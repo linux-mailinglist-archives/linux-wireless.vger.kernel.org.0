@@ -1,265 +1,208 @@
-Return-Path: <linux-wireless+bounces-17328-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17329-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C26A0926D
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 14:47:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60989A09362
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 15:26:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D84F188CD9D
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 13:47:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D725162710
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 14:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C52E620D4F2;
-	Fri, 10 Jan 2025 13:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E81520FAAE;
+	Fri, 10 Jan 2025 14:26:24 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C8E20DD71;
-	Fri, 10 Jan 2025 13:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736516845; cv=fail; b=FNTgnbGo7Sj07A5fKxFLyy0R+AZCQXJp54RLw+c9gVRbnH30vkJd1CRkayE5v5N2kDctzS4bsDN06PP2rnvtKVy5MEPu5oSKHMZVIi5pxwPo3Hg/8Ryv+4d0rMNxTWPVz121dJXBrFtV89ziQChCEJgXcaPtgFffv1qWX3FDblw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736516845; c=relaxed/simple;
-	bh=FA2DK5U55hgp9rZYmaQLK5zq7VLYLyLbVVknfWCkdGU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=b3M5CrfRdi/2NeuEJEm14Tu1HA13XTY8MowIU7Wh/mB4oiHcy4K3/YEESrFYB0dPDyk1vun97tiPhTC02alxaxxOdm635cL/yo8hCGm15efnYD/qoYnVgBpIxNoKrQmeUQZ4CJo2nQ3gq3otvZ4Orf34ldLV+yWcKdTzFspfufY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50A8t4Fs025676;
-	Fri, 10 Jan 2025 13:47:14 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2041.outbound.protection.outlook.com [104.47.70.41])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 441fv3txkm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 13:47:13 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eZHaHUMrudwNlubHvFg6DrSB1bnAMPwk05bCbc8t9LQumn7aHWDS01fSs2Mh/eJ9DXM5Pedz9krgiPQf5H+DKzjW5Wmg+gSNMMosm+QTyAo7Qmq9PpcHftQbv7ApVKo0Z4TvyBnPBU7D9+00BcMZh8veb5WT48SOYSzKQwgOFLNO/nyzastcFXTbi4MC0g8f6k8C7gDlHxTp/nlMgJaUwAhKxGXfyND7D3W4Ju/X7Uoff74jNfSgIweUCZb+o3M0XIyyzuVGezKfD5sJF5BPZ/1mPNh1k8lUprJw3WLBNJBgKihfQZKnaXn13ScIB9eIA8+Rj7+7WFhQtWAPntPndw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5ot9kX+39cCu5jRW3XcfKpdO5zagCRXEjtOXAcdpY0k=;
- b=c3nTy/cCXPOXk/ONrJXh5U9aaK0fUes1Kahi+92mWYuqTbtBFERCBfq+fv3C3e4evW0HXZcGssbmtjXB2xOZxCJ7hzdCqTxSrBDvZ2MQoGjLQlH5xzGM+fnuv0y1CWLJqSg7yKgWNVR3QY/9bEo9gp91RimAXqdd1L1uo8M0Bt7ObHSzYE5TY6nBFf2lF6VFyxWTYGpdxF0K+9MjwkjqjAtcrxrlZcp0zt8pDG+0MjBUvICBxe21uJ5Y4JBIiWaAl5HeSgsxTfxz3ANmR5IUqdQotInKGPNaYOva21CqZoWkD2pVtdIWfCU8xxT+sW5GiwNJdyFHdJw3llmL2628GA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CO6PR11MB5617.namprd11.prod.outlook.com (2603:10b6:5:35c::14)
- by DM4PR11MB7205.namprd11.prod.outlook.com (2603:10b6:8:113::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.13; Fri, 10 Jan
- 2025 13:47:12 +0000
-Received: from CO6PR11MB5617.namprd11.prod.outlook.com
- ([fe80::9629:5ec0:f779:4bd]) by CO6PR11MB5617.namprd11.prod.outlook.com
- ([fe80::9629:5ec0:f779:4bd%5]) with mapi id 15.20.8335.011; Fri, 10 Jan 2025
- 13:47:12 +0000
-Date: Fri, 10 Jan 2025 14:47:06 +0100
-From: Marcel Hamer <marcel.hamer@windriver.com>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] brcmfmac: NULL pointer dereference on tx statistic update
-Message-ID: <Z4Ek2uyi+87yZzlh@windriver.com>
-References: <20250109155201.3661298-1-marcel.hamer@windriver.com>
- <CAOiHx=kVXbKB9VXCZzz-2vmBi+wRBdWGg6HUFcDf6j-aQMxoVw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOiHx=kVXbKB9VXCZzz-2vmBi+wRBdWGg6HUFcDf6j-aQMxoVw@mail.gmail.com>
-X-ClientProxiedBy: FR0P281CA0133.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:97::11) To CO6PR11MB5617.namprd11.prod.outlook.com
- (2603:10b6:5:35c::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821E320FA88
+	for <linux-wireless@vger.kernel.org>; Fri, 10 Jan 2025 14:26:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736519184; cv=none; b=IOJy3dIyX//kogwh9/QoLLCRDpJHh+MaBVfHP3HvXeQZ8i1/IOSk+LlNWfn0un9fNoRM/aslQSQcqGhblSh0zbESSdNm65/wfw+EfhigrW3jYPyQ2aXvhgYYl/5M8DlRaNll6FVg1+Di/PKrrOWtB8PB1W+mOQlRgkkop3Cvg08=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736519184; c=relaxed/simple;
+	bh=qqBakNXYvbiCQEGAfikcMrx/vc8EeodCOs13Awspa+s=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=mSRlC1w7pLs82+5f5lvoxRKAb8pqJtL48QDXdDvNbulqMC53IvhIq0UzJjPEWrn+Fzx+wCPGa+8PdJyxk6nvCunlw50KbgR0A+BJirRfrGR4QYxM4tcX10PAsS8kD+fVKspWORVP+hTz0fHMZylYVStZKhjOwniN4g3Xroi4Sc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3cca581135dso35664455ab.3
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Jan 2025 06:26:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736519181; x=1737123981;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hV5fQEcBQovLfGffXD+3G1PqJGkp6eQP70KdyQTeXPc=;
+        b=nOd2YAuE6MwuC/PvOF+u02S0nTbEUYd9Btmc0zR0AxfjO7w0KWiNWJuxGKcHOq2oI2
+         TOb5NykXf8dEIHjG1UfNIAvz/tOq3gjIv0JgsfPZK9rqwUzyh6pHPqaHdvYYck3MwB4M
+         eBDgblLqh/CxalCuK6/yS0oqu8zBRuhPwA1aGG9wPOOShgpg2WRT/j89Fz8hVZZvGOmF
+         xeR7Tv24k0ma6DsWfTGFYz0y5ZifBsBQQ9fcpy2gri8i7fVn/EmmJADjgHc8x23rnRgd
+         zU3x1+/5ub7At2ad8cI9BY0fn6QJ/2a8C3cQME9y4HQs+dqnScCKPO/NQt8B6oc+t7h+
+         semA==
+X-Forwarded-Encrypted: i=1; AJvYcCX9m2Ukv1+WJ8aa1I+LWtGmPbkl4TlgMIVZoXM6gP4P6eydMraJke+AMQn1mH21jt2bIo9EfF981SMFohAtSA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmnBwf+7JNhcmVz82A/8xIx4ILlHqn1l1pGlIHJjDCA8NN5MCi
+	QF74+cfBQO0ERQdpoPHYjY7b7iLaEYg8bv+22Rb6h9XsIFy/Knal8Tm91C5J61Tt0fGMvNXTLov
+	eKjPFrOk3W0tbuPqyEOFkDQVcK45pxO7vu7+HlojpH+vWCSO5L8FZZlo=
+X-Google-Smtp-Source: AGHT+IGvxzrD1Fzz1imV4sJt94Rv/iBg/PkrKOxggFbrZjdpV9S1o9smiknTRNG19vnQ/BxzY2ZdLOQ3RRJqClDq7VU3mnQXz2xK
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO6PR11MB5617:EE_|DM4PR11MB7205:EE_
-X-MS-Office365-Filtering-Correlation-Id: 60e042fd-cf9a-4fb6-837b-08dd317d48b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MC9YTkJhRGV5SmtFWXQ1TDRHenJFTndoU1BNbGVTa240ZlR4NzhuSUNDSC9E?=
- =?utf-8?B?eW1GQ1p1Z29RVUxjNFRETUJpL1NrVHhMWktBaHF3TGw3NzVvOXdWVjNoVGN0?=
- =?utf-8?B?c3FobzRvUE5aOGQ0azlCbVUrU3JtZ2xlaXA4Snl1MXNLT1QwNjJiMFRCeUNW?=
- =?utf-8?B?NFdnVXBrTGg5cG1jeThnSG9kUllVeDdwT3FxejAyb1M5anA2dzdxMDByRFNy?=
- =?utf-8?B?VVBUQU1ENTVwSko4ZVY4a29GOXh2L3BGaEpDaGdNWUx6L1R1cWV4UHgwNFdZ?=
- =?utf-8?B?MWo4cXRPYlBMOGtoY1Fzbk1WN3hHT085ODViQlYzLzZxdW8wZmhRSHRYSDN3?=
- =?utf-8?B?RFczd2xuUDJZY05YUGtsTUFrcTV5SjFpVXBjTVNNeDVuakhkQzllVmdnNG03?=
- =?utf-8?B?dmZNL2RPUjV1VXNKWjQ0V3NSdkNRUExKSGlOL1VFbCtDaGp4enFnYVFvQ3B2?=
- =?utf-8?B?TU42VnhKY1I0cVhLZ1ZaWVVWRlE0QmNEMWNZOHJPd2hLMnZpKzBKZTBscE5y?=
- =?utf-8?B?M3dPWXJWSzdwVmsyRlpPMW9lNUNWL0FrOXdZb2JXVlQrNDZuaHUvbUo1VGR2?=
- =?utf-8?B?dk0wUGZSYkh2VEE1UEk3Y0lnWFFsNTZyUC9iZU0vSUtUWnRQSHY4aHNLYktU?=
- =?utf-8?B?TDVYU0hsSnI2U2lkem1KcjJKa0pTN0IrNGVxSENHT1dwU1pNK3Z2aVo5SjhR?=
- =?utf-8?B?ZW00MUpoQ1R3Ly9JMlJkV3o5VnhZWUExV0IwWmh5M0lORmlXRVhNeVNkRVVu?=
- =?utf-8?B?bDMxaFhYQ2ZlaitBUG1VZ2QxL3E4WTI2NnY4ZFJsWWEzTXlRKzJzQnRKVWZ5?=
- =?utf-8?B?eUprUXlMQko4QlIyQzVwUEhJNjBBMVJBUHdpdlVVWmhiUkQ5cklZSExmU2dt?=
- =?utf-8?B?OVJBYXAzYVVTT0daTitQTVBRdUpZQzcrNTdPYzA4S2FzMkJ3Mit6UjdGanNo?=
- =?utf-8?B?NUhabGhZRm4zUWozTTNnUXh1T25UOUh3REVsODFuQ3Q0aGMxeFhBblVzWXFy?=
- =?utf-8?B?blpnL0F1dURmc0JoUnFVMkFYSFRrU25ZK3M2d2Fnb0tqa296aUZXU3BWd3hk?=
- =?utf-8?B?OVZ5OWVFZUIvT0lyN2I1dEFpYVYwR25qdE9HT3BsWVlCNUJtRUVCUjhHcXNF?=
- =?utf-8?B?YmkyQjd6N3YzTXB5UmZhQzFiUlV4RTNtTlgybnVaWlIvUWgxN1QwTGM4RUFx?=
- =?utf-8?B?ampVb1VqTFV3WlM4MkwyOHRMOWdWZWpCakVzeXdhMDh6ME1HZ1dnazQ2b2l0?=
- =?utf-8?B?N015V0FNakNHYnZ2aEVvOXl1TnVBWldaSURIS3B2bjd3MlBNSGsxNUpCOTdP?=
- =?utf-8?B?M3ZGQ1J5cklNZFFXbHFxaVNIWU0wajlnZ3BYbDAwNHlMTkFxZVVVazVMc2pJ?=
- =?utf-8?B?Wi9ZTEdFZ243UFRsa3hrUURodGQ0dFZaakpINGFTc3pmZWtmVHBXTWlmMjZi?=
- =?utf-8?B?dklWNU1EREk3VUN5QVpCd0xSdUxFeEFVRE55ay9aMkNFNHZIV0ExRG5Pd0xt?=
- =?utf-8?B?TE4ycEF5VXBNWVBQaXRXRE5xeXd3SExnSzNIREE0eTZlSllkQnB5c1dDSWl0?=
- =?utf-8?B?UmozeUl4MTlHSFFPWmtzSHFxYjdyOEZCZmU3YjA3TVlJenQ2OUozdEtHZlps?=
- =?utf-8?B?Yy9FRSttNjQ2RDhRdkVJVUZkMUVCaUNtOXZuWUU0Y3JqQW1FOThYeWY2c1Fm?=
- =?utf-8?B?K0d1WE5XRXZ0RjcwSU5IQTRtcUgrZkRzL3dXckdGTnV3RmF1SXJZQ2dDOFFQ?=
- =?utf-8?B?L1BueG9NdDF2OG52VS9RVmVqWUllWjBka2thYUdhcVVGOTlHUGVyVGNjL2lB?=
- =?utf-8?B?YmlJb2JMRnJYc3dyNWRSQ2RSOGlqbTlablRpcTRydmNtVFM4M3hsajhHZHhi?=
- =?utf-8?Q?zN9cvHWt236mP?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5617.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UmFRU2syM0lFRjJoQlVXdUhIV2VhSTFVRHRNVkhRQjFZaERWZHNtT1Z4RmtJ?=
- =?utf-8?B?MTh6R0ZoYW85MG1lb0k3WU1Ya0x6eldUU1dCb1gzU3lMVk5IU3NKdGszTWFp?=
- =?utf-8?B?ZUhSYnBnSGNuV2VmQkNOUXlTV1FjTDhoSnFyK250a1hNbXVKV0t5ei8vaHhj?=
- =?utf-8?B?d0Q3a3RKdUx2RG1vVjJjWUVpK1pRVUlrKzcvamdmVkNaOGtpUzB3aVowNTV5?=
- =?utf-8?B?dWx3RTRnTXUrQWdFMXVxOWVCQnl3WXNXQ1JOU3lnSm9sUmgvcVc3bXprNzRw?=
- =?utf-8?B?N0hZYWJTLy9pVURoaXZyd1hidjVLcklZdTE3UTNjbVhsWG5KRnNYcHZGMTNQ?=
- =?utf-8?B?Yk9oYStZZlNGZ0lQMlNUZ3Y5V3RnWTFvUGRneDlTQlR1d3dJaDRjY2dBaHlY?=
- =?utf-8?B?c0swS1lYNDI4VFZUWFRFZis5RmJjMzR6a2h5N0hlTTNqZ1F0a3JUaGRjb2NS?=
- =?utf-8?B?NC80VU9ReDdSTmlUcDhvQ20waXpKdWk2b2NMSlNOdjBlTE1lTk9YUDh1Q3Er?=
- =?utf-8?B?cDJnZzZmUk9XL0ljcWdnN3lEazlodWlhM2JGczl2Z1VkbC9ZNjdDNVdjL0J4?=
- =?utf-8?B?Z1ZNd21BK3N2c0pvNFlPOCttbkNpWXNDTkxYakVVNllzZ0ozd2hFcU9hN3JF?=
- =?utf-8?B?OS9ROGhMZlhVeGZBRi9tQjB1cWNuTXBDTzhwdi8wKzFyR214eHNmQ3EyUytN?=
- =?utf-8?B?TUJwTDRDNk1tVVBGZWE5aEdHaEp4emRyTmpOSWI4UFJqL05KY1pnL2J0cXR2?=
- =?utf-8?B?VzJ3c1Z5dFltb3dxNlFaQ1FjZmYxYWo3aDJVVm5pamZRZVZwenY0bXN3MW9K?=
- =?utf-8?B?T2VVRUhXa2JuUVo1WHBQNmtaMTYxV3VDQVV5OUx3L3VJK0tRcWhnRWt5ak9N?=
- =?utf-8?B?WWR5MnFIcXJvdDFCU0t3SzR2cjRPb3ZIRXh0Q2dqZ3lFeS9mUjJIeGZXTDBK?=
- =?utf-8?B?cTZnblVXeDV3NlVJR3FWN3FPTlBuKy9XSXFvNk9tV3FWenVtYzdRTkdWSG4w?=
- =?utf-8?B?MFVBamtIY2tWUWVhOVFYYmRHMkVIZCtnSEh3RlFZQkg3K0N5NkIvWG1GQXZE?=
- =?utf-8?B?Z3ZHZUJRZ1J5RHNwWVFCVnNMRGlCNURwVmEyRStHTlVQOXAxMjMybXhoZHgx?=
- =?utf-8?B?aCttTlFLWDZPd2ZWN2VMcHdIMGh5enNKSHNxaVJPMThTVDRGeWJtK0l6V01z?=
- =?utf-8?B?OGI0YXBkaDJ6RU5vcmxkVXJ1S0lEcWZTdG95YklSaUxnVENONnZveGVKU0g3?=
- =?utf-8?B?V3VQM25zTjZrV090QkFYb3RiV1pLOG5UZTU4NkQ5QU9INkJLNHprWE9VVklp?=
- =?utf-8?B?WmhQQ21RMHlJaGg0dmFFYWNKZ0tMa3JtSXFseEZQK3drRHdqeGdlN0N1elcz?=
- =?utf-8?B?ZmxIZnlKcCt6NU5UWXBpUk1MeUNYRldDcWo3SXUwYXJOTjFZdCtNUXZ3RlZZ?=
- =?utf-8?B?TkVLSHdPN0ZSNllkT1B6eHRWWnd2ekNvMWw3YlNncXBJV2RBMEtNSXZQUnBK?=
- =?utf-8?B?VlhGZHRsaGQ5cFp1OFhONjRSUjFvNFZzclRaWXhOMW12QnoxS1NYSTkzZmp0?=
- =?utf-8?B?MmpOOWVtOW0yUGpuWWVxWjJSZEswYUlBUjEyZllMYXZCa3AyU0ZBTHQ3N0RF?=
- =?utf-8?B?QmVzaG13QkFJb0xweHZpRXJyL3ZreDV6em0xY09iODJaUU1HSzJDQ3FyR1oz?=
- =?utf-8?B?NW1hZkg5NXIwdTU0aXl0djl5WHVGMkw4R1NMdm1paEQvQzhUeTl5VUVCbjVu?=
- =?utf-8?B?RDRiRHkwV1d4TGFUOG9KREFNSFhITXQ1NFBjWi83L2dWcUVNSWFmT3p1N2dQ?=
- =?utf-8?B?NERkcWFPbXg2ZWs1WGhDZ0h3WEdhcTgveVJjU3drenBZaTNkbVoraVdxZzZa?=
- =?utf-8?B?UUdwdUNlMkQwa2tMaHFOUGVTbjhBMVhxVTVqWnJQRXhaZzAwZW10S2ZBYnZT?=
- =?utf-8?B?YVh6bGU0dDNUYmxLZHpHN2lObEJNL3hCTVdtaHB3c2tiRFpLbzZaemYxdGFs?=
- =?utf-8?B?YXlwM0xzRHpKTEJBamUycGlvUGE5OXFvWUFpRnVUK0NPaDh5NU1MTzJQVXV2?=
- =?utf-8?B?L3VKaGN6N1ZGY2EzL1NPSVcyUWdXV1FXeUhhVE5ObUxIRlNkT0JpekZkc2Fq?=
- =?utf-8?B?cXlKcmYwaWJCczNJeUl5ekY0U2dGbkY1bG1zdjNUTTJHR29lWFRGTy9LMUdu?=
- =?utf-8?B?QTJmZVpQNXFyMXkwRWZaMkRlbWtPaUdrME5pOFhQYlo5eXMvRU1iNkltZy83?=
- =?utf-8?B?T05aM0lhTEFUZWlVRFNHc1FyWXVnPT0=?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 60e042fd-cf9a-4fb6-837b-08dd317d48b9
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5617.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jan 2025 13:47:12.1024
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZRm4iMhUqPMB3qkK9na8y5VMrsLgq/An6nQCMmnt2VSkZFBccw9jZFov1xM+oMG5a4otXrOzpcnYS6/9+C5d0cRCMpfY/V3vDCznfEao2Z8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7205
-X-Proofpoint-GUID: drtg4Eg_v5RdlMHGnttbd_aQiux9Yu7p
-X-Authority-Analysis: v=2.4 cv=NIUv+16g c=1 sm=1 tr=0 ts=678124e1 cx=c_pps a=ybfeQeV9t1qutTZukg5VSg==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=VdSt8ZQiCzkA:10 a=bRTqI5nwn0kA:10
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=t7CeM3EgAAAA:8 a=gkEyKUcQ2NRFztCQ7-QA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: drtg4Eg_v5RdlMHGnttbd_aQiux9Yu7p
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-10_06,2025-01-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- priorityscore=1501 mlxscore=0 clxscore=1011 malwarescore=0 mlxlogscore=999
- phishscore=0 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2411120000 definitions=main-2501100108
+X-Received: by 2002:a05:6e02:b44:b0:3a7:15aa:3fcc with SMTP id
+ e9e14a558f8ab-3ce3a86a440mr96257375ab.1.1736519181753; Fri, 10 Jan 2025
+ 06:26:21 -0800 (PST)
+Date: Fri, 10 Jan 2025 06:26:21 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67812e0d.050a0220.216c54.0014.GAE@google.com>
+Subject: [syzbot] [wireless?] KASAN: use-after-free Read in cfg80211_shutdown_all_interfaces
+From: syzbot <syzbot+9f80a60b805b070b9702@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
 Hello,
 
-On Thu, Jan 09, 2025 at 08:33:37PM +0100, Jonas Gorski wrote:
-> CAUTION: This email comes from a non Wind River email account!
-> Do not click links or open attachments unless you recognize the sender and know the content is safe.
-> 
-> Hi,
-> 
-> On Thu, Jan 9, 2025 at 4:53 PM Marcel Hamer <marcel.hamer@windriver.com> wrote:
-> >
-> > On removal of the device or unloading of the kernel module a potential
-> > NULL pointer dereference occurs.
-> >
-> > The following sequence deletes the interface:
-> >
-> >   brcmf_detach()
-> >     brcmf_remove_interface()
-> >       brcmf_del_if()
-> >
-> > Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
-> > BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
-> >
-> > After brcmf_remove_interface() call the brcmf_proto_detach() function is
-> > called providing the following sequence:
-> >
-> >   brcmf_detach()
-> >     brcmf_proto_detach()
-> >       brcmf_proto_msgbuf_detach()
-> >         brcmf_flowring_detach()
-> >           brcmf_msgbuf_delete_flowring()
-> >             brcmf_msgbuf_remove_flowring()
-> >               brcmf_flowring_delete()
-> >                 brcmf_get_ifp()
-> >                 brcmf_txfinalize()
-> >
-> > Since brcmf_get_ip() can and actually will return NULL in this case the
-> > call to brcmf_txfinalize() will result in a NULL pointer dereference
-> > inside brcmf_txfinalize() when trying to update
-> > ifp->ndev->stats.tx_errors.
-> >
-> > This will only happen if a flowring still has an skb.
-> >
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
-> > Link: https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
-> > ---
-> >  drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-> > index c3a57e30c855..cf731bc7ae24 100644
-> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-> > @@ -549,7 +549,7 @@ void brcmf_txfinalize(struct brcmf_if *ifp, struct sk_buff *txp, bool success)
-> >                         wake_up(&ifp->pend_8021x_wait);
-> 
-> Here is some additional potential ifp access, which happens if the
-> ethtype is ETH_P_PAE. Should this also be guarded? To me it looks it
-> might also break there, just with lower probability. Or is this
-> impossible to reach when detaching?
-> 
-> >         }
-> >
-> > -       if (!success)
-> > +       if (!success && ifp)
-> >                 ifp->ndev->stats.tx_errors++;
-> >
-> >         brcmu_pkt_buf_free_skb(txp);
-> 
-> Best Regards,
-> Jonas
+syzbot found the following issue on:
 
-Thank you for pointing this out, I actually missed that.
+HEAD commit:    d7123c77dc60 usb: gadget: f_tcm: Refactor goto check_condi..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=11a8fcc4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c7df994a0b7c30a9
+dashboard link: https://syzkaller.appspot.com/bug?extid=9f80a60b805b070b9702
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
 
-I have added this in v2 of the patch.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Kind regards,
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/ccb59f24626e/disk-d7123c77.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b51b5c87b9dc/vmlinux-d7123c77.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/f66bf96bc8cc/bzImage-d7123c77.xz
 
-Marcel
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+9f80a60b805b070b9702@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KASAN: use-after-free in cfg80211_shutdown_all_interfaces+0x1ed/0x200 net/wireless/core.c:278
+Read of size 8 at addr ffff88811b318d68 by task kworker/0:9/17903
+
+CPU: 0 UID: 0 PID: 17903 Comm: kworker/0:9 Not tainted 6.13.0-rc4-syzkaller-00068-gd7123c77dc60 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events cfg80211_rfkill_block_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xc3/0x620 mm/kasan/report.c:489
+ kasan_report+0xd9/0x110 mm/kasan/report.c:602
+ cfg80211_shutdown_all_interfaces+0x1ed/0x200 net/wireless/core.c:278
+ cfg80211_rfkill_set_block net/wireless/core.c:312 [inline]
+ cfg80211_rfkill_set_block net/wireless/core.c:304 [inline]
+ cfg80211_rfkill_block_work+0x1e/0x30 net/wireless/core.c:324
+ process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
+ process_scheduled_works kernel/workqueue.c:3310 [inline]
+ worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
+ kthread+0x2c1/0x3a0 kernel/kthread.c:389
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff88811b318f00 pfn:0x11b318
+flags: 0x200000000000000(node=0|zone=2)
+raw: 0200000000000000 ffffea00047a7a08 ffff8881f5842ff0 0000000000000000
+raw: ffff88811b318f00 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as freed
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0x40dc0(GFP_KERNEL|__GFP_COMP|__GFP_ZERO), pid 12252, tgid 12252 (kworker/0:7), ts 1567506366580, free_ts 1570817378586
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x2d1/0x350 mm/page_alloc.c:1558
+ prep_new_page mm/page_alloc.c:1566 [inline]
+ get_page_from_freelist+0xe76/0x2b90 mm/page_alloc.c:3476
+ __alloc_pages_noprof+0x21c/0x22a0 mm/page_alloc.c:4753
+ __alloc_pages_node_noprof include/linux/gfp.h:269 [inline]
+ alloc_pages_node_noprof include/linux/gfp.h:296 [inline]
+ ___kmalloc_large_node+0x84/0x1b0 mm/slub.c:4243
+ __kmalloc_large_node_noprof+0x1c/0x70 mm/slub.c:4270
+ __do_kmalloc_node mm/slub.c:4286 [inline]
+ __kmalloc_noprof.cold+0xc/0x61 mm/slub.c:4310
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ kzalloc_noprof include/linux/slab.h:1037 [inline]
+ wiphy_new_nm+0x701/0x2120 net/wireless/core.c:477
+ ieee80211_alloc_hw_nm+0x1b7a/0x2260 net/mac80211/main.c:830
+ ieee80211_alloc_hw include/net/mac80211.h:4899 [inline]
+ rtl8187_probe+0x176/0x19a0 drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c:1444
+ usb_probe_interface+0x300/0x9c0 drivers/usb/core/driver.c:396
+ call_driver_probe drivers/base/dd.c:579 [inline]
+ really_probe+0x23e/0xa90 drivers/base/dd.c:658
+ __driver_probe_device+0x1de/0x440 drivers/base/dd.c:800
+ driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:830
+ __device_attach_driver+0x1df/0x310 drivers/base/dd.c:958
+ bus_for_each_drv+0x157/0x1e0 drivers/base/bus.c:459
+ __device_attach+0x1e8/0x4b0 drivers/base/dd.c:1030
+page last free pid 12252 tgid 12252 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1127 [inline]
+ free_unref_page+0x661/0xe40 mm/page_alloc.c:2659
+ __folio_put+0x1e8/0x2d0 mm/swap.c:112
+ device_release+0xa1/0x240 drivers/base/core.c:2567
+ kobject_cleanup lib/kobject.c:689 [inline]
+ kobject_release lib/kobject.c:720 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x1e4/0x5a0 lib/kobject.c:737
+ put_device+0x1f/0x30 drivers/base/core.c:3773
+ rtl8187_disconnect+0x117/0x150 drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c:1678
+ usb_unbind_interface+0x1e2/0x960 drivers/usb/core/driver.c:458
+ device_remove drivers/base/dd.c:569 [inline]
+ device_remove+0x122/0x170 drivers/base/dd.c:561
+ __device_release_driver drivers/base/dd.c:1273 [inline]
+ device_release_driver_internal+0x44a/0x610 drivers/base/dd.c:1296
+ bus_remove_device+0x22f/0x420 drivers/base/bus.c:576
+ device_del+0x396/0x9f0 drivers/base/core.c:3854
+ usb_disable_device+0x36c/0x7f0 drivers/usb/core/message.c:1418
+ usb_disconnect+0x2e1/0x920 drivers/usb/core/hub.c:2304
+ hub_port_connect drivers/usb/core/hub.c:5361 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5661 [inline]
+ port_event drivers/usb/core/hub.c:5821 [inline]
+ hub_event+0x1bed/0x4f40 drivers/usb/core/hub.c:5903
+ process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
+ process_scheduled_works kernel/workqueue.c:3310 [inline]
+ worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
+
+Memory state around the buggy address:
+ ffff88811b318c00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff88811b318c80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>ffff88811b318d00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                                                          ^
+ ffff88811b318d80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff88811b318e00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+==================================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
