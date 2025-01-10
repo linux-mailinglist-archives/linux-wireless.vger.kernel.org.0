@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-17324-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17326-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91209A09184
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 14:12:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C999A091A6
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 14:17:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FBEB188E29A
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 13:12:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ECC63ABD30
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 13:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039A2209F22;
-	Fri, 10 Jan 2025 13:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0E620E325;
+	Fri, 10 Jan 2025 13:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rgdbLQBg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LY409uwi"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04831E32C5;
-	Fri, 10 Jan 2025 13:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F6520E320;
+	Fri, 10 Jan 2025 13:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736514771; cv=none; b=rieYtrAkxRcMc8WFC6HTCxJz5roKYM9ifENHjcC5ZPjplt4S9ZTAXG6FF6BAsKxw4oGCBV2vHg2S9L7e9oqrl9u/Jiz1XkP6m2cvVOW84K7quhs/JkHK+nLI6+ro5SATppGcPELkr4QQaXYsJ78Fe3DiuB/xZdxxczW0aczHpos=
+	t=1736514878; cv=none; b=VECKnCqwEUAd33Pj+iNDXmmF79XYFSzz7OTKai2DiY3j4SQ6mvM03OekANY0UdITCXw3Jxwsh744kE3FUSBu175DNm98sxjPmVEf95JQh3W3A2MfaaTdTfGldt3fNbdDBHcAv+XhqUtrL9mHq1u5HZtG//3snGGYxYTtA1yJXqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736514771; c=relaxed/simple;
-	bh=nj7fsiiDxvJq0xaxvcHI/mKFqbzzUp16p1h3nysGU1g=;
+	s=arc-20240116; t=1736514878; c=relaxed/simple;
+	bh=DSLKVv/krrAdDin6xUFCag3f6iFvd8LlMR3JZIo5N+Y=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=IjxU+8kqrU4MZkBXRun02ELaOjJkZgk5pc89+zjEHzs+RvUBO1LEETG3+b8IqW7VHDV/au3dLKagZt+D5VCqh1T1wH3w5K7e11Eb1g2i2yz9tEuZUpIb08SpvA1M3BNQpHztWiw/aBy+BrecYqAUX/OB1hvkqaOYP87rYrydwFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rgdbLQBg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454DFC4CED6;
-	Fri, 10 Jan 2025 13:12:50 +0000 (UTC)
+	 Cc:Message-ID:Date; b=KqnwZUmtQO5aCbfGHBXsYjGuQN1s4n+QX+pj090ke8tnNQUJ+OIRjtgMC3Sr7PqWCpOQqEEyvMuevrukZiBAyHdLBM+xiXbmKy4Sl+GF6dZsgZ6HOKBfU06eRGiEQVPYyPSmafLzNyxMyFSUG2VDpE6dyXJOZP0+KpyJpSfHbIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LY409uwi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CD1C4CED6;
+	Fri, 10 Jan 2025 13:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736514771;
-	bh=nj7fsiiDxvJq0xaxvcHI/mKFqbzzUp16p1h3nysGU1g=;
+	s=k20201202; t=1736514877;
+	bh=DSLKVv/krrAdDin6xUFCag3f6iFvd8LlMR3JZIo5N+Y=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=rgdbLQBgesy2zp0ISmUwrHhecNpF3+BDRZp+Ry7C0V6h9dTm/3zxwwd8Caei/AwVu
-	 Aapw69zwxGENr7SJBBJW9uUlMx1vmrr/4upOE75uozp9V/LzJGhToB56miOKesld/H
-	 C/+6a+1ILYb+7Tkji1hzEmCXKbjawc74Uap8xHCb4L7kxI5/bF+uWhdgK8gzWUjzyP
-	 VE7EsTDii1Kh+nlAWTNJd/TmVlY+3hJXFj/Rp/HymA5rn8XW8cFluAa/1Q1dUfU4El
-	 uJJi+3L0EjZNVIPKqpY4kZCWaV38e4TuBM1V4v58e4HJrbJr1tPTNfI7V9jXvG5A3b
-	 Q5Yw47uCDaeqQ==
+	b=LY409uwi22GKjJKIPTiWkdo6+IZY6y3C5tPYzMZBQoK0q59gmxoMZfe5R2G7cqoQ0
+	 izYNMIWo/h9XfCuYfUcT/xVBo3KHZMM0SpzLM6D1yYo/6ByMOSQ7MEV84D5IOjVrqO
+	 3UvMMu1Udfb3tcRgOMsE2YXCfJ1pGIdi09DJVGA6m+dPtYJZPytuJh8u1gNKm6G+gF
+	 GuPJKrNrQjy+nN88cTMXokTshtZwwEJzF8F4HMZdQW9U8uCHA4F51MoPvDgEO57FyH
+	 lap4RrH/iCiPF6rNz60am8rk+B4264EWuvMTAHC4s9IvpNYVlnOiPYQbCkpbFXoq3l
+	 4sRaMapysvLIg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,37 +49,39 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [1/2] wifi: iwlegacy: Remove unused il3945_calc_db_from_ratio()
+Subject: Re: [PATCH] wifi: brcmfmac: Add missing Return: to function
+ documentation
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20241226011355.135417-2-linux@treblig.org>
-References: <20241226011355.135417-2-linux@treblig.org>
-To: linux@treblig.org
-Cc: stf_xl@wp.pl, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, "Dr. David Alan Gilbert" <linux@treblig.org>
+In-Reply-To: <20250106-brcmfmac-kdoc-v1-1-ed72196e21a1@oss.qualcomm.com>
+References: <20250106-brcmfmac-kdoc-v1-1-ed72196e21a1@oss.qualcomm.com>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
+ linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <173651476877.72755.17293189953022835840.kvalo@kernel.org>
-Date: Fri, 10 Jan 2025 13:12:50 +0000 (UTC)
+Message-ID: <173651487482.72755.16429721895960725368.kvalo@kernel.org>
+Date: Fri, 10 Jan 2025 13:14:36 +0000 (UTC)
 
-linux@treblig.org wrote:
+Jeff Johnson <jeff.johnson@oss.qualcomm.com> wrote:
 
-> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> Running 'scripts/kernel-doc -Wall -Werror -none' flagged the following
+> kernel-doc issues:
 > 
-> The last use of il3945_calc_db_from_ratio() was removed in 2010 by
-> commit ed1b6e99b5e6 ("iwlwifi: remove noise reporting")
-> when it was still called iwl3945_calc_db_from_ratio().
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:823: warning: No description found for return value of 'brcmf_apsta_add_vif'
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:907: warning: No description found for return value of 'brcmf_mon_add_vif'
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:7419: warning: No description found for return value of 'brcmf_setup_ifmodes'
 > 
-> Remove it.
+> Add the missing 'Return:' tags to the kernel-doc of these functions.
 > 
-> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+> Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
-2 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-413859e909a4 wifi: iwlegacy: Remove unused il3945_calc_db_from_ratio()
-83ed80dd25f6 wifi: iwlegacy: Remove unused il_get_single_channel_number()
+8221712a174a wifi: brcmfmac: Add missing Return: to function documentation
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20241226011355.135417-2-linux@treblig.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20250106-brcmfmac-kdoc-v1-1-ed72196e21a1@oss.qualcomm.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
