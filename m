@@ -1,70 +1,91 @@
-Return-Path: <linux-wireless+bounces-17297-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17299-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FF6A0888C
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 07:49:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F55A089BE
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 09:20:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 194621688CC
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 06:49:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97BB2188C7A9
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 08:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AEA206F14;
-	Fri, 10 Jan 2025 06:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7AE32080D2;
+	Fri, 10 Jan 2025 08:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bzcZSHax"
+	dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b="m2Djh5DM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2079.outbound.protection.outlook.com [40.107.20.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AC92066CB
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Jan 2025 06:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736491754; cv=none; b=TXuYqdYlsLvTs+mUPPIylcPiCTqLy0FaWLrJfmoqG/ptGWMO9dZrfhMDLjuMGOg2aO16wUJsa6V0tRu/gzVyTaQ+9tpKZ8HAOjGfaOE6FSk6MQoRE5bjHv9VtagT4W0Mr7RFcLxUojkY0KvZADFElKb6UBv3C0xuGiIL8TRzV/A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736491754; c=relaxed/simple;
-	bh=cXDphJezZ19d74hNxbAvhH9UXFc8bhojzLa3gppnaOQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Eb1visImzIDqnp4V4NNdZZoGnRFeTqsLsqJV4ZHUbe9FfOWYkz3oyiheSWXU4ChClzuJpFrnJc3glwBLPKCw6Ubg+Ays8Ujoz3P+e+CnyZFXw67NWlYOHVMol2I55nWLWHVbpwm+gApY7hqQJNbkolH7W0/6Z+1tDVjqfZAh2oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bzcZSHax; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50A1W4wS023773;
-	Fri, 10 Jan 2025 06:49:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	zx5IhO09UnC6JAwkkaEAsCHGDuZn6TDBpFo1SToaxLU=; b=bzcZSHaxg3NVAqE+
-	V5Q03fhglaZLwezir9P+F5u4ekGEPf9zgmDj84Ondd3X6jnP8/iKHxs1JNCIXSET
-	GRBHdubhnCDQOzDw3Z93S4UdlCl7tllnobrpfLSFhcs0WAHNfnFigGpX6RCK0bpd
-	0TkpKD8SbKbQiCoQxRlM4WlRklrN3tBrrSgseip4G0rUBwuxmgViAbBGMAIzHBeD
-	OdM/1JoXVeSc3NUnDbytYj5B/mTNREG8fbtLERi5VpqWmnUFNBPn+RW/DwUJcJYl
-	Xd36BsMjp1f9G1zm+XOHHh92VU/aqAuQ5uX7NVF3Ve2L4DkUuR3vcctgs1hTiHZH
-	qmVZyw==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 442syc0mwb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 06:49:10 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50A6n9nC014990
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 06:49:09 GMT
-Received: from lingbok-Birman-PHX.qca.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 9 Jan 2025 22:49:08 -0800
-From: Lingbo Kong <quic_lingbok@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
-Subject: [PATCH v9 3/3] wifi: ath12k: report station mode signal strength
-Date: Fri, 10 Jan 2025 14:48:48 +0800
-Message-ID: <20250110064848.790733-4-quic_lingbok@quicinc.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D9C207E02;
+	Fri, 10 Jan 2025 08:20:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736497220; cv=fail; b=Oem+PCnpr7fUHHNitfuDmKzmUDSfBI+5fheSQPoAi4bYmXbOKlNYMGirwbKXNsCuddqHL/pB+NvgAbX8OgLvl4c9wBgjGtHsulrvMdXFic4fukCtL8/e2M6OMYDjMBBEdG5Ugwbtmd2al4rs1nnrRLMy2m9V2OWLag+iaaSxNag=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736497220; c=relaxed/simple;
+	bh=qobj6G+593UvCJ2IHCUHccFnL6Fclzm+HsyFp194Bao=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=kXyp6xu4XNiPHGcu9xKexBat/tlb6akLos5rVX9NcglFnCjF6hjOH2DkBHtys2NUxXNny6rSgQC8wB6ygZRBzDgM/pEowYZPA9Qj9ibcwRAHz+aB8TD/BgI6OwjEwOLBgHM3aE1Nex55F8rCE5K0Ig+DRdCFJjvdCEOYVS0sPWM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com; spf=fail smtp.mailfrom=leica-geosystems.com; dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b=m2Djh5DM; arc=fail smtp.client-ip=40.107.20.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=leica-geosystems.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ijrPPYY8b7AMN3VzLKLMFcO/vNySCLmmX5eyyGbCUrorfOZCJGi53l9G/+h47QBMPktfaXzUpEdXQG0uZc75t8GBJDBGLoJYcsjIEAGbabMgojMMCH+BWpaDWnUE9wonNwPEXNzy8WKumExmsK4CM2faO6dmni5yLYupV30Lz3VVe1F27PDWWZyesov/z6Jar6G3foz3pRdPZO0CkogALuIA5/wN1DEevkRWSoq7JfpYnaE61jxXQ7H8QbDR+ZMVPMs/lLYkCzrBwrBBXTDrY/qg3X49szPWU07o804xe9ZVO3AVJMYQueqvjtYGTuVsLWKCcb28TRVSj/ZNogIKFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ObuvQrM6K7PmVdpYk05YI2HrEhMl3SOEwV5saoVTjyc=;
+ b=Wc90wG5pa8BJ+HELTqnAtP7itJ04wVIeYFsDZh5ytN9AYCR0w2HQ0DNl6l/F8Fh26MFiovWWWIsp6ox+ML9dLYtCQ6RL2j1VvnCs23z5AMPYRMGNm0fnqs7IDkBVSH7raWrI8WVKrftB/y9Kj34nOxossyXXXhEmWEPClfDrmt1WLlGXVqBSZW0WR4NgejUjaVpg6mEA0EVUlV56bnH+Ufn1dk/d5zv1KbA4aHTEpbNNesByp88m1Z+vPW61On99jpYKwYzi50D/gptiFic/hjaMRPIqK2Uwxr4hUAXPeuOpsE67ig9WGGvVXUISh8O+t0MGOp16xjhhhksYRVJEJQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=temperror (sender ip
+ is 193.8.40.94) smtp.rcpttodomain=vger.kernel.org
+ smtp.mailfrom=leica-geosystems.com; dmarc=temperror action=none
+ header.from=leica-geosystems.com; dkim=none (message not signed); arc=none
+ (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ObuvQrM6K7PmVdpYk05YI2HrEhMl3SOEwV5saoVTjyc=;
+ b=m2Djh5DMpqxnw2SouOMYLSPu6RrJ/jWlD3YqkCKyREssAAsaug288rcHV2B9/nUWJz4UKnMUvSH89KLOCq5OWYBW8ZMSS7Iyf8l5+FDc9eCtK0ZgZ10PoCMf092hrqP3j1pVyW18+nuNlZKJR6MJ+zKEBPY2n+XUif0v5aNBd3I=
+Received: from AS8PR07CA0045.eurprd07.prod.outlook.com (2603:10a6:20b:459::16)
+ by GVXPR06MB9609.eurprd06.prod.outlook.com (2603:10a6:150:1e6::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.12; Fri, 10 Jan
+ 2025 08:20:09 +0000
+Received: from AM4PEPF00025F9C.EURPRD83.prod.outlook.com
+ (2603:10a6:20b:459:cafe::27) by AS8PR07CA0045.outlook.office365.com
+ (2603:10a6:20b:459::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.6 via Frontend Transport; Fri,
+ 10 Jan 2025 08:20:09 +0000
+X-MS-Exchange-Authentication-Results: spf=temperror (sender IP is 193.8.40.94)
+ smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
+ header.d=none;dmarc=temperror action=none header.from=leica-geosystems.com;
+Received-SPF: TempError (protection.outlook.com: error in processing during
+ lookup of leica-geosystems.com: DNS Timeout)
+Received: from hexagon.com (193.8.40.94) by
+ AM4PEPF00025F9C.mail.protection.outlook.com (10.167.16.11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8356.0 via Frontend Transport; Fri, 10 Jan 2025 08:20:07 +0000
+Received: from aherlnxbspsrv01.lgs-net.com ([10.60.34.116]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
+	 Fri, 10 Jan 2025 09:20:07 +0100
+From: Catalin Popescu <catalin.popescu@leica-geosystems.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org
+Cc: netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	m.felsch@pengutronix.de,
+	bsp-development.geo@leica-geosystems.com,
+	Catalin Popescu <catalin.popescu@leica-geosystems.com>
+Subject: [PATCH net-next 1/2] dt-bindings: net: rfkill-gpio: enable booting in blocked state
+Date: Fri, 10 Jan 2025 09:19:01 +0100
+Message-Id: <20250110081902.1846296-1-catalin.popescu@leica-geosystems.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250110064848.790733-1-quic_lingbok@quicinc.com>
-References: <20250110064848.790733-1-quic_lingbok@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -72,428 +93,90 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 10 Jan 2025 08:20:07.0511 (UTC) FILETIME=[7550CE70:01DB6338]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM4PEPF00025F9C:EE_|GVXPR06MB9609:EE_
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: CUsu0ASxOS0CyfhHo0Zt1J3QF7PH-85v
-X-Proofpoint-ORIG-GUID: CUsu0ASxOS0CyfhHo0Zt1J3QF7PH-85v
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=999
- malwarescore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- clxscore=1015 mlxscore=0 suspectscore=0 priorityscore=1501 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501100055
+X-MS-Office365-Filtering-Correlation-Id: 09e97ef2-3c1b-491c-f71d-08dd314f97df
+X-SET-LOWER-SCL-SCANNER: YES
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?EOFCgJeDqHXgNjNCRbB7xy27RLjLK7w2pt0vadxE0lI6+Vz1jWfBYlZKumbZ?=
+ =?us-ascii?Q?+Q8X6smrwVkxz5YwjgEDKvzGkd/cFLyZrBf7WZuufayA3loz81eG+sgf1Tin?=
+ =?us-ascii?Q?tKMmXeZczAnMJx9H/myUldPOtEMaloprVpfaiDDz3ir9xBNELRTPrNGj0gp2?=
+ =?us-ascii?Q?07vZKq4nCPpatPwRtfMZnR3PpEmF4Di9OVYLgmhIPmpzwDK6Jg0AbSwslBFC?=
+ =?us-ascii?Q?V8CzExJBO82iFd5KchNgG96pfhUlRqUMWs+yHPZoMY6m3NAryAONpVB+sQMZ?=
+ =?us-ascii?Q?CfAVefHuBNKQva6xIcUZjpmCQ8D61yoBOTePuNwUcfGB7PaO/2jouBGkujK4?=
+ =?us-ascii?Q?6f+nSkT+1fmbbw3lJMmW4/1mr/PvJfag5xoisWcnjcEcQaTkivG5jZm+qJEX?=
+ =?us-ascii?Q?w1XRu2UR9XjV9PBRCaHpTozCddnOV/L2lVjydr7e4+OSkydsD6be1oxAgK4t?=
+ =?us-ascii?Q?LxEZzn1drHQmCG+sZ6hrdOllnu77HMgubXcnbS9B+fQlxBNSXbSHqIk1a7Cr?=
+ =?us-ascii?Q?ch9RMnkXHoZBPAMNIiHkYh+JgIsMiQGiRCk3Lwj/yuXUPOHnGaamLu8KTJJk?=
+ =?us-ascii?Q?Fnhq51FbHikWxTGUxo5Jbc/FqiPJYk7VfotMcbzbIPzvLhuR0zmGyWJQfkzZ?=
+ =?us-ascii?Q?ooit4iUy06070sGjj2yD0LypOAMmfIXgwS+yOgKpzbtVk4rzCCIzDAIFFTNe?=
+ =?us-ascii?Q?W9pbh3atplfSeeqU3mQOflpd6xqyltOgnjHO90VFdkSVallQvCKMPdvqC0YH?=
+ =?us-ascii?Q?sUl4bQRMbJ4HpOtrISG+aNod1WW8xsLsV2fTJ6DG/A6Fcfa9gusGLftdSOV9?=
+ =?us-ascii?Q?2ihML9iFnRoBOF8xNWCtzxdjpJ+baoJuA963Z/OCvJt/DoYrltmGQ9FiJKwN?=
+ =?us-ascii?Q?4G0wA12Q4eV12q9Z47fE5IyZVa+Yd4YnaIWsWlrV5FiXgJAvYq006DcFyDf9?=
+ =?us-ascii?Q?sAmLARPGi0ULnBObK0JNqWp/WIkjhXfAiAAJ0nzECYzXSHjDl8zZWBUH0t3A?=
+ =?us-ascii?Q?vr/4FTrBk8f+7uoQ+i3W4R2LM44uYUZMCPVRsksiOB9FkHPHHL4Qst5cfiIa?=
+ =?us-ascii?Q?Z09n91HdP3bHA0iTFBBW0tNwHZGqIChs6EmxLKmx6xRZPz+aI6kPZa67Jfeo?=
+ =?us-ascii?Q?/9aj9hS8h7QoC0MDWlsyWeXDixOM5SWFWVHfgH+sVaFUMupfwjC90k2VEWXf?=
+ =?us-ascii?Q?JCprgmbEAzuZoy5faGaSOsRAjONewjgrxE7dPvWkXiOe6DLoZPJNqmILcKuV?=
+ =?us-ascii?Q?CqxW4GeZ8+fmVuUG8+C2oRoArzNmA4CS6KTHcFZ6JdrV7HCG2K5AALbg46v6?=
+ =?us-ascii?Q?WJxylRxmRfLAvfn1D2Ok3D87IxhpGtfp2O+PbByGlAJLyRk5HIjXzmZKODue?=
+ =?us-ascii?Q?zJxYdPyJKxObf8UTf29bawHGOiqGsrKzT4Rzws5iIE4zM4w9BT1gqk088bHD?=
+ =?us-ascii?Q?3yvrbwUrVno2cbGMxtYXydWU28b4+ZWa4s74IOW32uw0KwCX2slI1Ua3au++?=
+ =?us-ascii?Q?p73DiiSj4eSC4wQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:193.8.40.94;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom50.leica-geosystems.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: leica-geosystems.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jan 2025 08:20:07.5755
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 09e97ef2-3c1b-491c-f71d-08dd314f97df
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.94];Helo=[hexagon.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM4PEPF00025F9C.EURPRD83.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR06MB9609
 
-Currently, the signal strength of "iw dev xxx station dump" always show an
-invalid value.
+By default, rfkill state is set to unblocked. Sometimes, we want to boot
+in blocked state and let the application unblock the rfkill.
 
-This is because signal strength is only set in ath12k_mgmt_rx_event()
-function, and not set for received data packet. So, change to get signal
-from firmware and report to mac80211.
-
-After that, "iw dev xxx station dump" show the correct signal strength.
-Such as:
-
-Station 00:03:7f:12:03:03 (on wlo1)
-        inactive time:  36 ms
-        rx bytes:       61571
-        rx packets:     336
-        tx bytes:       28204
-        tx packets:     205
-        tx retries:     49
-        tx failed:      0
-        beacon loss:    0
-        beacon rx:      83
-        rx drop misc:   66
-        signal:         -24 dBm
-        beacon signal avg:      -22 dBm
-
-For WCN7850, the firmware supports db2dbm, so not need to add noise floor.
-For QCN9274, the firmware not support db2dbm, so need to add noise floor.
-
-This patch affects the station mode of WCN7850 and QCN9274.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+Signed-off-by: Catalin Popescu <catalin.popescu@leica-geosystems.com>
 ---
-v9:
-1.rebase to dbe50a7420e2
+ Documentation/devicetree/bindings/net/rfkill-gpio.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-v8:
-1.rebase to 09fa3b6974a1
+diff --git a/Documentation/devicetree/bindings/net/rfkill-gpio.yaml b/Documentation/devicetree/bindings/net/rfkill-gpio.yaml
+index 9630c8466fac..22f26f1a3856 100644
+--- a/Documentation/devicetree/bindings/net/rfkill-gpio.yaml
++++ b/Documentation/devicetree/bindings/net/rfkill-gpio.yaml
+@@ -32,6 +32,10 @@ properties:
+   shutdown-gpios:
+     maxItems: 1
+ 
++  default-blocked:
++    description: configure rfkill state as blocked at boot
++    type: boolean
++
+ required:
+   - compatible
+   - radio-type
+@@ -48,4 +52,5 @@ examples:
+         label = "rfkill-pcie-wlan";
+         radio-type = "wlan";
+         shutdown-gpios = <&gpio2 25 GPIO_ACTIVE_HIGH>;
++        default-blocked;
+     };
 
-v7:
-1.use guard(mutex)(&ah->hw_mutex)
-2.replace time with time_left
-
-v6:
-1.rebase against wifi: ath12k: prepare sta data structure for MLO handling
-
-v5:
-no change
-
-v4:
-1.no change
-
-v3:
-1.change wmi_vdev_stats_event to wmi_vdev_stats_params 
-
-v2:
-1.change name according Naming conventions for structures
-
- drivers/net/wireless/ath/ath12k/core.h |   3 +
- drivers/net/wireless/ath/ath12k/mac.c  |  59 ++++++++++-
- drivers/net/wireless/ath/ath12k/wmi.c  | 132 +++++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/wmi.h  |  48 +++++++++
- 4 files changed, 240 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index eef8b0c98d12..ec1448bd0861 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -502,6 +502,7 @@ struct ath12k_link_sta {
- 	struct ath12k_wbm_tx_stats *wbm_tx_stats;
- 	u32 bw_prev;
- 	u32 peer_nss;
-+	s8 rssi_beacon;
- 
- 	/* For now the assoc link will be considered primary */
- 	bool is_assoc_link;
-@@ -714,6 +715,8 @@ struct ath12k {
- 
- 	bool nlo_enabled;
- 
-+	struct completion fw_stats_complete;
-+
- 	struct completion mlo_setup_done;
- 	u32 mlo_setup_status;
- };
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 3e07f392d0d2..8f180632865d 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -10088,6 +10088,40 @@ static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
- 	return 0;
- }
- 
-+static int ath12k_mac_get_fw_stats(struct ath12k *ar, u32 pdev_id,
-+				   u32 vdev_id, u32 stats_id)
-+{
-+	struct ath12k_base *ab = ar->ab;
-+	struct ath12k_hw *ah = ath12k_ar_to_ah(ar);
-+	unsigned long time_left;
-+	int ret;
-+
-+	guard(mutex)(&ah->hw_mutex);
-+
-+	if (ah->state != ATH12K_HW_STATE_ON)
-+		return -ENETDOWN;
-+
-+	reinit_completion(&ar->fw_stats_complete);
-+
-+	ret = ath12k_wmi_send_stats_request_cmd(ar, stats_id, vdev_id, pdev_id);
-+
-+	if (ret) {
-+		ath12k_warn(ab, "failed to request fw stats: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ath12k_dbg(ab, ATH12K_DBG_WMI,
-+		   "get fw stat pdev id %d vdev id %d stats id 0x%x\n",
-+		   pdev_id, vdev_id, stats_id);
-+
-+	time_left = wait_for_completion_timeout(&ar->fw_stats_complete, 1 * HZ);
-+
-+	if (!time_left)
-+		ath12k_warn(ab, "time out while waiting for get fw stats\n");
-+
-+	return ret;
-+}
-+
- static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 					 struct ieee80211_vif *vif,
- 					 struct ieee80211_sta *sta,
-@@ -10095,10 +10129,19 @@ static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- {
- 	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
- 	struct ath12k_link_sta *arsta;
-+	struct ath12k *ar;
-+	s8 signal;
-+	bool db2dbm;
- 
- 	lockdep_assert_wiphy(hw->wiphy);
- 
- 	arsta = &ahsta->deflink;
-+	ar = ath12k_get_ar_by_vif(hw, vif, arsta->link_id);
-+	if (!ar)
-+		return;
-+
-+	db2dbm = test_bit(WMI_TLV_SERVICE_HW_DB2DBM_CONVERSION_SUPPORT,
-+			  ar->ab->wmi_ab.svc_map);
- 
- 	sinfo->rx_duration = arsta->rx_duration;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_DURATION);
-@@ -10125,8 +10168,18 @@ static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
- 
- 	/* TODO: Use real NF instead of default one. */
--	sinfo->signal = arsta->rssi_comb + ATH12K_DEFAULT_NOISE_FLOOR;
--	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
-+	signal = arsta->rssi_comb;
-+
-+	if (!signal &&
-+	    ahsta->ahvif->vdev_type == WMI_VDEV_TYPE_STA &&
-+	    !(ath12k_mac_get_fw_stats(ar, ar->pdev->pdev_id, 0,
-+				      WMI_REQUEST_VDEV_STAT)))
-+		signal = arsta->rssi_beacon;
-+
-+	if (signal) {
-+		sinfo->signal = db2dbm ? signal : signal + ATH12K_DEFAULT_NOISE_FLOOR;
-+		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
-+	}
- }
- 
- static int ath12k_mac_op_cancel_remain_on_channel(struct ieee80211_hw *hw,
-@@ -11106,6 +11159,8 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
- 		ath12k_debugfs_register(ar);
- 	}
- 
-+	init_completion(&ar->fw_stats_complete);
-+
- 	return 0;
- 
- err_unregister_hw:
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 4dd6cdf84571..6fa047b7528c 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -25,6 +25,10 @@ struct ath12k_wmi_svc_ready_parse {
- 	bool wmi_svc_bitmap_done;
- };
- 
-+struct wmi_tlv_fw_stats_parse {
-+	const struct wmi_stats_event *ev;
-+};
-+
- struct ath12k_wmi_dma_ring_caps_parse {
- 	struct ath12k_wmi_dma_ring_caps_params *dma_ring_caps;
- 	u32 n_dma_ring_caps;
-@@ -814,6 +818,39 @@ int ath12k_wmi_mgmt_send(struct ath12k *ar, u32 vdev_id, u32 buf_id,
- 	return ret;
- }
- 
-+int ath12k_wmi_send_stats_request_cmd(struct ath12k *ar, u32 stats_id,
-+				      u32 vdev_id, u32 pdev_id)
-+{
-+	struct ath12k_wmi_pdev *wmi = ar->wmi;
-+	struct wmi_request_stats_cmd *cmd;
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	skb = ath12k_wmi_alloc_skb(wmi->wmi_ab, sizeof(*cmd));
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	cmd = (struct wmi_request_stats_cmd *)skb->data;
-+	cmd->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_REQUEST_STATS_CMD,
-+						 sizeof(*cmd));
-+
-+	cmd->stats_id = cpu_to_le32(stats_id);
-+	cmd->vdev_id = cpu_to_le32(vdev_id);
-+	cmd->pdev_id = cpu_to_le32(pdev_id);
-+
-+	ret = ath12k_wmi_cmd_send(wmi, skb, WMI_REQUEST_STATS_CMDID);
-+	if (ret) {
-+		ath12k_warn(ar->ab, "failed to send WMI_REQUEST_STATS cmd\n");
-+		dev_kfree_skb(skb);
-+	}
-+
-+	ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
-+		   "WMI request stats 0x%x vdev id %d pdev id %d\n",
-+		   stats_id, vdev_id, pdev_id);
-+
-+	return ret;
-+}
-+
- int ath12k_wmi_vdev_create(struct ath12k *ar, u8 *macaddr,
- 			   struct ath12k_wmi_vdev_create_arg *args)
- {
-@@ -6813,8 +6850,103 @@ static void ath12k_peer_assoc_conf_event(struct ath12k_base *ab, struct sk_buff
- 	rcu_read_unlock();
- }
- 
-+static int ath12k_wmi_tlv_fw_stats_data_parse(struct ath12k_base *ab,
-+					      struct wmi_tlv_fw_stats_parse *parse,
-+					      const void *ptr,
-+					      u16 len)
-+{
-+	const struct wmi_stats_event *ev = parse->ev;
-+	struct ath12k *ar;
-+	struct ath12k_link_vif *arvif;
-+	struct ieee80211_sta *sta;
-+	struct ath12k_sta *ahsta;
-+	struct ath12k_link_sta *arsta;
-+	int i, ret = 0;
-+	const void *data = ptr;
-+
-+	if (!ev) {
-+		ath12k_warn(ab, "failed to fetch update stats ev");
-+		return -EPROTO;
-+	}
-+
-+	rcu_read_lock();
-+
-+	ar = ath12k_mac_get_ar_by_pdev_id(ab, le32_to_cpu(ev->pdev_id));
-+	if (!ar) {
-+		ath12k_warn(ab, "invalid pdev id %d in update stats event\n",
-+			    le32_to_cpu(ev->pdev_id));
-+		ret = -EPROTO;
-+		goto exit;
-+	}
-+
-+	for (i = 0; i < le32_to_cpu(ev->num_vdev_stats); i++) {
-+		const struct wmi_vdev_stats_params *src;
-+
-+		src = data;
-+		if (len < sizeof(*src)) {
-+			ret = -EPROTO;
-+			goto exit;
-+		}
-+
-+		arvif = ath12k_mac_get_arvif(ar, le32_to_cpu(src->vdev_id));
-+		if (arvif) {
-+			sta = ieee80211_find_sta_by_ifaddr(ath12k_ar_to_hw(ar),
-+							   arvif->bssid,
-+							   NULL);
-+			if (sta) {
-+				ahsta = ath12k_sta_to_ahsta(sta);
-+				arsta = &ahsta->deflink;
-+				arsta->rssi_beacon = le32_to_cpu(src->beacon_snr);
-+				ath12k_dbg(ab, ATH12K_DBG_WMI,
-+					   "wmi stats vdev id %d snr %d\n",
-+					   src->vdev_id, src->beacon_snr);
-+			} else {
-+				ath12k_dbg(ab, ATH12K_DBG_WMI,
-+					   "not found station bssid %pM for vdev stat\n",
-+					   arvif->bssid);
-+			}
-+		}
-+
-+		data += sizeof(*src);
-+		len -= sizeof(*src);
-+	}
-+
-+	complete(&ar->fw_stats_complete);
-+exit:
-+	rcu_read_unlock();
-+	return ret;
-+}
-+
-+static int ath12k_wmi_tlv_fw_stats_parse(struct ath12k_base *ab,
-+					 u16 tag, u16 len,
-+					 const void *ptr, void *data)
-+{
-+	struct wmi_tlv_fw_stats_parse *parse = data;
-+	int ret = 0;
-+
-+	switch (tag) {
-+	case WMI_TAG_STATS_EVENT:
-+		parse->ev = ptr;
-+		break;
-+	case WMI_TAG_ARRAY_BYTE:
-+		ret = ath12k_wmi_tlv_fw_stats_data_parse(ab, parse, ptr, len);
-+		break;
-+	default:
-+		break;
-+	}
-+	return ret;
-+}
-+
- static void ath12k_update_stats_event(struct ath12k_base *ab, struct sk_buff *skb)
- {
-+	int ret;
-+	struct wmi_tlv_fw_stats_parse parse = {};
-+
-+	ret = ath12k_wmi_tlv_iter(ab, skb->data, skb->len,
-+				  ath12k_wmi_tlv_fw_stats_parse,
-+				  &parse);
-+	if (ret)
-+		ath12k_warn(ab, "failed to parse fw stats %d\n", ret);
- }
- 
- /* PDEV_CTL_FAILSAFE_CHECK_EVENT is received from FW when the frequency scanned
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index b6a197389277..565a8684f49a 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -5629,6 +5629,52 @@ enum wmi_sta_keepalive_method {
- #define WMI_STA_KEEPALIVE_INTERVAL_DEFAULT	30
- #define WMI_STA_KEEPALIVE_INTERVAL_DISABLE	0
- 
-+struct wmi_stats_event {
-+	__le32 stats_id;
-+	__le32 num_pdev_stats;
-+	__le32 num_vdev_stats;
-+	__le32 num_peer_stats;
-+	__le32 num_bcnflt_stats;
-+	__le32 num_chan_stats;
-+	__le32 num_mib_stats;
-+	__le32 pdev_id;
-+	__le32 num_bcn_stats;
-+	__le32 num_peer_extd_stats;
-+	__le32 num_peer_extd2_stats;
-+} __packed;
-+
-+enum wmi_stats_id {
-+	WMI_REQUEST_VDEV_STAT	= BIT(3),
-+};
-+
-+struct wmi_request_stats_cmd {
-+	__le32 tlv_header;
-+	__le32 stats_id;
-+	__le32 vdev_id;
-+	struct ath12k_wmi_mac_addr_params peer_macaddr;
-+	__le32 pdev_id;
-+} __packed;
-+
-+#define WLAN_MAX_AC 4
-+#define MAX_TX_RATE_VALUES 10
-+
-+struct wmi_vdev_stats_params {
-+	__le32 vdev_id;
-+	__le32 beacon_snr;
-+	__le32 data_snr;
-+	__le32 num_tx_frames[WLAN_MAX_AC];
-+	__le32 num_rx_frames;
-+	__le32 num_tx_frames_retries[WLAN_MAX_AC];
-+	__le32 num_tx_frames_failures[WLAN_MAX_AC];
-+	__le32 num_rts_fail;
-+	__le32 num_rts_success;
-+	__le32 num_rx_err;
-+	__le32 num_rx_discard;
-+	__le32 num_tx_not_acked;
-+	__le32 tx_rate_history[MAX_TX_RATE_VALUES];
-+	__le32 beacon_rssi_history[MAX_TX_RATE_VALUES];
-+} __packed;
-+
- void ath12k_wmi_init_qcn9274(struct ath12k_base *ab,
- 			     struct ath12k_wmi_resource_config_arg *config);
- void ath12k_wmi_init_wcn7850(struct ath12k_base *ab,
-@@ -5754,6 +5800,8 @@ int ath12k_wmi_set_bios_cmd(struct ath12k_base *ab, u32 param_id,
- 			    const u8 *buf, size_t buf_len);
- int ath12k_wmi_set_bios_sar_cmd(struct ath12k_base *ab, const u8 *psar_table);
- int ath12k_wmi_set_bios_geo_cmd(struct ath12k_base *ab, const u8 *pgeo_table);
-+int ath12k_wmi_send_stats_request_cmd(struct ath12k *ar, u32 stats_id,
-+				      u32 vdev_id, u32 pdev_id);
- 
- static inline u32
- ath12k_wmi_caps_ext_get_pdev_id(const struct ath12k_wmi_caps_ext_params *param)
+base-commit: 25cc469d6d344f5772e9fb6a5cf9d82a690afe68
+prerequisite-patch-id: 0000000000000000000000000000000000000000
 -- 
 2.34.1
 
