@@ -1,144 +1,116 @@
-Return-Path: <linux-wireless+bounces-17384-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17385-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC58A0A86C
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 11:53:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438FAA0AAC9
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 17:14:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC4C03A4A57
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 10:53:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C7A3162136
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 16:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1936C1A8F8E;
-	Sun, 12 Jan 2025 10:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB291BD50D;
+	Sun, 12 Jan 2025 16:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="TSPJi6aG"
+	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="jjKmIluZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39AC1A840D;
-	Sun, 12 Jan 2025 10:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C6D1BD9CB
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2025 16:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736679197; cv=none; b=SnhZEr/5Z4Z9MxepR4/uer+8kuumFF+B2FmBcVKXTXDTKiVy419umd2cjqaydWG8a0p9S999O6lIsCb+yDzJNzJc0WRRwuXVCkXqCveaGhK7lQVfaEbamjCFCNWaBWkDCjmtzxtvpwC/nqjNSVX2oE3DXDEyX3V0qrisz+KphmA=
+	t=1736698491; cv=none; b=si/FVqMQdsUJVyO/upZbxz4kNf0uQbujTnR41YYgSd3bze6oYpnlR9MWMAW0r375zG9HCAZjqecwmq36XhqOsTTsUABGioh5SLfWSWu7tuJECvPPBgb45cg7VgufjtHJl3Go5do+KhdkmmvX5FJp3IEapsnoAeXLi3UAW8wlnLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736679197; c=relaxed/simple;
-	bh=birV0m2TUYCxH3KwWA5B/e6Yhw24rOPaiRSP6FEaXr0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KUhSCBD1IYf2cY9sBMDU5TY/oFwTNFk6v1eNC0BMlpk8azAktSfhnfglt45fOhaTQpwURuuv6bi7Mkr+rLJPBP9vyRcJByabud+h9fqDYJ4YuxpoU1eOyWk1ygUXYM/jBX4LaqQC3uViGXj2QsEI87wc5eGQcbzLbuHHxd6scWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=TSPJi6aG; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=Yv90L
-	9yj0YdwWlTf+JeNOTMvl/SxjHh9t/iyEqBKgck=; b=TSPJi6aGUkF/ICT9SBL+f
-	KmvK2wW/cr3XNnw1eD5hlknc4xTKnirGHQAXC+aU7vlpLrAfMauLMGcbHW6FDdb5
-	LFt4OFyG3WUSzMQ1N/iUnkU74ulM44W2Qe5KzuMv6gNjZdr3ELpW8jTHqoUMAsED
-	C7y4olnXURDuYTkNZgeo4E=
-Received: from hello.. (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3_83DnoNn2lc_Fg--.33526S2;
-	Sun, 12 Jan 2025 18:51:48 +0800 (CST)
-From: Liang Jie <buaajxlj@163.com>
-To: pkshih@realtek.com
-Cc: kvalo@kernel.org,
-	phhuang@realtek.com,
-	fanggeng@lixiang.com,
-	yangchen11@lixiang.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Liang Jie <liangjie@lixiang.com>
-Subject: [PATCH v4] wifi: rtw89: Correct immediate cfg_len calculation for scan_offload_be
-Date: Sun, 12 Jan 2025 18:51:44 +0800
-Message-Id: <20250112105144.615474-1-buaajxlj@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1736698491; c=relaxed/simple;
+	bh=bK21uoMXNt7FSUXzGvf/eZtNyCCNur2P0FKFqx87MIs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=kfgPnYXSOvr1kPCv3Mi3SMfqCiGWWO/AD1jO1fC2udOeUBLaDyh0KYuDAcZE6A9HqufDuc0/LMW38WV2qNCKlHDjSj/lNN677JUWsaI9nESb9r3o2NBCkBKy2QZpKBhoxEU0UQvxZ5CpfgQOb3TBB6kZsCRcBZlo3pkchdEAKH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=jjKmIluZ; arc=none smtp.client-ip=5.252.227.236
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
+Message-ID: <19d0ea5a-237a-48da-9d01-e380d7419101@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+	s=wetzel-home; t=1736698089;
+	bh=bK21uoMXNt7FSUXzGvf/eZtNyCCNur2P0FKFqx87MIs=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=jjKmIluZzt6i2IMvziP8OSL7FDH8VmJds0hx/+yiX5PNL9943crOz5eqjkyjkYHEI
+	 Ry3AsFWyphnj2KaUsYi69QgRZedDMJ/TJMQX+hHqjWPtWxIcYo/zOqUx0IOcQHC+Te
+	 AaeuyxgI/3OFSzZc+ABEmJ0eeMfmpcH++YOvXqPQ=
+Date: Sun, 12 Jan 2025 17:08:09 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3_83DnoNn2lc_Fg--.33526S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAF4xZw4rWr1xXFWftrWkWFg_yoW5Zr1Dpa
-	y8G3W8urn5Gr17Xr47Za1xZFZ5Ga1kGr1YkrWqk395Za1rXF1ayFyUKFWY9ryjvr4kZFy8
-	XFyqvr13GasxWaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Ul_MfUUUUU=
-X-CM-SenderInfo: pexdtyx0omqiywtou0bp/xtbBzw7SIGeDk+B+YAAAs6
+User-Agent: Mozilla Thunderbird
+Subject: Re: Performance degradation with "wifi: mac80211: Drop support for TX
+ push path"
+From: Alexander Wetzel <alexander@wetzel-home.de>
+To: Maxime Bizon <mbizon@freebox.fr>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <ZEwBXkj7nwXY2cF+@sakura>
+ <140bdbc3-8cb3-e7bd-13ee-fdacdf3b20da@wetzel-home.de>
+ <1f5e0a66-e68e-a673-feea-d2a3baaf54d4@wetzel-home.de>
+Content-Language: en-US, de-DE
+In-Reply-To: <1f5e0a66-e68e-a673-feea-d2a3baaf54d4@wetzel-home.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Liang Jie <liangjie@lixiang.com>
+On 29.04.23 09:36, Alexander Wetzel wrote:
+...
+>>> First I would like to thank you for the cleanups you are doing in
+>>> mac80211, as a driver writer [1] I used to scratch my head to
+>>> understand the internals.
+>>>
+>>> I work for a french ISP called Free, and actively maintain the
+>>> software of all router/gateway devices (couple millions deployed)
+>>>
+>>> We have a very large number of old devices deployed that are >10 years
+>>> old but on which we manage to run a mainline kernel. Those are ARM
+>>> Kirkwook (armv5 1Ghz) based devices, wifi is Marvell 11n 2.4Ghz (mwl8k
+>>> based) + QCA 11ac 5ghz (QCA998X/ath10k).
+>>>
+>>> The CPU was always a bit underpowered for the 11ac card, but I could
+>>> reach ~400Mbit/s in a routing test between WAN and Wifi, 100% CPU usage.
+>>>
+>>> Since work started in 2019 on ath10k debloat, I applied that patch [2]
+>>> to avoid performance degration.
+>>>
+>>> Since "wifi: mac80211: Drop support for TX push path", it's not
+>>> possible to do that anymore, so I did a benchmark to see the impact,
+>>> the same routing test caps at 250Mbit/s. I suppose some openwrt users
+>>> will be affected also.
+>>
+>> Well, I guess calling wake_tx_queue and then transmitting (mostly) one 
+>> packet is probably causing that. Now there are some ideas to improve 
+>> that by using a kthreads. It's hidden in the discussion here:
+>> https://lore.kernel.org/all/82d5623b-8d21-a8c1-e835- 
+>> e446adf96cde@wetzel-home.de/
+>>
+>> My problem with doing that *now* is, that I'm working on a invasive 
+>> patch set in mac80211. Which will really clean up the old logic and 
+>> not just tweak some simple things.
+>> It's mostly sorted out and written, only a few issue left till I can 
+>> try it out. But I'm not getting around to wrap that up for work/ 
+>> private reasons for quite some weeks (really months...) now. Rebasing 
+>> and then testing the already working patches for a wake_tx_queue 
+>> implementation using kthreads is something I'm hoping to avoid:-)
+>>
+>> Now, I've more or less already decided to add the kthread patch to 
+>> that series, once I get it stabilized at its current level.
+>> I have some hopes, that I can reuse the reworked PS mechanism to even 
+>> simplify such an patch.
 
-Ensures the correct calculation of `cfg_len` prior to the allocation of
-the skb in the `rtw89_fw_h2c_scan_offload_be` function, particularly when
-the `SCAN_OFFLOAD_BE_V0` firmware feature is enabled. It addresses an
-issue where an incorrect skb size might be allocated due to a delayed
-setting of `cfg_len`, potentially leading to memory inefficiencies.
+I did put the promised patch set aside for quite some time again and 
+just resumed looking into them a few weeks ago.
 
-By moving the conditional check and assignment of `cfg_len` before skb
-allocation, the patch guarantees that `len`, which depends on `cfg_len`,
-is accurately computed, ensuring proper skb size and preventing any
-unnecessary memory reservation for firmware operations not supporting
-beyond the `w8` member of the command data structure.
+They are now good enough that I could share patches moving TX a kthread.
+So if you - or anyone else - is interested to check the performance with 
+kthread TX I would wrap them up and post an RFC for that.
 
-This correction helps to optimize memory usage and maintain consistent
-behavior across different firmware versions.
 
-Fixes: 6ca6b918f280 ("wifi: rtw89: 8922a: Add new fields for scan offload H2C command")
-Signed-off-by: Liang Jie <liangjie@lixiang.com>
----
-
-Changes in v4:
-- Rebase on the top of rtw tree(commit 4b6652b).
-- Add scan_offload_ver used for SCAN_OFFLOAD_BE_V0 check.
-- Link to v3: https://lore.kernel.org/all/20250109022557.1143215-1-buaajxlj@163.com/
-
-Changes in v3:
-- Resolved "reverse X'mas tree" issue.
-- Link to v2: https://lore.kernel.org/all/20250109021148.1114317-1-buaajxlj@163.com/
-
-Changes in v2:
-- Standardized the format of the commit log.
-- Optimized the handling logic for cfg_len.
-- Link to v1: https://lore.kernel.org/linux-wireless/20250109012356.1015198-1-buaajxlj@163.com/
-
- drivers/net/wireless/realtek/rtw89/fw.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 5d4ad23cc..5cc9ab78c 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -5311,6 +5311,7 @@ int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
- 	u8 macc_role_size = sizeof(*macc_role) * option->num_macc_role;
- 	u8 opch_size = sizeof(*opch) * option->num_opch;
- 	u8 probe_id[NUM_NL80211_BANDS];
-+	u8 scan_offload_ver = U8_MAX;
- 	u8 cfg_len = sizeof(*h2c);
- 	unsigned int cond;
- 	u8 ver = U8_MAX;
-@@ -5321,6 +5322,11 @@ int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
- 
- 	rtw89_scan_get_6g_disabled_chan(rtwdev, option);
- 
-+	if (RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD_BE_V0, &rtwdev->fw)) {
-+		cfg_len = offsetofend(typeof(*h2c), w8);
-+		scan_offload_ver = 0;
-+	}
-+
- 	len = cfg_len + macc_role_size + opch_size;
- 	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
- 	if (!skb) {
-@@ -5392,10 +5398,8 @@ int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
- 					   RTW89_H2C_SCANOFLD_BE_W8_PROBE_RATE_6GHZ);
- 	}
- 
--	if (RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD_BE_V0, &rtwdev->fw)) {
--		cfg_len = offsetofend(typeof(*h2c), w8);
-+	if (scan_offload_ver == 0)
- 		goto flex_member;
--	}
- 
- 	h2c->w9 = le32_encode_bits(sizeof(*h2c) / sizeof(h2c->w0),
- 				   RTW89_H2C_SCANOFLD_BE_W9_SIZE_CFG) |
--- 
-2.34.1
+Alexander
 
 
