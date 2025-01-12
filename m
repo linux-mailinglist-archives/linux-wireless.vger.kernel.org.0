@@ -1,67 +1,66 @@
-Return-Path: <linux-wireless+bounces-17361-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17362-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4FDA0A6DE
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 02:51:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDF6A0A6E0
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 02:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13EAF3A8DF0
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 01:50:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26A327A2B09
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 01:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF5A79E1;
-	Sun, 12 Jan 2025 01:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F36D79E1;
+	Sun, 12 Jan 2025 01:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Xb1sCxQK"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Pqr8lJEl"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1138763CF;
-	Sun, 12 Jan 2025 01:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9801779CF
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2025 01:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736646657; cv=none; b=sYMGh9uNvSItUBne6XIRyagMuVygebn61daO1JoWsqAq7rFw6IsDK5MKdm+Hf4ggrbtPvkV2MAEdIVRHXn/U8GhLagN0N0bU/mDP6L3Z8+tHOZgecnHCoiv28904m16MIZAqiGaFbUAFGRiDfSAXhLGVnYXyYXsH7dfawk3xId4=
+	t=1736646936; cv=none; b=ncE89UVGawJpBTuZYLgYyAYSfdePyUj+E/4cy/8rqBky3WP0VUdUnBT/td7cXGfOYcrAPidx+3uQULSIXBTBOMQ/XTkL+l7Q0ySkMIvKumP3AgnNJE+lXFktCC1F/BaOv8FjJ/pPRu0xduU7IiscWy/l+ju7GAt39Jt0f7PsM8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736646657; c=relaxed/simple;
-	bh=6M0iLCz8S5DxPypVCA8TqI6CK7SZgoi405fNlVoTdNU=;
+	s=arc-20240116; t=1736646936; c=relaxed/simple;
+	bh=gmfVJPUgASbcf2kQE5/KBTrG4x7ArMOnhyRLGM+z3+0=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=N/0mv+wZd9nPMBjRcNL/YdPpJnfC8uHobDYHTudhvBwW+iAH+sDPGHZnNZo3GsskTXFTRVMejp7oO+dw4sYeSckeXNzlzwg8ThHGfEue50CdaeCfRYX33RFwsVy3ELJqXUGet0PasALvwE9Gdor6V3VOHzcGpsW6moVmadFBAH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Xb1sCxQK; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:Message-ID:Date; b=VOP6u78kY+WCmExLMePL/g6HWuWL/41EyCgU4RLHb8RlqONk+YUNq105INz8Ei8B10sCSOcMyVffEre9MnsNvSk/LCFrWjMmsiHvAVywoQ2nhY09x1zjDxl3PpIdnSEeyffKykMF4NgbOa9994jC+7YxrXGO9uhwae15hJzpTW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Pqr8lJEl; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50C1oXuhD1596249, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50C1tL2I11599048, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1736646633; bh=6M0iLCz8S5DxPypVCA8TqI6CK7SZgoi405fNlVoTdNU=;
+	t=1736646921; bh=gmfVJPUgASbcf2kQE5/KBTrG4x7ArMOnhyRLGM+z3+0=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
 	 Content-Type:Message-ID:Date;
-	b=Xb1sCxQKB7KM5X0Gzc9ZGjotHeejCtaA+9o9HB0qoYeq6YN/Mq8jlmJOG/mIAYczB
-	 BP6bwvcLztJpN2/h3Ip4+5aGz+29PFkrR8Y2Nz9esAyNGspWSspdxBe0nYcxc+P9gG
-	 DEJayJ/5r/giQ4ake6koENDwDMIP9kUPkyPYCZ9C8T3HET5wWJNi1MWZbaH8Wzxz/3
-	 4ARYaSPYIreN9uQHcl3MxVe+efF8gmqSc+rmyuibpm7CjJIvNTh1EOdYN/4aCyg4KQ
-	 jZmEowxhX1/OaB2L1rLYgK16d9YI3CwuXW0he3p6QbS/cDxDzADWsz/D6837P9HC8s
-	 pWn/kGbZuBXIg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50C1oXuhD1596249
+	b=Pqr8lJElZmj+udq9r1Ku1t/O3vEbCX5aE9xYd1tXx1PVQUQ6O3Xo/I16ZFj7bZIHs
+	 vz4O4nfP0IPih6tuwhbB7ifo6vAyqB+MVqeqTeNV8q8ofN9TAIw7Y7JtemMf1FiJP2
+	 SwhoY2cQc5PsN3ORMq/cUlFIH+mQe3KXHE+Bgp+d7eJArsDQNukKfcWUjckHSuWOl5
+	 2beAjjOwrXNntRHQYJ7O5c8Yp6k3E17JSbUf0HTKjQln/3mq1b7bkDHc21veYYOWr0
+	 aFE8QVmJOdxjyd3Lut8QzRATOaIwHA6NF6NbVnCwPmJep4pjym/UqgkjtvZmkcfbwf
+	 N/OP0W+4h9y/Q==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50C1tL2I11599048
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 12 Jan 2025 09:50:33 +0800
+	Sun, 12 Jan 2025 09:55:21 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sun, 12 Jan 2025 09:50:34 +0800
+ 15.1.2507.39; Sun, 12 Jan 2025 09:55:22 +0800
 Received: from [127.0.1.1] (172.16.16.103) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sun, 12 Jan
- 2025 09:50:34 +0800
+ 2025 09:55:21 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Liang Jie <buaajxlj@163.com>, <pkshih@realtek.com>
-CC: <kvalo@kernel.org>, <phhuang@realtek.com>, <fanggeng@lixiang.com>,
-        <yangchen11@lixiang.com>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Liang Jie <liangjie@lixiang.com>
-Subject: Re: [PATCH v3] wifi: rtw89: Correct immediate cfg_len calculation for scan_offload_be
-In-Reply-To: <20250109022557.1143215-1-buaajxlj@163.com>
-References: <20250109022557.1143215-1-buaajxlj@163.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Ping-Ke Shih <pkshih@realtek.com>, Sascha Hauer <sha@pengutronix.de>
+Subject: Re: [PATCH v2] wifi: rtw88: Add USB PHY configuration
+In-Reply-To: <9d312b14-0146-4be8-9c50-ef432234db50@gmail.com>
+References: <9d312b14-0146-4be8-9c50-ef432234db50@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -69,46 +68,42 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Message-ID: <61e0a972-75d3-4acb-ba73-fcedd1ee4a69@RTEXMBS04.realtek.com.tw>
-Date: Sun, 12 Jan 2025 09:50:34 +0800
+Message-ID: <b11811e2-0fc4-4b02-9b57-4a10515d86bc@RTEXMBS04.realtek.com.tw>
+Date: Sun, 12 Jan 2025 09:55:21 +0800
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Liang Jie <buaajxlj@163.com> wrote:
+Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 
-> From: Liang Jie <liangjie@lixiang.com>
+> Add some extra configuration for USB devices. Currently only RTL8822BU
+> version (cut) D needs this. The new code makes use of the existing
+> usb3_param_8822b array from rtw8822b.c.
 > 
-> Ensures the correct calculation of `cfg_len` prior to the allocation of
-> the skb in the `rtw89_fw_h2c_scan_offload_be` function, particularly when
-> the `SCAN_OFFLOAD_BE_V0` firmware feature is enabled. It addresses an
-> issue where an incorrect skb size might be allocated due to a delayed
-> setting of `cfg_len`, potentially leading to memory inefficiencies.
+> A user reported that TP-Link Archer T3U in USB 3 mode was randomly
+> disconnecting from USB:
 > 
-> By moving the conditional check and assignment of `cfg_len` before skb
-> allocation, the patch guarantees that `len`, which depends on `cfg_len`,
-> is accurately computed, ensuring proper skb size and preventing any
-> unnecessary memory reservation for firmware operations not supporting
-> beyond the `w8` member of the command data structure.
+> [ 26.036502] usb 2-2: new SuperSpeed USB device number 3 using xhci_hcd
+> ...
+> [ 27.576491] usb 2-2: USB disconnect, device number 3
+> [ 28.621528] usb 2-2: new SuperSpeed USB device number 4 using xhci_hcd
+> ...
+> [ 45.984521] usb 2-2: USB disconnect, device number 4
+> ...
+> [ 46.845585] usb 2-2: new SuperSpeed USB device number 5 using xhci_hcd
+> ...
+> [ 94.400380] usb 2-2: USB disconnect, device number 5
+> ...
+> [ 95.590421] usb 2-2: new SuperSpeed USB device number 6 using xhci_hcd
 > 
-> This correction helps to optimize memory usage and maintain consistent
-> behavior across different firmware versions.
+> This patch fixes that.
 > 
-> Fixes: 6ca6b918f280 ("wifi: rtw89: 8922a: Add new fields for scan offload H2C command")
-> Signed-off-by: Liang Jie <liangjie@lixiang.com>
+> Link: https://github.com/lwfinger/rtw88/issues/262
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 > Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Failed to apply patch:
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-  Applying: wifi: rtw89: Correct immediate cfg_len calculation for scan_offload_be
-  error: patch failed: drivers/net/wireless/realtek/rtw89/fw.c:5171
-  error: drivers/net/wireless/realtek/rtw89/fw.c: patch does not apply
-  Patch failed at 0001 wifi: rtw89: Correct immediate cfg_len calculation for scan_offload_be
-
-Please rebase on the top of rtw tree.
-
-Set patchset state to Changes Requested
-
-[v3] wifi: rtw89: Correct immediate cfg_len calculation for scan_offload_be
+5b1b9545262b wifi: rtw88: Add USB PHY configuration
 
 ---
 https://github.com/pkshih/rtw.git
