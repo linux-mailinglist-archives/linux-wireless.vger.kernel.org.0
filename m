@@ -1,197 +1,175 @@
-Return-Path: <linux-wireless+bounces-17367-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17368-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F26A0A6FA
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 03:27:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F32EEA0A74E
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 06:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CE7B18889E8
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 02:27:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4B831655C2
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 05:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22592881E;
-	Sun, 12 Jan 2025 02:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9EF146D6A;
+	Sun, 12 Jan 2025 05:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="cgc1HiMS"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jjiMkytw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B441E522
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2025 02:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B061A145FE8;
+	Sun, 12 Jan 2025 05:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736648836; cv=none; b=Z0Jbo3GTUGpggxWyvOTYje9nBu3qS3G16ZCGm9x5aUsSgOyUVj4vNNN5X3/Vsi5WNhBuwv93fXERzgQ0bNlYhTkth0JaKwaYM+rQn0GfZpZyoMNBm/JfuvRPw+zgVK5uZXm6PqRz4UlmihrbbdUP8dNMHcjgejsBYeqGZterZh4=
+	t=1736661009; cv=none; b=Ruvxcl3qRf+i8RJKTnSXz/Pu7QKFP32Y/9aPQB6p4NIt+0A8h6Ghh5oUrP5jcp9FcBDe4oGlLcqt4Gu/WpXNHP9KhNA301FQ0yeAk1z5Ussu2NGxU25aGaX/G/tqGPQDVFbt1w0rsEETju8BD/ZiZD6yX2OAWkWkO2t1hNZ9uIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736648836; c=relaxed/simple;
-	bh=F0o0Qq2ZGNc6+cIVOixw1evcpENHuQ41qGXLMpyAdNQ=;
-	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date; b=j7GOHyqsSjjsw4IbOjGBXRtViurUo1Yy5ymF+B5ecGVXFtki4JpNWvGKcafTaYvNqMqkM58ASibKgSMVoadJRGk72n/JY+5zda4kOLWc2Mz6sYDeI0h/HWfixNBlKCtX1u1lhFMT3IcVZKVt0It170i9EGinggmK4Gmx7VJVmTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=cgc1HiMS; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50C2RArX41636971, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1736648830; bh=F0o0Qq2ZGNc6+cIVOixw1evcpENHuQ41qGXLMpyAdNQ=;
-	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date;
-	b=cgc1HiMSxRUGGRVwfoJ+oCxInvaHK/uek0CNc/T1OuCkUf8829l4/nd/CQr6234Oe
-	 K6QizoTKeLvdzjNM+VpoOYBim+pSrzNo71VI6tv8fjJTMvPB/+7YnKD20BhV77msaH
-	 FRhV9tBEqX6Jndwjj5JjnA5RRqjilIVBkyld99o6soxBAUwxrBxSvf/5UiQMa4n5gP
-	 L5Mzq85p3kezQOtB545l87revtO7yutgVAur59TBsm2dNrSut3MlHhV1a3vi9EiBda
-	 DVrnuAVCJMakRuSz/iV8UUf7szR/6ppGwxrUhTfmFmtyaovKZiprOZK6aPn5CmBbHd
-	 JDTBb2Fplkcsg==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50C2RArX41636971
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2025 10:27:10 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+	s=arc-20240116; t=1736661009; c=relaxed/simple;
+	bh=zz/NnMJCVtYhrAPKbbRDt1zaZOkEZaoEMOJdbb4biQo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=AOvXr8QwXlB3EhjrTDXIrrtke7zz10Ro4nvnWyImXaZjj9JQ+x5DMzoKMBdqSG6KyfSRoaPq0UpI/3hoder3vGGEmVrnbNwl+Ty9mFTxI4H9BM9gcmRJwqvbVdXPk8bHJgmxAzuqAR5W4kKIiTNCKarY1Jh8dn2SGfISopMOb64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jjiMkytw; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50C4idGG016323;
+	Sun, 12 Jan 2025 05:49:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=VtVKi/vRwZXgAU9wodaPKD
+	0j9pv33+qWADe8hElvCqo=; b=jjiMkytwcMfni2XgFL4lZIQgO323CiYNTudtYb
+	8b7AC7Bhe7HCmeM0QdYd1o025xZb/LemGpvtaJCzN/d3iK7WquTnekE7QvC6yKkO
+	Yk5hGxyyvpMzPUZUZvMcKcTdts0MP+MuXKfj3OgRkGlYSbYDnhEAGGxfY+A1m4HA
+	oUEtted4b0WKizFPPetwoYtqi3+bVLH2129w8uu2BvDf5jjP12yxJyNOWcwV85xV
+	PjJ9p/Q3hTiomkJCY/viXm2rpoQu2XlgS+UZMCyzoK/85KJnKcT4Egboic/3jwBp
+	3BJozCndHSDcIvuSYc68YWadp73WBIo8OIK46OGEC4Wn5tQw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 443hj2skq3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 12 Jan 2025 05:49:58 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50C5nvJf030090
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 12 Jan 2025 05:49:57 GMT
+Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sun, 12 Jan 2025 10:27:10 +0800
-Received: from [127.0.1.1] (172.16.16.103) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sun, 12 Jan
- 2025 10:27:09 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: pull-request: rtw-next-2025-01-12
+ 15.2.1544.9; Sat, 11 Jan 2025 21:49:54 -0800
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Date: Sun, 12 Jan 2025 11:19:42 +0530
+Subject: [PATCH] wifi: ath12k: fix key cache handling
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <b02292db-3d80-49d9-a95f-1d70c0af5321@RTEXMBS04.realtek.com.tw>
-Date: Sun, 12 Jan 2025 10:27:09 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20250112-fix_key_cache_handling-v1-1-aa952cd3c368@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAPZXg2cC/x2MQQqAIBAAvxJ7TnANO/SVCEnbaiksFKKQ/t7Sc
+ WBmCmRKTBm6qkCiizMfUQDrCsI6xoUUT8JgtLEa0aiZb7fR48IYVnKiTDvHRaE3DWrdepwtSHw
+ mEvMf98P7ftPKSDBoAAAA
+X-Change-ID: 20250112-fix_key_cache_handling-1b231006b1f5
+To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+        Rameshkumar Sundaram <quic_ramess@quicinc.com>
+CC: Kalle Valo <quic_kvalo@quicinc.com>,
+        Jeff Johnson
+	<quic_jjohnson@quicinc.com>,
+        <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Aditya Kumar
+ Singh" <quic_adisi@quicinc.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: cmsYtSWm6nWpwuWAklN8rRTKqhNDBXoS
+X-Proofpoint-ORIG-GUID: cmsYtSWm6nWpwuWAklN8rRTKqhNDBXoS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 clxscore=1015
+ mlxscore=0 phishscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
+ bulkscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501120049
 
-Hi,
+Currently, an interface is created in the driver during channel assignment.
+If mac80211 attempts to set a key for an interface before this assignment,
+the driver caches the key. Once the interface is created, the driver
+installs the cached key to the hardware. This sequence is exemplified in
+mesh mode operation where the group key is set before channel assignment.
 
-A pull-request of rtw-next to wireless-next tree, more info below. Please
-let me know if any problems.
+However, in ath12k_mac_update_key_cache(), after caching the key, due to
+incorrect logic, it is deleted from the cache during the subsequent loop
+iteration. As a result, after the interface is created, the driver does not
+find any cached key, and the key is not installed to the hardware which is
+wrong. This leads to issue in mesh, where broadcast traffic is not
+encrypted over the air.
 
-Thanks
-Ping-Ke
+Fix this issue by adjusting the logic of ath12k_mac_update_key_cache()
+properly.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+
+Fixes: 25e18b9d6b4b ("wifi: ath12k: modify ath12k_mac_op_set_key() for MLO")
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 48d110e2a7ded61c4094b0ce7e5bbb50b94d5cd4..01c688c29b6d02785a2b37e36ed423a2eb37e33b 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4657,7 +4657,23 @@ static int ath12k_mac_update_key_cache(struct ath12k_vif_cache *cache,
+ 				       struct ieee80211_sta *sta,
+ 				       struct ieee80211_key_conf *key)
+ {
+-	struct ath12k_key_conf *key_conf = NULL, *tmp;
++	struct ath12k_key_conf *key_conf, *tmp;
++
++	list_for_each_entry_safe(key_conf, tmp, &cache->key_conf.list, list) {
++		if (key_conf->key != key)
++			continue;
++
++		/* If SET key entry is already present in cache, nothing to do,
++		 * just return
++		 */
++		if (cmd == SET_KEY)
++			return 0;
++
++		/* DEL key for an old SET key which driver hasn't flushed yet.
++		 */
++		list_del(&key_conf->list);
++		kfree(key_conf);
++	}
+ 
+ 	if (cmd == SET_KEY) {
+ 		key_conf = kzalloc(sizeof(*key_conf), GFP_KERNEL);
+@@ -4671,17 +4687,7 @@ static int ath12k_mac_update_key_cache(struct ath12k_vif_cache *cache,
+ 		list_add_tail(&key_conf->list,
+ 			      &cache->key_conf.list);
+ 	}
+-	if (list_empty(&cache->key_conf.list))
+-		return 0;
+-	list_for_each_entry_safe(key_conf, tmp, &cache->key_conf.list, list) {
+-		if (key_conf->key == key) {
+-			/* DEL key for an old SET key which driver hasn't flushed yet.
+-			 */
+-			list_del(&key_conf->list);
+-			kfree(key_conf);
+-			break;
+-		}
+-	}
++
+ 	return 0;
+ }
+ 
 
 ---
+base-commit: 0c5fcd9069dd5f984e39820629acbfbe0f1b4256
+change-id: 20250112-fix_key_cache_handling-1b231006b1f5
 
-The following changes since commit 104372ff359486b26b5a2db33b8e1dc6bfb39812:
-
-  Merge tag 'rtw-next-2024-12-12' of https://github.com/pkshih/rtw (2024-12-13 14:57:06 +0200)
-
-are available in the Git repository at:
-
-  https://github.com/pkshih/rtw.git tags/rtw-next-2025-01-12
-
-for you to fetch changes up to 4b6652bc6d8d5fb0648b3a7a16ef8af4e0345bcd:
-
-  wifi: rtw88: Add support for LED blinking (2025-01-12 10:07:38 +0800)
-
-----------------------------------------------------------------
-rtw-next patches for v6.14
-
-rtl8xxxu, rtlwifi and rtw88 fix field issues reported by users.
-rtw89 is ongoing to implement MLO and fix issues during the development.
-
-Major changes:
-
-rtw88:
-
- - support LED blinking
-
-rtw89:
-
- - support RTL8922AE-VS chip
-
-----------------------------------------------------------------
-Bitterblue Smith (10):
-      wifi: rtlwifi: rtl8821ae: Fix media status report
-      wifi: rtw88: 8812a: Support RFE type 2
-      wifi: rtw88: 8821a/8812a: Set ptct_efuse_size to 0
-      wifi: rtw88: usb: Copy instead of cloning the RX skb
-      wifi: rtw88: Handle C2H_ADAPTIVITY in rtw_fw_c2h_cmd_handle()
-      wifi: rtw88: usb: Preallocate and reuse the RX skbs
-      wifi: rtl8xxxu: Fix RTL8188EU firmware upload block size
-      wifi: rtw88: Add USB PHY configuration
-      wifi: rtw88: Delete rf_type member of struct rtw_sta_info
-      wifi: rtw88: Add support for LED blinking
-
-Chih-Kang Chang (2):
-      wifi: rtw89: adjust thermal protection step and more RTL8852BE-VT ID
-      wifi: rtw89: avoid to init mgnt_entry list twice when WoWLAN failed
-
-Chin-Yen Lee (1):
-      wifi: rtw89: pci: disable PCI completion timeout control
-
-Fiona Klute (1):
-      wifi: rtw88: sdio: Fix disconnection after beacon loss
-
-Ping-Ke Shih (5):
-      wifi: rtw88: add __packed attribute to efuse layout struct
-      wifi: rtw89: pci: treat first receiving part as first segment for 8922AE
-      wifi: rtw89: fix race between cancel_hw_scan and hw_scan completion
-      wifi: rtw89: read hardware capabilities part 1 via firmware command
-      wifi: rtw89: 8922ae: add variant info to support RTL8922AE-VS
-
-Po-Hao Huang (1):
-      wifi: rtw89: correct header conversion rule for MLO only
-
-Vasily Khoruzhick (1):
-      wifi: rtw88: 8703b: Fix RX/TX issues
-
-Zong-Zhe Yang (4):
-      wifi: rtw89: debug: print regd for QATAR/UK/THAILAND
-      wifi: rtw89: fix proceeding MCC with wrong scanning state after sequence changes
-      wifi: rtw89: chan: fix soft lockup in rtw89_entity_recalc_mgnt_roles()
-      wifi: rtw89: mcc: consider time limits not divisible by 1024
-
- drivers/net/wireless/realtek/rtl8xxxu/8188e.c      |   2 +-
- .../net/wireless/realtek/rtlwifi/rtl8821ae/fw.h    |   4 +-
- drivers/net/wireless/realtek/rtw88/Makefile        |   2 +
- drivers/net/wireless/realtek/rtw88/fw.c            |   7 +-
- drivers/net/wireless/realtek/rtw88/led.c           |  73 ++++++++
- drivers/net/wireless/realtek/rtw88/led.h           |  25 +++
- drivers/net/wireless/realtek/rtw88/main.c          |  21 ++-
- drivers/net/wireless/realtek/rtw88/main.h          |  10 +-
- drivers/net/wireless/realtek/rtw88/reg.h           |  22 +++
- drivers/net/wireless/realtek/rtw88/rtw8703b.c      |   8 +-
- drivers/net/wireless/realtek/rtw88/rtw8723x.h      |   8 +-
- drivers/net/wireless/realtek/rtw88/rtw8812a.c      |  22 ++-
- drivers/net/wireless/realtek/rtw88/rtw8821a.c      |  28 ++-
- drivers/net/wireless/realtek/rtw88/rtw8821c.c      |  19 ++
- drivers/net/wireless/realtek/rtw88/rtw8821c.h      |   9 +-
- drivers/net/wireless/realtek/rtw88/rtw8822b.c      |  19 ++
- drivers/net/wireless/realtek/rtw88/rtw8822b.h      |   9 +-
- drivers/net/wireless/realtek/rtw88/rtw8822c.c      |  19 ++
- drivers/net/wireless/realtek/rtw88/rtw8822c.h      |   9 +-
- drivers/net/wireless/realtek/rtw88/sdio.c          |   2 +
- drivers/net/wireless/realtek/rtw88/usb.c           | 195 +++++++++++++++++----
- drivers/net/wireless/realtek/rtw88/usb.h           |   3 +
- drivers/net/wireless/realtek/rtw89/Kconfig         |   6 +-
- drivers/net/wireless/realtek/rtw89/chan.c          |  31 +++-
- drivers/net/wireless/realtek/rtw89/chan.h          |   9 +-
- drivers/net/wireless/realtek/rtw89/core.c          |  29 ++-
- drivers/net/wireless/realtek/rtw89/core.h          |  18 +-
- drivers/net/wireless/realtek/rtw89/debug.c         |   3 +
- drivers/net/wireless/realtek/rtw89/fw.c            |  66 ++++++-
- drivers/net/wireless/realtek/rtw89/fw.h            |  16 ++
- drivers/net/wireless/realtek/rtw89/mac.c           |  94 ++++++++--
- drivers/net/wireless/realtek/rtw89/mac80211.c      |  12 +-
- drivers/net/wireless/realtek/rtw89/pci.c           |  24 ++-
- drivers/net/wireless/realtek/rtw89/pci.h           |   4 +-
- drivers/net/wireless/realtek/rtw89/phy.c           |  10 +-
- drivers/net/wireless/realtek/rtw89/phy.h           |   4 +
- drivers/net/wireless/realtek/rtw89/rtw8851be.c     |   2 +
- drivers/net/wireless/realtek/rtw89/rtw8852ae.c     |   2 +
- drivers/net/wireless/realtek/rtw89/rtw8852be.c     |   2 +
- drivers/net/wireless/realtek/rtw89/rtw8852bte.c    |  10 +-
- drivers/net/wireless/realtek/rtw89/rtw8852ce.c     |   2 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c      |   6 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.h      |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8922ae.c     |  17 +-
- 44 files changed, 762 insertions(+), 122 deletions(-)
- create mode 100644 drivers/net/wireless/realtek/rtw88/led.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/led.h
 
