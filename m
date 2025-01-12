@@ -1,178 +1,106 @@
-Return-Path: <linux-wireless+bounces-17376-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17377-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57E8A0A769
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 08:17:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3157CA0A7A0
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 09:08:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76A5B1888B47
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 07:17:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C55F1886854
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 08:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F6314F9EB;
-	Sun, 12 Jan 2025 07:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAE379E1;
+	Sun, 12 Jan 2025 08:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fk4MJIRO"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BkPBxYpn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806391547E8
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2025 07:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D08C1714A1
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2025 08:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736666218; cv=none; b=SRL0vc5Eh/Myl2n4kN/Beo/ZTIC0Zce9EdsBNYjWxjpa3E/7CYs4iCgslmJlOZzAz/uT4bsk7uwsXx+DeuOP0XtEWzd8byahDY1U5dns6pBkuTSRlPLP7vmF0ovuoHcdRl3L1yY54tctzaiVgXKQI7KzMosjmk3reh/AJb/sBZA=
+	t=1736669321; cv=none; b=tpYPRY6J5nsnaxWob0zzyrCp+aoCZn75UVCLeSZItjLEsj6eooIiALJd2rFJIGtOs3ERfO1DztAmnIGJrom9IwQx4P4wKvVqlV0l9t1qzq3FYwwKHRwb9k6Nu5HABYPbCi/w4WETBVT7zan60pOCW26vdTDb9oBKvcb27uo89K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736666218; c=relaxed/simple;
-	bh=PY3UDrMV7shnjUMC+ZrOGxhkUxpuMRtmVSBt0/fuoyw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MPriwiTLMf284Khw0LTNOooTLd2ROVG6tnJJ46E8Ai7SwVZzzDxJ86U6HaAQGmooVrKSTZh3QnTJ3NOxlJ+iRdXCZu0+Hr31ytns1DH3LdEzaYpzV8fFkxuMRRYv6HZqghoRM/gf9UVRsc/pFmfuuZNBzxT0/dNx3M9hZnY3g5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fk4MJIRO; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1736669321; c=relaxed/simple;
+	bh=xIFrezFNdM7PTr4eCUlK/Le0tIrkxBjW5sAbyn1oAzk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=CB6+nxQX4XS159jLINOL/TUnIF1h49wQxdc5+aSfy02gqRGleixM71Ofa24CQa0CDm+yM3zvvL0M/qWGvgWJpQftIPMaUTyalqvCdZ2KpBU9PZmZg1AKgEOXggq1LBNCOw2JiXESrQHgw8u/90OOxd7Vh1DbjF3gCPs6bnXZMIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BkPBxYpn; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50C3t2LI004703;
-	Sun, 12 Jan 2025 07:16:54 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50C7Y2Oe019408;
+	Sun, 12 Jan 2025 08:08:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	rjkwfhmIjLEH6BAgFacNFEG1wm15qvrmIFEdQYiMfAw=; b=fk4MJIRO1SIYBpws
-	uUqGvZPIvhU5dz4ZoixwnEBGP60LblE4aCQd0VYC6ZJNsmadXkXhj/BqoGrYqX+9
-	QTMpCmVQ/w9MGlmoW1nGGggcP/EJ2lTMf6duDMYVkA3eJBWRpAFLzhjOv2hpS4q+
-	UnIJJZav6SbJbcLM+SHyuclolBxwmpUQ+dW3Gobz6PAXeIxW92Sxi+Oidm8AMTnG
-	hTE7CPHjk0w83g5qTOTaadDeJGu49RY5wHYrLZHmQwOaWtsQd5ziN7oQJj9WxJh0
-	onmSXE6c4Dc4DekfBNSGhA8m2UetrRf0jl7HKSEaNU0zDvrCVClK5l9jhBm5MQR2
-	b/J8Yg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 443hjdhpv6-1
+	hnizD9CiDnoQ0Q9WEjug54Qprg7eSadCINnCuMg+RKg=; b=BkPBxYpnXfb3+NxP
+	i5bvn5E+aDScb3AJlhyHHubJB/BVXHcyNOs2smCqpj+s3XQUKfNpkTrDg8uezCp6
+	6NKFqIk9wmUIpyWrYp+a2nWwqpW/d+5ifssL0OVWcj8Bao26O7JraWdRYPtPv+1w
+	tEhF9OZeZxOtTSd6i2X0FymWCZKxdZgxRneNpA+hs4uk6t/cdl+Qh75lwBFI4Ea7
+	k1PLFIXK54G4SqJjQF7u5Em5YRbAAT+3SSvBPg9tZM9gymseS32Ux6VFJGoWeSeW
+	1P6S+4wNrcvC5GAb+7FyNPN1MUIOb+nCuKi+MwVNbfj69oRJ9o+J5Jw0UVLhKyUL
+	fdwnKA==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 443hm21rq1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 12 Jan 2025 07:16:54 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50C7GrQ2006021
+	Sun, 12 Jan 2025 08:08:29 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50C88SnW023801
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 12 Jan 2025 07:16:53 GMT
-Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sat, 11 Jan 2025 23:16:51 -0800
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH v4 4/4] wifi: ath12k: Fix uninitialized variable access in ath12k_mac_allocate() function
-Date: Sun, 12 Jan 2025 12:46:30 +0530
-Message-ID: <20250112071630.4059410-5-quic_periyasa@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250112071630.4059410-1-quic_periyasa@quicinc.com>
-References: <20250112071630.4059410-1-quic_periyasa@quicinc.com>
+	Sun, 12 Jan 2025 08:08:28 GMT
+Received: from [10.50.34.183] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 12 Jan
+ 2025 00:08:26 -0800
+Message-ID: <214e0005-2045-4d2b-9071-54cd40ddd049@quicinc.com>
+Date: Sun, 12 Jan 2025 13:38:23 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 1/7] wifi: cfg80211: reorg sinfo structure elements
+ for mesh
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+References: <20250110042449.1158789-1-quic_sarishar@quicinc.com>
+ <20250110042449.1158789-2-quic_sarishar@quicinc.com>
+ <5e7eb3236768d8e3fe4eee984fc799070aabd30a.camel@sipsolutions.net>
+Content-Language: en-US
+From: Sarika Sharma <quic_sarishar@quicinc.com>
+In-Reply-To: <5e7eb3236768d8e3fe4eee984fc799070aabd30a.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+ nasanex01c.na.qualcomm.com (10.45.79.139)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 3OjYVaAlCncikyASuqEqeauADbqSb_q4
-X-Proofpoint-GUID: 3OjYVaAlCncikyASuqEqeauADbqSb_q4
+X-Proofpoint-GUID: vec88g0sWe6VYBqHU620ugeU6Oms06h_
+X-Proofpoint-ORIG-GUID: vec88g0sWe6VYBqHU620ugeU6Oms06h_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- bulkscore=0 mlxscore=0 priorityscore=1501 spamscore=0 impostorscore=0
- mlxlogscore=999 lowpriorityscore=0 clxscore=1015 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501120063
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ mlxlogscore=629 phishscore=0 mlxscore=0 suspectscore=0 malwarescore=0
+ spamscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501120070
 
-Currently, the uninitialized variable 'ab' is accessed in the
-ath12k_mac_allocate() function. Initialize 'ab' with the first radio device
-present in the hardware abstraction handle (ah). Additionally, move the
-default setting procedure from the pdev mapping iteration to the total
-radio calculating iteration for better code readability. Perform the
-maximum radio validation check for total_radio to ensure that both num_hw
-and radio_per_hw are validated indirectly, as these variables are derived
-from total_radio. This also fixes the below Smatch static checker warning.
+On 1/10/2025 2:45 PM, Johannes Berg wrote:
+> 
+>>   include/net/cfg80211.h  | 43 ++++++++++++++-------------
+>>   net/mac80211/sta_info.c | 64 ++++++++++++++++++++++-------------------
+>>   net/wireless/nl80211.c  | 11 +++----
+> 
+> That should be two or three patches, I suppose.
+> 
+> johannes
 
-Smatch warning:
-ath12k_mac_allocate() error: uninitialized symbol 'ab'
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Fixes: a343d97f27f5 ("wifi: ath12k: move struct ath12k_hw from per device to group")
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 08f340afb970..af614b301c61 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -11383,8 +11383,20 @@ int ath12k_mac_allocate(struct ath12k_hw_group *ag)
- 	u8 radio_per_hw;
- 
- 	total_radio = 0;
--	for (i = 0; i < ag->num_devices; i++)
--		total_radio += ag->ab[i]->num_radios;
-+	for (i = 0; i < ag->num_devices; i++) {
-+		ab = ag->ab[i];
-+		if (!ab)
-+			continue;
-+
-+		ath12k_mac_set_device_defaults(ab);
-+		total_radio += ab->num_radios;
-+	}
-+
-+	if (!total_radio)
-+		return -EINVAL;
-+
-+	if (WARN_ON(total_radio > ATH12K_GROUP_MAX_RADIO))
-+		return -ENOSPC;
- 
- 	/* All pdev get combined and register as single wiphy based on
- 	 * hardware group which participate in multi-link operation else
-@@ -11397,14 +11409,16 @@ int ath12k_mac_allocate(struct ath12k_hw_group *ag)
- 
- 	num_hw = total_radio / radio_per_hw;
- 
--	if (WARN_ON(num_hw >= ATH12K_GROUP_MAX_RADIO))
--		return -ENOSPC;
--
- 	ag->num_hw = 0;
- 	device_id = 0;
- 	mac_id = 0;
- 	for (i = 0; i < num_hw; i++) {
- 		for (j = 0; j < radio_per_hw; j++) {
-+			if (device_id >= ag->num_devices || !ag->ab[device_id]) {
-+				ret = -ENOSPC;
-+				goto err;
-+			}
-+
- 			ab = ag->ab[device_id];
- 			pdev_map[j].ab = ab;
- 			pdev_map[j].pdev_idx = mac_id;
-@@ -11416,10 +11430,11 @@ int ath12k_mac_allocate(struct ath12k_hw_group *ag)
- 			if (mac_id >= ab->num_radios) {
- 				mac_id = 0;
- 				device_id++;
--				ath12k_mac_set_device_defaults(ab);
- 			}
- 		}
- 
-+		ab = pdev_map->ab;
-+
- 		ah = ath12k_mac_hw_allocate(ag, pdev_map, radio_per_hw);
- 		if (!ah) {
- 			ath12k_warn(ab, "failed to allocate mac80211 hw device for hw_idx %d\n",
--- 
-2.34.1
-
+Sure, will split it.
 
