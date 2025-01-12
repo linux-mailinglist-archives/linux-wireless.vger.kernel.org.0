@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-17354-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17355-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3CAA0A6CC
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 02:19:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF31A0A6D0
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 02:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4403B7A1693
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 01:19:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E017B3A065F
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 01:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AC4322B;
-	Sun, 12 Jan 2025 01:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A8F3FF1;
+	Sun, 12 Jan 2025 01:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="XND07NMU"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="pjWEYaXL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F314E3FF1
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2025 01:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E305E322B
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2025 01:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736644792; cv=none; b=ZC/1iPbsplPmZf7AHpwRU8yCiyfwuJw9VzZBJ7X9SCum20Xwn2xDtmvWbBQiTV+YtxHp0AkbVeVzbbv8LwoH9/gGIkni0rcLMMrGiYe22cZ1y466s1Le4DqcFZO8pJ97ATe6WQ/dGz3uHXrxeu2nVmMVfJVpWwMDdEn8rirYuSY=
+	t=1736645016; cv=none; b=L3Ldrg1DlzMKpq3KNY6+sAM7RSknbjQzsILR46shHFldNHNKoDrdTcckXJ2SJKlUahUP1jkMK2h1VRD078C7O4yv+5hPrLwuN2NlB09QB/GiTQnhsbMWQEDr2W35Ms4C4gOeXMgpCiQw0dg/RKEjty1jc9YKmXC3P67ygYWmJuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736644792; c=relaxed/simple;
-	bh=aG0RQ3eq3MllEKSBJp7M7DnKtRWt4VcAPVtnZEy1eCA=;
+	s=arc-20240116; t=1736645016; c=relaxed/simple;
+	bh=MQLFeI8vMA3LcbVe2+xKVW8Nj8dyaTBrZUDdSur7hb8=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=udwwKDwNY9f8pUuozdotxJwpHJEAD2gczcUOFYMFO+l0jZ++0C+TDSvaZtbb6KM+EXj7UppiYTpGNPNuXs5fVeR0p5+RLVGgAz24KsSBQpnmM49KnsD9L1hGodj9+jPsT/RIML/h39stvJOFk9UQ26+Z0CAIsI2WYfuVswKu1+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=XND07NMU; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:Message-ID:Date; b=fj+ti8Rz2TWrc6KzHMq6CRW2FmSB7YTXS589a6+6ERpBHmY8UqJa738wi39VZIn0h9G8CK+++PyTdDbvLVhqIxRJBlRowKgUz+4Clw4Q3GilcNAZv1wuliXh7CW2opJt4R/AuUTGsqRQ5gA2JuKbMTkiPvy2Z+cn3K+B0SnWV+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=pjWEYaXL; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50C1JiOC21559360, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50C1NUdhC1560191, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1736644784; bh=aG0RQ3eq3MllEKSBJp7M7DnKtRWt4VcAPVtnZEy1eCA=;
+	t=1736645011; bh=MQLFeI8vMA3LcbVe2+xKVW8Nj8dyaTBrZUDdSur7hb8=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
 	 Content-Type:Message-ID:Date;
-	b=XND07NMUGUsCz+X9txFOlEssKhahn58KzOyfthXqYkllV5NZHajoy0H42O0WCu6Ek
-	 O4Yb58NBKwViDnKHA5iZXZe86duy0ErbjNT5Qm23PqtfEJQRZVSVQFh/fI4SC/C5w6
-	 9ETq293la64OQO3H1mwpY56gt48HQx50VNeTzGGalulEcAPzu9RSor+u/uYyHT+Rjq
-	 LeFC+Vz11brAtooVSEBMQKCR4QJysqA5JciGz66Apy6pYiESwSgHXLAQEFZ6Es2gqK
-	 cPmsxnwLVoaB9MwvYlXKZpEOctdUtqUtOskSHcTcCHotAYKYbDOlg/OUwLvc7qi/U+
-	 3G0boTz6cw1Rg==
+	b=pjWEYaXL7fYml6l1gPDppJIfcrIbDMTDe/BGJxsuxqVDb+lhdQa0pkIuPiaqW19z4
+	 DFaVqSNf6eWqeoRXjBbgQCuyOai2FQnWTRIEkQqPNqXKNixx65DWVax9UbkcMOFVLA
+	 OUtOxsQ7nziI6+4XLLK+LKsmyWwLENzEGx9aPuaSTdFl+Bw2H5wvc4ZtjRc7N+hdyH
+	 2NuRUmsHJZxwqNFLl4iSy2jtmc191C1eU2gRkLlMgvSgaImwunSJtI+JoVIUNfV5zF
+	 mX5to4Wl5YOPvU5VbkJhwXaGCXVMwg9rinyYF5z1pCwBmqxz0ymsNX2+KZek5gC4uG
+	 8cpZ5w37zPtFg==
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50C1JiOC21559360
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50C1NUdhC1560191
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2025 09:19:44 +0800
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2025 09:23:31 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sun, 12 Jan 2025 09:19:45 +0800
+ 15.1.2507.39; Sun, 12 Jan 2025 09:23:31 +0800
 Received: from [127.0.1.1] (172.16.16.103) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sun, 12 Jan
- 2025 09:19:44 +0800
+ 2025 09:23:31 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-CC: <phhuang@realtek.com>, <kevin_yang@realtek.com>
-Subject: Re: [PATCH 1/3] wifi: rtw89: fix proceeding MCC with wrong scanning state after sequence changes
-In-Reply-To: <20241231004811.8646-2-pkshih@realtek.com>
-References: <20241231004811.8646-1-pkshih@realtek.com> <20241231004811.8646-2-pkshih@realtek.com>
+CC: <gary.chang@realtek.com>
+Subject: Re: [PATCH] wifi: rtw89: avoid to init mgnt_entry list twice when WoWLAN failed
+In-Reply-To: <20250103024500.14990-1-pkshih@realtek.com>
+References: <20250103024500.14990-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -67,103 +67,90 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Message-ID: <9a27d527-8415-43af-b0d7-8df9b64fae3b@RTEXMBS04.realtek.com.tw>
-Date: Sun, 12 Jan 2025 09:19:44 +0800
+Message-ID: <d9c43f6f-b929-4ed8-a63c-c59f40f9ba90@RTEXMBS04.realtek.com.tw>
+Date: Sun, 12 Jan 2025 09:23:31 +0800
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+> From: Chih-Kang Chang <gary.chang@realtek.com>
 > 
-> When starting/proceeding MCC, it will abort an ongoing hw scan process.
-> In the proceeding cases, it unexpectedly tries to abort a non-exist hw
-> scan process. Then, a trace shown at the bottom will happen. This problem
-> is caused by a previous commit which changed some call sequence inside
-> rtw89_hw_scan_complete() to fix some coex problems. These changes lead
-> to our scanning flag was not cleared when proceeding MCC. To keep the
-> fixes on coex, and resolve the problem here, re-consider the related
-> call sequence.
+> If WoWLAN failed in resume flow, the rtw89_ops_add_interface() triggered
+> without removing the interface first. Then the mgnt_entry list init again,
+> causing the list_empty() check in rtw89_chanctx_ops_assign_vif()
+> useless, and list_add_tail() again. Therefore, we have added a check to
+> prevent double adding of the list.
 > 
-> The known sequence requirements are listed below.
-> 
-> * the old sequence:
-> 	A. notify coex
-> 	B. clear scanning flag
-> 	C. proceed chanctx
-> 		C-1. set channel
-> 		C-2. proceed MCC
-> (the problem: A needs to be after C-1)
-> 
-> * the current sequence:
-> 	C. proceed chanctx
-> 		C-1. set channel
-> 		C-2. proceed MCC
-> 	A. notify coex
-> 	B. clear scanning flag
-> (the problem: C-2 needs to be after B)
-> 
-> So, now let hw scan caller pass a callback to proceed chanctx if needed.
-> Then, the new sequence will be like the below.
-> 	C-1. set channel
-> 	A. notify coex
-> 	B. clear scanning flag
-> 	C-2. proceed MCC
-> 
-> The following is the kernel log for the problem in current sequence.
-> 
-> rtw89_8852be 0000:04:00.0: rtw89_hw_scan_offload failed ret -110
+> rtw89_8852ce 0000:01:00.0: failed to check wow status disabled
+> rtw89_8852ce 0000:01:00.0: wow: failed to check disable fw ready
+> rtw89_8852ce 0000:01:00.0: wow: failed to swap to normal fw
+> rtw89_8852ce 0000:01:00.0: failed to disable wow
+> rtw89_8852ce 0000:01:00.0: failed to resume for wow -110
+> rtw89_8852ce 0000:01:00.0: MAC has already powered on
+> i2c_hid_acpi i2c-ILTK0001:00: PM: acpi_subsys_resume+0x0/0x60 returned 0 after 284705 usecs
+> list_add corruption. prev->next should be next (ffff9d9719d82228), but was ffff9d9719f96030. (prev=ffff9d9719f96030).
 > ------------[ cut here ]------------
-> [...]
-> CPU: 2 PID: 3991 Comm: kworker/u16:0 Tainted: G           OE      6.6.17 #3
-> Hardware name: LENOVO 2356AD1/2356AD1, BIOS G7ETB3WW (2.73 ) 11/28/2018
-> Workqueue: events_unbound wiphy_work_cancel [cfg80211]
-> RIP: 0010:ieee80211_sched_scan_stopped+0xaea/0xd80 [mac80211]
-> Code: 9c 24 d0 11 00 00 49 39 dd 0f 85 46 ff ff ff 4c 89 e7 e8 09 2d
-> RSP: 0018:ffffb27783643d48 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-> RDX: ffff8a2280964bc0 RSI: 0000000000000000 RDI: ffff8a23df580900
-> RBP: ffffb27783643d88 R08: 0000000000000001 R09: 0000000000000400
-> R10: 0000000000000000 R11: 0000000000008268 R12: ffff8a23df580900
-> R13: ffff8a23df581b00 R14: 0000000000000000 R15: 0000000000000000
-> FS:  0000000000000000(0000) GS:ffff8a258e680000(0000) knlGS:0000000000000000
+> kernel BUG at lib/list_debug.c:34!
+> invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+> CPU: 2 PID: 6918 Comm: kworker/u8:19 Tainted: G     U     O
+> Hardware name: Google Anraggar/Anraggar, BIOS Google_Anraggar.15217.514.0 03/25/2024
+> Workqueue: events_unbound async_run_entry_fn
+> RIP: 0010:__list_add_valid_or_report+0x9f/0xb0
+> Code: e8 56 89 ff ff 0f 0b 48 c7 c7 3e fc e0 96 48 89 c6 e8 45 89 ff ...
+> RSP: 0018:ffffa51b42bbbaf0 EFLAGS: 00010246
+> RAX: 0000000000000075 RBX: ffff9d9719d82ab0 RCX: 13acb86e047a4400
+> RDX: 3fffffffffffffff RSI: 0000000000000000 RDI: 00000000ffffdfff
+> RBP: ffffa51b42bbbb28 R08: ffffffff9768e250 R09: 0000000000001fff
+> R10: ffffffff9765e250 R11: 0000000000005ffd R12: ffff9d9719f95c40
+> R13: ffff9d9719f95be8 R14: ffff9d97081bfd78 R15: ffff9d9719d82060
+> FS:  0000000000000000(0000) GS:ffff9d9a6fb00000(0000) knlGS:0000000000000000
 > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007f26a0654000 CR3: 000000002ea2e002 CR4: 00000000001706e0
+> CR2: 00007e7d029a4060 CR3: 0000000345e38000 CR4: 0000000000750ee0
+> PKRU: 55555554
 > Call Trace:
 >  <TASK>
->  ? show_regs+0x68/0x70
->  ? ieee80211_sched_scan_stopped+0xaea/0xd80 [mac80211]
->  ? __warn+0x8f/0x150
->  ? ieee80211_sched_scan_stopped+0xaea/0xd80 [mac80211]
->  ? report_bug+0x1f5/0x200
->  ? handle_bug+0x46/0x80
->  ? exc_invalid_op+0x19/0x70
->  ? asm_exc_invalid_op+0x1b/0x20
->  ? ieee80211_sched_scan_stopped+0xaea/0xd80 [mac80211]
->  ieee80211_scan_work+0x14a/0x650 [mac80211]
->  ? __queue_work+0x10f/0x410
->  wiphy_work_cancel+0x2fb/0x310 [cfg80211]
->  process_scheduled_works+0x9d/0x390
+>  ? __die_body+0x68/0xb0
+>  ? die+0xaa/0xd0
+>  ? do_trap+0x9f/0x170
+>  ? __list_add_valid_or_report+0x9f/0xb0
+>  ? __list_add_valid_or_report+0x9f/0xb0
+>  ? handle_invalid_op+0x69/0x90
+>  ? __list_add_valid_or_report+0x9f/0xb0
+>  ? exc_invalid_op+0x3c/0x50
+>  ? asm_exc_invalid_op+0x16/0x20
+>  ? __list_add_valid_or_report+0x9f/0xb0
+>  rtw89_chanctx_ops_assign_vif+0x1f9/0x210 [rtw89_core cbb375c44bf28564ce479002bff66617a25d9ac1]
+>  ? __mutex_unlock_slowpath+0xa0/0xf0
+>  rtw89_ops_assign_vif_chanctx+0x4b/0x90 [rtw89_core cbb375c44bf28564ce479002bff66617a25d9ac1]
+>  drv_assign_vif_chanctx+0xa7/0x1f0 [mac80211 6efaad16237edaaea0868b132d4f93ecf918a8b6]
+>  ieee80211_reconfig+0x9cb/0x17b0 [mac80211 6efaad16237edaaea0868b132d4f93ecf918a8b6]
+>  ? __pfx_wiphy_resume+0x10/0x10 [cfg80211 572d03acaaa933fe38251be7fce3b3675284b8ed]
+>  ? dev_printk_emit+0x51/0x70
+>  ? _dev_info+0x6e/0x90
+>  wiphy_resume+0x89/0x180 [cfg80211 572d03acaaa933fe38251be7fce3b3675284b8ed]
+>  ? __pfx_wiphy_resume+0x10/0x10 [cfg80211 572d03acaaa933fe38251be7fce3b3675284b8ed]
+>  dpm_run_callback+0x37/0x1e0
+>  device_resume+0x26d/0x4b0
+>  ? __pfx_dpm_watchdog_handler+0x10/0x10
+>  async_resume+0x1d/0x30
+>  async_run_entry_fn+0x29/0xd0
+>  worker_thread+0x397/0x970
+>  kthread+0xed/0x110
 >  ? __pfx_worker_thread+0x10/0x10
->  worker_thread+0x15b/0x2d0
->  ? __pfx_worker_thread+0x10/0x10
->  kthread+0x108/0x140
 >  ? __pfx_kthread+0x10/0x10
->  ret_from_fork+0x3c/0x60
+>  ret_from_fork+0x38/0x50
 >  ? __pfx_kthread+0x10/0x10
 >  ret_from_fork_asm+0x1b/0x30
 >  </TASK>
-> ---[ end trace 0000000000000000 ]---
 > 
-> Fixes: f16c40acd319 ("wifi: rtw89: Fix TX fail with A2DP after scanning")
-> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Fixes: 68ec751b2881 ("wifi: rtw89: chan: manage active interfaces")
+> Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-3 patch(es) applied to rtw-next branch of rtw.git, thanks.
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-e47f0a589854 wifi: rtw89: fix proceeding MCC with wrong scanning state after sequence changes
-e4790b3e314a wifi: rtw89: chan: fix soft lockup in rtw89_entity_recalc_mgnt_roles()
-b2658bf4d7f2 wifi: rtw89: correct header conversion rule for MLO only
+2f7667675df1 wifi: rtw89: avoid to init mgnt_entry list twice when WoWLAN failed
 
 ---
 https://github.com/pkshih/rtw.git
