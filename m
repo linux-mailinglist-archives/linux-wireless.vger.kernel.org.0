@@ -1,61 +1,59 @@
-Return-Path: <linux-wireless+bounces-17426-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17427-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CD6A0BA8F
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 15:54:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8457A0BB17
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 16:06:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F82160C06
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 14:54:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 235D61689BA
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 15:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878A322CA18;
-	Mon, 13 Jan 2025 14:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913DD243355;
+	Mon, 13 Jan 2025 14:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qdkRAcbt"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Jp4pcKg/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF7922C9F2
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jan 2025 14:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E09243353
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jan 2025 14:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736779973; cv=none; b=m51jMuzKHop0Nr2cgPhbH3aX4h3FyBg1tLX3g9FgO4F7fHwk6M3VWefQBByOp2osjqD+DKEGmzVpMlB0tP9Xw+ZBQRptwDa3hGfIv0//8jmBvm0Hqze9L6TruGEW/B8PLj/tC286oKsZ2MEYa01f2haiER6xY4PnjuK3pyeJqME=
+	t=1736780290; cv=none; b=gXLSRx0SkZzjhCVr6SaHu7rW8cc2oAhPNkAavH3eKofKwGEMZQKNFu2UdYPvZsz6pgIgClXP+0hP8wNUa3fX7ZG/n8aqRFL/AhAFlK2w+MSF6a4Wbym7e5GnX+WnZ0E+wwlvY3ohzvOPUmtOOyBlfyDVGhL/Ra+/55a3Rt4bz50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736779973; c=relaxed/simple;
-	bh=zWzoS3SH0lHhhnLmAkKbap6GgS3GElT949gEXQ6BA9Y=;
+	s=arc-20240116; t=1736780290; c=relaxed/simple;
+	bh=Rn9iapgDk3yyxazd/Cjj+/iynmQ3Bay85/x2hh4Zvkg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Va19K3SiHACiwWlxmVNQXbqoFkh+mf8X+/j7/3zi3JtKC79vv4aiqc1eC0sW+5c5xzaTjiOfqlH76pz3Vut+03ECsLpkznUz5RXFNfyZYZLaBiEVypGsyOHskUfZCDB0NOjraQ9zFWui5HTXCRG+EmFc+ExI13kkCuwP6SG/rek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qdkRAcbt; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=PoWSsgPS5Jwk9Jmt2jN6TbPnw7i/geUQ43xwS4XF4j1Jx5hwej6EJqpA70rL8FGqaTR98XmZCWabIUz2Es+dFtoeRY0EbCj6ujR6ntNuNXc9/xol9YYRk0oZpQNSPVDf9yO6d59Z1uG2oZ7022ugViJ0llxNAK7AQU5273kqoL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Jp4pcKg/; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=zWzoS3SH0lHhhnLmAkKbap6GgS3GElT949gEXQ6BA9Y=;
-	t=1736779972; x=1737989572; b=qdkRAcbtPAj92zEZXcYPeyoP2GhTdAOzbh/EaMJnDWKhJwL
-	7wKnDwya10lW/owuw+0wLThnNtAwzY8Tr4LF9xeFmqoWqc1DyB618dEY9jlyZ4YHSUR9viyYUt/rI
-	nbE26TL3p7mPO6+FBjaF7+ZetdPQGZpnQGTj1asS7CkpEGJCfYHvLjqQs7rZfZOk3W970cqD4EUbv
-	mC1BQn/oZhaMi7V/4oMV7YzNmR2ub5P8a5i1u8ngKlRewjXViwuUPaseSHX3+fAtPBTQJPF/Vmuzp
-	T6qbaYaFk9fkSg+EogozR2TQJg5VV5VEuQneqwotUuyU6bcArG+LZtbqrMtg3xAQ==;
+	Resent-Cc:Resent-Message-ID; bh=Rn9iapgDk3yyxazd/Cjj+/iynmQ3Bay85/x2hh4Zvkg=;
+	t=1736780289; x=1737989889; b=Jp4pcKg/naNDqXonIBB3BmgDFXqDlQ3DTXA13aXi6M+KqlD
+	KD9sWlCcj5z+qPELmB+9BzLblVzw0eGFfA6e7a9Bf/fe3lc4hcIhXiBDIVcBxtDFzMsukyRUY0PHc
+	tj+Dj0V9eXMlOeMSfHn7EoeBSWL6f4qpmDc+ewCGuGjDUCdHKSD3Pvd5B+y00EuwRO3lP2/swI8Th
+	o2eEhhvOlJWQsCoZ/kLL7xXhG9CvWIwod5LR7HllBVfZugBixB0nfCe93ybgJbQHpB/SU9TBFObiW
+	5QvCMpxpaWHnyY4nf9EzlAb4F1qo6+nJxcL6+kb7EFYSnqg4yQKQMlyD/lHfaVWw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1tXLo8-0000000De3O-3CuG;
-	Mon, 13 Jan 2025 15:52:48 +0100
-Message-ID: <2fbb6683ecbef875d5946a71b5a3295ae8cb6f7b.camel@sipsolutions.net>
-Subject: Re: [PATCH 05/17] wifi: iwlwifi: s/iwl_mvm_ctdp_cmd/iwl_ctdp_cmd/
+	id 1tXLtF-0000000DeBt-2hCl;
+	Mon, 13 Jan 2025 15:58:05 +0100
+Message-ID: <db24c2eecfcdb1e5b77e68891ec2c15390ac80db.camel@sipsolutions.net>
+Subject: Re: [PATCH 00/17] wifi: mac80211: updates - 02-01-24
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: linux-wireless@vger.kernel.org, Emmanuel Grumbach
-	 <emmanuel.grumbach@intel.com>
-Date: Mon, 13 Jan 2025 15:52:48 +0100
-In-Reply-To: <20241227095718.2d2cc9910535.Ic2b6f265d0b4aea25ccc7114d6f48afa621871be@changeid>
-References: <20241227080112.1098419-1-miriam.rachel.korenblit@intel.com>
-	 <20241227095718.2d2cc9910535.Ic2b6f265d0b4aea25ccc7114d6f48afa621871be@changeid>
+Cc: linux-wireless@vger.kernel.org
+Date: Mon, 13 Jan 2025 15:58:05 +0100
+In-Reply-To: <20250102142009.3057049-1-miriam.rachel.korenblit@intel.com>
+References: <20250102142009.3057049-1-miriam.rachel.korenblit@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
@@ -67,13 +65,8 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Fri, 2024-12-27 at 10:01 +0200, Miri Korenblit wrote:
-> From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
->=20
-> This command is not related to iwlmvm.
-
-The subjects like that are just being lazy, I've dropped 3 patches like
-it, please resend.
+Pretty sure you got the date wrong, but the format is strange too - I'd
+appreciate if you could just use ISO YYYY-MM-DD :)
 
 johannes
 
