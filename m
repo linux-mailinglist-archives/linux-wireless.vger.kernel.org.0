@@ -1,116 +1,177 @@
-Return-Path: <linux-wireless+bounces-17385-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17386-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438FAA0AAC9
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 17:14:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 936C1A0AF95
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 08:03:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C7A3162136
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jan 2025 16:14:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1614E1881F1D
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 07:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB291BD50D;
-	Sun, 12 Jan 2025 16:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A7E1C07FE;
+	Mon, 13 Jan 2025 07:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="jjKmIluZ"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="h9oYIPNr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C6D1BD9CB
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2025 16:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D647713AD0;
+	Mon, 13 Jan 2025 07:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736698491; cv=none; b=si/FVqMQdsUJVyO/upZbxz4kNf0uQbujTnR41YYgSd3bze6oYpnlR9MWMAW0r375zG9HCAZjqecwmq36XhqOsTTsUABGioh5SLfWSWu7tuJECvPPBgb45cg7VgufjtHJl3Go5do+KhdkmmvX5FJp3IEapsnoAeXLi3UAW8wlnLs=
+	t=1736751824; cv=none; b=FPPgo+qjzmIQwWRmZwTYxP4glHfbNHYb+N6xwW5FDaOJTdkFujXK2km3D1EczK7ak6dyPAqOiyTUqLWZxzMWm9ZGfbOvuIzNRkG6us2OSFA6TfB+BlxoUqv4MwzmiPBXG5Jm2X2vkR+UZasaUbGNmbM+O2BNGZ0bzDQGTrmfIgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736698491; c=relaxed/simple;
-	bh=bK21uoMXNt7FSUXzGvf/eZtNyCCNur2P0FKFqx87MIs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=kfgPnYXSOvr1kPCv3Mi3SMfqCiGWWO/AD1jO1fC2udOeUBLaDyh0KYuDAcZE6A9HqufDuc0/LMW38WV2qNCKlHDjSj/lNN677JUWsaI9nESb9r3o2NBCkBKy2QZpKBhoxEU0UQvxZ5CpfgQOb3TBB6kZsCRcBZlo3pkchdEAKH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=jjKmIluZ; arc=none smtp.client-ip=5.252.227.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
-Message-ID: <19d0ea5a-237a-48da-9d01-e380d7419101@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-	s=wetzel-home; t=1736698089;
-	bh=bK21uoMXNt7FSUXzGvf/eZtNyCCNur2P0FKFqx87MIs=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=jjKmIluZzt6i2IMvziP8OSL7FDH8VmJds0hx/+yiX5PNL9943crOz5eqjkyjkYHEI
-	 Ry3AsFWyphnj2KaUsYi69QgRZedDMJ/TJMQX+hHqjWPtWxIcYo/zOqUx0IOcQHC+Te
-	 AaeuyxgI/3OFSzZc+ABEmJ0eeMfmpcH++YOvXqPQ=
-Date: Sun, 12 Jan 2025 17:08:09 +0100
+	s=arc-20240116; t=1736751824; c=relaxed/simple;
+	bh=vpUAIzxZENNDv58atj4xHgNfohrgiFakzpLmpvVC2AM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Eb7raI42QPtlbBnqCsY73aIQlJfDP8p5UW9Etf9nZcIc/1wRR0kBzcuC1aqJ+krR+T+LxdhZbawwn6HLzGouAakybSIsRh3sR3wTJAw0CXsqzGm7azGECf3rKJ6WngzAWbE3Izuj3kWNZx20LoR5vbTEGjasJsFWmmeiTWbbs64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=h9oYIPNr; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1736751781;
+	bh=NqfFf4fv96alvmAhC70OVRBAMo6UG+0b5So5mFEFih0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=h9oYIPNr8VTOIaZg0lQ6jY/J0s5u2uloGOtLNe2Sks6gJPYa/yZwP5ELxhx4/VffW
+	 t8uq+T8+DiERceRd0ZEL7mxe5VUk9Oa/gAHVzyLKAKFYecADuuhO99lPCAT5amG6L3
+	 S6zLVw8XpTRNjZ33jX5tZE1lSz8W6lm/4qtSCVOE=
+X-QQ-mid: bizesmtpip3t1736751767tk1inzv
+X-QQ-Originating-IP: LJtxmZbB0DRaJHg91pmdGdfDROe6I8rMwyDT1D/Zhos=
+Received: from localhost.localdomain ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 13 Jan 2025 15:02:44 +0800 (CST)
+X-QQ-SSF: 0002000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 12665532747322616285
+From: WangYuli <wangyuli@uniontech.com>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	deren.wu@mediatek.com,
+	mingyen.hsieh@mediatek.com,
+	chui-hao.chiu@mediatek.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	netdev@vger.kernel.org,
+	raoxu@uniontech.com,
+	guanwentao@uniontech.com,
+	chenlinxuan@uniontech.com,
+	zhanjun@uniontech.com,
+	cug_yangyuancong@hotmail.com,
+	lorenzo.bianconi@redhat.com,
+	kvalo@codeaurora.org,
+	aleksander.lobakin@intel.com,
+	michal.pecio@gmail.com,
+	dzm91@hust.edu.cn,
+	jiefeng_li@hust.edu.cn,
+	wangyuli@uniontech.com
+Subject: [PATCH v3] wifi: mt76: mt76u_vendor_request: Do not print error messages when -EPROTO
+Date: Mon, 13 Jan 2025 15:02:41 +0800
+Message-ID: <9DD7DE7AAB497CB7+20250113070241.63590-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Performance degradation with "wifi: mac80211: Drop support for TX
- push path"
-From: Alexander Wetzel <alexander@wetzel-home.de>
-To: Maxime Bizon <mbizon@freebox.fr>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <ZEwBXkj7nwXY2cF+@sakura>
- <140bdbc3-8cb3-e7bd-13ee-fdacdf3b20da@wetzel-home.de>
- <1f5e0a66-e68e-a673-feea-d2a3baaf54d4@wetzel-home.de>
-Content-Language: en-US, de-DE
-In-Reply-To: <1f5e0a66-e68e-a673-feea-d2a3baaf54d4@wetzel-home.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: MkkqBHH+kTJApwBfI5ai0tNbU/b+Bo4APgoiwSBXiUcXzTESdO8YSkPA
+	tHKYM1fzrLZJ/N64UdfTtbNk/hmICamhrOrNE/CeuMB3/ItB7pPKvq5MGXWFTqZy06xlN9Z
+	jb45Gry4ejYodSNCJOR6rhgeuaCZVtRlQNJJ0pz/bDW7GaYqMBESUbkbJt/kdhGpxlEqD8D
+	c4SqvkFsTOnXHESpCH8yl6YLSdR4pIxWT+qgEOsLzH4KfzvyoCVpcfk1tSNCEOTu7b7nNbv
+	tkVvb0FkvCaEljuLXwFtjH4cHRHFlCtdaRJB33LRq+7+kqkIKAlQlvD+kG/usNbV5AS3Axy
+	k+810IBRZJ4bJabZUVih4ooXpxV9fP1MYlGpYkHdFudTgLLJTv0mKAkKnG0uCDzj4MyS9Xw
+	Ipd/B26ZTLKqAROA1IE4eiRaY4h4JZBmZ00fWxuE370WWnIHFzSsQ1In6wQpNUuiZDvjSBg
+	oIy2/m2RzArg3ZeY7UaI8o5QSlhyIiIv4Elz9Xxje5CnRLnZDCjLionoAi/1AlE+qDT61ly
+	W4yABzQ/WDBr2cXgUS2OOXe1kzu/nOrTLXVbXDIKXxjg2M/CFaln9fxen2gYi5hVSddAWhk
+	ezIUiAQNQpmeBr/VL8c0fwUmGdUXtlfx8VyvQBjvF/MEr/58eulYKTbK6Z4UoXm3hlCPH6d
+	7Eq9Uz8lo7yeb72koKKvn2gPf3i1tOA2u7zxd0jWtUq9GA5DoExMaETpCW/I10oRCsyeQ43
+	Ogp2jrJ0HINFQke8A5M7oMfC2dRnTkki1j8VtsPIm3KcR4MbUw0PmMt6aqVQ7nZVWEcJIOw
+	99KWyfgnQsgzD4lIDMR+MTRskVwNtGrjL+P3H+ltm5cPsSg/FSh3P5VymrSJHVbXUgFj5ez
+	cUQ4308s0/RNcKA0uL9LgWKjhVRdj0UWpyexzWPmNlMhZxbn+jCfA/VUCkbSNs0UZe84/9t
+	ro4PsJ2fjaCmHEysiA75t97psg5wQy93Kb1N+Yvmi2Zhif2IQuWT/b5Hh0jHhX3PSNfeXrr
+	0qgZTBdDytKJw6BJe7
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+X-QQ-RECHKSPAM: 0
 
-On 29.04.23 09:36, Alexander Wetzel wrote:
-...
->>> First I would like to thank you for the cleanups you are doing in
->>> mac80211, as a driver writer [1] I used to scratch my head to
->>> understand the internals.
->>>
->>> I work for a french ISP called Free, and actively maintain the
->>> software of all router/gateway devices (couple millions deployed)
->>>
->>> We have a very large number of old devices deployed that are >10 years
->>> old but on which we manage to run a mainline kernel. Those are ARM
->>> Kirkwook (armv5 1Ghz) based devices, wifi is Marvell 11n 2.4Ghz (mwl8k
->>> based) + QCA 11ac 5ghz (QCA998X/ath10k).
->>>
->>> The CPU was always a bit underpowered for the 11ac card, but I could
->>> reach ~400Mbit/s in a routing test between WAN and Wifi, 100% CPU usage.
->>>
->>> Since work started in 2019 on ath10k debloat, I applied that patch [2]
->>> to avoid performance degration.
->>>
->>> Since "wifi: mac80211: Drop support for TX push path", it's not
->>> possible to do that anymore, so I did a benchmark to see the impact,
->>> the same routing test caps at 250Mbit/s. I suppose some openwrt users
->>> will be affected also.
->>
->> Well, I guess calling wake_tx_queue and then transmitting (mostly) one 
->> packet is probably causing that. Now there are some ideas to improve 
->> that by using a kthreads. It's hidden in the discussion here:
->> https://lore.kernel.org/all/82d5623b-8d21-a8c1-e835- 
->> e446adf96cde@wetzel-home.de/
->>
->> My problem with doing that *now* is, that I'm working on a invasive 
->> patch set in mac80211. Which will really clean up the old logic and 
->> not just tweak some simple things.
->> It's mostly sorted out and written, only a few issue left till I can 
->> try it out. But I'm not getting around to wrap that up for work/ 
->> private reasons for quite some weeks (really months...) now. Rebasing 
->> and then testing the already working patches for a wake_tx_queue 
->> implementation using kthreads is something I'm hoping to avoid:-)
->>
->> Now, I've more or less already decided to add the kthread patch to 
->> that series, once I get it stabilized at its current level.
->> I have some hopes, that I can reuse the reworked PS mechanism to even 
->> simplify such an patch.
+When initializing the network card, unplugging the device will
+trigger an -EPROTO error, resulting in a flood of error messages
+being printed frantically.
 
-I did put the promised patch set aside for quite some time again and 
-just resumed looking into them a few weeks ago.
+The exception is printed as follows：
 
-They are now good enough that I could share patches moving TX a kthread.
-So if you - or anyone else - is interested to check the performance with 
-kthread TX I would wrap them up and post an RFC for that.
+         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
+         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
+         ...
 
+It will continue to print more than 2000 times for about 5 minutes,
+causing the usb device to be unable to be disconnected. During this
+period, the usb port cannot recognize the new device because the old
+device has not disconnected.
 
-Alexander
+There may be other operating methods that cause -EPROTO, but -EPROTO is
+a low-level hardware error. It is unwise to repeat vendor requests
+expecting to read correct data. It is a better choice to treat -EPROTO
+and -ENODEV the same way.
+
+Similar to commit 9b0f100c1970 ("mt76: usb: process URBs with status
+EPROTO properly") do no schedule rx_worker for urb marked with status
+set  -EPROTO. I also reproduced this situation when plugging and
+unplugging the device, and this patch is effective.
+
+Just do not vendor request again for urb marked with status set -EPROTO.
+
+Link: https://lore.kernel.org/all/531681bd-30f5-4a70-a156-bf8754b8e072@intel.com/
+Link: https://lore.kernel.org/all/D4B9CC1FFC0CBAC3+20250105040607.154706-1-wangyuli@uniontech.com/
+Fixes: b40b15e1521f ("mt76: add usb support to mt76 layer")
+Co-developed-by: Xu Rao <raoxu@uniontech.com>
+Signed-off-by: Xu Rao <raoxu@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+---
+Changlog:
+ *v1 -> v2: Modify the commit title and message to provide a more
+comprehensive description of the changes made. Additionally, append
+a "Fixes" tag to accurately categorize the commit as a bug fix.
+  v2 -> v3: Add the changelog and fix a typo in the commit message.
+---
+ drivers/net/wireless/mediatek/mt76/usb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index 58ff06823389..f9e67b8c3b3c 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -33,9 +33,9 @@ int __mt76u_vendor_request(struct mt76_dev *dev, u8 req, u8 req_type,
+ 
+ 		ret = usb_control_msg(udev, pipe, req, req_type, val,
+ 				      offset, buf, len, MT_VEND_REQ_TOUT_MS);
+-		if (ret == -ENODEV)
++		if (ret == -ENODEV || ret == -EPROTO)
+ 			set_bit(MT76_REMOVED, &dev->phy.state);
+-		if (ret >= 0 || ret == -ENODEV)
++		if (ret >= 0 || ret == -ENODEV || ret == -EPROTO)
+ 			return ret;
+ 		usleep_range(5000, 10000);
+ 	}
+-- 
+2.47.1
 
 
