@@ -1,78 +1,86 @@
-Return-Path: <linux-wireless+bounces-17445-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17446-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3B1A0C168
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 20:28:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D773A0C16A
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 20:28:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C79BB165A88
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 19:28:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E089165946
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 19:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14931B21BC;
-	Mon, 13 Jan 2025 19:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1660D1B21BC;
+	Mon, 13 Jan 2025 19:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bcWgumng"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AmoGWBEM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFB11C9B62
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jan 2025 19:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D1B1C1F0C
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jan 2025 19:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736796517; cv=none; b=fown13cU8x2ICLDgqHaB11KOmDfTR1fCcKt+YZOIbu1eO63RyU05QCj+F35zPfEUsjds3slkcrJRmCdS3ZBNyAuPM6S36+P1DbscKVXSwjaLNlZQuCbBr4snys5XX/UlAQByoyGGpQmJoU0l5NpWxZEu2YXCjWgzx3cLJp4Km5k=
+	t=1736796535; cv=none; b=urdOlvHF3L0n4mBpi17p5kuAHjbu6sSPJIpU7+jpchapVhNBosp6scBXVTzYaytNJPZMqTx9Y0NgaLKdL+JVughJnoyJ0iax7Mknlme6qMq6Ndc0YlYil1T0hxSPdyWQeLo1bG/xTwIZkD9xidTRPXH1BbtVYTnIifGVxu2JbQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736796517; c=relaxed/simple;
-	bh=VXVOBd1bepD4YOnI9GBDknUn44th81dU9S7X7P8WeSs=;
+	s=arc-20240116; t=1736796535; c=relaxed/simple;
+	bh=cnnGFozQcr7VbBH0JJdaBS1uGXqpSXC9u2tqE7APqFg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M3OzXwZ8tBkQD9kuU15/FELjbG0P9DcGmOBkT/9NHSYdbYYN+fhWohlJtc6TPNRJNWd3BsgpCjWfWchnb18HLKXZ9cDKpDqSckTJXuSUhceMpcTqM85XZpLAmqCjmoI9ZKwXSyGGVnbeA4LbalY8kAAyT4lg/OkXfoKPDiZlM8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bcWgumng; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ab2e308a99bso32162566b.1
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jan 2025 11:28:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1736796514; x=1737401314; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=QALMLN5RGy8U/8LqFR8Kx7H+3ZaayKQvJ9z0v27Bhio=;
-        b=bcWgumng1P4mRVp8SDN5+c4g41/0aAyDj24dg4jQYXMu37k7l9+qcVzQgIq5S3KDWu
-         v4BSkOIjmpDLSh05mlt+wekxfqTaLehZQEXsUhUJq7Pu6XS1LCvOxNLDBUyayC4+IlrV
-         RmPibXKj6f8Sg+Qfnk9LnZw8KAn7QCr9ZDcZw=
+	 In-Reply-To:Content-Type; b=qKdyhQbaRwLi5lVDw60Hvpdt9UFOiTXh0Ys2d7L0LjYXrp+13Ttgv0Si2cRZsXu4ez04DMA6rU8exWz/fl51O/qsfDYkG8XCwA6ABE8W4rwJ3oHZH2+Dc84dx5jeeym/L+4I91DRlbM/K0Gj6SHsjfA2C9UUR7UvICT6/sKztkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AmoGWBEM; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50DIigZv007900
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jan 2025 19:28:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	/5mhQy/iLi/hHQbqK1N//sXRK2hJJG0CiemfOAYFPXk=; b=AmoGWBEMTFYlYWwN
+	vLzi4YKb+BKcOjAC07fN9B7ZQa6CTBZ0dM0Vc/GYA7wSnMXIyD9YFVHL/GQoddQY
+	B5ioEhUdPQUff+puj6At++3IVRxt73xMSyN+DXiFAeBCVBirxKJ/gGqqFRmjShFp
+	R3+Z8yNQ9LJSw8138W0cCwbXxNUYxVdlQUExLhBN6vZkVIYurXmlYr5i2iTQ+HZZ
+	X4BRjyA7tnjEwfaTAZ9CdfcOKEiFMQh5YZKdy/bqzvhEp/BjeWD4VF7lKf8T+TEU
+	nhK/aer0itq6jlCSwrHyQ8CL1gD4DrKJAfhkIcoraPTC7Q83kUgofax2oXYo60Hm
+	t5eg4Q==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4458cn03xu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jan 2025 19:28:52 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-21655569152so89047215ad.2
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Jan 2025 11:28:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736796514; x=1737401314;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QALMLN5RGy8U/8LqFR8Kx7H+3ZaayKQvJ9z0v27Bhio=;
-        b=gkbRvPkKWdKabT1dt2ZF5PrlVRQH8b8zA7ZowUNUjv4QU37Gm5LC7sjNPLLv4sPEgK
-         dWgc7Tl5p9+DZUntYDLaIr5Jn5Rf0hNSErudJvh9Wp4Og8r6DI9KBk538DfyjH6aaIt4
-         wmA5dVAar6KEcu64wEnPMzUQu6dhLlLbfmKztzNoEuijfXx+aVjfdfgKlhEDv/LOH3za
-         S3nszaiKVLw/T7yiGxfJ3Me01WsGsM6WLdqnZY4sblZCZ4psSmMgAMudQz5ypsMF9scJ
-         bfVlzFzuwpAzwYz9JWn9Sra8kOmt1axlkz4eqNQukNt554IoMFPcwycy9G8z7ReBd7ys
-         hwNw==
-X-Forwarded-Encrypted: i=1; AJvYcCXHLq5WUFtfZ2vl+iN5NG2+DaSdffwW+oM7y6qOsMEkVhPilN1g3r0IfTwJVaQ2s9GmWzataDOYYFqbz46y0A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzcb+pq1KZV4e/q59tvO9cCVrTn9RjBx+dupROp8Vbg6v2yn7jp
-	IOh6Sf+cMvnQNWVG63fjWjwCSiagk2QVj+DquJkqHriBXWXDGcdJaj8M9KUlLyAZ3qrZGv+JCbb
-	wGQ==
-X-Gm-Gg: ASbGncu51hGD/xi3zrEHwZgZLcXUSqqO8DurAb7QBLj7K5cTlgKaUXhfeThzYUrTkIw
-	r3wLsIVWTTd90ey8s1IMTWzuNyuPFyng5V3+q3PwO2uMsXWuBva17UZOS+1tryDpz7mMmTPOOKR
-	YdS5gQ0ZtQz3yMbY3OE3jqBy7lLwmnVnQ+kwEzXFeU9+dqe+5xckMEim6jwJ695NiJArIbRTonO
-	Xrg3L6NIitoQNvemdTXEI7L6Vn7FqnwgJtxjXsfcRnaDayxtuS7BNl6PME7inGyjUt7p7nhjs7t
-	eiUlZxt/tifrvakwYWF4TB/I4iZs6JUV
-X-Google-Smtp-Source: AGHT+IHPanyWz773JheYHtrrW9jgXITDNhYeZU/g6YY9i3wfmzx90fIiUce0LiYnVe0xzvvknRVYng==
-X-Received: by 2002:a17:906:dc92:b0:aa6:7c8e:808c with SMTP id a640c23a62f3a-ab2c3cb6e09mr1820421066b.17.1736796514151;
-        Mon, 13 Jan 2025 11:28:34 -0800 (PST)
-Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c9060badsm537733966b.29.2025.01.13.11.28.33
+        d=1e100.net; s=20230601; t=1736796531; x=1737401331;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/5mhQy/iLi/hHQbqK1N//sXRK2hJJG0CiemfOAYFPXk=;
+        b=oz9EnKy7h3j1jyyx9LdJRoK5uj6YrxixkGjyJpnkOINh/udHDmkm63RU4GGB42wwxd
+         V2IbbDx1TNdlMrPlWx4nJREWVuYWczVlKBQ60zGyucDRfmjHXSA+yPswA+WeIfQZmWem
+         V+uT9RgKwpEb0IGrvkAX1Zc6Ai4ddwzS4W8IR9NKiE6DdgPynT1BlIfS7MKS7tBWzE/D
+         9J6aqUEXP8cp45d6mZGEh02SYfV1E75u0+iAMeXRJP9CXJAt4F06wn6/Qql8igfkkV9C
+         6dLyYxrHBDLBS75bnXXSlVyCWF0eLDNqCNI1TiSObvwOGiWEmfwD/zO3Fd6LuuXaWnbB
+         PEjA==
+X-Gm-Message-State: AOJu0YzTJap1xZ3bJWTWvYS91lGLX5uayrUuJu8wvlq2xlwsoxuC8TIY
+	LkC/nP9iY6G4DX6McvLL8+Yt5Hz1/JEQYTTdxNevNWjGZcKd6+8VEJL10F3dPQWevOw9Tmby90E
+	ujR4SiENd8u4nhUpct/IW3HF0NutsRcjFLhuzOKT3YiAi5GHumwDeCXeWTXWM57l3Fw==
+X-Gm-Gg: ASbGncsot0Eoxx3jvHmDcOQFKX6Jx5A0zRfGIO6c0DM4/9MCLTLOk8tekBiolnCul0h
+	ZthYBBA7JZqa3geXBZzdSaIi6CUDbjX9d/KyLP7iInDPmkrGEn466gVBphXUay2dy6MMucD6x9n
+	4SLy2QOWissalg7+Unh4hdfoxO49j3mTJ+dv01vUOPlXuRWFPDR32foz9z0fBJb7cM6DDplsLjm
+	GsaNikYCrR1ZeGg+w9k3O6voURtvYxwefkO5dq6X9pIKkdgZVQlwZtJZkbeiVParWDjxJq4QM30
+	NYS0cNZN60vz7nA0DPZFor3UbGB/XS2s1t9WFR7eviVQKH2C+w==
+X-Received: by 2002:a17:902:da8d:b0:216:2abc:195c with SMTP id d9443c01a7336-21a83f429ecmr304262115ad.7.1736796530769;
+        Mon, 13 Jan 2025 11:28:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFy8aD+OBjXqv32LcJQYeGJg+trdsFUduQg1qH1ESZhroKs+54HzfL+haMDzQ8DNywU/hIVRA==
+X-Received: by 2002:a17:902:da8d:b0:216:2abc:195c with SMTP id d9443c01a7336-21a83f429ecmr304261755ad.7.1736796530351;
+        Mon, 13 Jan 2025 11:28:50 -0800 (PST)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f253e02sm57279285ad.225.2025.01.13.11.28.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jan 2025 11:28:33 -0800 (PST)
-Message-ID: <4020e574-be5d-43e4-9c04-1e5a708e70c6@broadcom.com>
-Date: Mon, 13 Jan 2025 20:28:33 +0100
+        Mon, 13 Jan 2025 11:28:50 -0800 (PST)
+Message-ID: <b3f38056-b2af-4f11-af5b-e21d3426024b@oss.qualcomm.com>
+Date: Mon, 13 Jan 2025 11:28:49 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,136 +88,45 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] brcmfmac: NULL pointer dereference on tx statistic
- update
-To: Marcel Hamer <marcel.hamer@windriver.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250110134502.824722-1-marcel.hamer@windriver.com>
+Subject: Re: [PATCH 1/2] wifi: ath12k: Update HTT_TCL_METADATA version and bit
+ mask definitions
+To: Balamurugan Mahalingam <quic_bmahalin@quicinc.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250109184932.1593157-1-quic_bmahalin@quicinc.com>
+ <20250109184932.1593157-2-quic_bmahalin@quicinc.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <20250110134502.824722-1-marcel.hamer@windriver.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20250109184932.1593157-2-quic_bmahalin@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: EMHL9p5XKkte7F_mI1JEfbe8N0BtXW4x
+X-Proofpoint-GUID: EMHL9p5XKkte7F_mI1JEfbe8N0BtXW4x
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 phishscore=0 clxscore=1015 mlxlogscore=999 mlxscore=0
+ priorityscore=1501 malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501130156
 
-On 1/10/2025 2:45 PM, Marcel Hamer wrote:
-> On removal of the device or unloading of the kernel module a potential
-> NULL pointer dereference occurs.
+On 1/9/2025 10:49 AM, Balamurugan Mahalingam wrote:
+> Update the HTT_TCL_METADATA version to the latest version (2)
+> as the bit definitions have changed a little to support more
+> features. This new version allows the host to submit a packet with
+> more information to the firmware. Firmware uses this additional
+> information to do special processing for certain frames.
 > 
-> The following sequence deletes the interface:
+> All the firmware binaries available in upstream/public are compatible with
+> this HTT version update.
 > 
->    brcmf_detach()
->      brcmf_remove_interface()
->        brcmf_del_if()
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > 
-> Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
-> BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
-> 
-> After brcmf_remove_interface() call the brcmf_proto_detach() function is
-> called providing the following sequence:
-> 
->    brcmf_detach()
->      brcmf_proto_detach()
->        brcmf_proto_msgbuf_detach()
->          brcmf_flowring_detach()
->            brcmf_msgbuf_delete_flowring()
->              brcmf_msgbuf_remove_flowring()
->                brcmf_flowring_delete()
->                  brcmf_get_ifp()
->                  brcmf_txfinalize()
-> 
-> Since brcmf_get_ip() can and actually will return NULL in this case the
-> call to brcmf_txfinalize() will result in a NULL pointer dereference
-> inside brcmf_txfinalize() when trying to update
-> ifp->ndev->stats.tx_errors.
-> 
-> This will only happen if a flowring still has an skb.
-> 
-> Although the NULL pointer dereference has only been seen when trying to update
-> the tx statistic, all other uses of the ifp pointer have been guarded as well.
+> Signed-off-by: Balamurugan Mahalingam <quic_bmahalin@quicinc.com>
 
-Here my suggestion to make it a bit more simple...
+Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
-> Link: https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
-> ---
-> v1 -> v2: guard all uses of the ifp pointer inside brcmf_txfinalize()
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-> index c3a57e30c855..791757a3ec13 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-> @@ -543,13 +543,13 @@ void brcmf_txfinalize(struct brcmf_if *ifp, struct sk_buff *txp, bool success)
-
-Instead of checking ifp below you can simply do following here and be 
-done with it:
-
-	if (!ifp) {
-		brcmu_pkt_buf_free_skb(txp);
-		return;
-	}
-
->   	eh = (struct ethhdr *)(txp->data);
->   	type = ntohs(eh->h_proto);
->   
-> -	if (type == ETH_P_PAE) {
-> +	if (type == ETH_P_PAE && ifp) {
->   		atomic_dec(&ifp->pend_8021x_cnt);
->   		if (waitqueue_active(&ifp->pend_8021x_wait))
->   			wake_up(&ifp->pend_8021x_wait);
->   	}
->   
-> -	if (!success)
-> +	if (!success && ifp)
->   		ifp->ndev->stats.tx_errors++;
->   
->   	brcmu_pkt_buf_free_skb(txp);
 
 
