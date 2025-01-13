@@ -1,177 +1,143 @@
-Return-Path: <linux-wireless+bounces-17386-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17387-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936C1A0AF95
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 08:03:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB68A0AFA4
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 08:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1614E1881F1D
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 07:03:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB8411886F52
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2025 07:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A7E1C07FE;
-	Mon, 13 Jan 2025 07:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A866231A26;
+	Mon, 13 Jan 2025 07:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="h9oYIPNr"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LuK4oikp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D647713AD0;
-	Mon, 13 Jan 2025 07:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA8F230D1C
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jan 2025 07:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736751824; cv=none; b=FPPgo+qjzmIQwWRmZwTYxP4glHfbNHYb+N6xwW5FDaOJTdkFujXK2km3D1EczK7ak6dyPAqOiyTUqLWZxzMWm9ZGfbOvuIzNRkG6us2OSFA6TfB+BlxoUqv4MwzmiPBXG5Jm2X2vkR+UZasaUbGNmbM+O2BNGZ0bzDQGTrmfIgk=
+	t=1736752300; cv=none; b=eEdWcJF4Eyao2KDeA10daYeYquhH5ABClqGnqo9p3F60MiKrMqBW/f2N7n8w+VVoc4CrOVSqHIs2Pxx9npMykow69PVGh/u9lutGPTmntKXpJPPniGoLqMOjI0Lmd3DVsqVqESxOmC7iuzRcCNeYPSnwi44//2g/honmAr9Z7kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736751824; c=relaxed/simple;
-	bh=vpUAIzxZENNDv58atj4xHgNfohrgiFakzpLmpvVC2AM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Eb7raI42QPtlbBnqCsY73aIQlJfDP8p5UW9Etf9nZcIc/1wRR0kBzcuC1aqJ+krR+T+LxdhZbawwn6HLzGouAakybSIsRh3sR3wTJAw0CXsqzGm7azGECf3rKJ6WngzAWbE3Izuj3kWNZx20LoR5vbTEGjasJsFWmmeiTWbbs64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=h9oYIPNr; arc=none smtp.client-ip=54.204.34.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1736751781;
-	bh=NqfFf4fv96alvmAhC70OVRBAMo6UG+0b5So5mFEFih0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=h9oYIPNr8VTOIaZg0lQ6jY/J0s5u2uloGOtLNe2Sks6gJPYa/yZwP5ELxhx4/VffW
-	 t8uq+T8+DiERceRd0ZEL7mxe5VUk9Oa/gAHVzyLKAKFYecADuuhO99lPCAT5amG6L3
-	 S6zLVw8XpTRNjZ33jX5tZE1lSz8W6lm/4qtSCVOE=
-X-QQ-mid: bizesmtpip3t1736751767tk1inzv
-X-QQ-Originating-IP: LJtxmZbB0DRaJHg91pmdGdfDROe6I8rMwyDT1D/Zhos=
-Received: from localhost.localdomain ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 13 Jan 2025 15:02:44 +0800 (CST)
-X-QQ-SSF: 0002000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 12665532747322616285
-From: WangYuli <wangyuli@uniontech.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	deren.wu@mediatek.com,
-	mingyen.hsieh@mediatek.com,
-	chui-hao.chiu@mediatek.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	netdev@vger.kernel.org,
-	raoxu@uniontech.com,
-	guanwentao@uniontech.com,
-	chenlinxuan@uniontech.com,
-	zhanjun@uniontech.com,
-	cug_yangyuancong@hotmail.com,
-	lorenzo.bianconi@redhat.com,
-	kvalo@codeaurora.org,
-	aleksander.lobakin@intel.com,
-	michal.pecio@gmail.com,
-	dzm91@hust.edu.cn,
-	jiefeng_li@hust.edu.cn,
-	wangyuli@uniontech.com
-Subject: [PATCH v3] wifi: mt76: mt76u_vendor_request: Do not print error messages when -EPROTO
-Date: Mon, 13 Jan 2025 15:02:41 +0800
-Message-ID: <9DD7DE7AAB497CB7+20250113070241.63590-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1736752300; c=relaxed/simple;
+	bh=4L2u8gU/18Q08Pe80uvkZCpMX9YOW6eL5wp/puzSnjE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=bgVDx134qtQLht5sFNOk4+XvT5rxwEV+QEjthSpas5Tq9KBTfSsK51UmQnpwz5i4K0gxrf5x2ctbs5kTkrh+5o07KyyCEnOek2OneXkO93IXzWRHbfJQEtaYSairrXMykvIXizox2AY+Vjbvw7S6LPfcamGFgDj84CcL+1YLSB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LuK4oikp; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50D06HtJ006082;
+	Mon, 13 Jan 2025 07:11:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	B6e59fMeJ5eErng7YxuaoW6O2OuKCvhOaDuKpX9d7SA=; b=LuK4oikpyLYdL9ex
+	wFtf08rHk/jpkifoyEOV22SmSU8TDaFpRaxjPN1NuBAOXCjfSknQ3ngLCEq6Mys8
+	8SevgVJRt8JuinX1gtG4ajaiifg4TLRuMjIUYF/x1m1q9LJ5wWLItAZqT3Noj6Wg
+	cBx6rnnWF7ZwzrIcy1bdpIqPsSRJsd7BzMFE1+iyMS1BAyiHcjCiJuQk610tcOLq
+	LwqXZtKqpy2CxU/PApVrM2O++GxinvlQIY7h4Hw0KEK6uhXIp1CWDboBzQf3PZLi
+	ZAn/O7d8DzOmGBAuFWbEd3OiX6jN9CRrJe95Dk4xZVoEl4ztG8fO3zy5ClJbtILf
+	UNd66A==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 444r01rrnn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jan 2025 07:11:33 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50D7BWp6007411
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jan 2025 07:11:32 GMT
+Received: from [10.50.33.46] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 12 Jan
+ 2025 23:11:31 -0800
+Message-ID: <509f4fff-b547-413e-b9b0-c0060ce8d379@quicinc.com>
+Date: Mon, 13 Jan 2025 12:41:23 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MkkqBHH+kTJApwBfI5ai0tNbU/b+Bo4APgoiwSBXiUcXzTESdO8YSkPA
-	tHKYM1fzrLZJ/N64UdfTtbNk/hmICamhrOrNE/CeuMB3/ItB7pPKvq5MGXWFTqZy06xlN9Z
-	jb45Gry4ejYodSNCJOR6rhgeuaCZVtRlQNJJ0pz/bDW7GaYqMBESUbkbJt/kdhGpxlEqD8D
-	c4SqvkFsTOnXHESpCH8yl6YLSdR4pIxWT+qgEOsLzH4KfzvyoCVpcfk1tSNCEOTu7b7nNbv
-	tkVvb0FkvCaEljuLXwFtjH4cHRHFlCtdaRJB33LRq+7+kqkIKAlQlvD+kG/usNbV5AS3Axy
-	k+810IBRZJ4bJabZUVih4ooXpxV9fP1MYlGpYkHdFudTgLLJTv0mKAkKnG0uCDzj4MyS9Xw
-	Ipd/B26ZTLKqAROA1IE4eiRaY4h4JZBmZ00fWxuE370WWnIHFzSsQ1In6wQpNUuiZDvjSBg
-	oIy2/m2RzArg3ZeY7UaI8o5QSlhyIiIv4Elz9Xxje5CnRLnZDCjLionoAi/1AlE+qDT61ly
-	W4yABzQ/WDBr2cXgUS2OOXe1kzu/nOrTLXVbXDIKXxjg2M/CFaln9fxen2gYi5hVSddAWhk
-	ezIUiAQNQpmeBr/VL8c0fwUmGdUXtlfx8VyvQBjvF/MEr/58eulYKTbK6Z4UoXm3hlCPH6d
-	7Eq9Uz8lo7yeb72koKKvn2gPf3i1tOA2u7zxd0jWtUq9GA5DoExMaETpCW/I10oRCsyeQ43
-	Ogp2jrJ0HINFQke8A5M7oMfC2dRnTkki1j8VtsPIm3KcR4MbUw0PmMt6aqVQ7nZVWEcJIOw
-	99KWyfgnQsgzD4lIDMR+MTRskVwNtGrjL+P3H+ltm5cPsSg/FSh3P5VymrSJHVbXUgFj5ez
-	cUQ4308s0/RNcKA0uL9LgWKjhVRdj0UWpyexzWPmNlMhZxbn+jCfA/VUCkbSNs0UZe84/9t
-	ro4PsJ2fjaCmHEysiA75t97psg5wQy93Kb1N+Yvmi2Zhif2IQuWT/b5Hh0jHhX3PSNfeXrr
-	0qgZTBdDytKJw6BJe7
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/6] wifi: ath12k: Support Sounding, Latency, Trigger,
+ FSE stats
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20241224102013.1530055-1-quic_rdevanat@quicinc.com>
+ <7721a8cc-ee42-4b6a-a08e-ed2ec472041f@oss.qualcomm.com>
+Content-Language: en-US
+From: Roopni Devanathan <quic_rdevanat@quicinc.com>
+In-Reply-To: <7721a8cc-ee42-4b6a-a08e-ed2ec472041f@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: V63SOqQ_BTmkA9Wf40YRGYAXaqWJVe1S
+X-Proofpoint-ORIG-GUID: V63SOqQ_BTmkA9Wf40YRGYAXaqWJVe1S
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ spamscore=0 suspectscore=0 clxscore=1015 malwarescore=0 priorityscore=1501
+ mlxlogscore=999 impostorscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501130060
 
-When initializing the network card, unplugging the device will
-trigger an -EPROTO error, resulting in a flood of error messages
-being printed frantically.
 
-The exception is printed as follows：
 
-         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
-         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
-         ...
+On 1/7/2025 2:16 AM, Jeff Johnson wrote:
+> On 12/24/2024 2:20 AM, Roopni Devanathan wrote:
+>> Add support to request HTT stats type 22, 25, 26, 27 and 28 from
+>> firmware. These stats give sounding stats, latency stats, trigger stats
+>> for uplink OFDMA and MUMIMO and FSE stats, respectively.
+>>
+>> Depends-on:
+>> [PATCH 0/2] wifi: ath12k: Support Rate and OFDMA Stats
+>> Link: https://lore.kernel.org/all/20241128110949.3672364-1-quic_rdevanat@quicinc.com/
+>>
+>> [PATCH v4 0/2] wifi: ath12k: Support AST and Puncture Stats
+>> Link: https://lore.kernel.org/all/20241217055408.1293764-1-quic_rdevanat@quicinc.com/
+>>
+>> v2:
+>>  - Added line breaks where necessary, as pointed out by Kalle.
+>>  - Modified the use of pointer arithmetic print_array_to_buf_s8().
+>>  - Modified commit logs, as suggested by Kalle. 
+>>
+>> Dinesh Karthikeyan (5):
+>>   wifi: ath12k: Support Sounding Stats
+>>   wifi: ath12k: Support Latency Stats
+>>   wifi: ath12k: Support Uplink OFDMA Trigger Stats
+>>   wifi: ath12k: Support Uplink MUMIMO Trigger Stats
+>>   wifi: ath12k: Support Received FSE Stats
+>>
+>> Roopni Devanathan (1):
+>>   wifi: ath12k: Add API to print s8 arrays in HTT stats
+>>
+>>  .../wireless/ath/ath12k/debugfs_htt_stats.c   | 736 ++++++++++++++++++
+>>  .../wireless/ath/ath12k/debugfs_htt_stats.h   | 267 ++++++-
+>>  2 files changed, 970 insertions(+), 33 deletions(-)
+>>
+>>
+>> base-commit: 09fa3b6974a1245ddd0751747609431494ba5b4f
+>> prerequisite-patch-id: c30df5e4af6f5773ed942d8f78de88c05ce2b18b
+>> prerequisite-patch-id: f2181eee4bce2e3487db9bd81ed962f477759e7e
+> 
+> FYI this is not applying to my test tree. Strangely, you list two 2-patch
+> dependencies but only have 2 prerequisite-patch-ids instead of 4.
+> 
+> I now have both "Rate and OFDMA Stats" and "AST and Puncture Stats" in the
+> pending branch. Look for those to be merged, and then rebase on the main
+> branch at that time.
 
-It will continue to print more than 2000 times for about 5 minutes,
-causing the usb device to be unable to be disconnected. During this
-period, the usb port cannot recognize the new device because the old
-device has not disconnected.
-
-There may be other operating methods that cause -EPROTO, but -EPROTO is
-a low-level hardware error. It is unwise to repeat vendor requests
-expecting to read correct data. It is a better choice to treat -EPROTO
-and -ENODEV the same way.
-
-Similar to commit 9b0f100c1970 ("mt76: usb: process URBs with status
-EPROTO properly") do no schedule rx_worker for urb marked with status
-set  -EPROTO. I also reproduced this situation when plugging and
-unplugging the device, and this patch is effective.
-
-Just do not vendor request again for urb marked with status set -EPROTO.
-
-Link: https://lore.kernel.org/all/531681bd-30f5-4a70-a156-bf8754b8e072@intel.com/
-Link: https://lore.kernel.org/all/D4B9CC1FFC0CBAC3+20250105040607.154706-1-wangyuli@uniontech.com/
-Fixes: b40b15e1521f ("mt76: add usb support to mt76 layer")
-Co-developed-by: Xu Rao <raoxu@uniontech.com>
-Signed-off-by: Xu Rao <raoxu@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
----
-Changlog:
- *v1 -> v2: Modify the commit title and message to provide a more
-comprehensive description of the changes made. Additionally, append
-a "Fixes" tag to accurately categorize the commit as a bug fix.
-  v2 -> v3: Add the changelog and fix a typo in the commit message.
----
- drivers/net/wireless/mediatek/mt76/usb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index 58ff06823389..f9e67b8c3b3c 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -33,9 +33,9 @@ int __mt76u_vendor_request(struct mt76_dev *dev, u8 req, u8 req_type,
+Sure, Jeff. Now that the mentioned series are merged, I'll send out a v3.
  
- 		ret = usb_control_msg(udev, pipe, req, req_type, val,
- 				      offset, buf, len, MT_VEND_REQ_TOUT_MS);
--		if (ret == -ENODEV)
-+		if (ret == -ENODEV || ret == -EPROTO)
- 			set_bit(MT76_REMOVED, &dev->phy.state);
--		if (ret >= 0 || ret == -ENODEV)
-+		if (ret >= 0 || ret == -ENODEV || ret == -EPROTO)
- 			return ret;
- 		usleep_range(5000, 10000);
- 	}
--- 
-2.47.1
-
+> /jeff
 
