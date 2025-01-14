@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-17510-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17511-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C715A11045
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 19:36:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F673A11055
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 19:39:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB610165A80
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 18:36:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3B4D1889FF6
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 18:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E854A1F9F52;
-	Tue, 14 Jan 2025 18:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B455B1FCFC5;
+	Tue, 14 Jan 2025 18:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBkm/BIF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPCValXz"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C003A18952C;
-	Tue, 14 Jan 2025 18:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888A01FCCF2;
+	Tue, 14 Jan 2025 18:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736879787; cv=none; b=COMAmd8StotNbZqGjT7KSp7KBxCMHagscPatWDfHh72fjS8ncYLrF4w1O0PTMzvEoC6G9tGj4HX36MxZ43ZiHjJf/j8Vx5243IR4lI+CFlZYiaPaKIr8XgB4xaOqWYnpDKrhWdPWJvJQj8Oc/mLLlCGoIdpQrELMnrCAoPdpnwI=
+	t=1736879975; cv=none; b=a051KabkQmUCCn587HjofwM65NzVDptpriwiumXrrDK7RfbMLiNlygF77jq6lJXQzwL+0RIHIPxtMME+NGT/FifBqhX1ZmlpFaqlNfyrDxSabPqR9AkT3YQX8+L7UHcsWXAqmpUcfac2uKmxvB68KJ1nYj8LfRs/ViEL6QaQY08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736879787; c=relaxed/simple;
-	bh=Tko+N3Fz0tu5dRw0EkJkvT2WNdyCin78QJz13mh47A8=;
+	s=arc-20240116; t=1736879975; c=relaxed/simple;
+	bh=lFW8xhnm4FmFpEtoCShRybDMlrjwPRMLXP3eIbz4nHU=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=o2247acwhrFrhGprpNEI/XJuaw5VT3sYXnFaGlJIAMQXO+NguDA41MXM3CGCCue36RdmGWN4bH0Te2QlOKZyJPEk5Tai0VJoSQvzka+19VDUpNuA85iBYYRRYHKD+rrEw8Q+5byt6nkXOdbhQ4f7xJHMcMKbJ5sjjI0HpRo34G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBkm/BIF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059D4C4CEDD;
-	Tue, 14 Jan 2025 18:36:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iqxUg8zTkDwhTN1kps2+vXyXiUSqOYcuZijOcX5iqFFUtTKSY0wRwOEegYLXyY2z5oBxNv+xEXgeDVTitI1aHB8XQzTeNMV7wKvYDKffem3ZxwPIql4ttW3+kZnP5WqAMuZ1b9bfL1AZzywZw50sOh+oQeA2yhP1oMDCeW+IB+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPCValXz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD54FC4CEDD;
+	Tue, 14 Jan 2025 18:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736879787;
-	bh=Tko+N3Fz0tu5dRw0EkJkvT2WNdyCin78QJz13mh47A8=;
+	s=k20201202; t=1736879975;
+	bh=lFW8xhnm4FmFpEtoCShRybDMlrjwPRMLXP3eIbz4nHU=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=NBkm/BIFvRWOP6hvQBCXsDMO3pjUWew/AtfOx/KlMOSgzoGrTQ9HdxK3jWB+y/2cY
-	 efGbUqoTw+LzO3bv2Xv3j97xSNgn1dvALC76nPoDi74SbIp+N5nT64J1obZBngtc91
-	 e7Uw9ArO6Lo7yrjk6X4Ngxo409BPtUZXouV/bNWMfGBhOsLypjNqV6dsCA2KJdhiTU
-	 LmYQ+qQ+bRTbwjEJWtGJFPnCeilB3saoE888kxg/XXRrc8OdjEmTuvCLKvLQWBunTt
-	 CUPwF2iL7nww1q5NDP0/pb6NxpG0Z5k05laha+Wuq8fHH2HOPzm2/FJ5C61e8uvlD3
-	 Lfq/cZZZtggrQ==
+	b=iPCValXzCGVwJm2eLC4ZSqlRQZxyMFcM8avnXhNquiJYIPKbLPOEEsGbFNbOBdUxs
+	 UhvpmFjHBlIaGtO5LWN+zrWSIxz0qy69Yb7ZQo3IdIPBC9lXto7AIkwMfmQ4//go9p
+	 J4vjrLadgvfZZcLiJCK0+6dKoelN9wVNFeTkCQ0BopLJQ+5bd+EI+Yid9ohWBx4hZH
+	 99OH+BagD5GOywq8WQttstwYYxUIC5/XrSb8fXpQP3UqKY0hU5HFjFYjFkOHBwuTUI
+	 twVfuEnmW/sqLIZi2xPuxih2LBYkuvMV0F0AvrQpvDJUhqEe4sgWblkLwxH8RfGbLn
+	 QgJ6sJbEIUVLA==
 From: Kalle Valo <kvalo@kernel.org>
 To: Aditya Kumar Singh <quic_adisi@quicinc.com>
 Cc: Jeff Johnson <jjohnson@kernel.org>,  <linux-wireless@vger.kernel.org>,
   <ath12k@lists.infradead.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] wifi: ath12k: relocate
- ath12k_mac_ieee80211_sta_bw_to_wmi()
+Subject: Re: [PATCH 2/2] wifi: ath12k: handle
+ ath12k_mac_ieee80211_sta_bw_to_wmi() for link sta
 References: <20250110-fix_link_sta_bandwidth_update-v1-0-61b6f3ef2ea3@quicinc.com>
-	<20250110-fix_link_sta_bandwidth_update-v1-1-61b6f3ef2ea3@quicinc.com>
-Date: Tue, 14 Jan 2025 20:36:24 +0200
-In-Reply-To: <20250110-fix_link_sta_bandwidth_update-v1-1-61b6f3ef2ea3@quicinc.com>
-	(Aditya Kumar Singh's message of "Fri, 10 Jan 2025 00:13:12 +0530")
-Message-ID: <87zfjtnsyf.fsf@kernel.org>
+	<20250110-fix_link_sta_bandwidth_update-v1-2-61b6f3ef2ea3@quicinc.com>
+Date: Tue, 14 Jan 2025 20:39:32 +0200
+In-Reply-To: <20250110-fix_link_sta_bandwidth_update-v1-2-61b6f3ef2ea3@quicinc.com>
+	(Aditya Kumar Singh's message of "Fri, 10 Jan 2025 00:13:13 +0530")
+Message-ID: <87v7uhnst7.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,15 +64,22 @@ Content-Type: text/plain
 
 Aditya Kumar Singh <quic_adisi@quicinc.com> writes:
 
-> An upcoming change will invoke ath12k_mac_ieee80211_sta_bw_to_wmi() from a
-> line located above its current definition. Hence, relocate it to above
-> so that it can be invoked later on.
+> Currently ath12k_mac_ieee80211_sta_bw_to_wmi() handles the bandwidth from
+> sta's deflink member. This works only for non-ML station. Now that MLO
+> support is there, extend this function to use link sta instead of deflink.
 >
-> No functionality changes. Compile tested only.
+> Additionally, in ath12k_mac_handle_link_sta_state(), the link sta structure
+> is not accessible, making it difficult to fetch the bandwidth there.
+> However, ath12k_mac_station_assoc() does reference the link sta structure.
+> Therefore, move the initial assignment of the arsta bandwidth member to
+> ath12k_mac_station_assoc().
+>
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 >
 > Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+So how does this help in practice? Ie. what are the user visible
+symptoms this patch is fixing?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
