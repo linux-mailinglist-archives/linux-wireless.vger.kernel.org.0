@@ -1,164 +1,122 @@
-Return-Path: <linux-wireless+bounces-17500-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17501-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0DA7A10B5E
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 16:46:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E124A10B5D
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 16:45:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C13C13AAB0D
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 15:45:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7432E7A5271
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 15:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EAB71B424B;
-	Tue, 14 Jan 2025 15:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C91A1CDFCC;
+	Tue, 14 Jan 2025 15:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jj4Rg+Bv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FD91ADC79;
-	Tue, 14 Jan 2025 15:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A721ACE12;
+	Tue, 14 Jan 2025 15:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736869494; cv=none; b=E/GUbxOY31whqhZAJw/GAZsSvI4KcurAtPh5qpR93OsuHU/p6HjjmGeIB9L4lHvFRefefopkDUtB1x8aOcnmiIKNfcUuEPH/1r+ZCRkMMQ+T4QQ2DUQFtjJW5/Kod6qZ6PjogjIbH3hzQb69tUurF0tKul2EXBjVYmuMzvahOGs=
+	t=1736869495; cv=none; b=GaLnmOBYkLkeg7xepdL+rVO9wwNrzSe4W048cLwkPLef10bzrEVqGiYt0gvpNg6QIh04Ya091hfUsxEwR4SIHBDWJFJXrWkF3rPtPgsZzdOHt0ZZlf1LynGfsprOXmj++LhvkBIWhBTf4eYy1agL9iAAaprzDLwEJIx1lSuk1sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736869494; c=relaxed/simple;
-	bh=9vl5mVnDtXRe1/udoXie00wF1LIBpz7jWB+gQs7Xja4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ssk+3IIRzAggknhzs96yMe5wxOnwbhSKUMdhHId0pmnAv4nfhsye/UO8CoFGGSxJuEAXhEmx09sobkKGkdW1XeQUyjKxoah8dGGBl0TRLZbxHbN8Z7TLLmhR4uJPuRXHbCoJz+g0mVd5mQ4JWjDnjaOwawgUdEhT/2MBoXSCRk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.169) with Microsoft SMTP Server (TLS) id 14.3.498.0; Tue, 14 Jan
- 2025 18:44:45 +0300
-Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Tue, 14 Jan
- 2025 18:44:45 +0300
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
-	"Ryder Lee" <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
-	"Sean Wang" <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>
-CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, <linux-wireless@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>, <lvc-project@linuxtesting.org>
-Subject: [PATCH] wifi: mt76: mt7915: fix possible integer overflows in mt7915_muru_stats_show()
-Date: Tue, 14 Jan 2025 07:44:41 -0800
-Message-ID: <20250114154441.16920-1-n.zhandarovich@fintech.ru>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1736869495; c=relaxed/simple;
+	bh=zxszI9t4R+vVNc8ZZxGix0Ap6as/A7QwELeAUTlB5cY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Olk5JYqZRS9PGn+ZC2tfXJvMd2xSXhS+Z7Aa4rG0pfoKKNUliA0TJFozKkgrN3RaMWjb57z/VZX15zSrsZxBtHmCQrrTv6IvZsZHYZzy2qWrl28IbIq1NvtSvCZzH6hq7AY143g5nCUhc26ih68O0s5+m8mhtnn+fPk6N6b0oYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jj4Rg+Bv; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DE85E1C0006;
+	Tue, 14 Jan 2025 15:44:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1736869491;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sOgokNd7tUxraq3YOmrF/cAoQHoDhiKkeICtOBBMWJk=;
+	b=jj4Rg+BvaolhW+cNk+OACp8+RfkIfkn/BsU/H3aKFvAeo3MAWH9lg0Evl5JFWi0HUyGxMO
+	6CLgkSHmE8XHNlDt1cxJU4ZD9txaULF73w9Dsd2hA91EXCR1hKih9FBvqS/Q6YPHsZ4Vbj
+	9ZWEwtXnCW75zMQn3Qb/GDChfp8hIEd1Refp8Bhrez1LfgAhsFqMyXIv8LP8814sTdmhdR
+	gUyEX/0BsPt1TCExCXhUjbGlObaBp5m6Wt0OBTE0Uj01s2MA3Kukf7Xw22ejds/LKYFXXw
+	53chAyKu5bTQ9DXDi04Einh1t1iwn4wPC3ix2PoElQRniPp/1cMYwY/Lc8dHqA==
+Message-ID: <d26a4283-a4fe-4ec6-9601-c239281335ac@bootlin.com>
+Date: Tue, 14 Jan 2025 16:44:50 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: wilc1000: unregister wiphy only after netdev
+ registration
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Marek Vasut <marex@denx.de>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250114-wilc1000_modprobe-v1-1-ad19d46f0c07@bootlin.com>
+ <87frllr3h1.fsf@kernel.org>
+ <165a166c-d402-48d9-a190-44a710fa4d1c@bootlin.com>
+ <87bjw9r0qd.fsf@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+In-Reply-To: <87bjw9r0qd.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-Assuming sums of values stored in variables such as sub_total_cnt
-and total_ppdu_cnt are big enough to warrant their u64 type, it
-makes sense to ensure that their calculation takes into account
-possible integer overflow issues.
+On 1/14/25 14:20, Kalle Valo wrote:
+> Alexis Lothoré <alexis.lothore@bootlin.com> writes:
 
-Play it safe and fix the problem by casting right hand expressions
-to u64 as well. Also, slightly adjust tabulation.
+[...]
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+>>>> @Kalle: 89a7616e1715 (the faulty commit) is only in wireless-next for
+>>>> now IIUC, so I did not provide any Fixes: tag to prevent any faulty SHA1
+>>>> if those commits end up being picked in stable tree (however, the faulty
+>>>> commit _has_ a Fixes tag). Please let me know if we should proceed
+>>>> differently.
+>>>
+>>> Hmm, I don't really follow you here. I feel that always adding the Fixes
+>>> tag is the safest option, that way it's clear for everyone what commit
+>>> we are fixing.
+>>
+>> I was thinking about the fact that the faulty commit SHA1 may change because of
+>> a merge, and then break the Fixes: tag, but maybe I am overthinking.
+> 
+> Ah, now I understand. Actually commit id doesn't change during a merge
+> so we are safe in that regard. The commit id only changes if there's a
+> rebase in the tree and we don't rebase wireless trees (unless something
+> really drastic has happened).
 
-Fixes: 1966a5078f2d ("mt76: mt7915: add mu-mimo and ofdma debugfs knobs")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
----
- .../net/wireless/mediatek/mt76/mt7915/debugfs.c    | 45 +++++++++++-----------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+ACK
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index 578013884e43..4fec7d000a63 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -303,9 +303,9 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- 		   phy->mib.dl_vht_3mu_cnt,
- 		   phy->mib.dl_vht_4mu_cnt);
- 
--	sub_total_cnt = phy->mib.dl_vht_2mu_cnt +
--			phy->mib.dl_vht_3mu_cnt +
--			phy->mib.dl_vht_4mu_cnt;
-+	sub_total_cnt = (u64)phy->mib.dl_vht_2mu_cnt +
-+			     phy->mib.dl_vht_3mu_cnt +
-+			     phy->mib.dl_vht_4mu_cnt;
- 
- 	seq_printf(file, "\nTotal non-HE MU-MIMO DL PPDU count: %lld",
- 		   sub_total_cnt);
-@@ -353,26 +353,27 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- 		   phy->mib.dl_he_9to16ru_cnt,
- 		   phy->mib.dl_he_gtr16ru_cnt);
- 
--	sub_total_cnt = phy->mib.dl_he_2mu_cnt +
--			phy->mib.dl_he_3mu_cnt +
--			phy->mib.dl_he_4mu_cnt;
-+	sub_total_cnt = (u64)phy->mib.dl_he_2mu_cnt +
-+			     phy->mib.dl_he_3mu_cnt +
-+			     phy->mib.dl_he_4mu_cnt;
- 	total_ppdu_cnt = sub_total_cnt;
- 
- 	seq_printf(file, "\nTotal HE MU-MIMO DL PPDU count: %lld",
- 		   sub_total_cnt);
- 
--	sub_total_cnt = phy->mib.dl_he_2ru_cnt +
--			phy->mib.dl_he_3ru_cnt +
--			phy->mib.dl_he_4ru_cnt +
--			phy->mib.dl_he_5to8ru_cnt +
--			phy->mib.dl_he_9to16ru_cnt +
--			phy->mib.dl_he_gtr16ru_cnt;
-+	sub_total_cnt = (u64)phy->mib.dl_he_2ru_cnt +
-+			     phy->mib.dl_he_3ru_cnt +
-+			     phy->mib.dl_he_4ru_cnt +
-+			     phy->mib.dl_he_5to8ru_cnt +
-+			     phy->mib.dl_he_9to16ru_cnt +
-+			     phy->mib.dl_he_gtr16ru_cnt;
- 	total_ppdu_cnt += sub_total_cnt;
- 
- 	seq_printf(file, "\nTotal HE OFDMA DL PPDU count: %lld",
- 		   sub_total_cnt);
- 
--	total_ppdu_cnt += phy->mib.dl_he_su_cnt + phy->mib.dl_he_ext_su_cnt;
-+	total_ppdu_cnt += (u64)phy->mib.dl_he_su_cnt +
-+			       phy->mib.dl_he_ext_su_cnt;
- 
- 	seq_printf(file, "\nAll HE DL PPDU count: %lld", total_ppdu_cnt);
- 
-@@ -404,20 +405,20 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- 		   phy->mib.ul_hetrig_9to16ru_cnt,
- 		   phy->mib.ul_hetrig_gtr16ru_cnt);
- 
--	sub_total_cnt = phy->mib.ul_hetrig_2mu_cnt +
--			phy->mib.ul_hetrig_3mu_cnt +
--			phy->mib.ul_hetrig_4mu_cnt;
-+	sub_total_cnt = (u64)phy->mib.ul_hetrig_2mu_cnt +
-+			     phy->mib.ul_hetrig_3mu_cnt +
-+			     phy->mib.ul_hetrig_4mu_cnt;
- 	total_ppdu_cnt = sub_total_cnt;
- 
- 	seq_printf(file, "\nTotal HE MU-MIMO UL TB PPDU count: %lld",
- 		   sub_total_cnt);
- 
--	sub_total_cnt = phy->mib.ul_hetrig_2ru_cnt +
--			phy->mib.ul_hetrig_3ru_cnt +
--			phy->mib.ul_hetrig_4ru_cnt +
--			phy->mib.ul_hetrig_5to8ru_cnt +
--			phy->mib.ul_hetrig_9to16ru_cnt +
--			phy->mib.ul_hetrig_gtr16ru_cnt;
-+	sub_total_cnt = (u64)phy->mib.ul_hetrig_2ru_cnt +
-+			     phy->mib.ul_hetrig_3ru_cnt +
-+			     phy->mib.ul_hetrig_4ru_cnt +
-+			     phy->mib.ul_hetrig_5to8ru_cnt +
-+			     phy->mib.ul_hetrig_9to16ru_cnt +
-+			     phy->mib.ul_hetrig_gtr16ru_cnt;
- 	total_ppdu_cnt += sub_total_cnt;
- 
- 	seq_printf(file, "\nTotal HE OFDMA UL TB PPDU count: %lld",
+>> So if it's ok for you, I would like to add the Fixes tag
+>>> but I can't find commit 89a7616e1715 anywhere.
+>>
+>> Gaah, indeed that's not the correct SHA1. The faulty commit in wireless-next is
+>> in fact commit 1be94490b6b8 ("wifi: wilc1000: unregister wiphy only if it has
+>> been registered")
+> 
+> Thanks, so I'm planning to add this during commit:
+> 
+> Fixes: 1be94490b6b8 ("wifi: wilc1000: unregister wiphy only if it has been registered")
+> 
+> Is that ok?
+
+Ok for me, thanks !
+
+Alexis
+
+
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
