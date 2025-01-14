@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-17518-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17516-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219F8A11437
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 23:36:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B839FA11434
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 23:36:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BFAF7A1F51
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 22:36:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7DE27A1E67
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 22:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEDA2139DB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933CD2139D8;
 	Tue, 14 Jan 2025 22:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="KtvOQ23Q"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TN/CshOC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79442135C0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D8C2135B2
 	for <linux-wireless@vger.kernel.org>; Tue, 14 Jan 2025 22:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736894197; cv=none; b=LBAp5tVZhAFrJjbnHRFRmldbHGPvfnLlhhmulDHtbamqoQ7lbVT7vZAF50ADImEWOQhlvbBOyc4G2fnLYY17BZ1rXYikJcMpM/B8uexm/240MI0ebQMnvk1UFGjTadkvmnmXOyPh2lZtI9u2yoGHxmp42/wZx0FhFy0gERGORLM=
+	t=1736894197; cv=none; b=VOLsyvc9Plmu4yDX0RcVfCB6BcRsszK6jDi3MqtR3fMO9/ZOQRVj17jzaZCU5//G48NUSysWrPunB2Frh2QXHbUI6MeTQkrsh+K/Y/W8rzOhcT38KtIUM1fgvlJZecGUzw1a2C8fuyrpPHIAGwPJBKawwPN2g3reN106kv/9NrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1736894197; c=relaxed/simple;
-	bh=vExkIRHADg7DfM+83tHTCiO2ylhssJGzfm518yMyHsk=;
+	bh=7yk6hJcZcq2mvkY0WH+HtvpelxHH44xW19ZT1DB58y8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=meNgHxNC622q3gVok94wcIcjXFjLuzKRJ4l0q0sA2ngB0YOLf6skO+EM3gb/BPEMFPYo2liYMvm9Ix1T4ZDBvulfpkydCKFjA7EeO0+1U9Bg9oJq6CDQSpbxRUUhrgbUH3LwD2sZadNEeUEXWpaFobmUu+kaoeUf2/MO/rWfgVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=KtvOQ23Q; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=EV3qbFkzTzToibQEd1tk2FEO+Riv3bmI7ydL9FpcWI2sUcJipWYSCrm+BRgCwS5oyzVyXuUZVcIdn2Mf0C5alaT+gwYWQovvtM2TS7ZPyF24X5wbUnKNKetMs6gKKCeLg+En+8Y+LigjgaZP/RpojryM4eLCCFIhjWsNvrsaLwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TN/CshOC; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EGkBbx016991;
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EK7vEf024926;
 	Tue, 14 Jan 2025 22:36:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Qf79nTM6UGdASN9Vx3sMkShtsEX7cBoMo6owVyFNOvM=; b=KtvOQ23Q82L1yeZO
-	VmBQArSQtWcxTK49eXFH47iaO3uyBBCz6NIdpVa1aRNCrBOjw7eq3STOHE6h8QwE
-	njtoDMN3uT0YgT8qOHGprdGSPZv37MjhUgIGFrjjLUoaxO5VYBU7rCiSv+1cLTc3
-	fWf7bGKhp5jkbS0wDJ95T6d15DGQ4id10Wk4MtPyN+w26narmnRt3gG+3xngDLmP
-	AFr1ggWYPyf19hcLDU7onuI8Q5uvOO0p3+Yzx/wSuL061dQqM6nexe+uQ2RtjX/R
-	3Wj8FN9to+/Y89hhqLeAf0190jrmR3fKn+B6o7zGx5zmHDv1wpup1H7+UnWzH7nM
-	mOg4Vg==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 445uqu0rnc-1
+	neLT67L+VEZGpVKY++sWqe/xnwP5s0lytk9Yza21MzU=; b=TN/CshOCEO5pWUq+
+	H22nGmDehnH3osgb3m3vt+C49IB0oOGdfQHoaagE0CgW0K03tq5xu457n9imDZp+
+	133ZQZtM1bzWPxMD2uVxAXdsJ0gz7NvJZusCmBth1z0aoevVM2X8dM0kiSHgvkui
+	jOK4Bc+91tv6qlPLbmAUyoEnnjZYBvdbI3eC22RBhuari7VvDYRnK6jn2ZAkj45+
+	CARX+FCijlE5duK6uuiktk1I1Xci1gtWvuBt6CsqV3RMYBIy0DIIyyBq15Y0cSPc
+	ooG+uYrW8cUZAObK5kUp2cOOFUedWSUlc+vuLW+Wu9Kb4CxvRrkrFKchv7EKsMYL
+	Bc85/g==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 445xpj097u-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 22:36:31 +0000 (GMT)
+	Tue, 14 Jan 2025 22:36:32 +0000 (GMT)
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50EMaUQ2006706
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50EMaVDa011784
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 22:36:30 GMT
+	Tue, 14 Jan 2025 22:36:31 GMT
 Received: from alokad-linux.qualcomm.com (10.80.80.8) by
  nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -60,9 +60,9 @@ From: Aloka Dixit <quic_alokad@quicinc.com>
 To: <ath11k@lists.infradead.org>, <ath12k@lists.infradead.org>,
         <linux-wireless@vger.kernel.org>
 CC: Aloka Dixit <quic_alokad@quicinc.com>
-Subject: [PATCH 1/5] wifi: ath11k: refactor transmitted arvif retrieval
-Date: Tue, 14 Jan 2025 14:36:08 -0800
-Message-ID: <20250114223612.2979310-2-quic_alokad@quicinc.com>
+Subject: [PATCH 2/5] wifi: ath11k: pass tx arvif for MBSSID and EMA beacon generation
+Date: Tue, 14 Jan 2025 14:36:09 -0800
+Message-ID: <20250114223612.2979310-3-quic_alokad@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250114223612.2979310-1-quic_alokad@quicinc.com>
 References: <20250114223612.2979310-1-quic_alokad@quicinc.com>
@@ -78,134 +78,118 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: r8BS9USorVXznSyJqO7mGTvD_s1voFm4
-X-Proofpoint-ORIG-GUID: r8BS9USorVXznSyJqO7mGTvD_s1voFm4
+X-Proofpoint-ORIG-GUID: UedBJBIxpedA14Gs-hEjbviA1lOx-Jyt
+X-Proofpoint-GUID: UedBJBIxpedA14Gs-hEjbviA1lOx-Jyt
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-14_07,2025-01-13_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 suspectscore=0 spamscore=0 clxscore=1011
- phishscore=0 mlxlogscore=832 malwarescore=0 mlxscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501140170
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=944
+ malwarescore=0 clxscore=1011 adultscore=0 priorityscore=1501
+ impostorscore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501140170
 
-Create a new function ath11k_mac_get_tx_arvif() to retrieve 'arvif'
-for the transmitted interface of the MBSSID set. This will help
-modifying the same code path to reflect mac80211 data structure
-changes to support MLO. This also fixes an issue in
-ath11k_mac_update_vif_chan() where tx_arvif is not reset to NULL
-inside for loop during each iteration.
+Function ath11k_mac_setup_bcn_tmpl() retrieves tx_arvif only for
+a sanity check and then calls ath11k_mac_setup_bcn_tmpl_mbssid()
+or ath11k_mac_setup_bcn_tmpl_ema() both of which again retrieve
+the same pointer. Instead store the pointer and pass it to the
+latter two functions.
 
 Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 34 +++++++++++++--------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 40 +++++++++++++--------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 1556392f7ad4..ebd5a9a7b6c3 100644
+index ebd5a9a7b6c3..3a56577c139b 100644
 --- a/drivers/net/wireless/ath/ath11k/mac.c
 +++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include <net/mac80211.h>
-@@ -1529,6 +1529,14 @@ static int ath11k_mac_set_vif_params(struct ath11k_vif *arvif,
- 	return ret;
+@@ -1537,17 +1537,15 @@ static struct ath11k_vif *ath11k_mac_get_tx_arvif(struct ath11k_vif *arvif)
+ 	return NULL;
  }
  
-+static struct ath11k_vif *ath11k_mac_get_tx_arvif(struct ath11k_vif *arvif)
-+{
-+	if (arvif->vif->mbssid_tx_vif)
-+		return ath11k_vif_to_arvif(arvif->vif->mbssid_tx_vif);
-+
-+	return NULL;
-+}
-+
- static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif)
+-static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif)
++static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif,
++					 struct ath11k_vif *tx_arvif)
  {
- 	struct ath11k_vif *tx_arvif;
-@@ -1538,7 +1546,7 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif)
+-	struct ath11k_vif *tx_arvif;
+ 	struct ieee80211_ema_beacons *beacons;
+ 	int ret = 0;
+ 	bool nontx_vif_params_set = false;
  	u32 params = 0;
  	u8 i = 0;
  
--	tx_arvif = ath11k_vif_to_arvif(arvif->vif->mbssid_tx_vif);
-+	tx_arvif = ath11k_mac_get_tx_arvif(arvif);
- 
+-	tx_arvif = ath11k_mac_get_tx_arvif(arvif);
+-
  	beacons = ieee80211_beacon_get_template_ema_list(tx_arvif->ar->hw,
  							 tx_arvif->vif, 0);
-@@ -1597,7 +1605,7 @@ static int ath11k_mac_setup_bcn_tmpl_mbssid(struct ath11k_vif *arvif)
- 	int ret;
+ 	if (!beacons || !beacons->cnt) {
+@@ -1593,25 +1591,22 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif)
+ 	return ret;
+ }
  
- 	if (vif->mbssid_tx_vif) {
--		tx_arvif = ath11k_vif_to_arvif(vif->mbssid_tx_vif);
-+		tx_arvif = ath11k_mac_get_tx_arvif(arvif);
- 		if (tx_arvif != arvif) {
- 			ar = tx_arvif->ar;
- 			ab = ar->ab;
-@@ -1674,7 +1682,7 @@ static void ath11k_control_beaconing(struct ath11k_vif *arvif,
- 				     struct ieee80211_bss_conf *info)
+-static int ath11k_mac_setup_bcn_tmpl_mbssid(struct ath11k_vif *arvif)
++static int ath11k_mac_setup_bcn_tmpl_mbssid(struct ath11k_vif *arvif,
++					    struct ath11k_vif *tx_arvif)
  {
  	struct ath11k *ar = arvif->ar;
--	struct ath11k_vif *tx_arvif = NULL;
-+	struct ath11k_vif *tx_arvif;
- 	int ret = 0;
+ 	struct ath11k_base *ab = ar->ab;
+-	struct ath11k_vif *tx_arvif = arvif;
+ 	struct ieee80211_hw *hw = ar->hw;
+ 	struct ieee80211_vif *vif = arvif->vif;
+ 	struct ieee80211_mutable_offsets offs = {};
+ 	struct sk_buff *bcn;
+ 	int ret;
  
- 	lockdep_assert_held(&arvif->ar->conf_mutex);
-@@ -1701,9 +1709,7 @@ static void ath11k_control_beaconing(struct ath11k_vif *arvif,
- 
- 	ether_addr_copy(arvif->bssid, info->bssid);
- 
--	if (arvif->vif->mbssid_tx_vif)
--		tx_arvif = ath11k_vif_to_arvif(arvif->vif->mbssid_tx_vif);
--
-+	tx_arvif = ath11k_mac_get_tx_arvif(arvif);
- 	ret = ath11k_wmi_vdev_up(arvif->ar, arvif->vdev_id, arvif->aid,
- 				 arvif->bssid,
- 				 tx_arvif ? tx_arvif->bssid : NULL,
-@@ -6333,14 +6339,12 @@ static int ath11k_mac_setup_vdev_params_mbssid(struct ath11k_vif *arvif,
- 	struct ieee80211_vif *tx_vif;
- 
- 	*tx_vdev_id = 0;
--	tx_vif = arvif->vif->mbssid_tx_vif;
--	if (!tx_vif) {
-+	tx_arvif = ath11k_mac_get_tx_arvif(arvif);
-+	if (!tx_arvif) {
- 		*flags = WMI_HOST_VDEV_FLAGS_NON_MBSSID_AP;
- 		return 0;
+-	if (vif->mbssid_tx_vif) {
+-		tx_arvif = ath11k_mac_get_tx_arvif(arvif);
+-		if (tx_arvif != arvif) {
+-			ar = tx_arvif->ar;
+-			ab = ar->ab;
+-			hw = ar->hw;
+-			vif = tx_arvif->vif;
+-		}
++	if (tx_arvif != arvif) {
++		ar = tx_arvif->ar;
++		ab = ar->ab;
++		hw = ar->hw;
++		vif = tx_arvif->vif;
  	}
  
--	tx_arvif = ath11k_vif_to_arvif(tx_vif);
--
- 	if (arvif->vif->bss_conf.nontransmitted) {
- 		if (ar->hw->wiphy != ieee80211_vif_to_wdev(tx_vif)->wiphy)
- 			return -EINVAL;
-@@ -7306,8 +7310,7 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
- 			   int n_vifs)
+ 	bcn = ieee80211_beacon_get_template(hw, vif, &offs, 0);
+@@ -1640,6 +1635,7 @@ static int ath11k_mac_setup_bcn_tmpl_mbssid(struct ath11k_vif *arvif)
+ static int ath11k_mac_setup_bcn_tmpl(struct ath11k_vif *arvif)
  {
- 	struct ath11k_base *ab = ar->ab;
--	struct ath11k_vif *arvif, *tx_arvif = NULL;
--	struct ieee80211_vif *mbssid_tx_vif;
-+	struct ath11k_vif *arvif, *tx_arvif;
- 	int ret;
- 	int i;
- 	bool monitor_vif = false;
-@@ -7361,10 +7364,7 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
- 			ath11k_warn(ab, "failed to update bcn tmpl during csa: %d\n",
- 				    ret);
+ 	struct ieee80211_vif *vif = arvif->vif;
++	struct ath11k_vif *tx_arvif;
  
--		mbssid_tx_vif = arvif->vif->mbssid_tx_vif;
--		if (mbssid_tx_vif)
--			tx_arvif = ath11k_vif_to_arvif(mbssid_tx_vif);
--
-+		tx_arvif = ath11k_mac_get_tx_arvif(arvif);
- 		ret = ath11k_wmi_vdev_up(arvif->ar, arvif->vdev_id, arvif->aid,
- 					 arvif->bssid,
- 					 tx_arvif ? tx_arvif->bssid : NULL,
+ 	if (arvif->vdev_type != WMI_VDEV_TYPE_AP)
+ 		return 0;
+@@ -1647,14 +1643,18 @@ static int ath11k_mac_setup_bcn_tmpl(struct ath11k_vif *arvif)
+ 	/* Target does not expect beacon templates for the already up
+ 	 * non-transmitting interfaces, and results in a crash if sent.
+ 	 */
+-	if (vif->mbssid_tx_vif &&
+-	    arvif != ath11k_vif_to_arvif(vif->mbssid_tx_vif) && arvif->is_up)
+-		return 0;
++	tx_arvif = ath11k_mac_get_tx_arvif(arvif);
++	if (tx_arvif) {
++		if (arvif != tx_arvif && arvif->is_up)
++			return 0;
+ 
+-	if (vif->bss_conf.ema_ap && vif->mbssid_tx_vif)
+-		return ath11k_mac_setup_bcn_tmpl_ema(arvif);
++		if (vif->bss_conf.ema_ap)
++			return ath11k_mac_setup_bcn_tmpl_ema(arvif, tx_arvif);
++	} else {
++		tx_arvif = arvif;
++	}
+ 
+-	return ath11k_mac_setup_bcn_tmpl_mbssid(arvif);
++	return ath11k_mac_setup_bcn_tmpl_mbssid(arvif, tx_arvif);
+ }
+ 
+ void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif)
 -- 
 2.34.1
 
