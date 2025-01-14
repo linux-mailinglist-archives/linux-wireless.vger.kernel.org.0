@@ -1,261 +1,112 @@
-Return-Path: <linux-wireless+bounces-17472-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17475-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D42A1029B
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 10:03:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C199A103B5
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 11:11:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6438C3A3378
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 09:03:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48635166A46
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 10:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6879028EC93;
-	Tue, 14 Jan 2025 09:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDCC246347;
+	Tue, 14 Jan 2025 10:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PHmupNuS"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="QkQiaMos"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7095D1C3BFC;
-	Tue, 14 Jan 2025 09:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B3922DC2A
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Jan 2025 10:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736845401; cv=none; b=NWQPyJd7/wW2mg7VKIXWfGGzzpzJZWu7yTe6J9mfJ+xGArBt3RTVdum4rix7XKqE9qPyXoqJPGVU4H8qrQ7b1mZMBOU3xwTZgX3AeF5YWzH58CKFk2avje8qlXEK8/nnkXTybsriq+j/d2oQ9iJMsguYtABa1T3vyapQnqF/+80=
+	t=1736849511; cv=none; b=PISILFIG5gh4R7zfZ/RJ0CXMlDwAn0y1v6EHHDQhdv2sQtlF40SMUZV/v4/ni7Y/rtF4U/fxip0URvKmXHIDb6Mw91VIueodeVS2W/YioKR2UDhE2AzOlnpTWDcXiqLPovzhq+EuNStutRFG6UEqAG22htn2igib2Ic0/S86HUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736845401; c=relaxed/simple;
-	bh=QNvuh5EDJiuoHdaCpoRHoR7O5EvfHOckuuZ644v9d00=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i5PGQvG4AyzcthDOwLJZnzzuNX3QB/MpzTtvxsUJA6itDrLlypMjPloxfVyRoR+Lc9KID0gAwmhVqPc5ExHygGkNwmnIXcmeVtErjyyMQ4Qc0xnEnV4dKYzxAND395Rx6eLTwX4cwLPSkaxltotcEJW9soal3tsC3FlpgJe4loo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PHmupNuS; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-436345cc17bso37198405e9.0;
-        Tue, 14 Jan 2025 01:03:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736845398; x=1737450198; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RJdpc5af8GraPbTvgj2FYJk8F44uMY7sTK/kVSc+LHs=;
-        b=PHmupNuSqVZ1c4/9v08gmJxdnkQvZjVlsgbq7lqgakh3UY6n2MUmIPbh7XyCDtOYi8
-         h6sP9bD7t1gKblz/t/SDukdku4HCUnggUayfr9KuWegfBu/n2S169RZ3lOToLNqjrtEI
-         deVyH7+RxKyoEpeBYPhwOYl42E0oYPM8lmSdCidaZJQy/cswl50hF/yHR3bHgWfNwBNp
-         bkMQmOlMV50gc6eVTvPUSyAWDIWxDJjz5J6sYZLq512TktDYZu9X+nKcZVILkax40d1m
-         zh6Pr8Wgag24BZyv5ZyUFUvHdaVh6sDLpLC2b4GH+UvX3Q+YqKCTF3LQ/Kd/RR6f+0TH
-         fwTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736845398; x=1737450198;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RJdpc5af8GraPbTvgj2FYJk8F44uMY7sTK/kVSc+LHs=;
-        b=SR0b32nf6bZsp/Id9rQoUgTQlhiY23Nwz8yTybRsvjaDVWQ8GK2a6TU9/tB1S++qXy
-         4A5OlPxy2yLuYEMaqgp7bca9Bo7PlyalMeF3YZy0x8q+QiFcuPv/xPXBruol7M3Muy65
-         UXl/FaFOHJvUBRa6QK0AP71vPTeiBb3WJdoUMPSkzDyuOTRtbPAUOP4PwUo79NycKEsB
-         Tl/fldDzs4cZT5aXGX/QdRif2FXEnF5mSxXGHTLwOxU4XJUxmxvzUPbOkuu9q2ykl2dI
-         uMwLroPkyy1w7AdlkCX+vDAro+1de1DAMYQbOeda4rbbC0IbnKT0Gslq4aLwlRUWFeWc
-         3c5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVUJ12DHJyneuoUvKCUd+A1iXh2/D62xggUWicCF6YeikE2Hm9DZRd94ZfvhzXtiREdeyE=@vger.kernel.org, AJvYcCWDMweVxKdTfL345NNnW78cGwY/72iAVTK/Eyn7zYGX+ehNKfbMqxjJvCM5EGk2kdAq+TDKtBJzYcB0dw==@vger.kernel.org, AJvYcCWMqiEvqS7S+p19JoyC4Mxy972Vd2LiczbS6FG4FTZeam+On2DzenjrFb1z6Gyi+OJ3ViSbNkwk@vger.kernel.org, AJvYcCWNBkAKp9/QN6NVsD/h0Q02/ZsLvO9OyvLQGYLLWF3GW8ZGFCOsv9wTTFgirS//Ytn+3q31xGLLEk4dDtznM00=@vger.kernel.org, AJvYcCXJ8t/KNOq1MB57Uai6xRBh0hL7otQfEeu3UgiDI2n+7xV4iIXP/aKMdU2khKhdm0mDpdGLa9VC22yat8ztC7J2@vger.kernel.org, AJvYcCXLuHVvTS/agrf59atzsIcg/BGiLaJqHr4k9hIxDR1Jz14HnUdo0rEsAgRYS7MwsNsIQBizLqwSRcE6AtGA@vger.kernel.org, AJvYcCXMv1EaYpD8i7Oku1H4GtQCkc9Y4s7kIeg6yWCiqod77UbsMAFKnnY7VwH4z6sAOCTtWKeALybkVXoJFQ==@vger.kernel.org, AJvYcCXa7WaEwP8vuyDTOrFnXjGE2Prpg+vceKX14fsUJE+h3i9yTDPrTER7S8/todguSfwelgJG/LVSDfN0@vger.kernel.org, AJvYcCXuuZ8G7OjtYnRKMa+CYDHhrdEDpPQt87Raq5qdhR3zMG9ZD8O5YhLEjhdDgoZQZw7WjVtxx/FaM1YR@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1zBSZt600gFH9asb9ZlFZ19wtcTE+285dLRqCkxyci/RBJbb4
-	GaILyXT8XXKsd13/iHHWhueRSsnsc/xnOj2Qj8pEYiCtq2eVHqNrs2AtKp6pnU4lyOIBC3GRfnp
-	qAXrPEqlHLV+/Dy4FHaj7sHxK4R1+WDqnM1w=
-X-Gm-Gg: ASbGnctdlxk6OoyjEmfE4+sJM0l36A8DZ36/8hJzxFdVAmpO+BlY/Ln+dx8Iszu0v9m
-	byTbQYtz4gmww3wyo+7fUsllfBRiDgMs78u6U
-X-Google-Smtp-Source: AGHT+IE8ZeqfL/AgiOHI7JzByaRH/gCmdKgPWO5Hj9zc39/ATmbh/1nt9GKO3Q2GNRNSP3Oe53/t8se7t847Ok8yve4=
-X-Received: by 2002:a05:600c:1ca9:b0:435:136:75f6 with SMTP id
- 5b1f17b1804b1-436e2551d7bmr233515785e9.0.1736845397493; Tue, 14 Jan 2025
- 01:03:17 -0800 (PST)
+	s=arc-20240116; t=1736849511; c=relaxed/simple;
+	bh=5dEsqEB4Vv6S0q9dhQSet28nITYmSK85cTXIRUM5cwA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CIgX4oSmwZIDEaLiced0uG/faUZkA/195JAgx6PY+VIb1dz8O6fqAbLd1CFx+gIIMrLJ3EyKD4PsWaIY5sM5jnC0/4C5Cj28JZO7Z70wPJpnc0PMOKIXCtOYtks40toxGZDajxFvskMt6nTospK73wGGoAP/GUVI3JgvBhMIG3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=QkQiaMos; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: f29d0948d25f11ef99858b75a2457dd9-20250114
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=EpY43PgHfYUZciGbxFw9yanIHF3ZM4XCGB3+IqKBC1A=;
+	b=QkQiaMosgiPqJ//KnSAIN2tH5uwhgaP2r+IqGXXRF20V0/rfJqFy2d5WIum+h/cgFt6qIeaCMjQZulyfhecz1e74Vne0p7E6owlEham31WdHKlQDuyoxEAryYJo6gZ5GUe8HO5jWBTc9Zl25htEDFG/GCLqgJpEgnaiDFfmkUyA=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.46,REQID:7be0b717-7795-49df-bb83-ada586b0e36e,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:60aa074,CLOUDID:8cd9de0e-078a-483b-8929-714244d25c49,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: f29d0948d25f11ef99858b75a2457dd9-20250114
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+	(envelope-from <shayne.chen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 406530001; Tue, 14 Jan 2025 18:11:40 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Tue, 14 Jan 2025 18:11:39 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Tue, 14 Jan 2025 18:11:39 +0800
+From: Shayne Chen <shayne.chen@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>
+CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
+	<evelyn.tsai@mediatek.com>, linux-mediatek
+	<linux-mediatek@lists.infradead.org>, Peter Chiu
+	<chui-hao.chiu@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH 1/9] wifi: mt76: mt7996: add max mpdu len capability
+Date: Tue, 14 Jan 2025 18:10:18 +0800
+Message-ID: <20250114101026.3587702-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250113143719.7948-3-shaw.leon@gmail.com> <20250114044935.26418-1-kuniyu@amazon.com>
-In-Reply-To: <20250114044935.26418-1-kuniyu@amazon.com>
-From: Xiao Liang <shaw.leon@gmail.com>
-Date: Tue, 14 Jan 2025 17:02:40 +0800
-X-Gm-Features: AbW1kvbnYf6XKcEPFQ7StR4SBvDI6u3mnWVP_-_JSDczC5xWtD3eG1aBQEYey8A
-Message-ID: <CABAhCOQy-qw8pY+8XjHGPVz7jWZ7wqnadPXZrF-enAO0AEgXyQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v8 06/11] net: ipv6: Use link netns in newlink()
- of rtnl_link_ops
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: alex.aring@gmail.com, andrew+netdev@lunn.ch, 
-	b.a.t.m.a.n@lists.open-mesh.org, bpf@vger.kernel.org, bridge@lists.linux.dev, 
-	davem@davemloft.net, donald.hunter@gmail.com, dsahern@kernel.org, 
-	edumazet@google.com, herbert@gondor.apana.org.au, horms@kernel.org, 
-	kuba@kernel.org, linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-ppp@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-wpan@vger.kernel.org, miquel.raynal@bootlin.com, netdev@vger.kernel.org, 
-	osmocom-net-gprs@lists.osmocom.org, pabeni@redhat.com, shuah@kernel.org, 
-	stefan@datenfreihafen.org, steffen.klassert@secunet.com, 
-	wireguard@lists.zx2c4.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
-On Tue, Jan 14, 2025 at 12:49=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.c=
-om> wrote:
->
-> From: Xiao Liang <shaw.leon@gmail.com>
-> Date: Mon, 13 Jan 2025 22:37:14 +0800
-> > diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/b=
-ond_netlink.c
-> > index 2a6a424806aa..ac5e402c34bc 100644
-> > --- a/drivers/net/bonding/bond_netlink.c
-> > +++ b/drivers/net/bonding/bond_netlink.c
-> > @@ -564,10 +564,12 @@ static int bond_changelink(struct net_device *bon=
-d_dev, struct nlattr *tb[],
-> >       return 0;
-> >  }
-> >
-> > -static int bond_newlink(struct net *src_net, struct net_device *bond_d=
-ev,
-> > -                     struct nlattr *tb[], struct nlattr *data[],
-> > +static int bond_newlink(struct net_device *bond_dev,
-> > +                     struct rtnl_newlink_params *params,
-> >                       struct netlink_ext_ack *extack)
-> >  {
-> > +     struct nlattr **data =3D params->data;
-> > +     struct nlattr **tb =3D params->tb;
-> >       int err;
-> >
-> >       err =3D bond_changelink(bond_dev, tb, data, extack);
->
-> Note that IFLA_BOND_ACTIVE_SLAVE uses dev_net(dev) for
-> __dev_get_by_index().
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-That's true. Bond devices have no "link-netns", and a slave
-device must be in the same namespace of the main dev.
+Set max mpdu len to 11454 according to hardware capability.
+Without this patch, the max ampdu length would be 3895 and count not get
+expected performance.
 
-> [...]
-> > diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-> > index fed4fe2a4748..0c496aa1f706 100644
-> > --- a/drivers/net/macvlan.c
-> > +++ b/drivers/net/macvlan.c
-> > @@ -1565,11 +1565,12 @@ int macvlan_common_newlink(struct net *src_net,=
- struct net_device *dev,
-> >  }
-> >  EXPORT_SYMBOL_GPL(macvlan_common_newlink);
-> >
-> > -static int macvlan_newlink(struct net *src_net, struct net_device *dev=
-,
-> > -                        struct nlattr *tb[], struct nlattr *data[],
-> > +static int macvlan_newlink(struct net_device *dev,
-> > +                        struct rtnl_newlink_params *params,
-> >                          struct netlink_ext_ack *extack)
-> >  {
-> > -     return macvlan_common_newlink(src_net, dev, tb, data, extack);
-> > +     return macvlan_common_newlink(params->net, dev, params->tb,
-> > +                                   params->data, extack);
->
-> Pass params as is as you did for ipvlan_link_new().
->
-> Same for macvtap_newlink().
+Fixes: 348533eb968d ("wifi: mt76: mt7996: add EHT capability init")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-OK.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index c3f99abe2a09..0946755dcf60 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -1310,7 +1310,9 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
+ 
+ 	eht_cap_elem->mac_cap_info[0] =
+ 		IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
+-		IEEE80211_EHT_MAC_CAP0_OM_CONTROL;
++		IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
++		u8_encode_bits(IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454,
++			       IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_MASK);
+ 
+ 	eht_cap_elem->phy_cap_info[0] =
+ 		IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
+-- 
+2.39.2
 
-> [...]
-> > diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
-> > index 1e1b00756be7..1e9eadc77da2 100644
-> > --- a/drivers/net/netkit.c
-> > +++ b/drivers/net/netkit.c
-> > @@ -327,10 +327,13 @@ static int netkit_validate(struct nlattr *tb[], s=
-truct nlattr *data[],
-> >
-> >  static struct rtnl_link_ops netkit_link_ops;
-> >
-> > -static int netkit_new_link(struct net *peer_net, struct net_device *de=
-v,
-> > -                        struct nlattr *tb[], struct nlattr *data[],
-> > +static int netkit_new_link(struct net_device *dev,
-> > +                        struct rtnl_newlink_params *params,
-> >                          struct netlink_ext_ack *extack)
-> >  {
-> > +     struct nlattr **data =3D params->data;
-> > +     struct net *peer_net =3D params->net;
-> > +     struct nlattr **tb =3D params->tb;
->
-> nit: please keep the reverse xmas tree order.
->
->
-> >       struct nlattr *peer_tb[IFLA_MAX + 1], **tbp =3D tb, *attr;
->
-> you can define *tbp here and initialise it later.
->
->         struct nlattr *peer_tb[IFLA_MAX + 1], **tbp, *attr;
->
-> >       enum netkit_action policy_prim =3D NETKIT_PASS;
-> >       enum netkit_action policy_peer =3D NETKIT_PASS;
->
->
-> [...]
-> > @@ -1064,6 +1067,11 @@ static void wwan_create_default_link(struct wwan=
-_device *wwandev,
-> >       struct net_device *dev;
-> >       struct nlmsghdr *nlh;
-> >       struct sk_buff *msg;
-> > +     struct rtnl_newlink_params params =3D {
-> > +             .net =3D &init_net,
-> > +             .tb =3D tb,
-> > +             .data =3D data,
-> > +     };
->
-> nit: Reverse xmas tree order
->
->
-> [...]
-> > diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-> > index ec98349b9620..7ff5e96f6ba7 100644
-> > --- a/net/core/rtnetlink.c
-> > +++ b/net/core/rtnetlink.c
-> > @@ -3766,6 +3766,14 @@ static int rtnl_newlink_create(struct sk_buff *s=
-kb, struct ifinfomsg *ifm,
-> >       struct net_device *dev;
-> >       char ifname[IFNAMSIZ];
-> >       int err;
-> > +     struct rtnl_newlink_params params =3D {
->
-> nit: Reverse xmas tree order
->
->
-> > +             .net =3D net,
->
-> Use sock_net(skb->sk) directly here and remove net defined above,
-> which is no longer used in this function.
->
-> ---8<---
->         unsigned char name_assign_type =3D NET_NAME_USER;
->         struct rtnl_newlink_params params =3D {
->                 .net =3D sock_net(skb->sk),
->                 .src_net =3D net,
->                 .link_net =3D link_net,
->                 .peer_net =3D peer_net,
->                 .tb =3D tb,
->                 .data =3D data,
->         };
->         u32 portid =3D NETLINK_CB(skb).portid;
-> ---8<---
->
->
-> [...]
-> > @@ -1698,6 +1702,10 @@ struct net_device *gretap_fb_dev_create(struct n=
-et *net, const char *name,
-> >       LIST_HEAD(list_kill);
-> >       struct ip_tunnel *t;
-> >       int err;
-> > +     struct rtnl_newlink_params params =3D {
-> > +             .net =3D net,
-> > +             .tb =3D tb,
-> > +     };
-> >
-> >       memset(&tb, 0, sizeof(tb));
->
-> nit: Reverse xmas tree
-
-Will fix the style issues mentioned above in the next version.
-
-Thanks.
 
