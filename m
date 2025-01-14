@@ -1,154 +1,142 @@
-Return-Path: <linux-wireless+bounces-17484-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17485-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02699A105E1
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 12:49:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E562A1067C
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 13:21:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3556C18881E7
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 11:49:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE3773A5FB5
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 12:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E53F20F995;
-	Tue, 14 Jan 2025 11:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28036236ED6;
+	Tue, 14 Jan 2025 12:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=johnrowley.me header.i=@johnrowley.me header.b="2cx/QHZF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AdLWgM3m"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.vapourmail.eu (mail.vapourmail.eu [5.75.183.223])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFC1234CE0;
-	Tue, 14 Jan 2025 11:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.183.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F027A236EAE;
+	Tue, 14 Jan 2025 12:21:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736855373; cv=none; b=ix1s/CHQta2mmBfE1AbmPfp//gBi4JPcb6o2xyt92A+fARo4UIvytmL7EI/yiWLkmPmkBIjbDPaXYM2ab7GEMJkh+MD4QEpcfBTWvx/6fwA2DThr3KQr6ONUTq6lMwo6zWAfumjuhPemyL9EHg9f7Q2+i4uxxA9P4a3tIdSz0hA=
+	t=1736857263; cv=none; b=NQ0eEo8BWbbtoy0EUJsAsh4oU/Cltdu1/Lx94D5LYhAHh+8M0IVCWLVqRNJwpggk3SDp/TvzYli+b2B9uJuDOCKC8DTPhqE5+6/cKcLyRcGMvGj3o47PpDN1Ms9a5mechoxWO2Wm1MlFzAxqYfNuNBQW2eFgl1pwjyAgJqIo3ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736855373; c=relaxed/simple;
-	bh=RP3FCB+SXv/jNTr5x1Irlv76KRajHH9p0qejlpwzuws=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=QHVudNPygao+FkgTrX3kFSTATz2wrpAy9qNvu6mnhpJ+CmoiI1G20lNLa8wracV22OJRpWqVo+JSlpwQFs4NSaCiAsGaxLwXTDth4EeSM4FjCxsk8LDairTWDqkEYkeur1BvY1mUP0VD16VJg9OutkkoHnOmiV1iaWQ/MYQ8xns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=johnrowley.me; spf=pass smtp.mailfrom=johnrowley.me; dkim=pass (2048-bit key) header.d=johnrowley.me header.i=@johnrowley.me header.b=2cx/QHZF; arc=none smtp.client-ip=5.75.183.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=johnrowley.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=johnrowley.me
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 586A3C46BA;
-	Tue, 14 Jan 2025 11:37:52 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=johnrowley.me;
-	s=dkim; t=1736854673;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RP3FCB+SXv/jNTr5x1Irlv76KRajHH9p0qejlpwzuws=;
-	b=2cx/QHZFgsgb39hYjt0ENbjY8tedP36R4z4jDsqcn5z6vuOW8uvHwMiMIEJe7Kkv4yuqrO
-	/lzZsXNasvw6T9QZHkIT/h8/wiessRnvcIuDaI1PdtFTL14gUwgyVeNyDgFlwwuIZPOOV5
-	9+0Li599scTWddrow24oZ3tHjeENouTfhjDlBqtTAk1MflACMY1XV9ZfWRctjq2h6nDrOo
-	JjVEj5tkpE1GcCjlSO95TjZj27mZbPs4fHbbUCaXP4n/mx1Rby0h3LXjABkSoSZjsL6BbT
-	ei3zr1z81ptPY8+iDRd0uUPXW8CsGx8NDy8LclxM2jrM+q4YsNguNE0dMlJXVw==
-Date: Tue, 14 Jan 2025 11:37:49 +0000 (GMT)
-From: John Rowley <lkml@johnrowley.me>
-To: Kees Cook <kees@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org, stable@vger.kernel.org,
-	gustavoars@kernel.org, linux-hardening@vger.kernel.org
-Message-ID: <4e8eba1c-b0df-4930-8b88-319587f8ddd3@johnrowley.me>
-In-Reply-To: <202412301022.BCAC61BD6C@keescook>
-References: <1815535c709ba9d9.156c6a5c9cdf6e59.b249b6b6a5ee4634@localhost.localdomain> <20241230053806.GA129354@ax162> <202412301022.BCAC61BD6C@keescook>
-Subject: Re: UBSAN array-index-out-of-bounds: cfg80211_scan_6ghz
+	s=arc-20240116; t=1736857263; c=relaxed/simple;
+	bh=UpmEPjGuMoTeKTvRtIlhEPisQ0/ZMZs2Vy07BTTPpjI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=FudOKwNC0QxwH7WA8+lKYpV3quAZOb3P8n9NwaewdMgkPTcJWDhzudeQuCpZ/MfYPL+bJujGCQVuOrdkbm+VDwKFyk6wD2QO3h+hKQxi4wTMfxtrdoyTvGJ5BXKq/W7aaqQGLq2uRqrHXxdOFFA+nYnyaj24sDggBzPOtl+dvi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AdLWgM3m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F378C4CEDD;
+	Tue, 14 Jan 2025 12:21:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736857262;
+	bh=UpmEPjGuMoTeKTvRtIlhEPisQ0/ZMZs2Vy07BTTPpjI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=AdLWgM3mjaEHlxSJGJSnLtJpgA9ZwlZi4BtCg+KzpV+ECSEfVy37SusBRCxlaJyiK
+	 aKgBHvZfrPHPqcyMz8vEbPe6YfAWbrIzPNo7jUbNzhd5yCtgxWcloTe9siH1wChaJt
+	 0scAF5MD6dX5MQjeole8MLAMmRBAA/4W7HJxQ8kBrXFPBG8qBgE7lPYvuKTl7Qmfbm
+	 DJQR76ZvVmRWey2cm3sOSGTuH/Z4HP3SwJhkT5FRL3TVqFr0N4fBPm2nd0uudRuFr8
+	 RS9Qh7cHBheAY0yx15QTMcYeXFLF9wZc9EE0tX2qfMoefjL4RT+GjCZGL9NwQrdxpZ
+	 oDubOzPiUBHyA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Alexis =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Cc: Ajay Singh <ajay.kathat@microchip.com>,  Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>,  Marek Vasut <marex@denx.de>,  Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: wilc1000: unregister wiphy only after netdev
+ registration
+References: <20250114-wilc1000_modprobe-v1-1-ad19d46f0c07@bootlin.com>
+Date: Tue, 14 Jan 2025 14:20:58 +0200
+In-Reply-To: <20250114-wilc1000_modprobe-v1-1-ad19d46f0c07@bootlin.com>
+	("Alexis =?utf-8?Q?Lothor=C3=A9=22's?= message of "Tue, 14 Jan 2025
+ 11:45:34 +0100")
+Message-ID: <87frllr3h1.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Correlation-ID: <4e8eba1c-b0df-4930-8b88-319587f8ddd3@johnrowley.me>
-X-Last-TLS-Session-Version: TLSv1.3
 
-----------------------------------------
+Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com> writes:
 
-From: Kees Cook <kees@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-CC: John Rowley <lkml@johnrowley.me>; johannes@sipsolutions.net; linux-wire=
-less@vger.kernel.org; stable@vger.kernel.org; gustavoars@kernel.org; linux-=
-hardening@vger.kernel.org
-Date: 30 Dec 2024 18:35:34
-Subject: Re: UBSAN array-index-out-of-bounds: cfg80211_scan_6ghz
+> wiphy_unregister/wiphy_free has been recently decoupled from
+> wilc_netdev_cleanup to fix a faulty error path in sdio/spi probe
+> functions. However this change introduced a new failure when simply
+> loading then unloading the driver:
+>   $ modprobe wilc1000-sdio; modprobe -r wilc1000-sdio
+>   WARNING: CPU: 0 PID: 115 at net/wireless/core.c:1145 wiphy_unregister+0=
+x904/0xc40 [cfg80211]
+>   Modules linked in: wilc1000_sdio(-) wilc1000 cfg80211 bluetooth ecdh_ge=
+neric ecc
+>   CPU: 0 UID: 0 PID: 115 Comm: modprobe Not tainted 6.13.0-rc6+ #45
+>   Hardware name: Atmel SAMA5
+>   Call trace:
+>    unwind_backtrace from show_stack+0x18/0x1c
+>    show_stack from dump_stack_lvl+0x44/0x70
+>    dump_stack_lvl from __warn+0x118/0x27c
+>    __warn from warn_slowpath_fmt+0xcc/0x140
+>    warn_slowpath_fmt from wiphy_unregister+0x904/0xc40 [cfg80211]
+>    wiphy_unregister [cfg80211] from wilc_sdio_remove+0xb0/0x15c [wilc1000=
+_sdio]
+>    wilc_sdio_remove [wilc1000_sdio] from sdio_bus_remove+0x104/0x3f0
+>    sdio_bus_remove from device_release_driver_internal+0x424/0x5dc
+>    device_release_driver_internal from driver_detach+0x120/0x224
+>    driver_detach from bus_remove_driver+0x17c/0x314
+>    bus_remove_driver from sys_delete_module+0x310/0x46c
+>    sys_delete_module from ret_fast_syscall+0x0/0x1c
+>   Exception stack(0xd0acbfa8 to 0xd0acbff0)
+>   bfa0:                   0044b210 0044b210 0044b24c 00000800 00000000 00=
+000000
+>   bfc0: 0044b210 0044b210 00000000 00000081 00000000 0044b210 00000000 00=
+000000
+>   bfe0: 00448e24 b6af99c4 0043ea0d aea2e12c
+>   irq event stamp: 0
+>   hardirqs last  enabled at (0): [<00000000>] 0x0
+>   hardirqs last disabled at (0): [<c01588f0>] copy_process+0x1c4c/0x7bec
+>   softirqs last  enabled at (0): [<c0158944>] copy_process+0x1ca0/0x7bec
+>   softirqs last disabled at (0): [<00000000>] 0x0
+>
+> The warning is triggered by the fact that there is still a
+> wireless_device linked to the wiphy we are unregistering, due to
+> wiphy_unregister now being called after net device unregister (performed
+> in wilc_netdev_cleanup). Fix this warning by moving wiphy_unregister
+> after wilc_netdev_cleanup is nominal paths (ie: driver removal).
+> wilc_netdev_cleanup ordering is left untouched in error paths in probe
+> function because net device is not registered in those paths (so the
+> warning can not trigger), yet the wiphy can still be registered, and we
+> still some cleanup steps from wilc_netdev_cleanup.
+>
+> Signed-off-by: Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com>
+> ---
+> I clearly overlooked this simple scenario/misunderstood expected
+> unregistration order when fixing some spi probe error path, my bad (see
+> commit 89a7616e1715 ("ARM: dts: at91-sama5d27_wlsom1: update bluetooth
+> chip description") in wireless-next)
 
-> On Sun, Dec 29, 2024 at 10:38:06PM -0700, Nathan Chancellor wrote:
->> Hi John,
->>=20
->> On Sat, Dec 28, 2024 at 11:21:27AM +0000, John Rowley wrote:
->>> Hi, I'm experiencing UBSAN array-index-out-of-bounds errors while using
->>> my Framework 13" AMD laptop with its Mediatek MT7922 wifi adapter
->>> (mt7921e).
->>>=20
->>> It seems to happen only once on boot, and occurs with both kernel
->>> versions 6.12.7 and 6.13-rc4, both compiled from vanilla upstream kerne=
-l
->>> sources on Fedora 41 using the kernel.org LLVM toolchain (19.1.6).
->>>=20
->>> I can try some other kernel series if necessary, and also a bisect if I
->>> find a working version, but that may take me a while.
->>=20
->> This looks related to UBSAN_BOUNDS and the fact that version of clang
->> supports the __counted_by attribute. I do not have much time at the
->> moment to look at this but I have added Kees, Gustavo, and
->> linux-hardening for further analysis.
->>=20
->> Cheers,
->> Nathan
->>=20
->>> I wasn't sure if I should mark this as a regression, as I'm not sure
->>> which/if there is a working kernel version at this point.
->>>=20
->>> Thanks.
->>>=20
->>> ----
->>>=20
->>> [=C2=A0=C2=A0 17.754417] UBSAN: array-index-out-of-bounds in /data/linu=
-x/net/wireless/scan.c:766:2
->>> [=C2=A0=C2=A0 17.754423] index 0 is out of range for type 'struct ieee8=
-0211_channel *[] __counted_by(n_channels)' (aka 'struct ieee80211_channel *=
-[]')
->=20
-> This is this line:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 request->channels[n_channels] =
-=3D chan;
->=20
-> and later:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 request->n_channels++;
->=20
-> Patch should be:
->=20
-> diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-> index 1c6fd45aa809..ccdbeb604639 100644
-> --- a/net/wireless/scan.c
-> +++ b/net/wireless/scan.c
-> @@ -763,12 +763,11 @@ static=C2=A0 void cfg80211_scan_req_add_chan(struct=
- cfg80211_scan_request *request,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> =C2=A0=C2=A0=C2=A0 }
->=20
-> +=C2=A0=C2=A0 request->n_channels++;
-> =C2=A0=C2=A0=C2=A0 request->channels[n_channels] =3D chan;
-> =C2=A0=C2=A0=C2=A0 if (add_to_6ghz)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 request->scan_6ghz_params[requ=
-est->n_6ghz_params].channel_idx =3D
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 n_chan=
-nels;
-> -
-> -=C2=A0=C2=A0 request->n_channels++;
-> }
->=20
-> static bool cfg80211_find_ssid_match(struct cfg80211_colocated_ap *ap,
->=20
->=20
-> --=20
-> Kees Cook
-Apologies for not replying sooner but the above patch works perfectly. Than=
-ks!
+No worries, bugs are business as usual.
+
+> @Kalle: 89a7616e1715 (the faulty commit) is only in wireless-next for
+> now IIUC, so I did not provide any Fixes: tag to prevent any faulty SHA1
+> if those commits end up being picked in stable tree (however, the faulty
+> commit _has_ a Fixes tag). Please let me know if we should proceed
+> differently.
+
+Hmm, I don't really follow you here. I feel that always adding the Fixes
+tag is the safest option, that way it's clear for everyone what commit
+we are fixing. So if it's ok for you, I would like to add the Fixes tag
+but I can't find commit 89a7616e1715 anywhere.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
