@@ -1,142 +1,121 @@
-Return-Path: <linux-wireless+bounces-17485-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17486-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E562A1067C
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 13:21:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 368ADA106D8
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 13:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE3773A5FB5
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 12:21:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37512164501
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 12:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28036236ED6;
-	Tue, 14 Jan 2025 12:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316EB236A70;
+	Tue, 14 Jan 2025 12:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AdLWgM3m"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Nu97r6Ru"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F027A236EAE;
-	Tue, 14 Jan 2025 12:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C20236A6A
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Jan 2025 12:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736857263; cv=none; b=NQ0eEo8BWbbtoy0EUJsAsh4oU/Cltdu1/Lx94D5LYhAHh+8M0IVCWLVqRNJwpggk3SDp/TvzYli+b2B9uJuDOCKC8DTPhqE5+6/cKcLyRcGMvGj3o47PpDN1Ms9a5mechoxWO2Wm1MlFzAxqYfNuNBQW2eFgl1pwjyAgJqIo3ss=
+	t=1736858350; cv=none; b=o84IfUX//eiurETZcMQIeTvWD84A3zxlpf9myI4roR2qU4K07dPz0J4plxZL6lrN7WxKGTeUCzw58aQ8nPHStXP7xmjd7wDUL+9BvcENZQm8WmrMaMuuxemDWl0NS1vjHpy1BWUKXXyGQonEhB0BodCnTH/Yby29lHSBqBmo6jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736857263; c=relaxed/simple;
-	bh=UpmEPjGuMoTeKTvRtIlhEPisQ0/ZMZs2Vy07BTTPpjI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=FudOKwNC0QxwH7WA8+lKYpV3quAZOb3P8n9NwaewdMgkPTcJWDhzudeQuCpZ/MfYPL+bJujGCQVuOrdkbm+VDwKFyk6wD2QO3h+hKQxi4wTMfxtrdoyTvGJ5BXKq/W7aaqQGLq2uRqrHXxdOFFA+nYnyaj24sDggBzPOtl+dvi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AdLWgM3m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F378C4CEDD;
-	Tue, 14 Jan 2025 12:21:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736857262;
-	bh=UpmEPjGuMoTeKTvRtIlhEPisQ0/ZMZs2Vy07BTTPpjI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=AdLWgM3mjaEHlxSJGJSnLtJpgA9ZwlZi4BtCg+KzpV+ECSEfVy37SusBRCxlaJyiK
-	 aKgBHvZfrPHPqcyMz8vEbPe6YfAWbrIzPNo7jUbNzhd5yCtgxWcloTe9siH1wChaJt
-	 0scAF5MD6dX5MQjeole8MLAMmRBAA/4W7HJxQ8kBrXFPBG8qBgE7lPYvuKTl7Qmfbm
-	 DJQR76ZvVmRWey2cm3sOSGTuH/Z4HP3SwJhkT5FRL3TVqFr0N4fBPm2nd0uudRuFr8
-	 RS9Qh7cHBheAY0yx15QTMcYeXFLF9wZc9EE0tX2qfMoefjL4RT+GjCZGL9NwQrdxpZ
-	 oDubOzPiUBHyA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Alexis =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Cc: Ajay Singh <ajay.kathat@microchip.com>,  Claudiu Beznea
- <claudiu.beznea@tuxon.dev>,  Marek Vasut <marex@denx.de>,  Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>,  linux-wireless@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: wilc1000: unregister wiphy only after netdev
- registration
-References: <20250114-wilc1000_modprobe-v1-1-ad19d46f0c07@bootlin.com>
-Date: Tue, 14 Jan 2025 14:20:58 +0200
-In-Reply-To: <20250114-wilc1000_modprobe-v1-1-ad19d46f0c07@bootlin.com>
-	("Alexis =?utf-8?Q?Lothor=C3=A9=22's?= message of "Tue, 14 Jan 2025
- 11:45:34 +0100")
-Message-ID: <87frllr3h1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1736858350; c=relaxed/simple;
+	bh=V+5OHhJ7uTxccJUx34iCK8Y77/bDlVRXTkZAZxLtgpw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bZClhDxTmaVYeAp+vIw2IbUYPAPDN5bJ/j1TwsSTBkkFGXDFqf//S+DK2Llg1/O9nfagKVkhNutrgIpp7kvsfXfx92U8sH6Uhkmxi7BzvHmQ69zi3TXr0TLlqpwI+KFdMCzN2uGiB5oNojJoLlg5a3Fll2InbWw6DQxGqyden6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Nu97r6Ru; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50E99Grh017465;
+	Tue, 14 Jan 2025 12:39:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=dFXykKR2iCChhSox2k80yN
+	g20P864q10As0u6DjZjdM=; b=Nu97r6RucOt9Q7lJJO+Spw38tIVi2mBmC6MPyN
+	GmlBRkUTmiDlWrXcTQhBv/reX/8B744GnJu/AExCD+f2syeubSaCHpWNvuOyAsnU
+	WwgaHz672wScufZ4EHKbs0dqbkv5cP2wcAsGlySz8aXap4bRNqM6o+fpl6G1CLfD
+	Tx8/tPgXB1aVE3MnJVwNZ3GvCLW0JfuAltysnE4AGKdtFQVoe2+oBrIPgKGqukkq
+	Rmydm2hnnN5vnyD+LhqTROkr1W95V8S/caIJUQL3w71HnqSKfb5JT5Fw01BbgILn
+	87jt7WGLqV1JGPLuvNJR+MuzWhcLRNW/tJsBaVZkCx/7f2Cw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 445n1j0dtf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jan 2025 12:39:03 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50ECd3dE029440
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jan 2025 12:39:03 GMT
+Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 14 Jan 2025 04:39:01 -0800
+From: Roopni Devanathan <quic_rdevanat@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Roopni Devanathan
+	<quic_rdevanat@quicinc.com>
+Subject: [PATCH v4 0/5] wifi: ath12k: Support Sounding, Latency, Trigger, FSE stats
+Date: Tue, 14 Jan 2025 18:08:30 +0530
+Message-ID: <20250114123835.882926-1-quic_rdevanat@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: AzFF4Pk2tRtQtbRleVMhF4cOYfxyeg_H
+X-Proofpoint-GUID: AzFF4Pk2tRtQtbRleVMhF4cOYfxyeg_H
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ clxscore=1015 impostorscore=0 mlxscore=0 mlxlogscore=857 spamscore=0
+ lowpriorityscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501140105
 
-Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com> writes:
+Add support to request HTT stats type 22, 25, 26, 27 and 28 from
+firmware. These stats give sounding stats, latency stats, trigger stats
+for uplink OFDMA and MUMIMO and FSE stats, respectively.
 
-> wiphy_unregister/wiphy_free has been recently decoupled from
-> wilc_netdev_cleanup to fix a faulty error path in sdio/spi probe
-> functions. However this change introduced a new failure when simply
-> loading then unloading the driver:
->   $ modprobe wilc1000-sdio; modprobe -r wilc1000-sdio
->   WARNING: CPU: 0 PID: 115 at net/wireless/core.c:1145 wiphy_unregister+0=
-x904/0xc40 [cfg80211]
->   Modules linked in: wilc1000_sdio(-) wilc1000 cfg80211 bluetooth ecdh_ge=
-neric ecc
->   CPU: 0 UID: 0 PID: 115 Comm: modprobe Not tainted 6.13.0-rc6+ #45
->   Hardware name: Atmel SAMA5
->   Call trace:
->    unwind_backtrace from show_stack+0x18/0x1c
->    show_stack from dump_stack_lvl+0x44/0x70
->    dump_stack_lvl from __warn+0x118/0x27c
->    __warn from warn_slowpath_fmt+0xcc/0x140
->    warn_slowpath_fmt from wiphy_unregister+0x904/0xc40 [cfg80211]
->    wiphy_unregister [cfg80211] from wilc_sdio_remove+0xb0/0x15c [wilc1000=
-_sdio]
->    wilc_sdio_remove [wilc1000_sdio] from sdio_bus_remove+0x104/0x3f0
->    sdio_bus_remove from device_release_driver_internal+0x424/0x5dc
->    device_release_driver_internal from driver_detach+0x120/0x224
->    driver_detach from bus_remove_driver+0x17c/0x314
->    bus_remove_driver from sys_delete_module+0x310/0x46c
->    sys_delete_module from ret_fast_syscall+0x0/0x1c
->   Exception stack(0xd0acbfa8 to 0xd0acbff0)
->   bfa0:                   0044b210 0044b210 0044b24c 00000800 00000000 00=
-000000
->   bfc0: 0044b210 0044b210 00000000 00000081 00000000 0044b210 00000000 00=
-000000
->   bfe0: 00448e24 b6af99c4 0043ea0d aea2e12c
->   irq event stamp: 0
->   hardirqs last  enabled at (0): [<00000000>] 0x0
->   hardirqs last disabled at (0): [<c01588f0>] copy_process+0x1c4c/0x7bec
->   softirqs last  enabled at (0): [<c0158944>] copy_process+0x1ca0/0x7bec
->   softirqs last disabled at (0): [<00000000>] 0x0
->
-> The warning is triggered by the fact that there is still a
-> wireless_device linked to the wiphy we are unregistering, due to
-> wiphy_unregister now being called after net device unregister (performed
-> in wilc_netdev_cleanup). Fix this warning by moving wiphy_unregister
-> after wilc_netdev_cleanup is nominal paths (ie: driver removal).
-> wilc_netdev_cleanup ordering is left untouched in error paths in probe
-> function because net device is not registered in those paths (so the
-> warning can not trigger), yet the wiphy can still be registered, and we
-> still some cleanup steps from wilc_netdev_cleanup.
->
-> Signed-off-by: Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com>
-> ---
-> I clearly overlooked this simple scenario/misunderstood expected
-> unregistration order when fixing some spi probe error path, my bad (see
-> commit 89a7616e1715 ("ARM: dts: at91-sama5d27_wlsom1: update bluetooth
-> chip description") in wireless-next)
+v4:
+ - Squashed patches to avoid build warning.
+v3:
+ - Rebased on ToT.
+ - Removed patch dependencies.
+v2:
+ - Added line breaks where necessary, as pointed out by Kalle.
+ - Modified the use of pointer arithmetic print_array_to_buf_s8().
+ - Modified commit logs, as suggested by Kalle. 
 
-No worries, bugs are business as usual.
+Dinesh Karthikeyan (4):
+  wifi: ath12k: Support Sounding Stats
+  wifi: ath12k: Support Latency Stats
+  wifi: ath12k: Support Uplink OFDMA Trigger Stats
+  wifi: ath12k: Support Received FSE Stats
 
-> @Kalle: 89a7616e1715 (the faulty commit) is only in wireless-next for
-> now IIUC, so I did not provide any Fixes: tag to prevent any faulty SHA1
-> if those commits end up being picked in stable tree (however, the faulty
-> commit _has_ a Fixes tag). Please let me know if we should proceed
-> differently.
+Roopni Devanathan (1):
+  wifi: ath12k: Support Uplink MUMIMO Trigger Stats
 
-Hmm, I don't really follow you here. I feel that always adding the Fixes
-tag is the safest option, that way it's clear for everyone what commit
-we are fixing. So if it's ok for you, I would like to add the Fixes tag
-but I can't find commit 89a7616e1715 anywhere.
+ .../wireless/ath/ath12k/debugfs_htt_stats.c   | 736 ++++++++++++++++++
+ .../wireless/ath/ath12k/debugfs_htt_stats.h   | 269 ++++++-
+ 2 files changed, 970 insertions(+), 35 deletions(-)
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+base-commit: 0c5fcd9069dd5f984e39820629acbfbe0f1b4256
+-- 
+2.25.1
+
 
