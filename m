@@ -1,278 +1,261 @@
-Return-Path: <linux-wireless+bounces-17471-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17472-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD05CA101E7
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 09:20:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D42A1029B
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 10:03:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA01B169E49
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 08:20:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6438C3A3378
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 09:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067482343B6;
-	Tue, 14 Jan 2025 08:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6879028EC93;
+	Tue, 14 Jan 2025 09:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PHmupNuS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38103233547;
-	Tue, 14 Jan 2025 08:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736842851; cv=fail; b=q7+jUn2MVB/49G3pT3oSe2nOk4FjxsRKjnopIjC2w3GY6+ICgSfRroBZ3sTDw8geOwxptGjByexRLbiWimXTtZjWcXI8ReOaOnfjIdyCRyzfCr5pWdiYvFKIcGXtCnAXx6LLvfx1BADaCvkoaymCBu0oLKVyym7wEcyu72y0Daw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736842851; c=relaxed/simple;
-	bh=lyKTVTGO3YTLhsApEaGE6Z7BzSNKDysdBUsoH3iwdQI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PITIkKH34sbFp3sdDHSyA4JDmNbLvquWpfYCV7FIEh0w5uiRMEY48UZW7YTMAq+S66mX0ad4GF8lgLlGXzoHtTrP/xkkMgDiY1CWEYgCDg0cC/Y5U44jeImANiFs6hCcCZ3B4IAhznBe+gkT+0R3CTv8t2T12n8lkqz03QaCQwg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50E8F1h0029883;
-	Tue, 14 Jan 2025 08:20:33 GMT
-Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam04lp2170.outbound.protection.outlook.com [104.47.73.170])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 443fm8arpe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 08:20:33 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HnXZgBTzelqWR1FjgJS+TRJeLTsBijRV0snvpXOAdFj+BTAmjLdVQY0cbLT0DW7SdTCBwUOTji+HdXMXbcmOVKvJAa6FiIF5RnxlC5LxB9prNexRI3ir9nxJGNtEZdwKMeISx02QOS6bsqkPaIkLI8gV7DQizRA9bux2Nz0Db1ielKZ771UNIUOM+Cz/V/Rcbiy5hgexYerBhvOfWwAjoRRg5oO9wG5p9eOTkLg8L7nEYZ5WJrkD5vyk0NIieqp41LFRFyr3SWky5EaptYxpO+C5TPrlfAYqztNzIqLMSnDE4tjm/Qb0JvVAKM03BM4ra/kync2mlFcEigl7ppEeFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JEss8ZqHmrV0HohtG2H8UkvwLHE7lPP/cpHC6M865RA=;
- b=Xo9IZ1+V7d1XhSG3VCJlFpVqk4yhP1WWbAqXfw9qcDRxhdMtPy1sxCYLkYNDGFhwQxBsm9DdVg7KzJWUsbVPcvmTQuXbhDI2mZRWzlfV41Wpvia9GlLPArBtEV1k72t7zRrUirX/Jq5riNdS1kYunQs7AbXjJl3iyqUrcASM7wbxsk3auQlRaNiKAmaXu+cRxwZaA9I2mTeHzCZ46PzMYyw4PIBRxc9Zs0Xjf+oBYx/vn5ECW70HorQziCo4125018xC8JCL5kTFC0zMud3v7QZn48cXia38b7ZmrAvAQjyzkb/KUL9OLLN0fm+SXl09FOvTbL5ZK+kZODaZ8Mqbbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CO6PR11MB5617.namprd11.prod.outlook.com (2603:10b6:5:35c::14)
- by PH7PR11MB5819.namprd11.prod.outlook.com (2603:10b6:510:13b::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.17; Tue, 14 Jan
- 2025 08:18:54 +0000
-Received: from CO6PR11MB5617.namprd11.prod.outlook.com
- ([fe80::9629:5ec0:f779:4bd]) by CO6PR11MB5617.namprd11.prod.outlook.com
- ([fe80::9629:5ec0:f779:4bd%5]) with mapi id 15.20.8335.017; Tue, 14 Jan 2025
- 08:18:54 +0000
-Date: Tue, 14 Jan 2025 09:18:47 +0100
-From: Marcel Hamer <marcel.hamer@windriver.com>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] brcmfmac: NULL pointer dereference on tx statistic
- update
-Message-ID: <Z4Yd515dhZApbxPz@windriver.com>
-References: <20250110134502.824722-1-marcel.hamer@windriver.com>
- <4020e574-be5d-43e4-9c04-1e5a708e70c6@broadcom.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4020e574-be5d-43e4-9c04-1e5a708e70c6@broadcom.com>
-X-ClientProxiedBy: GV3P280CA0110.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:8::17) To CO6PR11MB5617.namprd11.prod.outlook.com
- (2603:10b6:5:35c::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7095D1C3BFC;
+	Tue, 14 Jan 2025 09:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736845401; cv=none; b=NWQPyJd7/wW2mg7VKIXWfGGzzpzJZWu7yTe6J9mfJ+xGArBt3RTVdum4rix7XKqE9qPyXoqJPGVU4H8qrQ7b1mZMBOU3xwTZgX3AeF5YWzH58CKFk2avje8qlXEK8/nnkXTybsriq+j/d2oQ9iJMsguYtABa1T3vyapQnqF/+80=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736845401; c=relaxed/simple;
+	bh=QNvuh5EDJiuoHdaCpoRHoR7O5EvfHOckuuZ644v9d00=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i5PGQvG4AyzcthDOwLJZnzzuNX3QB/MpzTtvxsUJA6itDrLlypMjPloxfVyRoR+Lc9KID0gAwmhVqPc5ExHygGkNwmnIXcmeVtErjyyMQ4Qc0xnEnV4dKYzxAND395Rx6eLTwX4cwLPSkaxltotcEJW9soal3tsC3FlpgJe4loo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PHmupNuS; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-436345cc17bso37198405e9.0;
+        Tue, 14 Jan 2025 01:03:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736845398; x=1737450198; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RJdpc5af8GraPbTvgj2FYJk8F44uMY7sTK/kVSc+LHs=;
+        b=PHmupNuSqVZ1c4/9v08gmJxdnkQvZjVlsgbq7lqgakh3UY6n2MUmIPbh7XyCDtOYi8
+         h6sP9bD7t1gKblz/t/SDukdku4HCUnggUayfr9KuWegfBu/n2S169RZ3lOToLNqjrtEI
+         deVyH7+RxKyoEpeBYPhwOYl42E0oYPM8lmSdCidaZJQy/cswl50hF/yHR3bHgWfNwBNp
+         bkMQmOlMV50gc6eVTvPUSyAWDIWxDJjz5J6sYZLq512TktDYZu9X+nKcZVILkax40d1m
+         zh6Pr8Wgag24BZyv5ZyUFUvHdaVh6sDLpLC2b4GH+UvX3Q+YqKCTF3LQ/Kd/RR6f+0TH
+         fwTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736845398; x=1737450198;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RJdpc5af8GraPbTvgj2FYJk8F44uMY7sTK/kVSc+LHs=;
+        b=SR0b32nf6bZsp/Id9rQoUgTQlhiY23Nwz8yTybRsvjaDVWQ8GK2a6TU9/tB1S++qXy
+         4A5OlPxy2yLuYEMaqgp7bca9Bo7PlyalMeF3YZy0x8q+QiFcuPv/xPXBruol7M3Muy65
+         UXl/FaFOHJvUBRa6QK0AP71vPTeiBb3WJdoUMPSkzDyuOTRtbPAUOP4PwUo79NycKEsB
+         Tl/fldDzs4cZT5aXGX/QdRif2FXEnF5mSxXGHTLwOxU4XJUxmxvzUPbOkuu9q2ykl2dI
+         uMwLroPkyy1w7AdlkCX+vDAro+1de1DAMYQbOeda4rbbC0IbnKT0Gslq4aLwlRUWFeWc
+         3c5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVUJ12DHJyneuoUvKCUd+A1iXh2/D62xggUWicCF6YeikE2Hm9DZRd94ZfvhzXtiREdeyE=@vger.kernel.org, AJvYcCWDMweVxKdTfL345NNnW78cGwY/72iAVTK/Eyn7zYGX+ehNKfbMqxjJvCM5EGk2kdAq+TDKtBJzYcB0dw==@vger.kernel.org, AJvYcCWMqiEvqS7S+p19JoyC4Mxy972Vd2LiczbS6FG4FTZeam+On2DzenjrFb1z6Gyi+OJ3ViSbNkwk@vger.kernel.org, AJvYcCWNBkAKp9/QN6NVsD/h0Q02/ZsLvO9OyvLQGYLLWF3GW8ZGFCOsv9wTTFgirS//Ytn+3q31xGLLEk4dDtznM00=@vger.kernel.org, AJvYcCXJ8t/KNOq1MB57Uai6xRBh0hL7otQfEeu3UgiDI2n+7xV4iIXP/aKMdU2khKhdm0mDpdGLa9VC22yat8ztC7J2@vger.kernel.org, AJvYcCXLuHVvTS/agrf59atzsIcg/BGiLaJqHr4k9hIxDR1Jz14HnUdo0rEsAgRYS7MwsNsIQBizLqwSRcE6AtGA@vger.kernel.org, AJvYcCXMv1EaYpD8i7Oku1H4GtQCkc9Y4s7kIeg6yWCiqod77UbsMAFKnnY7VwH4z6sAOCTtWKeALybkVXoJFQ==@vger.kernel.org, AJvYcCXa7WaEwP8vuyDTOrFnXjGE2Prpg+vceKX14fsUJE+h3i9yTDPrTER7S8/todguSfwelgJG/LVSDfN0@vger.kernel.org, AJvYcCXuuZ8G7OjtYnRKMa+CYDHhrdEDpPQt87Raq5qdhR3zMG9ZD8O5YhLEjhdDgoZQZw7WjVtxx/FaM1YR@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1zBSZt600gFH9asb9ZlFZ19wtcTE+285dLRqCkxyci/RBJbb4
+	GaILyXT8XXKsd13/iHHWhueRSsnsc/xnOj2Qj8pEYiCtq2eVHqNrs2AtKp6pnU4lyOIBC3GRfnp
+	qAXrPEqlHLV+/Dy4FHaj7sHxK4R1+WDqnM1w=
+X-Gm-Gg: ASbGnctdlxk6OoyjEmfE4+sJM0l36A8DZ36/8hJzxFdVAmpO+BlY/Ln+dx8Iszu0v9m
+	byTbQYtz4gmww3wyo+7fUsllfBRiDgMs78u6U
+X-Google-Smtp-Source: AGHT+IE8ZeqfL/AgiOHI7JzByaRH/gCmdKgPWO5Hj9zc39/ATmbh/1nt9GKO3Q2GNRNSP3Oe53/t8se7t847Ok8yve4=
+X-Received: by 2002:a05:600c:1ca9:b0:435:136:75f6 with SMTP id
+ 5b1f17b1804b1-436e2551d7bmr233515785e9.0.1736845397493; Tue, 14 Jan 2025
+ 01:03:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO6PR11MB5617:EE_|PH7PR11MB5819:EE_
-X-MS-Office365-Filtering-Correlation-Id: a0cb6619-80b3-4a1b-d3a5-08dd3474154d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|10070799003|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YiEi3e6ac5+OH9qudOX2gcKRTjYjY/fy2PN6ZaQgg2fbPbAqYjaxaDP5OuC5?=
- =?us-ascii?Q?YA0TweohX/1SaQCh6B3fjkY28LHSBJcF/6gF7m0QZogWx4mJ+YnZYv0OVWsN?=
- =?us-ascii?Q?67blN9Mabgzb1tW69cZ2emJTLYulkgM4Y/F26PfpgG2EV02xqRqbIIevCJYt?=
- =?us-ascii?Q?5F0ciIFgFSNerfQZe+MYaXudd5ahtNggidiQ0Nd0AVlPAIoNv+T9vRqTrTQh?=
- =?us-ascii?Q?SQJEWl94UGCVB7oEpy9MCHsmOo7XLsG4LdL5o3HLNIiNeZ66Ah8j+sO9Hz/0?=
- =?us-ascii?Q?YIbH3CjRMv8eY6UlHC25S1AhKLEjUhqJC1FRfpTCIdYlv4UFWt3OnHtGi2or?=
- =?us-ascii?Q?+ezgvH5tUBvuOQ4exmNEOiY6ZNqu4EeXh9kekKq7uePxjD7bAue1376U/1r5?=
- =?us-ascii?Q?jZwS9Ia/XqGeLpvgA55hg7mowhhdGmQcbE96UUzt7WcvOpwfY5flvK996urk?=
- =?us-ascii?Q?gQjuDWLJiEwT/8YUpWm9x9B6IcPuiYuW28EOgC5eN3YA5meKt1juhmHzCgTI?=
- =?us-ascii?Q?99/VwSVQV7l5vinA2HT1BHOe9HVImOS1KETyraHDRJEkYQsCVJJVcKli6DaG?=
- =?us-ascii?Q?0Psr+9QCNTYcW0wuiRVvpSCkS9miDJwEXb1RWf2FchdygQeyfdlr5ELRQOxE?=
- =?us-ascii?Q?66KGhdDZm/TouYGDZb0pyRkS3TydmMp8ZzKQB+vic2ZyKMVj0or08G8RH6jh?=
- =?us-ascii?Q?c5vbgqXy9fqTLkO+wpPJRrxynUsTpUwh4Xb476URBe6FlCxpvO3xnDWjXIru?=
- =?us-ascii?Q?GpK5p0X29d07ZfpuY5osAkTeO3gMc0tOPaYEGdITyBmxUVFn85pkgGhoJ3kP?=
- =?us-ascii?Q?BT1+hT8/w4R/MJc4URG9woMnerGMC9mkuZ4kk9iU+CRQFR+s2nPf0UWfKP9S?=
- =?us-ascii?Q?ikU+F44+kIAZalY8R64tyhLaA2iPnT5NgrdFYWnI0Utc+PYyUEykR1TpX7Fr?=
- =?us-ascii?Q?nzaydpFYahL0RoiY0guC2ipXcWEgufLq8id+W9C48hb0/jrHMaCT3wYxKzOV?=
- =?us-ascii?Q?1ZJ2kw6Vw0qSHUfRMqGsKWgVqDpfwh2EaGO7IZ3KTh1NgZM5XQmuRKT3jeSl?=
- =?us-ascii?Q?lpEG8PL2SdczBt3J7SCTC0YGOqZs9JFoS9tW5xfBRHwNV43974UvMzSEVrws?=
- =?us-ascii?Q?lo3j7Y/buCyq+srP0iqxqbaqPttH10A/EysiM/R+holw9NtAtEAvQL7tKtW6?=
- =?us-ascii?Q?kLhidHu3FY+LmMCJ5gI3SGfdijxBJPwK8FjpkowUdHP40lQ7n4cohcVp7qcX?=
- =?us-ascii?Q?4rm4+S7+jAFdtJBiGbIEkyVkMDtYP0+X1pxNOPYUhBrJ+jyQsR5UsUkGF2Tb?=
- =?us-ascii?Q?jGlpVHKywrSdGdfq5iPgezjJIB8TLC1aJ3OvOL9IvazgmxAkfKWbvqnIcCXR?=
- =?us-ascii?Q?CDGzmPAGDMnWdItdViIsnwjY/USz?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5617.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ckQjJ4SKpIblApAI+ddYdPbcXTKo/CWGKCsQvaYGOHVJwuP0l0UlumzZe3Q4?=
- =?us-ascii?Q?AytbsigvjP5cGsghr9hP5LZpCWsGiz1PuHwn4pN/+xAzZO8mWnyXeLfXPe1V?=
- =?us-ascii?Q?f/MG9t+hwo2q92iIF6kESsfogIQ4JKlfiZtXsCKvO16ChNkdHyegq456MpO+?=
- =?us-ascii?Q?ricFFFIyExt+xgGx38adP1gbqptZobR3+RlFnIaTO1FMkaop5m0oscRRi43G?=
- =?us-ascii?Q?GAtkLBMknmxhHqYxp8y9t/E7gDSyrCsR8xBDDEyHgTIRh1H1OmJWSk6c7OUT?=
- =?us-ascii?Q?VLYYu0//fdm1roUwGC/Q83lLR2mS1oN71oD40ABFnsZcjmgPufBsR2jmz81b?=
- =?us-ascii?Q?fiwRUwso2RMmAeTrN80Oeb1OIribKXPNY3MjWyaYefEikfT4FkwboXSM090t?=
- =?us-ascii?Q?eUuNojdy5jeBfIJ62WSQ1Ci7N7gLufoBfuBdCHAoyflYxbstZsLo9ueyi6m3?=
- =?us-ascii?Q?GBvwVN9rRpSWenfcRD00RPuTdurL2g/fgUP4x2NGGXAq9s4rMe5sboEebMHY?=
- =?us-ascii?Q?gl+U2b+OnhD9TXMfV4/Lk/e8we9aUArX6tBZgO4MNvPcJAdh8URgWx49uMLo?=
- =?us-ascii?Q?zSqK5AP1YbKhwpXbsRibpoauVaDGxUvQexTB810LjyOlnDL6m+2pr/U/8sPT?=
- =?us-ascii?Q?bAnvwzfzoWoTeZpanXdHp66LxJpzRKEwL1TjKUvAL5Sr73AilFE3OmiXf2Zj?=
- =?us-ascii?Q?ZRjC0QfGHlg9TzSG5Y3EDkZueZY2+lh4vDjdOBqDaI0sh+Yn3NTvQnGl3321?=
- =?us-ascii?Q?MI5gzAJ5SLURy3hdNOY5/ZKQFFGtzWLR6NSPDk1JP4H7o13gWTI/ev1EM/bu?=
- =?us-ascii?Q?tssdxzoZm+r+yHh8FO/dTTFRALqfPJd39GbisnVsleileePQNzvVODyL39wR?=
- =?us-ascii?Q?gjPyKPOrgPYwoI+w0EarC6amWVFKt68jcbYLHwlQMx5BTW1FgaWp/N4sPjoH?=
- =?us-ascii?Q?p7kxH6CT+JRfEaEdom8cRqndNvduN/EIK0sPxx56pm4hFnx+/3eYhANlhw1U?=
- =?us-ascii?Q?KDbWSyEq8MSEgHm7kaTvv8+X0NqiwpYZllxpl9Bj7/l3qpCAeEmSjEVDt58H?=
- =?us-ascii?Q?9xr+4VuwYTn02JUhLXa1ta/YV6+IY81DE8fazr/wsMukBOXJz0U77HoDLkVT?=
- =?us-ascii?Q?J2RMAqbstMuUUAFqGC8Y1LvFK1sHLsvoRHF23rPQVgEz+lb4/N6EQgnbNgzu?=
- =?us-ascii?Q?PwaCou6OZ6mVcmbxn6VcJ0Ssdui4eiHJNU3+VUZ76sv7RfVaBQmqwfr3laIg?=
- =?us-ascii?Q?JwOxEQ45gtHlK8ZPTZZCrPliqqFtHgV315PUAIuy9zSXCV+yE1kx/8VkYtDU?=
- =?us-ascii?Q?SP18nUJ0GLFaWImXeqbGJMjiZiwTCBypeZh+EoYyI4rmExLhTbREx36dmuYt?=
- =?us-ascii?Q?ZOetSzi8dbSx1ekR1wQzS1A5nywGcSeSV4zgi4V9tRpgTD8w1nORu9I5ih14?=
- =?us-ascii?Q?9oH4bn8S9SaQhFzIFmP3EBY1qTqsmzLLax/GzrB4eCW4sVe2NzMh9AQPiVC8?=
- =?us-ascii?Q?JeUHjUhBzlmvgyWTKqchAhLFb+aOuPjKebFjhzewGDopiFpvF803+qOHQgs0?=
- =?us-ascii?Q?50XMoS4eGdSqK1izNivgq7zyOzk/M0kqytlscklLjwKM/JpSMjq+7XccVoV0?=
- =?us-ascii?Q?BiK34SiVQ945/z+VGTtkt1ygD5cxZOjwEyZAGfz9rdfQPh1+Eb3nxOI/ghr1?=
- =?us-ascii?Q?69ZiOA=3D=3D?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0cb6619-80b3-4a1b-d3a5-08dd3474154d
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5617.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 08:18:54.2201
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1BaAAOcZ71jFBybnLEfOlv+5zv+SS//12zmOgJC5IUL9SOEqfgs/Bysf81oJbUIPpc+qz1JQ/k8gdEKkk+6sS6dItlRUhzM0F8pFs7bOExg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5819
-X-Authority-Analysis: v=2.4 cv=Mtmo63ae c=1 sm=1 tr=0 ts=67861e51 cx=c_pps a=uuboLt+qr3MZZMeqEnD08g==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=VdSt8ZQiCzkA:10 a=bRTqI5nwn0kA:10
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=t7CeM3EgAAAA:8 a=nyReEFDZQmCFEhiLzyQA:9 a=CjuIK1q_8ugA:10 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: 2OomTKThjdNT0NV3-CMyKBzYXsZYiUom
-X-Proofpoint-GUID: 2OomTKThjdNT0NV3-CMyKBzYXsZYiUom
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-14_01,2025-01-13_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
- phishscore=0 clxscore=1015 mlxlogscore=999 impostorscore=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 malwarescore=0
- bulkscore=0 spamscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
- scancount=1 engine=8.21.0-2411120000 definitions=main-2501140068
+References: <20250113143719.7948-3-shaw.leon@gmail.com> <20250114044935.26418-1-kuniyu@amazon.com>
+In-Reply-To: <20250114044935.26418-1-kuniyu@amazon.com>
+From: Xiao Liang <shaw.leon@gmail.com>
+Date: Tue, 14 Jan 2025 17:02:40 +0800
+X-Gm-Features: AbW1kvbnYf6XKcEPFQ7StR4SBvDI6u3mnWVP_-_JSDczC5xWtD3eG1aBQEYey8A
+Message-ID: <CABAhCOQy-qw8pY+8XjHGPVz7jWZ7wqnadPXZrF-enAO0AEgXyQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v8 06/11] net: ipv6: Use link netns in newlink()
+ of rtnl_link_ops
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: alex.aring@gmail.com, andrew+netdev@lunn.ch, 
+	b.a.t.m.a.n@lists.open-mesh.org, bpf@vger.kernel.org, bridge@lists.linux.dev, 
+	davem@davemloft.net, donald.hunter@gmail.com, dsahern@kernel.org, 
+	edumazet@google.com, herbert@gondor.apana.org.au, horms@kernel.org, 
+	kuba@kernel.org, linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-ppp@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-wpan@vger.kernel.org, miquel.raynal@bootlin.com, netdev@vger.kernel.org, 
+	osmocom-net-gprs@lists.osmocom.org, pabeni@redhat.com, shuah@kernel.org, 
+	stefan@datenfreihafen.org, steffen.klassert@secunet.com, 
+	wireguard@lists.zx2c4.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
-
-On Mon, Jan 13, 2025 at 08:28:33PM +0100, Arend van Spriel wrote:
-> CAUTION: This email comes from a non Wind River email account!
-> Do not click links or open attachments unless you recognize the sender and know the content is safe.
-> 
-> On 1/10/2025 2:45 PM, Marcel Hamer wrote:
-> > On removal of the device or unloading of the kernel module a potential
-> > NULL pointer dereference occurs.
-> > 
-> > The following sequence deletes the interface:
-> > 
-> >    brcmf_detach()
-> >      brcmf_remove_interface()
-> >        brcmf_del_if()
-> > 
-> > Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
-> > BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
-> > 
-> > After brcmf_remove_interface() call the brcmf_proto_detach() function is
-> > called providing the following sequence:
-> > 
-> >    brcmf_detach()
-> >      brcmf_proto_detach()
-> >        brcmf_proto_msgbuf_detach()
-> >          brcmf_flowring_detach()
-> >            brcmf_msgbuf_delete_flowring()
-> >              brcmf_msgbuf_remove_flowring()
-> >                brcmf_flowring_delete()
-> >                  brcmf_get_ifp()
-> >                  brcmf_txfinalize()
-> > 
-> > Since brcmf_get_ip() can and actually will return NULL in this case the
-> > call to brcmf_txfinalize() will result in a NULL pointer dereference
-> > inside brcmf_txfinalize() when trying to update
-> > ifp->ndev->stats.tx_errors.
-> > 
-> > This will only happen if a flowring still has an skb.
-> > 
-> > Although the NULL pointer dereference has only been seen when trying to update
-> > the tx statistic, all other uses of the ifp pointer have been guarded as well.
-> 
-> Here my suggestion to make it a bit more simple...
-> 
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
-> > Link: https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
-> > ---
-> > v1 -> v2: guard all uses of the ifp pointer inside brcmf_txfinalize()
-> > ---
-> >   drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-> > index c3a57e30c855..791757a3ec13 100644
-> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-> > @@ -543,13 +543,13 @@ void brcmf_txfinalize(struct brcmf_if *ifp, struct sk_buff *txp, bool success)
-> 
-> Instead of checking ifp below you can simply do following here and be
-> done with it:
-> 
->        if (!ifp) {
->                brcmu_pkt_buf_free_skb(txp);
->                return;
->        }
+On Tue, Jan 14, 2025 at 12:49=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.c=
+om> wrote:
 >
+> From: Xiao Liang <shaw.leon@gmail.com>
+> Date: Mon, 13 Jan 2025 22:37:14 +0800
+> > diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/b=
+ond_netlink.c
+> > index 2a6a424806aa..ac5e402c34bc 100644
+> > --- a/drivers/net/bonding/bond_netlink.c
+> > +++ b/drivers/net/bonding/bond_netlink.c
+> > @@ -564,10 +564,12 @@ static int bond_changelink(struct net_device *bon=
+d_dev, struct nlattr *tb[],
+> >       return 0;
+> >  }
+> >
+> > -static int bond_newlink(struct net *src_net, struct net_device *bond_d=
+ev,
+> > -                     struct nlattr *tb[], struct nlattr *data[],
+> > +static int bond_newlink(struct net_device *bond_dev,
+> > +                     struct rtnl_newlink_params *params,
+> >                       struct netlink_ext_ack *extack)
+> >  {
+> > +     struct nlattr **data =3D params->data;
+> > +     struct nlattr **tb =3D params->tb;
+> >       int err;
+> >
+> >       err =3D bond_changelink(bond_dev, tb, data, extack);
+>
+> Note that IFLA_BOND_ACTIVE_SLAVE uses dev_net(dev) for
+> __dev_get_by_index().
 
-Thank you for the suggestion and review. I considered that when doing my changes
-and then thought it would be more efficient to only check the validity of ifp
-when ifp is actually used. To skip checking it on each call to this function,
-since it seems unlikely ifp will be used on each and every call.
+That's true. Bond devices have no "link-netns", and a slave
+device must be in the same namespace of the main dev.
 
-Before I create a patch with your suggested changes, I just wanted to check if
-you think it would be better to just wrap the two existing if statements in a
-new if statement in that case, something like this:
+> [...]
+> > diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+> > index fed4fe2a4748..0c496aa1f706 100644
+> > --- a/drivers/net/macvlan.c
+> > +++ b/drivers/net/macvlan.c
+> > @@ -1565,11 +1565,12 @@ int macvlan_common_newlink(struct net *src_net,=
+ struct net_device *dev,
+> >  }
+> >  EXPORT_SYMBOL_GPL(macvlan_common_newlink);
+> >
+> > -static int macvlan_newlink(struct net *src_net, struct net_device *dev=
+,
+> > -                        struct nlattr *tb[], struct nlattr *data[],
+> > +static int macvlan_newlink(struct net_device *dev,
+> > +                        struct rtnl_newlink_params *params,
+> >                          struct netlink_ext_ack *extack)
+> >  {
+> > -     return macvlan_common_newlink(src_net, dev, tb, data, extack);
+> > +     return macvlan_common_newlink(params->net, dev, params->tb,
+> > +                                   params->data, extack);
+>
+> Pass params as is as you did for ipvlan_link_new().
+>
+> Same for macvtap_newlink().
 
-if (ifp) {
-    ...
-    if (type == ETH_P_PAE) {
-    ...
-    }
+OK.
 
-    if (!success)
-        ifp->ndev->stats.tx_errors++;
-}
+> [...]
+> > diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
+> > index 1e1b00756be7..1e9eadc77da2 100644
+> > --- a/drivers/net/netkit.c
+> > +++ b/drivers/net/netkit.c
+> > @@ -327,10 +327,13 @@ static int netkit_validate(struct nlattr *tb[], s=
+truct nlattr *data[],
+> >
+> >  static struct rtnl_link_ops netkit_link_ops;
+> >
+> > -static int netkit_new_link(struct net *peer_net, struct net_device *de=
+v,
+> > -                        struct nlattr *tb[], struct nlattr *data[],
+> > +static int netkit_new_link(struct net_device *dev,
+> > +                        struct rtnl_newlink_params *params,
+> >                          struct netlink_ext_ack *extack)
+> >  {
+> > +     struct nlattr **data =3D params->data;
+> > +     struct net *peer_net =3D params->net;
+> > +     struct nlattr **tb =3D params->tb;
+>
+> nit: please keep the reverse xmas tree order.
+>
+>
+> >       struct nlattr *peer_tb[IFLA_MAX + 1], **tbp =3D tb, *attr;
+>
+> you can define *tbp here and initialise it later.
+>
+>         struct nlattr *peer_tb[IFLA_MAX + 1], **tbp, *attr;
+>
+> >       enum netkit_action policy_prim =3D NETKIT_PASS;
+> >       enum netkit_action policy_peer =3D NETKIT_PASS;
+>
+>
+> [...]
+> > @@ -1064,6 +1067,11 @@ static void wwan_create_default_link(struct wwan=
+_device *wwandev,
+> >       struct net_device *dev;
+> >       struct nlmsghdr *nlh;
+> >       struct sk_buff *msg;
+> > +     struct rtnl_newlink_params params =3D {
+> > +             .net =3D &init_net,
+> > +             .tb =3D tb,
+> > +             .data =3D data,
+> > +     };
+>
+> nit: Reverse xmas tree order
+>
+>
+> [...]
+> > diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+> > index ec98349b9620..7ff5e96f6ba7 100644
+> > --- a/net/core/rtnetlink.c
+> > +++ b/net/core/rtnetlink.c
+> > @@ -3766,6 +3766,14 @@ static int rtnl_newlink_create(struct sk_buff *s=
+kb, struct ifinfomsg *ifm,
+> >       struct net_device *dev;
+> >       char ifname[IFNAMSIZ];
+> >       int err;
+> > +     struct rtnl_newlink_params params =3D {
+>
+> nit: Reverse xmas tree order
+>
+>
+> > +             .net =3D net,
+>
+> Use sock_net(skb->sk) directly here and remove net defined above,
+> which is no longer used in this function.
+>
+> ---8<---
+>         unsigned char name_assign_type =3D NET_NAME_USER;
+>         struct rtnl_newlink_params params =3D {
+>                 .net =3D sock_net(skb->sk),
+>                 .src_net =3D net,
+>                 .link_net =3D link_net,
+>                 .peer_net =3D peer_net,
+>                 .tb =3D tb,
+>                 .data =3D data,
+>         };
+>         u32 portid =3D NETLINK_CB(skb).portid;
+> ---8<---
+>
+>
+> [...]
+> > @@ -1698,6 +1702,10 @@ struct net_device *gretap_fb_dev_create(struct n=
+et *net, const char *name,
+> >       LIST_HEAD(list_kill);
+> >       struct ip_tunnel *t;
+> >       int err;
+> > +     struct rtnl_newlink_params params =3D {
+> > +             .net =3D net,
+> > +             .tb =3D tb,
+> > +     };
+> >
+> >       memset(&tb, 0, sizeof(tb));
+>
+> nit: Reverse xmas tree
 
-And then keep a single call to brcmu_pkt_buf_free_skb(txp) at the end of the
-function.
- 
-> >       eh = (struct ethhdr *)(txp->data);
-> >       type = ntohs(eh->h_proto);
-> > 
-> > -     if (type == ETH_P_PAE) {
-> > +     if (type == ETH_P_PAE && ifp) {
-> >               atomic_dec(&ifp->pend_8021x_cnt);
-> >               if (waitqueue_active(&ifp->pend_8021x_wait))
-> >                       wake_up(&ifp->pend_8021x_wait);
-> >       }
-> > 
-> > -     if (!success)
-> > +     if (!success && ifp)
-> >               ifp->ndev->stats.tx_errors++;
-> > 
-> >       brcmu_pkt_buf_free_skb(txp);
-> 
+Will fix the style issues mentioned above in the next version.
 
-Kind regards,
-
-Marcel
+Thanks.
 
