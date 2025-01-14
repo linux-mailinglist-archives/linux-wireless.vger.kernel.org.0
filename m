@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-17502-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17503-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA3AEA1100B
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 19:28:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D26A11016
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 19:30:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E7C5188B3F6
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 18:28:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F410160E31
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2025 18:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83751CB501;
-	Tue, 14 Jan 2025 18:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F941FBE8F;
+	Tue, 14 Jan 2025 18:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGQn2wEj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MoME+fxd"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B751465AC
-	for <linux-wireless@vger.kernel.org>; Tue, 14 Jan 2025 18:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD611FBCBD
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Jan 2025 18:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736879311; cv=none; b=b+ZB90unSXcGVYCA2KMgAB1H6YmWbDT8PqBeMqLYsl+bhv7Us6or+pC3kxyXhON3OL7dX42h2s1lhezs9lAgqieDOS3dmT1NuuZlDkMj7PwhbPRae8m/iQHHgdu5JYyJv5qZ/L/EG9dlxUfn4OWxJ7H9863wIqq4tnRlLOVSFks=
+	t=1736879372; cv=none; b=lkAVRNv9TWTzA4t2g346PUR4EO9xi8v9c5Z6q3QM/1K22zQz/FTgwOy+k41HTccOPIHysnJP3UUxi/HNtrnIpuZU+LVqK+qMq3/NTAiUbWioV5EkSZTyAPHTlmQmjAcRe+OaEf7UXLkCytu2t/yqBo6avrWNv7eu+0FSLFWkLWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736879311; c=relaxed/simple;
+	s=arc-20240116; t=1736879372; c=relaxed/simple;
 	bh=WOY4AGPayNCfR8xPWYGzZU8DRPDN3/lPA1u+hsfXMts=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ETk/BHpcIO8bvJ+e1I+VjwpbT+YLK3Wfm0kRSQ72h58o5sI85JAb2xMur8RcXVi7sRgTnX9C3e4iBX+TbS5QqljX6v0LI5HloNMninBavFKnN6qkh/qx1bdHERxfNKnuzcvQkZDJo3HMzvLiYgChgBrpkUxBfWnX/igIhn5c3ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGQn2wEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7441C4CEDD;
-	Tue, 14 Jan 2025 18:28:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M+gFLXbY2g1PpTS/CuheWdpvo+x5QXeCJrJD47qT3akrAaKyOmQtlEOQ3UqndYJSyzxc0M9x9bkorzFSBKG54fhMng1BwQxbbPHkhPpGM7BawuOHkNJwrS/T5IM8bh935OsGutI3286u4eRG419ZrnbbQ13367Tq/+2oJB9WKa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MoME+fxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0566BC4CEDD;
+	Tue, 14 Jan 2025 18:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736879311;
+	s=k20201202; t=1736879372;
 	bh=WOY4AGPayNCfR8xPWYGzZU8DRPDN3/lPA1u+hsfXMts=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=jGQn2wEjtVcKWRvODJf4C7GHXI2/xzIs2PbVZMVIxzHdFYDT0b/t6OR3mB/eMOwL0
-	 PeTh60xa7c2VOu5L/rkYwS9O/NtM4KosXq0ZF38ufm76EUrakME1WGkt8Xhy4/Xhws
-	 4zvr+FBZILRRa/Abw+cwmEcgQTndDfvEIsmO+jW0VgQl73bP99mfsLNH8HZloZCaye
-	 i/zlA2uAb0oySy0sClv0gnPpPAABX/UxCuqreC7dqPXk+NZSSp2/6f09cgEmLviO+H
-	 7z8g1Q/eHLpyPx67FltqBNGy9zN+sM7phBgKy57Bq/20txatJuTTI98dYFwD3AdVGo
-	 89NQttngDrJxQ==
+	b=MoME+fxdlvCszFOdrwvDLEHl1npu5FYyrXZHekAPDKF3/3Nje8O1N6ogi7eg/1iCu
+	 HqKV2jyFO+UoPHAPWcndIkBuEx7g7tcUE8OKat2u5ZhYd/v9A0LkAvDTaoUlnSp6vO
+	 PKqfu5A5tS3sBowFX2WKCgG5aDs+fGmEGcNywd+bZbAn3nHJFUc8hY2rc5sMhNvQcN
+	 v+mm72kaLudjlw3m91s1+eGTYPSOwDoPCDBvg9oDcJASJEzisKIZcBaoHSCrXW3StY
+	 kgefGqaLTKeWXLMpZGaafAw0I6soYcJlqiZz/hKrfOB2CqB+ED716/cde/l3FmVd+V
+	 jZj+tIzOK8L4w==
 From: Kalle Valo <kvalo@kernel.org>
 To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,  Jeff
@@ -49,10 +49,10 @@ Subject: Re: [PATCH v4 1/4] wifi: ath12k: Refactor ath12k_hw set helper
  function argument
 References: <20250112071630.4059410-1-quic_periyasa@quicinc.com>
 	<20250112071630.4059410-2-quic_periyasa@quicinc.com>
-Date: Tue, 14 Jan 2025 20:28:28 +0200
+Date: Tue, 14 Jan 2025 20:29:29 +0200
 In-Reply-To: <20250112071630.4059410-2-quic_periyasa@quicinc.com> (Karthikeyan
 	Periyasamy's message of "Sun, 12 Jan 2025 12:46:27 +0530")
-Message-ID: <87plkpp7w3.fsf@kernel.org>
+Message-ID: <87ldvdp7ue.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
