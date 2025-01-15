@@ -1,139 +1,120 @@
-Return-Path: <linux-wireless+bounces-17540-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17541-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8698EA119F4
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 07:44:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFD2A11A29
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 07:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0A257A167C
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 06:44:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 985103A29BB
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 06:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF8F22F175;
-	Wed, 15 Jan 2025 06:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7528020CCDB;
+	Wed, 15 Jan 2025 06:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JKE3iEj/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KdXJf7XT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C511E04BE
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 06:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D1B4C6C
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 06:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736923493; cv=none; b=aAtL5UrqBJLNNZnMWknvWlp+UtcrroeHC+0hu9TqQftHezPB99W+kJl6RZRQUcaIqyuL2quX5KwIePdZ3zM6yZ275RtXQ1+Sgap/5kWCiD3w3DSmr35y4OlSyM0hpXKPEVw7STpqRRUmjVUc/B+lmkRWW02lT+pFal9Mxf8dfmg=
+	t=1736924099; cv=none; b=QJGTO4KZ5YMcikYbDOhdyswUEzogHhtrjijtk+kpYV8CBUwfpcBxOf+yYpW7ONvm8DJXIpx7fPLPojPELRTAvGd6xpiqUS2rNTq465417EVA33v/ZgwQ/qhrZ8TGXg/PSS+h1e+qsfB7Q4FdLA47aRByFALQ255OoiM9XsIn67w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736923493; c=relaxed/simple;
-	bh=TlUVncyIME8F1iB/QyOBs4nrnx064EZSZ94AnTbrWwE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Eun0Euq/+tQastcdHYJshYvmT78IP50C3AEYx5AzffFfOfzVesc4D+vl+dsJ+qUPk69JVLmg0QMuPuFMFmcz/FQaU4Q0CfifE0xJiiuSsCaxmQnXCrAZ5qYDnqEJpe9dWsMMbb82wEzNZ0xmn5nKRWeDOJVJToff7dj3w3yvzTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JKE3iEj/; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50ELcDJD012499;
-	Wed, 15 Jan 2025 06:44:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	YGZ0TShWUotMxawqv6H0GihgtrKfMbRR2KqTx5c8Y5s=; b=JKE3iEj/xiPe7zpP
-	QvlagR3fN5z4kSZwl96IDej0wU18ZvVkW0kKBjl8gSpWE8H5xYSt4AXzNgq4i+8d
-	QySHV2mldQp8Lnaf6p7jTd5Q6vyeoF10fTNLSwsj7KPjfFtAoBoK4F9dZ5XJN3Em
-	qwi1UvJcRtqW4Wi4OUZkzIJTuWLkhBvK95y7zkmWRftueItjs6zqFA8q9YSedTdb
-	kQ+B4eT7prM2ax6oQqzDLe/TldmENUBMw7vVx1fQA+1nCWlaSKVGjApVktustrjx
-	Vp/mrV73Tg09Hb5tP26iIrcZ5xbj2Cf50j8HsM+bYUvxzN+QlE/Qh5jAwvAVtYzI
-	tBSYTg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44600p12jg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jan 2025 06:44:49 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50F6imlh031430
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jan 2025 06:44:48 GMT
-Received: from [10.152.202.18] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 14 Jan
- 2025 22:44:46 -0800
-Message-ID: <1d6b6601-f8a6-4ec0-9741-29eb634fa391@quicinc.com>
-Date: Wed, 15 Jan 2025 12:14:43 +0530
+	s=arc-20240116; t=1736924099; c=relaxed/simple;
+	bh=2hqRIoY/uCa1uHU7XkHKh0fl4illlMY9ijCtuFlFpQk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=f4e7/jrQtqwQuoqmaqPLgdNRGEla7J+6+ZjIkOLR30NtZvO1vyKc3Yp2c+0Z8vTfJFag03By/Ep6XYBNxMIYW+ljzqsqRX7bKwVSb6cdnmOSt80W00VGxnNp2uCD2QKFenLlfAOkA9pCcDPSCGHyfMOjuwCKalUnQv0DlIo01Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KdXJf7XT; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5d3e8f64d5dso12251549a12.3
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jan 2025 22:54:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736924096; x=1737528896; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=A14TTUSHGw4Tfxp9OI9Y9Uf9engfooD8uv0pvFJOHmU=;
+        b=KdXJf7XT7BseuGPvWDbmh5GorsEQkgP6+xi3a3D21B1X2+K40LifMHhuDZaLhLZ6UL
+         V6msnLDV4F3kfhjnlgX6sr8fEBEW579ToaqOR1nJN1/qKqZDzU4eCHwSw0qik/MHainD
+         QzixbconOl2MYl0wxesurzI+w51LgLxnWSfeYFmh9MbSLmkTE4nykeQPZujnn+6CPPpI
+         6gBGh1fVEs/k2+a/UqLm9pDIiIXWmu/LX5dhkRCJEskfg0/X7Y6QzKXetoTxZ9bmwdzK
+         82tBECi+vJ6NOV48Sw/iZxXvHHyRnWoHNZQpuOWjLGgCt6InyLc2IacGwNBnsHR3kebc
+         PHzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736924096; x=1737528896;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A14TTUSHGw4Tfxp9OI9Y9Uf9engfooD8uv0pvFJOHmU=;
+        b=WuDJ/W2klxTKvlisJk30Fbfo1tNTWYHF5ijZYroUz1rVi4QKvADYZ8Ofa6Ctt0wVo7
+         y5sxxBexdT0TH1DYVpB5IVPGpXwK97JPcvylPcOKnKIJTwT29LsZevPFE0CrwRj9tvvA
+         z/ysiDEwCZUGbV4tS4UZznMteFBMf8c6gLYzpmkAjk/NZyUrvg01q4B8aYiw+I5wfV5S
+         n/U2KKgP2RrVtLIw+qirJ+SC8cZ+pyuzlrzy5XAOUdibOHu3mQRIIH/76teyabexwETE
+         sJpMh73FIJj/mc8POCtUpF3m1TXijDukj5SKNvCy54w708Yn612n6+PdAdiKa80Hjl0X
+         4DYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1yJ09VU2tqxRWN7ayiQBtNSEjPKMGnmz+D4UzGYEZgXP+gk59i8MXEt0Rko86AWmagggR0ODvZnaMgDq5nQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywcr/xtMez3XA73aF8g31X8t7CYWcgaMSaNiirtu23S3njcfHmw
+	3ctpoVmOb9BgVLI/XtQLIke3y7PFRJaATkiDl5cqjsWXACximOISueZ8DeprenE=
+X-Gm-Gg: ASbGnctLtnNpNTgIun0TSVsWZPckF4Fn7b/AV9z/qEgHahqLpVymDJJOlL0QHCYzhXo
+	GV0n+BU07HfWisJ5ky5WjhF2vPizfV9NjdWS6zR4m8jsjB+is4uXvSe9ASINjrIEvshR1PmRhED
+	xsYO344WgGe0uCbQBraOkX7W60GIKx63J00UubPtE4sLLTyZKlbuv6Qm5lrG9n4YoewqR+Zc7tt
+	rwGGHowVt6rb2lz6xvbQs/aDmBjMuoHZRKuoltQpkWO6N2fk/BuyaD+DhAy3g==
+X-Google-Smtp-Source: AGHT+IFmiPuMZjPhxJLXqB5h+XMs4bPD14TM+r5B+xxJIUUnoehpVx/Zz1fbrRY62nYEzYYJ1Ozb5A==
+X-Received: by 2002:a05:6402:2105:b0:5d0:bf27:ef8a with SMTP id 4fb4d7f45d1cf-5d972e4eeb6mr25432395a12.26.1736924096059;
+        Tue, 14 Jan 2025 22:54:56 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d99046a195sm6811700a12.57.2025.01.14.22.54.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 22:54:55 -0800 (PST)
+Date: Wed, 15 Jan 2025 09:54:52 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Ilan Peer <ilan.peer@intel.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH next] wifi: mac80211: fix memory leak in
+ ieee80211_mgd_assoc_ml_reconf()
+Message-ID: <7ad826a7-7651-48e7-9589-7d2dc17417c2@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/5] wifi: ath12k: Support Sounding, Latency, Trigger,
- FSE stats
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20250114123835.882926-1-quic_rdevanat@quicinc.com>
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20250114123835.882926-1-quic_rdevanat@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: MPtGlAPBL3MJWVEJGcLjVPU5gx-T8_1A
-X-Proofpoint-GUID: MPtGlAPBL3MJWVEJGcLjVPU5gx-T8_1A
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-15_02,2025-01-13_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- mlxlogscore=999 phishscore=0 spamscore=0 impostorscore=0 adultscore=0
- lowpriorityscore=0 bulkscore=0 mlxscore=0 clxscore=1015 priorityscore=1501
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501150048
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-On 1/14/25 18:08, Roopni Devanathan wrote:
-> Add support to request HTT stats type 22, 25, 26, 27 and 28 from
-> firmware. These stats give sounding stats, latency stats, trigger stats
-> for uplink OFDMA and MUMIMO and FSE stats, respectively.
-> 
-> v4:
->   - Squashed patches to avoid build warning.
-> v3:
->   - Rebased on ToT.
->   - Removed patch dependencies.
-> v2:
->   - Added line breaks where necessary, as pointed out by Kalle.
->   - Modified the use of pointer arithmetic print_array_to_buf_s8().
->   - Modified commit logs, as suggested by Kalle.
-> 
-> Dinesh Karthikeyan (4):
->    wifi: ath12k: Support Sounding Stats
->    wifi: ath12k: Support Latency Stats
->    wifi: ath12k: Support Uplink OFDMA Trigger Stats
->    wifi: ath12k: Support Received FSE Stats
-> 
-> Roopni Devanathan (1):
->    wifi: ath12k: Support Uplink MUMIMO Trigger Stats
-> 
->   .../wireless/ath/ath12k/debugfs_htt_stats.c   | 736 ++++++++++++++++++
->   .../wireless/ath/ath12k/debugfs_htt_stats.h   | 269 ++++++-
->   2 files changed, 970 insertions(+), 35 deletions(-)
-> 
-> 
-> base-commit: 0c5fcd9069dd5f984e39820629acbfbe0f1b4256
+Free the "data" allocation before returning on this error path.
 
-Comments from v3 regarding copyright were ignored :(
+Fixes: 36e05b0b8390 ("wifi: mac80211: Support dynamic link addition and removal")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ net/mac80211/mlme.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-v4 still throws -
-
-* drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c: 2025 copyright 
-missing
-* drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h: 2025 copyright 
-missing
-
-No need to resend just because of this. But if there is next version, 
-please *address this*
-
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 0d3f64eb573e..f8d52b3b0d0e 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -10273,8 +10273,10 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
+ 	 * on which the request was received.
+ 	 */
+ 	skb = ieee80211_build_ml_reconf_req(sdata, data, rem_links);
+-	if (!skb)
+-		return -ENOMEM;
++	if (!skb) {
++		err = -ENOMEM;
++		goto err_free;
++	}
+ 
+ 	if (rem_links) {
+ 		u16 new_dormant_links = sdata->vif.dormant_links & ~rem_links;
 -- 
-Aditya
+2.45.2
+
 
