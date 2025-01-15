@@ -1,200 +1,199 @@
-Return-Path: <linux-wireless+bounces-17558-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17559-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C864A127DB
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 16:52:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09910A127FA
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 16:58:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C5CB1674DB
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 15:52:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E20A167699
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 15:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EE1160799;
-	Wed, 15 Jan 2025 15:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D60724A7C4;
+	Wed, 15 Jan 2025 15:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E+sJGfZ1"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="AIURZAUs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C4D15D5C5
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 15:51:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7974A24A7EB
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 15:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736956319; cv=none; b=Www+3NXvJ6R9HPaZzKpfP+RLOhko8tgp1/n1bxJbMwoe4IiJ2tPVcCdL5R9tuEFtiwHli1wMtooOdF8IcuuIDv1KkD7WtzbpxklgjF6FMS24nqm8r30sUI44fmiZ2EZ+w5iFW5ENv6J5lUEWwFKTZ58BwSgqysoSpX5friZDOBw=
+	t=1736956677; cv=none; b=nObJ3ylbKgnDAuLCmYvr+Dn2Ir2Ufl7E4WZzD2lPqSObePWLaGkVc/j2xaI/dKpjm9fVlQixyKiOAp+VYJXljpJB3s0z1iQ9eO4mG+ADeYLQbJxCEVKLu5qWgOtQ+DAaOUmtWfDxreC58SPxXh0FiFXfwK5mGSnI3k2wssTJNnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736956319; c=relaxed/simple;
-	bh=5yYJCdYHfb+lhQpVHmMs3C12rfT7I7/yw/E1i/e0xhM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=LAEkUQF5vze0qbc3WQ13KWYrH5h7DDKr6oBc45DnH1EY/TM1Fmd0a40v6j+Y4cuGIKBbOpBzpLEVoNujyoCQ1P9SRoQewzpwhwArb8Jq2Dh3fiCwdQc6782tjDUJQdxrQZmHRaeTqE3yqqWJhhospCA5M3mgX8Kz52b2iub2Il4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E+sJGfZ1; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4361dc6322fso49182595e9.3
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 07:51:56 -0800 (PST)
+	s=arc-20240116; t=1736956677; c=relaxed/simple;
+	bh=PgVNBcDsh3fEF9S+3sQwDR0VhfPAjLamklEBqEfEkGk=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=umvhEkD4uExdXrTX7sPbMp+fZV4Gmm5sXo0Eqvr5p13NqHu2BM7zl1sCOY6YBpHQ+By8YdYmp9lIQuJ424YYnj57e+uohWHMTzLu/3/9PUDDlSDuS6t3Iu9nnSKusBs4PzWugcUi/JBeZrQW9QUhx70O5wx9Bca8jjLW4lMZ35s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=AIURZAUs; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-aae81f4fdc4so1304928866b.0
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 07:57:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736956315; x=1737561115; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gDsM2ndKvgfuiO8anHB17sGgKpa4aAq7L6HCTfeIO+g=;
-        b=E+sJGfZ1RfdbBVORZEyIS9JJpujQNXXX+UJpFms0fObjwtOoG7VeYzpUdWj55PqJHd
-         n/mMUkA2wCTz1fHc51IfjZtToEhzwd3ex4Wp/8DR0ps5+CdyLJ/jpzmbW3Djwnxl38hR
-         F76Pl2baYD8IOq8sSoGwFWAfuxCQrhI+3Qc2av4/eaRt+WQlLIeOobwZqvWHkFcD/z69
-         hmkEPoQAJ6WbK452jts0xB9RBW1zaKPFEkkHw7Z699C24Fi+z/H8D7+3Yiu9i6qK25xC
-         kLtTSL3cd9ofwqfEQqWSyGtkTGdBJ/qXo8R/YUUsztKxMj6s512ZprYYdn5799J3BtuR
-         t0hA==
+        d=broadcom.com; s=google; t=1736956673; x=1737561473; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=61qpqz+hm3qQrmLmzAGUfGSJ2GhlyTptrqixt9Wb55U=;
+        b=AIURZAUsHtIkKCtpLTqz4j5n7vX9XJUzkScp49Li3bjJ+REvDe0r6jf6FSuCZsfGF+
+         mL4tGKmvQDZFdCv9iTV4NQHFOMPvCW0mTp1/qmu/l545TZVocwTF7FkE3a9eGIsnM7nf
+         eZFJG482blXtcauZfnnlRBEFIkh2/IUTey1qw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736956315; x=1737561115;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1736956673; x=1737561473;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gDsM2ndKvgfuiO8anHB17sGgKpa4aAq7L6HCTfeIO+g=;
-        b=H/34jPtTwTajiitdKspVzq2gTwjtdrbqcymYw8N5pHFJI/9h2T1n9nUeJwlcOmkE56
-         HqRWRWjiH6SD47INgxYpJ569bCnHda+38wFlDG4H+84vWc313FhNW5Xt2oPP4GPOPSU5
-         np/AY/gQ4YiU22ZT1be1aLHW1yBNZqdalwB5gN80OonBJnbqvDoF1nZl6H4RBRmOcsyG
-         MEFqZg7lSI3o+mg5U6ej8XolH038ifYEElgZnTUhGLSSpQp9s3vBlHjYhJ5Ja+01mqSz
-         u933H85urZ1gY5meAb5zZAP+6H5AMli/LCiqikd4DEFZl9foAXzhQ+G+MYCZblOqchq8
-         y5YA==
-X-Forwarded-Encrypted: i=1; AJvYcCXHQafZdvK7zLKb+6h9TyPE+MOLaN027rF/Zjf+4X4hZPDVBBcF3v68bbpl9RZ63AISiIw2MjbDJat23pBByA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6cLdlPbJbVtYcn7PSvfmGi8sW+A8mwwxU4brZ6ff1OVJy0byu
-	AsnxryzlBNiCkFuZ6ACPD5L9OLbITnWQQYx3UhvRGeiiINMRrafD
-X-Gm-Gg: ASbGncsjrZELKPMZkcyDuyrhUJi48ZSMito9NG+ucNJKLh4LrM5jnxnXD30GSVmCAtg
-	R/9dHqNH8HhzZvkKbKw5t9tZrKbCP4YSVsTMw/lIPLYTsqPdTK04aMGrApIlx09e19Kenq4xBVF
-	k/FFJj5xNtgi9GAXIeGETP74/Vh4kazHkVXXdHblFErfTfUaqy4WSVv7uBAPPDIBinVkAYniFu8
-	YaaxxEoblFlsrzIlBxbvSknIMBBrUkPgtzO/NOOwjy8Jfa1G/ZPoTK5CwiTzMRf
-X-Google-Smtp-Source: AGHT+IH2Wk5NDH5amNjWMHnfS2nod63hl5c1HrBMrz5wvoPhOL0TwZPC0+HQeAQGGYRgkdFqinzfvA==
-X-Received: by 2002:a05:600c:4455:b0:434:fbcd:1382 with SMTP id 5b1f17b1804b1-436e26a80b6mr303296075e9.11.1736956315180;
-        Wed, 15 Jan 2025 07:51:55 -0800 (PST)
-Received: from [192.168.0.50] ([79.119.240.80])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c749a127sm27859965e9.7.2025.01.15.07.51.53
+        bh=61qpqz+hm3qQrmLmzAGUfGSJ2GhlyTptrqixt9Wb55U=;
+        b=GOlHuZR/NOq4AjL83duzgdOQ834w/o7TqOK5CVSOg3LSMWXajyS9dspRUNEYEPFSI0
+         mIS6lq56iGY+FDrK7psGZhAkVcYZibuBfkgKb1f2ah9D2Jp0skGAA9ojbFn8kpyh71RE
+         SenkERLYL+q7wvtcj/WxjWfqBPtINjHYZ00jD0oUyv39W44Datr3qAXyAivBpDOc4n1F
+         KtWnyMiCXfpoaKqq4SZUSaWe80wZDzVTzM8/ys44H5cBIqbK4+meI8GJWhuu9FOwxanJ
+         U5X2bkKoumHaEO6Y6azu/n5han6Ea3FuhiZEL8ipinaF0fuhuAGeo4oyiqVJ69vX6Lho
+         7BjA==
+X-Forwarded-Encrypted: i=1; AJvYcCXpPio++BA43qum8Z8cnv1Sn12YqP+F0FHXYQEcl0Lw/f6qLoVD17f4/bpBrh/u4QLTN13xfWKyiADFh2+Zmg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YydLWMDWsBSgUI6mVvT/I46l9J+P9D4eE43kMKEXU2snhQUvFlK
+	2og9EwHOlOOVucDGl3lbJ4xmrrjlSeBmTXXsgxWRlvOXXLJkxr1k7p19pAarLg==
+X-Gm-Gg: ASbGnct/JgAh21nVmU+MxQGzjZXjB2D8j6igebwDTbkyOrTkJzbArg2/n55nmKqT8qI
+	rGNw9P23CxlHNATeiXPSFS/npX9nS4ZAZnsZwxGcDh7NM6qduPeZyR+/yT3D1yU66V255cXgQ8D
+	B5K71afnI4p71t168WFaeYA+R9cNOx/N1029MkmncBEtG3WC3BcQ8LFgAEXsiA//nYXnS/4+yI0
+	fcm94KbtlMcMatGEATBj4uqq4e4BuLeD8MHjoo7eN4xubOy/EXNj37Vap6pDyYsfLrWn+uqvuoC
+	Xy3czus8u2MASytEvK4=
+X-Google-Smtp-Source: AGHT+IHbv12zipSWsVJAhQHRCL3rwRF99VutRgAlzJeAX/zqf4aChIMW6y1V3UGv9uZyGCnVnAu4eQ==
+X-Received: by 2002:a17:906:f58a:b0:aa6:b473:8500 with SMTP id a640c23a62f3a-ab2abcaafb9mr2739548566b.42.1736956672786;
+        Wed, 15 Jan 2025 07:57:52 -0800 (PST)
+Received: from [192.168.178.74] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c9649939sm766824066b.182.2025.01.15.07.57.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Jan 2025 07:51:54 -0800 (PST)
-Message-ID: <54abe45f-a26d-4606-8f13-6b27b22d4811@gmail.com>
-Date: Wed, 15 Jan 2025 17:51:53 +0200
+        Wed, 15 Jan 2025 07:57:52 -0800 (PST)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Marcel Hamer <marcel.hamer@windriver.com>
+CC: Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>, <stable@vger.kernel.org>
+Date: Wed, 15 Jan 2025 16:57:51 +0100
+Message-ID: <1946aaf7418.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <Z4Yd515dhZApbxPz@windriver.com>
+References: <20250110134502.824722-1-marcel.hamer@windriver.com>
+ <4020e574-be5d-43e4-9c04-1e5a708e70c6@broadcom.com>
+ <Z4Yd515dhZApbxPz@windriver.com>
+User-Agent: AquaMail/1.54.1 (build: 105401536)
+Subject: Re: [PATCH v2] brcmfmac: NULL pointer dereference on tx statistic update
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND. PATCH] drivers/mediatek: Fix some mt7601u vendor could
- not connect
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, WangYuli <wangyuli@uniontech.com>
-Cc: guanwentao@uniontech.com, linux-wireless@vger.kernel.org
-References: <A9442D62405552CE+20240715094714.1553336-1-wangyuli@uniontech.com>
- <20240715065426.73ba0869@kernel.org>
- <43a58f4a-6579-40f8-bb92-6bee8075c72e@gmail.com>
-Content-Language: en-US
-In-Reply-To: <43a58f4a-6579-40f8-bb92-6bee8075c72e@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-On 10/01/2025 00:42, Bitterblue Smith wrote:
-> On 15/07/2024 16:54, Jakub Kicinski wrote:
->> On Mon, 15 Jul 2024 17:47:14 +0800 WangYuli wrote:
->>> Some mt7601 devices cannot establish a connection properly.
->>> This patch fixes the issue.
->>> We do not know why, but it just works.
+On January 14, 2025 9:20:33 AM Marcel Hamer <marcel.hamer@windriver.com> wrote:
+
+> Hello,
+>
+> On Mon, Jan 13, 2025 at 08:28:33PM +0100, Arend van Spriel wrote:
+>> CAUTION: This email comes from a non Wind River email account!
+>> Do not click links or open attachments unless you recognize the sender and 
+>> know the content is safe.
 >>
->> Any chance we can gate this on the version of EEPROM or chip or
->> something else? It'd be good to avoid regressions on older devices.
->> Or possibly - could we issue the MCU command as a test and disable
->> the calibration if it fails?
-> 
-> (Removed some people and lists from CC because they seemed
-> unnecessary.)
-> 
-> Hi Jakub,
-> 
-> I have Tenda W311MI2 which works with vanilla mt7601u, and a no-name
-> "free driver" device from Aliexpress which doesn't. They have the
-> same USB IDs.
-> 
-> The Tenda:
-> 
-> Jan 09 22:39:40 ideapad2 kernel: mt7601u 1-2:1.0: ASIC revision: 76010001 MAC revision: 76010500                
-> Jan 09 22:39:40 ideapad2 kernel: mt7601u 1-2:1.0: Firmware Version: 0.1.00 Build: 7640 Build time: 201302052146____
-> Jan 09 22:39:40 ideapad2 kernel: mt7601u 1-2:1.0: EEPROM ver:0d fae:00                                                                                                     
-> 
-> 00000000: 01 76 00 0d 50 2b 73 e8 19 76 ff ff ff ff ff ff  .v..P+s..v......
-> 00000010: 01 02 8f 14 01 76 00 00 4a 00 01 00 80 50 08 00  .....v..J....P..
-> 00000020: 03 00 02 00 00 00 ff 01 40 60 80 ff ff ff ff ff  ........@`......
-> 00000030: ff ff ff ff 11 ff 04 28 ff ff 78 01 ff ff 99 99  .......(..x.....
-> 00000040: 8c 88 ff 07 08 00 00 00 00 00 00 00 00 00 00 00  ................
-> 00000050: 00 00 1b 1b 1b 1b 1b 1b 1c 1c 1c 1c 1c 1c 1c 1c  ................
-> 00000060: ff ff ff ff ff ff ff ff ff ff ff ff ff ff 80 00  ................
-> 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-> 00000080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 00000090: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 000000a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 000000b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 000000c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 000000d0: 20 f9 00 00 00 00 00 00 00 00 00 00 00 00 05 05   ...............
-> 000000e0: 03 03 04 00 00 00 02 00 00 00 02 00 00 00 02 00  ................
-> 000000f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 
-> The no-name:
-> 
-> Jan 09 21:50:34 ideapad2 kernel: mt7601u 1-4:1.0: ASIC revision: 76010001 MAC revision: 76010500                                                
-> Jan 09 21:50:34 ideapad2 kernel: mt7601u 1-4:1.0: EEPROM ver:0d fae:00                                                                                                     
-> 
-> 00000000: 01 76 00 0d 00 50 11 00 5b 9b ff ff ff ff ff ff  .v...P..[.......
-> 00000010: 01 02 8f 14 01 76 00 00 4a 00 01 00 80 50 08 00  .....v..J....P..
-> 00000020: 03 00 02 00 00 00 ff 01 40 60 80 ff ff ff ff ff  ........@`......
-> 00000030: ff ff ff ff 11 ff 04 10 ff ff 82 01 ff ff 99 99  ................
-> 00000040: 8c 88 ff 07 08 00 00 00 00 00 00 00 00 00 00 00  ................
-> 00000050: 00 00 05 05 05 04 04 04 05 05 06 06 07 07 07 07  ................
-> 00000060: ff ff ff ff ff ff ff ff ff ff ff ff ff ff 80 00  ................
-> 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-> 00000080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 00000090: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 000000a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 000000b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 000000c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 000000d0: 1e f9 00 00 00 00 00 00 00 00 00 00 00 00 05 05  ................
-> 000000e0: 03 03 04 00 00 00 02 00 00 00 02 00 00 00 02 00  ................
-> 000000f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> 
-> The no-name device seems to die after uploading the third chunk of
-> the firmware:
-> 
-> Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Firmware Version: 0.1.00 Build: 7640 Build time: 201302052146____
-> Jan 09 16:48:43 ideapad2 kernel: __mt7601u_dma_fw:327 len 14336 dst_addr 64
-> Jan 09 16:48:43 ideapad2 kernel: __mt7601u_dma_fw:327 len 14336 dst_addr 14400
-> Jan 09 16:48:43 ideapad2 kernel: __mt7601u_dma_fw:327 len 14336 dst_addr 28736
-> Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:07 off:09a8 failed:-110
-> Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:02 off:09a8 failed:-110
-> Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:07 off:0734 failed:-110
-> Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:42 off:0230 failed:-110
-> Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:07 off:0080 failed:-110
-> Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:02 off:0080 failed:-110
-> Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:02 off:0080 failed:-110
-> Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: probe with driver mt7601u failed with error -110
-> 
-> Removing the call to mt7601u_vendor_reset() fixes that problem.
-> The firmware uploads, the device connects to my network. The
-> Tenda still works. The driver included in Windows 10 doesn't do
-> that reset with either device.
-> 
-> At first I tried with len=8192 because that's what the Windows
-> driver does but it didn't help.
-> 
-> After fixing the firmware upload, I had some USB disconnects with
-> the no-name device. They were kind of random. Now I'm testing it
-> with those two MCU_CAL_DPD removed. The Windows driver doesn't
-> seem to use MCU_CAL_DPD with the Tenda. I didn't check with the
-> other one.
-> 
-> I hope this helps.
+>> On 1/10/2025 2:45 PM, Marcel Hamer wrote:
+>>> On removal of the device or unloading of the kernel module a potential
+>>> NULL pointer dereference occurs.
+>>>
+>>> The following sequence deletes the interface:
+>>>
+>>> brcmf_detach()
+>>> brcmf_remove_interface()
+>>> brcmf_del_if()
+>>>
+>>> Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
+>>> BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
+>>>
+>>> After brcmf_remove_interface() call the brcmf_proto_detach() function is
+>>> called providing the following sequence:
+>>>
+>>> brcmf_detach()
+>>> brcmf_proto_detach()
+>>> brcmf_proto_msgbuf_detach()
+>>>   brcmf_flowring_detach()
+>>>     brcmf_msgbuf_delete_flowring()
+>>>       brcmf_msgbuf_remove_flowring()
+>>>         brcmf_flowring_delete()
+>>>           brcmf_get_ifp()
+>>>           brcmf_txfinalize()
+>>>
+>>> Since brcmf_get_ip() can and actually will return NULL in this case the
+>>> call to brcmf_txfinalize() will result in a NULL pointer dereference
+>>> inside brcmf_txfinalize() when trying to update
+>>> ifp->ndev->stats.tx_errors.
+>>>
+>>> This will only happen if a flowring still has an skb.
+>>>
+>>> Although the NULL pointer dereference has only been seen when trying to update
+>>> the tx statistic, all other uses of the ifp pointer have been guarded as well.
+>>
+>> Here my suggestion to make it a bit more simple...
+>>
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
+>>> Link: 
+>>> https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
+>>> ---
+>>> v1 -> v2: guard all uses of the ifp pointer inside brcmf_txfinalize()
+>>> ---
+>>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c | 4 ++--
+>>> 1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c 
+>>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+>>> index c3a57e30c855..791757a3ec13 100644
+>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+>>> @@ -543,13 +543,13 @@ void brcmf_txfinalize(struct brcmf_if *ifp, struct 
+>>> sk_buff *txp, bool success)
+>>
+>> Instead of checking ifp below you can simply do following here and be
+>> done with it:
+>>
+>> if (!ifp) {
+>>       brcmu_pkt_buf_free_skb(txp);
+>>       return;
+>> }
+>
+> Thank you for the suggestion and review. I considered that when doing my 
+> changes
+> and then thought it would be more efficient to only check the validity of ifp
+> when ifp is actually used. To skip checking it on each call to this function,
+> since it seems unlikely ifp will be used on each and every call.
 
-So after using the no-name device some more, I can say that only
-the mt7601u_vendor_reset() needs to be removed to make this device
-work.
+Actually, the function will mostly be called with a valid ifp instance.
 
-The USB disconnects only happen in one port, no idea why. They
-happen with or without the MCU_CAL_DPD.
+> Before I create a patch with your suggested changes, I just wanted to check if
+> you think it would be better to just wrap the two existing if statements in a
+> new if statement in that case, something like this:
+>
+> if (ifp) {
+>    ...
+>    if (type == ETH_P_PAE) {
+>    ...
+>    }
+>
+>    if (!success)
+>        ifp->ndev->stats.tx_errors++;
+> }
+>
+> And then keep a single call to brcmu_pkt_buf_free_skb(txp) at the end of the
+> function.
+
+I understand your motivation. My generic approach is to bail out early and 
+thereby avoid extra indentation levels. Although this function is in the 
+data path I think the null-check for ifp is negligible. Could consider 
+using unlikely(), but that requires profiling data to justify using it here.
+
+Regards,
+Arend
+
+
 
