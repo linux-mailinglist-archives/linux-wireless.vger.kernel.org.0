@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-17539-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17540-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63922A119D1
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 07:41:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8698EA119F4
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 07:44:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8531C16134A
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 06:41:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0A257A167C
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 06:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC8A1E04BE;
-	Wed, 15 Jan 2025 06:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF8F22F175;
+	Wed, 15 Jan 2025 06:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="c532LagF"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JKE3iEj/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3517822F395
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 06:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C511E04BE
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 06:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736923272; cv=none; b=b448zoLf6IqzDjVxb91l0VV7ZlIcoHfHaYBA1wwPL5ffHSAw4qfhBERriCJ4nrpHZ6nLoE/0AguIZDXZvzvXPMavD+Bt0IRHjnO9tDouOAwunP+ObkAO7NbMJJzgfsHzIrVZN5ZxLQq/19Pqd3aY3Tv1Ma8ak38268lr/Y9P52s=
+	t=1736923493; cv=none; b=aAtL5UrqBJLNNZnMWknvWlp+UtcrroeHC+0hu9TqQftHezPB99W+kJl6RZRQUcaIqyuL2quX5KwIePdZ3zM6yZ275RtXQ1+Sgap/5kWCiD3w3DSmr35y4OlSyM0hpXKPEVw7STpqRRUmjVUc/B+lmkRWW02lT+pFal9Mxf8dfmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736923272; c=relaxed/simple;
-	bh=T3KV0Ho1s3lFi7b29xg++r4Tdo6UVUypWBlDSMQry1c=;
+	s=arc-20240116; t=1736923493; c=relaxed/simple;
+	bh=TlUVncyIME8F1iB/QyOBs4nrnx064EZSZ94AnTbrWwE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=jLSmrkXINXqGIOT5KHZT52HSWnuUk1MHQf8Ho12r1mA1CS4mAPgby5azszZkDumbTXsH6YRGA8KyXvENQU/bwc/SJOe4BNUYfG/APwtDgMzLwU6pUi9/+tbz9G+xdLrPhKvOuN89fo+Z+a7xKzns5+wgfu+/8Vqgyas/ToJbd0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=c532LagF; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=Eun0Euq/+tQastcdHYJshYvmT78IP50C3AEYx5AzffFfOfzVesc4D+vl+dsJ+qUPk69JVLmg0QMuPuFMFmcz/FQaU4Q0CfifE0xJiiuSsCaxmQnXCrAZ5qYDnqEJpe9dWsMMbb82wEzNZ0xmn5nKRWeDOJVJToff7dj3w3yvzTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JKE3iEj/; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50F2ihZm011368;
-	Wed, 15 Jan 2025 06:41:05 GMT
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50ELcDJD012499;
+	Wed, 15 Jan 2025 06:44:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	xQK6wvnZB1E+geozWcWMafIkL6YXB+ODUC84pVAObfM=; b=c532LagFsCfmLsg6
-	h0TuLEI6q7lxz3M3HETG2z6mtDX+JCqdw/v+AsjxHe4q9hfXLw14SQ02P+bX015J
-	XrBn2E6TgE+ZlJEmYIVGNc73gJkI8UOgT+gsjdhgnArvJsU+Fp2wO/rhhYJYxOBJ
-	FMiG3LBpGcQBPgx40vFJ4KRJFFrxZhlM9U3yhW+nEkKQPJwzZ1nQhbkDvdNq33jp
-	/Rs+VGvXorDUhme3m8OrKsdfshMYI3K1YM8G3oDqt09mR5H8GUIPgLQaStZQLBvQ
-	3TB2/9VJ9w+iXzCOjUM/Oqffdij1ndnzm64wfwbpW4CwIYmilgOoya/H3wnFQu2t
-	4o5SnQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4464gp8fan-1
+	YGZ0TShWUotMxawqv6H0GihgtrKfMbRR2KqTx5c8Y5s=; b=JKE3iEj/xiPe7zpP
+	QvlagR3fN5z4kSZwl96IDej0wU18ZvVkW0kKBjl8gSpWE8H5xYSt4AXzNgq4i+8d
+	QySHV2mldQp8Lnaf6p7jTd5Q6vyeoF10fTNLSwsj7KPjfFtAoBoK4F9dZ5XJN3Em
+	qwi1UvJcRtqW4Wi4OUZkzIJTuWLkhBvK95y7zkmWRftueItjs6zqFA8q9YSedTdb
+	kQ+B4eT7prM2ax6oQqzDLe/TldmENUBMw7vVx1fQA+1nCWlaSKVGjApVktustrjx
+	Vp/mrV73Tg09Hb5tP26iIrcZ5xbj2Cf50j8HsM+bYUvxzN+QlE/Qh5jAwvAVtYzI
+	tBSYTg==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44600p12jg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jan 2025 06:41:05 +0000 (GMT)
+	Wed, 15 Jan 2025 06:44:49 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50F6f4kv007645
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50F6imlh031430
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jan 2025 06:41:04 GMT
+	Wed, 15 Jan 2025 06:44:48 GMT
 Received: from [10.152.202.18] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 14 Jan
- 2025 22:41:02 -0800
-Message-ID: <50547012-1679-4ce6-a457-f16ce58484e4@quicinc.com>
-Date: Wed, 15 Jan 2025 12:10:58 +0530
+ 2025 22:44:46 -0800
+Message-ID: <1d6b6601-f8a6-4ec0-9741-29eb634fa391@quicinc.com>
+Date: Wed, 15 Jan 2025 12:14:43 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,81 +65,74 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 4/5] wifi: ath12k: Fill pdev id for fw test cmd
-To: Aaradhana Sahu <quic_aarasahu@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Rajat Soni <quic_rajson@quicinc.com>
-References: <20250115042532.1509956-1-quic_aarasahu@quicinc.com>
- <20250115042532.1509956-5-quic_aarasahu@quicinc.com>
- <d2b317e0-dccc-4683-8964-3878ef61d4fb@quicinc.com>
- <c51886be-3f4e-45b6-a7c6-19596ce9b24d@quicinc.com>
-Content-Language: en-US
+Subject: Re: [PATCH v4 0/5] wifi: ath12k: Support Sounding, Latency, Trigger,
+ FSE stats
+To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20250114123835.882926-1-quic_rdevanat@quicinc.com>
 From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <c51886be-3f4e-45b6-a7c6-19596ce9b24d@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20250114123835.882926-1-quic_rdevanat@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: vqOW33gUspdjGMTCG1OStkXUro9aWTSJ
-X-Proofpoint-ORIG-GUID: vqOW33gUspdjGMTCG1OStkXUro9aWTSJ
+X-Proofpoint-ORIG-GUID: MPtGlAPBL3MJWVEJGcLjVPU5gx-T8_1A
+X-Proofpoint-GUID: MPtGlAPBL3MJWVEJGcLjVPU5gx-T8_1A
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-15_02,2025-01-13_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 bulkscore=0
- mlxscore=0 mlxlogscore=999 adultscore=0 suspectscore=0 clxscore=1015
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501150047
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=999 phishscore=0 spamscore=0 impostorscore=0 adultscore=0
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 clxscore=1015 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501150048
 
-On 1/15/25 11:11, Aaradhana Sahu wrote:
+On 1/14/25 18:08, Roopni Devanathan wrote:
+> Add support to request HTT stats type 22, 25, 26, 27 and 28 from
+> firmware. These stats give sounding stats, latency stats, trigger stats
+> for uplink OFDMA and MUMIMO and FSE stats, respectively.
+> 
+> v4:
+>   - Squashed patches to avoid build warning.
+> v3:
+>   - Rebased on ToT.
+>   - Removed patch dependencies.
+> v2:
+>   - Added line breaks where necessary, as pointed out by Kalle.
+>   - Modified the use of pointer arithmetic print_array_to_buf_s8().
+>   - Modified commit logs, as suggested by Kalle.
+> 
+> Dinesh Karthikeyan (4):
+>    wifi: ath12k: Support Sounding Stats
+>    wifi: ath12k: Support Latency Stats
+>    wifi: ath12k: Support Uplink OFDMA Trigger Stats
+>    wifi: ath12k: Support Received FSE Stats
+> 
+> Roopni Devanathan (1):
+>    wifi: ath12k: Support Uplink MUMIMO Trigger Stats
+> 
+>   .../wireless/ath/ath12k/debugfs_htt_stats.c   | 736 ++++++++++++++++++
+>   .../wireless/ath/ath12k/debugfs_htt_stats.h   | 269 ++++++-
+>   2 files changed, 970 insertions(+), 35 deletions(-)
 > 
 > 
-> On 1/15/2025 10:56 AM, Aditya Kumar Singh wrote:
->> On 1/15/25 09:55, Aaradhana Sahu wrote:
->>> Currently pdev id is not set properly. That can cause a crash
->>> if pdev id is not equal to the pdev id when firmware test
->>> command is run during AP bring up or ping.
->>>
->>> Set pdev id in function ath12k_tm_cmd_wmi to resolve this
->>> issue.
->>>
->>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
->>>
->>> Co-developed-by: Rajat Soni <quic_rajson@quicinc.com>
->>> Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
->>> Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
->>> ---
->>>    drivers/net/wireless/ath/ath12k/testmode.c | 11 +++++++++--
->>>    1 file changed, 9 insertions(+), 2 deletions(-)
->>>
->>
->> Previous patch "[PATCH v9 3/5] wifi: ath12k: add factory test mode support" only added testmode.c file isn't it? So can't we squash this patch in that?
->>
->> Let's not introduce a bug in patch X and then in same series fix it at patch Y.
->>
-> 
-> This patch does not address any issues related to Factory Test Mode (FTM).
-> Instead, it focuses only on the ath11k-fwtest command, which is used for
-> certification testing and is distinct from FTM.
-> 
-> Initially, this patch was submitted independently as '[PATCH v2] wifi: ath12k: Fill pdev id for fw test cmd'
-> during the internal review.
-> However, Kalle suggested incorporating this patch with the FTM patches.
+> base-commit: 0c5fcd9069dd5f984e39820629acbfbe0f1b4256
 
-That is good. But that comment does not mean it needs to be a *separate* 
-patch? It should be in this series that's what Kalle wanted to ensure.
+Comments from v3 regarding copyright were ignored :(
 
-> 
-> As this patch addresses ath11k-fwtest command issue, that's why this is not merge with [PATCH v9 3/5].
-> 
+v4 still throws -
 
-That is fine, but you are adding the file in 3/5 so why not have this 
-part as well in same patch only? And let me ask this way, if you don't 
-apply 3/5, will your issue exist? Probably No? Since ath12k/testmode.c 
-file itself is not there before 3/5. So if you know something is 
-incorrect, why introduce it in the first place?
+* drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c: 2025 copyright 
+missing
+* drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h: 2025 copyright 
+missing
 
+No need to resend just because of this. But if there is next version, 
+please *address this*
 
 -- 
 Aditya
