@@ -1,185 +1,117 @@
-Return-Path: <linux-wireless+bounces-17554-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17555-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CF1A126E7
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 16:08:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B831CA1270D
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 16:17:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE5DB1613E8
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 15:08:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 051B818874F7
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 15:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DF97711F;
-	Wed, 15 Jan 2025 15:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF3970801;
+	Wed, 15 Jan 2025 15:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TSHrsBuW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+spigIw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F9720326
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 15:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7171304B0;
+	Wed, 15 Jan 2025 15:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736953701; cv=none; b=NG7U2ZbsBkJQawgSL5AUh+Zh0sQ0r4yVyMfe+T51sHFfj/tC9NrYsShdtZubFmOvJIXQM7AmyP6xwLTRIJ/voaHxx/7+2+yXzniHElnjlVwpQv9OZuIPmjd/4TIqUPdq+XdlP7cLPY/aArBH0jZwIIVsygDct6PnmBVGkQxSaxU=
+	t=1736954218; cv=none; b=Ls6fgurH26P/0f0v2Ld52L/gqh4ZMPFNK4RLUGHuUpyGxZaDUD340D+nI/LiyiG3FMCNJgbqDbh7STULKhNAeRR0qwElVFjWFq060Lu+zRdehSKitMu+oDEYYbTwLcF/6QUaw7fHqfnUe9hE2NiomcI0xehFTYiVWNOnTD7Co4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736953701; c=relaxed/simple;
-	bh=eER4h7BxA3yeAhNP2922kFbim8qsH0T0t7m2HpfziZY=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=U8VQDbxVX9YVPJrtH9jDAxawo9VEn/+j7KlzPeX0RYh2cezRTATKZJXlwiupmuzG3b7E0oL8UDSbArhopI2BFn6ya47CYWUtXFyf2Im5bRj7XqWavqEFEhxNQyd+XRWk2YYka5oqsp00+RVaOcRB0XyLsfgRteyrlp3cpQeDt2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TSHrsBuW; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736953700; x=1768489700;
-  h=date:from:to:cc:subject:message-id;
-  bh=eER4h7BxA3yeAhNP2922kFbim8qsH0T0t7m2HpfziZY=;
-  b=TSHrsBuW96YNHKCiiRB53HzjxErTh/uzKm6Ro4hasU5yyQuLvmdfBWmM
-   zwDPKRpgw9L8fpbQ1rQg2I1t12IWoUNwyb3t19ePe3POFPqvAseYSnwJR
-   puE20N7Gh4um8aw3a9baRv/lCheAgOyN152IiallLIlF30oBSWXto/2gw
-   t9O5yf65D4KCAUdk6dDgSbi48XCfAfYIR3VXXlCEhje641AvOIlFq2KLi
-   MRcoxVVrRiSFkX5AEnZ9YcjSD/hA/MlTz1WkUkJgH/QBs+Jo5mZK2zHW6
-   W/11FN1rzCvwSx9Dh39g4Bj0Vp8q3DRdsyN/6Ywee4KU96t18WN1O3Cd0
-   A==;
-X-CSE-ConnectionGUID: G8IlilgISTCxIVeqT9O23g==
-X-CSE-MsgGUID: X9bfxVqzSvec4/dbAJb3qw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="41228813"
-X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; 
-   d="scan'208";a="41228813"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 07:08:19 -0800
-X-CSE-ConnectionGUID: qs0HwrSdS/a9lEkUFNdreA==
-X-CSE-MsgGUID: BQKgeoJGQSeFAVbmjs98Hw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="109200994"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 15 Jan 2025 07:08:18 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tY50B-000QV7-3B;
-	Wed, 15 Jan 2025 15:08:15 +0000
-Date: Wed, 15 Jan 2025 23:07:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:pending] BUILD SUCCESS
- 3737936e2be920977aea7d9f7eb8cb4468d700d7
-Message-ID: <202501152317.2PnBkFYM-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1736954218; c=relaxed/simple;
+	bh=e8H0zp7MNqacJBs9d1qkeznwR6hkG7iTAzUns3yznHk=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=Z2QIYRcJ8G1fGp98/ZDZGW4dNIUHZdtpLz4k/+CmAAULIDt+iW7lADb3aFXgBTkTUIyaoWM1673XrLHtNLg59T9SW+Pd8JjFwLtjcSQ9lWqlI6zu5dU1A6FQEFXFNuTJ9YvaLli44XTujt5XVAvj8muQM2LPatkoSpKdbZMRQgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+spigIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9BCC4CED1;
+	Wed, 15 Jan 2025 15:16:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736954217;
+	bh=e8H0zp7MNqacJBs9d1qkeznwR6hkG7iTAzUns3yznHk=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=N+spigIwsmVvcO+naMqY4IPzo8kCADHBlmCTv21F+N/bWa9updqD8nMB7AIvY+Giq
+	 u+nY2s1Pz3UVP/sTFxoe6N43jSUHGKNcFm6wSomY8DbCUf07wrRPUH+CuwVM2FwSon
+	 wZc0tLQLUNkQyE5wR1dFSOVPwIyArDcBAliYVVd8iuaQLprt+Xp/LbwJl0o9SUxbW+
+	 dIApDrrPaR4NeBn6Qtdjo9w9ceevORLXWb1AC4ZOgkTyCPf2vh/a4aSnXqSl0Oaznu
+	 RnUtyO58Vk4IbbYC6uGSyTQDcvrExOP0NxKB5uEOFiP5Wpa7Yuk0oSUcnMXbk8h+HD
+	 jSN2sEVKH+nbw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] brcmfmac: NULL pointer dereference on tx statistic
+ update
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20250110134502.824722-1-marcel.hamer@windriver.com>
+References: <20250110134502.824722-1-marcel.hamer@windriver.com>
+To: Marcel Hamer <marcel.hamer@windriver.com>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
+ linux-wireless@vger.kernel.org, Marcel Hamer <marcel.hamer@windriver.com>,
+ stable@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <173695421441.512722.1081406482312817540.kvalo@kernel.org>
+Date: Wed, 15 Jan 2025 15:16:56 +0000 (UTC)
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
-branch HEAD: 3737936e2be920977aea7d9f7eb8cb4468d700d7  Merge tag 'rtw-next-2025-01-12' of https://github.com/pkshih/rtw into pending
+Marcel Hamer <marcel.hamer@windriver.com> wrote:
 
-elapsed time: 1457m
+> On removal of the device or unloading of the kernel module a potential
+> NULL pointer dereference occurs.
+> 
+> The following sequence deletes the interface:
+> 
+>   brcmf_detach()
+>     brcmf_remove_interface()
+>       brcmf_del_if()
+> 
+> Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
+> BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
+> 
+> After brcmf_remove_interface() call the brcmf_proto_detach() function is
+> called providing the following sequence:
+> 
+>   brcmf_detach()
+>     brcmf_proto_detach()
+>       brcmf_proto_msgbuf_detach()
+>         brcmf_flowring_detach()
+>           brcmf_msgbuf_delete_flowring()
+>             brcmf_msgbuf_remove_flowring()
+>               brcmf_flowring_delete()
+>                 brcmf_get_ifp()
+>                 brcmf_txfinalize()
+> 
+> Since brcmf_get_ip() can and actually will return NULL in this case the
+> call to brcmf_txfinalize() will result in a NULL pointer dereference
+> inside brcmf_txfinalize() when trying to update
+> ifp->ndev->stats.tx_errors.
+> 
+> This will only happen if a flowring still has an skb.
+> 
+> Although the NULL pointer dereference has only been seen when trying to update
+> the tx statistic, all other uses of the ifp pointer have been guarded as well.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
+> Link: https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
 
-configs tested: 91
-configs skipped: 1
+If you submit v3, please add 'wifi:'.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+ERROR: 'wifi:' prefix missing: '[PATCH v2] brcmfmac: NULL pointer dereference on tx statistic update'
 
-tested configs:
-alpha                            allnoconfig    gcc-14.2.0
-alpha                           allyesconfig    gcc-14.2.0
-arc                             allmodconfig    gcc-13.2.0
-arc                              allnoconfig    gcc-13.2.0
-arc                             allyesconfig    gcc-13.2.0
-arc                  randconfig-001-20250115    gcc-13.2.0
-arc                  randconfig-002-20250115    gcc-13.2.0
-arm                             allmodconfig    gcc-14.2.0
-arm                              allnoconfig    clang-17
-arm                             allyesconfig    gcc-14.2.0
-arm                  randconfig-001-20250115    clang-16
-arm                  randconfig-002-20250115    clang-20
-arm                  randconfig-003-20250115    clang-20
-arm                  randconfig-004-20250115    clang-20
-arm64                           allmodconfig    clang-18
-arm64                            allnoconfig    gcc-14.2.0
-arm64                randconfig-001-20250115    clang-20
-arm64                randconfig-002-20250115    gcc-14.2.0
-arm64                randconfig-003-20250115    clang-18
-arm64                randconfig-004-20250115    gcc-14.2.0
-csky                             allnoconfig    gcc-14.2.0
-csky                 randconfig-001-20250115    gcc-14.2.0
-csky                 randconfig-002-20250115    gcc-14.2.0
-hexagon                         allmodconfig    clang-20
-hexagon                          allnoconfig    clang-20
-hexagon                         allyesconfig    clang-18
-hexagon              randconfig-001-20250115    clang-20
-hexagon              randconfig-002-20250115    clang-19
-i386                            allmodconfig    gcc-12
-i386                             allnoconfig    gcc-12
-i386                            allyesconfig    gcc-12
-i386       buildonly-randconfig-001-20250115    clang-19
-i386       buildonly-randconfig-002-20250115    gcc-12
-i386       buildonly-randconfig-003-20250115    gcc-12
-i386       buildonly-randconfig-004-20250115    gcc-12
-i386       buildonly-randconfig-005-20250115    gcc-12
-i386       buildonly-randconfig-006-20250115    gcc-12
-i386                               defconfig    clang-19
-loongarch                        allnoconfig    gcc-14.2.0
-loongarch            randconfig-001-20250115    gcc-14.2.0
-loongarch            randconfig-002-20250115    gcc-14.2.0
-nios2                randconfig-001-20250115    gcc-14.2.0
-nios2                randconfig-002-20250115    gcc-14.2.0
-openrisc                         allnoconfig    gcc-14.2.0
-openrisc                        allyesconfig    gcc-14.2.0
-parisc                          allmodconfig    gcc-14.2.0
-parisc                           allnoconfig    gcc-14.2.0
-parisc                          allyesconfig    gcc-14.2.0
-parisc               randconfig-001-20250115    gcc-14.2.0
-parisc               randconfig-002-20250115    gcc-14.2.0
-powerpc                         allmodconfig    gcc-14.2.0
-powerpc                          allnoconfig    gcc-14.2.0
-powerpc              randconfig-001-20250115    gcc-14.2.0
-powerpc              randconfig-002-20250115    gcc-14.2.0
-powerpc              randconfig-003-20250115    gcc-14.2.0
-powerpc64            randconfig-001-20250115    gcc-14.2.0
-powerpc64            randconfig-002-20250115    gcc-14.2.0
-powerpc64            randconfig-003-20250115    clang-18
-riscv                            allnoconfig    gcc-14.2.0
-riscv                randconfig-001-20250115    gcc-14.2.0
-riscv                randconfig-002-20250115    clang-16
-s390                            allmodconfig    clang-19
-s390                             allnoconfig    clang-20
-s390                            allyesconfig    gcc-14.2.0
-s390                 randconfig-001-20250115    clang-20
-s390                 randconfig-002-20250115    clang-15
-sh                              allmodconfig    gcc-14.2.0
-sh                              allyesconfig    gcc-14.2.0
-sh                   randconfig-001-20250115    gcc-14.2.0
-sh                   randconfig-002-20250115    gcc-14.2.0
-sparc                           allmodconfig    gcc-14.2.0
-sparc                randconfig-001-20250115    gcc-14.2.0
-sparc                randconfig-002-20250115    gcc-14.2.0
-sparc64              randconfig-001-20250115    gcc-14.2.0
-sparc64              randconfig-002-20250115    gcc-14.2.0
-um                              allmodconfig    clang-20
-um                               allnoconfig    clang-18
-um                              allyesconfig    gcc-12
-um                   randconfig-001-20250115    clang-18
-um                   randconfig-002-20250115    gcc-12
-x86_64                           allnoconfig    clang-19
-x86_64                          allyesconfig    clang-19
-x86_64     buildonly-randconfig-001-20250115    gcc-12
-x86_64     buildonly-randconfig-002-20250115    gcc-12
-x86_64     buildonly-randconfig-003-20250115    clang-19
-x86_64     buildonly-randconfig-004-20250115    clang-19
-x86_64     buildonly-randconfig-005-20250115    gcc-12
-x86_64     buildonly-randconfig-006-20250115    clang-19
-x86_64                             defconfig    gcc-11
-xtensa               randconfig-001-20250115    gcc-14.2.0
-xtensa               randconfig-002-20250115    gcc-14.2.0
+Patch set to Changes Requested.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20250110134502.824722-1-marcel.hamer@windriver.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
