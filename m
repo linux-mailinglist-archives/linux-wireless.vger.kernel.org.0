@@ -1,138 +1,189 @@
-Return-Path: <linux-wireless+bounces-17568-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17569-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AD3A12BBC
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 20:30:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA752A12BCC
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 20:36:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C87F3A1F20
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 19:30:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2A4F7A3B0C
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2025 19:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E93D196D9D;
-	Wed, 15 Jan 2025 19:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E397C1D86D6;
+	Wed, 15 Jan 2025 19:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nc65NtcD"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BrDKQCZ7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D7819343B
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 19:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADD41D79A6
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 19:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736969436; cv=none; b=H4HcLTcaxTB/Co2pAbIAdSboAPht7VFOie0m8UP+uot2/o9yE/WtuTfb+aasisetKh0DHbH1wnPWosVk4PG/C3ftmbHJUDevlNxBogmkj7d2OgWJzBS6B/UFgG1IvMGltTsJDx+pLDEITR1ooHIyX4zSnxdzTv4CnV6zhE34Jno=
+	t=1736969783; cv=none; b=K/6B73ApPkszJKfym2nSr0e4OvarX0fIGqTlcHs3ciPLIXgSUGzMkO91GGsYDzmmYUS4a/TzYNQ6fU8OqGjGW2lXtBMZ1uUYmP22n8spMx6Jcj75DqMs0aiwlnHwrPuOthE3WJ1MdjyiiKXzN3bi6wIVsSvmzn7InALraU431wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736969436; c=relaxed/simple;
-	bh=MbiPS+cI03BZu7Fkiw4/2txsbVyc1HhRx2VoO4aUgzs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g2p0liydW3nkpi4GnBghc+OCIgPvOfjKiF2ftlt9+sDKcw/SPBoxP8KewIAI86gBh84JhPwSiJo5riT8zNYgNkNViMgVmyKNikKn7rDBnFjhUMCuQ6J9t0k3OtH6aFGJkO2TEc545y1JJQPMJzw3XBwxJTejw3bxyhFAtYUWjIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nc65NtcD; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-54263b52b5aso179531e87.1
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 11:30:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736969432; x=1737574232; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=74XkFS9DzZ2OkyiCSpmU2WovRKw4oJ8QjJazyagugLE=;
-        b=nc65NtcDfstiDT3gC0Ajpg2cwj3be4W8UfGkdqvVCjeF1IROLk5kgZXU+Cfr8IHsFB
-         T3MhzGkxZXYXl1sUd7n1YrhFS5JIO3z6WUXOMdp6CRy0XKjIcd6a4JLLUQHMNCzJ/ZC+
-         oJ62tq5Niagp7G4vvdNCY3nAhexpWy1pmKY+OC9VKS6ONMIrP5qHE26jXQkV86/NB2EE
-         m0v3w7u4oMiOhrUWEi+4Fs2o2mujGclaHi6NqjUfEPqBb2eDtxla/2gA5aSavXkSvrL5
-         BSSnnm9dkJkXqp1KZ5tA+M7YNQ6ntzFPhm8e83ySlBRtZ+kPYDkjTxrDuQfo4NusI68M
-         ZKKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736969432; x=1737574232;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=74XkFS9DzZ2OkyiCSpmU2WovRKw4oJ8QjJazyagugLE=;
-        b=KH6cGLL2BZKOwJkWc4sWx+GNWxQw9Z+7EaprceBXJs1TuhU6fpIxn+D3/+GuMEg3dz
-         1rI9raHDxi0RXCuQm2IRJc8/zEdbsFyp7mnMsU8uui3POzRg1FQeurUM1GTTsgPstloU
-         hFuTlx7qxZv/kKBxQTMEe6wTY6catBm69xePbvxox5oMdcMp4vaHoQqQU0CFqiKCT8Jp
-         Vc0087q/cacP7fhJmYwRBSqaXZBivX5DsabLf1Tn2AVt1GwcotAdum1TbYbJJCsOYDOM
-         I/yljSYe66J5PskaTiwUaXk/wYC2nRSz5+BRRhUjcRKmMtoL4zuwQq/Q376qGbhwdJJ9
-         oKVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV1JYKYGAMTCrN5/Eq7vOzJEXXmQ351ixlMOGk9YMRWUSYHGFzMAgcuzxGgz+nh+tMjC2PdcBrbTW7VRL9H0g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVwHJbdAhMnMkDF4242OFg/hLS66F8594JK3hTmIbqX7BEbcTI
-	W9N9jik4p4LbrOLY8MyTz55VizGFe7IEsruRBqIvSJ32nhZkk/SqlF2CRqZ2cP8=
-X-Gm-Gg: ASbGncu2JcUBOkkDfRYKptw2zZ5cXh0dp5fFUB5+RTUiQvI+jSOznGDRQedVnu+5Ikr
-	IVgq58qLFm97QgkCYXm9rDgPfAcP2oxdxYJzarurOIdNPzZCUPIieCHkFC7Dr8FWFBWhSfbKooH
-	mzaS05ntlJa0DU86M3l+sV2Oe77UZs8bioL4acPxU1tRG0R5EJ4Ar9ULQQ53VTbgxtF3onQsygj
-	/xmjuBp1Vu8WqaVMOuLDbEFRWaZZvxMb/oScr4wZNmaSP5B0cj/XLtTiI6MDBu94tfIsLsx6J8o
-	9ANLMmWUFxi1i+lbC4tqOJJq0R2UdaeSSMM7
-X-Google-Smtp-Source: AGHT+IGS0gsniHAb1265t2ZInspYgL6rWfoxkSpJFSOe+oC2DXSzdeDmFJAzWdYH+4C429519LL8Aw==
-X-Received: by 2002:a05:6512:1188:b0:540:1a0c:9bac with SMTP id 2adb3069b0e04-542845d61d7mr10774580e87.34.1736969432101;
-        Wed, 15 Jan 2025 11:30:32 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5428be54154sm2133263e87.68.2025.01.15.11.30.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 11:30:30 -0800 (PST)
-Date: Wed, 15 Jan 2025 21:30:28 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Ajay.Kathat@microchip.com
-Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org, 
-	kvalo@kernel.org, alexis.lothore@bootlin.com, marex@denx.de, 
-	Sripad.Balwadgi@microchip.com
-Subject: Re: [PATCH] linux-firmware: wilc3000: add firmware for WILC3000 WiFi
- device
-Message-ID: <ismsffcidddb3dqr54mdhzsxrwpqfvsauq77fmuzsekhnxyeb6@3imjhwdg34fx>
-References: <20250115171751.7308-1-ajay.kathat@microchip.com>
+	s=arc-20240116; t=1736969783; c=relaxed/simple;
+	bh=w2yutSuwS3/c1mp0S3D9IW+boiJqhqjXx82noBaKwiU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:CC:From:
+	 In-Reply-To:Content-Type; b=rJr3zS2Xd1TvJfs7NWOYq1BHxQGoZ0/j413q03zWraXH+vqHATZhp4Vb49pwKev654aF7TRpHJ0UYAxs9D+4mDNkxbEllR0j2zBJT5s3JhVu1HA/Bf1/WYIoE2At6xkToN4k5ibksBDbniCibmdgWUtjYuMnl0dfsyxAs703peY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BrDKQCZ7; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FIobCC007832;
+	Wed, 15 Jan 2025 19:36:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	t56w0zxptNyUSFP9eC1B7m625vNjqZz4J1Nv5uogHDg=; b=BrDKQCZ7lkFoq7g7
+	3EBQSOGI9eOt+K4nXEf6uFZRbSPXtqixbWisdjO8+HMjaVAJ7yBLOivQSiioXG93
+	ABvDyVyYd1Zl7Ld1hTgEE7s4sH8QhClet/0l4JMzSAO0LHHXUtKZwCDLNCxDq1HK
+	AqQF3Kmwa1ksi9QO8smBm1i+9dqrRTQjKnVc4b2a7EyT0p9l/aBrCB0thKaXEbBC
+	7IUnl85TGSM8BLUulm+j5SOQBBisgiYmQCJlw/IXURwLKuZJu4SqWSsOSpIwxy84
+	iH5onw8SpqMpW4vBGuM5WX3QG8DhkEGTDuu5NpoRovpn86WD3R5gYUtJo4tvWo4E
+	5mhAdQ==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 446jndr3du-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jan 2025 19:36:09 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50FJa9dC011389
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jan 2025 19:36:09 GMT
+Received: from [10.110.39.228] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 15 Jan
+ 2025 11:36:09 -0800
+Message-ID: <1df1e6b4-cb25-4abb-a6eb-1abaeeb5f588@quicinc.com>
+Date: Wed, 15 Jan 2025 11:36:04 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250115171751.7308-1-ajay.kathat@microchip.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] wifi: ath11k: refactor transmitted arvif retrieval
+To: Aloka Dixit <quic_alokad@quicinc.com>
+References: <20250114223612.2979310-1-quic_alokad@quicinc.com>
+ <20250114223612.2979310-2-quic_alokad@quicinc.com>
+Content-Language: en-US
+CC: <ath11k@lists.infradead.org>, <ath12k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>
+From: Sidhanta Sahu <quic_sidhanta@quicinc.com>
+In-Reply-To: <20250114223612.2979310-2-quic_alokad@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: UejdSBEqeiKkfX_yuSSPKygzyFDM0cZn
+X-Proofpoint-ORIG-GUID: UejdSBEqeiKkfX_yuSSPKygzyFDM0cZn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-15_09,2025-01-15_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 bulkscore=0 impostorscore=0
+ phishscore=0 adultscore=0 spamscore=0 malwarescore=0 clxscore=1011
+ mlxlogscore=529 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501150142
 
-On Wed, Jan 15, 2025 at 05:18:49PM +0000, Ajay.Kathat@microchip.com wrote:
-> This commit adds WLAN firmware for wilc3000 which is supported in mainline
-> Linux with commit [1].
-> 
-> FW version: 16.1.2
-> 
-> 1. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/net/wireless/microchip/wilc1000?id=e1408c115ef9b
-> 
-> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
-> ---
->  WHENCE                             |   5 +++--
->  atmel/wilc3000_wifi_firmware-1.bin | Bin 0 -> 140712 bytes
->  2 files changed, 3 insertions(+), 2 deletions(-)
->  create mode 100644 atmel/wilc3000_wifi_firmware-1.bin
-> 
-> diff --git a/WHENCE b/WHENCE
-> index 920d6093..3842bed7 100644
-> --- a/WHENCE
-> +++ b/WHENCE
-> @@ -5712,14 +5712,15 @@ Licence: Redistributable. See LICENCE.nvidia for details
->  
->  --------------------------------------------------------------------------
->  
-> -Driver: wilc1000 - Atmel 802.11n WLAN driver for WILC1000
-> +Driver: wilc1000 - Atmel 802.11n WLAN driver for WILC1000 & WILC3000
->  
->  File: atmel/wilc1000_fw.bin
->  File: atmel/wilc1000_ap_fw.bin
->  File: atmel/wilc1000_p2p_fw.bin
->  File: atmel/wilc1000_wifi_firmware.bin
->  File: atmel/wilc1000_wifi_firmware-1.bin
-> -Version: 16.0
 
-Why? You haven't updated old firmware, so it should still be 16.0
+>   
+> +static struct ath11k_vif *ath11k_mac_get_tx_arvif(struct ath11k_vif *arvif)
+> +{
+> +	if (arvif->vif->mbssid_tx_vif)
+> +		return ath11k_vif_to_arvif(arvif->vif->mbssid_tx_vif);
+> +
+> +	return NULL;
+> +}
+> +
+>   static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif)
+>   {
+>   	struct ath11k_vif *tx_arvif;
+> @@ -1538,7 +1546,7 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif)
+>   	u32 params = 0;
+>   	u8 i = 0;
+>   
+> -	tx_arvif = ath11k_vif_to_arvif(arvif->vif->mbssid_tx_vif);
+> +	tx_arvif = ath11k_mac_get_tx_arvif(arvif);
 
-> +File: atmel/wilc3000_wifi_firmware-1.bin
-> +Version: 16.1.2
->  
->  License: Redistributable. See LICENSE.atmel for details
->  
+ath11k_mac_get_tx_arvif can return NULL, below, we are accessing 
+tx_arvif without a NULL check. Shouldn't we add a null check wherever 
+applicable to prevent potential issues?
 
--- 
-With best wishes
-Dmitry
+>   
+>   	beacons = ieee80211_beacon_get_template_ema_list(tx_arvif->ar->hw,
+>   							 tx_arvif->vif, 0);
+> @@ -1597,7 +1605,7 @@ static int ath11k_mac_setup_bcn_tmpl_mbssid(struct ath11k_vif *arvif)
+>   	int ret;
+>   
+>   	if (vif->mbssid_tx_vif) {
+> -		tx_arvif = ath11k_vif_to_arvif(vif->mbssid_tx_vif);
+> +		tx_arvif = ath11k_mac_get_tx_arvif(arvif);
+>   		if (tx_arvif != arvif) {
+>   			ar = tx_arvif->ar;
+>   			ab = ar->ab;
+> @@ -1674,7 +1682,7 @@ static void ath11k_control_beaconing(struct ath11k_vif *arvif,
+>   				     struct ieee80211_bss_conf *info)
+>   {
+>   	struct ath11k *ar = arvif->ar;
+> -	struct ath11k_vif *tx_arvif = NULL;
+> +	struct ath11k_vif *tx_arvif;
+>   	int ret = 0;
+>   
+>   	lockdep_assert_held(&arvif->ar->conf_mutex);
+> @@ -1701,9 +1709,7 @@ static void ath11k_control_beaconing(struct ath11k_vif *arvif,
+>   
+>   	ether_addr_copy(arvif->bssid, info->bssid);
+>   
+> -	if (arvif->vif->mbssid_tx_vif)
+> -		tx_arvif = ath11k_vif_to_arvif(arvif->vif->mbssid_tx_vif);
+> -
+> +	tx_arvif = ath11k_mac_get_tx_arvif(arvif);
+>   	ret = ath11k_wmi_vdev_up(arvif->ar, arvif->vdev_id, arvif->aid,
+>   				 arvif->bssid,
+>   				 tx_arvif ? tx_arvif->bssid : NULL,
+> @@ -6333,14 +6339,12 @@ static int ath11k_mac_setup_vdev_params_mbssid(struct ath11k_vif *arvif,
+>   	struct ieee80211_vif *tx_vif;
+>   
+>   	*tx_vdev_id = 0;
+> -	tx_vif = arvif->vif->mbssid_tx_vif;
+> -	if (!tx_vif) {
+> +	tx_arvif = ath11k_mac_get_tx_arvif(arvif);
+> +	if (!tx_arvif) {
+>   		*flags = WMI_HOST_VDEV_FLAGS_NON_MBSSID_AP;
+>   		return 0;
+>   	}
+>   
+> -	tx_arvif = ath11k_vif_to_arvif(tx_vif);
+> -
+>   	if (arvif->vif->bss_conf.nontransmitted) {
+>   		if (ar->hw->wiphy != ieee80211_vif_to_wdev(tx_vif)->wiphy)
+>   			return -EINVAL;
+> @@ -7306,8 +7310,7 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
+>   			   int n_vifs)
+>   {
+>   	struct ath11k_base *ab = ar->ab;
+> -	struct ath11k_vif *arvif, *tx_arvif = NULL;
+> -	struct ieee80211_vif *mbssid_tx_vif;
+> +	struct ath11k_vif *arvif, *tx_arvif;
+>   	int ret;
+>   	int i;
+>   	bool monitor_vif = false;
+> @@ -7361,10 +7364,7 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
+>   			ath11k_warn(ab, "failed to update bcn tmpl during csa: %d\n",
+>   				    ret);
+>   
+> -		mbssid_tx_vif = arvif->vif->mbssid_tx_vif;
+> -		if (mbssid_tx_vif)
+> -			tx_arvif = ath11k_vif_to_arvif(mbssid_tx_vif);
+> -
+> +		tx_arvif = ath11k_mac_get_tx_arvif(arvif);
+>   		ret = ath11k_wmi_vdev_up(arvif->ar, arvif->vdev_id, arvif->aid,
+>   					 arvif->bssid,
+>   					 tx_arvif ? tx_arvif->bssid : NULL,
 
