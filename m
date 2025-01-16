@@ -1,134 +1,121 @@
-Return-Path: <linux-wireless+bounces-17577-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17578-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78FCBA130C7
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 02:29:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B28A13114
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 03:08:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E365161EDB
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 01:29:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 785D91889037
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 02:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A2B1CAA4;
-	Thu, 16 Jan 2025 01:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D8274059;
+	Thu, 16 Jan 2025 02:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hf3LEtuy"
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="vJdFX+7P"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2289424A7ED
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 01:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60667082D;
+	Thu, 16 Jan 2025 02:08:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736990980; cv=none; b=BuRPBDPvze3GFAQOJkJgRl9/jZsdxYIBhN87NmPxYSsXmupL5t8T9nx3OjJxF2EWoMd1WAbv8ErXS17u3B0Wc8BmAeVA2m+G3afen8uZL/MzgY88DT1gkZ7oHlioKj3vzSHFJGqKKIS207RrDCHawS/VRHFdP29PmJLlYS3MHkY=
+	t=1736993299; cv=none; b=t8SarM61ijPy3wlHBL6Rt2QiEtkXFDhrc6Z6Z9Rc7H5VlHgGoU0XwoOzR6/Fga7CeTPEDe2b5JoAzcs8fRENdlVZQwder47kfxgUJr/Th7mu7ILRHHLdlaUYb+SpjSHeq5Tm/kXC4XhOBIdnFEXne7y8feHOfAzwqEIzMQdIq7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736990980; c=relaxed/simple;
-	bh=l6d6z0QYl6ovKo3Hwn0KibZ/xIEO8FxuFcOmfV/Rgaw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KXHLpq/T/MUGPrtHVXy7Zaui80sXWt/HzvXwA/iZmaMRmaEAN6rrlsG09ERexCbjhrbXDnyq1PBbn1GF+xYX6tsrsNrMkEDqXTaz8Er//6a2/An9e8558STc479u/iop7fu/kFckBl7euGweqqsWqpg3Zyr2nmP4/jI1vPCp96E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hf3LEtuy; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5401bd6cdb4so441354e87.2
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2025 17:29:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736990977; x=1737595777; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K9T7mV2vVb98CXuz1Onh9zlMAsvGv9rLwOLXA+rehiw=;
-        b=hf3LEtuyk45LEGRJm/D4VgjhnuyVRLXGihir9e7ml+75ZaWIDPW+lOKgRchoLkn9gT
-         dASPhJBKcRTNGq8n4GtlzUdEgLcaDq2M4M3W0uZICUpOJey3wVwglQIAgbsskxTcrwc3
-         m32Mkat9wfjecph/feXuQNxgXLomzvyGJQ2xYwXZO/Qe52ibikmA65Vjs0jSLp+8s2xy
-         N1IapGyHQEAEgLAJvd/Arw7H4Xpw2yIrXevImgQmmsqij8MZb41J5JUifMlCZnXXRN6j
-         lZaDVtIKNx1RyW5J+eossN1moZz7r6TxoQW+86xhSWuZtHeUR9qLtr6GhS+RcJb2vV6E
-         RTnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736990977; x=1737595777;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K9T7mV2vVb98CXuz1Onh9zlMAsvGv9rLwOLXA+rehiw=;
-        b=j+6xAIzgy9lgN+L4Nn5oTShk9NTw4kbm9/4WE57f+XVfbp5CVBFJNtQUhJq2YL3TD8
-         WSXy1tf5rTj95LHYCYzu4fSYQE8HOz5LNBgNJ1xswCOgmH6Gklsmh5hUvs7Rn2/j0yZF
-         f8bVOMGiAb2h5Eepcv+XTfGvSEUAnCHU9TVy4dDTjP9jHcr8YNwAEGzgeyaBbYBDPzf0
-         Jz2iOgIZGA8APgMjL0IkKJD4wXnfdqU+DCbTBdnhjmrwlBEtZYOlsVbPLxgJbMzGZUFE
-         9guyblfpvY0QFTQ9bI+AcmJ//rYu66blJvGe6tdwv/QXY/VzPqMfnB4ALEaYjQXzpbCX
-         q+5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVz17icIfOTlvqvm6HRxOx3a0jqsu2EoZ7I6OlugYlb6rUlWs6mBGI1UgOuNdagxVBXD0/A/8QnnkvChKHSsw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMN0p/jxCAX1MPxik77+GOg00IJD30bAUa4iFCVwrNqKeDRS2W
-	lYiWnYB3zux9YhY1KgZh6ezsI42buGFZjl54Shwrqqo5TqDsOr3EC8iEzvN8EVY=
-X-Gm-Gg: ASbGncsziNkEGiHImBaY2f8q65jF/2hoERDSO9ZKSzf0xn9DLH+JV3rx5zGVQVuk91g
-	7eKRlhMfHFw5xkOKrIXIXfl4GQHBlZ1WYAx34siU+fyu1tC+T9pxp185UP1ecSgQ8as12L59M2L
-	nYxYz0395mj59SiT2VIH3r11wn42e7blBjhjWQqwaCUTLUfp7XKiwGVqDkkVnuRGgeNi1m06wGK
-	o05VPzj6wubHZngFsD9bkdOjQbE6kiI/p2tCqAQNpDPjum9KO21/X0dJ3akqZ7krYoKlHctOOla
-	f1ZRn/t6P70qq0foc82E90vJ8TTYjj2otcW5
-X-Google-Smtp-Source: AGHT+IGsmCxUgdgnESZu8E5KV1JTbrVec2d1tbzdcd1alvinIyQzFkmE7CReevwd/sdV8PB3Tna87w==
-X-Received: by 2002:a05:6512:1282:b0:540:1fec:f321 with SMTP id 2adb3069b0e04-542845b0a50mr10430769e87.41.1736990977304;
-        Wed, 15 Jan 2025 17:29:37 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5428bec06fcsm2194284e87.195.2025.01.15.17.29.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 17:29:36 -0800 (PST)
-Date: Thu, 16 Jan 2025 03:29:33 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Ajay.Kathat@microchip.com
-Cc: marex@denx.de, linux-firmware@kernel.org, 
-	linux-wireless@vger.kernel.org, kvalo@kernel.org, alexis.lothore@bootlin.com, 
-	Sripad.Balwadgi@microchip.com
-Subject: Re: [PATCH] linux-firmware: wilc3000: add firmware for WILC3000 WiFi
- device
-Message-ID: <snk2vtgflkb5bu2pbuke7hoxpmjy23hspn2pktzplmr3ipnhgg@pz6n4eabguct>
-References: <20250115171751.7308-1-ajay.kathat@microchip.com>
- <b558af8a-a72b-4568-8ed7-5be22105a5c6@denx.de>
- <798971cb-0c4c-4e5c-9e90-2488edca49a7@microchip.com>
+	s=arc-20240116; t=1736993299; c=relaxed/simple;
+	bh=dq25cu2CFcaEy0Sjy94dpa6TNJ5EsczGcqwiGw4b3KM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=cWAHF50nODKgvLpLEcMBgSFomfPQ0+yAgTKNQ/D3ajTeNz1zwmurXYxQMQrcR2PV3LmHfcQq7yhM+DEaHkj1zzm2Z+3ImMFc0zbBt6fa8h8jD0ZDvv+tWEZrz/yoHV7mAxW7g+E3Uzm9dOiUqk/jXFwYn+pCCgvEW7dh2u8/QCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=vJdFX+7P; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1736993285;
+	bh=PPpDrhEzQh9Fo/crDUCNf6BtsRd8ABancL1Cmvc3SAM=;
+	h=Date:From:To:Cc:Subject:From;
+	b=vJdFX+7Pw4pmJjFbEzZ+w1wRoVnFmUIpuf82b/8mFrKEJfBC8rFDLTdfKEKTSzVm9
+	 B7Bxy9/iirn2b7DYw0qY+pHz2G+KiBS2P1VmUhaBpdojsIIPs/UXr/ZbWOcElS3W3N
+	 w+lv7Pr8W3zrJ79LoXi18Es7LJcA3qtH5hbZucTciYgyyUN8D0L4H/kB9p+v9VubvV
+	 oykO2sxcO1Nlpas3V7/RgE9z1CTysYS98eEBZ+J65qnBEWxCTBmjDMx5JjrCpgJSKm
+	 eWmgUfKTBUGA8/THWYq+A2RKCvKpDMh530qicO5/udvjSLKSyDaSLhd9qbO3V5I6lR
+	 Q2cAljz43Lg/A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YYR9123cxz4xQq;
+	Thu, 16 Jan 2025 13:08:05 +1100 (AEDT)
+Date: Thu, 16 Jan 2025 13:08:12 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes@sipsolutions.net>
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>, Ping-Ke Shih
+ <pkshih@realtek.com>, Wireless <linux-wireless@vger.kernel.org>, Linux
+ Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>
+Subject: linux-next: build failure after merge of the wireless-next tree
+Message-ID: <20250116130812.6e6c7b3e@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <798971cb-0c4c-4e5c-9e90-2488edca49a7@microchip.com>
+Content-Type: multipart/signed; boundary="Sig_/CJABub7zUDeTb3IYWBzXz+x";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-On Wed, Jan 15, 2025 at 09:19:45PM +0000, Ajay.Kathat@microchip.com wrote:
-> On 1/15/25 12:02, Marek Vasut wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know
-> > the content is safe
-> > 
-> > On 1/15/25 6:18 PM, Ajay.Kathat@microchip.com wrote:
-> >> This commit adds WLAN firmware for wilc3000 which is supported in
-> >> mainline
-> >> Linux with commit [1].
-> >>
-> >> FW version: 16.1.2
-> > https://github.com/linux4wilc/firmware.git
-> > 
-> > containers firmware v16.3 , why add this old firmware v16.1 here ?
-> 
-> wilc1000 and wilc3000 follow the same version numbering. Since, wilc3000
-> firmware is getting added for the first time, I thought to include the
-> corresponding wilc3000 firmware version,which is v16.1.2, in this commit.
+--Sig_/CJABub7zUDeTb3IYWBzXz+x
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Please use separate Version: fields for all the firmware rather than
-havign misleading and incorrect specification.
+Hi all,
 
-While we are at it, do the old ap/p2p/normal firmware also have 16.0
-version? If not, the Version clause is incorrect anyway (there should be
-an empty line before the unified firmware entry).
-Granted that support for non-unified firmware has been dropped in 2016,
-maybe it's time to drop these files from linux-firmware too?
+After merging the wireless-next tree, today's linux-next build (x86_64
+allmodconfig) failed like this:
 
-> Going forward, both these firmware will be upgraded with a single patch.
-> Once this patch is applied, I will submit a patch to upgrade both
-> wilc1000 and wilc3000 firmware to v16.3.
+drivers/net/wireless/realtek/rtw88/led.c:19:6: error: redefinition of 'rtw_=
+led_init'
+   19 | void rtw_led_init(struct rtw_dev *rtwdev)
+      |      ^~~~~~~~~~~~
+In file included from drivers/net/wireless/realtek/rtw88/led.c:7:
+drivers/net/wireless/realtek/rtw88/led.h:15:20: note: previous definition o=
+f 'rtw_led_init' with type 'void(struct rtw_dev *)'
+   15 | static inline void rtw_led_init(struct rtw_dev *rtwdev)
+      |                    ^~~~~~~~~~~~
+drivers/net/wireless/realtek/rtw88/led.c:64:6: error: redefinition of 'rtw_=
+led_deinit'
+   64 | void rtw_led_deinit(struct rtw_dev *rtwdev)
+      |      ^~~~~~~~~~~~~~
+drivers/net/wireless/realtek/rtw88/led.h:19:20: note: previous definition o=
+f 'rtw_led_deinit' with type 'void(struct rtw_dev *)'
+   19 | static inline void rtw_led_deinit(struct rtw_dev *rtwdev)
+      |                    ^~~~~~~~~~~~~~
 
-Just my 2c, but I don't think that this patch should be applied in its
-current form.
+Caused by commit
 
--- 
-With best wishes
-Dmitry
+  4b6652bc6d8d ("wifi: rtw88: Add support for LED blinking")
+
+I have used the wireless-next tree from next-20250115 for today.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/CJABub7zUDeTb3IYWBzXz+x
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmeIagwACgkQAVBC80lX
+0GyW7Qf+I+Ci4aadJ1YDY0r5cryldp039QRO6Utn2iwRMuMeE7KUz1ktbGjB75vT
+9ghsZud1xJ57PvwUrbKeCP848164Y6cOUR15Mk86jKCLHxIql1KW3k9IpqOR6Tg5
+R4c6Ks3nzOp5tXEejVqkRjZXPrwbFonXSUScLkGclLgH+SdOfFa0x1oBDgHAC2Tl
+t/g8v8YNwo3873TOTTGkv9AZ4zAUSzh5YK04qoX3acIQt8YXCnrS7UB/d7trKcTw
+/+spxcbLuiEVNmOQ67qD/i4R6Y8KwVYIHPc17Udc0mmUK/jjEIkU75f42KMqwUIZ
+h4fxkcgRXcrMAGHknc70pvG9YPuiyw==
+=mNBR
+-----END PGP SIGNATURE-----
+
+--Sig_/CJABub7zUDeTb3IYWBzXz+x--
 
