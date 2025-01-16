@@ -1,130 +1,102 @@
-Return-Path: <linux-wireless+bounces-17610-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17611-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E18A14105
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 18:42:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D0EA1423A
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 20:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3252B16797D
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 17:42:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3B6C7A3969
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 19:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C325A24A7C6;
-	Thu, 16 Jan 2025 17:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D7C22CBC1;
+	Thu, 16 Jan 2025 19:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bcJOOyY0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rdIElFlr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8452F137930
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 17:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D55222E40F
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 19:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737049332; cv=none; b=AepAQOGGB8cNfq3sp4t/LFEI73U8vip02UOCi9211KoPwUEXBDlHkVqw5jugDzjbY7aJKIZ25zfFZ8gzgTaMB9LpywVB0AcbyooeiCcFG3K2YBqta1dfaCBn2kmzEa1WCVJm2v3iWA/JMat4EfS6CBLTMDZmeYwVl63p+GCFOq0=
+	t=1737055578; cv=none; b=b+1YSvt7WPyw0yT7k2H7O1k+V//rYyft9oI20zyeyLwdYcTj/erK6CuS7mw4xBufKnpB2GnR3alWuYsvrYad/Q7LODTixWTlAu2Q7kpDlxklhM8UuyoncNwVmY0f3KE0GYblenfOMhNakFNQhTrXT5sl5vODunLgSsW5HYdj1X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737049332; c=relaxed/simple;
-	bh=zhUXx4gEfGo2K52PCANgM4cTfeRaBUolS1xZn2oOKsE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C4EuF69sTrf+4D6PvAyJjSEukuMGPZqHbDYPpN9m4JHKocsSnEra6EjgXxp5azOc/DnB4wWXAcDhGY6yl5s3+RKyKVYW1DJgygzz3L8sg1+YMRfuX0xg1vF+YkruJ39HDjT66T0q/Sf5sRZhB7WPY0AGEPyru8+UxY/e7xxXCTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bcJOOyY0; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50GEKQVp022271
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 17:42:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2Rtd3H7zwl4PHifGjlMJEfP9eYuxYGowXIigRP2aSXA=; b=bcJOOyY0n4R0hvFd
-	Z+V9HFEDYssZYNMTk3h/BNLGLmMYLQHcdr8jf/r1G+cMwIW/TKdopIjIq/bZTgPm
-	bSTKTMDcMD6kmxg0ZrOhbupub8hqhkGEANcvfAwUURoI9xBN6waB5YlA0LSg/cUX
-	14t95TvAT6AWNliY19OxeG+n4c0oqKXbj9KER/rHoQtOsAxNdtxCis9uQ8qxcN9a
-	8uZweRMJr+yqvpgJfRMoRjUCWsKxR587mRWdA5RC1F4SBzztZTGF7NcDY0vhvegp
-	frzXMynTfmr6bhsWGrBgJVMNsFu9Uc348VMAmcVo868vDg2YDKv5o1C058sBb/gD
-	EXdgGg==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4473se0h52-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 17:42:09 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2161d185f04so16655195ad.3
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 09:42:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737049328; x=1737654128;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Rtd3H7zwl4PHifGjlMJEfP9eYuxYGowXIigRP2aSXA=;
-        b=Koe+nw8ram6V+3tz8uXkdU02U5qnrPrcXXK4HMB8XC0sjxQzw0hWkcsxwcd6/fkIBf
-         TyFED9MGfzHz0MnSoKgngNgSb2+C1kkIiI85yXQjKX/DNeQXHngrrCD/3b9ID48KK48O
-         tX7hSQZn0uTQUtkJ+nVSlZN49E/lRE+G/zrp7oZFl9TIp3ZyDbtj6T4L0U4JLNV8ENxZ
-         i6rdMLDw4Aj1sB6rH+BRJGiao6Czx7EjE0K9KgVwmvh2egFjB1aodKxNWlvY1bTM2mMr
-         p3OtXH8C/c6NiVm2aptSMjDd7Kq02b3uhD4x2VorsD/2t7VxnjBURpdy0KRmRfWVyWki
-         mSwA==
-X-Forwarded-Encrypted: i=1; AJvYcCXo1v40ZGIuVuYVyDY81byIwHNHI5gFjD7sFN9aExM0fUjGMz6Wz/Gi2inJ0V/hUDVPWaf6RbnMHd+RT3LlmQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyFilrrs4AUwbR10UAoBGl2pqlw1mBmIIzWe2hE6oyNocZXWTF
-	xlSPUpkde4dD9DIHDvaXmncjqfgwn0lg6iIy4YdccJUnv9kwtLbqj93jrv64l2FHi62+TWo2DcT
-	EBdowql+Y6DnpE88yxYeOXWaxqa4SYUasvXjG24DBYb77dC7cTVUdnJXDB+fAXhhOlQ==
-X-Gm-Gg: ASbGncuFcyrsP4HvyMVlNa2kqQ/tunzla6/igwqZ7GzN9nfSqp5jdepMfaFs23NQxOg
-	SGc0zOcKq7FwENWxQS9NsRvOEyMameysJxJvyWqbmzeO7fcd8JqRpDq6spkl9t5pfH2z7rVtswi
-	iwWXrNKYB3lviqa9LUCQADmZ9piIa32gulu2Jw3nPfcFplGYLziRZGs3DJBf1za5/6zzfkL19Aw
-	hclPJtwGSu46FJUFhnTK22kUzcegFw3ABT/Pm5PEuy+luhYaqyXTrryh0HRMJZHeQqXICEfwgzy
-	dYjgAdHCPFTJvA03LXkOI3I6RycODNxL5iB26BO7xXYHTcmBSw==
-X-Received: by 2002:a05:6a00:1bca:b0:725:a78c:6c31 with SMTP id d2e1a72fcca58-72d21f107f1mr48618160b3a.3.1737049328036;
-        Thu, 16 Jan 2025 09:42:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFqNuoeKH0RcFcycCEO91zE19PrVGiTgcBdAdU6UMAJ/wChcBQPxW3/kY9w5bc67TNoldqyhw==
-X-Received: by 2002:a05:6a00:1bca:b0:725:a78c:6c31 with SMTP id d2e1a72fcca58-72d21f107f1mr48618128b3a.3.1737049327642;
-        Thu, 16 Jan 2025 09:42:07 -0800 (PST)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-a9bce3a7bbesm324090a12.42.2025.01.16.09.42.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Jan 2025 09:42:07 -0800 (PST)
-Message-ID: <4e1b3008-97e8-4652-a07f-56983d989444@oss.qualcomm.com>
-Date: Thu, 16 Jan 2025 09:42:06 -0800
+	s=arc-20240116; t=1737055578; c=relaxed/simple;
+	bh=1qBdtG9JK9sIk3aW1/PXjJPv5bRecs9Mua8OjF6+Pz8=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=YMNg03a/h60BrN+3UwTPIJ5uJvd7KySRpmmCSaSFNqMNksN5YWMhVCbZ5nFOSwN/twQ0PpvAMfZ5dcVJP8CLYYeF6BPX1hTsVrloMmfm00/JK4h79LZ2YP6sasEULsZiNlmK97h1IC15s6F2oWxRJUWwzIJWjO1/WSUgZ7+WDjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rdIElFlr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE71BC4CED6;
+	Thu, 16 Jan 2025 19:26:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737055577;
+	bh=1qBdtG9JK9sIk3aW1/PXjJPv5bRecs9Mua8OjF6+Pz8=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=rdIElFlrllrJISKujK3wsTPsT4q1ybEfFABwCkLxgAJd2nVt9fY+hNeIZBbVeAVn2
+	 zMyP+x7wf1xxh8p+zo3+5cX0e3vLuSUbjp1tdZl8GQtIOokoQP3BBHsCMaz/+aVmHT
+	 FXyrdzvkjJAtHGOC5UZOS64Uk/IJx01jMEi/OQwMgVA3gGeHPfA4ulkKrZDkGfQmmy
+	 0uFZWuQxTb74Qmt2moEwCg2voL7fvQWvID5mC0q4fUmMM8vTlLT4OTqi7WV55lq5Dq
+	 cuw/jt8+pD5urYFcUShrgIKTkIcJTFZ/cw5jKRLVfmNfJvc3hF90f0nJzI84xp2Ghi
+	 V2ZIHD4XJ6Ayw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: ath9k: cleanup struct ath_tx_control and
- ath_tx_prepare()
-To: Kalle Valo <kvalo@kernel.org>, Dmitry Antipov <dmantipov@yandex.ru>
-Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        linux-wireless@vger.kernel.org
-References: <20250115171750.259917-1-dmantipov@yandex.ru>
- <87y0zbm2f8.fsf@kernel.org>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <87y0zbm2f8.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: l0NnyQM3ldtz-X00kH9ChqyZ-saXrQT_
-X-Proofpoint-ORIG-GUID: l0NnyQM3ldtz-X00kH9ChqyZ-saXrQT_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-16_07,2025-01-16_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 adultscore=0 mlxscore=0 bulkscore=0 impostorscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=836 lowpriorityscore=0
- clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501160132
+Subject: Re: [PATCH v2] wifi: rtw88: add RTW88_LEDS depends on LEDS_CLASS to
+ Kconfig
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20250116120424.13174-1-pkshih@realtek.com>
+References: <20250116120424.13174-1-pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: <linux-wireless@vger.kernel.org>, <rtl8821cerfe2@gmail.com>,
+ <sfr@canb.auug.org.au>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <173705557492.574756.8841895327319970368.kvalo@kernel.org>
+Date: Thu, 16 Jan 2025 19:26:16 +0000 (UTC)
 
-On 1/16/2025 3:19 AM, Kalle Valo wrote:
-> Dmitry Antipov <dmantipov@yandex.ru> writes:
-> 
->> After switching to mac80211 software queues, pointer to 'struct ath_node'
->> in 'struct ath_tx_control' is still assigned but not actually used. So drop
->> it and cleanup related things in 'ath_tx_prepare()'. Compile tested only.
->>
->> Fixes: 50f08edf9809 ("ath9k: Switch to using mac80211 intermediate software queues.")
->> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> 
-> I don't think cleanup patches should have a Fixes tag. This is not
-> fixing a user visible issue.
-> 
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-ACK
+> When using allmodconfig, .config has CONFIG_LEDS_CLASS=m but
+> autoconf.h has CONFIG_LEDS_CLASS_MODULE (additional suffix _MODULE)
+> instead of CONFIG_LEDS_CLASS, which condition CONFIG_LEDS_CLASS in
+> rtw88/led.h can't work properly.
+> 
+> Add RTW88_LEDS to Kconfig, and use it as condition to fix this problem.
+> 
+> drivers/net/wireless/realtek/rtw88/led.c:19:6: error: redefinition of 'rtw_led_init'
+>    19 | void rtw_led_init(struct rtw_dev *rtwdev)
+>       |      ^~~~~~~~~~~~
+> In file included from drivers/net/wireless/realtek/rtw88/led.c:7:
+> drivers/net/wireless/realtek/rtw88/led.h:15:20: note: previous definition of 'rtw_led_init' with type 'void(struct rtw_dev *)'
+>    15 | static inline void rtw_led_init(struct rtw_dev *rtwdev)
+>       |                    ^~~~~~~~~~~~
+> drivers/net/wireless/realtek/rtw88/led.c:64:6: error: redefinition of 'rtw_led_deinit'
+>    64 | void rtw_led_deinit(struct rtw_dev *rtwdev)
+>       |      ^~~~~~~~~~~~~~
+> drivers/net/wireless/realtek/rtw88/led.h:19:20: note: previous definition of 'rtw_led_deinit' with type 'void(struct rtw_dev *)'
+>    19 | static inline void rtw_led_deinit(struct rtw_dev *rtwdev)
+>       |                    ^~~~~~~~~~~~~~
+> 
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Closes: https://lore.kernel.org/linux-wireless/e19a87ad9cd54bfa9907f3a043b25d30@realtek.com/T/#me407832de1040ce22e53517bcb18e322ad0e2260
+> Fixes: 4b6652bc6d8d ("wifi: rtw88: Add support for LED blinking")
+> Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+
+Patch applied to wireless-next.git, thanks.
+
+b4bfbc50b1b9 wifi: rtw88: add RTW88_LEDS depends on LEDS_CLASS to Kconfig
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20250116120424.13174-1-pkshih@realtek.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
