@@ -1,188 +1,137 @@
-Return-Path: <linux-wireless+bounces-17606-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17607-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4117A13C86
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 15:42:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C75A13D8E
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 16:23:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0917A188C289
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 14:42:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4A30188D685
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 15:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44EF22ACEB;
-	Thu, 16 Jan 2025 14:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2DDC22A80E;
+	Thu, 16 Jan 2025 15:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bnboD+aY"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="NH8912f1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B4224A7C9;
-	Thu, 16 Jan 2025 14:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA17143736
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 15:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737038557; cv=none; b=Xvk9iCz3aX4epSAQGbSJOZF1Pojdk1oB4inDsKlvohng9I7lbXF3aqIQIttJx/m9FqJXDISi1pc3txOiXjAad4kyxH90nbwPaUn/w7mjDuxGA5HE+jvyac+T9lio6kyeMfZ04H1aHkMFYXz0P90JwWJbS32t1JFrXMCIAJsWKXo=
+	t=1737041002; cv=none; b=JE9R4b5fcFXVWW0lb8GbF37HtioWawWkG1ELW+qHZnHDqDEd+9sJukC2G6QVYFxC8iXPsTU/5OaQ1GBdblJX8Z74cR9XGleCy+x9m9cgBt/4K9DqefKtZ8ZPd4awVD1TPyCdnnw+XnW2aexEgb15OQVLqhlFWHV9etiwQSJQBXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737038557; c=relaxed/simple;
-	bh=IytHOeD0st2WzVI40fez+8lx6PY/Y6ty7+lqugmUpA0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nxrp1QsHDvWaSCZAbC2K3yfxU7pidGoIqsXEKZu4GaRfZPFRCNVGc0cb9JPAA3p0DnA0sir3WngZlv+8jpZtZ9Nps4zF666q58qqHldU4G21dlTXUp9vxZtzRN/z8zoU9gT1crHcTTqomkhdfOCq5r+256xii9mdYB0kSxF28jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bnboD+aY; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737038557; x=1768574557;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=IytHOeD0st2WzVI40fez+8lx6PY/Y6ty7+lqugmUpA0=;
-  b=bnboD+aYf79UqYDVIv69HX2BRCQvP2fuKThmz/frOSSWqpKE3ZD6AjMB
-   T+xW0Ii7NahVWowh3qAHAxBc9L6Zzb9yaoSXyNbiBeGEfs8kPxiVZI1Oa
-   kl3wyXSh9M3/hiGqoyJmz/JPgD8IFzyd3VeYcKKyYADDXcT0Qm/2fnaap
-   lkJG1RX9w0MKev3ojTo2gDtB6lr0IbM/4dSjnZQQmIJozcJVINeXz/zT/
-   xqh3EsV7I8fqYaQ9Acc+l85+DSFc7XoX1/V2hbWkTO1PvZ7okWQtMvXpr
-   WblQo4sPhumenO9MjLP6/epGI7UwxiCpW9YhY+KWlNcJivXqkHEH9KaoP
-   g==;
-X-CSE-ConnectionGUID: +SHPae5+SBGrPKP6PynzJA==
-X-CSE-MsgGUID: YNTpTlU0R/COH1BWlZsj2g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="47916826"
-X-IronPort-AV: E=Sophos;i="6.13,209,1732608000"; 
-   d="scan'208";a="47916826"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 06:42:36 -0800
-X-CSE-ConnectionGUID: jdpP7OWyQSKuAYbmo4TG7Q==
-X-CSE-MsgGUID: h8mvhtAuQTOZ/SXnLFmmrA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="110620389"
-Received: from unknown (HELO smile.fi.intel.com) ([10.237.72.154])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 06:42:33 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tYR4o-00000001hb8-0ynU;
-	Thu, 16 Jan 2025 16:42:30 +0200
-Date: Thu, 16 Jan 2025 16:42:29 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: =?utf-8?B?TWljaGHFgiBLxJlwaWXFhA==?= <kernel@kempniu.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Kalle Valo <kvalo@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Alban Bedel <albeu@free.fr>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
-	linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-	linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: ath9k: Obtain system GPIOS from descriptors
-Message-ID: <Z4ka1eBBPkhLKNKM@smile.fi.intel.com>
-References: <20240423-descriptors-wireless-v2-1-6d1d03b30bfa@linaro.org>
- <Z3t6coHFgd9PBCeb@larwa.hq.kempniu.pl>
+	s=arc-20240116; t=1737041002; c=relaxed/simple;
+	bh=wOYJydZ05zexni5iCmfbSnSKDO8udCBwJm1DUOZXF3o=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Dq93BL44K4/TOmg52dKJqyfhBFmdbG5fLMFy+8pF1ptiL8gKrS7e3ccLY/YKcS+ICwT1KaWcomknalHDu5ArqnzuDMbsujRrngfwc8ettvKrrthtFUeECbAWDvVbimU5W+5+e87Z+aTcjJHhrdOJmWrXYmP/FnLaZYbxi25kG8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=NH8912f1; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aaf3c3c104fso208386166b.1
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 07:23:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1737040999; x=1737645799; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3t6OHZijaEdtQho17KfYpalcxu3KfEafC4rmSzrPeQ4=;
+        b=NH8912f1Pi3udf+12n0TL4K/vPDE2DttHNlZDb0kkXlpZJag+sP/yx5zRFsSdRKY15
+         hH+mC7vK0mX7hW2VRwIq11Aoyl5PXrmJSMqOGSAEBslEbRfr0QXas5QyhS00DfZQR3oM
+         fsfl+v+pRz19hMJ9JmXFvgXhHdoHwe0GgBk0A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737040999; x=1737645799;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3t6OHZijaEdtQho17KfYpalcxu3KfEafC4rmSzrPeQ4=;
+        b=WS+2AsHNbuNW4kAYH3yfrNs3efQ1rE/kHecSoQMqlsYAFCUP3ESBOqKEn0wVwvImAT
+         5At9GqxwxWW2h3pexXbVflLt+Od8jVOjAU1fUOjiF/06nte7Ks1FGyv+jT5u1tlurJS7
+         0nrU8iZAzdQ2M3IX2YWKEh/83KsuSGNzRay9wGdZpRy5n2IZon0///wKiK8gKs7LEKe9
+         lwyabGvWymwKK+RgfM5WzCdHSYbDaLOD92Mkj7jtWU0wEFQZIG6i6Lf/NOm1lj72nVvX
+         V9cKhYQsucB/lwgSWJ2aR/Zs5AcjVTYaazI/XvVA4Ld3Runyn4htK7OaOfawTIPLL99W
+         4QpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVWFZrYK/+rx85XcS1+pkkLmimU6pCScuJchUjIrS749EBI4zI1gu1cNP74132wO3wsDuVBdxJLOTpI8LG7MQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYFJ0NhfjPERKyKczAkdoX8Ek4f/aDx2/x2sGJG9WrGqK9NeDu
+	33UpGOwFE+hEOekCeeu67zkRwxrd1Ephz54DPtmXnQ0+44RiO1WEjtywYbb5asJy7MtJ4Ggc+JK
+	AN0dk
+X-Gm-Gg: ASbGncsc1AH5olmo1a+ECCeyWxY9mvvFTWlJZFshFuN8SELtnILFRWiZ6/M7nm4mksa
+	Yq/XEz0e2cOYcW/Ni9OEG0Z7yIyUb7B7eT95ck5LNk8zZK/UUMsKWg7P2Z/52YJVn1z/V8DxgOd
+	SHAor7R6WhlmjarNxgWLFj/Jv1hXLmQukPs00kxJlq8JCqp4sPqEs9HgybFZAyKK5d2D2Dwx2lN
+	MJ4cNJXNzRbIf86fRUXlrVCsyNK8oAo2TWQMIQl1pCgUhyWej5bzVztxH0jDEI79AHjIRcc6H3t
+	RQxX/SXMxtGD3a/pPdY=
+X-Google-Smtp-Source: AGHT+IESZHCMVm/ihlphauAy9omKbUvnYD/SIOp2AGMrCDzz4cC6qEyYek2Bns5dZEV3bLMLeDlScg==
+X-Received: by 2002:a17:907:2cc4:b0:aae:ec01:2de4 with SMTP id a640c23a62f3a-ab2ab5f52efmr3024980066b.30.1737040999293;
+        Thu, 16 Jan 2025 07:23:19 -0800 (PST)
+Received: from [192.168.178.74] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384ce1914sm10348766b.57.2025.01.16.07.23.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Jan 2025 07:23:18 -0800 (PST)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Marcel Hamer <marcel.hamer@windriver.com>
+CC: Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>, <stable@vger.kernel.org>
+Date: Thu, 16 Jan 2025 16:23:18 +0100
+Message-ID: <1946fb62e70.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <20250116132240.731039-1-marcel.hamer@windriver.com>
+References: <20250116132240.731039-1-marcel.hamer@windriver.com>
+User-Agent: AquaMail/1.54.1 (build: 105401536)
+Subject: Re: [PATCH v3] wifi: brcmfmac: fix NULL pointer dereference in brcmf_txfinalize()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z3t6coHFgd9PBCeb@larwa.hq.kempniu.pl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Jan 06, 2025 at 07:38:42AM +0100, Michał Kępień wrote:
-> Hi Linus,
-> 
-> > The ath9k has an odd use of system-wide GPIOs: if the chip
-> > does not have internal GPIO capability, it will try to obtain a
-> > GPIO line from the system GPIO controller:
-> > 
-> >   if (BIT(gpio) & ah->caps.gpio_mask)
-> >         ath9k_hw_gpio_cfg_wmac(...);
-> >   else if (AR_SREV_SOC(ah))
-> >         ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
-> > 
-> > Where ath9k_hw_gpio_cfg_soc() will attempt to issue
-> > gpio_request_one() passing the local GPIO number of the controller
-> > (0..31) to gpio_request_one().
-> > 
-> > This is somewhat peculiar and possibly even dangerous: there is
-> > nowadays no guarantee of the numbering of these system-wide
-> > GPIOs, and assuming that GPIO 0..31 as used by ath9k would
-> > correspond to GPIOs 0..31 on the system as a whole seems a bit
-> > wild.
-> > 
-> > Register all 32 GPIOs at index 0..31 directly in the ATH79K
-> > GPIO driver and associate with WIFI if and only if we are probing
-> > ATH79K wifi from the AHB bus (used for SoCs).
-> 
-> I don't know how likely it is today that this patch will get merged,
+On January 16, 2025 2:22:55 PM Marcel Hamer <marcel.hamer@windriver.com> wrote:
 
-I believe the idea is to have this (okay, something that moves to GPIO descriptors)
-merged at some point, better sooner than later.
+> On removal of the device or unloading of the kernel module a potential NULL
+> pointer dereference occurs.
+>
+> The following sequence deletes the interface:
+>
+>  brcmf_detach()
+>    brcmf_remove_interface()
+>      brcmf_del_if()
+>
+> Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
+> BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
+>
+> After brcmf_remove_interface() call the brcmf_proto_detach() function is
+> called providing the following sequence:
+>
+>  brcmf_detach()
+>    brcmf_proto_detach()
+>      brcmf_proto_msgbuf_detach()
+>        brcmf_flowring_detach()
+>          brcmf_msgbuf_delete_flowring()
+>            brcmf_msgbuf_remove_flowring()
+>              brcmf_flowring_delete()
+>                brcmf_get_ifp()
+>                brcmf_txfinalize()
+>
+> Since brcmf_get_ip() can and actually will return NULL in this case the
+> call to brcmf_txfinalize() will result in a NULL pointer dereference inside
+> brcmf_txfinalize() when trying to update ifp->ndev->stats.tx_errors.
+>
+> This will only happen if a flowring still has an skb.
+>
+> Although the NULL pointer dereference has only been seen when trying to
+> update the tx statistic, all other uses of the ifp pointer have been
+> guarded as well with an early return if ifp is NULL.
+>
+> Cc: stable@vger.kernel.org
 
-> but it turned out to be useful for fixing an OpenWRT issue [1][2].  However,
-> the patch required some tweaking in order to make it work, so I assumed
-> it cannot hurt to provide some feedback on it.
+Acked-by: Arend van Spriel  <arend.vanspriel@broadcom.com>
 
-Feedback is much appreciated, esp. from the real users on real HW!
-
-...
-
-> > +	lookup->dev_id = "ath9k";
-> 
-> Since the devm_gpiod_get_index() call in ath9k_hw_gpio_cfg_soc() passes
-> ah->dev as the first argument, "ath9k" is not the string that
-> gpiod_find_lookup_table() will use for matching the lookup table;
-> instead, it will be the wireless device's name, e.g. "18100000.wmac" on
-> my router (which is built on Atheros 9344).  This causes
-> devm_gpiod_get_index() to return -ENOENT [3].
-
-Yeah, there is a fundamental issue with this patch. The part that adds a GPIO
-table has to be part either of:
-1) Device Tree (or other firmware description);
-2) board file;
-3) quirk in the wireless driver.
-
-The GPIO driver won't ever know the all of the details of the zillion of
-possible platforms on this chip and the resource configurations.
-
-...
-
-> > +	for (i = 0; i < ATH79K_WIFI_DESCS; i++) {
-> > +		lookup->table[i] = (struct gpiod_lookup)
-> > +			GPIO_LOOKUP_IDX(label, 0, NULL, i,
-> 
-> This sets the chip_hwnum member of every registered lookup table entry
-> to 0 (second GPIO_LOOKUP_IDX() argument), which causes all 32 GPIOs
-> registered here to be erroneously mapped to the GPIO chip's first line.
-> I believe the second argument for GPIO_LOOKUP_IDX() should also be 'i'
-> here - or at least that is what made the patch work for me (after fixing
-> the lookup table matching issue).
-
-Good catch! (Also note my comments to the patch which I done previously).
-
-...
-
-> > +	/* Obtains a system specific GPIO descriptor from another GPIO controller */
-> > +	gpiod = devm_gpiod_get_index(ah->dev, NULL, gpio, flags);
-> 
-> Since using the resource-managed version of gpiod_get_index() requires
-> providing a valid pointer to a struct device as the first argument and
-> the name of that device is not going to be "ath9k", some other means of
-> matching this call with the lookup table registered in
-> ath79_gpio_register_wifi_descriptors() needs to be devised.
-> 
-> I resorted to the NULL-matching fallback in gpiod_find_lookup_table(),
-> which enables a lookup table with dev_id set to NULL to be matched for a
-> gpiod_get_index() call with dev also set to NULL, coupled with setting
-> con_id in all the lookup table entries and in the gpiod_get_index() call
-> to a matching string.
-
-Yeah, but this way it's even worse hack :-(.
-So, the only driver that knows about the device name is the Wi-Fi driver.
-Otherwise this should come by other means as I listed above.
-
--- 
-With Best Regards,
-Andy Shevchenko
+> Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
+> Link: 
+> https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
 
 
 
