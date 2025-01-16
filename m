@@ -1,128 +1,154 @@
-Return-Path: <linux-wireless+bounces-17598-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17599-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E7CA1398C
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 12:59:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF26FA1399D
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 13:00:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00D5F7A41CC
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 11:59:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D1EA3A6D41
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 12:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3070B1DE2BE;
-	Thu, 16 Jan 2025 11:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179671DE4FF;
+	Thu, 16 Jan 2025 12:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+Sc4o09"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EBQuTfft"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6E919FA92
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 11:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CB71DE4F9
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 12:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737028761; cv=none; b=HgmcbMdxjJgM/QaRmREMnOnjh6nTgiX0UktNCGx8FPjEWSX1a3aCk1k8lYFq+GiE1zc4jr8pqUlli1J4soZzIp7bgyAaOtZdIwFxQ3VH8LQednHcq01p9R3aEJ7/rRep1SZ+cElhGhb3LR8MZqHMFtq+uIyWXoJfHMzE1W1oem4=
+	t=1737028806; cv=none; b=ZInzWzk2uE53buJIeC1PJLoOfi5bR+j7ZfX+J0BsBKF9LE6saueE66YRzRkb1qHqxxGtGsfTy6UZzgovBhqRMt7cWzwvlL6IjQeErZOkDpiHAManDiB/bDQypWKVBGfsqpMBIy962hIBcgSAHY38bBKjktZTzD5UtcS8w1egoz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737028761; c=relaxed/simple;
-	bh=XxMfDiJW7EnW4WvRbo3d2krzQIkID6cBIBy3wfgJq14=;
+	s=arc-20240116; t=1737028806; c=relaxed/simple;
+	bh=aIzrQq9tBTdcVGI4/Nll1Kjfe3pVlC5BM/kqbcXYrDs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O4pa+aMp12hC0GEKefO35JieVqRk+kaljGrSFeisJh+5TZ2W+uSzBiqlhVIjctWtXZHUOh3Y0/l1BjnSfkMBGBF7kKEtTaXvSlvFOcR0s9ykR4ku3/3+NeYPhtvKDf/d0067ymrhvA6eKKUOmKA/YOakUCOhNERz3oRvwcFok0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+Sc4o09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D837C4CEDF
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 11:59:18 +0000 (UTC)
+	 To:Cc:Content-Type; b=M0A1z6kHOic5xq5N3TAIghsBzRKs8pySCMQo5YCznN3vyySP2OiEMzyndY5RdfMFQnGkiDV2vinBvqKoIZxLDaoBxlPbvbERqERWFjhko4oIy3NN8Vi9LwYJ3qfrLnMvIh+83eIn4Y3uUSJqv7fWw+ik5qCn3NJv1LuHC01/Wnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EBQuTfft; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4947FC4CEE2
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 12:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737028758;
-	bh=XxMfDiJW7EnW4WvRbo3d2krzQIkID6cBIBy3wfgJq14=;
+	s=k20201202; t=1737028805;
+	bh=aIzrQq9tBTdcVGI4/Nll1Kjfe3pVlC5BM/kqbcXYrDs=;
 	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=B+Sc4o09RH02vVclWL1rRg8QL9e1y8JDdH1/B4PtZMs/1ZsUtDiqgaL0i/d0dAQ5p
-	 0gfQZzNvl0KrxVklgCuxgOr5lGcNxk5B908DEJf5x66EkZmdn5KfRnsfrYOdels4gz
-	 hhqItF9eCilPt7UxMs4HQz10mejmERAcZwC7Cqhi/zWA5KmX85X3xsmnfRDsAKdOk/
-	 Q3Dpl10vEhsehGKuTR+jjwsuy/LCvBDgmz4ip8xmRQvQPCgQ9Q8QnxSjAT0MHmXB4o
-	 fnTBF1+IVnP2egfOctPQr/RZ3Ed7xrwZrF52J8MXWm/+JbEpbnQwO0P103EBXgO4FS
-	 3IXUKXnIPSZig==
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5d3f65844deso1369395a12.0
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 03:59:18 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWzqUOxASRgxalNGbjyAi46WgzXHWucrtiCLiWFioaPRjjIgaxFZ4P6gGn5FtUn1gOeFG34IwWIeO63LhYGfg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvDDDeumH0TBZ+1wpBrVoI/4noDfIWfDLxIrXEEljnfUsqe1Z3
-	aeo7Ffinjo7kSk/FcMi2WpmjCq7kvYAS0VqcoQ/hRbS98Pc3B2kGLjBiCfTC77iHZABKJfBwYFP
-	9Nwwovi9yzZJlhyR/6ktrJ1R8dII=
-X-Google-Smtp-Source: AGHT+IGDyT4bZb4xIo2DjV3d7+rg3m9XzVpUJ3QYWXuhQ94hQJdd+NEdfASEiD1yBXpJLXe4SnCqlkEA78zwafjdJmo=
-X-Received: by 2002:a05:6402:26d3:b0:5d9:a59:854a with SMTP id
- 4fb4d7f45d1cf-5d972e07f98mr31517607a12.13.1737028757096; Thu, 16 Jan 2025
- 03:59:17 -0800 (PST)
+	b=EBQuTfftzFpQ1VMwNKHQXOhazjdIzUClt8c1HnZ7Z1atbFJ8cftmrc7rUO6C7uNHU
+	 PRcHU5FgkXGtuoaZbZySDZj3XOdlPIqgFjGrE7TRtQQuj2QQJNo9gXRrvjWstbY4ol
+	 ji4eVwCLVOlNbH+NFPHzGBrPjv3wi4dN/LzShx1r8HnAYfuK1rCGg1KsQUMDtw1WoR
+	 yBKJatMiuZkPMeOIyvYNV8CImBtSGjF11N4cxySz3Zffm3CkZJ2hz/U2i56ijYcejA
+	 RF6qilHpQ20giR4DzlWgE0vQoX8NtnXtgVmqx/XD46PfTGO1P3c7M96Tzhu6QTYjEw
+	 BSzoyeAzwTejg==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aaf8f0ea963so161709666b.3
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 04:00:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVhd3krm4iY5VHULKcRpz2tfXRePFfJDkwIyStVxRz4r0D6pU7X8HyvGhUKMyI0ZAvZCgw0V+V9784oXsQ70A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIkQlWmDZXLYWCFktH8z0AbaOS2Grj05phyw8zATaV3E2Ko4KX
+	24pOBH42BCs3qxSdfKpA7CiKm8v2w6P7bl7XsMHHjno7FWlgNy42z08T+4ZlQLSDgX/yYP5aO3F
+	FZIgGQ7aDdksxS4a/t/KG8bWc4ic=
+X-Google-Smtp-Source: AGHT+IEknswj0r6+jEMspheA8T+7pscfhXggdRbCTT49JUROv5lFYLojtUGe4XA8Xiy0BTeI1TZYz0HEqlySvLWz7/M=
+X-Received: by 2002:a17:907:6d0e:b0:aaf:5c9:19f9 with SMTP id
+ a640c23a62f3a-ab2ab6f3455mr3054182766b.27.1737028803814; Thu, 16 Jan 2025
+ 04:00:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <82c98b21-326f-4694-86cb-5d6af04a9166@RTEXMBS04.realtek.com.tw>
-In-Reply-To: <82c98b21-326f-4694-86cb-5d6af04a9166@RTEXMBS04.realtek.com.tw>
+References: <MW5PR11MB5810AB20FCCD2A0B4AFDC901A3192@MW5PR11MB5810.namprd11.prod.outlook.com>
+In-Reply-To: <MW5PR11MB5810AB20FCCD2A0B4AFDC901A3192@MW5PR11MB5810.namprd11.prod.outlook.com>
 From: Josh Boyer <jwboyer@kernel.org>
-Date: Thu, 16 Jan 2025 06:58:59 -0500
-X-Gmail-Original-Message-ID: <CA+5PVA7+vovudJLEip6P6gcZwDzzFvL2CQfd9ij32aXUvgtp=A@mail.gmail.com>
-X-Gm-Features: AbW1kvZzBZmKaqFTbcNZuMdBTb3k0xA_zkyQhpZ_zReGMvVIm39tO4lbEcKAEno
-Message-ID: <CA+5PVA7+vovudJLEip6P6gcZwDzzFvL2CQfd9ij32aXUvgtp=A@mail.gmail.com>
-Subject: Re: pull-request: update rtw89 firmware by rtw-fw-2025-01-12
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org, 
-	damon.chen@realtek.com, phhuang@realtek.com
+Date: Thu, 16 Jan 2025 06:59:50 -0500
+X-Gmail-Original-Message-ID: <CA+5PVA5E8R0XNAJX3ymphG4PL66YxJ6RbNZG+1fCvo3cq9hR3g@mail.gmail.com>
+X-Gm-Features: AbW1kvbjSZ1EgFzukx00E4xmUcszM-BRtX3HfFmSR70PW7EVuFFU-mXGPiF2Msw
+Message-ID: <CA+5PVA5E8R0XNAJX3ymphG4PL66YxJ6RbNZG+1fCvo3cq9hR3g@mail.gmail.com>
+Subject: Re: pull request: iwlwifi firmware updates 2024-01-15
+To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
+Cc: "linux-firmware@kernel.org" <linux-firmware@kernel.org>, "kyle@infradead.org" <kyle@infradead.org>, 
+	"Hutchings, Ben" <ben@decadent.org.uk>, "Yang, You-Sheng" <vicamo.yang@canonical.com>, 
+	"Dreyfuss, Haim" <haim.dreyfuss@intel.com>, Wireless <linux-wireless@vger.kernel.org>, 
+	"Damary, Guy" <guy.damary@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jan 11, 2025 at 8:42=E2=80=AFPM Ping-Ke Shih <pkshih@realtek.com> w=
-rote:
+On Wed, Jan 15, 2025 at 2:46=E2=80=AFAM Korenblit, Miriam Rachel
+<miriam.rachel.korenblit@intel.com> wrote:
 >
 > Hi,
 >
-> Update rtw89 firmware including RTL8852B, RTL8852BT, RTL8852C and RTL8922=
-A.
 >
-> Thank you
-> Ping-Ke
 >
-> ---
+> This contains a new firmware for Bz device.
 >
-> The following changes since commit 7673dffd5e3324a726caf8bfc0f1a005862f5f=
-16:
 >
->   Merge branch 'robot/pr-0-1736442209' into 'main' (2025-01-09 17:11:19 +=
+>
+> Please pull or let me know if there are any issues.
+>
+>
+>
+> --
+>
+> Thanks,
+>
+> Miri
+>
+>
+>
+> The following changes since commit a28a9226ccb8bf393b8e7dd8970a4d967c1a1d=
+92:
+>
+>
+>
+>   Merge branch 'robot/pr-0-1736646402' into 'main' (2025-01-13 14:30:09 +=
 0000)
+>
+>
 >
 > are available in the Git repository at:
 >
->   https://github.com/pkshih/linux-firmware.git tags/rtw-fw-2025-01-12
+>
+>
+>   http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.g=
+it tags/iwlwifi-fw-2025-01-15
 
 Merged and pushed out.
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/406
+https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/407
 
 josh
 
 >
-> for you to fetch changes up to f495ed8a143a4e1844cd18f875c82f2823843d02:
 >
->   rtw89: 8852b: update fw to v0.29.29.8 (2025-01-12 09:33:44 +0800)
+>
+> for you to fetch changes up to 04e6d3f371ab3ad6970603be194023bd4c700126:
+>
+>
+>
+>   iwlwifi: add Bz FW for core90-93 release (2025-01-15 09:38:48 +0200)
+>
+>
 >
 > ----------------------------------------------------------------
-> Kuan-Chung Chen (1):
->       rtw89: 8922a: update fw to v0.35.52.1 and stuffs
 >
-> Ping-Ke Shih (3):
->       rtw89: 8922a: update fw to v0.35.54.0
->       rtw89: 8852c: update fw to v0.27.122.0
->       rtw89: 8852b: update fw to v0.29.29.8
+> released core90 of BZ+FM
 >
-> Po-Hao Huang (2):
->       rtw89: 8852b: update fw to v0.29.29.7
->       rtw89: 8852bt: update fw to v0.29.110.0
 >
->  WHENCE                  |   1 +
->  rtw89/rtw8852b_fw-1.bin | Bin 1242808 -> 1244784 bytes
->  rtw89/rtw8852bt_fw.bin  | Bin 897512 -> 913992 bytes
->  rtw89/rtw8852c_fw-1.bin | Bin 2180616 -> 2375560 bytes
->  rtw89/rtw8922a_fw-3.bin | Bin 0 -> 1725278 bytes
->  5 files changed, 1 insertion(+)
->  create mode 100644 rtw89/rtw8922a_fw-3.bin
+>
+> ----------------------------------------------------------------
+>
+> Miri Korenblit (1):
+>
+>       iwlwifi: add Bz FW for core90-93 release
+>
+>
+>
+>  WHENCE                       |   3 +++
+>
+>  iwlwifi-bz-b0-fm-c0-93.ucode | Bin 0 -> 1931432 bytes
+>
+>  2 files changed, 3 insertions(+)
+>
+>  create mode 100644 iwlwifi-bz-b0-fm-c0-93.ucode
 
