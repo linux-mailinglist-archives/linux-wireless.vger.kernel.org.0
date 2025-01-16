@@ -1,154 +1,153 @@
-Return-Path: <linux-wireless+bounces-17599-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17600-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF26FA1399D
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 13:00:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21011A139B2
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 13:05:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D1EA3A6D41
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 12:00:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49362168EB2
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 12:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179671DE4FF;
-	Thu, 16 Jan 2025 12:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEF21D6DAA;
+	Thu, 16 Jan 2025 12:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EBQuTfft"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Amky3+bA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CB71DE4F9
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 12:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453B324A7C2
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 12:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737028806; cv=none; b=ZInzWzk2uE53buJIeC1PJLoOfi5bR+j7ZfX+J0BsBKF9LE6saueE66YRzRkb1qHqxxGtGsfTy6UZzgovBhqRMt7cWzwvlL6IjQeErZOkDpiHAManDiB/bDQypWKVBGfsqpMBIy962hIBcgSAHY38bBKjktZTzD5UtcS8w1egoz8=
+	t=1737029107; cv=none; b=AX6ZLz3Daj4xT+u7uwIEp7BdDU07XaWC7t3iiElo55uWESpgcDlLvloKXRNercLnO5uUV9BWHWjMp8NqYZtDtUReidOlwccIyxTk2td3D+1PWuq/v8KzqzWtqW6RUdtf4p4JHkNweT/fPLvQnPRHYsk9p0lFOj7q1j3C58Q63q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737028806; c=relaxed/simple;
-	bh=aIzrQq9tBTdcVGI4/Nll1Kjfe3pVlC5BM/kqbcXYrDs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M0A1z6kHOic5xq5N3TAIghsBzRKs8pySCMQo5YCznN3vyySP2OiEMzyndY5RdfMFQnGkiDV2vinBvqKoIZxLDaoBxlPbvbERqERWFjhko4oIy3NN8Vi9LwYJ3qfrLnMvIh+83eIn4Y3uUSJqv7fWw+ik5qCn3NJv1LuHC01/Wnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EBQuTfft; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4947FC4CEE2
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 12:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737028805;
-	bh=aIzrQq9tBTdcVGI4/Nll1Kjfe3pVlC5BM/kqbcXYrDs=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=EBQuTfftzFpQ1VMwNKHQXOhazjdIzUClt8c1HnZ7Z1atbFJ8cftmrc7rUO6C7uNHU
-	 PRcHU5FgkXGtuoaZbZySDZj3XOdlPIqgFjGrE7TRtQQuj2QQJNo9gXRrvjWstbY4ol
-	 ji4eVwCLVOlNbH+NFPHzGBrPjv3wi4dN/LzShx1r8HnAYfuK1rCGg1KsQUMDtw1WoR
-	 yBKJatMiuZkPMeOIyvYNV8CImBtSGjF11N4cxySz3Zffm3CkZJ2hz/U2i56ijYcejA
-	 RF6qilHpQ20giR4DzlWgE0vQoX8NtnXtgVmqx/XD46PfTGO1P3c7M96Tzhu6QTYjEw
-	 BSzoyeAzwTejg==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aaf8f0ea963so161709666b.3
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 04:00:05 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVhd3krm4iY5VHULKcRpz2tfXRePFfJDkwIyStVxRz4r0D6pU7X8HyvGhUKMyI0ZAvZCgw0V+V9784oXsQ70A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIkQlWmDZXLYWCFktH8z0AbaOS2Grj05phyw8zATaV3E2Ko4KX
-	24pOBH42BCs3qxSdfKpA7CiKm8v2w6P7bl7XsMHHjno7FWlgNy42z08T+4ZlQLSDgX/yYP5aO3F
-	FZIgGQ7aDdksxS4a/t/KG8bWc4ic=
-X-Google-Smtp-Source: AGHT+IEknswj0r6+jEMspheA8T+7pscfhXggdRbCTT49JUROv5lFYLojtUGe4XA8Xiy0BTeI1TZYz0HEqlySvLWz7/M=
-X-Received: by 2002:a17:907:6d0e:b0:aaf:5c9:19f9 with SMTP id
- a640c23a62f3a-ab2ab6f3455mr3054182766b.27.1737028803814; Thu, 16 Jan 2025
- 04:00:03 -0800 (PST)
+	s=arc-20240116; t=1737029107; c=relaxed/simple;
+	bh=r6485evTJ6FWA1R8v31Drf6EiPl3Bfqb8qV6tWT/TA4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c9XJ22wh5/EVycdxeatkb+URmnihHVDQHv1JRegz+3Ta48Zw6LVqlNu8no/YozLffkzUskVwH1FWGbrhrfkPOZYIrrGBzj2PyIuePNcpjlNUIgVFWl3mR+qZ63h16xqHyRjUESzLvhjxElIN7sSTEoAY1L+FcZZTr84mskgZR5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Amky3+bA; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50GC4gsnE947726, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1737029083; bh=r6485evTJ6FWA1R8v31Drf6EiPl3Bfqb8qV6tWT/TA4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=Amky3+bAINWypUZvdhbkisBooY51HbuFijHAQqa3q2aXm5xw3biBEbvZrqLJQoP+5
+	 XVSXlLkBzJzilKuw3sIBorfuMM01wOc4gKjCpfpGTAEkMi1eNUzdw6TTpIK0HOZyih
+	 uLbkdiFThO1YcuBD0/iZLlMukAs2YmG6HWrLCIdBjdGZoXnmSz6ggTbWVdLz7AAFYD
+	 zXw6MiE47Gjd5hysdr+OOH2JZtl4VnTmNHWIXublia1ZE+pWoiqGWsQ936KS01rREg
+	 a468KX3lcPEIwmJfbKsQ0GbZiTuPpAUrerMHTu2c5LyJnMuE2ixKRBHOcoW39cDlGJ
+	 UGWoxzYNviclQ==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50GC4gsnE947726
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Jan 2025 20:04:43 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 16 Jan 2025 20:04:43 +0800
+Received: from [127.0.1.1] (172.16.16.153) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 16 Jan
+ 2025 20:04:41 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
+CC: <rtl8821cerfe2@gmail.com>, <sfr@canb.auug.org.au>
+Subject: [PATCH v2] wifi: rtw88: add RTW88_LEDS depends on LEDS_CLASS to Kconfig
+Date: Thu, 16 Jan 2025 20:04:24 +0800
+Message-ID: <20250116120424.13174-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <MW5PR11MB5810AB20FCCD2A0B4AFDC901A3192@MW5PR11MB5810.namprd11.prod.outlook.com>
-In-Reply-To: <MW5PR11MB5810AB20FCCD2A0B4AFDC901A3192@MW5PR11MB5810.namprd11.prod.outlook.com>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Thu, 16 Jan 2025 06:59:50 -0500
-X-Gmail-Original-Message-ID: <CA+5PVA5E8R0XNAJX3ymphG4PL66YxJ6RbNZG+1fCvo3cq9hR3g@mail.gmail.com>
-X-Gm-Features: AbW1kvbjSZ1EgFzukx00E4xmUcszM-BRtX3HfFmSR70PW7EVuFFU-mXGPiF2Msw
-Message-ID: <CA+5PVA5E8R0XNAJX3ymphG4PL66YxJ6RbNZG+1fCvo3cq9hR3g@mail.gmail.com>
-Subject: Re: pull request: iwlwifi firmware updates 2024-01-15
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
-Cc: "linux-firmware@kernel.org" <linux-firmware@kernel.org>, "kyle@infradead.org" <kyle@infradead.org>, 
-	"Hutchings, Ben" <ben@decadent.org.uk>, "Yang, You-Sheng" <vicamo.yang@canonical.com>, 
-	"Dreyfuss, Haim" <haim.dreyfuss@intel.com>, Wireless <linux-wireless@vger.kernel.org>, 
-	"Damary, Guy" <guy.damary@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On Wed, Jan 15, 2025 at 2:46=E2=80=AFAM Korenblit, Miriam Rachel
-<miriam.rachel.korenblit@intel.com> wrote:
->
-> Hi,
->
->
->
-> This contains a new firmware for Bz device.
->
->
->
-> Please pull or let me know if there are any issues.
->
->
->
-> --
->
-> Thanks,
->
-> Miri
->
->
->
-> The following changes since commit a28a9226ccb8bf393b8e7dd8970a4d967c1a1d=
-92:
->
->
->
->   Merge branch 'robot/pr-0-1736646402' into 'main' (2025-01-13 14:30:09 +=
-0000)
->
->
->
-> are available in the Git repository at:
->
->
->
->   http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.g=
-it tags/iwlwifi-fw-2025-01-15
+When using allmodconfig, .config has CONFIG_LEDS_CLASS=m but
+autoconf.h has CONFIG_LEDS_CLASS_MODULE (additional suffix _MODULE)
+instead of CONFIG_LEDS_CLASS, which condition CONFIG_LEDS_CLASS in
+rtw88/led.h can't work properly.
 
-Merged and pushed out.
+Add RTW88_LEDS to Kconfig, and use it as condition to fix this problem.
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/407
+drivers/net/wireless/realtek/rtw88/led.c:19:6: error: redefinition of 'rtw_led_init'
+   19 | void rtw_led_init(struct rtw_dev *rtwdev)
+      |      ^~~~~~~~~~~~
+In file included from drivers/net/wireless/realtek/rtw88/led.c:7:
+drivers/net/wireless/realtek/rtw88/led.h:15:20: note: previous definition of 'rtw_led_init' with type 'void(struct rtw_dev *)'
+   15 | static inline void rtw_led_init(struct rtw_dev *rtwdev)
+      |                    ^~~~~~~~~~~~
+drivers/net/wireless/realtek/rtw88/led.c:64:6: error: redefinition of 'rtw_led_deinit'
+   64 | void rtw_led_deinit(struct rtw_dev *rtwdev)
+      |      ^~~~~~~~~~~~~~
+drivers/net/wireless/realtek/rtw88/led.h:19:20: note: previous definition of 'rtw_led_deinit' with type 'void(struct rtw_dev *)'
+   19 | static inline void rtw_led_deinit(struct rtw_dev *rtwdev)
+      |                    ^~~~~~~~~~~~~~
 
-josh
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/linux-wireless/e19a87ad9cd54bfa9907f3a043b25d30@realtek.com/T/#me407832de1040ce22e53517bcb18e322ad0e2260
+Fixes: 4b6652bc6d8d ("wifi: rtw88: Add support for LED blinking")
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+v2:
+  - add Reported-by and Closes
+  - use 'depends on LEDS_CLASS=y || LEDS_CLASS=MAC80211'
+---
+ drivers/net/wireless/realtek/rtw88/Kconfig  | 5 +++++
+ drivers/net/wireless/realtek/rtw88/Makefile | 2 +-
+ drivers/net/wireless/realtek/rtw88/led.h    | 2 +-
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
->
->
->
-> for you to fetch changes up to 04e6d3f371ab3ad6970603be194023bd4c700126:
->
->
->
->   iwlwifi: add Bz FW for core90-93 release (2025-01-15 09:38:48 +0200)
->
->
->
-> ----------------------------------------------------------------
->
-> released core90 of BZ+FM
->
->
->
-> ----------------------------------------------------------------
->
-> Miri Korenblit (1):
->
->       iwlwifi: add Bz FW for core90-93 release
->
->
->
->  WHENCE                       |   3 +++
->
->  iwlwifi-bz-b0-fm-c0-93.ucode | Bin 0 -> 1931432 bytes
->
->  2 files changed, 3 insertions(+)
->
->  create mode 100644 iwlwifi-bz-b0-fm-c0-93.ucode
+diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
+index 733b3e58da51..ab21b8059e0b 100644
+--- a/drivers/net/wireless/realtek/rtw88/Kconfig
++++ b/drivers/net/wireless/realtek/rtw88/Kconfig
+@@ -238,4 +238,9 @@ config RTW88_DEBUGFS
+ 
+ 	  If unsure, say Y to simplify debug problems
+ 
++config RTW88_LEDS
++	bool
++	depends on LEDS_CLASS=y || LEDS_CLASS=MAC80211
++	default y
++
+ endif
+diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
+index e8bad9d099a4..0cbbb366e393 100644
+--- a/drivers/net/wireless/realtek/rtw88/Makefile
++++ b/drivers/net/wireless/realtek/rtw88/Makefile
+@@ -20,7 +20,7 @@ rtw88_core-y += main.o \
+ 
+ rtw88_core-$(CONFIG_PM) += wow.o
+ 
+-rtw88_core-$(CONFIG_LEDS_CLASS) += led.o
++rtw88_core-$(CONFIG_RTW88_LEDS) += led.o
+ 
+ obj-$(CONFIG_RTW88_8822B)	+= rtw88_8822b.o
+ rtw88_8822b-objs		:= rtw8822b.o rtw8822b_table.o
+diff --git a/drivers/net/wireless/realtek/rtw88/led.h b/drivers/net/wireless/realtek/rtw88/led.h
+index c3bb6fe49b49..fa64002b0215 100644
+--- a/drivers/net/wireless/realtek/rtw88/led.h
++++ b/drivers/net/wireless/realtek/rtw88/led.h
+@@ -5,7 +5,7 @@
+ #ifndef __RTW_LED_H
+ #define __RTW_LED_H
+ 
+-#ifdef CONFIG_LEDS_CLASS
++#ifdef CONFIG_RTW88_LEDS
+ 
+ void rtw_led_init(struct rtw_dev *rtwdev);
+ void rtw_led_deinit(struct rtw_dev *rtwdev);
+-- 
+2.25.1
+
 
