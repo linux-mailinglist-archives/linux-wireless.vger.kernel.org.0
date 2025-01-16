@@ -1,123 +1,113 @@
-Return-Path: <linux-wireless+bounces-17583-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17584-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BEEA132D7
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 06:55:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DA3A132E4
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 06:59:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D390168910
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 05:54:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9764165865
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 05:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A5014A62A;
-	Thu, 16 Jan 2025 05:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33CC18CC1C;
+	Thu, 16 Jan 2025 05:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ujE2t4Hi"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Fbs0WkuE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D21156C5E
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 05:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343D7141987;
+	Thu, 16 Jan 2025 05:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737006886; cv=none; b=DbJTJUyv741+bnOiOpVK7eeSm3fbw56pStdC/xz8Wl6Pjuvher6xG5wqGZXeR45NUr1E00stSpH0o2asp+d0WsfwGLaQybZa+lkx2M4y5te0TGIQ9MTpwNtXPmVC8hVmg40iocLGq8AGyWag1S7u84TOxV9kEfe/QUFoIvIaI0g=
+	t=1737007177; cv=none; b=VbC/a8EN3oXFZ3MGRjg6fOKkmmEiRxPLBP6jqV8ME14F1Rki8JgOKBjQz6+J/+ZgnTcS8atUH0sIxUd9C6e7aGfe6Ey7uGpqtz+2xGhO768gEpZGIKfTprdg1HVwE0KcobvjyvbFGOHsOpS3Mi7IrX5CXqNQhwzuuS6+D8dy6xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737006886; c=relaxed/simple;
-	bh=/RFBJCj8WdTdxKBLUZZ4IEuHsR+DW5tkaSuPqwXgeB8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=joAmCUEfWR0jbyaDZ0IRIOdAjq5pgifHpMHxdM5h9lP8JbdXWr+uXd+mKENvQKKbNSTcjiP/RfAObY62xVC+1mKvDYh/5eKwT2Hja++ooSEpeviwSa9JXiZJ2hZOPn4J2MxCGSI0jC57z+F0wh8O7CLp1pr459XMZLpyF83dnZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ujE2t4Hi; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50G5saeG7506778, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1737006876; bh=/RFBJCj8WdTdxKBLUZZ4IEuHsR+DW5tkaSuPqwXgeB8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ujE2t4HiJ4oMyGJVpAnqM0Fq14685giB1MnWE79nZ/R/KmEKNwzEs6ZpDcJh+zh89
-	 va62eAzI6Ck5QormmlEs7q76XjEGsg8EO6KLBodg8AkVkNtSVINtV9sKxtp4KshJGZ
-	 vV9mqCa1XyQOEHg95Q8C+SR9g0HvfE1veCifvHd2+yNji2LmKdK6li6MuQiz8uCYvj
-	 phNQW6nPvDj1oeEnnYkD+Y/JtVA3PjPDlvHNfR45MTX4Lj999tBlEpDXjKas8/VtxY
-	 ExjCTb44968VHg3AOnfUpQ32pL0mkIk1w35WqFtkNc4/8CTwdrMpZ2/I6gSpAvouFq
-	 63cMxSpSvcmog==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50G5saeG7506778
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Jan 2025 13:54:36 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+	s=arc-20240116; t=1737007177; c=relaxed/simple;
+	bh=lcQqiuG2mKaEftTvzcONznF2dzWJHPToqMHqJUIACM0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dV755jxMIY3lTsWRDyN9SYwl3NMcrznTYfj0VTu46Zwz+rqmddE/IJD6rBwUCrJ/77iovR+PUwmBOJw0qTdf0CUBZhvLmbE7oCLRSs2hBWhOtBghPOUwlaIv212y059tAue5F107OnoIeZyC3I+wLGP5+wouRa2H7AAJHT8ITEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Fbs0WkuE; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 0be75eb0d3cf11efbd192953cf12861f-20250116
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=7JOyXQZobW/luOOWb6Nlyqh7d3eh8Z9mp/NnINZ9kOA=;
+	b=Fbs0WkuEllL1bpCk7dkNsU1yFPKHmKWB+iC4Wl9Mv7fVIYoEVlMWIwsDqkGipBF5kWog1grTzEPbqOCUC6u1gX+OZvzpvRRTGAYef1XsRUfyjLeKqnumd9WJsrMWEoap9kI3gmgptXMppLjxXm9Ca6DN9UuBD+7zwEaaDAUvYKw=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.46,REQID:105c0f99-3796-48e8-b88e-02debce993fe,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:60aa074,CLOUDID:7df1f90e-078a-483b-8929-714244d25c49,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 0be75eb0d3cf11efbd192953cf12861f-20250116
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 207954963; Thu, 16 Jan 2025 13:59:28 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 16 Jan 2025 13:54:37 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 16 Jan 2025 13:54:36 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553]) by
- RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553%5]) with mapi id
- 15.01.2507.035; Thu, 16 Jan 2025 13:54:36 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
-Subject: RE: [PATCH] wifi: rtw88: add RTW88_LEDS depends on LEDS_CLASS to Kconfig
-Thread-Topic: [PATCH] wifi: rtw88: add RTW88_LEDS depends on LEDS_CLASS to
- Kconfig
-Thread-Index: AQHbZ9mvcCacfzes3E2TTCURefvNkbMY5Y9A
-Date: Thu, 16 Jan 2025 05:54:36 +0000
-Message-ID: <9b2d304b24e14699bbd5f1ddf7959e05@realtek.com>
-References: <20250116054337.35723-1-pkshih@realtek.com>
-In-Reply-To: <20250116054337.35723-1-pkshih@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 15.2.1258.28; Thu, 16 Jan 2025 13:59:27 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Thu, 16 Jan 2025 13:59:26 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
+Subject: [PATCH] wifi: mt76: mt7925: ensure wow pattern command align fw format
+Date: Thu, 16 Jan 2025 13:59:25 +0800
+Message-ID: <20250116055925.3856856-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi Kalle,
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
-> When using allmodconfig, .config has CONFIG_LEDS_CLASS=3Dm but
-> autoconf.h has CONFIG_LEDS_CLASS_MODULE (additional suffix _MODULE)
-> instead of CONFIG_LEDS_CLASS, which condition CONFIG_LEDS_CLASS in
-> rtw88/led.h can't work properly.
->=20
-> Add RTW88_LEDS to Kconfig, and use it as condition to fix this problem.
->=20
-> drivers/net/wireless/realtek/rtw88/led.c:19:6: error: redefinition of 'rt=
-w_led_init'
->    19 | void rtw_led_init(struct rtw_dev *rtwdev)
->       |      ^~~~~~~~~~~~
-> In file included from drivers/net/wireless/realtek/rtw88/led.c:7:
-> drivers/net/wireless/realtek/rtw88/led.h:15:20: note: previous definition=
- of 'rtw_led_init' with type
-> 'void(struct rtw_dev *)'
->    15 | static inline void rtw_led_init(struct rtw_dev *rtwdev)
->       |                    ^~~~~~~~~~~~
-> drivers/net/wireless/realtek/rtw88/led.c:64:6: error: redefinition of 'rt=
-w_led_deinit'
->    64 | void rtw_led_deinit(struct rtw_dev *rtwdev)
->       |      ^~~~~~~~~~~~~~
-> drivers/net/wireless/realtek/rtw88/led.h:19:20: note: previous definition=
- of 'rtw_led_deinit' with type
-> 'void(struct rtw_dev *)'
->    19 | static inline void rtw_led_deinit(struct rtw_dev *rtwdev)
->       |                    ^~~~~~~~~~~~~~
->=20
-> Fixes: 4b6652bc6d8d ("wifi: rtw88: Add support for LED blinking")
+Align the format of "struct mt7925_wow_pattern_tlv" with
+firmware to ensure proper functionality.
 
-If this patch is good to you, please take it to wireless-next to fix the
-problem caused by Commit 4b6652bc6d8d.
+Cc: stable@vger.kernel.org
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Assigned to you in patchwork. Thanks.
-
-Ping-Ke
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index 1e47d2c61b54..6bf1623e542e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -566,8 +566,8 @@ struct mt7925_wow_pattern_tlv {
+ 	u8 offset;
+ 	u8 mask[MT76_CONNAC_WOW_MASK_MAX_LEN];
+ 	u8 pattern[MT76_CONNAC_WOW_PATTEN_MAX_LEN];
+-	u8 rsv[7];
+-} __packed;
++	u8 rsv[4];
++};
+ 
+ struct roc_acquire_tlv {
+ 	__le16 tag;
+-- 
+2.45.2
 
 
