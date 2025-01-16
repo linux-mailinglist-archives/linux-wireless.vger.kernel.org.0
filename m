@@ -1,121 +1,155 @@
-Return-Path: <linux-wireless+bounces-17578-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17579-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B28A13114
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 03:08:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8904BA131C0
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 04:29:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 785D91889037
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 02:08:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6A457A1032
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2025 03:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D8274059;
-	Thu, 16 Jan 2025 02:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF12C74059;
+	Thu, 16 Jan 2025 03:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="vJdFX+7P"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RzxOd2of"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60667082D;
-	Thu, 16 Jan 2025 02:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB9A225D6
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Jan 2025 03:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736993299; cv=none; b=t8SarM61ijPy3wlHBL6Rt2QiEtkXFDhrc6Z6Z9Rc7H5VlHgGoU0XwoOzR6/Fga7CeTPEDe2b5JoAzcs8fRENdlVZQwder47kfxgUJr/Th7mu7ILRHHLdlaUYb+SpjSHeq5Tm/kXC4XhOBIdnFEXne7y8feHOfAzwqEIzMQdIq7c=
+	t=1736998138; cv=none; b=U27v6g3/4wi9wwNq+N8b2PIQ0V5UGMGVXFzNeSNBGtKCgT5nTQZmcIO64h9NHL9IwokATJiKlZ2rU9eQgm265MQYslOydIUp5ixgflJDGYdpAuKt4bI7iZbcgUQAHXDjwfIWmaTTAyA6jV89+Xt2fkYGRYRHyH4FB5HbaibRKkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736993299; c=relaxed/simple;
-	bh=dq25cu2CFcaEy0Sjy94dpa6TNJ5EsczGcqwiGw4b3KM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=cWAHF50nODKgvLpLEcMBgSFomfPQ0+yAgTKNQ/D3ajTeNz1zwmurXYxQMQrcR2PV3LmHfcQq7yhM+DEaHkj1zzm2Z+3ImMFc0zbBt6fa8h8jD0ZDvv+tWEZrz/yoHV7mAxW7g+E3Uzm9dOiUqk/jXFwYn+pCCgvEW7dh2u8/QCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=vJdFX+7P; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1736993285;
-	bh=PPpDrhEzQh9Fo/crDUCNf6BtsRd8ABancL1Cmvc3SAM=;
-	h=Date:From:To:Cc:Subject:From;
-	b=vJdFX+7Pw4pmJjFbEzZ+w1wRoVnFmUIpuf82b/8mFrKEJfBC8rFDLTdfKEKTSzVm9
-	 B7Bxy9/iirn2b7DYw0qY+pHz2G+KiBS2P1VmUhaBpdojsIIPs/UXr/ZbWOcElS3W3N
-	 w+lv7Pr8W3zrJ79LoXi18Es7LJcA3qtH5hbZucTciYgyyUN8D0L4H/kB9p+v9VubvV
-	 oykO2sxcO1Nlpas3V7/RgE9z1CTysYS98eEBZ+J65qnBEWxCTBmjDMx5JjrCpgJSKm
-	 eWmgUfKTBUGA8/THWYq+A2RKCvKpDMh530qicO5/udvjSLKSyDaSLhd9qbO3V5I6lR
-	 Q2cAljz43Lg/A==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YYR9123cxz4xQq;
-	Thu, 16 Jan 2025 13:08:05 +1100 (AEDT)
-Date: Thu, 16 Jan 2025 13:08:12 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes@sipsolutions.net>
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>, Ping-Ke Shih
- <pkshih@realtek.com>, Wireless <linux-wireless@vger.kernel.org>, Linux
- Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>
-Subject: linux-next: build failure after merge of the wireless-next tree
-Message-ID: <20250116130812.6e6c7b3e@canb.auug.org.au>
+	s=arc-20240116; t=1736998138; c=relaxed/simple;
+	bh=3vn1ggLhHsF/D2dyaVyVGkIrViQLCTukvZ+KpA5CGFM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a6JfL69/Xx4Kb/ZZR/NNm2BQj0ms9D+ttaXcnAk+frhhEdWV0aSfP+AUArgbpJ0dkhLSHYchDxgC8Kuo2xmBRlaY7BjuGMgd2d+CuxuwM3JV2Ca/zWSUEDW2AoFo6fIoRpT9c3CTic8YzWwHxPFx58/cYxs4xe7GDJPQf1LAANA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RzxOd2of; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50G02flP023998;
+	Thu, 16 Jan 2025 03:28:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=XlOcoiUtT/8Gm+iDSWcpHm
+	acHdnhbpbEzthArm4cL/w=; b=RzxOd2ofNUaOxDhIMeBFoMu6YcVR9BYvDKEgXl
+	AtXzc+R1XlQURz0KcfBRPK+MR4fx1kxTnxGTaPS9U7Q8j0B3xBR2uoqD2s3t+/mz
+	2w04MnfyoR23Dgz2jrrOo8gGGNJpBKaqhNW1ybOFuKNmltcB2lclNJAcjwRvLj0M
+	Hjo12llxYd0vaZe0h2rARZ76rQD8UTjAKgPfitxz+0LQlLJxxlNyX2rUdsV1vtVc
+	UBrnKY9+ehrX/iZwMSNTCVMCSx0U3Rngdhtx5J2InoYsuf6w61B1dvkDksycvchi
+	bp9rGf8Apd4R6ClrMLa9eXLzY3PGmogHX/zZhqzLVWC0anog==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 446q7n0cn1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jan 2025 03:28:53 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50G3Srrf003360
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jan 2025 03:28:53 GMT
+Received: from hu-aarasahu-blr.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 15 Jan 2025 19:28:51 -0800
+From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Aaradhana Sahu
+	<quic_aarasahu@quicinc.com>
+Subject: [PATCH] wifi: ath12k: Fetch regdb.bin file from board-2.bin
+Date: Thu, 16 Jan 2025 08:58:35 +0530
+Message-ID: <20250116032835.118397-1-quic_aarasahu@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/CJABub7zUDeTb3IYWBzXz+x";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: iLyKlfUZxrHOK1nT9A8b387aYJNdrr0L
+X-Proofpoint-ORIG-GUID: iLyKlfUZxrHOK1nT9A8b387aYJNdrr0L
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-16_01,2025-01-15_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ priorityscore=1501 impostorscore=0 lowpriorityscore=0 spamscore=0
+ adultscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501160021
 
---Sig_/CJABub7zUDeTb3IYWBzXz+x
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Currently, ath12k_core_fetch_regdb() finds regdb.bin file through
+board id's but in board-2.bin file regdb.bin file is present with
+default board id because of which regdb.bin is not fetched.
 
-Hi all,
+Add support to fetch regdb.bin file from board-2.bin through
+default board id.
 
-After merging the wireless-next tree, today's linux-next build (x86_64
-allmodconfig) failed like this:
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 
-drivers/net/wireless/realtek/rtw88/led.c:19:6: error: redefinition of 'rtw_=
-led_init'
-   19 | void rtw_led_init(struct rtw_dev *rtwdev)
-      |      ^~~~~~~~~~~~
-In file included from drivers/net/wireless/realtek/rtw88/led.c:7:
-drivers/net/wireless/realtek/rtw88/led.h:15:20: note: previous definition o=
-f 'rtw_led_init' with type 'void(struct rtw_dev *)'
-   15 | static inline void rtw_led_init(struct rtw_dev *rtwdev)
-      |                    ^~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/led.c:64:6: error: redefinition of 'rtw_=
-led_deinit'
-   64 | void rtw_led_deinit(struct rtw_dev *rtwdev)
-      |      ^~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/led.h:19:20: note: previous definition o=
-f 'rtw_led_deinit' with type 'void(struct rtw_dev *)'
-   19 | static inline void rtw_led_deinit(struct rtw_dev *rtwdev)
-      |                    ^~~~~~~~~~~~~~
+Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/core.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-Caused by commit
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 0606116d6b9c..3eff1fbf8247 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -173,7 +173,7 @@ EXPORT_SYMBOL(ath12k_core_resume);
+ 
+ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ 					   size_t name_len, bool with_variant,
+-					   bool bus_type_mode)
++					   bool bus_type_mode, bool with_default)
+ {
+ 	/* strlen(',variant=') + strlen(ab->qmi.target.bdf_ext) */
+ 	char variant[9 + ATH12K_QMI_BDF_EXT_STR_LENGTH] = { 0 };
+@@ -204,7 +204,9 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ 			  "bus=%s,qmi-chip-id=%d,qmi-board-id=%d%s",
+ 			  ath12k_bus_str(ab->hif.bus),
+ 			  ab->qmi.target.chip_id,
+-			  ab->qmi.target.board_id, variant);
++			  with_default ?
++			  ATH12K_BOARD_ID_DEFAULT : ab->qmi.target.board_id,
++			  variant);
+ 		break;
+ 	}
+ 
+@@ -216,19 +218,19 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ static int ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ 					 size_t name_len)
+ {
+-	return __ath12k_core_create_board_name(ab, name, name_len, true, false);
++	return __ath12k_core_create_board_name(ab, name, name_len, true, false, false);
+ }
+ 
+ static int ath12k_core_create_fallback_board_name(struct ath12k_base *ab, char *name,
+ 						  size_t name_len)
+ {
+-	return __ath12k_core_create_board_name(ab, name, name_len, false, false);
++	return __ath12k_core_create_board_name(ab, name, name_len, false, false, true);
+ }
+ 
+ static int ath12k_core_create_bus_type_board_name(struct ath12k_base *ab, char *name,
+ 						  size_t name_len)
+ {
+-	return __ath12k_core_create_board_name(ab, name, name_len, false, true);
++	return __ath12k_core_create_board_name(ab, name, name_len, false, true, true);
+ }
+ 
+ const struct firmware *ath12k_core_firmware_request(struct ath12k_base *ab,
 
-  4b6652bc6d8d ("wifi: rtw88: Add support for LED blinking")
+base-commit: 6a5fe6aaedcfadf8e32dd703ec20b1460523c22d
+-- 
+2.34.1
 
-I have used the wireless-next tree from next-20250115 for today.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/CJABub7zUDeTb3IYWBzXz+x
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmeIagwACgkQAVBC80lX
-0GyW7Qf+I+Ci4aadJ1YDY0r5cryldp039QRO6Utn2iwRMuMeE7KUz1ktbGjB75vT
-9ghsZud1xJ57PvwUrbKeCP848164Y6cOUR15Mk86jKCLHxIql1KW3k9IpqOR6Tg5
-R4c6Ks3nzOp5tXEejVqkRjZXPrwbFonXSUScLkGclLgH+SdOfFa0x1oBDgHAC2Tl
-t/g8v8YNwo3873TOTTGkv9AZ4zAUSzh5YK04qoX3acIQt8YXCnrS7UB/d7trKcTw
-/+spxcbLuiEVNmOQ67qD/i4R6Y8KwVYIHPc17Udc0mmUK/jjEIkU75f42KMqwUIZ
-h4fxkcgRXcrMAGHknc70pvG9YPuiyw==
-=mNBR
------END PGP SIGNATURE-----
-
---Sig_/CJABub7zUDeTb3IYWBzXz+x--
 
