@@ -1,138 +1,138 @@
-Return-Path: <linux-wireless+bounces-17662-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17663-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D04A15805
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 20:15:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2892CA1580A
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 20:17:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D91F7A2D53
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 19:14:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 877693A23DB
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 19:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8592E1A3AAD;
-	Fri, 17 Jan 2025 19:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5135199FB2;
+	Fri, 17 Jan 2025 19:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ehan/1/m"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PgBTFLdN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5F625A63C
-	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 19:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BFD25A62F
+	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 19:17:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737141300; cv=none; b=QJRX3fGojGab32uSoZEEBxk8dVvugiCTmB1WbVGRulj1a9Iaub47IlWGvd8nVvGKE3fD7n1uH47smnoaqYF1NLLqkVAOknY0H2ZaZPrU7xp/iex9lPdNGCmIq893hog7oGGt1g193e/E9sh3hK/nw7rA5SKOAZhZmIoEfnKTuxk=
+	t=1737141427; cv=none; b=b5cwygd1TwxA3iLHhOKPnPIkfUIfaKZ15JIEI4Fnx4SP5ShXlb0Un5zObDrF7lWk2n6CQQCs+421rjgcZOmWCxKE3eB9aZH56IiHWk67PU87xT2zuElT4iC/1W8GMzrUzjY/58RbuDU6rRRBAFm6YzaAwg5HEKzx8Pk9L8WGwVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737141300; c=relaxed/simple;
-	bh=dLuiQl02VryiHl/SCAS2YYUXqhZL0h+wBcrD8FLK88E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nlDUj5dsIzLsCqQia6r2Rf4qvMiosEOaityjWUZBuvSoveJM5Xaxm7buUBOaZeBxnx/XfPIZu67AYblocjZsimHrwClCf5CO+vxLkkaPbZa/PbMI3up+vnA9GiWwZXJtJpN1Xt74XViEFInxGMoNqLShjPYkT/5CTSu0HU4a6eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ehan/1/m; arc=none smtp.client-ip=209.85.128.54
+	s=arc-20240116; t=1737141427; c=relaxed/simple;
+	bh=9cxvKQU5tEuWef2ZR6szSgBQXshTqPB/bp6pTKZegRY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Yesp2RCoiwZy2DvMgFrxtxmUe268hz+L35KDeoBGg8SCExe1tpldqn9/UDtfFX55FM8SX+o3k780a6VfLLWIVB1V4b+tYeFh6JKMYKuhmLnME6yV6zZMduN4hhaOtxLaeDFfkVQ3HK4uIqycgR1WDFdLraghu9XllFztfMy0xMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PgBTFLdN; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-436202dd7f6so27009965e9.0
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 11:14:58 -0800 (PST)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-436a03197b2so16826755e9.2
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 11:17:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737141297; x=1737746097; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=99e4J68cxEKBg616wDoMXtPaePxmFVcHw1zkfBxnlHM=;
-        b=ehan/1/mzxbltFI5uL8f+pCfFFL1Va9SdVdtwrsav5dCDgSITSd7gHsIT6nZxYyFJF
-         c5NOFgovC7OzO/m7xeIxSwOiv4qqVvBxPETbO/D+RZmNy2rlOjbHrTR5R757dIk9hm5F
-         6UySJw1JaBVi2I89XjpIfWCMeYc67w5Vu1gwlHz534ualUq+wl1Pz6EDMXYDivDycGoZ
-         2ba/2/J9GPJx10DRuWIOD0kXILD1lK7+zcNxEjoK/5LOj+JX707t2pCLVgAjPNkVwvFR
-         PLVrGvROM2tdbx7jJ48mmqfMjZKBl7goqIcleBe7A+xOdB3NRzJDNDzu3o77NZGirWF0
-         v2IQ==
+        d=gmail.com; s=20230601; t=1737141424; x=1737746224; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9cxvKQU5tEuWef2ZR6szSgBQXshTqPB/bp6pTKZegRY=;
+        b=PgBTFLdNsFzGhP+TSf8i9f9tR1geiAd1p0D/l5iITY7nCbOxywiuahaERRLSV4Evk+
+         14/EbFEIZ0FP+s9sbQVFnHByTYngOmzHhwiOTyj0I90hbjxL6/XA6xMRk4aAbYzc0RNk
+         Sd2y9s/aCP76me1NvCiscxrGoDouD6MYFlW85udEUPsJlJxVzBcJu5h6INuIjEMN1pRN
+         8uxORIsBsTICBC54D5LAwRXTggbmLEE38QVFC5vvSOcinj6H95auXgDkpJfqJ6ackA8N
+         hD4gw32+otsWVTI4zNbU2ctXRTMF5ebUsPhhcBXI8zyfLA0BXu8TjA1W5Jj/PC5XKVKo
+         hEGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737141297; x=1737746097;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=99e4J68cxEKBg616wDoMXtPaePxmFVcHw1zkfBxnlHM=;
-        b=AcPb5GRDin82V5KQMTfq36ssqdntIXU17IrvmmW8pQpJBE1Bu+XSqBtpk/3NmcU5OD
-         SXEbPSlIMY7coEiPn2AhGeWhTbbfcaBZy31ZU9htlsLu4BqJW1+4nqhxMWHAiq+rjm+Z
-         e71GyP5CK28ZtVvauViQ+sRyzF2ewnZ4z8HnvDwpYfcwbirL58fTZE5bmZtnoIn9HuTk
-         4EfCdNga7GLd8cNNEV03kqjMAtaBpVqCUyrBMbwxZeBONMB2t/GjVUhCL1vdeEVciIFy
-         9lFgKD7f2ynlNX5+F89CJTP5AONH2Zmz7m/apM3H8lne9kBxQf6Cmw/3pjRTOmfOV1LN
-         FMnQ==
-X-Gm-Message-State: AOJu0YxnYL1lQ/N7BvopEu6RPDYMucVfE/RFRj8/ieuOBFNVt6sV3Dkw
-	yov2K/hpfILYEqViwufOiWrL1TdOOVejeiiwcP/X2XM4nqNlTbR/
-X-Gm-Gg: ASbGncupQs39lPOWSflKnRu9nSCn416GOCVxDnIn0M1fdFUI1Hld348eYNV7QAZOhYl
-	bEO3lecJsadn7T6P+GEU0Ns3WPpgKhSpi4TIOaqIx6NAXkCy98fhM7HBVJh0fKuwud6r1Ij+okf
-	AOZ8Z3XlPcTcMm6UVtHkBsK2S7rEnwR8Ea9J2PKqW0mDhihUkPwha8DSGQNIOFYSmTpl8WW84QY
-	488L3r2HeKLRV6OmuROuRtYxmpw1bSqCGGvwHA86Bw6dlu9cSZz3VDeBzsFbAHqemghoEwbjhDQ
-	LEm/y9aEs0aCDw==
-X-Google-Smtp-Source: AGHT+IFURGPATZai3ribvgNfR+gInUwm8jy4Na74LIXUvtGwyak3lYx45vrT3YiJNGXh9TnMeQyWRA==
-X-Received: by 2002:a05:600c:5486:b0:434:f586:753c with SMTP id 5b1f17b1804b1-438913ca694mr39450775e9.7.1737141296811;
-        Fri, 17 Jan 2025 11:14:56 -0800 (PST)
-Received: from syracuse.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf322ace8sm3242709f8f.53.2025.01.17.11.14.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jan 2025 11:14:56 -0800 (PST)
-From: Nicolas Escande <nico.escande@gmail.com>
-To: ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-	Steffen Moser <lists@steffen-moser.de>
-Subject: [PATCH] Revert "ath11k: clear the keys properly via DISABLE_KEY"
-Date: Fri, 17 Jan 2025 20:14:55 +0100
-Message-ID: <20250117191455.3395145-1-nico.escande@gmail.com>
-X-Mailer: git-send-email 2.48.0
+        d=1e100.net; s=20230601; t=1737141424; x=1737746224;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9cxvKQU5tEuWef2ZR6szSgBQXshTqPB/bp6pTKZegRY=;
+        b=bOEvcnl79uC8SX78E02f14ZxLnUJqpcgrxRzebVeZhxyOhiPyGNTPfdi6Ld1fR1pMU
+         fQga3GFUTyE4rqaBLAR0rgNdK9quRgIfADupLccSlspUedBNpwcZYvnVyt5x1Qf2h/IR
+         YNTBNWGQ3dN6lqUszvBTYOdRzuuDUbYqPA76D24lvxy7TEdrwupu4TMSmSlzwGF4P0Tt
+         qul+HDB5P1nw8Cmt0aU54bDT2Y6QssjyVitoZCl9zyAiB2grvoiXBPWZLRSxinfbOBy7
+         VRfcSq7pWksaKxjomucc635oJ9RRA3FT8BpQRrsYtW1suC7WltgInEzsRBXaQz1dTFgt
+         BCGA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdxe6TVzkbD8VLjgpEGeH9bVHYS5/ajj1I1kvQ9iARRIa0IejWrXYW/2zdBq49k2W8aKFcIVZEIL5haXyYBA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz82Uq7la88UjjYFkWVZicifl/QO2k4MwRGtr2tWGF8J2qSpSjx
+	KpOypenoV/JqaqZyepuXbJnje5m/aLU55EVQYXKUnmvP673+3Zos
+X-Gm-Gg: ASbGncvDHIgMZoOyZi1Y7QSMz6iybTGEeboSy25B/D89hzETx/2G8Wb664NhHPro9Km
+	P8xESme8wAxbeTr7zYFMzjTkv294pX3WJ2/xajOy7Koo9FL/siyGACzRV82MmjBWpxsax6BnWSq
+	1AwWXwSXQOnbKUU4V292SFHLBIOMjsSrdNVnUBcXj3/Op7NRN5oKXjrru7y+SGNLQUUKCSy2Enj
+	MCdbkGOuZE3SoBUHwN5BGiR7+xAWAaNmrn/NVh1J61jRWu8xDwPeTBJlmkpVJTRYZI0T2rUmUM=
+X-Google-Smtp-Source: AGHT+IF/3Pew53rNIqs/RtMzp/qLGa4PToXW9cQ2P+5l0NX7kQf1/hu+Lld54hUYFKG/9d7bC+IZDA==
+X-Received: by 2002:a05:600c:3b29:b0:434:fe4b:be18 with SMTP id 5b1f17b1804b1-438913ef951mr41355125e9.18.1737141423938;
+        Fri, 17 Jan 2025 11:17:03 -0800 (PST)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4389041fec5sm43798465e9.19.2025.01.17.11.17.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Jan 2025 11:17:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 17 Jan 2025 20:17:01 +0100
+Message-Id: <D74L8O64EGM3.2CXM7VKQA8O92@gmail.com>
+Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>, "Steffen
+ Moser" <lists@steffen-moser.de>
+Subject: Re: Potential Broadcast Issues After GTK Key Exchange on ath11k
+ with IPQ8072A (QCN5024/QCN5054)
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Kalle Valo" <kvalo@kernel.org>
+X-Mailer: aerc 0.18.2-0-ge037c095a049
+References: <c6366409-9928-4dd7-bf7b-ba7fcf20eabf@steffen-moser.de>
+ <Z2Q9POuV-6MIdzRf@pilgrim>
+ <b18ede18-0c33-4d14-a7c5-0066cbec39c9@steffen-moser.de>
+ <D6VX7M6MGZQB.3LU3FBYJK6CZH@gmail.com> <878qrkdsr7.fsf@kernel.org>
+In-Reply-To: <878qrkdsr7.fsf@kernel.org>
 
-This reverts commit 436a4e88659842a7cf634d7cc088c8f2cc94ebf5.
+On Thu Jan 9, 2025 at 2:25 PM CET, Kalle Valo wrote:
+> "Nicolas Escande" <nico.escande@gmail.com> writes:
+>
+> > On Sat Dec 28, 2024 at 11:13 AM CET, Steffen Moser wrote:
+> >> Dear Remi,
+> >>
+> >> thank you very much for the pointer to the patch. Sebastian integrated=
+=20
+> >> it into DD-WRT. Now the DynaLink DL-WRX36 runs absolutely smoothly, th=
+e=20
+> >> WLAN links are stable, the packet loss is gone. No weird states anymor=
+e,=20
+> >> independent from the group key exchange interval:
+> >>
+> >> https://data.saps.uni-ulm.de/index.php/s/NLNpWqjc8iGsaEM
+> >>
+> >> So your idea was a direct hit! Thank you very, very much. Several mont=
+hs=20
+> >> of debugging have come to an end...
+> >
+> > So this is at least the second time this commit breaks a setup.
+> > =20
+> > @ath11k why isn't this pushed to mainline ?
+> > This seems to be a clear regression, so even if there is no need to rus=
+h things
+> > in the long run this still needs to to reverted mainline right ?
+>
+> Good question, I don't have an answer to that. Could someone (also
+> outside of Qualcomm) send a proper patch ASAP so that we can solve this?
+> And it's good ot include the link to this discussion and describe the
+> symptoms the revert is fixing.
+>
+> This is the patch in question:
+>
+> https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/blob/win=
+.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-ke=
+ys-properly-when-DISABLE_K.patch
 
-This as been reported by multiple people [0] that with this commit,
-broadcast packets were not being delivered after GTK exchange.
-Qualcomm seems to have a similar patch [1] confirming the issue.
-
-[0] https://lore.kernel.org/linux-wireless/Z2Q9POuV-6MIdzRf@pilgrim/
-[1] https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/blob/win.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-keys-properly-when-DISABLE_K.patch
-
-Fixes: 436a4e886598 ("ath11k: clear the keys properly via DISABLE_KEY")
-Reported-by: Steffen Moser <lists@steffen-moser.de>
-Closes: https://lore.kernel.org/linux-wireless/c6366409-9928-4dd7-bf7b-ba7fcf20eabf@steffen-moser.de
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 4 +++-
- drivers/net/wireless/ath/ath11k/wmi.c | 3 +--
- 2 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 1556392f7ad4..70793f8b1081 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -4220,7 +4220,9 @@ static int ath11k_install_key(struct ath11k_vif *arvif,
- 		return 0;
- 
- 	if (cmd == DISABLE_KEY) {
--		arg.key_cipher = WMI_CIPHER_NONE;
-+		/* TODO: Check if FW expects  value other than NONE for del */
-+		/* arg.key_cipher = WMI_CIPHER_NONE; */
-+		arg.key_len = 0;
- 		arg.key_data = NULL;
- 		goto install;
- 	}
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 87abfa547529..02ff0a58952d 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -1854,8 +1854,7 @@ int ath11k_wmi_vdev_install_key(struct ath11k *ar,
- 	tlv = (struct wmi_tlv *)(skb->data + sizeof(*cmd));
- 	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
- 		      FIELD_PREP(WMI_TLV_LEN, key_len_aligned);
--	if (arg->key_data)
--		memcpy(tlv->value, (u8 *)arg->key_data, key_len_aligned);
-+	memcpy(tlv->value, (u8 *)arg->key_data, key_len_aligned);
- 
- 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_VDEV_INSTALL_KEY_CMDID);
- 	if (ret) {
--- 
-2.48.1
-
+Not sure if I did it the right way but it at least is here :
+https://lore.kernel.org/linux-wireless/20250117191455.3395145-1-nico.escand=
+e@gmail.com/
 
