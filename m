@@ -1,199 +1,240 @@
-Return-Path: <linux-wireless+bounces-17636-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17639-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B98A14E83
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 12:34:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45E1A14F99
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 13:46:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4C52168856
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 11:34:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F30A1885F1D
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 12:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528171FDE04;
-	Fri, 17 Jan 2025 11:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609D31FF1BA;
+	Fri, 17 Jan 2025 12:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HZMFOecu"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="my+jHCqH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB751D8E12
-	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 11:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C6E1FF1D8
+	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 12:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737113640; cv=none; b=BWNmk5pqBJgLoyvTIbrOtba5p0DinZkbwwESitBnkK7XhPA2WPIohwuwXRI8S4BQs6K6hYrWO4Si63c2yV/h7yM7hWzHSlBdjCUmhWS2gckbmWjPIMXobSuuNLkVctVeVJiFoyfYBc8+Amc0s2uPlwnN+82R6pJffOX6i9WvPI4=
+	t=1737117993; cv=none; b=gZogHiodeJRkfHqlxLq/xdMhSl+T0ZBAWOdJRnnqNO4qrMAaf+nXU9TJl6BWXOSIpOo95Yap9tnfg/mBQ6NiGV+DEN6YkzSpNo3vX9dsjDZHBex6COWyqvaAmP4whHSy5rh6CYyiqOMZs3R1B1o1eZbsTA5shUDPYuM5jlvOrHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737113640; c=relaxed/simple;
-	bh=cral7K8HGXuJ5gTB3kx6CYy2wP/os+Q0/GYPuRHBlEo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=O1adR8fZhtH90IUoud8WovD7rNBSFXUFFNGloHqd/DGiRfCslNXmTLqlZa67Alm3uC+9rkHcnQlkZ9Rqtwdykoa+8zC73SGodTICNNu4WDAPxVNmIxEaTLjPZ/eTfqVk0fuSqgu+/bKGsJH9M0REx9bGBIE6MLPkdffu64eggZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HZMFOecu; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43618283dedso18925655e9.3
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 03:33:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737113637; x=1737718437; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6ODjOBO9MtIgABgcwAyfoWf9VIwAipEtpPJ9eBhJRg8=;
-        b=HZMFOecu+fS5wPsiPudDZcNpF9eC9yJNZuQI+GFjQnvK5RiiBJ0MPMo7FblzeXTkmQ
-         kgBk3a8KYMMziq4ChgX65WKxIjVbnd4Ej5+73XnTU/qahckPy0QHzNQWnOIepq+oOO3x
-         nMKoeFEx0pQ+syGc9sEN2Aby2p+iALWktiKuY0ZAD6uFXFGoUWi3knZF/v+NaK4xFWPY
-         wcdidVeZH2difNCXEwv6YgBQrwrFRsu50TR96dkhLWYRMIOwJ8XtkzCOsVNRwKiJU785
-         LqWwtzHPZKC64kay79n3jWnw9p7uI61DccrLK9QtXhNfpDY7KUplqmUhjt0qH6dtRXkP
-         pNKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737113637; x=1737718437;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6ODjOBO9MtIgABgcwAyfoWf9VIwAipEtpPJ9eBhJRg8=;
-        b=MZipNoOeXL+RDBqZVad8tCRsMwb4+gRotrWhoYq4FcuMAHGa1wSNHq1JiK62MVYa6A
-         iK/K+V14L0P4ZbiIcmY4a7BBwYZFA4dzdCkbDlcsRVkBiteXJ0kGwkUAAuGLdfi4DHxj
-         M6zWIZbWrH9Yx1assKC9WLVv9kRKMEiZqTXJHgpDrhdZME/TdO/X75AjuWuzrRqWp3Ms
-         d0564LHlFx3b7/rBs6Z/s5Y5vTrgnruEqmRH8bBS+J0crAZwBYOiYsa2d3NroXMsHywb
-         BcJy2uzGaMoQ4K7AJjLOYJ2vIvLV5dGlM9ZZBbhyoYEgvay2avCa1ySyX3ixbUWA2VAO
-         Kpmw==
-X-Gm-Message-State: AOJu0Yz8kcjv/rE8PIXKo3Q+zy36T12SDqRQzf+j0vm8ePR5HJanYqBQ
-	vrhgUtD9LoLOevn1oqNiQ2/+VhYAuUPU3zIJVs9B24vxxjd2UX+kwF0BMQ==
-X-Gm-Gg: ASbGncsjzc4FUpPSkMR43T3Q4T8aFm+HfBaydzjybMKSR8Y4HXWqHkw0+iB523bCL5z
-	QVdCLV1xk8hSb+ybnF8ImrhUZABKlYVAXSygPgxnVmFa/SC7hj1YpkalEiiV8UGEEtn6bnT1+iP
-	DH1P/eQ8oSklw8sYg7r9fkQGcr6J/qTzJ5pg34DyZCj/CAlaVhlFCRmvNQ07NWXdFwCb5w08dqd
-	jXZMRRBBKq1q7V9KwWXSaFr4pZkcwzTT+ulx6iPqkWDaa5rTpQWI/NU5P7KpI+QgiyYQykhgPU=
-X-Google-Smtp-Source: AGHT+IGvLIKvsqNW/P9Ywv7yw9j5IjfOYKM/JKR7riVV1MLqP/1HvyFrpjCQqxtjOMT0cR+RZvT7fw==
-X-Received: by 2002:a05:600c:1e18:b0:436:8a6f:b6db with SMTP id 5b1f17b1804b1-4389141c12emr20626775e9.22.1737113636530;
-        Fri, 17 Jan 2025 03:33:56 -0800 (PST)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c73e7140sm92797595e9.0.2025.01.17.03.33.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Jan 2025 03:33:56 -0800 (PST)
+	s=arc-20240116; t=1737117993; c=relaxed/simple;
+	bh=wbWFBvwlxPhJB5szlAIBYiod1NjEQLnRprgVzOuxtzs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=s7z1dZ4SFHXB29ffSXLcvkRo3TBba6HNhqXmqBRk0LtSK1yToejrpYxp6RffDqhosZvIs5v0UXaafj+Y+Bpm9gSOOH3Oj3Bt799pHIoohq5rIFpsvfFsHJRTGpqfqBH4fs8RAZgQpJqphoxiRNqRphy1lQ/ueoTxr3pOG1M3M3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=my+jHCqH; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50H9ImSw030630;
+	Fri, 17 Jan 2025 12:46:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=E0T+TXnYTpTHLsxUla+xig
+	nnqlbiayEmy+cmdmK8ARQ=; b=my+jHCqHL310J7HyuzKEmqfFH7J0kcF2sQjlny
+	gqfvgV2PIi760mAtN3DU21PriDBoptd22sbm+58p8PbZ2baZADaFqzw3UC+G7oPd
+	DIR9VjuJ8jd3DYKdNCQCSS18J7zaTl5EOPuhWRKPDLDGMLc3EIG0+4eclTythO8h
+	oKIk+JurQhmcX9yLqu1BwzkMVSYJWaitosmn9h1wyQLrD9mEbTp+atVb+lM37RRN
+	kgHUFsVN9l5XXau97NsSFVvwLDQzvnrQ+4w9j/WsZjaCsojmfQy42fli3MYzG1hd
+	0Urni5CUWd3rxnh5OYJGqk3JJO578ZsUezqCI0ZbA5yf5kOQ==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 447mfcrhat-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jan 2025 12:46:26 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50HCkKJA013994
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jan 2025 12:46:20 GMT
+Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Fri, 17 Jan 2025 04:46:19 -0800
+From: Sarika Sharma <quic_sarishar@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>,
+        Sarika Sharma
+	<quic_sarishar@quicinc.com>
+Subject: [PATCH RFC v2 00/12] wifi: cfg80211/mac80211: add support to handle per link statistics of multi-link station
+Date: Fri, 17 Jan 2025 18:15:42 +0530
+Message-ID: <20250117124554.3719808-1-quic_sarishar@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 17 Jan 2025 12:33:55 +0100
-Message-Id: <D74BE3ES4HZC.GJJ2MY3UH462@gmail.com>
-Cc: <linux-wireless@vger.kernel.org>, "P Praneesh"
- <quic_ppranees@quicinc.com>
-Subject: Re: [PATCH 7/7] wifi: ath12k: add monitor interface support on
- QCN9274
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Karthikeyan Periyasamy" <quic_periyasa@quicinc.com>,
- <ath12k@lists.infradead.org>
-X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <20250107021017.3857555-1-quic_periyasa@quicinc.com>
- <20250107021017.3857555-8-quic_periyasa@quicinc.com>
-In-Reply-To: <20250107021017.3857555-8-quic_periyasa@quicinc.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: hRlQTwJcBHSE19TDXhT4XurTuusJQSxA
+X-Proofpoint-ORIG-GUID: hRlQTwJcBHSE19TDXhT4XurTuusJQSxA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-17_05,2025-01-16_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 mlxlogscore=999 spamscore=0 mlxscore=0 impostorscore=0
+ phishscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 clxscore=1015
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501170103
 
-On Tue Jan 7, 2025 at 3:10 AM CET, Karthikeyan Periyasamy wrote:
-> From: P Praneesh <quic_ppranees@quicinc.com>
->
-> Currently, the monitor interface is not supported. To support the monitor
-> interface, configure the monitor vdev state identifier, configure the HTT
-> filter setup, subscribe the mac80211 WANT_MONITOR_VIF feature and prevent
-> monitor interface to transmit packet. Therefore, add these procedures to
-> add monitor interface support and enable the monitor interface support on
-> the QCN9274 platform through the hardware parameter.
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_S=
-ILICONZ-3
->
-> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-> ---
-[...]
-> diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wirele=
-ss/ath/ath12k/dp_tx.c
-> index b8f0df6f7a05..81d1ff918f48 100644
-> --- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-> +++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: BSD-3-Clause-Clear
->  /*
->   * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-> - * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights r=
-eserved.
-> + * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights r=
-eserved.
->   */
-> =20
->  #include "core.h"
-> @@ -1277,6 +1277,8 @@ int ath12k_dp_tx_htt_rx_monitor_mode_ring_config(st=
-ruct ath12k *ar, bool reset)
->  					HTT_RX_MON_MO_CTRL_FILTER_FLASG3 |
->  					HTT_RX_MON_FP_DATA_FILTER_FLASG3 |
->  					HTT_RX_MON_MO_DATA_FILTER_FLASG3;
-> +	} else {
-> +		tlv_filter.rxmon_disable =3D true;
-Shouldn't this be
-	tlv_filter =3D ath12k_mac_mon_status_filter_default;
-To match de default value ?
->  	}
-> =20
->  	if (ab->hw_params->rxdma1_enable) {
-> diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/=
-ath/ath12k/hw.c
-> index a106ebed7870..021a4b565e8b 100644
-> --- a/drivers/net/wireless/ath/ath12k/hw.c
-> +++ b/drivers/net/wireless/ath/ath12k/hw.c
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: BSD-3-Clause-Clear
->  /*
->   * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-> - * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights r=
-eserved.
-> + * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights r=
-eserved.
->   */
-> =20
->  #include <linux/types.h>
-> @@ -1049,7 +1049,7 @@ static const struct ath12k_hw_params ath12k_hw_para=
-ms[] =3D {
->  					BIT(NL80211_IFTYPE_AP) |
->  					BIT(NL80211_IFTYPE_MESH_POINT) |
->  					BIT(NL80211_IFTYPE_AP_VLAN),
-> -		.supports_monitor =3D false,
-> +		.supports_monitor =3D true,
-> =20
->  		.idle_ps =3D false,
->  		.download_calib =3D true,
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless=
-/ath/ath12k/mac.c
-> index abf7c7ed8967..27d44b508884 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -1264,6 +1264,12 @@ static int ath12k_mac_monitor_start(struct ath12k =
-*ar)
->  		return ret;
->  	}
-> =20
-> +	ret =3D ath12k_dp_tx_htt_monitor_mode_ring_config(ar, false);
-This is already done a few lines after. Shouldn't the one after be removed
-> +	if (ret) {
-> +		ath12k_warn(ar->ab, "fail to set monitor filter: %d\n", ret);
-> +		return ret;
-> +	}
-> +
->  	ar->monitor_started =3D true;
->  	ar->num_started_vdevs++;
->  	ret =3D ath12k_dp_tx_htt_monitor_mode_ring_config(ar, false);
-[...]
+Current implementation of NL80211_CMD_GET_STATION does not work
+for multi-link operation(MLO) since in case of MLO only deflink
+(or one of the links) is considered and not all links.
 
-And this is probably out of the scope of this patch but the code in
-ath12k_dp_tx_htt_rx_monitor_mode_ring_config could be simplified by returni=
-ng
-early if (!ab->hw_params->rxdma1_enable) like in
-ath12k_mac_config_mon_status_default.
+Hence, add the link_sinfo structure to provide infrastructure
+for link-level station statistics for multi-link operation(MLO).
 
-And that brings the question for me as shouldn't theese two functions shoul=
-d be
-refactored to share more code
+Additionally, accumulated stats for MLO are included in a concise
+manner to provide a comprehensive overview of the ML stations.
+
+NOTE:
+   1. Current code changes are done to get an early feedback on design.
+   2. Once RFC patches are approved will add the required driver changes.
+   3. Ath12k changes are included in this series for reference to other
+      driver changes.
+
+V2:
+ - Update cover letter to give more details on structural changes.
+ - Split the patch(1/7) in two patches.
+ - Do the required changes for MLO bringup before as seperate patches.
+ - Remove link_sinfo naming to sinfo for better clarity on changes.
+ - Add accumulated stats logic in cfg80211.
+ - Add flag to indicate driver supports per-link station statistics or not.
+
+Current flow:
+  cfg80211:
+  - Structure station_info is used to fill all station information (station
+    level as well link level).
+  - Nl80211_get_station() - locally define sinfo, call -.get_station() ops
+
+  mac80211:
+  - Sta_set_sinfo() - fill station information and call mac80211
+    ops - .sta_statistics()(to fill the station_info structure).
+
+Purposed flow:
+ cfg80211:
+  - Structure changes for station_info
+    structure station_info {
+      filled
+      packets
+      sta_flags
+      ... etc // station specific fields
+      link_station_info *links[IEEE80211_MLD_MAX_NUM_LINKS]
+    }
+    structure link_station_info {
+      filled
+      rates
+      ...etc // all link specific fields
+    }
+
+  - Split station_info structure into station specific and link specific
+    fields- (station_info and link_station_info).
+  - Add array pointers in station_info structure for link_station_info.
+    for non-ML use links[0], for ML use *links for each valid links.
+  - Nl80211_get_station() - locally define sinfo, call -.get_station() ops.
+  - Once link station information filled, fill mld level information in
+    cfg80211_sta_set_mld_sinfo() for MLO.
+  - Introduce a flag to indicate if driver provides per-link station
+    statistics or not and embed NL attributes accordingly.
+
+ mac80211:
+  - Sta_set_sinfo() - fill station specific information and call
+    sta_set_link_sinfo()
+     a. If MLO and driver provides per-link statistics
+         - For each link fill link specific data in *links[link_id]
+         - Call mac80211 ops for each link- .link_sta_statistics() to
+           fill link statistics.
+     b. If non-ML or driver does not provides per-link statistics
+         - Fill link level data for links[0]
+         - Call mac80211 ops- .link_sta_statistics() to fill link statistics
+  - Maintain accumulated data for removed links in sta_info structure
+    and fill in to station_info structure for consistency.
+
+Alternate approach:
+   - Keep sinfo structure as it is and use this for non-ML or
+     accumulated statistics for ML station.
+   - Add link sinfo for links with only certain link specific statistics.
+   - Keep mac_op_sta_statistics at MLD level and let driver fill the
+     MLO and link level data, if driver not filling let mac80211 fill
+     the data.
+   - Corresponding changes done to embed statistics into the NL message
+     based on the sinfo/link_sinfo.
+	 
+pseudo code for alternate approach:
+
+ - cfg80211/mac80211:
+	structure sinfo {
+	filled
+	packets
+	bytes
+	etc... //retain the structure as it was there before
+	add structure link_sinfo{
+		filled
+		packets
+		bytes
+		etc ... //all link level applicable fields
+		}
+	}
+ - Call drv_sta_statistics at MLO level or deflink if non-ML and let
+   driver fill MLO statistics and link level statistics.
+ - Check if sinfo->filled is set if not fill the corresponding data
+   in sinfo and link sinfo for MLO or sinfo for non-ML.
+
+Why not considered this approach for implementation:
+
+ - The required changes here to other drivers are minimal. However,
+   since sinfo is retained, every field needs to be filled at the MLO
+   level. MLO statistics for tx_duration, pertid, etc., may not be
+   very useful.
+ - If these elements are not filled for MLO, they will remain unused
+   in sinfo.
+
+Sarika Sharma (12):
+  wifi: cfg80211: reorg sinfo structure elements for mesh
+  wifi: mac80211: add API to populated mesh related fields in sinfo
+  wifi: mac80211: add support towards MLO handling of station statistics
+  wifi: mac80211: introduce sta_set_link_sinfo API to add support
+    towards MLO statistics
+  wifi: cfg80211: introduced nl80211_fill_link_station API for link
+    attributes towards MLO
+  wifi: cfg80211: reorg sinfo structure elements for MLO
+  wifi: cfg80211: extend statistics for link level in sinfo
+  wifi: cfg80211: add flag to indicate driver supports ML station
+    statistics
+  wifi: cfg80211: add accumulated statistics for MLO links
+  wifi: mac80211: add support to accumulate removed link statistics
+  wifi: cfg80211: add additional MLO statistics
+  wifi: ath12k: correctly fetch arsta for MLO
+
+ drivers/net/wireless/ath/ath12k/mac.c        |  22 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/lib.c |   2 +-
+ include/net/cfg80211.h                       | 210 ++++++++----
+ include/net/mac80211.h                       |  21 +-
+ net/mac80211/driver-ops.h                    |  14 +-
+ net/mac80211/ethtool.c                       |  31 +-
+ net/mac80211/ibss.c                          |   4 +-
+ net/mac80211/sta_info.c                      | 340 +++++++++++++------
+ net/mac80211/sta_info.h                      |  30 +-
+ net/mac80211/trace.h                         |   2 +-
+ net/mac80211/util.c                          |  18 +-
+ net/wireless/nl80211.c                       | 298 +++++++++++++---
+ net/wireless/trace.h                         |  33 +-
+ net/wireless/util.c                          |   6 +-
+ net/wireless/wext-compat.c                   |  22 +-
+ 15 files changed, 743 insertions(+), 310 deletions(-)
+
+
+base-commit: 7bf1659bad4e9413cdba132ef9cbd0caa9cabcc4
+-- 
+2.34.1
+
 
