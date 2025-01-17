@@ -1,81 +1,70 @@
-Return-Path: <linux-wireless+bounces-17657-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17659-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3B7A155B4
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 18:28:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D3AA15625
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 19:00:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D40C164A27
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 17:28:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B0113A1570
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 17:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467851A239E;
-	Fri, 17 Jan 2025 17:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802191A3BC0;
+	Fri, 17 Jan 2025 17:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ndWjPSzC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UJ4BLVfB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E4A166F29
-	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 17:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4747B1A2643;
+	Fri, 17 Jan 2025 17:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737134904; cv=none; b=IuVLitr7N5dHS2ZwaCm7ukOZ1BucqASeX9DvWB7+xuVV/qarC5FWnAoLeVZ/4yN2x33B+QIP+MF33fUvRk46hXZGswvxtrHkGvMJhiizaeNCGxAcGmcropibUR1zvdDfUQ35yXB7oG3XFwTMOmmp3vYe9KBp8S915Z7M5nXyJNc=
+	t=1737136795; cv=none; b=mIkHxvOHsJ82uQ7t3d1cdsktrHYrgLQsK4ATy/elV36Wz5KKWiDQ8nJDu1z1A+zGK4DBZXLm1wEn1r0VbMP5DPuMKE9sgEDdhiWPSPHjS9naKjwy9R5eIWXgPbKTjfZ44jrAWuoS+FJyDb1GKuEQn0s8EWFXLI8xAwsqWq2Wleg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737134904; c=relaxed/simple;
-	bh=e9OCVc75MoYGuJSLn+XNfpXtrMP9X39O0WbWMZ+VrDM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sU8AqTzjeINGvdRu9wVO2FblEWXdKhWKH9/7Gu9fglHhmB1Kos2/r+FqnebIf+HAcKvd0ZEocYn+rTvU6adOHft1Hn3qrxC91VPbhlw61MkZfljC61LBmonYoRKRigP7uu0blZLPDzjq1e2kF3VOwNgshgrdQ+S8VO+oLG3DVg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ndWjPSzC; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43626213fffso21569915e9.1
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 09:28:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737134901; x=1737739701; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PLN3gOcLDJS36tJv//bMowXpxsTR9Nhq+LKenQnzMwM=;
-        b=ndWjPSzCEE2DXbfSfDsI35k9MFhHjyaTmZq0ZdVLi4E3sqZ/jw89PlXGcKGl/L/ehW
-         hxtuMTuH3YKX3LESWH3nPBzFK1BcLCU8QHwPrpvVbcmpRevtoXUVqQ3eHBrEzBx/Y7wh
-         bLU5QFVWvdvRe3pAc4Efq3NSh4bBYRCJpKdLiK5uMnjnmK4FhPgmA3NJLlOdj/wuPcQj
-         plTqBOd4F/LPpVVN84Tiu/sPgXNvRfQH4pDBu8OLOuRDSst4bMYCLsVlv20r1Q4bzHxz
-         yqcAOg9hUHQPoM3KMHu1QknJaONlRr1YT5VqSKo4yzqb2CVvkTJpB5pf3XamAuzDBX+e
-         i2Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737134901; x=1737739701;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PLN3gOcLDJS36tJv//bMowXpxsTR9Nhq+LKenQnzMwM=;
-        b=qLIaQie04BBi0FrcLmcTeXSK9u6NCxHAe9E/J7thGeSYMQlwfPYm2KeTnhBgohNILm
-         Kae+q3AAs/thvDikaMZR2HcR7oA5wijatoi1hpEly7z1zCs+sheRw0PzN5e87W6+nnl8
-         8FXKi+qjS8ctQTFFyvFoCFWpx0ijDSMjJDPwGnVAr+gke55kCBx++sgucC3bACM0Wj8u
-         2D/W7C5GebV6ONxtku3759jBqE9mtNdfBVQf/SSAV3/Pf7q5Y7Q3BRlZz+cblVyNrXEl
-         g5HTxX0cXc6MfrAy3KGSdzBPgGs4FlIUszAf3+pw8UtFvmBRti6NLqzFmb5/m7BTtnwN
-         jy7A==
-X-Gm-Message-State: AOJu0YzM2mWG0ig137mMPD9yULWQYdd8AihQYm3/AU72+YbMX40Os7cX
-	GJt5+isMnYXHtFFoTgg+D3ho5YPrO8jiUAqlfZhlDoee88GyGA91L8sXnw==
-X-Gm-Gg: ASbGncsPvJRmGH6mgf4JylGwCahqkQMBZwMP4xqlkFlLYYvtPqIjvfKe821DfQAYp8w
-	e33nquTYI9crMyxfmJ8vamqfiMe42aQbzYfEXs0dyosYsrWnyQIlvMg898rPwfTaN4H+qKCJovt
-	68ssnbj2hcBBMAM/HU5e0xAMqw7y5MKUZv/VrtT8/GLeQddunxJC4uibpTk8oQ/yNut8Pxdbkwq
-	EB4AQ1co8aEsmA9IYi7KcI6WUdvEdNCBEiVCreWVn4lb5ndDYFU5y9i3ewWSFexFrd70ICgSImG
-	ZJEDZPnSuV6a1Q==
-X-Google-Smtp-Source: AGHT+IEWE12BcgR5C6nhlkhA8r092LE4py8JIqeiQuML0tzebpzWr5c0O4QRGGHiyGRxQjTxGW7+PA==
-X-Received: by 2002:a5d:648c:0:b0:385:f892:c8be with SMTP id ffacd0b85a97d-38bec54290dmr9388114f8f.23.1737134900453;
-        Fri, 17 Jan 2025 09:28:20 -0800 (PST)
-Received: from syracuse.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf3275562sm3074631f8f.66.2025.01.17.09.28.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jan 2025 09:28:19 -0800 (PST)
-From: Nicolas Escande <nico.escande@gmail.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: ath12k: add support of station average signal strength
-Date: Fri, 17 Jan 2025 18:28:19 +0100
-Message-ID: <20250117172819.3357534-1-nico.escande@gmail.com>
-X-Mailer: git-send-email 2.48.0
+	s=arc-20240116; t=1737136795; c=relaxed/simple;
+	bh=GbqeT7eeAHIjJRdLRDZggAAJcM/bUobSgiiZNrAeh2s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EkS3kZ4HVGEP/SwM1sn0EpBS0u/tKFezh1qzI7uECH8wGoZVrjCRdzzJ7m3icruu6b3oj7HMpHynCDAyUQ4lcXvHrCFGjmuYYJ+FFH5qpSU5/9s0OmVJuL3FbrTfqQO+fjQ+oD5FFnVakNujLxNaXjVc6pcFgAl2jQWx0UOnhB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UJ4BLVfB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FDAC4CEE2;
+	Fri, 17 Jan 2025 17:59:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737136795;
+	bh=GbqeT7eeAHIjJRdLRDZggAAJcM/bUobSgiiZNrAeh2s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UJ4BLVfBc5CgoQgarhyz8frZd3QYr1vcDc2Q23SSXR+RqDZQtU/odh+ZiYIU39zNC
+	 4Goye5M2FBfXHDElyZQ7t1tD2NWBMpzpZmfcf9XIpBWH4maYz2EhpE7hLxjaKdW9Ti
+	 Dm3xEBD0kdXOMipbvNS5HVNC1tSBM0ufLIFAeVkQf6CBKC3EtCxwJNQyfEKeoKXOY5
+	 7CEBYMrCHsZabraQCo0XylISR1P8O2ATNSp57I8fO0WzV5AIvXNB89q4L/mh8J4zPB
+	 cZVttfxstovxydmK5i+zItsh6M/7UCwzlpHwCX1pueQUgv2Awf3n4imiO0Oj2vRDAY
+	 6+sBgdQWecUsQ==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1tYqdM-00000006AjU-1Ray;
+	Fri, 17 Jan 2025 18:59:52 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Chao Yu <mchehab+huawei@kernel.org>,
+	Jaegeuk Kim <mchehab+huawei@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Mike Leach <mike.leach@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	coresight@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH RFC 00/10] Improve ABI documentation generation
+Date: Fri, 17 Jan 2025 18:59:29 +0100
+Message-ID: <cover.1737135484.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -83,98 +72,86 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-This adds support for reporting to the kernel the average rssi. This is
-done the same way as it was done in ath11k. A simple ewma (with the same
-parameters) is updated with each rssi update.
+Hi Jon/Greg,
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+The main goal of this RFC is to give a heads up of a work I've been doing to
+replace the get_abi.pl script with a python version.
 
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
----
- drivers/net/wireless/ath/ath12k/core.h   | 5 +++++
- drivers/net/wireless/ath/ath12k/dp_mon.c | 2 ++
- drivers/net/wireless/ath/ath12k/mac.c    | 5 +++++
- 3 files changed, 12 insertions(+)
+Patches 1-6 are OK to be applied:
+- Patch 1 changes the sort criteria of the ABI generation to use alphabetic order:
+  currently, it is *almost* alphabetic, but, on some cases, it orders on a different
+  way. No changes at the content, just at the order. 
+  I wrote it mainly to use the same sort criteria as the new tool, but IMO it is
+  worth applying even before we switch to the python version.
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index ee595794a7aee..9408d8a528580 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -1,3 +1,4 @@
-+
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-@@ -15,6 +16,7 @@
- #include <linux/ctype.h>
- #include <linux/firmware.h>
- #include <linux/panic_notifier.h>
-+#include <linux/average.h>
- #include "qmi.h"
- #include "htc.h"
- #include "wmi.h"
-@@ -477,6 +479,8 @@ struct ath12k_wbm_tx_stats {
- 	u64 wbm_tx_comp_stats[HAL_WBM_REL_HTT_TX_COMP_STATUS_MAX];
- };
- 
-+DECLARE_EWMA(avg_rssi, 10, 8)
-+
- struct ath12k_link_sta {
- 	struct ath12k_link_vif *arvif;
- 	struct ath12k_sta *ahsta;
-@@ -496,6 +500,7 @@ struct ath12k_link_sta {
- 	u64 rx_duration;
- 	u64 tx_duration;
- 	u8 rssi_comb;
-+	struct ewma_avg_rssi avg_rssi;
- 	u8 link_id;
- 	struct ath12k_rx_peer_stats *rx_stats;
- 	struct ath12k_wbm_tx_stats *wbm_tx_stats;
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 5a21961cfd465..e53d5674b4368 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -2157,6 +2157,7 @@ static void ath12k_dp_mon_rx_update_peer_su_stats(struct ath12k *ar,
- 		return;
- 
- 	arsta->rssi_comb = ppdu_info->rssi_comb;
-+	ewma_avg_rssi_add(&arsta->avg_rssi, ppdu_info->rssi_comb);
- 
- 	num_msdu = ppdu_info->tcp_msdu_count + ppdu_info->tcp_ack_msdu_count +
- 		   ppdu_info->udp_msdu_count + ppdu_info->other_msdu_count;
-@@ -2329,6 +2330,7 @@ ath12k_dp_mon_rx_update_user_stats(struct ath12k *ar,
- 		return;
- 
- 	arsta->rssi_comb = ppdu_info->rssi_comb;
-+	ewma_avg_rssi_add(&arsta->avg_rssi, ppdu_info->rssi_comb);
- 
- 	num_msdu = user_stats->tcp_msdu_count + user_stats->tcp_ack_msdu_count +
- 		   user_stats->udp_msdu_count + user_stats->other_msdu_count;
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 2d062b5904a8e..5be8cf0e41279 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -5403,6 +5403,7 @@ static int ath12k_mac_station_add(struct ath12k *ar,
- 		}
- 	}
- 
-+	ewma_avg_rssi_init(&arsta->avg_rssi);
- 	return 0;
- 
- free_peer:
-@@ -10054,6 +10055,10 @@ static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 	/* TODO: Use real NF instead of default one. */
- 	sinfo->signal = arsta->rssi_comb + ATH12K_DEFAULT_NOISE_FLOOR;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
-+
-+	sinfo->signal_avg = ewma_avg_rssi_read(&arsta->avg_rssi) +
-+		ATH12K_DEFAULT_NOISE_FLOOR;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL_AVG);
- }
- 
- static int ath12k_mac_op_cancel_remain_on_channel(struct ieee80211_hw *hw,
+- Patches 2-6 fix some ABI tag problems. They're independent of the rest and
+  can also be applied without  other patches on this series.
+
+The remaining patches (7-10) are RFC for a new tool.
+
+The new tool uses a cleaned-up version of the same algorithms I wrote in Perl,
+re-writen in Python. While doing the conversion, I got rid of some stuff that aren't
+needed anymore.
+
+The new tool has two additional changes:
+- the validate tool now detects a duplicate definition when files with the same name
+  exists on different parts of the ABI documentation (if one asks to build them altogether);
+- it fixes a bug on one of the files whose "what" keys weren't properly parsed.
+
+Patches 7 and 8 are already in good shape (IMHO).
+
+Patch 9 replaces "get_abi.pl" by "get_abi.py" exec for htmldocs/pdfdocs targets.
+It is not on its final shape, as my end goal is to do a python include and use the
+class directly there instead of calling an exec file, but such change will require
+some work (I'll likely implement an interactor at the class instead of just returning
+a big amount of text).
+
+Patch 10 is just a boilerplate to one additional functionality of the perl script that
+would require a lot of work to implement: check undefined/bad defined symbols
+at the local machine's sysfs and compare with ABI.
+
+Before getting patches 7-10 merged, I'd like to implement patch 10. This may
+take some time, as the ABI check there is not the simplest code I wrote.
+
+Yet, I'd like to get some feedback about patches 7-9 while I'm working on 
+patch 10, so, let me send what I have so far as a RFC.
+
+I hope this would make more people look at the code, as right now, we had only
+6 persons/6 patches besides me that touched the code.
+
+Mauro Carvalho Chehab (10):
+  scripts/get_abi.pl use label to better sort ABI symbols and files
+  ABI: sysfs-class-rfkill: fix kernelversion tags
+  ABI: sysfs-bus-coresight-*: fix kernelversion tags
+  ABI: sysfs-driver-dma-idxd: fix date tags
+  ABI: sysfs-fs-f2fs: fix date tags
+  ABI: sysfs-power: fix a what tag
+  [RFC] scripts: add a get_abi.py tool to generate ReST output
+  [RFC] scripts/get_abi.py: add support for symbol search
+  [RFC] docs: use get_abi.py for ABI generation
+  [RFC BOILERPLATE] scripts/get_abi.py: add support for undefined ABIs
+
+ Documentation/ABI/removed/sysfs-class-rfkill  |   2 +-
+ Documentation/ABI/stable/sysfs-class-rfkill   |  12 +-
+ .../ABI/stable/sysfs-driver-dma-idxd          |   4 +-
+ .../testing/sysfs-bus-coresight-devices-cti   |  78 +-
+ .../testing/sysfs-bus-coresight-devices-tpdm  |  52 +-
+ Documentation/ABI/testing/sysfs-fs-f2fs       |   4 +-
+ Documentation/ABI/testing/sysfs-power         |   2 +-
+ Documentation/admin-guide/abi-obsolete.rst    |   1 -
+ Documentation/admin-guide/abi-removed.rst     |   1 -
+ Documentation/admin-guide/abi-stable.rst      |   1 -
+ Documentation/admin-guide/abi-testing.rst     |   1 -
+ Documentation/sphinx/kernel_abi.py            |  10 +-
+ scripts/get_abi.pl                            |   3 +-
+ scripts/get_abi.py                            | 678 ++++++++++++++++++
+ 14 files changed, 760 insertions(+), 89 deletions(-)
+ create mode 100755 scripts/get_abi.py
+
 -- 
-2.48.0
+2.47.1
+
 
 
