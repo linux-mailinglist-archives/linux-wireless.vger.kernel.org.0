@@ -1,146 +1,118 @@
-Return-Path: <linux-wireless+bounces-17652-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17653-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1B9A1535D
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 17:00:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01EB6A15541
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 18:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AEAB18825CD
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 16:00:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FAA73A34D6
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 17:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1266A19C552;
-	Fri, 17 Jan 2025 16:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B3519F41C;
+	Fri, 17 Jan 2025 17:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="e75DFbym"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="A/aSICbQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10D919ADA4
-	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 16:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D3919E7D1
+	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 17:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737129603; cv=none; b=FjFF/jHxMsqwjixaAI2RxyZba5UNIFfRBcjnfh9CNqno09brmjJQy1D8bwLKs/Yn2d5uGbw0GpS+NuQbAdyL0WhDqF98cGGtG5KC12ME6Zd8IXXAjUYZgpgSnSuF9ss75gOemZAiOxY9uQx5J2U7txErePH4WHLImPlBDkROo/c=
+	t=1737133489; cv=none; b=t3meryXXOdQH+2YK2l8JfaJmZCpqlONY/XwOSSiuvcwp46ODyvbCU357eRY06rMXGZ1l3olaCdjvhBlrFk5roI+ifnhS9EW2VbTT5qFggydC1r4QCEgwfCf+yjXxISiHmqYcRdSPpe5Yx3ZKxJgvufRo345L3GgW3Mx26msUP68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737129603; c=relaxed/simple;
-	bh=n54bq5Fm8IxV07/L9aKJuhsaDQsGRhzAwPELINTii9U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YXy1fgllQMx9zFbelbyUtR0be+uLU4olrhD5Z3c0Imexz7K2VD4LgFpjdh4u3lL2SlA0vAHgGuylIZuwj3/LO2MmnRmQ9m6cDG1K5LYYcXoE6WIrfTERwmw7okQg08nW3iK8gotUQWe4pGRqKIgz5sWTMon/Xs6nuNrKx1BZhyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=e75DFbym; arc=none smtp.client-ip=148.163.129.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 51D5970007F;
-	Fri, 17 Jan 2025 15:59:53 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.43.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 724F713C2B0;
-	Fri, 17 Jan 2025 07:59:52 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 724F713C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1737129592;
-	bh=n54bq5Fm8IxV07/L9aKJuhsaDQsGRhzAwPELINTii9U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=e75DFbym6/7Z1zkCEC4v5yWmcmSzAzKqK01LMWg0FAWajXlMXugxKpwziSbD+e+S3
-	 cdKkBf7z1LYsflGI6l79wX5cKv+kOVdhEgM5I6v4mZttZBGTmuPPGyGDdS9s80Y/UB
-	 KlTPcSp4PTJn0mzCh2wLF+y9DJsfysI49+1HV1+I=
-Message-ID: <e484a38c-90ad-4ff4-8b86-2b714dabb6d8@candelatech.com>
-Date: Fri, 17 Jan 2025 07:59:51 -0800
+	s=arc-20240116; t=1737133489; c=relaxed/simple;
+	bh=1qpWwAzEnnAUOvHZ4V3xsJrd8ixmbPGuvLMx7qqHdPg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dOHS0JtrwHi332FTas/pmN9TKPYl/ETeJdMj3F/56nYR6rXCCkhD5rwb5vELfcQqa28oEgNo/oi52Z4zTwwPesTSo8TYShRntlUefvF2LcEa6RmRF1xKuCJ8OBrYKlXWDn+pfBJMBDcQ9e4hdBe0XXIL82CCMOPVRnlZXt27LKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=A/aSICbQ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50H9IhUL030288;
+	Fri, 17 Jan 2025 17:04:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=nj+yQgkiZnWtliqVNMliEa
+	zQLLZhjhl1BjV+zAHp1HA=; b=A/aSICbQ+fkPmE4xreoAD7O9lcHfastSNnzHxD
+	OE0V3634I/E4dNMXkgALgBN6L4FL83kAk7KowrzYyb1EHuZcRNoVqH0OLB0PljBQ
+	fCyLOfeqo1TtS3SgPGAicQlv6JPxUClg2mOIfnCfmtNJf7tpxtnO3xe8aAuTE1Jf
+	119vVCqww9WBPGtFDc66xoEIYr40T8tt1alYWum8DKWoEhbTWhu0NK0qV2ILvyvx
+	806bSYg4065Opr4axDA/9FE3lt6xPN6j+rtVPpGhUup9l5mNcTiowxACp10yWWy9
+	nYRVfu7T59JrPTbtVOenVA3Zl3WlRVf7r56nifgZEF3EpYKg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 447mfcs619-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jan 2025 17:04:39 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50HH4cav020805
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jan 2025 17:04:38 GMT
+Received: from hu-ramess-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Fri, 17 Jan 2025 09:04:36 -0800
+From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Subject: [PATCH v2 0/3] wifi: cfg80211: update EML capabilities of an ML Station
+Date: Fri, 17 Jan 2025 22:34:13 +0530
+Message-ID: <20250117170416.2907530-1-quic_ramess@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 09/12] wifi: cfg80211: add accumulated statistics
- for MLO links
-To: Sarika Sharma <quic_sarishar@quicinc.com>, johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-References: <20250117124554.3719808-1-quic_sarishar@quicinc.com>
- <20250117124554.3719808-10-quic_sarishar@quicinc.com>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <20250117124554.3719808-10-quic_sarishar@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1737129594-UY34dFoG6yzu
-X-MDID-O:
- us5;ut7;1737129594;UY34dFoG6yzu;<greearb@candelatech.com>;535bfda298b524f45ffb92fb019ae3e8
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: c-PV91Ne7LBiTuDWbquasHP01OHwdjmD
+X-Proofpoint-ORIG-GUID: c-PV91Ne7LBiTuDWbquasHP01OHwdjmD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-17_06,2025-01-16_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 mlxlogscore=773 spamscore=0 mlxscore=0 impostorscore=0
+ phishscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 clxscore=1015
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501170134
 
-On 1/17/25 04:45, Sarika Sharma wrote:
-> Currently statistics are handled at link level for multi-link
-> operation(MLO). There is no provision to check accumulated statistics
-> for a multi-link(ML) station. Accumulated statistics are useful to
-> provide comprehensive overview for the ML stations.
-> 
-> Statistics such as packets and bytes are useful for observing the
-> total packets sent and received at the station level. However,
-> MLO statistics for rates and signal can not be accumulated since it
-> won't make much sense. Hence, a subsequent change will handle signal
-> and rates bit differently at MLO level.
-> 
-> Hence, add accumulated statistics for MLO station. Also, for non-ML
-> station accumulated statistics make no sense.
+When EMLSR is enabled for an ML association, the EML capabilities
+advertised by the ML Station needs to be updated to drivers in order to
+trigger EMLSR operation.
+Add support to fetch EML capabilities advertised by ML station and
+cache it in ieee80211_sta data structure so that drivers can use them
+whenever required.
 
-> --- a/include/net/cfg80211.h
-> +++ b/include/net/cfg80211.h
-> @@ -2174,6 +2174,12 @@ struct link_station_info {
->    *	dump_station() callbacks. User space needs this information to determine
->    *	the accepted and rejected affiliated links of the connected station.
->    * @assoc_resp_ies_len: Length of @assoc_resp_ies buffer in octets.
-> + * @rx_packets: total packets (MSDUs & MMPDUs) received from this station
-> + * @tx_packets: total packets (MSDUs & MMPDUs) transmitted to this station
-> + * @rx_bytes: total bytes (size of MPDUs) received from this station
-> + * @tx_bytes: total bytes (size of MPDUs) transmitted to this station
-> + * @tx_retries: cumulative retry counts (MPDUs)
+*v2:
+   - Added new flag eml_cap_present to indicate if EML attribute is
+     present as part of new/set station command.
 
-While at it, can we define these a bit better?
+Ramasamy Kaliappan (3):
+  wifi: cfg80211: Add support to get EMLSR capabilities of non-AP MLD
+  wifi: mac80211: update ML STA with EML capabilities
+  wifi: ath12k: update EMLSR capabilities of ML Station
 
-For instance, if one frame is sent from mac80211 to the driver,
-and the driver fails first transmit attempt, drops encoding rate,
-and second transmit succeeds, is this correct?
+ drivers/net/wireless/ath/ath12k/mac.c |  1 +
+ drivers/net/wireless/ath/ath12k/wmi.c | 81 ++++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/wmi.h |  3 +-
+ include/net/cfg80211.h                |  5 ++
+ include/net/mac80211.h                |  2 +
+ net/mac80211/cfg.c                    |  3 +
+ net/wireless/nl80211.c                | 12 ++++
+ 7 files changed, 104 insertions(+), 3 deletions(-)
 
-tx_packets += 1;
-tx_retries += 1;
 
-If frame is is retried all 15 times and fails to be successfully transmitted, would
-it be this?
-
-tx_packets += 1;
-tx_retries += 15
-tx_failed += 1;
-
-> + * @tx_failed: number of failed transmissions (MPDUs) (retries exceeded, no ACK)
->    * @valid_links: bitmap of valid links, or 0 for non-MLO. Drivers fill this
->    *	information in cfg80211_new_sta(), cfg80211_del_sta_sinfo(),
->    *	get_station() and dump_station() callbacks.
-> @@ -2210,6 +2216,13 @@ struct station_info {
->   	const u8 *assoc_resp_ies;
->   	size_t assoc_resp_ies_len;
->   
-> +	u32 rx_packets;
-> +	u32 tx_packets;
-
-At 10g rates, this will wrap fairly quickly, can we make these u64?
-
-> +	u64 rx_bytes;
-> +	u64 tx_bytes;
-> +	u32 tx_retries;
-> +	u32 tx_failed;
-> +
-
-Thanks,
-Ben
-
+base-commit: d7bef42fc98f2d8f67546d1ea1a3f2c2932fd72b
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.34.1
 
 
