@@ -1,64 +1,64 @@
-Return-Path: <linux-wireless+bounces-17629-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17630-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6FEA14A25
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 08:29:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A54A14A26
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 08:29:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8468F3AA8FD
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 07:29:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91DCB188A739
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 07:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D628D1F790F;
-	Fri, 17 Jan 2025 07:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25FC1F78FD;
+	Fri, 17 Jan 2025 07:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="uYU+uszn"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="A9e0k6Rg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7633E1F8669
-	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 07:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C90C1F7907
+	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 07:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737098965; cv=none; b=ZZa9eSZrv4PwOFbw2AuHPVTBHY+wtY6vCHUK97787jFD32oikHvZcstUDbBgtRPR3wV2KeHCtkgyB8zAwj8GHrkmSG4qFxD/5vs0qls17aoR3yV4KJZl338YZ0zwfR8aJoB/vzar5fKd6pr1EvkoHZuVFZZgxSXxtTBw5ituBKI=
+	t=1737098969; cv=none; b=eh+Cymw8s+GXies0TNiG9kOJ7pqcLyup+E8M7HHFpMaia2NKksbBP5jqp3QT9qT2L7lvxdY/gmCbLc6RPWR2zs1rQuz9KzPdoklU2bt5YnytLbyHR7feYta+7ybIBKUi8kCwu4FGEMG0kAw2JFsDMDhZ5PWelUN3g9WVMI+HYW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737098965; c=relaxed/simple;
-	bh=aXSQOHMpbxH8fgblbR6kPhiShECkG+kuDLA2lr7lyYw=;
+	s=arc-20240116; t=1737098969; c=relaxed/simple;
+	bh=//WbCKdbzmXh3sgaOcJ6nJgvUMJWUeSRakxAGYNvrUQ=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sGphNp1eEgoPtZ9zsUny3jqthwA4S7eqbKrikOplYoOuuyCqrsmpY59x9NgfWERDaSnSsFKQSNYzm0cVD5paMgMtXY9rjlz/TRTknM/1w6YHvNvgVEqrppFu5SRHd8w50TG0OaN68sRaerNhLi5ndA3Tds/VoTVwwsvRE4V6NAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=uYU+uszn; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=rdLYgnahndLTjIOKRii9hRl4xqyurAMXErbGqOYkSn55HrD85KODUF94kTh3fB57tyn9ijVM8VFDBZRwDObNJCMfTpJyqzpp5bNR7w+imnfM7ZyoxCFwTLvFWIu2nBH30W0FdbAG7NLZGTqFhDoxIDvSHQZFtFSdvW3yf3UvzPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=A9e0k6Rg; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50H7TLBA02337838, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50H7TPXm82337847, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1737098961; bh=aXSQOHMpbxH8fgblbR6kPhiShECkG+kuDLA2lr7lyYw=;
+	t=1737098965; bh=//WbCKdbzmXh3sgaOcJ6nJgvUMJWUeSRakxAGYNvrUQ=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=uYU+usznNGSPNrz1/XJ0HEVrG7dJNG9i0OPTzVF4elXq7GK015+Jrprc8poRJ9ylV
-	 I8JQfTwG4rWPTnGCVy0I/eGnzqCAiiZhU33I7S9ioLk94wOc064mU7EDJMK9lW361F
-	 YxH8EwOcK3C0Zhd18QW+YbZZ+rkGH9nD34NHnvk/tlNTCfqxPD7N4grSgA1KZn4UHh
-	 SkU/7O9Ip+A+2cR2cY4JBQFP2EqW5CfbLYDVe7tGq5KSLyX+p8N4Ajt593Hs9xv9yF
-	 nb0PvBdRdW6j8RBfzKPq4FyDTcxZhfXVnxlkpK9p1KawGVcenu9gEFDDEgq52UI/TA
-	 8YUZdI4HuTigg==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50H7TLBA02337838
+	b=A9e0k6Rg/skj0fJb6SmDgfMHsGiSlWpPcHIhQkUyOFNUuLcNK6Ljymb80T41jwjA+
+	 6p+/4s6ZCKVxaZnRlkyqj/yN0624IJf2hSs6DQk/og1nQLhXs43o//8iWjFONxI+sK
+	 6wKlji/KopeGpwb82PNgKKVhNK36w7+VJEWR6BqnvMLi19+dY9qEnkYcZpnMZ8ely4
+	 exBdknNd5bWrd7HbCX3N1jbRKJKlb/LDV7njv44PSBtK0GM7hMu06apYaXiH4fXbtP
+	 gRaokNxP3humoYr7pYOuEzPjobgGyKcLsWQg6ys6JbBAeblduMVcQVj6gpw6ICTn3/
+	 IR996qN9UqMAg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50H7TPXm82337847
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 15:29:21 +0800
+	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 15:29:25 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 17 Jan 2025 15:29:21 +0800
+ 15.1.2507.39; Fri, 17 Jan 2025 15:29:25 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 17 Jan
- 2025 15:29:21 +0800
+ 2025 15:29:25 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 6/8] wifi: rtw89: phy: support EDCCA per PHY
-Date: Fri, 17 Jan 2025 15:28:26 +0800
-Message-ID: <20250117072828.16728-7-pkshih@realtek.com>
+Subject: [PATCH 7/8] wifi: rtw89: phy: support EDCCA log per PHY
+Date: Fri, 17 Jan 2025 15:28:27 +0800
+Message-ID: <20250117072828.16728-8-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250117072828.16728-1-pkshih@realtek.com>
 References: <20250117072828.16728-1-pkshih@realtek.com>
@@ -73,278 +73,336 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Dynamic mechanism EDCCA (Energy Detection Clear Channel Assessment) is to
-dynamically adjusted to make EDCCA suitable for situations.
-
-Use PHY context to support two PHY.
-
-For the EDCCA log part, registers to report EDCCA for PHY 1 is not a
-simple offset from PHY 0, so add them by separate patch.
+The registers of EDCCA log for PHY 1 isn't a simple offset, so define
+them accordingly. Then the function use register set to access reports
+according to phy_idx.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c |   6 +-
- drivers/net/wireless/realtek/rtw89/core.h |   3 +-
- drivers/net/wireless/realtek/rtw89/phy.c  | 107 +++++++++++++---------
- drivers/net/wireless/realtek/rtw89/phy.h  |   5 +-
- 4 files changed, 73 insertions(+), 48 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h     | 10 ++--
+ drivers/net/wireless/realtek/rtw89/phy.c      | 48 +++++++++++--------
+ drivers/net/wireless/realtek/rtw89/reg.h      |  5 ++
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c | 15 ++++--
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c | 15 ++++--
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c | 15 ++++--
+ .../net/wireless/realtek/rtw89/rtw8852bt.c    | 15 ++++--
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 15 ++++--
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c | 15 ++++--
+ 9 files changed, 104 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index e39fb696ac13..b730f70c82aa 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -4906,6 +4906,7 @@ void rtw89_core_scan_start(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rtwv
- {
- 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev,
- 						       rtwvif_link->chanctx_idx);
-+	struct rtw89_bb_ctx *bb = rtw89_get_bb_ctx(rtwdev, rtwvif_link->phy_idx);
- 
- 	rtwdev->scanning = true;
- 	rtw89_leave_lps(rtwdev);
-@@ -4916,7 +4917,7 @@ void rtw89_core_scan_start(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rtwv
- 	rtw89_btc_ntfy_scan_start(rtwdev, rtwvif_link->phy_idx, chan->band_type);
- 	rtw89_chip_rfk_scan(rtwdev, rtwvif_link, true);
- 	rtw89_hci_recalc_int_mit(rtwdev);
--	rtw89_phy_config_edcca(rtwdev, true);
-+	rtw89_phy_config_edcca(rtwdev, bb, true);
- 
- 	rtw89_fw_h2c_cam(rtwdev, rtwvif_link, NULL, mac_addr);
- }
-@@ -4941,7 +4942,8 @@ void rtw89_core_scan_complete(struct rtw89_dev *rtwdev,
- 
- 	rtw89_chip_rfk_scan(rtwdev, rtwvif_link, false);
- 	rtw89_btc_ntfy_scan_finish(rtwdev, rtwvif_link->phy_idx);
--	rtw89_phy_config_edcca(rtwdev, false);
-+	bb = rtw89_get_bb_ctx(rtwdev, rtwvif_link->phy_idx);
-+	rtw89_phy_config_edcca(rtwdev, bb, false);
- 
- 	rtwdev->scanning = false;
- 	rtw89_for_each_active_bb(rtwdev, bb)
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 0523f97fb0e1..e4e9ae6e609b 100644
+index e4e9ae6e609b..afa792d4a815 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4767,7 +4767,6 @@ struct rtw89_hal {
- 	enum rtw89_entity_mode entity_mode;
- 	struct rtw89_entity_mgnt entity_mgnt;
- 
--	struct rtw89_edcca_bak edcca_bak;
- 	u32 disabled_dm_bitmap; /* bitmap of enum rtw89_dm_type */
- 
- 	u8 thermal_prot_th;
-@@ -5682,7 +5681,6 @@ struct rtw89_dev {
- 	struct rtw89_power_trim_info pwr_trim;
- 
- 	struct rtw89_cfo_tracking_info cfo_tracking;
--	struct rtw89_phy_ch_info ch_info;
- 	union {
- 		struct rtw89_phy_bb_gain_info ax;
- 		struct rtw89_phy_bb_gain_info_be be;
-@@ -5696,6 +5694,7 @@ struct rtw89_dev {
- 		struct rtw89_env_monitor_info env_monitor;
- 		struct rtw89_dig_info dig;
- 		struct rtw89_phy_ch_info ch_info;
-+		struct rtw89_edcca_bak edcca_bak;
- 	} bbs[RTW89_PHY_NUM];
- 
- 	struct delayed_work track_work;
+@@ -4189,10 +4189,12 @@ struct rtw89_edcca_regs {
+ 	u32 edcca_p_mask;
+ 	u32 ppdu_level;
+ 	u32 ppdu_mask;
+-	u32 rpt_a;
+-	u32 rpt_b;
+-	u32 rpt_sel;
+-	u32 rpt_sel_mask;
++	struct rtw89_edcca_p_regs {
++		u32 rpt_a;
++		u32 rpt_b;
++		u32 rpt_sel;
++		u32 rpt_sel_mask;
++	} p[RTW89_PHY_NUM];
+ 	u32 rpt_sel_be;
+ 	u32 rpt_sel_be_mask;
+ 	u32 tx_collision_t2r_st;
 diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index e07f874590d2..f1029da4a78e 100644
+index f1029da4a78e..a5299295b777 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy.c
 +++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -6584,10 +6584,13 @@ static void rtw89_phy_env_monitor_init(struct rtw89_dev *rtwdev)
- 		__rtw89_phy_env_monitor_init(rtwdev, bb);
- }
- 
--static void rtw89_phy_edcca_init(struct rtw89_dev *rtwdev)
-+static void __rtw89_phy_edcca_init(struct rtw89_dev *rtwdev,
-+				   struct rtw89_bb_ctx *bb)
+@@ -7017,6 +7017,7 @@ void rtw89_phy_config_edcca(struct rtw89_dev *rtwdev,
+ static void rtw89_phy_edcca_log(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb)
  {
  	const struct rtw89_edcca_regs *edcca_regs = rtwdev->chip->edcca_regs;
--	struct rtw89_edcca_bak *edcca_bak = &rtwdev->hal.edcca_bak;
-+	struct rtw89_edcca_bak *edcca_bak = &bb->edcca_bak;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_EDCCA, "BB-%d edcca init\n", bb->phy_idx);
- 
- 	memset(edcca_bak, 0, sizeof(*edcca_bak));
- 
-@@ -6603,8 +6606,16 @@ static void rtw89_phy_edcca_init(struct rtw89_dev *rtwdev)
- 		rtw89_phy_set_phy_regs(rtwdev, R_DFS_FFT_CG, B_DFS_FFT_EN, 1);
- 	}
- 
--	rtw89_phy_write32_mask(rtwdev, edcca_regs->tx_collision_t2r_st,
--			       edcca_regs->tx_collision_t2r_st_mask, 0x29);
-+	rtw89_phy_write32_idx(rtwdev, edcca_regs->tx_collision_t2r_st,
-+			      edcca_regs->tx_collision_t2r_st_mask, 0x29, bb->phy_idx);
-+}
-+
-+static void rtw89_phy_edcca_init(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_bb_ctx *bb;
-+
-+	rtw89_for_each_capab_bb(rtwdev, bb)
-+		__rtw89_phy_edcca_init(rtwdev, bb);
- }
- 
- void rtw89_phy_dm_init(struct rtw89_dev *rtwdev)
-@@ -6967,42 +6978,43 @@ void rtw89_decode_chan_idx(struct rtw89_dev *rtwdev, u8 chan_idx,
- }
- EXPORT_SYMBOL(rtw89_decode_chan_idx);
- 
--void rtw89_phy_config_edcca(struct rtw89_dev *rtwdev, bool scan)
-+void rtw89_phy_config_edcca(struct rtw89_dev *rtwdev,
-+			    struct rtw89_bb_ctx *bb, bool scan)
- {
- 	const struct rtw89_edcca_regs *edcca_regs = rtwdev->chip->edcca_regs;
--	struct rtw89_edcca_bak *edcca_bak = &rtwdev->hal.edcca_bak;
-+	struct rtw89_edcca_bak *edcca_bak = &bb->edcca_bak;
- 
- 	if (scan) {
- 		edcca_bak->a =
--			rtw89_phy_read32_mask(rtwdev, edcca_regs->edcca_level,
--					      edcca_regs->edcca_mask);
-+			rtw89_phy_read32_idx(rtwdev, edcca_regs->edcca_level,
-+					     edcca_regs->edcca_mask, bb->phy_idx);
- 		edcca_bak->p =
--			rtw89_phy_read32_mask(rtwdev, edcca_regs->edcca_level,
--					      edcca_regs->edcca_p_mask);
-+			rtw89_phy_read32_idx(rtwdev, edcca_regs->edcca_level,
-+					     edcca_regs->edcca_p_mask, bb->phy_idx);
- 		edcca_bak->ppdu =
--			rtw89_phy_read32_mask(rtwdev, edcca_regs->ppdu_level,
--					      edcca_regs->ppdu_mask);
--
--		rtw89_phy_write32_mask(rtwdev, edcca_regs->edcca_level,
--				       edcca_regs->edcca_mask, EDCCA_MAX);
--		rtw89_phy_write32_mask(rtwdev, edcca_regs->edcca_level,
--				       edcca_regs->edcca_p_mask, EDCCA_MAX);
--		rtw89_phy_write32_mask(rtwdev, edcca_regs->ppdu_level,
--				       edcca_regs->ppdu_mask, EDCCA_MAX);
-+			rtw89_phy_read32_idx(rtwdev, edcca_regs->ppdu_level,
-+					     edcca_regs->ppdu_mask, bb->phy_idx);
-+
-+		rtw89_phy_write32_idx(rtwdev, edcca_regs->edcca_level,
-+				      edcca_regs->edcca_mask, EDCCA_MAX, bb->phy_idx);
-+		rtw89_phy_write32_idx(rtwdev, edcca_regs->edcca_level,
-+				      edcca_regs->edcca_p_mask, EDCCA_MAX, bb->phy_idx);
-+		rtw89_phy_write32_idx(rtwdev, edcca_regs->ppdu_level,
-+				      edcca_regs->ppdu_mask, EDCCA_MAX, bb->phy_idx);
- 	} else {
--		rtw89_phy_write32_mask(rtwdev, edcca_regs->edcca_level,
--				       edcca_regs->edcca_mask,
--				       edcca_bak->a);
--		rtw89_phy_write32_mask(rtwdev, edcca_regs->edcca_level,
--				       edcca_regs->edcca_p_mask,
--				       edcca_bak->p);
--		rtw89_phy_write32_mask(rtwdev, edcca_regs->ppdu_level,
--				       edcca_regs->ppdu_mask,
--				       edcca_bak->ppdu);
-+		rtw89_phy_write32_idx(rtwdev, edcca_regs->edcca_level,
-+				      edcca_regs->edcca_mask,
-+				      edcca_bak->a, bb->phy_idx);
-+		rtw89_phy_write32_idx(rtwdev, edcca_regs->edcca_level,
-+				      edcca_regs->edcca_p_mask,
-+				      edcca_bak->p, bb->phy_idx);
-+		rtw89_phy_write32_idx(rtwdev, edcca_regs->ppdu_level,
-+				      edcca_regs->ppdu_mask,
-+				      edcca_bak->ppdu, bb->phy_idx);
- 	}
- }
- 
--static void rtw89_phy_edcca_log(struct rtw89_dev *rtwdev)
-+static void rtw89_phy_edcca_log(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb)
- {
- 	const struct rtw89_edcca_regs *edcca_regs = rtwdev->chip->edcca_regs;
++	const struct rtw89_edcca_p_regs *edcca_p_regs;
  	bool flag_fb, flag_p20, flag_s20, flag_s40, flag_s80;
-@@ -7099,9 +7111,10 @@ static void rtw89_phy_edcca_log(struct rtw89_dev *rtwdev)
- 		    pwdb_fb, pwdb_p20, pwdb_s20, pwdb_s40, pwdb_s80);
- }
- 
--static u8 rtw89_phy_edcca_get_thre_by_rssi(struct rtw89_dev *rtwdev)
-+static u8 rtw89_phy_edcca_get_thre_by_rssi(struct rtw89_dev *rtwdev,
-+					   struct rtw89_bb_ctx *bb)
- {
--	struct rtw89_phy_ch_info *ch_info = &rtwdev->ch_info;
-+	struct rtw89_phy_ch_info *ch_info = &bb->ch_info;
- 	bool is_linked = rtwdev->total_sta_assoc > 0;
- 	u8 rssi_min = ch_info->rssi_min >> 1;
- 	u8 edcca_thre;
-@@ -7117,13 +7130,13 @@ static u8 rtw89_phy_edcca_get_thre_by_rssi(struct rtw89_dev *rtwdev)
- 	return edcca_thre;
- }
- 
--void rtw89_phy_edcca_thre_calc(struct rtw89_dev *rtwdev)
-+void rtw89_phy_edcca_thre_calc(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb)
- {
- 	const struct rtw89_edcca_regs *edcca_regs = rtwdev->chip->edcca_regs;
--	struct rtw89_edcca_bak *edcca_bak = &rtwdev->hal.edcca_bak;
-+	struct rtw89_edcca_bak *edcca_bak = &bb->edcca_bak;
- 	u8 th;
- 
--	th = rtw89_phy_edcca_get_thre_by_rssi(rtwdev);
-+	th = rtw89_phy_edcca_get_thre_by_rssi(rtwdev, bb);
- 	if (th == edcca_bak->th_old)
+ 	s8 pwdb_fb, pwdb_p20, pwdb_s20, pwdb_s40, pwdb_s80;
+ 	u8 path, per20_bitmap;
+@@ -7026,13 +7027,18 @@ static void rtw89_phy_edcca_log(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *b
+ 	if (!rtw89_debug_is_enabled(rtwdev, RTW89_DBG_EDCCA))
  		return;
  
-@@ -7132,23 +7145,33 @@ void rtw89_phy_edcca_thre_calc(struct rtw89_dev *rtwdev)
- 	rtw89_debug(rtwdev, RTW89_DBG_EDCCA,
- 		    "[EDCCA]: Normal Mode, EDCCA_th = %d\n", th);
- 
--	rtw89_phy_write32_mask(rtwdev, edcca_regs->edcca_level,
--			       edcca_regs->edcca_mask, th);
--	rtw89_phy_write32_mask(rtwdev, edcca_regs->edcca_level,
--			       edcca_regs->edcca_p_mask, th);
--	rtw89_phy_write32_mask(rtwdev, edcca_regs->ppdu_level,
--			       edcca_regs->ppdu_mask, th);
-+	rtw89_phy_write32_idx(rtwdev, edcca_regs->edcca_level,
-+			      edcca_regs->edcca_mask, th, bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, edcca_regs->edcca_level,
-+			      edcca_regs->edcca_p_mask, th, bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, edcca_regs->ppdu_level,
-+			      edcca_regs->ppdu_mask, th, bb->phy_idx);
-+}
++	if (bb->phy_idx == RTW89_PHY_1)
++		edcca_p_regs = &edcca_regs->p[RTW89_PHY_1];
++	else
++		edcca_p_regs = &edcca_regs->p[RTW89_PHY_0];
 +
-+static
-+void __rtw89_phy_edcca_track(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb)
-+{
-+	rtw89_debug(rtwdev, RTW89_DBG_EDCCA, "BB-%d edcca track\n", bb->phy_idx);
-+
-+	rtw89_phy_edcca_thre_calc(rtwdev, bb);
-+	rtw89_phy_edcca_log(rtwdev, bb);
- }
+ 	if (rtwdev->chip->chip_id == RTL8922A)
+ 		rtw89_phy_write32_mask(rtwdev, edcca_regs->rpt_sel_be,
+ 				       edcca_regs->rpt_sel_be_mask, 0);
  
- void rtw89_phy_edcca_track(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_hal *hal = &rtwdev->hal;
-+	struct rtw89_bb_ctx *bb;
+-	rtw89_phy_write32_mask(rtwdev, edcca_regs->rpt_sel,
+-			       edcca_regs->rpt_sel_mask, 0);
+-	tmp = rtw89_phy_read32(rtwdev, edcca_regs->rpt_b);
++	rtw89_phy_write32_mask(rtwdev, edcca_p_regs->rpt_sel,
++			       edcca_p_regs->rpt_sel_mask, 0);
++	tmp = rtw89_phy_read32(rtwdev, edcca_p_regs->rpt_b);
+ 	path = u32_get_bits(tmp, B_EDCCA_RPT_B_PATH_MASK);
+ 	flag_s80 = u32_get_bits(tmp, B_EDCCA_RPT_B_S80);
+ 	flag_s40 = u32_get_bits(tmp, B_EDCCA_RPT_B_S40);
+@@ -7043,19 +7049,19 @@ static void rtw89_phy_edcca_log(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *b
+ 	pwdb_p20 = u32_get_bits(tmp, MASKBYTE2);
+ 	pwdb_fb = u32_get_bits(tmp, MASKBYTE3);
  
- 	if (hal->disabled_dm_bitmap & BIT(RTW89_DM_DYNAMIC_EDCCA))
- 		return;
+-	rtw89_phy_write32_mask(rtwdev, edcca_regs->rpt_sel,
+-			       edcca_regs->rpt_sel_mask, 4);
+-	tmp = rtw89_phy_read32(rtwdev, edcca_regs->rpt_b);
++	rtw89_phy_write32_mask(rtwdev, edcca_p_regs->rpt_sel,
++			       edcca_p_regs->rpt_sel_mask, 4);
++	tmp = rtw89_phy_read32(rtwdev, edcca_p_regs->rpt_b);
+ 	pwdb_s80 = u32_get_bits(tmp, MASKBYTE1);
+ 	pwdb_s40 = u32_get_bits(tmp, MASKBYTE2);
  
--	rtw89_phy_edcca_thre_calc(rtwdev);
--	rtw89_phy_edcca_log(rtwdev);
-+	rtw89_for_each_active_bb(rtwdev, bb)
-+		__rtw89_phy_edcca_track(rtwdev, bb);
- }
+-	per20_bitmap = rtw89_phy_read32_mask(rtwdev, edcca_regs->rpt_a,
++	per20_bitmap = rtw89_phy_read32_mask(rtwdev, edcca_p_regs->rpt_a,
+ 					     MASKBYTE0);
  
- enum rtw89_rf_path_bit rtw89_phy_get_kpath(struct rtw89_dev *rtwdev,
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index db748c7453cd..33d466c519e3 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.h
-+++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -1002,9 +1002,10 @@ void rtw89_phy_ul_tb_ctrl_track(struct rtw89_dev *rtwdev);
- u8 rtw89_encode_chan_idx(struct rtw89_dev *rtwdev, u8 central_ch, u8 band);
- void rtw89_decode_chan_idx(struct rtw89_dev *rtwdev, u8 chan_idx,
- 			   u8 *ch, enum nl80211_band *band);
--void rtw89_phy_config_edcca(struct rtw89_dev *rtwdev, bool scan);
-+void rtw89_phy_config_edcca(struct rtw89_dev *rtwdev,
-+			    struct rtw89_bb_ctx *bb, bool scan);
- void rtw89_phy_edcca_track(struct rtw89_dev *rtwdev);
--void rtw89_phy_edcca_thre_calc(struct rtw89_dev *rtwdev);
-+void rtw89_phy_edcca_thre_calc(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb);
- enum rtw89_rf_path_bit rtw89_phy_get_kpath(struct rtw89_dev *rtwdev,
- 					   enum rtw89_phy_idx phy_idx);
- enum rtw89_rf_path rtw89_phy_get_syn_sel(struct rtw89_dev *rtwdev,
+ 	if (rtwdev->chip->chip_id == RTL8922A) {
+ 		rtw89_phy_write32_mask(rtwdev, edcca_regs->rpt_sel_be,
+ 				       edcca_regs->rpt_sel_be_mask, 4);
+-		tmp = rtw89_phy_read32(rtwdev, edcca_regs->rpt_b);
++		tmp = rtw89_phy_read32(rtwdev, edcca_p_regs->rpt_b);
+ 		pwdb[0] = u32_get_bits(tmp, MASKBYTE3);
+ 		pwdb[1] = u32_get_bits(tmp, MASKBYTE2);
+ 		pwdb[2] = u32_get_bits(tmp, MASKBYTE1);
+@@ -7063,33 +7069,33 @@ static void rtw89_phy_edcca_log(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *b
+ 
+ 		rtw89_phy_write32_mask(rtwdev, edcca_regs->rpt_sel_be,
+ 				       edcca_regs->rpt_sel_be_mask, 5);
+-		tmp = rtw89_phy_read32(rtwdev, edcca_regs->rpt_b);
++		tmp = rtw89_phy_read32(rtwdev, edcca_p_regs->rpt_b);
+ 		pwdb[4] = u32_get_bits(tmp, MASKBYTE3);
+ 		pwdb[5] = u32_get_bits(tmp, MASKBYTE2);
+ 		pwdb[6] = u32_get_bits(tmp, MASKBYTE1);
+ 		pwdb[7] = u32_get_bits(tmp, MASKBYTE0);
+ 	} else {
+-		rtw89_phy_write32_mask(rtwdev, edcca_regs->rpt_sel,
+-				       edcca_regs->rpt_sel_mask, 0);
+-		tmp = rtw89_phy_read32(rtwdev, edcca_regs->rpt_a);
++		rtw89_phy_write32_mask(rtwdev, edcca_p_regs->rpt_sel,
++				       edcca_p_regs->rpt_sel_mask, 0);
++		tmp = rtw89_phy_read32(rtwdev, edcca_p_regs->rpt_a);
+ 		pwdb[0] = u32_get_bits(tmp, MASKBYTE3);
+ 		pwdb[1] = u32_get_bits(tmp, MASKBYTE2);
+ 
+-		rtw89_phy_write32_mask(rtwdev, edcca_regs->rpt_sel,
+-				       edcca_regs->rpt_sel_mask, 1);
+-		tmp = rtw89_phy_read32(rtwdev, edcca_regs->rpt_a);
++		rtw89_phy_write32_mask(rtwdev, edcca_p_regs->rpt_sel,
++				       edcca_p_regs->rpt_sel_mask, 1);
++		tmp = rtw89_phy_read32(rtwdev, edcca_p_regs->rpt_a);
+ 		pwdb[2] = u32_get_bits(tmp, MASKBYTE3);
+ 		pwdb[3] = u32_get_bits(tmp, MASKBYTE2);
+ 
+-		rtw89_phy_write32_mask(rtwdev, edcca_regs->rpt_sel,
+-				       edcca_regs->rpt_sel_mask, 2);
+-		tmp = rtw89_phy_read32(rtwdev, edcca_regs->rpt_a);
++		rtw89_phy_write32_mask(rtwdev, edcca_p_regs->rpt_sel,
++				       edcca_p_regs->rpt_sel_mask, 2);
++		tmp = rtw89_phy_read32(rtwdev, edcca_p_regs->rpt_a);
+ 		pwdb[4] = u32_get_bits(tmp, MASKBYTE3);
+ 		pwdb[5] = u32_get_bits(tmp, MASKBYTE2);
+ 
+-		rtw89_phy_write32_mask(rtwdev, edcca_regs->rpt_sel,
+-				       edcca_regs->rpt_sel_mask, 3);
+-		tmp = rtw89_phy_read32(rtwdev, edcca_regs->rpt_a);
++		rtw89_phy_write32_mask(rtwdev, edcca_p_regs->rpt_sel,
++				       edcca_p_regs->rpt_sel_mask, 3);
++		tmp = rtw89_phy_read32(rtwdev, edcca_p_regs->rpt_a);
+ 		pwdb[6] = u32_get_bits(tmp, MASKBYTE3);
+ 		pwdb[7] = u32_get_bits(tmp, MASKBYTE2);
+ 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 10d0efa7a58e..c992835d4b63 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -8157,6 +8157,8 @@
+ #define B_EDCCA_RPT_B_S40 BIT(4)
+ #define B_EDCCA_RPT_B_S80 BIT(3)
+ #define B_EDCCA_RPT_B_PATH_MASK GENMASK(2, 1)
++#define R_EDCCA_RPT_P1_A 0x1740
++#define R_EDCCA_RPT_P1_B 0x1744
+ #define R_SWSI_V1 0x174C
+ #define B_SWSI_W_BUSY_V1 BIT(24)
+ #define B_SWSI_R_BUSY_V1 BIT(25)
+@@ -8222,6 +8224,7 @@
+ #define B_TXCKEN_FORCE_ALL GENMASK(24, 0)
+ #define R_EDCCA_RPT_SEL 0x20CC
+ #define B_EDCCA_RPT_SEL_MSK GENMASK(2, 0)
++#define B_EDCCA_RPT_SEL_P1_MSK GENMASK(5, 3)
+ #define R_ADC_FIFO 0x20fc
+ #define B_ADC_FIFO_RST GENMASK(31, 24)
+ #define B_ADC_FIFO_RXK GENMASK(31, 16)
+@@ -8291,6 +8294,8 @@
+ #define B_P1_EN_SOUND_WO_NDP BIT(1)
+ #define R_EDCCA_RPT_A_BE 0x2E38
+ #define R_EDCCA_RPT_B_BE 0x2E3C
++#define R_EDCCA_RPT_P1_A_BE 0x2E40
++#define R_EDCCA_RPT_P1_B_BE 0x2E44
+ #define R_S1_HW_SI_DIS 0x3200
+ #define B_S1_HW_SI_DIS_W_R_TRIG GENMASK(30, 28)
+ #define R_P1_RXCK 0x32A0
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+index c56f70267882..d23896de6812 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+@@ -224,10 +224,17 @@ static const struct rtw89_edcca_regs rtw8851b_edcca_regs = {
+ 	.edcca_p_mask			= B_EDCCA_LVL_MSK1,
+ 	.ppdu_level			= R_SEG0R_EDCCA_LVL_V1,
+ 	.ppdu_mask			= B_EDCCA_LVL_MSK3,
+-	.rpt_a				= R_EDCCA_RPT_A,
+-	.rpt_b				= R_EDCCA_RPT_B,
+-	.rpt_sel			= R_EDCCA_RPT_SEL,
+-	.rpt_sel_mask			= B_EDCCA_RPT_SEL_MSK,
++	.p = {{
++		.rpt_a			= R_EDCCA_RPT_A,
++		.rpt_b			= R_EDCCA_RPT_B,
++		.rpt_sel		= R_EDCCA_RPT_SEL,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_MSK,
++	}, {
++		.rpt_a			= R_EDCCA_RPT_P1_A,
++		.rpt_b			= R_EDCCA_RPT_P1_B,
++		.rpt_sel		= R_EDCCA_RPT_SEL,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_P1_MSK,
++	}},
+ 	.tx_collision_t2r_st		= R_TX_COLLISION_T2R_ST,
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_M,
+ };
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 9bd2842c27d5..27ffbb3b26fc 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -522,10 +522,17 @@ static const struct rtw89_edcca_regs rtw8852a_edcca_regs = {
+ 	.edcca_p_mask			= B_EDCCA_LVL_MSK1,
+ 	.ppdu_level			= R_SEG0R_EDCCA_LVL,
+ 	.ppdu_mask			= B_EDCCA_LVL_MSK3,
+-	.rpt_a				= R_EDCCA_RPT_A,
+-	.rpt_b				= R_EDCCA_RPT_B,
+-	.rpt_sel			= R_EDCCA_RPT_SEL,
+-	.rpt_sel_mask			= B_EDCCA_RPT_SEL_MSK,
++	.p = {{
++		.rpt_a			= R_EDCCA_RPT_A,
++		.rpt_b			= R_EDCCA_RPT_B,
++		.rpt_sel		= R_EDCCA_RPT_SEL,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_MSK,
++	}, {
++		.rpt_a			= R_EDCCA_RPT_P1_A,
++		.rpt_b			= R_EDCCA_RPT_P1_B,
++		.rpt_sel		= R_EDCCA_RPT_SEL,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_P1_MSK,
++	}},
+ 	.tx_collision_t2r_st		= R_TX_COLLISION_T2R_ST,
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_M,
+ };
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index dfb2bf61b0b8..8b92f2219fb9 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -189,10 +189,17 @@ static const struct rtw89_edcca_regs rtw8852b_edcca_regs = {
+ 	.edcca_p_mask			= B_EDCCA_LVL_MSK1,
+ 	.ppdu_level			= R_SEG0R_EDCCA_LVL_V1,
+ 	.ppdu_mask			= B_EDCCA_LVL_MSK3,
+-	.rpt_a				= R_EDCCA_RPT_A,
+-	.rpt_b				= R_EDCCA_RPT_B,
+-	.rpt_sel			= R_EDCCA_RPT_SEL,
+-	.rpt_sel_mask			= B_EDCCA_RPT_SEL_MSK,
++	.p = {{
++		.rpt_a			= R_EDCCA_RPT_A,
++		.rpt_b			= R_EDCCA_RPT_B,
++		.rpt_sel		= R_EDCCA_RPT_SEL,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_MSK,
++	}, {
++		.rpt_a			= R_EDCCA_RPT_P1_A,
++		.rpt_b			= R_EDCCA_RPT_P1_B,
++		.rpt_sel		= R_EDCCA_RPT_SEL,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_P1_MSK,
++	}},
+ 	.tx_collision_t2r_st		= R_TX_COLLISION_T2R_ST,
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_M,
+ };
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
+index bde3e1fb7ca6..6b43f5806ea4 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
+@@ -187,10 +187,17 @@ static const struct rtw89_edcca_regs rtw8852bt_edcca_regs = {
+ 	.edcca_p_mask			= B_EDCCA_LVL_MSK1,
+ 	.ppdu_level			= R_SEG0R_EDCCA_LVL_V1,
+ 	.ppdu_mask			= B_EDCCA_LVL_MSK3,
+-	.rpt_a				= R_EDCCA_RPT_A,
+-	.rpt_b				= R_EDCCA_RPT_B,
+-	.rpt_sel			= R_EDCCA_RPT_SEL,
+-	.rpt_sel_mask			= B_EDCCA_RPT_SEL_MSK,
++	.p = {{
++		.rpt_a			= R_EDCCA_RPT_A,
++		.rpt_b			= R_EDCCA_RPT_B,
++		.rpt_sel		= R_EDCCA_RPT_SEL,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_MSK,
++	}, {
++		.rpt_a			= R_EDCCA_RPT_P1_A,
++		.rpt_b			= R_EDCCA_RPT_P1_B,
++		.rpt_sel		= R_EDCCA_RPT_SEL,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_P1_MSK,
++	}},
+ 	.tx_collision_t2r_st		= R_TX_COLLISION_T2R_ST,
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_M,
+ };
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index bc84b15e7826..4ff45af704ab 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -186,10 +186,17 @@ static const struct rtw89_edcca_regs rtw8852c_edcca_regs = {
+ 	.edcca_p_mask			= B_EDCCA_LVL_MSK1,
+ 	.ppdu_level			= R_SEG0R_EDCCA_LVL,
+ 	.ppdu_mask			= B_EDCCA_LVL_MSK3,
+-	.rpt_a				= R_EDCCA_RPT_A,
+-	.rpt_b				= R_EDCCA_RPT_B,
+-	.rpt_sel			= R_EDCCA_RPT_SEL,
+-	.rpt_sel_mask			= B_EDCCA_RPT_SEL_MSK,
++	.p = {{
++		.rpt_a			= R_EDCCA_RPT_A,
++		.rpt_b			= R_EDCCA_RPT_B,
++		.rpt_sel		= R_EDCCA_RPT_SEL,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_MSK,
++	}, {
++		.rpt_a			= R_EDCCA_RPT_P1_A,
++		.rpt_b			= R_EDCCA_RPT_P1_B,
++		.rpt_sel		= R_EDCCA_RPT_SEL,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_P1_MSK,
++	}},
+ 	.tx_collision_t2r_st		= R_TX_COLLISION_T2R_ST,
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_M,
+ };
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+index 11d66bfceb15..898a65a721dc 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+@@ -205,10 +205,17 @@ static const struct rtw89_edcca_regs rtw8922a_edcca_regs = {
+ 	.edcca_p_mask			= B_EDCCA_LVL_MSK1,
+ 	.ppdu_level			= R_SEG0R_PPDU_LVL_BE,
+ 	.ppdu_mask			= B_EDCCA_LVL_MSK1,
+-	.rpt_a				= R_EDCCA_RPT_A_BE,
+-	.rpt_b				= R_EDCCA_RPT_B_BE,
+-	.rpt_sel			= R_EDCCA_RPT_SEL_BE,
+-	.rpt_sel_mask			= B_EDCCA_RPT_SEL_MSK,
++	.p = {{
++		.rpt_a			= R_EDCCA_RPT_A_BE,
++		.rpt_b			= R_EDCCA_RPT_B_BE,
++		.rpt_sel		= R_EDCCA_RPT_SEL_BE,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_MSK,
++	}, {
++		.rpt_a			= R_EDCCA_RPT_P1_A_BE,
++		.rpt_b			= R_EDCCA_RPT_P1_B_BE,
++		.rpt_sel		= R_EDCCA_RPT_SEL_BE,
++		.rpt_sel_mask		= B_EDCCA_RPT_SEL_P1_MSK,
++	}},
+ 	.rpt_sel_be			= R_EDCCA_RPTREG_SEL_BE,
+ 	.rpt_sel_be_mask		= B_EDCCA_RPTREG_SEL_BE_MSK,
+ 	.tx_collision_t2r_st		= R_TX_COLLISION_T2R_ST_BE,
 -- 
 2.25.1
 
