@@ -1,64 +1,64 @@
-Return-Path: <linux-wireless+bounces-17626-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17627-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27602A14A22
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 08:29:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D458DA14A23
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 08:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CAA0161886
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 07:29:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 268D0188A719
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 07:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8771F8670;
-	Fri, 17 Jan 2025 07:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADBA1F867E;
+	Fri, 17 Jan 2025 07:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="DMIWeIyH"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ENWZAPdx"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892771F791B
-	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 07:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2081F866D
+	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 07:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737098958; cv=none; b=OSkqWD+gCdF+mAqy/5FsxlOplRhr0s3QaqCT4N4i4PTgbZgE52rhLSufUewW3dlpBozuRR2xSlX1+FyARUAZQEwHCYLje3AmJroYLzt6+cvB0R57SWpHSB8PfWKpinhKMOSfMlTXTXkTIRBhMKp1FDqsb1T+EfElW43Ek/ZR8Qc=
+	t=1737098960; cv=none; b=FHhNfxqULvbByrV5OLoVnUcg+ZIBRjuEG+j0ikM3+xjKEhvbJJ81YNfHXXgi/gflztrhCbaL8Oz26k5t7PbFnqhDz4jbabWNs2XIT4Kt1TXt2z8UngZVmqmVEsHQIJhiJMBnLWNYbitnny27i46sLZwGwZcD2RwwEnkvI/sSwzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737098958; c=relaxed/simple;
-	bh=AcDMsPznwwoUehRX7l2SUUZKCr6bf6AnH+mExKwElJY=;
+	s=arc-20240116; t=1737098960; c=relaxed/simple;
+	bh=gEYKIk2lTd+pTT5ecy/K67DSiSM3LLklwyaWyI72bWk=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cGiWJ/sANKy8K/iq5PaMVa3MJiuDm1f0i4deoroUVgUeShfmfMeI1VrltxbUpx/RQ0cEppBrIgMOUzmwo5i6vlUgJ+EClhac+2SeC/xkG5z9gzc7vYK1EKWwrBX0CfENlUXCn+/xNwAqY7Pd8Xy6wBGBBEhYuB6kPJoxy8J5xHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=DMIWeIyH; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=UjEPcoNPW+rGichtv/8rtFj3PkHytg4iSduQkQWOnNbf0r7aP/SrJHR9EV5hr0LAb57PJNJ8QEEqTPZE2pLyieugZSG0IiTcncI4ND/+ypEYtoINtbvfQvC6Ql+adQDu+WcohoJCkFMpjxr1M8Ta3+tx2Zb6XpUoUSqTlNXL438=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ENWZAPdx; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50H7T8XW02337812, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50H7TC4A02337821, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1737098948; bh=AcDMsPznwwoUehRX7l2SUUZKCr6bf6AnH+mExKwElJY=;
+	t=1737098952; bh=gEYKIk2lTd+pTT5ecy/K67DSiSM3LLklwyaWyI72bWk=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=DMIWeIyHTVqWXZBzpE2GApMj0IsMCwazz6a2582cYnRnw5xVMPCrqBzU+zRZc/Z1T
-	 rl7fSJNeP/8qpB9yBMcFtqe7/5sNnFH6XE4W2/11MUZydajQLapovaWKeuP3grJdK7
-	 mD6Splsds7Hgz5yaBVKL6ZyZUagK9JWa5EK4SUvrlu8y+7iimv7GQzZkrwhmesr0MP
-	 CVcp2WxS+fNmuH0uZbjnZdOcm1lTmQ/uLAGTCeXkWzgsEUOc+5kvywgU0PlCTLqffc
-	 8rbvDIrIRX9eznFWFb07s45quUg/LD+bXmClCiiS4MNipRXSvDIDlpmA4oEn+akmHW
-	 kTgkM6AUi0UlQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50H7T8XW02337812
+	b=ENWZAPdx0fWDstdme3gFRQTUKbkoSYRVZMBpYAZXVn7XlAoBU77ayQxq0oLRUHE5G
+	 Vo+mIqJMIN9vsXhdpwtl0kpTyL8gK6xgyZ6szmuytrHaNHr8tBKcS8jtFOyIp4bIhi
+	 Ph1yss7RJpJPyWBku/FI0W+XIIzp6LRgMfhTGAY6lJr5hgeNYgYQnSZvTo34Chw48H
+	 4ERdyx3h4DkwMmkD1hCeTyJzW7yKCmOZIHKgBe2TiO7SGwef/cZop+7fS1dWcaYcIB
+	 GQTd496uQPnONpr5DsAyy6vHiZy2rlru8czSz/lDpkJLVTL7HaJgdfBnoCWo/83DPq
+	 eznqPURESSriw==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50H7TC4A02337821
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 15:29:08 +0800
+	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 15:29:12 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 17 Jan 2025 15:29:08 +0800
+ 15.1.2507.39; Fri, 17 Jan 2025 15:29:12 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 17 Jan
- 2025 15:29:07 +0800
+ 2025 15:29:12 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/8] wifi: rtw89: phy: support env_monitor per PHY
-Date: Fri, 17 Jan 2025 15:28:23 +0800
-Message-ID: <20250117072828.16728-4-pkshih@realtek.com>
+Subject: [PATCH 4/8] wifi: rtw89: phy: support DIG per PHY
+Date: Fri, 17 Jan 2025 15:28:24 +0800
+Message-ID: <20250117072828.16728-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250117072828.16728-1-pkshih@realtek.com>
 References: <20250117072828.16728-1-pkshih@realtek.com>
@@ -73,612 +73,519 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-The env_monitor is to collect information of current operating channel as
-helper to make decision with better hardware parameters to adopt current
-environment.
+DIG standing for dynamic initial gain is to define RX coverage. Adjust this
+value dynamically to gain good RX performance.
 
-Use PHY context as argument to control PHY accordingly, and use
-rtw89_phy_{write32,read32}_idx with phy_idx to access registers.
+Use PHY context to extend DIG algorithm to support two PHY.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
+ drivers/net/wireless/realtek/rtw89/core.c |   4 +-
  drivers/net/wireless/realtek/rtw89/core.h |   2 +-
- drivers/net/wireless/realtek/rtw89/phy.c  | 306 +++++++++++++---------
- drivers/net/wireless/realtek/rtw89/sar.c  |   3 +-
- 3 files changed, 180 insertions(+), 131 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c  | 224 +++++++++++++---------
+ drivers/net/wireless/realtek/rtw89/phy.h  |   2 +-
+ 4 files changed, 136 insertions(+), 96 deletions(-)
 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 42815a58a49a..e39fb696ac13 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -4925,6 +4925,7 @@ void rtw89_core_scan_complete(struct rtw89_dev *rtwdev,
+ 			      struct rtw89_vif_link *rtwvif_link, bool hw_scan)
+ {
+ 	struct ieee80211_bss_conf *bss_conf;
++	struct rtw89_bb_ctx *bb;
+ 
+ 	if (!rtwvif_link)
+ 		return;
+@@ -4943,7 +4944,8 @@ void rtw89_core_scan_complete(struct rtw89_dev *rtwdev,
+ 	rtw89_phy_config_edcca(rtwdev, false);
+ 
+ 	rtwdev->scanning = false;
+-	rtwdev->dig.bypass_dig = true;
++	rtw89_for_each_active_bb(rtwdev, bb)
++		bb->dig.bypass_dig = true;
+ 	if (hw_scan && (rtwdev->hw->conf.flags & IEEE80211_CONF_IDLE))
+ 		ieee80211_queue_work(rtwdev->hw, &rtwdev->ips_work);
+ }
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 4e9700ebd7e5..99bb32f4fd8d 100644
+index 99bb32f4fd8d..86f1370ff136 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
 @@ -5682,7 +5682,6 @@ struct rtw89_dev {
  	struct rtw89_power_trim_info pwr_trim;
  
  	struct rtw89_cfo_tracking_info cfo_tracking;
--	struct rtw89_env_monitor_info env_monitor;
- 	struct rtw89_dig_info dig;
+-	struct rtw89_dig_info dig;
  	struct rtw89_phy_ch_info ch_info;
  	union {
+ 		struct rtw89_phy_bb_gain_info ax;
 @@ -5695,6 +5694,7 @@ struct rtw89_dev {
- 
  	struct rtw89_bb_ctx {
  		enum rtw89_phy_idx phy_idx;
-+		struct rtw89_env_monitor_info env_monitor;
+ 		struct rtw89_env_monitor_info env_monitor;
++		struct rtw89_dig_info dig;
  	} bbs[RTW89_PHY_NUM];
  
  	struct delayed_work track_work;
 diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index c7c05f7fda1d..e266ddae0c31 100644
+index e266ddae0c31..bae8d8643490 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy.c
 +++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -5199,24 +5199,27 @@ void rtw89_phy_stat_track(struct rtw89_dev *rtwdev)
- 	memset(&phystat->cur_pkt_stat, 0, sizeof(phystat->cur_pkt_stat));
+@@ -5835,11 +5835,12 @@ static void rtw89_physts_parsing_init(struct rtw89_dev *rtwdev)
+ 		__rtw89_physts_parsing_init(rtwdev, RTW89_PHY_1);
  }
  
--static u16 rtw89_phy_ccx_us_to_idx(struct rtw89_dev *rtwdev, u32 time_us)
-+static u16 rtw89_phy_ccx_us_to_idx(struct rtw89_dev *rtwdev,
-+				   struct rtw89_bb_ctx *bb, u32 time_us)
+-static void rtw89_phy_dig_read_gain_table(struct rtw89_dev *rtwdev, int type)
++static void rtw89_phy_dig_read_gain_table(struct rtw89_dev *rtwdev,
++					  struct rtw89_bb_ctx *bb, int type)
  {
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 
- 	return time_us >> (ilog2(CCX_US_BASE_RATIO) + env->ccx_unit_idx);
- }
- 
--static u32 rtw89_phy_ccx_idx_to_us(struct rtw89_dev *rtwdev, u16 idx)
-+static u32 rtw89_phy_ccx_idx_to_us(struct rtw89_dev *rtwdev,
-+				   struct rtw89_bb_ctx *bb, u16 idx)
- {
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 
- 	return idx << (ilog2(CCX_US_BASE_RATIO) + env->ccx_unit_idx);
- }
- 
--static void rtw89_phy_ccx_top_setting_init(struct rtw89_dev *rtwdev)
-+static void rtw89_phy_ccx_top_setting_init(struct rtw89_dev *rtwdev,
-+					   struct rtw89_bb_ctx *bb)
- {
- 	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 	const struct rtw89_ccx_regs *ccx = phy->ccx;
- 
- 	env->ccx_manual_ctrl = false;
-@@ -5225,17 +5228,20 @@ static void rtw89_phy_ccx_top_setting_init(struct rtw89_dev *rtwdev)
- 	env->ccx_period = 0;
- 	env->ccx_unit_idx = RTW89_CCX_32_US;
- 
--	rtw89_phy_set_phy_regs(rtwdev, ccx->setting_addr, ccx->en_mask, 1);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->setting_addr, ccx->trig_opt_mask, 1);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->setting_addr, ccx->measurement_trig_mask, 1);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->setting_addr, ccx->edcca_opt_mask,
--			       RTW89_CCX_EDCCA_BW20_0);
-+	rtw89_phy_write32_idx(rtwdev, ccx->setting_addr, ccx->en_mask, 1, bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->setting_addr, ccx->trig_opt_mask, 1,
-+			      bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->setting_addr, ccx->measurement_trig_mask, 1,
-+			      bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->setting_addr, ccx->edcca_opt_mask,
-+			      RTW89_CCX_EDCCA_BW20_0, bb->phy_idx);
- }
- 
--static u16 rtw89_phy_ccx_get_report(struct rtw89_dev *rtwdev, u16 report,
--				    u16 score)
-+static u16 rtw89_phy_ccx_get_report(struct rtw89_dev *rtwdev,
-+				    struct rtw89_bb_ctx *bb,
-+				    u16 report, u16 score)
- {
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 	u32 numer = 0;
- 	u16 ret = 0;
- 
-@@ -5275,9 +5281,10 @@ static void rtw89_phy_ccx_ms_to_period_unit(struct rtw89_dev *rtwdev,
- 		    *period, *unit_idx);
- }
- 
--static void rtw89_phy_ccx_racing_release(struct rtw89_dev *rtwdev)
-+static void rtw89_phy_ccx_racing_release(struct rtw89_dev *rtwdev,
-+					 struct rtw89_bb_ctx *bb)
- {
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_PHY_TRACK,
- 		    "lv:(%d)->(0)\n", env->ccx_rac_lv);
-@@ -5288,9 +5295,10 @@ static void rtw89_phy_ccx_racing_release(struct rtw89_dev *rtwdev)
- }
- 
- static bool rtw89_phy_ifs_clm_th_update_check(struct rtw89_dev *rtwdev,
-+					      struct rtw89_bb_ctx *bb,
- 					      struct rtw89_ccx_para_info *para)
- {
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 	bool is_update = env->ifs_clm_app != para->ifs_clm_app;
- 	u8 i = 0;
- 	u16 *ifs_th_l = env->ifs_clm_th_l;
-@@ -5325,12 +5333,12 @@ static bool rtw89_phy_ifs_clm_th_update_check(struct rtw89_dev *rtwdev,
- 	 */
- 	ifs_th_l[IFS_CLM_TH_START_IDX] = 0;
- 	ifs_th_h_us[IFS_CLM_TH_START_IDX] = ifs_th0_us;
--	ifs_th_h[IFS_CLM_TH_START_IDX] = rtw89_phy_ccx_us_to_idx(rtwdev,
-+	ifs_th_h[IFS_CLM_TH_START_IDX] = rtw89_phy_ccx_us_to_idx(rtwdev, bb,
- 								 ifs_th0_us);
- 	for (i = 1; i < RTW89_IFS_CLM_NUM; i++) {
- 		ifs_th_l[i] = ifs_th_h[i - 1] + 1;
- 		ifs_th_h_us[i] = ifs_th_h_us[i - 1] * ifs_th_times;
--		ifs_th_h[i] = rtw89_phy_ccx_us_to_idx(rtwdev, ifs_th_h_us[i]);
-+		ifs_th_h[i] = rtw89_phy_ccx_us_to_idx(rtwdev, bb, ifs_th_h_us[i]);
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
+ 	const struct rtw89_phy_dig_gain_cfg *cfg;
++	struct rtw89_dig_info *dig = &bb->dig;
+ 	const char *msg;
+ 	u8 i;
+ 	s8 gain_base;
+@@ -5876,8 +5877,8 @@ static void rtw89_phy_dig_read_gain_table(struct rtw89_dev *rtwdev, int type)
  	}
  
- ifs_update_finished:
-@@ -5341,30 +5349,31 @@ static bool rtw89_phy_ifs_clm_th_update_check(struct rtw89_dev *rtwdev,
- 	return is_update;
+ 	for (i = 0; i < cfg->size; i++) {
+-		tmp = rtw89_phy_read32_mask(rtwdev, cfg->table[i].addr,
+-					    cfg->table[i].mask);
++		tmp = rtw89_phy_read32_idx(rtwdev, cfg->table[i].addr,
++					   cfg->table[i].mask, bb->phy_idx);
+ 		tmp >>= DIG_GAIN_SHIFT;
+ 		gain_arr[i] = sign_extend32(tmp, U4_MAX_BIT) + gain_base;
+ 		gain_base += DIG_GAIN;
+@@ -5887,25 +5888,26 @@ static void rtw89_phy_dig_read_gain_table(struct rtw89_dev *rtwdev, int type)
+ 	}
  }
  
--static void rtw89_phy_ifs_clm_set_th_reg(struct rtw89_dev *rtwdev)
-+static void rtw89_phy_ifs_clm_set_th_reg(struct rtw89_dev *rtwdev,
-+					 struct rtw89_bb_ctx *bb)
+-static void rtw89_phy_dig_update_gain_para(struct rtw89_dev *rtwdev)
++static void rtw89_phy_dig_update_gain_para(struct rtw89_dev *rtwdev,
++					   struct rtw89_bb_ctx *bb)
  {
- 	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 	const struct rtw89_ccx_regs *ccx = phy->ccx;
- 	u8 i = 0;
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
++	struct rtw89_dig_info *dig = &bb->dig;
+ 	u32 tmp;
+ 	u8 i;
  
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t1_addr, ccx->ifs_t1_th_l_mask,
--			       env->ifs_clm_th_l[0]);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t2_addr, ccx->ifs_t2_th_l_mask,
--			       env->ifs_clm_th_l[1]);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t3_addr, ccx->ifs_t3_th_l_mask,
--			       env->ifs_clm_th_l[2]);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t4_addr, ccx->ifs_t4_th_l_mask,
--			       env->ifs_clm_th_l[3]);
--
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t1_addr, ccx->ifs_t1_th_h_mask,
--			       env->ifs_clm_th_h[0]);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t2_addr, ccx->ifs_t2_th_h_mask,
--			       env->ifs_clm_th_h[1]);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t3_addr, ccx->ifs_t3_th_h_mask,
--			       env->ifs_clm_th_h[2]);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t4_addr, ccx->ifs_t4_th_h_mask,
--			       env->ifs_clm_th_h[3]);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t1_addr, ccx->ifs_t1_th_l_mask,
-+			      env->ifs_clm_th_l[0], bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t2_addr, ccx->ifs_t2_th_l_mask,
-+			      env->ifs_clm_th_l[1], bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t3_addr, ccx->ifs_t3_th_l_mask,
-+			      env->ifs_clm_th_l[2], bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t4_addr, ccx->ifs_t4_th_l_mask,
-+			      env->ifs_clm_th_l[3], bb->phy_idx);
+ 	if (!rtwdev->hal.support_igi)
+ 		return;
+ 
+-	tmp = rtw89_phy_read32_mask(rtwdev, R_PATH0_IB_PKPW,
+-				    B_PATH0_IB_PKPW_MSK);
++	tmp = rtw89_phy_read32_idx(rtwdev, R_PATH0_IB_PKPW,
++				   B_PATH0_IB_PKPW_MSK, bb->phy_idx);
+ 	dig->ib_pkpwr = sign_extend32(tmp >> DIG_GAIN_SHIFT, U8_MAX_BIT);
+-	dig->ib_pbk = rtw89_phy_read32_mask(rtwdev, R_PATH0_IB_PBK,
+-					    B_PATH0_IB_PBK_MSK);
++	dig->ib_pbk = rtw89_phy_read32_idx(rtwdev, R_PATH0_IB_PBK,
++					   B_PATH0_IB_PBK_MSK, bb->phy_idx);
+ 	rtw89_debug(rtwdev, RTW89_DBG_DIG, "ib_pkpwr=%d, ib_pbk=%d\n",
+ 		    dig->ib_pkpwr, dig->ib_pbk);
+ 
+ 	for (i = RTW89_DIG_GAIN_LNA_G; i < RTW89_DIG_GAIN_MAX; i++)
+-		rtw89_phy_dig_read_gain_table(rtwdev, i);
++		rtw89_phy_dig_read_gain_table(rtwdev, bb, i);
+ }
+ 
+ static const u8 rssi_nolink = 22;
+@@ -5914,10 +5916,11 @@ static const u16 fa_th_2g[FA_TH_NUM] = {22, 44, 66, 88};
+ static const u16 fa_th_5g[FA_TH_NUM] = {4, 8, 12, 16};
+ static const u16 fa_th_nolink[FA_TH_NUM] = {196, 352, 440, 528};
+ 
+-static void rtw89_phy_dig_update_rssi_info(struct rtw89_dev *rtwdev)
++static void rtw89_phy_dig_update_rssi_info(struct rtw89_dev *rtwdev,
++					   struct rtw89_bb_ctx *bb)
+ {
+ 	struct rtw89_phy_ch_info *ch_info = &rtwdev->ch_info;
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
++	struct rtw89_dig_info *dig = &bb->dig;
+ 	bool is_linked = rtwdev->total_sta_assoc > 0;
+ 
+ 	if (is_linked) {
+@@ -5928,10 +5931,11 @@ static void rtw89_phy_dig_update_rssi_info(struct rtw89_dev *rtwdev)
+ 	}
+ }
+ 
+-static void rtw89_phy_dig_update_para(struct rtw89_dev *rtwdev)
++static void rtw89_phy_dig_update_para(struct rtw89_dev *rtwdev,
++				      struct rtw89_bb_ctx *bb)
+ {
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
++	const struct rtw89_chan *chan = rtw89_mgnt_chan_get(rtwdev, bb->phy_idx);
++	struct rtw89_dig_info *dig = &bb->dig;
+ 	bool is_linked = rtwdev->total_sta_assoc > 0;
+ 	const u16 *fa_th_src = NULL;
+ 
+@@ -5960,9 +5964,10 @@ static const u8 pd_low_th_offset = 16, dynamic_igi_min = 0x20;
+ static const u8 igi_max_performance_mode = 0x5a;
+ static const u8 dynamic_pd_threshold_max;
+ 
+-static void rtw89_phy_dig_para_reset(struct rtw89_dev *rtwdev)
++static void rtw89_phy_dig_para_reset(struct rtw89_dev *rtwdev,
++				     struct rtw89_bb_ctx *bb)
+ {
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
++	struct rtw89_dig_info *dig = &bb->dig;
+ 
+ 	dig->cur_gaincode.lna_idx = LNA_IDX_MAX;
+ 	dig->cur_gaincode.tia_idx = TIA_IDX_MAX;
+@@ -5978,15 +5983,27 @@ static void rtw89_phy_dig_para_reset(struct rtw89_dev *rtwdev)
+ 	dig->is_linked_pre = false;
+ }
+ 
++static void __rtw89_phy_dig_init(struct rtw89_dev *rtwdev,
++				 struct rtw89_bb_ctx *bb)
++{
++	rtw89_debug(rtwdev, RTW89_DBG_DIG, "BB-%d dig_init\n", bb->phy_idx);
 +
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t1_addr, ccx->ifs_t1_th_h_mask,
-+			      env->ifs_clm_th_h[0], bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t2_addr, ccx->ifs_t2_th_h_mask,
-+			      env->ifs_clm_th_h[1], bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t3_addr, ccx->ifs_t3_th_h_mask,
-+			      env->ifs_clm_th_h[2], bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t4_addr, ccx->ifs_t4_th_h_mask,
-+			      env->ifs_clm_th_h[3], bb->phy_idx);
- 
- 	for (i = 0; i < RTW89_IFS_CLM_NUM; i++)
- 		rtw89_debug(rtwdev, RTW89_DBG_PHY_TRACK,
-@@ -5372,31 +5381,38 @@ static void rtw89_phy_ifs_clm_set_th_reg(struct rtw89_dev *rtwdev)
- 			    i + 1, env->ifs_clm_th_l[i], env->ifs_clm_th_h[i]);
- }
- 
--static void rtw89_phy_ifs_clm_setting_init(struct rtw89_dev *rtwdev)
-+static void rtw89_phy_ifs_clm_setting_init(struct rtw89_dev *rtwdev,
-+					   struct rtw89_bb_ctx *bb)
++	rtw89_phy_dig_update_gain_para(rtwdev, bb);
++	rtw89_phy_dig_reset(rtwdev, bb);
++}
++
+ static void rtw89_phy_dig_init(struct rtw89_dev *rtwdev)
  {
- 	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 	const struct rtw89_ccx_regs *ccx = phy->ccx;
--	struct rtw89_ccx_para_info para = {0};
-+	struct rtw89_ccx_para_info para = {};
- 
- 	env->ifs_clm_app = RTW89_IFS_CLM_BACKGROUND;
- 	env->ifs_clm_mntr_time = 0;
- 
- 	para.ifs_clm_app = RTW89_IFS_CLM_INIT;
--	if (rtw89_phy_ifs_clm_th_update_check(rtwdev, &para))
--		rtw89_phy_ifs_clm_set_th_reg(rtwdev);
-+	if (rtw89_phy_ifs_clm_th_update_check(rtwdev, bb, &para))
-+		rtw89_phy_ifs_clm_set_th_reg(rtwdev, bb);
- 
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_cnt_addr, ccx->ifs_collect_en_mask, true);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t1_addr, ccx->ifs_t1_en_mask, true);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t2_addr, ccx->ifs_t2_en_mask, true);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t3_addr, ccx->ifs_t3_en_mask, true);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_t4_addr, ccx->ifs_t4_en_mask, true);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_cnt_addr, ccx->ifs_collect_en_mask, true,
-+			      bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t1_addr, ccx->ifs_t1_en_mask, true,
-+			      bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t2_addr, ccx->ifs_t2_en_mask, true,
-+			      bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t3_addr, ccx->ifs_t3_en_mask, true,
-+			      bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_t4_addr, ccx->ifs_t4_en_mask, true,
-+			      bb->phy_idx);
+-	rtw89_phy_dig_update_gain_para(rtwdev);
+-	rtw89_phy_dig_reset(rtwdev);
++	struct rtw89_bb_ctx *bb;
++
++	rtw89_for_each_capab_bb(rtwdev, bb)
++		__rtw89_phy_dig_init(rtwdev, bb);
  }
  
- static int rtw89_phy_ccx_racing_ctrl(struct rtw89_dev *rtwdev,
+-static u8 rtw89_phy_dig_lna_idx_by_rssi(struct rtw89_dev *rtwdev, u8 rssi)
++static u8 rtw89_phy_dig_lna_idx_by_rssi(struct rtw89_dev *rtwdev,
++					struct rtw89_bb_ctx *bb, u8 rssi)
+ {
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
++	struct rtw89_dig_info *dig = &bb->dig;
+ 	u8 lna_idx;
+ 
+ 	if (rssi < dig->igi_rssi_th[0])
+@@ -6005,9 +6022,10 @@ static u8 rtw89_phy_dig_lna_idx_by_rssi(struct rtw89_dev *rtwdev, u8 rssi)
+ 	return lna_idx;
+ }
+ 
+-static u8 rtw89_phy_dig_tia_idx_by_rssi(struct rtw89_dev *rtwdev, u8 rssi)
++static u8 rtw89_phy_dig_tia_idx_by_rssi(struct rtw89_dev *rtwdev,
++					struct rtw89_bb_ctx *bb, u8 rssi)
+ {
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
++	struct rtw89_dig_info *dig = &bb->dig;
+ 	u8 tia_idx;
+ 
+ 	if (rssi < dig->igi_rssi_th[0])
+@@ -6020,10 +6038,11 @@ static u8 rtw89_phy_dig_tia_idx_by_rssi(struct rtw89_dev *rtwdev, u8 rssi)
+ 
+ #define IB_PBK_BASE 110
+ #define WB_RSSI_BASE 10
+-static u8 rtw89_phy_dig_rxb_idx_by_rssi(struct rtw89_dev *rtwdev, u8 rssi,
++static u8 rtw89_phy_dig_rxb_idx_by_rssi(struct rtw89_dev *rtwdev,
++					struct rtw89_bb_ctx *bb, u8 rssi,
+ 					struct rtw89_agc_gaincode_set *set)
+ {
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
++	struct rtw89_dig_info *dig = &bb->dig;
+ 	s8 lna_gain = dig->lna_gain[set->lna_idx];
+ 	s8 tia_gain = dig->tia_gain[set->tia_idx];
+ 	s32 wb_rssi = rssi + lna_gain + tia_gain;
+@@ -6039,12 +6058,13 @@ static u8 rtw89_phy_dig_rxb_idx_by_rssi(struct rtw89_dev *rtwdev, u8 rssi,
+ 	return rxb_idx;
+ }
+ 
+-static void rtw89_phy_dig_gaincode_by_rssi(struct rtw89_dev *rtwdev, u8 rssi,
++static void rtw89_phy_dig_gaincode_by_rssi(struct rtw89_dev *rtwdev,
++					   struct rtw89_bb_ctx *bb, u8 rssi,
+ 					   struct rtw89_agc_gaincode_set *set)
+ {
+-	set->lna_idx = rtw89_phy_dig_lna_idx_by_rssi(rtwdev, rssi);
+-	set->tia_idx = rtw89_phy_dig_tia_idx_by_rssi(rtwdev, rssi);
+-	set->rxb_idx = rtw89_phy_dig_rxb_idx_by_rssi(rtwdev, rssi, set);
++	set->lna_idx = rtw89_phy_dig_lna_idx_by_rssi(rtwdev, bb, rssi);
++	set->tia_idx = rtw89_phy_dig_tia_idx_by_rssi(rtwdev, bb, rssi);
++	set->rxb_idx = rtw89_phy_dig_rxb_idx_by_rssi(rtwdev, bb, rssi, set);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_DIG,
+ 		    "final_rssi=%03d, (lna,tia,rab)=(%d,%d,%02d)\n",
+@@ -6053,10 +6073,11 @@ static void rtw89_phy_dig_gaincode_by_rssi(struct rtw89_dev *rtwdev, u8 rssi,
+ 
+ #define IGI_OFFSET_MAX 25
+ #define IGI_OFFSET_MUL 2
+-static void rtw89_phy_dig_igi_offset_by_env(struct rtw89_dev *rtwdev)
++static void rtw89_phy_dig_igi_offset_by_env(struct rtw89_dev *rtwdev,
++					    struct rtw89_bb_ctx *bb)
+ {
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
+-	struct rtw89_env_monitor_info *env = &rtwdev->bbs[0].env_monitor;
++	struct rtw89_dig_info *dig = &bb->dig;
++	struct rtw89_env_monitor_info *env = &bb->env_monitor;
+ 	enum rtw89_dig_noisy_level noisy_lv;
+ 	u8 igi_offset = dig->fa_rssi_ofst;
+ 	u16 fa_ratio = 0;
+@@ -6093,92 +6114,99 @@ static void rtw89_phy_dig_igi_offset_by_env(struct rtw89_dev *rtwdev)
+ 		    noisy_lv, igi_offset);
+ }
+ 
+-static void rtw89_phy_dig_set_lna_idx(struct rtw89_dev *rtwdev, u8 lna_idx)
++static void rtw89_phy_dig_set_lna_idx(struct rtw89_dev *rtwdev,
++				      struct rtw89_bb_ctx *bb, u8 lna_idx)
+ {
+ 	const struct rtw89_dig_regs *dig_regs = rtwdev->chip->dig_regs;
+ 
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->p0_lna_init.addr,
+-			       dig_regs->p0_lna_init.mask, lna_idx);
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->p1_lna_init.addr,
+-			       dig_regs->p1_lna_init.mask, lna_idx);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->p0_lna_init.addr,
++			      dig_regs->p0_lna_init.mask, lna_idx, bb->phy_idx);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->p1_lna_init.addr,
++			      dig_regs->p1_lna_init.mask, lna_idx, bb->phy_idx);
+ }
+ 
+-static void rtw89_phy_dig_set_tia_idx(struct rtw89_dev *rtwdev, u8 tia_idx)
++static void rtw89_phy_dig_set_tia_idx(struct rtw89_dev *rtwdev,
++				      struct rtw89_bb_ctx *bb, u8 tia_idx)
+ {
+ 	const struct rtw89_dig_regs *dig_regs = rtwdev->chip->dig_regs;
+ 
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->p0_tia_init.addr,
+-			       dig_regs->p0_tia_init.mask, tia_idx);
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->p1_tia_init.addr,
+-			       dig_regs->p1_tia_init.mask, tia_idx);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->p0_tia_init.addr,
++			      dig_regs->p0_tia_init.mask, tia_idx, bb->phy_idx);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->p1_tia_init.addr,
++			      dig_regs->p1_tia_init.mask, tia_idx, bb->phy_idx);
+ }
+ 
+-static void rtw89_phy_dig_set_rxb_idx(struct rtw89_dev *rtwdev, u8 rxb_idx)
++static void rtw89_phy_dig_set_rxb_idx(struct rtw89_dev *rtwdev,
++				      struct rtw89_bb_ctx *bb, u8 rxb_idx)
+ {
+ 	const struct rtw89_dig_regs *dig_regs = rtwdev->chip->dig_regs;
+ 
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->p0_rxb_init.addr,
+-			       dig_regs->p0_rxb_init.mask, rxb_idx);
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->p1_rxb_init.addr,
+-			       dig_regs->p1_rxb_init.mask, rxb_idx);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->p0_rxb_init.addr,
++			      dig_regs->p0_rxb_init.mask, rxb_idx, bb->phy_idx);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->p1_rxb_init.addr,
++			      dig_regs->p1_rxb_init.mask, rxb_idx, bb->phy_idx);
+ }
+ 
+ static void rtw89_phy_dig_set_igi_cr(struct rtw89_dev *rtwdev,
 +				     struct rtw89_bb_ctx *bb,
- 				     enum rtw89_env_racing_lv level)
+ 				     const struct rtw89_agc_gaincode_set set)
  {
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 	int ret = 0;
+ 	if (!rtwdev->hal.support_igi)
+ 		return;
  
- 	if (level >= RTW89_RAC_MAX_NUM) {
-@@ -5425,56 +5441,62 @@ static int rtw89_phy_ccx_racing_ctrl(struct rtw89_dev *rtwdev,
- 	return ret;
+-	rtw89_phy_dig_set_lna_idx(rtwdev, set.lna_idx);
+-	rtw89_phy_dig_set_tia_idx(rtwdev, set.tia_idx);
+-	rtw89_phy_dig_set_rxb_idx(rtwdev, set.rxb_idx);
++	rtw89_phy_dig_set_lna_idx(rtwdev, bb, set.lna_idx);
++	rtw89_phy_dig_set_tia_idx(rtwdev, bb, set.tia_idx);
++	rtw89_phy_dig_set_rxb_idx(rtwdev, bb, set.rxb_idx);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_DIG, "Set (lna,tia,rxb)=((%d,%d,%02d))\n",
+ 		    set.lna_idx, set.tia_idx, set.rxb_idx);
  }
  
--static void rtw89_phy_ccx_trigger(struct rtw89_dev *rtwdev)
-+static void rtw89_phy_ccx_trigger(struct rtw89_dev *rtwdev,
-+				  struct rtw89_bb_ctx *bb)
+ static void rtw89_phy_dig_sdagc_follow_pagc_config(struct rtw89_dev *rtwdev,
++						   struct rtw89_bb_ctx *bb,
+ 						   bool enable)
  {
- 	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 	const struct rtw89_ccx_regs *ccx = phy->ccx;
+ 	const struct rtw89_dig_regs *dig_regs = rtwdev->chip->dig_regs;
  
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_cnt_addr, ccx->ifs_clm_cnt_clear_mask, 0);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->setting_addr, ccx->measurement_trig_mask, 0);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_cnt_addr, ccx->ifs_clm_cnt_clear_mask, 1);
--	rtw89_phy_set_phy_regs(rtwdev, ccx->setting_addr, ccx->measurement_trig_mask, 1);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_cnt_addr, ccx->ifs_clm_cnt_clear_mask, 0,
-+			      bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->setting_addr, ccx->measurement_trig_mask, 0,
-+			      bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->ifs_cnt_addr, ccx->ifs_clm_cnt_clear_mask, 1,
-+			      bb->phy_idx);
-+	rtw89_phy_write32_idx(rtwdev, ccx->setting_addr, ccx->measurement_trig_mask, 1,
-+			      bb->phy_idx);
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->p0_p20_pagcugc_en.addr,
+-			       dig_regs->p0_p20_pagcugc_en.mask, enable);
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->p0_s20_pagcugc_en.addr,
+-			       dig_regs->p0_s20_pagcugc_en.mask, enable);
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->p1_p20_pagcugc_en.addr,
+-			       dig_regs->p1_p20_pagcugc_en.mask, enable);
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->p1_s20_pagcugc_en.addr,
+-			       dig_regs->p1_s20_pagcugc_en.mask, enable);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->p0_p20_pagcugc_en.addr,
++			      dig_regs->p0_p20_pagcugc_en.mask, enable, bb->phy_idx);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->p0_s20_pagcugc_en.addr,
++			      dig_regs->p0_s20_pagcugc_en.mask, enable, bb->phy_idx);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->p1_p20_pagcugc_en.addr,
++			      dig_regs->p1_p20_pagcugc_en.mask, enable, bb->phy_idx);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->p1_s20_pagcugc_en.addr,
++			      dig_regs->p1_s20_pagcugc_en.mask, enable, bb->phy_idx);
  
- 	env->ccx_ongoing = true;
+ 	rtw89_debug(rtwdev, RTW89_DBG_DIG, "sdagc_follow_pagc=%d\n", enable);
  }
  
--static void rtw89_phy_ifs_clm_get_utility(struct rtw89_dev *rtwdev)
-+static void rtw89_phy_ifs_clm_get_utility(struct rtw89_dev *rtwdev,
-+					  struct rtw89_bb_ctx *bb)
+-static void rtw89_phy_dig_config_igi(struct rtw89_dev *rtwdev)
++static void rtw89_phy_dig_config_igi(struct rtw89_dev *rtwdev,
++				     struct rtw89_bb_ctx *bb)
  {
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 	u8 i = 0;
- 	u32 res = 0;
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
++	struct rtw89_dig_info *dig = &bb->dig;
  
- 	env->ifs_clm_tx_ratio =
--		rtw89_phy_ccx_get_report(rtwdev, env->ifs_clm_tx, PERCENT);
-+		rtw89_phy_ccx_get_report(rtwdev, bb, env->ifs_clm_tx, PERCENT);
- 	env->ifs_clm_edcca_excl_cca_ratio =
--		rtw89_phy_ccx_get_report(rtwdev, env->ifs_clm_edcca_excl_cca,
-+		rtw89_phy_ccx_get_report(rtwdev, bb, env->ifs_clm_edcca_excl_cca,
- 					 PERCENT);
- 	env->ifs_clm_cck_fa_ratio =
--		rtw89_phy_ccx_get_report(rtwdev, env->ifs_clm_cckfa, PERCENT);
-+		rtw89_phy_ccx_get_report(rtwdev, bb, env->ifs_clm_cckfa, PERCENT);
- 	env->ifs_clm_ofdm_fa_ratio =
--		rtw89_phy_ccx_get_report(rtwdev, env->ifs_clm_ofdmfa, PERCENT);
-+		rtw89_phy_ccx_get_report(rtwdev, bb, env->ifs_clm_ofdmfa, PERCENT);
- 	env->ifs_clm_cck_cca_excl_fa_ratio =
--		rtw89_phy_ccx_get_report(rtwdev, env->ifs_clm_cckcca_excl_fa,
-+		rtw89_phy_ccx_get_report(rtwdev, bb, env->ifs_clm_cckcca_excl_fa,
- 					 PERCENT);
- 	env->ifs_clm_ofdm_cca_excl_fa_ratio =
--		rtw89_phy_ccx_get_report(rtwdev, env->ifs_clm_ofdmcca_excl_fa,
-+		rtw89_phy_ccx_get_report(rtwdev, bb, env->ifs_clm_ofdmcca_excl_fa,
- 					 PERCENT);
- 	env->ifs_clm_cck_fa_permil =
--		rtw89_phy_ccx_get_report(rtwdev, env->ifs_clm_cckfa, PERMIL);
-+		rtw89_phy_ccx_get_report(rtwdev, bb, env->ifs_clm_cckfa, PERMIL);
- 	env->ifs_clm_ofdm_fa_permil =
--		rtw89_phy_ccx_get_report(rtwdev, env->ifs_clm_ofdmfa, PERMIL);
-+		rtw89_phy_ccx_get_report(rtwdev, bb, env->ifs_clm_ofdmfa, PERMIL);
+ 	if (!rtwdev->hal.support_igi)
+ 		return;
  
- 	for (i = 0; i < RTW89_IFS_CLM_NUM; i++) {
- 		if (env->ifs_clm_his[i] > ENV_MNTR_IFSCLM_HIS_MAX) {
- 			env->ifs_clm_ifs_avg[i] = ENV_MNTR_FAIL_DWORD;
- 		} else {
- 			env->ifs_clm_ifs_avg[i] =
--				rtw89_phy_ccx_idx_to_us(rtwdev,
-+				rtw89_phy_ccx_idx_to_us(rtwdev, bb,
- 							env->ifs_clm_avg[i]);
- 		}
- 
--		res = rtw89_phy_ccx_idx_to_us(rtwdev, env->ifs_clm_cca[i]);
-+		res = rtw89_phy_ccx_idx_to_us(rtwdev, bb, env->ifs_clm_cca[i]);
- 		res += env->ifs_clm_his[i] >> 1;
- 		if (env->ifs_clm_his[i])
- 			res /= env->ifs_clm_his[i];
-@@ -5504,81 +5526,82 @@ static void rtw89_phy_ifs_clm_get_utility(struct rtw89_dev *rtwdev)
- 			    env->ifs_clm_cca_avg[i]);
+ 	if (dig->force_gaincode_idx_en) {
+-		rtw89_phy_dig_set_igi_cr(rtwdev, dig->force_gaincode);
++		rtw89_phy_dig_set_igi_cr(rtwdev, bb, dig->force_gaincode);
+ 		rtw89_debug(rtwdev, RTW89_DBG_DIG,
+ 			    "Force gaincode index enabled.\n");
+ 	} else {
+-		rtw89_phy_dig_gaincode_by_rssi(rtwdev, dig->igi_fa_rssi,
++		rtw89_phy_dig_gaincode_by_rssi(rtwdev, bb, dig->igi_fa_rssi,
+ 					       &dig->cur_gaincode);
+-		rtw89_phy_dig_set_igi_cr(rtwdev, dig->cur_gaincode);
++		rtw89_phy_dig_set_igi_cr(rtwdev, bb, dig->cur_gaincode);
+ 	}
  }
  
--static bool rtw89_phy_ifs_clm_get_result(struct rtw89_dev *rtwdev)
-+static bool rtw89_phy_ifs_clm_get_result(struct rtw89_dev *rtwdev,
-+					 struct rtw89_bb_ctx *bb)
+-static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev, u8 rssi,
+-				    bool enable)
++static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev,
++				    struct rtw89_bb_ctx *bb,
++				    u8 rssi, bool enable)
  {
- 	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 	const struct rtw89_ccx_regs *ccx = phy->ccx;
- 	u8 i = 0;
- 
--	if (rtw89_phy_read32_mask(rtwdev, ccx->ifs_total_addr,
--				  ccx->ifs_cnt_done_mask) == 0) {
-+	if (rtw89_phy_read32_idx(rtwdev, ccx->ifs_total_addr,
-+				 ccx->ifs_cnt_done_mask, bb->phy_idx) == 0) {
- 		rtw89_debug(rtwdev, RTW89_DBG_PHY_TRACK,
- 			    "Get IFS_CLM report Fail\n");
- 		return false;
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
++	const struct rtw89_chan *chan = rtw89_mgnt_chan_get(rtwdev, bb->phy_idx);
+ 	const struct rtw89_dig_regs *dig_regs = rtwdev->chip->dig_regs;
+ 	enum rtw89_bandwidth cbw = chan->band_width;
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
++	struct rtw89_dig_info *dig = &bb->dig;
+ 	u8 final_rssi = 0, under_region = dig->pd_low_th_ofst;
+ 	u8 ofdm_cca_th;
+ 	s8 cck_cca_th;
+@@ -6220,10 +6248,10 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev, u8 rssi,
+ 			    "Dynamic PD th disabled, Set PD_low_bd=0\n");
  	}
  
- 	env->ifs_clm_tx =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_clm_tx_cnt_addr,
--				      ccx->ifs_clm_tx_cnt_msk);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_clm_tx_cnt_addr,
-+				     ccx->ifs_clm_tx_cnt_msk, bb->phy_idx);
- 	env->ifs_clm_edcca_excl_cca =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_clm_tx_cnt_addr,
--				      ccx->ifs_clm_edcca_excl_cca_fa_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_clm_tx_cnt_addr,
-+				     ccx->ifs_clm_edcca_excl_cca_fa_mask, bb->phy_idx);
- 	env->ifs_clm_cckcca_excl_fa =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_clm_cca_addr,
--				      ccx->ifs_clm_cckcca_excl_fa_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_clm_cca_addr,
-+				     ccx->ifs_clm_cckcca_excl_fa_mask, bb->phy_idx);
- 	env->ifs_clm_ofdmcca_excl_fa =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_clm_cca_addr,
--				      ccx->ifs_clm_ofdmcca_excl_fa_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_clm_cca_addr,
-+				     ccx->ifs_clm_ofdmcca_excl_fa_mask, bb->phy_idx);
- 	env->ifs_clm_cckfa =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_clm_fa_addr,
--				      ccx->ifs_clm_cck_fa_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_clm_fa_addr,
-+				     ccx->ifs_clm_cck_fa_mask, bb->phy_idx);
- 	env->ifs_clm_ofdmfa =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_clm_fa_addr,
--				      ccx->ifs_clm_ofdm_fa_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_clm_fa_addr,
-+				     ccx->ifs_clm_ofdm_fa_mask, bb->phy_idx);
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->seg0_pd_reg,
+-			       dig_regs->pd_lower_bound_mask, pd_val);
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->seg0_pd_reg,
+-			       dig_regs->pd_spatial_reuse_en, enable);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->seg0_pd_reg,
++			      dig_regs->pd_lower_bound_mask, pd_val, bb->phy_idx);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->seg0_pd_reg,
++			      dig_regs->pd_spatial_reuse_en, enable, bb->phy_idx);
  
- 	env->ifs_clm_his[0] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_his_addr,
--				      ccx->ifs_t1_his_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_his_addr,
-+				     ccx->ifs_t1_his_mask, bb->phy_idx);
- 	env->ifs_clm_his[1] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_his_addr,
--				      ccx->ifs_t2_his_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_his_addr,
-+				     ccx->ifs_t2_his_mask, bb->phy_idx);
- 	env->ifs_clm_his[2] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_his_addr,
--				      ccx->ifs_t3_his_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_his_addr,
-+				     ccx->ifs_t3_his_mask, bb->phy_idx);
- 	env->ifs_clm_his[3] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_his_addr,
--				      ccx->ifs_t4_his_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_his_addr,
-+				     ccx->ifs_t4_his_mask, bb->phy_idx);
+ 	if (!rtwdev->hal.support_cckpd)
+ 		return;
+@@ -6235,29 +6263,29 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev, u8 rssi,
+ 		    "igi=%d, cck_ccaTH=%d, backoff=%d, cck_PD_low=((%d))dB\n",
+ 		    final_rssi, cck_cca_th, under_region, pd_val);
  
- 	env->ifs_clm_avg[0] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_avg_l_addr,
--				      ccx->ifs_t1_avg_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_avg_l_addr,
-+				     ccx->ifs_t1_avg_mask, bb->phy_idx);
- 	env->ifs_clm_avg[1] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_avg_l_addr,
--				      ccx->ifs_t2_avg_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_avg_l_addr,
-+				     ccx->ifs_t2_avg_mask, bb->phy_idx);
- 	env->ifs_clm_avg[2] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_avg_h_addr,
--				      ccx->ifs_t3_avg_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_avg_h_addr,
-+				     ccx->ifs_t3_avg_mask, bb->phy_idx);
- 	env->ifs_clm_avg[3] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_avg_h_addr,
--				      ccx->ifs_t4_avg_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_avg_h_addr,
-+				     ccx->ifs_t4_avg_mask, bb->phy_idx);
- 
- 	env->ifs_clm_cca[0] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_cca_l_addr,
--				      ccx->ifs_t1_cca_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_cca_l_addr,
-+				     ccx->ifs_t1_cca_mask, bb->phy_idx);
- 	env->ifs_clm_cca[1] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_cca_l_addr,
--				      ccx->ifs_t2_cca_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_cca_l_addr,
-+				     ccx->ifs_t2_cca_mask, bb->phy_idx);
- 	env->ifs_clm_cca[2] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_cca_h_addr,
--				      ccx->ifs_t3_cca_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_cca_h_addr,
-+				     ccx->ifs_t3_cca_mask, bb->phy_idx);
- 	env->ifs_clm_cca[3] =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_cca_h_addr,
--				      ccx->ifs_t4_cca_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_cca_h_addr,
-+				     ccx->ifs_t4_cca_mask, bb->phy_idx);
- 
- 	env->ifs_clm_total_ifs =
--		rtw89_phy_read32_mask(rtwdev, ccx->ifs_total_addr,
--				      ccx->ifs_total_mask);
-+		rtw89_phy_read32_idx(rtwdev, ccx->ifs_total_addr,
-+				     ccx->ifs_total_mask, bb->phy_idx);
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_PHY_TRACK, "IFS-CLM total_ifs = %d\n",
- 		    env->ifs_clm_total_ifs);
-@@ -5598,16 +5621,17 @@ static bool rtw89_phy_ifs_clm_get_result(struct rtw89_dev *rtwdev)
- 			    "T%d:[%d, %d, %d]\n", i + 1, env->ifs_clm_his[i],
- 			    env->ifs_clm_avg[i], env->ifs_clm_cca[i]);
- 
--	rtw89_phy_ifs_clm_get_utility(rtwdev);
-+	rtw89_phy_ifs_clm_get_utility(rtwdev, bb);
- 
- 	return true;
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->bmode_pd_reg,
+-			       dig_regs->bmode_cca_rssi_limit_en, enable);
+-	rtw89_phy_write32_mask(rtwdev, dig_regs->bmode_pd_lower_bound_reg,
+-			       dig_regs->bmode_rssi_nocca_low_th_mask, pd_val);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->bmode_pd_reg,
++			      dig_regs->bmode_cca_rssi_limit_en, enable, bb->phy_idx);
++	rtw89_phy_write32_idx(rtwdev, dig_regs->bmode_pd_lower_bound_reg,
++			      dig_regs->bmode_rssi_nocca_low_th_mask, pd_val, bb->phy_idx);
  }
  
- static int rtw89_phy_ifs_clm_set(struct rtw89_dev *rtwdev,
-+				 struct rtw89_bb_ctx *bb,
- 				 struct rtw89_ccx_para_info *para)
+-void rtw89_phy_dig_reset(struct rtw89_dev *rtwdev)
++void rtw89_phy_dig_reset(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb)
  {
- 	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 	const struct rtw89_ccx_regs *ccx = phy->ccx;
- 	u32 period = 0;
- 	u32 unit_idx = 0;
-@@ -5618,17 +5642,17 @@ static int rtw89_phy_ifs_clm_set(struct rtw89_dev *rtwdev,
- 		return -EINVAL;
- 	}
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
++	struct rtw89_dig_info *dig = &bb->dig;
  
--	if (rtw89_phy_ccx_racing_ctrl(rtwdev, para->rac_lv))
-+	if (rtw89_phy_ccx_racing_ctrl(rtwdev, bb, para->rac_lv))
- 		return -EINVAL;
- 
- 	if (para->mntr_time != env->ifs_clm_mntr_time) {
- 		rtw89_phy_ccx_ms_to_period_unit(rtwdev, para->mntr_time,
- 						&period, &unit_idx);
--		rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_cnt_addr,
--				       ccx->ifs_clm_period_mask, period);
--		rtw89_phy_set_phy_regs(rtwdev, ccx->ifs_cnt_addr,
--				       ccx->ifs_clm_cnt_unit_mask,
--				       unit_idx);
-+		rtw89_phy_write32_idx(rtwdev, ccx->ifs_cnt_addr,
-+				      ccx->ifs_clm_period_mask, period, bb->phy_idx);
-+		rtw89_phy_write32_idx(rtwdev, ccx->ifs_cnt_addr,
-+				      ccx->ifs_clm_cnt_unit_mask,
-+				      unit_idx, bb->phy_idx);
- 
- 		rtw89_debug(rtwdev, RTW89_DBG_PHY_TRACK,
- 			    "Update IFS-CLM time ((%d)) -> ((%d))\n",
-@@ -5639,18 +5663,19 @@ static int rtw89_phy_ifs_clm_set(struct rtw89_dev *rtwdev,
- 		env->ccx_unit_idx = (u8)unit_idx;
- 	}
- 
--	if (rtw89_phy_ifs_clm_th_update_check(rtwdev, para)) {
-+	if (rtw89_phy_ifs_clm_th_update_check(rtwdev, bb, para)) {
- 		env->ifs_clm_app = para->ifs_clm_app;
--		rtw89_phy_ifs_clm_set_th_reg(rtwdev);
-+		rtw89_phy_ifs_clm_set_th_reg(rtwdev, bb);
- 	}
- 
- 	return 0;
+ 	dig->bypass_dig = false;
+-	rtw89_phy_dig_para_reset(rtwdev);
+-	rtw89_phy_dig_set_igi_cr(rtwdev, dig->force_gaincode);
+-	rtw89_phy_dig_dyn_pd_th(rtwdev, rssi_nolink, false);
+-	rtw89_phy_dig_sdagc_follow_pagc_config(rtwdev, false);
+-	rtw89_phy_dig_update_para(rtwdev);
++	rtw89_phy_dig_para_reset(rtwdev, bb);
++	rtw89_phy_dig_set_igi_cr(rtwdev, bb, dig->force_gaincode);
++	rtw89_phy_dig_dyn_pd_th(rtwdev, bb, rssi_nolink, false);
++	rtw89_phy_dig_sdagc_follow_pagc_config(rtwdev, bb, false);
++	rtw89_phy_dig_update_para(rtwdev, bb);
  }
  
--void rtw89_phy_env_monitor_track(struct rtw89_dev *rtwdev)
-+static void __rtw89_phy_env_monitor_track(struct rtw89_dev *rtwdev,
-+					  struct rtw89_bb_ctx *bb)
+ #define IGI_RSSI_MIN 10
+ #define ABS_IGI_MIN 0xc
+-void rtw89_phy_dig(struct rtw89_dev *rtwdev)
++static void __rtw89_phy_dig(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb)
  {
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
--	struct rtw89_ccx_para_info para = {0};
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
-+	struct rtw89_ccx_para_info para = {};
- 	u8 chk_result = RTW89_PHY_ENV_MON_CCX_FAIL;
+-	struct rtw89_dig_info *dig = &rtwdev->dig;
++	struct rtw89_dig_info *dig = &bb->dig;
+ 	bool is_linked = rtwdev->total_sta_assoc > 0;
+ 	u8 igi_min;
  
- 	env->ccx_watchdog_result = RTW89_PHY_ENV_MON_CCX_FAIL;
-@@ -5660,25 +5685,36 @@ void rtw89_phy_env_monitor_track(struct rtw89_dev *rtwdev)
+@@ -6266,20 +6294,22 @@ void rtw89_phy_dig(struct rtw89_dev *rtwdev)
  		return;
  	}
  
-+	rtw89_debug(rtwdev, RTW89_DBG_PHY_TRACK,
-+		    "BB-%d env_monitor track\n", bb->phy_idx);
+-	rtw89_phy_dig_update_rssi_info(rtwdev);
++	rtw89_debug(rtwdev, RTW89_DBG_DIG, "BB-%d dig track\n", bb->phy_idx);
 +
- 	/* only ifs_clm for now */
--	if (rtw89_phy_ifs_clm_get_result(rtwdev))
-+	if (rtw89_phy_ifs_clm_get_result(rtwdev, bb))
- 		env->ccx_watchdog_result |= RTW89_PHY_ENV_MON_IFS_CLM;
++	rtw89_phy_dig_update_rssi_info(rtwdev, bb);
  
--	rtw89_phy_ccx_racing_release(rtwdev);
-+	rtw89_phy_ccx_racing_release(rtwdev, bb);
- 	para.mntr_time = 1900;
- 	para.rac_lv = RTW89_RAC_LV_1;
- 	para.ifs_clm_app = RTW89_IFS_CLM_BACKGROUND;
+ 	if (!dig->is_linked_pre && is_linked) {
+ 		rtw89_debug(rtwdev, RTW89_DBG_DIG, "First connected\n");
+-		rtw89_phy_dig_update_para(rtwdev);
++		rtw89_phy_dig_update_para(rtwdev, bb);
+ 		dig->igi_fa_rssi = dig->igi_rssi;
+ 	} else if (dig->is_linked_pre && !is_linked) {
+ 		rtw89_debug(rtwdev, RTW89_DBG_DIG, "First disconnected\n");
+-		rtw89_phy_dig_update_para(rtwdev);
++		rtw89_phy_dig_update_para(rtwdev, bb);
+ 		dig->igi_fa_rssi = dig->igi_rssi;
+ 	}
+ 	dig->is_linked_pre = is_linked;
  
--	if (rtw89_phy_ifs_clm_set(rtwdev, &para) == 0)
-+	if (rtw89_phy_ifs_clm_set(rtwdev, bb, &para) == 0)
- 		chk_result |= RTW89_PHY_ENV_MON_IFS_CLM;
- 	if (chk_result)
--		rtw89_phy_ccx_trigger(rtwdev);
-+		rtw89_phy_ccx_trigger(rtwdev, bb);
+-	rtw89_phy_dig_igi_offset_by_env(rtwdev);
++	rtw89_phy_dig_igi_offset_by_env(rtwdev, bb);
  
- 	rtw89_debug(rtwdev, RTW89_DBG_PHY_TRACK,
- 		    "get_result=0x%x, chk_result:0x%x\n",
- 		    env->ccx_watchdog_result, chk_result);
- }
+ 	igi_min = max_t(int, dig->igi_rssi - IGI_RSSI_MIN, 0);
+ 	dig->dyn_igi_max = min(igi_min + IGI_OFFSET_MAX, igi_max_performance_mode);
+@@ -6298,14 +6328,22 @@ void rtw89_phy_dig(struct rtw89_dev *rtwdev)
+ 		    dig->igi_rssi, dig->dyn_igi_max, dig->dyn_igi_min,
+ 		    dig->igi_fa_rssi);
  
-+void rtw89_phy_env_monitor_track(struct rtw89_dev *rtwdev)
+-	rtw89_phy_dig_config_igi(rtwdev);
++	rtw89_phy_dig_config_igi(rtwdev, bb);
+ 
+-	rtw89_phy_dig_dyn_pd_th(rtwdev, dig->igi_fa_rssi, dig->dyn_pd_th_en);
++	rtw89_phy_dig_dyn_pd_th(rtwdev, bb, dig->igi_fa_rssi, dig->dyn_pd_th_en);
+ 
+ 	if (dig->dyn_pd_th_en && dig->igi_fa_rssi > dig->dyn_pd_th_max)
+-		rtw89_phy_dig_sdagc_follow_pagc_config(rtwdev, true);
++		rtw89_phy_dig_sdagc_follow_pagc_config(rtwdev, bb, true);
+ 	else
+-		rtw89_phy_dig_sdagc_follow_pagc_config(rtwdev, false);
++		rtw89_phy_dig_sdagc_follow_pagc_config(rtwdev, bb, false);
++}
++
++void rtw89_phy_dig(struct rtw89_dev *rtwdev)
 +{
 +	struct rtw89_bb_ctx *bb;
 +
 +	rtw89_for_each_active_bb(rtwdev, bb)
-+		__rtw89_phy_env_monitor_track(rtwdev, bb);
-+}
-+
- static bool rtw89_physts_ie_page_valid(enum rtw89_phy_status_bitmap *ie_page)
- {
- 	if (*ie_page >= RTW89_PHYSTS_BITMAP_NUM ||
-@@ -6020,7 +6056,7 @@ static void rtw89_phy_dig_gaincode_by_rssi(struct rtw89_dev *rtwdev, u8 rssi,
- static void rtw89_phy_dig_igi_offset_by_env(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_dig_info *dig = &rtwdev->dig;
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_env_monitor_info *env = &rtwdev->bbs[0].env_monitor;
- 	enum rtw89_dig_noisy_level noisy_lv;
- 	u8 igi_offset = dig->fa_rssi_ofst;
- 	u16 fa_ratio = 0;
-@@ -6486,10 +6522,22 @@ void rtw89_phy_antdiv_track(struct rtw89_dev *rtwdev)
- 	ieee80211_queue_delayed_work(rtwdev->hw, &rtwdev->antdiv_work, 0);
++		__rtw89_phy_dig(rtwdev, bb);
  }
  
-+static void __rtw89_phy_env_monitor_init(struct rtw89_dev *rtwdev,
-+					 struct rtw89_bb_ctx *bb)
-+{
-+	rtw89_debug(rtwdev, RTW89_DBG_PHY_TRACK,
-+		    "BB-%d env_monitor init\n", bb->phy_idx);
-+
-+	rtw89_phy_ccx_top_setting_init(rtwdev, bb);
-+	rtw89_phy_ifs_clm_setting_init(rtwdev, bb);
-+}
-+
- static void rtw89_phy_env_monitor_init(struct rtw89_dev *rtwdev)
- {
--	rtw89_phy_ccx_top_setting_init(rtwdev);
--	rtw89_phy_ifs_clm_setting_init(rtwdev);
-+	struct rtw89_bb_ctx *bb;
-+
-+	rtw89_for_each_capab_bb(rtwdev, bb)
-+		__rtw89_phy_env_monitor_init(rtwdev, bb);
- }
- 
- static void rtw89_phy_edcca_init(struct rtw89_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw89/sar.c b/drivers/net/wireless/realtek/rtw89/sar.c
-index 871f45a6508c..94db695e78e6 100644
---- a/drivers/net/wireless/realtek/rtw89/sar.c
-+++ b/drivers/net/wireless/realtek/rtw89/sar.c
-@@ -411,7 +411,8 @@ static const struct rtw89_reg_def txpwr_regs[] = {
- 
- void rtw89_tas_track(struct rtw89_dev *rtwdev)
- {
--	struct rtw89_env_monitor_info *env = &rtwdev->env_monitor;
-+	struct rtw89_bb_ctx *bb = rtw89_get_bb_ctx(rtwdev, RTW89_PHY_0);
-+	struct rtw89_env_monitor_info *env = &bb->env_monitor;
- 	const enum rtw89_sar_sources src = rtwdev->sar.src;
- 	u8 max_nss_num = rtwdev->chip->rf_path_num;
- 	struct rtw89_tas_info *tas = &rtwdev->tas;
+ static void __rtw89_phy_tx_path_div_sta_iter(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index 08b635c93ac3..db748c7453cd 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -985,7 +985,7 @@ void rtw89_phy_stat_track(struct rtw89_dev *rtwdev);
+ void rtw89_phy_env_monitor_track(struct rtw89_dev *rtwdev);
+ void rtw89_phy_set_phy_regs(struct rtw89_dev *rtwdev, u32 addr, u32 mask,
+ 			    u32 val);
+-void rtw89_phy_dig_reset(struct rtw89_dev *rtwdev);
++void rtw89_phy_dig_reset(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb);
+ void rtw89_phy_dig(struct rtw89_dev *rtwdev);
+ void rtw89_phy_tx_path_div_track(struct rtw89_dev *rtwdev);
+ void rtw89_phy_antdiv_parse(struct rtw89_dev *rtwdev,
 -- 
 2.25.1
 
