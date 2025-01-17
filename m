@@ -1,121 +1,99 @@
-Return-Path: <linux-wireless+bounces-17632-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17633-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73181A14B85
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 09:56:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76871A14B87
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 09:56:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5A1F3A2ED6
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 08:56:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1A42169009
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jan 2025 08:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F651F8AE1;
-	Fri, 17 Jan 2025 08:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF081F91DA;
+	Fri, 17 Jan 2025 08:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="C2K94LvR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bcCaU9Nm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward200b.mail.yandex.net (forward200b.mail.yandex.net [178.154.239.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859811F754C
-	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 08:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FDB1F754C;
+	Fri, 17 Jan 2025 08:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737104184; cv=none; b=WgTYSL9rY2FRJ1JW5uC5JsahRxCNlcw3IfxzZ5hyMvGAwayzKQKZbo4w9UUkAGWhNKo7EaIAJSN0LPfrOSo/R3Z8N5cQtbiXH0VkjxVf3IPFX7wOhl4i6Ud9f0OyVwEhgsxExT3UwigoL6gkYV73FNbafuVCmMAs36d8v0wu7A8=
+	t=1737104194; cv=none; b=qpCCwADHNiPicxCMUOu71bTJANA3xx0gegDFRb2w8nlz/LbcYPp0ADxS2e5RHTuU97ZcaOq0orqxY3ibjnLONHkAI+al0NF79lGeCzODGmh3aUdb2lV5vb1ZIXsnzg+9KGiErmMOKycxR9uMt3BqOAEUID0P9m9iH5l+yM/ZmDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737104184; c=relaxed/simple;
-	bh=G6JUsXejjHZnrm6b7QLTD2i5yBXyc93gChgla8tzwTI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fhwYZJ+L+kjxnGfMQfn8z05AS5jo/4x7WGpDRHPWLsP3pE0Z1LPuS8R/YkoTCjqI7m6A5WnKLt7AVoGPNYT5pIG38eXqIejXLZcrkIfIzqc4QDVT/srMhQr58VpvwH3Ij6IOGgMLUokXwTYqkN3LAokZjtykseve7kBZqNlhJNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=C2K94LvR; arc=none smtp.client-ip=178.154.239.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d103])
-	by forward200b.mail.yandex.net (Yandex) with ESMTPS id 9B32B6AC99
-	for <linux-wireless@vger.kernel.org>; Fri, 17 Jan 2025 11:48:42 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:3b0d:0:640:b15b:0])
-	by forward103b.mail.yandex.net (Yandex) with ESMTPS id 1C4C760AFC;
-	Fri, 17 Jan 2025 11:48:35 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id XmNUnd6OmqM0-heSJT8RA;
-	Fri, 17 Jan 2025 11:48:34 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1737103714; bh=zX/JPX/ilw9PA/foig/tl9XreUocd7cMLrZuhYTJlBo=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=C2K94LvRvOMUelaXB2Jx/6NofRXfRpJOWV37KMdzQJlrB+OpaDLsv77X4YQ4wF6nc
-	 qFwJKrURKhnCy1fNblVgDAyLOgdFiv1FPCpZmq8k8fDfPsv2aR7gJFzFptOy5CaazF
-	 JDakuBbaSxOyMl15AOgCIHWQzwFp5X8np7W95AW8=
-Authentication-Results: mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: ath9k: adjust ath9k_rx_prepare() and simplify ath9k_rx_tasklet()
-Date: Fri, 17 Jan 2025 11:48:23 +0300
-Message-ID: <20250117084823.1193083-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1737104194; c=relaxed/simple;
+	bh=AGecMXknwWlOL9Fox1ctaYE4gI/yBsQgeqsHWg2+DSg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NDBC/+GQwuOMJF2Ladm76IoVBxF6U9B/fUCpQ9CBGMRvdKl6zv74zfpePydYJ1TdhDxcPjJeb1An8qpl4yoqdXwJlqPXO3c9r5utUXnlvfeeyzekn7SyGTMydnYMFfKVypf8nT80hKjST7mFNJ44u+SFu8oqZ2ABOhcUW3wT4R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bcCaU9Nm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B97AC4CEDD;
+	Fri, 17 Jan 2025 08:56:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737104193;
+	bh=AGecMXknwWlOL9Fox1ctaYE4gI/yBsQgeqsHWg2+DSg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bcCaU9Nmz4y5WH7lpnIvowjmu7oCMjtxBlat7dk/JvMGcs600tqqVY/k/ZHhSeLXJ
+	 VtqieNWVdwh6gDxSVHu6SyRCE08GStGeVbsy52i9rqWgKw9qzdN/NUlQasatf+3pww
+	 rDXlePwqtFDbgNiyfX6FGlajRPlybQjQ5Y8WmnDj8gz97R/29KNeVkEIKgkQZj1YMo
+	 I/qszuDnBTihO2kjjZKFbzqWlZ6BksjP4POnno1dBFLU3ekv6ZU4wAV8tihlui9Etf
+	 Xg7RymFER80RGn+G+1zdMkvfh2kFP1wm56gobVaNcMfTtOD2bXobdt8tRgo3wTP8En
+	 Kj1QvaLdI6iBQ==
+Date: Fri, 17 Jan 2025 09:56:30 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Catalin Popescu <catalin.popescu@leica-geosystems.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, johannes@sipsolutions.net, p.zabel@pengutronix.de, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, m.felsch@pengutronix.de, 
+	bsp-development.geo@leica-geosystems.com
+Subject: Re: [PATCH net-next v2 1/2] dt-bindings: net: rfkill-gpio: enable
+ booting in blocked state
+Message-ID: <20250117-truthful-reindeer-of-perception-496bd4@krzk-bin>
+References: <20250116084702.3473176-1-catalin.popescu@leica-geosystems.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250116084702.3473176-1-catalin.popescu@leica-geosystems.com>
 
-Adjust 'ath9k_rx_prepare()' to fill skb control buffer directly rather
-than using temporary 'struct ieee80211_rx_status' in 'ath9k_rx_tasklet()',
-thus making both temporary and 'memcpy()' redundant. Compile tested only.
+On Thu, Jan 16, 2025 at 09:47:01AM +0100, Catalin Popescu wrote:
+> By default, rfkill state is set to unblocked. Sometimes, we want to boot
+> in blocked state and let the application unblock the rfkill.
+> 
+> Signed-off-by: Catalin Popescu <catalin.popescu@leica-geosystems.com>
+> ---
+> Changes in v2:
+>  - change "default-blocked" type from boolean to flag
+> ---
+>  Documentation/devicetree/bindings/net/rfkill-gpio.yaml | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/rfkill-gpio.yaml b/Documentation/devicetree/bindings/net/rfkill-gpio.yaml
+> index 9630c8466fac..4a706a41ab38 100644
+> --- a/Documentation/devicetree/bindings/net/rfkill-gpio.yaml
+> +++ b/Documentation/devicetree/bindings/net/rfkill-gpio.yaml
+> @@ -32,6 +32,10 @@ properties:
+>    shutdown-gpios:
+>      maxItems: 1
+>  
+> +  default-blocked:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description: configure rfkill state as blocked at boot
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+I am assuming rfkill does not have third state possible, so it is only
+off or on.
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-index ce9c04e418b8..acbcb37150eb 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-@@ -969,13 +969,12 @@ static void rx_status_htc_to_ath(struct ath_rx_status *rx_stats,
- }
- 
- static bool ath9k_rx_prepare(struct ath9k_htc_priv *priv,
--			     struct ath9k_htc_rxbuf *rxbuf,
--			     struct ieee80211_rx_status *rx_status)
--
-+			     struct ath9k_htc_rxbuf *rxbuf)
- {
- 	struct ieee80211_hdr *hdr;
- 	struct ieee80211_hw *hw = priv->hw;
- 	struct sk_buff *skb = rxbuf->skb;
-+	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
- 	struct ath_common *common = ath9k_hw_common(priv->ah);
- 	struct ath_hw *ah = common->ah;
- 	struct ath_htc_rx_status *rxstatus;
-@@ -1081,7 +1080,6 @@ void ath9k_rx_tasklet(struct tasklet_struct *t)
- {
- 	struct ath9k_htc_priv *priv = from_tasklet(priv, t, rx_tasklet);
- 	struct ath9k_htc_rxbuf *rxbuf = NULL, *tmp_buf = NULL;
--	struct ieee80211_rx_status rx_status;
- 	struct sk_buff *skb;
- 	unsigned long flags;
- 	struct ieee80211_hdr *hdr;
-@@ -1103,13 +1101,11 @@ void ath9k_rx_tasklet(struct tasklet_struct *t)
- 		if (!rxbuf->skb)
- 			goto requeue;
- 
--		if (!ath9k_rx_prepare(priv, rxbuf, &rx_status)) {
-+		if (!ath9k_rx_prepare(priv, rxbuf)) {
- 			dev_kfree_skb_any(rxbuf->skb);
- 			goto requeue;
- 		}
- 
--		memcpy(IEEE80211_SKB_RXCB(rxbuf->skb), &rx_status,
--		       sizeof(struct ieee80211_rx_status));
- 		skb = rxbuf->skb;
- 		hdr = (struct ieee80211_hdr *) skb->data;
- 
--- 
-2.48.1
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
 
