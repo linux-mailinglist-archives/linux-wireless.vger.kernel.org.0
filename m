@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-17693-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17695-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3231A16217
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 14:58:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E15EA16219
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 14:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B1EB3A64CE
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 13:58:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA4D51885E73
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 13:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1711B1DED6B;
-	Sun, 19 Jan 2025 13:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3990B1DF25A;
+	Sun, 19 Jan 2025 13:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="e3boEqrF"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Zw2lU33F"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D435E1C5F2E
-	for <linux-wireless@vger.kernel.org>; Sun, 19 Jan 2025 13:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D91D182D9
+	for <linux-wireless@vger.kernel.org>; Sun, 19 Jan 2025 13:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737295102; cv=none; b=pcoxoACz1qPpmr6kTvzChzDxguffKQyXvX0fOmPcWnUvfKGYHwVzzPQ8splere/GAiHCkS6o8eiq3QI3OZ9KahmvnKXGFyAGH/2d9oJ7ePBjk1THlrwA7ROz8MWitFHzgk2ElO6tMHN38qwJioXSXQm+eJAlOk+wDwpxvBVcR3o=
+	t=1737295104; cv=none; b=ONVM/B2N33NlafrY/fhmwhfMN6kzcOQRDvYA2XXPzj4G8c9E1hsavYBtvwmtpLuEFPwDtGOLbhczptcczzCCZVmIJr8k+RHPHM3CA3iDHWeWALp+6aC2rqepEtKcLTDuPpkAHMJSRKKPDXybAxnuojgyaB4lU4nTYnmOnUrS86g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737295102; c=relaxed/simple;
-	bh=+4rkkMeP+VTmgImQoTDDbZ6iG/8W+rwgf5zPqx2stW0=;
+	s=arc-20240116; t=1737295104; c=relaxed/simple;
+	bh=y852AbGa+P4KURF+AMEqH6nCMnPCFfjS4IsGDoKbR30=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XjR6UbkdoBaHHQ32BmEXLZcrI84OIYZKonPhPuRFZsKNAleCIGAmSjQVx4OXKZdj95TGb4KYPTliaqSGPt8IoDaHPNhrzbFrACh0c/34gT9CNXc/FiAIWwLC+3dOIOMD5cZymf3J4fUZ0UVV0h4oA85Qcv3aUT03ZWzIblRgGyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=e3boEqrF; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=jbM2ajlZso8wy0REE0pwAG0awb031wsZDmhxVZIeU/m7qvnzCTZfA6Fd9ts6jmBN8zcAr6SWpT2OEmqYKe0Qf4sL3vsckwycXI7Su6fpBKq47T0pXlMiM9gxJCUjA7YysM725viApXu3RwiVX/5HOlI0tAhm7v69gu8pN31RU1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Zw2lU33F; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50JCv5k8007532;
-	Sun, 19 Jan 2025 13:58:14 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50JDwHgI011598;
+	Sun, 19 Jan 2025 13:58:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	iMYRBVOnbjp2Z/sMv8NyfK1SUyvYTw35eTG/8QasLlc=; b=e3boEqrF6HtoENx7
-	7aJn9tCbI3sXbcmEtaUabLiTNcZOD2ic9rvqJ5ul7ubef543JQFPBKr9eGH8pitD
-	ht6RBa2mZFBsu4F+59yB+jYk/M4MH7ytHCvV9aOXSEnLJ1/hKXo+td1Ty8A/mTTa
-	QzLGIra6r7dcPoYw2aXTebXA1FQTpWVAwF60hR4TUpEQ8pfZAZoW+i8pOGORLKzi
-	ZoFWrZEpjy6BUl9TYlFUfrHmjtUTpyny5mQi5gKE+dAjX8a3XUcMz/VLB/Yydz7w
-	KRjL22IhEEaQxn7EDt4201/3uxS3z1sJtYo0W5mFElSIyxZYs+6vE+yep770yyGM
-	KiiIjQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 448wnf0axa-1
+	9qlVB8Hta1cOE2SFQ72HMC1d6YvkI5hrZNwjhR/++zQ=; b=Zw2lU33FzuslvNpT
+	ATpjCIPMyr+uxpafgWlOMoZAsEm6/vsis22rLG4dfLePfhXcOn99buL7WCS/ASlr
+	dSYhGRCeJqNZEYYj7GgtJx5DPmLxWlOAJ1u/UCH7JboL7gjaxj1Rttk+f6PDVb81
+	So3It8NmhRiVwLs9kSU3QmkuxIThzJIZaFaBV0PQV+tl/y4YOeiHBuZFhv3NneM2
+	VxuW3dL8T7cEVUV2hS+s1lcN7cdcvvNUcFbrvPppi+Gj8auebcAtnL6Jeg5l50q3
+	fBf62d4NImJggYNVx7vIb1AVXb6DKtXrVcmln7/VKDmtCye44hp/k0pfFcfuE2hb
+	Gcc16g==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 448wnf0axc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 19 Jan 2025 13:58:14 +0000 (GMT)
+	Sun, 19 Jan 2025 13:58:16 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50JDwD4U025173
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50JDwFYY028744
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 19 Jan 2025 13:58:13 GMT
+	Sun, 19 Jan 2025 13:58:15 GMT
 Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sun, 19 Jan 2025 05:58:11 -0800
+ 15.2.1544.9; Sun, 19 Jan 2025 05:58:13 -0800
 From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
         Karthikeyan Periyasamy
 	<quic_periyasa@quicinc.com>,
         P Praneesh <quic_ppranees@quicinc.com>
-Subject: [PATCH v3 01/10] wifi: ath12k: Add HAL_PHYRX_GENERIC_U_SIG TLV parsing support
-Date: Sun, 19 Jan 2025 19:27:42 +0530
-Message-ID: <20250119135751.2221902-2-quic_periyasa@quicinc.com>
+Subject: [PATCH v3 02/10] wifi: ath12k: Add HAL_PHYRX_GENERIC_EHT_SIG TLV parsing support
+Date: Sun, 19 Jan 2025 19:27:43 +0530
+Message-ID: <20250119135751.2221902-3-quic_periyasa@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250119135751.2221902-1-quic_periyasa@quicinc.com>
 References: <20250119135751.2221902-1-quic_periyasa@quicinc.com>
@@ -80,8 +80,8 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: jNvNYeSN226u3EYrdoNa8XtwNX_bonO8
-X-Proofpoint-ORIG-GUID: jNvNYeSN226u3EYrdoNa8XtwNX_bonO8
+X-Proofpoint-GUID: Iz4hUhKJQrHKhDiUTkKABO-1I-cd--Xy
+X-Proofpoint-ORIG-GUID: Iz4hUhKJQrHKhDiUTkKABO-1I-cd--Xy
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-19_01,2025-01-16_01,2024-11-22_01
@@ -92,8 +92,8 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscor
  engine=8.19.0-2411120000 definitions=main-2501190106
 
 Currently, monitor is not enabled. However, in the future, the monitor
-will be enabled. Therefore, add the necessary HAL_PHYRX_GENERIC_U_SIG TLV
-parsing support in monitor Rx path, which help to populate the EHT
+will be enabled. Therefore, add the necessary HAL_PHYRX_GENERIC_EHT_SIG
+TLV parsing support in monitor Rx path, which help to populate the EHT
 radiotap data.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
@@ -103,76 +103,577 @@ Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
 Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
 Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 211 ++++++++++++++++++++++-
- drivers/net/wireless/ath/ath12k/hal_rx.h |  60 +++++++
- 2 files changed, 270 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 571 +++++++++++++++++++++--
+ drivers/net/wireless/ath/ath12k/hal_rx.h | 136 +++++-
+ 2 files changed, 661 insertions(+), 46 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 4e9a60181c06..4c8fe1b65fda 100644
+index 4c8fe1b65fda..3636916c5d37 100644
 --- a/drivers/net/wireless/ath/ath12k/dp_mon.c
 +++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -10,6 +10,9 @@
- #include "dp_tx.h"
- #include "peer.h"
+@@ -13,6 +13,9 @@
+ #define ATH12K_LE32_DEC_ENC(value, dec_bits, enc_bits)	\
+ 		u32_encode_bits(le32_get_bits(value, dec_bits), enc_bits)
  
-+#define ATH12K_LE32_DEC_ENC(value, dec_bits, enc_bits)	\
-+		u32_encode_bits(le32_get_bits(value, dec_bits), enc_bits)
++#define ATH12K_LE64_DEC_ENC(value, dec_bits, enc_bits) \
++		u32_encode_bits(le64_get_bits(value, dec_bits), enc_bits)
 +
  static void
  ath12k_dp_mon_rx_handle_ofdma_info(const struct hal_rx_ppdu_end_user_stats *ppdu_end_user,
  				   struct hal_rx_user_status *rx_user_status)
-@@ -562,6 +565,193 @@ static void ath12k_dp_mon_parse_he_sig_su(const struct hal_rx_he_sig_a_su_info *
- 	ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_SU;
+@@ -570,11 +573,13 @@ ath12k_dp_mon_hal_rx_parse_u_sig_cmn(const struct hal_mon_usig_cmn *cmn,
+ 				     struct hal_rx_mon_ppdu_info *ppdu_info)
+ {
+ 	u32 common;
+-	u8 bw;
+ 
+-	bw = le32_get_bits(cmn->info0, HAL_RX_USIG_CMN_INFO0_BW);
++	ppdu_info->u_sig_info.bw = le32_get_bits(cmn->info0,
++						 HAL_RX_USIG_CMN_INFO0_BW);
++	ppdu_info->u_sig_info.ul_dl = le32_get_bits(cmn->info0,
++						    HAL_RX_USIG_CMN_INFO0_UL_DL);
+ 
+-	common = __le32_to_cpu(ppdu_info->usig.common);
++	common = __le32_to_cpu(ppdu_info->u_sig_info.usig.common);
+ 	common |= IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER_KNOWN |
+ 		  IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_KNOWN |
+ 		  IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL_KNOWN |
+@@ -583,19 +588,19 @@ ath12k_dp_mon_hal_rx_parse_u_sig_cmn(const struct hal_mon_usig_cmn *cmn,
+ 		  ATH12K_LE32_DEC_ENC(cmn->info0,
+ 				      HAL_RX_USIG_CMN_INFO0_PHY_VERSION,
+ 				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER) |
+-		  u32_encode_bits(bw, IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW) |
+-		  ATH12K_LE32_DEC_ENC(cmn->info0,
+-				      HAL_RX_USIG_CMN_INFO0_UL_DL,
+-				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL) |
++		  u32_encode_bits(ppdu_info->u_sig_info.bw,
++				  IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW) |
++		  u32_encode_bits(ppdu_info->u_sig_info.ul_dl,
++				  IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL) |
+ 		  ATH12K_LE32_DEC_ENC(cmn->info0,
+ 				      HAL_RX_USIG_CMN_INFO0_BSS_COLOR,
+ 				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_BSS_COLOR) |
+ 		  ATH12K_LE32_DEC_ENC(cmn->info0,
+ 				      HAL_RX_USIG_CMN_INFO0_TXOP,
+ 				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_TXOP);
+-	ppdu_info->usig.common = cpu_to_le32(common);
++	ppdu_info->u_sig_info.usig.common = cpu_to_le32(common);
+ 
+-	switch (bw) {
++	switch (ppdu_info->u_sig_info.bw) {
+ 	default:
+ 		fallthrough;
+ 	case HAL_EHT_BW_20:
+@@ -623,24 +628,28 @@ static enum hal_rx_mon_status
+ ath12k_dp_mon_hal_rx_parse_u_sig_tb(const struct hal_mon_usig_tb *usig_tb,
+ 				    struct hal_rx_mon_ppdu_info *ppdu_info)
+ {
++	struct ieee80211_radiotap_eht_usig *usig = &ppdu_info->u_sig_info.usig;
+ 	enum ieee80211_radiotap_eht_usig_tb spatial_reuse1, spatial_reuse2;
+ 	u32 common, value, mask;
+ 
+ 	spatial_reuse1 = IEEE80211_RADIOTAP_EHT_USIG2_TB_B3_B6_SPATIAL_REUSE_1;
+ 	spatial_reuse2 = IEEE80211_RADIOTAP_EHT_USIG2_TB_B7_B10_SPATIAL_REUSE_2;
+ 
+-	common = __le32_to_cpu(ppdu_info->usig.common);
+-	value = __le32_to_cpu(ppdu_info->usig.value);
+-	mask = __le32_to_cpu(ppdu_info->usig.mask);
++	common = __le32_to_cpu(usig->common);
++	value = __le32_to_cpu(usig->value);
++	mask = __le32_to_cpu(usig->mask);
++
++	ppdu_info->u_sig_info.ppdu_type_comp_mode =
++				le32_get_bits(usig_tb->info0,
++					      HAL_RX_USIG_TB_INFO0_PPDU_TYPE_COMP_MODE);
+ 
+ 	common |= ATH12K_LE32_DEC_ENC(usig_tb->info0,
+ 				      HAL_RX_USIG_TB_INFO0_RX_INTEG_CHECK_PASS,
+ 				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_BAD_USIG_CRC);
+ 
+ 	value |= IEEE80211_RADIOTAP_EHT_USIG1_TB_B20_B25_DISREGARD |
+-		 ATH12K_LE32_DEC_ENC(usig_tb->info0,
+-				     HAL_RX_USIG_TB_INFO0_PPDU_TYPE_COMP_MODE,
+-				     IEEE80211_RADIOTAP_EHT_USIG2_TB_B0_B1_PPDU_TYPE) |
++		 u32_encode_bits(ppdu_info->u_sig_info.ppdu_type_comp_mode,
++				 IEEE80211_RADIOTAP_EHT_USIG2_TB_B0_B1_PPDU_TYPE) |
+ 		 IEEE80211_RADIOTAP_EHT_USIG2_TB_B2_VALIDATE |
+ 		 ATH12K_LE32_DEC_ENC(usig_tb->info0,
+ 				     HAL_RX_USIG_TB_INFO0_SPATIAL_REUSE_1,
+@@ -664,9 +673,9 @@ ath12k_dp_mon_hal_rx_parse_u_sig_tb(const struct hal_mon_usig_tb *usig_tb,
+ 		IEEE80211_RADIOTAP_EHT_USIG2_TB_B16_B19_CRC |
+ 		IEEE80211_RADIOTAP_EHT_USIG2_TB_B20_B25_TAIL;
+ 
+-	ppdu_info->usig.common = cpu_to_le32(common);
+-	ppdu_info->usig.value = cpu_to_le32(value);
+-	ppdu_info->usig.mask = cpu_to_le32(mask);
++	usig->common = cpu_to_le32(common);
++	usig->value = cpu_to_le32(value);
++	usig->mask = cpu_to_le32(mask);
+ 
+ 	return HAL_TLV_STATUS_PPDU_NOT_DONE;
+ }
+@@ -675,15 +684,26 @@ static enum hal_rx_mon_status
+ ath12k_dp_mon_hal_rx_parse_u_sig_mu(const struct hal_mon_usig_mu *usig_mu,
+ 				    struct hal_rx_mon_ppdu_info *ppdu_info)
+ {
++	struct ieee80211_radiotap_eht_usig *usig = &ppdu_info->u_sig_info.usig;
+ 	enum ieee80211_radiotap_eht_usig_mu sig_symb, punc;
+ 	u32 common, value, mask;
+ 
+ 	sig_symb = IEEE80211_RADIOTAP_EHT_USIG2_MU_B11_B15_EHT_SIG_SYMBOLS;
+ 	punc = IEEE80211_RADIOTAP_EHT_USIG2_MU_B3_B7_PUNCTURED_INFO;
+ 
+-	common = __le32_to_cpu(ppdu_info->usig.common);
+-	value = __le32_to_cpu(ppdu_info->usig.value);
+-	mask = __le32_to_cpu(ppdu_info->usig.mask);
++	common = __le32_to_cpu(usig->common);
++	value = __le32_to_cpu(usig->value);
++	mask = __le32_to_cpu(usig->mask);
++
++	ppdu_info->u_sig_info.ppdu_type_comp_mode =
++				le32_get_bits(usig_mu->info0,
++					      HAL_RX_USIG_MU_INFO0_PPDU_TYPE_COMP_MODE);
++	ppdu_info->u_sig_info.eht_sig_mcs =
++				le32_get_bits(usig_mu->info0,
++					      HAL_RX_USIG_MU_INFO0_EHT_SIG_MCS);
++	ppdu_info->u_sig_info.num_eht_sig_sym =
++				le32_get_bits(usig_mu->info0,
++					      HAL_RX_USIG_MU_INFO0_NUM_EHT_SIG_SYM);
+ 
+ 	common |= ATH12K_LE32_DEC_ENC(usig_mu->info0,
+ 				      HAL_RX_USIG_MU_INFO0_RX_INTEG_CHECK_PASS,
+@@ -691,20 +711,17 @@ ath12k_dp_mon_hal_rx_parse_u_sig_mu(const struct hal_mon_usig_mu *usig_mu,
+ 
+ 	value |= IEEE80211_RADIOTAP_EHT_USIG1_MU_B20_B24_DISREGARD |
+ 		 IEEE80211_RADIOTAP_EHT_USIG1_MU_B25_VALIDATE |
+-		 ATH12K_LE32_DEC_ENC(usig_mu->info0,
+-				     HAL_RX_USIG_MU_INFO0_PPDU_TYPE_COMP_MODE,
+-				     IEEE80211_RADIOTAP_EHT_USIG2_MU_B0_B1_PPDU_TYPE) |
++		 u32_encode_bits(ppdu_info->u_sig_info.ppdu_type_comp_mode,
++				 IEEE80211_RADIOTAP_EHT_USIG2_MU_B0_B1_PPDU_TYPE) |
+ 		 IEEE80211_RADIOTAP_EHT_USIG2_MU_B2_VALIDATE |
+ 		 ATH12K_LE32_DEC_ENC(usig_mu->info0,
+ 				     HAL_RX_USIG_MU_INFO0_PUNC_CH_INFO,
+ 				     punc) |
+ 		 IEEE80211_RADIOTAP_EHT_USIG2_MU_B8_VALIDATE |
+-		 ATH12K_LE32_DEC_ENC(usig_mu->info0,
+-				     HAL_RX_USIG_MU_INFO0_EHT_SIG_MCS,
+-				     IEEE80211_RADIOTAP_EHT_USIG2_MU_B9_B10_SIG_MCS) |
+-		 ATH12K_LE32_DEC_ENC(usig_mu->info0,
+-				     HAL_RX_USIG_MU_INFO0_NUM_EHT_SIG_SYM,
+-				     sig_symb) |
++		 u32_encode_bits(ppdu_info->u_sig_info.eht_sig_mcs,
++				 IEEE80211_RADIOTAP_EHT_USIG2_MU_B9_B10_SIG_MCS) |
++		 u32_encode_bits(ppdu_info->u_sig_info.num_eht_sig_sym,
++				 sig_symb) |
+ 		 ATH12K_LE32_DEC_ENC(usig_mu->info0,
+ 				     HAL_RX_USIG_MU_INFO0_CRC,
+ 				     IEEE80211_RADIOTAP_EHT_USIG2_MU_B16_B19_CRC) |
+@@ -723,9 +740,9 @@ ath12k_dp_mon_hal_rx_parse_u_sig_mu(const struct hal_mon_usig_mu *usig_mu,
+ 		IEEE80211_RADIOTAP_EHT_USIG2_MU_B16_B19_CRC |
+ 		IEEE80211_RADIOTAP_EHT_USIG2_MU_B20_B25_TAIL;
+ 
+-	ppdu_info->usig.common = cpu_to_le32(common);
+-	ppdu_info->usig.value = cpu_to_le32(value);
+-	ppdu_info->usig.mask = cpu_to_le32(mask);
++	usig->common = cpu_to_le32(common);
++	usig->value = cpu_to_le32(value);
++	usig->mask = cpu_to_le32(mask);
+ 
+ 	return HAL_TLV_STATUS_PPDU_NOT_DONE;
+ }
+@@ -734,24 +751,425 @@ static enum hal_rx_mon_status
+ ath12k_dp_mon_hal_rx_parse_u_sig_hdr(const struct hal_mon_usig_hdr *usig,
+ 				     struct hal_rx_mon_ppdu_info *ppdu_info)
+ {
+-	const struct hal_mon_usig_cmn *usig_cmn = &usig->cmn;
+ 	u8 comp_mode;
+-	bool ap_ppdu;
+ 
+ 	ppdu_info->eht_usig = true;
+ 
+ 	ath12k_dp_mon_hal_rx_parse_u_sig_cmn(&usig->cmn, ppdu_info);
+ 
+-	ap_ppdu = le32_get_bits(usig_cmn->info0, HAL_RX_USIG_CMN_INFO0_UL_DL);
+ 	comp_mode = le32_get_bits(usig->non_cmn.mu.info0,
+ 				  HAL_RX_USIG_MU_INFO0_PPDU_TYPE_COMP_MODE);
+ 
+-	if (comp_mode == 0 && ap_ppdu)
++	if (comp_mode == 0 && ppdu_info->u_sig_info.ul_dl)
+ 		return ath12k_dp_mon_hal_rx_parse_u_sig_tb(&usig->non_cmn.tb, ppdu_info);
+ 	else
+ 		return ath12k_dp_mon_hal_rx_parse_u_sig_mu(&usig->non_cmn.mu, ppdu_info);
  }
  
 +static enum hal_rx_mon_status
-+ath12k_dp_mon_hal_rx_parse_u_sig_cmn(const struct hal_mon_usig_cmn *cmn,
-+				     struct hal_rx_mon_ppdu_info *ppdu_info)
++ath12k_dp_mon_hal_aggr_tlv(struct hal_rx_mon_ppdu_info *ppdu_info,
++			   u16 tlv_len, const void *tlv_data)
 +{
-+	u32 common;
-+	u8 bw;
++	if (tlv_len <= HAL_RX_MON_MAX_AGGR_SIZE - ppdu_info->tlv_aggr.cur_len) {
++		memcpy(ppdu_info->tlv_aggr.buf + ppdu_info->tlv_aggr.cur_len,
++		       tlv_data, tlv_len);
++		ppdu_info->tlv_aggr.cur_len += tlv_len;
++	}
 +
-+	bw = le32_get_bits(cmn->info0, HAL_RX_USIG_CMN_INFO0_BW);
++	return HAL_RX_MON_STATUS_PPDU_NOT_DONE;
++}
 +
-+	common = __le32_to_cpu(ppdu_info->usig.common);
-+	common |= IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER_KNOWN |
-+		  IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_KNOWN |
-+		  IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL_KNOWN |
-+		  IEEE80211_RADIOTAP_EHT_USIG_COMMON_BSS_COLOR_KNOWN |
-+		  IEEE80211_RADIOTAP_EHT_USIG_COMMON_TXOP_KNOWN |
-+		  ATH12K_LE32_DEC_ENC(cmn->info0,
-+				      HAL_RX_USIG_CMN_INFO0_PHY_VERSION,
-+				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER) |
-+		  u32_encode_bits(bw, IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW) |
-+		  ATH12K_LE32_DEC_ENC(cmn->info0,
-+				      HAL_RX_USIG_CMN_INFO0_UL_DL,
-+				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL) |
-+		  ATH12K_LE32_DEC_ENC(cmn->info0,
-+				      HAL_RX_USIG_CMN_INFO0_BSS_COLOR,
-+				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_BSS_COLOR) |
-+		  ATH12K_LE32_DEC_ENC(cmn->info0,
-+				      HAL_RX_USIG_CMN_INFO0_TXOP,
-+				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_TXOP);
-+	ppdu_info->usig.common = cpu_to_le32(common);
++static inline bool
++ath12k_dp_mon_hal_rx_is_frame_type_ndp(const struct hal_rx_u_sig_info *usig_info)
++{
++	if (usig_info->ppdu_type_comp_mode == 1 &&
++	    usig_info->eht_sig_mcs == 0 &&
++	    usig_info->num_eht_sig_sym == 0)
++		return true;
 +
-+	switch (bw) {
-+	default:
++	return false;
++}
++
++static inline bool
++ath12k_dp_mon_hal_rx_is_non_ofdma(const struct hal_rx_u_sig_info *usig_info)
++{
++	u32 ppdu_type_comp_mode = usig_info->ppdu_type_comp_mode;
++	u32 ul_dl = usig_info->ul_dl;
++
++	if ((ppdu_type_comp_mode == HAL_RX_RECEPTION_TYPE_MU_MIMO && ul_dl == 0) ||
++	    (ppdu_type_comp_mode == HAL_RX_RECEPTION_TYPE_MU_OFDMA && ul_dl == 0) ||
++	    (ppdu_type_comp_mode == HAL_RX_RECEPTION_TYPE_MU_MIMO  && ul_dl == 1))
++		return true;
++
++	return false;
++}
++
++static inline bool
++ath12k_dp_mon_hal_rx_is_ofdma(const struct hal_rx_u_sig_info *usig_info)
++{
++	if (usig_info->ppdu_type_comp_mode == 0 && usig_info->ul_dl == 0)
++		return true;
++
++	return false;
++}
++
++static enum hal_rx_mon_status
++ath12k_dp_mon_hal_rx_parse_eht_sig_ndp(const struct hal_eht_sig_ndp_cmn_eb *eht_sig_ndp,
++				       struct hal_rx_mon_ppdu_info *ppdu_info)
++{
++	struct hal_rx_radiotap_eht *eht = &ppdu_info->eht_info.eht;
++	u32 known, data;
++
++	known = __le32_to_cpu(eht->known);
++	known |= IEEE80211_RADIOTAP_EHT_KNOWN_SPATIAL_REUSE |
++		 IEEE80211_RADIOTAP_EHT_KNOWN_EHT_LTF |
++		 IEEE80211_RADIOTAP_EHT_KNOWN_NSS_S |
++		 IEEE80211_RADIOTAP_EHT_KNOWN_BEAMFORMED_S |
++		 IEEE80211_RADIOTAP_EHT_KNOWN_DISREGARD_S |
++		 IEEE80211_RADIOTAP_EHT_KNOWN_CRC1 |
++		 IEEE80211_RADIOTAP_EHT_KNOWN_TAIL1;
++	eht->known = cpu_to_le32(known);
++
++	data = __le32_to_cpu(eht->data[0]);
++	data |= ATH12K_LE32_DEC_ENC(eht_sig_ndp->info0,
++				    HAL_RX_EHT_SIG_NDP_CMN_INFO0_SPATIAL_REUSE,
++				    IEEE80211_RADIOTAP_EHT_DATA0_SPATIAL_REUSE);
++	/* GI and LTF size are separately indicated in radiotap header
++	 * and hence will be parsed from other TLV
++	 */
++	data |=	ATH12K_LE32_DEC_ENC(eht_sig_ndp->info0,
++				    HAL_RX_EHT_SIG_NDP_CMN_INFO0_NUM_LTF_SYM,
++				    IEEE80211_RADIOTAP_EHT_DATA0_EHT_LTF);
++
++	data |=	ATH12K_LE32_DEC_ENC(eht_sig_ndp->info0,
++				    HAL_RX_EHT_SIG_NDP_CMN_INFO0_CRC,
++				    IEEE80211_RADIOTAP_EHT_DATA0_CRC1_O);
++
++	data |= ATH12K_LE32_DEC_ENC(eht_sig_ndp->info0,
++				    HAL_RX_EHT_SIG_NDP_CMN_INFO0_DISREGARD,
++				    IEEE80211_RADIOTAP_EHT_DATA0_DISREGARD_S);
++	eht->data[0] = cpu_to_le32(data);
++
++	data = __le32_to_cpu(eht->data[7]);
++	data |=	ATH12K_LE32_DEC_ENC(eht_sig_ndp->info0,
++				    HAL_RX_EHT_SIG_NDP_CMN_INFO0_NSS,
++				    IEEE80211_RADIOTAP_EHT_DATA7_NSS_S);
++
++	data |=	ATH12K_LE32_DEC_ENC(eht_sig_ndp->info0,
++				    HAL_RX_EHT_SIG_NDP_CMN_INFO0_BEAMFORMED,
++				    IEEE80211_RADIOTAP_EHT_DATA7_BEAMFORMED_S);
++	eht->data[7] = cpu_to_le32(data);
++
++	return HAL_TLV_STATUS_PPDU_NOT_DONE;
++}
++
++static enum hal_rx_mon_status
++ath12k_dp_mon_hal_rx_parse_usig_overflow(const struct hal_eht_sig_usig_overflow *ovflow,
++					 struct hal_rx_mon_ppdu_info *ppdu_info)
++{
++	struct hal_rx_radiotap_eht *eht = &ppdu_info->eht_info.eht;
++	u32 known, data;
++
++	known = __le32_to_cpu(eht->known);
++	known |= IEEE80211_RADIOTAP_EHT_KNOWN_SPATIAL_REUSE |
++		 IEEE80211_RADIOTAP_EHT_KNOWN_EHT_LTF |
++		 IEEE80211_RADIOTAP_EHT_KNOWN_LDPC_EXTRA_SYM_OM |
++		 IEEE80211_RADIOTAP_EHT_KNOWN_PRE_PADD_FACOR_OM |
++		 IEEE80211_RADIOTAP_EHT_KNOWN_PE_DISAMBIGUITY_OM |
++		 IEEE80211_RADIOTAP_EHT_KNOWN_DISREGARD_O;
++	eht->known = cpu_to_le32(known);
++
++	data = __le32_to_cpu(eht->data[0]);
++	data |=	ATH12K_LE32_DEC_ENC(ovflow->info0,
++				    HAL_RX_EHT_SIG_OVERFLOW_INFO0_SPATIAL_REUSE,
++				    IEEE80211_RADIOTAP_EHT_DATA0_SPATIAL_REUSE);
++
++	/* GI and LTF size are separately indicated in radiotap header
++	 * and hence will be parsed from other TLV
++	 */
++	data |=	ATH12K_LE32_DEC_ENC(ovflow->info0,
++				    HAL_RX_EHT_SIG_OVERFLOW_INFO0_NUM_LTF_SYM,
++				    IEEE80211_RADIOTAP_EHT_DATA0_EHT_LTF);
++
++	data |=	ATH12K_LE32_DEC_ENC(ovflow->info0,
++				    HAL_RX_EHT_SIG_OVERFLOW_INFO0_LDPC_EXTA_SYM,
++				    IEEE80211_RADIOTAP_EHT_DATA0_LDPC_EXTRA_SYM_OM);
++
++	data |=	ATH12K_LE32_DEC_ENC(ovflow->info0,
++				    HAL_RX_EHT_SIG_OVERFLOW_INFO0_PRE_FEC_PAD_FACTOR,
++				    IEEE80211_RADIOTAP_EHT_DATA0_PRE_PADD_FACOR_OM);
++
++	data |=	ATH12K_LE32_DEC_ENC(ovflow->info0,
++				    HAL_RX_EHT_SIG_OVERFLOW_INFO0_DISAMBIGUITY,
++				    IEEE80211_RADIOTAP_EHT_DATA0_PE_DISAMBIGUITY_OM);
++
++	data |=	ATH12K_LE32_DEC_ENC(ovflow->info0,
++				    HAL_RX_EHT_SIG_OVERFLOW_INFO0_DISREGARD,
++				    IEEE80211_RADIOTAP_EHT_DATA0_DISREGARD_O);
++	eht->data[0] = cpu_to_le32(data);
++
++	return HAL_TLV_STATUS_PPDU_NOT_DONE;
++}
++
++static enum hal_rx_mon_status
++ath12k_dp_mon_hal_rx_parse_non_ofdma_users(const struct hal_eht_sig_non_ofdma_cmn_eb *eb,
++					   struct hal_rx_mon_ppdu_info *ppdu_info)
++{
++	struct hal_rx_radiotap_eht *eht = &ppdu_info->eht_info.eht;
++	u32 known, data;
++
++	known = __le32_to_cpu(eht->known);
++	known |= IEEE80211_RADIOTAP_EHT_KNOWN_NR_NON_OFDMA_USERS_M;
++	eht->known = cpu_to_le32(known);
++
++	data = __le32_to_cpu(eht->data[7]);
++	data |=	ATH12K_LE32_DEC_ENC(eb->info0,
++				    HAL_RX_EHT_SIG_NON_OFDMA_INFO0_NUM_USERS,
++				    IEEE80211_RADIOTAP_EHT_DATA7_NUM_OF_NON_OFDMA_USERS);
++	eht->data[7] = cpu_to_le32(data);
++
++	return HAL_TLV_STATUS_PPDU_NOT_DONE;
++}
++
++static enum hal_rx_mon_status
++ath12k_dp_mon_hal_rx_parse_eht_mumimo_user(const struct hal_eht_sig_mu_mimo *user,
++					   struct hal_rx_mon_ppdu_info *ppdu_info)
++{
++	struct hal_rx_eht_info *eht_info = &ppdu_info->eht_info;
++	u32 user_idx;
++
++	if (eht_info->num_user_info >= ARRAY_SIZE(eht_info->user_info))
++		return HAL_TLV_STATUS_PPDU_NOT_DONE;
++
++	user_idx = eht_info->num_user_info;
++
++	eht_info->user_info[user_idx] |=
++		IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID_KNOWN |
++		IEEE80211_RADIOTAP_EHT_USER_INFO_MCS_KNOWN |
++		IEEE80211_RADIOTAP_EHT_USER_INFO_CODING_KNOWN |
++		IEEE80211_RADIOTAP_EHT_USER_INFO_SPATIAL_CONFIG_KNOWN_M |
++		ATH12K_LE32_DEC_ENC(user->info0,
++				    HAL_RX_EHT_SIG_MUMIMO_USER_INFO0_STA_ID,
++				    IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID) |
++		ATH12K_LE32_DEC_ENC(user->info0,
++				    HAL_RX_EHT_SIG_MUMIMO_USER_INFO0_CODING,
++				    IEEE80211_RADIOTAP_EHT_USER_INFO_CODING) |
++		ATH12K_LE32_DEC_ENC(user->info0,
++				    HAL_RX_EHT_SIG_MUMIMO_USER_INFO0_MCS,
++				    IEEE80211_RADIOTAP_EHT_USER_INFO_MCS) |
++		ATH12K_LE32_DEC_ENC(user->info0,
++				    HAL_RX_EHT_SIG_MUMIMO_USER_INFO0_SPATIAL_CODING,
++				    IEEE80211_RADIOTAP_EHT_USER_INFO_SPATIAL_CONFIG_M);
++
++	ppdu_info->mcs = le32_get_bits(user->info0,
++				       HAL_RX_EHT_SIG_MUMIMO_USER_INFO0_MCS);
++
++	/* TODO: get USER_ENCODING_BLOCK_CRC */
++	eht_info->num_user_info++;
++
++	return HAL_TLV_STATUS_PPDU_NOT_DONE;
++}
++
++static enum hal_rx_mon_status
++ath12k_dp_mon_hal_rx_parse_eht_non_mumimo_user(const struct hal_eht_sig_non_mu_mimo *user,
++					       struct hal_rx_mon_ppdu_info *ppdu_info)
++{
++	struct hal_rx_eht_info *eht_info = &ppdu_info->eht_info;
++	u32 user_idx;
++
++	if (eht_info->num_user_info >= ARRAY_SIZE(eht_info->user_info))
++		return HAL_TLV_STATUS_PPDU_NOT_DONE;
++
++	user_idx = eht_info->num_user_info;
++
++	eht_info->user_info[user_idx] |=
++		IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID_KNOWN |
++		IEEE80211_RADIOTAP_EHT_USER_INFO_MCS_KNOWN |
++		IEEE80211_RADIOTAP_EHT_USER_INFO_CODING_KNOWN |
++		IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_KNOWN_O |
++		IEEE80211_RADIOTAP_EHT_USER_INFO_BEAMFORMING_KNOWN_O |
++		ATH12K_LE32_DEC_ENC(user->info0,
++				    HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_STA_ID,
++				    IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID) |
++		ATH12K_LE32_DEC_ENC(user->info0,
++				    HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_CODING,
++				    IEEE80211_RADIOTAP_EHT_USER_INFO_CODING) |
++		ATH12K_LE32_DEC_ENC(user->info0,
++				    HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_MCS,
++				    IEEE80211_RADIOTAP_EHT_USER_INFO_MCS) |
++		ATH12K_LE32_DEC_ENC(user->info0,
++				    HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_NSS,
++				    IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_O) |
++		ATH12K_LE32_DEC_ENC(user->info0,
++				    HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_BEAMFORMED,
++				    IEEE80211_RADIOTAP_EHT_USER_INFO_BEAMFORMING_O);
++
++	ppdu_info->mcs = le32_get_bits(user->info0,
++				       HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_MCS);
++
++	ppdu_info->nss = le32_get_bits(user->info0,
++				       HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_NSS) + 1;
++
++	eht_info->num_user_info++;
++
++	return HAL_TLV_STATUS_PPDU_NOT_DONE;
++}
++
++static inline bool
++ath12k_dp_mon_hal_rx_is_mu_mimo_user(const struct hal_rx_u_sig_info *usig_info)
++{
++	if (usig_info->ppdu_type_comp_mode == HAL_RX_RECEPTION_TYPE_SU &&
++	    usig_info->ul_dl == 1)
++		return true;
++
++	return false;
++}
++
++static enum hal_rx_mon_status
++ath12k_dp_mon_hal_rx_parse_eht_sig_non_ofdma(const void *tlv,
++					     struct hal_rx_mon_ppdu_info *ppdu_info)
++{
++	const struct hal_eht_sig_non_ofdma_cmn_eb *eb = tlv;
++
++	ath12k_dp_mon_hal_rx_parse_usig_overflow(tlv, ppdu_info);
++	ath12k_dp_mon_hal_rx_parse_non_ofdma_users(eb, ppdu_info);
++
++	if (ath12k_dp_mon_hal_rx_is_mu_mimo_user(&ppdu_info->u_sig_info))
++		ath12k_dp_mon_hal_rx_parse_eht_mumimo_user(&eb->user_field.mu_mimo,
++							   ppdu_info);
++	else
++		ath12k_dp_mon_hal_rx_parse_eht_non_mumimo_user(&eb->user_field.n_mu_mimo,
++							       ppdu_info);
++
++	return HAL_TLV_STATUS_PPDU_NOT_DONE;
++}
++
++static enum hal_rx_mon_status
++ath12k_dp_mon_hal_rx_parse_ru_allocation(const struct hal_eht_sig_ofdma_cmn_eb *eb,
++					 struct hal_rx_mon_ppdu_info *ppdu_info)
++{
++	const struct hal_eht_sig_ofdma_cmn_eb1 *ofdma_cmn_eb1 = &eb->eb1;
++	const struct hal_eht_sig_ofdma_cmn_eb2 *ofdma_cmn_eb2 = &eb->eb2;
++	struct hal_rx_radiotap_eht *eht = &ppdu_info->eht_info.eht;
++	enum ieee80211_radiotap_eht_data ru_123, ru_124, ru_125, ru_126;
++	enum ieee80211_radiotap_eht_data ru_121, ru_122, ru_112, ru_111;
++	u32 data;
++
++	ru_123 = IEEE80211_RADIOTAP_EHT_DATA4_RU_ALLOC_CC_1_2_3;
++	ru_124 = IEEE80211_RADIOTAP_EHT_DATA5_RU_ALLOC_CC_1_2_4;
++	ru_125 = IEEE80211_RADIOTAP_EHT_DATA5_RU_ALLOC_CC_1_2_5;
++	ru_126 = IEEE80211_RADIOTAP_EHT_DATA6_RU_ALLOC_CC_1_2_6;
++	ru_121 = IEEE80211_RADIOTAP_EHT_DATA3_RU_ALLOC_CC_1_2_1;
++	ru_122 = IEEE80211_RADIOTAP_EHT_DATA3_RU_ALLOC_CC_1_2_2;
++	ru_112 = IEEE80211_RADIOTAP_EHT_DATA2_RU_ALLOC_CC_1_1_2;
++	ru_111 = IEEE80211_RADIOTAP_EHT_DATA1_RU_ALLOC_CC_1_1_1;
++
++	switch (ppdu_info->u_sig_info.bw) {
++	case HAL_EHT_BW_320_2:
++	case HAL_EHT_BW_320_1:
++		data = __le32_to_cpu(eht->data[4]);
++		/* CC1 2::3 */
++		data |=	IEEE80211_RADIOTAP_EHT_DATA4_RU_ALLOC_CC_1_2_3_KNOWN |
++			ATH12K_LE64_DEC_ENC(ofdma_cmn_eb2->info0,
++					    HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_3,
++					    ru_123);
++		eht->data[4] = cpu_to_le32(data);
++
++		data = __le32_to_cpu(eht->data[5]);
++		/* CC1 2::4 */
++		data |=	IEEE80211_RADIOTAP_EHT_DATA5_RU_ALLOC_CC_1_2_4_KNOWN |
++			ATH12K_LE64_DEC_ENC(ofdma_cmn_eb2->info0,
++					    HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_4,
++					    ru_124);
++
++		/* CC1 2::5 */
++		data |=	IEEE80211_RADIOTAP_EHT_DATA5_RU_ALLOC_CC_1_2_5_KNOWN |
++			ATH12K_LE64_DEC_ENC(ofdma_cmn_eb2->info0,
++					    HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_5,
++					    ru_125);
++		eht->data[5] = cpu_to_le32(data);
++
++		data = __le32_to_cpu(eht->data[6]);
++		/* CC1 2::6 */
++		data |=	IEEE80211_RADIOTAP_EHT_DATA6_RU_ALLOC_CC_1_2_6_KNOWN |
++			ATH12K_LE64_DEC_ENC(ofdma_cmn_eb2->info0,
++					    HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_6,
++					    ru_126);
++		eht->data[6] = cpu_to_le32(data);
++
++		fallthrough;
++	case HAL_EHT_BW_160:
++		data = __le32_to_cpu(eht->data[3]);
++		/* CC1 2::1 */
++		data |=	IEEE80211_RADIOTAP_EHT_DATA3_RU_ALLOC_CC_1_2_1_KNOWN |
++			ATH12K_LE64_DEC_ENC(ofdma_cmn_eb2->info0,
++					    HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_1,
++					    ru_121);
++		/* CC1 2::2 */
++		data |=	IEEE80211_RADIOTAP_EHT_DATA3_RU_ALLOC_CC_1_2_2_KNOWN |
++			ATH12K_LE64_DEC_ENC(ofdma_cmn_eb2->info0,
++					    HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_2,
++					    ru_122);
++		eht->data[3] = cpu_to_le32(data);
++
++		fallthrough;
++	case HAL_EHT_BW_80:
++		data = __le32_to_cpu(eht->data[2]);
++		/* CC1 1::2 */
++		data |=	IEEE80211_RADIOTAP_EHT_DATA2_RU_ALLOC_CC_1_1_2_KNOWN |
++			ATH12K_LE64_DEC_ENC(ofdma_cmn_eb1->info0,
++					    HAL_RX_EHT_SIG_OFDMA_EB1_RU_ALLOC_1_2,
++					    ru_112);
++		eht->data[2] = cpu_to_le32(data);
++
++		fallthrough;
++	case HAL_EHT_BW_40:
 +		fallthrough;
 +	case HAL_EHT_BW_20:
-+		ppdu_info->bw = HAL_RX_BW_20MHZ;
++		data = __le32_to_cpu(eht->data[1]);
++		/* CC1 1::1 */
++		data |=	IEEE80211_RADIOTAP_EHT_DATA1_RU_ALLOC_CC_1_1_1_KNOWN |
++			ATH12K_LE64_DEC_ENC(ofdma_cmn_eb1->info0,
++					    HAL_RX_EHT_SIG_OFDMA_EB1_RU_ALLOC_1_1,
++					    ru_111);
++		eht->data[1] = cpu_to_le32(data);
 +		break;
-+	case HAL_EHT_BW_40:
-+		ppdu_info->bw = HAL_RX_BW_40MHZ;
-+		break;
-+	case HAL_EHT_BW_80:
-+		ppdu_info->bw = HAL_RX_BW_80MHZ;
-+		break;
-+	case HAL_EHT_BW_160:
-+		ppdu_info->bw = HAL_RX_BW_160MHZ;
-+		break;
-+	case HAL_EHT_BW_320_1:
-+	case HAL_EHT_BW_320_2:
-+		ppdu_info->bw = HAL_RX_BW_320MHZ;
++	default:
 +		break;
 +	}
 +
@@ -180,254 +681,325 @@ index 4e9a60181c06..4c8fe1b65fda 100644
 +}
 +
 +static enum hal_rx_mon_status
-+ath12k_dp_mon_hal_rx_parse_u_sig_tb(const struct hal_mon_usig_tb *usig_tb,
-+				    struct hal_rx_mon_ppdu_info *ppdu_info)
++ath12k_dp_mon_hal_rx_parse_eht_sig_ofdma(const void *tlv,
++					 struct hal_rx_mon_ppdu_info *ppdu_info)
 +{
-+	enum ieee80211_radiotap_eht_usig_tb spatial_reuse1, spatial_reuse2;
-+	u32 common, value, mask;
++	const struct hal_eht_sig_ofdma_cmn_eb *ofdma = tlv;
 +
-+	spatial_reuse1 = IEEE80211_RADIOTAP_EHT_USIG2_TB_B3_B6_SPATIAL_REUSE_1;
-+	spatial_reuse2 = IEEE80211_RADIOTAP_EHT_USIG2_TB_B7_B10_SPATIAL_REUSE_2;
++	ath12k_dp_mon_hal_rx_parse_usig_overflow(tlv, ppdu_info);
++	ath12k_dp_mon_hal_rx_parse_ru_allocation(ofdma, ppdu_info);
 +
-+	common = __le32_to_cpu(ppdu_info->usig.common);
-+	value = __le32_to_cpu(ppdu_info->usig.value);
-+	mask = __le32_to_cpu(ppdu_info->usig.mask);
-+
-+	common |= ATH12K_LE32_DEC_ENC(usig_tb->info0,
-+				      HAL_RX_USIG_TB_INFO0_RX_INTEG_CHECK_PASS,
-+				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_BAD_USIG_CRC);
-+
-+	value |= IEEE80211_RADIOTAP_EHT_USIG1_TB_B20_B25_DISREGARD |
-+		 ATH12K_LE32_DEC_ENC(usig_tb->info0,
-+				     HAL_RX_USIG_TB_INFO0_PPDU_TYPE_COMP_MODE,
-+				     IEEE80211_RADIOTAP_EHT_USIG2_TB_B0_B1_PPDU_TYPE) |
-+		 IEEE80211_RADIOTAP_EHT_USIG2_TB_B2_VALIDATE |
-+		 ATH12K_LE32_DEC_ENC(usig_tb->info0,
-+				     HAL_RX_USIG_TB_INFO0_SPATIAL_REUSE_1,
-+				     spatial_reuse1) |
-+		 ATH12K_LE32_DEC_ENC(usig_tb->info0,
-+				     HAL_RX_USIG_TB_INFO0_SPATIAL_REUSE_2,
-+				     spatial_reuse2) |
-+		 IEEE80211_RADIOTAP_EHT_USIG2_TB_B11_B15_DISREGARD |
-+		 ATH12K_LE32_DEC_ENC(usig_tb->info0,
-+				     HAL_RX_USIG_TB_INFO0_CRC,
-+				     IEEE80211_RADIOTAP_EHT_USIG2_TB_B16_B19_CRC) |
-+		 ATH12K_LE32_DEC_ENC(usig_tb->info0,
-+				     HAL_RX_USIG_TB_INFO0_TAIL,
-+				     IEEE80211_RADIOTAP_EHT_USIG2_TB_B20_B25_TAIL);
-+
-+	mask |= IEEE80211_RADIOTAP_EHT_USIG1_TB_B20_B25_DISREGARD |
-+		IEEE80211_RADIOTAP_EHT_USIG2_TB_B0_B1_PPDU_TYPE |
-+		IEEE80211_RADIOTAP_EHT_USIG2_TB_B2_VALIDATE |
-+		spatial_reuse1 | spatial_reuse2 |
-+		IEEE80211_RADIOTAP_EHT_USIG2_TB_B11_B15_DISREGARD |
-+		IEEE80211_RADIOTAP_EHT_USIG2_TB_B16_B19_CRC |
-+		IEEE80211_RADIOTAP_EHT_USIG2_TB_B20_B25_TAIL;
-+
-+	ppdu_info->usig.common = cpu_to_le32(common);
-+	ppdu_info->usig.value = cpu_to_le32(value);
-+	ppdu_info->usig.mask = cpu_to_le32(mask);
++	ath12k_dp_mon_hal_rx_parse_eht_non_mumimo_user(&ofdma->user_field.n_mu_mimo,
++						       ppdu_info);
 +
 +	return HAL_TLV_STATUS_PPDU_NOT_DONE;
 +}
 +
-+static enum hal_rx_mon_status
-+ath12k_dp_mon_hal_rx_parse_u_sig_mu(const struct hal_mon_usig_mu *usig_mu,
-+				    struct hal_rx_mon_ppdu_info *ppdu_info)
++static void
++ath12k_dp_mon_parse_eht_sig_hdr(struct hal_rx_mon_ppdu_info *ppdu_info,
++				const void *tlv_data)
 +{
-+	enum ieee80211_radiotap_eht_usig_mu sig_symb, punc;
-+	u32 common, value, mask;
++	ppdu_info->is_eht = true;
 +
-+	sig_symb = IEEE80211_RADIOTAP_EHT_USIG2_MU_B11_B15_EHT_SIG_SYMBOLS;
-+	punc = IEEE80211_RADIOTAP_EHT_USIG2_MU_B3_B7_PUNCTURED_INFO;
-+
-+	common = __le32_to_cpu(ppdu_info->usig.common);
-+	value = __le32_to_cpu(ppdu_info->usig.value);
-+	mask = __le32_to_cpu(ppdu_info->usig.mask);
-+
-+	common |= ATH12K_LE32_DEC_ENC(usig_mu->info0,
-+				      HAL_RX_USIG_MU_INFO0_RX_INTEG_CHECK_PASS,
-+				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_BAD_USIG_CRC);
-+
-+	value |= IEEE80211_RADIOTAP_EHT_USIG1_MU_B20_B24_DISREGARD |
-+		 IEEE80211_RADIOTAP_EHT_USIG1_MU_B25_VALIDATE |
-+		 ATH12K_LE32_DEC_ENC(usig_mu->info0,
-+				     HAL_RX_USIG_MU_INFO0_PPDU_TYPE_COMP_MODE,
-+				     IEEE80211_RADIOTAP_EHT_USIG2_MU_B0_B1_PPDU_TYPE) |
-+		 IEEE80211_RADIOTAP_EHT_USIG2_MU_B2_VALIDATE |
-+		 ATH12K_LE32_DEC_ENC(usig_mu->info0,
-+				     HAL_RX_USIG_MU_INFO0_PUNC_CH_INFO,
-+				     punc) |
-+		 IEEE80211_RADIOTAP_EHT_USIG2_MU_B8_VALIDATE |
-+		 ATH12K_LE32_DEC_ENC(usig_mu->info0,
-+				     HAL_RX_USIG_MU_INFO0_EHT_SIG_MCS,
-+				     IEEE80211_RADIOTAP_EHT_USIG2_MU_B9_B10_SIG_MCS) |
-+		 ATH12K_LE32_DEC_ENC(usig_mu->info0,
-+				     HAL_RX_USIG_MU_INFO0_NUM_EHT_SIG_SYM,
-+				     sig_symb) |
-+		 ATH12K_LE32_DEC_ENC(usig_mu->info0,
-+				     HAL_RX_USIG_MU_INFO0_CRC,
-+				     IEEE80211_RADIOTAP_EHT_USIG2_MU_B16_B19_CRC) |
-+		 ATH12K_LE32_DEC_ENC(usig_mu->info0,
-+				     HAL_RX_USIG_MU_INFO0_TAIL,
-+				     IEEE80211_RADIOTAP_EHT_USIG2_MU_B20_B25_TAIL);
-+
-+	mask |= IEEE80211_RADIOTAP_EHT_USIG1_MU_B20_B24_DISREGARD |
-+		IEEE80211_RADIOTAP_EHT_USIG1_MU_B25_VALIDATE |
-+		IEEE80211_RADIOTAP_EHT_USIG2_MU_B0_B1_PPDU_TYPE |
-+		IEEE80211_RADIOTAP_EHT_USIG2_MU_B2_VALIDATE |
-+		punc |
-+		IEEE80211_RADIOTAP_EHT_USIG2_MU_B8_VALIDATE |
-+		IEEE80211_RADIOTAP_EHT_USIG2_MU_B9_B10_SIG_MCS |
-+		sig_symb |
-+		IEEE80211_RADIOTAP_EHT_USIG2_MU_B16_B19_CRC |
-+		IEEE80211_RADIOTAP_EHT_USIG2_MU_B20_B25_TAIL;
-+
-+	ppdu_info->usig.common = cpu_to_le32(common);
-+	ppdu_info->usig.value = cpu_to_le32(value);
-+	ppdu_info->usig.mask = cpu_to_le32(mask);
-+
-+	return HAL_TLV_STATUS_PPDU_NOT_DONE;
-+}
-+
-+static enum hal_rx_mon_status
-+ath12k_dp_mon_hal_rx_parse_u_sig_hdr(const struct hal_mon_usig_hdr *usig,
-+				     struct hal_rx_mon_ppdu_info *ppdu_info)
-+{
-+	const struct hal_mon_usig_cmn *usig_cmn = &usig->cmn;
-+	u8 comp_mode;
-+	bool ap_ppdu;
-+
-+	ppdu_info->eht_usig = true;
-+
-+	ath12k_dp_mon_hal_rx_parse_u_sig_cmn(&usig->cmn, ppdu_info);
-+
-+	ap_ppdu = le32_get_bits(usig_cmn->info0, HAL_RX_USIG_CMN_INFO0_UL_DL);
-+	comp_mode = le32_get_bits(usig->non_cmn.mu.info0,
-+				  HAL_RX_USIG_MU_INFO0_PPDU_TYPE_COMP_MODE);
-+
-+	if (comp_mode == 0 && ap_ppdu)
-+		return ath12k_dp_mon_hal_rx_parse_u_sig_tb(&usig->non_cmn.tb, ppdu_info);
-+	else
-+		return ath12k_dp_mon_hal_rx_parse_u_sig_mu(&usig->non_cmn.mu, ppdu_info);
++	if (ath12k_dp_mon_hal_rx_is_frame_type_ndp(&ppdu_info->u_sig_info))
++		ath12k_dp_mon_hal_rx_parse_eht_sig_ndp(tlv_data, ppdu_info);
++	else if (ath12k_dp_mon_hal_rx_is_non_ofdma(&ppdu_info->u_sig_info))
++		ath12k_dp_mon_hal_rx_parse_eht_sig_non_ofdma(tlv_data, ppdu_info);
++	else if (ath12k_dp_mon_hal_rx_is_ofdma(&ppdu_info->u_sig_info))
++		ath12k_dp_mon_hal_rx_parse_eht_sig_ofdma(tlv_data, ppdu_info);
 +}
 +
  static enum hal_rx_mon_status
  ath12k_dp_mon_rx_parse_status_tlv(struct ath12k *ar,
  				  struct ath12k_mon_data *pmon,
-@@ -774,6 +964,9 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k *ar,
- 		return HAL_RX_MON_STATUS_MSDU_END;
- 	case HAL_RX_MPDU_END:
- 		return HAL_RX_MON_STATUS_MPDU_END;
-+	case HAL_PHYRX_GENERIC_U_SIG:
-+		ath12k_dp_mon_hal_rx_parse_u_sig_hdr(tlv_data, ppdu_info);
+@@ -760,11 +1178,19 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k *ar,
+ 	struct hal_rx_mon_ppdu_info *ppdu_info = &pmon->mon_ppdu_info;
+ 	const void *tlv_data = tlv->value;
+ 	u32 info[7], userid;
+-	u16 tlv_tag;
++	u16 tlv_tag, tlv_len;
+ 
+ 	tlv_tag = le64_get_bits(tlv->tl, HAL_TLV_64_HDR_TAG);
++	tlv_len = le64_get_bits(tlv->tl, HAL_TLV_64_HDR_LEN);
+ 	userid = le64_get_bits(tlv->tl, HAL_TLV_64_USR_ID);
+ 
++	if (ppdu_info->tlv_aggr.in_progress && ppdu_info->tlv_aggr.tlv_tag != tlv_tag) {
++		ath12k_dp_mon_parse_eht_sig_hdr(ppdu_info, ppdu_info->tlv_aggr.buf);
++
++		ppdu_info->tlv_aggr.in_progress = false;
++		ppdu_info->tlv_aggr.cur_len = 0;
++	}
++
+ 	switch (tlv_tag) {
+ 	case HAL_RX_PPDU_START: {
+ 		const struct hal_rx_ppdu_start *ppdu_start = tlv_data;
+@@ -842,6 +1268,9 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k *ar,
+ 		case HAL_RX_PREAMBLE_11AX:
+ 			ppdu_info->he_flags = 1;
+ 			break;
++		case HAL_RX_PREAMBLE_11BE:
++			ppdu_info->is_eht = true;
++			break;
+ 		default:
+ 			break;
+ 		}
+@@ -967,6 +1396,21 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k *ar,
+ 	case HAL_PHYRX_GENERIC_U_SIG:
+ 		ath12k_dp_mon_hal_rx_parse_u_sig_hdr(tlv_data, ppdu_info);
+ 		break;
++	case HAL_PHYRX_GENERIC_EHT_SIG:
++		/* Handle the case where aggregation is in progress
++		 * or the current TLV is one of the TLVs which should be
++		 * aggregated
++		 */
++		if (!ppdu_info->tlv_aggr.in_progress) {
++			ppdu_info->tlv_aggr.in_progress = true;
++			ppdu_info->tlv_aggr.tlv_tag = tlv_tag;
++			ppdu_info->tlv_aggr.cur_len = 0;
++		}
++
++		ppdu_info->is_eht = true;
++
++		ath12k_dp_mon_hal_aggr_tlv(ppdu_info, tlv_len, tlv_data);
 +		break;
  	case HAL_DUMMY:
  		return HAL_RX_MON_STATUS_BUF_DONE;
  	case HAL_RX_PPDU_END_STATUS_DONE:
-@@ -971,7 +1164,23 @@ static void ath12k_dp_mon_update_radiotap(struct ath12k *ar,
+@@ -1164,22 +1608,59 @@ static void ath12k_dp_mon_update_radiotap(struct ath12k *ar,
  		rxs->ampdu_reference = ampdu_id;
  	}
  
--	if (ppduinfo->he_mu_flags) {
-+	if (ppduinfo->eht_usig) {
-+		struct ieee80211_radiotap_tlv *tlv;
-+		struct ieee80211_radiotap_eht_usig *usig;
-+		u16 len = sizeof(*usig);
+-	if (ppduinfo->eht_usig) {
++	if (ppduinfo->is_eht || ppduinfo->eht_usig) {
+ 		struct ieee80211_radiotap_tlv *tlv;
++		struct ieee80211_radiotap_eht *eht;
+ 		struct ieee80211_radiotap_eht_usig *usig;
+-		u16 len = sizeof(*usig);
++		u16 len = 0, i, eht_len, usig_len;
++		u8 user;
 +
-+		rxs->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
-+		rxs->encoding = RX_ENC_EHT;
++		if (ppduinfo->is_eht) {
++			eht_len = struct_size(eht,
++					      user_info,
++					      ppduinfo->eht_info.num_user_info);
++			len += sizeof(*tlv) + eht_len;
++		}
 +
-+		skb_reset_mac_header(mon_skb);
++		if (ppduinfo->eht_usig) {
++			usig_len = sizeof(*usig);
++			len += sizeof(*tlv) + usig_len;
++		}
+ 
+ 		rxs->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
+ 		rxs->encoding = RX_ENC_EHT;
+ 
+ 		skb_reset_mac_header(mon_skb);
+ 
+-		tlv = skb_push(mon_skb, sizeof(*tlv) + len);
+-		tlv->type = cpu_to_le16(IEEE80211_RADIOTAP_EHT_USIG);
+-		tlv->len = cpu_to_le16(len);
++		tlv = skb_push(mon_skb, len);
+ 
+-		usig = (struct ieee80211_radiotap_eht_usig *)tlv->data;
+-		*usig = ppduinfo->usig;
++		if (ppduinfo->is_eht) {
++			tlv->type = cpu_to_le16(IEEE80211_RADIOTAP_EHT);
++			tlv->len = cpu_to_le16(eht_len);
 +
-+		tlv = skb_push(mon_skb, sizeof(*tlv) + len);
-+		tlv->type = cpu_to_le16(IEEE80211_RADIOTAP_EHT_USIG);
-+		tlv->len = cpu_to_le16(len);
++			eht = (struct ieee80211_radiotap_eht *)tlv->data;
++			eht->known = ppduinfo->eht_info.eht.known;
 +
-+		usig = (struct ieee80211_radiotap_eht_usig *)tlv->data;
-+		*usig = ppduinfo->usig;
-+	} else if (ppduinfo->he_mu_flags) {
++			for (i = 0;
++			     i < ARRAY_SIZE(eht->data) &&
++			     i < ARRAY_SIZE(ppduinfo->eht_info.eht.data);
++			     i++)
++				eht->data[i] = ppduinfo->eht_info.eht.data[i];
++
++			for (user = 0; user < ppduinfo->eht_info.num_user_info; user++)
++				put_unaligned_le32(ppduinfo->eht_info.user_info[user],
++						   &eht->user_info[user]);
++
++			tlv = (struct ieee80211_radiotap_tlv *)&tlv->data[eht_len];
++		}
++
++		if (ppduinfo->eht_usig) {
++			tlv->type = cpu_to_le16(IEEE80211_RADIOTAP_EHT_USIG);
++			tlv->len = cpu_to_le16(usig_len);
++
++			usig = (struct ieee80211_radiotap_eht_usig *)tlv->data;
++			*usig = ppduinfo->u_sig_info.usig;
++		}
+ 	} else if (ppduinfo->he_mu_flags) {
  		rxs->flag |= RX_FLAG_RADIOTAP_HE_MU;
  		rxs->encoding = RX_ENC_HE;
- 		ptr = skb_push(mon_skb, sizeof(struct ieee80211_radiotap_he_mu));
 diff --git a/drivers/net/wireless/ath/ath12k/hal_rx.h b/drivers/net/wireless/ath/ath12k/hal_rx.h
-index e4f9e21158dc..ed078bb5751e 100644
+index ed078bb5751e..61b3e1809486 100644
 --- a/drivers/net/wireless/ath/ath12k/hal_rx.h
 +++ b/drivers/net/wireless/ath/ath12k/hal_rx.h
-@@ -235,6 +235,8 @@ struct hal_rx_mon_ppdu_info {
- 	bool is_ampdu;
+@@ -71,6 +71,8 @@ enum hal_rx_preamble {
+ 	HAL_RX_PREAMBLE_11N,
+ 	HAL_RX_PREAMBLE_11AC,
+ 	HAL_RX_PREAMBLE_11AX,
++	HAL_RX_PREAMBLE_11BA,
++	HAL_RX_PREAMBLE_11BE,
+ 	HAL_RX_PREAMBLE_MAX,
+ };
+ 
+@@ -150,6 +152,37 @@ struct hal_rx_user_status {
+ 
+ #define HAL_MAX_UL_MU_USERS	37
+ 
++struct hal_rx_u_sig_info {
++	bool ul_dl;
++	u8 bw;
++	u8 ppdu_type_comp_mode;
++	u8 eht_sig_mcs;
++	u8 num_eht_sig_sym;
++	struct ieee80211_radiotap_eht_usig usig;
++};
++
++#define HAL_RX_MON_MAX_AGGR_SIZE	128
++
++struct hal_rx_tlv_aggr_info {
++	bool in_progress;
++	u16 cur_len;
++	u16 tlv_tag;
++	u8 buf[HAL_RX_MON_MAX_AGGR_SIZE];
++};
++
++struct hal_rx_radiotap_eht {
++	__le32 known;
++	__le32 data[9];
++};
++
++#define EHT_MAX_USER_INFO	4
++
++struct hal_rx_eht_info {
++	u8 num_user_info;
++	struct hal_rx_radiotap_eht eht;
++	u32 user_info[EHT_MAX_USER_INFO];
++};
++
+ struct hal_rx_mon_ppdu_info {
+ 	u32 ppdu_id;
+ 	u32 last_ppdu_id;
+@@ -236,7 +269,10 @@ struct hal_rx_mon_ppdu_info {
  	u8 medium_prot_type;
  	bool ppdu_continuation;
-+	bool eht_usig;
-+	struct ieee80211_radiotap_eht_usig usig;
+ 	bool eht_usig;
+-	struct ieee80211_radiotap_eht_usig usig;
++	struct hal_rx_u_sig_info u_sig_info;
++	bool is_eht;
++	struct hal_rx_eht_info eht_info;
++	struct hal_rx_tlv_aggr_info tlv_aggr;
  };
  
  #define HAL_RX_PPDU_START_INFO0_PPDU_ID			GENMASK(15, 0)
-@@ -675,6 +677,64 @@ enum nl80211_he_ru_alloc ath12k_he_ru_tones_to_nl80211_he_ru_alloc(u16 ru_tones)
- 	return ret;
- }
+@@ -647,6 +683,104 @@ struct hal_rx_resp_req_info {
+ #define HAL_RX_MPDU_ERR_MPDU_LEN		BIT(6)
+ #define HAL_RX_MPDU_ERR_UNENCRYPTED_FRAME	BIT(7)
  
-+enum hal_eht_bw {
-+	HAL_EHT_BW_20,
-+	HAL_EHT_BW_40,
-+	HAL_EHT_BW_80,
-+	HAL_EHT_BW_160,
-+	HAL_EHT_BW_320_1,
-+	HAL_EHT_BW_320_2,
++#define HAL_RX_EHT_SIG_NDP_CMN_INFO0_SPATIAL_REUSE	GENMASK(3, 0)
++#define HAL_RX_EHT_SIG_NDP_CMN_INFO0_GI_LTF		GENMASK(5, 4)
++#define HAL_RX_EHT_SIG_NDP_CMN_INFO0_NUM_LTF_SYM	GENMASK(8, 6)
++#define HAL_RX_EHT_SIG_NDP_CMN_INFO0_NSS		GENMASK(10, 7)
++#define HAL_RX_EHT_SIG_NDP_CMN_INFO0_BEAMFORMED		BIT(11)
++#define HAL_RX_EHT_SIG_NDP_CMN_INFO0_DISREGARD		GENMASK(13, 12)
++#define HAL_RX_EHT_SIG_NDP_CMN_INFO0_CRC		GENMASK(17, 14)
++
++struct hal_eht_sig_ndp_cmn_eb {
++	__le32 info0;
++} __packed;
++
++#define HAL_RX_EHT_SIG_OVERFLOW_INFO0_SPATIAL_REUSE		GENMASK(3, 0)
++#define HAL_RX_EHT_SIG_OVERFLOW_INFO0_GI_LTF			GENMASK(5, 4)
++#define HAL_RX_EHT_SIG_OVERFLOW_INFO0_NUM_LTF_SYM		GENMASK(8, 6)
++#define HAL_RX_EHT_SIG_OVERFLOW_INFO0_LDPC_EXTA_SYM		BIT(9)
++#define HAL_RX_EHT_SIG_OVERFLOW_INFO0_PRE_FEC_PAD_FACTOR	GENMASK(11, 10)
++#define HAL_RX_EHT_SIG_OVERFLOW_INFO0_DISAMBIGUITY		BIT(12)
++#define HAL_RX_EHT_SIG_OVERFLOW_INFO0_DISREGARD			GENMASK(16, 13)
++
++struct hal_eht_sig_usig_overflow {
++	__le32 info0;
++} __packed;
++
++#define HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_STA_ID	GENMASK(10, 0)
++#define HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_MCS	GENMASK(14, 11)
++#define HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_VALIDATE	BIT(15)
++#define HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_NSS	GENMASK(19, 16)
++#define HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_BEAMFORMED	BIT(20)
++#define HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_CODING	BIT(21)
++#define HAL_RX_EHT_SIG_NON_MUMIMO_USER_INFO0_CRC	GENMASK(25, 22)
++
++struct hal_eht_sig_non_mu_mimo {
++	__le32 info0;
++} __packed;
++
++#define HAL_RX_EHT_SIG_MUMIMO_USER_INFO0_STA_ID		GENMASK(10, 0)
++#define HAL_RX_EHT_SIG_MUMIMO_USER_INFO0_MCS		GENMASK(14, 11)
++#define HAL_RX_EHT_SIG_MUMIMO_USER_INFO0_CODING		BIT(15)
++#define HAL_RX_EHT_SIG_MUMIMO_USER_INFO0_SPATIAL_CODING	GENMASK(22, 16)
++#define HAL_RX_EHT_SIG_MUMIMO_USER_INFO0_CRC		GENMASK(26, 23)
++
++struct hal_eht_sig_mu_mimo {
++	__le32 info0;
++} __packed;
++
++union hal_eht_sig_user_field {
++	struct hal_eht_sig_mu_mimo mu_mimo;
++	struct hal_eht_sig_non_mu_mimo n_mu_mimo;
 +};
 +
-+#define HAL_RX_USIG_CMN_INFO0_PHY_VERSION	GENMASK(2, 0)
-+#define HAL_RX_USIG_CMN_INFO0_BW		GENMASK(5, 3)
-+#define HAL_RX_USIG_CMN_INFO0_UL_DL		BIT(6)
-+#define HAL_RX_USIG_CMN_INFO0_BSS_COLOR		GENMASK(12, 7)
-+#define HAL_RX_USIG_CMN_INFO0_TXOP		GENMASK(19, 13)
-+#define HAL_RX_USIG_CMN_INFO0_DISREGARD		GENMASK(25, 20)
-+#define HAL_RX_USIG_CMN_INFO0_VALIDATE		BIT(26)
++#define HAL_RX_EHT_SIG_NON_OFDMA_INFO0_SPATIAL_REUSE		GENMASK(3, 0)
++#define HAL_RX_EHT_SIG_NON_OFDMA_INFO0_GI_LTF			GENMASK(5, 4)
++#define HAL_RX_EHT_SIG_NON_OFDMA_INFO0_NUM_LTF_SYM		GENMASK(8, 6)
++#define HAL_RX_EHT_SIG_NON_OFDMA_INFO0_LDPC_EXTA_SYM		BIT(9)
++#define HAL_RX_EHT_SIG_NON_OFDMA_INFO0_PRE_FEC_PAD_FACTOR	GENMASK(11, 10)
++#define HAL_RX_EHT_SIG_NON_OFDMA_INFO0_DISAMBIGUITY		BIT(12)
++#define HAL_RX_EHT_SIG_NON_OFDMA_INFO0_DISREGARD		GENMASK(16, 13)
++#define HAL_RX_EHT_SIG_NON_OFDMA_INFO0_NUM_USERS		GENMASK(19, 17)
 +
-+struct hal_mon_usig_cmn {
++struct hal_eht_sig_non_ofdma_cmn_eb {
 +	__le32 info0;
++	union hal_eht_sig_user_field user_field;
 +} __packed;
 +
-+#define HAL_RX_USIG_TB_INFO0_PPDU_TYPE_COMP_MODE	GENMASK(1, 0)
-+#define HAL_RX_USIG_TB_INFO0_VALIDATE			BIT(2)
-+#define HAL_RX_USIG_TB_INFO0_SPATIAL_REUSE_1		GENMASK(6, 3)
-+#define HAL_RX_USIG_TB_INFO0_SPATIAL_REUSE_2		GENMASK(10, 7)
-+#define HAL_RX_USIG_TB_INFO0_DISREGARD_1		GENMASK(15, 11)
-+#define HAL_RX_USIG_TB_INFO0_CRC			GENMASK(19, 16)
-+#define HAL_RX_USIG_TB_INFO0_TAIL			GENMASK(25, 20)
-+#define HAL_RX_USIG_TB_INFO0_RX_INTEG_CHECK_PASS	BIT(31)
++#define HAL_RX_EHT_SIG_OFDMA_EB1_SPATIAL_REUSE		GENMASK_ULL(3, 0)
++#define HAL_RX_EHT_SIG_OFDMA_EB1_GI_LTF			GENMASK_ULL(5, 4)
++#define HAL_RX_EHT_SIG_OFDMA_EB1_NUM_LFT_SYM		GENMASK_ULL(8, 6)
++#define HAL_RX_EHT_SIG_OFDMA_EB1_LDPC_EXTRA_SYM		BIT(9)
++#define HAL_RX_EHT_SIG_OFDMA_EB1_PRE_FEC_PAD_FACTOR	GENMASK_ULL(11, 10)
++#define HAL_RX_EHT_SIG_OFDMA_EB1_PRE_DISAMBIGUITY	BIT(12)
++#define HAL_RX_EHT_SIG_OFDMA_EB1_DISREGARD		GENMASK_ULL(16, 13)
++#define HAL_RX_EHT_SIG_OFDMA_EB1_RU_ALLOC_1_1		GENMASK_ULL(25, 17)
++#define HAL_RX_EHT_SIG_OFDMA_EB1_RU_ALLOC_1_2		GENMASK_ULL(34, 26)
++#define HAL_RX_EHT_SIG_OFDMA_EB1_CRC			GENMASK_ULL(30, 27)
 +
-+struct hal_mon_usig_tb {
-+	__le32 info0;
++struct hal_eht_sig_ofdma_cmn_eb1 {
++	__le64 info0;
 +} __packed;
 +
-+#define HAL_RX_USIG_MU_INFO0_PPDU_TYPE_COMP_MODE	GENMASK(1, 0)
-+#define HAL_RX_USIG_MU_INFO0_VALIDATE_1			BIT(2)
-+#define HAL_RX_USIG_MU_INFO0_PUNC_CH_INFO		GENMASK(7, 3)
-+#define HAL_RX_USIG_MU_INFO0_VALIDATE_2			BIT(8)
-+#define HAL_RX_USIG_MU_INFO0_EHT_SIG_MCS		GENMASK(10, 9)
-+#define HAL_RX_USIG_MU_INFO0_NUM_EHT_SIG_SYM		GENMASK(15, 11)
-+#define HAL_RX_USIG_MU_INFO0_CRC			GENMASK(20, 16)
-+#define HAL_RX_USIG_MU_INFO0_TAIL			GENMASK(26, 21)
-+#define HAL_RX_USIG_MU_INFO0_RX_INTEG_CHECK_PASS	BIT(31)
++#define HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_1		GENMASK_ULL(8, 0)
++#define HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_2		GENMASK_ULL(17, 9)
++#define HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_3		GENMASK_ULL(26, 18)
++#define HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_4		GENMASK_ULL(35, 27)
++#define HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_5		GENMASK_ULL(44, 36)
++#define HAL_RX_EHT_SIG_OFDMA_EB2_RU_ALLOC_2_6		GENMASK_ULL(53, 45)
++#define HAL_RX_EHT_SIG_OFDMA_EB2_MCS			GNEMASK_ULL(57, 54)
 +
-+struct hal_mon_usig_mu {
-+	__le32 info0;
++struct hal_eht_sig_ofdma_cmn_eb2 {
++	__le64 info0;
 +} __packed;
 +
-+union hal_mon_usig_non_cmn {
-+	struct hal_mon_usig_tb tb;
-+	struct hal_mon_usig_mu mu;
-+};
-+
-+struct hal_mon_usig_hdr {
-+	struct hal_mon_usig_cmn cmn;
-+	union hal_mon_usig_non_cmn non_cmn;
++struct hal_eht_sig_ofdma_cmn_eb {
++	struct hal_eht_sig_ofdma_cmn_eb1 eb1;
++	struct hal_eht_sig_ofdma_cmn_eb2 eb2;
++	union hal_eht_sig_user_field user_field;
 +} __packed;
 +
- void ath12k_hal_reo_status_queue_stats(struct ath12k_base *ab,
- 				       struct hal_tlv_64_hdr *tlv,
- 				       struct hal_reo_status *status);
+ static inline
+ enum nl80211_he_ru_alloc ath12k_he_ru_tones_to_nl80211_he_ru_alloc(u16 ru_tones)
+ {
 -- 
 2.34.1
 
