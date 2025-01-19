@@ -1,119 +1,90 @@
-Return-Path: <linux-wireless+bounces-17678-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17679-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA575A15F89
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 02:04:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86881A15FE6
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 03:00:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1547165B7B
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 01:04:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F96E165D98
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 02:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365984C92;
-	Sun, 19 Jan 2025 01:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81CB286A1;
+	Sun, 19 Jan 2025 02:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=steffen-moser.de header.i=@steffen-moser.de header.b="yy/3JrUy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HYqR8brI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dd54106.kasserver.com (dd54106.kasserver.com [85.13.166.165])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001BDD515
-	for <linux-wireless@vger.kernel.org>; Sun, 19 Jan 2025 01:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.13.166.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80118EAF1;
+	Sun, 19 Jan 2025 02:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737248646; cv=none; b=Ytahp37UhOgMwxWEOEBjrrOdizEvjDSMAJXc3MAOKKFcgXuEN1xxs6CcTvhemP4TV0/rhTjwF6ff2EmPo7/vxbsXVePj7sFVo9eZUCFdGKcVawMJc9LTCVt4g8r4faMHTahdCXxCV9ruhjV9EfAkXz8lXTzzZmuRf3mNZRa+h2M=
+	t=1737252042; cv=none; b=mkVjxgL9LOrJAF+TM++hGXzLoIxN9wOhex3gSdTvNuAVzwyhfZZdbQ73U2QKzyo6tf3NtQrSqReU+Re6fxFBCUBYGMcLmgOinPX/1oTsG21DYhBu9TZHyZpStW3aqEo+L7epsimHD7Dyi8+EsYwDrm24NPLpuZWuaEhbkUy5pXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737248646; c=relaxed/simple;
-	bh=FLYolM5kn0CDNvaFWx54AxPFgB+G7U+WrPEKP6CG22U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qCsF67EUISPRSGXHWd5yfcisN75MhmtHQ4HhsCEcWkNLu+TFAlOEWJfsprqVu8/gxdsj88sRt4Pi14sG9tgV4NtYcvZmkthxZdsqhnIAkdls4I9VMpxzCQwQ7KrNIz8w8RZMNwHK/rwWuydUzmtMC3zfTwuVYJ0TPA3wB8QlS6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=steffen-moser.de; spf=pass smtp.mailfrom=steffen-moser.de; dkim=pass (2048-bit key) header.d=steffen-moser.de header.i=@steffen-moser.de header.b=yy/3JrUy; arc=none smtp.client-ip=85.13.166.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=steffen-moser.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=steffen-moser.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=steffen-moser.de;
-	s=kas202408292216; t=1737248131;
-	bh=8BOzZKmL8ZI+fceofBNwktY/tVagVG1zjtXb36neCH0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=yy/3JrUyv7QCVFWACNI03JU6bCnTaC2XjqTru4nNNY39jvr3terFKD6MlTEpcwLBB
-	 khMJGnlV7pGc6+yf2balK+Lv9aXsnA9X1CznCdKMCNGKjYWrPUtym3q4fboj65/6cH
-	 d7rCOWO02CHBzurqSgyiWDEhtrUBFzt6a5xp3uQnqike6kOPY98lD8Ma7Lcqw1AdQ0
-	 YXLuX3DdKLdIpsB8KiW0q6WjUduf6O9bqVYb3IbjBvIeX/ktkPLAhf6QwPXqDXLFIN
-	 jSaC87x9OCvD1YyF7EheRiZ74NYvxXhohgIAHkYuAPQ+A84W/CR+T/f/bO6g2ytom4
-	 1Iwxz998YqNcg==
-Received: from [192.168.1.101] (p54a37daa.dip0.t-ipconnect.de [84.163.125.170])
-	by dd54106.kasserver.com (Postfix) with ESMTPSA id C5A3AE4A4EC7;
-	Sun, 19 Jan 2025 01:55:31 +0100 (CET)
-Message-ID: <a996f6bc-622f-4bf7-9c7a-84a1df504474@steffen-moser.de>
-Date: Sun, 19 Jan 2025 01:55:31 +0100
+	s=arc-20240116; t=1737252042; c=relaxed/simple;
+	bh=GEe33fQfPWHSHm6H3hVYWS6UiIpcce0SVjzrjcCOBLI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=saZz0DQLtRq5WuOY4zgt0VUoAVGs3EOcE4Dqq69M0qE1GMC2ml03A414oQy82otxp5SmadnGFVY2ja8Np7DCfJt6CbzqssNXpX7Zg5dyk0B7I696QJEGSSj1+dF/b/Np3BzXTIVx/jSJnhFumMY3nu3zWh+7YQ18d6UMBaQErtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HYqR8brI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC53C4CED1;
+	Sun, 19 Jan 2025 02:00:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737252041;
+	bh=GEe33fQfPWHSHm6H3hVYWS6UiIpcce0SVjzrjcCOBLI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=HYqR8brI1PaxHtM3nnu+QeNQSvKzgHziaSsTP5vo6uZxR8RmRrW95a+ugiwyrbTz8
+	 k4r3IANjqdvPxPE/UjWtSZGmxuTCbYjl7LmUHHRXDGSWZ7EogU30gs1WzjByap64vr
+	 md0lqlngUfk0u5K1bi/XvPlaqv6aTHUq96ADINzK4HfmBOscEDnPvuYc6CYDdVyFtl
+	 9v7Ikjd74b5nPaY3qejA3knnHQ/dEg49LUKWrgEcy48r/Vq1tHsrXC+MJc8uDDUSA8
+	 rJUZiy6T6IIdr3EE9vNbT1QNfkgs0+vWsSp9DMmb6v6j0kIT9OCr1ADuDzuKWp3hF+
+	 r06sJ6P925rCA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD1D380AA62;
+	Sun, 19 Jan 2025 02:01:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Potential Broadcast Issues After GTK Key Exchange on ath11k with
- IPQ8072A (QCN5024/QCN5054)
-To: Nicolas Escande <nico.escande@gmail.com>
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
- Kalle Valo <kvalo@kernel.org>
-References: <c6366409-9928-4dd7-bf7b-ba7fcf20eabf@steffen-moser.de>
- <Z2Q9POuV-6MIdzRf@pilgrim>
- <b18ede18-0c33-4d14-a7c5-0066cbec39c9@steffen-moser.de>
- <D6VX7M6MGZQB.3LU3FBYJK6CZH@gmail.com> <878qrkdsr7.fsf@kernel.org>
- <D74L8O64EGM3.2CXM7VKQA8O92@gmail.com>
-Content-Language: de-DE
-From: Steffen Moser <lists@steffen-moser.de>
-In-Reply-To: <D74L8O64EGM3.2CXM7VKQA8O92@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: +++
+Subject: Re: pull-request: wireless-next-2025-01-17
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173725206473.2534672.11238438170847318371.git-patchwork-notify@kernel.org>
+Date: Sun, 19 Jan 2025 02:01:04 +0000
+References: <20250117203529.72D45C4CEDD@smtp.kernel.org>
+In-Reply-To: <20250117203529.72D45C4CEDD@smtp.kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
-Hi,
+Hello:
 
-I’m not a kernel developer myself, but from a formal perspective, it 
-looks good to me. Unfortunately, I don't really know what the patch was 
-for originally. Maybe reverting it brakes something.
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Best regards,
-Steffen
-
-
-On 17.01.25 8:17 PM, Nicolas Escande wrote:
-> On Thu Jan 9, 2025 at 2:25 PM CET, Kalle Valo wrote:
->> "Nicolas Escande" <nico.escande@gmail.com> writes:
->>
->> > On Sat Dec 28, 2024 at 11:13 AM CET, Steffen Moser wrote:
->> >> Dear Remi,
->> >>
->> >> thank you very much for the pointer to the patch. Sebastian integrated 
->> >> it into DD-WRT. Now the DynaLink DL-WRX36 runs absolutely smoothly, the 
->> >> WLAN links are stable, the packet loss is gone. No weird states anymore, 
->> >> independent from the group key exchange interval:
->> >>
->> >> https://data.saps.uni-ulm.de/index.php/s/NLNpWqjc8iGsaEM
->> >>
->> >> So your idea was a direct hit! Thank you very, very much. Several months 
->> >> of debugging have come to an end...
->> >
->> > So this is at least the second time this commit breaks a setup.
->> >  
->> > @ath11k why isn't this pushed to mainline ?
->> > This seems to be a clear regression, so even if there is no need to rush things
->> > in the long run this still needs to to reverted mainline right ?
->>
->> Good question, I don't have an answer to that. Could someone (also
->> outside of Qualcomm) send a proper patch ASAP so that we can solve this?
->> And it's good ot include the link to this discussion and describe the
->> symptoms the revert is fixing.
->>
->> This is the patch in question:
->>
->> https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/blob/win.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-keys-properly-when-DISABLE_K.patch
+On Fri, 17 Jan 2025 20:35:29 +0000 (UTC) you wrote:
+> Hi,
 > 
-> Not sure if I did it the right way but it at least is here :
-> https://lore.kernel.org/linux-wireless/20250117191455.3395145-1-nico.escande@gmail.com/
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
 > 
+> Kalle
+> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: wireless-next-2025-01-17
+    https://git.kernel.org/netdev/net-next/c/66cc61a25c7d
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
