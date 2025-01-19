@@ -1,72 +1,68 @@
-Return-Path: <linux-wireless+bounces-17689-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17692-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65699A160E6
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 09:37:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E19F7A16216
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 14:58:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9C4F7A30AF
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 08:37:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09D7F3A6460
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 13:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6031A23A6;
-	Sun, 19 Jan 2025 08:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FD61DB14C;
+	Sun, 19 Jan 2025 13:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QrrWw8Rj"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kBzWzRnf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF6D1A23A2
-	for <linux-wireless@vger.kernel.org>; Sun, 19 Jan 2025 08:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DDB1B0403
+	for <linux-wireless@vger.kernel.org>; Sun, 19 Jan 2025 13:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737275855; cv=none; b=VlfczbeBHB5jrKrJrZYyJVh6A1Q3vEawl0yDPIPbBW5yvy7LwpjpV0xVxc1COU5myRG+GweJq4v3EAA2i7H5+f70NSjxuYrletykeypUfD4LWOJgUZcHldlVGXgVywcpqH8OZCJgbSOevInIJyu/+U3oiETFeYEpfTOZ+TmxK3M=
+	t=1737295101; cv=none; b=jX8NII8U2wgi01xB/dy0JSboJjto7p1nbCLk2O3ZFMP08PsSmHBOmZJSv6etSeVAK7Hw2QvCW9oVRI420sR/WCceOfB8NMC96nVED9v5LUOPgIYY/l8McxTDhou/sj2MHDjHF8JsGTtuEoEF4jKUyhRV0C2daA4tg56CK2OSRdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737275855; c=relaxed/simple;
-	bh=QD8IAu2HRaRrafdHa0Pqatu8SROv3pD3Tstfsg7D2Q4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mGnBtB1lJwKhhEPYdExF2P7ha0pDyWrN0jiGGaPMm4OQXIDhUmlZGty/hsuRqRHc90cpKHfEz3pYmjKwns3t7OkIJ0sKuzwFGyesb29BWJ0g27133T9BUyMCCvmnEOGv7bBpx2307aTquh41rRAdN03QrgIdPjBRJSSOhJUeys4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QrrWw8Rj; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1737295101; c=relaxed/simple;
+	bh=YgStsOVgXL+26HgGHVsSwA44XKff9hC+bDYlTBaBsXs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hfkdeTEw9zDyZKkbS7DqyGYhRqWxgRbSmCjkCy5BhOhUmCgAS6j0gLEWD7l1M5MXz/Q2BmxzunNj9YrRmPHejTaV42B6pQuPDLcZfGCndJj3+wI4LXTc05SwzeiCS8xFhD7HA3UzLkWJDvcryYs2cZCTqYDje94/GO3UcH3Asts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kBzWzRnf; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50J6x5Yd025692;
-	Sun, 19 Jan 2025 08:37:31 GMT
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50J7HtYb013413;
+	Sun, 19 Jan 2025 13:58:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	BGG4t+s4iK3paJ/XMRx/VzsDzDX0FJzny0wJLFxw5C0=; b=QrrWw8RjShvrTX4y
-	Aj1dNtg+KfqscuPzKto47ZYuDBeZWwbtSXbrpJoYgFeVQ/1Is9oBajmJd3QkDaZE
-	sIER/rIBkVlLJJsbJBp3+6SRsnRrHE/MZWWrsCKecBia/J+aqvG3XFfzuZ4RIWxx
-	NBqaBE+qEBM2bTGjPOc2vhGvUW4f+rOy1dzm6dqyy99a3POjfsjwRYiCIjrv+3CW
-	kILY1zfGwsoEkU4mgW3eSaygLRIvVB3ENMPGPmWlYmPTL6vUMtaezSBqwyeb5rme
-	68fXpVlb+S03edCFMd2X8HFjxdx0+1f2CQyc1/wpCU7s9asXWGika+POSdSUYud1
-	fDQZbg==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44852d1q28-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=I2AmqruUOLD6/2jeqltzi8
+	h0g74jC1oDguA9vUDmlOo=; b=kBzWzRnf7wrgRky2nNTbiSpimv+m5PI10wHudM
+	MFBRTAqBrTlHnmVMczWPpJc3km0/rEZxnqhlWZQTJK3gl13PQiDIRqTBN/0ylN4n
+	Vf/pMv1cXQOZ2LQtvdfhwMVVl3jqtZpj57d/wa9+JdrW1Ci0o9VAipJbyEx+csF4
+	4IZkVcMVnofMg6QOr04Jxtzj+ZB5YmHj/vtZgoFTXVYpHUheKJ1OY/U2d2ElBNXZ
+	kXVuzMheOPJJj+f6YaV+7+hRRi5FXsgifxXW0F6Z87F+Hg8GllRIepXD82IY6ZUi
+	Ccq8dKSfNsH361ACW3KwjBP69LKtQLypeRXoMrw1nkt3ZkJQ==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 448vv40cx1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 19 Jan 2025 08:37:31 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50J8bVBh023820
+	Sun, 19 Jan 2025 13:58:12 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50JDwBLL021364
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 19 Jan 2025 08:37:31 GMT
-Received: from hu-aarasahu-blr.qualcomm.com (10.80.80.8) by
- nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+	Sun, 19 Jan 2025 13:58:11 GMT
+Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sun, 19 Jan 2025 00:37:29 -0800
-From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+ 15.2.1544.9; Sun, 19 Jan 2025 05:58:09 -0800
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
-        Aaradhana Sahu
-	<quic_aarasahu@quicinc.com>
-Subject: [PATCH v10 4/4] wifi: ath12k: Disable MLO in Factory Test Mode
-Date: Sun, 19 Jan 2025 14:06:57 +0530
-Message-ID: <20250119083657.1937557-5-quic_aarasahu@quicinc.com>
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
+Subject: [PATCH v3 00/10] wifi: ath12k: Add peer extended Rx statistics debugfs support
+Date: Sun, 19 Jan 2025 19:27:41 +0530
+Message-ID: <20250119135751.2221902-1-quic_periyasa@quicinc.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250119083657.1937557-1-quic_aarasahu@quicinc.com>
-References: <20250119083657.1937557-1-quic_aarasahu@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,55 +71,87 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 7Ars4gg9u7ukm_IzQyXkdu94P2ETFSV9
-X-Proofpoint-GUID: 7Ars4gg9u7ukm_IzQyXkdu94P2ETFSV9
+X-Proofpoint-GUID: 5QCLBY2hjRJnKQ1ByYbyXCiINE0yK_dg
+X-Proofpoint-ORIG-GUID: 5QCLBY2hjRJnKQ1ByYbyXCiINE0yK_dg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-18_10,2025-01-16_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
- clxscore=1015 bulkscore=0 mlxscore=0 phishscore=0 mlxlogscore=696
- impostorscore=0 priorityscore=1501 suspectscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501190071
+ definitions=2025-01-19_01,2025-01-16_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ mlxscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 clxscore=1015 spamscore=0 adultscore=0 mlxlogscore=765
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501190106
 
-Factory test mode(FTM) is supported only in non-MLO(multi-link operation)
-mode. Therefore, disable MLO when driver boots in FTM mode.
+Currently, peer extended Rx statistics are not supported. Peer extended Rx
+statistics are collected form the TLV data reported in the monitor status
+Rx path. Therefore, add support for TLV tag parser handling and debugfs
+to configure and dump the collected information. Additionally, this series
+does not impact the WCN7850.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Depends-On:
+	[PATCH v2 00/14] wifi: ath12k: Enable monitor ring for updating station dump in QCN9274
+	https://lore.kernel.org/all/20241223060132.3506372-1-quic_ppranees@quicinc.com/
 
-Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+v3:
+ wifi: ath12k: Add peer extended Rx statistics debugfs support
+  - avoid ext_rx_stats filter overwrite in default filter setting
+v2:
+ wifi: ath12k: Add HAL_PHYRX_GENERIC_U_SIG TLV parsing support
+ wifi: ath12k: Add HAL_PHYRX_GENERIC_EHT_SIG TLV parsing support
+  - fixed the length calculation in the EHT radiotap procedure
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 20c8a7bed3db..2dd0666959cd 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1614,6 +1614,9 @@ static struct ath12k_hw_group *ath12k_core_hw_group_assign(struct ath12k_base *a
- 
- 	lockdep_assert_held(&ath12k_hw_group_mutex);
- 
-+	if (ath12k_ftm_mode)
-+		goto invalid_group;
-+
- 	/* The grouping of multiple devices will be done based on device tree file.
- 	 * The platforms that do not have any valid group information would have
- 	 * each device to be part of its own invalid group.
-@@ -1801,6 +1804,9 @@ void ath12k_core_hw_group_set_mlo_capable(struct ath12k_hw_group *ag)
- 	struct ath12k_base *ab;
- 	int i;
- 
-+	if (ath12k_ftm_mode)
-+		return;
-+
- 	lockdep_assert_held(&ag->mutex);
- 
- 	/* If more than one devices are grouped, then inter MLO
+Balamurugan Mahalingam (2):
+  wifi: ath12k: Add EHT MCS support in Extended Rx statistics
+  wifi: ath12k: Refactor the format of peer rate table information
+
+Karthikeyan Periyasamy (7):
+  wifi: ath12k: Add HAL_PHYRX_GENERIC_U_SIG TLV parsing support
+  wifi: ath12k: Add HAL_PHYRX_GENERIC_EHT_SIG TLV parsing support
+  wifi: ath12k: Add HAL_RX_PPDU_START_USER_INFO TLV parsing support
+  wifi: ath12k: Add HAL_PHYRX_OTHER_RECEIVE_INFO TLV parsing support
+  wifi: ath12k: Update the peer id in PPDU end user stats TLV
+  wifi: ath12k: Add EHT rate statistics support
+  wifi: ath12k: Add peer extended Rx statistics debugfs support
+
+P Praneesh (1):
+  wifi: ath12k: fix the ampdu id fetch in the HAL_RX_MPDU_START TLV
+
+ drivers/net/wireless/ath/ath12k/Makefile      |    2 +-
+ drivers/net/wireless/ath/ath12k/core.h        |   11 +-
+ drivers/net/wireless/ath/ath12k/debugfs.c     |  100 +-
+ drivers/net/wireless/ath/ath12k/debugfs.h     |   21 +-
+ drivers/net/wireless/ath/ath12k/debugfs_sta.c |  336 ++++++
+ drivers/net/wireless/ath/ath12k/debugfs_sta.h |   24 +
+ drivers/net/wireless/ath/ath12k/dp_mon.c      | 1064 ++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/dp_rx.c       |   15 +
+ drivers/net/wireless/ath/ath12k/hal_rx.h      |  430 ++++++-
+ drivers/net/wireless/ath/ath12k/mac.c         |   19 +-
+ drivers/net/wireless/ath/ath12k/mac.h         |    6 +-
+ drivers/net/wireless/ath/ath12k/rx_desc.h     |   10 +-
+ 12 files changed, 1976 insertions(+), 62 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/debugfs_sta.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/debugfs_sta.h
+
+
+base-commit: e7ef944b3e2c31b608800925e784f67596375770
+prerequisite-patch-id: afb04ab90da26435239077de723d1276946a194a
+prerequisite-patch-id: 1b12bea72973c14f461b8202eed9432f27932876
+prerequisite-patch-id: a6719494f46b8568504be8c64255676e67b4deda
+prerequisite-patch-id: 054756eb1705babff324a743e62685bb78035198
+prerequisite-patch-id: 889c4a0174fac23261705a42b46e923d7e7a0a18
+prerequisite-patch-id: ea0321fbd8a59c09191873f59b6aea8225f4b8e5
+prerequisite-patch-id: 3c8ccb635d319f8755649e445b68feb615fd82c4
+prerequisite-patch-id: d516b2a3196218f42fdf4567516a1fd2c8b4c40f
+prerequisite-patch-id: a2c59b4e468384e27d934a986e5fe9a951685fd9
+prerequisite-patch-id: 359fecf93ef53f39243cc1b3466ab06fbd33cc71
+prerequisite-patch-id: bf0b6542c65299c0bfa7fef2da6f09dd8453c39f
+prerequisite-patch-id: 1dc79cafb399be590d1e418afcc5a719ae35834f
+prerequisite-patch-id: fb1e39f2dce024ff692b0e6b112dc90c6a43ad00
+prerequisite-patch-id: 9ea3943ae0b6e6a5a09cb648eaa35f8087967ac3
 -- 
 2.34.1
 
