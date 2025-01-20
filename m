@@ -1,60 +1,61 @@
-Return-Path: <linux-wireless+bounces-17733-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17734-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7587A1676E
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 08:39:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729D2A16770
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 08:40:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B862164060
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 07:39:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CFC77A2369
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 07:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DE218FDAA;
-	Mon, 20 Jan 2025 07:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D40190058;
+	Mon, 20 Jan 2025 07:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LyZPUXlP"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IN82brUZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012027.outbound.protection.outlook.com [52.101.66.27])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012023.outbound.protection.outlook.com [52.101.66.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE17617E015;
-	Mon, 20 Jan 2025 07:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9778217E015;
+	Mon, 20 Jan 2025 07:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.23
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737358794; cv=fail; b=p2RmPuPyWqlGvN7iDpW7Tw5AcruZXjBDlr1Ho4zCgrffpwMeifbDvQUlki9Y3C833Yix0v1NmF5Jynm/6tfPPvBKSLbNDUjhpWPV3uaM3yruqdnUY/Vr8tNhbhx2EzaLlvV8M+jaVH2QCvxFjSblffRI8sUP4MAo3EcxBjscv1E=
+	t=1737358806; cv=fail; b=XUmSbZinxjTXtEsaYZ6M7OIkQTs3z+gRsY57HVwlEON9Xj5188kRoQ7olTFU7N3hAz4kH4Ed8a/WpVd7T7+JVQLOmSDjwSkMM9ClykVQwwnAmhrtX3zIsBGIaplyL/pGB0DOEKirQ3d1/jqE231rcWtX5+gYZ97aAAsgCYNaRRI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737358794; c=relaxed/simple;
-	bh=e1I5er6Jf0qfKebO54zjQabJq6PPOQZ7xjv9euqNgJ0=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=QLxUz39/8JaVp1R31M5aS7h8k0B1ENubk3mVV51bAlXOsyjWlmO78ECgd4BIHUqDtLiOY/Rj8D7yVK40CYX6aTjyhKjU7aWXBf+4CbJpBuUPCE1SiDaL1Jh4EoZV5IQwI4YXeguGS3uSuWHhs287R2yLzXs/iFQo6zoxGS+dbVU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LyZPUXlP; arc=fail smtp.client-ip=52.101.66.27
+	s=arc-20240116; t=1737358806; c=relaxed/simple;
+	bh=RtATQ9lKHQ2RDIWdstGAHB20JPm7KqF4194qyD7SS08=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bKb6SKVQS8YKEzABccVQ/yYB/fX0JuRgBOjXsEPkhvKp7/rjUNXNKtqv0kMAuc8+hrXzJS1jPWHwh4hykxBNmBLTTTzEIlVyzn/OfNPvVU9+b9Wkw92e6TgvfJCvGBNXchOY2K0VP50w1U5QUMOrmuRqGmSWpq9Ny7jTo1N/kCQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IN82brUZ; arc=fail smtp.client-ip=52.101.66.23
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pQ5Wd6LoJugfUe/dymI/wQHp4E/pIiKSWgfLDJ8QhMhgMpmWJLKHFO0llCJQJj1zXSl5IKyRWFKVVH8c95R0UBaJ1dncO1+3ZLtCZr0l5CYypTHpRg2W2pti/+mY/IdtN6pyluCaHP+EyyeVk6NZ0v1H+7LWJy2Xx5hoxthc8BZVCXG/U+2WwYl/rXnXopRZCEgNyvF+FnGiD9jOXaY6uhhRyjrGQzkEbjju8lVqafS1zSdW6kEvVjgNI3/ZFhUa+rhjlrQzruvBdwZVUsWOJZhreaVww9GlselYNL4wJ+N7/m+9j6/7scvrOW5cST+vZQooChZ3kPfhKEHIqqHgww==
+ b=Kz7irse9acPEz0ZnwRlWDi588hCXL8/aFWppj7ZTm1Xy/AiThRXEowG2XEZojzJlE+ZstzQs/B+n6lE8OnuK4FBepdCGSbFW4gy5f3Y+hVET51+cJUP21h8EErhUfA0H4xps3byqeRWtYrpb5qhKGAEnCw04a8tSjgUFgG65vVxfm8aZRglIz1XzJjsZvV5o4HJ3vxScGzfGNInKSXw92omTjiIAs3ntbmxfcUjjKPIlW/zR8+jUICaJqM4jCk3WMjGn1CjvN0Jnj30eCaTjyQeLYKVjvxWb9asFtGWclCEV2r8u5QUfknWSIuzBpTaDdrD0HqBDMO2vG78WA4w8OA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EltfHQWvSWzSd0Vl8prVl4gUAAKwQWK2Ki79zZt+mbA=;
- b=fijuS1hnhQ0I+q2HMsLtUUGe27A9uyLMCOwAg2nclnsNEdaVTIslMzdanv9pHzY5+sECSsLVvE16QJocV3nLkAPmII7GPEcjZZLaPzhIhTk+ptBNyohDvyJb1mzC5JM8oHPNkHVmh/g2uA14YZve2HaRJHLxrLaenfk8knyq39RIZVn3M+Ek0EFwX014X36C/9ZAuf7Dz5xlPM5fq+4CYufcNMaQfva0q/jBrA0cKORCe9rg8Nbv3IlrxOg+6nnUsxgeeIzAjlVkr/bQVRMLM4PNhpVyLuMIciEIc4zJHbGC5/x3NPFQCUy1SoUt9yZTl5RbiaxVaFb9g9US57KUnA==
+ bh=+Ika9GaVnWrN7Au3JxRyHM1sAwjnZ+hPDYeuYOwjjt0=;
+ b=v3vZkvBfNA7Bbvep8y2CGB6x7Hd9bGPRWuFMh63K8tPtsG7ZnbfeJnO29NPKq0msImJoTRDCTh5Jq8w5vsmMvF+wE5xEAXvBVtib/3efs4PkS7iJbE10ENzs1fm4XkAdAYmMtM6O8zWYjg1qSEognEZQpBE3ceFkz5w28031oBABzelXd/Bi4IwNwgAjJJXxgmf8DZCjP1bi4D+J2NcnujoNTai1gJXjEbHQ6JaBMQywS3jt9X4wiq6WWYrOwS9SludrRpi4Oo6R1tEP87NLZhxhgm7PtRFoWwhg1QYTv5NriYU/HUGvgYgSB0MWkG+uWk0AU3EdaFfinsbkKsRakQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EltfHQWvSWzSd0Vl8prVl4gUAAKwQWK2Ki79zZt+mbA=;
- b=LyZPUXlPa8EMfcCGBbE/QW1Khpv5SmdKGm8MNQFNBlwi8JdYLJ22eU4REO31IXvlzD+Bobim4OmW+OMRvJ+RNDGhchNo6/zHOosC/o1G0VF1ME3c3IS3XGXeFWGZ1YaxIFeWa/0NTvppRQ016zGR4FUlpSJbCR4MAmkoSYF1Jx+yYuGd/+u8bTpYB8eu97RGhbG34zi2kLYT6AUxduLtTOIYQc1Z6LPC9qYtVOMrqtaZIVhyisUv/G77fs2EIOs4Tlga5DVYAwPXFktqHxYu3uhhk9z/HAJahkESPrb+7A9VPvKoKCNFLftdNPPq3v6dib/aLy2yUzk3N586A5zJXQ==
+ bh=+Ika9GaVnWrN7Au3JxRyHM1sAwjnZ+hPDYeuYOwjjt0=;
+ b=IN82brUZ33CpBGXrzK2M8bz91PoUelfpGmX4DdLfhs91Mu0bAY5n4829gCUaQtqMm+GP+JUozRR9hHJS9BKcsE6Jk6EhNUe8Dpf4C8qssh898JPvAAkwbRE7Qm4zCLcUCedqBNaktV3dqeNQHhiFd5x/AdlmhbFKC3gyBNFH55V3hv/LQuj3dYQOA6XjTrL9fHBekSVLHaqcAZ11h2uXsMPSKLS+9ERhH1SsWMFyExnNvuqYZMwOEVVipNuR1DsyYdj4JUjgnVrG73VHNmvrGEWi2KvRkiwPvnV66m9lYOLROoNyXixvmJZ36EwPrF01ilNmIH0uAL/9jPiFV0Udww==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAWPR04MB9910.eurprd04.prod.outlook.com (2603:10a6:102:380::7)
  by PA4PR04MB7679.eurprd04.prod.outlook.com (2603:10a6:102:e0::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Mon, 20 Jan
- 2025 07:39:49 +0000
+ 2025 07:40:02 +0000
 Received: from PAWPR04MB9910.eurprd04.prod.outlook.com
  ([fe80::24b9:b9fd:bcc0:4ee6]) by PAWPR04MB9910.eurprd04.prod.outlook.com
  ([fe80::24b9:b9fd:bcc0:4ee6%4]) with mapi id 15.20.8356.017; Mon, 20 Jan 2025
- 07:39:49 +0000
+ 07:40:02 +0000
 From: Jeff Chen <jeff.chen_1@nxp.com>
 To: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -64,10 +65,12 @@ Cc: linux-kernel@vger.kernel.org,
 	tsung-hsien.hsieh@nxp.com,
 	s.hauer@pengutronix.de,
 	Jeff Chen <jeff.chen_1@nxp.com>
-Subject: [PATCH] wifi: mwifiex: Resolve the failure in downloading calibration data.
-Date: Mon, 20 Jan 2025 15:40:10 +0800
-Message-Id: <20250120074011.720358-1-jeff.chen_1@nxp.com>
+Subject: [PATCH 2/2] wifi: mwifiex: Fix the wrong hardware setting for HT40.
+Date: Mon, 20 Jan 2025 15:40:11 +0800
+Message-Id: <20250120074011.720358-2-jeff.chen_1@nxp.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250120074011.720358-1-jeff.chen_1@nxp.com>
+References: <20250120074011.720358-1-jeff.chen_1@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: SI2PR01CA0032.apcprd01.prod.exchangelabs.com
@@ -81,199 +84,123 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAWPR04MB9910:EE_|PA4PR04MB7679:EE_
-X-MS-Office365-Filtering-Correlation-Id: 576a1a63-51b4-447b-493e-08dd39259e6e
+X-MS-Office365-Filtering-Correlation-Id: fce6c88c-e3d4-4d13-17ae-08dd3925a64f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?vw0tAxo7oPsruLMRmS0qrHQ5eaoIgl+OcaWS2zyvhYEe17j9WJXqOfzQIyoO?=
- =?us-ascii?Q?bp5JfnQjgIoBlxr6acW1LJ9aK0l61Go3cgTGgBcLgFDRu4m2UA2I+9TZCAo5?=
- =?us-ascii?Q?Wg/h1OhD03Nm6GhuVuQdt31aE0CnCmym1CtEdXAN0HMj+/7Jgy6VX9gYZNaZ?=
- =?us-ascii?Q?McO/2XRBvfTy3oqkHxOsTJ7ypiufclAq0H/tOYS0nuF7Pk3QZ4QLlyEgag8Y?=
- =?us-ascii?Q?j0Y0WzXo7lCqA8zcNVXE/QLyGc2xcrnLEY3ePXjeiRdFLr77KOylHZ22Gbs8?=
- =?us-ascii?Q?W8uZS61AWGu3KRQMJBiGgvCy+gY+s9FJNhI9+k5VVA7ftiG1MXn0AIbtCxpV?=
- =?us-ascii?Q?wsxJiE8y4Fxk4em4v+YMVXefmh7dp1OuZON49qoxkHmdhQimFoPOAKetiHDg?=
- =?us-ascii?Q?Y6A52nM1cU2/g+N6jIT9pnQF/cv9VcJ2mMYlfzgpX6KS/MegV1INj9gI5cIb?=
- =?us-ascii?Q?M0qPoRrnAIx6doJkSNNiIiJbePZfdd2sD41HDi/flPVR9x514gIpC+SIOyJs?=
- =?us-ascii?Q?o3iE1yevZMGuFh82dvqR1KeCguhsgSJ9Q+MtDu+9jkb9p+3btRixmR3Y+sr2?=
- =?us-ascii?Q?xRzjlkRyC59F0bITzpUpVrrs6KQa5hUagrjvYI2SYssbv97qnSIUEL8U5KD2?=
- =?us-ascii?Q?vjiOGDAhTZ4DDWWuPr9ioYnkzeYw0hHP4DOhTazc1kdojgf0CA/6S/U+UkwY?=
- =?us-ascii?Q?aIYyc0MG6Ozm8V3+pUnPPWIaFGsajSfBx9of+4pdpmmycpQ6KiA9tLa1FOax?=
- =?us-ascii?Q?CG0YK5iOWqfSo6IBUpYJ+uR5xfejHDTUbN60koc6/rxDMbL+p0PPEmNiinhN?=
- =?us-ascii?Q?qMD34kKTx6KxfdiX0cLq+e5nUngiNorqA7BApnouk7moYp84WJwZurSi8H6c?=
- =?us-ascii?Q?+a0bWmRyaZVQ+jM3xZ02/M5FC4aVaHhiFzJtFuy/teM2XPj6yoo3nBd+RF2K?=
- =?us-ascii?Q?oQ62DTTHizXo7YlOu8R4x+qYEeef+KUActQ4aDRXNS/o09h8AmGdSQMnwrWv?=
- =?us-ascii?Q?5mZ7/iGKkW9ykyBPUqLa1bINHOELtYHxCDwRt8t3wGrmZvJGDMXBYyY7Bd6m?=
- =?us-ascii?Q?78w4+8cFmgeeqsJnN5yGYoiNr0hm69alSl9UxcN96uX91gh9E+7h0TP+e2De?=
- =?us-ascii?Q?hrRPI5TohkyfGVvuKByLramkj9I7BLfzzuvcgbBqENdD4OzoA0ATgo30TUBh?=
- =?us-ascii?Q?lsl6QZtAMiGeZvfus2zAAD9M++OuadbKS3sUZEQUYxhU9Di8CT2l+uPnoZ1p?=
- =?us-ascii?Q?ojYBWp+4UQq4TYZVj2b/rrZWbccddFXLFq7Lt7n/RBQEkIAOqTciuA3SdK2D?=
- =?us-ascii?Q?c2NB8XYMpCGURdK+E4BJaqQIMAZ5QJzAumx6kF6RlZl52+CbBUaNfmA+cH77?=
- =?us-ascii?Q?Y5vl3cEksZ33hks5ZocqQabeFyV92rh8xuezarHs5CE5Lg8AKq1x67cxnNMz?=
- =?us-ascii?Q?0/DliA1AZwdesnPEijH4SdRdHO5tFGDT?=
+	=?us-ascii?Q?RMM0QZnkFkdlReN1KD9xWg+6RCA51pJLugHqiV5zaf1dWhRZFhll+Jt7+jJp?=
+ =?us-ascii?Q?CwgIiIgqzNXl3XBF82g+nUHGIep/3xhiMORA2pMyemcEdbBmqrM2eoqS36yw?=
+ =?us-ascii?Q?ZJ3iNw+IBdJEj0Mk/4eWUrNrCRv0ayynLHhj/CtSqpISISIxw5O8W0ysTsWE?=
+ =?us-ascii?Q?P/VcZ8Gs5kSN9aKvWQKplHixd1rybLpwpo32NxWMy84TSsbsHpG0or0rWfmE?=
+ =?us-ascii?Q?VpccbSdVQwE/unqbqZu2ve9dzuGmha4P5giKCE6GMMt4J0wrIvhtQuTrx4lh?=
+ =?us-ascii?Q?2VSgw3YCH5FhXWt62HH1zQ8h9XuvxGlu3VF93jknjmETz9Jdp8FdAsyokxZ5?=
+ =?us-ascii?Q?YkggNUicxZq5xlgglsq2hhNUdHtR0IPxq407X3q9o0EeRZlCHZ3lHp32V31w?=
+ =?us-ascii?Q?qFZLn0p2hcIlxIpjyK0MUwxCXUa+itiRHntDvbJlGYyq7kW5i9DG8vbg7Usa?=
+ =?us-ascii?Q?ZliEKVzBUVPHH6XyRHgahWRFKIDQn+BCeLVuoOJxvqWGyIwSRQnY785dy6gC?=
+ =?us-ascii?Q?sWzAeHRUyX1Zrg4/kgQTUm+f2SNfjJn2wRWQO4fEshzIno5zYqgMfCMuuzE9?=
+ =?us-ascii?Q?skElUitQQ/eCG9syIWW++mam9GkDyPxcgUdd0jP6yGGL0+1hloeEqyBZ0RZY?=
+ =?us-ascii?Q?Wa6w+t066tpRQ737Z1RZpnxnGbYwX3frSqx6+/drkj6DaxL5gqSPMf3BBNFT?=
+ =?us-ascii?Q?KHWmqvDg8Bi2JNlPIdTolKHboQKvmd5u5bGuhY9C8oDLFI228l9EGWTEoEhT?=
+ =?us-ascii?Q?K0LLoReliw18jA2i7iphCi7iYLsOa7+k2pM3Us4nCgg3ZHhRgV7wzApk5Ni4?=
+ =?us-ascii?Q?DQSbvBmDVlfrmguCKm/P2ykUb2c48bBYU7oOkkYOxjZm7sBV9+cblCAk8Wcr?=
+ =?us-ascii?Q?wvl7DyLbSB1DrT4eGlzOpT4iMYQXwLwAlo0qZwrXAjrflD2WrG5g3cOVTP8/?=
+ =?us-ascii?Q?leUhUypdQPnrzJcJy1hi70nFg1bMChQ7/suXdSSUn6kWp5omsc1FISSmwwuG?=
+ =?us-ascii?Q?EfMjktR022nDM9w0g0RrHbr9GVCDWGKXXjyYFsinp6LNWHknWLBFCfZmU5gH?=
+ =?us-ascii?Q?PH8A3ZljM6PbOWdETHvWbrX30NRPanml7BGwSWs6xfrFrufw95cXwWDfhNth?=
+ =?us-ascii?Q?9mJDd04rxLY5ku4LEWyDmYnkcYI2+Gn6IZc0ejnftQym4b0OYnXvs73mYRpl?=
+ =?us-ascii?Q?Z5g2ouulZk6WKLItlR6C2Vy4kHuvoN302GObTT6XpnZZqiRF3mJKNzvCsUoc?=
+ =?us-ascii?Q?QlOlZVgR2ePFJt2EqbZzLTtEO4Ejy1ncaX636QysJeCmKOHn/DjuEn3Hgcbr?=
+ =?us-ascii?Q?bMqtIogVvuO+Flk2L+efgZB0ZZWeOHkIK4bmGAenSJnNAPtxKJxsvpLgjPjX?=
+ =?us-ascii?Q?maFJU5aomTkhz1K8LI4G6/HykPSDxBCLi6Hq71MfwbIwgd5rBllvVoaz9T7L?=
+ =?us-ascii?Q?q2i5uoe5AT/TQK1MbIMz9IpWYtmKcWgZ?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAWPR04MB9910.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YenAIpnchO6W2R0PCN12g7NrwGWdgxFbavNOUXGTN1wVkw9vi2r5g6MBcco5?=
- =?us-ascii?Q?CnZoOk9UzUv9fngjBgpG3SCeo7ggKzg7PIxHPxWkVKjjpCgUvkJ1vQpBkJ3k?=
- =?us-ascii?Q?eZFwLL+R4Ot416Sbaj3GWe6h8EDYG1wLkKuW5wqZxazi8M3CYATEfkUXfJKj?=
- =?us-ascii?Q?0o8DUf6q3ahR6S0xKkEQ3yzRn9+ckqd1shxoulgIxnSmD/89nsNbiJSy0mqZ?=
- =?us-ascii?Q?30YZ3yrGr1aiQhCM/+2tnihibJVVVtqmawtIyYDsvMnesZoJKIe7XInWFfy3?=
- =?us-ascii?Q?f9eSiZXjiXwC649HRfQStvmupEenozHs/CftaGGRiiBdTjno7GjpRL2lKTge?=
- =?us-ascii?Q?XtkflmE/Ll/AhFRi9RFiVBNjP0DeYs/WcLaguwnvfecvgnjIPQM5z8qt40c2?=
- =?us-ascii?Q?xMaj6f4MqhgG1DuIQ6YOwwSoM6VNlGPWf7e/8Qsplp1inOdtYINl2cMnoNJq?=
- =?us-ascii?Q?dL6lEOccidcXI5Dy9h0nSu1fDXi40OYMOuXCAmb52c05EUmXwzr4saXiZKdb?=
- =?us-ascii?Q?bKkZnU5c2mcWgPfeUrfgNL38S989frewSb9pwmKP4aX+JEwPUd5xpsIR82G2?=
- =?us-ascii?Q?uGTAU2FApDsseCbihtlxUcuGsKa+tzyb/3HYYlahZEGBTcp2iAsW8QINbZPV?=
- =?us-ascii?Q?B8Bec+Eu0Q2AVSXysSPDO5xs5vUtPPjdzzaqeN4Tg6wd6tqzFZ9JY6Nd9QOW?=
- =?us-ascii?Q?4bl/k+IGSOQSAfZyC7pdpnx6uKC6RuBQKu/RTREFe07sW351ZIz6WuXTG/CK?=
- =?us-ascii?Q?3whteesNp0nf6ofX0cl84FKX3y3XE0JdaWTj1z1eB1alqkr2NyKUTMy6sZ6K?=
- =?us-ascii?Q?POx+L4SJ10+OqFSZXqaV9/0Ne0ouZwSMdIq+dUcD232Q9tjDq7bSYwQVMZwi?=
- =?us-ascii?Q?A7GiHJuMpKzoXZFFjGkMr9LTwt20m9HUVFHjoeMt4p4+ZUEpjy/dOqcaYxKD?=
- =?us-ascii?Q?y1pqSABNpFtzpUhHnQ9UftiGgDWgA3wIY9Nen5yP4sWz0Z86/fP94tKz+ik3?=
- =?us-ascii?Q?FqwLDKfyMyBVshsfpTFZeb6jPk0xxTlslPwRYtXDZLFz/ShJJaNm4A/etMgs?=
- =?us-ascii?Q?lXtbVNhPFINk02Weak1lRkWIKevOlWfWuWKhMrXKL4TUPOZoBqYx8t6W615S?=
- =?us-ascii?Q?jO7U2FQF430OqGhmTm+i2ZcWb1IQA/jq8ZP5iszXJgKt15He8fIuIk6Y9DYJ?=
- =?us-ascii?Q?T6G9X0eqZQUty/P2TGSSIU4AYRGoiBMO0alJ6xxlx6igPyer0Jo427tHyon9?=
- =?us-ascii?Q?f4DcvmiCfEE81z7WfrE1WdlxOm2ZpwNpwSTVDAaRb0RFZsIXfmwUlo/yFolt?=
- =?us-ascii?Q?aKI84xXdiEDBj4k97umPfQq9s3pnV1AOgufQmj6CTI3+OHBG3XtQe75mJ6PK?=
- =?us-ascii?Q?AVmU0p/e/LUgLpy5PRFPhWkb0mx5v3A987ooT1TrzKJvDr1fQh1Lt8gK85bH?=
- =?us-ascii?Q?wmBAQUQ9+Btd3Ig2MZ/MyqpwLTo0KhEO+8gW2iQV1oxEKK8VEuPEEAs46CCS?=
- =?us-ascii?Q?adporH38Viqq6dTFpqjyzwJ4Y4/octVYiJ35/wGMJimlLoZMN/BpHKoJ35hr?=
- =?us-ascii?Q?04wbDFP3PJXHwfxZ3WWfXmrVDT3lKdV0hyxfrTtz?=
+	=?us-ascii?Q?CwKsBVMYxARXEPD+W++k9wJvMCM/Qtw0q1FD3bdajQUheEVFNVLoAEp0PieK?=
+ =?us-ascii?Q?LdDRVnio3VmZKI2pCVS+rFFlyLZw4TzVX4HYeh81VgGS+Tmw6EoaM/hm/qfO?=
+ =?us-ascii?Q?Dd+XqdWUJ6KTFSaAZfrHemSligFMimtKCv/C+fpZrf1j30bGYOcdMWl+j6/n?=
+ =?us-ascii?Q?TSw9yPSD52R6phILNq6y70iJmVf5ExZT4GnhY42Iqxt7GjSIMCkTRzBBl1Vb?=
+ =?us-ascii?Q?rJTcI4w+em6WqJT3jptKzq8yUjWYoulH7vJPIeFwGGcIBItwyd4gnzx5BBLx?=
+ =?us-ascii?Q?3QIVBU0Xkq7s8/AyTgT8+52h9xmRstAKesb+ZQM2eLNTiuYRZVceRZ2Jz7aq?=
+ =?us-ascii?Q?935KgwyfBLbAIJJLh+RwrGrYWy+EDN528AgpKaKOQ8rNGwKzSexOKFt369u9?=
+ =?us-ascii?Q?7kTLKax//nmeTkDYnnmnJITIWqA8RpQp/Cj6Pd/obgYObaeh3cW9g0wFdtP5?=
+ =?us-ascii?Q?g2NybuaWQbBopz8gp9kRLjdOXINmIKS+WlVavuRfMK4S/yDNbXZg14rQzZmM?=
+ =?us-ascii?Q?1zT4+ha1t0HgoYyjPtKMgMy7Wogbks0d9u+tdtX2elljZrdbLyHVmostwxXm?=
+ =?us-ascii?Q?1FX9z25EyI/CJc82UvH3NyM/N/l4SkaMitSKPBEwEs9qFP+xH/KHvJaJeyHu?=
+ =?us-ascii?Q?DdwYF58J9Pl7xbaLbeZnk4kW13dJX6QTugIen6RA4VpjmxmQCNrZv/bqyl/Z?=
+ =?us-ascii?Q?zq8TmA+yGRa+DmQjCkQ5aHNSDRG2O8BXuc1RZHfSqFSAZRTQGJdq43tOr/ct?=
+ =?us-ascii?Q?GbhNsY/OsavC54Hk4XG7feMvPZNxHZrx5kA+/hnI2+J+3KIY3Dp3O8rAqLRj?=
+ =?us-ascii?Q?APm30aufV0AV/V6dv5zdBnEU0inJHshe/nz7i8vpyCKazUhcTmihCaN0DirC?=
+ =?us-ascii?Q?j5v19m/6EE1sucxJ9PM7drWEDKVOjrJa9OTFn9KzzlKEDcyypq43nX6PtvQW?=
+ =?us-ascii?Q?La6YQmtFdONOY8EbwUzO/J0mAau5D1DzXLTL+6FG1k/stZUi0d2d7lOYaXHN?=
+ =?us-ascii?Q?1xlMxfrK5ozuzGhuIeJtWrGQKqWkkpbABW+OId/3NgXf4ulZIetzE/SD4gYu?=
+ =?us-ascii?Q?oeoSWbljk4nL/HQLbhxm333sXEC6t6dRTAK15PvUCjqGygQQtSE2Q1cbSD8E?=
+ =?us-ascii?Q?CqQfqhL0JUqVds9suzo98QKkCI5XdIRnpt/nsJRoFJpo9D4909JqURteOMs6?=
+ =?us-ascii?Q?s0SDD6tGGVf4D9EoG/XNmKKTSofUzn0IZ2+HPU7wu0M9eO44TN/NgzmFgwer?=
+ =?us-ascii?Q?sjfIrlbIjlne81Hm0zgKJyta4bBgfeGhY1GF7ChK4mPEghxToCeubjJuC+Fx?=
+ =?us-ascii?Q?Xr34yUHs+VAMQ18k0bCIbbDMVFwCqvZ0pbTXw/puoJdij6yIyLmk6QDrHUPy?=
+ =?us-ascii?Q?SSLtR7ao2t1ZN4BIbRnOmGClyz9sN9eStgRpBnHyBSXg5jBOorY9pV6iE2dD?=
+ =?us-ascii?Q?RIGpukkji0YuUQ+YlohqobrKaD0EqG343+iB8tC5HOJewJa1G/wIt7pSB4aM?=
+ =?us-ascii?Q?SNV3GqOf8GvfBRf81ouWfcJ+hq67HTEE1BpfQTyUYbBg44TSv+ShjS9twvbq?=
+ =?us-ascii?Q?PU8yVDDvNWmACbgFNsqgP1f6gOWZDY2Q4n5JRGUs?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 576a1a63-51b4-447b-493e-08dd39259e6e
+X-MS-Exchange-CrossTenant-Network-Message-Id: fce6c88c-e3d4-4d13-17ae-08dd3925a64f
 X-MS-Exchange-CrossTenant-AuthSource: PAWPR04MB9910.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2025 07:39:49.2954
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2025 07:40:02.4914
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5CLwlzvsu7fHhOGjrbtrb7AQ//7LaEgELMlC19pHFiqzqsNiJcYq/13IGMiEAKN/xs5yZcnEv9sHEBciz3DO1Q==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ga/8iBcEzkWUw/ImHAlasSOWTUj4wvTF3AD3PBOuBm/VnXpEj3Fvxy073EWMN8Wh+zoQsdp/OaDNUzFY2lVRUQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7679
 
-Correct the command format for downloading calibration data.
+Add the missing bandwidth configuration for HT40.
 
 Signed-off-by: Jeff Chen <jeff.chen_1@nxp.com>
 ---
- drivers/net/wireless/marvell/mwifiex/fw.h     |  7 +++++++
- drivers/net/wireless/marvell/mwifiex/main.c   |  4 ----
- .../net/wireless/marvell/mwifiex/sta_cmd.c    | 19 +++++++++++++------
- 3 files changed, 20 insertions(+), 10 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index 4a96281792cc..0c75a574a7ee 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -2352,6 +2352,12 @@ struct host_cmd_ds_add_station {
- 	u8 tlv[];
- } __packed;
+diff --git a/drivers/net/wireless/marvell/mwifiex/11n.c b/drivers/net/wireless/marvell/mwifiex/11n.c
+index 66f0f5377ac1..4ae0b4aaa09a 100644
+--- a/drivers/net/wireless/marvell/mwifiex/11n.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n.c
+@@ -308,7 +308,7 @@ mwifiex_cmd_append_11n_tlv(struct mwifiex_private *priv,
+ 	int ret_len = 0;
+ 	struct ieee80211_supported_band *sband;
+ 	struct ieee_types_header *hdr;
+-	u8 radio_type;
++	u8 radio_type, secch_offset;
  
-+struct host_cmd_ds_802_11_cfg_data {
-+	__le16 action;
-+	__le16 type;
-+	__le16 data_len;
-+} __packed;
-+
- struct host_cmd_ds_command {
- 	__le16 command;
- 	__le16 size;
-@@ -2431,6 +2437,7 @@ struct host_cmd_ds_command {
- 		struct host_cmd_ds_pkt_aggr_ctrl pkt_aggr_ctrl;
- 		struct host_cmd_ds_sta_configure sta_cfg;
- 		struct host_cmd_ds_add_station sta_info;
-+		struct host_cmd_ds_802_11_cfg_data cfg_data;
- 	} params;
- } __packed;
+ 	if (!buffer || !*buffer)
+ 		return ret_len;
+@@ -401,13 +401,15 @@ mwifiex_cmd_append_11n_tlv(struct mwifiex_private *priv,
+ 		chan_list->chan_scan_param[0].radio_type =
+ 			mwifiex_band_to_radio_type((u8) bss_desc->bss_band);
  
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-index 855019fe5485..80fc6d5afe86 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -691,10 +691,6 @@ static int _mwifiex_fw_dpc(const struct firmware *firmware, void *context)
- 
- 	init_failed = true;
- done:
--	if (adapter->cal_data) {
--		release_firmware(adapter->cal_data);
--		adapter->cal_data = NULL;
--	}
- 	if (adapter->firmware) {
- 		release_firmware(adapter->firmware);
- 		adapter->firmware = NULL;
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-index e2800a831c8e..027555211a99 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-@@ -1500,18 +1500,19 @@ int mwifiex_dnld_dt_cfgdata(struct mwifiex_private *priv,
- 
- /* This function prepares command of set_cfg_data. */
- static int mwifiex_cmd_cfg_data(struct mwifiex_private *priv,
--				struct host_cmd_ds_command *cmd, void *data_buf)
-+				struct host_cmd_ds_command *cmd, void *data_buf, u16 cmd_action)
- {
- 	struct mwifiex_adapter *adapter = priv->adapter;
- 	struct property *prop = data_buf;
- 	u32 len;
- 	u8 *data = (u8 *)cmd + S_DS_GEN;
- 	int ret;
-+	struct host_cmd_ds_802_11_cfg_data *pcfg_data = &cmd->params.cfg_data;
- 
- 	if (prop) {
- 		len = prop->length;
- 		ret = of_property_read_u8_array(adapter->dt_node, prop->name,
--						data, len);
-+						data + sizeof(*pcfg_data), len);
- 		if (ret)
- 			return ret;
- 		mwifiex_dbg(adapter, INFO,
-@@ -1519,15 +1520,18 @@ static int mwifiex_cmd_cfg_data(struct mwifiex_private *priv,
- 			    prop->name);
- 	} else if (adapter->cal_data->data && adapter->cal_data->size > 0) {
- 		len = mwifiex_parse_cal_cfg((u8 *)adapter->cal_data->data,
--					    adapter->cal_data->size, data);
-+					    adapter->cal_data->size, data + sizeof(*pcfg_data));
- 		mwifiex_dbg(adapter, INFO,
- 			    "download cfg_data from config file\n");
- 	} else {
- 		return -1;
- 	}
- 
-+	pcfg_data->action = cpu_to_le16(cmd_action);
-+	pcfg_data->type = cpu_to_le16(2);
-+	pcfg_data->data_len = cpu_to_le16(len);
- 	cmd->command = cpu_to_le16(HostCmd_CMD_CFG_DATA);
--	cmd->size = cpu_to_le16(S_DS_GEN + len);
-+	cmd->size = cpu_to_le16(S_DS_GEN + sizeof(*pcfg_data) + len);
- 
- 	return 0;
- }
-@@ -1949,7 +1953,7 @@ int mwifiex_sta_prepare_cmd(struct mwifiex_private *priv, uint16_t cmd_no,
- 		ret = mwifiex_cmd_get_hw_spec(priv, cmd_ptr);
- 		break;
- 	case HostCmd_CMD_CFG_DATA:
--		ret = mwifiex_cmd_cfg_data(priv, cmd_ptr, data_buf);
-+		ret = mwifiex_cmd_cfg_data(priv, cmd_ptr, data_buf, cmd_action);
- 		break;
- 	case HostCmd_CMD_MAC_CONTROL:
- 		ret = mwifiex_cmd_mac_control(priv, cmd_ptr, cmd_action,
-@@ -2293,9 +2297,12 @@ int mwifiex_sta_init_cmd(struct mwifiex_private *priv, u8 first_sta, bool init)
- 						"marvell,caldata");
- 		}
- 
--		if (adapter->cal_data)
-+		if (adapter->cal_data) {
- 			mwifiex_send_cmd(priv, HostCmd_CMD_CFG_DATA,
- 					 HostCmd_ACT_GEN_SET, 0, NULL, true);
-+			release_firmware(adapter->cal_data);
-+			adapter->cal_data = NULL;
+-		if (sband->ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 &&
+-		    bss_desc->bcn_ht_oper->ht_param &
+-		    IEEE80211_HT_PARAM_CHAN_WIDTH_ANY)
+-			SET_SECONDARYCHAN(chan_list->chan_scan_param[0].
+-					  radio_type,
+-					  (bss_desc->bcn_ht_oper->ht_param &
+-					  IEEE80211_HT_PARAM_CHA_SEC_OFFSET));
++		if (sband->ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40) {
++			if (bss_desc->bcn_ht_oper->ht_param & IEEE80211_HT_PARAM_CHAN_WIDTH_ANY) {
++				chan_list->chan_scan_param[0].radio_type |= (CHAN_BW_40MHZ << 2);
++				secch_offset = bss_desc->bcn_ht_oper->ht_param &
++				IEEE80211_HT_PARAM_CHA_SEC_OFFSET;
++				SET_SECONDARYCHAN(chan_list->chan_scan_param[0].radio_type,
++						  secch_offset);
++			}
 +		}
  
- 		/* Read MAC address from HW */
- 		ret = mwifiex_send_cmd(priv, HostCmd_CMD_GET_HW_SPEC,
+ 		*buffer += struct_size(chan_list, chan_scan_param, 1);
+ 		ret_len += struct_size(chan_list, chan_scan_param, 1);
 -- 
 2.34.1
 
