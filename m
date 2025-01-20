@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-17725-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17726-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349EFA165A5
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 04:28:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF61EA165A6
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 04:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5158C3A4B15
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 03:28:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E630E3A53B6
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 03:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359F213D51E;
-	Mon, 20 Jan 2025 03:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BCB1442E8;
+	Mon, 20 Jan 2025 03:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="S1rmBjnM"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="qBtBGP80"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DCE13AA5D
-	for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 03:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AB51494CC
+	for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 03:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737343682; cv=none; b=tkleISdNPzn/3Vqi9Olt1+uk7dM9IkCOyPKoULQzG/orpUgAXWMZ4tna0aeu+UhNsNiTeMTLLjtrrhZpzBRXaax0dvbtAhYJCJFS1bXKYERnznxBk53OyZ4WqaTRbQvZkR166f87b/l0FEdPenJabvjHhF/Fxc9L3bVCS9sPJPI=
+	t=1737343686; cv=none; b=EnwztFVB8CiAE4MBZwxCNB33GmoxLCd9rsj2Ux0R1iD5ImDEoFeawz35KFdtfZEJGdit26sKnGVHlGvntJpxu2LnjPXt3r3aVPthxWnvglYN3PRM+5aO5pK38u1pE8RgQeeKrTwQM49h8zJlE5ix8ppsocyfDJhmq378XdRXC4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737343682; c=relaxed/simple;
-	bh=UAye97b195teafTJzXxxNJp4TN90q53vDsoog9sh5ME=;
+	s=arc-20240116; t=1737343686; c=relaxed/simple;
+	bh=wmCyRqa1W3BDEmGsyA8Lw0t0KAzX184Isiu8+9jqesc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c37+/yT8YeIh5Lui3GrK0TaJPQ1yCZHguUYkzSt5DH0ofwswu5l5+zp3ACoSZ2HKw6B8M7pCAMnFUf4KaLuNtVXR3NSOCB3XsFpBbJroX/V25ika0CC84cuOw7BeYBfX9Q3/5DmzLbRm7nXRQSkCK7I+zmxVZOCKZSSTKG775do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=S1rmBjnM; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=ReIkBilnSUM8UtQXNMDfB6aomKYZXMvQw8c99Eqsz8G5GdxVo50Goqz3dNu2VpkDJ4X7tscPO1GCfvkd+SDkXg5psXVM/KhkZknVLweBbbr1nmkCg3d9gKMAgVb3M3yR+P328O8hguybTuWFh66cM2G1pNlCACIoPg6ZPk89bww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=qBtBGP80; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50K3RuOcA2654408, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50K3S0Ca82654470, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1737343676; bh=UAye97b195teafTJzXxxNJp4TN90q53vDsoog9sh5ME=;
+	t=1737343680; bh=wmCyRqa1W3BDEmGsyA8Lw0t0KAzX184Isiu8+9jqesc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=S1rmBjnMjClr9SJ1bIccqf6DYaWdaK6ngehtWFixeeNZ7RD3yEWaw/Iw1ZUGNt59T
-	 G7/9TaPh3gC+vkqVkthQ1E1mxVE82uIaPP2UashF1XvkH/mGPTl6yw3EWw0dU39N/A
-	 A8A+glZIszSjnJO8wHdK17/p5JFVGDpZ55Tiuv0Y2S5OoH4e0gNfmKYWHLtykb3faD
-	 o/wAh4wAEAivcHKvIqrBA9J1FronDJXtyFq3uXKP1YgxNMXk62kRA3GPj3gU6YhA9D
-	 areSyAVPPbrG8wFdLdFEqyYBdmdSYiuwrDBX5DBKTOvZ7PO0gyUeT4E4bWsUiW3x60
-	 lH6HOuI8cIX0A==
+	b=qBtBGP809CCm5BitCSsJohulUXjieupMmwgbuaB3CWDmIteX6gvtKg1QyPIRHmL0K
+	 UQZL5hGPTdzFTcAMPPiUPBLpprcTvvd/DxgW9gNpF3l0bKtRkMtWKQ8ist4rX6dk1c
+	 N7+duvzMHNzOtJUFZ7DyN4kF+1VRy2uq4NeXd127C/+oyCmxQFSMwi/WNX3LQrM3u9
+	 Tdx2nLXYuvwWNL2CFbtfi6sNen7b/KMZAwHaHMlVert2ogksPzjhbmfhB28Uoos5Qb
+	 h7K2bFTI2mxZ1ZWmvaHj3mWxhh8VjBsnWghSF0pS2WVJEK3CoPGnulQ/l/+/spixwI
+	 JtfBBJc2gcg4A==
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50K3RuOcA2654408
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50K3S0Ca82654470
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 11:27:56 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 11:28:00 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 20 Jan 2025 11:27:57 +0800
+ 15.1.2507.39; Mon, 20 Jan 2025 11:28:01 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 20 Jan
- 2025 11:27:56 +0800
+ 2025 11:27:59 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <kevin_yang@realtek.com>
-Subject: [PATCH 1/3] wifi: rtw89: regd: support loading regd table from fw element
-Date: Mon, 20 Jan 2025 11:27:21 +0800
-Message-ID: <20250120032723.19042-2-pkshih@realtek.com>
+Subject: [PATCH 2/3] wifi: rtw89: regd: handle supported regulatory functions by country
+Date: Mon, 20 Jan 2025 11:27:22 +0800
+Message-ID: <20250120032723.19042-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250120032723.19042-1-pkshih@realtek.com>
 References: <20250120032723.19042-1-pkshih@realtek.com>
@@ -76,415 +76,598 @@ X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Regd table is a table that we use to describe how to map Realtek RF TX
-power settings on different countries. Originally, a common regd table
-for all chips is implemented in driver. However, in order to work on all
-chips, the common regd table might have some trade-off. So now, there are
-also an individual regd table for some chips. And, we support loading it
-from FW element.
+There are two regulatory functions including TAS (Time Average SAR) and
+DAG (Dynamic Antenna Gain) for now. They are used to improve RF behavior.
+But, availability depends on country. Extend regd map to record the status
+of whether a country allows to enable certain regulatory functions.
+
+Also, extend the handling of loading regd map via FW element for this.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h | 14 ++++
- drivers/net/wireless/realtek/rtw89/fw.c   | 86 +++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/fw.h   | 22 ++++++
- drivers/net/wireless/realtek/rtw89/regd.c | 66 +++++++++++------
- 4 files changed, 166 insertions(+), 22 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h |   8 +
+ drivers/net/wireless/realtek/rtw89/fw.c   |  12 +
+ drivers/net/wireless/realtek/rtw89/fw.h   |   1 +
+ drivers/net/wireless/realtek/rtw89/regd.c | 489 +++++++++++-----------
+ 4 files changed, 266 insertions(+), 244 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 0f2a46e36b04..7257b5dc1cbc 100644
+index 7257b5dc1cbc..7417dcd68f3d 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -22,6 +22,7 @@ struct rtw89_h2c_rf_tssi;
- struct rtw89_fw_txpwr_track_cfg;
- struct rtw89_phy_rfk_log_fmt;
- struct rtw89_debugfs;
-+struct rtw89_regd_data;
- 
- extern const struct ieee80211_ops rtw89_ops;
- 
-@@ -718,6 +719,7 @@ enum rtw89_ofdma_type {
- 	RTW89_OFDMA_NUM,
+@@ -5150,9 +5150,17 @@ struct rtw89_power_trim_info {
+ 	u8 pad_bias_trim[RF_PATH_MAX];
  };
  
-+/* neither insert new in the middle, nor change any given definition */
- enum rtw89_regulation_type {
- 	RTW89_WW	= 0,
- 	RTW89_ETSI	= 1,
-@@ -4537,6 +4539,7 @@ struct rtw89_fw_elm_info {
- 	struct rtw89_phy_table *rf_nctl;
- 	struct rtw89_fw_txpwr_track_cfg *txpwr_trk;
- 	struct rtw89_phy_rfk_log_fmt *rfk_log_fmt;
-+	const struct rtw89_regd_data *regd;
- };
- 
- enum rtw89_fw_mss_dev_type {
-@@ -5152,11 +5155,22 @@ struct rtw89_regd {
++enum rtw89_regd_func {
++	RTW89_REGD_FUNC_TAS = 0, /* TAS (Time Average SAR) */
++	RTW89_REGD_FUNC_DAG = 1, /* DAG (Dynamic Antenna Gain) */
++
++	NUM_OF_RTW89_REGD_FUNC,
++};
++
+ struct rtw89_regd {
+ 	char alpha2[3];
  	u8 txpwr_regd[RTW89_BAND_NUM];
++	DECLARE_BITMAP(func_bitmap, NUM_OF_RTW89_REGD_FUNC);
  };
  
-+struct rtw89_regd_data {
-+	unsigned int nr;
-+	struct rtw89_regd map[] __counted_by(nr);
-+};
-+
-+struct rtw89_regd_ctrl {
-+	unsigned int nr;
-+	const struct rtw89_regd *map;
-+};
-+
- #define RTW89_REGD_MAX_COUNTRY_NUM U8_MAX
- #define RTW89_5GHZ_UNII4_CHANNEL_NUM 3
- #define RTW89_5GHZ_UNII4_START_INDEX 25
- 
- struct rtw89_regulatory_info {
-+	struct rtw89_regd_ctrl ctrl;
- 	const struct rtw89_regd *regd;
- 	enum rtw89_reg_6ghz_power reg_6ghz_power;
- 	struct rtw89_reg_6ghz_tpe reg_6ghz_tpe;
+ struct rtw89_regd_data {
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 5cc9ab78c09f..7b7994b8e1aa 100644
+index 7b7994b8e1aa..cb5ccd9df364 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -1056,6 +1056,89 @@ int rtw89_build_rfk_log_fmt_from_elm(struct rtw89_dev *rtwdev,
- 	return 0;
+@@ -1064,8 +1064,11 @@ static bool rtw89_regd_entcpy(struct rtw89_regd *regd, const void *cursor,
+ 		.rule_2ghz = RTW89_NA,
+ 		.rule_5ghz = RTW89_NA,
+ 		.rule_6ghz = RTW89_NA,
++		.fmap = cpu_to_le32(0x0),
+ 	};
+ 	u8 valid_size = min_t(u8, sizeof(entry), cursor_size);
++	unsigned int i;
++	u32 fmap;
+ 
+ 	memcpy(&entry, cursor, valid_size);
+ 	memset(regd, 0, sizeof(*regd));
+@@ -1082,6 +1085,15 @@ static bool rtw89_regd_entcpy(struct rtw89_regd *regd, const void *cursor,
+ 	regd->txpwr_regd[RTW89_BAND_6G] = entry.rule_6ghz < RTW89_REGD_NUM ?
+ 					  entry.rule_6ghz : RTW89_NA;
+ 
++	BUILD_BUG_ON(sizeof(fmap) != sizeof(entry.fmap));
++	BUILD_BUG_ON(sizeof(fmap) * 8 < NUM_OF_RTW89_REGD_FUNC);
++
++	fmap = le32_to_cpu(entry.fmap);
++	for (i = 0; i < NUM_OF_RTW89_REGD_FUNC; i++) {
++		if (fmap & BIT(i))
++			set_bit(i, regd->func_bitmap);
++	}
++
+ 	return true;
  }
  
-+static bool rtw89_regd_entcpy(struct rtw89_regd *regd, const void *cursor,
-+			      u8 cursor_size)
-+{
-+	/* fill default values if needed for backward compatibility */
-+	struct rtw89_fw_regd_entry entry = {
-+		.rule_2ghz = RTW89_NA,
-+		.rule_5ghz = RTW89_NA,
-+		.rule_6ghz = RTW89_NA,
-+	};
-+	u8 valid_size = min_t(u8, sizeof(entry), cursor_size);
-+
-+	memcpy(&entry, cursor, valid_size);
-+	memset(regd, 0, sizeof(*regd));
-+
-+	regd->alpha2[0] = entry.alpha2_0;
-+	regd->alpha2[1] = entry.alpha2_1;
-+	regd->alpha2[2] = '\0';
-+
-+	/* also need to consider forward compatibility */
-+	regd->txpwr_regd[RTW89_BAND_2G] = entry.rule_2ghz < RTW89_REGD_NUM ?
-+					  entry.rule_2ghz : RTW89_NA;
-+	regd->txpwr_regd[RTW89_BAND_5G] = entry.rule_5ghz < RTW89_REGD_NUM ?
-+					  entry.rule_5ghz : RTW89_NA;
-+	regd->txpwr_regd[RTW89_BAND_6G] = entry.rule_6ghz < RTW89_REGD_NUM ?
-+					  entry.rule_6ghz : RTW89_NA;
-+
-+	return true;
-+}
-+
-+#define rtw89_for_each_in_regd_element(regd, element) \
-+	for (const void *cursor = (element)->content, \
-+	     *end = (element)->content + \
-+		    le32_to_cpu((element)->num_ents) * (element)->ent_sz; \
-+	     cursor < end; cursor += (element)->ent_sz) \
-+		if (rtw89_regd_entcpy(regd, cursor, (element)->ent_sz))
-+
-+static
-+int rtw89_recognize_regd_from_elm(struct rtw89_dev *rtwdev,
-+				  const struct rtw89_fw_element_hdr *elm,
-+				  const union rtw89_fw_element_arg arg)
-+{
-+	const struct __rtw89_fw_regd_element *regd_elm = &elm->u.regd;
-+	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
-+	u32 num_ents = le32_to_cpu(regd_elm->num_ents);
-+	struct rtw89_regd_data *p;
-+	struct rtw89_regd regd;
-+	u32 i = 0;
-+
-+	if (num_ents > RTW89_REGD_MAX_COUNTRY_NUM) {
-+		rtw89_warn(rtwdev,
-+			   "regd element ents (%d) are over max num (%d)\n",
-+			   num_ents, RTW89_REGD_MAX_COUNTRY_NUM);
-+		rtw89_warn(rtwdev,
-+			   "regd element ignore and take another/common\n");
-+		return 1;
-+	}
-+
-+	if (elm_info->regd) {
-+		rtw89_debug(rtwdev, RTW89_DBG_REGD,
-+			    "regd element take the latter\n");
-+		devm_kfree(rtwdev->dev, elm_info->regd);
-+		elm_info->regd = NULL;
-+	}
-+
-+	p = devm_kzalloc(rtwdev->dev, struct_size(p, map, num_ents), GFP_KERNEL);
-+	if (!p)
-+		return -ENOMEM;
-+
-+	p->nr = num_ents;
-+	rtw89_for_each_in_regd_element(&regd, regd_elm)
-+		p->map[i++] = regd;
-+
-+	if (i != num_ents) {
-+		rtw89_err(rtwdev, "regd element has %d invalid ents\n",
-+			  num_ents - i);
-+		devm_kfree(rtwdev->dev, p);
-+		return -EINVAL;
-+	}
-+
-+	elm_info->regd = p;
-+	return 0;
-+}
-+
- static const struct rtw89_fw_element_handler __fw_element_handlers[] = {
- 	[RTW89_FW_ELEMENT_ID_BBMCU0] = {__rtw89_fw_recognize_from_elm,
- 					{ .fw_type = RTW89_FW_BBMCU0 }, NULL},
-@@ -1114,6 +1197,9 @@ static const struct rtw89_fw_element_handler __fw_element_handlers[] = {
- 	[RTW89_FW_ELEMENT_ID_RFKLOG_FMT] = {
- 		rtw89_build_rfk_log_fmt_from_elm, {}, NULL,
- 	},
-+	[RTW89_FW_ELEMENT_ID_REGD] = {
-+		rtw89_recognize_regd_from_elm, {}, "REGD",
-+	},
- };
- 
- int rtw89_fw_recognize_elements(struct rtw89_dev *rtwdev)
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 2026bc2fd2ac..c55eabe0138d 100644
+index c55eabe0138d..5546c05fb428 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.h
 +++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -3882,6 +3882,7 @@ enum rtw89_fw_element_id {
- 	RTW89_FW_ELEMENT_ID_TX_SHAPE_LMT_RU = 17,
- 	RTW89_FW_ELEMENT_ID_TXPWR_TRK = 18,
- 	RTW89_FW_ELEMENT_ID_RFKLOG_FMT = 19,
-+	RTW89_FW_ELEMENT_ID_REGD = 20,
- 
- 	RTW89_FW_ELEMENT_ID_NUM,
- };
-@@ -3925,6 +3926,15 @@ struct __rtw89_fw_txpwr_element {
- 	u8 content[];
+@@ -4894,6 +4894,7 @@ struct rtw89_fw_regd_entry {
+ 	u8 rule_2ghz;
+ 	u8 rule_5ghz;
+ 	u8 rule_6ghz;
++	__le32 fmap;
  } __packed;
  
-+struct __rtw89_fw_regd_element {
-+	u8 rsvd0;
-+	u8 rsvd1;
-+	u8 rsvd2;
-+	u8 ent_sz;
-+	__le32 num_ents;
-+	u8 content[];
-+} __packed;
-+
- enum rtw89_fw_txpwr_trk_type {
- 	__RTW89_FW_TXPWR_TRK_TYPE_6GHZ_START = 0,
- 	RTW89_FW_TXPWR_TRK_TYPE_6GB_N = 0,
-@@ -4016,6 +4026,7 @@ struct rtw89_fw_element_hdr {
- 			__le16 offset[];
- 		} __packed rfk_log_fmt;
- 		struct __rtw89_fw_txpwr_element txpwr;
-+		struct __rtw89_fw_regd_element regd;
- 	} __packed u;
- } __packed;
- 
-@@ -4874,6 +4885,17 @@ int rtw89_chip_h2c_ba_cam(struct rtw89_dev *rtwdev, struct rtw89_sta *rtwsta,
- 	return 0;
- }
- 
-+/* Must consider compatibility; don't insert new in the mid.
-+ * Fill each field's default value in rtw89_regd_entcpy().
-+ */
-+struct rtw89_fw_regd_entry {
-+	u8 alpha2_0;
-+	u8 alpha2_1;
-+	u8 rule_2ghz;
-+	u8 rule_5ghz;
-+	u8 rule_6ghz;
-+} __packed;
-+
  /* must consider compatibility; don't insert new in the mid */
- struct rtw89_fw_txpwr_byrate_entry {
- 	u8 band;
 diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
-index 80b2f74589eb..aea37dae8ef9 100644
+index aea37dae8ef9..50a7f6ff4b5b 100644
 --- a/drivers/net/wireless/realtek/rtw89/regd.c
 +++ b/drivers/net/wireless/realtek/rtw89/regd.c
-@@ -7,9 +7,12 @@
+@@ -7,260 +7,261 @@
  #include "ps.h"
  #include "util.h"
  
--#define COUNTRY_REGD(_alpha2, _txpwr_regd...) \
--	{.alpha2 = (_alpha2), \
--	 .txpwr_regd = {_txpwr_regd}, \
-+#define COUNTRY_REGD(_alpha2, _rule_2ghz, _rule_5ghz, _rule_6ghz) \
-+	{							\
-+		.alpha2 = _alpha2,				\
-+		.txpwr_regd[RTW89_BAND_2G] = _rule_2ghz,	\
-+		.txpwr_regd[RTW89_BAND_5G] = _rule_5ghz,	\
-+		.txpwr_regd[RTW89_BAND_6G] = _rule_6ghz,	\
+-#define COUNTRY_REGD(_alpha2, _rule_2ghz, _rule_5ghz, _rule_6ghz) \
++#define COUNTRY_REGD(_alpha2, _rule_2ghz, _rule_5ghz, _rule_6ghz, _fmap) \
+ 	{							\
+ 		.alpha2 = _alpha2,				\
+ 		.txpwr_regd[RTW89_BAND_2G] = _rule_2ghz,	\
+ 		.txpwr_regd[RTW89_BAND_5G] = _rule_5ghz,	\
+ 		.txpwr_regd[RTW89_BAND_6G] = _rule_6ghz,	\
++		.func_bitmap = { BITMAP_FROM_U64(_fmap), },	\
  	}
  
  static const struct rtw89_regd rtw89_ww_regd =
-@@ -295,13 +298,16 @@ static const char rtw89_alpha2_list_eu[][3] = {
- 	"RO",
+-	COUNTRY_REGD("00", RTW89_WW, RTW89_WW, RTW89_WW);
++	COUNTRY_REGD("00", RTW89_WW, RTW89_WW, RTW89_WW, 0x0);
+ 
+ static const struct rtw89_regd rtw89_regd_map[] = {
+-	COUNTRY_REGD("AR", RTW89_MEXICO, RTW89_MEXICO, RTW89_FCC),
+-	COUNTRY_REGD("BO", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("BR", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("CL", RTW89_CHILE, RTW89_CHILE, RTW89_CHILE),
+-	COUNTRY_REGD("CO", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("CR", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("EC", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("SV", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("GT", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("HN", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("MX", RTW89_MEXICO, RTW89_MEXICO, RTW89_FCC),
+-	COUNTRY_REGD("NI", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("PA", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("PY", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("PE", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("US", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("UY", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("VE", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("PR", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("DO", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("AT", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("BE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("CY", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("CZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("DK", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("EE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("FI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("FR", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("DE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("GR", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("HU", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("IS", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("IE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("IT", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("LV", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("LI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("LT", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("LU", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("MT", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("MC", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("NL", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("NO", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("PL", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("PT", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("SK", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("SI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("ES", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("SE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("CH", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("GB", RTW89_UK, RTW89_UK, RTW89_UK),
+-	COUNTRY_REGD("AL", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("AZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("BH", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("BA", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("BG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("HR", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("EG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("GH", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("IQ", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("IL", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("JO", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("KZ", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("KE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("KW", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("KG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("LB", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("LS", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("MK", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("MA", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("MZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("NA", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("NG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("OM", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("QA", RTW89_QATAR, RTW89_QATAR, RTW89_QATAR),
+-	COUNTRY_REGD("RO", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("RU", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("SA", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("SN", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("RS", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("ME", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("ZA", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("TR", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("UA", RTW89_UKRAINE, RTW89_UKRAINE, RTW89_UKRAINE),
+-	COUNTRY_REGD("AE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("YE", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("ZW", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("BD", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("KH", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("CN", RTW89_CN, RTW89_CN, RTW89_CN),
+-	COUNTRY_REGD("HK", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("IN", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("ID", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("KR", RTW89_KCC, RTW89_KCC, RTW89_KCC),
+-	COUNTRY_REGD("MY", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("PK", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("PH", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("SG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("LK", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("TW", RTW89_FCC, RTW89_FCC, RTW89_ETSI),
+-	COUNTRY_REGD("TH", RTW89_THAILAND, RTW89_THAILAND, RTW89_THAILAND),
+-	COUNTRY_REGD("VN", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("AU", RTW89_ACMA, RTW89_ACMA, RTW89_ACMA),
+-	COUNTRY_REGD("NZ", RTW89_ACMA, RTW89_ACMA, RTW89_ACMA),
+-	COUNTRY_REGD("PG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("CA", RTW89_IC, RTW89_IC, RTW89_IC),
+-	COUNTRY_REGD("JP", RTW89_MKK, RTW89_MKK, RTW89_MKK),
+-	COUNTRY_REGD("JM", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("AN", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("TT", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("TN", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("AF", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("DZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("AS", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("AD", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("AO", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("AI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("AQ", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("AG", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("AM", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("AW", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("BS", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("BB", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("BY", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("BZ", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("BJ", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("BM", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("BT", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("BW", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("BV", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("IO", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("VG", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("BN", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("BF", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("MM", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("BI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("CM", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("CV", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("KY", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("CF", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("TD", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("CX", RTW89_ACMA, RTW89_ACMA, RTW89_NA),
+-	COUNTRY_REGD("CC", RTW89_ACMA, RTW89_ACMA, RTW89_NA),
+-	COUNTRY_REGD("KM", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("CG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("CD", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("CK", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("CI", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("DJ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("DM", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("GQ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("ER", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("ET", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("FK", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("FO", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("FJ", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("GF", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("PF", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("TF", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("GA", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("GM", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("GE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("GI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("GL", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("GD", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("GP", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("GU", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("GG", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("GN", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("GW", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("GY", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("HT", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("HM", RTW89_ACMA, RTW89_ACMA, RTW89_NA),
+-	COUNTRY_REGD("VA", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("IM", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("JE", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("KI", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("XK", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("LA", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("LR", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("LY", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("MO", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("MG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("MW", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("MV", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("ML", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("MH", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("MQ", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("MR", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("MU", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("YT", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("FM", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("MD", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("MN", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("MS", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("NR", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("NP", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("NC", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("NE", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("NU", RTW89_ACMA, RTW89_ACMA, RTW89_NA),
+-	COUNTRY_REGD("NF", RTW89_ACMA, RTW89_ACMA, RTW89_NA),
+-	COUNTRY_REGD("MP", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("PW", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("RE", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("RW", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("SH", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("KN", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("LC", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("MF", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("SX", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("PM", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("VC", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("WS", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("SM", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("ST", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("SC", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("SL", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("SB", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("SO", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("GS", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("SR", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("SJ", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("SZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("TJ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("TZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("TG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("TK", RTW89_ACMA, RTW89_ACMA, RTW89_NA),
+-	COUNTRY_REGD("TO", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("TM", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("TC", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("TV", RTW89_ETSI, RTW89_NA, RTW89_NA),
+-	COUNTRY_REGD("UG", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("VI", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("UZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("VU", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("WF", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("EH", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("ZM", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("CU", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("IR", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("SY", RTW89_ETSI, RTW89_NA, RTW89_NA),
+-	COUNTRY_REGD("SD", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("PS", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
++	COUNTRY_REGD("AR", RTW89_MEXICO, RTW89_MEXICO, RTW89_FCC, 0x0),
++	COUNTRY_REGD("BO", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("BR", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("CL", RTW89_CHILE, RTW89_CHILE, RTW89_CHILE, 0x0),
++	COUNTRY_REGD("CO", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("CR", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("EC", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("SV", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("GT", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("HN", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("MX", RTW89_MEXICO, RTW89_MEXICO, RTW89_FCC, 0x0),
++	COUNTRY_REGD("NI", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("PA", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("PY", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("PE", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("US", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x1),
++	COUNTRY_REGD("UY", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("VE", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("PR", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("DO", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("AT", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("BE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("CY", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("CZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("DK", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("EE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("FI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("FR", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("DE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("GR", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("HU", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("IS", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("IE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("IT", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("LV", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("LI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("LT", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("LU", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("MT", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("MC", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("NL", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("NO", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("PL", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("PT", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("SK", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("SI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("ES", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("SE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("CH", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("GB", RTW89_UK, RTW89_UK, RTW89_UK, 0x0),
++	COUNTRY_REGD("AL", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("AZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("BH", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("BA", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("BG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("HR", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("EG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("GH", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("IQ", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("IL", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("JO", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("KZ", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("KE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("KW", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("KG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("LB", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("LS", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("MK", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("MA", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("MZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("NA", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("NG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("OM", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("QA", RTW89_QATAR, RTW89_QATAR, RTW89_QATAR, 0x0),
++	COUNTRY_REGD("RO", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x2),
++	COUNTRY_REGD("RU", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("SA", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("SN", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("RS", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("ME", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("ZA", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("TR", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("UA", RTW89_UKRAINE, RTW89_UKRAINE, RTW89_UKRAINE, 0x0),
++	COUNTRY_REGD("AE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("YE", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("ZW", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("BD", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("KH", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("CN", RTW89_CN, RTW89_CN, RTW89_CN, 0x0),
++	COUNTRY_REGD("HK", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("IN", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("ID", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("KR", RTW89_KCC, RTW89_KCC, RTW89_KCC, 0x1),
++	COUNTRY_REGD("MY", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("PK", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("PH", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("SG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("LK", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("TW", RTW89_FCC, RTW89_FCC, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("TH", RTW89_THAILAND, RTW89_THAILAND, RTW89_THAILAND, 0x0),
++	COUNTRY_REGD("VN", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("AU", RTW89_ACMA, RTW89_ACMA, RTW89_ACMA, 0x0),
++	COUNTRY_REGD("NZ", RTW89_ACMA, RTW89_ACMA, RTW89_ACMA, 0x0),
++	COUNTRY_REGD("PG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("CA", RTW89_IC, RTW89_IC, RTW89_IC, 0x1),
++	COUNTRY_REGD("JP", RTW89_MKK, RTW89_MKK, RTW89_MKK, 0x0),
++	COUNTRY_REGD("JM", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("AN", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("TT", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("TN", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("AF", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("DZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("AS", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("AD", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("AO", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("AI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("AQ", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("AG", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("AM", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("AW", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("BS", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("BB", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("BY", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("BZ", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("BJ", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("BM", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("BT", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("BW", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("BV", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("IO", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("VG", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("BN", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("BF", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("MM", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("BI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("CM", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("CV", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("KY", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("CF", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("TD", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("CX", RTW89_ACMA, RTW89_ACMA, RTW89_NA, 0x0),
++	COUNTRY_REGD("CC", RTW89_ACMA, RTW89_ACMA, RTW89_NA, 0x0),
++	COUNTRY_REGD("KM", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("CG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("CD", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("CK", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("CI", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("DJ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("DM", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("GQ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("ER", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("ET", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("FK", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("FO", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("FJ", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("GF", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("PF", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("TF", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("GA", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("GM", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("GE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("GI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("GL", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("GD", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("GP", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("GU", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("GG", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("GN", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("GW", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("GY", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("HT", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("HM", RTW89_ACMA, RTW89_ACMA, RTW89_NA, 0x0),
++	COUNTRY_REGD("VA", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("IM", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("JE", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("KI", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("XK", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("LA", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("LR", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("LY", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("MO", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("MG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("MW", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("MV", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("ML", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("MH", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("MQ", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("MR", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("MU", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("YT", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("FM", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("MD", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("MN", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("MS", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("NR", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("NP", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("NC", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("NE", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("NU", RTW89_ACMA, RTW89_ACMA, RTW89_NA, 0x0),
++	COUNTRY_REGD("NF", RTW89_ACMA, RTW89_ACMA, RTW89_NA, 0x0),
++	COUNTRY_REGD("MP", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("PW", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("RE", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("RW", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("SH", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("KN", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("LC", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("MF", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("SX", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("PM", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("VC", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("WS", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("SM", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("ST", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("SC", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
++	COUNTRY_REGD("SL", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("SB", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("SO", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("GS", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("SR", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("SJ", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("SZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("TJ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("TZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("TG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("TK", RTW89_ACMA, RTW89_ACMA, RTW89_NA, 0x0),
++	COUNTRY_REGD("TO", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("TM", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("TC", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("TV", RTW89_ETSI, RTW89_NA, RTW89_NA, 0x0),
++	COUNTRY_REGD("UG", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("VI", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
++	COUNTRY_REGD("UZ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI, 0x0),
++	COUNTRY_REGD("VU", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("WF", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("EH", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("ZM", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("CU", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("IR", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("SY", RTW89_ETSI, RTW89_NA, RTW89_NA, 0x0),
++	COUNTRY_REGD("SD", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
++	COUNTRY_REGD("PS", RTW89_ETSI, RTW89_ETSI, RTW89_NA, 0x0),
  };
  
--static const struct rtw89_regd *rtw89_regd_find_reg_by_name(const char *alpha2)
-+static const struct rtw89_regd *rtw89_regd_find_reg_by_name(struct rtw89_dev *rtwdev,
-+							    const char *alpha2)
- {
-+	struct rtw89_regulatory_info *regulatory = &rtwdev->regulatory;
-+	const struct rtw89_regd_ctrl *regd_ctrl = &regulatory->ctrl;
- 	u32 i;
- 
--	for (i = 0; i < ARRAY_SIZE(rtw89_regd_map); i++) {
--		if (!memcmp(rtw89_regd_map[i].alpha2, alpha2, 2))
--			return &rtw89_regd_map[i];
-+	for (i = 0; i < regd_ctrl->nr; i++) {
-+		if (!memcmp(regd_ctrl->map[i].alpha2, alpha2, 2))
-+			return &regd_ctrl->map[i];
- 	}
- 
- 	return &rtw89_ww_regd;
-@@ -312,22 +318,25 @@ static bool rtw89_regd_is_ww(const struct rtw89_regd *regd)
- 	return regd == &rtw89_ww_regd;
- }
- 
--static u8 rtw89_regd_get_index(const struct rtw89_regd *regd)
-+static u8 rtw89_regd_get_index(struct rtw89_dev *rtwdev, const struct rtw89_regd *regd)
- {
-+	struct rtw89_regulatory_info *regulatory = &rtwdev->regulatory;
-+	const struct rtw89_regd_ctrl *regd_ctrl = &regulatory->ctrl;
-+
- 	BUILD_BUG_ON(ARRAY_SIZE(rtw89_regd_map) > RTW89_REGD_MAX_COUNTRY_NUM);
- 
- 	if (rtw89_regd_is_ww(regd))
- 		return RTW89_REGD_MAX_COUNTRY_NUM;
- 
--	return regd - rtw89_regd_map;
-+	return regd - regd_ctrl->map;
- }
- 
--static u8 rtw89_regd_get_index_by_name(const char *alpha2)
-+static u8 rtw89_regd_get_index_by_name(struct rtw89_dev *rtwdev, const char *alpha2)
- {
- 	const struct rtw89_regd *regd;
- 
--	regd = rtw89_regd_find_reg_by_name(alpha2);
--	return rtw89_regd_get_index(regd);
-+	regd = rtw89_regd_find_reg_by_name(rtwdev, alpha2);
-+	return rtw89_regd_get_index(rtwdev, regd);
- }
- 
- #define rtw89_debug_regd(_dev, _regd, _desc, _argv...) \
-@@ -345,6 +354,7 @@ static void rtw89_regd_setup_unii4(struct rtw89_dev *rtwdev,
- 				   struct wiphy *wiphy)
- {
- 	struct rtw89_regulatory_info *regulatory = &rtwdev->regulatory;
-+	const struct rtw89_regd_ctrl *regd_ctrl = &regulatory->ctrl;
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	struct ieee80211_supported_band *sband;
- 	struct rtw89_acpi_dsm_result res = {};
-@@ -382,8 +392,8 @@ static void rtw89_regd_setup_unii4(struct rtw89_dev *rtwdev,
- 		    "acpi: eval if allow unii-4: 0x%x\n", val);
- 
- bottom:
--	for (i = 0; i < ARRAY_SIZE(rtw89_regd_map); i++) {
--		const struct rtw89_regd *regd = &rtw89_regd_map[i];
-+	for (i = 0; i < regd_ctrl->nr; i++) {
-+		const struct rtw89_regd *regd = &regd_ctrl->map[i];
- 
- 		switch (regd->txpwr_regd[RTW89_BAND_5G]) {
- 		case RTW89_FCC:
-@@ -406,7 +416,7 @@ static void __rtw89_regd_setup_policy_6ghz(struct rtw89_dev *rtwdev, bool block,
- 	struct rtw89_regulatory_info *regulatory = &rtwdev->regulatory;
- 	u8 index;
- 
--	index = rtw89_regd_get_index_by_name(alpha2);
-+	index = rtw89_regd_get_index_by_name(rtwdev, alpha2);
- 	if (index == RTW89_REGD_MAX_COUNTRY_NUM) {
- 		rtw89_debug(rtwdev, RTW89_DBG_REGD, "%s: unknown alpha2 %c%c\n",
- 			    __func__, alpha2[0], alpha2[1]);
-@@ -474,6 +484,7 @@ static void rtw89_regd_setup_policy_6ghz(struct rtw89_dev *rtwdev)
- static void rtw89_regd_setup_policy_6ghz_sp(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_regulatory_info *regulatory = &rtwdev->regulatory;
-+	const struct rtw89_regd_ctrl *regd_ctrl = &regulatory->ctrl;
- 	const struct rtw89_acpi_policy_6ghz_sp *ptr;
- 	struct rtw89_acpi_dsm_result res = {};
- 	bool enable_by_us;
-@@ -505,8 +516,8 @@ static void rtw89_regd_setup_policy_6ghz_sp(struct rtw89_dev *rtwdev)
- 
- 	enable_by_us = u8_get_bits(ptr->conf, RTW89_ACPI_CONF_6GHZ_SP_US);
- 
--	for (i = 0; i < ARRAY_SIZE(rtw89_regd_map); i++) {
--		const struct rtw89_regd *tmp = &rtw89_regd_map[i];
-+	for (i = 0; i < regd_ctrl->nr; i++) {
-+		const struct rtw89_regd *tmp = &regd_ctrl->map[i];
- 
- 		if (enable_by_us && memcmp(tmp->alpha2, "US", 2) == 0)
- 			clear_bit(i, regulatory->block_6ghz_sp);
-@@ -573,8 +584,19 @@ static void rtw89_regd_setup_6ghz(struct rtw89_dev *rtwdev, struct wiphy *wiphy)
- 
- int rtw89_regd_setup(struct rtw89_dev *rtwdev)
- {
-+	struct rtw89_regulatory_info *regulatory = &rtwdev->regulatory;
-+	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
-+	const struct rtw89_regd_data *regd_data = elm_info->regd;
- 	struct wiphy *wiphy = rtwdev->hw->wiphy;
- 
-+	if (regd_data) {
-+		regulatory->ctrl.nr = regd_data->nr;
-+		regulatory->ctrl.map = regd_data->map;
-+	} else {
-+		regulatory->ctrl.nr = ARRAY_SIZE(rtw89_regd_map);
-+		regulatory->ctrl.map = rtw89_regd_map;
-+	}
-+
- 	if (!wiphy)
- 		return -EINVAL;
- 
-@@ -599,7 +621,7 @@ int rtw89_regd_init(struct rtw89_dev *rtwdev,
- 	if (!wiphy)
- 		return -EINVAL;
- 
--	chip_regd = rtw89_regd_find_reg_by_name(rtwdev->efuse.country_code);
-+	chip_regd = rtw89_regd_find_reg_by_name(rtwdev, rtwdev->efuse.country_code);
- 	if (!rtw89_regd_is_ww(chip_regd)) {
- 		rtwdev->regulatory.regd = chip_regd;
- 		/* Ignore country ie if there is a country domain programmed in chip */
-@@ -637,7 +659,7 @@ static void rtw89_regd_apply_policy_unii4(struct rtw89_dev *rtwdev,
- 	if (!chip->support_unii4)
- 		return;
- 
--	index = rtw89_regd_get_index(regd);
-+	index = rtw89_regd_get_index(rtwdev, regd);
- 	if (index != RTW89_REGD_MAX_COUNTRY_NUM &&
- 	    !test_bit(index, regulatory->block_unii4))
- 		return;
-@@ -655,7 +677,7 @@ static bool regd_is_6ghz_blocked(struct rtw89_dev *rtwdev)
- 	const struct rtw89_regd *regd = regulatory->regd;
- 	u8 index;
- 
--	index = rtw89_regd_get_index(regd);
-+	index = rtw89_regd_get_index(rtwdev, regd);
- 	if (index != RTW89_REGD_MAX_COUNTRY_NUM &&
- 	    !test_bit(index, regulatory->block_6ghz))
- 		return false;
-@@ -700,7 +722,7 @@ static void rtw89_regd_notifier_apply(struct rtw89_dev *rtwdev,
- 				      struct wiphy *wiphy,
- 				      struct regulatory_request *request)
- {
--	rtwdev->regulatory.regd = rtw89_regd_find_reg_by_name(request->alpha2);
-+	rtwdev->regulatory.regd = rtw89_regd_find_reg_by_name(rtwdev, request->alpha2);
- 	/* This notification might be set from the system of distros,
- 	 * and it does not expect the regulatory will be modified by
- 	 * connecting to an AP (i.e. country ie).
-@@ -925,7 +947,7 @@ static bool __rtw89_reg_6ghz_power_recalc(struct rtw89_dev *rtwdev)
- 		sel = RTW89_REG_6GHZ_POWER_DFLT;
- 
- 	if (sel == RTW89_REG_6GHZ_POWER_STD) {
--		index = rtw89_regd_get_index(regd);
-+		index = rtw89_regd_get_index(rtwdev, regd);
- 		if (index == RTW89_REGD_MAX_COUNTRY_NUM ||
- 		    test_bit(index, regulatory->block_6ghz_sp)) {
- 			rtw89_debug(rtwdev, RTW89_DBG_REGD,
+ static const char rtw89_alpha2_list_eu[][3] = {
 -- 
 2.25.1
 
