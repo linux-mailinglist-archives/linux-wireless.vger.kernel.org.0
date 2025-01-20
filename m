@@ -1,168 +1,99 @@
-Return-Path: <linux-wireless+bounces-17719-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17720-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E879CA16406
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 22:41:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43705A164E0
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 02:26:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61EC11885444
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jan 2025 21:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 287E33A6035
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 01:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE381DF753;
-	Sun, 19 Jan 2025 21:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D6A4C70;
+	Mon, 20 Jan 2025 01:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="GSnpAcb1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315B51A073F
-	for <linux-wireless@vger.kernel.org>; Sun, 19 Jan 2025 21:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA9B199B8
+	for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 01:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737322885; cv=none; b=FgMe1f02XkBkOfWNtuHxYgUp2fOIuhx7FoBsnihyUFWrhK7gmhXzCCG5fSsyHe0iOkI8ssNa+AKN6AFD/mcVX6frymrEISvZnTLNidlPotsv26pNWw2Kazc56FKrkdHh5uSQnFhgzqZ3uNJDp435xqu1lQbsjkqPsrtnomsgQ6o=
+	t=1737336398; cv=none; b=Dv/H5shEfw4+n3ibeLUc3DCW+PjJ9hpaAC58LHlRCPUE+M4SCRKWymA59++5Ij4cP4gnKtiLeEFWb3vZIuP+d5CaKOZ11SL61+IJjSmZggwRCV3sy1Evmo8L6LP2sIahZsjnDwf0smxExDV7SRkJdhgEcYFcgccFmZOE4O+EqIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737322885; c=relaxed/simple;
-	bh=9bTIuPIrcXZdpwp3r7z35PA1+vLuJuCCh6OoRrns2Vc=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Xb5FU5G0M4ZwE/eQ5uomr4TycauRU8Ts2HLwjYBtfPqbHzulC+Oevj0/weqF10FCP27Mp1JADpN3wsMbCvXZRZTEad7ofkWyPbmdOE+laX+a1l53Rzq97McfxLUIAGcrmg+e7CigITmTUIIDRfbXqQ/28GABq7MR/QNeScowM8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3a814bfb77bso37310315ab.0
-        for <linux-wireless@vger.kernel.org>; Sun, 19 Jan 2025 13:41:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737322883; x=1737927683;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jLkLKP4qiOGdIVw6XBrXEzKeEzrfv2Lm9845lBhwEX8=;
-        b=VgiD5d7BKGYK17ZF4ZzPVXmJ3l2Yxs8tPawH0VaN3VDK0dF1ozKB6JGYolDIm6yeLW
-         qx11xUh9h8z1o/U9UQQSGKWNCqsSOqclWXC8FZ/cfd8o7GCb+PL8gUgJcaLa/7nn8b1v
-         9JQ5Z+zFBOG5IxF/ZNaIC40Iev9mVS0QS7ynruHTtTa7XpjCk6JxgjfGND8oxPORCMdu
-         Ti1v4U3EfU/13BpvvOte13AgFfpd3SnRA2E73ef/1juJYxZ3bt9V8EP9MbW0Kd88AWbx
-         9rgsSvilnJ6dlIvyak3CKZhr8G1qYYR+EQlVepoyPz08k4Zt/aCpDUom3Sh3fOihbzmH
-         yhwg==
-X-Forwarded-Encrypted: i=1; AJvYcCVpAe2XGThrDJoABgJiRn2YblXAPG/7O15k3syfQIig/UKZY+TUmjrRyQ2AtyHn1hDjfLXfza7t8Gc/szPnMw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMHM0C3FBAiZhWzYeL8PZncBl0VEikEPmppI7iFH9bvlg3jydW
-	6bCcVQgPf+P0Y0M1ZIw5HdwfTu0yG7Ise7pYt26FPB+E1JFvVEX4IcGImN16aQrsDJkSG/V2Haq
-	FHt9SX5ZgMmKNNe/3zgFU1lShaLQA65lMJyn592N3Xi79IuDk3gVFfw8=
-X-Google-Smtp-Source: AGHT+IGqKcpAhmDcabHPm4QfooXMUk2p+gqshZM2puSNzjDw4TpFZO11+yixVhsBrC4TtOELnjg2wwsq8/q/l+Kk2uGU9/UXaZsG
+	s=arc-20240116; t=1737336398; c=relaxed/simple;
+	bh=p0T3M6b3PLBJkIXeDX/rbX3OcISc08PYSOyOdMtYNLw=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=UTorCuEsm0DszZ6Wq4b3gEkAKuPuqaj8TwsVqGSlZeUUm6Tv8yOjyA16SjrMVjy8x9HPngkys6CGtRbPDFdOIhpqIDBfOTdIyirqsSQj5G/TwgTC/p9uN2XnoN70Yf8/kH0VnzU1UaGu7qj8gFWaYXHLbdQ1Hnrl5HS7mgmewJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=GSnpAcb1; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50K1QPMo82482806, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1737336385; bh=p0T3M6b3PLBJkIXeDX/rbX3OcISc08PYSOyOdMtYNLw=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date;
+	b=GSnpAcb1YEmfS8QYpe5Z9Z1Petc9oSZQH+0lB5aa01WEfAXYSA6fbS+YJDdSr/669
+	 ls/Krq/bmS4efPgtTDoFhUnP7OS35PeWTZnMreaCD69i1BqP19F6+XajC8oDNeIOv2
+	 UavLU/SDX/IidokyNLquZO5Ju0lB9P0x0Vq4xCG1nLHdgN482KZn/dKn2h06iNZbf5
+	 ui3kLmyUOFCGoyc9QQ0emrgSABltaTfUEjUUvVzJw04WjY74BC2ToWs4NUxOykVvOE
+	 haO4FhfsKASpiSR/bk1/lH7Ino0B+ftPOKaq1Yz3NSiOAFPnCf+EU8Gm9QhK9tf+kW
+	 JtFvkD20IpS2A==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50K1QPMo82482806
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 09:26:25 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 20 Jan 2025 09:26:26 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 20 Jan
+ 2025 09:26:25 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <ku920601@realtek.com>
+Subject: Re: [PATCH 1/3] wifi: rtw89: coex: Add protect to avoid A2DP lag while Wi-Fi connecting
+In-Reply-To: <20250110015416.10704-2-pkshih@realtek.com>
+References: <20250110015416.10704-1-pkshih@realtek.com> <20250110015416.10704-2-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a0c:b0:3ce:7faa:3d3f with SMTP id
- e9e14a558f8ab-3cf747c7ad2mr74169755ab.3.1737322883252; Sun, 19 Jan 2025
- 13:41:23 -0800 (PST)
-Date: Sun, 19 Jan 2025 13:41:23 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <678d7183.050a0220.303755.005f.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_tdls_build_mgmt_packet_data
-From: syzbot <syzbot+e55106f8389651870be0@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+Message-ID: <54145d9e-c7a4-49b4-93f0-1b4bce30d0e7@RTEXMBS04.realtek.com.tw>
+Date: Mon, 20 Jan 2025 09:26:25 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Hello,
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-syzbot found the following issue on:
+> From: Ching-Te Ku <ku920601@realtek.com>
+> 
+> To get a well Wi-Fi RF quality, Wi-Fi need to do RF calibrations. While
+> Wi-Fi is doing RF calibrations, driver will pause the Bluetooth traffic
+> to make sure the RF calibration will not be interfered by Bluetooth.
+> However, if the RF calibrations take too much time, Bluetooth audio
+> will perform a lag sound. Add a function to make Bluetooth can do
+> traffic between the individual calibrations to avoid Bluetooth sound
+> lag. And patch related A2DP coexistence mechanism actions.
+> 
+> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-HEAD commit:    619f0b6fad52 Merge tag 'seccomp-v6.13-rc8' of git://git.ke..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=10fb49df980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=aadf89e2f6db86cc
-dashboard link: https://syzkaller.appspot.com/bug?extid=e55106f8389651870be0
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+3 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-619f0b6f.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/f181fafa1b35/vmlinux-619f0b6f.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/174e5d6e6837/bzImage-619f0b6f.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e55106f8389651870be0@syzkaller.appspotmail.com
-
-mac80211_hwsim: wmediumd released netlink socket, switching to perfect channel medium
-mac80211_hwsim: wmediumd released netlink socket, switching to perfect channel medium
-mac80211_hwsim: wmediumd released netlink socket, switching to perfect channel medium
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5320 at net/mac80211/tdls.c:611 ieee80211_tdls_add_setup_cfm_ies net/mac80211/tdls.c:611 [inline]
-WARNING: CPU: 0 PID: 5320 at net/mac80211/tdls.c:611 ieee80211_tdls_add_ies net/mac80211/tdls.c:762 [inline]
-WARNING: CPU: 0 PID: 5320 at net/mac80211/tdls.c:611 ieee80211_tdls_build_mgmt_packet_data+0x329c/0x4080 net/mac80211/tdls.c:984
-Modules linked in:
-CPU: 0 UID: 0 PID: 5320 Comm: syz.0.0 Not tainted 6.13.0-rc7-syzkaller-00043-g619f0b6fad52 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:ieee80211_tdls_add_setup_cfm_ies net/mac80211/tdls.c:611 [inline]
-RIP: 0010:ieee80211_tdls_add_ies net/mac80211/tdls.c:762 [inline]
-RIP: 0010:ieee80211_tdls_build_mgmt_packet_data+0x329c/0x4080 net/mac80211/tdls.c:984
-Code: f5 ff ff e8 16 6e 4a f6 90 0f 0b 90 4c 8b 7c 24 10 e9 7e fe ff ff e8 03 6e 4a f6 90 0f 0b 90 e9 70 fe ff ff e8 f5 6d 4a f6 90 <0f> 0b 90 e9 62 fe ff ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c c7
-RSP: 0018:ffffc9000d47f0c0 EFLAGS: 00010287
-RAX: ffffffff8b55147b RBX: ffff888040d3cd80 RCX: 0000000000100000
-RDX: ffffc9000e5d2000 RSI: 00000000000002e3 RDI: 00000000000002e4
-RBP: ffffc9000d47f260 R08: ffffffff901983b7 R09: 1ffffffff2033076
-R10: dffffc0000000000 R11: fffffbfff2033077 R12: dffffc0000000000
-R13: 0000000000000017 R14: 0000000000000000 R15: ffff88803f0f5c80
-FS:  00007f0f00e996c0(0000) GS:ffff88801fc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000200021c0 CR3: 0000000040622000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ieee80211_tdls_prep_mgmt_packet+0x3b6/0x860 net/mac80211/tdls.c:1058
- ieee80211_tdls_mgmt+0x8cf/0x10a0 net/mac80211/tdls.c:1299
- rdev_tdls_mgmt net/wireless/rdev-ops.h:926 [inline]
- nl80211_tdls_mgmt+0x4d8/0x770 net/wireless/nl80211.c:12540
- genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2542
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1321 [inline]
- netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1347
- netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1891
- sock_sendmsg_nosec net/socket.c:711 [inline]
- __sock_sendmsg+0x221/0x270 net/socket.c:726
- ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2583
- ___sys_sendmsg net/socket.c:2637 [inline]
- __sys_sendmsg+0x269/0x350 net/socket.c:2669
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f0efff85d29
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f0f00e99038 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f0f00175fa0 RCX: 00007f0efff85d29
-RDX: 0000000000000000 RSI: 0000000020000000 RDI: 0000000000000009
-RBP: 00007f0f00001b08 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007f0f00175fa0 R15: 00007ffe23266438
- </TASK>
-
+5251fd321684 wifi: rtw89: coex: Add protect to avoid A2DP lag while Wi-Fi connecting
+4a5734665215 wifi: rtw89: coex: Separated Wi-Fi connecting event from Wi-Fi scan event
+dbb6a738f6cb wifi: rtw89: coex: Update Wi-Fi/Bluetooth coexistence version to 7.0.2
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+https://github.com/pkshih/rtw.git
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
