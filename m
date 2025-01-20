@@ -1,81 +1,89 @@
-Return-Path: <linux-wireless+bounces-17737-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17738-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2888A1699D
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 10:30:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08150A169CF
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 10:47:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 632E71885143
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 09:30:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27227163821
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 09:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6D1190470;
-	Mon, 20 Jan 2025 09:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593671B0F0B;
+	Mon, 20 Jan 2025 09:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Rt3cEbja"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Vj+7Pt//"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCD0189B8D
-	for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 09:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1220419AD8D
+	for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 09:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737365425; cv=none; b=LUmP20GOqkP+jYIiWDGouNORD4HqdgMbuiupyfbAX+u+IQ5nEgPkbWaUfG6y9Z9yxGm+0c+WIxfStOnrwQJIgehtS3eYTz6ESM4Kywrd8JmlUMaoB2iqocVPeu0X6TdjdvoMbs/aHC+DlWfBgxiTT7xYI4OKRL1qH72081pnK+A=
+	t=1737366427; cv=none; b=JBXS8JLVeGjd/Piqn3LA1OaLURXHDMR2iGJ0Uo1jW5pvqn/C5obGlyIk9jQYbTgykIi6bt7bMQmCh1rgBgaJQZa2H7aavL1V9s/JDuU6tbemcGBNhIFTo2yI4Fvcr/0xTLFkSQXxl2wKnAw+UwrNH1i/tA+8FZTW6xqhNsUu8Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737365425; c=relaxed/simple;
-	bh=49SI2CJlKOgnaWrfkFh+9jXmTP/5wAJi47FXyahqi7Q=;
+	s=arc-20240116; t=1737366427; c=relaxed/simple;
+	bh=CLtH6u90O+N7mDiNWKKTvhQAJx7W2UlPQbyMWSmfrks=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=SuFAxwvTQvrPgD5RNBQ6FApccLJVMKt7XfrIsgGTSnK00zD6n1fEXw23fP67l0LQ4Tc4C7R3pv5LdpuhQ0fEfcvcYUzQbeWfQtWajAfaViNG+e4juk+8VAkf9CNK9KkLwNNPaj3nktZmN5uZv8ymxg+39JMW4k98tIuQbqcQj+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Rt3cEbja; arc=none smtp.client-ip=209.85.221.43
+	 Content-Disposition; b=JWuKCI0ns7ApH9hmFo9eLfueWN2AVUdMC2VY5JcR1bs/8c5a3Ra1gyHs9QaEgcZeqHXGsQggKdLHsmFkUSkpX4UeWqvh2+g0tp0uQVMj8aeJupHjXBZtO7H/0fieUB1aD5aJapzjaKshk0eGMWuv3mt4/sjkdwdCKR4cB2+UwPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Vj+7Pt//; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3862d6d5765so2355601f8f.3
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 01:30:23 -0800 (PST)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38632b8ae71so3405560f8f.0
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 01:47:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737365422; x=1737970222; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1737366422; x=1737971222; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=mN2vzQN2MHhC7vsZGZLLyTF4vEgyb2J5Y6QFwZ7uVNs=;
-        b=Rt3cEbjaMIk7ST1iP+DQT7xMJcprTogEPGebnIOAOoSRYMB97ZAaxLzwa4Mevh+gPl
-         Tt4+eRjVVGxXdprvynRS8kna+nGD8Acs4/l5f6jJWzBsjcfNjOMgOQOly/Y6brdZpkBa
-         mEMzyCHIEt4RlsNTgrxYA7/WrVaTXy5mkBx2YnTBh81ouyJHDg6NtCEJfX+CdLcFjnTF
-         lLV9K80acX1qlOjsPuLT9y1AXe9iQCSJqVh0d+XZuDSMrpxF0DL61YBeHTL9vONeCySZ
-         At3UWvAR5G6NTtAdi/ojQm3FMzi0Cz7u2uu/tdmgWhMEk2GMCof0gj6aKhNAFeqa3Ofc
-         f1/A==
+        bh=VM6sOkfE8iqC95N0AKyRjkMPid32wJ87nN4QCxrUuqo=;
+        b=Vj+7Pt//YpE+KQ+Lotti2s+qxJrq1UCy5MJJE5uWS+uMWfI8m3+6MQFjQ69NOfn4B0
+         dE7xluF2BumlkbvdrDn7+jQx+TgJ/2HjqyLrnbd+eKza9YE19sEWugxN87R2O5Yt32mC
+         UFGw4IhwhNB8V4OcE7Ghzc1yfw8XfOZVrbO+v/sfGA4KWCNlWa7RWUEc5P8xFuh6TGv4
+         T7nGFraeYOcBF25iF53O7fbLtzsins72xHMZm725iflIknKUfzjYHqs7vjzUMId6saZ6
+         uyVPM+A5bC8ORXdA1WxAXj5ls6GguCsdzbESF0hKiZMItXRWGvLnORQbJpwBMT5rMzLq
+         5FRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737365422; x=1737970222;
+        d=1e100.net; s=20230601; t=1737366422; x=1737971222;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mN2vzQN2MHhC7vsZGZLLyTF4vEgyb2J5Y6QFwZ7uVNs=;
-        b=V/rzPbaG2JpEGBsd41JhK7rjF8NcYCPes33kU+gijyTpdZKt28oL6j8iGx/T/zRhZu
-         sjUyJodwht75wVcW2Sqr1TbcxAu9OSl3gnCXSrjR+eoOc2R/5x+G3cleC6MhUd/G0lR/
-         YRJan9h6cl+8kjQ2QDlhm+i7WToXYsMHckETbMKvlpcRwMYIY1uxFg3oZbBEpQNJZw5O
-         rO9wVPT6o3g36JYPZ2uWGROrIkeZUB3YPXF5IlT+JpN/b7cw/oN0awlV8m7ADsvqeQYX
-         FCOOlK+gsp53t/QK9pICs4nqhSUa5daNNUCtWjspgxewMwnplSs7NcOFxwzm1QpFVf4v
-         m5oA==
-X-Gm-Message-State: AOJu0YzVEUDrR68pEjjzbguAGzzbShkLbYanOPlNMBA6kgKOzRSVP/C/
-	GZ2NshbWoQ/Nb32lRR9IINBH3Twzdtx/VzzZ8RRAv4xyvVSKRoUxv/UKRUhEzZQ3Ojmt6Ox2Zem
-	s
-X-Gm-Gg: ASbGncs86t9nRIFkazaVH3K5pI6jB3LtDhW6rBhITSH5+fSBUrG1uGdVDc8Q7fU/S8S
-	nz+QPULy9GShZrpaK44FzFAZgXUwLI30FxdXBrwBBkQxr3n4HbnDq/Q7SYYd3+VktDPq71exAay
-	8/lmBywed/e7Ul+SDoIwHoNWo00UwtBeQUNc7x3BTo5TdhqhQznb1oaDmISGZ782mvLYiU4cpzh
-	nNDwzGaUyBZW4DYUiJIYj3PpTy9J2BNEsQnU397OTp9BbsXAgkACSqXizANSJ/GAu4OlhgBwWo=
-X-Google-Smtp-Source: AGHT+IEZXASFrmYShzNvlF7HMBo84fpqQweouX7QZO3kXwCjuF6druhkZHwPyP/GtHrteNSIXdX06w==
-X-Received: by 2002:a05:6000:1f85:b0:38b:e32a:109d with SMTP id ffacd0b85a97d-38bf59e1d83mr9745687f8f.34.1737365421747;
-        Mon, 20 Jan 2025 01:30:21 -0800 (PST)
+        bh=VM6sOkfE8iqC95N0AKyRjkMPid32wJ87nN4QCxrUuqo=;
+        b=d3igP39wXNoctQPNNx3lv4kQt9WE1uAQ/8vkuT/IlBDtYXo0XBwhiNd/gG4Dfzavd4
+         WXinpY66dZ0cCPssfAmfSn3+ohL2aX05HLSyEKC3q4KnXrLqc7XGFHFixkC9P3GsNSKG
+         0/JsIHGXVQWzMpuKVxFXjFyhAxRVJV49kpc6ASM5Xg4X7H1tWUDyZJX7ZO23IMLsqHY4
+         /LMyekzJgJEW0uvUgqZj9EpGq2bBDXBsNgmjGbeYrh1NYWbLK3ZCqUfM7vRY1z0zVMO5
+         lze41974QWOuWa01Nsdx1r8wMcdDncL+9Mwe7D3jUpNne0BBwFuhjgDlQDNmv1xKhOd2
+         VOTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVApo22GhQHwqapaHjbTupSAtCr1LAIO/FSyA66HDNd0kv63gy/2lecDvkIUZNNu2p12Dwr0pT45OUoCuUARw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUiWS+hl0fIgo3DvO67JPShY0P1JuAB+3Ok713B/ad9XbdRe3O
+	xuYdHfyL2vqNXRA99a2XjDR/bQ4p5fPknGhQ5elQyRfYvaV2zcr8/7riP2aoxY4=
+X-Gm-Gg: ASbGnctfx5EhrW2/qEKd1dkD9nSRe9APvIcz0MbKX6JzQtGBSimm6swo2wFLjKzMQsR
+	hUcOUB5y3mtacWgiJabNGzyala+eg6K9jl3or0abaIl/JCIGG8rOumSVLWaE4COMXU3l/I4BeOB
+	37/2Jx6vwZYrFkGiP+ZJCpKG4pfK/O2L4yfGdKb4BAjiy/UTS0HfnN+VCxPAYjV2U6Fz3lyeG4k
+	lKyLprMQKxZNCDUIqh2N3MGL7HgdcTveoArFJ/S3mvdNgs/AVvY7TWa1m066Eir4Ppt6K2Z98A=
+X-Google-Smtp-Source: AGHT+IGPG329V2074yOYSMY1ziObuL2UZ+m5lYehxxQsiJfOBHTxj4D3R6O9lmeqMjiIW6U9yiBaRw==
+X-Received: by 2002:adf:9bca:0:b0:386:3356:f3ac with SMTP id ffacd0b85a97d-38bf57937a7mr7522401f8f.26.1737366422340;
+        Mon, 20 Jan 2025 01:47:02 -0800 (PST)
 Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43890468869sm130364155e9.35.2025.01.20.01.30.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf32758dbsm10018595f8f.64.2025.01.20.01.47.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jan 2025 01:30:21 -0800 (PST)
-Date: Mon, 20 Jan 2025 12:30:18 +0300
+        Mon, 20 Jan 2025 01:47:01 -0800 (PST)
+Date: Mon, 20 Jan 2025 12:46:58 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Charles Han <hanchunchao@inspur.com>
-Cc: linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: [bug report] wifi: mt76: mt7925: fix NULL deref check in
- mt7925_change_vif_links
-Message-ID: <7f806676-a698-4081-81b7-4a48435d2f82@stanley.mountain>
+To: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Deren Wu <deren.wu@mediatek.com>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH next] wifi: mt76: mt7925: fix error checking in
+ mt7925_mcu_uni_rx/tx_ba()
+Message-ID: <063aafdf-3234-42ac-a4ea-3ff98e2835b6@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -84,129 +92,76 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-Hello Charles Han,
+The "ret" variable in mt7925_mcu_uni_[rx/tx]_ba() needs to be signed for
+the if (ret < 0) condition to be true.
 
-Commit 5cd0bd815c8a ("wifi: mt76: mt7925: fix NULL deref check in
-mt7925_change_vif_links") from Oct 25, 2024 (linux-next), leads to
-the following Smatch static checker warning:
+Also the mt7925_mcu_sta_ba() function returns positive values on success.
+The code currently returns whatever non-negative value was returned on
+the last iteration.  It would be better to return zero on success.  This
+function is called from mt7925_ampdu_action() which does not check the
+return value so the return value doesn't affect runtime.  However, it
+still makes sense to return zero even though nothing is affected in the
+current code.
 
-	drivers/net/wireless/mediatek/mt76/mt7925/main.c:2053 mt7925_change_vif_links()
-	warn: inconsistent returns '&dev->mt76.mutex'.
+Fixes: eb2a9a12c609 ("wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba for MLO")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-drivers/net/wireless/mediatek/mt76/mt7925/main.c
-    1947 static int
-    1948 mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-    1949                         u16 old_links, u16 new_links,
-    1950                         struct ieee80211_bss_conf *old[IEEE80211_MLD_MAX_NUM_LINKS])
-    1951 {
-    1952         struct mt792x_bss_conf *mconfs[IEEE80211_MLD_MAX_NUM_LINKS] = {}, *mconf;
-    1953         struct mt792x_link_sta *mlinks[IEEE80211_MLD_MAX_NUM_LINKS] = {}, *mlink;
-    1954         struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-    1955         unsigned long add = new_links & ~old_links;
-    1956         unsigned long rem = old_links & ~new_links;
-    1957         struct mt792x_dev *dev = mt792x_hw_dev(hw);
-    1958         struct mt792x_phy *phy = mt792x_hw_phy(hw);
-    1959         struct ieee80211_bss_conf *link_conf;
-    1960         unsigned int link_id;
-    1961         int err;
-    1962 
-    1963         if (old_links == new_links)
-    1964                 return 0;
-    1965 
-    1966         mt792x_mutex_acquire(dev);
-    1967 
-    1968         for_each_set_bit(link_id, &rem, IEEE80211_MLD_MAX_NUM_LINKS) {
-    1969                 mconf = mt792x_vif_to_link(mvif, link_id);
-    1970                 mlink = mt792x_sta_to_link(&mvif->sta, link_id);
-    1971 
-    1972                 if (!mconf || !mlink)
-    1973                         continue;
-    1974 
-    1975                 if (mconf != &mvif->bss_conf) {
-    1976                         mt792x_mac_link_bss_remove(dev, mconf, mlink);
-    1977                         devm_kfree(dev->mt76.dev, mconf);
-    1978                         devm_kfree(dev->mt76.dev, mlink);
-    1979                 }
-    1980 
-    1981                 rcu_assign_pointer(mvif->link_conf[link_id], NULL);
-    1982                 rcu_assign_pointer(mvif->sta.link[link_id], NULL);
-    1983         }
-    1984 
-    1985         for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
-    1986                 if (!old_links) {
-    1987                         mvif->deflink_id = link_id;
-    1988                         mconf = &mvif->bss_conf;
-    1989                         mlink = &mvif->sta.deflink;
-    1990                 } else {
-    1991                         mconf = devm_kzalloc(dev->mt76.dev, sizeof(*mconf),
-    1992                                              GFP_KERNEL);
-    1993                         mlink = devm_kzalloc(dev->mt76.dev, sizeof(*mlink),
-    1994                                              GFP_KERNEL);
-    1995                         if (!mconf || !mlink)
-    1996                                 return -ENOMEM;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 15815ad84713..b3a00964e802 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -617,7 +617,8 @@ int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
+ 	struct mt792x_bss_conf *mconf;
+ 	unsigned long usable_links = ieee80211_vif_usable_links(vif);
+ 	struct mt76_wcid *wcid;
+-	u8 link_id, ret;
++	u8 link_id;
++	int ret;
+ 
+ 	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		mconf = mt792x_vif_to_link(mvif, link_id);
+@@ -630,10 +631,10 @@ int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
+ 		ret = mt7925_mcu_sta_ba(&dev->mt76, &mconf->mt76, wcid, params,
+ 					enable, true);
+ 		if (ret < 0)
+-			break;
++			return ret;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
+@@ -647,7 +648,8 @@ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
+ 	struct mt792x_bss_conf *mconf;
+ 	unsigned long usable_links = ieee80211_vif_usable_links(vif);
+ 	struct mt76_wcid *wcid;
+-	u8 link_id, ret;
++	u8 link_id;
++	int ret;
+ 
+ 	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		mconf = mt792x_vif_to_link(mvif, link_id);
+@@ -657,10 +659,10 @@ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
+ 		ret = mt7925_mcu_sta_ba(&dev->mt76, &mconf->mt76, wcid, params,
+ 					enable, false);
+ 		if (ret < 0)
+-			break;
++			return ret;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
+-- 
+2.45.2
 
-Need to call mt792x_mutex_release(dev) before returning.
-
-    1997                 }
-    1998 
-    1999                 mconfs[link_id] = mconf;
-    2000                 mlinks[link_id] = mlink;
-    2001                 mconf->link_id = link_id;
-    2002                 mconf->vif = mvif;
-    2003                 mlink->wcid.link_id = link_id;
-    2004                 mlink->wcid.link_valid = !!vif->valid_links;
-    2005                 mlink->wcid.def_wcid = &mvif->sta.deflink.wcid;
-    2006         }
-    2007 
-    2008         if (hweight16(mvif->valid_links) == 0)
-    2009                 mt792x_mac_link_bss_remove(dev, &mvif->bss_conf,
-    2010                                            &mvif->sta.deflink);
-    2011 
-    2012         for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
-    2013                 mconf = mconfs[link_id];
-    2014                 mlink = mlinks[link_id];
-    2015                 link_conf = mt792x_vif_to_bss_conf(vif, link_id);
-    2016 
-    2017                 rcu_assign_pointer(mvif->link_conf[link_id], mconf);
-    2018                 rcu_assign_pointer(mvif->sta.link[link_id], mlink);
-    2019 
-    2020                 err = mt7925_mac_link_bss_add(dev, link_conf, mlink);
-    2021                 if (err < 0)
-    2022                         goto free;
-    2023 
-    2024                 if (mconf != &mvif->bss_conf) {
-    2025                         mt7925_mcu_set_bss_pm(dev, link_conf, true);
-    2026 
-    2027                         err = mt7925_set_mlo_roc(phy, &mvif->bss_conf,
-    2028                                                  vif->active_links);
-    2029                         if (err < 0)
-    2030                                 goto free;
-    2031                 }
-    2032         }
-    2033 
-    2034         mvif->valid_links = new_links;
-    2035 
-    2036         mt792x_mutex_release(dev);
-    2037 
-    2038         return 0;
-    2039 
-    2040 free:
-    2041         for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
-    2042                 rcu_assign_pointer(mvif->link_conf[link_id], NULL);
-    2043                 rcu_assign_pointer(mvif->sta.link[link_id], NULL);
-    2044 
-    2045                 if (mconf != &mvif->bss_conf)
-    2046                         devm_kfree(dev->mt76.dev, mconfs[link_id]);
-    2047                 if (mlink != &mvif->sta.deflink)
-    2048                         devm_kfree(dev->mt76.dev, mlinks[link_id]);
-    2049         }
-    2050 
-    2051         mt792x_mutex_release(dev);
-    2052 
---> 2053         return err;
-    2054 }
-
-regards,
-dan carpenter
 
