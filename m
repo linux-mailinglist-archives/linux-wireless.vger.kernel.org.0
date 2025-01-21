@@ -1,108 +1,95 @@
-Return-Path: <linux-wireless+bounces-17766-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17767-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CDCFA174B6
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 23:36:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B74A175C5
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 02:33:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5E88188630D
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2025 22:36:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD2031887D16
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 01:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AE51F1505;
-	Mon, 20 Jan 2025 22:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E615028C;
+	Tue, 21 Jan 2025 01:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="Mehp+jni"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="P3YJWwDc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82351F1306
-	for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 22:35:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598D83987D;
+	Tue, 21 Jan 2025 01:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737412530; cv=none; b=skAadTWnl9P3aYJZ9R9uzCfyO+z02y1Ae3bIJHzzNCBGPvboWDzIYx97qr8adY2ZvKK85xSqX2BiyBPOJ3IyBWu+FUNoZ+ZpIs4cOM7/iZ1ED1xD0S3A7vnKIcER0yhE5JiYcs/d2yPRlAd9XQ1ATba8O3PMo+rAl1lKhb20kec=
+	t=1737423197; cv=none; b=gojxdvuReeUyqIDRCAYQV8ohOqWPSZV0xIk3vLfePb26fn0wsArkF7YSlArfgThSkMA+pTo6OifXHl9T/iwh5CK3mxz2dNE9JB6CVPz53gkUSoa/vRIx9bgcayUXSlW4864sT6nRMF0KMKps2+OglX3yDhHkHXkpLOl/2K/jdfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737412530; c=relaxed/simple;
-	bh=4Eiydyy06kX0Zgs83GD0q+F2XQAgL0BasVv3L/35s90=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tTIHbLdsPI/13NRoQ56ijXmtb3YGjvNaPmOF8miiHrYMm7kKii5y8yirOetgPuo+mtTaZOqP2b86T3Ha4YCfl8lVr9YhswjahrMiOARYxRlCNxwgO1rvLJHYk9ogsFk9seXHmXyrYSQVK09ezvcqKJPBl0Q4NfxFTJuTlq5CflM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=Mehp+jni; arc=none smtp.client-ip=67.231.154.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id DF0E1504C7B
-	for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2025 22:25:46 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 79831B80085;
-	Mon, 20 Jan 2025 22:25:38 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.38.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 8AD0613C2B0;
-	Mon, 20 Jan 2025 14:25:37 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8AD0613C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1737411937;
-	bh=4Eiydyy06kX0Zgs83GD0q+F2XQAgL0BasVv3L/35s90=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Mehp+jni1wcDXP+Bl6OXCNDVJTVyg+wpDX8CuAJL2jn3SMoXxWNSI5cJSxXPsGBvt
-	 lnZd17nfaHpZSovvuMqNK9ULbnsB07F0HotZbP1rKP5XJLTC0w3Bal627YALS5/Vyl
-	 2TEjyOpXoKinO7Pk7LfEFyMuHZooIVdPfY1nvqXg=
-Message-ID: <d18865a7-7120-455d-aec9-45f3747587f6@candelatech.com>
-Date: Mon, 20 Jan 2025 14:25:37 -0800
+	s=arc-20240116; t=1737423197; c=relaxed/simple;
+	bh=hQ1GbYpIYxzKa/9yrlWNZYKjvOiaOWEW8vlOrZI7xz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oEBMweTnrHv4zvDiwocK++SAYdyHa4tM+fp4OBS19QrizQPS6ELRI5byJ4q1w+F3vfW+ZxttSAcWegvqDTG9n5dLACzvlkMHcwQ/rYxOSRJsOKrdgq8uOLKRRYpLfyKoQElfBRPae8nyuihwQ+sQ2j2E25HQq7V5JOhLA/BZMIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=P3YJWwDc; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=LfSU5ttDd+e2OhkreM5FYt5iFonOHi5mJEFH1olPS3g=; b=P3YJWwDc22e67qjx
+	E+8/5NFPsnESw807VhgPsGOQe68zSuqvyFyjSFhiHSr5qG+ux0AQiOQ96ZiazB8xDJasIWQekU2MV
+	jeqGQLnqr453Cwhi02Uiojg1jJysUm7b3BlMjzrmXi7T61nkrmsBqTehxqO+pVtlTiQLj7hH3hJRa
+	v7/aRlYlK3MjkgVzwCv8i+2F9Fks9JqLZDqDzGlsv+q+9ZksWcmgaKb5rMLuD/kL06RzuzEmCue7c
+	uqYmvZiy/nunxnEBnQZO+NlqBAAModQXsP2U3t9bbVUHRaqJauqbgngT7RHTgEvOkGzEDpGmwCRjQ
+	wjTts55Lsb6boNfozQ==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1ta38W-00BEI2-39;
+	Tue, 21 Jan 2025 01:33:00 +0000
+From: linux@treblig.org
+To: kvalo@kernel.org,
+	libertas-dev@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH 0/3] wifi: libertas: Deadcoding
+Date: Tue, 21 Jan 2025 01:32:57 +0000
+Message-ID: <20250121013300.433538-1-linux@treblig.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 09/12] wifi: cfg80211: add accumulated statistics
- for MLO links
-To: Johannes Berg <johannes@sipsolutions.net>,
- Sarika Sharma <quic_sarishar@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-References: <20250117124554.3719808-1-quic_sarishar@quicinc.com>
- <20250117124554.3719808-10-quic_sarishar@quicinc.com>
- <e484a38c-90ad-4ff4-8b86-2b714dabb6d8@candelatech.com>
- <8543cf2d657b0b975830434eddaf76c35dee8c23.camel@sipsolutions.net>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <8543cf2d657b0b975830434eddaf76c35dee8c23.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1737411939-Z5IqPz1kqn7m
-X-MDID-O:
- us5;at1;1737411939;Z5IqPz1kqn7m;<greearb@candelatech.com>;535bfda298b524f45ffb92fb019ae3e8
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Content-Transfer-Encoding: 8bit
 
-On 1/20/25 13:41, Johannes Berg wrote:
-> On Fri, 2025-01-17 at 07:59 -0800, Ben Greear wrote:
->>
->> While at it, can we define these a bit better?
->>
-> 
-> No. We're not going to do "while at it do random other changes", ever.
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-I was just asking for clarity in the comments around those counters to
-explain more precisely how they are expected to behave.
+Hi,
+  The first two patches remove functions that haven't been
+called since a commit in 2010.
+  The last one cleans up a bunch of unreachable code and
+never set variables, due to the functions that weren't called.
 
-In case any drivers need tweaking to match that, it can be handled
-later.
+This series is build test only, which the first two are fine,
+but the 3rd one might be best to check a bit more given
+that it's actually removing some if's.
 
-If my suggestion for how they should behave is not what you think it
-is, then just change the comments to match your expectations, but
-define it well enough that it can be understood precisely.
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 
-Thanks,
-Ben
+
+Dr. David Alan Gilbert (3):
+  wifi: libertas: Remove unused functions in main
+  wifi: libertas: Remove unused cmd functions
+  wifi: libertas: Remove unused auto deep sleep code
+
+ drivers/net/wireless/marvell/libertas/cmd.c   | 143 +-----------------
+ drivers/net/wireless/marvell/libertas/cmd.h   |  10 --
+ .../net/wireless/marvell/libertas/cmdresp.c   |   1 -
+ drivers/net/wireless/marvell/libertas/decl.h  |   4 -
+ drivers/net/wireless/marvell/libertas/dev.h   |   4 -
+ drivers/net/wireless/marvell/libertas/main.c  |  88 +----------
+ 6 files changed, 6 insertions(+), 244 deletions(-)
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.48.1
 
 
