@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-17770-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17769-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0D1A175CB
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 02:34:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C0AA175C7
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 02:33:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01B017A1C68
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 01:33:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3EBE1887D16
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 01:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25A23987D;
-	Tue, 21 Jan 2025 01:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD0385931;
+	Tue, 21 Jan 2025 01:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="JgaXl73f"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="BOZ0svdb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE59188006;
-	Tue, 21 Jan 2025 01:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5990F49641;
+	Tue, 21 Jan 2025 01:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737423204; cv=none; b=LS5nKtpx57r/wB/0qKQBsuJWny0XTJfiGWokpT5D4VTOEjbbshu0TxX46L7U+3uoI28Iur9WeDt17B9FVwX3w8ZM/15silY+teL+6714BKESDRT8U+ckNWqehhGjO4yCQJ0PxtfcOztmm1BOpU6BDJMFax09OQY7qNeQOlzEgRM=
+	t=1737423197; cv=none; b=FnNDnimL7kR8PC3xeACVTcbruEQP+JkfqgqjfyC/iOMZatYB6Nv9fTAKVSOQr5wPy4bAaraMcv7cR4p30dNFHb7hN6R1cqjTdgjqMozyVBc7XSB7W1UAia/HNmFwNXgNljRHxGdXOgXQcEDofVKTd9IYGRRbBI/JHesrG0xrqeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737423204; c=relaxed/simple;
-	bh=CRXk7XMa0DMM/R41q7VZUzVo85QJLovxKxX3D4dGsPo=;
+	s=arc-20240116; t=1737423197; c=relaxed/simple;
+	bh=m44pva6xLSwoayoDGldZwPJePGM+tFoBiV1JvRB0LTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2LPrqeJeFr+O6Pd+S0ozCCvY+cgA1EADF+mrAsP9gbDb/KOBngQR0vg2rT8srRj+22++n13JDnO/sdS1GkVZ5q4F+NHH4MU4pCjVYImtqs7m3H/orpD9JHCIT4CdHkMKsHJYqQWhmX5A0KT9q56+TnSFYcL2D5DPB9MFRk377g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=JgaXl73f; arc=none smtp.client-ip=46.235.229.95
+	 MIME-Version; b=DpUz8jXv6ERKwWaYtGxSZnuGdQOC2jjs7gc6KP4ITIJvb2kdNwNUJYm8v6cJk0OvoEMpoCAJtmI5mMXsJ1BfXtlocxmu9gpIGJzdZRE7LGw2l3UmPX3MPydBmmwgOqAH/lAUOTPVpHSVZ2P1QfQmN211TB6MwitTJpHLQhl+HyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=BOZ0svdb; arc=none smtp.client-ip=46.235.229.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
 	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=vyjyO37Ga6Gx8qYJ0PsYqbzurBUaw5cOYROc+FVJCFA=; b=JgaXl73flt2ljOVl
-	RXhN0K8JszqUNYjxo++gzd6NqllkY8DiNIfgqCEO/nNRAT6EtASF/37RAeCVAO7QTFuuoHv0RRbGL
-	l810z7Gi12fNQ47oz+9EfL5hEM/o44iRFTtVneZelgNgoSm5JPYg/M3YI3dxYaNk4MVb3C3H0kZaA
-	QaMKXRpe9hY3fKW+ug+qDyLRkHRPA2F6p3VfCpcdKgv9/N8IJflTWpweDhG1RrX45l8nXIuzBjKx7
-	7oNz6moW2+9LWTZMqp/OQQA3X/dLp4lhgSus+wn1RQPJjjyIV925N0wb/8NdCWMNbcMzisku+lrgW
-	e9XytQV/dpTTEhN5lQ==;
+	:Subject; bh=VmrvnobXFnfz6nZ86BtHR6A5ZAKaDHYd9kZJD/zijBw=; b=BOZ0svdbmitN+npN
+	M/vm2+zuBrpFY2QkjclMMhE0KT7ZF7nIZIT3NlRj8aAFmJbByUxrNQyUv4zvg4jFSBu6wrqEsdFdw
+	Smu+e//z36UlcEuZuBdBslzWdaxEcPooOEfbAzcYJw4fMHyOvPPn1p+0fCcW6vfLq9pfs4WUTO6AJ
+	sjF7W1ydOKhVDnDnGy9J9Ni5nzNEFJ+adJjdpYM/ty1OGTVOVjBNQ8xjgy3Etc6nr0mpwYoAuZbZQ
+	HMeTDjQSn3ccVZF8BO+4XM9S/d9lgKYKl9OQn8BevM3cDU7+iwD5K/dQ+0Qvkfxeig79FM44MM2v8
+	hersAeGx5E0CpAuoxg==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
 	by mx.treblig.org with esmtp (Exim 4.96)
 	(envelope-from <linux@treblig.org>)
-	id 1ta38Y-00BEI2-06;
+	id 1ta38Y-00BEI2-2Y;
 	Tue, 21 Jan 2025 01:33:02 +0000
 From: linux@treblig.org
 To: kvalo@kernel.org,
@@ -50,9 +50,9 @@ To: kvalo@kernel.org,
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH 2/3] wifi: libertas: Remove unused cmd functions
-Date: Tue, 21 Jan 2025 01:32:59 +0000
-Message-ID: <20250121013300.433538-3-linux@treblig.org>
+Subject: [PATCH 3/3] wifi: libertas: Remove unused auto deep sleep code
+Date: Tue, 21 Jan 2025 01:33:00 +0000
+Message-ID: <20250121013300.433538-4-linux@treblig.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250121013300.433538-1-linux@treblig.org>
 References: <20250121013300.433538-1-linux@treblig.org>
@@ -66,196 +66,197 @@ Content-Transfer-Encoding: 8bit
 
 From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-lbs_get_snmp_mib(), lbs_set_power_adapt_cfg(), lbs_set_tpc_cfg()
-and lbs_set_tx_power() have been unused since 2010's
-commit e86dc1ca4676 ("Libertas: cfg80211 support")
+With the recent removal of the uncalled
+  lbs_(enter|exit)_auto_deep_sleep()
+functions, it's no longer possible to set
+  priv->is_auto_deep_sleep_enabled
+so we can remove all tests of it and the variable itself.
 
-Remove them.
+With that gone, priv->wakeup_dev_required also doesn't
+get set, so we can remove any testing of it.
+
+Now the timer itself, and the function it calls goes.
+The timer used the apparently unset auto_deep_sleep_timeout
+member, which can also go.
 
 Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 ---
- drivers/net/wireless/marvell/libertas/cmd.c | 129 --------------------
- drivers/net/wireless/marvell/libertas/cmd.h |  10 --
- 2 files changed, 139 deletions(-)
+ drivers/net/wireless/marvell/libertas/cmd.c   | 14 ++----
+ .../net/wireless/marvell/libertas/cmdresp.c   |  1 -
+ drivers/net/wireless/marvell/libertas/dev.h   |  4 --
+ drivers/net/wireless/marvell/libertas/main.c  | 48 +------------------
+ 4 files changed, 6 insertions(+), 61 deletions(-)
 
 diff --git a/drivers/net/wireless/marvell/libertas/cmd.c b/drivers/net/wireless/marvell/libertas/cmd.c
-index 5a525da434c2..4032bbd28acd 100644
+index 4032bbd28acd..21fde876bb0d 100644
 --- a/drivers/net/wireless/marvell/libertas/cmd.c
 +++ b/drivers/net/wireless/marvell/libertas/cmd.c
-@@ -452,46 +452,6 @@ int lbs_set_snmp_mib(struct lbs_private *priv, u32 oid, u16 val)
- 	return ret;
+@@ -903,10 +903,6 @@ static void lbs_submit_command(struct lbs_private *priv,
+ 	}
+ 
+ 	if (command == CMD_802_11_DEEP_SLEEP) {
+-		if (priv->is_auto_deep_sleep_enabled) {
+-			priv->wakeup_dev_required = 1;
+-			priv->dnld_sent = 0;
+-		}
+ 		priv->is_deep_sleep = 1;
+ 		lbs_complete_command(priv, cmdnode, 0);
+ 	} else {
+@@ -1391,12 +1387,10 @@ struct cmd_ctrl_node *__lbs_cmd_async(struct lbs_private *priv,
+ 	/* No commands are allowed in Deep Sleep until we toggle the GPIO
+ 	 * to wake up the card and it has signaled that it's ready.
+ 	 */
+-	if (!priv->is_auto_deep_sleep_enabled) {
+-		if (priv->is_deep_sleep) {
+-			lbs_deb_cmd("command not allowed in deep sleep\n");
+-			cmdnode = ERR_PTR(-EBUSY);
+-			goto done;
+-		}
++	if (priv->is_deep_sleep) {
++		lbs_deb_cmd("command not allowed in deep sleep\n");
++		cmdnode = ERR_PTR(-EBUSY);
++		goto done;
+ 	}
+ 
+ 	cmdnode = lbs_get_free_cmd_node(priv);
+diff --git a/drivers/net/wireless/marvell/libertas/cmdresp.c b/drivers/net/wireless/marvell/libertas/cmdresp.c
+index f2aa659e7714..8393f396eebe 100644
+--- a/drivers/net/wireless/marvell/libertas/cmdresp.c
++++ b/drivers/net/wireless/marvell/libertas/cmdresp.c
+@@ -279,7 +279,6 @@ void lbs_process_event(struct lbs_private *priv, u32 event)
+ 			priv->reset_deep_sleep_wakeup(priv);
+ 		lbs_deb_cmd("EVENT: ds awake\n");
+ 		priv->is_deep_sleep = 0;
+-		priv->wakeup_dev_required = 0;
+ 		wake_up_interruptible(&priv->ds_awake_q);
+ 		break;
+ 
+diff --git a/drivers/net/wireless/marvell/libertas/dev.h b/drivers/net/wireless/marvell/libertas/dev.h
+index 4b6e05a8e5d5..c4708ce4eb83 100644
+--- a/drivers/net/wireless/marvell/libertas/dev.h
++++ b/drivers/net/wireless/marvell/libertas/dev.h
+@@ -83,12 +83,8 @@ struct lbs_private {
+ 	/* Deep sleep */
+ 	int is_deep_sleep;
+ 	int deep_sleep_required;
+-	int is_auto_deep_sleep_enabled;
+-	int wakeup_dev_required;
+ 	int is_activity_detected;
+-	int auto_deep_sleep_timeout; /* in ms */
+ 	wait_queue_head_t ds_awake_q;
+-	struct timer_list auto_deepsleep_timer;
+ 
+ 	/* Host sleep*/
+ 	int is_host_sleep_configured;
+diff --git a/drivers/net/wireless/marvell/libertas/main.c b/drivers/net/wireless/marvell/libertas/main.c
+index e7fa27a7de81..017e5c6bbade 100644
+--- a/drivers/net/wireless/marvell/libertas/main.c
++++ b/drivers/net/wireless/marvell/libertas/main.c
+@@ -256,8 +256,7 @@ void lbs_host_to_card_done(struct lbs_private *priv)
+ 
+ 	/* Wake main thread if commands are pending */
+ 	if (!priv->cur_cmd || priv->tx_pending_len > 0) {
+-		if (!priv->wakeup_dev_required)
+-			wake_up(&priv->waitq);
++		wake_up(&priv->waitq);
+ 	}
+ 
+ 	spin_unlock_irqrestore(&priv->driver_lock, flags);
+@@ -448,8 +447,7 @@ static int lbs_thread(void *data)
+ 			shouldsleep = 0;	/* We have a command response */
+ 		else if (priv->cur_cmd)
+ 			shouldsleep = 1;	/* Can't send a command; one already running */
+-		else if (!list_empty(&priv->cmdpendingq) &&
+-					!(priv->wakeup_dev_required))
++		else if (!list_empty(&priv->cmdpendingq))
+ 			shouldsleep = 0;	/* We have a command to send */
+ 		else if (kfifo_len(&priv->event_fifo))
+ 			shouldsleep = 0;	/* We have an event to process */
+@@ -516,14 +514,6 @@ static int lbs_thread(void *data)
+ 		}
+ 		spin_unlock_irq(&priv->driver_lock);
+ 
+-		if (priv->wakeup_dev_required) {
+-			lbs_deb_thread("Waking up device...\n");
+-			/* Wake up device */
+-			if (priv->exit_deep_sleep(priv))
+-				lbs_deb_thread("Wakeup device failed\n");
+-			continue;
+-		}
+-
+ 		/* command timeout stuff */
+ 		if (priv->cmd_timed_out && priv->cur_cmd) {
+ 			struct cmd_ctrl_node *cmdnode = priv->cur_cmd;
+@@ -606,7 +596,6 @@ static int lbs_thread(void *data)
+ 
+ 	del_timer(&priv->command_timer);
+ 	del_timer(&priv->tx_lockup_timer);
+-	del_timer(&priv->auto_deepsleep_timer);
+ 
+ 	return 0;
+ }
+@@ -753,35 +742,6 @@ static void lbs_tx_lockup_handler(struct timer_list *t)
+ 	spin_unlock_irqrestore(&priv->driver_lock, flags);
  }
  
 -/**
-- *  lbs_get_snmp_mib - Get an SNMP MIB value
-- *
-- *  @priv:	A pointer to &struct lbs_private structure
-- *  @oid:	The OID to retrieve from the firmware
-- *  @out_val:	Location for the returned value
-- *
-- *  returns:	0 on success, error on failure
+- * auto_deepsleep_timer_fn - put the device back to deep sleep mode when
+- * timer expires and no activity (command, event, data etc.) is detected.
+- * @t: Context from which to retrieve a &struct lbs_private pointer
+- * returns:	N/A
 - */
--int lbs_get_snmp_mib(struct lbs_private *priv, u32 oid, u16 *out_val)
+-static void auto_deepsleep_timer_fn(struct timer_list *t)
 -{
--	struct cmd_ds_802_11_snmp_mib cmd;
--	int ret;
+-	struct lbs_private *priv = from_timer(priv, t, auto_deepsleep_timer);
 -
--	memset(&cmd, 0, sizeof (cmd));
--	cmd.hdr.size = cpu_to_le16(sizeof(cmd));
--	cmd.action = cpu_to_le16(CMD_ACT_GET);
--	cmd.oid = cpu_to_le16(oid);
+-	if (priv->is_activity_detected) {
+-		priv->is_activity_detected = 0;
+-	} else {
+-		if (priv->is_auto_deep_sleep_enabled &&
+-		    (!priv->wakeup_dev_required) &&
+-		    (priv->connect_status != LBS_CONNECTED)) {
+-			struct cmd_header cmd;
 -
--	ret = lbs_cmd_with_response(priv, CMD_802_11_SNMP_MIB, &cmd);
--	if (ret)
--		goto out;
--
--	switch (le16_to_cpu(cmd.bufsize)) {
--	case sizeof(u8):
--		*out_val = cmd.value[0];
--		break;
--	case sizeof(u16):
--		*out_val = le16_to_cpu(*((__le16 *)(&cmd.value)));
--		break;
--	default:
--		lbs_deb_cmd("SNMP_CMD: (get) unhandled OID 0x%x size %d\n",
--		            oid, le16_to_cpu(cmd.bufsize));
--		break;
+-			lbs_deb_main("Entering auto deep sleep mode...\n");
+-			memset(&cmd, 0, sizeof(cmd));
+-			cmd.size = cpu_to_le16(sizeof(cmd));
+-			lbs_cmd_async(priv, CMD_802_11_DEEP_SLEEP, &cmd,
+-					sizeof(cmd));
+-		}
 -	}
--
--out:
--	return ret;
+-	mod_timer(&priv->auto_deepsleep_timer , jiffies +
+-				(priv->auto_deep_sleep_timeout * HZ)/1000);
 -}
 -
- /**
-  *  lbs_get_tx_power - Get the min, max, and current TX power
-  *
-@@ -524,31 +484,6 @@ int lbs_get_tx_power(struct lbs_private *priv, s16 *curlevel, s16 *minlevel,
- 	return ret;
+ static int lbs_init_adapter(struct lbs_private *priv)
+ {
+ 	int ret;
+@@ -795,9 +755,7 @@ static int lbs_init_adapter(struct lbs_private *priv)
+ 	priv->psmode = LBS802_11POWERMODECAM;
+ 	priv->psstate = PS_STATE_FULL_POWER;
+ 	priv->is_deep_sleep = 0;
+-	priv->is_auto_deep_sleep_enabled = 0;
+ 	priv->deep_sleep_required = 0;
+-	priv->wakeup_dev_required = 0;
+ 	init_waitqueue_head(&priv->ds_awake_q);
+ 	init_waitqueue_head(&priv->scan_q);
+ 	priv->authtype_auto = 1;
+@@ -809,7 +767,6 @@ static int lbs_init_adapter(struct lbs_private *priv)
+ 
+ 	timer_setup(&priv->command_timer, lbs_cmd_timeout_handler, 0);
+ 	timer_setup(&priv->tx_lockup_timer, lbs_tx_lockup_handler, 0);
+-	timer_setup(&priv->auto_deepsleep_timer, auto_deepsleep_timer_fn, 0);
+ 
+ 	INIT_LIST_HEAD(&priv->cmdfreeq);
+ 	INIT_LIST_HEAD(&priv->cmdpendingq);
+@@ -843,7 +800,6 @@ static void lbs_free_adapter(struct lbs_private *priv)
+ 	kfifo_free(&priv->event_fifo);
+ 	del_timer(&priv->command_timer);
+ 	del_timer(&priv->tx_lockup_timer);
+-	del_timer(&priv->auto_deepsleep_timer);
  }
  
--/**
-- *  lbs_set_tx_power - Set the TX power
-- *
-- *  @priv:	A pointer to &struct lbs_private structure
-- *  @dbm:	The desired power level in dBm
-- *
-- *  returns: 	   	0 on success, error on failure
-- */
--int lbs_set_tx_power(struct lbs_private *priv, s16 dbm)
--{
--	struct cmd_ds_802_11_rf_tx_power cmd;
--	int ret;
--
--	memset(&cmd, 0, sizeof(cmd));
--	cmd.hdr.size = cpu_to_le16(sizeof(cmd));
--	cmd.action = cpu_to_le16(CMD_ACT_SET);
--	cmd.curlevel = cpu_to_le16(dbm);
--
--	lbs_deb_cmd("SET_RF_TX_POWER: %d dBm\n", dbm);
--
--	ret = lbs_cmd_with_response(priv, CMD_802_11_RF_TX_POWER, &cmd);
--
--	return ret;
--}
--
- /**
-  *  lbs_set_monitor_mode - Enable or disable monitor mode
-  *  (only implemented on OLPC usb8388 FW)
-@@ -1440,70 +1375,6 @@ void lbs_ps_confirm_sleep(struct lbs_private *priv)
- }
- 
- 
--/**
-- * lbs_set_tpc_cfg - Configures the transmission power control functionality
-- *
-- * @priv:	A pointer to &struct lbs_private structure
-- * @enable:	Transmission power control enable
-- * @p0:		Power level when link quality is good (dBm).
-- * @p1:		Power level when link quality is fair (dBm).
-- * @p2:		Power level when link quality is poor (dBm).
-- * @usesnr:	Use Signal to Noise Ratio in TPC
-- *
-- * returns:	0 on success
-- */
--int lbs_set_tpc_cfg(struct lbs_private *priv, int enable, int8_t p0, int8_t p1,
--		int8_t p2, int usesnr)
--{
--	struct cmd_ds_802_11_tpc_cfg cmd;
--	int ret;
--
--	memset(&cmd, 0, sizeof(cmd));
--	cmd.hdr.size = cpu_to_le16(sizeof(cmd));
--	cmd.action = cpu_to_le16(CMD_ACT_SET);
--	cmd.enable = !!enable;
--	cmd.usesnr = !!usesnr;
--	cmd.P0 = p0;
--	cmd.P1 = p1;
--	cmd.P2 = p2;
--
--	ret = lbs_cmd_with_response(priv, CMD_802_11_TPC_CFG, &cmd);
--
--	return ret;
--}
--
--/**
-- * lbs_set_power_adapt_cfg - Configures the power adaptation settings
-- *
-- * @priv:	A pointer to &struct lbs_private structure
-- * @enable:	Power adaptation enable
-- * @p0:		Power level for 1, 2, 5.5 and 11 Mbps (dBm).
-- * @p1:		Power level for 6, 9, 12, 18, 22, 24 and 36 Mbps (dBm).
-- * @p2:		Power level for 48 and 54 Mbps (dBm).
-- *
-- * returns:	0 on Success
-- */
--
--int lbs_set_power_adapt_cfg(struct lbs_private *priv, int enable, int8_t p0,
--		int8_t p1, int8_t p2)
--{
--	struct cmd_ds_802_11_pa_cfg cmd;
--	int ret;
--
--	memset(&cmd, 0, sizeof(cmd));
--	cmd.hdr.size = cpu_to_le16(sizeof(cmd));
--	cmd.action = cpu_to_le16(CMD_ACT_SET);
--	cmd.enable = !!enable;
--	cmd.P0 = p0;
--	cmd.P1 = p1;
--	cmd.P2 = p2;
--
--	ret = lbs_cmd_with_response(priv, CMD_802_11_PA_CFG , &cmd);
--
--	return ret;
--}
--
--
- struct cmd_ctrl_node *__lbs_cmd_async(struct lbs_private *priv,
- 	uint16_t command, struct cmd_header *in_cmd, int in_cmd_size,
- 	int (*callback)(struct lbs_private *, unsigned long, struct cmd_header *),
-diff --git a/drivers/net/wireless/marvell/libertas/cmd.h b/drivers/net/wireless/marvell/libertas/cmd.h
-index d7be232f5739..a95c2651e67f 100644
---- a/drivers/net/wireless/marvell/libertas/cmd.h
-+++ b/drivers/net/wireless/marvell/libertas/cmd.h
-@@ -105,19 +105,9 @@ int lbs_get_tx_power(struct lbs_private *priv, s16 *curlevel, s16 *minlevel,
- 
- int lbs_set_snmp_mib(struct lbs_private *priv, u32 oid, u16 val);
- 
--int lbs_get_snmp_mib(struct lbs_private *priv, u32 oid, u16 *out_val);
--
- 
- /* Commands only used in wext.c, assoc. and scan.c */
- 
--int lbs_set_power_adapt_cfg(struct lbs_private *priv, int enable, int8_t p0,
--		int8_t p1, int8_t p2);
--
--int lbs_set_tpc_cfg(struct lbs_private *priv, int enable, int8_t p0, int8_t p1,
--		int8_t p2, int usesnr);
--
--int lbs_set_tx_power(struct lbs_private *priv, s16 dbm);
--
- int lbs_set_deep_sleep(struct lbs_private *priv, int deep_sleep);
- 
- int lbs_set_host_sleep(struct lbs_private *priv, int host_sleep);
+ static const struct net_device_ops lbs_netdev_ops = {
 -- 
 2.48.1
 
