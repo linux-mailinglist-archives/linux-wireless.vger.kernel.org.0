@@ -1,409 +1,487 @@
-Return-Path: <linux-wireless+bounces-17798-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17799-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26EBA182DC
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 18:26:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48E5A187A7
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 23:16:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95DE23A7F7E
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 17:26:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54CA4188BC97
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 22:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1641E1BF7E8;
-	Tue, 21 Jan 2025 17:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6574E1F91D4;
+	Tue, 21 Jan 2025 22:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="nlj0lE9M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c61QSSiE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF307187FE4
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Jan 2025 17:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6AD1F91CA;
+	Tue, 21 Jan 2025 22:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737480411; cv=none; b=Nx3BOknhhjws57XVtjeib3e30bmNR9RQZP/JgQ4qz+sHB4bR3G8BoSQt39Vk/7DSX1vpzMcQLzgcewuYjbTPpAEi6dE5ioa8wLNknVcbPaSecMVxprOplk5HtkFjmRJ5/Oz8tXzWZQVDo48tPJJDOLjqGtQauo/mcfjYKmwQsj0=
+	t=1737497730; cv=none; b=JFuulPQZCF0meVVFID+0tJyFTTBT78XlGzGumBnsEne2YUcaPbPgOwYQbmP3vwp2UGFhbj3/smL4k1JolJJOdD47uti3UsifFIe6HbqmPZT6g//ObyCSsoV0e42Nw9W5b8hfdusvX+ngekvba5rpCn0EBGPGOTZ39ZZbQtaMLvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737480411; c=relaxed/simple;
-	bh=iVknQhSzg6caTnx1MsedpjNX5WbQMQxKCW8lMbzykcU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rsQScmMdINx35J4JD8x8/ejBt61BUm3+HH5dPLZmaGlLLWZ5AhTnptRTgYOk2y/5nGl/ZCy545+C8CF8a1BhxXvVF4+zx6/cPr4B+ye88Keo60BCd4oIa7cY/HTjHoHdm640ofQZplTDjKfrsCAxSoUyVhT0l8lIG9vzhdOF1gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=nlj0lE9M; arc=none smtp.client-ip=209.85.219.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e4a6b978283so16671276.0
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Jan 2025 09:26:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gateworks.com; s=google; t=1737480408; x=1738085208; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XU/S9Sk4m3Cf1n01L5292fNIPyUryfbIotTDKW9l8eY=;
-        b=nlj0lE9MTWU7ZdX9w4L6Jcl10bAFcPynEpNyv3wHRvJ83Kjc8kUlRSgsgQns3xSpzJ
-         Q3lr1cu5jQumzAxKcEsn08dX5Gf+4cYM7BE9/NagfBf4EmF+JBAjUuszITpuH9vHm58w
-         LRNnGShkowWXPnivXuyT0orMrV+JbI3AjB4NVisTJP1YFllLcyyjpxkmks4YiEhlGf1I
-         +wfmz9HYSEzP4PZeOXxQxYFPazjKejHPFO3kTOgCm7SjGSYGjSNFn7lcnbF2WM8sUwvE
-         KTi3rna4BYGYbNHl2HUhPsl0FNEdNpBSVlbfpi+rUJAPUizClDHdlRSKaZdpkOYClvcI
-         wupg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737480408; x=1738085208;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XU/S9Sk4m3Cf1n01L5292fNIPyUryfbIotTDKW9l8eY=;
-        b=Tb9zjbloIVNWzLCsMgo1OPFVRd99KDpVUcLikH/nmdv0G8qGnugyXtBf0SfWvrybcJ
-         gGsywnrvTjgkixsH6PqVgZIZj6yaNleCxY3s5M4HsJaXYh4Fn7hdQE1Yws8396hUPqsV
-         6ys8NbNm8JFsHDy/0JEY5GPzCkY1JaqXVEfe/lW0Dt/mR25iljXmdUZwTEf5LWQ+XNZc
-         QLLnORFyHYX8XPO5czS60olGOI32x7hVagt74ZcnkGKDdGVf6MpvWmsZKcx4HXX7rSqR
-         t9NorRUJiOqPzyfAvG4NX2rqas68RU0UozgQKCRp6y70ol1j95C27BmibLS9DCD5GYf4
-         Fwbg==
-X-Forwarded-Encrypted: i=1; AJvYcCVZtCj6FRQj6Y+TaqLXmi6TMeUtONigRbHMoxhBYq6Y/W3HTpuWNDVtXXMqAhZFwhLLWXjS9UMWORv7pmeqrQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7Qa/u2MCAYzGgeuHXK2XzudvD4I7/sLIl4YufgfSLODL2aguI
-	ePWnGtpK4ELVPY+TUq11PvxlWDte+vtinkYe9aRIwZQ8Ns+57QJdC3uI5d9adjbh0Azxe38CoY+
-	UmD6V9H/kvGMH85NMc0Em/CK81nQx2sJjajyJfQ==
-X-Gm-Gg: ASbGncvfojemeJUCwLeSRb71qtco9DINzYiV8M3ewqxNiiTdOStx79jPI/EyEbGQX/Z
-	8xZchlbfLmtK/WfAPi5BU+uxU495aMEJyrahfRghBVPeLgjjDWXg=
-X-Google-Smtp-Source: AGHT+IFd+gQREMHIvmFV2ABqWuaQze36LJac8HuI3AKKMlj9TsP1Mn9ZzCv+ubSsFiiVOFtV8rpoSb8WeDuDgZ70Nz8=
-X-Received: by 2002:a05:690c:9a03:b0:6f0:23c9:2989 with SMTP id
- 00721157ae682-6f6eb6b7e9amr136374417b3.11.1737480407727; Tue, 21 Jan 2025
- 09:26:47 -0800 (PST)
+	s=arc-20240116; t=1737497730; c=relaxed/simple;
+	bh=3YCd1tIzsYgsgx6L85WFqeDPt7a3d542lTTM3DTIjS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CLUqC+chPPzqsUFa0xtaFk21aGKk3oHdd7DB/lLZznJh7+SKRnSueIqpO/ejs79HYpVxn5o6q/c0+5NEZy1S9bmwjfA0Nu3hjGyMcyGMBdAHNr4lAcSTwSSC6+7nM8YXd5dK/YDkgtwryENwF9Xx12xNDImyecq4SaJnEjn8BpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c61QSSiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C31C4CEE1;
+	Tue, 21 Jan 2025 22:15:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737497730;
+	bh=3YCd1tIzsYgsgx6L85WFqeDPt7a3d542lTTM3DTIjS4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=c61QSSiEQDmSQuq1HYEB6xXgWFG9wMhv8PaiFZN63nQsJLZCc2UFUH6Bxr6XOIQdE
+	 gnUvy9eVWP/W/q6Dsh1VTHcwagc9Ocnsaovo6rqNf82XqiZpxGFGjbRBsJc1FHvdCQ
+	 OmlYzpIPmH0C3nCISBUBcx+CVLAQRpQ7UQ/OISnhLSzclWHCy8vNZSF4qEkkh//C9N
+	 pLCcyn+dYmcPloikey6sApqYCJbUL7doq4ofmMSd+fhJhf6i+186/YIVmfWns4tNhY
+	 /V4Dc3AGJBYdHyRl3Xlq1dLZaxjQpi+Xk5Bma5BSYW5/Kfaq7+Bx2weBC0wTjnhDe6
+	 tJ6MwEmg53K1A==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	dan.carpenter@linaro.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	quan.zhou@mediatek.com,
+	johannes.berg@intel.com,
+	emmanuel.grumbach@intel.com,
+	leitao@debian.org,
+	mingyen.hsieh@mediatek.com,
+	leon.yen@mediatek.com,
+	deren.wu@mediatek.com,
+	chui-hao.chiu@mediatek.com,
+	kuniyu@amazon.com,
+	romieu@fr.zoreil.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH net-next 7/7] wifi: mt76: move napi_enable() from under BH
+Date: Tue, 21 Jan 2025 14:15:19 -0800
+Message-ID: <20250121221519.392014-8-kuba@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250121221519.392014-1-kuba@kernel.org>
+References: <20250121221519.392014-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250119164219.647059-1-quic_ppranees@quicinc.com> <20250119164219.647059-3-quic_ppranees@quicinc.com>
-In-Reply-To: <20250119164219.647059-3-quic_ppranees@quicinc.com>
-From: Tim Harvey <tharvey@gateworks.com>
-Date: Tue, 21 Jan 2025 09:26:36 -0800
-X-Gm-Features: AbW1kvY37jZxQhLj0pk5NfHgGJvx3igq3RoIAPWuvZN3v5GGeaYgIFT3UVgPnfc
-Message-ID: <CAJ+vNU2HR2=7i4yocQqKf2Ce8bap1fAaKYC3QxNwD5h-Z9PbAQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] wifi: ath11k: Use dma_alloc_noncoherent for rx_tid
- buffer allocation
-To: P Praneesh <quic_ppranees@quicinc.com>
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jan 19, 2025 at 8:42=E2=80=AFAM P Praneesh <quic_ppranees@quicinc.c=
-om> wrote:
->
-> Currently, the driver allocates cacheable DMA buffers for the rx_tid
-> structure using kzalloc() and dma_map_single(). These buffers are
-> long-lived and can persist for the lifetime of the peer, which is not
-> advisable. Instead of using kzalloc() and dma_map_single() for allocating
-> cacheable DMA buffers, utilize the dma_alloc_noncoherent() helper for the
-> allocation of long-lived cacheable DMA buffers, such as the peer's rx_tid=
-.
-> Since dma_alloc_noncoherent() returns unaligned physical and virtual
-> addresses, align them internally before use within the driver. This
-> ensures proper allocation of non-coherent memory through the kernel
-> helper.
->
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ=
-_LITE-3
->
-> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-> ---
->  drivers/net/wireless/ath/ath11k/dp.h    |   6 +-
->  drivers/net/wireless/ath/ath11k/dp_rx.c | 117 +++++++++++-------------
->  2 files changed, 58 insertions(+), 65 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/=
-ath/ath11k/dp.h
-> index f777314db8b3..7a55afd33be8 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp.h
-> +++ b/drivers/net/wireless/ath/ath11k/dp.h
-> @@ -1,7 +1,7 @@
->  /* SPDX-License-Identifier: BSD-3-Clause-Clear */
->  /*
->   * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-> - * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights r=
-eserved.
-> + * Copyright (c) 2021-2023, 2025 Qualcomm Innovation Center, Inc. All ri=
-ghts reserved.
->   */
->
->  #ifndef ATH11K_DP_H
-> @@ -20,7 +20,6 @@ struct ath11k_ext_irq_grp;
->
->  struct dp_rx_tid {
->         u8 tid;
-> -       u32 *vaddr;
->         dma_addr_t paddr;
->         u32 size;
->         u32 ba_win_sz;
-> @@ -37,6 +36,9 @@ struct dp_rx_tid {
->         /* Timer info related to fragments */
->         struct timer_list frag_timer;
->         struct ath11k_base *ab;
-> +       u32 *vaddr_unaligned;
-> +       dma_addr_t paddr_unaligned;
-> +       u32 unaligned_size;
->  };
->
->  #define DP_REO_DESC_FREE_THRESHOLD  64
-> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wirele=
-ss/ath/ath11k/dp_rx.c
-> index 029ecf51c9ef..5e71e5d9ecb7 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: BSD-3-Clause-Clear
->  /*
->   * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-> - * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights r=
-eserved.
-> + * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights r=
-eserved.
->   */
->
->  #include <linux/ieee80211.h>
-> @@ -675,11 +675,11 @@ void ath11k_dp_reo_cmd_list_cleanup(struct ath11k_b=
-ase *ab)
->         list_for_each_entry_safe(cmd, tmp, &dp->reo_cmd_list, list) {
->                 list_del(&cmd->list);
->                 rx_tid =3D &cmd->data;
-> -               if (rx_tid->vaddr) {
-> -                       dma_unmap_single(ab->dev, rx_tid->paddr,
-> -                                        rx_tid->size, DMA_BIDIRECTIONAL)=
-;
-> -                       kfree(rx_tid->vaddr);
-> -                       rx_tid->vaddr =3D NULL;
-> +               if (rx_tid->vaddr_unaligned) {
-> +                       dma_free_noncoherent(ab->dev, rx_tid->unaligned_s=
-ize,
-> +                                            rx_tid->vaddr_unaligned,
-> +                                            rx_tid->paddr_unaligned, DMA=
-_BIDIRECTIONAL);
-> +                       rx_tid->vaddr_unaligned =3D NULL;
->                 }
->                 kfree(cmd);
->         }
-> @@ -689,11 +689,11 @@ void ath11k_dp_reo_cmd_list_cleanup(struct ath11k_b=
-ase *ab)
->                 list_del(&cmd_cache->list);
->                 dp->reo_cmd_cache_flush_count--;
->                 rx_tid =3D &cmd_cache->data;
-> -               if (rx_tid->vaddr) {
-> -                       dma_unmap_single(ab->dev, rx_tid->paddr,
-> -                                        rx_tid->size, DMA_BIDIRECTIONAL)=
-;
-> -                       kfree(rx_tid->vaddr);
-> -                       rx_tid->vaddr =3D NULL;
-> +               if (rx_tid->vaddr_unaligned) {
-> +                       dma_free_noncoherent(ab->dev, rx_tid->unaligned_s=
-ize,
-> +                                            rx_tid->vaddr_unaligned,
-> +                                            rx_tid->paddr_unaligned, DMA=
-_BIDIRECTIONAL);
-> +                       rx_tid->vaddr_unaligned =3D NULL;
->                 }
->                 kfree(cmd_cache);
->         }
-> @@ -708,11 +708,11 @@ static void ath11k_dp_reo_cmd_free(struct ath11k_dp=
- *dp, void *ctx,
->         if (status !=3D HAL_REO_CMD_SUCCESS)
->                 ath11k_warn(dp->ab, "failed to flush rx tid hw desc, tid =
-%d status %d\n",
->                             rx_tid->tid, status);
-> -       if (rx_tid->vaddr) {
-> -               dma_unmap_single(dp->ab->dev, rx_tid->paddr, rx_tid->size=
-,
-> -                                DMA_BIDIRECTIONAL);
-> -               kfree(rx_tid->vaddr);
-> -               rx_tid->vaddr =3D NULL;
-> +       if (rx_tid->vaddr_unaligned) {
-> +               dma_free_noncoherent(dp->ab->dev, rx_tid->unaligned_size,
-> +                                    rx_tid->vaddr_unaligned,
-> +                                    rx_tid->paddr_unaligned, DMA_BIDIREC=
-TIONAL);
-> +               rx_tid->vaddr_unaligned =3D NULL;
->         }
->  }
->
-> @@ -749,10 +749,10 @@ static void ath11k_dp_reo_cache_flush(struct ath11k=
-_base *ab,
->         if (ret) {
->                 ath11k_err(ab, "failed to send HAL_REO_CMD_FLUSH_CACHE cm=
-d, tid %d (%d)\n",
->                            rx_tid->tid, ret);
-> -               dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
-> -                                DMA_BIDIRECTIONAL);
-> -               kfree(rx_tid->vaddr);
-> -               rx_tid->vaddr =3D NULL;
-> +               dma_free_noncoherent(ab->dev, rx_tid->unaligned_size,
-> +                                    rx_tid->vaddr_unaligned,
-> +                                    rx_tid->paddr_unaligned, DMA_BIDIREC=
-TIONAL);
-> +               rx_tid->vaddr_unaligned =3D NULL;
->         }
->  }
->
-> @@ -802,10 +802,10 @@ static void ath11k_dp_rx_tid_del_func(struct ath11k=
-_dp *dp, void *ctx,
->
->         return;
->  free_desc:
-> -       dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
-> -                        DMA_BIDIRECTIONAL);
-> -       kfree(rx_tid->vaddr);
-> -       rx_tid->vaddr =3D NULL;
-> +       dma_free_noncoherent(ab->dev, rx_tid->unaligned_size,
-> +                            rx_tid->vaddr_unaligned,
-> +                            rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-> +       rx_tid->vaddr_unaligned =3D NULL;
->  }
->
->  void ath11k_peer_rx_tid_delete(struct ath11k *ar,
-> @@ -831,14 +831,16 @@ void ath11k_peer_rx_tid_delete(struct ath11k *ar,
->                 if (ret !=3D -ESHUTDOWN)
->                         ath11k_err(ar->ab, "failed to send HAL_REO_CMD_UP=
-DATE_RX_QUEUE cmd, tid %d (%d)\n",
->                                    tid, ret);
-> -               dma_unmap_single(ar->ab->dev, rx_tid->paddr, rx_tid->size=
-,
-> -                                DMA_BIDIRECTIONAL);
-> -               kfree(rx_tid->vaddr);
-> -               rx_tid->vaddr =3D NULL;
-> +               dma_free_noncoherent(ar->ab->dev, rx_tid->unaligned_size,
-> +                                    rx_tid->vaddr_unaligned,
-> +                                    rx_tid->paddr_unaligned, DMA_BIDIREC=
-TIONAL);
-> +               rx_tid->vaddr_unaligned =3D NULL;
->         }
->
->         rx_tid->paddr =3D 0;
-> +       rx_tid->paddr_unaligned =3D 0;
->         rx_tid->size =3D 0;
-> +       rx_tid->unaligned_size =3D 0;
->  }
->
->  static int ath11k_dp_rx_link_desc_return(struct ath11k_base *ab,
-> @@ -982,10 +984,9 @@ static void ath11k_dp_rx_tid_mem_free(struct ath11k_=
-base *ab,
->         if (!rx_tid->active)
->                 goto unlock_exit;
->
-> -       dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
-> -                        DMA_BIDIRECTIONAL);
-> -       kfree(rx_tid->vaddr);
-> -       rx_tid->vaddr =3D NULL;
-> +       dma_free_noncoherent(ab->dev, rx_tid->unaligned_size, rx_tid->vad=
-dr_unaligned,
-> +                            rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-> +       rx_tid->vaddr_unaligned =3D NULL;
->
->         rx_tid->active =3D false;
->
-> @@ -1000,9 +1001,8 @@ int ath11k_peer_rx_tid_setup(struct ath11k *ar, con=
-st u8 *peer_mac, int vdev_id,
->         struct ath11k_base *ab =3D ar->ab;
->         struct ath11k_peer *peer;
->         struct dp_rx_tid *rx_tid;
-> -       u32 hw_desc_sz;
-> -       u32 *addr_aligned;
-> -       void *vaddr;
-> +       u32 hw_desc_sz, *vaddr;
-> +       void *vaddr_unaligned;
->         dma_addr_t paddr;
->         int ret;
->
-> @@ -1050,49 +1050,40 @@ int ath11k_peer_rx_tid_setup(struct ath11k *ar, c=
-onst u8 *peer_mac, int vdev_id,
->         else
->                 hw_desc_sz =3D ath11k_hal_reo_qdesc_size(DP_BA_WIN_SZ_MAX=
-, tid);
->
-> -       vaddr =3D kzalloc(hw_desc_sz + HAL_LINK_DESC_ALIGN - 1, GFP_ATOMI=
-C);
-> -       if (!vaddr) {
-> +       rx_tid->unaligned_size =3D hw_desc_sz + HAL_LINK_DESC_ALIGN - 1;
-> +       vaddr_unaligned =3D dma_alloc_noncoherent(ab->dev, rx_tid->unalig=
-ned_size, &paddr,
-> +                                               DMA_BIDIRECTIONAL, GFP_AT=
-OMIC);
-> +       if (!vaddr_unaligned) {
->                 spin_unlock_bh(&ab->base_lock);
->                 return -ENOMEM;
->         }
->
-> -       addr_aligned =3D PTR_ALIGN(vaddr, HAL_LINK_DESC_ALIGN);
-> -
-> -       ath11k_hal_reo_qdesc_setup(addr_aligned, tid, ba_win_sz,
-> -                                  ssn, pn_type);
-> -
-> -       paddr =3D dma_map_single(ab->dev, addr_aligned, hw_desc_sz,
-> -                              DMA_BIDIRECTIONAL);
-> -
-> -       ret =3D dma_mapping_error(ab->dev, paddr);
-> -       if (ret) {
-> -               spin_unlock_bh(&ab->base_lock);
-> -               ath11k_warn(ab, "failed to setup dma map for peer %pM rx =
-tid %d: %d\n",
-> -                           peer_mac, tid, ret);
-> -               goto err_mem_free;
-> -       }
-> -
-> -       rx_tid->vaddr =3D vaddr;
-> -       rx_tid->paddr =3D paddr;
-> +       rx_tid->vaddr_unaligned =3D vaddr_unaligned;
-> +       vaddr =3D PTR_ALIGN(vaddr_unaligned, HAL_LINK_DESC_ALIGN);
-> +       rx_tid->paddr_unaligned =3D paddr;
-> +       rx_tid->paddr =3D rx_tid->paddr_unaligned + ((unsigned long)vaddr=
- -
-> +                       (unsigned long)rx_tid->vaddr_unaligned);
-> +       ath11k_hal_reo_qdesc_setup(vaddr, tid, ba_win_sz, ssn, pn_type);
->         rx_tid->size =3D hw_desc_sz;
->         rx_tid->active =3D true;
->
-> +       /* After dma_alloc_noncoherent, vaddr is being modified for reo q=
-desc setup.
-> +        * Since these changes are not reflected in the device, driver no=
-w needs to
-> +        * explicitly call dma_sync_single_for_device.
-> +        */
-> +       dma_sync_single_for_device(ab->dev, rx_tid->paddr,
-> +                                  rx_tid->size,
-> +                                  DMA_TO_DEVICE);
->         spin_unlock_bh(&ab->base_lock);
->
-> -       ret =3D ath11k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id, peer_=
-mac,
-> -                                                    paddr, tid, 1, ba_wi=
-n_sz);
-> +       ret =3D ath11k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id, peer_=
-mac, rx_tid->paddr,
-> +                                                    tid, 1, ba_win_sz);
->         if (ret) {
->                 ath11k_warn(ar->ab, "failed to setup rx reorder queue for=
- peer %pM tid %d: %d\n",
->                             peer_mac, tid, ret);
->                 ath11k_dp_rx_tid_mem_free(ab, peer_mac, vdev_id, tid);
->         }
->
-> -       return ret;
-> -
-> -err_mem_free:
-> -       kfree(rx_tid->vaddr);
-> -       rx_tid->vaddr =3D NULL;
-> -
->         return ret;
->  }
->
-> --
-> 2.34.1
->
+mt76 does a lot of:
 
-I tested this with qcn9074 on an imx8mm (no iommu) with 4GiB DRAM and
-verified swiotlb was not being used and infrastructure mode worked
-fine.
+  local_bh_disable();
+  napi_enable(...napi);
+  napi_schedule(...napi);
+  local_bh_enable();
 
-Tested-By: Tim Harvey <tharvey@gateworks.com>
+local_bh_disable() is not a real lock, its most likely taken
+because napi_schedule() requires it. napi_enable() needs
+to take a mutex, so move it from under the BH protection.
 
-Best regards,
+Fixes: 413f0271f396 ("net: protect NAPI enablement with netdev_lock()")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/dcfd56bc-de32-4b11-9e19-d8bd1543745d@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: nbd@nbd.name
+CC: lorenzo@kernel.org
+CC: ryder.lee@mediatek.com
+CC: shayne.chen@mediatek.com
+CC: sean.wang@mediatek.com
+CC: kvalo@kernel.org
+CC: matthias.bgg@gmail.com
+CC: angelogioacchino.delregno@collabora.com
+CC: quan.zhou@mediatek.com
+CC: johannes.berg@intel.com
+CC: emmanuel.grumbach@intel.com
+CC: leitao@debian.org
+CC: mingyen.hsieh@mediatek.com
+CC: leon.yen@mediatek.com
+CC: deren.wu@mediatek.com
+CC: chui-hao.chiu@mediatek.com
+CC: kuniyu@amazon.com
+CC: romieu@fr.zoreil.com
+CC: linux-wireless@vger.kernel.org
+---
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c |  9 ++++-----
+ drivers/net/wireless/mediatek/mt76/mt7615/pci.c |  8 ++++++--
+ .../net/wireless/mediatek/mt76/mt7615/pci_mac.c |  8 +++++---
+ drivers/net/wireless/mediatek/mt76/mt76x0/pci.c |  8 +++++---
+ .../net/wireless/mediatek/mt76/mt76x02_mmio.c   |  8 +++++---
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci.c |  7 +++++--
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 17 +++++++++++++----
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c |  7 +++++--
+ .../net/wireless/mediatek/mt76/mt7921/pci_mac.c |  7 +++++--
+ drivers/net/wireless/mediatek/mt76/mt7925/pci.c |  7 +++++--
+ .../net/wireless/mediatek/mt76/mt7925/pci_mac.c |  7 +++++--
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 12 ++++++------
+ 12 files changed, 69 insertions(+), 36 deletions(-)
 
-Tim
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index a259f4dd9540..413973d05b43 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1479,14 +1479,13 @@ static void mt7603_mac_watchdog_reset(struct mt7603_dev *dev)
+ 	tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
+ 	mt7603_beacon_set_timer(dev, -1, beacon_int);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
+-	napi_schedule(&dev->mt76.tx_napi);
+-
+ 	napi_enable(&dev->mt76.napi[0]);
+-	napi_schedule(&dev->mt76.napi[0]);
+-
+ 	napi_enable(&dev->mt76.napi[1]);
++
++	local_bh_disable();
++	napi_schedule(&dev->mt76.tx_napi);
++	napi_schedule(&dev->mt76.napi[0]);
+ 	napi_schedule(&dev->mt76.napi[1]);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+index 9a278589df4e..68010e27f065 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+@@ -164,12 +164,16 @@ static int mt7615_pci_resume(struct pci_dev *pdev)
+ 		dev_err(mdev->dev, "PDMA engine must be reinitialized\n");
+ 
+ 	mt76_worker_enable(&mdev->tx_worker);
+-	local_bh_disable();
++
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		napi_enable(&mdev->napi[i]);
+-		napi_schedule(&mdev->napi[i]);
+ 	}
+ 	napi_enable(&mdev->tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
++		napi_schedule(&mdev->napi[i]);
++	}
+ 	napi_schedule(&mdev->tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
+index a0ca3bbdfcaf..c2e4e6aabd9f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
+@@ -262,12 +262,14 @@ void mt7615_mac_reset_work(struct work_struct *work)
+ 
+ 	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
+-	napi_schedule(&dev->mt76.tx_napi);
+-
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_enable(&dev->mt76.napi[i]);
++	}
++
++	local_bh_disable();
++	napi_schedule(&dev->mt76.tx_napi);
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+ 	local_bh_enable();
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+index 1eb955f3ca13..b456ccd00d58 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+@@ -282,14 +282,16 @@ static int mt76x0e_resume(struct pci_dev *pdev)
+ 
+ 	mt76_worker_enable(&mdev->tx_worker);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		mt76_queue_rx_reset(dev, i);
+ 		napi_enable(&mdev->napi[i]);
++	}
++	napi_enable(&mdev->tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
+ 		napi_schedule(&mdev->napi[i]);
+ 	}
+-
+-	napi_enable(&mdev->tx_napi);
+ 	napi_schedule(&mdev->tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+index 7d840ad4ae65..a82c75ba26e6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+@@ -504,12 +504,14 @@ static void mt76x02_watchdog_reset(struct mt76x02_dev *dev)
+ 	mt76_worker_enable(&dev->mt76.tx_worker);
+ 	tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
+-	napi_schedule(&dev->mt76.tx_napi);
+-
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_enable(&dev->mt76.napi[i]);
++	}
++
++	local_bh_disable();
++	napi_schedule(&dev->mt76.tx_napi);
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+ 	local_bh_enable();
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+index 67c9d1caa0bd..727bfdd00b40 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+@@ -151,12 +151,15 @@ mt76x2e_resume(struct pci_dev *pdev)
+ 
+ 	mt76_worker_enable(&mdev->tx_worker);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		napi_enable(&mdev->napi[i]);
+-		napi_schedule(&mdev->napi[i]);
+ 	}
+ 	napi_enable(&mdev->tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
++		napi_schedule(&mdev->napi[i]);
++	}
+ 	napi_schedule(&mdev->tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 13bdc0a7174c..2ba6eb3038ce 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1356,10 +1356,15 @@ mt7915_mac_restart(struct mt7915_dev *dev)
+ 
+ 	mt7915_dma_reset(dev, true);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		if (mdev->q_rx[i].ndesc) {
+ 			napi_enable(&dev->mt76.napi[i]);
++		}
++	}
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
++		if (mdev->q_rx[i].ndesc) {
+ 			napi_schedule(&dev->mt76.napi[i]);
+ 		}
+ 	}
+@@ -1419,8 +1424,9 @@ mt7915_mac_restart(struct mt7915_dev *dev)
+ 	if (phy2)
+ 		clear_bit(MT76_RESET, &phy2->mt76->state);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
++
++	local_bh_disable();
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+@@ -1570,9 +1576,12 @@ void mt7915_mac_reset_work(struct work_struct *work)
+ 	if (phy2)
+ 		clear_bit(MT76_RESET, &phy2->mt76->state);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_enable(&dev->mt76.napi[i]);
++	}
++
++	local_bh_disable();
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+ 	local_bh_enable();
+@@ -1581,8 +1590,8 @@ void mt7915_mac_reset_work(struct work_struct *work)
+ 
+ 	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
++	local_bh_disable();
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index ba870e1b05fb..a0c9df3c2cc7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -523,12 +523,15 @@ static int mt7921_pci_resume(struct device *device)
+ 
+ 	mt76_worker_enable(&mdev->tx_worker);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		napi_enable(&mdev->napi[i]);
+-		napi_schedule(&mdev->napi[i]);
+ 	}
+ 	napi_enable(&mdev->tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
++		napi_schedule(&mdev->napi[i]);
++	}
+ 	napi_schedule(&mdev->tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+index 2452b1a2d118..881812ba03ff 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+@@ -81,9 +81,12 @@ int mt7921e_mac_reset(struct mt792x_dev *dev)
+ 
+ 	mt792x_wpdma_reset(dev, true);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_enable(&dev->mt76.napi[i]);
++	}
++
++	local_bh_disable();
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+ 	local_bh_enable();
+@@ -115,8 +118,8 @@ int mt7921e_mac_reset(struct mt792x_dev *dev)
+ 	err = __mt7921_start(&dev->phy);
+ out:
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
++	local_bh_disable();
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+index f36893e20c61..c7b5dc1dbb34 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+@@ -556,12 +556,15 @@ static int mt7925_pci_resume(struct device *device)
+ 
+ 	mt76_worker_enable(&mdev->tx_worker);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		napi_enable(&mdev->napi[i]);
+-		napi_schedule(&mdev->napi[i]);
+ 	}
+ 	napi_enable(&mdev->tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
++		napi_schedule(&mdev->napi[i]);
++	}
+ 	napi_schedule(&mdev->tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
+index faedbf766d1a..4578d16bf456 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
+@@ -101,12 +101,15 @@ int mt7925e_mac_reset(struct mt792x_dev *dev)
+ 
+ 	mt792x_wpdma_reset(dev, true);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_enable(&dev->mt76.napi[i]);
+-		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+ 	napi_enable(&dev->mt76.tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(&dev->mt76, i) {
++		napi_schedule(&dev->mt76.napi[i]);
++	}
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index bc8cba4dca47..019c925ae600 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1695,7 +1695,6 @@ mt7996_mac_restart(struct mt7996_dev *dev)
+ 
+ 	mt7996_dma_reset(dev, true);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
+ 		    mt76_queue_is_wed_rro(&mdev->q_rx[i]))
+@@ -1703,10 +1702,11 @@ mt7996_mac_restart(struct mt7996_dev *dev)
+ 
+ 		if (mdev->q_rx[i].ndesc) {
+ 			napi_enable(&dev->mt76.napi[i]);
++			local_bh_disable();
+ 			napi_schedule(&dev->mt76.napi[i]);
++			local_bh_enable();
+ 		}
+ 	}
+-	local_bh_enable();
+ 	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 	clear_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
+ 
+@@ -1764,8 +1764,8 @@ mt7996_mac_restart(struct mt7996_dev *dev)
+ 	if (phy3)
+ 		clear_bit(MT76_RESET, &phy3->mt76->state);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
++	local_bh_disable();
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+@@ -1958,23 +1958,23 @@ void mt7996_mac_reset_work(struct work_struct *work)
+ 	if (phy3)
+ 		clear_bit(MT76_RESET, &phy3->mt76->state);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
+ 		    mt76_queue_is_wed_rro(&dev->mt76.q_rx[i]))
+ 			continue;
+ 
+ 		napi_enable(&dev->mt76.napi[i]);
++		local_bh_disable();
+ 		napi_schedule(&dev->mt76.napi[i]);
++		local_bh_enable();
+ 	}
+-	local_bh_enable();
+ 
+ 	tasklet_schedule(&dev->mt76.irq_tasklet);
+ 
+ 	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
++	local_bh_disable();
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+-- 
+2.48.1
+
 
