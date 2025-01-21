@@ -1,115 +1,77 @@
-Return-Path: <linux-wireless+bounces-17792-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17793-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F07DA17C28
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 11:48:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D0DA17D0E
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 12:32:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 475181605B1
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 10:47:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448D21884863
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2025 11:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D15D1A8409;
-	Tue, 21 Jan 2025 10:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618121EEA46;
+	Tue, 21 Jan 2025 11:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="S5VvWEMb"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="oWnH7oGL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C93B1F0E44
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Jan 2025 10:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D99D26AFA
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Jan 2025 11:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737456465; cv=none; b=Za7D/54KWbP+sdqj3Er9ZQBEP2DMkFbv8OqmimwRA2b6duZ1mDDFJuzn9bUvkFfamZbvTZahjoyfS+oIa81+ZWtoxhefi4IhSLJCMZTag2V7DqZFzugZQgi6cxfvH+SwiGWHVLLNlVC+hP8TBpee7kYegEVRcO1eCagMxvWjwXQ=
+	t=1737459171; cv=none; b=u9wCSh3nBiUlYZ0d/7RZudtm+zA91P4EQL85bLCfYj38ZR6hSEQT/XwAL/0m6uOfeLPDXi7kXvrALPyXIxlZidPXfhRW1YIWYuBfQdFzHoopnLHvsou9e0lti0Ck5BOxel9BPnO0pgTL8AGmeKRourrI0GFeZ29cqg1XOrlS93A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737456465; c=relaxed/simple;
-	bh=EkeaWKRG548ce4iyEqbLMyZAQ6honRMCZMIH7Q4tW2c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=hA/8zi8DktmUwtD3ToBVxZLDd74+u3V8GkzAm8fNjGRLnf4H1CUA4tB4y4cQYQ0dtxGIFo1vJAU87XhDbVKFizXpMohI21DaYWD37kdclhQFEW9smh2vqtoez5tpuuMjSyR7GVU9qXTHH2jsgmVtEWB3JX83fSnti7pyJNSdmOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=S5VvWEMb; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50L9QgQC031220;
-	Tue, 21 Jan 2025 10:47:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	0110w/5hEyoEkseqshvplOtl+V80g2OAplLpO2U9Uv4=; b=S5VvWEMbM1aftGKd
-	oAuWS9uaXQPTk8D5/OjybEBLOak6mUKfRLbnHM0Kc8A5KOgtfvSCF6lNWCsoQSKs
-	JWvMBA9TXBz+ObvTf6TBLiQRHuqXrwMbyc/sBoPM6b2QerdPafFW13+gBTt0vbaU
-	7cYrGQXOr8208Yr+jl26wxRO3jDSV4iSelB4Yw1vwEOLFtHb3vU7UOfHRiRNpj0D
-	eWsV1reLGNj3wry1D70zN/lRlB78ymd9bku/i6yqm13k3s9SVgaVGyonYjPbc8u8
-	VyNJdTftTPAnLVujGRPDCnWPhtGr7YYq3DWfRUtQFjMzMifbU2HvpI9G0xxdZ0oK
-	4IWWBQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44a8y2ga9y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Jan 2025 10:47:41 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50LAle5X026027
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Jan 2025 10:47:40 GMT
-Received: from [10.253.36.159] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 21 Jan
- 2025 02:47:39 -0800
-Message-ID: <f790e71e-9b03-474a-be21-5d9bfa71e593@quicinc.com>
-Date: Tue, 21 Jan 2025 18:47:37 +0800
+	s=arc-20240116; t=1737459171; c=relaxed/simple;
+	bh=2hXM2a2eS/x9t4Qg7uHryYXc+55ZCWlomya/9VHVijM=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l7rddUgCdNLafJgL5ZZIcsSsO8Q5vmyL3SWcttqE58R3KkK6uMoV0S5EVA01nWH1nOVuRB4mWpbMevcj9Vgg/b4iBLiThq6jUfHccckSU2/9aOzSOvVeviamB1djxyPvHtgJdXNV3YZFqEqWbrWaBft7IeUsT0o8iC3w45wSDHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=oWnH7oGL; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id A0A4E1F98F;
+	Tue, 21 Jan 2025 12:32:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1737459158;
+	bh=2hXM2a2eS/x9t4Qg7uHryYXc+55ZCWlomya/9VHVijM=; h=From:To:Subject;
+	b=oWnH7oGLvOCk/Kt9hS6wX4Ws1DENW4sBdAr/N1lQwxdBcx4ma5uedwptZf4abQQIc
+	 BIXSr2zauZJmiOLvodY0YblUAdSA8O8fHT+DzZDlYz7WVMGK6BiXLIWoRSirFamF+B
+	 Tfj0PxlPKoJOT4gJC2aoCcmkL85XXo/ZY8IpQKThaL9Vc2v3MonIJN8AqU3KtKB0yw
+	 r6rszksU6ugx3PjKIA+35vgnDNSSmfFOAagUp/0OPk/hg9ni8mBEMSV7C/XA8pNIWg
+	 XAhppPf11dauJcAzfa+P8g4SCDDnQYcH3H/MPTrsA9lo6vVOBHq3WvPuVicmu8YQWi
+	 2X0bArnd3d2mA==
+Date: Tue, 21 Jan 2025 12:32:34 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+	Kalle Valo <kvalo@qca.qualcomm.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: Re: ath11k-firmware: WCN6855 hw2.1: add Silex SX-PCEAX specific BDF
+Message-ID: <20250121113234.GA28230@francesco-nb>
+References: <Z1bc_jn-k-88Io3f@gaggiata.pivistrello.it>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 4/4] wifi: ath12k: store and send country code to
- firmware after recovery
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20250121091844.1987-1-quic_kangyang@quicinc.com>
- <20250121091844.1987-5-quic_kangyang@quicinc.com>
-Content-Language: en-US
-From: Kang Yang <quic_kangyang@quicinc.com>
-In-Reply-To: <20250121091844.1987-5-quic_kangyang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ecHgHlF96YOyg6oZXjU3qVSIg0cx7CTY
-X-Proofpoint-ORIG-GUID: ecHgHlF96YOyg6oZXjU3qVSIg0cx7CTY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-21_05,2025-01-21_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- mlxlogscore=823 impostorscore=0 spamscore=0 phishscore=0
- priorityscore=1501 adultscore=0 mlxscore=0 suspectscore=0
- lowpriorityscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2501210089
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z1bc_jn-k-88Io3f@gaggiata.pivistrello.it>
 
++Jeff, that seems to be active on this area.
 
+Hello all,
 
-On 1/21/2025 5:18 PM, Kang Yang wrote:
-> From: Wen Gong <quic_wgong@quicinc.com>
-> 
-> Currently ath12k does not send the country code to firmware after device
-> recovery. As a result the country code will be the default one which
-> is reported from firmware. Country code is important, so ath12k also
-> need to restore it to the value which was used before recovery.
-> 
-> This is only needed for platforms which support the current_cc_support
-> hardware parameter.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-> ---
+On Mon, Dec 09, 2024 at 01:05:18PM +0100, Francesco Dolcini wrote:
+> I'd like to ask for inclusion for the board file for Silex SX-PCEAX
+> radio module [1].
 
-Please ignore this version, review v9.
+Any comment on this? It's been a while since I sent this and I had no
+feedback so far.
+
+Francesco
 
 
