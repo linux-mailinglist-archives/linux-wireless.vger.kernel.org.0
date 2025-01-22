@@ -1,135 +1,119 @@
-Return-Path: <linux-wireless+bounces-17829-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17831-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3221DA18F8A
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 11:17:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 849E0A192AC
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 14:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05DFA18817A6
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 10:17:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69F443A0845
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 13:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A7618CBFE;
-	Wed, 22 Jan 2025 10:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2A5211A3B;
+	Wed, 22 Jan 2025 13:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Gfex6TOj"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Rw1MsWcQ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32406145FE0
-	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 10:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554E11BDCF
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 13:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737541052; cv=none; b=ec6JaoSIdZ1lbfEVGOlfrqCYyY4epNg5Ay61q7QLGoaNiVFWlM666pZX7D29hJMJvSMQ94f377fpdskwiBs8XdvQkD0MzRd8E89sHipf8I2t88YU508tZzs2R8fs8egFeO1waUvleQRtMvODRmsbu/P/vuryTOmuy4rDi3pzYt0=
+	t=1737552921; cv=none; b=DXwghiyeiCp0+44Q8QTCDlkX5k6EBwFXOOf20OEvdySqqQ7SVA4KvVsUBAU7BL6NzB1c84ztmTGutj6avR+at206yhc8Uz4sbLUmYHL9gFyYw9P21MwpymZC7v6oRU95Zdsk+R5BqNPoREj8wKLnno0KrPHt2vUwQDR+vqn18/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737541052; c=relaxed/simple;
-	bh=pRf1oWBSH+BeUs4cjxzcaoonU9tc/qWJ03nETRAvw8w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ee2bbedV4gqkU/nPJ5KN3siMWs64ssZiiegoyY/9JwoyvKt578QTBnCEPNnttLbg7P1xq1HMdO6+MasEB9EGHDgOzkUF+Douhj0pYBbfd2KKPYgvd6jlg+hZlvlcx9RfC3plMMCF3mAMN0gwRnnlUVrSViZZx+g1/LVTNMCOpwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Gfex6TOj; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50M9odsl002864
-	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 10:17:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	29dlzNT95wwzkWGs8yh9/Nui22y01PiBArjf9t8ZTKs=; b=Gfex6TOjmHdhd1Bc
-	xpdgH7lM49SAD9GO5gX/ZSJcGB1eGonPmA+8TqC7+IXmAH1oT1Nc0Jk82plcsHaG
-	zPpTT8TusdMjnSnq13r22Bse8qJAxH9suMoZcuWu5kdJ2y5QxqENBNEDbQZiQ1Hy
-	wt0mnLmbbDez9sNkKvVte0DSqlvr2KOrvFrQ/z2bM40LaVFORuUOw7w/4wha4fKt
-	+ecxZ2eHqf+BdKcjPWHqYMDwXK/2l5tNMzMkxxLf3gq7w1ZH8wYG0G+xoQxs9ELc
-	mYnRNkKCVuZHtLUoGX27zNj5W/pcVghr6Oqg98Rgd+XG1wNCCGxKRVXO4ZPKhZ7x
-	ev6/FA==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44axd8g2hh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 10:17:30 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2ee86953aeaso12447254a91.2
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 02:17:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737541049; x=1738145849;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=29dlzNT95wwzkWGs8yh9/Nui22y01PiBArjf9t8ZTKs=;
-        b=YkztSrRAcORPmEuSo5JwCOP7IGFi+GBhtHGJftB4dwhEbHBDxwGG/TC08RGYcQH4AL
-         IpAh123gDCzrvAjrvQRkyGbvWjUWYkS/bZscqXZxzjehESTgqQw/SlQkhy6i0nYAQde5
-         jRsrxhQk/FBWNtXZF8k8KLFf5LT3iIMYfWe4s67/wfUs1RDr9dbKDzq5L4FbvCUo3Tjs
-         TQZTXgslk8E1T+uloG/Qb66RGX2ECkGl14CMmu8NlfzvjtMQP+RyG8glgezxUWxauxU7
-         mBMNrUzmnt+JgaF4Auqk7vjrc3ucLrruULtI/lrrANalaR8Po9AWeLVK/Ai8sFrHBTip
-         cVZQ==
-X-Gm-Message-State: AOJu0YyytKPw/KzcuwTR9oWxmIUbdRo7+fJ6nMSnXEv7q75fif6cjkIJ
-	dJu6/ki3M5TmjLft5QyxxT3oh1eECY0jHB2UFl4/Jy7WKW9FLeV8VFwm5l/6qVJztrU6OmY004c
-	UMSwRkAknmICI1QCLAcxgggcJq1hGgsUpGSQC5E3IeHLN6x97hwtv5mk/j/WEboVSzLzP5KIDKA
-	==
-X-Gm-Gg: ASbGncvM7r+xYwL1LkTnCafeAeduZ5QpChaLnsHg2Wnc5ixmC9Nx3xZlkhJN1EN3fNq
-	yI3MKf4Ss+TBjZCBTcVZtvicKeild/rORo2dRMy0hcIJtKd3imRHLmfP7RH9vXoR3UR12lZHsOP
-	YzfM1TZMZsEsaoYssnMlNg4FXqC7TJR8LFs4tsJbe7n1wKEDp8CzPGNl3h0mDqTYWryAZiXjeH5
-	xXm3oCBth4n9tb131KPdJFgDj+yDIe/DoDUqpTLxehT1WDwLktdgbDn6E8bZk0HY2mYuBXsxvpW
-	WNA0fa4zj/vHQUcdtL3zA/C2WUpH
-X-Received: by 2002:a17:90b:2b87:b0:2ee:a127:ba96 with SMTP id 98e67ed59e1d1-2f782d36030mr26332258a91.23.1737541049204;
-        Wed, 22 Jan 2025 02:17:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHrehCCwxqUjvfCI+Nu9dMOmWY6RxzQsqOG7Td7OY8XZRx2UCbAeYNU2aAEs8DJzW7OB1weNQ==
-X-Received: by 2002:a17:90b:2b87:b0:2ee:a127:ba96 with SMTP id 98e67ed59e1d1-2f782d36030mr26332236a91.23.1737541048890;
-        Wed, 22 Jan 2025 02:17:28 -0800 (PST)
-Received: from [10.152.202.18] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7e6a5e30csm1204993a91.7.2025.01.22.02.17.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jan 2025 02:17:28 -0800 (PST)
-Message-ID: <b111e01c-f375-43ef-af22-a5de6a6f5ea1@oss.qualcomm.com>
-Date: Wed, 22 Jan 2025 15:47:25 +0530
+	s=arc-20240116; t=1737552921; c=relaxed/simple;
+	bh=E8HdG3UMi+llUtuDcpyrKJVYiif2oUvkmXmi2moecwA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QiH6yvN6gqeYUKfsQA1CAYQ74iwQy+7+JtGgbZaGr+zhX+VZcTnpBR/bV7DT7IkTh5pI9zOg3zWvhK4zr6OEODpUfvrW6A2FjKKkoGB4D3//sJuBT975IW/UZ4n4BeFlirz9y7jAHSmOUuhYrpNAr9MXOiFgfjFerSBpGkrrJPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Rw1MsWcQ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50MB7xZb001072;
+	Wed, 22 Jan 2025 13:35:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=SqiTWOskZbsEZ8QHQTA1VE
+	9PhEQn4j1Muoz+orz0waY=; b=Rw1MsWcQ+vQZXp8tJenWA/zLLxbLX1yoCuSlbv
+	ZYqwDnNIWQEan9TCSC34QTe1zwllz3vF0RwTfQ+oztVFQreFj9ijyaAK0sSut2wJ
+	kj6JasyzPlNRkkSsCnitXLq9433venw2ATSwbXWzB3wQ9aX0HypLfjqemd2Hzcd4
+	UNjSvn7VglPAqBM0BcizitBRCwy5yYog/GrGaum05FddoUhrYDJ/dM8rgm8kKFfL
+	GmVHzE+kGnTP9Pa699FiuzS3fdHdTsurpiY4ZDDPOv9BFfEBQBw27gyR76Uq/UMK
+	xEfbSAlN0aDZBRluAXKDsirKEh18zl3Yg9vhz4mcjTkY5XNw==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ayhcra9q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jan 2025 13:35:12 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50MDZBn5012180
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jan 2025 13:35:11 GMT
+Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 22 Jan 2025 05:35:09 -0800
+From: Sarika Sharma <quic_sarishar@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <johannes@sipsolutions.net>,
+        "Sarika
+ Sharma" <quic_sarishar@quicinc.com>
+Subject: [PATCH RFC 0/3] wifi: mac80211/ath12k: add support to fill link statistics of multi-link station
+Date: Wed, 22 Jan 2025 19:04:21 +0530
+Message-ID: <20250122133424.1226555-1-quic_sarishar@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 4/4] wifi: ath12k: store and send country code to
- firmware after recovery
-To: Kang Yang <quic_kangyang@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250121104543.2053-1-quic_kangyang@quicinc.com>
- <20250121104543.2053-5-quic_kangyang@quicinc.com>
-Content-Language: en-US
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-In-Reply-To: <20250121104543.2053-5-quic_kangyang@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: VbQKuMUI-xVckXnV0E92_48yqEyp1tus
-X-Proofpoint-GUID: VbQKuMUI-xVckXnV0E92_48yqEyp1tus
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Ae8d90gSuJMGu4dDpkc0KIdxUfsd1DCm
+X-Proofpoint-ORIG-GUID: Ae8d90gSuJMGu4dDpkc0KIdxUfsd1DCm
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-22_04,2025-01-22_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=936 bulkscore=0
- suspectscore=0 mlxscore=0 phishscore=0 clxscore=1011 priorityscore=1501
- lowpriorityscore=0 adultscore=0 spamscore=0 impostorscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501220075
+ definitions=2025-01-22_06,2025-01-22_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=626 bulkscore=0 phishscore=0 adultscore=0 mlxscore=0
+ malwarescore=0 impostorscore=0 clxscore=1011 priorityscore=1501
+ spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501220100
 
-On 1/21/25 16:15, Kang Yang wrote:
-> From: Wen Gong<quic_wgong@quicinc.com>
-> 
-> Currently ath12k does not send the country code to firmware after device
-> recovery. As a result the country code will be the default one which
-> is reported from firmware. Country code is important, so ath12k also
-> need to restore it to the value which was used before recovery.
-> 
-> This is only needed for platforms which support the current_cc_support
-> hardware parameter.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Wen Gong<quic_wgong@quicinc.com>
-> Signed-off-by: Kang Yang<quic_kangyang@quicinc.com>
+Currently, station statistics are filled at deflink for both non-ML and
+multi-link(ML) station.
 
-Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Hence, add support to fill station statistics for the corresponding
+link of station.
 
+Depends-On: [RFC,v2,00/12] wifi: cfg80211/mac80211: add support to
+            handle per link statistics of multi-link station
+Link: https://patchwork.kernel.org/project/linux-wireless/cover/20250117124554.3719808-1-quic_sarishar@quicinc.com/
+
+Depends-On: [v10,0/3] wifi: ath12k: report station mode stats
+Link: https://patchwork.kernel.org/project/linux-wireless/cover/20250115063537.35797-1-quic_lingbok@quicinc.com/
+
+Sarika Sharma (3):
+  wifi: mac80211: correct RX stats packet increment for multi-link
+  wifi: ath12k: add link support for multi-link in arsta
+  wifi: ath12k: add EHT support for TX rate
+
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 25 +++++++++++++++-------
+ drivers/net/wireless/ath/ath12k/dp_rx.c  | 21 ++++++++++++++----
+ drivers/net/wireless/ath/ath12k/peer.h   | 27 +++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/wmi.h    |  3 ++-
+ net/mac80211/rx.c                        | 15 +++++++++++--
+ 5 files changed, 75 insertions(+), 16 deletions(-)
+
+
+base-commit: e7ef944b3e2c31b608800925e784f67596375770
 -- 
-Aditya
+2.34.1
 
 
