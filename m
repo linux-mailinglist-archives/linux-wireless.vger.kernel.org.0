@@ -1,58 +1,64 @@
-Return-Path: <linux-wireless+bounces-17812-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17813-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01999A189D7
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 03:22:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8018A18B97
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 07:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2D6D188B0E7
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 02:22:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 082571627C0
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 06:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FBA2E628;
-	Wed, 22 Jan 2025 02:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA72175D47;
+	Wed, 22 Jan 2025 06:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="m+FRXTs5"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="CKb5+I7X"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE91145A05;
-	Wed, 22 Jan 2025 02:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B7C14A619
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 06:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737512567; cv=none; b=SbPwG0J8sDEMy13azxTv5m11oVqW1eKYiRot+BdIvJ8HBqHz090ZneHpEpjrPseQsZdJsXck2/9MQSEamDImabGCqd4pSO36Kh1J77Ah3f01VaIfFUrJeHvMYMNpeiHrdCrrWTs7KrmQv0Hsc5+CuQSikUVvMmfY1qPDG/G6OOs=
+	t=1737525820; cv=none; b=j0at9mP1XVe8Ej25QBoy5DCjIpFcbNgb/ayB57a2R4yIXCaVDP6hF/efTlDWztdKomaJQaWzAsFK49hCblEvwAtMSLAYbxx/pVWyVwNLDs0+LmQEPVJeFSx12Gig82JBuhK9axyz1jS6sf1FXCQxWx/Dupq0McPvECylVBbXGBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737512567; c=relaxed/simple;
-	bh=6VIUdM5Tg+/W8PXINQvbJb2UuMReiLTQyJhk4mx55oI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UA0ae0vgo+BkNr0mZbkVm9c+N9OLKap9+76uO62z6z6DOJM2W7l8PDR1lLiyj8NqIzwYxnzeHly7CTB9FMPhk2CGxsSrW8M9fHXOhlIPIooUg/qK45mziAID7jtwWlr7Ag+Wc13Ih19rw/7QKAii7ikwLF0R9GyZcC9j3R7gM/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=m+FRXTs5; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=cJDs44l7FOIhekBJMpGxopfrdTVZNC5rMy41b9aO/AM=; b=m+FRXTs5VEr/7IyZ
-	mUXRZmUgsI/0+NoB+s/VKZ9tKXLmRbUPF05foJWI2gxbA8u++DPv7TkjfiMxmSXk10BY3CQNI58O/
-	Z7KpiZaspvLrRE6TH5NrPTUN2KwehbLf3ghOdsQCgMW4fovQCFd+IonV8HI+faEo1+Dzff2TyF8B+
-	mQiHxJbVwv313dlCfmj2U/+atJr/gjM6H973AjJqnPSqMVMC5gvEtItjX/D0Crb3fuyB4CKZdeebY
-	SOExISgI4B00HxvVr1iJqA6sw14m/OA0gh8d9BBHebhZal6J+ij3FpVsTOAxXltSz5ntpOnSZwNG5
-	xyNa8tasCZGg0/JY7Q==;
-Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
-	by mx.treblig.org with esmtp (Exim 4.96)
-	(envelope-from <linux@treblig.org>)
-	id 1taQO9-00BPQB-02;
-	Wed, 22 Jan 2025 02:22:41 +0000
-From: linux@treblig.org
-To: stas.yakovlev@gmail.com,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH] wifi: ipw2x00: Remove unused libipw_rx_any
-Date: Wed, 22 Jan 2025 02:22:40 +0000
-Message-ID: <20250122022240.456198-1-linux@treblig.org>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1737525820; c=relaxed/simple;
+	bh=tzLaFDMmoOnIZItKbUceuCOmfLTFrevSKI3QEEtFglw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XbUbSScoQaNYYwnBUOtGfiUze1H0bWBaCSlvWPfs/Hyp29IvhhAYnw2BspVkXIpFr2IozG+SvWxXCRL4OTonNqDnhWPE9KDpe8jPgbOzdFQKJG3QxPuvbtr41guCgb8/CiYtKvK8fnBwpUrCoE7EG03VeDvsajVCcOfnfgws/CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=CKb5+I7X; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50M63XnpC2493985, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1737525813; bh=tzLaFDMmoOnIZItKbUceuCOmfLTFrevSKI3QEEtFglw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=CKb5+I7XU8+LB2XD6/GIP4IshiXM0inlvGcg4CyJ43LeMMLFrHBPlM19kipPGhwy1
+	 8SoOp/VuEqO/SpfglM4+dZ4E6RikwHigvOKCla8/EnRkFG/jtHHaQHnRnp06Lxrl6p
+	 66hzhDqwHtaOayUe5gn1keDSm06anazuS1hzNqKhjrnFeNeX6Gl3qyUv51pZM9pQ2S
+	 yaINgvhH+aFXWL2fQYwBxBMt0Cp0jcpzWdKi1k+7Ge11XWkTRJUOZMJ7oie/oS8hFN
+	 CGDZA3317F+nP3wFvx/5/0h5iWeLirTh6f4pbIS2CHKSYmgPJyC0ax3lDgNvHr+Psq
+	 sNLaJ6/zAjqNA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50M63XnpC2493985
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 14:03:33 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 22 Jan 2025 14:03:33 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 22 Jan
+ 2025 14:03:33 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+Subject: [PATCH 00/10] wifi: rtw89: switch to wiphy lock and work
+Date: Wed, 22 Jan 2025 14:03:00 +0800
+Message-ID: <20250122060310.31976-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -60,145 +66,95 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
+The driver mutex is to synchronize ieee80211_ops and works, but it isn't
+easy to mange and causes AB-BA locks problem, which we have adjusted to
+avoid but the code isn't smooth.
 
-libipw_rx_any() was added in 2006 by
-commit 1a995b45a528 ("[PATCH] ieee80211_rx_any: filter out packets, call
-ieee80211_rx or ieee80211_rx_mgt")
-as ieee80211_rx_any but is currently unused and I can't find any
-sign it was used under either name,
+Nowaday, wiphy lock can make thing simple and easy, and also switch to
+wiphy lock is easy by reference of ath12k [1]. The debugfs neeeds special
+treatments to use wiphy_lock [2], and debugfs_short_fops [3] can save
+some spaces.
 
-Remove it.
+The plans in this patchset is to switch from (A) to (B) and to (C) as
+below. Current code has two patterns (A) and (B), so fist step is to
+change (A) to (B), and then just remove mutex_lock() of driver to get (C).
 
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
----
- drivers/net/wireless/intel/ipw2x00/libipw.h   |  2 -
- .../net/wireless/intel/ipw2x00/libipw_rx.c    | 91 -------------------
- 2 files changed, 93 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/ipw2x00/libipw.h b/drivers/net/wireless/intel/ipw2x00/libipw.h
-index 3c20353e5a41..e031e8692ca6 100644
---- a/drivers/net/wireless/intel/ipw2x00/libipw.h
-+++ b/drivers/net/wireless/intel/ipw2x00/libipw.h
-@@ -1011,8 +1011,6 @@ netdev_tx_t libipw_xmit(struct sk_buff *skb, struct net_device *dev);
- void libipw_txb_free(struct libipw_txb *);
+      (A)                      (B)                  (C)
+                         wiphy_lock()          wiphy_lock()
+                         ...                   ...
+  mutex_lock()           mutex_lock()
+  ...                    ...                   ...
+  mutex_unlock()         mutex_unlock()
+                         ...                   ...
+                         wiphy_unlock()        wiphy_unlock()
  
- /* libipw_rx.c */
--void libipw_rx_any(struct libipw_device *ieee, struct sk_buff *skb,
--		   struct libipw_rx_stats *stats);
- int libipw_rx(struct libipw_device *ieee, struct sk_buff *skb,
- 	      struct libipw_rx_stats *rx_stats);
- /* make sure to set stats->len */
-diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-index dc4e91f58bb4..b7bc94f7abd8 100644
---- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-+++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-@@ -823,96 +823,6 @@ int libipw_rx(struct libipw_device *ieee, struct sk_buff *skb,
- 	return 0;
- }
- 
--/* Filter out unrelated packets, call libipw_rx[_mgt]
-- * This function takes over the skb, it should not be used again after calling
-- * this function. */
--void libipw_rx_any(struct libipw_device *ieee,
--		     struct sk_buff *skb, struct libipw_rx_stats *stats)
--{
--	struct libipw_hdr_4addr *hdr;
--	int is_packet_for_us;
--	u16 fc;
--
--	if (ieee->iw_mode == IW_MODE_MONITOR) {
--		if (!libipw_rx(ieee, skb, stats))
--			dev_kfree_skb_irq(skb);
--		return;
--	}
--
--	if (skb->len < sizeof(struct ieee80211_hdr))
--		goto drop_free;
--
--	hdr = (struct libipw_hdr_4addr *)skb->data;
--	fc = le16_to_cpu(hdr->frame_ctl);
--
--	if ((fc & IEEE80211_FCTL_VERS) != 0)
--		goto drop_free;
--
--	switch (fc & IEEE80211_FCTL_FTYPE) {
--	case IEEE80211_FTYPE_MGMT:
--		if (skb->len < sizeof(struct libipw_hdr_3addr))
--			goto drop_free;
--		libipw_rx_mgt(ieee, hdr, stats);
--		dev_kfree_skb_irq(skb);
--		return;
--	case IEEE80211_FTYPE_DATA:
--		break;
--	case IEEE80211_FTYPE_CTL:
--		return;
--	default:
--		return;
--	}
--
--	is_packet_for_us = 0;
--	switch (ieee->iw_mode) {
--	case IW_MODE_ADHOC:
--		/* our BSS and not from/to DS */
--		if (ether_addr_equal(hdr->addr3, ieee->bssid) &&
--		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == 0)) {
--			/* promisc: get all */
--			if (ieee->dev->flags & IFF_PROMISC)
--				is_packet_for_us = 1;
--			/* to us */
--			else if (ether_addr_equal(hdr->addr1, ieee->dev->dev_addr))
--				is_packet_for_us = 1;
--			/* mcast */
--			else if (is_multicast_ether_addr(hdr->addr1))
--				is_packet_for_us = 1;
--		}
--		break;
--	case IW_MODE_INFRA:
--		/* our BSS (== from our AP) and from DS */
--		if (ether_addr_equal(hdr->addr2, ieee->bssid) &&
--		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS)) {
--			/* promisc: get all */
--			if (ieee->dev->flags & IFF_PROMISC)
--				is_packet_for_us = 1;
--			/* to us */
--			else if (ether_addr_equal(hdr->addr1, ieee->dev->dev_addr))
--				is_packet_for_us = 1;
--			/* mcast */
--			else if (is_multicast_ether_addr(hdr->addr1)) {
--				/* not our own packet bcasted from AP */
--				if (!ether_addr_equal(hdr->addr3, ieee->dev->dev_addr))
--					is_packet_for_us = 1;
--			}
--		}
--		break;
--	default:
--		/* ? */
--		break;
--	}
--
--	if (is_packet_for_us)
--		if (!libipw_rx(ieee, skb, stats))
--			dev_kfree_skb_irq(skb);
--	return;
--
--drop_free:
--	dev_kfree_skb_irq(skb);
--	ieee->dev->stats.rx_dropped++;
--}
--
- #define MGMT_FRAME_FIXED_PART_LENGTH		0x24
- 
- static u8 qos_oui[QOS_OUI_LEN] = { 0x00, 0x50, 0xF2 };
-@@ -1729,6 +1639,5 @@ void libipw_rx_mgt(struct libipw_device *ieee,
- 	}
- }
- 
--EXPORT_SYMBOL_GPL(libipw_rx_any);
- EXPORT_SYMBOL(libipw_rx_mgt);
- EXPORT_SYMBOL(libipw_rx);
+The patches 1/10 and 2/10 are to change (A) to (B) for the codes except
+to debugfs.
+
+The patches 3/10 to 6/10 are related to debugfs. Originally, rtw89 uses
+seq_file to output data, so we convert to use generic file_ops::read/write
+with scnprintf() to be compatible with wiphy_locked_debugfs_{read,write}().
+This is also good to specify output buffer size to avoid duplicate IO
+during debugging.
+
+After patches 1/10 to 6/10, all have become (B), so remove driver mutex
+by patches 7/10 to 9/10. Among them, patch 8/10 is a manually comsmetic
+patch to be expected.
+
+The last one patch is a special deal to early_h2c, which is a list of H2C
+commands for debug purpose.
+
+This patchset has structural dependency with existing two patchset:
+ - wifi: rtw89: enhance dynamic mechanism per PHY
+ - wifi: rtw89: cleanup unused rtwdev::roc_work
+
+[1] ath12k switch to wiphy_lock: https://lore.kernel.org/linux-wireless/20240821153728.2121600-1-kvalo@kernel.org/
+[2] wiphy_lock for debugfs: https://lore.kernel.org/linux-wireless/33ea3a62b4257b6ef789c30fa8f7bf7e9f1865b5.camel@sipsolutions.net/
+[3] debugfs_short_fops: https://lore.kernel.org/linux-wireless/20241009181339.0b1a6eaef573.Ia80b55e934bbfc45ce0df42a3233d34b35508046@changeid/
+
+Ping-Ke Shih (10):
+  wifi: rtw89: add wiphy_lock() to work that isn't held wiphy_lock() yet
+  wifi: rtw89: use wiphy_work() to replace ieee802111_work()
+  wifi: rtw89: debugfs: implement file_ops::read/write to replace
+    seq_file
+  wifi: rtw89: debugfs: specify buffer size allocated by devm_kazlloc()
+    for reading
+  wifi: rtw89: debugfs: use wiphy_locked_debugfs_{read,write}() if
+    needed
+  wifi: rtw89: debugfs: use debugfs_short_fops
+  wifi: rtw89: remove consumers of driver mutex
+  wifi: rtw89: manual cosmetic along lockdep_assert_wiphy()
+  wifi: rtw89: remove definition of driver mutex
+  wifi: rtw89: pci: not assert wiphy_lock to free early_h2c for PCI
+    probe/remove
+
+ drivers/net/wireless/realtek/rtw89/chan.c     |   28 +-
+ drivers/net/wireless/realtek/rtw89/chan.h     |    2 +-
+ drivers/net/wireless/realtek/rtw89/coex.c     | 2805 +++++++++--------
+ drivers/net/wireless/realtek/rtw89/coex.h     |   16 +-
+ drivers/net/wireless/realtek/rtw89/core.c     |  145 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |   38 +-
+ drivers/net/wireless/realtek/rtw89/debug.c    | 2062 ++++++------
+ drivers/net/wireless/realtek/rtw89/fw.c       |   23 +-
+ drivers/net/wireless/realtek/rtw89/fw.h       |    3 +-
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  281 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      |   45 +-
+ drivers/net/wireless/realtek/rtw89/phy.h      |    8 +-
+ drivers/net/wireless/realtek/rtw89/ps.c       |    6 +-
+ drivers/net/wireless/realtek/rtw89/regd.c     |    6 +-
+ drivers/net/wireless/realtek/rtw89/sar.c      |   60 +-
+ drivers/net/wireless/realtek/rtw89/sar.h      |    5 +-
+ drivers/net/wireless/realtek/rtw89/ser.c      |   17 +-
+ drivers/net/wireless/realtek/rtw89/util.c     |   11 +
+ drivers/net/wireless/realtek/rtw89/util.h     |    5 +-
+ drivers/net/wireless/realtek/rtw89/wow.c      |    7 +-
+ 20 files changed, 2988 insertions(+), 2585 deletions(-)
+
 -- 
-2.48.1
+2.25.1
 
 
