@@ -1,88 +1,68 @@
-Return-Path: <linux-wireless+bounces-17824-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17825-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC6FA18C9E
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 08:15:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A87DBA18DD2
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 09:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A107816B4FF
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 07:15:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC2177A52F5
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 08:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4E6143723;
-	Wed, 22 Jan 2025 07:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF8F153824;
+	Wed, 22 Jan 2025 08:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=easyb-ch.20230601.gappssmtp.com header.i=@easyb-ch.20230601.gappssmtp.com header.b="MJDoz0+1"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DwwyfIoA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E887E57D
-	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 07:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD2420F082
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 08:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737530141; cv=none; b=KyAG+wSYDOKBNDVFGoY+ntFUh2k0Ek/Xojp+H8JQs1GQ38SIJLkeGgzyqx6U3GYPv352QnM87sjnHi1SDKcnZYeUU4sPfjhIIyb/EVEwIFt0mGUBLqIvqSvNvXLLjhgeBmPakTuplFzWjj5aPOHWNHvjSYTQXMd5ABpLjwIP9YU=
+	t=1737535713; cv=none; b=ZSPypZk0i02IwbiKhdstOMYcMnN/Dz6BirIfuDfxQcQedLXmwG9Sl7uXAwK6AyxEQ5uuRp+oXrZMbMZrcPNtvqXlNTOrBcAJOVpG4eUscRwcyRvY3gl/b2exutlkiX12Grpyu4tO1JYJYR8PjZFSkkogd5CcjiGfiDC1i5z+oQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737530141; c=relaxed/simple;
-	bh=vWfk37iYUd2tgyOS8c7JDWSFmh5ZM74evUQpYduL8zk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dq+xQm4ZeApI5CAVZ/r9G0oFvBq7opoXCvn0RhddM3a/lh+UekWB+r9K3ywyiSARwU6OEnHOCZLW5xqdsQ2w2t+nCBpSUs+6KWzKDsqXpBq6jBYGEuSZKSMuY9wH13ThY51yxfubDwlgC05GKq/bNm+CpBkUHwXQd9GbF0IusAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=easyb.ch; spf=none smtp.mailfrom=easyb.ch; dkim=pass (2048-bit key) header.d=easyb-ch.20230601.gappssmtp.com header.i=@easyb-ch.20230601.gappssmtp.com header.b=MJDoz0+1; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=easyb.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=easyb.ch
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ef714374c0so871479a91.0
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Jan 2025 23:15:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=easyb-ch.20230601.gappssmtp.com; s=20230601; t=1737530137; x=1738134937; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7UjDfBGOZJec0FX+GhR9A5zT78pHxXSu6/4RrJhJCws=;
-        b=MJDoz0+1ghkAaMM3ZVSZ5vuIh6etxH5V/P0X9vB38vK9N8TU1GWafjv6IU5nayjEcT
-         iXSPBd/f8SMQQg8B/3kzDnnyYYAlbcX9RIgmRxK/lv6+VGLnf0sKlpJdl7ygwF37GvZf
-         QCsDKCKLgV+vg4GlCxR9uQMsw5ZPdIoNdgjkKKriDIGiPs4b6DxxXi6ieUvajapdHrBQ
-         8HNLbjzjXvLrOzDt5PiTotG6Uzmmu3bOV3yKd6uqfYsroI1NqK/M6RmQT33JANxyU0Jj
-         XP1DTttg5EGPYnu1vIkw7sivGpjqMI5fQRWeWqBVMRuZmq0Bl7EkjLMmf3TZwL5J5za6
-         zHxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737530137; x=1738134937;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7UjDfBGOZJec0FX+GhR9A5zT78pHxXSu6/4RrJhJCws=;
-        b=EHSnm1ga5CECSv5bS/Ik8SSqJFOVaB8SYyIUOB0eRiWE14CbVVC34wv762a9m8zUkx
-         JLYqKzyToCwBith6EhMP+86G9A7frnFoOhIf9yaJ0SYJBO7ahG8qVTJdwTiKz3jJv+m8
-         Uf3ZdxDLJYLy0oVSNjNtJjTnxSs5VUe4GRNwt0G2O02v2yvq8Ql8jikInHaF5Sww6krE
-         cfaRtFaTTZcYll+lhDG/aRDLitZInO/KOAKKpsXTWWQS9NWsu8DR2LsWHa2WZJxi8J8s
-         ti3zNuw7GffPvyxtRYm/vXDvaPMzjBVj15OyAPU5filfM4Irs7tblymU6WRIren50cmQ
-         JKDA==
-X-Gm-Message-State: AOJu0Yy2FNgn4/oCagOXoGVokI43KmsULqweRDlIO1aQBcc//6Z1sTyl
-	vF4uf9RvUYOmTyMFIPHqnr+XsXczuEuFE1IClVkU2P1a/46p193wbx///aei4dOxtmz6pziFvA3
-	5
-X-Gm-Gg: ASbGnctYZ5uFkyNktW+qnPO5HFk3S6kwRagbrw0WUgOnJs9Tcj5mWFR12sBOSvpo50h
-	0oc35iI14nxybx1oc9lhfKw5BikAelzY2AfoEAHWJxgpeYheJoQj8k8CFW+nyUorOrW35g6KMom
-	vstTtVcsgEzdc2NyKemUtsJxTvzIHHeVvJNIEwFSSfnAO8Verm+9EWHaihI2ul105lT3d6BFude
-	YDtTW4Ywnmr/N3EubsCwbD3yHD+8lS9Q3T4fqk6dkSlAAZurPcSF09MgdYb
-X-Google-Smtp-Source: AGHT+IEKQWcF3LGTIQxp4rM07dyUhqCrGi20Kq7I3HLLKP2YnnZRu97lXz3gCf33hXzIzKgReCoMsA==
-X-Received: by 2002:a17:90b:2e4a:b0:2ee:7504:bb3d with SMTP id 98e67ed59e1d1-2f782a8e9a6mr33213822a91.0.1737530136680;
-        Tue, 21 Jan 2025 23:15:36 -0800 (PST)
-Received: from pikachu.lan ([101.128.97.26])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7e6a5e347sm806491a91.6.2025.01.21.23.15.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2025 23:15:36 -0800 (PST)
-From: Ezra Buehler <ezra@easyb.ch>
-To: linux-wireless@vger.kernel.org
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Reto Schneider <reto.schneider@husqvarnagroup.com>,
-	Ezra Buehler <ezra.buehler@husqvarnagroup.com>
-Subject: [PATCH v2] wifi: rtl8xxxu: Enable AP mode for RTL8192CU (RTL8188CUS)
-Date: Wed, 22 Jan 2025 15:15:11 +0800
-Message-ID: <20250122071512.10165-1-ezra@easyb.ch>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1737535713; c=relaxed/simple;
+	bh=acHJtgLd2sImWZsqyJ3d16UYiI/taSFKMGHQvu8uecQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rtXQsuYxSHKBWHzX2CX6Vras8lIYFiycGcKz1XF++E8G/9N/XopsWKRh8zvFwWI8V2HEKSRz4oQf3ZtnN40BzppRQUX+9xA6ibiricXHcLfi5hH07apYNDy+PMph2rNZmxuDd8Fzrnmj3Jil3tmGsP1praJlUacEnwxpbD3BDM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DwwyfIoA; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50M4XvGe029827;
+	Wed, 22 Jan 2025 08:48:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=5oLtSJOxxB/cCS7EBavWs5
+	m3edIgGaP2xff8r9TH7F0=; b=DwwyfIoALryuh6jM7lmteUKG0LbdKL2TKGJyZJ
+	OZWhU0F9Dx8en6TtPZi3QpypbqESry18FbcCyvjkyNJKwhcQ6hAYHrfjFhk1woq5
+	/jVhXI4y4VWZxXZLLyhgHdMQYz+1mSY/Q4HwXUsH5M/ytXxgwKms9oUd4v5lBSJR
+	S1n84KfYUwP4f7BUEME51IoEZ08oxQZ2+PIHHudZ6Ca0C2/bD8aZ2pNvCnCY12Q+
+	CszvcygSPsvAlE+/hg109sPtz+hoSDDy+qpV6K0UalpI8GK6kwE+0ujpjzIW2VRQ
+	lmFbFpGyuXvuLuPkeAu72A6N1BtPU0HVL4c4uix3rjil1URw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44asrnrjb3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jan 2025 08:48:26 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50M8mPqR015821
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jan 2025 08:48:25 GMT
+Received: from Z2-SFF-G9-MQ.ap.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 22 Jan 2025 00:48:23 -0800
+From: Miaoqing Pan <quic_miaoqing@quicinc.com>
+To: <kvalo@kernel.org>, <quic_jjohnson@quicinc.com>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        "Miaoqing
+ Pan" <quic_miaoqing@quicinc.com>
+Subject: [PATCH v2] wifi: ath12k: fix memory leak in ath12k_pci_remove()
+Date: Wed, 22 Jan 2025 16:47:56 +0800
+Message-ID: <20250122084756.817548-1-quic_miaoqing@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,55 +70,61 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: SShnQvHfD6t-ijXIALJCF2UcDqtk4kz6
+X-Proofpoint-ORIG-GUID: SShnQvHfD6t-ijXIALJCF2UcDqtk4kz6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-22_03,2025-01-22_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0 mlxscore=0
+ spamscore=0 lowpriorityscore=0 clxscore=1011 adultscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501220062
 
-From: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+Kmemleak reported this error:
 
-This allows the driver to be used in wireless access point mode on the
-AT91SAM9G25-based GARDENA smart Gateway.
+  unreferenced object 0xffff1c165cec3060 (size 32):
+    comm "insmod", pid 560, jiffies 4296964570 (age 235.596s)
+    backtrace:
+      [<000000005434db68>] __kmem_cache_alloc_node+0x1f4/0x2c0
+      [<000000001203b155>] kmalloc_trace+0x40/0x88
+      [<0000000028adc9c8>] _request_firmware+0xb8/0x608
+      [<00000000cad1aef7>] firmware_request_nowarn+0x50/0x80
+      [<000000005011a682>] local_pci_probe+0x48/0xd0
+      [<00000000077cd295>] pci_device_probe+0xb4/0x200
+      [<0000000087184c94>] really_probe+0x150/0x2c0
 
-Unfortunately, the data throughput in AP mode appears to be lower than
-with the vendor driver (or in STA mode). Especially when sending, the
-data rate is significantly lower. My measurements performed with iperf3
-and an Edimax EW-7811Un (VID: 7392, PID: 7811) showed a maximum TX rate
-of about 4 Mbits/sec compared to the ~24 Mbits/sec measured with the
-rtl8192cu driver.
+The firmware memory was allocated in ath12k_pci_probe(), but not
+freed in ath12k_pci_remove() in case ATH12K_FLAG_QMI_FAIL bit is
+set. So call ath12k_fw_unmap() to free the memory.
 
-Although the performance might be good enough for our use case, this is
-something that should be further looked into.
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.2.0-02280-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
 
-Signed-off-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
 ---
-When comparing the register values dumped for the two drivers in AP
-mode, there are quite some differences. So, no idea where to start
-digging deeper. Any pointers would be highly appreciated.
-
-Cheers,
-Ezra.
+v2: rebased as Jeff required
 ---
-Changes in v2:
-- Set max_macid_num to correct value
-- Make commit message more elaborate, mention bad TX performance
-- Link to v1: https://lore.kernel.org/20241108195511.1338147-1-ezra@easyb.ch
----
- drivers/net/wireless/realtek/rtl8xxxu/8192c.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/ath12k/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/8192c.c b/drivers/net/wireless/realtek/rtl8xxxu/8192c.c
-index 0abb1b092bc2..73034e7e41d1 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/8192c.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8192c.c
-@@ -644,6 +644,8 @@ struct rtl8xxxu_fileops rtl8192cu_fops = {
- 	.rx_agg_buf_size = 16000,
- 	.tx_desc_size = sizeof(struct rtl8xxxu_txdesc32),
- 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc16),
-+	.supports_ap = 1,
-+	.max_macid_num = 32,
- 	.max_sec_cam_num = 32,
- 	.adda_1t_init = 0x0b1b25a0,
- 	.adda_1t_path_on = 0x0bdb25a0,
-
-base-commit: 361cb056e2468be534f47c1a6745f96581a721e3
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 06cff3849ab8..7a30abda22cd 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -1725,6 +1725,7 @@ static void ath12k_pci_remove(struct pci_dev *pdev)
+ 	if (test_bit(ATH12K_FLAG_QMI_FAIL, &ab->dev_flags)) {
+ 		ath12k_pci_power_down(ab, false);
+ 		ath12k_qmi_deinit_service(ab);
++		ath12k_fw_unmap(ab);
+ 		ath12k_core_hw_group_unassign(ab);
+ 		goto qmi_fail;
+ 	}
 -- 
-2.47.1
+2.25.1
 
 
