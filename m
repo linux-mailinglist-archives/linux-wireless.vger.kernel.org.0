@@ -1,64 +1,67 @@
-Return-Path: <linux-wireless+bounces-17813-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17814-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8018A18B97
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 07:03:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E94AA18B9A
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 07:04:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 082571627C0
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 06:03:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F31C3AAEC5
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 06:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA72175D47;
-	Wed, 22 Jan 2025 06:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E372EAE6;
+	Wed, 22 Jan 2025 06:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="CKb5+I7X"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="d/wMEF8L"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B7C14A619
-	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 06:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4CB54738
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 06:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737525820; cv=none; b=j0at9mP1XVe8Ej25QBoy5DCjIpFcbNgb/ayB57a2R4yIXCaVDP6hF/efTlDWztdKomaJQaWzAsFK49hCblEvwAtMSLAYbxx/pVWyVwNLDs0+LmQEPVJeFSx12Gig82JBuhK9axyz1jS6sf1FXCQxWx/Dupq0McPvECylVBbXGBY=
+	t=1737525824; cv=none; b=o3Bjj4srUJlKaC4pKLZ+KOiKYrLXxk7/VORd40MmnOD0D2wuiyBWM+AjXlWOa7cjo1L54YQ9AQlZwKtgZfzdoEIfSTmSZ11f7AagzYzEToEy/i88BGI04DPJlOlrCb/4r+lu9pU1TBroaIAO9jQZobh/UERaLMbukEWWa4a0F1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737525820; c=relaxed/simple;
-	bh=tzLaFDMmoOnIZItKbUceuCOmfLTFrevSKI3QEEtFglw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XbUbSScoQaNYYwnBUOtGfiUze1H0bWBaCSlvWPfs/Hyp29IvhhAYnw2BspVkXIpFr2IozG+SvWxXCRL4OTonNqDnhWPE9KDpe8jPgbOzdFQKJG3QxPuvbtr41guCgb8/CiYtKvK8fnBwpUrCoE7EG03VeDvsajVCcOfnfgws/CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=CKb5+I7X; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1737525824; c=relaxed/simple;
+	bh=ZoIkKTLn9eJFI6l2lvcLm7a1xedIfSwhTTfX67GhL1g=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=p2Tnkn5nZP/oz/uo5lhCuj/1T4JVaCZlzRuUhpVqumHReKe2KJxH4CJEyWurxI2q2EB4Iijyga/T+wsxTCWQ9VbDlkwqHTOU/MI5209BuhqoN733GtiBPZWsu1KBssZC1pIHuI5QV5d8qlIjBHfIHcyCaMUpDGfo4VSb8b5RalY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=d/wMEF8L; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50M63XnpC2493985, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50M63b3T22494028, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1737525813; bh=tzLaFDMmoOnIZItKbUceuCOmfLTFrevSKI3QEEtFglw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=CKb5+I7XU8+LB2XD6/GIP4IshiXM0inlvGcg4CyJ43LeMMLFrHBPlM19kipPGhwy1
-	 8SoOp/VuEqO/SpfglM4+dZ4E6RikwHigvOKCla8/EnRkFG/jtHHaQHnRnp06Lxrl6p
-	 66hzhDqwHtaOayUe5gn1keDSm06anazuS1hzNqKhjrnFeNeX6Gl3qyUv51pZM9pQ2S
-	 yaINgvhH+aFXWL2fQYwBxBMt0Cp0jcpzWdKi1k+7Ge11XWkTRJUOZMJ7oie/oS8hFN
-	 CGDZA3317F+nP3wFvx/5/0h5iWeLirTh6f4pbIS2CHKSYmgPJyC0ax3lDgNvHr+Psq
-	 sNLaJ6/zAjqNA==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50M63XnpC2493985
+	t=1737525817; bh=ZoIkKTLn9eJFI6l2lvcLm7a1xedIfSwhTTfX67GhL1g=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=d/wMEF8Lmmm0aGyoTQjeSxk6M5IGnCZuYXhfJYyke4RZKiaY370QY+WTxyUPt+YU1
+	 qouomfFaTd5gOw/SsF3NA1yQHWLrkOu7QpWnda9lCqaDN3H+Bnu1chieH8gUJ8ypZ7
+	 IYXlaee4R2o/+ZzINkfBH78n8EypMQRpZDOy4NMe2xqhKG5+JCFezw/fkia0AAqGae
+	 WgExbcz/zyBmuesMoNpmGk0aUOYWMpdsYSW82pLK/qXgw3o9k4tbl3ly3foI/p7oeJ
+	 oPaw0LFXYJHWenJSefsWCCaQmUjgmH+rBCUDm+MgRlI/uijHHBLFCUKbnRkHqtQGbj
+	 MNHVVCk38YQgA==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50M63b3T22494028
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 14:03:33 +0800
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 14:03:37 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 22 Jan 2025 14:03:33 +0800
+ 15.1.2507.39; Wed, 22 Jan 2025 14:03:38 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 22 Jan
- 2025 14:03:33 +0800
+ 2025 14:03:37 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 00/10] wifi: rtw89: switch to wiphy lock and work
-Date: Wed, 22 Jan 2025 14:03:00 +0800
-Message-ID: <20250122060310.31976-1-pkshih@realtek.com>
+Subject: [PATCH 01/10] wifi: rtw89: add wiphy_lock() to work that isn't held wiphy_lock() yet
+Date: Wed, 22 Jan 2025 14:03:01 +0800
+Message-ID: <20250122060310.31976-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250122060310.31976-1-pkshih@realtek.com>
+References: <20250122060310.31976-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,90 +73,63 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-The driver mutex is to synchronize ieee80211_ops and works, but it isn't
-easy to mange and causes AB-BA locks problem, which we have adjusted to
-avoid but the code isn't smooth.
+To ensure where are protected by driver mutex can also be protected by
+wiphy_lock(), so afterward we can remove driver mutex safely.
 
-Nowaday, wiphy lock can make thing simple and easy, and also switch to
-wiphy lock is easy by reference of ath12k [1]. The debugfs neeeds special
-treatments to use wiphy_lock [2], and debugfs_short_fops [3] can save
-some spaces.
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/regd.c | 2 ++
+ drivers/net/wireless/realtek/rtw89/ser.c  | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-The plans in this patchset is to switch from (A) to (B) and to (C) as
-below. Current code has two patterns (A) and (B), so fist step is to
-change (A) to (B), and then just remove mutex_lock() of driver to get (C).
-
-      (A)                      (B)                  (C)
-                         wiphy_lock()          wiphy_lock()
-                         ...                   ...
-  mutex_lock()           mutex_lock()
-  ...                    ...                   ...
-  mutex_unlock()         mutex_unlock()
-                         ...                   ...
-                         wiphy_unlock()        wiphy_unlock()
+diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
+index 80b2f74589eb..5b8d95c90d73 100644
+--- a/drivers/net/wireless/realtek/rtw89/regd.c
++++ b/drivers/net/wireless/realtek/rtw89/regd.c
+@@ -720,6 +720,7 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
+ 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
+ 	struct rtw89_dev *rtwdev = hw->priv;
  
-The patches 1/10 and 2/10 are to change (A) to (B) for the codes except
-to debugfs.
-
-The patches 3/10 to 6/10 are related to debugfs. Originally, rtw89 uses
-seq_file to output data, so we convert to use generic file_ops::read/write
-with scnprintf() to be compatible with wiphy_locked_debugfs_{read,write}().
-This is also good to specify output buffer size to avoid duplicate IO
-during debugging.
-
-After patches 1/10 to 6/10, all have become (B), so remove driver mutex
-by patches 7/10 to 9/10. Among them, patch 8/10 is a manually comsmetic
-patch to be expected.
-
-The last one patch is a special deal to early_h2c, which is a list of H2C
-commands for debug purpose.
-
-This patchset has structural dependency with existing two patchset:
- - wifi: rtw89: enhance dynamic mechanism per PHY
- - wifi: rtw89: cleanup unused rtwdev::roc_work
-
-[1] ath12k switch to wiphy_lock: https://lore.kernel.org/linux-wireless/20240821153728.2121600-1-kvalo@kernel.org/
-[2] wiphy_lock for debugfs: https://lore.kernel.org/linux-wireless/33ea3a62b4257b6ef789c30fa8f7bf7e9f1865b5.camel@sipsolutions.net/
-[3] debugfs_short_fops: https://lore.kernel.org/linux-wireless/20241009181339.0b1a6eaef573.Ia80b55e934bbfc45ce0df42a3233d34b35508046@changeid/
-
-Ping-Ke Shih (10):
-  wifi: rtw89: add wiphy_lock() to work that isn't held wiphy_lock() yet
-  wifi: rtw89: use wiphy_work() to replace ieee802111_work()
-  wifi: rtw89: debugfs: implement file_ops::read/write to replace
-    seq_file
-  wifi: rtw89: debugfs: specify buffer size allocated by devm_kazlloc()
-    for reading
-  wifi: rtw89: debugfs: use wiphy_locked_debugfs_{read,write}() if
-    needed
-  wifi: rtw89: debugfs: use debugfs_short_fops
-  wifi: rtw89: remove consumers of driver mutex
-  wifi: rtw89: manual cosmetic along lockdep_assert_wiphy()
-  wifi: rtw89: remove definition of driver mutex
-  wifi: rtw89: pci: not assert wiphy_lock to free early_h2c for PCI
-    probe/remove
-
- drivers/net/wireless/realtek/rtw89/chan.c     |   28 +-
- drivers/net/wireless/realtek/rtw89/chan.h     |    2 +-
- drivers/net/wireless/realtek/rtw89/coex.c     | 2805 +++++++++--------
- drivers/net/wireless/realtek/rtw89/coex.h     |   16 +-
- drivers/net/wireless/realtek/rtw89/core.c     |  145 +-
- drivers/net/wireless/realtek/rtw89/core.h     |   38 +-
- drivers/net/wireless/realtek/rtw89/debug.c    | 2062 ++++++------
- drivers/net/wireless/realtek/rtw89/fw.c       |   23 +-
- drivers/net/wireless/realtek/rtw89/fw.h       |    3 +-
- drivers/net/wireless/realtek/rtw89/mac80211.c |  281 +-
- drivers/net/wireless/realtek/rtw89/phy.c      |   45 +-
- drivers/net/wireless/realtek/rtw89/phy.h      |    8 +-
- drivers/net/wireless/realtek/rtw89/ps.c       |    6 +-
- drivers/net/wireless/realtek/rtw89/regd.c     |    6 +-
- drivers/net/wireless/realtek/rtw89/sar.c      |   60 +-
- drivers/net/wireless/realtek/rtw89/sar.h      |    5 +-
- drivers/net/wireless/realtek/rtw89/ser.c      |   17 +-
- drivers/net/wireless/realtek/rtw89/util.c     |   11 +
- drivers/net/wireless/realtek/rtw89/util.h     |    5 +-
- drivers/net/wireless/realtek/rtw89/wow.c      |    7 +-
- 20 files changed, 2988 insertions(+), 2585 deletions(-)
-
++	wiphy_lock(wiphy);
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtw89_leave_ps_mode(rtwdev);
+ 
+@@ -737,6 +738,7 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
+ 
+ exit:
+ 	mutex_unlock(&rtwdev->mutex);
++	wiphy_unlock(wiphy);
+ }
+ 
+ /* Maximum Transmit Power field (@raw) can be EIRP or PSD.
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index 26a944d3b672..d0c8584308c0 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -156,9 +156,11 @@ static void ser_state_run(struct rtw89_ser *ser, u8 evt)
+ 	rtw89_debug(rtwdev, RTW89_DBG_SER, "ser: %s receive %s\n",
+ 		    ser_st_name(ser), ser_ev_name(ser, evt));
+ 
++	wiphy_lock(rtwdev->hw->wiphy);
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtw89_leave_lps(rtwdev);
+ 	mutex_unlock(&rtwdev->mutex);
++	wiphy_unlock(rtwdev->hw->wiphy);
+ 
+ 	ser->st_tbl[ser->state].st_func(ser, evt);
+ }
+@@ -708,9 +710,11 @@ static void ser_l2_reset_st_hdl(struct rtw89_ser *ser, u8 evt)
+ 
+ 	switch (evt) {
+ 	case SER_EV_STATE_IN:
++		wiphy_lock(rtwdev->hw->wiphy);
+ 		mutex_lock(&rtwdev->mutex);
+ 		ser_l2_reset_st_pre_hdl(ser);
+ 		mutex_unlock(&rtwdev->mutex);
++		wiphy_unlock(rtwdev->hw->wiphy);
+ 
+ 		ieee80211_restart_hw(rtwdev->hw);
+ 		ser_set_alarm(ser, SER_RECFG_TIMEOUT, SER_EV_L2_RECFG_TIMEOUT);
 -- 
 2.25.1
 
