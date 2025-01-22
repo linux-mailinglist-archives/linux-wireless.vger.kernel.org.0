@@ -1,894 +1,365 @@
-Return-Path: <linux-wireless+bounces-17810-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17811-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB91DA18925
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 01:49:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8E8A189A0
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 02:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E7C93AB95C
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 00:48:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C90F16631B
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2025 01:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50EE8F9FE;
-	Wed, 22 Jan 2025 00:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8B06A8D2;
+	Wed, 22 Jan 2025 01:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="iU5y/r/+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QtL47FYz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BE6749C
-	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 00:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849897462
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Jan 2025 01:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737506912; cv=none; b=SqqXhIidh21uRkFrxRkZT0XAGvIPxiV0T/9ZoKgn799TJR7eopLwu/34hwyRmJsG8pf5F0Rqkm0Eim9BQt3nORDrO+kAEXucnznEz+33XNaIB7U/baOKugm+zbPWfzoR7jZSRVVGJsdPVu8VXp5RXtHDNV02s5lYei0581K6B+Y=
+	t=1737510006; cv=none; b=FA3EuaytCC88xE3Jkq2RUomElvNvbTl7Eb8ihcJz3xiPkSlz+V1HbsTN1uFVHQZQI6fI6CgJOFKiPkrlRLqZJNxci7LAZm8sQSlUxbmXcngT8x9apuA3NHIXC9LhAFcFLrITJoAVnNFchfKb0ZvAFG3LrIbXAkbtwJtEcJYITVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737506912; c=relaxed/simple;
-	bh=4V5qiM5Y5QtmFvMg1GLgqbbSu/yJGXShkQjrOVnv/d0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tmtxPdcVGNOXeq1MRBcSBITXps+gASB71oo/Svg9y5/M6Bppir3qVKJiU3rfEo+oSuVXwcgZwj1N6VCmHawbxho2WrT5iBsB3K5FVzO3+rkocJGoS15ba4NeWFBZwgiY+BMjlBKLULGo+UMoUKGHO43Hat3SH1C4Xdt/oK9fAe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=iU5y/r/+; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50LHQav0024191;
-	Wed, 22 Jan 2025 00:48:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	3gPaC5gsuiiN2VBo3Tn3J5oEsE/JO3H41w9aptWY6wI=; b=iU5y/r/+FhoCjYT/
-	/aUwLgQPWjcZ1KpRWR0Q5292jqer2gzST25mM/XCRB+T5gcgLO5gyguqI70zUS/b
-	0vHAZ3k0Xf/ifvBt0UxpW4tdssnzwZpKz/fNHZ/2y7swvY2e6GZ1e2TQnFMmNiYm
-	840oTiVPM+a8QeKjKJI1PQBKI7K7nD4RyA3iLdFh+p46gjy/LBua6x3a+hpGp32z
-	9gOsrI9lFXiUK7dUehWa8BagqdpDk8MS3Ed0DZtijTQJkWtkKdsy7diZhLdOWm6R
-	HNL6msEnzZkzJIPtUUhsxI6Z3q8QXn0yUUf7VElscV/A/jaOEY5I2YIFZS5WkPPf
-	szGKWg==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ag00rx55-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jan 2025 00:48:27 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50M0mR4u024958
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jan 2025 00:48:27 GMT
-Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 21 Jan 2025 16:48:24 -0800
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>,
-        P Praneesh <quic_ppranees@quicinc.com>,
-        Balamurugan Mahalingam <quic_bmahalin@quicinc.com>
-Subject: [PATCH v4 10/10] wifi: ath12k: Add peer extended Rx statistics debugfs support
-Date: Wed, 22 Jan 2025 06:17:47 +0530
-Message-ID: <20250122004747.488438-11-quic_periyasa@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250122004747.488438-1-quic_periyasa@quicinc.com>
-References: <20250122004747.488438-1-quic_periyasa@quicinc.com>
+	s=arc-20240116; t=1737510006; c=relaxed/simple;
+	bh=X8svDz7HtPQcW44cGU47R6oNOze1fOKboudbN+MY4wY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iP/B0gdbvhzK7pniVe0Ku+c9rKVieaZsnTWrl+8RU0cwovkaCO4DpbKOy3UWMbIFX4OMKetboPWSZixOo56+pKp1BxKbjqZyQJ6e0mQmNc6Uj9dnZqutX+5zp6swmcczM4TZaoTdQLW3yBu6CZ3RR+8ucX/1t49/pjUDEn60oeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QtL47FYz; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737510004; x=1769046004;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=X8svDz7HtPQcW44cGU47R6oNOze1fOKboudbN+MY4wY=;
+  b=QtL47FYzUjfb+QqEkfWS9BYRS6aqnS+udJ7MEBWU5N+MU2h8Uxdw8Ptg
+   XfjyJP1JqRX23TBO+qrV8NEu+WE7Ph3of77ZLoN78+nRO7f0XD1t3enls
+   RB72rsWkfSAbzMRow6Ym1GADscQaPNllnflHm7Sl7ibF6Vplrj1AoAfWE
+   eQ80ckvpi2LULWAqbl+nxN9TumaeZYgIUITOPE1osLMx99KsrtByPJRC4
+   VeaCwB447Ntfjx9VgFgbUSFL8VJo8Cv2SZIH68eqErZ9RuJqejNESoblL
+   hMubLGLy27Ttnb7YPITZlx9z4vEitopH8cYN/S8KgCpwlGz2vmOrayYz4
+   w==;
+X-CSE-ConnectionGUID: 7Y/WfgPxSB2CUuZCcbMMfw==
+X-CSE-MsgGUID: yv7q84nKShSIQrwzaItcvA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="49366758"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="49366758"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 17:40:04 -0800
+X-CSE-ConnectionGUID: wuHn2nd+Rk+Hj1FK4AmuRw==
+X-CSE-MsgGUID: PWNJUa90RTefNNVdM3knSw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,223,1732608000"; 
+   d="scan'208";a="106900654"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 21 Jan 2025 17:40:02 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1taPip-000ZGJ-2h;
+	Wed, 22 Jan 2025 01:39:59 +0000
+Date: Wed, 22 Jan 2025 09:39:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
+	ath12k@lists.infradead.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-wireless@vger.kernel.org,
+	Rajat Soni <rajat.soni@oss.qualcomm.com>,
+	Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+Subject: Re: [PATCH v3] wifi: ath12k: Add WMI control path stats infra
+Message-ID: <202501220916.o70hNSkA-lkp@intel.com>
+References: <20250120184447.658660-1-ramya.gnanasekar@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Sd-un-xFrXGBAiVabiaUN1lCLKRTcLru
-X-Proofpoint-ORIG-GUID: Sd-un-xFrXGBAiVabiaUN1lCLKRTcLru
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-21_10,2025-01-21_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
- malwarescore=0 suspectscore=0 clxscore=1015 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 phishscore=0
- mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2501220003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250120184447.658660-1-ramya.gnanasekar@oss.qualcomm.com>
 
-Currently, peer extended Rx statistics are not supported. Therefore, expose
-peer extended Rx statistics support through debugfs, allowing users to
-enable or disable the collection of statistics information. After that
-the statistics information can be dumped through debugfs. Below are the
-debugfs commands exposed.
+Hi Ramya,
 
-Enable/Disable:
- echo <1/0> > /sys/kernel/debug/ieee80211/phyX/ath12k/ext_rx_stats
+kernel test robot noticed the following build warnings:
 
-Dump:
- cat /sys/kernel/debug/ieee80211/phyX/netdev:wlanX/stations/<peer MAC addr>/rx_stats
+[auto build test WARNING on d7bef42fc98f2d8f67546d1ea1a3f2c2932fd72b]
 
-Sample output:
-==============
-RX peer stats:
+url:    https://github.com/intel-lab-lkp/linux/commits/Ramya-Gnanasekar/wifi-ath12k-Add-WMI-control-path-stats-infra/20250121-024618
+base:   d7bef42fc98f2d8f67546d1ea1a3f2c2932fd72b
+patch link:    https://lore.kernel.org/r/20250120184447.658660-1-ramya.gnanasekar%40oss.qualcomm.com
+patch subject: [PATCH v3] wifi: ath12k: Add WMI control path stats infra
+config: um-allmodconfig (https://download.01.org/0day-ci/archive/20250122/202501220916.o70hNSkA-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project c23f2417dc5f6dc371afb07af5627ec2a9d373a0)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250122/202501220916.o70hNSkA-lkp@intel.com/reproduce)
 
-Num of MSDUs: 1087
-Num of MSDUs with TCP L4: 0
-Num of MSDUs with UDP L4: 13
-Num of other MSDUs: 1074
-Num of MSDUs part of AMPDU: 363
-Num of MSDUs not part of AMPDU: 724
-Num of MSDUs using STBC: 0
-Num of MSDUs beamformed: 0
-Num of MPDUs with FCS ok: 695
-Num of MPDUs with FCS error: 0
-preamble: 11A 395 11B 0 11N 0 11AC 0 11AX 692 11BE 0
-reception type: SU 1087 MU_MIMO 0 MU_OFDMA 0 MU_OFDMA_MIMO 0
-TID(0-15) Legacy TID(16):690 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 395
-RX Duration:39537
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501220916.o70hNSkA-lkp@intel.com/
 
-DCM: 0
-RU26:  0
-RU52:  0
-RU106: 0
-RU242: 0
-RU484: 0
-RU996: 0
+All warnings (new ones prefixed by >>):
 
-RX success packet stats:
+   In file included from drivers/net/wireless/ath/ath12k/wmi.c:6:
+   In file included from include/linux/skbuff.h:17:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:12:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/um/include/asm/hardirq.h:5:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:549:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     549 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:567:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     567 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+         |                                                   ^
+   In file included from drivers/net/wireless/ath/ath12k/wmi.c:6:
+   In file included from include/linux/skbuff.h:17:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:12:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/um/include/asm/hardirq.h:5:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:585:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     585 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+         |                                                   ^
+   In file included from drivers/net/wireless/ath/ath12k/wmi.c:6:
+   In file included from include/linux/skbuff.h:17:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:12:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/um/include/asm/hardirq.h:5:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:601:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     601 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:616:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     616 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:631:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     631 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:724:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     724 |         readsb(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:737:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     737 |         readsw(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:750:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     750 |         readsl(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:764:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     764 |         writesb(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:778:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     778 |         writesw(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:792:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     792 |         writesl(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+>> drivers/net/wireless/ath/ath12k/wmi.c:7504:7: warning: variable 'ret' is used uninitialized whenever switch case is taken [-Wsometimes-uninitialized]
+    7504 |         case WMI_TAG_CTRL_PATH_STATS_EV_FIXED_PARAM:
+         |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/wireless/ath/ath12k/wmi.c:7518:9: note: uninitialized use occurs here
+    7518 |         return ret;
+         |                ^~~
+   drivers/net/wireless/ath/ath12k/wmi.c:7501:9: note: initialize the variable 'ret' to silence this warning
+    7501 |         int ret;
+         |                ^
+         |                 = 0
+>> drivers/net/wireless/ath/ath12k/wmi.c:7597:7: warning: variable 'ar' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+    7597 |                 if (!param.ar)
+         |                     ^~~~~~~~~
+   drivers/net/wireless/ath/ath12k/wmi.c:7638:16: note: uninitialized use occurs here
+    7638 |         spin_lock_bh(&ar->debug.wmi_ctrl_path_stats_lock);
+         |                       ^~
+   drivers/net/wireless/ath/ath12k/wmi.c:7597:3: note: remove the 'if' if its condition is always true
+    7597 |                 if (!param.ar)
+         |                 ^~~~~~~~~~~~~~
+    7598 |                         return;
+   drivers/net/wireless/ath/ath12k/wmi.c:7562:19: note: initialize the variable 'ar' to silence this warning
+    7562 |         struct ath12k *ar;
+         |                          ^
+         |                           = NULL
+   14 warnings generated.
 
-EHT stats:
-MCS 0: 0        MCS 1: 0        MCS 2: 0        MCS 3: 0        MCS 4: 0        MCS 5: 0        MCS 6: 0        MCS 7: 0
-MCS 8: 0        MCS 9: 0        MCS 10: 0       MCS 11: 0       MCS 12: 0       MCS 13: 0       MCS 14: 0       MCS 15: 0
 
-HE stats:
-MCS 0: 1        MCS 1: 0        MCS 2: 0        MCS 3: 0        MCS 4: 0        MCS 5: 0
-MCS 6: 66       MCS 7: 46       MCS 8: 46       MCS 9: 34       MCS 10: 28      MCS 11: 471
+vim +/ret +7504 drivers/net/wireless/ath/ath12k/wmi.c
 
-VHT stats:
-MCS 0: 0        MCS 1: 0        MCS 2: 0        MCS 3: 0        MCS 4: 0
-MCS 5: 0        MCS 6: 0        MCS 7: 0        MCS 8: 0        MCS 9: 0
+  7496	
+  7497	static int ath12k_wmi_ctrl_stats_subtlv_parser(struct ath12k_base *ab,
+  7498						       u16 tag, u16 len,
+  7499						       const void *ptr, void *data)
+  7500	{
+  7501		int ret;
+  7502	
+  7503		switch (tag) {
+> 7504		case WMI_TAG_CTRL_PATH_STATS_EV_FIXED_PARAM:
+  7505			break;
+  7506		case WMI_TAG_CTRL_PATH_PDEV_STATS:
+  7507			ret = wmi_pull_ctrl_path_pdev_tx_stats_tlv(ab, len, ptr, data);
+  7508			break;
+  7509			/* Add case for newly wmi ctrl path added stats here */
+  7510		default:
+  7511			ath12k_warn(ab,
+  7512				    "Received invalid tag for wmi ctrl path stats in subtlvs, tag : 0x%x\n",
+  7513				    tag);
+  7514			ret = -EINVAL;
+  7515			break;
+  7516		}
+  7517	
+  7518		return ret;
+  7519	}
+  7520	
+  7521	static int ath12k_wmi_ctrl_stats_event_parser(struct ath12k_base *ab,
+  7522						      u16 tag, u16 len,
+  7523						      const void *ptr, void *data)
+  7524	{
+  7525		int ret;
+  7526	
+  7527		ath12k_dbg(ab, ATH12K_DBG_WMI, "wmi ctrl path stats tag 0x%x of len %d rcvd\n",
+  7528			   tag, len);
+  7529	
+  7530		switch (tag) {
+  7531		case WMI_TAG_CTRL_PATH_STATS_EV_FIXED_PARAM:
+  7532			/* Fixed param is already processed*/
+  7533			ret = 0;
+  7534			break;
+  7535		case WMI_TAG_ARRAY_STRUCT:
+  7536			/* len 0 is expected for array of struct when there
+  7537			 * is no content of that type to pack inside that tlv
+  7538			 */
+  7539			if (len == 0)
+  7540				return 0;
+  7541	
+  7542			ret = ath12k_wmi_tlv_iter(ab, ptr, len,
+  7543						  ath12k_wmi_ctrl_stats_subtlv_parser,
+  7544						  data);
+  7545			break;
+  7546		default:
+  7547			ath12k_warn(ab, "Received invalid tag for wmi ctrl path stats\n");
+  7548			ret = -EINVAL;
+  7549			break;
+  7550		}
+  7551	
+  7552		return ret;
+  7553	}
+  7554	
+  7555	static void ath12k_wmi_ctrl_path_stats_event(struct ath12k_base *ab, struct sk_buff *skb)
+  7556	{
+  7557		struct wmi_ctrl_path_stats_event *fixed_param;
+  7558		struct ath12k_wmi_ctrl_path_stats_list param = {0};
+  7559		struct ath12k_wmi_ctrl_path_stats_list *stats;
+  7560		const struct wmi_tlv *tlv;
+  7561		struct list_head *src, *dst;
+  7562		struct ath12k *ar;
+  7563		void *ptr = skb->data;
+  7564		u16 tlv_tag, tag_id;
+  7565		u32 more;
+  7566		int ret;
+  7567	
+  7568		if (!skb->data) {
+  7569			ath12k_warn(ab, "No data present in wmi ctrl stats event\n");
+  7570			return;
+  7571		}
+  7572	
+  7573		if (skb->len < (sizeof(*fixed_param) + TLV_HDR_SIZE)) {
+  7574			ath12k_warn(ab, "wmi ctrl stats event size invalid\n");
+  7575			return;
+  7576		}
+  7577	
+  7578		param.ar = NULL;
+  7579	
+  7580		tlv = ptr;
+  7581		tlv_tag = le32_get_bits(tlv->header, WMI_TLV_TAG);
+  7582		ptr += sizeof(*tlv);
+  7583	
+  7584		if (tlv_tag != WMI_TAG_CTRL_PATH_STATS_EV_FIXED_PARAM) {
+  7585			ath12k_warn(ab, "wmi ctrl stats without fixed param tlv at start\n");
+  7586			return;
+  7587		}
+  7588	
+  7589		INIT_LIST_HEAD(&param.pdev_stats);
+  7590	
+  7591		fixed_param = ptr;
+  7592		ret = ath12k_wmi_tlv_iter(ab, skb->data, skb->len,
+  7593					  ath12k_wmi_ctrl_stats_event_parser,
+  7594					  &param);
+  7595		if (ret) {
+  7596			ath12k_warn(ab, "failed to parse wmi_ctrl_path_stats tlv: %d\n", ret);
+> 7597			if (!param.ar)
+  7598				return;
+  7599			goto free;
+  7600		}
+  7601	
+  7602		ar = param.ar;
+  7603		if (!ar)
+  7604			return;
+  7605	
+  7606		tag_id = ar->debug.wmi_ctrl_path_stats_tagid;
+  7607		stats = &ar->debug.wmi_ctrl_path_stats;
+  7608		more = __le32_to_cpu(fixed_param->more);
+  7609	
+  7610		switch (tag_id) {
+  7611		case WMI_TAG_CTRL_PATH_PDEV_STATS:
+  7612			src = &param.pdev_stats;
+  7613			dst = &stats->pdev_stats;
+  7614			break;
+  7615		default:
+  7616			goto free;
+  7617		}
+  7618	
+  7619		spin_lock_bh(&ar->debug.wmi_ctrl_path_stats_lock);
+  7620		if (!more) {
+  7621			if (!ar->debug.wmi_ctrl_path_stats_more_enabled)
+  7622				ath12k_wmi_ctrl_path_stats_list_free(stats);
+  7623			else
+  7624				ar->debug.wmi_ctrl_path_stats_more_enabled = false;
+  7625	
+  7626			list_splice_tail_init(src, dst);
+  7627			complete(&ar->debug.wmi_ctrl_path_stats_rcvd);
+  7628		} else {
+  7629			if (!ar->debug.wmi_ctrl_path_stats_more_enabled) {
+  7630				ath12k_wmi_ctrl_path_stats_list_free(stats);
+  7631				ar->debug.wmi_ctrl_path_stats_more_enabled = true;
+  7632			}
+  7633			list_splice_tail_init(src, dst);
+  7634		}
+  7635		spin_unlock_bh(&ar->debug.wmi_ctrl_path_stats_lock);
+  7636		return;
+  7637	free:
+  7638		spin_lock_bh(&ar->debug.wmi_ctrl_path_stats_lock);
+  7639		ath12k_wmi_ctrl_path_stats_list_free(&param);
+  7640		spin_unlock_bh(&ar->debug.wmi_ctrl_path_stats_lock);
+  7641	}
+  7642	#else
+  7643	static void ath12k_wmi_ctrl_path_stats_event(struct ath12k_base *ab,
+  7644						     struct sk_buff *skb)
+  7645	{
+  7646	}
+  7647	#endif /* CONFIG_ATH12K_DEBUGFS */
+  7648	
 
-HT stats:
-MCS 0: 0        MCS 1: 0        MCS 2: 0        MCS 3: 0        MCS 4: 0        MCS 5: 0        MCS 6: 0        MCS 7: 0
-MCS 8: 0        MCS 9: 0        MCS 10: 0       MCS 11: 0       MCS 12: 0       MCS 13: 0       MCS 14: 0       MCS 15: 0
-MCS 16: 0       MCS 17: 0       MCS 18: 0       MCS 19: 0       MCS 20: 0       MCS 21: 0       MCS 22: 0       MCS 23: 0
-MCS 24: 0       MCS 25: 0       MCS 26: 0       MCS 27: 0       MCS 28: 0       MCS 29: 0       MCS 30: 0       MCS 31: 0
-
-Legacy stats:
-1 Mbps: 0       2 Mbps: 0       5.5 Mbps: 0     6 Mbps: 395
-9 Mbps: 0       11 Mbps: 0      12 Mbps: 0      18 Mbps: 0
-24 Mbps: 0      36 Mbps: 0      48 Mbps: 0      54 Mbps: 0
-
-NSS stats:
-1x1: 1086 2x2: 0 3x3: 0 4x4: 0 5x5: 0 6x6: 0 7x7: 0 8x8: 0
-
-GI: 0.8 us 0 0.4 us 396 1.6 us 691 3.2 us 0
-BW: 20 MHz 785 40 MHz 2 80 MHz 300 160 MHz 0 320 MHz 0
-
-20 Mhz gi 1 us 1x1 :  6:5 7:3 8:3 9:4 10:4 11:374 12:391
-40 Mhz gi 1 us 1x1 :  12:2
-80 Mhz gi 1 us 1x1 :  6:61 7:43 8:43 9:30 10:24 11:97 12:2
-
-RX success byte stats:
-
-EHT stats:
-MCS 0: 0        MCS 1: 0        MCS 2: 0        MCS 3: 0        MCS 4: 0        MCS 5: 0        MCS 6: 0        MCS 7: 0
-MCS 8: 0        MCS 9: 0        MCS 10: 0       MCS 11: 0       MCS 12: 0       MCS 13: 0       MCS 14: 0       MCS 15: 0
-
-HE stats:
-MCS 0: 41       MCS 1: 0        MCS 2: 0        MCS 3: 0        MCS 4: 0        MCS 5: 0
-MCS 6: 1435     MCS 7: 943      MCS 8: 697      MCS 9: 533      MCS 10: 492     MCS 11: 8159
-
-VHT stats:
-MCS 0: 0        MCS 1: 0        MCS 2: 0        MCS 3: 0        MCS 4: 0
-MCS 5: 0        MCS 6: 0        MCS 7: 0        MCS 8: 0        MCS 9: 0
-
-HT stats:
-MCS 0: 0        MCS 1: 0        MCS 2: 0        MCS 3: 0        MCS 4: 0        MCS 5: 0        MCS 6: 0        MCS 7: 0
-MCS 8: 0        MCS 9: 0        MCS 10: 0       MCS 11: 0       MCS 12: 0       MCS 13: 0       MCS 14: 0       MCS 15: 0
-MCS 16: 0       MCS 17: 0       MCS 18: 0       MCS 19: 0       MCS 20: 0       MCS 21: 0       MCS 22: 0       MCS 23: 0
-MCS 24: 0       MCS 25: 0       MCS 26: 0       MCS 27: 0       MCS 28: 0       MCS 29: 0       MCS 30: 0       MCS 31: 0
-
-Legacy stats:
-1 Mbps: 0       2 Mbps: 0       5.5 Mbps: 0     6 Mbps: 16195
-9 Mbps: 0       11 Mbps: 0      12 Mbps: 0      18 Mbps: 0
-24 Mbps: 0      36 Mbps: 0      48 Mbps: 0      54 Mbps: 0
-
-NSS stats:
-1x1: 28454 2x2: 0 3x3: 0 4x4: 0 5x5: 0 6x6: 0 7x7: 0 8x8: 0
-
-GI: 0.8 us 0 0.4 us 16236 1.6 us 12259 3.2 us 0
-BW: 20 MHz 24108 40 MHz 82 80 MHz 4305 160 MHz 0 320 MHz 0
-
-20 Mhz gi 1 us 1x1 :  6:205 7:123 8:123 9:164 10:164 11:7257 12:16031
-40 Mhz gi 1 us 1x1 :  12:82
-80 Mhz gi 1 us 1x1 :  6:1230 7:820 8:574 9:369 10:328 11:902 12:82
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Co-developed-by: Balamurugan Mahalingam <quic_bmahalin@quicinc.com>
-Signed-off-by: Balamurugan Mahalingam <quic_bmahalin@quicinc.com>
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/Makefile      |   2 +-
- drivers/net/wireless/ath/ath12k/core.h        |   2 +
- drivers/net/wireless/ath/ath12k/debugfs.c     | 100 +++++-
- drivers/net/wireless/ath/ath12k/debugfs.h     |  21 +-
- drivers/net/wireless/ath/ath12k/debugfs_sta.c | 337 ++++++++++++++++++
- drivers/net/wireless/ath/ath12k/debugfs_sta.h |  24 ++
- drivers/net/wireless/ath/ath12k/hal_rx.h      |   3 -
- drivers/net/wireless/ath/ath12k/mac.c         |  19 +-
- drivers/net/wireless/ath/ath12k/mac.h         |   6 +-
- 9 files changed, 501 insertions(+), 13 deletions(-)
- create mode 100644 drivers/net/wireless/ath/ath12k/debugfs_sta.c
- create mode 100644 drivers/net/wireless/ath/ath12k/debugfs_sta.h
-
-diff --git a/drivers/net/wireless/ath/ath12k/Makefile b/drivers/net/wireless/ath/ath12k/Makefile
-index b5bb3e2599cd..8fd5ac5e1bce 100644
---- a/drivers/net/wireless/ath/ath12k/Makefile
-+++ b/drivers/net/wireless/ath/ath12k/Makefile
-@@ -23,7 +23,7 @@ ath12k-y += core.o \
- 	    fw.o \
- 	    p2p.o
- 
--ath12k-$(CONFIG_ATH12K_DEBUGFS) += debugfs.o debugfs_htt_stats.o
-+ath12k-$(CONFIG_ATH12K_DEBUGFS) += debugfs.o debugfs_htt_stats.o debugfs_sta.o
- ath12k-$(CONFIG_ACPI) += acpi.o
- ath12k-$(CONFIG_ATH12K_TRACING) += trace.o
- ath12k-$(CONFIG_PM) += wow.o
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 1c4d5b741441..a96075040bf2 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -556,9 +556,11 @@ struct ath12k_dbg_htt_stats {
- };
- 
- struct ath12k_debug {
-+	u32 rx_filter;
- 	struct dentry *debugfs_pdev;
- 	struct dentry *debugfs_pdev_symlink;
- 	struct ath12k_dbg_htt_stats htt_stats;
-+	bool extd_rx_stats;
- };
- 
- struct ath12k_per_peer_tx_stats {
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs.c b/drivers/net/wireless/ath/ath12k/debugfs.c
-index d4b32d1a431c..ed00fdfdd243 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs.c
-@@ -1,10 +1,12 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include "core.h"
-+#include "dp_tx.h"
-+#include "debug.h"
- #include "debugfs.h"
- #include "debugfs_htt_stats.h"
- 
-@@ -31,6 +33,98 @@ static const struct file_operations fops_simulate_radar = {
- 	.open = simple_open
- };
- 
-+static ssize_t ath12k_write_extd_rx_stats(struct file *file,
-+					  const char __user *ubuf,
-+					  size_t count, loff_t *ppos)
-+{
-+	struct ath12k *ar = file->private_data;
-+	struct htt_rx_ring_tlv_filter tlv_filter = {0};
-+	u32 ring_id, rx_filter = 0;
-+	bool enable;
-+	int ret, i;
-+
-+	if (kstrtobool_from_user(ubuf, count, &enable))
-+		return -EINVAL;
-+
-+	wiphy_lock(ath12k_ar_to_hw(ar)->wiphy);
-+
-+	if (!ar->ab->hw_params->rxdma1_enable) {
-+		ret = count;
-+		goto exit;
-+	}
-+
-+	if (ar->ah->state != ATH12K_HW_STATE_ON) {
-+		ret = -ENETDOWN;
-+		goto exit;
-+	}
-+
-+	if (enable == ar->debug.extd_rx_stats) {
-+		ret = count;
-+		goto exit;
-+	}
-+
-+	if (enable) {
-+		rx_filter =  HTT_RX_FILTER_TLV_FLAGS_MPDU_START;
-+		rx_filter |= HTT_RX_FILTER_TLV_FLAGS_PPDU_START;
-+		rx_filter |= HTT_RX_FILTER_TLV_FLAGS_PPDU_END;
-+		rx_filter |= HTT_RX_FILTER_TLV_FLAGS_PPDU_END_USER_STATS;
-+		rx_filter |= HTT_RX_FILTER_TLV_FLAGS_PPDU_END_USER_STATS_EXT;
-+		rx_filter |= HTT_RX_FILTER_TLV_FLAGS_PPDU_END_STATUS_DONE;
-+		rx_filter |= HTT_RX_FILTER_TLV_FLAGS_PPDU_START_USER_INFO;
-+
-+		tlv_filter.rx_filter = rx_filter;
-+		tlv_filter.pkt_filter_flags0 = HTT_RX_FP_MGMT_FILTER_FLAGS0;
-+		tlv_filter.pkt_filter_flags1 = HTT_RX_FP_MGMT_FILTER_FLAGS1;
-+		tlv_filter.pkt_filter_flags2 = HTT_RX_FP_CTRL_FILTER_FLASG2;
-+		tlv_filter.pkt_filter_flags3 = HTT_RX_FP_CTRL_FILTER_FLASG3 |
-+			HTT_RX_FP_DATA_FILTER_FLASG3;
-+	} else {
-+		tlv_filter = ath12k_mac_mon_status_filter_default;
-+	}
-+
-+	ar->debug.rx_filter = tlv_filter.rx_filter;
-+
-+	for (i = 0; i < ar->ab->hw_params->num_rxdma_per_pdev; i++) {
-+		ring_id = ar->dp.rxdma_mon_dst_ring[i].ring_id;
-+		ret = ath12k_dp_tx_htt_rx_filter_setup(ar->ab, ring_id, ar->dp.mac_id + i,
-+						       HAL_RXDMA_MONITOR_DST,
-+						       DP_RXDMA_REFILL_RING_SIZE,
-+						       &tlv_filter);
-+		if (ret) {
-+			ath12k_warn(ar->ab, "failed to set rx filter for monitor status ring\n");
-+			goto exit;
-+		}
-+	}
-+
-+	ar->debug.extd_rx_stats = !!enable;
-+	ret = count;
-+exit:
-+	wiphy_unlock(ath12k_ar_to_hw(ar)->wiphy);
-+	return ret;
-+}
-+
-+static ssize_t ath12k_read_extd_rx_stats(struct file *file,
-+					 char __user *ubuf,
-+					 size_t count, loff_t *ppos)
-+{
-+	struct ath12k *ar = file->private_data;
-+	char buf[32];
-+	int len = 0;
-+
-+	wiphy_lock(ath12k_ar_to_hw(ar)->wiphy);
-+	len = scnprintf(buf, sizeof(buf) - len, "%d\n",
-+			ar->debug.extd_rx_stats);
-+	wiphy_unlock(ath12k_ar_to_hw(ar)->wiphy);
-+
-+	return simple_read_from_buffer(ubuf, count, ppos, buf, len);
-+}
-+
-+static const struct file_operations fops_extd_rx_stats = {
-+	.read = ath12k_read_extd_rx_stats,
-+	.write = ath12k_write_extd_rx_stats,
-+	.open = simple_open,
-+};
-+
- void ath12k_debugfs_soc_create(struct ath12k_base *ab)
- {
- 	bool dput_needed;
-@@ -92,6 +186,10 @@ void ath12k_debugfs_register(struct ath12k *ar)
- 	}
- 
- 	ath12k_debugfs_htt_stats_register(ar);
-+
-+	debugfs_create_file("ext_rx_stats", 0644,
-+			    ar->debug.debugfs_pdev, ar,
-+			    &fops_extd_rx_stats);
- }
- 
- void ath12k_debugfs_unregister(struct ath12k *ar)
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs.h b/drivers/net/wireless/ath/ath12k/debugfs.h
-index 8d64ba03aa9a..f9b6d12955e1 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs.h
-+++ b/drivers/net/wireless/ath/ath12k/debugfs.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef _ATH12K_DEBUGFS_H_
-@@ -12,6 +12,16 @@ void ath12k_debugfs_soc_create(struct ath12k_base *ab);
- void ath12k_debugfs_soc_destroy(struct ath12k_base *ab);
- void ath12k_debugfs_register(struct ath12k *ar);
- void ath12k_debugfs_unregister(struct ath12k *ar);
-+
-+static inline bool ath12k_debugfs_is_extd_rx_stats_enabled(struct ath12k *ar)
-+{
-+	return ar->debug.extd_rx_stats;
-+}
-+
-+static inline int ath12k_debugfs_rx_filter(struct ath12k *ar)
-+{
-+	return ar->debug.rx_filter;
-+}
- #else
- static inline void ath12k_debugfs_soc_create(struct ath12k_base *ab)
- {
-@@ -29,6 +39,15 @@ static inline void ath12k_debugfs_unregister(struct ath12k *ar)
- {
- }
- 
-+static inline bool ath12k_debugfs_is_extd_rx_stats_enabled(struct ath12k *ar)
-+{
-+	return false;
-+}
-+
-+static inline int ath12k_debugfs_rx_filter(struct ath12k *ar)
-+{
-+	return 0;
-+}
- #endif /* CONFIG_ATH12K_DEBUGFS */
- 
- #endif /* _ATH12K_DEBUGFS_H_ */
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_sta.c b/drivers/net/wireless/ath/ath12k/debugfs_sta.c
-new file mode 100644
-index 000000000000..51d00b4bcbb7
---- /dev/null
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_sta.c
-@@ -0,0 +1,337 @@
-+// SPDX-License-Identifier: BSD-3-Clause-Clear
-+/*
-+ * Copyright (c) 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
-+
-+#include <linux/vmalloc.h>
-+
-+#include "debugfs_sta.h"
-+#include "core.h"
-+#include "peer.h"
-+#include "debug.h"
-+#include "debugfs_htt_stats.h"
-+#include "debugfs.h"
-+
-+static
-+u32 ath12k_dbg_sta_dump_rate_stats(u8 *buf, u32 offset, const int size,
-+				   bool he_rates_avail,
-+				   const struct ath12k_rx_peer_rate_stats *stats)
-+{
-+	static const char *legacy_rate_str[HAL_RX_MAX_NUM_LEGACY_RATES] = {
-+					"1 Mbps", "2 Mbps", "5.5 Mbps", "6 Mbps",
-+					"9 Mbps", "11 Mbps", "12 Mbps", "18 Mbps",
-+					"24 Mbps", "36 Mbps", "48 Mbps", "54 Mbps"};
-+	u8 max_bw = HAL_RX_BW_MAX, max_gi = HAL_RX_GI_MAX, max_mcs = HAL_RX_MAX_NSS;
-+	int mcs = 0, bw = 0, nss = 0, gi = 0, bw_num = 0;
-+	u32 i, len = offset, max = max_bw * max_gi * max_mcs;
-+	bool found;
-+
-+	len += scnprintf(buf + len, size - len, "\nEHT stats:\n");
-+	for (i = 0; i <= HAL_RX_MAX_MCS_BE; i++)
-+		len += scnprintf(buf + len, size - len,
-+				   "MCS %d: %llu%s", i, stats->be_mcs_count[i],
-+				   (i + 1) % 8 ? "\t" : "\n");
-+
-+	len += scnprintf(buf + len, size - len, "\nHE stats:\n");
-+	for (i = 0; i <= HAL_RX_MAX_MCS_HE; i++)
-+		len += scnprintf(buf + len, size - len,
-+				   "MCS %d: %llu%s", i, stats->he_mcs_count[i],
-+				   (i + 1) % 6 ? "\t" : "\n");
-+
-+	len += scnprintf(buf + len, size - len, "\nVHT stats:\n");
-+	for (i = 0; i <= HAL_RX_MAX_MCS_VHT; i++)
-+		len += scnprintf(buf + len, size - len,
-+				   "MCS %d: %llu%s", i, stats->vht_mcs_count[i],
-+				   (i + 1) % 5 ? "\t" : "\n");
-+
-+	len += scnprintf(buf + len, size - len, "\nHT stats:\n");
-+	for (i = 0; i <= HAL_RX_MAX_MCS_HT; i++)
-+		len += scnprintf(buf + len, size - len,
-+				   "MCS %d: %llu%s", i, stats->ht_mcs_count[i],
-+				   (i + 1) % 8 ? "\t" : "\n");
-+
-+	len += scnprintf(buf + len, size - len, "\nLegacy stats:\n");
-+	for (i = 0; i < HAL_RX_MAX_NUM_LEGACY_RATES; i++)
-+		len += scnprintf(buf + len, size - len,
-+				   "%s: %llu%s", legacy_rate_str[i],
-+				   stats->legacy_count[i],
-+				   (i + 1) % 4 ? "\t" : "\n");
-+
-+	len += scnprintf(buf + len, size - len, "\nNSS stats:\n");
-+	for (i = 0; i < HAL_RX_MAX_NSS; i++)
-+		len += scnprintf(buf + len, size - len,
-+				   "%dx%d: %llu ", i + 1, i + 1,
-+				   stats->nss_count[i]);
-+
-+	len += scnprintf(buf + len, size - len,
-+			  "\n\nGI: 0.8 us %llu 0.4 us %llu 1.6 us %llu 3.2 us %llu\n",
-+			  stats->gi_count[0],
-+			  stats->gi_count[1],
-+			  stats->gi_count[2],
-+			  stats->gi_count[3]);
-+
-+	len += scnprintf(buf + len, size - len,
-+			   "BW: 20 MHz %llu 40 MHz %llu 80 MHz %llu 160 MHz %llu 320 MHz %llu\n",
-+			   stats->bw_count[0],
-+			   stats->bw_count[1],
-+			   stats->bw_count[2],
-+			   stats->bw_count[3],
-+			   stats->bw_count[4]);
-+
-+	for (i = 0; i < max; i++) {
-+		found = false;
-+
-+		for (mcs = 0; mcs <= HAL_RX_MAX_MCS_HT; mcs++) {
-+			if (stats->rx_rate[bw][gi][nss][mcs]) {
-+				found = true;
-+				break;
-+			}
-+		}
-+
-+		if (!found)
-+			goto skip_report;
-+
-+		switch (bw) {
-+		case HAL_RX_BW_20MHZ:
-+			bw_num = 20;
-+			break;
-+		case HAL_RX_BW_40MHZ:
-+			bw_num = 40;
-+			break;
-+		case HAL_RX_BW_80MHZ:
-+			bw_num = 80;
-+			break;
-+		case HAL_RX_BW_160MHZ:
-+			bw_num = 160;
-+			break;
-+		case HAL_RX_BW_320MHZ:
-+			bw_num = 320;
-+			break;
-+		}
-+
-+		len += scnprintf(buf + len, size - len, "\n%d Mhz gi %d us %dx%d : ",
-+				 bw_num, gi, nss + 1, nss + 1);
-+
-+		for (mcs = 0; mcs <= HAL_RX_MAX_MCS_HT; mcs++) {
-+			if (stats->rx_rate[bw][gi][nss][mcs])
-+				len += scnprintf(buf + len, size - len,
-+						 " %d:%llu", mcs,
-+						 stats->rx_rate[bw][gi][nss][mcs]);
-+		}
-+
-+skip_report:
-+		if (nss++ >= max_mcs - 1) {
-+			nss = 0;
-+			if (gi++ >= max_gi - 1) {
-+				gi = 0;
-+				if (bw < max_bw - 1)
-+					bw++;
-+			}
-+		}
-+	}
-+
-+	len += scnprintf(buf + len, size - len, "\n");
-+
-+	return len - offset;
-+}
-+
-+static ssize_t ath12k_dbg_sta_dump_rx_stats(struct file *file,
-+					    char __user *user_buf,
-+					    size_t count, loff_t *ppos)
-+{
-+	struct ieee80211_link_sta *link_sta = file->private_data;
-+	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(link_sta->sta);
-+	const int size = ATH12K_STA_RX_STATS_BUF_SIZE;
-+	struct ath12k_hw *ah = ahsta->ahvif->ah;
-+	struct ath12k_rx_peer_stats *rx_stats;
-+	struct ath12k_link_sta *arsta;
-+	u8 link_id = link_sta->link_id;
-+	int len = 0, i, ret = 0;
-+	bool he_rates_avail;
-+	struct ath12k *ar;
-+
-+	wiphy_lock(ah->hw->wiphy);
-+
-+	if (!(BIT(link_id) & ahsta->links_map)) {
-+		wiphy_unlock(ah->hw->wiphy);
-+		return -ENOENT;
-+	}
-+
-+	arsta = wiphy_dereference(ah->hw->wiphy, ahsta->link[link_id]);
-+	if (!arsta || !arsta->arvif->ar) {
-+		wiphy_unlock(ah->hw->wiphy);
-+		return -ENOENT;
-+	}
-+
-+	ar = arsta->arvif->ar;
-+
-+	u8 *buf __free(kfree) = kzalloc(size, GFP_KERNEL);
-+	if (!buf) {
-+		ret = -ENOENT;
-+		goto out;
-+	}
-+
-+	spin_lock_bh(&ar->ab->base_lock);
-+
-+	rx_stats = arsta->rx_stats;
-+	if (!rx_stats) {
-+		ret = -ENOENT;
-+		goto unlock;
-+	}
-+
-+	len += scnprintf(buf + len, size - len, "RX peer stats:\n\n");
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs: %llu\n",
-+			 rx_stats->num_msdu);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs with TCP L4: %llu\n",
-+			 rx_stats->tcp_msdu_count);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs with UDP L4: %llu\n",
-+			 rx_stats->udp_msdu_count);
-+	len += scnprintf(buf + len, size - len, "Num of other MSDUs: %llu\n",
-+			 rx_stats->other_msdu_count);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs part of AMPDU: %llu\n",
-+			 rx_stats->ampdu_msdu_count);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs not part of AMPDU: %llu\n",
-+			 rx_stats->non_ampdu_msdu_count);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs using STBC: %llu\n",
-+			 rx_stats->stbc_count);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs beamformed: %llu\n",
-+			 rx_stats->beamformed_count);
-+	len += scnprintf(buf + len, size - len, "Num of MPDUs with FCS ok: %llu\n",
-+			 rx_stats->num_mpdu_fcs_ok);
-+	len += scnprintf(buf + len, size - len, "Num of MPDUs with FCS error: %llu\n",
-+			 rx_stats->num_mpdu_fcs_err);
-+
-+	he_rates_avail = (rx_stats->pream_cnt[HAL_RX_PREAMBLE_11AX] > 1) ? true : false;
-+
-+	len += scnprintf(buf + len, size - len,
-+			 "preamble: 11A %llu 11B %llu 11N %llu 11AC %llu 11AX %llu 11BE %llu\n",
-+			 rx_stats->pream_cnt[0], rx_stats->pream_cnt[1],
-+			 rx_stats->pream_cnt[2], rx_stats->pream_cnt[3],
-+			 rx_stats->pream_cnt[4], rx_stats->pream_cnt[6]);
-+	len += scnprintf(buf + len, size - len,
-+			 "reception type: SU %llu MU_MIMO %llu MU_OFDMA %llu MU_OFDMA_MIMO %llu\n",
-+			 rx_stats->reception_type[0], rx_stats->reception_type[1],
-+			 rx_stats->reception_type[2], rx_stats->reception_type[3]);
-+
-+	len += scnprintf(buf + len, size - len, "TID(0-15) Legacy TID(16):");
-+	for (i = 0; i <= IEEE80211_NUM_TIDS; i++)
-+		len += scnprintf(buf + len, size - len, "%llu ", rx_stats->tid_count[i]);
-+
-+	len += scnprintf(buf + len, size - len, "\nRX Duration:%llu\n",
-+			 rx_stats->rx_duration);
-+
-+	len += scnprintf(buf + len, size - len,
-+			 "\nDCM: %llu\nRU26:  %llu\nRU52:  %llu\nRU106: %llu\nRU242: %llu\nRU484: %llu\nRU996: %llu\n",
-+			 rx_stats->dcm_count, rx_stats->ru_alloc_cnt[0],
-+			 rx_stats->ru_alloc_cnt[1], rx_stats->ru_alloc_cnt[2],
-+			 rx_stats->ru_alloc_cnt[3], rx_stats->ru_alloc_cnt[4],
-+			 rx_stats->ru_alloc_cnt[5]);
-+
-+	len += scnprintf(buf + len, size - len, "\nRX success packet stats:\n");
-+	len += ath12k_dbg_sta_dump_rate_stats(buf, len, size, he_rates_avail,
-+					      &rx_stats->pkt_stats);
-+
-+	len += scnprintf(buf + len, size - len, "\n");
-+
-+	len += scnprintf(buf + len, size - len, "\nRX success byte stats:\n");
-+	len += ath12k_dbg_sta_dump_rate_stats(buf, len, size, he_rates_avail,
-+					      &rx_stats->byte_stats);
-+
-+unlock:
-+	spin_unlock_bh(&ar->ab->base_lock);
-+
-+	if (len)
-+		ret = simple_read_from_buffer(user_buf, count, ppos, buf, len);
-+out:
-+	wiphy_unlock(ah->hw->wiphy);
-+	return ret;
-+}
-+
-+static const struct file_operations fops_rx_stats = {
-+	.read = ath12k_dbg_sta_dump_rx_stats,
-+	.open = simple_open,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
-+
-+static ssize_t ath12k_dbg_sta_reset_rx_stats(struct file *file,
-+					     const char __user *buf,
-+					     size_t count, loff_t *ppos)
-+{
-+	struct ieee80211_link_sta *link_sta = file->private_data;
-+	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(link_sta->sta);
-+	struct ath12k_hw *ah = ahsta->ahvif->ah;
-+	struct ath12k_rx_peer_stats *rx_stats;
-+	struct ath12k_link_sta *arsta;
-+	u8 link_id = link_sta->link_id;
-+	struct ath12k *ar;
-+	bool reset;
-+	int ret;
-+
-+	ret = kstrtobool_from_user(buf, count, &reset);
-+	if (ret)
-+		return ret;
-+
-+	if (!reset)
-+		return -EINVAL;
-+
-+	wiphy_lock(ah->hw->wiphy);
-+
-+	if (!(BIT(link_id) & ahsta->links_map)) {
-+		ret = -ENOENT;
-+		goto out;
-+	}
-+
-+	arsta = wiphy_dereference(ah->hw->wiphy, ahsta->link[link_id]);
-+	if (!arsta || !arsta->arvif->ar) {
-+		ret = -ENOENT;
-+		goto out;
-+	}
-+
-+	ar = arsta->arvif->ar;
-+
-+	spin_lock_bh(&ar->ab->base_lock);
-+
-+	rx_stats = arsta->rx_stats;
-+	if (!rx_stats) {
-+		spin_unlock_bh(&ar->ab->base_lock);
-+		ret = -ENOENT;
-+		goto out;
-+	}
-+
-+	memset(rx_stats, 0, sizeof(*rx_stats));
-+	spin_unlock_bh(&ar->ab->base_lock);
-+
-+	ret = count;
-+out:
-+	wiphy_unlock(ah->hw->wiphy);
-+	return ret;
-+}
-+
-+static const struct file_operations fops_reset_rx_stats = {
-+	.write = ath12k_dbg_sta_reset_rx_stats,
-+	.open = simple_open,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
-+
-+void ath12k_debugfs_link_sta_op_add(struct ieee80211_hw *hw,
-+				    struct ieee80211_vif *vif,
-+				    struct ieee80211_link_sta *link_sta,
-+				    struct dentry *dir)
-+{
-+	struct ath12k *ar;
-+
-+	lockdep_assert_wiphy(hw->wiphy);
-+
-+	ar = ath12k_get_ar_by_vif(hw, vif, link_sta->link_id);
-+	if (!ar)
-+		return;
-+
-+	if (ath12k_debugfs_is_extd_rx_stats_enabled(ar)) {
-+		debugfs_create_file("rx_stats", 0400, dir, link_sta,
-+				    &fops_rx_stats);
-+		debugfs_create_file("reset_rx_stats", 0200, dir, link_sta,
-+				    &fops_reset_rx_stats);
-+	}
-+}
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_sta.h b/drivers/net/wireless/ath/ath12k/debugfs_sta.h
-new file mode 100644
-index 000000000000..8de924f4d7d5
---- /dev/null
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_sta.h
-@@ -0,0 +1,24 @@
-+/* SPDX-License-Identifier: BSD-3-Clause-Clear */
-+/*
-+ * Copyright (c) 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
-+
-+#ifndef _ATH12K_DEBUGFS_STA_H_
-+#define _ATH12K_DEBUGFS_STA_H_
-+
-+#include <net/mac80211.h>
-+
-+#include "core.h"
-+
-+#define ATH12K_STA_RX_STATS_BUF_SIZE		(1024 * 16)
-+
-+#ifdef CONFIG_ATH12K_DEBUGFS
-+
-+void ath12k_debugfs_link_sta_op_add(struct ieee80211_hw *hw,
-+				    struct ieee80211_vif *vif,
-+				    struct ieee80211_link_sta *link_sta,
-+				    struct dentry *dir);
-+
-+#endif /* CONFIG_ATH12K_DEBUGFS */
-+
-+#endif /* _ATH12K_DEBUGFS_STA_H_ */
-diff --git a/drivers/net/wireless/ath/ath12k/hal_rx.h b/drivers/net/wireless/ath/ath12k/hal_rx.h
-index 764730c447de..f8ab327f0345 100644
---- a/drivers/net/wireless/ath/ath12k/hal_rx.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_rx.h
-@@ -22,9 +22,6 @@ struct hal_rx_wbm_rel_info {
- #define HAL_INVALID_PEERID	0x3fff
- #define VHT_SIG_SU_NSS_MASK 0x7
- 
--#define HAL_RX_MAX_MCS 12
--#define HAL_RX_MAX_NSS 8
--
- #define HAL_RX_MPDU_INFO_PN_GET_BYTE1(__val) \
- 	le32_get_bits((__val), GENMASK(7, 0))
- 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 925b5389a634..c63e4e77dcfc 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -19,6 +19,7 @@
- #include "debugfs.h"
- #include "hif.h"
- #include "wow.h"
-+#include "debugfs_sta.h"
- 
- #define CHAN2G(_channel, _freq, _flags) { \
- 	.band                   = NL80211_BAND_2GHZ, \
-@@ -725,9 +726,9 @@ static struct ath12k *ath12k_get_ar_by_ctx(struct ieee80211_hw *hw,
- 	return ath12k_mac_get_ar_by_chan(hw, ctx->def.chan);
- }
- 
--static struct ath12k *ath12k_get_ar_by_vif(struct ieee80211_hw *hw,
--					   struct ieee80211_vif *vif,
--					   u8 link_id)
-+struct ath12k *ath12k_get_ar_by_vif(struct ieee80211_hw *hw,
-+				    struct ieee80211_vif *vif,
-+				    u8 link_id)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
-@@ -7265,10 +7266,14 @@ static int ath12k_mac_config_mon_status_default(struct ath12k *ar, bool enable)
- 	if (!ab->hw_params->rxdma1_enable)
- 		return ret;
- 
--	if (enable)
-+	if (enable) {
- 		tlv_filter = ath12k_mac_mon_status_filter_default;
--	else
-+
-+		if (ath12k_debugfs_rx_filter(ar))
-+			tlv_filter.rx_filter = ath12k_debugfs_rx_filter(ar);
-+	} else {
- 		tlv_filter.rxmon_disable = true;
-+	}
- 
- 	for (i = 0; i < ab->hw_params->num_rxdma_per_pdev; i++) {
- 		ring_id = ar->dp.rxdma_mon_dst_ring[i].ring_id;
-@@ -10304,6 +10309,10 @@ static const struct ieee80211_ops ath12k_ops = {
- 	.resume				= ath12k_wow_op_resume,
- 	.set_wakeup			= ath12k_wow_op_set_wakeup,
- #endif
-+
-+#ifdef CONFIG_ATH12K_DEBUGFS
-+	.link_sta_add_debugfs           = ath12k_debugfs_link_sta_op_add,
-+#endif
- };
- 
- static void ath12k_mac_update_ch_list(struct ath12k *ar,
-diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
-index 3594729b6397..17ac59c93a9f 100644
---- a/drivers/net/wireless/ath/ath12k/mac.h
-+++ b/drivers/net/wireless/ath/ath12k/mac.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef ATH12K_MAC_H
-@@ -108,5 +108,7 @@ int ath12k_mac_vdev_stop(struct ath12k_link_vif *arvif);
- void ath12k_mac_get_any_chanctx_conf_iter(struct ieee80211_hw *hw,
- 					  struct ieee80211_chanctx_conf *conf,
- 					  void *data);
--
-+struct ath12k *ath12k_get_ar_by_vif(struct ieee80211_hw *hw,
-+				    struct ieee80211_vif *vif,
-+				    u8 link_id);
- #endif
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
