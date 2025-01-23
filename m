@@ -1,86 +1,87 @@
-Return-Path: <linux-wireless+bounces-17868-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17869-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D156FA1A942
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jan 2025 18:51:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E230A1A9E6
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jan 2025 20:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34FFA3AE5B7
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jan 2025 17:51:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F38F188771B
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jan 2025 19:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D9B187553;
-	Thu, 23 Jan 2025 17:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A495F146593;
+	Thu, 23 Jan 2025 19:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GyBydaRe"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="P+Zo3Y3I"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0277F17085C
-	for <linux-wireless@vger.kernel.org>; Thu, 23 Jan 2025 17:50:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88B884A30
+	for <linux-wireless@vger.kernel.org>; Thu, 23 Jan 2025 19:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737654637; cv=none; b=EUdwIBHFxLnRe+4K5wDP183r2zWpuagKonCaAm6YMY9pmVjZMaxvz4kmMFj8Qv1GCF5dMbDVFPAugFsMNwFQnind0gFYl1hPRpB0Tpys6fhw/b+3LRdLWtrVIGxh9ZCOjs/Weiid8496+oMMY7swUsdqNS2NZw5rUOD1PYbCUiM=
+	t=1737658945; cv=none; b=ExuqUZ3aSlXHres234TwzOkfd1VJT4syGPMbUgCZ9y2OTIm0pHK0k7ZhB5Qi/c7hEFJKpLhXbE3xefqHNRMzlitYoM0V+ytsONTmAse8TAkLQygTrueT7YGdCaK0kjx4oARTTiu/uiedWwBJoIcwXVOWMRo1c4o2aLDWtLvqRa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737654637; c=relaxed/simple;
-	bh=0wPGI8lWNlIJcfMhRRvQdzOsT0mESW60zaNo47lMc6I=;
+	s=arc-20240116; t=1737658945; c=relaxed/simple;
+	bh=YI+f4QR+l6rjeIvT27vqZI6jn1a28NDEveWspZ0z834=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TbY0cHJhoauG0iMVL2w3jIBOc9NYb1tJVvKKuddaDOKgAKzTXkDZTJy8otPQHBVczWYsg+gpHv0amPcKOF32Xy2zW+1FQKiXMG6/BsudSGLrT1yVX0UL0xb1hQQc/XPmy0DWNtpkyZqhh03dOW9LeSYOQ9rJRvScnGudClgDLq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GyBydaRe; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=S6ipTIwRYo1Z0WgeyXam+vsAjDToVZ8y8znsSMvomOkzzts8DmLmby1JPZCCjpoaVHxe/2UwKwVA7LNTTTj5XdABBoX2ssleeyMDa3Jcea7X7CljvO/lz0F58ZqWaoNHek0pbRZVol8IPqQl/hSdonXs0rKRNpFphoVgRkmFTw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=P+Zo3Y3I; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50NHUdKb001562
-	for <linux-wireless@vger.kernel.org>; Thu, 23 Jan 2025 17:50:33 GMT
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50NDsqZV032535
+	for <linux-wireless@vger.kernel.org>; Thu, 23 Jan 2025 19:02:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	g/igeLISpBDQb4F0p7vtfCh9x3La1i5T622uQk0rbUE=; b=GyBydaRe71b6TAB6
-	b7tEIxn5KkjARv+DP8d0GKNA5ePwT95K4sIEVLtqmOPf3clojUFIEsMp/A6H3S1L
-	SZC6to8iMVkLg9N6p3cfIV8rkm/SKizj3YPQWJxLUclSSHG9bhL7J+phlEdnTTmE
-	dlH+siDfJP1lz+rsjlqGRvwYnmRndQ65QSqmbpim6V9ji+jlwr+BW0yGColdoEX9
-	ng/E/r2ES6uLSZCOOv+s6rRcaVal4Rt8QT31LFZpYQrNi/OOFS04Z3DO5bOfeOa6
-	QL9g8htpC4V5WWWi9BujIjZpKV3AcDqv6JT7Y/1c3rQ16fYLXlHWI5hM0n54a33d
-	64p6Gg==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44bt7x81ck-1
+	rp+WoVb4Ir2FS5YckET275G6b9qljQCT2IocqP9kwdc=; b=P+Zo3Y3Ismdxxl5a
+	wba/RuENpw0bCuKVYsQ3flfi0SClsBTBA1kW+hdQzQzHMz8jnMX7v5AtmcbXSE9L
+	YcXNaFxNGZo3uAapPpfo9NJ8501AdH7eKmRAurQ9yBV49goO0qVERFnEGslKlZnG
+	IDV7iARKx8RPQlC5/DaM/2XvhhMZOZXVhGdBUmz9i7HqwZa3yBWM0/8/OG9ED3y4
+	SRtUlRWPZwSiEabSpK6BWBZ9bCc5G4D+6RfnARAmYNe1JWh5Ag4xK/fg+wboFplH
+	Nkbj+DEx9ZcHhZpgUlpD09EKE/Z+G80QEzMGWaun9UIudIOC8jRd0kXwUCsVnc0u
+	0Wg25A==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44bq2crqdq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 23 Jan 2025 17:50:33 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2ef8c7ef51dso2523889a91.1
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Jan 2025 09:50:33 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Thu, 23 Jan 2025 19:02:22 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-218ad674181so49281355ad.1
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Jan 2025 11:02:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737654632; x=1738259432;
+        d=1e100.net; s=20230601; t=1737658941; x=1738263741;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g/igeLISpBDQb4F0p7vtfCh9x3La1i5T622uQk0rbUE=;
-        b=DuBUkSPVW2Djjh6uY3Ba02bdbQSIPLyQx1TWOjh2uX7z/paHNTAPgCZoWnsqx3orLO
-         +DTnY+zt3r5eBSw+Q+MFesEHgE+6OIvK2tDQRq/2kiLGWD2lx9iAvaphIdMQS8+KYSy/
-         +yTwDC3TqZEJqD1Biwf2S8MipICqU1ApVyqBRGMFk/+S+RvxueI3ZwZUmoyiEnz3ucnn
-         PcwZpK99eebEBokFPjST4Thla+96le8gig7hH2JcFpygK3/5jK4F1YW0T5eGM4QRPvp0
-         t6nqs2dfIgj6GmHYTuYTQbxJiEoWc+TNWLUqZUHzQqHl/cUh36ujCJ+SP+I8FVu0Fll0
-         ad5Q==
-X-Gm-Message-State: AOJu0Ywma7fIjO4mEr9hh1bJUqXc8o1wUFpDClVwFAAp+h5vASXdnh72
-	RDLj1lIAKvfdVlm5euKo5yDCjfapq7n95wFJgYY2VMZ/7Z7T9TZKDTn3O+nUsPy4m7kPCnxTexc
-	gLJjirjYyVeNGO4fH3E6rvvDj+s6is+NWaG/J4EhCE+Cglgv+WCe40BZMPp+QfB8iUA==
-X-Gm-Gg: ASbGncvkndyG6h7jxv1rHQK6dAuBMioKzf7jeDEhLqsdLWIyFtNej7G6XNi40luDcbx
-	y+yNWjiCblayw2c5BfqWvbk391InnRBaX6gu5X86JBdElsCOrrQS4+8Zfzez9hi/v4aQO/ZFyiH
-	Dro4evYiFXzRadZyXYkDLVuFCnifgLYFLUcvsTDLg8Fe8b7xh1fX7snJN+XF6zTYBZXIUGR+rHt
-	/cgNLaup9Ze1JjYPx6ozbAVMg1kJCwBAge6818Oj9zAsqLjbWVFj4MQlwaODbdHeRU9r5DBemWl
-	gnWCvxEeC+3gXBdUIyGYRNovcVdQZQSwVKYpPgKUNmgvYBvWu0jSzvO4zxGZot4=
-X-Received: by 2002:a17:90b:1348:b0:2ef:2980:4411 with SMTP id 98e67ed59e1d1-2f7ff2f065bmr358729a91.9.1737654632216;
-        Thu, 23 Jan 2025 09:50:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFAtq08VwqGBJlI3fCc7ZACmqGbCst4C9o8cd6GJLIYjhGxqHzv9xlw9sqKsjcOfoIkjRCNQw==
-X-Received: by 2002:a17:90b:1348:b0:2ef:2980:4411 with SMTP id 98e67ed59e1d1-2f7ff2f065bmr358703a91.9.1737654631844;
-        Thu, 23 Jan 2025 09:50:31 -0800 (PST)
+        bh=rp+WoVb4Ir2FS5YckET275G6b9qljQCT2IocqP9kwdc=;
+        b=a+JWAmlSlxVOox1NGkq+ftu+DvgMt6CCnizqEGoI7XUvJZuTs0qQp1Zo5SWMqVj9L0
+         zWEYzCE02NhL6b2dnRvWj9fmwl68gGGlsBNRtSOQkaNEuTLSRFXcHMIyn8s9z5fGV/La
+         ZGzmOr0XnLtdxO8crtXHhR1tbcyvXKL3Rea6UY8eHXwakTd8x64qzhz5dWVo8nEUvupA
+         CAAokMnG2qPUklZUv38roDMeUW+t3mcg5RvFzY4h7NdBDvHsiknW66fL3mtJ09e2B3Hd
+         JZGNo0JtT5AqBGC4FC768COgBQQsjKN5PK8k92TajoPLHK5xhYZAn3PKHs0fsI6NtZ/G
+         EGoA==
+X-Gm-Message-State: AOJu0Yw7IfQqE99kXmDIHlMCM934ru5EZLXWsz3BbbdEjAZXsY8bQpDM
+	a+t68F24KQWt6H7ZVG/2JTLa6xNMv3R1e8VxnXG+q67GIMleFNT3xBu0pjsnTErH7beQ9MiiXDF
+	Jf9NBePU4iG2fXIsG4tzcqVIOwmOqo0sjWdZLNJBdCf3Lm4uNm7eF9nsWBzsmgxWrp+K+reCVbA
+	==
+X-Gm-Gg: ASbGnctK3tHHlMUiwzy2ua2xDw02x5FKoSyaI7K9uUMQPBNbCBLuHXMvxJgFLh4/WXo
+	MrixNd5gPoVoj+Ycx49sthrrbsqvKjtpfE7tVCOpp1/JGipWp0oo5LXkgjolTNoaSqXQEllAWLG
+	pKb+ywXm+Idf/AQiOMINc01WNWqjWu9q+JgJ51VSCdZ30mSIapcLLzcf07eOwTQRQ8c/BSeMEfV
+	WbO+psWXdYm97HyJWwa4TW0OomolT9OPUO3kgtAZhhSIlX1TW5FmPLAT8AVshq+osPhECAHGUP5
+	cSBKJgj/zY0wjkOgjEKHlvakBMmLVv0k/9+Kaah9Gi89pChkQ8Pqi6W0wh40tJY=
+X-Received: by 2002:a05:6a20:7492:b0:1e0:c166:18ba with SMTP id adf61e73a8af0-1eb69731123mr6251859637.12.1737658941509;
+        Thu, 23 Jan 2025 11:02:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEFsxRN1zIKOddGbZZ3gkr0+K9prBCVrNuMXjlsd75VaNlfXAy9k4RP0v2eUsb7d6SR3hhwrg==
+X-Received: by 2002:a05:6a20:7492:b0:1e0:c166:18ba with SMTP id adf61e73a8af0-1eb69731123mr6251816637.12.1737658941020;
+        Thu, 23 Jan 2025 11:02:21 -0800 (PST)
 Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7e6a7e039sm4665568a91.17.2025.01.23.09.50.30
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72f8a6b31besm295407b3a.54.2025.01.23.11.02.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jan 2025 09:50:31 -0800 (PST)
-Message-ID: <4629864f-010f-4524-8861-1381f4b18614@oss.qualcomm.com>
-Date: Thu, 23 Jan 2025 09:50:30 -0800
+        Thu, 23 Jan 2025 11:02:20 -0800 (PST)
+Message-ID: <a889082f-67eb-45d1-bef9-dc6b9486ff29@oss.qualcomm.com>
+Date: Thu, 23 Jan 2025 11:02:19 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,72 +89,82 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] wifi: ath12k: add MLO CSA support
-To: Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        Kalle Valo
- <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20241223-ath12k_mlo_csa-v1-0-78b6d7515568@quicinc.com>
+Subject: Re: [PATCH] wifi: ath12k: Add support for link specific datapath
+ stats
+To: Balamurugan Mahalingam <quic_bmahalin@quicinc.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250110205912.2585850-1-quic_bmahalin@quicinc.com>
 From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <20241223-ath12k_mlo_csa-v1-0-78b6d7515568@quicinc.com>
+In-Reply-To: <20250110205912.2585850-1-quic_bmahalin@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: ztfrN4jnb0H33HAiKYvSOMFRWysi_AQ_
-X-Proofpoint-GUID: ztfrN4jnb0H33HAiKYvSOMFRWysi_AQ_
+X-Proofpoint-GUID: zyt1BylcpbsH6MpVhiQdseHzGHVqaBAr
+X-Proofpoint-ORIG-GUID: zyt1BylcpbsH6MpVhiQdseHzGHVqaBAr
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-23_07,2025-01-23_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 malwarescore=0 suspectscore=0 spamscore=0 adultscore=0
- mlxlogscore=999 impostorscore=0 clxscore=1015 phishscore=0
- lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2501230130
+ definitions=2025-01-23_08,2025-01-23_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 phishscore=0 spamscore=0
+ lowpriorityscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501230138
 
-On 12/23/2024 8:21 AM, Aditya Kumar Singh wrote:
-> Patch 1 and 2 are pre-req fixes (applies to non-MLO as well)
+On 1/10/2025 12:59 PM, Balamurugan Mahalingam wrote:
+> Add support to record the number of frames enqueued, hardware
+> descriptor type, encapsulation/encryption types used, frames
+> dropped and completed. This is useful for understanding the
+> datapath performance and tune the peak throughput.
 > 
-> Patch 3 basically uses arvif->link_id to enable MLO for CSA while adding
-> support to update counters throughout the CSA time.
+> The link specific stats can be viewed through the below debugfs file
 > 
-> Patch 4 fixes a potential problem seen when medium is busy. Again this
-> applies to both MLO and non-MLO. But this is exposed only when Patch 3 is
-> there.
+> cat /sys/kernel/debug/ieee80211/phy0/netdev:wlan1/link_stats
+> link[0] Tx Unicast Frames Enqueued  = 9
+> link[0] Tx Broadcast Frames Enqueued = 78689
+> link[0] Tx Frames Completed = 78698
+> link[0] Tx Frames Dropped = 0
+> link[0] Tx Frame descriptor Encap Type =  raw:0 native wifi:78698 ethernet:0
+> link[0] Tx Frame descriptor Encrypt Type =  0:78698 1:0 2:0 3:0 4:0 5:0 6:0 7:0 8:0 9:0 10:0 11:0
+> link[0] Tx Frame descriptor Type = buffer:78698 extension:0
+> ------------------------------------------------------
+> link[1] Tx Unicast Frames Enqueued  = 0
+> link[1] Tx Broadcast Frames Enqueued = 78689
+> link[1] Tx Frames Completed = 78689
+> link[1] Tx Frames Dropped = 0
+> link[1] Tx Frame descriptor Encap Type =  raw:0 native wifi:78689 ethernet:0
+> link[1] Tx Frame descriptor Encrypt Type =  0:78689 1:0 2:0 3:0 4:0 5:0 6:0 7:0 8:0 9:0 10:0 11:0
+> link[1] Tx Frame descriptor Type = buffer:78689 extension:0
+> ------------------------------------------------------
 > 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Balamurugan Mahalingam <quic_bmahalin@quicinc.com>
 > ---
-> Aditya Kumar Singh (4):
->       wifi: ath12k: update beacon template function to use arvif structure
->       wifi: ath12k: fix handling of CSA offsets in beacon template command
->       wifi: ath12k: update the latest CSA counter
->       wifi: ath12k: prevent CSA counter to reach 0 and hit WARN_ON_ONCE
 > 
->  drivers/net/wireless/ath/ath12k/core.h |  2 ++
->  drivers/net/wireless/ath/ath12k/mac.c  |  7 ++--
->  drivers/net/wireless/ath/ath12k/mac.h  |  1 +
->  drivers/net/wireless/ath/ath12k/wmi.c  | 61 +++++++++++++++++++++++++++-------
->  drivers/net/wireless/ath/ath12k/wmi.h  |  2 +-
->  5 files changed, 56 insertions(+), 17 deletions(-)
-> ---
-> base-commit: 09fa3b6974a1245ddd0751747609431494ba5b4f
-> change-id: 20241217-ath12k_mlo_csa-35bd512a05ae
+> Depends-on : 
+> [PATCH 0/2] wifi: ath12k: Add support for MLO Multicast Handling
+> Link: https://lore.kernel.org/all/20250109184932.1593157-1-quic_bmahalin@quicinc.com/ 
 
-fails to apply to current ath/main
+The dependent patch still applies cleanly to ath/main and is now in pending.
+However this patch doesn't apply cleanly on top of that, so please rebase.
 
-* Applying 20241223_quic_adisi_wifi_ath12k_add_mlo_csa_support.mbx 
-Applying: wifi: ath12k: update beacon template function to use arvif structure
-Applying: wifi: ath12k: fix handling of CSA offsets in beacon template command
+* Applying 20250110_quic_bmahalin_wifi_ath12k_add_support_for_link_specific_datapath_stats.mbx 
+Applying: wifi: ath12k: Add support for link specific datapath stats
 Using index info to reconstruct a base tree...
+M       drivers/net/wireless/ath/ath12k/core.h
+M       drivers/net/wireless/ath/ath12k/dp.h
+M       drivers/net/wireless/ath/ath12k/dp_tx.c
 M       drivers/net/wireless/ath/ath12k/mac.c
-M       drivers/net/wireless/ath/ath12k/mac.h
-M       drivers/net/wireless/ath/ath12k/wmi.c
 Falling back to patching base and 3-way merge...
-Auto-merging drivers/net/wireless/ath/ath12k/wmi.c
-Auto-merging drivers/net/wireless/ath/ath12k/mac.h
-CONFLICT (content): Merge conflict in drivers/net/wireless/ath/ath12k/mac.h
 Auto-merging drivers/net/wireless/ath/ath12k/mac.c
-Recorded preimage for 'drivers/net/wireless/ath/ath12k/mac.h'
+CONFLICT (content): Merge conflict in drivers/net/wireless/ath/ath12k/mac.c
+Auto-merging drivers/net/wireless/ath/ath12k/dp_tx.c
+Auto-merging drivers/net/wireless/ath/ath12k/dp.h
+Auto-merging drivers/net/wireless/ath/ath12k/core.h
+Recorded preimage for 'drivers/net/wireless/ath/ath12k/mac.c'
 error: Failed to merge in the changes.
-Patch failed at 0002 wifi: ath12k: fix handling of CSA offsets in beacon template command
+Patch failed at 0001 wifi: ath12k: Add support for link specific datapath stats
 
 
