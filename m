@@ -1,130 +1,493 @@
-Return-Path: <linux-wireless+bounces-17874-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17875-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55EBA1AE17
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jan 2025 02:09:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A3BA1AEFB
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jan 2025 04:19:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34BBE1694BC
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jan 2025 01:09:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE1A73A6A9F
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jan 2025 03:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16EE560890;
-	Fri, 24 Jan 2025 01:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C751D9359;
+	Fri, 24 Jan 2025 03:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UfUIQ3/o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nGO0VaxU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8B94C91
-	for <linux-wireless@vger.kernel.org>; Fri, 24 Jan 2025 01:09:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9CB1D9337;
+	Fri, 24 Jan 2025 03:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737680948; cv=none; b=driAEF/cRF4Vc7V2i/nZrTruxcurnb7Ig4ykz1FCODn9lqAhn5ZoFWFaqFHTqijRS9luavbebNH5fB9WWtlGqN2hA4CM3psTiy6FczZ2maN5VxffCFcylReL8gFLu0IbD7CtWdlYc5MR7YBzmW/UDajrvOZs2Yv22xrXQTUYdPI=
+	t=1737688736; cv=none; b=swzD+X90shE29PMISUWPX5sUXKDh4yMka+77ZqamMPE4uPNsPz8KMPjeXmtyqX4QIq5lv06Q2J1P5F36er+ufW2NJmKJB0E4DC5nsKCGDGkA/ud4qLAuk7LIdrJYwT6u/xKHKwvB6LCwPp52eu9KQQtxX1FWkmrmI30LyvY7iHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737680948; c=relaxed/simple;
-	bh=xo1wD6cBQ+DwYQEvZ1znQhrhUeL79Ey9pJ2NAEKDeNY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=J/i55MnG21+Eyhi6AlyvSvn1B3nIpl1+x5aosuGk98HeCeFzZQy7IBwMSmjuRsR8n5fIA9CVHBPhCvSiE5ocmlydBXi787MxPOA81bOM7iGVVmIAh6gSi7UGR/0zLl1gtYzz+C0kxcGcQfYPdKeqfwilCXmJ6h0WBQ8IXJMwcLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UfUIQ3/o; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50NLt8Vw023520;
-	Fri, 24 Jan 2025 01:09:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	u+/Nzf+wQsYK4CUtFVQexhSIKfVhWoImWUHWAyJwQrE=; b=UfUIQ3/o3It+BhsE
-	pKTNKfj3c71tqc+VBzgoDDFlMiK18fH5nHhcpb+KrrvJ20hcXsVq0aQXXFDKwPGE
-	GkrwjvVtTNkt0Edrp8WeZdqxti1M97cVJUkaN70RvD4ukOi2PDOqlrJYLPjFrpyZ
-	rCFeD01b9JJwcV/0Sk5aNqdRp42b+FhCkY0fUQNvtv8NnwtKDFF58qCUN1jH4rPQ
-	Q2M7Ux3W3XevLOD7Y5M2SpZaAYBps+dffXkGJ9hIOXetrgi2poqrd8ZeImnE33k4
-	MN27LiaN96T5THWfLrDtlgdLlRV+hBBZS8dPzc1AerXvepXT7U7JPCbF/WMDNCqn
-	eTkDpA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44bx3u89h3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jan 2025 01:09:02 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50O191bG023699
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jan 2025 01:09:01 GMT
-Received: from [10.227.108.41] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 23 Jan
- 2025 17:09:00 -0800
-Message-ID: <5861c953-436e-4f36-ae8b-5ef52fceb3b6@quicinc.com>
-Date: Thu, 23 Jan 2025 17:09:00 -0800
+	s=arc-20240116; t=1737688736; c=relaxed/simple;
+	bh=mtHl+eiTIUYaHdG7xSOt9tfDm1HS0Z8cvpdxG4XToQU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mFJNI+XeRivNMGG2jZz2kegCBMXJGLeHYeol0GwfJEn7WiNorZjzS+vzPloD9uUt991Ilw9n++5g6zEZa+dbSmg0k/pgEjUDfUtnwMnOge+Cp75+gvrEH7aeDJnMuZmH6orKKnYDWF1rxa4fTiNScKsOddaOPoonMJiwoz9R1yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nGO0VaxU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26374C4CEE2;
+	Fri, 24 Jan 2025 03:18:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737688735;
+	bh=mtHl+eiTIUYaHdG7xSOt9tfDm1HS0Z8cvpdxG4XToQU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nGO0VaxUD3L/rT8D4N6OCA4ago0ElaYLZ1r127lXOEsfiqCbTj+NiJJJr0rq58Zb4
+	 wacvXN+Ezc3O4nzytvax++QhQzEUkwPNsk1hwEom0xQ3oUrf4tv5EF9ZvFGf0YPcaR
+	 3gT/Dax9CZcD3fJOqVaIwuUx+kV3C6BjX826QcTUxib9DAx1m7mxBSaekM7mIBGSYQ
+	 svNKKayI7mz14wFpO1AwKCgfQxx5wC4S3s9qzX/HJOSyEQjJQnkCd7GpxnJX1sP73J
+	 fNu7RAg5iFS4lbhMrBrsN5ICoKDct5MwRoaEOSsQGJj9cfdXtIEK7KhcNoEGD3ADcg
+	 MVG/9QLKoEsgw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	dan.carpenter@linaro.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	quan.zhou@mediatek.com,
+	johannes.berg@intel.com,
+	emmanuel.grumbach@intel.com,
+	leitao@debian.org,
+	mingyen.hsieh@mediatek.com,
+	leon.yen@mediatek.com,
+	deren.wu@mediatek.com,
+	chui-hao.chiu@mediatek.com,
+	kuniyu@amazon.com,
+	romieu@fr.zoreil.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH net v3 7/7] wifi: mt76: move napi_enable() from under BH
+Date: Thu, 23 Jan 2025 19:18:41 -0800
+Message-ID: <20250124031841.1179756-8-kuba@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250124031841.1179756-1-kuba@kernel.org>
+References: <20250124031841.1179756-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 6/9] wifi: ath12k: add support for setting fixed HE
- rate/GI/LTF
-To: <mbizon@freebox.fr>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Muna Sinada <quic_msinada@quicinc.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-References: <20250114003813.2783550-1-quic_pradeepc@quicinc.com>
- <20250114003813.2783550-7-quic_pradeepc@quicinc.com>
- <f5c6d874e9d7682d52c5ed107a0ede952b5cf53f.camel@freebox.fr>
-Content-Language: en-US
-From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-In-Reply-To: <f5c6d874e9d7682d52c5ed107a0ede952b5cf53f.camel@freebox.fr>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: IF9h6XQi_JKhNPLwxIosI5ztGv9CIsC7
-X-Proofpoint-ORIG-GUID: IF9h6XQi_JKhNPLwxIosI5ztGv9CIsC7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-23_10,2025-01-23_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1011
- mlxlogscore=768 suspectscore=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 bulkscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501240006
 
+mt76 does a lot of:
 
+  local_bh_disable();
+  napi_enable(...napi);
+  napi_schedule(...napi);
+  local_bh_enable();
 
-On 1/23/2025 3:06 AM, Maxime Bizon wrote:
-> 
-> On Mon, 2025-01-13 at 16:38 -0800, Pradeep Kumar Chitrapu wrote:
-> 
-> Hello,
->   
->> @@ -8376,10 +8637,13 @@ static int ath12k_mac_op_add_interface(struct ieee80211_hw *hw,
->>   
->>          for (i = 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
->>                  arvif->bitrate_mask.control[i].legacy = 0xffffffff;
->> +               arvif->bitrate_mask.control[i].gi = NL80211_TXRATE_FORCE_SGI;
-> 
-> can you explain why it's not NL80211_TXRATE_DEFAULT_GI ?
-> 
-Hi Maxime
+local_bh_disable() is not a real lock, its most likely taken
+because napi_schedule() requires that we invoke softirqs at
+some point. napi_enable() needs to take a mutex, so move it
+from under the BH protection.
 
-I believe, this is default GI based on device capability of HE for 
-ath11k or EHT for ath12k.
->>                  memset(arvif->bitrate_mask.control[i].ht_mcs, 0xff,
->>                         sizeof(arvif->bitrate_mask.control[i].ht_mcs));
->>                  memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
->>                         sizeof(arvif->bitrate_mask.control[i].vht_mcs));
->> +               memset(arvif->bitrate_mask.control[i].he_mcs, 0xff,
->> +                      sizeof(arvif->bitrate_mask.control[i].he_mcs));
->>          }
->>   
-> 
-> 
-> The same initialization of he_mcs is missing in the ath12k_mac_assign_link_vif()
-> 
+Fixes: 413f0271f396 ("net: protect NAPI enablement with netdev_lock()")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/dcfd56bc-de32-4b11-9e19-d8bd1543745d@stanley.mountain
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+v2:
+ - reword the commit msg slightly
+v1: https://lore.kernel.org/20250121221519.392014-8-kuba@kernel.org
 
-Thanks for notifying..will fix it in next revision
+CC: nbd@nbd.name
+CC: lorenzo@kernel.org
+CC: ryder.lee@mediatek.com
+CC: shayne.chen@mediatek.com
+CC: sean.wang@mediatek.com
+CC: kvalo@kernel.org
+CC: matthias.bgg@gmail.com
+CC: angelogioacchino.delregno@collabora.com
+CC: quan.zhou@mediatek.com
+CC: johannes.berg@intel.com
+CC: emmanuel.grumbach@intel.com
+CC: leitao@debian.org
+CC: mingyen.hsieh@mediatek.com
+CC: leon.yen@mediatek.com
+CC: deren.wu@mediatek.com
+CC: chui-hao.chiu@mediatek.com
+CC: kuniyu@amazon.com
+CC: romieu@fr.zoreil.com
+CC: linux-wireless@vger.kernel.org
+---
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c |  9 ++++-----
+ drivers/net/wireless/mediatek/mt76/mt7615/pci.c |  8 ++++++--
+ .../net/wireless/mediatek/mt76/mt7615/pci_mac.c |  8 +++++---
+ drivers/net/wireless/mediatek/mt76/mt76x0/pci.c |  8 +++++---
+ .../net/wireless/mediatek/mt76/mt76x02_mmio.c   |  8 +++++---
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci.c |  7 +++++--
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 17 +++++++++++++----
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c |  7 +++++--
+ .../net/wireless/mediatek/mt76/mt7921/pci_mac.c |  7 +++++--
+ drivers/net/wireless/mediatek/mt76/mt7925/pci.c |  7 +++++--
+ .../net/wireless/mediatek/mt76/mt7925/pci_mac.c |  7 +++++--
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 12 ++++++------
+ 12 files changed, 69 insertions(+), 36 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index a259f4dd9540..413973d05b43 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1479,14 +1479,13 @@ static void mt7603_mac_watchdog_reset(struct mt7603_dev *dev)
+ 	tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
+ 	mt7603_beacon_set_timer(dev, -1, beacon_int);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
+-	napi_schedule(&dev->mt76.tx_napi);
+-
+ 	napi_enable(&dev->mt76.napi[0]);
+-	napi_schedule(&dev->mt76.napi[0]);
+-
+ 	napi_enable(&dev->mt76.napi[1]);
++
++	local_bh_disable();
++	napi_schedule(&dev->mt76.tx_napi);
++	napi_schedule(&dev->mt76.napi[0]);
+ 	napi_schedule(&dev->mt76.napi[1]);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+index 9a278589df4e..68010e27f065 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+@@ -164,12 +164,16 @@ static int mt7615_pci_resume(struct pci_dev *pdev)
+ 		dev_err(mdev->dev, "PDMA engine must be reinitialized\n");
+ 
+ 	mt76_worker_enable(&mdev->tx_worker);
+-	local_bh_disable();
++
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		napi_enable(&mdev->napi[i]);
+-		napi_schedule(&mdev->napi[i]);
+ 	}
+ 	napi_enable(&mdev->tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
++		napi_schedule(&mdev->napi[i]);
++	}
+ 	napi_schedule(&mdev->tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
+index a0ca3bbdfcaf..c2e4e6aabd9f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
+@@ -262,12 +262,14 @@ void mt7615_mac_reset_work(struct work_struct *work)
+ 
+ 	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
+-	napi_schedule(&dev->mt76.tx_napi);
+-
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_enable(&dev->mt76.napi[i]);
++	}
++
++	local_bh_disable();
++	napi_schedule(&dev->mt76.tx_napi);
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+ 	local_bh_enable();
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+index 1eb955f3ca13..b456ccd00d58 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+@@ -282,14 +282,16 @@ static int mt76x0e_resume(struct pci_dev *pdev)
+ 
+ 	mt76_worker_enable(&mdev->tx_worker);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		mt76_queue_rx_reset(dev, i);
+ 		napi_enable(&mdev->napi[i]);
++	}
++	napi_enable(&mdev->tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
+ 		napi_schedule(&mdev->napi[i]);
+ 	}
+-
+-	napi_enable(&mdev->tx_napi);
+ 	napi_schedule(&mdev->tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+index 7d840ad4ae65..a82c75ba26e6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+@@ -504,12 +504,14 @@ static void mt76x02_watchdog_reset(struct mt76x02_dev *dev)
+ 	mt76_worker_enable(&dev->mt76.tx_worker);
+ 	tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
+-	napi_schedule(&dev->mt76.tx_napi);
+-
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_enable(&dev->mt76.napi[i]);
++	}
++
++	local_bh_disable();
++	napi_schedule(&dev->mt76.tx_napi);
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+ 	local_bh_enable();
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+index 67c9d1caa0bd..727bfdd00b40 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+@@ -151,12 +151,15 @@ mt76x2e_resume(struct pci_dev *pdev)
+ 
+ 	mt76_worker_enable(&mdev->tx_worker);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		napi_enable(&mdev->napi[i]);
+-		napi_schedule(&mdev->napi[i]);
+ 	}
+ 	napi_enable(&mdev->tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
++		napi_schedule(&mdev->napi[i]);
++	}
+ 	napi_schedule(&mdev->tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 13bdc0a7174c..2ba6eb3038ce 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1356,10 +1356,15 @@ mt7915_mac_restart(struct mt7915_dev *dev)
+ 
+ 	mt7915_dma_reset(dev, true);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		if (mdev->q_rx[i].ndesc) {
+ 			napi_enable(&dev->mt76.napi[i]);
++		}
++	}
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
++		if (mdev->q_rx[i].ndesc) {
+ 			napi_schedule(&dev->mt76.napi[i]);
+ 		}
+ 	}
+@@ -1419,8 +1424,9 @@ mt7915_mac_restart(struct mt7915_dev *dev)
+ 	if (phy2)
+ 		clear_bit(MT76_RESET, &phy2->mt76->state);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
++
++	local_bh_disable();
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+@@ -1570,9 +1576,12 @@ void mt7915_mac_reset_work(struct work_struct *work)
+ 	if (phy2)
+ 		clear_bit(MT76_RESET, &phy2->mt76->state);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_enable(&dev->mt76.napi[i]);
++	}
++
++	local_bh_disable();
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+ 	local_bh_enable();
+@@ -1581,8 +1590,8 @@ void mt7915_mac_reset_work(struct work_struct *work)
+ 
+ 	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
++	local_bh_disable();
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index ba870e1b05fb..a0c9df3c2cc7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -523,12 +523,15 @@ static int mt7921_pci_resume(struct device *device)
+ 
+ 	mt76_worker_enable(&mdev->tx_worker);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		napi_enable(&mdev->napi[i]);
+-		napi_schedule(&mdev->napi[i]);
+ 	}
+ 	napi_enable(&mdev->tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
++		napi_schedule(&mdev->napi[i]);
++	}
+ 	napi_schedule(&mdev->tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+index 2452b1a2d118..881812ba03ff 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+@@ -81,9 +81,12 @@ int mt7921e_mac_reset(struct mt792x_dev *dev)
+ 
+ 	mt792x_wpdma_reset(dev, true);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_enable(&dev->mt76.napi[i]);
++	}
++
++	local_bh_disable();
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+ 	local_bh_enable();
+@@ -115,8 +118,8 @@ int mt7921e_mac_reset(struct mt792x_dev *dev)
+ 	err = __mt7921_start(&dev->phy);
+ out:
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
++	local_bh_disable();
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+index f36893e20c61..c7b5dc1dbb34 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+@@ -556,12 +556,15 @@ static int mt7925_pci_resume(struct device *device)
+ 
+ 	mt76_worker_enable(&mdev->tx_worker);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		napi_enable(&mdev->napi[i]);
+-		napi_schedule(&mdev->napi[i]);
+ 	}
+ 	napi_enable(&mdev->tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
++		napi_schedule(&mdev->napi[i]);
++	}
+ 	napi_schedule(&mdev->tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
+index faedbf766d1a..4578d16bf456 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
+@@ -101,12 +101,15 @@ int mt7925e_mac_reset(struct mt792x_dev *dev)
+ 
+ 	mt792x_wpdma_reset(dev, true);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_enable(&dev->mt76.napi[i]);
+-		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+ 	napi_enable(&dev->mt76.tx_napi);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(&dev->mt76, i) {
++		napi_schedule(&dev->mt76.napi[i]);
++	}
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index bc8cba4dca47..019c925ae600 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1695,7 +1695,6 @@ mt7996_mac_restart(struct mt7996_dev *dev)
+ 
+ 	mt7996_dma_reset(dev, true);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
+ 		    mt76_queue_is_wed_rro(&mdev->q_rx[i]))
+@@ -1703,10 +1702,11 @@ mt7996_mac_restart(struct mt7996_dev *dev)
+ 
+ 		if (mdev->q_rx[i].ndesc) {
+ 			napi_enable(&dev->mt76.napi[i]);
++			local_bh_disable();
+ 			napi_schedule(&dev->mt76.napi[i]);
++			local_bh_enable();
+ 		}
+ 	}
+-	local_bh_enable();
+ 	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 	clear_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
+ 
+@@ -1764,8 +1764,8 @@ mt7996_mac_restart(struct mt7996_dev *dev)
+ 	if (phy3)
+ 		clear_bit(MT76_RESET, &phy3->mt76->state);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
++	local_bh_disable();
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+@@ -1958,23 +1958,23 @@ void mt7996_mac_reset_work(struct work_struct *work)
+ 	if (phy3)
+ 		clear_bit(MT76_RESET, &phy3->mt76->state);
+ 
+-	local_bh_disable();
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
+ 		    mt76_queue_is_wed_rro(&dev->mt76.q_rx[i]))
+ 			continue;
+ 
+ 		napi_enable(&dev->mt76.napi[i]);
++		local_bh_disable();
+ 		napi_schedule(&dev->mt76.napi[i]);
++		local_bh_enable();
+ 	}
+-	local_bh_enable();
+ 
+ 	tasklet_schedule(&dev->mt76.irq_tasklet);
+ 
+ 	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+-	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
++	local_bh_disable();
+ 	napi_schedule(&dev->mt76.tx_napi);
+ 	local_bh_enable();
+ 
+-- 
+2.48.1
+
 
