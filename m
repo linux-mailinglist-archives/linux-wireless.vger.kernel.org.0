@@ -1,64 +1,57 @@
-Return-Path: <linux-wireless+bounces-17951-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17952-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DA0A1CAC5
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 16:33:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B03A1CACE
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 16:33:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34E7B3AF6C0
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 15:25:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2BDA1696EC
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 15:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2A520459C;
-	Sun, 26 Jan 2025 15:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9242B209663;
+	Sun, 26 Jan 2025 15:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p429NvaT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3Jwgx8g"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF9019E98D;
-	Sun, 26 Jan 2025 15:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AEA208995;
+	Sun, 26 Jan 2025 15:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903703; cv=none; b=T0s7IFHDGL/Y7f/D7+iJN2cQEYLmP+GTkjEhhHZ+YX+RzCHYtGsN/Zj8PEE3L5Np6lSa8pCF+bd+/GUTSeF8Hbz5oNvNpzNZxaBV75I1c3HkSzXcMj4NCrJwOTrc2QLDv3BEZhFE/+HHCBNAW3VQpEdUMuF7wlxP5wzzcprWogQ=
+	t=1737903733; cv=none; b=TvCNFOxS0HbaBwA1/dbsRduz+u7CghcWeG4sotIkQ0G+AePEhe3Ta5BeTeO6yUcLDZGQDuonk05hXnvcK3+zB8yj0WAyFgnwrmasb9U8xz1qcdVsKycqBZDscEiSR4UJXd2vsLm8yuiYX126bYMuIJ8WJ4xe1fG/IegcUGkCDEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903703; c=relaxed/simple;
-	bh=gZXa/QlzUTnZNzVf8+mlAdBz4gVYIciL2oZ+rzjJKkE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IJKjlDz9DAAnq5hFahkyBZKWccsB4V3fGQwofn2pbphVbGM4TzmZ9ZK9NamFVAeU3EYUm3BYZ63sTMn/EU+HIWhDUvlHij6MiWVZbW6fMsf9DNeAmsK7ijEwmwTZoY+z+wLCHMl9Fj+9vntOrBjPToGfVKz7GlpE6IBjckKlAVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p429NvaT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E41C4CED3;
-	Sun, 26 Jan 2025 15:01:42 +0000 (UTC)
+	s=arc-20240116; t=1737903733; c=relaxed/simple;
+	bh=CbT2kRZkwVQV7uQSxvmnC7Msj/oYFU2uKge6dOpqOL8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f8bnu1V04J8Frs7TY07h0BSvqomdAq8cTJRjcoTayJAmVTvh1/aFVby9usUHnm1NM4jTfmS5J/AbQb6sK8JuhhRM69hgCeR0AXnNk3cVAc7XlCZHdfii1ITWW7rzffh96NiUHJZjuWXPhmOiBvalB7dNG9VZLUZ5cEnnXvicwdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3Jwgx8g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCDEC4CED3;
+	Sun, 26 Jan 2025 15:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903703;
-	bh=gZXa/QlzUTnZNzVf8+mlAdBz4gVYIciL2oZ+rzjJKkE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p429NvaTIOnqVQ1h+RDVNIY8l8MxRzYPLQVaPnUemDhx3QfXn+Y1F/vGGOxthtk26
-	 hOS+ESQHtLSv89WCxgVgNNBXcQaiOwpJIjV4mALSjugmZ051vb6DdaiBdm7ifGnWMt
-	 ZUtsOsJ1upQhJlR72zA4WaL36QfPDAHWlv8+u3Z8aR1nzCs2i7+EuIU9jjHeuxZriM
-	 /OMG9GR8GbQpcDH0EseG97J6a3SQImvRhTN4eEut0c9L3+TfiZ5c5d5x2gONySFOak
-	 eBlvCvMQxQDQkJP3uz50eqzP6DeOQ4Vi9MUsGSYGiNU0Nc3Wx2aET5uFUPNB7PvI0u
-	 Zj3FEnzT1BLwg==
+	s=k20201202; t=1737903732;
+	bh=CbT2kRZkwVQV7uQSxvmnC7Msj/oYFU2uKge6dOpqOL8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=X3Jwgx8gF58FcVc+mwdhWi9VKEOuCUdsgf3rhFu3FiuJO1TxPfAjDDNK+itcHaMEx
+	 TRH2ENmyUr9whWwyUbIxSchkifw//2ymyACH/6m83Kt2oxGwD7QTO5adkyzR95zVw0
+	 K6E1SwhtMpLAmuhEjpKY4OG8BqJBx6djhqrGUu9fzpZroSXtakzyZgI7bGLRriVzmr
+	 sq8ET+ntZMXAdqBv+z5OS2fGsEGPCGHp7XumwQc1YmXc0yFQ6VJG7fGl+EwFYttB9q
+	 gcQQWV6H/k/aga91cSAmkkMZmXsXy6RkkZEcwTrtRVerr+unVlBNbl2LBuAvg4Q+ld
+	 MnnFjPQldvMYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	pagadala.yesu.anjaneyulu@intel.com,
-	dan.carpenter@linaro.org,
-	somashekhar.puttagangaiah@intel.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 21/35] wifi: iwlwifi: avoid memory leak
-Date: Sun, 26 Jan 2025 10:00:15 -0500
-Message-Id: <20250126150029.953021-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 01/29] wifi: rtw89: add crystal_cap check to avoid setting as overflow value
+Date: Sun, 26 Jan 2025 10:01:42 -0500
+Message-Id: <20250126150210.955385-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126150029.953021-1-sashal@kernel.org>
-References: <20250126150029.953021-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -67,70 +60,82 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.13
+X-stable-base: Linux 6.12.11
 Content-Transfer-Encoding: 8bit
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit 80e96206a3ef348fbd658d98f2f43149c36df8bc ]
+[ Upstream commit 7b98caea39676561f22db58752551161bb36462b ]
 
-A caller of iwl_acpi_get_dsm_object must free the returned object.
-iwl_acpi_get_dsm_integer returns immediately without freeing
-it if the expected size is more than 8 bytes. Fix that.
+In the original flow, the crystal_cap might be calculated as a negative
+value and set as an overflow value. Therefore, we added a check to limit
+the calculated crystal_cap value. Additionally, we shrank the crystal_cap
+adjustment according to specific CFO.
 
-Note that with the current code this will never happen, since the caller
-of iwl_acpi_get_dsm_integer already checks that the expected size if
-either 1 or 4 bytes, so it can't exceed 8 bytes.
-
-While at it, print the DSM value instead of the return value, as this
-was the intention in the first place.
-
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241228223206.bf61eaab99f8.Ibdc5df02f885208c222456d42c889c43b7e3b2f7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241128055433.11851-7-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c | 11 ++++++-----
+ drivers/net/wireless/realtek/rtw89/phy.h |  2 +-
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index 0bc32291815e1..a26c5573d2091 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -108,7 +108,7 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
- 				    size_t expected_size)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 4b47b45f897cb..5c31639b4cade 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -3892,7 +3892,6 @@ static void rtw89_phy_cfo_set_crystal_cap(struct rtw89_dev *rtwdev,
+ 
+ 	if (!force && cfo->crystal_cap == crystal_cap)
+ 		return;
+-	crystal_cap = clamp_t(u8, crystal_cap, 0, 127);
+ 	if (chip->chip_id == RTL8852A || chip->chip_id == RTL8851B) {
+ 		rtw89_phy_cfo_set_xcap_reg(rtwdev, true, crystal_cap);
+ 		rtw89_phy_cfo_set_xcap_reg(rtwdev, false, crystal_cap);
+@@ -4015,7 +4014,7 @@ static void rtw89_phy_cfo_crystal_cap_adjust(struct rtw89_dev *rtwdev,
+ 					     s32 curr_cfo)
  {
- 	union acpi_object *obj;
--	int ret = 0;
-+	int ret;
+ 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
+-	s8 crystal_cap = cfo->crystal_cap;
++	int crystal_cap = cfo->crystal_cap;
+ 	s32 cfo_abs = abs(curr_cfo);
+ 	int sign;
  
- 	obj = iwl_acpi_get_dsm_object(dev, rev, func, NULL, guid);
- 	if (IS_ERR(obj)) {
-@@ -123,8 +123,10 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
- 	} else if (obj->type == ACPI_TYPE_BUFFER) {
- 		__le64 le_value = 0;
- 
--		if (WARN_ON_ONCE(expected_size > sizeof(le_value)))
--			return -EINVAL;
-+		if (WARN_ON_ONCE(expected_size > sizeof(le_value))) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 
- 		/* if the buffer size doesn't match the expected size */
- 		if (obj->buffer.length != expected_size)
-@@ -145,8 +147,9 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
+@@ -4036,15 +4035,17 @@ static void rtw89_phy_cfo_crystal_cap_adjust(struct rtw89_dev *rtwdev,
  	}
- 
- 	IWL_DEBUG_DEV_RADIO(dev,
--			    "ACPI: DSM method evaluated: func=%d, ret=%d\n",
--			    func, ret);
-+			    "ACPI: DSM method evaluated: func=%d, value=%lld\n",
-+			    func, *value);
-+	ret = 0;
- out:
- 	ACPI_FREE(obj);
- 	return ret;
+ 	sign = curr_cfo > 0 ? 1 : -1;
+ 	if (cfo_abs > CFO_TRK_STOP_TH_4)
+-		crystal_cap += 7 * sign;
++		crystal_cap += 3 * sign;
+ 	else if (cfo_abs > CFO_TRK_STOP_TH_3)
+-		crystal_cap += 5 * sign;
+-	else if (cfo_abs > CFO_TRK_STOP_TH_2)
+ 		crystal_cap += 3 * sign;
++	else if (cfo_abs > CFO_TRK_STOP_TH_2)
++		crystal_cap += 1 * sign;
+ 	else if (cfo_abs > CFO_TRK_STOP_TH_1)
+ 		crystal_cap += 1 * sign;
+ 	else
+ 		return;
++
++	crystal_cap = clamp(crystal_cap, 0, 127);
+ 	rtw89_phy_cfo_set_crystal_cap(rtwdev, (u8)crystal_cap, false);
+ 	rtw89_debug(rtwdev, RTW89_DBG_CFO,
+ 		    "X_cap{Curr,Default}={0x%x,0x%x}\n",
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index 7e335c02ee6fb..9bb9c9c8e7a1b 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -57,7 +57,7 @@
+ #define CFO_TRK_STOP_TH_4 (30 << 2)
+ #define CFO_TRK_STOP_TH_3 (20 << 2)
+ #define CFO_TRK_STOP_TH_2 (10 << 2)
+-#define CFO_TRK_STOP_TH_1 (00 << 2)
++#define CFO_TRK_STOP_TH_1 (03 << 2)
+ #define CFO_TRK_STOP_TH (2 << 2)
+ #define CFO_SW_COMP_FINE_TUNE (2 << 2)
+ #define CFO_PERIOD_CNT 15
 -- 
 2.39.5
 
