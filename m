@@ -1,108 +1,128 @@
-Return-Path: <linux-wireless+bounces-17968-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17969-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C5FA1CC33
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 17:04:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00181A1CD66
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 19:16:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0D503A8FBC
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 15:53:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5F221886F26
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 18:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D901722F3A1;
-	Sun, 26 Jan 2025 15:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A1F153808;
+	Sun, 26 Jan 2025 18:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WmQSnsNp"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="P94aFJLQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68221A9B48;
-	Sun, 26 Jan 2025 15:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845C125A62C
+	for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 18:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903935; cv=none; b=rK3uEQDa59Tco275zhYs+LrJZgpjL/rEPgdF7mxCSFmzaKGYuSfkyH/jb0Rbi4P7QYtCKJl86YNLlIblRE5bZuJYvij4SmYYx42kddfrN6kpoqfGuCrAlzkgj34rOzdEoDcWTk0Yn9O+I4GCDIoKaZbTxeOnCr6eKZPenQHWcBU=
+	t=1737915406; cv=none; b=UCCc0IQZZZQuOxBi5ezbmGgzS5d7H2MZHNDKzyRAaG/L6KoXLbSctIFL7jAyiPkn2dxuMoJK0yvYOgznLzSRna3HrD0IxtzxHt43zdTsCbcujQ2jYQtvGUdaFFxkqmb0+UelBGAMUZT0CPD0O69g6s1IMFJdfcUXLWkRXwbsQpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903935; c=relaxed/simple;
-	bh=VNMC92ERXGgXHptbGRo48slbMZlq6EDbppqGFCn7la8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jaMOGr2ot2UEmovg6KaiLjYThh8+LNHxLewxoT9F9z76vP8VznEDElRtqMqxMP4JDVRfEMVKW9XWZbMALwUx1rXee1E+Fiyckniy5zNndxMtZsMxLi4pqcMRPmcj4+HOTZvbLGe3xx/8ucgPZShOQqii58flONFBnCdiSfx9RaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WmQSnsNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C598C4CED3;
-	Sun, 26 Jan 2025 15:05:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903935;
-	bh=VNMC92ERXGgXHptbGRo48slbMZlq6EDbppqGFCn7la8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmQSnsNpFgQ42GDfztE18kExKmolKOjvLapFwgpLOtqya+IeniJr7sLpHB4odFSzr
-	 B+Y/8qHQfLONLiePqapDKxJtte8AjJrFp6t9yoS3OcWk6ysZ47jvvde3a0NRY8TgXz
-	 Bt+j+x79wi/nrCjNO7UQX8tB2tTVwuCuWwtsFWDh1AsbA2RIVmruua5U7huJttSaJg
-	 M/VKDl08+l29EH9rPJTmVMNPVmdzL1mPjI7Bqpt/Wj0YnEnQ2s2iaKa4x8tIgpvGjv
-	 WFRtRmQjkt+g3ZiPC2Lu8B+l2eMTHeYu/e17dUBH6K+jii1s0eykzwIvvOzQ3GFbtk
-	 Avm5W8A+z+low==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Dmitry Antipov <dmantipov@yandex.ru>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes.berg@intel.com,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com
-Subject: [PATCH AUTOSEL 5.4 3/7] wifi: brcmsmac: add gain range check to wlc_phy_iqcal_gainparams_nphy()
-Date: Sun, 26 Jan 2025 10:05:23 -0500
-Message-Id: <20250126150527.960265-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126150527.960265-1-sashal@kernel.org>
-References: <20250126150527.960265-1-sashal@kernel.org>
+	s=arc-20240116; t=1737915406; c=relaxed/simple;
+	bh=+BW2U98f9bUqqsQHM0pPFR6VofvOnCVL58IbXM8+xIw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=urnH50f0MRtNO4OX7e64wG5allmxkIxnzNLayKMZbBYJmerR3h71NEfT2UwgLyKM4GpVI3WWRKOdbRtkAwV5nRzIyy3MQcNSuTraMBQfNYsqIQAMruS4EKPjJcQHrG8Z8vtZ/lnVllKSjNUluIVz2sZbPqVyow7xHoMGCzbZVWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=P94aFJLQ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50QHvAsQ021133
+	for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 18:16:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	+BW2U98f9bUqqsQHM0pPFR6VofvOnCVL58IbXM8+xIw=; b=P94aFJLQPvMF6/6D
+	Jo3hwq12aauq5PPsI0rywAhu9u+lm29/0iT4Egr/NhNvvoa+vY+ARGtRgPW7GOnh
+	DWZyzfulljwGMzNqhBlgVx3vLitJ4uOakSlRtwil7nbfYhe3mO2aUmdtyBs1nVrh
+	hYwIozi9tPDnrpAaROuWdfhpPmvfVk7RpzvC3CbZrCevxA5ef1+rLWnyeWyJaQv2
+	mZUt9FmprLiQIghlQ7deFSxpFH5tqsYq9hQbzXPCWj/zuMz88XL97gPKkGvPh+20
+	W/z3+7fCU8/Wd8XwDrNK0ibZRH9Tb2Bmljih1+QAVQMPCiOIphLg/tiy6l8i20f3
+	kuypUA==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44dh6q8k22-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 18:16:36 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2ef9e4c5343so10626532a91.0
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 10:16:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737915395; x=1738520195;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+BW2U98f9bUqqsQHM0pPFR6VofvOnCVL58IbXM8+xIw=;
+        b=MkR6aE2mKSoRBMIVcPfuY2uDWPSDHs7hrRck5d9vJxZy2FVzZMsey5hicKTPHKcQcL
+         CpnR3FVxAffG+VdZ5WBC5oQdJgckPtcnl3Uv5rnadAQ1xmoMJaNiuNbAnGlHHZsJ7s6L
+         sUCt4d34ksIU5gKCbFaj1Y9K9k60bjKacQNDinixMI969ssKZRGx9J6JbRPpnDJRxANl
+         laug8pQGBuVyl+DEcHuPGGipyjUBDc0N/CwYbLqTWdJCXuhgbq1uC3IZMgKKyhUtRkv5
+         7t4muphhL4OPqyHbAzIClXgoKtFi4cO/BQAsOctdOzKmaRldyCE0lol81oVMT+el6d1G
+         7sLw==
+X-Gm-Message-State: AOJu0Yx/mz8s4zn4aIbRUKrCYhj8jlnd/gcgsg5jYEEuWPoyjgjsXM3e
+	7u61hZL7LE03mmeYF3sRh+SJ9v2B0h1oNPFzASgnx1hXGtddM2NTeJbrZKQU/GRe/fRFrIeMkFR
+	bOyTYMFHjdgv5YyvVXuLfE+vTgRSBf2EMut0z3RPN/XMBXQPOTynb4QE+gCnxvPx3iw==
+X-Gm-Gg: ASbGncst20glGVqWyWaWmaCm9h0E0pWzHa0UaQ0kmbczpXNM1qKiL3xktQuA95DfSXk
+	5kDL7WGyV0YSzT60HhtPeOM7LBYpLW3VXhE9VaW8SheT3MmaI1+GHz8wMHLv8PKxAz/0sU/3XXP
+	irDT/vOiIVBkYC8W1QxyAG/+CK4ZoY0QtYFxwyFXsaw+JMNjAHrfhl83oKWIQguQbLf33z8nHy9
+	DlAF3m/ehQNf/KEZeyTi4JRyZySHpH4nat9OgfqREnkHqP6nDYCERAemnhg0onpr9OZ6H1SUa9i
+	hRxWGX+EUu0Et+RTKppnjaJdF87FYSzqUxUNzGFmelyVHkOtydk0rBiacng7qc65yIUPOgZydw=
+	=
+X-Received: by 2002:a17:90b:1f8f:b0:2ee:3cc1:793e with SMTP id 98e67ed59e1d1-2f782d9a198mr49853334a91.32.1737915395318;
+        Sun, 26 Jan 2025 10:16:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGun4CAWTga0BhEoL/MdVWK3/hSH2J4Zmhs+JnVVOyeBcIoN+uwv78QtV6WKGN8T4uZVSrD1A==
+X-Received: by 2002:a17:90b:1f8f:b0:2ee:3cc1:793e with SMTP id 98e67ed59e1d1-2f782d9a198mr49853310a91.32.1737915394819;
+        Sun, 26 Jan 2025 10:16:34 -0800 (PST)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ac496cb4810sm4958851a12.66.2025.01.26.10.16.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 26 Jan 2025 10:16:34 -0800 (PST)
+Message-ID: <23d62bef-2393-4232-93ff-82ca4dbc4524@oss.qualcomm.com>
+Date: Sun, 26 Jan 2025 10:16:33 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.289
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: fbx: fix ath12k_hal_tx_cmd_ext_desc_setup()
+ info1 override
+To: Nicolas Escande <nico.escande@gmail.com>,
+        Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
+        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250124113352.93638-1-nico.escande@gmail.com>
+ <a979cbc5-5cfe-160d-d5b9-9e5ed7513ed1@quicinc.com>
+ <D7B63ACJOYD0.1XBZ5VB991KOW@gmail.com>
+ <18b47227-6b77-a029-2e80-04a0455ac091@quicinc.com>
+ <D7BFM42HW2NL.2IZS207VTCTJN@gmail.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <D7BFM42HW2NL.2IZS207VTCTJN@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: xMD65IUYdHQhHoMCBQCga2stFBa4hlgB
+X-Proofpoint-GUID: xMD65IUYdHQhHoMCBQCga2stFBa4hlgB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-26_07,2025-01-23_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 malwarescore=0 mlxscore=0 mlxlogscore=817
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501260148
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+On 1/25/2025 12:21 PM, Nicolas Escande wrote:
+> So You guys prefer I remove the fixes tag then ?
 
-[ Upstream commit 3f4a0948c3524ae50f166dbc6572a3296b014e62 ]
+Yes, please don't add a Fixes: tag if no current upstream functionality is
+broken. This may cause the 'stable' team to spend unnecessary time backporting
+the change for no reason.
 
-In 'wlc_phy_iqcal_gainparams_nphy()', add gain range check to WARN()
-instead of possible out-of-bounds 'tbl_iqcal_gainparams_nphy' access.
-Compile tested only.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241210070441.836362-1-dmantipov@yandex.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-index a3f094568cfb2..90ae800cbccd0 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-@@ -23445,6 +23445,9 @@ wlc_phy_iqcal_gainparams_nphy(struct brcms_phy *pi, u16 core_no,
- 			}
- 		}
- 
-+		if (WARN_ON(k == NPHY_IQCAL_NUMGAINS))
-+			return;
-+
- 		params->txgm = tbl_iqcal_gainparams_nphy[band_idx][k][1];
- 		params->pga = tbl_iqcal_gainparams_nphy[band_idx][k][2];
- 		params->pad = tbl_iqcal_gainparams_nphy[band_idx][k][3];
--- 
-2.39.5
-
+/jeff
 
