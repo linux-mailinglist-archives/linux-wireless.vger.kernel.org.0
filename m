@@ -1,95 +1,104 @@
-Return-Path: <linux-wireless+bounces-17971-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17972-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2711A1CD79
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 19:45:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC28A1CD7A
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 19:45:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 055411883458
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 18:45:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECC55164F92
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 18:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A6917BEC6;
-	Sun, 26 Jan 2025 18:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F8B1662E9;
+	Sun, 26 Jan 2025 18:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nS9lXP/d"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CRVzeh5A"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE3616EB42
-	for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 18:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDC817ADF8
+	for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 18:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737917105; cv=none; b=akNC7UWOslt9O/+0xAxKibQWk4/MfiCwZe8VQFNgrx1GHzX7D1j86zhLAEf+KX1Wo/Yh9TDHXazbZYH2V0RH47Zz1YWYmVGdXDHz7LPwwksRYt/aGK3V4mOrMIJqF8i9RlJIAootEzORFbPLJT/8io/8jged/XjnKac3CyFsxwc=
+	t=1737917107; cv=none; b=q1NZfUVjoh+K6fGloHvj3veUjq3dsJWTgPcM4JdTwu9wRUYX91+Iqr8jC8rHAtJMNMX156cTOBEWR3wlr6RezlbUg9eNJMjbbNu38syyOpqnp2kjBVU7Fz2F1dbJa/JYxCMLk1M90N4VoU0kbrW62GhOUkleZsdtoG7JkaAksqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737917105; c=relaxed/simple;
-	bh=zz3xS+43zOTRrOffRrxNuilzIRpHDRXi335WHuZCFgg=;
+	s=arc-20240116; t=1737917107; c=relaxed/simple;
+	bh=G+BBRRWVEv5Jkpfqap6p0EeEepHV148HEb4d/qXLG6s=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=CHovomIiIjgUQG9GBbXBwfsQ4dOmwCxFYDTizc8dnBsov/gyt5dAg/1trm6YG2nrDNZVV7fMloYG57TP+CIX52qG9t2TJUmgu7xOW8mMIp2RxCY2pT3kwSrqIowQOYBBvXK/23wsBTx2ga+pncWt4/zGW1Zlloep/Fm6+FC8nyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nS9lXP/d; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=CK5uivpx4+UVk8AP3qW9hT1etWOOdlIXMFk0XJE+u7GT86tstLX6bRvnuXgmcMOfrIod+PUa9J+ypfgCjLXs6U86Ldmf4wiPn6LNjePIO1UW0tjxQ13+w019e+oKBSyHFkI3uxTo/xBxYE6x1qIe5a1UV+CNtY4VEjKea+3H8QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CRVzeh5A; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50QHeM31025426
-	for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 18:45:03 GMT
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50QGNpIR031742
+	for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 18:45:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WIMAOucDnoD6b7e/gEVK/KtBPqhW1iRWKSqKeR63TcM=; b=nS9lXP/dMLlV84Yb
-	4TuxMPiePRfnwjTJJ3a/CDCsaBTaLnAz6JgDHU+ZCZ7MxLkG7AYOWY1gnwnJDXs8
-	JpqU3P+ZRpbSpWRsxolneGkerQvpIXGlcQYdOy9YAUUyQuK956n8eFxl8TMKT/jm
-	jcWi/XuWHlfDgT6ZqCqD9ZJYkaHrCmYCH5EaHQcXV7JxX/CgIjGD41U8GgmSCM/Z
-	OnrhKybFYuEVIyCi9vpNWniBt4KG/h6rR6TRk3tYLRFZAcHxFsqcuLIv/nBBvaTx
-	FsU1/TnTG3waQVZsCI0j+yfb2WYabhFSx8u2pE9mH14NgvdubivtDcsSGswiInFn
-	mjLzgQ==
+	Qjzal2VIOLOUxu2o2XRhtZzepAUsS41r+vnYJ3dxxdk=; b=CRVzeh5AUa0THa80
+	MMf1c6u3Wh/nEIVPAAq6P70X/ZVgxnY9mq/9uyesq+wb0fWdOoo6X2bgvFNCfj8S
+	SWx4rSnhYVmxYb/NnruE/t2h0JhSpScf1r8gZUklrWVCPHI0YRerU6rjHJN1hvFk
+	anyPZ+mE4rkBm/Xweo+b+BT86dBopgF/ABnm5iTuIbSrhuhy/PAEV2qQU1VRcEJb
+	gVmZeJgHPDhb+1PaeCfseIhX4RiFmII3981TEt9k4xJ2EwvFLWNRhKDqQV7dZKtT
+	WOYp3ZKGeo6KbCE6A8qd2+wDblUXBrZnx0KrpK4zb12ZU0NHAZXvCB0n+CjeASju
+	Fkn2XA==
 Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44cs2hj5cv-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44cs1pt5t3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 18:45:02 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2ef8c7ef51dso7287932a91.1
-        for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 10:45:02 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 18:45:04 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2ef9da03117so10651432a91.1
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2025 10:45:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737917101; x=1738521901;
+        d=1e100.net; s=20230601; t=1737917103; x=1738521903;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WIMAOucDnoD6b7e/gEVK/KtBPqhW1iRWKSqKeR63TcM=;
-        b=Xf+wBet4vdJL4fxewoGrC8DNZARk7HtpuoKQ/ufiDsm7OhS05FXEtYV3H3ETqA74fo
-         Ln2BEemHZb4MaIWPcVFeAKzk5cunl11FVIMUIJJArJ+OUVdLKJ0cCYqacJ8RM+69RDjE
-         dklyoNmASTxZ69Blps0z3K5hX6Hl4jzatvc/GaStrlSaKc3Vho39q2ADE5OZGdgpzm/S
-         iy82wonh/I6S7TNyeTLjfU4/zwuCx7VBB5XyHE4ccafBPTCQKPsAfrFWQgVTCKfQoWVi
-         4LdKN2Ai6kPRJlp7CoakU10c51p4KpZrOhhj0HQRtIe5xk4v1F7Qp4aKsgOg6TxU3Lct
-         JBOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVV1FQS4C6LzJN28uGox62f1Vl7NgYez6A3PAQ/MymkEN+2Us1nNItAhPTl57DUGN3pvAQPvzQbCrx7Fu6w4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXrxLCq4/Eqh4uoioE2xTjI/5I3dpi2brKyfL4AJ17rQ7iLoMY
-	5jpo5GjQPzuOhZ6zqd4u0UDnhJ4M0Kh4mNaOsTyto/tX1oJbm3fX/dkX/eNzbWLd9TUZcJNIZck
-	fvX2vmyVXdSjcZzL1R3aluTqjgLHq2f0+OLyaLWOy9NoDOe9Ugq0kCs8QFErkeLDmSbEkX6ORRw
-	==
-X-Gm-Gg: ASbGncvAJUDWM3F4Pe6MRlnr9A8wD31tGzqU2yQ6NXeKzEFMswqh7SCVPsrMFpTD/Ef
-	usBtDc4Acz+s+8ki9ZNmMthMTAKy1lZ6QIdAn6hiT/PzPHPBj9j2pK2RggdZrZy4563gqeJyqH2
-	6uW1qpH2BVpUfPbpU3yPf+f98JqDVpve+EMB3WV7g5aT+uTIewLZgfTXKxKnZ/EBcVEQnkYj3KC
-	ua+dtkQkd8k8f1Fs95GBnPwC8SPBMGoSGDj0D/NmS7ml9MjfoFHjYIG0+lkzdogOQEAxOaDTYp0
-	7EFJOyE1xzKebw+mS++X07rpN6T/xJBs2vU6spEutw==
-X-Received: by 2002:a17:90b:234d:b0:2ee:7504:bb3d with SMTP id 98e67ed59e1d1-2f7f15dfba9mr24210908a91.0.1737917101183;
-        Sun, 26 Jan 2025 10:45:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG26oKJjuEA21yrG/PkVI7/SoF6CjcurwEG2SoTEXHxrB1yqeM6UeMNbOvXp+g5ZqT/kJ8Ozw==
-X-Received: by 2002:a17:90b:234d:b0:2ee:7504:bb3d with SMTP id 98e67ed59e1d1-2f7f15dfba9mr24210874a91.0.1737917100811;
-        Sun, 26 Jan 2025 10:45:00 -0800 (PST)
+        bh=Qjzal2VIOLOUxu2o2XRhtZzepAUsS41r+vnYJ3dxxdk=;
+        b=pu1xxuEWf8ujT/wdTIPGhoyc2fW5O69hsjVCCnX2Stw4rETtAcCSLI/7Lp9MlzTqZQ
+         OHQl5+uIKZ9YreykR/0/KhXFUB4jvuKmjUGtxEvcLzJNZj5Yps4g3JT90bAPFlQku85q
+         ExRvfQPIrTG1Oc0626RV/xSOEo+Iwyd6j8kKN4Gv7eqiS+ZD2ZckP8O8Do554cTVV+BM
+         A4nUxwjC7xZ1/NraSRk3YDjqBxpdXvAVmD4+myQqce0Yy76nCZeaxN3En8Jja3WhzhhO
+         H1Ydq3OG4vEPuJsPsOsS7tE3VSkLRjvar3j00Wxk24FLqWsiiMM9Zrd2qLosWh2ak9W0
+         lWDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWGHbTATCTCDEV45VnKQu4L5ch7wHPmIlSVHP6whSEiNREfTElPaWKWqhNamqfKbj79+tveHXK7V256NxXRdg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+0+7J/HfS/iT415ito8GUlIfRQnvgYrKuahvEo0U7kO1SMND/
+	CZdA2SEJEVVdZL9MYK13EfOzYRvmXU7XQMxEib3/LIqkPK5yt6q9gmwT+t3s863ZGcgd2s2MRcn
+	nav4WEbGk/L9sAMOSXvxif2LOtauIjs3jVjOz+y7p2+sIR07IsWQ6wY/jKosPywv7ag==
+X-Gm-Gg: ASbGncvViUmEeGOs9easuJ1PRiWr+Ykbp4OlUn9Jb24WGUkmIiJFVgwnyZMk8MYrRA8
+	ZiCF7TRNoK9OVmBy5ChqswSQp/gHF59+2ZYhN4inrPgWhhxIKtuc0HPvP09rH2ON+/Lz2MWZCKD
+	/YlSN3uqI5uXaNoRwM29C/W2ns+gXkfaXL56EAzN9/qMYdU9X/S4lBN8dXi1BU5sgmjiLuMlBLe
+	8zyACAEvTdBCmd1iNqgu3QaD7i/1muMph5f4JNUpado1TlhePBlmKc1zm5TESd0zRtFdUnZ32d+
+	KgwM+XMwDDOanyLvpF0YqiIJ/XJifPPgW1k56ji8mw==
+X-Received: by 2002:a17:90b:5244:b0:2ef:2f49:7d7f with SMTP id 98e67ed59e1d1-2f782cb58c3mr63741844a91.18.1737917102961;
+        Sun, 26 Jan 2025 10:45:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFVDOJEal9qItKa852YUinKUBKEPgqodT6CK191Nxz1C3J8NiQdSjFfGQ7fvaGxYTmh6kkv1Q==
+X-Received: by 2002:a17:90b:5244:b0:2ef:2f49:7d7f with SMTP id 98e67ed59e1d1-2f782cb58c3mr63741810a91.18.1737917102649;
+        Sun, 26 Jan 2025 10:45:02 -0800 (PST)
 Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7ffa44cb8sm5414795a91.6.2025.01.26.10.45.00
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7ffa44cb8sm5414795a91.6.2025.01.26.10.45.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jan 2025 10:45:00 -0800 (PST)
+        Sun, 26 Jan 2025 10:45:01 -0800 (PST)
 From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: kvalo@kernel.org, quic_jjohnson@quicinc.com,
-        Miaoqing Pan <quic_miaoqing@quicinc.com>
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-In-Reply-To: <20250123084948.1124357-1-quic_miaoqing@quicinc.com>
-References: <20250123084948.1124357-1-quic_miaoqing@quicinc.com>
-Subject: Re: [PATCH v2] wifi: ath11k: fix memory leak in
- ath11k_xxx_remove()
-Message-Id: <173791710012.2935553.8848464110597031122.b4-ty@oss.qualcomm.com>
+To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+        Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
+        Bhagavathi Perumal S <quic_bperumal@quicinc.com>,
+        P Praneesh <quic_ppranees@quicinc.com>,
+        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc: Kalle Valo <quic_kvalo@quicinc.com>,
+        Balamurugan Selvarajan <quic_bselvara@quicinc.com>,
+        Carl Huang <quic_cjhuang@quicinc.com>,
+        Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org,
+        ath12k@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+In-Reply-To: <20250107-add_max_reg_pwr_in_scan_ch_list_cmd-v1-1-70d9963a21e4@quicinc.com>
+References: <20250107-add_max_reg_pwr_in_scan_ch_list_cmd-v1-1-70d9963a21e4@quicinc.com>
+Subject: Re: [PATCH] wifi: ath12k: encode max Tx power in scan channel list
+ command
+Message-Id: <173791710099.2935553.14215933138966631965.b4-ty@oss.qualcomm.com>
 Date: Sun, 26 Jan 2025 10:45:00 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -100,33 +109,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.0
-X-Proofpoint-ORIG-GUID: Ru3OT4Q92E1HOIlABuFR_yQKbZcWvV6-
-X-Proofpoint-GUID: Ru3OT4Q92E1HOIlABuFR_yQKbZcWvV6-
+X-Proofpoint-GUID: CaMFzGVxGOcjCRtNI5LSoaxsJvVaKKiZ
+X-Proofpoint-ORIG-GUID: CaMFzGVxGOcjCRtNI5LSoaxsJvVaKKiZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-26_07,2025-01-23_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=683 lowpriorityscore=0 spamscore=0 mlxscore=0 impostorscore=0
- malwarescore=0 bulkscore=0 clxscore=1015 phishscore=0 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501260152
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ suspectscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0
+ mlxscore=0 adultscore=0 bulkscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501260152
 
 
-On Thu, 23 Jan 2025 16:49:48 +0800, Miaoqing Pan wrote:
-> The firmware memory was allocated in ath11k_pci_probe() or
-> ath11k_ahb_probe(), but not freed in ath11k_xxx_remove() in case
-> ATH11K_FLAG_QMI_FAIL bit is set. So call ath11k_fw_destroy() to
-> free the memory.
+On Tue, 07 Jan 2025 09:31:39 +0530, Aditya Kumar Singh wrote:
+> Currently, when sending the scan channel list command to the firmware, the
+> maximum Tx power is not encoded in the reg2 member. This omission causes
+> the firmware to be unaware of the host's maximum Tx power, leading to
+> incorrect Tx power derivation at firmware level.
 > 
-> Found while fixing the same problem in ath12k:
-> https://lore.kernel.org/linux-wireless/20240314012746.2729101-1-quic_miaoqing@quicinc.com
+> To resolve this issue, encode the maximum Tx power in the scan channel list
+> command before sending it to firmware.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] wifi: ath11k: fix memory leak in ath11k_xxx_remove()
-      commit: efb24b1f0d29537714dd3cc46fb335ac27855251
+[1/1] wifi: ath12k: encode max Tx power in scan channel list command
+      commit: 07c34cad10ab0ac8b06ede8a7fbc55ecf2efa3e6
 
 Best regards,
 -- 
