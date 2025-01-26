@@ -1,57 +1,60 @@
-Return-Path: <linux-wireless+bounces-17946-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17947-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2590A1CA54
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 16:23:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0BBA1CA8C
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 16:28:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD5521885B43
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 15:21:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C0323A9260
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2025 15:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81A9197A76;
-	Sun, 26 Jan 2025 15:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BB9198E78;
+	Sun, 26 Jan 2025 15:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQ7Z9eU0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E2Twt5N5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B72719750B;
-	Sun, 26 Jan 2025 15:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52871DDC12;
+	Sun, 26 Jan 2025 15:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903635; cv=none; b=r1tkIVH8Tnj2ScSxM8qI6We977uGTKyqX1rkFIq3NzjGuSc+Dm8jM0+2O0aGaIgmfAbWo+Y0CDJG6QCr7cHP5JlNcL7wal0EmONZ43RWiBTuoy/d+352Rh6bTDjDp93Fj8agHjU6pokTTnk6qMSdsvjn8dg1hbjhwTOE6YA2u18=
+	t=1737903646; cv=none; b=QPEvF6XgXV6OOEPTXPcIizkYc5xaGRzz1XXA218p5V6nme/IIWi99M1il5sWyfYhcS3ExZRFfcE4IMyskd55bkFvucIXOM+8dD46PAVxI8/2pusubvwZbvST36jEJNbNfmlSQCeRh5gofDI3ru22h4c5TwFt8aZ8crH+7tATMKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903635; c=relaxed/simple;
-	bh=9Q0LHsfRnHoGMcVTSsJbci89bsMQEYFZftvvEgqLZn0=;
+	s=arc-20240116; t=1737903646; c=relaxed/simple;
+	bh=CGiuOyRCSz8cyy9BQptoIIFiYUhJkgbuW56cfCSSqqM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jFq0dOG5FelDthu3ytyOgnm7EhVwfaPI/GgvltMHbVMLc+kB5tg9RggtoeiM/9IBw1iHMqU9efKaM5EczJHCDPejcwjeL6so5tWEnwW0kL25Cy+9jXiRPyw7TY1utTw5lTF0cpWC4u+DC9mwvvVOCn62yB+6QYUv2o40VLcs98k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQ7Z9eU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D50C4CED3;
-	Sun, 26 Jan 2025 15:00:34 +0000 (UTC)
+	 MIME-Version; b=rfjT+cdDHaBza4+LVqVLqGzgxC0GkHDgcBx1JS11k29oRGmxCZKTRd1c32CWuEmi8puaEZIp6oFJr32/aMr4KbSKoBgTNaLCAFYHZtffPyuOZLKDEjZ+q8pIkpJP6iExS67XqUK5nJy6EyDWufr5dW83w6/tPozNmDaPOOBxR/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2Twt5N5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFB6C4CED3;
+	Sun, 26 Jan 2025 15:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903635;
-	bh=9Q0LHsfRnHoGMcVTSsJbci89bsMQEYFZftvvEgqLZn0=;
+	s=k20201202; t=1737903645;
+	bh=CGiuOyRCSz8cyy9BQptoIIFiYUhJkgbuW56cfCSSqqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JQ7Z9eU0f+vDIrIRkelYFOZ6kT/mmme7wrVJ6F6bP+jRBCTdZJPzcIh3FYI6yf1bA
-	 w0EwzMprK3xkfOq24mOBQJKhKRMRZlfBf/u7L+7+Jgskuu1pq9KkmklNZN4k6JSvSw
-	 IMztKDJnKzycC0a5fu/84Sr8o1zY+NUxdJTYFgUUiM6dCUl5kJ3t/X4qGDw3MhocMx
-	 ah4/lXnNFAbhAVIf6Y9bEdp8HcdbR+Ow6ORwM7ypqpd3EMdLxE/GOpJYrD8HRzC2Gs
-	 zZw/SqeCzxxcHOGJL80WrhFZrkTsZI2f1/5H0s1lrtJ540BZMhQwPkcE4aTMpICX+x
-	 jSkeF4NsRuEBA==
+	b=E2Twt5N5LDBj8aUu3WRBSNU40BrgeZhw+CSMLdVcYcxUqKn9QNa0EW2Zm5b88Fhx5
+	 ioAgoWwcccxZgrFPxfJQlsnCfmkbqe2AzJyjW4sacjbKWg7a5sHfGAE1Xhf5jHDePC
+	 C8ka1GjeSJVuv8rnaXd4KZVVaDwrdYDjXcf+RBZ+w/nvQwJ2hCBxAdXaAgn/68puqS
+	 dS6CmZiZy+Csdpuh6pDos4g58AQiDbSLz5pVi0R69GPyna32zEgyasEqw28smITEx4
+	 I3B0z/6Mdw9szZnuVd/Bz520Sgkd9zsSPLdgMWwDdkvcYydNjO+/rYnc+UkcaJjEOb
+	 Mg5JqHyk56H6Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chih-Kang Chang <gary.chang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 03/35] wifi: rtw89: add crystal_cap check to avoid setting as overflow value
-Date: Sun, 26 Jan 2025 09:59:57 -0500
-Message-Id: <20250126150029.953021-3-sashal@kernel.org>
+	johannes.berg@intel.com,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com
+Subject: [PATCH AUTOSEL 6.13 08/35] wifi: brcmsmac: add gain range check to wlc_phy_iqcal_gainparams_nphy()
+Date: Sun, 26 Jan 2025 10:00:02 -0500
+Message-Id: <20250126150029.953021-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150029.953021-1-sashal@kernel.org>
 References: <20250126150029.953021-1-sashal@kernel.org>
@@ -66,79 +69,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 7b98caea39676561f22db58752551161bb36462b ]
+[ Upstream commit 3f4a0948c3524ae50f166dbc6572a3296b014e62 ]
 
-In the original flow, the crystal_cap might be calculated as a negative
-value and set as an overflow value. Therefore, we added a check to limit
-the calculated crystal_cap value. Additionally, we shrank the crystal_cap
-adjustment according to specific CFO.
+In 'wlc_phy_iqcal_gainparams_nphy()', add gain range check to WARN()
+instead of possible out-of-bounds 'tbl_iqcal_gainparams_nphy' access.
+Compile tested only.
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241128055433.11851-7-pkshih@realtek.com
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241210070441.836362-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/phy.c | 11 ++++++-----
- drivers/net/wireless/realtek/rtw89/phy.h |  2 +-
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index f24aca663cf00..b9171f6ccae07 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -4058,7 +4058,6 @@ static void rtw89_phy_cfo_set_crystal_cap(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+index d69879e1bd870..d362c4337616b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+@@ -23423,6 +23423,9 @@ wlc_phy_iqcal_gainparams_nphy(struct brcms_phy *pi, u16 core_no,
+ 				break;
+ 		}
  
- 	if (!force && cfo->crystal_cap == crystal_cap)
- 		return;
--	crystal_cap = clamp_t(u8, crystal_cap, 0, 127);
- 	if (chip->chip_id == RTL8852A || chip->chip_id == RTL8851B) {
- 		rtw89_phy_cfo_set_xcap_reg(rtwdev, true, crystal_cap);
- 		rtw89_phy_cfo_set_xcap_reg(rtwdev, false, crystal_cap);
-@@ -4181,7 +4180,7 @@ static void rtw89_phy_cfo_crystal_cap_adjust(struct rtw89_dev *rtwdev,
- 					     s32 curr_cfo)
- {
- 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
--	s8 crystal_cap = cfo->crystal_cap;
-+	int crystal_cap = cfo->crystal_cap;
- 	s32 cfo_abs = abs(curr_cfo);
- 	int sign;
- 
-@@ -4202,15 +4201,17 @@ static void rtw89_phy_cfo_crystal_cap_adjust(struct rtw89_dev *rtwdev,
- 	}
- 	sign = curr_cfo > 0 ? 1 : -1;
- 	if (cfo_abs > CFO_TRK_STOP_TH_4)
--		crystal_cap += 7 * sign;
-+		crystal_cap += 3 * sign;
- 	else if (cfo_abs > CFO_TRK_STOP_TH_3)
--		crystal_cap += 5 * sign;
--	else if (cfo_abs > CFO_TRK_STOP_TH_2)
- 		crystal_cap += 3 * sign;
-+	else if (cfo_abs > CFO_TRK_STOP_TH_2)
-+		crystal_cap += 1 * sign;
- 	else if (cfo_abs > CFO_TRK_STOP_TH_1)
- 		crystal_cap += 1 * sign;
- 	else
- 		return;
++		if (WARN_ON(k == NPHY_IQCAL_NUMGAINS))
++			return;
 +
-+	crystal_cap = clamp(crystal_cap, 0, 127);
- 	rtw89_phy_cfo_set_crystal_cap(rtwdev, (u8)crystal_cap, false);
- 	rtw89_debug(rtwdev, RTW89_DBG_CFO,
- 		    "X_cap{Curr,Default}={0x%x,0x%x}\n",
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index c683f4d7d29b0..bc6912b3a2fba 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.h
-+++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -57,7 +57,7 @@
- #define CFO_TRK_STOP_TH_4 (30 << 2)
- #define CFO_TRK_STOP_TH_3 (20 << 2)
- #define CFO_TRK_STOP_TH_2 (10 << 2)
--#define CFO_TRK_STOP_TH_1 (00 << 2)
-+#define CFO_TRK_STOP_TH_1 (03 << 2)
- #define CFO_TRK_STOP_TH (2 << 2)
- #define CFO_SW_COMP_FINE_TUNE (2 << 2)
- #define CFO_PERIOD_CNT 15
+ 		params->txgm = tbl_iqcal_gainparams_nphy[band_idx][k][1];
+ 		params->pga = tbl_iqcal_gainparams_nphy[band_idx][k][2];
+ 		params->pad = tbl_iqcal_gainparams_nphy[band_idx][k][3];
 -- 
 2.39.5
 
