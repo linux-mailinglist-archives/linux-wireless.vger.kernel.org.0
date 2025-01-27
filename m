@@ -1,81 +1,93 @@
-Return-Path: <linux-wireless+bounces-18025-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18026-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E790A1D905
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 16:09:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31CA6A1D966
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 16:21:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CAC71883D32
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 15:09:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 897CE3A4FCF
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 15:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D944E130A54;
-	Mon, 27 Jan 2025 15:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327C11339A4;
+	Mon, 27 Jan 2025 15:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KluhJSZK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G01oNOl1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7271477F11
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 15:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9411A8837
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 15:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737990571; cv=none; b=F3kI6S/02dVxCCLThIBkxcJNhuorB1nstJ1CeHPNzGQHi4wwCg/kDfFQV9jglWguHiTD97HYf6B3k5jeu/RRV5XckGh8Vo4j1Z7a8nNN3i0k5TVnReJbxUA2nG6QJgW4PP4v7m+CDbnvxjfOdJyrbv6mJ2Y4CtFz4114mims3Jo=
+	t=1737991263; cv=none; b=OPVVT/3a3dCTA1VI+vfozhTmzC1DPq1iIPQx6DLfylcIR46zjmZ4QsjJvw0dwRQODvbCgYrhpPKHoW4/rySLNzcnH2heng7eRcje03ZN2veQZJgy4fpW5DW2hFLG8lOfzA/zKbrrljQ0BK4bfdQEy4CY6nHbAB/xI4wNgTKHOY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737990571; c=relaxed/simple;
-	bh=EwcaXFgV0xCS4nriJgeU5GOhkTW/UCHC43bQna+e1WI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kwcsj/DxkeUQmiVeoJpdOBXHai0DSfURjgJSa/SA0+c5ZWKmhq61x7GTYl19ZwzLDsu0OD3+RoEaI0eZs4Sja3850XyCkzwmyIpmjNld3KMsjHfufKckQwofxK849/dcY4tzemvKkYOom5v5kpqJJoD1TjaQ0R86hP0TyU04a58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KluhJSZK; arc=none smtp.client-ip=209.85.216.51
+	s=arc-20240116; t=1737991263; c=relaxed/simple;
+	bh=P4YLS630pj+sIKngIzZXNX0CJaDfpIWSuim3VbvJgFA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y+dRbQVZqmtLkAeG35FqXHBPa/eK18RnR86ixsaHXYw8DqhxRWyC/FLy4GosWxjjVQt+61iPiTNsXfMZCfN0K4nmwV9Zp+6q++rmQ2Dhr/4dtaCENXRqscGNDsmfp8kn1ZfdGRoL0fukYNr5/Ze0r2wgFNZHTslUulxfdxfgLDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G01oNOl1; arc=none smtp.client-ip=209.85.222.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2ef714374c0so7003402a91.0
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 07:09:30 -0800 (PST)
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7be3d681e74so409472685a.0
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 07:21:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737990570; x=1738595370; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+u6EzzWcIGnS4+MejkE3jWALM1FF33F7pQoXeXph8FU=;
-        b=KluhJSZKEos6jiniIOy8uYsDcH9077DjvRfM/BoV5ndVDmGfknlmUJBcPKzcTnDx/+
-         qszWNagdu2Mp3ipRPe4uDbaHdQO4AzrgLLiS6uZre4BTHHm7Zco1Yb0KVfYq+7NtNLi4
-         kI0wbMRsse1JLHSw2gza6Vzut2Pt3lVRz3TkfjYQmYbDxIfsZFCKTIBW6EQPbTtnqdxD
-         V5cX52xv7duAzVjaB+oIE7Jtbo+6zLuA4G/SzyWHgY8QUNFMr5cC14Df7xbrofXemLTk
-         J4CwVtSbo0EbKdOD7zYjyp6XzQ4c/WEiVDGAC5rm7XqVn+P+Jm7J6EP0k+18uUzuxOzs
-         VU0w==
+        d=gmail.com; s=20230601; t=1737991260; x=1738596060; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iT8ApVhyv4PImzhWoKA6aW6GniXAQEVDWB5FBbwyYQc=;
+        b=G01oNOl1hH8vfH/dDz2OE28Uo2NdjB3SwIN+fhwhQPwIZ8AifnSzegGN/CB5T+zIpi
+         rMXa8XAySfKN6o3ZPcNzDHoIQZl93Jd2Qnvp+WGLSXe+0G3ALdcvWgMQhGLcCdENIRB2
+         4ecIYakUyB5MvKxDMw6uQDbmzwqwGcWgnB7AbtRVxpaJdxLYmHYeK5Y923mNDdra+qcH
+         6FySyMEp9imbBSrZbwXLQvKSW18rgD/VNXxF2H5ptudhOTJobq/nbcYBZF6w92TnF6XH
+         hnplcj+LasLyJTn3aXt4bGZi3SX8Vj4NMK72eEJPHuAXI0OUtqWHEoceEfoJnxUOKVG8
+         K5hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737990570; x=1738595370;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+u6EzzWcIGnS4+MejkE3jWALM1FF33F7pQoXeXph8FU=;
-        b=UG2Vr8HAA3TKaCGnXeyYdv8t4bpFdnPIw7Uxv9vKRMRvAPi/m0RN+ox2ZtszCciwk/
-         gi4cqsVKoZypnTi7iYBc8SOeQLcTaT15p9lyaVl+6LHFCC2alwa+S9cTDmW3P6u0vI0j
-         npzVKZlKg4pXJc0rsUWEI97iPWHnD1eXAPr8KKEcPtHM7h4OLLH2bCkYqiNd3JJ41WxO
-         8mCJmitPRYrF4EggL3bGvrGumOczI3exvfke86k/ATAg1aY0Iwo+5/NZBmXNQtvCBR6S
-         4HynpXKKJbtaKisQ58tooZV+jNEY47QwmId1CwXcS5+t5VIQnQ4I/ZiYOggYpgJ2QpUA
-         abXw==
-X-Forwarded-Encrypted: i=1; AJvYcCVTAA6/SkQJQmzN0wVCekMdoDlD/haQXW7WfzR5wTA5Ba1dWY72J3GMDbZBrG6HXYLF1KyPyPIZea9X9A7L8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBoCNqxsfxy/yN5rG0oPnTchIapri+SQOxrjneS+h0T0F8gyqX
-	qSIZJs7e9vI5JBE0XZWqihgx9s9iM4GSrga8K1mnPk/kzgXkn3bGU65MNMwldVz/jYghzgW6HRI
-	KurDTz77xt1J9fBzl00G4l9AbaVc=
-X-Gm-Gg: ASbGnct50mrmElvx0ttb3r8PqUllySPRPqk3J5brWFTXvtJ2XjPwQHE3bnJothn0U6E
-	I6xB1MhL2a8YDTCxvbh/v0t8e7tV2q83ghw7JThURgEn1okSafNvANW6LG/i+BCTe
-X-Google-Smtp-Source: AGHT+IGVgD8wsBNO9HaP0Y2FD3bARVApgGsYc5Hfaqtt+CPaXyCl+Z6Hd0vZn50lxsxGf7Gn51yhNhbjGGxK+QmLndY=
-X-Received: by 2002:a17:90b:2dc1:b0:2ef:e063:b3f8 with SMTP id
- 98e67ed59e1d1-2f7ff2ba81bmr20793345a91.7.1737990569495; Mon, 27 Jan 2025
- 07:09:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737991260; x=1738596060;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iT8ApVhyv4PImzhWoKA6aW6GniXAQEVDWB5FBbwyYQc=;
+        b=r5FGokceQKBaDgUmh9xrWL+5uR0hVyWAbAGIerAg++Awt5/oPNsVh6Q0iqCcU3ukTK
+         1iGJIYCz6UB0e75OYRgwfesKPXVPb4sqZzFCPN5RJ5w66hudbDut9QNE2Cgj+NHW+2zv
+         SDImAFtMiin3i+0rVlphQvPJ5yr/ptfYqFr+1ZkGE4kqX4auPVjMmWLceYeRbpyJFcIg
+         9plEIuiF5qAA4SmaKqYLZntKACXRrljgYSVdgrMNFUU40Pu1UN/d9HhNBigF4PTTx+Jc
+         mkRtbBvFADBtYAVi58z/AfPZ1BBLqLI/xK08FBkgjlP2KUl0pPTuM5Hf6qu3BtegL0jX
+         zxOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWzWmhCbekb6nw7NsNkeUs6TRkF70hyFNlKub9wEva/RH+IGPtyEoZhCYiaefXH+nAbvuelV4pbZVQSajyaZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxy4sf53Y9/8nxYo6AvEqFQ7YkFfNScrSULsElz8oRm4Yu56cH9
+	wgUBkmJlAHYvju8IrCzmEZs+CiIAHeLqrrYWrgJfCe4g6KgFpZMbP7Zlog==
+X-Gm-Gg: ASbGncvQZgMUfo6rzAWchprnypw93jf/8CrOehydYt/D0Hv7bA2qCtKi2fv/EgdbhP+
+	7elBICWN+TEFrmZAct7G/GZfkxBq9aXk7aSrtwXqQW3MlBWFO8hsAVIxtmUlxpBObfTEJlZSsM1
+	PHSb9fcMT1Af2XpXG21XQhp2jd4VPL8881rFEfAVNbh+7jlr8sGgawtyYgXDJ+vsNRMIW9PxcSt
+	7ytWKshyd48oS26KACb4mH4/tsb9HfJFt1KcYstXywLoXUIU8E3PAwUt74c69fP3O/CO+kAk5kZ
+	Ciw/2/ap
+X-Google-Smtp-Source: AGHT+IEnJnp2cYoqDLWX58VIryul0pkwYiNqA2q/DFh580edzsdHDFRBVnOr5g0yz59lplOB/9utZw==
+X-Received: by 2002:a05:620a:25cd:b0:7b6:d65a:d6ea with SMTP id af79cd13be357-7be63279052mr6779176285a.46.1737991260487;
+        Mon, 27 Jan 2025 07:21:00 -0800 (PST)
+Received: from [10.100.121.195] ([152.193.78.90])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7be9ae7ec43sm398710085a.24.2025.01.27.07.20.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jan 2025 07:20:59 -0800 (PST)
+Message-ID: <375f302d-7597-4880-96c7-e301e8c7cb4d@gmail.com>
+Date: Mon, 27 Jan 2025 07:20:57 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: brcmfmac SAE/WPA3 negotiation - Part 2
+To: KeithG <ys3al35l@gmail.com>
+Cc: Denis Kenzior <denkenz@gmail.com>,
+ Arend Van Spriel <arend.vanspriel@broadcom.com>, connman@lists.linux.dev,
+ brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org,
+ iwd@lists.linux.dev
 References: <CAG17S_OwtNxetb7XzsxkZcygH_CWkZx15evQZkThb3WjqpiKTQ@mail.gmail.com>
- <CAG17S_N6Gw1G8e5dh_1cm3P2DNt_gSbQSAKWd27hvpMZui4yxg@mail.gmail.com>
- <CAG17S_NgkTQ5wT5nb=6FZZ9gnVMTqOWfWJve47JmfOoVAHZy8A@mail.gmail.com>
  <CAG17S_Oq+RGOZpE+xa-CV8=VtmJu7G8GWxfVYqg1edEG9wC+yA@mail.gmail.com>
  <CAG17S_NdA9LdwmA_XfvPOVrhCdqp+BOtAssH0=RE-VSjg=WFnA@mail.gmail.com>
  <CAG17S_O6Bpc+JhhUuDvE70a+ef9wt9D7jG1gMJDNo1qZCUOg8w@mail.gmail.com>
@@ -83,70 +95,32 @@ References: <CAG17S_OwtNxetb7XzsxkZcygH_CWkZx15evQZkThb3WjqpiKTQ@mail.gmail.com>
  <CAG17S_O7HbPFB0gubWWP9P-Oecps8K_LG0Y7YDo5DbNGKSLjpA@mail.gmail.com>
  <CAG17S_MwJC+h7O-htyUxEgB4zHKeGf+9B4QaQ6ZLiVStU_Egkw@mail.gmail.com>
  <CAG17S_NfqFjjaWj6vGS1HXux6JDy0QKcg8aQAR=aOzNGhO0a3w@mail.gmail.com>
- <eace9233-1b65-4793-8abe-abd3c640dba8@gmail.com> <CAG17S_MfQ+FjWQJoiNs30rt4u1O9Z_FXFB7BiS6RAQsG9ReNkA@mail.gmail.com>
+ <eace9233-1b65-4793-8abe-abd3c640dba8@gmail.com>
+ <CAG17S_MfQ+FjWQJoiNs30rt4u1O9Z_FXFB7BiS6RAQsG9ReNkA@mail.gmail.com>
  <CAG17S_OigLj3j=tS2BKYpoKOWKVs=XOBS-YFn26SzF9r+ZpLzA@mail.gmail.com>
- <CAG17S_Pj6UaA-yaGDUCwr8+M+L760PU0NvB1sAzGGNCp4xKatg@mail.gmail.com> <8c36a8c0-0246-4009-b79b-890e1f0a7aaa@gmail.com>
-In-Reply-To: <8c36a8c0-0246-4009-b79b-890e1f0a7aaa@gmail.com>
-From: KeithG <ys3al35l@gmail.com>
-Date: Mon, 27 Jan 2025 09:09:18 -0600
-X-Gm-Features: AWEUYZmW3L6Yj0HRbpi8kaLlsRPs_B9BYnc6HUz_q5W0EyA3nWjtVXw77rADv4I
-Message-ID: <CAG17S_NNtyU0eXzsWgrjJEjcqDHPLrbSkvnEboSg-fZebdV3dg@mail.gmail.com>
-Subject: Re: brcmfmac SAE/WPA3 negotiation - Part 2
-To: James Prestwood <prestwoj@gmail.com>
-Cc: Denis Kenzior <denkenz@gmail.com>, Arend Van Spriel <arend.vanspriel@broadcom.com>, 
-	connman@lists.linux.dev, brcm80211@lists.linux.dev, 
-	linux-wireless@vger.kernel.org, iwd@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <CAG17S_Pj6UaA-yaGDUCwr8+M+L760PU0NvB1sAzGGNCp4xKatg@mail.gmail.com>
+ <8c36a8c0-0246-4009-b79b-890e1f0a7aaa@gmail.com>
+ <CAG17S_NNtyU0eXzsWgrjJEjcqDHPLrbSkvnEboSg-fZebdV3dg@mail.gmail.com>
+Content-Language: en-US
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <CAG17S_NNtyU0eXzsWgrjJEjcqDHPLrbSkvnEboSg-fZebdV3dg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-I just tried this and it connected 2x once from a saved key and a
-second time from a new key.
-Will continue testing and let you know, but this may be it!
-Thanks so much for all the support.
+Hi Keith,
 
-On Mon, Jan 27, 2025 at 8:29=E2=80=AFAM James Prestwood <prestwoj@gmail.com=
-> wrote:
->
-> Hi Keith,
->
-> On 1/25/25 8:37 AM, KeithG wrote:
->
-> <snip>
-> >> With wpa_supplincant, before the AP sends the 'PAE:', we get this
-> >> which is not in any of the iwmon logs with iwd:
-> >> < Request: Set PMKSA (0x34) len 92 [ack]                              =
-14.561627
-> >>      Interface Index: 3 (0x00000003)
-> >>      PMKID: len 16
-> >>          05 cb 9d 0d 9a c6 7c 42 77 b5 d2 23 f0 62 f7 4d  ......|Bw..#=
-.b.M
-> >>      MAC Address D8:3A:DD:60:A3:0C
-> >>      Unknown: 287 len 4
-> >>          c0 a8 00 00                                      ....
-> >>      Unknown: 288 len 1
-> >>          46                                               F
-> >>      PMK: 254 len 32
-> >>          35 28 07 cb 94 de 82 e7 0a 5c 73 d3 e4 1f 88 ae  5(.......\s.=
-....
-> >>          74 84 82 66 86 8d b5 aa 79 cb 75 d9 75 8d da 3a  t..f....y.u.=
-u..:
-> >>> Response: Set PMKSA (0x34) len 4 [0x100]                            1=
-4.562171
-> >>      Status: Success (0)
-> >>
-> >> Is there any more info or help I can provide?
->
-> Looks like the only difference between IWD working and not working is
-> when it includes the PMKID. This is due to the new PMKSA feature which
-> looks like it requires some extra work on brcmfmac (using SET_PMKSA).
-> Try disabling PMKSA in main.conf with:
->
-> [General].DisablePMKSA=3Dtrue
->
-> This should hopefully get IWD reliably connecting.
->
-> Thanks,
->
-> James
->
+On 1/27/25 7:09 AM, KeithG wrote:
+> I just tried this and it connected 2x once from a saved key and a
+> second time from a new key.
+> Will continue testing and let you know, but this may be it!
+> Thanks so much for all the support.
+
+Thanks for the feedback. If you continue to see issues with this 
+configuration let us know. I'm probably going to just disable PMKSA on 
+brcmfmac for the time being.
+
+Thanks,
+
+James
+
 
