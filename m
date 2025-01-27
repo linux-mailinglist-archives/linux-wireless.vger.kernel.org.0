@@ -1,387 +1,165 @@
-Return-Path: <linux-wireless+bounces-18043-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18044-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6B1A1DB3D
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 18:22:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC3EA1DCEC
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 20:49:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB9093A50CF
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 17:22:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC6513A6351
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 19:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE5718A6C0;
-	Mon, 27 Jan 2025 17:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F75D194C96;
+	Mon, 27 Jan 2025 19:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cktkEx4l"
+	dkim=pass (2048-bit key) header.d=web.de header.i=smoch@web.de header.b="g9poIM1a"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACA818A922
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 17:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C77189F43;
+	Mon, 27 Jan 2025 19:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737998551; cv=none; b=iRlxazZkYcGNeULiMT2wTOsbL738r2UZpiQ3UA8rOVl3oatzHXK3OKxsdHQr1UuSkM83sGqAIsrJGzZTOA1T3DP3vy4BOK3HRpvaP9LIBB4Y1Ywck8Pr1vPWPRiPqhQ/dk4k7p5NMbJdjJRdfxl9ceGwGdqzBezBDAt8cdb4Fh4=
+	t=1738007338; cv=none; b=mQJpajz85KBcYNrLWzsqYY4n+3JPJ9h8veLjzTwJuaPGRh9nHFrxl01knAdoI8L4c+Y7FdKzUsqpyD8aAtcX4EmZqNScjGqadYU/ZliXz00TA6Qj7zHSe18JKH5L3uawWf0fZMZSFCY5M/QvCT2aBce+b4veBpp3WJmX7JWKz3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737998551; c=relaxed/simple;
-	bh=QtszCdIERzvumFh86qInGTin3ABlJhxz7hYCEyL4YOE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O5ZKyE83wpF+PBh31rccOr4YHK4j1If5v4vfFHhzj79TFocunFbiZkwnnYAcK0vt1RSzygW95FsaTLB8Rl28atgKUI/OcgvNVPtmfbEMAEWORDMOEbYgvlLafS7PC2NQCbgchGykk9H8YuIwslAGaLZX5lMWH7kSCQlKT2+f1/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cktkEx4l; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50RCkPIc016979
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 17:22:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=ZnwPHaAP2r9
-	TWS3/Hq3ojIy3J1a5iwPeNI3adWR5StI=; b=cktkEx4l2kx30bk1q2FYPVLCTxN
-	LYQe5ntrmt4shy/GXw5UbmiVtNE4UgvtEeiCR8L3035fUHZFFxdtgwfOgKGLwU9B
-	8DcK3uU4FIXDFhATBe6T7FCmUnrwmV+U5Xh7UFVg4fieCuGnj/1EAgOvXciwfdNA
-	R+w2+ab2xNa6Lr6gcaflth6hYzot4RK3Z5yYKBoEhdlfOm7wey5CLAcr1wa47YZP
-	qgnYsD35osyAH9dlhPMzNCgl3IY0nLz9GqVpj+k+7RVvuqF1boxTXpupmAjuJ1gg
-	tPvCoubJOVy1jSFuizy9tA06SD7f22CWYR+9W7yaIvNys/IBcrn0HM2ZvbQ==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44eaecgjpg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 17:22:27 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-21655569152so91293275ad.2
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 09:22:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737998546; x=1738603346;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZnwPHaAP2r9TWS3/Hq3ojIy3J1a5iwPeNI3adWR5StI=;
-        b=NVm+KmGMlLSSjUSodNmdU2TevwsukLGaD9LnjOV4ORqqmzpC9sQiPtmlhyFsUbCoET
-         ub8f9NdSnnKNhtgyhaNYvLSUybpPKII5QhGUOsf1fk0uVt9Yt8fuoq5kosDsFAIVRuXr
-         /Jb5RYdQo4dHeP0jST2ZOtU4BcT+/rBvRs/gSq7jwlwkW6zhEhcyuIrBNd3ZPzXOVqrR
-         lQTkE41YADq4P9EcAMGXndrn11L73WyhUn5qH+r6wEp9H6nkDX24Sr0kuKMzsJbixgK1
-         EkBqiA8O0nllOK38y5uu2kn2THNgA6Rg1U76nbJqo5wh9jmKONWuj7y5ftBYmDoYwuZj
-         9RZQ==
-X-Gm-Message-State: AOJu0Ywnr0Q7yxkCcaIBxJzQ47kAbLJuVJDavbWPxxp/Qh8eTGefS+y4
-	mV0e4msy3LNY8O0UQ+IJRiXxgXfdkhF6TZH/KQJv4WoTnuWTMtyhEDPDgiF9oKmJp97fPXdmNk0
-	OE7ThNk4cFqve7Ekmmmza5X8nYEp4pnRVcXUTSgafjFehVN4L8ZnTivdRKRVavJKnzlMNsMRnQA
-	==
-X-Gm-Gg: ASbGncthSf1c1OXmfH8y1WH4G+jwC/qN9p6soR78UhagSJOVMQvE0SKeTCndcDTwM8A
-	TDEhJ7/091mrqYnrGy3ked28wgVWX5AYSoKMnnRQTi7Yiy0Yx5dgDq5wcW1cNjWeL5UT90pW+UX
-	hTJMPvuSVnknzrAeyw4jboos6qgw50SAoTKnIS3jGjMMgzUOgqxmWeoMLLqqwIn3sSmv6KlJMS0
-	czpD2rXiZvg1RsauaD8U0spLsBHTKCqBLH8N4xYqPlkQyQCzn8v88zikiWz+R6O2oWKHq17Cd/C
-	WHnxS7/MuGwrlW0KFDbPYTpqxZDrwCiLroLYO8xKGKWpdowXCV+HaejW02nYKPObbHF3GxDY3jW
-	KndrNDLzTerS+f0wUNOwhJwji1AfFrQpYmA==
-X-Received: by 2002:a05:6a20:841c:b0:1e0:d9a0:4ff7 with SMTP id adf61e73a8af0-1eb21599eecmr79368767637.32.1737998546030;
-        Mon, 27 Jan 2025 09:22:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFdzq4Vt7MMNk3AD7SlnNop+TuN7ee9FwN4ArVllGpYZ8aw/1rUktfYpRREbnCZERBE4ODNfQ==
-X-Received: by 2002:a05:6a20:841c:b0:1e0:d9a0:4ff7 with SMTP id adf61e73a8af0-1eb21599eecmr79368707637.32.1737998545544;
-        Mon, 27 Jan 2025 09:22:25 -0800 (PST)
-Received: from hu-ramess-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72f8a6b2c07sm7464639b3a.40.2025.01.27.09.22.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jan 2025 09:22:25 -0800 (PST)
-From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-        Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Subject: [PATCH 2/2] wifi: ath12k: add get_txpower mac ops
-Date: Mon, 27 Jan 2025 22:52:02 +0530
-Message-Id: <20250127172202.1410429-3-rameshkumar.sundaram@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250127172202.1410429-1-rameshkumar.sundaram@oss.qualcomm.com>
-References: <20250127172202.1410429-1-rameshkumar.sundaram@oss.qualcomm.com>
+	s=arc-20240116; t=1738007338; c=relaxed/simple;
+	bh=ro6QN2mJ13LgUk7K+2HpgHyalFgS7tQjN+1OfPnc9q4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TB5uFnNCVI6kFGgObxyUj5NjeTCdcJL5Qq/49AzyBATVT+mPst8oJFdEL947ZhBd+FvCBItDJ/d95DCCdougCNT/JSieF/9aDmKFZSAbKSNoGaXBldxblmedBMVYMpAzXakB9LWq0pChrOD0Xv3UsCaq7Y2vKffeJXl8hIRS83U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=smoch@web.de header.b=g9poIM1a; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1738007327; x=1738612127; i=smoch@web.de;
+	bh=SN7Hax3V7meZCCQdThMA9BV5EAHTRutl1/qaATTXcRk=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=g9poIM1aVUqXFOlLK7oXNMeyeMWcPXvnGCBLzqBaOIAi9UmYn/z/xbNpk6w65VEI
+	 cGuQG8gl5wgvqIdSj7oZXlDAzXPRQEId7Xfp1l+JfVRh3qfxV2p/HYc7eJs8CtDoQ
+	 w92fZap+NKdcROVKiyh6j69hF3QJA64U/ONF7TAuCnJe3q55OUtVwFAZaieC9SK5S
+	 R51swjpBksSARBJXKGg3ULw4PXXGPxGqW2pVgjMf7M9gfF2e4KMbZ9pFOF3Z6+fiK
+	 MzecIV4fed1TogJ2NsNTEJigyWvjRJ7cfFOYBgk1cxOn5JJnad3twina6mGsOaxHE
+	 ngrAnJQHXzpMnDG+Dg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from x1 ([109.40.243.154]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1M2Phc-1td3rM2scI-005wcu; Mon, 27
+ Jan 2025 20:48:46 +0100
+From: Soeren Moch <smoch@web.de>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Soeren Moch <smoch@web.de>,
+	Jes Sorensen <Jes.Sorensen@gmail.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH v2] wifi: rtl8xxxu: retry firmware download on error
+Date: Mon, 27 Jan 2025 20:48:28 +0100
+Message-ID: <20250127194828.599379-1-smoch@web.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: EKGcR7fdK35H6eRi6dGWcZNWTTNiwce9
-X-Proofpoint-ORIG-GUID: EKGcR7fdK35H6eRi6dGWcZNWTTNiwce9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-27_08,2025-01-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- spamscore=0 phishscore=0 clxscore=1015 suspectscore=0 mlxlogscore=999
- malwarescore=0 impostorscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501270137
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:6SoqzoYr/kIna3zRe0Bsf5CxbbpSBC+s0pz5HIuxeq0NUkxoMfp
+ kkSK0YQCDhNsBnMsvurC5J0Sz5NRJnZ0wcroFYV94E9Q7S11XY9dmt6O2yr1p18ze+F6f9l
+ GHVMBXB+PEBWKQIRTCfUDPjhNDyCijpiccB56XzB1WS4pwYhZ/7bm5bnE/qx8Anhze8BSlF
+ VybrZGOMFQZZPWHAfsFZA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:j15uIffQLkQ=;vRe0Lak+o6tTflmF4GVoB/EJccY
+ cP+fqXYGXUwUZPgFTuP+6rbflpCC1KqrtCWvCZd4K6kiQXHHLMEH2Yy0xC9J4/0JGGfCmbU7Z
+ yatvNUKdJ3ZYU8szEAmqAn/AJG5ZE0Y+O72ZmMGoKj0bBA9Bd7VSpnWqQJgRjUCPB2svsO+8a
+ ioo2Ay1zJDoJy63piSTQ6pPN80mdkbltVQY6SBy1aE4uEQoFz7tSdS0UNeKbF8S1WeyHCFx79
+ IQfdft6hqfVLrjlh/zTYT5tne+sEpGZxsUEPHU31/B99rd8u9WSQHy6WC5FkuSFZ0vTgr+gbf
+ Boam6NeuPi34kr0UzqIs5hZhfTequZFrRSshiSZBywiXgku2GdI4j0dEdN6pPfk5wRpiG43D4
+ ukAaMZBQJnDAhCCm+UT+B6IOXunuYKjKDcahX0F62jTSYkMtWabufvfGO47iMkZN46NzpOM2o
+ 4VLp41OocZ574eQsu9ZArj63OpuYOJOxRC1jDeDoOfmFEVaKbsJ76WhZjhVi1R4uZq1aOq3mq
+ FJcqV1Oy7eyBjOV4BUDHRv0g6Nok9v+7bZHRLdIfM3nnSo3NuZwGCopXaEacr5xkoOettquSR
+ o28rDo6DGgjZetoOT2M8PEcVzspoy1IC8N0aWepbFWTiHjQpb3+U1R2NvyhA3Pvih/5YkUqVN
+ v6c1PBxEW8BFuyvKC7NRnnG71AUZitJWlkTNI9mq0aybjW6nK7AZ6AeQGkM9IjY7Sp0f5UatT
+ gwU+MI++Z/QlxZhoXDuxiyFmS9sS8whOF8mw2WqmUqKcpQ5JcxRIzz7EUL/ZioD9o4vrR79s6
+ 14Ve2dPBVQr3maaVCfGzltk6P9AT8vlIic0h5NhoOhMy1I9Pob9WsIZfmmg+i18otsYX/o7Ng
+ gWK9Trm7qL7RJVkbrtzAYyNCrhggBBdmTACSIZpzLXtbjpYeoAI1YFrw74kaZ0qeArjBA0otM
+ lMxShimW7XekCi0StGdu1cymN/mtorRig7gABYRBAp+K+xExCQ6uE4xFT9uJxmYi27/3EA4xn
+ D+O2ifGma2o3+av8Cx/3ABzl+F/R50kyN2N+IymWmh/+xPHR8DeN4yzLivIg/qxRUXVFtgwl4
+ 38B+5oRwhDmu2gNVs4P2kh2md8dhz8UZvjbqDxcHDV2gUTndic9twdAOyOrTFoDu5GeqN3rXg
+ 7DtmK0QGshtheVJIVPNlGpWi9AZIpi80Yu2mvPCV4wimgnIbFwBtPnA7WYgRv11Ri3v7LRVdk
+ yn4D8Swq3arv1EQYaLXEPPdxKo4vcNUhHyDXL9vQNvUTbEWFnTYQ5Wh/6YgtkaIYu7rPj3PB4
+ PmZz4m5IroR8Wj7ACuqtzdQkg==
 
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Occasionally there is an EPROTO error during firmware download.
+This error is converted to EAGAIN in the download function.
+But nobody tries again and so device probe fails.
 
-Driver does not support get_txpower mac ops because of which
-cfg80211 returns vif->bss_conf.txpower to user space. bss_conf.txpower
-gets its value from ieee80211_channel->max_reg_power. However, the final
-txpower is dependent on few other parameters apart from max regulatory
-supported power. It is the firmware which knows about all these
-parameters and considers the minimum for each packet transmission.
+Implement download retry to fix this.
 
-All ath12k firmware reports the final TX power in firmware pdev stats
-which falls under fw_stats. add get_txpower mac ops to get the TX power
-from firmware leveraging fw_stats and return it accordingly.
+This error was observed (and fix tested) on a tbs2910 board [1]
+with an embedded RTL8188EU (0bda:8179) device behind a USB hub.
 
-While at it, there is a possibility that repeated stats request WMI
-commands are queued to FW if mac80211/userspace does get tx power back
-to back(in Multiple BSS cases). This could potentially consume the WMI
-queue completely. Hence limit this by fetching the power only for every
-5 seconds and reusing the value until the refresh timeout or when there
-is a change in channel.
+[1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
 
-Also remove init_completion(&ar->fw_stats_complete) in
-ath12k_mac_hw_register() as ath12k_fw_stats_init() takes care of
-it for each ar.
+Signed-off-by: Soeren Moch <smoch@web.de>
+=2D--
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Ping-Ke Shih <pkshih@realtek.com>
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Changes in v2:
+- mention related device in formal commit message
+- fix loop iterations
+- adapt download retry message to common style including
+  function name
+- hide firmware write error and retry messages behind
+  debug settings, according to feedback by Ping-Ke Shih
+=2D--
+ drivers/net/wireless/realtek/rtl8xxxu/core.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/core.h |   1 +
- drivers/net/wireless/ath/ath12k/mac.c  | 155 +++++++++++++++++++------
- drivers/net/wireless/ath/ath12k/mac.h  |   3 +
- 3 files changed, 123 insertions(+), 36 deletions(-)
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wi=
+reless/realtek/rtl8xxxu/core.c
+index 7891c988dd5f..9008c619d833 100644
+=2D-- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -860,9 +860,10 @@ rtl8xxxu_writeN(struct rtl8xxxu_priv *priv, u16 addr,=
+ u8 *buf, u16 len)
+ 	return len;
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index e4f51ad6a59f..42da19870713 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -731,6 +731,7 @@ struct ath12k {
- 	u32 mlo_setup_status;
- 	u8 ftm_msgref;
- 	struct ath12k_fw_stats fw_stats;
-+	unsigned long last_tx_power_update;
- };
- 
- struct ath12k_hw {
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 4fb7e235be66..54fe3a2c9c0b 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4280,6 +4280,120 @@ static int ath12k_start_scan(struct ath12k *ar,
- 	return 0;
+ write_error:
+-	dev_info(&udev->dev,
+-		 "%s: Failed to write block at addr: %04x size: %04x\n",
+-		 __func__, addr, blocksize);
++	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_REG_WRITE)
++		dev_info(&udev->dev,
++			 "%s: Failed to write block at addr: %04x size: %04x\n",
++			 __func__, addr, blocksize);
+ 	return -EAGAIN;
  }
- 
-+static int ath12k_mac_get_fw_stats(struct ath12k *ar, u32 pdev_id,
-+				   u32 vdev_id, u32 stats_id)
-+{
-+	struct ath12k_base *ab = ar->ab;
-+	struct ath12k_hw *ah = ath12k_ar_to_ah(ar);
-+	unsigned long time_left;
-+	int ret;
-+
-+	guard(mutex)(&ah->hw_mutex);
-+
-+	if (ah->state != ATH12K_HW_STATE_ON)
-+		return -ENETDOWN;
-+
-+	spin_lock_bh(&ar->data_lock);
-+	ar->fw_stats.fw_stats_done = false;
-+	ath12k_fw_stats_free(&ar->fw_stats);
-+	spin_unlock_bh(&ar->data_lock);
-+
-+	reinit_completion(&ar->fw_stats_complete);
-+
-+	ret = ath12k_wmi_send_stats_request_cmd(ar, stats_id, vdev_id, pdev_id);
-+
-+	if (ret) {
-+		ath12k_warn(ab, "failed to request fw stats: stats id %u ret %d\n",
-+			    stats_id, ret);
-+		return ret;
-+	}
-+
-+	ath12k_dbg(ab, ATH12K_DBG_WMI,
-+		   "get fw stat pdev id %d vdev id %d stats id 0x%x\n",
-+		   pdev_id, vdev_id, stats_id);
-+
-+	time_left = wait_for_completion_timeout(&ar->fw_stats_complete, 1 * HZ);
-+
-+	if (!time_left)
-+		ath12k_warn(ab, "time out while waiting for get fw stats\n");
-+
-+	return ret;
-+}
-+
-+static int ath12k_mac_op_get_txpower(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif *vif,
-+				     unsigned int link_id,
-+				     int *dbm)
-+{
-+	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
-+	struct ath12k_fw_stats_pdev *pdev;
-+	struct ath12k_hw *ah = hw->priv;
-+	struct ath12k_link_vif *arvif;
-+	struct ath12k_base *ab;
-+	struct ath12k *ar;
-+	int ret;
-+
-+	/* Final Tx power is minimum of Target Power, CTL power, Regulatory
-+	 * Power, PSD EIRP Power. We just know the Regulatory power from the
-+	 * regulatory rules obtained. FW knows all these power and sets the min
-+	 * of these. Hence, we request the FW pdev stats in which FW reports
-+	 * the minimum of all vdev's channel Tx power.
-+	 */
-+	lockdep_assert_wiphy(hw->wiphy);
-+
-+	arvif = wiphy_dereference(ah->hw->wiphy, ahvif->link[link_id]);
-+	if (!arvif || !arvif->ar)
-+		return -EINVAL;
-+
-+	ar = arvif->ar;
-+	ab = ar->ab;
-+	if (ah->state != ATH12K_HW_STATE_ON)
-+		goto err_fallback;
-+
-+	if (test_bit(ATH12K_FLAG_CAC_RUNNING, &ar->dev_flags))
-+		return -EAGAIN;
-+
-+	/* Limit the requests to Firmware for fetching the tx power */
-+	if (ar->chan_tx_pwr != ATH12K_PDEV_TX_POWER_INVALID &&
-+	    time_before(jiffies,
-+			msecs_to_jiffies(ATH12K_PDEV_TX_POWER_REFRESH_TIME_MSECS) +
-+					 ar->last_tx_power_update))
-+		goto send_tx_power;
-+
-+	ret = ath12k_mac_get_fw_stats(ar, ar->pdev->pdev_id, arvif->vdev_id,
-+				      WMI_REQUEST_PDEV_STAT);
-+	if (ret) {
-+		ath12k_warn(ab, "failed to request fw pdev stats: %d\n", ret);
-+		goto err_fallback;
-+	}
-+
-+	spin_lock_bh(&ar->data_lock);
-+	pdev = list_first_entry_or_null(&ar->fw_stats.pdevs,
-+					struct ath12k_fw_stats_pdev, list);
-+	if (!pdev) {
-+		spin_unlock_bh(&ar->data_lock);
-+		goto err_fallback;
-+	}
-+
-+	ar->chan_tx_pwr = pdev->chan_tx_power;
-+	spin_unlock_bh(&ar->data_lock);
-+	ar->last_tx_power_update = jiffies;
-+
-+send_tx_power:
-+	/* tx power reported by firmware is in units of 0.5 dBm */
-+	*dbm = ar->chan_tx_pwr / 2;
-+	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "txpower from firmware %d, reported %d dBm\n",
-+		   ar->chan_tx_pwr, *dbm);
-+	return 0;
-+
-+err_fallback:
-+	/* We didn't get txpower from FW. Hence, relying on vif->bss_conf.txpower */
-+	*dbm = vif->bss_conf.txpower;
-+	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "txpower from firmware NaN, reported %d dBm\n",
-+		   *dbm);
-+	return 0;
-+}
-+
- static u8
- ath12k_mac_find_link_id_by_ar(struct ath12k_vif *ahvif, struct ath12k *ar)
- {
-@@ -7433,6 +7547,7 @@ static int ath12k_mac_start(struct ath12k *ar)
- 	ar->num_created_vdevs = 0;
- 	ar->num_peers = 0;
- 	ar->allocated_vdev_map = 0;
-+	ar->chan_tx_pwr = ATH12K_PDEV_TX_POWER_INVALID;
- 
- 	/* Configure monitor status ring with default rx_filter to get rx status
- 	 * such as rssi, rx_duration.
-@@ -8638,6 +8753,7 @@ static int ath12k_mac_op_add_chanctx(struct ieee80211_hw *hw,
+
+@@ -4064,8 +4065,14 @@ static int rtl8xxxu_init_device(struct ieee80211_hw=
+ *hw)
  	 */
- 	ar->rx_channel = ctx->def.chan;
- 	spin_unlock_bh(&ar->data_lock);
-+	ar->chan_tx_pwr = ATH12K_PDEV_TX_POWER_INVALID;
- 
- 	return 0;
- }
-@@ -8666,6 +8782,7 @@ static void ath12k_mac_op_remove_chanctx(struct ieee80211_hw *hw,
- 	 */
- 	ar->rx_channel = NULL;
- 	spin_unlock_bh(&ar->data_lock);
-+	ar->chan_tx_pwr = ATH12K_PDEV_TX_POWER_INVALID;
- }
- 
- static enum wmi_phy_mode
-@@ -10109,40 +10226,6 @@ static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
- 	return 0;
- }
- 
--static int ath12k_mac_get_fw_stats(struct ath12k *ar, u32 pdev_id,
--				   u32 vdev_id, u32 stats_id)
--{
--	struct ath12k_base *ab = ar->ab;
--	struct ath12k_hw *ah = ath12k_ar_to_ah(ar);
--	unsigned long time_left;
--	int ret;
--
--	guard(mutex)(&ah->hw_mutex);
--
--	if (ah->state != ATH12K_HW_STATE_ON)
--		return -ENETDOWN;
--
--	reinit_completion(&ar->fw_stats_complete);
--
--	ret = ath12k_wmi_send_stats_request_cmd(ar, stats_id, vdev_id, pdev_id);
--
--	if (ret) {
--		ath12k_warn(ab, "failed to request fw stats: %d\n", ret);
--		return ret;
--	}
--
--	ath12k_dbg(ab, ATH12K_DBG_WMI,
--		   "get fw stat pdev id %d vdev id %d stats id 0x%x\n",
--		   pdev_id, vdev_id, stats_id);
--
--	time_left = wait_for_completion_timeout(&ar->fw_stats_complete, 1 * HZ);
--
--	if (!time_left)
--		ath12k_warn(ab, "time out while waiting for get fw stats\n");
--
--	return ret;
--}
--
- static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 					 struct ieee80211_vif *vif,
- 					 struct ieee80211_sta *sta,
-@@ -10431,6 +10514,7 @@ static const struct ieee80211_ops ath12k_ops = {
- 	.assign_vif_chanctx		= ath12k_mac_op_assign_vif_chanctx,
- 	.unassign_vif_chanctx		= ath12k_mac_op_unassign_vif_chanctx,
- 	.switch_vif_chanctx		= ath12k_mac_op_switch_vif_chanctx,
-+	.get_txpower			= ath12k_mac_op_get_txpower,
- 	.set_rts_threshold		= ath12k_mac_op_set_rts_threshold,
- 	.set_frag_threshold		= ath12k_mac_op_set_frag_threshold,
- 	.set_bitrate_mask		= ath12k_mac_op_set_bitrate_mask,
-@@ -11178,11 +11262,10 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
- 			goto err_unregister_hw;
- 		}
- 
-+		ath12k_fw_stats_init(ar);
- 		ath12k_debugfs_register(ar);
- 	}
- 
--	init_completion(&ar->fw_stats_complete);
--
- 	return 0;
- 
- err_unregister_hw:
-diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
-index 1acaf3f68292..af0d3c6a2a6c 100644
---- a/drivers/net/wireless/ath/ath12k/mac.h
-+++ b/drivers/net/wireless/ath/ath12k/mac.h
-@@ -33,6 +33,9 @@ struct ath12k_generic_iter {
- #define ATH12K_KEEPALIVE_MAX_IDLE		3895
- #define ATH12K_KEEPALIVE_MAX_UNRESPONSIVE	3900
- 
-+#define ATH12K_PDEV_TX_POWER_INVALID		(-1)
-+#define ATH12K_PDEV_TX_POWER_REFRESH_TIME_MSECS	5000 /* msecs */
-+
- /* FIXME: should these be in ieee80211.h? */
- #define IEEE80211_VHT_MCS_SUPPORT_0_11_MASK	GENMASK(23, 16)
- #define IEEE80211_DISABLE_VHT_MCS_SUPPORT_0_11	BIT(24)
--- 
-2.34.1
+ 	rtl8xxxu_write16(priv, REG_TRXFF_BNDY + 2, fops->trxff_boundary);
+
+-	ret =3D rtl8xxxu_download_firmware(priv);
+-	dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
++	for (int retry =3D 5; retry >=3D 0 ; retry--) {
++		ret =3D rtl8xxxu_download_firmware(priv);
++		dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
++		if (ret !=3D -EAGAIN)
++			break;
++		if (retry)
++			dev_dbg(dev, "%s: retry firmware download\n", __func__);
++	}
+ 	if (ret)
+ 		goto exit;
+ 	ret =3D rtl8xxxu_start_firmware(priv);
+=2D-
+2.43.0
 
 
