@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-18030-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18034-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DD3A1DA8B
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 17:28:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB873A1DA8E
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 17:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F11811888D50
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 16:28:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11CB51888CC7
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 16:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7502715CD78;
-	Mon, 27 Jan 2025 16:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFCE1581E0;
+	Mon, 27 Jan 2025 16:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="HFZqmdIw"
+	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="J4rBDNgw"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A77155382
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BED157493
 	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 16:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737995310; cv=none; b=g3KnNREO9oxpzZRCEOdGp/8mfutMke5W2chSuP6yPKtos6ayZ19K526fjHyVj58CycOQAJNkx3yqiDmaVA5JWBPmeoyvld9/tDHYihc/17xTN9jWkNQW/7D1GKd5tevZR0MSpLrjuXi3UJ0iiTneKuvCH/nv5u0dJNJAinLDh5U=
+	t=1737995310; cv=none; b=f5nap2bayhxoUCwzrDo1ZpgwIYn4Y1THhsODW3rKarA1LRIDqSYLxIShO++SPP9/CzDhKH3xvzPteUeDfW72NyJwld5+1Q+4W+qP//R7NaDxjaMTslkEBaeDbD4CMUwV8rIz88FS5xM7QGJ5LyL0aOlGXfFpZrynuOiq+G0P3iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1737995310; c=relaxed/simple;
-	bh=zALIxcHhdlrIeE0+Nh3VjnJG+JShCnkMPBwDDnFgZBA=;
+	bh=yNGmMPQsNAIKQisDkqd0Xdu1EpRz+A2n4k3y9qo0380=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ntwe44vJ2cduSaCuC4aYlW9NY4GQ0sZl5xhiorScKa4ZLJuyvwWvEF9YMq/EmM4IFfqy38CQbZjmXQQvlGHqeleIVfmWni8emEpZuxFgsmVHVM7NCnFOaJk5/syy3mi0x1GJn94JcdCCqAyPHa5/ddoIv76Z6p2PFkgpdoW4lcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=HFZqmdIw; arc=none smtp.client-ip=5.252.227.236
+	 MIME-Version; b=V/hNnEYNKT0lWaZGcp1FyP3P1f+fR9lu2Xd5Vszyf4nUYaVOKb0a8RxfWfv6z9RsDBbb81disA9/7+pm1YTpxvd1fPsZ84vn3yKQZrRxjR9kKp/mPnqWTf5fXh/3m58RJs1hRVWuQ+DdoD3hj1hQ+7k6UjUOXPLTKgB8H6lLuGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=J4rBDNgw; arc=none smtp.client-ip=5.252.227.236
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
 From: Alexander Wetzel <Alexander@wetzel-home.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
 	s=wetzel-home; t=1737995298;
-	bh=zALIxcHhdlrIeE0+Nh3VjnJG+JShCnkMPBwDDnFgZBA=;
+	bh=yNGmMPQsNAIKQisDkqd0Xdu1EpRz+A2n4k3y9qo0380=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HFZqmdIwJz762wcJfwbGG/8z3qa1/r/4Ew9g3VbRz+hlHCVllRu+kNOFksbiEQlNV
-	 FGmq91zfZK0wwx/abfQdwoFq93ET9icxxroCXbw7UZgMAYbZ6HdGoelbR/Nb+gSIvG
-	 6urBSaVHZZ2ocfusMlnXRIhJt4yP7VPJ37BTQsK0=
+	b=J4rBDNgwXHKSYUKB1oLobUBaSCm1KV76Gd3dqFneR9/AuECaDu3gIh/9OQaaDZeVR
+	 T3hbule4y6Cv2CvQ5w+ObFyJ+6sLww43WSvs/0Qw2a0IPRnREa1f0OhJQspfY+odXZ
+	 QVyCNLAPwu3SHpSkgsDSrCmEwnr/NQGFTzFjToL0=
 To: linux-wireless@vger.kernel.org
 Cc: johannes@sipsolutions.net,
 	Alexander Wetzel <Alexander@wetzel-home.de>
-Subject: [RFC PATCH 12/13] wifi: mac80211: Drop wake_txqs_tasklet
-Date: Mon, 27 Jan 2025 17:26:24 +0100
-Message-ID: <20250127162625.20747-13-Alexander@wetzel-home.de>
+Subject: [RFC PATCH 13/13] wifi: mac80211: Cleanup *ieee80211_wake_txq* naming
+Date: Mon, 27 Jan 2025 17:26:25 +0100
+Message-ID: <20250127162625.20747-14-Alexander@wetzel-home.de>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250127162625.20747-1-Alexander@wetzel-home.de>
 References: <20250127162625.20747-1-Alexander@wetzel-home.de>
@@ -54,79 +54,115 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-_ieee80211_wake_txqs() is no longer handling TX, making the
-wake_txqs_tasklet unnecessary.
+ieee80211_wake_txq() and ieee80211_wake_txqs() are not used.
+Rename:
+	_ieee80211_wake_txqs()  -> ieee80211_wake_txqs()
+	__ieee80211_wake_txqs() -> _ieee80211_wake_txqs()
+	__ieee80211_wake_txq()  -> ieee80211_wake_txq()
 
 Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
 ---
- net/mac80211/ieee80211_i.h |  2 --
- net/mac80211/main.c        |  1 -
- net/mac80211/util.c        | 16 +---------------
- 3 files changed, 1 insertion(+), 18 deletions(-)
+ net/mac80211/iface.c |  2 +-
+ net/mac80211/util.c  | 26 ++++++++++++--------------
+ 2 files changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 8bd1e4f0e5fd..cecf2363fd85 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1461,7 +1461,6 @@ struct ieee80211_local {
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 9b2d0b3ae132..c650bc3df986 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -467,7 +467,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
+ 	lockdep_assert_wiphy(local->hw.wiphy);
  
- 	struct sk_buff_head pending[IEEE80211_MAX_QUEUES];
- 	struct tasklet_struct tx_pending_tasklet;
--	struct tasklet_struct wake_txqs_tasklet;
- 	struct task_struct *mac80211_tsk;
- 	wait_queue_head_t mac80211_tsk_wq;
+ 	clear_bit(SDATA_STATE_RUNNING, &sdata->state);
+-	synchronize_rcu(); /* flush _ieee80211_wake_txqs() */
++	synchronize_rcu(); /* flush ieee80211_wake_txqs() */
  
-@@ -2540,7 +2539,6 @@ void ieee80211_txq_remove_vlan(struct ieee80211_local *local,
- 			       struct ieee80211_sub_if_data *sdata);
- void ieee80211_fill_txq_stats(struct cfg80211_txq_stats *txqstats,
- 			      struct txq_info *txqi);
--void ieee80211_wake_txqs(struct tasklet_struct *t);
- int mac80211_thread(void *data);
- void ieee80211_send_auth(struct ieee80211_sub_if_data *sdata,
- 			 u16 transaction, u16 auth_alg, u16 status,
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 25d5a57a74ca..c634a781970b 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -999,7 +999,6 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
- 		skb_queue_head_init(&local->pending[i]);
- 	}
- 	tasklet_setup(&local->tx_pending_tasklet, ieee80211_tx_pending);
--	tasklet_setup(&local->wake_txqs_tasklet, ieee80211_wake_txqs);
- 	tasklet_setup(&local->tasklet, ieee80211_tasklet_handler);
- 
- 	init_waitqueue_head(&local->mac80211_tsk_wq);
+ 	cancel_scan = rcu_access_pointer(local->scan_sdata) == sdata;
+ 	if (cancel_scan)
 diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 1f84b83b0ea4..0513a1da2b51 100644
+index 0513a1da2b51..985644949d7e 100644
 --- a/net/mac80211/util.c
 +++ b/net/mac80211/util.c
-@@ -425,17 +425,6 @@ _ieee80211_wake_txqs(struct ieee80211_local *local, unsigned long *flags)
- 	rcu_read_unlock();
+@@ -318,8 +318,8 @@ void ieee80211_handle_wake_tx_queue(struct ieee80211_hw *hw,
+ }
+ EXPORT_SYMBOL(ieee80211_handle_wake_tx_queue);
+ 
+-static void __ieee80211_wake_txq(struct ieee80211_local *local,
+-				 struct ieee80211_txq *txq)
++static void ieee80211_wake_txq(struct ieee80211_local *local,
++			       struct ieee80211_txq *txq)
+ {
+ 	struct txq_info *txqi = to_txq_info(txq);
+ 	struct fq *fq = &local->fq;
+@@ -331,7 +331,7 @@ static void __ieee80211_wake_txq(struct ieee80211_local *local,
+ 	}
  }
  
--void ieee80211_wake_txqs(struct tasklet_struct *t)
--{
--	struct ieee80211_local *local = from_tasklet(local, t,
--						     wake_txqs_tasklet);
--	unsigned long flags;
--
--	spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
--	_ieee80211_wake_txqs(local, &flags);
--	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
--}
--
- static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
- 				   enum queue_stop_reason reason,
- 				   bool refcounted,
-@@ -476,10 +465,7 @@ static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
+-static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
++static void _ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct fq *fq = &local->fq;
+@@ -354,15 +354,13 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
+ 
+ 	/* %IEEE80211_VIF_TXQ_NOQUEUE must be ignored here */
+ 
+-	if (ac == IEEE80211_AC_VO) {
+-		__ieee80211_wake_txq(local,
+-				     vif->txq[IEEE80211_VIF_TXQ_FALLBACK]);
+-	}
++	if (ac == IEEE80211_AC_VO)
++		ieee80211_wake_txq(local, vif->txq[IEEE80211_VIF_TXQ_FALLBACK]);
+ 
+ 	if (ac == IEEE80211_AC_BE && vif->txq[IEEE80211_VIF_TXQ_MULTICAST] &&
+ 	    (!ps || !atomic_read(&ps->num_sta_ps)))
+-		__ieee80211_wake_txq(local,
+-				     vif->txq[IEEE80211_VIF_TXQ_MULTICAST]);
++		ieee80211_wake_txq(local,
++				   vif->txq[IEEE80211_VIF_TXQ_MULTICAST]);
+ 
+ 	list_for_each_entry_rcu(sta, &local->sta_list, list) {
+ 		if (sdata != sta->sdata)
+@@ -378,7 +376,7 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
+ 			if (ac != txq->ac)
+ 				continue;
+ 
+-			__ieee80211_wake_txq(local, txq);
++			ieee80211_wake_txq(local, txq);
+ 		}
+ 	}
+ out:
+@@ -389,7 +387,7 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
+ static void
+ __releases(&local->queue_stop_reason_lock)
+ __acquires(&local->queue_stop_reason_lock)
+-_ieee80211_wake_txqs(struct ieee80211_local *local, unsigned long *flags)
++ieee80211_wake_txqs(struct ieee80211_local *local, unsigned long *flags)
+ {
+ 	struct ieee80211_sub_if_data *sdata;
+ 	int n_acs = IEEE80211_NUM_ACS;
+@@ -416,7 +414,7 @@ _ieee80211_wake_txqs(struct ieee80211_local *local, unsigned long *flags)
+ 
+ 				if (ac_queue == i ||
+ 				    sdata->vif.cab_queue == i)
+-					__ieee80211_wake_txqs(sdata, ac);
++					_ieee80211_wake_txqs(sdata, ac);
+ 			}
+ 		}
+ 		spin_lock_irqsave(&local->queue_stop_reason_lock, *flags);
+@@ -459,13 +457,13 @@ static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
+ 		tasklet_schedule(&local->tx_pending_tasklet);
+ 
+ 	/*
+-	 * Calling _ieee80211_wake_txqs here can be a problem because it may
++	 * Calling ieee80211_wake_txqs here can be a problem because it may
+ 	 * release queue_stop_reason_lock which has been taken by
+ 	 * __ieee80211_wake_queue's caller. It is certainly not very nice to
  	 * release someone's lock, but it is fine because all the callers of
  	 * __ieee80211_wake_queue call it right before releasing the lock.
  	 */
--	if (reason == IEEE80211_QUEUE_STOP_REASON_DRIVER)
--		tasklet_schedule(&local->wake_txqs_tasklet);
--	else
--		_ieee80211_wake_txqs(local, flags);
-+	_ieee80211_wake_txqs(local, flags);
+-	_ieee80211_wake_txqs(local, flags);
++	ieee80211_wake_txqs(local, flags);
  }
  
  static int ac_has_active_txq(struct ieee80211_local *local)
