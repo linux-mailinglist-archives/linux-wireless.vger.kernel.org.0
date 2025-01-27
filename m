@@ -1,51 +1,91 @@
-Return-Path: <linux-wireless+bounces-18034-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18041-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB873A1DA8E
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 17:28:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 152F0A1DB3A
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 18:22:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11CB51888CC7
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 16:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AF3F3A5441
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 17:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFCE1581E0;
-	Mon, 27 Jan 2025 16:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACB9189F57;
+	Mon, 27 Jan 2025 17:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="J4rBDNgw"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LdUgn21x"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BED157493
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 16:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971BC7DA6A
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 17:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737995310; cv=none; b=f5nap2bayhxoUCwzrDo1ZpgwIYn4Y1THhsODW3rKarA1LRIDqSYLxIShO++SPP9/CzDhKH3xvzPteUeDfW72NyJwld5+1Q+4W+qP//R7NaDxjaMTslkEBaeDbD4CMUwV8rIz88FS5xM7QGJ5LyL0aOlGXfFpZrynuOiq+G0P3iY=
+	t=1737998539; cv=none; b=DpXAGUz+NCI7JhrmPXjxOG/O7t4a4CY8MrI5yEh1gYVDHthsRB2AMJqWmNHhnMEgJofMXeETw3QoISaqeH4s6SlyWtkySqMMadASUya+wg8W5Nx65GnBohDxFrkijCF1NtOIxHRih3VNkjjtIDcYG0m3qBXPmRGonuIbvFO59+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737995310; c=relaxed/simple;
-	bh=yNGmMPQsNAIKQisDkqd0Xdu1EpRz+A2n4k3y9qo0380=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V/hNnEYNKT0lWaZGcp1FyP3P1f+fR9lu2Xd5Vszyf4nUYaVOKb0a8RxfWfv6z9RsDBbb81disA9/7+pm1YTpxvd1fPsZ84vn3yKQZrRxjR9kKp/mPnqWTf5fXh/3m58RJs1hRVWuQ+DdoD3hj1hQ+7k6UjUOXPLTKgB8H6lLuGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=J4rBDNgw; arc=none smtp.client-ip=5.252.227.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
-From: Alexander Wetzel <Alexander@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-	s=wetzel-home; t=1737995298;
-	bh=yNGmMPQsNAIKQisDkqd0Xdu1EpRz+A2n4k3y9qo0380=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=J4rBDNgwXHKSYUKB1oLobUBaSCm1KV76Gd3dqFneR9/AuECaDu3gIh/9OQaaDZeVR
-	 T3hbule4y6Cv2CvQ5w+ObFyJ+6sLww43WSvs/0Qw2a0IPRnREa1f0OhJQspfY+odXZ
-	 QVyCNLAPwu3SHpSkgsDSrCmEwnr/NQGFTzFjToL0=
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	Alexander Wetzel <Alexander@wetzel-home.de>
-Subject: [RFC PATCH 13/13] wifi: mac80211: Cleanup *ieee80211_wake_txq* naming
-Date: Mon, 27 Jan 2025 17:26:25 +0100
-Message-ID: <20250127162625.20747-14-Alexander@wetzel-home.de>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250127162625.20747-1-Alexander@wetzel-home.de>
-References: <20250127162625.20747-1-Alexander@wetzel-home.de>
+	s=arc-20240116; t=1737998539; c=relaxed/simple;
+	bh=7I3f88EMzq2rgXVXJCUCPUbx1BzOvLzMu8mNcX7ocbI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mLCNYG268EeI5f17NNkXu3ipGC9ocO+Jk8XDrAmMN1MvBKaRRwCN0DIpG8yL6lAMO83YRfCzO8rkeG0ZYAghXNLC2U/loOD62Tsios7B2mlaDadQ4Ifm69UWbwqImewzoiNhluG6cBVc0vTOMK7ruK1e0PYD4nwMHvREqOLlCRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LdUgn21x; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50RFtFHu020870
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 17:22:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=w2H3WUaNQwsaAb3gCGRdZw4v18QA9Nzh15V
+	6dq6hVJc=; b=LdUgn21xtWQ/xwoVdvmjV+LeYGILxaIaoP+gBWN201M/ldmMhAq
+	ZBGq8pLf48GuuKiLBoQYCx/Fvxy2c85BzOksm8gAheCf6xIWqs4V2qNGdy2DCfjY
+	LtoXUrXkx3oPDGEfUO+YOyQN9X4dx1qnyjRehe2VyVEqr9awpF3EfWLcB8MWjpa5
+	QZoViASk8NH37Fl8dKC/ACdnTc/eE/F9UPfjSZzX+iDLHT9X8ggaUG8t9FxJQu45
+	+XmwryYfi+mYEtDCRFaYYx1G7ZtGXuqDcvJrCTRSaORPVzwdCNFmaXJNr3h0FBlG
+	eKjmLiiK+KURHVw5Vk7C+C69fGWF0z+jhXw==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ed6yr6s0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 17:22:15 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-21631cbf87dso94645555ad.3
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 09:22:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737998534; x=1738603334;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=w2H3WUaNQwsaAb3gCGRdZw4v18QA9Nzh15V6dq6hVJc=;
+        b=n5f2CI69NwQrE+UeqiUsqxA6Y2RNMqWRWtNzTfTAs/0gEFOwZCqRIC7rh2aCAOUQ9B
+         4wuzPWkxU8zGJEnz40zNkkP7CbXx08ZiD8dJO+OLI/zNwcZIaBjlMsijfirV+xBD6qEQ
+         7iPmUSMsU8UuZ0muEWv4z+9IKUNEBxYcuCsa9k/jq7TwG1iHCMmJUBB/7T2Q1S2Lw+6T
+         n4EwC3MI74VaySJk0qTyOhtjx6+C3gy8ZtcfiX0ORe8Lqu31IDWfP6yGC3jI3Y47sOPl
+         FWDpBfOIZ0maY3uhgQ1TPYT+4MW6jno2DKt4tF4E9o5FIBK3Y7PGBMXpFP4QQchXctfb
+         KQIQ==
+X-Gm-Message-State: AOJu0Yykbb6d4ZGyOrLICO1ix9BQvFx9+AzhuwcQ3l0UUknrILIjOBEj
+	X7xdg8M72T9cspiogSZ69+k8NsPxcO/AvTz1hUXm9zog4eR+3HnU6eNvP9vJVoNB7X6smKLyMAG
+	StfiWDdGR+jkykLEAf4CWtCWq7XLJpJlUraV3BTb871TN+wpmmN7R+f75r1VZYDe7oA==
+X-Gm-Gg: ASbGncufBalYAGSrH1+r8TPQ1wpgIJGbgQlwKcl0AqFpZ90QCk2ODm+gPTTbUv+8Vg9
+	OAeVOc4kvChkMBQTHzETvy/jiTqMt0L5biqjIp8yYUSj4C47WLWJ+EuMIBxTDVBB2K1odfRrXpo
+	LX7SYrqFuWeuI2ZNAzrVP4pqS7PpkZPnEdMoIxF91W4EopoiUbT5NnnTnql595QfkfjsilKC9fc
+	1LGbNd/u8gYRI6/5BX2vzLpl7BdQWlNqH7NNufpXl+ryzJLupWGdH6zRUAaa5VQwdWXc4B2h/rU
+	N0W7OcJvHONgpjmMf/qXUTLT9sEjrlXVRPJ4WKzN7ld5WuHMIInl+IfAB8dAgOjt3rqPNb+1yGm
+	kO6+GcZC8wtE1onezEyFicmoCoL6zrEEQ1w==
+X-Received: by 2002:a05:6a20:9152:b0:1e1:aef4:9cdd with SMTP id adf61e73a8af0-1eb2145cb7cmr63636517637.1.1737998533835;
+        Mon, 27 Jan 2025 09:22:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG418GSIzCDpHtOEMEZjmZHoa7ZnZu/zhFFWaiALhb8y/n8B5l7GrsF9CE0e/RWvHzzd2IBTA==
+X-Received: by 2002:a05:6a20:9152:b0:1e1:aef4:9cdd with SMTP id adf61e73a8af0-1eb2145cb7cmr63636479637.1.1737998533418;
+        Mon, 27 Jan 2025 09:22:13 -0800 (PST)
+Received: from hu-ramess-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72f8a6b2c07sm7464639b3a.40.2025.01.27.09.22.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jan 2025 09:22:13 -0800 (PST)
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Subject: [PATCH 0/2] wifi: ath12k: add support for get_txpower mac ops
+Date: Mon, 27 Jan 2025 22:52:00 +0530
+Message-Id: <20250127172202.1410429-1-rameshkumar.sundaram@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,120 +93,48 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: kO-xR5Y0afDVpqyDeSh4n-IiHN54G89F
+X-Proofpoint-ORIG-GUID: kO-xR5Y0afDVpqyDeSh4n-IiHN54G89F
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-27_08,2025-01-27_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 lowpriorityscore=0
+ spamscore=0 phishscore=0 clxscore=1011 suspectscore=0 malwarescore=0
+ mlxscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501270135
 
-ieee80211_wake_txq() and ieee80211_wake_txqs() are not used.
-Rename:
-	_ieee80211_wake_txqs()  -> ieee80211_wake_txqs()
-	__ieee80211_wake_txqs() -> _ieee80211_wake_txqs()
-	__ieee80211_wake_txq()  -> ieee80211_wake_txq()
+Currently, driver does not support get_txpower mac ops because of which
+cfg80211 returns vif->bss_conf.txpower to user space. bss_conf.txpower
+gets its value from ieee80211_channel->max_reg_power. However, the final
+txpower is dependent on few other parameters apart from max regulatory
+supported power. It is the firmware which knows about all these parameters
+and considers the minimum for each packet transmission.
 
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
----
- net/mac80211/iface.c |  2 +-
- net/mac80211/util.c  | 26 ++++++++++++--------------
- 2 files changed, 13 insertions(+), 15 deletions(-)
+Firmware reports the final TX power in firmware pdev stats which falls
+under fw_stats. But currently, fw_stats is under debugfs.
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 9b2d0b3ae132..c650bc3df986 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -467,7 +467,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
- 	clear_bit(SDATA_STATE_RUNNING, &sdata->state);
--	synchronize_rcu(); /* flush _ieee80211_wake_txqs() */
-+	synchronize_rcu(); /* flush ieee80211_wake_txqs() */
- 
- 	cancel_scan = rcu_access_pointer(local->scan_sdata) == sdata;
- 	if (cancel_scan)
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 0513a1da2b51..985644949d7e 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -318,8 +318,8 @@ void ieee80211_handle_wake_tx_queue(struct ieee80211_hw *hw,
- }
- EXPORT_SYMBOL(ieee80211_handle_wake_tx_queue);
- 
--static void __ieee80211_wake_txq(struct ieee80211_local *local,
--				 struct ieee80211_txq *txq)
-+static void ieee80211_wake_txq(struct ieee80211_local *local,
-+			       struct ieee80211_txq *txq)
- {
- 	struct txq_info *txqi = to_txq_info(txq);
- 	struct fq *fq = &local->fq;
-@@ -331,7 +331,7 @@ static void __ieee80211_wake_txq(struct ieee80211_local *local,
- 	}
- }
- 
--static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
-+static void _ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- {
- 	struct ieee80211_local *local = sdata->local;
- 	struct fq *fq = &local->fq;
-@@ -354,15 +354,13 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 
- 	/* %IEEE80211_VIF_TXQ_NOQUEUE must be ignored here */
- 
--	if (ac == IEEE80211_AC_VO) {
--		__ieee80211_wake_txq(local,
--				     vif->txq[IEEE80211_VIF_TXQ_FALLBACK]);
--	}
-+	if (ac == IEEE80211_AC_VO)
-+		ieee80211_wake_txq(local, vif->txq[IEEE80211_VIF_TXQ_FALLBACK]);
- 
- 	if (ac == IEEE80211_AC_BE && vif->txq[IEEE80211_VIF_TXQ_MULTICAST] &&
- 	    (!ps || !atomic_read(&ps->num_sta_ps)))
--		__ieee80211_wake_txq(local,
--				     vif->txq[IEEE80211_VIF_TXQ_MULTICAST]);
-+		ieee80211_wake_txq(local,
-+				   vif->txq[IEEE80211_VIF_TXQ_MULTICAST]);
- 
- 	list_for_each_entry_rcu(sta, &local->sta_list, list) {
- 		if (sdata != sta->sdata)
-@@ -378,7 +376,7 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 			if (ac != txq->ac)
- 				continue;
- 
--			__ieee80211_wake_txq(local, txq);
-+			ieee80211_wake_txq(local, txq);
- 		}
- 	}
- out:
-@@ -389,7 +387,7 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- static void
- __releases(&local->queue_stop_reason_lock)
- __acquires(&local->queue_stop_reason_lock)
--_ieee80211_wake_txqs(struct ieee80211_local *local, unsigned long *flags)
-+ieee80211_wake_txqs(struct ieee80211_local *local, unsigned long *flags)
- {
- 	struct ieee80211_sub_if_data *sdata;
- 	int n_acs = IEEE80211_NUM_ACS;
-@@ -416,7 +414,7 @@ _ieee80211_wake_txqs(struct ieee80211_local *local, unsigned long *flags)
- 
- 				if (ac_queue == i ||
- 				    sdata->vif.cab_queue == i)
--					__ieee80211_wake_txqs(sdata, ac);
-+					_ieee80211_wake_txqs(sdata, ac);
- 			}
- 		}
- 		spin_lock_irqsave(&local->queue_stop_reason_lock, *flags);
-@@ -459,13 +457,13 @@ static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
- 		tasklet_schedule(&local->tx_pending_tasklet);
- 
- 	/*
--	 * Calling _ieee80211_wake_txqs here can be a problem because it may
-+	 * Calling ieee80211_wake_txqs here can be a problem because it may
- 	 * release queue_stop_reason_lock which has been taken by
- 	 * __ieee80211_wake_queue's caller. It is certainly not very nice to
- 	 * release someone's lock, but it is fine because all the callers of
- 	 * __ieee80211_wake_queue call it right before releasing the lock.
- 	 */
--	_ieee80211_wake_txqs(local, flags);
-+	ieee80211_wake_txqs(local, flags);
- }
- 
- static int ac_has_active_txq(struct ieee80211_local *local)
+Add support for get_txpower mac ops to get the TX power from firmware
+leveraging fw_stats and return it accordingly.
+
+Also, move fw_stats out of debugfs so that get_txpower mac ops can
+function properly even when debugfs is disabled.
+
+Aditya Kumar Singh (2):
+  wifi: ath12k: move firmware stats out of debugfs
+  wifi: ath12k: add get_txpower mac ops
+
+ drivers/net/wireless/ath/ath12k/core.c    |  45 +++++++
+ drivers/net/wireless/ath/ath12k/core.h    |   4 +
+ drivers/net/wireless/ath/ath12k/debugfs.c |  44 +-----
+ drivers/net/wireless/ath/ath12k/mac.c     | 155 +++++++++++++++++-----
+ drivers/net/wireless/ath/ath12k/mac.h     |   3 +
+ drivers/net/wireless/ath/ath12k/wmi.c     |  94 ++++++++++---
+ 6 files changed, 247 insertions(+), 98 deletions(-)
+
+
+base-commit: b5aeca2e66899430827b8afcad061201f3b7861b
 -- 
-2.48.1
+2.34.1
 
 
