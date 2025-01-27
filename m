@@ -1,78 +1,75 @@
-Return-Path: <linux-wireless+bounces-17993-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17994-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146E4A1D0E5
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 07:26:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0624CA1D0F5
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 07:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73D403A2BE5
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 06:26:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 025371884D17
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2025 06:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0F415852E;
-	Mon, 27 Jan 2025 06:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3B113AA2D;
+	Mon, 27 Jan 2025 06:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="IUUuCeA7"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="dGF8itPz"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0D927701
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 06:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79BC16DED2
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2025 06:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737959215; cv=none; b=l1cjypyFcUQWv+BNwMsn1fO7reVphPGNTaTC4PT41R7z1dxHlTpr5qxWess2Ced4F+4pQWcUyVcpRUS+y9mdotfZ8ke3dr5sWNHy5H7cnVzkALoLcrAQUD/9rF1JIUWNDI3UVKVXLidqlzxIb4kjNKDs/V4urBzJ+Q58kU2RAaM=
+	t=1737959800; cv=none; b=BYUHvw/8LMwNKGMQiubtE/h1b0KjmmnJmeWbHDxV34nZFrgIjvXdpU9/Yo1gIwjK+sCNN1PDX5lUNkQzaaAxaVCuN2wyFx7ItDy7dLW44g4cip8P1KdoIw8ibCDTxU7AfxcaqdnaYW7aL+1e9vvUA3NcqgdLJEpcJPYPkdpaaG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737959215; c=relaxed/simple;
-	bh=oIcRSy8WLjSxA6FMNmnPtrCiXXSYxrAkc6ITYMKMZoU=;
+	s=arc-20240116; t=1737959800; c=relaxed/simple;
+	bh=jBcCPtz290HF2oSND88+H8CD/nzOBfuJ1xkaKNe9Zpo=;
 	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=lstS/Koc61sCcMKkaKcCoV91MfHVhgT1PnBjwjNsBE33Qvx083HFNQDfjOsFzU8uTXcc5dfKteiOlqwiFJI1fK+SqEbcdTTj96pM9oZ+QpIQJj21rCHhVyjqw4WV17fRDBaHVNYOYkZcnhKLd7uMuhoEz4AlebfqSTEtdbwEtyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=IUUuCeA7; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:MIME-Version; b=Up09V5t7W8l+srTusJ5HFiFEQSICZS43HLSo1AxpEfTYqp3kUib+28VeAmJsn7rrmTYbZc2Zev1tciDVLsL2VNiE0euIE/OHnEXIUTtmv1BbbAytJUJePMnPI6rFbTq8tIWRGHWnIuqcpZaocg2bbBQAQJbOFo9IPIjMLjeFXNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=dGF8itPz; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50R6QmLhA2604868, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50R6aRyV52610594, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1737959208; bh=oIcRSy8WLjSxA6FMNmnPtrCiXXSYxrAkc6ITYMKMZoU=;
+	t=1737959787; bh=jBcCPtz290HF2oSND88+H8CD/nzOBfuJ1xkaKNe9Zpo=;
 	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=IUUuCeA7pC2kAuECl47rOVBJlEqJmLORPPYQnL2/2dyPTqXQ89ZnPNGIUsUx6ugU5
-	 x+cMd49Q5QqFIJ1+FvHhXqhgEBltbN0rLwoXcihOmUBk12sH8KG2NbH2ROyR8mAQU9
-	 buL8QZS31ePDwFebpZIDt5DgbXGymHo08CEAhpnc+JsAIUgyi2EtuTCBBeM6HlMcxe
-	 XVki/CirVnZKIRIsQFB+6OB5XF9PGMo0Yf4y2LA+crjef2nRRI747JQZw2ehLezL+h
-	 JOY2B8+jNUVCzpP4ZC7qMgJPs/fYubXh/vNyA2BMHDFSkU3/X9ug+izfAdrT+BMjjp
-	 qmWZrkRmiEFqA==
+	b=dGF8itPzYks+dixModhChR4MZBkFou/sirsrUFt8VUkrU5RvcqbhwXWXDpfU9Eg/z
+	 xEeFyxVepBi2hgDvckaOchA4JOMQbif0MJRvYYXlNhcZVLL5nmgksj14PFIEMOIzwu
+	 LxrwDWClQTPYMYQRrWybw5C8Mex2drZ9vTnuUWR9NmjeQD7FwEQM3BMTHJB8I1Di2l
+	 g3pI0LRJekCKlW7O6HKAVXc8PFg0/lZJOYXM0P1uE11kc/PEvCWdWzZzXPgMCn4JOq
+	 4L5MPWox/WOtmxy/cTeWJDXAmi7+Ckd4Z6Kwz6Ti3jigp0v2AV8v5cle5v139eh5jG
+	 Tc/LESGTdZw0Q==
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50R6QmLhA2604868
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50R6aRyV52610594
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Jan 2025 14:26:48 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+	Mon, 27 Jan 2025 14:36:27 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 27 Jan 2025 14:26:49 +0800
+ 15.1.2507.39; Mon, 27 Jan 2025 14:36:28 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 27 Jan 2025 14:26:49 +0800
+ 15.1.2507.35; Mon, 27 Jan 2025 14:36:27 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553]) by
  RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553%5]) with mapi id
- 15.01.2507.035; Mon, 27 Jan 2025 14:26:49 +0800
+ 15.01.2507.035; Mon, 27 Jan 2025 14:36:27 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 4/7] wifi: rtw88: Extend rf_base_addr and rf_sipi_addr for RTL8814AU
-Thread-Topic: [PATCH 4/7] wifi: rtw88: Extend rf_base_addr and rf_sipi_addr
- for RTL8814AU
-Thread-Index: AQHbcEV7qBlnHgzxok+ZT6p8H5/N1LMqJ9/M
-Date: Mon, 27 Jan 2025 06:26:48 +0000
-Message-ID: <38390e3d612e42b09e8763b1de486e0d@realtek.com>
-References: <fb2c2ae6-6173-4b4a-9e1f-ff51759cdee6@gmail.com>,<241f642c-b31f-4b52-be65-515269769a2b@gmail.com>
-In-Reply-To: <241f642c-b31f-4b52-be65-515269769a2b@gmail.com>
+Subject: Re: [PATCH 5/7] wifi: rtw88: Extend rtw_fw_send_ra_info() for RTL8814AU
+Thread-Topic: [PATCH 5/7] wifi: rtw88: Extend rtw_fw_send_ra_info() for
+ RTL8814AU
+Thread-Index: AQHbcEWMDvUgah16k02kcTsE1TgourMqKWuB
+Date: Mon, 27 Jan 2025 06:36:27 +0000
+Message-ID: <ca7380d8560046c4a2a2badde9302691@realtek.com>
+References: <fb2c2ae6-6173-4b4a-9e1f-ff51759cdee6@gmail.com>,<fa9ff2b4-6e1a-45e4-90de-db6fe0d4f433@gmail.com>
+In-Reply-To: <fa9ff2b4-6e1a-45e4-90de-db6fe0d4f433@gmail.com>
 Accept-Language: en-US, zh-TW
 Content-Language: en-US
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -81,17 +78,67 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
 Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
-> These members of struct rtw_chip_info each have a size of 2. Increase
-> their size to 4, which is the number of RF paths the RTL8814AU has.
->=20
-> This is required to read and write the RF registers of the RTL8814AU.
+> The existing code is suitable for chips with up to 2 spatial streams.
+> Inform the firmware about the rates it's allowed to use when
+> transmitting 3 spatial streams.
 >=20
 > Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> ---
+>  drivers/net/wireless/realtek/rtw88/fw.c | 14 ++++++++++++++
+>  drivers/net/wireless/realtek/rtw88/fw.h |  1 +
+>  2 files changed, 15 insertions(+)
 >=20
+> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wirele=
+ss/realtek/rtw88/fw.c
+> index 02389b7c6876..0ca1b139110d 100644
+> --- a/drivers/net/wireless/realtek/rtw88/fw.c
+> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
+> @@ -735,6 +735,7 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev, stru=
+ct rtw_sta_info *si,
+>  {
+>         u8 h2c_pkt[H2C_PKT_SIZE] =3D {0};
+>         bool disable_pt =3D true;
+> +       u32 mask_hi;
+>=20
+>         SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_RA_INFO);
+>=20
+> @@ -755,6 +756,19 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev, str=
+uct rtw_sta_info *si,
+>         si->init_ra_lv =3D 0;
+>=20
+>         rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
+> +
+> +       if (rtwdev->chip->rf_tbl[RF_PATH_C]) {
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Using `efuse->hw_cap.nss >=3D 3` would be consistent with latter patch.=20
+
+> +               SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_RA_INFO_HI);
+> +
+> +               mask_hi =3D si->ra_mask >> 32;
+> +
+> +               SET_RA_INFO_RA_MASK0(h2c_pkt, (mask_hi & 0xff));
+> +               SET_RA_INFO_RA_MASK1(h2c_pkt, (mask_hi & 0xff00) >> 8);
+> +               SET_RA_INFO_RA_MASK2(h2c_pkt, (mask_hi & 0xff0000) >> 16)=
+;
+> +               SET_RA_INFO_RA_MASK3(h2c_pkt, (mask_hi & 0xff000000) >> 2=
+4);
+> +
+> +               rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
+> +       }
+>  }
+
+Prefer calling RA_INFO LO/HI in the same level. I meant
+
+rtw_fw_send_ra_info()
+{
+        rtw_fw_send_ra_info_lo(); // original RA info
+   =20
+        if (efuse->hw_cap.nss <=3D 2)
+                return;
+
+        rtw_fw_send_ra_info_hi();
+}
 
 
