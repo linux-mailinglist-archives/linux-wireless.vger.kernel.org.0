@@ -1,79 +1,63 @@
-Return-Path: <linux-wireless+bounces-18076-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18077-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C6EA20F80
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 18:17:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5BEA20FA4
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 18:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D13B7A2B00
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 17:17:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 245A41885BA0
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 17:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4351AF0B6;
-	Tue, 28 Jan 2025 17:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12131581F1;
+	Tue, 28 Jan 2025 17:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y5kW4m5T"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FRP5Xavk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664501684AE
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 17:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BAE1EEE6;
+	Tue, 28 Jan 2025 17:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738084671; cv=none; b=Vo5qevh9QzANYShoNHhaE+hBzkLLctPVvC8viY2DN7YwXo0ZjdVT3jAffHprjMGHrn/fJaj/O6qhknkOmBYd1Nm4GXBJQNuNDUN3NvQdpVTinvP45h6XdXwuGQojeSSBf22VZksPnhHCIYF2Wjk4iHT5hIrOf+qOLXW1tGo54ek=
+	t=1738085685; cv=none; b=RmzRC5FLK8wAxoOqaZeb+lWSo3ZD6/6uWkiO7FqBBkPWAh/gL4qjn062IKty1F8GZnMlmv82OKKcskblBow77QfvuNlRhpHONlASZoqqHKPdEBPlMnE3hfTmQjoOcfcBeMPvHvDHPcy4TM5bPEGq7Hq2twNYsJq726kk0AnVPXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738084671; c=relaxed/simple;
-	bh=9NhEEJi8+ZjiYBFHRuvYtSltaovuG3Uec9fIMaaEmW4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=hqBfxBhyniHTjpQUh1Wd5jMXw/ufjgmnARcC+9BZ49mJk6nPCLVzdHw2Kyh/7UiaqffKsoUJMOon1XORuJ/gY2pyt0AHJ/QnWQaZNsXQLxzTx5B3oPkKFQpy49iqOgoQkd+F1u34qN/DxPSEhIXGEA4I3VYs1daBbRzPry9xLj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y5kW4m5T; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-385de59c1a0so3401593f8f.2
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 09:17:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738084668; x=1738689468; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YOAa/qzp0c+N/R7MoQCwDoMAfuxAsjRzYXwyLz5skbo=;
-        b=Y5kW4m5TWJy/ls6ExLKWH4nY3wKMKisSmtBjTFu74uKSezlX6OdM/XHBdx5bbpT6RQ
-         AVC68Y00caKi+8jQyA65AJNdeRhH+XSURfcgJiWkxBKirshSPwecvfURtBrPx8EQIHZV
-         LgQq/OJ2DxPoLOOC2dvMt4x+S7CHCLlY8CLVIEFR73dwO1A6NCbv4K9gn6c/7Ux+tAOc
-         BcKBI7pVx8lonUSGGaiLGJRZmFhDrtU41FfQ7OYi7LDkAmoRFziC6M+HsbEyX5dya06D
-         gKxNLpn5vdPQPm+9ZYvbusUn9YLPPJTDozonbZbXU2EV8r2Dd9opvcCwoJ4RETudETrY
-         /K4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738084668; x=1738689468;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YOAa/qzp0c+N/R7MoQCwDoMAfuxAsjRzYXwyLz5skbo=;
-        b=HFskVeIZM4YLT7jsiQ6tIs83WTzxXnNanQuk9WiczlWdlZ0rTa6F5loBr367hy2+a3
-         aUfFigLU4/F8h0w8ffXeyzicrKToICgw1k1mpgucd4syXdgIv1voBdkhVTI3ZS0M4lTR
-         5mzbWwZOuQtdmm2jQkrlQosZLkVTJFmttcQqWXC+NZjgHjKEV4nLRSK9j/RYUaP0ZVPL
-         CQ7NjWTTC7dJomiLdLJaf+04cSGdLWdYUkZVyk4U6ge97UXfLHjlK4f4fbziCNbKf1aY
-         sMIK5I3xr+zLsq080SlwTsytKpGp5z7/PT46EeAINbJD52JNOJ0v6JzEChVfUrYhYFdV
-         wPdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWpsjzsrP/ATWobIzGFyRCFT+VT0S2H2yO61Z3/5tTidarQ8syp5ViegT46/cjGL9sMCIj6UX+OiFdk1l9JjA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNW2b/kc+VILbXLLEp8AnZaxNiRCsnOeEAlSIHpCm3wMrhhaeV
-	O4AwXPDxnoL8f4EBYCmBDUB54I2V5Pd1lsv9HoGp42q+tE2CKUYigfkMYA==
-X-Gm-Gg: ASbGnct+J0a0bUbQng523ITz+zmxoW1dwtQuMxVR+Ugj6zYF/1VUXBLtcbTMHvpUXZV
-	yNBdKql+dFPEnSM6eR8yBJRnFQ77Iv0nPeNvR3rjQyNdpuAgLFhUkq8qKZrX8pMJr77H9tcoqcK
-	+lY1i+3WFKFAFDyzFYk6BGGZ7ouxC73bjR6JIeGmgxR/dliQqSAIKfUN+845B1MmZ+1L0mMDcOC
-	1cxVshGWs7EU/Rs1CBnrfRxXC+/RIhApnuGaeswK/lbtc7XjjZVfwdHwVPnLkMkDkso+cevuGGX
-	uyNCKFwsM5qP4fgq+J6Ob6Y=
-X-Google-Smtp-Source: AGHT+IGHWw5qLmYfpJVak2eKsZtsYmqbURHN0gY3R1kb7HOvS5oLbCuAKRUr3adQbmoP0GvxjHgwow==
-X-Received: by 2002:a5d:6c66:0:b0:385:fae2:f443 with SMTP id ffacd0b85a97d-38bf57a91a1mr37655420f8f.34.1738084667310;
-        Tue, 28 Jan 2025 09:17:47 -0800 (PST)
-Received: from [192.168.0.50] ([79.119.240.80])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a1c418esm14826985f8f.95.2025.01.28.09.17.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jan 2025 09:17:46 -0800 (PST)
-Message-ID: <d80fe4e2-1e38-4e84-b169-8c2699d7c764@gmail.com>
-Date: Tue, 28 Jan 2025 19:17:46 +0200
+	s=arc-20240116; t=1738085685; c=relaxed/simple;
+	bh=Z3hziaJj19jRiKHPij/W67cwPZ0GjZ6AHXjd8gMHN0s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=emNRBsK1afs04a34f+7T0im/cqFsBxC14AIzI1KYoqaTR9mHfJ3nnXKUMJ96d6GMm+/JL7/JXqZhOV2zUfkw1ew/f3XpjvbX161Wf8GC9spNjqqIsGkmEamJnle6XkZI0m8BdKRYVmAuNh1Zl28rQQD2cg6iOTROWpOZV+ijRRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FRP5Xavk; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50SFqVbj032373;
+	Tue, 28 Jan 2025 17:34:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	4E/11L6bTr/abK1jSaUDzqcbdGdMmdVqWMAVsWUG+4E=; b=FRP5Xavkct1J9Pvz
+	gUSLKTIu2z9q+uhaaQ3tMvvYYaUz/20xU10LcUQ5TUbalMWsEuwQGJsuJIhPsxic
+	HXOny3uNV3E6f3wbft52DYuUsfri2UZFqBeAsfVDNleJlaGtU9pzOfv/CRhQ6QkC
+	mew70Ob7aSvPY+H/a54Up/xcq47q+54f+8mZykqAhvs2+y6Rmc+DvNLdw9V4hb6Q
+	57Bkq6QaQQjCSvsW99egU1yUeFwNQHTJ2eXSQZat4s3Cs4gODMphgKoVd9vwZdf9
+	aqNtLqf4FsFh/eUfSCl+o8X9FcU7762NT4yxd74513SYrYzsTcxXwvXowlJIcyDW
+	ztxPtQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44f28y084n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jan 2025 17:34:38 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50SHYbjV024257
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jan 2025 17:34:37 GMT
+Received: from [10.216.5.143] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 28 Jan
+ 2025 09:34:33 -0800
+Message-ID: <0de7039c-d94e-4857-922f-29274d8632d9@quicinc.com>
+Date: Tue, 28 Jan 2025 23:04:29 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,93 +65,85 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] wifi: rtw88: Extend rtw_fw_send_ra_info() for
- RTL8814AU
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <fb2c2ae6-6173-4b4a-9e1f-ff51759cdee6@gmail.com>
- <fa9ff2b4-6e1a-45e4-90de-db6fe0d4f433@gmail.com>
- <ca7380d8560046c4a2a2badde9302691@realtek.com>
- <d05ba9e5-d5e3-4761-bd1e-f7c2b63f5a36@gmail.com>
- <53740c9ec74a4aa0a5a3c51b895eb385@realtek.com>
+Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: describe the ath12k AHB
+ module
+To: Krzysztof Kozlowski <krzk@kernel.org>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        Rob
+ Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor
+ Dooley <conor+dt@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn
+ Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+References: <20250128091012.2574478-1-quic_rajkbhag@quicinc.com>
+ <20250128091012.2574478-2-quic_rajkbhag@quicinc.com>
+ <0ca970e7-cc9a-4853-86de-5f01dc6d82a2@kernel.org>
+ <1bd2dca3-1fa0-424d-95e8-cdb887f1d9e2@quicinc.com>
+ <112fe636-1328-49f0-8f0a-395764e118c7@kernel.org>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <53740c9ec74a4aa0a5a3c51b895eb385@realtek.com>
-Content-Type: text/plain; charset=UTF-8
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <112fe636-1328-49f0-8f0a-395764e118c7@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: duoJqxOjIVtVhRNbowjgCOArEyuFRZEA
+X-Proofpoint-ORIG-GUID: duoJqxOjIVtVhRNbowjgCOArEyuFRZEA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-28_04,2025-01-27_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ mlxlogscore=999 clxscore=1015 priorityscore=1501 spamscore=0
+ malwarescore=0 mlxscore=0 adultscore=0 phishscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501280129
 
-On 28/01/2025 07:52, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> On 27/01/2025 08:36, Ping-Ke Shih wrote:
->>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>>> The existing code is suitable for chips with up to 2 spatial streams.
->>>> Inform the firmware about the rates it's allowed to use when
->>>> transmitting 3 spatial streams.
+On 1/28/2025 3:51 PM, Krzysztof Kozlowski wrote:
+> On 28/01/2025 10:29, Raj Kumar Bhagat wrote:
+>> On 1/28/2025 2:47 PM, Krzysztof Kozlowski wrote:
+>>> On 28/01/2025 10:10, Raj Kumar Bhagat wrote:
+>>>> Add device-tree bindings for the ATH12K module found in the IPQ5332
+>>>> device.
 >>>>
->>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>>> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 >>>> ---
->>>>  drivers/net/wireless/realtek/rtw88/fw.c | 14 ++++++++++++++
->>>>  drivers/net/wireless/realtek/rtw88/fw.h |  1 +
->>>>  2 files changed, 15 insertions(+)
->>>>
->>>> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
->>>> index 02389b7c6876..0ca1b139110d 100644
->>>> --- a/drivers/net/wireless/realtek/rtw88/fw.c
->>>> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
->>>> @@ -735,6 +735,7 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
->>>>  {
->>>>         u8 h2c_pkt[H2C_PKT_SIZE] = {0};
->>>>         bool disable_pt = true;
->>>> +       u32 mask_hi;
->>>>
->>>>         SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_RA_INFO);
->>>>
->>>> @@ -755,6 +756,19 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
->>>>         si->init_ra_lv = 0;
->>>>
->>>>         rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
->>>> +
->>>> +       if (rtwdev->chip->rf_tbl[RF_PATH_C]) {
+>>>>  .../net/wireless/qcom,ath12k-ahb.yaml         | 317 ++++++++++++++++++
+>>>>  1 file changed, 317 insertions(+)
+>>>>  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
 >>>
->>> Using `efuse->hw_cap.nss >= 3` would be consistent with latter patch.
+>>> It was v4, now v1? So entire previous discussion and feedback is
+>>> missing? Go to previous series and implement entire feedback. Then use
+>>> proper versioning, proper changelog and make it obvious/understandable
+>>> to us, instead of sending v1 after v4 in entirely separate thread.
 >>>
 >>
->> I would like that, but nss is 2 when RTL8814AU is in USB 2 mode.
->> I assume this is to keep the current draw under the 500 mA limit
->> of USB 2.
->>
->> What about rtwdev->hal.rf_path_num >= 3 ? I don't remember why
->> I didn't do that.
+>> I was asked to send DTS as a separate series, this is a new series for
+>> DTS hence stated with v1.
 > 
-> I think `rtwdev->hal.rf_path_num >= 3` is suitable to initialize/configure
-> hardware registers, because no matter USB 2 or 3 mode should be the same.
 > 
-> For this case (RA info), this is related to protocol, so I feel 
-> `efuse->hw_cap.nss >= 3` is suitable, but I have not seen a patch to declare
-> supported NSS in register_hw(), or I missed it? Or, without RA_INFO_HI,
-> it gets abnormal rate to RTL8814AU in your test?
+> But we do not talk about DTS here, but bindings.
+> 
+> 
+>> To address the undocumented ABIs we have changes in dt-binding and hence
+> 
+> That's v1 so how it could have changes in the first place? Unless this
+> is v5?
 > 
 
-You didn't miss it, that will be in part 3. You can see the code here:
+Sure, I understand your point now.
+I shouldn't have sent dt-binding here along with DTS as v1. dt-binding should
+go with wireless patch-set in v5.
 
-https://github.com/lwfinger/rtw88/blob/21a3fa7ec11a0cbb3be14145f45cdca35c3d3217/rtw8814a.c#L82
+Let me know your thoughts on the next steps:
+1. I will send v5 for 'wifi: ath12k: add Ath12k AHB driver support for IPQ5332'
+   along with dt-binding.
 
-I get a steady 300 Mbps even without RA_INFO_HI. The problem is only
-cosmetic. Right after connecting to the AP the first C2H_RA_RPT comes
-a bit later than usual, after the first CTRL-EVENT-SIGNAL-CHANGE, so
-we see a TX rate of 0:
-
-Jan 28 19:00:06 ideapad2 NetworkManager[504]: <info>  [1738083606.4996] manager: NetworkManager state is now CONNECTED_SITE
-Jan 28 19:00:06 ideapad2 NetworkManager[504]: <info>  [1738083606.5003] device (wlp3s0f3u2): Activation: successful, device activated.
-Jan 28 19:00:06 ideapad2 wpa_supplicant[1480]: wlp3s0f3u2: CTRL-EVENT-SIGNAL-CHANGE above=1 signal=-42 noise=9999 txrate=0
-Jan 28 19:00:06 ideapad2 NetworkManager[504]: <info>  [1738083606.6020] manager: NetworkManager state is now CONNECTED_GLOBAL
-
-With RA_INFO_HI the first C2H_RA_RPT comes at the normal time,
-before the first CTRL-EVENT-SIGNAL-CHANGE:
-
-Jan 28 19:09:44 ideapad2 NetworkManager[504]: <info>  [1738084184.2400] manager: NetworkManager state is now CONNECTED_SITE
-Jan 28 19:09:44 ideapad2 NetworkManager[504]: <info>  [1738084184.2407] device (wlp3s0f3u2): Activation: successful, device activated.
-Jan 28 19:09:44 ideapad2 wpa_supplicant[1480]: wlp3s0f3u2: CTRL-EVENT-SIGNAL-CHANGE above=1 signal=-44 noise=9999 txrate=780000
-Jan 28 19:09:44 ideapad2 NetworkManager[504]: <info>  [1738084184.3810] manager: NetworkManager state is now CONNECTED_GLOBAL
-
+2. In a separate series, I will send only DTS changes as v2, considering the
+   review comments in this version as v1 for DTS.
 
