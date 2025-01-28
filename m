@@ -1,82 +1,149 @@
-Return-Path: <linux-wireless+bounces-18093-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18091-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3B7A212CB
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 20:58:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E440A212C2
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 20:53:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F2B23A4118
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 19:58:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0241188AAF8
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 19:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0296199230;
-	Tue, 28 Jan 2025 19:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833151DFD89;
+	Tue, 28 Jan 2025 19:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="XLHbKhpM"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="T/oicrGK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FEF158A09;
-	Tue, 28 Jan 2025 19:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660E31E98E8;
+	Tue, 28 Jan 2025 19:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738094305; cv=none; b=UENw36sHOZnL1/BK3sH1Oz286lUsGBPYq+uAouoObVZWQ1OB3NfqP0Z5H0MsPtxlronF4PzZWTgmymLXOZYcqoBoL1PZwvQTLPEqp1G2cm3jv/AdGivKF/2GZzbmou4abB4d2X73l5qP1Sd8HNAERum9ffv1dgrkgiFqDrssdMk=
+	t=1738093969; cv=none; b=nX040kHUNuYte0b1n/BXZVW0tF2RghzeUDx8fgpxXTXWfYhAJq2sSxU5Cf6JQAPpd1DIr2r7qJlKEeVJAsJ8G5JPCz20fKJNV4B8a2TGY6sp6m79B87KcltV+JtRd5f/Rt9JTi7vPJ21TU/WtuW//noT2kFNgiOYBU9NfrNYMus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738094305; c=relaxed/simple;
-	bh=r1IQ5VrIiqDXdlSfJTSOs1Fq/Q3uye9YqXJhVfmanPo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JZc8nQblRIcXucQnCsQSaAUM64eyzF7WK7eg4KAFehksUnQDaqGL3KIjkMrgpSiAKwXDGHU+trTLzGkGxhvb448E0dwWEiI4qG5hmLws0vvAtBGBMOeyL81rpGuFTHFcapFsLqIroMdIX0ifgPjSFVWMErxVMzFDRjQguUhiC+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=XLHbKhpM; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=/UVwCVUckavusFcfIbtuoG7y1CE3wZnBJdeThYkKfqw=;
-	t=1738094304; x=1739303904; b=XLHbKhpMdyTadHemOedxO9hmLFGeZxydj/VnJkBm4WZqTdc
-	GdS1Q+ykjOGuvCvH2l+i5TgesjKpE3acFhsME4wyGrk1KzM7tCCCtUw1iG9R/4mjkbFvLEA95fGqj
-	Omqr1DCgA618HWcXolNxSxeeG0ETESSyspA/oeMwmvd3mW4XY97kVe/hcToZK4CwV8346qe1Qfqw4
-	QMM1VSrUEZrgXUmTLc0qSq1TQc5uPXEwXudb8xJZMl289JacFp4XkAIldtloVy5UMVZiM/BtKfxhw
-	8IKRTnV6vAji6+pEY3CDGUzUFCkQM5Up8X0xsxRImQvTuVSu9GTyj5FWvlY/Hcyw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tcrKr-0000000D3mR-1nRP;
-	Tue, 28 Jan 2025 20:33:21 +0100
-Message-ID: <d5ca1cf4593edb1c8ee32f3c2e6fde47dc97cc32.camel@sipsolutions.net>
-Subject: Re: [PATCH 0/2] wifi: mac80211: Deadcode cleanup
-From: Johannes Berg <johannes@sipsolutions.net>
-To: "Dr. David Alan Gilbert" <linux@treblig.org>, 
-	linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Date: Tue, 28 Jan 2025 20:33:20 +0100
-In-Reply-To: <Z5kkVa0pi9_TRsCl@gallifrey>
-References: <20241224013257.185742-1-linux@treblig.org>
-	 <Z5kkVa0pi9_TRsCl@gallifrey>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1738093969; c=relaxed/simple;
+	bh=PWEPEure7HQrZ8dG6/eksnkSIECXu/YVLkemgDQyGWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BVQIKIfPkA6+GwaUKqpj9L7qUJTaJnu12PA6q4GCZwlFscgL1lxD1XSfD6b8bVXvvLtnr6vIYVK70sDCMs+cw3386gVzhKW/ubgEB8KaMOC1Zv9I5nhnKiP79qs36xUA9/i/orF45aJ/mU1pnNc1sP5A34fMLSyqryT0ZSj9/W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=T/oicrGK; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+	:Subject; bh=POa/3lE2bVxXraVtVR+/qivi/O1cJzPp9IuhNQHVelQ=; b=T/oicrGKemoDyV7p
+	vwlw6q6WUAkU/+2K2HBDXkPNGibsmnnnGcW05pLI4ix6m9VwBeymaX8iYmPnfCDnA8icvJjf9Iz/T
+	lgVbhWlbMlublQFAgOVMDrGMAx/LD8kztrqjiM4w4sQu9vY/BscQ9LMD39r85MUKFTegaP+v6zqkw
+	MZM1vme4VDt3Qi3py0Uszy7diJpiEr9L+0YlCB+ZpEsl54/7e20RaldOY/94RP8AUuHlwJvW6+Vy2
+	H7FA8UnJq0+Bq8hfBmKrSqxe3ZJaTXMC5jCZ+dsv9mNG+644iNod+/0I0b8vYi+swyaP4iZANXkLR
+	TPmIe9wgInNaYzZ5mg==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+	(envelope-from <dg@treblig.org>)
+	id 1tcrdZ-00CXSz-0g;
+	Tue, 28 Jan 2025 19:52:41 +0000
+Date: Tue, 28 Jan 2025 19:52:41 +0000
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
+To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
+Cc: "kvalo@kernel.org" <kvalo@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 0/6] iwlwifi: Cleaning up deadcode
+Message-ID: <Z5k1iYBT0wTT86uw@gallifrey>
+References: <20241223013202.340180-1-linux@treblig.org>
+ <Z5kly5whELp8h1k3@gallifrey>
+ <MW5PR11MB5810E64A405DBCE4F472A253A3EF2@MW5PR11MB5810.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <MW5PR11MB5810E64A405DBCE4F472A253A3EF2@MW5PR11MB5810.namprd11.prod.outlook.com>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
+X-Uptime: 19:52:28 up 265 days,  7:06,  1 user,  load average: 0.05, 0.01,
+ 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-On Tue, 2025-01-28 at 18:39 +0000, Dr. David Alan Gilbert wrote:
->=20
-> >   wifi: mac80211: Remove unused ieee80211_nan_func_match
->=20
-> Hi,
->   I noticed one of these patches (debugfs_key) has landed in 6.14
-> but the other one I don't think has - any particular reason?
+* Korenblit, Miriam Rachel (miriam.rachel.korenblit@intel.com) wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Dr. David Alan Gilbert <linux@treblig.org>
+> > Sent: Tuesday, 28 January 2025 20:46
+> > To: Korenblit, Miriam Rachel <miriam.rachel.korenblit@intel.com>;
+> > kvalo@kernel.org; linux-wireless@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH 0/6] iwlwifi: Cleaning up deadcode
+> > 
+> > * linux@treblig.org (linux@treblig.org) wrote:
+> > > From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> > >
+> > > Hi,
+> > >   This is a collection of removal of functions that have been used for
+> > > more than a few years.
+> > >
+> > >   There are also a handful of string and one structure removal that
+> > > are just left overs from a recent commit.
+> > >
+> > > They're all entire function/structure/string removal.
+> > >
+> > > Build tested only.
+> > >
+> > > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> > 
+> > A gentle ping on this just-pre-christmas set please.
+> > Thanks!
+> > 
+> > Dave
+> > 
+> > >
+> > >
+> > > Dr. David Alan Gilbert (6):
+> > >   iwlwifi: Remove unused iwl_rx_ant_restriction
+> > >   iwlwifi: Remove unused iwl_mvm_rx_missed_vap_notif
+> > >   iwlwifi: Remove unused iwl_mvm_ftm_*_add_pasn_sta functions
+> > >   iwlwifi: Remove unused iwl_mvm_ftm_add_pasn_sta
+> > >   iwlwifi: Remove unused iwl_bz_name
+> > >   iwlwifi: Remove old device data
+> > >
+> > >  .../net/wireless/intel/iwlwifi/cfg/22000.c    |   1 -
+> > >  .../net/wireless/intel/iwlwifi/cfg/ax210.c    |   8 --
+> > >  drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |   1 -
+> > >  drivers/net/wireless/intel/iwlwifi/dvm/tt.c   |  11 --
+> > >  drivers/net/wireless/intel/iwlwifi/dvm/tt.h   |   1 -
+> > >  .../net/wireless/intel/iwlwifi/iwl-config.h   |   4 -
+> > >  .../intel/iwlwifi/mvm/ftm-initiator.c         | 101 ------------------
+> > >  .../intel/iwlwifi/mvm/ftm-responder.c         |  86 ---------------
+> > >  .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  23 ----
+> > > drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  12 ---
+> > > drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  61 -----------
+> > >  drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |   4 -
+> > >  12 files changed, 313 deletions(-)
+> > >
+> > > --
+> > > 2.47.1
+> > >
+> > --
+> >  -----Open up your eyes, open up your mind, open up your code -------
+> > / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \
+> > \        dave @ treblig.org |                               | In Hex /
+> >  \ _________________________|_____ http://www.treblig.org   |_______/
+> 
+> 
+> Acked-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-We were still using NAN internally, and there's a chance that it might
-make a comeback, so I was holding off on it for now.
+Thanks!
 
-johannes
+Dave
+
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
