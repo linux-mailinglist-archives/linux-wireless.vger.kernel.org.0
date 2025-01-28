@@ -1,63 +1,48 @@
-Return-Path: <linux-wireless+bounces-18057-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18058-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 798AEA2070E
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 10:18:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E52A20723
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 10:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24F7A18862D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 09:18:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C78A3AA4C5
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 09:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46B61F6663;
-	Tue, 28 Jan 2025 09:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFC41DF985;
+	Tue, 28 Jan 2025 09:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="EGpKASGH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CQYbxL51"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E261E0DEA;
-	Tue, 28 Jan 2025 09:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388171DF74F;
+	Tue, 28 Jan 2025 09:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738055800; cv=none; b=sz+ORJ3zN3Ud7bSeU55iCnyFLKqwLTbcXJUXI65MlYFzl2aoLfRMmJwt52rweMHUijmnLFD7aDE2JHsiiCPGlkkO4GSHaXAkL+OOowqS4y+U4tYmA75x0d60tPDpGoqF95bmbeXJBerQPdj0oLXlke9XbZBRoqfFHQ/7qSrNjnc=
+	t=1738055845; cv=none; b=tO49GClHl1AFbhYNgyH2zIxo4ZnD/u+szCV74uqxe6soIsKsQmRnNSx3KYBuF75Gaellz/kH1JUPyCzIR4NcDo1+8jpT5+1hfP0US4ijH5qQRQGL5j51hS7kykkbQLnWtQy/6DD2GLwhkshfuitEZdNlNrjR9J3792xXfcDiDyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738055800; c=relaxed/simple;
-	bh=8X2d8yAB0710R5cSUdUEeUdKbAxss0pvQdv4R1dFniI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=IkqR91f4RME69+V7hTg5W2ltKLDEezwmCJvdsFOuqGRhtP+w4lj/eENjDuOExJQcgUvLx8RC30SJIKAe9QW+EhHcLfeOx8ZFHfOISd9psNPFjHoMPtewnKFyhv8k0AsyDCHzjbmSjpqIX4k2WhtM6ZJFH2NsjpAvaytfXddnGe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=EGpKASGH; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50RNmNrK006090;
-	Tue, 28 Jan 2025 09:16:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	xezB8n6Rfd+/Rmbbwa/0KA+P+sdz/ttAlpqai6xIpfM=; b=EGpKASGH6QYI1yQm
-	ZbM2r5HKW3YfyTSHiDzCC83yiwfVFmlXf00W8ieh78k/v2g5zPNXzEdhpFQb7uwB
-	/oZ4bq/xDONFWI4Bbd14ZcfIPVoTnB1itSDM3NE0el4KRrWlIQvtTBQy8cNdYvge
-	ArggHuoqGEbsU0wb7gfctRkCwloKlfomkHf3qzKz4IQ9qFS7WHhNi9E1lH29VFpQ
-	yBB5gxGxAFVBRVPgnzRUc3+TQr9IKkz6vz15bRxEyvt6UUyeYBQ3ekAd66rTBH3z
-	CbjwIR+vmqEaPpJcCOBKJ3TGvMREAh2+W/FcYi/Mydj9VdVMYrWpLcrF1V2patw4
-	qb/EuQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ed5g9v7q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jan 2025 09:16:34 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50S9GYlm021541
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jan 2025 09:16:34 GMT
-Received: from [10.151.40.239] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 28 Jan
- 2025 01:16:30 -0800
-Message-ID: <af926bd7-730c-4465-a206-4168bb93d01a@quicinc.com>
-Date: Tue, 28 Jan 2025 14:46:27 +0530
+	s=arc-20240116; t=1738055845; c=relaxed/simple;
+	bh=yVSjSWszN/9BPiVWvmLAGyXUmEWeXoGABsqhdxrbxHY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ELbh/HxJJvQyiMPa0E90vpy/7BuNgZ7t93MeTmPNQD0lKFNWEqmxkrhsbx1sKFQWDIfCuSvcLzOC3YTBZUOyk8TvVZDZ3dcpDPoFSsnrfDTkv1qb5mdmQmjIxm+6Eoo8JEdt4tk2yK7Dx0hRtJGJiAMQbuypfH0NFtB3L19zoMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CQYbxL51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADCE8C4CED3;
+	Tue, 28 Jan 2025 09:17:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738055844;
+	bh=yVSjSWszN/9BPiVWvmLAGyXUmEWeXoGABsqhdxrbxHY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CQYbxL51i05yY9ApsiCSV7X1Y4qEfFMN2t5ECbwMeJe9cayxyKcyrcQffNxHfeXDh
+	 jw990/p9l1lVXHKAHPGvxByNvwZtn53MKxKrX0K24RQ1P+lqYUjmrXZFi0nOxz/VA+
+	 9pmR3MgzPF1kfAHqnN4GOX8UHaLYiXnNoCWrQ7Fhzf9W3l+RylCb8w3wVbM6OHD/Vx
+	 BcoZcifkhvCLChigXHF0YzypF34n2j2ACITYlg4X01bqpBCEmJ9TFQtC24KT4bp3us
+	 eAzs8vpJ69nUjvkvuk82eZNFT5VTsm8jHcVxvAE8JeTobJVZKXk6W8WD5BDT5BABC7
+	 LDCFagq67+LsA==
+Message-ID: <0ca970e7-cc9a-4853-86de-5f01dc6d82a2@kernel.org>
+Date: Tue, 28 Jan 2025 10:17:18 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,85 +50,83 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/13] wifi: ath12k: add Ath12k AHB driver support for
- IPQ5332
-To: Krzysztof Kozlowski <krzk@kernel.org>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        Rob
- Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor
- Dooley <conor+dt@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-References: <20241210074159.2637933-1-quic_rajkbhag@quicinc.com>
- <fd338dd5-db11-4439-835d-b6641f3feb78@kernel.org>
- <001ae2e4-bba8-4b76-a4b6-eda8533c5fc5@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: describe the ath12k AHB
+ module
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20250128091012.2574478-1-quic_rajkbhag@quicinc.com>
+ <20250128091012.2574478-2-quic_rajkbhag@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-In-Reply-To: <001ae2e4-bba8-4b76-a4b6-eda8533c5fc5@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250128091012.2574478-2-quic_rajkbhag@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: zay7V2AeBkp-PpnWsfpemkreFXgINVju
-X-Proofpoint-ORIG-GUID: zay7V2AeBkp-PpnWsfpemkreFXgINVju
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-28_03,2025-01-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- mlxlogscore=976 impostorscore=0 clxscore=1015 spamscore=0 phishscore=0
- priorityscore=1501 bulkscore=0 suspectscore=0 mlxscore=0
- lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2501280071
 
-On 12/10/2024 8:42 PM, Krzysztof Kozlowski wrote:
-> On 10/12/2024 16:08, Krzysztof Kozlowski wrote:
->> On 10/12/2024 08:41, Raj Kumar Bhagat wrote:
->>> Currently, Ath12k driver only supports WiFi devices that are based on
->>> PCI bus. New Ath12k device IPQ5332 is based on AHB bus. Hence, add
->>> Ath12k AHB support for IPQ5332.
->>>
->>> IPQ5332 is IEEE802.11be 2 GHz 2x2 Wifi device. To bring-up IPQ5332
->>> device:
->>> - Add hardware parameters for IPQ5332.
->>> - CE register address space in IPQ5332 is separate from WCSS register
->>>   space. Hence, add logic to remap CE register address.
->>> - Add support for fixed QMI firmware memory for IPQ5332.
->>> - Support userPD handling for WCSS secure PIL driver to enable ath12k
->>>   AHB support.
->>>
->>> v4:
->>> - Missed to include some review list in v3. Hence sending v4 with
->>>   all review list as per - scripts/get_maintainers.pl
->>>
->> The amount of undocumented ABI you add here, points to the problem that
->> either your drivers don't work or your drivers would never work with
->> upstream. Why? Because either you would have wrong DTS or drivers not
->> matching DTS, thus not working.
->>
->> Please point us to your upstream DTS implementing (and working 100%)
->> this ABI, so we can review that you do not sneak more broken or
->> undocumented things. I will NAK also future submissions without above,
->> because I believe you usptream something which will not work.
+On 28/01/2025 10:10, Raj Kumar Bhagat wrote:
+> Add device-tree bindings for the ATH12K module found in the IPQ5332
+> device.
 > 
-> 
-> I dug a bit and I found your earlier v2:
-> https://lore.kernel.org/all/20241015182637.955753-3-quic_rajkbhag@quicinc.com/
-> 
-> which confirms:
-> 1. DTS not following coding style, so not possible to accept
-> 2. Driver relying on that exact DTS, so not really working.
-> 
-> Please post in separate series updated DTS, after fixing all the issues
-> pointed out by DTS coding style.
-> 
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> ---
+>  .../net/wireless/qcom,ath12k-ahb.yaml         | 317 ++++++++++++++++++
+>  1 file changed, 317 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
 
-To fix all the issues in DTS (including undocumented ABIs) we did changes in
-dt-binding as well.
+It was v4, now v1? So entire previous discussion and feedback is
+missing? Go to previous series and implement entire feedback. Then use
+proper versioning, proper changelog and make it obvious/understandable
+to us, instead of sending v1 after v4 in entirely separate thread.
 
-The dt-binding and working DTS are now posted as separate series -
-https://lore.kernel.org/lkml/20250128091012.2574478-1-quic_rajkbhag@quicinc.com/
+I also do not understand why this is sent to arm soc. That's wireless patch.
+
+Best regards,
+Krzysztof
 
