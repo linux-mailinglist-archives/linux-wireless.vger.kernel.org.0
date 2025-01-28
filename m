@@ -1,113 +1,145 @@
-Return-Path: <linux-wireless+bounces-18085-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18086-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A7AA211BC
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 19:39:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC82A211C2
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 19:44:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 728301884C0C
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 18:39:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5C373A379D
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 18:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976AA1A725A;
-	Tue, 28 Jan 2025 18:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0278ABE40;
+	Tue, 28 Jan 2025 18:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="ntt4ENeo"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bfZAiT7J"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA65BE40;
-	Tue, 28 Jan 2025 18:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BD61AAA10
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 18:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738089567; cv=none; b=ej7iochOsk+pfrmmdTWLE8y54Ua6hLTI3OGP3qPg6RJccCnd/2IBBVMMtxPpTh7hez+dnor3VsmzS/sFRe9tCWe1PGqcTK8rLAEkyDB3xlGbs4Lv4TS4ifXVnh3cI+BVXo468hw59nl70Cset91/vzfydCZvkICPmEOdJ3EAJ2c=
+	t=1738089853; cv=none; b=BXruP2ztusnuSTSO4Ynvt8fr4dmYA+sgwmYqMx98hnlRmJfJOQZWNdU3Xp5hg038Bw58sFKTOh6cU3P+stc2B4yU2w/EOFKbHYmN4t2oSFoyph/cl0C3IdpcbCZwqi3j0LjK9BlPn3aaU70OpbkPa7VzHRhBqRNJDId7LCQIeKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738089567; c=relaxed/simple;
-	bh=f3IEGRCmk/5zVEWSpjgyqRQK6y7H9X3IlRtPc78B55w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n1MKdNoKPlNHMUkyB7dJJzi1YujTikUWpn0FqPzf7mOqh6yR6xywivC5mbiXjQl07izG7tYdarQo07971z55zXKl9EA5X+6+763av4CQ36s/ZpBgf33PCqdJ7K/JxO3T7PKk8ryvJmXxnzXsCNqFAXw4qzwAZiYdI6PuPq2hieM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=ntt4ENeo; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=z/zHYTl1Q665YDulmLZXjaBwvitYIconswfbKBQ4sZ0=; b=ntt4ENeofoWWGeeY
-	gYD65PWzbdUrWe2TMzh2uWVuD/U0P58Yoc7GdX+FQAKj+Hnv9a9ZXWGz5dgVwp6l5vgDkV0TZ9ukZ
-	O2Ld4nOEPou0mTE6a8jGFjH1vJn6M7JGrRTosTH/WjlRB0D2t1lh3WkyzotuUki3F+na1oK8PcGoC
-	rTSdVzxa3lS5sqsXGVTmpz0d9/BV4s3J9dZDKSwOGr4ID8B3iff+ZcLCS0HEUVcQNYmkkMvesoG1A
-	Mmp7nVl9OC3XKV0J1g9gMpTif82x5UO8+1FydjG6Dh5rL9zmtUI744osZcDHh6bQ5C7Qop4oQMlWh
-	t5y4dSdMSzfq4rG0kQ==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-	(envelope-from <dg@treblig.org>)
-	id 1tcqUX-00CWoz-23;
-	Tue, 28 Jan 2025 18:39:17 +0000
-Date: Tue, 28 Jan 2025 18:39:17 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] wifi: mac80211: Deadcode cleanup
-Message-ID: <Z5kkVa0pi9_TRsCl@gallifrey>
-References: <20241224013257.185742-1-linux@treblig.org>
+	s=arc-20240116; t=1738089853; c=relaxed/simple;
+	bh=0JXSI4weAGD6OAsJdwx8r0sZu0S5bVpqUmVXGXYmVr8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LMALQR5pSamVT3VqeHdKx6WMmiisSYSc4lZMPhk8yVbI3/hN+iuXNFVEc/QyYsLhR8paVcgv1AFGjY/+1Ie9OE5m8jLbbIvRdh07DYPvtrCix/ijNgLHjCCm3vFGSyc8Lz2/8hxZONoumRJ7P9ipm2ttJ7++stVV0ulOYXfxdco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bfZAiT7J; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50SH6ibc032661;
+	Tue, 28 Jan 2025 18:44:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	waasbAwmzj7ujLbfya5oMoQ+CaPf2PErneHn+u2V5JY=; b=bfZAiT7JBGavVxpj
+	oKDKC41aLm9hb9J6OKLKYDqBeRUH7tnqY32k8CzYDa0mmnY5AzzJ0dZHEXvUPiTB
+	dYggMLn4dsf6O5ylSF17rkGMkYrGbtfZLYyIqpxBTyiBRhtJ/umwZvueliRVZC8L
+	s4kLEF4BsVTGbckTtFNkIsXSn/c7pchqnS6VS10tTKTgo+Rs6vLom867OlPC6zKf
+	7eci2fzzYct6A2Ti1zMwhnk9eRVSIJq886yJE16yUmHYNA8b0Q8AJnaw1lnJHyi3
+	bxkrDmiHsCPmlKnScgsiec59MoOUJj6EuoSFPvbm6AQ4FWQaF/NAtGr/5NZKjoq9
+	miKwDQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ernksvq6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jan 2025 18:44:05 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50SIi42c004156
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jan 2025 18:44:04 GMT
+Received: from [10.227.108.41] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 28 Jan
+ 2025 10:44:04 -0800
+Message-ID: <961df6e7-0b5c-4972-9324-5c4d430cb172@quicinc.com>
+Date: Tue, 28 Jan 2025 10:44:03 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20241224013257.185742-1-linux@treblig.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
-X-Uptime: 18:38:20 up 265 days,  5:52,  1 user,  load average: 0.01, 0.04,
- 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 6/9] wifi: ath12k: add support for setting fixed HE
+ rate/GI/LTF
+To: <mbizon@freebox.fr>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Muna Sinada <quic_msinada@quicinc.com>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+References: <20250114003813.2783550-1-quic_pradeepc@quicinc.com>
+ <20250114003813.2783550-7-quic_pradeepc@quicinc.com>
+ <f5c6d874e9d7682d52c5ed107a0ede952b5cf53f.camel@freebox.fr>
+ <5861c953-436e-4f36-ae8b-5ef52fceb3b6@quicinc.com>
+ <2aba18dc3448b5a60a1a06b33fa591e562927693.camel@freebox.fr>
+Content-Language: en-US
+From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+In-Reply-To: <2aba18dc3448b5a60a1a06b33fa591e562927693.camel@freebox.fr>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: gx0bl6nD4nIs3Aftg7pdH47GTKODw8PO
+X-Proofpoint-ORIG-GUID: gx0bl6nD4nIs3Aftg7pdH47GTKODw8PO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-28_04,2025-01-27_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
+ malwarescore=0 clxscore=1015 adultscore=0 impostorscore=0
+ lowpriorityscore=0 priorityscore=1501 mlxlogscore=999 spamscore=0
+ phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501280136
 
-* linux@treblig.org (linux@treblig.org) wrote:
-> From: "Dr. David Alan Gilbert" <linux@treblig.org>
-> 
-> Hi,
->   This pair of patches removes a bunch of functions that haven't
-> been called for more than a few years.
-> 
-> I suspect I could go further; in particular I wonder
-> if
->   ieee80211_debugfs_key_remove_beacon_default()
-> and
->   ieee80211_debugfs_key_remove_mgmt_default()
-> 
-> could go together with a data structure somewhere?
-> 
-> Also, ieee80211_nan_func_match() was the last use of
-> cfg80211_nan_match(); but that would be in a separate area.
-> 
-> Dave
-> 
-> Dr. David Alan Gilbert (2):
->   wifi: mac80211: Clean up debugfs_key deadcode
->   wifi: mac80211: Remove unused ieee80211_nan_func_match
 
-Hi,
-  I noticed one of these patches (debugfs_key) has landed in 6.14
-but the other one I don't think has - any particular reason?
 
-Dave
+On 1/24/2025 12:26 AM, Maxime Bizon wrote:
+> 
+> On Thu, 2025-01-23 at 17:09 -0800, Pradeep Kumar Chitrapu wrote:
+> 
+> Hello,
+> 
+>> I believe, this is default GI based on device capability of HE for
+>> ath11k or EHT for ath12k.
+> 
+> Your patch alters the behaviour of this code in
+> ath12k_peer_assoc_h_ht():
+> 
+>          /* As firmware handles these two flags (IEEE80211_HT_CAP_SGI_20
+>           * and IEEE80211_HT_CAP_SGI_40) for enabling SGI, reset both
+>           * flags if guard interval is Default GI
+>           */
+> 	if (arvif->bitrate_mask.control[band].gi == NL80211_TXRATE_DEFAULT_GI)
+> 	        arg->peer_ht_caps &= ~(IEEE80211_HT_CAP_SGI_20 |
+> 				IEEE80211_HT_CAP_SGI_40);
+> 
+> 	if (arvif->bitrate_mask.control[band].gi != NL80211_TXRATE_FORCE_LGI) {
+> 		if (ht_cap->cap & (IEEE80211_HT_CAP_SGI_20 |
+> 	            IEEE80211_HT_CAP_SGI_40))
+>                          arg->peer_rate_caps |= WMI_HOST_RC_SGI_FLAG;
+> 	}
+> 
+> 
+> I don't understand why a patch adding a feature to force GI would alter
+> the current behaviour without any actual forcing ?
+> 
+Hi Maxime,
 
-> 
->  include/net/mac80211.h     | 15 ------------
->  net/mac80211/cfg.c         | 25 --------------------
->  net/mac80211/debugfs_key.c | 47 --------------------------------------
->  net/mac80211/debugfs_key.h | 15 ------------
->  4 files changed, 102 deletions(-)
-> 
-> -- 
-> 2.47.1
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+Apologize for my earlier comment. Firmware relies on peer_rate_caps and 
+bandwidth settings when configuring GI. Currently default is configured 
+as FORCE_SGI. When there is fixed rate settings configured from user 
+space to override defaults to replace SHORT GI with DEFAULT_GI, the code 
+snippet you mentioned ensures honoring this by removing HT_CAP_SGI_20 
+and HT_CAP_SGI_40. The behavior has been same for ath11k driver as well.
+
+I will get back with more detailed information as soon as possible.
+
+Thanks for understanding,
+
+Best regards,
+Pradeep
 
