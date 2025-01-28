@@ -1,73 +1,65 @@
-Return-Path: <linux-wireless+bounces-18049-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18048-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21175A20246
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 01:07:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8159EA20210
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 01:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DD683A3DE4
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 00:07:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97DF01884369
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 00:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1350B18BC3F;
-	Tue, 28 Jan 2025 00:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0C3BE40;
+	Tue, 28 Jan 2025 00:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVMdUUsP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lPcaNiVu"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7623C33CFC;
-	Tue, 28 Jan 2025 00:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE514A1A;
+	Tue, 28 Jan 2025 00:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738022797; cv=none; b=czQx09cJQyQSZBP1BGgcNSPDnT/33NLH458yGgYegrxzEkMlKIWHpoEiTAZ81pp0GgYXFyfn2bx+1M2nBKPqio9+O9McP1ALYdDeIrCoR2S9pBV33Hu9yjghdInZOAMNq5+aqlc8LYgOqjeumxcERC58NaqefZZ9Ri/y5OdRAMY=
+	t=1738022796; cv=none; b=P/V/SxzjfcqBkqndGS3yZe65lHb7fTA4NfyRX+DvV7o5TxZHUArarD1Kk5s3Ghb1ZH8AP34zajJk1zviRy0/0ibHzYQGGVJcA+9PjSrPH8DCA/wr+VmsnW7BS3F1IYOxrd25HBOPdF8OA4XsQCkfSoZxPdG+OI+6g0weiFtblj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738022797; c=relaxed/simple;
-	bh=x0APBPBQWrivChaCg4k0Jly7N3L+drRwEE2afrYm3Ko=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pG7vhzPeB2x/+yDwbNhJFIvm2jB/JWVTv+koS8hxTDg5Z8vqsXUMFlVaWKj0c1vnGe3Ib5tI8WY+a0QWCU7JGNxXNd2ZOTeL6JU+kenOZTLGkalPyzF3gOL/8SADA4mtZH/PNqc1Qu9OOsNupeiDlZQVhQmePYu7Rk4kIqicx/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVMdUUsP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0CDC4CEE7;
+	s=arc-20240116; t=1738022796; c=relaxed/simple;
+	bh=hdD/lkpi+9/YArLnX7wjSWSXiDV5h4tehxtqm9TMWBI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Kan5lc2QVJyMEwePFGGV9FqIqiuCNZd4L64XvOVlv1GyZWasucSrxyFVvxOxqk3+2+F88b5QJO044+TadYVKGmSC0g5BG0x8gApm7qcllzPE2FX6PS+hCHaWsCbPYhHOoBpXPPmhaKONu/qYTUPXToDKOehKtVZ0fxemm9OR+gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lPcaNiVu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9065C4AF09;
 	Tue, 28 Jan 2025 00:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738022796;
-	bh=x0APBPBQWrivChaCg4k0Jly7N3L+drRwEE2afrYm3Ko=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YVMdUUsPMxPbkAk4qEzxydaiheiKgPq0V/bec3NjHqtsuNI4LbgEBDEej9+LgNza+
-	 ljIEnlJ8dOW66epiiZtLELOhM7CI9Xmfl04mwJsxOPi5DZqupGOzyLYI8OrEB0YMLK
-	 2aabCdo/efDt+1ketrNTclboOiYMqtBF3chVGB2EMC4yfr4ULHJGHphSkN/9c0uXJr
-	 2zeCibWgf8wkOz10yK0tDHg/2UyTNfnmjDli87oee4K3CFTkaD0PhvQA9VygWXf7kB
-	 Qo1Ry12uzmRsVIoEnhnI2jD01cboTneK2GBz8V4u2Zk1oJeS56JxjuAeS7Lo5BEMUu
-	 9jWWaNQP5ViKg==
+	s=k20201202; t=1738022795;
+	bh=hdD/lkpi+9/YArLnX7wjSWSXiDV5h4tehxtqm9TMWBI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lPcaNiVudyKvkajoNLTbetl2NxriGbZ2iRUKGs44UrJeVO6SZ3LpwQxS09VqVZ37P
+	 PLZFUiiYjzVHts5nrQXw6PjdhSDKIrr5MtoZssbBCDBTax7K5CS295vwV2UwNw/8Xc
+	 CrQgpG2td/P7F6/jUqr/ZLybtnfWfyQlUAIuIBBJOSxfvUU7HrnuPqZhdQ3hRTiIho
+	 vH77g31jW7ZjebRJvaqaOTMX+Is4p2afS92NfOzTxL+cNCsoMyoCKMsN3Fp8e8xVR1
+	 uwRYypRb/lbN+/0Axwehly9LTxEjqY1eiW9DnQQTGUqr0Yi+z6PqKZQvO30iYzM39y
+	 MIOq57D99Bvug==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1tcZ7h-0000000DRKO-2KyQ;
+	id 1tcZ7h-0000000DRKp-3AM8;
 	Tue, 28 Jan 2025 01:06:33 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	"Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
 	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	coresight@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-hardening@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	workflows@vger.kernel.org
-Subject: [RFC v2 00/38] Improve ABI documentation generation
-Date: Tue, 28 Jan 2025 01:05:49 +0100
-Message-ID: <cover.1738020236.git.mchehab+huawei@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [RFC v2 07/38] ABI: sysfs-class-rfkill: fix kernelversion tags
+Date: Tue, 28 Jan 2025 01:05:56 +0100
+Message-ID: <dd5fff5fe459b1e4d8eee422dd7e506084c93310.1738020236.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <cover.1738020236.git.mchehab+huawei@kernel.org>
+References: <cover.1738020236.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,187 +69,87 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Hi Jon/Greg,
+Some kernelversion tags are missing colons. Add them to comply with
+ABI description and produce right results when converted to html/pdf.
 
-That's the second version of my RFC patches meant to modenize the ABI
-parser that I wrote in Perl.
-
-I originally started it due to some issues I noticed when searching for
-ABI symbols. While I could just go ahead and fix the already existing
-script, I noticed that the script maintainance didn't have much care over
-all those years, probably because it is easier to find Python programmers
-those days.
-
-Also, the code is complex and was not using modules or classes and
-were using lots of global variables.
-
-So, I decided to rewrite it in Python. I started with a manual conversion
-for each function. Yet, to avoid future maintainership issues, I opted to
-divide the code on three classes. One class for the ABI parser, another
-one for regex conversion (used when checking symbols from local hardware,
-and an extra class for undefined symbols check.
-
-I opted to change the Sphinx integration gradually using different
-patch sets on 4 phases:
-
-1. minimal integration: just execute the new script on a similar way as
-   the perl one;
-2. the kernel_abi module was changed to import the ABI parser class,
-   using it directly;
-3. the logic at kernel_abi were rewritten to better integrate. As a bonus,
-   Sphinx now imports ReST data symbol by symbol. That solves one of
-   the issues I was discomfortable with the original approach: when lots
-   of data is sent to Sphinx parser, it stops in the middle of processing.
-   This was addressed in the past on a hacky way, but it could cause
-   problems in the future as the number of symbols increase;
-4. the ABI parser part is now called either by automarkup and kernel_abi.
-   This allowed automarkup to solve ABI symbols.
-
-Together with this series, I added some patches fixing issues and warnings
-when generating documentation.
-
-Some notes about this new RFC:
-
-- despite being able to generate documentation cross-references with
-  auto-markup, the documentation build timt didn't increase on my machine
-  (it was actually 5 seconds faster);
-- I rewrote some algorithms at the undefined symbol detection code. With
-  that, it is now a lot faster than the previous version, at least on my desktop
-  (wich has 24 CPU threads). I didn't try it on a server yet;
-- the undefined parser can optionally use multiple CPUs. This sounds
-  fancier than it seems: Python (up to version 3.12) is really bad with
-  multi-CPU support and doesn't have real multi-thread support. Python
-  3.13 has now an optional way to address that (although I didn't test yet,
-  as it requires Python manual compilation). When such feature becomes
-  standard, maybe the undefined symbols detection will be faster.
-
-Btw, I'm opting to send this as an RFC because I'd like to have more
-people testing and checking it. In particular, the undefined ABI check
-is complex, as it requires lots of tricks to reduce the run time from hours
-to seconds.
-  
-On this series we have:
-
-patches 1 to 11: several bug fixes addressing issues at ABI symbols;
-patch 12: a fix for scripts/documentation-file-ref-check
-patches 13-15: create new script with rest and search logic and 
-  minimally integrate with kernel_abi Sphinx extension(phase 1);
-patches 16-19: implement phase 2: class integration (phase 2);
-patch 20: fix a bug at kernel_abi: the way it splits lines is buggy;
-patches  21-24: rewrite kernel_abi logic to make it simpler and more
-  robust;
-patches 25-27: add cross-reference support at automarkup;
-patches 28-36: several ABI cleanups to cope with the improvements;
-patch 37: implement undefined command;
-patch 38: get rid of the old Perl script.
-
-To make it easier to review/apply, I may end breaking the next version
-on a couple of different patchsets. Still it would be nice to have more
-people testing it and providing some feedback.
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
-RFC v2:
-  - Dropped a patch touching the perl script;
-  - Implemented phases 2-4 of the script's logic;
-  - Added ABI cross-references via automarkup;
-  - Added support for undefined logic;
-  - Added more ABI and scripts' fixes;
-  - Added undefined logic;
-  - Added a patch to remove the old tool.
+ Documentation/ABI/removed/sysfs-class-rfkill |  2 +-
+ Documentation/ABI/stable/sysfs-class-rfkill  | 12 ++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-Mauro Carvalho Chehab (38):
-  docs: power: video.rst: fix a footnote reference
-  docs: media: ipu3: fix two footnote references
-  docs: block: ublk.rst: remove a reference from a dropped text
-  docs: sphinx: remove kernellog.py file
-  docs: sphinx/kernel_abi: adjust coding style
-  docs: admin-guide: abi: add SPDX tags to ABI files
-  ABI: sysfs-class-rfkill: fix kernelversion tags
-  ABI: sysfs-bus-coresight-*: fix kernelversion tags
-  ABI: sysfs-driver-dma-idxd: fix date tags
-  ABI: sysfs-fs-f2fs: fix date tags
-  ABI: sysfs-power: fix a what tag
-  scripts/documentation-file-ref-check: don't check perl/python scripts
-  scripts/get_abi.py: add a Python tool to generate ReST output
-  scripts/get_abi.py: add support for symbol search
-  docs: use get_abi.py for ABI generation
-  scripts/get_abi.py: optimize parse_abi() function
-  scripts/get_abi.py: use an interactor for ReST output
-  docs: sphinx/kernel_abi: use AbiParser directly
-  docs: sphinx/kernel_abi: reduce buffer usage for ABI messages
-  docs: sphinx/kernel_abi: properly split lines
-  scripts/get_abi.pl: Add filtering capabilities to rest output
-  scripts/get_abi.pl: add support to parse ABI README file
-  docs: sphinx/kernel_abi: parse ABI files only once
-  docs: admin-guide/abi: split files from symbols
-  docs: sphinx/automarkup: add cross-references for ABI
-  docs: sphinx/kernel_abi: avoid warnings during Sphinx module init
-  scripts/get_abi.py: Rename title name for ABI files
-  docs: media: Allow creating cross-references for RC ABI
-  docs: thunderbolt: Allow creating cross-references for ABI
-  docs: arm: asymmetric-32bit: Allow creating cross-references for ABI
-  docs: arm: generic-counter: Allow creating cross-references for ABI
-  docs: iio: Allow creating cross-references ABI
-  docs: networking: Allow creating cross-references statistics ABI
-  docs: submit-checklist: Allow creating cross-references for ABI README
-  docs: translations: Allow creating cross-references for ABI README
-  docs: ABI: drop two duplicate symbols
-  scripts/get_abi.py: add support for undefined ABIs
-  scripts/get_abi.pl: drop now obsoleted script
-
- Documentation/ABI/removed/sysfs-class-rfkill  |    2 +-
- Documentation/ABI/stable/sysfs-class-rfkill   |   12 +-
- .../ABI/stable/sysfs-devices-system-cpu       |   10 -
- .../ABI/stable/sysfs-driver-dma-idxd          |    4 +-
- .../testing/sysfs-bus-coresight-devices-cti   |   78 +-
- .../testing/sysfs-bus-coresight-devices-tpdm  |   52 +-
- Documentation/ABI/testing/sysfs-fs-f2fs       |    4 +-
- Documentation/ABI/testing/sysfs-power         |    2 +-
- .../admin-guide/abi-obsolete-files.rst        |    7 +
- Documentation/admin-guide/abi-obsolete.rst    |    6 +-
- Documentation/admin-guide/abi-readme-file.rst |    6 +
- .../admin-guide/abi-removed-files.rst         |    7 +
- Documentation/admin-guide/abi-removed.rst     |    6 +-
- .../admin-guide/abi-stable-files.rst          |    7 +
- Documentation/admin-guide/abi-stable.rst      |    6 +-
- .../admin-guide/abi-testing-files.rst         |    7 +
- Documentation/admin-guide/abi-testing.rst     |    6 +-
- Documentation/admin-guide/abi.rst             |   17 +
- Documentation/admin-guide/media/ipu3.rst      |   12 +-
- Documentation/admin-guide/thunderbolt.rst     |    2 +-
- Documentation/arch/arm64/asymmetric-32bit.rst |    2 +-
- Documentation/block/ublk.rst                  |    2 -
- Documentation/driver-api/generic-counter.rst  |    4 +-
- Documentation/driver-api/iio/core.rst         |    2 +-
- Documentation/iio/iio_devbuf.rst              |    2 +-
- Documentation/networking/statistics.rst       |    2 +-
- Documentation/power/video.rst                 |    2 +-
- Documentation/process/submit-checklist.rst    |    2 +-
- Documentation/sphinx/automarkup.py            |   56 +
- Documentation/sphinx/kernel_abi.py            |  162 +-
- Documentation/sphinx/kerneldoc.py             |   14 +-
- Documentation/sphinx/kernellog.py             |   22 -
- Documentation/sphinx/kfigure.py               |   81 +-
- .../it_IT/process/submit-checklist.rst        |    2 +-
- .../sp_SP/process/submit-checklist.rst        |    2 +-
- .../zh_CN/process/submit-checklist.rst        |    2 +-
- .../zh_TW/process/submit-checklist.rst        |    2 +-
- .../userspace-api/media/rc/rc-sysfs-nodes.rst |    2 +-
- scripts/documentation-file-ref-check          |    2 +-
- scripts/get_abi.pl                            | 1103 -------------
- scripts/get_abi.py                            | 1437 +++++++++++++++++
- 41 files changed, 1804 insertions(+), 1354 deletions(-)
- create mode 100644 Documentation/admin-guide/abi-obsolete-files.rst
- create mode 100644 Documentation/admin-guide/abi-readme-file.rst
- create mode 100644 Documentation/admin-guide/abi-removed-files.rst
- create mode 100644 Documentation/admin-guide/abi-stable-files.rst
- create mode 100644 Documentation/admin-guide/abi-testing-files.rst
- delete mode 100644 Documentation/sphinx/kernellog.py
- delete mode 100755 scripts/get_abi.pl
- create mode 100755 scripts/get_abi.py
-
+diff --git a/Documentation/ABI/removed/sysfs-class-rfkill b/Documentation/ABI/removed/sysfs-class-rfkill
+index f25174eafd55..20cb688af173 100644
+--- a/Documentation/ABI/removed/sysfs-class-rfkill
++++ b/Documentation/ABI/removed/sysfs-class-rfkill
+@@ -4,7 +4,7 @@ For details to this subsystem look at Documentation/driver-api/rfkill.rst.
+ 
+ What:		/sys/class/rfkill/rfkill[0-9]+/claim
+ Date:		09-Jul-2007
+-KernelVersion	v2.6.22
++KernelVersion:	v2.6.22
+ Contact:	linux-wireless@vger.kernel.org
+ Description:	This file was deprecated because there no longer was a way to
+ 		claim just control over a single rfkill instance.
+diff --git a/Documentation/ABI/stable/sysfs-class-rfkill b/Documentation/ABI/stable/sysfs-class-rfkill
+index 037979f7dc4b..67b605e3dd16 100644
+--- a/Documentation/ABI/stable/sysfs-class-rfkill
++++ b/Documentation/ABI/stable/sysfs-class-rfkill
+@@ -16,7 +16,7 @@ Description: 	The rfkill class subsystem folder.
+ 
+ What:		/sys/class/rfkill/rfkill[0-9]+/name
+ Date:		09-Jul-2007
+-KernelVersion	v2.6.22
++KernelVersion:	v2.6.22
+ Contact:	linux-wireless@vger.kernel.org
+ Description: 	Name assigned by driver to this key (interface or driver name).
+ Values: 	arbitrary string.
+@@ -24,7 +24,7 @@ Values: 	arbitrary string.
+ 
+ What: 		/sys/class/rfkill/rfkill[0-9]+/type
+ Date:		09-Jul-2007
+-KernelVersion	v2.6.22
++KernelVersion:	v2.6.22
+ Contact:	linux-wireless@vger.kernel.org
+ Description: 	Driver type string ("wlan", "bluetooth", etc).
+ Values: 	See include/linux/rfkill.h.
+@@ -32,7 +32,7 @@ Values: 	See include/linux/rfkill.h.
+ 
+ What:		/sys/class/rfkill/rfkill[0-9]+/persistent
+ Date:		09-Jul-2007
+-KernelVersion	v2.6.22
++KernelVersion:	v2.6.22
+ Contact:	linux-wireless@vger.kernel.org
+ Description: 	Whether the soft blocked state is initialised from non-volatile
+ 		storage at startup.
+@@ -44,7 +44,7 @@ Values: 	A numeric value:
+ 
+ What:		/sys/class/rfkill/rfkill[0-9]+/state
+ Date:		09-Jul-2007
+-KernelVersion	v2.6.22
++KernelVersion:	v2.6.22
+ Contact:	linux-wireless@vger.kernel.org
+ Description: 	Current state of the transmitter.
+ 		This file was scheduled to be removed in 2014, but due to its
+@@ -67,7 +67,7 @@ Values: 	A numeric value.
+ 
+ What:		/sys/class/rfkill/rfkill[0-9]+/hard
+ Date:		12-March-2010
+-KernelVersion	v2.6.34
++KernelVersion:	v2.6.34
+ Contact:	linux-wireless@vger.kernel.org
+ Description: 	Current hardblock state. This file is read only.
+ Values: 	A numeric value.
+@@ -81,7 +81,7 @@ Values: 	A numeric value.
+ 
+ What:		/sys/class/rfkill/rfkill[0-9]+/soft
+ Date:		12-March-2010
+-KernelVersion	v2.6.34
++KernelVersion:	v2.6.34
+ Contact:	linux-wireless@vger.kernel.org
+ Description:	Current softblock state. This file is read and write.
+ Values: 	A numeric value.
 -- 
 2.48.1
-
 
 
