@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-18064-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18065-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0CBA20862
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 11:21:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D791A2086A
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 11:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24486188754A
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 10:21:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E52E2166B37
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 10:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B4A19CC05;
-	Tue, 28 Jan 2025 10:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D2619AD90;
+	Tue, 28 Jan 2025 10:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D5WgrIBh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZVImLGl"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297FD1552E3;
-	Tue, 28 Jan 2025 10:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBB11917D8;
+	Tue, 28 Jan 2025 10:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738059670; cv=none; b=aj2uMI7ZHhQP8hbyZCBHLQnhs7vfNQAVGi2SHUMe8f4fEFr7HR0unCU2pZu2IlwuMbYbzNGKaQp8aa14y3epdPAdsDi2RJoyILePnYbxUBYBpZ02oNMuECCymt5vRD1U8sIfdorAnBuQuSqu8OUGCt0BnZqNe/gL986qr7HyX1U=
+	t=1738059850; cv=none; b=OtzPl9U6vUfvzw8n1Wzn5KoKPzb5ELeP6WSzNhNO8SlRFQtalsOJE0IfcCpHLmaCuW7lwJ46uwH4ED+gTm5FkRdXCM6ExwwVJUvPSQ9QzP0irmnM25t87n8p/op6q0Ru+NbqbEL7fOVJuLonzhLufzQlVaODCgRkCMuFQtnpsA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738059670; c=relaxed/simple;
-	bh=tG6mcmUL//T3dY7eugZ21T/eIkcmm+M0E+Ha8wNsnPE=;
+	s=arc-20240116; t=1738059850; c=relaxed/simple;
+	bh=1d6nto/GL+Snq0xFsvq5zA3lwZIeCEd2S8FFAdLgsJM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CeGLIAWnKnos8byIx9o3Tmz3yomjQbL3bSI8irY1lgEbf7J+hepZfClv+s0/+pOdXxExdlBf9SGszx/gFiCswmsQM09fVR65p1y9rypoI6ttWOma8rBnwT/d3SedIz5aIOF1fSBr0YilDWwSkLBgy1ewqVIMHDgNLODmWddcmLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D5WgrIBh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE66AC4CED3;
-	Tue, 28 Jan 2025 10:21:06 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Csw/TFeeHEi4n5mHic256iILqL4OB9LNBYPiPdAxc+eLb/gl2/KbI/RyEhXt6+i2ZUAayOPJNHBdi1TXs7FY6gy3c63xjEp9Sw9EsCuylvAGIFImvNxZ0lVQC1q+sxhAqA9v5081KFXQMAiJkKFdFMnotx3YKtQMX2M7e6hzw6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZVImLGl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195ECC4CED3;
+	Tue, 28 Jan 2025 10:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738059669;
-	bh=tG6mcmUL//T3dY7eugZ21T/eIkcmm+M0E+Ha8wNsnPE=;
+	s=k20201202; t=1738059850;
+	bh=1d6nto/GL+Snq0xFsvq5zA3lwZIeCEd2S8FFAdLgsJM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=D5WgrIBhTGAIRNDrwGbI1TxJBTk/XCTq2J3oahkhaxz8DaZssV61OBcehp8twoZWV
-	 BEL5u/V0msVl4C2O6Oe8nsqr8lmT/ez1iqWRUP/jq2yWyBqdewwYNfMOakSN1VBAh/
-	 fZ32DneXussN2hOLNb64+WIqeTcpr61VwIlM+otuoK1SMCSuZc2bK28U0GSqikIC7F
-	 BMivLnBxyc22y6DK45sIYMGxJv0kNbZcxSv/at5pdV0WSJmT40DK3DIHPmq6SojZO9
-	 N01LUKNSmmfh1HxJKA4oxgPtWr2VdeKfS6IB6S2FnBUxcNjmKn+AhfSd8D62wmI6XV
-	 peEyAGSNr2d8g==
-Message-ID: <112fe636-1328-49f0-8f0a-395764e118c7@kernel.org>
-Date: Tue, 28 Jan 2025 11:21:04 +0100
+	b=GZVImLGlq/aWEowx6Ge0+wq9XIbpWGQYXj1dY8Y8Vhm3dL9hpgM3SIP+iOsBZX0CB
+	 hi2vh7o4hjupad4LtKHeCCZg0C/xVzGxwdNHAGSAmJDZSH14dYEz6017WJd2Lyz9qI
+	 IwqNr4kreFpa4pfM7TmEGlGy0O6N/CZaYBvj5SpwWrdw00ja9DfUZ+N3t0i5CX8lcz
+	 lhs9Vh5Uxbg87J6XwRFMken+Bci/u9O55pONBSfswEAtclTw9naN7CYb6r9PP+7cDq
+	 o49oEh33H3S3YkLSdoHRcsrn8xEAcUaGwYQCrJUqhbSL7EcXPsnduDEjNdF1j+4V+I
+	 TEiM/TrAg5AYA==
+Message-ID: <7d23afc2-ccb0-4a57-afcc-c5ac01013ea2@kernel.org>
+Date: Tue, 28 Jan 2025 11:24:05 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: describe the ath12k AHB
- module
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: add wifi node for IPQ5332 based
+ RDP441
 To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -60,9 +60,9 @@ Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
 References: <20250128091012.2574478-1-quic_rajkbhag@quicinc.com>
- <20250128091012.2574478-2-quic_rajkbhag@quicinc.com>
- <0ca970e7-cc9a-4853-86de-5f01dc6d82a2@kernel.org>
- <1bd2dca3-1fa0-424d-95e8-cdb887f1d9e2@quicinc.com>
+ <20250128091012.2574478-3-quic_rajkbhag@quicinc.com>
+ <b3ff05c1-6424-4ace-a873-ddf1a0d3d07d@kernel.org>
+ <a752a135-9cd0-402b-b0fb-967491cfdaee@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -108,51 +108,65 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <1bd2dca3-1fa0-424d-95e8-cdb887f1d9e2@quicinc.com>
+In-Reply-To: <a752a135-9cd0-402b-b0fb-967491cfdaee@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/01/2025 10:29, Raj Kumar Bhagat wrote:
-> On 1/28/2025 2:47 PM, Krzysztof Kozlowski wrote:
->> On 28/01/2025 10:10, Raj Kumar Bhagat wrote:
->>> Add device-tree bindings for the ATH12K module found in the IPQ5332
->>> device.
->>>
->>> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
->>> ---
->>>  .../net/wireless/qcom,ath12k-ahb.yaml         | 317 ++++++++++++++++++
->>>  1 file changed, 317 insertions(+)
->>>  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
+On 28/01/2025 10:41, Raj Kumar Bhagat wrote:
+>>> +
+>>> +	reserved-memory {
+>>> +		#address-cells = <2>;
+>>> +		#size-cells = <2>;
+>>> +		ranges;
+>>> +
+>>> +		q6_region: wcss@4a900000 {
+>>> +			reg = <0x0 0x4a900000 0x0 0x02b00000>;
+>>> +			no-map;
+>>> +		};
+>>> +
+>>> +		m3_dump: m3-dump@4d400000 {
 >>
->> It was v4, now v1? So entire previous discussion and feedback is
->> missing? Go to previous series and implement entire feedback. Then use
->> proper versioning, proper changelog and make it obvious/understandable
->> to us, instead of sending v1 after v4 in entirely separate thread.
->>
-> 
-> I was asked to send DTS as a separate series, this is a new series for
-> DTS hence stated with v1.
-
-
-But we do not talk about DTS here, but bindings.
-
-
-> To address the undocumented ABIs we have changes in dt-binding and hence
-
-That's v1 so how it could have changes in the first place? Unless this
-is v5?
-
-> corresponding changes in driver as well. Let me know If we could send the
-> complete series as v5.
-> 
->> I also do not understand why this is sent to arm soc. That's wireless patch.
+>> This fails with your wireless patchset.
 >>
 > 
-> All the email list are as per - './scripts/get_maintainer.pl'
+> Yes, this will fail with v4 wireless patch.
+> We have v5 (yet to be sent) to read the correct reserved memory. Since,
+> in v4 I was asked to address and send DTS patch separately, The corresponding
+> driver patches are yet to be sent.
 
 
-I am asking why this patch is part of the arm soc patchset. This is
-networking/wireless patch.
+So you send it to prove my point? OK, fine. So this patch confirms your
+driver changes should be rejected.
+
+> 
+>>> +			reg = <0x0 0x4D400000 0x0 0x100000>;
+>>> +			no-map;
+>>> +		};
+>>> +	};
+>>>  };
+>>>  
+>>>  &blsp1_i2c1 {
+>>> @@ -63,3 +104,16 @@ data-pins {
+>>>  		};
+>>>  	};
+>>>  };
+>>> +
+>>> +&wifi0 {
+>>> +	memory-region = <&q6_region>, <&m3_dump>;
+>>> +	memory-region-names = "q6-region", "m3-dump";
+>>
+>> Binding said you have four items. I don't understand why this varies and
+>> why this is 2 items instead.
+>>
+> 
+> In total we have 4 items, with minItems as 2.
+> The other 2 items (q6-caldb & mlo-global-mem) functionalities are not yet enabled
+> in ath12k driver. Hence these memory are not reserved yet.
+
+That's not a valid reason to skip valid items. DTS is not dependent on
+driver. Submit proper hardware description, not something carved to
+match your driver.
+
 
 Best regards,
 Krzysztof
