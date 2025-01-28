@@ -1,94 +1,74 @@
-Return-Path: <linux-wireless+bounces-18092-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18094-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F0CA212C3
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 20:53:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8683AA2141E
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 23:24:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4365B1889FF9
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 19:53:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F7B91640D0
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 22:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134201DFD89;
-	Tue, 28 Jan 2025 19:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BFD1DFE12;
+	Tue, 28 Jan 2025 22:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="Q8towS5d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="upPXOBtF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA14199230;
-	Tue, 28 Jan 2025 19:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9781DFD86;
+	Tue, 28 Jan 2025 22:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738094017; cv=none; b=BaZMeGyq8hK80wNuoPrO45K83lPo16K4tu0ByGdFRLn33aobMJruEiAUxwntX6+yqjOTlRnXqvLo5rybdWXAE50uiq7VbMrcSJDTuEQ5/SqzJoiOVIWm1t2UD0ijsWS+kGt7iz+nBTudkk17Fx3cagVFKzk5Z0A7bjHH70BBfaE=
+	t=1738103055; cv=none; b=EMJoBP+9Cdlt1rcN5ZcNeQj1PegVdVAwn4h8Av/NBdVmFnwhhjrmQE7OhNVU0qyXmBZ4/+Z/YWKpnIgvmRU926wVkslsYzdxI6USDv/4Oy0MH0uUy2oDOl0Zz/k+OAoCmTnDDXFhRR5JwOjYr3fH+8UrexdtOw/tXrzphytJaG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738094017; c=relaxed/simple;
-	bh=FJ3GCpXjySOf3YS2uTbxI905OyBIY4EfhHlH+Y833dw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UCtPhuzU7TI0vimC3jTVNpn+Q2deamdMyu2kvQpr2YFYS+kqShaKJSPaqemLNp+Evf5g0B4OOJk7YB7j6MjT8E+YD9DbIf3phg1gXuEziK/Pun2CEqI6wJDVZ+FmZRcuY1TXupqLm3yzjvXFZG57HxTlogF7+Zolell2Mm9GOJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=Q8towS5d; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=5VSBKYidE/C+XNVL5mX4/yQwBaJIOPZw4rgKcyHqhiA=; b=Q8towS5dz0P/FkQR
-	beNwi5LTqJn/OG/HZwXtfsiQN4DHfQ1A6vz7+stELx2LEpFiy2REh5U+wpkgJrsDq5wLW+99KkgzX
-	VhrjxbXgZJczToYwTAcpcgQHAd2YQINRRfIHQFXW3QqvBNT14duga9A1nEqYmuR543v8dyH9Z2ubS
-	2kaAnPSfBYZo+mcf7LfRc4esdYubl/gU1UKYNsBTASCTZ2s7SXfpu8aPlWxZlE7TauZABIjkmnESE
-	RBM+erlEn9gwV+M8AF4Z32xXYMOvx5Pch/smZyA3lVAC/6SJJDea7XXJcOCcAE2zKnh4DRZ9OYVT4
-	AyJ6XFjPlFxshEJszA==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-	(envelope-from <dg@treblig.org>)
-	id 1tcreQ-00CXU5-0L;
-	Tue, 28 Jan 2025 19:53:34 +0000
-Date: Tue, 28 Jan 2025 19:53:34 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] wifi: mac80211: Deadcode cleanup
-Message-ID: <Z5k1vnajAeLtsevs@gallifrey>
-References: <20241224013257.185742-1-linux@treblig.org>
- <Z5kkVa0pi9_TRsCl@gallifrey>
- <d5ca1cf4593edb1c8ee32f3c2e6fde47dc97cc32.camel@sipsolutions.net>
+	s=arc-20240116; t=1738103055; c=relaxed/simple;
+	bh=WEytLMAl7cwCDJw/5DRZVkqcz9UySDzwuhOZNmFaZTs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LL0oKgIy+q91A+NSOPvsyI0NLyt1DBkw0OiR9lk4WZmwlybAZ7J6bZi3/85EWXUHWHhZFI8fD8cKXxnt6fYQXH5JXmMcoam4pif/pXoycc2e1S4wufv3+kQY2REP9uWGa2N4ZBxnOOEWvBpGhkToJVuGghSdePS8w8hK7AwvKWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=upPXOBtF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC1EC4CED3;
+	Tue, 28 Jan 2025 22:24:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738103054;
+	bh=WEytLMAl7cwCDJw/5DRZVkqcz9UySDzwuhOZNmFaZTs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=upPXOBtFrPxgXwmb7BJKBgHroVTxe4QEsdbSuLn7DexDjFoeMtlnPE79wU4LFs3Uc
+	 7BcQbtvsc/ZDUiwi/yv4h19+0XeYKCdCCvj1M55FMF1+OXse+WA5Llbn7RfcE2ecOm
+	 omrMJeFFTupyJRMfm0+9DzmDatGzptrKL8bQuBvAy9mQaeldC+va9foKb06x+OOY0+
+	 BuuYf4v+HaTf2NNUj31WN7DXonSqQiNbM3evFN0BHfHETZhD2AlpCOKzeFCPVRDjp9
+	 g5MDn2D6aLJQE0PAN3Oo9qZEYwstcs2ZekRLsWbo7CbVTwcjSzmjl54BYPE/rnJLpj
+	 BfXuNublVg8kg==
+Date: Tue, 28 Jan 2025 14:24:13 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ath12k@lists.infradead.org, ath11k@lists.infradead.org,
+ ath10k@lists.infradead.org, Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: Stepping down as maintainer
+Message-ID: <20250128142413.3a86418e@kernel.org>
+In-Reply-To: <87wmefguqt.fsf@kernel.org>
+References: <87wmefguqt.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <d5ca1cf4593edb1c8ee32f3c2e6fde47dc97cc32.camel@sipsolutions.net>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
-X-Uptime: 19:53:23 up 265 days,  7:07,  1 user,  load average: 0.05, 0.02,
- 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-* Johannes Berg (johannes@sipsolutions.net) wrote:
-> On Tue, 2025-01-28 at 18:39 +0000, Dr. David Alan Gilbert wrote:
-> > 
-> > >   wifi: mac80211: Remove unused ieee80211_nan_func_match
-> > 
-> > Hi,
-> >   I noticed one of these patches (debugfs_key) has landed in 6.14
-> > but the other one I don't think has - any particular reason?
+On Tue, 28 Jan 2025 11:20:26 +0200 Kalle Valo wrote:
+> Hi everyone,
 > 
-> We were still using NAN internally, and there's a chance that it might
-> make a comeback, so I was holding off on it for now.
+> I'm stepping down from all my maintainer roles. My first commit
+> feed9bab7b14 ("spi: omap2_mcspi PIO RX fix") to the kernel was back in
+> 2008 for v2.6.24 so I have been here for a long time. Thank you everyone
+> who I have worked with, there are too many to list here.
 
-Ah OK.
+Thank you for all the hard work over the years, Kalle!
 
-Thanks!
-
-Dave
-
-> johannes
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+You will certainly be missed
 
