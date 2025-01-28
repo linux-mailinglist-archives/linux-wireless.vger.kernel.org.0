@@ -1,100 +1,113 @@
-Return-Path: <linux-wireless+bounces-18084-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18085-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A102FA210AA
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 19:20:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A7AA211BC
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 19:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBA1F3A2E4C
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 18:19:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 728301884C0C
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 18:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D261B040E;
-	Tue, 28 Jan 2025 18:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976AA1A725A;
+	Tue, 28 Jan 2025 18:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HilBwh4W"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="ntt4ENeo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE4019ABAB
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 18:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA65BE40;
+	Tue, 28 Jan 2025 18:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738088398; cv=none; b=bDB9//hXegPkjntMMS6gJqtPXe719cYNyFy0aUe4/9DVzCWv0vYcXcOEaeLEHzfKg+yT7ayYX+PQFJ6DBAcNt2v/XOvjPnmW/8TocTL0e9syrEG5YsN6aD1F93m7OWEV/d5yxkGzMpJOOTZMe/rCsEj4R07BakJ7+0dX+14dvl4=
+	t=1738089567; cv=none; b=ej7iochOsk+pfrmmdTWLE8y54Ua6hLTI3OGP3qPg6RJccCnd/2IBBVMMtxPpTh7hez+dnor3VsmzS/sFRe9tCWe1PGqcTK8rLAEkyDB3xlGbs4Lv4TS4ifXVnh3cI+BVXo468hw59nl70Cset91/vzfydCZvkICPmEOdJ3EAJ2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738088398; c=relaxed/simple;
-	bh=IJ4s4wbxmvi7WlbVja1PWuObnoO89o4CJKiawUCQvz8=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=lATE+DjiSzsL2BZqIo4OpMLb9HZIJuux/6MKL2liAC8BwWlasFEbL1qnelFtNC8nLGFq3lLxshErSLoLRaHlQo21tHwfWNzM8+S+Ut040kEjizuc1sqa27sZHnSSzOzmv6bEYvKENUjRY8/cvV0AtKipy0Ygt4NqfMlNMm5kbH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HilBwh4W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52162C4CED3;
-	Tue, 28 Jan 2025 18:19:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738088398;
-	bh=IJ4s4wbxmvi7WlbVja1PWuObnoO89o4CJKiawUCQvz8=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=HilBwh4WeFTUFHEmit/Mtn0GULsgGNjf02f2Otr0gm/p0PhwvGQtsKmz+KGpZB8TL
-	 lZkRs6lrmOFBmR7sbKXgRFhbwC7hCKkQecwzOTEw9fHau9MnZWA0HHTxUdiWMnQJG1
-	 v7azmU736wBqlw25+pBrTn+6+AqH+gKVXooxb1uWwtAHH2Cc1GZy/elILpxdVnQu/i
-	 Hh4dVhb5JrL/X1BXIauWV3uPNIBxir6B3fJYywT0dnSK3d/jhzP/cC3iVmNOT6XDVB
-	 9Z+F2Ove635aEWc+hLsJa6kdSbAISfTWEbDZAXH/fjVeSWsPy3Ms7Foc8o71VDIjr9
-	 f0EiYkPbKy1VA==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1738089567; c=relaxed/simple;
+	bh=f3IEGRCmk/5zVEWSpjgyqRQK6y7H9X3IlRtPc78B55w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n1MKdNoKPlNHMUkyB7dJJzi1YujTikUWpn0FqPzf7mOqh6yR6xywivC5mbiXjQl07izG7tYdarQo07971z55zXKl9EA5X+6+763av4CQ36s/ZpBgf33PCqdJ7K/JxO3T7PKk8ryvJmXxnzXsCNqFAXw4qzwAZiYdI6PuPq2hieM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=ntt4ENeo; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+	:Subject; bh=z/zHYTl1Q665YDulmLZXjaBwvitYIconswfbKBQ4sZ0=; b=ntt4ENeofoWWGeeY
+	gYD65PWzbdUrWe2TMzh2uWVuD/U0P58Yoc7GdX+FQAKj+Hnv9a9ZXWGz5dgVwp6l5vgDkV0TZ9ukZ
+	O2Ld4nOEPou0mTE6a8jGFjH1vJn6M7JGrRTosTH/WjlRB0D2t1lh3WkyzotuUki3F+na1oK8PcGoC
+	rTSdVzxa3lS5sqsXGVTmpz0d9/BV4s3J9dZDKSwOGr4ID8B3iff+ZcLCS0HEUVcQNYmkkMvesoG1A
+	Mmp7nVl9OC3XKV0J1g9gMpTif82x5UO8+1FydjG6Dh5rL9zmtUI744osZcDHh6bQ5C7Qop4oQMlWh
+	t5y4dSdMSzfq4rG0kQ==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+	(envelope-from <dg@treblig.org>)
+	id 1tcqUX-00CWoz-23;
+	Tue, 28 Jan 2025 18:39:17 +0000
+Date: Tue, 28 Jan 2025 18:39:17 +0000
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
+To: johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] wifi: mac80211: Deadcode cleanup
+Message-ID: <Z5kkVa0pi9_TRsCl@gallifrey>
+References: <20241224013257.185742-1-linux@treblig.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: pull-request: ath-current-20250124
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <3311fea1-c7c0-4929-b92c-16ab933de33c@oss.qualcomm.com>
-References: <3311fea1-c7c0-4929-b92c-16ab933de33c@oss.qualcomm.com>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
- ath11k@lists.infradead.org, ath12k@lists.infradead.org, jjohnson@kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <173808839535.1321818.16289363523697290711.kvalo@kernel.org>
-Date: Tue, 28 Jan 2025 18:19:57 +0000 (UTC)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20241224013257.185742-1-linux@treblig.org>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
+X-Uptime: 18:38:20 up 265 days,  5:52,  1 user,  load average: 0.01, 0.04,
+ 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com> wrote:
+* linux@treblig.org (linux@treblig.org) wrote:
+> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> 
+> Hi,
+>   This pair of patches removes a bunch of functions that haven't
+> been called for more than a few years.
+> 
+> I suspect I could go further; in particular I wonder
+> if
+>   ieee80211_debugfs_key_remove_beacon_default()
+> and
+>   ieee80211_debugfs_key_remove_mgmt_default()
+> 
+> could go together with a data structure somewhere?
+> 
+> Also, ieee80211_nan_func_match() was the last use of
+> cfg80211_nan_match(); but that would be in a separate area.
+> 
+> Dave
+> 
+> Dr. David Alan Gilbert (2):
+>   wifi: mac80211: Clean up debugfs_key deadcode
+>   wifi: mac80211: Remove unused ieee80211_nan_func_match
 
-> The following changes since commit 146b6057e1fd28fb1a38d300bf76a38dfba7f9fb:
-> 
->   wifi: cw1200: Fix potential NULL dereference (2024-12-18 19:58:27 +0200)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git tags/ath-current-20250124
-> 
-> for you to fetch changes up to 64a1ba4072b34af1b76bf15fca5c2075b8cc4d64:
-> 
->   wifi: ath12k: fix handling of 6 GHz rules (2025-01-24 10:32:44 -0800)
-> 
-> ----------------------------------------------------------------
-> ath.git patch for v6.14-rc
-> 
-> Fix an issue in the ath12k driver where 6 GHz operation no longer
-> works with new firmware.
-> 
-> ----------------------------------------------------------------
-> Aditya Kumar Singh (1):
->       wifi: ath12k: fix handling of 6 GHz rules
-> 
->  drivers/net/wireless/ath/ath12k/wmi.c | 61 ++++++++++++++++++++++++++---------
->  drivers/net/wireless/ath/ath12k/wmi.h |  1 -
->  2 files changed, 45 insertions(+), 17 deletions(-)
+Hi,
+  I noticed one of these patches (debugfs_key) has landed in 6.14
+but the other one I don't think has - any particular reason?
 
-Pulled, thanks.
+Dave
 
-3319569bf9d8 Merge tag 'ath-current-20250124' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
-
+> 
+>  include/net/mac80211.h     | 15 ------------
+>  net/mac80211/cfg.c         | 25 --------------------
+>  net/mac80211/debugfs_key.c | 47 --------------------------------------
+>  net/mac80211/debugfs_key.h | 15 ------------
+>  4 files changed, 102 deletions(-)
+> 
+> -- 
+> 2.47.1
+> 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/3311fea1-c7c0-4929-b92c-16ab933de33c@oss.qualcomm.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
