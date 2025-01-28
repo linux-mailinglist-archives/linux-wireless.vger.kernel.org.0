@@ -1,87 +1,82 @@
-Return-Path: <linux-wireless+bounces-18090-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18093-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71765A21205
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 20:14:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3B7A212CB
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 20:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9690188886C
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 19:14:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F2B23A4118
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 19:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42511DE8A5;
-	Tue, 28 Jan 2025 19:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0296199230;
+	Tue, 28 Jan 2025 19:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="XLHbKhpM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ns.iliad.fr (ns.iliad.fr [212.27.33.1])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595F11C5F2C
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 19:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.33.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FEF158A09;
+	Tue, 28 Jan 2025 19:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738091649; cv=none; b=e4mCnBK6jKJDD+DUfkhkyRyz+iQO5kA0jYRgSFAAlr0SgKDsI20gEX5vOqmOEJ/rdwvhFfJsBJ9GVBAaRaSi2YpNA8D+m1mmr4+oX4j9J6ZHsBH7nrabGVlxIfpmquoeqD18U3dfhL/LRkOldHFtq/EoDDAq2k/l8u5vK2vjgI4=
+	t=1738094305; cv=none; b=UENw36sHOZnL1/BK3sH1Oz286lUsGBPYq+uAouoObVZWQ1OB3NfqP0Z5H0MsPtxlronF4PzZWTgmymLXOZYcqoBoL1PZwvQTLPEqp1G2cm3jv/AdGivKF/2GZzbmou4abB4d2X73l5qP1Sd8HNAERum9ffv1dgrkgiFqDrssdMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738091649; c=relaxed/simple;
-	bh=zuJsGRkQsFYTiaY6imygnPrbK4A2tpmbVu0lGGjQ5Wc=;
+	s=arc-20240116; t=1738094305; c=relaxed/simple;
+	bh=r1IQ5VrIiqDXdlSfJTSOs1Fq/Q3uye9YqXJhVfmanPo=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DQurR/75wWMC2aAHBQyut2Ugzj1KF6PiLxiagufME5+gNQQlZA4FXCuejD8bhyzQi99NOe5x0CQdUUsD+GzcfpwDowLhaRQIOq2Sg18u1iwTKkwiC0VE41psPAgRkkH2LPdDle3LZ+o7+jxY8qIpu3YJICdoPhu35sdyEBfWxIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=srs.iliad.fr; arc=none smtp.client-ip=212.27.33.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=srs.iliad.fr
-Received: from ns.iliad.fr (localhost [127.0.0.1])
-	by ns.iliad.fr (Postfix) with ESMTP id 6981020913;
-	Tue, 28 Jan 2025 20:13:57 +0100 (CET)
-Received: from [192.168.108.70] (freebox.vlq16.iliad.fr [213.36.7.13])
-	by ns.iliad.fr (Postfix) with ESMTP id 4FAB8206E8;
-	Tue, 28 Jan 2025 20:13:57 +0100 (CET)
-Message-ID: <54d456f00aa8a806768099df55dc9f2ef734209b.camel@freebox.fr>
-Subject: Re: [PATCH v9 6/9] wifi: ath12k: add support for setting fixed HE
- rate/GI/LTF
-From: Maxime Bizon <mbizon@freebox.fr>
-Reply-To: mbizon@freebox.fr
-To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>, 
-	ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Muna Sinada <quic_msinada@quicinc.com>, 
-	Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Tue, 28 Jan 2025 20:13:57 +0100
-In-Reply-To: <961df6e7-0b5c-4972-9324-5c4d430cb172@quicinc.com>
-References: <20250114003813.2783550-1-quic_pradeepc@quicinc.com>
-	 <20250114003813.2783550-7-quic_pradeepc@quicinc.com>
-	 <f5c6d874e9d7682d52c5ed107a0ede952b5cf53f.camel@freebox.fr>
-	 <5861c953-436e-4f36-ae8b-5ef52fceb3b6@quicinc.com>
-	 <2aba18dc3448b5a60a1a06b33fa591e562927693.camel@freebox.fr>
-	 <961df6e7-0b5c-4972-9324-5c4d430cb172@quicinc.com>
-Organization: Freebox
+	 Content-Type:MIME-Version; b=JZc8nQblRIcXucQnCsQSaAUM64eyzF7WK7eg4KAFehksUnQDaqGL3KIjkMrgpSiAKwXDGHU+trTLzGkGxhvb448E0dwWEiI4qG5hmLws0vvAtBGBMOeyL81rpGuFTHFcapFsLqIroMdIX0ifgPjSFVWMErxVMzFDRjQguUhiC+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=XLHbKhpM; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=/UVwCVUckavusFcfIbtuoG7y1CE3wZnBJdeThYkKfqw=;
+	t=1738094304; x=1739303904; b=XLHbKhpMdyTadHemOedxO9hmLFGeZxydj/VnJkBm4WZqTdc
+	GdS1Q+ykjOGuvCvH2l+i5TgesjKpE3acFhsME4wyGrk1KzM7tCCCtUw1iG9R/4mjkbFvLEA95fGqj
+	Omqr1DCgA618HWcXolNxSxeeG0ETESSyspA/oeMwmvd3mW4XY97kVe/hcToZK4CwV8346qe1Qfqw4
+	QMM1VSrUEZrgXUmTLc0qSq1TQc5uPXEwXudb8xJZMl289JacFp4XkAIldtloVy5UMVZiM/BtKfxhw
+	8IKRTnV6vAji6+pEY3CDGUzUFCkQM5Up8X0xsxRImQvTuVSu9GTyj5FWvlY/Hcyw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tcrKr-0000000D3mR-1nRP;
+	Tue, 28 Jan 2025 20:33:21 +0100
+Message-ID: <d5ca1cf4593edb1c8ee32f3c2e6fde47dc97cc32.camel@sipsolutions.net>
+Subject: Re: [PATCH 0/2] wifi: mac80211: Deadcode cleanup
+From: Johannes Berg <johannes@sipsolutions.net>
+To: "Dr. David Alan Gilbert" <linux@treblig.org>, 
+	linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Date: Tue, 28 Jan 2025 20:33:20 +0100
+In-Reply-To: <Z5kkVa0pi9_TRsCl@gallifrey>
+References: <20241224013257.185742-1-linux@treblig.org>
+	 <Z5kkVa0pi9_TRsCl@gallifrey>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
+On Tue, 2025-01-28 at 18:39 +0000, Dr. David Alan Gilbert wrote:
+>=20
+> >   wifi: mac80211: Remove unused ieee80211_nan_func_match
+>=20
+> Hi,
+>   I noticed one of these patches (debugfs_key) has landed in 6.14
+> but the other one I don't think has - any particular reason?
 
-On Tue, 2025-01-28 at 10:44 -0800, Pradeep Kumar Chitrapu wrote:
+We were still using NAN internally, and there's a chance that it might
+make a comeback, so I was holding off on it for now.
 
-
-Hello,
-
-
-> Currently default is configured as FORCE_SGI
-
-"Currently" with or without your patch applied ?
-
-From my perspective:
- - without your patch: DEFAULT_SGI
- - with your patch applied, no fixed rate: FORCE_SGI
- - with your patch applied, fixed rates: user decides
-
---=20
-Maxime
-
-
-
+johannes
 
