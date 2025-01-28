@@ -1,63 +1,79 @@
-Return-Path: <linux-wireless+bounces-18075-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18076-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CBCA20F5A
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 18:01:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C6EA20F80
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 18:17:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECB293A9621
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 17:01:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D13B7A2B00
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 17:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD691B21AA;
-	Tue, 28 Jan 2025 17:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4351AF0B6;
+	Tue, 28 Jan 2025 17:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="a6J4Kzym"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y5kW4m5T"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99BF1A7249;
-	Tue, 28 Jan 2025 17:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664501684AE
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 17:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738083671; cv=none; b=eUq4bmyfIcW7TJuzlwjw1GMvKbHI4kHP/Mm5QyNuTublZcxdakYKfl3AQVJYa44J60brpRXDrMV5WD3F8LNccOq5OW38W8rCMaTEv0F+rKi/Q0Hg0YON4ZHLf3Zr2rqcmrwJc33z5aqMAagkIF5wVTtvVsLj+Jqur1DjnOmXDg4=
+	t=1738084671; cv=none; b=Vo5qevh9QzANYShoNHhaE+hBzkLLctPVvC8viY2DN7YwXo0ZjdVT3jAffHprjMGHrn/fJaj/O6qhknkOmBYd1Nm4GXBJQNuNDUN3NvQdpVTinvP45h6XdXwuGQojeSSBf22VZksPnhHCIYF2Wjk4iHT5hIrOf+qOLXW1tGo54ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738083671; c=relaxed/simple;
-	bh=mF05j41uzO5AxIr0Ne4o7R1QcFWIE4/Zp6PanRtvlqI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=A/nVfLM5jcLt+6ZSDEN7iU5DyfrZB54RpqqTH/qP5MD3j0bcvOgXpyeDrreIqX0VArFQwvjG5K2WMHFbKw55BpwVsBNXKpkQPeaCl99cg6ferqQvogi3nQGWoX/0I0xtXJEF5cm58VRflsheaFghFxpSV7w1mE87lAedyD0U3I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=a6J4Kzym; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50SDnwHQ013084;
-	Tue, 28 Jan 2025 17:01:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2OUjp/zwujNr5r3x6a5AB+/OVSf9RqiUYrcvyBEc3to=; b=a6J4Kzym7I7lXk6a
-	CyTUOCmHQeLWm4losU79xPsMWqPdcqMalHzqcoDNtk/IHs42500lRjhgdSlUAzdy
-	NRc92Tjc3dBSxlVrpjbDhXzyl6TXHPciT1OQAxrfmSlJmg0DfnTIfLhacSSdf1+9
-	1FCancfAwd1aSiYvRR6iesC8Q5LbCu64AJTTD4XOrEyMEoxOj3XtUg9YaqtlZiQ9
-	Swl266f6EPMo1howaaiFEQNbjL1dnfMIM6s+LkWIwVX0UWrH6cUQSkamwI2zGQYN
-	UarkrF0HGCduLfwg3E17BfhW1ERx8WqVsqBPS9FUpD1rfTFX+Rjx6tKpfI5wrivK
-	APuvtg==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44f0fcrff0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jan 2025 17:01:03 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50SH12mp000765
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jan 2025 17:01:02 GMT
-Received: from [10.216.5.143] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 28 Jan
- 2025 09:00:57 -0800
-Message-ID: <f69fea6c-c6a3-461f-96e5-2e6ccd76cf73@quicinc.com>
-Date: Tue, 28 Jan 2025 22:30:54 +0530
+	s=arc-20240116; t=1738084671; c=relaxed/simple;
+	bh=9NhEEJi8+ZjiYBFHRuvYtSltaovuG3Uec9fIMaaEmW4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=hqBfxBhyniHTjpQUh1Wd5jMXw/ufjgmnARcC+9BZ49mJk6nPCLVzdHw2Kyh/7UiaqffKsoUJMOon1XORuJ/gY2pyt0AHJ/QnWQaZNsXQLxzTx5B3oPkKFQpy49iqOgoQkd+F1u34qN/DxPSEhIXGEA4I3VYs1daBbRzPry9xLj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y5kW4m5T; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-385de59c1a0so3401593f8f.2
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 09:17:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738084668; x=1738689468; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YOAa/qzp0c+N/R7MoQCwDoMAfuxAsjRzYXwyLz5skbo=;
+        b=Y5kW4m5TWJy/ls6ExLKWH4nY3wKMKisSmtBjTFu74uKSezlX6OdM/XHBdx5bbpT6RQ
+         AVC68Y00caKi+8jQyA65AJNdeRhH+XSURfcgJiWkxBKirshSPwecvfURtBrPx8EQIHZV
+         LgQq/OJ2DxPoLOOC2dvMt4x+S7CHCLlY8CLVIEFR73dwO1A6NCbv4K9gn6c/7Ux+tAOc
+         BcKBI7pVx8lonUSGGaiLGJRZmFhDrtU41FfQ7OYi7LDkAmoRFziC6M+HsbEyX5dya06D
+         gKxNLpn5vdPQPm+9ZYvbusUn9YLPPJTDozonbZbXU2EV8r2Dd9opvcCwoJ4RETudETrY
+         /K4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738084668; x=1738689468;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YOAa/qzp0c+N/R7MoQCwDoMAfuxAsjRzYXwyLz5skbo=;
+        b=HFskVeIZM4YLT7jsiQ6tIs83WTzxXnNanQuk9WiczlWdlZ0rTa6F5loBr367hy2+a3
+         aUfFigLU4/F8h0w8ffXeyzicrKToICgw1k1mpgucd4syXdgIv1voBdkhVTI3ZS0M4lTR
+         5mzbWwZOuQtdmm2jQkrlQosZLkVTJFmttcQqWXC+NZjgHjKEV4nLRSK9j/RYUaP0ZVPL
+         CQ7NjWTTC7dJomiLdLJaf+04cSGdLWdYUkZVyk4U6ge97UXfLHjlK4f4fbziCNbKf1aY
+         sMIK5I3xr+zLsq080SlwTsytKpGp5z7/PT46EeAINbJD52JNOJ0v6JzEChVfUrYhYFdV
+         wPdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWpsjzsrP/ATWobIzGFyRCFT+VT0S2H2yO61Z3/5tTidarQ8syp5ViegT46/cjGL9sMCIj6UX+OiFdk1l9JjA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNW2b/kc+VILbXLLEp8AnZaxNiRCsnOeEAlSIHpCm3wMrhhaeV
+	O4AwXPDxnoL8f4EBYCmBDUB54I2V5Pd1lsv9HoGp42q+tE2CKUYigfkMYA==
+X-Gm-Gg: ASbGnct+J0a0bUbQng523ITz+zmxoW1dwtQuMxVR+Ugj6zYF/1VUXBLtcbTMHvpUXZV
+	yNBdKql+dFPEnSM6eR8yBJRnFQ77Iv0nPeNvR3rjQyNdpuAgLFhUkq8qKZrX8pMJr77H9tcoqcK
+	+lY1i+3WFKFAFDyzFYk6BGGZ7ouxC73bjR6JIeGmgxR/dliQqSAIKfUN+845B1MmZ+1L0mMDcOC
+	1cxVshGWs7EU/Rs1CBnrfRxXC+/RIhApnuGaeswK/lbtc7XjjZVfwdHwVPnLkMkDkso+cevuGGX
+	uyNCKFwsM5qP4fgq+J6Ob6Y=
+X-Google-Smtp-Source: AGHT+IGHWw5qLmYfpJVak2eKsZtsYmqbURHN0gY3R1kb7HOvS5oLbCuAKRUr3adQbmoP0GvxjHgwow==
+X-Received: by 2002:a5d:6c66:0:b0:385:fae2:f443 with SMTP id ffacd0b85a97d-38bf57a91a1mr37655420f8f.34.1738084667310;
+        Tue, 28 Jan 2025 09:17:47 -0800 (PST)
+Received: from [192.168.0.50] ([79.119.240.80])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a1c418esm14826985f8f.95.2025.01.28.09.17.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jan 2025 09:17:46 -0800 (PST)
+Message-ID: <d80fe4e2-1e38-4e84-b169-8c2699d7c764@gmail.com>
+Date: Tue, 28 Jan 2025 19:17:46 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,109 +81,93 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: add wifi node for IPQ5332 based
- RDP441
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Krzysztof Kozlowski
-	<krzk@kernel.org>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        "Rob
- Herring" <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        "Conor
- Dooley" <conor+dt@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        "Bjorn
- Andersson" <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
-References: <20250128091012.2574478-1-quic_rajkbhag@quicinc.com>
- <20250128091012.2574478-3-quic_rajkbhag@quicinc.com>
- <b3ff05c1-6424-4ace-a873-ddf1a0d3d07d@kernel.org>
- <a752a135-9cd0-402b-b0fb-967491cfdaee@quicinc.com>
- <fd55ba36-d90d-4507-9c52-912f667c4193@oss.qualcomm.com>
+Subject: Re: [PATCH 5/7] wifi: rtw88: Extend rtw_fw_send_ra_info() for
+ RTL8814AU
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <fb2c2ae6-6173-4b4a-9e1f-ff51759cdee6@gmail.com>
+ <fa9ff2b4-6e1a-45e4-90de-db6fe0d4f433@gmail.com>
+ <ca7380d8560046c4a2a2badde9302691@realtek.com>
+ <d05ba9e5-d5e3-4761-bd1e-f7c2b63f5a36@gmail.com>
+ <53740c9ec74a4aa0a5a3c51b895eb385@realtek.com>
 Content-Language: en-US
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-In-Reply-To: <fd55ba36-d90d-4507-9c52-912f667c4193@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <53740c9ec74a4aa0a5a3c51b895eb385@realtek.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: qZFjIMZSZTtvCrogJ-hSiNS9lYNfIUZR
-X-Proofpoint-ORIG-GUID: qZFjIMZSZTtvCrogJ-hSiNS9lYNfIUZR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-28_04,2025-01-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 adultscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
- clxscore=1015 mlxlogscore=999 mlxscore=0 impostorscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501280125
 
-On 1/28/2025 5:02 PM, Konrad Dybcio wrote:
-> On 28.01.2025 10:41 AM, Raj Kumar Bhagat wrote:
->> On 1/28/2025 2:52 PM, Krzysztof Kozlowski wrote:
->>> On 28/01/2025 10:10, Raj Kumar Bhagat wrote:
->>>> +	/*                 Default Profile
->>>> +	 * +============+==============+=====================+
->>>> +	 * |            |              |                     |
->>>> +	 * | Region     | Start Offset |       Size          |
->>>> +	 * |            |              |                     |
->>>> +	 * +------------+--------------+---------------------+
->>>> +	 * |            |              |                     |
->>>> +	 * |            |              |                     |
->>>> +	 * |            |              |                     |
->>>> +	 * | WLAN Q6    |  0x4A900000  |       43MB          |
->>>> +	 * |            |              |                     |
->>>> +	 * |            |              |                     |
->>>> +	 * +------------+--------------+---------------------+
->>>> +	 * | M3 Dump    |  0x4D400000  |       1MB           |
->>>> +	 * +============+==============+=====================+
->>>> +	 * |                                                 |
->>>> +	 * |                                                 |
->>>> +	 * |                                                 |
->>>> +	 * |            Rest of memory for Linux             |
->>>> +	 * |                                                 |
->>>> +	 * |                                                 |
->>>> +	 * |                                                 |
->>>> +	 * +=================================================+
->>>> +	 */
+On 28/01/2025 07:52, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> On 27/01/2025 08:36, Ping-Ke Shih wrote:
+>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>>> The existing code is suitable for chips with up to 2 spatial streams.
+>>>> Inform the firmware about the rates it's allowed to use when
+>>>> transmitting 3 spatial streams.
+>>>>
+>>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>>> ---
+>>>>  drivers/net/wireless/realtek/rtw88/fw.c | 14 ++++++++++++++
+>>>>  drivers/net/wireless/realtek/rtw88/fw.h |  1 +
+>>>>  2 files changed, 15 insertions(+)
+>>>>
+>>>> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+>>>> index 02389b7c6876..0ca1b139110d 100644
+>>>> --- a/drivers/net/wireless/realtek/rtw88/fw.c
+>>>> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
+>>>> @@ -735,6 +735,7 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
+>>>>  {
+>>>>         u8 h2c_pkt[H2C_PKT_SIZE] = {0};
+>>>>         bool disable_pt = true;
+>>>> +       u32 mask_hi;
+>>>>
+>>>>         SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_RA_INFO);
+>>>>
+>>>> @@ -755,6 +756,19 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
+>>>>         si->init_ra_lv = 0;
+>>>>
+>>>>         rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
 >>>> +
->>>> +	reserved-memory {
->>>> +		#address-cells = <2>;
->>>> +		#size-cells = <2>;
->>>> +		ranges;
->>>> +
->>>> +		q6_region: wcss@4a900000 {
->>>> +			reg = <0x0 0x4a900000 0x0 0x02b00000>;
->>>> +			no-map;
->>>> +		};
->>>> +
->>>> +		m3_dump: m3-dump@4d400000 {
+>>>> +       if (rtwdev->chip->rf_tbl[RF_PATH_C]) {
 >>>
->>> This fails with your wireless patchset.
+>>> Using `efuse->hw_cap.nss >= 3` would be consistent with latter patch.
 >>>
 >>
->> Yes, this will fail with v4 wireless patch.
->> We have v5 (yet to be sent) to read the correct reserved memory. Since,
->> in v4 I was asked to address and send DTS patch separately, The corresponding
->> driver patches are yet to be sent.
-> 
-> I think the intention was to send them separately, but together time-wise, so
-> that the large set of net changes is somewhat shrunk, but the reviewers can
-> cross-reference both series if/as needed
-> 
-
-Yes, the intention is similar: to get DT related reviews before posting the next
-version (v5) of the driver changes.
-
+>> I would like that, but nss is 2 when RTL8814AU is in USB 2 mode.
+>> I assume this is to keep the current draw under the 500 mA limit
+>> of USB 2.
 >>
->>>> +			reg = <0x0 0x4D400000 0x0 0x100000>;
+>> What about rtwdev->hal.rf_path_num >= 3 ? I don't remember why
+>> I didn't do that.
 > 
-> Please use lowercase hex
+> I think `rtwdev->hal.rf_path_num >= 3` is suitable to initialize/configure
+> hardware registers, because no matter USB 2 or 3 mode should be the same.
+> 
+> For this case (RA info), this is related to protocol, so I feel 
+> `efuse->hw_cap.nss >= 3` is suitable, but I have not seen a patch to declare
+> supported NSS in register_hw(), or I missed it? Or, without RA_INFO_HI,
+> it gets abnormal rate to RTL8814AU in your test?
 > 
 
-Thanks, will do in next version.
+You didn't miss it, that will be in part 3. You can see the code here:
+
+https://github.com/lwfinger/rtw88/blob/21a3fa7ec11a0cbb3be14145f45cdca35c3d3217/rtw8814a.c#L82
+
+I get a steady 300 Mbps even without RA_INFO_HI. The problem is only
+cosmetic. Right after connecting to the AP the first C2H_RA_RPT comes
+a bit later than usual, after the first CTRL-EVENT-SIGNAL-CHANGE, so
+we see a TX rate of 0:
+
+Jan 28 19:00:06 ideapad2 NetworkManager[504]: <info>  [1738083606.4996] manager: NetworkManager state is now CONNECTED_SITE
+Jan 28 19:00:06 ideapad2 NetworkManager[504]: <info>  [1738083606.5003] device (wlp3s0f3u2): Activation: successful, device activated.
+Jan 28 19:00:06 ideapad2 wpa_supplicant[1480]: wlp3s0f3u2: CTRL-EVENT-SIGNAL-CHANGE above=1 signal=-42 noise=9999 txrate=0
+Jan 28 19:00:06 ideapad2 NetworkManager[504]: <info>  [1738083606.6020] manager: NetworkManager state is now CONNECTED_GLOBAL
+
+With RA_INFO_HI the first C2H_RA_RPT comes at the normal time,
+before the first CTRL-EVENT-SIGNAL-CHANGE:
+
+Jan 28 19:09:44 ideapad2 NetworkManager[504]: <info>  [1738084184.2400] manager: NetworkManager state is now CONNECTED_SITE
+Jan 28 19:09:44 ideapad2 NetworkManager[504]: <info>  [1738084184.2407] device (wlp3s0f3u2): Activation: successful, device activated.
+Jan 28 19:09:44 ideapad2 wpa_supplicant[1480]: wlp3s0f3u2: CTRL-EVENT-SIGNAL-CHANGE above=1 signal=-44 noise=9999 txrate=780000
+Jan 28 19:09:44 ideapad2 NetworkManager[504]: <info>  [1738084184.3810] manager: NetworkManager state is now CONNECTED_GLOBAL
+
 
