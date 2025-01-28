@@ -1,86 +1,86 @@
-Return-Path: <linux-wireless+bounces-18070-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18071-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C08A20C50
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 15:50:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA83A20C59
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 15:53:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0518F3A6937
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 14:50:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 426D61889657
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2025 14:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C06A1C878E;
-	Tue, 28 Jan 2025 14:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7299E19AD48;
+	Tue, 28 Jan 2025 14:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RQ8yi2Zt"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dDLjCMWH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8A41B0413
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 14:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0A5F9F8
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 14:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738075806; cv=none; b=RCjBDIIW0gQWpMHgQNLaZFI22gPLnUZLLUE6ZYYV7Dqttw+7E27bSmwZaGKWTn9REjv993/dTA+5mj0AVqHsYsClYb41z88WvvoYEBlbMdQ070qEDYDfdkSEgqFWvsf9M6TGxIAihxPfRKfOxm6lNi1vy1Zd3yALj7VO9s9nE3U=
+	t=1738075992; cv=none; b=MbhWdsx5QNJS6i9Zy0IHjjUt5fD43ogrc9D6b8/WIFWOq/cZT36qik8SERK+oK699Z1Va8q6lDEoOtyXMIZeFmyVhR4U6oiAuNTCX+3vJf6xsGDPbUTEuFEmnFTCHEIvDnzz5oS2KdhFZo1DyYRoEr0KDfPEuE6EqtQeHQK0+Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738075806; c=relaxed/simple;
-	bh=yN/7tYntALaDnr/PrrVqyeb/xsCgQS8+qjejjh7wO0Y=;
+	s=arc-20240116; t=1738075992; c=relaxed/simple;
+	bh=0JEd27JctMKQdmgCBB5cVr3+Q94+juaCQeJWRk73Ddw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OvpL/94U0aJpcyc7pQeyEb3yUq01QYJIaAtuTYQQxUlcLQ0X0Viw6wdCXoMlcKk/d2szdsPKaZV5doTOZma6ZT9iS/7YNVFkrWmgpqao1dAm6MiDJUalEp7XpV1ZSyNKgFZKyjsL6xSs4kR8foXcouFHwD1cM0JZc3b/QVYu0eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RQ8yi2Zt; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=pod+Z1zITiSU93qjsLBeft+A4ZtJD92raQDbMNs0lvpmd9BLjvo3QLIo3acCh9t9cFPbedIr0RF2Vf777M70w4cHdQHhr0khyK5TiVPm33/Z4781THiNggUYvG1DWEe1LW/8mG6rnhuLND7fqLrJJoZ39Y+gD9rhhS1g4dSoR0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dDLjCMWH; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50S9lpho019133
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 14:50:04 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50S9lmu5019036
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 14:53:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Kg7KgCeFkHFpNSsYE8u5hk8iLj7p7GoJw/mPLS3+mtw=; b=RQ8yi2ZtF+mIzT3p
-	lzZB+egjQsUII91eV7gnTX58yJZt45Vnje9DK8cVEZsUyTu1zShS1q23a8vRifPH
-	98Bcmy0qn8rIa6Yv3zw1jWrewM0Yep8v6rq6geLOHcxYvY2RsAKQ/6WMQp83VXWG
-	yhYMF0++ubId0P1NiFfR9Ze9JeiiVng9Z86FPr/pd/8mes6YkeZ+yGPd8XojT25Y
-	vP/Riu0dLkDE0Y24sugRZEBKOIl350F/KI1oa3aJdqbPPpXZlcU3UBsGIFKvZJy4
-	5BtuzXjaUzUm9t2sA7tBhDgF1llyg1rpYR7KvmKAO4f5fDgsIXf5+vXb0iL2Jqqc
-	HA4koA==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44evwugpmj-1
+	AroXVuyqk4ebuD7fOzoCQq+wPsBrvou1mnrYuKOiENo=; b=dDLjCMWHCyvqHHOX
+	PShuUUnv1N+gapm8KpH3KDWJgrdDxDLp9qRYfzvj+5vYdNd2AcaZuhvaTEfCDM5+
+	xYTATlBpUW45y7Ok7E+8fOsxUwvOvVVDatNQvVLn0UkWabD77ematgJde1LCQh0w
+	XYFuuXvLhD5Qq3QIh26hJEt1qRRQI0uJfwFtROrDXnoLEfp4Ky5NuwnbQ+FEhQy+
+	qSq93gclpFzznaAGiczSSw0bUkgKog+gBdgD2W4aD4aC3hTdsq3F2IWknQD83Lf/
+	3JWaE7uBZijxVAml8vxdsfwkO2+gnHRFCiQrlOutoBbleiTw6eGF/+lZTGOV3frQ
+	eIdHEg==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44evwugpta-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 14:50:03 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2163c2f32fdso178516195ad.2
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 06:50:03 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 14:53:10 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-21638389f63so87765825ad.1
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2025 06:53:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738075803; x=1738680603;
+        d=1e100.net; s=20230601; t=1738075989; x=1738680789;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kg7KgCeFkHFpNSsYE8u5hk8iLj7p7GoJw/mPLS3+mtw=;
-        b=toiojlC6XLsSV68Bv9ZAkv5TUi9+f5HscAoSFVGXOYuCkN5jA+vYDmTDM/XFcfsyth
-         je+kpYB041fEif0LUpe2QccvCxN+RYTbs3gCf9kntU7ejFJcTwTLgqUVhq/fHFUEuCSo
-         dE8xr7FpwNNU/xlOLViOxHOkVs23KZekB4qbCyYHkrzlc4/vvyMNsIqpYlwnOcU2Kh5h
-         KxOU9BQSirPGKizpokc0/YomRKm0joBzklVB1WbKNCDVvnUjl1FdSf+6nZF3kIfl7WdM
-         3dUsqVJ+zEBcayO0PfZ658A75nzhQT4dh3g7INPBz2S5MRqReGF+AcKYzq+IHTte3gLL
-         c+HA==
-X-Gm-Message-State: AOJu0YxA8Hh0/ic9TBrCLGErQN6yCsCDGpRpW9rZ9qCqsH9tHg+mERJ2
-	5rFXPIZsyAQ20z09hV7eKh2ysaGtaVoVSkmq16+ELnTKVc1l0P/5B3wE2XLVNS+TgOUJ/B/sOR2
-	Cosc/KAjKdyoBm5Jrn7+BnepPKX3KdnFrnfHJWUL0/0HVfbLfzDrjlgqLg97DB1iNOA==
-X-Gm-Gg: ASbGncumyKA0hiIMHzsykktnzezgMRVpNCesNUIA5u1V1LeQYAZyD3aXmKUQ3WCT7+b
-	KjPeVFigMCKR3jZxqJ9y2R9pU0UKEyOOdi12Ud2pL765kWviR/owzShFAVatfLbTeDmoaOESVv9
-	GHExRg42F9VcOJbbWU27cD9RuNe9JgEArqeFbyIBcolmn7CC6clPP9+VTwPcYlrU5wg6lHI9a5s
-	a99b5iIEZxUKODwRUE3HkN0Ml5QkNKYM8hVgOHdDxAQuGsxvXR9ivSPnMubT//M8Ric8ePWqJzd
-	CuPd5k1rXV6soYbk+IWuzHQciSqSPPWpstsaH9ULMQ==
-X-Received: by 2002:a17:902:c94d:b0:216:3e87:c9fc with SMTP id d9443c01a7336-21c353ef5damr753457165ad.5.1738075803138;
-        Tue, 28 Jan 2025 06:50:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE8jXYTfjcUCXFjJG6lpWbPt8PeB6TXSFVj8bhXCi5auL8mxkEEOnalCqSS8TNNFiC16do/Lg==
-X-Received: by 2002:a17:902:c94d:b0:216:3e87:c9fc with SMTP id d9443c01a7336-21c353ef5damr753456905ad.5.1738075802786;
-        Tue, 28 Jan 2025 06:50:02 -0800 (PST)
+        bh=AroXVuyqk4ebuD7fOzoCQq+wPsBrvou1mnrYuKOiENo=;
+        b=HHjZvI5B2BQs+slGT1MJPr87RYl5qjP59M4NkjquS7FMzczYKuwwYsTmPPSNinCmvn
+         UGCOc3c/nGx1nJS+hwDrsu6OrP+j2kA4EUU4sOvHkd17bPboNGsLl8Gx+38yaU+LrK2N
+         qVZdnva/LnK0t+eZvYyRYXBQZ7YTdEhZee5XkNgbpkNHliD/7zHLjUVfvHHy533V9FXz
+         eXzHK81igIxtXsW7BNZNTCVL9G9Jv7fAPCsx5MkSEbaSxYp5gTMEnxG1daO1sHIcRIYi
+         Ue3splgoVzuglN5N94rvMsZA0YbD7QitPGcDzZVHoiOMosfMp7cbhWWrRtZ69jGocmIO
+         6cSg==
+X-Gm-Message-State: AOJu0YxteSC/+FlpyOvgz359Wvuz7Tc4cms6Db0sfHQrIkOOAt5KoCAv
+	16MNIIJZl2YL3xwYn1UXJzf2vm8LGBIs5mOYriAv8bKUuCzP9GIQOy8ba++RJ5wu3U9qmDdYX85
+	dVxpN/KrgCUi4wzkJzRf4URh31VvvzPVc+C9ajJfMhV1HSQ4EyJl4Q1kaaLBEzwnxUw==
+X-Gm-Gg: ASbGncsKPI8tORP7g+HBAHXSfNsVGIGEH1IOvqbRpz2wOKe0NqGQlQYMIDLA2U/+i4J
+	Pgn0fYVGLtx4WhzH4EJkgAEZYcm0L+AQC7B3iBJ6X+Zz1rMd/HH1sTXCcgpRibS8v0Gqexex3f9
+	hbPpAQcgpnKx9KQD06d6QXzRNs83bzKyvpWLVa0/Q5n7jCAeWJrDfZaJKGkriszwd1hqwzDgQlP
+	gMtWP44tTzREv8cNJ/+IELmQhY3vWSf54EkNUoHXXPnjtIwdD2ICcY/CkbC80+6vqZ+or1G9GNU
+	v/DBptuUNGLgnUm4C/bRrVSVeKieZVL7JqW2ovNLCw==
+X-Received: by 2002:a17:903:11cd:b0:215:b5c6:9ee8 with SMTP id d9443c01a7336-21c351d3065mr599704605ad.7.1738075988828;
+        Tue, 28 Jan 2025 06:53:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEDcEM2Qm5bG+KZ4ryMMgVAQ+hzP7QUPCz3RjLizBOlvoq8EQ2pMKpui4TFDRtskPfJJooU7g==
+X-Received: by 2002:a17:903:11cd:b0:215:b5c6:9ee8 with SMTP id d9443c01a7336-21c351d3065mr599704265ad.7.1738075988459;
+        Tue, 28 Jan 2025 06:53:08 -0800 (PST)
 Received: from [192.168.29.221] ([49.37.208.137])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414e30dsm82406075ad.199.2025.01.28.06.50.00
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414cb74sm82366515ad.161.2025.01.28.06.53.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jan 2025 06:50:02 -0800 (PST)
-Message-ID: <1fc5e70e-12a7-4a4e-9d0b-3fc25f5151cd@oss.qualcomm.com>
-Date: Tue, 28 Jan 2025 20:19:59 +0530
+        Tue, 28 Jan 2025 06:53:08 -0800 (PST)
+Message-ID: <cdbdfc44-849d-449b-8c27-c175344440b6@oss.qualcomm.com>
+Date: Tue, 28 Jan 2025 20:23:05 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,50 +88,81 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/2] wifi: ath12k: Add Support to Parse TPC Event from
- Firmware
+Subject: Re: [PATCH v5 2/2] wifi: ath12k: Add Support to Calculate and Display
+ TPC Values
 To: Roopni Devanathan <quic_rdevanat@quicinc.com>, ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org,
         Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>,
         Ramya Gnanasekar <quic_rgnanase@quicinc.com>
 References: <20250128111059.1690113-1-quic_rdevanat@quicinc.com>
- <20250128111059.1690113-2-quic_rdevanat@quicinc.com>
+ <20250128111059.1690113-3-quic_rdevanat@quicinc.com>
 Content-Language: en-US
 From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-In-Reply-To: <20250128111059.1690113-2-quic_rdevanat@quicinc.com>
+In-Reply-To: <20250128111059.1690113-3-quic_rdevanat@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: aDgPRhG59O3qw_lt-eUODKFQ0HlhD771
-X-Proofpoint-ORIG-GUID: aDgPRhG59O3qw_lt-eUODKFQ0HlhD771
+X-Proofpoint-GUID: 8WsVqlCkP12eZ1tG1ssHTB_xQ6qi99d-
+X-Proofpoint-ORIG-GUID: 8WsVqlCkP12eZ1tG1ssHTB_xQ6qi99d-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-28_04,2025-01-27_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
  priorityscore=1501 clxscore=1015 lowpriorityscore=0 suspectscore=0
- bulkscore=0 mlxscore=0 phishscore=0 malwarescore=0 mlxlogscore=999
+ bulkscore=0 mlxscore=0 phishscore=0 malwarescore=0 mlxlogscore=957
  impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2411120000 definitions=main-2501280110
 
 On 1/28/25 16:40, Roopni Devanathan wrote:
 > From: Sowmiya Sree Elavalagan<quic_ssreeela@quicinc.com>
 > 
-> Host receives four Transmit Power Control(TPC) events from firmware on
-> sending TPC request. Fixed param TLV is present as part of all event to
-> indicate the event count and end of event. TPC config parameters along
-> with regulatory power array comes as first event. Rates array comes as
-> second and third event as it cannot be packed in single event.
-> Conformance Test Limit (CTL) power array comes as the fourth event.
-> Firmware packs different sets of array params which includes array
-> length and type inside master TLV as different subtlvs. And the actual
-> content of array is packed one after the other inside a separate TLV as
-> single buffer.
+> Transmit Power Control(TPC) stats should display per chain TPC value per
+> radio. Add debugfs support to read and display TPC stats type and TPC
+> stats. Take power values for each preamble type, rate and NSS combination
+> from a particular index from each power arrays based on number of chains,
+> NSS, modes, MCS and tx beamforming enabled/disabled parameters. Minimum
+> of the values taken from reg power table, rates and Conformance Test
+> Limit(CTL) array table should give the TPC which is in 0.25 dBm steps.
 > 
-> Parse various events and save it in local structures. Create tpc_stats
-> file using debugfs to store these local structures. Create function to
-> handle TPC stats read to relay the information to the user.
+> Sample Output:
+> -------------
+> echo 1 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/tpc_stats_type
+> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/tpc_stats
 > 
-> Command usage:
-> cat > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/tpc_stats
+> *************** TPC config **************
+> * powers are in 0.25 dBm steps
+> reg domain-22           chan freq-5955
+> power limit-126         max reg-domain Power-252
+> No.of tx chain-4        No.of rates-1164
+> **************** SU WITH TXBF ****************
+>                                  TPC values for Active chains
+> Rate idx Preamble Rate code     1-Chain 2-Chain 3-Chain 4-Chain
+> 4        OFDM    0x000          39      15      1       -9
+> 5        OFDM    0x001          39      15      1       -9
+> .....
+> 12       HT20    0x200          40      16      2       -8
+> 13       HT20    0x201          40      16      2       -8
+> .....
+> 44       HT40    0x200          88      88      88      88
+> 45       HT40    0x201          88      88      88      88
+> .....
+> 76       VHT20   0x300          40      16      2       -8
+> 77       VHT20   0x301          40      16      2       -8
+> .....
+> 172      VHT40   0x300          88      88      88      88
+> 173      VHT40   0x301          88      88      88      88
+> .....
+> 412      HE20    0x400          88      88      88      88
+> 413      HE20    0x401          88      88      88      88
+> .....
+> 508      HE40    0x400          76      76      76      76
+> 509      HE40    0x401          76      76      76      76
+> .....
+> 748      EHT20   0x50e          88      88      88      88
+> 749      EHT20   0x50f          88      88      88      88
+> .....
+> 812      EHT40   0x50e          88      88      88      88
+> 813      EHT40   0x50f          88      88      88      88
+> .....
 > 
 > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
 > 
