@@ -1,210 +1,155 @@
-Return-Path: <linux-wireless+bounces-18157-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18158-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443F0A22193
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 17:19:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F40A2226F
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 17:59:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DF67167DAD
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 16:19:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E31D17A3A94
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 16:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37AE91DF271;
-	Wed, 29 Jan 2025 16:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A3B1DFE0A;
+	Wed, 29 Jan 2025 16:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/4WzsGK"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="PqSkafCb";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="QxfFyk0f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from e3i103.smtp2go.com (e3i103.smtp2go.com [158.120.84.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE0228EB;
-	Wed, 29 Jan 2025 16:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B9F1DF99D
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 16:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738167569; cv=none; b=K6ZXkCa6FvrRRx45ew/+4I0fv2d90yQkbZmPmXXVXjduNPECCes6nqUrmppH3b8nSV8uMR4S47oMklJsWUD3sC6gIWyj97TeWH9SFYNyLT8HGE0v29a4xIT0BgC6gkj2ybibkgnLt7sNi+gVtxWMaeCAiD1T063PzfeFyjJAtLI=
+	t=1738169964; cv=none; b=E5fzPLGXxP1TZngT9mQcRbg+9+/I2wmW6p2WMWcC3FZDpFXA5EBqrOKnq4QoA5vuNyVxw6ThdP76tuPtlDIfXhgxGWK0D15cpjnb/mn4pCKvXCU61xdJJgg0AlEqAiSayUyXt820yl1l910sLoiJbY3NJznVF2MvkuDkaKDgbrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738167569; c=relaxed/simple;
-	bh=VQ1tE7auwykWHFaAWlmFtxRv+H5gTV+mb3VLluuo+bU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lqzadzTRERZY+E6SIv5+4fNfw0TM3HQpyCZ0D5wRZh29RYk6+9gxQ91aCn25YVkydcXJRbVoZwhcCOUT4Dlu6XLQRkJaDp5ImK5cFc8o2LT9/xJklj00KwyAE4bmHYDo79ZRlrH0Qa8MZZY0EaqOL0pA5w9aR2ooiaLe3HqL7bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/4WzsGK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB92C4CED1;
-	Wed, 29 Jan 2025 16:19:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738167568;
-	bh=VQ1tE7auwykWHFaAWlmFtxRv+H5gTV+mb3VLluuo+bU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=n/4WzsGK81F59SkkUMb+WMCMS5ZHaRbmeLw6ahJDhfCBABA4a6KVBCSwK9uQe2dCx
-	 x0mNRgNXoAzA3H2ahKHYKJqAKXXN8MREVyvIrV0GgJAcoI7h6gX9LHdjLTxtClMSx4
-	 EddIHSjyw6wAz2IS3Q+EeK4Ip3z4ZZbwoD7CtalDQ7OeIU8gJmPRFPLhFO6904UeOL
-	 pbOtP49em5EsHn7LjmGJCQd4vKS5POHzZdHn43fsshTYlLqDnGfVcMwX7Xp0QR2BJT
-	 vmSJuwnOZQMB3s3i2xEUR2Vvxazeak0N6s9PY8c7YRZAkNftTuLHW4TgGq2APSSIua
-	 GqdW/Bxq24vdQ==
-Date: Wed, 29 Jan 2025 17:19:22 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, coresight@lists.linaro.org,
- linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-hardening@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- workflows@vger.kernel.org
-Subject: Re: [RFC v2 00/38] Improve ABI documentation generation
-Message-ID: <20250129171922.4322c338@foz.lan>
-In-Reply-To: <87a5b96296.fsf@trenco.lwn.net>
-References: <cover.1738020236.git.mchehab+huawei@kernel.org>
-	<87h65i7e87.fsf@trenco.lwn.net>
-	<20250129164157.3c7c072d@foz.lan>
-	<87a5b96296.fsf@trenco.lwn.net>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1738169964; c=relaxed/simple;
+	bh=vlR/mNTPKdf93728swy2ZznETWcIqOE2mb0rx2F285M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WfBeOZ5d5K9fUujvSZkPCRUpcE+ARY3IhL1QSgavATBIDJh/J47bNUNK+6vCEOAHN4Y2q7GLn3YTmucygQyOQYLMXrrRYKNoP1a6DGMS6YDKFmfKc0E/akSU9T0/YWfONBVaTsUAD/FFo4PzaT/elVUbHiVfIEOnVKofjFSOno4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=PqSkafCb; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=QxfFyk0f; arc=none smtp.client-ip=158.120.84.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1738169955; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe : list-unsubscribe-post;
+ bh=yI14DNCfIlRuCxZ886YFaQ2/UtcUwqmz1COfGxdJOeo=;
+ b=PqSkafCb17XgOydABrcC5PKT2z5ACLo/Huo1pVCUWfA0pciFGq61Pp/pHQXjUuGd06LKM
+ 9YPljMfR/xWXeSz5RHEhiiKcOSi+Mj1Cw2H1HMb9ffL615evZTNFmxT1O3fWBAkZScXYaDl
+ J+GvDUVEEpm1LDOdC0Cn1yujNfeFRI11h19VcX7p5ZefsbgGL4VCdRP60VvP6Tkbm79L0IU
+ 07sr/XbhK8vp4kaHGs/SQeq+ekXeip60D9yeVz/7tK/g/gyPAjD05YBFoonyA3gaZKQT7e+
+ nPfInw7Xp9R/hivI7qFYtTfOOSl52U2fX3PFXbMhiaWxbt/1mgqB7nihseJw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1738169955; h=from : subject
+ : to : message-id : date;
+ bh=yI14DNCfIlRuCxZ886YFaQ2/UtcUwqmz1COfGxdJOeo=;
+ b=QxfFyk0fuPvho0VsOVPF7nHW/qfN543eiIgsLBVUckYr6b2CebJ7VYmHN385jDKl0txSA
+ GF4ZffTMzCjXTJ7hGrop3bUk3AJvRZMVq0TIuzW4+ttjDBH/umYJy18WWDCnvPXYg2Cf5kZ
+ 0FbIwx9sh8+R3+Lw6Dlf/3ckD3hr6T1rkyqazGFvr4Jpg4DN14v+lV+1MUC6hH88abdpzz0
+ wNl/Ze+i6Y7XZtENHdcmHAlIPxDT3dTNml1F5fXR2k4x8fbkbJO5Ns7S/cWceZOxDPQCPVO
+ hjOf0tI68feVr0Yc4gCEO3cQLvPZvow0+EwUPuLM78ZsVeG6ue04LGrbcIig==
+Received: from [10.12.239.196] (helo=localhost)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97.1-S2G)
+	(envelope-from <repk@triplefau.lt>)
+	id 1tdBP9-FnQW0hPzWk4-mJHD;
+	Wed, 29 Jan 2025 16:59:07 +0000
+From: Remi Pommarel <repk@triplefau.lt>
+To: ath12k@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Remi Pommarel <repk@triplefau.lt>
+Subject: [PATCH v2] wifi: ath12k: remove return for empty tx bitrate in mac_op_sta_statistics
+Date: Wed, 29 Jan 2025 17:55:17 +0100
+Message-Id: <38c2a7c4f7eaf57b9306bb95a9e6c42b7d987e05.1738169458.git.repk@triplefau.lt>
+X-Mailer: git-send-email 2.40.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 510616m:510616apGKSTK:510616sIr91F9xb_
+X-smtpcorp-track: KoMcHzDzUiE3.pWuvcwuce-PD.q7FjhwbNYYv
 
-Em Wed, 29 Jan 2025 08:58:13 -0700
-Jonathan Corbet <corbet@lwn.net> escreveu:
+Currently in ath12k_mac_op_sta_statistics() there is the following
+logic:
 
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
-> 
-> > So, I'm proposing to change the minimal requirements to:
-> > 	- Sphinx 3.4.3;
-> > 	- Python 3.9
-> >
-> > By setting Sphinx minimal version to 3.4.3, we can get rid of all
-> > Sphinx backward-compatible code.  
-> 
-> That's certainly a nice thought.
-> 
-> With regard to Python ... are all reasonable distributions at 3.9 at
-> least?  CentOS 9 seems to be there, and Debian beyond it.  So probably
-> that is a reasonable floor to set?
+    if (!arsta->txrate.legacy && !arsta->txrate.nss)
+        return;
 
-I didn't check, but those are the current minimal versions above 3.5 for
-what we have at the Kernel tree[1]:
+Because ath12k_sta_statistics is used to report many info to iw wlan0 link,
+if it return for empty legacy and nss of arsta->txrate, then the other
+stats after it will not be set.
 
-            !2, 3.10     tools/net/sunrpc/xdrgen/generators/__init__.py
-            !2, 3.10     tools/net/sunrpc/xdrgen/generators/program.py
-            !2, 3.10     tools/net/sunrpc/xdrgen/subcmds/source.py
-            !2, 3.10     tools/net/sunrpc/xdrgen/xdr_ast.py
-            !2, 3.10     tools/power/cpupower/bindings/python/test_raw_pylibcpupower.py
-            !2, 3.9      tools/testing/selftests/net/rds/test.py
-            !2, 3.9      tools/net/ynl/ethtool.py
-            !2, 3.9      tools/net/ynl/cli.py
-            !2, 3.9      scripts/checktransupdate.py
-            !2, 3.8      tools/testing/selftests/tc-testing/plugin-lib/nsPlugin.py
-            !2, 3.8      tools/testing/selftests/hid/tests/base.py
-            !2, 3.7      tools/testing/selftests/turbostat/smi_aperf_mperf.py
-            !2, 3.7      tools/testing/selftests/turbostat/defcolumns.py
-            !2, 3.7      tools/testing/selftests/turbostat/added_perf_counters.py
-            !2, 3.7      tools/testing/selftests/hid/tests/conftest.py
-            !2, 3.7      tools/testing/kunit/qemu_config.py
-            !2, 3.7      tools/testing/kunit/kunit_tool_test.py
-            !2, 3.7      tools/testing/kunit/kunit.py
-            !2, 3.7      tools/testing/kunit/kunit_parser.py
-            !2, 3.7      tools/testing/kunit/kunit_kernel.py
-            !2, 3.7      tools/testing/kunit/kunit_json.py
-            !2, 3.7      tools/testing/kunit/kunit_config.py
-            !2, 3.7      tools/perf/scripts/python/gecko.py
-            !2, 3.7      scripts/rust_is_available_test.py
-            !2, 3.7      scripts/bpf_doc.py
-            !2, 3.6      tools/writeback/wb_monitor.py
-            !2, 3.6      tools/workqueue/wq_monitor.py
-            !2, 3.6      tools/workqueue/wq_dump.py
-            !2, 3.6      tools/usb/p9_fwd.py
-            !2, 3.6      tools/tracing/rtla/sample/timerlat_load.py
-            !2, 3.6      tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-            !2, 3.6      tools/testing/selftests/net/nl_netdev.py
-            !2, 3.6      tools/testing/selftests/net/lib/py/ynl.py
-            !2, 3.6      tools/testing/selftests/net/lib/py/utils.py
-            !2, 3.6      tools/testing/selftests/net/lib/py/nsim.py
-            !2, 3.6      tools/testing/selftests/net/lib/py/netns.py
-            !2, 3.6      tools/testing/selftests/net/lib/py/ksft.py
-            !2, 3.6      tools/testing/selftests/kselftest/ksft.py
-            !2, 3.6      tools/testing/selftests/hid/tests/test_tablet.py
-            !2, 3.6      tools/testing/selftests/hid/tests/test_sony.py
-            !2, 3.6      tools/testing/selftests/hid/tests/test_multitouch.py
-            !2, 3.6      tools/testing/selftests/hid/tests/test_mouse.py
-            !2, 3.6      tools/testing/selftests/hid/tests/base_gamepad.py
-            !2, 3.6      tools/testing/selftests/hid/tests/base_device.py
-            !2, 3.6      tools/testing/selftests/drivers/net/stats.py
-            !2, 3.6      tools/testing/selftests/drivers/net/shaper.py
-            !2, 3.6      tools/testing/selftests/drivers/net/queues.py
-            !2, 3.6      tools/testing/selftests/drivers/net/ping.py
-            !2, 3.6      tools/testing/selftests/drivers/net/lib/py/remote_ssh.py
-            !2, 3.6      tools/testing/selftests/drivers/net/lib/py/load.py
-            !2, 3.6      tools/testing/selftests/drivers/net/lib/py/__init__.py
-            !2, 3.6      tools/testing/selftests/drivers/net/lib/py/env.py
-            !2, 3.6      tools/testing/selftests/drivers/net/hw/rss_ctx.py
-            !2, 3.6      tools/testing/selftests/drivers/net/hw/pp_alloc_fail.py
-            !2, 3.6      tools/testing/selftests/drivers/net/hw/nic_performance.py
-            !2, 3.6      tools/testing/selftests/drivers/net/hw/nic_link_layer.py
-            !2, 3.6      tools/testing/selftests/drivers/net/hw/lib/py/linkconfig.py
-            !2, 3.6      tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-            !2, 3.6      tools/testing/selftests/drivers/net/hw/devmem.py
-            !2, 3.6      tools/testing/selftests/drivers/net/hw/devlink_port_split.py
-            !2, 3.6      tools/testing/selftests/drivers/net/hw/csum.py
-            !2, 3.6      tools/testing/selftests/devices/probe/test_discoverable_devices.py
-            !2, 3.6      tools/testing/selftests/bpf/test_bpftool_synctypes.py
-            !2, 3.6      tools/testing/selftests/bpf/generate_udp_fragments.py
-            !2, 3.6      tools/testing/kunit/run_checks.py
-            !2, 3.6      tools/testing/kunit/kunit_printer.py
-            !2, 3.6      tools/sched_ext/scx_show_state.py
-            !2, 3.6      tools/perf/tests/shell/lib/perf_metric_validation.py
-            !2, 3.6      tools/perf/tests/shell/lib/perf_json_output_lint.py
-            !2, 3.6      tools/perf/scripts/python/parallel-perf.py
-            !2, 3.6      tools/perf/scripts/python/flamegraph.py
-            !2, 3.6      tools/perf/scripts/python/arm-cs-trace-disasm.py
-            !2, 3.6      tools/perf/pmu-events/models.py
-            !2, 3.6      tools/perf/pmu-events/metric_test.py
-            !2, 3.6      tools/perf/pmu-events/metric.py
-            !2, 3.6      tools/perf/pmu-events/jevents.py
-            !2, 3.6      tools/net/ynl/ynl-gen-rst.py
-            !2, 3.6      tools/net/ynl/ynl-gen-c.py
-            !2, 3.6      tools/net/ynl/lib/ynl.py
-            !2, 3.6      tools/net/ynl/lib/nlspec.py
-            !2, 3.6      tools/crypto/tcrypt/tcrypt_speed_compare.py
-            !2, 3.6      tools/cgroup/iocost_monitor.py
-            !2, 3.6      tools/cgroup/iocost_coef_gen.py
-            !2, 3.6      scripts/make_fit.py
-            !2, 3.6      scripts/macro_checker.py
-            !2, 3.6      scripts/get_abi.py
-            !2, 3.6      scripts/generate_rust_analyzer.py
-            !2, 3.6      scripts/gdb/linux/timerlist.py
-            !2, 3.6      scripts/gdb/linux/pgtable.py
-            !2, 3.6      scripts/clang-tools/run-clang-tools.py
-            !2, 3.6      Documentation/sphinx/automarkup.py
+To address this issue remove the return and instead invert the logic to set
+the txrate logic if (arsta->txrate.legacy || arsta->txrate.nss).
 
-[1] Checked with:
-	vermin -v $(git ls-files *.py)
+The same was done also in both ath10k with commit 1cd6ba8ae33e ("ath10k:
+remove return for NL80211_STA_INFO_TX_BITRATE") and ath11k as well with
+commit 1d795645e1ee ("ath11k: remove return for empty tx bitrate in
+mac_op_sta_statistics").
 
-    Please notice that vermin is not perfect: my script passed as version 3.6
-    because the f-string check there didn't verify f-string improvements over
-    time. Still, it is a quick way to check that our current minimal version
-    is not aligned with reality.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+---
+Changes in v2:
+  - Rebase on ath-next
+
+ drivers/net/wireless/ath/ath12k/mac.c | 33 +++++++++++++--------------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 4fb7e235be66..e9663c6ac72c 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -10170,23 +10170,22 @@ static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
+ 	sinfo->tx_duration = arsta->tx_duration;
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_DURATION);
  
-Btw, vermin explains what is requiring more at the scripts. For instance:
+-	if (!arsta->txrate.legacy && !arsta->txrate.nss)
+-		return;
+-
+-	if (arsta->txrate.legacy) {
+-		sinfo->txrate.legacy = arsta->txrate.legacy;
+-	} else {
+-		sinfo->txrate.mcs = arsta->txrate.mcs;
+-		sinfo->txrate.nss = arsta->txrate.nss;
+-		sinfo->txrate.bw = arsta->txrate.bw;
+-		sinfo->txrate.he_gi = arsta->txrate.he_gi;
+-		sinfo->txrate.he_dcm = arsta->txrate.he_dcm;
+-		sinfo->txrate.he_ru_alloc = arsta->txrate.he_ru_alloc;
+-		sinfo->txrate.eht_gi = arsta->txrate.eht_gi;
+-		sinfo->txrate.eht_ru_alloc = arsta->txrate.eht_ru_alloc;
+-	}
+-	sinfo->txrate.flags = arsta->txrate.flags;
+-	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
++	if (arsta->txrate.legacy || arsta->txrate.nss) {
++		if (arsta->txrate.legacy) {
++			sinfo->txrate.legacy = arsta->txrate.legacy;
++		} else {
++			sinfo->txrate.mcs = arsta->txrate.mcs;
++			sinfo->txrate.nss = arsta->txrate.nss;
++			sinfo->txrate.bw = arsta->txrate.bw;
++			sinfo->txrate.he_gi = arsta->txrate.he_gi;
++			sinfo->txrate.he_dcm = arsta->txrate.he_dcm;
++			sinfo->txrate.he_ru_alloc = arsta->txrate.he_ru_alloc;
++			sinfo->txrate.eht_gi = arsta->txrate.eht_gi;
++			sinfo->txrate.eht_ru_alloc = arsta->txrate.eht_ru_alloc;
++		}
++		sinfo->txrate.flags = arsta->txrate.flags;
++		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
++	}
+ 
+ 	/* TODO: Use real NF instead of default one. */
+ 	signal = arsta->rssi_comb;
+-- 
+2.40.0
 
-	$ vermin -vv scripts/checktransupdate.py
-	...
-	!2, 3.9      /new_devel/v4l/docs/scripts/checktransupdate.py
-	  'argparse' module requires 2.7, 3.2
-	  'argparse.BooleanOptionalAction' member requires !2, 3.9
-	  'datetime' module requires 2.3, 3.0
-	  'datetime.datetime.strptime' member requires 2.5, 3.0
-	  'logging' module requires 2.3, 3.0
-	  'logging.StreamHandler' member requires 2.6, 3.0
-	  'os.path.relpath' member requires 2.6, 3.0
-	  f-strings require !2, 3.6
-
-Thanks,
-Mauro
 
