@@ -1,155 +1,131 @@
-Return-Path: <linux-wireless+bounces-18158-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18159-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F40A2226F
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 17:59:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A845EA22277
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 18:04:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E31D17A3A94
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 16:58:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A5A01638FD
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 17:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A3B1DFE0A;
-	Wed, 29 Jan 2025 16:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D576D15666D;
+	Wed, 29 Jan 2025 17:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="PqSkafCb";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="QxfFyk0f"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QRtBsHpt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from e3i103.smtp2go.com (e3i103.smtp2go.com [158.120.84.103])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B9F1DF99D
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 16:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D04B17A5A4
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 17:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738169964; cv=none; b=E5fzPLGXxP1TZngT9mQcRbg+9+/I2wmW6p2WMWcC3FZDpFXA5EBqrOKnq4QoA5vuNyVxw6ThdP76tuPtlDIfXhgxGWK0D15cpjnb/mn4pCKvXCU61xdJJgg0AlEqAiSayUyXt820yl1l910sLoiJbY3NJznVF2MvkuDkaKDgbrE=
+	t=1738170239; cv=none; b=jF9x5UaKB13n5Bw53qCG5QAEppqmoFM86wbedMiP1tXnnOabNEz5iBs1UMirUTAMZuBZbuhdBZ5yEfU3xYdje1Am02MRzALvyaprf+DZN9+KrmitC0FUtNYdbGUAbPzRRv7KN7yw9ID45RO3Up+g6nzS5tLsbKiNRrxWZy6l3MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738169964; c=relaxed/simple;
-	bh=vlR/mNTPKdf93728swy2ZznETWcIqOE2mb0rx2F285M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WfBeOZ5d5K9fUujvSZkPCRUpcE+ARY3IhL1QSgavATBIDJh/J47bNUNK+6vCEOAHN4Y2q7GLn3YTmucygQyOQYLMXrrRYKNoP1a6DGMS6YDKFmfKc0E/akSU9T0/YWfONBVaTsUAD/FFo4PzaT/elVUbHiVfIEOnVKofjFSOno4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=PqSkafCb; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=QxfFyk0f; arc=none smtp.client-ip=158.120.84.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
- i=@smtpservice.net; q=dns/txt; s=a1-4; t=1738169955; h=feedback-id :
- x-smtpcorp-track : date : message-id : to : subject : from : reply-to
- : sender : list-unsubscribe : list-unsubscribe-post;
- bh=yI14DNCfIlRuCxZ886YFaQ2/UtcUwqmz1COfGxdJOeo=;
- b=PqSkafCb17XgOydABrcC5PKT2z5ACLo/Huo1pVCUWfA0pciFGq61Pp/pHQXjUuGd06LKM
- 9YPljMfR/xWXeSz5RHEhiiKcOSi+Mj1Cw2H1HMb9ffL615evZTNFmxT1O3fWBAkZScXYaDl
- J+GvDUVEEpm1LDOdC0Cn1yujNfeFRI11h19VcX7p5ZefsbgGL4VCdRP60VvP6Tkbm79L0IU
- 07sr/XbhK8vp4kaHGs/SQeq+ekXeip60D9yeVz/7tK/g/gyPAjD05YBFoonyA3gaZKQT7e+
- nPfInw7Xp9R/hivI7qFYtTfOOSl52U2fX3PFXbMhiaWxbt/1mgqB7nihseJw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1738169955; h=from : subject
- : to : message-id : date;
- bh=yI14DNCfIlRuCxZ886YFaQ2/UtcUwqmz1COfGxdJOeo=;
- b=QxfFyk0fuPvho0VsOVPF7nHW/qfN543eiIgsLBVUckYr6b2CebJ7VYmHN385jDKl0txSA
- GF4ZffTMzCjXTJ7hGrop3bUk3AJvRZMVq0TIuzW4+ttjDBH/umYJy18WWDCnvPXYg2Cf5kZ
- 0FbIwx9sh8+R3+Lw6Dlf/3ckD3hr6T1rkyqazGFvr4Jpg4DN14v+lV+1MUC6hH88abdpzz0
- wNl/Ze+i6Y7XZtENHdcmHAlIPxDT3dTNml1F5fXR2k4x8fbkbJO5Ns7S/cWceZOxDPQCPVO
- hjOf0tI68feVr0Yc4gCEO3cQLvPZvow0+EwUPuLM78ZsVeG6ue04LGrbcIig==
-Received: from [10.12.239.196] (helo=localhost)
-	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97.1-S2G)
-	(envelope-from <repk@triplefau.lt>)
-	id 1tdBP9-FnQW0hPzWk4-mJHD;
-	Wed, 29 Jan 2025 16:59:07 +0000
-From: Remi Pommarel <repk@triplefau.lt>
-To: ath12k@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Remi Pommarel <repk@triplefau.lt>
-Subject: [PATCH v2] wifi: ath12k: remove return for empty tx bitrate in mac_op_sta_statistics
-Date: Wed, 29 Jan 2025 17:55:17 +0100
-Message-Id: <38c2a7c4f7eaf57b9306bb95a9e6c42b7d987e05.1738169458.git.repk@triplefau.lt>
-X-Mailer: git-send-email 2.40.0
+	s=arc-20240116; t=1738170239; c=relaxed/simple;
+	bh=V9crMbVIP8+vinbtlmt+HlQD0N5QnM5Jyt/th8QNvIQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=KJ2SSpMs8LezJabQSveeeC5K1S1TEOxZznqQRNL7a/MYDjHLi5dmkeGDO2BX/Ex/CU/y5Yw8H9N4iITHfy6hpw4X2fj7eEtw1MBjLUnUd1KAOzVJHA9LpG7eqqwHmPkr87MeBtt8AtICLoMOt+3Tmv6duO5zAvR+g61tpGO6/YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QRtBsHpt; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50T6OcwR004260
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 17:03:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	cCYxhKn4B4q2UzXNaKibV8fc0rPbgSiq2cv6hbxdtdo=; b=QRtBsHptoKTvmVGi
+	uVsXVo6pAu3mxOeC8ThgGvf4mIUNB3DXAkS6l8P/ELivSHxldVEUVOPyEPLhwIz0
+	FXxIUYKEy9ZzXl47mZra+RtKspygzEGa7HwbQikLjNyrkQUH36Ei5+MZopuxouAg
+	7qqilGHWziLoUSgMryr6h7P35nYgjH+eRtpba88gI+0MI52CIyk31tO/5kzJqpj0
+	CVUuCZtoD1R2vR7RmiDfjFaqYpyb5ULcWoz7KartSFLTdasqEHg0kbpe4cixTfjK
+	Tflyma79gcR0UBQURhZgKSpc58/OZt/OohgO2NHvL2sKfTLuOTRPk6OZQNC0UlOh
+	/mVx6Q==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ff1q16h0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 17:03:56 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2ee86953aeaso13602753a91.2
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 09:03:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738170236; x=1738775036;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cCYxhKn4B4q2UzXNaKibV8fc0rPbgSiq2cv6hbxdtdo=;
+        b=PwdBAO3SDMs+AuLQEm7A8SJ8xWYzFQQb81euqm1ElWH6mqolAJXPHQ6R8tTiyzR7Us
+         sI+kj1GfK8DQuVR4Jo3Y/W+UfNjISpUByJK5vOdREfM5mGFpq9t2xNlpjnl5KGA/nDTZ
+         NnD24S19pgQOv3qFCAkYKvuafiTHwkPvniH4f7xKAfJPjLF3r4HbkSnrYc3gOvgWEJPQ
+         7rZmux7w0p0/N7Ymk7OoTHANkv6dgJ4+MS+32CXry1exSnyaSCHBN3fyw0fih79uIV16
+         uAr6xuLCzBodB8EK2iP8Rvjk32LQp0g9Kd3spuPvqox+leoCxrXcoFEbZqPGbqCUK+eV
+         zKoA==
+X-Gm-Message-State: AOJu0Yz2Z1/mgN/loPFPd0s4L1XFdYOhWZ514XdEPGKpA3QGr3APk3aP
+	s7T3gOyUM8DPgiX0VuqwU4NDKQbSxIUSW5YnPmfRaMFpZsgncHyazSX2wUVNOwX5xWdR5lcE61r
+	7CiBZXTDalZdE5X2olYMvCY3PuN5Zwb3dhQjxJNzrnNHipkVGCjbJrOhTFhRaAVirwy0dheK7Fw
+	==
+X-Gm-Gg: ASbGncsfyhDmsYoDMDBNjOwitQ8OuDN/sj9wW96Fl2DE79n6hkiJoGnZZhjSwJwdqd8
+	F8EsHqVZxwlxPG+IWET7Q3Qot/dnfJFonJpwK4vYxqzlHVXT3BEYRnzXYTe2xLUrIrq75Iz2KsC
+	hNY38kC+rEayvAWGeiuRbDzwOKYlIqOEixWxW6vbV2FGie/229avdnVwaXV2uOE/iOtX+/zlt3j
+	vOrmQDOSIOkf1VrBMJCl1xw/gJY72kF03LUNWUKjrADjb8kSSR+00dLesTLNSyONMkYXwYPBDSs
+	o766dFF9MRBSPpS8fGt/TklnaSRbs6sGXXVkQHhSyQ==
+X-Received: by 2002:a17:90b:2585:b0:2ee:accf:9685 with SMTP id 98e67ed59e1d1-2f83abac617mr5297413a91.4.1738170235860;
+        Wed, 29 Jan 2025 09:03:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFrCpglI/oFl5t78dPoQSEwQUu3I5D99R137n8Ay4Pl8j1UVbu6nUQdGuNOrFSDImafbQPXMg==
+X-Received: by 2002:a17:90b:2585:b0:2ee:accf:9685 with SMTP id 98e67ed59e1d1-2f83abac617mr5297381a91.4.1738170235484;
+        Wed, 29 Jan 2025 09:03:55 -0800 (PST)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f83be3622bsm1988366a91.46.2025.01.29.09.03.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jan 2025 09:03:55 -0800 (PST)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: ath12k@lists.infradead.org, Aaradhana Sahu <quic_aarasahu@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+In-Reply-To: <20250116032835.118397-1-quic_aarasahu@quicinc.com>
+References: <20250116032835.118397-1-quic_aarasahu@quicinc.com>
+Subject: Re: [PATCH] wifi: ath12k: Fetch regdb.bin file from board-2.bin
+Message-Id: <173817023483.726123.2294052678769953649.b4-ty@oss.qualcomm.com>
+Date: Wed, 29 Jan 2025 09:03:54 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 510616m:510616apGKSTK:510616sIr91F9xb_
-X-smtpcorp-track: KoMcHzDzUiE3.pWuvcwuce-PD.q7FjhwbNYYv
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0
+X-Proofpoint-GUID: 46gTbhmRoP46pIQFnyfjkiZfrRoxbTqn
+X-Proofpoint-ORIG-GUID: 46gTbhmRoP46pIQFnyfjkiZfrRoxbTqn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-29_03,2025-01-29_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=822
+ impostorscore=0 mlxscore=0 suspectscore=0 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501290136
 
-Currently in ath12k_mac_op_sta_statistics() there is the following
-logic:
 
-    if (!arsta->txrate.legacy && !arsta->txrate.nss)
-        return;
+On Thu, 16 Jan 2025 08:58:35 +0530, Aaradhana Sahu wrote:
+> Currently, ath12k_core_fetch_regdb() finds regdb.bin file through
+> board id's but in board-2.bin file regdb.bin file is present with
+> default board id because of which regdb.bin is not fetched.
+> 
+> Add support to fetch regdb.bin file from board-2.bin through
+> default board id.
+> 
+> [...]
 
-Because ath12k_sta_statistics is used to report many info to iw wlan0 link,
-if it return for empty legacy and nss of arsta->txrate, then the other
-stats after it will not be set.
+Applied, thanks!
 
-To address this issue remove the return and instead invert the logic to set
-the txrate logic if (arsta->txrate.legacy || arsta->txrate.nss).
+[1/1] wifi: ath12k: Fetch regdb.bin file from board-2.bin
+      commit: 24f587572acf7509127dbdfcbf1b681ef84eeba0
 
-The same was done also in both ath10k with commit 1cd6ba8ae33e ("ath10k:
-remove return for NL80211_STA_INFO_TX_BITRATE") and ath11k as well with
-commit 1d795645e1ee ("ath11k: remove return for empty tx bitrate in
-mac_op_sta_statistics").
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
----
-Changes in v2:
-  - Rebase on ath-next
-
- drivers/net/wireless/ath/ath12k/mac.c | 33 +++++++++++++--------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 4fb7e235be66..e9663c6ac72c 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -10170,23 +10170,22 @@ static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 	sinfo->tx_duration = arsta->tx_duration;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_DURATION);
- 
--	if (!arsta->txrate.legacy && !arsta->txrate.nss)
--		return;
--
--	if (arsta->txrate.legacy) {
--		sinfo->txrate.legacy = arsta->txrate.legacy;
--	} else {
--		sinfo->txrate.mcs = arsta->txrate.mcs;
--		sinfo->txrate.nss = arsta->txrate.nss;
--		sinfo->txrate.bw = arsta->txrate.bw;
--		sinfo->txrate.he_gi = arsta->txrate.he_gi;
--		sinfo->txrate.he_dcm = arsta->txrate.he_dcm;
--		sinfo->txrate.he_ru_alloc = arsta->txrate.he_ru_alloc;
--		sinfo->txrate.eht_gi = arsta->txrate.eht_gi;
--		sinfo->txrate.eht_ru_alloc = arsta->txrate.eht_ru_alloc;
--	}
--	sinfo->txrate.flags = arsta->txrate.flags;
--	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
-+	if (arsta->txrate.legacy || arsta->txrate.nss) {
-+		if (arsta->txrate.legacy) {
-+			sinfo->txrate.legacy = arsta->txrate.legacy;
-+		} else {
-+			sinfo->txrate.mcs = arsta->txrate.mcs;
-+			sinfo->txrate.nss = arsta->txrate.nss;
-+			sinfo->txrate.bw = arsta->txrate.bw;
-+			sinfo->txrate.he_gi = arsta->txrate.he_gi;
-+			sinfo->txrate.he_dcm = arsta->txrate.he_dcm;
-+			sinfo->txrate.he_ru_alloc = arsta->txrate.he_ru_alloc;
-+			sinfo->txrate.eht_gi = arsta->txrate.eht_gi;
-+			sinfo->txrate.eht_ru_alloc = arsta->txrate.eht_ru_alloc;
-+		}
-+		sinfo->txrate.flags = arsta->txrate.flags;
-+		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
-+	}
- 
- 	/* TODO: Use real NF instead of default one. */
- 	signal = arsta->rssi_comb;
+Best regards,
 -- 
-2.40.0
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
 
