@@ -1,178 +1,191 @@
-Return-Path: <linux-wireless+bounces-18099-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18100-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8ADA21687
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 03:43:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15501A21757
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 06:21:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0466E18840A0
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 02:44:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 502651888E90
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 05:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A141C2D627;
-	Wed, 29 Jan 2025 02:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E4EEAF6;
+	Wed, 29 Jan 2025 05:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ODE0y842"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eHATckdQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35BE2AE7C
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 02:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91957FD
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 05:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738118634; cv=none; b=RQWlKwwQOBrPXcC5ky/xJC8VLVuUW+jNqJXG7yqotmOnUn6IaTbAPHyXLp5he08F8Yh/sE+mt8fQg/us/5/yEMNI3nU00JI+xbz80JeflePP07Wl5Cy9YcM9kuG5k3hM7KEilsNnKZbRoilr354HipB+/w3NJif6frljEiTyul0=
+	t=1738128086; cv=none; b=UEILrOaftd0apXdk/2iPMbl9GI2xVnkxkxEiWdGsdEUrJEONzNLLZ1nTjx7Q4Igbd7DUGANVMdd43m/d6yNNggNOmHp/4bjiQ4YmKG5j6PA7z1qJrrZ8fIvrGSJmxc/FS3gTM/PzTwxEK1G4109SaCA1XBg9k6n+YBy2VVBACqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738118634; c=relaxed/simple;
-	bh=iOly2gXTW3iN8g1p2jVvPXuitYO0A0ju0+rb5680Acg=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=lzK3fj/+uol8rPHGhWLzNcjp09KEj5cjbOAS0FD1l/GyKLodXUJYQs4NjnfURXvyl6GxIlScvE0aP6djtEpQsegG0fDee+UBWKdZKA7IF20mMuk77ycjVcG367V5aOEckRqqWrSar7blYyCfE3NlGjHVHxqUm5Wd7gwIMyJDFd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ODE0y842; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50T2hipaF1283082, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1738118624; bh=iOly2gXTW3iN8g1p2jVvPXuitYO0A0ju0+rb5680Acg=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ODE0y8429Cfw80q0O4AZ7uP1T7E6UMpmlXtsMIev+Iy3zNxig31Z7PZuBnnJYNNOM
-	 ABbHvTt403zlqvWaj25/WJKVllxcGNX9JJkw3vtfkytOcD7EWzrVGM9v3YY4fMWX3X
-	 SA+EFrcBd8SsEUsq1HL5rW10AHHtGVMpQ+s14HrH9u4IqRsZFxBijMaaM1fcc0zxSG
-	 kK+gIO9Bfh9F1m3cv5LMvNBk0IuhjxdO2U8WR8b2/zpQK815iyBWo+ZxD/1dvKBACl
-	 O5TN29X0WntT/ahG22hMB1GzDaZwJmxmXFVdoymgYx1V+fTiSM0DXq/bnaLZ2KLLUB
-	 L94jS+LWTeMVg==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50T2hipaF1283082
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 Jan 2025 10:43:44 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 29 Jan 2025 10:43:45 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 29 Jan 2025 10:43:44 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553]) by
- RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553%5]) with mapi id
- 15.01.2507.035; Wed, 29 Jan 2025 10:43:44 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 5/7] wifi: rtw88: Extend rtw_fw_send_ra_info() for RTL8814AU
-Thread-Topic: [PATCH 5/7] wifi: rtw88: Extend rtw_fw_send_ra_info() for
- RTL8814AU
-Thread-Index: AQHbcEWMDvUgah16k02kcTsE1TgourMqKWuBgACTdYCAAPJSlIAAOz8AgAEf/jU=
-Date: Wed, 29 Jan 2025 02:43:44 +0000
-Message-ID: <1f04331c713141c68e6892751611d01e@realtek.com>
-References: <fb2c2ae6-6173-4b4a-9e1f-ff51759cdee6@gmail.com>
- <fa9ff2b4-6e1a-45e4-90de-db6fe0d4f433@gmail.com>
- <ca7380d8560046c4a2a2badde9302691@realtek.com>
- <d05ba9e5-d5e3-4761-bd1e-f7c2b63f5a36@gmail.com>
- <53740c9ec74a4aa0a5a3c51b895eb385@realtek.com>,<d80fe4e2-1e38-4e84-b169-8c2699d7c764@gmail.com>
-In-Reply-To: <d80fe4e2-1e38-4e84-b169-8c2699d7c764@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: en-US
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1738128086; c=relaxed/simple;
+	bh=GMSRvFz5LGr0QHxv/qSfRbvUl+ICTakZjShmvPIWcEY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=hYIJWOYyLm43rXiblziWn4WUyI0/RfgES+H2SZQXmDSiaonW6iSThDLy27Iq5E576is6qBSM77XHcE0qOUK8Zl9Ii1x7BB6ToClCtF7+xTIiW1QyJlss2lPCHM8SYQOCUy7Y6v8sqWQDzJIDtNdI56WCXoeyS8pXqjaYHuJwLv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eHATckdQ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50T2hTvZ021198;
+	Wed, 29 Jan 2025 05:21:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	PN3t4ICONZDRDV54eH4uyvDuwLwSMYI8MBgZy+50YFY=; b=eHATckdQQPG5tlv5
+	5CrjsqupHu+dmvr9ElyCnuXoyECaaYaJMYLYcKI9Qr/Gm2JMfeCngEpxQrjT+dl+
+	kzey/WpjZk73n7cGAY3CU4Y9ojxspYgZSEnPvgu1qcxRm7vYGyUWQyQEjrhP3EuN
+	HbEZSTgA0HQAIou+28sd3uPHdPufmegMVYZHkJnrCQZXO29JDh2RddlFnOfFpLDQ
+	CQj8u/FPa5vUqignZQXujkNKrB1ofGx/9TeffGOCmvMFyCMbkLMLUzeQ1yTb938r
+	uGqE8PXMBsJWDBQsqAyd6EV0eabHHndQa/hTg7Pot1yk6PY5C/Ica+5sP3U0CPsR
+	1iuAjQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44f7xfgjrk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jan 2025 05:21:20 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50T5LJqc023940
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jan 2025 05:21:20 GMT
+Received: from [10.216.32.57] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 28 Jan
+ 2025 21:21:18 -0800
+Message-ID: <35fcc2d4-519b-8f71-c722-7aceea590b0e@quicinc.com>
+Date: Wed, 29 Jan 2025 10:51:14 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v5 1/9] wifi: ath12k: Add HAL_PHYRX_GENERIC_U_SIG TLV
+ parsing support
+Content-Language: en-US
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, P Praneesh <quic_ppranees@quicinc.com>
+References: <20250127104738.4174862-1-quic_periyasa@quicinc.com>
+ <20250127104738.4174862-2-quic_periyasa@quicinc.com>
+From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+In-Reply-To: <20250127104738.4174862-2-quic_periyasa@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: NRFuNPixwBMj-Biee0swBVHQi4ok5j3-
+X-Proofpoint-GUID: NRFuNPixwBMj-Biee0swBVHQi4ok5j3-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-28_04,2025-01-27_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 malwarescore=0
+ phishscore=0 mlxlogscore=999 adultscore=0 impostorscore=0 spamscore=0
+ priorityscore=1501 clxscore=1015 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501290042
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
-> On 28/01/2025 07:52, Ping-Ke Shih wrote:
-> > Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
-> >> On 27/01/2025 08:36, Ping-Ke Shih wrote:
-> >>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
-> >>>> The existing code is suitable for chips with up to 2 spatial streams=
-.
-> >>>> Inform the firmware about the rates it's allowed to use when
-> >>>> transmitting 3 spatial streams.
-> >>>>
-> >>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> >>>> ---
-> >>>>  drivers/net/wireless/realtek/rtw88/fw.c | 14 ++++++++++++++
-> >>>>  drivers/net/wireless/realtek/rtw88/fw.h |  1 +
-> >>>>  2 files changed, 15 insertions(+)
-> >>>>
-> >>>> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/w=
-ireless/realtek/rtw88/fw.c
-> >>>> index 02389b7c6876..0ca1b139110d 100644
-> >>>> --- a/drivers/net/wireless/realtek/rtw88/fw.c
-> >>>> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
-> >>>> @@ -735,6 +735,7 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev,=
- struct rtw_sta_info *si,
-> >>>>  {
-> >>>>         u8 h2c_pkt[H2C_PKT_SIZE] =3D {0};
-> >>>>         bool disable_pt =3D true;
-> >>>> +       u32 mask_hi;
-> >>>>
-> >>>>         SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_RA_INFO);
-> >>>>
-> >>>> @@ -755,6 +756,19 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev=
-, struct rtw_sta_info *si,
-> >>>>         si->init_ra_lv =3D 0;
-> >>>>
-> >>>>         rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
-> >>>> +
-> >>>> +       if (rtwdev->chip->rf_tbl[RF_PATH_C]) {
-> >>>
-> >>> Using `efuse->hw_cap.nss >=3D 3` would be consistent with latter patc=
-h.
-> >>>
-> >>
-> >> I would like that, but nss is 2 when RTL8814AU is in USB 2 mode.
-> >> I assume this is to keep the current draw under the 500 mA limit
-> >> of USB 2.
-> >>
-> >> What about rtwdev->hal.rf_path_num >=3D 3 ? I don't remember why
-> >> I didn't do that.
-> >
-> > I think `rtwdev->hal.rf_path_num >=3D 3` is suitable to initialize/conf=
-igure
-> > hardware registers, because no matter USB 2 or 3 mode should be the sam=
-e.
-> >
-> > For this case (RA info), this is related to protocol, so I feel
-> > `efuse->hw_cap.nss >=3D 3` is suitable, but I have not seen a patch to =
-declare
-> > supported NSS in register_hw(), or I missed it? Or, without RA_INFO_HI,
-> > it gets abnormal rate to RTL8814AU in your test?
-> >
->=20
-> You didn't miss it, that will be in part 3. You can see the code here:
->=20
-> https://github.com/lwfinger/rtw88/blob/21a3fa7ec11a0cbb3be14145f45cdca35c=
-3d3217/rtw8814a.c#L82
->=20
 
-I feel we should clearly define the meaning. What I thought for 8814AU are:
- - hal->rf_type: hardware capability. Should be RF_3T3R no matter USB 2 or =
-3.
- - hal->antenna_tx: the antenna for current TX. Can be 2 antenna.
- - hal->antenna_rx: the antenna for current RX. Can be 2 antenna.
- - efuse->hw_cap.nss: read from efuse. So this will be 3SS for USB 2/3.
-If you have better defnitiion, please share your ideas.=20
 
-Also, I would want to point the mcs_map implemented in rtw_init_vht_cap().
+On 1/27/2025 4:17 PM, Karthikeyan Periyasamy wrote:
+> Currently, monitor is not enabled. However, in the future, the monitor
+> will be enabled. Therefore, add the necessary HAL_PHYRX_GENERIC_U_SIG TLV
+> parsing support in monitor Rx path, which help to populate the EHT
+> radiotap data.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> ---
+>   drivers/net/wireless/ath/ath12k/dp_mon.c | 211 ++++++++++++++++++++++-
+>   drivers/net/wireless/ath/ath12k/hal_rx.h |  60 +++++++
+>   2 files changed, 270 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+> index 4e9a60181c06..4c8fe1b65fda 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_mon.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+> @@ -10,6 +10,9 @@
+>   #include "dp_tx.h"
+>   #include "peer.h"
+>   
+> +#define ATH12K_LE32_DEC_ENC(value, dec_bits, enc_bits)	\
+> +		u32_encode_bits(le32_get_bits(value, dec_bits), enc_bits)
+> +
+>   static void
+>   ath12k_dp_mon_rx_handle_ofdma_info(const struct hal_rx_ppdu_end_user_stats *ppdu_end_user,
+>   				   struct hal_rx_user_status *rx_user_status)
+> @@ -562,6 +565,193 @@ static void ath12k_dp_mon_parse_he_sig_su(const struct hal_rx_he_sig_a_su_info *
+>   	ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_SU;
+>   }
+>   
+> +static enum hal_rx_mon_status
+> +ath12k_dp_mon_hal_rx_parse_u_sig_cmn(const struct hal_mon_usig_cmn *cmn,
+> +				     struct hal_rx_mon_ppdu_info *ppdu_info)
+> +{
+> +	u32 common;
+> +	u8 bw;
+> +
+> +	bw = le32_get_bits(cmn->info0, HAL_RX_USIG_CMN_INFO0_BW);
+> +
+> +	common = __le32_to_cpu(ppdu_info->usig.common);
+> +	common |= IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER_KNOWN |
+> +		  IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_KNOWN |
+> +		  IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL_KNOWN |
+> +		  IEEE80211_RADIOTAP_EHT_USIG_COMMON_BSS_COLOR_KNOWN |
+> +		  IEEE80211_RADIOTAP_EHT_USIG_COMMON_TXOP_KNOWN |
+> +		  ATH12K_LE32_DEC_ENC(cmn->info0,
+> +				      HAL_RX_USIG_CMN_INFO0_PHY_VERSION,
+> +				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER) |
+> +		  u32_encode_bits(bw, IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW) |
+> +		  ATH12K_LE32_DEC_ENC(cmn->info0,
+> +				      HAL_RX_USIG_CMN_INFO0_UL_DL,
+> +				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL) |
+> +		  ATH12K_LE32_DEC_ENC(cmn->info0,
+> +				      HAL_RX_USIG_CMN_INFO0_BSS_COLOR,
+> +				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_BSS_COLOR) |
+> +		  ATH12K_LE32_DEC_ENC(cmn->info0,
+> +				      HAL_RX_USIG_CMN_INFO0_TXOP,
+> +				      IEEE80211_RADIOTAP_EHT_USIG_COMMON_TXOP);
+> +	ppdu_info->usig.common = cpu_to_le32(common);
+> +
+> +	switch (bw) {
+> +	default:
+> +		fallthrough;
+> +	case HAL_EHT_BW_20:
+> +		ppdu_info->bw = HAL_RX_BW_20MHZ;
+> +		break;
+> +	case HAL_EHT_BW_40:
+> +		ppdu_info->bw = HAL_RX_BW_40MHZ;
+> +		break;
+> +	case HAL_EHT_BW_80:
+> +		ppdu_info->bw = HAL_RX_BW_80MHZ;
+> +		break;
+> +	case HAL_EHT_BW_160:
+> +		ppdu_info->bw = HAL_RX_BW_160MHZ;
+> +		break;
+> +	case HAL_EHT_BW_320_1:
+> +	case HAL_EHT_BW_320_2:
+> +		ppdu_info->bw = HAL_RX_BW_320MHZ;
+> +		break;
+> +	}
+> +
+> +	return HAL_TLV_STATUS_PPDU_NOT_DONE;
 
-	if (efuse->hw_cap.nss > 1) {
-		highest =3D cpu_to_le16(780);
-		mcs_map |=3D IEEE80211_VHT_MCS_SUPPORT_0_9 << 2;
-	}
+Return code for this function and the below ones dont seem
+to have a real use in the callers. May be these can be made
+void instead?
 
-This can only support up to 2SS, and I'm not sure if 'efuse->hw_cap.nss' is
-still sutiable for 8814AU.
-
->=20
-> With RA_INFO_HI the first C2H_RA_RPT comes at the normal time,
-> before the first CTRL-EVENT-SIGNAL-CHANGE:
-
-So, how about sending RA_INFO_HI unconditionally for 8814AU
-(just check chip ID as condition)?
-
+Vasanth
 
