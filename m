@@ -1,126 +1,197 @@
-Return-Path: <linux-wireless+bounces-18149-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18150-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D31A220A3
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 16:42:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78510A220EA
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 16:53:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BE9A163388
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 15:42:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8BCE162FE8
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 15:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465DA1DE2DE;
-	Wed, 29 Jan 2025 15:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BC618F2EA;
+	Wed, 29 Jan 2025 15:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aU7xY1/z"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hUN41M0g"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2101DDC3A;
-	Wed, 29 Jan 2025 15:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB158224EA
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 15:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738165325; cv=none; b=t8BjAEIdA8K95Se/NUwzpFLs+9h2aMZ7jqTQvN21+vgBeqSToWhMKixv+2g3JiYGsGE8Dc91uUvrs7RFwgM0w5M9lKeSHO5RQ056fqAfDlsJExiobbIrzmg4gtTn7q2nZuaCMLcwjBfaDl7H6Pm7x3ihwmHcyxT392NFar5SejA=
+	t=1738165992; cv=none; b=mZmaGJA6yEOQutqDFd5KA43hGDI/eRAImKYrOng77Mn+9AGzzZjliQwF5R+UMP1iPcZvZfCUHG4iK0PTUFG4pEiXveWVE9c4+shq+Z7GA7zAWr3cNk2fhSpdEInolnBeX31Rg1Y0r12WqYvhaku2Gn2KmpertcyEoag8WG92rd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738165325; c=relaxed/simple;
-	bh=GplWvWETMezm9d36v4eAfoqt/au1TivnkJ+SWeO2lSg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nULorQv0YZ4GmJqK4IZzAGWTY1rBkCK+jAwubyKpSI91jLOlKnEOTEnd9dbZ+rvdq73BINCO5avupZfV9gmdPcrnqMn/A9wGAS9Ve9x04q6aYFHex8s4VBAz/s3flI9FM0lSJXGtt+Ui3dPN1VHeINx2+HOiWe3lwSKfaA9b/Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aU7xY1/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60928C4CED1;
-	Wed, 29 Jan 2025 15:42:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738165324;
-	bh=GplWvWETMezm9d36v4eAfoqt/au1TivnkJ+SWeO2lSg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aU7xY1/zYzJuaW6w9rNm1ubl5Xt+CWFtHsWN2RKDfRYDVbS6hoIF9qvqRPP/jdC+o
-	 n9sc28S2gI6BwQGNNkViJtfEuGMgf8yXViqR0bVptbi1JGdt4uZpDL3rC+zLYdD2R2
-	 LvRr+oYrBTHfe0N1TI7nLfb3oLUOcNMk6jlIoAg5MOCpNzo+MotUd8JaUv3wKoon4l
-	 tuVdgnNv0djOjt6DKfIc7gmEm0g5OKUWFx4Yfktshh9bhs5uK1rRKp5QLYBX+v7URg
-	 lc1VdYMtw06mrr+76GOR28iAJW7U2ehBlI2qXh9oSISs4oV4/EZifWpzvEERxf1Lkt
-	 yXZsdTh95S+vg==
-Date: Wed, 29 Jan 2025 16:41:57 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, coresight@lists.linaro.org,
- linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-hardening@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- workflows@vger.kernel.org
-Subject: Re: [RFC v2 00/38] Improve ABI documentation generation
-Message-ID: <20250129164157.3c7c072d@foz.lan>
-In-Reply-To: <87h65i7e87.fsf@trenco.lwn.net>
-References: <cover.1738020236.git.mchehab+huawei@kernel.org>
-	<87h65i7e87.fsf@trenco.lwn.net>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1738165992; c=relaxed/simple;
+	bh=hhJ0WQwMO61jx/B8fsfuyCZMDZOkVgqbe/RG8vG+2+Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JD6QId+SwCwfBzGpMJ4pvqMPpnlsYnOmyae5zk/CYNw4vL0J89xTEC+7LO1iDNQvSLLQVEawjnqVMn4VjggqFMLL3vzZUGUQpfGSmp2tw/urUoL+SaaK1oF063KRiPCkjQ1x3iD8G92zvHN+fKJBnkwfVJI4zD2BeCioslH5Pfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hUN41M0g; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50T6RV6O008605;
+	Wed, 29 Jan 2025 15:53:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=jHSbZFqSJjMifpl2inlU7S
+	ZBB1IYt6DnvfMpLfDzLNQ=; b=hUN41M0gt4/gwBI+ZYDH0xvjTp9vQN0nOFMDZ4
+	nVVex67fBG9AXbjjdAebHXW7y2utZn+tlQ+rScjmdBac0Yic0Z20Hp6C0PCKtr/a
+	XGw3+oVYC8jMRKLfQb7cm3X7GgCvU+oERR02Lse9oH+/gbYtNKlQxnSXLj2O6NXS
+	6DeNNwNxLWone24freXBBRjHmpE3fw8CQxiet6JoK4HJpvQyKdvg0jDmJm+UF3lf
+	bsxYdBH+BJiv1ASmZWDvNTNY26J2aLG2ENvcOkO1WJIZC+ypoxsrjG5syA4lEQ38
+	Xc8sf8lfD7pYVWw8/7on3PSb5w422PSjD1PqFoNk8sf9kkEA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ff33s0u6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jan 2025 15:53:05 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50TFr4l0026262
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jan 2025 15:53:04 GMT
+Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 29 Jan 2025 07:53:03 -0800
+From: Roopni Devanathan <quic_rdevanat@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>,
+        Roopni Devanathan
+	<quic_rdevanat@quicinc.com>
+Subject: [PATCH v4 0/5] wifi: cfg80211/mac80211: Set/get wiphy parameters on per-radio basis
+Date: Wed, 29 Jan 2025 21:22:41 +0530
+Message-ID: <20250129155246.155587-1-quic_rdevanat@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 0zNc9xEReRQ00Z_hmQQhUCKHX9SdkxRM
+X-Proofpoint-GUID: 0zNc9xEReRQ00Z_hmQQhUCKHX9SdkxRM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-29_03,2025-01-29_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ phishscore=0 impostorscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0
+ clxscore=1015 adultscore=0 priorityscore=1501 mlxlogscore=999
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501290128
 
-Em Tue, 28 Jan 2025 15:42:00 -0700
-Jonathan Corbet <corbet@lwn.net> escreveu:
+Currently wiphy level configurations like RTS threshold, TX power etc.
+lacks radio level get/set support and same value is applied to all
+radios
+of wiphy. Add support to parse radio id attribute and use the same to
+apply the configuration to corresponding radio of a multi radio wiphy.
 
-> [It's probably time to raise our minimum version again, especially now
-> that current Sphinx has better performance.]
+This design will not disturb the global wiphy configuration. If radio id
+is
+not passed from userspace, then the existing design of setting attribute
+to
+all the radios will hold good.
 
-Last change was about one year ago, so it sounds fair to also
-change Sphinx minimal version with about one year gap. What we have
-currently is:
+Also add support to get the radio specific attributes in a multi-radio
+wiphy from userspace.
 
-	2.4.4: minimal version
-	3.4.3: suggested minimal version.
+The attributes that can be handled for each radio are:
+NL80211_ATTR_WIPHY_FREQ
+NL80211_ATTR_WIPHY_ANTENNA_TX
+NL80211_ATTR_WIPHY_ANTENNA_RX
+NL80211_ATTR_WIPHY_RETRY_SHORT
+NL80211_ATTR_WIPHY_RETRY_LONG
+NL80211_ATTR_WIPHY_FRAG_THRESHOLD
+NL80211_ATTR_WIPHY_RTS_THRESHOLD
+NL80211_ATTR_WIPHY_COVERAGE_CLASS
+NL80211_ATTR_WIPHY_DYN_AC
 
-Looking at the relevant release dates, we have:
+With this design, the new userspace designed to set/get per-radio
+parameters can work with both traditional and multi-radio wiphys.
 
-	Release 2.4.0 (released Feb 09, 2020)
-	Release 2.4.4 (released Mar 05, 2020)
-	Release 3.4.0 (released Dec 20, 2020)
-	Release 3.4.3 (released Jan 08, 2021)
+v4:
+ - Fixed stack frame size warning.
+ - Added S-O-B tag in patches 4/5 and 5/5.
+v3:
+ - Fixed warnings to refresh copyright, to curb long lines of code and
+   to include kernel documentation for a few variables.
+v2:
+ - Converted the series to [PATCH] from [PATCH RFC], link to which is,
+   https://patchwork.kernel.org/project/linux-wireless/cover/20250107182506.1838704-1-quic_ramess@quicinc.com/.
 
-So, the ~one year gap is what it takes to raise the bar from 2.4.4 to
-3.4.3.
 
-In terms of Python, we're currently at 3.5:
+Rameshkumar Sundaram (2):
+  wifi: cfg80211: set tx power per radio in a wiphy
+  wifi: mac80211: set tx power per radio in a wiphy
 
-	Python	Release date 
-	3.5	2015-09-13
-	3.6	2016-12-23
-	3.7 	2018-06-27
-	3.8 	2019-10-14
-	3.9 	2020-10-05
-	3.10	2021-10-04
+Roopni Devanathan (3):
+  wifi: cfg80211: Add Support to Set RTS Threshold for each Radio
+  wifi: cfg80211: Report per-radio RTS threshold to userspace
+  wifi: mac80211: Set RTS threshold on per-radio basis
 
-	(according with https://en.wikipedia.org/w/index.php?title=History_of_Python) 
+ drivers/net/wireless/ath/ar5523/ar5523.c      |   2 +-
+ drivers/net/wireless/ath/ath10k/mac.c         |   4 +-
+ drivers/net/wireless/ath/ath11k/mac.c         |   5 +-
+ drivers/net/wireless/ath/ath12k/mac.c         |   3 +-
+ drivers/net/wireless/ath/ath6kl/cfg80211.c    |   3 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_main.c |   2 +-
+ drivers/net/wireless/ath/wcn36xx/main.c       |   2 +-
+ drivers/net/wireless/ath/wil6210/cfg80211.c   |   2 +-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    |   4 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   4 +-
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |   4 +-
+ drivers/net/wireless/marvell/mwl8k.c          |   2 +-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |   2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02.h  |   2 +-
+ .../net/wireless/mediatek/mt76/mt76x02_util.c |   2 +-
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |   2 +-
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |   2 +-
+ .../net/wireless/mediatek/mt76/mt7925/main.c  |   2 +-
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |   2 +-
+ drivers/net/wireless/mediatek/mt7601u/main.c  |   2 +-
+ .../wireless/microchip/wilc1000/cfg80211.c    |   4 +-
+ drivers/net/wireless/purelifi/plfxlc/mac.c    |   2 +-
+ .../net/wireless/quantenna/qtnfmac/cfg80211.c |   4 +-
+ .../net/wireless/ralink/rt2x00/rt2800lib.c    |   2 +-
+ .../net/wireless/ralink/rt2x00/rt2800lib.h    |   2 +-
+ drivers/net/wireless/realtek/rtl8xxxu/core.c  |   2 +-
+ drivers/net/wireless/realtek/rtw88/mac80211.c |   2 +-
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   2 +-
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c   |   2 +
+ drivers/net/wireless/silabs/wfx/sta.c         |   2 +-
+ drivers/net/wireless/silabs/wfx/sta.h         |   2 +-
+ drivers/net/wireless/st/cw1200/sta.c          |   2 +-
+ drivers/net/wireless/st/cw1200/sta.h          |   2 +-
+ drivers/net/wireless/ti/wl1251/main.c         |   2 +-
+ drivers/net/wireless/ti/wlcore/main.c         |   2 +-
+ drivers/net/wireless/virtual/mac80211_hwsim.c |   3 +-
+ .../staging/rtl8723bs/os_dep/ioctl_cfg80211.c |   4 +-
+ include/net/cfg80211.h                        |  22 +++-
+ include/net/mac80211.h                        |   2 +-
+ include/uapi/linux/nl80211.h                  |  10 ++
+ net/mac80211/cfg.c                            |  25 +++-
+ net/mac80211/driver-ops.h                     |   6 +-
+ net/mac80211/trace.h                          |  24 +++-
+ net/mac80211/tx.c                             |  11 +-
+ net/mac80211/util.c                           |   8 +-
+ net/wireless/core.c                           |  18 +++
+ net/wireless/debugfs.c                        |  35 +++++-
+ net/wireless/nl80211.c                        | 117 ++++++++++++------
+ net/wireless/rdev-ops.h                       |  12 +-
+ net/wireless/trace.h                          |  16 ++-
+ net/wireless/wext-compat.c                    |  11 +-
+ 52 files changed, 294 insertions(+), 119 deletions(-)
 
-Python 3.6 is the first one with f-string support, with is something
-that most Python programmers use those days. So, IMO, that would
-be the absolute minimal version we should pick.
 
-Yet, IMHO, we should aim to be backard-compatible with the tools 
-available up to a certain date (Jan, 2021) - e. g. we'll aim to
-support at least a 4 years old toolset for documentation build.
+base-commit: 22f3551b60be7d126db9233998d262edfc577d0b
+-- 
+2.17.1
 
-So, I'm proposing to change the minimal requirements to:
-	- Sphinx 3.4.3;
-	- Python 3.9
-
-By setting Sphinx minimal version to 3.4.3, we can get rid of all
-Sphinx backward-compatible code.
-
-I have already patches with such changes for it on the top of this RFC. 
-Will send it shortly as RFC, aiming to send the final version after -rc1.
-
-Thanks,
-Mauro
 
