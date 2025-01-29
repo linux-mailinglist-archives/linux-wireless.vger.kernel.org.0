@@ -1,226 +1,185 @@
-Return-Path: <linux-wireless+bounces-18146-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18147-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D59A21D34
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 13:39:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E48A21F04
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 15:22:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 561F63A64D2
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 12:39:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF03A3A6E21
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2025 14:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C354372;
-	Wed, 29 Jan 2025 12:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA3B1C32FF;
+	Wed, 29 Jan 2025 14:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L11Q5YZH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="djFiyaI1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82206184
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 12:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0FD1B4250;
+	Wed, 29 Jan 2025 14:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738154350; cv=none; b=Vzbnp9UnXKH++DIhOgei/tNVjBaTQw5ACG3l1/oNE/Ct0ep+qoT3H0XJJnxWTB+EWnCvNXFXsqHgU2AftN1AqnSiH5huGzUboFGMaXxmCp+QBDJrCyjJKgG8Plx+fjZOYFp+8ue11GBeJxYb/0/pS/bRKjRuP3M2+4Gd4dO44Bw=
+	t=1738160531; cv=none; b=MqzDk1aNZ+SSNVjv43r4DyISKUzQeEur/oOfPpDJVbGMYIhfSoem97n2BmiBhK0LOSlbUi6MHFZMfYIHkszoGcX92cm12kX+0gBhYvhpZ0agiWJyX50xHbA2Vi80OMyiKsC13Ly+IxtIKsD73SR11miLV9aFhQ8o4Nw35yCqzDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738154350; c=relaxed/simple;
-	bh=vJWVTXm93TmEvhMMt5leccWh1RH7Vk4xrJFHq6fVe44=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=FsDMRuqfi5oklV2PecChSYjAnEgBZCul2xj3bzQ3OMprCRWAvoITFEbgyhMewB1meVn1pin3iJP90wqRha3KLhTMH/YmZ18dBEREoAglm5FHoaEmQhNDzeublz2dw0BRNWJNzMyM/kq5Vf5wJOGfkadQkMYbr8ipQE5iViBHwzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L11Q5YZH; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738154349; x=1769690349;
-  h=date:from:to:cc:subject:message-id;
-  bh=vJWVTXm93TmEvhMMt5leccWh1RH7Vk4xrJFHq6fVe44=;
-  b=L11Q5YZHwDVMKpGlAWPRbT+xXhfoVifd/qVTE219It6HFOM41xLGeqyk
-   OOGgjWEpWG3Qda/almdk4fflCzae2Iq1O/czo/Gxj+x9hADx0XYpR46Yn
-   tf+bW+aKK0xfqqjVhLawQPyWoiwfOljuVp6dldDl1iMUYfAKwuGnxcdjB
-   NUxhLUnROadwDZTwR91KNIplJh6ZIV0fm+jTl79cU0XhRCnQGfZwfy9lM
-   VxuClb7E87N2SIffrZo16hRN9TbKcoE44wC1CmykxH03Yl6yrWjKtKixS
-   Ag8DvJWloHDs3z2lho86YFxp8jvXr1/VjxEiimaGbZqbpJDfiK8KYNDgJ
-   g==;
-X-CSE-ConnectionGUID: GEblxMfTRR++uJ1/mqsegg==
-X-CSE-MsgGUID: 36oVHVHuQ1eJk5Ma12OdIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11329"; a="42415469"
-X-IronPort-AV: E=Sophos;i="6.13,243,1732608000"; 
-   d="scan'208";a="42415469"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 04:38:57 -0800
-X-CSE-ConnectionGUID: At1VvQYDS/Crmt9JAgr4/w==
-X-CSE-MsgGUID: +k81I81RThSQw4QDaxZAWw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,243,1732608000"; 
-   d="scan'208";a="108995899"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 29 Jan 2025 04:38:55 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1td7LI-000iwf-39;
-	Wed, 29 Jan 2025 12:38:52 +0000
-Date: Wed, 29 Jan 2025 20:37:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- 3319569bf9d8b4d8c5aaf0d410b620210c4bb317
-Message-ID: <202501292041.MQRPzCSd-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1738160531; c=relaxed/simple;
+	bh=/uy2KVK+92bnjkNkIT1iw5CrTdiZ0e2lwuNq07xf8OM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dIjz3OvimteobWYLHRjzWMXoKzWhEPpYBp/O6JqsOwdVvdewpUnFs1NaqCTilPqJWha4nHJJxRgrUqN6Ert/SPUSHV3gZV96iRKaCGnvu0jrAToRkBvclybo2sg/eWRoCriqyANIdJ1Hi/K9TsDOeM+JG4ZBtncizAKGRA2A1hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=djFiyaI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A63C4CED3;
+	Wed, 29 Jan 2025 14:22:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738160530;
+	bh=/uy2KVK+92bnjkNkIT1iw5CrTdiZ0e2lwuNq07xf8OM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=djFiyaI1DlJWiFHE8181GXXxjAr3wEqHuYYG3QsXELwZvDKxnRVxjUbFdIQbTnmLU
+	 Lt9fufnc/G7WtGz9dtGAS3ZPyc4zzMF7RCfLnP+iBbDKwR+eb444lgkHrtJ/IVzKnP
+	 WXttUr2Yxs6fWKBISWq0/x5ZYEIrKYg1CFR9lX/xH1tZyDicoyC+ae2lT5AysNsQ5+
+	 Zrzl0ec3PcPgnqhqfetOvYwj+teyI/gwI8joVAbOMvx/WjRa3zWtMYKccoxnJSJUEq
+	 elKqiXQFndQZbOtUJb0kgnqPfoQifhZUjqbQYA3D92ZpRy6VKsPv9SGhYwjgHdtLhq
+	 gPYPXMPtSHgOQ==
+Date: Wed, 29 Jan 2025 15:22:03 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, coresight@lists.linaro.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-hardening@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ workflows@vger.kernel.org
+Subject: Re: [RFC v2 00/38] Improve ABI documentation generation
+Message-ID: <20250129152203.0dda53ca@foz.lan>
+In-Reply-To: <20250129024518.69c0be81@foz.lan>
+References: <cover.1738020236.git.mchehab+huawei@kernel.org>
+	<87h65i7e87.fsf@trenco.lwn.net>
+	<20250129024518.69c0be81@foz.lan>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 3319569bf9d8b4d8c5aaf0d410b620210c4bb317  Merge tag 'ath-current-20250124' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
+Em Wed, 29 Jan 2025 02:45:18 +0100
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> escreveu:
 
-elapsed time: 1090m
+> > I've only tested with current Sphinx,
+> > have you tried this with the more ancient versions we support?  
+> 
+> Not yet, but I double-checked at Sphinx documentation to be sure that
+> I won't be using any newer methods: I just kept using the same Sphinx
+> API as used by other extensions at the Kernel.
 
-configs tested: 132
-configs skipped: 5
+Just checked it with Python 3.6 and Sphinx 3.4 on Fedora 41 with:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+	sudo dnf install python3.6.x86_64
+	python3.6 -m venv Sphinx-3.4
+	pip install alabaster Sphinx==3.4.3 pyyaml
 
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                   randconfig-001-20250129    gcc-13.2.0
-arc                   randconfig-002-20250129    gcc-13.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-17
-arm                              allyesconfig    gcc-14.2.0
-arm                   milbeaut_m10v_defconfig    clang-20
-arm                       omap2plus_defconfig    gcc-14.2.0
-arm                          pxa910_defconfig    gcc-14.2.0
-arm                   randconfig-001-20250129    gcc-14.2.0
-arm                   randconfig-002-20250129    clang-20
-arm                   randconfig-003-20250129    gcc-14.2.0
-arm                   randconfig-004-20250129    gcc-14.2.0
-arm                           sama7_defconfig    clang-16
-arm                        spear3xx_defconfig    clang-16
-arm                        vexpress_defconfig    gcc-14.2.0
-arm64                            allmodconfig    clang-18
-arm64                             allnoconfig    gcc-14.2.0
-arm64                 randconfig-001-20250129    gcc-14.2.0
-arm64                 randconfig-002-20250129    gcc-14.2.0
-arm64                 randconfig-003-20250129    gcc-14.2.0
-arm64                 randconfig-004-20250129    gcc-14.2.0
-csky                              allnoconfig    gcc-14.2.0
-csky                  randconfig-001-20250129    gcc-14.2.0
-csky                  randconfig-002-20250129    gcc-14.2.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    clang-20
-hexagon                          allyesconfig    clang-18
-hexagon               randconfig-001-20250129    clang-19
-hexagon               randconfig-002-20250129    clang-20
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250129    clang-19
-i386        buildonly-randconfig-002-20250129    gcc-12
-i386        buildonly-randconfig-003-20250129    clang-19
-i386        buildonly-randconfig-004-20250129    clang-19
-i386        buildonly-randconfig-005-20250129    clang-19
-i386        buildonly-randconfig-006-20250129    gcc-12
-i386                                defconfig    clang-19
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch             randconfig-001-20250129    gcc-14.2.0
-loongarch             randconfig-002-20250129    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-m68k                          atari_defconfig    gcc-14.2.0
-m68k                          hp300_defconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-mips                        bcm47xx_defconfig    clang-20
-mips                      bmips_stb_defconfig    clang-18
-mips                      maltaaprp_defconfig    clang-20
-mips                          rb532_defconfig    clang-17
-nios2                 randconfig-001-20250129    gcc-14.2.0
-nios2                 randconfig-002-20250129    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-openrisc                            defconfig    gcc-14.2.0
-openrisc                  or1klitex_defconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                              defconfig    gcc-14.2.0
-parisc                randconfig-001-20250129    gcc-14.2.0
-parisc                randconfig-002-20250129    gcc-14.2.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-16
-powerpc                      arches_defconfig    gcc-14.2.0
-powerpc                     ep8248e_defconfig    gcc-14.2.0
-powerpc                      pmac32_defconfig    clang-20
-powerpc               randconfig-001-20250129    clang-20
-powerpc               randconfig-002-20250129    clang-20
-powerpc               randconfig-003-20250129    gcc-14.2.0
-powerpc                     sequoia_defconfig    clang-17
-powerpc                     tqm8541_defconfig    clang-15
-powerpc                      tqm8xx_defconfig    clang-20
-powerpc64             randconfig-001-20250129    clang-16
-powerpc64             randconfig-002-20250129    clang-18
-powerpc64             randconfig-003-20250129    clang-20
-riscv                            allmodconfig    clang-20
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-20
-riscv                               defconfig    clang-19
-riscv                    nommu_k210_defconfig    clang-15
-riscv                 randconfig-001-20250129    gcc-14.2.0
-riscv                 randconfig-002-20250129    gcc-14.2.0
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.2.0
-s390                                defconfig    clang-15
-s390                  randconfig-001-20250129    clang-20
-s390                  randconfig-002-20250129    clang-17
-sh                               allmodconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                                  defconfig    gcc-14.2.0
-sh                          kfr2r09_defconfig    gcc-14.2.0
-sh                          r7785rp_defconfig    gcc-14.2.0
-sh                    randconfig-001-20250129    gcc-14.2.0
-sh                    randconfig-002-20250129    gcc-14.2.0
-sh                          rsk7201_defconfig    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                 randconfig-001-20250129    gcc-14.2.0
-sparc                 randconfig-002-20250129    gcc-14.2.0
-sparc64                             defconfig    gcc-14.2.0
-sparc64               randconfig-001-20250129    gcc-14.2.0
-sparc64               randconfig-002-20250129    gcc-14.2.0
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                                  defconfig    clang-20
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250129    gcc-12
-um                    randconfig-002-20250129    gcc-12
-um                           x86_64_defconfig    clang-15
-x86_64                           alldefconfig    gcc-12
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20250129    clang-19
-x86_64      buildonly-randconfig-002-20250129    gcc-12
-x86_64      buildonly-randconfig-003-20250129    gcc-12
-x86_64      buildonly-randconfig-004-20250129    gcc-12
-x86_64      buildonly-randconfig-005-20250129    gcc-12
-x86_64      buildonly-randconfig-006-20250129    clang-19
-x86_64                              defconfig    gcc-11
-xtensa                randconfig-001-20250129    gcc-14.2.0
-xtensa                randconfig-002-20250129    gcc-14.2.0
+There were some issues related to problems with early f-string
+support, as reported by Akira.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+After applying the enclosed patch, it is now working fine. The only
+drawback is here:
+
+	- print(f"Defined on file{'s'[:len(files) ^ 1]}:\t{", ".join(files)}")
+	+ print("Defined on file(s):\t" + ", ".join(files))
+
+As I removed the file/files auto-plural logic depending on the files
+array length. Not a big deal.
+
+I'll double-check if there's no other diff between old/new version
+and add the enclosed patch in the end.
+
+Thanks,
+Mauro
+
+[PATCH] scripts/get_abi.py: make it backward-compatible with Python 3.6
+
+Despite being introduced on Python 3.6, the original implementation
+was too limited: it doesn't accept anything but the argument.
+
+Even on python 3.10.12, support was still limited, as more complex
+operations cause SyntaxError:
+
+	Exception occurred:
+	  File ".../linux/Documentation/sphinx/kernel_abi.py", line 48, in <module>
+	    from get_abi import AbiParser
+	  File ".../linux/scripts/get_abi.py", line 525
+	    msg += f"{part}\n{"-" * len(part)}\n\n"
+                       ^
+	SyntaxError: f-string: expecting '}'
+
+Replace f-strings by normal string concatenation when it doesn't
+work on Python 3.6.
+
+Reported-by: Akira Yokosawa <akiyks@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+diff --git a/scripts/get_abi.py b/scripts/get_abi.py
+index 543bed397c8c..e6e94f721fff 100755
+--- a/scripts/get_abi.py
++++ b/scripts/get_abi.py
+@@ -522,7 +522,7 @@ class AbiParser:
+ 
+                 if cur_part and cur_part != part:
+                     part = cur_part
+-                    msg += f"{part}\n{"-" * len(part)}\n\n"
++                    msg += part + "\n"+ "-" * len(part) +"\n\n"
+ 
+                 msg += f".. _{key}:\n\n"
+ 
+@@ -546,7 +546,7 @@ class AbiParser:
+                     msg += f"Defined on file :ref:`{base} <{ref[1]}>`\n\n"
+ 
+             if wtype == "File":
+-                msg += f"{names[0]}\n{"-" * len(names[0])}\n\n"
++                msg += names[0] +"\n" + "-" * len(names[0]) +"\n\n"
+ 
+             desc = v.get("description")
+             if not desc and wtype != "File":
+@@ -570,7 +570,8 @@ class AbiParser:
+ 
+             users = v.get("users")
+             if users and users.strip(" \t\n"):
+-                msg += f"Users:\n\t{users.strip("\n").replace('\n', '\n\t')}\n\n"
++                users = users.strip("\n").replace('\n', '\n\t')
++                msg += f"Users:\n\t{users}\n\n"
+ 
+             ln = v.get("line_no", 1)
+ 
+@@ -596,7 +597,9 @@ class AbiParser:
+                 elif len(lines) == 1:
+                     f.append(f"{fname}:{lines[0]}")
+                 else:
+-                    f.append(f"{fname} lines {", ".join(str(x) for x in lines)}")
++                    m = fname + "lines "
++                    m += ", ".join(str(x) for x in lines)
++                    f.append(m)
+ 
+             self.log.warning("%s is defined %d times: %s", what, len(f), "; ".join(f))
+ 
+@@ -644,10 +647,11 @@ class AbiParser:
+                     if users:
+                         print(f"Users:\t\t\t{users}")
+ 
+-                    print(f"Defined on file{'s'[:len(files) ^ 1]}:\t{", ".join(files)}")
++                    print("Defined on file(s):\t" + ", ".join(files))
+ 
+                     if desc:
+-                        print(f"\n{desc.strip("\n")}\n")
++                        desc = desc.strip("\n")
++                        print(f"\n{desc}\n")
+ 
+         if not found_keys:
+             print(f"Regular expression /{expr}/ not found.")
 
