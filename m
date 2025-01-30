@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-18204-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18205-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC51A2293D
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 08:37:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA062A2294F
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 08:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89DC3165F5E
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 07:37:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B3B918870C0
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 07:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E89519F487;
-	Thu, 30 Jan 2025 07:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F661922FB;
+	Thu, 30 Jan 2025 07:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CbENHeGE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bWIzVYL7"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30ED5C2FB;
-	Thu, 30 Jan 2025 07:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED197483;
+	Thu, 30 Jan 2025 07:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738222655; cv=none; b=iDVVPEw0EgnHe6Pvte8r2HyGsETbFDjaQTJ0TwgaZgccwFpIaCkPfPhCIDKBpdJoAqUcWTPZkDYmZKFigRVN7Y7dP3Lz61cRl3BY/1sBpWcg3I3Ps1EdrJB5u7f54aP7a7LGLdA2foBplj8E1uzZ7SVBW5ZGTox6tmI7O+Wl7tw=
+	t=1738223196; cv=none; b=P22ZHjWi1YhWb1TllE7Nqj+ED/KcZwYIf8lGKrrTRrgQrIzBm64KRv50tbxu8XfnzFiA4Ws4rmhA81Dz0KPW8Yrw1/ZQhc4xMV1pp+v328LnHyizXjzAhAsa0zGXTJGhftlCGNGfFLHVdIuRq+VZ+q/Ip9whjNTMZSB7Aqe6kMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738222655; c=relaxed/simple;
-	bh=5X77AvIgq4Fo1Fp8a31/KKOXgMONk2UfKmvIYDuGpZY=;
+	s=arc-20240116; t=1738223196; c=relaxed/simple;
+	bh=lDB5v7qxjmq1lmrz/ct+yxeDPcvs+Ly1IOev7D37CP8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OtZLz6boXNtzTMUnx27hJL17ocpQhYRDBqGVzggO236J0fqQaPPvSI12ncvQKLBcVn/FBo3yl1XgukypXyNkaJa67NNOEV+TuZ69ekoT/lC0UwsjNunawMw8XRKMC3Yd+rsi1jcT/vWErpEE9A4GWit/OuUUENomWihCCsQ34zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CbENHeGE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3DDC4CED2;
-	Thu, 30 Jan 2025 07:37:29 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Plgi7LWNYpIweGjOc9wVXcgfrGXzZrNFqR6WT7dtEaAmsIsIWCx4x65HLlWnlvuEBDZrfYVFkWQYdd2GU3R9qOPaPRaITOoM1s3cWiwN+8Z3E7Eskn9GsIwxsN5e7pcPkmU7JPwpXkgnzNb5x6m2Pgh1FJSpndUCP9bH1ZN3o/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bWIzVYL7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B71C4CED2;
+	Thu, 30 Jan 2025 07:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738222653;
-	bh=5X77AvIgq4Fo1Fp8a31/KKOXgMONk2UfKmvIYDuGpZY=;
+	s=k20201202; t=1738223196;
+	bh=lDB5v7qxjmq1lmrz/ct+yxeDPcvs+Ly1IOev7D37CP8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CbENHeGEZH8xImy0A2q/bbVLxRIgqLOfpGHB0VENHsJTnXhstb2isvAuK/W7xvlSe
-	 +ymog6Sb5PTBPlueZpNE6Y5yeSvnRhanTfAhoMipDbd/A9KE+8gos7UYN0K2JnU/nD
-	 UHrwe63cTRMJYILs6P2Y8u764ffDi3LUz+54UPmPT6tGezlogjdWtuA9BGaPc7iRdA
-	 xm94RhsjWnrOyRSBF9etEFvmN7+m4JStknU30R4LpQxcmP0JlXKB59FbqfsKUNmobG
-	 ptUjktiAIOPuqFc+/P76JeZm6uSsVUR1wtnTqvTNy0JgvR03qDfKnv+JfVk0KBZeOO
-	 nGk38+Ep9KnCQ==
-Message-ID: <3db11710-8ad7-439b-8674-ce07fa221920@kernel.org>
-Date: Thu, 30 Jan 2025 08:37:27 +0100
+	b=bWIzVYL7lAHyqcF5pj6Kw7gFz3YcZxJ5DkL5WoOOsexPnyTyNDizewwzflwok6APh
+	 3namoEReIbsO4jhCQUZ6znbTOkk7jKBPCchFoa3tJ/vydKO9BcM15SbiVfFGrEMYxe
+	 8+j5fGso33GI9xRCBXiw0j61i2HS8AaCWxfwt7Yp67kXT+9Qx0z/Zz+hoyDk5SF82p
+	 //k+P7PiEqCfreBVbRgUalMQoZ54yKet+AEeoo9R2uigMWkaS9uKAjtNoEt/ZWZXbq
+	 LQ8YWtSxYTDs9f0kew5mcuQCs50Kk7R3omqtT+/kYF9mvqbyxIKfdcTXSppweoPxkt
+	 ogt0jH1m7ZPiA==
+Message-ID: <4c9b512f-59d2-4d96-a899-5af4de2c823e@kernel.org>
+Date: Thu, 30 Jan 2025 08:46:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,15 +50,17 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/5] wifi: ath12k: Enable IPQ5424 AHB WiFi device
+Subject: Re: [PATCH v5 07/13] wifi: ath12k: add support for fixed QMI firmware
+ memory
 To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250130051838.1924079-1-quic_rajkbhag@quicinc.com>
-Content-Language: en-US
+References: <20250130043508.1885026-1-quic_rajkbhag@quicinc.com>
+ <20250130043508.1885026-8-quic_rajkbhag@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -102,26 +104,30 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250130051838.1924079-1-quic_rajkbhag@quicinc.com>
+In-Reply-To: <20250130043508.1885026-8-quic_rajkbhag@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 30/01/2025 06:18, Raj Kumar Bhagat wrote:
-> Add support for the new ath12k AHB device IPQ5424, as currently, Ath12k
-> AHB only supports IPQ5332 WiFi devices.
-> 
-> The IPQ5424 is an IEEE 802.11be 2 GHz WiFi device, supporting 4x4
-> configurations. To enable the IPQ5424 device:
-> - Add the necessary hardware parameters for IPQ5424.
-> - Modify the boot-up sequence for ath12k AHB to accommodate the
->   requirements of the IPQ5424 device.
-> 
-> Depends-On: [PATCH v5 00/13] wifi: ath12k: add Ath12k AHB driver support for IPQ5332
-> Link: https://lore.kernel.org/all/20250130043508.1885026-1-quic_rajkbhag@quicinc.com/
-> 
-You marked this a RFC, so this is not ready, but nothing explains this
-here. What sort of comments are you looking for? What's incomplete with
-this work?
+On 30/01/2025 05:35, Raj Kumar Bhagat wrote:
+> @@ -2646,6 +2663,136 @@ static int ath12k_qmi_alloc_target_mem_chunk(struct ath12k_base *ab)
+>  	return ret;
+>  }
+>  
+> +static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
+> +{
+> +	struct device_node *mem_node;
+> +	struct resource res, m3_res;
+> +	u32 bdf_start_addr;
+> +	int i, idx, ret;
+> +
+> +	for (i = 0, idx = 0; i < ab->qmi.mem_seg_count; i++) {
+> +		switch (ab->qmi.target_mem[i].type) {
+> +		case HOST_DDR_REGION_TYPE:
+> +			mem_node = ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
+
+
+Why cannot you use existing API for reserved memory -
+of_reserved_mem_lookup()?
 
 Best regards,
 Krzysztof
