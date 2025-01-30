@@ -1,68 +1,74 @@
-Return-Path: <linux-wireless+bounces-18197-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18198-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADFEA228CA
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 07:11:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFDABA228CB
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 07:11:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A929B18872D1
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 06:11:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68E637A2A8A
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 06:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D985D190055;
-	Thu, 30 Jan 2025 06:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1DA1922F3;
+	Thu, 30 Jan 2025 06:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Ruh1J/vY"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cf/B1Eof"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2641898F2
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 06:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712DD18E379
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 06:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738217504; cv=none; b=ez2QSeKlZUqwrwJw24UrP9zGIp/ZEO62ZgXYbYHfwViUa8i6uheZ7o/l3nvk6uKvyvLd5wv9vWJAbo3AcPNmz47OJux0ErEQx/QL6aRYE5/DF5KsRQ9lJvFj7fSH0Iut80jDC3bQ3zvtX1wl8W2ekSKATaAtL5L5SypqDSuClH8=
+	t=1738217505; cv=none; b=QVHZH+/mL0QQaMibq2uRONRopLmTcbkV5zCqpxBn+668xmaM9mK4PlVHRvjwHsUElmw3UNiXzhsa9Ra+kMlCkmGRYWOhqbfsq+fDeFBxD0zHWyLrWM7A7FEOfW5giCmyJu99lZmnqrGS4q2WUqIfvnsLcCF2DFbTEfdLyU/2s9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738217504; c=relaxed/simple;
-	bh=UpkTtIiilCERTUJr5gbBg89V6yQD7c0JBWAUbzyrucE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cQS63F8j36PwUbNfA33/oQz7xdWpUrrJ2Wwdkf16MM2zsZZr5jQjgx0aSbvarnXZ/7prqtrkNQ7Gtu3XreR/O3MRWzGy9OidFd6+N2lwczGi153Ltz9B978FFN9QyTXMsP2o6zbhp4KsZ23UKisA7bMHQopWhjd7NwB5P5VNGvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Ruh1J/vY; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1738217505; c=relaxed/simple;
+	bh=qd2dGxflzT3lpZrK8oeQTlU++flEQI7buSfHyDjydQA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ccv17Uc62QAnopvYntk706mpuwdRSJf+xGUCps1TQpSBIiHRsKdIFXAR7pkJYv/wruOOBxxwlTu3lXVOO9Ti608z7bPL39MBYRmBRzc1m+21XYPCdJkARdp/YAVj29TTSGuKpC9c+d94hSlG2w5vomIr2CcvKks1xQl1R92yi2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=cf/B1Eof; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50TJmSMG022844;
-	Thu, 30 Jan 2025 06:11:38 GMT
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50TIlYM9000784;
+	Thu, 30 Jan 2025 06:11:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=/S5b5p3AsfddZWildN4u3s
-	xH0+4l2R6Oonh4mBG04qM=; b=Ruh1J/vY63svu3SE+q8qjav8afd3vH5sWVcZXa
-	lJzJgg2IBON/DhXDsuMfpoliGiu5xt+DsErLyRJqeK8uL3tAoq8HJLS6moGAIIUF
-	4644x6ZTxXlnk/zbr9xMIhWRYvoHOQ28v/iGBq9pWG+Qj/yX5gccErYr5jZHhXHs
-	ynOgWtVtwwwxLYwf/wv4jvXIR9mJE8l7vrQ6sMEZcBJDhEyUqFzma+uPSt8dUQ7K
-	fGZx5IKyCP59nD+Fu0RsPjlc08dO1gDGbGQXbDRPosv1cp1fTvj2R2EHluNS9VLH
-	uR7+raJXdtpjhf9CGnldBb9wyNiWw9K6+5+blZnJqsfTkyVw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44fttj10t3-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	xw8w36z9W3WcGJ3hPf80EA7JxVFK9QHZON9RswgoHls=; b=cf/B1EofoYXBRqCn
+	J9vOWiL0BqWrtqmKQyf3CSimZGhs1efcZZazASijRCIyivdZSriAa21bj5KagMBB
+	JBfPQZzo88fqMCJmeGhNIeHLkKmbaQF+bcyFX9tGA0dwFXq56Xd8dXAvy7fI9ztq
+	FHAjGjEHA1HYi1Z/HmB8Z6McnMIC4pbaNqqundPDfxeH2R/RYu0H/JJmc1GHgz1v
+	G8Cy3t57QeKtehI5T1bBzuU+S2S8/wgdi6ytx8IlLrhMFNX2LDS7huE1TVKQuTs8
+	HivrgBg661u2Ik8ldErhmVsO8oAOy7BkIqcCN6dTGHeG+KYlEGxuJp/FWM5QmtXZ
+	Xe6OOg==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44fswys75n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jan 2025 06:11:38 +0000 (GMT)
+	Thu, 30 Jan 2025 06:11:41 +0000 (GMT)
 Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50U6BbhV005020
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50U6BeJd020658
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jan 2025 06:11:37 GMT
+	Thu, 30 Jan 2025 06:11:40 GMT
 Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
  nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 29 Jan 2025 22:11:36 -0800
+ 15.2.1544.9; Wed, 29 Jan 2025 22:11:38 -0800
 From: Roopni Devanathan <quic_rdevanat@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
-        Roopni Devanathan
-	<quic_rdevanat@quicinc.com>
-Subject: [PATCH v6 0/2] wifi: ath12k: Support Transmit Power Control Stats
-Date: Thu, 30 Jan 2025 11:41:02 +0530
-Message-ID: <20250130061104.962124-1-quic_rdevanat@quicinc.com>
+        Sowmiya Sree Elavalagan
+	<quic_ssreeela@quicinc.com>,
+        Ramya Gnanasekar <quic_rgnanase@quicinc.com>,
+        Roopni Devanathan <quic_rdevanat@quicinc.com>
+Subject: [PATCH v6 1/2] wifi: ath12k: Add Support to Parse TPC Event from Firmware
+Date: Thu, 30 Jan 2025 11:41:03 +0530
+Message-ID: <20250130061104.962124-2-quic_rdevanat@quicinc.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250130061104.962124-1-quic_rdevanat@quicinc.com>
+References: <20250130061104.962124-1-quic_rdevanat@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,87 +81,866 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01c.na.qualcomm.com (10.47.97.35)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: DBleNlVs2A5wuX3f9zPjLe4YvGSfpKSZ
-X-Proofpoint-GUID: DBleNlVs2A5wuX3f9zPjLe4YvGSfpKSZ
+X-Proofpoint-ORIG-GUID: ydOHnJmFlDcyUjIVwXPOluGBZ3irQW2r
+X-Proofpoint-GUID: ydOHnJmFlDcyUjIVwXPOluGBZ3irQW2r
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-30_03,2025-01-29_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- mlxlogscore=999 spamscore=0 clxscore=1015 suspectscore=0
- priorityscore=1501 mlxscore=0 phishscore=0 impostorscore=0 adultscore=0
- lowpriorityscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2501300046
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ suspectscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0
+ mlxscore=0 malwarescore=0 spamscore=0 priorityscore=1501 clxscore=1015
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501300046
 
-Add support to print Transmit Power Control Stats. Add support for basic
-infrastructure necessary for enabling TPC stats via debugfs. This patch
-series brings support to request stats type from firmware and dump the
-corresponding stats.
+From: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
 
-Schema for an ath12k device:
-ath12k
--- pci-0000:06:00.0
-    -- mac0
-        -- tpc_stats
-        -- tpc_stats_type
+Host receives four Transmit Power Control(TPC) events from firmware on
+sending TPC request. Fixed param TLV is present as part of all event to
+indicate the event count and end of event. TPC config parameters along
+with regulatory power array comes as first event. Rates array comes as
+second and third event as it cannot be packed in single event.
+Conformance Test Limit (CTL) power array comes as the fourth event.
+Firmware packs different sets of array params which includes array
+length and type inside master TLV as different subtlvs. And the actual
+content of array is packed one after the other inside a separate TLV as
+single buffer.
 
-Sample TPC logs:
-*************** TPC config **************
-* powers are in 0.25 dBm steps
-reg domain-22           chan freq-5955
-power limit-126         max reg-domain Power-252
-No.of tx chain-4        No.of rates-1164
-**************** SU WITH TXBF ****************
-                                TPC values for Active chains
-Rate idx Preamble Rate code     1-Chain 2-Chain 3-Chain 4-Chain
-4        OFDM    0x000          39      15      1       -9
-5        OFDM    0x001          39      15      1       -9
-.....
-12       HT20    0x200          40      16      2       -8
-13       HT20    0x201          40      16      2       -8
-.....
-44       HT40    0x200          88      88      88      88
-45       HT40    0x201          88      88      88      88
-.....
-76       VHT20   0x300          40      16      2       -8
-77       VHT20   0x301          40      16      2       -8
-.....
-172      VHT40   0x300          88      88      88      88
-173      VHT40   0x301          88      88      88      88
-.....
+Parse various events and save it in local structures. Create tpc_stats
+file using debugfs to store these local structures. Create function to
+handle TPC stats read to relay the information to the user.
 
-Note:
-MCC firmware version -
-WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3 does not print stats
-because MCC firmware will not respond to the event passed from host,
-resulting in timeout.
+Command usage:
+cat > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/tpc_stats
 
-v6:
- - Fixed review comments about naming conventions for structures.
-v5:
- - Fixed cosmetic comments about line breaks, function naming and
-   paranthesis alignment.
-v4:
- - Rebased on ToT. No change in code.
-v3:
- - Fixed datatype conversion warnings in v2.
-v2:
- - Fixed compilation issues in v1.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
 
-
-Sowmiya Sree Elavalagan (2):
-  wifi: ath12k: Add Support to Parse TPC Event from Firmware
-  wifi: ath12k: Add Support to Calculate and Display TPC  Values
-
+Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+Co-developed-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+Co-developed-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+---
  drivers/net/wireless/ath/ath12k/core.h    |   4 +
- drivers/net/wireless/ath/ath12k/debugfs.c | 714 ++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/debugfs.h |  83 +++
- drivers/net/wireless/ath/ath12k/reg.h     |   5 +-
- drivers/net/wireless/ath/ath12k/wmi.c     | 451 ++++++++++++++
- drivers/net/wireless/ath/ath12k/wmi.h     | 140 +++++
- 6 files changed, 1396 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/debugfs.c |  96 +++++
+ drivers/net/wireless/ath/ath12k/debugfs.h |   6 +
+ drivers/net/wireless/ath/ath12k/wmi.c     | 451 ++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h     | 139 +++++++
+ 5 files changed, 696 insertions(+)
 
-
-base-commit: a10b8b584b8bcb7559f068ce247fc27d0c4850ca
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 28db100cfac0..0534312f9339 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -572,6 +572,10 @@ struct ath12k_debug {
+ 	struct dentry *debugfs_pdev;
+ 	struct dentry *debugfs_pdev_symlink;
+ 	struct ath12k_dbg_htt_stats htt_stats;
++	enum wmi_halphy_ctrl_path_stats_id tpc_stats_type;
++	bool tpc_request;
++	struct completion tpc_complete;
++	struct wmi_tpc_stats_arg *tpc_stats;
+ };
+ 
+ struct ath12k_per_peer_tx_stats {
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs.c b/drivers/net/wireless/ath/ath12k/debugfs.c
+index 6d6708486d14..8ddcae01a2a1 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs.c
+@@ -32,6 +32,99 @@ static const struct file_operations fops_simulate_radar = {
+ 	.open = simple_open
+ };
+ 
++static int ath12k_debug_tpc_stats_request(struct ath12k *ar)
++{
++	enum wmi_halphy_ctrl_path_stats_id tpc_stats_sub_id;
++	struct ath12k_base *ab = ar->ab;
++	int ret;
++
++	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
++
++	reinit_completion(&ar->debug.tpc_complete);
++
++	spin_lock_bh(&ar->data_lock);
++	ar->debug.tpc_request = true;
++	tpc_stats_sub_id = ar->debug.tpc_stats_type;
++	spin_unlock_bh(&ar->data_lock);
++
++	ret = ath12k_wmi_send_tpc_stats_request(ar, tpc_stats_sub_id);
++	if (ret) {
++		ath12k_warn(ab, "failed to request pdev tpc stats: %d\n", ret);
++		spin_lock_bh(&ar->data_lock);
++		ar->debug.tpc_request = false;
++		spin_unlock_bh(&ar->data_lock);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int ath12k_open_tpc_stats(struct inode *inode, struct file *file)
++{
++	struct ath12k *ar = inode->i_private;
++	struct ath12k_hw *ah = ath12k_ar_to_ah(ar);
++	int ret;
++
++	guard(wiphy)(ath12k_ar_to_hw(ar)->wiphy);
++
++	if (ah->state != ATH12K_HW_STATE_ON) {
++		ath12k_warn(ar->ab, "Interface not up\n");
++		return -ENETDOWN;
++	}
++
++	void *buf __free(kfree) = kzalloc(ATH12K_TPC_STATS_BUF_SIZE, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++
++	ret = ath12k_debug_tpc_stats_request(ar);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed to request tpc stats: %d\n",
++			    ret);
++		return ret;
++	}
++
++	if (!wait_for_completion_timeout(&ar->debug.tpc_complete, TPC_STATS_WAIT_TIME)) {
++		spin_lock_bh(&ar->data_lock);
++		ath12k_wmi_free_tpc_stats_mem(ar);
++		ar->debug.tpc_request = false;
++		spin_unlock_bh(&ar->data_lock);
++		return -ETIMEDOUT;
++	}
++
++	file->private_data = no_free_ptr(buf);
++
++	spin_lock_bh(&ar->data_lock);
++	ath12k_wmi_free_tpc_stats_mem(ar);
++	spin_unlock_bh(&ar->data_lock);
++
++	return 0;
++}
++
++static ssize_t ath12k_read_tpc_stats(struct file *file,
++				     char __user *user_buf,
++				     size_t count, loff_t *ppos)
++{
++	const char *buf = file->private_data;
++	size_t len = strlen(buf);
++
++	return simple_read_from_buffer(user_buf, count, ppos, buf, len);
++}
++
++static int ath12k_release_tpc_stats(struct inode *inode,
++				    struct file *file)
++{
++	kfree(file->private_data);
++	return 0;
++}
++
++static const struct file_operations fops_tpc_stats = {
++	.open = ath12k_open_tpc_stats,
++	.release = ath12k_release_tpc_stats,
++	.read = ath12k_read_tpc_stats,
++	.owner = THIS_MODULE,
++	.llseek = default_llseek,
++};
++
+ void ath12k_debugfs_soc_create(struct ath12k_base *ab)
+ {
+ 	bool dput_needed;
+@@ -468,6 +561,9 @@ void ath12k_debugfs_register(struct ath12k *ar)
+ 				    &fops_simulate_radar);
+ 	}
+ 
++	debugfs_create_file("tpc_stats", 0400, ar->debug.debugfs_pdev, ar,
++			    &fops_tpc_stats);
++
+ 	ath12k_debugfs_htt_stats_register(ar);
+ 	ath12k_debugfs_fw_stats_register(ar);
+ }
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs.h b/drivers/net/wireless/ath/ath12k/debugfs.h
+index 1c30745ee415..25b5219ffe49 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs.h
++++ b/drivers/net/wireless/ath/ath12k/debugfs.h
+@@ -15,6 +15,12 @@ void ath12k_debugfs_unregister(struct ath12k *ar);
+ void ath12k_debugfs_fw_stats_process(struct ath12k *ar,
+ 				     struct ath12k_fw_stats *stats);
+ void ath12k_debugfs_fw_stats_reset(struct ath12k *ar);
++
++#define TPC_STATS_WAIT_TIME		(1 * HZ)
++#define TPC_STATS_TOT_ROW		700
++#define TPC_STATS_TOT_COLUMN		100
++#define ATH12K_TPC_STATS_BUF_SIZE	(TPC_STATS_TOT_ROW * TPC_STATS_TOT_COLUMN)
++
+ #else
+ static inline void ath12k_debugfs_soc_create(struct ath12k_base *ab)
+ {
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 61aa5f509338..8ef882942ad3 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -8092,6 +8092,386 @@ static void ath12k_wmi_event_teardown_complete(struct ath12k_base *ab,
+ 	kfree(tb);
+ }
+ 
++#ifdef CONFIG_ATH12K_DEBUGFS
++static int ath12k_wmi_tpc_stats_copy_buffer(struct ath12k_base *ab,
++					    const void *ptr, u16 tag, u16 len,
++					    struct wmi_tpc_stats_arg *tpc_stats)
++{
++	u32 len1, len2, len3, len4;
++	s16 *dst_ptr;
++	s8 *dst_ptr_ctl;
++
++	len1 = le32_to_cpu(tpc_stats->max_reg_allowed_power.tpc_reg_pwr.reg_array_len);
++	len2 = le32_to_cpu(tpc_stats->rates_array1.tpc_rates_array.rate_array_len);
++	len3 = le32_to_cpu(tpc_stats->rates_array2.tpc_rates_array.rate_array_len);
++	len4 = le32_to_cpu(tpc_stats->ctl_array.tpc_ctl_pwr.ctl_array_len);
++
++	switch (tpc_stats->event_count) {
++	case ATH12K_TPC_STATS_CONFIG_REG_PWR_EVENT:
++		if (len1 > len)
++			return -ENOBUFS;
++
++		if (tpc_stats->tlvs_rcvd & WMI_TPC_REG_PWR_ALLOWED) {
++			dst_ptr = tpc_stats->max_reg_allowed_power.reg_pwr_array;
++			memcpy(dst_ptr, ptr, len1);
++		}
++		break;
++	case ATH12K_TPC_STATS_RATES_EVENT1:
++		if (len2 > len)
++			return -ENOBUFS;
++
++		if (tpc_stats->tlvs_rcvd & WMI_TPC_RATES_ARRAY1) {
++			dst_ptr = tpc_stats->rates_array1.rate_array;
++			memcpy(dst_ptr, ptr, len2);
++		}
++		break;
++	case ATH12K_TPC_STATS_RATES_EVENT2:
++		if (len3 > len)
++			return -ENOBUFS;
++
++		if (tpc_stats->tlvs_rcvd & WMI_TPC_RATES_ARRAY2) {
++			dst_ptr = tpc_stats->rates_array2.rate_array;
++			memcpy(dst_ptr, ptr, len3);
++		}
++		break;
++	case ATH12K_TPC_STATS_CTL_TABLE_EVENT:
++		if (len4 > len)
++			return -ENOBUFS;
++
++		if (tpc_stats->tlvs_rcvd & WMI_TPC_CTL_PWR_ARRAY) {
++			dst_ptr_ctl = tpc_stats->ctl_array.ctl_pwr_table;
++			memcpy(dst_ptr_ctl, ptr, len4);
++		}
++		break;
++	}
++	return 0;
++}
++
++static int ath12k_tpc_get_reg_pwr(struct ath12k_base *ab,
++				  struct wmi_tpc_stats_arg *tpc_stats,
++				  struct wmi_max_reg_power_fixed_params *ev)
++{
++	struct wmi_max_reg_power_allowed_arg *reg_pwr;
++	u32 total_size;
++
++	ath12k_dbg(ab, ATH12K_DBG_WMI,
++		   "Received reg power array type %d length %d for tpc stats\n",
++		   ev->reg_power_type, ev->reg_array_len);
++
++	switch (le32_to_cpu(ev->reg_power_type)) {
++	case TPC_STATS_REG_PWR_ALLOWED_TYPE:
++		reg_pwr = &tpc_stats->max_reg_allowed_power;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	/* Each entry is 2 byte hence multiplying the indices with 2 */
++	total_size = le32_to_cpu(ev->d1) * le32_to_cpu(ev->d2) *
++		     le32_to_cpu(ev->d3) * le32_to_cpu(ev->d4) * 2;
++	if (le32_to_cpu(ev->reg_array_len) != total_size) {
++		ath12k_warn(ab,
++			    "Total size and reg_array_len doesn't match for tpc stats\n");
++		return -EINVAL;
++	}
++
++	memcpy(&reg_pwr->tpc_reg_pwr, ev, sizeof(struct wmi_max_reg_power_fixed_params));
++
++	reg_pwr->reg_pwr_array = kzalloc(le32_to_cpu(reg_pwr->tpc_reg_pwr.reg_array_len),
++					 GFP_ATOMIC);
++	if (!reg_pwr->reg_pwr_array)
++		return -ENOMEM;
++
++	tpc_stats->tlvs_rcvd |= WMI_TPC_REG_PWR_ALLOWED;
++
++	return 0;
++}
++
++static int ath12k_tpc_get_rate_array(struct ath12k_base *ab,
++				     struct wmi_tpc_stats_arg *tpc_stats,
++				     struct wmi_tpc_rates_array_fixed_params *ev)
++{
++	struct wmi_tpc_rates_array_arg *rates_array;
++	u32 flag = 0, rate_array_len;
++
++	ath12k_dbg(ab, ATH12K_DBG_WMI,
++		   "Received rates array type %d length %d for tpc stats\n",
++		   ev->rate_array_type, ev->rate_array_len);
++
++	switch (le32_to_cpu(ev->rate_array_type)) {
++	case ATH12K_TPC_STATS_RATES_ARRAY1:
++		rates_array = &tpc_stats->rates_array1;
++		flag = WMI_TPC_RATES_ARRAY1;
++		break;
++	case ATH12K_TPC_STATS_RATES_ARRAY2:
++		rates_array = &tpc_stats->rates_array2;
++		flag = WMI_TPC_RATES_ARRAY2;
++		break;
++	default:
++		ath12k_warn(ab,
++			    "Received invalid type of rates array for tpc stats\n");
++		return -EINVAL;
++	}
++	memcpy(&rates_array->tpc_rates_array, ev,
++	       sizeof(struct wmi_tpc_rates_array_fixed_params));
++	rate_array_len = le32_to_cpu(rates_array->tpc_rates_array.rate_array_len);
++	rates_array->rate_array = kzalloc(rate_array_len, GFP_ATOMIC);
++	if (!rates_array->rate_array)
++		return -ENOMEM;
++
++	tpc_stats->tlvs_rcvd |= flag;
++	return 0;
++}
++
++static int ath12k_tpc_get_ctl_pwr_tbl(struct ath12k_base *ab,
++				      struct wmi_tpc_stats_arg *tpc_stats,
++				      struct wmi_tpc_ctl_pwr_fixed_params *ev)
++{
++	struct wmi_tpc_ctl_pwr_table_arg *ctl_array;
++	u32 total_size, ctl_array_len, flag = 0;
++
++	ath12k_dbg(ab, ATH12K_DBG_WMI,
++		   "Received ctl array type %d length %d for tpc stats\n",
++		   ev->ctl_array_type, ev->ctl_array_len);
++
++	switch (le32_to_cpu(ev->ctl_array_type)) {
++	case ATH12K_TPC_STATS_CTL_ARRAY:
++		ctl_array = &tpc_stats->ctl_array;
++		flag = WMI_TPC_CTL_PWR_ARRAY;
++		break;
++	default:
++		ath12k_warn(ab,
++			    "Received invalid type of ctl pwr table for tpc stats\n");
++		return -EINVAL;
++	}
++
++	total_size = le32_to_cpu(ev->d1) * le32_to_cpu(ev->d2) *
++		     le32_to_cpu(ev->d3) * le32_to_cpu(ev->d4);
++	if (le32_to_cpu(ev->ctl_array_len) != total_size) {
++		ath12k_warn(ab,
++			    "Total size and ctl_array_len doesn't match for tpc stats\n");
++		return -EINVAL;
++	}
++
++	memcpy(&ctl_array->tpc_ctl_pwr, ev, sizeof(struct wmi_tpc_ctl_pwr_fixed_params));
++	ctl_array_len = le32_to_cpu(ctl_array->tpc_ctl_pwr.ctl_array_len);
++	ctl_array->ctl_pwr_table = kzalloc(ctl_array_len, GFP_ATOMIC);
++	if (!ctl_array->ctl_pwr_table)
++		return -ENOMEM;
++
++	tpc_stats->tlvs_rcvd |= flag;
++	return 0;
++}
++
++static int ath12k_wmi_tpc_stats_subtlv_parser(struct ath12k_base *ab,
++					      u16 tag, u16 len,
++					      const void *ptr, void *data)
++{
++	struct wmi_tpc_rates_array_fixed_params *tpc_rates_array;
++	struct wmi_max_reg_power_fixed_params *tpc_reg_pwr;
++	struct wmi_tpc_ctl_pwr_fixed_params *tpc_ctl_pwr;
++	struct wmi_tpc_stats_arg *tpc_stats = data;
++	struct wmi_tpc_config_params *tpc_config;
++	int ret = 0;
++
++	if (!tpc_stats) {
++		ath12k_warn(ab, "tpc stats memory unavailable\n");
++		return -EINVAL;
++	}
++
++	switch (tag) {
++	case WMI_TAG_TPC_STATS_CONFIG_EVENT:
++		tpc_config = (struct wmi_tpc_config_params *)ptr;
++		memcpy(&tpc_stats->tpc_config, tpc_config,
++		       sizeof(struct wmi_tpc_config_params));
++		break;
++	case WMI_TAG_TPC_STATS_REG_PWR_ALLOWED:
++		tpc_reg_pwr = (struct wmi_max_reg_power_fixed_params *)ptr;
++		ret = ath12k_tpc_get_reg_pwr(ab, tpc_stats, tpc_reg_pwr);
++		break;
++	case WMI_TAG_TPC_STATS_RATES_ARRAY:
++		tpc_rates_array = (struct wmi_tpc_rates_array_fixed_params *)ptr;
++		ret = ath12k_tpc_get_rate_array(ab, tpc_stats, tpc_rates_array);
++		break;
++	case WMI_TAG_TPC_STATS_CTL_PWR_TABLE_EVENT:
++		tpc_ctl_pwr = (struct wmi_tpc_ctl_pwr_fixed_params *)ptr;
++		ret = ath12k_tpc_get_ctl_pwr_tbl(ab, tpc_stats, tpc_ctl_pwr);
++		break;
++	default:
++		ath12k_warn(ab,
++			    "Received invalid tag for tpc stats in subtlvs\n");
++		return -EINVAL;
++	}
++	return ret;
++}
++
++static int ath12k_wmi_tpc_stats_event_parser(struct ath12k_base *ab,
++					     u16 tag, u16 len,
++					     const void *ptr, void *data)
++{
++	struct wmi_tpc_stats_arg *tpc_stats = (struct wmi_tpc_stats_arg *)data;
++	int ret;
++
++	switch (tag) {
++	case WMI_TAG_HALPHY_CTRL_PATH_EVENT_FIXED_PARAM:
++		ret = 0;
++		/* Fixed param is already processed*/
++		break;
++	case WMI_TAG_ARRAY_STRUCT:
++		/* len 0 is expected for array of struct when there
++		 * is no content of that type to pack inside that tlv
++		 */
++		if (len == 0)
++			return 0;
++		ret = ath12k_wmi_tlv_iter(ab, ptr, len,
++					  ath12k_wmi_tpc_stats_subtlv_parser,
++					  tpc_stats);
++		break;
++	case WMI_TAG_ARRAY_INT16:
++		if (len == 0)
++			return 0;
++		ret = ath12k_wmi_tpc_stats_copy_buffer(ab, ptr,
++						       WMI_TAG_ARRAY_INT16,
++						       len, tpc_stats);
++		break;
++	case WMI_TAG_ARRAY_BYTE:
++		if (len == 0)
++			return 0;
++		ret = ath12k_wmi_tpc_stats_copy_buffer(ab, ptr,
++						       WMI_TAG_ARRAY_BYTE,
++						       len, tpc_stats);
++		break;
++	default:
++		ath12k_warn(ab, "Received invalid tag for tpc stats\n");
++		ret = -EINVAL;
++		break;
++	}
++	return ret;
++}
++
++void ath12k_wmi_free_tpc_stats_mem(struct ath12k *ar)
++{
++	struct wmi_tpc_stats_arg *tpc_stats = ar->debug.tpc_stats;
++
++	lockdep_assert_held(&ar->data_lock);
++	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "tpc stats mem free\n");
++	if (tpc_stats) {
++		kfree(tpc_stats->max_reg_allowed_power.reg_pwr_array);
++		kfree(tpc_stats->rates_array1.rate_array);
++		kfree(tpc_stats->rates_array2.rate_array);
++		kfree(tpc_stats->ctl_array.ctl_pwr_table);
++		kfree(tpc_stats);
++		ar->debug.tpc_stats = NULL;
++	}
++}
++
++static void ath12k_wmi_process_tpc_stats(struct ath12k_base *ab,
++					 struct sk_buff *skb)
++{
++	struct ath12k_wmi_pdev_tpc_stats_event_fixed_params *fixed_param;
++	struct wmi_tpc_stats_arg *tpc_stats;
++	const struct wmi_tlv *tlv;
++	void *ptr = skb->data;
++	struct ath12k *ar;
++	u16 tlv_tag;
++	u32 event_count;
++	int ret;
++
++	if (!skb->data) {
++		ath12k_warn(ab, "No data present in tpc stats event\n");
++		return;
++	}
++
++	if (skb->len < (sizeof(*fixed_param) + TLV_HDR_SIZE)) {
++		ath12k_warn(ab, "TPC stats event size invalid\n");
++		return;
++	}
++
++	tlv = (struct wmi_tlv *)ptr;
++	tlv_tag = le32_get_bits(tlv->header, WMI_TLV_TAG);
++	ptr += sizeof(*tlv);
++
++	if (tlv_tag != WMI_TAG_HALPHY_CTRL_PATH_EVENT_FIXED_PARAM) {
++		ath12k_warn(ab, "TPC stats without fixed param tlv at start\n");
++		return;
++	}
++
++	fixed_param = (struct ath12k_wmi_pdev_tpc_stats_event_fixed_params *)ptr;
++	rcu_read_lock();
++	ar = ath12k_mac_get_ar_by_pdev_id(ab, le32_to_cpu(fixed_param->pdev_id) + 1);
++	if (!ar) {
++		ath12k_warn(ab, "Failed to get ar for tpc stats\n");
++		rcu_read_unlock();
++		return;
++	}
++	spin_lock_bh(&ar->data_lock);
++	if (!ar->debug.tpc_request) {
++		/* Event is received either without request or the
++		 * timeout, if memory is already allocated free it
++		 */
++		if (ar->debug.tpc_stats) {
++			ath12k_warn(ab, "Freeing memory for tpc_stats\n");
++			ath12k_wmi_free_tpc_stats_mem(ar);
++		}
++		goto unlock;
++	}
++
++	event_count = le32_to_cpu(fixed_param->event_count);
++	if (event_count == 0) {
++		if (ar->debug.tpc_stats) {
++			ath12k_warn(ab,
++				    "Invalid tpc memory present\n");
++			goto unlock;
++		}
++		ar->debug.tpc_stats =
++			kzalloc(sizeof(struct wmi_tpc_stats_arg),
++				GFP_ATOMIC);
++		if (!ar->debug.tpc_stats) {
++			ath12k_warn(ab,
++				    "Failed to allocate memory for tpc stats\n");
++			goto unlock;
++		}
++	}
++
++	tpc_stats = ar->debug.tpc_stats;
++
++	if (!(event_count == 0)) {
++		if (event_count != tpc_stats->event_count + 1) {
++			ath12k_warn(ab,
++				    "Invalid tpc event received\n");
++			goto unlock;
++		}
++	}
++	tpc_stats->pdev_id = le32_to_cpu(fixed_param->pdev_id);
++	tpc_stats->end_of_event = le32_to_cpu(fixed_param->end_of_event);
++	tpc_stats->event_count = le32_to_cpu(fixed_param->event_count);
++	ath12k_dbg(ab, ATH12K_DBG_WMI,
++		   "tpc stats event_count %d\n",
++		   tpc_stats->event_count);
++	ret = ath12k_wmi_tlv_iter(ab, skb->data, skb->len,
++				  ath12k_wmi_tpc_stats_event_parser,
++				  tpc_stats);
++	if (ret) {
++		if (tpc_stats)
++			ath12k_wmi_free_tpc_stats_mem(ar);
++		ath12k_warn(ab, "failed to parse tpc_stats tlv: %d\n", ret);
++		goto unlock;
++	}
++
++	if (tpc_stats && tpc_stats->end_of_event)
++		complete(&ar->debug.tpc_complete);
++
++unlock:
++	spin_unlock_bh(&ar->data_lock);
++	rcu_read_unlock();
++}
++#else
++static void ath12k_wmi_process_tpc_stats(struct ath12k_base *ab,
++					 struct sk_buff *skb)
++{
++}
++#endif
++
+ static void ath12k_wmi_op_rx(struct ath12k_base *ab, struct sk_buff *skb)
+ {
+ 	struct wmi_cmd_hdr *cmd_hdr;
+@@ -8217,6 +8597,9 @@ static void ath12k_wmi_op_rx(struct ath12k_base *ab, struct sk_buff *skb)
+ 	case WMI_MLO_TEARDOWN_COMPLETE_EVENTID:
+ 		ath12k_wmi_event_teardown_complete(ab, skb);
+ 		break;
++	case WMI_HALPHY_STATS_CTRL_PATH_EVENTID:
++		ath12k_wmi_process_tpc_stats(ab, skb);
++		break;
+ 	/* add Unsupported events (rare) here */
+ 	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
+ 	case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
+@@ -8372,6 +8755,74 @@ int ath12k_wmi_simulate_radar(struct ath12k *ar)
+ 	return ath12k_wmi_send_unit_test_cmd(ar, wmi_ut, dfs_args);
+ }
+ 
++int ath12k_wmi_send_tpc_stats_request(struct ath12k *ar,
++				      enum wmi_halphy_ctrl_path_stats_id tpc_stats_type)
++{
++	struct wmi_request_halphy_ctrl_path_stats_cmd_fixed_params *cmd;
++	struct ath12k_wmi_pdev *wmi = ar->wmi;
++	struct sk_buff *skb;
++	struct wmi_tlv *tlv;
++	__le32 *pdev_id;
++	u32 buf_len;
++	void *ptr;
++	int ret;
++
++	buf_len = sizeof(*cmd) + TLV_HDR_SIZE + sizeof(u32) + TLV_HDR_SIZE + TLV_HDR_SIZE;
++
++	skb = ath12k_wmi_alloc_skb(wmi->wmi_ab, buf_len);
++	if (!skb)
++		return -ENOMEM;
++	cmd = (struct wmi_request_halphy_ctrl_path_stats_cmd_fixed_params *)skb->data;
++	cmd->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_HALPHY_CTRL_PATH_CMD_FIXED_PARAM,
++						 sizeof(*cmd));
++
++	cmd->stats_id_mask = cpu_to_le32(WMI_REQ_CTRL_PATH_PDEV_TX_STAT);
++	cmd->action = cpu_to_le32(WMI_REQUEST_CTRL_PATH_STAT_GET);
++	cmd->subid = cpu_to_le32(tpc_stats_type);
++
++	ptr = skb->data + sizeof(*cmd);
++
++	/* The below TLV arrays optionally follow this fixed param TLV structure
++	 * 1. ARRAY_UINT32 pdev_ids[]
++	 *      If this array is present and non-zero length, stats should only
++	 *      be provided from the pdevs identified in the array.
++	 * 2. ARRAY_UNIT32 vdev_ids[]
++	 *      If this array is present and non-zero length, stats should only
++	 *      be provided from the vdevs identified in the array.
++	 * 3. ath12k_wmi_mac_addr_params peer_macaddr[];
++	 *      If this array is present and non-zero length, stats should only
++	 *      be provided from the peers with the MAC addresses specified
++	 *      in the array
++	 */
++	tlv = ptr;
++	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_UINT32, sizeof(u32));
++	ptr += TLV_HDR_SIZE;
++
++	pdev_id = ptr;
++	*pdev_id = cpu_to_le32(ath12k_mac_get_target_pdev_id(ar));
++	ptr += sizeof(*pdev_id);
++
++	tlv = ptr;
++	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_UINT32, 0);
++	ptr += TLV_HDR_SIZE;
++
++	tlv = ptr;
++	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_FIXED_STRUCT, 0);
++	ptr += TLV_HDR_SIZE;
++
++	ret = ath12k_wmi_cmd_send(wmi, skb, WMI_REQUEST_HALPHY_CTRL_PATH_STATS_CMDID);
++	if (ret) {
++		ath12k_warn(ar->ab,
++			    "failed to submit WMI_REQUEST_STATS_CTRL_PATH_CMDID\n");
++		dev_kfree_skb(skb);
++		return ret;
++	}
++	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "WMI get TPC STATS sent on pdev %d\n",
++		   ar->pdev->pdev_id);
++
++	return ret;
++}
++
+ int ath12k_wmi_connect(struct ath12k_base *ab)
+ {
+ 	u32 i;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index 2934d9589007..7c60da3a2859 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -517,6 +517,9 @@ enum wmi_tlv_cmd_id {
+ 	WMI_REQUEST_RCPI_CMDID,
+ 	WMI_REQUEST_PEER_STATS_INFO_CMDID,
+ 	WMI_REQUEST_RADIO_CHAN_STATS_CMDID,
++	WMI_REQUEST_WLM_STATS_CMDID,
++	WMI_REQUEST_CTRL_PATH_STATS_CMDID,
++	WMI_REQUEST_HALPHY_CTRL_PATH_STATS_CMDID = WMI_REQUEST_CTRL_PATH_STATS_CMDID + 3,
+ 	WMI_SET_ARP_NS_OFFLOAD_CMDID = WMI_TLV_CMD(WMI_GRP_ARP_NS_OFL),
+ 	WMI_ADD_PROACTIVE_ARP_RSP_PATTERN_CMDID,
+ 	WMI_DEL_PROACTIVE_ARP_RSP_PATTERN_CMDID,
+@@ -786,6 +789,9 @@ enum wmi_tlv_event_id {
+ 	WMI_UPDATE_RCPI_EVENTID,
+ 	WMI_PEER_STATS_INFO_EVENTID,
+ 	WMI_RADIO_CHAN_STATS_EVENTID,
++	WMI_WLM_STATS_EVENTID,
++	WMI_CTRL_PATH_STATS_EVENTID,
++	WMI_HALPHY_STATS_CTRL_PATH_EVENTID,
+ 	WMI_NLO_MATCH_EVENTID = WMI_TLV_CMD(WMI_GRP_NLO_OFL),
+ 	WMI_NLO_SCAN_COMPLETE_EVENTID,
+ 	WMI_APFIND_EVENTID,
+@@ -1192,6 +1198,7 @@ enum wmi_tlv_tag {
+ 	WMI_TAG_ARRAY_BYTE,
+ 	WMI_TAG_ARRAY_STRUCT,
+ 	WMI_TAG_ARRAY_FIXED_STRUCT,
++	WMI_TAG_ARRAY_INT16,
+ 	WMI_TAG_LAST_ARRAY_ENUM = 31,
+ 	WMI_TAG_SERVICE_READY_EVENT,
+ 	WMI_TAG_HAL_REG_CAPABILITIES,
+@@ -1942,6 +1949,12 @@ enum wmi_tlv_tag {
+ 	WMI_TAG_MAC_PHY_CAPABILITIES_EXT = 0x36F,
+ 	WMI_TAG_REGULATORY_RULE_EXT_STRUCT = 0x3A9,
+ 	WMI_TAG_REG_CHAN_LIST_CC_EXT_EVENT,
++	WMI_TAG_TPC_STATS_GET_CMD = 0x38B,
++	WMI_TAG_TPC_STATS_EVENT_FIXED_PARAM,
++	WMI_TAG_TPC_STATS_CONFIG_EVENT,
++	WMI_TAG_TPC_STATS_REG_PWR_ALLOWED,
++	WMI_TAG_TPC_STATS_RATES_ARRAY,
++	WMI_TAG_TPC_STATS_CTL_PWR_TABLE_EVENT,
+ 	WMI_TAG_EHT_RATE_SET = 0x3C4,
+ 	WMI_TAG_DCS_AWGN_INT_TYPE = 0x3C5,
+ 	WMI_TAG_MLO_TX_SEND_PARAMS,
+@@ -1959,6 +1972,8 @@ enum wmi_tlv_tag {
+ 	WMI_TAG_PDEV_SET_BIOS_SAR_TABLE_CMD = 0x3D8,
+ 	WMI_TAG_PDEV_SET_BIOS_GEO_TABLE_CMD = 0x3D9,
+ 	WMI_TAG_PDEV_SET_BIOS_INTERFACE_CMD = 0x3FB,
++	WMI_TAG_HALPHY_CTRL_PATH_CMD_FIXED_PARAM = 0x442,
++	WMI_TAG_HALPHY_CTRL_PATH_EVENT_FIXED_PARAM,
+ 	WMI_TAG_MAX
+ };
+ 
+@@ -5768,6 +5783,126 @@ struct ath12k_fw_stats_req_params {
+ 	u32 pdev_id;
+ };
+ 
++#define WMI_REQ_CTRL_PATH_PDEV_TX_STAT		1
++#define WMI_REQUEST_CTRL_PATH_STAT_GET		1
++
++#define WMI_TPC_CONFIG			BIT(1)
++#define WMI_TPC_REG_PWR_ALLOWED		BIT(2)
++#define WMI_TPC_RATES_ARRAY1		BIT(3)
++#define WMI_TPC_RATES_ARRAY2		BIT(4)
++#define WMI_TPC_RATES_DL_OFDMA_ARRAY	BIT(5)
++#define WMI_TPC_CTL_PWR_ARRAY		BIT(6)
++#define WMI_TPC_CONFIG_PARAM		0x1
++#define ATH12K_TPC_RATE_ARRAY_MU	GENMASK(15, 8)
++#define ATH12K_TPC_RATE_ARRAY_SU	GENMASK(7, 0)
++#define TPC_STATS_REG_PWR_ALLOWED_TYPE	0
++
++enum wmi_halphy_ctrl_path_stats_id {
++	WMI_HALPHY_PDEV_TX_SU_STATS = 0,
++	WMI_HALPHY_PDEV_TX_SUTXBF_STATS,
++	WMI_HALPHY_PDEV_TX_MU_STATS,
++	WMI_HALPHY_PDEV_TX_MUTXBF_STATS,
++	WMI_HALPHY_PDEV_TX_STATS_MAX,
++};
++
++enum ath12k_wmi_tpc_stats_rates_array {
++	ATH12K_TPC_STATS_RATES_ARRAY1,
++	ATH12K_TPC_STATS_RATES_ARRAY2,
++};
++
++enum ath12k_wmi_tpc_stats_ctl_array {
++	ATH12K_TPC_STATS_CTL_ARRAY,
++	ATH12K_TPC_STATS_CTL_160ARRAY,
++};
++
++enum ath12k_wmi_tpc_stats_events {
++	ATH12K_TPC_STATS_CONFIG_REG_PWR_EVENT,
++	ATH12K_TPC_STATS_RATES_EVENT1,
++	ATH12K_TPC_STATS_RATES_EVENT2,
++	ATH12K_TPC_STATS_CTL_TABLE_EVENT
++};
++
++struct wmi_request_halphy_ctrl_path_stats_cmd_fixed_params {
++	__le32 tlv_header;
++	__le32 stats_id_mask;
++	__le32 request_id;
++	__le32 action;
++	__le32 subid;
++} __packed;
++
++struct ath12k_wmi_pdev_tpc_stats_event_fixed_params {
++	__le32 pdev_id;
++	__le32 end_of_event;
++	__le32 event_count;
++} __packed;
++
++struct wmi_tpc_config_params {
++	__le32 reg_domain;
++	__le32 chan_freq;
++	__le32 phy_mode;
++	__le32 twice_antenna_reduction;
++	__le32 twice_max_reg_power;
++	__le32 twice_antenna_gain;
++	__le32 power_limit;
++	__le32 rate_max;
++	__le32 num_tx_chain;
++	__le32 ctl;
++	__le32 flags;
++	__le32 caps;
++} __packed;
++
++struct wmi_max_reg_power_fixed_params {
++	__le32 reg_power_type;
++	__le32 reg_array_len;
++	__le32 d1;
++	__le32 d2;
++	__le32 d3;
++	__le32 d4;
++} __packed;
++
++struct wmi_max_reg_power_allowed_arg {
++	struct wmi_max_reg_power_fixed_params tpc_reg_pwr;
++	s16 *reg_pwr_array;
++};
++
++struct wmi_tpc_rates_array_fixed_params {
++	__le32 rate_array_type;
++	__le32 rate_array_len;
++} __packed;
++
++struct wmi_tpc_rates_array_arg {
++	struct wmi_tpc_rates_array_fixed_params tpc_rates_array;
++	s16 *rate_array;
++};
++
++struct wmi_tpc_ctl_pwr_fixed_params {
++	__le32 ctl_array_type;
++	__le32 ctl_array_len;
++	__le32 end_of_ctl_pwr;
++	__le32 ctl_pwr_count;
++	__le32 d1;
++	__le32 d2;
++	__le32 d3;
++	__le32 d4;
++} __packed;
++
++struct wmi_tpc_ctl_pwr_table_arg {
++	struct wmi_tpc_ctl_pwr_fixed_params tpc_ctl_pwr;
++	s8 *ctl_pwr_table;
++};
++
++struct wmi_tpc_stats_arg {
++	u32 pdev_id;
++	u32 event_count;
++	u32 end_of_event;
++	u32 tlvs_rcvd;
++	struct wmi_max_reg_power_allowed_arg max_reg_allowed_power;
++	struct wmi_tpc_rates_array_arg rates_array1;
++	struct wmi_tpc_rates_array_arg rates_array2;
++	struct wmi_tpc_config_params tpc_config;
++	struct wmi_tpc_ctl_pwr_table_arg ctl_array;
++};
++
+ void ath12k_wmi_init_qcn9274(struct ath12k_base *ab,
+ 			     struct ath12k_wmi_resource_config_arg *config);
+ void ath12k_wmi_init_wcn7850(struct ath12k_base *ab,
+@@ -5897,6 +6032,10 @@ int ath12k_wmi_send_stats_request_cmd(struct ath12k *ar, u32 stats_id,
+ 				      u32 vdev_id, u32 pdev_id);
+ __le32 ath12k_wmi_tlv_hdr(u32 cmd, u32 len);
+ 
++int ath12k_wmi_send_tpc_stats_request(struct ath12k *ar,
++				      enum wmi_halphy_ctrl_path_stats_id tpc_stats_type);
++void ath12k_wmi_free_tpc_stats_mem(struct ath12k *ar);
++
+ static inline u32
+ ath12k_wmi_caps_ext_get_pdev_id(const struct ath12k_wmi_caps_ext_params *param)
+ {
 -- 
 2.25.1
 
