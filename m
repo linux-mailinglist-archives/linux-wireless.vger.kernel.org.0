@@ -1,121 +1,131 @@
-Return-Path: <linux-wireless+bounces-18223-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18224-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A65A232E4
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 18:31:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA838A232F3
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 18:33:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77DE8164CE0
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 17:31:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0BEF3A50AA
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 17:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BFA1EE7D6;
-	Thu, 30 Jan 2025 17:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212A74C7C;
+	Thu, 30 Jan 2025 17:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mDT43JF1"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RwRIXQEM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0E61EF0AB
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 17:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3D426289
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 17:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738258225; cv=none; b=pgNSBjn5NwrrukYrTxCvXg1yB/JZ6GFjh8NvypY+6UgSzgWJ5jG3bfMkIPgp2XjKUDMuJOwlAuEb8opL0I/O90mC8+m1N60QtV+TNaMB8xhXBghFwZLuSrNKp3R6krqi8f9GZTy9CdlTchcZ+AKNlXtCccLlaSiTsJ1ktbxlBmk=
+	t=1738258399; cv=none; b=ihVdH+H3lqyUwBWZpXKjnVEC7bdlTxDD737UuGRfT56Ja6y6lVL1TOx+S5yPpsN+bvFlel0ZfOYCINeFr+Vg2Nqhx2O7ahBs6Egf6M5fGv3AJacgi8wqXWW6WtZJ0HPdDSvIh12WKu6hLZetp/PBkNEvUFdeRMg8vfARZ9lsyiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738258225; c=relaxed/simple;
-	bh=D6Fa1/5aBiWk2HfzzQZzJAz5jF/zmzA7utLWq1npJTA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CM0xggq4k98OeUpEdRAAj+mCPFpVhX8F9D3SrymagPlvTfkFfUmTrd8wiuPD2z2HvT776h1fbWrkK8BONbwLw8A1GwBFCJIOqzrX7rxiLZwXheW7WuTMGbx9kb0X1IkBmIkl09+4TbwlvZXMaYFmo410pf19zPeyYyjCpn3thzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mDT43JF1; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50UE3VgU031760
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 17:30:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	s=arc-20240116; t=1738258399; c=relaxed/simple;
+	bh=pgwwWSjJaXBfz/Iq9i1FDU5rbzsnT0gYrUY61TRlKHw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UH5fMSS6y7zjrWPB1zzi84rnMsl/caI2niQCKoqlj4+VQMFuUDitaddzLP4JMTEf1Gu8Ise0k44b1l5/8uJyUdm5y5xHmRVcGGJxzceqkr8vucheKYYyKU7PARW5m7g4O0mbZadqIUx5eY6wJu8WqEkqbVnomOnj/ffXQyaEPdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RwRIXQEM; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50U9LhAN015160;
+	Thu, 30 Jan 2025 17:33:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	D6Fa1/5aBiWk2HfzzQZzJAz5jF/zmzA7utLWq1npJTA=; b=mDT43JF1KuiNtVPS
-	yZd+VRxf/prCPKevFe/6ZIN8RIsCBy1/T1sRZN1xB3WrO8ixzPVPmVJUJ2H0KQ3w
-	hdVou80bUiNhIcdQCIzLKkv+ggq7ctI9NPfiknLfzJIPtoSaJjIKkCzR+lrqcMoH
-	02V/14TmnOQ965ABDguQUcrO4GrE8A1KuD7n0ix1QcLKimQcbr5HpSyos1ZwLZ0M
-	6OTXvKE7dWPixle0cExSaJuru6iNdzZOZZQZbUQmuG6D6tBZoWESXBbydikZAK+7
-	MEdir5mwSaMYgMPBEing/GFijmlBYOwfC6ypuvCzWzPzz+FRNgVi6MQ9CuJ0CMQj
-	CWp+XQ==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44gauurh93-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 17:30:23 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2163a2a1ec2so35843225ad.1
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 09:30:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738258222; x=1738863022;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D6Fa1/5aBiWk2HfzzQZzJAz5jF/zmzA7utLWq1npJTA=;
-        b=GLeZhtIEvyk0aaoJiXfTrHVfQ8Fmf5MtFeoFlrg8l1asxWLrBwq+kBY9jIRzZZYpHq
-         MhA/ek4ICCC7ST/ANOP4VL70GmAD5s1mbwYTwdQebI2Jg1vcD9a7DV1EqxcIsBz2pFbc
-         vhrRM2mi4Vhz5x4Vu6PGBAKxSuCHMLXAY7hv4h5Wfuqn7IEpzaNufP43iOXONMpLUyq4
-         60bRdnYkOI8cBhoJRd5SprKHLamverRIE69/rKqnBo+jKq9jFTW/VOv4bvcXEgBbgc51
-         Y+4eZyS5wkCAixMh8BxIg7FknBTWJUaTACTTnvUTpATkEjGuwY44r231fNkPwIu5JiR0
-         2y9Q==
-X-Gm-Message-State: AOJu0YyKmQI3V7h7OYIZje1VRfjToqPCssaCdOvQEdHrL9onjWkEURue
-	DDu7L6AFeBv2q6A/68iLAUXvz8TnVxPwlLi2hwkphBHLGwsIDMsBOdrNy4DISc1rnJs04P+qO1R
-	XkDl1bQnnJWphI8RhnJm9OlgilcckOjPgPR1vEdJ25Da2lAz4OpflUl/mxbTT4vT3hg==
-X-Gm-Gg: ASbGncuarZNefDEM7525pr5VH2sJU2KidzFfM/nN6qY+TlVOAmOvvQRqCUOTCnL/NUE
-	bkolGLrVq6Nwv7wl5c44NwMvmrkRBETYtq3uQsRtocGYe9DnIVXec8lMIPWEm41++yWu1vZJeg9
-	1qf8hYtfpzGr3P7vGE9JFG8iFLIc39X8fygyIm0yPzXi9ranq3NJyoZ2yBKVBb7+TldxiIzJmWz
-	Vf8P+eyojmy2Do9v19tozcoJgbtC39MjgCpmkUhqtA0atJNIdtmuwy7Kecj8cUkb62o6+mmW0DM
-	U6uZA4ZVh9zH0nh+WhuU5pOslayhNmddpDCjsADOCu9D1bQjm41SL91gSh+FGyzKPK/dZZgSag=
-	=
-X-Received: by 2002:a17:902:d48b:b0:215:385e:921c with SMTP id d9443c01a7336-21dd7e39d0emr115615675ad.51.1738258222153;
-        Thu, 30 Jan 2025 09:30:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IELaiH32awt6QGzr63yRUAiA8B5sIZqc9gY7P8Bsp7pqcQV/C7UcdET9yb1E1jIjNmL8+e4kQ==
-X-Received: by 2002:a17:902:d48b:b0:215:385e:921c with SMTP id d9443c01a7336-21dd7e39d0emr115615015ad.51.1738258221437;
-        Thu, 30 Jan 2025 09:30:21 -0800 (PST)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de330305asm16366485ad.186.2025.01.30.09.30.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Jan 2025 09:30:21 -0800 (PST)
-Message-ID: <bdfc31fa-bf09-4540-8a72-139c46cbc353@oss.qualcomm.com>
-Date: Thu, 30 Jan 2025 09:30:20 -0800
+	eYmQqKs/Ne01PIQhPGvRWliO2qJVYCPyCpjjna+biIM=; b=RwRIXQEMMiuim1W1
+	okB0/bJ4iC8S5K0DbYnrFV9aKqjjLKSF28KPsPKmhCFXOYYYoZKXLjJqAZN7Mj+t
+	8c4Qr85HifSjW57QU+ptIrt1QIItyr0sXeVBe7pfmXo/74Ftbaaz7/JEDPzSzqUY
+	TcZqjPfeh8MaVjYw17kIgJmPzlRd9Z+YMHSYQmYZJOeJ0bAf8AoLYJP84aw9Yl3c
+	4fMCg53D31xUGkpsLh4/mnvAUKbtzs+H/qnq/J2U2sGMl/ca1YEbIgKk+4p/lukQ
+	JSKnJhaxf0atgwfXZDk1S3jXmpU8ypu2vgCVZXzx2Wr7loctr4uMk6Qz8NNV/HGu
+	f+HdBw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44g6qqh5p4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jan 2025 17:33:10 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50UHX9LI010375
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jan 2025 17:33:09 GMT
+Received: from [10.216.32.57] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 30 Jan
+ 2025 09:33:06 -0800
+Message-ID: <13987b22-15ee-f8b4-36f4-2375fe5a811e@quicinc.com>
+Date: Thu, 30 Jan 2025 23:03:01 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
 Subject: Re: [PATCH v2] wifi: ath12k: fix ath12k_hal_tx_cmd_ext_desc_setup()
  info1 override
-To: Nicolas Escande <nico.escande@gmail.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250127071306.1454699-1-nico.escande@gmail.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
+To: Nicolas Escande <nico.escande@gmail.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20250127071306.1454699-1-nico.escande@gmail.com>
+From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
 In-Reply-To: <20250127071306.1454699-1-nico.escande@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: qZ1Pk5LIpSn9YhJ9HHez4FQyOeKFtAgb
-X-Proofpoint-ORIG-GUID: qZ1Pk5LIpSn9YhJ9HHez4FQyOeKFtAgb
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 6S1Kh0AG1combFUjeApj7JSBOiueaLYX
+X-Proofpoint-ORIG-GUID: 6S1Kh0AG1combFUjeApj7JSBOiueaLYX
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-30_08,2025-01-30_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 malwarescore=0 suspectscore=0 clxscore=1015 bulkscore=0
- spamscore=0 phishscore=0 priorityscore=1501 impostorscore=0 mlxscore=0
- mlxlogscore=874 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501300132
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ phishscore=0 lowpriorityscore=0 mlxscore=0 impostorscore=0 bulkscore=0
+ mlxlogscore=990 spamscore=0 clxscore=1015 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501300133
 
-On 1/26/2025 11:13 PM, Nicolas Escande wrote:
+
+
+On 1/27/2025 12:43 PM, Nicolas Escande wrote:
 > Since inception there is an obvious typo laying around in
 > ath12k_hal_tx_cmd_ext_desc_setup(). Instead of intitializing + adding
+> flags to tcl_ext_cmd->info1, we initialize + override. This will be needed
+> in the future to make broadcast frames work with ethernet encapsulation.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+> ---
+> v2:
+>    - removed spurious 'fbx' from title
+>    - removed fixes tag as the problem it fixes is not yet enabled mainstream
+>      see https://lore.kernel.org/linux-wireless/23d62bef-2393-4232-93ff-82ca4dbc4524@oss.qualcomm.com/
+> v1:
+>    - initial version
+> ---
+>   drivers/net/wireless/ath/ath12k/dp_tx.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+> index e0b85f959cd4a..00437736e0322 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_tx.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+> @@ -117,7 +117,7 @@ static void ath12k_hal_tx_cmd_ext_desc_setup(struct ath12k_base *ab,
+>   			       le32_encode_bits(ti->data_len,
+>   						HAL_TX_MSDU_EXT_INFO1_BUF_LEN);
+>   
+> -	tcl_ext_cmd->info1 = le32_encode_bits(1, HAL_TX_MSDU_EXT_INFO1_EXTN_OVERRIDE) |
+> +	tcl_ext_cmd->info1 |= le32_encode_bits(1, HAL_TX_MSDU_EXT_INFO1_EXTN_OVERRIDE) |
+>   				le32_encode_bits(ti->encap_type,
+>   						 HAL_TX_MSDU_EXT_INFO1_ENCAP_TYPE) |
+>   				le32_encode_bits(ti->encrypt_type,
 
-WARNING:TYPO_SPELLING: 'intitializing' may be misspelled - perhaps 'initializing'?
-
-I'll fix in the 'pending' branch
-
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
