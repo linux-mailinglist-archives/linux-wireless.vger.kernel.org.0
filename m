@@ -1,140 +1,116 @@
-Return-Path: <linux-wireless+bounces-18213-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18214-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37FFFA229C0
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 09:40:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF75A229D9
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 09:53:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFDF61887D0B
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 08:41:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C22AE188791D
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 08:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D911B0F38;
-	Thu, 30 Jan 2025 08:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7531953A1;
+	Thu, 30 Jan 2025 08:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jx/AKb2j"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="sN6n+dL3";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="Qrp25eiB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from e3i103.smtp2go.com (e3i103.smtp2go.com [158.120.84.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7691B0422;
-	Thu, 30 Jan 2025 08:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174E518FDC5
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 08:53:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738226450; cv=none; b=pzAA5G3wou/O1PMbX4tVPHA2Ni10r7j5FC8gwHnTdiay9DdOdJQpoNewVhFnAGRgqIMBiFTXtieefVIPZIrCybYuF2Cg8RszGoFVUkpTWb1Hwt4i6anNSziN5Ua+UZVJDGc03ZE8d8Nn3g2Gh3E5F0adPSMalCfdgLW/XrVp5AE=
+	t=1738227187; cv=none; b=eHeYqXncgHKCP/u6mIwdB8EeUi/q/Rn/wECIg2U+Hdm2EipB2M8hiJouQ32axTi8VYoDil3qJnnQum3CLN5lews+6xAJKxntiQ3FTT3Q59ErvxwtYqbdwcBFQI2Oy7JgdjJnhaR95QibcsOvlngpvWO3D8nvZL44PduRHR/6WKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738226450; c=relaxed/simple;
-	bh=YvbJnh/HicZ8svAByNknxks8ZnMOCqU0Cb9AnJtFmUU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=N4poMD1cRAN7xwUVYxNd7cJbq6eI83jNwdVDyaN9RSBYtGIb0+4j+MbVF3jQE4BmHv4/JWt299HWoytiGyG2bZVBS/xiGmNXwZlkBPAC6t+qH9YcpSNmNsvzzbN7VEgMyMnn33b1uCKEKwI+nlhNIXreEs+9ojknCr1B4Hw0bDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jx/AKb2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AE8C4CED2;
-	Thu, 30 Jan 2025 08:40:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738226450;
-	bh=YvbJnh/HicZ8svAByNknxks8ZnMOCqU0Cb9AnJtFmUU=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=jx/AKb2jKdDU3K9xze5RT0UAbgJDDbNv8p3XMvh9QIsjmkI5NaEyDbfZWD2z0GRM8
-	 ETXfmzPU2JhSkdT9h2iTm2GFVzqHGeoXq1E96kx5e2IZ4rFVmvp/wR4EbA1Iw0psmu
-	 Il1Sen1fbIQkVGMgq3vhEY+3spvSQjEqE46qV6jUo91U/X8Bo1y9Mcyj3/ZD8PGaGP
-	 HKzxVpVkLoz/9BQbc4LA5GNCE9OcZrU2ma1IimecHw6//blPiM78VEUo1HIokcqd3L
-	 SPDD1Zl+9HmD4Sxzg1q5KA+jeu++w6m7TjCC+d3bfe3t69S4pF+MmlVez7e9SQW5uR
-	 dQV8SOxlTNwNA==
-Message-ID: <104e6b6f-3c1e-4a00-8822-aa6fb4562411@kernel.org>
-Date: Thu, 30 Jan 2025 09:40:44 +0100
+	s=arc-20240116; t=1738227187; c=relaxed/simple;
+	bh=XzxeJ4XPzzp0usFqTbZ0M1nRoFpn4ZTZJon5i7ounms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O3OvaWKFm3dzFG4bus3T4wSrjJGFTxG1J6atU2PfYF5OzZ/La46DT3SijIxswpPpucRqAgaRUDFrgiOir4XJxw4vkX5NbilaqedVkIANYsrycQMg7uxYslwJhTT1/8pA22XFg2EDtlaUTIMkn03ZekidfcU4oRNVgrV6U16+RxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=sN6n+dL3; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=Qrp25eiB; arc=none smtp.client-ip=158.120.84.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1738227180; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe : list-unsubscribe-post;
+ bh=ztTkXggYlobgx0epsppi5S+4LOlRnswYqg61lPztKMQ=;
+ b=sN6n+dL3aKsm0GTAjx37lMc6zYq91YImND6qbOANCH37P0iX6nCcnRhzMKhCpwwrYSsM0
+ gaCqQDOaOk0o7MVEg37OLcyrAvArNveYboGW4YmSxiOjimrK0EylZywAarpTnhbqwFQmAiW
+ If4o/JsWx6N+NmRNCmh6dkAZ1Xlpujr8Ru4Gv22okbzS9p+cJokAHSevURqODM1fUw/1htR
+ Zwif0POwvqS6B/egCYcQgG905wc+ImVfopYb3E/v/gCrWL98Z50j8hrKKps/s0MOA2Pns6e
+ Tg9SAtldKx3AJKgdAZ9RCn3NNFu1M8cgL4fFN8/V5qVrapKhWfSNtQN6UgAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1738227180; h=from : subject
+ : to : message-id : date;
+ bh=ztTkXggYlobgx0epsppi5S+4LOlRnswYqg61lPztKMQ=;
+ b=Qrp25eiB5UFQLe+3xFMEstY2lj5rT8sKpRXGgpkjMJksj/TEqV1Rp/0C52XP9AyzgY3B6
+ 7WdvoQOCfXqGrWFKykuBrVcV/Q8mrtQG1XIhplA/HxhVQ0sdfQpCyQDjjlOUtKA+32qd7nQ
+ SH6dyoUxgqF1D2nyL4+XSJZS/hr/N69JZT4vStuSyJAoxGE6sldsvAI7sS4MjNFofmB5OKY
+ aJs4jWmAZzJpFvH9ZrQyVyz1y97B6uRx8SolUpZaI8SMU6diyju2oDxi4U7pocxcqdsxxw1
+ H98PGQO6DTkl/E2EiA4I6TfSyh3FXgPfSuubv57epMWYdyHTTmQYmHzAzDyg==
+Received: from [10.12.239.196] (helo=localhost)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97.1-S2G)
+	(envelope-from <repk@triplefau.lt>)
+	id 1tdQIF-4o5NDgrn3Ce-oqLA;
+	Thu, 30 Jan 2025 08:52:59 +0000
+Date: Thu, 30 Jan 2025 09:49:12 +0100
+From: Remi Pommarel <repk@triplefau.lt>
+To: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>
+Subject: Re: [PATCH v2] wifi: ath12k: remove return for empty tx bitrate in
+ mac_op_sta_statistics
+Message-ID: <Z5s9CO_mmazq2Kg1@pilgrim>
+References: <38c2a7c4f7eaf57b9306bb95a9e6c42b7d987e05.1738169458.git.repk@triplefau.lt>
+ <9c12e9b9-35a4-47f1-bd17-6b4641de92a4@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/13] dt-bindings: net: wireless: describe the ath12k
- AHB module
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
- Kalle Valo <kvalo@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250130043508.1885026-1-quic_rajkbhag@quicinc.com>
- <20250130043508.1885026-2-quic_rajkbhag@quicinc.com>
- <20250130-cunning-quail-of-opportunity-76d0ad@krzk-bin>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250130-cunning-quail-of-opportunity-76d0ad@krzk-bin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9c12e9b9-35a4-47f1-bd17-6b4641de92a4@oss.qualcomm.com>
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 510616m:510616apGKSTK:510616sX7BLYLfdb
+X-smtpcorp-track: NtTCJqLkdc3l.FVQEFL1tgX-Y.7cVO1w80khh
 
-On 30/01/2025 09:28, Krzysztof Kozlowski wrote:
-> On Thu, Jan 30, 2025 at 10:04:56AM +0530, Raj Kumar Bhagat wrote:
->> Add device-tree bindings for the ATH12K module found in the IPQ5332
->> device.
->>
->> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
->> ---
->>  .../net/wireless/qcom,ath12k-ahb.yaml         | 319 ++++++++++++++++++
->>  1 file changed, 319 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
->> new file mode 100644
->> index 000000000000..bd953a028dc3
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
+On Thu, Jan 30, 2025 at 12:21:54PM +0530, Aditya Kumar Singh wrote:
+> On 1/29/25 22:25, Remi Pommarel wrote:
+> > Currently in ath12k_mac_op_sta_statistics() there is the following
+> > logic:
+> > 
+> >      if (!arsta->txrate.legacy && !arsta->txrate.nss)
+> >          return;
+> > 
+> > Because ath12k_sta_statistics is used to report many info to iw wlan0 link,
+> > if it return for empty legacy and nss of arsta->txrate, then the other
+> > stats after it will not be set.
+> > 
+> > To address this issue remove the return and instead invert the logic to set
+> > the txrate logic if (arsta->txrate.legacy || arsta->txrate.nss).
+> > 
+> > The same was done also in both ath10k with commit 1cd6ba8ae33e ("ath10k:
+> > remove return for NL80211_STA_INFO_TX_BITRATE") and ath11k as well with
+> > commit 1d795645e1ee ("ath11k: remove return for empty tx bitrate in
+> > mac_op_sta_statistics").
+> > 
+> > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 > 
-> Filename should match compatible. This binding does not look like
-> supporting more devices, so there is no much benefit calling it by generic name.
+> MISSING_BLANK_LINE
+> 'Tested-on:' tag missing blank line after it.
+> 
+> You missed v1 comment? :)
 
+Yes sorry I think your mail never reached me, did you CC me ? Do you
+need a respin ?
 
-I saw now your other patchset, so you have here two devices, but I still
-do not understand why this cannot follow standard naming practice like
-most bindings supporting one or more devices. Like every review we give.
-
-Best regards,
-Krzysztof
+-- 
+Remi
 
