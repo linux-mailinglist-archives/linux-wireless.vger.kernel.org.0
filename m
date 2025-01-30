@@ -1,87 +1,86 @@
-Return-Path: <linux-wireless+bounces-18174-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18175-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F80A2277F
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 02:31:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F57A227D7
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 04:36:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F413163B8A
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 01:31:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34AB91653DE
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 03:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3474A32;
-	Thu, 30 Jan 2025 01:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14D325634;
+	Thu, 30 Jan 2025 03:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="klnQtvdm"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="D2Jz90ex"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C254A07
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 01:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED1133F7
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 03:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738200681; cv=none; b=t9LVxisNBilZZp4uBTzSm3YjY5h/XbNhy335uCTygAlUZnXbeq012MsPMa4gSN1gqcUnqklG/it0oR+CS+Fffz5KPcI/WCjQ4hyh2C00NN6AMUB64hEAURjpk96rDPquGUsJeOlaeSs+etqEWb/aRtgT3r49kllHY8OYyXCJbcI=
+	t=1738208208; cv=none; b=dEMFqRDx1ithMViSNAxEDiBXBN11N6eW0cPmCjtXKtCprXsRQVtXHkeCWCY61RNw838tmK66efCKzsZR0aX4h+L0nE1zsCtY/YZJnoJHPh67Kun4O0B/fxdmfW/GrHL/aVgUiD0Lxafbs40j8yhY6DDRcjQvOl/0AkMPkzqScsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738200681; c=relaxed/simple;
-	bh=FPS8hc0aWS7P619Hbx/Ie4TfR+sDHeAbJFxBOhnvoxU=;
+	s=arc-20240116; t=1738208208; c=relaxed/simple;
+	bh=Dl7GI2cBmAppunQKRZj6T0qX4dIfPFP+x6zFbBEK4vo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Eue0Rvl18O+F7HFBj0cKvEYBxfghloMVgFTPxYITlZ1WScarAcfatrIq+4PoRJwo6R++oH3lStN7K2CLviSK/3kKDL99QH+r2CxXZQAPLTlhTX0FQLsqtFMHdEUZJi8l1tnrurmxmIM1+/GwSoUJSTO5QLUE+MOaewiucx8JlBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=klnQtvdm; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=hCQCXlDDPI83Afi0BD0k6hmtLANQlcxk6WwY5ofnPkqjO5faQyFdWytBbmh2BDUX2OV6F303WyOxbpwnnYnstxrwRR4yW/fxTr4VWL0MMLbFAxDbGD+OstbDr+EhIQl2pQ5ry1OqQTnu0IBDyRhWufYuUMxqVaVVYFJK9WFnUWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=D2Jz90ex; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50TIWoOa021101
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 01:31:18 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50TJmSVC022843
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 03:36:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	eZmfgbDyRs8egvyZJaS061p9zREsNe9WuLNjZIbWswE=; b=klnQtvdmU59xccvr
-	SrUkUC1rdjdcYqXfWwFmUMFpYOjDRlokxoON2e23GH4JuZ4rMhSAZh6RgANt/zRc
-	f6PP+K+VKQl3G8d8N1pbTm1QJ2dYjly624PFauI8taXWo7ewJCB4P4oGtw2Dynsk
-	stj5eVGPdMM8nqBbEp2VaH2GWD18IDVWc84c7ut/dVtgg1PRAjjTxllWOZWYTv+C
-	VborwRDlCNlzBk5Wq6m5qE/8nOOHEOup4bnvwclyRUB5d09EcE7w9H+pfYKYvEEp
-	pEVDTPd2Hhb0dwXm3jnc3egddChBSEuLPUgV/TcDI2AJmBJnEs/zijil05MeHUtE
-	sHvXxw==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44fsq28tyj-1
+	xug+E7ij4WF0LuLuZ/OHsojEglbBOq/RVcXRzH7G0So=; b=D2Jz90exge5tU5Iq
+	5mMbXyAAMEUkZXPRBiv5/GupHCS2HM05SR7LunIRQIa09LTj/LJicq9weMaPmzXP
+	vspB3Gx6oI89A4iKRktHlwNJvD8ymswx8pQBaZu2MePLKKrv2UwO7mURn+HKxoca
+	4ZSqQLhWayOt1T6NdOCbxrd/5Hlu/bpKxMIMoVoh5t8BGbtWIe6fE5qQUdMJ1hxm
+	PAd4UxE+INIXiuu+FlNJWt0BnbEYnkRGsfjzoS0gUkwddOc/RdtH6Q7sorA8YvEd
+	zMX+zdjguDIyrs7fqCrk7QByTvYLsdNFF3Df2Q6O+jdSHabJ5iliNSjeLYkhkm2J
+	1UPOsA==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44fttj0rh4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 01:31:18 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2166a1a5cc4so5600635ad.3
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 17:31:18 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 03:36:46 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-216387ddda8so8044015ad.3
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2025 19:36:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738200677; x=1738805477;
+        d=1e100.net; s=20230601; t=1738208205; x=1738813005;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eZmfgbDyRs8egvyZJaS061p9zREsNe9WuLNjZIbWswE=;
-        b=d78IV3u4LjtZbH5StWIojx0AszGzxNYJT8eu8SVKQwcqn0dYtfZlKDoNtnrd6MS0Op
-         vup7zObmguwbDF2pC2SvzgRh1XHJBW2Capkg1EvZ3oJ93Fj+/232D5qgm/TnCaBlOO4J
-         zaM2TbzapaZek19FHQgGD4wEQtrF2YErJSQ+WJo7rXx9A84XrO9agPNNtR/rK3aE0YMk
-         kitX8yIAVxeciQ8Bf7D76esJZSue+6wXnzSdlsSHTtEJ2SYIV6hFlQxPu92tKOeNr/jC
-         aGvOtYneYAk7BnF+kvPM8/JqdsllVgpsXsMnkxWTr7xwue8C3KAblWNVGkDtQWnlBOe5
-         KMJw==
-X-Gm-Message-State: AOJu0YxmKZXtuWBQdPQ23ftToMnnK5YSObb5gudvbsKbEtl4IBSSpL7y
-	zUMtIW5M60pKFZAP6ViJqVZOKeFLkeIK6I8bLO3uHGb/GclXzC3cc1nCFsbS7IE9mJiar424L+p
-	y70MpwQUe9Xea9UdeclG/Ui3Ij9ylksfNrXssl67XjsuM/5jcHluboM9169VDeWIgWQ==
-X-Gm-Gg: ASbGncu9OVD/4hzfCI2X1UpbEqSFrRwG1uOA+Tn24TQwPhOh/x51NpAC0Kr4mfF7Opu
-	Z5mIgp3h6WSNrYHWjVTkPCEokAPbAC+JP2k682sZbulIF7195/x4MkZqobC8OITf4jugJE72gzS
-	Ir9wIa1bRq1HwIJaCG0GYTrwTJ23W/KBjEN453+0AZjUkSqhXVcbnPnDshanKE3PL7aK4ee5xIJ
-	rcGgA2ySw0OyBtUb7F93Mp46LUC63NXIB6m6roB57nuZ5GyLsMlmNGiHKG7kCv2Q9/znhtURBlK
-	NXc4Ctn5xfiFNMkpf/hdjq5Qfssqojc8TrAoEi6T1T/D6XDO/EIZzg/mXbIi5FmENlFzL365GA=
-	=
-X-Received: by 2002:a17:903:1cb:b0:21c:2f41:f4cd with SMTP id d9443c01a7336-21dd7dea7b3mr90736935ad.43.1738200676754;
-        Wed, 29 Jan 2025 17:31:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF6AhMUA9yAsx/IDznDSEsVzexyxfxifa8JcyIZuIWrA8FHp+kVcds4sP7+xkMNrjoFHWgzmQ==
-X-Received: by 2002:a17:903:1cb:b0:21c:2f41:f4cd with SMTP id d9443c01a7336-21dd7dea7b3mr90736535ad.43.1738200676352;
-        Wed, 29 Jan 2025 17:31:16 -0800 (PST)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de31f5cd9sm2547775ad.58.2025.01.29.17.31.15
+        bh=xug+E7ij4WF0LuLuZ/OHsojEglbBOq/RVcXRzH7G0So=;
+        b=FCFgX8sKjEnb7Z4uhWP26KFGZTyxpPJ2CRRqAQoVR6NS5mk4Ac3NkEiKZXod46XpdK
+         YibjpvwU9oQVDCWLb8x/6e08PgNZkzfd48nF7hTa0f08ioQdh//lc1kxiOxiWB6kLONx
+         8xPJrpyknjmfiRgOo0QCXA6BMTJJDScg6f9hCiUE9TQWKo9YDmGVisEwYvynOT91zukB
+         mpr3VnhBPuzA47LK1gN+s5JipdoJkcewjAYr4cM19HgZ2ikJ6ynUfr8vUjxyFMHd5liR
+         dS+kyT6FWsSMN2CUJ/639SYoh9Qx9yvL8A2gYVE+Vg7HEG0WWMnaECGpqvo5fWqnhc9q
+         /Llg==
+X-Gm-Message-State: AOJu0Yytz2EK6RyENsUqRnync+2MWfTk+8FzQvuS3F+ciyCHt5wMmUHt
+	01HBbSPTbghTXYyw8MExlW6RZGCFZCRvH0BPnG9xhUevE86GI/LsqoknAkQ38p0pZaH9Pqgf3it
+	hlAsTahcUS+duquSryfy4jGC7oT1S1+F92k3R3nwKubYikXuoXRlElhHIx7h9XZn4Yw==
+X-Gm-Gg: ASbGncuMSxvlS5n+2dxFmBJopFl1JWdZecURW09J2j7ux0seN3oLeCXZj6As9kQRHp4
+	gorv6cqZifPPtktBuXBXjXXbs5q1oK0FbH8edEBMm4ABCUk4ez9HbvJ9+qjcNwkoSb3KXY+pDSC
+	NamzIJ2GZ16OI9JrY6SDSdNGoiC6gpzE5RK/i4qiMD0olhq2FB05g4lwZYKX/ZLrrvqsRkwrN7B
+	7q3FEUmsBKb93DB2Te5J5wR9cA3EN7JLjSOW+7d8lexx1ROSxeGcIdlsHobOorrosOVvsKWp+qo
+	IBZDovPkdB5prHGW668baCyr3A/E2qa0GcblRAg=
+X-Received: by 2002:a17:902:db02:b0:216:69ca:7714 with SMTP id d9443c01a7336-21dd7c46297mr84253355ad.11.1738208205325;
+        Wed, 29 Jan 2025 19:36:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHIEes1x7Hp+Gh7oCa5B+RDPrqST2NNoI4k3f4nlFhDmTxUxUeMJxGThJr0IDzpglY+9vqCFw==
+X-Received: by 2002:a17:902:db02:b0:216:69ca:7714 with SMTP id d9443c01a7336-21dd7c46297mr84253165ad.11.1738208204909;
+        Wed, 29 Jan 2025 19:36:44 -0800 (PST)
+Received: from [10.152.202.18] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de331fa58sm3673225ad.233.2025.01.29.19.36.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jan 2025 17:31:16 -0800 (PST)
-Message-ID: <904c2c6e-c21b-4718-b60e-c29c60d80aa2@oss.qualcomm.com>
-Date: Wed, 29 Jan 2025 17:31:15 -0800
+        Wed, 29 Jan 2025 19:36:44 -0800 (PST)
+Message-ID: <0cc92ac1-9566-46cc-b130-7546168f43eb@oss.qualcomm.com>
+Date: Thu, 30 Jan 2025 09:06:41 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,102 +88,55 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/2] wifi: ath12k: Add Support to Parse TPC Event from
- Firmware
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>,
-        Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-References: <20250128111059.1690113-1-quic_rdevanat@quicinc.com>
- <20250128111059.1690113-2-quic_rdevanat@quicinc.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: Re: [PATCH v2 2/4] wifi: ath12k: fix handling of CSA offsets in
+ beacon template command
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20250124-ath12k_mlo_csa-v2-0-420c42fcfecf@quicinc.com>
+ <20250124-ath12k_mlo_csa-v2-2-420c42fcfecf@quicinc.com>
+ <6f52dcd2-3b0b-4c19-b8bd-cd17dc4543b5@oss.qualcomm.com>
+ <2b5bdfc8-95f2-4919-830f-c35d152055d1@oss.qualcomm.com>
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <20250128111059.1690113-2-quic_rdevanat@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <2b5bdfc8-95f2-4919-830f-c35d152055d1@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: 6ZIstDEnBai9uT2m23X6BzVnktV_5APR
-X-Proofpoint-GUID: 6ZIstDEnBai9uT2m23X6BzVnktV_5APR
+X-Proofpoint-ORIG-GUID: GFzq6RdNrx3ueiSvfUun_YQcdIM95xSR
+X-Proofpoint-GUID: GFzq6RdNrx3ueiSvfUun_YQcdIM95xSR
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-30_01,2025-01-29_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
- spamscore=0 clxscore=1015 impostorscore=0 malwarescore=0
- priorityscore=1501 phishscore=0 suspectscore=0 mlxscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501300009
+ definitions=2025-01-30_02,2025-01-29_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=867 spamscore=0 clxscore=1015 suspectscore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 impostorscore=0 adultscore=0
+ lowpriorityscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501300025
 
-On 1/28/2025 3:10 AM, Roopni Devanathan wrote:
-...
-> +struct wmi_max_reg_power_allowed_params {
-
-this seems to be misnamed. per the wmi naming convention _params are structs
-passed from firmware. you cannot pass a pointer to an array from firmware to
-host, you can only pass the array contents. hence seems this is a host-only
-struct and should be named _arg
-
-> +	struct wmi_max_reg_power_fixed_params tpc_reg_pwr;
-> +	s16 *reg_pwr_array;
-> +};
-> +
-> +struct wmi_tpc_rates_array_fixed_params {
-> +	__le32 rate_array_type;
-> +	__le32 rate_array_len;
-> +} __packed;
-> +
-> +struct wmi_tpc_rates_array_params {
-
-again seems this should be _arg
-
-> +	struct wmi_tpc_rates_array_fixed_params tpc_rates_array;
-> +	s16 *rate_array;
-> +};
-> +
-> +struct wmi_tpc_ctl_pwr_fixed_params {
-> +	__le32 ctl_array_type;
-> +	__le32 ctl_array_len;
-> +	__le32 end_of_ctl_pwr;
-> +	__le32 ctl_pwr_count;
-> +	__le32 d1;
-> +	__le32 d2;
-> +	__le32 d3;
-> +	__le32 d4;
-> +} __packed;
-> +
-> +struct wmi_tpc_ctl_pwr_table_params {
-
-again seems this should be _arg
-
-> +	struct wmi_tpc_ctl_pwr_fixed_params tpc_ctl_pwr;
-> +	s8 *ctl_pwr_table;
-> +};
-> +
-> +struct wmi_tpc_stats_info {
-
-same here
-
-> +	u32 pdev_id;
-> +	u32 event_count;
-> +	u32 end_of_event;
-> +	u32 tlvs_rcvd;
-> +	struct wmi_max_reg_power_allowed_params max_reg_allowed_power;
-> +	struct wmi_tpc_rates_array_params rates_array1;
-> +	struct wmi_tpc_rates_array_params rates_array2;
-> +	struct wmi_tpc_config_params tpc_config;
-> +	struct wmi_tpc_ctl_pwr_table_params ctl_array;
-> +};
-
-reminder from the top of the file:
-/* Naming conventions for structures:
- *
- * _cmd means that this is a firmware command sent from host to firmware.
- *
- * _event means that this is a firmware event sent from firmware to host
- *
- * _params is a structure which is embedded either into _cmd or _event (or
- * both), it is not sent individually.
- *
- * _arg is used inside the host, the firmware does not see that at all.
- */
+On 1/30/25 06:48, Jeff Johnson wrote:
+> On 1/29/2025 4:40 PM, Jeff Johnson wrote:
+>> On 1/23/2025 10:16 PM, Aditya Kumar Singh wrote:
+>>> @@ -108,5 +108,6 @@ int ath12k_mac_vdev_stop(struct ath12k_link_vif *arvif);
+>>>   void ath12k_mac_get_any_chanctx_conf_iter(struct ieee80211_hw *hw,
+>>>   					  struct ieee80211_chanctx_conf *conf,
+>>>   					  void *data);
+>>> +struct ieee80211_bss_conf *ath12k_mac_get_link_bss_conf(struct ath12k_link_vif *arvif);
+>>
+>> This patch now conflicts with:
+>> wifi: ath12k: report station mode transmit rate
+>>
+>> but i'll clean that up in 'pending'
+> 
+> 
+> please check
+> https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=47bc4c5c6598ef2ff3a362eb13dfe4573ab5d910
 
 
+Looks fine, thanks.
+
+
+-- 
+Aditya
 
