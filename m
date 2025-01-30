@@ -1,178 +1,162 @@
-Return-Path: <linux-wireless+bounces-18215-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18216-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8ECA22A12
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 10:12:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C4FA22A25
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 10:18:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E9C53A5FB4
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 09:12:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 095093A2FB2
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2025 09:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B59D1AF0BA;
-	Thu, 30 Jan 2025 09:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A551ACEB3;
+	Thu, 30 Jan 2025 09:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="IwauUJz7"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lWL6G0zm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9D018DF60
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 09:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E748C139B
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 09:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738228331; cv=none; b=fzJm/HRUL/Tn3eNGWMZesoyCvchsQf+kcGxKqqMYcF4t00Aq1v6itTPeqzjPKvS+rHxn+5C3gRTt1HBTTriZxAGFDIrFfwvMEru87AFFQ2MjwJNnVw3wYp64eAGEQZ3eGgC5eZpDRBmlP4jTpfX7eUiT0p1QX1R3M9BEANQz/ZQ=
+	t=1738228709; cv=none; b=J9B09yzW1OWXjWLdtqmzURWfKzCC/ZJgUTTb/HFfs9ifcTdOcbJvhSCfsILZnd+ahqOmrao3Gl3QvTcVKvcrzg8UkXfTTaGvCbzeqpEUc+SmdbVvK1g/OvXklETeqXIjA9x+ApOMVg1Nv0HQ+MHgkX55sK8R4F/b61LSgm+q/RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738228331; c=relaxed/simple;
-	bh=lWpC4n2+wSADaONz3+LH+66IIPTLHl9Ex/u2BxN5GqU=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XtUmbH4ig0NII0IR2RLpe1OrgW+gluIZH+6hoa6mOjC8MH3FhBVldADduwMGPX5pNg9tqyJn9e9pn3VOohms8WDYj84ATKlljS0d0FZOLmpNEC8J77A6OXPHxq091ITwa1oZcI7MS9l2W/EWzZrm5PR92Ixxp06gEZMkWKmvrs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=IwauUJz7; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 50U9C3t543430072, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1738228323; bh=lWpC4n2+wSADaONz3+LH+66IIPTLHl9Ex/u2BxN5GqU=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=IwauUJz7b6gHK7V2UNFygYEj339RfNL2PlqaUcf1rT+zi/56CK92gs4LsI0xwtVkh
-	 jlxHkz1NtE8+jsf1BKwAHRRZjMeraPOKPvWb6485+Qzc86JmE9FW0u5ATfGF3qp3ZP
-	 SgEgo+z3VUO3yTXzpOYmA2jJ5eXEJgP6Qp4Fv3+07PNp+12PrtHKibrtDYUADfTyQ0
-	 /djTW8iazIwDqluWptXZSSf5zRe9HPDCHqqANLTvkQwyPVG10VKO3z/u8EKlcIHp/S
-	 lg92IQ0lA+dCXEtTIJ9Iw6bes3baxyuVJX5eU/lGxllPDuzZnRtVed3Xun2zvplNol
-	 tQBNbvDIIgohA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 50U9C3t543430072
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Jan 2025 17:12:03 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 30 Jan 2025 17:12:01 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 30 Jan 2025 17:12:00 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553]) by
- RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553%5]) with mapi id
- 15.01.2507.035; Thu, 30 Jan 2025 17:12:00 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 5/7] wifi: rtw88: Extend rtw_fw_send_ra_info() for RTL8814AU
-Thread-Topic: [PATCH 5/7] wifi: rtw88: Extend rtw_fw_send_ra_info() for
- RTL8814AU
-Thread-Index: AQHbcEWMDvUgah16k02kcTsE1TgourMqKWuBgACTdYCAAPJSlIAAOz8AgAEf/jWAANX6gIABKpN5
-Date: Thu, 30 Jan 2025 09:12:00 +0000
-Message-ID: <975cf4b88f43484e8411764fd72d8313@realtek.com>
-References: <fb2c2ae6-6173-4b4a-9e1f-ff51759cdee6@gmail.com>
- <fa9ff2b4-6e1a-45e4-90de-db6fe0d4f433@gmail.com>
- <ca7380d8560046c4a2a2badde9302691@realtek.com>
- <d05ba9e5-d5e3-4761-bd1e-f7c2b63f5a36@gmail.com>
- <53740c9ec74a4aa0a5a3c51b895eb385@realtek.com>
- <d80fe4e2-1e38-4e84-b169-8c2699d7c764@gmail.com>
- <1f04331c713141c68e6892751611d01e@realtek.com>,<86aae394-be5d-4fca-a68c-2ee02e5ab6af@gmail.com>
-In-Reply-To: <86aae394-be5d-4fca-a68c-2ee02e5ab6af@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: en-US
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1738228709; c=relaxed/simple;
+	bh=6494x1NsziKlFATjP5K/hvSwS6QGIDEkExL6srt021Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cXsUHLeFHrMRFvfbrc1b5p9PQCQ9zqpL5N61BeE3J6v9NWXScH95UlWAouPjle+TtN3r1252eHgmrkFIzIHJ2Ul9IehMW1fS/UmPBqlKWDktVZpf7XxAeYZhY4/bzJiDR9cdxID+8sKIVCYgSS2StUKmJn9/coJoQ4Bpyf/+tJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lWL6G0zm; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50U9I0bX012358
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 09:18:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	eePmyQ6AyToHFq5ZzRudtzKbdM2PRLlCrpc5DW2Ub5I=; b=lWL6G0zmDNerUlaW
+	G/LIYKhkLnZ62yp0XY3nKsGLGHSdlLmALA3PoTpdT8tfHIEmKPsF+6E8agbqc8nn
+	gEtu8qd/LSnCp8aufeBP3daYAQP23LV3ChqU09j76d/iNJyJyjOKtPcQ670cSWC5
+	bXoUUZEScDIre1Yk6YACkVNscpFq9sXEE+TCBCo0yST0kg5MhbZs5qApwsmntcC8
+	y8L8xD7zMBsSzYPIBkQrpcJ08Lk/JA6nLYwcCOBMV1RvgMhCFBvtr62tAteHv7zt
+	J8LvrghgMlFbrIG5j6kcw3iLbXInAfpXRLUn5g10efHA7JcL5I1NaMm49dNIeQ5A
+	K64p5g==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44g6nu8017-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 09:18:24 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-216717543b7so16538885ad.0
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jan 2025 01:18:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738228703; x=1738833503;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eePmyQ6AyToHFq5ZzRudtzKbdM2PRLlCrpc5DW2Ub5I=;
+        b=VnLFIL5QIz8lKULKZryzBhwkdLmx2f8XIqXxnfwOlDCt8VdyYRFZLgbxFMoJZ/Ngns
+         NED286cYI052GvgBLTLW2aSDe+K2kM+TRsTb0Di3sSUGPVbJ6locMzDUM1B2hygnj2vt
+         SbGkQyfNO6uUBDxTklGEKBFX8p7Fxbk9RaK3m+cpDwG02jPXjhxGKHfxWRY+qXqqMKeK
+         Qv9WX22R0yvmmh+4x666ns5lEFa+Iu2IpU75vzb2R4AwJ2WHWscl7IcswhAFGaE2A/Sr
+         8tDGozWMzZYD+ee/kK9WvzvwbjfL8IBEQC4b6XsKF/gNIhBeWzJadqiztmlo6JUsz6+2
+         UHwg==
+X-Forwarded-Encrypted: i=1; AJvYcCVc3oA6EEohY8rdXj1OQLpCtB2siJiRNgvm/Yp/yVvDQ2iN6+K/JYi+D7eDMzIpNMOtgKp2JF6l9EuKuoE1PQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPc2XqbpT+Wrkd040FqCcwP82afh8DoveCWdRQQL69tX3zueX+
+	GVtIiQjM2KAkf86wTg2uYwjEt1dAJmv1d02KbGrd23w5rPI/As3aVTAFPip8gBPD7dOlhiFW6AY
+	YwIdymDTRglZqWhKiVDMfp9tU/ADwYBDuKpcHKHOZS/kNcPJGKxfeQORnBF2MyWo0zr3Qehqn9Q
+	==
+X-Gm-Gg: ASbGncuskXsnBsLA4iRvEU7DfA2USTyTE+quw0GaTE26g9pEVd0GNpEQX7KvzrvjBA9
+	upAgMUDp79a7PVT/X62nAAAr3YV2ZEuBCRc78l4UwOFBrtQy2QpF/tLxli6rjCbi8lAJYwZa3fx
+	yN2Oo8QY7sKyzn14Wo0SKyFiggMX+apcBRxKDPT2yWiooiWYiwa+ClkhzyDyO8rVPyKIy1gbJjf
+	Tc+qDzniBhryObUWw0ZSGZ2q6LnijRVaE4urvRpJOxSIcGyi4DXfibMNuKTNlNalz4IoftO1M+B
+	HiqmLdzVLsuxOo7PlONGkxl3cjmx52BiEXUC7Ck=
+X-Received: by 2002:a17:902:f60f:b0:215:a3fd:61f5 with SMTP id d9443c01a7336-21dd7c44516mr103038865ad.5.1738228703440;
+        Thu, 30 Jan 2025 01:18:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGRttBzfpMMi7+IvNp9nzNnKCJLwBTy4+pzP5Bx50uGqeX9D+oTbLTRBPYM8mM5/vF6FVybGw==
+X-Received: by 2002:a17:902:f60f:b0:215:a3fd:61f5 with SMTP id d9443c01a7336-21dd7c44516mr103038655ad.5.1738228703061;
+        Thu, 30 Jan 2025 01:18:23 -0800 (PST)
+Received: from [10.152.202.18] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de31f8004sm9620975ad.74.2025.01.30.01.18.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Jan 2025 01:18:22 -0800 (PST)
+Message-ID: <94db4020-b1c7-4aee-b22c-6fe6d357e593@oss.qualcomm.com>
+Date: Thu, 30 Jan 2025 14:48:19 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath12k: remove return for empty tx bitrate in
+ mac_op_sta_statistics
+To: Remi Pommarel <repk@triplefau.lt>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>
+References: <38c2a7c4f7eaf57b9306bb95a9e6c42b7d987e05.1738169458.git.repk@triplefau.lt>
+ <9c12e9b9-35a4-47f1-bd17-6b4641de92a4@oss.qualcomm.com>
+ <Z5s9CO_mmazq2Kg1@pilgrim>
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <Z5s9CO_mmazq2Kg1@pilgrim>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: O-z0txVx2zJaxjitDfNc4f4NGdwN1FrC
+X-Proofpoint-GUID: O-z0txVx2zJaxjitDfNc4f4NGdwN1FrC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-30_05,2025-01-29_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ lowpriorityscore=0 spamscore=0 clxscore=1015 mlxscore=0 mlxlogscore=704
+ phishscore=0 impostorscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501300071
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->On 29/01/2025 04:43, Ping-Ke Shih wrote:
->> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>> On 28/01/2025 07:52, Ping-Ke Shih wrote:
->>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>>>> On 27/01/2025 08:36, Ping-Ke Shih wrote:
->>>>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>>>>>> The existing code is suitable for chips with up to 2 spatial stream=
-s.
->>>>>>> Inform the firmware about the rates it's allowed to use when
->>>>>>> transmitting 3 spatial streams.
->>>>>>>
->>>>>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->>>>>>> ---
->>>>>>>  drivers/net/wireless/realtek/rtw88/fw.c | 14 ++++++++++++++
->>>>>>>  drivers/net/wireless/realtek/rtw88/fw.h |  1 +
->>>>>>>  2 files changed, 15 insertions(+)
->>>>>>>
->>>>>>> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/=
-wireless/realtek/rtw88/fw.c
->>>>>>> index 02389b7c6876..0ca1b139110d 100644
->>>>>>> --- a/drivers/net/wireless/realtek/rtw88/fw.c
->>>>>>> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
->>>>>>> @@ -735,6 +735,7 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev=
-, struct rtw_sta_info *si,
->>>>>>>  {
->>>>>>>         u8 h2c_pkt[H2C_PKT_SIZE] =3D {0};
->>>>>>>         bool disable_pt =3D true;
->>>>>>> +       u32 mask_hi;
->>>>>>>
->>>>>>>         SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_RA_INFO);
->>>>>>>
->>>>>>> @@ -755,6 +756,19 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwde=
-v, struct rtw_sta_info *si,
->>>>>>>         si->init_ra_lv =3D 0;
->>>>>>>
->>>>>>>         rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
->>>>>>> +
->>>>>>> +       if (rtwdev->chip->rf_tbl[RF_PATH_C]) {
->>>>>>
->>>>>> Using `efuse->hw_cap.nss >=3D 3` would be consistent with latter pat=
-ch.
->>>>>>
->>>>>
->>>>> I would like that, but nss is 2 when RTL8814AU is in USB 2 mode.
->>>>> I assume this is to keep the current draw under the 500 mA limit
->>>>> of USB 2.
->>>>>
->>>>> What about rtwdev->hal.rf_path_num >=3D 3 ? I don't remember why
->>>>> I didn't do that.
->>>>
->>>> I think `rtwdev->hal.rf_path_num >=3D 3` is suitable to initialize/con=
-figure
->>>> hardware registers, because no matter USB 2 or 3 mode should be the sa=
-me.
->>>>
->>>> For this case (RA info), this is related to protocol, so I feel
->>>> `efuse->hw_cap.nss >=3D 3` is suitable, but I have not seen a patch to=
- declare
->>>> supported NSS in register_hw(), or I missed it? Or, without RA_INFO_HI=
-,
->>>> it gets abnormal rate to RTL8814AU in your test?
->>>>
+On 1/30/25 14:19, Remi Pommarel wrote:
+> On Thu, Jan 30, 2025 at 12:21:54PM +0530, Aditya Kumar Singh wrote:
+>> On 1/29/25 22:25, Remi Pommarel wrote:
+>>> Currently in ath12k_mac_op_sta_statistics() there is the following
+>>> logic:
 >>>
->>> You didn't miss it, that will be in part 3. You can see the code here:
+>>>       if (!arsta->txrate.legacy && !arsta->txrate.nss)
+>>>           return;
 >>>
->>> https://github.com/lwfinger/rtw88/blob/21a3fa7ec11a0cbb3be14145f45cdca3=
-5c3d3217/rtw8814a.c#L82
+>>> Because ath12k_sta_statistics is used to report many info to iw wlan0 link,
+>>> if it return for empty legacy and nss of arsta->txrate, then the other
+>>> stats after it will not be set.
 >>>
+>>> To address this issue remove the return and instead invert the logic to set
+>>> the txrate logic if (arsta->txrate.legacy || arsta->txrate.nss).
+>>>
+>>> The same was done also in both ath10k with commit 1cd6ba8ae33e ("ath10k:
+>>> remove return for NL80211_STA_INFO_TX_BITRATE") and ath11k as well with
+>>> commit 1d795645e1ee ("ath11k: remove return for empty tx bitrate in
+>>> mac_op_sta_statistics").
+>>>
+>>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 >>
->> I feel we should clearly define the meaning. What I thought for 8814AU a=
-re:
->>  - hal->rf_type: hardware capability. Should be RF_3T3R no matter USB 2 =
-or 3.
->>  - hal->antenna_tx: the antenna for current TX. Can be 2 antenna.
->>  - hal->antenna_rx: the antenna for current RX. Can be 2 antenna.
->>  - efuse->hw_cap.nss: read from efuse. So this will be 3SS for USB 2/3.
->> If you have better defnitiion, please share your ideas.
+>> MISSING_BLANK_LINE
+>> 'Tested-on:' tag missing blank line after it.
 >>
->
-> If efuse->hw_cap.nss is always 3, how to limit the spatial streams
-> to 2 in USB 2 mode?
+>> You missed v1 comment? :)
+> 
+> Yes sorry I think your mail never reached me, did you CC me ? Do you
+> need a respin ?
+> 
 
-That's a proposal only, because I felt `efuse->hw_cap.nss` read from efuse
-should be persistent, but it is fine to define desired meaning.=20
+No problem. No need of respin just because of this. I think Jeff can fix 
+in pending?
 
-I would like to confirm if USB devices will not switch USB 2/3 mode
-after USB probe? If so, `efuse->hw_cap.nss` is also a kind of persistent.
-Then, using `efuse->hw_cap.nss` seems fine.=20
+It's strange that the v1 reply appears to be delivered from my mail box 
+and it is sent to the list. I see even Jeff replying to that. But none 
+of those are captured in patchwork. Not sure.
 
+Anyways, v1 comment was regarding this blank line and one suggestion 
+that in future submissions, please use base commit tag.
+
+-- 
+Aditya
 
