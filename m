@@ -1,88 +1,87 @@
-Return-Path: <linux-wireless+bounces-18256-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18257-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7525DA2450C
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2025 23:10:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E72C5A2452D
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2025 23:21:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D71461887CD0
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2025 22:10:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEBAF3A58FB
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2025 22:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F391C5D74;
-	Fri, 31 Jan 2025 22:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5301B415D;
+	Fri, 31 Jan 2025 22:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Go/qP/sJ"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JufgXu05"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883921487E9
-	for <linux-wireless@vger.kernel.org>; Fri, 31 Jan 2025 22:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E92A1547E4
+	for <linux-wireless@vger.kernel.org>; Fri, 31 Jan 2025 22:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738361403; cv=none; b=aZXmoWZmmG4z6tw7fsDoCGonWg/14uVZnZq9+psxarDwqDPsHdJfWmMmFL/ukEHJhKJw+KouA6xQKC2LRl6rsRQCKYTHa/8EtWQIVAotZ9oc6ZL9mKPMgMLrptC3UwHpK8LhpMLiqWWHxyDqFsY2Scd9KMhvfbZaKMhbVHyZ9cs=
+	t=1738362111; cv=none; b=vE1eVAGrefNPLKd8YbXu88RH6h5/DM3LexP9Ly85aHJblD8JzNe+/08meoTnr8fWzmFOnW3TmLkpsuBa8CyWqrpuGOyqvmHzftb2NHq5ZaRZSYhtbWri57BVIJjm/hVNaxy0u0xpr4epJ7KGYxDFkCfq3QsNA/3oKEB46gnMYV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738361403; c=relaxed/simple;
-	bh=FDOH1xAtgOz8Xd61rj1a1/4t3oH6pgjU1v1tOWC8dMA=;
+	s=arc-20240116; t=1738362111; c=relaxed/simple;
+	bh=KbrFdyD/bpfV8KJgZlshax3DHtdiuG3Af0rvvQwD8Is=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PuxYQByWOwqL7ActANNKNaM0lWk17F3tMADP2ILJ1BPA1Dh/FlbHTLoIGsVTzyMi2q8YROOaiROLLxk1bWhmzwGFZuTydUcQAVmfZKk2ZJEVgK8uSJqgu39LcidQWoK5BLlXpk8Xg46SbR+Y0pdZqQilVT++ybwEWaFnkrRsZsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Go/qP/sJ; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=NI/XdB1IElJ3vd7lzvqOT8Qtk+3+5wR4xS/jHahdwOv6GG3UDcDMY6Mk/y9E33udjgaU3/1u1fLq+hCHWka6nbNY54uHy/s2i4O2yfUHsHjRbzjUe0ulC8MLVnMnKdrmowl1B6d8U3zXmqNMUF+Vn3ndhnh+WWFvsDc85/zbGMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JufgXu05; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50VDL0o8016186
-	for <linux-wireless@vger.kernel.org>; Fri, 31 Jan 2025 22:10:00 GMT
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50VDKhMT009723
+	for <linux-wireless@vger.kernel.org>; Fri, 31 Jan 2025 22:21:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	YzrLG4JS/fWwtEHwbff15586VvIk96Av9ZQboWCAQg0=; b=Go/qP/sJrqawnM/k
-	N7kNhnRIiZrhnzEGxHZOZAAROvnvhZv2/2pvJwoWKyPZtLZV+gexOt834zwxIGYO
-	VfKrbgRLEz0tGq+3WznOfwTjv38wIparg1SRFcPIZMqT4BNlcJdRktRUPdSoaSXu
-	kRBoiB9M3l7mmc+1V8aK7banke7Gy4okmD/9o303UbXoeo4cLZcv0oBJuboc4/AT
-	+I2wj1QAzdBaBBQ+z+gdL3K/9o0798jL602cskG88rIplogZtwzgv4JkgfwkK6o+
-	/6zuBGg9cJIULBUaH0a+xW1i5aEsQflIiLDXz4/yey1Msy0l5A80OvUNMhW98+LL
-	85YCSw==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44gyau946s-1
+	mUB3hp0A/oyJSzN/kCE+SQcJbrJLtU+PWheTVJA603k=; b=JufgXu05Ime6bmk2
+	TZUCUhKh5nugsMRaPyHT3gV4BjCpM7803lYX07ogl4jayuXPkEuOAiinzQ0C1bdY
+	YK3wZrMR20j4EqHa2ZLFUOmxaUgMd3QxDhuhNKuBZBdVahjlSkbtBajXEXaT2ZYn
+	b68gPJvHM95TweVZlQPW9X3aUZ0y4nwvq/G+jQPun6LIsamU9orU/9FmlGy5XEBj
+	Rk52PV7daShTUESHAEZE2NzB5CKtgBfKRwfs1S/gLVFbyzePC1cQynjuFba9/2IJ
+	uTg2kvIbCRPh/T8oi+1IAdPHBPg6AUoDlsxzK1PrDC8GvKgciSg8s20hkyvdiIWe
+	LlIdzg==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44gyaph6re-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 31 Jan 2025 22:10:00 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2ee3206466aso6729697a91.1
-        for <linux-wireless@vger.kernel.org>; Fri, 31 Jan 2025 14:09:59 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Fri, 31 Jan 2025 22:21:48 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-21650d4612eso67170025ad.2
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Jan 2025 14:21:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738361399; x=1738966199;
+        d=1e100.net; s=20230601; t=1738362107; x=1738966907;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YzrLG4JS/fWwtEHwbff15586VvIk96Av9ZQboWCAQg0=;
-        b=cmQwWF8QJe8fruJEGreUpL/V/JooCxSWpMM/b/X9ARAcBRifZHvLAY4PenswsvQrF8
-         ySTxv8vjP8QI9yhvujqLy5GiZXWXsJBBcYSerrWltIFAeTLbuH9I0ww7Qv5f1YTw0HIG
-         SHQ16yuQgp7DXvSCH6VXzWt73wOYYNg4sro3gsbjG0kbcZOvfuoiyeL5GmrgZEYJxLEj
-         0RUR1nm6FiM2KBA2BykXlka53I0chEZL4USwVtoRVA3S5lNFxId/kvWXGy9AoXXRPgQt
-         CrULTAoaPC+mjtdf2STXx/n1GMQs1m2lLqnvejjAYKkoo7fM6oqGCl6SIwDhBkrdDLIc
-         pNRQ==
-X-Gm-Message-State: AOJu0YyImb/6UP9WvZ1yFbhMKbPOqi+HTGJH58cAaqTkmqoGBAZV6X5X
-	pGI/1r+W68dzlUraF6eATCy+ymSzCxGylacN+ZGHEd3Z+2lXIjdlzbvF/pQLoIYOeC5LHD/1hlr
-	C8tkPt6WZm1QGbb6Xa7Lz9j/FuzjuRCZ7tSvXUn7AiSdxaiDr5IJHYCCt8ldc8a69/GPyj6q/jw
-	==
-X-Gm-Gg: ASbGncusSxRDKnbk0XNPHZHbJmRAI+V8uTC+LcITCGTceNZufaiZxa3we9kvzqlbhDg
-	pPvGcbPpOd96twU1hKLN7WNrXr4q1hTWLJnM5LTshBAAte3wZHbXdBho22UIsnTBxPwR18Ssv75
-	RzWfmZiItL3kK9VWZFkmWhyIckLLY9sUStiCgQYFdj5qvworHInGI3vuKLb94xdwECct/hDtM4J
-	1lGYYISLz1FlMP19P/YkWeTuQGtDKV7JPkmq1d0O7UqZ1ObGlVwdjMG7r0ZAngtGenhpqk6ltdi
-	RZNk9mPSDF9fhh0bOREQFbQUeOPpjBgkSJ0yDHIMQG1S8C+Y6+AGNFL8mqCfm1/zH26/qzEv8Q=
+        bh=mUB3hp0A/oyJSzN/kCE+SQcJbrJLtU+PWheTVJA603k=;
+        b=w4qBYRcawzfPDJq2Mhe4ioq4zEL5+6RVwh86KFmgtFYK5Ls4CvGxgtVcHof4LzdQrM
+         T3ZO5AsylGMPH0meb9msMcoQXunFmmi8gnVstuDk9om2AsGsqOhkyYT1DxLDqITM9eCe
+         sreVvEGl40boCh3EkiDxsxlUt77hNCXk6mxXfqh3UJKb2J4vnJaWzupP0KwrszIhI8rq
+         G7CDqXhhPU4pQsWNzAdCbqtRMwMAcLMrQ6qV69Wmhq6VqjlChCvje02Dwkb5xmq/zArb
+         5xSgsmsCRCmmsLfeFMPYBfvLDgaZFUU0tl/u6xVVZoQXmkr/RBLrbfbxfHU7O9ahenaL
+         SuGQ==
+X-Gm-Message-State: AOJu0Yx4vfc7bjUEm8jZL4msGbruQOa2GonnM4+iKlVK5RHQ8nTBBwY1
+	khPG1jtiOaXiabZSHbxUvADUe4EpZxGoXuJV/FBxHHLNCGrXIxnnqRKj1CMsusck9mrEG2dYMM5
+	ieg3F29hQbIDRBYFMoV9Fwc15sPXqfUmkmxoMtqtRM3EwPb2b3ZDBQI9ZF6PsSEicHQ==
+X-Gm-Gg: ASbGncv6MTJPj8u4ImBg+fOwKrdlwWaca3G/03Rf04RNMTjravgQkerXptxAc0r8YZi
+	mHoX/upcM4ChcoVYOuyf2Z338iF+59kTJEkBk5U+fZ5loVO3gQvOknJ1XVpwrNe3Fy3m9dcMZEx
+	ZsRvWGsBNVc7dnJEvRG4YhC9fgPq8yozuzUwKMARs/fYC3SKll5Covig32WnegyvP9NG9PB2WEm
+	tYjNvguytWRwQN6ORCzhwIXD//TafwKme7AwZxxU7l7SgQevaV6Cjm3f+HuQDV5tJEG6v4D7VQ+
+	R8wIDYj08AmDh3xpzqosVxFProaa9yn4cgcswM7cDAl4D2Wq8OxZ/WugxfowA4VTpqFU/4ppsw=
 	=
-X-Received: by 2002:a05:6a00:3a0f:b0:724:db17:f975 with SMTP id d2e1a72fcca58-72fe2d5eebamr12841877b3a.12.1738361398509;
-        Fri, 31 Jan 2025 14:09:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFA58tVXyHxvzv49/ZX/BxOfEGx1wGjFS+5r8qwLEN8Na08t/yBZwAowGpK6CHqZAm3x4i9sg==
-X-Received: by 2002:a05:6a00:3a0f:b0:724:db17:f975 with SMTP id d2e1a72fcca58-72fe2d5eebamr12841842b3a.12.1738361398028;
-        Fri, 31 Jan 2025 14:09:58 -0800 (PST)
+X-Received: by 2002:a05:6300:6385:b0:1ed:a812:c3b with SMTP id adf61e73a8af0-1eda8120d25mr1156919637.2.1738362107196;
+        Fri, 31 Jan 2025 14:21:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHvl97v+gvKvCqFmCOTlaqsxyHfMPlUjGPpurC9VbXfstnDJM7M0Vc2/Ub1uoY8F5xiGAZZ2Q==
+X-Received: by 2002:a05:6300:6385:b0:1ed:a812:c3b with SMTP id adf61e73a8af0-1eda8120d25mr1156894637.2.1738362106829;
+        Fri, 31 Jan 2025 14:21:46 -0800 (PST)
 Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72fe69cf267sm3907978b3a.147.2025.01.31.14.09.57
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-acebe56daeasm3054666a12.32.2025.01.31.14.21.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jan 2025 14:09:57 -0800 (PST)
-Message-ID: <6c4d37a2-8f67-4b5e-81dd-eb61f9b46dec@oss.qualcomm.com>
-Date: Fri, 31 Jan 2025 14:09:56 -0800
+        Fri, 31 Jan 2025 14:21:46 -0800 (PST)
+Message-ID: <a8f4f4e7-1c13-44d8-b19e-4ac85b48ee04@oss.qualcomm.com>
+Date: Fri, 31 Jan 2025 14:21:45 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,71 +89,57 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: support average ack rssi in station dump
-To: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Sivashankari Madhavan <quic_sivamadh@quicinc.com>
-References: <20240514124949.2197384-1-quic_ssreeela@quicinc.com>
+Subject: Re: [PATCH 0/3] wifi: ath11k/ath12k: Set IRQ affinity hint after
+ requesting all shared IRQs
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, kvalo@kernel.org,
+        jjohnson@kernel.org
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20240823155502.57333-1-manivannan.sadhasivam@linaro.org>
 From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <20240514124949.2197384-1-quic_ssreeela@quicinc.com>
+In-Reply-To: <20240823155502.57333-1-manivannan.sadhasivam@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: x2_tIb1YxBHmjz1BdgNQu7Eqae8XPdPt
-X-Proofpoint-ORIG-GUID: x2_tIb1YxBHmjz1BdgNQu7Eqae8XPdPt
+X-Proofpoint-ORIG-GUID: SW5WZGobue4gzZTQjaHRMzRH8BmJQVJq
+X-Proofpoint-GUID: SW5WZGobue4gzZTQjaHRMzRH8BmJQVJq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-31_08,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- lowpriorityscore=0 malwarescore=0 impostorscore=0 mlxlogscore=968
- clxscore=1015 mlxscore=0 adultscore=0 phishscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2501310168
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 mlxlogscore=981 mlxscore=0 suspectscore=0
+ priorityscore=1501 impostorscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2501310170
 
-On 5/14/2024 5:49 AM, Sowmiya Sree Elavalagan wrote:
-> From: Sivashankari Madhavan <quic_sivamadh@quicinc.com>
+On 8/23/2024 8:54 AM, Manivannan Sadhasivam wrote:
+> Hi,
 > 
-> Currently, the ACK RSSI value is not shown in station dump. Enable WMI
-> resource flag for ACK RSSI in WMI INIT command to add ACK RSSI value in
-> management TX completion event from WMI. Update ACK RSSI value obtained
-> in management and data frame completion path to ieee80211_tx_info. Also
-> advertise NL80211_EXT_FEATURE_ACK_SIGNAL_SUPPORT flag during hardware
-> register to mac80211 layer so that ACK RSSI is added to station dump
-> message.
+> This series fixes a warning from kernel IRQ core that gets triggered in the
+> error path of QCA6390 probe. While fixing that I also noticed the same issue in
+> the ath12k driver, so added an untested patch for the same.
 > 
-> Example output :
-> Station 00:03:7f:12:cc:cc (on wlo1)
->         inactive time:  600 ms
->         rx bytes:       288106
->         rx packets:     1446
->         tx bytes:       41818
->         tx packets:     342
->         tx retries:     64
->         tx failed:      0
->         beacon loss:    0
->         beacon rx:      602
->         rx drop misc:   51
->         signal:         0 dBm
->         beacon signal avg:      -44 dBm
->         tx duration:    0 us
->         rx bitrate:     1441.1 MBit/s 80MHz HE-MCS 9 HE-NSS 3 HE-GI 0 HE-DCM 0
->         rx duration:    0 us
->         last ack signal:-51 dBm
->         avg ack signal: -50 dBm
->         authorized:     yes
->         .......
+> Finally, I updated the irq_set_affinity_hint() API in both drivers as it was
+> depercated.
 > 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> - Mani
 > 
-> Signed-off-by: Sivashankari Madhavan <quic_sivamadh@quicinc.com>
-> Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+> Manivannan Sadhasivam (3):
+>   wifi: ath11k: Set IRQ affinity hint after requesting all shared IRQs
+>   wifi: ath12k: Set IRQ affinity hint after requesting all shared IRQs
+>   wifi: ath11k/ath12k: Replace irq_set_affinity_hint() with
+>     irq_set_affinity_and_hint()
+> 
+>  drivers/net/wireless/ath/ath11k/pci.c | 26 +++++++++++++-------------
+>  drivers/net/wireless/ath/ath12k/pci.c | 26 +++++++++++++-------------
+>  2 files changed, 26 insertions(+), 26 deletions(-)
+> 
 
-For some reason this patch was deferred in Patchwork.
+What is the status of this series. I inherited it in Patchwork from Kalle.
 
-If this patch is still valid, please rebase to current ath/main and repost.
-Make sure to add 2025 to Qualcomm Innovation Center copyrights.
+It looks like there was a question if the 1/3 patch was actually applicable.
+
+If we think this series is needed, can you rebase & repost?
 
 /jeff
 
