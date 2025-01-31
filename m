@@ -1,151 +1,135 @@
-Return-Path: <linux-wireless+bounces-18244-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18245-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36C7A23E48
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2025 14:23:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9994AA23FA5
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2025 16:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E8141882729
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2025 13:23:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 337C818855EE
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2025 15:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF71F1C3F04;
-	Fri, 31 Jan 2025 13:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA871DFDA5;
+	Fri, 31 Jan 2025 15:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Q4w9orF+"
+	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="AfriKALW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from ksmg01.maxima.ru (ksmg01.maxima.ru [81.200.124.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF39A1E4AB;
-	Fri, 31 Jan 2025 13:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1882B1DE4E5;
+	Fri, 31 Jan 2025 15:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738329795; cv=none; b=PELf9M2eX9Zg+wHX1tpPMeEaThmhxreiM99NxlgHB2jfV/Iw/N//hwYH5b2RAYGSHO6F+9zMSIZyn6ABimY9FCcf3Lqds/F1Ian2N8WTFA0npAUi7D9LOQdIRE1aL5wFsFErMDta1JkZtWQDR/xvcbmjxKdZhEuscIcwUDgDW0A=
+	t=1738337292; cv=none; b=NZNo4S1cAThaGjzR19ST5NYuQAQwYE6cvoez3hkaSSw7mmMMAi2dZt6TDiGueH7VlSSuavnLa/mMDF0JwlHStwhXkPhWdjdwWblz/QMrl+g1gHD0Lp4Zmktagn1cQQ/UV+ICcrp/UqefQb9rRtiu05HSHCmq4J7DUF9t2oIyt0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738329795; c=relaxed/simple;
-	bh=i98dv1hcShtHP6AHCDM9O3+gtS5Xr9m1puc+d9u+8pg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bAkl+drl+kb92dGH6s42XP6iOCdkkgi+0MXM+aqvkg+apZHrAnxwEtR0ajFUBZ/TM2i8skbYt6RrJirTgyTppl1Zem4DNoZdh995qKvp1NVfqXf/SbujJxmiC3rRrtz73WYgOfJSH7UFJO01b5A0BkHAP6+lH5Jzppx71e5qrmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Q4w9orF+; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=i98dv1hcShtHP6AHCDM9O3+gtS5Xr9m1puc+d9u+8pg=;
-	t=1738329793; x=1739539393; b=Q4w9orF+3sIn3D/ZAndJGufB+9yl/HRP20++/DTjmqNEsuK
-	1zNYphw98Jt5ebxd+AieewqKkIqPYjNfaNzevxybCQ3gewrnSDCPIhHjCtT6ECI2t/AyT1aBuRCDh
-	n4Jkem2CMVX1C84o/QcX+py6CC7lDKV3zX40LUpb3RVO49tDIf2a/JgHGVTby38WjgcATiYWV6aLd
-	WtEoC7cd3XsjIGwKJZwwq+8K3x6Fe0dl8JeblVy0ta+egtiWiVznkq2ZwvGIDkxPHz/tEKwd9npmf
-	7BzCrhHkrgLBeeyrMD7Q0ZtiXf5HlxBL+wiBZsRjme2RI3njLiqPO3sRtewDOSOg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tdqzA-0000000G9Bj-3JqL;
-	Fri, 31 Jan 2025 14:23:05 +0100
-Message-ID: <21896d2788b8bc6c7fcb534cd43e75671a57f494.camel@sipsolutions.net>
-Subject: Re: Stepping down as maintainer
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org
-Cc: ath12k@lists.infradead.org, ath11k@lists.infradead.org, 
-	ath10k@lists.infradead.org
-Date: Fri, 31 Jan 2025 14:23:03 +0100
-In-Reply-To: <87wmefguqt.fsf@kernel.org>
-References: <87wmefguqt.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1738337292; c=relaxed/simple;
+	bh=54STAwR00ASCZCVJI5Yh67MWr1elOz6OEnFK+SgG8lE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q888X68oGJWMprMGGMV3WJ9wR7q7oGs5ItVJXykUbA/8BIMp09H5zfX6Kcg7iv4a29y+gpME4kQO8GdgkfJj12fIY3+m/F+wgAxy6eY6nOSS+y69TB+mqeUMBIp6eLeIrtw9m0uWDQbtWSYcihQsXBnMuJbDLI/cLsHpe4rm1f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=AfriKALW; arc=none smtp.client-ip=81.200.124.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
+Received: from ksmg01.maxima.ru (localhost [127.0.0.1])
+	by ksmg01.maxima.ru (Postfix) with ESMTP id 87766C0003;
+	Fri, 31 Jan 2025 18:27:56 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg01.maxima.ru 87766C0003
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
+	s=sl; t=1738337276; bh=rW23PiXK22C21obbkHYRPKanoYKTVhrnKD7lXE0kx14=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=AfriKALW6ufLeyw7rbLZLjiIQj61DNMRNbAB+ia8zI6aznLqL/+W1eW/gX5gKhEYy
+	 MfWrF0pzfwZKTOOidEM1Efnvtd0CZkXZWinIUFtmZ+Rv2Xak5LQI3JXPZn6JvZCKEe
+	 xt8ru3yQMpBEr7fwL5Ad+LY7cGkaRdcZrjvvxQVGkvXUZn4ypRLp24NUZEdTV8yZjV
+	 RCjIfGF8m0gqmE6UrxFmLiT76ZLswQ13ad1AG8WrixvQWoxQ0D8r5rW1G2aV+sHrEv
+	 srJmUvFqJcXXFU+5DryFVevBuFhl8avS8yN9tiaOuGGKAJ/Sjmpy6YtGF3895fn1eg
+	 nLIxBkNReI9pw==
+Received: from ksmg01.maxima.ru (mail.maxima.ru [81.200.124.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
+	by ksmg01.maxima.ru (Postfix) with ESMTPS;
+	Fri, 31 Jan 2025 18:27:56 +0300 (MSK)
+Received: from localhost.maximatelecom.ru (5.1.51.69) by mmail-p-exch01.mt.ru
+ (81.200.124.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1544.4; Fri, 31 Jan
+ 2025 18:27:54 +0300
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>, Michael Wu
+	<flamingice@sourmilk.net>, "John W. Linville" <linville@tuxdriver.com>,
+	<linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>,
+	<syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com>
+Subject: [PATCH v2] wifi: nl80211: reject cooked mode if it is set along with other flags
+Date: Fri, 31 Jan 2025 20:26:55 +0500
+Message-ID: <20250131152657.5606-1-v.shevtsov@mt-integration.ru>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch01.mt.ru
+ (81.200.124.61)
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/01/31 14:37:00
+X-KSMG-AntiSpam-Auth: dmarc=none header.from=mt-integration.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
+X-KSMG-AntiSpam-Envelope-From: v.shevtsov@mt-integration.ru
+X-KSMG-AntiSpam-Info: LuaCore: 50 0.3.50 df4aeb250ed63fd3baa80a493fa6caee5dd9e10f, {rep_avail}, {Tracking_one_url, url3}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 81.200.124.61:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;ksmg01.maxima.ru:7.1.1;mt-integration.ru:7.1.1;syzkaller.appspot.com:5.0.1,7.1.1, FromAlignment: s, ApMailHostAddress: 81.200.124.61
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 190721 [Jan 31 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.7
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/01/31 13:26:00 #27170191
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/01/31 14:37:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 7
 
-Hi Kalle, all,
+It is possible to set both MONITOR_FLAG_COOK_FRAMES and MONITOR_FLAG_ACTIVE
+flags simultaneously on the same monitor interface from the userspace. This
+causes a sub-interface to be created with no IEEE80211_SDATA_IN_DRIVER bit
+set because the monitor interface is in the cooked state and it takes
+precedence over all other states. When the interface is then being deleted
+the kernel calls WARN_ONCE() from check_sdata_in_driver() because of missing
+that bit.
 
-> I'm stepping down from all my maintainer roles. My first commit
-> feed9bab7b14 ("spi: omap2_mcspi PIO RX fix") to the kernel was back in
-> 2008 for v2.6.24 so I have been here for a long time. Thank you everyone
-> who I have worked with, there are too many to list here.
+Fix this by rejecting MONITOR_FLAG_COOK_FRAMES if it is set along with
+other flags.
 
-First and foremost, let me add my thanks to the list here. We've worked
-together for many years on wireless now and I appreciate that greatly,
-personally and also in the role you've played in shaping wireless, be it
-through the reviews directly, or the more indirect things like sharing
-the tree maintenance etc. Thank you!
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-This is also an opportunity to thank Qualcomm for sponsoring your work
-here. Certainly I'd expect they also got a lot of value out of it, but
-we the community definitely got a lot, so thank you Qualcomm!
+Fixes: 66f7ac50ed7c ("nl80211: Add monitor interface configuration flags")
+Reported-by: syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2e5c1e55b9e5c28a3da7
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+---
+v2: update patch name and description,
+    reject cooked mode if the one is set along with other flags.
 
-> Jeff continues to maintain ath10k, ath11k and ath12k drivers so they are
-> unaffected. But for the wireless driver maintainer (drivers/net/wireless/=
-)
-> there is no replacement at the moment. If anyone is interested, please
-> do let Johannes and me know.
+ net/wireless/nl80211.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-I'll be honest and say that I did delay my reply to see if anyone would
-speak up, but in the short term I really didn't expect anyone to step
-up. We're pretty niche in wireless, after all :)
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index d7d3da0f6833..fdb2aac951d1 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4220,6 +4220,11 @@ static int parse_monitor_flags(struct nlattr *nla, u32 *mntrflags)
+ 		if (flags[flag])
+ 			*mntrflags |= (1<<flag);
+ 
++	/* cooked monitor mode is incompatible with other modes */
++	if (*mntrflags & MONITOR_FLAG_COOK_FRAMES &&
++	    *mntrflags != MONITOR_FLAG_COOK_FRAMES)
++		return -EOPNOTSUPP;
++
+ 	*mntrflags |= MONITOR_FLAG_CHANGED;
+ 
+ 	return 0;
+-- 
+2.48.1
 
-There's obviously reluctance of netdev picking up any wireless related
-activity, and that would anyway be impractical if cfg80211 and/or
-mac80211 were to remain separate. There's also a clear separation of the
-lists, and given the volumes involved I think that's likely better for
-everyone.
-
-In the short term at least, I therefore expect that I will (need to) be
-the custodian of the wireless trees. And I say "custodian" rather than
-"maintainer" quite intentionally, because I cannot really take on the
-role as you've filled it in the past. Shoes a few sizes too big, I
-guess.
-
-
-So as the wireless community, I think we will need to come to terms with
-the fact that our workflow and processes will change now, and we'll
-invariably have to take on some new work. In some ways, netdev has
-already undergone such a transformation in the past, with
- * maintenance shared across more people (to some extent),
- * a lot more emphasis on reviewers _other_ than the maintainers, and
- * automation to take care of rote things.
-
-I'm not sure we will be able to find (trusted) people willing to share
-the maintenance with in the short term, but the other two things seem
-entirely manageable in the short term. I'm already checking if I can get
-(interim) automation set up in the short term, with a more permanent
-setup, independent of myself or hopefully any company, to come later.
-
-As for reviews, I suppose that'll be a new thing in the wireless world
-where pretty much everyone (with few exceptions) works in their driver
-niche. I would think that was also the case for Ethernet in the past
-though, where now we see "cross-vendor" Reviewed-by tags on many
-patches, even ones specific to other drivers. This is where we should
-get to, to distribute reviews across more people. For those of you who
-may not have seen, Jakub also publishes statistics about that, e.g.
-https://lore.kernel.org/netdev/20250121200710.19126f7d@kernel.org/
-
-Hopefully then over time we'll see where things fall, and find one or
-multiple people to share the tree maintenance with again. Bus factor and
-all that.
-
-
-However, that's only *my* vision for how we continue to maintain the
-wireless tree going from here. I'm open to other suggestions (though
-pre-emptively reject the suggestion that "every driver has their own
-maintainer and that's good enough...")
-
-
-Thanks for reading this far, and thanks again Kalle! :-)
-
-johannes
-
-
-PS: I'll update patchwork auto-delegation accordingly soon, just have to
-remember when I have enough time to click all the slow buttons there
 
