@@ -1,188 +1,115 @@
-Return-Path: <linux-wireless+bounces-18260-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18261-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F30A9A24BD9
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Feb 2025 22:13:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3567BA2503F
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Feb 2025 23:07:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 697D516327B
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Feb 2025 21:13:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E33531884A43
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Feb 2025 22:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E4A1C5D68;
-	Sat,  1 Feb 2025 21:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EFB2147E7;
+	Sun,  2 Feb 2025 22:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RoY7OF2e"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nbTdU9Zk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0571C3BF2
-	for <linux-wireless@vger.kernel.org>; Sat,  1 Feb 2025 21:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB2D20C003;
+	Sun,  2 Feb 2025 22:07:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738444386; cv=none; b=X1iNMPrdakcqek/JVry77f8KlqUegWbL6UMxveT44FdlJFidp6dwwdPRjUKvE2DWk29kbs+Feg1E9iopGTfp9F36K6JmRZEzJwA6K56IzLdyXMEAvF1dcRiWn0iUZWPqXkQ2m1UTPSrgXCiI+UG9e0CPV9Y+UIb+sf42E5bUjGo=
+	t=1738534048; cv=none; b=uDqdYP8Gn/gDJNsGNVlEEkObh7FTWR42G5zHL7mGu8gSRp2RtRbUCKVCxTJa5pmhtr9HTQsMjahwyCpBDfF1d6w2hcrGQrgm2wMjAYcuYX22PQkL/GcxWLP6u2dzr8/45H5nWNs76ZRfqt0vTNv3VoOAFDfYV8+SsbQG/gV1Lh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738444386; c=relaxed/simple;
-	bh=6vyg2ycPhUZmR/9VksEfLHa96a58QsmASoYETYSNJS0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KFFZNma6qYj96DzyJcfMiHe8MqY45A2ptD+TgVsLM8tt/eatA6ktWbEvYoKFX/4zSvnprjpAmSXf+xonesYuJH03Q8Ah8QX+ej4d5ujx7VPeQptop0lE3vbdBJT9tq1Nzcaid69CZpl36SRaaIK3j/s48vgpeCHER0xq3mpFsnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RoY7OF2e; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1738534048; c=relaxed/simple;
+	bh=Tww6j7IITtP1JpiFaLexj9OLS/m0wJmj2DIOLw7haZA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L83nqVQGPX6ZETXaj09iIaLyrMSwGLAQmhjl4ppiNaCIaU1qQ89t4rhNyY48pPnUDE/0JhF9oaOyAgAjUDh5C/wR+omWXT46btOxbZdKfS+ezRowOIVFOzEuRWrHxKHNEHQ1mL9U9rFUOu+8lNJPBkvCqodhiEPDdDR80T28bzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nbTdU9Zk; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-436281c8a38so22639625e9.3
-        for <linux-wireless@vger.kernel.org>; Sat, 01 Feb 2025 13:13:04 -0800 (PST)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4361dc6322fso25279635e9.3;
+        Sun, 02 Feb 2025 14:07:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738444383; x=1739049183; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738534045; x=1739138845; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IAXOnX62cZ6i8kI2tncb0QO6ket58w+Pb9EoHU06fZ0=;
-        b=RoY7OF2eSSECa29WHTNs7Www1bNA1N3qctVE0NxBsWHM5l8Pz6zGd6Asmtd0BXN0mG
-         82mlRoSKmen1ZLF57dLRrGwjXyjUyyih9RGG52BBmGClYvkrLQXWRw5s2BbQfVHiGbPs
-         7W8pWtCmCbf37r7P5VG1vJlPtj+5GNEABYgHzjQXUhKPshfxWLasi9oEFyHLQb0aRh2G
-         WgcsHl9TlXEzK4rjeOrVh0qNaShuoN+69odjEdnEoTK3zutOB2jVSWsElhet4oMEGH1X
-         sdOONh8OzTEhvyonPcUPgSzPSLnpuAOj9p4zoGo5cQtqnxHtXOM1uQcrBJbDDawcLD1/
-         FKbw==
+        bh=bNwdZ9Rby6QrQ/t2sXkUgdNUisz3NDMDNDDC7nr5Ytw=;
+        b=nbTdU9ZkaK7tsKva8OYK3dgnld3VEBkDlVRCjQMJXGYb8fnRTbBuMnvi8WsnkAuOM4
+         LWqoblbxy8/uSdKXfO3/X30A6bvPnkZC8QmrJuDAPQUkB16RcTXLV+gaulumaB8nG7xS
+         GStnpa3+qz5M1aFb4rIjdaRAxkoQwjEhPnNE/f+PAOmUGxo5eMEFTOEGiYQU2JPt9acX
+         WdhJJadfBMpKb7CEW1+4xXPe/wtU4s30n1OdHKwRqH/zrxFLq3/52yjbGT9S0bnnLC0s
+         LVZ/Ohe3Z/q6cV2S9Yc8S2QOPvc5+p1uCIqx/JMERUacpsMXP1vCcFYBmdZCakAn7b4+
+         vtjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738444383; x=1739049183;
+        d=1e100.net; s=20230601; t=1738534045; x=1739138845;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=IAXOnX62cZ6i8kI2tncb0QO6ket58w+Pb9EoHU06fZ0=;
-        b=N00NvOBPYJvZwJwYgPlnddrNjZyzhhPoThyeflcW3Uq4MWU+VfADWVYEEiKbCuhFVe
-         uDd6ZnIJKI20pLPj2et1RbfufE/t/EsSBS8CLhYTpsOdlpbG/yGdAf74PqkSRl6AUDiv
-         iTZuU19+8mRK2WamcBHtqVZQuLizigWKEcdc9CDr24ZP7cZ79VZrLbhgmqbYVFNjeBix
-         S298TqHiJMgvds+csi18ongH/GNHdi2r0hs/NthnHiLN83/gCWE0SxILqLPb1L2Wjki5
-         4zqT0RWGp9Ida7TBinnPXMrQO8PmSGZr3rUvFQyvfNqKQVWm97t7dpp0yNs7AU4Ew3ec
-         SqGg==
-X-Gm-Message-State: AOJu0YyosngnvFSWpVkLg2/8h1nd0Eb9ki6n0A6E0VDmrjOkmSZBLh/0
-	0fSEESPTgmcTe5lC/AHJk08fZlWOu4vBhBaH1cscUzl7aieRUZsvAwhJhQ==
-X-Gm-Gg: ASbGncvFbxllpPcrtJjrVU8yo/hnnIz/q9O1byd4al2JnOtla64tU6pw7UqBjMuKpsg
-	n6+9mVlCbesxmZ1O1I57doJwDAfttvvf3QCekYLeawRADtXYkFa7B+TNfQrv+/7ZxV3g0KM/oB4
-	gUc+XaXb9oP3qt0L3VWfEaOffRZlRtUUSZ8YbuHb799MkPHREAKS+D2EgPsxcCdg+PKsGlCLHfD
-	RlwLjpDAGTf4MMGC0T8M//Dz/5zgpivcO2hVf6ccidwLf1tPKH5zdYqIeLuiGmhwUTeEkMpfzNn
-	5TBvKjQc53cn/4ssb8XD+WLNCylEUgNrOQqijf5msvB3DHTc
-X-Google-Smtp-Source: AGHT+IGJVRa/bkKZeoR0SoJZrw3nAzxaFe6fY+cQyOj44g9IOuf6m6TluWguF2EWZf8oAfQEl2oWbQ==
-X-Received: by 2002:a05:600c:5486:b0:433:c76d:d57e with SMTP id 5b1f17b1804b1-438dc3a40d3mr160996275e9.5.1738444382813;
-        Sat, 01 Feb 2025 13:13:02 -0800 (PST)
-Received: from syracuse.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438e244ecd6sm100349485e9.28.2025.02.01.13.13.01
+        bh=bNwdZ9Rby6QrQ/t2sXkUgdNUisz3NDMDNDDC7nr5Ytw=;
+        b=dXgDNZJpZIamwH9TWZ9elo38AFH66MYa7lcXwTUdhP/5vAN6j6UBCRhUFoT1WbXTGZ
+         LkiULn7Y0fN1xyi6MUsyUGGvtJsr4wsiSUdAL8jpBBxC9IJbdQTk/yhozLunmLRYt0ek
+         4ZiiIw+8MO45lU6Eb0ZtP/B48/CzBgx/Rj7A92enDlIryhN6axzdscqfXeITsAFMbAiR
+         5IvIhF0Ckpdsg7sHGS1yLStNZqIZ8nzwgvzvjNtK+KsxV93ugrGxGwwseDZidC0ovdV1
+         7PewrqvZoszFZZKtx88k1MrUtFaQTDRc7X6XmlSuI1JTZwIBjf4rrs+92BaZee/IK22o
+         SZZg==
+X-Forwarded-Encrypted: i=1; AJvYcCXoww+1TeBLQoPADtRTddwCn5Lw9jw/bDu5vZLyitzySrrs7VIjCCA/Dpg312Rl9J8hWw90tEqmVeoqoYWoKlk=@vger.kernel.org, AJvYcCXsMgyojlFfLphKPU9v2tTZxDL7196r/PMIM3IQ7sju9xs4cNLO7TK9wRYQ29nye4Yofv1DRs8hNWZmfag=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2DH7tmzonHDMlnbrTKj40Ptl4AjxWVBqLOn66gpTMBxta5kVO
+	lgRsvlKmiMXt19bP8TnNpX1umLqu7LTg5f14F0WH8hc/l+MMhUd2Ns6Q9lJ+aaw=
+X-Gm-Gg: ASbGncsMTpsio0qxIWrBQzmhwWa3WREHdiwhyWfkcXzQzd5SMxBbTJbaOCQEbITeSiu
+	YqYr6trYh7QDWUo1R97GVMdHxP6uDMePPKXeMjxOiiKycf13OJkO8G8HC3JD21uHmd/sczJPQWb
+	mKe5o9nmu31P5lsGKAQq5TNxKDtS8r6YPmsd2i9EdhEiNyTCAnZGzC32dvpeHE52fXJXRsV8x7f
+	/qQyoMRTXMIWZP7Sq12z9LAkQLH+LiUiSUDeqZAKX0pMgcjBkyyF0iljyqEnIgTIDtBEq6lVu9i
+	bxC0NLKqKnu8BaSI
+X-Google-Smtp-Source: AGHT+IGqToJckq9WXaHfFTvgbHEi1aCj7NGnpjNkDKNYHEBTw3PFmy6Sr/Ktlpr9n14KVY4K4FlLqA==
+X-Received: by 2002:a05:600c:3c89:b0:434:a7e7:a1ca with SMTP id 5b1f17b1804b1-438dc40ffaamr151077395e9.20.1738534044751;
+        Sun, 02 Feb 2025 14:07:24 -0800 (PST)
+Received: from localhost ([194.120.133.72])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-438e244ed3fsm135150805e9.31.2025.02.02.14.07.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Feb 2025 13:13:02 -0800 (PST)
-From: Nicolas Escande <nico.escande@gmail.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH v3] wifi: ath12k: add support of station average signal strength
-Date: Sat,  1 Feb 2025 22:13:01 +0100
-Message-ID: <20250201211301.357985-1-nico.escande@gmail.com>
-X-Mailer: git-send-email 2.48.1
+        Sun, 02 Feb 2025 14:07:24 -0800 (PST)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] wifi: ipw2x00: Fix spelling mistake "stablization" -> "stabilization"
+Date: Sun,  2 Feb 2025 22:06:59 +0000
+Message-ID: <20250202220659.199341-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-This adds support for reporting to the kernel the average rssi. This is
-done the same way as it was done in ath11k. A simple ewma (with the same
-parameters) is updated with each rssi update.
+There is a spelling mistake in a IPW_DEBUG_INFO message. Fix it.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
-v3:
-  - rebased on ToT
-  - now also handles db2dbm
+ drivers/net/wireless/intel/ipw2x00/ipw2200.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v2: https://lore.kernel.org/ath12k/20250121093834.25132-1-nico.escande@gmail.com/
-  - removed spurious exta new line at the beggining of core.h
-
-v1: https://lore.kernel.org/ath12k/20250117172819.3357534-1-nico.escande@gmail.com/
-  - initial version
----
- drivers/net/wireless/ath/ath12k/core.h   | 4 ++++
- drivers/net/wireless/ath/ath12k/dp_mon.c | 2 ++
- drivers/net/wireless/ath/ath12k/mac.c    | 8 ++++++++
- 3 files changed, 14 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 28db100cfac0..2a53712bd606 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -15,6 +15,7 @@
- #include <linux/ctype.h>
- #include <linux/firmware.h>
- #include <linux/panic_notifier.h>
-+#include <linux/average.h>
- #include "qmi.h"
- #include "htc.h"
- #include "wmi.h"
-@@ -480,6 +481,8 @@ struct ath12k_wbm_tx_stats {
- 	u64 wbm_tx_comp_stats[HAL_WBM_REL_HTT_TX_COMP_STATUS_MAX];
- };
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+index be1d971b3d32..24a5624ef207 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+@@ -3295,7 +3295,7 @@ static int ipw_init_nic(struct ipw_priv *priv)
+ 	rc = ipw_poll_bit(priv, IPW_GP_CNTRL_RW,
+ 			  IPW_GP_CNTRL_BIT_CLOCK_READY, 250);
+ 	if (rc < 0)
+-		IPW_DEBUG_INFO("FAILED wait for clock stablization\n");
++		IPW_DEBUG_INFO("FAILED wait for clock stabilization\n");
  
-+DECLARE_EWMA(avg_rssi, 10, 8)
-+
- struct ath12k_link_sta {
- 	struct ath12k_link_vif *arvif;
- 	struct ath12k_sta *ahsta;
-@@ -499,6 +502,7 @@ struct ath12k_link_sta {
- 	u64 rx_duration;
- 	u64 tx_duration;
- 	u8 rssi_comb;
-+	struct ewma_avg_rssi avg_rssi;
- 	u8 link_id;
- 	struct ath12k_rx_peer_stats *rx_stats;
- 	struct ath12k_wbm_tx_stats *wbm_tx_stats;
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 4e9a60181c06..d529229f2d0f 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -2002,6 +2002,7 @@ static void ath12k_dp_mon_rx_update_peer_su_stats(struct ath12k *ar,
- 		return;
- 
- 	arsta->rssi_comb = ppdu_info->rssi_comb;
-+	ewma_avg_rssi_add(&arsta->avg_rssi, ppdu_info->rssi_comb);
- 
- 	num_msdu = ppdu_info->tcp_msdu_count + ppdu_info->tcp_ack_msdu_count +
- 		   ppdu_info->udp_msdu_count + ppdu_info->other_msdu_count;
-@@ -2174,6 +2175,7 @@ ath12k_dp_mon_rx_update_user_stats(struct ath12k *ar,
- 		return;
- 
- 	arsta->rssi_comb = ppdu_info->rssi_comb;
-+	ewma_avg_rssi_add(&arsta->avg_rssi, ppdu_info->rssi_comb);
- 
- 	num_msdu = user_stats->tcp_msdu_count + user_stats->tcp_ack_msdu_count +
- 		   user_stats->udp_msdu_count + user_stats->other_msdu_count;
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index e9663c6ac72c..807638d30e7b 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -5484,6 +5484,7 @@ static int ath12k_mac_station_add(struct ath12k *ar,
- 		}
- 	}
- 
-+	ewma_avg_rssi_init(&arsta->avg_rssi);
- 	return 0;
- 
- free_peer:
-@@ -10200,6 +10201,13 @@ static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 		sinfo->signal = db2dbm ? signal : signal + ATH12K_DEFAULT_NOISE_FLOOR;
- 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
- 	}
-+
-+	sinfo->signal_avg = ewma_avg_rssi_read(&arsta->avg_rssi);
-+
-+	if (!db2dbm)
-+		sinfo->signal_avg += ATH12K_DEFAULT_NOISE_FLOOR;
-+
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL_AVG);
- }
- 
- static int ath12k_mac_op_cancel_remain_on_channel(struct ieee80211_hw *hw,
+ 	/* assert SW reset */
+ 	ipw_set_bit(priv, IPW_RESET_REG, IPW_RESET_REG_SW_RESET);
 -- 
-2.48.1
+2.47.2
 
 
