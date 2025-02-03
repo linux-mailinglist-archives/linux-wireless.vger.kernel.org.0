@@ -1,64 +1,65 @@
-Return-Path: <linux-wireless+bounces-18263-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18264-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A015DA2512F
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 03:03:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB704A25136
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 03:15:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD8F87A1EC6
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 02:03:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B22F16336A
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 02:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20624C85;
-	Mon,  3 Feb 2025 02:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18FF1CAAC;
+	Mon,  3 Feb 2025 02:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="blSOAHDD"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="cJ1ZxpEx"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B8712E7F
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Feb 2025 02:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF57F12E7F
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Feb 2025 02:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738548229; cv=none; b=lVq+Mp2x3yNZ9bHnaRSFI5qz9yyffQcT8WGeXw7zZXlXnNTwaSXQeaIHVac0hQKOz3HGr97YtWBqfa2iF5zikzYeu1ciztt6o4HOGqkNLKfQcLs1UX0RCDxS1aKz1n/AtZ0ZAg0ljH7btGlUuLoUYlBNMMoG2D85Fsxi2P0XLgM=
+	t=1738548901; cv=none; b=BL/jKUYN/WRfL1plnCgBlqsTDcHhfupn+JucFDqrBCmD32UiSIVx9yycZu0uy4MNVooMvrIoy+Tp+6JDSmBjv8cYLZGpUsdH+EvrRXTJYkrYo8kE+EKnw1wHj2UlTb9qpbn3dcKfBe8OkVjfNs/X/nq0c331EhwKLM/oaPCTzto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738548229; c=relaxed/simple;
-	bh=V/zIPRvRZM5dIL8bjjDjQYVvhMWteiB4d4FeEmdENCc=;
-	h=From:To:Subject:In-Reply-To:References:MIME-Version:Content-Type:
-	 Message-ID:Date; b=Ps7GX2dnv3YKzciD0k4ob3C+GScsC8biyAG8uD1Giz9bL2s+MTa/rcHm9JGVnJCoIdbJ2KU+d9Dnbg6rHmw3yE6fvu6tLa99cLsJUC5QPp9v1KX8JdjxdWfvuYejC/5tqjEJ+2x4w9oxBn4AyY/9RGWrcYHFKeiluRM1xUac6AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=blSOAHDD; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1738548901; c=relaxed/simple;
+	bh=q1UHobL53M1WRTbqBm+SR2EVwlP7Zc0kIn9O++bcKsE=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=SGm2GFlGyTXmS2+caamJ1PYh/8wpaySF0lvS2eEf+KLjWqX8PDu82bhIB9hbj0sxT5wt5edGfSU0iDqmEQ+5cBbM+TZqHt73RpUPOXn/fJzqIgbLbq0HKvCtg0qD1rGkiTs+EnSJ/eG/4bDZsjlaKHkTbgq1vk8gnuQEI/crmF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=cJ1ZxpEx; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51323h092923177, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5132EvawE932832, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1738548223; bh=V/zIPRvRZM5dIL8bjjDjQYVvhMWteiB4d4FeEmdENCc=;
-	h=From:To:Subject:In-Reply-To:References:MIME-Version:Content-Type:
-	 Message-ID:Date;
-	b=blSOAHDDnCVjvBz11fkhdOL1SyG3oVzw4egG1MPsxlu+1I1GkvOi7m4DHpQtJmpYk
-	 in3PqgXNN2ajiZJ/SjxC1JZXv3dvB7fsGgttaEmTYE4HKhrWVffEEOhBUIpWMbjZ5D
-	 PdKsN0FJbzREUpeAZnd8n6gfF25ti3QmqbERpdG/fVA6g158fKxaRyivb6RFsjCNJD
-	 /LVOgF/KlYPCY03aNbyrM6y5MAquaCrbY2PfpnJjLHoDKmkchDz9lvra1YqxgtAgeF
-	 F9AVqvGHXH69T7fT3RCHWqZuucJ7wPz7BOMnLVgiO5lok2EdTeg7FBfMsDIcdWJfDB
-	 wArzyLvrnynUg==
+	t=1738548897; bh=q1UHobL53M1WRTbqBm+SR2EVwlP7Zc0kIn9O++bcKsE=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date;
+	b=cJ1ZxpExH6d7uBUskTrNBpwpLpwFzyNOqvIcGFm/GVNFxNTZ1RKjM0xHEU6otlr8B
+	 HCa9bZ1UQ/NVnvTKRypyQYfVgLdTsDywpuwUk3y5eXES/gjTMmvE7jj1r+Zp1n0+Iy
+	 5xkQ+Snt2FoQ0TwZHiOghdZ3VromeYAMr0/uFu6qqaOV4o0hojDo9zvvmmiCQaqZp+
+	 9yeW97Im4itYYT5f2jQRN24SkqsCrrFBo7k9mfP1MuKjK17n9lnWcWqkuwuEiTvRVY
+	 gaMO48gAlsG0/sZ57X5xmcpySZKvwbBxrYeyL3c7vGHaWBDsUewS+vZQkJZPZlA2dJ
+	 bFCcwp4K3kQDw==
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51323h092923177
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5132EvawE932832
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 3 Feb 2025 10:03:43 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 3 Feb 2025 10:14:57 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 3 Feb 2025 10:03:42 +0800
+ 15.1.2507.39; Mon, 3 Feb 2025 10:14:57 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 3 Feb
- 2025 10:03:42 +0800
+ 2025 10:14:56 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 1/8] wifi: rtw89: phy: rename to RTW89_PHY_NUM as proper naming
-In-Reply-To: <20250117072828.16728-2-pkshih@realtek.com>
-References: <20250117072828.16728-1-pkshih@realtek.com> <20250117072828.16728-2-pkshih@realtek.com>
+CC: <kevin_yang@realtek.com>
+Subject: Re: [PATCH 1/3] wifi: rtw89: regd: support loading regd table from fw element
+In-Reply-To: <20250120032723.19042-2-pkshih@realtek.com>
+References: <20250120032723.19042-1-pkshih@realtek.com> <20250120032723.19042-2-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,30 +67,30 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Message-ID: <7a74f686-73bd-4b20-9cf0-5c2b3b016a11@RTEXMBS04.realtek.com.tw>
-Date: Mon, 3 Feb 2025 10:03:42 +0800
+Message-ID: <fc9d2a66-57f4-4cfc-931d-10dc9bc41b56@RTEXMBS04.realtek.com.tw>
+Date: Mon, 3 Feb 2025 10:14:56 +0800
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> The meaning is number of PHY, not maximum ID of PHY. Change to proper
-> naming.
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
 > 
-> No change logic at all.
+> Regd table is a table that we use to describe how to map Realtek RF TX
+> power settings on different countries. Originally, a common regd table
+> for all chips is implemented in driver. However, in order to work on all
+> chips, the common regd table might have some trade-off. So now, there are
+> also an individual regd table for some chips. And, we support loading it
+> from FW element.
 > 
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-8 patch(es) applied to rtw-next branch of rtw.git, thanks.
+3 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-f0dc53a7b77f wifi: rtw89: phy: rename to RTW89_PHY_NUM as proper naming
-57a6cdf2feaf wifi: rtw89: phy: add PHY context array to support functions per PHY
-11a625160a32 wifi: rtw89: phy: support env_monitor per PHY
-dc0ac60f2a92 wifi: rtw89: phy: support DIG per PHY
-786e485c61ef wifi: rtw89: phy: support ch_info per PHY
-af5fa884e22f wifi: rtw89: phy: support EDCCA per PHY
-0a51f04a9afe wifi: rtw89: phy: support EDCCA log per PHY
-076652f56ed6 wifi: rtw89: phy: disable CFO track when two PHY are working simultaneously
+e7196b32a43d wifi: rtw89: regd: support loading regd table from fw element
+79a36fc56bea wifi: rtw89: regd: handle supported regulatory functions by country
+b45acf245596 wifi: rtw89: regd: refactor init/setup flow and prototype
 
 ---
 https://github.com/pkshih/rtw.git
