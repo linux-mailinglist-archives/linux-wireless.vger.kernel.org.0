@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-18282-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18283-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF8BA25313
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 08:30:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8FBA25314
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 08:30:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D069162BD6
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 07:30:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDD0A3A30E9
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 07:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351E61E990B;
-	Mon,  3 Feb 2025 07:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D7B1C462D;
+	Mon,  3 Feb 2025 07:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="H7Vmi5Gy"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="EIb3QucS"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744A71EEA4E
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Feb 2025 07:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1DF1F4723
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Feb 2025 07:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738567805; cv=none; b=F4g1wOkUfjWPmAEylsK7AXgwyzQufkiqHlNWAaT8zXplZmTTXhSEXvQ5dz7fgF5W8NXByqfUuf/+QoXPsZbOnU2yXWPbSCLxDWvuWrY06rBkK7bMl0luaKlMNNGJ2HxWJY2B8wAXmDPF0j+oEOCdI2g0/oz2OKXAnkqpsrVwcME=
+	t=1738567808; cv=none; b=IUhtqPzNknj5/WzN2yAakyYJR/inDN5DkIrcuDSNKk2xU/eQ1dl20vwxgthsMdWP1l9Jip4gX2xY6N1MmHIKwzTo3zx8O7UbKwSyptHZOp6psXgmLBisvPAG+8MJRv6+/PtIpYlTdD1FWbd/rWKnMSPI06GFEYFFFhJey2RByfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738567805; c=relaxed/simple;
-	bh=8yfAmYBVsoqIHjpHNEoJ5qWcOXyLKC3DAQLvXVFd9uw=;
+	s=arc-20240116; t=1738567808; c=relaxed/simple;
+	bh=EyvjFGm/fyqwDNRUVHVF9IjZ8RH3WbflF1SE/X2R3tQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q/fmJP540FIg8Lw/by1c8CfOnKotfs2M80+oAmz+T7Rf4qQljfRctUBU7eBMsQSr789L5GadIcNB2DjHa3PKkC8IXCIlQAapyW1QUzsLD0+7UNFYxOJILQzeIw5tFb3SyArGXPv9r4rYxExl2NpY2ZxSa9IIJULCcUxHe/uZMxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=H7Vmi5Gy; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=N0veqkpsqWvaXXE322OeQUzd3/O8/J/bmSc6fl/FOWcYjXIher5JWIjskqipH1diNwGbtIqnVlVYu2HjWj8RJkSSa3CoP3ux3/8KDUZFGcnLISJafrnDyL4/l9u7UNLITdDQWY4yK8EcB1w0vIKPkMH8KYfTODrdnCiA2oDS1GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=EIb3QucS; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5137U07C01321562, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5137U4Y801321574, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1738567800; bh=8yfAmYBVsoqIHjpHNEoJ5qWcOXyLKC3DAQLvXVFd9uw=;
+	t=1738567805; bh=EyvjFGm/fyqwDNRUVHVF9IjZ8RH3WbflF1SE/X2R3tQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=H7Vmi5Gyb0bo2amRj3jS57Y46W7/Uw+XMWY3/BfMccNB5KYyL1hvoJ4LmRShSP13j
-	 TEVFUUEu8WOhKmOMeKH3l1d03+5d0QbEQfCcqdroBgpDZTNvgM0J2UzmRysaIvt7d3
-	 QmlF4uahnrl5yXGRbZAIEnPNmQm3+hugRGX/+g7IaEA0sMQVGIDDnTPWLlfjZGOE8z
-	 lyIYXV8LZ0NmhAaHcn7a8cU7mntk0+bmkfOi4sAmY0p0NE+TAypnu8y/5xTt+fhdEN
-	 ch/dH0HWewqZyMd/PeZQS5If3kgL+9lVylIl2mFdLN2fn48dHV3jMAsFhGmBE/CeJD
-	 FbUbyyUv/4wPQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5137U07C01321562
+	b=EIb3QucSd+rutkXe6SEmjay8GsCDt+lIyGDh3jOmjFXf8rQOkq/UwC0kUlsnDI4Op
+	 bK9qAxwdHeOn4TpFwANKzpgBOcoVHBYsS+rRdp4zm9lqvBffb1G+OVMv96DaHwZJWh
+	 CBggeMWOf8cLVzV+XaMwfkcA5InYlCN1tcRj+M3q3WrF30tJCGcrHwlwqKCF3ehZld
+	 iAPhMqaEWeURTypL0aBQh54wjm//9PSWig1Nx5hsJ5jaFZc1cQfVB27fbCXakwbWs0
+	 ohGOf1NHbvvHKNXYoqmOMrV5jJWgOoVG91GJNg7uJ7qaOgZaSfVhQfp39dtGMuW8++
+	 QBEM7RvY6nXPQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5137U4Y801321574
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 3 Feb 2025 15:30:00 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 3 Feb 2025 15:30:04 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 3 Feb 2025 15:30:00 +0800
+ 15.1.2507.39; Mon, 3 Feb 2025 15:30:04 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 3 Feb
- 2025 15:29:59 +0800
+ 2025 15:30:03 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <echuang@realtek.com>
-Subject: [PATCH 3/4] wifi: rtw89: fw: validate multi-firmware header before accessing
-Date: Mon, 3 Feb 2025 15:29:10 +0800
-Message-ID: <20250203072911.47313-4-pkshih@realtek.com>
+Subject: [PATCH 4/4] wifi: rtw89: fw: validate multi-firmware header before getting its size
+Date: Mon, 3 Feb 2025 15:29:11 +0800
+Message-ID: <20250203072911.47313-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250203072911.47313-1-pkshih@realtek.com>
 References: <20250203072911.47313-1-pkshih@realtek.com>
@@ -74,76 +74,54 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-A firmeware file contains multi-firmware with a header to represent
-contents. The mfw_hdr->fw_nr is to define number of firmware in file.
+To access firmware elements appended after multi-firmware, add its size
+as offset to get start address of firmware elements.
 
-         +-----+-------+------+---------+--------------+
-         | sig | fw_nr | rsvd | version | reserved     |
-         +---------------------------------------------+ --
- fw 0    | cv | type | mp | rsvd | shift | size | rsvd |   \
+         +-----+-------+------+---------+--------------+ --
+         | sig | fw_nr | rsvd | version | reserved     |   \
          +---------------------------------------------+   |
- fw 1    | cv | type | mp | rsvd | shift | size | rsvd |   | mfw_hdr->fw_nr
+ fw 0    | cv | type | mp | rsvd | shift | size | rsvd |   |
          +---------------------------------------------+   |
- fw N-1  |                  ...                        |   /
-         +=============================================+ --
-         |               fw 0 content                  |
-         |       (pointed by fw0 shift/size)           |
+ fw 1    | cv | type | mp | rsvd | shift | size | rsvd |   |
+         +---------------------------------------------+   |
+ fw N-1  |                  ...                        |   |
+         +=============================================+   | mfw size
+         |               fw 0 content                  |   |
+         +=============================================+   |
+         |               fw 1 content                  |   |
+         +=============================================+   |
+         |                  ...                        |   |
+         +=============================================+   |
+         |               fw N -1 content               |   |
+         +=============================================+ --/
+         |             fw element TLV X                |
+         +=============================================+
+         |             fw element TLV Y                |
+         +=============================================+
+         |             fw element TLV Z                |
          +=============================================+
 
-To avoid Coverity warning, validate header is in range of firmware size,
-and also validate the range of actual firmware content is in range.
+To avoid Coverity warning when getting mfw size, validate it header ahead.
 
-Addresses-Coverity-ID: 1494046 ("Untrusted loop bound")
+Addresses-Coverity-ID: 1544385 ("Untrusted array index read")
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 35 +++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ drivers/net/wireless/realtek/rtw89/fw.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index c86a0d328435..68e80e54ab5f 100644
+index 68e80e54ab5f..35b86970db2a 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -489,6 +489,30 @@ static int rtw89_fw_hdr_parser(struct rtw89_dev *rtwdev,
- 	}
- }
- 
-+static int rtw89_mfw_validate_hdr(struct rtw89_dev *rtwdev,
-+				  const struct firmware *firmware,
-+				  const struct rtw89_mfw_hdr *mfw_hdr)
-+{
-+	const void *mfw = firmware->data;
-+	u32 mfw_len = firmware->size;
-+	u8 fw_nr = mfw_hdr->fw_nr;
-+	const void *ptr;
-+
-+	if (fw_nr == 0) {
-+		rtw89_err(rtwdev, "mfw header has no fw entry\n");
-+		return -ENOENT;
-+	}
-+
-+	ptr = &mfw_hdr->info[fw_nr];
-+
-+	if (ptr > mfw + mfw_len) {
-+		rtw89_err(rtwdev, "mfw header out of address\n");
-+		return -EFAULT;
-+	}
-+
-+	return 0;
-+}
-+
- static
- int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
- 			struct rtw89_fw_suit *fw_suit, bool nowarn)
-@@ -499,6 +523,7 @@ int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
- 	u32 mfw_len = firmware->size;
- 	const struct rtw89_mfw_hdr *mfw_hdr = (const struct rtw89_mfw_hdr *)mfw;
- 	const struct rtw89_mfw_info *mfw_info = NULL, *tmp;
+@@ -586,12 +586,17 @@ static u32 rtw89_mfw_get_size(struct rtw89_dev *rtwdev)
+ 		(const struct rtw89_mfw_hdr *)firmware->data;
+ 	const struct rtw89_mfw_info *mfw_info;
+ 	u32 size;
 +	int ret;
- 	int i;
  
  	if (mfw_hdr->sig != RTW89_MFW_SIG) {
-@@ -511,6 +536,10 @@ int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
+ 		rtw89_warn(rtwdev, "not mfw format\n");
  		return 0;
  	}
  
@@ -151,21 +129,8 @@ index c86a0d328435..68e80e54ab5f 100644
 +	if (ret)
 +		return ret;
 +
- 	for (i = 0; i < mfw_hdr->fw_nr; i++) {
- 		tmp = &mfw_hdr->info[i];
- 		if (tmp->type != type)
-@@ -540,6 +569,12 @@ int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
- found:
- 	fw_suit->data = mfw + le32_to_cpu(mfw_info->shift);
- 	fw_suit->size = le32_to_cpu(mfw_info->size);
-+
-+	if (fw_suit->data + fw_suit->size > mfw + mfw_len) {
-+		rtw89_err(rtwdev, "fw_suit %d out of address\n", type);
-+		return -EFAULT;
-+	}
-+
- 	return 0;
- }
+ 	mfw_info = &mfw_hdr->info[mfw_hdr->fw_nr - 1];
+ 	size = le32_to_cpu(mfw_info->shift) + le32_to_cpu(mfw_info->size);
  
 -- 
 2.25.1
