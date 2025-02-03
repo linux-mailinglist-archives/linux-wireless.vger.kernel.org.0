@@ -1,68 +1,66 @@
-Return-Path: <linux-wireless+bounces-18283-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18285-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8FBA25314
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 08:30:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD56A2535C
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 08:56:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDD0A3A30E9
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 07:30:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F4D216286E
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 07:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D7B1C462D;
-	Mon,  3 Feb 2025 07:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182541F76A5;
+	Mon,  3 Feb 2025 07:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="EIb3QucS"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GiCsftvM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1DF1F4723
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Feb 2025 07:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DC91E7C34
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Feb 2025 07:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738567808; cv=none; b=IUhtqPzNknj5/WzN2yAakyYJR/inDN5DkIrcuDSNKk2xU/eQ1dl20vwxgthsMdWP1l9Jip4gX2xY6N1MmHIKwzTo3zx8O7UbKwSyptHZOp6psXgmLBisvPAG+8MJRv6+/PtIpYlTdD1FWbd/rWKnMSPI06GFEYFFFhJey2RByfQ=
+	t=1738569368; cv=none; b=qBr6gOhIqYr8QHUKW3rcso3hVtXU53tYrp2LDdAJ5a+H+vVxc4oCBehhxxxxYTYWvHPdv0KvfgVojWcgt1XcR1HLlzCVTmt7ATwPd4swL1etBCbU1t4WL+4BiYS7kX92EuILsEt7NHe+hHA9Z5PNIOVQyGzer95JND4YcGoVGjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738567808; c=relaxed/simple;
-	bh=EyvjFGm/fyqwDNRUVHVF9IjZ8RH3WbflF1SE/X2R3tQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N0veqkpsqWvaXXE322OeQUzd3/O8/J/bmSc6fl/FOWcYjXIher5JWIjskqipH1diNwGbtIqnVlVYu2HjWj8RJkSSa3CoP3ux3/8KDUZFGcnLISJafrnDyL4/l9u7UNLITdDQWY4yK8EcB1w0vIKPkMH8KYfTODrdnCiA2oDS1GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=EIb3QucS; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5137U4Y801321574, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1738567805; bh=EyvjFGm/fyqwDNRUVHVF9IjZ8RH3WbflF1SE/X2R3tQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=EIb3QucSd+rutkXe6SEmjay8GsCDt+lIyGDh3jOmjFXf8rQOkq/UwC0kUlsnDI4Op
-	 bK9qAxwdHeOn4TpFwANKzpgBOcoVHBYsS+rRdp4zm9lqvBffb1G+OVMv96DaHwZJWh
-	 CBggeMWOf8cLVzV+XaMwfkcA5InYlCN1tcRj+M3q3WrF30tJCGcrHwlwqKCF3ehZld
-	 iAPhMqaEWeURTypL0aBQh54wjm//9PSWig1Nx5hsJ5jaFZc1cQfVB27fbCXakwbWs0
-	 ohGOf1NHbvvHKNXYoqmOMrV5jJWgOoVG91GJNg7uJ7qaOgZaSfVhQfp39dtGMuW8++
-	 QBEM7RvY6nXPQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5137U4Y801321574
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 3 Feb 2025 15:30:04 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+	s=arc-20240116; t=1738569368; c=relaxed/simple;
+	bh=CEJpjcxSbO0fJhi98dQGGvrwSS8BJsqTJRSDF24wZz0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CQFlLk/eoj7rTuVh+F0lcF/wW6n9hpBGLc5gXT+vvN3SuZcwOf6Bart9J7hgOkBqyk30k6JThvoPusnOwy9Osee0C+zs9kKlxQngsKOZgoXzNKxgjU1oByuEawUWDmnudtpLDpYOdHhFYctj0o2BMDHroNW/gmEOGD1z+DejP6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GiCsftvM; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 513673iq009303;
+	Mon, 3 Feb 2025 07:56:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=rIKVqs6srmjXj89c0Lhu5H
+	KpeL5yplUu6T2wV1qKBHw=; b=GiCsftvMEP0laGtEuIBKW0usJe9RXl7KWVxpbl
+	rPuNhODRT5ydxX5O9BdSGzWEcRHqYWdd/Yd9gfjZjFtER7vFpojHKDXaIauYFHwh
+	7VBd2jiXCINkXDjTiE/PWUN6WVhimGGDA0qCqf0jgqmoV2o2hB0TTYoLFJ1DnZ38
+	H05GhceZtA1OdfjKT0JqSGv5Z2dYNudNKbHCmo6bP9VKPMzDcH56jNvP7PYAiOws
+	31aiH7Zcb7LMkWB5tvnEAs/9OZkboXm1a8Dakon5xLuGBFBFFTv2a6CzMIBgDn1+
+	8aIUAKXBlmLJHO49+mbHt4nk0Q3i7YDXxmWK15TEfCdqjxjA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44jr888776-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Feb 2025 07:56:00 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5137u0tD009516
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 3 Feb 2025 07:56:00 GMT
+Received: from hu-bmahalin-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 3 Feb 2025 15:30:04 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 3 Feb
- 2025 15:30:03 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <echuang@realtek.com>
-Subject: [PATCH 4/4] wifi: rtw89: fw: validate multi-firmware header before getting its size
-Date: Mon, 3 Feb 2025 15:29:11 +0800
-Message-ID: <20250203072911.47313-5-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250203072911.47313-1-pkshih@realtek.com>
-References: <20250203072911.47313-1-pkshih@realtek.com>
+ 15.2.1544.9; Sun, 2 Feb 2025 23:55:59 -0800
+From: Balamurugan Mahalingam <quic_bmahalin@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_bmahalin@quicinc.com>
+Subject: [PATCH v3 0/2]  wifi: ath12k: Add support for MLO Multicast Handling
+Date: Sun, 2 Feb 2025 23:55:36 -0800
+Message-ID: <20250203075538.3982875-1-quic_bmahalin@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,68 +69,52 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: H4GippJyAqvAt-xMMC-IxE-H94yFG-rd
+X-Proofpoint-GUID: H4GippJyAqvAt-xMMC-IxE-H94yFG-rd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-03_03,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 phishscore=0 mlxscore=0 priorityscore=1501 adultscore=0
+ bulkscore=0 mlxlogscore=749 lowpriorityscore=0 spamscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502030064
 
-To access firmware elements appended after multi-firmware, add its size
-as offset to get start address of firmware elements.
+Patch 1 updates the HTT TCL metadata version to use the new bit definitions
+	of the field to pass additional information from Host to Firmware.
 
-         +-----+-------+------+---------+--------------+ --
-         | sig | fw_nr | rsvd | version | reserved     |   \
-         +---------------------------------------------+   |
- fw 0    | cv | type | mp | rsvd | shift | size | rsvd |   |
-         +---------------------------------------------+   |
- fw 1    | cv | type | mp | rsvd | shift | size | rsvd |   |
-         +---------------------------------------------+   |
- fw N-1  |                  ...                        |   |
-         +=============================================+   | mfw size
-         |               fw 0 content                  |   |
-         +=============================================+   |
-         |               fw 1 content                  |   |
-         +=============================================+   |
-         |                  ...                        |   |
-         +=============================================+   |
-         |               fw N -1 content               |   |
-         +=============================================+ --/
-         |             fw element TLV X                |
-         +=============================================+
-         |             fw element TLV Y                |
-         +=============================================+
-         |             fw element TLV Z                |
-         +=============================================+
+Patch 2 moves the MLO Multicast frame duplication logic to the driver to
+	have more flexibility to update the HTT TCL metadata with the global
+	sequence and with a special vdev id to indicate Multicast handling
 
-To avoid Coverity warning when getting mfw size, validate it header ahead.
+v3:
+	Updated the code to handle the ARP transmit failure from AP side during secure mode.
 
-Addresses-Coverity-ID: 1544385 ("Untrusted array index read")
+v2: https://patchwork.kernel.org/project/linux-wireless/patch/20250203025016.3851279-3-quic_bmahalin@quicinc.com/
+	Optimized vdev id arithmetic for more readability based on feedback.
+	Updated code documentation on intentional reset of meta_data_flag value.
+	Rebased on top of master branch.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/fw.c | 5 +++++
- 1 file changed, 5 insertions(+)
+v1: https://patchwork.kernel.org/project/linux-wireless/patch/20250109184932.1593157-3-quic_bmahalin@quicinc.com/
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 68e80e54ab5f..35b86970db2a 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -586,12 +586,17 @@ static u32 rtw89_mfw_get_size(struct rtw89_dev *rtwdev)
- 		(const struct rtw89_mfw_hdr *)firmware->data;
- 	const struct rtw89_mfw_info *mfw_info;
- 	u32 size;
-+	int ret;
- 
- 	if (mfw_hdr->sig != RTW89_MFW_SIG) {
- 		rtw89_warn(rtwdev, "not mfw format\n");
- 		return 0;
- 	}
- 
-+	ret = rtw89_mfw_validate_hdr(rtwdev, firmware, mfw_hdr);
-+	if (ret)
-+		return ret;
-+
- 	mfw_info = &mfw_hdr->info[mfw_hdr->fw_nr - 1];
- 	size = le32_to_cpu(mfw_info->shift) + le32_to_cpu(mfw_info->size);
- 
+Balamurugan Mahalingam (2):
+  wifi: ath12k: Update HTT_TCL_METADATA version and bit mask definitions
+  wifi: ath12k: Add support for MLO Multicast handling in driver
+
+ drivers/net/wireless/ath/ath12k/core.h  |   1 +
+ drivers/net/wireless/ath/ath12k/dp.h    |  27 ++++--
+ drivers/net/wireless/ath/ath12k/dp_tx.c |  28 +++++-
+ drivers/net/wireless/ath/ath12k/dp_tx.h |   4 +-
+ drivers/net/wireless/ath/ath12k/mac.c   | 124 +++++++++++++++++++++++-
+ 5 files changed, 167 insertions(+), 17 deletions(-)
+
+
+base-commit: a10b8b584b8bcb7559f068ce247fc27d0c4850ca
 -- 
-2.25.1
+2.34.1
 
 
