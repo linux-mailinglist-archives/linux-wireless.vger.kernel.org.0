@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-18292-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18293-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7D2A25573
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 10:09:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08D0A25631
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 10:45:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2746B188503C
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 09:09:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A1C43A94BE
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 09:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326CF1FF60F;
-	Mon,  3 Feb 2025 09:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2601FF7C9;
+	Mon,  3 Feb 2025 09:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CwOv10Rz"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mMpiZKc1"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5329D1E0B9C;
-	Mon,  3 Feb 2025 09:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DBE1FF7C3;
+	Mon,  3 Feb 2025 09:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738573664; cv=none; b=J4FX/9NMjpN81J6k9tsjmcxj8S3vf0AA5xqXJbwIeTivuD+7rH+4uBW/AHgJdeYLBj9ndrvY5Uha8h9pLSZkhes73JYEy6tXmzANfiqmHt1NFwMAhVBZFd5cNQ1DL21Ba+zDBxFuxb8FLt7KQpi92KkA63gHI9c9CKv5pttRcRk=
+	t=1738575884; cv=none; b=HodDk3+gHniMlpwvb2rAzxyGU3x12ntPlU738VUqeBws+UxQcaGdNpWPQgbhVblxPoA+ESnRmmMgcoF9tYcTzasBOsz6kLwVXPlxD8BagVcju1mY4euSr/LZAlGmHlC+ILpHEaQx2cxPV/OYkUbT4D2kT6GQotJHFkt+bE+BmU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738573664; c=relaxed/simple;
-	bh=LrNaaAN8CgnFf01cXAm64Gx08zjhLQl+u8QYVB21upg=;
+	s=arc-20240116; t=1738575884; c=relaxed/simple;
+	bh=gxdfI5WrcRHDD2llHshM5Duzx8/HXQUlsmDY2FonnOI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=M8dnnbsxz5RnnrVwkqBJOqdOq4Ki1sVG/3TT+molL0SGtqQyhpZFCT8IDQkm4WG4SekhNGc42x0i7tEv4LqHR390mR5bCg8Qnwqm3MHsjkxCKhIV5T7ATN9dF0K9O+4MPVNoY+q/Kh5l6o0qkohP3zDjhe2P8vXUdjRmp4iEx9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=CwOv10Rz; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=RbYWB5S8xKTo2WtJ8v89w0FxG3su2fDaFWe7Ec7oGJQaOFol75McHFwvfZYsHF4Bgcmd4pL99SfMWq5OhLzo2eMjzo8tlfwhuyCIk68Qn7TdhvAYY1S4v+/rU4bnrV8HhwTe+K9hfrEZk+XI3k+eTPpnL/Spf9cBYPQFaCpB3cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mMpiZKc1; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 512LjB2r002355;
-	Mon, 3 Feb 2025 09:07:31 GMT
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5138CVjD031453;
+	Mon, 3 Feb 2025 09:44:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	5IFJybb1pcE7296a9/K0sJwN2gUdU48QFivEoX0a/tA=; b=CwOv10Rz0A8i3B2d
-	eDMBndMgXdyaiBCA2LYnmFNjBYqpDf5BOa6iHHk6RFb81eTMEN01BOswJzfrYnHZ
-	Lfs7jVgYKAaosoumrx9MjCgNKOyVea255LAIo2mbs6yYjaPoxYdOsrscpNc76bj0
-	054frG6ObWkqA9OIz+WXFAkPpwZQIDS9kX7XOUHdcFa3EOhQPH1zGAWfOsndfRYk
-	tjJQGOR5S6QQgiZDbuY+vmDTyuP4dpuCPxvFKfiuHc5Zu+mdgU68vMzjN04tt9Ji
-	dOSiFNBVZiGBVWUFWaWMPtdADQEk1iY24ojvzszVYdIeGqxhyryRag9RZvwyhVYu
-	G/jHZA==
+	g2DFr8O0VMaWPwK0ueg3lGyqTuoLafEqVtZgKNF8Qq4=; b=mMpiZKc1ctumbGZH
+	hhITUglLt+Sl5PWErTTybucNccie1DuSJqcK3NzyhyJiypI2EULfqbs4lytxYMRP
+	HSUEdcQ7ZAo8p1NVRlYes0Bc6L7I5hTkckAHbHUV93PQPXPO+dFiAiMThYij6kf8
+	xwSQ+ok5Jqf9PpRlD90V6CYRCuxwdlymSAVHOtArYTkUE0LwNtUvOy2BJX3L6v/T
+	HkOPuyxjBS9tMNpAiOAh7eryTRQqDdzskKr0cslzyEOMMuCtfxavldNL8Ch9vkvl
+	vZ5v6cspbxOHQOlKo2NsBhtixP++6iVEz5u3CQniSQiMg+mX46+JXBbZ12t7nMf/
+	UAIm5A==
 Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44jc0t18tr-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44jt3ar672-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 09:07:30 +0000 (GMT)
+	Mon, 03 Feb 2025 09:44:35 +0000 (GMT)
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51397UwK005999
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5139iYLN001103
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 3 Feb 2025 09:07:30 GMT
+	Mon, 3 Feb 2025 09:44:34 GMT
 Received: from [10.216.42.141] (10.80.80.8) by nalasex01b.na.qualcomm.com
  (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 3 Feb 2025
- 01:07:26 -0800
-Message-ID: <2f0b8022-c04d-4375-af47-b3f7d4cb9ba2@quicinc.com>
-Date: Mon, 3 Feb 2025 14:37:23 +0530
+ 01:44:31 -0800
+Message-ID: <7d5f7b4c-2a55-41c7-b85c-cb4cd76d553f@quicinc.com>
+Date: Mon, 3 Feb 2025 15:14:27 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,71 +65,70 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/13] dt-bindings: net: wireless: describe the ath12k
- AHB module
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, <ath12k@lists.infradead.org>
+Subject: Re: [PATCH v5 07/13] wifi: ath12k: add support for fixed QMI firmware
+ memory
+To: Krzysztof Kozlowski <krzk@kernel.org>, <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        "Rob
- Herring" <robh@kernel.org>,
+        Rob
+ Herring <robh@kernel.org>,
         Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        "Conor
- Dooley" <conor+dt@kernel.org>,
+        Conor
+ Dooley <conor+dt@kernel.org>,
         Jeff Johnson <jjohnson@kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
 References: <20250130043508.1885026-1-quic_rajkbhag@quicinc.com>
- <20250130043508.1885026-2-quic_rajkbhag@quicinc.com>
- <b3637222-d79a-4019-8155-d14abbadd6f7@oss.qualcomm.com>
+ <20250130043508.1885026-8-quic_rajkbhag@quicinc.com>
+ <4c9b512f-59d2-4d96-a899-5af4de2c823e@kernel.org>
 Content-Language: en-US
 From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-In-Reply-To: <b3637222-d79a-4019-8155-d14abbadd6f7@oss.qualcomm.com>
+In-Reply-To: <4c9b512f-59d2-4d96-a899-5af4de2c823e@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: JdTKmWgd7-duw_WL0P8Do8ZpM87UROdj
-X-Proofpoint-GUID: JdTKmWgd7-duw_WL0P8Do8ZpM87UROdj
+X-Proofpoint-GUID: lw-e8y6ZMt4lsEKxF5uTHuk6yG7IqSW9
+X-Proofpoint-ORIG-GUID: lw-e8y6ZMt4lsEKxF5uTHuk6yG7IqSW9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-03_03,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- lowpriorityscore=0 mlxlogscore=884 bulkscore=0 mlxscore=0 malwarescore=0
- adultscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502030072
+ definitions=2025-02-03_04,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 mlxlogscore=986
+ impostorscore=0 bulkscore=0 malwarescore=0 clxscore=1015 adultscore=0
+ spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502030076
 
-On 1/31/2025 12:37 AM, Jeff Johnson wrote:
-> On 1/29/2025 8:34 PM, Raj Kumar Bhagat wrote:
->> Add device-tree bindings for the ATH12K module found in the IPQ5332
->> device.
->>
->> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
->> ---
->>  .../net/wireless/qcom,ath12k-ahb.yaml         | 319 ++++++++++++++++++
->>  1 file changed, 319 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
->> new file mode 100644
->> index 000000000000..bd953a028dc3
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
->> @@ -0,0 +1,319 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +# Copyright (c) 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/net/wireless/qcom,ath12k-ahb.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+On 1/30/2025 1:16 PM, Krzysztof Kozlowski wrote:
+> On 30/01/2025 05:35, Raj Kumar Bhagat wrote:
+>> @@ -2646,6 +2663,136 @@ static int ath12k_qmi_alloc_target_mem_chunk(struct ath12k_base *ab)
+>>  	return ret;
+>>  }
+>>  
+>> +static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
+>> +{
+>> +	struct device_node *mem_node;
+>> +	struct resource res, m3_res;
+>> +	u32 bdf_start_addr;
+>> +	int i, idx, ret;
 >> +
->> +title: Qualcomm Technologies ath12k wireless devices (AHB)
->> +
->> +maintainers:
->> +  - Kalle Valo <kvalo@kernel.org>
+>> +	for (i = 0, idx = 0; i < ab->qmi.mem_seg_count; i++) {
+>> +		switch (ab->qmi.target_mem[i].type) {
+>> +		case HOST_DDR_REGION_TYPE:
+>> +			mem_node = ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
 > 
-> sadly, you should remove Kalle since he resigned as a maintainer this week
+> 
+> Why cannot you use existing API for reserved memory -
+> of_reserved_mem_lookup()?
 > 
 
-Will update.
+The of_reserved_mem_lookup() requires reserved memory node to read the memory and
+return in the structure "struct reserved_mem".
+
+The of_reserved_mem_lookup() would be used after we get the reserved memory node
+using the API - ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
+
+In next version we would use of_reserved_mem_lookup(), Something like below:
+    mem_node = ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
+    struct reserved_mem res = of_reserved_mem_lookup(mem_node)
 
