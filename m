@@ -1,90 +1,54 @@
-Return-Path: <linux-wireless+bounces-18307-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18308-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6771DA261DC
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 19:00:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 257BDA261ED
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 19:04:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E18C77A3174
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 17:59:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C10263A061A
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 18:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A0120D51A;
-	Mon,  3 Feb 2025 17:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCEC1D63D3;
+	Mon,  3 Feb 2025 18:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ak0EoQUq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="umpApImA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53B520CCC2;
-	Mon,  3 Feb 2025 17:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FFD1D5176
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Feb 2025 18:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738605584; cv=none; b=OMiiDCAbkHPRlGYrTLiCangc9D+OVtyKJgf2tac9Vok1s5nuaxHMbQ9UrIeykRT+TIPi93lkiAOjESTt0i8uDV8I7Xpc9l+xOp7tj/t3K6RXr/8BYtxj4cpC/qHBcY5yoS0z7cB4P23s1GEVi8qnahA13ew7N9xgnBg7c2FtFI0=
+	t=1738605889; cv=none; b=NapVOSX8eqoc3ts9JYOEupayj/3xRC+LU5NvNwNaqTljQc9dxxKkCaBaTP2BFNyUDfKpGp/ZORzvGUa1toKSzu/JEC8fYsuPSdMOx42qfLhggjuHnVmEvTxPfOTwx4BMlkxyYjtGIf6go8xGvPzVhsYeQ57TVZtrTN+fcOH7GFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738605584; c=relaxed/simple;
-	bh=bHOp0QUrMuogWHVDOqjCZX+gH2Orn1MzQQkMPVmxQ+E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u0TVu91dcAKiDkmPTd+ZPpZeatweCPcJE8fH1cKwStaSufAAju9sQXQ+6cS295ohzBbFvaRhia1maXVum/xsvWWjKh/mdH0fmc8GVUy6/mMdMxitBh9Y4yRSS3D2lwJfwux/KNnHuTS9kL2oTN1U7TnFmQPSRaKZKSBM5nhdmqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ak0EoQUq; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3862d6d5765so2483042f8f.3;
-        Mon, 03 Feb 2025 09:59:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738605579; x=1739210379; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cawTWtf8oPVLDrUkrYoMuQNnqZbL3O9HeB89EuCja7U=;
-        b=ak0EoQUqs/yD0W+FN2Rxj6ca93jXC948eo7rW4Q6k8d+nm2rI/gCx1T+or8SHvnfdT
-         s01RL7PhxW6kIJps1jASRSjTIjuSsb+t5HGcY6KZdiW0bPLemoD1BR1pUy6PFJ+BiWSh
-         kQLX90LmRcU9grSWb0zrA3axHRuBKs2yUNiFROaSePO0DfvMzbz8ymt/IrWCqbLHJe6Q
-         IClJ1css88+ehwfWT03kZLKy3bbVDqvhyHK9OPs3xpi6s3YgsPTZcNArEgvGCMyvQ4B/
-         mdaA/y+yvZTmtJPyc8eyIehb3DQ11mXGSEmsfgUcqR1e8DMoVDmmET7bBQY02Ch5flFA
-         msZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738605579; x=1739210379;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cawTWtf8oPVLDrUkrYoMuQNnqZbL3O9HeB89EuCja7U=;
-        b=klF/JL7PsDL+xXv7LEu1ppGWsAuHbrs+muL9DTnmlcTTHNRfDWip7qpP0ii7TK6+W7
-         ClEGFeWQPdVTJDxjNaze3zvBHwidasJxOw5ZnJgzW2JGyuhy00Ph5JjXLp+v3zSgStor
-         U63FfRtX92y06h35XUVPXOGkWmEx3NTlh5ly0wDxVtuZAuNNynirb0noWN6HPxktcHsc
-         VeeNRz1d5SXa5MXMXUAHWq865XONSNjz1fMh8ay+U0zdHCUCjuukFhp11sBjd5XSwrPF
-         yaOjy5H8zH/DLFIBVkxBMGo2zdWtGIDsw4/etN3S3XICfCGCLSqrv65eoYLXCk7jMQkz
-         3dig==
-X-Forwarded-Encrypted: i=1; AJvYcCVE9ABQ9fS2uZha+zZ1YgpffJ+/xHMWDbiXR9HigVoMj2nVm2KBNy2dbKm0DkMowD5DmlieUIh1RDDtvai2fZY=@vger.kernel.org, AJvYcCVHN19BfLn+kncZH/RKY7P9Vw0v7FCahN7dpSohP9v7Cl9PqbaYBW4QZB+3us0Uh0oMl5YcC9PQZ36E01ER@vger.kernel.org
-X-Gm-Message-State: AOJu0YylAECCqZsDACy774ySnSNX9jWVQjfCidSi1Jk+HKUD2AsdsUOw
-	lRPbVjscAQuNqCYPQeNt09MXnvWPhI77HfeVlVTdKKXKdXp+gkoU
-X-Gm-Gg: ASbGnct4j7WGVoibhvshqtU7Qw+eBMa9d31xk+KRqWmCrU5S6rGdaijOOdIVlv/NH7F
-	b/dtthnFgmaQ4cOzqjIi/56pQs6v5NZK+byvT9RNc8BclR+Tdlj8eBbHsNy+UZch/5+KHrt+S5H
-	eEeElNk/+JcCrslwVYTEBMx9u4NwqXQVb0rlSlQbnrdYS+SnweWg3aOzwTEunwKDo8lM0lX3SiD
-	FnqiwGuBrOoaWAJel6Z9nMwiFw6mVMwBvhE5ixWuWuzzHaicmP59AfFqZFhsDloLdhbCukM1dE4
-	abRMjxLwGwhR3VhE
-X-Google-Smtp-Source: AGHT+IGeinNHnhJtiqaajyHesWJ+5C8zkEwFfCR8tg4FWfMeuhnH2qwTG/FWDN+nrATLGwVPMKFwFQ==
-X-Received: by 2002:a5d:694f:0:b0:386:5b2:a9d9 with SMTP id ffacd0b85a97d-38c520bfa02mr15179849f8f.53.1738605578603;
-        Mon, 03 Feb 2025 09:59:38 -0800 (PST)
-Received: from void.cudy.net ([46.210.194.238])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438e244f0d2sm166484425e9.30.2025.02.03.09.59.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 09:59:38 -0800 (PST)
-From: Andrew Kreimer <algonell@gmail.com>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Daniel Gabay <daniel.gabay@intel.com>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Andrew Kreimer <algonell@gmail.com>
-Subject: [PATCH net-next] wifi: iwlwifi: mvm: Fix typos
-Date: Mon,  3 Feb 2025 19:59:05 +0200
-Message-ID: <20250203175931.4795-1-algonell@gmail.com>
-X-Mailer: git-send-email 2.48.1.91.g5f8f7081f7
+	s=arc-20240116; t=1738605889; c=relaxed/simple;
+	bh=uyU+cyi8HOtY8ILi4qFyRpji6zcStOmr4W2XE7K2sbs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OW1eD1D8UkLL7C9AxrFcuYN1Y5V0M19KPLUTn+4JVqxKVuj5m7kt09xqDIhJhSJHvrj1G/WOqlBwl3gKwwbVQBQ4EEso57DzyHD8zFM4T3JcA53P4/BnzvmjdcQCWgf+U79oY8zmwwkrhDxIy5pWzE8Q6gJULsDndJ1rvKP7+uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=umpApImA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF163C4CED2;
+	Mon,  3 Feb 2025 18:04:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738605888;
+	bh=uyU+cyi8HOtY8ILi4qFyRpji6zcStOmr4W2XE7K2sbs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=umpApImARvSABFTR6sL+J2VYowWUn7ZPrhYKySJ3e+oQ8bnVMYMmQ5Ax4frhhYqNk
+	 0YJg3hiYqNHEpsQCobNTL0k68x1+3VLb9/KeR1O0qi2wdv4QA9P5dXCeckTKf8+uqg
+	 IMXaZxjv/E9fiDWuFLiEF2KgSc8ZhzkcNkGvszVfhyTVjE2Etg173pO+0gGIrBfi7r
+	 TByVSJKOOm+v8cDniJgjWC8cUUPpZSnDV6V5cW5YHUQUbmWRhQ4lleYiWEOn8R+SYA
+	 C4V5EhxJHFwIqoATaHunW0rad+NqiUaKXAaI8jE1SnhzIaT6ooiTpBxX1Ein4bazJP
+	 f8jJ5W5n+6V9A==
+From: Kalle Valo <kvalo@kernel.org>
+To: ath10k@lists.infradead.org,
+	ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH wireless 1/2] MAINTAINERS: wifi: ath: remove Kalle
+Date: Mon,  3 Feb 2025 20:04:44 +0200
+Message-Id: <20250203180445.1429640-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -93,91 +57,134 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There are some typos in comments/messages:
- - Increate -> Increase
- - intenally -> internally
- - stopp -> stop
+I'm stepping down as ath10k, ath11k and ath12k maintainer so remove me from
+MAINTAINERS file and Device Tree bindings. Jeff continues as the maintainer.
 
-Fix them via codespell.
+As my quicinc.com email will not work anymore so add an entry to .mailmap file
+to direct the mail to my kernel.org address.
 
-Signed-off-by: Andrew Kreimer <algonell@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c  |  4 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 10 +++++-----
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ .mailmap                                                      | 1 +
+ .../devicetree/bindings/net/wireless/qcom,ath10k.yaml         | 1 -
+ .../devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml     | 1 -
+ .../devicetree/bindings/net/wireless/qcom,ath11k.yaml         | 1 -
+ .../devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml     | 1 -
+ .../devicetree/bindings/net/wireless/qcom,ath12k.yaml         | 1 -
+ MAINTAINERS                                                   | 4 ----
+ 7 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-index a8c4e354e2ce..fd37e9dc9e0f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-@@ -1783,7 +1783,7 @@ static enum rs_action rs_get_rate_action(struct iwl_mvm *mvm,
- 	if ((high_tpt != IWL_INVALID_VALUE) &&
- 	    (high_tpt > current_tpt)) {
- 		IWL_DEBUG_RATE(mvm,
--			       "Higher rate is better. Increate rate\n");
-+			       "Higher rate is better. Increase rate\n");
- 		return RS_ACTION_UPSCALE;
- 	}
+diff --git a/.mailmap b/.mailmap
+index 42e42cabb36d..68d36bf46dcb 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -370,6 +370,7 @@ Juha Yrjola <juha.yrjola@solidboot.com>
+ Julien Thierry <julien.thierry.kdev@gmail.com> <julien.thierry@arm.com>
+ Iskren Chernev <me@iskren.info> <iskren.chernev@gmail.com>
+ Kalle Valo <kvalo@kernel.org> <kvalo@codeaurora.org>
++Kalle Valo <kvalo@kernel.org> <quic_kvalo@quicinc.com>
+ Kalyan Thota <quic_kalyant@quicinc.com> <kalyan_t@codeaurora.org>
+ Karthikeyan Periyasamy <quic_periyasa@quicinc.com> <periyasa@codeaurora.org>
+ Kathiravan T <quic_kathirav@quicinc.com> <kathirav@codeaurora.org>
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+index 070c4c9b8643..aace072e2d52 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+@@ -7,7 +7,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Qualcomm Technologies ath10k wireless devices
  
-@@ -3125,7 +3125,7 @@ static void __iwl_mvm_rs_tx_status(struct iwl_mvm *mvm,
- 			       "tx resp color 0x%x does not match 0x%x\n",
- 			       lq_color, LQ_FLAG_COLOR_GET(table->flags));
+ maintainers:
+-  - Kalle Valo <kvalo@kernel.org>
+   - Jeff Johnson <jjohnson@kernel.org>
  
--		/* Since rates mis-match, the last LQ command may have failed.
-+		/* Since rates mismatch, the last LQ command may have failed.
- 		 * After IWL_MISSED_RATE_MAX mis-matches, resync the uCode with
- 		 * ... driver.
- 		 */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 7a4844ec3c10..a246f1e4f5a6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -1113,7 +1113,7 @@ static void iwl_mvm_unshare_queue(struct iwl_mvm *mvm, int queue)
- 					    "TXQ #%d is now aggregated again\n",
- 					    queue);
+ description:
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
+index a71fdf05bc1e..a4425cf196ab 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
+@@ -8,7 +8,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Qualcomm Technologies ath11k wireless devices (PCIe)
  
--			/* Mark queue intenally as aggregating again */
-+			/* Mark queue internally as aggregating again */
- 			iwl_trans_txq_set_shared_mode(mvm->trans, queue, false);
- 		}
- 	}
-@@ -2801,7 +2801,7 @@ static int iwl_mvm_fw_baid_op_sta(struct iwl_mvm *mvm,
- 	switch (status & IWL_ADD_STA_STATUS_MASK) {
- 	case ADD_STA_SUCCESS:
- 		IWL_DEBUG_HT(mvm, "RX BA Session %sed in fw\n",
--			     start ? "start" : "stopp");
-+			     start ? "start" : "stop");
- 		if (WARN_ON(start && iwl_mvm_has_new_rx_api(mvm) &&
- 			    !(status & IWL_ADD_STA_BAID_VALID_MASK)))
- 			return -EINVAL;
-@@ -2811,7 +2811,7 @@ static int iwl_mvm_fw_baid_op_sta(struct iwl_mvm *mvm,
- 		return -ENOSPC;
- 	default:
- 		IWL_ERR(mvm, "RX BA Session failed %sing, status 0x%x\n",
--			start ? "start" : "stopp", status);
-+			start ? "start" : "stop", status);
- 		return -EIO;
- 	}
- }
-@@ -2861,7 +2861,7 @@ static int iwl_mvm_fw_baid_op_cmd(struct iwl_mvm *mvm,
- 	}
+ maintainers:
+-  - Kalle Valo <kvalo@kernel.org>
+   - Jeff Johnson <jjohnson@kernel.org>
  
- 	IWL_DEBUG_HT(mvm, "RX BA Session %sed in fw\n",
--		     start ? "start" : "stopp");
-+		     start ? "start" : "stop");
+ description: |
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+index ff5763dc66a8..a69ffb7b3cb8 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+@@ -8,7 +8,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Qualcomm Technologies ath11k wireless devices
  
- 	if (baid < 0 || baid >= ARRAY_SIZE(mvm->baid_map))
- 		return -EINVAL;
-@@ -3059,7 +3059,7 @@ int iwl_mvm_sta_tx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 	default:
- 		ret = -EIO;
- 		IWL_ERR(mvm, "TX BA Session failed %sing, status 0x%x\n",
--			start ? "start" : "stopp", status);
-+			start ? "start" : "stop", status);
- 		break;
- 	}
+ maintainers:
+-  - Kalle Valo <kvalo@kernel.org>
+   - Jeff Johnson <jjohnson@kernel.org>
  
+ description: |
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml
+index cbfb559f6b69..318f305405e3 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml
+@@ -9,7 +9,6 @@ title: Qualcomm Technologies ath12k wireless devices (PCIe) with WSI interface
+ 
+ maintainers:
+   - Jeff Johnson <jjohnson@kernel.org>
+-  - Kalle Valo <kvalo@kernel.org>
+ 
+ description: |
+   Qualcomm Technologies IEEE 802.11be PCIe devices with WSI interface.
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
+index 1b5884015b15..9e557cb838c7 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
+@@ -9,7 +9,6 @@ title: Qualcomm Technologies ath12k wireless devices (PCIe)
+ 
+ maintainers:
+   - Jeff Johnson <quic_jjohnson@quicinc.com>
+-  - Kalle Valo <kvalo@kernel.org>
+ 
+ description:
+   Qualcomm Technologies IEEE 802.11be PCIe devices.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5bcc78c0be70..2048c75c3c42 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3631,7 +3631,6 @@ F:	Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
+ F:	drivers/phy/qualcomm/phy-ath79-usb.c
+ 
+ ATHEROS ATH GENERIC UTILITIES
+-M:	Kalle Valo <kvalo@kernel.org>
+ M:	Jeff Johnson <jjohnson@kernel.org>
+ L:	linux-wireless@vger.kernel.org
+ S:	Supported
+@@ -19192,7 +19191,6 @@ Q:	http://patchwork.linuxtv.org/project/linux-media/list/
+ F:	drivers/media/tuners/qt1010*
+ 
+ QUALCOMM ATH12K WIRELESS DRIVER
+-M:	Kalle Valo <kvalo@kernel.org>
+ M:	Jeff Johnson <jjohnson@kernel.org>
+ L:	ath12k@lists.infradead.org
+ S:	Supported
+@@ -19202,7 +19200,6 @@ F:	drivers/net/wireless/ath/ath12k/
+ N:	ath12k
+ 
+ QUALCOMM ATHEROS ATH10K WIRELESS DRIVER
+-M:	Kalle Valo <kvalo@kernel.org>
+ M:	Jeff Johnson <jjohnson@kernel.org>
+ L:	ath10k@lists.infradead.org
+ S:	Supported
+@@ -19212,7 +19209,6 @@ F:	drivers/net/wireless/ath/ath10k/
+ N:	ath10k
+ 
+ QUALCOMM ATHEROS ATH11K WIRELESS DRIVER
+-M:	Kalle Valo <kvalo@kernel.org>
+ M:	Jeff Johnson <jjohnson@kernel.org>
+ L:	ath11k@lists.infradead.org
+ S:	Supported
+
+base-commit: 3319569bf9d8b4d8c5aaf0d410b620210c4bb317
 -- 
-2.48.1.91.g5f8f7081f7
+2.39.5
 
 
