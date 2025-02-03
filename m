@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-18294-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18295-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8878A2569E
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 11:06:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51878A256A3
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 11:09:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E4853A2524
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 10:06:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0E0B1886807
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 10:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E4C200BA2;
-	Mon,  3 Feb 2025 10:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D33F200B8C;
+	Mon,  3 Feb 2025 10:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1W9GlEL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ebbh+qGl"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98C178F49;
-	Mon,  3 Feb 2025 10:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708523594B;
+	Mon,  3 Feb 2025 10:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738577162; cv=none; b=UpsHqGFApUx5dxFboeSGG8UKM4GgkIm909YqMJtpSQXeAXIKsQcI6I2QmkONGuBgDBX7NuYTXifnbFAS7ZGA3dD3Rw9SwKNXAlMtWIW7toQTrnLLFAXvfNhftmRMwbJAh+wB13So94Jvw0qeWQbs4GDPVMYfUgTEuk9CnGu4e1Q=
+	t=1738577367; cv=none; b=JAi+wjYhbaMGlSnCC8NjVC5IbSV6v+vYsZH/ZqhqE9Z3UFK2gDqNOUXIBi4jvojBhSAoIed3XR+MBarpt7KcWfpmN5QyHsj3Y3We2i+0mGugrsOvWbqdPa7mHAkEoHs3H9K/nQd4jx/HHaTdoSUwm3Cq6ESJoJbBU6U60942Y6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738577162; c=relaxed/simple;
-	bh=0LAer1+VCPuEwTxq68r3aBJGH3VUj8GQfN5OepHe5cg=;
+	s=arc-20240116; t=1738577367; c=relaxed/simple;
+	bh=ASpuuev7ZZTKMlBx/lV8ZsXtftUSf3OuoGlgsNzc/k0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fv4FmQWo+TdL3TEM0/cT8tkyyuYWObUm22hQdXw+Bgdd8Lxu05YxIdmjcTuB5p78C2/79EXxxQ+/w7Po8yiYtk4itXW2ks2C1kNIemexpXvrKrM7yQL38PKaFhdj/1vnq8Q3llmSuEbONDaj80rCWu0uUlbP87m9b2zD38lVqtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1W9GlEL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E935C4CED2;
-	Mon,  3 Feb 2025 10:05:58 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=cKvj+BBbboJgU+SJBXjlMQ6LCCL2qYUPJIILZeRqZvbmljRDCqrJKvfCkczEJZre1hSBBvlUGhcNvNIzJROmbVuIFSyvm8Yh+bGOGKccesvudTTKNG93LNz4ALjgVxHZ3GG8R4jf8K6BTfPou6GgCH+vjgMPtlpqGUvhalKyXGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ebbh+qGl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE7FC4CED2;
+	Mon,  3 Feb 2025 10:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738577162;
-	bh=0LAer1+VCPuEwTxq68r3aBJGH3VUj8GQfN5OepHe5cg=;
+	s=k20201202; t=1738577366;
+	bh=ASpuuev7ZZTKMlBx/lV8ZsXtftUSf3OuoGlgsNzc/k0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=n1W9GlELmoY0Xxf1nkM+Y21j5G7kaIlhVj4r8CeRt5KvWtEttcNAp5bwimCMSkD/6
-	 gYjaHlz30C93NlrDMkSweqVRJXIXuqUb5JFksXIGTuHW5Zlc6bfx+TurYZYaQcrUFN
-	 j7X3T6+0oQnKtE9ofsll82/UklIK3akSNqO6XWqnEu8JNOj1RyVWZc23xhnXmfkbv6
-	 OtT+vD0iKGGxCFD1xHQu0YoP2rAyHDRojQOEddsKljOF4BzxMnZLYHgfZiI3vRHv9H
-	 2jiB1F8nDwiltCxOrHHx0g6R5Dbkx2z0NvmPHoZOv5qTW4SQJ/SVhEgXiRO4PR3gye
-	 FOqTw/emX7I0w==
-Message-ID: <7b57f8c8-7d0b-46f8-8364-a13860ab530e@kernel.org>
-Date: Mon, 3 Feb 2025 11:05:56 +0100
+	b=ebbh+qGlSF8cJpIpZqwdHAgg184O7C14xOyeLj3UmkMv5ZHiPu3ykVbPyWeoOPuFn
+	 3lXsditQ9yZ77XRKDcjFny1tmwZkY2z32P/tldhbxq1zZGjspSJbbP0mmxQvSB0udk
+	 Bh1HFH2enjq2yj+CAMayqpV6COXWvMZy8X2UkxsD1f2xV0AQquYh+iQlSnNS1+es9x
+	 ab9c0W0SKZ8YxBjdthNZ7RT9rwh33Ph6pEmCy7rkhRFGytmp3gcnK1PY8czR3u2jJW
+	 CWT+KaSpb60+B/MP7aAD8OKQsAF7ydtbgih4O345EfC2YDgfP0bwNeSeGZFBdtBGSF
+	 73UdLAsT9T9RA==
+Message-ID: <aaabcc7a-8234-4753-a8d1-ab36afdafa2e@kernel.org>
+Date: Mon, 3 Feb 2025 11:09:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,10 +61,9 @@ Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
 References: <20250130043508.1885026-1-quic_rajkbhag@quicinc.com>
  <20250130043508.1885026-2-quic_rajkbhag@quicinc.com>
  <20250130-cunning-quail-of-opportunity-76d0ad@krzk-bin>
- <104e6b6f-3c1e-4a00-8822-aa6fb4562411@kernel.org>
- <a3c7b0e6-a440-4452-83a2-eb95de0de9bc@quicinc.com>
-Content-Language: en-US
+ <724a4822-469a-45bb-bfb1-c02b54e971a3@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -108,43 +107,55 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <a3c7b0e6-a440-4452-83a2-eb95de0de9bc@quicinc.com>
+In-Reply-To: <724a4822-469a-45bb-bfb1-c02b54e971a3@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 03/02/2025 09:43, Raj Kumar Bhagat wrote:
-> On 1/30/2025 2:10 PM, Krzysztof Kozlowski wrote:
->> On 30/01/2025 09:28, Krzysztof Kozlowski wrote:
->>> On Thu, Jan 30, 2025 at 10:04:56AM +0530, Raj Kumar Bhagat wrote:
->>>> Add device-tree bindings for the ATH12K module found in the IPQ5332
->>>> device.
->>>>
->>>> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
->>>> ---
->>>>  .../net/wireless/qcom,ath12k-ahb.yaml         | 319 ++++++++++++++++++
->>>>  1 file changed, 319 insertions(+)
->>>>  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
->>>> new file mode 100644
->>>> index 000000000000..bd953a028dc3
->>>> --- /dev/null
->>>> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
->>>
->>> Filename should match compatible. This binding does not look like
->>> supporting more devices, so there is no much benefit calling it by generic name.
->>
->>
->> I saw now your other patchset, so you have here two devices, but I still
->> do not understand why this cannot follow standard naming practice like
->> most bindings supporting one or more devices. Like every review we give.
+On 03/02/2025 10:05, Raj Kumar Bhagat wrote:
+> 
+>>> +    items:
+>>> +      - const: q6-region
+>>> +      - const: m3-dump
+>>> +      - const: q6-caldb
+>>> +      - const: mlo-global-mem
+>>> +
+>>> +  qcom,ath12k-calibration-variant:
+>>> +    $ref: /schemas/types.yaml#/definitions/string
+>> Why this is named after ath12k? Why this is just not
+>> "qcom,calibration-variant"? None of the other properties have ath12k in
+>> their names, so why this one in the WSI schema was named like that?
 >>
 > 
-> Sure, we can rename the filename to match the compatibles - "qcom,ipq5x-wifi.yaml".
+> This property is added after the below comment.
+> https://lore.kernel.org/all/qzjgpwemwaknwbs3dwils6kaa5c3inabfvkaryvc32kblzfhy3@6yduooj4dk63/
+> 
+> This `ath12k` in the name of this property is inherited from the 'qcom,ath10k.yaml' and
+> 'qcom,ath11k.yaml'. Same was followed for WSI schema as well.
 
-No:
+They do not have ath12k prefix in the name, so I don't understand.
 
->>> Filename should match compatible.
+People, start re-using properties, not creating one per each binding.
+
+> 
+>>> +    description:
+>>> +      String to uniquely identify variant of the calibration data for designs
+>>> +      with colliding bus and device ids
+>> I don't think this property is here possible. How could you have on the
+>> same SoC different devices?
+> 
+> The WiFi controller in the SoC includes an internal or external Front-End Module (FEM).
+> These FEMs can vary and require different calibration data. This property uniquely
+
+1. So exactly the same SoC package has different FEMs?
+
+2. How does it exactly work? Different bins? Different revisions?
+
+3. How is it supposed to work in practice - you have one board, but
+might have different SoCs inside? Which calibration data would you use
+in such case?
+
+> identify the variant of calibration data required by a FEM.
+> 
 
 
 Best regards,
