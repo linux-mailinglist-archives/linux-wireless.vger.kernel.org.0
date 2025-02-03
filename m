@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-18295-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18296-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51878A256A3
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 11:09:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E94A256B2
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 11:13:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0E0B1886807
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 10:09:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECC783A806A
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 10:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D33F200B8C;
-	Mon,  3 Feb 2025 10:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93ADB200BB7;
+	Mon,  3 Feb 2025 10:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ebbh+qGl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lzH1nJZD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708523594B;
-	Mon,  3 Feb 2025 10:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65742200118;
+	Mon,  3 Feb 2025 10:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738577367; cv=none; b=JAi+wjYhbaMGlSnCC8NjVC5IbSV6v+vYsZH/ZqhqE9Z3UFK2gDqNOUXIBi4jvojBhSAoIed3XR+MBarpt7KcWfpmN5QyHsj3Y3We2i+0mGugrsOvWbqdPa7mHAkEoHs3H9K/nQd4jx/HHaTdoSUwm3Cq6ESJoJbBU6U60942Y6M=
+	t=1738577583; cv=none; b=NjBTOkK4GB3K0KeLVCeJyAMgjREPiQwkWMgrjftzPFw7ePjblZPrP5DLpI+HYQ/+Z2l+qgnMG/aqAOjuLM7xHu39b30N4RHrLEqOOcOvJab+dRUqy7ZuYfjsC7t8PvHWF1oYc8Cpvqok6SWCRZ4nAdPm8CY5mngW4vrQ3MxBDgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738577367; c=relaxed/simple;
-	bh=ASpuuev7ZZTKMlBx/lV8ZsXtftUSf3OuoGlgsNzc/k0=;
+	s=arc-20240116; t=1738577583; c=relaxed/simple;
+	bh=tLbJXYxUhEFv6Iig2E6u0QBVqqlEhSREn7pQ0ziuXhQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cKvj+BBbboJgU+SJBXjlMQ6LCCL2qYUPJIILZeRqZvbmljRDCqrJKvfCkczEJZre1hSBBvlUGhcNvNIzJROmbVuIFSyvm8Yh+bGOGKccesvudTTKNG93LNz4ALjgVxHZ3GG8R4jf8K6BTfPou6GgCH+vjgMPtlpqGUvhalKyXGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ebbh+qGl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE7FC4CED2;
-	Mon,  3 Feb 2025 10:09:22 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=fVRkg3X3Ovo8dzAUOKPae0aWNaGJAe8KgoMPaBJPnOxhOJphy4FPjuuxeaJNDD2GGVwMw1YNcPqNTDHGLbu0KRxqbQ1iLAseoNTt+fh/tTmiwJ7knPK7jcX+rVlYVfYUHGwWca4EYioH/ervTPXmSwmlOYidef+2Lxtea5dVzx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lzH1nJZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62418C4CED2;
+	Mon,  3 Feb 2025 10:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738577366;
-	bh=ASpuuev7ZZTKMlBx/lV8ZsXtftUSf3OuoGlgsNzc/k0=;
+	s=k20201202; t=1738577582;
+	bh=tLbJXYxUhEFv6Iig2E6u0QBVqqlEhSREn7pQ0ziuXhQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ebbh+qGlSF8cJpIpZqwdHAgg184O7C14xOyeLj3UmkMv5ZHiPu3ykVbPyWeoOPuFn
-	 3lXsditQ9yZ77XRKDcjFny1tmwZkY2z32P/tldhbxq1zZGjspSJbbP0mmxQvSB0udk
-	 Bh1HFH2enjq2yj+CAMayqpV6COXWvMZy8X2UkxsD1f2xV0AQquYh+iQlSnNS1+es9x
-	 ab9c0W0SKZ8YxBjdthNZ7RT9rwh33Ph6pEmCy7rkhRFGytmp3gcnK1PY8czR3u2jJW
-	 CWT+KaSpb60+B/MP7aAD8OKQsAF7ydtbgih4O345EfC2YDgfP0bwNeSeGZFBdtBGSF
-	 73UdLAsT9T9RA==
-Message-ID: <aaabcc7a-8234-4753-a8d1-ab36afdafa2e@kernel.org>
-Date: Mon, 3 Feb 2025 11:09:21 +0100
+	b=lzH1nJZD5hYM7CgSXHm+jqaHlrZ2MH6H0A8I3r3845qkTemqr/VKNdNx0vXQoIn8v
+	 Uza7VjpdGqRgPRZoCt+ZaQ4vCKhTAyOJT3Vn7HoB1adc1LcVB0TYwyVdBwuBNBSxKv
+	 cyBqJb2Vdh+rCkk6RZjm/D0TXw9ffTggfe6elQd2yGBBaWeqdWghw8DpS0UqX18t1s
+	 5St+U78NyK+r08VF4QOt6GuOTY2RVlNC5u6t2/AKv7YVk8WWjbku595mjZcy5TQ55k
+	 ourGReDlXWns09z7NvBwMkh4H1m7CiTizrXyzdmzzE1kThZdEJOEG1Erp8+Ad+4LXj
+	 Asf67Hg4xlVmw==
+Message-ID: <962dc257-f7a6-49c7-b760-a31fd84e7a56@kernel.org>
+Date: Mon, 3 Feb 2025 11:12:56 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,18 +50,17 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/13] dt-bindings: net: wireless: describe the ath12k
- AHB module
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
- Kalle Valo <kvalo@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+Subject: Re: [PATCH v5 07/13] wifi: ath12k: add support for fixed QMI firmware
+ memory
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250130043508.1885026-1-quic_rajkbhag@quicinc.com>
- <20250130043508.1885026-2-quic_rajkbhag@quicinc.com>
- <20250130-cunning-quail-of-opportunity-76d0ad@krzk-bin>
- <724a4822-469a-45bb-bfb1-c02b54e971a3@quicinc.com>
+ <20250130043508.1885026-8-quic_rajkbhag@quicinc.com>
+ <4c9b512f-59d2-4d96-a899-5af4de2c823e@kernel.org>
+ <7d5f7b4c-2a55-41c7-b85c-cb4cd76d553f@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -107,55 +106,49 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <724a4822-469a-45bb-bfb1-c02b54e971a3@quicinc.com>
+In-Reply-To: <7d5f7b4c-2a55-41c7-b85c-cb4cd76d553f@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 03/02/2025 10:05, Raj Kumar Bhagat wrote:
-> 
->>> +    items:
->>> +      - const: q6-region
->>> +      - const: m3-dump
->>> +      - const: q6-caldb
->>> +      - const: mlo-global-mem
+On 03/02/2025 10:44, Raj Kumar Bhagat wrote:
+> On 1/30/2025 1:16 PM, Krzysztof Kozlowski wrote:
+>> On 30/01/2025 05:35, Raj Kumar Bhagat wrote:
+>>> @@ -2646,6 +2663,136 @@ static int ath12k_qmi_alloc_target_mem_chunk(struct ath12k_base *ab)
+>>>  	return ret;
+>>>  }
+>>>  
+>>> +static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
+>>> +{
+>>> +	struct device_node *mem_node;
+>>> +	struct resource res, m3_res;
+>>> +	u32 bdf_start_addr;
+>>> +	int i, idx, ret;
 >>> +
->>> +  qcom,ath12k-calibration-variant:
->>> +    $ref: /schemas/types.yaml#/definitions/string
->> Why this is named after ath12k? Why this is just not
->> "qcom,calibration-variant"? None of the other properties have ath12k in
->> their names, so why this one in the WSI schema was named like that?
+>>> +	for (i = 0, idx = 0; i < ab->qmi.mem_seg_count; i++) {
+>>> +		switch (ab->qmi.target_mem[i].type) {
+>>> +		case HOST_DDR_REGION_TYPE:
+>>> +			mem_node = ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
+>>
+>>
+>> Why cannot you use existing API for reserved memory -
+>> of_reserved_mem_lookup()?
 >>
 > 
-> This property is added after the below comment.
-> https://lore.kernel.org/all/qzjgpwemwaknwbs3dwils6kaa5c3inabfvkaryvc32kblzfhy3@6yduooj4dk63/
+> The of_reserved_mem_lookup() requires reserved memory node to read the memory and
+> return in the structure "struct reserved_mem".
 > 
-> This `ath12k` in the name of this property is inherited from the 'qcom,ath10k.yaml' and
-> 'qcom,ath11k.yaml'. Same was followed for WSI schema as well.
-
-They do not have ath12k prefix in the name, so I don't understand.
-
-People, start re-using properties, not creating one per each binding.
-
+> The of_reserved_mem_lookup() would be used after we get the reserved memory node
+> using the API - ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
 > 
->>> +    description:
->>> +      String to uniquely identify variant of the calibration data for designs
->>> +      with colliding bus and device ids
->> I don't think this property is here possible. How could you have on the
->> same SoC different devices?
-> 
-> The WiFi controller in the SoC includes an internal or external Front-End Module (FEM).
-> These FEMs can vary and require different calibration data. This property uniquely
+> In next version we would use of_reserved_mem_lookup(), Something like below:
+>     mem_node = ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
 
-1. So exactly the same SoC package has different FEMs?
+Then why do you need ath12k_core_get_reserved_mem_by_name() in the first
+place? Just use of_reserved_mem_lookup() directly. Why do you need to
+parse phandle before of_reserved_mem_lookup()?
 
-2. How does it exactly work? Different bins? Different revisions?
 
-3. How is it supposed to work in practice - you have one board, but
-might have different SoCs inside? Which calibration data would you use
-in such case?
-
-> identify the variant of calibration data required by a FEM.
-> 
+>     struct reserved_mem res = of_reserved_mem_lookup(mem_node)
 
 
 Best regards,
