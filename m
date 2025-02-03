@@ -1,125 +1,163 @@
-Return-Path: <linux-wireless+bounces-18290-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18291-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8080BA254EF
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 09:52:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B244A2556F
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 10:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71EDD7A346D
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 08:51:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1651161F11
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2025 09:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83851FCF68;
-	Mon,  3 Feb 2025 08:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7148E1FDE29;
+	Mon,  3 Feb 2025 09:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="aECNP9Yr"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QgEtN3pR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5A92066FD
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Feb 2025 08:52:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9003F1A270;
+	Mon,  3 Feb 2025 09:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738572734; cv=none; b=LwObDnsW3VBCWRj/s/2N1cquroivOqCZWaiRsT5d1JK+LFwUfodZDweeMMRGVrOBuHPpLcEs77BfraAlt+UPXcJsVhjBOSCKdcAJD/XFIdHn3e0xY6eAl+Jm4vXecS7Q16eKlf7i43C4vCDUyWLGgLMobEVflL0EgSJKAbiYawM=
+	t=1738573556; cv=none; b=l5Q4KPPJy00CuHgHogSEmWx0uDPuTMJy1y/BCP8mBolCaGCZ7Lftj+TGpx4iKeEb5ALudejFa+41Tbu1mysSZk5qW91WmoITRekH8rxJM9yQ7Z1MofzqFLbJhF2kSjG2qLL9SG1Eq7bBmB62vNSyhtvWuCfnSqJvUuQ710I0xhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738572734; c=relaxed/simple;
-	bh=QAZDIbTkeobVhjIZ99acn5Bun6ryhKeL6G9kglFjY3o=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=DBUnzn2MpF4xS7+zARe9px8EYTbcsoLdM8tNR65umUj1XXJWZDcgUDlHV0r0Z2iYBrB6JMPA3GkB+vas4Ah/TRZh7YhEJyqkxYYzKgZOWQXefJDxUDT7HycYcfNIRYwbkS6QGoeaU5fqGuQoSOi3Jgm7VshYxM55GGlOUAk4vbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=aECNP9Yr; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5138ph3U31420645, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1738572703; bh=QAZDIbTkeobVhjIZ99acn5Bun6ryhKeL6G9kglFjY3o=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=aECNP9YrpbO4Y93q/L7lapWDT5lKAgbDAi+xpdU8zAmAWAJKeIu5HIgG6REe7Ql7c
-	 0nrrCSYQFxL1lEg+zRBOdefDFQ0BnmPd4GftSJpEgcXYsgBj/ZSF7kuEbipIfsB+cC
-	 L1Z1NRC1LwEL2TCo0a6hWXlEgyfA4Bpx3FucaYzYBzwKvtaGqXJPBCE/fOMHxlMeJx
-	 68nfJCzQte5cuJuuuc7SIziYGyKUaciN67FADetZmqMWsXamac0XccG0sEbSfWnWTg
-	 VpVPkVM4FN/45C3Qp25UQwib7aO32kaQOtSz5uZWquf5pIPgtkd49mFxrN0e4+//ij
-	 DDf1g9S1J/2gw==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5138ph3U31420645
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Feb 2025 16:51:43 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 3 Feb 2025 16:51:44 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 3 Feb 2025 16:51:43 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553]) by
- RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553%5]) with mapi id
- 15.01.2507.035; Mon, 3 Feb 2025 16:51:43 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Martin Kaistra <martin.kaistra@linutronix.de>,
-        Ezra Buehler
-	<ezra@easyb.ch>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        Johannes Berg
-	<johannes.berg@intel.com>,
-        Reto Schneider
-	<reto.schneider@husqvarnagroup.com>,
-        Ezra Buehler
-	<ezra.buehler@husqvarnagroup.com>
-Subject: RE: [PATCH v2] wifi: rtl8xxxu: Enable AP mode for RTL8192CU (RTL8188CUS)
-Thread-Topic: [PATCH v2] wifi: rtl8xxxu: Enable AP mode for RTL8192CU
- (RTL8188CUS)
-Thread-Index: AQHbbJ1xE9KyBjPFvEiofeS+5WzYALM0aoyAgABYNYCAAIwjMA==
-Date: Mon, 3 Feb 2025 08:51:43 +0000
-Message-ID: <93fe56295aba4bf0bc1af603bd992f47@realtek.com>
-References: <20250122071512.10165-1-ezra@easyb.ch>
- <393aa422-3ac8-40e7-aa2f-62956a844005@RTEXMBS04.realtek.com.tw>
- <19b8059a-c5f6-4467-8b42-31e70b9fe1f3@linutronix.de>
-In-Reply-To: <19b8059a-c5f6-4467-8b42-31e70b9fe1f3@linutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1738573556; c=relaxed/simple;
+	bh=FF0AYy7QO4wAppz+BTEHxQ8EQD+ttCMNis84es56hb0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=AsvaZeWJ83VQt630EgwIXc+SNQYiyvInQupJmyuERIzk3lQToiCvWhqUWko48w3zZ8aUXWXRmwA+PxMdrxf8uJhErp6H7Zooas6t22itmrJkN6tG+Ww11/zrohJkOxu9L7cf4CgZxTm6jKO5+EBV4gfNIHEIc0xDm2H6Vld1qbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QgEtN3pR; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5135OiAi000874;
+	Mon, 3 Feb 2025 09:05:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	cV5qVf3KEl2mKoV6KdKVtnjnoxdRcDLKf/ZGrf//YiE=; b=QgEtN3pRRXyiHuM0
+	67MPQxFj9e0NFoGssmje7xW1tX6zAUuNqMoBsZiQMjnMrVZylVUxvgY4wkeswSkC
+	bz/WpD10ijntB4lTvdo9Ki4dhR5K/qytjc+0j33ktrz/V0EhuUf2rUrFsI4X8+E7
+	u6Dmbg5coGxbWPm6WIRwxtRlO2Gl5oc1md+iCAp3dlgYUpvVK12/+pCCLMvAP74w
+	Uq06bFgOXqnk+ur6onX5N1bscmNtF9VVsST/gYTFhbHVh5WjJ/s2r2bPr3Z3spCa
+	8iwSwBKMzUYT6dDqZQ0BhKBbaI496V/I53/kB9YQMEgcRgfEafTHOjmNGjGj4DwR
+	g3laxQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44jqm40ex0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Feb 2025 09:05:48 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51395ll8026043
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 3 Feb 2025 09:05:47 GMT
+Received: from [10.216.42.141] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 3 Feb 2025
+ 01:05:44 -0800
+Message-ID: <724a4822-469a-45bb-bfb1-c02b54e971a3@quicinc.com>
+Date: Mon, 3 Feb 2025 14:35:41 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 01/13] dt-bindings: net: wireless: describe the ath12k
+ AHB module
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Kalle Valo
+	<kvalo@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jeff Johnson
+	<jjohnson@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20250130043508.1885026-1-quic_rajkbhag@quicinc.com>
+ <20250130043508.1885026-2-quic_rajkbhag@quicinc.com>
+ <20250130-cunning-quail-of-opportunity-76d0ad@krzk-bin>
+Content-Language: en-US
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <20250130-cunning-quail-of-opportunity-76d0ad@krzk-bin>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: VPpC0vgZfiIO8bQBVN4TbmeZz2zgh_7x
+X-Proofpoint-ORIG-GUID: VPpC0vgZfiIO8bQBVN4TbmeZz2zgh_7x
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-03_03,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
+ spamscore=0 malwarescore=0 priorityscore=1501 suspectscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 mlxscore=0 lowpriorityscore=0
+ mlxlogscore=822 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502030072
 
-TWFydGluIEthaXN0cmEgPG1hcnRpbi5rYWlzdHJhQGxpbnV0cm9uaXguZGU+IHdyb3RlOg0KPiBB
-bSAwMy4wMi4yNSB1bSAwMzo0MCBzY2hyaWViIFBpbmctS2UgU2hpaDoNCj4gPiBFenJhIEJ1ZWhs
-ZXIgPGV6cmFAZWFzeWIuY2g+IHdyb3RlOg0KPiA+DQo+ID4+IEZyb206IEV6cmEgQnVlaGxlciA8
-ZXpyYS5idWVobGVyQGh1c3F2YXJuYWdyb3VwLmNvbT4NCj4gPj4NCj4gPj4gVGhpcyBhbGxvd3Mg
-dGhlIGRyaXZlciB0byBiZSB1c2VkIGluIHdpcmVsZXNzIGFjY2VzcyBwb2ludCBtb2RlIG9uIHRo
-ZQ0KPiA+PiBBVDkxU0FNOUcyNS1iYXNlZCBHQVJERU5BIHNtYXJ0IEdhdGV3YXkuDQo+ID4+DQo+
-ID4+IFVuZm9ydHVuYXRlbHksIHRoZSBkYXRhIHRocm91Z2hwdXQgaW4gQVAgbW9kZSBhcHBlYXJz
-IHRvIGJlIGxvd2VyIHRoYW4NCj4gPj4gd2l0aCB0aGUgdmVuZG9yIGRyaXZlciAob3IgaW4gU1RB
-IG1vZGUpLiBFc3BlY2lhbGx5IHdoZW4gc2VuZGluZywgdGhlDQo+ID4+IGRhdGEgcmF0ZSBpcyBz
-aWduaWZpY2FudGx5IGxvd2VyLiBNeSBtZWFzdXJlbWVudHMgcGVyZm9ybWVkIHdpdGggaXBlcmYz
-DQo+ID4+IGFuZCBhbiBFZGltYXggRVctNzgxMVVuIChWSUQ6IDczOTIsIFBJRDogNzgxMSkgc2hv
-d2VkIGEgbWF4aW11bSBUWCByYXRlDQo+ID4+IG9mIGFib3V0IDQgTWJpdHMvc2VjIGNvbXBhcmVk
-IHRvIHRoZSB+MjQgTWJpdHMvc2VjIG1lYXN1cmVkIHdpdGggdGhlDQo+ID4+IHJ0bDgxOTJjdSBk
-cml2ZXIuDQo+ID4+DQo+ID4+IEFsdGhvdWdoIHRoZSBwZXJmb3JtYW5jZSBtaWdodCBiZSBnb29k
-IGVub3VnaCBmb3Igb3VyIHVzZSBjYXNlLCB0aGlzIGlzDQo+ID4+IHNvbWV0aGluZyB0aGF0IHNo
-b3VsZCBiZSBmdXJ0aGVyIGxvb2tlZCBpbnRvLg0KPiA+Pg0KPiA+PiBTaWduZWQtb2ZmLWJ5OiBF
-enJhIEJ1ZWhsZXIgPGV6cmEuYnVlaGxlckBodXNxdmFybmFncm91cC5jb20+DQo+ID4NCj4gPiAx
-IHBhdGNoKGVzKSBhcHBsaWVkIHRvIHJ0dy1uZXh0IGJyYW5jaCBvZiBydHcuZ2l0LCB0aGFua3Mu
-DQo+IA0KPiBJcyB0aGVyZSBhIHJlYXNvbiBmb3Igbm90IHNldHRpbmcgbWFjaWQgaW4gcnRsOHh4
-eHVfZmlsbF90eGRlc2NfdjEoKSBhbmQNCj4gcnRsOHh4eHVfdXBkYXRlX3JhdGVfbWFzaygpIGxp
-a2UgaXQgd2FzIGRvbmUgZm9yIHRoZSBnZW4yIGNhc2U/DQoNCnJ0bDh4eHh1X2ZpbGxfdHhkZXNj
-X3YzKCkgZG9lc24ndCBmaWxsIG1hY2lkIG5laXRoZXIuIFF1aWNrbHkgc2VhcmNoIGZvcg0KdGhl
-IGNvZGUgZmlsbGluZyB0eCBkZXNjIFsxXS4gSSB0aGluayB3ZSBjYW4gaGF2ZSBhDQogICAjZGVm
-aW5lIFRYREVTQzMyX01BQ0lEX01BU0sgR0VOTUFTSyg0LCAwKQ0KDQpUaGUgaDJjIGNvbW1hbmQg
-Zm9ybWF0IG9mIHJ0bDh4eHh1X3VwZGF0ZV9yYXRlX21hc2soKSBzZWVtaW5nbHkgc2hvdWxkIGJl
-DQplcXVhbCB0byBydGw4MTkyY19zZXRfcmFpZF9jbWQoKSBbMl0sIGJ1dCBub3QuDQoNCkNhbiBh
-bnlvbmUgaGVscCB0byBzcGluIHBhdGNoZXMgYW5kIHRlc3QgaWYgaXQgd29ya3M/DQoNClsxXSBo
-dHRwczovL2dpdGh1Yi5jb20vbHdmaW5nZXIvcnRsODE5MmN1L2Jsb2IvbWFzdGVyL2hhbC9ydGw4
-MTkyY3VfeG1pdC5jI0wyNTcNClsyXSBodHRwczovL2dpdGh1Yi5jb20vbHdmaW5nZXIvcnRsODE5
-MmN1L2Jsb2IvbWFzdGVyL2hhbC9ydGw4MTkyY19jbWQuYyNMMjAxDQoNCg0K
+On 1/30/2025 1:58 PM, Krzysztof Kozlowski wrote:
+>> +  memory-region:
+>> +    description:
+>> +      phandle to a node describing reserved memory (System RAM memory)
+>> +      used by ath12k firmware (see bindings/reserved-memory/reserved-memory.txt)
+> Do not say what DT syntax is, so "phandle to a node" is redundant,
+> reserved-memory.txt is redundant. The only useful part here is "used by
+> ath12k firmware", so based on this none of below are used by the driver
+> and driver just passes them to the firmware?
+> 
+
+Sure, will rephrase the description.
+
+These reserved memory-regions are utilized by the ath12k firmware. The ath12k driver
+stores these memory addresses solely for the purpose of collecting crash dumps
+(RAM dumps) when the firmware encounters a crash.
+
+>> +    items:
+>> +      - description: Q6 memory region
+>> +      - description: m3 dump memory region
+>> +      - description: Q6 caldata memory region
+>> +      - description: Multi Link Operation (MLO) Global memory region
+>> +
+>> +  memory-region-names:
+>> +    description:
+>> +      Name of the reserved memory region used by ath12k firmware
+> Drop description.
+> 
+
+Sure.
+
+>> +    items:
+>> +      - const: q6-region
+>> +      - const: m3-dump
+>> +      - const: q6-caldb
+>> +      - const: mlo-global-mem
+>> +
+>> +  qcom,ath12k-calibration-variant:
+>> +    $ref: /schemas/types.yaml#/definitions/string
+> Why this is named after ath12k? Why this is just not
+> "qcom,calibration-variant"? None of the other properties have ath12k in
+> their names, so why this one in the WSI schema was named like that?
+> 
+
+This property is added after the below comment.
+https://lore.kernel.org/all/qzjgpwemwaknwbs3dwils6kaa5c3inabfvkaryvc32kblzfhy3@6yduooj4dk63/
+
+This `ath12k` in the name of this property is inherited from the 'qcom,ath10k.yaml' and
+'qcom,ath11k.yaml'. Same was followed for WSI schema as well.
+
+>> +    description:
+>> +      String to uniquely identify variant of the calibration data for designs
+>> +      with colliding bus and device ids
+> I don't think this property is here possible. How could you have on the
+> same SoC different devices?
+
+The WiFi controller in the SoC includes an internal or external Front-End Module (FEM).
+These FEMs can vary and require different calibration data. This property uniquely
+identify the variant of calibration data required by a FEM.
+
 
