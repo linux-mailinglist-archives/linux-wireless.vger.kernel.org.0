@@ -1,68 +1,73 @@
-Return-Path: <linux-wireless+bounces-18381-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18382-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71207A26C3E
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 07:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32862A26C3F
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 07:44:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 023BA3A57BD
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 06:44:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B60393A8331
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 06:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251CB1F8AD3;
-	Tue,  4 Feb 2025 06:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9896E1F8AD3;
+	Tue,  4 Feb 2025 06:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nALUhlOe"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MpCN7l5G"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3AB13212A
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 06:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B67113212A
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 06:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738651485; cv=none; b=WJw8nmVRpdc4St14uQqpV4K+LUUdoIMZk9UgUJKKbN1vVFY9tb891TThm1rDelBkCaqqlX15MpbtRUVryFmIX5Q7yyUt4pO2WDlIfVRLZ3l1ty8qZhZxugGw7qR6ENT0b2J5OQVXmJIyVzEWlG25Yb1RGZrj7a42S5AbFH87ekU=
+	t=1738651489; cv=none; b=oMSxwujaPK1fQOWWtFPyo4PhMjy9zX0MEfGlyHTAtu+7vKY2syOTkP/VEhAx+LxZkB8/U6i+TpdKKFQUtI0VUi2ogJrJNRSjoUf0e+iXoPR/mo5ziJvzt8mQIkOuBa6gNZJ81H1sd/n2AGUqy5Jsjcaj2YBjukaCdNVH+i/zkd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738651485; c=relaxed/simple;
-	bh=g1TvqCEeD35LIxFcoXx7gsfQYE6/SiYvP8nqKRt6E+Y=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E/RC86V3MKTcLZZiO3U9hKoQ8rZhFhGzqoBgMaMsfVadcoYEh05YeFVT6X8DGZNgotrDgy+Boo60LLlj1PIaO7i4jMorhCOA49ssCMTku0mbbtUY57Dt3ncYvODFPrQZWhN9OeSBzzZZRx9W0rq9irFjCV6FA4V0XNIzInkLgRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nALUhlOe; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1738651489; c=relaxed/simple;
+	bh=SFTR+836K6/IfvpVayzJO3S6ib/Wh2RRzziPA6TQ/5E=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DHHjXL16HUOeI61RvC1S8EOkxav/H9gmZsWQIqQnrmkdmbtEzXVVfIN5KX3Dhuh0p/mXNw14fmX1U3yvdC7YjSW/Y//pvIqY8IpgAgIK3n7v4xZjjUuHRDqLhwyls58aYoZfLdNXNKAZ1ihAcAHyvFQyPLazIoyG2k0BLgXNMjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MpCN7l5G; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 514583NP008380;
-	Tue, 4 Feb 2025 06:44:39 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5141BdTa021163;
+	Tue, 4 Feb 2025 06:44:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=wvgUwBg2FrMRJ6J1XiTX5w
-	DvBcwqTYr3F3sSGPYGWvc=; b=nALUhlOeWp4wIvprWNURhSV/udL7qq6Il8FPlR
-	MnC05kEmyJVVXJDHKGlgmQo11/Gmw46VU5m+qX+o1KQLAckK9wOY9Xp1je9RY8fD
-	NS3i3TaUkzIqj34cO/VXjV5OEvsVpRWCW5DQUPfmjQhNRJgdGrBzf5dUfODEThBm
-	vRrFnVhl4G4zgJKdpyfWZJ26CJl4HuwkRwZLGDx+KMWeUE2AcUx01UyFiP3WzjgO
-	H/+BHj8E1jFQEA+bXXL6ZCMbVqVNw9dfLsakVUD27CPegs55CGAFYVuDAKfMEP7Q
-	iPHwH+BVR9rZ1XGGgpOpD81xhT2WyEeW990ZSQiJGm/boisQ==
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	/yswofy9ptpb1S29K+YdGQBGCLz4f2Qs61L09D/MUFg=; b=MpCN7l5GfU6Ne9UG
+	bs07DRevsvgjRYFnZxx7Y8XtUFdJIZiTJxkVq6HE15q4wMnsQ30NN+DLjjZx9AMk
+	QfkYAIqW+mSYLdfYUFri+i9By31fNZSU34RfevbEmfD4N8dIGqTTpk6PLysXwhKr
+	ShsdqW+dEh1LPJ8svgOdhrC3KjB6hVRelwKjAQo9BDjdk8IeA2UQLBY1SiQefYRp
+	o/IDgaitq6wBvDjq0PYtvLM16ATGMyNwBBHSjn2hwEoxEkg6CSP1eH6haRxlvAXw
+	YrSDGvvsSzcB00iKLCeQFvPHnsHn/fflfj6WSG7zVJzQoezO5u/JNQXr03Cp8ulw
+	dK/Hng==
 Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44kcfp0647-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44k911gjxv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Feb 2025 06:44:39 +0000 (GMT)
+	Tue, 04 Feb 2025 06:44:43 +0000 (GMT)
 Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5146icsG030717
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5146igC2030742
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 4 Feb 2025 06:44:38 GMT
+	Tue, 4 Feb 2025 06:44:42 GMT
 Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
  nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 3 Feb 2025 22:44:36 -0800
+ 15.2.1544.9; Mon, 3 Feb 2025 22:44:40 -0800
 From: Roopni Devanathan <quic_rdevanat@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
-        Roopni Devanathan
-	<quic_rdevanat@quicinc.com>
-Subject: [PATCH v5 0/5] wifi: ath12k: Support Sounding, Latency, Trigger, FSE stats
-Date: Tue, 4 Feb 2025 12:14:12 +0530
-Message-ID: <20250204064417.3671928-1-quic_rdevanat@quicinc.com>
+        Dinesh Karthikeyan
+	<quic_dinek@quicinc.com>,
+        Roopni Devanathan <quic_rdevanat@quicinc.com>
+Subject: [PATCH v5 1/5] wifi: ath12k: Support Sounding Stats
+Date: Tue, 4 Feb 2025 12:14:13 +0530
+Message-ID: <20250204064417.3671928-2-quic_rdevanat@quicinc.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250204064417.3671928-1-quic_rdevanat@quicinc.com>
+References: <20250204064417.3671928-1-quic_rdevanat@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,48 +80,461 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01c.na.qualcomm.com (10.47.97.35)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 8jIBKWKfdA4HFs8YBObFZghq1hSeujks
-X-Proofpoint-ORIG-GUID: 8jIBKWKfdA4HFs8YBObFZghq1hSeujks
+X-Proofpoint-GUID: BijgBh4WWShFfwNHWcos0zCl-MgED_Qn
+X-Proofpoint-ORIG-GUID: BijgBh4WWShFfwNHWcos0zCl-MgED_Qn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-04_03,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 mlxlogscore=858 malwarescore=0 impostorscore=0 spamscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ spamscore=0 mlxscore=0 phishscore=0 bulkscore=0 mlxlogscore=999
+ adultscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2501170000 definitions=main-2502040052
 
-Add support to request HTT stats type 22, 25, 26, 27 and 28 from
-firmware. These stats give sounding stats, latency stats, trigger stats
-for uplink OFDMA and MUMIMO and FSE stats, respectively.
+From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
 
-v5:
- - Rebased on ToT. No code changes.
-v4:
- - Squashed patches to avoid build warning.
-v3:
- - Rebased on ToT.
- - Removed patch dependencies.
-v2:
- - Added line breaks where necessary, as pointed out by Kalle.
- - Modified the use of pointer arithmetic print_array_to_buf_s8().
- - Modified commit logs, as suggested by Kalle.
+Add support to request sounding stats from firmware through HTT stats
+type 22. These stats give sounding information of different Wi-Fi
+standards, channel vector upload status and correlation details.
 
-Dinesh Karthikeyan (4):
-  wifi: ath12k: Support Sounding Stats
-  wifi: ath12k: Support Latency Stats
-  wifi: ath12k: Support Uplink OFDMA Trigger Stats
-  wifi: ath12k: Support Received FSE Stats
+Sample output:
+-------------
+echo 22 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
+HTT_TX_AC_SOUNDING_STATS_TLV:
+ac_cbf_20 = IBF: 0, SU_SIFS: 0, SU_RBO: 0, MU_SIFS: 0, MU_RBO: 0
+ac_cbf_40 = IBF: 0, SU_SIFS: 0, SU_RBO: 0, MU_SIFS: 0, MU_RBO: 0
+.....
+Sounding User_0 = 20MHz: 0, 40MHz: 0, 80MHz: 0, 160MHz: 0
+Sounding User_1 = 20MHz: 0, 40MHz: 0, 80MHz: 0, 160MHz: 0
+.....
 
-Roopni Devanathan (1):
-  wifi: ath12k: Support Uplink MUMIMO Trigger Stats
+HTT_TX_AX_SOUNDING_STATS_TLV:
+ax_cbf_20 = IBF: 0, SU_SIFS: 0, SU_RBO: 0, MU_SIFS: 0, MU_RBO: 0
+ax_cbf_40 = IBF: 0, SU_SIFS: 0, SU_RBO: 0, MU_SIFS: 0, MU_RBO: 0
+.....
+Sounding User_0 = 20MHz: 0, 40MHz: 0, 80MHz: 0, 160MHz: 0
+Sounding User_1 = 20MHz: 0, 40MHz: 0, 80MHz: 0, 160MHz: 0
+.....
 
- .../wireless/ath/ath12k/debugfs_htt_stats.c   | 736 ++++++++++++++++++
- .../wireless/ath/ath12k/debugfs_htt_stats.h   | 275 ++++++-
- 2 files changed, 973 insertions(+), 38 deletions(-)
+HTT_TX_BE_SOUNDING_STATS_TLV:
+be_cbf_20 = IBF: 0, SU_SIFS: 0, SU_RBO: 0, MU_SIFS: 0, MU_RBO: 0
+be_cbf_40 = IBF: 0, SU_SIFS: 0, SU_RBO: 0, MU_SIFS: 0, MU_RBO: 0
+.....
+Sounding User_0 = 20MHz: 0, 40MHz: 0, 80MHz: 0, 160MHz: 0, 320MHz: 0
+Sounding User_1 = 20MHz: 0, 40MHz: 0, 80MHz: 0, 160MHz: 0, 320MHz: 0
+.....
 
+CV UPLOAD HANDLER STATS:
+cv_nc_mismatch_err = 0
+cv_fcs_err = 0
+cv_frag_idx_mismatch = 0
+cv_invalid_peer_id = 0
+.....
 
-base-commit: 48a62436540224f57013c27519dd2aa3ddd714c9
+CV QUERY STATS:
+cv_total_query = 0
+cv_total_pattern_query = 0
+cv_total_bw_query = 0
+cv_invalid_bw_coding = 0
+.....
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+
+Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
+Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+---
+ .../wireless/ath/ath12k/debugfs_htt_stats.c   | 265 ++++++++++++++++++
+ .../wireless/ath/ath12k/debugfs_htt_stats.h   |  78 ++++++
+ 2 files changed, 343 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+index bad1bd21d67d..9998c5cf7ab0 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+@@ -2511,6 +2511,268 @@ ath12k_htt_print_pdev_stats_cca_counters_tlv(const void *tag_buf, u16 tag_len,
+ 	stats_req->buf_len = len;
+ }
+ 
++static void
++ath12k_htt_print_tx_sounding_stats_tlv(const void *tag_buf, u16 tag_len,
++				       struct debug_htt_stats_req *stats_req)
++{
++	const struct ath12k_htt_tx_sounding_stats_tlv *htt_stats_buf = tag_buf;
++	const __le32 *cbf_20, *cbf_40, *cbf_80, *cbf_160, *cbf_320;
++	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
++	u32 len = stats_req->buf_len;
++	u8 *buf = stats_req->buf;
++	u32 tx_sounding_mode;
++	u8 i, u;
++
++	if (tag_len < sizeof(*htt_stats_buf))
++		return;
++
++	cbf_20 = htt_stats_buf->cbf_20;
++	cbf_40 = htt_stats_buf->cbf_40;
++	cbf_80 = htt_stats_buf->cbf_80;
++	cbf_160 = htt_stats_buf->cbf_160;
++	cbf_320 = htt_stats_buf->cbf_320;
++	tx_sounding_mode = le32_to_cpu(htt_stats_buf->tx_sounding_mode);
++
++	if (tx_sounding_mode == ATH12K_HTT_TX_AC_SOUNDING_MODE) {
++		len += scnprintf(buf + len, buf_len - len,
++				 "HTT_TX_AC_SOUNDING_STATS_TLV:\n");
++		len += scnprintf(buf + len, buf_len - len,
++				 "ac_cbf_20 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_20[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len,
++				 "ac_cbf_40 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_40[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len,
++				 "ac_cbf_80 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_80[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len,
++				 "ac_cbf_160 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_160[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++
++		for (u = 0, i = 0; u < ATH12K_HTT_TX_NUM_AC_MUMIMO_USER_STATS; u++) {
++			len += scnprintf(buf + len, buf_len - len,
++					 "Sounding User_%u = 20MHz: %u, ", u,
++					 le32_to_cpu(htt_stats_buf->sounding[i++]));
++			len += scnprintf(buf + len, buf_len - len, "40MHz: %u, ",
++					 le32_to_cpu(htt_stats_buf->sounding[i++]));
++			len += scnprintf(buf + len, buf_len - len, "80MHz: %u, ",
++					 le32_to_cpu(htt_stats_buf->sounding[i++]));
++			len += scnprintf(buf + len, buf_len - len, "160MHz: %u\n",
++					 le32_to_cpu(htt_stats_buf->sounding[i++]));
++		}
++	} else if (tx_sounding_mode == ATH12K_HTT_TX_AX_SOUNDING_MODE) {
++		len += scnprintf(buf + len, buf_len - len,
++				 "\nHTT_TX_AX_SOUNDING_STATS_TLV:\n");
++		len += scnprintf(buf + len, buf_len - len,
++				 "ax_cbf_20 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_20[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len,
++				 "ax_cbf_40 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_40[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len,
++				 "ax_cbf_80 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_80[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len,
++				 "ax_cbf_160 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_160[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++
++		for (u = 0, i = 0; u < ATH12K_HTT_TX_NUM_AX_MUMIMO_USER_STATS; u++) {
++			len += scnprintf(buf + len, buf_len - len,
++					 "Sounding User_%u = 20MHz: %u, ", u,
++					 le32_to_cpu(htt_stats_buf->sounding[i++]));
++			len += scnprintf(buf + len, buf_len - len, "40MHz: %u, ",
++					 le32_to_cpu(htt_stats_buf->sounding[i++]));
++			len += scnprintf(buf + len, buf_len - len, "80MHz: %u, ",
++					 le32_to_cpu(htt_stats_buf->sounding[i++]));
++			len += scnprintf(buf + len, buf_len - len, "160MHz: %u\n",
++					 le32_to_cpu(htt_stats_buf->sounding[i++]));
++		}
++	} else if (tx_sounding_mode == ATH12K_HTT_TX_BE_SOUNDING_MODE) {
++		len += scnprintf(buf + len, buf_len - len,
++				 "\nHTT_TX_BE_SOUNDING_STATS_TLV:\n");
++		len += scnprintf(buf + len, buf_len - len,
++				 "be_cbf_20 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_20[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_20[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len,
++				 "be_cbf_40 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_40[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_40[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len,
++				 "be_cbf_80 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_80[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_80[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len,
++				 "be_cbf_160 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_160[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_160[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len,
++				 "be_cbf_320 = IBF: %u, SU_SIFS: %u, SU_RBO: %u, ",
++				 le32_to_cpu(cbf_320[ATH12K_HTT_IMPL_STEER_STATS]),
++				 le32_to_cpu(cbf_320[ATH12K_HTT_EXPL_SUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_320[ATH12K_HTT_EXPL_SURBO_STEER_STATS]));
++		len += scnprintf(buf + len, buf_len - len, "MU_SIFS: %u, MU_RBO: %u\n",
++				 le32_to_cpu(cbf_320[ATH12K_HTT_EXPL_MUSIFS_STEER_STATS]),
++				 le32_to_cpu(cbf_320[ATH12K_HTT_EXPL_MURBO_STEER_STATS]));
++		for (u = 0, i = 0; u < ATH12K_HTT_TX_NUM_BE_MUMIMO_USER_STATS; u++) {
++			len += scnprintf(buf + len, buf_len - len,
++					 "Sounding User_%u = 20MHz: %u, ", u,
++					 le32_to_cpu(htt_stats_buf->sounding[i++]));
++			len += scnprintf(buf + len, buf_len - len, "40MHz: %u, ",
++					 le32_to_cpu(htt_stats_buf->sounding[i++]));
++			len += scnprintf(buf + len, buf_len - len, "80MHz: %u, ",
++					 le32_to_cpu(htt_stats_buf->sounding[i++]));
++			len += scnprintf(buf + len, buf_len - len,
++					 "160MHz: %u, 320MHz: %u\n",
++					 le32_to_cpu(htt_stats_buf->sounding[i++]),
++					 le32_to_cpu(htt_stats_buf->sounding_320[u]));
++		}
++	} else if (tx_sounding_mode == ATH12K_HTT_TX_CMN_SOUNDING_MODE) {
++		len += scnprintf(buf + len, buf_len - len,
++				 "\nCV UPLOAD HANDLER STATS:\n");
++		len += scnprintf(buf + len, buf_len - len, "cv_nc_mismatch_err = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_nc_mismatch_err));
++		len += scnprintf(buf + len, buf_len - len, "cv_fcs_err = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_fcs_err));
++		len += scnprintf(buf + len, buf_len - len, "cv_frag_idx_mismatch = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_frag_idx_mismatch));
++		len += scnprintf(buf + len, buf_len - len, "cv_invalid_peer_id = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_invalid_peer_id));
++		len += scnprintf(buf + len, buf_len - len, "cv_no_txbf_setup = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_no_txbf_setup));
++		len += scnprintf(buf + len, buf_len - len, "cv_expiry_in_update = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_expiry_in_update));
++		len += scnprintf(buf + len, buf_len - len, "cv_pkt_bw_exceed = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_pkt_bw_exceed));
++		len += scnprintf(buf + len, buf_len - len, "cv_dma_not_done_err = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_dma_not_done_err));
++		len += scnprintf(buf + len, buf_len - len, "cv_update_failed = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_update_failed));
++		len += scnprintf(buf + len, buf_len - len, "cv_dma_timeout_error = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_dma_timeout_error));
++		len += scnprintf(buf + len, buf_len - len, "cv_buf_ibf_uploads = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_buf_ibf_uploads));
++		len += scnprintf(buf + len, buf_len - len, "cv_buf_ebf_uploads = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_buf_ebf_uploads));
++		len += scnprintf(buf + len, buf_len - len, "cv_buf_received = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_buf_received));
++		len += scnprintf(buf + len, buf_len - len, "cv_buf_fed_back = %u\n\n",
++				 le32_to_cpu(htt_stats_buf->cv_buf_fed_back));
++
++		len += scnprintf(buf + len, buf_len - len, "CV QUERY STATS:\n");
++		len += scnprintf(buf + len, buf_len - len, "cv_total_query = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_total_query));
++		len += scnprintf(buf + len, buf_len - len,
++				 "cv_total_pattern_query = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_total_pattern_query));
++		len += scnprintf(buf + len, buf_len - len, "cv_total_bw_query = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_total_bw_query));
++		len += scnprintf(buf + len, buf_len - len, "cv_invalid_bw_coding = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_invalid_bw_coding));
++		len += scnprintf(buf + len, buf_len - len, "cv_forced_sounding = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_forced_sounding));
++		len += scnprintf(buf + len, buf_len - len,
++				 "cv_standalone_sounding = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_standalone_sounding));
++		len += scnprintf(buf + len, buf_len - len, "cv_nc_mismatch = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_nc_mismatch));
++		len += scnprintf(buf + len, buf_len - len, "cv_fb_type_mismatch = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_fb_type_mismatch));
++		len += scnprintf(buf + len, buf_len - len, "cv_ofdma_bw_mismatch = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_ofdma_bw_mismatch));
++		len += scnprintf(buf + len, buf_len - len, "cv_bw_mismatch = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_bw_mismatch));
++		len += scnprintf(buf + len, buf_len - len, "cv_pattern_mismatch = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_pattern_mismatch));
++		len += scnprintf(buf + len, buf_len - len, "cv_preamble_mismatch = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_preamble_mismatch));
++		len += scnprintf(buf + len, buf_len - len, "cv_nr_mismatch = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_nr_mismatch));
++		len += scnprintf(buf + len, buf_len - len,
++				 "cv_in_use_cnt_exceeded = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_in_use_cnt_exceeded));
++		len += scnprintf(buf + len, buf_len - len, "cv_ntbr_sounding = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_ntbr_sounding));
++		len += scnprintf(buf + len, buf_len - len,
++				 "cv_found_upload_in_progress = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_found_upload_in_progress));
++		len += scnprintf(buf + len, buf_len - len,
++				 "cv_expired_during_query = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_expired_during_query));
++		len += scnprintf(buf + len, buf_len - len, "cv_found = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_found));
++		len += scnprintf(buf + len, buf_len - len, "cv_not_found = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_not_found));
++		len += scnprintf(buf + len, buf_len - len, "cv_total_query_ibf = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_total_query_ibf));
++		len += scnprintf(buf + len, buf_len - len, "cv_found_ibf = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_found_ibf));
++		len += scnprintf(buf + len, buf_len - len, "cv_not_found_ibf = %u\n",
++				 le32_to_cpu(htt_stats_buf->cv_not_found_ibf));
++		len += scnprintf(buf + len, buf_len - len,
++				 "cv_expired_during_query_ibf = %u\n\n",
++				 le32_to_cpu(htt_stats_buf->cv_expired_during_query_ibf));
++	}
++
++	stats_req->buf_len = len;
++}
++
+ static void
+ ath12k_htt_print_pdev_obss_pd_stats_tlv(const void *tag_buf, u16 tag_len,
+ 					struct debug_htt_stats_req *stats_req)
+@@ -4473,6 +4735,9 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
+ 	case HTT_STATS_PDEV_CCA_COUNTERS_TAG:
+ 		ath12k_htt_print_pdev_stats_cca_counters_tlv(tag_buf, len, stats_req);
+ 		break;
++	case HTT_STATS_TX_SOUNDING_STATS_TAG:
++		ath12k_htt_print_tx_sounding_stats_tlv(tag_buf, len, stats_req);
++		break;
+ 	case HTT_STATS_PDEV_OBSS_PD_TAG:
+ 		ath12k_htt_print_pdev_obss_pd_stats_tlv(tag_buf, len, stats_req);
+ 		break;
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+index e557a5807bc6..a4dd894df077 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+@@ -136,6 +136,7 @@ enum ath12k_dbg_htt_ext_stats_type {
+ 	ATH12K_DBG_HTT_EXT_STATS_SFM_INFO		= 16,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_TX_MU		= 17,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_CCA_STATS		= 19,
++	ATH12K_DBG_HTT_EXT_STATS_TX_SOUNDING_INFO	= 22,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_OBSS_PD_STATS	= 23,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_RX_RATE_EXT	= 30,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_TX_RATE_TXBF	= 31,
+@@ -200,6 +201,7 @@ enum ath12k_dbg_htt_tlv_tag {
+ 	HTT_STATS_PDEV_CCA_STAT_CUMULATIVE_TAG		= 72,
+ 	HTT_STATS_PDEV_CCA_COUNTERS_TAG			= 73,
+ 	HTT_STATS_TX_PDEV_MPDU_STATS_TAG		= 74,
++	HTT_STATS_TX_SOUNDING_STATS_TAG			= 80,
+ 	HTT_STATS_SCHED_TXQ_SCHED_ORDER_SU_TAG		= 86,
+ 	HTT_STATS_SCHED_TXQ_SCHED_INELIGIBILITY_TAG	= 87,
+ 	HTT_STATS_PDEV_OBSS_PD_TAG			= 88,
+@@ -1240,6 +1242,82 @@ struct ath12k_htt_pdev_cca_stats_hist_v1_tlv {
+ 	__le32 collection_interval;
+ } __packed;
+ 
++#define ATH12K_HTT_TX_CV_CORR_MAX_NUM_COLUMNS		8
++#define ATH12K_HTT_TX_NUM_AC_MUMIMO_USER_STATS		4
++#define ATH12K_HTT_TX_NUM_AX_MUMIMO_USER_STATS          8
++#define ATH12K_HTT_TX_NUM_BE_MUMIMO_USER_STATS		8
++#define ATH12K_HTT_TX_PDEV_STATS_NUM_BW_COUNTERS	4
++#define ATH12K_HTT_TX_NUM_MCS_CNTRS			12
++#define ATH12K_HTT_TX_NUM_EXTRA_MCS_CNTRS		2
++
++#define ATH12K_HTT_TX_NUM_OF_SOUNDING_STATS_WORDS \
++	(ATH12K_HTT_TX_PDEV_STATS_NUM_BW_COUNTERS * \
++	 ATH12K_HTT_TX_NUM_AX_MUMIMO_USER_STATS)
++
++enum ath12k_htt_txbf_sound_steer_modes {
++	ATH12K_HTT_IMPL_STEER_STATS		= 0,
++	ATH12K_HTT_EXPL_SUSIFS_STEER_STATS	= 1,
++	ATH12K_HTT_EXPL_SURBO_STEER_STATS	= 2,
++	ATH12K_HTT_EXPL_MUSIFS_STEER_STATS	= 3,
++	ATH12K_HTT_EXPL_MURBO_STEER_STATS	= 4,
++	ATH12K_HTT_TXBF_MAX_NUM_OF_MODES	= 5
++};
++
++enum ath12k_htt_stats_sounding_tx_mode {
++	ATH12K_HTT_TX_AC_SOUNDING_MODE		= 0,
++	ATH12K_HTT_TX_AX_SOUNDING_MODE		= 1,
++	ATH12K_HTT_TX_BE_SOUNDING_MODE		= 2,
++	ATH12K_HTT_TX_CMN_SOUNDING_MODE		= 3,
++};
++
++struct ath12k_htt_tx_sounding_stats_tlv {
++	__le32 tx_sounding_mode;
++	__le32 cbf_20[ATH12K_HTT_TXBF_MAX_NUM_OF_MODES];
++	__le32 cbf_40[ATH12K_HTT_TXBF_MAX_NUM_OF_MODES];
++	__le32 cbf_80[ATH12K_HTT_TXBF_MAX_NUM_OF_MODES];
++	__le32 cbf_160[ATH12K_HTT_TXBF_MAX_NUM_OF_MODES];
++	__le32 sounding[ATH12K_HTT_TX_NUM_OF_SOUNDING_STATS_WORDS];
++	__le32 cv_nc_mismatch_err;
++	__le32 cv_fcs_err;
++	__le32 cv_frag_idx_mismatch;
++	__le32 cv_invalid_peer_id;
++	__le32 cv_no_txbf_setup;
++	__le32 cv_expiry_in_update;
++	__le32 cv_pkt_bw_exceed;
++	__le32 cv_dma_not_done_err;
++	__le32 cv_update_failed;
++	__le32 cv_total_query;
++	__le32 cv_total_pattern_query;
++	__le32 cv_total_bw_query;
++	__le32 cv_invalid_bw_coding;
++	__le32 cv_forced_sounding;
++	__le32 cv_standalone_sounding;
++	__le32 cv_nc_mismatch;
++	__le32 cv_fb_type_mismatch;
++	__le32 cv_ofdma_bw_mismatch;
++	__le32 cv_bw_mismatch;
++	__le32 cv_pattern_mismatch;
++	__le32 cv_preamble_mismatch;
++	__le32 cv_nr_mismatch;
++	__le32 cv_in_use_cnt_exceeded;
++	__le32 cv_found;
++	__le32 cv_not_found;
++	__le32 sounding_320[ATH12K_HTT_TX_NUM_BE_MUMIMO_USER_STATS];
++	__le32 cbf_320[ATH12K_HTT_TXBF_MAX_NUM_OF_MODES];
++	__le32 cv_ntbr_sounding;
++	__le32 cv_found_upload_in_progress;
++	__le32 cv_expired_during_query;
++	__le32 cv_dma_timeout_error;
++	__le32 cv_buf_ibf_uploads;
++	__le32 cv_buf_ebf_uploads;
++	__le32 cv_buf_received;
++	__le32 cv_buf_fed_back;
++	__le32 cv_total_query_ibf;
++	__le32 cv_found_ibf;
++	__le32 cv_not_found_ibf;
++	__le32 cv_expired_during_query_ibf;
++} __packed;
++
+ struct ath12k_htt_pdev_obss_pd_stats_tlv {
+ 	__le32 num_obss_tx_ppdu_success;
+ 	__le32 num_obss_tx_ppdu_failure;
 -- 
 2.25.1
 
