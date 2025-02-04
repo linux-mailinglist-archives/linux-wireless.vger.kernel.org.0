@@ -1,92 +1,86 @@
-Return-Path: <linux-wireless+bounces-18417-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18418-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50A8A271DC
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 13:36:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC35FA27284
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 14:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA9091882588
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 12:36:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3631B188525E
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 13:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A453D1A29A;
-	Tue,  4 Feb 2025 12:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE718C1E;
+	Tue,  4 Feb 2025 12:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="in8ZqpJp"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="b//TTyry"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39AA20D506
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 12:31:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA5B5228
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 12:54:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738672301; cv=none; b=kBryPZiu2pYNbpmt8FOBqXmX8BGWUpjsUu7cKZEIWXjtzB3uV/hn+dyAGkI3+Zr4PGz08+QYqYunHkrgQDTFFDISTAyomWIkCqI4C4hWbNMsIr/Xq9B330opwA9zPd9PThqJE3Ts8cVqYPk2wB2z6fEW0fCegp+JfbIedWC6cI4=
+	t=1738673645; cv=none; b=hhqMqO+BRwIWC/Yy2NkXWB2vtk4mdzKPhBr+hg1eHPZo91rgQ+SxrjBUs9nz1bYDEbhjksdHZItmBK1dGRedpxSxvAf1n/fB5DDbbIAg7aMaa+PPD3RgLlrakQGTE+AO960SpUaQz3qMYa6rnLfhUrGM15PXGss1aYyZeHl7QC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738672301; c=relaxed/simple;
-	bh=pX2OqxqExFZegWrhn0bRG+Ob6CZG4W9CU452+wtm+5E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HyxiZsJpvXIPbxWFFayzbdI/Enu/1DMGUC6ISBASCNxgIn1PlStiJv0Fv4kdxdFWWh2eXN0EF7M2X3WAuWuc5e/CI5Sl5A15ym5mtB5h5WLE1ScnePegxDkJ0JIhLmlkgRPwnlb9AmC0HlCENW5X1/FPTZlgvBGCkFWvwklWxIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=in8ZqpJp; arc=none smtp.client-ip=5.252.227.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
-From: Alexander Wetzel <Alexander@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-	s=wetzel-home; t=1738672297;
-	bh=pX2OqxqExFZegWrhn0bRG+Ob6CZG4W9CU452+wtm+5E=;
-	h=From:To:Cc:Subject:Date;
-	b=in8ZqpJpXrk7dXSZKSm/0CdWbUvKZqCOmKrxhrxeppY8IYqYYIQuPUVmSKI32zkej
-	 ODkOoeF/03LYNswa9tMygyRl0tKxmh8NYHyYewVaFxxE5IGVi+oEvZcD8TMCPisXlX
-	 DkIhAT/qXVhfL6BoUqhNLjMkc9N5QdwrbjqpCeu4=
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Alexander Wetzel <Alexander@wetzel-home.de>
-Subject: [PATCH] wifi: mac80211: Cleanup sta TXQs on flush
-Date: Tue,  4 Feb 2025 13:31:29 +0100
-Message-ID: <20250204123129.9162-1-Alexander@wetzel-home.de>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1738673645; c=relaxed/simple;
+	bh=LAVgYOD4rF4WS2GfS0uwMY+mPcNk7ZktLakVsx8M6DQ=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dPnfVchYQc0lAnt1OsvfYG0jyS4jS1b6oidFbfKDb9VyiS0Xf54ZZ9/JAtxgeLSxbNgJek0plPmPexHr0rrKl4o8v2oBa8ZWmKTjwa1xCJYRKrIUrrwCX88ZetVyS7K5Ud1okBMw91+ZSORz5chKb0nX4oRiHYtnAszIGeMHO6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=b//TTyry; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=6v92cMHEkoJdILkC2k/hZmidlA+IpZU59skP4mPqt5o=;
+	t=1738673644; x=1739883244; b=b//TTyrymqNZK1mpNo80DrW7hpxKrVTPl81qNbf9pA9NSYz
+	Sa7MQwb0e+uvflqwYLflTg5X3hvn1UoQRjFbS3MZL5/PfMqGn3vZBQ3uZ20R5bw4QAomYx/DjUvbF
+	Ox4yMieCFT79rvuAznq7249Cu4ts7lfoYKPM+16LcbmA9nosjm4xIoo/e0YHAFB7LHDDF5jnb65hy
+	DhYM5coMjOyV5lOgBzep6goGgeicCuUUiafhgPCWaOT/Bh7xsTcPSwoaGna/Ogvqnc2YXDOFfGbQD
+	zuAMjwAsAa6unQPFX0GXNh4FTTVsQDK3hPZiXa8DXQ0Acj2DMbG6usmqriIhwmkQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tfIR7-00000002gMX-33vT;
+	Tue, 04 Feb 2025 13:53:53 +0100
+Message-ID: <9e60d3a81e87649eb25e9bbeb599e1ed24050134.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: Debugfs handling for virtual monitor
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Alexander Wetzel <Alexander@wetzel-home.de>, 
+	linux-wireless@vger.kernel.org
+Date: Tue, 04 Feb 2025 13:53:53 +0100
+In-Reply-To: <20250204122617.8976-1-Alexander@wetzel-home.de>
+References: <20250204122617.8976-1-Alexander@wetzel-home.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-Drop the sta TXQs on flush when the drivers is not supporting
-flush.
+On Tue, 2025-02-04 at 13:26 +0100, Alexander Wetzel wrote:
+> Create/delete debugfs entry for the virtual monitor interface according
+> to the state of the virtual monitor interface.
+>=20
+> This fixes the following issues:
+>  1) Debugfs is not getting an entry when the virtual monitor interface
+>     is created.
+>  2) Instead debugfs gets an entry when it's deleted.
+>  3) And debugfs warns, that it already has directory for the virtual
+>     monitor interface every time the virtual monitor interface is
+>     removed again after the first time.
+>=20
 
-ieee80211_set_disassoc() tries to clean up everything for the sta.
-But it ignored queued frames in the sta TX queues when the driver
-isn't supporting the flush driver ops.
+Started wondering, maybe it should just not have debugfs at all? That'd
+also avoid the potential name clash, and there isn't really anything of
+value there in the first place?
 
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
----
- net/mac80211/util.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index f6b631faf4f7..7f02bd5891eb 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -687,7 +687,7 @@ void __ieee80211_flush_queues(struct ieee80211_local *local,
- 			      struct ieee80211_sub_if_data *sdata,
- 			      unsigned int queues, bool drop)
- {
--	if (!local->ops->flush)
-+	if (!local->ops->flush && !drop)
- 		return;
- 
- 	/*
-@@ -714,7 +714,8 @@ void __ieee80211_flush_queues(struct ieee80211_local *local,
- 		}
- 	}
- 
--	drv_flush(local, sdata, queues, drop);
-+	if (local->ops->flush)
-+		drv_flush(local, sdata, queues, drop);
- 
- 	ieee80211_wake_queues_by_reason(&local->hw, queues,
- 					IEEE80211_QUEUE_STOP_REASON_FLUSH,
--- 
-2.48.1
-
+johannes
 
