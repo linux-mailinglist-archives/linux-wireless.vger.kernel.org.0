@@ -1,146 +1,143 @@
-Return-Path: <linux-wireless+bounces-18472-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18474-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885DCA27CF5
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 21:58:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315F1A27DAE
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 22:44:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11BFA1634F7
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 20:58:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E954618830A8
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 21:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C839C206F16;
-	Tue,  4 Feb 2025 20:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538F22206A5;
+	Tue,  4 Feb 2025 21:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HLwTiwX5"
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="Dsh7OWyh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-wr1-f102.google.com (mail-wr1-f102.google.com [209.85.221.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCECF19E83E
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 20:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E082C21C167
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 21:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738702700; cv=none; b=lPc7AS0ra+ZBjiGMMM6gc3w9VJOhpWbDUQGm4RQAoysvYBm3Opx04YOlYJyrqBr4333Jghgoib+Ba7RH08pAJKBDuelX5fTYBrO0p+B3Y6/GnPU6SAdFItpD9VNC+JKlLKlJ6mT3KiLkT3Qmr/0IQyhibMWQyXaKBXsOjeDvVto=
+	t=1738705314; cv=none; b=V7jLV1KN3FJZYIhUvGYQVDMYlNyUxetFdhMKM0pL04666cVGVBXkj0JQL77/+L4s3ak6uxByfkKvVYksdr4hb9FnG1WyiWc7CtC2u5mtfFF9iFxkYXaN2nkFGbqAjRExrpbJONh6jPOXmso7/wChiS68zsKmT8W+HxQ6wVASUIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738702700; c=relaxed/simple;
-	bh=o3CcFq+X2oAFhodFAgqXihMVp6qsp4cfQ5NXZj8uQKo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qXDEMqSO8i6Wi8bC5iQOSvFq0MoUiCjakJbb2kbjv5OOCZR5xVy0c/5JJDwbV36dQI55DNiG2lc9Tms/yGzQzRc4XZ1zC6jQY6udQdya/M8F8wXiH8XguGI4CfkrrcGU0gjEFTvfanWSiYCoXR9RoNJ9jn9KryBrCMWjwdsNoKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HLwTiwX5; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ab68a4ab074so736921866b.0
-        for <linux-wireless@vger.kernel.org>; Tue, 04 Feb 2025 12:58:18 -0800 (PST)
+	s=arc-20240116; t=1738705314; c=relaxed/simple;
+	bh=FS08keFY1ozdicBUiUIN8Bu2H6mZ2iIkvJVfmRGOhvQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RIRc9noVf0Fgqy7DDT231MpdwL4AH/zkveJ9f/So54AmRkeIoXCLMgXwjYVBn5TEZyrNEF3ClRLqAf7SZFV1nQWm1nh8IAoRwPzJ3M1h5yGP58owIXf8GFjbYqQ2e9XWDKcLGhwIM7/VSwpcEKi4FwzL4h2M1fOZHFDDpk7Gl8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=Dsh7OWyh; arc=none smtp.client-ip=209.85.221.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+Received: by mail-wr1-f102.google.com with SMTP id ffacd0b85a97d-38db0146117so528655f8f.3
+        for <linux-wireless@vger.kernel.org>; Tue, 04 Feb 2025 13:41:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738702697; x=1739307497; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SSEiuUb+aI2nZGeyU8J5T6b/ID0C8enKmRLrZW3Mgqw=;
-        b=HLwTiwX5aoGeQ/HCKVjEHj4pYVbOUTqJ6segEW65QSv7FcMyoL5lnjgPL/BZAWJ0nO
-         eLVTU1Bja6da9Yooik+WWIWODCvjN3OQlgQQccKjH11XLuTXqMjQHZWC+EhD98FFdskI
-         4db58c8YHPdNDbz4OTX/lpU3KaUCg2Ii4CKhz7EDY7YxIJPquWOsxgCeFuWDg/1lkaNc
-         LQGI9nsOXnm8zvSLgMAmzrteBGl526B1zf6gw/SYxpAA+qEswZL0OHQ4mUuMk1CMpt/x
-         fWdxvNJASNMeWwe8qqlsz/0TUd0hLfK318gVJmdVKmSmTaVlpG/SlUGoWw+1YZ4ptOLu
-         HJKQ==
+        d=purestorage.com; s=google2022; t=1738705308; x=1739310108; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6kSjAEc3JpgYH0pfJk9yrLxuH6CjSL5l4ipCiBf9QiU=;
+        b=Dsh7OWyhJkjgy3jaI4YUiT+Vt4TXogtOSZuWqg2OUPefc8+8CwDgDgBk4khSn5l2vm
+         ybZfCN7Uu2pJFcUm+RnJGcnDzHVnS/NRnoCN5r9w/NeGQBEvu5EKMkJ4EPXLToMoJvJR
+         s/5Xn+WWRUQxRNazuzyZMWyoCF5YK36njkh+BEfGVeU8DRg1BUKMLELMWZPVXG3MSMcj
+         TFRggSg9VS/jldoCUxZuf6ueYVgXzJwRfc+e9XweBZljC02RT9EPbP6V9lbjjRi7xjh2
+         GJNqLbeb5JurmJ1raHNV9fGnTpVrhgBPbmRNccYGmNArT5FBnlT/J2hWk00d98bYskpA
+         VlLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738702697; x=1739307497;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SSEiuUb+aI2nZGeyU8J5T6b/ID0C8enKmRLrZW3Mgqw=;
-        b=Ak6gqyCek72AcUwDc6p55FnotQ60FoscGuGop7dq9/3czbHKxnpihcjPn+dE4mGL3/
-         1ucxbjHx8gwcGAaqcHHsegB7qTMNgnLGALa3REWmKVuKCxl0AVHu7dS/IejTSY7a/QkJ
-         cEBKXZOv+LKWqU3hLXCA6TECqYGf+pbvV9HDz3xDRYGnQCNcjPvCrahTBDlyW6c2loss
-         iNYDiXt58Zd+D/T95TBpAvEgOpOISMVIRwwHMqJhuQsaUuINRn/ah1bfCcIrhQXo92U9
-         fktpEj3UW2yYc5eU7SbYRHRsBjDUCI1cGB7iyeT2KVHMNpws9oYOyqobAs7/HPPPJZoQ
-         aUVw==
-X-Forwarded-Encrypted: i=1; AJvYcCWORC3vhSTwD33AuU8615N9pe4XwOSHwJ9HdHu5jJlyHDjcjvFbyP+/0rFACImywCnNRlkab5UEzBuZlWURjQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsYNxq7/1KYrpwHjgSDKY9fV33GOpngakQLj3OVIZbIrtCtGIc
-	P1DnJK69qQareRHvWt2oKqRs+0b5y7rra53HDZHR8u5R7swDXdbs
-X-Gm-Gg: ASbGncuEqKP+P6UmF/GJYk0TPC/DtUpBHzmCRt+UloDngAQFffdhDOZnhkJp+iiWp5P
-	CG7I4U2XXW8FzSs8+3J5/JJ3ug3Cgb87WUggR3aVD13XnwYhLHDdF8grkCDdJ9d0YFbXt5TC+3Z
-	vW3KBgNGFzXR/p3VnHX8GuDLktgS4P6h5Esj2wKSHIWJArhkbyt0+zAmUg1TnsbF9RURgYtrFwU
-	xwvip+T1vy4FcQdigaPckqCU3v+tgvfED9Dd6KWm6VtySg5IiA6U6SIcCTRnNgDujyRhjG5qT3z
-	go9ijioa/2G0e7PbrzfkYBzA
-X-Google-Smtp-Source: AGHT+IGGIRA4fyknsx8xOVNdF+2w0xS2bZuUcbG/woqbV8pL4YwVnTr6Wre58PVk+WTenVpckGNoJg==
-X-Received: by 2002:a05:6402:3205:b0:5dc:5ada:e0c7 with SMTP id 4fb4d7f45d1cf-5dcdb762c7bmr1282110a12.26.1738702696668;
-        Tue, 04 Feb 2025 12:58:16 -0800 (PST)
-Received: from [192.168.0.50] ([79.119.240.253])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dccfc236a3sm1204395a12.18.2025.02.04.12.58.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Feb 2025 12:58:16 -0800 (PST)
-Message-ID: <abfb985a-50c8-4c85-8a11-9648d106c2c9@gmail.com>
-Date: Tue, 4 Feb 2025 22:58:14 +0200
+        d=1e100.net; s=20230601; t=1738705308; x=1739310108;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6kSjAEc3JpgYH0pfJk9yrLxuH6CjSL5l4ipCiBf9QiU=;
+        b=p4Klg4dOMjXq5UVqkgh2q0kSMSzptOb5GejkuQxiUMamMLCJ2h8EB6DtoEfQBv+u+w
+         3nURpX0huhPnedB+XhUdi7zk/6gf2ruHuRKiT8zaoBNb/Kk/38OsJDrwDZFQf1ZcOmH0
+         z3pCM0zsqQLj+aFD1d3XGU6LzhMgyFH6sd3r0xQxpEKv3KEO5564VF19xWKp+8hFRLSv
+         RwbsGrfx4GRu2vYA8RFNEoTruMe4C1PzirXrX9/Uk6CwuYgsx3Bs3/Fw0AGs5bqp86k2
+         rBfqGuNhisSn1HcBN6WLOit7RT3M8JuDMBTorxecnkNKD891MwB7L6PAKDp+y/SRTMWh
+         rj7A==
+X-Forwarded-Encrypted: i=1; AJvYcCXj+hy3Ac+ZiEnGGz5NGyFgSNRxuT5NRNPj3lyo/tHh7EYKvrc9FXIk+DCDkKLWH2tN9ZlnFfibrBVN55ze4w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzynIwN0QAORzwahZ/AC26wP2cbNJ4GqFv4f2EBEaonBXa0Y3yB
+	899+hXPZMnXtvWYXEK+wIOJIlEDI/wTHa4FTiUP1ZJlD1C/g/bzIM1jlH7doNr3/o20jsR5Jkx/
+	wbK7pO4hlI03xPcKW3mtv8t7snRmnsQR7
+X-Gm-Gg: ASbGncux+N2bT1tt03ifFiuylBo5XO9lJGz1YG6Sse1HCFMNl4wg0Ny7p7LXXj1q9wl
+	Ue74AphPvNCYihhsyDy0AvPoPq4IL0nXtS7SsMNWGuv1TAw5AyJV3T+0G/RDTDQKuzjXDRh1Rfa
+	zKKjcM3Yhs3PRabRAPy2G4seiDt0N+ZkfxfSn8pai1v14OS2UjYsIgAeFVNBPLUQvD6zMdopOPq
+	l0QHgqKya27LWBdRZXFT8zYYf39EXFcKyWHk+W44QgLt1RhuzUYXPdtT6qQoqh8oDELjRevLD19
+	egF6wkwh7AXcSXjO3in0756vrTASk52pjbY+mdM=
+X-Google-Smtp-Source: AGHT+IHnFwgWjv8YV945kq/kC9C35yctrGUfuiPjRcl9fbEU9yyG5D3XeVSkJedIdI9xuStQxGPZrW7XyNqF
+X-Received: by 2002:a5d:5849:0:b0:38d:b0fe:8c99 with SMTP id ffacd0b85a97d-38db49101c1mr230256f8f.48.1738705307565;
+        Tue, 04 Feb 2025 13:41:47 -0800 (PST)
+Received: from c7-smtp-2023.dev.purestorage.com ([208.88.159.128])
+        by smtp-relay.gmail.com with ESMTPS id ffacd0b85a97d-38c5c0d3560sm367622f8f.8.2025.02.04.13.41.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Feb 2025 13:41:47 -0800 (PST)
+X-Relaying-Domain: purestorage.com
+Received: from dev-ushankar.dev.purestorage.com (dev-ushankar.dev.purestorage.com [IPv6:2620:125:9007:640:7:70:36:0])
+	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 0FE6A3401AB;
+	Tue,  4 Feb 2025 14:41:46 -0700 (MST)
+Received: by dev-ushankar.dev.purestorage.com (Postfix, from userid 1557716368)
+	id F2E4CE435A1; Tue,  4 Feb 2025 14:41:45 -0700 (MST)
+From: Uday Shankar <ushankar@purestorage.com>
+Subject: [PATCH v2 0/2] netconsole: allow selection of egress interface via
+ MAC address
+Date: Tue, 04 Feb 2025 14:41:43 -0700
+Message-Id: <20250204-netconsole-v2-0-5ef5eb5f6056@purestorage.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: rtl8xxxu: Enable AP mode for RTL8192CU
- (RTL8188CUS)
-To: Ezra Buehler <ezra@easyb.ch>, Ping-Ke Shih <pkshih@realtek.com>
-Cc: Martin Kaistra <martin.kaistra@linutronix.de>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Johannes Berg <johannes.berg@intel.com>,
- Reto Schneider <reto.schneider@husqvarnagroup.com>,
- Ezra Buehler <ezra.buehler@husqvarnagroup.com>
-References: <20250122071512.10165-1-ezra@easyb.ch>
- <393aa422-3ac8-40e7-aa2f-62956a844005@RTEXMBS04.realtek.com.tw>
- <19b8059a-c5f6-4467-8b42-31e70b9fe1f3@linutronix.de>
- <93fe56295aba4bf0bc1af603bd992f47@realtek.com>
- <CAM1KZSkPNQ=6VzuoiF7qALq=UVjoT_SF2YgO5oRwuraQACqeQA@mail.gmail.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <CAM1KZSkPNQ=6VzuoiF7qALq=UVjoT_SF2YgO5oRwuraQACqeQA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJeJomcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDI1MDIwMT3bzUkuT8vOL8nFRdk2QzQ4NUozQLc8NkJaCGgqLUtMwKsGHRsbW
+ 1AIZgPeRcAAAA
+X-Change-ID: 20250204-netconsole-4c610e2f871c
+To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+ =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>, 
+ Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ Johannes Berg <johannes@sipsolutions.net>, Jonathan Corbet <corbet@lwn.net>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Uday Shankar <ushankar@purestorage.com>
+X-Mailer: b4 0.14.2
 
-On 04/02/2025 21:59, Ezra Buehler wrote:
-> On Mon, Feb 3, 2025 at 9:51 AM Ping-Ke Shih <pkshih@realtek.com> wrote:
->>
->> Martin Kaistra <martin.kaistra@linutronix.de> wrote:
->>>
->>> Is there a reason for not setting macid in rtl8xxxu_fill_txdesc_v1() and
->>> rtl8xxxu_update_rate_mask() like it was done for the gen2 case?
->>
->> rtl8xxxu_fill_txdesc_v3() doesn't fill macid neither. Quickly search for
->> the code filling tx desc [1]. I think we can have a
->>    #define TXDESC32_MACID_MASK GENMASK(4, 0)
->>
->> The h2c command format of rtl8xxxu_update_rate_mask() seemingly should be
->> equal to rtl8192c_set_raid_cmd() [2], but not.
->>
->> Can anyone help to spin patches and test if it works?
-> 
-> The suggested changes seem to help. A quick test shows TX rates of
-> around 20 Mbits/sec. I will prepare the patches soon.
-> 
->>
->> [1] https://github.com/lwfinger/rtl8192cu/blob/master/hal/rtl8192cu_xmit.c#L257
->> [2] https://github.com/lwfinger/rtl8192cu/blob/master/hal/rtl8192c_cmd.c#L201
->>
-> 
-> I've also noticed that the TX rate is not reported correctly. "iw
-> station dump" shows "tx bitrate: (unknown)" and "hostapd_cli all_sta"
-> displays "tx_rate_info=0".
-> 
-> Any ideas why that could be?
-> 
-> Cheers,
-> Ezra.
+This series adds support for selecting a netconsole egress interface by
+specifying the MAC address (in place of the interface name) in the
+boot/module parameter.
 
-Looks like rtl8xxxu_sta_statistics() was not updated for AP mode.
-See rtw_ops_sta_statistics() and rtw_fw_ra_report_iter() in rtw88
-for inspiration.
+Changes since v1 (https://lore.kernel.org/netdev/20241211021851.1442842-1-ushankar@purestorage.com/):
+- Add a patch to define and use MAC_ADDR_LEN (Simon Horman)
+- Remove ability to use MAC address to select egress interface via
+  configfs (Breno Leitao)
+- Misc style fixes (Simon Horman, Breno Leitao)
 
-But this chip doesn't report the TX rate, so rtl8xxxu can only
-report the theoretical maximum. It does this already for station
-mode in rtl8xxxu_bss_info_changed(). I guess you can do the same
-for AP mode in rtl8xxxu_sta_add().
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+---
+Uday Shankar (2):
+      net, treewide: define and use MAC_ADDR_LEN
+      netconsole: allow selection of egress interface via MAC address
+
+ Documentation/networking/netconsole.rst |  6 +++-
+ drivers/net/netconsole.c                |  2 +-
+ drivers/nvmem/brcm_nvram.c              |  2 +-
+ drivers/nvmem/layouts/u-boot-env.c      |  2 +-
+ include/linux/if_ether.h                |  3 ++
+ include/linux/netpoll.h                 |  6 ++++
+ lib/net_utils.c                         |  4 +--
+ net/core/netpoll.c                      | 51 +++++++++++++++++++++++++--------
+ net/mac80211/debugfs_sta.c              |  5 ++--
+ 9 files changed, 60 insertions(+), 21 deletions(-)
+---
+base-commit: c2933b2befe25309f4c5cfbea0ca80909735fd76
+change-id: 20250204-netconsole-4c610e2f871c
+
+Best regards,
+-- 
+Uday Shankar <ushankar@purestorage.com>
+
 
