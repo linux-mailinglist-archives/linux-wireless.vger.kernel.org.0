@@ -1,99 +1,150 @@
-Return-Path: <linux-wireless+bounces-18424-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18425-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B74A27688
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 16:55:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BF4A276F6
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 17:16:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 088453A422B
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 15:55:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC3E818858F0
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 16:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD09215067;
-	Tue,  4 Feb 2025 15:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC77214A60;
+	Tue,  4 Feb 2025 16:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iEydTaSm"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hRliQO/B"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90006214A65;
-	Tue,  4 Feb 2025 15:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384363232;
+	Tue,  4 Feb 2025 16:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738684539; cv=none; b=WYJkmtCNAOEunEAig9tK0eu8MbWbJxrNfjFlq+AxfI504RDyQLGn3v5aCt2cy8QlQwEEjb436gkBAt+b97OqrKpHO4d5G1QXIbqkg2pZjJi4Xuu/WGgyP4YLXGlcCYyh3+XPcwpUb4PUv9Q5wEMNCtcf0zPantXqR4BDUoJsnNo=
+	t=1738685803; cv=none; b=ZTmA1qvnwSeHMX/K5lojQ+gKPbDxbxjnrvrmRp8OSk8QLs+J/EOzoK6hd93lBMs7COVZDPU3lyvNdc4EeJoAtJZhBCOz3F5cLBYKTbygb6ODBFJlzRZSQGS9GwucNb/f34HhDwGPkjM507rYs+3BdkIynRfsr7c4znWuKIYeadc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738684539; c=relaxed/simple;
-	bh=GndJEtpYdFqEDOd4Z8mTp5BDPpjjgXLx/u3RIQMRdow=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bnP5R0Q/9JtkItK0TlLUS1ALSvjuwPqIie3husvx5hZDSePNnhf8gwXl4/dMoMcnXYZWRA5zKLv1buqcMlmd6X1cx64m/8qpxVOBDCTeeWFVaTbLNULJGyAM1qgFgS86y6J/CM3Uyw/SpgqNDm35lFX2Sf2BV4Xf8l4Lpqa7Wrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iEydTaSm; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4361b6f9faeso35873305e9.1;
-        Tue, 04 Feb 2025 07:55:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738684536; x=1739289336; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GndJEtpYdFqEDOd4Z8mTp5BDPpjjgXLx/u3RIQMRdow=;
-        b=iEydTaSm6NMKdgXjtWMown9Qe5WEdcWM06SdzecszpR4goWDYk4Chgzv0TWEXTyaNb
-         NX19oHKc+X7reL4PcTSB8+FGs8uOs11/Y4l5ZFBTo9dyxiVVUYPlnGzFJgIuv/dStYP9
-         Y7/oK4+5Rj32MfOIx/yKUodYjYb07TO5LQwAbxa26EZ4tf92Uroo7ZNjrpEyMI5s/12Z
-         o+gx092I/U0EspvZesAACjmn335NrzHoaTKvDRQzce3ZPSjAVL7kwrNiokZgeUM8iDy/
-         sB2OeVnKjOzxLMJCwTpPNz8lcikeVJnUB4QTTCoZLI6uqMp/ltWm7MoUTsrt6EZWaWzq
-         y+Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738684536; x=1739289336;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GndJEtpYdFqEDOd4Z8mTp5BDPpjjgXLx/u3RIQMRdow=;
-        b=k0na3jOHIgZzuzcvxMAByodmUqsH6K/Q9ehTDTHvVqNNHE0zMzFXt0/dttjxZmP6ZT
-         xHYkG3cuqxbjsxFG1ZuNtIpmQMMkZL8Ey2kP2txKLYw9AVPPoIR1BlQUyHNjGudQZnh7
-         BWVLmVu65K0LfwXNLD3BuVHoojfZxEZ4j17Yj0tJaUeU2BoKAoByMOvKXc6DKV85cNUX
-         SYoupAiTOij43kmfy/FsgU2K1jceY0ocbiu2iadxlyEMT59EBzshlG3McWFPMTPGTfpd
-         yzNXqNjW2Xu/t76pp6nn28mwlQKbmDieRd3xdyM3DcLuXOZwxB/amKotY1nwDyPeXvMr
-         Gf/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUo/mzoHV1IAxLDcGbTDywNfNGSOrhjQ/3+xCryGa5FWvuNZFgsT4pK5wfU6CcvuK5jsYs6OKt6ydroGkodi2A=@vger.kernel.org, AJvYcCWsNl9Y1jlDTNQuPooXlhRtDBCartBvwVdJElxfqjj/GmggdTNaLChpd56RSaABEhZm7MgCoC9T4fJkxliv2Yo=@vger.kernel.org, AJvYcCWvDr498hQ6wSN2+BO66lkkc+kYra5jwV2e3S08+jE2wnyo0OEkbFT1Bkkv/zqox9/ZgAzm984cIHyF5cUx@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfJxvhr6mEusrhjqjhdh3EcmCIPFEol/T+vHstrUVyUsJJT+6o
-	oMtd2X8o+yUlq6oL3yrFMLRZV+TXLPzlAgbxhl43Gw1pHLpiv2/8
-X-Gm-Gg: ASbGncuDGlJbm+bHEhZMasubFE761uygNuirPfMuC/KDxzAhjZWxIEJXVXkYRI7XUIL
-	7adswGr/xtXBNEnQORBwwiI8/WnqeMdaVsObAlGQRoL86ElTB6EZE84P2UsbVBPalJqxMZZqHMq
-	pdFn9wN5011+oqVPeiht8wfAMYMrh484Aj/hjeRpkuz0b4zboIZDt2Lef4v0XG8J+tK1dnmKuA+
-	lcnjw9avklSHMNmNPaRaSjT/y38Qw3c1Wq+e4NKCH+B3Ww/xXQRAqKdHqx6IeQhyOOBrA3iMZ6r
-	qQxwmPy/fw==
-X-Google-Smtp-Source: AGHT+IGKGruzA4wwdDq7Y2RpTmwsPaCmy5oTDCAJQDreSJXPZQcJrKJIeOVsRrar+qymm+QTF5yaFw==
-X-Received: by 2002:a05:600c:15c3:b0:436:fdac:26eb with SMTP id 5b1f17b1804b1-43905f72ae4mr29643885e9.7.1738684535476;
-        Tue, 04 Feb 2025 07:55:35 -0800 (PST)
-Received: from void.void ([46.210.150.20])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438e23d42dfsm198278465e9.4.2025.02.04.07.55.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Feb 2025 07:55:35 -0800 (PST)
-Date: Tue, 4 Feb 2025 17:55:32 +0200
-From: Andrew Kreimer <algonell@gmail.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH net-next] wifi: rtw88: Fix a typo
-Message-ID: <Z6I4dGqtAXGM8rls@void.void>
-References: <20250203180913.5435-1-algonell@gmail.com>
- <59ace70567f544e3b0b9bd601e2a24b7@realtek.com>
+	s=arc-20240116; t=1738685803; c=relaxed/simple;
+	bh=Wm9ixR6QtXFALjs+x9GdQG7OdHTWuWrT49ASoIfXQ8s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pW1I22727ti6OTRXR2kmhjo7ALrPLFhQNEhVzw6xSzSzLDcvbTk7Lem3vDzqUqLj1GCkUGIQWRmoD39uGYMBlDA+J2E1XmWeXDjNKrPyAnmnueULm4yqt44dfe7CZzhU1xFfwWnCC5ITqgCdA5cOnCQrPOgvcllx8R+V7jidDn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hRliQO/B; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 514EWWI4016940;
+	Tue, 4 Feb 2025 16:16:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	9Prt8xOPE4tzYuuC2GdD2b9BREl1EzNERXgEX3LdMYw=; b=hRliQO/BB8VXK+iU
+	03snTgLVxtZUR3NwJVBTM0RlC5+q2FVKqLn5yX0Ggr70MgbMF65hkuTesT2b4UC4
+	G+W6aBhrfK1axekqYqx2C1sanmhbvr23clTYStKlUQWAsjEfZ8cLGL37PT+JM2aF
+	HV50cvQb1p11okbqvrrcjZEM4bP5h8IjPI9T4m3yT+UmJKBX/xXUrg9M4guxQfZ6
+	vGRWutGyo/8mdu4rN960a8gRd3lHMnlKyHuRPEqiOBPxBKtDwcUdEo6lvv676zS5
+	TGIUwAF+hs81dJh0S1xoGLAcmDvbaa6+7tCeMDAIJzts6p+nksD3T+WR8rpI9Rra
+	IfbNDQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44kmre08kp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Feb 2025 16:16:37 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 514GGaWq007150
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 4 Feb 2025 16:16:36 GMT
+Received: from [10.216.42.141] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 4 Feb 2025
+ 08:16:32 -0800
+Message-ID: <e05719c5-15b8-4ee7-85a3-5dd9d00f5b0e@quicinc.com>
+Date: Tue, 4 Feb 2025 21:46:28 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <59ace70567f544e3b0b9bd601e2a24b7@realtek.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 09/13] wifi: ath12k: Power up root PD
+To: Krzysztof Kozlowski <krzk@kernel.org>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        "Rob
+ Herring" <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        "Conor
+ Dooley" <conor+dt@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Sowmiya Sree
+ Elavalagan" <quic_ssreeela@quicinc.com>
+References: <20250130043508.1885026-1-quic_rajkbhag@quicinc.com>
+ <20250130043508.1885026-10-quic_rajkbhag@quicinc.com>
+ <02d3f555-c2e9-40ed-8695-8ae7f260e259@kernel.org>
+Content-Language: en-US
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <02d3f555-c2e9-40ed-8695-8ae7f260e259@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 8WNBpYl_UMi4pz-k9IFQYjBjVXRBXcG1
+X-Proofpoint-GUID: 8WNBpYl_UMi4pz-k9IFQYjBjVXRBXcG1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-04_08,2025-02-04_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 adultscore=0 impostorscore=0 malwarescore=0 phishscore=0
+ spamscore=0 mlxlogscore=874 bulkscore=0 priorityscore=1501 mlxscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502040125
 
-> To be clear, during commiting I will change subject to
-> "wifi: rtw88: Fix a typo of debug message in rtw8723d_iqk_check_tx_failed()"
+On 1/30/2025 1:28 PM, Krzysztof Kozlowski wrote:
+> On 30/01/2025 05:35, Raj Kumar Bhagat wrote:
+>> +
+>> +static void ath12k_ahb_unregister_rproc_notifier(struct ath12k_base *ab)
+>> +{
+>> +	struct ath12k_ahb *ab_ahb = ath12k_ab_to_ahb(ab);
+>> +
+>> +	if (!ab_ahb->root_pd_notifier) {
+>> +		ath12k_err(ab, "Rproc notifier not registered\n");
+>> +		return;
+>> +	}
+>> +
+>> +	qcom_unregister_ssr_notifier(ab_ahb->root_pd_notifier,
+>> +				     &ab_ahb->root_pd_nb);
+>> +	ab_ahb->root_pd_notifier = NULL;
+>> +}
+>> +
+>> +static int ath12k_ahb_get_rproc(struct ath12k_base *ab)
+>> +{
+>> +	struct ath12k_ahb *ab_ahb = ath12k_ab_to_ahb(ab);
+>> +	struct device *dev = ab->dev;
+>> +	struct device_node *np;
+>> +	struct rproc *prproc;
+>> +
+>> +	np = of_parse_phandle(dev->of_node, "qcom,rproc", 0);
+>> +	if (!np) {
+>> +		ath12k_err(ab, "failed to get q6_rproc handle\n");
+>> +		return -ENOENT;
+>> +	}
+>> +
+>> +	prproc = rproc_get_by_phandle(np->phandle);
+>> +	if (!prproc)
+> 
+> Nothing improved here - you still leak the reference.
+> 
 
-Noted, thank you.
+Thanks, will take care of np refcount leak in next version.
+
+>> +		return dev_err_probe(&ab->pdev->dev, -EPROBE_DEFER,
+>> +				     "failed to get rproc\n");
+>> +
+>> +	ab_ahb->tgt_rproc = prproc;
+> 
+> And here.
+> 
+
+Thanks, will handle rproc refcount leak.
 
