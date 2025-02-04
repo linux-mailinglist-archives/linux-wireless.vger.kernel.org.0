@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-18457-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18459-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E72CEA278E6
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 18:45:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34521A278E8
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 18:45:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92FBA7A14B2
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 17:44:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE63B3A4949
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 17:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F261216E09;
-	Tue,  4 Feb 2025 17:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C20217736;
+	Tue,  4 Feb 2025 17:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IQVGqIOf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UL+mVqqg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E78216E06
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 17:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B141217715
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 17:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738691033; cv=none; b=DfZLgwuuUpt0zr9zEeJ5a6vJfX+UmtO1sqkAs/QPc2jnlpXSpNkfJlJidXkJMLhVEVsaeDqH8t6V9Vgvc0j9J8p1twuWhdHqkUFlhJ3aZ7G8sTZiIXx6yxxtkrxXRFauid6leOpkPgkXLIhgaLEIWkIYKVLTPpTZZyUPz6re7XE=
+	t=1738691034; cv=none; b=CljEbKR2I2roj0fa2ZiJNMy4JBZG1/E8PuiALrQ33c3e4iQd2yVRcUgJEvBpDMiIMU+ENBJV8jzsQ8mZRIP0rdN8JkmCbDyewTG/tYyWrTL6OO07Ba+4nFb/gR0YXdiw+u/E9PnnDN5WZ7G9/iLA80zdu90ej4zo/VwZjYXGYUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738691033; c=relaxed/simple;
-	bh=2p3wIanMvJ9F+sePUllkeyny16eBQd3LXbnFS09w2fI=;
+	s=arc-20240116; t=1738691034; c=relaxed/simple;
+	bh=erd7G2XY3j3Bv7e6tWorf0W/YkCwIdR9O3U8NYzel6w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GqvXnnNVq0Q3heaLM9NFfGov30F33S1TQokHuO7vTw2W0v+/X5tH5G6ugBMETvP2LO2upKCKb9fCfNBxiYUMzCpp5C3ERdLSlLMl+GMwbhINed97hboxiCAGuxrJiLVOKwYzsrxAai2ghxa3UpDa9y+j19hywFADrvdbPPZdI8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IQVGqIOf; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=nDblDF1a+PoQgYQV+mqN2xRVK+GnvXnLoxLU2WEg6qxVqjUEgajPj7otuA49u8ofE8OfIAagbS2lyw8edGD9PLWP0XjOVaYGjvDtQIrtccHyeQds1gGXGjuQxMEl5/fuZcbSHuuLtngg61Hhhw0Sag9eNAQyUsBYLldeoCmilHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UL+mVqqg; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,35 +36,35 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1738691032; x=1770227032;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2p3wIanMvJ9F+sePUllkeyny16eBQd3LXbnFS09w2fI=;
-  b=IQVGqIOfevzCuiFRBz57GEOVOLiGnSev4Qd++gDH9aqA4Y2zKMwzUSx5
-   Oh3e2KK+G6xVGE2h8oF3NW86FYeaKO5h5zdaKSd5nEnIfRDYVxEiEwjZM
-   ITSjcyRROy1z+pVxQb5Ajoce8TklNV9yJ9x0XzkgckCRMje9vCxAPebME
-   jI55nSA8+U2EhYbeHfU/RmTO6hAldRzJdVofnXReTP3jCdlWWmRnzOhfx
-   mR9VH0CF5uc2LRdS4ONo/i9Qwr3ufjXVHwhJS/c0ki6OR4llJz5Rds2v7
-   Fe1LGS4VIZa7xXYCowb7xUuAGfX2WqY/L2OwZ18xk5Csh/7GzfSkgg4CX
-   Q==;
-X-CSE-ConnectionGUID: mbUoccLWThGfTodNKPgBdQ==
-X-CSE-MsgGUID: fyzILVv2StyLrZCI/Lre7Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="64585478"
+  bh=erd7G2XY3j3Bv7e6tWorf0W/YkCwIdR9O3U8NYzel6w=;
+  b=UL+mVqqg85pyc4u5UeP8baXmlG7aTNc7+0CZoGcPpxF6qpu4VpKfoWQk
+   FSA6oqd33FqYP2UgMEOV2GdtFwcFo1gGuXCje3bvOliBjKIGSqW9KxQeA
+   T+kfbsiXBdg9IcsHKmVdiVs1fAgBbk58qZ9jNETGSjCsqyGfuuU/9cmjg
+   FSlhs+OsEqx4y18jHgyKH2tcd/Fx/W0g5t3mXYgT3HYmeVQUr+6m7bWd+
+   qKv6oeAU+/QE/LeExQvfxR7YYZS9RpeQ4yNZWR2uVyCpiDejZr0zURjAD
+   vKBdAv8d13dHI0q3aZd21+39fgkc41elQuFbtlsg9jDjONYOJa2SA1hlB
+   w==;
+X-CSE-ConnectionGUID: D2Igs225QRm9mO7mOQqiBg==
+X-CSE-MsgGUID: m1UOfwM7QISzDHKm89VvMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="64585485"
 X-IronPort-AV: E=Sophos;i="6.13,259,1732608000"; 
-   d="scan'208";a="64585478"
+   d="scan'208";a="64585485"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 09:43:03 -0800
-X-CSE-ConnectionGUID: p03+/AlFRFundzXNkH4TCA==
-X-CSE-MsgGUID: vBtDz1SVSKi04eZ3gZcB7Q==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 09:43:04 -0800
+X-CSE-ConnectionGUID: lKxIrw8ySa2HcbY+yesxSw==
+X-CSE-MsgGUID: E5CnBKNMTTKI/hkwh5BDaA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,259,1732608000"; 
-   d="scan'208";a="115696848"
+   d="scan'208";a="115696852"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 09:43:01 -0800
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 09:43:03 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 18/20] wifi: mac80211: don't queue sdata::work for a non-running sdata
-Date: Tue,  4 Feb 2025 19:42:15 +0200
-Message-Id: <20250204193721.0aba6305a228.I4949e71ed56e7186ed4968fa9ddff477473fa2f4@changeid>
+Subject: [PATCH 19/20] wifi: mac80211: ensure sdata->work is canceled before initialized.
+Date: Tue,  4 Feb 2025 19:42:16 +0200
+Message-Id: <20250204193721.012f3191559b.I84ce27a239059f6009cee197b252549a11426046@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250204174217.1161638-1-miriam.rachel.korenblit@intel.com>
 References: <20250204174217.1161638-1-miriam.rachel.korenblit@intel.com>
@@ -77,43 +77,41 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-The worker really shouldn't be queued for a non-running interface.
-Also, if ieee80211_setup_sdata is called between queueing and executing
-the wk, it will be initialized, which will corrupt wiphy_work_list.
+This wiphy work is canceled when the iface is stopped,
+and shouldn't be queued for a non-running iface.
+If it happens to be queued for a non-running iface (due to a bug)
+it can cause a corruption of wiphy_work_list when ieee80211_setup_sdata
+is called. Make sure to cancel it in this case and warn on.
 
-Fixes: f8891461a277 ("mac80211: do not start any work during reconfigure flow")
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/util.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/mac80211/iface.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index f6b631faf4f7..be579af252be 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -6,7 +6,7 @@
-  * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index f8aaa2db52ce..6bea6342d3b7 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -8,7 +8,7 @@
+  * Copyright 2008, Johannes Berg <johannes@sipsolutions.net>
   * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2015-2017	Intel Deutschland GmbH
+  * Copyright (c) 2016        Intel Deutschland GmbH
 - * Copyright (C) 2018-2024 Intel Corporation
 + * Copyright (C) 2018-2025 Intel Corporation
-  *
-  * utilities for mac80211
   */
-@@ -2192,8 +2192,10 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 		ieee80211_reconfig_roc(local);
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+@@ -807,6 +807,9 @@ static void ieee80211_set_multicast_list(struct net_device *dev)
+  */
+ static void ieee80211_teardown_sdata(struct ieee80211_sub_if_data *sdata)
+ {
++	if (WARN_ON(!list_empty(&sdata->work.entry)))
++		wiphy_work_cancel(sdata->local->hw.wiphy, &sdata->work);
++
+ 	/* free extra data */
+ 	ieee80211_free_keys(sdata, false);
  
- 		/* Requeue all works */
--		list_for_each_entry(sdata, &local->interfaces, list)
--			wiphy_work_queue(local->hw.wiphy, &sdata->work);
-+		list_for_each_entry(sdata, &local->interfaces, list) {
-+			if (ieee80211_sdata_running(sdata))
-+				wiphy_work_queue(local->hw.wiphy, &sdata->work);
-+		}
- 	}
- 
- 	ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
 -- 
 2.34.1
 
