@@ -1,89 +1,88 @@
-Return-Path: <linux-wireless+bounces-18367-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18369-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CF5A26B0E
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 05:25:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFD5A26B12
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 05:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 365727A136F
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 04:24:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2110F165F5A
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 04:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB801204C30;
-	Tue,  4 Feb 2025 04:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B24205AD5;
+	Tue,  4 Feb 2025 04:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LVfYyZu5"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="eX1zT/y8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B261204C17
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 04:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA81B2054F4
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 04:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738643053; cv=none; b=bij4+khz/GZdbsHTUPRrxj0GeVw+XT+50ByggIKz1CP1g4dxLCVaFZyc+1BwEEEb6hFfqYviOGKDvgqMApM6/MDYFTEi+b5SilKNlydyjxYToojVQg3aN3hNMNS2Scb+srn3GzXa0SnVSyLlCJNulwP5529efWmqiHumfvaa0C4=
+	t=1738643058; cv=none; b=VPFESP2EolbviJ2KJoEIhph/WY4pwCYRCUPTj/drs3T/WsURqYa3ROAB5c1r1HKi0BxKeRXGLB9VKLy3A1kOIoQmb0hRVSBkXxGtzfhyrt85yffC99mUZrAIR02wLez2XTCfAd57URI0EtgbCD/3Gw4heoJevs/csgoEEhU9MlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738643053; c=relaxed/simple;
-	bh=gwPZy+ldd2gBfU4saE4MLv7VxN67dn4s+tHZP4cQRRk=;
+	s=arc-20240116; t=1738643058; c=relaxed/simple;
+	bh=6+4xk2qwahdHWPYlJdCB8T7RNkmPa/xjG/CLQ+Pp5bg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QsgXK6NljjCggAm+ECX7OYwhCJKNaXSGz77F39s5Xm3MbwN24A6vhsprQrHz6Cr/0z0huuKrur6fV/myW+AEByhzYcOtTp+kgmK5O+tCNMH14FrpgLUwrwzVvEhw7Lu4NqLLfwaH7kRdLe/FDxQT4Tp/aeSCbNOH++sQEKZw9sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LVfYyZu5; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:To:Cc; b=DyJRntG2LofnwfF+WJyDoZcR6/MHcboTPziuRPfgtovEZ4qqyWfWbwvGV5IvKRIuNZrm9BDNAdTd5j0A6xSoE8mp27ANZz2QEO0uWSio6JpJFd5tyJGLtPUm2sfdH6muqUwk0HiLd+ObleGufK7ZwxoYjCPA7lOs1E+R7bMGugM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=eX1zT/y8; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 513IajG9008805
-	for <linux-wireless@vger.kernel.org>; Tue, 4 Feb 2025 04:24:11 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5141C1mp022107
+	for <linux-wireless@vger.kernel.org>; Tue, 4 Feb 2025 04:24:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	x00RgwEIM9B0L+foEiTohE00SGuLhH++Md440wM3z3g=; b=LVfYyZu5HFLiu5Md
-	r8TOLI+yqZhXRM658SPG76IELfKSm43/ULtNs4vyKsf+qxtBpJFbRNT1DJoj4fwN
-	LwryJiZMUPpTo2FZFyNgdqt1Ax0pM2HX7y6qQIgj5LEBQ+rCozXPASQBxVhlCYRV
-	Ldojp+Ofb4r9Z863FB+s/HZbCf2lqXIu2kXh4e6vUhed2tllpsvZgegshnOxg8y3
-	Oxm2bsdcDI4ovVrrgW0FlZp+SG+6h2efiGAWUMqtdL20TlLkwlvVRODKHyDvHMFc
-	nNsJGHwAWifLU7/uV3vJWnqj2wHlkVHa7G8/pQtvlkwIac8LyQC3X46bbM25jhoa
-	VjX3jA==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44k37u1205-1
+	HrVb+INNM+z4pj0PiN/+xSGN0XHpDBNtY7UI5NNgmI8=; b=eX1zT/y8Q28g6+lI
+	NelVFC6kdNacEmslF/iin8/O1Naf/xHUKjwqX4j4fnl4bedPYzE0KESrGmMS1icn
+	0IUmvxUvCUS4X7c2I1lenjqIj6dYvzVDGM80JORLccDn6S/85mU610sNlLKdLScM
+	ZA/hzo7H5MRPSlhhQvrPPEM/n8RKkF7yZ1a41yvmnMeZJpba+ikyaMO3tx9fjL/W
+	Oo1E4gCvr50DTUhRVo7y18tlBU6Y6SYu4yiayugVE0OCsLsfcInCsUSE9xezO82y
+	7S9QB0qyvjfLpisHjGKOClwDliXEhUr3EfSOIXJZge5c/l6wB0by7eQAYgQFaDD/
+	FVou0g==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44k911gahd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 04 Feb 2025 04:24:11 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-21effaf89d9so12975925ad.2
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Feb 2025 20:24:10 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Tue, 04 Feb 2025 04:24:13 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-216430a88b0so111505135ad.0
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Feb 2025 20:24:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738643050; x=1739247850;
+        d=1e100.net; s=20230601; t=1738643052; x=1739247852;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=x00RgwEIM9B0L+foEiTohE00SGuLhH++Md440wM3z3g=;
-        b=fn5AuP6bLNoO+q58cR30XEkqlpbKvW1Cy2WgJ9ooGEFDBJPYQ0vG5YxjF93p/jPkKB
-         ntoXQ8P7dOKxYxe8hDBkPmi5l8KjX/30Sk+6EDx6xAV4gDUYwPjFgWRpTOlBl8SwTLrh
-         2nLgmpzrLTHuO8rSuKFvw7QLMLaBr8XLQw0rpb9xzoVF6TtptmWfoS0IJsDq6XRLfQSi
-         gHOVkIPGu28kt0hkqqrTNzuEt6jhBIXpSSlGScnhKUzLc51qgRZdDxzenH/Sb0leFwqQ
-         cebmEqzGdq92bG329CQy290FS2h9pyJASF409i69/iFOACj16v8C+1jNHX4SvEh+TsIm
-         GntA==
-X-Gm-Message-State: AOJu0Yx20ZaIIM/mq08lZLnyZ2UhXgojgMtb3jhzVwQjNGHttAEhhId8
-	hQeEDjbqPpxBT70ZZXM9qMS4KwNKJP+Y12tnjow4kOCyYJVCVQT7sMdnEOL7qOyUVcc53TiTQaT
-	0dkNgWhHB90DRxqVYptXqduNNoNKIK7YgVR5x8zC+Bu1rxfq8OC79LkKMJnIYD6EDVA==
-X-Gm-Gg: ASbGnctbawO1k+298Tqo6Q1wxfLsdnHpF3cjmEnKpwc1yY9+8eiprm40DD/rcu3ut7B
-	AhY4fIK7j0vsWiNXNy4h6v/R5XS2sHrCV2LIEs7EcAuDCJjlFypkskDN/i0sdLJc2jesZxtKOVj
-	sbw3liiNd2YiwTm5V3XXMnCSD6brQqZzaZHw2MAST4VT+BllhQB0sHXNFbfBFV3QeyY4DSZLrX+
-	jOFUL487y7SdzPzSXxA7sdVyiAphqd8pxk6KCtcvHXQSkGMxv9DOFJTY9tPQ1MDJdP+bcQnvROK
-	muVRvJO/F48Ymq38gl8YpIZqlfoT298kqlyzoGEXMWFT2JCfLUO9JO8/a4ezz5jJKRuPst8AJyu
-	R6aXs6cq6dkZr2sRGLGobdgQO46t7FQ==
-X-Received: by 2002:a05:6a21:6da5:b0:1e1:dbfd:1fde with SMTP id adf61e73a8af0-1ed7a5e7e38mr38458890637.27.1738643049760;
-        Mon, 03 Feb 2025 20:24:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHBA73qDRykSxKVpm1Py5x1Wfon1kxEZVcDUKBFbVikl2vgIOYfg85rf8JTG2O8i3ygGa8zJQ==
-X-Received: by 2002:a05:6a21:6da5:b0:1e1:dbfd:1fde with SMTP id adf61e73a8af0-1ed7a5e7e38mr38458862637.27.1738643049381;
-        Mon, 03 Feb 2025 20:24:09 -0800 (PST)
+        bh=HrVb+INNM+z4pj0PiN/+xSGN0XHpDBNtY7UI5NNgmI8=;
+        b=ZSaNB9RHYpLt+UntIGJiN86zfyfTuGXWhBysWpcKBG49FYvhhxFyx4USjCS09xjEtv
+         2mFhcPqPhsAcKv/V2DwMqFwRSPEC/aMxh9Gn1cSkzTx5g9NsdBjNPzX8lD58eanfVQSU
+         7wTyxlnr6GOODhZgSvBzoodhInXpJbbngrKAdWr20PZZV5EXMbLELqG93xscOPdlWtuO
+         9Y9hj5gq9umvpuVcTnocl7p2qixnsdpNJ0c3dQmsGkTlxQUBozu6e40rp7oPxi7Nd7h7
+         Ywc4D1Y2n/FBj0nJJgRINn/76Eb8nmQjvloUS/ZcXGxV4j1/QKJXV+E1ue+zhhbtCNcS
+         Z0Zg==
+X-Gm-Message-State: AOJu0Yx/Af+d1E5PRZa9ng9OPYUCDnMgceVWLogyJbEgEX4GlYjGSJJ0
+	0O67v2x1v8A4kp04WA56I9Or4Ij135GQlkvvxsUyf5Mw+hPsyjs8ctnB6X/2ixLm9PSydDjT8Bj
+	wHo0+I9lj2dXDrrTpy+u2A35eurVl/RhV0vo3IeXlgHNhw2FkJMHHN/vDD94Ol1xHQQ==
+X-Gm-Gg: ASbGncvhJ06sCp+aI2QR71YzyqgABVjK+RSnw63JmJ5WFnfjSer3Kb61saa72WSrLKQ
+	6BFDdogQ1n+Vmm1OAzd0a9GHRrKv2scbjntInLgHPykMFcCvjvgUsWfx8pdp5pUH0//CkDErAN1
+	NLiW4GXqMIfKVogPSqkVR4mh75v2KnLHVYffC6+IJhz2osEmJPiY0cLk/3n3WIP0GJNMUfklh76
+	YkUrZDHGlxmhC9P+TcwYyZkLP00Lx2ZffgG2ePdDx2I7IGwYDE++IaJUqxAOt0IRAWArKfR+ksa
+	n/ovZeiusSjqfJCewmLnfpWzIgjvUkCjJfWIFeKMJx+Ks5LlQR4T1boOYOaHNpxLXx/Q4/6q/GL
+	9i7SgbAfnJ+fIxQlBug4SwfNwK57INQ==
+X-Received: by 2002:a17:902:d48e:b0:21a:5501:938 with SMTP id d9443c01a7336-21dd7e38e38mr386772195ad.52.1738643052112;
+        Mon, 03 Feb 2025 20:24:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE49ECwcCEgYzSew4ZO7UPQc13n0Kq+P/s7ciZAzDlfP1uq9+He2FL6XzGDxNA6kiAXbLbiUQ==
+X-Received: by 2002:a17:902:d48e:b0:21a:5501:938 with SMTP id d9443c01a7336-21dd7e38e38mr386771925ad.52.1738643051669;
+        Mon, 03 Feb 2025 20:24:11 -0800 (PST)
 Received: from hu-adisi-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-acec04796e1sm8897144a12.58.2025.02.03.20.24.07
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-acec04796e1sm8897144a12.58.2025.02.03.20.24.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 20:24:09 -0800 (PST)
+        Mon, 03 Feb 2025 20:24:11 -0800 (PST)
 From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Date: Tue, 04 Feb 2025 09:53:45 +0530
-Subject: [PATCH 5/8] wifi: ath12k: use arvif instead of link_conf in
- ath12k_mac_set_key()
+Date: Tue, 04 Feb 2025 09:53:46 +0530
+Subject: [PATCH 6/8] wifi: ath12k: relocate a few functions in mac.c
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -92,7 +91,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250204-unlink_link_arvif_from_chanctx-v1-5-675bd4cea339@oss.qualcomm.com>
+Message-Id: <20250204-unlink_link_arvif_from_chanctx-v1-6-675bd4cea339@oss.qualcomm.com>
 References: <20250204-unlink_link_arvif_from_chanctx-v1-0-675bd4cea339@oss.qualcomm.com>
 In-Reply-To: <20250204-unlink_link_arvif_from_chanctx-v1-0-675bd4cea339@oss.qualcomm.com>
 To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
@@ -100,77 +99,249 @@ Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
         linux-kernel@vger.kernel.org,
         Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
 X-Mailer: b4 0.14.2
-X-Proofpoint-ORIG-GUID: lGP12yagAEiNhA_yJsD2gt_qtHvaVAuX
-X-Proofpoint-GUID: lGP12yagAEiNhA_yJsD2gt_qtHvaVAuX
+X-Proofpoint-GUID: jfNCYOK0gw5fZE2L5CvEK_o5SyqGINiP
+X-Proofpoint-ORIG-GUID: jfNCYOK0gw5fZE2L5CvEK_o5SyqGINiP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-04_02,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
- mlxscore=0 malwarescore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- priorityscore=1501 suspectscore=0 bulkscore=0 impostorscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ spamscore=0 mlxscore=0 phishscore=0 bulkscore=0 mlxlogscore=945
+ adultscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2501170000 definitions=main-2502040032
 
-Currently, in ath12k_mac_set_key(), if sta is not present, the address is
-retrieved from link_conf's bssid or addr member, depending on the interface
-type.
+An upcoming change will invoke ath12k_mac_init_arvif(),
+ath12k_mac_assign_link_vif(), and ath12k_mac_unassign_link_vif() from a
+line located above their current definition. Hence, relocate these
+functions to above so that these can be invoked later on.
 
-When operating as an ML station and during shutdown, link_conf will not be
-available. This can result in the following error:
-
-ath12k_pci 0004:01:00.0: unable to access bss link conf in set key for vif AA:BB:CC:DD:EE:FF link 1
-
-The primary purpose of accessing link_conf is to obtain the address for
-finding the peer. However, since arvif is always valid in this call, it can
-be used instead.
-
-Add change to use arvif instead of link_conf.
-
-A subsequent change will expose this issue but since tear down will give
-error, this is included first.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+No functionality changes. Compile tested only.
 
 Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 14 +-------------
- 1 file changed, 1 insertion(+), 13 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 202 +++++++++++++++++-----------------
+ 1 file changed, 101 insertions(+), 101 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 5f0388002e16c38a834d6c7c6c020b7afa7044f0..db866c1419a613103f119037b19e24b7edaa6c24 100644
+index db866c1419a613103f119037b19e24b7edaa6c24..5d80bbb664ea6a710eedd7b57db3523df9c893e6 100644
 --- a/drivers/net/wireless/ath/ath12k/mac.c
 +++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4667,9 +4667,6 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
- 			      struct ath12k_link_sta *arsta,
- 			      struct ieee80211_key_conf *key)
- {
--	struct ath12k_vif *ahvif = arvif->ahvif;
--	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
--	struct ieee80211_bss_conf *link_conf;
- 	struct ieee80211_sta *sta = NULL;
- 	struct ath12k_base *ab = ar->ab;
- 	struct ath12k_peer *peer;
-@@ -4686,19 +4683,10 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
- 	if (test_bit(ATH12K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags))
- 		return 1;
+@@ -3469,6 +3469,107 @@ static void ath12k_recalculate_mgmt_rate(struct ath12k *ar,
+ 		ath12k_warn(ar->ab, "failed to set beacon tx rate %d\n", ret);
+ }
  
--	link_conf = ath12k_mac_get_link_bss_conf(arvif);
--	if (!link_conf) {
--		ath12k_warn(ab, "unable to access bss link conf in set key for vif %pM link %u\n",
--			    vif->addr, arvif->link_id);
--		return -ENOLINK;
++static void ath12k_mac_init_arvif(struct ath12k_vif *ahvif,
++				  struct ath12k_link_vif *arvif, int link_id)
++{
++	struct ath12k_hw *ah = ahvif->ah;
++	u8 _link_id;
++	int i;
++
++	lockdep_assert_wiphy(ah->hw->wiphy);
++
++	if (WARN_ON(!arvif))
++		return;
++
++	if (WARN_ON(link_id >= ATH12K_NUM_MAX_LINKS))
++		return;
++
++	if (link_id < 0)
++		_link_id = 0;
++	else
++		_link_id = link_id;
++
++	arvif->ahvif = ahvif;
++	arvif->link_id = _link_id;
++
++	INIT_LIST_HEAD(&arvif->list);
++	INIT_DELAYED_WORK(&arvif->connection_loss_work,
++			  ath12k_mac_vif_sta_connection_loss_work);
++
++	for (i = 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
++		arvif->bitrate_mask.control[i].legacy = 0xffffffff;
++		memset(arvif->bitrate_mask.control[i].ht_mcs, 0xff,
++		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
++		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
++		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
++	}
++
++	/* Handle MLO related assignments */
++	if (link_id >= 0) {
++		rcu_assign_pointer(ahvif->link[arvif->link_id], arvif);
++		ahvif->links_map |= BIT(_link_id);
++	}
++
++	ath12k_generic_dbg(ATH12K_DBG_MAC,
++			   "mac init link arvif (link_id %d%s) for vif %pM. links_map 0x%x",
++			   _link_id, (link_id < 0) ? " deflink" : "", ahvif->vif->addr,
++			   ahvif->links_map);
++}
++
++static struct ath12k_link_vif *ath12k_mac_assign_link_vif(struct ath12k_hw *ah,
++							  struct ieee80211_vif *vif,
++							  u8 link_id)
++{
++	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
++	struct ath12k_link_vif *arvif;
++
++	lockdep_assert_wiphy(ah->hw->wiphy);
++
++	arvif = wiphy_dereference(ah->hw->wiphy, ahvif->link[link_id]);
++	if (arvif)
++		return arvif;
++
++	if (!vif->valid_links) {
++		/* Use deflink for Non-ML VIFs and mark the link id as 0
++		 */
++		link_id = 0;
++		arvif = &ahvif->deflink;
++	} else {
++		/* If this is the first link arvif being created for an ML VIF
++		 * use the preallocated deflink memory except for scan arvifs
++		 */
++		if (!ahvif->links_map && link_id != ATH12K_DEFAULT_SCAN_LINK) {
++			arvif = &ahvif->deflink;
++		} else {
++			arvif = (struct ath12k_link_vif *)
++			kzalloc(sizeof(struct ath12k_link_vif), GFP_KERNEL);
++			if (!arvif)
++				return NULL;
++		}
++	}
++
++	ath12k_mac_init_arvif(ahvif, arvif, link_id);
++
++	return arvif;
++}
++
++static void ath12k_mac_unassign_link_vif(struct ath12k_link_vif *arvif)
++{
++	struct ath12k_vif *ahvif = arvif->ahvif;
++	struct ath12k_hw *ah = ahvif->ah;
++
++	lockdep_assert_wiphy(ah->hw->wiphy);
++
++	rcu_assign_pointer(ahvif->link[arvif->link_id], NULL);
++	synchronize_rcu();
++	ahvif->links_map &= ~BIT(arvif->link_id);
++
++	if (arvif != &ahvif->deflink)
++		kfree(arvif);
++	else
++		memset(arvif, 0, sizeof(*arvif));
++}
++
+ static int
+ ath12k_mac_op_change_vif_links(struct ieee80211_hw *hw,
+ 			       struct ieee80211_vif *vif,
+@@ -3973,107 +4074,6 @@ static void ath12k_mac_op_link_info_changed(struct ieee80211_hw *hw,
+ 	ath12k_mac_bss_info_changed(ar, arvif, info, changed);
+ }
+ 
+-static void ath12k_mac_init_arvif(struct ath12k_vif *ahvif,
+-				  struct ath12k_link_vif *arvif, int link_id)
+-{
+-	struct ath12k_hw *ah = ahvif->ah;
+-	u8 _link_id;
+-	int i;
+-
+-	lockdep_assert_wiphy(ah->hw->wiphy);
+-
+-	if (WARN_ON(!arvif))
+-		return;
+-
+-	if (WARN_ON(link_id >= ATH12K_NUM_MAX_LINKS))
+-		return;
+-
+-	if (link_id < 0)
+-		_link_id = 0;
+-	else
+-		_link_id = link_id;
+-
+-	arvif->ahvif = ahvif;
+-	arvif->link_id = _link_id;
+-
+-	INIT_LIST_HEAD(&arvif->list);
+-	INIT_DELAYED_WORK(&arvif->connection_loss_work,
+-			  ath12k_mac_vif_sta_connection_loss_work);
+-
+-	for (i = 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
+-		arvif->bitrate_mask.control[i].legacy = 0xffffffff;
+-		memset(arvif->bitrate_mask.control[i].ht_mcs, 0xff,
+-		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
+-		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
+-		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
 -	}
 -
- 	if (sta)
- 		peer_addr = arsta->addr;
--	else if (ahvif->vdev_type == WMI_VDEV_TYPE_STA)
--		peer_addr = link_conf->bssid;
- 	else
--		peer_addr = link_conf->addr;
-+		peer_addr = arvif->bssid;
- 
- 	key->hw_key_idx = key->keyidx;
- 
+-	/* Handle MLO related assignments */
+-	if (link_id >= 0) {
+-		rcu_assign_pointer(ahvif->link[arvif->link_id], arvif);
+-		ahvif->links_map |= BIT(_link_id);
+-	}
+-
+-	ath12k_generic_dbg(ATH12K_DBG_MAC,
+-			   "mac init link arvif (link_id %d%s) for vif %pM. links_map 0x%x",
+-			   _link_id, (link_id < 0) ? " deflink" : "", ahvif->vif->addr,
+-			   ahvif->links_map);
+-}
+-
+-static struct ath12k_link_vif *ath12k_mac_assign_link_vif(struct ath12k_hw *ah,
+-							  struct ieee80211_vif *vif,
+-							  u8 link_id)
+-{
+-	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
+-	struct ath12k_link_vif *arvif;
+-
+-	lockdep_assert_wiphy(ah->hw->wiphy);
+-
+-	arvif = wiphy_dereference(ah->hw->wiphy, ahvif->link[link_id]);
+-	if (arvif)
+-		return arvif;
+-
+-	if (!vif->valid_links) {
+-		/* Use deflink for Non-ML VIFs and mark the link id as 0
+-		 */
+-		link_id = 0;
+-		arvif = &ahvif->deflink;
+-	} else {
+-		/* If this is the first link arvif being created for an ML VIF
+-		 * use the preallocated deflink memory except for scan arvifs
+-		 */
+-		if (!ahvif->links_map && link_id != ATH12K_DEFAULT_SCAN_LINK) {
+-			arvif = &ahvif->deflink;
+-		} else {
+-			arvif = (struct ath12k_link_vif *)
+-			kzalloc(sizeof(struct ath12k_link_vif), GFP_KERNEL);
+-			if (!arvif)
+-				return NULL;
+-		}
+-	}
+-
+-	ath12k_mac_init_arvif(ahvif, arvif, link_id);
+-
+-	return arvif;
+-}
+-
+-static void ath12k_mac_unassign_link_vif(struct ath12k_link_vif *arvif)
+-{
+-	struct ath12k_vif *ahvif = arvif->ahvif;
+-	struct ath12k_hw *ah = ahvif->ah;
+-
+-	lockdep_assert_wiphy(ah->hw->wiphy);
+-
+-	rcu_assign_pointer(ahvif->link[arvif->link_id], NULL);
+-	synchronize_rcu();
+-	ahvif->links_map &= ~BIT(arvif->link_id);
+-
+-	if (arvif != &ahvif->deflink)
+-		kfree(arvif);
+-	else
+-		memset(arvif, 0, sizeof(*arvif));
+-}
+-
+ static void ath12k_mac_remove_link_interface(struct ieee80211_hw *hw,
+ 					     struct ath12k_link_vif *arvif)
+ {
 
 -- 
 2.34.1
