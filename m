@@ -1,157 +1,461 @@
-Return-Path: <linux-wireless+bounces-18422-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18423-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB85A275C3
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 16:27:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60522A27654
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 16:46:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9A1E3A266D
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 15:27:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9270163DD1
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 15:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7906213E81;
-	Tue,  4 Feb 2025 15:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61D62144A6;
+	Tue,  4 Feb 2025 15:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UnPDSnF7"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="D4IRfwTl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1225C21420C
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 15:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A4520C46D;
+	Tue,  4 Feb 2025 15:45:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738682839; cv=none; b=qSBLdrUA7AMz+EHAa65VqE2gBaQSiboD+X8ePbwWdx6zZJIjMWUdqw546AUdKhjr+A2gIJ3aDjZrzWA8aYWz/4nw/wfSV6E+o7gkDaUjwYel62J9ml5ADJZQ1mlOSNuLAJRFRK9KiaLv5nmDhkHZ5kCDnU6xM6PSzTW+IWvma0s=
+	t=1738683954; cv=none; b=WGwcIFNZpbuckt9NATN718rPiJ7Iv3N+2/fCod9s1jMNEsGm7b38frca/mwfTEJfGWs1EyswKg9Dw5ev+ABtxSdyrMLFIrEb1otiOyT0G8SqtQfA+UmWwe3UfH7YsrffzDr6bTiMpv7gBreasxVaHnYHYmF1vs573y3pqsZxulw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738682839; c=relaxed/simple;
-	bh=6bbw6NuplC45g5e415URYITIdUl4aCpORburWx1YQSQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jiue5ilHrMLzO9rglamSq2RBIMt15NOOARtYtTU4V52Py09dr8V3vRjU+0mh3REHTce0AXJnlvszPOy780vETACRYFVVyRKuKASehNNeGWoUsfyEkT0yJXkHQapih4fiBtbxE3KfcyYbUzOrKRLJJ/GwSXyR/DVJvND5yU175Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UnPDSnF7; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e53a5ff2233so5863557276.3
-        for <linux-wireless@vger.kernel.org>; Tue, 04 Feb 2025 07:27:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738682837; x=1739287637; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6bbw6NuplC45g5e415URYITIdUl4aCpORburWx1YQSQ=;
-        b=UnPDSnF70VmXOjjZwJ0vq5JYM2h3Cx4HfuB2Ghy8hv+Y8ncaIoZikV0JxKRaUSdeDK
-         aByhDeaC3zPF8Uvf9g4i3pDH/m+o0b8XCt5BeuswTI7raOjPWCE+HHNH1Db6zMEwVufb
-         XtuCmyxk8l2NZSXBqelUh5gKQK6/IViY35bYhcClSOq/6ht9RG6RclNy12xequ9aLCvI
-         WZayThXXrmEFmR1UGTwTWCJR75C4/Hn9RbyzyeYPq1ro62cYLV5m7Ye2mbbzuQP8W89Q
-         4GhgGwU05XXswQKhsARzWOBvUhupKoEjB8h90tDw1cN5oFZh7Uny3MEYFogQP+Zj8ApW
-         H62w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738682837; x=1739287637;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6bbw6NuplC45g5e415URYITIdUl4aCpORburWx1YQSQ=;
-        b=qUthc3E9MCeE7Z78PNdNjXU/3cjaY5SKAvQjU6ZHhlaDGmoa3iOVbsjx141xkMNaRh
-         Pu1bSNPi2RIECqYw0Ux6THPC9eec3NjRE+ijOsUChM4IFGPjmfeGlbCjCYqkyvO9W2Yy
-         eOwi1+64gq6G3CLkZA6VqvVBPCub/gUD4Lown8zAKF+Yrm/ZpKh7ONFqtAdEldAQ/zPp
-         JQlqIRlm43aUWCd5VRmi/S8xpskH+ErqM2cOFmzkNGrJJtqGaFgAMxVWtn9swJecgttD
-         tCSWc7xBwOROQYKTxEjKXEitCYqlVJPNc1Hi402uQfkacnkzBxWhM/VKuMnJa8mKD6x2
-         tiuw==
-X-Gm-Message-State: AOJu0YyNfe5i5RGAogqoXPjYynpkaQHhNSbzG6rXWBA56QrLepUQfQKL
-	tlV66fofYy9o7ndAZ0FgLAK8lzccfyZHQKCE19iz9HhmDP6RvTBCzPF4uSP0jI/u4GBYhSlT8uj
-	GWjIz134mABRNbrdcX7pkTmhp8yw+Rd4hlzLmYQ==
-X-Gm-Gg: ASbGncu42N0WRt9LyoU4k5tH/GMfMVJXzCWf3MdDXubct5OKzNvgrGyhhMPicXwMW7i
-	r+eZiMP8sQdaSaQNPsne3jahZH3fJOOP60azyY+6CV+EveDEFlIiX783bCcCVxRc6V9duhMT3sw
-	==
-X-Google-Smtp-Source: AGHT+IGuTehydOk3Axr20URL8vBy9g3qWXoLiXwzZEf5vxniYy62jE4Kl9yHuwqLqMu97MIGL+LC7qy+k9L+D/GoJRY=
-X-Received: by 2002:a05:6902:2808:b0:e5a:e625:e513 with SMTP id
- 3f1490d57ef6-e5ae625e61emr11909922276.12.1738682836852; Tue, 04 Feb 2025
- 07:27:16 -0800 (PST)
+	s=arc-20240116; t=1738683954; c=relaxed/simple;
+	bh=C07sUUck6kA/CVKnuzDizMhHTlBqmB/a72rcHwwatnI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=kMZulOv455d8+No3pC0Be3VJ2SnUMQEcyIuH8ueYbSVgV44mQT+5CQM4bFtJO6jaIW2ZEOX+D9FKQPCFIdaIzjbIw3TF1Epvjdq0m+32GgqARUJg3I2Unl+k8ioGDhbJtGBZQTKjHc2niL+IEdIoYuOOU39BHt6OID45A8jiaZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=D4IRfwTl; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 514E1bbS032324;
+	Tue, 4 Feb 2025 15:45:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	SmzpwdylyuXyz1bRPWE37WvAaaUec0zu4cZfeZzC9No=; b=D4IRfwTlCpceS1ir
+	/ODZ50ZkWM3TlEvxhhfguPE6L8mpoBNvNuF7udR0gB7k2Wz4OWjyPuOxuh4+KAt/
+	2vGTclvQiuqE3FjbKGkLNoZMvQHhOlHIU1Cyh/ubQYpjDJs2pe9M3osT9pwRZbpD
+	RX+qvSiWPMSiL438iw8VNnEd0xW3iL718R0Eqmy5E234svJk2sXNDTnuM+jQgzY1
+	kGH0rRtIudMKTBK0WCgr5d6TkebUgj7Uzo93q1sAMsJG+H80sgY6yGkQ8foBVHm1
+	7WJIEzmNtn2y7AcuwX8wGAu7vm/3L+DuflAzQldp44Tw5v4v31jv2DCytXJzKons
+	gDWKzw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44km9wg8p4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Feb 2025 15:45:47 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 514Fjlim026799
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 4 Feb 2025 15:45:47 GMT
+Received: from [10.216.42.141] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 4 Feb 2025
+ 07:45:43 -0800
+Message-ID: <fe48c265-11e7-42ed-98e5-e55f89ca4021@quicinc.com>
+Date: Tue, 4 Feb 2025 21:15:39 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cd1b13d4-b01d-4237-813e-bd48c55d9ca9@matthias-proske.de>
-In-Reply-To: <cd1b13d4-b01d-4237-813e-bd48c55d9ca9@matthias-proske.de>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 4 Feb 2025 16:26:41 +0100
-X-Gm-Features: AWEUYZmzVPGqQjAUScsSlKOO9d6YlW9_MWDY69DsffBTqZs8gHgQdoTz5D-t8mI
-Message-ID: <CAPDyKFr=XyLg2VjuEq1ZTrdAwSJJmYFDn9wSFj4zWD1+ZB9MTQ@mail.gmail.com>
-Subject: Re: DT property keep-power-in-suspend and how WiFi drivers use it
-To: Matthias Proske <email@matthias-proske.de>
-Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
-	brcm80211-dev-list.pdl@broadcom.com, linux-mmc@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 08/13] wifi: ath12k: add AHB driver support for IPQ5332
+To: Krzysztof Kozlowski <krzk@kernel.org>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        "Rob
+ Herring" <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        "Conor
+ Dooley" <conor+dt@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Balamurugan S
+	<quic_bselvara@quicinc.com>,
+        P Praneesh <quic_ppranees@quicinc.com>
+References: <20250130043508.1885026-1-quic_rajkbhag@quicinc.com>
+ <20250130043508.1885026-9-quic_rajkbhag@quicinc.com>
+ <0f3efa0c-b5e0-44e4-850a-d63b0beeb0b8@kernel.org>
+Content-Language: en-US
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <0f3efa0c-b5e0-44e4-850a-d63b0beeb0b8@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Ns-NDlIQ4sr6ec7ZOrAiM70Z0xGM_EPY
+X-Proofpoint-GUID: Ns-NDlIQ4sr6ec7ZOrAiM70Z0xGM_EPY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-04_07,2025-02-04_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 impostorscore=0
+ malwarescore=0 adultscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999
+ spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502040122
 
-On Wed, 29 Jan 2025 at 12:05, Matthias Proske <email@matthias-proske.de> wrote:
->
-> Hello,
->
-> I have a question regarding the usage of the Device Tree property
-> `keep-power-suspend`.
->
-> In the Device Tree documentation it reads:
-> "SDIO only. Preserves card power during a suspend/resume cycle."
->
-> Does that mean that the SDIO Host Controller will remain powered or
-> should this equally apply to anything that is connected to this SDIO
-> Host Controller?
+On 1/30/2025 1:27 PM, Krzysztof Kozlowski wrote:
+> On 30/01/2025 05:35, Raj Kumar Bhagat wrote:
+>> +static int ath12k_ahb_clock_init(struct ath12k_base *ab)
+>> +{
+>> +	struct ath12k_ahb *ab_ahb = ath12k_ab_to_ahb(ab);
+>> +	int ret;
+>> +
+>> +	ab_ahb->xo_clk = devm_clk_get(ab->dev, "xo");
+>> +	if (IS_ERR_OR_NULL(ab_ahb->xo_clk)) {
+> 
+> No, you are not supposed to use IS_ERR_OR_NULL(). That's indication of bug.
+> 
+>> +		ret = ab_ahb->xo_clk ? PTR_ERR(ab_ahb->xo_clk) : -ENODEV;
+> 
+> I don't understand this. It's the third time you are reimplementing
+> standard code in some odd way, different than all other drivers.
+> 
+> Read the description of this function. Can clk_get return NULL? Of
+> course not. This is so overcomplicated for no reason, I wonder if it is
+> actually buggy here.
+> 
 
-Unfortunately the documentation isn't really clear.
-"keep-power-in-suspend" means that the platform is *capable* of
-keeping the SDIO card powered when the system is suspended.
+My bad, will update in next version.
 
-Depending on what the SDIO func-driver (like the brcm_fmac driver)
-decides to do during system suspend/resume, the mmc core we may or may
-not keep the SDIO card powered.
+> 
+>> +		return dev_err_probe(&ab->pdev->dev, ret, "failed to get xo clock\n");
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void ath12k_ahb_clock_deinit(struct ath12k_base *ab)
+>> +{
+>> +	struct ath12k_ahb *ab_ahb = ath12k_ab_to_ahb(ab);
+>> +
+>> +	devm_clk_put(ab->dev, ab_ahb->xo_clk);
+>> +	ab_ahb->xo_clk = NULL;
+>> +}
+>> +
+>> +static int ath12k_ahb_clock_enable(struct ath12k_base *ab)
+>> +{
+>> +	struct ath12k_ahb *ab_ahb = ath12k_ab_to_ahb(ab);
+>> +	int ret;
+>> +
+>> +	if (IS_ERR_OR_NULL(ab_ahb->xo_clk)) {
+>> +		ath12k_err(ab, "clock is not initialized\n");
+> 
+> NAK.
+> 
+> Sorry, this code makes no sense. This is some random code. This code
+> cannot be executed before probe. If it can: your driver is buggy, so fix
+> your driver.
+> 
+> After the probe(), this is never NULL as an error. Either you have here
+> valid pointer or you failed the probe.
+> 
+> This driver fails on basics of driver probing.
+> 
 
->
-> To give a bit more background:
->
-> I have an embedded board with a brcm_fmac WiFi module. It seems that due
-> to a hardware limitation we are not permitted to switch the module off.
-> It simply cannot be re-probed afterwards.
+Will remove the above code in next version.
 
-How did we manage to power it on and probe it in the first place?
+>> +		return -EIO;
+>> +	}
+>> +
+>> +	ret = clk_prepare_enable(ab_ahb->xo_clk);
+>> +	if (ret) {
+>> +		ath12k_err(ab, "failed to enable gcc_xo_clk: %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void ath12k_ahb_clock_disable(struct ath12k_base *ab)
+>> +{
+>> +	struct ath12k_ahb *ab_ahb = ath12k_ab_to_ahb(ab);
+>> +
+>> +	clk_disable_unprepare(ab_ahb->xo_clk);
+> 
+> Don't create such wrappers for single clock. Does not help.
+> 
 
->
-> The property `keep-power-in-suspend` was used and that used to work fine
-> until 92caded ("brcmfmac: Avoid keeping power to SDIO card
-> unless WOWL is used"), which made the wifi adapter by default turn off
-> on suspend to be re-probed on resume. Not working on our board...
+Sure, will remove the wrapper.
 
-Would you mind elaborating why it isn't working?
+>> +}
+>> +
+>> +static int ath12k_ahb_resource_init(struct ath12k_base *ab)
+>> +{
+>> +	struct platform_device *pdev = ab->pdev;
+>> +	struct resource *mem_res;
+>> +	int ret;
+>> +
+>> +	ab->mem = devm_platform_get_and_ioremap_resource(pdev, 0, &mem_res);
+>> +	if (IS_ERR(ab->mem)) {
+>> +		ret = dev_err_probe(&pdev->dev, PTR_ERR(ab->mem), "ioremap error\n");
+>> +		goto out;
+>> +	}
+>> +
+>> +	ab->mem_len = resource_size(mem_res);
+>> +
+>> +	if (ab->hw_params->ce_remap) {
+>> +		const struct ce_remap *ce_remap = ab->hw_params->ce_remap;
+>> +		/* CE register space is moved out of WCSS and the space is not
+>> +		 * contiguous, hence remapping the CE registers to a new space
+>> +		 * for accessing them.
+>> +		 */
+>> +		ab->mem_ce = ioremap(ce_remap->base, ce_remap->size);
+>> +		if (IS_ERR(ab->mem_ce)) {
+>> +			dev_err(&pdev->dev, "ce ioremap error\n");
+>> +			ret = -ENOMEM;
+>> +			goto err_mem_unmap;
+>> +		}
+>> +		ab->ce_remap = true;
+>> +		ab->ce_remap_base_addr = HAL_IPQ5332_CE_WFSS_REG_BASE;
+>> +	}
+>> +
+>> +	ret = ath12k_ahb_clock_init(ab);
+>> +	if (ret)
+>> +		goto err_mem_ce_unmap;
+>> +
+>> +	ret =  ath12k_ahb_clock_enable(ab);
+>> +	if (ret)
+>> +		goto err_clock_deinit;
+>> +
+>> +	return 0;
+>> +
+>> +err_clock_deinit:
+>> +	ath12k_ahb_clock_deinit(ab);
+>> +
+>> +err_mem_ce_unmap:
+>> +	if (ab->hw_params->ce_remap)
+>> +		iounmap(ab->mem_ce);
+>> +
+>> +err_mem_unmap:
+>> +	ab->mem_ce = NULL;
+>> +	devm_iounmap(ab->dev, ab->mem);
+>> +
+>> +out:
+>> +	ab->mem = NULL;
+>> +	return ret;
+>> +}
+>> +
+>> +static void ath12k_ahb_resource_deinit(struct ath12k_base *ab)
+>> +{
+>> +	if (ab->mem)
+>> +		devm_iounmap(ab->dev, ab->mem);
+>> +
+>> +	if (ab->mem_ce)
+>> +		iounmap(ab->mem_ce);
+>> +
+>> +	ab->mem = NULL;
+>> +	ab->mem_ce = NULL;
+>> +
+>> +	ath12k_ahb_clock_disable(ab);
+>> +	ath12k_ahb_clock_deinit(ab);
+>> +}
+>> +
+>> +static enum ath12k_hw_rev ath12k_ahb_get_hw_rev(struct platform_device *pdev)
+>> +{
+>> +	const struct of_device_id *of_id;
+>> +
+>> +	of_id = of_match_device(ath12k_ahb_of_match, &pdev->dev);
+>> +	if (!of_id) {
+>> +		dev_err(&pdev->dev, "Failed to find matching device tree id\n");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	return (enum ath12k_hw_rev)of_id->data;
+> 
+> You just open-coded of_device_get_match_data().
+> 
 
->
->
-> I have also looked at other WiFi drivers with an SDIO interface and it
-> seems that none of them are really honoring the `keep-power-in-suspend`
-> flag. Is this flag for the SDIO Host Controller only?
+Thanks, will use of_device_get_match_data() in next version.
 
-See above.
+>> +}
+>> +
+>> +static int ath12k_ahb_probe(struct platform_device *pdev)
+>> +{
+>> +	struct ath12k_base *ab;
+>> +	const struct ath12k_hif_ops *hif_ops;
+>> +	struct device_node *mem_node;
+>> +	enum ath12k_hw_rev hw_rev;
+>> +	u32 addr;
+>> +	int ret;
+>> +
+>> +	hw_rev = ath12k_ahb_get_hw_rev(pdev);
+>> +	switch (hw_rev) {
+>> +	case ATH12K_HW_IPQ5332_HW10:
+>> +		hif_ops = &ath12k_ahb_hif_ops_ipq5332;
+>> +		break;
+>> +	default:
+>> +		return -EOPNOTSUPP;
+>> +	}
+>> +
+>> +	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
+>> +	if (ret) {
+>> +		dev_err(&pdev->dev, "Failed to set 32-bit coherent dma\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	ab = ath12k_core_alloc(&pdev->dev, sizeof(struct ath12k_ahb),
+>> +			       ATH12K_BUS_AHB);
+>> +	if (!ab) {
+>> +		dev_err(&pdev->dev, "failed to allocate ath12k base\n");
+> 
+> No, driver never prints allocation errors. You are duplicating existing
+> core printk.
+> 
 
->
->
-> What would be proper way to implement it so that the brcm_fmac return to
-> its old behaviour if necessary?
-> Add a Device Tree property directly for the brcm_fmac driver..?
+Thanks, will remove this error print.
 
-The corresponding SDIO func-driver may call
-sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER). In this way, the mmc
-core will leave the SDIO card powered-on during system suspend.
-Although, unless it's really necessary, it's ofcourse a bad idea as it
-would mean wasting energy when the system is suspended.
+> 
+>> +		return -ENOMEM;
+>> +	}
+>> +
+>> +	ab->hif.ops = hif_ops;
+>> +	ab->pdev = pdev;
+>> +	ab->hw_rev = hw_rev;
+>> +	platform_set_drvdata(pdev, ab);
+>> +
+>> +	/* Set fixed_mem_region to true for platforms that support fixed memory
+>> +	 * reservation from DT. If memory is reserved from DT for FW, ath12k driver
+>> +	 * need not to allocate memory.
+>> +	 */
+>> +	if (!of_property_read_u32(ab->dev->of_node, "memory-region", &addr)) {
+>> +		set_bit(ATH12K_FLAG_FIXED_MEM_REGION, &ab->dev_flags);
+>> +
+>> +		/* If the platform supports fixed memory, then it should define/
+>> +		 * reserve MLO global memory in DT to support Multi Link Operation
+>> +		 * (IEEE 802.11be).
+>> +		 * If MLO global memory is not reserved in fixed memory mode, then
+>> +		 * MLO cannot be supported.
+>> +		 */
+>> +		mem_node = ath12k_core_get_reserved_mem_by_name(ab, "mlo-global-mem");
+>> +		if (!mem_node)
+>> +			ab->single_chip_mlo_supp = false;
+>> +		else
+>> +			of_node_put(mem_node);
+>> +	}
+>> +
+>> +	ret = ath12k_core_pre_init(ab);
+>> +	if (ret)
+>> +		goto err_core_free;
+>> +
+>> +	ret = ath12k_ahb_resource_init(ab);
+>> +	if (ret)
+>> +		goto err_core_free;
+>> +
+>> +	ret = ath12k_hal_srng_init(ab);
+>> +	if (ret)
+>> +		goto err_resource_deinit;
+>> +
+>> +	ret = ath12k_ce_alloc_pipes(ab);
+>> +	if (ret) {
+>> +		ath12k_err(ab, "failed to allocate ce pipes: %d\n", ret);
+>> +		goto err_hal_srng_deinit;
+>> +	}
+>> +
+>> +	ath12k_ahb_init_qmi_ce_config(ab);
+>> +
+>> +	ret = ath12k_ahb_config_irq(ab);
+>> +	if (ret) {
+>> +		ath12k_err(ab, "failed to configure irq: %d\n", ret);
+>> +		goto err_ce_free;
+>> +	}
+>> +
+>> +	ret = ath12k_core_init(ab);
+>> +	if (ret) {
+>> +		ath12k_err(ab, "failed to init core: %d\n", ret);
+>> +		goto err_ce_free;
+>> +	}
+>> +
+>> +	return 0;
+>> +
+>> +err_ce_free:
+>> +	ath12k_ce_free_pipes(ab);
+>> +
+>> +err_hal_srng_deinit:
+>> +	ath12k_hal_srng_deinit(ab);
+>> +
+>> +err_resource_deinit:
+>> +	ath12k_ahb_resource_deinit(ab);
+>> +
+>> +err_core_free:
+>> +	ath12k_core_free(ab);
+>> +	platform_set_drvdata(pdev, NULL);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static void ath12k_ahb_remove_prepare(struct ath12k_base *ab)
+>> +{
+>> +	unsigned long left;
+>> +
+>> +	if (test_bit(ATH12K_FLAG_RECOVERY, &ab->dev_flags)) {
+>> +		left = wait_for_completion_timeout(&ab->driver_recovery,
+>> +						   ATH12K_AHB_RECOVERY_TIMEOUT);
+>> +		if (!left)
+>> +			ath12k_warn(ab, "failed to receive recovery response completion\n");
+>> +	}
+>> +
+>> +	set_bit(ATH12K_FLAG_UNREGISTERING, &ab->dev_flags);
+>> +	cancel_work_sync(&ab->restart_work);
+>> +	cancel_work_sync(&ab->qmi.event_work);
+>> +}
+>> +
+>> +static void ath12k_ahb_free_resources(struct ath12k_base *ab)
+>> +{
+>> +	struct platform_device *pdev = ab->pdev;
+>> +
+>> +	ath12k_hal_srng_deinit(ab);
+>> +	ath12k_ce_free_pipes(ab);
+>> +	ath12k_ahb_resource_deinit(ab);
+>> +	ath12k_core_free(ab);
+>> +	platform_set_drvdata(pdev, NULL);
+>> +}
+>> +
+>> +static void ath12k_ahb_remove(struct platform_device *pdev)
+>> +{
+>> +	struct ath12k_base *ab = platform_get_drvdata(pdev);
+>> +
+>> +	if (test_bit(ATH12K_FLAG_QMI_FAIL, &ab->dev_flags)) {
+>> +		ath12k_qmi_deinit_service(ab);
+>> +		goto qmi_fail;
+>> +	}
+>> +
+>> +	ath12k_ahb_remove_prepare(ab);
+>> +	ath12k_core_deinit(ab);
+>> +
+>> +qmi_fail:
+>> +	ath12k_ahb_free_resources(ab);
+>> +}
+>> +
+>> +static void ath12k_ahb_shutdown(struct platform_device *pdev)
+>> +{
+>> +	struct ath12k_base *ab = platform_get_drvdata(pdev);
+>> +
+>> +	/* platform shutdown() & remove() are mutually exclusive.
+>> +	 * remove() is invoked during rmmod & shutdown() during
+>> +	 * system reboot/shutdown.
+>> +	 */
+> 
+> You should rather explain why you cannot use one callback for both. Why
+> this has to be duplicated?
+> 
+>> +	ath12k_ahb_remove_prepare(ab);
+>> +
+>> +	if (!(test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags)))
+>> +		goto free_resources;
+>> +
+>> +	ath12k_core_deinit(ab);
+> 
+> And why this is actually different order than remove().
+> 
 
->
-> I would like to write a patch, but I would like to know in which
-> direction to go.
->
->
-> Thank you for any feedback
->
-> Matthias
-
-Kind regards
-Uffe
+The .shutdown() is not required for IPQ5332 wifi. In the next version
+will remove the shutdown callback.
 
