@@ -1,108 +1,135 @@
-Return-Path: <linux-wireless+bounces-18332-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18333-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB4BA2688A
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 01:27:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87719A2693B
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 02:13:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B318188639F
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 00:27:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CE89164B97
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 01:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FE918EB0;
-	Tue,  4 Feb 2025 00:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1527081A;
+	Tue,  4 Feb 2025 01:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZcLzzrqp"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Z74ujgkI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C341862A
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 00:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F06625A629
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 01:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738628861; cv=none; b=FPo3hsd3yE72iPJJkuAMtT+ghi2uT8XKLGAPmr8jVtRzgYka5M5QhSP2kSbRg44LVmtnmOR4MaiA60s4aT9r5xs7xXF1YQHsV9QO9O6Qx3G1gz356wCURqYrtw6g26pMQuUOrwNG41CyE529YKy5kE/BtgDzCkEU8Y28lCQ9z9E=
+	t=1738631617; cv=none; b=BEQG1ZSTMELnoz8hajehtsUmFlPbNHv6fUpaHN9xg21kG1DFBFA3vD2cejDbSWJhvIvgtq0LOAGPZ9YeJxOr7a7t/E6siPnZFdSHjle+azeXJxr/2L8zQrvkXleHyNF7dxm5BaJyspZsttgWk3YODXKHqimGUkv+PAiuCKjZADI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738628861; c=relaxed/simple;
-	bh=P4Hu060AS7bqr3atD7otamrI1MViLNAqhZlLFotATUQ=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=BWsJhG+mYAUlPVVj4AzRJETN+zeljXFw2A1rGTJjgOO0go0GD7J+PilHMylRN8APwQAXSiPs0pvYabK7Z+Nkj4TK+z01VDZ4lfkrpClvx48WkZ5HvZ8zda6wWFLUYUNFwQKDk/wwPz3CvH0oOwvEUobhTXjptlDk2sQDC650xJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZcLzzrqp; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5140RUaV42624755, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1738628850; bh=P4Hu060AS7bqr3atD7otamrI1MViLNAqhZlLFotATUQ=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ZcLzzrqpd//d76KrwadOM2Ng890y3V9QQEDuwijgCkUC+LOP1/sVBYnp+/R6ZpdRT
-	 x9oqGyk30CdVT+ncHOtdYCQsm4s1RAbUlIy8LuwaOjaBVfeXEhW8z4Go6g5KvK6ZYQ
-	 Gx/m1qtHRf0AmtT7F5e/qVrBzguCUyCCygvXlWc8l3G6ZKdtac6Ow060PUlnt8Tw/4
-	 wGUAtpLE2Zw64tdqaOX8BlO9Ax2THfE/y+QEgG/4S/+Vv06hMAFJtISh9IpICE/cG3
-	 g9kwedsfWU4SCOyHceFwc+WOSLq1OL49vHFRyqbbprs4nUvK/jXekQ4t0oxtAKYrox
-	 DOhTzGBjK1/5g==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5140RUaV42624755
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Feb 2025 08:27:30 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 4 Feb 2025 08:27:31 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 4 Feb 2025 08:27:30 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553]) by
- RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553%5]) with mapi id
- 15.01.2507.035; Tue, 4 Feb 2025 08:27:30 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Tistou MOITA <tistou@syngate.fr>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-Subject: RE: wifi radom disconnects
-Thread-Topic: wifi radom disconnects
-Thread-Index: AQHbdkYhi+DCpSTEeUSJPfPVpOpGsLM2SU2g
-Date: Tue, 4 Feb 2025 00:27:30 +0000
-Message-ID: <6cec5730b4414f7999e4af92ae306389@realtek.com>
-References: <PR0P264MB2968C37DBDB24BD8151F8162B3F52@PR0P264MB2968.FRAP264.PROD.OUTLOOK.COM>
-In-Reply-To: <PR0P264MB2968C37DBDB24BD8151F8162B3F52@PR0P264MB2968.FRAP264.PROD.OUTLOOK.COM>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1738631617; c=relaxed/simple;
+	bh=X+f+xBZ5x7qaeHgObjDrFiESlq4mLFR+nbshgLgAE5U=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=KmXd1Fx6v/6bI9+FP+2aOfLja1m5BVxJlNPWHgGvpUuqAG66S5qkZjJWKZT7nlObbBqEuoKtmjWbMHEGQorcB3OXiSm0Yc0Qk3EwqGbSUBn7d6i31UqegIbiv+vKJaJXOXBWXRYiEDNPmP/cTpSzq/RzmoXQPe6C9L86NyCyIdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Z74ujgkI; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 513E5YpY002395
+	for <linux-wireless@vger.kernel.org>; Tue, 4 Feb 2025 01:13:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	yT5/fcAE26okMeBX/EB7E9oL6/XaBT9SZ0JtHj1hDks=; b=Z74ujgkIJ1nofgbX
+	JdhTBUlkFH8h30LQ7yeyQpeLIoLs9Q3QpxioAlBQkNEH1MvHDiVVU7S3BEjufWfc
+	MD8Somtup+h+Y08PfdynIj+CKH7PKy646wMwR/jePf/Q+RoEBPudVLkZi9ZyBT6z
+	R5Yoz6LibxK3sUuZ2bzGT5DDNDex62lBm9TV6P6DPjwU5k/ddNnNOTRqC/5KDMKI
+	iygzNZsK2Z5m8QIv5+H+huu6vhqn7CvBwYEjbUhFYc3iKrVCAum/yQkP0m3myeJG
+	RmRH500aOjZMNZX/BLVpG4wdA07MQtKvhMjtT9RewMG5wcTXysm66FveikHllQKV
+	D/aN5w==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44jy8s9bqa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 04 Feb 2025 01:13:34 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-21648ddd461so109230355ad.0
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Feb 2025 17:13:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738631613; x=1739236413;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yT5/fcAE26okMeBX/EB7E9oL6/XaBT9SZ0JtHj1hDks=;
+        b=PlHXpmeqG9ttuXdWMKribxMLQ03Qy7kFSynPc+4a+bop9CXPA6zMw0SGNSuWJB75cO
+         trKFNslk05CIAuzDHBvNchSMTeOipU+YJpFAsSh+ZJKZ3PmW4RUW5eRDgD+xzy+zukAM
+         2ITbLGIP3PVdq6TYS/fJintqWkp+dGq3HplZ7h6A1MAay7YJQ1dQc9r+T7RZU4qH6nc6
+         X+68Q+zPh+y9FkoGeyzie2JWxHyVGQweuKTLGYisXIL5fbzP3QoFgzyvsn/6PL8ZVaRB
+         rcnpiMwghYEO9oFwbxFl5A79R8r50CpwHMNYdQ7Vvu0xcTikh4AzHlK9MOO/onQHkNp5
+         HkTQ==
+X-Gm-Message-State: AOJu0YyJm+k7BDbh02fWK7IgAktrKNFR2dBLPtvmdNSPTZikrCIjt4BH
+	DNojKuIbICqbow4pswLuRQWnjUh8MtPPqnfY9TDabjAs/fsXsZz2hl7s4AHJhxtBO8uaH7ywQ3j
+	aBWoJvt/S/FHW5Zs6i9oedCqvFWXebmSaiv0687YGhtuPB3GaOFajzdXTVjePkMMpLQ==
+X-Gm-Gg: ASbGncvD4SVcMd7a6qnKBkRmCAseiH4dm8Z9C6bhA/IImZgFZ1Ayeds90cJPRa77Kp0
+	JCsDfd2SCT2S1bxYALAh4eJte0RxDUIXSDTXnqToI9hHLBmnU+TCayIjL+ZxPbbWMEsrvP+UbLi
+	OZG8PEyR8oJXZM8vw+gVtr8l04FROBgFsqp2KoUckvq1tqx9B2IQxD1lQuQmiKj1FqaJAgkYfvJ
+	oxL9ZRuCskGMJrscN+hPtju/Ze0RRZCt4p3qsQHH+LlHMMpi3SYVv2f/cLMQpULIgGX4gJ8CicW
+	AkSbeQj0h1D/NvCO6nRfCEovkB7hgsHXlFPS+VGHWA==
+X-Received: by 2002:a17:902:c40f:b0:216:281f:820d with SMTP id d9443c01a7336-21eddbf3371mr261750595ad.11.1738631613341;
+        Mon, 03 Feb 2025 17:13:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHsmFp4dHUN9/ea/YQYopKp1NpfKyinYyi+gwqb6hy52ez2R0RAtdQ+Fo6xTNuvyemLyBbDzQ==
+X-Received: by 2002:a17:902:c40f:b0:216:281f:820d with SMTP id d9443c01a7336-21eddbf3371mr261750225ad.11.1738631612923;
+        Mon, 03 Feb 2025 17:13:32 -0800 (PST)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de31f8522sm84069685ad.89.2025.02.03.17.13.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Feb 2025 17:13:32 -0800 (PST)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: ath12k@lists.infradead.org, Lingbo Kong <quic_lingbok@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+In-Reply-To: <20250113071758.19589-1-quic_lingbok@quicinc.com>
+References: <20250113071758.19589-1-quic_lingbok@quicinc.com>
+Subject: Re: [PATCH v4 0/3] wifi: ath12k: Support dump PDEV transmit and
+ receive rate HTT stats
+Message-Id: <173863161230.4031998.5854006886193521367.b4-ty@oss.qualcomm.com>
+Date: Mon, 03 Feb 2025 17:13:32 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0
+X-Proofpoint-GUID: xtTjfse-TDCdHu3F3LlOQ5mIJWZimdgM
+X-Proofpoint-ORIG-GUID: xtTjfse-TDCdHu3F3LlOQ5mIJWZimdgM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-04_01,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 mlxscore=0 spamscore=0
+ malwarescore=0 impostorscore=0 phishscore=0 lowpriorityscore=0
+ mlxlogscore=686 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2501170000 definitions=main-2502040008
 
-VGlzdG91IE1PSVRBIDx0aXN0b3VAc3luZ2F0ZS5mcj4gd3JvdGU6DQo+IEhpLA0KPiANCj4gV2lG
-aSByYW5kb21seSBpcyBkaXNjb25uZWN0ZWQgb24gdWJ1bnR1IDI0LjA0DQo+IA0KPiB1bmFtZSAt
-YQ0KPiBMaW51eCBQQ1AtUVVJTVBFUi0wNCA2LjguMC01Mi1nZW5lcmljICM1My1VYnVudHUgU01Q
-IFBSRUVNUFRfRFlOQU1JQyBTYXQgSmFuIDExIDAwOjA2OjI1IFVUQyAyMDI1IHg4Nl82NA0KPiB4
-ODZfNjQgeDg2XzY0IEdOVS9MaW51eA0KPiANCj4gT24gc2V2ZXJhbCBzYW1lIFBDcyA6DQo+IOKA
-guKAguKAguKAguKAguKAgk1hbnVmYWN0dXJlcjogTEVOT1ZPDQo+IOKAguKAguKAguKAguKAguKA
-glByb2R1Y3QgTmFtZTogODNBMQ0KPiDigILigILigILigILigILigIJWZXJzaW9uOiBMZW5vdm8g
-VjE1IEc0IElSVQ0KPiANCj4gV2lmaSBDaGlwc2V0IDoNCj4gUmVhbHRlayBSVEw4ODIyQ0UNCj4g
-DQo+IEVycm9ycyA6DQo+IA0KPiBNb2RlbU1hbmFnZXJbMTg4OF06IDxtc2c+IFtiYXNlLW1hbmFn
-ZXJdIGNvdWxkbid0IGNoZWNrIHN1cHBvcnQgZm9yIGRldmljZQ0KPiAnL3N5cy9kZXZpY2VzL3Bj
-aTAwMDA6MDAvMDAwMDowMDoxZC4wLzAwMDA6MDI6MDAuMCc6IG5vdCBzdXBwb3J0ZWQgYnkgYW55
-IHBsdWdpbg0KPiANCj4gd3BhX3N1cHBsaWNhbnRbMTgzNF06IFRETFM6IEludmFsaWQgZnJhbWUg
-LSBwYXlsb2FkdHlwZT0xIGNhdGVnb3J5PTI0MCBhY3Rpb249MjYNCj4gDQo+IFsgIDMwMi42MjM0
-MjddIHJ0d184ODIyY2UgMDAwMDowMjowMC4wOiBmYWlsZWQgdG8gZG8gZHBrIGNhbGlicmF0aW9u
-DQo+IA0KPiB3cGFfc3VwcGxpY2FudFsxMzMxXTogd2xwMnMwOiBDVFJMLUVWRU5ULVNJR05BTC1D
-SEFOR0UgYWJvdmU9MCBzaWduYWw9LTY0IG5vaXNlPTk5OTkgdHhyYXRlPTIxNjAwMA0KPiANCj4g
-WyAzMjAzLjU2Nzk3MV0gcnR3Xzg4MjJjZSAwMDAwOjAyOjAwLjA6IGZhaWxlZCB0byBnZXQgdHgg
-cmVwb3J0IGZyb20gZmlybXdhcmUNCj4gWyAzMjMzLjkyOTA3Nl0gcnR3Xzg4MjJjZSAwMDAwOjAy
-OjAwLjA6IGZpcm13YXJlIGZhaWxlZCB0byByZXBvcnQgZGVuc2l0eSBhZnRlciBzY2FuDQo+IA0K
-PiBBbHJlYWR5IHRyaWVkIHRvIGFkZCBvcHRpb25zIHRvIHJ0dzg4IG1vZHVsZSA6DQo+IA0KPiBk
-aXNhYmxlX2xwc19kZWVwPXkNCj4gZGlzYWJsZV9hc3BtPXkNCg0KTm90IGNsZWFyIHRvIG1lIGlm
-IHRoZXNlIGVycm9ycyBhcmUgcmVsYXRlZCB0byBkaXNjb25uZWN0LiBQbGVhc2Ugc2hhcmUNCmZ1
-bGwgbG9nICh2aWEgcHJpdmF0ZSBtYWlsIGlmIHByaXZhY3kgaXNzdWUpLiBJIGFsc28gd2FudCB0
-byBjaGVjayB0aGUNCmZpcm13YXJlIHZlcnNpb24geW91IGFyZSB1c2luZy4gDQoNCkFub3RoZXIg
-dHJ5IGlzIHRvIHR1cm4gb2ZmIHBvd2VyIHNhdmluZyBlbnRpcmVseSBieQ0KICBzdWRvIGl3IHds
-YW4wIHNldCBwb3dlciBzYXZlIG9mZg0KDQpQaW5nLUtlDQoNCg==
+
+On Mon, 13 Jan 2025 15:17:55 +0800, Lingbo Kong wrote:
+> Support to dump PDEV transmit rate stats through HTT debugfs stats type 9.
+> Support to dump PDEV receive rate stats through HTT debugfs stats type 10.
+> Support to dump additional PDEV receive rate stats through HTT debugfs stats type 30.
+> 
+> v4:
+> 1.used tab(s) to align the = to match the existing code
+> 
+> [...]
+
+Applied, thanks!
+
+[1/3] wifi: ath12k: Dump PDEV transmit rate HTT stats
+      commit: ba42b22aa336c3ea0bd6f9c606f70a35a278bd61
+[2/3] wifi: ath12k: Dump PDEV receive rate HTT stats
+      commit: a24cd7583003824f8bd0034c02987e5da26088f6
+[3/3] wifi: ath12k: Dump additional PDEV receive rate HTT stats
+      commit: 7a3e8eec8d183d7b293bfb69caab9f213e0a6bbd
+
+Best regards,
+-- 
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+
 
