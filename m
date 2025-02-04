@@ -1,154 +1,150 @@
-Return-Path: <linux-wireless+bounces-18410-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18411-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF75A26EF6
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 11:03:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FB7A26F43
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 11:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10A5318871C4
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 10:03:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90B2C164B8B
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 10:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BB02080DB;
-	Tue,  4 Feb 2025 10:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BA120A5CE;
+	Tue,  4 Feb 2025 10:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hd/E9e+w"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jLi0ChJI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FCA208992;
-	Tue,  4 Feb 2025 10:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68E2207DF6
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 10:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738663375; cv=none; b=M9/F5lVfgGTOIXisngUG1oBPimSztczVHNXUZ6zgOwkLo9cW+tFRwFRe4Dz6WIGBOcy93CLddiEpPw7L2I0pYTnkxEVcSxQzGIrMBufG4kANSGrqItBQ9gP1BxA6Umgnu4IdhWsw8hWLnbioUeTU3Qw8JcBg6DfDq7aE1RDJlaE=
+	t=1738664624; cv=none; b=YeSArXMIlGGQJPRziA/k/vHrAIv5WiM68XL6VQKXt7wKaPFNDCxJHB5SXUPFUw1IXjHpcgSJBZL7aSqPBAUjFpI/9pbzzwEFtv/GKktRcnZ+5WmQVR7CBBQv8/msMJ2ARxGDFd3iJZKnA3xyDtHejsxXI3QEuk4rwrIvRAHJ2a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738663375; c=relaxed/simple;
-	bh=NVe+5Vj5wT+jv8MRUuBhLO5f0ZuuCoMo+ewbhxjx8dc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=gxa4WaasFqBiUecP4XqWnUtHuZSN9Ijc0dPLh3dw03WOxO2LQlCfXpJKzLsX4aSc1RgvU4rxiJTIozHm/A5s/Xd55pszyan6CQCT8OBZi4SZYFTZE5s4eBjM+nG36+majOj5Lpd0vZI9hX3ra33XBpsqqQrSiiHmtcUN4SFpdxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hd/E9e+w; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38daf1f5091so132523f8f.1;
-        Tue, 04 Feb 2025 02:02:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738663372; x=1739268172; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=phievftbMhEJWOjF57oTUK/kdR4f6x3/eDPPiCF/bJU=;
-        b=hd/E9e+wHHRte0VdAXsvSl0WFtiv7dIzPpjPUlkpXs/x/2FRtQlliztplO7rnLEek+
-         z/uD5o/HZEH3htylh7vYjXOpxyaocnkE99UXGrbVcX9sewa81phKhhxhDKI/5OIII+8R
-         5yCtBhrKSRQv1zZERSlMU63F10Zp7NByZXH0vyg0lP49hcdfO6m4wKyD3ACCSCTK04nj
-         EwEVHFo+Vf0OV98F0FNexU5epQ2O7mzL1q6zut7SCxmZ68jaS6/xI5RcbGNAA8/a8k6P
-         vrFaFgFG1f/bliEirVBxGaDGCM2f90vyRe2Gu7czUL9E0mlRF535lPsCMSRR69kx5lHm
-         FLeA==
+	s=arc-20240116; t=1738664624; c=relaxed/simple;
+	bh=2tOrENL1eh7vCOb+YRZ48Z4/lH/9EZu7VjQAHHXcToM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YyNZRdZshAL+OYwGyHWp6YLr/gpKpNUHlTikU081BYl34GdlBLtCE90Uzamor/yNjPclQH4TxZL788oKcoK+svtB7yPYAJIV3uNy869h2mQF7EDypldWtlobSj5dqORrIEcevSLiGiRlPs/ebzObXBBTFzPVvDR+tyyul1HBZHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jLi0ChJI; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5149tvc6007727
+	for <linux-wireless@vger.kernel.org>; Tue, 4 Feb 2025 10:23:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	hayHRKWt3KgTH36kTGY0tB09nAi5jZ+X1aXPPC8Jm+4=; b=jLi0ChJIfFSaqRTo
+	U8zKG6GW4fh86fBHmxsOOe0PfMqBFOJ0RsFmFEObsBg6z+3w1kJXsiOwyf3blsbZ
+	CaQbF9O7tv5Pab0r+ElwOqtCrA4nndHMW3bJ6YG97xRu+HlFFuwsrsU5y2eAvKm2
+	d6/FXo4Fh2C053yZs40q7hdLXYd/2JHLnezsTH22df6bXYRFGrzeeELERbCAk2hW
+	N4NAigo9wZTzsKOcgHOGLL9UccMdVVhmJGwWKc0Yi8uOOjo0uZ6uPJVHjSRsrkww
+	rKrTZq+XTF7jtboxx8gAbxTrgaA2N2u/BjkC0j9gRkvIeXzo94CZFwEkbsL5xCWU
+	IeGo9g==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44kgp7024b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 04 Feb 2025 10:23:40 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2166e907b5eso100269885ad.3
+        for <linux-wireless@vger.kernel.org>; Tue, 04 Feb 2025 02:23:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738663372; x=1739268172;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=phievftbMhEJWOjF57oTUK/kdR4f6x3/eDPPiCF/bJU=;
-        b=ak6vsPM8F9yobKlwL8+LSNrm4w8hXTYYqRpNm04J2QTFKjXwB7Tq+FoyrFVUZaMNIG
-         MPuyfJ7wn+WWnqUlYVq3ukPrxdzz8s3SskgSX14YG35k98lZDGxT1l7kiC0iwQ4wtCGG
-         HCurVxdrTClU7jNLb1tdI74x+pWixvBBS/kZbq80v6eFeS7qugEbaYnkSuL26kgoa3yd
-         6bJgtHSsuSJrDHhswzAzI9FPU4Bn7mLGf+9DDqnZLNIC526zECkJXuSPtzXGLuTVxm0S
-         vyV0p5aMUyegwRHlANy0mWIP5plLcVnQpexus+tA0XItnziI4JBCB1CJCKO4ziFelvpQ
-         IXFw==
-X-Forwarded-Encrypted: i=1; AJvYcCV6g/VpI5BBhOoa+2v0iQOI9YsJI1hh+f+oHkYWZp7GcFoRg3cGwpoDgn+2s6QvaY/pQvSbzM5f9AJnodg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIBYyN+r31cPMevKzSUzJCP3xAvCzIRePTgshTG4w3t23XiBvb
-	2Z8cOPtpTxsUmK9OqeMpCz6MuSMCcSNqMgBSlgpDpyRBHZ8pzNu3
-X-Gm-Gg: ASbGnctoOQw7W6ziizzcJgeF6VX8Lyb/zyJUcbT6cMGHiwIu1BSSEtNTx5uzHQK+nvp
-	OyTe4/8qDpm5oC/NJ//SvcHzUc/+yjw0AcRIxR79bWnrrBumxLshzjtHvpdZmVK3jYbAm+v46yV
-	DYOlFOaJryjsOEW4TuRIlZPmNhrdI61nQtHLOERR8HgZ96aQU0+/jD5YqFLFBzB5MCmGe9hLYWJ
-	1yNlbZQSStrDrs/bNbQmkb8+N9BuZXzE/JUapOrzKUL+2uaYZKrJGnQdkUxUpLzjFrbFqaPvFJt
-	nF+6d1e1z+AvDTZfXiFY2erqyYRxeyq9FQ==
-X-Google-Smtp-Source: AGHT+IE17SiHozWKj+Os0pE2Y/1zwACLsOViGQPHYeNCGvgkHtVrDitOn4GliYkHWXRDJzqG8U9sig==
-X-Received: by 2002:a5d:4d47:0:b0:38b:f44b:8663 with SMTP id ffacd0b85a97d-38c520bb322mr15854536f8f.55.1738663371922;
-        Tue, 04 Feb 2025 02:02:51 -0800 (PST)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c11fadbsm15039077f8f.44.2025.02.04.02.02.51
+        d=1e100.net; s=20230601; t=1738664619; x=1739269419;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hayHRKWt3KgTH36kTGY0tB09nAi5jZ+X1aXPPC8Jm+4=;
+        b=b/r4QBUzeQCWAwyOuim8YfndmxBIVa9+1MjlH6MM1CoEevalaGOECkUoYSwmwofquf
+         W11J1sW2/V+kkMm3N69Rwgz2HzkJ9n5FFqT2K6hwJKpPgOXVLd/Ts9jzgg8PDLliI2+u
+         NFtmLcdxFB9vrrhGP74OK/idS7H+LHF3uRF7IdE6X6N4USAc35nDyMhhCGg4xLQhqbUJ
+         fTuBSayDWZt5qUUCsEMGS+K+MieX9EGAWPyPF1EPJ7V+z51EGlyX618ZhSZrgwMhpOCY
+         XsSFDgmFyYrP/7wG1G+cyjm/QNDnD0/xfUOCfG5Ikyr94XM5A1LUFtDu0yU17WvE+bw3
+         aqig==
+X-Gm-Message-State: AOJu0YwOPAekVFT6bAjL9Ji0PVbt4OjK/xf/oMU/SlQWcz+uqrDx7yCu
+	QPYgJwX24pk173wMVzlTnAp3WwZa5EjvEtUP6N1uVtsjj7z6dJSyZTwXeuifJpELAVZQynaKXD2
+	qGBGeSasQGQo3B0TqitmXbJC0YLZmmwh7/eGadpbzvmT1JG2429oZlFeoQAAr76gKZA==
+X-Gm-Gg: ASbGncvNWQroY2InueoZ0EM+a3cN8B6kmP50MHcmxHasj4mRu4tQpBJO9KLm2n/eZ0E
+	62xIyMpYfF15Avj+elbmQOJRwFt8oqWuLrX/e0qqrrzENpcuI7TlYiDGWCgy9oIJkzMLBIaY9Uz
+	RRu1fqKmJUAiqjzYXTLMBUSWMl9H2uYchkxLX6TBNk0bM2fVd7KUjC9dEtxMJS+sfZtFZsdmnrN
+	88ztLXTWYUyvlLVvz9vADcey7FD6BzVnJtXAPtOUs8ZOlWGzJCQgSGSv8CYTOyP0deZEp+la0FB
+	ObYGzvBHfd/coLegqDQkpbcY5C4HIimQ5AiTxXY=
+X-Received: by 2002:a05:6a20:841b:b0:1cf:27bf:8e03 with SMTP id adf61e73a8af0-1ed7a6b81f3mr40738757637.26.1738664619050;
+        Tue, 04 Feb 2025 02:23:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHIdD5AiG7u15rXf2GHuHDUY9fbuc3P//5L0huLyjmG8JXN8JnwvXSF0P2RL0jsOL/hgtFu6Q==
+X-Received: by 2002:a05:6a20:841b:b0:1cf:27bf:8e03 with SMTP id adf61e73a8af0-1ed7a6b81f3mr40738723637.26.1738664618630;
+        Tue, 04 Feb 2025 02:23:38 -0800 (PST)
+Received: from [10.152.202.18] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-acebe856840sm8243100a12.41.2025.02.04.02.23.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Feb 2025 02:02:51 -0800 (PST)
+        Tue, 04 Feb 2025 02:23:38 -0800 (PST)
+Message-ID: <076014d2-eaaa-44be-81fc-a8f1eb0c2ac9@oss.qualcomm.com>
+Date: Tue, 4 Feb 2025 15:53:34 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 04 Feb 2025 11:02:50 +0100
-Message-Id: <D7JKQ60C6EZA.24H639LLIG2U7@gmail.com>
-Cc: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/8] wifi: ath12k: handle change_vif_links() callback
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Aditya Kumar Singh" <aditya.kumar.singh@oss.qualcomm.com>, "Kalle Valo"
- <kvalo@kernel.org>, "Jeff Johnson" <jjohnson@kernel.org>
-X-Mailer: aerc 0.19.0-0-gadd9e15e475d
+To: Nicolas Escande <nico.escande@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
 References: <20250204-unlink_link_arvif_from_chanctx-v1-0-675bd4cea339@oss.qualcomm.com>
-In-Reply-To: <20250204-unlink_link_arvif_from_chanctx-v1-0-675bd4cea339@oss.qualcomm.com>
+ <D7JKQ60C6EZA.24H639LLIG2U7@gmail.com>
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <D7JKQ60C6EZA.24H639LLIG2U7@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: 8k3JE_24hn7dKY7f-Sy8LRyuFb9RCKYm
+X-Proofpoint-GUID: 8k3JE_24hn7dKY7f-Sy8LRyuFb9RCKYm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-04_05,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ phishscore=0 priorityscore=1501 spamscore=0 clxscore=1015 adultscore=0
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ mlxlogscore=919 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502040083
 
-On Tue Feb 4, 2025 at 5:23 AM CET, Aditya Kumar Singh wrote:
-> Currently, links in an interface are allocated during channel assignment
-> via assign_vif_chanctx(). Conversely, links are deleted during channel
-> unassignment via unassign_vif_chanctx(). However, deleting links during
-> channel unassignment does not comply with mac80211 link handling.
-> Therefore, this process should be managed within change_vif_links().
->
-> This series aims to add support to handle links in change_vif_links()
-> callback.
->
-> Patches 1-2 are making debug infra to work without device info.
->
-> Patches 3-8 are the ones changing the code to handle as mentioned above.
->
-> NOTE:
-> * A new ath12k-check warning comes which probably needs to be added to
-> ignore list
->
-> drivers/net/wireless/ath/ath12k/debug.c:69: Prefer [subsystem eg: netdev]=
-_dbg([subsystem]dev, ... then dev_dbg(dev, ... then pr_debug(...  to printk=
-(KERN_DEBUG ...
->
-> This is because, since device info is not known can not use netdev_ or de=
-v_
-> dbg family. pr_debug() is an option but that will require DYNAMIC_DEBUG
-> and then ath12k needs to be probed with dyndbg=3D+p which we don't want i=
-n
-> ath. Hence, only option left is to use printk() directly.
->
-Hello,
+On 2/4/25 15:32, Nicolas Escande wrote:
+> Hello,
+> 
+> When applying this series I am no longer able to start an AP on a DFS channel.
+> (I don't know specifically which patch though)
+> 
 
-When applying this series I am no longer able to start an AP on a DFS chann=
-el.
-(I don't know specifically which patch though)
+Thanks for reporting this. I think non-DFS channel should be working 
+fine right?
 
-After the initial CAC period I get the following kernel message:
-	[   45.248441] ath12k_pci 0003:01:00.0: cannot install key for non-existen=
-t peer 3a:07:16:d8:00:08
-And then hostapd goes in failed state:
-	wlan0: interface state UNINITIALIZED->COUNTRY_UPDATE
-	ACS: Automatic channel selection started, this may take a bit
-	wlan0: interface state COUNTRY_UPDATE->ACS
-	wlan0: ACS-STARTED
-	wlan0: ACS-COMPLETED freq=3D5620 channel=3D124
-	wlan0: interface state ACS->DFS
-	wlan0: DFS-CAC-START freq=3D5620 chan=3D124 sec_chan=3D1, width=3D2, seg0=
-=3D114, seg1=3D0, cac_time=3D5s
-	wlan0: DFS-CAC-COMPLETED success=3D1 freq=3D5620 ht_enabled=3D0 chan_offse=
-t=3D0 chan_width=3D5 cf1=3D5570 cf2=3D0 radar_detected=3D0
-	wlan0: nl80211: kernel reports: key addition failed
-	Interface initialization failed
-	wlan0: interface state DFS->DISABLED
-	wlan0: AP-DISABLED
+Anyways, I'm able to repro the issue locally. Let me investigate further 
+and come back.
 
-Maybe I missed something ? Is there another series this one depends upon th=
-at I
-should have applied before ?
+> After the initial CAC period I get the following kernel message:
+> 	[   45.248441] ath12k_pci 0003:01:00.0: cannot install key for non-existent peer 3a:07:16:d8:00:08
+> And then hostapd goes in failed state:
+> 	wlan0: interface state UNINITIALIZED->COUNTRY_UPDATE
+> 	ACS: Automatic channel selection started, this may take a bit
+> 	wlan0: interface state COUNTRY_UPDATE->ACS
+> 	wlan0: ACS-STARTED
+> 	wlan0: ACS-COMPLETED freq=5620 channel=124
+> 	wlan0: interface state ACS->DFS
+> 	wlan0: DFS-CAC-START freq=5620 chan=124 sec_chan=1, width=2, seg0=114, seg1=0, cac_time=5s
+> 	wlan0: DFS-CAC-COMPLETED success=1 freq=5620 ht_enabled=0 chan_offset=0 chan_width=5 cf1=5570 cf2=0 radar_detected=0
+> 	wlan0: nl80211: kernel reports: key addition failed
+> 	Interface initialization failed
+> 	wlan0: interface state DFS->DISABLED
+> 	wlan0: AP-DISABLED
+> 
+> Maybe I missed something ? Is there another series this one depends upon that I
+> should have applied before ?
 
-Thanks
+No known dependency as such.
+
+-- 
+Aditya
 
