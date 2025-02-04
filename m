@@ -1,141 +1,135 @@
-Return-Path: <linux-wireless+bounces-18387-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18388-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727E2A26C8F
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 08:31:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C70D0A26C9E
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 08:35:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D0AE16583A
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 07:31:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69BEC7A3E6B
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 07:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E947620409A;
-	Tue,  4 Feb 2025 07:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08242063E7;
+	Tue,  4 Feb 2025 07:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qXHSZdeG"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HVe2M62G"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A131754B;
-	Tue,  4 Feb 2025 07:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18837204C1F
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 07:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738654260; cv=none; b=cVRXMDA5vAF5qO7IxZcokoTpiopOhA2ML8Yl39bO3vvBMCUNujKehiX9cTp9mfdaaEtReFrifpnCJPu752a8fZAnl8mQoeXLRda0cuiWfjYQ5Lj+4TqUF5vG1d4nq0LkvEeWmCJe3S5Of8BU9sc8uLrHkwM/YAsNgrPv0mBlLps=
+	t=1738654518; cv=none; b=YopIMGAKfRXTto83HDoDX+fBsLf6PNfMHtVqG1GqAb/S/Sug25uPZlKdtChpqQz8ZD/uByzcPGTdy/2abO0RXYBgUUXhhn7X1PT5qhkrGWnwaQFj3DPNBnxiMmzyHzaWU6DS6wUmxas0DN2q4XXaRwiuNLD+amgOsU9iqllS5xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738654260; c=relaxed/simple;
-	bh=zt/aEx8/bioARNiNbp5LpN9aIVl9Rt/uc9g3v77CCh4=;
+	s=arc-20240116; t=1738654518; c=relaxed/simple;
+	bh=xQAGdSbSIYSyiBdU3C21sOz/sN3QXi6wsOZNmif2uiM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QnN7u/v8C+7aZ/h0LmCNC5y6Mn8bcXoLXBf3DNLyOx9TQZqapebQk85cxSgQbmAJh5nuUvSbiTB2THk4pLz+qJaQ+/Si42KRuttUfLBSThN7Wl+yO6N5fHfKM86lMefl/oaXZtrwNc/un6MlILOQZNVZEoozEHHljpsUg6ck+5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qXHSZdeG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7DC5C4CEDF;
-	Tue,  4 Feb 2025 07:30:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738654260;
-	bh=zt/aEx8/bioARNiNbp5LpN9aIVl9Rt/uc9g3v77CCh4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qXHSZdeGAuhXmkWNnncngOKkMXoikSKlAkcwz+VD+YxUXBGnZq6/7EGTyfWE/Fj3T
-	 K5ROdqwhQCyNxiP3AmrL3pRx9CsCDN8gGJy+7ojS0aSqH0sKPAvuU28ZJOtJy9lKVm
-	 mvo8QDYUwvAKdnehl2sitHZkeoRB7TtQTCQI8shfi2BNrQIULbIUT4DVTBNS4TJRZF
-	 AgE7qCXm9ZC/erAw4dXstMOaAyDS+QUS4F4IGT94DZTB93adr3QL+UPwTnYfRqY03M
-	 B5YkzZ7tahHvonwuVsRAsa3aIEoeqSJL8++5WKwjJ3yJIHz3dNAnZOTVd6RqYjk0sB
-	 oLPdj2mnerJsg==
-Message-ID: <f2ed9fe6-a42f-4631-ac80-3ec39156aaab@kernel.org>
-Date: Tue, 4 Feb 2025 08:30:54 +0100
+	 In-Reply-To:Content-Type; b=f1kdcU4ZuujiwlFN++YCYacUdAw+JaOILEUTXUknsLSKCSngeBMWpC2VPoiony+7+YXqBr2phPHBsIAC0spE4TRgqDCSyb7v5eI6b+CZ169MO+XDDHeD/gYpC5NNzaUa4CISyYxQVHnxjKCZwu4+mA+Nk0RDgfTHAJrgQxCykmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HVe2M62G; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 513HfVnO017317
+	for <linux-wireless@vger.kernel.org>; Tue, 4 Feb 2025 07:35:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	C8CC3DNaNwstjCL5UYvX2ni2+zBNkZ7cSI4Dr0j1vnk=; b=HVe2M62Gi7FCp1Eg
+	xkDyMnd0EX9PAyRkjey7X980MzYXFE3PsrG1XG56MRgZVPciPAOyl0ibTu6/CkiJ
+	QtPYLck2Vg+Db+NOOC9qqW7JkpoExK9TbPjec8WC0DxKxq4eXb4iXWIMM0yvpKtk
+	cnX3Ru1OHMfXK+s+icundJ7T3c/i8yl7rAO+42ioqeqdLVxHwNjzhZLjGJKKohmJ
+	1W81NE2WLTuAcA5Cwzh/5KgeAyqcelsoMy3m+hY5x6mSpNlJ0BrWkoHf9CZMHqTd
+	PoG/rY2Hbx+SIULiGjX+iRJ2nt1E6w7vJzZL9B0V/IH4CvRtowfQ5JqbQBpxyUjR
+	Qf2kWg==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44k2e1hjk6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 04 Feb 2025 07:35:15 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2166e907b5eso97489845ad.3
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Feb 2025 23:35:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738654514; x=1739259314;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=C8CC3DNaNwstjCL5UYvX2ni2+zBNkZ7cSI4Dr0j1vnk=;
+        b=P8UBr+oKXidW5NE8uBjKwV9QgLNT6QApVPSL52WLys6P8NxarLUdTdjM8OJn57Ej8R
+         xgishlqhLaGV8BS7wvjZoQTX9T9ZAlOk4Dko9XYkJzyJcutwMVZhKiTuOXrWyr/XhUh3
+         pTuFRsc09sAP//F/D2Z0inbXrvW+3AH8vNkdAmAdaGyQd/y60UHMRZUVOs4mOQXat7cJ
+         i6bGVChQz50IMxoEffcTEKM3TAsoyITGMSnHkQAT1hHtwq+LIFqTzp6zxZjszaSV7AQD
+         Fyb+OrDmy4ZMJMToFx9AigBk+RIVc4KlmvAzRISixb0B82vXvUW628GYzhuN8khBdpfO
+         vh7g==
+X-Gm-Message-State: AOJu0Yx+n/Z5UaLoaVEGQGUdthXFWRG1PjBGfuSYJVUBtMCkE7SrM+DG
+	61DAdztZ0F27fb9ev/NPdXlXNasLXmaajy+IxAh86IU7Ijm4tE/IxQZY6hK2agmJd9yuIXGvD+o
+	2OG+vGUjBiwynoCTwr9djBbZJUfp50PRJvjI3ZUSze2zZHkJtRhQssR/vPu24fTcSrnocw3xBMg
+	==
+X-Gm-Gg: ASbGncuv4yoWwD7APD6QX6cGY2SYVtZQUeRNjNkTiG5oDaLZmrMTxZAQeNYyo79ffN7
+	/BTXHYXI+fiIrCQV6/3IjQdxS7GRuKqyGIZBnXfoL900ipXjxb+f+/DIwaUfRj9IyWrUwnn9xAe
+	MGVPYkvc/tu3QWOoE2s2Su7O8CFqy2mR9DK6t/GZ9eoZx98qGNnNoLrNZ2MhOQu3D4QPjRHkMy/
+	fFU6/Xpqe2h27I5OpVG4b1MCS/3sMW+6ICs8aa9EwFQp6RS27VxCqeL5sVgu7I40I14dvxbmo8L
+	ct36B9c93gSVlmVUEcKRLOPIJ58TKEt3D9me3qi60hwKIR4=
+X-Received: by 2002:a17:902:d4d1:b0:21c:1140:136c with SMTP id d9443c01a7336-21dd7c3558cmr363849575ad.3.1738654514270;
+        Mon, 03 Feb 2025 23:35:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF4gw5bm/pgvM7hItOIb2mRVVbANXJ5lA/uYMkezaugLu7QXPhkzFwO5gbkOyIlpplWZcOdgQ==
+X-Received: by 2002:a17:902:d4d1:b0:21c:1140:136c with SMTP id d9443c01a7336-21dd7c3558cmr363849335ad.3.1738654513798;
+        Mon, 03 Feb 2025 23:35:13 -0800 (PST)
+Received: from [10.152.204.0] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de33032absm88861265ad.187.2025.02.03.23.35.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Feb 2025 23:35:13 -0800 (PST)
+Message-ID: <18856414-c05b-a737-5567-e8669b2349a0@oss.qualcomm.com>
+Date: Tue, 4 Feb 2025 13:05:10 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/13] dt-bindings: net: wireless: describe the ath12k
- AHB module
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
- Kalle Valo <kvalo@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250130043508.1885026-1-quic_rajkbhag@quicinc.com>
- <20250130043508.1885026-2-quic_rajkbhag@quicinc.com>
- <20250130-cunning-quail-of-opportunity-76d0ad@krzk-bin>
- <724a4822-469a-45bb-bfb1-c02b54e971a3@quicinc.com>
- <aaabcc7a-8234-4753-a8d1-ab36afdafa2e@kernel.org>
- <345519bb-ba1c-4bcc-a03c-5557f8f40035@quicinc.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/8] wifi: ath12k: eliminate redundant debug mask check in
+ ath12k_dbg()
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <345519bb-ba1c-4bcc-a03c-5557f8f40035@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+To: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+        Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20250204-unlink_link_arvif_from_chanctx-v1-0-675bd4cea339@oss.qualcomm.com>
+ <20250204-unlink_link_arvif_from_chanctx-v1-1-675bd4cea339@oss.qualcomm.com>
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20250204-unlink_link_arvif_from_chanctx-v1-1-675bd4cea339@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-
-On 04/02/2025 06:57, Raj Kumar Bhagat wrote:
-> 
-> The calibration board data for different variant are packed into firmware binary 'board-2.bin'.
-> Thus, board-2.bin can contain multiple board data for various variants. Ath12k driver selects
-> the correct board data based on the variant. The "qcom,ath12k-calibration-variant" is used
-> as one of the parameter to select the correct board data from board-2.bin.
-> 
->> 3. How is it supposed to work in practice - you have one board, but
->> might have different SoCs inside? Which calibration data would you use
->> in such case?
->>
-> 
-> The SoC in the following statement 'you have one board, but might have different SoCs inside'
-> , I am assuming SoC to be WiFi controller/component.
-> 
-> Consider, if we have two WiFi (qcom,ipq5332-wifi) controller with different FEM in IPQ5332 board.
-> Then in the DTS we have two wifi node. Each wifi node in DTS will have different value for
-> 'qcom,ath12k-calibration-variant'. With the help of this property driver will be able to
-> download the correct calibration board data from board-2.bin.
+X-Proofpoint-GUID: z8uyTA5_TmgunsBDoebFxo5hMhxLvA2e
+X-Proofpoint-ORIG-GUID: z8uyTA5_TmgunsBDoebFxo5hMhxLvA2e
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-04_03,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=688 bulkscore=0 spamscore=0 mlxscore=0 priorityscore=1501
+ clxscore=1015 adultscore=0 impostorscore=0 lowpriorityscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502040059
 
 
-Indeed, that makes sense. Thanks for explanation.
 
-Best regards,
-Krzysztof
+On 2/4/2025 9:53 AM, Aditya Kumar Singh wrote:
+> The current implementation includes a debug mask check both in the macro
+> expansion and in the function __ath12k_dbg(), which is unnecessary.
+> 
+> Simplify the code by removing the redundant check from the helper function
+> __ath12k_dbg().
+> 
+> While at this, rename the first argument in macro from ar to ab since the
+> first argument name in the function __ath12k_dbg() is ab.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+
+
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
