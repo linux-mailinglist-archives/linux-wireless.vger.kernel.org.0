@@ -1,195 +1,149 @@
-Return-Path: <linux-wireless+bounces-18400-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18401-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5772BA26DA9
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 09:51:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2428A26DE5
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 10:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1709164D73
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 08:51:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C5133A7903
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2025 09:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA6F206F37;
-	Tue,  4 Feb 2025 08:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19D3207675;
+	Tue,  4 Feb 2025 09:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FQCY/oRH"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kvCj+tqF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E33207A0C
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Feb 2025 08:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5D51F76CA;
+	Tue,  4 Feb 2025 09:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738659052; cv=none; b=piKFRQJ67XGzLLQwFzF41BT6aUf5VVX8QxCjykQS6bgYH2c9GnfpySuioAYrESnBlcT+P7/oQig80FY+f8mZX9wIulQtdknKh1JG/c1VsQ1ADpM6vDlmoRdWSueT5aFEXLab679Z4Dw6UZv8rpAop3xIAYb8gAAZyEFxCrIZjCA=
+	t=1738660025; cv=none; b=sL0AbJDbZs/LLPIiIpi/cl83Yk4MOaBlXyPqrIrqBaNdxjx3oQujTvNJ5Sj+H5FhsvxvyqFQPHby7pHv+cr1OOqwPvZAay2xLkv7HLdQKUKVwVKrujNSukA2sHM9S2jUgs3TVTwabQj3lURpvuLgs34y7ARASiWiVDBOmcGDuOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738659052; c=relaxed/simple;
-	bh=6SPbdiaC9dvQ/HrAJK6Qp0yZ02oezqZxwdm3OYH1IsU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TwZNG7l4380IhOnZA3v453fqGqUscPU9khPs+jqfVg1Vk5Mt0N3xM+EC3+LqeEQnA1++ogybHdZdJ2IPxvCXWp/TEqcKP5L9r0HJqxxVwGuI9AOMOk1moBRWyTqo97YQKuRw5hiSD99B9GMlpMaM6BFjcJpZCEWMGj15OAsXSSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FQCY/oRH; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1738660025; c=relaxed/simple;
+	bh=q+GimL0nMUDGbZMytsKY71lHzXtpVlrnL+bOQ7FZIGI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=EijZeZWq72EIAzM5ODea1nc/1KTOrsDI4bdBPd9WuMIsQydZO+OGn9UA7/lMZvpSLHziggVDGhNtIngqK4DhKaHXbty19K4AsdtfJm4+Su5nUgSgXT95Ls4B3kBSoyqt9o4HmkuTbf7wf0E5VdKNev9traXWRvW21i33lEtFxtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kvCj+tqF; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5148UHbJ006256;
-	Tue, 4 Feb 2025 08:50:45 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5141axeW004786;
+	Tue, 4 Feb 2025 09:06:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	HxNHklzAdBHq+zxdanUaa02a1UsSgauJQBsAKcUgbv4=; b=FQCY/oRH+WSczdDx
-	/tiVoxWcb2bUqbef2vWsivEtzYLXMd1qwc95FQZMJE7ADjjIrEfyL7U+HHhfQCgC
-	NIM+HL2EmiC6l8vr8EoGMSirlhi+gsC7xQrleasBY3tIklAE6pxcrM9w9ZqdqMca
-	s0JGstI6BVPFhc1AHTgcBpQz4qReZZwUa388xGEYvSl2AfjOyj0PuAj5omTZZqiE
-	AtMtBZ+Kq+jICoUwM8HrWFKURL0PRJtPfAOfBVamLli1mSlS4FTQ6rdKbF47Y5vL
-	h6/c7lV8D/Yr0L2CSDgHcc2YtF6jAMJbTL9eMjBIbmiR4tfafvVqZOxIUUEzhbKA
-	q0N3Pw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44kfe9g1e2-1
+	nbnJssJZG3MOTVpEih44BprCyGfRnM+RbClZRhYaWK4=; b=kvCj+tqFzDrlG3jF
+	Tf393bAmOjilXKI0mc8AeJAsIHwF+pFND+bz2ovQvZyqB4f9i/3ycUPZKpeJqq79
+	SiLsSPqZ7cANqdoRy0VN9prW5vrPzu2cv0/lty04M4LnuUjADzaGquk1qZRJefwn
+	tRzkWGe0qvzfdbGOZ24AphjKAMyELOb218AwIhwrsy1Nj3OzoKe3r2k/mULy28DS
+	c+xBTtcuuOX9B0vJ9dK0RR1Jq5dX8KXp7LmaoUzCjE5rgoFT0rGRXBv11zpNeCuE
+	/279bIUaQDlfakDLbBULCnnsx+/UZYx9O5Cd9Qhmtd/Y3el6Ds4gE+6BA4LrvsPl
+	+Vp4Zw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44k9cn0ud4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Feb 2025 08:50:44 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5148ohDY006202
+	Tue, 04 Feb 2025 09:06:58 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51496vZB017428
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 4 Feb 2025 08:50:43 GMT
-Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 4 Feb 2025 00:50:41 -0800
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Rameshkumar Sundaram
-	<quic_ramess@quicinc.com>,
-        Roopni Devanathan <quic_rdevanat@quicinc.com>
-Subject: [PATCH 2/2] iw: Add support to set per-radio Tx power config in multi-radio wiphy
-Date: Tue, 4 Feb 2025 14:20:00 +0530
-Message-ID: <20250204085000.3809769-3-quic_rdevanat@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250204085000.3809769-1-quic_rdevanat@quicinc.com>
-References: <20250204085000.3809769-1-quic_rdevanat@quicinc.com>
+	Tue, 4 Feb 2025 09:06:57 GMT
+Received: from [10.216.42.141] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 4 Feb 2025
+ 01:06:54 -0800
+Message-ID: <c7d9842a-96bf-41aa-8046-52c3e45f90d4@quicinc.com>
+Date: Tue, 4 Feb 2025 14:36:51 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 07/13] wifi: ath12k: add support for fixed QMI firmware
+ memory
+To: Krzysztof Kozlowski <krzk@kernel.org>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        Rob
+ Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor
+ Dooley <conor+dt@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20250130043508.1885026-1-quic_rajkbhag@quicinc.com>
+ <20250130043508.1885026-8-quic_rajkbhag@quicinc.com>
+ <4c9b512f-59d2-4d96-a899-5af4de2c823e@kernel.org>
+ <7d5f7b4c-2a55-41c7-b85c-cb4cd76d553f@quicinc.com>
+ <962dc257-f7a6-49c7-b760-a31fd84e7a56@kernel.org>
+Content-Language: en-US
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <962dc257-f7a6-49c7-b760-a31fd84e7a56@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
+ nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 6JjpMH7ODfCnZlHHv5w2O1CpCH4LezQD
-X-Proofpoint-GUID: 6JjpMH7ODfCnZlHHv5w2O1CpCH4LezQD
+X-Proofpoint-GUID: bwnGYCj7eok16Tun1dxNjPyrsV-sb_0N
+X-Proofpoint-ORIG-GUID: bwnGYCj7eok16Tun1dxNjPyrsV-sb_0N
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-04_04,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
- spamscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0 mlxscore=0
- suspectscore=0 mlxlogscore=999 impostorscore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502040071
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ spamscore=0 bulkscore=0 mlxlogscore=973 clxscore=1015 phishscore=0
+ suspectscore=0 priorityscore=1501 adultscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502040073
 
-From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+On 2/3/2025 3:42 PM, Krzysztof Kozlowski wrote:
+> On 03/02/2025 10:44, Raj Kumar Bhagat wrote:
+>> On 1/30/2025 1:16 PM, Krzysztof Kozlowski wrote:
+>>> On 30/01/2025 05:35, Raj Kumar Bhagat wrote:
+>>>> @@ -2646,6 +2663,136 @@ static int ath12k_qmi_alloc_target_mem_chunk(struct ath12k_base *ab)
+>>>>  	return ret;
+>>>>  }
+>>>>  
+>>>> +static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
+>>>> +{
+>>>> +	struct device_node *mem_node;
+>>>> +	struct resource res, m3_res;
+>>>> +	u32 bdf_start_addr;
+>>>> +	int i, idx, ret;
+>>>> +
+>>>> +	for (i = 0, idx = 0; i < ab->qmi.mem_seg_count; i++) {
+>>>> +		switch (ab->qmi.target_mem[i].type) {
+>>>> +		case HOST_DDR_REGION_TYPE:
+>>>> +			mem_node = ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
+>>>
+>>>
+>>> Why cannot you use existing API for reserved memory -
+>>> of_reserved_mem_lookup()?
+>>>
+>>
+>> The of_reserved_mem_lookup() requires reserved memory node to read the memory and
+>> return in the structure "struct reserved_mem".
+>>
+>> The of_reserved_mem_lookup() would be used after we get the reserved memory node
+>> using the API - ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
+>>
+>> In next version we would use of_reserved_mem_lookup(), Something like below:
+>>     mem_node = ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
+> 
+> Then why do you need ath12k_core_get_reserved_mem_by_name() in the first
+> place? Just use of_reserved_mem_lookup() directly. Why do you need to
+> parse phandle before of_reserved_mem_lookup()?
+> 
 
-Currently, setting transmit power changes the transmit power for all radios
-in a wiphy. But different radios in a wiphy can have different transmit
-power requirements. Modify the iw command to handle this. This will
-ensure that the legacy userspace will interact with traditional drivers
-as well as multi-radio wiphy drivers.
+Sorry, I'm having difficulty understanding this.
+We have the WiFi node at ab->dev->of_node, but we don't have a node for the reserved-memory
+'q6-region'. The of_reserved_mem_lookup() function requires the device node for 'q6-region'.
 
-In order to be able to set transmit power for a particular radio from
-user space, without disturbing the other radios in a wiphy, pass the
-radio id for which the transmit power needs to be changed and its
-transmit power value. The valid radio id values can be checked in
-iw phy#XXX info, under "Supported wiphy radios".
-
-Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
----
- phy.c | 39 ++++++++++++++++++++++++++++-----------
- 1 file changed, 28 insertions(+), 11 deletions(-)
-
-diff --git a/phy.c b/phy.c
-index 890966d..bd7194d 100644
---- a/phy.c
-+++ b/phy.c
-@@ -727,20 +727,37 @@ static int handle_txpower(struct nl80211_state *state,
- 			  enum id_input id)
- {
- 	enum nl80211_tx_power_setting type;
--	int mbm;
-+	int mbm, i = 0;
- 
- 	/* get the required args */
--	if (argc != 1 && argc != 2)
-+	if (argc > 4)
- 		return 1;
- 
--	if (!strcmp(argv[0], "auto"))
-+	/* check if radio idx is provided */
-+	if (argc >= 2 && !strcmp(argv[0], "radio")) {
-+		unsigned int radio_id;
-+		char *endptr;
-+
-+		radio_id = strtoul(argv[1], &endptr, 10);
-+		if (*endptr)
-+			return 1;
-+
-+		NLA_PUT_U32(msg, NL80211_ATTR_WIPHY_RADIO_INDEX, radio_id);
-+		i = 2;
-+	}
-+
-+	/* check the required args without radio id */
-+	if ((argc - i) != 1 && (argc - i) != 2)
-+		return 1;
-+
-+	if (!strcmp(argv[i], "auto")) {
- 		type = NL80211_TX_POWER_AUTOMATIC;
--	else if (!strcmp(argv[0], "fixed"))
-+	} else if (!strcmp(argv[i], "fixed")) {
- 		type = NL80211_TX_POWER_FIXED;
--	else if (!strcmp(argv[0], "limit"))
-+	} else if (!strcmp(argv[i], "limit")) {
- 		type = NL80211_TX_POWER_LIMITED;
--	else {
--		printf("Invalid parameter: %s\n", argv[0]);
-+	} else {
-+		printf("Invalid parameter: %s\n", argv[i]);
- 		return 2;
- 	}
- 
-@@ -748,16 +765,16 @@ static int handle_txpower(struct nl80211_state *state,
- 
- 	if (type != NL80211_TX_POWER_AUTOMATIC) {
- 		char *endptr;
--		if (argc != 2) {
-+		if ((argc - i) != 2) {
- 			printf("Missing TX power level argument.\n");
- 			return 2;
- 		}
- 
--		mbm = strtol(argv[1], &endptr, 10);
-+		mbm = strtol(argv[++i], &endptr, 10);
- 		if (*endptr)
- 			return 2;
- 		NLA_PUT_U32(msg, NL80211_ATTR_WIPHY_TX_POWER_LEVEL, mbm);
--	} else if (argc != 1)
-+	} else if ((argc - i) != 1)
- 		return 1;
- 
- 	return 0;
-@@ -765,7 +782,7 @@ static int handle_txpower(struct nl80211_state *state,
-  nla_put_failure:
- 	return -ENOBUFS;
- }
--COMMAND(set, txpower, "<auto|fixed|limit> [<tx power in mBm>]",
-+COMMAND(set, txpower, "[radio <radio idx>] <auto|fixed|limit> [<tx power in mBm>]",
- 	NL80211_CMD_SET_WIPHY, 0, CIB_PHY, handle_txpower,
- 	"Specify transmit power level and setting type.");
- COMMAND(set, txpower, "<auto|fixed|limit> [<tx power in mBm>]",
--- 
-2.34.1
-
+Could you please suggest how we can use of_reserved_mem_lookup() without obtaining the
+'q6-region' node first.
 
