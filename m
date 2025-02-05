@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-18523-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18522-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFF7A28AFA
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 13:56:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB2BA28AFB
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 13:56:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07661620E6
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 12:56:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD5F3A0561
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 12:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB8ABA38;
-	Wed,  5 Feb 2025 12:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E0125776;
+	Wed,  5 Feb 2025 12:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IRr3HaOt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Af5KDgge"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B55A19BBA
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Feb 2025 12:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF13BA38
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Feb 2025 12:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738760176; cv=none; b=qvPqSGuawSeYWtZnc0ojYhG4JCtBp5B7Vc2yUnBgnp8O0n7fhVbequYqF4xNE+NHX6Jnfrv4mGw/7784tuvoppJxn2IyLeM1anBMYBgN7hUwAggCqvY8e4Sxr9Ce+qOF7qOq/Z06VJm3XnJ0Dgx8UcogsR9lu5km8q6rEMxJz2I=
+	t=1738760175; cv=none; b=GGaxAG9sKPu0o8GqcQUpuiUMkQDDVpAgMoI1snvqYsnczrQkJ6FCeG1POLZkM29MVRQ8mjbpcumt6QNLfHyT8z+zW89C0ndzgv47UX5iHwiFLnhpH1wT0K05/pCmuTVZq+KX0FtlHHJNhWfKF2uwUwlE1HTad3/w2A5XMia0Ruo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738760176; c=relaxed/simple;
-	bh=YgAqTqJY/4xxjL0+zNgcB965K4H4nF9o/VhJKdXp0pc=;
+	s=arc-20240116; t=1738760175; c=relaxed/simple;
+	bh=LeUDdSLZJ3atIByDBVKGnS0GjOE2KvpgksMwY0jD1wM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IdhWSYkl4TGyCwKlThS+0rCMf2fOKGS3VgvOOmDk4YIP3GOdM6e+RO9mlXLag0yqqirkOXbTCwt9KDhbxhkscYqNd1rcOPQlHfPfvHa3BAyLOLXk+PDKY1Mzmm2022M2KuLJJS5sEVycFY5wnThbkdsKHb3BBMDOrDvpxmLF4Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IRr3HaOt; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=GNNNL91jeujbN/AaqxiJzETblsuHUEpqh2EyL4VHsemLpPn6O3YH8dQKWihwYLb1uVveSLOmfkOnR0MGnnjEDJL1JXlzqrD6WcN5LCUo+6RFSn1o43VHfiGUAzwkxcshlIQjbS92fD3kGKjmWZos3Rvxg2SuD+oG1uyzs0nXbJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Af5KDgge; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738760171; x=1770296171;
+  t=1738760173; x=1770296173;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=YgAqTqJY/4xxjL0+zNgcB965K4H4nF9o/VhJKdXp0pc=;
-  b=IRr3HaOtJSXraHd1WTurCIXieNGrGjulKWuBmFW1lxCAuo76/m6noXLb
-   rSn0Nhc8YuiN6DMbiEHkUOqi/MZQX3Os1POP9KCYOUJcqwjfx8xFKkioK
-   /z9z8PEjomey2FguqVjvLbSjnVZWUIJMRaMmCCir+v2jMz4vGRiYZHkft
-   95L/6+ZzlZZ4doKV++AvLkbr96GdPbzbfV6UynB/lR+/4UfcR8Ebd/k9W
-   /ttMHecKt49cQxBTBtk2SdyVSVloBkRP2g2dml/cSrQDaVHJwdHW62MEc
-   2pZSfFySpBqZ5nVrpIYCLsddSMoXe6r4h6x3SZa3jUpZjJnaUgviFf88K
-   A==;
-X-CSE-ConnectionGUID: LJUzj4ydQLKXN3GKpYsbVg==
-X-CSE-MsgGUID: /Y4C6kQuRy+JVIWB679T0w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="42159172"
+  bh=LeUDdSLZJ3atIByDBVKGnS0GjOE2KvpgksMwY0jD1wM=;
+  b=Af5KDggeelnf3jg4eMqI35IZxCZ3iIgnVbx83WRWAKenTJTiBUxrCL6L
+   iPlBl4Z7KlE5DsMz0zNsnL3YzSMZeMytfiGRIYwjtdcrZutkxeJyq+I5S
+   km3oxUFwrqzQ6P0bMh9ISfJiQOb3GPrDebK6GfE9gmVbt8YINM8tsX0G6
+   ex8iPLvfpr26Vz8H4lF0FnU7mro48fugMSO22jHUd5yM+syX6J0HjEag+
+   TbupOMmSl/rg0bKE+JThyp1It8LIODZS8M9xOcHcTupd0JaGXrzPTCpfq
+   5RNRQuMQGaNkzDwDS7fyuzD9da+BmaffzVFVIkqEvVvjXkWW3DvStkm/U
+   Q==;
+X-CSE-ConnectionGUID: lRdMrVw1QMCS5/7B31Fx8A==
+X-CSE-MsgGUID: +g4w2AfqRFq0GyPvjZmVoA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="42159176"
 X-IronPort-AV: E=Sophos;i="6.13,261,1732608000"; 
-   d="scan'208";a="42159172"
+   d="scan'208";a="42159176"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 04:56:11 -0800
-X-CSE-ConnectionGUID: SkPaNuU+QPyUwMRMQPAfJw==
-X-CSE-MsgGUID: DnO9CAsfRu6nzwtmyuCIfw==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 04:56:13 -0800
+X-CSE-ConnectionGUID: mIa1FutGQ0afarMo8x4aAQ==
+X-CSE-MsgGUID: fba3Wf2DTh6LmQ8PsX6F0A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="110745454"
+   d="scan'208";a="110745457"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 04:56:10 -0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 04:56:12 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
 	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 04/19] wifi: iwlwifi: mvm: rename and move iwl_mvm_eval_dsm_rfi() to iwl_rfi_is_enabled_in_bios()
-Date: Wed,  5 Feb 2025 14:55:33 +0200
-Message-Id: <20250205145347.b7ac9d05234e.Ieb623d7e8dca6bb6a5733682b31e4ff1e39373f0@changeid>
+Subject: [PATCH 05/19] wifi: iwlwifi: Unify TAS block list handling in regulatory.c
+Date: Wed,  5 Feb 2025 14:55:34 +0200
+Message-Id: <20250205145347.157d26fb7f02.I87e20e967835bc895be390daf1c6637e20b52aae@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250205125548.1963070-1-miriam.rachel.korenblit@intel.com>
 References: <20250205125548.1963070-1-miriam.rachel.korenblit@intel.com>
@@ -80,124 +80,101 @@ Content-Transfer-Encoding: 8bit
 
 From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-Renamed iwl_mvm_eval_dsm_rfi() to iwl_rfi_is_enabled_in_bios() to better
-reflect the function's operation. Additionally, moved the function to the
-regulatory.c file for better organization. optimize local variable
-usage in it.
+Created a common function iwl_add_mcc_to_tas_block_list() to handle the
+operations previously performed by iwl_mld_add_to_tas_block_list() and
+iwl_mvm_add_to_tas_block_list(). moved this new function to regulatory.c
+to better reflect its purpose and improve code organization.
 
 Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/regulatory.c    | 31 +++++++++++++++++
- .../wireless/intel/iwlwifi/fw/regulatory.h    |  2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 34 +------------------
- 3 files changed, 34 insertions(+), 33 deletions(-)
+ .../wireless/intel/iwlwifi/fw/regulatory.c    | 18 +++++++++++++++++
+ .../wireless/intel/iwlwifi/fw/regulatory.h    |  1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 20 ++-----------------
+ 3 files changed, 21 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-index ea435ee94312..63320689e05d 100644
+index 63320689e05d..11f54339acc6 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-@@ -674,3 +674,34 @@ bool iwl_puncturing_is_allowed_in_bios(u32 puncturing, u16 mcc)
- 	}
+@@ -456,6 +456,24 @@ iwl_parse_tas_selection(const u32 tas_selection_in, const u8 tbl_rev)
  }
- IWL_EXPORT_SYMBOL(iwl_puncturing_is_allowed_in_bios);
-+
-+bool iwl_rfi_is_enabled_in_bios(struct iwl_fw_runtime *fwrt)
+ IWL_EXPORT_SYMBOL(iwl_parse_tas_selection);
+ 
++bool iwl_add_mcc_to_tas_block_list(u16 *list, u8 *size, u16 mcc)
 +{
-+	/* default behaviour is disabled */
-+	u32 value = 0;
-+	int ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_RFI_CONFIG, &value);
-+
-+	if (ret < 0) {
-+		IWL_DEBUG_RADIO(fwrt, "Failed to get DSM RFI, ret=%d\n", ret);
-+		return false;
++	for (int i = 0; i < *size; i++) {
++		if (list[i] == mcc)
++			return true;
 +	}
 +
-+	value &= DSM_VALUE_RFI_DISABLE;
-+	/* RFI BIOS CONFIG value can be 0 or 3 only.
-+	 * i.e 0 means DDR and DLVR enabled. 3 means DDR and DLVR disabled.
-+	 * 1 and 2 are invalid BIOS configurations, So, it's not possible to
-+	 * disable ddr/dlvr separately.
++	/* Verify that there is room for another country
++	 * If *size == IWL_WTAS_BLACK_LIST_MAX, then the table is full.
 +	 */
-+	if (!value) {
-+		IWL_DEBUG_RADIO(fwrt, "DSM RFI is evaluated to enable\n");
-+		return true;
-+	} else if (value == DSM_VALUE_RFI_DISABLE) {
-+		IWL_DEBUG_RADIO(fwrt, "DSM RFI is evaluated to disable\n");
-+	} else {
-+		IWL_DEBUG_RADIO(fwrt,
-+				"DSM RFI got invalid value, value=%d\n", value);
-+	}
++	if (*size >= IWL_WTAS_BLACK_LIST_MAX)
++		return false;
 +
-+	return false;
++	list[*size++] = mcc;
++	return true;
 +}
-+IWL_EXPORT_SYMBOL(iwl_rfi_is_enabled_in_bios);
++IWL_EXPORT_SYMBOL(iwl_add_mcc_to_tas_block_list);
++
+ static __le32 iwl_get_lari_config_bitmap(struct iwl_fw_runtime *fwrt)
+ {
+ 	int ret;
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-index b355d7bef14c..ed61bc35ef5b 100644
+index ed61bc35ef5b..d978a4fadfae 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-@@ -167,6 +167,8 @@ enum iwl_dsm_values_rfi {
- #define DSM_VALUE_RFI_DISABLE	(DSM_VALUE_RFI_DLVR_DISABLE |\
- 				 DSM_VALUE_RFI_DDR_DISABLE)
+@@ -192,6 +192,7 @@ int iwl_fill_ppag_table(struct iwl_fw_runtime *fwrt,
+ bool iwl_is_ppag_approved(struct iwl_fw_runtime *fwrt);
  
-+bool iwl_rfi_is_enabled_in_bios(struct iwl_fw_runtime *fwrt);
-+
- enum iwl_dsm_masks_reg {
- 	DSM_MASK_CHINA_22_REG = BIT(2)
- };
+ bool iwl_is_tas_approved(void);
++bool iwl_add_mcc_to_tas_block_list(u16 *list, u8 *size, u16 mcc);
+ 
+ struct iwl_tas_selection_data
+ iwl_parse_tas_selection(const u32 tas_selection, const u8 tbl_rev);
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index df49dd2e2026..5a9ce7dba714 100644
+index 5a9ce7dba714..822244b87df3 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1213,38 +1213,6 @@ static void iwl_mvm_tas_init(struct iwl_mvm *mvm)
- 		IWL_DEBUG_RADIO(mvm, "failed to send TAS_CONFIG (%d)\n", ret);
+@@ -1094,22 +1094,6 @@ static int iwl_mvm_ppag_init(struct iwl_mvm *mvm)
+ 	return iwl_mvm_ppag_send_cmd(mvm);
  }
  
--static bool iwl_mvm_eval_dsm_rfi(struct iwl_mvm *mvm)
+-static bool
+-iwl_mvm_add_to_tas_block_list(u16 *list, u8 *size, u16 mcc)
 -{
--	u32 value = 0;
--	/* default behaviour is disabled */
--	bool bios_enable_rfi = false;
--	int ret = iwl_bios_get_dsm(&mvm->fwrt, DSM_FUNC_RFI_CONFIG, &value);
+-	/* Verify that there is room for another country */
+-	if (*size >= IWL_WTAS_BLACK_LIST_MAX)
+-		return false;
 -
--
--	if (ret < 0) {
--		IWL_DEBUG_RADIO(mvm, "Failed to get DSM RFI, ret=%d\n", ret);
--		return bios_enable_rfi;
+-	for (u8 i = 0; i < *size; i++) {
+-		if (list[i] == mcc)
+-			return true;
 -	}
 -
--	value &= DSM_VALUE_RFI_DISABLE;
--	/* RFI BIOS CONFIG value can be 0 or 3 only.
--	 * i.e 0 means DDR and DLVR enabled. 3 means DDR and DLVR disabled.
--	 * 1 and 2 are invalid BIOS configurations, So, it's not possible to
--	 * disable ddr/dlvr separately.
--	 */
--	if (!value) {
--		IWL_DEBUG_RADIO(mvm, "DSM RFI is evaluated to enable\n");
--		bios_enable_rfi = true;
--	} else if (value == DSM_VALUE_RFI_DISABLE) {
--		IWL_DEBUG_RADIO(mvm, "DSM RFI is evaluated to disable\n");
--	} else {
--		IWL_DEBUG_RADIO(mvm,
--				"DSM RFI got invalid value, value=%d\n", value);
--	}
--
--	return bios_enable_rfi;
+-	list[*size++] = mcc;
+-	return true;
 -}
 -
- static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
+ static void iwl_mvm_tas_init(struct iwl_mvm *mvm)
  {
- 	struct iwl_lari_config_change_cmd cmd;
-@@ -1631,7 +1599,7 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 	iwl_mvm_uats_init(mvm);
- 
- 	if (iwl_rfi_supported(mvm)) {
--		if (iwl_mvm_eval_dsm_rfi(mvm))
-+		if (iwl_rfi_is_enabled_in_bios(&mvm->fwrt))
- 			iwl_rfi_send_config_cmd(mvm, NULL);
- 	}
- 
+ 	u32 cmd_id = WIDE_ID(REGULATORY_AND_NVM_GROUP, TAS_CONFIG);
+@@ -1150,10 +1134,10 @@ static void iwl_mvm_tas_init(struct iwl_mvm *mvm)
+ 		IWL_DEBUG_RADIO(mvm,
+ 				"System vendor '%s' is not in the approved list, disabling TAS in US and Canada.\n",
+ 				dmi_get_system_info(DMI_SYS_VENDOR) ?: "<unknown>");
+-		if ((!iwl_mvm_add_to_tas_block_list(data.block_list_array,
++		if ((!iwl_add_mcc_to_tas_block_list(data.block_list_array,
+ 						    &data.block_list_size,
+ 						    IWL_MCC_US)) ||
+-		    (!iwl_mvm_add_to_tas_block_list(data.block_list_array,
++		    (!iwl_add_mcc_to_tas_block_list(data.block_list_array,
+ 						    &data.block_list_size,
+ 						    IWL_MCC_CANADA))) {
+ 			IWL_DEBUG_RADIO(mvm,
 -- 
 2.34.1
 
