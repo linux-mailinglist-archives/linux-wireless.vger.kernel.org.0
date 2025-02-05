@@ -1,177 +1,112 @@
-Return-Path: <linux-wireless+bounces-18546-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18547-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6344FA29B65
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 21:46:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42294A29B87
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 21:57:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AACF37A1BCC
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 20:45:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D042F166E5F
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 20:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BEBB2144A3;
-	Wed,  5 Feb 2025 20:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252A0211A22;
+	Wed,  5 Feb 2025 20:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="PdM4Sv9M"
+	dkim=pass (2048-bit key) header.d=comcast.net header.i=@comcast.net header.b="5hwirHwz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f232.google.com (mail-lj1-f232.google.com [209.85.208.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from resdmta-h2p-564583.sys.comcast.net (resdmta-h2p-564583.sys.comcast.net [96.102.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC62213E6F
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Feb 2025 20:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8AE2144A3
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Feb 2025 20:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.102.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738788385; cv=none; b=ZoPcZyv3p7EfRxjNoj1l3eHHUwp3BXTgpAm7yRvsS0F+c1FcUEl0TbjTDhpyBDqWL/Vcz42+Di/+DcOmTvI3dx1TO5b0vK3yDPCiTfKFOsZm+VUdcMUTVpCGqVX58WkgOWauCAL9m+otI9QlSX9yv2mEsTfDU5z7YP4frwMWPj4=
+	t=1738789076; cv=none; b=P0P46VdeVMopEiirtM5TkROi1e2aWhbZcvyaHkcJVEmkle7r0AQpZeN8aClWPJaqrzQC30xnfnrf5c7Ifs8nO2k/xNiXpS6ghMDrnbxTJrFv4kj0CmdMNrKlOaRe8o8Cwmj4+3SSGKcLCrmMI4s3M06UpfZJtPvC8iS5UvoOORU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738788385; c=relaxed/simple;
-	bh=eJJq5QNRi14jFadz/bxG36Zo3CHW1uI2JqLwh8zP4ow=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NtjPkh/LiM3vlzWrcmKxCSwFyyICFHUNiFILIqvoVUYB49aUCJN1goNMIFTt2LLl7zKVT1KO0s24tT3QCkXHiImGbKn0f81IM12eUnBOT1ERkx5usbXEeOidiyGHtJttskuSiFcJVQtsh6VYUOw1J/in1snKIOBzJmTHGvQIt0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=PdM4Sv9M; arc=none smtp.client-ip=209.85.208.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
-Received: by mail-lj1-f232.google.com with SMTP id 38308e7fff4ca-307c13298eeso2178401fa.0
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Feb 2025 12:46:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1738788381; x=1739393181; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YZgLBFelzHCvaOXDScSFVXg2HFnlFG4aCVoHAFEQ/jY=;
-        b=PdM4Sv9M6stuMyPtdaLpFpp472IHI9AgjtrIzt0TeOU9NSHNmKpXWoULvACCm2bcj5
-         GDef7Po0mJ6DkQCgZJ+eaEoJImfknWK42DVBoo5CEVpyOG7LanGFVBhtlnv0IUUg04Zn
-         v/kBlHTOA6kRDqfkNN7nwaxbG2tDUj3AGwT9AQgmv56rmWp9fe57fCL1/5uCwg+sGsbt
-         IP8wHXkkvGGiOuszZuR2Cshp8f5EMmmED+awWIdHWByhCME/xTEZIO9TNs6jXoH95/zS
-         ZQJgPlojwFNo3ZBtVyibERgLNsPsJ+FxxH6GuhzlCLt62bw+Cr/h9aSUPFAIZW+MbUIF
-         ilug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738788381; x=1739393181;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YZgLBFelzHCvaOXDScSFVXg2HFnlFG4aCVoHAFEQ/jY=;
-        b=wTXxm+FRG8PxiqOuUNG3mb2fPXjKIWQ7naGHpEuC+7zbxJ+DCfvGxq9CwpWOnoBrwi
-         9gbTdhTy/iZtPcsVp21hQ2NntAdegVTBvQpM7gZ/99rqw7uBFxK9TRIuKTvJANGCbJz8
-         /cRu+CV2/ztli0nVA3Tzmqe3iUhm7H04vtbM8PkN/qeEDfdAYrJlfJ9W7v7bJit3JG6b
-         BNLINnPs2quZDu5JPv+YhH3WSgVzLaq9MoHo+0w3pRArBqKZk7jfFUBv54Vm0oCydHiA
-         oE0GW5NiEbkeV5/kmB3My7NFZTiWXc4jdoh6nrXYk/U4UKiIM+4V3HkiW51eE82Ih+/J
-         dP5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWXLsvVLcEK43ZxtogBtTiwiG2sWs9O6i1KLsJKVrKTgSDwYFKNpgDYnSEWpmMr5XzDx+JheDLIw5lj+sUr9A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxweA0Nk/w0zMAfrb2Yhd2/YcjndfaFBSj0IsjLMrQBHYXS4Ekd
-	GtVy+fgsGcqcfIJ81lYpIepDjizT49PS/BHUHlGdsTwGa7l/bXdZLcNX5BxMVSDaibSPneTa6mq
-	vrWYt3t0K4AGUuozwrgi1G+QHzSV//bu2ly5rizFHHNQPmeHj
-X-Gm-Gg: ASbGncuuvIfB3EyWaBqbfNfTx2dAJJovdO+CBf3jquJsd8gzOHwLzcnv399DHSkMjGT
-	HnFypOT55XrfcMIxDo6QlEwHTfEE6JzgTeU3qn97oalgP3BHvfG4RJ7XN5vH0uBMtMMzzKBFpwE
-	Hhw8QBuKUx8V5f96UVYK//SyPdpw/5Ya7dBoxrpw6MgUKvFaPr0HO8bLnrKqFiBTW5oTrmgH83g
-	1xA4VWIw4LNLKg/KxkZ3GOkfFXEPj0HgByYKopXmd8GANlRvyIIBTr3IIrAPX9GSvzsMkUByD41
-	VdmWchQbDFc274Oq1a93ma3U
-X-Google-Smtp-Source: AGHT+IHGwIKRNNFxj2aI2pB1MRsUTu9sF3y4BpuFpcUwXFlSdrpcxN6BtNkK74LQkEMWM1Ky2ABB1PoPqWjB
-X-Received: by 2002:a2e:874d:0:b0:2ff:c167:a965 with SMTP id 38308e7fff4ca-307da514932mr2475291fa.8.1738788380245;
-        Wed, 05 Feb 2025 12:46:20 -0800 (PST)
-Received: from c7-smtp-2023.dev.purestorage.com ([2620:125:9017:12:36:3:5:0])
-        by smtp-relay.gmail.com with ESMTPS id 38308e7fff4ca-307a3069cc3sm4133931fa.4.2025.02.05.12.46.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2025 12:46:20 -0800 (PST)
-X-Relaying-Domain: purestorage.com
-Received: from dev-ushankar.dev.purestorage.com (dev-ushankar.dev.purestorage.com [IPv6:2620:125:9007:640:7:70:36:0])
-	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 6981F3401BB;
-	Wed,  5 Feb 2025 13:46:18 -0700 (MST)
-Received: by dev-ushankar.dev.purestorage.com (Postfix, from userid 1557716368)
-	id 5B895E41340; Wed,  5 Feb 2025 13:46:18 -0700 (MST)
-Date: Wed, 5 Feb 2025 13:46:18 -0700
-From: Uday Shankar <ushankar@purestorage.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] netconsole: allow selection of egress interface
- via MAC address
-Message-ID: <Z6POGmAEEixKV5/O@dev-ushankar.dev.purestorage.com>
-References: <20250204-netconsole-v2-0-5ef5eb5f6056@purestorage.com>
- <20250204-netconsole-v2-2-5ef5eb5f6056@purestorage.com>
- <20250205-flying-coucal-of-influence-0dcbc3@leitao>
+	s=arc-20240116; t=1738789076; c=relaxed/simple;
+	bh=lZdHoVBigG3cLld57gL5OfTq85teJkmVCYMQWe5OmHc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SQtKZy43VoKteNOj+++gz1JcwOmKLFOAHy6CDLdid40JWhJlEClC7Z5p8RvwCju5zbPMD29YSr/rNsVtV6CebZaN3K4idS2HEkLPQX36jrRHXII3k/Pz+DlQ5sLJTfV95QzFh4xUC09FMNOROL1duVozctImvSUa5iHHAnZ16Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=comcast.net; spf=pass smtp.mailfrom=comcast.net; dkim=pass (2048-bit key) header.d=comcast.net header.i=@comcast.net header.b=5hwirHwz; arc=none smtp.client-ip=96.102.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=comcast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=comcast.net
+Received: from resomta-h2p-540626.sys.comcast.net ([96.102.179.210])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 256/256 bits)
+	(Client did not present a certificate)
+	by resdmta-h2p-564583.sys.comcast.net with ESMTPS
+	id feTJthx4hEPtrfmQYtI5lZ; Wed, 05 Feb 2025 20:55:18 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+	s=20190202a; t=1738788918;
+	bh=X/NawfgTLiQ55H9r0tROYwzqwwvjRME6a88QmH10FcU=;
+	h=Received:Received:From:To:Subject:Date:Message-ID:MIME-Version:
+	 Xfinity-Spam-Result;
+	b=5hwirHwz7zdlumJrN9yK72+SVjA4PJzUG/GFDOXbxreP6+CELVenl/zXyfXBJ7L87
+	 Feu0qFEVClQe5lc5fFxs28UVKOtfsY65y1BijF8MvUQl9xqPFLWj0QNIOHgIkxm4Rz
+	 O18Uy3y5B4WzDfUbAkVj7Umd787KfYrYkphovtZhq97GncraZITgtmjZBDogSOaqzh
+	 D77jsvCUpdQ9odfibQE9KydHs3WuHB0Hbch6Ggi0H1rZ2wx9vA91PCkVwdGGouL+fq
+	 enMd6+0kZV3F00wpPB6UW20e59SqeEJibFq3miMx+wiK29owJ6rIsNUhijVCx6JUX7
+	 axkaFyMrWqzIw==
+Received: from jack-livingood.hsd1.ca.comcast.net
+ ([IPv6:2601:647:4d81:b870::c894])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 256/256 bits)
+	(Client did not present a certificate)
+	by resomta-h2p-540626.sys.comcast.net with ESMTPSA
+	id fmQJteUqXOMcTfmQWtDFnn; Wed, 05 Feb 2025 20:55:17 +0000
+From: jack Livingood <jacklivingood@comcast.net>
+To: miriam.rachel.korenblit@intel.com
+Cc: linux-wireless@vger.kernel.org,
+	jack Livingood <jacklivingood@comcast.net>
+Subject: [PATCH 3/3] Undoing Macros with flow control statements.
+Date: Wed,  5 Feb 2025 12:54:52 -0800
+Message-ID: <20250205205452.384911-1-jacklivingood@comcast.net>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250205-flying-coucal-of-influence-0dcbc3@leitao>
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfDczuCDeuc3ID0Zcc3NmSJgtgDgcdjn5f3ixGmCRw86uXh85LBg6sGVboEfo+5Gv0eA9tbwOiJvnCodYxYHuD5+iU6P8LRB3XqVozvK8WdI4ge6hrCHL
+ wM628IdiyWAIwMBDMsyvgqlB6XoKmbFwEGiXqhkqlDk3WsaNgCQMHmksGRUg4uJO8edKIrW49xT1YySxC0CIo7pO/9xsa5Uc5KGqBW/C+PLJnggauN7P/aY8
+ v9c9yOge0yIte2auEyrAQ0UqZ+5YPO7xWuVWHpNrS2OqdWbq8jt/oxFk9fjCjgY027F6t7ehKGzpwhogQwrMq103RqZwRh/nYdts9I0oIlijKA8IbHwENPuD
+ UWJ1MqEZ
 
-On Wed, Feb 05, 2025 at 11:07:45AM -0800, Breno Leitao wrote:
-> > +	else if (is_valid_ether_addr(np->dev_mac))
-> > +		ndev = dev_getbyhwaddr_rcu(net, ARPHRD_ETHER, np->dev_mac);
-> 
-> You do not have the RCU read lock here. You have the rtnl(), which is
-> sufficient, but, CONFIG_PROVE_RCU_LIST will show something as:
-> 
-> 	WARNING: suspicious RCU usage
-> 	6.13.0-09701-g6610c7be45bb-dirty #18 Not tainted
-> 	-----------------------------
-> 	net/core/dev.c:1143 RCU-list traversed in non-reader section!!
-> 	other info that might help us debug this:
-> 	rcu_scheduler_active = 2, debug_locks = 1
-> 	1 lock held by swapper/0/1:
-> 	 #0: ffffffff832795b8 (rtnl_mutex){+.+.}-{4:4}, at: netpoll_setup+0x48/0x540
-> 	stack backtrace:
-> 	CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.13.0-virtme-09701-g6610c7be45bb-dirty #18
-> 	Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-> 	Call Trace:
-> 	 <TASK>
-> 	 dump_stack_lvl+0x9f/0xf0
-> 	 lockdep_rcu_suspicious+0x11a/0x150
-> 	 dev_getbyhwaddr_rcu+0xb6/0xc0
-> 	 netpoll_setup+0x8a/0x540
-> 	 ? netpoll_parse_options+0x2bd/0x310
-> 
-> This is not a problem per-se, since you have RTNL. We probably need to
-> tell for_each_netdev_rcu() to not comply about "RCU-list traversed in
-> non-reader section" if RTNL is held. Not sure why we didn't hit in the
-> test infrastructure, tho:
-> 
-> 	https://patchwork.kernel.org/project/netdevbpf/patch/20250204-netconsole-v2-2-5ef5eb5f6056@purestorage.com/
+Signed off by Jack Livingood <jacklivingood@comcast.net>
+---
+ drivers/net/wireless/intel/iwlwifi/iwl-io.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-I don't think there is an automated test that will hit this path yet. I
-guess you got this trace from your manual testing?
-
-> 
-> Anyway, no action item for you here. I am talking to Jakub on a way to
-> solve it, and I should send a fix soon.
-
-/**
- * list_for_each_entry_rcu	-	iterate over rcu list of given type
- * @pos:	the type * to use as a loop cursor.
- * @head:	the head for your list.
- * @member:	the name of the list_head within the struct.
- * @cond:	optional lockdep expression if called from non-RCU protection.
- *
- * This list-traversal primitive may safely run concurrently with
- * the _rcu list-mutation primitives such as list_add_rcu()
- * as long as the traversal is guarded by rcu_read_lock().
- */
-#define list_for_each_entry_rcu(pos, head, member, cond...)		\
-	for (__list_check_rcu(dummy, ## cond, 0),			\
-	     pos = list_entry_rcu((head)->next, typeof(*pos), member);	\
-		&pos->member != (head);					\
-		pos = list_entry_rcu(pos->member.next, typeof(*pos), member))
-
-If we do something like
-
-list_for_each_entry_rcu(..., lockdep_rtnl_is_held())
-	...
-
-I think that code will be okay with being called with either rcu or rtnl
-held. Of course, we need to plumb it through the net-specific helpers.
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-io.c b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
+index cd7eebe6a7b1..957000d5df68 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-io.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
+@@ -230,15 +230,19 @@ IWL_EXPORT_SYMBOL(iwl_force_nmi);
+ static const char *get_rfh_string(int cmd)
+ {
+ #define IWL_CMD(x) case x: return #x
+-#define IWL_CMD_MQ(arg, reg, q) { if (arg == reg(q)) return #reg; }
++
+ 
+ 	int i;
+ 
+ 	for (i = 0; i < IWL_MAX_RX_HW_QUEUES; i++) {
+-		IWL_CMD_MQ(cmd, RFH_Q_FRBDCB_BA_LSB, i);
+-		IWL_CMD_MQ(cmd, RFH_Q_FRBDCB_WIDX, i);
+-		IWL_CMD_MQ(cmd, RFH_Q_FRBDCB_RIDX, i);
+-		IWL_CMD_MQ(cmd, RFH_Q_URBD_STTS_WPTR_LSB, i);
++		if (cmd == RFH_Q_FRBDCB_BA_LSB(i))
++			return #cmd;
++		if (cmd == RFH_Q_FRBDCB_WIDX(i))
++			return #cmd;
++		if (cmd == RFH_Q_FRBDCB_RIDX(i))
++			return #cmd;
++		if (cmd == RFH_Q_URBD_STTS_WPTR_LSB(i))
++			return #cmd;
+ 	}
+ 
+ 	switch (cmd) {
+-- 
+2.48.1
 
 
