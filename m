@@ -1,181 +1,124 @@
-Return-Path: <linux-wireless+bounces-18477-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18478-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6A2A28039
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 01:43:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526CEA2808F
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 02:03:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 077383A712E
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 00:43:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DB77164111
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 01:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D547227B98;
-	Wed,  5 Feb 2025 00:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3762F43;
+	Wed,  5 Feb 2025 01:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IT5tbY65"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="D/SL7Fzy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D36E1FE479;
-	Wed,  5 Feb 2025 00:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACCB6FC5
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Feb 2025 01:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738716221; cv=none; b=LRWpdQiO2SFmWxz1JoYwzgrQSqUOJgYR/kPxM3YVoNP97qtJslDA+dZvpI9em89QEpSy7VwkwkO/qvzdW20I3oKiDMrWMnJTIHMnnRh6aoW6zjY9cg7HwqChW3Mt+pFEQWi6KZwNAMrcLjtoNj6uQCTLamBPbzfjM/lmpQOSehw=
+	t=1738717411; cv=none; b=JuHGtTAlPjN0V0Hbn8dgBJaJxkAaesAXVTE5CAmK8dkQnO9h+FnkJWaVBKW5n7XcTbte6F3JT3BkSvhhYtUutOMLGFGCddDm3KP3Xy2/ermNRCaA0y/woe3TRfqKfhZ3IQpwLgiCSSNZzoWrN7fCh8EZZgTziLRTmh4fAjeHAfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738716221; c=relaxed/simple;
-	bh=DYdszt71y6WeymCQBtk4lvyx4TCPHkHSFV4UdgUples=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=oQzVb3GvwJ+C38oWKfwE/BzvHmvdU8PptL+tIzZZ0TCW+0o/ltPC0q4sW9SMkQkqICdV+I3YIYAMl7lhYodj9TE6jNiY5cvekTmW8ESUSOb1fb8wZcKMhjx7aDRWfoGz88isa6PexMPqxe8d9aTf8anBJS3cjcWg0lFZ0BQpCco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IT5tbY65; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1025CC4CEDF;
-	Wed,  5 Feb 2025 00:43:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738716220;
-	bh=DYdszt71y6WeymCQBtk4lvyx4TCPHkHSFV4UdgUples=;
-	h=Date:From:To:Cc:Subject:From;
-	b=IT5tbY65Vi0gQSafotjimOwjig4H7Ai4+mYmNAFtqjbEBESJt3efkTek1cfsWv1YU
-	 641LJHpDZn2RReo00FcSbzE4KFsgFdK8u2HbR97dtZKVobmqj+98O3e4Q/Z9EKUta1
-	 EJE72CrlNVSd9n0O2dXuBP2tUvdsshlu18twd5NZn+A/axSGuVn7yD6t8JdjgrgxYp
-	 83htpfOjr5+OY+7ieJsDVmZYvr+DlXcp778+1d7zdkgY/Uo2xAgal4/Knx/KBXVdU1
-	 maheqOeN4YryPwNYPx0UAm5AVrNfA6zEteXxdZV2RJ8vcbXjVRo5gOcEwVkq32qGQz
-	 TiceXpYqVzlYw==
-Date: Wed, 5 Feb 2025 11:13:33 +1030
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Igor Mitsyanko <imitsyanko@quantenna.com>,
-	Sergey Matyukevich <geomatsi@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH][next] qtnfmac: Avoid multiple -Wflex-array-member-not-at-end
- warnings
-Message-ID: <Z6K0Nd_IprrhS6pn@kspp>
+	s=arc-20240116; t=1738717411; c=relaxed/simple;
+	bh=sKyG/pQbT/tp3P+Vt5AN4WmraQCCzVZ+Z1aq3J6IuOc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=MIxnkwbi6bgrMlfcDLjU6Q6/STS/oWVgoa38cCmYbaYDJOjRjVThFnUxCikm0i9dhBtNf6RkWIqaRHBJ73CctPZ+gBoSnM10rqXn0t4A15Pft7M/bCh5nEgNoq168isFf8j6xPuNpfCGwvatgLRhBU/cCRFH+jg4zQv0SkktpLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=D/SL7Fzy; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 514E1aab032316;
+	Wed, 5 Feb 2025 01:03:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	riqRvzbNwbYlkuc7UwhRFdLtvXAkud21a578+p1IZ04=; b=D/SL7Fzyp8+tw9Ay
+	cqFTMF34lgBqzAtWT9gO8MHYJCQimjV0TNPPY7IJRMLOEpJwB/lRW+fIs5cqo5ej
+	e+x8lspu2tT18VSeNdmkAOrorIiS+aup7ASZU+W/MnAVOOwWuslkY5LyluFru5cg
+	KmLSzbLUQf/WIsXwf2/R6LNoSor6AEPrsH6P9ONLvbnzTy6eJX7ii6Ddp8HzADob
+	FKRWMy728qrtShExeqLCb7hznUZRCuTW3EiMklDf2MR0gYogEdYPnVNX2QVeqgd4
+	Bbi/ntHJ5zy6vqfn91TymSt/yuRiRu4tqqJO81gFGxmgzzMbSPX28CHbrLsgZ/PS
+	YBAPwA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44km9whdxr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Feb 2025 01:03:26 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51513Pv1005165
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 5 Feb 2025 01:03:25 GMT
+Received: from [10.216.47.115] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 4 Feb 2025
+ 17:03:10 -0800
+Message-ID: <0f7885ad-a360-2ff1-eb0b-51454de2eeb0@quicinc.com>
+Date: Wed, 5 Feb 2025 06:32:38 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v8 1/9] wifi: ath12k: Add HAL_PHYRX_GENERIC_U_SIG TLV
+ parsing support
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, P Praneesh <quic_ppranees@quicinc.com>,
+        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+References: <20250204035718.3227726-1-quic_periyasa@quicinc.com>
+ <20250204035718.3227726-2-quic_periyasa@quicinc.com>
+ <414ca414-d6a4-4228-acb3-dde4bb71624d@oss.qualcomm.com>
+Content-Language: en-US
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+In-Reply-To: <414ca414-d6a4-4228-acb3-dde4bb71624d@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: K63B46zqiidkaSgslUYMUM_-P2NOP8za
+X-Proofpoint-GUID: K63B46zqiidkaSgslUYMUM_-P2NOP8za
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-04_10,2025-02-04_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 impostorscore=0
+ malwarescore=0 adultscore=0 mlxscore=0 bulkscore=0 mlxlogscore=851
+ spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502050006
 
--Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-getting ready to enable it, globally.
 
-So, in order to avoid ending up with a flexible-array member in the
-middle of other structs, we use the `__struct_group()` helper to
-create a new tagged `struct qlink_tlv_hdr_fixed`. This structure
-groups together all the members of the flexible `struct qlink_tlv_hdr`
-except the flexible array.
 
-As a result, the array is effectively separated from the rest of the
-members without modifying the memory layout of the flexible structure.
-We then change the type of the middle struct member currently causing
-trouble from `struct qlink_tlv_hdr` to `struct qlink_tlv_hdr_fixed`.
+On 2/5/2025 3:59 AM, Jeff Johnson wrote:
+> On 2/3/2025 7:57 PM, Karthikeyan Periyasamy wrote:
+>> Currently, monitor is not enabled. However, in the future, the monitor
+>> will be enabled. Therefore, add the necessary HAL_PHYRX_GENERIC_U_SIG TLV
+>> parsing support in monitor Rx path, which help to populate the EHT
+>> radiotap data.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+>>
+>> Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
+>> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+>> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+>> Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+> 
+> Normally your S-O-B should be the last tag. Any tags you collect should come
+> before it.
 
-We also want to ensure that when new members need to be added to the
-flexible structure, they are always included within the newly created
-tagged struct. For this, we use `static_assert()`. This ensures that
-the memory layout for both the flexible structure and the new tagged
-struct is the same after any changes.
+Oh my bad, if you want to re-spin ?
+will fix it in the next version of the path.
 
-This approach avoids having to implement `struct qlink_tlv_hdr_fixed`
-as a completely separate structure, thus preventing having to maintain
-two independent but basically identical structures, closing the door
-to potential bugs in the future.
-
-So, with this changes, fix 66 of the following warnings:
-drivers/net/wireless/quantenna/qtnfmac/qlink.h:1681:30: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/quantenna/qtnfmac/qlink.h:1660:30: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/quantenna/qtnfmac/qlink.h:1646:30: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/quantenna/qtnfmac/qlink.h:1621:30: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/quantenna/qtnfmac/qlink.h:1609:30: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/quantenna/qtnfmac/qlink.h:1570:30: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- .../net/wireless/quantenna/qtnfmac/qlink.h    | 21 ++++++++++++-------
- 1 file changed, 13 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/qlink.h b/drivers/net/wireless/quantenna/qtnfmac/qlink.h
-index 674461fa7fb3..eae35b678952 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/qlink.h
-+++ b/drivers/net/wireless/quantenna/qtnfmac/qlink.h
-@@ -1510,10 +1510,15 @@ enum qlink_tlv_id {
- };
- 
- struct qlink_tlv_hdr {
--	__le16 type;
--	__le16 len;
-+	/* New members MUST be added within the struct_group() macro below. */
-+	__struct_group(qlink_tlv_hdr_fixed, __hdr, __packed,
-+		__le16 type;
-+		__le16 len;
-+	);
- 	u8 val[];
- } __packed;
-+static_assert(offsetof(struct qlink_tlv_hdr, val) == sizeof(struct qlink_tlv_hdr_fixed),
-+	      "struct member likely outside of __struct_group()");
- 
- struct qlink_iface_limit {
- 	__le16 max_num;
-@@ -1567,7 +1572,7 @@ enum qlink_reg_rule_flags {
-  * @dfs_cac_ms: DFS CAC period.
-  */
- struct qlink_tlv_reg_rule {
--	struct qlink_tlv_hdr hdr;
-+	struct qlink_tlv_hdr_fixed hdr;
- 	__le32 start_freq_khz;
- 	__le32 end_freq_khz;
- 	__le32 max_bandwidth_khz;
-@@ -1606,7 +1611,7 @@ enum qlink_dfs_state {
-  * @channel: ieee80211 channel settings.
-  */
- struct qlink_tlv_channel {
--	struct qlink_tlv_hdr hdr;
-+	struct qlink_tlv_hdr_fixed hdr;
- 	struct qlink_channel chan;
- } __packed;
- 
-@@ -1618,7 +1623,7 @@ struct qlink_tlv_channel {
-  * @chan: channel definition data.
-  */
- struct qlink_tlv_chandef {
--	struct qlink_tlv_hdr hdr;
-+	struct qlink_tlv_hdr_fixed hdr;
- 	struct qlink_chandef chdef;
- } __packed;
- 
-@@ -1643,7 +1648,7 @@ enum qlink_ie_set_type {
-  * @ie_data: IEs data.
-  */
- struct qlink_tlv_ie_set {
--	struct qlink_tlv_hdr hdr;
-+	struct qlink_tlv_hdr_fixed hdr;
- 	u8 type;
- 	u8 flags;
- 	u8 rsvd[2];
-@@ -1657,7 +1662,7 @@ struct qlink_tlv_ie_set {
-  * @ie_data: IEs data.
-  */
- struct qlink_tlv_ext_ie {
--	struct qlink_tlv_hdr hdr;
-+	struct qlink_tlv_hdr_fixed hdr;
- 	u8 eid_ext;
- 	u8 rsvd[3];
- 	u8 ie_data[];
-@@ -1678,7 +1683,7 @@ struct qlink_sband_iftype_data {
-  * @iftype_data: interface type data entries.
-  */
- struct qlink_tlv_iftype_data {
--	struct qlink_tlv_hdr hdr;
-+	struct qlink_tlv_hdr_fixed hdr;
- 	u8 n_iftype_data;
- 	u8 rsvd[3];
- 	struct qlink_sband_iftype_data iftype_data[];
 -- 
-2.43.0
-
+Karthikeyan Periyasamy
+--
+கார்த்திகேயன் பெரியசாமி
 
