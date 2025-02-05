@@ -1,205 +1,141 @@
-Return-Path: <linux-wireless+bounces-18493-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18494-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5BAA28637
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 10:12:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC3BA286C4
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 10:40:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85E003A6C3F
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 09:11:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FFD5188A250
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 09:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D58C22A7E8;
-	Wed,  5 Feb 2025 09:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7137A22A4CB;
+	Wed,  5 Feb 2025 09:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iJbHmCxn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GueHp2d8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D1A22A4FC
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Feb 2025 09:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699C322A7E1
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Feb 2025 09:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738746704; cv=none; b=P3eT1/uy3IqGLERCut1uZKg0oN5/YtxrE/n8w9wfCT7bUM0sjjq6zUUSSCUt1K8EqkNZmaTYfzpzZYMDAa0zbSLgnqYkE4/u9UqiJNO0YUhtevRPktCkieq9R4yVVcs0aDnp2ErqCPIV3Ax1Go7AVENYpwsIXbPsd75fCCDibLQ=
+	t=1738748386; cv=none; b=Kj8jzsuMq5e74Sa6QZtfH8gywks0Gp+oH0TyrBhaK3jyssq+HynkpOmHN/qjnKAR0P/XKsdKfdnqMpZ2hXLBDtX3ens+jFqYMfti6de4OrvtqHHIKXymWmxn3bLIKbW1Sj5DNNb/BPE6eohJ+vi1fBgORiYg7OKB6fS+6suoYTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738746704; c=relaxed/simple;
-	bh=2xGNb6+PYn+RV2OrORSkRXhEyCHxo+QWRjjxDrEtLX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=LUnzGNKWOqIHYpj9IGo/lPBcs6n2uGhj0CAUTn4yqsCVj+mkcYsSAcTq+SM/CYD4gbZAnDzLIVmMPb6+2JUr6Y7R7V2ZYIsdADKlhfBcIDba8Tm6kkPBrJkwUPeuptiWtV0vms8LsVRWkIT8q05JMhyg0fh5esmPQBtkv7+IfoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iJbHmCxn; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-438a3216fc2so64647885e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Feb 2025 01:11:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738746700; x=1739351500; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VIUDjyBVwJ/dm7gTPgpVoztf+HTD2k5fIkdAtbxgAm0=;
-        b=iJbHmCxn0m/PenQAGzBTmKLGiNl8Dfs57irkOd6+f/d0klUi7pbBB5IP1qHPcONXuL
-         TuGtDqXfknwWJRANtqtgy6uv8YmfwmZ4VXb1ETMRQIaRrEJHmeHTaQfz8jiWbeULxPTl
-         klKGaWisrVjRDOkPXo//cAb+182jt5u0chfM0pd0/jJu+DY5U+ZZ+JhOGLpqmDv7xs4j
-         1KMXOz8FjfSoHZOSD2ncgy7sezaMLnIl/ohyr48TRqfK+XWHTZ5GXiI3726ghb+2qFJ6
-         O09maMCCHn9AbWFhjTuOut63zPZQ28q6pgM3Fs8P899dxevTmzSkz8l0mTgKbZJdXltF
-         6xgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738746700; x=1739351500;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VIUDjyBVwJ/dm7gTPgpVoztf+HTD2k5fIkdAtbxgAm0=;
-        b=GzzSafqajZzo0sbcJDjWkBjxePmlZ4Nz6yk0fOABU/Yn7618Du0t7gr/IWuOixE0Kk
-         YYBhP7UEhBoTvO7O0lOA4fbRhSE+KAGgPLJAvaIPNT+2819WG+su4Cy0eX2j4sr6Iez6
-         5tK7kXGYGk3LUqVmZyCmQpkn13D8FezjzmVs5/rlnvt6QcWcKr7FbGZYvTeq5lAAX0GW
-         u5ZlWsZVnV+jnXIk7Afn/nSioxM1t20OqC/dfpUG1Kgikce8z/Vtrh8uV4U1OS3qGR/H
-         2Vu4EdNb+X8SD1Ot76xxA6NxOkqRFduK908bcEZf2fRB5UBOSh6m9fDRtIEB4+5fQKWa
-         9GfA==
-X-Forwarded-Encrypted: i=1; AJvYcCXojzgYGWD65qt/jLxXuhncDJ5xuk1672/gS35kEUawshMz89kg/8eLsf+eXEpjnzMI9DWN9Y4UgxbqbmLN0g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyE4WK9XR7eXsJyxd+/DVdQKf2PXT9WX+fWIpOs2yfELzgB4GX
-	jvA1EwYONcUY9Vpr9aIfokyyPwm1hI4cQquZpRWYjWqQpwJknQJyMAomFeFEF4g=
-X-Gm-Gg: ASbGncsQ0JIuqM2uHqMLOB3gXVReh5cBSDJnj49C98BHCjnBZv8k9ZryJqNX8XYg4Sw
-	4ldKHq9bnPVkEmhhG969lHvKe/BQTbTLywwQ+hjrUcjiH6eap2iwodhwp4ddvewkP2Hr6eWQTPT
-	XLn/8OrFgOxo1qMJeTrdkMx1XeEKskpPYUnAe1rBbQaB2H7CgjgTZIVv8mGWsyvsMGhjnhH1NgV
-	nqu9OLbtqKMehd7Mmw1Jo4yCuC5fUOaIwzx3mRwUIEiQ5RX2/1bDMcrROOxNUsIMZiRceYn26Nk
-	M9SZddQ77YuuCWFbYmSy
-X-Google-Smtp-Source: AGHT+IFIs1qAaUKAvLcYISJkN6uoUXlhr9ORlrTo5xO0VyHLR1PeFb7Tmmm2EQua0lntTf/Wmw/l4w==
-X-Received: by 2002:a05:600c:1e02:b0:434:fa73:a907 with SMTP id 5b1f17b1804b1-4390d43d465mr12605905e9.13.1738746700375;
-        Wed, 05 Feb 2025 01:11:40 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-38dafeee4f6sm3249458f8f.60.2025.02.05.01.11.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2025 01:11:40 -0800 (PST)
-Date: Wed, 5 Feb 2025 12:11:36 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: [bug report] wcn36xx: Transition driver to SMD client
-Message-ID: <8e85b9bf-8b4d-4926-8daa-f84608561383@stanley.mountain>
+	s=arc-20240116; t=1738748386; c=relaxed/simple;
+	bh=KHNO08ZfvA9xhs2xZbzFdLJAFFpQyr09q5r2yEtBBLs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fahKDXe9uvaNc9PyESraKDYIsu4tXCzKjFl/fqbf4JwQc8JVbVII08Wr8eCUJt3wq97xOjd7jL/sjGmg6N12fskP3v6hv4sRYOnEpIzYnHFu70r54tBoNlm/xxnpy01Y6V0Z9O/0fReFUPI/5kzya446zAUMfU+aXcLJ7AIXHxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GueHp2d8; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738748384; x=1770284384;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KHNO08ZfvA9xhs2xZbzFdLJAFFpQyr09q5r2yEtBBLs=;
+  b=GueHp2d8LhEUFwWiOckMJEde7v5WA8HBFW+jxSM8I12T5zjlDvFurhTz
+   MYZOQ9/2c6snSJmmkvoqZp8pVjC+3cCCcYCvZzvzPxwCzWyVGNzupfvTQ
+   bLFYHn/FuGvhmAbevi0wAGfJG8paUl08Xup2aP7IwasnX/C3SVDJH79Hz
+   EcdQ6clOiGrBBMV1QQHs+sLclkki4THMx6IDNlhkShB8KNNGdpI9dCPBV
+   FeTaaBI1RdaXGCrHFIGlIVOu3h394sYwWruXbAEB0AhQR+2QOW5NRYxLD
+   XIzCyL4Yq6CeNWHGrf+Ak4vSkhItGUU0Q6MC7j2URX64sMfnYoKemwk+/
+   g==;
+X-CSE-ConnectionGUID: S7bL2G7MTPC7+thwF28aJw==
+X-CSE-MsgGUID: RPS7/UtSTAO0CQgnIUpJHw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="43225200"
+X-IronPort-AV: E=Sophos;i="6.13,261,1732608000"; 
+   d="scan'208";a="43225200"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 01:39:43 -0800
+X-CSE-ConnectionGUID: qj3GchHpT5mlYr6wacT6sQ==
+X-CSE-MsgGUID: +Emp4D4ySeGBN7DIb5h+MQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,261,1732608000"; 
+   d="scan'208";a="115845247"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 01:39:41 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 00/17] [RESEND] wifi: mac80211/cfg80211: updates - 2025-02-04
+Date: Wed,  5 Feb 2025 11:39:10 +0200
+Message-Id: <20250205093927.1775858-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-Hello Bjorn Andersson,
+Hi,
 
-Commit f303a9311065 ("wcn36xx: Transition driver to SMD client") from
-Jan 11, 2017 (linux-next), leads to the following Smatch static
-checker warning:
+This series contains a few features
+(EPCS, strict mode) cleanups and bugfixes.
 
-drivers/net/wireless/ath/wcn36xx/main.c:1616 wcn36xx_probe() warn: 'wcn->smd_channel' is not an error pointer
-drivers/bluetooth/btqcomsmd.c:155 btqcomsmd_probe() warn: 'btq->acl_channel' is not an error pointer
-drivers/bluetooth/btqcomsmd.c:160 btqcomsmd_probe() warn: 'btq->cmd_channel' is not an error pointer
+Thanks,
+Miri
+---
 
-drivers/net/wireless/ath/wcn36xx/main.c
-    1557 static int wcn36xx_probe(struct platform_device *pdev)
-    1558 {
-    1559         struct ieee80211_hw *hw;
-    1560         struct wcn36xx *wcn;
-    1561         void *wcnss;
-    1562         int ret;
-    1563         const u8 *addr;
-    1564         int n_channels;
-    1565 
-    1566         wcn36xx_dbg(WCN36XX_DBG_MAC, "platform probe\n");
-    1567 
-    1568         wcnss = dev_get_drvdata(pdev->dev.parent);
-    1569 
-    1570         hw = ieee80211_alloc_hw(sizeof(struct wcn36xx), &wcn36xx_ops);
-    1571         if (!hw) {
-    1572                 wcn36xx_err("failed to alloc hw\n");
-    1573                 ret = -ENOMEM;
-    1574                 goto out_err;
-    1575         }
-    1576         platform_set_drvdata(pdev, hw);
-    1577         wcn = hw->priv;
-    1578         wcn->hw = hw;
-    1579         wcn->dev = &pdev->dev;
-    1580         wcn->first_boot = true;
-    1581         mutex_init(&wcn->conf_mutex);
-    1582         mutex_init(&wcn->hal_mutex);
-    1583         mutex_init(&wcn->scan_lock);
-    1584         __skb_queue_head_init(&wcn->amsdu);
-    1585 
-    1586         wcn->hal_buf = devm_kmalloc(wcn->dev, WCN36XX_HAL_BUF_SIZE, GFP_KERNEL);
-    1587         if (!wcn->hal_buf) {
-    1588                 ret = -ENOMEM;
-    1589                 goto out_wq;
-    1590         }
-    1591 
-    1592         n_channels = wcn_band_2ghz.n_channels + wcn_band_5ghz.n_channels;
-    1593         wcn->chan_survey = devm_kcalloc(wcn->dev,
-    1594                                         n_channels,
-    1595                                         sizeof(struct wcn36xx_chan_survey),
-    1596                                         GFP_KERNEL);
-    1597         if (!wcn->chan_survey) {
-    1598                 ret = -ENOMEM;
-    1599                 goto out_wq;
-    1600         }
-    1601 
-    1602         ret = dma_set_mask_and_coherent(wcn->dev, DMA_BIT_MASK(32));
-    1603         if (ret < 0) {
-    1604                 wcn36xx_err("failed to set DMA mask: %d\n", ret);
-    1605                 goto out_wq;
-    1606         }
-    1607 
-    1608         wcn->nv_file = WLAN_NV_FILE;
-    1609         ret = of_property_read_string(wcn->dev->parent->of_node, "firmware-name", &wcn->nv_file);
-    1610         if (ret < 0 && ret != -EINVAL) {
-    1611                 wcn36xx_err("failed to read \"firmware-name\" property: %d\n", ret);
-    1612                 goto out_wq;
-    1613         }
-    1614 
-    1615         wcn->smd_channel = qcom_wcnss_open_channel(wcnss, "WLAN_CTRL", wcn36xx_smd_rsp_process, hw);
---> 1616         if (IS_ERR(wcn->smd_channel)) {
+Benjamin Berg (2):
+  wifi: mac80211: add HT and VHT basic set verification
+  wifi: mac80211: tests: add tests for ieee80211_determine_chan_mode
 
-qcom_wcnss_open_channel() only returns error pointers if
-CONFIG_QCOM_WCNSS_CTRL is disabled.  I guess this is a COMPILE_TEST
-thing?  Normally it would be the reverse way where functions return
-error pointers on error for real errors and NULL for COMPILE_TEST of
-if the feature is optional.
+Emmanuel Grumbach (2):
+  wifi: mac80211: set ieee80211_prep_tx_info::link_id upon Auth Rx
+  wifi: mac80211: rework the Tx of the deauth in
+    ieee80211_set_disassoc()
 
-    1617                 wcn36xx_err("failed to open WLAN_CTRL channel\n");
-    1618                 ret = PTR_ERR(wcn->smd_channel);
-    1619                 goto out_wq;
-    1620         }
-    1621 
-    1622         addr = of_get_property(pdev->dev.of_node, "local-mac-address", &ret);
-    1623         if (addr && ret != ETH_ALEN) {
-    1624                 wcn36xx_err("invalid local-mac-address\n");
-    1625                 ret = -EINVAL;
-    1626                 goto out_destroy_ept;
-    1627         } else if (addr) {
-    1628                 wcn36xx_info("mac address: %pM\n", addr);
-    1629                 SET_IEEE80211_PERM_ADDR(wcn->hw, addr);
-    1630         }
-    1631 
-    1632         ret = wcn36xx_platform_get_resources(wcn, pdev);
-    1633         if (ret)
-    1634                 goto out_destroy_ept;
-    1635 
-    1636         wcn36xx_init_ieee80211(wcn);
-    1637         ret = ieee80211_register_hw(wcn->hw);
-    1638         if (ret)
-    1639                 goto out_unmap;
-    1640 
-    1641         return 0;
-    1642 
-    1643 out_unmap:
-    1644         iounmap(wcn->ccu_base);
-    1645         iounmap(wcn->dxe_base);
-    1646 out_destroy_ept:
-    1647         rpmsg_destroy_ept(wcn->smd_channel);
-    1648 out_wq:
-    1649         ieee80211_free_hw(hw);
-    1650 out_err:
-    1651         return ret;
-    1652 }
+Ilan Peer (5):
+  wifi: cfg80211: Fix trace print for removed links
+  wifi: mac80211: Refactor ieee80211_sta_wmm_params()
+  wifi: mac80211: Add support for EPCS configuration
+  wifi: ieee80211: Add missing EHT MAC capabilities
+  wifi: mac80211: Add processing of TTLM teardown frame
 
-regards,
-dan carpenter
+Johannes Berg (7):
+  wifi: mac80211: add strict mode disabling workarounds
+  wifi: mac80211_hwsim: enable strict mode
+  wifi: mac80211: remove misplaced drv_mgd_complete_tx() call
+  wifi: mac80211: don't unconditionally call drv_mgd_complete_tx()
+  wifi: mac80211: always send max agg subframe num in strict mode
+  wifi: mac80211: aggregation: remove deflink accesses for MLO
+  wifi: mac80211: enable removing assoc link
+
+Miri Korenblit (1):
+  wifi: mac80211: ensure sdata->work is canceled before initialized.
+
+ drivers/net/wireless/virtual/mac80211_hwsim.c |   1 +
+ include/linux/ieee80211.h                     |  12 +
+ include/net/mac80211.h                        |  13 +-
+ net/mac80211/agg-rx.c                         |  22 +-
+ net/mac80211/agg-tx.c                         |   9 +-
+ net/mac80211/cfg.c                            |   9 +
+ net/mac80211/debugfs.c                        |  44 +-
+ net/mac80211/driver-ops.h                     |   3 +-
+ net/mac80211/ieee80211_i.h                    |  19 +
+ net/mac80211/iface.c                          |  16 +-
+ net/mac80211/mlme.c                           | 582 ++++++++++++++++--
+ net/mac80211/rx.c                             |  25 +
+ net/mac80211/tests/Makefile                   |   2 +-
+ net/mac80211/tests/chan-mode.c                | 254 ++++++++
+ net/mac80211/tests/util.c                     |   6 +-
+ net/mac80211/tx.c                             |   3 +-
+ net/wireless/trace.h                          |   2 +-
+ 17 files changed, 933 insertions(+), 89 deletions(-)
+ create mode 100644 net/mac80211/tests/chan-mode.c
+
+-- 
+2.34.1
+
+---
+v2: 
+removed patches that should go to wireless,
+rephrased the commit message of "wifi: mac80211: add HT and VHT
+basic set verification"
 
