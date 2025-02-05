@@ -1,171 +1,205 @@
-Return-Path: <linux-wireless+bounces-18492-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18493-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB80A28621
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 10:07:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5BAA28637
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 10:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC9FC168CFD
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 09:07:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85E003A6C3F
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 09:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31C222A1E1;
-	Wed,  5 Feb 2025 09:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D58C22A7E8;
+	Wed,  5 Feb 2025 09:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MasVflAY"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iJbHmCxn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9356D2288DA;
-	Wed,  5 Feb 2025 09:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D1A22A4FC
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Feb 2025 09:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738746464; cv=none; b=H1whDXDVcm56utccdjSDbnpEc2+4SZbRwji7YnBH1EOI2B+pVdq4CqJ9niBwh+x1uxSokVmKsyfUHIRPt/LucGrcl9C87X7Bt4NMuCKKemig0oJA0pZ6qSjRaOWqAjGXAnAStl+OmC6bT6eUZ6rQ6ynFzg+Ai9Z82SZTp3ejQZw=
+	t=1738746704; cv=none; b=P3eT1/uy3IqGLERCut1uZKg0oN5/YtxrE/n8w9wfCT7bUM0sjjq6zUUSSCUt1K8EqkNZmaTYfzpzZYMDAa0zbSLgnqYkE4/u9UqiJNO0YUhtevRPktCkieq9R4yVVcs0aDnp2ErqCPIV3Ax1Go7AVENYpwsIXbPsd75fCCDibLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738746464; c=relaxed/simple;
-	bh=dT+brue9bZJjCvucpVy58D22kI3f5XOtfMhs1uM9yK4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f4UVkDdnXfZWkhyKA67M8ZOfC1WKjVMN64cuBIEqtfrJ3NvBg6ramp2j02RpA8A4XYKYX8oT6h9r2MApl2nsfQJEAQvIQ3RRqoJyL65YxhYEV4e2gcZsb0Ew/H/pZXdm4qafkya1RKHwUMd+VFyceLOn3io42KZphKWMYprsej8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MasVflAY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A9BC4CED1;
-	Wed,  5 Feb 2025 09:07:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738746464;
-	bh=dT+brue9bZJjCvucpVy58D22kI3f5XOtfMhs1uM9yK4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MasVflAYp/mJcGP/oEgutBOTMVZYjWqhrZVQzSUYpte7GSgnZ77EO3c3VJetMUHMM
-	 e4Xifam28m02X3uq0qXEu22NGDZXt4OPqYmYMEwiTz4QPWlRuMExdKxQth5MROCJcE
-	 fSS5VxN5umHl95u1iepZp0T1J87sv7VOcdT3WsOqbRR523XDDyU8WZpVF1MRExeupF
-	 7JHAIqt/NczBDkAkgyUl3araUGwtyfEOX2n9MKf358Clfke0KECpzm3qzsUuVUfhkM
-	 G1MpEERMZOcq0RMob9+1g+sjWCnT5J8UnyCUwMcF1MGGHzOBfEI56nWKg7i6T4jKg9
-	 S8kM27RERuKnQ==
-Message-ID: <f8b8a39d-043a-4be0-9024-c080cf864e7b@kernel.org>
-Date: Wed, 5 Feb 2025 10:07:38 +0100
+	s=arc-20240116; t=1738746704; c=relaxed/simple;
+	bh=2xGNb6+PYn+RV2OrORSkRXhEyCHxo+QWRjjxDrEtLX4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=LUnzGNKWOqIHYpj9IGo/lPBcs6n2uGhj0CAUTn4yqsCVj+mkcYsSAcTq+SM/CYD4gbZAnDzLIVmMPb6+2JUr6Y7R7V2ZYIsdADKlhfBcIDba8Tm6kkPBrJkwUPeuptiWtV0vms8LsVRWkIT8q05JMhyg0fh5esmPQBtkv7+IfoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iJbHmCxn; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-438a3216fc2so64647885e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Feb 2025 01:11:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1738746700; x=1739351500; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VIUDjyBVwJ/dm7gTPgpVoztf+HTD2k5fIkdAtbxgAm0=;
+        b=iJbHmCxn0m/PenQAGzBTmKLGiNl8Dfs57irkOd6+f/d0klUi7pbBB5IP1qHPcONXuL
+         TuGtDqXfknwWJRANtqtgy6uv8YmfwmZ4VXb1ETMRQIaRrEJHmeHTaQfz8jiWbeULxPTl
+         klKGaWisrVjRDOkPXo//cAb+182jt5u0chfM0pd0/jJu+DY5U+ZZ+JhOGLpqmDv7xs4j
+         1KMXOz8FjfSoHZOSD2ncgy7sezaMLnIl/ohyr48TRqfK+XWHTZ5GXiI3726ghb+2qFJ6
+         O09maMCCHn9AbWFhjTuOut63zPZQ28q6pgM3Fs8P899dxevTmzSkz8l0mTgKbZJdXltF
+         6xgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738746700; x=1739351500;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VIUDjyBVwJ/dm7gTPgpVoztf+HTD2k5fIkdAtbxgAm0=;
+        b=GzzSafqajZzo0sbcJDjWkBjxePmlZ4Nz6yk0fOABU/Yn7618Du0t7gr/IWuOixE0Kk
+         YYBhP7UEhBoTvO7O0lOA4fbRhSE+KAGgPLJAvaIPNT+2819WG+su4Cy0eX2j4sr6Iez6
+         5tK7kXGYGk3LUqVmZyCmQpkn13D8FezjzmVs5/rlnvt6QcWcKr7FbGZYvTeq5lAAX0GW
+         u5ZlWsZVnV+jnXIk7Afn/nSioxM1t20OqC/dfpUG1Kgikce8z/Vtrh8uV4U1OS3qGR/H
+         2Vu4EdNb+X8SD1Ot76xxA6NxOkqRFduK908bcEZf2fRB5UBOSh6m9fDRtIEB4+5fQKWa
+         9GfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXojzgYGWD65qt/jLxXuhncDJ5xuk1672/gS35kEUawshMz89kg/8eLsf+eXEpjnzMI9DWN9Y4UgxbqbmLN0g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyE4WK9XR7eXsJyxd+/DVdQKf2PXT9WX+fWIpOs2yfELzgB4GX
+	jvA1EwYONcUY9Vpr9aIfokyyPwm1hI4cQquZpRWYjWqQpwJknQJyMAomFeFEF4g=
+X-Gm-Gg: ASbGncsQ0JIuqM2uHqMLOB3gXVReh5cBSDJnj49C98BHCjnBZv8k9ZryJqNX8XYg4Sw
+	4ldKHq9bnPVkEmhhG969lHvKe/BQTbTLywwQ+hjrUcjiH6eap2iwodhwp4ddvewkP2Hr6eWQTPT
+	XLn/8OrFgOxo1qMJeTrdkMx1XeEKskpPYUnAe1rBbQaB2H7CgjgTZIVv8mGWsyvsMGhjnhH1NgV
+	nqu9OLbtqKMehd7Mmw1Jo4yCuC5fUOaIwzx3mRwUIEiQ5RX2/1bDMcrROOxNUsIMZiRceYn26Nk
+	M9SZddQ77YuuCWFbYmSy
+X-Google-Smtp-Source: AGHT+IFIs1qAaUKAvLcYISJkN6uoUXlhr9ORlrTo5xO0VyHLR1PeFb7Tmmm2EQua0lntTf/Wmw/l4w==
+X-Received: by 2002:a05:600c:1e02:b0:434:fa73:a907 with SMTP id 5b1f17b1804b1-4390d43d465mr12605905e9.13.1738746700375;
+        Wed, 05 Feb 2025 01:11:40 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-38dafeee4f6sm3249458f8f.60.2025.02.05.01.11.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Feb 2025 01:11:40 -0800 (PST)
+Date: Wed, 5 Feb 2025 12:11:36 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Bjorn Andersson <andersson@kernel.org>
+Cc: wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: [bug report] wcn36xx: Transition driver to SMD client
+Message-ID: <8e85b9bf-8b4d-4926-8daa-f84608561383@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 07/13] wifi: ath12k: add support for fixed QMI firmware
- memory
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250130043508.1885026-1-quic_rajkbhag@quicinc.com>
- <20250130043508.1885026-8-quic_rajkbhag@quicinc.com>
- <4c9b512f-59d2-4d96-a899-5af4de2c823e@kernel.org>
- <7d5f7b4c-2a55-41c7-b85c-cb4cd76d553f@quicinc.com>
- <962dc257-f7a6-49c7-b760-a31fd84e7a56@kernel.org>
- <c7d9842a-96bf-41aa-8046-52c3e45f90d4@quicinc.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <c7d9842a-96bf-41aa-8046-52c3e45f90d4@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 04/02/2025 10:06, Raj Kumar Bhagat wrote:
-> On 2/3/2025 3:42 PM, Krzysztof Kozlowski wrote:
->> On 03/02/2025 10:44, Raj Kumar Bhagat wrote:
->>> On 1/30/2025 1:16 PM, Krzysztof Kozlowski wrote:
->>>> On 30/01/2025 05:35, Raj Kumar Bhagat wrote:
->>>>> @@ -2646,6 +2663,136 @@ static int ath12k_qmi_alloc_target_mem_chunk(struct ath12k_base *ab)
->>>>>  	return ret;
->>>>>  }
->>>>>  
->>>>> +static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
->>>>> +{
->>>>> +	struct device_node *mem_node;
->>>>> +	struct resource res, m3_res;
->>>>> +	u32 bdf_start_addr;
->>>>> +	int i, idx, ret;
->>>>> +
->>>>> +	for (i = 0, idx = 0; i < ab->qmi.mem_seg_count; i++) {
->>>>> +		switch (ab->qmi.target_mem[i].type) {
->>>>> +		case HOST_DDR_REGION_TYPE:
->>>>> +			mem_node = ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
->>>>
->>>>
->>>> Why cannot you use existing API for reserved memory -
->>>> of_reserved_mem_lookup()?
->>>>
->>>
->>> The of_reserved_mem_lookup() requires reserved memory node to read the memory and
->>> return in the structure "struct reserved_mem".
->>>
->>> The of_reserved_mem_lookup() would be used after we get the reserved memory node
->>> using the API - ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
->>>
->>> In next version we would use of_reserved_mem_lookup(), Something like below:
->>>     mem_node = ath12k_core_get_reserved_mem_by_name(ab, "q6-region");
->>
->> Then why do you need ath12k_core_get_reserved_mem_by_name() in the first
->> place? Just use of_reserved_mem_lookup() directly. Why do you need to
->> parse phandle before of_reserved_mem_lookup()?
->>
-> 
-> Sorry, I'm having difficulty understanding this.
-> We have the WiFi node at ab->dev->of_node, but we don't have a node for the reserved-memory
-> 'q6-region'. The of_reserved_mem_lookup() function requires the device node for 'q6-region'.
-> 
-> Could you please suggest how we can use of_reserved_mem_lookup() without obtaining the
-> 'q6-region' node first.
+Hello Bjorn Andersson,
 
+Commit f303a9311065 ("wcn36xx: Transition driver to SMD client") from
+Jan 11, 2017 (linux-next), leads to the following Smatch static
+checker warning:
 
-Hm, it seems you are not using it for this device, so indeed you need to
-parse phandle. You can still code it simpler -
-of_property_match_string() is not necessary and
-of_address_to_resource()+of_node_put()  could be in the
-ath12k_core_get_reserved_mem()
+drivers/net/wireless/ath/wcn36xx/main.c:1616 wcn36xx_probe() warn: 'wcn->smd_channel' is not an error pointer
+drivers/bluetooth/btqcomsmd.c:155 btqcomsmd_probe() warn: 'btq->acl_channel' is not an error pointer
+drivers/bluetooth/btqcomsmd.c:160 btqcomsmd_probe() warn: 'btq->cmd_channel' is not an error pointer
 
-Best regards,
-Krzysztof
+drivers/net/wireless/ath/wcn36xx/main.c
+    1557 static int wcn36xx_probe(struct platform_device *pdev)
+    1558 {
+    1559         struct ieee80211_hw *hw;
+    1560         struct wcn36xx *wcn;
+    1561         void *wcnss;
+    1562         int ret;
+    1563         const u8 *addr;
+    1564         int n_channels;
+    1565 
+    1566         wcn36xx_dbg(WCN36XX_DBG_MAC, "platform probe\n");
+    1567 
+    1568         wcnss = dev_get_drvdata(pdev->dev.parent);
+    1569 
+    1570         hw = ieee80211_alloc_hw(sizeof(struct wcn36xx), &wcn36xx_ops);
+    1571         if (!hw) {
+    1572                 wcn36xx_err("failed to alloc hw\n");
+    1573                 ret = -ENOMEM;
+    1574                 goto out_err;
+    1575         }
+    1576         platform_set_drvdata(pdev, hw);
+    1577         wcn = hw->priv;
+    1578         wcn->hw = hw;
+    1579         wcn->dev = &pdev->dev;
+    1580         wcn->first_boot = true;
+    1581         mutex_init(&wcn->conf_mutex);
+    1582         mutex_init(&wcn->hal_mutex);
+    1583         mutex_init(&wcn->scan_lock);
+    1584         __skb_queue_head_init(&wcn->amsdu);
+    1585 
+    1586         wcn->hal_buf = devm_kmalloc(wcn->dev, WCN36XX_HAL_BUF_SIZE, GFP_KERNEL);
+    1587         if (!wcn->hal_buf) {
+    1588                 ret = -ENOMEM;
+    1589                 goto out_wq;
+    1590         }
+    1591 
+    1592         n_channels = wcn_band_2ghz.n_channels + wcn_band_5ghz.n_channels;
+    1593         wcn->chan_survey = devm_kcalloc(wcn->dev,
+    1594                                         n_channels,
+    1595                                         sizeof(struct wcn36xx_chan_survey),
+    1596                                         GFP_KERNEL);
+    1597         if (!wcn->chan_survey) {
+    1598                 ret = -ENOMEM;
+    1599                 goto out_wq;
+    1600         }
+    1601 
+    1602         ret = dma_set_mask_and_coherent(wcn->dev, DMA_BIT_MASK(32));
+    1603         if (ret < 0) {
+    1604                 wcn36xx_err("failed to set DMA mask: %d\n", ret);
+    1605                 goto out_wq;
+    1606         }
+    1607 
+    1608         wcn->nv_file = WLAN_NV_FILE;
+    1609         ret = of_property_read_string(wcn->dev->parent->of_node, "firmware-name", &wcn->nv_file);
+    1610         if (ret < 0 && ret != -EINVAL) {
+    1611                 wcn36xx_err("failed to read \"firmware-name\" property: %d\n", ret);
+    1612                 goto out_wq;
+    1613         }
+    1614 
+    1615         wcn->smd_channel = qcom_wcnss_open_channel(wcnss, "WLAN_CTRL", wcn36xx_smd_rsp_process, hw);
+--> 1616         if (IS_ERR(wcn->smd_channel)) {
+
+qcom_wcnss_open_channel() only returns error pointers if
+CONFIG_QCOM_WCNSS_CTRL is disabled.  I guess this is a COMPILE_TEST
+thing?  Normally it would be the reverse way where functions return
+error pointers on error for real errors and NULL for COMPILE_TEST of
+if the feature is optional.
+
+    1617                 wcn36xx_err("failed to open WLAN_CTRL channel\n");
+    1618                 ret = PTR_ERR(wcn->smd_channel);
+    1619                 goto out_wq;
+    1620         }
+    1621 
+    1622         addr = of_get_property(pdev->dev.of_node, "local-mac-address", &ret);
+    1623         if (addr && ret != ETH_ALEN) {
+    1624                 wcn36xx_err("invalid local-mac-address\n");
+    1625                 ret = -EINVAL;
+    1626                 goto out_destroy_ept;
+    1627         } else if (addr) {
+    1628                 wcn36xx_info("mac address: %pM\n", addr);
+    1629                 SET_IEEE80211_PERM_ADDR(wcn->hw, addr);
+    1630         }
+    1631 
+    1632         ret = wcn36xx_platform_get_resources(wcn, pdev);
+    1633         if (ret)
+    1634                 goto out_destroy_ept;
+    1635 
+    1636         wcn36xx_init_ieee80211(wcn);
+    1637         ret = ieee80211_register_hw(wcn->hw);
+    1638         if (ret)
+    1639                 goto out_unmap;
+    1640 
+    1641         return 0;
+    1642 
+    1643 out_unmap:
+    1644         iounmap(wcn->ccu_base);
+    1645         iounmap(wcn->dxe_base);
+    1646 out_destroy_ept:
+    1647         rpmsg_destroy_ept(wcn->smd_channel);
+    1648 out_wq:
+    1649         ieee80211_free_hw(hw);
+    1650 out_err:
+    1651         return ret;
+    1652 }
+
+regards,
+dan carpenter
 
