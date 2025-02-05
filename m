@@ -1,193 +1,177 @@
-Return-Path: <linux-wireless+bounces-18545-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18546-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97968A29A51
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 20:42:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6344FA29B65
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 21:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11006167FE5
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 19:42:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AACF37A1BCC
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2025 20:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E178A205AB8;
-	Wed,  5 Feb 2025 19:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BEBB2144A3;
+	Wed,  5 Feb 2025 20:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gOBngM1U"
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="PdM4Sv9M"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f232.google.com (mail-lj1-f232.google.com [209.85.208.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027D61FF1B3
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Feb 2025 19:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC62213E6F
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Feb 2025 20:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738784559; cv=none; b=mLJWhBVwxIqiOsl7QGBPBW6QGc4T+pV49d0PL9j54C+UPt6wD9/S5CoMI1doJRpOPU6C3EEBIU8tiYSWhpqCbL0bb/OlC8wzGk5xlE6LHw6J1DQ6A3kx7yF0qVz61+FccsD1feiokGskNeanBVaMZSQaTa9JV1HTTdM3FfY44Mc=
+	t=1738788385; cv=none; b=ZoPcZyv3p7EfRxjNoj1l3eHHUwp3BXTgpAm7yRvsS0F+c1FcUEl0TbjTDhpyBDqWL/Vcz42+Di/+DcOmTvI3dx1TO5b0vK3yDPCiTfKFOsZm+VUdcMUTVpCGqVX58WkgOWauCAL9m+otI9QlSX9yv2mEsTfDU5z7YP4frwMWPj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738784559; c=relaxed/simple;
-	bh=PmMfshh5THC8MfMQz67iu7Oa5ccLmDis8+ArJNdIu/s=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=SgvRyE6mp9rGvN5BdElpvob2tr9pTNSX8KyzCi8USOVOkJ2cc2vWNyGCTH7uVb0Z+2I7PLLJQvBG0wDQiZ0edMDOtQa/YxuqJIauMoQKCux6xCqBsMMQbVLgyDsW8wIOklHhO0O2n1t/qVuqUO5rZJonRb+KC0xD7n84CKnp7hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gOBngM1U; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 515GNd6W025753
-	for <linux-wireless@vger.kernel.org>; Wed, 5 Feb 2025 19:42:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=U89NaUs2hFzdVum9QFeTZv
-	vj2h4vjXk6YXjDwpodyZg=; b=gOBngM1UmtXsNXEgRTgC+F06435D+fmXvuvhZK
-	6msXg54TYygMRm75x1lriXI+4G/0VcAgmoDI0BeqoBMBEkAn4j1hpfZkKeDsjyIW
-	Ed0ry1jEi3QHzL2Tk0Z4ALS699NpnJD9QyTVx5EtjtAi/7A/Dgs0lVuhULe4ajaB
-	k1y45DqI1cgWdfhtcpAs/aohoWnxYRFR5KpnPrZBuaZ1HVvYH1LD+2he+bR5qm5Z
-	wWNyQu6mxHI9Z41yGvYeT96wbO+3G1y9bLD+UugXJjdJw14LiBPg8gJ9aRDFesaf
-	ULLReFsySSU1iQ9nn1QzRH5dvBIuLfJZ5oKukQKj8glv5x6w==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44mbfh8ffq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 05 Feb 2025 19:42:36 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2f9f90051a2so125835a91.2
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Feb 2025 11:42:36 -0800 (PST)
+	s=arc-20240116; t=1738788385; c=relaxed/simple;
+	bh=eJJq5QNRi14jFadz/bxG36Zo3CHW1uI2JqLwh8zP4ow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NtjPkh/LiM3vlzWrcmKxCSwFyyICFHUNiFILIqvoVUYB49aUCJN1goNMIFTt2LLl7zKVT1KO0s24tT3QCkXHiImGbKn0f81IM12eUnBOT1ERkx5usbXEeOidiyGHtJttskuSiFcJVQtsh6VYUOw1J/in1snKIOBzJmTHGvQIt0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=PdM4Sv9M; arc=none smtp.client-ip=209.85.208.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+Received: by mail-lj1-f232.google.com with SMTP id 38308e7fff4ca-307c13298eeso2178401fa.0
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Feb 2025 12:46:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1738788381; x=1739393181; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YZgLBFelzHCvaOXDScSFVXg2HFnlFG4aCVoHAFEQ/jY=;
+        b=PdM4Sv9M6stuMyPtdaLpFpp472IHI9AgjtrIzt0TeOU9NSHNmKpXWoULvACCm2bcj5
+         GDef7Po0mJ6DkQCgZJ+eaEoJImfknWK42DVBoo5CEVpyOG7LanGFVBhtlnv0IUUg04Zn
+         v/kBlHTOA6kRDqfkNN7nwaxbG2tDUj3AGwT9AQgmv56rmWp9fe57fCL1/5uCwg+sGsbt
+         IP8wHXkkvGGiOuszZuR2Cshp8f5EMmmED+awWIdHWByhCME/xTEZIO9TNs6jXoH95/zS
+         ZQJgPlojwFNo3ZBtVyibERgLNsPsJ+FxxH6GuhzlCLt62bw+Cr/h9aSUPFAIZW+MbUIF
+         ilug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738784555; x=1739389355;
-        h=content-transfer-encoding:subject:cc:to:from:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=U89NaUs2hFzdVum9QFeTZvvj2h4vjXk6YXjDwpodyZg=;
-        b=BJKDNKjVUF1l7gtuHqcpj3tBBttMUIhSRO0xGngsYSeUD+1kHjHKCf0ypShlJQr5JC
-         X4ZaBeFcmU4+0hvlm+t8Jed+1OcgtbNXdtGiSoP6k5ZKFdQhi4b+m7zj2vvSFN4GbVPL
-         CS2PcLcZkD+1tjWXQ4uPTUpIu49lUn0UqwMXsCMj+W+pFGiraup9U/F6K5fBaA3qPXse
-         iPskDB/R/f4ZNCQoH4s1/r5/10mFrdBbMhPQQ3M48L8qE3cet5XKdqtzbFlTwJIyh4pD
-         MADm+jRw+I6/PINPgOgD1nYdqBFRiUtn6tWW8alOxuFv4/c0+c1vtAxNpjXBj2zU+smR
-         MPWg==
-X-Gm-Message-State: AOJu0Yyp/H+qTqoM+n7XgelhNEHhV6cG2kOqjtVs4fjmsxHa0mEGkWCC
-	sMTzezd8lsFeBRc+OvF0oaW8/sqzXNh61RM+yn+ZKwxr5pQ5chqY8ZuUl1W2mtA9Q8LtfNaeYlv
-	1acetwbkNUetetARrWeoFZmN1RSuvIMG05JqoP0aLpPztASTeGKp+3x6h1LCsLbrqKQ==
-X-Gm-Gg: ASbGncuL+pz0YRb+riq8fThEG5/cZLYln/hHYCa/Joa2r4LISWxdwK4Q2sfW7yyVr74
-	LvftB8xCH9IzjhWctr8XA07S51S1nSm+4YD++elg3V3/Ha9p0+4LBPF4ZSK2sy5BPPOANT+4m4c
-	QAJXrHUC0g7zj24LrVaow8RuV57wXH9syY0gUJSZQqFdvWZdCHdYai6BPSSqU52WOP18N3m63P4
-	4Id/TvhfQqOwRQK9/5/2Qpq7aCKrOI7nVn/wktcjmH4OUzTeIw2IPnXRicqrRUxbnArX0c+03F1
-	roaqQGoP36Yzyl6BpQ/RunXzdrK4phnSAE7R0k7CoCrg92SSd7rQrfDdo9lV
-X-Received: by 2002:a17:90b:52c7:b0:2f8:4a3f:dd2d with SMTP id 98e67ed59e1d1-2f9e07846b9mr6703874a91.15.1738784555055;
-        Wed, 05 Feb 2025 11:42:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF940SS5ltAjpQDKtK9E1zhSwIPpVcHL52+Reu9zJb0T1PN07OyPNgW0Um7KDFL1mJymnS5dQ==
-X-Received: by 2002:a17:90b:52c7:b0:2f8:4a3f:dd2d with SMTP id 98e67ed59e1d1-2f9e07846b9mr6703834a91.15.1738784554649;
-        Wed, 05 Feb 2025 11:42:34 -0800 (PST)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f9e1d89b9csm1978812a91.27.2025.02.05.11.42.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Feb 2025 11:42:34 -0800 (PST)
-Message-ID: <9be8cab2-02d0-40d2-b69f-7cb3095249a9@oss.qualcomm.com>
-Date: Wed, 5 Feb 2025 11:42:33 -0800
+        d=1e100.net; s=20230601; t=1738788381; x=1739393181;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YZgLBFelzHCvaOXDScSFVXg2HFnlFG4aCVoHAFEQ/jY=;
+        b=wTXxm+FRG8PxiqOuUNG3mb2fPXjKIWQ7naGHpEuC+7zbxJ+DCfvGxq9CwpWOnoBrwi
+         9gbTdhTy/iZtPcsVp21hQ2NntAdegVTBvQpM7gZ/99rqw7uBFxK9TRIuKTvJANGCbJz8
+         /cRu+CV2/ztli0nVA3Tzmqe3iUhm7H04vtbM8PkN/qeEDfdAYrJlfJ9W7v7bJit3JG6b
+         BNLINnPs2quZDu5JPv+YhH3WSgVzLaq9MoHo+0w3pRArBqKZk7jfFUBv54Vm0oCydHiA
+         oE0GW5NiEbkeV5/kmB3My7NFZTiWXc4jdoh6nrXYk/U4UKiIM+4V3HkiW51eE82Ih+/J
+         dP5w==
+X-Forwarded-Encrypted: i=1; AJvYcCWXLsvVLcEK43ZxtogBtTiwiG2sWs9O6i1KLsJKVrKTgSDwYFKNpgDYnSEWpmMr5XzDx+JheDLIw5lj+sUr9A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxweA0Nk/w0zMAfrb2Yhd2/YcjndfaFBSj0IsjLMrQBHYXS4Ekd
+	GtVy+fgsGcqcfIJ81lYpIepDjizT49PS/BHUHlGdsTwGa7l/bXdZLcNX5BxMVSDaibSPneTa6mq
+	vrWYt3t0K4AGUuozwrgi1G+QHzSV//bu2ly5rizFHHNQPmeHj
+X-Gm-Gg: ASbGncuuvIfB3EyWaBqbfNfTx2dAJJovdO+CBf3jquJsd8gzOHwLzcnv399DHSkMjGT
+	HnFypOT55XrfcMIxDo6QlEwHTfEE6JzgTeU3qn97oalgP3BHvfG4RJ7XN5vH0uBMtMMzzKBFpwE
+	Hhw8QBuKUx8V5f96UVYK//SyPdpw/5Ya7dBoxrpw6MgUKvFaPr0HO8bLnrKqFiBTW5oTrmgH83g
+	1xA4VWIw4LNLKg/KxkZ3GOkfFXEPj0HgByYKopXmd8GANlRvyIIBTr3IIrAPX9GSvzsMkUByD41
+	VdmWchQbDFc274Oq1a93ma3U
+X-Google-Smtp-Source: AGHT+IHGwIKRNNFxj2aI2pB1MRsUTu9sF3y4BpuFpcUwXFlSdrpcxN6BtNkK74LQkEMWM1Ky2ABB1PoPqWjB
+X-Received: by 2002:a2e:874d:0:b0:2ff:c167:a965 with SMTP id 38308e7fff4ca-307da514932mr2475291fa.8.1738788380245;
+        Wed, 05 Feb 2025 12:46:20 -0800 (PST)
+Received: from c7-smtp-2023.dev.purestorage.com ([2620:125:9017:12:36:3:5:0])
+        by smtp-relay.gmail.com with ESMTPS id 38308e7fff4ca-307a3069cc3sm4133931fa.4.2025.02.05.12.46.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Feb 2025 12:46:20 -0800 (PST)
+X-Relaying-Domain: purestorage.com
+Received: from dev-ushankar.dev.purestorage.com (dev-ushankar.dev.purestorage.com [IPv6:2620:125:9007:640:7:70:36:0])
+	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 6981F3401BB;
+	Wed,  5 Feb 2025 13:46:18 -0700 (MST)
+Received: by dev-ushankar.dev.purestorage.com (Postfix, from userid 1557716368)
+	id 5B895E41340; Wed,  5 Feb 2025 13:46:18 -0700 (MST)
+Date: Wed, 5 Feb 2025 13:46:18 -0700
+From: Uday Shankar <ushankar@purestorage.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] netconsole: allow selection of egress interface
+ via MAC address
+Message-ID: <Z6POGmAEEixKV5/O@dev-ushankar.dev.purestorage.com>
+References: <20250204-netconsole-v2-0-5ef5eb5f6056@purestorage.com>
+ <20250204-netconsole-v2-2-5ef5eb5f6056@purestorage.com>
+ <20250205-flying-coucal-of-influence-0dcbc3@leitao>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: linux-firmware@kernel.org
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PULL linux-firmware] ath11k and ath12k firmware 20250205
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: khHLqiQwUgvAkZIBT4lXvmWgA8JTESwT
-X-Proofpoint-ORIG-GUID: khHLqiQwUgvAkZIBT4lXvmWgA8JTESwT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-05_06,2025-02-05_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1015
- mlxscore=0 adultscore=0 priorityscore=1501 impostorscore=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 malwarescore=0 spamscore=0
- mlxlogscore=861 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502050150
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250205-flying-coucal-of-influence-0dcbc3@leitao>
 
-Hi,
-Here's a new pull request for ath11k and ath12k.
-This includes new ath11k support for QCA6698AQ, updated ath11k board support
-for the Qualcomm Robotics RB3 gen2 platform [1], and some board and firmware
-upgrades for other ath11k and ath12k hardware.
+On Wed, Feb 05, 2025 at 11:07:45AM -0800, Breno Leitao wrote:
+> > +	else if (is_valid_ether_addr(np->dev_mac))
+> > +		ndev = dev_getbyhwaddr_rcu(net, ARPHRD_ETHER, np->dev_mac);
+> 
+> You do not have the RCU read lock here. You have the rtnl(), which is
+> sufficient, but, CONFIG_PROVE_RCU_LIST will show something as:
+> 
+> 	WARNING: suspicious RCU usage
+> 	6.13.0-09701-g6610c7be45bb-dirty #18 Not tainted
+> 	-----------------------------
+> 	net/core/dev.c:1143 RCU-list traversed in non-reader section!!
+> 	other info that might help us debug this:
+> 	rcu_scheduler_active = 2, debug_locks = 1
+> 	1 lock held by swapper/0/1:
+> 	 #0: ffffffff832795b8 (rtnl_mutex){+.+.}-{4:4}, at: netpoll_setup+0x48/0x540
+> 	stack backtrace:
+> 	CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.13.0-virtme-09701-g6610c7be45bb-dirty #18
+> 	Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> 	Call Trace:
+> 	 <TASK>
+> 	 dump_stack_lvl+0x9f/0xf0
+> 	 lockdep_rcu_suspicious+0x11a/0x150
+> 	 dev_getbyhwaddr_rcu+0xb6/0xc0
+> 	 netpoll_setup+0x8a/0x540
+> 	 ? netpoll_parse_options+0x2bd/0x310
+> 
+> This is not a problem per-se, since you have RTNL. We probably need to
+> tell for_each_netdev_rcu() to not comply about "RCU-list traversed in
+> non-reader section" if RTNL is held. Not sure why we didn't hit in the
+> test infrastructure, tho:
+> 
+> 	https://patchwork.kernel.org/project/netdevbpf/patch/20250204-netconsole-v2-2-5ef5eb5f6056@purestorage.com/
 
-Please let me know if there are any problems.
+I don't think there is an automated test that will hit this path yet. I
+guess you got this trace from your manual testing?
 
-/jeff
+> 
+> Anyway, no action item for you here. I am talking to Jakub on a way to
+> solve it, and I should send a fix soon.
 
-[1] https://msgid.link/CAA8EJpq=QRbWe6KTxcmHkHp20rgEgLZeGYV7+Hy2Qkfo_MyV1g@mail.gmail.com
+/**
+ * list_for_each_entry_rcu	-	iterate over rcu list of given type
+ * @pos:	the type * to use as a loop cursor.
+ * @head:	the head for your list.
+ * @member:	the name of the list_head within the struct.
+ * @cond:	optional lockdep expression if called from non-RCU protection.
+ *
+ * This list-traversal primitive may safely run concurrently with
+ * the _rcu list-mutation primitives such as list_add_rcu()
+ * as long as the traversal is guarded by rcu_read_lock().
+ */
+#define list_for_each_entry_rcu(pos, head, member, cond...)		\
+	for (__list_check_rcu(dummy, ## cond, 0),			\
+	     pos = list_entry_rcu((head)->next, typeof(*pos), member);	\
+		&pos->member != (head);					\
+		pos = list_entry_rcu(pos->member.next, typeof(*pos), member))
 
-The following changes since commit 7ac1fc5f254d8d97a1aa96360c23f0659addb047:
+If we do something like
 
-  Merge branch 'make-deb-fix-no-such-file-error' into 'main' (2025-02-04 12:31:31 +0000)
+list_for_each_entry_rcu(..., lockdep_rtnl_is_held())
+	...
 
-are available in the Git repository at:
+I think that code will be okay with being called with either rcu or rtnl
+held. Of course, we need to plumb it through the net-specific helpers.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/ath/linux-firmware.git ath-20250205
-
-for you to fetch changes up to 99720d02248f775f952a97455ea3b3a687196a50:
-
-  ath12k: WCN7850 hw2.0: update board-2.bin (2025-02-05 11:26:43 -0800)
-
-----------------------------------------------------------------
-Jeff Johnson (12):
-      ath11k: IPQ6018 hw1.0: update to WLAN.HK.2.7.0.1-02409-QCAHKSWPL_SILICONZ-1
-      ath11k: IPQ8074 hw2.0: update to WLAN.HK.2.9.0.1-02146-QCAHKSWPL_SILICONZ-1
-      ath11k: QCA2066 hw2.1: update board-2.bin
-      ath11k: QCA2066 hw2.1: update to WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
-      ath11k: QCA6390 hw2.0: update board-2.bin
-      ath11k: QCA6698AQ hw2.1: add board-2.bin
-      ath11k: QCA6698AQ hw2.1: add to WLAN.HSP.1.1-04479-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
-      ath11k: QCN9074 hw1.0: update to WLAN.HK.2.9.0.1-02146-QCAHKSWPL_SILICONZ-1
-      ath11k: WCN6750 hw1.0: update board-2.bin
-      ath12k: QCN9274 hw2.0: update board-2.bin
-      ath12k: QCN9274 hw2.0: update to WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-      ath12k: WCN7850 hw2.0: update board-2.bin
-
- WHENCE                              |   15 +-
- ath11k/IPQ6018/hw1.0/Notice.txt     |  419 ++--
- ath11k/IPQ6018/hw1.0/m3_fw.b01      |  Bin 6712 -> 6712 bytes
- ath11k/IPQ6018/hw1.0/m3_fw.mdt      |  Bin 6860 -> 6860 bytes
- ath11k/IPQ6018/hw1.0/q6_fw.b00      |  Bin 340 -> 340 bytes
- ath11k/IPQ6018/hw1.0/q6_fw.b01      |  Bin 7000 -> 7000 bytes
- ath11k/IPQ6018/hw1.0/q6_fw.b02      |  Bin 4696 -> 4696 bytes
- ath11k/IPQ6018/hw1.0/q6_fw.b03      |  Bin 2602320 -> 2606416 bytes
- ath11k/IPQ6018/hw1.0/q6_fw.b04      |  Bin 386016 -> 386528 bytes
- ath11k/IPQ6018/hw1.0/q6_fw.b05      |  Bin 202532 -> 202532 bytes
- ath11k/IPQ6018/hw1.0/q6_fw.b07      |  Bin 9912 -> 9912 bytes
- ath11k/IPQ6018/hw1.0/q6_fw.b08      |  Bin 464564 -> 467388 bytes
- ath11k/IPQ6018/hw1.0/q6_fw.mdt      |  Bin 7340 -> 7340 bytes
- ath11k/IPQ8074/hw2.0/Notice.txt     |  419 ++--
- ath11k/IPQ8074/hw2.0/m3_fw.b01      |  Bin 136 -> 136 bytes
- ath11k/IPQ8074/hw2.0/m3_fw.b02      |  Bin 327680 -> 327680 bytes
- ath11k/IPQ8074/hw2.0/m3_fw.mdt      |  Bin 284 -> 284 bytes
- ath11k/IPQ8074/hw2.0/q6_fw.b00      |  Bin 340 -> 340 bytes
- ath11k/IPQ8074/hw2.0/q6_fw.b01      |  Bin 328 -> 328 bytes
- ath11k/IPQ8074/hw2.0/q6_fw.b02      |  Bin 4696 -> 4696 bytes
- ath11k/IPQ8074/hw2.0/q6_fw.b03      |  Bin 2978704 -> 3215248 bytes
- ath11k/IPQ8074/hw2.0/q6_fw.b04      |  Bin 982944 -> 1000480 bytes
- ath11k/IPQ8074/hw2.0/q6_fw.b05      |  Bin 248260 -> 254596 bytes
- ath11k/IPQ8074/hw2.0/q6_fw.b07      |  Bin 10112 -> 9960 bytes
- ath11k/IPQ8074/hw2.0/q6_fw.b08      |  Bin 504104 -> 596768 bytes
- ath11k/IPQ8074/hw2.0/q6_fw.mdt      |  Bin 668 -> 668 bytes
- ath11k/QCA2066/hw2.1/amss.bin       |  Bin 5349376 -> 5349376 bytes
- ath11k/QCA2066/hw2.1/board-2.bin    |  Bin 685144 -> 685144 bytes
- ath11k/QCA6390/hw2.0/board-2.bin    |  Bin 115984 -> 173980 bytes
- ath11k/QCA6698AQ/hw2.1/Notice.txt   | 3658 +++++++++++++++++++++++++++++++++++
- ath11k/QCA6698AQ/hw2.1/amss.bin     |  Bin 0 -> 5132288 bytes
- ath11k/QCA6698AQ/hw2.1/board-2.bin  |  Bin 0 -> 866120 bytes
- ath11k/QCA6698AQ/hw2.1/m3.bin       |  Bin 0 -> 266684 bytes
- ath11k/QCN9074/hw1.0/Notice.txt     |  419 ++--
- ath11k/QCN9074/hw1.0/amss.bin       |  Bin 3963336 -> 4227408 bytes
- ath11k/QCN9074/hw1.0/m3.bin         |  Bin 340108 -> 340108 bytes
- ath11k/WCN6750/hw1.0/board-2.bin    |  Bin 843548 -> 927980 bytes
- ath12k/QCN9274/hw2.0/board-2.bin    |  Bin 292160 -> 1308544 bytes
- ath12k/QCN9274/hw2.0/firmware-2.bin |  Bin 15224888 -> 15392824 bytes
- ath12k/WCN7850/hw2.0/board-2.bin    |  Bin 1897968 -> 1986952 bytes
- 40 files changed, 4136 insertions(+), 794 deletions(-)
- create mode 100644 ath11k/QCA6698AQ/hw2.1/Notice.txt
- create mode 100644 ath11k/QCA6698AQ/hw2.1/amss.bin
- create mode 100644 ath11k/QCA6698AQ/hw2.1/board-2.bin
- create mode 100644 ath11k/QCA6698AQ/hw2.1/m3.bin
 
