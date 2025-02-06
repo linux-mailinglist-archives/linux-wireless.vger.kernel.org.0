@@ -1,90 +1,122 @@
-Return-Path: <linux-wireless+bounces-18590-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18591-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BC0A2A4E1
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 10:43:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CC6A2A511
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 10:48:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEAAE161AD5
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 09:43:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1077F7A2083
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 09:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13AE22616E;
-	Thu,  6 Feb 2025 09:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550A0226539;
+	Thu,  6 Feb 2025 09:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nrZL80hW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hV7KPuI3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3293C22617B;
-	Thu,  6 Feb 2025 09:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3CD226169;
+	Thu,  6 Feb 2025 09:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738835033; cv=none; b=ShK9YdxqKBhkCPY7ZZf4ppVa8BsaTOkR+hmECFiLo/MkM4tW8+qBCWfzxFWODgUABDNmJaJ4s7z+yL4WfsVcHuhjbRJfVUZOtZgj5/QmOjJPJ4ifUF/vfYn+O2CQGYoLfSuTKfBJpmvL/sYEP4Yr9GWcq8abXLufODjFWDKEhFo=
+	t=1738835293; cv=none; b=YYmxqWiKNzjQJoGpez2cUFYGKeCPcax08nXK6CXwlRmDFe7Y6Sx9OEKpA0fHBMAb4CLPIk7g62MgHfVBSgfWZpv9QPbzCaUYzDc1pTXTTBcv6hJpO5IHgOGQSBokXeR69qSik0nSbAvS1NYji+6yLUT55NzqiXw2ZHNNq43UToM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738835033; c=relaxed/simple;
-	bh=2CU6rKQgBTkyUVzxGZ9/le6oQKbbkmeFxvB2o8HLihI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ByYljq0/vXH6e917kQD2tNsi95QFZqvxzJDYakmWolITZAIwd1L4RRiTX8auAi+x+gVsw54ufjjRERNO33PU2MCKINLf7FQOdUtLwFY7c92+FFH21f2DB/VhNtqWnn0SPIC4FQUkTrSproDvNULDc9UMigpW0j4cvOF7DD9GPYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nrZL80hW; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=JXGiHZytgRX1Kr+OdP27bjmtvwbFEVk2dhAHOxPhcJU=;
-	t=1738835032; x=1740044632; b=nrZL80hW6NkCC9agpYpqbqK7h4u/ALkM9jdATCpwBBgiMsc
-	UCBJbai03Zi5wfrkKsBxp0CUwiDn4sVCMzoehAI3RbQ4f85ZG4oing0kQXAPTWclxK9CcAjQY+O9x
-	rEaNw9x5BHtD/Cy8tkvOHlP0Dhpj2sqmD+LYI7EoUQeDr/hR5csQjYxHG0ltR0jcvfZICkzDMJ+cl
-	bxmoJ8flCbU0hguSxdw9BJSvMnPlRoYzbFHcEijrNMrMCxUwH6TEee66jNTIZIaB3f11Yg/pbB9eA
-	7BN+zgsZwikAXr5AThr338Z6GAbKT37cY8WXjszHH63tML5/qjRDAAd1r4rUzgUQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tfyQE-00000004xio-1RnR;
-	Thu, 06 Feb 2025 10:43:46 +0100
-Message-ID: <da75ef6287d00bf5d1200118bd48d46d11d45607.camel@sipsolutions.net>
-Subject: Re: [PATCH net-next v3 10/10] netlink: specs: wireless: add a spec
- for nl80211
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Donald Hunter <donald.hunter@gmail.com>, netdev@vger.kernel.org, Jakub
- Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet	 <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman	 <horms@kernel.org>, linux-wireless@vger.kernel.org
-Cc: donald.hunter@redhat.com
-Date: Thu, 06 Feb 2025 10:43:45 +0100
-In-Reply-To: <20250206092658.1383-11-donald.hunter@gmail.com>
-References: <20250206092658.1383-1-donald.hunter@gmail.com>
-	 <20250206092658.1383-11-donald.hunter@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1738835293; c=relaxed/simple;
+	bh=Zcs5Snf4g8flz7TYouYgDp3W2DHK3PiGIpAbCvqR+HM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ckUfV97tuMhuYChCE+yZ7X9qq9vHk82MMkusYTWH+WkjEH5KVJ3AT2EYAWjDP9ps1Fn2EpWRRcXutkh1cnQKUH8gKrgkWCPLUuadiAa9b1HwOpCX1mM9U/p5mGkGiQ1xcAZR17xL2UUGDQzuR3HdUN+PFdZITWc6oMHrm+JFBi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hV7KPuI3; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738835292; x=1770371292;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Zcs5Snf4g8flz7TYouYgDp3W2DHK3PiGIpAbCvqR+HM=;
+  b=hV7KPuI3JymAskwy1Gtbw2ZQ9bu2OLPmq7erGJeHDgLQAsA/XttsPsKd
+   iIiAF/DYA2j5r8FjU4o65Mwrug5dnqWsc4TfXeWsRHc7pNnco43l7+YvW
+   3TkQVJR0rFDciT3KGQUFQ98tcVAhW9i1tyvf8p40yZ6d8vatI1+TliL7A
+   mm5KSnRbStSymtUQOUl1sV8XS5xpAlsXU1SMz8P4LDKB2DhxLCTgO4NCP
+   Ulria1jUSjfj7CvP+EtS3ke3b33oa5Pi3HJOB9nI0ipHLviUCM4gApl1n
+   9/py0N/8ZFaiinPToQNN4xUVnIF58+Ia8+08RpQeLwMVUkSxat77LXBta
+   A==;
+X-CSE-ConnectionGUID: bsCNwcH5TpGXsdilmzNB4w==
+X-CSE-MsgGUID: om8mz04ORu67LojgRpyOUw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="43092133"
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; 
+   d="scan'208";a="43092133"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 01:48:11 -0800
+X-CSE-ConnectionGUID: moeHN7m+QPajiFGHxiYh3Q==
+X-CSE-MsgGUID: mmIcINAIRZ+fvr1HFc8qig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; 
+   d="scan'208";a="111127724"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 01:48:07 -0800
+Date: Thu, 6 Feb 2025 10:44:34 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Uday Shankar <ushankar@purestorage.com>
+Cc: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] net, treewide: define and use MAC_ADDR_STR_LEN
+Message-ID: <Z6SEeO0QFx9Y52LJ@mev-dev.igk.intel.com>
+References: <20250205-netconsole-v3-0-132a31f17199@purestorage.com>
+ <20250205-netconsole-v3-1-132a31f17199@purestorage.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250205-netconsole-v3-1-132a31f17199@purestorage.com>
 
-On Thu, 2025-02-06 at 09:26 +0000, Donald Hunter wrote:
->=20
-> +    name: feature-flags
-> +    type: flags
-> +    entries:
-> +      - sk-tx-status
-> +      - ht-ibss
+On Wed, Feb 05, 2025 at 10:21:30PM -0700, Uday Shankar wrote:
+> There are a few places in the tree which compute the length of the
+> string representation of a MAC address as 3 * ETH_ALEN - 1. Define a
+> constant for this and use it where relevant. No functionality changes
+> are expected.
+> 
+> Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+> ---
+>  drivers/net/netconsole.c           | 2 +-
+>  drivers/nvmem/brcm_nvram.c         | 2 +-
+>  drivers/nvmem/layouts/u-boot-env.c | 2 +-
+>  include/linux/if_ether.h           | 3 +++
+>  lib/net_utils.c                    | 4 +---
+>  net/mac80211/debugfs_sta.c         | 5 +++--
+>  6 files changed, 10 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+> index 86ab4a42769a49eebe5dd6f01dafafc6c86ec54f..6db5af2d8d059fa5c072194545d4408eec19b4a9 100644
+> --- a/drivers/net/netconsole.c
+> +++ b/drivers/net/netconsole.c
+> @@ -675,7 +675,7 @@ static ssize_t remote_mac_store(struct config_item *item, const char *buf,
+>  
+[...]
 
-Oi, I'd really hoped you auto-generated that even with a one-off sed
-script or so, but:
+What about ieee80211_sta_debugfs_add()? (net/mac80211/debugfs_sta.c)
 
-> +      - ds-param-set-ie-in-probes
-> +      - wfa-tpc-ie-in-proves
+In gerneal looks fine, thanks:
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-typo?
-
-johannes
+> 
+> -- 
+> 2.34.1
 
