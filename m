@@ -1,310 +1,149 @@
-Return-Path: <linux-wireless+bounces-18572-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18574-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0AB4A2A009
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 06:21:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E956CA2A0AA
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 07:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3CE918883F9
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 05:21:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD07F3A77F7
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 06:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FEB22331A;
-	Thu,  6 Feb 2025 05:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="SJbC8piE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B22422332E;
+	Thu,  6 Feb 2025 06:05:20 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f100.google.com (mail-ej1-f100.google.com [209.85.218.100])
+Received: from mail-io1-f80.google.com (mail-io1-f80.google.com [209.85.166.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3A3222577
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Feb 2025 05:21:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3332248B9
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Feb 2025 06:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738819297; cv=none; b=Sv2FJDeSqaF6SzR7qpG87/d3m5ylmyqRn2iILjNfpEPwXMeNjcDVNn3ICehA0TvuP+8tj4KFnnZuhnfNA1MiKSpm5WP/zJsb+zKmQI/MYlRyW2r3QXuPFT2LW8hvgwR8xrDMyevbpyMaaMggIFTmz2HL9LNb760AcD2qXET0XMQ=
+	t=1738821920; cv=none; b=kCdpegESmCuzqOlKD+0g+HDsI7U1wsQWAts7pscziccx3e6vSrV0Gdvg8comTsgDyroiX0BButwBSriFb0px3e/TfdCltao6Rz5tZ6OFp8cZp6x/Lt+MDu281iQekQADa1zDl8PZ0zX/Hd0y/u0XLyWdGyF8wAPhzO+5Fsc2UNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738819297; c=relaxed/simple;
-	bh=BroGEX3nunAdikjx03Lrr0TXP2Y+6z/r/wQ8/CLIkPU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SgrJt8qZeGTfPl9khTPhKSUI2/h2E+HjRxF8/L7+xeZJz8W5Bj0xOvZG4rntDZoabGlSuF7r2oPC5Z70fdqeavfYJ3kSbBEpYiQd5mB8d7BJ214UAmwTZWsD2+dxkfzKouZROOC7zNsnMVyoWBJE5ermL40kGOZ0woTPuDDsdK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=SJbC8piE; arc=none smtp.client-ip=209.85.218.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
-Received: by mail-ej1-f100.google.com with SMTP id a640c23a62f3a-ab7157cf352so325660366b.0
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Feb 2025 21:21:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1738819293; x=1739424093; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=otzVsN1NW+U9mK3ObL5P0pr2UFgS62iOxxgXBwBSQ+o=;
-        b=SJbC8piEB6uYrqUfMLXlOPryFjaiRBfK/WMMVt2NkpFkue2aiGeoPrd0Dagr5g1DAR
-         L+rRPC+7PFtdkXYMMvaodEhEOhMpxo1KqQ3pzIBU6mi4+yX0HGfnQsuObx710OTMnS0s
-         vBsX3l38MuHv4gw8vk4CRR8IapLeQFEVhCxJoAnKFCR/NTkDy4SVWx5qNzVv/lY5Nij+
-         Pz04Q/bTpmw4zrg/lI01s6TcQleKiXHZUTRXH/gLjg2tXFVZWD+0YFsWV/D2999jg65H
-         RotzVa2vmMpj29MdwEdoZ/XOONV4pQVEDqpFxwE1UdIPOgiCmM27zc0DudkNidL7xr7k
-         Fuzg==
+	s=arc-20240116; t=1738821920; c=relaxed/simple;
+	bh=tiaOYm5pYA+aGstwxdQX/EYDi0r3XD/mgYm932MZdqk=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=c5qmQivPO/7MMQ0pINV3yHR8KMQLp6PujpTsnuoUnya3mXrIdehWgV+1Uor7yZMj/nzXMnjYBFTLq7n2z37MMaDv5wMw9RFSH9CyA84tBudiNtZD+ZOF/MPWNlMRAvEKqBw9bThUwLaEIQEo2YkQ9fxf/yMk/bhOtMx9uM7K/OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f80.google.com with SMTP id ca18e2360f4ac-845dee0425cso47805539f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Feb 2025 22:05:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738819293; x=1739424093;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=otzVsN1NW+U9mK3ObL5P0pr2UFgS62iOxxgXBwBSQ+o=;
-        b=S0RXrDNGrQvM0XLoGjSOzGMU3IINckYmCHn7zjPT9sIbWWZJJtBqgSo1Y314+Xe+2J
-         Gr2x8GXtuYdNZSjS21ZVg3aqw06Ja/8eUJNlLL81vmZbgLEtEDnRoQXS2Ph84Pn+fc4b
-         hfZ3MmH0i8VuD7+x4TDwfh/qO+lkB7sR1Kjwo1GtSkwydlUq1Q8BbjuKRxYEdie/jKOQ
-         EhWsUt0hLOrX8eg6aogIKw0B9/RtK3uMOHjT0bvleGgCr/dBiSdNQH2EoEjYMR+KHtgv
-         DZ85xKLBwSjMKWzoFmJqoLl1f2pjoQ80eoMuHqoQNq+mtWT3g5TqQJt0cptlLmUkILgi
-         13Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCW3OofxBcfLopLCxZ8bqgxO0jYwyT6jjbM1pYP6FNfENUeJYwu83cBGmmhVdBqDzzXNKWIPUBMbGusiqai7Eg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPffNM9kPrAJfwlueW0Gtf2G9Fq28R4Q4BQQr8dG11ZJ8IaJ5v
-	+lNy7ER3GBGbDeEVjSsAJyKJJ+x0UujjNeHzB6euJ2IUKKxW2WPY4RDFwAB7EUPxvGcH1PYhs92
-	XyMJZMTEQzI7X9qiF8JVM66qlfDce9UFc
-X-Gm-Gg: ASbGnctJscJ/1LY94iCdtvlEST3VjHPPw2QAUoSWEsHfpnCrz8yPH7JhohLjDE2Oo86
-	1a5XTYq+ioYhdrkuQ3a0Kf88C6MzU70IsXtU1ukkPpmxyghDkMJ+kb6IkwXkyTuIGANQEujFGXJ
-	GUch5dv/oVCWyyqpWCDUg9hCp2tcLRSgJ7PaTanoLd/+BstA0VmGIMnAWWvdfh1KeVerCrWx9YY
-	WW8iBUExd3HQPdGEwfePlSDWS6M3VGQQc6R4YpgMu1bKoCI8aJgRixhy++0nyv15+eMRdacpyZq
-	Q5coQBAwY3oapW09EJjRIHDVpM8HGD8zN0ymnHI=
-X-Google-Smtp-Source: AGHT+IEOeUong+iqEZmE/uaY2diPiB8AmCybH/LMhnwCuyEOfGjLLgOGIi3uenVtSrG1ZH7jt6SIEBI035c5
-X-Received: by 2002:a17:907:1c0f:b0:ab6:726e:b14d with SMTP id a640c23a62f3a-ab76e9d8cb5mr212784566b.23.1738819292450;
-        Wed, 05 Feb 2025 21:21:32 -0800 (PST)
-Received: from c7-smtp-2023.dev.purestorage.com ([208.88.159.128])
-        by smtp-relay.gmail.com with ESMTPS id a640c23a62f3a-ab77332cb2dsm1017866b.186.2025.02.05.21.21.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2025 21:21:32 -0800 (PST)
-X-Relaying-Domain: purestorage.com
-Received: from dev-ushankar.dev.purestorage.com (dev-ushankar.dev.purestorage.com [10.7.70.36])
-	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 4605634032D;
-	Wed,  5 Feb 2025 22:21:31 -0700 (MST)
-Received: by dev-ushankar.dev.purestorage.com (Postfix, from userid 1557716368)
-	id 3BEC3E55FE0; Wed,  5 Feb 2025 22:21:31 -0700 (MST)
-From: Uday Shankar <ushankar@purestorage.com>
-Date: Wed, 05 Feb 2025 22:21:31 -0700
-Subject: [PATCH v3 2/2] netconsole: allow selection of egress interface via
- MAC address
+        d=1e100.net; s=20230601; t=1738821917; x=1739426717;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1TO+9rzBupMNMiq/QelljNSbWiGr9BXU5LdVRKfddWs=;
+        b=V/xF5IYSHA37+C1gx/KEjr2A6bIYTDEfp7uDQ9e1ZWYj04erx738kzrkasVQBo9Hzz
+         lCihzqwhDoHQLS8/eNc/Alcy8z6c7MW7X316BBCPIe8Tglp22sNeEOPFzhxzvftmZljL
+         70z53UaM1SwXvW2CrMHZjY3yFzN6FfMg1xodfCJqbG53jGDLUncWqLBy05Mcn1KJV8bS
+         jdARvppOdWdkB2JLih6WASH3NcNShoO0HlsBSVynoCLh8AraBK7jGg4ZBDupB9QiZGpq
+         FcBC2qJ11wL7eIkmgDgDIu9NagGnefvcUFPRvyDe1e+hE9PiRzGMI6JkgMG3S0Exvshi
+         HH7A==
+X-Forwarded-Encrypted: i=1; AJvYcCWw7+cG3hjmtv94LhkCNCoMfXxAryeQP7E7e6IJ7NAKlGCvtEwch4iFfRouybjWmDkEwmnZlx4xpczvXaIyWA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6X/xgDDzSn2TZzpdGnWIkjNs2fei3e51eWk/yYuCZdpH1xpxs
+	bIgc69LJGkCT71zkVVUQp7MNLKoFRxoOu9xHOpTPOAlUonFNaw7n0LeL3FxXNXH3P3jwzuicEbz
+	3lEBXijv4CKvyyvOKMcv/VuPwN8xaT1lPs3j1xC474Ixh4SfscECx4lg=
+X-Google-Smtp-Source: AGHT+IHXrAJssA2VQ4xK5u6Qf66UNd7a1rvB1Rp/Mk4i5onARVBr6UVxz4Lben11D22LMBOjbh+MKIxvR+//hl7rNmYXxUf2EQrq
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250205-netconsole-v3-2-132a31f17199@purestorage.com>
-References: <20250205-netconsole-v3-0-132a31f17199@purestorage.com>
-In-Reply-To: <20250205-netconsole-v3-0-132a31f17199@purestorage.com>
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
- =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>, 
- Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Berg <johannes@sipsolutions.net>, Jonathan Corbet <corbet@lwn.net>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-wireless@vger.kernel.org, linux-doc@vger.kernel.org, 
- Uday Shankar <ushankar@purestorage.com>
-X-Mailer: b4 0.14.2
+X-Received: by 2002:a05:6e02:138c:b0:3d0:4b0d:b226 with SMTP id
+ e9e14a558f8ab-3d04f917cd9mr53494645ab.21.1738821917351; Wed, 05 Feb 2025
+ 22:05:17 -0800 (PST)
+Date: Wed, 05 Feb 2025 22:05:17 -0800
+In-Reply-To: <678d7183.050a0220.303755.005f.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67a4511d.050a0220.19061f.05f7.GAE@google.com>
+Subject: Re: [syzbot] [wireless?] WARNING in ieee80211_tdls_build_mgmt_packet_data
+From: syzbot <syzbot+e55106f8389651870be0@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Currently, netconsole has two methods of configuration - module
-parameter and configfs. The former interface allows for netconsole
-activation earlier during boot (by specifying the module parameter on
-the kernel command line), so it is preferred for debugging issues which
-arise before userspace is up/the configfs interface can be used. The
-module parameter syntax requires specifying the egress interface name.
-This requirement makes it hard to use for a couple reasons:
-- The egress interface name can be hard or impossible to predict. For
-  example, installing a new network card in a system can change the
-  interface names assigned by the kernel.
-- When constructing the module parameter, one may have trouble
-  determining the original (kernel-assigned) name of the interface
-  (which is the name that should be given to netconsole) if some stable
-  interface naming scheme is in effect. A human can usually look at
-  kernel logs to determine the original name, but this is very painful
-  if automation is constructing the parameter.
+syzbot has found a reproducer for the following issue on:
 
-For these reasons, allow selection of the egress interface via MAC
-address when configuring netconsole using the module parameter. Update
-the netconsole documentation with an example of the new syntax.
-Selection of egress interface by MAC address via configfs is far less
-interesting (since when this interface can be used, one should be able
-to easily convert between MAC address and interface name), so it is left
-unimplemented.
+HEAD commit:    92514ef226f5 Merge tag 'for-6.14-rc1-tag' of git://git.ker..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=137124a4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1909f2f0d8e641ce
+dashboard link: https://syzkaller.appspot.com/bug?extid=e55106f8389651870be0
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=167aadf8580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=117aadf8580000
 
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Tested-by: Breno Leitao <leitao@debian.org>
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-92514ef2.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c4d8b91f8769/vmlinux-92514ef2.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c24ec4365966/bzImage-92514ef2.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+e55106f8389651870be0@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 5309 at net/mac80211/tdls.c:611 ieee80211_tdls_add_setup_cfm_ies net/mac80211/tdls.c:611 [inline]
+WARNING: CPU: 0 PID: 5309 at net/mac80211/tdls.c:611 ieee80211_tdls_add_ies net/mac80211/tdls.c:762 [inline]
+WARNING: CPU: 0 PID: 5309 at net/mac80211/tdls.c:611 ieee80211_tdls_build_mgmt_packet_data+0x329c/0x4080 net/mac80211/tdls.c:984
+Modules linked in:
+CPU: 0 UID: 0 PID: 5309 Comm: syz-executor211 Not tainted 6.14.0-rc1-syzkaller-00034-g92514ef226f5 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:ieee80211_tdls_add_setup_cfm_ies net/mac80211/tdls.c:611 [inline]
+RIP: 0010:ieee80211_tdls_add_ies net/mac80211/tdls.c:762 [inline]
+RIP: 0010:ieee80211_tdls_build_mgmt_packet_data+0x329c/0x4080 net/mac80211/tdls.c:984
+Code: f5 ff ff e8 06 49 3d f6 90 0f 0b 90 4c 8b 7c 24 10 e9 7e fe ff ff e8 f3 48 3d f6 90 0f 0b 90 e9 70 fe ff ff e8 e5 48 3d f6 90 <0f> 0b 90 e9 62 fe ff ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c c7
+RSP: 0018:ffffc9000d2270c0 EFLAGS: 00010293
+RAX: ffffffff8b82153b RBX: ffff888042af8d80 RCX: ffff888000ee8000
+RDX: 0000000000000000 RSI: ffffffff8c0ab8e0 RDI: ffffffff8c608a00
+RBP: ffffc9000d227260 R08: ffffffff901b5177 R09: 1ffffffff2036a2e
+R10: dffffc0000000000 R11: fffffbfff2036a2f R12: dffffc0000000000
+R13: 0000000000000017 R14: 0000000000000000 R15: ffff888041d91640
+FS:  0000555566989380(0000) GS:ffff88801fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00002000000021c0 CR3: 000000004515a000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ieee80211_tdls_prep_mgmt_packet+0x3b6/0x860 net/mac80211/tdls.c:1058
+ ieee80211_tdls_mgmt+0x8cf/0x10a0 net/mac80211/tdls.c:1299
+ rdev_tdls_mgmt net/wireless/rdev-ops.h:927 [inline]
+ nl80211_tdls_mgmt+0x4d8/0x770 net/wireless/nl80211.c:12537
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2543
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+ netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1348
+ netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1892
+ sock_sendmsg_nosec net/socket.c:713 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:728
+ ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2568
+ ___sys_sendmsg net/socket.c:2622 [inline]
+ __sys_sendmsg+0x269/0x350 net/socket.c:2654
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f1284b95c69
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 01 1a 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffcdf2a63b8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f1284b95c69
+RDX: 0000000000000000 RSI: 0000200000000000 RDI: 0000000000000005
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+
+
 ---
- Documentation/networking/netconsole.rst |  6 +++-
- include/linux/netpoll.h                 |  6 ++++
- net/core/netpoll.c                      | 51 +++++++++++++++++++++++++--------
- 3 files changed, 50 insertions(+), 13 deletions(-)
-
-diff --git a/Documentation/networking/netconsole.rst b/Documentation/networking/netconsole.rst
-index 94c4680fdf3e7e1a0020d11b44547acfd68072a5..90a1bbb52918a0163828f4e96c89781e0bc6856b 100644
---- a/Documentation/networking/netconsole.rst
-+++ b/Documentation/networking/netconsole.rst
-@@ -45,7 +45,7 @@ following format::
- 	r             if present, prepend kernel version (release) to the message
- 	src-port      source for UDP packets (defaults to 6665)
- 	src-ip        source IP to use (interface address)
--	dev           network interface (eth0)
-+	dev           network interface name (eth0) or MAC address
- 	tgt-port      port for logging agent (6666)
- 	tgt-ip        IP address for logging agent
- 	tgt-macaddr   ethernet MAC address for logging agent (broadcast)
-@@ -62,6 +62,10 @@ or using IPv6::
- 
-  insmod netconsole netconsole=@/,@fd00:1:2:3::1/
- 
-+or using a MAC address to select the egress interface::
-+
-+   linux netconsole=4444@10.0.0.1/22:33:44:55:66:77,9353@10.0.0.2/12:34:56:78:9a:bc
-+
- It also supports logging to multiple remote agents by specifying
- parameters for the multiple agents separated by semicolons and the
- complete string enclosed in "quotes", thusly::
-diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index f91e50a76efd4b016381c632456397eea1ea877f..1ade65b59be49cfdcf86ed6e938287b949aa9f58 100644
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -25,7 +25,13 @@ union inet_addr {
- struct netpoll {
- 	struct net_device *dev;
- 	netdevice_tracker dev_tracker;
-+	/*
-+	 * Either dev_name or dev_mac can be used to specify the local
-+	 * interface - dev_name is used if it is a nonempty string, else
-+	 * dev_mac is used.
-+	 */
- 	char dev_name[IFNAMSIZ];
-+	u8 dev_mac[ETH_ALEN];
- 	const char *name;
- 
- 	union inet_addr local_ip, remote_ip;
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 62b4041aae1ae8c7dc47c89fb40b14bbd4ad0e0e..327c409b1974b9ecc1e078c78ca090b05c3ca9dd 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -501,7 +501,8 @@ void netpoll_print_options(struct netpoll *np)
- 		np_info(np, "local IPv6 address %pI6c\n", &np->local_ip.in6);
- 	else
- 		np_info(np, "local IPv4 address %pI4\n", &np->local_ip.ip);
--	np_info(np, "interface '%s'\n", np->dev_name);
-+	np_info(np, "interface name '%s'\n", np->dev_name);
-+	np_info(np, "local ethernet address '%pM'\n", np->dev_mac);
- 	np_info(np, "remote port %d\n", np->remote_port);
- 	if (np->ipv6)
- 		np_info(np, "remote IPv6 address %pI6c\n", &np->remote_ip.in6);
-@@ -570,11 +571,18 @@ int netpoll_parse_options(struct netpoll *np, char *opt)
- 	cur++;
- 
- 	if (*cur != ',') {
--		/* parse out dev name */
-+		/* parse out dev_name or dev_mac */
- 		if ((delim = strchr(cur, ',')) == NULL)
- 			goto parse_failed;
- 		*delim = 0;
--		strscpy(np->dev_name, cur, sizeof(np->dev_name));
-+
-+		np->dev_name[0] = '\0';
-+		eth_broadcast_addr(np->dev_mac);
-+		if (!strchr(cur, ':'))
-+			strscpy(np->dev_name, cur, sizeof(np->dev_name));
-+		else if (!mac_pton(cur, np->dev_mac))
-+			goto parse_failed;
-+
- 		cur = delim;
- 	}
- 	cur++;
-@@ -679,27 +687,45 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- }
- EXPORT_SYMBOL_GPL(__netpoll_setup);
- 
-+/*
-+ * Returns a pointer to a string representation of the identifier used
-+ * to select the egress interface for the given netpoll instance. buf
-+ * must be a buffer of length at least MAC_ADDR_STR_LEN + 1.
-+ */
-+static char *egress_dev(struct netpoll *np, char *buf)
-+{
-+	if (np->dev_name[0])
-+		return np->dev_name;
-+
-+	snprintf(buf, MAC_ADDR_STR_LEN, "%pM", np->dev_mac);
-+	return buf;
-+}
-+
- int netpoll_setup(struct netpoll *np)
- {
-+	struct net *net = current->nsproxy->net_ns;
-+	char buf[MAC_ADDR_STR_LEN + 1];
- 	struct net_device *ndev = NULL;
- 	bool ip_overwritten = false;
- 	struct in_device *in_dev;
- 	int err;
- 
- 	rtnl_lock();
--	if (np->dev_name[0]) {
--		struct net *net = current->nsproxy->net_ns;
-+	if (np->dev_name[0])
- 		ndev = __dev_get_by_name(net, np->dev_name);
--	}
-+	else if (is_valid_ether_addr(np->dev_mac))
-+		ndev = dev_getbyhwaddr_rcu(net, ARPHRD_ETHER, np->dev_mac);
-+
- 	if (!ndev) {
--		np_err(np, "%s doesn't exist, aborting\n", np->dev_name);
-+		np_err(np, "%s doesn't exist, aborting\n", egress_dev(np, buf));
- 		err = -ENODEV;
- 		goto unlock;
- 	}
- 	netdev_hold(ndev, &np->dev_tracker, GFP_KERNEL);
- 
- 	if (netdev_master_upper_dev_get(ndev)) {
--		np_err(np, "%s is a slave device, aborting\n", np->dev_name);
-+		np_err(np, "%s is a slave device, aborting\n",
-+		       egress_dev(np, buf));
- 		err = -EBUSY;
- 		goto put;
- 	}
-@@ -707,7 +733,8 @@ int netpoll_setup(struct netpoll *np)
- 	if (!netif_running(ndev)) {
- 		unsigned long atmost;
- 
--		np_info(np, "device %s not up yet, forcing it\n", np->dev_name);
-+		np_info(np, "device %s not up yet, forcing it\n",
-+			egress_dev(np, buf));
- 
- 		err = dev_open(ndev, NULL);
- 
-@@ -741,7 +768,7 @@ int netpoll_setup(struct netpoll *np)
- 			if (!ifa) {
- put_noaddr:
- 				np_err(np, "no IP address for %s, aborting\n",
--				       np->dev_name);
-+				       egress_dev(np, buf));
- 				err = -EDESTADDRREQ;
- 				goto put;
- 			}
-@@ -772,13 +799,13 @@ int netpoll_setup(struct netpoll *np)
- 			}
- 			if (err) {
- 				np_err(np, "no IPv6 address for %s, aborting\n",
--				       np->dev_name);
-+				       egress_dev(np, buf));
- 				goto put;
- 			} else
- 				np_info(np, "local IPv6 %pI6c\n", &np->local_ip.in6);
- #else
- 			np_err(np, "IPv6 is not supported %s, aborting\n",
--			       np->dev_name);
-+			       egress_dev(np, buf));
- 			err = -EINVAL;
- 			goto put;
- #endif
-
--- 
-2.34.1
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
