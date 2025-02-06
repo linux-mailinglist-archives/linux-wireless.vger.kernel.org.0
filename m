@@ -1,77 +1,77 @@
-Return-Path: <linux-wireless+bounces-18581-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18582-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1F5A2A444
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 10:28:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1445AA2A449
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 10:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4081E1889005
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 09:28:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA83C3A7C40
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2025 09:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6014E226863;
-	Thu,  6 Feb 2025 09:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C657226884;
+	Thu,  6 Feb 2025 09:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bns3L9ih"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZPkOFREi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0A6226532;
-	Thu,  6 Feb 2025 09:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C485F22655A;
+	Thu,  6 Feb 2025 09:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738834041; cv=none; b=itTztw5ary+uLk48s7O4Bake5+Dh4OJI4yiCzO12XdrzTmAT9PCGQm2n3KYDf647mEZirMrWbN6+4R1pOCg2/GNwpzdPbxvYY+lVM/Y1rcix7ixeOQ0fQZhZzTivYv1vZL0gWSbbjsCDz0oWrLxBgNejsy/ONL/8ni9cWlUp3yI=
+	t=1738834042; cv=none; b=K+kGqwnp+U+SGAKijSFdAIDq4hoDrikKhlJEKP6EWB1IWV6jeWpP15hESFM8ThxwwmWdCYKgewFoq3FCcd39uUhweHPqkI+B8vJkI8JZeB1QCx+7u/W+cjFeQj6wHjEWsFk+JFt0JzBzsCjRSo3Q4Uz5cu0h8ZwnkKk8Yxd9I8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738834041; c=relaxed/simple;
-	bh=lsdo6dOMRiEzgGmbLZEhh4vqI+MpuW1eJhzBvUC2vqc=;
+	s=arc-20240116; t=1738834042; c=relaxed/simple;
+	bh=uAA0SrBIEat8KHomEGBPPHi6DFugJWWC167a7gJeS1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBD5jE/TwtCP7+YoPcaQx/Y76guJ4RpGbKNkGciypEVdlap7sMErRDxkJ1RmCdPk969b5zbmzyYjVMDFYmS4G9wt83Fuhk/1Wp4euAzHA3gXzWejPy3WMFMgjDIlfq7s+iYzWWJzyd6UAjBoDYFKpas01dwSczT6qxgNe4Lwkhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bns3L9ih; arc=none smtp.client-ip=209.85.221.45
+	 MIME-Version; b=H5YBDL7dGj+Drp/BaFfpuWbdYGCZBnheAl5tdxm48CJ7/ZE4AjtdNU8BDE+2RoVmVVrOgK51mU5UTi8RwXSEml3tsO2Qmx9a7CG7CPE4U0nUwNaX4uISkf6E+DlsHr1qXqOCJRpFakIXRmwo12Ac8QFzU9Z4cswY53B+OIjC6zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZPkOFREi; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-38db34a5c5fso275974f8f.2;
-        Thu, 06 Feb 2025 01:27:19 -0800 (PST)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43618283d48so4304865e9.1;
+        Thu, 06 Feb 2025 01:27:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738834037; x=1739438837; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738834038; x=1739438838; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jO41Ytx+7wXajgxryk6h+JVDmtp85gTH1SGrqcLWqHE=;
-        b=Bns3L9ihj3JUcs5Nip9F8iGKpcJGGU4LvcASRkq87iDrz+GKwZIhMlab8x5JO064dR
-         1CyCuCtEZ7KQIM/96Ef6XaEREHOePDKd1BfNG2cU16xjnoNYtjaWIy1Z05t9PkTED8xK
-         OvJ/gA6F9UTKsUN9iT2aIUt3RcEtmb02NJRh3b8RPkhVI3B+WFQg6fZsDR/EHHeuxKra
-         iOM7DpqX+VuKBPUC48YheoQjRaezOExTD2Cij8Dng4yv8nLzIoauzgySnaHnY5DLal4u
-         fQlfmhU5xb/hwUXvYqVBdnmbw+PyzhajwaJLcRS23TbpHr+jonDJV7WxVZSzRBhUUl2Q
-         rIBQ==
+        bh=xw9XalKM7KcIW2N2jDDGMQtPiQlecJSRq7lkkgga6Wc=;
+        b=ZPkOFREiAIlMWQs7p6HLtC1OxymTeUf3neY6JiRf9jicc1jAZ18ul3/EqRn2H9HPkm
+         b3PXK74+0r1N+uInMbVulp+sgI0tfc/zQobjGiucUyD+xgSDB6VnGe8PAayxNtjQmJeQ
+         Qmf0rHrXMRXH7tn+WPhZrAUbkNG1lTYgjeI6C7QHKJ5bUmsXl0tYkvKdV7RADbI3BwwI
+         fKr/FAJqVYtCgRs3kOib+axptEQAYYVMX2Mzy9D5AeNKUMNIwYoR/vOg6Q8l1/zAhDeO
+         LUI1RkWyWJ6f4ETtasmL7OSgjiLLsW9LH0AzX1I8MNtY0DQULMSyuDj1uux6f7VrHyZn
+         4XSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738834037; x=1739438837;
+        d=1e100.net; s=20230601; t=1738834038; x=1739438838;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jO41Ytx+7wXajgxryk6h+JVDmtp85gTH1SGrqcLWqHE=;
-        b=c1YWvLGKgJaCSA4ArW3O5H3SxZIJdxeued8/qzIPN0Fb7kJMDtG5Gsk/KGnYAP5VRt
-         62Ckjyd4fFt0exyMOJcbW3fphMWuFdfenyx1KyQLfsy/SNeOh5sP64379zqByJyXv3mX
-         RB9RNMqt8jeDsCYHqkLM+gqg1CtxhvwpVRhBlOUC2VhMtrU96Kt1XCclj+hL6jGqRE8v
-         xkE82tp7/YVYNmwQYwwO72ZvCc7bK/G8RY97HIAOOqtBd6hlO4yo0L895JvSNRyGDwk7
-         O0ZEt06uNd9NoDQJYjgZDn/QpNhSOj/K9eIxHxh1QCr5twJnMPAPCs2hBkMXYxAHtRO2
-         yAVA==
-X-Forwarded-Encrypted: i=1; AJvYcCXr0vlrFJgevhbK9SQPXkuuCIKerm3STBPcJ5jWz+yLzS+WOiA4kBHWrjSp2essPOaxW1P8OW/D7uxvFUKMBA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT7OwzkJS29U2Rce4TOCesTfUi+IAqLihmr6m/eWhEzggYQUfS
-	jN8V5AMFIpxr3sFIJWRCqlhQeQjq7hsFvTS32Xibg/E5+HAoK+7RtZrXCg==
-X-Gm-Gg: ASbGncu5ffazKznwOfMl4UYnFM1wNjml0oO+/KJUM7ukk7CdFbG583bcvvAG6B+J6uU
-	WAttCJ4HsAOJO/FDRHDknVQadWpHqfkHbhUYOvwgtQ/HTc+sBz7MYxIaaXkqnHKT9l3HPAvXcq9
-	lKlx8qJthpJYXCon1Mt7MF7LwdWqdk9Al+3IFna+pSUEMx4+7cGcJDpN7P5C95xzXsSXpPT20hE
-	TMPfB1/yBFmvh0HbiLbQRZdBKei3+qnRj5T/Y2lk4YObaTtQKqp1uNY0MJTytr/+o1dKD5vkQYC
-	OzOCfDDgxAU9wdhL6P4bUwt6B0hVq3hvHg==
-X-Google-Smtp-Source: AGHT+IHydIJwt+sylTTqPETMqbxKYDc+dpukzF3o3fO3g4pWts87u/KXodwwYjFI2g2aZ5N7U5xcFg==
-X-Received: by 2002:a5d:64e3:0:b0:38c:5d42:1516 with SMTP id ffacd0b85a97d-38db48cad35mr4640027f8f.34.1738834037310;
-        Thu, 06 Feb 2025 01:27:17 -0800 (PST)
+        bh=xw9XalKM7KcIW2N2jDDGMQtPiQlecJSRq7lkkgga6Wc=;
+        b=b1veh06ibClXMm0ygEQKnxjj1Vq/eEg/vsuPmLwk8z/VUaj8PKlfafTL8Sxmh4B1sm
+         +MCUCJzyE3y94ClBl5lbSnTkha1ft1kEBdQkr86M3ryJrwjyGP4tp6nXfcH4NMgUR4yT
+         3WLZnFJrg8oL4dtIcF7Jwl14jHtI6tZVQRDaAv52KQ9LmU1khT01tY60GSqfGQcFktI9
+         yKwb11s2wUrJn7OsLdTFahiIShhhsrbaftUOVBsdk+OixUfgK10JpeQ8jTlNkPKivLpo
+         zMx2UwtGCf3PzePJpSZnIgNnYArBvH+oy+Ifh96nA88ypgZLfqqXlZg7QAf0YlOPCCx5
+         KVpg==
+X-Forwarded-Encrypted: i=1; AJvYcCXd8pq+/+JnvHVstHuSeZuBO1G0E0Tm2YVvTLAhUpGjJz9nkkFpKbfonxwITp+jty8u+BwMIRIhujp5j21rfQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2VA9mhQXlJ64N7lYU/s/1iVNABus2qaZFqrl08ee11waTtsES
+	TnLXmIs7VuuN7nE8FnmwFB5ueB06w2ImYk+BsKzLFOmeSzigh6efIH+LwA==
+X-Gm-Gg: ASbGncuYkZRGqo2RZaUe6JOmKGKg7VCRFD1dT4cI7ymbLtmY9j/hDQjf+dNjDKizI80
+	cdU0VD/VMoaylziMsJ2VHhtXRjlWvclYybYFwomhHXy3HcvDSnzkIdfIHjwthXBeIQxa/vM/3ne
+	glGHgxV6Jz4bqvh/+5bbJAI7FHKw084WAKM0ojnfOSUuTlo9B24Th0mA+/9Df5Z0T621ZTtIiG9
+	V2a13PzBPS84Wv2uZK1kru8hbHjkMyh6IlY0VtgcMbPFEZtdOOMHHj+dS3ubPggM2r7+qS8wrvg
+	jKGgedUWtFyREIaMDfoPjkE1Cr+yDyaT2w==
+X-Google-Smtp-Source: AGHT+IFsKWzmuGPREshk9x0xR8ujPED2HwsoSVLrOJMPwtUEytMYjnGepRB3adMb2KBden9DXQhgRA==
+X-Received: by 2002:a05:600c:5252:b0:434:a711:ace4 with SMTP id 5b1f17b1804b1-4390d43dc2amr45777375e9.17.1738834038431;
+        Thu, 06 Feb 2025 01:27:18 -0800 (PST)
 Received: from imac.lan ([2a02:8010:60a0:0:c428:5404:970c:34c7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391dca004esm12832585e9.13.2025.02.06.01.27.15
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391dca004esm12832585e9.13.2025.02.06.01.27.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 01:27:16 -0800 (PST)
+        Thu, 06 Feb 2025 01:27:17 -0800 (PST)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -83,9 +83,9 @@ To: netdev@vger.kernel.org,
 	linux-wireless@vger.kernel.org
 Cc: donald.hunter@redhat.com,
 	Donald Hunter <donald.hunter@gmail.com>
-Subject: [PATCH net-next v3 04/10] tools/net/ynl: accept IP string inputs
-Date: Thu,  6 Feb 2025 09:26:52 +0000
-Message-ID: <20250206092658.1383-5-donald.hunter@gmail.com>
+Subject: [PATCH net-next v3 05/10] tools/net/ynl: add s8, s16 to valid scalars in ynl-gen-c
+Date: Thu,  6 Feb 2025 09:26:53 +0000
+Message-ID: <20250206092658.1383-6-donald.hunter@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250206092658.1383-1-donald.hunter@gmail.com>
 References: <20250206092658.1383-1-donald.hunter@gmail.com>
@@ -97,65 +97,27 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ynl tool uses display-hint to know when to format IP addresses in
-printed output, but not to parse IP addresses from --json input. Add
-support for parsing ipv4 and ipv6 strings.
+Add the missing s8 and s16 scalar types to the list of recognised
+scalars in ynl-gen-c.
 
 Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
 ---
- tools/net/ynl/pyynl/lib/ynl.py | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
-index 62ce3340796f..dcc2c6b298d6 100644
---- a/tools/net/ynl/pyynl/lib/ynl.py
-+++ b/tools/net/ynl/pyynl/lib/ynl.py
-@@ -536,9 +536,11 @@ class YnlFamily(SpecFamily):
-         try:
-             return int(value)
-         except (ValueError, TypeError) as e:
--            if 'enum' not in attr_spec:
--                raise e
--        return self._encode_enum(attr_spec, value)
-+            if 'enum' in attr_spec:
-+                return self._encode_enum(attr_spec, value)
-+            if attr_spec.display_hint:
-+                return self._from_string(value, attr_spec)
-+            raise e
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index c2eabc90dce8..803d49bf7c33 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -1437,7 +1437,7 @@ class CodeWriter:
+         self._ifdef_block = config_option
  
-     def _add_attr(self, space, name, value, search_attrs):
-         try:
-@@ -571,7 +573,10 @@ class YnlFamily(SpecFamily):
-             if isinstance(value, bytes):
-                 attr_payload = value
-             elif isinstance(value, str):
--                attr_payload = bytes.fromhex(value)
-+                if attr.display_hint:
-+                    attr_payload = self._from_string(value, attr)
-+                else:
-+                    attr_payload = bytes.fromhex(value)
-             elif isinstance(value, dict) and attr.struct_name:
-                 attr_payload = self._encode_struct(attr.struct_name, value)
-             else:
-@@ -906,6 +911,18 @@ class YnlFamily(SpecFamily):
-             formatted = raw
-         return formatted
  
-+    def _from_string(self, string, attr_spec):
-+        if attr_spec.display_hint in ['ipv4', 'ipv6']:
-+            ip = ipaddress.ip_address(string)
-+            if attr_spec['type'] == 'binary':
-+                raw = ip.packed
-+            else:
-+                raw = int(ip)
-+        else:
-+            raise Exception(f"Display hint '{attr_spec.display_hint}' not implemented"
-+                            f" when parsing '{attr_spec['name']}'")
-+        return raw
-+
-     def handle_ntf(self, decoded):
-         msg = dict()
-         if self.include_raw:
+-scalars = {'u8', 'u16', 'u32', 'u64', 's32', 's64', 'uint', 'sint'}
++scalars = {'u8', 'u16', 'u32', 'u64', 's8', 's16', 's32', 's64', 'uint', 'sint'}
+ 
+ direction_to_suffix = {
+     'reply': '_rsp',
 -- 
 2.48.1
 
