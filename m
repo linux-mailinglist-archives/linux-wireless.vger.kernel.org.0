@@ -1,125 +1,80 @@
-Return-Path: <linux-wireless+bounces-18617-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18618-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF797A2BF25
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 10:24:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01934A2C0B3
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 11:37:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C48407A3136
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 09:23:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25CAD3A7A08
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 10:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5491D6182;
-	Fri,  7 Feb 2025 09:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4866C1DE2C5;
+	Fri,  7 Feb 2025 10:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DYo48zgh"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="pfdLBQY4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D74B1A4F12;
-	Fri,  7 Feb 2025 09:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1141853A7
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Feb 2025 10:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738920266; cv=none; b=OqzZs0dVKvLfKzQCXMC035qgjDZ/J5tnWvfi9oVxZxcFeXgyGEu0rQyie9DoKCtV6QkAB/JDfOQAs/KldCzchMxob4VSGlFz8L4flq8WsT9d+Gug2haSOyG/LuaFBcI4EvIV60xwSPATzT0gl9lkAKl7QKYKF/+LUiwSlwNunlE=
+	t=1738924650; cv=none; b=KXgbSyY35OXdnq8nz+wiDBehDlZ7YU2V1DXR4HiVbIHbI0KH/bRBRy9lc4hqISIz5WXDhgIGVtv2uF7GEXXR1sZcmWyVJmKnQSDrMDbf8hnGoQaV2V0hBb47u3rru3DQXWT+lLeYAZki/XIHymhuBdKfKoHep3AdkmJjQ6exwLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738920266; c=relaxed/simple;
-	bh=+MbzPOcGNRRPhnTBCFQgzSjGsnegZzFp3CefwijqsqA=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=I9foAO8yU2aEN+FUnQQsRjdyoyHMla9ZsNbUarROOV8Jt7LFIWBFOJr4VQ2UeqlBXcgOv1BDkq65TEZdlrJWC3hiZwda+7LtzM+HKfb23mLVUy6A8dLfTm4JpMk4VXKWCYqQcIMcEqadGbZTiQDlXUqAx0uFojt/PeKB5oJqSy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DYo48zgh; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-436341f575fso21090125e9.1;
-        Fri, 07 Feb 2025 01:24:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738920263; x=1739525063; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iKkuoAldlKbaq/b6Dxxu4R9211eD0SUopSgn5S6J0Yo=;
-        b=DYo48zghdG1iOloiJ0+3d43U04Am7hVtTDLU8+gDQ2hTSHHD947mDCXtUFXgQd2tyE
-         BHrhcBmG4IH7OyF4wgag3jg9G4kUgZfl/VKd1BQ7fphZQohvEILJ22VcGeflu1vXLoUC
-         SFmgumpgyFHq52RUrsCqTVumXSmivQMR/9ClbGKxCph7KDw1cD+U3xttKOlpF/vRnb3R
-         7O/JfrIxSiEHs9vKEKEcfxLgcHzHVRMYbxRGt9NwLLGeLcOYxG7Rc3nL5sjiJewX8JNx
-         cRXRvKb1rtFDGXvJOalfEMopo9cTU4DRh1cYlpapswyoMgOGuaFLNizW0Id0f6G0dQEM
-         bB1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738920263; x=1739525063;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iKkuoAldlKbaq/b6Dxxu4R9211eD0SUopSgn5S6J0Yo=;
-        b=G4QvJhnoKPnrb+uHB06zyPtuEycfoVrQ2fWUWIDP25EviFVNR4B989jNhxxqobIYSJ
-         zLZPTEbzAkyGNQC7n7o5bRpdQAxJAXEqS7n1WtxK/T2CvSk6hNCF0UUPQHVtV1uhKtS7
-         ZnLUDvMT5LY+jzvOXFdpG9rmEO9jYaRcYJ5ox66s5IBD7IvPjjL4+Yv4LuG51F+HTJsE
-         jNIMArlXcI8UvMVn9KlX64wut1jSdiwYnIlgZlvxMISWfveEPl6tElJWWzSYDIRDT4+L
-         kL6AYg2dAR6q+6Ao1GFCCYzXtGrz3B9DUlmQMXKID3BMARD44/B5eVshNDj6plKDhsBh
-         Q7Ag==
-X-Forwarded-Encrypted: i=1; AJvYcCWnP5eFkat60l3TnPHwW4AydROqFqig3yzZjTD++84kZv/YvMV6fZUbCcqnX5upOWjhpmRH/gAS9mpr+EBWVQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYAkQM51WQS3qdq42UfP1CXL1YjF4dQaz8nPWuv+ciVSa8yKEE
-	xjS9QTTsLC5qb3doQWtpse2d+qyM7lGywkEVmpmZ/cOlSmcHdGtYdLRnBA==
-X-Gm-Gg: ASbGncuEjKtcuscJuqwwPzMjRv7nXCLZR/mz11lSxJa2V/pIdQF1VOu0FahWn3woUzF
-	0o+buy4Zzj+/wJc8B7hJ9nsA3fjPQrf+3DaX3qK89HGbI1b7tPI76yhAKVguv/fBZ3bH2Ymxsyc
-	W9MkM8bBp3aWuOwEGJsqraRl+Oei5WePerhnwWA1+/WQ1ooMbsj4HQu9SKrHskmhHzbUx8aABZy
-	+H4Wkj0JiuQFbVxhb1BOC3GVudB0UAY2cmHGCOk7x4lGBCL+VUfodMI2FAt9VN/Wke6s3W1dsmZ
-	RyC0FqjzzinrxkL4HMHzeh/mKcCB
-X-Google-Smtp-Source: AGHT+IHhZnHjFwbkKjfbLgOfw31yp2iise56LxN7QfoigXsUv9a+uGxBG4cxjAvd8Vn74fQsjipemQ==
-X-Received: by 2002:a05:600c:c0b:b0:436:1ac2:1acf with SMTP id 5b1f17b1804b1-439249a7c30mr21551365e9.20.1738920263262;
-        Fri, 07 Feb 2025 01:24:23 -0800 (PST)
-Received: from imac ([2a02:8010:60a0:0:14f1:dd0a:e74e:7c33])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4390daf44f3sm85554115e9.29.2025.02.07.01.24.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Feb 2025 01:24:22 -0800 (PST)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org,  "David S. Miller" <davem@davemloft.net>,  Eric
- Dumazet <edumazet@google.com>,  Paolo Abeni <pabeni@redhat.com>,  Simon
- Horman <horms@kernel.org>,  Johannes Berg <johannes@sipsolutions.net>,
-  linux-wireless@vger.kernel.org,  donald.hunter@redhat.com
-Subject: Re: [PATCH net-next v3 06/10] tools/net/ynl: sanitise enums with
- leading digits in ynl-gen-c
-In-Reply-To: <20250206081033.49a7f4d6@kernel.org> (Jakub Kicinski's message of
-	"Thu, 6 Feb 2025 08:10:33 -0800")
-Date: Fri, 07 Feb 2025 09:24:14 +0000
-Message-ID: <m2mseyxg3l.fsf@gmail.com>
-References: <20250206092658.1383-1-donald.hunter@gmail.com>
-	<20250206092658.1383-7-donald.hunter@gmail.com>
-	<20250206081033.49a7f4d6@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1738924650; c=relaxed/simple;
+	bh=kNmqsjH+63UUyTt9uiIWhTvu8IDk9I0nm7HgR8OYXLE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=kFzNWMFFilBZxXHWzxgckQWS7pII4TMKDTcKrVaQssVirnrKZ3bEN3scGVjVPZRn4B1409X4UQUbN+RfhdIpXKBHFN9jJXBwIxGvtTUCd2hkk5M4VDBL89Njo0llu/MltQCe4dpnuQ4v/lAliZkAM/S10v0PR1tUUOML4JoJSUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=pfdLBQY4; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost (unknown [10.10.165.17])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 125B44132AD7;
+	Fri,  7 Feb 2025 10:37:18 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 125B44132AD7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1738924638;
+	bh=3RyfsLlkcsrE1Uipd0bPj1sExIJ67ckgF2rKuv54jMk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=pfdLBQY4BVYEbLmhLqntEpr/ypiE2KJ8di94jMQVdLH3vOGzeS+/ZGYxzW18SFOOr
+	 ixm73muHcYIj0k/3Xplc4u4vZwQy1Ta/4OFBIqdZ9MiQE21yO9N+CpAZ7WfwxEP+2b
+	 Gv7W+TP9/ufSQ7pnVOHyzB0b+c6ZaKY2SBlYZtlo=
+Date: Fri, 7 Feb 2025 13:37:17 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Alexander Wetzel <Alexander@wetzel-home.de>
+Cc: Johannes Berg <johannes@sipsolutions.net>, 
+	linux-wireless@vger.kernel.org, Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Subject: Re: [PATCH 1/2] wifi: nl80211/cfg80211: Stop supporting cooked
+ monitor
+Message-ID: <rk6oogifmfbtboifgyzluw7cu2t6i3xdtf7qtrt2suil7t7nay@binkah2qe22o>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250204111352.7004-1-Alexander@wetzel-home.de>
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Alexander Wetzel wrote:
+> I first tried to just refuse setting the flag in mac80211, but that
+> triggered a warning in nl80211 when rdev_add_virtual_intf() got the
+> error after green-lightening the flags in nl80211_parse_mon_options().
+> 
+> So we could add some code in nl80211 suppressing the warning when
+> MONITOR_FLAG_COOK_FRAMES is set. That would open up drivers to refuse
+> cooperation when someone tries to use the flag.
 
-> On Thu,  6 Feb 2025 09:26:54 +0000 Donald Hunter wrote:
->>  class Type(SpecAttr):
->> +    starts_with_digit = re.compile(r"^\d")
->> +
->>      def __init__(self, family, attr_set, attr, value):
->>          super().__init__(family, attr_set, attr, value)
->>  
->> @@ -74,6 +76,8 @@ class Type(SpecAttr):
->>          self.c_name = c_lower(self.name)
->>          if self.c_name in _C_KW:
->>              self.c_name += '_'
->> +        if self.starts_with_digit.match(self.c_name):
->> +            self.c_name = '_' + self.c_name
->
-> bit heavyweight with the regex? I think this would do:
->
-> 	if self.c_name[0].isdigit():
+Is that the same WARNING which is being fixed at [1] or something new?
 
-Agreed. I'll use the simpler method.
+FWIW, I think the current series would not go to the stable trees (at
+least there are no Fixes ot Cc: stable tags), while [1] should go there
+to suppress the currently observed and triggerable WARNING regarding
+setting the outdated cooked monitor mode mixed with some other modes.
 
-> but either way:
->
-> Acked-by: Jakub Kicinski <kuba@kernel.org>
-
-TY.
+[1]: https://lore.kernel.org/linux-wireless/20250131152657.5606-1-v.shevtsov@mt-integration.ru/
 
