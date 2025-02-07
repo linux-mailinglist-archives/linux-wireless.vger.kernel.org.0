@@ -1,213 +1,157 @@
-Return-Path: <linux-wireless+bounces-18634-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18635-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAFAFA2C2DD
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 13:40:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84421A2C696
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 16:11:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07BD37A7975
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 12:39:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1A963A64E4
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 15:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849691448E0;
-	Fri,  7 Feb 2025 12:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABDC1EB193;
+	Fri,  7 Feb 2025 15:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m5UZNU87"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GcDIFUOQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6D917C68
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Feb 2025 12:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00C3238D29
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Feb 2025 15:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738932007; cv=none; b=DRP286WHm8RM+5hC1w1jDMx/y4HsspIp8Xf18+n6ZTZQIx5pEjVbasz2JKzkcfTU8RCcaPUVJIRBp4vU/+lzeERkjkWbCro9VccAGQjkCrygEaTsYzURPtKk3oEtvnJAuyU/tTIKElt+NjE2DQNbEqEUCPCmPCP5qeJj+9jzSW0=
+	t=1738941066; cv=none; b=f03EIZ5Fk8PNbO51ubd/Dm0bEJDwUiMb5l7wdJCl+tExxRa2JEO5R2KmWeE1gti9lw4HZckudNNfdZHXacfhV3moYDmYqVqja9V2hHwFWAIhPfKv6X98JI90FySrfACv5eZdTSkgtv7ElY+opXxFsQV3xa1YfPgvt6sAz0qAKKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738932007; c=relaxed/simple;
-	bh=LULE6dhcYLRBJ3wTxRmiq6ICHBFGoY0lwWu57YR+iMY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I2yUiK/Vsl1kx7sh22nzgTuBVyEhlpYYNy8Zytr5dCDmzBY9tNxioa75LzdmaBhGDpAChNx1qWJFUPmgXAlzaFPUaPhaEjBeu9Gh+Jj8Ks959gnkxeKH/LsyYqKqqE0qsDLteHPtxH3r0R/RuMmVBhUvEHk1iLl1px74mKZWvko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m5UZNU87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1A3C4AF0B
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Feb 2025 12:40:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738932006;
-	bh=LULE6dhcYLRBJ3wTxRmiq6ICHBFGoY0lwWu57YR+iMY=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=m5UZNU87l2NvNkrkLbRARIlQIh5qznt+/BznaHIkQfZfAhE334fkEeCtH0ys82alT
-	 5vYznbWT6TFdti3hKwDK/4xf64BIoTSMPVgBoxAaxZKL1T49o2oQxDb8pTo12/PK7F
-	 UwD2zAXgxT1cs+KJtFT6/xyY0igKN/2qfd1ZUTzzN+hvZ+zSMd9hZzCr/ra4D7N+U1
-	 BBvUg2D797TooXtPLcoZYxryYvUD58V42rT/Y2QADDttk+7x7/FQ/WphPQlU+q796O
-	 MtnhIoC48W622nYs1enb5afLtyqGVFJkoQOuetQRJ4XuqWiJwINue/u72zMxBtqlbi
-	 gLvlFMGIXaLrw==
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e5b107c4346so1633044276.2
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Feb 2025 04:40:06 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUsOqjd9Q6tr2chCCeQ4fQ+3UkQko6jBiwYpzuGnxUuK/zhiJHmT95YkLr5N+I7wS5r20LpVkNOwpC+ZUb6Ug==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCTpwol6OOWFO4mL6xIsiNUlCiez8ZA/AsaR1WInD9OvRzb09/
-	CfmFJeGxAE7qJrvx9yiFT6X4q5pOJUaErYCPA9TVBuqHzB+wKAInpol3P/IOHK8fAjtukOoOHck
-	GTi6Ga2WN5/WWByxgGL+41ii0Fbk=
-X-Google-Smtp-Source: AGHT+IGwFG0DeuZXUakfOINeqiJLXekMT+pEAIDlHL34PwNYOVeen+G1IKlcw9N8/7B2Ij+kKI9V6OYuEGBTamQd2Ms=
-X-Received: by 2002:a05:6902:1886:b0:e58:a918:fdd0 with SMTP id
- 3f1490d57ef6-e5b46178224mr2319267276.4.1738932005964; Fri, 07 Feb 2025
- 04:40:05 -0800 (PST)
+	s=arc-20240116; t=1738941066; c=relaxed/simple;
+	bh=MS5Ft81073oPYuqXfXPP6AZJpPawgA9sKN0pyM4ExXU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ih7Aww9WJFzbJKcncpbZ5cbgRffh/KvvolZ0aTpIDDePF3h6lGtvesulM/V+tJD47VNyKdmuFEn3HRVT/RCM7Qr6KhxooovPycLzNtXEvQWYFjWqA2LQ2pM9TuCQsuEGQjxVj6oMqzghI5nzePCMGbsmEBWVuD+tl3y6I34sg8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GcDIFUOQ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 517BNbxM032209
+	for <linux-wireless@vger.kernel.org>; Fri, 7 Feb 2025 15:11:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	s+V+JgQRCYKhXRFEasqcCrnMZZS1Hps/NSFCEiIsHng=; b=GcDIFUOQXQ/7X2jj
+	qHiXCoqWefhgoxxmp2nwgUy44rNzTodGlt4zJfKr6Wc+zlxhHfdhEJeGNHkA4/79
+	ozS+omBU3nNEU6etagUYuc2xOs5tfBkCNjUYmJKA83bez8HpuPKpjMrMcdYYAbVb
+	vH3n3AwzMZA4ythBKbBMov6f458KHpU+qVf03dAoqluv0kYtcR0Kwyux6pY+66PH
+	EoTpY6/DN4xDEcro1vDIrizlEm6cBnOfRXEtT3UauOzTjptSeRR2pRaQx67U4evF
+	AOOoc2MjNJFOWMIa/ZdlCAnGo1RXrMeZrXUFOmLb7PPWMcuDoUr6+AL9Dj1ZEQMn
+	TiH7EQ==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44nh8urj0t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 07 Feb 2025 15:11:00 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2fa3e1f08a0so185413a91.0
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Feb 2025 07:11:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738941060; x=1739545860;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=s+V+JgQRCYKhXRFEasqcCrnMZZS1Hps/NSFCEiIsHng=;
+        b=ksk/toH294AY0Z53XZVPY7yENv5UVLzxORJpWpOaiKpLWjoi+LsqeoRl8SKiOl1Umy
+         OQ7mBw1kys18ip97zGU0LGYa8UP4vCIbj20z3m8X1qToCQYdudIGHNzVL8jdx8BJNz+W
+         BNjuzOCWIlfwpRDIvGC6Y9CqrF7A04A0W4gxYOxxURq3TfUNDMYrnIEPzHjw8Yiyum+c
+         irArdx85GV4LpdqljhAehKuhJdJgk93uvSv7FI2AfF8JTkOemBmYhksWE9+69cfgxktA
+         5X4iEHplf/EupNlJO+KjDcbLVjSF3OPhIPe01aIGL8RUXGjgsSnHbI8S9FipVBqRu24L
+         WNpw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRsCuY5pvW89TMPLQqzzsUnuX6o6mmijXVysJ+rwV4qgBKKiaORcDMsLv5BSHyP1DASkaAA/nfofqjIznILw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+vOjmpoOQuQjwHuf2nbjsb0gdzgv8dlSMPJiDR/CKKAp8pK02
+	AaA+h6X3swSba0u5aQKfU2fyGYhObvOJMy01rkCovYlE1LNWMHmtCEpAVGGoXHkiGj8MElF+sVD
+	ODTWxGsDaMEXQiOr0Nk++Nnn0j32n7wJvaZwLry6c4X/8saW4aCVnks7sBScL2WJsJA==
+X-Gm-Gg: ASbGnctAPiQ3kQaqVdgOpsNp3tgQMwGrvfGFhZV1nIqNUxjr4bRr80yfiXZhQ4QA+t7
+	dMBU55f82/VYfF5kuS2/zg4kKk8j/Kmvd0Z4gsCf9fcmJ31QV2I6kuw5yMw8+Ep+nH9AuL6SUqD
+	Uyx2viIQaXa5yXtCBvYSW47XoBrV4U1WScjzUI0+eFgwyzQ8yLfwTAz1qiE1PjKV80CG3Tx4ZFH
+	LZZibYABoNzKVClhIu4CgyndWoTqlkvbJRRUAAIJWIWeM4ZCrGKuibom/lSGxOGrVWzYOttfENd
+	ShMIcp1sgHi+sVTLFBiGPR2xz+EYmuXUFSTDUg8u7QSBgTEaZVSSFtP+zN0Y/RpPusKdh4hjUA=
+	=
+X-Received: by 2002:a17:90b:194f:b0:2ee:59af:a432 with SMTP id 98e67ed59e1d1-2fa2450985amr4857276a91.31.1738941060004;
+        Fri, 07 Feb 2025 07:11:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IErvSX5l9qRiKdHJ4TV8ECcN8WrvQ0HpuAnUPpHdTx3VdptMOc+XJf3yadFLmyIP/yfAMO73A==
+X-Received: by 2002:a17:90b:194f:b0:2ee:59af:a432 with SMTP id 98e67ed59e1d1-2fa2450985amr4857234a91.31.1738941059579;
+        Fri, 07 Feb 2025 07:10:59 -0800 (PST)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fa0cceff11sm3400012a91.10.2025.02.07.07.10.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Feb 2025 07:10:59 -0800 (PST)
+Message-ID: <c9765212-bfb1-4b8d-80f2-7219bb4a7372@oss.qualcomm.com>
+Date: Fri, 7 Feb 2025 07:10:58 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <MW5PR11MB5810E6BC1E21F490B39AE464A3F62@MW5PR11MB5810.namprd11.prod.outlook.com>
-In-Reply-To: <MW5PR11MB5810E6BC1E21F490B39AE464A3F62@MW5PR11MB5810.namprd11.prod.outlook.com>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Fri, 7 Feb 2025 07:39:54 -0500
-X-Gmail-Original-Message-ID: <CA+5PVA7WFgB9Lice5awPbT3KaRTFmCz-165wUdexYRRoqrFp4Q@mail.gmail.com>
-X-Gm-Features: AWEUYZkj94XVQowGHAi2dExLQBqehQMuAtZZRpFZOWUIDX1Rx-E0mEa7NfMzuYo
-Message-ID: <CA+5PVA7WFgB9Lice5awPbT3KaRTFmCz-165wUdexYRRoqrFp4Q@mail.gmail.com>
-Subject: Re: pull request: iwlwifi firmware updates 2025-02-06
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
-Cc: "linux-firmware@kernel.org" <linux-firmware@kernel.org>, "kyle@infradead.org" <kyle@infradead.org>, 
-	"Hutchings, Ben" <ben@decadent.org.uk>, "Yang, You-Sheng" <vicamo.yang@canonical.com>, 
-	Wireless <linux-wireless@vger.kernel.org>, "Dreyfuss, Haim" <haim.dreyfuss@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: Fix locking in error paths
+To: Bart Van Assche <bvanassche@acm.org>, Kalle Valo <kvalo@kernel.org>
+Cc: Jeff Johnson <jjohnson@kernel.org>, ath12k@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+References: <20250206221317.3845663-1-bvanassche@acm.org>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250206221317.3845663-1-bvanassche@acm.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: HP2NZeuu2rTBz1HTw_aUkHqDs1hGgowM
+X-Proofpoint-ORIG-GUID: HP2NZeuu2rTBz1HTw_aUkHqDs1hGgowM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-07_07,2025-02-07_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ mlxscore=0 bulkscore=0 adultscore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 malwarescore=0 mlxlogscore=999 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502070115
 
-Merged and pushed out.
+On 2/6/2025 2:13 PM, Bart Van Assche wrote:
+> If ag->mutex has been locked, unlock it before returning. If it has not
+> been locked, do not unlock it before returning. These bugs have been
+> detected by the Clang thread-safety analyzer.
+> 
+> Cc: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+> Fixes: ee146e11b4d9 ("wifi: ath12k: refactor core start based on hardware group")
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+>  drivers/net/wireless/ath/ath12k/core.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+> index 0606116d6b9c..212cd935e60a 100644
+> --- a/drivers/net/wireless/ath/ath12k/core.c
+> +++ b/drivers/net/wireless/ath/ath12k/core.c
+> @@ -1122,16 +1122,18 @@ int ath12k_core_qmi_firmware_ready(struct ath12k_base *ab)
+>  		ath12k_core_stop(ab);
+>  		mutex_unlock(&ab->core_lock);
+>  	}
+> +	mutex_unlock(&ag->mutex);
+>  	goto exit;
+>  
+>  err_dp_free:
+>  	ath12k_dp_free(ab);
+>  	mutex_unlock(&ab->core_lock);
+> +	mutex_unlock(&ag->mutex);
+> +
+>  err_firmware_stop:
+>  	ath12k_qmi_firmware_stop(ab);
+>  
+>  exit:
+> -	mutex_unlock(&ag->mutex);
+>  	return ret;
+>  }
+>  
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/442
+I made the subject a bit more descriptive in the pending branch:
+https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=09a2421b6e5f617cfbeab906fa8037dda4aa95b8
 
-josh
-
-On Thu, Feb 6, 2025 at 1:47=E2=80=AFPM Korenblit, Miriam Rachel
-<miriam.rachel.korenblit@intel.com> wrote:
->
-> Hi,
->
->
->
-> This contains some new and updated firmwares for all our currently
->
-> maintained FW binaries.
->
->
->
-> Please pull or let me know if there are any issues.
->
->
->
-> --
->
-> Thanks,
->
-> Miri
->
->
->
->
->
-> The following changes since commit 2166884332990f45dcdff597ee9477ec31c064=
-28:
->
->
->
->   Merge branch 'robot/patch-0-1738852296' into 'main' (2025-02-06 14:33:4=
-6 +0000)
->
->
->
-> are available in the Git repository at:
->
->
->
->   http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.g=
-it tags/iwlwifi-fw-2025-02-06
->
->
->
-> for you to fetch changes up to 608fdf4c775b1c852320fc694097ad1d2dbf4860:
->
->
->
->   iwlwifi: add Bz/gl FW for core93-123 release (2025-02-06 20:37:28 +0200=
-)
->
->
->
-> ----------------------------------------------------------------
->
-> core93
->
->
->
-> ----------------------------------------------------------------
->
-> Miri Korenblit (3):
->
->       iwlwifi: update cc/Qu/QuZ firmwares for core93-82 release
->
->       iwlwifi: update ty/So/Ma firmwares for core93-123 release
->
->       iwlwifi: add Bz/gl FW for core93-123 release
->
->
->
-> WHENCE                        |  37 +++++++++++++++++++++++--------------
->
-> iwlwifi-Qu-b0-hr-b0-77.ucode  | Bin 1405988 -> 1406176 bytes
->
-> iwlwifi-Qu-b0-jf-b0-77.ucode  | Bin 1322744 -> 1322888 bytes
->
-> iwlwifi-Qu-c0-hr-b0-77.ucode  | Bin 1406004 -> 1406192 bytes
->
-> iwlwifi-Qu-c0-jf-b0-77.ucode  | Bin 1322760 -> 1322904 bytes
->
-> iwlwifi-QuZ-a0-hr-b0-77.ucode | Bin 1406124 -> 1406312 bytes
->
-> iwlwifi-QuZ-a0-jf-b0-77.ucode | Bin 1322828 -> 1322980 bytes
->
-> iwlwifi-bz-b0-fm-c0-96.ucode  | Bin 0 -> 1935524 bytes
->
-> iwlwifi-bz-b0-fm-c0.pnvm      | Bin 295324 -> 295324 bytes
->
-> iwlwifi-bz-b0-gf-a0-96.ucode  | Bin 0 -> 1762852 bytes
->
-> iwlwifi-bz-b0-gf-a0.pnvm      | Bin 55192 -> 55192 bytes
->
-> iwlwifi-cc-a0-77.ucode        | Bin 1367504 -> 1367692 bytes
->
-> iwlwifi-gl-c0-fm-c0-96.ucode  | Bin 0 -> 1919592 bytes
->
-> iwlwifi-gl-c0-fm-c0.pnvm      | Bin 295004 -> 295004 bytes
->
-> iwlwifi-ma-b0-gf-a0-89.ucode  | Bin 1747384 -> 1747480 bytes
->
-> iwlwifi-ma-b0-gf-a0.pnvm      | Bin 55112 -> 55128 bytes
->
-> iwlwifi-ma-b0-gf4-a0-89.ucode | Bin 1599724 -> 1599820 bytes
->
-> iwlwifi-ma-b0-gf4-a0.pnvm     | Bin 27828 -> 27836 bytes
->
-> iwlwifi-ma-b0-hr-b0-89.ucode  | Bin 1539472 -> 1539540 bytes
->
-> iwlwifi-so-a0-gf-a0-89.ucode  | Bin 1739904 -> 1735904 bytes
->
-> iwlwifi-so-a0-gf-a0.pnvm      | Bin 55192 -> 55208 bytes
->
-> iwlwifi-so-a0-gf4-a0-89.ucode | Bin 1590316 -> 1590412 bytes
->
-> iwlwifi-so-a0-gf4-a0.pnvm     | Bin 27868 -> 27876 bytes
->
-> iwlwifi-so-a0-hr-b0-89.ucode  | Bin 1530736 -> 1526708 bytes
->
-> iwlwifi-ty-a0-gf-a0-89.ucode  | Bin 1681772 -> 1677772 bytes
->
-> iwlwifi-ty-a0-gf-a0.pnvm      | Bin 55036 -> 55052 bytes
->
-> 26 files changed, 23 insertions(+), 14 deletions(-)
->
-> create mode 100644 iwlwifi-bz-b0-fm-c0-96.ucode
->
-> create mode 100644 iwlwifi-bz-b0-gf-a0-96.ucode
->
-> create mode 100644 iwlwifi-gl-c0-fm-c0-96.ucode
+/jeff
 
