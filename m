@@ -1,131 +1,112 @@
-Return-Path: <linux-wireless+bounces-18609-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18610-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE942A2BA75
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 06:00:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF087A2BA77
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 06:04:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8D3B3A6C30
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 05:00:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52A67165F5B
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2025 05:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1757946BF;
-	Fri,  7 Feb 2025 05:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EDF17BA6;
+	Fri,  7 Feb 2025 05:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="M1jSB7qB"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Uabcbop9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7242317BA6
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Feb 2025 05:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB2C2417D5
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Feb 2025 05:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738904418; cv=none; b=TqvJsb74BskfohH128ksNqbBuV3IFcxIUL2rPtc1a3LCX01tULyHjzHMsQU3b0NFmEQOZbbD3CqR1xFSlWGILN3+rEQk4Qg3m0io6ElLMM6N24od+TPcIH+hCq/KIXARPnFbzItnHQNw5AMgUxReYCPNdCdZuP445EY8etauxt8=
+	t=1738904640; cv=none; b=PoKYtnuVNwZUY24XoWI/qBi5TJxbEatpdAnKilJWhEVtRy8Ars1JYQWGAHjRRoniXmHfPkB061OcJ5uk+/bF+rmXPOYL5msLC4g/naqEtRk9YIncQnbWMTPFmajOx/K6Wei3eBVVoLQpmiE44NnZkR6M+FoF92b6quhhdz7n5bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738904418; c=relaxed/simple;
-	bh=AWxzJnpmI6zeCn6LL93Ae4efvTHwya6vTHJDL7So8gs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VPNytJEwWT7IYffdeObJypaTkWyOny30poPQkdeWSTxi+Eu2fzaMjmTJ41UMO0HhPuzpulXuTcsYCpqiDGcptDx58x3PagR4pfhqKyZnJnDWy2RPkKB/mKClvzgJNwt8ZRJpnROVkpmUUSmslANlas6/I3NyMbT6tPd2Ert5hXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=M1jSB7qB; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5171PLt3028549
-	for <linux-wireless@vger.kernel.org>; Fri, 7 Feb 2025 05:00:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	dOzuZc8iVwPZwJIc+/M02cfHSRfQBgPrYnVNLWwSnf0=; b=M1jSB7qBk5goec8T
-	GQOcg7Pu8iGbWO9nu5LL28stvOG/BdilMv5LDkp/GtCTnxQwQHvVNRQUhmb72Oor
-	TVjjzgbL9CwccGcAIzla52NZ8oVTozF0CiXX9op6qtdEHXBr/5cmA3tKh91Sr3RC
-	87rvCAHpCplJ1tM/2gOwc6HCwq4vZd6CuCfHMyaaib/jMhbtj4OBoEpa0cEqorc1
-	AASeeXXsYQ0eg1Erps9Q/wQK7LSwu8IKjJAiRZ09OotZOtR7cLFEcMLfsBPyGzJN
-	c3A2/Db36NU4Mv8HLG+jH5goSOj5002TkNoFrQTMtiAQCTTbJzDt/n/irpy4P/BQ
-	rG6C6A==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44n7p7rh4p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 07 Feb 2025 05:00:15 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-21f022fc6a3so36487625ad.1
-        for <linux-wireless@vger.kernel.org>; Thu, 06 Feb 2025 21:00:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738904410; x=1739509210;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dOzuZc8iVwPZwJIc+/M02cfHSRfQBgPrYnVNLWwSnf0=;
-        b=j9dsxNejpr+ykn3Z+g0ndOsl0c43uIniZtE0Nh3wHTqpFW5vZuqG2kQ7T37TjLM1nI
-         8eKt4z6LX/NKqRYexJpEqHOGZQtvzCj0YRMNm0zQmRYIXxeh6NCje1KKQfeULQAtkrta
-         B1WQiY1ewqx4OQtF0JgEJkYFgdYiUPA5qUsJTZmm3m1Yelv2GmQtpOvHcP01Ku4PEEqx
-         VUD9qQE3094um+aASBdP+P3PC6YKPtoC9itXwocGuJSZAcMst6xsJ7LkojMWoOUPR72f
-         P1gz+iMRWFHE2v7sAVnXF8v+1kTVL43sqWCb2rWIM2oMoFU/vjpF3rOg/hAABMCpuC/7
-         p8ww==
-X-Forwarded-Encrypted: i=1; AJvYcCUTyClKf4PSmd0aYWIKcRoyYZXIqqSGfjywDgvmTC8tYJinR3jA5ZNRGmh99nrv/pFz4Vvx5yBufWTpPFsJ9Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL4CB+tly8OtWiWZkvaYPBdR/uYG1r7NDSu4e16/tp/iEPSUri
-	6/27A6cWOQnPigNmnz96K/41PL9d27Wfo022jSS+rCJVtCpWd8uyu4XJExr/6+3HOM4yxhY5rZW
-	UGRdgnzmpsr8eNem9BdU1fBSczvHaFmzaPjPHm2Mk0+rpbtZIGnRc84z002j3bLkW9g==
-X-Gm-Gg: ASbGncvCEa/MNfv5jcBexIrA566k0BERUuhV6rb5Ru3qhd6ePG+5mX0kU+DEn34YQws
-	AoSarZ56w6I0xw1oaAgHz5lVgwhRabGNEfOXbIlYL+aIRB79mqJnDlEheHmNDk37CIm9Ib94ye2
-	ravOYDufrIgB1uU1Gi21vvqCr3u26qC/LwyVL4wb3897SehFOLVnXhsCUF/wJqX6M/vthfh7fk0
-	2k3ISUJuuemk1AOq83tTqW+MtnEw8LpojWGxn5W8fD+Y7L3eMcTvennYFFKe+VWlC1ZI5IDPS8Y
-	/qufuEiu3oAOVmTQCpQ9ltAReJzoLztdbAujTcE=
-X-Received: by 2002:a17:902:cec3:b0:216:4122:ab3a with SMTP id d9443c01a7336-21f2f1376c8mr95105155ad.1.1738904410216;
-        Thu, 06 Feb 2025 21:00:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG3I8kg0/wWJ9yAjmoEI9x+DgbR4cjYovakozwhpNH6aeEU/frAxeCztnalGWo2qYLs4bvgig==
-X-Received: by 2002:a17:902:cec3:b0:216:4122:ab3a with SMTP id d9443c01a7336-21f2f1376c8mr95104675ad.1.1738904409767;
-        Thu, 06 Feb 2025 21:00:09 -0800 (PST)
-Received: from [10.152.202.18] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f36552068sm21477785ad.87.2025.02.06.21.00.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Feb 2025 21:00:09 -0800 (PST)
-Message-ID: <4df3ce01-64f3-4115-be6d-c84160b8dbed@oss.qualcomm.com>
-Date: Fri, 7 Feb 2025 10:30:05 +0530
+	s=arc-20240116; t=1738904640; c=relaxed/simple;
+	bh=9cqOX2JonG9yqono3aP4wx5QBtJEJC8H1fTON6ISEGw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fg+6A1gkFrbcZGIvqtjP3mL2sGocXGpD2Q5mc3PrlqgRKIdH6ztXshNaa0JJ2Tn/y/H7uJAikR1dDHOn7cOBka8p3mNlJkliFRgbPY2kKNjuumvpRrzwvkK0CwdkrxGS59vkQdQwjt8qGK9pChRo7zwA3q6UZX5WOv2B+M1aW1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Uabcbop9; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5172xlXi014297;
+	Fri, 7 Feb 2025 05:03:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=FsadaE/ss3PMP/OsdyT7bV
+	lZLChuHO9tl87MCpHq/ok=; b=Uabcbop9wvwA+GmLfSIQewjQdRbTrfl954DDg0
+	Tll18VuTjNyYGAr0QhUlIOxL3GvofeqyIsTXakKLTiVqO4A8CbdlTKYxsBHH+T7z
+	SuM6OIpFOKTawi/BlOt4Of3ghanKu04ivzRleLqJDMJ+VCWVOwgZp73xdBns1pXG
+	ex4pMfjFLTVvNSpNrQWkRDBDg/DQyqulu2+yxHTkRCODACf1NYwMpS5SEi8c5rWX
+	nQ1sn2/p/GzAKjj+wqRI6JM1r9ru3t4XofgIQCGLY6Z/4X/7M73dxtoCbAcY3N2B
+	6UQ2/8dW3vd+H4UeJTzkxxi58JDKWx/74MXaKb9ZuQwWueDg==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44n9vq08b1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Feb 2025 05:03:48 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51753lvA009501
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 7 Feb 2025 05:03:47 GMT
+Received: from hu-aarasahu-blr.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 6 Feb 2025 21:03:45 -0800
+From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Aaradhana Sahu
+	<quic_aarasahu@quicinc.com>
+Subject: [PATCH 0/3] wifi: ath12k: MLO setup for single split-phy PCI device
+Date: Fri, 7 Feb 2025 10:33:24 +0530
+Message-ID: <20250207050327.360987-1-quic_aarasahu@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: Fix locking in error paths
-To: Bart Van Assche <bvanassche@acm.org>, Kalle Valo <kvalo@kernel.org>
-Cc: Jeff Johnson <jjohnson@kernel.org>, ath12k@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-References: <20250206221317.3845663-1-bvanassche@acm.org>
-Content-Language: en-US
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-In-Reply-To: <20250206221317.3845663-1-bvanassche@acm.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 73HuzM8B0QB3SaM5mAnaScPpMZ8px2_E
-X-Proofpoint-ORIG-GUID: 73HuzM8B0QB3SaM5mAnaScPpMZ8px2_E
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Af6hsPy0w2z2B7lURiUPWi9ljRdEKzqF
+X-Proofpoint-ORIG-GUID: Af6hsPy0w2z2B7lURiUPWi9ljRdEKzqF
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-07_02,2025-02-07_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=769
- impostorscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 adultscore=0
- clxscore=1015 mlxscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ phishscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
+ impostorscore=0 priorityscore=1501 mlxlogscore=466 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2501170000 definitions=main-2502070038
 
-On 2/7/25 03:43, Bart Van Assche wrote:
-> If ag->mutex has been locked, unlock it before returning. If it has not
-> been locked, do not unlock it before returning. These bugs have been
-> detected by the Clang thread-safety analyzer.
-> 
-> Cc: Karthikeyan Periyasamy<quic_periyasa@quicinc.com>
-> Cc: Jeff Johnson<jeff.johnson@oss.qualcomm.com>
-> Fixes: ee146e11b4d9 ("wifi: ath12k: refactor core start based on hardware group")
-> Signed-off-by: Bart Van Assche<bvanassche@acm.org>
-> ---
+The single split-phy PCI device can establish multi-link operation(MLO)
+within its own radios.
 
-Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Therefore, enables MLO for single split-phy PCI device.
+
+Aaradhana Sahu (3):
+  wifi: ath12k: Enable MLO setup ready and teardown commands for single
+    split-phy device
+  wifi: ath12k: Remove dependency on single_chip_mlo_support for
+    mlo_capable flag
+  wifi: ath12k: Enable MLO for single split-phy PCI device
+
+ drivers/net/wireless/ath/ath12k/core.c | 46 ++++++++++++++++++++------
+ drivers/net/wireless/ath/ath12k/core.h |  4 +--
+ drivers/net/wireless/ath/ath12k/mac.c  |  9 +++++
+ drivers/net/wireless/ath/ath12k/qmi.c  | 12 ++-----
+ 4 files changed, 49 insertions(+), 22 deletions(-)
 
 
+base-commit: d132a72d768bae74d10e6539fcf6522dfdbd1115
 -- 
-Aditya
+2.34.1
+
 
