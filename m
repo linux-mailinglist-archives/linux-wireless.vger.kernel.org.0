@@ -1,217 +1,188 @@
-Return-Path: <linux-wireless+bounces-18653-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18654-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4BFA2D60A
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Feb 2025 13:21:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2545AA2D7FC
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Feb 2025 19:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B71D33A955E
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Feb 2025 12:21:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD9AE166377
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Feb 2025 18:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B686A246335;
-	Sat,  8 Feb 2025 12:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9A124111B;
+	Sat,  8 Feb 2025 18:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="vwyh9bLO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H/6A/C8G"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mxout4.routing.net (mxout4.routing.net [134.0.28.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1F12451EF;
-	Sat,  8 Feb 2025 12:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3E724111C
+	for <linux-wireless@vger.kernel.org>; Sat,  8 Feb 2025 18:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739017266; cv=none; b=N9uEhsmCuyHotijLuw51RSe+36nHD0oFCHSx2JUpzyfyBJakZ4Q2a7wvSEPrARwJ3SRNFeCl/pzZkAIG5vI+couXL0D1sb9fY44YfrM64wagS1NZkFFKUnWYp+urndkdf4X1yLpko5B/f3H3pMZcasw7w/D/H5WakTD9GiV1GnM=
+	t=1739038544; cv=none; b=lW4L1DBDXkIJYoEkhzcNDXoJt9COGi+zusHovKS3AqnigYw2pGcz7envyWUhfnndgeTN17ya4zwDKbHPtd2tPfjCATV7MRm5GylnMdNHgLOumi11wGm3zVGkU/a6B4OI1SjGpHKnPFDigPnHZRnDDkebwhVi7Oh0D5pKZNDzLNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739017266; c=relaxed/simple;
-	bh=8fodqG0U8+c2xusdvvvWyc0H7YK/RqBhN9WmRxmZCPg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a3tEkuYI4oyARTWhd7OOwKRkdmwwc2jqlzVbrOYZkzmeXirxKs+wvZ4lBVVwvP7sX5QodeeSyeSNbZ6vrPMDs1BO0ZaiqnT6BlAyeZycrnh0MsHctI82ZS+5UMD20zhljmQJBd8BrwWlppFNvVCB6LOVEXzLESGqzx7rJiU6Djc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=matthias-proske.de; spf=pass smtp.mailfrom=matthias-proske.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=vwyh9bLO; arc=none smtp.client-ip=134.0.28.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=matthias-proske.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matthias-proske.de
-Received: from mxbox3.masterlogin.de (unknown [192.168.10.78])
-	by mxout4.routing.net (Postfix) with ESMTP id 9CB511006EA;
-	Sat,  8 Feb 2025 12:21:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
-	s=20200217; t=1739017261;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NUJ38qvwQM3hoY8TEcm9mcnQw31XAmWoeS10esRamn4=;
-	b=vwyh9bLOUFe93iX018/NF+gSC5GIUJaBfx9z4/q9DPkG9YUx4hPJnr/xIfktVcwuSv3ZeC
-	TG9XFI+O9Pfuz2d3RidlghOinEcCMH55prWBAwcQ1e8LHojHJm8sXwA4CHbxZSkS5LKTkJ
-	rSYrqJYj6gvT+X5Du/exsIkMwer0qTo=
-Received: from [192.168.0.2] (unknown [185.181.129.144])
-	by mxbox3.masterlogin.de (Postfix) with ESMTPSA id 1F4193605AD;
-	Sat,  8 Feb 2025 12:21:01 +0000 (UTC)
-Message-ID: <efb9b9b7-bf56-4b3f-87eb-afd356453e62@matthias-proske.de>
-Date: Sat, 8 Feb 2025 13:20:57 +0100
+	s=arc-20240116; t=1739038544; c=relaxed/simple;
+	bh=JhlPtXpJUKq8YkpZhW4KEnNGOc3+W5nAxp0WPvcA3H0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fUOhmClBOeP4MhjTVUnDwel9fagx7B9+lJvKLQOZ0v/cguGOdl/Ww5+fl8kgUr3LTQjcQg/1c+MPIBdMSFLYuOmZomJgbWQUbLiDVlQ8AM6zbEuXNr9CSb1mgqRQ/JUXXTVASkiHFIvXv/oN6ECbUvxboEGzFbPpP1RVJ3odlWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H/6A/C8G; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739038543; x=1770574543;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JhlPtXpJUKq8YkpZhW4KEnNGOc3+W5nAxp0WPvcA3H0=;
+  b=H/6A/C8G47i75kKa+H7o+ci0BL0jzmvTMuNhQxwQH3phycmdgKihtOKw
+   X+uualCxw0HYATwZcWfSexXG1ie42SloOG/ODCRNuERlB1Izo9wRHgLzx
+   rNg1HRZZKcRU7pNQGDDGViZ+xc2nqpUvU/grAdMDizsCHMtZpbhg84MXw
+   6CTKojIFA19GnEwTUQM0aeC6oOBGRFMaR3t8ZP1b7k53tbBEg2JXOZT21
+   GXyERKmLninvKTSSQvp0Akk5aH3h4nUeMO99sqQFFWa94Le2CPaIljksk
+   mYA1ygTvF/DYoH0ODHdtuKLI8q7q7h0C36XR0ww1NIoLJv+GnkQO3dCQZ
+   w==;
+X-CSE-ConnectionGUID: quHAUrssQnSgzcEpWM59XA==
+X-CSE-MsgGUID: tod4LBBXTKOK2vUGVZMImA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11339"; a="43325124"
+X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; 
+   d="scan'208";a="43325124"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2025 10:15:42 -0800
+X-CSE-ConnectionGUID: vdKkOMaDSp2tQafImAOQ8w==
+X-CSE-MsgGUID: MpH5rHbeR56r7mrgJdw4XQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; 
+   d="scan'208";a="112023278"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 08 Feb 2025 10:15:40 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tgpMg-0010Tv-2F;
+	Sat, 08 Feb 2025 18:15:38 +0000
+Date: Sun, 9 Feb 2025 02:15:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nithyanantham Paramasivam <quic_nithp@quicinc.com>,
+	ath12k@lists.infradead.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
+	Sriram R <quic_srirrama@quicinc.com>,
+	Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+Subject: Re: [PATCH v2 1/3] wifi: ath12k: Fix the enabling of REO queue
+ lookup table feature
+Message-ID: <202502090206.lIwUMGJF-lkp@intel.com>
+References: <20250207173023.3856217-2-quic_nithp@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: DT property keep-power-in-suspend and how WiFi drivers use it
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, linux-mmc@vger.kernel.org
-References: <cd1b13d4-b01d-4237-813e-bd48c55d9ca9@matthias-proske.de>
- <CAPDyKFr=XyLg2VjuEq1ZTrdAwSJJmYFDn9wSFj4zWD1+ZB9MTQ@mail.gmail.com>
- <6aa67bad-5712-441e-a24b-f787474472bb@matthias-proske.de>
- <CAPDyKFooyDSPu7RG18sp9cV1ndRPpg5yia1BAiqtb-c3cOqv5Q@mail.gmail.com>
-Content-Language: en-US
-From: Matthias Proske <email@matthias-proske.de>
-In-Reply-To: <CAPDyKFooyDSPu7RG18sp9cV1ndRPpg5yia1BAiqtb-c3cOqv5Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mail-ID: 2efe2db1-830e-4b10-ac55-03a231ea7f13
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250207173023.3856217-2-quic_nithp@quicinc.com>
+
+Hi Nithyanantham,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on 48a62436540224f57013c27519dd2aa3ddd714c9]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Nithyanantham-Paramasivam/wifi-ath12k-Fix-the-enabling-of-REO-queue-lookup-table-feature/20250208-013400
+base:   48a62436540224f57013c27519dd2aa3ddd714c9
+patch link:    https://lore.kernel.org/r/20250207173023.3856217-2-quic_nithp%40quicinc.com
+patch subject: [PATCH v2 1/3] wifi: ath12k: Fix the enabling of REO queue lookup table feature
+config: i386-randconfig-063-20250208 (https://download.01.org/0day-ci/archive/20250209/202502090206.lIwUMGJF-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250209/202502090206.lIwUMGJF-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202502090206.lIwUMGJF-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/net/wireless/ath/ath12k/dp.c:1660:30: warning: shift count is negative [-Wshift-count-negative]
+    1660 |                            ((dp->reoq_lut.paddr & HAL_REO_QLUT_REG_BASE_ADDR) >> 8));
+         |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/wireless/ath/ath12k/hal.h:328:38: note: expanded from macro 'HAL_REO_QLUT_REG_BASE_ADDR'
+     328 | #define HAL_REO_QLUT_REG_BASE_ADDR                      GENMASK(39, 8)
+         |                                                         ^~~~~~~~~~~~~~
+   include/linux/bits.h:35:31: note: expanded from macro 'GENMASK'
+      35 |         (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
+         |                                      ^~~~~~~~~~~~~~~
+   include/uapi/linux/bits.h:9:19: note: expanded from macro '__GENMASK'
+       9 |          (~_UL(0) >> (__BITS_PER_LONG - 1 - (h))))
+         |                   ^  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/wireless/ath/ath12k/dp.c:1663:33: warning: shift count is negative [-Wshift-count-negative]
+    1663 |                            ((dp->ml_reoq_lut.paddr & HAL_REO_QLUT_REG_BASE_ADDR) >> 8));
+         |                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/wireless/ath/ath12k/hal.h:328:38: note: expanded from macro 'HAL_REO_QLUT_REG_BASE_ADDR'
+     328 | #define HAL_REO_QLUT_REG_BASE_ADDR                      GENMASK(39, 8)
+         |                                                         ^~~~~~~~~~~~~~
+   include/linux/bits.h:35:31: note: expanded from macro 'GENMASK'
+      35 |         (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
+         |                                      ^~~~~~~~~~~~~~~
+   include/uapi/linux/bits.h:9:19: note: expanded from macro '__GENMASK'
+       9 |          (~_UL(0) >> (__BITS_PER_LONG - 1 - (h))))
+         |                   ^  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2 warnings generated.
 
 
+vim +1660 drivers/net/wireless/ath/ath12k/dp.c
 
-On 2/5/25 1:49 PM, Ulf Hansson wrote:
-> On Tue, 4 Feb 2025 at 17:25, Matthias Proske <email@matthias-proske.de> wrote:
->>
->> On 2/4/25 4:26 PM, Ulf Hansson wrote:
->>> On Wed, 29 Jan 2025 at 12:05, Matthias Proske <email@matthias-proske.de> wrote:
->>>>
->>>> Hello,
->>>>
->>>> I have a question regarding the usage of the Device Tree property
->>>> `keep-power-suspend`.
->>>>
->>>> In the Device Tree documentation it reads:
->>>> "SDIO only. Preserves card power during a suspend/resume cycle."
->>>>
->>>> Does that mean that the SDIO Host Controller will remain powered or
->>>> should this equally apply to anything that is connected to this SDIO
->>>> Host Controller?
->>>
->>> Unfortunately the documentation isn't really clear.
->>> "keep-power-in-suspend" means that the platform is *capable* of
->>> keeping the SDIO card powered when the system is suspended.
->>>
->>> Depending on what the SDIO func-driver (like the brcm_fmac driver)
->>> decides to do during system suspend/resume, the mmc core we may or may
->>> not keep the SDIO card powered.
->>>
->>>>
->>>> To give a bit more background:
->>>>
->>>> I have an embedded board with a brcm_fmac WiFi module. It seems that due
->>>> to a hardware limitation we are not permitted to switch the module off.
->>>> It simply cannot be re-probed afterwards.
->>>
->>> How did we manage to power it on and probe it in the first place?
->>
->> Sorry if this was misleading. By "we" I meant whoever uses our hardware.
->> I probably should have written "I" instead.
->>
->> I have a hardware with the limitation that I can only power off WiFi
->> whenever I power off the complete SoC.
->>
->> Was it fixed it in newer HW designs? Yes.
->> Is there HW out there with the problem? Also yes.
->>
->> How could I probe it in the first place?
->> The brcm_fmac module was responding because it was still in its initial
->> phase after being booted.
->>
->>>
->>>>
->>>> The property `keep-power-in-suspend` was used and that used to work fine
->>>> until 92caded ("brcmfmac: Avoid keeping power to SDIO card
->>>> unless WOWL is used"), which made the wifi adapter by default turn off
->>>> on suspend to be re-probed on resume. Not working on our board...
->>>
->>> Would you mind elaborating why it isn't working?
->>
->> I can no longer probe the device after the resume.
->>
->> [   61.390016] brcmfmac: brcmf_sdio_bus_rxctl: resumed on timeout
->> [   61.390128] ieee80211 phy1: brcmf_bus_started: failed: -110
->> [   61.390294] ieee80211 phy1: brcmf_attach: dongle is not responding:
->> err=-110
->> [   61.426594] brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
-> 
-> I had a look at the corresponding code in
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c. Yes, it
-> seems there is a complete cleanup and re-probe being done during
-> system suspend/resume (it looks heavy and prone to errors, but that's
-> a different story).
-> 
-> Anyway, it would also be interesting to know if the SDIO
-> card/interface is failing to be re-initialized correctly by the mmc
-> core during system resume. Typically, mmc_sdio_resume() in
-> drivers/mmc/core/sdio.c should not return an error code, but it sounds
-> like that is the case too, right?
-> 
->>
->> I assume that I have this problem because I cannot power off the WiFi
->> module using the two GPIOs, usually controlled by a mmc-pwrseq. In fact
->> I don't see these errors with the newer HW revisions where I can toggle
->> the GPIOs.
-> 
-> With HW revisions, are you referring to different platform revisions
-> or revisions of the WiFi module? Or both?
-> 
-> Anyway, in the past we have seen many issues with incorrect HW
-> descriptions in DT in regards to the mmc-pwrseq. The mmc-pwrseq may be
-> different both from the platform point of view and from the WiFi
-> module point of view.
-> 
-> For example, maybe those GPIOs were routed differently on some
-> platforms, but not correctly described in DT? Or perhaps different
-> variants of the WiFi module need different power-sequences?
-> 
-> Just wanted to be sure that we really have a broken HW and not just
-> the description of it. :-)
+  1628	
+  1629	static int ath12k_dp_reoq_lut_setup(struct ath12k_base *ab)
+  1630	{
+  1631		struct ath12k_dp *dp = &ab->dp;
+  1632		u32 val;
+  1633		int ret;
+  1634	
+  1635		if (!ab->hw_params->reoq_lut_support)
+  1636			return 0;
+  1637	
+  1638		ret = ath12k_dp_alloc_reoq_lut(ab, &dp->reoq_lut);
+  1639		if (ret) {
+  1640			ath12k_warn(ab, "failed to allocate memory for reoq table");
+  1641			return ret;
+  1642		}
+  1643	
+  1644		ret = ath12k_dp_alloc_reoq_lut(ab, &dp->ml_reoq_lut);
+  1645		if (ret) {
+  1646			ath12k_warn(ab, "failed to allocate memory for ML reoq table");
+  1647			dma_free_coherent(ab->dev, dp->reoq_lut.size,
+  1648					  dp->reoq_lut.vaddr_unaligned,
+  1649					  dp->reoq_lut.paddr_unaligned);
+  1650			dp->reoq_lut.vaddr_unaligned = NULL;
+  1651			return ret;
+  1652		}
+  1653	
+  1654		/* Bits in the register have address [39:8] LUT base address to be
+  1655		 * allocated such that LSBs are assumed to be zero. Also, current
+  1656		 * design supports paddr upto 4 GB max hence it fits in 32 bit register only
+  1657		 */
+  1658	
+  1659		ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_LUT_BASE0(ab),
+> 1660				   ((dp->reoq_lut.paddr & HAL_REO_QLUT_REG_BASE_ADDR) >> 8));
+  1661	
+  1662		ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_LUT_BASE1(ab),
+  1663				   ((dp->ml_reoq_lut.paddr & HAL_REO_QLUT_REG_BASE_ADDR) >> 8));
+  1664	
+  1665		val = ath12k_hif_read32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_ADDR(ab));
+  1666	
+  1667		ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_ADDR(ab),
+  1668				   val | HAL_REO_QDESC_ADDR_READ_LUT_ENABLE);
+  1669	
+  1670		ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_MAX_PEERID(ab),
+  1671				   HAL_REO_QDESC_MAX_PEERID);
+  1672	
+  1673		return 0;
+  1674	}
+  1675	
 
-With HW revisions I'm talking about our own PCB. WiFi module remains 
-unchanged.
-
-And the GPIO handling works with our different HW revision. Also 
-modifying the GPIOs to some different timing did not change anything. I 
-just need to keep the GPIOs "on".
-
-> 
->>
->>
->>>
->>>>
->>>>
->>>> I have also looked at other WiFi drivers with an SDIO interface and it
->>>> seems that none of them are really honoring the `keep-power-in-suspend`
->>>> flag. Is this flag for the SDIO Host Controller only?
->>>
->>> See above.
->>>
->>>>
->>>>
->>>> What would be proper way to implement it so that the brcm_fmac return to
->>>> its old behaviour if necessary?
->>>> Add a Device Tree property directly for the brcm_fmac driver..?
->>>
->>> The corresponding SDIO func-driver may call
->>> sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER). In this way, the mmc
->>> core will leave the SDIO card powered-on during system suspend.
->>> Although, unless it's really necessary, it's ofcourse a bad idea as it
->>> would mean wasting energy when the system is suspended.
->>
->> Just to get my understanding right: The brcm_fmac driver would be the
->> SDIO func-driver in my case, right?
-> 
-> Correct. The one that is registered with sdio_register_driver().
-
-I guess I would just write a patch for the corresponding SDIO 
-func-driver, adding a DeviceTree property directly in that SDIO 
-func-driver (not the mmc host driver) so this can be enabled just for 
-these specific boards, or would you suggest a different solution?
-
-Matthias
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
