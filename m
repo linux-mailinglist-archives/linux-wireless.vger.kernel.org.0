@@ -1,188 +1,146 @@
-Return-Path: <linux-wireless+bounces-18654-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18655-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2545AA2D7FC
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Feb 2025 19:15:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0983A2DA1B
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2025 02:19:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD9AE166377
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Feb 2025 18:15:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE06918867A7
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2025 01:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9A124111B;
-	Sat,  8 Feb 2025 18:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A40243379;
+	Sun,  9 Feb 2025 01:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H/6A/C8G"
+	dkim=pass (2048-bit key) header.d=vampirebyte-ro.20230601.gappssmtp.com header.i=@vampirebyte-ro.20230601.gappssmtp.com header.b="CnykWS+j"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f98.google.com (mail-wm1-f98.google.com [209.85.128.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3E724111C
-	for <linux-wireless@vger.kernel.org>; Sat,  8 Feb 2025 18:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B79819
+	for <linux-wireless@vger.kernel.org>; Sun,  9 Feb 2025 01:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739038544; cv=none; b=lW4L1DBDXkIJYoEkhzcNDXoJt9COGi+zusHovKS3AqnigYw2pGcz7envyWUhfnndgeTN17ya4zwDKbHPtd2tPfjCATV7MRm5GylnMdNHgLOumi11wGm3zVGkU/a6B4OI1SjGpHKnPFDigPnHZRnDDkebwhVi7Oh0D5pKZNDzLNQ=
+	t=1739063991; cv=none; b=S00zKUt13J9lj/+Gs4tMmDm90kSVRezRJUqa2wjI65KmHrnfkLGwYhgcsMwMem4H2ap5smDdLh46HqiGAYulkfs9Bi6uMv8wIzUogli3uwcAlCNIl9/vJPLJp3XaiDaMxU/y0Q+QNNx9TAe9z9GYnutC9JhXx5yl3RLN5VyOQTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739038544; c=relaxed/simple;
-	bh=JhlPtXpJUKq8YkpZhW4KEnNGOc3+W5nAxp0WPvcA3H0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fUOhmClBOeP4MhjTVUnDwel9fagx7B9+lJvKLQOZ0v/cguGOdl/Ww5+fl8kgUr3LTQjcQg/1c+MPIBdMSFLYuOmZomJgbWQUbLiDVlQ8AM6zbEuXNr9CSb1mgqRQ/JUXXTVASkiHFIvXv/oN6ECbUvxboEGzFbPpP1RVJ3odlWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H/6A/C8G; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739038543; x=1770574543;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JhlPtXpJUKq8YkpZhW4KEnNGOc3+W5nAxp0WPvcA3H0=;
-  b=H/6A/C8G47i75kKa+H7o+ci0BL0jzmvTMuNhQxwQH3phycmdgKihtOKw
-   X+uualCxw0HYATwZcWfSexXG1ie42SloOG/ODCRNuERlB1Izo9wRHgLzx
-   rNg1HRZZKcRU7pNQGDDGViZ+xc2nqpUvU/grAdMDizsCHMtZpbhg84MXw
-   6CTKojIFA19GnEwTUQM0aeC6oOBGRFMaR3t8ZP1b7k53tbBEg2JXOZT21
-   GXyERKmLninvKTSSQvp0Akk5aH3h4nUeMO99sqQFFWa94Le2CPaIljksk
-   mYA1ygTvF/DYoH0ODHdtuKLI8q7q7h0C36XR0ww1NIoLJv+GnkQO3dCQZ
-   w==;
-X-CSE-ConnectionGUID: quHAUrssQnSgzcEpWM59XA==
-X-CSE-MsgGUID: tod4LBBXTKOK2vUGVZMImA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11339"; a="43325124"
-X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; 
-   d="scan'208";a="43325124"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2025 10:15:42 -0800
-X-CSE-ConnectionGUID: vdKkOMaDSp2tQafImAOQ8w==
-X-CSE-MsgGUID: MpH5rHbeR56r7mrgJdw4XQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; 
-   d="scan'208";a="112023278"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 08 Feb 2025 10:15:40 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tgpMg-0010Tv-2F;
-	Sat, 08 Feb 2025 18:15:38 +0000
-Date: Sun, 9 Feb 2025 02:15:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Nithyanantham Paramasivam <quic_nithp@quicinc.com>,
-	ath12k@lists.infradead.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
-	Sriram R <quic_srirrama@quicinc.com>,
-	Nithyanantham Paramasivam <quic_nithp@quicinc.com>
-Subject: Re: [PATCH v2 1/3] wifi: ath12k: Fix the enabling of REO queue
- lookup table feature
-Message-ID: <202502090206.lIwUMGJF-lkp@intel.com>
-References: <20250207173023.3856217-2-quic_nithp@quicinc.com>
+	s=arc-20240116; t=1739063991; c=relaxed/simple;
+	bh=qyR4lu4Vp5Dh2hOT4F5FpKt++Fs2rxkMbfxO+/YX9I0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tkP3A1+Ve4BSmmVE37KZXjSJQV+FnIwnZ1LWJnOez8TqL7ORbS+LHzi0pi7ggPsSHc3pLXzXLoGdCrvdIEMzjtnijQZYxqoKt3xfo7fFaR4YmwBc0b2ov9hCXlCWNTBVcsfNpYPFTDDNW2aYODkCTrjKzQj16fVpCBXu1QQwUWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vampirebyte.ro; spf=pass smtp.mailfrom=vampirebyte.ro; dkim=pass (2048-bit key) header.d=vampirebyte-ro.20230601.gappssmtp.com header.i=@vampirebyte-ro.20230601.gappssmtp.com header.b=CnykWS+j; arc=none smtp.client-ip=209.85.128.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vampirebyte.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vampirebyte.ro
+Received: by mail-wm1-f98.google.com with SMTP id 5b1f17b1804b1-43624b2d453so38435925e9.2
+        for <linux-wireless@vger.kernel.org>; Sat, 08 Feb 2025 17:19:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=vampirebyte-ro.20230601.gappssmtp.com; s=20230601; t=1739063987; x=1739668787; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qwCmp2CYB+j2WRGNYr2WuEiEOsIVgRs8bDTT2ZvcZRo=;
+        b=CnykWS+jImp1gGrkzbSXfinCyWrfsyyMQxar9ytnV4t2dkkM2ZV/6sXi2P8T5crq6x
+         bTV+Wm9C9tOYAwziexDjvnFenlyeZOqW6Vp+bKRv7rh4+eol0/MQi4gXTFPTzJJtUB/h
+         D9/GO7CZi8mtjYpERG+kUECm4cPw66HmlRHOSGEZKoR69Yaq9p1sHZCSXuVPffHyqKOx
+         UXH73fus16Oe1EPrxxSVkFxD8RCGp69z33l0yj++03e4F9JpvNav88FhDsytwRj0zl68
+         bqVTPa3SWI4vMmy8gJo+t8IM9F3yaxMUJdx5hqviBVZVaeVg5RG8/32yNcCbvL2sUNPn
+         ZwwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739063987; x=1739668787;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qwCmp2CYB+j2WRGNYr2WuEiEOsIVgRs8bDTT2ZvcZRo=;
+        b=TAsEzDG96JtoPakB6WoIKrTLfVftPNOeG13b15fIYMDvADCI6XZojzHxOqdXcyGbYu
+         0rRaCy52rPcvq3USGtDIwHUv6udpMCzan0N+MzAfHc/ZNc2XbAlA7rhnFwH9qxQPscBc
+         IlaeTn1KjeENTsmV2HomYHV7OZt1Pk5yXXEnMNDc6gwqCjofHsBbqNnWnPSGcJcgnjDP
+         JUBtDiqyEOJMHiTg9L1T5AUC10qsNZ++yyYdisKkW+uLTLytdHfijxmW3qcYTEoJy8kH
+         tHKe809LhtqIGs1uCDh16Z2pWV0Ufr2GdDnNilnLvgvsjjhIp8Ri7v8W3Xp4fRO2xy/d
+         BG2g==
+X-Gm-Message-State: AOJu0YyJqIUqBzilvc16+HmLBKpz1th/sL9J+kYA8GQrPr244HZx1ynN
+	gQv7IqelICO67aubl4O0h3CcxSUwtUbL2gnrpnoO8r1BgyWsmzgvZnFOoH17iYDdZjZv7p/Vc22
+	q7dmx3ppZBIdqG8KYIKDQI1JwGs0nKBo+WHtolu0g
+X-Gm-Gg: ASbGnct5yPBKpNEPUjbLjQUETGYjLTp8ry/RVRiTSZkVmy2cqTgJvKovQ7VsDMFld9j
+	LDcLcL+2aPFxc8duqcJ95uhQLpZDj8+PIgJSLkV4fdhSkaMj0momisLZEDhOh3iZikd2INP+ML3
+	+6LuTH4XmYmRIzQDxpRQOWrKsTMnK30YkCIS5yR2InCm0v/5NzJsqlu81UjXaIwirgznQ9AdC6j
+	u0aMdVr9zqEa9YCSGqSpGSZj3rzdHTZioCeZigQxv7/AuGTjTZ7Nhe4tpaM47J1nt+L5P/GZjAT
+	GDwOsZN157AISqUKIyAjPxceb9kizA==
+X-Google-Smtp-Source: AGHT+IGCewGMNIs+RmMOsviLQ0Yf/HsAZYYDLl1VhcSv7wt0dfNPBIQ5a6Dav5BGOHN2qAPGORO82HlTRyer
+X-Received: by 2002:a05:600c:510c:b0:436:e86e:e4ab with SMTP id 5b1f17b1804b1-439249bd35amr85208945e9.30.1739063987232;
+        Sat, 08 Feb 2025 17:19:47 -0800 (PST)
+Received: from orin60.vampirebyte.net ([82.77.132.211])
+        by smtp-relay.gmail.com with ESMTPS id ffacd0b85a97d-38dd6880056sm149536f8f.16.2025.02.08.17.19.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Feb 2025 17:19:47 -0800 (PST)
+X-Relaying-Domain: vampirebyte.ro
+From: Razvan Grigore <razvan.grigore@vampirebyte.ro>
+To: linux-wireless@vger.kernel.org,
+	Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>
+Cc: Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Razvan Grigore <razvan.grigore@vampirebyte.ro>
+Subject: [PATCH 0/4] wifi: mt76: fix returned txpower for mt7921 and mt7925
+Date: Sun,  9 Feb 2025 01:18:52 +0000
+Message-Id: <20250209011856.6726-1-razvan.grigore@vampirebyte.ro>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250207173023.3856217-2-quic_nithp@quicinc.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Nithyanantham,
+When reading the txpower with `iw dev wlan1` the returned value is
+always 3.00 dBm, no matter what reg domain is set or if one changes the
+txpower manually.
 
-kernel test robot noticed the following build warnings:
+This bug was discovered by me and confirmed by many people using this
+chipset on openwrt: https://github.com/openwrt/mt76/issues/783
 
-[auto build test WARNING on 48a62436540224f57013c27519dd2aa3ddd714c9]
+I tracked the code for this and it seems that for those 2 chipsets
+particularly, the mt76_phy->txpower_cur is never set, in contrast to
+other chipsets like mt7603, mt7615, mt76x0, mt7915, etc.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Nithyanantham-Paramasivam/wifi-ath12k-Fix-the-enabling-of-REO-queue-lookup-table-feature/20250208-013400
-base:   48a62436540224f57013c27519dd2aa3ddd714c9
-patch link:    https://lore.kernel.org/r/20250207173023.3856217-2-quic_nithp%40quicinc.com
-patch subject: [PATCH v2 1/3] wifi: ath12k: Fix the enabling of REO queue lookup table feature
-config: i386-randconfig-063-20250208 (https://download.01.org/0day-ci/archive/20250209/202502090206.lIwUMGJF-lkp@intel.com/config)
-compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250209/202502090206.lIwUMGJF-lkp@intel.com/reproduce)
+Added some debug logs in the mt76_get_txpower function and I got:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502090206.lIwUMGJF-lkp@intel.com/
+[   26.816227] mt7921u 2-1:1.3: mt76_get_txpower: phy->txpower_cur = 0
+[   26.816234] mt7921u 2-1:1.3: mt76_get_txpower: n_chains = 2
+[   26.816236] mt7921u 2-1:1.3: mt76_get_txpower: delta = 6
+[   26.816237] mt7921u 2-1:1.3: mt76_get_txpower: *dbm = 3
 
-All warnings (new ones prefixed by >>):
+So the driver is correctly calculating the TX power adjustment based on
+the number of antennas. However, the base TX power (phy->txpower_cur)
+is not being properly initialized or set to a meaningful value.
+It's starting at 0, so the final result is just the antenna
+gain compensation divided by 2.
 
->> drivers/net/wireless/ath/ath12k/dp.c:1660:30: warning: shift count is negative [-Wshift-count-negative]
-    1660 |                            ((dp->reoq_lut.paddr & HAL_REO_QLUT_REG_BASE_ADDR) >> 8));
-         |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/wireless/ath/ath12k/hal.h:328:38: note: expanded from macro 'HAL_REO_QLUT_REG_BASE_ADDR'
-     328 | #define HAL_REO_QLUT_REG_BASE_ADDR                      GENMASK(39, 8)
-         |                                                         ^~~~~~~~~~~~~~
-   include/linux/bits.h:35:31: note: expanded from macro 'GENMASK'
-      35 |         (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-         |                                      ^~~~~~~~~~~~~~~
-   include/uapi/linux/bits.h:9:19: note: expanded from macro '__GENMASK'
-       9 |          (~_UL(0) >> (__BITS_PER_LONG - 1 - (h))))
-         |                   ^  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/wireless/ath/ath12k/dp.c:1663:33: warning: shift count is negative [-Wshift-count-negative]
-    1663 |                            ((dp->ml_reoq_lut.paddr & HAL_REO_QLUT_REG_BASE_ADDR) >> 8));
-         |                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/wireless/ath/ath12k/hal.h:328:38: note: expanded from macro 'HAL_REO_QLUT_REG_BASE_ADDR'
-     328 | #define HAL_REO_QLUT_REG_BASE_ADDR                      GENMASK(39, 8)
-         |                                                         ^~~~~~~~~~~~~~
-   include/linux/bits.h:35:31: note: expanded from macro 'GENMASK'
-      35 |         (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-         |                                      ^~~~~~~~~~~~~~~
-   include/uapi/linux/bits.h:9:19: note: expanded from macro '__GENMASK'
-       9 |          (~_UL(0) >> (__BITS_PER_LONG - 1 - (h))))
-         |                   ^  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   2 warnings generated.
+While investigating this I found commit ff94604 that adds a separate
+function for _get_power_bound so decided to reuse it for all 3 chipsets,
+might be needed in the future as well.
 
+Tested-on: Alfa Network AWUS036AXML
+... and it also reacts to manual txpower changes now.
 
-vim +1660 drivers/net/wireless/ath/ath12k/dp.c
+Thank you in advance for looking into this!
+R
 
-  1628	
-  1629	static int ath12k_dp_reoq_lut_setup(struct ath12k_base *ab)
-  1630	{
-  1631		struct ath12k_dp *dp = &ab->dp;
-  1632		u32 val;
-  1633		int ret;
-  1634	
-  1635		if (!ab->hw_params->reoq_lut_support)
-  1636			return 0;
-  1637	
-  1638		ret = ath12k_dp_alloc_reoq_lut(ab, &dp->reoq_lut);
-  1639		if (ret) {
-  1640			ath12k_warn(ab, "failed to allocate memory for reoq table");
-  1641			return ret;
-  1642		}
-  1643	
-  1644		ret = ath12k_dp_alloc_reoq_lut(ab, &dp->ml_reoq_lut);
-  1645		if (ret) {
-  1646			ath12k_warn(ab, "failed to allocate memory for ML reoq table");
-  1647			dma_free_coherent(ab->dev, dp->reoq_lut.size,
-  1648					  dp->reoq_lut.vaddr_unaligned,
-  1649					  dp->reoq_lut.paddr_unaligned);
-  1650			dp->reoq_lut.vaddr_unaligned = NULL;
-  1651			return ret;
-  1652		}
-  1653	
-  1654		/* Bits in the register have address [39:8] LUT base address to be
-  1655		 * allocated such that LSBs are assumed to be zero. Also, current
-  1656		 * design supports paddr upto 4 GB max hence it fits in 32 bit register only
-  1657		 */
-  1658	
-  1659		ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_LUT_BASE0(ab),
-> 1660				   ((dp->reoq_lut.paddr & HAL_REO_QLUT_REG_BASE_ADDR) >> 8));
-  1661	
-  1662		ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_LUT_BASE1(ab),
-  1663				   ((dp->ml_reoq_lut.paddr & HAL_REO_QLUT_REG_BASE_ADDR) >> 8));
-  1664	
-  1665		val = ath12k_hif_read32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_ADDR(ab));
-  1666	
-  1667		ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_ADDR(ab),
-  1668				   val | HAL_REO_QDESC_ADDR_READ_LUT_ENABLE);
-  1669	
-  1670		ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_MAX_PEERID(ab),
-  1671				   HAL_REO_QDESC_MAX_PEERID);
-  1672	
-  1673		return 0;
-  1674	}
-  1675	
+Razvan Grigore (4):
+  wifi: mt76: add mt76_get_power_bound helper function
+  wifi: mt76: mt7921: fix returned txpower
+  wifi: mt76: mt7925: fix returned txpower
+  wifi: mt76: mt7915: cleanup mt7915_get_power_bound
+
+ drivers/net/wireless/mediatek/mt76/mac80211.c       | 11 +++++++++++
+ drivers/net/wireless/mediatek/mt76/mt76.h           |  2 ++
+ drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c |  8 ++++----
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c     |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.h     | 12 ------------
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c    |  7 +++++++
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c    |  7 +++++++
+ 7 files changed, 33 insertions(+), 18 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
