@@ -1,70 +1,71 @@
-Return-Path: <linux-wireless+bounces-18668-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18669-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52E9A2DDD2
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2025 13:35:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CF8A2DDD4
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2025 13:35:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D4003A2F9C
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2025 12:35:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FEB17A2370
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2025 12:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE7A74040;
-	Sun,  9 Feb 2025 12:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92BD1DE2B7;
+	Sun,  9 Feb 2025 12:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H8jvunm8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HoiOvW30"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046421DC185
-	for <linux-wireless@vger.kernel.org>; Sun,  9 Feb 2025 12:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C83E1DE896
+	for <linux-wireless@vger.kernel.org>; Sun,  9 Feb 2025 12:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739104523; cv=none; b=G+yg8PUSmwWYCs6tZMFoU5nARhS7q5iUHUeHAPRD7uRlTc66aji7Gyol1VAz+5SnAh4y2+l5ttNcv+D+k80NYtpm3opV+nj1m5jYK4BTmEATNhkeNaMjelPEA4vgdHOkVug66I9J7LfvCfrViVWkmTw0njXwkiyfoI1vHT7vBVY=
+	t=1739104524; cv=none; b=ANwQEQbvtLwDzmfHcctSChb5rUJ1cefM9obQs5ZmDr6ALJ2RQrp/yOqcgR5ZwXtqT+/3JHkBG72BSJ95sQQ1LgdEQkvP74b+pl3SK40tdcgie8NFiPgjRf6KmCv0Jg+Q+QxzsPKnuTv8V4y5OsaWB7fgZCCJ+7eXuhCrKhkhGjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739104523; c=relaxed/simple;
-	bh=o6JcCRkNJU3VVmD3zcdZDHs8mScML9JLHfhd0N26y+k=;
+	s=arc-20240116; t=1739104524; c=relaxed/simple;
+	bh=kJoBTBUnx3ThJujJq2NlULkcDwcFZROW8aDrwlWtN1c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CqkxVUUfs+ebkgHOP4FamuyXnyeVlUZKOqFgfpGq8jGhHcKYNS2zeVYhJHYaVecH/tnLFR+MWFNV3fbWSkzdbzafLGOB3/QrXL8uIqzlwowyC/sJKPRYySmnXj0Xe5NVMQZhV30MubT7chFHUIJ9cFM0Q+n+9aCUas/jSzoV3iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H8jvunm8; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=ZiyYUk5/490h0qkw1UReYhPbplhLe6oQWMVEEoE8RxD8aqkEPXW+MjwrppyDVzqqjWcNkrs4DupSBAmprV7u2gMYoITRlaNEiT2s6GH1NzXXz5J2310/NcCv/xX36+IFVUj85Tyvzrf/W0DGtmAifcnXbCMPTGOIaB9772A9Gjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HoiOvW30; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739104522; x=1770640522;
+  t=1739104523; x=1770640523;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=o6JcCRkNJU3VVmD3zcdZDHs8mScML9JLHfhd0N26y+k=;
-  b=H8jvunm8ZiNljkfJ6JrtfgoALCCVT1mE0Ah28ggx0t4XS5cQrvg/+fQS
-   fl0fLGEI13401v+uol6cKMMpvzAscMqe/t2NL8opDrLn+88505ls56umb
-   CzVKRPRZb75RMLPMONei81TmnpiZZN9EWX1UR9Xvt2xsjVTKwaDx2lD96
-   6O+IpuolPOnOMQboLMWFlNikWQ6RdHt1GSxYoXil52wdgsKswILkbog3G
-   nfrA8PtyD7oxc+KGO9WGLW/sXC5G/d+fSOxmqzXws7cGQMYPOt/a01GGk
-   +ofkDoUhc+fzGJVneexm11MDf+PqUEOszTPcCMh1/UZbseDZLN9wN4k0m
-   A==;
-X-CSE-ConnectionGUID: XmgfAYwGRFqnIEHPXATxFw==
-X-CSE-MsgGUID: ORYTNviwQduMdcMhVD+yIQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="51125986"
+  bh=kJoBTBUnx3ThJujJq2NlULkcDwcFZROW8aDrwlWtN1c=;
+  b=HoiOvW3026xdoTAazf4Tm0B4r2CH1NEE64Lg4cwqp2uWPO6z7rWt/g7Q
+   +7WMomU8AA4gp1F5l4/iFtI4zmoNJq0TU3TmULhbyWK7rbVYzB65aytc2
+   ojh2axByzfbqzWZbkU6IV1InvIDthpZ2dVZZFBJKcjTSJJnFBecdvj+Xx
+   zwE3TcLIsWzfElNJoRdeZ6QQYiJ1Wdm1Xok/JhmnPGqPiPIwnOqYLDGeh
+   qk6Ff0rD0ixAF1rzbmLL/nb0XoINlcuayGgGCV0yITm+Be3j+xs5m98yH
+   IhlqP1rz/19+mH/iMqP034+tGPcQrZyR3TLKop+ktddWAA9HGYCGUXkIn
+   Q==;
+X-CSE-ConnectionGUID: Hlt41em+T4CsiZzqKfj8cw==
+X-CSE-MsgGUID: Npe8x9OpSFKvSCzZ0Taw4Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="51125988"
 X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="51125986"
+   d="scan'208";a="51125988"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 04:35:21 -0800
-X-CSE-ConnectionGUID: mpka5ml6R/WBE+fKU++fAA==
-X-CSE-MsgGUID: P/x/5wPgSjirP/+k/ako8w==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 04:35:23 -0800
+X-CSE-ConnectionGUID: H/SicHS8Rg+Sz5kUB5u/DQ==
+X-CSE-MsgGUID: y/C6JYfaTMSAnmN10FQACQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="111782459"
+   d="scan'208";a="111782466"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 04:35:20 -0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 04:35:21 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 7/9] wifi: iwlwifi: limit printed string from FW file
-Date: Sun,  9 Feb 2025 14:34:51 +0200
-Message-Id: <20250209143303.cb5f9d0c2f5d.Idec695d53c6c2234aade306f7647b576c7e3d928@changeid>
+	Ilan Peer <ilan.peer@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH 8/9] wifi: iwlwifi: Free pages allocated when failing to build A-MSDU
+Date: Sun,  9 Feb 2025 14:34:52 +0200
+Message-Id: <20250209143303.bc27fad9b3d5.Ibf43dd18fb652b1a59061204e081f11c9fa34a3f@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250209123453.2010013-1-miriam.rachel.korenblit@intel.com>
 References: <20250209123453.2010013-1-miriam.rachel.korenblit@intel.com>
@@ -77,36 +78,31 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-There's no guarantee here that the file is always with a
-NUL-termination, so reading the string may read beyond the
-end of the TLV. If that's the last TLV in the file, it can
-perhaps even read beyond the end of the file buffer.
+When failing to prepare the data needed for A-MSDU transmission, the memory
+allocated for the TSO management was not freed. Fix it.
 
-Fix that by limiting the print format to the size of the
-buffer we have.
-
-Fixes: aee1b6385e29 ("iwlwifi: support fseq tlv and print fseq version")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 7f5e3038f029 ("wifi: iwlwifi: map entire SKB when sending AMSDUs")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index d3a65f33097c..352b6e73e08f 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1181,7 +1181,7 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+index 1f483f15c238..dce5096db82b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+@@ -347,6 +347,7 @@ iwl_tfh_tfd *iwl_txq_gen2_build_tx_amsdu(struct iwl_trans *trans,
+ 	return tfd;
  
- 			if (tlv_len != sizeof(*fseq_ver))
- 				goto invalid_tlv_len;
--			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %s\n",
-+			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %.32s\n",
- 				 fseq_ver->version);
- 			}
- 			break;
+ out_err:
++	iwl_pcie_free_tso_pages(trans, skb, out_meta);
+ 	iwl_txq_gen2_tfd_unmap(trans, out_meta, tfd);
+ 	return NULL;
+ }
 -- 
 2.34.1
 
