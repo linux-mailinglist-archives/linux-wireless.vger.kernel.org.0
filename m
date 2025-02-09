@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-18669-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18670-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81CF8A2DDD4
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2025 13:35:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AACA5A2DDD3
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2025 13:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FEB17A2370
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2025 12:35:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3C8A1886773
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2025 12:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92BD1DE2B7;
-	Sun,  9 Feb 2025 12:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F8D1DE2C4;
+	Sun,  9 Feb 2025 12:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HoiOvW30"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K9ppKDOo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C83E1DE896
-	for <linux-wireless@vger.kernel.org>; Sun,  9 Feb 2025 12:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9A01DEFD6
+	for <linux-wireless@vger.kernel.org>; Sun,  9 Feb 2025 12:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739104524; cv=none; b=ANwQEQbvtLwDzmfHcctSChb5rUJ1cefM9obQs5ZmDr6ALJ2RQrp/yOqcgR5ZwXtqT+/3JHkBG72BSJ95sQQ1LgdEQkvP74b+pl3SK40tdcgie8NFiPgjRf6KmCv0Jg+Q+QxzsPKnuTv8V4y5OsaWB7fgZCCJ+7eXuhCrKhkhGjA=
+	t=1739104527; cv=none; b=FzE2kEMCVIXJnZ4MyfGN3x7Tkefw56KOu/Vd5iPv6GhO7QyxQEgZ0Xb7222l/NwiwqupYzsgdaHNTAHOcU2rIXaas9ER//jAFlxlntxQYE5AUavNQ50Hin97dO4FbQ+xL78plc3feOXgexgzHyvxJv4AFBmwbCrEWyvcEpRezos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739104524; c=relaxed/simple;
-	bh=kJoBTBUnx3ThJujJq2NlULkcDwcFZROW8aDrwlWtN1c=;
+	s=arc-20240116; t=1739104527; c=relaxed/simple;
+	bh=bg2k8jcm1b6E6qh/13yDOWN1E8H7Z9dRhancspZ0TLU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZiyYUk5/490h0qkw1UReYhPbplhLe6oQWMVEEoE8RxD8aqkEPXW+MjwrppyDVzqqjWcNkrs4DupSBAmprV7u2gMYoITRlaNEiT2s6GH1NzXXz5J2310/NcCv/xX36+IFVUj85Tyvzrf/W0DGtmAifcnXbCMPTGOIaB9772A9Gjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HoiOvW30; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=GFCSa6mmd0jw+9PUs6PZKoj4B2pEqaHBNyilNJCnIkwpHeoiPLxuwFSt3dDM2Am7sqqLhxnnZScQ8vtKE5+k7XaOSExds3FliSBfv3jHXt2xKbZp0dG487H3dIrk6OH6nTAhBwepdJ/Eg403V4jInWSpb5xAPPFpKl+3fEWWjTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K9ppKDOo; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739104523; x=1770640523;
+  t=1739104525; x=1770640525;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=kJoBTBUnx3ThJujJq2NlULkcDwcFZROW8aDrwlWtN1c=;
-  b=HoiOvW3026xdoTAazf4Tm0B4r2CH1NEE64Lg4cwqp2uWPO6z7rWt/g7Q
-   +7WMomU8AA4gp1F5l4/iFtI4zmoNJq0TU3TmULhbyWK7rbVYzB65aytc2
-   ojh2axByzfbqzWZbkU6IV1InvIDthpZ2dVZZFBJKcjTSJJnFBecdvj+Xx
-   zwE3TcLIsWzfElNJoRdeZ6QQYiJ1Wdm1Xok/JhmnPGqPiPIwnOqYLDGeh
-   qk6Ff0rD0ixAF1rzbmLL/nb0XoINlcuayGgGCV0yITm+Be3j+xs5m98yH
-   IhlqP1rz/19+mH/iMqP034+tGPcQrZyR3TLKop+ktddWAA9HGYCGUXkIn
-   Q==;
-X-CSE-ConnectionGUID: Hlt41em+T4CsiZzqKfj8cw==
-X-CSE-MsgGUID: Npe8x9OpSFKvSCzZ0Taw4Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="51125988"
+  bh=bg2k8jcm1b6E6qh/13yDOWN1E8H7Z9dRhancspZ0TLU=;
+  b=K9ppKDOorfXicZB7bDjVsXh1RKgmijJyutFHoz6MAdBT/Z7kwsSvgeq6
+   tPrBYq4j7s9P2U0H13GtQavx2e11LETppAr2QFmPeGedlNUK/KxEyuiQK
+   Aqe04LeWqCe6dKLsuI9vk7P5Kr8H7S9cG9q06+m+tGD74zXJsC8g+dolX
+   snR3vpho5asZMwhJjYzASNrTvV4CIHL514I2kVODNfcK4ggjosomPxk0n
+   eiI3L7EQEPejthA1vFuRrFvmV2ogbv7C5570X8ey9KRavCDowRS4RgNly
+   kQQR0vzjX3qt2UW1jranTFA2RLhNwNeyURuBU19Tj1i1Ssq9y4T9OSZG2
+   w==;
+X-CSE-ConnectionGUID: KT+MetTvS1uYBv+jYeLu/A==
+X-CSE-MsgGUID: bU7My2H+QbKQop7nkt1tsQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="51125990"
 X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="51125988"
+   d="scan'208";a="51125990"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 04:35:23 -0800
-X-CSE-ConnectionGUID: H/SicHS8Rg+Sz5kUB5u/DQ==
-X-CSE-MsgGUID: y/C6JYfaTMSAnmN10FQACQ==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 04:35:25 -0800
+X-CSE-ConnectionGUID: t/LaAuWLTPOONhVlV1UQzw==
+X-CSE-MsgGUID: oP0cNllLSWe9nznpyWvLig==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="111782466"
+   d="scan'208";a="111782471"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 04:35:21 -0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 04:35:23 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Ilan Peer <ilan.peer@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 8/9] wifi: iwlwifi: Free pages allocated when failing to build A-MSDU
-Date: Sun,  9 Feb 2025 14:34:52 +0200
-Message-Id: <20250209143303.bc27fad9b3d5.Ibf43dd18fb652b1a59061204e081f11c9fa34a3f@changeid>
+	Benjamin Berg <benjamin.berg@intel.com>
+Subject: [PATCH 9/9] wifi: iwlwifi: Fix A-MSDU TSO preparation
+Date: Sun,  9 Feb 2025 14:34:53 +0200
+Message-Id: <20250209143303.75769a4769bf.Iaf79e8538093cdf8c446c292cc96164ad6498f61@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250209123453.2010013-1-miriam.rachel.korenblit@intel.com>
 References: <20250209123453.2010013-1-miriam.rachel.korenblit@intel.com>
@@ -80,29 +80,136 @@ Content-Transfer-Encoding: 8bit
 
 From: Ilan Peer <ilan.peer@intel.com>
 
-When failing to prepare the data needed for A-MSDU transmission, the memory
-allocated for the TSO management was not freed. Fix it.
+The TSO preparation assumed that the skb head contained the headers
+while the rest of the data was in the fragments. Since this is not
+always true, e.g., it is possible that the data was linearised, modify
+the TSO preparation to start the data processing after the network
+headers.
 
 Fixes: 7f5e3038f029 ("wifi: iwlwifi: map entire SKB when sending AMSDUs")
 Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  5 +++--
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |  5 +++--
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 20 +++++++++++--------
+ 3 files changed, 18 insertions(+), 12 deletions(-)
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index 856b7e9f717d..45460f93d24a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2003-2015, 2018-2024 Intel Corporation
++ * Copyright (C) 2003-2015, 2018-2025 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -646,7 +646,8 @@ dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, unsigned int offset,
+ 				    unsigned int len);
+ struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct sk_buff *skb,
+ 				   struct iwl_cmd_meta *cmd_meta,
+-				   u8 **hdr, unsigned int hdr_room);
++				   u8 **hdr, unsigned int hdr_room,
++				   unsigned int offset);
+ 
+ void iwl_pcie_free_tso_pages(struct iwl_trans *trans, struct sk_buff *skb,
+ 			     struct iwl_cmd_meta *cmd_meta);
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-index 1f483f15c238..dce5096db82b 100644
+index dce5096db82b..401919f9fe88 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-@@ -347,6 +347,7 @@ iwl_tfh_tfd *iwl_txq_gen2_build_tx_amsdu(struct iwl_trans *trans,
- 	return tfd;
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+  * Copyright (C) 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2020, 2023-2024 Intel Corporation
++ * Copyright (C) 2018-2020, 2023-2025 Intel Corporation
+  */
+ #include <net/tso.h>
+ #include <linux/tcp.h>
+@@ -188,7 +188,8 @@ static int iwl_txq_gen2_build_amsdu(struct iwl_trans *trans,
+ 		(3 + snap_ip_tcp_hdrlen + sizeof(struct ethhdr));
  
- out_err:
-+	iwl_pcie_free_tso_pages(trans, skb, out_meta);
- 	iwl_txq_gen2_tfd_unmap(trans, out_meta, tfd);
- 	return NULL;
- }
+ 	/* Our device supports 9 segments at most, it will fit in 1 page */
+-	sgt = iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room);
++	sgt = iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room,
++				snap_ip_tcp_hdrlen + hdr_len);
+ 	if (!sgt)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 334ebd4c12fa..7b6071a59b69 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2003-2014, 2018-2021, 2023-2024 Intel Corporation
++ * Copyright (C) 2003-2014, 2018-2021, 2023-2025 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -1855,6 +1855,7 @@ dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, unsigned int offset,
+  * @cmd_meta: command meta to store the scatter list information for unmapping
+  * @hdr: output argument for TSO headers
+  * @hdr_room: requested length for TSO headers
++ * @offset: offset into the data from which mapping should start
+  *
+  * Allocate space for a scatter gather list and TSO headers and map the SKB
+  * using the scatter gather list. The SKB is unmapped again when the page is
+@@ -1864,18 +1865,20 @@ dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, unsigned int offset,
+  */
+ struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct sk_buff *skb,
+ 				   struct iwl_cmd_meta *cmd_meta,
+-				   u8 **hdr, unsigned int hdr_room)
++				   u8 **hdr, unsigned int hdr_room,
++				   unsigned int offset)
+ {
+ 	struct sg_table *sgt;
++	unsigned int n_segments;
+ 
+ 	if (WARN_ON_ONCE(skb_has_frag_list(skb)))
+ 		return NULL;
+ 
++	n_segments = DIV_ROUND_UP(skb->len - offset, skb_shinfo(skb)->gso_size);
+ 	*hdr = iwl_pcie_get_page_hdr(trans,
+ 				     hdr_room + __alignof__(struct sg_table) +
+ 				     sizeof(struct sg_table) +
+-				     (skb_shinfo(skb)->nr_frags + 1) *
+-				     sizeof(struct scatterlist),
++				     n_segments * sizeof(struct scatterlist),
+ 				     skb);
+ 	if (!*hdr)
+ 		return NULL;
+@@ -1883,11 +1886,11 @@ struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct sk_buff *skb,
+ 	sgt = (void *)PTR_ALIGN(*hdr + hdr_room, __alignof__(struct sg_table));
+ 	sgt->sgl = (void *)(sgt + 1);
+ 
+-	sg_init_table(sgt->sgl, skb_shinfo(skb)->nr_frags + 1);
++	sg_init_table(sgt->sgl, n_segments);
+ 
+ 	/* Only map the data, not the header (it is copied to the TSO page) */
+-	sgt->orig_nents = skb_to_sgvec(skb, sgt->sgl, skb_headlen(skb),
+-				       skb->data_len);
++	sgt->orig_nents = skb_to_sgvec(skb, sgt->sgl, offset,
++				       skb->len - offset);
+ 	if (WARN_ON_ONCE(sgt->orig_nents <= 0))
+ 		return NULL;
+ 
+@@ -1939,7 +1942,8 @@ static int iwl_fill_data_tbs_amsdu(struct iwl_trans *trans, struct sk_buff *skb,
+ 		(3 + snap_ip_tcp_hdrlen + sizeof(struct ethhdr)) + iv_len;
+ 
+ 	/* Our device supports 9 segments at most, it will fit in 1 page */
+-	sgt = iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room);
++	sgt = iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room,
++				snap_ip_tcp_hdrlen + hdr_len + iv_len);
+ 	if (!sgt)
+ 		return -ENOMEM;
+ 
 -- 
 2.34.1
 
