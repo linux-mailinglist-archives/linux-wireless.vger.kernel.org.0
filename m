@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-18684-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18685-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6E7A2E2BB
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 04:26:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA01A2E2BD
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 04:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F4907A27DF
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 03:25:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D060165D96
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 03:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216DA5336D;
-	Mon, 10 Feb 2025 03:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FB96F06B;
+	Mon, 10 Feb 2025 03:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="MYSjlHoS"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Rt6NoaBB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077BC35957
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 03:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBE235957
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 03:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739157998; cv=none; b=BkOKWPPN7wl3SmmZ0LEvf4sYS9XsJ/5m0v73d5dlGRctLpcbD1b0u+FXzJ+UDTzGIQCOjwlGhMM7PvGsUAebo2FBdkj4vP5E0a8s2gIVl8Oc8R7V9E0oZuJgNbd2n2Ym1lk3tYPxjLlu5Y4r/63QBsMb6ZVhX0PzHmG2JZDP0UA=
+	t=1739158106; cv=none; b=htmHGEVDSp0576TaJRs1Z7L3E4tnuoP+3EXfw7FGN6MoCIOLk+KmhFMigeOxtMqVlcx2TMnwUbrkC5WIYb2WPNw36k/odhTjOpQkXWxYXiObgC1Ma0/mYjkPRQWzx+hYQQEFGn+ejUsolgEQ9x+N7ubwkOZtGVFGbTzSHhiG68M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739157998; c=relaxed/simple;
-	bh=venAAyHHLjHPFfOxHHH23qChY1m1vCs7oBbHeFg9Y7g=;
+	s=arc-20240116; t=1739158106; c=relaxed/simple;
+	bh=EPx6LZ7mrxekxMEy0jgo3G+/QyiYup2OfAE3F6PLPyM=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=IemgCACi7L7ECXxUbaHGFsMJ1Nxj4g50bkKDvz1Cf0uHqp6smrQYOMDKUJSGZc580DFssV1cVnMRstGStDg6YHnF5TfKfHBz62cQfXU19i3IaoN8CJWRvZBHhn7wxkLV0ngnYtTxIL7fYNegrdTfW0fa9q/kHT0/mJkIXJ+zcW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=MYSjlHoS; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:Message-ID:Date; b=XUYQBjOlzT7+3x0mFA0iLU5aLpRCdBcypvjtAPFcI9YqhkXKyRO9kZBYOHRde3QfNnYdWe4eqNNaj7z0ExZDutzeRPLuQnzdcN/VOnEIa6MHe39au6UF9ygbxFPNWPB/x+hrsxoLIenQoELVTWOMyInIMkV8hDF/VsnTtm0/7F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Rt6NoaBB; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51A3QWL801573522, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51A3SKSC01574428, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1739157992; bh=venAAyHHLjHPFfOxHHH23qChY1m1vCs7oBbHeFg9Y7g=;
+	t=1739158100; bh=EPx6LZ7mrxekxMEy0jgo3G+/QyiYup2OfAE3F6PLPyM=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
 	 Content-Type:Message-ID:Date;
-	b=MYSjlHoSJDwVrCB66pHgu9CC15H7o/tx94fZ2f2rThgZkYYArxKTMbokqvlpJIYT4
-	 TqFICUbQ/LQELVKjFzN/iyqnBUE924G3kOiYEFQ0A/IBO0W5v6Qsgu8GQbBmF7x9+L
-	 dBd41+4oN8gKg9C2S68Zcay2fpWF/t/JGfaR0uqBoe/CEo6DdMVyr2837eXm/3IRwC
-	 BD6o7uovw9wSyj7g8dTdbX7yVU/TS83OajOgMeembUcziycKSwp4HwXd8XRb2ME+qd
-	 DW2nFU2J463JzmRHC0oHXfNvHRlrUzs9UsZFy1/oak4ZBZPFHMh5QBSmDiukRZ5DiN
-	 6e59zg5HKGTGg==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51A3QWL801573522
+	b=Rt6NoaBBvMme8RzN2gCPsOJxZtXIOUTemXYP9TWfZUoytdZk66fmumrGZTCFxhoqB
+	 zVj4GGSBtUdrBLDhIuOUe5q+YBu/vaYrsTcm1bFtbKX5kGvzBwJEjVUTcY9+tO2LY2
+	 LYzjilrUELOWtl/+AEp87+bLyTpvymJxfCq54EnL9Ubank6DkPPYD+C6e0PbXdm+oe
+	 wM6Lc0XmTvuDUFd92DeYIrVWJY/1bv3m1QhcM/CWxsXb6ft/lnS+R9zbeRxX68euqO
+	 1CldObgvSmBgDplZHRcD78yfmKStDiSDHztKTRvuCP6NKXoFk8XMmSASmPuQa3VhkH
+	 UO9dMl0GPkw3Q==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51A3SKSC01574428
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 11:26:32 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 11:28:20 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 10 Feb 2025 11:26:32 +0800
+ 15.1.2507.39; Mon, 10 Feb 2025 11:28:21 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 10 Feb
- 2025 11:26:32 +0800
+ 2025 11:28:20 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-CC: <ku920601@realtek.com>
-Subject: Re: [PATCH 1/3] wifi: rtw89: coex: Assign value over than 0 to avoid firmware timer hang
-In-Reply-To: <20250205013233.10945-2-pkshih@realtek.com>
-References: <20250205013233.10945-1-pkshih@realtek.com> <20250205013233.10945-2-pkshih@realtek.com>
+CC: <kevin_yang@realtek.com>
+Subject: Re: [PATCH] wifi: rtw89: regd: avoid using BITMAP_FROM_U64() to assign function bitmap
+In-Reply-To: <20250205014051.13765-1-pkshih@realtek.com>
+References: <20250205014051.13765-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -67,26 +67,38 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Message-ID: <e606e615-975b-4b1d-a4e8-31c788ef149e@RTEXMBS04.realtek.com.tw>
-Date: Mon, 10 Feb 2025 11:26:32 +0800
+Message-ID: <58293fb9-cf7d-4d0a-add2-7f9b2a1d66f9@RTEXMBS04.realtek.com.tw>
+Date: Mon, 10 Feb 2025 11:28:20 +0800
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Ching-Te Ku <ku920601@realtek.com>
+> Since there are two function features for now, func_bitmap[] has single
+> one element, which BITMAP_FROM_U64() generating two elements is exceeded.
+> Change to assign function bitmap barely.
 > 
-> If the slot duration is 0, the firmware timer will trigger timer hang at
-> the timer initializing state in a low rate due to hardware algorithm.
+> With i386-allmodconfig (a 32 bit system), it throws
 > 
-> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+>  >> include/linux/bitmap.h:736:33: warning: excess elements in array initializer
+>       736 |                                 ((unsigned long) ((u64)(n) >> 32))
+>           |                                 ^
+>     drivers/net/wireless/realtek/rtw89/regd.c:16:34: note: in expansion of macro 'BITMAP_FROM_U64'
+>        16 |                 .func_bitmap = { BITMAP_FROM_U64(_fmap), },     \
+>           |                                  ^~~~~~~~~~~~~~~
+>     drivers/net/wireless/realtek/rtw89/regd.c:20:9: note: in expansion of macro 'COUNTRY_REGD'
+>        20 |         COUNTRY_REGD("00", RTW89_WW, RTW89_WW, RTW89_WW, 0x0);
+>           |         ^~~~~~~~~~~~
+> 
+> Fixes: 79a36fc56bea ("wifi: rtw89: regd: handle supported regulatory functions by country")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202502031932.BMQ4lhJT-lkp@intel.com/
+> Cc: Zong-Zhe Yang <kevin_yang@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-3 patch(es) applied to rtw-next branch of rtw.git, thanks.
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-2e4c4717b3f6 wifi: rtw89: coex: Assign value over than 0 to avoid firmware timer hang
-e53aa85e4b8a wifi: rtw89: coex: To avoid TWS serials A2DP lag, adjust slot arrangement
-f94ba3c640f6 wifi: rtw89: coex: Update Wi-Fi/Bluetooth coexistence version to 7.0.3
+85c726b20f59 wifi: rtw89: regd: avoid using BITMAP_FROM_U64() to assign function bitmap
 
 ---
 https://github.com/pkshih/rtw.git
