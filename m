@@ -1,126 +1,193 @@
-Return-Path: <linux-wireless+bounces-18697-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18699-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FB5A2E826
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 10:48:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0C4A2E8EA
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 11:18:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9497418844F8
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 09:48:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3924C1889D9A
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 10:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04411C5499;
-	Mon, 10 Feb 2025 09:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30391CAA82;
+	Mon, 10 Feb 2025 10:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="TCccnZ5L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PX0+CSSl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067602E628
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 09:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2361C68A6;
+	Mon, 10 Feb 2025 10:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739180909; cv=none; b=BPl/a84ouDv/B0shHPVropJlblyYQeyopk+OuGF6Skf4wUOoFldL8XeEmpBcA09/Gw2XlS7TVJbO30Vw/pF6isI6ZEYdvr0T6bnR2aguTw5eOjKn7hkuG3j72UKVJiLQrbuQbSw8dgrQe2xg+elQzh2mf2QfFNvmd2Mz34v4qvo=
+	t=1739182704; cv=none; b=j+5Ec3I5e8ZwSPl10H8WO6Wx5VGnGA+98uTJi6GYASy6NykD0guxHr/R3WynguYN5wKTtDAgQQoXdQozOrqdy2pRFPayuC25Yv8nqG9c6u7QjtYq6aVCB7BpEQrR350gl6rRNEQNDjULkzwjZ0e6RNgESEFhlSKHS7+b5BLl+HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739180909; c=relaxed/simple;
-	bh=Uq9LEFwqXD/ohngq9zlUzUQyXKiamR8ZOhOnBCMIfoo=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=dc+xDFx0VzjMPxGt7KXoNqt5lETMDytTDyHd1tRSQBPhdHatK4nZARoPbSDXr9j+I0skfs+tQxuyaBU1SfkFfCXpDT4sMknmMfEZJu7mO5Poaz4E92BevSIHAlWLKtaaGgDxtdfvwoYfSX/UljAxL3rNzzYsz97MtEAUGQ+doWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=TCccnZ5L; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-436281c8a38so26814155e9.3
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 01:48:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1739180904; x=1739785704; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=9sWAuiljb6qgt2soNGlWZPwj09N7VzIfmlBHhiUbhLQ=;
-        b=TCccnZ5LsFw4rYRxnzOgGlGdv5PLrFAlfcGOy7MYMsZPvnadO6Gizq+klrrUDGp/Z0
-         OzFKcR70xcmfb9WxVwlr6VqMagrgA4rnCnW9XNzjBi+lz5DBlVMuwAUB8xF+KUqF77Sn
-         SgQ5G6kz3Id/dNe36VRUi+bWekUwyt7oC1kI+lPHPEh5oSSomoQJK7y5mFYApDtOXg4i
-         nE23/DpGF9HP5cwCqAmrSjhd5ii3qtCGrE1nAUC69j4o+nPs5OgFfzxDYtABM7StKR71
-         0FsMsuUvMvskT9VoEyn/9MhjIRkkX+kPvBJ2BOKXwXruLGjbXWSsRnz6vDx2eAGcGLoq
-         LzKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739180904; x=1739785704;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9sWAuiljb6qgt2soNGlWZPwj09N7VzIfmlBHhiUbhLQ=;
-        b=KuoLcHuZc9Q3STEMYK+mdAjtGX0CigyI1O/kkUHbiaIDW8kYHGYSvTSMFwHOQPYd10
-         rfqtSytnkgFWiDqx02ohgY3jwwjY67NEM0TA/vy87BMK+wHQvLDqJ4qBY5m0m2HHch5J
-         0E5c5dUxPPf1v30MN4s/1bpykdj57sEbTveHEcvTTqE5F0NBewnhJTNEau+KX4g7Z/pc
-         wCSVgUJZ2cslMW5RHFq5mxQCEsVF8OCDqgbDaIZEdgJRsbdF2mE2MPmW2FHeNpJPDC2N
-         hQTzUl/0coNiNIsGwrw9+4wKj7kO/hURX4YxGL2p9XB9vGuyPR3epRrsDm8vFI+ri5ea
-         LhOQ==
-X-Gm-Message-State: AOJu0YxPqat7egyWWbAWJyg7IV8GCfZGaxT8pNWF6Njv5lW1UHHXkQnO
-	GDxmGYs3crWbl1yY0iO27SWbodo0XSKrE38icM5e2AMtwYdMH4E4ciri+Hm97PE=
-X-Gm-Gg: ASbGncsSNSaJvtvpmqsdXe0g2jIf26NgNm4d+E+MuzCbxfClg6ql/PooDEeyp9RL7Hk
-	9QmhZ3a7CNqKWjUf4yAtl/IKwRWz3UgqAXZvkhRdLdPcLHdTRQNt/LLqRwNgSl7b0OIJFicDFIa
-	OIzLJlL0jBWh8vj9WVR4b11soRUmZZ48QSSp9WriynQL+pTuyC+3ukZqKeKxFlhz9znhQix4DQw
-	19oP3mTz6FCvyQqPccxnGGwVYZTvL3vptz2et3xciYpKs8OulPMoXxguichGSYh2s+kMa2Mjlo9
-	Hqplnifajc40M9uXpVJ9Jh+07pxGl5+esYc7voymizqzCoo=
-X-Google-Smtp-Source: AGHT+IFQo8xzQ94CgaklwWkOTUBMlFg9l5Wqvm7POmCkzaGuaqB1WbSYEchbGaMfjn/MbKEPCg+lxA==
-X-Received: by 2002:a05:600c:a4b:b0:434:fa55:eb56 with SMTP id 5b1f17b1804b1-43924987b41mr101980005e9.7.1739180903971;
-        Mon, 10 Feb 2025 01:48:23 -0800 (PST)
-Received: from [192.168.108.121] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391d5283b2sm145015155e9.0.2025.02.10.01.48.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Feb 2025 01:48:23 -0800 (PST)
-Message-ID: <17a9044d-4bab-40df-a119-8c43ebd60bc2@freebox.fr>
-Date: Mon, 10 Feb 2025 10:48:23 +0100
+	s=arc-20240116; t=1739182704; c=relaxed/simple;
+	bh=p8iRm7Gznn3ekKIRR91V/psR21ij9bK+0II7DymWAjA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MSgn0I/gDmkRJrmgJoypVHV/o6sYc3/UEzm5QukM40winVb7dBBdDIOMlNQ8BZXGSc/XB7qEnpHRry4j/fcBaRxsC3whfdJuN4cV9ho+2CXhhzcOrJ6/BjyHp3TiN2Od0CCK44E83hOTtGXwDG4g6m/N/uAL+lzYTXbIP8fwho0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PX0+CSSl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56D2C4CEE6;
+	Mon, 10 Feb 2025 10:18:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739182703;
+	bh=p8iRm7Gznn3ekKIRR91V/psR21ij9bK+0II7DymWAjA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PX0+CSSljZXtmDbUPsW3q/1UEAZkcJHQHMj/eR0Q8uSPrNmrv7jqsd3H+YWo1xOM/
+	 HjMrHdx6LlY4VekopfJmqAvseecf+sebvVrDYeBP2E4GKMMrmkGAF7v22e90DTf2Ge
+	 mjxsRdCf7qv3lINGQIUrTR/CKUR1x2WI5IgNnSnIRO7tiHp3FFc+3cqvsj/9hsWnKh
+	 QUvK4DWNq98U6G9Jmn/ZLIwMSS34I6YncKIZUQdrGDo3GiokB90neYSGG7qvgPEeX+
+	 u8zr8PFfVeA+4pAnIe0oPCCKpjgmBbYQ3zyMgD9kNY5qkMBCxcJD7jQPVUsrPO+vlG
+	 qr78nANSqX06Q==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1thQrt-00000006Ci9-3Zgs;
+	Mon, 10 Feb 2025 11:18:21 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Chao Yu <mchehab+huawei@kernel.org>,
+	Jaegeuk Kim <mchehab+huawei@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Mike Leach <mike.leach@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tony Luck <tony.luck@intel.com>,
+	bpf@vger.kernel.org,
+	coresight@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-hardening@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH 00/27] Improve ABI documentation generation
+Date: Mon, 10 Feb 2025 11:17:49 +0100
+Message-ID: <cover.1739182025.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
-Subject: Re: [PATCH] ieee80211: fix interopt issue with MT7927 chipset
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-References: <20250120114551.1542812-1-pmartin-gomez@freebox.fr>
-Content-Language: en-US
-In-Reply-To: <20250120114551.1542812-1-pmartin-gomez@freebox.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On 20/01/2025 12:45, Pablo Martin-Gomez wrote:
-> -	/* on 2.4 GHz, if it supports 40 MHz, the result is 3 */
-> -	if (he_cap->phy_cap_info[0] &
-> -	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G)
-> -		return 3;
-> +	/* 20 MHz-only non-AP STA */
-> +	if (!from_ap && (he_cap->phy_cap_info[0] &
-> +	    (IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G |
-> +	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
-> +	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
-> +	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)) == 0)
-> +		return 4;
->   
-> -	/* on 2.4 GHz, these three bits are reserved, so should be 0 */
->   	if (he_cap->phy_cap_info[0] &
-> -	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G)
-> +	    (IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G |
-> +	     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G))
->   		count += 3;
->   
->   	if (he_cap->phy_cap_info[0] &
+Hi Jon/Greg,
 
-This patch is still reading reserved bits depending on the band being 
-used. I wanted to do a new version of the patch to avoid doing that by 
-passing the current band to ieee80211_eht_mcs_nss_size(). Unfortunately, 
-ieee80211_eht_mcs_nss_size() is called by ieee80211_eht_capa_size_ok() 
-which itself is called in places where the band is not known. So I'm not 
-sure I can do better than this.
+This series replace get_abi.pl with a Python version.
 
-Best regards,
+I originally started it due to some issues I noticed when searching for
+ABI symbols. While I could just go ahead and fix the already existing
+script, I noticed that the script maintainance didn't have much care over
+all those years, probably because it is easier to find Python programmers
+those days.
 
-Pablo MG
+Also, the code is complex and was not using modules or classes and
+were using lots of global variables.
+
+So, I decided to rewrite it in Python. I started with a manual conversion
+for each function. Yet, to avoid future maintainership issues, I opted to
+divide the main code on three classes, each on a sepaparate file.
+
+Just like the original RFC, I opted to keep the Sphinx kernel-abi module
+on three different phases:
+
+- call get_abi.py as an exec file;
+- import AbiParser on a minimal integration scenario;
+- cleanup the code to avoid needing to parse line numbers from the text.
+
+This way, if something goes wrong, it would be easier to just revert any
+offending patches, It also provides a better rationale about what each
+logical change is doing.
+
+The initial patches on this series do some preparation work and
+cleans some ABI symbol bugs that lack ":" delimiter.
+
+I opted to place on this series the Sphinx and Python version updates.
+
+I still have ~10 patches here with additional cleanups, from the original
+series I sent as RFC but let's get the main changes merged first.
+
+Mauro Carvalho Chehab (27):
+  docs: sphinx: remove kernellog.py file
+  docs: sphinx/kernel_abi: adjust coding style
+  docs: admin-guide: abi: add SPDX tags to ABI files
+  ABI: sysfs-class-rfkill: fix kernelversion tags
+  ABI: sysfs-bus-coresight-*: fix kernelversion tags
+  ABI: sysfs-driver-dma-idxd: fix date tags
+  ABI: sysfs-fs-f2fs: fix date tags
+  ABI: sysfs-power: fix a what tag
+  scripts/documentation-file-ref-check: don't check perl/python scripts
+  scripts/get_abi.py: add a Python tool to generate ReST output
+  scripts/get_abi.py: add support for symbol search
+  docs: use get_abi.py for ABI generation
+  scripts/lib/abi/abi_parser.py: optimize parse_abi() function
+  scripts/lib/abi/abi_parser.py: use an interactor for ReST output
+  docs: sphinx/kernel_abi: use AbiParser directly
+  docs: sphinx/kernel_abi: reduce buffer usage for ABI messages
+  docs: sphinx/kernel_abi: properly split lines
+  scripts/get_abi.pl: Add filtering capabilities to rest output
+  scripts/get_abi.pl: add support to parse ABI README file
+  docs: sphinx/kernel_abi: parse ABI files only once
+  docs: admin-guide/abi: split files from symbols
+  docs: sphinx/automarkup: add cross-references for ABI
+  docs: sphinx/kernel_abi: avoid warnings during Sphinx module init
+  scripts/lib/abi/abi_parser.py: Rename title name for ABI files
+  scripts/lib/abi/abi_parser.py: make it backward-compatible with Python
+    3.6
+  scripts/get_abi.py: add support for undefined ABIs
+  scripts/get_abi.pl: drop now obsoleted script
+
+ Documentation/ABI/removed/sysfs-class-rfkill  |    2 +-
+ Documentation/ABI/stable/sysfs-class-rfkill   |   12 +-
+ .../ABI/stable/sysfs-driver-dma-idxd          |    4 +-
+ .../testing/sysfs-bus-coresight-devices-cti   |   78 +-
+ .../testing/sysfs-bus-coresight-devices-tpdm  |   52 +-
+ Documentation/ABI/testing/sysfs-fs-f2fs       |    4 +-
+ Documentation/ABI/testing/sysfs-power         |    2 +-
+ .../admin-guide/abi-obsolete-files.rst        |    7 +
+ Documentation/admin-guide/abi-obsolete.rst    |    6 +-
+ Documentation/admin-guide/abi-readme-file.rst |    6 +
+ .../admin-guide/abi-removed-files.rst         |    7 +
+ Documentation/admin-guide/abi-removed.rst     |    6 +-
+ .../admin-guide/abi-stable-files.rst          |    7 +
+ Documentation/admin-guide/abi-stable.rst      |    6 +-
+ .../admin-guide/abi-testing-files.rst         |    7 +
+ Documentation/admin-guide/abi-testing.rst     |    6 +-
+ Documentation/admin-guide/abi.rst             |   17 +
+ Documentation/sphinx/automarkup.py            |   47 +
+ Documentation/sphinx/kernel_abi.py            |  162 ++-
+ Documentation/sphinx/kerneldoc.py             |   14 +-
+ Documentation/sphinx/kernellog.py             |   22 -
+ Documentation/sphinx/kfigure.py               |   81 +-
+ scripts/documentation-file-ref-check          |    2 +-
+ scripts/get_abi.pl                            | 1103 -----------------
+ scripts/get_abi.py                            |  214 ++++
+ scripts/lib/abi/abi_parser.py                 |  628 ++++++++++
+ scripts/lib/abi/abi_regex.py                  |  234 ++++
+ scripts/lib/abi/helpers.py                    |   38 +
+ scripts/lib/abi/system_symbols.py             |  378 ++++++
+ 29 files changed, 1830 insertions(+), 1322 deletions(-)
+ create mode 100644 Documentation/admin-guide/abi-obsolete-files.rst
+ create mode 100644 Documentation/admin-guide/abi-readme-file.rst
+ create mode 100644 Documentation/admin-guide/abi-removed-files.rst
+ create mode 100644 Documentation/admin-guide/abi-stable-files.rst
+ create mode 100644 Documentation/admin-guide/abi-testing-files.rst
+ delete mode 100644 Documentation/sphinx/kernellog.py
+ delete mode 100755 scripts/get_abi.pl
+ create mode 100755 scripts/get_abi.py
+ create mode 100644 scripts/lib/abi/abi_parser.py
+ create mode 100644 scripts/lib/abi/abi_regex.py
+ create mode 100644 scripts/lib/abi/helpers.py
+ create mode 100644 scripts/lib/abi/system_symbols.py
+
+-- 
+2.48.1
+
 
 
