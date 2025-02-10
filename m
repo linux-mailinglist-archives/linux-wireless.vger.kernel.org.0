@@ -1,164 +1,100 @@
-Return-Path: <linux-wireless+bounces-18687-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18688-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95163A2E2D9
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 04:33:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1EAA2E2E3
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 04:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72C7F3A4B2D
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 03:33:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACC95188799E
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 03:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C395EAF9;
-	Mon, 10 Feb 2025 03:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1169546447;
+	Mon, 10 Feb 2025 03:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GiV1ooQY"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="L+OBY37E"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC0A35953
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 03:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BBCEAF9
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 03:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739158421; cv=none; b=PaZxGbQtvjy0nyN/dQR11w/w9xBvPwCTQVzm7RG4t13o3YJI7jgSfg7v4hqG9Z7V6D5LllQz9bBufKsPG7/nWC3mMjiNkG2pQVLqexZyrTtjaJekVIqcLu0p7b6E9VnvHHxq1ld3sZ5Pt6DS8QgQcJMfPii3r3zQtfTgt6N1AA0=
+	t=1739159051; cv=none; b=WKO0VgFbpfWrdgZ5BGM80BOMBUza9r+gmYpOUI5v7j2qARSiR2hPqWwAU5uvWhvMTbLmmVwJqfDu/RZkxuakUX9GbpUhON8/n+ZyXSj+l2p9YGA3bNT/3ofCjC4AE2SLCM61HaOQgojl4pSM9s2OzUUjmRBqdUrnMVKgPUx/WrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739158421; c=relaxed/simple;
-	bh=YHeHZNOWN6kZWUWe3rNuWHpAEwYGkiq5W8CYjsIzn6I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YfkeK3qG2GbtjMAiqHPNSxXBpb/wa7gvLxewnWUKhC2NiM6xzOFkM4FtXsYi5Pps8M2ut6E1qyj8ncjXbnHHzmzerbm04WKm8y28ZWVw67pmma/VDGXpeyBsnQn3AswHf2WiKL7Q11l4hGIC6Jc1M118ZHrKzunPHq0e5lQ5ir4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GiV1ooQY; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 519MGwvv015468
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 03:33:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Tc+kij6+pE0t14MlY+EJRZoja7UejFCIx+FgUfhcgkU=; b=GiV1ooQYZi7qVDXH
-	dxrqq/YhdQO0zUYJwfSucenCrfpBpLq/r5SUrFpQCtXEZquyrJNsb03bYi2Dsna7
-	CrBu7TEtCPidBBXMQ/QnwyqNRMvJSk8zcWsM+LUhFkZplsSzPDSkQyE1u1zrr6Jz
-	2gOQiKqa3wREQASg0sEOD6gTGATDdegCshvhIrjbIhZj5jRvsgKyA9NGaG/Eo7qB
-	elAhtra2uyvi25hRd22cRPgkkmafZVWkclp6kBzaAhCRXzr4Qh3WO1yay//7Xm5/
-	3vlVgq10lweBWCuuIM4G4lnEwZFEnk9tTSR9/19mAHtyy167frKTLHS0IcUXumtI
-	1Dw8HA==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44p0dqay2c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 03:33:39 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2f83e54432dso13056431a91.2
-        for <linux-wireless@vger.kernel.org>; Sun, 09 Feb 2025 19:33:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739158419; x=1739763219;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tc+kij6+pE0t14MlY+EJRZoja7UejFCIx+FgUfhcgkU=;
-        b=BNmb8eU7LJruj63Smp6ORdB8b9log6Uu0fgdB/PDx2Tc7wQ8mSLbNz21HF/ygy49dj
-         sK4LhDcN+rYhBACbagwJOKeEc3YltP0GJHPUKjTfjT9BAWkOlSVrO8hXmoBZfY6fh2U3
-         UwAVVRS0LUH3IGY8xXtBSY4J2JZaCCjJFyeLUpRn42EXbZqtIEnBeIsFT7KGjZML/is0
-         DjmAV0CfNhE6xGZRrUMKWs7NOPxHB1v2+92SUUChF1TOpUqCqf/NR4vQuHonIiF11k+q
-         IH4o2/mkKjkLQTLoWB7U9a6yyvCPtDqnCFHE1bjsLZkfnRvG1FhO7pQSRdAmGc8Q+kMJ
-         4HtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUjNiyw7+cUVpQTuH0tPSYXZSDe1jycmSqekA9Ji2kQN0J+uIycdd3wJKEmSNU7YnxQacfFyLIlF1RfkrQOmA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7i8vGYlrK18UokUcRF27ITh//G6MalJxI8TZf3K3DhRwAxiqU
-	U0DZNBCewIIR54r/drWh9qbqArZJFd6xGu0CzznQfFmymFPMw9VEFIAF5rBcHtZ7ibrctdPROUQ
-	n2fQZoWLwdKHlXlUdNJ7dyXw57Uwn6zDQJ57pkZht/RDgA7OdEX1AW60y2ONWLZ12jzlq79+SmQ
-	==
-X-Gm-Gg: ASbGncutMkNNCebEPiG/RVLUBCzM9AuR2rFVswrmb/+DqV9pHVjGY3L1qb18rWCfnXc
-	dq4Dr6LonLnMksw+HiDL1Y8tU+JbeogZwoc7Nau/TEnT9t9dkRj10Ql7QhGabjwyzBEVHHQrX7/
-	xfcSi2wLJHUiCW+pq44d014+fkWJyKS/fj+G0pVEBHRljjdYVlmY/rxuYTpYJyNOw1CKLC+kENh
-	a2AbIrn+CckPBnNzSXiHQA7OIyR0RYg3AoNJCz2jSYwmBXfSapbrAsH+NqVlH8jPiz89RqQpfDG
-	zqaSluCOyMpsY0eqvrIMKSsmkJJGupAI5SAffKE=
-X-Received: by 2002:a05:6a00:3016:b0:725:e499:5b86 with SMTP id d2e1a72fcca58-7305d546034mr20917158b3a.20.1739158418676;
-        Sun, 09 Feb 2025 19:33:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFNWKz69WA1iDoZIkm4CPxi7iVaekbu8x2lRv9HMX2DcslnSjt1KSl9w6DbAHKm61c/erwkVQ==
-X-Received: by 2002:a05:6a00:3016:b0:725:e499:5b86 with SMTP id d2e1a72fcca58-7305d546034mr20917126b3a.20.1739158418324;
-        Sun, 09 Feb 2025 19:33:38 -0800 (PST)
-Received: from [10.152.202.18] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73048ae7f84sm6511273b3a.80.2025.02.09.19.33.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Feb 2025 19:33:38 -0800 (PST)
-Message-ID: <5eede3cc-1b60-41ff-9ced-8a75107748e3@oss.qualcomm.com>
-Date: Mon, 10 Feb 2025 09:03:34 +0530
+	s=arc-20240116; t=1739159051; c=relaxed/simple;
+	bh=5V9YSwEwGcgAUuRdscLm7/9ZZtU7awv55D48d02F+04=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=sEoPIsLQY8ERD5T2b3piClbKzJwiKtqCqrpZvR4v2rCjfONmxviptI4yyK0iYeRGMJeP/QYc7KJ+gekQSYJW5DHIhUc6bSXpjXZAdRuciz4xSylMqsMsQZtY1eqNGAFmUd3dmYmf2cI3HWzto8ELEgaut6fEMm3ygCyfrr20yHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=L+OBY37E; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51A3i5Vo91593598, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1739159045; bh=5V9YSwEwGcgAUuRdscLm7/9ZZtU7awv55D48d02F+04=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date;
+	b=L+OBY37EwYpePESW6wT1kgloX5Wan0tLSyaoZQGcmPwtYQaRNdj9ZcVYUalGOMxfo
+	 SX7QITXrAdjsVDkQxpjZQ5KSs56yZ2cC1DUUMZ/QO5dnaeBymWSG+1uDbw9dqQr0X7
+	 bPnuasiZSJJzMkjXjb4WGt7S4n2R6pHpWujp1MPyGIQPTO0alSaOAvLWr9OxCHGGah
+	 VioD/mO882oUyKP8HQIQH1Pgbwj/QUub4n5SdtEMOBY3qlBwhBhuorzVW0cBTECW8I
+	 mlVQiejpqW62ClB3ju1GT9gV3GktmUJadDuANI2S/3LIMq7eKe+ctt+ZCFXRQqtpFy
+	 ECv0ExspSP2ng==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51A3i5Vo91593598
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Feb 2025 11:44:05 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 10 Feb 2025 11:44:06 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 10 Feb
+ 2025 11:44:05 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [PATCH v2 1/9] wifi: rtw88: Fix __rtw_download_firmware() for RTL8814AU
+In-Reply-To: <55b5641f-094e-4f94-9f79-ac053733f2cf@gmail.com>
+References: <9fc518ae-7708-42c6-99ca-56ee307555b6@gmail.com> <55b5641f-094e-4f94-9f79-ac053733f2cf@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: Fix locking in error paths
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        Bart Van Assche <bvanassche@acm.org>, Kalle Valo <kvalo@kernel.org>
-Cc: Jeff Johnson <jjohnson@kernel.org>, ath12k@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-References: <20250206221317.3845663-1-bvanassche@acm.org>
- <c9765212-bfb1-4b8d-80f2-7219bb4a7372@oss.qualcomm.com>
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <c9765212-bfb1-4b8d-80f2-7219bb4a7372@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: Sqqzno2Neu2aLrGXiwyii02zoprXPuV4
-X-Proofpoint-ORIG-GUID: Sqqzno2Neu2aLrGXiwyii02zoprXPuV4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-10_02,2025-02-07_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- phishscore=0 spamscore=0 malwarescore=0 impostorscore=0 lowpriorityscore=0
- clxscore=1015 priorityscore=1501 bulkscore=0 mlxlogscore=973 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
- definitions=main-2502100027
+Content-Type: text/plain
+Message-ID: <d952bf69-6109-4d9e-a0c3-19a596102cdc@RTEXMBS04.realtek.com.tw>
+Date: Mon, 10 Feb 2025 11:44:05 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On 2/7/25 20:40, Jeff Johnson wrote:
-> On 2/6/2025 2:13 PM, Bart Van Assche wrote:
->> If ag->mutex has been locked, unlock it before returning. If it has not
->> been locked, do not unlock it before returning. These bugs have been
->> detected by the Clang thread-safety analyzer.
->>
->> Cc: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
->> Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
->> Fixes: ee146e11b4d9 ("wifi: ath12k: refactor core start based on hardware group")
->> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
->> ---
->>   drivers/net/wireless/ath/ath12k/core.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
->> index 0606116d6b9c..212cd935e60a 100644
->> --- a/drivers/net/wireless/ath/ath12k/core.c
->> +++ b/drivers/net/wireless/ath/ath12k/core.c
->> @@ -1122,16 +1122,18 @@ int ath12k_core_qmi_firmware_ready(struct ath12k_base *ab)
->>   		ath12k_core_stop(ab);
->>   		mutex_unlock(&ab->core_lock);
->>   	}
->> +	mutex_unlock(&ag->mutex);
->>   	goto exit;
->>   
->>   err_dp_free:
->>   	ath12k_dp_free(ab);
->>   	mutex_unlock(&ab->core_lock);
->> +	mutex_unlock(&ag->mutex);
->> +
->>   err_firmware_stop:
->>   	ath12k_qmi_firmware_stop(ab);
->>   
->>   exit:
->> -	mutex_unlock(&ag->mutex);
->>   	return ret;
->>   }
->>   
+Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+
+> Don't call ltecoex_read_reg() and ltecoex_reg_write() when the
+> ltecoex_addr member of struct rtw_chip_info is NULL. The RTL8814AU
+> doesn't have this feature.
 > 
-> I made the subject a bit more descriptive in the pending branch:
-> https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=09a2421b6e5f617cfbeab906fa8037dda4aa95b8
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Better now, thanks.
+9 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
+8425f5c8f04d wifi: rtw88: Fix __rtw_download_firmware() for RTL8814AU
+9e8243025cc0 wifi: rtw88: Fix download_firmware_validate() for RTL8814AU
+62f726848da4 wifi: rtw88: Extend struct rtw_pwr_track_tbl for RTL8814AU
+d80e7d9b6ba3 wifi: rtw88: Extend rf_base_addr and rf_sipi_addr for RTL8814AU
+8f0076726b66 wifi: rtw88: Extend rtw_fw_send_ra_info() for RTL8814AU
+e66f3b5c7535 wifi: rtw88: Constify some more structs and arrays
+ad815f392003 wifi: rtw88: Rename RTW_RATE_SECTION_MAX to RTW_RATE_SECTION_NUM
+0f98a5959657 wifi: rtw88: Extend TX power stuff for 3-4 spatial streams
+9f00e2218e15 wifi: rtw88: Fix rtw_update_sta_info() for RTL8814AU
 
--- 
-Aditya
+---
+https://github.com/pkshih/rtw.git
+
 
