@@ -1,331 +1,115 @@
-Return-Path: <linux-wireless+bounces-18719-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18710-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F23BA2EE45
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 14:36:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F900A2EDEF
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 14:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16E8D167EF8
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 13:35:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75B1F3A1D53
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 13:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A801323027B;
-	Mon, 10 Feb 2025 13:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5724722FF5F;
+	Mon, 10 Feb 2025 13:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nffdMbBG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fLakUSMF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0A022F391;
-	Mon, 10 Feb 2025 13:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D5122F16A
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 13:30:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739194320; cv=none; b=LiMp/ul9ghd8BpfBLLI0O3n2NFTiB7CQ9j2F59D48vlfN1CLN5OGxQaeXmR11xtlg3wES34m8H5dL+Ht/gWXQOdyHNV47X7iOKFEnBOFjtzUqn5FKrztUj+LCC1pp14Q/ZMREBsxYI9bFRH07IjsGMZQuOcW9/+cL3KESaK+1Ro=
+	t=1739194242; cv=none; b=p585bl+wngxe3whXiVpy2q0c1jihaPKKKGg0LKO73xPDxBeKVICf82gESbltyrrErPjlSYrQ6Lrv3NPBgM4wN9lHu2lL/pUg+gqeAulp4JXFvork7t7Ue/rX9B78cE3f6mKwNOVX281UEVVoppSIbYKm7HAY1WtCMXbf5osZ3hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739194320; c=relaxed/simple;
-	bh=S62S2UlhWL8rb4qI3arpOLtfToV24VE5G0QJtgwZSd0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQWXBtUbYnThfG/6OAitlzsAJkwhJMESV/xx0bHz9AhJD4/BcWDYvERLKeOUDXnuR7BIcDzeDmN+OW7Q5RPjlAGtE+nP/TnLEw3AjBMYcwHZ6jkWjINbOnXycgMllofNljnH1dy9hhfmBVX4mVSZQflgbqbQCRkIi4Agodxplfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nffdMbBG; arc=none smtp.client-ip=209.85.214.169
+	s=arc-20240116; t=1739194242; c=relaxed/simple;
+	bh=xzR95+vrkDBDeB9j0wCiT1Bu/67XaaV7S4ZZbWRygnE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=nSCVXZXUN2Q7bzDO8G7/MNeihZcN0vsErzkHQCEEfjCEvtX9uVBh+mZTl7v1+mpinAy36mkfBMwVv4Uccgsi3E3Brtuc70lv8D8b0y/jKiFuX1gFQdgOJmwsfDzRICKUNVLuHg5+VDEpOPjiLOATbjnIueGwn9C5oKQSw1unYkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fLakUSMF; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-21f2f386cbeso79691785ad.0;
-        Mon, 10 Feb 2025 05:31:58 -0800 (PST)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5de861dcb04so1034545a12.1
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 05:30:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739194317; x=1739799117; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Jk0dxyoWsu5lRO3R+Rz0JbRWJlXzABQyZSbO//NLaUs=;
-        b=nffdMbBGq5lRsBHSKBMadMqqfvyNNIlS/Cwc0MJ8f5IjZ0ZM8CJ7MDNWwGKkIkPLwD
-         sNoBNIOiI1IijsKGyf5LY6Y+C+5qhsDvy1UGnLTF/Duy4nMS5gddV4vec1jGHXSHWg6s
-         3lkEXfN8NNhZFk4QQ8s9Ih0qRK1w6wiyPMM2lXv4yuIgZaSKFo5iEJHrtjDTkvO/C1U+
-         zXGPLiaOJY3eCP0eey8tTDFg4SlZUIljtNUGx0ODDjT7JctZHM00Qnh0Mw2IxDxO1KEd
-         lFr7THRh2MguPSVDWqrG99FzeT6AqvaLCgEB5AhQFFU3ObQXPskEWG/qKj7xhKLf+0Zd
-         zoKw==
+        d=gmail.com; s=20230601; t=1739194239; x=1739799039; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=q24vHHQ1SnBMHxcwto72Dh3csPAbQwG8zVQfdc192pg=;
+        b=fLakUSMF4O4zzpsBGYyZnEWuOZw9zbsCJjaODWjveLulGVC3whwQ+GU1GtMeG2T22N
+         FX50gVS8inq0QSXlH0kcqBPq009X0074fHvmbNoFpWkZ3Vgs0xjfWHnW/9xQDhGztjtU
+         9nnTHTgWsWjE8a5Gt6Ttkcbu7tqANv18jyPYqjGsVNwmw2pFsn4KRBXi/oA4UgJfdLMx
+         8T1yIUgt7cD+34wWPqRZoOqRs+EBXtU+O7h6Y/h9UXV16CKTUy0Kl3esIFIWz8mChK+u
+         NdJ9z5v/c/AaquTrntoH8Lld5VNfjG0YypmRl6EJiRXYdA22oG5nXpM7o49G6GxLHWnl
+         jfyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739194317; x=1739799117;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Jk0dxyoWsu5lRO3R+Rz0JbRWJlXzABQyZSbO//NLaUs=;
-        b=Sh9kWjIkqyYtZ22e9ExP4Ov/74UYvtpEw1RZIRf/efSdISDm9H7v7rkFZocUtrqD38
-         uvkO7M+1rHAzW0I+76wsxAzKKrgmjhXLkFpIgp0BUEqju5/eLqGMo4UFUWvNQsx/iTSP
-         DsF5rE8MjuDH0uNH4KSibkyscog4TAbUgArFjBv35qrRImTwyTCCXhCKlxwQ1akRpU4H
-         gs58jqSuslrHYHPY9L5hFxS3crDMQZ6RohZQG92SfLpfGZr8mInwBc1jQEruIfWApRuO
-         cr1e7mqTBcnd4cE6r+Xzu/1shjut3znfcF14I/8+D4hqnGAC+5rOa2dYpNolENshCFn1
-         m+8g==
-X-Forwarded-Encrypted: i=1; AJvYcCUrK+VWuoYr6B/Ne4jB1R2ZUPbpyMS0YldA+a1u+J5VpPGZXAJBhWja8/HI8Ia2pNx6EFxFD2Mc+ARO@vger.kernel.org, AJvYcCVOJ61EGvPjXK6udrbZiqXTrfAYEOrXjv96hA887G1RS7DpzAUhibkPLparCSk2B/SGqSOTPu7YTvW//Ncokfn1@vger.kernel.org, AJvYcCW9QrpdJDp2XMn/coPc4/h0ex9HU6Ceq1AkVOSu2HP3mrRf4Dh6rEq2om4AdNyAIRA224U=@vger.kernel.org, AJvYcCWA3IQTOFw19Q6Id2o+2eyHuF2iWZmx+Wo7wsH4EeeTMeneszkBu7vAA5xVf/b/M4IbS3WzwyrMFXpnZQ==@vger.kernel.org, AJvYcCWRySya22sXNlPKrzo9fVmhjs9finoANLKgbAdaU0mS1AmJGQtTHe9HxDjU+DE8c7aJ4OKnQ1o0tVemaL9Y@vger.kernel.org, AJvYcCWrFw9uYdgUHpAZIWqjoQGokJGCysqoEcMAdbI8WoEcdbajJr6Ns3Ozh9Hia+d2NdJgEEaN48xj9kXmRw==@vger.kernel.org, AJvYcCX545YPGlgLOGcxOsqSPBvyB7I/8QklTCYXoCY8phm9K4fdAUWH2xftH8J99DgYr8zYqzG2PbOsrwP/lBsLt3k=@vger.kernel.org, AJvYcCXPM/5ENZCrCHopPOZDzn11LWCRT4ENN+T64+SDSTTGRExoTgY03cMmVqJWmQzpPUuMFpxvg3J1dgp4@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlylsSwM8ldxxANAExZ339B+4vX1jUewGqZxYAv9gMlKDgKsGc
-	2jGBSZUdNyzQaefRl8IdsNmqeh3Po3Wk64YMWhdB/oMP0GyyxkuHorJPcQ34x7A=
-X-Gm-Gg: ASbGncsY6uiUeM/oeYV3ChmbIgycsUXFyrQrOlNhUOE6FWKtOsfQh8FHZ9qsiCmwrnS
-	ML4rm9MSF4kU92WVf/gy+ctkZP1vzU+qBMVbkZfQkuMag25JtCAUVfClMRJPG7JMDQWdROIgrbY
-	ZelWqnAvsFWlXMSJV7UrLE5z5ZF9bKjYWxpXycCRHftztss7OkvxcgY84Ysc7SRYe3m8vFNjx8a
-	CzmfrYymaX5FfwyPRk708YyJFDdN4BaoSk5mK0FH7pHuxLzh3Kh+RV7S5ATocB0RIeIYRrEWxZW
-	3ky8wQ==
-X-Google-Smtp-Source: AGHT+IFvHDtUC7UviecjfNl3hpHTbMhh0EOi41PhfMqFPmLkJsOvzu+7RGuTxjt6Zfs/TZjuhdiWxA==
-X-Received: by 2002:a17:902:f60a:b0:21e:feac:8b99 with SMTP id d9443c01a7336-21f4e10da1bmr232900525ad.0.1739194317162;
-        Mon, 10 Feb 2025 05:31:57 -0800 (PST)
-Received: from ws.. ([103.167.140.11])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3653af3bsm78799445ad.57.2025.02.10.05.31.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 05:31:56 -0800 (PST)
-From: Xiao Liang <shaw.leon@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-rdma@vger.kernel.org,
-	linux-can@vger.kernel.org,
-	osmocom-net-gprs@lists.osmocom.org,
-	bpf@vger.kernel.org,
-	linux-ppp@vger.kernel.org,
-	wireguard@lists.zx2c4.com,
-	linux-wireless@vger.kernel.org,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	bridge@lists.linux.dev,
-	linux-wpan@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v9 11/11] selftests: net: Add test cases for link and peer netns
-Date: Mon, 10 Feb 2025 21:30:02 +0800
-Message-ID: <20250210133002.883422-12-shaw.leon@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250210133002.883422-1-shaw.leon@gmail.com>
-References: <20250210133002.883422-1-shaw.leon@gmail.com>
+        d=1e100.net; s=20230601; t=1739194239; x=1739799039;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q24vHHQ1SnBMHxcwto72Dh3csPAbQwG8zVQfdc192pg=;
+        b=SXhXdeqxEsDtld5ls70zyZGJVfSI49P6XQ2uCX5/nHxsFYLo1O74DmY9htYKcGO+AS
+         upqwRRnXP8i/xWVxMxDckxDqDf1opAUM4lScBPjXnAc/2yCuBbur3LlJ0MSyKF2+te4/
+         SG+TWIjfR9Uf3jgLbrkv9wuaL7OBxlddUlsmqwwe/mCQ9/Kz0cli7VH6fyCDgsjwPgfN
+         ajISKqhuR3TyAwgFkhmHEIt9jS/WdWJ36kjBQ2WXDzrNrJon3l++iopULzq1THZp8z78
+         h9lsykVDVUa4AJFkxgYf1zY/vgnGAmRyxeZGTE+wQ7a5GtAe0fo+4fhPeVo3UHCwL/hl
+         T6JA==
+X-Forwarded-Encrypted: i=1; AJvYcCXYbiEeHvoMOlfbJ4PqwkI4Uw5IsRLutshSnyWlKaIC30ViSJvTqeGNvlfEA4Ln1O/wXJ1oOASSHeMd3jUY0Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWs36F4V/76YbeaIIFlq/wpnSHQkCeZ/bHHmBSEJu+kO57CmJP
+	Qgw+MMjHhY7LhF5cNrwbSP6q8vaB3ZHnO2kGQO+1IxDndVaSUoA+nsA2mg==
+X-Gm-Gg: ASbGncsBN7j2I98Z+nlHSMuyliygESe0WnLySzGgACPRcF2NCB4H/qYYR1szLfzwNwf
+	MndwhFMflv10eyzhAYqqpDiLoGFL/cYToR0c4scFiNHBF7oZek9SCXHeu4uDy65V4X3kLRkbthn
+	6GXDegRz+81zB+eZ4agQdWWOd8XH45Pr18cWN+T23+BAAM4xnt44zc/5LgDEPDiAyb+qGZXLvwm
+	gZEExjU89C36/s8GBgaSK4o7j0eymBUdvKuYotNR2cNVzPQ6b4g87AQCIyhTyMMVVYu9qpF5QSs
+	BYUBwdw1qqCrhWMc0ibywYig
+X-Google-Smtp-Source: AGHT+IFx3k55PTq8kpgwKcb5RBhQUyp1OMTX5cXkssctzaZV79A7RJPBwJuog5CyrXFMu62ocVpQYA==
+X-Received: by 2002:a05:6402:440f:b0:5d9:fbb5:9ee with SMTP id 4fb4d7f45d1cf-5de45005adbmr17226356a12.13.1739194238397;
+        Mon, 10 Feb 2025 05:30:38 -0800 (PST)
+Received: from [192.168.0.50] ([79.119.240.253])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5de63a89b6asm4042296a12.46.2025.02.10.05.30.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Feb 2025 05:30:38 -0800 (PST)
+Message-ID: <53fc4a4c-dff8-4d30-9c79-c91fa36b55b9@gmail.com>
+Date: Mon, 10 Feb 2025 15:30:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/9] wifi: rtw88: Fix __rtw_download_firmware() for
+ RTL8814AU
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <9fc518ae-7708-42c6-99ca-56ee307555b6@gmail.com>
+ <55b5641f-094e-4f94-9f79-ac053733f2cf@gmail.com>
+ <3a8771c4587e4ac5b4bd59d95f6d5162@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <3a8771c4587e4ac5b4bd59d95f6d5162@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
- - Add test for creating link in another netns when a link of the same
-   name and ifindex exists in current netns.
- - Add test to verify that link is created in target netns directly -
-   no link new/del events should be generated in link netns or current
-   netns.
- - Add test cases to verify that link-netns is set as expected for
-   various drivers and combination of namespace-related parameters.
+On 10/02/2025 03:23, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> Don't call ltecoex_read_reg() and ltecoex_reg_write() when the
+>> ltecoex_addr member of struct rtw_chip_info is NULL. The RTL8814AU
+>> doesn't have this feature.
+>>
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> 
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> 
+>> ---
+>> v2:
+>>  - No change.
+> 
+> Next time please take my Acked-by in v1. That will help me to save time in v2.
+> 
 
-Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
----
- tools/testing/selftests/net/Makefile      |   1 +
- tools/testing/selftests/net/config        |   5 +
- tools/testing/selftests/net/link_netns.py | 141 ++++++++++++++++++++++
- tools/testing/selftests/net/netns-name.sh |  10 ++
- 4 files changed, 157 insertions(+)
- create mode 100755 tools/testing/selftests/net/link_netns.py
-
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 73ee88d6b043..df07a38f884f 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -35,6 +35,7 @@ TEST_PROGS += cmsg_so_mark.sh
- TEST_PROGS += cmsg_so_priority.sh
- TEST_PROGS += cmsg_time.sh cmsg_ipv6.sh
- TEST_PROGS += netns-name.sh
-+TEST_PROGS += link_netns.py
- TEST_PROGS += nl_netdev.py
- TEST_PROGS += srv6_end_dt46_l3vpn_test.sh
- TEST_PROGS += srv6_end_dt4_l3vpn_test.sh
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index 5b9baf708950..ab55270669ec 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -107,3 +107,8 @@ CONFIG_XFRM_INTERFACE=m
- CONFIG_XFRM_USER=m
- CONFIG_IP_NF_MATCH_RPFILTER=m
- CONFIG_IP6_NF_MATCH_RPFILTER=m
-+CONFIG_IPVLAN=m
-+CONFIG_CAN=m
-+CONFIG_CAN_DEV=m
-+CONFIG_CAN_VXCAN=m
-+CONFIG_NETKIT=y
-diff --git a/tools/testing/selftests/net/link_netns.py b/tools/testing/selftests/net/link_netns.py
-new file mode 100755
-index 000000000000..aab043c59d69
---- /dev/null
-+++ b/tools/testing/selftests/net/link_netns.py
-@@ -0,0 +1,141 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+import time
-+
-+from lib.py import ksft_run, ksft_exit, ksft_true
-+from lib.py import ip
-+from lib.py import NetNS, NetNSEnter
-+from lib.py import RtnlFamily
-+
-+
-+LINK_NETNSID = 100
-+
-+
-+def test_event() -> None:
-+    with NetNS() as ns1, NetNS() as ns2:
-+        with NetNSEnter(str(ns2)):
-+            rtnl = RtnlFamily()
-+
-+        rtnl.ntf_subscribe("rtnlgrp-link")
-+
-+        ip(f"netns set {ns2} {LINK_NETNSID}", ns=str(ns1))
-+        ip(f"link add netns {ns1} link-netnsid {LINK_NETNSID} dummy1 type dummy")
-+        ip(f"link add netns {ns1} dummy2 type dummy", ns=str(ns2))
-+
-+        ip("link del dummy1", ns=str(ns1))
-+        ip("link del dummy2", ns=str(ns1))
-+
-+        time.sleep(1)
-+        rtnl.check_ntf()
-+        ksft_true(rtnl.async_msg_queue.empty(),
-+                  "Received unexpected link notification")
-+
-+
-+def validate_link_netns(netns, ifname, link_netnsid) -> bool:
-+    link_info = ip(f"-d link show dev {ifname}", ns=netns, json=True)
-+    if not link_info:
-+        return False
-+    return link_info[0].get("link_netnsid") == link_netnsid
-+
-+
-+def test_link_net() -> None:
-+    configs = [
-+        # type, common args, type args, fallback to dev_net
-+        ("ipvlan", "link dummy1", "", False),
-+        ("macsec", "link dummy1", "", False),
-+        ("macvlan", "link dummy1", "", False),
-+        ("macvtap", "link dummy1", "", False),
-+        ("vlan", "link dummy1", "id 100", False),
-+        ("gre", "", "local 192.0.2.1", True),
-+        ("vti", "", "local 192.0.2.1", True),
-+        ("ipip", "", "local 192.0.2.1", True),
-+        ("ip6gre", "", "local 2001:db8::1", True),
-+        ("ip6tnl", "", "local 2001:db8::1", True),
-+        ("vti6", "", "local 2001:db8::1", True),
-+        ("sit", "", "local 192.0.2.1", True),
-+        ("xfrm", "", "if_id 1", True),
-+    ]
-+
-+    with NetNS() as ns1, NetNS() as ns2, NetNS() as ns3:
-+        net1, net2, net3 = str(ns1), str(ns2), str(ns3)
-+
-+        # prepare link netnsid  and a dummy link needed by certain drivers
-+        ip(f"netns set {net3} {LINK_NETNSID}", ns=str(net2))
-+        ip("link add dummy1 type dummy", ns=net3)
-+
-+        cases = [
-+            # source, "netns", "link-netns", expected link-netns
-+            (net3, None, None, None, None),
-+            (net3, net2, None, None, LINK_NETNSID),
-+            (net2, None, net3, LINK_NETNSID, LINK_NETNSID),
-+            (net1, net2, net3, LINK_NETNSID, LINK_NETNSID),
-+        ]
-+
-+        for src_net, netns, link_netns, exp1, exp2 in cases:
-+            tgt_net = netns or src_net
-+            for typ, cargs, targs, fb_dev_net in configs:
-+                cmd = "link add"
-+                if netns:
-+                    cmd += f" netns {netns}"
-+                if link_netns:
-+                    cmd += f" link-netns {link_netns}"
-+                cmd += f" {cargs} foo type {typ} {targs}"
-+                ip(cmd, ns=src_net)
-+                if fb_dev_net:
-+                    ksft_true(validate_link_netns(tgt_net, "foo", exp1),
-+                              f"{typ} link_netns validation failed")
-+                else:
-+                    ksft_true(validate_link_netns(tgt_net, "foo", exp2),
-+                              f"{typ} link_netns validation failed")
-+                ip(f"link del foo", ns=tgt_net)
-+
-+
-+def test_peer_net() -> None:
-+    types = [
-+        "vxcan",
-+        "netkit",
-+        "veth",
-+    ]
-+
-+    with NetNS() as ns1, NetNS() as ns2, NetNS() as ns3, NetNS() as ns4:
-+        net1, net2, net3, net4 = str(ns1), str(ns2), str(ns3), str(ns4)
-+
-+        ip(f"netns set {net3} {LINK_NETNSID}", ns=str(net2))
-+
-+        cases = [
-+            # source, "netns", "link-netns", "peer netns", expected
-+            (net1, None, None, None, None),
-+            (net1, net2, None, None, None),
-+            (net2, None, net3, None, LINK_NETNSID),
-+            (net1, net2, net3, None, None),
-+            (net2, None, None, net3, LINK_NETNSID),
-+            (net1, net2, None, net3, LINK_NETNSID),
-+            (net2, None, net2, net3, LINK_NETNSID),
-+            (net1, net2, net4, net3, LINK_NETNSID),
-+        ]
-+
-+        for src_net, netns, link_netns, peer_netns, exp in cases:
-+            tgt_net = netns or src_net
-+            for typ in types:
-+                cmd = "link add"
-+                if netns:
-+                    cmd += f" netns {netns}"
-+                if link_netns:
-+                    cmd += f" link-netns {link_netns}"
-+                cmd += f" foo type {typ}"
-+                if peer_netns:
-+                    cmd += f" peer netns {peer_netns}"
-+                ip(cmd, ns=src_net)
-+                ksft_true(validate_link_netns(tgt_net, "foo", exp),
-+                          f"{typ} peer_netns validation failed")
-+                ip(f"link del foo", ns=tgt_net)
-+
-+
-+def main() -> None:
-+    ksft_run([test_event, test_link_net, test_peer_net])
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
-diff --git a/tools/testing/selftests/net/netns-name.sh b/tools/testing/selftests/net/netns-name.sh
-index 6974474c26f3..0be1905d1f2f 100755
---- a/tools/testing/selftests/net/netns-name.sh
-+++ b/tools/testing/selftests/net/netns-name.sh
-@@ -78,6 +78,16 @@ ip -netns $NS link show dev $ALT_NAME 2> /dev/null &&
-     fail "Can still find alt-name after move"
- ip -netns $test_ns link del $DEV || fail
- 
-+#
-+# Test no conflict of the same name/ifindex in different netns
-+#
-+ip -netns $NS link add name $DEV index 100 type dummy || fail
-+ip -netns $NS link add netns $test_ns name $DEV index 100 type dummy ||
-+    fail "Can create in netns without moving"
-+ip -netns $test_ns link show dev $DEV >> /dev/null || fail "Device not found"
-+ip -netns $NS link del $DEV || fail
-+ip -netns $test_ns link del $DEV || fail
-+
- echo -ne "$(basename $0) \t\t\t\t"
- if [ $RET_CODE -eq 0 ]; then
-     echo "[  OK  ]"
--- 
-2.48.1
-
+Okay, I will do that.
 
