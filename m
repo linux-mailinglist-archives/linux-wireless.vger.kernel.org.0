@@ -1,101 +1,120 @@
-Return-Path: <linux-wireless+bounces-18702-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18703-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B889CA2EC97
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 13:34:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D00EA2ECCF
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 13:48:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 926433A2558
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 12:34:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B6571622D7
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 12:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB79223318;
-	Mon, 10 Feb 2025 12:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744E1C2FD;
+	Mon, 10 Feb 2025 12:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="SNynFsk8"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XW2NZvEL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60862223311
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 12:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B5A1EF0A5
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 12:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739190706; cv=none; b=JMu/TmzmsTAxMEcmNO9p+pfX1Jedd5r4uoZqU0sXwb3t14Jpsos/6DkVhPKQkqxwqSv9NskgXQ8wOOsKJdX4nnBhR3x4t7XG4Lkz2ngspiNz3VI/Q8pb91DjilPLwmMjKzUCW8dMYKqE7ZUZi8xDfl0KvEIhM16rdpBCJfZgn/o=
+	t=1739191680; cv=none; b=PdMGBTBFvN/e+rhn1xjpCShl1uTCDnLDpDoMSUPZ54ctxyMTt5tzME5xoaOKC1wgRBLPq5twKI35AbWlIOXDeK6HT1Bx3X4jfJa3I+aQVHjGntdodeKFcG0jbuIo3Y7vNTcGshxOes52iVfqSObV5icz3y8VmYfkSKSG2gmenGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739190706; c=relaxed/simple;
-	bh=4mLTA+TCiiyvIjG2HJqEcqJfqStXPN6S+QZBKX/pRu4=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ArnvD2CTToa+IQojf4fZH/QhDcWFuVem4WuolsabfudtVEgc5r+f5tPQimz+dM6bCUTgv0wV/ZC1jOmG1IAz7WhYX+EKIXjopDYZkfSfZ3ovjEW3GS0o+XRx3We6m1KcpvnjBXJDGxFW4DnRVgffbowZq4JMc+Dd5l8WMILr6kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=SNynFsk8; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51ACVb0U22219614, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1739190697; bh=4mLTA+TCiiyvIjG2HJqEcqJfqStXPN6S+QZBKX/pRu4=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=SNynFsk8YADkQ0omeaNLIbXgEAWmXRt8Ssjmo2LZTUb2Rl61hzLKiDsVjV+0SmPmp
-	 qrqiiMpfxP9kB09uSW212fxHdSuI44k/7UbzUOGVFUYCzN3owVTEMChX5dcICrGKfL
-	 7n2DaaStbfQZaRigM9tfYhvxFf5qN3ZnCyGafWo1MfRhsFAHHdQCj18L2zx1P03fSU
-	 Ja2dsA/wIVa/Yy+o+O84BGRKNl68Y1UVOd8wt+2+TxNSeltCiKMq6eKOSUgHXT0764
-	 9z5iWaZnYSsCzQZJYtiZ6XV8dz8F/BVODD+r/+2E2xCH1KsAxPKOZDTIZ9kCbqUJdu
-	 UT/cUY7i+NGJA==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51ACVb0U22219614
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 20:31:37 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 10 Feb 2025 20:31:38 +0800
-Received: from [127.0.1.1] (172.16.24.241) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 10 Feb
- 2025 20:31:37 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: debugfs depends on CFG80211's one
-Date: Mon, 10 Feb 2025 20:31:05 +0800
-Message-ID: <20250210123105.10466-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1739191680; c=relaxed/simple;
+	bh=sw4GIsTupaH+lw8i0Nwr5L7XDu0thVQ7gAEmZQ0sbUg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R+PHKVgKmXgByDfdgDCuvTqzugPPiT+bUPxfzip/wo+MdUj5nbUAhI8uFSPY5yuLUA+QGrluvEmPgXlCh83sZ/vSQ5PNkyzdBL6MqKb7sFTK7+BdCkHFKOdE5Ow8gc7DSsB3i0YC8hFyslkBmxF/fJ1lm5wDxT171mSnuysCqYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XW2NZvEL; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e5b29779d74so3760038276.2
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 04:47:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739191677; x=1739796477; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=sw4GIsTupaH+lw8i0Nwr5L7XDu0thVQ7gAEmZQ0sbUg=;
+        b=XW2NZvELK3nafMCZYyGljgtFyVaL7MfvrJaBpzjr0DFZgKQelZK8XeIcGe5HmD+zN8
+         mfI0YMyhK3Wszt/A8a1dPJMYClfEzoxERiSrKc5oAvANC/lUV0exx5waUzVjNSUazaws
+         0Ur/fKursEr0rXzdzhJYJHBm8K5RgvJ28aTNp+n6NrgysF7PFB7Q9GV9yHUIpWrtTDYQ
+         42R9kHwQyt8H7213v/1Yf4ZMLLEqxaFRcoMyb3liQZhmifZmp1CF6is++EXzeWYXZsTN
+         Qm5hAhZ/yaOxpTJwD+JtXlAOxE0tOjNv/FdT+L2JMzxwU52a1Z5ULKeQIR8at7+ffpDs
+         IopQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739191677; x=1739796477;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sw4GIsTupaH+lw8i0Nwr5L7XDu0thVQ7gAEmZQ0sbUg=;
+        b=ISc0g81W8Gx0+jVXkxlYrQsmCeEzNv1uJW3uC8IPnHOsDjaIIDD4MImvckc99/esrK
+         VMr/xt/TjgCNtDTxGeEeWC/StsehtA8vLQ5dyXBe3/LqLuKojCY1BGqNwBM9vy9n9SwP
+         9bIxd9G2PLgOWWI2eojs7jZ5817LS1VrryH1WIPLUK4dMkPj3g4Pfm5BQ+pnTcIEfWbW
+         5jxb+pLDDwYxIs3HL2RCWy0A6ehi3ijcF1uOL8VwSRvLIvRpIc6bITmUhsDh27Gbgnd/
+         klBFGTSXxTCsaJ5a3u/vZiI2eG0PHHZYX+/0xIxIjM4Hv7tz1z/e3aupGn6ARvX6IAvg
+         N+HQ==
+X-Gm-Message-State: AOJu0Yx4Omdfp8hC5BXvniojc02S6P1JJBvx+IetXfPdXh+MXJgS6QPq
+	cRywtG6QC2sDqt6MIaliZ96ERzXi+TXcwtvXqvu6w0TigGsav4WbyMyEj+M0O3oKKkN+S0OX+yr
+	4bf98xfBFNcfFVdatMrJSNNpwUl9p79pmo5SUYcZ5iRyA40tTVSY=
+X-Gm-Gg: ASbGncsEaLOA8xhkBWPTu7s5vyr2aPFSVyk8Ux3RMyswvXg1II8meAf5n9YGcz/3aj8
+	pJ6DeujeqClrJKo1KplaZAghKu97MO+2v04NW/ppfQHjG6ym2hj+PrUtpYzlBP+Rl4/AMb19GuQ
+	==
+X-Google-Smtp-Source: AGHT+IHCARCr3W2dsFBPoy0teQ9rJvEN+LQ+nr51lkt6u9aAaTFigHQA3uE9MDY3wAtkCUkPpWDJGs8q+V4NX86c+fw=
+X-Received: by 2002:a05:690c:9989:b0:6ef:6a71:aa55 with SMTP id
+ 00721157ae682-6f9b2345b63mr118817667b3.0.1739191677606; Mon, 10 Feb 2025
+ 04:47:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+References: <cd1b13d4-b01d-4237-813e-bd48c55d9ca9@matthias-proske.de>
+ <CAPDyKFr=XyLg2VjuEq1ZTrdAwSJJmYFDn9wSFj4zWD1+ZB9MTQ@mail.gmail.com>
+ <6aa67bad-5712-441e-a24b-f787474472bb@matthias-proske.de> <CAPDyKFooyDSPu7RG18sp9cV1ndRPpg5yia1BAiqtb-c3cOqv5Q@mail.gmail.com>
+ <efb9b9b7-bf56-4b3f-87eb-afd356453e62@matthias-proske.de>
+In-Reply-To: <efb9b9b7-bf56-4b3f-87eb-afd356453e62@matthias-proske.de>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 10 Feb 2025 13:47:20 +0100
+X-Gm-Features: AWEUYZkEspBPxh6Dm0nzMsm9DEgeqY_Rih6Dn3IzNI5XKW2fr4WXaZ5Q7HUECLM
+Message-ID: <CAPDyKFqH+YHu-uxmTN_LJi7Q2DjcRLx2WBu6-hKsaz+3T0L+iQ@mail.gmail.com>
+Subject: Re: DT property keep-power-in-suspend and how WiFi drivers use it
+To: Matthias Proske <email@matthias-proske.de>
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
+	brcm80211-dev-list.pdl@broadcom.com, linux-mmc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The wiphy_locked_debugfs_read() and wiphy_locked_debugfs_write() used
-by rtw89 are defined if CFG80211_DEBUGFS enabled. Add the dependency
-accordingly.
+[...]
 
-Fixes: 8fdf78f3cd5f ("wifi: rtw89: debugfs: use wiphy_locked_debugfs_{read,write}() if needed")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502101810.3CUpUL7p-lkp@intel.com/
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>
+> >>> The corresponding SDIO func-driver may call
+> >>> sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER). In this way, the mmc
+> >>> core will leave the SDIO card powered-on during system suspend.
+> >>> Although, unless it's really necessary, it's ofcourse a bad idea as it
+> >>> would mean wasting energy when the system is suspended.
+> >>
+> >> Just to get my understanding right: The brcm_fmac driver would be the
+> >> SDIO func-driver in my case, right?
+> >
+> > Correct. The one that is registered with sdio_register_driver().
+>
+> I guess I would just write a patch for the corresponding SDIO
+> func-driver, adding a DeviceTree property directly in that SDIO
+> func-driver (not the mmc host driver) so this can be enabled just for
+> these specific boards, or would you suggest a different solution?
 
-diff --git a/drivers/net/wireless/realtek/rtw89/Kconfig b/drivers/net/wireless/realtek/rtw89/Kconfig
-index b1c86cdd9c0e..205d7ecca7d7 100644
---- a/drivers/net/wireless/realtek/rtw89/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw89/Kconfig
-@@ -123,7 +123,7 @@ config RTW89_DEBUGMSG
- 
- config RTW89_DEBUGFS
- 	bool "Realtek rtw89 debugfs support"
--	depends on RTW89_CORE
-+	depends on RTW89_CORE && CFG80211_DEBUGFS
- 	select RTW89_DEBUG
- 	help
- 	  Enable debugfs support
--- 
-2.25.1
+Right, a DT property indicating that we can't power-cycle the SDIO
+card is probably the correct way.
 
+We have a bunch of properties already in the host's node related to
+this, so adding another one there should be fine too, I think.
+Otherwise, an SDIO func device may be described in a child-node of the
+mmc host's node (see
+Documentation/devicetree/bindings/mmc/mmc-controller-common.yaml).
+
+Kind regards
+Uffe
 
