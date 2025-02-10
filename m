@@ -1,310 +1,130 @@
-Return-Path: <linux-wireless+bounces-18721-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18722-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD20A2EEFA
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 14:55:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10ED8A2F0D6
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 16:06:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50A9616484A
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 13:55:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14A1F16921A
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 15:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD5D230998;
-	Mon, 10 Feb 2025 13:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F5023CEEF;
+	Mon, 10 Feb 2025 15:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Xf9BpD8H"
+	dkim=pass (2048-bit key) header.d=devture.com header.i=@devture.com header.b="I2YfSUjI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mail.botevgrad.com (mail.botevgrad.com [84.22.5.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B62322E406
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 13:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225B42309B4;
+	Mon, 10 Feb 2025 15:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.22.5.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739195757; cv=none; b=FCLiMlOVSSWpX/+gvoAHiO1PPfHT1nEEiNEAyQC9MWfbAre17I8FRms0OQzCaD9wB299MoM0zuhqXzuPwpZNuoOBkENA1RZj6nCsjGg5xy0+kLc+AAkuToUSVnbf/viZl41IWrXxjyuu5GK6kiGr9yAOs7Gr1GchuLI8DojW4g8=
+	t=1739199733; cv=none; b=bEZDXzH35yWMGcvfW4xMcW/gP7vDZGLAbhz1mE7QJjXQV8b2SC93wgJx3C/4GezfroX4LTGyaWN+O54wjY5a2r+Nrr07+Eq4nc/h69fbWVu7zo6J5iQDbk4oHNVUBHwQaeynPZ1cdsvj1fRdshMpfSeGFquYiYlobgoDiv4Kp/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739195757; c=relaxed/simple;
-	bh=0rnLw4+xExK7HPng78Uq3sF0XQrKE4dgWYE5cwg5RC8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=PK4CMjyOdXeAo7gFkqGKx11DcoNM6a/1toWj74MkreogT6iWWswSLBUpwXspQcaLixQiWrkVqAf/VgVjGNUqhSLnQ/iQNkbZ6pgOoYvunSk5pAWvUtChZwSM98gR3QiWaN8GY22PVz2crJHNF6LqVZ+nyGi5phNCWmSGZCFphZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Xf9BpD8H; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51A9bdjw006420;
-	Mon, 10 Feb 2025 13:55:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	uDtLDjgMJ61v2TX2UM0knNfzgLRlJx2XlE+RRyuyId0=; b=Xf9BpD8HyAMhyHLR
-	CtaoNbN7A+7/jtkv7FKexq8oqq1n8+pA3YXCA17Zir4aX1t6DfcbKhV1Hms+EC16
-	nmdjA8B+bfkQfuPCoGTaJJS9ATMTHZBXyoCk6kgP3kRayVqUggKZN0qg4/c6i4NW
-	Qh8aYb0U+DiGBk47/ks7JK+43KE3/eHAXGroHm8rH5H8A5HdPscU3sv/b/JM9QGA
-	1jCVXvBjadXjD/rIpMQpRww7B48w+Z2KEe6vy94IFNfDW2CceqHusPHyW5KT3Fbf
-	YKnNqrV730mnJVhm5u9lOfvARXICNVAyMC7BfQDxgUlcC8nhfDz2VrnbXosLyeQw
-	V7jEhw==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44p0escj0c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Feb 2025 13:55:51 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51ADto69013653
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Feb 2025 13:55:50 GMT
-Received: from [10.216.14.138] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 10 Feb
- 2025 05:55:47 -0800
-Message-ID: <9092e428-01ac-a61b-eb07-6a075f98fab4@quicinc.com>
-Date: Mon, 10 Feb 2025 19:25:42 +0530
+	s=arc-20240116; t=1739199733; c=relaxed/simple;
+	bh=ZRCpRxJPB7pxYt7cBmQ9QaWTZHcy+ZoZBGEkQtHASYE=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=swYpuY0ZCrMdnrVceFB5dQIf7/NbZtKkyje34vdgj3d+IGmSDzeL+diepb54+wWWWDrYR9nqgZCY3711clFPXWl1k1VHyrewsRMCqSgMXWmo+OX1mqqspmFK8CYXTZ9z0h3muwUaDQVzj+uuLkiPnDe5zUleh9Ruzu+qjeHkayA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=devture.com; spf=pass smtp.mailfrom=devture.com; dkim=pass (2048-bit key) header.d=devture.com header.i=@devture.com header.b=I2YfSUjI; arc=none smtp.client-ip=84.22.5.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=devture.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=devture.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6FC226018ED00;
+	Mon, 10 Feb 2025 16:56:25 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=devture.com; s=dkim;
+	t=1739199388;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eUjZ6nL8w17oREQOvkvYBXo6SX9OZgpgfq7fRKD2fXc=;
+	b=I2YfSUjIvFE6ccoGMTV1CoWbZTd8yX1YkdJVoW5eGKl4A8K8hRp7UNnJf0XZ/5EJ/uIX6E
+	XcNOJJOFA82LYBJuA9AsFFUlLRJywrBnZsCL0Ox0KZS/rIdgR0ok0ztb46KToJ0aWQ+YW9
+	yYWp6K+G0WZruJ8As+5uMoU+r7LHAKeClGacIHiiiuoAeOXyuai52PqmTVnNh3vQzSc4+r
+	Hgqt2sJIDByucK57ExmM1b2XRYoF2Vy1FnKafZEYfNMs4f1ehsvqxyxvjfx41nUa99awm6
+	KO0Vi8A2uY4RDd34KFVy1iI7NYxU1ffRTabQYGbvfruMjj25tb1kFrX8nsMerg==
+Message-ID: <18be5ba2-6dc4-4766-9944-59cb46c8dfaf@devture.com>
+Date: Mon, 10 Feb 2025 16:56:17 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v9 3/9] wifi: ath12k: Add HAL_RX_PPDU_START_USER_INFO TLV
- parsing support
+User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To: Mahendran P <quic_mahep@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, P Praneesh <quic_ppranees@quicinc.com>,
-        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-References: <20250206013854.174765-1-quic_periyasa@quicinc.com>
- <20250206013854.174765-4-quic_periyasa@quicinc.com>
- <d312265c-9b42-7c62-1467-205045a51a26@quicinc.com>
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-In-Reply-To: <d312265c-9b42-7c62-1467-205045a51a26@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Slavi Pantaleev <slavi@devture.com>
+Subject: 6 Ghz frequencies always listed as disabled in newer kernels with
+ Mediatek MT7921K (RZ608)
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Ryder Lee <ryder.lee@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Deren Wu
+ <deren.wu@mediatek.com>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: CgJMC9_roaRasdRqAvKWPppo2bRgDhBJ
-X-Proofpoint-ORIG-GUID: CgJMC9_roaRasdRqAvKWPppo2bRgDhBJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-10_08,2025-02-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- suspectscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 adultscore=0 spamscore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502100117
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hello!
 
+This is in regard to Bugzilla Bug 218731 - Tri-band AMD RZ608 (MediaTek 
+MT7921K) has 6GHz band disabled in kernel 6.7+ despite working in <=6.6
 
-On 2/10/2025 4:35 PM, Mahendran P wrote:
-> On 2/6/2025 7:08 AM, Karthikeyan Periyasamy wrote:
->> Currently, monitor is not enabled. However, in the future, the monitor
->> will be enabled. Therefore, add necessary HAL_RX_PPDU_START_USER_INFO TLV
->> parsing support in monitor Rx path, which help to populate the EHT radiotap
->> data.
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
->> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
->>
->> Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
->> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
->> Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
->> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
->> ---
->>   drivers/net/wireless/ath/ath12k/dp_mon.c  | 307 +++++++++++++++++++++-
->>   drivers/net/wireless/ath/ath12k/hal_rx.h  | 291 +++++++++++++++++---
->>   drivers/net/wireless/ath/ath12k/rx_desc.h |   9 -
->>   3 files changed, 551 insertions(+), 56 deletions(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
->> index dd17607d470d..96e9d68618d3 100644
->> --- a/drivers/net/wireless/ath/ath12k/dp_mon.c
->> +++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
->> @@ -81,7 +81,7 @@ ath12k_dp_mon_rx_populate_mu_user_info(const struct hal_rx_ppdu_end_user_stats *
->>   static void ath12k_dp_mon_parse_vht_sig_a(const struct hal_rx_vht_sig_a_info *vht_sig,
->>   					  struct hal_rx_mon_ppdu_info *ppdu_info)
->>   {
->> -	u32 nsts, group_id, info0, info1;
->> +	u32 nsts, info0, info1;
->>   	u8 gi_setting;
->>   
->>   	info0 = __le32_to_cpu(vht_sig->info0);
->> @@ -109,12 +109,8 @@ static void ath12k_dp_mon_parse_vht_sig_a(const struct hal_rx_vht_sig_a_info *vh
->>   	ppdu_info->bw = u32_get_bits(info0, HAL_RX_VHT_SIG_A_INFO_INFO0_BW);
->>   	ppdu_info->beamformed = u32_get_bits(info1,
->>   					     HAL_RX_VHT_SIG_A_INFO_INFO1_BEAMFORMED);
->> -	group_id = u32_get_bits(info0, HAL_RX_VHT_SIG_A_INFO_INFO0_GROUP_ID);
->> -	if (group_id == 0 || group_id == 63)
->> -		ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_SU;
->> -	else
->> -		ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_MU_MIMO;
->> -	ppdu_info->vht_flag_values5 = group_id;
->> +	ppdu_info->vht_flag_values5 = u32_get_bits(info0,
->> +						   HAL_RX_VHT_SIG_A_INFO_INFO0_GROUP_ID);
->>   	ppdu_info->vht_flag_values3[0] = (((ppdu_info->mcs) << 4) |
->>   					    ppdu_info->nss);
->>   	ppdu_info->vht_flag_values2 = ppdu_info->bw;
->> @@ -134,7 +130,6 @@ static void ath12k_dp_mon_parse_ht_sig(const struct hal_rx_ht_sig_info *ht_sig,
->>   	ppdu_info->ldpc = u32_get_bits(info1, HAL_RX_HT_SIG_INFO_INFO1_FEC_CODING);
->>   	ppdu_info->gi = u32_get_bits(info1, HAL_RX_HT_SIG_INFO_INFO1_GI);
->>   	ppdu_info->nss = (ppdu_info->mcs >> 3);
->> -	ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_SU;
->>   }
->>   
->>   static void ath12k_dp_mon_parse_l_sig_b(const struct hal_rx_lsig_b_info *lsigb,
->> @@ -166,7 +161,6 @@ static void ath12k_dp_mon_parse_l_sig_b(const struct hal_rx_lsig_b_info *lsigb,
->>   
->>   	ppdu_info->rate = rate;
->>   	ppdu_info->cck_flag = 1;
->> -	ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_SU;
->>   }
->>   
->>   static void ath12k_dp_mon_parse_l_sig_a(const struct hal_rx_lsig_a_info *lsiga,
->> @@ -206,7 +200,6 @@ static void ath12k_dp_mon_parse_l_sig_a(const struct hal_rx_lsig_a_info *lsiga,
->>   	}
->>   
->>   	ppdu_info->rate = rate;
->> -	ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_SU;
->>   }
->>   
->>   static void
->> @@ -243,7 +236,6 @@ ath12k_dp_mon_parse_he_sig_b2_ofdma(const struct hal_rx_he_sig_b2_ofdma_info *of
->>   	ppdu_info->nss = u32_get_bits(info0, HAL_RX_HE_SIG_B2_OFDMA_INFO_INFO0_STA_NSTS);
->>   	ppdu_info->beamformed = u32_get_bits(info0,
->>   					     HAL_RX_HE_SIG_B2_OFDMA_INFO_INFO0_STA_TXBF);
->> -	ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_MU_OFDMA;
->>   }
->>   
->>   static void
->> @@ -283,7 +275,6 @@ ath12k_dp_mon_parse_he_sig_b1_mu(const struct hal_rx_he_sig_b1_mu_info *he_sig_b
->>   				HAL_RX_HE_SIG_B1_MU_INFO_INFO0_RU_ALLOCATION);
->>   	ppdu_info->ru_alloc = ath12k_he_ru_tones_to_nl80211_he_ru_alloc(ru_tones);
->>   	ppdu_info->he_RU[0] = ru_tones;
->> -	ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_MU_MIMO;
->>   }
->>   
->>   static void
->> @@ -417,7 +408,6 @@ ath12k_dp_mon_parse_he_sig_mu(const struct hal_rx_he_sig_a_mu_dl_info *he_sig_a_
->>   
->>   	ppdu_info->is_stbc = info1 &
->>   			     HAL_RX_HE_SIG_A_MU_DL_INFO1_STBC;
->> -	ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_MU_MIMO;
->>   }
->>   
->>   static void ath12k_dp_mon_parse_he_sig_su(const struct hal_rx_he_sig_a_su_info *he_sig_a,
->> @@ -565,7 +555,6 @@ static void ath12k_dp_mon_parse_he_sig_su(const struct hal_rx_he_sig_a_su_info *
->>   	dcm = u32_get_bits(info0, HAL_RX_HE_SIG_A_SU_INFO_INFO0_DCM);
->>   	ppdu_info->nss = u32_get_bits(info0, HAL_RX_HE_SIG_A_SU_INFO_INFO0_NSTS);
->>   	ppdu_info->dcm = dcm;
->> -	ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_SU;
->>   }
->>   
->>   static void
->> @@ -1141,6 +1130,292 @@ ath12k_dp_mon_parse_eht_sig_hdr(struct hal_rx_mon_ppdu_info *ppdu_info,
->>   		ath12k_dp_mon_hal_rx_parse_eht_sig_ofdma(tlv_data, ppdu_info);
->>   }
->>   
->> +static inline enum ath12k_eht_ru_size
->> +hal_rx_mon_hal_ru_size_to_ath12k_ru_size(u32 hal_ru_size)
->> +{
->> +	switch (hal_ru_size) {
->> +	case HAL_EHT_RU_26:
->> +		return ATH12K_EHT_RU_26;
->> +	case HAL_EHT_RU_52:
->> +		return ATH12K_EHT_RU_52;
->> +	case HAL_EHT_RU_78:
->> +		return ATH12K_EHT_RU_52_26;
->> +	case HAL_EHT_RU_106:
->> +		return ATH12K_EHT_RU_106;
->> +	case HAL_EHT_RU_132:
->> +		return ATH12K_EHT_RU_106_26;
->> +	case HAL_EHT_RU_242:
->> +		return ATH12K_EHT_RU_242;
->> +	case HAL_EHT_RU_484:
->> +		return ATH12K_EHT_RU_484;
->> +	case HAL_EHT_RU_726:
->> +		return ATH12K_EHT_RU_484_242;
->> +	case HAL_EHT_RU_996:
->> +		return ATH12K_EHT_RU_996;
->> +	case HAL_EHT_RU_996x2:
->> +		return ATH12K_EHT_RU_996x2;
->> +	case HAL_EHT_RU_996x3:
->> +		return ATH12K_EHT_RU_996x3;
->> +	case HAL_EHT_RU_996x4:
->> +		return ATH12K_EHT_RU_996x4;
->> +	case HAL_EHT_RU_NONE:
->> +		return ATH12K_EHT_RU_INVALID;
->> +	case HAL_EHT_RU_996_484:
->> +		return ATH12K_EHT_RU_996_484;
->> +	case HAL_EHT_RU_996x2_484:
->> +		return ATH12K_EHT_RU_996x2_484;
->> +	case HAL_EHT_RU_996x3_484:
->> +		return ATH12K_EHT_RU_996x3_484;
->> +	case HAL_EHT_RU_996_484_242:
->> +		return ATH12K_EHT_RU_996_484_242;
->> +	default:
->> +		return ATH12K_EHT_RU_INVALID;
->> +	}
->> +}
-> 
-> consider using lookup table.
-> 
+URL: https://bugzilla.kernel.org/show_bug.cgi?id=218731
 
-Lookup table need static array. Really need the static for this ?
+I'm in Bulgaria and `iw reg get` reports this:
 
-Even if we need, shall we have this in a separate future patch ?
+```
+global
+country BG: DFS-ETSI
+         (2400 - 2483 @ 40), (N/A, 20), (N/A)
+         (5150 - 5250 @ 80), (N/A, 23), (N/A), NO-OUTDOOR, AUTO-BW
+         (5250 - 5350 @ 80), (N/A, 20), (0 ms), NO-OUTDOOR, DFS, AUTO-BW
+         (5470 - 5725 @ 160), (N/A, 26), (0 ms), DFS
+         (5725 - 5875 @ 80), (N/A, 13), (N/A)
+         (5945 - 6425 @ 160), (N/A, 23), (N/A), NO-OUTDOOR
+         (57000 - 66000 @ 2160), (N/A, 40), (N/A)
+```
 
+For testing purposes, I've also tried switching to another regulatory 
+domain (`US`, `DE`, `SE`, `NL`) via `iw reg set ..`.
 
->> +
->> +static inline u32
->> +hal_rx_ul_ofdma_ru_size_to_width(enum ath12k_eht_ru_size ru_size)
->> +{
->> +	switch (ru_size) {
->> +	case ATH12K_EHT_RU_26:
->> +		return RU_26;
->> +	case ATH12K_EHT_RU_52:
->> +		return RU_52;
->> +	case ATH12K_EHT_RU_52_26:
->> +		return RU_52_26;
->> +	case ATH12K_EHT_RU_106:
->> +		return RU_106;
->> +	case ATH12K_EHT_RU_106_26:
->> +		return RU_106_26;
->> +	case ATH12K_EHT_RU_242:
->> +		return RU_242;
->> +	case ATH12K_EHT_RU_484:
->> +		return RU_484;
->> +	case ATH12K_EHT_RU_484_242:
->> +		return RU_484_242;
->> +	case ATH12K_EHT_RU_996:
->> +		return RU_996;
->> +	case ATH12K_EHT_RU_996_484:
->> +		return RU_996_484;
->> +	case ATH12K_EHT_RU_996_484_242:
->> +		return RU_996_484_242;
->> +	case ATH12K_EHT_RU_996x2:
->> +		return RU_2X996;
->> +	case ATH12K_EHT_RU_996x2_484:
->> +		return RU_2X996_484;
->> +	case ATH12K_EHT_RU_996x3:
->> +		return RU_3X996;
->> +	case ATH12K_EHT_RU_996x3_484:
->> +		return RU_3X996_484;
->> +	case ATH12K_EHT_RU_996x4:
->> +		return RU_4X996;
->> +	default:
->> +		return RU_INVALID;
->> +	}
->> +}
-> 
-> same as above
-> 
+Regardless of the regulatory domain, `iw list | grep -A 15 Frequencies` 
+always reports the 6 Ghz frequencies as disabled on newer kernels.
 
-same here
+As the original bug reporter has discovered, the regression begins to 
+appear in kernel 6.7.0 while it isn't present in 6.6.30.
+I've done a bisection and the results are like this:
 
+1. [bad] mainline (954a209f431c06b62718a49b403bd4c549f0d6fb)
+2. [good] v6.6.30
+3. [bad] v6.7.12
+4. [good] v6.6
+5. [bad] edd8e84ae9514e93368f56c3715b11af52df6c3b
+6. [bad] 89ed67ef126c4160349c1b96fdb775ea6170ac90
+7. [good] b827ac419721a106ae2fccaa40576b0594edad92
+8. [bad] d1a02ed66fe62aa2edd77bd54e270ebc33bd12ff
+9. [good] 3abbd0699b678fc48e0100704338cff9180fe4bb
+10. [good] 5a423552e0d9bb882f22cb0bf85f520ca2692706
+11. [bad] 56a7bb12c78ffa1b02e154b1d779ed2a1555fa3c
+12. [good] a3c2dd96487f1dd734c9443a3472c8dafa689813
+13. [bad] 089482a06b74a40d45773b1871182e8f04be026b
+14. [good] fce9c967820a72f600abbf061d7077861685a14d
+15. [good] c948b5da6bbec742b433138e3e3f9537a85af2e5
+16. [good] 9585316a2aaf773a67846bdc8bbdd4df1e9622fa
+17. [good] 51ba0e3a15eb1643116a93674e230e11b9499592
+18. [bad] 09382d8f8641bc12fffc41a93eb9b37be0e653c0
+19. [good] 4fc8df50fd41c2762d893211487be0ecb24c6a05
 
--- 
-Karthikeyan Periyasamy
---
-கார்த்திகேயன் பெரியசாமி
+09382d8f8641bc12fffc41a93eb9b37be0e653c0 is reported as the first bad 
+commit.
+
+URL: 
+https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux/+/09382d8f8641bc12fffc41a93eb9b37be0e653c0
+
+Regards
+
 
