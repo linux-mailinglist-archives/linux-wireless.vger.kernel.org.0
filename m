@@ -1,95 +1,99 @@
-Return-Path: <linux-wireless+bounces-18696-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18695-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28613A2E71A
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 09:58:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079D9A2E717
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 09:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808D21887F6E
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 08:58:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0D6016294D
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 08:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9EB1B425A;
-	Mon, 10 Feb 2025 08:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0143E1C173C;
+	Mon, 10 Feb 2025 08:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=technux.se header.i=@technux.se header.b="rFcmi6Bh"
+	dkim=pass (2048-bit key) header.d=technux.se header.i=@technux.se header.b="KPjRa3GG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from m101-out-mua-2.websupport.se (m101-out-mua-2.websupport.se [109.235.175.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416D61B87F1
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 08:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636751B87F1
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 08:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.235.175.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739177898; cv=none; b=UJBPMqjUZG9oB/fxRkmfddJ+2x31/DMJxy6LD1D3/39A3T6Ta8wc/9uokDNGY6luf0bbV1/UVQwMD0xzHR2dD4fik/dHU/fIAqCUzxIVgNKXMEYmFiB188XKmG9nKN6nBrkq72Kxb+NytcDXb2Hb1OGYmeco3oOPt2S5YrLRCfo=
+	t=1739177877; cv=none; b=C3j/Af+xf5rIMNfWBafi1HzuzdhAz41P49D3I5L/iSiWMijUkVoiZQ49z5c9cJeSpXC5i2UtNQSZtLd2cyO5UmoXAf9ej7KC8A4AhSo0cgqXhuIGk6xTuqE/zhiakVWdJv4jFlV9DvP0hoKwy5Ro6sJ/UZVlAVVIwvAMIc9oqGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739177898; c=relaxed/simple;
+	s=arc-20240116; t=1739177877; c=relaxed/simple;
 	bh=jV1OCprPNPXMUVT8LdxDCdF1Ny7xlcy2gSvEO+EVKvM=;
-	h=MIME-Version:Date:From:To:Subject:Message-ID:Content-Type; b=BDI8XoDpE5ipa8xiq6u4VrOoINIrzuU6fzLPSp4txjIQwPxHU6ItwodPE83rGAkQDK+fbrhXxA6UtF5xMAC/rhnLA4HDYXuw/1XgkJHi9BbS4cqoMyVgT9BpFgKm28MmL6dqGwwcdm+27zwb40VSl3fkc3PR+a/xzZHQqBhDK8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=technux.se; spf=pass smtp.mailfrom=technux.se; dkim=pass (2048-bit key) header.d=technux.se header.i=@technux.se header.b=rFcmi6Bh; arc=none smtp.client-ip=109.235.175.102
+	h=MIME-Version:Date:From:To:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=mxSUVvrhW+VlP9bXpAES+Wl2sNUsjhDOaCmh/8fF4LNDEN0J7u4N0zYXVUClGMMwm8Toro6DJk99eBie4oGAP3XxAhoKTBRZAWdu5+We2S36Csk4zFjrGiyiB97oeApJm/ZG6O4u4KojpSqfwcf4ZS9V/Q172UC3evTzv2Zvd4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=technux.se; spf=pass smtp.mailfrom=technux.se; dkim=pass (2048-bit key) header.d=technux.se header.i=@technux.se header.b=KPjRa3GG; arc=none smtp.client-ip=109.235.175.102
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=technux.se
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=technux.se
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=technux.se; s=mail;
-	t=1739177331; bh=erL/yD+CYCl9Vlw4qhCTdydItDWTrcxTvbYV7w5/m8o=;
-	h=Date:From:To:Subject:From;
-	b=rFcmi6BhMoVEf3D67uU01et7jike8/DsO+dOKV2RmF+i9zmv6YVMgHRKhfgVy/G/a
-	 4yjB+j9NBVLrcWW4Bp4dWnIzxXzuyeAPovrOmBrPgsyTxHZV9mAgdSLWr8XVTX9qlh
-	 MikftedyY6eHscsnP38LcJ04hKqQMBdryaAvSgEu8z25g1dEmgE0XLUKP/mxFFcwG8
-	 R1SPKb8su1WylbXfE17DsTNRaczNq9xAV1KQiZNjVqPWfeagmPhWfe9zehttAMpbES
-	 ysjNPOXz9p7MVD0Ykb5gPLyZ2RuZXl/vEvBRe8/hbMUSOKsrZrlyvjRw/Jv/menibk
-	 LdNNWSjlmssyA==
+	t=1739177864; bh=erL/yD+CYCl9Vlw4qhCTdydItDWTrcxTvbYV7w5/m8o=;
+	h=Date:From:To:Subject:In-Reply-To:References:From;
+	b=KPjRa3GG+jF6zqq7SAio7OLnA1MTqTmJaj/mSRpOgZ3gw2/Nn7Z94CFTMmrzFc+QY
+	 IN3HMUFZAYImoY/F1sGwcRBXVK7zCkP9BagdN/lFThqUpUTBweAsoDhuoixZiOtUPB
+	 ZW1bonKwmkyB0JGHVDpPYLZg8yxQbsWghwBRDVLSV/ZnKT3SzEeoUNvrDBTt9LmQ1W
+	 QOl/l0km0oBHoVz/tmF/edVSQCl6FL5zouLU5vnUzOcVDM0W8bNZgubt2Cj0DfmWLm
+	 LGB/XCMo3LwCNKOHS51UQlRV3jhO5we7OBEwrBN0S6KYaQifFV0pr7cYjGnDrvOrIF
+	 ld2YeFDIxNCUg==
 Received: from m101-u5-ing.websupport.se (unknown [10.30.5.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(No client certificate requested)
-	by m101-out-mua-2.websupport.se (Postfix) with ESMTPS id 4Yrysv2qbKzLq5;
-	Mon, 10 Feb 2025 09:48:51 +0100 (CET)
+	by m101-out-mua-2.websupport.se (Postfix) with ESMTPS id 4Yrz476zT9zMKD;
+	Mon, 10 Feb 2025 09:57:43 +0100 (CET)
 X-Authenticated-Sender: petter@technux.se
 Authentication-Results: m101-u5-ing.websupport.se;
 	auth=pass smtp.auth=petter@technux.se smtp.mailfrom=petter@technux.se
-Received: from roundcube.ws.int (unknown [109.235.175.25])
+Received: from roundcube.ws.int (unknown [109.235.175.26])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: petter@technux.se)
-	by m101-u5-ing.websupport.se (Postfix) with ESMTPSA id 4Yryst2mgmz2rW3;
-	Mon, 10 Feb 2025 09:48:50 +0100 (CET)
+	by m101-u5-ing.websupport.se (Postfix) with ESMTPSA id 4Yrz474Jgmz2rSQ;
+	Mon, 10 Feb 2025 09:57:43 +0100 (CET)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 10 Feb 2025 09:48:49 +0100
+Date: Mon, 10 Feb 2025 09:57:43 +0100
 From: petter@technux.se
-To: Linux wireless <linux-wireless@vger.kernel.org>,
- rtl8821cerfe2@gmail.com, pkshih@realtek.com
-Subject: rtw88: 8821au:
+To: pkshih@realtek.com, rtl8821cerfe2@gmail.com, Linux wireless
+ <linux-wireless@vger.kernel.org>
+Subject: rtw88: 8821au: locking issues possible caused by firmware failed to
+ leave lps state / failed to get tx report
+In-Reply-To: <84d07bb6109ae42ce4e708d6e293f6de@technux.se>
+References: <84d07bb6109ae42ce4e708d6e293f6de@technux.se>
 User-Agent: Roundcube Webmail/1.6.9
-Message-ID: <84d07bb6109ae42ce4e708d6e293f6de@technux.se>
+Message-ID: <110cbd37e935161dbe0039a708f6428d@technux.se>
 X-Sender: petter@technux.se
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
+X-Out-Rspamd-Server: m101-rspamd-out-5
+X-Out-Rspamd-Queue-Id: 4Yrz474Jgmz2rSQ
 X-Out-Spamd-Result: default: False [0.00 / 1000.00];
 	FROM_EQ_ENVFROM(0.00)[];
 	FROM_NO_DN(0.00)[];
 	ASN(0.00)[asn:41528, ipnet:109.235.175.0/24, country:SE];
 	ARC_NA(0.00)[];
-	WS_IP_WHITELIST(0.00)[109.235.175.25]
+	WS_IP_WHITELIST(0.00)[109.235.175.26]
 X-Rspamd-Pre-Result: action=no action;
 	module=multimap;
 	Matched map: WS_IP_WHITELIST
-X-Out-Rspamd-Server: m101-rspamd-out-6
 X-Rspamd-Action: no action
-X-Out-Rspamd-Queue-Id: 4Yryst2mgmz2rW3
 X-purgate-type: clean
 X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
 X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
 X-purgate: clean
 X-purgate-size: 197992
-X-purgate-ID: 155908::1739177331-C7C3EF5A-D59B66ED/0/0
+X-purgate-ID: 155908::1739177863-C7C3EF5A-6F9C5EEB/0/0
 
 Hi,
 
