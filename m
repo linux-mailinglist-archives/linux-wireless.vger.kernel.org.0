@@ -1,115 +1,260 @@
-Return-Path: <linux-wireless+bounces-18710-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18720-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F900A2EDEF
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 14:32:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3DEA2EEC8
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 14:50:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75B1F3A1D53
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 13:31:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4D813A1CFC
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 13:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5724722FF5F;
-	Mon, 10 Feb 2025 13:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB1C221DA9;
+	Mon, 10 Feb 2025 13:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fLakUSMF"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IezBZhJ9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D5122F16A
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 13:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8271C07D8
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 13:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739194242; cv=none; b=p585bl+wngxe3whXiVpy2q0c1jihaPKKKGg0LKO73xPDxBeKVICf82gESbltyrrErPjlSYrQ6Lrv3NPBgM4wN9lHu2lL/pUg+gqeAulp4JXFvork7t7Ue/rX9B78cE3f6mKwNOVX281UEVVoppSIbYKm7HAY1WtCMXbf5osZ3hQ=
+	t=1739195441; cv=none; b=R5iz5TVZTm7tRn4W4PVeg69QyJudCgjzxgGsrhaIqmcxbQuzMpFbZpvpfm+tqCLOcVi4+zXpoC+HmdzIZRCSXbPknxU2vSWt8XKUotxtn1LzXKH6iw0gGE9UoYeutr6c5B4dy01+SHfEvfW0wztOZg58NvhwoOPB3KWvBAuJfNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739194242; c=relaxed/simple;
-	bh=xzR95+vrkDBDeB9j0wCiT1Bu/67XaaV7S4ZZbWRygnE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=nSCVXZXUN2Q7bzDO8G7/MNeihZcN0vsErzkHQCEEfjCEvtX9uVBh+mZTl7v1+mpinAy36mkfBMwVv4Uccgsi3E3Brtuc70lv8D8b0y/jKiFuX1gFQdgOJmwsfDzRICKUNVLuHg5+VDEpOPjiLOATbjnIueGwn9C5oKQSw1unYkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fLakUSMF; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5de861dcb04so1034545a12.1
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 05:30:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739194239; x=1739799039; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=q24vHHQ1SnBMHxcwto72Dh3csPAbQwG8zVQfdc192pg=;
-        b=fLakUSMF4O4zzpsBGYyZnEWuOZw9zbsCJjaODWjveLulGVC3whwQ+GU1GtMeG2T22N
-         FX50gVS8inq0QSXlH0kcqBPq009X0074fHvmbNoFpWkZ3Vgs0xjfWHnW/9xQDhGztjtU
-         9nnTHTgWsWjE8a5Gt6Ttkcbu7tqANv18jyPYqjGsVNwmw2pFsn4KRBXi/oA4UgJfdLMx
-         8T1yIUgt7cD+34wWPqRZoOqRs+EBXtU+O7h6Y/h9UXV16CKTUy0Kl3esIFIWz8mChK+u
-         NdJ9z5v/c/AaquTrntoH8Lld5VNfjG0YypmRl6EJiRXYdA22oG5nXpM7o49G6GxLHWnl
-         jfyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739194239; x=1739799039;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q24vHHQ1SnBMHxcwto72Dh3csPAbQwG8zVQfdc192pg=;
-        b=SXhXdeqxEsDtld5ls70zyZGJVfSI49P6XQ2uCX5/nHxsFYLo1O74DmY9htYKcGO+AS
-         upqwRRnXP8i/xWVxMxDckxDqDf1opAUM4lScBPjXnAc/2yCuBbur3LlJ0MSyKF2+te4/
-         SG+TWIjfR9Uf3jgLbrkv9wuaL7OBxlddUlsmqwwe/mCQ9/Kz0cli7VH6fyCDgsjwPgfN
-         ajISKqhuR3TyAwgFkhmHEIt9jS/WdWJ36kjBQ2WXDzrNrJon3l++iopULzq1THZp8z78
-         h9lsykVDVUa4AJFkxgYf1zY/vgnGAmRyxeZGTE+wQ7a5GtAe0fo+4fhPeVo3UHCwL/hl
-         T6JA==
-X-Forwarded-Encrypted: i=1; AJvYcCXYbiEeHvoMOlfbJ4PqwkI4Uw5IsRLutshSnyWlKaIC30ViSJvTqeGNvlfEA4Ln1O/wXJ1oOASSHeMd3jUY0Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWs36F4V/76YbeaIIFlq/wpnSHQkCeZ/bHHmBSEJu+kO57CmJP
-	Qgw+MMjHhY7LhF5cNrwbSP6q8vaB3ZHnO2kGQO+1IxDndVaSUoA+nsA2mg==
-X-Gm-Gg: ASbGncsBN7j2I98Z+nlHSMuyliygESe0WnLySzGgACPRcF2NCB4H/qYYR1szLfzwNwf
-	MndwhFMflv10eyzhAYqqpDiLoGFL/cYToR0c4scFiNHBF7oZek9SCXHeu4uDy65V4X3kLRkbthn
-	6GXDegRz+81zB+eZ4agQdWWOd8XH45Pr18cWN+T23+BAAM4xnt44zc/5LgDEPDiAyb+qGZXLvwm
-	gZEExjU89C36/s8GBgaSK4o7j0eymBUdvKuYotNR2cNVzPQ6b4g87AQCIyhTyMMVVYu9qpF5QSs
-	BYUBwdw1qqCrhWMc0ibywYig
-X-Google-Smtp-Source: AGHT+IFx3k55PTq8kpgwKcb5RBhQUyp1OMTX5cXkssctzaZV79A7RJPBwJuog5CyrXFMu62ocVpQYA==
-X-Received: by 2002:a05:6402:440f:b0:5d9:fbb5:9ee with SMTP id 4fb4d7f45d1cf-5de45005adbmr17226356a12.13.1739194238397;
-        Mon, 10 Feb 2025 05:30:38 -0800 (PST)
-Received: from [192.168.0.50] ([79.119.240.253])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5de63a89b6asm4042296a12.46.2025.02.10.05.30.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Feb 2025 05:30:38 -0800 (PST)
-Message-ID: <53fc4a4c-dff8-4d30-9c79-c91fa36b55b9@gmail.com>
-Date: Mon, 10 Feb 2025 15:30:36 +0200
+	s=arc-20240116; t=1739195441; c=relaxed/simple;
+	bh=DKEoPLdrdrGN9NYJLSxi7YhFVgcfDlUvH3Pk2bNSW2Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=A4ViiFZX9CCmsKPVQXzDtkRfohbUr3D9VluRXx/CApjNQNvndawyZ3vkCkPfQmh8gn6ZaYh05ive03EOb0q2NTBrsq65YCC4XYMRSEFjxFyGphsmsjl02MmW5mtH9KlSVyoxfMgHwrq8VI2C+5texMDrgzvgO3NHpHXNtfNFNLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IezBZhJ9; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51A8h5VY015701;
+	Mon, 10 Feb 2025 13:50:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	izAZ47/J8OLX0F+QPE3KgdL1yhaG7hVSK5i+tO6h29M=; b=IezBZhJ9REwXNtZD
+	3fokGFoP1l/DSWLh3NwYamCfOC8xoDDEPm4znlbsPfNSrq207FKhDzuGOqcomYuZ
+	O0p9WykQu32IqTUoZSiMyYgSuexKJGcGyQ20FffEevpCaf2trZEbNhH2CfcRMll0
+	M5/tdATAwNNmn0VLInDpCKdJkgxADuh25hReoG7XNu41raoVTVAIKifLSAJm1OkD
+	8O3zAsS3t65C22C7uVh2/nExdBBZ/Xq+BRrdRWohZNJ9K1mATBQrfGS2FN3FwGWt
+	21hApWX4EeNxVPQ5ce0s+oBkUpzMs1z4dBVW9ywrKO0JW2R7BdWfqoaWzeCH//Gu
+	fdEsGg==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44qe6nrtcn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Feb 2025 13:50:35 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51ADoYQl005131
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Feb 2025 13:50:34 GMT
+Received: from [10.216.14.138] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 10 Feb
+ 2025 05:50:31 -0800
+Message-ID: <a825284b-431f-696b-3f76-f13763e46438@quicinc.com>
+Date: Mon, 10 Feb 2025 19:20:26 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/9] wifi: rtw88: Fix __rtw_download_firmware() for
- RTL8814AU
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <9fc518ae-7708-42c6-99ca-56ee307555b6@gmail.com>
- <55b5641f-094e-4f94-9f79-ac053733f2cf@gmail.com>
- <3a8771c4587e4ac5b4bd59d95f6d5162@realtek.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v9 2/9] wifi: ath12k: Add HAL_PHYRX_GENERIC_EHT_SIG TLV
+ parsing support
+To: Mahendran P <quic_mahep@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, P Praneesh <quic_ppranees@quicinc.com>,
+        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+References: <20250206013854.174765-1-quic_periyasa@quicinc.com>
+ <20250206013854.174765-3-quic_periyasa@quicinc.com>
+ <7a27d2d0-6630-f074-b426-04b199f3821d@quicinc.com>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <3a8771c4587e4ac5b4bd59d95f6d5162@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+In-Reply-To: <7a27d2d0-6630-f074-b426-04b199f3821d@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: MY_zXsDh3V241IGcpFYYMWzeHIljt2EV
+X-Proofpoint-ORIG-GUID: MY_zXsDh3V241IGcpFYYMWzeHIljt2EV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-10_08,2025-02-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 bulkscore=0 spamscore=0 malwarescore=0 mlxscore=0
+ phishscore=0 mlxlogscore=999 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2501170000 definitions=main-2502100115
 
-On 10/02/2025 03:23, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> Don't call ltecoex_read_reg() and ltecoex_reg_write() when the
->> ltecoex_addr member of struct rtw_chip_info is NULL. The RTL8814AU
->> doesn't have this feature.
+
+
+On 2/10/2025 4:23 PM, Mahendran P wrote:
+> On 2/6/2025 7:08 AM, Karthikeyan Periyasamy wrote:
+>> Currently, monitor is not enabled. However, in the future, the monitor
+>> will be enabled. Therefore, add the necessary HAL_PHYRX_GENERIC_EHT_SIG
+>> TLV parsing support in monitor Rx path, which help to populate the EHT
+>> radiotap data.
 >>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> 
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-> 
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+>>
+>> Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
+>> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+>> Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+>> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 >> ---
->> v2:
->>  - No change.
+>>   drivers/net/wireless/ath/ath12k/dp_mon.c | 548 +++++++++++++++++++++--
+>>   drivers/net/wireless/ath/ath12k/hal_rx.h | 136 +++++-
+>>   2 files changed, 638 insertions(+), 46 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+>> index 61fd481b7a3b..dd17607d470d 100644
+>> --- a/drivers/net/wireless/ath/ath12k/dp_mon.c
+>> +++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+>> @@ -13,6 +13,9 @@
+>>   #define ATH12K_LE32_DEC_ENC(value, dec_bits, enc_bits)	\
+>>   		u32_encode_bits(le32_get_bits(value, dec_bits), enc_bits)
+>>   
+>> +#define ATH12K_LE64_DEC_ENC(value, dec_bits, enc_bits) \
+>> +		u32_encode_bits(le64_get_bits(value, dec_bits), enc_bits)
 > 
-> Next time please take my Acked-by in v1. That will help me to save time in v2.
+> u64_encode_bits?
 > 
 
-Okay, I will do that.
+No, Its not needed. Here we need to decode from the u64 and get assign 
+to u32 as defined by eht radiotap header.
+
+
+>> @@ -836,6 +1239,9 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k *ar,
+>>   		case HAL_RX_PREAMBLE_11AX:
+>>   			ppdu_info->he_flags = 1;
+>>   			break;
+>> +		case HAL_RX_PREAMBLE_11BE:
+>> +			ppdu_info->is_eht = true;
+>> +			break;
+>>   		default:
+>>   			break;
+>>   		}
+>> @@ -961,6 +1367,21 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k *ar,
+>>   	case HAL_PHYRX_GENERIC_U_SIG:
+>>   		ath12k_dp_mon_hal_rx_parse_u_sig_hdr(tlv_data, ppdu_info);
+>>   		break;
+>> +	case HAL_PHYRX_GENERIC_EHT_SIG:
+>> +		/* Handle the case where aggregation is in progress
+>> +		 * or the current TLV is one of the TLVs which should be
+>> +		 * aggregated
+>> +		 */
+>> +		if (!ppdu_info->tlv_aggr.in_progress) {
+>> +			ppdu_info->tlv_aggr.in_progress = true;
+>> +			ppdu_info->tlv_aggr.tlv_tag = tlv_tag;
+>> +			ppdu_info->tlv_aggr.cur_len = 0;
+>> +		}
+>> +
+>> +		ppdu_info->is_eht = true;
+>> +
+>> +		ath12k_dp_mon_hal_aggr_tlv(ppdu_info, tlv_len, tlv_data);
+>> +		break;
+>>   	case HAL_DUMMY:
+>>   		return HAL_RX_MON_STATUS_BUF_DONE;
+>>   	case HAL_RX_PPDU_END_STATUS_DONE:
+>> @@ -1158,22 +1579,59 @@ static void ath12k_dp_mon_update_radiotap(struct ath12k *ar,
+>>   		rxs->ampdu_reference = ampdu_id;
+>>   	}
+>>   
+>> -	if (ppduinfo->eht_usig) {
+>> +	if (ppduinfo->is_eht || ppduinfo->eht_usig) {
+>>   		struct ieee80211_radiotap_tlv *tlv;
+>> +		struct ieee80211_radiotap_eht *eht;
+>>   		struct ieee80211_radiotap_eht_usig *usig;
+>> -		u16 len = sizeof(*usig);
+>> +		u16 len = 0, i, eht_len, usig_len;
+>> +		u8 user;
+>> +
+>> +		if (ppduinfo->is_eht) {
+>> +			eht_len = struct_size(eht,
+>> +					      user_info,
+>> +					      ppduinfo->eht_info.num_user_info);
+>> +			len += sizeof(*tlv) + eht_len;
+>> +		}
+>> +
+>> +		if (ppduinfo->eht_usig) {
+>> +			usig_len = sizeof(*usig);
+>> +			len += sizeof(*tlv) + usig_len;
+>> +		}
+>>   
+>>   		rxs->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
+>>   		rxs->encoding = RX_ENC_EHT;
+>>   
+>>   		skb_reset_mac_header(mon_skb);
+>>   
+>> -		tlv = skb_push(mon_skb, sizeof(*tlv) + len);
+>> -		tlv->type = cpu_to_le16(IEEE80211_RADIOTAP_EHT_USIG);
+>> -		tlv->len = cpu_to_le16(len);
+>> +		tlv = skb_push(mon_skb, len);
+>> +
+>> +		if (ppduinfo->is_eht) {
+>> +			tlv->type = cpu_to_le16(IEEE80211_RADIOTAP_EHT);
+>> +			tlv->len = cpu_to_le16(eht_len);
+>>   
+>> -		usig = (struct ieee80211_radiotap_eht_usig *)tlv->data;
+>> -		*usig = ppduinfo->usig;
+>> +			eht = (struct ieee80211_radiotap_eht *)tlv->data;
+>> +			eht->known = ppduinfo->eht_info.eht.known;
+>> +
+>> +			for (i = 0;
+>> +			     i < ARRAY_SIZE(eht->data) &&
+>> +			     i < ARRAY_SIZE(ppduinfo->eht_info.eht.data);
+>> +			     i++)
+>> +				eht->data[i] = ppduinfo->eht_info.eht.data[i];
+>> +
+>> +			for (user = 0; user < ppduinfo->eht_info.num_user_info; user++)
+>> +				put_unaligned_le32(ppduinfo->eht_info.user_info[user],
+>> +						   &eht->user_info[user]);
+>> +
+>> +			tlv = (struct ieee80211_radiotap_tlv *)&tlv->data[eht_len];
+>> +		}
+>> +
+>> +		if (ppduinfo->eht_usig) {
+>> +			tlv->type = cpu_to_le16(IEEE80211_RADIOTAP_EHT_USIG);
+>> +			tlv->len = cpu_to_le16(usig_len);
+>> +
+>> +			usig = (struct ieee80211_radiotap_eht_usig *)tlv->data;
+>> +			*usig = ppduinfo->u_sig_info.usig;
+>> +		}
+>>   	} else if (ppduinfo->he_mu_flags) {
+>>   		rxs->flag |= RX_FLAG_RADIOTAP_HE_MU;
+>>   		rxs->encoding = RX_ENC_HE;
+>> diff --git a/drivers/net/wireless/ath/ath12k/hal_rx.h b/drivers/net/wireless/ath/ath12k/hal_rx.h
+>> index 2da16f27e76c..959f2283294c 100644
+>> --- a/drivers/net/wireless/ath/ath12k/hal_rx.h
+>> +++ b/drivers/net/wireless/ath/ath12k/hal_rx.h
+>> @@ -71,6 +71,8 @@ enum hal_rx_preamble {
+>>   	HAL_RX_PREAMBLE_11N,
+>>   	HAL_RX_PREAMBLE_11AC,
+>>   	HAL_RX_PREAMBLE_11AX,
+>> +	HAL_RX_PREAMBLE_11BA,
+> 
+> is it needed?
+> 
+
+It will be good to have the defined values in the enum instead of 
+initialise the HAL_RX_PREAMBLE_11BE = 6 directly.
+
+>> +	HAL_RX_PREAMBLE_11BE,
+>>   	HAL_RX_PREAMBLE_MAX,
+>>   };
+>>   
+
+-- 
+Karthikeyan Periyasamy
+--
+கார்த்திகேயன் பெரியசாமி
 
