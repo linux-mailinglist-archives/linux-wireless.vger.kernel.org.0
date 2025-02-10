@@ -1,130 +1,141 @@
-Return-Path: <linux-wireless+bounces-18722-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18723-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10ED8A2F0D6
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 16:06:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1D8A2F6FC
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 19:27:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14A1F16921A
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 15:05:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C26921883E78
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2025 18:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F5023CEEF;
-	Mon, 10 Feb 2025 15:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7299125B690;
+	Mon, 10 Feb 2025 18:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=devture.com header.i=@devture.com header.b="I2YfSUjI"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="l9SRFCHx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.botevgrad.com (mail.botevgrad.com [84.22.5.30])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225B42309B4;
-	Mon, 10 Feb 2025 15:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.22.5.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D915725B668
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 18:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739199733; cv=none; b=bEZDXzH35yWMGcvfW4xMcW/gP7vDZGLAbhz1mE7QJjXQV8b2SC93wgJx3C/4GezfroX4LTGyaWN+O54wjY5a2r+Nrr07+Eq4nc/h69fbWVu7zo6J5iQDbk4oHNVUBHwQaeynPZ1cdsvj1fRdshMpfSeGFquYiYlobgoDiv4Kp/0=
+	t=1739212045; cv=none; b=NN+pBw/q+wyXg6riuwlFiatNBYF/tErcpE14MlBYYI87nFI98qOnG6eXAwRKi4Hi1qbQlzpCok8+dccrHJrM0G+BgEPy7mktQnO1RmW/pGukDvCiwB4c71FQt4EOetwcqA4wt0g5xDbct9WhfazEe9aQjRrpeWTLFgseMsI5iDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739199733; c=relaxed/simple;
-	bh=ZRCpRxJPB7pxYt7cBmQ9QaWTZHcy+ZoZBGEkQtHASYE=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=swYpuY0ZCrMdnrVceFB5dQIf7/NbZtKkyje34vdgj3d+IGmSDzeL+diepb54+wWWWDrYR9nqgZCY3711clFPXWl1k1VHyrewsRMCqSgMXWmo+OX1mqqspmFK8CYXTZ9z0h3muwUaDQVzj+uuLkiPnDe5zUleh9Ruzu+qjeHkayA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=devture.com; spf=pass smtp.mailfrom=devture.com; dkim=pass (2048-bit key) header.d=devture.com header.i=@devture.com header.b=I2YfSUjI; arc=none smtp.client-ip=84.22.5.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=devture.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=devture.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6FC226018ED00;
-	Mon, 10 Feb 2025 16:56:25 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=devture.com; s=dkim;
-	t=1739199388;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eUjZ6nL8w17oREQOvkvYBXo6SX9OZgpgfq7fRKD2fXc=;
-	b=I2YfSUjIvFE6ccoGMTV1CoWbZTd8yX1YkdJVoW5eGKl4A8K8hRp7UNnJf0XZ/5EJ/uIX6E
-	XcNOJJOFA82LYBJuA9AsFFUlLRJywrBnZsCL0Ox0KZS/rIdgR0ok0ztb46KToJ0aWQ+YW9
-	yYWp6K+G0WZruJ8As+5uMoU+r7LHAKeClGacIHiiiuoAeOXyuai52PqmTVnNh3vQzSc4+r
-	Hgqt2sJIDByucK57ExmM1b2XRYoF2Vy1FnKafZEYfNMs4f1ehsvqxyxvjfx41nUa99awm6
-	KO0Vi8A2uY4RDd34KFVy1iI7NYxU1ffRTabQYGbvfruMjj25tb1kFrX8nsMerg==
-Message-ID: <18be5ba2-6dc4-4766-9944-59cb46c8dfaf@devture.com>
-Date: Mon, 10 Feb 2025 16:56:17 +0200
+	s=arc-20240116; t=1739212045; c=relaxed/simple;
+	bh=qqAGJ0kL5x96w4uFcixdmbLngkE30fvHV+uGe09hISA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pSdr7dDCM/WESb+lXbX6us3KUHYXR0VtEhTdsshOW7QCwi6+vBiDeUDD9vSdsICrC/th5vFhrh1qeFjptoNnfUxc6xn25tj7xc8Jv3A5HrtagQF02upugtd/5XmWqpXtMkYpqzV6xxQMYkVUuUH9teEwkk/8XxwUsRM9/qodTps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=l9SRFCHx; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51A9Vgq1018694
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 18:27:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=Gjew95/V5NgXtpzaCazVN4ozklSBnkqrhwT
+	SJOZZ9N8=; b=l9SRFCHx4pR1Z5GE9YMfbgbC/CF3IeBeLGIUaZh2eU74+BhgC49
+	632AQsMVgAUT+v8rKJYQnv7tPnzOrvLI4BAors9EZLZTunu9ehQa6pHihAlr8kSc
+	Vh7x86zb953NhcceiAdundKauAxyyfLCml++cy4SyizmNZVjqUltLLfZBuL0BRoP
+	gJB0S9uvy96QX4pbWiH2gbEF+VoqTBf5vicmdWThmcau+exkdUzeZX2IRmbkNLO5
+	ENNlicQ+/qIBx8B4FP+PAvS2aoW0jIGzXm2LO4ZtS1mNaq38aX+Iq8VNXKCD/Khe
+	F4CTv1HyhwaVnlhYQcEOTBPUPl1gu0ENRgw==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44p0esdads-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 18:27:22 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2f9c02f54f2so9742824a91.3
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 10:27:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739212041; x=1739816841;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Gjew95/V5NgXtpzaCazVN4ozklSBnkqrhwTSJOZZ9N8=;
+        b=uZtfP2o6S9wtq/ZT7XpNiFlS9D6xM5XgXWyRTZJ/CLBed5PT/CfdlwV9Sosb3KP1Wy
+         8kZ9g5go9J6WZdHfSyg1NeJAHqmvrVPRPwYzPD8Abi/nwuXostjtsLyXBjEEPizN/cEn
+         RGrTviZuuFHPbFOJuNdwWUxK7idVsfWdeeptAXpwLKoLb2Ds/HoyFjmWpM41Y/0bPukw
+         0KenCNJx5LeG6oXUkg84yOEGb1xMJCMRFqYlCWsU1wf1GyTaM5oE1a1IcNxYvKyc5GrR
+         9zKouo0Z4gucYDcc6btnqFewkxyDF3Xc7S513N/WWIqPaVOHWX0GuvRNNkaiQxtRVude
+         EL6A==
+X-Forwarded-Encrypted: i=1; AJvYcCUSC5YwTFbRQ2Jv48VcARAAdusIWmdkoPk6rHXJoKqvhsccOMdOCOHp4+ztz9NPNO75IKbOa0B2mUHJVMOLOQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOxMDbmImBgpORTP/QX3rtPXzMRoScMGy9Xq5GcMMRIfy+wrvU
+	5nTNcHxrBDQgkiU+B0HlPjnQsb6JrrxxnjyJAtSrUFYrjweXFkozE8fUqMHE/HCdg6PNbPiOvel
+	gCtiVZSe58QZP+DM/3pIGqYv3PeNI+/VMyTDZXHS5GQ+1k5Lz/XCgdkMBHwBjl2szhA==
+X-Gm-Gg: ASbGncuGXEVw3QHLJdlNlGmEjZIAeqhgJjpbCFjkfRlwMGzAO2rGa7FrCjv/qsF7FDc
+	reFSjReqbNT9WCK8Yculrhb88MsriyVkyYfoJK1cs8r2S45w8vLL8BLTuSay57Zt075hNF+2jEl
+	fwBTSKhMB1OP4Fhjq0cYWCHJ50YZvYkJVZ5j+WYc3XFoMtRbKm/Y9k84PtAefylzsPXRRc67YtV
+	xQDGfMKx/FyiNf9mnDqMAVHFbkbWojtKJtVXYN/8Q51Npa3kcQAs9OZNW8x9qZpXsoePVy3PkR+
+	UTzmW++bv5g/gou74VlGhjsDGlZdQeeJQMsFg1rvcF+zlzQlCohpUEqjOLPi
+X-Received: by 2002:a05:6a00:2289:b0:725:460e:6bc0 with SMTP id d2e1a72fcca58-7305d2ac0admr25649698b3a.0.1739212041119;
+        Mon, 10 Feb 2025 10:27:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFPXrpGR0BvSH58Ju3d8FrcHnAh2KNvN/0WuaoCUw7XmsBPUZo/Z3DUS+E2PBVelTjibLdOTQ==
+X-Received: by 2002:a05:6a00:2289:b0:725:460e:6bc0 with SMTP id d2e1a72fcca58-7305d2ac0admr25649634b3a.0.1739212040605;
+        Mon, 10 Feb 2025 10:27:20 -0800 (PST)
+Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73048ae8e83sm7948372b3a.84.2025.02.10.10.27.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Feb 2025 10:27:20 -0800 (PST)
+From: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
+To: ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Cc: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
+Subject: [PATCH v4 0/5] wifi:ath11k/ath12k: refactor tx_arvif retrieval
+Date: Mon, 10 Feb 2025 10:27:13 -0800
+Message-Id: <20250210182718.408891-1-aloka.dixit@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Slavi Pantaleev <slavi@devture.com>
-Subject: 6 Ghz frequencies always listed as disabled in newer kernels with
- Mediatek MT7921K (RZ608)
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Ryder Lee <ryder.lee@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Deren Wu
- <deren.wu@mediatek.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-Proofpoint-GUID: BduHVxSPpn9wxYAEm8u_vX6EnCleENZg
+X-Proofpoint-ORIG-GUID: BduHVxSPpn9wxYAEm8u_vX6EnCleENZg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-10_10,2025-02-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 adultscore=0 spamscore=0 mlxlogscore=999
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502100149
 
-Hello!
+MLO MBSSID series for cfg80211/mac80211, which is in review here 
+https://patchwork.kernel.org/project/linux-wireless/list/?series=902914&state=%2A&archive=both,
+changes the way transmitted profile data is stored for each link.
+As drivers currently retrieve 'arvif' for transmitted profile at
+multiple places, MLO MBSSID changes will becomes unnecessarily
+bloated with RCU operations for every retrieval. Refactor 'tx_arvif'
+to avoid this.
 
-This is in regard to Bugzilla Bug 218731 - Tri-band AMD RZ608 (MediaTek 
-MT7921K) has 6GHz band disabled in kernel 6.7+ despite working in <=6.6
+Additionally, fix an issue in ath11k_mac_update_vif_chan() where
+tx_arvif is not reset to NULL inside 'for' loop during each
+iteration.
 
-URL: https://bugzilla.kernel.org/show_bug.cgi?id=218731
+v4: Added "compile tested only" in commit descriptions for ath11k.
 
-I'm in Bulgaria and `iw reg get` reports this:
+v3: addressed comment from v2 and removed NULL check for
+vif->mbssid_tx_vif from patch #1.
 
-```
-global
-country BG: DFS-ETSI
-         (2400 - 2483 @ 40), (N/A, 20), (N/A)
-         (5150 - 5250 @ 80), (N/A, 23), (N/A), NO-OUTDOOR, AUTO-BW
-         (5250 - 5350 @ 80), (N/A, 20), (0 ms), NO-OUTDOOR, DFS, AUTO-BW
-         (5470 - 5725 @ 160), (N/A, 26), (0 ms), DFS
-         (5725 - 5875 @ 80), (N/A, 13), (N/A)
-         (5945 - 6425 @ 160), (N/A, 23), (N/A), NO-OUTDOOR
-         (57000 - 66000 @ 2160), (N/A, 40), (N/A)
-```
+v2: fixed kernel test robot error in patch 1/5 for tx_vif.
+https://lore.kernel.org/oe-kbuild-all/202501160626.Jbb3GHnk-lkp@intel.com
 
-For testing purposes, I've also tried switching to another regulatory 
-domain (`US`, `DE`, `SE`, `NL`) via `iw reg set ..`.
+Aloka Dixit (5):
+  wifi: ath11k: refactor transmitted arvif retrieval
+  wifi: ath11k: pass tx arvif for MBSSID and EMA beacon generation
+  wifi: ath12k: refactor transmitted arvif retrieval
+  wifi: ath12k: pass tx arvif for MBSSID and EMA beacon generation
+  wifi: ath12k: pass BSSID index as input for EMA
 
-Regardless of the regulatory domain, `iw list | grep -A 15 Frequencies` 
-always reports the 6 Ghz frequencies as disabled on newer kernels.
+ drivers/net/wireless/ath/ath11k/mac.c | 73 ++++++++++++------------
+ drivers/net/wireless/ath/ath12k/mac.c | 81 +++++++++++++--------------
+ 2 files changed, 75 insertions(+), 79 deletions(-)
 
-As the original bug reporter has discovered, the regression begins to 
-appear in kernel 6.7.0 while it isn't present in 6.6.30.
-I've done a bisection and the results are like this:
-
-1. [bad] mainline (954a209f431c06b62718a49b403bd4c549f0d6fb)
-2. [good] v6.6.30
-3. [bad] v6.7.12
-4. [good] v6.6
-5. [bad] edd8e84ae9514e93368f56c3715b11af52df6c3b
-6. [bad] 89ed67ef126c4160349c1b96fdb775ea6170ac90
-7. [good] b827ac419721a106ae2fccaa40576b0594edad92
-8. [bad] d1a02ed66fe62aa2edd77bd54e270ebc33bd12ff
-9. [good] 3abbd0699b678fc48e0100704338cff9180fe4bb
-10. [good] 5a423552e0d9bb882f22cb0bf85f520ca2692706
-11. [bad] 56a7bb12c78ffa1b02e154b1d779ed2a1555fa3c
-12. [good] a3c2dd96487f1dd734c9443a3472c8dafa689813
-13. [bad] 089482a06b74a40d45773b1871182e8f04be026b
-14. [good] fce9c967820a72f600abbf061d7077861685a14d
-15. [good] c948b5da6bbec742b433138e3e3f9537a85af2e5
-16. [good] 9585316a2aaf773a67846bdc8bbdd4df1e9622fa
-17. [good] 51ba0e3a15eb1643116a93674e230e11b9499592
-18. [bad] 09382d8f8641bc12fffc41a93eb9b37be0e653c0
-19. [good] 4fc8df50fd41c2762d893211487be0ecb24c6a05
-
-09382d8f8641bc12fffc41a93eb9b37be0e653c0 is reported as the first bad 
-commit.
-
-URL: 
-https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux/+/09382d8f8641bc12fffc41a93eb9b37be0e653c0
-
-Regards
+-- 
+2.34.1
 
 
