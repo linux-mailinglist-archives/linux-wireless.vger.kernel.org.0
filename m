@@ -1,77 +1,78 @@
-Return-Path: <linux-wireless+bounces-18787-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18788-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5318A31885
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 23:22:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B09DA31889
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 23:22:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F848168887
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 22:22:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B8CA188895B
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 22:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D61C268FEF;
-	Tue, 11 Feb 2025 22:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00436268C6F;
+	Tue, 11 Feb 2025 22:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CYq5yneP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HRU/3ivB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC9F268FF5
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 22:21:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44896267715
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 22:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739312503; cv=none; b=d7vvC6AAFvcEWgI4qjHZNRHFWwM0Nx+feZI2QAq/tRl+uhJrtcX4j3cq65TtE3DN8SCQyA2vMOukwsX9JvjAHcp9NO0E0A41NRizkLY18HJ3pxu+se8ADkotjbC24gu+5+uBWSC3ThG+0QK79qEseHZ1Qk+MP4Ge6RNx+8qsxNQ=
+	t=1739312541; cv=none; b=qI77JCEnYkS/BvUb31pPGXr8fk5pQPvL7ARNeb/LlmaN7MFIRVFEg7a1oH0+fS9139X9RBVQZjBMb/QQqmTod3sHJUicQAB3WhA1dhX8Q/SGHAuMrT1iYbvoXWIv1LIc7Az9H5bnsWc6iUC+SEwMRv7JVwftY6gega63QadcK44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739312503; c=relaxed/simple;
-	bh=aXKJtbUk9vQ7G2sk7UlLFqubvcA//KP5R/ZE2ETlL0M=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=l1OWyx3qWMG07n0QLOqJZyes/1zFuv8Zy/daoUkwc2ElInndx1cV4xqVGRoBEvdT2slBUdBAqtZS/3vKt/2Lbssd2Sues1rR3JYes4Mp+5YJGZC3lTvLQ4QTwoKXRbL1coQm2tngEOXHMNG16GirXsgfINsWGQcgEH2iqf5AYMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CYq5yneP; arc=none smtp.client-ip=209.85.218.52
+	s=arc-20240116; t=1739312541; c=relaxed/simple;
+	bh=+VayUWbg8pu3OIpUV7DPdKi3S42ml7UlmBsVRWRZfh0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=O8WG3VrGfaqJreHzbM13x8TR7p/UVFdKCuHR5Lpy3m9am8l044fs3hOa2gkpCTIbNFgCGP90jiECHi5bUAj6Ral7j6SGUGAkce9kG9LDNAq1It+xBz+XRyGK5LN4V03BfIAj9ixaIGRZ4O1Hh2GDqmSgPg6oLNfmVfWRn17c89Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HRU/3ivB; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ab7b7250256so465183866b.0
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 14:21:41 -0800 (PST)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso992778066b.1
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 14:22:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739312500; x=1739917300; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4J9ZKf2ZlezeB+RVYDmiHlxUn3IE6af9sglL2slrqpw=;
-        b=CYq5ynePBMpN3M+EqlcrF3lY6QtC00VkhoL+UJ0cdQHmrZNmBR/Kc8ddvgJhlaplXk
-         iTTuty2ssOAjOO8RHDZnC3ePL/JVmSEPbaMoBTsiadvR/jJjWAKrD6e9mlCklozVqxGV
-         smUNWtsPnY8GlX7MujV+G3eQyHQ4F90ZUJYP/1U5QMDM2VUQT019g1y+DRSgpP2xEzez
-         8S6+pXIJggAr0ptZQWDVw4IBFV4km5PjeM9zycrapL717x+AjV3waG//+0xPaFqiY8xv
-         ETYWOLYDtemBKCoU8xIpWYapdJ0ozBKxw0nxUQpSzXRlMuy9N4rHAT9iB+lzGEnJg8DV
-         90cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739312500; x=1739917300;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+        d=gmail.com; s=20230601; t=1739312538; x=1739917338; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=4J9ZKf2ZlezeB+RVYDmiHlxUn3IE6af9sglL2slrqpw=;
-        b=tgCogsnDKOrG4za2l8Lkls0Hp20EX0wsAQdz4SY3Vm1G87fdr8+c9jfF2rVgC+d644
-         Ttzs+KS78P5VAgDXSMqNlZ7DYDPS+fN89Hp9CtanwXQV6hZA7eprE5Z7o7Mwuzgy0Y2u
-         LacJIhbkXVV0g4XlZIaKeXWhLqka2tSvjYrRtY8l3VjVxAi9Iy7rCNIGFo1ZHErgv1v9
-         b7jSBpiT7Ny0SOrlToqlDBDlx4yklmXCWS2jblVE2jt9dyZd/TF1KyOy/ylxYYgyiAlk
-         MB572ttpS6/ez1loILwgyUuQ24Q3RgWiJX9xnpwx2itQGWLLHp1HLJF8XNpHrB7dMrlT
-         S6OQ==
-X-Gm-Message-State: AOJu0YwpgGBj1FlbNAt77SfoCIxsnVjxT5utQiUZcrcoKAPk3umV+kEF
-	D+nNyPtRra6c8lugx4dg7XlFRyADvR9g5WoWeFO2G+qjj2ETsHeUCy/HdQ==
-X-Gm-Gg: ASbGncsqbFoHV6ERnFMdtyex7re6D7ORG2FA+yJK/REbay3oddbnbnDvOYzNUCEtUob
-	AXNYWZ9LxuJKzYvH0p28UAlPXKP79dFbrhUOSYLntdaQOIUKvEhAgNBYD9FZTHyy5UXwyCzlVNR
-	N6e0X1IGd6ox/WKW88Od5+aMV8dtUs4/9fmui4OQpZG7kU/WHVIW5ykgEngGWtGQ6uim6ih0Xq5
-	WlbNDrk9pubEeeeHFQJ4YJn6YJKqn4LySM3xDPJjkP4ok/yWGye63T1rSP/zkzFWm5xmEErzI80
-	xhA6M8yvghL+fobg1gzaSRYs
-X-Google-Smtp-Source: AGHT+IHJf267fknzDJF7j+ezX+m4/Q7yh9to8aGddjlmlR6sdz8hVo0XW2+eukt/K/cGFEn0XhpdHw==
-X-Received: by 2002:a17:906:fe49:b0:ab6:ef94:6054 with SMTP id a640c23a62f3a-ab7f33d70a0mr56799066b.33.1739312499927;
-        Tue, 11 Feb 2025 14:21:39 -0800 (PST)
+        bh=VbiTCbXEeldJnegnvSXu0fmcBO2Za0kGDLfJrHVRyUM=;
+        b=HRU/3ivBCyBw5LxZxI2UnZdlIVUa/+f00JSEYL1cwXgaxjSqK9UFD89cAJZWIgjpeg
+         yqdUh+CW4QsFuFiTiDzQMNOh3q7JKXypisw3veWWUtevO0SKelSvmLETew3n4ptvpiJ7
+         dt8vHIPm78KsixMB3hb8nkBuziX53SNfZmfdFUBYW92ZsTiDMzKtij3mWcB+LEGEZ/rB
+         eY/Nzy8sd1vd2z238OKYW+PFn5k1lyZrsmtsOS5fqDCesFCJ+HNhGwbLTzhKMvJN/rse
+         vtIl0CRm4BxTExDDhmcYb2pXPPDebqXH70D0UZ2nRyhYBzQFks+OhDJNoxqk/6WuH+D1
+         zRjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739312538; x=1739917338;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VbiTCbXEeldJnegnvSXu0fmcBO2Za0kGDLfJrHVRyUM=;
+        b=La5yxmZ2l0TK7pI+tYCROWmN6IBYICudJ4cmWsEZbot1DCSMiuVylPUeE4qSGpBe1e
+         Xdqu7lGyISeD9u48shke6a0hGJA6RlJCPJRdM71zhPGrw4Ure5143xfisIe7FQXlEa59
+         BWbZDqZ+hXVH2PEAYRvgpfBduw54IkCHsZGJtEhkQqtHZCIR5YYmI3psxwOh5D69DIwp
+         ahHAgGBUsiqeT0uqhiN8cv0DW5LHP2NNN1+2g05wCpW8x96bxBr1dZGz7guGi4p2mLQA
+         hzUuZ309QJn2250bUC3ihH9lCVKWU7rNnQqcJOGOAout7DiRB9UGTj7eKmfqi+svwi/h
+         lW4g==
+X-Gm-Message-State: AOJu0YzKZeQhj0xLX/VGbiSpaVJOsEpf2+RlCZcsO1rK+Jzso0LlBFuV
+	e0DxWnj2NHk1DFT47KdnT8wd/fCFV6nHqj9V3FQVTi/l3e0HbixlkqPV+Q==
+X-Gm-Gg: ASbGncsTJxwji38udIW5uRKmrDPxpRRHBvUxxs31a0ZYiLy2qFKthJuu9g818YBCGIe
+	bAhO4GPuaV24azEiqQ0r21rysomHQs9mwOAtIZEhd5vDsujzE3eULlFicrhDb/3Juk8zMYvU/VE
+	gYpcYFY7zsxEpEald1SWIJ+cP6h7NFLk78ZEiujECmGc1IjMuntDX3FydDq5FPumzVuGylS0Ua5
+	6ei7eICc3wqXjEelKfmxjB3Z9Anojj8lH9jjZxyepio7XlUKappwx4lvflHPi0eRKpPX5Sk38VC
+	Ktej5MRdA0NJNz3VxDZyBrPA
+X-Google-Smtp-Source: AGHT+IFBB9C5py1SO+kqi4bkM/UVahiIJCh4aqcBeiLSKVF9r452PEdR1us9vy1GZu4rtVybVlBD1Q==
+X-Received: by 2002:a17:906:7956:b0:ab7:f221:f7b4 with SMTP id a640c23a62f3a-ab7f34738c0mr51235366b.43.1739312538186;
+        Tue, 11 Feb 2025 14:22:18 -0800 (PST)
 Received: from [192.168.0.50] ([79.119.240.253])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7d18e006csm329370866b.52.2025.02.11.14.21.38
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7bc28c58csm535888166b.135.2025.02.11.14.22.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Feb 2025 14:21:39 -0800 (PST)
-Message-ID: <21111380-5db6-4a72-ace9-f18b5bcd525c@gmail.com>
-Date: Wed, 12 Feb 2025 00:21:37 +0200
+        Tue, 11 Feb 2025 14:22:17 -0800 (PST)
+Message-ID: <83c8e281-0d25-4de6-a6c7-84d24b228888@gmail.com>
+Date: Wed, 12 Feb 2025 00:22:16 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,44 +80,39 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-US
+Subject: [PATCH 1/8] wifi: rtw88: Fix rtw_mac_power_switch() for RTL8814AU
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH 0/8] wifi: rtw88: Prepare to support RTL8814AU (part 2/2)
+References: <21111380-5db6-4a72-ace9-f18b5bcd525c@gmail.com>
+Content-Language: en-US
+In-Reply-To: <21111380-5db6-4a72-ace9-f18b5bcd525c@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-A few more changes for RTL8814AU. Fix power on/off, the HT/VHT
-capabilities advertised to mac80211, RX statistics, TX power tracking
-stuff, debugfs stuff.
+rtw_mac_power_switch() checks bit 8 of REG_SYS_STATUS1 to see if the
+chip is powered on. This bit appears to be always on in the RTL8814AU,
+so ignore it.
 
-Part 1 was here:
-https://lore.kernel.org/all/9fc518ae-7708-42c6-99ca-56ee307555b6@gmail.com/
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw88/mac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Part 3 will be mostly the new files for RTL8814AU.
-
-Part 4 will improve performance.
-
-Bitterblue Smith (8):
-  wifi: rtw88: Fix rtw_mac_power_switch() for RTL8814AU
-  wifi: rtw88: Fix rtw_desc_to_mcsrate() to handle MCS16-31
-  wifi: rtw88: Fix rtw_init_ht_cap() for RTL8814AU
-  wifi: rtw88: Fix rtw_init_vht_cap() for RTL8814AU
-  wifi: rtw88: Fix rtw_rx_phy_stat() for RTL8814AU
-  wifi: rtw88: Extend rtw_phy_config_swing_table() for RTL8814AU
-  wifi: rtw88: Extend rtw_debugfs_get_phy_info() for RTL8814AU
-  wifi: rtw88: Extend rtw_debugfs_get_tx_pwr_tbl() for RTL8814AU
-
- drivers/net/wireless/realtek/rtw88/debug.c | 47 +++++++++++++---------
- drivers/net/wireless/realtek/rtw88/mac.c   |  3 +-
- drivers/net/wireless/realtek/rtw88/main.c  | 40 +++++++-----------
- drivers/net/wireless/realtek/rtw88/main.h  |  7 ++++
- drivers/net/wireless/realtek/rtw88/phy.c   | 24 +++++++++++
- drivers/net/wireless/realtek/rtw88/rx.c    |  6 +++
- drivers/net/wireless/realtek/rtw88/util.c  |  2 +-
- 7 files changed, 83 insertions(+), 46 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index 63edf6461de8..5de16c75adf2 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -291,7 +291,8 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
+ 	if (rtw_read8(rtwdev, REG_CR) == 0xea)
+ 		cur_pwr = false;
+ 	else if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_USB &&
+-		 (rtw_read8(rtwdev, REG_SYS_STATUS1 + 1) & BIT(0)))
++		   chip->id != RTW_CHIP_TYPE_8814A &&
++		   (rtw_read8(rtwdev, REG_SYS_STATUS1 + 1) & BIT(0)))
+ 		cur_pwr = false;
+ 	else
+ 		cur_pwr = true;
 -- 
 2.48.1
 
