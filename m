@@ -1,109 +1,102 @@
-Return-Path: <linux-wireless+bounces-18740-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18741-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12306A3034A
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 07:15:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E6BA3035E
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 07:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 759D4188A6A9
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 06:15:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD8DD188A6A4
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 06:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDE226BDA0;
-	Tue, 11 Feb 2025 06:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744C526BD8B;
+	Tue, 11 Feb 2025 06:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jT+Guqp0"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="LoameRNx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E7B26BD8B
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 06:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D2026BDB9
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 06:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739254547; cv=none; b=MBX5l+4EF/fcaYYqkq8S8eEOH4A/SbfuZCVd8cbOgldjaarTbTxnBhjTV1KPMzljPrczIuxfeRjmRoYB/PB7AyLAntzRN5hcwv4JHQUadf+tm+NK5toTAv6JOTC2pw7fgh8E+4p634kwxx5tGBB+k/N+E8i8bsVw2n9YLLgGNhA=
+	t=1739254822; cv=none; b=QFoRgTup70i50NUNvCoyhVIgPN5MJASrWKhF/1j8uuoNhkuWSzSfjzDl92mzjNYS/jTo2zhwqzoqntM0GI2XdEHAzA6zrXzOIZE11Wx6FY6ETetdQ7KxYl5Q0Q92pTIQk0xxRBQGBZLZABgTEXIlIB3PQHOly9kXVTmj1lLVBwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739254547; c=relaxed/simple;
-	bh=wsRT9LZH7XrpLa27bB/Wes0PWTQLYxBIt7C7Wd/85a8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EtvfXcbM7rS+VBuUY/Gnt18lTXOFU7YOrYDs9Lv4qJEG2gPSZ+F3XFpslsZshddWOaDjELQx1736VvZw/S1LaqRxJ5FbveP+5E7lP+PIpDDZyYkb9K7tTpGTT0midyIiVM/zgQH4eYl/wt6Jbidf1y+riNRKaXczVowxL3Dkvvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jT+Guqp0; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-21c2f1b610dso125890815ad.0
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2025 22:15:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739254545; x=1739859345; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wsRT9LZH7XrpLa27bB/Wes0PWTQLYxBIt7C7Wd/85a8=;
-        b=jT+Guqp0BmxCW/CLFeEfbaRmR00M5dG7yQrYoN2pf/QQvLqj9IH7g6luocj3vpd3Cz
-         x1baXiJuWs3wddbhgtX+IBuoy1z87XF+jP5TdbZiSj3s5iZUK1h45BCvP+0FxAKs3kFp
-         I+JMJL5wEIbhcBpDGrLS+Suzc6uR/hJaVqcu4zSmBBMBF6Ru25rOC5+t/hQycM/+VKuh
-         d9qU2CHHc3805XjuTAMqzfGolmlW36pt8eJD32VmkEpz/ZS4U8NInoAmu++Bmueso1MI
-         NZ7OoUQ763u86QpAEa8zi92SBXVZnjM78tQ/fY5+3Xz0qeN42gq6bW3F2RUD8vDrzKe4
-         C4/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739254545; x=1739859345;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wsRT9LZH7XrpLa27bB/Wes0PWTQLYxBIt7C7Wd/85a8=;
-        b=imUC7oeHP5OEwkTw4t0wmlMDCUU5N9G/5spFjCf6lZRVV1d+up/Yom+wkmmxSRBLue
-         +hsg9soRQWE+oddPYhDjTHot3G4YIGwmPQ5vdoMcaOBETq6YNqTKGH8jWjSPmnw/2rCG
-         W0yCqzFblkjUTqJwuGOnoAq8I1r3SyTmZGqHyIdwmRDt/qoodkr9QX5hKmU1IR5F6BlY
-         VQhhPxoF4bbcBM/funUozE2Fgz5/zHVvzbHFWAooFPD0wRrc4/tBbsJFfVdZ/ZMy9nza
-         soKnTbmD9m72NYEjREruTdB2r+z/+y4+vFS0oDUHFC30htaIvPt5bmu01lLl7ktrZ/fC
-         IrOA==
-X-Gm-Message-State: AOJu0YydiyhaYDLRQe+clIjy9jttc+7AG5GqXtEdb05xh1Aqo9RQ1xJj
-	iTY3m0KA5NNxEi83hLIrpi1tjPOU9d2CDoJJvJ+hwNcaRmB/XtBI
-X-Gm-Gg: ASbGncsxqm9j8QSaVPsGP1bA/urif9Ux/odkB/GjtwDmSXvpwzGGRVR/Mn34J/xu+Rb
-	RI0Kt9uhCLpgGX7O32/9NCXEzBuSnzSBTNRZzzh4TfUel4Fc9wZxU/4qLa2VuHIpSLTRWB2KKQ9
-	F4uo08/k53tUV+uGjkygNkg87nGOfCrBuQPTIcxMaZapBr1PC72pGcUIuMNRAb5Wg7g5TkwX57h
-	h19f5j5jxuCc3RUz2daGpNG9+veJZ/kZtl30xrOdSp6duV1uyUyzeKpLJQhUt6K9+qWO1qVsU4O
-	87XOuIAQdSsP/sGAzaR1lsbHgjGfcVjnupuynk0xyEu5q1BsSZlNX2Iza52GTsWGcw==
-X-Google-Smtp-Source: AGHT+IGDa27EJyFMm9C+IUFsEwdWc+sxcf1zqPdCPuf9sAulOY9E35Ce28YYY+CebNShtw1WdErnmA==
-X-Received: by 2002:a17:902:da89:b0:21f:7082:1137 with SMTP id d9443c01a7336-21f7082121cmr192004035ad.22.1739254545437;
-        Mon, 10 Feb 2025 22:15:45 -0800 (PST)
-Received: from localhost.localdomain (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-21f368b27f9sm88685685ad.228.2025.02.10.22.15.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 22:15:45 -0800 (PST)
-From: Zenm Chen <zenmchen@gmail.com>
-To: pkshih@realtek.com
-Cc: linux-wireless@vger.kernel.org,
-	rtl8821cerfe2@gmail.com,
-	zenmchen@gmail.com
+	s=arc-20240116; t=1739254822; c=relaxed/simple;
+	bh=vbte7hB2p8ay+3x/6C959Jj8NKTWjTL7I4UNnRRaTgA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QTdmA0DDt9q/3vTAhYxQjsrj32WGw5LxLhouElHBYiZt5Y1D4f2daDUosGqt7zCd4eL4MLfTVYx1XEjR6xmvp3z7c89mhPqNJoSRmcIq2JbLc+//8UqpqxYL9YTOvu61jQaav8SvuB5h3NHA2xXhGgt8joJ81VQRF0eSmt9PhY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=LoameRNx; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51B6KFgO44083164, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1739254815; bh=vbte7hB2p8ay+3x/6C959Jj8NKTWjTL7I4UNnRRaTgA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=LoameRNxs3fPtfQ6/UeW7SGDutMKUuTceRE7WjlXZ5Nzn+Ve2PtltQQ/JTp5omAs4
+	 ZdqLKCByPLS8Z/08iB7bHfzbB6gLCZJiKbqetgrbU8pHjtTgS5TpXR3zreo6rNkJod
+	 5EPm1Hva1ye3Gwy06dxOK9SXwbrj0ElM7kHoPeY8cWloihPi4AZBHP5P0CWwIeZacU
+	 KmlFoYxSFdjIVodcKzos7wqV9+t67Xu40sSl9dpQLEMuJyQv2ZpADyrYAdeV2QpXPr
+	 FfavW1cMWJYXzpn1KKsNS/XeYdo8MdZeST7DnidC+QLu0HtIxkb0SeOKTrdCJQb7DH
+	 EWxnPBAbESvOw==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51B6KFgO44083164
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Feb 2025 14:20:15 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 11 Feb 2025 14:20:16 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 11 Feb 2025 14:20:15 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553]) by
+ RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553%5]) with mapi id
+ 15.01.2507.035; Tue, 11 Feb 2025 14:20:15 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Zenm Chen <zenmchen@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
 Subject: RE: [PATCH] wifi: rtw88: Add support for Mercusys MA30N and D-Link DWA-T185 rev. A1
-Date: Tue, 11 Feb 2025 14:15:41 +0800
-Message-ID: <20250211061541.1730-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <1f46070899bf4ddaa7b668a1f96b85ed@realtek.com>
+Thread-Topic: [PATCH] wifi: rtw88: Add support for Mercusys MA30N and D-Link
+ DWA-T185 rev. A1
+Thread-Index: AQHbe455GovrMsKY002rA8aWeyvE1bNBm+8w//9/mICAAIa6QA==
+Date: Tue, 11 Feb 2025 06:20:15 +0000
+Message-ID: <b58fcb1185a24661a09d1eceeeda843a@realtek.com>
 References: <1f46070899bf4ddaa7b668a1f96b85ed@realtek.com>
+ <20250211061541.1730-1-zenmchen@gmail.com>
+In-Reply-To: <20250211061541.1730-1-zenmchen@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-> By the way, these IDs aren't in increasing order, how did you pick IDs
-> from vendor driver?
+> > By the way, these IDs aren't in increasing order, how did you pick IDs
+> > from vendor driver?
+>=20
+> Mikhail Novosyolov taught me a good command [1] to find out the missing
+> USB IDs. :)
+>=20
+> $ diff -u --color \
+> <(modinfo a.ko | grep ^alias | sort -u) \
+> <(modinfo b.ko | grep ^alias | sort -u)
+>=20
+> [1] https://github.com/morrownr/88x2bu-20210702/issues/224#issuecomment-2=
+404823387
+>=20
 
-Mikhail Novosyolov taught me a good command [1] to find out the missing
-USB IDs. :)
+Cool. I thought you compared them with source code rather than binary code.=
+=20
+So maybe it is not necessary to align them in source code.=20
 
-$ diff -u --color \
-<(modinfo a.ko | grep ^alias | sort -u) \
-<(modinfo b.ko | grep ^alias | sort -u)
-
-[1] https://github.com/morrownr/88x2bu-20210702/issues/224#issuecomment-2404823387
-
-> Not sure if it's worth to sort these IDs so that it would be easier to
-> align IDs with vendor driver (it should be sorted as well).
-
-okay, I will send another patch to sort them after this is merged.
 
