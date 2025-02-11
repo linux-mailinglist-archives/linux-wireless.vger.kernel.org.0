@@ -1,77 +1,77 @@
-Return-Path: <linux-wireless+bounces-18766-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18767-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3059FA30B09
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 13:02:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACBBAA30B0D
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 13:03:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97B27166193
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 12:02:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CF661887E91
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 12:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C104621E0BC;
-	Tue, 11 Feb 2025 12:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85F32206A6;
+	Tue, 11 Feb 2025 12:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UB2qmMx1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B4zDk/jr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E170321A424;
-	Tue, 11 Feb 2025 12:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C91521D5A7;
+	Tue, 11 Feb 2025 12:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739275312; cv=none; b=BOfBkCVhjVtjCS58g85w8P69X7CEHgWuVvN9+wzsrWd/ngL0+nEDK2OcgV1Ih7VGNshq7gmQbw0BoAlr6nev/Ybw3hAqdNGSku3yOghrSE6GeKddP4PWaiXR7QMyYWLlev9y13Q49ScHaHPJhl35Vhoemr+744IbqhA7PRmxuHk=
+	t=1739275313; cv=none; b=dKlH3Gxi4BjTRi09bOAf7t4HQ+telfBFL7Ga3qs9BICmCUuJ2XZMzX9rtFkkHgY91Qtc3mkpnW1iEWd+bDVaEh0+Dca9DDCyiePd7Ab3IKwhsCe6DVB3dUI6BgMYnKfYwugfJFWIX1Ey8Nf3N/tBQNF03XR2uqN0iqCcoP+lGXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739275312; c=relaxed/simple;
-	bh=Ap1q4LgkrLbGyYRLWcKtA1t6kyY/N7ouDJbyAdy3y1c=;
+	s=arc-20240116; t=1739275313; c=relaxed/simple;
+	bh=hngH+nkRM+69V8gMEYAXSayqQbNSU/kvsOcQdYK01ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RYfqnKhSXxiQwGbK1AZrzNnrKSBL7VSkTZpNaI1uEobnP2xf6Zkuvz7kHRaNnwGsWFmlwpqeuRhVP55Eff7L0PuIktw0WjuZu3naMPnJ8bT7zhk85TPq47UnzOPqqYB6iPxH5XdkJaF5AMrAsRQa509W1Uv7dgBbiC3qyWKUuMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UB2qmMx1; arc=none smtp.client-ip=209.85.221.49
+	 MIME-Version; b=k/qKTTyImMiIYDX3Nxpzhe886Njn84BJGzTbSK27ouncREFibcQbS3Zx49C7HMI4PWeT3tq6MX4ks6RRSDUq5pmbTIAvRkXUcseAcsKErvSarUYRN73zMARsQxNC2DiT1dr4PZFQXNhGtRqn+dt63jXyMZp1IYSywQ6kNGCxer8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B4zDk/jr; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-38dd91c313bso1431242f8f.3;
-        Tue, 11 Feb 2025 04:01:50 -0800 (PST)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-38dc6d9b292so2292094f8f.2;
+        Tue, 11 Feb 2025 04:01:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739275309; x=1739880109; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739275310; x=1739880110; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9N9nv58w02wJpkfqRyDXBfeCG5CiiQvz6kgd+N3dJY8=;
-        b=UB2qmMx1Vboi6B/MlebjV5Fw5lbXfxS6t9P12rl5VqgNbWXLrO0AI7+uMshNTBX/2A
-         F0tFQx8kAszdHbxIP+yzVlfNMxzZv4RoaURtvmkOOC0VV9QEYFcfjk8LcK78TxC2lTg2
-         hiyme57GzVVZgml1GPcpKsnIpS8u7p9aQwmxOgy5cewyThCvoQmfz+IySERubmjHThsL
-         jaCm4wRt9aqdmQKvO+fHBQBko2InuDhccHppgEuX29g0+LKyB0yrZEAljoLNWkKtvxLQ
-         Ha/W0YpxAyb/8Tvr2w9+ZMI4R3WOnQf89sBZi2j8a2H4mXrSGhYZsiHhfSnlm4G9s3qF
-         UQvA==
+        bh=tpSnMf/WKCpk42PUpTTHzELsWuR5f0+/8dWnGZMy7ow=;
+        b=B4zDk/jrwUlW8ZyUpy+1kY0qG2nTiZlexVTkXnAPfAriCgs3UQbWsbKPEAKa8kSnRP
+         Bqb98YkVQbYtAD78aCK0w2VU701DvuXHHjM+uxkHgFq4REbJmqCy8o31+OgbQcKT1SZs
+         bI7ItRTB1hgKuEnvUj7VIEpH0cxF8ycz1G+s0BX1lXxn13O+zl6Sf5zPg0/9kDIj30FP
+         0BdSrWkRMIUpa4OqdSdeQS9BBk4rGxTXKFkagxITzLxRhEQoA7baONebi7PCmQEgswii
+         d6Iu7JVzrsUiOxnaMkjaLmMx/sOqarS/h4YbZ8NoEuJ01cFWMWDMyVc7bVzcWx1mXYzt
+         55bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739275309; x=1739880109;
+        d=1e100.net; s=20230601; t=1739275310; x=1739880110;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9N9nv58w02wJpkfqRyDXBfeCG5CiiQvz6kgd+N3dJY8=;
-        b=Fc9D9dn+TccAnHCm+PApnndxhTyncIPRGuYpWC3EMLhWwRPJ5CchraWxN4iczrTUPe
-         U50yOc2TG1nyc8y6CzzR2yAurgw9SAAjUCn4MTOmtdefEECLI62Df4FSNYh0h6ntFblf
-         bPvPxag3VVd5WqSeYH0OBFeXOnZ2BGct38V6ozM1PEcy4HEuJWRQJa6XXt0W7Ts6iaij
-         TIfGR2Npz7pm9cKflVuDNA69c4/ER0D0cFEBIwHbZrPFdfbgJ2fdycVvfHH+IJ20PppW
-         72nxNSQk3eikkaKYjrhNv8ytrI73RPhIDHe72JQf6/OYCeD8Wptcr8Qv/Hz2fBW4xeW5
-         dPyg==
-X-Forwarded-Encrypted: i=1; AJvYcCXCCptEDPXr+ULPJYRq0VJi4S/hsEWuME1Mh96rQw3tiPxupkSiWWewc4C/AsfFHgpxMVhX5Jpqx0gFT75BNg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIfLDCr/oZeTtxgCwKlWfA1BsCPSVrkEaLkcso364xkIYB8Nwl
-	ppx6hmE4CkWjSMoXE6gq3LH8lnfSPDqedTChtUlLEFiltQgSTSRXsheXdg==
-X-Gm-Gg: ASbGnctY7bt3KGSWP0/OXiufa3Bh+izn5PhoaUBvKpKtTqVKWsmAjUIFJhhfc7pQIuw
-	6SdlxZxPclWA6xRRJwRDxsFE79SAVTo3h9ZYhP5Aeci4WahRVPRhZv69gs7Gxm2qr/cHJBiEk7D
-	kP3zqM1gFmX7TQfA4WXbtuan1uUZnMlBmP+mZ1WnM7JIes+/3LU15B0W9kaj2SdEZKU8CZtfopK
-	3y0BHDf6Sf+2OPs+U931z9JCwWycxVM126qvunkH05YhYTqALAqdadxcCI52pxPu4DdUMljS/Zm
-	MUVoXkCOMUE5Ac1s1djnrmsUMtc4UJLjJg==
-X-Google-Smtp-Source: AGHT+IGoxsW7NNJKPkOMXlVtFVClrvSB7fBX6qtHIsoTsQ7Fc16KZ+dBnpUEqaz2LtZmEkVproYa7Q==
-X-Received: by 2002:a05:6000:1862:b0:38d:de34:32ed with SMTP id ffacd0b85a97d-38de41be586mr2862212f8f.34.1739275308848;
-        Tue, 11 Feb 2025 04:01:48 -0800 (PST)
+        bh=tpSnMf/WKCpk42PUpTTHzELsWuR5f0+/8dWnGZMy7ow=;
+        b=lPO2EQIUIkFS1spQEVQyk6m1GPCQLX2bhHqucIRDUCo2+aykmpar0Kir3zppNidvov
+         4OpZa2DkxSASSmCLAXB4ML89q6O7cxTXCVU+5UdSYjsLdlDWTfJYf+KuxtYwG1SjI5n6
+         gOo/kCr/nAEsPM8z4+Q0MfBL8C+ClCAFzYesQHvtjliiKKkRxZUbOqbWMSZWsxB3sRAC
+         Z9i1H7biPUfGwTvqmHnag7M6hcx6bVCOCusPSjSVOtf6QpZnFo2NRnswOUz9HcSscYOW
+         qAQZ1zeoaFYJH7f2eOuIQISwu1OZ17SgRiQXIue7DQYjtEOKpwNN4zN/AUeQI23J0he9
+         XRTA==
+X-Forwarded-Encrypted: i=1; AJvYcCUF+40h9iXw+qr6wYCPBnbZ/qlsInnDk6EOMGrR9SIzdNNPjI7B7VQwgJF+qfpPYwb9Py9d3CDmtXrEOitG+A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn/QYHDhIzRbvkFBOZJHZFe3te3AKLDpS1GHDqpJpt+xuwlC70
+	NDS1okXymqXEauPfkS7ID4O+2zAbN/4wg6wge8SxesitmN3FsjmAkubXuw==
+X-Gm-Gg: ASbGncvXO6w03S4kpJIK3yXMoUq4MmnDCfVMW+bN36aM0U17AQDC8gZdD+gOUHKeobs
+	bEzbq2TtVUYcnn6cL1JB4mH84fhkmnyZWoLnMAUxBVLycBJb+U8xhKGe4NGY9qchjCUKHv/08Kv
+	HSP3A9ZFl7Ntg1oAl+Xv7lB3PjC7hW3tNaBzkW7QkZb3g5LoFToOYb8G6/vQA77nHT5hkQufwRB
+	WW0UZIZwFwk67V8SFiSa/qbA1Dwe0197tbpxzM7lzvLOzbjaRAFBCvzHVKFSRKEF1fkFCo/8chW
+	DOpa2UgJAZOYsaijnL7VNXLP3+jFXvtA5A==
+X-Google-Smtp-Source: AGHT+IFl7qxo+QvC/sZKDIPHcPXMj4RoHPI+XMMI3LS7mw9RUxqCFTTOF3580dlJbdybp4/K9r4k2Q==
+X-Received: by 2002:a5d:59ae:0:b0:38d:d8e0:a9a1 with SMTP id ffacd0b85a97d-38de419486amr2914863f8f.29.1739275309962;
+        Tue, 11 Feb 2025 04:01:49 -0800 (PST)
 Received: from imac.lan ([2a02:8010:60a0:0:ac07:4372:f96c:546e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dc933ff9fsm12466658f8f.96.2025.02.11.04.01.47
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dc933ff9fsm12466658f8f.96.2025.02.11.04.01.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 04:01:48 -0800 (PST)
+        Tue, 11 Feb 2025 04:01:49 -0800 (PST)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -83,9 +83,9 @@ To: netdev@vger.kernel.org,
 	linux-wireless@vger.kernel.org
 Cc: donald.hunter@redhat.com,
 	Donald Hunter <donald.hunter@gmail.com>
-Subject: [PATCH net-next v5 08/10] netlink: specs: support nested structs in genetlink legacy
-Date: Tue, 11 Feb 2025 12:01:25 +0000
-Message-ID: <20250211120127.84858-9-donald.hunter@gmail.com>
+Subject: [PATCH net-next v5 09/10] netlink: specs: add s8, s16 to genetlink schemas
+Date: Tue, 11 Feb 2025 12:01:26 +0000
+Message-ID: <20250211120127.84858-10-donald.hunter@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250211120127.84858-1-donald.hunter@gmail.com>
 References: <20250211120127.84858-1-donald.hunter@gmail.com>
@@ -97,29 +97,56 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Nested structs are already supported in netlink-raw. Add the same
-capability to the genetlink legacy schema.
+Add s8 and s16 types to the genetlink schemas to align scalar types
+across all schemas.
 
 Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
 ---
- Documentation/netlink/genetlink-legacy.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/netlink/genetlink-c.yaml      | 2 +-
+ Documentation/netlink/genetlink-legacy.yaml | 2 +-
+ Documentation/netlink/genetlink.yaml        | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/Documentation/netlink/genetlink-c.yaml b/Documentation/netlink/genetlink-c.yaml
+index 44f2226160ca..96fa1f1522ed 100644
+--- a/Documentation/netlink/genetlink-c.yaml
++++ b/Documentation/netlink/genetlink-c.yaml
+@@ -161,7 +161,7 @@ properties:
+                 type: string
+               type: &attr-type
+                 enum: [ unused, pad, flag, binary,
+-                        uint, sint, u8, u16, u32, u64, s32, s64,
++                        uint, sint, u8, u16, u32, u64, s8, s16, s32, s64,
+                         string, nest, indexed-array, nest-type-value ]
+               doc:
+                 description: Documentation of the attribute.
 diff --git a/Documentation/netlink/genetlink-legacy.yaml b/Documentation/netlink/genetlink-legacy.yaml
-index ed64acf1bef7..c02ed8089746 100644
+index c02ed8089746..a8c5b521937d 100644
 --- a/Documentation/netlink/genetlink-legacy.yaml
 +++ b/Documentation/netlink/genetlink-legacy.yaml
-@@ -152,6 +152,9 @@ properties:
-                   the right formatting mechanism when displaying values of this
-                   type.
-                 enum: [ hex, mac, fddi, ipv4, ipv6, uuid ]
-+              struct:
-+                description: Name of the nested struct type.
-+                type: string
-         # End genetlink-legacy
- 
-   attribute-sets:
+@@ -207,7 +207,7 @@ properties:
+               type: &attr-type
+                 description: The netlink attribute type
+                 enum: [ unused, pad, flag, binary, bitfield32,
+-                        uint, sint, u8, u16, u32, u64, s32, s64,
++                        uint, sint, u8, u16, u32, u64, s8, s16, s32, s64,
+                         string, nest, indexed-array, nest-type-value ]
+               doc:
+                 description: Documentation of the attribute.
+diff --git a/Documentation/netlink/genetlink.yaml b/Documentation/netlink/genetlink.yaml
+index e43e50dba2e4..40efbbad76ab 100644
+--- a/Documentation/netlink/genetlink.yaml
++++ b/Documentation/netlink/genetlink.yaml
+@@ -124,7 +124,7 @@ properties:
+                 type: string
+               type: &attr-type
+                 enum: [ unused, pad, flag, binary,
+-                        uint, sint, u8, u16, u32, u64, s32, s64,
++                        uint, sint, u8, u16, u32, u64, s8, s16, s32, s64,
+                         string, nest, indexed-array, nest-type-value ]
+               doc:
+                 description: Documentation of the attribute.
 -- 
 2.48.1
 
