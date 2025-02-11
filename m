@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-18794-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18795-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258AEA31896
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 23:25:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75942A31897
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 23:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C4321889076
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 22:25:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E87201888EF4
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 22:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C10A267714;
-	Tue, 11 Feb 2025 22:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98336268FD0;
+	Tue, 11 Feb 2025 22:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DZBmDjcg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gw7Es3nj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB1C268FDB
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 22:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7608267AFB
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 22:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739312737; cv=none; b=f9jXLuBMaFwklYcNs3Eo/ouoN7RPomJu0PwDQl5w207+Z6tOAqxfYNiBgCbqzDM8d6PMcIBsPGbWk9xjmCIV0eBnvpQKJOWkx22sp+dZ44nQ61GD6XU0m2SG8oWzZC1/DENiTP3E4YJyxBy7exMxk2oIo195l8hHaqGz2eAdylQ=
+	t=1739312775; cv=none; b=VSKu52C2QVqhB7AfLoNoLexRHNLlY6HWy6yBpjorBArx1wt0acg1YAgUbsYIKwX3KHJXkBlhlqT7YCoiT9YyGKJW3NkwavK7JryJCjMTMfz+0Y6vSZVtbo5iKXdN9iLntvErx0oZgNeJ6Mb3OpSe2IQyzGeXYCeUX+cGktIl8YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739312737; c=relaxed/simple;
-	bh=q39GKe54wWsixypymdEc02ltQC77Y4eY9LP9seBWqdM=;
+	s=arc-20240116; t=1739312775; c=relaxed/simple;
+	bh=WMQZ4G6KGSATIk2HAhb3UOeSAY7+nKsmS0IBKr1z/4Y=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=OCHYMXA/ppmgg/nE/N/dMOk+MqCLPebh+Z7U0c+u40WnlKLTEnfemEAU5WKCEOUxut9y+yn4XiA9x8c+BZ788a7/zv+kjD7jXI8BcjYSJ0EG6TfjuFIsyC1VeOLkXLRlhxQtT0SHHzcY926ZAH8skxk2pcC8qWyNUsnOsFxJEXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DZBmDjcg; arc=none smtp.client-ip=209.85.218.41
+	 In-Reply-To:Content-Type; b=eKb0mvgsvuoos2sUHz+2znqXvURoQWKnjqEkr4neqk1JSyXF7PcmLww4u5MWfGP0Jl0ffuWjRJkIwOdrgaRcUan2Cw41flRHeVdMuWzoJ4z9XqbFLeyv7PuCyXxUyCj0jdvVGWidGhHxrScTgOC/oOtTrhHB0QkQB1MGSp76veA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gw7Es3nj; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ab2b29dfc65so933113566b.1
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 14:25:35 -0800 (PST)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ab7e9254bb6so133668866b.1
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 14:26:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739312734; x=1739917534; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739312772; x=1739917572; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=bF2VIE1a4aWIniUoomxj4NoiwWg/dsC1RN0XrnuE7Fc=;
-        b=DZBmDjcgx2W+lFnSXlRP9mEe2ZAuF63D4s224Gu/R1Ou//5HDI8OwqQY+KNnm6+x8s
-         KVW0WK6TjwzJ3TvCsbI3kp1wjxIb++kU3M1bE6Y24Bu7X4fizcSLS763IhkJPWDsoS2F
-         KswV5hnDKuH193RXDipRU5uaqtRCGiXFTR72EDwD9z1X48BX0YkijUS4iJD85YeAw78j
-         fdUC6G+fBbJ/W9+JseyzJbeBq6WaPd0y/uO8a6v6WDOdw0G3UreytN39FYAaNJDloQQL
-         IIBZuNw5wrBW12sS2s2S/gmKUTZ6etD6rdfDcuZuKclwnCIU9zrnzt9M35lzeDmVTben
-         KNfg==
+        bh=0fTULECwBuzzTX7pSLnSQoHxx4aAeFdJAs05MrYoVJg=;
+        b=gw7Es3njJTjkjbjDLCjr88g0nFCfOKu23LCIGnrijaS3yrWQywPU+MyiqSIc3VJke9
+         Viv8QRQtTdXL6kKz9qKYZp7fUN74/eEj9uhzA3yZuS7GKG8NC33rps2+zyuJ6PbZaZxw
+         3sa7a+f9o1T/7SRd/oIsaFUp9EeytWEC5Hoo3nLYKZRzygGaT3yoMiTbEml/aMKDIbyp
+         BdB1F0d/xgGR7IO6lqYrqhK3MaZ7BaylxLxJt2Nrgo0VAUKUlYWrY2ZjayVlonxqrZ95
+         ZOqviYKmdvDtwWaQpUNdFOfIvPZOQgBy97hkQ6OCdLXkDZrrS2umQ3qirw//QWbN1rrx
+         wg2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739312734; x=1739917534;
+        d=1e100.net; s=20230601; t=1739312772; x=1739917572;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bF2VIE1a4aWIniUoomxj4NoiwWg/dsC1RN0XrnuE7Fc=;
-        b=GYyoapoeM5X7CF5V/vKfRsjeYHT7EpkeAnxD1msdUYtdKQ3a3G4aYiNdWNoDqdVBuS
-         jwu4dJChvyHrck4x1ABSU3h1WMz4uP31bA/Xp6jyTJUZNosEsg3bUXLO4W1MYfXo85qW
-         Kxom4q6NndFMIxjIUqjS03qbs199Xz29pMeBXrZqj/hdZ1NevT2lMxFM5ToXH3t5rUzO
-         Nh/zJp+L7Ln5MBz7ll8P+rHCLPPWNduhDHeVqEE54mk/i4YCizCHgno0x+OrDBXR8kU2
-         98EXtpvdcLJxjCrxb8Z+rTrmwIKB57F1390qNJju0n53AJ/vSS4ESf7q8NNoVlnm+03m
-         I3rQ==
-X-Gm-Message-State: AOJu0Ywa8t+CSVWCNipqwlt9pEBlhlvKQBv81NvWPL7jNMdjk93KGDrE
-	b1V5iAw+vSuiOGTp5bZLk0CLjun82ZigRJXP0QUxQK1wxY6gCKNvX90m9Q==
-X-Gm-Gg: ASbGncuL1Y6MLNNdDaxD9XunLrN6+UBN/w1eAt5X2MgK8hfcbPvRMdeMvg7VnX5x+dr
-	Aa95Bl3j2KwehEEG8Zwkk1wX4qcynfNPOj3CbrFqkdveF7UyQByAfZBPlK48mzsrQikdRInccjw
-	BYvGi+D/pinCPEgdmPee68CQVJjRpHwg2roXz0fZ8H/RkhPx+0qyprunQAzC2zk3Hs+mpbWvsjp
-	OYRFhPiBHhYTvxvdwLMIRJ2IqK7ZRJ96WhVfU66IXIoK5yF10o2uTHTlkEuJ6ZFvoyaWcUlqigG
-	Hp8Q7VpDtbVniOcJWqzTgsaY
-X-Google-Smtp-Source: AGHT+IGTRJ9+6u/xsS4CxSsgFiudc9me6E3ZfilGOo0bsJtb88NNDYpdb7DWepxxFJCetzRjZoAmJg==
-X-Received: by 2002:a17:907:d1a:b0:ab7:83c2:bdbf with SMTP id a640c23a62f3a-ab7f347aa61mr66847566b.41.1739312733480;
-        Tue, 11 Feb 2025 14:25:33 -0800 (PST)
+        bh=0fTULECwBuzzTX7pSLnSQoHxx4aAeFdJAs05MrYoVJg=;
+        b=ZJdD7/LrYt+jDVhIG4C+2oHOzRry8EMPd0+thaiDDhmPQhrcZU3E3IGt0N0urI+JiV
+         rIUXhZGuR5ok7QsbrveKdb7JwMZHFF4aCWupHo7t5LH9WaNtT+1I+s8U2F+Fy5q8DqtW
+         sYATF0NXustSMeJfXgwtANJnzMhAmtVMEEqPSD8KdqjE9JOaWThxRa0RsFJpGLrpw3b6
+         tLNIneXOKFj8G9r8MWc5iczf9hymky2ydmbagqHHfKFX/CH9hxmKvLnaxEdQMAYkIJ9k
+         t+Ng7tf/ZCLWaBKMJ+Hs5A6cRCHzIxxl/om1CiNyCVcK+eJp5J+CgRIepno9lr0LyxNt
+         N4Rw==
+X-Gm-Message-State: AOJu0Yy14y1MicOytyZ5zVu9Gi9nW4G/abarMxyH0AcbYPqaZrIfZbVQ
+	JpmvawkO7CFFFKGmLUeEpxO15L7+FbHdlINjHHudFGPmGvuGZJ/fZXq0KQ==
+X-Gm-Gg: ASbGncs5PpVmlLyCoO7sElSuZiIxDreVSo7yvNZpjrxnzkBri8lJvBIeOn+IwhNcXx7
+	fYy2C1rgJRy1T7qREzRUK3edIJhk9N+62NUFSpHld6NOFhZoaeOC/4CVSOwpyk7FBoEqtN6QWrY
+	qR8r/Ng/weJSmgmlesNz/g54F1ULSpBYsuJWk3Kad1dbKExs4dZvztAAn8cT4RDJQy0PiuyP+4F
+	iPAEX7wRqecg24juW8BZbBx2o24CYxXqJ12proBIW58N5xlNmGwufiaHnQccw7C/qHr8j447xkA
+	WEU8La7ZWsgp6SCV72YG/I8L
+X-Google-Smtp-Source: AGHT+IF4CuNeb/uBtwZKMJf0n2wp8/3yvZWxKaaJzIwsdFFCFn4EmKbYIKLaLSl7tPUk/bHJ0/ZqJQ==
+X-Received: by 2002:a17:907:94c5:b0:aac:619:e914 with SMTP id a640c23a62f3a-ab7f33b480amr77530666b.16.1739312772000;
+        Tue, 11 Feb 2025 14:26:12 -0800 (PST)
 Received: from [192.168.0.50] ([79.119.240.253])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7e9853560sm136911966b.111.2025.02.11.14.25.32
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7e386014dsm188617966b.55.2025.02.11.14.26.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Feb 2025 14:25:33 -0800 (PST)
-Message-ID: <2af9cee8-1b4e-4d97-bbf6-4f793005f910@gmail.com>
-Date: Wed, 12 Feb 2025 00:25:32 +0200
+        Tue, 11 Feb 2025 14:26:11 -0800 (PST)
+Message-ID: <6bb6443a-3e2a-4cd4-83b9-34d2eb235654@gmail.com>
+Date: Wed, 12 Feb 2025 00:26:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,7 +80,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH 7/8] wifi: rtw88: Extend rtw_debugfs_get_phy_info() for
+Subject: [PATCH 8/8] wifi: rtw88: Extend rtw_debugfs_get_tx_pwr_tbl() for
  RTL8814AU
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
@@ -91,86 +91,41 @@ In-Reply-To: <21111380-5db6-4a72-ace9-f18b5bcd525c@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Print information about the 3rd and 4th RF paths and about the 3rd
-spatial stream.
-
-Also, fix a small bug: don't show the average SNR and EVM for the OFDM
-and HT/VHT rates when the rate is actually CCK 11M.
+Make it print the TX power details for RF paths C and D, and for 3SS and
+4SS rates.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
- drivers/net/wireless/realtek/rtw88/debug.c | 37 +++++++++++++++-------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ drivers/net/wireless/realtek/rtw88/debug.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index 364ec0436d0f..1adb03d1210a 100644
+index 1adb03d1210a..0efb5c19b90e 100644
 --- a/drivers/net/wireless/realtek/rtw88/debug.c
 +++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -654,10 +654,10 @@ static void rtw_print_rate(struct seq_file *m, u8 rate)
- 	case DESC_RATE6M...DESC_RATE54M:
- 		rtw_print_ofdm_rate_txt(m, rate);
- 		break;
--	case DESC_RATEMCS0...DESC_RATEMCS15:
-+	case DESC_RATEMCS0...DESC_RATEMCS31:
- 		rtw_print_ht_rate_txt(m, rate);
- 		break;
--	case DESC_RATEVHT1SS_MCS0...DESC_RATEVHT2SS_MCS9:
-+	case DESC_RATEVHT1SS_MCS0...DESC_RATEVHT4SS_MCS9:
- 		rtw_print_vht_rate_txt(m, rate);
- 		break;
- 	default:
-@@ -849,20 +849,28 @@ static int rtw_debugfs_get_phy_info(struct seq_file *m, void *v)
- 			   last_cnt->num_qry_pkt[rate_id + 9]);
- 	}
+@@ -708,20 +708,14 @@ static int rtw_debugfs_get_tx_pwr_tbl(struct seq_file *m, void *v)
+ 		   "path", "rate", "pwr", "base", "byr", "lmt", "sar", "rem");
  
--	seq_printf(m, "[RSSI(dBm)] = {%d, %d}\n",
-+	seq_printf(m, "[RSSI(dBm)] = {%d, %d, %d, %d}\n",
- 		   dm_info->rssi[RF_PATH_A] - 100,
--		   dm_info->rssi[RF_PATH_B] - 100);
--	seq_printf(m, "[Rx EVM(dB)] = {-%d, -%d}\n",
-+		   dm_info->rssi[RF_PATH_B] - 100,
-+		   dm_info->rssi[RF_PATH_C] - 100,
-+		   dm_info->rssi[RF_PATH_D] - 100);
-+	seq_printf(m, "[Rx EVM(dB)] = {-%d, -%d, -%d, -%d}\n",
- 		   dm_info->rx_evm_dbm[RF_PATH_A],
--		   dm_info->rx_evm_dbm[RF_PATH_B]);
--	seq_printf(m, "[Rx SNR] = {%d, %d}\n",
-+		   dm_info->rx_evm_dbm[RF_PATH_B],
-+		   dm_info->rx_evm_dbm[RF_PATH_C],
-+		   dm_info->rx_evm_dbm[RF_PATH_D]);
-+	seq_printf(m, "[Rx SNR] = {%d, %d, %d, %d}\n",
- 		   dm_info->rx_snr[RF_PATH_A],
--		   dm_info->rx_snr[RF_PATH_B]);
--	seq_printf(m, "[CFO_tail(KHz)] = {%d, %d}\n",
-+		   dm_info->rx_snr[RF_PATH_B],
-+		   dm_info->rx_snr[RF_PATH_C],
-+		   dm_info->rx_snr[RF_PATH_D]);
-+	seq_printf(m, "[CFO_tail(KHz)] = {%d, %d, %d, %d}\n",
- 		   dm_info->cfo_tail[RF_PATH_A],
--		   dm_info->cfo_tail[RF_PATH_B]);
-+		   dm_info->cfo_tail[RF_PATH_B],
-+		   dm_info->cfo_tail[RF_PATH_C],
-+		   dm_info->cfo_tail[RF_PATH_D]);
+ 	mutex_lock(&hal->tx_power_mutex);
+-	for (path = RF_PATH_A; path <= RF_PATH_B; path++) {
++	for (path = RF_PATH_A; path <= RF_PATH_D; path++) {
+ 		/* there is no CCK rates used in 5G */
+ 		if (hal->current_band_type == RTW_BAND_5G)
+ 			rate = DESC_RATE6M;
+ 		else
+ 			rate = DESC_RATE1M;
  
--	if (dm_info->curr_rx_rate >= DESC_RATE11M) {
-+	if (dm_info->curr_rx_rate >= DESC_RATE6M) {
- 		seq_puts(m, "[Rx Average Status]:\n");
- 		seq_printf(m, " * OFDM, EVM: {-%d}, SNR: {%d}\n",
- 			   (u8)ewma_evm_read(&ewma_evm[RTW_EVM_OFDM]),
-@@ -875,6 +883,13 @@ static int rtw_debugfs_get_phy_info(struct seq_file *m, void *v)
- 			   (u8)ewma_evm_read(&ewma_evm[RTW_EVM_2SS_B]),
- 			   (u8)ewma_snr_read(&ewma_snr[RTW_SNR_2SS_A]),
- 			   (u8)ewma_snr_read(&ewma_snr[RTW_SNR_2SS_B]));
-+		seq_printf(m, " * 3SS, EVM: {-%d, -%d, -%d}, SNR: {%d, %d, %d}\n",
-+			   (u8)ewma_evm_read(&ewma_evm[RTW_EVM_3SS_A]),
-+			   (u8)ewma_evm_read(&ewma_evm[RTW_EVM_3SS_B]),
-+			   (u8)ewma_evm_read(&ewma_evm[RTW_EVM_3SS_C]),
-+			   (u8)ewma_snr_read(&ewma_snr[RTW_SNR_3SS_A]),
-+			   (u8)ewma_snr_read(&ewma_snr[RTW_SNR_3SS_B]),
-+			   (u8)ewma_snr_read(&ewma_snr[RTW_SNR_3SS_C]));
- 	}
+-		/* now, not support vht 3ss and vht 4ss*/
+-		for (; rate <= DESC_RATEVHT2SS_MCS9; rate++) {
+-			/* now, not support ht 3ss and ht 4ss*/
+-			if (rate > DESC_RATEMCS15 &&
+-			    rate < DESC_RATEVHT1SS_MCS0)
+-				continue;
+-
++		for (; rate <= DESC_RATEVHT4SS_MCS9; rate++) {
+ 			rtw_get_tx_power_params(rtwdev, path, rate, bw,
+ 						ch, regd, &pwr_param);
  
- 	seq_puts(m, "[Rx Counter]:\n");
 -- 
 2.48.1
 
