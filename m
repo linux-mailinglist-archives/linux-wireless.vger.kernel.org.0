@@ -1,77 +1,77 @@
-Return-Path: <linux-wireless+bounces-18747-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18748-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C94EA3056B
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 09:14:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D019CA3056C
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 09:14:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 052A8162B51
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 08:14:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DB827A2572
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2025 08:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BFA1EF090;
-	Tue, 11 Feb 2025 08:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1F91EEA2F;
+	Tue, 11 Feb 2025 08:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vampirebyte-ro.20230601.gappssmtp.com header.i=@vampirebyte-ro.20230601.gappssmtp.com header.b="sMZH6Ie8"
+	dkim=pass (2048-bit key) header.d=vampirebyte-ro.20230601.gappssmtp.com header.i=@vampirebyte-ro.20230601.gappssmtp.com header.b="ZW7Te1Uk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f97.google.com (mail-ed1-f97.google.com [209.85.208.97])
+Received: from mail-ed1-f98.google.com (mail-ed1-f98.google.com [209.85.208.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5661EE7DF
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 08:14:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72B81EEA4B
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 08:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739261651; cv=none; b=ZUY+w9jh+fGB9bu+0JNf6qRzZ+tVgmWroyFii/1KKttZowyzZPE6dj0vJFd3DzNYZPnVG5nNkfFuGWuz4sHvMeRhHE7LvW7xYAUHZ1YuNwvK99HnU6Qz7ubAb9HpW/bm6ozIOCvLmjmLc554+KOJuVKWFxK4AOu7r0+uRLCBhdo=
+	t=1739261655; cv=none; b=kVG9efEnYgI+ZfmGhbiyvegvtCvcZ5mJRx0dpFKRDR7uP5GW1oADXZHXOPP8qti2IaxhXJsxPvadsHKvloSM9UzADrW8f18gEoLkCKsjFY69BzPiapNfrziocq8HjH7sBav8E45fe7x6gVfbgKtD7u2HKZz8aHzHdnVhvDxvO5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739261651; c=relaxed/simple;
-	bh=qySn+qutT/7QTH9+GPMef8PgnUwe7yKZFScnxrQJafg=;
+	s=arc-20240116; t=1739261655; c=relaxed/simple;
+	bh=8Fx2o4/9alx0ubq/qGXg/mIOFiDYHtkRblyGfprneQ8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Iv3IAlKFaBBn8OoeLbVwXTDQK75q7yOdR/Q+062980Z1A/7nctO4rwt4LsidmX4+TxZIyNIF7jRErX47upnZ9gvI69q2FR6sAVWwJX23HF6fS1cZlwfWa6XtxMZjmDKNnxlozn0ujlZsfw3jPH8hOtFBC0D4tJC8MJczcRXgd6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vampirebyte.ro; spf=pass smtp.mailfrom=vampirebyte.ro; dkim=pass (2048-bit key) header.d=vampirebyte-ro.20230601.gappssmtp.com header.i=@vampirebyte-ro.20230601.gappssmtp.com header.b=sMZH6Ie8; arc=none smtp.client-ip=209.85.208.97
+	 MIME-Version; b=JfyxHD/00mVCt+82TGQB2mztofBxSxHRi5pM4JIF2TBDs9u4/5NJhueQ1XnSiAnZeEhjP+e33bay1O9oxYtzEwOBTgh08Bti9pYQnHi7AxasxPnFMySwgJbJUyueNmroi/Mz3aROYCd0icskKxFSSOEh7SvbLYb7F6fBvyYLiiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vampirebyte.ro; spf=pass smtp.mailfrom=vampirebyte.ro; dkim=pass (2048-bit key) header.d=vampirebyte-ro.20230601.gappssmtp.com header.i=@vampirebyte-ro.20230601.gappssmtp.com header.b=ZW7Te1Uk; arc=none smtp.client-ip=209.85.208.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vampirebyte.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vampirebyte.ro
-Received: by mail-ed1-f97.google.com with SMTP id 4fb4d7f45d1cf-5de6c70832bso4182239a12.1
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 00:14:09 -0800 (PST)
+Received: by mail-ed1-f98.google.com with SMTP id 4fb4d7f45d1cf-5dca468c5e4so7259348a12.1
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 00:14:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vampirebyte-ro.20230601.gappssmtp.com; s=20230601; t=1739261648; x=1739866448; darn=vger.kernel.org;
+        d=vampirebyte-ro.20230601.gappssmtp.com; s=20230601; t=1739261652; x=1739866452; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ObnMbn2FLzqhaRiDyEEyyncfTfV/NglSimRNCizvXa4=;
-        b=sMZH6Ie8dlG163YocC7TVNrftwO+3enrvyHpanX9a70vflErtL1NjAV96sn9/3qa4B
-         tARUTtCDHFKGxN/NQxp1BERR8cicMF9yhYU5Y82eTgFBpjHbCWdvctgm1xrbnYt5RrUR
-         nYHfhw7+/VzqBefXJLwata+nQnNQytdpf921mjcPuLj5ySO9XIUp2j750lvM271XjNZf
-         WjqDAaBp4UeiiFCHOX/8iHi7eZjZG0sW1FIlw4bbF0+5RluxakF4NVBwhv2ok4vgIhhZ
-         SA1OzOGLn+Eqa5lOUFm8vU4wI6LWiBlmp3I0tMNRcfDXupLFbkXtTu8mO2y3Qv/Wp9zI
-         /A4Q==
+        bh=rVqpV2jN8bN/XpUbb3eWYROCnA/6Dk6ns0d+BlR50c8=;
+        b=ZW7Te1Uk5e/dJ3SlRoVKWOF2AmfBqRj6z5dr/scDm60GgVYIcivwI1j3umqav+QQ12
+         S98ookswlMb5YQAT4jfM+rGzmQYk9+CEbajDm+3J/H0Tkajkh5ZCktHjedQnYaJq2JmD
+         eG7PRvn1nZVmytgShVdi+rf8cBd6cAyZrS9WV3uQjCQJEgirLyMZKKXq2unamz8r8x3q
+         4g1kToRUi5dHfUwxNdP6zukRRZqwkprIPz2rhuCmaKY3vGSKOQP0SaIxLK035BYeCKaI
+         8yTOivywLb8m+upGAMS+tvpVXjzzj9oUWJPqEEMKn2uOhdO08pqaq5lHXiDxe5Uu6Ars
+         3yHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739261648; x=1739866448;
+        d=1e100.net; s=20230601; t=1739261652; x=1739866452;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ObnMbn2FLzqhaRiDyEEyyncfTfV/NglSimRNCizvXa4=;
-        b=sGGZ3lpLGE90Nk/KgJr9UBs95USTctBfRLb5wuEAmeoiexumhQMjVWIQSx5m/VKnWf
-         QLtarHP1l9nZ3/FXv+NFob5BNbvseuH1uusKAQaXUWVxehLXmtDzA9WDJnfYmbKqb96a
-         xy087xAWyU9KVrQV6JKkWotO7qY0jf67Gk1zRbtmEMfj6KoH50FCluVOB5s9v5fLDwju
-         JIi0KHgVxNtaFNHizAWra8PcfeZ1WYFprDvsOHm/tA5/3KlCwbGDCBV7q5rDF28b+pzt
-         hKkeruNKkt7Rv9trAt0/1+eWNmZfDAHPijPQgyUvymDH2Ixq/mDqfjZSv8ewGNRFzHZj
-         n74w==
-X-Gm-Message-State: AOJu0YzfiTrvmuPXbfpkYwiw0uoKaZ8WhN02nI/j/rJB0FxcD5gOLyFe
-	BhzaqKK97dLhku4vyv4b997BsV0JUIpeDc3hblV6CItflikE+iGvcq3zPVk05U7uMRgnQ8A13vo
-	4dmL/kyJ0HFHrIPf0ibOBGlTlKQfAzi0Y7p0k/ShY
-X-Gm-Gg: ASbGncsppFysrUScUOO5daVQuLQ5lg2xTjO2N35QLs5zSdvNjVYDf/mP+NQV4mEUygZ
-	bnSBQB2XIKuv0ucUyjqrs17fbhQQBZyFC98ukhv7Lv5QYbsng0hJjCwHUUSorQCN2svd9wC8g0f
-	VG83WY10kMuuHWujedlq/LEcEMCLInnxUIsrCGYnY11SCTL6G72vJCe22ytFaI7QjMjZ6WZc7+6
-	u3zDqktl9UHvjy9WoSlERtp9+AiiDu13F9j+7RgYojHgTw+iFTrAWoZOpRwXYnd3lGHlAWTsPEj
-	zykuBlRsYgw35dI4Nilt3jx+4S3zUw==
-X-Google-Smtp-Source: AGHT+IFaNTh5tvrp3/K1K3ow4zTUrvgNIkWuqlZ9btpnX3NIMUU7vRlpIiSIDZuEGMVy79oo4olDttGZEADk
-X-Received: by 2002:a05:6402:2382:b0:5db:7353:2b5c with SMTP id 4fb4d7f45d1cf-5de9b931aaemr1862556a12.11.1739261647919;
-        Tue, 11 Feb 2025 00:14:07 -0800 (PST)
+        bh=rVqpV2jN8bN/XpUbb3eWYROCnA/6Dk6ns0d+BlR50c8=;
+        b=mDhcGQbL6S9Q0GEYcw0s9V2wGSQh824qFAvLfnWIhH9fHCtn8WUXqNRxNZ98OHCtCF
+         ELqMKlyD0K+feP6I6iYBcDBqX8IVyDGWMJ2Z/Bh1CPc6Api8U/j47d7PiT3vFf6Dneaa
+         +9fQSvEZ8h4avwR5+IOTBHQiDXR2PNPRVZbssn13+OPnXeJmVemJmOTkQhQ9tM3yvwW5
+         mFWm6muCzxPWRgZE0ATTLWNHp7xeIy3Z+G4jscQX0ZEMlX5cmhykCFKzzft33n2gLn/N
+         ctLRIX/qW/WNx+lyXbF4lg5XKmXKFbU7K6NRU5HxczyTFz7/zn2KOluMEb2KN+CbOhql
+         uCqQ==
+X-Gm-Message-State: AOJu0YzJW8N8FxQp2Wctto12XyHHnGB+jUanzT3OFp9qmbagOs/aiAy2
+	oRIYpBPwcgPwlSpFv4JqEtfAxRRH/R6/kxQFjTQTPvDWF4/mUp9u01vjS6rsN3bVmVejeCpRwU8
+	HmBoaTzfOIy0EqwCwU1ZaAqxLA7guQG5PibNxhm2D
+X-Gm-Gg: ASbGncuF3s8whJa2F0rS9oRnBVL3c5IB7ew4cDo1sehIVDvwPDzVEqq5YoAUK2hx7E3
+	W5KwduRHPZsOGJobjPHU8RRJRfkQgCfkCFwh2AHRdXudRB1UY1iw0OjZLp3rFyA1dSNJFUP84A9
+	6CqB+iywDQ2qUgMIxX5KOQDsc9aasv5+wjefKXUkVoLyIzw/k1U8zKNc4MWjm1Jzk/NEsjzA6/V
+	anWmsnCwSg4RV54iYRTnBjcMzhKOWgV1Kg3XXVJV9pcAaseYC0rfzDwyFp8ZWVxBUQ+8wmApwBF
+	IGUemKess+iNDXdwrnrb5nVuysBH4g==
+X-Google-Smtp-Source: AGHT+IExf794mWe/YHEDaIlMY5Ff6L1p/GFpIb4fyat0himzsY80j/8mUZWg7g38WgBJiFXgqNvSC2NYt+Hp
+X-Received: by 2002:a05:6402:4416:b0:5dc:c9ce:b022 with SMTP id 4fb4d7f45d1cf-5de45005a55mr17506930a12.9.1739261651781;
+        Tue, 11 Feb 2025 00:14:11 -0800 (PST)
 Received: from orin60.vampirebyte.net ([82.77.132.211])
-        by smtp-relay.gmail.com with ESMTPS id 4fb4d7f45d1cf-5de57041c05sm222537a12.12.2025.02.11.00.14.07
+        by smtp-relay.gmail.com with ESMTPS id 4fb4d7f45d1cf-5de57041c05sm222537a12.12.2025.02.11.00.14.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 00:14:07 -0800 (PST)
+        Tue, 11 Feb 2025 00:14:11 -0800 (PST)
 X-Relaying-Domain: vampirebyte.ro
 From: Razvan Grigore <razvan.grigore@vampirebyte.ro>
 To: linux-wireless@vger.kernel.org,
@@ -81,9 +81,9 @@ To: linux-wireless@vger.kernel.org,
 Cc: Shayne Chen <shayne.chen@mediatek.com>,
 	Sean Wang <sean.wang@mediatek.com>,
 	Razvan Grigore <razvan.grigore@vampirebyte.ro>
-Subject: [PATCH v2 1/5] wifi: mt76: add mt76_get_power_bound helper function
-Date: Tue, 11 Feb 2025 08:12:43 +0000
-Message-Id: <20250211081247.5892-2-razvan.grigore@vampirebyte.ro>
+Subject: [PATCH v2 2/5] wifi: mt76: mt7921: fix returned txpower
+Date: Tue, 11 Feb 2025 08:12:44 +0000
+Message-Id: <20250211081247.5892-3-razvan.grigore@vampirebyte.ro>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250211081247.5892-1-razvan.grigore@vampirebyte.ro>
 References: <20250211081247.5892-1-razvan.grigore@vampirebyte.ro>
@@ -95,50 +95,48 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This will replace mt7915_get_power_bound function from b/mt7915/mcu.h,
-since we will need it also for mt7921 and mt7925
+This bug was noticed by me and confirmed by many more people using this
+chipset with openwrt: https://github.com/openwrt/mt76/issues/783
+
+It seems that for this particular chipset the mt76_phy->txpower_cur is
+never set, like in the case of other chipsets like mt7603, mt7615, etc.
+
+The driver is correctly calculating the TX power adjustment based on the
+number of antennas. However, the base TX power (phy->txpower_cur) is not
+being properly initialized or set to a meaningful value. It's starting
+at 0, so the final result is just the antenna gain compensation divided
+by 2.
 
 Signed-off-by: Razvan Grigore <razvan.grigore@vampirebyte.ro>
 ---
- drivers/net/wireless/mediatek/mt76/mac80211.c | 11 +++++++++++
- drivers/net/wireless/mediatek/mt76/mt76.h     |  2 ++
- 2 files changed, 13 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 508b472408c2..2c98cc42cd7e 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1697,6 +1697,17 @@ void mt76_wcid_add_poll(struct mt76_dev *dev, struct mt76_wcid *wcid)
- }
- EXPORT_SYMBOL_GPL(mt76_wcid_add_poll);
- 
-+s8 mt76_get_power_bound(struct mt76_phy *phy, s8 txpower)
-+{
-+	int n_chains = hweight16(phy->chainmask);
-+
-+	txpower = mt76_get_sar_power(phy, phy->chandef.chan, txpower * 2);
-+	txpower -= mt76_tx_power_nss_delta(n_chains);
-+
-+	return txpower;
-+}
-+EXPORT_SYMBOL_GPL(mt76_get_power_bound);
-+
- int mt76_get_txpower(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		     unsigned int link_id, int *dbm)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 13e58c328aff..9e8961533fd1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -1251,6 +1251,8 @@ int mt7921_set_tx_sar_pwr(struct ieee80211_hw *hw,
+ 			  const struct cfg80211_sar_specs *sar)
  {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 132148f7b107..96f98a0d55a8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1482,6 +1482,8 @@ void mt76_sta_pre_rcu_remove(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	struct mt76_phy *mphy = hw->priv;
++	int tx_power;
++	struct mt76_power_limits limits_array;
  
- int mt76_get_min_avg_rssi(struct mt76_dev *dev, u8 phy_idx);
+ 	if (sar) {
+ 		int err = mt76_init_sar_power(hw, sar);
+@@ -1260,6 +1262,11 @@ int mt7921_set_tx_sar_pwr(struct ieee80211_hw *hw,
+ 	}
+ 	mt792x_init_acpi_sar_power(mt792x_hw_phy(hw), !sar);
  
-+s8 mt76_get_power_bound(struct mt76_phy *phy, s8 txpower);
++	tx_power = mt76_get_power_bound(mphy, hw->conf.power_level);
++	tx_power = mt76_get_rate_power_limits(mphy, mphy->chandef.chan,
++					      &limits_array, tx_power);
++	mphy->txpower_cur = tx_power;
 +
- int mt76_get_txpower(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		     unsigned int link_id, int *dbm);
- int mt76_init_sar_power(struct ieee80211_hw *hw,
+ 	return mt76_connac_mcu_set_rate_txpower(mphy);
+ }
+ 
 -- 
 2.34.1
 
