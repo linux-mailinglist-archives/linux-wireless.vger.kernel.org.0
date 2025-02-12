@@ -1,87 +1,52 @@
-Return-Path: <linux-wireless+bounces-18860-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18861-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52752A32C8F
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 17:56:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36845A32CA8
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 18:01:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6ADE416176B
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 16:54:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE9DB3A26CD
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 17:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1A1253B51;
-	Wed, 12 Feb 2025 16:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A85253B63;
+	Wed, 12 Feb 2025 17:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NU8DpwJ8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="f7F4hpCd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B948F1DEFDD
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 16:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C86E221D8B;
+	Wed, 12 Feb 2025 17:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739379286; cv=none; b=MhEdpV1tGcrxWLKsNgbVCAP4H4V7xj9JD63MprBGp4LBZitt5Vei4QQ3DJ9eFS9MgYSx+cRooHc52jpgc5pub04M+mNmnhpAM13MjbBpInOtu1Yp98Eaa6j51sYsO11EbqA1NmeMz1m5GXEOu12K9N84c6Y+ne5iDYsxmIUufxw=
+	t=1739379679; cv=none; b=TnVHawqQjs1gijptEqeLyowpwUsuwonWYrDemPh3a298fAGLX94Ge/4sj5y5lbdHMEgHuiNkMslsJ+f81xSs3Rl1ZuaDACKS1ztN73j2lplLwQzKiI30kWyNLEcv6CL6AggTuHt5XTjPxk2+bAz+fsWYnJZ86sUe3oIPr+qRgMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739379286; c=relaxed/simple;
-	bh=wkaUg1DENSD4yHymFSi2ejg0prL/M/EWygSMyN+dkvg=;
+	s=arc-20240116; t=1739379679; c=relaxed/simple;
+	bh=PNXX6obNWU7tUnUtVvYQStEQzBnCy0+YmkXrpfLfcQI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sJ7ZJZxDFkMQTJxHrSTghmF47or9BANpeuzgvqNedFiZs6stmT/pKcHhLIn7SQRm7PYHhIe1ulYD66Zw3CoJaeCtmgVtcfba6cGj7HUS9GhHZZNHtQCw2ItO1Ytv228f4JqM12AmOU6+WHebyft2tr7WPaBJJyKoxCAloSCwNW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NU8DpwJ8; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51CEiMXX006135
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 16:54:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nfbHxXfLDJVGtgNZIgeGSymwLVT6zSrgg/aja6UrOP4=; b=NU8DpwJ8CmbsbmiF
-	lsoXBD4n34MNA4ARVp5HzKP90RqInNXWXXHBR6njz5YKZcuXQmpkdHwq6ZNR1OzB
-	YZWT9Cq4eZ/FnRIwA4iR2QTNWR2ZK25uc3VlqYxFj8tKQVGL1b+Zl640Jg/jvW1C
-	0YNKYpwu5zgJBpM+8klt+0MB9jKIsq6vrVMCA39oKNVjfD9/sOlbS6C5MsA/n6O8
-	d1UyD0gybZQ23wBSGlZ7fLXagn8/iUwKRuZVqcIvtC1Ke5MT1hizU0FynsgNpHw+
-	vD9lcahJnutDSOTbmbtqgqXt4dA+M/4oSRj7oXhGnt34EPQCXuI12jST2hYEecO+
-	tZqHiA==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44qe5n05g1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 16:54:43 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2fa11d8e448so7645a91.0
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 08:54:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739379282; x=1739984082;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nfbHxXfLDJVGtgNZIgeGSymwLVT6zSrgg/aja6UrOP4=;
-        b=v13Ejkx/S3+hneI9sd32R558LZSzYch14K5FyOxMp1UbvzULt7AeR9chNGV5qWNzCJ
-         PkcC7QD+QlsMpmLprfziH/jzsO6sP/ExU4FLaY2oAsSyiKVPFUtpvhfGlfGk5+GYCdIO
-         teggWJW4b5imqgaF+ULnDzNYLcAyfvNfwk40rOasaaOxio6AdNxxDbe1gEklumdM1YXE
-         DReMzDsxPEH+Ouf9g6A2FrnWMtseQeiwbB8f77UFoCv6n25SZK4AkDLWy8e0Ljzzofcm
-         jZUWL80u+8tyOiLyh48kFvwDCECKn9TrLX9oqJKNNMpuWEBXf3G4/+qXkiKQ+wUqJlEs
-         wV+A==
-X-Forwarded-Encrypted: i=1; AJvYcCWPvDv5LuZXo0R+VPxnfX91uiZhwLKzr155Vrd0+EJfaSeTnhPueF49WCoKC0kIflnPuDxSRIqMbjrImo4n2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHf4MD5nz2jr3QN5VkOB6EY59g6CD3Q4FBmRPo7SoLQ8XfVxt0
-	uKBnX71cp4i/6FWdYClKx3qGmst/Nao4vA+5gB39OrEHNCNzcbHXtObAo2ZQg/q2UcOD3wu+whM
-	lL5Q93PB5YB86lDTf4m3CLmBnzqMOx1rIhTBZ8h6ZvpMSXugWkMj7DgeVaLenofZ/pg==
-X-Gm-Gg: ASbGncsqeEhct9oLoG2rf/NpTNouoNs6ZVHplMemgrkpJ8xpHhdiQx3cJp8L7sLPB/p
-	lyGznG2pwbyu+Rjed1c4BQ03Xm9a7bBJ01ce5untiVjiRxqxREMOGt/4xk2BG9py82bnoB6CpTr
-	foMBNRw6iSdsHQYwdYxMJQZikSgbvm9WP/Mr/4mVqgk+doPo5ut0Zz+S2/ayXO9RR9AH+AqYyYf
-	5c9AYeplC5bDJDb6pHm3tlOvn4FS9XDA+/wxYuKEn7k1hK1oKW6ImoD10CMVlC1AkFcJWY0HOwN
-	c95qAIgTzObiPLPP+ZaB2wm1ejnwMXSHg3oj2+geE/7p2Q+f5xsjGJt+HFQ0
-X-Received: by 2002:a17:90b:134f:b0:2ea:83a0:47a5 with SMTP id 98e67ed59e1d1-2fbf5bb5735mr6133332a91.4.1739379282024;
-        Wed, 12 Feb 2025 08:54:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGx+CWks0nvoqMOT5wEtwjJQXwKdPFly96tXraDduozSmPBMM+3wmzaLt6FvkicFgrTncPtIg==
-X-Received: by 2002:a17:90b:134f:b0:2ea:83a0:47a5 with SMTP id 98e67ed59e1d1-2fbf5bb5735mr6133297a91.4.1739379281639;
-        Wed, 12 Feb 2025 08:54:41 -0800 (PST)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fbf989bdcfsm1721378a91.3.2025.02.12.08.54.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Feb 2025 08:54:41 -0800 (PST)
-Message-ID: <509cb1aa-a0d9-4444-9a54-0edc0b181d61@oss.qualcomm.com>
-Date: Wed, 12 Feb 2025 08:54:39 -0800
+	 In-Reply-To:Content-Type; b=LnkjamsnQt5A2BltpQBc1PRfYz3EMoukuZWQrkq8y7/fGZFtBCphBnZ++ej05GJs1fxmb20e3l1S2JL0eQjWs0bXOv01vV22t6c8OKkkOaOYtj8qkaiE/yfOOfDdujGRUfTHkADNVrwrgq27ha2MMMuq17hjGztYx3L3ivff9Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=f7F4hpCd; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D8880441BB;
+	Wed, 12 Feb 2025 17:01:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739379672;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W+8tJdrJUUM2r3rGlZ87tl2Cw8IhsamzxMOaFlEPj2Y=;
+	b=f7F4hpCdCR3z/FwoIu08EnVzGQ0zcm5AoyUNLuC30f4+TBNPiq8WyIpq85B1vQKH/a5Xuf
+	Fjhp4ALHx/pNu2sNG4mKWmn2GEyxK9uyE/vwk4/i+0T+JkDnzXQdUu9bwC/EWH+lXssQ/e
+	1mp0zcz1Rvx3noaAnvjJ0gmpsL2B2LAg127LkI8lQBuMDFvt8syI/kDxSCrkZSf4JOKpAw
+	Ssuk13Roho2ghdOlELhoaaDvQtGONRC38PeY396QZGqvoA9Zi/WpFuZhYzk4WWROjAmSJ/
+	2rcS7vXkRyb/wzK2rdI4RCps5R2rY5T43Zmz27JVh/urkh7J/yi7XOjX4x9UAg==
+Message-ID: <a2702615-2946-4ca5-a33b-15da7026b58b@bootlin.com>
+Date: Wed, 12 Feb 2025 18:01:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,48 +54,80 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath12k: cleanup ath12k_mac_mlo_ready()
-To: Ethan Carter Edwards <ethan@ethancedwards.com>,
-        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Cc: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-        Harshitha Prem <quic_hprem@quicinc.com>,
-        Kalle Valo
- <quic_kvalo@quicinc.com>, linux-wireless@vger.kernel.org,
-        ath12k@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-References: <20250210-ath12k-uninit-v2-1-3596f28dd380@ethancedwards.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: Re: [PATCH 10/12] bluetooth: hci_wilc: add wilc hci driver
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Marek Vasut <marex@denx.de>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, linux-bluetooth@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20250212-wilc3000_bt-v1-0-9609b784874e@bootlin.com>
+ <20250212-wilc3000_bt-v1-10-9609b784874e@bootlin.com>
+ <CABBYNZJ5XDasAfVxcFU+K=ru2PpZJVXkRuf_kokv1z66KF=Xaw@mail.gmail.com>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <20250210-ath12k-uninit-v2-1-3596f28dd380@ethancedwards.com>
+In-Reply-To: <CABBYNZJ5XDasAfVxcFU+K=ru2PpZJVXkRuf_kokv1z66KF=Xaw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: vsaXM4sNejDDTdRrh3RONhcdIrjFpU05
-X-Proofpoint-ORIG-GUID: vsaXM4sNejDDTdRrh3RONhcdIrjFpU05
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-12_05,2025-02-11_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 mlxscore=0
- lowpriorityscore=0 phishscore=0 impostorscore=0 malwarescore=0 spamscore=0
- mlxlogscore=679 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2501170000 definitions=main-2502120124
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeggeegfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeetlhgvgihishcunfhothhhohhrrocuoegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvdetteektdehudelheehkeeggfejgfelveevgeevtdejudfgveetgefhtdduuedtnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemkeegvdekmehfleegtgemvgdttdemmehfkeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeekgedvkeemfhelgegtmegvtddtmeemfhekhedphhgvlhhopeglkffrggeimedvrgdtvdemkeegvdekmehfleegtgemvgdttdemmehfkeehngdpmhgrihhlfhhrohhmpegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdefpdhrtghpthhtoheplhhuihiirdguvghnthiisehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhgrrhgtvghlsehhohhlthhmrghnnhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepk
+ hhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrjhgrhidrkhgrthhhrghtsehmihgtrhhotghhihhprdgtohhmpdhrtghpthhtoheptghlrghuughiuhdrsggviihnvggrsehtuhigohhnrdguvghvpdhrtghpthhtohepkhhvrghloheskhgvrhhnvghlrdhorhhg
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-On 2/10/2025 6:49 PM, Ethan Carter Edwards wrote:
-> There is a possibility for an uninitialized *ret* variable to be
-> returned in some code paths.
+Hi Luiz,
+thanks for the prompt review !
+
+On 2/12/25 17:14, Luiz Augusto von Dentz wrote:
+
+[...]
+
+>> +static int wilc_open(struct hci_uart *hu)
+>> +{
+>> +       struct wilc_data *wdata;
+>> +
+>> +       BT_DBG("hci_wilc: open");
 > 
-> This explicitly returns 0 without an error. Also removes goto that
-> returned *ret* and simply returns in place.
+> Afaik you don't need to include the function name with the likes of
+> pr_debug/BT_DBG, that said you should really be using bt_dev_dbg if
+> you have hu->hdev set at this point, and this is valid for all other
+> places where BT_DBG could be replaced with bt_dev_dbg.
+
+I observe that BT_DBG does not bring any kind of prefix to the emitted log. But
+indeed, bt_dev_dbg looks definitely better for my purpose, I'll update all those
+logs with it.
+
+>> +       wdata = kzalloc(sizeof(*wdata), GFP_KERNEL);
+>> +       if (!wdata)
+>> +               return -ENOMEM;
 > 
-> Closes: https://scan5.scan.coverity.com/#/project-view/63541/10063?selectedIssue=1642337
-> Fixes: b716a10d99a28 ("wifi: ath12k: enable MLO setup and teardown from core")
+> Add an empty after something like an if statement to make it clearer
+> that it is not under the same scope.
 
-In the pending branch I changed this to:
-Fixes: b716a10d99a2 ("wifi: ath12k: enable MLO setup and teardown from core")
+True, that will be fixed.
 
-To fix the checkpatch issue:
-WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: b716a10d99a2 ("wifi: ath12k: enable MLO setup and teardown from core")'
+[...]
 
-https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=c2f7ae223cd3d781c69337dc804f1fae95789cdd
+> 
+> Once you address these comments please fill free to add:
+> 
+> Reviewed-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
+Thanks. I'll delay v2 for a few days to let other people review the series.
+
+Alexis
+
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
