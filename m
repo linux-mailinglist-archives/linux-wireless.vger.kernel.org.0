@@ -1,54 +1,54 @@
-Return-Path: <linux-wireless+bounces-18852-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18853-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FD7A32A8F
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 16:50:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A72DA32A98
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 16:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6D22167727
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 15:49:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2AFA1676C9
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 15:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88329253B51;
-	Wed, 12 Feb 2025 15:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB38125E465;
+	Wed, 12 Feb 2025 15:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TjZ/AkzY"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="e7S/94rb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB17E2566D7;
-	Wed, 12 Feb 2025 15:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BBA207667;
+	Wed, 12 Feb 2025 15:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739375277; cv=none; b=aAyTIJeLR0KZIcFGeGb7whkL6j9fjxy7NHgjpqo8e9m6AdiECO253puLK2Rrq1tytFkfQm1Ql6plzeoaQnp+cEPSVfJ04Nd+qoo1NytLXsfycZRfTTyZb8RisGXsvoqz1wod+eWcwhasCkA7kBi4fPEU9G7B+87+kH9ZWbAKakQ=
+	t=1739375278; cv=none; b=tJ1dIQEW5iL7t6nMAcBjrCHNoe/2WcZAFfqdj8qR9lFeymsG8eHYugPJD6ufA9Xpqcc3Es7QgthzmcuFQSAPCLXDjI7Hj990HclLCOb6Cy2yfKI8AmZZOrKXWPzvZGNucXwRkCNcWQJFHh4EVxxfDS06ENyRxuTjJK4QhvNwruY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739375277; c=relaxed/simple;
-	bh=xAmGyU91V+m4Q7kGIo3hv+45LYipGVyiZmeFoNFG190=;
+	s=arc-20240116; t=1739375278; c=relaxed/simple;
+	bh=wwE9J/3DWzGzvf3HX8mIawo1HhEFag+7yqU3+gKUFAs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HOwLCNm1ik/E+3nHJQBXKEBRwej6M/bV6x2YhF5TIGPWtckJR1AJhOKPuXHuwhgqg1Xmc56Fmo8pXTvqwnXYLSiSyxiluToHE8wcluFaI5p2s8YctrLmP9RJgyFVF54Jv2fMIOBKdpv1I14Mjf7Q9HLV3Zu6jSInvXodfWOKn3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TjZ/AkzY; arc=none smtp.client-ip=217.70.183.194
+	 In-Reply-To:To:Cc; b=deEKJK906mu1OF9QGfdZIvgoU2OuIyzesipKSTFNYJEKV0Aej8/ieSMwDbr6S1EP6fGF7473ibtUuLQeNArRTgbV6YPAjaqkgWuHEAEfeN3NxI6VC2mgzh9IyyHXYcJgSm1OdRQK6ARCaMM2HK2atO9yz86CgYSQ+8CBRE9vdoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=e7S/94rb; arc=none smtp.client-ip=217.70.183.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6D0FA440FC;
-	Wed, 12 Feb 2025 15:47:52 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9280244103;
+	Wed, 12 Feb 2025 15:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739375273;
+	t=1739375274;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eSlKEKgzm/q54egNWa8O2T+4J35Hi0UxWaRxNxaH0z0=;
-	b=TjZ/AkzYBhFedMs08HnK2oPOp6dXjcONfnjOmvCeVY5yD1HgW2rZK1tK9BIt9Q7pqBJYXM
-	jYJbWmd+ejh+BLMlLWDafz5mHwh/O7xNF6pK/P8aDakRyOBG62CoB7YzeQGv83sOTcjApk
-	SMWRhwtEVnVGV+bymbbS/YDY266W7IAXQYfm7N52QcqA9xD/CMc/odRIGEqCmv/K5CGAFH
-	UBwMwGzp9Tvpt4awsN2oxlifbSxp7cEwZ1yRsNL1e0wZOx1fLVvenTvahnFd5AsTHz0D7n
-	602Uyye/ALCwG8XYAfhIBXoX04BI8r9In1S5/ai7cWsYZdzFuQri43BFeewxXQ==
+	bh=2ARy609cfvM2of9MOB+Gm0QH81VkAA3wJdG6pfhwRTg=;
+	b=e7S/94rbSfelEL+qP0xlfBImgIn7ZSDO3cwrEN8vMru0qDJf+lQ1Il2tbn6XCUdhGq9dDj
+	EiyOCNfx9StQORtHFc/YcwSIC+cOYWxOVYJn0PDRGkQdVMuIyBCFNmM3Vp4OGHGMPba+/Z
+	yT1TOXxkgY4IwKSU9QZlmtqSfOkB0GQRasGWUx8uER+eU7QW9Gm0MHtJWN5f3f3ptSnHZk
+	IaVJRbmnJQI3YGn9qmm5/ECByeOtGXB63qf1zPaYLdPmWtT2S5q1liSxbY/ps/SeFg7Gbm
+	j8MvF4bqNBqpB5qxyE+WkkDpEQfvPcyvzTRwslMmbS6pAY8zvYzMxi4RiiNGuw==
 From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Date: Wed, 12 Feb 2025 16:46:25 +0100
-Subject: [PATCH 06/12] wifi: wilc1000: remove timeout parameter from
- set_power_mgmt
+Date: Wed, 12 Feb 2025 16:46:26 +0100
+Subject: [PATCH 07/12] wifi: wilc1000: reorganize makefile objs into sorted
+ list
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,7 +57,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250212-wilc3000_bt-v1-6-9609b784874e@bootlin.com>
+Message-Id: <20250212-wilc3000_bt-v1-7-9609b784874e@bootlin.com>
 References: <20250212-wilc3000_bt-v1-0-9609b784874e@bootlin.com>
 In-Reply-To: <20250212-wilc3000_bt-v1-0-9609b784874e@bootlin.com>
 To: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, 
@@ -83,57 +83,34 @@ X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeggedvkecutefuodetggdotef
  hgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhuihiirdguvghnthiisehgmhgrihhlrdgtohhm
 X-GND-Sasl: alexis.lothore@bootlin.com
 
-While the timeout parameter is part for the cfg80211 ops set_power_mgmt,
-wilc currently does not uses it (it processes only the boolean value).
-
-Remove the unused parameter from the driver-specific function.
+Put one object per line and sort them by alphabetical order
 
 Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 ---
- drivers/net/wireless/microchip/wilc1000/cfg80211.c | 2 +-
- drivers/net/wireless/microchip/wilc1000/hif.c      | 2 +-
- drivers/net/wireless/microchip/wilc1000/hif.h      | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/Makefile | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-index 393fff618f919c5a6d3f4a7d894b187399455fb8..ff8c1a40634cee9960777eb017f6b2905e6399a5 100644
---- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-+++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-@@ -1348,7 +1348,7 @@ static int set_power_mgmt(struct wiphy *wiphy, struct net_device *dev,
- 	if (!priv->hif_drv)
- 		return -EIO;
+diff --git a/drivers/net/wireless/microchip/wilc1000/Makefile b/drivers/net/wireless/microchip/wilc1000/Makefile
+index c3c9e34c1eaa93e7f6f13c6e4701f800408e8f89..9a2602b4a1494309ba06e4b553a8fc76a3f5433e 100644
+--- a/drivers/net/wireless/microchip/wilc1000/Makefile
++++ b/drivers/net/wireless/microchip/wilc1000/Makefile
+@@ -1,8 +1,14 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_WILC1000) += wilc1000.o
  
--	wilc_set_power_mgmt(vif, enabled, timeout);
-+	wilc_set_power_mgmt(vif, enabled);
+-wilc1000-objs := cfg80211.o netdev.o mon.o \
+-			hif.o wlan_cfg.o wlan.o
++wilc1000-objs := \
++	cfg80211.o \
++	hif.o \
++	mon.o \
++	netdev.o \
++	wlan.o \
++	wlan_cfg.o
++
  
- 	return 0;
- }
-diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
-index bba53307b960d996032f56affead0cd0922902a4..3b14d560bc295844d873ed966592f031f6b50206 100644
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -1932,7 +1932,7 @@ int wilc_edit_station(struct wilc_vif *vif, const u8 *mac,
- 	return result;
- }
- 
--int wilc_set_power_mgmt(struct wilc_vif *vif, bool enabled, u32 timeout)
-+int wilc_set_power_mgmt(struct wilc_vif *vif, bool enabled)
- {
- 	struct wilc *wilc = vif->wilc;
- 	struct wid wid;
-diff --git a/drivers/net/wireless/microchip/wilc1000/hif.h b/drivers/net/wireless/microchip/wilc1000/hif.h
-index 96eeaf31d23777e0392699240479b341529bfd42..5ecf6ba293a598823d09de43b597f8d54d375a7c 100644
---- a/drivers/net/wireless/microchip/wilc1000/hif.h
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.h
-@@ -192,7 +192,7 @@ int wilc_del_allstation(struct wilc_vif *vif, u8 mac_addr[][ETH_ALEN]);
- int wilc_del_station(struct wilc_vif *vif, const u8 *mac_addr);
- int wilc_edit_station(struct wilc_vif *vif, const u8 *mac,
- 		      struct station_parameters *params);
--int wilc_set_power_mgmt(struct wilc_vif *vif, bool enabled, u32 timeout);
-+int wilc_set_power_mgmt(struct wilc_vif *vif, bool enabled);
- int wilc_setup_multicast_filter(struct wilc_vif *vif, u32 enabled, u32 count,
- 				u8 *mc_list);
- int wilc_remain_on_channel(struct wilc_vif *vif, u64 cookie, u16 chan,
+ obj-$(CONFIG_WILC1000_SDIO) += wilc1000-sdio.o
+ wilc1000-sdio-objs += sdio.o
 
 -- 
 2.48.0
