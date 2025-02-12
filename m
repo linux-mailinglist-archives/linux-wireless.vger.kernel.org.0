@@ -1,75 +1,75 @@
-Return-Path: <linux-wireless+bounces-18803-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18804-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B0BA31E00
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 06:36:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89232A31E13
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 06:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5BE1883A8B
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 05:36:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B026188AF56
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 05:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6653EB67E;
-	Wed, 12 Feb 2025 05:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE691F5428;
+	Wed, 12 Feb 2025 05:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="b9R4WOyd"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="m6O8zjC/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1060C271837
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 05:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89B4271837
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 05:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739338581; cv=none; b=OgrnCorD8oYuw8iwnaukiTC6/yhzJKae67xP68vNn0smr4WmZpvE1Qje8d6lpCTq/QuLl7GKCXjARobSVgUCAfxB5SOB0YhFUv7aVnO+hXV6jqq8UKB13i/F1frgNoETRLXWZvuwRRHwxLOLGyODiGzT9uoGl8T0ZM5skz//E2Q=
+	t=1739338947; cv=none; b=IhPi+daDf3XsaL8DsV1jHaZ7bTB3zP/qE9KncY6KRzouoT3qQUJwqkVHSvGFHvTR8EB2HblSMMa1yQO6sXh7f/MLrnIb9wfVB3oAMk5xbVoVXB2Je+mNhZwotpXdinC7y2A/VWtjKAmjYblwZlPkprvz9pCrpoofZFnSWYS9cVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739338581; c=relaxed/simple;
-	bh=sWTQdi5QEBF3wuLJBRo7MN0ZSF2WrqkcVHqMUsIJOhE=;
+	s=arc-20240116; t=1739338947; c=relaxed/simple;
+	bh=nRA4QGZFqkensPv05YLymmCQZcZ91Lxdm8JZENdCCrA=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=LAEtz8E6IcSW/a73efKaCFDrIacc+jlf2KTVk0Z3L3loH4hfAFaG8CdkFWvN8t0K3NbxAqG55HvpSk1+eLnV5pToI9082CAd4zGWPdlOLbnGCLx6O+tSww0MysbLzM1U6T6cPa12GOkiLDF06h6ZBe08sVuzhPnI7ox7p9avLMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=b9R4WOyd; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:MIME-Version; b=vEE72foSYM6wqwxPdDo37gwxKK6JSsJyR3y4OQ0IuqSuvbuZC2+ptqHAYzE9MCsQazVeuHGl8Szm8ksFIMTxcoI66nK0Dr4D271FD9aHNa++VtZlMr5+uy+Hm80qL4vpMRwd1RHGasfypwjmaa2F918/mU47FuVgIjgu8SduWOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=m6O8zjC/; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51C5ZxshE1641516, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51C5gGfjD1646226, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1739338559; bh=sWTQdi5QEBF3wuLJBRo7MN0ZSF2WrqkcVHqMUsIJOhE=;
+	t=1739338937; bh=nRA4QGZFqkensPv05YLymmCQZcZ91Lxdm8JZENdCCrA=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=b9R4WOydGKL6x0LbBRyLBGD1IynXOpMC1SZJ3xI6k5yCki09MDdnxTOroJvULMAXx
-	 Mr1g0j17bGg0LqEfoX51SLkS/a5foaMvhje/2xaXSj+uH0wXKy3ExIoHjanlbcivzX
-	 Ws6P1LLNYmg1C3ss4jCDcV8XUFw/wNw022QAS2LH9h3EryhGhBMjsWaWOo/Px2od3v
-	 oK5YAlHaD4zl8za7DEYZsbl3hRwsc0d5bv7cHXxsRu+n207Jkbn+diPG0xdKvgmjQN
-	 RNjGynheiTyUTqt5K7+VDgrOMs1LJAKZqZ6zEKvg9SjlmsAYy9u22a7O+p9eePAy61
-	 yImhIjEV1hhQA==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51C5ZxshE1641516
+	b=m6O8zjC/cqTqDp7Dt79n2q5PpY6+/h6IMPLy7ZHAE053A+LqQvdO/7IKoq6F8P6rW
+	 vbZAXfhDF6B/etmwguXGLUE9Qy+Jc+31MN/kx6JCWuaWYSj3mrh6n58FrYvJywsXEq
+	 mhB9ofyU5EVzo/CbNnLQxTbrkC+bXml8MJ/RyceYOmuwmDcPNThWStQdWxvNmkW3JO
+	 B/UTHEHOcKBRgViqyojdzOxWqkl3ZnlAYNzFcoZATSC4EdfZn+GdWbpkuQ1dWZdTI9
+	 yOtcMNYc2gdF/z1Ah6EIio+f80Fokh3Lc22mTOwTGlbkzVgO7myJI+rQ/9+/CDMsuf
+	 pvD6hsKbB5vHg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51C5gGfjD1646226
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Feb 2025 13:35:59 +0800
+	Wed, 12 Feb 2025 13:42:16 +0800
 Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 12 Feb 2025 13:35:59 +0800
+ 15.1.2507.39; Wed, 12 Feb 2025 13:42:17 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 12 Feb 2025 13:35:58 +0800
+ 15.1.2507.35; Wed, 12 Feb 2025 13:42:16 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553]) by
  RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553%5]) with mapi id
- 15.01.2507.035; Wed, 12 Feb 2025 13:35:58 +0800
+ 15.01.2507.035; Wed, 12 Feb 2025 13:42:16 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Dmitry Antipov <dmantipov@yandex.ru>
 CC: Kalle Valo <kvalo@kernel.org>,
         "linux-wireless@vger.kernel.org"
 	<linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 1/2] wifi: rtw89: simplify rtw89_debug_priv_mac_reg_dump_select()
-Thread-Topic: [PATCH 1/2] wifi: rtw89: simplify
- rtw89_debug_priv_mac_reg_dump_select()
-Thread-Index: AQHbfFk56mvBm0SA2EqV5dpc1gpdrLNDJtmQ
-Date: Wed, 12 Feb 2025 05:35:58 +0000
-Message-ID: <6e498ecb91a440199539fcc001b9af4b@realtek.com>
+Subject: RE: [PATCH 2/2] wifi: rtw89: rtw8852b{t}: fix TSSI debug timestamps
+Thread-Topic: [PATCH 2/2] wifi: rtw89: rtw8852b{t}: fix TSSI debug timestamps
+Thread-Index: AQHbfFlRfsbqVknxlEKt5p1SvfD+brNDJ06g
+Date: Wed, 12 Feb 2025 05:42:15 +0000
+Message-ID: <0b028bab48ab4d64ac82b1228e1ad21c@realtek.com>
 References: <20250211073915.648418-1-dmantipov@yandex.ru>
-In-Reply-To: <20250211073915.648418-1-dmantipov@yandex.ru>
+ <20250211073915.648418-2-dmantipov@yandex.ru>
+In-Reply-To: <20250211073915.648418-2-dmantipov@yandex.ru>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
@@ -86,45 +86,48 @@ MIME-Version: 1.0
 X-KSE-AntiSpam-Interceptor-Info: fallback
 
 Dmitry Antipov <dmantipov@yandex.ru> wrote:
-> Simplify 'rtw89_debug_priv_mac_reg_dump_select()' by using
-> the convenient 'kstrtoint_from_user()'. Compile tested only.
+> Assuming that 'tssi_alimk_time' of 'struct rtw89_tssi_info' is
+> in milliseconds,
+
+Checking vendor driver, It intends microseconds.=20
+
+	RF_DBG(rf, DBG_RF_TX_PWR_TRACK, "[TSSI PA K] %s processing time =3D %d.%dm=
+s\n",
+		__func__,
+		HALRF_ABS(finish_time, start_time) / 1000,
+		HALRF_ABS(finish_time, start_time) % 1000);
+
+> adjust rtw8852b{t}-specific '_tssi_alimentk()'
+> to not mix the former with nanoseconds. Compile tested only.
 >=20
+> Fixes: 7f18a70d7b4d ("wifi: rtw89: 8852b: rfk: add TSSI")
 > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-
-The function has been changed, because of switch wiphy_lock().=20
-No copy_from_user() now. Skip this patch.=20
-
 > ---
->  drivers/net/wireless/realtek/rtw89/debug.c | 9 +--------
->  1 file changed, 1 insertion(+), 8 deletions(-)
+>  drivers/net/wireless/realtek/rtw89/core.h          | 2 +-
+>  drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c  | 9 ++++-----
+>  drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c | 9 ++++-----
+>  3 files changed, 9 insertions(+), 11 deletions(-)
 >=20
-> diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wir=
-eless/realtek/rtw89/debug.c
-> index 09fa977a6e6d..339f9f6672fd 100644
-> --- a/drivers/net/wireless/realtek/rtw89/debug.c
-> +++ b/drivers/net/wireless/realtek/rtw89/debug.c
-> @@ -924,17 +924,10 @@ rtw89_debug_priv_mac_reg_dump_select(struct file *f=
-ilp,
->         struct rtw89_debugfs_priv *debugfs_priv =3D m->private;
->         struct rtw89_dev *rtwdev =3D debugfs_priv->rtwdev;
->         const struct rtw89_chip_info *chip =3D rtwdev->chip;
-> -       char buf[32];
-> -       size_t buf_size;
->         int sel;
->         int ret;
->=20
-> -       buf_size =3D min(count, sizeof(buf) - 1);
-> -       if (copy_from_user(buf, user_buf, buf_size))
-> -               return -EFAULT;
-> -
-> -       buf[buf_size] =3D '\0';
-> -       ret =3D kstrtoint(buf, 0, &sel);
-> +       ret =3D kstrtoint_from_user(user_buf, count, 0, &sel);
->         if (ret)
->                 return ret;
->=20
-> --
-> 2.48.1
->=20
+> diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wire=
+less/realtek/rtw89/core.h
+> index ff4894c7fa8a..93e41def81b4 100644
+> --- a/drivers/net/wireless/realtek/rtw89/core.h
+> +++ b/drivers/net/wireless/realtek/rtw89/core.h
+> @@ -5135,7 +5135,7 @@ struct rtw89_tssi_info {
+>         u32 alignment_backup_by_ch[RF_PATH_MAX][TSSI_MAX_CH_NUM][TSSI_ALI=
+MK_VALUE_NUM];
+>         u32 alignment_value[RF_PATH_MAX][TSSI_ALIMK_MAX][TSSI_ALIMK_VALUE=
+_NUM];
+>         bool alignment_done[RF_PATH_MAX][TSSI_ALIMK_MAX];
+> -       u32 tssi_alimk_time;
+> +       u64 tssi_alimk_time;
+
+This is the accumulated time of doing alimk, so debug message would be=20
+
+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+		        "[TSSI PA K] %s processing time =3D %d.%d ms (acc =3D %d.%d ms)\n=
+",
+
+
 
 
