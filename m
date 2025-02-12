@@ -1,54 +1,54 @@
-Return-Path: <linux-wireless+bounces-18857-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18858-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6301BA32AAF
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 16:52:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C54A32AB6
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 16:53:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CDCD1688EC
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 15:51:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C48123A806B
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 15:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00E2261390;
-	Wed, 12 Feb 2025 15:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6BC263F25;
+	Wed, 12 Feb 2025 15:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="M/Zjyda5"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mXvv70m2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB96326137A;
-	Wed, 12 Feb 2025 15:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D78262151;
+	Wed, 12 Feb 2025 15:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739375283; cv=none; b=UWObZH77aAmlyPf1il85dGfPmuPfCAc414kD9fQvEFuY+i5+sXyJYQJXJpRfPWqreQr8ubPGSowxxmoH7ajWnvnQv9EhlmA3JgZcUkQjtAFlN1iA4esfF4emXzPqfIBajvAUV+AxtQHTmyTALyaDvUdyyRYRfpKZEUE6Td6sKbo=
+	t=1739375285; cv=none; b=E0/FHMWe2iP1OlQHy5rzfQss/UeXWjz6F5hd08ewyx87MntF34eq9xptZPW0FVnK2KP3ARqrZFqojSRm++DOZn1gQvK3xqu3ARN5ib/7nowGI8OH3kdVF70Rbt/de1ygqYmyTlKXa6UZJ+zDFZ57DQ9rfzWknctaz7kuStfGcVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739375283; c=relaxed/simple;
-	bh=7Nuvq0/XaKtH4YYZYU9GOiSo9SqvZGltin6mD5/9gJA=;
+	s=arc-20240116; t=1739375285; c=relaxed/simple;
+	bh=osZmc1DPVoTq245gL1CMMReUC2xc6UC5A8bH+WgUWnc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PBGRRb8U9ZhWSxZT2RZUergO/jH4OF9JnOiahA3PtiqfeRm4tFflnYspijAtRmamtYHYIdkHZb8534TfhR/FVUhmLUhtZJ54B5I9/rrLOPP9OmGp0liaU+yLwfWb/GCwXcaqOf8I0vyE/6Zp9KdZWenlZnKePd9kBtEtjGPshYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=M/Zjyda5; arc=none smtp.client-ip=217.70.183.194
+	 In-Reply-To:To:Cc; b=qcxsns8x82jdNw5bJCUjjDzFLNXMbPL68wwDflEXh5AXz0kCDDZczttCZ8iyfyAP4XheWMEFYJ7xMShsYNO3mNcJ0Nu9cwMucxYK/nYq/Hr98x4sCyUT+ObhCJ3I1ftobM7SU4RxslAzq22Zch9KDsuoUQJyeWM2GgET9kxsetU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mXvv70m2; arc=none smtp.client-ip=217.70.183.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0C692440FC;
-	Wed, 12 Feb 2025 15:47:58 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 364144416E;
+	Wed, 12 Feb 2025 15:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739375279;
+	t=1739375280;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p9mJBeQJc9XrbJbz/UPw2MShuHNEjyFKhfrVFDRUvK8=;
-	b=M/Zjyda56Eh4V0dsM4qeR+/eslwZfJQPAYgKb1WzvTTfRW0i8U2TNFAM697MotdutEeiXS
-	3xlhRpa+zc4gqJOl3N+yWbCuPQqt0mNQhCmyS4XZe5folQvFmsDQNBoD6EULajikDVFBsP
-	HrOMnHdt/+LXGxmMKEWfW3Y1weQVEV/PiIXJiIFfSOdJp2BKbLcvpf8tTaxgoHuFPyiRMc
-	wc+39CjNGKTgTNcbM6p5h510bNColfVX6zgHbV9YhjxA6u4Rt0lNl2f2eD+k9vr+yhe2sb
-	bzTvNkDwqqOAYIGi3uAeV5NKiabl/obLsnlyLNiWkpE5+6SRQnCa8G/PiEtNiA==
+	bh=P0G+yYadJWDhMsM9S6K3wOyG/oWy+c8825+nanSQpks=;
+	b=mXvv70m2Am4yO9Kvh96qPNwuxJRncLele/NuEh6/2t4WDnmi3Z/YfV9XJ2Sc+NNlAW0FgG
+	7hxEycTIR8B7mq2rLD3m96VSZMlRCDVvtNR9IBwJNWyRy4Pn7VQaOeOhgeNU/N/dFdaHVl
+	s+/443rY8H5dyrNEHa/6aNADLCq0wzn7oTBUF1MwUAdluXbD+hW2ESqaNHFvMtwvDuSLDg
+	MYi+Ord8vFvRNsqeodt+svNBmSq85ft2DTI3BGiwtT0pIUpdrIoqKUTKpraxtbIn+5K08P
+	hfH5ZQyps+2ZiKs537yNF+taQyBpbRY6dPth7dbiUyFT0Bhs7BFXZdYO6rVQtg==
 From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Date: Wed, 12 Feb 2025 16:46:30 +0100
-Subject: [PATCH 11/12] ARM: dts: at91-sama5d27_wlsom1: update bluetooth
- chip description
+Date: Wed, 12 Feb 2025 16:46:31 +0100
+Subject: [PATCH 12/12] MAINTAINERS: add entry for new wilc3000 bluetooth
+ driver
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,7 +57,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250212-wilc3000_bt-v1-11-9609b784874e@bootlin.com>
+Message-Id: <20250212-wilc3000_bt-v1-12-9609b784874e@bootlin.com>
 References: <20250212-wilc3000_bt-v1-0-9609b784874e@bootlin.com>
 In-Reply-To: <20250212-wilc3000_bt-v1-0-9609b784874e@bootlin.com>
 To: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, 
@@ -83,64 +83,32 @@ X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeggedvkecutefuodetggdotef
  hgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhuihiirdguvghnthiisehgmhgrihhlrdgtohhm
 X-GND-Sasl: alexis.lothore@bootlin.com
 
-The SAMA5D27 WLSOM1 plaftorm embeds a wilc3000 chip exposing 802.11b/g/n
-and bluetooth 5. The current description for this chip does not expose
-the bluetooth part: it only configures the relevant flexcom peripheral
-to set it as uart, and relies on user to trigger the corresponding hci
-device creation in kernel through hci_attach. Now that a bluetooth
-driver is available and handles the device creation, replace the bare
-uart description with a proper bluetooth node.
+Add MAINTAINERS entry for the new bluetooth driver in
+drivers/bluetooth/hci_wilc.c
 
 Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 ---
- arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1.dtsi   |  8 ++++++++
- arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts | 10 ----------
- 2 files changed, 8 insertions(+), 10 deletions(-)
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1.dtsi b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1.dtsi
-index ef11606a82b31c2f745141cdac1318805f473273..10d48a9ef92c9621a8885feebda6119d3f61af75 100644
---- a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1.dtsi
-+++ b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1.dtsi
-@@ -50,10 +50,18 @@ wifi_pwrseq: wifi_pwrseq {
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 82b227c3939a49996498f4e829541eb5380ab2b3..2f02aecc21e96a2f9e6ff2de3864bb2d2b964127 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15526,6 +15526,13 @@ L:	linux-wireless@vger.kernel.org
+ S:	Supported
+ F:	drivers/net/wireless/microchip/wilc1000/
  
- &flx1 {
- 	atmel,flexcom-mode = <ATMEL_FLEXCOM_MODE_USART>;
-+	status = "okay";
- 
- 	uart6: serial@200 {
- 		pinctrl-0 = <&pinctrl_flx1_default>;
- 		pinctrl-names = "default";
-+		atmel,use-dma-rx;
-+		atmel,use-dma-tx;
-+		status = "okay";
-+		bluetooth: bluetooth@0 {
-+			compatible = "microchip,wilc3000-bt";
-+			wlan = <&wilc>;
-+		};
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
-index 15239834d886edbf9e732ac461a92ac9eea42ae5..8b89ee0b47ccb6e60b67f3e4db6caa827ce9c0bc 100644
---- a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
-+++ b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
-@@ -85,16 +85,6 @@ uart5: serial@200 {
- 	};
- };
- 
--&flx1 {
--	status = "okay";
--
--	uart6: serial@200 {
--		atmel,use-dma-rx;
--		atmel,use-dma-tx;
--		status = "okay";
--	};
--};
--
- &macb0 {
- 	status = "okay";
- };
++MICROCHIP WILC3000 BLUETOOTH DRIVER
++M:	Alexis Lothoré <alexis.lothore@bootlin.com>
++L:	linux-bluetooth@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/net/bluetooth/microchip,wilc3000-bt.yaml
++F:	drivers/bluetooth/hci_wilc.c
++
+ MICROSEMI MIPS SOCS
+ M:	Alexandre Belloni <alexandre.belloni@bootlin.com>
+ M:	UNGLinuxDriver@microchip.com
 
 -- 
 2.48.0
