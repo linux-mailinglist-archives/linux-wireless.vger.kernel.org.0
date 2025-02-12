@@ -1,170 +1,174 @@
-Return-Path: <linux-wireless+bounces-18845-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18846-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458B9A32855
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 15:25:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AD5A32A6E
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 16:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB2803A7250
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 14:25:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68B241883371
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 15:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300C220FA90;
-	Wed, 12 Feb 2025 14:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D69211700;
+	Wed, 12 Feb 2025 15:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I4CME8Ev"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PLkMLkwv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6A220FA8F
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 14:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781E6271814;
+	Wed, 12 Feb 2025 15:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739370330; cv=none; b=XmIOvFA2VYoedDFaaST6pMLrYCU32TJbAnXHPlSivCQtP1B4QQDIwEO1hAfcUu4O5KzLnqbETk4cfoo+w8aYADL/EPN9gE+yhDlGi6KgWJXtD7MXdv/eOezuQP4mHVtm1nKVPz98KvE8dflOt+oIIwAXikMUj164wBnd34gXSs8=
+	t=1739375271; cv=none; b=olGUqWVzt658od/lySWSWJZj3MmYCsWSFRLclPj9PF20z9QK6mqfyAAey7oxFc7Vt9Jb1xpDiUBSlvVuTve2Za4TyIzIR09c96OBcfP0ZPjXAVLSQUHn8kf79JhS96dFroe8mXWXWBFcPK8yRkNDS9eHB+2/E8JkO7KoAmL6+SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739370330; c=relaxed/simple;
-	bh=RJMMloWgcQdUFqDSeKQ2oopBz2j77s3iX0H35AhUc2s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NaZMJiGGTOA7InNx3rgDgK+i3Y5NVgVRzy9yxuan34+jNjW77Q6T6zcjWbxwjA4KUhSWNS2t8lTIRiyDM8RDmQ3M/Dw2QAvgF/WAUIAbgDDGg3O2QkrekPt0IaMGEtl4OQmh7HXhFVHdoZn8qdiWzFEjp0ED2AVon87QZM69r14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I4CME8Ev; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-471a25753a4so17137181cf.0
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 06:25:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739370327; x=1739975127; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6a2ncZGrEKwYAetWIYfT9wk3W+4dzvqnS2tU96ciDA8=;
-        b=I4CME8EvBmIUEdB3myMCVsDs6I8SkMWZ9w3Hbuu+ZriJAJ+99il7EHB3w3cuF9B1ic
-         qx50yGPVdJGbZCSUAEmRdiD4/YJPhilBRxxXsTPYrneet3RLK4oUG/MRJuawwzXSfuG4
-         /GCBBikv9OtTy104lz0OzwuDUEiBi1bz87cKU0ucFBc7LnH+r6iwQ1wqtv6FZquEe+3p
-         iXKvjE97chzO6rIRZVBkwPeW6Tx+wUJKyl5smq83DeBcvUkcA6PTL3/bBjdaaF9QEOIx
-         GGTUWB6JEGRJwjYxnFb7/YahzGkV6P4yKKY/sBRKsG2JKIpvbnub+k9F+9N49VcqtUKR
-         9y5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739370327; x=1739975127;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6a2ncZGrEKwYAetWIYfT9wk3W+4dzvqnS2tU96ciDA8=;
-        b=EiC8GXLKjsX3aXIP9bH1GwcpcejbDyfjeeu4V6Aj7mS9Van/V60UvLhG2GdDcZ6tE7
-         yVXE4Sm+AYUfohg9GPYNX8pEuGrnKHqtlXzp+MwCPezvuDw8yazryujnqj4b973JtJy+
-         Z4PAgQXmBqqG4GcWg24BEKu/Z2VQZqvd1a05lpRy2Ow/yK7h4xKlcLjgCiklTSUIf5R/
-         Yzp9RGub5yoJd17Ywdg1oJa+0ZSbL+AIEqGzgIdp9FZ1W9Fb0xTOWugKfIC6Fsx6+Pl8
-         rf4NDlsnvBbcd/tqYAV7k8IuyfsueTl7q2a37+9FoImjSQI6DiogRS3D++5rEk1Wfqgx
-         U4Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCUyEgau+K+vxxbHJZTYkayPE/aRL3PWT1KgSblqXWIK+vrSrBJKqPMuhvSHg+ZoPQBJ8Z83iAznxkYKrKmuqQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqKdhMqajohBBVKY+ssO1RttBbkWz7l3hU5fNNnPXR/sicuPEt
-	PBpnQQPLGfH8P0XNwpvDGmtoc8K0DaUgTH85hxLgt9sjWxt+HpLa
-X-Gm-Gg: ASbGncut6mIZzD13ldmLMR8GVPADNFF8HrE4eB3bnrJ05cCKLfrBE14H9jSQgZ68VLE
-	qqJmQJOy/xNd35EPIGaeD1clVhtE6xoZPa8fU6YhpOcJ/xTa7ePT3pCJrdXVLdFE8drAj3hMCVf
-	QZO0mC9DkVgELmI0rVTZK6p8QO/w28CMB3TEaAP6STliNNO7EBuMW4roM4Rzv/hGXkZe+jQsYfd
-	8fz9/6LWYDfTgwjygBc0XaO+6hwUcIx9i5osXha2ci863wCtgm8z046KRGv/ct362V9+lWZEpxD
-	aeGrzN11zpnpYLDTMp4=
-X-Google-Smtp-Source: AGHT+IHyy2b5dRkkpIlh970tTduoVTKuBakJRPTRZft3Zijmlwtcmb+LBj3FqVU1FaEqFgpZf0ze2Q==
-X-Received: by 2002:a05:622a:180e:b0:471:b9e1:6707 with SMTP id d75a77b69052e-471b9e16e0bmr22457801cf.11.1739370327224;
-        Wed, 12 Feb 2025 06:25:27 -0800 (PST)
-Received: from [10.100.121.195] ([152.193.78.90])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-471793f639bsm54826191cf.35.2025.02.12.06.25.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Feb 2025 06:25:26 -0800 (PST)
-Message-ID: <e570804d-6835-47da-9c4b-5520b4d6daa7@gmail.com>
-Date: Wed, 12 Feb 2025 06:25:24 -0800
+	s=arc-20240116; t=1739375271; c=relaxed/simple;
+	bh=evqjBDuFvQvZNlaBbpp360TMcXxjhw1F9NMB4b5lJuQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KeKwzXd/MaZQpmuPg6CUDHQTQkXsetLoz7uoJV2P7xg3s67Rk0kGmFmlfXggFx/nQUzoR2B/GGF2Ry7ItrxXlq1ZbaNR3PftQvlcCPqvuQ0mIdLXU/5B2uNOnRnBfo/cewmPtDwTU2nktvC5ZjO9ULRnoWnNHnhpvKgwLl+Ru9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PLkMLkwv; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BF86F440F3;
+	Wed, 12 Feb 2025 15:47:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739375266;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=39musMyRvQZFJGCAwDo09lJ3EVHHEkzlG1spNgpkZ4Q=;
+	b=PLkMLkwv0wm/8HRgZPKQsHL3sSziak3cusMU+bcFX6+IVkHZS6TEd3k+KrY2dIywTHU+oU
+	k5K+Pu8maSlm//NBsxq+mli1fn7ynFCbmeyrr0OVipl4XgwpYFpZ71V/Tp26rgvyeW/VtT
+	aNGFCrDp4Mqnl16E8Td75hPikhyv5T09yR9oqeNnvaN21zbx63n7R28RguxaBHArhg2815
+	Oel1IDy2h8N8RZ3QHT5Fgs+AY/odjSZySHn09TSgSRb+URe2tF0+6rKCsiewXEfGGijI3M
+	GhwVdz8aXHvMXC6DNX2aI1tobo5yil3SxE8scKqWRZZ4MU149UC2siFA9xrlAQ==
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Subject: [PATCH 00/12] bluetooth: hci_wilc: add new bluetooth driver
+Date: Wed, 12 Feb 2025 16:46:19 +0100
+Message-Id: <20250212-wilc3000_bt-v1-0-9609b784874e@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFT] brcmfmac: Fix structure size for WPA3 external SAE
-To: KeithG <ys3al35l@gmail.com>
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
- linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- Ting-Ying Li <tingying.li@cypress.com>,
- Ting-Ying Li <tingying.li@infineon.com>
-References: <CAG17S_NqbLogvTWyoYobZ6kOpfXHnScfm4-dB1EqsmpB+q+zxA@mail.gmail.com>
- <20241215120401.238320-1-arend.vanspriel@broadcom.com>
- <69874369-495c-4698-af1f-502d21371f7d@gmail.com>
- <CAG17S_Oh7mjecrSju=CxfB5eSqTGewY5gUYqK3YC-oW4jW5G7g@mail.gmail.com>
-Content-Language: en-US
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <CAG17S_Oh7mjecrSju=CxfB5eSqTGewY5gUYqK3YC-oW4jW5G7g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAEvCrGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDCyML3fLMnGRjAwOD+KQS3bREE1OjNKNES+PEFCWgjoKi1LTMCrBp0bG
+ 1tQDQShcmXQAAAA==
+X-Change-ID: 20240828-wilc3000_bt-fa452f2a93ad
+To: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, 
+ Marcel Holtmann <marcel@holtmann.org>, 
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Ajay Singh <ajay.kathat@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Marek Vasut <marex@denx.de>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-bluetooth@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeggedvkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtkeertdertdejnecuhfhrohhmpeetlhgvgihishcunfhothhhohhrrocuoegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevffetudegfedukeelhffgjeefteevgeejjeffkeekudejhedvfedufeefvedtnecuffhomhgrihhnpehmihgtrhhotghhihhprdgtohhmpdhkvghrnhgvlhdrohhrghdpghhithhhuhgsrdgtohhmpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemkeegvdekmehfleegtgemvgdttdemmehfkeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeekgedvkeemfhelgegtmegvtddtmeemfhekhedphhgvlhhopegludelvddrudeikedruddrudeljegnpdhmrghilhhfrhhomheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvgedprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrn
+ hgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeguvghvihgtvghtrhgvvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhuihiirdguvghnthiisehgmhgrihhlrdgtohhm
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-Hi Keith,
+Hello,
 
-On 2/12/25 6:13 AM, KeithG wrote:
-> On Wed, Feb 12, 2025 at 7:42 AM James Prestwood <prestwoj@gmail.com> wrote:
->> Hi Arend,
->>
->> On 12/15/24 4:04 AM, Arend van Spriel wrote:
->>> From: Ting-Ying Li <tingying.li@cypress.com>
->>>
->>> Add pmkid parameter in "brcmf_auth_req_status_le" structure to
->>> align the buffer size defined in firmware "wl_auth_req_status"
->>> structure.
->>>
->>> Signed-off-by: Ting-Ying Li <tingying.li@infineon.com>
->>> [arend: adapted path to apply to per-vendor variant]
->>> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->>> ---
->>>    .../net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h    | 1 +
->>>    1 file changed, 1 insertion(+)
->>>
->>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
->>> index 18129adb5dc2..1cbe66526d82 100644
->>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
->>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
->>> @@ -54,6 +54,7 @@ struct brcmf_auth_req_status_le {
->>>        u8 peer_mac[ETH_ALEN];
->>>        __le32 ssid_len;
->>>        u8 ssid[IEEE80211_MAX_SSID_LEN];
->>> +     u8 pmkid[WLAN_PMKID_LEN];
->>>    };
->>>
->>>    /**
->>>
->>> base-commit: 1cac3bd863bef434d43e6b0554ac5d7f7f6350fe
->>> prerequisite-patch-id: d5b3eb93d54bd6a0508a91f4627ec3e59a810928
->>> prerequisite-patch-id: 653281e1349a038c7f48b3513243f3211fffab9e
->>> prerequisite-patch-id: 0e47ab711ef159237e20c860834d3ac269b05eb2
->> I've tested this and can also confirm it does fix external auth on
->> brcmfmac. I adapted it to work with the upstream 6.6 raspi kernel and
->> had no issues using IWD + external auth to connect to a WPA3 network. Is
->> this something that can be upstreamed?
->>
->> This is the firmware I'm using (no changes to the default raspi distro):
->>
->> Firmware: BCM4345/6 wl0: Aug 29 2023 01:47:08 version 7.45.265 (28bca26
->> CY) FWID 01-b677b91b
->>
->> Thanks,
->>
->> James
->>
-> James,
->
-> It is easy to do, but I am starting to get confused. Is this in
-> addition to or instead of the patch you posted:
-> [RFC] netdev: avoid PMKSA for fullmac drivers
-This IWD patch is still needed. I'll poke Denis to merge this.
-> Does it invalidate the need for using the latest cypress/infineon firmware:
-> Firmware: BCM4345/6 wl0: Oct 28 2024 23:27:00 version 7.45.286
-> (be70ab3 CY) FWID 01-95efe7fa
-I guess? It just worked for me with this kernel patch and the firmware 
-that comes stock with raspbian. I haven't tried the latest cypress FW.
->
-> If we can go to a default kernel and the 7.45.265 firmware, and still
-> have wpa3, that would simplify things and make us happier.
-Its not going to work with the default 6.6 kernel (or likely any 
-unpatched kernel). You definitely need the above kernel patch adding the 
-pmkid field.
->
-> Keith
+WILC3000 ([1]) is a combo chip exposing 802.11b/g/n and Bluetooth 5.
+Support for the wlan part has recently been integrated upstream ([2]) in
+the existing wilc1000 driver. This new series aims to bring support for
+the bluetooth side.
+
+The WILC3000 chip is controlled through a SDIO or SPI bus for the wlan
+part (similarly to wilc1000), and uses standard HCI commands over a UART
+bus for the bluetooth operations. This work is based on the code
+available in the vendor kernel ([3]), in which bluetooth is managed
+directly in the wireless driver, and relies on user to trigger the
+hardware configuration (chardev manipulations + hciattach). The series
+brings a new dedicated bluetooth driver to support the bluetooth feature
+from the chip, without relying on the user to perform the device
+bringup. However, getting completely rid of the wlan driver dependency
+is not possible: it is still needed for early BT CPU configuration and
+BT firmware download, so the new driver still have a dependency of the
+wlan one, with an approach similar to the one used by the rsi driver.
+
+- Patch 1 brings the new dt binding
+- Patch 2-9 prepares the wlan side, either by exposing the needed
+  functions to initialize BT, or by mitigating behavior which would
+  prevent BT and WLAN from runnning in parallel
+- Patch 10 brings the new bluetooth driver
+- Patch 11 updates the device tree description for sama5d27_wlsom1_ek
+  board (which I used to validate this series) to use the new driver
+- Patch 12 adds a new entry for this driver in the MAINTAINERS files
+
+This series has been tested with WILC3000 both in SDIO mode (with the
+chip embedded on the sama5d27_wlsom1_ek) and SPI mode (custom wiring on
+an SPI on the same eval board, with a WILC3000-SD).
+
+Since this works needs new code in both the existing wlan driver and the
+new driver, I have included both linux-wireless and bluetooth mailing
+lists, while keeping the entire series for clarity, but let me know if
+you want to proceed differently.
+
+[1] https://www.microchip.com/en-us/product/atwilc3000
+[2] https://lore.kernel.org/linux-wireless/20241004114551.40236-1-marex@denx.de/
+[3] https://github.com/linux4microchip/linux/tree/linux-6.6-mchp/drivers/net/wireless/microchip/wilc1000
+
+---
+Alexis Lothoré (12):
+      dt-bindings: bluetooth: describe wilc 3000 bluetooth chip
+      wifi: wilc1000: add a read-modify-write API for registers accesses
+      wifi: wilc1000: add lock to prevent concurrent firmware startup
+      wifi: wilc1000: allow to use acquire/release bus in other parts of driver
+      wifi: wilc1000: do not depend on power save flag to wake up chip
+      wifi: wilc1000: remove timeout parameter from set_power_mgmt
+      wifi: wilc1000: reorganize makefile objs into sorted list
+      wifi: wilc1000: add basic functions to allow bluetooth bringup
+      wifi: wilc1000: disable firmware power save if bluetooth is in use
+      bluetooth: hci_wilc: add wilc hci driver
+      ARM: dts: at91-sama5d27_wlsom1: update bluetooth chip description
+      MAINTAINERS: add entry for new wilc3000 bluetooth driver
+
+ .../net/bluetooth/microchip,wilc3000-bt.yaml       |  41 +++
+ MAINTAINERS                                        |   7 +
+ .../boot/dts/microchip/at91-sama5d27_wlsom1.dtsi   |   8 +
+ .../boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts |  10 -
+ drivers/bluetooth/Kconfig                          |  13 +
+ drivers/bluetooth/Makefile                         |   3 +-
+ drivers/bluetooth/hci_uart.h                       |   1 +
+ drivers/bluetooth/hci_wilc.c                       | 333 ++++++++++++++++++++
+ drivers/net/wireless/microchip/wilc1000/Kconfig    |   3 +
+ drivers/net/wireless/microchip/wilc1000/Makefile   |  11 +-
+ drivers/net/wireless/microchip/wilc1000/bt.c       | 345 +++++++++++++++++++++
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c |   7 +-
+ drivers/net/wireless/microchip/wilc1000/hif.c      |   2 +-
+ drivers/net/wireless/microchip/wilc1000/hif.h      |   2 +-
+ drivers/net/wireless/microchip/wilc1000/netdev.c   |  14 +
+ drivers/net/wireless/microchip/wilc1000/netdev.h   |   5 +
+ drivers/net/wireless/microchip/wilc1000/sdio.c     | 101 ++++--
+ drivers/net/wireless/microchip/wilc1000/spi.c      |  43 +++
+ drivers/net/wireless/microchip/wilc1000/wlan.c     | 154 ++++-----
+ drivers/net/wireless/microchip/wilc1000/wlan.h     |  23 ++
+ include/net/wilc.h                                 |  19 ++
+ 21 files changed, 996 insertions(+), 149 deletions(-)
+---
+base-commit: 95f6f2d73dc40ab53a94756689ce5cfd2f23361a
+change-id: 20240828-wilc3000_bt-fa452f2a93ad
+
+Best regards,
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
