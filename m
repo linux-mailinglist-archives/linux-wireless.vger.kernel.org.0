@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-18808-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18809-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3D4A31E1A
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 06:44:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63314A31E1B
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 06:44:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91BF9162268
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 05:44:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8298188B755
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 05:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931AC1E1A05;
-	Wed, 12 Feb 2025 05:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5071F8AC8;
+	Wed, 12 Feb 2025 05:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kUHzGsVD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LtnpYI2A"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EFB1F91C5
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 05:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67567271837
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 05:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739339034; cv=none; b=tQUqU78pmoLyJqQ0JmmcltKTdXfirkJA3r1Codye0ZNKyAVQ4H2OUa65btzax0/5+6823utSs2+65c2JE0o+B83kWQuy3WRznc6v26Avs3k9nkznXPdOnDti3cGqNEkuhrFk5J4RX2IzPSdfwDBTy4H8s7ZIKFUEwec4d6Jkydw=
+	t=1739339035; cv=none; b=rKrW42UKvQuatOhUc/y2Rt2Rbg0tyMB4YyWDW9bV4HKOSBvrVpz+Lk7ceKe0Sr3l0ws7g8mjf1kAdU5/eiutpDTw/MI2lY3GbOET5AYma0etReFNWYekJpoMS9WwfKfKm6mx1vxdai+YihKdDFkFRVYUFvyjGJMwzTFCNSl5QP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739339034; c=relaxed/simple;
-	bh=GVaBKmL+tiIGh0KJysrc+WlPH0ku4pLIyz+OMRB8l00=;
+	s=arc-20240116; t=1739339035; c=relaxed/simple;
+	bh=edcEgtr+n9+aT60+Rms5SKSYyPL+yGPQxKQtc0eynqo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dETPrVO5MZvdeNntIyul5VIQphWV0cc/Qwv5DcTqWcFpxvp+0+qEKSrOVqMh0c5z7nRbxHs4M2H2r9wq0w2XJHicJs/i1G8TQLcROSx1oSTpo8TrQmDJxm0P0HsyDZ6bDOQQwdhqN4f6x2/KLi0N5aZ9UJchpy46IBEPYsbLy/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kUHzGsVD; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=Je/f5E6NWggXzlYLwyjX44IMLDUIIjUC64XQyGZq084MB69YDw2eNJAo5ED1ZLj5Xi6blvUJhS/wIN8YVqzdqSHDKK7vlM0FtGsMvpn2tooWu20OKpGRbF6Iy7Rl6q36mukRVzgVpKao0s+E3gxg6IPbxbk9hCOX9DFDrvpDJQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LtnpYI2A; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739339033; x=1770875033;
+  t=1739339034; x=1770875034;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GVaBKmL+tiIGh0KJysrc+WlPH0ku4pLIyz+OMRB8l00=;
-  b=kUHzGsVDJmkntnMzJxSr7go6eQDiMBJM0Oj4UyzF3z9tc3o1NJtnOk5c
-   9/cig04QjsyYrQP+ipn0MxHattsABAutkX5iKJXrx832BssC13pb6Y2af
-   Llvbwy3SxhCbUyq+ibFWpVs1imVkor8rc+Rmpthjuh1Myi7WGFtCZDBTi
-   x6QUxcueQLYAPlD8Eiy0o+FAQlu4xFQiFN+gCmLcrhGJjnr+GVtr882Ue
-   epBbVYWmUwUHgKSEI/RADIj9RUF1HWA2fjMUOaj8DZczqM0Q8RPdcMao5
-   /njeVpZYmeagDsbYazt3de/TgZVYnMyLKXpdCnN85yYufij2DBhub1ay6
-   w==;
-X-CSE-ConnectionGUID: bVdZbKRnQZOOIrWWIK1bSw==
-X-CSE-MsgGUID: //rMEMTYTK+TeQX57jItiQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39172211"
+  bh=edcEgtr+n9+aT60+Rms5SKSYyPL+yGPQxKQtc0eynqo=;
+  b=LtnpYI2AhyTInZn3bELZnImJCS0aAUYsujspyrgSHRoYPAxnboi9z6uZ
+   Uu+3MbsjUkdbRZQE/ZM0SwoTgygq5RtLHr6h4ej5K5loa80DUZqrFhwFt
+   mXe9nVHrCmA0ioaiTy/KjeysKmsqkwxg0Dx4QVSGUm72+RQQpoPbvONwF
+   wy4cSMaSxfvXQUlL5F2RdZYiohCODfJHEPE+jlrnffJnDOqPoaDJxKSUZ
+   ocQJ6W/VlYUfq488PxFXCy6BlQUxdtsztNNTiBOzK8xTcZ+B6sFYW7BjX
+   LJCX3V8iI3VHR8Paa+jrE2G/4WVcqU/1EsFKkfR6q64uRnWOyW0myeRSf
+   Q==;
+X-CSE-ConnectionGUID: oFcC4LlxSmudYvsJczc0Xg==
+X-CSE-MsgGUID: JNq8qbhaQ922ujgaIQln5g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39172213"
 X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
-   d="scan'208";a="39172211"
+   d="scan'208";a="39172213"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 21:43:52 -0800
-X-CSE-ConnectionGUID: veMNyNOjQFumOQwQ4tTCHA==
-X-CSE-MsgGUID: BW66F8Z1RwmuxVeAVAesSQ==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 21:43:53 -0800
+X-CSE-ConnectionGUID: p4BycsY3Qk6vJFkiTs+3OA==
+X-CSE-MsgGUID: cLpbRcfLRXeWbWQNT0ludA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="117893845"
+   d="scan'208";a="117893848"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 21:43:51 -0800
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 21:43:52 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 03/12] wifi: iwlwifi: remove mvm prefix from iwl_mvm_esr_mode_notif
-Date: Wed, 12 Feb 2025 07:43:24 +0200
-Message-Id: <20250212073923.c536eeaae129.I848307be6df21913c0ce3eb6baef715cd401db1a@changeid>
+Subject: [PATCH 04/12] wifi: iwlwifi: mld: add a debug level for PTP prints
+Date: Wed, 12 Feb 2025 07:43:25 +0200
+Message-Id: <20250212073923.866f8f66b1d7.I764abcb845d992d058c753ce8fa9d45fed2ff4ec@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250212054333.376219-1-miriam.rachel.korenblit@intel.com>
 References: <20250212054333.376219-1-miriam.rachel.korenblit@intel.com>
@@ -76,84 +76,41 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-This is not specific to mvm.
+This is required for PTP related debug prints.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h | 4 ++--
- drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h  | 4 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c         | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-debug.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h b/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
-index 570a3f722510..34a562d6c208 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2024 Intel Corporation
-+ * Copyright (C) 2024-2025 Intel Corporation
-  * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-@@ -92,7 +92,7 @@ enum iwl_data_path_subcmd_ids {
- 
- 	/**
- 	 * @ESR_MODE_NOTIF: notification to recommend/force a wanted esr mode,
--	 *	uses &struct iwl_mvm_esr_mode_notif
-+	 *	uses &struct iwl_esr_mode_notif
- 	 */
- 	ESR_MODE_NOTIF = 0xF3,
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-index 511e86ea11d4..b511e3aa6bb2 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-@@ -697,11 +697,11 @@ enum iwl_mvm_fw_esr_recommendation {
- }; /* ESR_MODE_RECOMMENDATION_CODE_API_E_VER_1 */
- 
- /**
-- * struct iwl_mvm_esr_mode_notif - FWs recommendation/force for esr mode
-+ * struct iwl_esr_mode_notif - FWs recommendation/force for esr mode
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-debug.h b/drivers/net/wireless/intel/iwlwifi/iwl-debug.h
+index bf52c2edaad1..5377dda9ad53 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-debug.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-debug.h
+@@ -2,7 +2,7 @@
+ /******************************************************************************
   *
-  * @action: the action to apply on esr state. See &iwl_mvm_fw_esr_recommendation
-  */
--struct iwl_mvm_esr_mode_notif {
-+struct iwl_esr_mode_notif {
- 	__le32 action;
- } __packed; /* ESR_MODE_RECOMMENDATION_NTFY_API_S_VER_1 */
+  * Copyright(c) 2003 - 2014 Intel Corporation. All rights reserved.
+- * Copyright(c) 2018 - 2021, 2024 Intel Corporation
++ * Copyright(c) 2018 - 2021, 2024-2025 Intel Corporation
+  *
+  * Portions of this file are derived from the ipw3945 project.
+  *****************************************************************************/
+@@ -156,6 +156,7 @@ do {                                            			\
+ #define IWL_DL_FW		0x00010000
+ #define IWL_DL_RF_KILL		0x00020000
+ #define IWL_DL_TPT		0x00040000
++#define IWL_DL_PTP		0x00080000
+ /* 0x00F00000 - 0x00100000 */
+ #define IWL_DL_RATE		0x00100000
+ #define IWL_DL_CALIB		0x00200000
+@@ -216,5 +217,6 @@ do {                                            			\
+ #define IWL_DEBUG_LAR(p, f, a...)	IWL_DEBUG(p, IWL_DL_LAR, f, ## a)
+ #define IWL_DEBUG_FW_INFO(p, f, a...)		\
+ 		IWL_DEBUG(p, IWL_DL_INFO | IWL_DL_FW, f, ## a)
++#define IWL_DEBUG_PTP(p, f, a...)	IWL_DEBUG(p, IWL_DL_PTP, f, ## a)
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 984f407f7027..76603ef02704 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -145,7 +145,7 @@ static void iwl_mvm_rx_esr_mode_notif(struct iwl_mvm *mvm,
- 				      struct iwl_rx_cmd_buffer *rxb)
- {
- 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
--	struct iwl_mvm_esr_mode_notif *notif = (void *)pkt->data;
-+	struct iwl_esr_mode_notif *notif = (void *)pkt->data;
- 	struct ieee80211_vif *vif = iwl_mvm_get_bss_vif(mvm);
- 
- 	/* FW recommendations is only for entering EMLSR */
-@@ -495,7 +495,7 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
- 	RX_HANDLER_GRP(DATA_PATH_GROUP, ESR_MODE_NOTIF,
- 		       iwl_mvm_rx_esr_mode_notif,
- 		       RX_HANDLER_ASYNC_LOCKED_WIPHY,
--		       struct iwl_mvm_esr_mode_notif),
-+		       struct iwl_esr_mode_notif),
- 
- 	RX_HANDLER_GRP(DATA_PATH_GROUP, MONITOR_NOTIF,
- 		       iwl_mvm_rx_monitor_notif, RX_HANDLER_ASYNC_LOCKED,
+ #endif
 -- 
 2.34.1
 
