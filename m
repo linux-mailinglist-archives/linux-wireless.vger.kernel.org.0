@@ -1,133 +1,130 @@
-Return-Path: <linux-wireless+bounces-18802-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18803-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53282A31D42
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 05:09:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B0BA31E00
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 06:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF15F3A6971
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 04:09:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5BE1883A8B
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2025 05:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CA4271835;
-	Wed, 12 Feb 2025 04:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6653EB67E;
+	Wed, 12 Feb 2025 05:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="A6hEwCf5"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="b9R4WOyd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDC41DDA1E
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 04:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1060C271837
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 05:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739333363; cv=none; b=MwkE3aGKmXJ1MwPmDov7w497zhgmMZLoiVfLJvDEa0cCVLD7Q+EL7h/thw9nmtiL9ZCA/WzZX/omp+fYBA4fNXH520lcxOwyVDVGXA7sur91xzC7BtkihuGpwjRffAF3Sn1X8SypIcgx6QY/Rvw2W3JnJQxg+CKjXvmu1amwT5o=
+	t=1739338581; cv=none; b=OgrnCorD8oYuw8iwnaukiTC6/yhzJKae67xP68vNn0smr4WmZpvE1Qje8d6lpCTq/QuLl7GKCXjARobSVgUCAfxB5SOB0YhFUv7aVnO+hXV6jqq8UKB13i/F1frgNoETRLXWZvuwRRHwxLOLGyODiGzT9uoGl8T0ZM5skz//E2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739333363; c=relaxed/simple;
-	bh=OEwWbRLrKnAb3RGADlGIkoKP03I+S+EzXwrlWv4oVpo=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=qkzn+LiMbEgDnpSt/qdLlmk6ASkJphtvxSOhPALAKzM700mzKmeGZB3MFJ1s6qiFDEBm4Nm+F/6yQmBjBk3Mo9C0Obu66rdeYHLcVNrT5jGKU0CJi1CdQ20gRhxi5zpW9KF5oTpCd7qK0vxlV0Ygv640YoP66sWQOOH2LgjWvJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=A6hEwCf5; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51BH0a7j006115
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 04:09:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	UmkM2sgKl/os28MvWYbqe0+++DekWCHSvMHgkykMltk=; b=A6hEwCf5JEJvcfyr
-	/DkXYhvoeJO+wWjVumyF23ub4fBEL+GCyGHjlJQT8pwO6DoDFsPrM3j+5JhKLtj/
-	5DXP410RczMDyGnhfaY18tZpvdAivkAz4mJxzenLh1aex9L/qFdZ2g8/b2BY8F4q
-	vwFD6az/Q5dxdpKYamEaB84UevFuMmXoAOkWeLvWs08oEYKAcpMOlOfsSU3lleIC
-	ozBFDXDQQ/44YsW76HuRTgyMNJFj48+f03soYzNbO7EtpcVoJCxPGoP0JMuBsaG8
-	Zxl86L+v0Yy4F3c1/bYnP0a0ljUDdHG96gUzLx3cyYDHC6UXxDeHfrcsaJKhIx2J
-	V0mnpQ==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44qe5mx79e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 04:09:19 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2f9c02f54f2so12807193a91.3
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2025 20:09:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739333358; x=1739938158;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UmkM2sgKl/os28MvWYbqe0+++DekWCHSvMHgkykMltk=;
-        b=C0SPdJFDv4eUm1yACv2P88NWy/wPQWtMKQemPzjnqVQEgydBIEXXQPZPLPNKiosM2B
-         4KlQtkBLlIW4OIGf46TtYzD1WSm038Z9bQm7Fqtl/ArPL80+KknSv41dw2Wl1yOZkKRQ
-         vJ9rMJAaBRAmWd6Im+82wTvNIEJJkEvwylJodiu4WZTYarn11NNhM4wC8cl3PsuW5L1V
-         PZInubaXW2NOooLAFf4LVQQwr1ReIUUshOqCwLx+/YsdGJ1BCxuS5UFvssuApBRsHONh
-         CpA/uuNY4f2YIUzKHu/7iO5bNfG8BUh+YcDfclKlxjXgLIOkdhFt0plpTW6gaE0sGtHT
-         6izQ==
-X-Gm-Message-State: AOJu0YwwRm2OsYgF8BAGI6Tc8VH8C2pD9kc9xM5MjXXLv87i5oHtCwcd
-	VUQanW9PX+3+QmlJluvfK6nLdeyPtztfRDO1Vy0OCgPh+t6M6Hstd4Ixafabq45J7XyCUusgmgj
-	rggvL1HgBtUNzbRgyErUzHide61/71P116u1LT9A3Dbr6MSlqZ8HuWL+f6Ecu5IUJ5g==
-X-Gm-Gg: ASbGncs9Om1UIAi7X9ParzYZOPr3R8lgBvyPHeu8qbSnt4TT3rLrqYnec2VGiiflVv+
-	ltHltZx9sR+CW24LS9koGOucDLkm7aSB/vjoOjl3G0/DJ0rbBnBSrdN8TmYb/t75grnnNGC60Dl
-	v0EbUhDNJnb32i+5JSWnTHoN/U55dw2SAvtKU71aMkK730Y2M9Azv8zz+xoOzM7n4fCV13lWoDi
-	/B4/msLWukOBU1KyZ+J88dBoZBCtuS0NJlewYfyuC/FkgbcWbrJW5W6oo3bnSo5tBHBmy7Tl8Xf
-	q0DP4gf/3d7Jg0akJdKLcluwpyX8aUrbFBQ7izHdMALWWrk=
-X-Received: by 2002:a05:6a00:ab86:b0:730:74f8:25c7 with SMTP id d2e1a72fcca58-7322c37c0femr2427623b3a.9.1739333358613;
-        Tue, 11 Feb 2025 20:09:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFTqahfub5fqTygv21tDtGBIbsQicMGyjE5EH+CHy9veEfQeMdI2r/bIVUx5ZRMWVvonJo98A==
-X-Received: by 2002:a05:6a00:ab86:b0:730:74f8:25c7 with SMTP id d2e1a72fcca58-7322c37c0femr2427595b3a.9.1739333358204;
-        Tue, 11 Feb 2025 20:09:18 -0800 (PST)
-Received: from [10.152.204.0] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7321b34c003sm2263027b3a.52.2025.02.11.20.09.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Feb 2025 20:09:17 -0800 (PST)
-Message-ID: <03697f42-7237-9ea0-311b-ed0cc5ac4e7e@oss.qualcomm.com>
-Date: Wed, 12 Feb 2025 09:39:15 +0530
+	s=arc-20240116; t=1739338581; c=relaxed/simple;
+	bh=sWTQdi5QEBF3wuLJBRo7MN0ZSF2WrqkcVHqMUsIJOhE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LAEtz8E6IcSW/a73efKaCFDrIacc+jlf2KTVk0Z3L3loH4hfAFaG8CdkFWvN8t0K3NbxAqG55HvpSk1+eLnV5pToI9082CAd4zGWPdlOLbnGCLx6O+tSww0MysbLzM1U6T6cPa12GOkiLDF06h6ZBe08sVuzhPnI7ox7p9avLMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=b9R4WOyd; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51C5ZxshE1641516, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1739338559; bh=sWTQdi5QEBF3wuLJBRo7MN0ZSF2WrqkcVHqMUsIJOhE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=b9R4WOydGKL6x0LbBRyLBGD1IynXOpMC1SZJ3xI6k5yCki09MDdnxTOroJvULMAXx
+	 Mr1g0j17bGg0LqEfoX51SLkS/a5foaMvhje/2xaXSj+uH0wXKy3ExIoHjanlbcivzX
+	 Ws6P1LLNYmg1C3ss4jCDcV8XUFw/wNw022QAS2LH9h3EryhGhBMjsWaWOo/Px2od3v
+	 oK5YAlHaD4zl8za7DEYZsbl3hRwsc0d5bv7cHXxsRu+n207Jkbn+diPG0xdKvgmjQN
+	 RNjGynheiTyUTqt5K7+VDgrOMs1LJAKZqZ6zEKvg9SjlmsAYy9u22a7O+p9eePAy61
+	 yImhIjEV1hhQA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51C5ZxshE1641516
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Feb 2025 13:35:59 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 12 Feb 2025 13:35:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 12 Feb 2025 13:35:58 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553]) by
+ RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553%5]) with mapi id
+ 15.01.2507.035; Wed, 12 Feb 2025 13:35:58 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+CC: Kalle Valo <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 1/2] wifi: rtw89: simplify rtw89_debug_priv_mac_reg_dump_select()
+Thread-Topic: [PATCH 1/2] wifi: rtw89: simplify
+ rtw89_debug_priv_mac_reg_dump_select()
+Thread-Index: AQHbfFk56mvBm0SA2EqV5dpc1gpdrLNDJtmQ
+Date: Wed, 12 Feb 2025 05:35:58 +0000
+Message-ID: <6e498ecb91a440199539fcc001b9af4b@realtek.com>
+References: <20250211073915.648418-1-dmantipov@yandex.ru>
+In-Reply-To: <20250211073915.648418-1-dmantipov@yandex.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] wifi: ath12k: fbx: Add missing htt_metadata flag in
- ath12k_dp_tx()
-Content-Language: en-US
-From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-To: Nicolas Escande <nico.escande@gmail.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250124113331.93476-1-nico.escande@gmail.com>
- <48cea2db-c6a7-63f1-5e3c-1db77a6fb84e@oss.qualcomm.com>
-In-Reply-To: <48cea2db-c6a7-63f1-5e3c-1db77a6fb84e@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: lC2DZly6N7FXXhNYy_LrAImie9vo3VCN
-X-Proofpoint-ORIG-GUID: lC2DZly6N7FXXhNYy_LrAImie9vo3VCN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-11_10,2025-02-11_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 mlxscore=0
- lowpriorityscore=0 phishscore=0 impostorscore=0 malwarescore=0 spamscore=0
- mlxlogscore=841 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2501170000 definitions=main-2502120030
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
+Dmitry Antipov <dmantipov@yandex.ru> wrote:
+> Simplify 'rtw89_debug_priv_mac_reg_dump_select()' by using
+> the convenient 'kstrtoint_from_user()'. Compile tested only.
+>=20
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
+The function has been changed, because of switch wiphy_lock().=20
+No copy_from_user() now. Skip this patch.=20
 
-On 2/12/2025 9:37 AM, Vasanthakumar Thiagarajan wrote:
-> 
-> 
-> On 1/24/2025 5:03 PM, Nicolas Escande wrote:
->> When AP-VLAN was added, we did not add HTT_TCL_META_DATA_VALID_HTT flag to
->> the tx_info's meta_data_flags . Without this flag the firmware seems to
->> reject all the broadcast (ap-vlan) frames. So lets add it same as ath11k
->> did it in commit 5e8a373c8699 ("ath11k: Add support for dynamic vlan")
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
->>
->> Fixes: 26dd8ccdba4d ("wifi: ath12k: dynamic VLAN support")
->> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-> 
-> Thanks for the this.
+> ---
+>  drivers/net/wireless/realtek/rtw89/debug.c | 9 +--------
+>  1 file changed, 1 insertion(+), 8 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wir=
+eless/realtek/rtw89/debug.c
+> index 09fa977a6e6d..339f9f6672fd 100644
+> --- a/drivers/net/wireless/realtek/rtw89/debug.c
+> +++ b/drivers/net/wireless/realtek/rtw89/debug.c
+> @@ -924,17 +924,10 @@ rtw89_debug_priv_mac_reg_dump_select(struct file *f=
+ilp,
+>         struct rtw89_debugfs_priv *debugfs_priv =3D m->private;
+>         struct rtw89_dev *rtwdev =3D debugfs_priv->rtwdev;
+>         const struct rtw89_chip_info *chip =3D rtwdev->chip;
+> -       char buf[32];
+> -       size_t buf_size;
+>         int sel;
+>         int ret;
+>=20
+> -       buf_size =3D min(count, sizeof(buf) - 1);
+> -       if (copy_from_user(buf, user_buf, buf_size))
+> -               return -EFAULT;
+> -
+> -       buf[buf_size] =3D '\0';
+> -       ret =3D kstrtoint(buf, 0, &sel);
+> +       ret =3D kstrtoint_from_user(user_buf, count, 0, &sel);
+>         if (ret)
+>                 return ret;
+>=20
+> --
+> 2.48.1
+>=20
 
-My bad, I meant "Thanks for the fix"
 
