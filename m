@@ -1,177 +1,184 @@
-Return-Path: <linux-wireless+bounces-18904-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18905-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E6BA3396C
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 09:00:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD3AA339EB
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 09:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57AA51614A6
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 08:00:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 771D1166ECA
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 08:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8140C207DF0;
-	Thu, 13 Feb 2025 08:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1918220B81F;
+	Thu, 13 Feb 2025 08:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D8qkgcpJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A3ye2SOJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8A8204C1E
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Feb 2025 08:00:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31927250EC;
+	Thu, 13 Feb 2025 08:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739433624; cv=none; b=YoTTKOvSiyhpsP28Y4TWboNE4ajAeYnlqeTVSVDpltucN1Ga6taw5x2Ey2fWUPppuZmn8kFtxq3FKnF2tGf72xtU3LFC2+Tpb0oWfggWkS1Vqv/DsFu22oEqDcbE2J4oAECIFNy8YsbJYm7NjyLqWeXR3LnyV8/o6nmyUIgTq34=
+	t=1739435281; cv=none; b=QeflDjJfJ4c92g0Qna6g7+XiEBr/6rUvFVbJpZDa2TVNohTvFFrxYJ2DbLS11oXXQIvamlNytOODg9VO2PzPOwvuVRLOkzEX8allXG0AFVF4bckap5TxQQNp9usZudHbd5FcX2DVkxcKL9m00jdx0d3K6hiAebmQ2EKr8O6/5Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739433624; c=relaxed/simple;
-	bh=haTfWRvPPfg95+pmW8xhhapMdFaDBGcdyJa5CjvQP3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=rjQbneowgQpscwNKxb4Nv2hwJSerfciGDdQf9yoaXcPGyiKmbaSm2WzNiBhzGgSsJ7GEQ6Ie5nQukUKh3B1oU0C+JQi9Vr31Jb0FreEcWLMs1LUc4V7MEDkXyhDPsjxSoGAvDtXUapun+Lr1uKWosxJBge6mREFVcdRr0xhciBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D8qkgcpJ; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5de63846e56so959369a12.1
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Feb 2025 00:00:22 -0800 (PST)
+	s=arc-20240116; t=1739435281; c=relaxed/simple;
+	bh=SyjaIWe3i0tkwC2EB8hBIa5rxw02yA5yYTi3aTzBhxo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nFJ9PxK9Ocrl2InyN32M57ftpwC5DqcePItvU3hPL+AZUvpE3GXkurpWEVJJGwazzmq8bqKzil/6zvl7X6N8gA2NPmunkOaBW7gtG1fK6wtjmqYgGSjqnIL1H3MG6V0NuQ0Opar/+PtTnUBfM6HX1LQnWey3obHjpYLpp1f8YfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A3ye2SOJ; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38f265c6cb0so149057f8f.2;
+        Thu, 13 Feb 2025 00:27:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739433621; x=1740038421; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=66Ty52e1WASFNgSLw3eYvPpwBZpTI+wQtoXQ6iwhUpY=;
-        b=D8qkgcpJJzaSQt/N/y0z15/mx8M64MH5mNOgtVSLabP+9jAlJ4DjxfkJQ0F4jjzgnL
-         gtQe92/Ey2mfvxHDFARYe548ICcvAKFhv6Wf0B1z8GYUHtmJs5PmcNHOdpRceK4f6GRo
-         mTJ0XTgQYXrdWBVgEPrm73LPg78o8GNxVCzZUGZl82sxouxRNQxVW26zQsQhxIPrmuUi
-         Ets55f01pgxDuw3NomBxqEJRltb4yoakOeLrqv5z3w/SNJDmqILujroLPg3emknbRlUT
-         6F6GpPVuliAr21g0idCxqGwb2JkCbc401nJxUg65ruOlQ03Rge6iHjFHkSSTO+ZBSi1K
-         WwEg==
+        d=gmail.com; s=20230601; t=1739435278; x=1740040078; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CYDCewrdvYreNRJlqbHeSMs4C/POtyIRcHlnfcP0ZCY=;
+        b=A3ye2SOJB44xTi+FmdYUXU7HtQzXaYbSeqMu+kxZi4F2BA/6a0Lmcfv+nb1CGGpKBe
+         xfzLLY06okJS1eTY5Hyut98obh2g7Z3ZIpwtLON0kwljBMBWMulLPwNFeOMi0qF1a7qT
+         WGz2wg3LleMPTdrcYLLOx9v29VzMQ0E5/dDJoEmF4zWK8K82QrXiNBp6p1rux1pbc6o6
+         AUVuMqPWJw7DfUjPymrQWXvfdhuMnkS0H+F0kb4ODXxnMv8jAML96KcyhAqmfteEyoB2
+         mRsCaRzl/eS1vj7SpJe4QAC6bCZVaUfILNKoih2Ou8pJQVPKKbe7S2EwOWD+COarANi0
+         uQ2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739433621; x=1740038421;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=66Ty52e1WASFNgSLw3eYvPpwBZpTI+wQtoXQ6iwhUpY=;
-        b=QryknFf1M+OKsSNWuP0urrM5lhJfOCG367kqxcqW1XEcAHxdNeyy2wGNNUGHuvpz0t
-         4ztSTnbEGBwqecWXtSXb3jNRCPEOSVv5utHUtywOcWNdmoH8woz0/Hpy5Uo5v/x1oPi0
-         xRds0efPa95I4W72uEN953cyDha8+G+Gr93+2tXO7c/7vDkRuW0XLjCfK7H7bZP9nBF3
-         r8+hm+quIH5DeDo6TIHBc2G19VIpHggR8xxvQGi/S4P2viof2psfQhp9tqCELheXx7+i
-         CE2cN7oz2iqmmCA2luPqn+74fgyKUh9NZfNi+4DJEM0tmVZd43e4nP0rz/sfkSejhgW5
-         0QUw==
-X-Gm-Message-State: AOJu0YwkiSzqj9k13PhF7w9vGBMfSc9zHtRKbr3yjIGInOGnW5sKTFH7
-	uzbVgXCCwxBqtIBN43DVJtmnkH7duM7CwL9oBZDXBVNmWhxA4WA3gF9zpCm9UydGi+zetadoYM+
-	q
-X-Gm-Gg: ASbGncukkmsCpGpW+1CydOf4WxPraGLGK4qJnHYxZeqINR/GZxJxwdYwMoeMBgZ7/Vu
-	XWe2beOTdi3/Dpzdvn/jZtf5SpguTVrZRgvhQGPBpiOc8RwVM57CtDkqii1o49empO8SJthS82z
-	M8xkMFekc7UwONWqsUffz/jxrF5HnMecy2qat2S+pWwKku0prt/TNmev/M2ZoGVVxGb5ppGfIGe
-	QFF54krrwEGNAihkSLGzGd8TIGKq2aEuNJot2VWX+Qqsiu9t4zNzIovTvv3PesQdt3eRp5a+rDN
-	StIA99O2MhICTsMoYsBp
-X-Google-Smtp-Source: AGHT+IEAERJy3MTU4qmYASPb6Cs2M0Cg02kvwTuLDwyMRhERCZJA7iellWuQd5pYQR+bCV0xL82TXg==
-X-Received: by 2002:a05:6402:4409:b0:5dc:89e0:8eb3 with SMTP id 4fb4d7f45d1cf-5deb08810a7mr4425312a12.11.1739433620716;
-        Thu, 13 Feb 2025 00:00:20 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-5dece270feasm732060a12.63.2025.02.13.00.00.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 00:00:20 -0800 (PST)
-Date: Thu, 13 Feb 2025 11:00:16 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Ilan Peer <ilan.peer@intel.com>
-Cc: linux-wireless@vger.kernel.org
-Subject: [bug report] wifi: mac80211: Add support for EPCS configuration
-Message-ID: <1f7d9499-5183-4d4c-81f6-dd43899d6746@stanley.mountain>
+        d=1e100.net; s=20230601; t=1739435278; x=1740040078;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CYDCewrdvYreNRJlqbHeSMs4C/POtyIRcHlnfcP0ZCY=;
+        b=TkK8rDTEgNYcIYiTfpZWCKTSJspC6YxVeCXn3gFMbeF1hhD81/8JiRj+i7xwlgTR8z
+         5svd8ODmlUSu08hysmg0A/kpJt+wtKPULsku346t1881cOqNGC2fNwmkNvSTyTetH49m
+         PDZvn9EQYaTR57soBU0NxdZ+SESDJ+VC8/gya09ld26mwio4mLtOK+uwW1G4jznXND5i
+         h2ZC7d0wVsbyLke+AShcAc21HTrK+tSy7RGnTrIeTPPNcz3M1C3XSfy1ov7fr5S2Akyq
+         hoFXPhF2uxcsWSspTWHoeYtic5c6W6E+dZfZKtJ2mFaqB1zLeq+XR5frW1xSN5FQKizI
+         Xvpg==
+X-Forwarded-Encrypted: i=1; AJvYcCURKmCOO33QVWYjDCRw9XrVAi+Yz67YG58sRnsSbqtI8VMJw98uI6PzPcpvdY3uYRE4rEzRiGqc2cf/mQ==@vger.kernel.org, AJvYcCW/3MkdA5kSdZ0P3fdvMPB+PENbIBCPWi5LfvdT671T16SVVoEBuCunOOO8WWMpuI0PNUWdWA1GpFl8lg==@vger.kernel.org, AJvYcCW6S9HEEr7V78lSla0SUASyt8k1ped+v1sYNgPzSAmHCxaALwI9WXhUl87/qFvPKiunEJjAxOCSvCpZ+tZM@vger.kernel.org, AJvYcCWFtatVQE0OdXevi5Te66/kAwwf5dXoq4d3frTEBQgnbbihbJ4nYYYjbKNvuQVZUHnsNmXcen6vs5vr9CWFI8k=@vger.kernel.org, AJvYcCWSUUq6XjoUdMwDSuU2u1P4W+/zziOoYextG5fSDQiM9OnTzi5sWyghU9pfou/u+jOea7hLWdW2AWri@vger.kernel.org, AJvYcCWcX1CXa6ZjPtNhx1FXprtT3nJu68xkewofyinr5bsNI8M5afIR3KOm50OrOfT/ikHoAJcYX54u@vger.kernel.org, AJvYcCX7YFJAyeqY7iWQbrqhOeHItqLS8YD0GDx+wvm5inTaYD83ztALZxGPaCBco+AkdktOn40=@vger.kernel.org, AJvYcCXP3DsdUvsqtqgWviWOHgZyg703DmoeR9Q6cnKEupV3OX3O211OnwCqlXa7PKAWISTz0EzE04YXh8IVYGONVVdk@vger.kernel.org, AJvYcCXbbPT7HIxUzdB+HOZ5LBhtIfFcQweTtqxbCD6b3nE1lkDZNJip10I2M6uMUS4O51ZE6OiwM5B/JbHQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYNFoepgV9sRBdYjILHID0O7pMIzyX1GpSB9nkxqmt4uPHN2cL
+	beQOVM3PHoCAomihREN/SFhKZwJK0SGctQjrqgBXadu4qO/H402Rx4pzYHXDmENnnKeSs2mKI58
+	iO+tgX0D6tmQx0GyPGO0VsuKMsv8=
+X-Gm-Gg: ASbGnctZ07FUMQ9rF2P0TzdYcDfFQU6aRqxIkGR07zQu5FdmsPqmB2KAu01lqzhBpej
+	nRDucgefzTnaONNGNA7bsD5Mxod+SN6JvB6rSMpICkul8asLrXqGZioS3nhR2XBU68t66/QQ=
+X-Google-Smtp-Source: AGHT+IGZE6zJIuhM6pmlASWXo0USdC2hFnASTias2WRNOVzNleb2xd7k0p6fviBFvki3FKkZ15YNMXus/cLozeOxCp8=
+X-Received: by 2002:a5d:598e:0:b0:38f:21ce:aa28 with SMTP id
+ ffacd0b85a97d-38f21ceb0famr3670345f8f.36.1739435278200; Thu, 13 Feb 2025
+ 00:27:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20250210133002.883422-6-shaw.leon@gmail.com> <20250213062031.4547-1-kuniyu@amazon.com>
+In-Reply-To: <20250213062031.4547-1-kuniyu@amazon.com>
+From: Xiao Liang <shaw.leon@gmail.com>
+Date: Thu, 13 Feb 2025 16:27:21 +0800
+X-Gm-Features: AWEUYZkYMDLgFWGQwQihDPwSk4qrLNJu_sLyRJOyUa3GWsERW-M3HJO2WaC6w5g
+Message-ID: <CABAhCOSqruMoMTg_=6Apo=gvnfe1j2fptADzoi=Gb8cdJqhgVw@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 05/11] net: ip_tunnel: Use link netns in
+ newlink() of rtnl_link_ops
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: alex.aring@gmail.com, andrew+netdev@lunn.ch, 
+	b.a.t.m.a.n@lists.open-mesh.org, bpf@vger.kernel.org, bridge@lists.linux.dev, 
+	davem@davemloft.net, donald.hunter@gmail.com, dsahern@kernel.org, 
+	edumazet@google.com, herbert@gondor.apana.org.au, horms@kernel.org, 
+	kuba@kernel.org, linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-ppp@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-wpan@vger.kernel.org, miquel.raynal@bootlin.com, netdev@vger.kernel.org, 
+	osmocom-net-gprs@lists.osmocom.org, pabeni@redhat.com, shuah@kernel.org, 
+	stefan@datenfreihafen.org, steffen.klassert@secunet.com, 
+	wireguard@lists.zx2c4.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Ilan Peer,
+On Thu, Feb 13, 2025 at 2:20=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.co=
+m> wrote:
+>
+> From: Xiao Liang <shaw.leon@gmail.com>
+> Date: Mon, 10 Feb 2025 21:29:56 +0800
+> > When link_net is set, use it as link netns instead of dev_net(). This
+> > prepares for rtnetlink core to create device in target netns directly,
+> > in which case the two namespaces may be different.
+> >
+> > Convert common ip_tunnel_newlink() to accept an extra link netns
+> > argument. Don't overwrite ip_tunnel.net in ip_tunnel_init().
+>
+> Why... ?  see a comment below.
+>
+>
+> [...]
+> > diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+> > index 1fe9b13d351c..26d15f907551 100644
+> > --- a/net/ipv4/ip_gre.c
+> > +++ b/net/ipv4/ip_gre.c
+> > @@ -1413,7 +1413,8 @@ static int ipgre_newlink(struct net_device *dev,
+> >       err =3D ipgre_netlink_parms(dev, data, tb, &p, &fwmark);
+> >       if (err < 0)
+> >               return err;
+> > -     return ip_tunnel_newlink(dev, tb, &p, fwmark);
+> > +     return ip_tunnel_newlink(params->link_net ? : dev_net(dev), dev, =
+tb, &p,
+>
+> This is duplicate at all call sites, let's move it into
+> ip_tunnel_newlink() by passing params.
+>
 
-Commit de86c5f60839 ("wifi: mac80211: Add support for EPCS
-configuration") from Feb 5, 2025 (linux-next), leads to the following
-Smatch static checker warning:
+Existing tunnels use `params->link_net ? : dev_net(dev)` for
+backward compatibility. But I think we can leave the choice of netns
+to future tunnel drivers because rtnl_newlink_link_net() is preferred
+in general.
 
-	net/mac80211/mlme.c:10707 ieee80211_ml_epcs()
-	warn: error code type promoted to positive: 'len'
+>
+> > +                              fwmark);
+> >  }
+> >
+> >  static int erspan_newlink(struct net_device *dev,
+> >
+> >
+> > diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+> > index 09b73acf037a..618a50d5c0c2 100644
+> > --- a/net/ipv4/ip_tunnel.c
+> > +++ b/net/ipv4/ip_tunnel.c
+> > @@ -1213,11 +1213,11 @@ void ip_tunnel_delete_nets(struct list_head *ne=
+t_list, unsigned int id,
+> >  }
+> >  EXPORT_SYMBOL_GPL(ip_tunnel_delete_nets);
+> >
+> > -int ip_tunnel_newlink(struct net_device *dev, struct nlattr *tb[],
+> > -                   struct ip_tunnel_parm_kern *p, __u32 fwmark)
+> > +int ip_tunnel_newlink(struct net *net, struct net_device *dev,
+> > +                   struct nlattr *tb[], struct ip_tunnel_parm_kern *p,
+> > +                   __u32 fwmark)
+> >  {
+> >       struct ip_tunnel *nt;
+> > -     struct net *net =3D dev_net(dev);
+> >       struct ip_tunnel_net *itn;
+> >       int mtu;
+> >       int err;
+> > @@ -1326,7 +1326,9 @@ int ip_tunnel_init(struct net_device *dev)
+> >       }
+> >
+> >       tunnel->dev =3D dev;
+> > -     tunnel->net =3D dev_net(dev);
+> > +     if (!tunnel->net)
+> > +             tunnel->net =3D dev_net(dev);
+>
+> Isn't tunnel->net always non-NULL ?
+>
+> ip_tunnel_newlink
+> -> netdev_priv(dev)->net =3D net
+> -> register_netdevice(dev)
+>   -> dev->netdev_ops->ndo_init(dev)
+>     -> ip_tunnel_init(dev)
+>       -> netdev_priv(dev)->net =3D dev_net(dev)
 
-net/mac80211/mlme.c
-    10663 static void ieee80211_ml_epcs(struct ieee80211_sub_if_data *sdata,
-    10664                               struct ieee802_11_elems *elems)
-    10665 {
-    10666         const struct element *sub;
-    10667         size_t scratch_len = elems->ml_epcs_len;
-    10668         u8 *scratch __free(kfree) = kzalloc(scratch_len, GFP_KERNEL);
-    10669 
-    10670         lockdep_assert_wiphy(sdata->local->hw.wiphy);
-    10671 
-    10672         if (!ieee80211_vif_is_mld(&sdata->vif) || !elems->ml_epcs)
-    10673                 return;
-    10674 
-    10675         if (WARN_ON(!scratch))
-    10676                 return;
-    10677 
-    10678         /* Directly parse the sub elements as the common information doesn't
-    10679          * hold any useful information.
-    10680          */
-    10681         for_each_mle_subelement(sub, (const u8 *)elems->ml_epcs,
-    10682                                 elems->ml_epcs_len) {
-    10683                 struct ieee80211_link_data *link;
-    10684                 struct ieee802_11_elems *link_elems __free(kfree);
-    10685                 u8 *pos = (void *)sub->data;
-    10686                 u16 control;
-    10687                 ssize_t len;
-    10688                 u8 link_id;
-    10689 
-    10690                 if (sub->id != IEEE80211_MLE_SUBELEM_PER_STA_PROFILE)
-    10691                         continue;
-    10692 
-    10693                 if (sub->datalen < sizeof(control))
-    10694                         break;
-    10695 
-    10696                 control = get_unaligned_le16(pos);
-    10697                 link_id = control & IEEE80211_MLE_STA_EPCS_CONTROL_LINK_ID;
-    10698 
-    10699                 link = sdata_dereference(sdata->link[link_id], sdata);
-    10700                 if (!link)
-    10701                         continue;
-    10702 
-    10703                 len = cfg80211_defragment_element(sub, (u8 *)elems->ml_epcs,
-    10704                                                   elems->ml_epcs_len,
-    10705                                                   scratch, scratch_len,
-    10706                                                   IEEE80211_MLE_SUBELEM_FRAGMENT);
---> 10707                 if (len < sizeof(control))
+Didn't find a path that can leave tunnel->net to NULL either.
+I think we can remove this.
 
-If cfg80211_defragment_element() returns a negative error code then
-because of type promotion, the error codes are cast to size_t and become
-high positive values.  They are treated as success.
-
-It would be easy enough to say:
-
-		if (len < (ssize_t)sizeof(control))
-			continue;
-
-But I really am not sure the continues in this loop are correct.
-Shouldn't we instead bail out and return at the first sign of corrupt
-data?
-
-    10708                         continue;
-    10709 
-    10710                 pos = scratch + sizeof(control);
-    10711                 len -= sizeof(control);
-    10712 
-    10713                 link_elems = ieee802_11_parse_elems(pos, len, false, NULL);
-    10714                 if (!link_elems)
-    10715                         continue;
-    10716 
-    10717                 if (ieee80211_sta_wmm_params(sdata->local, link,
-    10718                                              link_elems->wmm_param,
-    10719                                              link_elems->wmm_param_len,
-    10720                                              link_elems->mu_edca_param_set))
-    10721                         ieee80211_link_info_change_notify(sdata, link,
-    10722                                                           BSS_CHANGED_QOS);
-    10723         }
-    10724 }
-
-regards,
-dan carpenter
+Thanks.
 
