@@ -1,113 +1,150 @@
-Return-Path: <linux-wireless+bounces-18919-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18920-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AACA3427D
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 15:37:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1AC1A34679
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 16:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 451EF7A325C
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 14:36:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDF057A2CB9
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 15:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2D623A9B8;
-	Thu, 13 Feb 2025 14:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8284159596;
+	Thu, 13 Feb 2025 15:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I+hCG0Aq"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Zlt2CV4z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0141C22154E;
-	Thu, 13 Feb 2025 14:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BD81411DE;
+	Thu, 13 Feb 2025 15:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457395; cv=none; b=TeZJDfThHVMc+qATS3775Uue3if41X/ykK7Y51YuNn+LRi+JpEQaqYyKUFi4eLVGoKKA91pSLSFMsoxg2nlzP5xnuf60egPFobD78eDmfPgSYdgTCrQvfEKEpJf+avyODdNdIzG/Ae0uSOSLm0GY5fsnLHQXriaf4io/xb83uLk=
+	t=1739460339; cv=none; b=V9ok485DrGketHw8hI8SqNpXl8SLErCh0idzSrzXg9COF2u3sWx7U2JP3RmAV4u1+kZeQJy+XAaTidgljA5i/d24NhWUHBmNwjCgkazXuYZg5DIyiVpot/hAbmPbrHw/i/em7gihuzKIdHi2JAR+Xub1Un3SPy3WlSJGsE3cjIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457395; c=relaxed/simple;
-	bh=9E38dq9mGR1MYPwVS38VQSpnRQAMRh37n1Six6KCqa0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gi1g2sI+p6WL0mfUpn8yCbPgXjKVYHnnEdYRGThQbwXhJa+QtI23Oj+c6x5P2mXKjmRTzcuG5cm4FEkmeLvOE9rm2ODol68Eike5JysllomtcaX6Gw1E1otsBDrxG+XxvqXn2VeS6LBIaskP07CaBU8UjqSPB+kktvabWhq6RPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I+hCG0Aq; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-220e83d65e5so2581725ad.1;
-        Thu, 13 Feb 2025 06:36:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739457393; x=1740062193; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jUHLay+y48anjs7ExKk+CakAJpazy6tSeUYS+Xwbn7I=;
-        b=I+hCG0AqYJSJMhZaBvxLd0TkmNDkIqdHx86SDUrcLl8HdIa4+6VFsBTFKkGONMp7Hs
-         jDKz/0jZSYo/v81Gg3wKVekUnCbWoFdhbK3CzbdlIa+e60s92H10YdmJZqXEtfXtv8l8
-         9FTPIoBgwfVCytEmB94oI4UYPq07qywW9TcxNk6j8kChZ+SDEQLOjPxhdzX8/WH0rOCg
-         lh8WOotf1X+JQ/fVGGdZ4heu6dWzbGYWRUEye2r0hmJljX07/JTkyRAEd925rTC+oPEC
-         9fJVu7EwlyKIAH6YZdgFqtd6DU4lsxz3w/SbHl+of37c0m0oWsKi9x+zrCJukFrPmU0n
-         B9Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739457393; x=1740062193;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jUHLay+y48anjs7ExKk+CakAJpazy6tSeUYS+Xwbn7I=;
-        b=neVFBc/ESMx0mLpOXuTO017dqkA/LyHnT25XuR3x/lJveksc0l3CZHYHKUsBCwdGt7
-         QbzKGnhjNLbQ8kv7Q8kW7p2XtRo6ZN8d9m7LOjATPMsiJcqf7PoawqWm+COG/g82Xk/5
-         th0Z2TQjftTK43jBnrSbKkngq0zETNq4d/g4dIw03AhLxHz0hVG+f5xIm8d+Mz9RP88M
-         uU70/fEC562fdpeEmvcY/8k2TcGe4T08jcI2xH6PpvUkpiF/idge8RYVqeagAB0yDEAd
-         yHVaKKAxaSaNxJEGKr8bHB3kYd81vFsIAskOrR4skXoKrRtYTIfD0kZ1n0QBVSGS8DLj
-         KElw==
-X-Forwarded-Encrypted: i=1; AJvYcCUO6S1gMqid65jrDHbDS511A9ZgyunZiS5H0XH1q2Mvf790KVk1z+el/SCKrjvcEkF3YKfO/B8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLG0EqmEpNTUZvK0JYKfk9KuJBwBE8QNBzgXU9lS9zSapqkYgV
-	WLWGDU4snTlyz4Zcle3k8ObLgC06u08M5SdSHWOtDiWlT/68El8nCNXQz7IQ
-X-Gm-Gg: ASbGncumN4ssdq4kb5/SOdg1p+EKGjshyTL3lbRY1Wlvjag/EzldPRbPdujgW+hrEtb
-	/fvYNu+SzWtZxZA0RfLGri7vDfQjGzhkfbhIuxIAzhoG3GYxOGzMzD/pUGXgMkj5szyh7kl/k4z
-	s4TON8h7A+Ph2so/tCjEloCUC2iLIhEA2xbOTBpFsSwov8Dzb9+2XMH5fe4wLgxlNPXK4k6vXrr
-	aLsjDSomVE/JUGVLCc471L81yq/Ly8lh56IllkNpOsQVUpzVlcBTRsAmiYQCIYcZObIzTP7c3Da
-	W246Z6vrpFmHQr8zt5AWzkNUFP3AYFNSNdVIHx/ZebQC1iq56rqV287bTTXz8N2JvA==
-X-Google-Smtp-Source: AGHT+IHF3keZm+rb3LzCteXeeX4A5FDH1raI65VRKbJbOHB5Csv/B4vuTeBLTUnj78FyDPgas6dRDQ==
-X-Received: by 2002:a05:6a00:194b:b0:730:937f:e823 with SMTP id d2e1a72fcca58-7322c443706mr11701063b3a.24.1739457392932;
-        Thu, 13 Feb 2025 06:36:32 -0800 (PST)
-Received: from localhost.localdomain (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-adb5a92d37asm1256690a12.72.2025.02.13.06.36.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 06:36:32 -0800 (PST)
-From: Zenm Chen <zenmchen@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: linux-wireless@vger.kernel.org,
-	pkshih@realtek.com,
-	stable@vger.kernel.org,
-	zenmchen@gmail.com
-Subject: RE: [PATCH v6.12] wifi: rtw89: pci: disable PCIE wake bit when PCIE deinit
-Date: Thu, 13 Feb 2025 22:36:29 +0800
-Message-ID: <20250213143629.3249-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <2025021330-squatting-routing-4279@gregkh>
-References: <2025021330-squatting-routing-4279@gregkh>
+	s=arc-20240116; t=1739460339; c=relaxed/simple;
+	bh=TPjq4XjQPNfxakLg3n1C4p8+KUOyyY7/h6//Panzx9I=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=RNX1TGiEWw2crqPzdVwHzYT3SsXETy95KaPXbb96mobx6cWYBSmmtNslv8urQE86QT2yFdrxc6Lr3Lc6uYfI6BBeSEAy1FUhBNCSx4ZB8RiACpF/o8L1b/S+y4Yl7mL3B2eoDe/6pyagnqLSYNjJDi9x6p3Nyo39/cffK40pugo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Zlt2CV4z; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 09B78432B4;
+	Thu, 13 Feb 2025 15:25:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739460335;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lFuRc4vnJDC+U8vlunBJUoC5VAZxPPiCI440ctYMhMM=;
+	b=Zlt2CV4zcUYBMgVH8rk5q0w7VMbNXWZqUiByPBR1Qdrmcku9kewtaX4Fzk9SAgMH5rddsF
+	WixvDN8UgC5QEOGXUw5p+PRqfbJWjwzFG6FbnXlEI3/7TOE/Gr0oy0K896FcZwt3IVdXh6
+	e03IpWT0pHlAuodihUQTKMBMbNTcrGko5PwNzcp1InTVGKKwyc8QWr8dronU0o1m6aEUO5
+	OFWiNk02TA+bKSa5eSv3X9fSGXkXEA4GHF62aUDU3IMaa05LHhvBHxGfd3jZq9UVkIr25r
+	yipJY+cw7hVDkqCtszC5/xG+Q3q1EvJokHHpFgrh5LB0SK/ZZelOQ3kpvtD2Zw==
+Message-ID: <99247019-bb41-4fd9-bc0c-d31e5688533b@bootlin.com>
+Date: Thu, 13 Feb 2025 16:25:33 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Subject: Re: [PATCH 01/12] dt-bindings: bluetooth: describe wilc 3000
+ bluetooth chip
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Marek Vasut <marex@denx.de>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, linux-bluetooth@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20250212-wilc3000_bt-v1-0-9609b784874e@bootlin.com>
+ <20250212-wilc3000_bt-v1-1-9609b784874e@bootlin.com>
+ <20250213-chamois-of-unexpected-glory-dd3eab@krzk-bin>
+Content-Language: en-US
+In-Reply-To: <20250213-chamois-of-unexpected-glory-dd3eab@krzk-bin>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegjedufecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpeetlhgvgihishcunfhothhhohhrrocuoegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepleejhfevledvgeehvdevueejgeduhfelffegkeejteejveevieejvdeifeekuedtnecuffhomhgrihhnpehmihgtrhhotghhihhprdgtohhmpdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddungdpmhgrihhlfhhrohhmpegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdegpdhrtghpthhtohepkhhriihksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghrtggvlheshhholhhtmhgrnhhnrdhorhhgpdhrtghpthhtoheplhhuihiirdguvghnthiisehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhop
+ ehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghjrgihrdhkrghthhgrthesmhhitghrohgthhhiphdrtghomhdprhgtphhtthhopegtlhgruhguihhurdgsvgiinhgvrgesthhugihonhdruggvvh
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-> > > It also needs to go to 6.13.y too, right?  Please provide backports for
-> > > both as we can not take them only for older kernels as you would have a
-> > > regression when upgrading.
-> >
-> > Hi Greg,
-> >
-> > Thanks for reminding! The patch for kernel 6.13 is here:
-> > https://lore.kernel.org/stable/20250211130432.1091-1-zenmchen@gmail.com/T/#u
-> >
-> > Tested with RTL8852BE on Arch Linux (kernel version: 6.13.2-arch1-1)
-> > and it did fix the issue.
+Hi Krzysztof,
+
+On 2/13/25 10:25, Krzysztof Kozlowski wrote:
+>> +  wlan:
+>> +    $ref: /schemas/types.yaml#/definitions/phandle
+>> +    description:
+>> +      Phandle to the wlan part of the combo chip
 > 
-> Ok, thanks, but can you now resend the 6.12.y version?
+> No resources here and judging by the driver everything is part of wifi.
+> Either you wrote it to match driver or indeed hardware is like that. In
+> the first case, why this cannot be part of WiFi with phandle to serial
+> bus? In the second case, this needs to be proper hardware description
 
-I resent the patch for kernel 6.12.y, please tell me if I did it incorrectly, thanks.
+First, I'd like to reclarify what the chip exactly is, to make sure that we are
+talking about the same thing. The wilc3000 ([1]) is a single physical device
+packaging two different discrete modules inside (one for 802.11, one for
+bluetooth). The WLAN part has its own binding integrated in upstream kernel
+([2]) and is based on a similar chip in the same family (wilc1000, which only
+have 802.11, and so only SPI/SDIO, no UART).
 
-https://lore.kernel.org/stable/20250213142946.3111-1-zenmchen@gmail.com/T/#u
+Now that it is said, no, I did not write this binding only aiming to match the
+new driver. I tried to base this description on how similar WLAN/BT combo chips
+are usually described (based on those which have existing bindings), and they
+seem to describe distinctly the two internal parts of those chips as well. For
+those who use HCI commands over uart for the bluetooth part, they expose a
+dedicated child node of a serial controller (distinct from the wlan part,
+described as another node on PCI/SDIO/SPI/etc). The hardware architecture for
+wilc3000 is similar to those, so since the serial bus is the primary interface
+to operate the bluetooth part inside the chip, doesn't it makes sense to have it
+under a serial controller node (and then to refer to wlan for the additional
+operations needed on sdio/spi), than the other way around ?
 
+About the lack of other resources in the new node: there are indeed additional
+resources that affect bluetooth, but I am not sure how it should be handled:
+there are for example a reset input and a chip enable input exposed by this
+chip, which in fact do not only affect the WLAN part but the two parts inside
+the chip. But those are currently described and handled by the WLAN part. I
+guess that an improvement regarding this point could then be to move those out
+of the wlan binding, and find a way to describe it as shared resources between
+those two parts of the chip, but how should it be handled ? Is it ok to remove
+those from an existing binding (and if so, where to put those ? It is not
+bluetooth specific neither) ? Is the issue rather about current WILC3000 binding
+kind of mixing overall chip description and internal wlan part description ?
+
+Thanks,
+
+Alexis
+
+[1]
+https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/IEEE-802.11-b-g-n-Link-Controller-Module-with-Integrated-Bluetooth-5.0-DS70005327B.pdf
+[2]
+https://elixir.bootlin.com/linux/v6.12.6/source/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
+> Best regards,
+> Krzysztof
+> 
+
+
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
