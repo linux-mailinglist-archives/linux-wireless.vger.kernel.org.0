@@ -1,323 +1,211 @@
-Return-Path: <linux-wireless+bounces-18881-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18882-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C51A335FC
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 04:16:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F196CA33619
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 04:34:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82CAA1667BD
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 03:16:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AE913A25AA
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 03:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C1A1F8EEC;
-	Thu, 13 Feb 2025 03:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04751FECB4;
+	Thu, 13 Feb 2025 03:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IifczGco"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="VNj1g6DR";
+	dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="K6aQ95jH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055B2B663;
-	Thu, 13 Feb 2025 03:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739416593; cv=none; b=PyKh0k5egrXYPr/K0ePXnIqLCaB1efBd15Kv8EVyakn2Ug7QoF2gRLPU5/oPVswBaH+VvrtuumNf7p+zO9huNpH+GJmjQi0VrurfPkN4EykTgt1fpWwcvfSPRBGj0NFeSdivqT8xTgk9dIy8N5PkSSDotFnHrqHJCBrdtZPqN9w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739416593; c=relaxed/simple;
-	bh=w+ue8yT5egHgOjoifuxFRdlucbvuDyhz9p777AX3bQc=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=nOXMVWO7RJAwsJ+0j8yE1AQnatR4diZ22VjiKPl64G0gcqG9+/qZj3ttLqOlQVH89udPhoWm9AwDoo5P2hwzNqIy88DH3ax0YGwEJmNbSXXk8CwqXJcexBXkPQAnnJw7SzCNBQ8/5WyAyD8oFrWFe5fYNyCdKa6NVHqdFAqNles=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IifczGco; arc=none smtp.client-ip=209.85.210.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-726ed359c56so387023a34.3;
-        Wed, 12 Feb 2025 19:16:31 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54779476;
+	Thu, 13 Feb 2025 03:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=210.61.82.184
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739417649; cv=fail; b=KZC9jRnQSlQ3IVDPNca024Vyv1+AQuY6/MS4xUr06hJvVZ7JZ1phAGELkKOOtIbIH4yav/secKl73sjIyO8SH/xQdMlsSURd6xwSjoauCPCLbfl7BG+vK1r1UH4n4yE6UqAPrGyhWtTBpV5TgNJ5T7Lg2V4baKrbC6sQSzG315I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739417649; c=relaxed/simple;
+	bh=2vl5wyIa58jGDjhXuyEyy6FhQjgtJT+LSGu5J02zB3s=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DdsO8yPyBLFzkDhjCzARx2I9HOe+ZAGWGQpaffmb6f2/vvnijPYfKkz+WCyIaMQeMLJ32HaKgNLoI2MXdINUWO8bwDzTqIxrqh6+IsiPz+wLtvHqYNp0/4aC4gPDG3rNxMllA+tYP2SaDjcewvw3eFQAlIgX6NYD9fxKQdfIc4U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=VNj1g6DR; dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b=K6aQ95jH; arc=fail smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 5bd25158e9bb11efbd192953cf12861f-20250213
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=2vl5wyIa58jGDjhXuyEyy6FhQjgtJT+LSGu5J02zB3s=;
+	b=VNj1g6DRrd9yW8ny4k3HHO2I1rv9+FMrwOIldChb3e0kn+qV5zPPI2U+rGq9h7k8ctOmPZI/VStwoWcWoDFTDjOrKg5P2smsC/vw9ZUPduo8j+MPjFOBKbmEP0R226wsLoHuOQVpL5UKcS/ggttzAXxiO83TBz1+aC11rrxLtRY=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.46,REQID:0a4890a2-252a-4900-b737-b0d6a1362e86,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:60aa074,CLOUDID:700c64a1-97df-4c26-9c83-d31de0c9db26,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|83|102,TC:nil,Content:0|50,EDM
+	:-3,IP:nil,URL:1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
+	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-UUID: 5bd25158e9bb11efbd192953cf12861f-20250213
+Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1998435185; Thu, 13 Feb 2025 11:33:58 +0800
+Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Thu, 13 Feb 2025 11:33:56 +0800
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Thu, 13 Feb 2025 11:33:56 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=N9LwaNq18SSrOMHrmkyqjRPbF8yMnrXzHBrrUA+LXOMUD+/8K0JBOAVX0ztY0vwUH4PkwbiPsiaJfdcJkZObhwDf8n+fOv3UnS1D8xspfg/daWePLhF4C17vZQSvynlGZc+HMgETMJXF72/ZxkQWIidQJ992mNl1EpYO6xSpkQ7nSVlfnRxGG7DuEotQeF092EYVqCGVeYedxAatrtH2EVnL9mQsh0O8zfmKxd27elkKUiavzARwSAagAf6sWH6fsDBqSH9koPL9/Fp1s730fehcbGEpYLX14xoNB3ybDfLcxBONca5BdyfNTaLKJ7gEsG/Lcng5Hbzvn+mZNJCmIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2vl5wyIa58jGDjhXuyEyy6FhQjgtJT+LSGu5J02zB3s=;
+ b=d4eZT2TPJ8T/qgPUHJe4GE3Rh6lc7QqfY2qCo7dYL1Z8+q018/cHQVB3/w0lJiDOvkQmZXc+JKWSjuMatHTnK/rREiZNOHNRVY78gTW+ooznJTnm3Uncs23FSjkyIDERd6Zhsh6RX5h8VitnauIFnecxQ/553F3a5uv+A9ogZRp2FMHf01L2oHAeWO+YDgVAIptA48c3JM9ptF0ddOcyW6w7sH7Rgk8IHtk2IoUeK+9rj8/U/1aut2hB6DqVZi3/ZY1NY7358bD98GCPxLZbktaJml2gdqJby40Ep2/gVEPmGb+7/DtRFHK7SWFxIUQSIScNtVuArC+QOPxWyReqfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739416591; x=1740021391; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=irI0jvMtJ/a9PT0otL3CiFOLhyUZ4L6k9X/uzgx1e7Q=;
-        b=IifczGcopUR+ZTy38EfYNqnDipia/IOTSD9sMJA8BaAyypm8cnwHiyHPgDbr2E5Xhd
-         C5FT5GTnLaOan3d34n83BkzLdreCOQFkt6D6hkgHmmqCWAFrpK9dfae+ksWvFhq6JdqX
-         2Gtgm8Z75jYQBITb539c1T//hb118YT8tpoglf4okl+kJ/POW0spj19cZDSVtPU5vc8t
-         fwPPO5Klh2rBTwkj8aC4qUks8UWqHLHQfb39xyrff6hW431+s9aw9KsBvHaWKT74Mjq1
-         ACkx/lLhLGnedHhR0s5fMg1MuogTQubIIWVmohajYKIw4gEhOcjfHJ1LZx6nNaV+NWQ0
-         1org==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739416591; x=1740021391;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=irI0jvMtJ/a9PT0otL3CiFOLhyUZ4L6k9X/uzgx1e7Q=;
-        b=TdZ5iF5ik379Z7/XPgZ0eTsVTVToZsGsMoblMnmHrDa/XGzcM25Tf8qdWAFuggJWfo
-         O+J9ySshJ+TO7uCO912+Xo3zOmglyQrOvKeKJapolglS2BeFmNnLzLfx8uwh9nFXS6ER
-         aKeFIWByhoic0krcAzCjjR5fxXIDOhzKaNPNTCi1m9ntclToXWAomWBsv5gr48tKq9ZC
-         7cbkB7zktL9cMdsZZgcjrmV6lJyCpTC/zZzMqzBOIFix0kAqLhIDC0nemLd6emfTzwCu
-         jO5xr3xVM2xEIg2p+7VgBCd1iDxURRkFWQrMYcPMJezecnn33pAPRdxitqtGDdsd5uO2
-         /+oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTttq7g/n/fP3EGg2jBNoaXJhErq0FJebhnhgZ3GnW/H1OqJFn7kpUxe62GKNvL+ZDxg8NA1c4lcoBSNPC8w==@vger.kernel.org, AJvYcCWDXxbjKl/vKIQaaCURdr/755Gphac3bPxOOHAk8ihmaFZbGw3SMfMf0JjkUtUyTEDKNvA05gbu@vger.kernel.org
-X-Gm-Message-State: AOJu0YwP5IN72UM3pnR+IPjE/cXpMeCDJfYeusZQb6zVvOLA4jODUef5
-	9rgcJYf0SIdyFdFPIXtqU++eT8jntT74XOTrGDQC1vXt9Ivt/bImIAbUipXWiv+bY3LtaySHC0f
-	dqkMuSrFiuywk75YnhD6WeUycXqA=
-X-Gm-Gg: ASbGncsIASlYmmwKZ42PSXoWHg2h07dRYqsoCMWyHEEBp2ENV060E/81nA7j2cWupcj
-	fFP3kNWHjwRbxGyXVTKCVPLSMar0HQZbxUMkfi4C/P89JckiDPOX7e+lu4fQoSNe+NRXdpQjev2
-	Y=
-X-Google-Smtp-Source: AGHT+IHp/WHCq9cbrCOBnU/BGYyaESeCTfe0PT842/DW9bIfnxlKqi2pYB4x9wE3UTlR6RWxCtBnQ0SufIsKtHChdlE=
-X-Received: by 2002:a05:6830:3c0d:b0:727:cf:aba9 with SMTP id
- 46e09a7af769-72700cfaeeemr382838a34.9.1739416590863; Wed, 12 Feb 2025
- 19:16:30 -0800 (PST)
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2vl5wyIa58jGDjhXuyEyy6FhQjgtJT+LSGu5J02zB3s=;
+ b=K6aQ95jHvvT6/I/q1OJ+ovndQq/nNW/VwTFt3aSNWXx/cyg98pGKbC09WgVk30YkgASw6sM071e8nLgLkUBw+7mnRTUKClWaxK4qZrv0uS3g4EOwYIepLt25Mt4dZ0syoccVYgKcGg6000lT6z8NZuN7zBYquNxkpXuO5rDElJM=
+Received: from SI2PR03MB5322.apcprd03.prod.outlook.com (2603:1096:4:ef::8) by
+ TYZPR03MB7667.apcprd03.prod.outlook.com (2603:1096:400:428::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.13; Thu, 13 Feb
+ 2025 03:33:55 +0000
+Received: from SI2PR03MB5322.apcprd03.prod.outlook.com
+ ([fe80::4f8e:6e62:b8a5:5741]) by SI2PR03MB5322.apcprd03.prod.outlook.com
+ ([fe80::4f8e:6e62:b8a5:5741%3]) with mapi id 15.20.8422.015; Thu, 13 Feb 2025
+ 03:33:55 +0000
+From: =?utf-8?B?TWluZ3llbiBIc2llaCAo6Kyd5piO6Ku6KQ==?=
+	<Mingyen.Hsieh@mediatek.com>
+To: =?utf-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= <Shayne.Chen@mediatek.com>,
+	"cjorden@gmail.com" <cjorden@gmail.com>, "lorenzo@kernel.org"
+	<lorenzo@kernel.org>, Ryder Lee <Ryder.Lee@mediatek.com>, "nbd@nbd.name"
+	<nbd@nbd.name>, "kvalo@kernel.org" <kvalo@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Sean Wang
+	<Sean.Wang@mediatek.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC: =?utf-8?B?QWxsYW4gV2FuZyAo546L5a625YGJKQ==?= <Allan.Wang@mediatek.com>,
+	=?utf-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>
+Subject: Re: [Stable Regression Bisected] Linux 6.13.2 breaks mt7925e
+Thread-Topic: [Stable Regression Bisected] Linux 6.13.2 breaks mt7925e
+Thread-Index: AQHbfcW5sdvJd6O7UEKgP0NQyp344rNElKoA
+Date: Thu, 13 Feb 2025 03:33:55 +0000
+Message-ID: <7280c6509a9c27b6d7813413b10683f1f6c6e6ca.camel@mediatek.com>
+References: <CABD8wQ=pU9Yc45WE07FGO40MUBf+BSZFGcoO1ff7NxC1cXzx-A@mail.gmail.com>
+In-Reply-To: <CABD8wQ=pU9Yc45WE07FGO40MUBf+BSZFGcoO1ff7NxC1cXzx-A@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SI2PR03MB5322:EE_|TYZPR03MB7667:EE_
+x-ms-office365-filtering-correlation-id: 04c80a4a-9e95-4f92-07da-08dd4bdf3e4d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?QTRGNHFlWU90dzZJak1nUlAwdWhiOXEzMHZzSGdaMkwxTWFOaHlnKzZzQ0NK?=
+ =?utf-8?B?USs3MXlXazBpYlp0bU1EYW9xUFB4L2h5am5KR3FSM1kzN2NxaHBNZjAvR2Jv?=
+ =?utf-8?B?UTIrZFlpQ0NCcWlyMXR4ZUt0K1JWcUlrWUJteTNQWjh4RW9Bam81QVprbVRl?=
+ =?utf-8?B?NFZ5UUo5cWF6SnhXUGdVWENzZzJIb0tUNVpJbzdKb1d6MXZpRm5tWjVYR1Rx?=
+ =?utf-8?B?SkFvSDE1THgxYU1Qb3hYSWs3Rm12dWxMb2w2U0VVemw2a3JLMXhxOWF6eEVs?=
+ =?utf-8?B?TnJsbzNLS0hQalpxVlV3WXhCd2NwQnkrUGVIM1lPTnJETVJldnFEOGR0UzRE?=
+ =?utf-8?B?QjQyUEVmYjRJZ0dSSTFLWHZhWUFxYWJJV0t0TjV3cnk4S2JqeXYwSTB6Skkx?=
+ =?utf-8?B?RE9mUEpNRFloWmI5M0llQ2pWelVKZHZnNForMS8rYWZ1RkVBUFdPbXpWRC9l?=
+ =?utf-8?B?ZjJmcCtRekFtNDl6VEVnS2w2cFJXK1MxTUkra2VSU0hDOEw4N2UzbEI0MEFH?=
+ =?utf-8?B?ZGphK05nWVc5cDVmMWFibC94WCt6SnFpTnhJL0xSUy9lYjYxeU1abUNrQS9n?=
+ =?utf-8?B?VlVZbkovbkhqV2N0VU9kYjB0OTFXODRDZ0UxbVREdGpTZHI2TlQxNVFBSFRa?=
+ =?utf-8?B?NVZrUzJSZjFTcXAvbGl0ZTdQaS9HaWJZUkJYelhHTTZxb2dOWnh6bmg2MW45?=
+ =?utf-8?B?RHVHM29XZzBMdXRLWmhMVEFld1VuUlMxdWYxZnBLUGtUb3JiNGpvSUVTN3p1?=
+ =?utf-8?B?R1ZhU0xlYksxRlNWYkdMYVJjQTdBSkRiYVhJZGJFVkNKZVlGUzV3bFhhOXFj?=
+ =?utf-8?B?WjRMZHlWWGVLZnJxVVluQzd6WHo3L2dSUU1vZnJKSUtYdDdwY1FKZW85VGVR?=
+ =?utf-8?B?dG1hUFJuUXMrTklxYUNuNEpJTjlOUlJYZEZ3SVhib09tWENJK0pndE9xZjFQ?=
+ =?utf-8?B?TFltQU8vOURRTXBrbVFtczdMMFlOUTd4UDlFTDJYYkdCV29teXl5VlA4bjF5?=
+ =?utf-8?B?NE1oZDdodmxzck40WnZPeU94dFY4cjJPV1BSOE9reENwM1d1a2hWOGxBOEdo?=
+ =?utf-8?B?aUtyS3NjWUNYbE9XV09MM1JKcGI4NVhKQSszSGJzMEo2a1ZFbTlJSzdqVHZH?=
+ =?utf-8?B?RFZPUTQrRXl3VDlQYnVmdW55ZkpCNkNVN1FkbGxmTkowU2Q1VHA0dlRpMzRl?=
+ =?utf-8?B?cXIyd1F6M3YzUUlUOHN3amVXQ3NwZEZRWnk5WGJjbWNLZVYwWDBoMGw1K2tz?=
+ =?utf-8?B?MHhQOUxXaCtkSVNaU2IxS3B5VytTbjlEYllSTlhvR3YrVEV1dXVFdko4UWlj?=
+ =?utf-8?B?Zm00TnYzVEVkdEUzT0ptSDBGMmQ5aTVIbnZmTjdQYnFCcmZvSzBTanhIdmVW?=
+ =?utf-8?B?b1R5UE9jTHpTc25WT0NqVkdMem1ZV2FkWVN3YWVod21JOWxPVEdrS1VEejM0?=
+ =?utf-8?B?T2l1MFpCajArT2NMZTRVUW1DbVYxVHAvYUMrd2hVZU5TL2JuaXhOeG5ZUk5U?=
+ =?utf-8?B?L0hCdkJSM3M2MXRpL1NyUHNoa2JmQ21HYmJSR3AwQUp6REtUVlR5UlZaVzBH?=
+ =?utf-8?B?WFNWeThpMG8rWVVwUitnZHFZQzVwVFdYdGNIUTV5bVlvaHcvT3JZNkNzdVVp?=
+ =?utf-8?B?RlhVVFdaRHllZHJkbFlmR2JLQk1vSHBCUExMOWx2NGxYOUpNMjNEK0V5YU93?=
+ =?utf-8?B?M1pQRldOdzBDdjNoSE9uai9kTzhqL3RJcDJ3Z2UyL0lYRjRoWWNDOXFWc0I3?=
+ =?utf-8?B?ZlhDWlVaQ1BIdWNHUnk3bWRGM1NyTUwxWlBZK2hzOG9KRVVVK2k1bmpnem1w?=
+ =?utf-8?B?b0JPV29XdGVEenJCSzJsdjliMVpCd1pSMTdQcGVkMVgycCtUMlE5VVFqYkJU?=
+ =?utf-8?B?Y0FncUlOS29yY0dkY3ptNSs5T1NlVmplMml1bCtFdzUrSHg0RUVZTXRPeUdC?=
+ =?utf-8?Q?HTppCcY9lbVkDqHGaKt1s1O816JozrlI?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR03MB5322.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MUVySm5pRnY1Z1FZSVlWR1VLTG1JNEFRaDVkUkg3dHBxR3pMWDM2RVlkazcz?=
+ =?utf-8?B?N3BHMVo4b2NOd2hIZEdNNEI2TDI0eW9Ib0RwaHZnUzdISGpIOGhNNytjWitp?=
+ =?utf-8?B?SWRXM0lpZXo3bXRqZ0JCd3pPUnlrUFpJV2pNbmd3R2swTHZqNlJ3cUlyWHpZ?=
+ =?utf-8?B?RXFjcU81cWNIRlg5NUkyK2FyOStEQytVZTRrUndJeWs0UTlCdUtBRWVSOS90?=
+ =?utf-8?B?NnBmTnAwT2pDc1BxcWpKc0Z3NWRDbThQeHJ1MytDQXZLS001b3g5YkZaTDV1?=
+ =?utf-8?B?TDNnVld6cnZpTGlxSG5zRURKSTUzZXBES0NjNmF6a0gwZ0l0cnVlSWVwMkx6?=
+ =?utf-8?B?Mm5hS3FSdnVXbHQ0Tmx1MHJwMkxod3RuYk15eU5LK0tXU0wzWENscmdrK25n?=
+ =?utf-8?B?YVZzRi8xT1NwcWdhazlqRENNb0R3T2RNa3pobG5qWjZOV2ZHWVRSejhUcTgy?=
+ =?utf-8?B?MFVhcE4zS0JKRzFySHJBcTY0b0tDMENpQWpMOTl1Sllhb1p2L1czU2tOVi9B?=
+ =?utf-8?B?V1FJNkgyOWRPcE12NldUbFI5MFJkcFNLWXFRTkFPaDJERDhLcFhhQ2ZKQjht?=
+ =?utf-8?B?VUhQRG1WZnErakxNekM3SnAvaks3anJ3OFJRdjhRR1gxWklPQ3JFSkFkVE9D?=
+ =?utf-8?B?RHZVMTIyNllTSW91ekJ4ZWx0ZEgzdGFDcWY0QzErdXpHWi9hUjJuZkwzRnU1?=
+ =?utf-8?B?NE9uMnE3TnllME9BVC8rSWV5OHhnUndHOThIdytqQXhXTlFabDFKV1lJUmd3?=
+ =?utf-8?B?d3Q5UEhMNCtCb0t4SllyL2ZYU0E2a1lUY1ovbWZVby8vOVZ3dC9nMVlmeEdy?=
+ =?utf-8?B?eUNMZEZ2YW5UaEV4TzNZUGx0eHRPTmlVMVY5MEs5UnNZaC9VTUNITW9WVzF5?=
+ =?utf-8?B?SXFhUHpzSmNQKzA5NVRsK29mc3pSYVJMMkZwaS9wMU1XcU5nd0NaaG9jcnl6?=
+ =?utf-8?B?dzRHb1ZTYzdmR045ZEExeWJSTlNZQzV1VnJqYUgycHZRQ3NpM0R6ekV2dk1u?=
+ =?utf-8?B?alREVWY2QWRzUkZFdnNiOUM3bXlkZnpUTGFsc25pcE5WWFczS0tQRmZmazUw?=
+ =?utf-8?B?Rm9FUHRvTkg0blJoblVNMThibVJscW44dS85ek43L3hhaW9DSHJ6TXhwb29o?=
+ =?utf-8?B?Z2NVMHQ0N0JwZHQ4dHZzdFdpOVAxcWQ3ZEhrdWJaRVZkUFQ0bjBJVDU0NG4x?=
+ =?utf-8?B?OUFuWmdzSVRyVHNsVmVrcnVFR09xRHZTcjlkVUg3ZisyYit5d1drVERTVldV?=
+ =?utf-8?B?UkVVKzZxNjF5eUYrT2ROcDR5aDZhS2pEK1YycEgyQ1k0SnpoZkhSNUpBL3U2?=
+ =?utf-8?B?YWtINjVnbFJ6UDJSanp4QU1LRk0vZnZsZThLQjJ4QlNBQzdyMXN6MDJ4ZzBP?=
+ =?utf-8?B?QzdtM3pFaFppTHp5QkFFUmxlT28vMkhEY1N3WlM4V1BDUVBoTDBXWVJlNkxh?=
+ =?utf-8?B?c3UwMHZBWkVHc1F5d3VySWh3NkVLamwrRlhqRDRQUVVPSnFSaWNHcTFXWGRR?=
+ =?utf-8?B?ZTVaQldIeGNIdU5vVXdwYSt4UUlkamd5c3ZWNVhLZjRsRGtlbGNaUUpyWHdX?=
+ =?utf-8?B?VDViRWVBL2ZWSFNoMmhIMkd3YUtNcDJZakg4YUZJTXllYVBCSk5wWUZhSXM0?=
+ =?utf-8?B?cGloQnEzWHBVem5iT2wybnpYWjRCclJ6SWh5ckMwOU1DYTlGZUhLVEdTVWZS?=
+ =?utf-8?B?N2tSdjVrd3ZQWUpQdmxmWCtET0U3TlAvN2tOY2ZmQVBLL3lXbGZ3aGlKWFZH?=
+ =?utf-8?B?c1F6Qjd3TDVzQlhpN1o5U3BYOTgrM2ZESFl0dnBqMFFOM1FNa2RkSmF1OXZn?=
+ =?utf-8?B?dHBEVXhNRG9abVdhOE82WFJFWlUxQndwOWRlYmRDMVNmZDNyMTZ4OW5KTDUv?=
+ =?utf-8?B?VkpEMWJLZmZiT0ZTY2twbGxCMVg1c0htTnNOL2JIR2pTRWpTZVJycGtyZkhJ?=
+ =?utf-8?B?S0dVQTFGOW9QMkcwRUZpTDlTbUtPNlFBQlJXR1lENjJIT2xNMnYyMFA0c2gw?=
+ =?utf-8?B?TnlKZE5KQW00d0tUVC96U0RKRkQrLzlMU0tvUkhUY3IzbHJhSGJHZmxXeUln?=
+ =?utf-8?B?UEhHank3U0ltS2dTMnY0TEVmRkpPQ2ZUK0dTRSsvVDk3L0c0dFVjWXhNeE1X?=
+ =?utf-8?B?Qm1NSUdNRUhOUFBKZXhWbGFXVHJiTDFPdFZkUnZQR0dGNkN2dWFQZ0JIUUdu?=
+ =?utf-8?B?R2c9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <59424A367D63FF4799F1F54F3EF8A9FC@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Caleb Jorden <cjorden@gmail.com>
-Date: Wed, 12 Feb 2025 21:16:20 -0600
-X-Gm-Features: AWEUYZk6Jt5mlR468IIp6Q6DTN_LkGAl6xf-1zeWBX6wt0CxyRKCp7UihvmZ9fA
-Message-ID: <CABD8wQ=pU9Yc45WE07FGO40MUBf+BSZFGcoO1ff7NxC1cXzx-A@mail.gmail.com>
-Subject: [Stable Regression Bisected] Linux 6.13.2 breaks mt7925e
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Kalle Valo <kvalo@kernel.org>, Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, 
-	linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SI2PR03MB5322.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04c80a4a-9e95-4f92-07da-08dd4bdf3e4d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Feb 2025 03:33:55.1353
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: MF5qbKYHkct34PNWEF8RybaA7XLVXo3qDCF8zb8m5zYkCLGBi0KXJWZa5RwWttq36Bo2peZACxg0FwO8e3GbYrZX/4JfXVhpkuiLknAJ9Lg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR03MB7667
 
-Hello Kernel team,
-
-I discovered that the 6.13.2 kernel breaks my laptop's wireless.  Here
-are the details of my system:
-
-- Framework 13 (AMD Ryzen 7840)
-- mt7925e wireless card (purchased from: https://www.amazon.com/dp/B0DP68GV9V)
-- Arch Linux, using IWD (3.3) to manage Wireless network connectivity
-
-When running the 6.13.0 and 6.13.1 kernels (from Arch), the wireless
-adapter worked very well.  I was able to associate to my Wifi 7
-network (Ubiquiti U7 Pros) and operate in the 6GHz spectrum with
-160MHz channels.  I also have an older wireless network that runs on
-Google Nest routers.
-
-When I upgraded to the 6.13.2 kernel from Arch Linux, my wireless
-suddenly stopped working.  I looked at the kernel logs and saw these
-messages (wireless addresses changed to make clearer the different
-points):
-
-[   10.007185] wlan0: authenticate with 28:80:xx:yy:zz:6e (local
-address=40:1a:58:aa:bb:cc)
-[   10.376446] wlan0: send auth to 28:80:xx:yy:zz:6e (try 1/3)
-[   10.384610] wlan0: 28:80:xx:yy:zz:6e denied authentication (status 77)
-[   10.483900] wlan0: authenticate with 28:80:xx:yy:zz:6e (local
-address=40:1a:58:aa:bb:cc)
-[   10.490138] wlan0: send auth to 28:80:xx:yy:zz:6e (try 1/3)
-[   10.507531] wlan0: send auth to 28:80:xx:yy:zz:6e (try 2/3)
-[   10.525580] wlan0: send auth to 28:80:xx:yy:zz:6e (try 3/3)
-[   10.543048] wlan0: authentication with 28:80:xx:yy:zz:6e timed out
-[   10.619423] wlan0: authenticate with 28:80:aa:bb:cc:e1 (local
-address=40:1a:58:aa:bb:cc)
-[   10.749880] wlan0: send auth to 28:80:aa:bb:cc:e1 (try 1/3)
-[   10.768530] wlan0: send auth to 28:80:aa:bb:cc:e1 (try 2/3)
-[   10.786954] wlan0: send auth to 28:80:aa:bb:cc:e1 (try 3/3)
-[   10.805792] wlan0: authentication with 28:80:aa:bb:cc:e1 timed out
-[   10.881620] wlan0: authenticate with 28:80:ee:ff:gg:6d (local
-address=40:1a:58:aa:bb:cc)
-[   11.016891] wlan0: send auth to 28:80:ee:ff:gg:6d (try 1/3)
-[   11.033622] wlan0: send auth to 28:80:ee:ff:gg:6d (try 2/3)
-[   11.050574] wlan0: send auth to 28:80:ee:ff:gg:6d (try 3/3)
-[   11.065250] wlan0: authentication with 28:80:ee:ff:gg:6d timed out
-[   11.139745] wlan0: authenticate with 2a:80:hh:ii:jj:6f (local
-address=40:1a:58:aa:bb:cc)
-[   11.506205] wlan0: send auth to 2a:80:hh:ii:jj:6f (try 1/3)
-[   11.528071] wlan0: send auth to 2a:80:hh:ii:jj:6f (try 2/3)
-[   11.550043] wlan0: send auth to 2a:80:hh:ii:jj:6f (try 3/3)
-[   11.572005] wlan0: authentication with 2a:80:hh:ii:jj:6f timed out
-[   16.312942] wlan0: authenticate with 2a:80:kk:ll:mm:e3 (local
-address=40:1a:58:aa:bb:cc)
-[   16.675865] wlan0: send auth to 2a:80:kk:ll:mm:e3 (try 1/3)
-[   16.702328] wlan0: send auth to 2a:80:kk:ll:mm:e3 (try 2/3)
-[   16.726162] wlan0: send auth to 2a:80:kk:ll:mm:e3 (try 3/3)
-[   16.748958] wlan0: authentication with 2a:80:kk:ll:mm:e3 timed out
-[   16.829874] wlan0: authenticate with 2a:80:nn:oo:pp:e2 (local
-address=40:1a:58:aa:bb:cc)
-[   17.196579] wlan0: send auth to 2a:80:nn:oo:pp:e2 (try 1/3)
-[   17.214256] wlan0: send auth to 2a:80:nn:oo:pp:e2 (try 2/3)
-[   17.231852] wlan0: send auth to 2a:80:nn:oo:pp:e2 (try 3/3)
-[   17.250116] wlan0: authentication with 2a:80:nn:oo:pp:e2 timed out
-
-Then IWD seems to have stopped attempting to associate for some time.
-My wireless interface showed link down, and I had no IP address.  I
-attempted to associate to my older Google Nest network, but that also
-failed with the same behavior (thus showing the problem not to be Wifi
-7 or Ubiquiti-specific).
-
-I compiled up the mainline 6.13.2 kernel myself and saw the same behavior.
-
-I then went back to the Arch 6.13.1 kernel, and the system operated
-perfectly fine as expected.
-
-I bisected the break to this commit:
-
-$ git bisect good
-c76fba3b07c7fb841c4f8f2acc0f01ff3cf73674 is the first bad commit
-commit c76fba3b07c7fb841c4f8f2acc0f01ff3cf73674
-Author: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Date:   Tue Dec 10 17:19:25 2024 -0800
-
-    wifi: mt76: mt7925: Cleanup MLO settings post-disconnection
-
-    [ Upstream commit 816161051a039eeb1226fc85e2b38389f508906c ]
-
-    Clean up MLO settings after disconnection.
-
-    Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the
-firmware supports it")
-    Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-    Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-    Link: https://patch.msgid.link/20241211011926.5002-16-sean.wang@kernel.org
-    Signed-off-by: Felix Fietkau <nbd@nbd.name>
-    Signed-off-by: Sasha Levin <sashal@kernel.org>
-
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 37
-+++++++++++++++++++++++++++++++++++--
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c  |  4 ++--
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.h  |  2 +-
- 3 files changed, 38 insertions(+), 5 deletions(-)
-
-I attempted to revert this commit on top of 6.13.2, but there are
-other commits that modify these files, so it can not be reverted by
-itself.  I looked at the commit, and a thought occurred to me that
-maybe wpa_supplicant might still function even though iwd did not.
-
-I set up wpa_supplicant, and found that I was able to associate and
-pass network traffic.  HOWEVER, when running a simple iperf3 test, saw
-very slow speeds while associated (about 10 times slower than seen
-with the 6.13.1 kernel).  Thus, I think this is quite clearly a
-regression.  My guess is that this wireless adapter is new enough that
-many people have yet to hit this.
-
-Here are the details of the card:
-# dmesg | grep mt79:
-[   12.617246] mt7925e 0000:01:00.0: enabling device (0000 -> 0002)
-[   12.622426] mt7925e 0000:01:00.0: ASIC revision: 79250000
-[   12.698681] mt7925e 0000:01:00.0: HW/SW Version: 0x8a108a10, Build
-Time: 20241104132949a
-[   13.047884] mt7925e 0000:01:00.0: WM Firmware Version: ____000000,
-Build Time: 20241104133053
-
-# lspci -vvv (mediatek device):
-01:00.0 Network controller: MEDIATEK Corp. Device 7925 (rev 01)
-    Subsystem: Hewlett-Packard Company Device 8c38
-    Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop-
-ParErr- Stepping- SERR- FastB2B- DisINTx+
-    Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort-
-<TAbort- <MAbort- >SERR- <PERR- INTx-
-    Latency: 0, Cache Line Size: 64 bytes
-    Interrupt: pin A routed to IRQ 116
-    IOMMU group: 12
-    Region 0: Memory at 90600000 (64-bit, non-prefetchable) [size=2M]
-    Region 2: Memory at 90800000 (64-bit, non-prefetchable) [size=32K]
-    Capabilities: [80] Express (v2) Endpoint, IntMsgNum 0
-        DevCap:    MaxPayload 256 bytes, PhantFunc 0, Latency L0s
-unlimited, L1 unlimited
-            ExtTag+ AttnBtn- AttnInd- PwrInd- RBE+ FLReset+
-SlotPowerLimit 75W TEE-IO-
-        DevCtl:    CorrErr- NonFatalErr- FatalErr- UnsupReq-
-            RlxdOrd- ExtTag+ PhantFunc- AuxPwr- NoSnoop+ FLReset-
-            MaxPayload 256 bytes, MaxReadReq 512 bytes
-        DevSta:    CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr- TransPend-
-        LnkCap:    Port #1, Speed 5GT/s, Width x1, ASPM L0s L1, Exit
-Latency L0s <2us, L1 <8us
-            ClockPM- Surprise- LLActRep- BwNot- ASPMOptComp+
-        LnkCtl:    ASPM L1 Enabled; RCB 64 bytes, LnkDisable- CommClk+
-            ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-        LnkSta:    Speed 5GT/s, Width x1
-            TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
-        DevCap2: Completion Timeout: Range ABCD, TimeoutDis+ NROPrPrP- LTR+
-             10BitTagComp- 10BitTagReq- OBFF Not Supported, ExtFmt+ EETLPPrefix-
-             EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
-             FRS- TPHComp- ExtTPHComp-
-             AtomicOpsCap: 32bit- 64bit- 128bitCAS-
-        DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-
-             AtomicOpsCtl: ReqEn-
-             IDOReq- IDOCompl- LTR+ EmergencyPowerReductionReq-
-             10BitTagReq- OBFF Disabled, EETLPPrefixBlk-
-        LnkCap2: Supported Link Speeds: 2.5-5GT/s, Crosslink- Retimer-
-2Retimers- DRS-
-        LnkCtl2: Target Link Speed: 5GT/s, EnterCompliance- SpeedDis-
-             Transmit Margin: Normal Operating Range,
-EnterModifiedCompliance- ComplianceSOS-
-             Compliance Preset/De-emphasis: -6dB de-emphasis, 0dB preshoot
-        LnkSta2: Current De-emphasis Level: -3.5dB,
-EqualizationComplete- EqualizationPhase1-
-             EqualizationPhase2- EqualizationPhase3- LinkEqualizationRequest-
-             Retimer- 2Retimers- CrosslinkRes: unsupported
-    Capabilities: [e0] MSI: Enable+ Count=1/32 Maskable+ 64bit+
-        Address: 00000000fee00000  Data: 0000
-        Masking: fffffffe  Pending: 00000000
-    Capabilities: [f8] Power Management version 3
-        Flags: PMEClk- DSI- D1- D2- AuxCurrent=0mA
-PME(D0+,D1-,D2-,D3hot+,D3cold+)
-        Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=0 PME-
-    Capabilities: [100 v1] Vendor Specific Information: ID=1556 Rev=1
-Len=008 <?>
-    Capabilities: [108 v1] Latency Tolerance Reporting
-        Max snoop latency: 1048576ns
-        Max no snoop latency: 1048576ns
-    Capabilities: [110 v1] L1 PM Substates
-        L1SubCap: PCI-PM_L1.2+ PCI-PM_L1.1+ ASPM_L1.2+ ASPM_L1.1+
-L1_PM_Substates+
-              PortCommonModeRestoreTime=3us PortTPowerOnTime=52us
-        L1SubCtl1: PCI-PM_L1.2+ PCI-PM_L1.1+ ASPM_L1.2+ ASPM_L1.1+
-               T_CommonMode=0us LTR1.2_Threshold=166912ns
-        L1SubCtl2: T_PwrOn=150us
-    Capabilities: [200 v2] Advanced Error Reporting
-        UESta:    DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt-
-RxOF- MalfTLP-
-            ECRC- UnsupReq- ACSViol- UncorrIntErr- BlockedTLP-
-AtomicOpBlocked- TLPBlockedErr-
-            PoisonTLPBlocked- DMWrReqBlocked- IDECheck- MisIDETLP-
-PCRC_CHECK- TLPXlatBlocked-
-        UEMsk:    DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt-
-RxOF- MalfTLP-
-            ECRC- UnsupReq- ACSViol- UncorrIntErr+ BlockedTLP-
-AtomicOpBlocked- TLPBlockedErr-
-            PoisonTLPBlocked- DMWrReqBlocked- IDECheck- MisIDETLP-
-PCRC_CHECK- TLPXlatBlocked-
-        UESvrt:    DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt- UnxCmplt-
-RxOF+ MalfTLP+
-            ECRC- UnsupReq- ACSViol- UncorrIntErr+ BlockedTLP-
-AtomicOpBlocked- TLPBlockedErr-
-            PoisonTLPBlocked- DMWrReqBlocked- IDECheck- MisIDETLP-
-PCRC_CHECK- TLPXlatBlocked-
-        CESta:    RxErr- BadTLP- BadDLLP- Rollover- Timeout-
-AdvNonFatalErr+ CorrIntErr- HeaderOF-
-        CEMsk:    RxErr- BadTLP- BadDLLP- Rollover- Timeout-
-AdvNonFatalErr+ CorrIntErr+ HeaderOF-
-        AERCap:    First Error Pointer: 00, ECRCGenCap- ECRCGenEn-
-ECRCChkCap- ECRCChkEn-
-            MultHdrRecCap- MultHdrRecEn- TLPPfxPres- HdrLogCap-
-        HeaderLog: 00000000 00000000 00000000 00000000
-    Kernel driver in use: mt7925e
-    Kernel modules: mt7925e
-
-On my system, /etc/iwd/main.conf contains:
-------------
-[Scan]
-DisablePeriodicScan=true
-
-[General]
-EnableNetworkConfiguration=true
-Country=US
-------------
-
-At this point my suggestion is that the v6.13.2 mt7925 changes should
-be reverted from the stable series for now, unless a fix can be
-quickly found.  I have not yet tested 6.14-rc2, but would be willing
-to do so if it would be helpful.
-
-Note: I am not subscribed to any of these lists, so please CC me if
-you want to contact me about this.
-
-Respectfully submitted,
-Caleb Jorden
-cjorden@gmail.com
+SGkgQ2FsZWIsDQoNCkhlcmUgYXJlIHNvbWUgcGF0Y2hlcyBhcmUgY3VycmVudGx5IG9uZ29pbmcu
+DQpDb3VsZCB5b3UgcGxlYXNlIGFwcGx5IHRoZXNlIHBhdGNoZXMgYW5kIHRyeSBhZ2Fpbj8NCg0K
+aHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wcm9qZWN0L2xpbnV4LXdpcmVsZXNzL2xpc3Qv
+P3Nlcmllcz05MjUxMDYNCg0KVGhhbmtzfg0KDQpCZXN0IFJlZ2FyZHMsDQpZZW4uDQo=
 
