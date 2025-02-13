@@ -1,82 +1,68 @@
-Return-Path: <linux-wireless+bounces-18869-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18871-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A676A33483
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 02:19:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE8CA3348E
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 02:25:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B022216415C
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 01:19:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 746A93A6337
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 01:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687DE3597D;
-	Thu, 13 Feb 2025 01:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BAF8635E;
+	Thu, 13 Feb 2025 01:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cXXHce4F"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pbvN5dYO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B584E2B2CF
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Feb 2025 01:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0639578F26
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Feb 2025 01:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739409556; cv=none; b=GWQO84sP+NX6SR9sKLWHK9Z0nKjDWldqXajF6ToJ0mnKra/wyvfNTuf785GGKSWVE69Ltu4+JjDJuFB1V5wbICR+AXFbqWgorHoadKYRCZUubBhPfmIxIIVYQzvvHPVv+sMq3jBM9J7pSWKt299/ZmFydrJBeOyJ6w++wfxIdo8=
+	t=1739409898; cv=none; b=QqqxGp4Q5rdk0fR7BLekErOqxk6vICK6hmcbPqHxSKJGwsU4bGmwVW8PBTBzMt6Y6IYxgawMi/69k1121lrrZKjODH5gyCWeICtYZi80LRpvDXyDE2mAD6E9eGwQg3ZL1d4+gz/313kVWlUaz+jmoFpMfHnnxEeDZMwtSrFi9S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739409556; c=relaxed/simple;
-	bh=+8LZ8A/CZN+lB9T35L3UsllCxQsKIXR5etyePsy8+ds=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VmMQdhVlpaQP4UzqHmvrWyJ4WYIh4rTU4jDQmgFfFg1/WT1e9YrT15G2XaS0mOp+2fVozNWBbiIS2P/ESW9v8PZL6v6gIQ1d51PpfDw3HqmMi08cbxYnqfKRBG9GB5s9OuLZ9cbi/cYqRkYXEPZ9mk5RRdHq2P8LC9Sc3TwIk/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cXXHce4F; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-220c4159f87so3863445ad.0
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Feb 2025 17:19:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739409554; x=1740014354; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HRWOyFzKSFOHOMVQ8j1lY1vPHUzUEqfRNVTVbm0T0C4=;
-        b=cXXHce4FDIPUQo8yEtNOnG0OGkBjjVpRGqhueg59St04Z4H4cKx5eor621giFb2a+D
-         uTe2B6Rah3soolt3RILV27bI7DFOQGK0scebIilqpZ5evEgApsssNU85S/ole8HgKN5n
-         Ldea0q7uAHdEikrn3XzhOwABy0cUK95KH9zc6fM1DLLJtJyWn6DzxlCqAfWLgE00dwri
-         eCC/ujR8lylyMEb1B9yxpcK19YLEgBlqujznnddMSoTEvisvNNrWRXpoREJsPHM54uBN
-         ZAnlL2WSoANiaN35UPUO0VhH8EwxJa8G5Niyw5DiHzQwPfbPLYcCv+8KOBv1ZeTs2t7X
-         sH/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739409554; x=1740014354;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HRWOyFzKSFOHOMVQ8j1lY1vPHUzUEqfRNVTVbm0T0C4=;
-        b=TkhpXAlXlXI6YAs7vbBvm0Ml/nM0jLt7lnOPW4G5NWeR8XXVDBr1+S4b4jii27lwNC
-         kd8IuuDelPsu61rgCep4o/s1eIi0Ki1jFbIAeMvoEfjbw+LIUYRvNyB60lyox1xXjAKz
-         Zt4JDuA3+1EhEy0hdFSL4ZQOHAlnFKLxj8S9yAjEvwAQRTb+ODPbHwJC8ODr92DC7aCF
-         LREgqy6V2wWR27IOjaUiJVEB+2KbCvezmOpyIGqSLLC5K2TXr+tpmtvUNbXj5kQd7l2e
-         EVo4NP8RDGkHE6sePlAfr54ZVDi9dLq7Ul7N5cUDFVAwAd9RkRmvSJ8OFFJEVofj/QsZ
-         Tzzg==
-X-Gm-Message-State: AOJu0YyJq5BigCZd8bQ36IlmTRuAZgCaZOIE2lFFFphCCTYhIzFR4TSH
-	6hiKXhRjXKuoH5LcDSn22djsMcsrWP8qeH9Y6jV4Ap/VGgEStI+MQRimSl6P
-X-Gm-Gg: ASbGncvex+sGtrayPQYZbtoEd2sFfP3KBP5nnfGPkM2y4DPOzM/P0mUGdNLNpYVj6Bn
-	AjBDrJd0CiHRpN5FPh5rFS/AydRodVqFohTYkb2RhTJ2tsJibPcSBS9G3d1GyjwZiQvLhGhCxwc
-	97K3S2gjvJrNnG6c4Sov5Y4K4Tx/rfD2i94Z8yCjDvfMHHyQ4VeYcxsV32X4Ci9KUMYJVK5dCFW
-	1xhwivB5DhaYpQRGLnrv2cD5ATDej9AQayply1EdyLwQl1Ozg0pZjuaEJJDitif+iTP8kM3vwLd
-	o5WdrimeL7/Rw0NH7q7PWalf8WjdU4hINrD55oJI0HQ3fGu9i8pHm1k6/Q==
-X-Google-Smtp-Source: AGHT+IFIRnd39ca+lAtFvOZdDbCy+iYEi5E6BqgS7zjr3biciAn1U8N2hTZqmvFLeV0LuS7yhjJI8w==
-X-Received: by 2002:a05:6a00:4394:b0:724:bf30:147d with SMTP id d2e1a72fcca58-7323c13efc1mr1848732b3a.11.1739409553635;
-        Wed, 12 Feb 2025 17:19:13 -0800 (PST)
-Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-73242568a66sm92477b3a.44.2025.02.12.17.19.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2025 17:19:13 -0800 (PST)
-From: Ping-Ke Shih <pkshih@gmail.com>
-To: wens@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	wireless-regdb@lists.infradead.org
-Subject: [PATCH v2] wireless-regdb: Update regulatory info for Cayman Islands (KY) for 2024
-Date: Thu, 13 Feb 2025 09:18:27 +0800
-Message-Id: <20250213011827.4528-1-pkshih@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1739409898; c=relaxed/simple;
+	bh=IDZl5wgDB4qTwVpvJubS8KnWcgZ8CUtbndeIQI0cFTY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OLMkdsOYYqzj1QelDjFed5/JZu8PWCienKJBFyrDWEYEiZG7tsaNSx6mLm8rR4klF1e20J+zjtTGzRQwsTvH7gLp1KJPd6nGT8HVEFLJT1r8pwEpbzjypWtBuodnIYAjerjhADqWt3pLdQKVx4FFhULQAHq97zmoQU9O+C0A9+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pbvN5dYO; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51CJc00v010885;
+	Thu, 13 Feb 2025 01:24:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=9/CB2HE4v/eXzPtHXCSjbT
+	BghOvnqptIv1D+YTr7Xi4=; b=pbvN5dYOhcZXYiV+EHO/QXDfMQYVSpw6Nk4ahG
+	No4UHmHU5lOtbn9evRknU4tedL6yNyjnZMw3pIamYtcDLZcvhUGsS2yDdOx6GfQ5
+	IlPAeEMHAF9ugZbRiwVQxZ7xsqY0GOkQ/2vo9aruPA1TVG9ZgpjBhlbl2oIsrzqM
+	te4FwoJ4S+q11Dw/uFUdZ56mVUrrVeBOnFmas+M2mWMC8Zxku4XsnFpTaDDLXtyx
+	MRLAvFpQXqCux76NgjghgwVLH58phRwIvug1Gw1bunVY50Q+Ka8JZ+/cEoU46kTH
+	Sh6qYFCGQHg3y6zfofgaRLzyG/kDl9e7umcW3eDXmq8BkAgQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44s1yngmsa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2025 01:24:52 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51D1Op9u012597
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2025 01:24:51 GMT
+Received: from ath12k-linux1.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 12 Feb 2025 17:24:50 -0800
+From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Pradeep Kumar Chitrapu
+	<quic_pradeepc@quicinc.com>
+Subject: [PATCH V10 0/9] wifi: ath12k: add MU-MIMO and 160 MHz bandwidth support
+Date: Wed, 12 Feb 2025 17:24:30 -0800
+Message-ID: <20250213012439.278373-1-quic_pradeepc@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -84,107 +70,85 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: lSyDdJPhaneAmAMEuP4HPE5WHf0ebjQl
+X-Proofpoint-GUID: lSyDdJPhaneAmAMEuP4HPE5WHf0ebjQl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-12_08,2025-02-11_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ bulkscore=0 lowpriorityscore=0 impostorscore=0 mlxlogscore=999
+ clxscore=1015 adultscore=0 priorityscore=1501 spamscore=0 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502130008
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+Add support for
+1. enabling MU-MIMO in HE and EHT modes from hardware
+2. setting fixed HE rate/GI/LTF
+3. 160 MHz bandwidth in HE mode
+4. extended NSS bandwidth support
 
-Utility Regulation and Competition Office, Cayman Islands, released
-Operating Parameters for Wireless Data Transmission (including WiFi)
-Services On 18th November 2024 [1].
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Both FCC and EU reference are permitted. Adopt FCC reference.
+changes in v10:
+ patch 6/9:
+  - use ath12k_ahsta_to_sta()
+  - fix rcu_dereference warning in ath12k_mac_set_bitrate_mask_iter()
+  - change return type for ath12k_mac_validate_fixed_rate_settings()
+  - improve readability by adhering to nl80211 definitions of GI
+    NL80211_TXRATE_DEFAULT_GI. Introduce ath12k_mac_nlgi_to_wmigi()
+    for conversion.
+ patch 7/9:
+  - do not change default MODE_11AC_VHT160 in
+    ath12k_mac_get_phymode_vht() as it breaks clients which do not
+    set VHT_CAP_SUPP_CHAN_WIDTH_160MHZ.
+ patch 8/9:
+  - Use IEEE80211_VHT_CAP_EXT_NSS_BW_MASK along with
+    IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ for determining VHT160
+    phymode.
 
-* 2400 - 2483.5 MHz
-  - Part 15.247
-    * 1 Watt
-      For systems using digital modulation in the 902 - 928 MHz,
-      2400-2483.5 MHz, and 5725 - 5850 MHz bands: 1 Watt.
+changes in v9: rebase on top of master branch with mlo changes
+ patch 1/9 and 2/9:
+  - fetch link_conf using ath12k_mac_get_link_bss_conf()
+    instead of arvif->vif->bss_conf before mlo
+ patch 6/9
+  - fetch mcs/nss values from sta->link[] instead of sta->deflink
+  - fix spelling of 'incompatibility'
+ patch 8/9
+  - replace sta->deflink.addr with arsta->addr in
+    ath12k_peer_assoc_h_vht
+ patch 9/9
+  - replace sta->deflink.rx_nss with link_sta->rx_nss
 
-* 5150 - 5350 MHz
-  - Part 15.407
-    * 250 mW
-      For client devices in the 5.15-5.25 GHz band, the maximum conducted
-      output power over the frequency band of operation shall not exceed
-      250 mW provided the maximum antenna gain does not exceed 6 dBi.
-      In addition, the maximum power spectral density shall not exceed
-      11 dBm in any 1 megahertz band.
+changes in v8:
+ - rebase and resolve KASAN warnings reported by Jeff in v7, in patch 6/9.
 
-      For the 5.25-5.35 GHz and 5.47-5.725 GHz bands, the maximum conducted
-      output power over the frequency bands of operation shall not exceed
-      the lesser of 250 mW or 11 dBm + 10 log B, where B is the 26 dB
-      emission bandwidth in megahertz. In addition, the maximum power
-      spectral density shall not exceed 11 dBm in any 1 megahertz band.
-    * DFS: 5.25-5.35 GHz
+Pradeep Kumar Chitrapu (9):
+  wifi: ath12k: push HE MU-MIMO params to hardware
+  wifi: ath12k: push EHT MU-MIMO params to hardware
+  wifi: ath12k: move HE MCS mapper to a separate function
+  wifi: ath12k: generate rx and tx mcs maps for supported HE mcs
+  wifi: ath12k: fix TX and RX MCS rate configurations in HE mode
+  wifi: ath12k: add support for setting fixed HE rate/GI/LTF
+  wifi: ath12k: clean up 80P80 support
+  wifi: ath12k: add support for 160 MHz bandwidth
+  wifi: ath12k: add extended NSS bandwidth support for 160 MHz
 
-* 5470 - 5725 MHz
-  - Part 15.407
-    * 250 mW
-      For the 5.25-5.35 GHz and 5.47-5.725 GHz bands, the maximum conducted
-      output power over the frequency bands of operation shall not exceed
-      the lesser of 250 mW or 11 dBm + 10 log B, where B is the 26 dB
-      emission bandwidth in megahertz. In addition, the maximum power
-      spectral density shall not exceed 11 dBm in any 1 megahertz band.
-    * DFS: 5.47-5.725 GHz
+ drivers/net/wireless/ath/ath12k/core.h |    2 +
+ drivers/net/wireless/ath/ath12k/mac.c  | 1140 ++++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/mac.h  |   17 +
+ drivers/net/wireless/ath/ath12k/wmi.c  |   24 +-
+ drivers/net/wireless/ath/ath12k/wmi.h  |  107 ++-
+ 5 files changed, 1068 insertions(+), 222 deletions(-)
 
-* 5725 - 5875
-  - Part 15.407
-    * 1 W
-      For the band 5.725-5.85 GHz, the maximum conducted output power over
-      the frequency band of operation shall not exceed 1 W.
 
-* 5925 - 6425 MHz
-  - Part 15.407 (but no description; reference [2])
-    * -1 / MHz (12 dBm is adopted)
-      Accordingly, the Commission concludes that the appropriate maximum
-      power spectral density for low power indoor client devices in this
-      band is 6 dB below the limit for access points (or -1 dBm/MHz based
-      on the adopted PSD limit).
-    * NO-OUTDOOR
-
-* 57 - 71 GHz
-  - Part 15.255 (but no power value; reference [3])
-    * 40 dBm
-      The average power of any emission shall not exceed 40 dBm and the
-      peak power of any emission shall not exceed 43 dBm.
-
-[1] https://www.ofreg.ky/viewPDF/documents/2024-11-19-16-28-50-OfReg-WiFi-Permitted-Parameters-V2.pdf
-[2] https://www.federalregister.gov/documents/2020/05/26/2020-11236/unlicensed-use-of-the-6-ghz-band
-[3] https://docs.fcc.gov/public/attachments/FCC-16-89A1.pdf
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-v2:
-  - extend "5470 - 5725" to "5470 - 5730" (+5MHz)
-  - drop AUTO-BW from "5470 - 5725" and "5725 - 5875"
----
- db.txt | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/db.txt b/db.txt
-index 4603324b4920..d56ad32d31c9 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1069,12 +1069,15 @@ country KW: DFS-ETSI
- 	(5470 - 5825 @ 160), (24), DFS
- 	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
- 
-+# Source: https://www.ofreg.ky/viewPDF/documents/2024-11-19-16-28-50-OfReg-WiFi-Permitted-Parameters-V2.pdf
- country KY: DFS-FCC
--	(2402 - 2482 @ 40), (20)
--	(5170 - 5250 @ 80), (24), AUTO-BW
--	(5250 - 5330 @ 80), (24), DFS, AUTO-BW
--	(5490 - 5730 @ 160), (24), DFS
--	(5735 - 5835 @ 80), (30)
-+	(2400 - 2483.5 @ 40), (1000 mW)
-+	(5150 - 5250 @ 80), (250 mW), AUTO-BW
-+	(5250 - 5350 @ 80), (250 mW), DFS, AUTO-BW
-+	(5470 - 5730 @ 160), (250 mW), DFS
-+	(5725 - 5875 @ 80), (1000 mW)
-+	(5925 - 6425 @ 320), (12), NO-OUTDOOR
-+	(57000 - 71000 @ 2160), (40)
- 
- # Source:
- # http://adilet.zan.kz/rus/docs/V1500010730
+base-commit: 704a2d7237043317ed1b0f8a08203e9ddde70097
 -- 
-2.25.1
+2.34.1
 
 
