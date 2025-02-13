@@ -1,129 +1,110 @@
-Return-Path: <linux-wireless+bounces-18894-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18895-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD8DA3387A
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 08:06:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E17A338D8
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 08:29:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24FAD3A8C12
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 07:05:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4319516282D
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 07:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A200B207E02;
-	Thu, 13 Feb 2025 07:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EE6209F25;
+	Thu, 13 Feb 2025 07:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="QgfaSyLr"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="SiE2m+an"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF9F20764A;
-	Thu, 13 Feb 2025 07:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89480208990
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Feb 2025 07:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739430358; cv=none; b=Ge3JwAu16qDyA+sPwZ3b/HstrfdVrB40OqvYx7G0foin6/MkQFrQDWLoRfdx70og90UM3U4MSAs2ALTEB21Rsp0+X1Vxjvcf7EM2lBSdaTJKH/KULQzuU8pMUf4MtNJ1KoInGP7cqqbi1yv2cP8vYWwf+DNC5/9CE9TFKMifgWc=
+	t=1739431768; cv=none; b=Wxo+iM0GHIxyy1AQwWKvskwaJWCRzFcmmRSV42hBfNDrd569issfSc6DilYd1oEyeRMXwOowOk01Mh14XDim+RpwtbwCXzeMVcm8be5LLvOQ8FBI2jSgzNieV3p/OLjyB3g0Bg6TR/vlPIYlJg/1K3AjBuKwNsLQlZLGfLipgtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739430358; c=relaxed/simple;
-	bh=kmgtqvckZ0e6iFNH8XDXdMK5sQI2GFWf7IJ95MBADfA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K5gWreDSseocFp+5sW6swJWeKNKPHwe+tp2E7y4Ef59dfBikrDYmZzKPoJTvv5Y4A7lJ2C6/luZTV0J4Z2jlSuDgaf9D5D67oAhubxb+nN0W/cxfA7UwQeBmlfSLkgj1UAqfFHKWc89YkWCKXditO9czA0CailBD7mF+LixWabY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=QgfaSyLr; arc=none smtp.client-ip=52.95.48.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1739430357; x=1770966357;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=HIz1Atlqpi5tnoN7n4BPu3eHETPxx2TUlMkVpEwhuEo=;
-  b=QgfaSyLrgHl/mTSXPfa1O1cScChJD9IlWGd8eMDbkZuzCWMyBI5znAao
-   +oebj9g9O3QcE4mKdwnQ324nwwAjpwy0Ll9o74E1a4i7iPpaPXhr9EYbH
-   Bz+dF79qwKu5tSpHFMLm+9JFzuSw5Q33bGG/M3J5HJNyiPfAy7o+cNlGM
-   w=;
-X-IronPort-AV: E=Sophos;i="6.13,282,1732579200"; 
-   d="scan'208";a="462133403"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 07:05:51 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.7.35:18133]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.32.208:2525] with esmtp (Farcaster)
- id 044845a0-eb50-4d20-a33f-ef53eec55ed0; Thu, 13 Feb 2025 07:05:50 +0000 (UTC)
-X-Farcaster-Flow-ID: 044845a0-eb50-4d20-a33f-ef53eec55ed0
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Thu, 13 Feb 2025 07:05:50 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.37.244.7) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 13 Feb 2025 07:05:42 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <shaw.leon@gmail.com>
-CC: <alex.aring@gmail.com>, <andrew+netdev@lunn.ch>,
-	<b.a.t.m.a.n@lists.open-mesh.org>, <bpf@vger.kernel.org>,
-	<bridge@lists.linux.dev>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
-	<dsahern@kernel.org>, <edumazet@google.com>, <herbert@gondor.apana.org.au>,
-	<horms@kernel.org>, <kuba@kernel.org>, <kuniyu@amazon.com>,
-	<linux-can@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-ppp@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<linux-wpan@vger.kernel.org>, <miquel.raynal@bootlin.com>,
-	<netdev@vger.kernel.org>, <osmocom-net-gprs@lists.osmocom.org>,
-	<pabeni@redhat.com>, <shuah@kernel.org>, <stefan@datenfreihafen.org>,
-	<steffen.klassert@secunet.com>, <wireguard@lists.zx2c4.com>
-Subject: Re: [PATCH net-next v9 06/11] net: ipv6: Use link netns in newlink() of rtnl_link_ops
-Date: Thu, 13 Feb 2025 16:05:33 +0900
-Message-ID: <20250213070533.9926-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250210133002.883422-7-shaw.leon@gmail.com>
-References: <20250210133002.883422-7-shaw.leon@gmail.com>
+	s=arc-20240116; t=1739431768; c=relaxed/simple;
+	bh=rKSogPBlo2hbgalDP27uPJmSBd1JgCxfQJ6Marg/MQQ=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DAO/aAhe/2LHBv49n6EctSwckKOOY3H1gF+Bz1Ys94RLuTf6qbqyeD+6HEqyrQCbZXA1fa2cM0a7oQ2vvlLUaQD3gheIJSGe+r1MEF6zcPMgAwpCmeQlGR2b1d0PNRMfP+i6c6TDvtBCzcJMvymRTmjoVJX0g8U5JaVA5ZrUDpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=SiE2m+an; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51D7TJSY0568457, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1739431759; bh=rKSogPBlo2hbgalDP27uPJmSBd1JgCxfQJ6Marg/MQQ=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=SiE2m+annNb8hKQENlB/40ruu47dGaedZ9Pm9U6cvcEznjkeTuO/r5nvQOXesnUqf
+	 bWL+o/IBlBoUMNpve2Ekd/zD8W1VvTyKEogBl9MjvG35Ryfc1ZBcrVO4hpsME//iQj
+	 3G05sCG/CcHkE74LA4uR0w4QybfzCS5HGBjEUU3Y1S1TzPkUP9IwsOtOlm45FClOGm
+	 1VRRyx2q++ewqxLayNNDquIIxWyR4rzBeUe+WXgtHpwJqX7QCmOPpKx24BkY1WTv8N
+	 fmXH1AIFGEWxdSAGEJ9MwU8T0PYvye+1W2zpmmcARX1evyseoTUJgozwHwDPs3D7Vp
+	 Waq9vr+sIyvSQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51D7TJSY0568457
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Feb 2025 15:29:19 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 13 Feb 2025 15:29:20 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 13 Feb 2025 15:29:19 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553]) by
+ RTEXMBS04.realtek.com.tw ([fe80::48ab:b54f:96a1:6553%5]) with mapi id
+ 15.01.2507.035; Thu, 13 Feb 2025 15:29:19 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 1/8] wifi: rtw88: Fix rtw_mac_power_switch() for RTL8814AU
+Thread-Topic: [PATCH 1/8] wifi: rtw88: Fix rtw_mac_power_switch() for
+ RTL8814AU
+Thread-Index: AQHbfNNsqIRe2Xd+mkek0+z3sTsGILNE1+0w
+Date: Thu, 13 Feb 2025 07:29:19 +0000
+Message-ID: <7d83f8070d214427828e93020e5a443f@realtek.com>
+References: <21111380-5db6-4a72-ace9-f18b5bcd525c@gmail.com>
+ <83c8e281-0d25-4de6-a6c7-84d24b228888@gmail.com>
+In-Reply-To: <83c8e281-0d25-4de6-a6c7-84d24b228888@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D035UWA002.ant.amazon.com (10.13.139.60) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Xiao Liang <shaw.leon@gmail.com>
-Date: Mon, 10 Feb 2025 21:29:57 +0800
-> When link_net is set, use it as link netns instead of dev_net(). This
-> prepares for rtnetlink core to create device in target netns directly,
-> in which case the two namespaces may be different.
-> 
-> Set correct netns in priv before registering device, and avoid
-> overwriting it in ndo_init() path.
-> 
-> Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
-> ---
->  net/ipv6/ip6_gre.c    | 20 ++++++++++----------
->  net/ipv6/ip6_tunnel.c | 13 ++++++++-----
->  net/ipv6/ip6_vti.c    | 10 ++++++----
->  net/ipv6/sit.c        | 11 +++++++----
->  4 files changed, 31 insertions(+), 23 deletions(-)
-> 
-> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-> index 863852abe8ea..108600dc716f 100644
-> --- a/net/ipv6/ip6_gre.c
-> +++ b/net/ipv6/ip6_gre.c
-> @@ -1498,7 +1498,8 @@ static int ip6gre_tunnel_init_common(struct net_device *dev)
->  	tunnel = netdev_priv(dev);
->  
->  	tunnel->dev = dev;
-> -	tunnel->net = dev_net(dev);
-> +	if (!tunnel->net)
-> +		tunnel->net = dev_net(dev);
-
-Same question as patch 5 for here and other parts.
-Do we need this check and assignment ?
-
-ip6gre_newlink_common
--> nt->net = dev_net(dev)
--> register_netdevice
-  -> ndo_init / ip6gre_tunnel_init()
-    -> ip6gre_tunnel_init_common
-      -> tunnel->net = dev_net(dev)
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBydHdf
+bWFjX3Bvd2VyX3N3aXRjaCgpIGNoZWNrcyBiaXQgOCBvZiBSRUdfU1lTX1NUQVRVUzEgdG8gc2Vl
+IGlmIHRoZQ0KPiBjaGlwIGlzIHBvd2VyZWQgb24uIFRoaXMgYml0IGFwcGVhcnMgdG8gYmUgYWx3
+YXlzIG9uIGluIHRoZSBSVEw4ODE0QVUsDQo+IHNvIGlnbm9yZSBpdC4NCj4gDQo+IFNpZ25lZC1v
+ZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KPiAtLS0N
+Cj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFjLmMgfCAzICsrLQ0KPiAg
+MSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlm
+ZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFjLmMgYi9kcml2
+ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21hYy5jDQo+IGluZGV4IDYzZWRmNjQ2MWRl
+OC4uNWRlMTZjNzVhZGYyIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFs
+dGVrL3J0dzg4L21hYy5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
+ODgvbWFjLmMNCj4gQEAgLTI5MSw3ICsyOTEsOCBAQCBzdGF0aWMgaW50IHJ0d19tYWNfcG93ZXJf
+c3dpdGNoKHN0cnVjdCBydHdfZGV2ICpydHdkZXYsIGJvb2wgcHdyX29uKQ0KPiAgICAgICAgIGlm
+IChydHdfcmVhZDgocnR3ZGV2LCBSRUdfQ1IpID09IDB4ZWEpDQo+ICAgICAgICAgICAgICAgICBj
+dXJfcHdyID0gZmFsc2U7DQo+ICAgICAgICAgZWxzZSBpZiAocnR3X2hjaV90eXBlKHJ0d2Rldikg
+PT0gUlRXX0hDSV9UWVBFX1VTQiAmJg0KPiAtICAgICAgICAgICAgICAgIChydHdfcmVhZDgocnR3
+ZGV2LCBSRUdfU1lTX1NUQVRVUzEgKyAxKSAmIEJJVCgwKSkpDQo+ICsgICAgICAgICAgICAgICAg
+ICBjaGlwLT5pZCAhPSBSVFdfQ0hJUF9UWVBFXzg4MTRBICYmDQo+ICsgICAgICAgICAgICAgICAg
+ICAocnR3X3JlYWQ4KHJ0d2RldiwgUkVHX1NZU19TVEFUVVMxICsgMSkgJiBCSVQoMCkpKQ0KDQpU
+aGUgbmV3bHkgYWRkZWQgY29kZXMgYXJlIG5vdCBhbGlnbmVkLCBhbmQgc2VlbWluZ2x5IG9ubHkg
+bmVlZCB0byBhZGQgDQp0aGUgbGluZSBjaGVja2luZyA4ODE0QS4NCg0KPiAgICAgICAgICAgICAg
+ICAgY3VyX3B3ciA9IGZhbHNlOw0KPiAgICAgICAgIGVsc2UNCj4gICAgICAgICAgICAgICAgIGN1
+cl9wd3IgPSB0cnVlOw0KPiAtLQ0KPiAyLjQ4LjENCg0K
 
