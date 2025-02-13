@@ -1,183 +1,143 @@
-Return-Path: <linux-wireless+bounces-18912-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18913-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C16AA33BA1
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 10:51:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8EFA33BB5
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 10:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAADE1883147
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 09:50:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 051FC18899BD
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2025 09:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CC020D4FC;
-	Thu, 13 Feb 2025 09:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C5F20FA9E;
+	Thu, 13 Feb 2025 09:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="I2XvjDw/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hgv6vE5O"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [178.154.239.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E3A2080C8
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Feb 2025 09:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F001E2847;
+	Thu, 13 Feb 2025 09:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739440221; cv=none; b=b2ZHTP1XOryY3OlKaGPYS1a16UoSoVDizGWge1LMyd2+FWGqrKd/ycf69SzlWVkmU39RoDTHcMkQFKvxmeD69NrXlnBIOcvOi8V9nPKbwTtsg8XPo7F+V+AdFGO2Fa0pXnzewpfSbJZL3NKKbaqGu4Nr3H9j8Su96OR93woirNU=
+	t=1739440573; cv=none; b=J5NZZd28TaBQFYOpjc7IETliVp74icp8HXKsiOwyFE0OuvHJ98uaKZK+WiOtDHY8jmXUIrC2lgH3NZisehKb/LUReCo4Wg8JPaWzCN55vSSgL0sLr/5E94R4ZJ6W9Tzq03923tgjZ32dlx8lytAUdNuxVdqBnmWFhQhtf0vBE2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739440221; c=relaxed/simple;
-	bh=IHWRE/BsjqrPCwLtppDhb7yAmvtoh7G1SOLwMZjbKiA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/xnAzKmjwxooiwWVoTLuvBKnbsnOkN/UWe54fw5guwAuJ6LN5f9QXxNUEqi8+M0Ho3MKgH2RhF5dQfJpjlX6/jx44QvL5haEPPcFwCm48MeeiI71cN7r4BtVj0/qJqHV1ObnXiHs5kkiF4jdTI3WaeR+VC9LSbsUUH6FpNTA4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=I2XvjDw/; arc=none smtp.client-ip=178.154.239.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:c:0:640:bd4a:0])
-	by forward101a.mail.yandex.net (Yandex) with ESMTPS id D50DF60AFB;
-	Thu, 13 Feb 2025 12:50:09 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 8oMHxa0OruQ0-exyqtaq8;
-	Thu, 13 Feb 2025 12:50:09 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1739440209; bh=iEWJsQDE6mD1JmeJk+aHC/sFQPTUS65ovSCUsSEwp50=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=I2XvjDw/2DY4kCz/ApgVOjnmW1ujFzNBb0u4/myP+Y4vuk9v2K9N0YLobaiAgAgWX
-	 uUjGfXiQRAlP701F8YzetaWCocyB2ljGokynwmE434j9J5WVZAtUY623518pPBAXB2
-	 uQg8m8qV53Ju1XVxD6ttVU4andVgGaXCxsfTDLV4=
-Authentication-Results: mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH v4] wifi: rtw89: rtw8852b{t}: fix TSSI debug timestamps
-Date: Thu, 13 Feb 2025 12:50:06 +0300
-Message-ID: <20250213095006.1308810-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <8c7cc2e680cf43379734aa86f22f8d49@realtek.com>
-References: <8c7cc2e680cf43379734aa86f22f8d49@realtek.com>
+	s=arc-20240116; t=1739440573; c=relaxed/simple;
+	bh=jA7SlTyYhz1+j8HlAbKGMC97RbplB7cAQ05gjyR9wTw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ljFqXsZBz/cCTXvyiELCRwK8Yn0EReMcoyN7t180HYamxX/vT5gWOq4RjoU1fRkopJ1nz6dLl9iHFWpoRj24quZLzMxTDM/knz14elGADkUeH92zbQJAAufL0KXGYSm6sBAVHCAG0iixTQSIOgHzqQZjssAP6X2E8IIju0+bN6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hgv6vE5O; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43946b5920cso4042075e9.1;
+        Thu, 13 Feb 2025 01:56:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739440570; x=1740045370; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6VgtMhO6+jJX1RjKLdoncmTjEAD+6FhglRm1uezg6DA=;
+        b=Hgv6vE5OsWur1EsBJTLkf5Yw349pSAE6Lp05HWKlRPG9+m+5WbsPo1CKJXvt/IGa/i
+         xrpkiDUqstn2jgmm1AEfDcAf7auFjEvOOVHdf/N3ci2O4QZ7HtvIHt9DcxH39UkdqUHr
+         DPGuIFrFPLJiZyz1b+1j9t7AAUFpYw4+Pt9so5H+Mf86NJ+TaqJ8ErEH4w6yLRtzW4mS
+         FPABPpgYwymr/VpnDAXX8kN0uUdXvQ0sPHcd03M1dUoZ5M+aqGrB3wZptr/npYEAMUwA
+         Yj8WLB9zzESuYDWXBahaBchabIyKp215y8uYPaKE7rIOZguBG5p/PngrPctt+k/IweJl
+         VYbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739440570; x=1740045370;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6VgtMhO6+jJX1RjKLdoncmTjEAD+6FhglRm1uezg6DA=;
+        b=qyEc0vfGeC0PcSiu83lNKFijhQbIXr4mp09nmXwlq/AS6u7hZcaKpltCzBfdB0xh72
+         +xOVgjCBIxZRWkInHbvQ4J4kg7I/nzOQPGbtJB1T9HNYmwUJKO1pCI1qzvHqmSE2h1kB
+         HAdvWkB3iNQ0kSc41L/2ZRAX6Hh+9L0UUVCEU9PRr6SpIMbF4XcsITyF+3H2BpL5glGx
+         NrLN2LtS+RoB/J6mVO3y6dnB3TpAjOc88o+9064c4nQKqMfgw2oMO3NXU1Ql/foCALbC
+         RWgCXRa05662Gc1XlAnrfd6seM/ShpO7iN/mrCpua3ObXcyriqtWbfFq9MkJr+7Rd/+h
+         uivA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3tufqHBLGggpJeFu65M+QbZVD429u7flhjGSDj/85RnmuNFG1PQj0bCCQV8dIeXjsMIA1ZwlQ+HDBIA==@vger.kernel.org, AJvYcCUONQ7XX7uLvj48uVklyR+VJLpW4z2NQxK24HnrwFybQ3vvhS1e9zcghReuNKbF70OfdLEQW69W5yeK@vger.kernel.org, AJvYcCUf0wHUNrSkIC/xM0udslXpYo1J0xvgm7TV40ujYbdY4XqO9pBLvd11CAVReK3Hiu47+h4ZlvKdnffQ@vger.kernel.org, AJvYcCWL1nrIGCkCXkdQfkLa3BD/0SmQzsOGkzjyRWvIDsY1K1DSNoif/iA+lhsNSUYOVK8bMlO4kkplbS9jdQ==@vger.kernel.org, AJvYcCWd5CL/Ua/0CfWu9WdCQ+GDtCjaDkxOpMfSZl6OWziX5Tx+aLu//CQfsRZPyrg38SdajsrEwvxNL8+hPTvV8129@vger.kernel.org, AJvYcCWob7ogA+GYpPAPqUqbMYZUQly6RgXxaroCCdYzCdOzAvVC7Ney4aj+mOCbcfRpbunabcozjbsjxzeea7XSyHg=@vger.kernel.org, AJvYcCWp/m1hrbPiZpLaY9J8YODGgNBEa7rJ7badKg9j3GOGKug9YnFO6/kUyOqETE+9h2cNQn8sbBFg@vger.kernel.org, AJvYcCX6ica7pCcIoAR7FarPfjWHEm5Kz6oFBzcgU6ga3QWGYPKAXfFv11FSk1Kn7vqYF70bmdl+RLG+ft/FQ0Sc@vger.kernel.org, AJvYcCXMbL+LehLmsLp3NRaW043Xs6yfE5/fMWwln8WGm42ln44YrJwvqevLhVDjSjQzYM/O1kI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhfnzbWv4146UK9fZoCbq12Ri4Lx21+M2E7M87d4axe6x976y5
+	rhYXDi1WR04M9nGm5hEYx236T8+X1CAghHa7yTwaPpK+rRT7e6f0wiUsvNHKHrCnqrtV9tTChN0
+	V66bsK3SpHhy5zQDoyxnhMdRa6PY=
+X-Gm-Gg: ASbGncvhpXdXkmbRtpGTViKawpv8rCyIEZNt++CLA7mIvgMongPg4qNIIgyc/3SoNWs
+	JZX1CQnHTuLdJMNRAR8Vy45SiqsnMGtk+p8XELQJHfwpWcF3dPLDF39MsnrX2ObPy7K49EGM=
+X-Google-Smtp-Source: AGHT+IF4vz9ZMNWiLlURtMBrw7f64+VQaaApf4FQsQ85yq8rGSoIhlhaKmw+1l1LVh0uOeuQn3pwG9KU0hl60Rc/heo=
+X-Received: by 2002:a5d:5889:0:b0:38f:24f9:8bac with SMTP id
+ ffacd0b85a97d-38f24f9912fmr1885857f8f.23.1739440569419; Thu, 13 Feb 2025
+ 01:56:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250210133002.883422-7-shaw.leon@gmail.com> <20250213070533.9926-1-kuniyu@amazon.com>
+ <CABAhCOT8sCV4RgBWwfYjCw2xoZbdiYG8yuWReigx-u5DibTaiA@mail.gmail.com>
+In-Reply-To: <CABAhCOT8sCV4RgBWwfYjCw2xoZbdiYG8yuWReigx-u5DibTaiA@mail.gmail.com>
+From: Xiao Liang <shaw.leon@gmail.com>
+Date: Thu, 13 Feb 2025 17:55:32 +0800
+X-Gm-Features: AWEUYZkW9l6r7KSPGBGbQx_PCRCw6eQRHHUgG_KYRCauok2SpPFULcU0b728Vqw
+Message-ID: <CABAhCORgi7Jqu=Aigs6Fc8ewG5OshFvcunye03R43C+Z0ojZyw@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 06/11] net: ipv6: Use link netns in newlink()
+ of rtnl_link_ops
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: alex.aring@gmail.com, andrew+netdev@lunn.ch, 
+	b.a.t.m.a.n@lists.open-mesh.org, bpf@vger.kernel.org, bridge@lists.linux.dev, 
+	davem@davemloft.net, donald.hunter@gmail.com, dsahern@kernel.org, 
+	edumazet@google.com, herbert@gondor.apana.org.au, horms@kernel.org, 
+	kuba@kernel.org, linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-ppp@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-wpan@vger.kernel.org, miquel.raynal@bootlin.com, netdev@vger.kernel.org, 
+	osmocom-net-gprs@lists.osmocom.org, pabeni@redhat.com, shuah@kernel.org, 
+	stefan@datenfreihafen.org, steffen.klassert@secunet.com, 
+	wireguard@lists.zx2c4.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since the vendor driver is claimed to measure 'tssi_alimk_time' of
-'struct rtw89_tssi_info' in microseconds, adjust rtw8852b{t}-specific
-'_tssi_alimentk()' to not mess the former with nanoseconds and print
-both per-call and accumulated times. Compile tested only.
+On Thu, Feb 13, 2025 at 4:37=E2=80=AFPM Xiao Liang <shaw.leon@gmail.com> wr=
+ote:
+>
+> On Thu, Feb 13, 2025 at 3:05=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.=
+com> wrote:
+> >
+> [...]
+> > > diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+> > > index 863852abe8ea..108600dc716f 100644
+> > > --- a/net/ipv6/ip6_gre.c
+> > > +++ b/net/ipv6/ip6_gre.c
+> > > @@ -1498,7 +1498,8 @@ static int ip6gre_tunnel_init_common(struct net=
+_device *dev)
+> > >       tunnel =3D netdev_priv(dev);
+> > >
+> > >       tunnel->dev =3D dev;
+> > > -     tunnel->net =3D dev_net(dev);
+> > > +     if (!tunnel->net)
+> > > +             tunnel->net =3D dev_net(dev);
+> >
+> > Same question as patch 5 for here and other parts.
+> > Do we need this check and assignment ?
+> >
+> > ip6gre_newlink_common
+> > -> nt->net =3D dev_net(dev)
+> > -> register_netdevice
+> >   -> ndo_init / ip6gre_tunnel_init()
+> >     -> ip6gre_tunnel_init_common
+> >       -> tunnel->net =3D dev_net(dev)
+>
+> Will remove this line.
 
-Fixes: 7f18a70d7b4d ("wifi: rtw89: 8852b: rfk: add TSSI")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v4: adjust declarations and commit message
-v3: do not mess s64 vs. ktime_t and print the former as signed
-v2: actually use microseconds and print both times
----
- drivers/net/wireless/realtek/rtw89/core.h          |  2 +-
- drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c  | 13 +++++++------
- drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c | 13 +++++++------
- 3 files changed, 15 insertions(+), 13 deletions(-)
+However, fb tunnel of ip6_tunnel, ip6_vti and sit can have
+tunnel->net =3D=3D NULL here. Take ip6_tunnel for example:
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index b3fdd8eded21..eb2a6b90c940 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -5141,7 +5141,7 @@ struct rtw89_tssi_info {
- 	u32 alignment_backup_by_ch[RF_PATH_MAX][TSSI_MAX_CH_NUM][TSSI_ALIMK_VALUE_NUM];
- 	u32 alignment_value[RF_PATH_MAX][TSSI_ALIMK_MAX][TSSI_ALIMK_VALUE_NUM];
- 	bool alignment_done[RF_PATH_MAX][TSSI_ALIMK_MAX];
--	u32 tssi_alimk_time;
-+	u64 tssi_alimk_time;
- };
- 
- struct rtw89_power_trim_info {
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-index ef47a5facc83..fbf82d42687b 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-@@ -3585,9 +3585,10 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 	u8 ch_idx = _tssi_ch_to_idx(rtwdev, channel);
- 	struct rtw8852bx_bb_tssi_bak tssi_bak;
- 	s32 aliment_diff, tssi_cw_default;
--	u32 start_time, finish_time;
- 	u32 bb_reg_backup[8] = {0};
-+	ktime_t start_time;
- 	const s16 *power;
-+	s64 this_time;
- 	u8 band;
- 	bool ok;
- 	u32 tmp;
-@@ -3613,7 +3614,7 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 		return;
- 	}
- 
--	start_time = ktime_get_ns();
-+	start_time = ktime_get();
- 
- 	if (chan->band_type == RTW89_BAND_2G)
- 		power = power_2g;
-@@ -3738,12 +3739,12 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 	rtw8852bx_bb_restore_tssi(rtwdev, phy, &tssi_bak);
- 	rtw8852bx_bb_tx_mode_switch(rtwdev, phy, 0);
- 
--	finish_time = ktime_get_ns();
--	tssi_info->tssi_alimk_time += finish_time - start_time;
-+	this_time = ktime_us_delta(ktime_get(), start_time);
-+	tssi_info->tssi_alimk_time += this_time;
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
--		    "[TSSI PA K] %s processing time = %d ms\n", __func__,
--		    tssi_info->tssi_alimk_time);
-+		    "[TSSI PA K] %s processing time = %lld us (acc = %llu us)\n",
-+		    __func__, this_time, tssi_info->tssi_alimk_time);
- }
- 
- void rtw8852b_dpk_init(struct rtw89_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-index 336a83e1d46b..6e6889eea9a0 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-@@ -3663,9 +3663,10 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 	u8 ch_idx = _tssi_ch_to_idx(rtwdev, channel);
- 	struct rtw8852bx_bb_tssi_bak tssi_bak;
- 	s32 aliment_diff, tssi_cw_default;
--	u32 start_time, finish_time;
- 	u32 bb_reg_backup[8] = {};
-+	ktime_t start_time;
- 	const s16 *power;
-+	s64 this_time;
- 	u8 band;
- 	bool ok;
- 	u32 tmp;
-@@ -3675,7 +3676,7 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 		    "======> %s   channel=%d   path=%d\n", __func__, channel,
- 		    path);
- 
--	start_time = ktime_get_ns();
-+	start_time = ktime_get();
- 
- 	if (chan->band_type == RTW89_BAND_2G)
- 		power = power_2g;
-@@ -3802,12 +3803,12 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 	rtw8852bx_bb_restore_tssi(rtwdev, phy, &tssi_bak);
- 	rtw8852bx_bb_tx_mode_switch(rtwdev, phy, 0);
- 
--	finish_time = ktime_get_ns();
--	tssi_info->tssi_alimk_time += finish_time - start_time;
-+	this_time = ktime_us_delta(ktime_get(), start_time);
-+	tssi_info->tssi_alimk_time += this_time;
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
--		    "[TSSI PA K] %s processing time = %d ms\n", __func__,
--		    tssi_info->tssi_alimk_time);
-+		    "[TSSI PA K] %s processing time = %lld us (acc = %llu us)\n",
-+		    __func__, this_time, tssi_info->tssi_alimk_time);
- }
- 
- void rtw8852bt_dpk_init(struct rtw89_dev *rtwdev)
--- 
-2.48.1
+ip6_tnl_init_net()
+    -> ip6_fb_tnl_dev_init()
+    -> register_netdev()
+        -> register_netdevice()
+            -> ip6_tnl_dev_init()
 
+This code path (including ip6_fb_tnl_dev_init()) doesn't set
+tunnel->net. But for ip6_gre, ip6gre_fb_tunnel_init() does.
 
