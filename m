@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-18997-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18996-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8DCA3738D
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:45:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E40A3738B
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:45:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 533D41888B0C
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:45:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1904A16CF47
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA89B194A60;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD6418DB3B;
 	Sun, 16 Feb 2025 09:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bdbS7Oy5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e+gIOkNj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A1819340D
-	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A356189916
+	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739699052; cv=none; b=POcTHomumobzjBIdNoKbjQ3+jeXqmX9HxvNi7YGbTdpEgB7/ljYnggsDkckrlP4fgSJr02Uj9P9SdQ5n65FTkdeao3oxV6wnFDDAf4v64f+kEyOpxvo0xUagTL3YkNE04VMW1GDjXDwOn76nCe0HKTQudLECVqYofxYOXVdgl98=
+	t=1739699052; cv=none; b=MzHI0L1Bxwsc81hI3ok4Nvcn88MHwWv/4q+HjbqdFlukqGnilxLSbVnsLIhkyomwbSwXAVbn1fxWuMSiRW28WKm37gBgbug6C2yP1srUEVQlL2ZXpp1aooM7ALfi44Qjfb33D1Ze1UJ/P9vBebXYYHdz7LTGqRBT7NHcNQ9YDyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739699052; c=relaxed/simple;
-	bh=Fg/2ahOqxk34lyQ6tMFaNBKxyWVcO29QFGcGnkr2zG8=;
+	bh=uGJrvNsS1XzXBC+WNxy+SWa9mzJ6x11qp0Bl0Zt/NyE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p4MDgo3FxiV916TsnDjfCEpHJnKfKt65onjrsXT5QX15ya/bJpTjEjoW956E04GFh5mn/oeys/sfH9mxdutTko3iLO9Cu7Ui+Yrxk5SGlukH9kwplOlwRFeIAcwH7xvIUkOiaxqfU2Fr/M0GBbA+GY70c9fj0C56vtFJhNImS/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bdbS7Oy5; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=OvPDhU+q1KteqMJcb0SwaLVzZ78fAD5vcXrtsLsBf5kaA+ibYHQfK6k+is+c3gdViXSUWWJELUlLADbJKQN61EhjEE+vDfjPtc11xAFFuNSRvjFYkMyAkL9VlsaOogryt12Kouttm1Nd0Y3u3O5PEUtMZ7WlBLzufJgs8BAGiI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e+gIOkNj; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739699048; x=1771235048;
+  t=1739699049; x=1771235049;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Fg/2ahOqxk34lyQ6tMFaNBKxyWVcO29QFGcGnkr2zG8=;
-  b=bdbS7Oy57LWAIJPHE1bDw2X1FmBTgy+vq7kvvMbrOaVvipG3oYICFKbn
-   opZVB5AR6EgygTlMKfvqo20ucq7TFpGR4UthVK34gMGlQWp/LTD8m1sqZ
-   3B3uY2L5w+gcUzi0PQZ35N2comr0t3/r/T1ekBArv/18IFXqCMZMo/8sU
-   jAwmvtuNH7a3LenImSmdKK+ROSiJCFF4hS48mKAdFpvnmZzK4ZhUD4yyp
-   AuM4991B/XUWCOLGdrznW+7qO/mkiVTOgnQHkzMm7gRL2egUquqdGrWKX
-   RFriXiacgQy40YtfXaC37NhffoIXdqPe2YE/0SIre603tcC73q11czUC1
+  bh=uGJrvNsS1XzXBC+WNxy+SWa9mzJ6x11qp0Bl0Zt/NyE=;
+  b=e+gIOkNjOzo6njBNPLZ/ymhEcRU5EGDLrFPQ4f5KdlxKGoIp6rwzcrRQ
+   hYh780z5tSaU/UPIEZdWKXWpx/Lvde5rBKy4esC6i8oqEq3cC3yBQWfm/
+   w3+XBKmbYEC0wtBWS6zxR3kYSs9AIKpSXMWIqKLQCy0u+Qm4xcacG/P7R
+   Uv6O8EPN0Bchuf4U9Aolsxpb9SfBDGrqQPZhI2GzI3WUTiFUKlGeAGTxN
+   DOM0Jora4ELCQ9A3PEW8UvxjQ7c7fVOiXUwAv0owDc209MojsWhEKXUlM
+   aXklRXrfCQNmeJ/8NvZAjnjvxZTJZEpZf2iLI0tEmgboQicM35rz6hhdJ
    A==;
-X-CSE-ConnectionGUID: DNO9LDpOS5273Mlhruj0eg==
-X-CSE-MsgGUID: OEeDmqf9Ti64yitAkZPSIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323406"
+X-CSE-ConnectionGUID: /GsqQC9STGCHt8pidH2O8w==
+X-CSE-MsgGUID: JD9jKE42QHykJn3VzqtGZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323408"
 X-IronPort-AV: E=Sophos;i="6.13,290,1732608000"; 
-   d="scan'208";a="40323406"
+   d="scan'208";a="40323408"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:08 -0800
-X-CSE-ConnectionGUID: dzlgn7/qSGmKtxoKM4TzwQ==
-X-CSE-MsgGUID: XZmBwAMdRlaPesKwIBDBcg==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:09 -0800
+X-CSE-ConnectionGUID: K+WvhN09SvmMTj6BwPF34Q==
+X-CSE-MsgGUID: QXptdUVvRhKCKyYvVWJhMg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118785257"
+   d="scan'208";a="118785259"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:07 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:08 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 25/42] wifi: iwlwifi: mld: add file rx.h/c
-Date: Sun, 16 Feb 2025 11:43:04 +0200
-Message-Id: <20250216111648.957eccd97575.I25ecc0e096d1d6091b4bb9e23b7a4ea28257620a@changeid>
+Subject: [PATCH 26/42] wifi: iwlwifi: mld: add file scan.h/c
+Date: Sun, 16 Feb 2025 11:43:05 +0200
+Message-Id: <20250216111648.d0570465ca1e.Ic9e29a24ce59bba1e524b5bf243b21236c074a9d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
 References: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
@@ -76,2160 +76,2169 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-these files are handling RX.
+these files are implementing scan.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/rx.c | 2060 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/rx.h |   72 +
- 2 files changed, 2132 insertions(+)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/rx.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/rx.h
+ drivers/net/wireless/intel/iwlwifi/mld/scan.c | 2006 +++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mld/scan.h |  135 ++
+ 2 files changed, 2141 insertions(+)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/scan.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/scan.h
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/rx.c b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.c b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
 new file mode 100644
-index 000000000000..c4f189bcece2
+index 000000000000..5f4ede92028b
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
-@@ -0,0 +1,2060 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
+@@ -0,0 +1,2006 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
 + * Copyright (C) 2024-2025 Intel Corporation
 + */
-+
-+#include <net/mac80211.h>
-+#include <kunit/static_stub.h>
++#include <linux/crc32.h>
 +
 +#include "mld.h"
-+#include "sta.h"
-+#include "agg.h"
-+#include "rx.h"
++#include "scan.h"
 +#include "hcmd.h"
 +#include "iface.h"
-+#include "time_sync.h"
-+#include "fw/dbg.h"
-+#include "fw/api/rx.h"
++#include "phy.h"
++#include "mlo.h"
 +
-+/* stores relevant PHY data fields extracted from iwl_rx_mpdu_desc */
-+struct iwl_mld_rx_phy_data {
-+	enum iwl_rx_phy_info_type info_type;
-+	__le32 data0;
-+	__le32 data1;
-+	__le32 data2;
-+	__le32 data3;
-+	__le32 eht_data4;
-+	__le32 data5;
-+	__le16 data4;
-+	bool first_subframe;
-+	bool with_data;
-+	__le32 rx_vec[4];
-+	u32 rate_n_flags;
-+	u32 gp2_on_air_rise;
-+	u16 phy_info;
-+	u8 energy_a, energy_b;
-+	u8 channel;
++#include "fw/api/scan.h"
++#include "fw/dbg.h"
++
++#define IWL_SCAN_DWELL_ACTIVE 10
++#define IWL_SCAN_DWELL_PASSIVE 110
++#define IWL_SCAN_NUM_OF_FRAGS 3
++
++/* adaptive dwell max budget time [TU] for full scan */
++#define IWL_SCAN_ADWELL_MAX_BUDGET_FULL_SCAN 300
++
++/* adaptive dwell max budget time [TU] for directed scan */
++#define IWL_SCAN_ADWELL_MAX_BUDGET_DIRECTED_SCAN 100
++
++/* adaptive dwell default high band APs number */
++#define IWL_SCAN_ADWELL_DEFAULT_HB_N_APS 8
++
++/* adaptive dwell default low band APs number */
++#define IWL_SCAN_ADWELL_DEFAULT_LB_N_APS 2
++
++/* adaptive dwell default APs number for P2P social channels (1, 6, 11) */
++#define IWL_SCAN_ADWELL_DEFAULT_N_APS_SOCIAL 10
++
++/* adaptive dwell number of APs override for P2P friendly GO channels */
++#define IWL_SCAN_ADWELL_N_APS_GO_FRIENDLY 10
++
++/* adaptive dwell number of APs override for P2P social channels */
++#define IWL_SCAN_ADWELL_N_APS_SOCIAL_CHS 2
++
++/* adaptive dwell number of APs override mask for p2p friendly GO */
++#define IWL_SCAN_ADWELL_N_APS_GO_FRIENDLY_BIT BIT(20)
++
++/* adaptive dwell number of APs override mask for social channels */
++#define IWL_SCAN_ADWELL_N_APS_SOCIAL_CHS_BIT BIT(21)
++
++#define SCAN_TIMEOUT_MSEC (30000 * HZ)
++
++/* minimal number of 2GHz and 5GHz channels in the regular scan request */
++#define IWL_MLD_6GHZ_PASSIVE_SCAN_MIN_CHANS 4
++
++enum iwl_mld_scan_type {
++	IWL_SCAN_TYPE_NOT_SET,
++	IWL_SCAN_TYPE_UNASSOC,
++	IWL_SCAN_TYPE_WILD,
++	IWL_SCAN_TYPE_MILD,
++	IWL_SCAN_TYPE_FRAGMENTED,
++	IWL_SCAN_TYPE_FAST_BALANCE,
 +};
 +
-+static void
-+iwl_mld_fill_phy_data(struct iwl_rx_mpdu_desc *desc,
-+		      struct iwl_mld_rx_phy_data *phy_data)
++struct iwl_mld_scan_timing_params {
++	u32 suspend_time;
++	u32 max_out_time;
++};
++
++static const struct iwl_mld_scan_timing_params scan_timing[] = {
++	[IWL_SCAN_TYPE_UNASSOC] = {
++		.suspend_time = 0,
++		.max_out_time = 0,
++	},
++	[IWL_SCAN_TYPE_WILD] = {
++		.suspend_time = 30,
++		.max_out_time = 120,
++	},
++	[IWL_SCAN_TYPE_MILD] = {
++		.suspend_time = 120,
++		.max_out_time = 120,
++	},
++	[IWL_SCAN_TYPE_FRAGMENTED] = {
++		.suspend_time = 95,
++		.max_out_time = 44,
++	},
++	[IWL_SCAN_TYPE_FAST_BALANCE] = {
++		.suspend_time = 30,
++		.max_out_time = 37,
++	},
++};
++
++struct iwl_mld_scan_params {
++	enum iwl_mld_scan_type type;
++	u32 n_channels;
++	u16 delay;
++	int n_ssids;
++	struct cfg80211_ssid *ssids;
++	struct ieee80211_channel **channels;
++	u32 flags;
++	u8 *mac_addr;
++	u8 *mac_addr_mask;
++	bool no_cck;
++	bool pass_all;
++	int n_match_sets;
++	struct iwl_scan_probe_req preq;
++	struct cfg80211_match_set *match_sets;
++	int n_scan_plans;
++	struct cfg80211_sched_scan_plan *scan_plans;
++	bool iter_notif;
++	bool respect_p2p_go;
++	u8 fw_link_id;
++	struct cfg80211_scan_6ghz_params *scan_6ghz_params;
++	u32 n_6ghz_params;
++	bool scan_6ghz;
++	bool enable_6ghz_passive;
++	u8 bssid[ETH_ALEN] __aligned(2);
++};
++
++struct iwl_mld_scan_respect_p2p_go_iter_data {
++	struct ieee80211_vif *current_vif;
++	bool p2p_go;
++};
++
++static void iwl_mld_scan_respect_p2p_go_iter(void *_data, u8 *mac,
++					     struct ieee80211_vif *vif)
 +{
-+	phy_data->phy_info = le16_to_cpu(desc->phy_info);
-+	phy_data->rate_n_flags = le32_to_cpu(desc->v3.rate_n_flags);
-+	phy_data->gp2_on_air_rise = le32_to_cpu(desc->v3.gp2_on_air_rise);
-+	phy_data->channel = desc->v3.channel;
-+	phy_data->energy_a = desc->v3.energy_a;
-+	phy_data->energy_b = desc->v3.energy_b;
-+	phy_data->data0 = desc->v3.phy_data0;
-+	phy_data->data1 = desc->v3.phy_data1;
-+	phy_data->data2 = desc->v3.phy_data2;
-+	phy_data->data3 = desc->v3.phy_data3;
-+	phy_data->data4 = desc->phy_data4;
-+	phy_data->eht_data4 = desc->phy_eht_data4;
-+	phy_data->data5 = desc->v3.phy_data5;
-+	phy_data->with_data = true;
-+}
++	struct iwl_mld_scan_respect_p2p_go_iter_data *data = _data;
 +
-+static inline int iwl_mld_check_pn(struct iwl_mld *mld, struct sk_buff *skb,
-+				   int queue, struct ieee80211_sta *sta)
-+{
-+	struct ieee80211_hdr *hdr = (void *)skb_mac_header(skb);
-+	struct ieee80211_rx_status *stats = IEEE80211_SKB_RXCB(skb);
-+	struct iwl_mld_sta *mld_sta;
-+	struct iwl_mld_ptk_pn *ptk_pn;
-+	int res;
-+	u8 tid, keyidx;
-+	u8 pn[IEEE80211_CCMP_PN_LEN];
-+	u8 *extiv;
-+
-+	/* multicast and non-data only arrives on default queue; avoid checking
-+	 * for default queue - we don't want to replicate all the logic that's
-+	 * necessary for checking the PN on fragmented frames, leave that
-+	 * to mac80211
-+	 */
-+	if (queue == 0 || !ieee80211_is_data(hdr->frame_control) ||
-+	    is_multicast_ether_addr(hdr->addr1))
-+		return 0;
-+
-+	if (!(stats->flag & RX_FLAG_DECRYPTED))
-+		return 0;
-+
-+	/* if we are here - this for sure is either CCMP or GCMP */
-+	if (!sta) {
-+		IWL_DEBUG_DROP(mld,
-+			       "expected hw-decrypted unicast frame for station\n");
-+		return -1;
-+	}
-+
-+	mld_sta = iwl_mld_sta_from_mac80211(sta);
-+
-+	extiv = (u8 *)hdr + ieee80211_hdrlen(hdr->frame_control);
-+	keyidx = extiv[3] >> 6;
-+
-+	ptk_pn = rcu_dereference(mld_sta->ptk_pn[keyidx]);
-+	if (!ptk_pn)
-+		return -1;
-+
-+	if (ieee80211_is_data_qos(hdr->frame_control))
-+		tid = ieee80211_get_tid(hdr);
-+	else
-+		tid = 0;
-+
-+	/* we don't use HCCA/802.11 QoS TSPECs, so drop such frames */
-+	if (tid >= IWL_MAX_TID_COUNT)
-+		return -1;
-+
-+	/* load pn */
-+	pn[0] = extiv[7];
-+	pn[1] = extiv[6];
-+	pn[2] = extiv[5];
-+	pn[3] = extiv[4];
-+	pn[4] = extiv[1];
-+	pn[5] = extiv[0];
-+
-+	res = memcmp(pn, ptk_pn->q[queue].pn[tid], IEEE80211_CCMP_PN_LEN);
-+	if (res < 0)
-+		return -1;
-+	if (!res && !(stats->flag & RX_FLAG_ALLOW_SAME_PN))
-+		return -1;
-+
-+	memcpy(ptk_pn->q[queue].pn[tid], pn, IEEE80211_CCMP_PN_LEN);
-+	stats->flag |= RX_FLAG_PN_VALIDATED;
-+
-+	return 0;
-+}
-+
-+/* iwl_mld_pass_packet_to_mac80211 - passes the packet for mac80211 */
-+void iwl_mld_pass_packet_to_mac80211(struct iwl_mld *mld,
-+				     struct napi_struct *napi,
-+				     struct sk_buff *skb, int queue,
-+				     struct ieee80211_sta *sta)
-+{
-+	KUNIT_STATIC_STUB_REDIRECT(iwl_mld_pass_packet_to_mac80211,
-+				   mld, napi, skb, queue, sta);
-+
-+	if (unlikely(iwl_mld_check_pn(mld, skb, queue, sta))) {
-+		kfree_skb(skb);
++	/* exclude the given vif */
++	if (vif == data->current_vif)
 +		return;
-+	}
 +
-+	ieee80211_rx_napi(mld->hw, sta, skb, napi);
-+}
-+EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_mld_pass_packet_to_mac80211);
-+
-+static void iwl_mld_fill_signal(struct iwl_mld *mld,
-+				struct ieee80211_rx_status *rx_status,
-+				struct iwl_mld_rx_phy_data *phy_data)
-+{
-+	u32 rate_n_flags = phy_data->rate_n_flags;
-+	int energy_a = phy_data->energy_a;
-+	int energy_b = phy_data->energy_b;
-+	int max_energy;
-+
-+	energy_a = energy_a ? -energy_a : S8_MIN;
-+	energy_b = energy_b ? -energy_b : S8_MIN;
-+	max_energy = max(energy_a, energy_b);
-+
-+	IWL_DEBUG_STATS(mld, "energy in A %d B %d, and max %d\n",
-+			energy_a, energy_b, max_energy);
-+
-+	rx_status->signal = max_energy;
-+	rx_status->chains =
-+	    (rate_n_flags & RATE_MCS_ANT_AB_MSK) >> RATE_MCS_ANT_POS;
-+	rx_status->chain_signal[0] = energy_a;
-+	rx_status->chain_signal[1] = energy_b;
++	/* TODO: CDB check the band of the GO */
++	if (ieee80211_vif_type_p2p(vif) == NL80211_IFTYPE_P2P_GO &&
++	    iwl_mld_vif_from_mac80211(vif)->ap_ibss_active)
++		data->p2p_go = true;
 +}
 +
-+static void
-+iwl_mld_decode_he_phy_ru_alloc(struct iwl_mld_rx_phy_data *phy_data,
-+			       struct ieee80211_radiotap_he *he,
-+			       struct ieee80211_radiotap_he_mu *he_mu,
-+			       struct ieee80211_rx_status *rx_status)
++static bool iwl_mld_get_respect_p2p_go(struct iwl_mld *mld,
++				       struct ieee80211_vif *vif,
++				       bool low_latency)
 +{
-+	/* Unfortunately, we have to leave the mac80211 data
-+	 * incorrect for the case that we receive an HE-MU
-+	 * transmission and *don't* have the HE phy data (due
-+	 * to the bits being used for TSF). This shouldn't
-+	 * happen though as management frames where we need
-+	 * the TSF/timers are not be transmitted in HE-MU.
-+	 */
-+	u8 ru = le32_get_bits(phy_data->data1, IWL_RX_PHY_DATA1_HE_RU_ALLOC_MASK);
-+	u32 rate_n_flags = phy_data->rate_n_flags;
-+	u32 he_type = rate_n_flags & RATE_MCS_HE_TYPE_MSK;
-+	u8 offs = 0;
-+
-+	rx_status->bw = RATE_INFO_BW_HE_RU;
-+
-+	he->data1 |= cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA1_BW_RU_ALLOC_KNOWN);
-+
-+	switch (ru) {
-+	case 0 ... 36:
-+		rx_status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_26;
-+		offs = ru;
-+		break;
-+	case 37 ... 52:
-+		rx_status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_52;
-+		offs = ru - 37;
-+		break;
-+	case 53 ... 60:
-+		rx_status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_106;
-+		offs = ru - 53;
-+		break;
-+	case 61 ... 64:
-+		rx_status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_242;
-+		offs = ru - 61;
-+		break;
-+	case 65 ... 66:
-+		rx_status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_484;
-+		offs = ru - 65;
-+		break;
-+	case 67:
-+		rx_status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_996;
-+		break;
-+	case 68:
-+		rx_status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_2x996;
-+		break;
-+	}
-+	he->data2 |= le16_encode_bits(offs,
-+				      IEEE80211_RADIOTAP_HE_DATA2_RU_OFFSET);
-+	he->data2 |= cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA2_PRISEC_80_KNOWN |
-+				 IEEE80211_RADIOTAP_HE_DATA2_RU_OFFSET_KNOWN);
-+	if (phy_data->data1 & cpu_to_le32(IWL_RX_PHY_DATA1_HE_RU_ALLOC_SEC80))
-+		he->data2 |=
-+			cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA2_PRISEC_80_SEC);
-+
-+#define CHECK_BW(bw) \
-+	BUILD_BUG_ON(IEEE80211_RADIOTAP_HE_MU_FLAGS2_BW_FROM_SIG_A_BW_ ## bw ## MHZ != \
-+		     RATE_MCS_CHAN_WIDTH_##bw >> RATE_MCS_CHAN_WIDTH_POS); \
-+	BUILD_BUG_ON(IEEE80211_RADIOTAP_HE_DATA6_TB_PPDU_BW_ ## bw ## MHZ != \
-+		     RATE_MCS_CHAN_WIDTH_##bw >> RATE_MCS_CHAN_WIDTH_POS)
-+	CHECK_BW(20);
-+	CHECK_BW(40);
-+	CHECK_BW(80);
-+	CHECK_BW(160);
-+
-+	if (he_mu)
-+		he_mu->flags2 |=
-+			le16_encode_bits(u32_get_bits(rate_n_flags,
-+						      RATE_MCS_CHAN_WIDTH_MSK),
-+					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_BW_FROM_SIG_A_BW);
-+	else if (he_type == RATE_MCS_HE_TYPE_TRIG)
-+		he->data6 |=
-+			cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA6_TB_PPDU_BW_KNOWN) |
-+			le16_encode_bits(u32_get_bits(rate_n_flags,
-+						      RATE_MCS_CHAN_WIDTH_MSK),
-+					 IEEE80211_RADIOTAP_HE_DATA6_TB_PPDU_BW);
-+}
-+
-+static void
-+iwl_mld_decode_he_mu_ext(struct iwl_mld_rx_phy_data *phy_data,
-+			 struct ieee80211_radiotap_he_mu *he_mu)
-+{
-+	u32 phy_data2 = le32_to_cpu(phy_data->data2);
-+	u32 phy_data3 = le32_to_cpu(phy_data->data3);
-+	u16 phy_data4 = le16_to_cpu(phy_data->data4);
-+	u32 rate_n_flags = phy_data->rate_n_flags;
-+
-+	if (u32_get_bits(phy_data4, IWL_RX_PHY_DATA4_HE_MU_EXT_CH1_CRC_OK)) {
-+		he_mu->flags1 |=
-+			cpu_to_le16(IEEE80211_RADIOTAP_HE_MU_FLAGS1_CH1_RU_KNOWN |
-+				    IEEE80211_RADIOTAP_HE_MU_FLAGS1_CH1_CTR_26T_RU_KNOWN);
-+
-+		he_mu->flags1 |=
-+			le16_encode_bits(u32_get_bits(phy_data4,
-+						      IWL_RX_PHY_DATA4_HE_MU_EXT_CH1_CTR_RU),
-+					 IEEE80211_RADIOTAP_HE_MU_FLAGS1_CH1_CTR_26T_RU);
-+
-+		he_mu->ru_ch1[0] = u32_get_bits(phy_data2,
-+						IWL_RX_PHY_DATA2_HE_MU_EXT_CH1_RU0);
-+		he_mu->ru_ch1[1] = u32_get_bits(phy_data3,
-+						IWL_RX_PHY_DATA3_HE_MU_EXT_CH1_RU1);
-+		he_mu->ru_ch1[2] = u32_get_bits(phy_data2,
-+						IWL_RX_PHY_DATA2_HE_MU_EXT_CH1_RU2);
-+		he_mu->ru_ch1[3] = u32_get_bits(phy_data3,
-+						IWL_RX_PHY_DATA3_HE_MU_EXT_CH1_RU3);
-+	}
-+
-+	if (u32_get_bits(phy_data4, IWL_RX_PHY_DATA4_HE_MU_EXT_CH2_CRC_OK) &&
-+	    (rate_n_flags & RATE_MCS_CHAN_WIDTH_MSK) != RATE_MCS_CHAN_WIDTH_20) {
-+		he_mu->flags1 |=
-+			cpu_to_le16(IEEE80211_RADIOTAP_HE_MU_FLAGS1_CH2_RU_KNOWN |
-+				    IEEE80211_RADIOTAP_HE_MU_FLAGS1_CH2_CTR_26T_RU_KNOWN);
-+
-+		he_mu->flags2 |=
-+			le16_encode_bits(u32_get_bits(phy_data4,
-+						      IWL_RX_PHY_DATA4_HE_MU_EXT_CH2_CTR_RU),
-+					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_CH2_CTR_26T_RU);
-+
-+		he_mu->ru_ch2[0] = u32_get_bits(phy_data2,
-+						IWL_RX_PHY_DATA2_HE_MU_EXT_CH2_RU0);
-+		he_mu->ru_ch2[1] = u32_get_bits(phy_data3,
-+						IWL_RX_PHY_DATA3_HE_MU_EXT_CH2_RU1);
-+		he_mu->ru_ch2[2] = u32_get_bits(phy_data2,
-+						IWL_RX_PHY_DATA2_HE_MU_EXT_CH2_RU2);
-+		he_mu->ru_ch2[3] = u32_get_bits(phy_data3,
-+						IWL_RX_PHY_DATA3_HE_MU_EXT_CH2_RU3);
-+	}
-+}
-+
-+static void
-+iwl_mld_decode_he_phy_data(struct iwl_mld_rx_phy_data *phy_data,
-+			   struct ieee80211_radiotap_he *he,
-+			   struct ieee80211_radiotap_he_mu *he_mu,
-+			   struct ieee80211_rx_status *rx_status,
-+			   int queue)
-+{
-+	switch (phy_data->info_type) {
-+	case IWL_RX_PHY_INFO_TYPE_NONE:
-+	case IWL_RX_PHY_INFO_TYPE_CCK:
-+	case IWL_RX_PHY_INFO_TYPE_OFDM_LGCY:
-+	case IWL_RX_PHY_INFO_TYPE_HT:
-+	case IWL_RX_PHY_INFO_TYPE_VHT_SU:
-+	case IWL_RX_PHY_INFO_TYPE_VHT_MU:
-+	case IWL_RX_PHY_INFO_TYPE_EHT_MU:
-+	case IWL_RX_PHY_INFO_TYPE_EHT_TB:
-+	case IWL_RX_PHY_INFO_TYPE_EHT_MU_EXT:
-+	case IWL_RX_PHY_INFO_TYPE_EHT_TB_EXT:
-+		return;
-+	case IWL_RX_PHY_INFO_TYPE_HE_TB_EXT:
-+		he->data1 |= cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA1_SPTL_REUSE_KNOWN |
-+					 IEEE80211_RADIOTAP_HE_DATA1_SPTL_REUSE2_KNOWN |
-+					 IEEE80211_RADIOTAP_HE_DATA1_SPTL_REUSE3_KNOWN |
-+					 IEEE80211_RADIOTAP_HE_DATA1_SPTL_REUSE4_KNOWN);
-+		he->data4 |= le16_encode_bits(le32_get_bits(phy_data->data2,
-+							    IWL_RX_PHY_DATA2_HE_TB_EXT_SPTL_REUSE1),
-+					      IEEE80211_RADIOTAP_HE_DATA4_TB_SPTL_REUSE1);
-+		he->data4 |= le16_encode_bits(le32_get_bits(phy_data->data2,
-+							    IWL_RX_PHY_DATA2_HE_TB_EXT_SPTL_REUSE2),
-+					      IEEE80211_RADIOTAP_HE_DATA4_TB_SPTL_REUSE2);
-+		he->data4 |= le16_encode_bits(le32_get_bits(phy_data->data2,
-+							    IWL_RX_PHY_DATA2_HE_TB_EXT_SPTL_REUSE3),
-+					      IEEE80211_RADIOTAP_HE_DATA4_TB_SPTL_REUSE3);
-+		he->data4 |= le16_encode_bits(le32_get_bits(phy_data->data2,
-+							    IWL_RX_PHY_DATA2_HE_TB_EXT_SPTL_REUSE4),
-+					      IEEE80211_RADIOTAP_HE_DATA4_TB_SPTL_REUSE4);
-+		fallthrough;
-+	case IWL_RX_PHY_INFO_TYPE_HE_SU:
-+	case IWL_RX_PHY_INFO_TYPE_HE_MU:
-+	case IWL_RX_PHY_INFO_TYPE_HE_MU_EXT:
-+	case IWL_RX_PHY_INFO_TYPE_HE_TB:
-+		/* HE common */
-+		he->data1 |= cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA1_LDPC_XSYMSEG_KNOWN |
-+					 IEEE80211_RADIOTAP_HE_DATA1_DOPPLER_KNOWN |
-+					 IEEE80211_RADIOTAP_HE_DATA1_BSS_COLOR_KNOWN);
-+		he->data2 |= cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA2_PRE_FEC_PAD_KNOWN |
-+					 IEEE80211_RADIOTAP_HE_DATA2_PE_DISAMBIG_KNOWN |
-+					 IEEE80211_RADIOTAP_HE_DATA2_TXOP_KNOWN |
-+					 IEEE80211_RADIOTAP_HE_DATA2_NUM_LTF_SYMS_KNOWN);
-+		he->data3 |= le16_encode_bits(le32_get_bits(phy_data->data0,
-+							    IWL_RX_PHY_DATA0_HE_BSS_COLOR_MASK),
-+					      IEEE80211_RADIOTAP_HE_DATA3_BSS_COLOR);
-+		if (phy_data->info_type != IWL_RX_PHY_INFO_TYPE_HE_TB &&
-+		    phy_data->info_type != IWL_RX_PHY_INFO_TYPE_HE_TB_EXT) {
-+			he->data1 |= cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA1_UL_DL_KNOWN);
-+			he->data3 |= le16_encode_bits(le32_get_bits(phy_data->data0,
-+							    IWL_RX_PHY_DATA0_HE_UPLINK),
-+						      IEEE80211_RADIOTAP_HE_DATA3_UL_DL);
-+		}
-+		he->data3 |= le16_encode_bits(le32_get_bits(phy_data->data0,
-+							    IWL_RX_PHY_DATA0_HE_LDPC_EXT_SYM),
-+					      IEEE80211_RADIOTAP_HE_DATA3_LDPC_XSYMSEG);
-+		he->data5 |= le16_encode_bits(le32_get_bits(phy_data->data0,
-+							    IWL_RX_PHY_DATA0_HE_PRE_FEC_PAD_MASK),
-+					      IEEE80211_RADIOTAP_HE_DATA5_PRE_FEC_PAD);
-+		he->data5 |= le16_encode_bits(le32_get_bits(phy_data->data0,
-+							    IWL_RX_PHY_DATA0_HE_PE_DISAMBIG),
-+					      IEEE80211_RADIOTAP_HE_DATA5_PE_DISAMBIG);
-+		he->data5 |= le16_encode_bits(le32_get_bits(phy_data->data1,
-+							    IWL_RX_PHY_DATA1_HE_LTF_NUM_MASK),
-+					      IEEE80211_RADIOTAP_HE_DATA5_NUM_LTF_SYMS);
-+		he->data6 |= le16_encode_bits(le32_get_bits(phy_data->data0,
-+							    IWL_RX_PHY_DATA0_HE_TXOP_DUR_MASK),
-+					      IEEE80211_RADIOTAP_HE_DATA6_TXOP);
-+		he->data6 |= le16_encode_bits(le32_get_bits(phy_data->data0,
-+							    IWL_RX_PHY_DATA0_HE_DOPPLER),
-+					      IEEE80211_RADIOTAP_HE_DATA6_DOPPLER);
-+		break;
-+	}
-+
-+	switch (phy_data->info_type) {
-+	case IWL_RX_PHY_INFO_TYPE_HE_MU_EXT:
-+	case IWL_RX_PHY_INFO_TYPE_HE_MU:
-+	case IWL_RX_PHY_INFO_TYPE_HE_SU:
-+		he->data1 |= cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA1_SPTL_REUSE_KNOWN);
-+		he->data4 |= le16_encode_bits(le32_get_bits(phy_data->data0,
-+							    IWL_RX_PHY_DATA0_HE_SPATIAL_REUSE_MASK),
-+					      IEEE80211_RADIOTAP_HE_DATA4_SU_MU_SPTL_REUSE);
-+		break;
-+	default:
-+		/* nothing here */
-+		break;
-+	}
-+
-+	switch (phy_data->info_type) {
-+	case IWL_RX_PHY_INFO_TYPE_HE_MU_EXT:
-+		he_mu->flags1 |=
-+			le16_encode_bits(le16_get_bits(phy_data->data4,
-+						       IWL_RX_PHY_DATA4_HE_MU_EXT_SIGB_DCM),
-+					 IEEE80211_RADIOTAP_HE_MU_FLAGS1_SIG_B_DCM);
-+		he_mu->flags1 |=
-+			le16_encode_bits(le16_get_bits(phy_data->data4,
-+						       IWL_RX_PHY_DATA4_HE_MU_EXT_SIGB_MCS_MASK),
-+					 IEEE80211_RADIOTAP_HE_MU_FLAGS1_SIG_B_MCS);
-+		he_mu->flags2 |=
-+			le16_encode_bits(le16_get_bits(phy_data->data4,
-+						       IWL_RX_PHY_DATA4_HE_MU_EXT_PREAMBLE_PUNC_TYPE_MASK),
-+					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_PUNC_FROM_SIG_A_BW);
-+		iwl_mld_decode_he_mu_ext(phy_data, he_mu);
-+		fallthrough;
-+	case IWL_RX_PHY_INFO_TYPE_HE_MU:
-+		he_mu->flags2 |=
-+			le16_encode_bits(le32_get_bits(phy_data->data1,
-+						       IWL_RX_PHY_DATA1_HE_MU_SIBG_SYM_OR_USER_NUM_MASK),
-+					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_SIG_B_SYMS_USERS);
-+		he_mu->flags2 |=
-+			le16_encode_bits(le32_get_bits(phy_data->data1,
-+						       IWL_RX_PHY_DATA1_HE_MU_SIGB_COMPRESSION),
-+					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_SIG_B_COMP);
-+		fallthrough;
-+	case IWL_RX_PHY_INFO_TYPE_HE_TB:
-+	case IWL_RX_PHY_INFO_TYPE_HE_TB_EXT:
-+		iwl_mld_decode_he_phy_ru_alloc(phy_data, he, he_mu, rx_status);
-+		break;
-+	case IWL_RX_PHY_INFO_TYPE_HE_SU:
-+		he->data1 |= cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA1_BEAM_CHANGE_KNOWN);
-+		he->data3 |= le16_encode_bits(le32_get_bits(phy_data->data0,
-+							    IWL_RX_PHY_DATA0_HE_BEAM_CHNG),
-+					      IEEE80211_RADIOTAP_HE_DATA3_BEAM_CHANGE);
-+		break;
-+	default:
-+		/* nothing */
-+		break;
-+	}
-+}
-+
-+static void iwl_mld_rx_he(struct iwl_mld *mld, struct sk_buff *skb,
-+			  struct iwl_mld_rx_phy_data *phy_data,
-+			  int queue)
-+{
-+	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
-+	struct ieee80211_radiotap_he *he = NULL;
-+	struct ieee80211_radiotap_he_mu *he_mu = NULL;
-+	u32 rate_n_flags = phy_data->rate_n_flags;
-+	u32 he_type = rate_n_flags & RATE_MCS_HE_TYPE_MSK;
-+	u8 ltf;
-+	static const struct ieee80211_radiotap_he known = {
-+		.data1 = cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA1_DATA_MCS_KNOWN |
-+				     IEEE80211_RADIOTAP_HE_DATA1_DATA_DCM_KNOWN |
-+				     IEEE80211_RADIOTAP_HE_DATA1_STBC_KNOWN	|
-+				     IEEE80211_RADIOTAP_HE_DATA1_CODING_KNOWN),
-+		.data2 = cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA2_GI_KNOWN |
-+				     IEEE80211_RADIOTAP_HE_DATA2_TXBF_KNOWN),
++	struct iwl_mld_scan_respect_p2p_go_iter_data data = {
++		.current_vif = vif,
++		.p2p_go = false,
 +	};
-+	static const struct ieee80211_radiotap_he_mu mu_known = {
-+		.flags1 = cpu_to_le16(IEEE80211_RADIOTAP_HE_MU_FLAGS1_SIG_B_MCS_KNOWN |
-+				      IEEE80211_RADIOTAP_HE_MU_FLAGS1_SIG_B_DCM_KNOWN |
-+				      IEEE80211_RADIOTAP_HE_MU_FLAGS1_SIG_B_SYMS_USERS_KNOWN |
-+				      IEEE80211_RADIOTAP_HE_MU_FLAGS1_SIG_B_COMP_KNOWN),
-+		.flags2 = cpu_to_le16(IEEE80211_RADIOTAP_HE_MU_FLAGS2_PUNC_FROM_SIG_A_BW_KNOWN |
-+				      IEEE80211_RADIOTAP_HE_MU_FLAGS2_BW_FROM_SIG_A_BW_KNOWN),
++
++	if (!low_latency)
++		return false;
++
++	ieee80211_iterate_active_interfaces_mtx(mld->hw,
++						IEEE80211_IFACE_ITER_NORMAL,
++						iwl_mld_scan_respect_p2p_go_iter,
++						&data);
++
++	return data.p2p_go;
++}
++
++struct iwl_mld_scan_iter_data {
++	struct ieee80211_vif *current_vif;
++	bool active_vif;
++	bool is_dcm_with_p2p_go;
++	bool global_low_latency;
++};
++
++static void iwl_mld_scan_iterator(void *_data, u8 *mac,
++				  struct ieee80211_vif *vif)
++{
++	struct iwl_mld_scan_iter_data *data = _data;
++	struct ieee80211_vif *curr_vif = data->current_vif;
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	struct iwl_mld_vif *curr_mld_vif;
++	unsigned long curr_vif_active_links;
++	u16 link_id;
++
++	data->global_low_latency |= iwl_mld_vif_low_latency(mld_vif);
++
++	if ((ieee80211_vif_is_mld(vif) && vif->active_links) ||
++	    (vif->type != NL80211_IFTYPE_P2P_DEVICE &&
++	     mld_vif->deflink.active))
++		data->active_vif = true;
++
++	if (vif == curr_vif)
++		return;
++
++	if (ieee80211_vif_type_p2p(vif) != NL80211_IFTYPE_P2P_GO)
++		return;
++
++	/* Currently P2P GO can't be AP MLD so the logic below assumes that */
++	WARN_ON_ONCE(ieee80211_vif_is_mld(vif));
++
++	curr_vif_active_links =
++		ieee80211_vif_is_mld(curr_vif) ? curr_vif->active_links : 1;
++
++	curr_mld_vif = iwl_mld_vif_from_mac80211(curr_vif);
++
++	for_each_set_bit(link_id, &curr_vif_active_links,
++			 IEEE80211_MLD_MAX_NUM_LINKS) {
++		struct iwl_mld_link *curr_mld_link =
++			iwl_mld_link_dereference_check(curr_mld_vif, link_id);
++
++		if (WARN_ON(!curr_mld_link))
++			return;
++
++		if (rcu_access_pointer(curr_mld_link->chan_ctx) &&
++		    rcu_access_pointer(mld_vif->deflink.chan_ctx) !=
++		    rcu_access_pointer(curr_mld_link->chan_ctx)) {
++			data->is_dcm_with_p2p_go = true;
++			return;
++		}
++	}
++}
++
++static enum
++iwl_mld_scan_type iwl_mld_get_scan_type(struct iwl_mld *mld,
++					struct ieee80211_vif *vif,
++					struct iwl_mld_scan_iter_data *data)
++{
++	enum iwl_mld_traffic_load load = mld->scan.traffic_load.status;
++
++	/* A scanning AP interface probably wants to generate a survey to do
++	 * ACS (automatic channel selection).
++	 * Force a non-fragmented scan in that case.
++	 */
++	if (ieee80211_vif_type_p2p(vif) == NL80211_IFTYPE_AP)
++		return IWL_SCAN_TYPE_WILD;
++
++	if (!data->active_vif)
++		return IWL_SCAN_TYPE_UNASSOC;
++
++	if ((load == IWL_MLD_TRAFFIC_HIGH || data->global_low_latency) &&
++	    vif->type != NL80211_IFTYPE_P2P_DEVICE)
++		return IWL_SCAN_TYPE_FRAGMENTED;
++
++	/* In case of DCM with P2P GO set all scan requests as
++	 * fast-balance scan
++	 */
++	if (vif->type == NL80211_IFTYPE_STATION &&
++	    data->is_dcm_with_p2p_go)
++		return IWL_SCAN_TYPE_FAST_BALANCE;
++
++	if (load >= IWL_MLD_TRAFFIC_MEDIUM || data->global_low_latency)
++		return IWL_SCAN_TYPE_MILD;
++
++	return IWL_SCAN_TYPE_WILD;
++}
++
++static u8 *
++iwl_mld_scan_add_2ghz_elems(struct iwl_mld *mld, const u8 *ies,
++			    size_t len, u8 *const pos)
++{
++	static const u8 before_ds_params[] = {
++	    WLAN_EID_SSID,
++	    WLAN_EID_SUPP_RATES,
++	    WLAN_EID_REQUEST,
++	    WLAN_EID_EXT_SUPP_RATES,
 +	};
-+	u16 phy_info = phy_data->phy_info;
++	size_t offs;
++	u8 *newpos = pos;
 +
-+	he = skb_put_data(skb, &known, sizeof(known));
-+	rx_status->flag |= RX_FLAG_RADIOTAP_HE;
++	offs = ieee80211_ie_split(ies, len,
++				  before_ds_params,
++				  ARRAY_SIZE(before_ds_params),
++				  0);
 +
-+	if (phy_data->info_type == IWL_RX_PHY_INFO_TYPE_HE_MU ||
-+	    phy_data->info_type == IWL_RX_PHY_INFO_TYPE_HE_MU_EXT) {
-+		he_mu = skb_put_data(skb, &mu_known, sizeof(mu_known));
-+		rx_status->flag |= RX_FLAG_RADIOTAP_HE_MU;
-+	}
++	memcpy(newpos, ies, offs);
++	newpos += offs;
 +
-+	/* report the AMPDU-EOF bit on single frames */
-+	if (!queue && !(phy_info & IWL_RX_MPDU_PHY_AMPDU)) {
-+		rx_status->flag |= RX_FLAG_AMPDU_DETAILS;
-+		rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT_KNOWN;
-+		if (phy_data->data0 & cpu_to_le32(IWL_RX_PHY_DATA0_HE_DELIM_EOF))
-+			rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT;
-+	}
++	/* Add a placeholder for DS Parameter Set element */
++	*newpos++ = WLAN_EID_DS_PARAMS;
++	*newpos++ = 1;
++	*newpos++ = 0;
 +
-+	if (phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD)
-+		iwl_mld_decode_he_phy_data(phy_data, he, he_mu, rx_status,
-+					   queue);
++	memcpy(newpos, ies + offs, len - offs);
++	newpos += len - offs;
 +
-+	/* update aggregation data for monitor sake on default queue */
-+	if (!queue && (phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD) &&
-+	    (phy_info & IWL_RX_MPDU_PHY_AMPDU) && phy_data->first_subframe) {
-+		rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT_KNOWN;
-+		if (phy_data->data0 & cpu_to_le32(IWL_RX_PHY_DATA0_EHT_DELIM_EOF))
-+			rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT;
-+	}
++	return newpos;
++}
 +
-+	if (he_type == RATE_MCS_HE_TYPE_EXT_SU &&
-+	    rate_n_flags & RATE_MCS_HE_106T_MSK) {
-+		rx_status->bw = RATE_INFO_BW_HE_RU;
-+		rx_status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_106;
-+	}
++static void
++iwl_mld_scan_add_tpc_report_elem(u8 *pos)
++{
++	pos[0] = WLAN_EID_VENDOR_SPECIFIC;
++	pos[1] = WFA_TPC_IE_LEN - 2;
++	pos[2] = (WLAN_OUI_MICROSOFT >> 16) & 0xff;
++	pos[3] = (WLAN_OUI_MICROSOFT >> 8) & 0xff;
++	pos[4] = WLAN_OUI_MICROSOFT & 0xff;
++	pos[5] = WLAN_OUI_TYPE_MICROSOFT_TPC;
++	pos[6] = 0;
++	/* pos[7] - tx power will be inserted by the FW */
++	pos[7] = 0;
++	pos[8] = 0;
++}
 +
-+	/* actually data is filled in mac80211 */
-+	if (he_type == RATE_MCS_HE_TYPE_SU ||
-+	    he_type == RATE_MCS_HE_TYPE_EXT_SU)
-+		he->data1 |=
-+			cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA1_BW_RU_ALLOC_KNOWN);
++static u32
++iwl_mld_scan_ooc_priority(enum iwl_mld_scan_status scan_status)
++{
++	if (scan_status == IWL_MLD_SCAN_REGULAR)
++		return IWL_SCAN_PRIORITY_EXT_6;
++	if (scan_status == IWL_MLD_SCAN_INT_MLO)
++		return IWL_SCAN_PRIORITY_EXT_4;
 +
-+#define CHECK_TYPE(F)							\
-+	BUILD_BUG_ON(IEEE80211_RADIOTAP_HE_DATA1_FORMAT_ ## F !=	\
-+		     (RATE_MCS_HE_TYPE_ ## F >> RATE_MCS_HE_TYPE_POS))
++	return IWL_SCAN_PRIORITY_EXT_2;
++}
 +
-+	CHECK_TYPE(SU);
-+	CHECK_TYPE(EXT_SU);
-+	CHECK_TYPE(MU);
-+	CHECK_TYPE(TRIG);
++static bool
++iwl_mld_scan_is_regular(struct iwl_mld_scan_params *params)
++{
++	return params->n_scan_plans == 1 &&
++		params->scan_plans[0].iterations == 1;
++}
 +
-+	he->data1 |= cpu_to_le16(he_type >> RATE_MCS_HE_TYPE_POS);
++static bool
++iwl_mld_scan_is_fragmented(enum iwl_mld_scan_type type)
++{
++	return (type == IWL_SCAN_TYPE_FRAGMENTED ||
++		type == IWL_SCAN_TYPE_FAST_BALANCE);
++}
 +
-+	if (rate_n_flags & RATE_MCS_BF_MSK)
-+		he->data5 |= cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA5_TXBF);
++static int
++iwl_mld_scan_uid_by_status(struct iwl_mld *mld, int status)
++{
++	for (int i = 0; i < ARRAY_SIZE(mld->scan.uid_status); i++)
++		if (mld->scan.uid_status[i] == status)
++			return i;
 +
-+	switch ((rate_n_flags & RATE_MCS_HE_GI_LTF_MSK) >>
-+		RATE_MCS_HE_GI_LTF_POS) {
-+	case 0:
-+		if (he_type == RATE_MCS_HE_TYPE_TRIG)
-+			rx_status->he_gi = NL80211_RATE_INFO_HE_GI_1_6;
-+		else
-+			rx_status->he_gi = NL80211_RATE_INFO_HE_GI_0_8;
-+		if (he_type == RATE_MCS_HE_TYPE_MU)
-+			ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_4X;
-+		else
-+			ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_1X;
-+		break;
-+	case 1:
-+		if (he_type == RATE_MCS_HE_TYPE_TRIG)
-+			rx_status->he_gi = NL80211_RATE_INFO_HE_GI_1_6;
-+		else
-+			rx_status->he_gi = NL80211_RATE_INFO_HE_GI_0_8;
-+		ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_2X;
-+		break;
-+	case 2:
-+		if (he_type == RATE_MCS_HE_TYPE_TRIG) {
-+			rx_status->he_gi = NL80211_RATE_INFO_HE_GI_3_2;
-+			ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_4X;
-+		} else {
-+			rx_status->he_gi = NL80211_RATE_INFO_HE_GI_1_6;
-+			ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_2X;
-+		}
-+		break;
-+	case 3:
-+		rx_status->he_gi = NL80211_RATE_INFO_HE_GI_3_2;
-+		ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_4X;
-+		break;
-+	case 4:
-+		rx_status->he_gi = NL80211_RATE_INFO_HE_GI_0_8;
-+		ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_4X;
-+		break;
++	return -ENOENT;
++}
++
++static const char *
++iwl_mld_scan_ebs_status_str(enum iwl_scan_ebs_status status)
++{
++	switch (status) {
++	case IWL_SCAN_EBS_SUCCESS:
++		return "successful";
++	case IWL_SCAN_EBS_INACTIVE:
++		return "inactive";
++	case IWL_SCAN_EBS_FAILED:
++	case IWL_SCAN_EBS_CHAN_NOT_FOUND:
 +	default:
-+		ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_UNKNOWN;
-+	}
-+
-+	he->data5 |= le16_encode_bits(ltf,
-+				      IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
-+}
-+
-+static void iwl_mld_decode_lsig(struct sk_buff *skb,
-+				struct iwl_mld_rx_phy_data *phy_data)
-+{
-+	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
-+	struct ieee80211_radiotap_lsig *lsig;
-+
-+	switch (phy_data->info_type) {
-+	case IWL_RX_PHY_INFO_TYPE_HT:
-+	case IWL_RX_PHY_INFO_TYPE_VHT_SU:
-+	case IWL_RX_PHY_INFO_TYPE_VHT_MU:
-+	case IWL_RX_PHY_INFO_TYPE_HE_TB_EXT:
-+	case IWL_RX_PHY_INFO_TYPE_HE_SU:
-+	case IWL_RX_PHY_INFO_TYPE_HE_MU:
-+	case IWL_RX_PHY_INFO_TYPE_HE_MU_EXT:
-+	case IWL_RX_PHY_INFO_TYPE_HE_TB:
-+	case IWL_RX_PHY_INFO_TYPE_EHT_MU:
-+	case IWL_RX_PHY_INFO_TYPE_EHT_TB:
-+	case IWL_RX_PHY_INFO_TYPE_EHT_MU_EXT:
-+	case IWL_RX_PHY_INFO_TYPE_EHT_TB_EXT:
-+		lsig = skb_put(skb, sizeof(*lsig));
-+		lsig->data1 = cpu_to_le16(IEEE80211_RADIOTAP_LSIG_DATA1_LENGTH_KNOWN);
-+		lsig->data2 = le16_encode_bits(le32_get_bits(phy_data->data1,
-+							     IWL_RX_PHY_DATA1_LSIG_LEN_MASK),
-+					       IEEE80211_RADIOTAP_LSIG_DATA2_LENGTH);
-+		rx_status->flag |= RX_FLAG_RADIOTAP_LSIG;
-+		break;
-+	default:
-+		break;
++		return "failed";
 +	}
 +}
 +
-+/* Put a TLV on the skb and return data pointer
-+ *
-+ * Also pad the len to 4 and zero out all data part
-+ */
-+static void *
-+iwl_mld_radiotap_put_tlv(struct sk_buff *skb, u16 type, u16 len)
++static int
++iwl_mld_scan_ssid_exist(u8 *ssid, u8 ssid_len, struct iwl_ssid_ie *ssid_list)
 +{
-+	struct ieee80211_radiotap_tlv *tlv;
-+
-+	tlv = skb_put(skb, sizeof(*tlv));
-+	tlv->type = cpu_to_le16(type);
-+	tlv->len = cpu_to_le16(len);
-+	return skb_put_zero(skb, ALIGN(len, 4));
-+}
-+
-+#define LE32_DEC_ENC(value, dec_bits, enc_bits) \
-+	le32_encode_bits(le32_get_bits(value, dec_bits), enc_bits)
-+
-+#define IWL_MLD_ENC_USIG_VALUE_MASK(usig, in_value, dec_bits, enc_bits) do { \
-+	typeof(enc_bits) _enc_bits = enc_bits; \
-+	typeof(usig) _usig = usig; \
-+	(_usig)->mask |= cpu_to_le32(_enc_bits); \
-+	(_usig)->value |= LE32_DEC_ENC(in_value, dec_bits, _enc_bits); \
-+} while (0)
-+
-+#define __IWL_MLD_ENC_EHT_RU(rt_data, rt_ru, fw_data, fw_ru) \
-+	eht->data[(rt_data)] |= \
-+		(cpu_to_le32 \
-+		 (IEEE80211_RADIOTAP_EHT_DATA ## rt_data ## _RU_ALLOC_CC_ ## rt_ru ## _KNOWN) | \
-+		 LE32_DEC_ENC(data ## fw_data, \
-+			      IWL_RX_PHY_DATA ## fw_data ## _EHT_MU_EXT_RU_ALLOC_ ## fw_ru, \
-+			      IEEE80211_RADIOTAP_EHT_DATA ## rt_data ## _RU_ALLOC_CC_ ## rt_ru))
-+
-+#define _IWL_MLD_ENC_EHT_RU(rt_data, rt_ru, fw_data, fw_ru)	\
-+	__IWL_MLD_ENC_EHT_RU(rt_data, rt_ru, fw_data, fw_ru)
-+
-+#define IEEE80211_RADIOTAP_RU_DATA_1_1_1	1
-+#define IEEE80211_RADIOTAP_RU_DATA_2_1_1	2
-+#define IEEE80211_RADIOTAP_RU_DATA_1_1_2	2
-+#define IEEE80211_RADIOTAP_RU_DATA_2_1_2	2
-+#define IEEE80211_RADIOTAP_RU_DATA_1_2_1	3
-+#define IEEE80211_RADIOTAP_RU_DATA_2_2_1	3
-+#define IEEE80211_RADIOTAP_RU_DATA_1_2_2	3
-+#define IEEE80211_RADIOTAP_RU_DATA_2_2_2	4
-+
-+#define IWL_RX_RU_DATA_A1			2
-+#define IWL_RX_RU_DATA_A2			2
-+#define IWL_RX_RU_DATA_B1			2
-+#define IWL_RX_RU_DATA_B2			4
-+#define IWL_RX_RU_DATA_C1			3
-+#define IWL_RX_RU_DATA_C2			3
-+#define IWL_RX_RU_DATA_D1			4
-+#define IWL_RX_RU_DATA_D2			4
-+
-+#define IWL_MLD_ENC_EHT_RU(rt_ru, fw_ru)				\
-+	_IWL_MLD_ENC_EHT_RU(IEEE80211_RADIOTAP_RU_DATA_ ## rt_ru,	\
-+			    rt_ru,					\
-+			    IWL_RX_RU_DATA_ ## fw_ru,			\
-+			    fw_ru)
-+
-+static void iwl_mld_decode_eht_ext_mu(struct iwl_mld *mld,
-+				      struct iwl_mld_rx_phy_data *phy_data,
-+				      struct ieee80211_rx_status *rx_status,
-+				      struct ieee80211_radiotap_eht *eht,
-+				      struct ieee80211_radiotap_eht_usig *usig)
-+{
-+	if (phy_data->with_data) {
-+		__le32 data1 = phy_data->data1;
-+		__le32 data2 = phy_data->data2;
-+		__le32 data3 = phy_data->data3;
-+		__le32 data4 = phy_data->eht_data4;
-+		__le32 data5 = phy_data->data5;
-+		u32 phy_bw = phy_data->rate_n_flags & RATE_MCS_CHAN_WIDTH_MSK;
-+
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, data5,
-+					    IWL_RX_PHY_DATA5_EHT_TYPE_AND_COMP,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_MU_B0_B1_PPDU_TYPE);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, data5,
-+					    IWL_RX_PHY_DATA5_EHT_MU_PUNC_CH_CODE,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_MU_B3_B7_PUNCTURED_INFO);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, data4,
-+					    IWL_RX_PHY_DATA4_EHT_MU_EXT_SIGB_MCS,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_MU_B9_B10_SIG_MCS);
-+		IWL_MLD_ENC_USIG_VALUE_MASK
-+			(usig, data1, IWL_RX_PHY_DATA1_EHT_MU_NUM_SIG_SYM_USIGA2,
-+			 IEEE80211_RADIOTAP_EHT_USIG2_MU_B11_B15_EHT_SIG_SYMBOLS);
-+
-+		eht->user_info[0] |=
-+			cpu_to_le32(IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID_KNOWN) |
-+			LE32_DEC_ENC(data5, IWL_RX_PHY_DATA5_EHT_MU_STA_ID_USR,
-+				     IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID);
-+
-+		eht->known |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_NR_NON_OFDMA_USERS_M);
-+		eht->data[7] |= LE32_DEC_ENC
-+			(data5, IWL_RX_PHY_DATA5_EHT_MU_NUM_USR_NON_OFDMA,
-+			 IEEE80211_RADIOTAP_EHT_DATA7_NUM_OF_NON_OFDMA_USERS);
-+
-+		/*
-+		 * Hardware labels the content channels/RU allocation values
-+		 * as follows:
-+		 *           Content Channel 1		Content Channel 2
-+		 *   20 MHz: A1
-+		 *   40 MHz: A1				B1
-+		 *   80 MHz: A1 C1			B1 D1
-+		 *  160 MHz: A1 C1 A2 C2		B1 D1 B2 D2
-+		 *  320 MHz: A1 C1 A2 C2 A3 C3 A4 C4	B1 D1 B2 D2 B3 D3 B4 D4
-+		 *
-+		 * However firmware can only give us A1-D2, so the higher
-+		 * frequencies are missing.
-+		 */
-+
-+		switch (phy_bw) {
-+		case RATE_MCS_CHAN_WIDTH_320:
-+			/* additional values are missing in RX metadata */
-+			fallthrough;
-+		case RATE_MCS_CHAN_WIDTH_160:
-+			/* content channel 1 */
-+			IWL_MLD_ENC_EHT_RU(1_2_1, A2);
-+			IWL_MLD_ENC_EHT_RU(1_2_2, C2);
-+			/* content channel 2 */
-+			IWL_MLD_ENC_EHT_RU(2_2_1, B2);
-+			IWL_MLD_ENC_EHT_RU(2_2_2, D2);
-+			fallthrough;
-+		case RATE_MCS_CHAN_WIDTH_80:
-+			/* content channel 1 */
-+			IWL_MLD_ENC_EHT_RU(1_1_2, C1);
-+			/* content channel 2 */
-+			IWL_MLD_ENC_EHT_RU(2_1_2, D1);
-+			fallthrough;
-+		case RATE_MCS_CHAN_WIDTH_40:
-+			/* content channel 2 */
-+			IWL_MLD_ENC_EHT_RU(2_1_1, B1);
-+			fallthrough;
-+		case RATE_MCS_CHAN_WIDTH_20:
-+			IWL_MLD_ENC_EHT_RU(1_1_1, A1);
-+			break;
-+		}
-+	} else {
-+		__le32 usig_a1 = phy_data->rx_vec[0];
-+		__le32 usig_a2 = phy_data->rx_vec[1];
-+
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a1,
-+					    IWL_RX_USIG_A1_DISREGARD,
-+					    IEEE80211_RADIOTAP_EHT_USIG1_MU_B20_B24_DISREGARD);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a1,
-+					    IWL_RX_USIG_A1_VALIDATE,
-+					    IEEE80211_RADIOTAP_EHT_USIG1_MU_B25_VALIDATE);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_PPDU_TYPE,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_MU_B0_B1_PPDU_TYPE);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_USIG2_VALIDATE_B2,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_MU_B2_VALIDATE);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_PUNC_CHANNEL,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_MU_B3_B7_PUNCTURED_INFO);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_USIG2_VALIDATE_B8,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_MU_B8_VALIDATE);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_SIG_MCS,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_MU_B9_B10_SIG_MCS);
-+		IWL_MLD_ENC_USIG_VALUE_MASK
-+			(usig, usig_a2, IWL_RX_USIG_A2_EHT_SIG_SYM_NUM,
-+			 IEEE80211_RADIOTAP_EHT_USIG2_MU_B11_B15_EHT_SIG_SYMBOLS);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_CRC_OK,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_MU_B16_B19_CRC);
-+	}
-+}
-+
-+static void iwl_mld_decode_eht_ext_tb(struct iwl_mld *mld,
-+				      struct iwl_mld_rx_phy_data *phy_data,
-+				      struct ieee80211_rx_status *rx_status,
-+				      struct ieee80211_radiotap_eht *eht,
-+				      struct ieee80211_radiotap_eht_usig *usig)
-+{
-+	if (phy_data->with_data) {
-+		__le32 data5 = phy_data->data5;
-+
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, data5,
-+					    IWL_RX_PHY_DATA5_EHT_TYPE_AND_COMP,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_TB_B0_B1_PPDU_TYPE);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, data5,
-+					    IWL_RX_PHY_DATA5_EHT_TB_SPATIAL_REUSE1,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_TB_B3_B6_SPATIAL_REUSE_1);
-+
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, data5,
-+					    IWL_RX_PHY_DATA5_EHT_TB_SPATIAL_REUSE2,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_TB_B7_B10_SPATIAL_REUSE_2);
-+	} else {
-+		__le32 usig_a1 = phy_data->rx_vec[0];
-+		__le32 usig_a2 = phy_data->rx_vec[1];
-+
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a1,
-+					    IWL_RX_USIG_A1_DISREGARD,
-+					    IEEE80211_RADIOTAP_EHT_USIG1_TB_B20_B25_DISREGARD);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_PPDU_TYPE,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_TB_B0_B1_PPDU_TYPE);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_USIG2_VALIDATE_B2,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_TB_B2_VALIDATE);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_TRIG_SPATIAL_REUSE_1,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_TB_B3_B6_SPATIAL_REUSE_1);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_TRIG_SPATIAL_REUSE_2,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_TB_B7_B10_SPATIAL_REUSE_2);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_TRIG_USIG2_DISREGARD,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_TB_B11_B15_DISREGARD);
-+		IWL_MLD_ENC_USIG_VALUE_MASK(usig, usig_a2,
-+					    IWL_RX_USIG_A2_EHT_CRC_OK,
-+					    IEEE80211_RADIOTAP_EHT_USIG2_TB_B16_B19_CRC);
-+	}
-+}
-+
-+static void iwl_mld_decode_eht_ru(struct iwl_mld *mld,
-+				  struct ieee80211_rx_status *rx_status,
-+				  struct ieee80211_radiotap_eht *eht)
-+{
-+	u32 ru = le32_get_bits(eht->data[8],
-+			       IEEE80211_RADIOTAP_EHT_DATA8_RU_ALLOC_TB_FMT_B7_B1);
-+	enum nl80211_eht_ru_alloc nl_ru;
-+
-+	/* Using D1.5 Table 9-53a - Encoding of PS160 and RU Allocation subfields
-+	 * in an EHT variant User Info field
-+	 */
-+
-+	switch (ru) {
-+	case 0 ... 36:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_26;
-+		break;
-+	case 37 ... 52:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_52;
-+		break;
-+	case 53 ... 60:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_106;
-+		break;
-+	case 61 ... 64:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_242;
-+		break;
-+	case 65 ... 66:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_484;
-+		break;
-+	case 67:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_996;
-+		break;
-+	case 68:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_2x996;
-+		break;
-+	case 69:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_4x996;
-+		break;
-+	case 70 ... 81:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_52P26;
-+		break;
-+	case 82 ... 89:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_106P26;
-+		break;
-+	case 90 ... 93:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_484P242;
-+		break;
-+	case 94 ... 95:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_996P484;
-+		break;
-+	case 96 ... 99:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_996P484P242;
-+		break;
-+	case 100 ... 103:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_2x996P484;
-+		break;
-+	case 104:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_3x996;
-+		break;
-+	case 105 ... 106:
-+		nl_ru = NL80211_RATE_INFO_EHT_RU_ALLOC_3x996P484;
-+		break;
-+	default:
-+		return;
-+	}
-+
-+	rx_status->bw = RATE_INFO_BW_EHT_RU;
-+	rx_status->eht.ru = nl_ru;
-+}
-+
-+static void iwl_mld_decode_eht_phy_data(struct iwl_mld *mld,
-+					struct iwl_mld_rx_phy_data *phy_data,
-+					struct ieee80211_rx_status *rx_status,
-+					struct ieee80211_radiotap_eht *eht,
-+					struct ieee80211_radiotap_eht_usig *usig)
-+
-+{
-+	__le32 data0 = phy_data->data0;
-+	__le32 data1 = phy_data->data1;
-+	__le32 usig_a1 = phy_data->rx_vec[0];
-+	u8 info_type = phy_data->info_type;
-+
-+	/* Not in EHT range */
-+	if (info_type < IWL_RX_PHY_INFO_TYPE_EHT_MU ||
-+	    info_type > IWL_RX_PHY_INFO_TYPE_EHT_TB_EXT)
-+		return;
-+
-+	usig->common |= cpu_to_le32
-+		(IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL_KNOWN |
-+		 IEEE80211_RADIOTAP_EHT_USIG_COMMON_BSS_COLOR_KNOWN);
-+	if (phy_data->with_data) {
-+		usig->common |= LE32_DEC_ENC(data0,
-+					     IWL_RX_PHY_DATA0_EHT_UPLINK,
-+					     IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL);
-+		usig->common |= LE32_DEC_ENC(data0,
-+					     IWL_RX_PHY_DATA0_EHT_BSS_COLOR_MASK,
-+					     IEEE80211_RADIOTAP_EHT_USIG_COMMON_BSS_COLOR);
-+	} else {
-+		usig->common |= LE32_DEC_ENC(usig_a1,
-+					     IWL_RX_USIG_A1_UL_FLAG,
-+					     IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL);
-+		usig->common |= LE32_DEC_ENC(usig_a1,
-+					     IWL_RX_USIG_A1_BSS_COLOR,
-+					     IEEE80211_RADIOTAP_EHT_USIG_COMMON_BSS_COLOR);
-+	}
-+
-+	usig->common |=
-+		cpu_to_le32(IEEE80211_RADIOTAP_EHT_USIG_COMMON_VALIDATE_BITS_CHECKED);
-+	usig->common |=
-+		LE32_DEC_ENC(data0, IWL_RX_PHY_DATA0_EHT_VALIDATE,
-+			     IEEE80211_RADIOTAP_EHT_USIG_COMMON_VALIDATE_BITS_OK);
-+
-+	eht->known |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_SPATIAL_REUSE);
-+	eht->data[0] |= LE32_DEC_ENC(data0,
-+				     IWL_RX_PHY_DATA0_ETH_SPATIAL_REUSE_MASK,
-+				     IEEE80211_RADIOTAP_EHT_DATA0_SPATIAL_REUSE);
-+
-+	/* All RU allocating size/index is in TB format */
-+	eht->known |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_RU_ALLOC_TB_FMT);
-+	eht->data[8] |= LE32_DEC_ENC(data0, IWL_RX_PHY_DATA0_EHT_PS160,
-+				     IEEE80211_RADIOTAP_EHT_DATA8_RU_ALLOC_TB_FMT_PS_160);
-+	eht->data[8] |= LE32_DEC_ENC(data1, IWL_RX_PHY_DATA1_EHT_RU_ALLOC_B0,
-+				     IEEE80211_RADIOTAP_EHT_DATA8_RU_ALLOC_TB_FMT_B0);
-+	eht->data[8] |= LE32_DEC_ENC(data1, IWL_RX_PHY_DATA1_EHT_RU_ALLOC_B1_B7,
-+				     IEEE80211_RADIOTAP_EHT_DATA8_RU_ALLOC_TB_FMT_B7_B1);
-+
-+	iwl_mld_decode_eht_ru(mld, rx_status, eht);
-+
-+	/* We only get here in case of IWL_RX_MPDU_PHY_TSF_OVERLOAD is set
-+	 * which is on only in case of monitor mode so no need to check monitor
-+	 * mode
-+	 */
-+	eht->known |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_PRIMARY_80);
-+	eht->data[1] |=
-+		le32_encode_bits(mld->monitor.p80,
-+				 IEEE80211_RADIOTAP_EHT_DATA1_PRIMARY_80);
-+
-+	usig->common |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_USIG_COMMON_TXOP_KNOWN);
-+	if (phy_data->with_data)
-+		usig->common |= LE32_DEC_ENC(data0, IWL_RX_PHY_DATA0_EHT_TXOP_DUR_MASK,
-+					     IEEE80211_RADIOTAP_EHT_USIG_COMMON_TXOP);
-+	else
-+		usig->common |= LE32_DEC_ENC(usig_a1, IWL_RX_USIG_A1_TXOP_DURATION,
-+					     IEEE80211_RADIOTAP_EHT_USIG_COMMON_TXOP);
-+
-+	eht->known |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_LDPC_EXTRA_SYM_OM);
-+	eht->data[0] |= LE32_DEC_ENC(data0, IWL_RX_PHY_DATA0_EHT_LDPC_EXT_SYM,
-+				     IEEE80211_RADIOTAP_EHT_DATA0_LDPC_EXTRA_SYM_OM);
-+
-+	eht->known |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_PRE_PADD_FACOR_OM);
-+	eht->data[0] |= LE32_DEC_ENC(data0, IWL_RX_PHY_DATA0_EHT_PRE_FEC_PAD_MASK,
-+				    IEEE80211_RADIOTAP_EHT_DATA0_PRE_PADD_FACOR_OM);
-+
-+	eht->known |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_PE_DISAMBIGUITY_OM);
-+	eht->data[0] |= LE32_DEC_ENC(data0, IWL_RX_PHY_DATA0_EHT_PE_DISAMBIG,
-+				     IEEE80211_RADIOTAP_EHT_DATA0_PE_DISAMBIGUITY_OM);
-+
-+	/* TODO: what about IWL_RX_PHY_DATA0_EHT_BW320_SLOT */
-+
-+	if (!le32_get_bits(data0, IWL_RX_PHY_DATA0_EHT_SIGA_CRC_OK))
-+		usig->common |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_USIG_COMMON_BAD_USIG_CRC);
-+
-+	usig->common |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER_KNOWN);
-+	usig->common |= LE32_DEC_ENC(data0, IWL_RX_PHY_DATA0_EHT_PHY_VER,
-+				     IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER);
-+
-+	/*
-+	 * TODO: what about TB - IWL_RX_PHY_DATA1_EHT_TB_PILOT_TYPE,
-+	 *			 IWL_RX_PHY_DATA1_EHT_TB_LOW_SS
-+	 */
-+
-+	eht->known |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_EHT_LTF);
-+	eht->data[0] |= LE32_DEC_ENC(data1, IWL_RX_PHY_DATA1_EHT_SIG_LTF_NUM,
-+				     IEEE80211_RADIOTAP_EHT_DATA0_EHT_LTF);
-+
-+	if (info_type == IWL_RX_PHY_INFO_TYPE_EHT_TB_EXT ||
-+	    info_type == IWL_RX_PHY_INFO_TYPE_EHT_TB)
-+		iwl_mld_decode_eht_ext_tb(mld, phy_data, rx_status, eht, usig);
-+
-+	if (info_type == IWL_RX_PHY_INFO_TYPE_EHT_MU_EXT ||
-+	    info_type == IWL_RX_PHY_INFO_TYPE_EHT_MU)
-+		iwl_mld_decode_eht_ext_mu(mld, phy_data, rx_status, eht, usig);
-+}
-+
-+static void iwl_mld_rx_eht(struct iwl_mld *mld, struct sk_buff *skb,
-+			   struct iwl_mld_rx_phy_data *phy_data,
-+			   int queue)
-+{
-+	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
-+	struct ieee80211_radiotap_eht *eht;
-+	struct ieee80211_radiotap_eht_usig *usig;
-+	size_t eht_len = sizeof(*eht);
-+
-+	u32 rate_n_flags = phy_data->rate_n_flags;
-+	u32 he_type = rate_n_flags & RATE_MCS_HE_TYPE_MSK;
-+	/* EHT and HE have the same values for LTF */
-+	u8 ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_UNKNOWN;
-+	u16 phy_info = phy_data->phy_info;
-+	u32 bw;
-+
-+	/* u32 for 1 user_info */
-+	if (phy_data->with_data)
-+		eht_len += sizeof(u32);
-+
-+	eht = iwl_mld_radiotap_put_tlv(skb, IEEE80211_RADIOTAP_EHT, eht_len);
-+
-+	usig = iwl_mld_radiotap_put_tlv(skb, IEEE80211_RADIOTAP_EHT_USIG,
-+					sizeof(*usig));
-+	rx_status->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
-+	usig->common |=
-+		cpu_to_le32(IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_KNOWN);
-+
-+	/* specific handling for 320MHz */
-+	bw = u32_get_bits(rate_n_flags, RATE_MCS_CHAN_WIDTH_MSK);
-+	if (bw == RATE_MCS_CHAN_WIDTH_320_VAL)
-+		bw += le32_get_bits(phy_data->data0,
-+				    IWL_RX_PHY_DATA0_EHT_BW320_SLOT);
-+
-+	usig->common |= cpu_to_le32
-+		(FIELD_PREP(IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW, bw));
-+
-+	/* report the AMPDU-EOF bit on single frames */
-+	if (!queue && !(phy_info & IWL_RX_MPDU_PHY_AMPDU)) {
-+		rx_status->flag |= RX_FLAG_AMPDU_DETAILS;
-+		rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT_KNOWN;
-+		if (phy_data->data0 &
-+		    cpu_to_le32(IWL_RX_PHY_DATA0_EHT_DELIM_EOF))
-+			rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT;
-+	}
-+
-+	if (phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD)
-+		iwl_mld_decode_eht_phy_data(mld, phy_data, rx_status, eht, usig);
-+
-+#define CHECK_TYPE(F)							\
-+	BUILD_BUG_ON(IEEE80211_RADIOTAP_HE_DATA1_FORMAT_ ## F !=	\
-+		     (RATE_MCS_HE_TYPE_ ## F >> RATE_MCS_HE_TYPE_POS))
-+
-+	CHECK_TYPE(SU);
-+	CHECK_TYPE(EXT_SU);
-+	CHECK_TYPE(MU);
-+	CHECK_TYPE(TRIG);
-+
-+	switch (u32_get_bits(rate_n_flags, RATE_MCS_HE_GI_LTF_MSK)) {
-+	case 0:
-+		if (he_type == RATE_MCS_HE_TYPE_TRIG) {
-+			rx_status->eht.gi = NL80211_RATE_INFO_EHT_GI_1_6;
-+			ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_1X;
-+		} else {
-+			rx_status->eht.gi = NL80211_RATE_INFO_EHT_GI_0_8;
-+			ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_2X;
-+		}
-+		break;
-+	case 1:
-+		rx_status->eht.gi = NL80211_RATE_INFO_EHT_GI_1_6;
-+		ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_2X;
-+		break;
-+	case 2:
-+		ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_4X;
-+		if (he_type == RATE_MCS_HE_TYPE_TRIG)
-+			rx_status->eht.gi = NL80211_RATE_INFO_EHT_GI_3_2;
-+		else
-+			rx_status->eht.gi = NL80211_RATE_INFO_EHT_GI_0_8;
-+		break;
-+	case 3:
-+		if (he_type != RATE_MCS_HE_TYPE_TRIG) {
-+			ltf = IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_4X;
-+			rx_status->eht.gi = NL80211_RATE_INFO_EHT_GI_3_2;
-+		}
-+		break;
-+	default:
-+		/* nothing here */
-+		break;
-+	}
-+
-+	if (ltf != IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE_UNKNOWN) {
-+		eht->known |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_GI);
-+		eht->data[0] |= cpu_to_le32
-+			(FIELD_PREP(IEEE80211_RADIOTAP_EHT_DATA0_LTF,
-+				    ltf) |
-+			 FIELD_PREP(IEEE80211_RADIOTAP_EHT_DATA0_GI,
-+				    rx_status->eht.gi));
-+	}
-+
-+	if (!phy_data->with_data) {
-+		eht->known |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_NSS_S |
-+					  IEEE80211_RADIOTAP_EHT_KNOWN_BEAMFORMED_S);
-+		eht->data[7] |=
-+			le32_encode_bits(le32_get_bits(phy_data->rx_vec[2],
-+						       RX_NO_DATA_RX_VEC2_EHT_NSTS_MSK),
-+					 IEEE80211_RADIOTAP_EHT_DATA7_NSS_S);
-+		if (rate_n_flags & RATE_MCS_BF_MSK)
-+			eht->data[7] |=
-+				cpu_to_le32(IEEE80211_RADIOTAP_EHT_DATA7_BEAMFORMED_S);
-+	} else {
-+		eht->user_info[0] |=
-+			cpu_to_le32(IEEE80211_RADIOTAP_EHT_USER_INFO_MCS_KNOWN |
-+				    IEEE80211_RADIOTAP_EHT_USER_INFO_CODING_KNOWN |
-+				    IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_KNOWN_O |
-+				    IEEE80211_RADIOTAP_EHT_USER_INFO_BEAMFORMING_KNOWN_O |
-+				    IEEE80211_RADIOTAP_EHT_USER_INFO_DATA_FOR_USER);
-+
-+		if (rate_n_flags & RATE_MCS_BF_MSK)
-+			eht->user_info[0] |=
-+				cpu_to_le32(IEEE80211_RADIOTAP_EHT_USER_INFO_BEAMFORMING_O);
-+
-+		if (rate_n_flags & RATE_MCS_LDPC_MSK)
-+			eht->user_info[0] |=
-+				cpu_to_le32(IEEE80211_RADIOTAP_EHT_USER_INFO_CODING);
-+
-+		eht->user_info[0] |= cpu_to_le32
-+			(FIELD_PREP(IEEE80211_RADIOTAP_EHT_USER_INFO_MCS,
-+				    u32_get_bits(rate_n_flags,
-+						 RATE_VHT_MCS_RATE_CODE_MSK)) |
-+			 FIELD_PREP(IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_O,
-+				    u32_get_bits(rate_n_flags,
-+						 RATE_MCS_NSS_MSK)));
-+	}
-+}
-+
-+#ifdef CONFIG_IWLWIFI_DEBUGFS
-+static void iwl_mld_add_rtap_sniffer_config(struct iwl_mld *mld,
-+					    struct sk_buff *skb)
-+{
-+	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
-+	struct ieee80211_radiotap_vendor_content *radiotap;
-+	const u16 vendor_data_len = sizeof(mld->monitor.cur_aid);
-+
-+	if (!mld->monitor.cur_aid)
-+		return;
-+
-+	radiotap =
-+		iwl_mld_radiotap_put_tlv(skb,
-+					 IEEE80211_RADIOTAP_VENDOR_NAMESPACE,
-+					 sizeof(*radiotap) + vendor_data_len);
-+
-+	/* Intel OUI */
-+	radiotap->oui[0] = 0xf6;
-+	radiotap->oui[1] = 0x54;
-+	radiotap->oui[2] = 0x25;
-+	/* radiotap sniffer config sub-namespace */
-+	radiotap->oui_subtype = 1;
-+	radiotap->vendor_type = 0;
-+
-+	/* fill the data now */
-+	memcpy(radiotap->data, &mld->monitor.cur_aid,
-+	       sizeof(mld->monitor.cur_aid));
-+
-+	rx_status->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
-+}
-+#endif
-+
-+static void iwl_mld_rx_fill_status(struct iwl_mld *mld, struct sk_buff *skb,
-+				   struct iwl_mld_rx_phy_data *phy_data,
-+				   struct iwl_rx_mpdu_desc *mpdu_desc,
-+				   struct ieee80211_hdr *hdr,
-+				   int queue)
-+{
-+	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
-+	u32 format = phy_data->rate_n_flags & RATE_MCS_MOD_TYPE_MSK;
-+	u32 rate_n_flags = phy_data->rate_n_flags;
-+	u8 stbc = u32_get_bits(rate_n_flags, RATE_MCS_STBC_MSK);
-+	bool is_sgi = rate_n_flags & RATE_MCS_SGI_MSK;
-+
-+	if (WARN_ON_ONCE(phy_data->with_data && (!mpdu_desc || !hdr)))
-+		return;
-+
-+	/* Keep packets with CRC errors (and with overrun) for monitor mode
-+	 * (otherwise the firmware discards them) but mark them as bad.
-+	 */
-+	if (phy_data->with_data &&
-+	    (!(mpdu_desc->status & cpu_to_le32(IWL_RX_MPDU_STATUS_CRC_OK)) ||
-+	     !(mpdu_desc->status & cpu_to_le32(IWL_RX_MPDU_STATUS_OVERRUN_OK)))) {
-+		IWL_DEBUG_RX(mld, "Bad CRC or FIFO: 0x%08X.\n",
-+			     le32_to_cpu(mpdu_desc->status));
-+		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-+	}
-+
-+	phy_data->info_type = IWL_RX_PHY_INFO_TYPE_NONE;
-+
-+	if (phy_data->with_data &&
-+	    likely(!(phy_data->phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD))) {
-+		rx_status->mactime =
-+			le64_to_cpu(mpdu_desc->v3.tsf_on_air_rise);
-+
-+		/* TSF as indicated by the firmware is at INA time */
-+		rx_status->flag |= RX_FLAG_MACTIME_PLCP_START;
-+	} else {
-+		phy_data->info_type =
-+			le32_get_bits(phy_data->data1,
-+				      IWL_RX_PHY_DATA1_INFO_TYPE_MASK);
-+	}
-+
-+	/* management stuff on default queue */
-+	if (!queue && phy_data->with_data &&
-+	    unlikely(ieee80211_is_beacon(hdr->frame_control) ||
-+		     ieee80211_is_probe_resp(hdr->frame_control))) {
-+		rx_status->boottime_ns = ktime_get_boottime_ns();
-+
-+		if (mld->scan.pass_all_sched_res == SCHED_SCAN_PASS_ALL_STATE_ENABLED)
-+			mld->scan.pass_all_sched_res = SCHED_SCAN_PASS_ALL_STATE_FOUND;
-+	}
-+
-+	/* set the preamble flag if appropriate */
-+	if (format == RATE_MCS_CCK_MSK &&
-+	    phy_data->phy_info & IWL_RX_MPDU_PHY_SHORT_PREAMBLE)
-+		rx_status->enc_flags |= RX_ENC_FLAG_SHORTPRE;
-+
-+	iwl_mld_fill_signal(mld, rx_status, phy_data);
-+
-+	/* This may be overridden by iwl_mld_rx_he() to HE_RU */
-+	switch (rate_n_flags & RATE_MCS_CHAN_WIDTH_MSK) {
-+	case RATE_MCS_CHAN_WIDTH_20:
-+		break;
-+	case RATE_MCS_CHAN_WIDTH_40:
-+		rx_status->bw = RATE_INFO_BW_40;
-+		break;
-+	case RATE_MCS_CHAN_WIDTH_80:
-+		rx_status->bw = RATE_INFO_BW_80;
-+		break;
-+	case RATE_MCS_CHAN_WIDTH_160:
-+		rx_status->bw = RATE_INFO_BW_160;
-+		break;
-+	case RATE_MCS_CHAN_WIDTH_320:
-+		rx_status->bw = RATE_INFO_BW_320;
-+		break;
-+	}
-+
-+	/* must be before L-SIG data */
-+	if (format == RATE_MCS_HE_MSK)
-+		iwl_mld_rx_he(mld, skb, phy_data, queue);
-+
-+	iwl_mld_decode_lsig(skb, phy_data);
-+
-+	rx_status->device_timestamp = phy_data->gp2_on_air_rise;
-+
-+	/* using TLV format and must be after all fixed len fields */
-+	if (format == RATE_MCS_EHT_MSK)
-+		iwl_mld_rx_eht(mld, skb, phy_data, queue);
-+
-+#ifdef CONFIG_IWLWIFI_DEBUGFS
-+	if (unlikely(mld->monitor.on))
-+		iwl_mld_add_rtap_sniffer_config(mld, skb);
-+#endif
-+
-+	if (format != RATE_MCS_CCK_MSK && is_sgi)
-+		rx_status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
-+
-+	if (rate_n_flags & RATE_MCS_LDPC_MSK)
-+		rx_status->enc_flags |= RX_ENC_FLAG_LDPC;
-+
-+	switch (format) {
-+	case RATE_MCS_HT_MSK:
-+		rx_status->encoding = RX_ENC_HT;
-+		rx_status->rate_idx = RATE_HT_MCS_INDEX(rate_n_flags);
-+		rx_status->enc_flags |= stbc << RX_ENC_FLAG_STBC_SHIFT;
-+		break;
-+	case RATE_MCS_VHT_MSK:
-+	case RATE_MCS_HE_MSK:
-+	case RATE_MCS_EHT_MSK:
-+		if (format == RATE_MCS_VHT_MSK) {
-+			rx_status->encoding = RX_ENC_VHT;
-+		} else if (format == RATE_MCS_HE_MSK) {
-+			rx_status->encoding = RX_ENC_HE;
-+			rx_status->he_dcm =
-+				!!(rate_n_flags & RATE_HE_DUAL_CARRIER_MODE_MSK);
-+		} else if (format == RATE_MCS_EHT_MSK) {
-+			rx_status->encoding = RX_ENC_EHT;
-+		}
-+
-+		rx_status->nss = u32_get_bits(rate_n_flags, RATE_MCS_NSS_MSK) + 1;
-+		rx_status->rate_idx = rate_n_flags & RATE_MCS_CODE_MSK;
-+		rx_status->enc_flags |= stbc << RX_ENC_FLAG_STBC_SHIFT;
-+		break;
-+	default: {
-+		int rate =
-+		    iwl_mld_legacy_hw_idx_to_mac80211_idx(rate_n_flags,
-+							  rx_status->band);
-+
-+		/* valid rate */
-+		if (rate >= 0 && rate <= 0xFF) {
-+			rx_status->rate_idx = rate;
-+			break;
-+		}
-+
-+		/* invalid rate */
-+		rx_status->rate_idx = 0;
-+
-+		if (net_ratelimit())
-+			IWL_ERR(mld, "invalid rate_n_flags=0x%x, band=%d\n",
-+				rate_n_flags, rx_status->band);
-+		break;
-+		}
-+	}
-+}
-+
-+/* iwl_mld_create_skb adds the rxb to a new skb */
-+static int iwl_mld_build_rx_skb(struct iwl_mld *mld, struct sk_buff *skb,
-+				struct ieee80211_hdr *hdr, u16 len,
-+				u8 crypt_len, struct iwl_rx_cmd_buffer *rxb)
-+{
-+	struct iwl_rx_packet *pkt = rxb_addr(rxb);
-+	struct iwl_rx_mpdu_desc *desc = (void *)pkt->data;
-+	unsigned int headlen, fraglen, pad_len = 0;
-+	unsigned int hdrlen = ieee80211_hdrlen(hdr->frame_control);
-+	u8 mic_crc_len = u8_get_bits(desc->mac_flags1,
-+				     IWL_RX_MPDU_MFLG1_MIC_CRC_LEN_MASK) << 1;
-+
-+	if (desc->mac_flags2 & IWL_RX_MPDU_MFLG2_PAD) {
-+		len -= 2;
-+		pad_len = 2;
-+	}
-+
-+	/* For non monitor interface strip the bytes the RADA might not have
-+	 * removed (it might be disabled, e.g. for mgmt frames). As a monitor
-+	 * interface cannot exist with other interfaces, this removal is safe
-+	 * and sufficient, in monitor mode there's no decryption being done.
-+	 */
-+	if (len > mic_crc_len && !ieee80211_hw_check(mld->hw, RX_INCLUDES_FCS))
-+		len -= mic_crc_len;
-+
-+	/* If frame is small enough to fit in skb->head, pull it completely.
-+	 * If not, only pull ieee80211_hdr (including crypto if present, and
-+	 * an additional 8 bytes for SNAP/ethertype, see below) so that
-+	 * splice() or TCP coalesce are more efficient.
-+	 *
-+	 * Since, in addition, ieee80211_data_to_8023() always pull in at
-+	 * least 8 bytes (possibly more for mesh) we can do the same here
-+	 * to save the cost of doing it later. That still doesn't pull in
-+	 * the actual IP header since the typical case has a SNAP header.
-+	 * If the latter changes (there are efforts in the standards group
-+	 * to do so) we should revisit this and ieee80211_data_to_8023().
-+	 */
-+	headlen = (len <= skb_tailroom(skb)) ? len : hdrlen + crypt_len + 8;
-+
-+	/* The firmware may align the packet to DWORD.
-+	 * The padding is inserted after the IV.
-+	 * After copying the header + IV skip the padding if
-+	 * present before copying packet data.
-+	 */
-+	hdrlen += crypt_len;
-+
-+	if (unlikely(headlen < hdrlen))
-+		return -EINVAL;
-+
-+	/* Since data doesn't move data while putting data on skb and that is
-+	 * the only way we use, data + len is the next place that hdr would
-+	 * be put
-+	 */
-+	skb_set_mac_header(skb, skb->len);
-+	skb_put_data(skb, hdr, hdrlen);
-+	skb_put_data(skb, (u8 *)hdr + hdrlen + pad_len, headlen - hdrlen);
-+
-+	if (skb->ip_summed == CHECKSUM_COMPLETE) {
-+		struct {
-+			u8 hdr[6];
-+			__be16 type;
-+		} __packed *shdr = (void *)((u8 *)hdr + hdrlen + pad_len);
-+
-+		if (unlikely(headlen - hdrlen < sizeof(*shdr) ||
-+			     !ether_addr_equal(shdr->hdr, rfc1042_header) ||
-+			     (shdr->type != htons(ETH_P_IP) &&
-+			      shdr->type != htons(ETH_P_ARP) &&
-+			      shdr->type != htons(ETH_P_IPV6) &&
-+			      shdr->type != htons(ETH_P_8021Q) &&
-+			      shdr->type != htons(ETH_P_PAE) &&
-+			      shdr->type != htons(ETH_P_TDLS))))
-+			skb->ip_summed = CHECKSUM_NONE;
-+	}
-+
-+	fraglen = len - headlen;
-+
-+	if (fraglen) {
-+		int offset = (u8 *)hdr + headlen + pad_len -
-+			     (u8 *)rxb_addr(rxb) + rxb_offset(rxb);
-+
-+		skb_add_rx_frag(skb, 0, rxb_steal_page(rxb), offset,
-+				fraglen, rxb->truesize);
-+	}
-+
-+	return 0;
-+}
-+
-+/* returns true if a packet is a duplicate or invalid tid and
-+ * should be dropped. Updates AMSDU PN tracking info
-+ */
-+VISIBLE_IF_IWLWIFI_KUNIT
-+bool
-+iwl_mld_is_dup(struct iwl_mld *mld, struct ieee80211_sta *sta,
-+	       struct ieee80211_hdr *hdr,
-+	       const struct iwl_rx_mpdu_desc *mpdu_desc,
-+	       struct ieee80211_rx_status *rx_status, int queue)
-+{
-+	struct iwl_mld_sta *mld_sta;
-+	struct iwl_mld_rxq_dup_data *dup_data;
-+	u8 tid, sub_frame_idx;
-+
-+	if (WARN_ON(!sta))
-+		return false;
-+
-+	mld_sta = iwl_mld_sta_from_mac80211(sta);
-+
-+	if (WARN_ON_ONCE(!mld_sta->dup_data))
-+		return false;
-+
-+	dup_data = &mld_sta->dup_data[queue];
-+
-+	/* Drop duplicate 802.11 retransmissions
-+	 * (IEEE 802.11-2020: 10.3.2.14 "Duplicate detection and recovery")
-+	 */
-+	if (ieee80211_is_ctl(hdr->frame_control) ||
-+	    ieee80211_is_any_nullfunc(hdr->frame_control) ||
-+	    is_multicast_ether_addr(hdr->addr1))
-+		return false;
-+
-+	if (ieee80211_is_data_qos(hdr->frame_control)) {
-+		/* frame has qos control */
-+		tid = ieee80211_get_tid(hdr);
-+		if (tid >= IWL_MAX_TID_COUNT)
-+			return true;
-+	} else {
-+		tid = IWL_MAX_TID_COUNT;
-+	}
-+
-+	/* If this wasn't a part of an A-MSDU the sub-frame index will be 0 */
-+	sub_frame_idx = mpdu_desc->amsdu_info &
-+		IWL_RX_MPDU_AMSDU_SUBFRAME_IDX_MASK;
-+
-+	if (IWL_FW_CHECK(mld,
-+			 sub_frame_idx > 0 &&
-+			 !(mpdu_desc->mac_flags2 & IWL_RX_MPDU_MFLG2_AMSDU),
-+			 "got sub_frame_idx=%d but A-MSDU flag is not set\n",
-+			 sub_frame_idx))
-+		return true;
-+
-+	if (unlikely(ieee80211_has_retry(hdr->frame_control) &&
-+		     dup_data->last_seq[tid] == hdr->seq_ctrl &&
-+		     dup_data->last_sub_frame_idx[tid] >= sub_frame_idx))
-+		return true;
-+
-+	/* Allow same PN as the first subframe for following sub frames */
-+	if (dup_data->last_seq[tid] == hdr->seq_ctrl &&
-+	    sub_frame_idx > dup_data->last_sub_frame_idx[tid])
-+		rx_status->flag |= RX_FLAG_ALLOW_SAME_PN;
-+
-+	dup_data->last_seq[tid] = hdr->seq_ctrl;
-+	dup_data->last_sub_frame_idx[tid] = sub_frame_idx;
-+
-+	rx_status->flag |= RX_FLAG_DUP_VALIDATED;
-+
-+	return false;
-+}
-+EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_mld_is_dup);
-+
-+static void iwl_mld_update_last_rx_timestamp(struct iwl_mld *mld, u8 baid)
-+{
-+	unsigned long now = jiffies;
-+	unsigned long timeout;
-+	struct iwl_mld_baid_data *ba_data;
-+
-+	ba_data = rcu_dereference(mld->fw_id_to_ba[baid]);
-+	if (!ba_data) {
-+		IWL_DEBUG_HT(mld, "BAID %d not found in map\n", baid);
-+		return;
-+	}
-+
-+	if (!ba_data->timeout)
-+		return;
-+
-+	/* To minimize cache bouncing between RX queues, avoid frequent updates
-+	 * to last_rx_timestamp. update it only when the timeout period has
-+	 * passed. The worst-case scenario is the session expiring after
-+	 * approximately 2 * timeout, which is negligible (the update is
-+	 * atomic).
-+	 */
-+	timeout = TU_TO_JIFFIES(ba_data->timeout);
-+	if (time_is_before_jiffies(ba_data->last_rx_timestamp + timeout))
-+		ba_data->last_rx_timestamp = now;
-+}
-+
-+/* Processes received packets for a station.
-+ * Sets *drop to true if the packet should be dropped.
-+ * Returns the station if found, or NULL otherwise.
-+ */
-+static struct ieee80211_sta *
-+iwl_mld_rx_with_sta(struct iwl_mld *mld, struct ieee80211_hdr *hdr,
-+		    struct sk_buff *skb,
-+		    const struct iwl_rx_mpdu_desc *mpdu_desc,
-+		    const struct iwl_rx_packet *pkt, int queue, bool *drop)
-+{
-+	struct ieee80211_sta *sta = NULL;
-+	struct ieee80211_link_sta *link_sta = NULL;
-+	struct ieee80211_rx_status *rx_status;
-+	u8 baid;
-+
-+	if (mpdu_desc->status & cpu_to_le32(IWL_RX_MPDU_STATUS_SRC_STA_FOUND)) {
-+		u8 sta_id = le32_get_bits(mpdu_desc->status,
-+					  IWL_RX_MPDU_STATUS_STA_ID);
-+
-+		if (IWL_FW_CHECK(mld,
-+				 sta_id >= mld->fw->ucode_capa.num_stations,
-+				 "rx_mpdu: invalid sta_id %d\n", sta_id))
-+			return NULL;
-+
-+		link_sta = rcu_dereference(mld->fw_id_to_link_sta[sta_id]);
-+		if (!IS_ERR_OR_NULL(link_sta))
-+			sta = link_sta->sta;
-+	} else if (!is_multicast_ether_addr(hdr->addr2)) {
-+		/* Passing NULL is fine since we prevent two stations with the
-+		 * same address from being added.
-+		 */
-+		sta = ieee80211_find_sta_by_ifaddr(mld->hw, hdr->addr2, NULL);
-+	}
-+
-+	/* we may not have any station yet */
-+	if (!sta)
-+		return NULL;
-+
-+	rx_status = IEEE80211_SKB_RXCB(skb);
-+
-+	if (link_sta && sta->valid_links) {
-+		rx_status->link_valid = true;
-+		rx_status->link_id = link_sta->link_id;
-+	}
-+
-+	/* fill checksum */
-+	if (ieee80211_is_data(hdr->frame_control) &&
-+	    pkt->len_n_flags & cpu_to_le32(FH_RSCSR_RPA_EN)) {
-+		u16 hwsum = be16_to_cpu(mpdu_desc->v3.raw_xsum);
-+
-+		skb->ip_summed = CHECKSUM_COMPLETE;
-+		skb->csum = csum_unfold(~(__force __sum16)hwsum);
-+	}
-+
-+	if (iwl_mld_is_dup(mld, sta, hdr, mpdu_desc, rx_status, queue)) {
-+		IWL_DEBUG_DROP(mld, "Dropping duplicate packet 0x%x\n",
-+			       le16_to_cpu(hdr->seq_ctrl));
-+		*drop = true;
-+		return NULL;
-+	}
-+
-+	baid = le32_get_bits(mpdu_desc->reorder_data,
-+			     IWL_RX_MPDU_REORDER_BAID_MASK);
-+	if (baid != IWL_RX_REORDER_DATA_INVALID_BAID)
-+		iwl_mld_update_last_rx_timestamp(mld, baid);
-+
-+	if (link_sta && ieee80211_is_data(hdr->frame_control)) {
-+		u8 sub_frame_idx = mpdu_desc->amsdu_info &
-+			IWL_RX_MPDU_AMSDU_SUBFRAME_IDX_MASK;
-+
-+		/* 0 means not an A-MSDU, and 1 means a new A-MSDU */
-+		if (!sub_frame_idx || sub_frame_idx == 1)
-+			iwl_mld_count_mpdu_rx(link_sta, queue, 1);
-+
-+		if (!is_multicast_ether_addr(hdr->addr1))
-+			iwl_mld_low_latency_update_counters(mld, hdr, sta,
-+							    queue);
-+	}
-+
-+	return sta;
-+}
-+
-+#define KEY_IDX_LEN 2
-+
-+static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
-+				struct ieee80211_hdr *hdr,
-+				struct ieee80211_rx_status *rx_status,
-+				u32 mpdu_status,
-+				u32 mpdu_len)
-+{
-+	struct wireless_dev *wdev;
-+	struct iwl_mld_sta *mld_sta;
-+	struct iwl_mld_vif *mld_vif;
-+	u8 keyidx;
-+	struct ieee80211_key_conf *key;
-+	const u8 *frame = (void *)hdr;
-+
-+	if ((mpdu_status & IWL_RX_MPDU_STATUS_SEC_MASK) ==
-+	     IWL_RX_MPDU_STATUS_SEC_NONE)
-+		return 0;
-+
-+	/* For non-beacon, we don't really care. But beacons may
-+	 * be filtered out, and we thus need the firmware's replay
-+	 * detection, otherwise beacons the firmware previously
-+	 * filtered could be replayed, or something like that, and
-+	 * it can filter a lot - though usually only if nothing has
-+	 * changed.
-+	 */
-+	if (!ieee80211_is_beacon(hdr->frame_control))
-+		return 0;
-+
-+	if (!sta)
-+		return -1;
-+
-+	mld_sta = iwl_mld_sta_from_mac80211(sta);
-+	mld_vif = iwl_mld_vif_from_mac80211(mld_sta->vif);
-+
-+	/* key mismatch - will also report !MIC_OK but we shouldn't count it */
-+	if (!(mpdu_status & IWL_RX_MPDU_STATUS_KEY_VALID))
-+		goto report;
-+
-+	/* good cases */
-+	if (likely(mpdu_status & IWL_RX_MPDU_STATUS_MIC_OK &&
-+		   !(mpdu_status & IWL_RX_MPDU_STATUS_REPLAY_ERROR))) {
-+		rx_status->flag |= RX_FLAG_DECRYPTED;
-+		return 0;
-+	}
-+
-+	/* both keys will have the same cipher and MIC length, use
-+	 * whichever one is available
-+	 */
-+	key = rcu_dereference(mld_vif->bigtks[0]);
-+	if (!key) {
-+		key = rcu_dereference(mld_vif->bigtks[1]);
-+		if (!key)
-+			goto report;
-+	}
-+
-+	if (mpdu_len < key->icv_len + IEEE80211_GMAC_PN_LEN + KEY_IDX_LEN)
-+		goto report;
-+
-+	/* get the real key ID */
-+	keyidx = frame[mpdu_len - key->icv_len - IEEE80211_GMAC_PN_LEN - KEY_IDX_LEN];
-+	/* and if that's the other key, look it up */
-+	if (keyidx != key->keyidx) {
-+		/* shouldn't happen since firmware checked, but be safe
-+		 * in case the MIC length is wrong too, for example
-+		 */
-+		if (keyidx != 6 && keyidx != 7)
++	for (int i = 0; i < PROBE_OPTION_MAX; i++) {
++		if (!ssid_list[i].len)
 +			return -1;
-+
-+		key = rcu_dereference(mld_vif->bigtks[keyidx - 6]);
-+		if (!key)
-+			goto report;
++		if (ssid_list[i].len == ssid_len &&
++		    !memcmp(ssid_list[i].ssid, ssid, ssid_len))
++			return i;
 +	}
-+
-+	/* Report status to mac80211 */
-+	if (!(mpdu_status & IWL_RX_MPDU_STATUS_MIC_OK))
-+		ieee80211_key_mic_failure(key);
-+	else if (mpdu_status & IWL_RX_MPDU_STATUS_REPLAY_ERROR)
-+		ieee80211_key_replay(key);
-+report:
-+	wdev = ieee80211_vif_to_wdev(mld_sta->vif);
-+	if (wdev->netdev)
-+		cfg80211_rx_unprot_mlme_mgmt(wdev->netdev, (void *)hdr,
-+					     mpdu_len);
 +
 +	return -1;
 +}
 +
-+static int iwl_mld_rx_crypto(struct iwl_mld *mld,
-+			     struct ieee80211_sta *sta,
-+			     struct ieee80211_hdr *hdr,
-+			     struct ieee80211_rx_status *rx_status,
-+			     struct iwl_rx_mpdu_desc *desc, int queue,
-+			     u32 pkt_flags, u8 *crypto_len)
++static bool
++iwl_mld_scan_fits(struct iwl_mld *mld, int n_ssids,
++		  struct ieee80211_scan_ies *ies, int n_channels)
 +{
-+	u32 status = le32_to_cpu(desc->status);
++	return ((n_ssids <= PROBE_OPTION_MAX) &&
++		(n_channels <= mld->fw->ucode_capa.n_scan_channels) &
++		(ies->common_ie_len + ies->len[NL80211_BAND_2GHZ] +
++		 ies->len[NL80211_BAND_5GHZ] + ies->len[NL80211_BAND_6GHZ] <=
++		 iwl_mld_scan_max_template_size()));
++}
 +
-+	if (unlikely(ieee80211_is_mgmt(hdr->frame_control) &&
-+		     !ieee80211_has_protected(hdr->frame_control)))
-+		return iwl_mld_rx_mgmt_prot(sta, hdr, rx_status, status,
-+					    le16_to_cpu(desc->mpdu_len));
++static void
++iwl_mld_scan_build_probe_req(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			     struct ieee80211_scan_ies *ies,
++			     struct iwl_mld_scan_params *params)
++{
++	struct ieee80211_mgmt *frame = (void *)params->preq.buf;
++	u8 *pos, *newpos;
++	const u8 *mac_addr = params->flags & NL80211_SCAN_FLAG_RANDOM_ADDR ?
++		params->mac_addr : NULL;
 +
-+	if (!ieee80211_has_protected(hdr->frame_control) ||
-+	    (status & IWL_RX_MPDU_STATUS_SEC_MASK) ==
-+	    IWL_RX_MPDU_STATUS_SEC_NONE)
-+		return 0;
++	if (mac_addr)
++		get_random_mask_addr(frame->sa, mac_addr,
++				     params->mac_addr_mask);
++	else
++		memcpy(frame->sa, vif->addr, ETH_ALEN);
 +
-+	switch (status & IWL_RX_MPDU_STATUS_SEC_MASK) {
-+	case IWL_RX_MPDU_STATUS_SEC_CCM:
-+	case IWL_RX_MPDU_STATUS_SEC_GCM:
-+		BUILD_BUG_ON(IEEE80211_CCMP_PN_LEN != IEEE80211_GCMP_PN_LEN);
-+		if (!(status & IWL_RX_MPDU_STATUS_MIC_OK)) {
-+			IWL_DEBUG_DROP(mld,
-+				       "Dropping packet, bad MIC (CCM/GCM)\n");
-+			return -1;
++	frame->frame_control = cpu_to_le16(IEEE80211_STYPE_PROBE_REQ);
++	eth_broadcast_addr(frame->da);
++	ether_addr_copy(frame->bssid, params->bssid);
++	frame->seq_ctrl = 0;
++
++	pos = frame->u.probe_req.variable;
++	*pos++ = WLAN_EID_SSID;
++	*pos++ = 0;
++
++	params->preq.mac_header.offset = 0;
++	params->preq.mac_header.len = cpu_to_le16(24 + 2);
++
++	/* Insert DS parameter set element on 2.4 GHz band */
++	newpos = iwl_mld_scan_add_2ghz_elems(mld,
++					     ies->ies[NL80211_BAND_2GHZ],
++					     ies->len[NL80211_BAND_2GHZ],
++					     pos);
++	params->preq.band_data[0].offset = cpu_to_le16(pos - params->preq.buf);
++	params->preq.band_data[0].len = cpu_to_le16(newpos - pos);
++	pos = newpos;
++
++	memcpy(pos, ies->ies[NL80211_BAND_5GHZ],
++	       ies->len[NL80211_BAND_5GHZ]);
++	params->preq.band_data[1].offset = cpu_to_le16(pos - params->preq.buf);
++	params->preq.band_data[1].len =
++	    cpu_to_le16(ies->len[NL80211_BAND_5GHZ]);
++	pos += ies->len[NL80211_BAND_5GHZ];
++
++	memcpy(pos, ies->ies[NL80211_BAND_6GHZ],
++	       ies->len[NL80211_BAND_6GHZ]);
++	params->preq.band_data[2].offset = cpu_to_le16(pos - params->preq.buf);
++	params->preq.band_data[2].len =
++		cpu_to_le16(ies->len[NL80211_BAND_6GHZ]);
++	pos += ies->len[NL80211_BAND_6GHZ];
++
++	memcpy(pos, ies->common_ies, ies->common_ie_len);
++	params->preq.common_data.offset = cpu_to_le16(pos - params->preq.buf);
++
++	iwl_mld_scan_add_tpc_report_elem(pos + ies->common_ie_len);
++	params->preq.common_data.len = cpu_to_le16(ies->common_ie_len +
++						   WFA_TPC_IE_LEN);
++}
++
++static u16
++iwl_mld_scan_get_cmd_gen_flags(struct iwl_mld *mld,
++			       struct iwl_mld_scan_params *params,
++			       struct ieee80211_vif *vif,
++			       enum iwl_mld_scan_status scan_status)
++{
++	u16 flags = 0;
++
++	/* If no direct SSIDs are provided perform a passive scan. Otherwise,
++	 * if there is a single SSID which is not the broadcast SSID, assume
++	 * that the scan is intended for roaming purposes and thus enable Rx on
++	 * all chains to improve chances of hearing the beacons/probe responses.
++	 */
++	if (params->n_ssids == 0)
++		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_FORCE_PASSIVE;
++	else if (params->n_ssids == 1 && params->ssids[0].ssid_len)
++		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_USE_ALL_RX_CHAINS;
++
++	if (params->pass_all)
++		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_PASS_ALL;
++	else
++		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_MATCH;
++
++	if (iwl_mld_scan_is_fragmented(params->type))
++		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_FRAGMENTED_LMAC1;
++
++	if (!iwl_mld_scan_is_regular(params))
++		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_PERIODIC;
++
++	if (params->iter_notif ||
++	    mld->scan.pass_all_sched_res == SCHED_SCAN_PASS_ALL_STATE_ENABLED)
++		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_NTFY_ITER_COMPLETE;
++
++	if (scan_status == IWL_MLD_SCAN_SCHED ||
++	    scan_status == IWL_MLD_SCAN_NETDETECT)
++		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_PREEMPTIVE;
++
++	if (params->flags & (NL80211_SCAN_FLAG_ACCEPT_BCAST_PROBE_RESP |
++			     NL80211_SCAN_FLAG_OCE_PROBE_REQ_HIGH_TX_RATE |
++			     NL80211_SCAN_FLAG_FILS_MAX_CHANNEL_TIME))
++		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_OCE;
++
++	if ((scan_status == IWL_MLD_SCAN_SCHED ||
++	     scan_status == IWL_MLD_SCAN_NETDETECT) &&
++	    params->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ)
++		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_TRIGGER_UHB_SCAN;
++
++	if (params->enable_6ghz_passive)
++		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN;
++
++	flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_ADAPTIVE_DWELL;
++
++	return flags;
++}
++
++static u8
++iwl_mld_scan_get_cmd_gen_flags2(struct iwl_mld *mld,
++				struct iwl_mld_scan_params *params,
++				struct ieee80211_vif *vif, u16 gen_flags)
++{
++	u8 flags = 0;
++
++	/* TODO: CDB */
++	if (params->respect_p2p_go)
++		flags |= IWL_UMAC_SCAN_GEN_PARAMS_FLAGS2_RESPECT_P2P_GO_LB |
++			IWL_UMAC_SCAN_GEN_PARAMS_FLAGS2_RESPECT_P2P_GO_HB;
++
++	if (params->scan_6ghz)
++		flags |= IWL_UMAC_SCAN_GEN_PARAMS_FLAGS2_DONT_TOGGLE_ANT;
++
++	return flags;
++}
++
++static void
++iwl_mld_scan_cmd_set_dwell(struct iwl_mld *mld,
++			   struct iwl_scan_general_params_v11 *gp,
++			   struct iwl_mld_scan_params *params)
++{
++	const struct iwl_mld_scan_timing_params *timing =
++		&scan_timing[params->type];
++
++	gp->adwell_default_social_chn =
++	    IWL_SCAN_ADWELL_DEFAULT_N_APS_SOCIAL;
++	gp->adwell_default_2g = IWL_SCAN_ADWELL_DEFAULT_LB_N_APS;
++	gp->adwell_default_5g = IWL_SCAN_ADWELL_DEFAULT_HB_N_APS;
++
++	if (params->n_ssids && params->ssids[0].ssid_len)
++		gp->adwell_max_budget =
++			cpu_to_le16(IWL_SCAN_ADWELL_MAX_BUDGET_DIRECTED_SCAN);
++	else
++		gp->adwell_max_budget =
++			cpu_to_le16(IWL_SCAN_ADWELL_MAX_BUDGET_FULL_SCAN);
++
++	gp->scan_priority = cpu_to_le32(IWL_SCAN_PRIORITY_EXT_6);
++
++	gp->max_out_of_time[SCAN_LB_LMAC_IDX] = cpu_to_le32(timing->max_out_time);
++	gp->suspend_time[SCAN_LB_LMAC_IDX] = cpu_to_le32(timing->suspend_time);
++
++	gp->active_dwell[SCAN_LB_LMAC_IDX] = IWL_SCAN_DWELL_ACTIVE;
++	gp->passive_dwell[SCAN_LB_LMAC_IDX] = IWL_SCAN_DWELL_PASSIVE;
++	gp->active_dwell[SCAN_HB_LMAC_IDX] = IWL_SCAN_DWELL_ACTIVE;
++	gp->passive_dwell[SCAN_HB_LMAC_IDX] = IWL_SCAN_DWELL_PASSIVE;
++
++	IWL_DEBUG_SCAN(mld,
++		       "Scan: adwell_max_budget=%d max_out_of_time=%d suspend_time=%d\n",
++		       gp->adwell_max_budget,
++		       gp->max_out_of_time[SCAN_LB_LMAC_IDX],
++		       gp->suspend_time[SCAN_LB_LMAC_IDX]);
++}
++
++static void
++iwl_mld_scan_cmd_set_gen_params(struct iwl_mld *mld,
++				struct iwl_mld_scan_params *params,
++				struct ieee80211_vif *vif,
++				struct iwl_scan_general_params_v11 *gp,
++				enum iwl_mld_scan_status scan_status)
++{
++	u16 gen_flags = iwl_mld_scan_get_cmd_gen_flags(mld, params, vif,
++						       scan_status);
++	u8 gen_flags2 = iwl_mld_scan_get_cmd_gen_flags2(mld, params, vif,
++							gen_flags);
++
++	IWL_DEBUG_SCAN(mld, "General: flags=0x%x, flags2=0x%x\n",
++		       gen_flags, gen_flags2);
++
++	gp->flags = cpu_to_le16(gen_flags);
++	gp->flags2 = gen_flags2;
++
++	iwl_mld_scan_cmd_set_dwell(mld, gp, params);
++
++	if (gen_flags & IWL_UMAC_SCAN_GEN_FLAGS_V2_FRAGMENTED_LMAC1)
++		gp->num_of_fragments[SCAN_LB_LMAC_IDX] = IWL_SCAN_NUM_OF_FRAGS;
++
++	if (params->fw_link_id != IWL_MLD_INVALID_FW_ID)
++		gp->scan_start_mac_or_link_id = params->fw_link_id;
++}
++
++static int
++iwl_mld_scan_cmd_set_sched_params(struct iwl_mld_scan_params *params,
++				  struct iwl_scan_umac_schedule *schedule,
++				  __le16 *delay)
++{
++	if (WARN_ON(!params->n_scan_plans ||
++		    params->n_scan_plans > IWL_MAX_SCHED_SCAN_PLANS))
++		return -EINVAL;
++
++	for (int i = 0; i < params->n_scan_plans; i++) {
++		struct cfg80211_sched_scan_plan *scan_plan =
++		    &params->scan_plans[i];
++
++		schedule[i].iter_count = scan_plan->iterations;
++		schedule[i].interval =
++		    cpu_to_le16(scan_plan->interval);
++	}
++
++	/* If the number of iterations of the last scan plan is set to zero,
++	 * it should run infinitely. However, this is not always the case.
++	 * For example, when regular scan is requested the driver sets one scan
++	 * plan with one iteration.
++	 */
++	if (!schedule[params->n_scan_plans - 1].iter_count)
++		schedule[params->n_scan_plans - 1].iter_count = 0xff;
++
++	*delay = cpu_to_le16(params->delay);
++
++	return 0;
++}
++
++/* We insert the SSIDs in an inverted order, because the FW will
++ * invert it back.
++ */
++static void
++iwl_mld_scan_cmd_build_ssids(struct iwl_mld_scan_params *params,
++			     struct iwl_ssid_ie *ssids, u32 *ssid_bitmap)
++{
++	int i, j;
++	int index;
++	u32 tmp_bitmap = 0;
++
++	/* copy SSIDs from match list. iwl_config_sched_scan_profiles()
++	 * uses the order of these ssids to config match list.
++	 */
++	for (i = 0, j = params->n_match_sets - 1;
++	     j >= 0 && i < PROBE_OPTION_MAX;
++	     i++, j--) {
++		/* skip empty SSID match_sets */
++		if (!params->match_sets[j].ssid.ssid_len)
++			continue;
++
++		ssids[i].id = WLAN_EID_SSID;
++		ssids[i].len = params->match_sets[j].ssid.ssid_len;
++		memcpy(ssids[i].ssid, params->match_sets[j].ssid.ssid,
++		       ssids[i].len);
++	}
++
++	/* add SSIDs from scan SSID list */
++	for (j = params->n_ssids - 1;
++	     j >= 0 && i < PROBE_OPTION_MAX;
++	     i++, j--) {
++		index = iwl_mld_scan_ssid_exist(params->ssids[j].ssid,
++						params->ssids[j].ssid_len,
++						ssids);
++		if (index < 0) {
++			ssids[i].id = WLAN_EID_SSID;
++			ssids[i].len = params->ssids[j].ssid_len;
++			memcpy(ssids[i].ssid, params->ssids[j].ssid,
++			       ssids[i].len);
++			tmp_bitmap |= BIT(i);
++		} else {
++			tmp_bitmap |= BIT(index);
++		}
++	}
++
++	if (ssid_bitmap)
++		*ssid_bitmap = tmp_bitmap;
++}
++
++static void
++iwl_mld_scan_fill_6g_chan_list(struct iwl_mld_scan_params *params,
++			       struct iwl_scan_probe_params_v4 *pp)
++{
++	int j, idex_s = 0, idex_b = 0;
++	struct cfg80211_scan_6ghz_params *scan_6ghz_params =
++		params->scan_6ghz_params;
++
++	for (j = 0;
++	     j < params->n_ssids && idex_s < SCAN_SHORT_SSID_MAX_SIZE;
++	     j++) {
++		if (!params->ssids[j].ssid_len)
++			continue;
++
++		pp->short_ssid[idex_s] =
++			cpu_to_le32(~crc32_le(~0, params->ssids[j].ssid,
++					      params->ssids[j].ssid_len));
++
++		/* hidden 6ghz scan */
++		pp->direct_scan[idex_s].id = WLAN_EID_SSID;
++		pp->direct_scan[idex_s].len = params->ssids[j].ssid_len;
++		memcpy(pp->direct_scan[idex_s].ssid, params->ssids[j].ssid,
++		       params->ssids[j].ssid_len);
++		idex_s++;
++	}
++
++	/* Populate the arrays of the short SSIDs and the BSSIDs using the 6GHz
++	 * collocated parameters. This might not be optimal, as this processing
++	 * does not (yet) correspond to the actual channels, so it is possible
++	 * that some entries would be left out.
++	 */
++	for (j = 0; j < params->n_6ghz_params; j++) {
++		int k;
++
++		/* First, try to place the short SSID */
++		if (scan_6ghz_params[j].short_ssid_valid) {
++			for (k = 0; k < idex_s; k++) {
++				if (pp->short_ssid[k] ==
++				    cpu_to_le32(scan_6ghz_params[j].short_ssid))
++					break;
++			}
++
++			if (k == idex_s && idex_s < SCAN_SHORT_SSID_MAX_SIZE) {
++				pp->short_ssid[idex_s++] =
++					cpu_to_le32(scan_6ghz_params[j].short_ssid);
++			}
 +		}
 +
-+		rx_status->flag |= RX_FLAG_DECRYPTED | RX_FLAG_MIC_STRIPPED;
-+		*crypto_len = IEEE80211_CCMP_HDR_LEN;
-+		return 0;
-+	case IWL_RX_MPDU_STATUS_SEC_TKIP:
-+		if (!(status & IWL_RX_MPDU_STATUS_ICV_OK))
-+			return -1;
-+
-+		if (!(status & RX_MPDU_RES_STATUS_MIC_OK))
-+			rx_status->flag |= RX_FLAG_MMIC_ERROR;
-+
-+		if (pkt_flags & FH_RSCSR_RADA_EN) {
-+			rx_status->flag |= RX_FLAG_ICV_STRIPPED;
-+			rx_status->flag |= RX_FLAG_MMIC_STRIPPED;
++		/* try to place BSSID for the same entry */
++		for (k = 0; k < idex_b; k++) {
++			if (!memcmp(&pp->bssid_array[k],
++				    scan_6ghz_params[j].bssid, ETH_ALEN))
++				break;
 +		}
 +
-+		*crypto_len = IEEE80211_TKIP_IV_LEN;
-+		rx_status->flag |= RX_FLAG_DECRYPTED;
++		if (k == idex_b && idex_b < SCAN_BSSID_MAX_SIZE &&
++		    !WARN_ONCE(!is_valid_ether_addr(scan_6ghz_params[j].bssid),
++			       "scan: invalid BSSID at index %u, index_b=%u\n",
++			       j, idex_b)) {
++			memcpy(&pp->bssid_array[idex_b++],
++			       scan_6ghz_params[j].bssid, ETH_ALEN);
++		}
++	}
++
++	pp->short_ssid_num = idex_s;
++	pp->bssid_num = idex_b;
++}
++
++static void
++iwl_mld_scan_cmd_set_probe_params(struct iwl_mld_scan_params *params,
++				  struct iwl_scan_probe_params_v4 *pp,
++				  u32 *bitmap_ssid)
++{
++	pp->preq = params->preq;
++
++	if (params->scan_6ghz) {
++		iwl_mld_scan_fill_6g_chan_list(params, pp);
++		return;
++	}
++
++	/* relevant only for 2.4 GHz /5 GHz scan */
++	iwl_mld_scan_cmd_build_ssids(params, pp->direct_scan, bitmap_ssid);
++}
++
++static bool
++iwl_mld_scan_use_ebs(struct iwl_mld *mld, struct ieee80211_vif *vif,
++		     bool low_latency)
++{
++	const struct iwl_ucode_capabilities *capa = &mld->fw->ucode_capa;
++
++	/* We can only use EBS if:
++	 *	1. the feature is supported.
++	 *	2. the last EBS was successful.
++	 *	3. it's not a p2p find operation.
++	 *	4. we are not in low latency mode,
++	 *	   or if fragmented ebs is supported by the FW
++	 *	5. the VIF is not an AP interface (scan wants survey results)
++	 */
++	return ((capa->flags & IWL_UCODE_TLV_FLAGS_EBS_SUPPORT) &&
++		!mld->scan.last_ebs_failed &&
++		vif->type != NL80211_IFTYPE_P2P_DEVICE &&
++		(!low_latency || fw_has_api(capa, IWL_UCODE_TLV_API_FRAG_EBS)) &&
++		ieee80211_vif_type_p2p(vif) != NL80211_IFTYPE_AP);
++}
++
++static u8
++iwl_mld_scan_cmd_set_chan_flags(struct iwl_mld *mld,
++				struct iwl_mld_scan_params *params,
++				struct ieee80211_vif *vif,
++				bool low_latency)
++{
++	u8 flags = 0;
++
++	flags |= IWL_SCAN_CHANNEL_FLAG_ENABLE_CHAN_ORDER;
++
++	if (iwl_mld_scan_use_ebs(mld, vif, low_latency))
++		flags |= IWL_SCAN_CHANNEL_FLAG_EBS |
++			 IWL_SCAN_CHANNEL_FLAG_EBS_ACCURATE |
++			 IWL_SCAN_CHANNEL_FLAG_CACHE_ADD;
++
++	/* set fragmented ebs for fragmented scan */
++	if (iwl_mld_scan_is_fragmented(params->type))
++		flags |= IWL_SCAN_CHANNEL_FLAG_EBS_FRAG;
++
++	/* Force EBS in case the scan is a fragmented and there is a need
++	 * to take P2P GO operation into consideration during scan operation.
++	 */
++	/* TODO: CDB */
++	if (iwl_mld_scan_is_fragmented(params->type) &&
++	    params->respect_p2p_go) {
++		IWL_DEBUG_SCAN(mld, "Respect P2P GO. Force EBS\n");
++		flags |= IWL_SCAN_CHANNEL_FLAG_FORCE_EBS;
++	}
++
++	return flags;
++}
++
++static const u8 p2p_go_friendly_chs[] = {
++	36, 40, 44, 48, 149, 153, 157, 161, 165,
++};
++
++static const u8 social_chs[] = {
++	1, 6, 11
++};
++
++static u32 iwl_mld_scan_ch_n_aps_flag(enum nl80211_iftype vif_type, u8 ch_id)
++{
++	if (vif_type != NL80211_IFTYPE_P2P_DEVICE)
 +		return 0;
-+	default:
-+		break;
++
++	for (int i = 0; i < ARRAY_SIZE(p2p_go_friendly_chs); i++) {
++		if (ch_id == p2p_go_friendly_chs[i])
++			return IWL_SCAN_ADWELL_N_APS_GO_FRIENDLY_BIT;
++	}
++
++	for (int i = 0; i < ARRAY_SIZE(social_chs); i++) {
++		if (ch_id == social_chs[i])
++			return IWL_SCAN_ADWELL_N_APS_SOCIAL_CHS_BIT;
 +	}
 +
 +	return 0;
 +}
 +
-+static void iwl_mld_rx_update_ampdu_ref(struct iwl_mld *mld,
-+					struct iwl_mld_rx_phy_data *phy_data,
-+					struct ieee80211_rx_status *rx_status)
++static void
++iwl_mld_scan_cmd_set_channels(struct iwl_mld *mld,
++			      struct ieee80211_channel **channels,
++			      struct iwl_scan_channel_params_v7 *cp,
++			      int n_channels, u32 flags,
++			      enum nl80211_iftype vif_type)
 +{
-+	bool toggle_bit =
-+		phy_data->phy_info & IWL_RX_MPDU_PHY_AMPDU_TOGGLE;
++	for (int i = 0; i < n_channels; i++) {
++		enum nl80211_band band = channels[i]->band;
++		struct iwl_scan_channel_cfg_umac *cfg = &cp->channel_config[i];
++		u8 iwl_band = iwl_mld_nl80211_band_to_fw(band);
++		u32 n_aps_flag =
++			iwl_mld_scan_ch_n_aps_flag(vif_type,
++						   channels[i]->hw_value);
 +
-+	rx_status->flag |= RX_FLAG_AMPDU_DETAILS;
-+	/* Toggle is switched whenever new aggregation starts. Make
-+	 * sure ampdu_reference is never 0 so we can later use it to
-+	 * see if the frame was really part of an A-MPDU or not.
-+	 */
-+	if (toggle_bit != mld->monitor.ampdu_toggle) {
-+		mld->monitor.ampdu_ref++;
-+		if (mld->monitor.ampdu_ref == 0)
-+			mld->monitor.ampdu_ref++;
-+		mld->monitor.ampdu_toggle = toggle_bit;
-+		phy_data->first_subframe = true;
++		if (IWL_MLD_ADAPTIVE_DWELL_NUM_APS_OVERRIDE)
++			n_aps_flag = IWL_SCAN_ADWELL_N_APS_GO_FRIENDLY_BIT;
++
++		cfg->flags = cpu_to_le32(flags | n_aps_flag);
++		cfg->channel_num = channels[i]->hw_value;
++		if (cfg80211_channel_is_psc(channels[i]))
++			cfg->flags = 0;
++
++		if (band == NL80211_BAND_6GHZ) {
++			/* 6 GHz channels should only appear in a scan request
++			 * that has scan_6ghz set. The only exception is MLO
++			 * scan, which has to be passive.
++			 */
++			WARN_ON_ONCE(cfg->flags != 0);
++			cfg->flags =
++				cpu_to_le32(IWL_UHB_CHAN_CFG_FLAG_FORCE_PASSIVE);
++		}
++
++		cfg->v2.iter_count = 1;
++		cfg->v2.iter_interval = 0;
++		cfg->flags |= cpu_to_le32(iwl_band <<
++					  IWL_CHAN_CFG_FLAGS_BAND_POS);
 +	}
-+	rx_status->ampdu_reference = mld->monitor.ampdu_ref;
++}
++
++static u8
++iwl_mld_scan_cfg_channels_6g(struct iwl_mld *mld,
++			     struct iwl_mld_scan_params *params,
++			     u32 n_channels,
++			     struct iwl_scan_probe_params_v4 *pp,
++			     struct iwl_scan_channel_params_v7 *cp,
++			     enum nl80211_iftype vif_type)
++{
++	struct cfg80211_scan_6ghz_params *scan_6ghz_params =
++		params->scan_6ghz_params;
++	u32 i;
++	u8 ch_cnt;
++
++	for (i = 0, ch_cnt = 0; i < params->n_channels; i++) {
++		struct iwl_scan_channel_cfg_umac *cfg =
++			&cp->channel_config[ch_cnt];
++
++		u32 s_ssid_bitmap = 0, bssid_bitmap = 0, flags = 0;
++		u8 k, n_s_ssids = 0, n_bssids = 0;
++		u8 max_s_ssids, max_bssids;
++		bool force_passive = false, found = false, allow_passive = true,
++		     unsolicited_probe_on_chan = false, psc_no_listen = false;
++		s8 psd_20 = IEEE80211_RNR_TBTT_PARAMS_PSD_RESERVED;
++
++		/* Avoid performing passive scan on non PSC channels unless the
++		 * scan is specifically a passive scan, i.e., no SSIDs
++		 * configured in the scan command.
++		 */
++		if (!cfg80211_channel_is_psc(params->channels[i]) &&
++		    !params->n_6ghz_params && params->n_ssids)
++			continue;
++
++		cfg->channel_num = params->channels[i]->hw_value;
++		cfg->flags |=
++			cpu_to_le32(PHY_BAND_6 << IWL_CHAN_CFG_FLAGS_BAND_POS);
++
++		cfg->v5.iter_count = 1;
++		cfg->v5.iter_interval = 0;
++
++		for (u32 j = 0; j < params->n_6ghz_params; j++) {
++			s8 tmp_psd_20;
++
++			if (!(scan_6ghz_params[j].channel_idx == i))
++				continue;
++
++			unsolicited_probe_on_chan |=
++				scan_6ghz_params[j].unsolicited_probe;
++
++			/* Use the highest PSD value allowed as advertised by
++			 * APs for this channel
++			 */
++			tmp_psd_20 = scan_6ghz_params[j].psd_20;
++			if (tmp_psd_20 !=
++			    IEEE80211_RNR_TBTT_PARAMS_PSD_RESERVED &&
++			    (psd_20 ==
++			     IEEE80211_RNR_TBTT_PARAMS_PSD_RESERVED ||
++			     psd_20 < tmp_psd_20))
++				psd_20 = tmp_psd_20;
++
++			psc_no_listen |= scan_6ghz_params[j].psc_no_listen;
++		}
++
++		/* In the following cases apply passive scan:
++		 * 1. Non fragmented scan:
++		 *	- PSC channel with NO_LISTEN_FLAG on should be treated
++		 *	  like non PSC channel
++		 *	- Non PSC channel with more than 3 short SSIDs or more
++		 *	  than 9 BSSIDs.
++		 *	- Non PSC Channel with unsolicited probe response and
++		 *	  more than 2 short SSIDs or more than 6 BSSIDs.
++		 *	- PSC channel with more than 2 short SSIDs or more than
++		 *	  6 BSSIDs.
++		 * 2. Fragmented scan:
++		 *	- PSC channel with more than 1 SSID or 3 BSSIDs.
++		 *	- Non PSC channel with more than 2 SSIDs or 6 BSSIDs.
++		 *	- Non PSC channel with unsolicited probe response and
++		 *	  more than 1 SSID or more than 3 BSSIDs.
++		 */
++		if (!iwl_mld_scan_is_fragmented(params->type)) {
++			if (!cfg80211_channel_is_psc(params->channels[i]) ||
++			    psc_no_listen) {
++				if (unsolicited_probe_on_chan) {
++					max_s_ssids = 2;
++					max_bssids = 6;
++				} else {
++					max_s_ssids = 3;
++					max_bssids = 9;
++				}
++			} else {
++				max_s_ssids = 2;
++				max_bssids = 6;
++			}
++		} else if (cfg80211_channel_is_psc(params->channels[i])) {
++			max_s_ssids = 1;
++			max_bssids = 3;
++		} else {
++			if (unsolicited_probe_on_chan) {
++				max_s_ssids = 1;
++				max_bssids = 3;
++			} else {
++				max_s_ssids = 2;
++				max_bssids = 6;
++			}
++		}
++
++		/* To optimize the scan time, i.e., reduce the scan dwell time
++		 * on each channel, the below logic tries to set 3 direct BSSID
++		 * probe requests for each broadcast probe request with a short
++		 * SSID.
++		 */
++		for (u32 j = 0; j < params->n_6ghz_params; j++) {
++			if (!(scan_6ghz_params[j].channel_idx == i))
++				continue;
++
++			found = false;
++
++			for (k = 0;
++			     k < pp->short_ssid_num && n_s_ssids < max_s_ssids;
++			     k++) {
++				if (!scan_6ghz_params[j].unsolicited_probe &&
++				    le32_to_cpu(pp->short_ssid[k]) ==
++				    scan_6ghz_params[j].short_ssid) {
++					/* Relevant short SSID bit set */
++					if (s_ssid_bitmap & BIT(k)) {
++						found = true;
++						break;
++					}
++
++					/* Prefer creating BSSID entries unless
++					 * the short SSID probe can be done in
++					 * the same channel dwell iteration.
++					 *
++					 * We also need to create a short SSID
++					 * entry for any hidden AP.
++					 */
++					if (3 * n_s_ssids > n_bssids &&
++					    !pp->direct_scan[k].len)
++						break;
++
++					/* Hidden AP, cannot do passive scan */
++					if (pp->direct_scan[k].len)
++						allow_passive = false;
++
++					s_ssid_bitmap |= BIT(k);
++					n_s_ssids++;
++					found = true;
++					break;
++				}
++			}
++
++			if (found)
++				continue;
++
++			for (k = 0; k < pp->bssid_num; k++) {
++				if (memcmp(&pp->bssid_array[k],
++					   scan_6ghz_params[j].bssid,
++					   ETH_ALEN))
++					continue;
++
++				if (bssid_bitmap & BIT(k))
++					break;
++
++				if (n_bssids < max_bssids) {
++					bssid_bitmap |= BIT(k);
++					n_bssids++;
++				} else {
++					force_passive = TRUE;
++				}
++
++				break;
++			}
++		}
++
++		if (cfg80211_channel_is_psc(params->channels[i]) &&
++		    psc_no_listen)
++			flags |= IWL_UHB_CHAN_CFG_FLAG_PSC_CHAN_NO_LISTEN;
++
++		if (unsolicited_probe_on_chan)
++			flags |= IWL_UHB_CHAN_CFG_FLAG_UNSOLICITED_PROBE_RES;
++
++		if ((allow_passive && force_passive) ||
++		    (!(bssid_bitmap | s_ssid_bitmap) &&
++		     !cfg80211_channel_is_psc(params->channels[i])))
++			flags |= IWL_UHB_CHAN_CFG_FLAG_FORCE_PASSIVE;
++		else
++			flags |= bssid_bitmap | (s_ssid_bitmap << 16);
++
++		cfg->flags |= cpu_to_le32(flags);
++		cfg->v5.psd_20 = psd_20;
++
++		ch_cnt++;
++	}
++
++	if (params->n_channels > ch_cnt)
++		IWL_DEBUG_SCAN(mld,
++			       "6GHz: reducing number channels: (%u->%u)\n",
++			       params->n_channels, ch_cnt);
++
++	return ch_cnt;
++}
++
++static int
++iwl_mld_scan_cmd_set_6ghz_chan_params(struct iwl_mld *mld,
++				      struct iwl_mld_scan_params *params,
++				      struct ieee80211_vif *vif,
++				      struct iwl_scan_req_params_v17 *scan_p,
++				      enum iwl_mld_scan_status scan_status)
++{
++	struct iwl_scan_channel_params_v7 *chan_p = &scan_p->channel_params;
++	struct iwl_scan_probe_params_v4 *probe_p = &scan_p->probe_params;
++
++	chan_p->flags = iwl_mld_scan_get_cmd_gen_flags(mld, params, vif,
++						       scan_status);
++	chan_p->count = iwl_mld_scan_cfg_channels_6g(mld, params,
++						     params->n_channels,
++						     probe_p, chan_p,
++						     vif->type);
++	if (!chan_p->count)
++		return -EINVAL;
++
++	if (!params->n_ssids ||
++	    (params->n_ssids == 1 && !params->ssids[0].ssid_len))
++		chan_p->flags |= IWL_SCAN_CHANNEL_FLAG_6G_PSC_NO_FILTER;
++
++	return 0;
++}
++
++static int
++iwl_mld_scan_cmd_set_chan_params(struct iwl_mld *mld,
++				 struct iwl_mld_scan_params *params,
++				 struct ieee80211_vif *vif,
++				 struct iwl_scan_req_params_v17 *scan_p,
++				 bool low_latency,
++				 enum iwl_mld_scan_status scan_status,
++				 u32 channel_cfg_flags)
++{
++	struct iwl_scan_channel_params_v7 *cp = &scan_p->channel_params;
++	struct ieee80211_supported_band *sband =
++		&mld->nvm_data->bands[NL80211_BAND_6GHZ];
++
++	cp->n_aps_override[0] = IWL_SCAN_ADWELL_N_APS_GO_FRIENDLY;
++	cp->n_aps_override[1] = IWL_SCAN_ADWELL_N_APS_SOCIAL_CHS;
++
++	if (IWL_MLD_ADAPTIVE_DWELL_NUM_APS_OVERRIDE)
++		cp->n_aps_override[0] = IWL_MLD_ADAPTIVE_DWELL_NUM_APS_OVERRIDE;
++
++	if (params->scan_6ghz)
++		return iwl_mld_scan_cmd_set_6ghz_chan_params(mld, params,
++							     vif, scan_p,
++							     scan_status);
++
++	/* relevant only for 2.4 GHz/5 GHz scan */
++	cp->flags = iwl_mld_scan_cmd_set_chan_flags(mld, params, vif,
++						    low_latency);
++	cp->count = params->n_channels;
++
++	iwl_mld_scan_cmd_set_channels(mld, params->channels, cp,
++				      params->n_channels, channel_cfg_flags,
++				      vif->type);
++
++	if (!params->enable_6ghz_passive)
++		return 0;
++
++	/* fill 6 GHz passive scan cfg */
++	for (int i = 0; i < sband->n_channels; i++) {
++		struct ieee80211_channel *channel =
++			&sband->channels[i];
++		struct iwl_scan_channel_cfg_umac *cfg =
++			&cp->channel_config[cp->count];
++
++		if (!cfg80211_channel_is_psc(channel))
++			continue;
++
++		cfg->channel_num = channel->hw_value;
++		cfg->v5.iter_count = 1;
++		cfg->v5.iter_interval = 0;
++		cfg->v5.psd_20 =
++			IEEE80211_RNR_TBTT_PARAMS_PSD_RESERVED;
++		cfg->flags = cpu_to_le32(PHY_BAND_6 <<
++					 IWL_CHAN_CFG_FLAGS_BAND_POS);
++		cp->count++;
++	}
++
++	return 0;
++}
++
++static int
++iwl_mld_scan_build_cmd(struct iwl_mld *mld, struct ieee80211_vif *vif,
++		       struct iwl_mld_scan_params *params,
++		       enum iwl_mld_scan_status scan_status,
++		       bool low_latency)
++{
++	struct iwl_scan_req_umac_v17 *cmd = mld->scan.cmd;
++	struct iwl_scan_req_params_v17 *scan_p = &cmd->scan_params;
++	u32 bitmap_ssid = 0;
++	int uid, ret;
++
++	memset(mld->scan.cmd, 0, mld->scan.cmd_size);
++
++	/* find a free UID entry */
++	uid = iwl_mld_scan_uid_by_status(mld, IWL_MLD_SCAN_NONE);
++	if (uid < 0)
++		return uid;
++
++	cmd->uid = cpu_to_le32(uid);
++	cmd->ooc_priority =
++		cpu_to_le32(iwl_mld_scan_ooc_priority(scan_status));
++
++	iwl_mld_scan_cmd_set_gen_params(mld, params, vif,
++					&scan_p->general_params, scan_status);
++
++	ret = iwl_mld_scan_cmd_set_sched_params(params,
++						scan_p->periodic_params.schedule,
++						&scan_p->periodic_params.delay);
++	if (ret)
++		return ret;
++
++	iwl_mld_scan_cmd_set_probe_params(params, &scan_p->probe_params,
++					  &bitmap_ssid);
++
++	ret = iwl_mld_scan_cmd_set_chan_params(mld, params, vif, scan_p,
++					       low_latency, scan_status,
++					       bitmap_ssid);
++	if (ret)
++		return ret;
++
++	return uid;
++}
++
++static bool
++iwl_mld_scan_pass_all(struct iwl_mld *mld,
++		      struct cfg80211_sched_scan_request *req)
++{
++	if (req->n_match_sets && req->match_sets[0].ssid.ssid_len) {
++		IWL_DEBUG_SCAN(mld,
++			       "Sending scheduled scan with filtering, n_match_sets %d\n",
++			       req->n_match_sets);
++		mld->scan.pass_all_sched_res = SCHED_SCAN_PASS_ALL_STATE_DISABLED;
++		return false;
++	}
++
++	IWL_DEBUG_SCAN(mld, "Sending Scheduled scan without filtering\n");
++	mld->scan.pass_all_sched_res = SCHED_SCAN_PASS_ALL_STATE_ENABLED;
++
++	return true;
++}
++
++static int
++iwl_mld_config_sched_scan_profiles(struct iwl_mld *mld,
++				   struct cfg80211_sched_scan_request *req)
++{
++	struct iwl_host_cmd hcmd = {
++		.id = SCAN_OFFLOAD_UPDATE_PROFILES_CMD,
++		.dataflags[0] = IWL_HCMD_DFL_NOCOPY,
++	};
++	struct iwl_scan_offload_profile *profile;
++	struct iwl_scan_offload_profile_cfg_data *cfg_data;
++	struct iwl_scan_offload_profile_cfg *profile_cfg;
++	struct iwl_scan_offload_blocklist *blocklist;
++	u32 blocklist_size = IWL_SCAN_MAX_BLACKLIST_LEN * sizeof(*blocklist);
++	u32 cmd_size = blocklist_size + sizeof(*profile_cfg);
++	u8 *cmd;
++	int ret;
++
++	if (WARN_ON(req->n_match_sets > IWL_SCAN_MAX_PROFILES_V2))
++		return -EIO;
++
++	cmd = kzalloc(cmd_size, GFP_KERNEL);
++	if (!cmd)
++		return -ENOMEM;
++
++	hcmd.data[0] = cmd;
++	hcmd.len[0] = cmd_size;
++
++	blocklist = (struct iwl_scan_offload_blocklist *)cmd;
++	profile_cfg = (struct iwl_scan_offload_profile_cfg *)(cmd + blocklist_size);
++
++	/* No blocklist configuration */
++	cfg_data = &profile_cfg->data;
++	cfg_data->num_profiles = req->n_match_sets;
++	cfg_data->active_clients = SCAN_CLIENT_SCHED_SCAN;
++	cfg_data->pass_match = SCAN_CLIENT_SCHED_SCAN;
++	cfg_data->match_notify = SCAN_CLIENT_SCHED_SCAN;
++
++	if (!req->n_match_sets || !req->match_sets[0].ssid.ssid_len)
++		cfg_data->any_beacon_notify = SCAN_CLIENT_SCHED_SCAN;
++
++	for (int i = 0; i < req->n_match_sets; i++) {
++		profile = &profile_cfg->profiles[i];
++
++		/* Support any cipher and auth algorithm */
++		profile->unicast_cipher = 0xff;
++		profile->auth_alg = IWL_AUTH_ALGO_UNSUPPORTED |
++			IWL_AUTH_ALGO_NONE | IWL_AUTH_ALGO_PSK |
++			IWL_AUTH_ALGO_8021X | IWL_AUTH_ALGO_SAE |
++			IWL_AUTH_ALGO_8021X_SHA384 | IWL_AUTH_ALGO_OWE;
++		profile->network_type = IWL_NETWORK_TYPE_ANY;
++		profile->band_selection = IWL_SCAN_OFFLOAD_SELECT_ANY;
++		profile->client_bitmap = SCAN_CLIENT_SCHED_SCAN;
++		profile->ssid_index = i;
++	}
++
++	IWL_DEBUG_SCAN(mld,
++		       "Sending scheduled scan profile config (n_match_sets=%u)\n",
++		       req->n_match_sets);
++
++	ret = iwl_mld_send_cmd(mld, &hcmd);
++
++	kfree(cmd);
++
++	return ret;
++}
++
++static int
++iwl_mld_sched_scan_handle_non_psc_channels(struct iwl_mld_scan_params *params,
++					   bool *non_psc_included)
++{
++	int i, j;
++
++	*non_psc_included = false;
++	/* for 6 GHZ band only PSC channels need to be added */
++	for (i = 0; i < params->n_channels; i++) {
++		struct ieee80211_channel *channel = params->channels[i];
++
++		if (channel->band == NL80211_BAND_6GHZ &&
++		    !cfg80211_channel_is_psc(channel)) {
++			*non_psc_included = true;
++			break;
++		}
++	}
++
++	if (!*non_psc_included)
++		return 0;
++
++	params->channels =
++		kmemdup(params->channels,
++			sizeof(params->channels[0]) * params->n_channels,
++			GFP_KERNEL);
++	if (!params->channels)
++		return -ENOMEM;
++
++	for (i = j = 0; i < params->n_channels; i++) {
++		if (params->channels[i]->band == NL80211_BAND_6GHZ &&
++		    !cfg80211_channel_is_psc(params->channels[i]))
++			continue;
++		params->channels[j++] = params->channels[i];
++	}
++
++	params->n_channels = j;
++
++	return 0;
 +}
 +
 +static void
-+iwl_mld_fill_rx_status_band_freq(struct iwl_mld_rx_phy_data *phy_data,
-+				 struct iwl_rx_mpdu_desc *mpdu_desc,
-+				 struct ieee80211_rx_status *rx_status)
++iwl_mld_scan_6ghz_passive_scan(struct iwl_mld *mld,
++			       struct iwl_mld_scan_params *params,
++			       struct ieee80211_vif *vif)
 +{
-+	enum nl80211_band band;
++	struct ieee80211_supported_band *sband =
++		&mld->nvm_data->bands[NL80211_BAND_6GHZ];
++	u32 n_disabled, i;
 +
-+	band = BAND_IN_RX_STATUS(mpdu_desc->mac_phy_idx);
-+	rx_status->band = iwl_mld_phy_band_to_nl80211(band);
-+	rx_status->freq = ieee80211_channel_to_frequency(phy_data->channel,
-+							 rx_status->band);
-+}
++	params->enable_6ghz_passive = false;
 +
-+void iwl_mld_rx_mpdu(struct iwl_mld *mld, struct napi_struct *napi,
-+		     struct iwl_rx_cmd_buffer *rxb, int queue)
-+{
-+	struct iwl_rx_packet *pkt = rxb_addr(rxb);
-+	struct iwl_mld_rx_phy_data phy_data = {};
-+	struct iwl_rx_mpdu_desc *mpdu_desc = (void *)pkt->data;
-+	struct ieee80211_sta *sta;
-+	struct ieee80211_hdr *hdr;
-+	struct sk_buff *skb;
-+	size_t mpdu_desc_size = sizeof(*mpdu_desc);
-+	bool drop = false;
-+	u8 crypto_len = 0;
-+	u32 pkt_len = iwl_rx_packet_payload_len(pkt);
-+	u32 mpdu_len;
-+	enum iwl_mld_reorder_result reorder_res;
-+	struct ieee80211_rx_status *rx_status;
-+
-+	if (unlikely(mld->fw_status.in_hw_restart))
-+		return;
-+
-+	if (IWL_FW_CHECK(mld, pkt_len < mpdu_desc_size,
-+			 "Bad REPLY_RX_MPDU_CMD size (%d)\n", pkt_len))
-+		return;
-+
-+	mpdu_len = le16_to_cpu(mpdu_desc->mpdu_len);
-+
-+	if (IWL_FW_CHECK(mld, mpdu_len + mpdu_desc_size > pkt_len,
-+			 "FW lied about packet len (%d)\n", pkt_len))
-+		return;
-+
-+	/* Don't use dev_alloc_skb(), we'll have enough headroom once
-+	 * ieee80211_hdr pulled.
++	/* 6 GHz passive scan may be enabled in the first 2.4 GHz/5 GHz scan
++	 * phase to discover geo location if no AP's are found. Skip it when
++	 * we're in the 6 GHz scan phase.
 +	 */
-+	skb = alloc_skb(128, GFP_ATOMIC);
-+	if (!skb) {
-+		IWL_ERR(mld, "alloc_skb failed\n");
++	if (params->scan_6ghz)
++		return;
++
++	/* 6 GHz passive scan allowed only on station interface  */
++	if (vif->type != NL80211_IFTYPE_STATION) {
++		IWL_DEBUG_SCAN(mld,
++			       "6GHz passive scan: not station interface\n");
 +		return;
 +	}
 +
-+	hdr = (void *)(pkt->data + mpdu_desc_size);
++	/* 6 GHz passive scan is allowed in a defined time interval following
++	 * HW reset or resume flow, or while not associated and a large
++	 * interval has passed since the last 6 GHz passive scan.
++	 */
++	if ((vif->cfg.assoc ||
++	     time_after(mld->scan.last_6ghz_passive_jiffies +
++			(IWL_MLD_6GHZ_PASSIVE_SCAN_TIMEOUT * HZ), jiffies)) &&
++	    (time_before(mld->scan.last_start_time_jiffies +
++			 (IWL_MLD_6GHZ_PASSIVE_SCAN_ASSOC_TIMEOUT * HZ),
++			 jiffies))) {
++		IWL_DEBUG_SCAN(mld, "6GHz passive scan: %s\n",
++			       vif->cfg.assoc ? "associated" :
++			       "timeout did not expire");
++		return;
++	}
 +
-+	iwl_mld_fill_phy_data(mpdu_desc, &phy_data);
++	/* not enough channels in the regular scan request */
++	if (params->n_channels < IWL_MLD_6GHZ_PASSIVE_SCAN_MIN_CHANS) {
++		IWL_DEBUG_SCAN(mld,
++			       "6GHz passive scan: not enough channels %d\n",
++			       params->n_channels);
++		return;
++	}
 +
-+	if (mpdu_desc->mac_flags2 & IWL_RX_MPDU_MFLG2_PAD) {
-+		/* If the device inserted padding it means that (it thought)
-+		 * the 802.11 header wasn't a multiple of 4 bytes long. In
-+		 * this case, reserve two bytes at the start of the SKB to
-+		 * align the payload properly in case we end up copying it.
++	for (i = 0; i < params->n_ssids; i++) {
++		if (!params->ssids[i].ssid_len)
++			break;
++	}
++
++	/* not a wildcard scan, so cannot enable passive 6 GHz scan */
++	if (i == params->n_ssids) {
++		IWL_DEBUG_SCAN(mld,
++			       "6GHz passive scan: no wildcard SSID\n");
++		return;
++	}
++
++	if (!sband || !sband->n_channels) {
++		IWL_DEBUG_SCAN(mld,
++			       "6GHz passive scan: no 6GHz channels\n");
++		return;
++	}
++
++	for (i = 0, n_disabled = 0; i < sband->n_channels; i++) {
++		if (sband->channels[i].flags & (IEEE80211_CHAN_DISABLED))
++			n_disabled++;
++	}
++
++	/* Not all the 6 GHz channels are disabled, so no need for 6 GHz
++	 * passive scan
++	 */
++	if (n_disabled != sband->n_channels) {
++		IWL_DEBUG_SCAN(mld,
++			       "6GHz passive scan: 6GHz channels enabled\n");
++		return;
++	}
++
++	/* all conditions to enable 6 GHz passive scan are satisfied */
++	IWL_DEBUG_SCAN(mld, "6GHz passive scan: can be enabled\n");
++	params->enable_6ghz_passive = true;
++}
++
++static void
++iwl_mld_scan_set_link_id(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			 struct iwl_mld_scan_params *params,
++			 s8 tsf_report_link_id,
++			 enum iwl_mld_scan_status scan_status)
++{
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	struct iwl_mld_link *link;
++
++	if (tsf_report_link_id < 0) {
++		if (vif->active_links)
++			tsf_report_link_id = __ffs(vif->active_links);
++		else
++			tsf_report_link_id = 0;
++	}
++
++	link = iwl_mld_link_dereference_check(mld_vif, tsf_report_link_id);
++	if (!WARN_ON(!link)) {
++		params->fw_link_id = link->fw_id;
++		/* we to store fw_link_id only for regular scan,
++		 * and use it in scan complete notif
 +		 */
-+		skb_reserve(skb, 2);
++		if (scan_status == IWL_MLD_SCAN_REGULAR)
++			mld->scan.fw_link_id = link->fw_id;
++	} else {
++		mld->scan.fw_link_id = IWL_MLD_INVALID_FW_ID;
++		params->fw_link_id = IWL_MLD_INVALID_FW_ID;
 +	}
-+
-+	rx_status = IEEE80211_SKB_RXCB(skb);
-+
-+	/* this is needed early */
-+	iwl_mld_fill_rx_status_band_freq(&phy_data, mpdu_desc, rx_status);
-+
-+	rcu_read_lock();
-+
-+	sta = iwl_mld_rx_with_sta(mld, hdr, skb, mpdu_desc, pkt, queue, &drop);
-+	if (drop)
-+		goto drop;
-+
-+	/* update aggregation data for monitor sake on default queue */
-+	if (!queue && (phy_data.phy_info & IWL_RX_MPDU_PHY_AMPDU))
-+		iwl_mld_rx_update_ampdu_ref(mld, &phy_data, rx_status);
-+
-+	iwl_mld_rx_fill_status(mld, skb, &phy_data, mpdu_desc, hdr, queue);
-+
-+	if (iwl_mld_rx_crypto(mld, sta, hdr, rx_status, mpdu_desc, queue,
-+			      le32_to_cpu(pkt->len_n_flags), &crypto_len))
-+		goto drop;
-+
-+	if (iwl_mld_build_rx_skb(mld, skb, hdr, mpdu_len, crypto_len, rxb))
-+		goto drop;
-+
-+	/* time sync frame is saved and will be released later when the
-+	 * notification with the timestamps arrives.
-+	 */
-+	if (iwl_mld_time_sync_frame(mld, skb, hdr->addr2))
-+		goto out;
-+
-+	reorder_res = iwl_mld_reorder(mld, napi, queue, sta, skb, mpdu_desc);
-+	switch (reorder_res) {
-+	case IWL_MLD_PASS_SKB:
-+		break;
-+	case IWL_MLD_DROP_SKB:
-+		goto drop;
-+	case IWL_MLD_BUFFERED_SKB:
-+		goto out;
-+	default:
-+		WARN_ON(1);
-+		goto drop;
-+	}
-+
-+	iwl_mld_pass_packet_to_mac80211(mld, napi, skb, queue, sta);
-+
-+	goto out;
-+
-+drop:
-+	kfree_skb(skb);
-+out:
-+	rcu_read_unlock();
 +}
 +
-+#define SYNC_RX_QUEUE_TIMEOUT (HZ)
-+void iwl_mld_sync_rx_queues(struct iwl_mld *mld,
-+			    enum iwl_mld_internal_rxq_notif_type type,
-+			    const void *notif_payload, u32 notif_payload_size)
++static int
++_iwl_mld_single_scan_start(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			   struct cfg80211_scan_request *req,
++			   struct ieee80211_scan_ies *ies,
++			   enum iwl_mld_scan_status scan_status)
 +{
-+	u8 num_rx_queues = mld->trans->num_rx_queues;
-+	struct {
-+		struct iwl_rxq_sync_cmd sync_cmd;
-+		struct iwl_mld_internal_rxq_notif notif;
-+	} __packed cmd = {
-+		.sync_cmd.rxq_mask = cpu_to_le32(BIT(num_rx_queues) - 1),
-+		.sync_cmd.count =
-+			cpu_to_le32(sizeof(struct iwl_mld_internal_rxq_notif) +
-+				    notif_payload_size),
-+		.notif.type = type,
-+		.notif.cookie = mld->rxq_sync.cookie,
-+	};
 +	struct iwl_host_cmd hcmd = {
-+		.id = WIDE_ID(DATA_PATH_GROUP, TRIGGER_RX_QUEUES_NOTIF_CMD),
-+		.data[0] = &cmd,
-+		.len[0] = sizeof(cmd),
-+		.data[1] = notif_payload,
-+		.len[1] = notif_payload_size,
++		.id = WIDE_ID(LONG_GROUP, SCAN_REQ_UMAC),
++		.len = { mld->scan.cmd_size, },
++		.data = { mld->scan.cmd, },
++		.dataflags = { IWL_HCMD_DFL_NOCOPY, },
 +	};
-+	int ret;
++	struct iwl_mld_scan_iter_data scan_iter_data = {
++		.current_vif = vif,
++	};
++	struct cfg80211_sched_scan_plan scan_plan = {.iterations = 1};
++	struct iwl_mld_scan_params params = {};
++	int ret, uid;
 +
-+	/* size must be a multiple of DWORD */
-+	if (WARN_ON(cmd.sync_cmd.count & cpu_to_le32(3)))
-+		return;
++	/* we should have failed registration if scan_cmd was NULL */
++	if (WARN_ON(!mld->scan.cmd))
++		return -ENOMEM;
 +
-+	mld->rxq_sync.state = (1 << num_rx_queues) - 1;
++	if (!iwl_mld_scan_fits(mld, req->n_ssids, ies, req->n_channels))
++		return -ENOBUFS;
++
++	ieee80211_iterate_active_interfaces_mtx(mld->hw,
++						IEEE80211_IFACE_ITER_NORMAL,
++						iwl_mld_scan_iterator,
++						&scan_iter_data);
++
++	params.type = iwl_mld_get_scan_type(mld, vif, &scan_iter_data);
++	params.n_ssids = req->n_ssids;
++	params.flags = req->flags;
++	params.n_channels = req->n_channels;
++	params.delay = 0;
++	params.ssids = req->ssids;
++	params.channels = req->channels;
++	params.mac_addr = req->mac_addr;
++	params.mac_addr_mask = req->mac_addr_mask;
++	params.no_cck = req->no_cck;
++	params.pass_all = true;
++	params.n_match_sets = 0;
++	params.match_sets = NULL;
++	params.scan_plans = &scan_plan;
++	params.n_scan_plans = 1;
++
++	params.n_6ghz_params = req->n_6ghz_params;
++	params.scan_6ghz_params = req->scan_6ghz_params;
++	params.scan_6ghz = req->scan_6ghz;
++
++	ether_addr_copy(params.bssid, req->bssid);
++	/* TODO: CDB - per-band flag */
++	params.respect_p2p_go =
++		iwl_mld_get_respect_p2p_go(mld, vif,
++					   scan_iter_data.global_low_latency);
++
++	if (req->duration)
++		params.iter_notif = true;
++
++	iwl_mld_scan_set_link_id(mld, vif, &params, req->tsf_report_link_id,
++				 scan_status);
++
++	iwl_mld_scan_build_probe_req(mld, vif, ies, &params);
++
++	iwl_mld_scan_6ghz_passive_scan(mld, &params, vif);
++
++	uid = iwl_mld_scan_build_cmd(mld, vif, &params, scan_status,
++				     scan_iter_data.global_low_latency);
++	if (uid < 0)
++		return uid;
 +
 +	ret = iwl_mld_send_cmd(mld, &hcmd);
 +	if (ret) {
-+		IWL_ERR(mld, "Failed to trigger RX queues sync (%d)\n", ret);
++		IWL_ERR(mld, "Scan failed! ret %d\n", ret);
++		return ret;
++	}
++
++	IWL_DEBUG_SCAN(mld, "Scan request send success: status=%u, uid=%u\n",
++		       scan_status, uid);
++
++	mld->scan.uid_status[uid] = scan_status;
++	mld->scan.status |= scan_status;
++
++	if (params.enable_6ghz_passive)
++		mld->scan.last_6ghz_passive_jiffies = jiffies;
++
++	return 0;
++}
++
++static int
++iwl_mld_scan_send_abort_cmd_status(struct iwl_mld *mld, int uid, u32 *status)
++{
++	struct iwl_umac_scan_abort abort_cmd = {
++		.uid = cpu_to_le32(uid),
++	};
++	struct iwl_host_cmd cmd = {
++		.id = WIDE_ID(LONG_GROUP, SCAN_ABORT_UMAC),
++		.flags = CMD_WANT_SKB,
++		.data = { &abort_cmd },
++		.len[0] = sizeof(abort_cmd),
++	};
++	struct iwl_rx_packet *pkt;
++	struct iwl_cmd_response *resp;
++	u32 resp_len;
++	int ret;
++
++	ret = iwl_mld_send_cmd(mld, &cmd);
++	if (ret)
++		return ret;
++
++	pkt = cmd.resp_pkt;
++
++	resp_len = iwl_rx_packet_payload_len(pkt);
++	if (IWL_FW_CHECK(mld, resp_len != sizeof(*resp),
++			 "Scan Abort: unexpected response length %d\n",
++			 resp_len)) {
++		ret = -EIO;
 +		goto out;
 +	}
 +
-+	ret = wait_event_timeout(mld->rxq_sync.waitq,
-+				 READ_ONCE(mld->rxq_sync.state) == 0,
-+				 SYNC_RX_QUEUE_TIMEOUT);
-+	WARN_ONCE(!ret, "RXQ sync failed: state=0x%lx, cookie=%d\n",
-+		  mld->rxq_sync.state, mld->rxq_sync.cookie);
++	resp = (void *)pkt->data;
++	*status = le32_to_cpu(resp->status);
 +
 +out:
-+	mld->rxq_sync.state = 0;
-+	mld->rxq_sync.cookie++;
++	iwl_free_resp(&cmd);
++	return ret;
 +}
 +
-+void iwl_mld_handle_rx_queues_sync_notif(struct iwl_mld *mld,
-+					 struct napi_struct *napi,
-+					 struct iwl_rx_packet *pkt, int queue)
++static int
++iwl_mld_scan_abort(struct iwl_mld *mld, int type, int uid, bool *wait)
 +{
-+	struct iwl_rxq_sync_notification *notif;
-+	struct iwl_mld_internal_rxq_notif *internal_notif;
-+	u32 len = iwl_rx_packet_payload_len(pkt);
-+	size_t combined_notif_len = sizeof(*notif) + sizeof(*internal_notif);
++	enum iwl_umac_scan_abort_status status;
++	int ret;
 +
-+	notif = (void *)pkt->data;
-+	internal_notif = (void *)notif->payload;
++	*wait = true;
 +
-+	if (IWL_FW_CHECK(mld, len < combined_notif_len,
-+			 "invalid notification size %u (%zu)\n",
-+			 len, combined_notif_len))
-+		return;
++	IWL_DEBUG_SCAN(mld, "Sending scan abort, uid %u\n", uid);
 +
-+	len -= combined_notif_len;
++	ret = iwl_mld_scan_send_abort_cmd_status(mld, uid, &status);
 +
-+	if (IWL_FW_CHECK(mld, mld->rxq_sync.cookie != internal_notif->cookie,
-+			 "received expired RX queue sync message (cookie=%d expected=%d q[%d])\n",
-+			 internal_notif->cookie, mld->rxq_sync.cookie, queue))
-+		return;
++	IWL_DEBUG_SCAN(mld, "Scan abort: ret=%d status=%u\n", ret, status);
 +
-+	switch (internal_notif->type) {
-+	case IWL_MLD_RXQ_EMPTY:
-+		IWL_FW_CHECK(mld, len,
-+			     "invalid empty notification size %d\n", len);
-+		break;
-+	case IWL_MLD_RXQ_NOTIF_DEL_BA:
-+		if (IWL_FW_CHECK(mld, len != sizeof(struct iwl_mld_delba_data),
-+				 "invalid delba notification size %u (%zu)\n",
-+				 len, sizeof(struct iwl_mld_delba_data)))
-+			break;
-+		iwl_mld_del_ba(mld, queue, (void *)internal_notif->payload);
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+	}
++	/* We don't need to wait to scan complete in the following cases:
++	 * 1. Driver failed to send the scan abort cmd.
++	 * 2. The FW is no longer familiar with the scan that needs to be
++	 *    stopped. It is expected that the scan complete notification was
++	 *    already received but not yet processed.
++	 *
++	 * In both cases the flow should continue similar to the case that the
++	 * scan was really aborted.
++	 */
++	if (ret || status == IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND)
++		*wait = false;
 +
-+	IWL_FW_CHECK(mld, !test_and_clear_bit(queue, &mld->rxq_sync.state),
-+		     "RXQ sync: queue %d responded a second time!\n", queue);
-+
-+	if (READ_ONCE(mld->rxq_sync.state) == 0)
-+		wake_up(&mld->rxq_sync.waitq);
++	return ret;
 +}
 +
-+void iwl_mld_rx_monitor_no_data(struct iwl_mld *mld, struct napi_struct *napi,
-+				struct iwl_rx_packet *pkt, int queue)
++static int
++iwl_mld_scan_stop_wait(struct iwl_mld *mld, int type, int uid)
 +{
-+	struct iwl_rx_no_data_ver_3 *desc;
-+	struct iwl_mld_rx_phy_data phy_data;
-+	struct ieee80211_rx_status *rx_status;
-+	struct sk_buff *skb;
-+	u32 format, rssi;
++	struct iwl_notification_wait wait_scan_done;
++	static const u16 scan_comp_notif[] = { SCAN_COMPLETE_UMAC };
++	bool wait = true;
++	int ret;
 +
-+	if (unlikely(mld->fw_status.in_hw_restart))
-+		return;
++	iwl_init_notification_wait(&mld->notif_wait, &wait_scan_done,
++				   scan_comp_notif,
++				   ARRAY_SIZE(scan_comp_notif),
++				   NULL, NULL);
 +
-+	if (IWL_FW_CHECK(mld, iwl_rx_packet_payload_len(pkt) < sizeof(*desc),
-+			 "Bad RX_NO_DATA_NOTIF size (%d)\n",
-+			 iwl_rx_packet_payload_len(pkt)))
-+		return;
++	IWL_DEBUG_SCAN(mld, "Preparing to stop scan, type=%x\n", type);
 +
-+	desc = (void *)pkt->data;
-+
-+	rssi = le32_to_cpu(desc->rssi);
-+	phy_data.energy_a = u32_get_bits(rssi, RX_NO_DATA_CHAIN_A_MSK);
-+	phy_data.energy_b = u32_get_bits(rssi, RX_NO_DATA_CHAIN_B_MSK);
-+	phy_data.channel = u32_get_bits(rssi, RX_NO_DATA_CHANNEL_MSK);
-+	phy_data.data0 = desc->phy_info[0];
-+	phy_data.data1 = desc->phy_info[1];
-+	phy_data.phy_info = IWL_RX_MPDU_PHY_TSF_OVERLOAD;
-+	phy_data.gp2_on_air_rise = le32_to_cpu(desc->on_air_rise_time);
-+	phy_data.rate_n_flags = le32_to_cpu(desc->rate);
-+	phy_data.with_data = false;
-+
-+	BUILD_BUG_ON(sizeof(phy_data.rx_vec) != sizeof(desc->rx_vec));
-+	memcpy(phy_data.rx_vec, desc->rx_vec, sizeof(phy_data.rx_vec));
-+
-+	format = phy_data.rate_n_flags & RATE_MCS_MOD_TYPE_MSK;
-+
-+	/* Don't use dev_alloc_skb(), we'll have enough headroom once
-+	 * ieee80211_hdr pulled.
-+	 */
-+	skb = alloc_skb(128, GFP_ATOMIC);
-+	if (!skb) {
-+		IWL_ERR(mld, "alloc_skb failed\n");
-+		return;
++	ret = iwl_mld_scan_abort(mld, type, uid, &wait);
++	if (ret) {
++		IWL_DEBUG_SCAN(mld, "couldn't stop scan type=%d\n", type);
++		goto return_no_wait;
 +	}
 +
-+	rx_status = IEEE80211_SKB_RXCB(skb);
-+
-+	/* 0-length PSDU */
-+	rx_status->flag |= RX_FLAG_NO_PSDU;
-+
-+	/* mark as failed PLCP on any errors to skip checks in mac80211 */
-+	if (le32_get_bits(desc->info, RX_NO_DATA_INFO_ERR_MSK) !=
-+	    RX_NO_DATA_INFO_ERR_NONE)
-+		rx_status->flag |= RX_FLAG_FAILED_PLCP_CRC;
-+
-+	switch (le32_get_bits(desc->info, RX_NO_DATA_INFO_TYPE_MSK)) {
-+	case RX_NO_DATA_INFO_TYPE_NDP:
-+		rx_status->zero_length_psdu_type =
-+			IEEE80211_RADIOTAP_ZERO_LEN_PSDU_SOUNDING;
-+		break;
-+	case RX_NO_DATA_INFO_TYPE_MU_UNMATCHED:
-+	case RX_NO_DATA_INFO_TYPE_TB_UNMATCHED:
-+		rx_status->zero_length_psdu_type =
-+			IEEE80211_RADIOTAP_ZERO_LEN_PSDU_NOT_CAPTURED;
-+		break;
-+	default:
-+		rx_status->zero_length_psdu_type =
-+			IEEE80211_RADIOTAP_ZERO_LEN_PSDU_VENDOR;
-+		break;
++	if (!wait) {
++		IWL_DEBUG_SCAN(mld, "no need to wait for scan type=%d\n", type);
++		goto return_no_wait;
 +	}
 +
-+	rx_status->band = phy_data.channel > 14 ? NL80211_BAND_5GHZ :
-+		NL80211_BAND_2GHZ;
++	return iwl_wait_notification(&mld->notif_wait, &wait_scan_done, HZ);
 +
-+	rx_status->freq = ieee80211_channel_to_frequency(phy_data.channel,
-+							 rx_status->band);
-+
-+	iwl_mld_rx_fill_status(mld, skb, &phy_data, NULL, NULL, queue);
-+
-+	/* No more radiotap info should be added after this point.
-+	 * Mark it as mac header for upper layers to know where
-+	 * the radiotap header ends.
-+	 */
-+	skb_set_mac_header(skb, skb->len);
-+
-+	/* Override the nss from the rx_vec since the rate_n_flags has
-+	 * only 1 bit for the nss which gives a max of 2 ss but there
-+	 * may be up to 8 spatial streams.
-+	 */
-+	switch (format) {
-+	case RATE_MCS_VHT_MSK:
-+		rx_status->nss =
-+			le32_get_bits(desc->rx_vec[0],
-+				      RX_NO_DATA_RX_VEC0_VHT_NSTS_MSK) + 1;
-+		break;
-+	case RATE_MCS_HE_MSK:
-+		rx_status->nss =
-+			le32_get_bits(desc->rx_vec[0],
-+				      RX_NO_DATA_RX_VEC0_HE_NSTS_MSK) + 1;
-+		break;
-+	case RATE_MCS_EHT_MSK:
-+		rx_status->nss =
-+			le32_get_bits(desc->rx_vec[2],
-+				      RX_NO_DATA_RX_VEC2_EHT_NSTS_MSK) + 1;
-+	}
-+
-+	/* pass the packet to mac80211 */
-+	rcu_read_lock();
-+	ieee80211_rx_napi(mld->hw, NULL, skb, napi);
-+	rcu_read_unlock();
++return_no_wait:
++	iwl_remove_notification(&mld->notif_wait, &wait_scan_done);
++	return ret;
 +}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/rx.h b/drivers/net/wireless/intel/iwlwifi/mld/rx.h
++
++int iwl_mld_sched_scan_start(struct iwl_mld *mld,
++			     struct ieee80211_vif *vif,
++			     struct cfg80211_sched_scan_request *req,
++			     struct ieee80211_scan_ies *ies,
++			     int type)
++{
++	struct iwl_host_cmd hcmd = {
++		.id = WIDE_ID(LONG_GROUP, SCAN_REQ_UMAC),
++		.len = { mld->scan.cmd_size, },
++		.data = { mld->scan.cmd, },
++		.dataflags = { IWL_HCMD_DFL_NOCOPY, },
++	};
++	struct iwl_mld_scan_params params = {};
++	struct iwl_mld_scan_iter_data scan_iter_data = {
++		.current_vif = vif,
++	};
++	bool non_psc_included = false;
++	int ret, uid;
++
++	/* we should have failed registration if scan_cmd was NULL */
++	if (WARN_ON(!mld->scan.cmd))
++		return -ENOMEM;
++
++	/* FW supports only a single periodic scan */
++	if (mld->scan.status & (IWL_MLD_SCAN_SCHED | IWL_MLD_SCAN_NETDETECT))
++		return -EBUSY;
++
++	ieee80211_iterate_active_interfaces_mtx(mld->hw,
++						IEEE80211_IFACE_ITER_NORMAL,
++						iwl_mld_scan_iterator,
++						&scan_iter_data);
++
++	params.type = iwl_mld_get_scan_type(mld, vif, &scan_iter_data);
++	params.flags = req->flags;
++	params.n_ssids = req->n_ssids;
++	params.ssids = req->ssids;
++	params.n_channels = req->n_channels;
++	params.channels = req->channels;
++	params.mac_addr = req->mac_addr;
++	params.mac_addr_mask = req->mac_addr_mask;
++	params.no_cck = false;
++	params.pass_all =  iwl_mld_scan_pass_all(mld, req);
++	params.n_match_sets = req->n_match_sets;
++	params.match_sets = req->match_sets;
++	params.n_scan_plans = req->n_scan_plans;
++	params.scan_plans = req->scan_plans;
++	/* TODO: CDB - per-band flag */
++	params.respect_p2p_go =
++		iwl_mld_get_respect_p2p_go(mld, vif,
++					   scan_iter_data.global_low_latency);
++
++	/* UMAC scan supports up to 16-bit delays, trim it down to 16-bits */
++	params.delay = req->delay > U16_MAX ? U16_MAX : req->delay;
++
++	eth_broadcast_addr(params.bssid);
++
++	ret = iwl_mld_config_sched_scan_profiles(mld, req);
++	if (ret)
++		return ret;
++
++	iwl_mld_scan_build_probe_req(mld, vif, ies, &params);
++
++	ret = iwl_mld_sched_scan_handle_non_psc_channels(&params,
++							 &non_psc_included);
++	if (ret)
++		goto out;
++
++	if (!iwl_mld_scan_fits(mld, req->n_ssids, ies, params.n_channels)) {
++		ret = -ENOBUFS;
++		goto out;
++	}
++
++	uid = iwl_mld_scan_build_cmd(mld, vif, &params, type,
++				     scan_iter_data.global_low_latency);
++	if (uid < 0) {
++		ret = uid;
++		goto out;
++	}
++
++	ret = iwl_mld_send_cmd(mld, &hcmd);
++	if (!ret) {
++		IWL_DEBUG_SCAN(mld,
++			       "Sched scan request send success: type=%u, uid=%u\n",
++			       type, uid);
++		mld->scan.uid_status[uid] = type;
++		mld->scan.status |= type;
++	} else {
++		IWL_ERR(mld, "Sched scan failed! ret %d\n", ret);
++		mld->scan.pass_all_sched_res = SCHED_SCAN_PASS_ALL_STATE_DISABLED;
++	}
++
++out:
++	if (non_psc_included)
++		kfree(params.channels);
++	return ret;
++}
++
++int iwl_mld_scan_stop(struct iwl_mld *mld, int type, bool notify)
++{
++	int uid, ret;
++
++	IWL_DEBUG_SCAN(mld,
++		       "Request to stop scan: type=0x%x, status=0x%x\n",
++		       type, mld->scan.status);
++
++	if (!(mld->scan.status & type))
++		return 0;
++
++	uid = iwl_mld_scan_uid_by_status(mld, type);
++	/* must be valid, we just checked it's running */
++	if (WARN_ON_ONCE(uid < 0))
++		return uid;
++
++	ret = iwl_mld_scan_stop_wait(mld, type, uid);
++	if (ret)
++		IWL_DEBUG_SCAN(mld, "Failed to stop scan\n");
++
++	/* Clear the scan status so the next scan requests will
++	 * succeed and mark the scan as stopping, so that the Rx
++	 * handler doesn't do anything, as the scan was stopped from
++	 * above. Also remove the handler to not notify mac80211
++	 * erroneously after a new scan starts, for example.
++	 */
++	mld->scan.status &= ~type;
++	mld->scan.uid_status[uid] = IWL_MLD_SCAN_NONE;
++	iwl_mld_cancel_notifications_of_object(mld, IWL_MLD_OBJECT_TYPE_SCAN,
++					       uid);
++
++	if (type == IWL_MLD_SCAN_REGULAR) {
++		if (notify) {
++			struct cfg80211_scan_info info = {
++				.aborted = true,
++			};
++
++			ieee80211_scan_completed(mld->hw, &info);
++		}
++	} else if (notify) {
++		ieee80211_sched_scan_stopped(mld->hw);
++		mld->scan.pass_all_sched_res = SCHED_SCAN_PASS_ALL_STATE_DISABLED;
++	}
++
++	return ret;
++}
++
++int iwl_mld_regular_scan_start(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			       struct cfg80211_scan_request *req,
++			       struct ieee80211_scan_ies *ies)
++{
++	return _iwl_mld_single_scan_start(mld, vif, req, ies,
++					  IWL_MLD_SCAN_REGULAR);
++}
++
++static void iwl_mld_int_mlo_scan_start(struct iwl_mld *mld,
++				       struct ieee80211_vif *vif,
++				       struct ieee80211_channel **channels,
++				       size_t n_channels)
++{
++	struct cfg80211_scan_request *req __free(kfree) = NULL;
++	struct ieee80211_scan_ies ies = {};
++	size_t size;
++	int ret;
++
++	IWL_DEBUG_SCAN(mld, "Starting Internal MLO scan: n_channels=%zu\n",
++		       n_channels);
++
++	size = struct_size(req, channels, n_channels);
++	req = kzalloc(size, GFP_KERNEL);
++	if (!req)
++		return;
++
++	/* set the requested channels */
++	for (int i = 0; i < n_channels; i++)
++		req->channels[i] = channels[i];
++
++	req->n_channels = n_channels;
++
++	/* set the rates */
++	for (int i = 0; i < NUM_NL80211_BANDS; i++)
++		if (mld->wiphy->bands[i])
++			req->rates[i] =
++				(1 << mld->wiphy->bands[i]->n_bitrates) - 1;
++
++	req->wdev = ieee80211_vif_to_wdev(vif);
++	req->wiphy = mld->wiphy;
++	req->scan_start = jiffies;
++	req->tsf_report_link_id = -1;
++
++	ret = _iwl_mld_single_scan_start(mld, vif, req, &ies,
++					 IWL_MLD_SCAN_INT_MLO);
++
++	IWL_DEBUG_SCAN(mld, "Internal MLO scan: ret=%d\n", ret);
++}
++
++void iwl_mld_int_mlo_scan(struct iwl_mld *mld, struct ieee80211_vif *vif)
++{
++	struct ieee80211_channel *channels[IEEE80211_MLD_MAX_NUM_LINKS];
++	unsigned long usable_links = ieee80211_vif_usable_links(vif);
++	size_t n_channels = 0;
++	u8 link_id;
++
++	lockdep_assert_wiphy(mld->wiphy);
++
++	if (!vif->cfg.assoc || !ieee80211_vif_is_mld(vif) ||
++	    hweight16(vif->valid_links) == 1)
++		return;
++
++	if (mld->scan.status & IWL_MLD_SCAN_INT_MLO) {
++		IWL_DEBUG_SCAN(mld, "Internal MLO scan is already running\n");
++		return;
++	}
++
++	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
++		struct ieee80211_bss_conf *link_conf =
++			link_conf_dereference_check(vif, link_id);
++
++		if (WARN_ON_ONCE(!link_conf))
++			continue;
++
++		channels[n_channels++] = link_conf->chanreq.oper.chan;
++	}
++
++	if (!n_channels)
++		return;
++
++	iwl_mld_int_mlo_scan_start(mld, vif, channels, n_channels);
++}
++
++void iwl_mld_handle_scan_iter_complete_notif(struct iwl_mld *mld,
++					     struct iwl_rx_packet *pkt)
++{
++	struct iwl_umac_scan_iter_complete_notif *notif = (void *)pkt->data;
++	u32 uid = __le32_to_cpu(notif->uid);
++
++	if (IWL_FW_CHECK(mld, uid >= ARRAY_SIZE(mld->scan.uid_status),
++			 "FW reports out-of-range scan UID %d\n", uid))
++		return;
++
++	if (mld->scan.uid_status[uid] == IWL_MLD_SCAN_REGULAR)
++		mld->scan.start_tsf = le64_to_cpu(notif->start_tsf);
++
++	IWL_DEBUG_SCAN(mld,
++		       "UMAC Scan iteration complete: status=0x%x scanned_channels=%d\n",
++		       notif->status, notif->scanned_channels);
++
++	if (mld->scan.pass_all_sched_res == SCHED_SCAN_PASS_ALL_STATE_FOUND) {
++		IWL_DEBUG_SCAN(mld, "Pass all scheduled scan results found\n");
++		ieee80211_sched_scan_results(mld->hw);
++		mld->scan.pass_all_sched_res = SCHED_SCAN_PASS_ALL_STATE_ENABLED;
++	}
++
++	IWL_DEBUG_SCAN(mld,
++		       "UMAC Scan iteration complete: scan started at %llu (TSF)\n",
++		       le64_to_cpu(notif->start_tsf));
++}
++
++void iwl_mld_handle_match_found_notif(struct iwl_mld *mld,
++				      struct iwl_rx_packet *pkt)
++{
++	IWL_DEBUG_SCAN(mld, "Scheduled scan results\n");
++	ieee80211_sched_scan_results(mld->hw);
++}
++
++void iwl_mld_handle_scan_complete_notif(struct iwl_mld *mld,
++					struct iwl_rx_packet *pkt)
++{
++	struct iwl_umac_scan_complete *notif = (void *)pkt->data;
++	bool aborted = (notif->status == IWL_SCAN_OFFLOAD_ABORTED);
++	u32 uid = __le32_to_cpu(notif->uid);
++
++	if (IWL_FW_CHECK(mld, uid >= ARRAY_SIZE(mld->scan.uid_status),
++			 "FW reports out-of-range scan UID %d\n", uid))
++		return;
++
++	IWL_DEBUG_SCAN(mld,
++		       "Scan completed: uid=%u type=%u, status=%s, EBS=%s\n",
++		       uid, mld->scan.uid_status[uid],
++		       notif->status == IWL_SCAN_OFFLOAD_COMPLETED ?
++				"completed" : "aborted",
++		       iwl_mld_scan_ebs_status_str(notif->ebs_status));
++	IWL_DEBUG_SCAN(mld, "Scan completed: scan_status=0x%x\n",
++		       mld->scan.status);
++	IWL_DEBUG_SCAN(mld,
++		       "Scan completed: line=%u, iter=%u, elapsed time=%u\n",
++		       notif->last_schedule, notif->last_iter,
++		       __le32_to_cpu(notif->time_from_last_iter));
++
++	if (IWL_FW_CHECK(mld, !(mld->scan.uid_status[uid] & mld->scan.status),
++			 "FW reports scan UID %d we didn't trigger\n", uid))
++		return;
++
++	/* if the scan is already stopping, we don't need to notify mac80211 */
++	if (mld->scan.uid_status[uid] == IWL_MLD_SCAN_REGULAR) {
++		struct cfg80211_scan_info info = {
++			.aborted = aborted,
++			.scan_start_tsf = mld->scan.start_tsf,
++		};
++		int fw_link_id = mld->scan.fw_link_id;
++		struct ieee80211_bss_conf *link_conf = NULL;
++
++		if (fw_link_id != IWL_MLD_INVALID_FW_ID)
++			link_conf =
++				wiphy_dereference(mld->wiphy,
++						  mld->fw_id_to_bss_conf[fw_link_id]);
++
++		/* It is possible that by the time the scan is complete the
++		 * link was already removed and is not valid.
++		 */
++		if (link_conf)
++			ether_addr_copy(info.tsf_bssid, link_conf->bssid);
++		else
++			IWL_DEBUG_SCAN(mld, "Scan link is no longer valid\n");
++
++		ieee80211_scan_completed(mld->hw, &info);
++	} else if (mld->scan.uid_status[uid] == IWL_MLD_SCAN_SCHED) {
++		ieee80211_sched_scan_stopped(mld->hw);
++		mld->scan.pass_all_sched_res = SCHED_SCAN_PASS_ALL_STATE_DISABLED;
++	} else if (mld->scan.uid_status[uid] == IWL_MLD_SCAN_INT_MLO) {
++		IWL_DEBUG_SCAN(mld, "Internal MLO scan completed\n");
++		mld->scan.last_mlo_scan_jiffies = jiffies;
++
++		/*
++		 * We limit link selection to internal MLO scans as otherwise
++		 * we do not know whether all channels were covered.
++		 */
++		iwl_mld_select_links(mld);
++	}
++
++	mld->scan.status &= ~mld->scan.uid_status[uid];
++
++	IWL_DEBUG_SCAN(mld, "Scan completed: after update: scan_status=0x%x\n",
++		       mld->scan.status);
++
++	mld->scan.uid_status[uid] = IWL_MLD_SCAN_NONE;
++
++	if (notif->ebs_status != IWL_SCAN_EBS_SUCCESS &&
++	    notif->ebs_status != IWL_SCAN_EBS_INACTIVE)
++		mld->scan.last_ebs_failed = true;
++}
++
++/* This function is used in nic restart flow, to inform mac80211 about scans
++ * that were aborted by restart flow or by an assert.
++ */
++void iwl_mld_report_scan_aborted(struct iwl_mld *mld)
++{
++	int uid;
++
++	uid = iwl_mld_scan_uid_by_status(mld, IWL_MLD_SCAN_REGULAR);
++	if (uid >= 0) {
++		struct cfg80211_scan_info info = {
++			.aborted = true,
++		};
++
++		ieee80211_scan_completed(mld->hw, &info);
++		mld->scan.uid_status[uid] = IWL_MLD_SCAN_NONE;
++	}
++
++	uid = iwl_mld_scan_uid_by_status(mld, IWL_MLD_SCAN_SCHED);
++	if (uid >= 0) {
++		mld->scan.pass_all_sched_res = SCHED_SCAN_PASS_ALL_STATE_DISABLED;
++		mld->scan.uid_status[uid] = IWL_MLD_SCAN_NONE;
++
++		/* sched scan will be restarted by mac80211 in reconfig.
++		 * report to mac80211 that sched scan stopped only if we won't
++		 * restart the firmware.
++		 */
++		if (!iwlwifi_mod_params.fw_restart)
++			ieee80211_sched_scan_stopped(mld->hw);
++	}
++
++	uid = iwl_mld_scan_uid_by_status(mld, IWL_MLD_SCAN_INT_MLO);
++	if (uid >= 0) {
++		IWL_DEBUG_SCAN(mld, "Internal MLO scan aborted\n");
++		mld->scan.uid_status[uid] = IWL_MLD_SCAN_NONE;
++	}
++
++	BUILD_BUG_ON(IWL_MLD_SCAN_NONE != 0);
++	memset(mld->scan.uid_status, 0, sizeof(mld->scan.uid_status));
++}
++
++int iwl_mld_alloc_scan_cmd(struct iwl_mld *mld)
++{
++	u8 scan_cmd_ver = iwl_fw_lookup_cmd_ver(mld->fw, SCAN_REQ_UMAC,
++						IWL_FW_CMD_VER_UNKNOWN);
++	size_t scan_cmd_size;
++
++	if (scan_cmd_ver == 17) {
++		scan_cmd_size = sizeof(struct iwl_scan_req_umac_v17);
++	} else {
++		IWL_ERR(mld, "Unexpected scan cmd version %d\n", scan_cmd_ver);
++		return -EINVAL;
++	}
++
++	mld->scan.cmd = kmalloc(scan_cmd_size, GFP_KERNEL);
++	if (!mld->scan.cmd)
++		return -ENOMEM;
++
++	mld->scan.cmd_size = scan_cmd_size;
++
++	return 0;
++}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.h b/drivers/net/wireless/intel/iwlwifi/mld/scan.h
 new file mode 100644
-index 000000000000..2beabd7e70b1
+index 000000000000..118ceb79f9d7
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/rx.h
-@@ -0,0 +1,72 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.h
+@@ -0,0 +1,135 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
 + * Copyright (C) 2024-2025 Intel Corporation
 + */
-+#ifndef __iwl_mld_rx_h__
-+#define __iwl_mld_rx_h__
++#ifndef __iwl_mld_scan_h__
++#define __iwl_mld_scan_h__
 +
-+#include "mld.h"
++int iwl_mld_alloc_scan_cmd(struct iwl_mld *mld);
 +
-+/**
-+ * enum iwl_mld_internal_rxq_notif_type - RX queue sync notif types
-+ *
-+ * @IWL_MLD_RXQ_EMPTY: empty sync notification
-+ * @IWL_MLD_RXQ_NOTIF_DEL_BA: notify RSS queues of delBA
++int iwl_mld_regular_scan_start(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			       struct cfg80211_scan_request *req,
++			       struct ieee80211_scan_ies *ies);
++
++void iwl_mld_int_mlo_scan(struct iwl_mld *mld, struct ieee80211_vif *vif);
++
++void iwl_mld_handle_scan_iter_complete_notif(struct iwl_mld *mld,
++					     struct iwl_rx_packet *pkt);
++
++int iwl_mld_scan_stop(struct iwl_mld *mld, int type, bool notify);
++
++int iwl_mld_sched_scan_start(struct iwl_mld *mld,
++			     struct ieee80211_vif *vif,
++			     struct cfg80211_sched_scan_request *req,
++			     struct ieee80211_scan_ies *ies,
++			     int type);
++
++void iwl_mld_handle_match_found_notif(struct iwl_mld *mld,
++				      struct iwl_rx_packet *pkt);
++
++void iwl_mld_handle_scan_complete_notif(struct iwl_mld *mld,
++					struct iwl_rx_packet *pkt);
++
++#define WFA_TPC_IE_LEN 9
++
++static inline int iwl_mld_scan_max_template_size(void)
++{
++#define MAC_HDR_LEN 24
++#define DS_IE_LEN 3
++#define SSID_IE_LEN 2
++
++/* driver create the 802.11 header, WFA TPC IE, DS parameter and SSID IE */
++#define DRIVER_TOTAL_IES_LEN \
++	(MAC_HDR_LEN + WFA_TPC_IE_LEN + DS_IE_LEN + SSID_IE_LEN)
++
++	BUILD_BUG_ON(SCAN_OFFLOAD_PROBE_REQ_SIZE < DRIVER_TOTAL_IES_LEN);
++
++	return SCAN_OFFLOAD_PROBE_REQ_SIZE - DRIVER_TOTAL_IES_LEN;
++}
++
++void iwl_mld_report_scan_aborted(struct iwl_mld *mld);
++
++enum iwl_mld_scan_status {
++	IWL_MLD_SCAN_NONE		= 0,
++	IWL_MLD_SCAN_REGULAR		= BIT(0),
++	IWL_MLD_SCAN_SCHED		= BIT(1),
++	IWL_MLD_SCAN_NETDETECT		= BIT(2),
++	IWL_MLD_SCAN_INT_MLO		= BIT(3),
++};
++
++/* enum iwl_mld_pass_all_sched_results_states - Defines the states for
++ * handling/passing scheduled scan results to mac80211
++ * @SCHED_SCAN_PASS_ALL_STATE_DISABLED: Don't pass all scan results, only when
++ *	a match found.
++ * @SCHED_SCAN_PASS_ALL_STATE_ENABLED: Pass all scan results is enabled
++ *	(no filtering).
++ * @SCHED_SCAN_PASS_ALL_STATE_FOUND: A scan result is found, pass it on the
++ *	next scan iteration complete notification.
 + */
-+enum iwl_mld_internal_rxq_notif_type {
-+	IWL_MLD_RXQ_EMPTY,
-+	IWL_MLD_RXQ_NOTIF_DEL_BA,
++enum iwl_mld_pass_all_sched_results_states {
++	SCHED_SCAN_PASS_ALL_STATE_DISABLED,
++	SCHED_SCAN_PASS_ALL_STATE_ENABLED,
++	SCHED_SCAN_PASS_ALL_STATE_FOUND,
 +};
 +
 +/**
-+ * struct iwl_mld_internal_rxq_notif - @iwl_rxq_sync_cmd internal data.
-+ * This data is echoed by the firmware to all RSS queues and should be DWORD
-+ * aligned. FW is agnostic to the data, so there are no endianness requirements
++ * enum iwl_mld_traffic_load - Levels of traffic load
 + *
-+ * @type: one of &iwl_mld_internal_rxq_notif_type
-+ * @cookie: unique internal cookie to identify old notifications
-+ * @reserved: reserved for alignment
-+ * @payload: data to send to RX queues based on the type (may be empty)
++ * @IWL_MLD_TRAFFIC_LOW: low traffic load
++ * @IWL_MLD_TRAFFIC_MEDIUM: medium traffic load
++ * @IWL_MLD_TRAFFIC_HIGH: high traffic load
 + */
-+struct iwl_mld_internal_rxq_notif {
-+	u8 type;
-+	u8 reserved[3];
-+	u32 cookie;
-+	u8 payload[];
-+} __packed;
-+
-+/**
-+ * struct iwl_mld_rx_queues_sync - RX queues sync data
-+ *
-+ * @waitq: wait queue for RX queues sync completion
-+ * @cookie: unique id to correlate sync requests with responses
-+ * @state: bitmask representing the sync state of RX queues
-+ *	all RX queues bits are set before sending the command, and the
-+ *	corresponding queue bit cleared upon handling the notification
-+ */
-+struct iwl_mld_rx_queues_sync {
-+	wait_queue_head_t waitq;
-+	u32 cookie;
-+	unsigned long state;
++enum iwl_mld_traffic_load {
++	IWL_MLD_TRAFFIC_LOW,
++	IWL_MLD_TRAFFIC_MEDIUM,
++	IWL_MLD_TRAFFIC_HIGH,
 +};
 +
-+void iwl_mld_rx_mpdu(struct iwl_mld *mld, struct napi_struct *napi,
-+		     struct iwl_rx_cmd_buffer *rxb, int queue);
++/**
++ * struct iwl_mld_scan - Scan data
++ * @status: scan status, a combination of %enum iwl_mld_scan_status,
++ *	reflects the %scan.uid_status array.
++ * @uid_status: array to track the scan status per uid.
++ * @start_tsf: start time of last scan in TSF of the link that requested
++ *	the scan.
++ * @last_ebs_failed: true if the last EBS (Energy Based Scan) failed.
++ * @pass_all_sched_res: see %enum iwl_mld_pass_all_sched_results_states.
++ * @fw_link_id: the current (regular) scan fw link id, used by scan
++ *	complete notif.
++ * @traffic_load: traffic load related data
++ * @traffic_load.last_stats_ts_usec: The timestamp of the last statistics
++ *	notification, used to calculate the elapsed time between two
++ *	notifications and determine the traffic load
++ * @traffic_load.status: The current traffic load status, see
++ *	&enum iwl_mld_traffic_load
++ * @cmd_size: size of %cmd.
++ * @cmd: pointer to scan cmd buffer (allocated once in op mode start).
++ * @last_6ghz_passive_jiffies: stores the last 6GHz passive scan time
++ *	in jiffies.
++ * @last_start_time_jiffies: stores the last start time in jiffies
++ *	(interface up/reset/resume).
++ * @last_mlo_scan_jiffies: end time of the last MLO scan in jiffies.
++ */
++struct iwl_mld_scan {
++	/* Add here fields that need clean up on restart */
++	struct_group(zeroed_on_hw_restart,
++		unsigned int status;
++		u32 uid_status[IWL_MAX_UMAC_SCANS];
++		u64 start_tsf;
++		bool last_ebs_failed;
++		enum iwl_mld_pass_all_sched_results_states pass_all_sched_res;
++		u8 fw_link_id;
++		struct {
++			u32 last_stats_ts_usec;
++			enum iwl_mld_traffic_load status;
++		} traffic_load;
++	);
++	/* And here fields that survive a fw restart */
++	size_t cmd_size;
++	void *cmd;
++	unsigned long last_6ghz_passive_jiffies;
++	unsigned long last_start_time_jiffies;
++	unsigned long last_mlo_scan_jiffies;
++};
 +
-+void iwl_mld_sync_rx_queues(struct iwl_mld *mld,
-+			    enum iwl_mld_internal_rxq_notif_type type,
-+			    const void *notif_payload, u32 notif_payload_size);
-+
-+void iwl_mld_handle_rx_queues_sync_notif(struct iwl_mld *mld,
-+					 struct napi_struct *napi,
-+					 struct iwl_rx_packet *pkt, int queue);
-+
-+void iwl_mld_pass_packet_to_mac80211(struct iwl_mld *mld,
-+				     struct napi_struct *napi,
-+				     struct sk_buff *skb, int queue,
-+				     struct ieee80211_sta *sta);
-+
-+void iwl_mld_rx_monitor_no_data(struct iwl_mld *mld, struct napi_struct *napi,
-+				struct iwl_rx_packet *pkt, int queue);
-+
-+#endif /* __iwl_mld_agg_h__ */
++#endif /* __iwl_mld_scan_h__ */
 -- 
 2.34.1
 
