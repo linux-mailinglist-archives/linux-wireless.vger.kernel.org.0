@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-18998-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19002-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4587BA3738E
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:45:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE316A37395
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:46:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FB007A14CD
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:44:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC60016CFFC
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B36290F;
-	Sun, 16 Feb 2025 09:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5909199396;
+	Sun, 16 Feb 2025 09:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ASz09UnU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eW5h09ws"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1544192D77
-	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E34F19340D
+	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739699054; cv=none; b=kmpQrlNmBxwtv7kKDs+5WEb0qkiCK87AgrNgqp49dIxf57ZLu8Z8yXuEaPHwN5VhQX57Gsl6xJwkyqiY0vkJCfqtGol11uAzWCK2beFH1xgjyAYXEYmJi3G0Co5XgnoEecPFIQQM6jItVrlaaykjiJ5K8CocyimkPGsz+LIG9pg=
+	t=1739699059; cv=none; b=mUKdClDjqQxFzFqfXVWn+GQNaYhdoRKrDcHKMqFILFaRGD1jMk8txopB7vmj5V5xptfhhGbiyZOET/Q0IB1fHgLDdzvckxWH4wSslCexjLfoiABLv/2y0ln1YFDu2cgf6NhL59a9dNEQQ5foQkxMZSJFELxfykE9kbbzP7xghcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739699054; c=relaxed/simple;
-	bh=JvUUpUzOi084KcwiO/ppvTxwvaMkgkgekqvypewdOjE=;
+	s=arc-20240116; t=1739699059; c=relaxed/simple;
+	bh=Oe4KZ+Yfy2/n0Z/AwURrYhnX0uSeksmx5gAB6V28lqM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DAux+Pi6GtxhxEnCbOTVmwO+UGQVj0sAxNw/H68G46cRtNdJiA34cFDw7TjLWK6L2v+oFLAhyDVfaXelwLBZBluGepjszYPW95tTHNq/Mfd50YRooGK5TDFwip4/OeW9HP4KA9xAp1MxCbMlgEBEYZZrtd0l/QOCF7EXdF3Libg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ASz09UnU; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=S6ye2y8J2zuhwRnxcUKzP0YLmCldwnm+VilrUG5VI/9pbsGj5dK8k+v9DS//dUIhzxDWfZL5JZf02fAYgZkvQyWeBZ3zyOFeeBZnx3ezT2Z5+i7GzEUcRwxZPWtjibZwfn5Cc1n/A6BoapRqH4VxS0A6RpvTQMriZmmWfz58HV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eW5h09ws; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739699053; x=1771235053;
+  t=1739699054; x=1771235054;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=JvUUpUzOi084KcwiO/ppvTxwvaMkgkgekqvypewdOjE=;
-  b=ASz09UnUlhxPhfZj8rKLD/nX7I8d1m3a9Fk/CfwdJ7Tr/1hjpE+XtogO
-   Owt66LhGq+HMn8jeuyjU8JrTEk5BgJhvYceSUCz9pG07zH784mGOFTPhD
-   uzh+o1gRjFbM46ABkjIE82K2kYjIJ0oUimA/H2PsVMopvmq8blkL3b7j7
-   AIZJyDkBUWYoYNhsY5TgAPe6oFYhPTAHzLBuMMs1bq52VYxcEYzn+96qz
-   7gpCZYPVJnnZ0/uFjAlof4eZDWfY/CNXyC3Kr2Z4Jiw+5YIIOOKO1QCAq
-   fQqogMl8KtSmsNCL8sMN8YwlKeVKv8CFPqjPiDBnwIY3Klx4cs6q5JKqS
-   A==;
-X-CSE-ConnectionGUID: hJ75fYPTRJeV6HgJd7DPaw==
-X-CSE-MsgGUID: eyiFziwATtKXPf2gH20PLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323414"
+  bh=Oe4KZ+Yfy2/n0Z/AwURrYhnX0uSeksmx5gAB6V28lqM=;
+  b=eW5h09ws0iofbap1OKELTUGYebap9f1hWRqBQwLmIhtrKD1mNZf4j86v
+   b+Rvd22Co6oylmW3XeCmEeOuXFuD1ZCpQbeFLADUnHoBnkpmkiMjFP6pa
+   XChlsMh5hlPeBOZJwq8I2rEWVnq7OZF94+nhpeFkFPQiJ3/vfkhdNZJ7J
+   QHTivMWiOUWJAbwb+IBshkU9h2WzyPupBN3qai8yEPZY9l3ZkjEvKoaE2
+   rHxP7bEZzqSyWhUitt+JBm4PskKUpyuVxNIcmRHsvPRCwmSsQHBwt2RBz
+   X9/2x0hPQIcgonw8n6JPObMFSFj6MrkJ+TC/AGYNIXem+ZpDlwS2R0R6D
+   Q==;
+X-CSE-ConnectionGUID: EIcEaSDvSAeG8LR5Wg6KNA==
+X-CSE-MsgGUID: BTbpJgbJSsWBSEZVvKDOMg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323416"
 X-IronPort-AV: E=Sophos;i="6.13,290,1732608000"; 
-   d="scan'208";a="40323414"
+   d="scan'208";a="40323416"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:13 -0800
-X-CSE-ConnectionGUID: F9H0Yd35R9mGC7M50exszw==
-X-CSE-MsgGUID: RrwpizomTdyNoiKmpsAQKA==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:14 -0800
+X-CSE-ConnectionGUID: rMtsE4VQSpuO9xoyasnM9g==
+X-CSE-MsgGUID: ZpRYGnXDS1qJk3LlV3zdSQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118785263"
+   d="scan'208";a="118785265"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:12 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:13 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 29/42] wifi: iwlwifi: mld: add file stats.h/c
-Date: Sun, 16 Feb 2025 11:43:08 +0200
-Message-Id: <20250216111648.4e84933ba588.Ib5add72720d10058151bd067dc88761c07e2dce2@changeid>
+Subject: [PATCH 30/42] wifi: iwlwifi: mld: add file thermal.h/c
+Date: Sun, 16 Feb 2025 11:43:09 +0200
+Message-Id: <20250216111649.464f5da344ca.Ib7ef4b721078430d4412229b72c0cd57d8759d01@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
 References: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
@@ -76,560 +76,502 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-these files are handling statistics
+this file is handling a link object
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mld/stats.c    | 510 ++++++++++++++++++
- .../net/wireless/intel/iwlwifi/mld/stats.h    |  22 +
- 2 files changed, 532 insertions(+)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/stats.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/stats.h
+ .../net/wireless/intel/iwlwifi/mld/thermal.c  | 438 ++++++++++++++++++
+ .../net/wireless/intel/iwlwifi/mld/thermal.h  |  36 ++
+ 2 files changed, 474 insertions(+)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/thermal.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/thermal.h
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/stats.c b/drivers/net/wireless/intel/iwlwifi/mld/stats.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
 new file mode 100644
-index 000000000000..a307c74c7371
+index 000000000000..1909953a9be9
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/stats.c
-@@ -0,0 +1,510 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
+@@ -0,0 +1,438 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
 + * Copyright (C) 2024-2025 Intel Corporation
 + */
++#ifdef CONFIG_THERMAL
++#include <linux/sort.h>
++#include <linux/thermal.h>
++#endif
 +
++#include "fw/api/phy.h"
++
++#include "thermal.h"
 +#include "mld.h"
-+#include "stats.h"
-+#include "sta.h"
-+#include "mlo.h"
 +#include "hcmd.h"
-+#include "iface.h"
-+#include "mlo.h"
-+#include "scan.h"
-+#include "phy.h"
-+#include "fw/api/stats.h"
 +
-+static int iwl_mld_send_fw_stats_cmd(struct iwl_mld *mld, u32 cfg_mask,
-+				     u32 cfg_time, u32 type_mask)
++#define IWL_MLD_CT_KILL_DURATION (5 * HZ)
++
++void iwl_mld_handle_ct_kill_notif(struct iwl_mld *mld,
++				  struct iwl_rx_packet *pkt)
 +{
-+	u32 cmd_id = WIDE_ID(SYSTEM_GROUP, SYSTEM_STATISTICS_CMD);
-+	struct iwl_system_statistics_cmd stats_cmd = {
-+		.cfg_mask = cpu_to_le32(cfg_mask),
-+		.config_time_sec = cpu_to_le32(cfg_time),
-+		.type_id_mask = cpu_to_le32(type_mask),
-+	};
++	const struct ct_kill_notif *notif = (const void *)pkt->data;
 +
-+	return iwl_mld_send_cmd_pdu(mld, cmd_id, &stats_cmd);
++	IWL_ERR(mld,
++		"CT Kill notification: temp = %d, DTS = 0x%x, Scheme 0x%x - Enter CT Kill\n",
++		le16_to_cpu(notif->temperature), notif->dts,
++		notif->scheme);
++
++	iwl_mld_set_ctkill(mld, true);
++
++	wiphy_delayed_work_queue(mld->wiphy, &mld->ct_kill_exit_wk,
++				 round_jiffies_relative(IWL_MLD_CT_KILL_DURATION));
 +}
 +
-+int iwl_mld_clear_stats_in_fw(struct iwl_mld *mld)
++static void iwl_mld_exit_ctkill(struct wiphy *wiphy, struct wiphy_work *wk)
 +{
-+	u32 cfg_mask = IWL_STATS_CFG_FLG_ON_DEMAND_NTFY_MSK;
-+	u32 type_mask = IWL_STATS_NTFY_TYPE_ID_OPER |
-+			IWL_STATS_NTFY_TYPE_ID_OPER_PART1;
-+
-+	return iwl_mld_send_fw_stats_cmd(mld, cfg_mask, 0, type_mask);
-+}
-+
-+static void
-+iwl_mld_fill_stats_from_oper_notif(struct iwl_mld *mld,
-+				   struct iwl_rx_packet *pkt,
-+				   u8 fw_sta_id, struct station_info *sinfo)
-+{
-+	const struct iwl_system_statistics_notif_oper *notif =
-+		(void *)&pkt->data;
-+	const struct iwl_stats_ntfy_per_sta *per_sta =
-+		&notif->per_sta[fw_sta_id];
-+	struct ieee80211_link_sta *link_sta;
-+	struct iwl_mld_link_sta *mld_link_sta;
-+
-+	/* 0 isn't a valid value, but FW might send 0.
-+	 * In that case, set the latest non-zero value we stored
-+	 */
-+	rcu_read_lock();
-+
-+	link_sta = rcu_dereference(mld->fw_id_to_link_sta[fw_sta_id]);
-+	if (IS_ERR_OR_NULL(link_sta))
-+		goto unlock;
-+
-+	mld_link_sta = iwl_mld_link_sta_from_mac80211(link_sta);
-+	if (WARN_ON(!mld_link_sta))
-+		goto unlock;
-+
-+	if (per_sta->average_energy)
-+		mld_link_sta->signal_avg =
-+			-(s8)le32_to_cpu(per_sta->average_energy);
-+
-+	sinfo->signal_avg = mld_link_sta->signal_avg;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL_AVG);
-+
-+unlock:
-+	rcu_read_unlock();
-+}
-+
-+struct iwl_mld_stats_data {
-+	u8 fw_sta_id;
-+	struct station_info *sinfo;
 +	struct iwl_mld *mld;
-+};
 +
-+static bool iwl_mld_wait_stats_handler(struct iwl_notif_wait_data *notif_data,
-+				       struct iwl_rx_packet *pkt, void *data)
-+{
-+	struct iwl_mld_stats_data *stats_data = data;
-+	u16 cmd = WIDE_ID(pkt->hdr.group_id, pkt->hdr.cmd);
++	mld = container_of(wk, struct iwl_mld, ct_kill_exit_wk.work);
 +
-+	switch (cmd) {
-+	case WIDE_ID(STATISTICS_GROUP, STATISTICS_OPER_NOTIF):
-+		iwl_mld_fill_stats_from_oper_notif(stats_data->mld, pkt,
-+						   stats_data->fw_sta_id,
-+						   stats_data->sinfo);
-+		break;
-+	case WIDE_ID(STATISTICS_GROUP, STATISTICS_OPER_PART1_NOTIF):
-+		break;
-+	case WIDE_ID(SYSTEM_GROUP, SYSTEM_STATISTICS_END_NOTIF):
-+		return true;
-+	}
-+
-+	return false;
++	IWL_ERR(mld, "Exit CT Kill\n");
++	iwl_mld_set_ctkill(mld, false);
 +}
 +
-+static int
-+iwl_mld_fw_stats_to_mac80211(struct iwl_mld *mld, struct iwl_mld_sta *mld_sta,
-+			     struct station_info *sinfo)
++void iwl_mld_handle_temp_notif(struct iwl_mld *mld, struct iwl_rx_packet *pkt)
 +{
-+	u32 cfg_mask = IWL_STATS_CFG_FLG_ON_DEMAND_NTFY_MSK |
-+		       IWL_STATS_CFG_FLG_RESET_MSK;
-+	u32 type_mask = IWL_STATS_NTFY_TYPE_ID_OPER |
-+			IWL_STATS_NTFY_TYPE_ID_OPER_PART1;
-+	static const u16 notifications[] = {
-+		WIDE_ID(STATISTICS_GROUP, STATISTICS_OPER_NOTIF),
-+		WIDE_ID(STATISTICS_GROUP, STATISTICS_OPER_PART1_NOTIF),
-+		WIDE_ID(SYSTEM_GROUP, SYSTEM_STATISTICS_END_NOTIF),
++	const struct iwl_dts_measurement_notif *notif =
++		(const void *)pkt->data;
++	int temp;
++	u32 ths_crossed;
++
++	temp = le32_to_cpu(notif->temp);
++
++	/* shouldn't be negative, but since it's s32, make sure it isn't */
++	if (IWL_FW_CHECK(mld, temp < 0, "negative temperature %d\n", temp))
++		return;
++
++	ths_crossed = le32_to_cpu(notif->threshold_idx);
++
++	/* 0xFF in ths_crossed means the notification is not related
++	 * to a trip, so we can ignore it here.
++	 */
++	if (ths_crossed == 0xFF)
++		return;
++
++	IWL_DEBUG_TEMP(mld, "Temp = %d Threshold crossed = %d\n",
++		       temp, ths_crossed);
++
++	if (IWL_FW_CHECK(mld, ths_crossed >= IWL_MAX_DTS_TRIPS,
++			 "bad threshold: %d\n", ths_crossed))
++		return;
++
++#ifdef CONFIG_THERMAL
++	if (mld->tzone)
++		thermal_zone_device_update(mld->tzone, THERMAL_TRIP_VIOLATED);
++#endif /* CONFIG_THERMAL */
++}
++
++#ifdef CONFIG_THERMAL
++static int iwl_mld_get_temp(struct iwl_mld *mld, s32 *temp)
++{
++	struct iwl_host_cmd cmd = {
++		.id = WIDE_ID(PHY_OPS_GROUP, CMD_DTS_MEASUREMENT_TRIGGER_WIDE),
++		.flags = CMD_WANT_SKB,
 +	};
-+	struct iwl_mld_stats_data wait_stats_data = {
-+		/* We don't support drv_sta_statistics in EMLSR */
-+		.fw_sta_id = mld_sta->deflink.fw_id,
-+		.sinfo = sinfo,
-+		.mld = mld,
-+	};
-+	struct iwl_notification_wait stats_wait;
++	const struct iwl_dts_measurement_resp *resp;
 +	int ret;
 +
-+	iwl_init_notification_wait(&mld->notif_wait, &stats_wait,
-+				   notifications, ARRAY_SIZE(notifications),
-+				   iwl_mld_wait_stats_handler,
-+				   &wait_stats_data);
++	lockdep_assert_wiphy(mld->wiphy);
 +
-+	ret = iwl_mld_send_fw_stats_cmd(mld, cfg_mask, 0, type_mask);
++	ret = iwl_mld_send_cmd(mld, &cmd);
 +	if (ret) {
-+		iwl_remove_notification(&mld->notif_wait, &stats_wait);
++		IWL_ERR(mld,
++			"Failed to send the temperature measurement command (err=%d)\n",
++			ret);
 +		return ret;
 +	}
 +
-+	/* Wait 500ms for OPERATIONAL, PART1, and END notifications,
-+	 * which should be sufficient for the firmware to gather data
-+	 * from all LMACs and send notifications to the host.
-+	 */
-+	ret = iwl_wait_notification(&mld->notif_wait, &stats_wait, HZ / 2);
-+	if (ret)
-+		return ret;
++	if (iwl_rx_packet_payload_len(cmd.resp_pkt) < sizeof(*resp)) {
++		IWL_ERR(mld,
++			"Failed to get a valid response to DTS measurement\n");
++		ret = -EIO;
++		goto free_resp;
++	}
 +
-+	/* When periodic statistics are sent, FW will clear its statistics DB.
-+	 * If the statistics request here happens shortly afterwards,
-+	 * the response will contain data collected over a short time
-+	 * interval. The response we got here shouldn't be processed by
-+	 * the general statistics processing because it's incomplete.
-+	 * So, we delete it from the list so it won't be processed.
++	resp = (const void *)cmd.resp_pkt->data;
++	*temp = le32_to_cpu(resp->temp);
++
++	IWL_DEBUG_TEMP(mld,
++		       "Got temperature measurement response: temp=%d\n",
++		       *temp);
++
++free_resp:
++	iwl_free_resp(&cmd);
++	return ret;
++}
++
++static int compare_temps(const void *a, const void *b)
++{
++	return ((s16)le16_to_cpu(*(__le16 *)a) -
++		(s16)le16_to_cpu(*(__le16 *)b));
++}
++
++struct iwl_trip_walk_data {
++	__le16 *thresholds;
++	int count;
++};
++
++static int iwl_trip_temp_iter(struct thermal_trip *trip, void *arg)
++{
++	struct iwl_trip_walk_data *twd = arg;
++
++	if (trip->temperature == THERMAL_TEMP_INVALID)
++		return 0;
++
++	twd->thresholds[twd->count++] =
++		cpu_to_le16((s16)(trip->temperature / 1000));
++	return 0;
++}
++#endif
++
++int iwl_mld_config_temp_report_ths(struct iwl_mld *mld)
++{
++	struct temp_report_ths_cmd cmd = {0};
++	int ret;
++#ifdef CONFIG_THERMAL
++	struct iwl_trip_walk_data twd = {
++		.thresholds = cmd.thresholds,
++		.count = 0
++	};
++
++	if (!mld->tzone)
++		goto send;
++
++	/* The thermal core holds an array of temperature trips that are
++	 * unsorted and uncompressed, the FW should get it compressed and
++	 * sorted.
 +	 */
-+	iwl_mld_delete_handlers(mld, notifications, ARRAY_SIZE(notifications));
++
++	/* compress trips to cmd array, remove uninitialized values*/
++	for_each_thermal_trip(mld->tzone, iwl_trip_temp_iter, &twd);
++
++	cmd.num_temps = cpu_to_le32(twd.count);
++	if (twd.count)
++		sort(cmd.thresholds, twd.count, sizeof(s16),
++		     compare_temps, NULL);
++
++send:
++#endif
++	lockdep_assert_wiphy(mld->wiphy);
++
++	ret = iwl_mld_send_cmd_pdu(mld, WIDE_ID(PHY_OPS_GROUP,
++						TEMP_REPORTING_THRESHOLDS_CMD),
++				   &cmd);
++	if (ret)
++		IWL_ERR(mld, "TEMP_REPORT_THS_CMD command failed (err=%d)\n",
++			ret);
++
++	return ret;
++}
++
++#ifdef CONFIG_THERMAL
++static int iwl_mld_tzone_get_temp(struct thermal_zone_device *device,
++				  int *temperature)
++{
++	struct iwl_mld *mld = thermal_zone_device_priv(device);
++	int temp;
++	int ret = 0;
++
++	wiphy_lock(mld->wiphy);
++
++	if (!mld->fw_status.running) {
++		/* Tell the core that there is no valid temperature value to
++		 * return, but it need not worry about this.
++		 */
++		*temperature = THERMAL_TEMP_INVALID;
++		goto unlock;
++	}
++
++	ret = iwl_mld_get_temp(mld, &temp);
++	if (ret)
++		goto unlock;
++
++	*temperature = temp * 1000;
++unlock:
++	wiphy_unlock(mld->wiphy);
++	return ret;
++}
++
++static int iwl_mld_tzone_set_trip_temp(struct thermal_zone_device *device,
++				       const struct thermal_trip *trip,
++				       int temp)
++{
++	struct iwl_mld *mld = thermal_zone_device_priv(device);
++	int ret;
++
++	wiphy_lock(mld->wiphy);
++
++	if (!mld->fw_status.running) {
++		ret = -EIO;
++		goto unlock;
++	}
++
++	if ((temp / 1000) > S16_MAX) {
++		ret = -EINVAL;
++		goto unlock;
++	}
++
++	ret = iwl_mld_config_temp_report_ths(mld);
++unlock:
++	wiphy_unlock(mld->wiphy);
++	return ret;
++}
++
++static  struct thermal_zone_device_ops tzone_ops = {
++	.get_temp = iwl_mld_tzone_get_temp,
++	.set_trip_temp = iwl_mld_tzone_set_trip_temp,
++};
++
++static void iwl_mld_thermal_zone_register(struct iwl_mld *mld)
++{
++	int ret;
++	char name[16];
++	static atomic_t counter = ATOMIC_INIT(0);
++	struct thermal_trip trips[IWL_MAX_DTS_TRIPS] = {
++		[0 ... IWL_MAX_DTS_TRIPS - 1] = {
++			.temperature = THERMAL_TEMP_INVALID,
++			.type = THERMAL_TRIP_PASSIVE,
++			.flags = THERMAL_TRIP_FLAG_RW_TEMP,
++		},
++	};
++
++	BUILD_BUG_ON(ARRAY_SIZE(name) >= THERMAL_NAME_LENGTH);
++
++	sprintf(name, "iwlwifi_%u", atomic_inc_return(&counter) & 0xFF);
++	mld->tzone =
++		thermal_zone_device_register_with_trips(name, trips,
++							IWL_MAX_DTS_TRIPS,
++							mld, &tzone_ops,
++							NULL, 0, 0);
++	if (IS_ERR(mld->tzone)) {
++		IWL_DEBUG_TEMP(mld,
++			       "Failed to register to thermal zone (err = %ld)\n",
++			       PTR_ERR(mld->tzone));
++		mld->tzone = NULL;
++		return;
++	}
++
++	ret = thermal_zone_device_enable(mld->tzone);
++	if (ret) {
++		IWL_DEBUG_TEMP(mld, "Failed to enable thermal zone\n");
++		thermal_zone_device_unregister(mld->tzone);
++	}
++}
++
++/* budget in mWatt */
++static const u32 iwl_mld_cdev_budgets[] = {
++	2400,	/* cooling state 0 */
++	2000,	/* cooling state 1 */
++	1800,	/* cooling state 2 */
++	1600,	/* cooling state 3 */
++	1400,	/* cooling state 4 */
++	1200,	/* cooling state 5 */
++	1000,	/* cooling state 6 */
++	900,	/* cooling state 7 */
++	800,	/* cooling state 8 */
++	700,	/* cooling state 9 */
++	650,	/* cooling state 10 */
++	600,	/* cooling state 11 */
++	550,	/* cooling state 12 */
++	500,	/* cooling state 13 */
++	450,	/* cooling state 14 */
++	400,	/* cooling state 15 */
++	350,	/* cooling state 16 */
++	300,	/* cooling state 17 */
++	250,	/* cooling state 18 */
++	200,	/* cooling state 19 */
++	150,	/* cooling state 20 */
++};
++
++int iwl_mld_config_ctdp(struct iwl_mld *mld, u32 state,
++			enum iwl_ctdp_cmd_operation op)
++{
++	struct iwl_ctdp_cmd cmd = {
++		.operation = cpu_to_le32(op),
++		.budget = cpu_to_le32(iwl_mld_cdev_budgets[state]),
++		.window_size = 0,
++	};
++	int ret;
++
++	lockdep_assert_wiphy(mld->wiphy);
++
++	ret = iwl_mld_send_cmd_pdu(mld, WIDE_ID(PHY_OPS_GROUP, CTDP_CONFIG_CMD),
++				   &cmd);
++
++	if (ret) {
++		IWL_ERR(mld, "cTDP command failed (err=%d)\n", ret);
++		return ret;
++	}
++
++	if (op == CTDP_CMD_OPERATION_START)
++		mld->cooling_dev.cur_state = state;
 +
 +	return 0;
 +}
 +
-+#define PERIODIC_STATS_SECONDS 5
-+
-+int iwl_mld_request_periodic_fw_stats(struct iwl_mld *mld, bool enable)
++static int iwl_mld_tcool_get_max_state(struct thermal_cooling_device *cdev,
++				       unsigned long *state)
 +{
-+	u32 cfg_mask = enable ? 0 : IWL_STATS_CFG_FLG_DISABLE_NTFY_MSK;
-+	u32 type_mask = enable ? (IWL_STATS_NTFY_TYPE_ID_OPER |
-+				  IWL_STATS_NTFY_TYPE_ID_OPER_PART1) : 0;
-+	u32 cfg_time = enable ? PERIODIC_STATS_SECONDS : 0;
++	*state = ARRAY_SIZE(iwl_mld_cdev_budgets) - 1;
 +
-+	return iwl_mld_send_fw_stats_cmd(mld, cfg_mask, cfg_time, type_mask);
++	return 0;
 +}
 +
-+static void iwl_mld_sta_stats_fill_txrate(struct iwl_mld_sta *mld_sta,
-+					  struct station_info *sinfo)
++static int iwl_mld_tcool_get_cur_state(struct thermal_cooling_device *cdev,
++				       unsigned long *state)
 +{
-+	struct rate_info *rinfo = &sinfo->txrate;
-+	u32 rate_n_flags = mld_sta->deflink.last_rate_n_flags;
-+	u32 format = rate_n_flags & RATE_MCS_MOD_TYPE_MSK;
-+	u32 gi_ltf;
++	struct iwl_mld *mld = (struct iwl_mld *)(cdev->devdata);
 +
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
++	*state = mld->cooling_dev.cur_state;
 +
-+	switch (rate_n_flags & RATE_MCS_CHAN_WIDTH_MSK) {
-+	case RATE_MCS_CHAN_WIDTH_20:
-+		rinfo->bw = RATE_INFO_BW_20;
-+		break;
-+	case RATE_MCS_CHAN_WIDTH_40:
-+		rinfo->bw = RATE_INFO_BW_40;
-+		break;
-+	case RATE_MCS_CHAN_WIDTH_80:
-+		rinfo->bw = RATE_INFO_BW_80;
-+		break;
-+	case RATE_MCS_CHAN_WIDTH_160:
-+		rinfo->bw = RATE_INFO_BW_160;
-+		break;
-+	case RATE_MCS_CHAN_WIDTH_320:
-+		rinfo->bw = RATE_INFO_BW_320;
-+		break;
++	return 0;
++}
++
++static int iwl_mld_tcool_set_cur_state(struct thermal_cooling_device *cdev,
++				       unsigned long new_state)
++{
++	struct iwl_mld *mld = (struct iwl_mld *)(cdev->devdata);
++	int ret;
++
++	wiphy_lock(mld->wiphy);
++
++	if (!mld->fw_status.running) {
++		ret = -EIO;
++		goto unlock;
 +	}
 +
-+	if (format == RATE_MCS_CCK_MSK || format == RATE_MCS_LEGACY_OFDM_MSK) {
-+		int rate = u32_get_bits(rate_n_flags, RATE_LEGACY_RATE_MSK);
++	if (new_state >= ARRAY_SIZE(iwl_mld_cdev_budgets)) {
++		ret = -EINVAL;
++		goto unlock;
++	}
 +
-+		/* add the offset needed to get to the legacy ofdm indices */
-+		if (format == RATE_MCS_LEGACY_OFDM_MSK)
-+			rate += IWL_FIRST_OFDM_RATE;
++	ret = iwl_mld_config_ctdp(mld, new_state, CTDP_CMD_OPERATION_START);
 +
-+		switch (rate) {
-+		case IWL_RATE_1M_INDEX:
-+			rinfo->legacy = 10;
-+			break;
-+		case IWL_RATE_2M_INDEX:
-+			rinfo->legacy = 20;
-+			break;
-+		case IWL_RATE_5M_INDEX:
-+			rinfo->legacy = 55;
-+			break;
-+		case IWL_RATE_11M_INDEX:
-+			rinfo->legacy = 110;
-+			break;
-+		case IWL_RATE_6M_INDEX:
-+			rinfo->legacy = 60;
-+			break;
-+		case IWL_RATE_9M_INDEX:
-+			rinfo->legacy = 90;
-+			break;
-+		case IWL_RATE_12M_INDEX:
-+			rinfo->legacy = 120;
-+			break;
-+		case IWL_RATE_18M_INDEX:
-+			rinfo->legacy = 180;
-+			break;
-+		case IWL_RATE_24M_INDEX:
-+			rinfo->legacy = 240;
-+			break;
-+		case IWL_RATE_36M_INDEX:
-+			rinfo->legacy = 360;
-+			break;
-+		case IWL_RATE_48M_INDEX:
-+			rinfo->legacy = 480;
-+			break;
-+		case IWL_RATE_54M_INDEX:
-+			rinfo->legacy = 540;
-+		}
++unlock:
++	wiphy_unlock(mld->wiphy);
++	return ret;
++}
++
++static const struct thermal_cooling_device_ops tcooling_ops = {
++	.get_max_state = iwl_mld_tcool_get_max_state,
++	.get_cur_state = iwl_mld_tcool_get_cur_state,
++	.set_cur_state = iwl_mld_tcool_set_cur_state,
++};
++
++static void iwl_mld_cooling_device_register(struct iwl_mld *mld)
++{
++	char name[] = "iwlwifi";
++
++	BUILD_BUG_ON(ARRAY_SIZE(name) >= THERMAL_NAME_LENGTH);
++
++	mld->cooling_dev.cdev =
++		thermal_cooling_device_register(name,
++						mld,
++						&tcooling_ops);
++
++	if (IS_ERR(mld->cooling_dev.cdev)) {
++		IWL_DEBUG_TEMP(mld,
++			       "Failed to register to cooling device (err = %ld)\n",
++			       PTR_ERR(mld->cooling_dev.cdev));
++		mld->cooling_dev.cdev = NULL;
 +		return;
 +	}
++}
 +
-+	rinfo->nss = u32_get_bits(rate_n_flags, RATE_MCS_NSS_MSK) + 1;
++static void iwl_mld_thermal_zone_unregister(struct iwl_mld *mld)
++{
++	if (!mld->tzone)
++		return;
 +
-+	if (format == RATE_MCS_HT_MSK)
-+		rinfo->mcs = RATE_HT_MCS_INDEX(rate_n_flags);
-+	else
-+		rinfo->mcs = u32_get_bits(rate_n_flags, RATE_MCS_CODE_MSK);
-+
-+	if (rate_n_flags & RATE_MCS_SGI_MSK)
-+		rinfo->flags |= RATE_INFO_FLAGS_SHORT_GI;
-+
-+	switch (format) {
-+	case RATE_MCS_EHT_MSK:
-+		rinfo->flags |= RATE_INFO_FLAGS_EHT_MCS;
-+		break;
-+	case RATE_MCS_HE_MSK:
-+		gi_ltf = u32_get_bits(rate_n_flags, RATE_MCS_HE_GI_LTF_MSK);
-+
-+		rinfo->flags |= RATE_INFO_FLAGS_HE_MCS;
-+
-+		if (rate_n_flags & RATE_MCS_HE_106T_MSK) {
-+			rinfo->bw = RATE_INFO_BW_HE_RU;
-+			rinfo->he_ru_alloc = NL80211_RATE_INFO_HE_RU_ALLOC_106;
-+		}
-+
-+		switch (rate_n_flags & RATE_MCS_HE_TYPE_MSK) {
-+		case RATE_MCS_HE_TYPE_SU:
-+		case RATE_MCS_HE_TYPE_EXT_SU:
-+			if (gi_ltf == 0 || gi_ltf == 1)
-+				rinfo->he_gi = NL80211_RATE_INFO_HE_GI_0_8;
-+			else if (gi_ltf == 2)
-+				rinfo->he_gi = NL80211_RATE_INFO_HE_GI_1_6;
-+			else if (gi_ltf == 3)
-+				rinfo->he_gi = NL80211_RATE_INFO_HE_GI_3_2;
-+			else
-+				rinfo->he_gi = NL80211_RATE_INFO_HE_GI_0_8;
-+			break;
-+		case RATE_MCS_HE_TYPE_MU:
-+			if (gi_ltf == 0 || gi_ltf == 1)
-+				rinfo->he_gi = NL80211_RATE_INFO_HE_GI_0_8;
-+			else if (gi_ltf == 2)
-+				rinfo->he_gi = NL80211_RATE_INFO_HE_GI_1_6;
-+			else
-+				rinfo->he_gi = NL80211_RATE_INFO_HE_GI_3_2;
-+			break;
-+		case RATE_MCS_HE_TYPE_TRIG:
-+			if (gi_ltf == 0 || gi_ltf == 1)
-+				rinfo->he_gi = NL80211_RATE_INFO_HE_GI_1_6;
-+			else
-+				rinfo->he_gi = NL80211_RATE_INFO_HE_GI_3_2;
-+			break;
-+		}
-+
-+		if (rate_n_flags & RATE_HE_DUAL_CARRIER_MODE_MSK)
-+			rinfo->he_dcm = 1;
-+		break;
-+	case RATE_MCS_HT_MSK:
-+		rinfo->flags |= RATE_INFO_FLAGS_MCS;
-+		break;
-+	case RATE_MCS_VHT_MSK:
-+		rinfo->flags |= RATE_INFO_FLAGS_VHT_MCS;
-+		break;
++	IWL_DEBUG_TEMP(mld, "Thermal zone device unregister\n");
++	if (mld->tzone) {
++		thermal_zone_device_unregister(mld->tzone);
++		mld->tzone = NULL;
 +	}
 +}
 +
-+void iwl_mld_mac80211_sta_statistics(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif *vif,
-+				     struct ieee80211_sta *sta,
-+				     struct station_info *sinfo)
++static void iwl_mld_cooling_device_unregister(struct iwl_mld *mld)
 +{
-+	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
-+
-+	/* This API is not EMLSR ready, so we cannot provide complete
-+	 * information if EMLSR is active
-+	 */
-+	if (hweight16(vif->active_links) > 1)
++	if (!mld->cooling_dev.cdev)
 +		return;
 +
-+	if (iwl_mld_fw_stats_to_mac80211(mld_sta->mld, mld_sta, sinfo))
-+		return;
-+
-+	iwl_mld_sta_stats_fill_txrate(mld_sta, sinfo);
-+
-+	/* TODO: NL80211_STA_INFO_BEACON_RX */
-+
-+	/* TODO: NL80211_STA_INFO_BEACON_SIGNAL_AVG */
-+}
-+
-+#define IWL_MLD_TRAFFIC_LOAD_MEDIUM_THRESH	10 /* percentage */
-+#define IWL_MLD_TRAFFIC_LOAD_HIGH_THRESH	50 /* percentage */
-+#define IWL_MLD_TRAFFIC_LOAD_MIN_WINDOW_USEC	(500 * 1000)
-+
-+static u8 iwl_mld_stats_load_percentage(u32 last_ts_usec, u32 curr_ts_usec,
-+					u32 total_airtime_usec)
-+{
-+	u32 elapsed_usec = curr_ts_usec - last_ts_usec;
-+
-+	if (elapsed_usec < IWL_MLD_TRAFFIC_LOAD_MIN_WINDOW_USEC)
-+		return 0;
-+
-+	return (100 * total_airtime_usec / elapsed_usec);
-+}
-+
-+static void iwl_mld_stats_recalc_traffic_load(struct iwl_mld *mld,
-+					      u32 total_airtime_usec,
-+					      u32 curr_ts_usec)
-+{
-+	u32 last_ts_usec = mld->scan.traffic_load.last_stats_ts_usec;
-+	u8 load_prec;
-+
-+	/* Skip the calculation as this is the first notification received */
-+	if (!last_ts_usec)
-+		goto out;
-+
-+	load_prec = iwl_mld_stats_load_percentage(last_ts_usec, curr_ts_usec,
-+						  total_airtime_usec);
-+
-+	if (load_prec > IWL_MLD_TRAFFIC_LOAD_HIGH_THRESH)
-+		mld->scan.traffic_load.status = IWL_MLD_TRAFFIC_HIGH;
-+	else if (load_prec > IWL_MLD_TRAFFIC_LOAD_MEDIUM_THRESH)
-+		mld->scan.traffic_load.status = IWL_MLD_TRAFFIC_MEDIUM;
-+	else
-+		mld->scan.traffic_load.status = IWL_MLD_TRAFFIC_LOW;
-+
-+out:
-+	mld->scan.traffic_load.last_stats_ts_usec = curr_ts_usec;
-+}
-+
-+static void iwl_mld_update_link_sig(struct ieee80211_vif *vif, int sig,
-+				    struct ieee80211_bss_conf *bss_conf)
-+{
-+	struct iwl_mld *mld = iwl_mld_vif_from_mac80211(vif)->mld;
-+	int exit_emlsr_thresh;
-+
-+	if (sig == 0) {
-+		IWL_DEBUG_RX(mld, "RSSI is 0 - skip signal based decision\n");
-+		return;
-+	}
-+
-+	/* TODO: task=statistics handle CQM notifications */
-+
-+	if (!iwl_mld_vif_has_emlsr_cap(vif))
-+		return;
-+
-+	/* Handle inactive EMLSR, check whether to switch links */
-+	if (!iwl_mld_emlsr_active(vif)) {
-+		if (sig < IWL_MLD_LOW_RSSI_MLO_SCAN_THRESH)
-+			iwl_mld_trigger_link_selection(mld, vif);
-+		return;
-+	}
-+
-+	/* We are in EMLSR, check if we need to exit */
-+	exit_emlsr_thresh =
-+		iwl_mld_get_emlsr_rssi_thresh(mld, &bss_conf->chanreq.oper,
-+					      true);
-+
-+	if (sig < exit_emlsr_thresh)
-+		iwl_mld_exit_emlsr(mld, vif, IWL_MLD_EMLSR_EXIT_LOW_RSSI,
-+				   iwl_mld_get_other_link(vif,
-+							  bss_conf->link_id));
-+}
-+
-+static void
-+iwl_mld_process_per_link_stats(struct iwl_mld *mld,
-+			       const struct iwl_stats_ntfy_per_link *per_link,
-+			       u32 curr_ts_usec)
-+{
-+	u32 total_airtime_usec = 0;
-+
-+	for (u32 fw_id = 0;
-+	     fw_id < ARRAY_SIZE(mld->fw_id_to_bss_conf);
-+	     fw_id++) {
-+		const struct iwl_stats_ntfy_per_link *link_stats;
-+		struct ieee80211_bss_conf *bss_conf;
-+		int sig;
-+
-+		bss_conf = wiphy_dereference(mld->wiphy,
-+					     mld->fw_id_to_bss_conf[fw_id]);
-+		if (!bss_conf || bss_conf->vif->type != NL80211_IFTYPE_STATION)
-+			continue;
-+
-+		link_stats = &per_link[fw_id];
-+
-+		total_airtime_usec += le32_to_cpu(link_stats->air_time);
-+
-+		sig = -le32_to_cpu(link_stats->beacon_filter_average_energy);
-+		iwl_mld_update_link_sig(bss_conf->vif, sig, bss_conf);
-+
-+		/* TODO: parse more fields here (task=statistics)*/
-+	}
-+
-+	iwl_mld_stats_recalc_traffic_load(mld, total_airtime_usec,
-+					  curr_ts_usec);
-+}
-+
-+static void
-+iwl_mld_process_per_sta_stats(struct iwl_mld *mld,
-+			      const struct iwl_stats_ntfy_per_sta *per_sta)
-+{
-+	for (int i = 0; i < mld->fw->ucode_capa.num_stations; i++) {
-+		struct ieee80211_link_sta *link_sta =
-+			wiphy_dereference(mld->wiphy,
-+					  mld->fw_id_to_link_sta[i]);
-+		struct iwl_mld_link_sta *mld_link_sta;
-+		s8 avg_energy =
-+			-(s8)le32_to_cpu(per_sta[i].average_energy);
-+
-+		if (IS_ERR_OR_NULL(link_sta) || !avg_energy)
-+			continue;
-+
-+		mld_link_sta = iwl_mld_link_sta_from_mac80211(link_sta);
-+		if (WARN_ON(!mld_link_sta))
-+			continue;
-+
-+		mld_link_sta->signal_avg = avg_energy;
++	IWL_DEBUG_TEMP(mld, "Cooling device unregister\n");
++	if (mld->cooling_dev.cdev) {
++		thermal_cooling_device_unregister(mld->cooling_dev.cdev);
++		mld->cooling_dev.cdev = NULL;
 +	}
 +}
++#endif /* CONFIG_THERMAL */
 +
-+static void iwl_mld_fill_chanctx_stats(struct ieee80211_hw *hw,
-+				       struct ieee80211_chanctx_conf *ctx,
-+				       void *data)
++void iwl_mld_thermal_initialize(struct iwl_mld *mld)
 +{
-+	struct iwl_mld_phy *phy = iwl_mld_phy_from_mac80211(ctx);
-+	const struct iwl_stats_ntfy_per_phy *per_phy = data;
++	wiphy_delayed_work_init(&mld->ct_kill_exit_wk, iwl_mld_exit_ctkill);
 +
-+	if (WARN_ON(phy->fw_id >= IWL_STATS_MAX_PHY_OPERATIONAL))
-+		return;
-+
-+	phy->channel_load_by_us =
-+		le32_to_cpu(per_phy[phy->fw_id].channel_load_by_us);
-+
-+	/* TODO: channel load not by us (task=statistics) */
++#ifdef CONFIG_THERMAL
++	iwl_mld_cooling_device_register(mld);
++	iwl_mld_thermal_zone_register(mld);
++#endif
 +}
 +
-+static void
-+iwl_mld_process_per_phy_stats(struct iwl_mld *mld,
-+			      const struct iwl_stats_ntfy_per_phy *per_phy)
++void iwl_mld_thermal_exit(struct iwl_mld *mld)
 +{
-+	ieee80211_iter_chan_contexts_mtx(mld->hw,
-+					 iwl_mld_fill_chanctx_stats,
-+					 (void *)(uintptr_t)per_phy);
++	wiphy_delayed_work_cancel(mld->wiphy, &mld->ct_kill_exit_wk);
 +
-+	/* channel_load_by_us may have been updated, so recheck */
-+	iwl_mld_emlsr_check_chan_load(mld);
++#ifdef CONFIG_THERMAL
++	iwl_mld_cooling_device_unregister(mld);
++	iwl_mld_thermal_zone_unregister(mld);
++#endif
 +}
-+
-+void iwl_mld_handle_stats_oper_notif(struct iwl_mld *mld,
-+				     struct iwl_rx_packet *pkt)
-+{
-+	const struct iwl_system_statistics_notif_oper *stats =
-+		(void *)&pkt->data;
-+	u32 curr_ts_usec = le32_to_cpu(stats->time_stamp);
-+
-+	BUILD_BUG_ON(ARRAY_SIZE(stats->per_sta) != IWL_STATION_COUNT_MAX);
-+	BUILD_BUG_ON(ARRAY_SIZE(stats->per_link) <
-+		     ARRAY_SIZE(mld->fw_id_to_bss_conf));
-+
-+	iwl_mld_process_per_link_stats(mld, stats->per_link, curr_ts_usec);
-+	iwl_mld_process_per_sta_stats(mld, stats->per_sta);
-+	iwl_mld_process_per_phy_stats(mld, stats->per_phy);
-+
-+	iwl_mld_check_omi_bw_reduction(mld);
-+}
-+
-+void iwl_mld_handle_stats_oper_part1_notif(struct iwl_mld *mld,
-+					   struct iwl_rx_packet *pkt)
-+{
-+	/* TODO */
-+}
-+
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/stats.h b/drivers/net/wireless/intel/iwlwifi/mld/stats.h
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/thermal.h b/drivers/net/wireless/intel/iwlwifi/mld/thermal.h
 new file mode 100644
-index 000000000000..de434e66d555
+index 000000000000..8c8893331b05
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/stats.h
-@@ -0,0 +1,22 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/thermal.h
+@@ -0,0 +1,36 @@
 +/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
 +/*
 + * Copyright (C) 2024 Intel Corporation
 + */
-+#ifndef __iwl_mld_stats_h__
-+#define __iwl_mld_stats_h__
++#ifndef __iwl_mld_thermal_h__
++#define __iwl_mld_thermal_h__
 +
-+int iwl_mld_request_periodic_fw_stats(struct iwl_mld *mld, bool enable);
++#include "iwl-trans.h"
 +
-+void iwl_mld_mac80211_sta_statistics(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif *vif,
-+				     struct ieee80211_sta *sta,
-+				     struct station_info *sinfo);
++struct iwl_mld;
 +
-+void iwl_mld_handle_stats_oper_notif(struct iwl_mld *mld,
-+				     struct iwl_rx_packet *pkt);
-+void iwl_mld_handle_stats_oper_part1_notif(struct iwl_mld *mld,
-+					   struct iwl_rx_packet *pkt);
++#ifdef CONFIG_THERMAL
++#include <linux/thermal.h>
 +
-+int iwl_mld_clear_stats_in_fw(struct iwl_mld *mld);
++/*
++ * struct iwl_mld_cooling_device
++ * @cur_state: current state
++ * @cdev: struct thermal cooling device
++ */
++struct iwl_mld_cooling_device {
++	u32 cur_state;
++	struct thermal_cooling_device *cdev;
++};
 +
-+#endif /* __iwl_mld_stats_h__ */
++int iwl_mld_config_ctdp(struct iwl_mld *mld, u32 state,
++			enum iwl_ctdp_cmd_operation op);
++#endif
++
++void iwl_mld_handle_temp_notif(struct iwl_mld *mld, struct iwl_rx_packet *pkt);
++void iwl_mld_handle_ct_kill_notif(struct iwl_mld *mld,
++				  struct iwl_rx_packet *pkt);
++int iwl_mld_config_temp_report_ths(struct iwl_mld *mld);
++void iwl_mld_thermal_initialize(struct iwl_mld *mld);
++void iwl_mld_thermal_exit(struct iwl_mld *mld);
++
++#endif /* __iwl_mld_thermal_h__ */
 -- 
 2.34.1
 
