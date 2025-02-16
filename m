@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-18992-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18993-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF9FA37388
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:45:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D164EA37389
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A38E3AA6CD
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:45:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B869188BB1D
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E150B192B8A;
-	Sun, 16 Feb 2025 09:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D54E18DB35;
+	Sun, 16 Feb 2025 09:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lyyOo7zm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RfEmMowt"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042121925BA
-	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CBA191F68
+	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739699045; cv=none; b=icA9CeCsNRzOEPFUBFnoq4B0CkEMgr/4DpKqoIt3j8/3DJvPU38OjorO/jTLN7OScDPtcnUC/UqfjX1204IubAjqt7GfQbeFBaHefXd0mHv1GgX/xxHAx9H83hRrt+2jjj2hLnaXV6UlgVw8Jj8UFwZBsNpJwqQQ/CugMLWCVCY=
+	t=1739699047; cv=none; b=COmVMGh7KlPmC+yjPZghpvjlX7Tig1vrXoG8D8tY1OEZH8c2JTAvKhrhXXepiH8/Bqu1RBNlMR6dZSYWT1+i4BbtM4DXQowqFs26ylG6m/yPJ5WhwuLg4RViJXBCvMIOJrylS0I5uuTmyYJkFbB1uqwoX7/n5t5EUynSBFbSZUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739699045; c=relaxed/simple;
-	bh=5FbsItZUdIlICXv2OcFRuvkX2yf8s/Vhjak7V91rRlo=;
+	s=arc-20240116; t=1739699047; c=relaxed/simple;
+	bh=2IeUS1/YZBq72tD5CVavcHB5Klhf4pWrwnDrVoZKMNc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IPVuLZV4avlF5brYmU7Ef8ttWNM5r4K69kJFzKWDY+yNIYBUlaEMqTkiLgghiLggkKusU7erujoRhFEttvcmXoZ6WK/tFsdBV5kuoTXaWrjO0F9iOCtdLJ9zc2W/vN4HlD0+D9PsPnPK55TWoX8MkFlmkc3r54VuQU40kv2KtOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lyyOo7zm; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=uXyvWfmxP+3U+rkmodcrUAIafTW0VZaRHlj7lTDGPCjtbx/K8S3V4zcrNyAoARVKNeQ5lvll3DQLkKGpedko6OcSidT9sZ+6M1xHXcDpDu93U2LlyqQIGLpszzL6JqHm5PFRcpFxt2Rq7vld0qMG3oaXEmhKouMhhPqRUFIGZks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RfEmMowt; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739699044; x=1771235044;
+  t=1739699045; x=1771235045;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=5FbsItZUdIlICXv2OcFRuvkX2yf8s/Vhjak7V91rRlo=;
-  b=lyyOo7zms3Hi76/6j2Eqe6v/Y4WcGSJZCOdlZAlx8xNkK90JIxmihhVK
-   thJMSTTZZmaBPRoiqm9Fwy2crpzXi61iY38JrDhWr99qQnAkZJLPr9BtY
-   SVjm1bz4y+tXt84f2tDtMIb18o/JTK4wN7ryHcph43c9NNtRyKZ71UN9z
-   y+0pR3kUMVJvFi1FbWdp2rd8tnU3HdVWqABXYQu1Hun9pfYY+9zMIzDZ6
-   5peguJreOadJ00+fUmxhTOQz1tuOXTf0BB3L1jiS824gmaswvEnT2DRcJ
-   F7mfzBezx5n2wpsVQMakh/VNz9uP1LLmlPItuZ1tToTaLUvpJ5gS0K86Y
-   g==;
-X-CSE-ConnectionGUID: KWt6tmJTRJmffbgKhVVm+w==
-X-CSE-MsgGUID: inx4R0ZzQFW9fvMdRYXiJw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323400"
+  bh=2IeUS1/YZBq72tD5CVavcHB5Klhf4pWrwnDrVoZKMNc=;
+  b=RfEmMowtEqsdu87mx1qx0nPpd7P4OtiuJxbkqb9y+19uwNUQlfveGbpf
+   Ukczfb/773DhDCvTGK+mEhBjnTAVv0qKapw4pD2zP9uMIdUnrrqworZN5
+   K0Cn/mrD/f63S3S5aekKVwhEOKYmIfgWDz9qMZGaBZRbjYl71advOzN4F
+   vX6MJR/pgWls4oqP0gP+7Gm271M6A3+gl6FK5qtdA/nZUdw2cyyhfGA9B
+   kkfcFZ2EG13UE+25wnEUzgKTTPWTBIidfMISaocKGwUfNhuyLk8pCjfJl
+   W9U+jjKCnw6cFX+q7os+dZ/FI804YLPTH0Ahdjas9OQRMWS8bn3ctsphm
+   Q==;
+X-CSE-ConnectionGUID: sqzcW9SwQ0mnzspaWxAyNg==
+X-CSE-MsgGUID: zgL6K1IrTnOl4XQ72wcu0A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323402"
 X-IronPort-AV: E=Sophos;i="6.13,290,1732608000"; 
-   d="scan'208";a="40323400"
+   d="scan'208";a="40323402"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:04 -0800
-X-CSE-ConnectionGUID: hISwmGFqSe+VPK18+KMkhg==
-X-CSE-MsgGUID: Jz1tg1pLRhSaUzDWA/fCwA==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:05 -0800
+X-CSE-ConnectionGUID: uH07R/mDSdGQhoZHlPpQrw==
+X-CSE-MsgGUID: BO+eSGRpT62814A1EqEErQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118785253"
+   d="scan'208";a="118785255"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:03 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:04 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 22/42] wifi: iwlwifi: mld: add file ptp.h/c
-Date: Sun, 16 Feb 2025 11:43:01 +0200
-Message-Id: <20250216111648.cf3ebb584706.If44066560db54cfdd62cccb3a71032d95b931c6b@changeid>
+Subject: [PATCH 23/42] wifi: iwlwifi: mld: add file regulatory.h/c
+Date: Sun, 16 Feb 2025 11:43:02 +0200
+Message-Id: <20250216111648.c4ac14af4cda.I262136e63f3802a3be704d1e70cc87ed7572b043@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
 References: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
@@ -76,394 +76,444 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-these fils are implementing p2p clock APIs
+these files are handling regulatory aspects
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/ptp.c | 321 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/ptp.h |  45 +++
- 2 files changed, 366 insertions(+)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ptp.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ptp.h
+ .../wireless/intel/iwlwifi/mld/regulatory.c   | 393 ++++++++++++++++++
+ .../wireless/intel/iwlwifi/mld/regulatory.h   |  23 +
+ 2 files changed, 416 insertions(+)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/regulatory.h
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
 new file mode 100644
-index 000000000000..d5c3f853d96c
+index 000000000000..a75af8c1e8ab
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-@@ -0,0 +1,321 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
+@@ -0,0 +1,393 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
-+ * Copyright (C) 2025 Intel Corporation
++ * Copyright (C) 2024-2025 Intel Corporation
 + */
 +
++#include <linux/dmi.h>
++
++#include "fw/regulatory.h"
++#include "fw/acpi.h"
++#include "fw/uefi.h"
++
++#include "regulatory.h"
 +#include "mld.h"
-+#include "iwl-debug.h"
 +#include "hcmd.h"
-+#include "ptp.h"
-+#include <linux/timekeeping.h>
 +
-+/* The scaled_ppm parameter is ppm (parts per million) with a 16-bit fractional
-+ * part, which means that a value of 1 in one of those fields actually means
-+ * 2^-16 ppm, and 2^16=65536 is 1 ppm.
-+ */
-+#define PTP_SCALE_FACTOR	65536000000ULL
-+
-+#define IWL_PTP_GP2_WRAP	0x100000000ULL
-+#define IWL_PTP_WRAP_TIME	(3600 * HZ)
-+#define IWL_PTP_WRAP_THRESHOLD_USEC	(5000)
-+
-+static int iwl_mld_get_systime(struct iwl_mld *mld, u32 *gp2)
++void iwl_mld_get_bios_tables(struct iwl_mld *mld)
 +{
-+	*gp2 = iwl_read_prph(mld->trans, mld->trans->cfg->gp2_reg_addr);
++	int ret;
 +
-+	if (*gp2 == 0x5a5a5a5a)
-+		return -EINVAL;
++	iwl_acpi_get_guid_lock_status(&mld->fwrt);
 +
-+	return 0;
-+}
++	ret = iwl_bios_get_ppag_table(&mld->fwrt);
++	if (ret < 0) {
++		IWL_DEBUG_RADIO(mld,
++				"PPAG BIOS table invalid or unavailable. (%d)\n",
++				ret);
++	}
 +
-+static void iwl_mld_ptp_update_new_read(struct iwl_mld *mld, u32 gp2)
-+{
-+	IWL_DEBUG_PTP(mld, "PTP: last_gp2=%u, new gp2 read=%u\n",
-+		      mld->ptp_data.last_gp2, gp2);
++	ret = iwl_bios_get_wrds_table(&mld->fwrt);
++	if (ret < 0) {
++		IWL_DEBUG_RADIO(mld,
++				"WRDS SAR BIOS table invalid or unavailable. (%d)\n",
++				ret);
 +
-+	/* If the difference is above the threshold, assume it's a wraparound.
-+	 * Otherwise assume it's an old read and ignore it.
-+	 */
-+	if (gp2 < mld->ptp_data.last_gp2) {
-+		if (mld->ptp_data.last_gp2 - gp2 <
-+		    IWL_PTP_WRAP_THRESHOLD_USEC) {
-+			IWL_DEBUG_PTP(mld,
-+				      "PTP: ignore old read (gp2=%u, last_gp2=%u)\n",
-+				      gp2, mld->ptp_data.last_gp2);
-+			return;
++		/* If not available, don't fail and don't bother with EWRD and
++		 * WGDS
++		 */
++
++		if (!iwl_bios_get_wgds_table(&mld->fwrt)) {
++			/* If basic SAR is not available, we check for WGDS,
++			 * which should *not* be available either. If it is
++			 * available, issue an error, because we can't use SAR
++			 * Geo without basic SAR.
++			 */
++			IWL_ERR(mld, "BIOS contains WGDS but no WRDS\n");
 +		}
 +
-+		mld->ptp_data.wrap_counter++;
-+		IWL_DEBUG_PTP(mld,
-+			      "PTP: wraparound detected (new counter=%u)\n",
-+			      mld->ptp_data.wrap_counter);
-+	}
-+
-+	mld->ptp_data.last_gp2 = gp2;
-+	schedule_delayed_work(&mld->ptp_data.dwork, IWL_PTP_WRAP_TIME);
-+}
-+
-+u64 iwl_mld_ptp_get_adj_time(struct iwl_mld *mld, u64 base_time_ns)
-+{
-+	struct ptp_data *data = &mld->ptp_data;
-+	u64 scale_time_gp2_ns = mld->ptp_data.scale_update_gp2 * NSEC_PER_USEC;
-+	u64 res;
-+	u64 diff;
-+	s64 scaled_diff;
-+
-+	lockdep_assert_held(&data->lock);
-+
-+	iwl_mld_ptp_update_new_read(mld,
-+				    div64_u64(base_time_ns, NSEC_PER_USEC));
-+
-+	base_time_ns = base_time_ns +
-+		(data->wrap_counter * IWL_PTP_GP2_WRAP * NSEC_PER_USEC);
-+
-+	/* It is possible that a GP2 timestamp was received from fw before the
-+	 * last scale update.
-+	 */
-+	if (base_time_ns < scale_time_gp2_ns) {
-+		diff = scale_time_gp2_ns - base_time_ns;
-+		scaled_diff = -mul_u64_u64_div_u64(diff,
-+						   data->scaled_freq,
-+						   PTP_SCALE_FACTOR);
 +	} else {
-+		diff = base_time_ns - scale_time_gp2_ns;
-+		scaled_diff = mul_u64_u64_div_u64(diff,
-+						  data->scaled_freq,
-+						  PTP_SCALE_FACTOR);
++		ret = iwl_bios_get_ewrd_table(&mld->fwrt);
++		/* If EWRD is not available, we can still use
++		 * WRDS, so don't fail.
++		 */
++		if (ret < 0)
++			IWL_DEBUG_RADIO(mld,
++					"EWRD SAR BIOS table invalid or unavailable. (%d)\n",
++					ret);
++
++		ret = iwl_bios_get_wgds_table(&mld->fwrt);
++		if (ret < 0)
++			IWL_DEBUG_RADIO(mld,
++					"Geo SAR BIOS table invalid or unavailable. (%d)\n",
++					ret);
++		/* we don't fail if the table is not available */
 +	}
 +
-+	IWL_DEBUG_PTP(mld, "base_time=%llu diff ns=%llu scaled_diff_ns=%lld\n",
-+		      (unsigned long long)base_time_ns,
-+		      (unsigned long long)diff, (long long)scaled_diff);
-+
-+	res = data->scale_update_adj_time_ns + data->delta + scaled_diff;
-+
-+	IWL_DEBUG_PTP(mld, "scale_update_ns=%llu delta=%lld adj=%llu\n",
-+		      (unsigned long long)data->scale_update_adj_time_ns,
-+		      (long long)data->delta, (unsigned long long)res);
-+	return res;
++	ret = iwl_uefi_get_uats_table(mld->trans, &mld->fwrt);
++	if (ret)
++		IWL_DEBUG_RADIO(mld, "failed to read UATS table (%d)\n", ret);
 +}
 +
-+static int iwl_mld_ptp_gettime(struct ptp_clock_info *ptp,
-+			       struct timespec64 *ts)
++static int iwl_mld_geo_sar_init(struct iwl_mld *mld)
 +{
-+	struct iwl_mld *mld = container_of(ptp, struct iwl_mld,
-+					   ptp_data.ptp_clock_info);
-+	struct ptp_data *data = &mld->ptp_data;
-+	u32 gp2;
-+	u64 ns;
-+
-+	if (iwl_mld_get_systime(mld, &gp2)) {
-+		IWL_DEBUG_PTP(mld, "PTP: gettime: failed to read systime\n");
-+		return -EIO;
-+	}
-+
-+	spin_lock_bh(&data->lock);
-+	ns = iwl_mld_ptp_get_adj_time(mld, (u64)gp2 * NSEC_PER_USEC);
-+	spin_unlock_bh(&data->lock);
-+
-+	*ts = ns_to_timespec64(ns);
-+	return 0;
-+}
-+
-+static int iwl_mld_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
-+{
-+	struct iwl_mld *mld = container_of(ptp, struct iwl_mld,
-+					   ptp_data.ptp_clock_info);
-+	struct ptp_data *data = &mld->ptp_data;
-+
-+	spin_lock_bh(&data->lock);
-+	data->delta += delta;
-+	IWL_DEBUG_PTP(mld, "delta=%lld, new delta=%lld\n", (long long)delta,
-+		      (long long)data->delta);
-+	spin_unlock_bh(&data->lock);
-+	return 0;
-+}
-+
-+static int iwl_mld_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
-+{
-+	struct iwl_mld *mld = container_of(ptp, struct iwl_mld,
-+					   ptp_data.ptp_clock_info);
-+	struct ptp_data *data = &mld->ptp_data;
-+	u32 gp2;
-+
-+	/* Must call iwl_mld_ptp_get_adj_time() before updating
-+	 * data->scale_update_gp2 or data->scaled_freq since
-+	 * scale_update_adj_time_ns should reflect the previous scaled_freq.
-+	 */
-+	if (iwl_mld_get_systime(mld, &gp2)) {
-+		IWL_DEBUG_PTP(mld, "adjfine: failed to read systime\n");
-+		return -EBUSY;
-+	}
-+
-+	spin_lock_bh(&data->lock);
-+	data->scale_update_adj_time_ns =
-+		iwl_mld_ptp_get_adj_time(mld, gp2 * NSEC_PER_USEC);
-+	data->scale_update_gp2 = gp2;
-+
-+	/* scale_update_adj_time_ns now relects the configured delta, the
-+	 * wrap_counter and the previous scaled frequency. Thus delta and
-+	 * wrap_counter should be reset, and the scale frequency is updated
-+	 * to the new frequency.
-+	 */
-+	data->delta = 0;
-+	data->wrap_counter = 0;
-+	data->scaled_freq = PTP_SCALE_FACTOR + scaled_ppm;
-+	IWL_DEBUG_PTP(mld, "adjfine: scaled_ppm=%ld new=%llu\n",
-+		      scaled_ppm, (unsigned long long)data->scaled_freq);
-+	spin_unlock_bh(&data->lock);
-+	return 0;
-+}
-+
-+static void iwl_mld_ptp_work(struct work_struct *wk)
-+{
-+	struct iwl_mld *mld = container_of(wk, struct iwl_mld,
-+					   ptp_data.dwork.work);
-+	struct ptp_data *data = &mld->ptp_data;
-+	u32 gp2;
-+
-+	spin_lock_bh(&data->lock);
-+	if (!iwl_mld_get_systime(mld, &gp2))
-+		iwl_mld_ptp_update_new_read(mld, gp2);
-+	else
-+		IWL_DEBUG_PTP(mld, "PTP work: failed to read GP2\n");
-+	spin_unlock_bh(&data->lock);
-+}
-+
-+static int
-+iwl_mld_get_crosstimestamp_fw(struct iwl_mld *mld, u32 *gp2, u64 *sys_time)
-+{
-+	struct iwl_synced_time_cmd synced_time_cmd = {
-+		.operation = cpu_to_le32(IWL_SYNCED_TIME_OPERATION_READ_BOTH)
-+	};
-+	struct iwl_host_cmd cmd = {
-+		.id = WIDE_ID(DATA_PATH_GROUP, WNM_PLATFORM_PTM_REQUEST_CMD),
-+		.flags = CMD_WANT_SKB,
-+		.data[0] = &synced_time_cmd,
-+		.len[0] = sizeof(synced_time_cmd),
-+	};
-+	struct iwl_synced_time_rsp *resp;
-+	struct iwl_rx_packet *pkt;
++	u32 cmd_id = WIDE_ID(PHY_OPS_GROUP, PER_CHAIN_LIMIT_OFFSET_CMD);
++	union iwl_geo_tx_power_profiles_cmd cmd;
++	u16 len;
++	u32 n_bands;
++	__le32 sk = cpu_to_le32(0);
 +	int ret;
-+	u64 gp2_10ns;
++	u8 cmd_ver = iwl_fw_lookup_cmd_ver(mld->fw, cmd_id,
++					   IWL_FW_CMD_VER_UNKNOWN);
 +
-+	wiphy_lock(mld->wiphy);
-+	ret = iwl_mld_send_cmd(mld, &cmd);
-+	wiphy_unlock(mld->wiphy);
++	BUILD_BUG_ON(offsetof(struct iwl_geo_tx_power_profiles_cmd_v4, ops) !=
++		     offsetof(struct iwl_geo_tx_power_profiles_cmd_v5, ops));
++
++	cmd.v4.ops = cpu_to_le32(IWL_PER_CHAIN_OFFSET_SET_TABLES);
++
++	/* Only set to South Korea if the table revision is 1 */
++	if (mld->fwrt.geo_rev == 1)
++		sk = cpu_to_le32(1);
++
++	if (cmd_ver == 5) {
++		len = sizeof(cmd.v5);
++		n_bands = ARRAY_SIZE(cmd.v5.table[0]);
++		cmd.v5.table_revision = sk;
++	} else if (cmd_ver == 4) {
++		len = sizeof(cmd.v4);
++		n_bands = ARRAY_SIZE(cmd.v4.table[0]);
++		cmd.v4.table_revision = sk;
++	} else {
++		return -EOPNOTSUPP;
++	}
++
++	BUILD_BUG_ON(offsetof(struct iwl_geo_tx_power_profiles_cmd_v4, table) !=
++		     offsetof(struct iwl_geo_tx_power_profiles_cmd_v5, table));
++	/* the table is at the same position for all versions, so set use v4 */
++	ret = iwl_sar_geo_fill_table(&mld->fwrt, &cmd.v4.table[0][0],
++				     n_bands, BIOS_GEO_MAX_PROFILE_NUM);
++
++	/* It is a valid scenario to not support SAR, or miss wgds table,
++	 * but in that case there is no need to send the command.
++	 */
++	if (ret)
++		return 0;
++
++	return iwl_mld_send_cmd_pdu(mld, cmd_id, &cmd, len);
++}
++
++int iwl_mld_config_sar_profile(struct iwl_mld *mld, int prof_a, int prof_b)
++{
++	u32 cmd_id = REDUCE_TX_POWER_CMD;
++	struct iwl_dev_tx_power_cmd cmd = {
++		.common.set_mode = cpu_to_le32(IWL_TX_POWER_MODE_SET_CHAINS),
++	};
++	__le16 *per_chain;
++	int ret;
++	u16 len = sizeof(cmd.common);
++	u32 n_subbands;
++	u8 cmd_ver = iwl_fw_lookup_cmd_ver(mld->fw, cmd_id,
++					   IWL_FW_CMD_VER_UNKNOWN);
++
++	if (cmd_ver == 10) {
++		len += sizeof(cmd.v10);
++		n_subbands = IWL_NUM_SUB_BANDS_V2;
++		per_chain = &cmd.v10.per_chain[0][0][0];
++		cmd.v10.flags =
++			cpu_to_le32(mld->fwrt.reduced_power_flags);
++	} else if (cmd_ver == 9) {
++		len += sizeof(cmd.v9);
++		n_subbands = IWL_NUM_SUB_BANDS_V1;
++		per_chain = &cmd.v9.per_chain[0][0];
++	} else {
++		return -EOPNOTSUPP;
++	}
++
++	/* TODO: CDB - support IWL_NUM_CHAIN_TABLES_V2 */
++	ret = iwl_sar_fill_profile(&mld->fwrt, per_chain,
++				   IWL_NUM_CHAIN_TABLES,
++				   n_subbands, prof_a, prof_b);
++	/* return on error or if the profile is disabled (positive number) */
 +	if (ret)
 +		return ret;
 +
-+	pkt = cmd.resp_pkt;
-+
-+	if (iwl_rx_packet_payload_len(pkt) != sizeof(*resp)) {
-+		IWL_DEBUG_PTP(mld, "PTP: Invalid PTM command response\n");
-+		iwl_free_resp(&cmd);
-+		return -EIO;
-+	}
-+
-+	resp = (void *)pkt->data;
-+
-+	gp2_10ns = (u64)le32_to_cpu(resp->gp2_timestamp_hi) << 32 |
-+		le32_to_cpu(resp->gp2_timestamp_lo);
-+	*gp2 = div_u64(gp2_10ns, 100);
-+
-+	*sys_time = (u64)le32_to_cpu(resp->platform_timestamp_hi) << 32 |
-+		le32_to_cpu(resp->platform_timestamp_lo);
-+
-+	iwl_free_resp(&cmd);
-+	return ret;
++	return iwl_mld_send_cmd_pdu(mld, cmd_id, &cmd, len);
 +}
 +
-+static int
-+iwl_mld_phc_get_crosstimestamp(struct ptp_clock_info *ptp,
-+			       struct system_device_crosststamp *xtstamp)
++int iwl_mld_init_sar(struct iwl_mld *mld)
 +{
-+	struct iwl_mld *mld = container_of(ptp, struct iwl_mld,
-+					   ptp_data.ptp_clock_info);
-+	struct ptp_data *data = &mld->ptp_data;
-+	int ret = 0;
-+	/* Raw value read from GP2 register in usec */
-+	u32 gp2;
-+	/* GP2 value in ns*/
-+	s64 gp2_ns;
-+	/* System (wall) time */
-+	ktime_t sys_time;
++	int chain_a_prof = 1;
++	int chain_b_prof = 1;
++	int ret;
 +
-+	memset(xtstamp, 0, sizeof(struct system_device_crosststamp));
++	/* If no profile was chosen by the user yet, choose profile 1 (WRDS) as
++	 * default for both chains
++	 */
++	if (mld->fwrt.sar_chain_a_profile && mld->fwrt.sar_chain_b_profile) {
++		chain_a_prof = mld->fwrt.sar_chain_a_profile;
++		chain_b_prof = mld->fwrt.sar_chain_b_profile;
++	}
 +
-+	ret = iwl_mld_get_crosstimestamp_fw(mld, &gp2, &sys_time);
-+	if (ret) {
-+		IWL_DEBUG_PTP(mld,
-+			      "PTP: fw get_crosstimestamp failed (ret=%d)\n",
-+			      ret);
++	ret = iwl_mld_config_sar_profile(mld, chain_a_prof, chain_b_prof);
++	if (ret < 0)
 +		return ret;
++
++	if (ret)
++		return 0;
++
++	return iwl_mld_geo_sar_init(mld);
++}
++
++int iwl_mld_init_sgom(struct iwl_mld *mld)
++{
++	int ret;
++	struct iwl_host_cmd cmd = {
++		.id = WIDE_ID(REGULATORY_AND_NVM_GROUP,
++			      SAR_OFFSET_MAPPING_TABLE_CMD),
++		.data[0] = &mld->fwrt.sgom_table,
++		.len[0] =  sizeof(mld->fwrt.sgom_table),
++		.dataflags[0] = IWL_HCMD_DFL_NOCOPY,
++	};
++
++	if (!mld->fwrt.sgom_enabled) {
++		IWL_DEBUG_RADIO(mld, "SGOM table is disabled\n");
++		return 0;
 +	}
 +
-+	spin_lock_bh(&data->lock);
-+	gp2_ns = iwl_mld_ptp_get_adj_time(mld, (u64)gp2 * NSEC_PER_USEC);
-+	spin_unlock_bh(&data->lock);
-+
-+	IWL_DEBUG_PTP(mld,
-+		      "Got Sync Time: GP2:%u, last_GP2: %u, GP2_ns: %lld, sys_time: %lld\n",
-+		      gp2, mld->ptp_data.last_gp2, gp2_ns, (s64)sys_time);
-+
-+	/* System monotonic raw time is not used */
-+	xtstamp->device = ns_to_ktime(gp2_ns);
-+	xtstamp->sys_realtime = sys_time;
++	ret = iwl_mld_send_cmd(mld, &cmd);
++	if (ret)
++		IWL_ERR(mld,
++			"failed to send SAR_OFFSET_MAPPING_CMD (%d)\n", ret);
 +
 +	return ret;
 +}
 +
-+void iwl_mld_ptp_init(struct iwl_mld *mld)
++static int iwl_mld_ppag_send_cmd(struct iwl_mld *mld)
 +{
-+	if (WARN_ON(mld->ptp_data.ptp_clock))
++	union iwl_ppag_table_cmd cmd = {};
++	int ret, len;
++
++	ret = iwl_fill_ppag_table(&mld->fwrt, &cmd, &len);
++	/* Not supporting PPAG table is a valid scenario */
++	if (ret < 0)
++		return 0;
++
++	IWL_DEBUG_RADIO(mld, "Sending PER_PLATFORM_ANT_GAIN_CMD\n");
++	ret = iwl_mld_send_cmd_pdu(mld, WIDE_ID(PHY_OPS_GROUP,
++						PER_PLATFORM_ANT_GAIN_CMD),
++				   &cmd, len);
++	if (ret < 0)
++		IWL_ERR(mld, "failed to send PER_PLATFORM_ANT_GAIN_CMD (%d)\n",
++			ret);
++
++	return ret;
++}
++
++int iwl_mld_init_ppag(struct iwl_mld *mld)
++{
++	/* no need to read the table, done in INIT stage */
++
++	if (!(iwl_is_ppag_approved(&mld->fwrt)))
++		return 0;
++
++	return iwl_mld_ppag_send_cmd(mld);
++}
++
++void iwl_mld_configure_lari(struct iwl_mld *mld)
++{
++	struct iwl_fw_runtime *fwrt = &mld->fwrt;
++	struct iwl_lari_config_change_cmd cmd = {
++		.config_bitmap = iwl_get_lari_config_bitmap(fwrt),
++	};
++	int ret;
++	u32 value;
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_11AX_ENABLEMENT, &value);
++	if (!ret)
++		cmd.oem_11ax_allow_bitmap = cpu_to_le32(value);
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENABLE_UNII4_CHAN, &value);
++	if (!ret)
++		cmd.oem_unii4_allow_bitmap =
++			cpu_to_le32(value &= DSM_UNII4_ALLOW_BITMAP);
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ACTIVATE_CHANNEL, &value);
++	if (!ret)
++		cmd.chan_state_active_bitmap = cpu_to_le32(value);
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENABLE_6E, &value);
++	if (!ret)
++		cmd.oem_uhb_allow_bitmap = cpu_to_le32(value);
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_FORCE_DISABLE_CHANNELS, &value);
++	if (!ret)
++		cmd.force_disable_channels_bitmap = cpu_to_le32(value);
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENERGY_DETECTION_THRESHOLD,
++			       &value);
++	if (!ret)
++		cmd.edt_bitmap = cpu_to_le32(value);
++
++	ret = iwl_bios_get_wbem(fwrt, &value);
++	if (!ret)
++		cmd.oem_320mhz_allow_bitmap = cpu_to_le32(value);
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENABLE_11BE, &value);
++	if (!ret)
++		cmd.oem_11be_allow_bitmap = cpu_to_le32(value);
++
++	if (!cmd.config_bitmap &&
++	    !cmd.oem_uhb_allow_bitmap &&
++	    !cmd.oem_11ax_allow_bitmap &&
++	    !cmd.oem_unii4_allow_bitmap &&
++	    !cmd.chan_state_active_bitmap &&
++	    !cmd.force_disable_channels_bitmap &&
++	    !cmd.edt_bitmap &&
++	    !cmd.oem_320mhz_allow_bitmap &&
++	    !cmd.oem_11be_allow_bitmap)
 +		return;
 +
-+	spin_lock_init(&mld->ptp_data.lock);
-+	INIT_DELAYED_WORK(&mld->ptp_data.dwork, iwl_mld_ptp_work);
++	IWL_DEBUG_RADIO(mld,
++			"sending LARI_CONFIG_CHANGE, config_bitmap=0x%x, oem_11ax_allow_bitmap=0x%x\n",
++			le32_to_cpu(cmd.config_bitmap),
++			le32_to_cpu(cmd.oem_11ax_allow_bitmap));
++	IWL_DEBUG_RADIO(mld,
++			"sending LARI_CONFIG_CHANGE, oem_unii4_allow_bitmap=0x%x, chan_state_active_bitmap=0x%x\n",
++			le32_to_cpu(cmd.oem_unii4_allow_bitmap),
++			le32_to_cpu(cmd.chan_state_active_bitmap));
++	IWL_DEBUG_RADIO(mld,
++			"sending LARI_CONFIG_CHANGE, oem_uhb_allow_bitmap=0x%x, force_disable_channels_bitmap=0x%x\n",
++			le32_to_cpu(cmd.oem_uhb_allow_bitmap),
++			le32_to_cpu(cmd.force_disable_channels_bitmap));
++	IWL_DEBUG_RADIO(mld,
++			"sending LARI_CONFIG_CHANGE, edt_bitmap=0x%x, oem_320mhz_allow_bitmap=0x%x\n",
++			le32_to_cpu(cmd.edt_bitmap),
++			le32_to_cpu(cmd.oem_320mhz_allow_bitmap));
++	IWL_DEBUG_RADIO(mld,
++			"sending LARI_CONFIG_CHANGE, oem_11be_allow_bitmap=0x%x\n",
++			le32_to_cpu(cmd.oem_11be_allow_bitmap));
 +
-+	mld->ptp_data.ptp_clock_info.owner = THIS_MODULE;
-+	mld->ptp_data.ptp_clock_info.gettime64 = iwl_mld_ptp_gettime;
-+	mld->ptp_data.ptp_clock_info.max_adj = 0x7fffffff;
-+	mld->ptp_data.ptp_clock_info.adjtime = iwl_mld_ptp_adjtime;
-+	mld->ptp_data.ptp_clock_info.adjfine = iwl_mld_ptp_adjfine;
-+	mld->ptp_data.scaled_freq = PTP_SCALE_FACTOR;
-+	mld->ptp_data.ptp_clock_info.getcrosststamp =
-+					iwl_mld_phc_get_crosstimestamp;
-+
-+	/* Give a short 'friendly name' to identify the PHC clock */
-+	snprintf(mld->ptp_data.ptp_clock_info.name,
-+		 sizeof(mld->ptp_data.ptp_clock_info.name),
-+		 "%s", "iwlwifi-PTP");
-+
-+	mld->ptp_data.ptp_clock =
-+		ptp_clock_register(&mld->ptp_data.ptp_clock_info, mld->dev);
-+
-+	if (IS_ERR_OR_NULL(mld->ptp_data.ptp_clock)) {
-+		IWL_ERR(mld, "Failed to register PHC clock (%ld)\n",
-+			PTR_ERR(mld->ptp_data.ptp_clock));
-+		mld->ptp_data.ptp_clock = NULL;
-+	} else {
-+		IWL_INFO(mld, "Registered PHC clock: %s, with index: %d\n",
-+			 mld->ptp_data.ptp_clock_info.name,
-+			 ptp_clock_index(mld->ptp_data.ptp_clock));
-+	}
++	ret = iwl_mld_send_cmd_pdu(mld, WIDE_ID(REGULATORY_AND_NVM_GROUP,
++						LARI_CONFIG_CHANGE), &cmd);
++	if (ret)
++		IWL_DEBUG_RADIO(mld,
++				"Failed to send LARI_CONFIG_CHANGE (%d)\n",
++				ret);
 +}
 +
-+void iwl_mld_ptp_remove(struct iwl_mld *mld)
++void iwl_mld_init_uats(struct iwl_mld *mld)
 +{
-+	if (mld->ptp_data.ptp_clock) {
-+		IWL_INFO(mld, "Unregistering PHC clock: %s, with index: %d\n",
-+			 mld->ptp_data.ptp_clock_info.name,
-+			 ptp_clock_index(mld->ptp_data.ptp_clock));
++	int ret;
++	struct iwl_host_cmd cmd = {
++		.id = WIDE_ID(REGULATORY_AND_NVM_GROUP,
++			      MCC_ALLOWED_AP_TYPE_CMD),
++		.data[0] = &mld->fwrt.uats_table,
++		.len[0] =  sizeof(mld->fwrt.uats_table),
++		.dataflags[0] = IWL_HCMD_DFL_NOCOPY,
++	};
 +
-+		ptp_clock_unregister(mld->ptp_data.ptp_clock);
-+		mld->ptp_data.ptp_clock = NULL;
-+		mld->ptp_data.last_gp2 = 0;
-+		mld->ptp_data.wrap_counter = 0;
-+		cancel_delayed_work_sync(&mld->ptp_data.dwork);
-+	}
++	if (!mld->fwrt.uats_valid)
++		return;
++
++	ret = iwl_mld_send_cmd(mld, &cmd);
++	if (ret)
++		IWL_ERR(mld, "failed to send MCC_ALLOWED_AP_TYPE_CMD (%d)\n",
++			ret);
 +}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ptp.h b/drivers/net/wireless/intel/iwlwifi/mld/ptp.h
++
++void iwl_mld_init_tas(struct iwl_mld *mld)
++{
++	int ret;
++	struct iwl_tas_data data = {};
++	struct iwl_tas_config_cmd cmd = {};
++	u32 cmd_id = WIDE_ID(REGULATORY_AND_NVM_GROUP, TAS_CONFIG);
++
++	BUILD_BUG_ON(ARRAY_SIZE(data.block_list_array) !=
++		     IWL_WTAS_BLACK_LIST_MAX);
++	BUILD_BUG_ON(ARRAY_SIZE(cmd.block_list_array) !=
++		     IWL_WTAS_BLACK_LIST_MAX);
++
++	if (!fw_has_capa(&mld->fw->ucode_capa, IWL_UCODE_TLV_CAPA_TAS_CFG)) {
++		IWL_DEBUG_RADIO(mld, "TAS not enabled in FW\n");
++		return;
++	}
++
++	ret = iwl_bios_get_tas_table(&mld->fwrt, &data);
++	if (ret < 0) {
++		IWL_DEBUG_RADIO(mld,
++				"TAS table invalid or unavailable. (%d)\n",
++				ret);
++		return;
++	}
++
++	if (!iwl_is_tas_approved()) {
++		IWL_DEBUG_RADIO(mld,
++				"System vendor '%s' is not in the approved list, disabling TAS in US and Canada.\n",
++				dmi_get_system_info(DMI_SYS_VENDOR) ?: "<unknown>");
++		if ((!iwl_add_mcc_to_tas_block_list(data.block_list_array,
++						    &data.block_list_size,
++						    IWL_MCC_US)) ||
++		    (!iwl_add_mcc_to_tas_block_list(data.block_list_array,
++						    &data.block_list_size,
++						    IWL_MCC_CANADA))) {
++			IWL_DEBUG_RADIO(mld,
++					"Unable to add US/Canada to TAS block list, disabling TAS\n");
++			return;
++		}
++	} else {
++		IWL_DEBUG_RADIO(mld,
++				"System vendor '%s' is in the approved list.\n",
++				dmi_get_system_info(DMI_SYS_VENDOR) ?: "<unknown>");
++	}
++
++	cmd.block_list_size = cpu_to_le16(data.block_list_size);
++	for (u8 i = 0; i < data.block_list_size; i++)
++		cmd.block_list_array[i] =
++			cpu_to_le16(data.block_list_array[i]);
++	cmd.tas_config_info.table_source = data.table_source;
++	cmd.tas_config_info.table_revision = data.table_revision;
++	cmd.tas_config_info.value = cpu_to_le32(data.tas_selection);
++
++	ret = iwl_mld_send_cmd_pdu(mld, cmd_id, &cmd);
++	if (ret)
++		IWL_DEBUG_RADIO(mld, "failed to send TAS_CONFIG (%d)\n", ret);
++}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/regulatory.h b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.h
 new file mode 100644
-index 000000000000..f3d18dd304e5
+index 000000000000..3b01c645adda
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ptp.h
-@@ -0,0 +1,45 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.h
+@@ -0,0 +1,23 @@
 +/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
 +/*
-+ * Copyright (C) 2025 Intel Corporation
++ * Copyright (C) 2024-2025 Intel Corporation
 + */
-+#ifndef __iwl_mld_ptp_h__
-+#define __iwl_mld_ptp_h__
++#ifndef __iwl_mld_regulatory_h__
++#define __iwl_mld_regulatory_h__
 +
-+#include <linux/ptp_clock_kernel.h>
++#include "mld.h"
 +
-+/**
-+ * struct ptp_data - PTP hardware clock data
-+ *
-+ * @ptp_clock: struct ptp_clock pointer returned by the ptp_clock_register()
-+ *	function.
-+ * @ptp_clock_info: struct ptp_clock_info that describes a PTP hardware clock
-+ * @lock: protects the time adjustments data
-+ * @delta: delta between hardware clock and ptp clock in nanoseconds
-+ * @scale_update_gp2: GP2 time when the scale was last updated
-+ * @scale_update_adj_time_ns: adjusted time when the scale was last updated,
-+ *	in nanoseconds
-+ * @scaled_freq: clock frequency offset, scaled to 65536000000
-+ * @last_gp2: the last GP2 reading from the hardware, used for tracking GP2
-+ *	wraparounds
-+ * @wrap_counter: number of wraparounds since scale_update_adj_time_ns
-+ * @dwork: worker scheduled every 1 hour to detect workarounds
-+ */
-+struct ptp_data {
-+	struct ptp_clock *ptp_clock;
-+	struct ptp_clock_info ptp_clock_info;
++void iwl_mld_get_bios_tables(struct iwl_mld *mld);
++void iwl_mld_configure_lari(struct iwl_mld *mld);
++void iwl_mld_init_uats(struct iwl_mld *mld);
++void iwl_mld_init_tas(struct iwl_mld *mld);
 +
-+	spinlock_t lock;
-+	s64 delta;
-+	u32 scale_update_gp2;
-+	u64 scale_update_adj_time_ns;
-+	u64 scaled_freq;
-+	u32 last_gp2;
-+	u32 wrap_counter;
-+	struct delayed_work dwork;
-+};
++int iwl_mld_init_ppag(struct iwl_mld *mld);
 +
-+void iwl_mld_ptp_init(struct iwl_mld *mld);
-+void iwl_mld_ptp_remove(struct iwl_mld *mld);
-+u64 iwl_mld_ptp_get_adj_time(struct iwl_mld *mld, u64 base_time_ns);
++int iwl_mld_init_sgom(struct iwl_mld *mld);
 +
-+#endif /* __iwl_mld_ptp_h__ */
++int iwl_mld_init_sar(struct iwl_mld *mld);
++
++int iwl_mld_config_sar_profile(struct iwl_mld *mld, int prof_a, int prof_b);
++
++#endif /* __iwl_mld_regulatory_h__ */
 -- 
 2.34.1
 
