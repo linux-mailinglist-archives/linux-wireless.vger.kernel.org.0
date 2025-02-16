@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-19002-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19000-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE316A37395
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:46:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5BAA37393
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC60016CFFC
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:46:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E90943AF6DB
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5909199396;
-	Sun, 16 Feb 2025 09:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3682D198A37;
+	Sun, 16 Feb 2025 09:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eW5h09ws"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OfCSB9If"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E34F19340D
-	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6FE195985
+	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739699059; cv=none; b=mUKdClDjqQxFzFqfXVWn+GQNaYhdoRKrDcHKMqFILFaRGD1jMk8txopB7vmj5V5xptfhhGbiyZOET/Q0IB1fHgLDdzvckxWH4wSslCexjLfoiABLv/2y0ln1YFDu2cgf6NhL59a9dNEQQ5foQkxMZSJFELxfykE9kbbzP7xghcA=
+	t=1739699057; cv=none; b=GJtR6IdIiU3AUq59T0hp0Xc6B5uvf0Le4HSRnIJPlUffLH+GIUfRdukq7yNlKSa5chdo75gYYtrouZb1WWXXhedfM2xR2SADTwoTYh2V1JIthrTKnlgQE7dif22i1J8pquR6mhhZkPN3tBjFOPpxQvRZPWTVKFNL0SXB7aFKOOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739699059; c=relaxed/simple;
-	bh=Oe4KZ+Yfy2/n0Z/AwURrYhnX0uSeksmx5gAB6V28lqM=;
+	s=arc-20240116; t=1739699057; c=relaxed/simple;
+	bh=PCuRWMcVO+47o3aoPJ5mDwViPboFjkq/1H+9vPJTWec=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=S6ye2y8J2zuhwRnxcUKzP0YLmCldwnm+VilrUG5VI/9pbsGj5dK8k+v9DS//dUIhzxDWfZL5JZf02fAYgZkvQyWeBZ3zyOFeeBZnx3ezT2Z5+i7GzEUcRwxZPWtjibZwfn5Cc1n/A6BoapRqH4VxS0A6RpvTQMriZmmWfz58HV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eW5h09ws; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=Y8V/715WEnQ6UO+KtJY79yK73a7JZO/cIHzHwIJUE93nWW4gcDXNF4AyiP4fHRJGPnkGaDl4CkEsb1kCDATI1ngnHK9OUoO/T68hkMX1ilWFmWM1BXK/AIR1WIFjtFOI+dSOp1/Z88hl3agq/mmiSuEd959qu1nW8QsifNpeBJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OfCSB9If; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739699054; x=1771235054;
+  t=1739699055; x=1771235055;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Oe4KZ+Yfy2/n0Z/AwURrYhnX0uSeksmx5gAB6V28lqM=;
-  b=eW5h09ws0iofbap1OKELTUGYebap9f1hWRqBQwLmIhtrKD1mNZf4j86v
-   b+Rvd22Co6oylmW3XeCmEeOuXFuD1ZCpQbeFLADUnHoBnkpmkiMjFP6pa
-   XChlsMh5hlPeBOZJwq8I2rEWVnq7OZF94+nhpeFkFPQiJ3/vfkhdNZJ7J
-   QHTivMWiOUWJAbwb+IBshkU9h2WzyPupBN3qai8yEPZY9l3ZkjEvKoaE2
-   rHxP7bEZzqSyWhUitt+JBm4PskKUpyuVxNIcmRHsvPRCwmSsQHBwt2RBz
-   X9/2x0hPQIcgonw8n6JPObMFSFj6MrkJ+TC/AGYNIXem+ZpDlwS2R0R6D
-   Q==;
-X-CSE-ConnectionGUID: EIcEaSDvSAeG8LR5Wg6KNA==
-X-CSE-MsgGUID: BTbpJgbJSsWBSEZVvKDOMg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323416"
+  bh=PCuRWMcVO+47o3aoPJ5mDwViPboFjkq/1H+9vPJTWec=;
+  b=OfCSB9IfAXuYSB4cW7kYuBZWjYOETopoiGa0wRObIz2KS9G+54Sy+X5H
+   WcqtJbAmg8c5ldn8kxd0VC0G4QiSxkh8YhL99cWJT09QPyJn4hdUYQ7ZT
+   1VIvSihMe+SQH5QDuexIXoNot06JQncOaFuIdlK1XGgkaZwuPpDOrWsc9
+   xgwP3eUltgsW9nJJ99O6wIC1xkWUdmMO1hJRS+7zwI5jNA2v2nqml5d0y
+   XBo7sKQ4dZzlBSeACsBzVGYZw1oI2CQrgWAu7LDWLtaJRWekidRgRNPT7
+   c9MUU5Lk+5fRi7v/lZ6ZU64E6qWw1WmhXeMzZ5EgVgBoCkU5JipXz/my+
+   w==;
+X-CSE-ConnectionGUID: xF/DnLg/TlSCNfStHpqS1Q==
+X-CSE-MsgGUID: 4iWI8MPDRvCHWk603fheHw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323418"
 X-IronPort-AV: E=Sophos;i="6.13,290,1732608000"; 
-   d="scan'208";a="40323416"
+   d="scan'208";a="40323418"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:14 -0800
-X-CSE-ConnectionGUID: rMtsE4VQSpuO9xoyasnM9g==
-X-CSE-MsgGUID: ZpRYGnXDS1qJk3LlV3zdSQ==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:15 -0800
+X-CSE-ConnectionGUID: YCF2q+PbTm6SEYd1CoCv5A==
+X-CSE-MsgGUID: +M7bu1EVQOWZSa8H9j9fkw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118785265"
+   d="scan'208";a="118785272"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:13 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:14 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 30/42] wifi: iwlwifi: mld: add file thermal.h/c
-Date: Sun, 16 Feb 2025 11:43:09 +0200
-Message-Id: <20250216111649.464f5da344ca.Ib7ef4b721078430d4412229b72c0cd57d8759d01@changeid>
+Subject: [PATCH 31/42] wifi: iwlwifi: mld: add file time_sync.h/c
+Date: Sun, 16 Feb 2025 11:43:10 +0200
+Message-Id: <20250216111649.3bb0336c119f.If910948f23b356ce5a721030bfb1ec4de69fc88f@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
 References: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
@@ -76,502 +76,294 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-this file is handling a link object
+these fils are handling time synchronization
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mld/thermal.c  | 438 ++++++++++++++++++
- .../net/wireless/intel/iwlwifi/mld/thermal.h  |  36 ++
- 2 files changed, 474 insertions(+)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/thermal.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/thermal.h
+ .../wireless/intel/iwlwifi/mld/time_sync.c    | 240 ++++++++++++++++++
+ .../wireless/intel/iwlwifi/mld/time_sync.h    |  26 ++
+ 2 files changed, 266 insertions(+)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/time_sync.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/time_sync.h
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/time_sync.c b/drivers/net/wireless/intel/iwlwifi/mld/time_sync.c
 new file mode 100644
-index 000000000000..1909953a9be9
+index 000000000000..50799f9bfccb
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
-@@ -0,0 +1,438 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/time_sync.c
+@@ -0,0 +1,240 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
-+ * Copyright (C) 2024-2025 Intel Corporation
++ * Copyright (C) 2025 Intel Corporation
 + */
-+#ifdef CONFIG_THERMAL
-+#include <linux/sort.h>
-+#include <linux/thermal.h>
-+#endif
 +
-+#include "fw/api/phy.h"
-+
-+#include "thermal.h"
 +#include "mld.h"
 +#include "hcmd.h"
++#include "ptp.h"
++#include "time_sync.h"
++#include <linux/ieee80211.h>
 +
-+#define IWL_MLD_CT_KILL_DURATION (5 * HZ)
-+
-+void iwl_mld_handle_ct_kill_notif(struct iwl_mld *mld,
-+				  struct iwl_rx_packet *pkt)
++static int iwl_mld_init_time_sync(struct iwl_mld *mld, u32 protocols,
++				  const u8 *addr)
 +{
-+	const struct ct_kill_notif *notif = (const void *)pkt->data;
++	struct iwl_mld_time_sync_data *time_sync = kzalloc(sizeof(*time_sync),
++							   GFP_KERNEL);
 +
-+	IWL_ERR(mld,
-+		"CT Kill notification: temp = %d, DTS = 0x%x, Scheme 0x%x - Enter CT Kill\n",
-+		le16_to_cpu(notif->temperature), notif->dts,
-+		notif->scheme);
++	if (!time_sync)
++		return -ENOMEM;
 +
-+	iwl_mld_set_ctkill(mld, true);
++	time_sync->active_protocols = protocols;
++	ether_addr_copy(time_sync->peer_addr, addr);
++	skb_queue_head_init(&time_sync->frame_list);
++	rcu_assign_pointer(mld->time_sync, time_sync);
 +
-+	wiphy_delayed_work_queue(mld->wiphy, &mld->ct_kill_exit_wk,
-+				 round_jiffies_relative(IWL_MLD_CT_KILL_DURATION));
-+}
-+
-+static void iwl_mld_exit_ctkill(struct wiphy *wiphy, struct wiphy_work *wk)
-+{
-+	struct iwl_mld *mld;
-+
-+	mld = container_of(wk, struct iwl_mld, ct_kill_exit_wk.work);
-+
-+	IWL_ERR(mld, "Exit CT Kill\n");
-+	iwl_mld_set_ctkill(mld, false);
-+}
-+
-+void iwl_mld_handle_temp_notif(struct iwl_mld *mld, struct iwl_rx_packet *pkt)
-+{
-+	const struct iwl_dts_measurement_notif *notif =
-+		(const void *)pkt->data;
-+	int temp;
-+	u32 ths_crossed;
-+
-+	temp = le32_to_cpu(notif->temp);
-+
-+	/* shouldn't be negative, but since it's s32, make sure it isn't */
-+	if (IWL_FW_CHECK(mld, temp < 0, "negative temperature %d\n", temp))
-+		return;
-+
-+	ths_crossed = le32_to_cpu(notif->threshold_idx);
-+
-+	/* 0xFF in ths_crossed means the notification is not related
-+	 * to a trip, so we can ignore it here.
-+	 */
-+	if (ths_crossed == 0xFF)
-+		return;
-+
-+	IWL_DEBUG_TEMP(mld, "Temp = %d Threshold crossed = %d\n",
-+		       temp, ths_crossed);
-+
-+	if (IWL_FW_CHECK(mld, ths_crossed >= IWL_MAX_DTS_TRIPS,
-+			 "bad threshold: %d\n", ths_crossed))
-+		return;
-+
-+#ifdef CONFIG_THERMAL
-+	if (mld->tzone)
-+		thermal_zone_device_update(mld->tzone, THERMAL_TRIP_VIOLATED);
-+#endif /* CONFIG_THERMAL */
-+}
-+
-+#ifdef CONFIG_THERMAL
-+static int iwl_mld_get_temp(struct iwl_mld *mld, s32 *temp)
-+{
-+	struct iwl_host_cmd cmd = {
-+		.id = WIDE_ID(PHY_OPS_GROUP, CMD_DTS_MEASUREMENT_TRIGGER_WIDE),
-+		.flags = CMD_WANT_SKB,
-+	};
-+	const struct iwl_dts_measurement_resp *resp;
-+	int ret;
-+
-+	lockdep_assert_wiphy(mld->wiphy);
-+
-+	ret = iwl_mld_send_cmd(mld, &cmd);
-+	if (ret) {
-+		IWL_ERR(mld,
-+			"Failed to send the temperature measurement command (err=%d)\n",
-+			ret);
-+		return ret;
-+	}
-+
-+	if (iwl_rx_packet_payload_len(cmd.resp_pkt) < sizeof(*resp)) {
-+		IWL_ERR(mld,
-+			"Failed to get a valid response to DTS measurement\n");
-+		ret = -EIO;
-+		goto free_resp;
-+	}
-+
-+	resp = (const void *)cmd.resp_pkt->data;
-+	*temp = le32_to_cpu(resp->temp);
-+
-+	IWL_DEBUG_TEMP(mld,
-+		       "Got temperature measurement response: temp=%d\n",
-+		       *temp);
-+
-+free_resp:
-+	iwl_free_resp(&cmd);
-+	return ret;
-+}
-+
-+static int compare_temps(const void *a, const void *b)
-+{
-+	return ((s16)le16_to_cpu(*(__le16 *)a) -
-+		(s16)le16_to_cpu(*(__le16 *)b));
-+}
-+
-+struct iwl_trip_walk_data {
-+	__le16 *thresholds;
-+	int count;
-+};
-+
-+static int iwl_trip_temp_iter(struct thermal_trip *trip, void *arg)
-+{
-+	struct iwl_trip_walk_data *twd = arg;
-+
-+	if (trip->temperature == THERMAL_TEMP_INVALID)
-+		return 0;
-+
-+	twd->thresholds[twd->count++] =
-+		cpu_to_le16((s16)(trip->temperature / 1000));
 +	return 0;
 +}
-+#endif
 +
-+int iwl_mld_config_temp_report_ths(struct iwl_mld *mld)
++int iwl_mld_time_sync_fw_config(struct iwl_mld *mld)
 +{
-+	struct temp_report_ths_cmd cmd = {0};
-+	int ret;
-+#ifdef CONFIG_THERMAL
-+	struct iwl_trip_walk_data twd = {
-+		.thresholds = cmd.thresholds,
-+		.count = 0
-+	};
++	struct iwl_time_sync_cfg_cmd cmd = {};
++	struct iwl_mld_time_sync_data *time_sync;
++	int err;
 +
-+	if (!mld->tzone)
-+		goto send;
++	time_sync = wiphy_dereference(mld->wiphy, mld->time_sync);
++	if (!time_sync)
++		return -EINVAL;
 +
-+	/* The thermal core holds an array of temperature trips that are
-+	 * unsorted and uncompressed, the FW should get it compressed and
-+	 * sorted.
-+	 */
++	cmd.protocols = cpu_to_le32(time_sync->active_protocols);
++	ether_addr_copy(cmd.peer_addr, time_sync->peer_addr);
 +
-+	/* compress trips to cmd array, remove uninitialized values*/
-+	for_each_thermal_trip(mld->tzone, iwl_trip_temp_iter, &twd);
-+
-+	cmd.num_temps = cpu_to_le32(twd.count);
-+	if (twd.count)
-+		sort(cmd.thresholds, twd.count, sizeof(s16),
-+		     compare_temps, NULL);
-+
-+send:
-+#endif
-+	lockdep_assert_wiphy(mld->wiphy);
-+
-+	ret = iwl_mld_send_cmd_pdu(mld, WIDE_ID(PHY_OPS_GROUP,
-+						TEMP_REPORTING_THRESHOLDS_CMD),
++	err = iwl_mld_send_cmd_pdu(mld,
++				   WIDE_ID(DATA_PATH_GROUP,
++					   WNM_80211V_TIMING_MEASUREMENT_CONFIG_CMD),
 +				   &cmd);
-+	if (ret)
-+		IWL_ERR(mld, "TEMP_REPORT_THS_CMD command failed (err=%d)\n",
-+			ret);
++	if (err)
++		IWL_ERR(mld, "Failed to send time sync cfg cmd: %d\n", err);
 +
-+	return ret;
++	return err;
 +}
 +
-+#ifdef CONFIG_THERMAL
-+static int iwl_mld_tzone_get_temp(struct thermal_zone_device *device,
-+				  int *temperature)
++int iwl_mld_time_sync_config(struct iwl_mld *mld, const u8 *addr, u32 protocols)
 +{
-+	struct iwl_mld *mld = thermal_zone_device_priv(device);
-+	int temp;
-+	int ret = 0;
++	struct iwl_mld_time_sync_data *time_sync;
++	int err;
 +
-+	wiphy_lock(mld->wiphy);
++	time_sync = wiphy_dereference(mld->wiphy, mld->time_sync);
 +
-+	if (!mld->fw_status.running) {
-+		/* Tell the core that there is no valid temperature value to
-+		 * return, but it need not worry about this.
-+		 */
-+		*temperature = THERMAL_TEMP_INVALID;
-+		goto unlock;
++	/* The fw only supports one peer. We do allow reconfiguration of the
++	 * same peer for cases of fw reset etc.
++	 */
++	if (time_sync && time_sync->active_protocols &&
++	    !ether_addr_equal(addr, time_sync->peer_addr)) {
++		IWL_DEBUG_INFO(mld, "Time sync: reject config for peer: %pM\n",
++			       addr);
++		return -ENOBUFS;
 +	}
 +
-+	ret = iwl_mld_get_temp(mld, &temp);
-+	if (ret)
-+		goto unlock;
++	if (protocols & ~(IWL_TIME_SYNC_PROTOCOL_TM |
++			  IWL_TIME_SYNC_PROTOCOL_FTM))
++		return -EINVAL;
 +
-+	*temperature = temp * 1000;
-+unlock:
-+	wiphy_unlock(mld->wiphy);
-+	return ret;
++	IWL_DEBUG_INFO(mld, "Time sync: set peer addr=%pM\n", addr);
++
++	iwl_mld_deinit_time_sync(mld);
++	err = iwl_mld_init_time_sync(mld, protocols, addr);
++	if (err)
++		return err;
++
++	err = iwl_mld_time_sync_fw_config(mld);
++	return err;
 +}
 +
-+static int iwl_mld_tzone_set_trip_temp(struct thermal_zone_device *device,
-+				       const struct thermal_trip *trip,
-+				       int temp)
++void iwl_mld_deinit_time_sync(struct iwl_mld *mld)
 +{
-+	struct iwl_mld *mld = thermal_zone_device_priv(device);
-+	int ret;
++	struct iwl_mld_time_sync_data *time_sync =
++		wiphy_dereference(mld->wiphy, mld->time_sync);
 +
-+	wiphy_lock(mld->wiphy);
-+
-+	if (!mld->fw_status.running) {
-+		ret = -EIO;
-+		goto unlock;
-+	}
-+
-+	if ((temp / 1000) > S16_MAX) {
-+		ret = -EINVAL;
-+		goto unlock;
-+	}
-+
-+	ret = iwl_mld_config_temp_report_ths(mld);
-+unlock:
-+	wiphy_unlock(mld->wiphy);
-+	return ret;
-+}
-+
-+static  struct thermal_zone_device_ops tzone_ops = {
-+	.get_temp = iwl_mld_tzone_get_temp,
-+	.set_trip_temp = iwl_mld_tzone_set_trip_temp,
-+};
-+
-+static void iwl_mld_thermal_zone_register(struct iwl_mld *mld)
-+{
-+	int ret;
-+	char name[16];
-+	static atomic_t counter = ATOMIC_INIT(0);
-+	struct thermal_trip trips[IWL_MAX_DTS_TRIPS] = {
-+		[0 ... IWL_MAX_DTS_TRIPS - 1] = {
-+			.temperature = THERMAL_TEMP_INVALID,
-+			.type = THERMAL_TRIP_PASSIVE,
-+			.flags = THERMAL_TRIP_FLAG_RW_TEMP,
-+		},
-+	};
-+
-+	BUILD_BUG_ON(ARRAY_SIZE(name) >= THERMAL_NAME_LENGTH);
-+
-+	sprintf(name, "iwlwifi_%u", atomic_inc_return(&counter) & 0xFF);
-+	mld->tzone =
-+		thermal_zone_device_register_with_trips(name, trips,
-+							IWL_MAX_DTS_TRIPS,
-+							mld, &tzone_ops,
-+							NULL, 0, 0);
-+	if (IS_ERR(mld->tzone)) {
-+		IWL_DEBUG_TEMP(mld,
-+			       "Failed to register to thermal zone (err = %ld)\n",
-+			       PTR_ERR(mld->tzone));
-+		mld->tzone = NULL;
-+		return;
-+	}
-+
-+	ret = thermal_zone_device_enable(mld->tzone);
-+	if (ret) {
-+		IWL_DEBUG_TEMP(mld, "Failed to enable thermal zone\n");
-+		thermal_zone_device_unregister(mld->tzone);
-+	}
-+}
-+
-+/* budget in mWatt */
-+static const u32 iwl_mld_cdev_budgets[] = {
-+	2400,	/* cooling state 0 */
-+	2000,	/* cooling state 1 */
-+	1800,	/* cooling state 2 */
-+	1600,	/* cooling state 3 */
-+	1400,	/* cooling state 4 */
-+	1200,	/* cooling state 5 */
-+	1000,	/* cooling state 6 */
-+	900,	/* cooling state 7 */
-+	800,	/* cooling state 8 */
-+	700,	/* cooling state 9 */
-+	650,	/* cooling state 10 */
-+	600,	/* cooling state 11 */
-+	550,	/* cooling state 12 */
-+	500,	/* cooling state 13 */
-+	450,	/* cooling state 14 */
-+	400,	/* cooling state 15 */
-+	350,	/* cooling state 16 */
-+	300,	/* cooling state 17 */
-+	250,	/* cooling state 18 */
-+	200,	/* cooling state 19 */
-+	150,	/* cooling state 20 */
-+};
-+
-+int iwl_mld_config_ctdp(struct iwl_mld *mld, u32 state,
-+			enum iwl_ctdp_cmd_operation op)
-+{
-+	struct iwl_ctdp_cmd cmd = {
-+		.operation = cpu_to_le32(op),
-+		.budget = cpu_to_le32(iwl_mld_cdev_budgets[state]),
-+		.window_size = 0,
-+	};
-+	int ret;
-+
-+	lockdep_assert_wiphy(mld->wiphy);
-+
-+	ret = iwl_mld_send_cmd_pdu(mld, WIDE_ID(PHY_OPS_GROUP, CTDP_CONFIG_CMD),
-+				   &cmd);
-+
-+	if (ret) {
-+		IWL_ERR(mld, "cTDP command failed (err=%d)\n", ret);
-+		return ret;
-+	}
-+
-+	if (op == CTDP_CMD_OPERATION_START)
-+		mld->cooling_dev.cur_state = state;
-+
-+	return 0;
-+}
-+
-+static int iwl_mld_tcool_get_max_state(struct thermal_cooling_device *cdev,
-+				       unsigned long *state)
-+{
-+	*state = ARRAY_SIZE(iwl_mld_cdev_budgets) - 1;
-+
-+	return 0;
-+}
-+
-+static int iwl_mld_tcool_get_cur_state(struct thermal_cooling_device *cdev,
-+				       unsigned long *state)
-+{
-+	struct iwl_mld *mld = (struct iwl_mld *)(cdev->devdata);
-+
-+	*state = mld->cooling_dev.cur_state;
-+
-+	return 0;
-+}
-+
-+static int iwl_mld_tcool_set_cur_state(struct thermal_cooling_device *cdev,
-+				       unsigned long new_state)
-+{
-+	struct iwl_mld *mld = (struct iwl_mld *)(cdev->devdata);
-+	int ret;
-+
-+	wiphy_lock(mld->wiphy);
-+
-+	if (!mld->fw_status.running) {
-+		ret = -EIO;
-+		goto unlock;
-+	}
-+
-+	if (new_state >= ARRAY_SIZE(iwl_mld_cdev_budgets)) {
-+		ret = -EINVAL;
-+		goto unlock;
-+	}
-+
-+	ret = iwl_mld_config_ctdp(mld, new_state, CTDP_CMD_OPERATION_START);
-+
-+unlock:
-+	wiphy_unlock(mld->wiphy);
-+	return ret;
-+}
-+
-+static const struct thermal_cooling_device_ops tcooling_ops = {
-+	.get_max_state = iwl_mld_tcool_get_max_state,
-+	.get_cur_state = iwl_mld_tcool_get_cur_state,
-+	.set_cur_state = iwl_mld_tcool_set_cur_state,
-+};
-+
-+static void iwl_mld_cooling_device_register(struct iwl_mld *mld)
-+{
-+	char name[] = "iwlwifi";
-+
-+	BUILD_BUG_ON(ARRAY_SIZE(name) >= THERMAL_NAME_LENGTH);
-+
-+	mld->cooling_dev.cdev =
-+		thermal_cooling_device_register(name,
-+						mld,
-+						&tcooling_ops);
-+
-+	if (IS_ERR(mld->cooling_dev.cdev)) {
-+		IWL_DEBUG_TEMP(mld,
-+			       "Failed to register to cooling device (err = %ld)\n",
-+			       PTR_ERR(mld->cooling_dev.cdev));
-+		mld->cooling_dev.cdev = NULL;
-+		return;
-+	}
-+}
-+
-+static void iwl_mld_thermal_zone_unregister(struct iwl_mld *mld)
-+{
-+	if (!mld->tzone)
++	if (!time_sync)
 +		return;
 +
-+	IWL_DEBUG_TEMP(mld, "Thermal zone device unregister\n");
-+	if (mld->tzone) {
-+		thermal_zone_device_unregister(mld->tzone);
-+		mld->tzone = NULL;
-+	}
++	RCU_INIT_POINTER(mld->time_sync, NULL);
++	skb_queue_purge(&time_sync->frame_list);
++	kfree_rcu(time_sync, rcu_head);
 +}
 +
-+static void iwl_mld_cooling_device_unregister(struct iwl_mld *mld)
++bool iwl_mld_time_sync_frame(struct iwl_mld *mld, struct sk_buff *skb, u8 *addr)
 +{
-+	if (!mld->cooling_dev.cdev)
++	struct iwl_mld_time_sync_data *time_sync;
++
++	rcu_read_lock();
++	time_sync = rcu_dereference(mld->time_sync);
++	if (time_sync && ether_addr_equal(time_sync->peer_addr, addr) &&
++	    (ieee80211_is_timing_measurement(skb) || ieee80211_is_ftm(skb))) {
++		skb_queue_tail(&time_sync->frame_list, skb);
++		rcu_read_unlock();
++		return true;
++	}
++	rcu_read_unlock();
++
++	return false;
++}
++
++static bool iwl_mld_is_skb_match(struct sk_buff *skb, u8 *addr, u8 dialog_token)
++{
++	struct ieee80211_mgmt *mgmt = (void *)skb->data;
++	u8 skb_dialog_token;
++
++	if (ieee80211_is_timing_measurement(skb))
++		skb_dialog_token = mgmt->u.action.u.wnm_timing_msr.dialog_token;
++	else
++		skb_dialog_token = mgmt->u.action.u.ftm.dialog_token;
++
++	if ((ether_addr_equal(mgmt->sa, addr) ||
++	     ether_addr_equal(mgmt->da, addr)) &&
++	    skb_dialog_token == dialog_token)
++		return true;
++
++	return false;
++}
++
++static struct sk_buff *iwl_mld_time_sync_find_skb(struct iwl_mld *mld, u8 *addr,
++						  u8 dialog_token)
++{
++	struct iwl_mld_time_sync_data *time_sync;
++	struct sk_buff *skb;
++
++	rcu_read_lock();
++
++	time_sync = rcu_dereference(mld->time_sync);
++	if (IWL_FW_CHECK(mld, !time_sync,
++			 "Time sync notification but time sync is not initialized\n")) {
++		rcu_read_unlock();
++		return NULL;
++	}
++
++	/* The notifications are expected to arrive in the same order of the
++	 * frames. If the incoming notification doesn't match the first SKB
++	 * in the queue, it means there was no time sync notification for this
++	 * SKB and it can be dropped.
++	 */
++	while ((skb = skb_dequeue(&time_sync->frame_list))) {
++		if (iwl_mld_is_skb_match(skb, addr, dialog_token))
++			break;
++
++		kfree_skb(skb);
++		skb = NULL;
++		IWL_DEBUG_DROP(mld,
++			       "Time sync: drop SKB without matching notification\n");
++	}
++	rcu_read_unlock();
++
++	return skb;
++}
++
++static u64 iwl_mld_get_64_bit(__le32 high, __le32 low)
++{
++	return ((u64)le32_to_cpu(high) << 32) | le32_to_cpu(low);
++}
++
++void iwl_mld_handle_time_msmt_notif(struct iwl_mld *mld,
++				    struct iwl_rx_packet *pkt)
++{
++	struct ptp_data *data = &mld->ptp_data;
++	struct iwl_time_msmt_notify *notif = (void *)pkt->data;
++	struct ieee80211_rx_status *rx_status;
++	struct skb_shared_hwtstamps *shwt;
++	u64 ts_10ns;
++	struct sk_buff *skb =
++		iwl_mld_time_sync_find_skb(mld, notif->peer_addr,
++					   le32_to_cpu(notif->dialog_token));
++	u64 adj_time;
++
++	if (IWL_FW_CHECK(mld, !skb, "Time sync event but no pending skb\n"))
 +		return;
 +
-+	IWL_DEBUG_TEMP(mld, "Cooling device unregister\n");
-+	if (mld->cooling_dev.cdev) {
-+		thermal_cooling_device_unregister(mld->cooling_dev.cdev);
-+		mld->cooling_dev.cdev = NULL;
-+	}
-+}
-+#endif /* CONFIG_THERMAL */
++	spin_lock_bh(&data->lock);
++	ts_10ns = iwl_mld_get_64_bit(notif->t2_hi, notif->t2_lo);
++	adj_time = iwl_mld_ptp_get_adj_time(mld, ts_10ns * 10);
++	shwt = skb_hwtstamps(skb);
++	shwt->hwtstamp = ktime_set(0, adj_time);
 +
-+void iwl_mld_thermal_initialize(struct iwl_mld *mld)
++	ts_10ns = iwl_mld_get_64_bit(notif->t3_hi, notif->t3_lo);
++	adj_time = iwl_mld_ptp_get_adj_time(mld, ts_10ns * 10);
++	rx_status = IEEE80211_SKB_RXCB(skb);
++	rx_status->ack_tx_hwtstamp = ktime_set(0, adj_time);
++	spin_unlock_bh(&data->lock);
++
++	IWL_DEBUG_INFO(mld,
++		       "Time sync: RX event - report frame t2=%llu t3=%llu\n",
++		       ktime_to_ns(shwt->hwtstamp),
++		       ktime_to_ns(rx_status->ack_tx_hwtstamp));
++	ieee80211_rx_napi(mld->hw, NULL, skb, NULL);
++}
++
++void iwl_mld_handle_time_sync_confirm_notif(struct iwl_mld *mld,
++					    struct iwl_rx_packet *pkt)
 +{
-+	wiphy_delayed_work_init(&mld->ct_kill_exit_wk, iwl_mld_exit_ctkill);
++	struct ptp_data *data = &mld->ptp_data;
++	struct iwl_time_msmt_cfm_notify *notif = (void *)pkt->data;
++	struct ieee80211_tx_status status = {};
++	struct skb_shared_hwtstamps *shwt;
++	u64 ts_10ns, adj_time;
 +
-+#ifdef CONFIG_THERMAL
-+	iwl_mld_cooling_device_register(mld);
-+	iwl_mld_thermal_zone_register(mld);
-+#endif
++	status.skb =
++		iwl_mld_time_sync_find_skb(mld, notif->peer_addr,
++					   le32_to_cpu(notif->dialog_token));
++
++	if (IWL_FW_CHECK(mld, !status.skb,
++			 "Time sync confirm but no pending skb\n"))
++		return;
++
++	spin_lock_bh(&data->lock);
++	ts_10ns = iwl_mld_get_64_bit(notif->t1_hi, notif->t1_lo);
++	adj_time = iwl_mld_ptp_get_adj_time(mld, ts_10ns * 10);
++	shwt = skb_hwtstamps(status.skb);
++	shwt->hwtstamp = ktime_set(0, adj_time);
++
++	ts_10ns = iwl_mld_get_64_bit(notif->t4_hi, notif->t4_lo);
++	adj_time = iwl_mld_ptp_get_adj_time(mld, ts_10ns * 10);
++	status.info = IEEE80211_SKB_CB(status.skb);
++	status.ack_hwtstamp = ktime_set(0, adj_time);
++	spin_unlock_bh(&data->lock);
++
++	IWL_DEBUG_INFO(mld,
++		       "Time sync: TX event - report frame t1=%llu t4=%llu\n",
++		       ktime_to_ns(shwt->hwtstamp),
++		       ktime_to_ns(status.ack_hwtstamp));
++	ieee80211_tx_status_ext(mld->hw, &status);
 +}
-+
-+void iwl_mld_thermal_exit(struct iwl_mld *mld)
-+{
-+	wiphy_delayed_work_cancel(mld->wiphy, &mld->ct_kill_exit_wk);
-+
-+#ifdef CONFIG_THERMAL
-+	iwl_mld_cooling_device_unregister(mld);
-+	iwl_mld_thermal_zone_unregister(mld);
-+#endif
-+}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/thermal.h b/drivers/net/wireless/intel/iwlwifi/mld/thermal.h
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/time_sync.h b/drivers/net/wireless/intel/iwlwifi/mld/time_sync.h
 new file mode 100644
-index 000000000000..8c8893331b05
+index 000000000000..2d4c5512e961
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/thermal.h
-@@ -0,0 +1,36 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/time_sync.h
+@@ -0,0 +1,26 @@
 +/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
 +/*
-+ * Copyright (C) 2024 Intel Corporation
++ * Copyright (C) 2025 Intel Corporation
 + */
-+#ifndef __iwl_mld_thermal_h__
-+#define __iwl_mld_thermal_h__
++#ifndef __iwl_mld_time_sync_h__
++#define __iwl_mld_time_sync_h__
 +
-+#include "iwl-trans.h"
-+
-+struct iwl_mld;
-+
-+#ifdef CONFIG_THERMAL
-+#include <linux/thermal.h>
-+
-+/*
-+ * struct iwl_mld_cooling_device
-+ * @cur_state: current state
-+ * @cdev: struct thermal cooling device
-+ */
-+struct iwl_mld_cooling_device {
-+	u32 cur_state;
-+	struct thermal_cooling_device *cdev;
++struct iwl_mld_time_sync_data {
++	struct rcu_head rcu_head;
++	u8 peer_addr[ETH_ALEN];
++	u32 active_protocols;
++	struct sk_buff_head frame_list;
 +};
 +
-+int iwl_mld_config_ctdp(struct iwl_mld *mld, u32 state,
-+			enum iwl_ctdp_cmd_operation op);
-+#endif
++int iwl_mld_time_sync_config(struct iwl_mld *mld, const u8 *addr,
++			     u32 protocols);
++int iwl_mld_time_sync_fw_config(struct iwl_mld *mld);
++void iwl_mld_deinit_time_sync(struct iwl_mld *mld);
++void iwl_mld_handle_time_msmt_notif(struct iwl_mld *mld,
++				    struct iwl_rx_packet *pkt);
++bool iwl_mld_time_sync_frame(struct iwl_mld *mld, struct sk_buff *skb,
++			     u8 *addr);
++void iwl_mld_handle_time_sync_confirm_notif(struct iwl_mld *mld,
++					    struct iwl_rx_packet *pkt);
 +
-+void iwl_mld_handle_temp_notif(struct iwl_mld *mld, struct iwl_rx_packet *pkt);
-+void iwl_mld_handle_ct_kill_notif(struct iwl_mld *mld,
-+				  struct iwl_rx_packet *pkt);
-+int iwl_mld_config_temp_report_ths(struct iwl_mld *mld);
-+void iwl_mld_thermal_initialize(struct iwl_mld *mld);
-+void iwl_mld_thermal_exit(struct iwl_mld *mld);
-+
-+#endif /* __iwl_mld_thermal_h__ */
++#endif /* __iwl_mld_time_sync_h__ */
 -- 
 2.34.1
 
