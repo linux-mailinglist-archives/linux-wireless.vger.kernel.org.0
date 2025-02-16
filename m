@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-19006-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19007-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4DE8A37399
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:46:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8FC5A3739A
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B52D518898A4
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:46:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68BEC16D0F8
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5293419A288;
-	Sun, 16 Feb 2025 09:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A408518F2D8;
+	Sun, 16 Feb 2025 09:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z/d/q1Ev"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Klr/Fj02"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB73D199EB0
-	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B4B199FC1
+	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739699063; cv=none; b=NDgjKCCgcAMar9tdbZ6RanLlflfqQEVqP2syuk8t1D8S6DOx3q800t76kDxvHW5WkmQtjgwpR+5RN4uOPjymzLIUrUn0pjh7sU3PSs4I9C9gMEDjipp4TqTpNKjlGGldDI9xaiEXFS5JPlSwhz/RblLGD+KLzFwTbB9avYtVTY8=
+	t=1739699064; cv=none; b=f2K0oQ5tgZERBhPVB1uChG0SeISTHjPu41dFNmyv+8d9xgG6TYJ7iGAGBY0x8eBy4bF6nqeDgLSS1y1FNHjstHcRj+OOBpoavKWMvgqO9+0UKudfcRjIU39sAIfAUELzEgaoadtm77hBTMomaHXBa3sCIJcm7GIxgsp61aDZGT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739699063; c=relaxed/simple;
-	bh=+jri2vicLLWPzmMQV4N5jItHNo36Pgzlhlvvb7TcJTo=;
+	s=arc-20240116; t=1739699064; c=relaxed/simple;
+	bh=pprMAFkkUrFdF6qI6e4ENsYf/loA1saeQNFKwSfXywc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IEV26057w4bIJhbfJB+pnsUFL7rErT89Sm8oUsPdvyUfvAIwcTHSIuA2MCvN36P1XFQBwo+3gWMkrM2nRN93rF8zZWroew2sjUdaz+aWi6Bdy4Uamd3kIeSEZV8/98qyhdYGjcHfdgycv9SFBZsNKk1MHKRMesqSV+jG3UV0x+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z/d/q1Ev; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=lXY1KwR8wngWNebtYu3Yy+lKK6IiTYli2TjPTHhUlHtQNE5M+O5NXT3Nu4Z/ou4/Uj0QfEdieo2NQzCaGF4mbsu7qi5h+0zSKSwiYoMaunA7JiNNvPaBKFSc3K9sq6C/JhIG9XH88VYnzPk5E7P2uJhCwU6n5l1ITEHkd/Tcx8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Klr/Fj02; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739699062; x=1771235062;
+  t=1739699063; x=1771235063;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+jri2vicLLWPzmMQV4N5jItHNo36Pgzlhlvvb7TcJTo=;
-  b=Z/d/q1EvLUWCi185D3VZdJYQkPMQx77bRSXHhR9x131svr2cz9s7mmVq
-   8vApx/4Hxl0Xf10ByLinSQYE3WBOTcBcUkOJPLkUPkB1CL4YtEjBCnJxX
-   RMmZnxrpYo8WGQWHrQ2/0sAe6IvQAMM6u1oewlzXodfF0fGNrQvIN/kZN
-   uwXH9ksRIg7Ak9gqCDyz5G+stVECrDj/WeB9Nm9ZS3/OSio/mxqVAJ75F
-   Ek7x2eyfLfsIqx8to0IfFron+A9O/bkk1kj28uikuM+1i2sGpS/ZdxWRu
-   6f+aAj33kk7Y2KZqVaFDloK31wcDEbIwsBOrxWYe6+7pSJ3mwLlTxuITf
+  bh=pprMAFkkUrFdF6qI6e4ENsYf/loA1saeQNFKwSfXywc=;
+  b=Klr/Fj02U2e0fZFsFg36B78dsu6XaymBlRBKCIB9JgImSdMwPijVsKYc
+   X2NJNrL5Au8nHGKn5zNsv2Ie8kCIhx7sRSb3xqi+jDwnjtdJHOzmfpVS7
+   4xdzF6RTp7HIQW4fOWiy0D4n9U5eNuD5VPf9/VtJhoRHVI80DzoIaO0KX
+   ffq8spcojftYmKT3JgKqfIedxI8lHKUx5GhEmGRtMWA82y6nNvw6js6P3
+   lsJ9/HJPu2VSV3ywPDxSLru6OI5S71L5qbTjXn/WwGC9H1cuR89k/XN+7
+   jiKRJFor2cJtjs0M5Hg0GI964RHGL42XIdSfNCSUVtVC66Po+QNvmqDhL
    g==;
-X-CSE-ConnectionGUID: BX414LxMQgCAkFsuyKVW1Q==
-X-CSE-MsgGUID: BskaHzIjSo+pwwnOKyT/gg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323430"
+X-CSE-ConnectionGUID: wqaMXTaCTXK49uv6dsaI1w==
+X-CSE-MsgGUID: lz+NMsflQle0/AKeG1+QiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323432"
 X-IronPort-AV: E=Sophos;i="6.13,290,1732608000"; 
-   d="scan'208";a="40323430"
+   d="scan'208";a="40323432"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:22 -0800
-X-CSE-ConnectionGUID: 9tDX8jq8R0+L+ceemzgBVw==
-X-CSE-MsgGUID: QausXeM1Req4xMdJ4qkWKg==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:23 -0800
+X-CSE-ConnectionGUID: xzO54z50QZubkKp9xqz6uQ==
+X-CSE-MsgGUID: ghElsOUSQEegJflOYiX71Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118785295"
+   d="scan'208";a="118785299"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:20 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:22 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 36/42] wifi: iwlwifi: mld: add KUnit test file link.c
-Date: Sun, 16 Feb 2025 11:43:15 +0200
-Message-Id: <20250216111649.ec0153e38515.I9f7eb14c0c17282667fb4b569423b2a192a2fd77@changeid>
+Subject: [PATCH 37/42] wifi: iwlwifi: mld: add KUnit test file link-selection.c
+Date: Sun, 16 Feb 2025 11:43:16 +0200
+Message-Id: <20250216111649.4b4b26f941f0.I62ef1ce661ccaf1f8d5f7c17b02e294ed9e3f41b@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
 References: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
@@ -76,25 +76,25 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-this file implements link KUnit tests
+this file implements link selection KUnit tests
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/mld/tests/link.c   | 103 ++++++++++++++++++
- 1 file changed, 103 insertions(+)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/link.c
+ .../intel/iwlwifi/mld/tests/link-selection.c  | 171 ++++++++++++++++++
+ 1 file changed, 171 insertions(+)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/link.c b/drivers/net/wireless/intel/iwlwifi/mld/tests/link.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c b/drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c
 new file mode 100644
-index 000000000000..6e251dbc1dfe
+index 000000000000..d835550c1a6b
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/link.c
-@@ -0,0 +1,103 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c
+@@ -0,0 +1,171 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
-+ * KUnit tests for channel helper functions
++ * KUnit tests for link selection functions
 + *
-+ * Copyright (C) 2024 Intel Corporation
++ * Copyright (C) 2025 Intel Corporation
 + */
 +#include <kunit/static_stub.h>
 +
@@ -102,97 +102,165 @@ index 000000000000..6e251dbc1dfe
 +#include "mld.h"
 +#include "link.h"
 +#include "iface.h"
-+#include "fw/api/mac-cfg.h"
++#include "phy.h"
 +
-+static const struct missed_beacon_test_case {
++static const struct link_grading_test_case {
 +	const char *desc;
 +	struct {
-+		struct iwl_missed_beacons_notif notif;
-+		bool emlsr;
++		struct {
++			u8 link_id;
++			const struct cfg80211_chan_def *chandef;
++			bool active;
++			s32 signal;
++			bool has_chan_util_elem;
++			u8 chan_util; /* 0-255 , used only if has_chan_util_elem is true */
++			u8 chan_load_by_us; /* 0-100, used only if active is true */;
++		} link;
 +	} input;
-+	struct {
-+		bool disconnected;
-+		bool emlsr;
-+	} output;
-+} missed_beacon_cases[] = {
++	unsigned int expected_grade;
++} link_grading_cases[] = {
 +	{
-+		.desc = "no EMLSR, no disconnect",
-+		.input.notif = {
-+			.consec_missed_beacons = cpu_to_le32(4),
++		.desc = "channel util of 128 (50%)",
++		.input.link = {
++			.link_id = 0,
++			.chandef = &chandef_2ghz,
++			.active = false,
++			.has_chan_util_elem = true,
++			.chan_util = 128,
 +		},
++		.expected_grade = 86,
 +	},
 +	{
-+		.desc = "no EMLSR, no beacon loss since Rx, no disconnect",
-+		.input.notif = {
-+			.consec_missed_beacons = cpu_to_le32(20),
++		.desc = "channel util of 180 (70%)",
++		.input.link = {
++			.link_id = 0,
++			.chandef = &chandef_2ghz,
++			.active = false,
++			.has_chan_util_elem = true,
++			.chan_util = 180,
 +		},
++		.expected_grade = 51,
 +	},
 +	{
-+		.desc = "no EMLSR, beacon loss since Rx, disconnect",
-+		.input.notif = {
-+			.consec_missed_beacons = cpu_to_le32(20),
-+			.consec_missed_beacons_since_last_rx =
-+				cpu_to_le32(10),
++		.desc = "channel util of 180 (70%), channel load by us of 10%",
++		.input.link = {
++			.link_id = 0,
++			.chandef = &chandef_2ghz,
++			.has_chan_util_elem = true,
++			.chan_util = 180,
++			.active = true,
++			.chan_load_by_us = 10,
 +		},
-+		.output.disconnected = true,
++		.expected_grade = 67,
++	},
++		{
++		.desc = "no channel util element",
++		.input.link = {
++			.link_id = 0,
++			.chandef = &chandef_2ghz,
++			.active = true,
++		},
++		.expected_grade = 120,
 +	},
 +};
 +
-+KUNIT_ARRAY_PARAM_DESC(test_missed_beacon, missed_beacon_cases, desc);
++KUNIT_ARRAY_PARAM_DESC(link_grading, link_grading_cases, desc);
 +
-+static void fake_ieee80211_connection_loss(struct ieee80211_vif *vif)
++static void setup_link(struct ieee80211_bss_conf *link)
 +{
-+	vif->cfg.assoc = false;
-+}
-+
-+static void test_missed_beacon(struct kunit *test)
-+{
++	struct kunit *test = kunit_get_current_test();
 +	struct iwl_mld *mld = test->priv;
-+	struct iwl_missed_beacons_notif *notif;
-+	const struct missed_beacon_test_case *test_param =
++	const struct link_grading_test_case *test_param =
 +		(const void *)(test->param_value);
-+	struct ieee80211_vif *vif;
-+	struct iwl_rx_packet *pkt;
 +
-+	kunit_activate_static_stub(test, ieee80211_connection_loss,
-+				   fake_ieee80211_connection_loss);
-+	pkt = iwl_mld_kunit_create_pkt(test_param->input.notif);
-+	notif = (void *)pkt->data;
++	KUNIT_ALLOC_AND_ASSERT(test, link->bss);
 +
-+	if (test_param->input.emlsr) {
-+		vif = iwlmld_kunit_assoc_emlsr(0x3, NL80211_BAND_5GHZ,
-+					       NL80211_BAND_6GHZ);
-+	} else {
-+		struct iwl_mld_vif *mld_vif;
++	link->bss->signal = DBM_TO_MBM(test_param->input.link.signal);
 +
-+		vif = iwlmld_kunit_setup_non_mlo_assoc(NL80211_BAND_6GHZ);
-+		mld_vif = iwl_mld_vif_from_mac80211(vif);
-+		notif->link_id = cpu_to_le32(mld_vif->deflink.fw_id);
++	link->chanreq.oper = *test_param->input.link.chandef;
++
++	if (test_param->input.link.has_chan_util_elem) {
++		struct cfg80211_bss_ies *ies;
++		struct ieee80211_bss_load_elem bss_load = {
++			.channel_util = test_param->input.link.chan_util,
++		};
++		struct element *elem =
++			iwlmld_kunit_gen_element(WLAN_EID_QBSS_LOAD,
++						 &bss_load,
++						 sizeof(bss_load));
++		unsigned int elem_len = sizeof(*elem) + sizeof(bss_load);
++
++		KUNIT_ALLOC_AND_ASSERT_SIZE(test, ies, sizeof(*ies) + elem_len);
++		memcpy(ies->data, elem, elem_len);
++		ies->len = elem_len;
++		rcu_assign_pointer(link->bss->beacon_ies, ies);
++		rcu_assign_pointer(link->bss->ies, ies);
 +	}
 +
-+	wiphy_lock(mld->wiphy);
++	if (test_param->input.link.active) {
++		struct ieee80211_chanctx_conf *chan_ctx =
++			wiphy_dereference(mld->wiphy, link->chanctx_conf);
++		struct iwl_mld_phy *phy;
 +
-+	iwl_mld_handle_missed_beacon_notif(mld, pkt);
++		KUNIT_ASSERT_NOT_NULL(test, chan_ctx);
 +
-+	wiphy_unlock(mld->wiphy);
++		phy = iwl_mld_phy_from_mac80211(chan_ctx);
 +
-+	KUNIT_ASSERT_NE(test, vif->cfg.assoc, test_param->output.disconnected);
-+
-+	/* TODO: add test cases for esr and check */
++		phy->channel_load_by_us = test_param->input.link.chan_load_by_us;
++	}
 +}
 +
-+static struct kunit_case link_cases[] = {
-+	KUNIT_CASE_PARAM(test_missed_beacon, test_missed_beacon_gen_params),
++static void test_link_grading(struct kunit *test)
++{
++	struct iwl_mld *mld = test->priv;
++	const struct link_grading_test_case *test_param =
++		(const void *)(test->param_value);
++	struct ieee80211_vif *vif;
++	struct ieee80211_bss_conf *link;
++	unsigned int actual_grade;
++	u8 assoc_link_id;
++	/* Extract test case parameters */
++	u8 link_id = test_param->input.link.link_id;
++	enum nl80211_band band = test_param->input.link.chandef->chan->band;
++	bool active = test_param->input.link.active;
++	u16 valid_links;
++
++	/* If the link is not active, use a different link as the assoc link */
++	if (active) {
++		assoc_link_id = link_id;
++		valid_links = BIT(link_id);
++	} else {
++		assoc_link_id = BIT(ffz(BIT(link_id)));
++		valid_links = BIT(assoc_link_id) | BIT(link_id);
++	}
++
++	vif = iwlmld_kunit_setup_mlo_assoc(valid_links, assoc_link_id, band);
++
++	wiphy_lock(mld->wiphy);
++	link = wiphy_dereference(mld->wiphy, vif->link_conf[link_id]);
++	KUNIT_ASSERT_NOT_NULL(test, link);
++
++	setup_link(link);
++
++	actual_grade = iwl_mld_get_link_grade(mld, link);
++	wiphy_unlock(mld->wiphy);
++
++	/* Assert that the returned grade matches the expected grade */
++	KUNIT_EXPECT_EQ(test, actual_grade, test_param->expected_grade);
++}
++
++static struct kunit_case link_selection_cases[] = {
++	KUNIT_CASE_PARAM(test_link_grading, link_grading_gen_params),
 +	{},
 +};
 +
-+static struct kunit_suite link = {
-+	.name = "iwlmld-link",
-+	.test_cases = link_cases,
++static struct kunit_suite link_selection = {
++	.name = "iwlmld-link-selection-tests",
++	.test_cases = link_selection_cases,
 +	.init = iwlmld_kunit_test_init,
 +};
 +
-+kunit_test_suite(link);
++kunit_test_suite(link_selection);
 -- 
 2.34.1
 
