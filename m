@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-18977-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18979-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1395BA37379
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:44:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00105A3737B
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:44:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE5D916CEE9
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:44:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C933616CFEE
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BB318DB3F;
-	Sun, 16 Feb 2025 09:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F6418E05F;
+	Sun, 16 Feb 2025 09:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eljzTsvi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NsbJRkdP"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A3D18DB00
-	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F6318DB08
+	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739699027; cv=none; b=WXAAxBpJJAaZapm+ZnnqVTliCgfgiB2FLqyZibL5Yasenl1vEi1ngrK1XqIbs3rC/AS6FganDhdciWp9wQdR4rnEqlv9WUufiLWnQatgQ6jREi/tUfhoN+0rSyzi7w0aO1UciOzq43sN0q9KPWyCIMIdX2prcyEgAg2te6hdewQ=
+	t=1739699029; cv=none; b=MNOyPTYAzyv4zZaxwAj7taRwyLJ1uC2GSMQaTRBbyRmN3DGbHVrYTmk4Y4fLAkV/GJcRPIwz72QcrxCG4lfRrE+R3WjqxNqq1/zozKmLdHotwddVjwNs7Qm+TcIXS4gUrgoZfY4BJRYhMMmCKx/HGHbWY8GK8s62VABT3fq4hk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739699027; c=relaxed/simple;
-	bh=Q213pkjPH8ewenhXpjbN0UfSXudJQTstDYbbu/reBOE=;
+	s=arc-20240116; t=1739699029; c=relaxed/simple;
+	bh=8hXNhuFiAC3CI45Npuy3kdehu5tyqzxyCEOJo2Q+/CM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bxzpIlyF+a2ucSIPmmPRoSPLnPY6OQyhu0zeNQ3MFf68lGrPkYf12t3oxrstpeKksB29YBrjAtIFuKiLnTt1vU9Mssq1fupWBQpmxNQzIhtJteJrz5yPbFLGV/q8d6l/PtTwxNlvV89dC2EJsybVwQvWxMQLDIsF7DiAjKH+/CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eljzTsvi; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=clo+BYb9j3mzSqGob/S/sXqm0S6v1DPWuEy3rS5UlTXbxcmvQhw+ymYHke2aUHmiiidwTyxcscZL9M7Ox7aljjbGfVaWuVpYNRBRv5rsdoBd6ZahbQOiPf9PK9wnIW5Nd2xL6gwjw85zIz31K4p+9OhuQH+w7lTNVn5TrzjTwAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NsbJRkdP; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739699025; x=1771235025;
+  t=1739699026; x=1771235026;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Q213pkjPH8ewenhXpjbN0UfSXudJQTstDYbbu/reBOE=;
-  b=eljzTsvinGdSKmpEER7yV8DOi2SPvFfBZR5bRilgg/2TwB7Kicm3PZWO
-   Qg10WVxGXlJFnXcsmA1OBfkgp4mAqRFqLGzqxDZ1TPArVDR5Lr8PYGqOh
-   K4QUI0xbmub9ah3nw/IOKRHxkzUOE3yXC75R9bNCERD5yCVeia2absH7R
-   GzgebxQEbGG4JJfkT9Z0PohA5plLemXUtFmir+DBiYjwsY+nOdfHDflLV
-   wSO0HjH3RKTKzRchv0Ae7F5bEjEnU2Y/bCumNjsrPsFR5rk/RD7Z+/MeA
-   A5FEGNZtTFa5KLTjHTwtvhiLHYUB+yRZoIuZAlokIDhVVDkh5rM6DWNDe
-   A==;
-X-CSE-ConnectionGUID: YRm9euhwRyKjUmK0lyX8Zw==
-X-CSE-MsgGUID: vYBgzx+gQu+EPyzFw8dbBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323369"
+  bh=8hXNhuFiAC3CI45Npuy3kdehu5tyqzxyCEOJo2Q+/CM=;
+  b=NsbJRkdPFilIsvA9RB590IjbDuBdcKOeH06P4zSYSW+YPRBzBDjMzfGw
+   df3sxg3Q8qXIq0Yx5SYRJpP/4ZWjx5HX4oqQmhdaQjZrVwyvyWIn8pe1Z
+   9w/4bGnc5UycbwA7JxzUC3MN6BTixk6dkYPPu0s3MAOutTZq8EJRryrS6
+   7rCJ0+EDAm6N1OM6WeSi9fYhQMY0fA6e1LI6bQOQsQoPXis+EUAqiLzAu
+   Wrf2JR2UkUyTQAo9aikyQPRUSRua/bEVepspaodQP2xZ8yjTY7IdQD5gb
+   t2MleZC5UCxJ6s/qVpBIXjxaq7EyszB4u9Up1EKRhwdMQaqf2TbPrKH/I
+   Q==;
+X-CSE-ConnectionGUID: DZd3z3mJTOScYxpA148CwQ==
+X-CSE-MsgGUID: /ep8cN3fRnm4EOlIRUgFZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323371"
 X-IronPort-AV: E=Sophos;i="6.13,290,1732608000"; 
-   d="scan'208";a="40323369"
+   d="scan'208";a="40323371"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:45 -0800
-X-CSE-ConnectionGUID: aj1HAxrNTMqBvUWiLXVYXA==
-X-CSE-MsgGUID: lhe5KAAESnmjgBBVvNUDAA==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:46 -0800
+X-CSE-ConnectionGUID: IPcQtCM2RIKnxB5T5ha+Rg==
+X-CSE-MsgGUID: pyEXSLYmRZCuMooZ/t2WVg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118785223"
+   d="scan'208";a="118785227"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:44 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:45 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 07/42] wifi: iwlwifi: mld: add file ftm-initiator.h/c
-Date: Sun, 16 Feb 2025 11:42:46 +0200
-Message-Id: <20250216111648.22a28a8eeaab.I192b3cd636b2203a4a39f41c77b60caf761192cd@changeid>
+Subject: [PATCH 08/42] wifi: iwlwifi: mld: add file fw.c
+Date: Sun, 16 Feb 2025 11:42:47 +0200
+Message-Id: <20250216111648.358e364ea3eb.I44dc2b28e071f3f127b360a4b63b10eb42a900fb@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
 References: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
@@ -76,494 +76,554 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-this file is handling a FTM
-
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../intel/iwlwifi/mld/ftm-initiator.c         | 451 ++++++++++++++++++
- .../intel/iwlwifi/mld/ftm-initiator.h         |  15 +
- 2 files changed, 466 insertions(+)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.h
+ drivers/net/wireless/intel/iwlwifi/mld/fw.c | 536 ++++++++++++++++++++
+ 1 file changed, 536 insertions(+)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/fw.c
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/fw.c b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
 new file mode 100644
-index 000000000000..f77ba21a174d
+index 000000000000..ec93af362cfc
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.c
-@@ -0,0 +1,451 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
+@@ -0,0 +1,536 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
-+ * Copyright (C) 2025 Intel Corporation
++ * Copyright (C) 2024-2025 Intel Corporation
 + */
-+#include <linux/etherdevice.h>
-+#include <linux/math64.h>
-+#include <net/cfg80211.h>
++
 +#include "mld.h"
-+#include "iface.h"
-+#include "phy.h"
-+#include "iwl-io.h"
-+#include "iwl-prph.h"
-+#include "constants.h"
-+#include "fw/api/location.h"
-+#include "ftm-initiator.h"
 +
-+static void iwl_mld_ftm_cmd_common(struct iwl_mld *mld,
-+				   struct ieee80211_vif *vif,
-+				   struct iwl_tof_range_req_cmd *cmd,
-+				   struct cfg80211_pmsr_request *req)
++#include "fw/api/alive.h"
++#include "fw/api/scan.h"
++#include "fw/api/rx.h"
++#include "fw/dbg.h"
++#include "fw/pnvm.h"
++#include "hcmd.h"
++#include "iwl-nvm-parse.h"
++#include "power.h"
++#include "mcc.h"
++#include "led.h"
++#include "coex.h"
++#include "regulatory.h"
++#include "thermal.h"
++
++static int iwl_mld_send_tx_ant_cfg(struct iwl_mld *mld)
 +{
-+	int i;
++	struct iwl_tx_ant_cfg_cmd cmd;
 +
-+	cmd->initiator_flags =
-+		cpu_to_le32(IWL_TOF_INITIATOR_FLAGS_MACADDR_RANDOM |
-+			    IWL_TOF_INITIATOR_FLAGS_NON_ASAP_SUPPORT);
-+	cmd->request_id = req->cookie;
-+	cmd->num_of_ap = req->n_peers;
++	lockdep_assert_wiphy(mld->wiphy);
 +
-+	/* Use a large value for "no timeout". Don't use the maximum value
-+	 * because of fw limitations.
-+	 */
-+	if (req->timeout)
-+		cmd->req_timeout_ms = cpu_to_le32(min(req->timeout, 0xfffff));
-+	else
-+		cmd->req_timeout_ms = cpu_to_le32(0xfffff);
++	cmd.valid = cpu_to_le32(iwl_mld_get_valid_tx_ant(mld));
 +
-+	memcpy(cmd->macaddr_template, req->mac_addr, ETH_ALEN);
-+	for (i = 0; i < ETH_ALEN; i++)
-+		cmd->macaddr_mask[i] = ~req->mac_addr_mask[i];
++	IWL_DEBUG_FW(mld, "select valid tx ant: %u\n", cmd.valid);
 +
-+	if (vif->cfg.assoc) {
-+		memcpy(cmd->range_req_bssid, vif->bss_conf.bssid, ETH_ALEN);
-+
-+		/* AP's TSF is only relevant if associated */
-+		for (i = 0; i < req->n_peers; i++) {
-+			if (req->peers[i].report_ap_tsf) {
-+				struct iwl_mld_vif *mld_vif =
-+					iwl_mld_vif_from_mac80211(vif);
-+
-+				cmd->tsf_mac_id = cpu_to_le32(mld_vif->fw_id);
-+				return;
-+			}
-+		}
-+	} else {
-+		eth_broadcast_addr(cmd->range_req_bssid);
-+	}
-+
-+	/* Don't report AP's TSF */
-+	cmd->tsf_mac_id = cpu_to_le32(0xff);
++	return iwl_mld_send_cmd_pdu(mld, TX_ANT_CONFIGURATION_CMD, &cmd);
 +}
 +
-+static int
-+iwl_mld_ftm_set_target_chandef(struct iwl_mld *mld,
-+			       struct cfg80211_pmsr_request_peer *peer,
-+			       struct iwl_tof_range_req_ap_entry *target)
++static int iwl_mld_send_rss_cfg_cmd(struct iwl_mld *mld)
 +{
-+	u32 freq = peer->chandef.chan->center_freq;
-+
-+	target->channel_num = ieee80211_frequency_to_channel(freq);
-+
-+	switch (peer->chandef.width) {
-+	case NL80211_CHAN_WIDTH_20_NOHT:
-+		target->format_bw = IWL_LOCATION_FRAME_FORMAT_LEGACY;
-+		target->format_bw |= IWL_LOCATION_BW_20MHZ << LOCATION_BW_POS;
-+		break;
-+	case NL80211_CHAN_WIDTH_20:
-+		target->format_bw = IWL_LOCATION_FRAME_FORMAT_HT;
-+		target->format_bw |= IWL_LOCATION_BW_20MHZ << LOCATION_BW_POS;
-+		break;
-+	case NL80211_CHAN_WIDTH_40:
-+		target->format_bw = IWL_LOCATION_FRAME_FORMAT_HT;
-+		target->format_bw |= IWL_LOCATION_BW_40MHZ << LOCATION_BW_POS;
-+		break;
-+	case NL80211_CHAN_WIDTH_80:
-+		target->format_bw = IWL_LOCATION_FRAME_FORMAT_VHT;
-+		target->format_bw |= IWL_LOCATION_BW_80MHZ << LOCATION_BW_POS;
-+		break;
-+	case NL80211_CHAN_WIDTH_160:
-+		target->format_bw = IWL_LOCATION_FRAME_FORMAT_HE;
-+		target->format_bw |= IWL_LOCATION_BW_160MHZ << LOCATION_BW_POS;
-+		break;
-+	default:
-+		IWL_ERR(mld, "Unsupported BW in FTM request (%d)\n",
-+			peer->chandef.width);
-+		return -EINVAL;
-+}
-+
-+	/* non EDCA based measurement must use HE preamble */
-+	if (peer->ftm.trigger_based || peer->ftm.non_trigger_based)
-+		target->format_bw |= IWL_LOCATION_FRAME_FORMAT_HE;
-+
-+	target->ctrl_ch_position =
-+		(peer->chandef.width > NL80211_CHAN_WIDTH_20) ?
-+		iwl_mld_get_fw_ctrl_pos(&peer->chandef) : 0;
-+
-+	target->band = iwl_mld_nl80211_band_to_fw(peer->chandef.chan->band);
-+	return 0;
-+}
-+
-+#define FTM_SET_FLAG(flag) (target->initiator_ap_flags |= \
-+			    cpu_to_le32(IWL_INITIATOR_AP_FLAGS_##flag))
-+
-+static void
-+iwl_mld_ftm_set_target_flags(struct iwl_mld *mld,
-+			     struct cfg80211_pmsr_request_peer *peer,
-+			     struct iwl_tof_range_req_ap_entry *target)
-+{
-+	target->initiator_ap_flags = cpu_to_le32(0);
-+
-+	if (peer->ftm.asap)
-+		FTM_SET_FLAG(ASAP);
-+
-+	if (peer->ftm.request_lci)
-+		FTM_SET_FLAG(LCI_REQUEST);
-+
-+	if (peer->ftm.request_civicloc)
-+		FTM_SET_FLAG(CIVIC_REQUEST);
-+
-+	if (IWL_MLD_FTM_INITIATOR_DYNACK)
-+		FTM_SET_FLAG(DYN_ACK);
-+
-+	if (IWL_MLD_FTM_INITIATOR_ALGO == IWL_TOF_ALGO_TYPE_LINEAR_REG)
-+		FTM_SET_FLAG(ALGO_LR);
-+	else if (IWL_MLD_FTM_INITIATOR_ALGO == IWL_TOF_ALGO_TYPE_FFT)
-+		FTM_SET_FLAG(ALGO_FFT);
-+
-+	if (peer->ftm.trigger_based)
-+		FTM_SET_FLAG(TB);
-+	else if (peer->ftm.non_trigger_based)
-+		FTM_SET_FLAG(NON_TB);
-+
-+	if ((peer->ftm.trigger_based || peer->ftm.non_trigger_based) &&
-+	    peer->ftm.lmr_feedback)
-+		FTM_SET_FLAG(LMR_FEEDBACK);
-+}
-+
-+static void iwl_mld_ftm_set_sta(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+				struct cfg80211_pmsr_request_peer *peer,
-+				struct iwl_tof_range_req_ap_entry *target)
-+{
-+	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	u32 sta_id_mask;
-+
-+	target->sta_id = IWL_INVALID_STA;
-+
-+	/* TODO: add ftm_unprotected debugfs support */
-+
-+	if (!vif->cfg.assoc || !mld_vif->ap_sta)
-+		return;
-+
-+	sta_id_mask = iwl_mld_fw_sta_id_mask(mld, mld_vif->ap_sta);
-+	if (WARN_ON(hweight32(sta_id_mask) != 1))
-+		return;
-+
-+	target->sta_id = __ffs(sta_id_mask);
-+
-+	if (mld_vif->ap_sta->mfp &&
-+	    (peer->ftm.trigger_based || peer->ftm.non_trigger_based))
-+		FTM_SET_FLAG(PMF);
-+}
-+
-+static int
-+iwl_mld_ftm_set_target(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+		       struct cfg80211_pmsr_request_peer *peer,
-+		       struct iwl_tof_range_req_ap_entry *target)
-+{
-+	u32 i2r_max_sts;
-+	int ret;
-+
-+	ret = iwl_mld_ftm_set_target_chandef(mld, peer, target);
-+	if (ret)
-+		return ret;
-+
-+	memcpy(target->bssid, peer->addr, ETH_ALEN);
-+	target->burst_period = cpu_to_le16(peer->ftm.burst_period);
-+	target->samples_per_burst = peer->ftm.ftms_per_burst;
-+	target->num_of_bursts = peer->ftm.num_bursts_exp;
-+	iwl_mld_ftm_set_target_flags(mld, peer, target);
-+	iwl_mld_ftm_set_sta(mld, vif, peer, target);
-+
-+	/* TODO: add secured ranging support */
-+
-+	i2r_max_sts = IWL_MLD_FTM_I2R_MAX_STS > 1 ? 1 :
-+		IWL_MLD_FTM_I2R_MAX_STS;
-+
-+	target->r2i_ndp_params = IWL_MLD_FTM_R2I_MAX_REP |
-+		(IWL_MLD_FTM_R2I_MAX_STS << IWL_LOCATION_MAX_STS_POS) |
-+		(IWL_MLD_FTM_R2I_MAX_TOTAL_LTF << IWL_LOCATION_TOTAL_LTF_POS);
-+	target->i2r_ndp_params = IWL_MLD_FTM_I2R_MAX_REP |
-+		(i2r_max_sts << IWL_LOCATION_MAX_STS_POS) |
-+		(IWL_MLD_FTM_I2R_MAX_TOTAL_LTF << IWL_LOCATION_TOTAL_LTF_POS);
-+
-+	if (peer->ftm.non_trigger_based) {
-+		target->min_time_between_msr =
-+			cpu_to_le16(IWL_MLD_FTM_NON_TB_MIN_TIME_BETWEEN_MSR);
-+		target->burst_period =
-+			cpu_to_le16(IWL_MLD_FTM_NON_TB_MAX_TIME_BETWEEN_MSR);
-+	} else {
-+		target->min_time_between_msr = cpu_to_le16(0);
-+	}
-+
-+	/* TODO: Beacon interval is currently unknown, so use the common value
-+	 * of 100 TUs.
-+	 */
-+	target->beacon_interval = cpu_to_le16(100);
-+
-+	return 0;
-+}
-+
-+int iwl_mld_ftm_start(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+		      struct cfg80211_pmsr_request *req)
-+{
-+	struct iwl_tof_range_req_cmd cmd;
-+	struct iwl_host_cmd hcmd = {
-+		.id = WIDE_ID(LOCATION_GROUP, TOF_RANGE_REQ_CMD),
-+		.dataflags[0] = IWL_HCMD_DFL_DUP,
-+		.data[0] = &cmd,
-+		.len[0] = sizeof(cmd),
++	struct iwl_rss_config_cmd cmd = {
++		.flags = cpu_to_le32(IWL_RSS_ENABLE),
++		.hash_mask = BIT(IWL_RSS_HASH_TYPE_IPV4_TCP) |
++			     BIT(IWL_RSS_HASH_TYPE_IPV4_UDP) |
++			     BIT(IWL_RSS_HASH_TYPE_IPV4_PAYLOAD) |
++			     BIT(IWL_RSS_HASH_TYPE_IPV6_TCP) |
++			     BIT(IWL_RSS_HASH_TYPE_IPV6_UDP) |
++			     BIT(IWL_RSS_HASH_TYPE_IPV6_PAYLOAD),
 +	};
-+	u8 i;
++
++	lockdep_assert_wiphy(mld->wiphy);
++
++	/* Do not direct RSS traffic to Q 0 which is our fallback queue */
++	for (int i = 0; i < ARRAY_SIZE(cmd.indirection_table); i++)
++		cmd.indirection_table[i] =
++			1 + (i % (mld->trans->num_rx_queues - 1));
++	netdev_rss_key_fill(cmd.secret_key, sizeof(cmd.secret_key));
++
++	return iwl_mld_send_cmd_pdu(mld, RSS_CONFIG_CMD, &cmd);
++}
++
++static int iwl_mld_config_scan(struct iwl_mld *mld)
++{
++	struct iwl_scan_config cmd = {
++		.tx_chains = cpu_to_le32(iwl_mld_get_valid_tx_ant(mld)),
++		.rx_chains = cpu_to_le32(iwl_mld_get_valid_rx_ant(mld))
++	};
++
++	return iwl_mld_send_cmd_pdu(mld, WIDE_ID(LONG_GROUP, SCAN_CFG_CMD),
++				    &cmd);
++}
++
++static void iwl_mld_alive_imr_data(struct iwl_trans *trans,
++				   const struct iwl_imr_alive_info *imr_info)
++{
++	struct iwl_imr_data *imr_data = &trans->dbg.imr_data;
++
++	imr_data->imr_enable = le32_to_cpu(imr_info->enabled);
++	imr_data->imr_size = le32_to_cpu(imr_info->size);
++	imr_data->imr2sram_remainbyte = imr_data->imr_size;
++	imr_data->imr_base_addr = imr_info->base_addr;
++	imr_data->imr_curr_addr = le64_to_cpu(imr_data->imr_base_addr);
++
++	if (imr_data->imr_enable)
++		return;
++
++	for (int i = 0; i < ARRAY_SIZE(trans->dbg.active_regions); i++) {
++		struct iwl_fw_ini_region_tlv *reg;
++
++		if (!trans->dbg.active_regions[i])
++			continue;
++
++		reg = (void *)trans->dbg.active_regions[i]->data;
++
++		/* We have only one DRAM IMR region, so we
++		 * can break as soon as we find the first
++		 * one.
++		 */
++		if (reg->type == IWL_FW_INI_REGION_DRAM_IMR) {
++			trans->dbg.unsupported_region_msk |= BIT(i);
++			break;
++		}
++	}
++}
++
++static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
++			 struct iwl_rx_packet *pkt, void *data)
++{
++	unsigned int pkt_len = iwl_rx_packet_payload_len(pkt);
++	struct iwl_mld *mld =
++		container_of(notif_wait, struct iwl_mld, notif_wait);
++	struct iwl_trans *trans = mld->trans;
++	u32 version = iwl_fw_lookup_notif_ver(mld->fw, LEGACY_GROUP,
++					      UCODE_ALIVE_NTFY, 0);
++	struct iwl_alive_ntf_v6 *palive;
++	bool *alive_valid = data;
++	struct iwl_umac_alive *umac;
++	struct iwl_lmac_alive *lmac1;
++	struct iwl_lmac_alive *lmac2 = NULL;
++	u32 lmac_error_event_table;
++	u32 umac_error_table;
++	u16 status;
++
++	if (version < 6 || version > 7 || pkt_len != sizeof(*palive))
++		return false;
++
++	palive = (void *)pkt->data;
++
++	iwl_mld_alive_imr_data(trans, &palive->imr);
++
++	umac = &palive->umac_data;
++	lmac1 = &palive->lmac_data[0];
++	lmac2 = &palive->lmac_data[1];
++	status = le16_to_cpu(palive->status);
++
++	trans->sku_id[0] = le32_to_cpu(palive->sku_id.data[0]);
++	trans->sku_id[1] = le32_to_cpu(palive->sku_id.data[1]);
++	trans->sku_id[2] = le32_to_cpu(palive->sku_id.data[2]);
++
++	IWL_DEBUG_FW(mld, "Got sku_id: 0x0%x 0x0%x 0x0%x\n",
++		     trans->sku_id[0], trans->sku_id[1], trans->sku_id[2]);
++
++	lmac_error_event_table =
++		le32_to_cpu(lmac1->dbg_ptrs.error_event_table_ptr);
++	iwl_fw_lmac1_set_alive_err_table(trans, lmac_error_event_table);
++
++	if (lmac2)
++		trans->dbg.lmac_error_event_table[1] =
++			le32_to_cpu(lmac2->dbg_ptrs.error_event_table_ptr);
++
++	umac_error_table = le32_to_cpu(umac->dbg_ptrs.error_info_addr) &
++		~FW_ADDR_CACHE_CONTROL;
++
++	if (umac_error_table >= trans->cfg->min_umac_error_event_table)
++		iwl_fw_umac_set_alive_err_table(trans, umac_error_table);
++	else
++		IWL_ERR(mld, "Not valid error log pointer 0x%08X\n",
++			umac_error_table);
++
++	*alive_valid = status == IWL_ALIVE_STATUS_OK;
++
++	IWL_DEBUG_FW(mld,
++		     "Alive ucode status 0x%04x revision 0x%01X 0x%01X\n",
++		     status, lmac1->ver_type, lmac1->ver_subtype);
++
++	if (lmac2)
++		IWL_DEBUG_FW(mld, "Alive ucode CDB\n");
++
++	IWL_DEBUG_FW(mld,
++		     "UMAC version: Major - 0x%x, Minor - 0x%x\n",
++		     le32_to_cpu(umac->umac_major),
++		     le32_to_cpu(umac->umac_minor));
++
++	if (version >= 7)
++		IWL_DEBUG_FW(mld, "FW alive flags 0x%x\n",
++			     le16_to_cpu(palive->flags));
++
++	iwl_fwrt_update_fw_versions(&mld->fwrt, lmac1, umac);
++
++	return true;
++}
++
++#define MLD_ALIVE_TIMEOUT		(2 * HZ)
++#define MLD_INIT_COMPLETE_TIMEOUT	(2 * HZ)
++
++static void iwl_mld_print_alive_notif_timeout(struct iwl_mld *mld)
++{
++	struct iwl_trans *trans = mld->trans;
++	struct iwl_pc_data *pc_data;
++	u8 count;
++
++	IWL_ERR(mld,
++		"SecBoot CPU1 Status: 0x%x, CPU2 Status: 0x%x\n",
++		iwl_read_umac_prph(trans, UMAG_SB_CPU_1_STATUS),
++		iwl_read_umac_prph(trans,
++				   UMAG_SB_CPU_2_STATUS));
++#define IWL_FW_PRINT_REG_INFO(reg_name) \
++	IWL_ERR(mld, #reg_name ": 0x%x\n", iwl_read_umac_prph(trans, reg_name))
++
++	IWL_FW_PRINT_REG_INFO(WFPM_LMAC1_PD_NOTIFICATION);
++
++	IWL_FW_PRINT_REG_INFO(HPM_SECONDARY_DEVICE_STATE);
++
++	/* print OTP info */
++	IWL_FW_PRINT_REG_INFO(WFPM_MAC_OTP_CFG7_ADDR);
++	IWL_FW_PRINT_REG_INFO(WFPM_MAC_OTP_CFG7_DATA);
++#undef IWL_FW_PRINT_REG_INFO
++
++	pc_data = trans->dbg.pc_data;
++	for (count = 0; count < trans->dbg.num_pc; count++, pc_data++)
++		IWL_ERR(mld, "%s: 0x%x\n", pc_data->pc_name,
++			pc_data->pc_address);
++}
++
++static int iwl_mld_load_fw_wait_alive(struct iwl_mld *mld)
++{
++	const struct fw_img *fw =
++		iwl_get_ucode_image(mld->fw, IWL_UCODE_REGULAR);
++	static const u16 alive_cmd[] = { UCODE_ALIVE_NTFY };
++	struct iwl_notification_wait alive_wait;
++	bool alive_valid = false;
 +	int ret;
 +
 +	lockdep_assert_wiphy(mld->wiphy);
 +
-+	if (mld->ftm_initiator.req)
-+		return -EBUSY;
++	iwl_init_notification_wait(&mld->notif_wait, &alive_wait,
++				   alive_cmd, ARRAY_SIZE(alive_cmd),
++				   iwl_alive_fn, &alive_valid);
 +
-+	if (req->n_peers > ARRAY_SIZE(cmd.ap))
-+		return -EINVAL;
++	iwl_dbg_tlv_time_point(&mld->fwrt, IWL_FW_INI_TIME_POINT_EARLY, NULL);
 +
-+	memset(&cmd, 0, sizeof(cmd));
-+
-+	iwl_mld_ftm_cmd_common(mld, vif, (void *)&cmd, req);
-+
-+	for (i = 0; i < cmd.num_of_ap; i++) {
-+		struct cfg80211_pmsr_request_peer *peer = &req->peers[i];
-+		struct iwl_tof_range_req_ap_entry *target = &cmd.ap[i];
-+
-+		ret = iwl_mld_ftm_set_target(mld, vif, peer, target);
-+		if (ret)
-+			return ret;
++	ret = iwl_trans_start_fw(mld->trans, fw, true);
++	if (ret) {
++		iwl_remove_notification(&mld->notif_wait, &alive_wait);
++		return ret;
 +	}
 +
-+	/* TODO: get the status from the response*/
-+	ret = iwl_mld_send_cmd(mld, &hcmd);
-+	if (!ret) {
-+		mld->ftm_initiator.req = req;
-+		mld->ftm_initiator.req_wdev = ieee80211_vif_to_wdev(vif);
++	ret = iwl_wait_notification(&mld->notif_wait, &alive_wait,
++				    MLD_ALIVE_TIMEOUT);
++
++	if (ret) {
++		if (ret == -ETIMEDOUT)
++			iwl_fw_dbg_error_collect(&mld->fwrt,
++						 FW_DBG_TRIGGER_ALIVE_TIMEOUT);
++		iwl_mld_print_alive_notif_timeout(mld);
++		goto alive_failure;
 +	}
 +
++	if (!alive_valid) {
++		IWL_ERR(mld, "Loaded firmware is not valid!\n");
++		ret = -EIO;
++		goto alive_failure;
++	}
++
++	iwl_trans_fw_alive(mld->trans, 0);
++
++	return 0;
++
++alive_failure:
++	iwl_trans_stop_device(mld->trans);
 +	return ret;
 +}
 +
-+static void iwl_mld_ftm_reset(struct iwl_mld *mld)
++int iwl_mld_run_fw_init_sequence(struct iwl_mld *mld)
 +{
++	struct iwl_notification_wait init_wait;
++	struct iwl_init_extended_cfg_cmd init_cfg = {};
++	static const u16 init_complete[] = {
++		INIT_COMPLETE_NOTIF,
++	};
++	int ret;
++
 +	lockdep_assert_wiphy(mld->wiphy);
 +
-+	mld->ftm_initiator.req = NULL;
-+	mld->ftm_initiator.req_wdev = NULL;
-+	memset(mld->ftm_initiator.responses, 0,
-+	       sizeof(mld->ftm_initiator.responses));
++	ret = iwl_mld_load_fw_wait_alive(mld);
++	if (ret)
++		return ret;
++
++	mld->trans->step_urm =
++		!!(iwl_read_umac_prph(mld->trans, CNVI_PMU_STEP_FLOW) &
++		   CNVI_PMU_STEP_FLOW_FORCE_URM);
++
++	ret = iwl_pnvm_load(mld->trans, &mld->notif_wait,
++			    &mld->fw->ucode_capa);
++	if (ret) {
++		IWL_ERR(mld, "Timeout waiting for PNVM load %d\n", ret);
++		goto init_failure;
++	}
++
++	iwl_dbg_tlv_time_point(&mld->fwrt, IWL_FW_INI_TIME_POINT_AFTER_ALIVE,
++			       NULL);
++
++	iwl_init_notification_wait(&mld->notif_wait,
++				   &init_wait,
++				   init_complete,
++				   ARRAY_SIZE(init_complete),
++				   NULL, NULL);
++
++	ret = iwl_mld_send_cmd_pdu(mld,
++				   WIDE_ID(SYSTEM_GROUP, INIT_EXTENDED_CFG_CMD),
++				   &init_cfg);
++	if (ret) {
++		IWL_ERR(mld, "Failed to send init config command: %d\n", ret);
++		iwl_remove_notification(&mld->notif_wait, &init_wait);
++		goto init_failure;
++	}
++
++	ret = iwl_wait_notification(&mld->notif_wait, &init_wait,
++				    MLD_INIT_COMPLETE_TIMEOUT);
++	if (ret) {
++		IWL_ERR(mld, "Failed to get INIT_COMPLETE %d\n", ret);
++		goto init_failure;
++	}
++
++	if (!mld->nvm_data) {
++		mld->nvm_data = iwl_get_nvm(mld->trans, mld->fw, 0, 0);
++		if (IS_ERR(mld->nvm_data)) {
++			ret = PTR_ERR(mld->nvm_data);
++			mld->nvm_data = NULL;
++			IWL_ERR(mld, "Failed to read NVM: %d\n", ret);
++			goto init_failure;
++		}
++	}
++
++	return 0;
++
++init_failure:
++	iwl_trans_stop_device(mld->trans);
++	return ret;
 +}
 +
-+static int iwl_mld_ftm_range_resp_valid(struct iwl_mld *mld, u8 request_id,
-+					u8 num_of_aps)
++int iwl_mld_load_fw(struct iwl_mld *mld)
 +{
-+	if (IWL_FW_CHECK(mld, request_id != (u8)mld->ftm_initiator.req->cookie,
-+			 "Request ID mismatch, got %u, active %u\n",
-+			 request_id, (u8)mld->ftm_initiator.req->cookie))
-+		return -EINVAL;
++	int ret;
 +
-+	if (IWL_FW_CHECK(mld, num_of_aps > mld->ftm_initiator.req->n_peers ||
-+			 num_of_aps > IWL_TOF_MAX_APS,
-+			 "FTM range response: invalid num of APs (%u)\n",
-+			 num_of_aps))
-+		return -EINVAL;
++	lockdep_assert_wiphy(mld->wiphy);
++
++	ret = iwl_trans_start_hw(mld->trans);
++	if (ret)
++		return ret;
++
++	ret = iwl_mld_run_fw_init_sequence(mld);
++	if (ret)
++		return ret;
++
++	mld->fw_status.running = true;
 +
 +	return 0;
 +}
 +
-+static int iwl_mld_ftm_find_peer(struct cfg80211_pmsr_request *req,
-+				 const u8 *addr)
++void iwl_mld_stop_fw(struct iwl_mld *mld)
 +{
-+	for (int i = 0; i < req->n_peers; i++) {
-+		struct cfg80211_pmsr_request_peer *peer = &req->peers[i];
++	lockdep_assert_wiphy(mld->wiphy);
 +
-+		if (ether_addr_equal_unaligned(peer->addr, addr))
-+			return i;
-+	}
++	iwl_abort_notification_waits(&mld->notif_wait);
 +
-+	return -ENOENT;
++	iwl_fw_dbg_stop_sync(&mld->fwrt);
++
++	iwl_trans_stop_device(mld->trans);
++
++	mld->fw_status.running = false;
 +}
 +
-+static void iwl_mld_debug_range_resp(struct iwl_mld *mld, u8 index,
-+				     struct cfg80211_pmsr_result *res)
++static void iwl_mld_restart_disconnect_iter(void *data, u8 *mac,
++					    struct ieee80211_vif *vif)
 +{
-+	s64 rtt_avg = div_s64(res->ftm.rtt_avg * 100, 6666);
-+
-+	IWL_DEBUG_INFO(mld, "entry %d\n", index);
-+	IWL_DEBUG_INFO(mld, "\tstatus: %d\n", res->status);
-+	IWL_DEBUG_INFO(mld, "\tBSSID: %pM\n", res->addr);
-+	IWL_DEBUG_INFO(mld, "\thost time: %llu\n", res->host_time);
-+	IWL_DEBUG_INFO(mld, "\tburst index: %d\n", res->ftm.burst_index);
-+	IWL_DEBUG_INFO(mld, "\tsuccess num: %u\n", res->ftm.num_ftmr_successes);
-+	IWL_DEBUG_INFO(mld, "\trssi: %d\n", res->ftm.rssi_avg);
-+	IWL_DEBUG_INFO(mld, "\trssi spread: %d\n", res->ftm.rssi_spread);
-+	IWL_DEBUG_INFO(mld, "\trtt: %lld\n", res->ftm.rtt_avg);
-+	IWL_DEBUG_INFO(mld, "\trtt var: %llu\n", res->ftm.rtt_variance);
-+	IWL_DEBUG_INFO(mld, "\trtt spread: %llu\n", res->ftm.rtt_spread);
-+	IWL_DEBUG_INFO(mld, "\tdistance: %lld\n", rtt_avg);
++	if (vif->type == NL80211_IFTYPE_STATION)
++		ieee80211_hw_restart_disconnect(vif);
 +}
 +
-+void iwl_mld_handle_ftm_resp_notif(struct iwl_mld *mld,
-+				   struct iwl_rx_packet *pkt)
++void iwl_mld_send_recovery_cmd(struct iwl_mld *mld, u32 flags)
 +{
-+	struct iwl_tof_range_rsp_ntfy *fw_resp = (void *)pkt->data;
-+	u8 num_of_aps, last_in_batch;
-+
-+	if (IWL_FW_CHECK(mld, !mld->ftm_initiator.req,
-+			 "FTM response without a pending request\n"))
-+		return;
-+
-+	if (iwl_mld_ftm_range_resp_valid(mld, fw_resp->request_id,
-+					 fw_resp->num_of_aps))
-+		return;
-+
-+	num_of_aps = fw_resp->num_of_aps;
-+	last_in_batch = fw_resp->last_report;
-+
-+	IWL_DEBUG_INFO(mld, "Range response received\n");
-+	IWL_DEBUG_INFO(mld, "request id: %llu, num of entries: %u\n",
-+		       mld->ftm_initiator.req->cookie, num_of_aps);
-+
-+	for (int i = 0; i < num_of_aps; i++) {
-+		struct cfg80211_pmsr_result result = {};
-+		struct iwl_tof_range_rsp_ap_entry_ntfy *fw_ap;
-+		int peer_idx;
-+
-+		fw_ap = &fw_resp->ap[i];
-+		result.final = fw_ap->last_burst;
-+		result.ap_tsf = le32_to_cpu(fw_ap->start_tsf);
-+		result.ap_tsf_valid = 1;
-+
-+		peer_idx = iwl_mld_ftm_find_peer(mld->ftm_initiator.req,
-+						 fw_ap->bssid);
-+		if (peer_idx < 0) {
-+			IWL_WARN(mld,
-+				 "Unknown address (%pM, target #%d) in FTM response\n",
-+				 fw_ap->bssid, i);
-+			continue;
-+		}
-+
-+		switch (fw_ap->measure_status) {
-+		case IWL_TOF_ENTRY_SUCCESS:
-+			result.status = NL80211_PMSR_STATUS_SUCCESS;
-+			break;
-+		case IWL_TOF_ENTRY_TIMING_MEASURE_TIMEOUT:
-+			result.status = NL80211_PMSR_STATUS_TIMEOUT;
-+			break;
-+		case IWL_TOF_ENTRY_NO_RESPONSE:
-+			result.status = NL80211_PMSR_STATUS_FAILURE;
-+			result.ftm.failure_reason =
-+				NL80211_PMSR_FTM_FAILURE_NO_RESPONSE;
-+			break;
-+		case IWL_TOF_ENTRY_REQUEST_REJECTED:
-+			result.status = NL80211_PMSR_STATUS_FAILURE;
-+			result.ftm.failure_reason =
-+				NL80211_PMSR_FTM_FAILURE_PEER_BUSY;
-+			result.ftm.busy_retry_time = fw_ap->refusal_period;
-+			break;
-+		default:
-+			result.status = NL80211_PMSR_STATUS_FAILURE;
-+			result.ftm.failure_reason =
-+				NL80211_PMSR_FTM_FAILURE_UNSPECIFIED;
-+			break;
-+		}
-+		memcpy(result.addr, fw_ap->bssid, ETH_ALEN);
-+
-+		/* TODO: convert the timestamp from the result to systime */
-+		result.host_time = ktime_get_boottime_ns();
-+
-+		result.type = NL80211_PMSR_TYPE_FTM;
-+		result.ftm.burst_index = mld->ftm_initiator.responses[peer_idx];
-+		mld->ftm_initiator.responses[peer_idx]++;
-+		result.ftm.rssi_avg = fw_ap->rssi;
-+		result.ftm.rssi_avg_valid = 1;
-+		result.ftm.rssi_spread = fw_ap->rssi_spread;
-+		result.ftm.rssi_spread_valid = 1;
-+		result.ftm.rtt_avg = (s32)le32_to_cpu(fw_ap->rtt);
-+		result.ftm.rtt_avg_valid = 1;
-+		result.ftm.rtt_variance = le32_to_cpu(fw_ap->rtt_variance);
-+		result.ftm.rtt_variance_valid = 1;
-+		result.ftm.rtt_spread = le32_to_cpu(fw_ap->rtt_spread);
-+		result.ftm.rtt_spread_valid = 1;
-+
-+		cfg80211_pmsr_report(mld->ftm_initiator.req_wdev,
-+				     mld->ftm_initiator.req,
-+				     &result, GFP_KERNEL);
-+
-+		if (fw_has_api(&mld->fw->ucode_capa,
-+			       IWL_UCODE_TLV_API_FTM_RTT_ACCURACY))
-+			IWL_DEBUG_INFO(mld, "RTT confidence: %u\n",
-+				       fw_ap->rttConfidence);
-+
-+		iwl_mld_debug_range_resp(mld, i, &result);
-+	}
-+
-+	if (last_in_batch) {
-+		cfg80211_pmsr_complete(mld->ftm_initiator.req_wdev,
-+				       mld->ftm_initiator.req,
-+				       GFP_KERNEL);
-+		iwl_mld_ftm_reset(mld);
-+	}
-+}
-+
-+void iwl_mld_ftm_restart_cleanup(struct iwl_mld *mld)
-+{
-+	struct cfg80211_pmsr_result result = {
-+		.status = NL80211_PMSR_STATUS_FAILURE,
-+		.final = 1,
-+		.host_time = ktime_get_boottime_ns(),
-+		.type = NL80211_PMSR_TYPE_FTM,
++	u32 error_log_size = mld->fw->ucode_capa.error_log_size;
++	struct iwl_fw_error_recovery_cmd recovery_cmd = {
++		.flags = cpu_to_le32(flags),
 +	};
++	struct iwl_host_cmd cmd = {
++		.id = WIDE_ID(SYSTEM_GROUP, FW_ERROR_RECOVERY_CMD),
++		.flags = CMD_WANT_SKB,
++		.data = {&recovery_cmd, },
++		.len = {sizeof(recovery_cmd), },
++	};
++	int ret;
 +
-+	if (!mld->ftm_initiator.req)
++	/* no error log was defined in TLV */
++	if (!error_log_size)
 +		return;
 +
-+	for (int i = 0; i < mld->ftm_initiator.req->n_peers; i++) {
-+		memcpy(result.addr, mld->ftm_initiator.req->peers[i].addr,
-+		       ETH_ALEN);
++	if (flags & ERROR_RECOVERY_UPDATE_DB) {
++		/* no buf was allocated upon NIC error */
++		if (!mld->error_recovery_buf)
++			return;
 +
-+		cfg80211_pmsr_report(mld->ftm_initiator.req_wdev,
-+				     mld->ftm_initiator.req,
-+				     &result, GFP_KERNEL);
++		cmd.data[1] = mld->error_recovery_buf;
++		cmd.len[1] =  error_log_size;
++		cmd.dataflags[1] = IWL_HCMD_DFL_NOCOPY;
++		recovery_cmd.buf_size = cpu_to_le32(error_log_size);
 +	}
 +
-+	cfg80211_pmsr_complete(mld->ftm_initiator.req_wdev,
-+			       mld->ftm_initiator.req, GFP_KERNEL);
-+	iwl_mld_ftm_reset(mld);
++	ret = iwl_mld_send_cmd(mld, &cmd);
++
++	/* we no longer need the recovery buffer */
++	kfree(mld->error_recovery_buf);
++	mld->error_recovery_buf = NULL;
++
++	if (ret) {
++		IWL_ERR(mld, "Failed to send recovery cmd %d\n", ret);
++		return;
++	}
++
++	if (flags & ERROR_RECOVERY_UPDATE_DB) {
++		struct iwl_rx_packet *pkt = cmd.resp_pkt;
++		u32 pkt_len = iwl_rx_packet_payload_len(pkt);
++		u32 resp;
++
++		if (IWL_FW_CHECK(mld, pkt_len != sizeof(resp),
++				 "Unexpected recovery cmd response size %u (expected %zu)\n",
++				 pkt_len, sizeof(resp)))
++			goto out;
++
++		resp = le32_to_cpup((__le32 *)cmd.resp_pkt->data);
++		if (!resp)
++			goto out;
++
++		IWL_ERR(mld,
++			"Failed to send recovery cmd blob was invalid %d\n",
++			resp);
++
++		ieee80211_iterate_interfaces(mld->hw, 0,
++					     iwl_mld_restart_disconnect_iter,
++					     NULL);
++	}
++
++out:
++	iwl_free_resp(&cmd);
 +}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.h b/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.h
-new file mode 100644
-index 000000000000..ff6021659442
---- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.h
-@@ -0,0 +1,15 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/*
-+ * Copyright (C) 2025 Intel Corporation
-+ */
-+#ifndef __iwl_mld_ftm_initiator_h__
-+#define __iwl_mld_ftm_initiator_h__
 +
-+int iwl_mld_ftm_start(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+		      struct cfg80211_pmsr_request *req);
++static int iwl_mld_config_fw(struct iwl_mld *mld)
++{
++	int ret;
 +
-+void iwl_mld_handle_ftm_resp_notif(struct iwl_mld *mld,
-+				   struct iwl_rx_packet *pkt);
-+void iwl_mld_ftm_restart_cleanup(struct iwl_mld *mld);
++	lockdep_assert_wiphy(mld->wiphy);
 +
-+#endif /* __iwl_mld_ftm_initiator_h__ */
++	iwl_fw_disable_dbg_asserts(&mld->fwrt);
++	iwl_get_shared_mem_conf(&mld->fwrt);
++
++	ret = iwl_mld_send_tx_ant_cfg(mld);
++	if (ret)
++		return ret;
++
++	ret = iwl_mld_send_bt_init_conf(mld);
++	if (ret)
++		return ret;
++
++	ret = iwl_set_soc_latency(&mld->fwrt);
++	if (ret)
++		return ret;
++
++	iwl_mld_configure_lari(mld);
++
++	ret = iwl_mld_config_temp_report_ths(mld);
++	if (ret)
++		return ret;
++
++#ifdef CONFIG_THERMAL
++	ret = iwl_mld_config_ctdp(mld, mld->cooling_dev.cur_state,
++				  CTDP_CMD_OPERATION_START);
++	if (ret)
++		return ret;
++#endif
++
++	ret = iwl_configure_rxq(&mld->fwrt);
++	if (ret)
++		return ret;
++
++	ret = iwl_mld_send_rss_cfg_cmd(mld);
++	if (ret)
++		return ret;
++
++	ret = iwl_mld_config_scan(mld);
++	if (ret)
++		return ret;
++
++	ret = iwl_mld_update_device_power(mld, false);
++	if (ret)
++		return ret;
++
++	ret = iwl_mld_init_mcc(mld);
++	if (ret)
++		return ret;
++
++	if (mld->fw_status.in_hw_restart) {
++		iwl_mld_send_recovery_cmd(mld, ERROR_RECOVERY_UPDATE_DB);
++		iwl_mld_time_sync_fw_config(mld);
++	}
++
++	iwl_mld_led_config_fw(mld);
++
++	ret = iwl_mld_init_ppag(mld);
++	if (ret)
++		return ret;
++
++	ret = iwl_mld_init_sar(mld);
++	if (ret)
++		return ret;
++
++	ret = iwl_mld_init_sgom(mld);
++	if (ret)
++		return ret;
++
++	iwl_mld_init_tas(mld);
++	iwl_mld_init_uats(mld);
++
++	return 0;
++}
++
++int iwl_mld_start_fw(struct iwl_mld *mld)
++{
++	int ret;
++
++	lockdep_assert_wiphy(mld->wiphy);
++
++	ret = iwl_mld_load_fw(mld);
++	if (IWL_FW_CHECK(mld, ret, "Failed to start firmware %d\n", ret)) {
++		iwl_fw_dbg_error_collect(&mld->fwrt, FW_DBG_TRIGGER_DRIVER);
++		goto error;
++	}
++
++	IWL_DEBUG_INFO(mld, "uCode started.\n");
++
++	ret = iwl_mld_config_fw(mld);
++	if (ret)
++		goto error;
++
++	return 0;
++
++error:
++	iwl_mld_stop_fw(mld);
++	return ret;
++}
 -- 
 2.34.1
 
