@@ -1,77 +1,72 @@
-Return-Path: <linux-wireless+bounces-18970-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18971-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64A9A37372
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:43:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADA5A37374
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:43:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1336B1888CFB
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:43:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC7D31888BB1
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A1818C93C;
-	Sun, 16 Feb 2025 09:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E3C290F;
+	Sun, 16 Feb 2025 09:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cb1zWBgg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YFnERhAv"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B6A290F
-	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4122518BBB9
+	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739699017; cv=none; b=P1jBZ1UgTDDpW/JMujSWMN0k6NhvRtOeunaz/Dard3tAzF2ITdIxcH/SSgqVlTH87FEH2M9CbYbfNpfWXdsw5xNQe0avHOofxKlICwio2B3t6mxqJv0Gt3GMMnosR+31hd9PQggxh7mtXWyxmLBfbP/0KfCHsHzwYJjsvbLlgmM=
+	t=1739699019; cv=none; b=UFWY0BGX8Ua1GrOH/3p2QcKO8W6Lp7qsWoFd5vjJteZROyJHyvTRKrd0af3ackh0/GSGGclOJRwT3Ys6+enTylwVfal1Tm9ZOqJPqu++OsF57jgo80mNtYl1e2Ibf7KbQxZyvIzaJRxXGaIeFpAysNSYOvJVclsYMkflnHyuNqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739699017; c=relaxed/simple;
-	bh=rtiu69FaOWLrF8gvel3ls4SbyDprvTf3WJQlbt8zPAc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rJymBBBFu4zWg0aZxckxqmmRSso6pmnCF0Mgydih+gyQHk14JRq83Nfb0glJt0V1YDlvevlPCWEtv8eywgBRXjkDQJU3bw+7hnxvyTjjPVL8RkAXswvlys93zHU0ymvUswXO4amK0JMmonfL17NoV5w3Q4CuRScsum+YxNsXyf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cb1zWBgg; arc=none smtp.client-ip=198.175.65.21
+	s=arc-20240116; t=1739699019; c=relaxed/simple;
+	bh=ZsxRoy5TfEAedruI7+UycdLtuPqFLop3GV5Yzh5JNnQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=dV3sfDDnV8RKWKjbBRQRNobVVw0LN67eCRjvBehaLfaCnQInfyZKyjcBYJKzDQZYadrM/L3LvmqKcUWGCDMwdPQscTxSIGUs2ey9jkDxTT55Hv054rxeP7q+yGLo4uArS1kgnMoHXByt1u/mY0UhCcMwfww+UKaSyBXLh1D5Emo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YFnERhAv; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739699016; x=1771235016;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rtiu69FaOWLrF8gvel3ls4SbyDprvTf3WJQlbt8zPAc=;
-  b=Cb1zWBgg/j+y9SkheSu5LjC/fxywE13WENMl3PS9q7KGXUeydIBg5rTu
-   X0F73rQFBKjXtC6EbqUdjmGFX+9h5s6L8fVq/Yp7GJRrdW5rVUoOw7ITc
-   3iwiiXwx+5/0FTcbkiyhZTXk3bj7QqtGbaXwRauT73d9swl4TE5DzAMGJ
-   2w+uwefECkabmtoXU4QgSUqZ6On3YvXTcldYwss00X2xaM8cIRRneUf4r
-   MdpoFzGelhj35KtQfaPcS9fdD2DUVUa6Is+85K+atXxoBRViulnrAUavu
-   1oooknYkKsl0LB65lQgBDX8X0mk8fFe5PlYYPfyhSftwZxj7lZmxX38bl
-   w==;
-X-CSE-ConnectionGUID: ezC9Vd4QRbmqqFHkZbLO/w==
-X-CSE-MsgGUID: 6+PyhzWET6e9DUj6CvgYBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323341"
+  t=1739699017; x=1771235017;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ZsxRoy5TfEAedruI7+UycdLtuPqFLop3GV5Yzh5JNnQ=;
+  b=YFnERhAvJzdTkm6r3PfLco+3+Z/VuhiTK/xL4xJ8gJ4vxMjRDghziuGJ
+   q5nLH0H7GankkEjXuIpemxlU8CHhWurM7nY5maCQWRlOE7fs3BpyS4xle
+   cAtAL2Il1nlfR/f0ZO6dYhfspeVC8WDcbShfcLH81Zb1sqI1LARbiWzTg
+   5lXJPSvHnygawZAIELVKVOvgljaJCjZpASz8WSHe6PW47kJtzLbSeoB5i
+   yWgGwzOQ6Ku9gruxE/AQGkR+qJiUXB1kDpetQ+J2LEFjKiUumNQh23+6X
+   CygNb+4T89/f/OjEr+alGB9ZW9bBirhtkhZ8FhYedXIoxtZUCQrieOPQ1
+   g==;
+X-CSE-ConnectionGUID: bRLcAI3YSFa/zXk9/S7KgA==
+X-CSE-MsgGUID: 1HgJzY/lRa2e/U6vkMwHdA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323343"
 X-IronPort-AV: E=Sophos;i="6.13,290,1732608000"; 
-   d="scan'208";a="40323341"
+   d="scan'208";a="40323343"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:35 -0800
-X-CSE-ConnectionGUID: JOQOzsyJSk64USUAnbSoKw==
-X-CSE-MsgGUID: xnZA8ybKQ8GBeby5WxHLiQ==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:37 -0800
+X-CSE-ConnectionGUID: Di1VYKl3T6y+KqWx1HFvWw==
+X-CSE-MsgGUID: LWoNxcylSfq7amnpmuH54w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118785189"
+   d="scan'208";a="118785190"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:32 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:36 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Avraham Stern <avraham.stern@intel.com>,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Shaul Triebitz <shaul.triebitz@intel.com>
-Subject: [PATCH 00/42] wifi: iwlwifi: mld: introduce iwlmld
-Date: Sun, 16 Feb 2025 11:42:39 +0200
-Message-Id: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 01/42] wifi: iwlwifi: mld: add file agg.h/c
+Date: Sun, 16 Feb 2025 11:42:40 +0200
+Message-Id: <20250216111648.43435eeac013.Iecd848789eefa4bdbda50f0b4f6da16f067f9ced@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
+References: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,262 +76,827 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-iwlwifi is the driver of all Intel wifi devices since 2008.
-Since then, the hardware has changed a lot, but the firmware
-API has changed even more. The need to keep one driver that
-supports all those different APIs led us to introduce a new
-architecture circa 2012 which allowed us to keep the same
-interface to the hardware (DMAs, Tx queues, etc...) with a
-new layer to implement the mid-layer between mac80211 and
-the firmware. The first component is called the 'transport'
-and the latter is called 'operation_mode' a.k.a  op_mode.
+this file is handling aggregation
 
-In 2013 we took advantage of the new architecture to
-introduce iwlmvm which allowed us to implement the, then,
-new firmware API. This op_mode supports 7260 and up, those
-devices supports support at least VHT.
-
-Since then, wifi evolved and so did the firmware. It became
-much bigger and took a lot of functionality from the driver.
-It became increasingly hard to keep the same op_mode for the
-newest devices and we experienced frequent regressions on
-older devices. In order to avoid those regressions and keep
-the code maintainable, we decided it was about time to start
-a new op_mode.
-
-iwlmld is a new op_mode that supports BE200 or newer if the
-firmware being used is 97.ucode or newer. If the user has
-an older devices or BE200 with .96.ucode, iwlmvm will be
-loaded. Of course, this op_mode selection is seamless.
-
-All the features supported in iwlmvm are supported in
-iwlmld besides a few seldom used use cases: injection and
-Hotspot 2.0. Those are under work.
-
-A few points about the implementation:
- * iwlmld doesn't have any mutexes, it relies on the
-   wiphy_lock
- * iwlmld is more "resource oriented": stations, links and
-   interfaces are allocated and freed only after all the
-   relevant flows are completed.
- * Firmware notifications' sizes are validated in a more
-   structured way.
-
-We would love to see this new op_mode merged in 6.15. The
-firmware for this new driver (.97.ucode) is not yet publicly
-available but it'll be sent very soon.
-People eager to get an early version of this firmware can
-contact Emmanuel at:
-emmanuel.grumbach@intel.com
-
-I've listed the people who directly contributed
-code, but many others from various teams have
-contributed in other ways.
-
-Co-developed-by: Johannes Berg <johannes.berg@intel.com>
-Co-developed-by: Avraham Stern <avraham.stern@intel.com>
-Co-developed-by: Daniel Gabay <daniel.gabay@intel.com>
-Co-developed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Co-developed-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Co-developed-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Co-developed-by: Benjamin Berg <benjamin.berg@intel.com>
-Co-developed-by: Shaul Triebitz <shaul.triebitz@intel.com>
-
-  wifi: iwlwifi: mld: add file agg.h/c
-  wifi: iwlwifi: mld: add file ap.h/c
-  wifi: iwlwifi: mld: add file coex.h/c
-  wifi: iwlwifi: mld: add file constants.h
-  wifi: iwlwifi: mld: add file d3.h/c
-  wifi: iwlwifi: mld: add file debugfs.h/c
-  wifi: iwlwifi: mld: add file ftm-initiator.h/c
-  wifi: iwlwifi: mld: add file fw.c
-  wifi: iwlwifi: mld: add file hcmd.h
-  wifi: iwlwifi: mld: add file iface.h/c
-  wifi: iwlwifi: mld: add file key.h/c
-  wifi: iwlwifi: mld: add file led.h/c
-  wifi: iwlwifi: mld: add file link.h/c
-  wifi: iwlwifi: mld: add file low_latency.h/c
-  wifi: iwlwifi: mld: add file mac80211.h/c
-  wifi: iwlwifi: mld: add file mcc.h/c
-  wifi: iwlwifi: mld: add file mld.h/c
-  wifi: iwlwifi: mld: add file mlo.h/c
-  wifi: iwlwifi: mld: add file notif.h/c
-  wifi: iwlwifi: mld: add file phy.h/c
-  wifi: iwlwifi: mld: add file power.h/c
-  wifi: iwlwifi: mld: add file ptp.h/c
-  wifi: iwlwifi: mld: add file regulatory.h/c
-  wifi: iwlwifi: mld: add file roc.h/c
-  wifi: iwlwifi: mld: add file rx.h/c
-  wifi: iwlwifi: mld: add file scan.h/c
-  wifi: iwlwifi: mld: add file session-protect.h/c
-  wifi: iwlwifi: mld: add file sta.h/c
-  wifi: iwlwifi: mld: add file stats.h/c
-  wifi: iwlwifi: mld: add file thermal.h/c
-  wifi: iwlwifi: mld: add file time_sync.h/c
-  wifi: iwlwifi: mld: add file tlc.h/c
-  wifi: iwlwifi: mld: add file tx.h/c
-  wifi: iwlwifi: mld: add KUnit test file agg.c
-  wifi: iwlwifi: mld: add KUnit test file hcmd.c
-  wifi: iwlwifi: mld: add KUnit test file link.c
-  wifi: iwlwifi: mld: add KUnit test file link-selection.c
-  wifi: iwlwifi: mld: add KUnit tests module file
-  wifi: iwlwifi: mld: add KUnit test file rx.c
-  wifi: iwlwifi: mld: add KUnit utils.h/c
-  wifi: iwlwifi: mld: add KUnit tests Makefile
-  wifi: iwlwifi: mld: add the new operation mode
-
- drivers/net/wireless/intel/iwlwifi/Kconfig    |   16 +-
- drivers/net/wireless/intel/iwlwifi/Makefile   |    5 +-
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |    5 +
- .../net/wireless/intel/iwlwifi/iwl-config.h   |    6 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |   28 +-
- .../net/wireless/intel/iwlwifi/mld/Makefile   |   16 +
- drivers/net/wireless/intel/iwlwifi/mld/agg.c  |  671 +++++
- drivers/net/wireless/intel/iwlwifi/mld/agg.h  |  128 +
- drivers/net/wireless/intel/iwlwifi/mld/ap.c   |  344 +++
- drivers/net/wireless/intel/iwlwifi/mld/ap.h   |   46 +
- drivers/net/wireless/intel/iwlwifi/mld/coex.c |   40 +
- drivers/net/wireless/intel/iwlwifi/mld/coex.h |   15 +
- .../wireless/intel/iwlwifi/mld/constants.h    |   88 +
- drivers/net/wireless/intel/iwlwifi/mld/d3.c   | 1998 ++++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/d3.h   |   51 +
- .../net/wireless/intel/iwlwifi/mld/debugfs.c  |  826 +++++
- .../net/wireless/intel/iwlwifi/mld/debugfs.h  |  200 ++
- .../intel/iwlwifi/mld/ftm-initiator.c         |  451 +++
- .../intel/iwlwifi/mld/ftm-initiator.h         |   15 +
- drivers/net/wireless/intel/iwlwifi/mld/fw.c   |  536 ++++
- drivers/net/wireless/intel/iwlwifi/mld/hcmd.h |   54 +
- .../net/wireless/intel/iwlwifi/mld/iface.c    |  671 +++++
- .../net/wireless/intel/iwlwifi/mld/iface.h    |  234 ++
- drivers/net/wireless/intel/iwlwifi/mld/key.c  |  358 +++
- drivers/net/wireless/intel/iwlwifi/mld/key.h  |   39 +
- drivers/net/wireless/intel/iwlwifi/mld/led.c  |  100 +
- drivers/net/wireless/intel/iwlwifi/mld/led.h  |   29 +
- drivers/net/wireless/intel/iwlwifi/mld/link.c | 1216 ++++++++
- drivers/net/wireless/intel/iwlwifi/mld/link.h |  153 +
- .../wireless/intel/iwlwifi/mld/low_latency.c  |  335 +++
- .../wireless/intel/iwlwifi/mld/low_latency.h  |   68 +
- .../net/wireless/intel/iwlwifi/mld/mac80211.c | 2672 +++++++++++++++++
- .../net/wireless/intel/iwlwifi/mld/mac80211.h |   13 +
- drivers/net/wireless/intel/iwlwifi/mld/mcc.c  |  329 ++
- drivers/net/wireless/intel/iwlwifi/mld/mcc.h  |   17 +
- drivers/net/wireless/intel/iwlwifi/mld/mld.c  |  707 +++++
- drivers/net/wireless/intel/iwlwifi/mld/mld.h  |  586 ++++
- drivers/net/wireless/intel/iwlwifi/mld/mlo.c  |  993 ++++++
- drivers/net/wireless/intel/iwlwifi/mld/mlo.h  |  157 +
- .../net/wireless/intel/iwlwifi/mld/notif.c    |  755 +++++
- .../net/wireless/intel/iwlwifi/mld/notif.h    |   35 +
- drivers/net/wireless/intel/iwlwifi/mld/phy.c  |  116 +
- drivers/net/wireless/intel/iwlwifi/mld/phy.h  |   49 +
- .../net/wireless/intel/iwlwifi/mld/power.c    |  395 +++
- .../net/wireless/intel/iwlwifi/mld/power.h    |   33 +
- drivers/net/wireless/intel/iwlwifi/mld/ptp.c  |  321 ++
- drivers/net/wireless/intel/iwlwifi/mld/ptp.h  |   45 +
- .../wireless/intel/iwlwifi/mld/regulatory.c   |  393 +++
- .../wireless/intel/iwlwifi/mld/regulatory.h   |   23 +
- drivers/net/wireless/intel/iwlwifi/mld/roc.h  |   20 +
- drivers/net/wireless/intel/iwlwifi/mld/rx.c   | 2060 +++++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/rx.h   |   72 +
- drivers/net/wireless/intel/iwlwifi/mld/scan.c | 2006 +++++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/scan.h |  135 +
- .../intel/iwlwifi/mld/session-protect.c       |  222 ++
- .../intel/iwlwifi/mld/session-protect.h       |  102 +
- drivers/net/wireless/intel/iwlwifi/mld/sta.c  | 1265 ++++++++
- drivers/net/wireless/intel/iwlwifi/mld/sta.h  |  266 ++
- .../net/wireless/intel/iwlwifi/mld/stats.c    |  510 ++++
- .../net/wireless/intel/iwlwifi/mld/stats.h    |   22 +
- .../wireless/intel/iwlwifi/mld/tests/Makefile |    5 +
- .../wireless/intel/iwlwifi/mld/tests/agg.c    |  663 ++++
- .../wireless/intel/iwlwifi/mld/tests/hcmd.c   |   62 +
- .../intel/iwlwifi/mld/tests/link-selection.c  |  171 ++
- .../wireless/intel/iwlwifi/mld/tests/link.c   |  103 +
- .../wireless/intel/iwlwifi/mld/tests/module.c |   11 +
- .../net/wireless/intel/iwlwifi/mld/tests/rx.c |  353 +++
- .../wireless/intel/iwlwifi/mld/tests/utils.c  |  475 +++
- .../wireless/intel/iwlwifi/mld/tests/utils.h  |  124 +
- .../net/wireless/intel/iwlwifi/mld/thermal.c  |  438 +++
- .../net/wireless/intel/iwlwifi/mld/thermal.h  |   36 +
- .../wireless/intel/iwlwifi/mld/time_sync.c    |  240 ++
- .../wireless/intel/iwlwifi/mld/time_sync.h    |   26 +
- drivers/net/wireless/intel/iwlwifi/mld/tlc.c  |  717 +++++
- drivers/net/wireless/intel/iwlwifi/mld/tlc.h  |   23 +
- drivers/net/wireless/intel/iwlwifi/mld/tx.c   | 1374 +++++++++
- drivers/net/wireless/intel/iwlwifi/mld/tx.h   |   77 +
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |    9 +-
- 78 files changed, 27958 insertions(+), 10 deletions(-)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/Makefile
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mld/agg.c | 671 +++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mld/agg.h | 128 ++++
+ 2 files changed, 799 insertions(+)
  create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/agg.c
  create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/agg.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ap.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ap.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/coex.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/coex.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/constants.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/d3.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/d3.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/debugfs.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/fw.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/hcmd.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/iface.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/iface.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/key.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/key.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/led.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/led.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/link.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/link.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/low_latency.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/low_latency.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mac80211.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mcc.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mcc.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mld.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mld.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mlo.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mlo.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/notif.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/notif.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/phy.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/phy.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/power.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/power.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ptp.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ptp.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/regulatory.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/roc.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/rx.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/rx.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/scan.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/scan.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/session-protect.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/session-protect.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/sta.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/sta.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/stats.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/stats.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/Makefile
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/agg.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/hcmd.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/link.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/module.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/rx.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/utils.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/thermal.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/thermal.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/time_sync.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/time_sync.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tlc.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tlc.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tx.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tx.h
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/agg.c b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
+new file mode 100644
+index 000000000000..d3ad0afa604d
+--- /dev/null
++++ b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
+@@ -0,0 +1,671 @@
++
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/*
++ * Copyright (C) 2024-2025 Intel Corporation
++ */
++#include "agg.h"
++#include "sta.h"
++#include "hcmd.h"
++
++static void
++iwl_mld_reorder_release_frames(struct iwl_mld *mld, struct ieee80211_sta *sta,
++			       struct napi_struct *napi,
++			       struct iwl_mld_baid_data *baid_data,
++			       struct iwl_mld_reorder_buffer *reorder_buf,
++			       u16 nssn)
++{
++	struct iwl_mld_reorder_buf_entry *entries =
++		&baid_data->entries[reorder_buf->queue *
++				    baid_data->entries_per_queue];
++	u16 ssn = reorder_buf->head_sn;
++
++	while (ieee80211_sn_less(ssn, nssn)) {
++		int index = ssn % baid_data->buf_size;
++		struct sk_buff_head *skb_list = &entries[index].frames;
++		struct sk_buff *skb;
++
++		ssn = ieee80211_sn_inc(ssn);
++
++		/* Empty the list. Will have more than one frame for A-MSDU.
++		 * Empty list is valid as well since nssn indicates frames were
++		 * received.
++		 */
++		while ((skb = __skb_dequeue(skb_list))) {
++			iwl_mld_pass_packet_to_mac80211(mld, napi, skb,
++							reorder_buf->queue,
++							sta);
++			reorder_buf->num_stored--;
++		}
++	}
++	reorder_buf->head_sn = nssn;
++}
++
++static void iwl_mld_release_frames_from_notif(struct iwl_mld *mld,
++					      struct napi_struct *napi,
++					      u8 baid, u16 nssn, int queue)
++{
++	struct iwl_mld_reorder_buffer *reorder_buf;
++	struct iwl_mld_baid_data *ba_data;
++	struct ieee80211_link_sta *link_sta;
++	u32 sta_id;
++
++	IWL_DEBUG_HT(mld, "Frame release notification for BAID %u, NSSN %d\n",
++		     baid, nssn);
++
++	if (WARN_ON_ONCE(baid == IWL_RX_REORDER_DATA_INVALID_BAID ||
++			 baid >= ARRAY_SIZE(mld->fw_id_to_ba)))
++		return;
++
++	rcu_read_lock();
++
++	ba_data = rcu_dereference(mld->fw_id_to_ba[baid]);
++	if (!ba_data) {
++		IWL_DEBUG_HT(mld, "BAID %d not found in map\n", baid);
++		goto out_unlock;
++	}
++
++	/* pick any STA ID to find the pointer */
++	sta_id = ffs(ba_data->sta_mask) - 1;
++	link_sta = rcu_dereference(mld->fw_id_to_link_sta[sta_id]);
++	if (WARN_ON_ONCE(IS_ERR_OR_NULL(link_sta) || !link_sta->sta))
++		goto out_unlock;
++
++	reorder_buf = &ba_data->reorder_buf[queue];
++
++	iwl_mld_reorder_release_frames(mld, link_sta->sta, napi, ba_data,
++				       reorder_buf, nssn);
++out_unlock:
++	rcu_read_unlock();
++}
++
++void iwl_mld_handle_frame_release_notif(struct iwl_mld *mld,
++					struct napi_struct *napi,
++					struct iwl_rx_packet *pkt, int queue)
++{
++	struct iwl_frame_release *release = (void *)pkt->data;
++	u32 pkt_len = iwl_rx_packet_payload_len(pkt);
++
++	if (IWL_FW_CHECK(mld, pkt_len < sizeof(*release),
++			 "Unexpected frame release notif size %u (expected %zu)\n",
++			 pkt_len, sizeof(*release)))
++		return;
++
++	iwl_mld_release_frames_from_notif(mld, napi, release->baid,
++					  le16_to_cpu(release->nssn),
++					  queue);
++}
++
++void iwl_mld_handle_bar_frame_release_notif(struct iwl_mld *mld,
++					    struct napi_struct *napi,
++					    struct iwl_rx_packet *pkt,
++					    int queue)
++{
++	struct iwl_bar_frame_release *release = (void *)pkt->data;
++	struct iwl_mld_baid_data *baid_data;
++	unsigned int baid, nssn, sta_id, tid;
++	u32 pkt_len = iwl_rx_packet_payload_len(pkt);
++
++	if (IWL_FW_CHECK(mld, pkt_len < sizeof(*release),
++			 "Unexpected frame release notif size %u (expected %zu)\n",
++			 pkt_len, sizeof(*release)))
++		return;
++
++	baid = le32_get_bits(release->ba_info,
++			     IWL_BAR_FRAME_RELEASE_BAID_MASK);
++	nssn = le32_get_bits(release->ba_info,
++			     IWL_BAR_FRAME_RELEASE_NSSN_MASK);
++	sta_id = le32_get_bits(release->sta_tid,
++			       IWL_BAR_FRAME_RELEASE_STA_MASK);
++	tid = le32_get_bits(release->sta_tid,
++			    IWL_BAR_FRAME_RELEASE_TID_MASK);
++
++	if (IWL_FW_CHECK(mld, baid >= ARRAY_SIZE(mld->fw_id_to_ba),
++			 "BAR release: invalid BAID (%x)\n", baid))
++		return;
++
++	rcu_read_lock();
++	baid_data = rcu_dereference(mld->fw_id_to_ba[baid]);
++	if (!IWL_FW_CHECK(mld, !baid_data,
++			  "Got valid BAID %d but not allocated, invalid BAR release!\n",
++			  baid))
++		goto out_unlock;
++
++	if (IWL_FW_CHECK(mld, tid != baid_data->tid ||
++			 sta_id > mld->fw->ucode_capa.num_stations ||
++			 !(baid_data->sta_mask & BIT(sta_id)),
++			 "BAID 0x%x is mapped to sta_mask:0x%x tid:%d, but BAR release received for sta:%d tid:%d\n",
++			 baid, baid_data->sta_mask, baid_data->tid, sta_id,
++			 tid))
++		goto out_unlock;
++
++	IWL_DEBUG_DROP(mld, "Received a BAR, expect packet loss: nssn %d\n",
++		       nssn);
++
++	iwl_mld_release_frames_from_notif(mld, napi, baid, nssn, queue);
++out_unlock:
++	rcu_read_unlock();
++}
++
++void iwl_mld_del_ba(struct iwl_mld *mld, int queue,
++		    struct iwl_mld_delba_data *data)
++{
++	struct iwl_mld_baid_data *ba_data;
++	struct iwl_mld_reorder_buffer *reorder_buf;
++	struct ieee80211_link_sta *link_sta;
++	u8 baid = data->baid;
++	u32 sta_id;
++
++	if (WARN_ONCE(baid >= IWL_MAX_BAID, "invalid BAID: %x\n", baid))
++		return;
++
++	rcu_read_lock();
++
++	ba_data = rcu_dereference(mld->fw_id_to_ba[baid]);
++	if (WARN_ON_ONCE(!ba_data))
++		goto out_unlock;
++
++	/* pick any STA ID to find the pointer */
++	sta_id = ffs(ba_data->sta_mask) - 1;
++	link_sta = rcu_dereference(mld->fw_id_to_link_sta[sta_id]);
++	if (WARN_ON_ONCE(IS_ERR_OR_NULL(link_sta) || !link_sta->sta))
++		goto out_unlock;
++
++	reorder_buf = &ba_data->reorder_buf[queue];
++
++	/* release all frames that are in the reorder buffer to the stack */
++	iwl_mld_reorder_release_frames(mld, link_sta->sta, NULL,
++				       ba_data, reorder_buf,
++				       ieee80211_sn_add(reorder_buf->head_sn,
++							ba_data->buf_size));
++out_unlock:
++	rcu_read_unlock();
++}
++
++/* Returns true if the MPDU was buffered\dropped, false if it should be passed
++ * to upper layer.
++ */
++enum iwl_mld_reorder_result
++iwl_mld_reorder(struct iwl_mld *mld, struct napi_struct *napi,
++		int queue, struct ieee80211_sta *sta,
++		struct sk_buff *skb, struct iwl_rx_mpdu_desc *desc)
++{
++	struct ieee80211_hdr *hdr = (void *)skb_mac_header(skb);
++	struct iwl_mld_baid_data *baid_data;
++	struct iwl_mld_reorder_buffer *buffer;
++	struct iwl_mld_reorder_buf_entry *entries;
++	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
++	struct iwl_mld_link_sta *mld_link_sta;
++	u32 reorder = le32_to_cpu(desc->reorder_data);
++	bool amsdu, last_subframe, is_old_sn, is_dup;
++	u8 tid = ieee80211_get_tid(hdr);
++	u8 baid;
++	u16 nssn, sn;
++	u32 sta_mask = 0;
++	int index;
++	u8 link_id;
++
++	baid = u32_get_bits(reorder, IWL_RX_MPDU_REORDER_BAID_MASK);
++
++	/* This also covers the case of receiving a Block Ack Request
++	 * outside a BA session; we'll pass it to mac80211 and that
++	 * then sends a delBA action frame.
++	 * This also covers pure monitor mode, in which case we won't
++	 * have any BA sessions.
++	 */
++	if (baid == IWL_RX_REORDER_DATA_INVALID_BAID)
++		return IWL_MLD_PASS_SKB;
++
++	/* no sta yet */
++	if (WARN_ONCE(!sta,
++		      "Got valid BAID without a valid station assigned\n"))
++		return IWL_MLD_PASS_SKB;
++
++	/* not a data packet */
++	if (!ieee80211_is_data_qos(hdr->frame_control) ||
++	    is_multicast_ether_addr(hdr->addr1))
++		return IWL_MLD_PASS_SKB;
++
++	if (unlikely(!ieee80211_is_data_present(hdr->frame_control)))
++		return IWL_MLD_PASS_SKB;
++
++	baid_data = rcu_dereference(mld->fw_id_to_ba[baid]);
++	if (!baid_data) {
++		IWL_DEBUG_HT(mld,
++			     "Got valid BAID but no baid allocated, bypass re-ordering (BAID=%d reorder=0x%x)\n",
++			     baid, reorder);
++		return IWL_MLD_PASS_SKB;
++	}
++
++	for_each_mld_link_sta(mld_sta, mld_link_sta, link_id)
++		sta_mask |= BIT(mld_link_sta->fw_id);
++
++	/* verify the BAID is correctly mapped to the sta and tid */
++	if (IWL_FW_CHECK(mld,
++			 tid != baid_data->tid ||
++			 !(sta_mask & baid_data->sta_mask),
++			 "BAID 0x%x is mapped to sta_mask:0x%x tid:%d, but was received for sta_mask:0x%x tid:%d\n",
++			 baid, baid_data->sta_mask, baid_data->tid,
++			 sta_mask, tid))
++		return IWL_MLD_PASS_SKB;
++
++	buffer = &baid_data->reorder_buf[queue];
++	entries = &baid_data->entries[queue * baid_data->entries_per_queue];
++
++	is_old_sn = !!(reorder & IWL_RX_MPDU_REORDER_BA_OLD_SN);
++
++	if (!buffer->valid && is_old_sn)
++		return IWL_MLD_PASS_SKB;
++
++	buffer->valid = true;
++
++	is_dup = !!(desc->status & cpu_to_le32(IWL_RX_MPDU_STATUS_DUPLICATE));
++
++	/* drop any duplicated or outdated packets */
++	if (is_dup || is_old_sn)
++		return IWL_MLD_DROP_SKB;
++
++	sn = u32_get_bits(reorder, IWL_RX_MPDU_REORDER_SN_MASK);
++	nssn = u32_get_bits(reorder, IWL_RX_MPDU_REORDER_NSSN_MASK);
++	amsdu = desc->mac_flags2 & IWL_RX_MPDU_MFLG2_AMSDU;
++	last_subframe = desc->amsdu_info & IWL_RX_MPDU_AMSDU_LAST_SUBFRAME;
++
++	/* release immediately if allowed by nssn and no stored frames */
++	if (!buffer->num_stored && ieee80211_sn_less(sn, nssn)) {
++		if (!amsdu || last_subframe)
++			buffer->head_sn = nssn;
++		return IWL_MLD_PASS_SKB;
++	}
++
++	/* release immediately if there are no stored frames, and the sn is
++	 * equal to the head.
++	 * This can happen due to reorder timer, where NSSN is behind head_sn.
++	 * When we released everything, and we got the next frame in the
++	 * sequence, according to the NSSN we can't release immediately,
++	 * while technically there is no hole and we can move forward.
++	 */
++	if (!buffer->num_stored && sn == buffer->head_sn) {
++		if (!amsdu || last_subframe)
++			buffer->head_sn = ieee80211_sn_inc(buffer->head_sn);
++		return IWL_MLD_PASS_SKB;
++	}
++
++	/* put in reorder buffer */
++	index = sn % baid_data->buf_size;
++	__skb_queue_tail(&entries[index].frames, skb);
++	buffer->num_stored++;
++
++	/* We cannot trust NSSN for AMSDU sub-frames that are not the last. The
++	 * reason is that NSSN advances on the first sub-frame, and may cause
++	 * the reorder buffer to advance before all the sub-frames arrive.
++	 *
++	 * Example: reorder buffer contains SN 0 & 2, and we receive AMSDU with
++	 * SN 1. NSSN for first sub frame will be 3 with the result of driver
++	 * releasing SN 0,1, 2. When sub-frame 1 arrives - reorder buffer is
++	 * already ahead and it will be dropped.
++	 * If the last sub-frame is not on this queue - we will get frame
++	 * release notification with up to date NSSN.
++	 */
++	if (!amsdu || last_subframe)
++		iwl_mld_reorder_release_frames(mld, sta, napi, baid_data,
++					       buffer, nssn);
++
++	return IWL_MLD_BUFFERED_SKB;
++}
++EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_mld_reorder);
++
++static void iwl_mld_rx_agg_session_expired(struct timer_list *t)
++{
++	struct iwl_mld_baid_data *data =
++		from_timer(data, t, session_timer);
++	struct iwl_mld_baid_data __rcu **rcu_ptr = data->rcu_ptr;
++	struct iwl_mld_baid_data *ba_data;
++	struct ieee80211_link_sta *link_sta;
++	struct iwl_mld_sta *mld_sta;
++	unsigned long timeout;
++	unsigned int sta_id;
++
++	rcu_read_lock();
++
++	ba_data = rcu_dereference(*rcu_ptr);
++	if (WARN_ON(!ba_data))
++		goto unlock;
++
++	if (WARN_ON(!ba_data->timeout))
++		goto unlock;
++
++	timeout = ba_data->last_rx_timestamp +
++		  TU_TO_JIFFIES(ba_data->timeout * 2);
++	if (time_is_after_jiffies(timeout)) {
++		mod_timer(&ba_data->session_timer, timeout);
++		goto unlock;
++	}
++
++	/* timer expired, pick any STA ID to find the pointer */
++	sta_id = ffs(ba_data->sta_mask) - 1;
++	link_sta = rcu_dereference(ba_data->mld->fw_id_to_link_sta[sta_id]);
++
++	/* sta should be valid unless the following happens:
++	 * The firmware asserts which triggers a reconfig flow, but
++	 * the reconfig fails before we set the pointer to sta into
++	 * the fw_id_to_link_sta pointer table. mac80211 can't stop
++	 * A-MPDU and hence the timer continues to run. Then, the
++	 * timer expires and sta is NULL.
++	 */
++	if (IS_ERR_OR_NULL(link_sta) || WARN_ON(!link_sta->sta))
++		goto unlock;
++
++	mld_sta = iwl_mld_sta_from_mac80211(link_sta->sta);
++	ieee80211_rx_ba_timer_expired(mld_sta->vif, link_sta->sta->addr,
++				      ba_data->tid);
++unlock:
++	rcu_read_unlock();
++}
++
++static int
++iwl_mld_stop_ba_in_fw(struct iwl_mld *mld, struct ieee80211_sta *sta, int tid)
++{
++	struct iwl_rx_baid_cfg_cmd cmd = {
++		.action = cpu_to_le32(IWL_RX_BAID_ACTION_REMOVE),
++		.remove.sta_id_mask =
++			cpu_to_le32(iwl_mld_fw_sta_id_mask(mld, sta)),
++		.remove.tid = cpu_to_le32(tid),
++
++	};
++	int ret;
++
++	ret = iwl_mld_send_cmd_pdu(mld,
++				   WIDE_ID(DATA_PATH_GROUP,
++					   RX_BAID_ALLOCATION_CONFIG_CMD),
++				   &cmd);
++	if (ret)
++		return ret;
++
++	IWL_DEBUG_HT(mld, "RX BA Session stopped in fw\n");
++
++	return ret;
++}
++
++static int
++iwl_mld_start_ba_in_fw(struct iwl_mld *mld, struct ieee80211_sta *sta,
++		       int tid, u16 ssn, u16 buf_size)
++{
++	struct iwl_rx_baid_cfg_cmd cmd = {
++		.action = cpu_to_le32(IWL_RX_BAID_ACTION_ADD),
++		.alloc.sta_id_mask =
++			cpu_to_le32(iwl_mld_fw_sta_id_mask(mld, sta)),
++		.alloc.tid = tid,
++		.alloc.ssn = cpu_to_le16(ssn),
++		.alloc.win_size = cpu_to_le16(buf_size),
++	};
++	struct iwl_host_cmd hcmd = {
++		.id = WIDE_ID(DATA_PATH_GROUP, RX_BAID_ALLOCATION_CONFIG_CMD),
++		.flags = CMD_WANT_SKB,
++		.len[0] = sizeof(cmd),
++		.data[0] = &cmd,
++	};
++	struct iwl_rx_baid_cfg_resp *resp;
++	struct iwl_rx_packet *pkt;
++	u32 resp_len;
++	int ret, baid;
++
++	BUILD_BUG_ON(sizeof(*resp) != sizeof(baid));
++
++	ret = iwl_mld_send_cmd(mld, &hcmd);
++	if (ret)
++		return ret;
++
++	pkt = hcmd.resp_pkt;
++
++	resp_len = iwl_rx_packet_payload_len(pkt);
++	if (IWL_FW_CHECK(mld, resp_len != sizeof(*resp),
++			 "BAID_ALLOC_CMD: unexpected response length %d\n",
++			 resp_len)) {
++		ret = -EIO;
++		goto out;
++	}
++
++	IWL_DEBUG_HT(mld, "RX BA Session started in fw\n");
++
++	resp = (void *)pkt->data;
++	baid = le32_to_cpu(resp->baid);
++
++	if (IWL_FW_CHECK(mld, baid < 0 || baid >= ARRAY_SIZE(mld->fw_id_to_ba),
++			 "BAID_ALLOC_CMD: invalid BAID response %d\n", baid)) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	ret = baid;
++out:
++	iwl_free_resp(&hcmd);
++	return ret;
++}
++
++static void iwl_mld_init_reorder_buffer(struct iwl_mld *mld,
++					struct iwl_mld_baid_data *data,
++					u16 ssn)
++{
++	for (int i = 0; i < mld->trans->num_rx_queues; i++) {
++		struct iwl_mld_reorder_buffer *reorder_buf =
++			&data->reorder_buf[i];
++		struct iwl_mld_reorder_buf_entry *entries =
++			&data->entries[i * data->entries_per_queue];
++
++		reorder_buf->head_sn = ssn;
++		reorder_buf->queue = i;
++
++		for (int j = 0; j < data->buf_size; j++)
++			__skb_queue_head_init(&entries[j].frames);
++	}
++}
++
++static void iwl_mld_free_reorder_buffer(struct iwl_mld *mld,
++					struct iwl_mld_baid_data *data)
++{
++	struct iwl_mld_delba_data delba_data = {
++		.baid = data->baid,
++	};
++
++	iwl_mld_sync_rx_queues(mld, IWL_MLD_RXQ_NOTIF_DEL_BA,
++			       &delba_data, sizeof(delba_data));
++
++	for (int i = 0; i < mld->trans->num_rx_queues; i++) {
++		struct iwl_mld_reorder_buffer *reorder_buf =
++			&data->reorder_buf[i];
++		struct iwl_mld_reorder_buf_entry *entries =
++			&data->entries[i * data->entries_per_queue];
++
++		if (likely(!reorder_buf->num_stored))
++			continue;
++
++		/* This shouldn't happen in regular DELBA since the RX queues
++		 * sync internal DELBA notification should trigger a release
++		 * of all frames in the reorder buffer.
++		 */
++		WARN_ON(1);
++
++		for (int j = 0; j < data->buf_size; j++)
++			__skb_queue_purge(&entries[j].frames);
++	}
++}
++
++int iwl_mld_ampdu_rx_start(struct iwl_mld *mld, struct ieee80211_sta *sta,
++			   int tid, u16 ssn, u16 buf_size, u16 timeout)
++{
++	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
++	struct iwl_mld_baid_data *baid_data = NULL;
++	u32 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
++	int ret, baid;
++	u32 sta_mask;
++
++	lockdep_assert_wiphy(mld->wiphy);
++
++	if (mld->num_rx_ba_sessions >= IWL_MAX_BAID) {
++		IWL_DEBUG_HT(mld,
++			     "Max num of RX BA sessions reached; blocking new session\n");
++		return -ENOSPC;
++	}
++
++	sta_mask = iwl_mld_fw_sta_id_mask(mld, sta);
++	if (WARN_ON(!sta_mask))
++		return -EINVAL;
++
++	/* sparse doesn't like the __align() so don't check */
++#ifndef __CHECKER__
++	/* The division below will be OK if either the cache line size
++	 * can be divided by the entry size (ALIGN will round up) or if
++	 * the entry size can be divided by the cache line size, in which
++	 * case the ALIGN() will do nothing.
++	 */
++	BUILD_BUG_ON(SMP_CACHE_BYTES % sizeof(baid_data->entries[0]) &&
++		     sizeof(baid_data->entries[0]) % SMP_CACHE_BYTES);
++#endif
++
++	/* Upward align the reorder buffer size to fill an entire cache
++	 * line for each queue, to avoid sharing cache lines between
++	 * different queues.
++	 */
++	reorder_buf_size = ALIGN(reorder_buf_size, SMP_CACHE_BYTES);
++
++	/* Allocate here so if allocation fails we can bail out early
++	 * before starting the BA session in the firmware
++	 */
++	baid_data = kzalloc(sizeof(*baid_data) +
++			    mld->trans->num_rx_queues * reorder_buf_size,
++			    GFP_KERNEL);
++	if (!baid_data)
++		return -ENOMEM;
++
++	/* This division is why we need the above BUILD_BUG_ON(),
++	 * if that doesn't hold then this will not be right.
++	 */
++	baid_data->entries_per_queue =
++		reorder_buf_size / sizeof(baid_data->entries[0]);
++
++	baid = iwl_mld_start_ba_in_fw(mld, sta, tid, ssn, buf_size);
++	if (baid < 0) {
++		ret = baid;
++		goto out_free;
++	}
++
++	mld->num_rx_ba_sessions++;
++	mld_sta->tid_to_baid[tid] = baid;
++
++	baid_data->baid = baid;
++	baid_data->mld = mld;
++	baid_data->tid = tid;
++	baid_data->buf_size = buf_size;
++	baid_data->sta_mask = sta_mask;
++	baid_data->timeout = timeout;
++	baid_data->last_rx_timestamp = jiffies;
++	baid_data->rcu_ptr = &mld->fw_id_to_ba[baid];
++
++	iwl_mld_init_reorder_buffer(mld, baid_data, ssn);
++
++	timer_setup(&baid_data->session_timer, iwl_mld_rx_agg_session_expired,
++		    0);
++	if (timeout)
++		mod_timer(&baid_data->session_timer,
++			  TU_TO_EXP_TIME(timeout * 2));
++
++	IWL_DEBUG_HT(mld, "STA mask=0x%x (tid=%d) is assigned to BAID %d\n",
++		     baid_data->sta_mask, tid, baid);
++
++	/* protect the BA data with RCU to cover a case where our
++	 * internal RX sync mechanism will timeout (not that it's
++	 * supposed to happen) and we will free the session data while
++	 * RX is being processed in parallel
++	 */
++	WARN_ON(rcu_access_pointer(mld->fw_id_to_ba[baid]));
++	rcu_assign_pointer(mld->fw_id_to_ba[baid], baid_data);
++
++	return 0;
++
++out_free:
++	kfree(baid_data);
++	return ret;
++}
++
++int iwl_mld_ampdu_rx_stop(struct iwl_mld *mld, struct ieee80211_sta *sta,
++			  int tid)
++{
++	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
++	int baid = mld_sta->tid_to_baid[tid];
++	struct iwl_mld_baid_data *baid_data;
++	int ret;
++
++	lockdep_assert_wiphy(mld->wiphy);
++
++	/* during firmware restart, do not send the command as the firmware no
++	 * longer recognizes the session. instead, only clear the driver BA
++	 * session data.
++	 */
++	if (!mld->fw_status.in_hw_restart) {
++		ret = iwl_mld_stop_ba_in_fw(mld, sta, tid);
++		if (ret)
++			return ret;
++	}
++
++	if (!WARN_ON(mld->num_rx_ba_sessions == 0))
++		mld->num_rx_ba_sessions--;
++
++	baid_data = wiphy_dereference(mld->wiphy, mld->fw_id_to_ba[baid]);
++	if (WARN_ON(!baid_data))
++		return -EINVAL;
++
++	if (timer_pending(&baid_data->session_timer))
++		timer_shutdown_sync(&baid_data->session_timer);
++
++	iwl_mld_free_reorder_buffer(mld, baid_data);
++
++	RCU_INIT_POINTER(mld->fw_id_to_ba[baid], NULL);
++	kfree_rcu(baid_data, rcu_head);
++
++	IWL_DEBUG_HT(mld, "BAID %d is free\n", baid);
++
++	return 0;
++}
++
++int iwl_mld_update_sta_baids(struct iwl_mld *mld,
++			     u32 old_sta_mask,
++			     u32 new_sta_mask)
++{
++	struct iwl_rx_baid_cfg_cmd cmd = {
++		.action = cpu_to_le32(IWL_RX_BAID_ACTION_MODIFY),
++		.modify.old_sta_id_mask = cpu_to_le32(old_sta_mask),
++		.modify.new_sta_id_mask = cpu_to_le32(new_sta_mask),
++	};
++	u32 cmd_id = WIDE_ID(DATA_PATH_GROUP, RX_BAID_ALLOCATION_CONFIG_CMD);
++	int baid;
++
++	/* mac80211 will remove sessions later, but we ignore all that */
++	if (mld->fw_status.in_hw_restart)
++		return 0;
++
++	BUILD_BUG_ON(sizeof(struct iwl_rx_baid_cfg_resp) != sizeof(baid));
++
++	for (baid = 0; baid < ARRAY_SIZE(mld->fw_id_to_ba); baid++) {
++		struct iwl_mld_baid_data *data;
++		int ret;
++
++		data = wiphy_dereference(mld->wiphy, mld->fw_id_to_ba[baid]);
++		if (!data)
++			continue;
++
++		if (!(data->sta_mask & old_sta_mask))
++			continue;
++
++		WARN_ONCE(data->sta_mask != old_sta_mask,
++			  "BAID data for %d corrupted - expected 0x%x found 0x%x\n",
++			  baid, old_sta_mask, data->sta_mask);
++
++		cmd.modify.tid = cpu_to_le32(data->tid);
++
++		ret = iwl_mld_send_cmd_pdu(mld, cmd_id, &cmd);
++		if (ret)
++			return ret;
++		data->sta_mask = new_sta_mask;
++	}
++
++	return 0;
++}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/agg.h b/drivers/net/wireless/intel/iwlwifi/mld/agg.h
+new file mode 100644
+index 000000000000..970484e0f29a
+--- /dev/null
++++ b/drivers/net/wireless/intel/iwlwifi/mld/agg.h
+@@ -0,0 +1,128 @@
++
++/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++/*
++ * Copyright (C) 2024 Intel Corporation
++ */
++#ifndef __iwl_agg_h__
++#define __iwl_agg_h__
++
++#include "mld.h"
++#include "fw/api/rx.h"
++
++/**
++ * struct iwl_mld_reorder_buffer - per ra/tid/queue reorder buffer
++ * @head_sn: reorder window head sequence number
++ * @num_stored: number of MPDUs stored in the buffer
++ * @queue: queue of this reorder buffer
++ * @valid: true if reordering is valid for this queue
++ */
++struct iwl_mld_reorder_buffer {
++	u16 head_sn;
++	u16 num_stored;
++	int queue;
++	bool valid;
++} ____cacheline_aligned_in_smp;
++
++/**
++ * struct iwl_mld_reorder_buf_entry - reorder buffer entry per-queue/per-seqno
++ * @frames: list of skbs stored. a list is necessary because in an A-MSDU,
++ *	all sub-frames share the same sequence number, so they are stored
++ *	together in the same list.
++ */
++struct iwl_mld_reorder_buf_entry {
++	struct sk_buff_head frames;
++}
++#ifndef __CHECKER__
++/* sparse doesn't like this construct: "bad integer constant expression" */
++__aligned(roundup_pow_of_two(sizeof(struct sk_buff_head)))
++#endif
++;
++
++/**
++ * struct iwl_mld_baid_data - Block Ack session data
++ * @rcu_head: RCU head for freeing this data
++ * @sta_mask: station mask for the BAID
++ * @tid: tid of the session
++ * @baid: baid of the session
++ * @buf_size: the reorder buffer size as set by the last ADDBA request
++ * @entries_per_queue: number of buffers per queue, this actually gets
++ *	aligned up to avoid cache line sharing between queues
++ * @timeout: the timeout value specified in the ADDBA request.
++ * @last_rx_timestamp: timestamp of the last received packet (in jiffies). This
++ *	value is updated only when the configured @timeout has passed since
++ *	the last update to minimize cache bouncing between RX queues.
++ * @session_timer: timer is set to expire after 2 * @timeout (since we want
++ *	to minimize the cache bouncing by updating @last_rx_timestamp only once
++ *	after @timeout has passed). If no packets are received within this
++ *	period, it informs mac80211 to initiate delBA flow, terminating the
++ *	BA session.
++ * @rcu_ptr: BA data RCU protected access
++ * @mld: mld pointer, needed for timer context
++ * @reorder_buf: reorder buffer, allocated per queue
++ * @entries: data
++ */
++struct iwl_mld_baid_data {
++	struct rcu_head rcu_head;
++	u32 sta_mask;
++	u8 tid;
++	u8 baid;
++	u16 buf_size;
++	u16 entries_per_queue;
++	u16 timeout;
++	struct timer_list session_timer;
++	unsigned long last_rx_timestamp;
++	struct iwl_mld_baid_data __rcu **rcu_ptr;
++	struct iwl_mld *mld;
++	struct iwl_mld_reorder_buffer reorder_buf[IWL_MAX_RX_HW_QUEUES];
++	struct iwl_mld_reorder_buf_entry entries[] ____cacheline_aligned_in_smp;
++};
++
++/**
++ * struct iwl_mld_delba_data - RX queue sync data for %IWL_MLD_RXQ_NOTIF_DEL_BA
++ *
++ * @baid: Block Ack id, used to identify the BA session to be removed
++ */
++struct iwl_mld_delba_data {
++	u32 baid;
++} __packed;
++
++/**
++ * enum iwl_mld_reorder_result - Possible return values for iwl_mld_reorder()
++ * indicating how the caller should handle the skb based on the result.
++ *
++ * @IWL_MLD_PASS_SKB: skb should be passed to upper layer.
++ * @IWL_MLD_BUFFERED_SKB: skb has been buffered, don't pass it to upper layer.
++ * @IWL_MLD_DROP_SKB: skb should be dropped and freed by the caller.
++ */
++enum iwl_mld_reorder_result {
++	IWL_MLD_PASS_SKB,
++	IWL_MLD_BUFFERED_SKB,
++	IWL_MLD_DROP_SKB
++};
++
++int iwl_mld_ampdu_rx_start(struct iwl_mld *mld, struct ieee80211_sta *sta,
++			   int tid, u16 ssn, u16 buf_size, u16 timeout);
++int iwl_mld_ampdu_rx_stop(struct iwl_mld *mld, struct ieee80211_sta *sta,
++			  int tid);
++
++enum iwl_mld_reorder_result
++iwl_mld_reorder(struct iwl_mld *mld, struct napi_struct *napi,
++		int queue, struct ieee80211_sta *sta,
++		struct sk_buff *skb, struct iwl_rx_mpdu_desc *desc);
++
++void iwl_mld_handle_frame_release_notif(struct iwl_mld *mld,
++					struct napi_struct *napi,
++					struct iwl_rx_packet *pkt, int queue);
++void iwl_mld_handle_bar_frame_release_notif(struct iwl_mld *mld,
++					    struct napi_struct *napi,
++					    struct iwl_rx_packet *pkt,
++					    int queue);
++
++void iwl_mld_del_ba(struct iwl_mld *mld, int queue,
++		    struct iwl_mld_delba_data *data);
++
++int iwl_mld_update_sta_baids(struct iwl_mld *mld,
++			     u32 old_sta_mask,
++			     u32 new_sta_mask);
++
++#endif /* __iwl_agg_h__ */
 -- 
 2.34.1
 
