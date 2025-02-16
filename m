@@ -1,179 +1,113 @@
-Return-Path: <linux-wireless+bounces-19024-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19025-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B570A3756A
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 17:07:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3726A377E4
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 22:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46A483AED33
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 16:07:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C1BE188E76B
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 21:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA00198A11;
-	Sun, 16 Feb 2025 16:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LlM6MgGh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F561922E1;
+	Sun, 16 Feb 2025 21:53:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DD7DF78;
-	Sun, 16 Feb 2025 16:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671C8155A2F
+	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 21:53:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739722056; cv=none; b=djw/o42l3eiyhIaZlUyOwGdIyRw+dCcDzm46STbb5i7L+yV9E0NHxIp7ZajI9X2hpGFIoKJtBvE7qBfKCL0hOa2ieIJuEScNsjIhARSwOZoXLs99Q9+temDOTGczJLKlklax8TPChdebhbvPT7nR4iQ4DlCN45EkrT0kuhuvR+Y=
+	t=1739742801; cv=none; b=qCMZdiBndxMh2OIaB5FTdJ2NeUyjnsXVem44X/Ez4zv9n/rQtNufh0rSQsXNNNsJlgThs0N3RfZQaEH65M/mHvjAWDXIPLEQNyKplH0w8MK++LhZOnOyIcp0qp3bTJKbX12xETxvVblJGREWBEOKFUQo10FdPIwxt5Kk31lDSHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739722056; c=relaxed/simple;
-	bh=43hB0V5xGtsW08Wu4x/+54J0/oLkkgqApWLJEGgtdtg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KDr6774fUlMOKALnvM8CYPrQwk7DviZ1kWpwUg3aNDUPu0iEVz5luI41Kjfkjpmn+VliPJAZLklghx1/+UyVY1BvhdvcoS4Su4lIBItxMKPNvfYXdlvBxeUJhkuTldv0LgMe+6tok/2spirTYLNatOpaR3Xo+mxa5eD09jrTX6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LlM6MgGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BB6C4CEDD;
-	Sun, 16 Feb 2025 16:07:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739722056;
-	bh=43hB0V5xGtsW08Wu4x/+54J0/oLkkgqApWLJEGgtdtg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LlM6MgGh//jb+HqFo2mNjO2abwlassCQW6QN1S0IhXrx9UWPKTL5lXIMRVICZOzHG
-	 +aYnJH6ZYStPAMiRJq9BoaA6fzzHLdcCGBjnpM5huUWXgAncyX5dPH9jTWi91Cv77M
-	 +3WB5YZYxAlEHNJp704sGJRxxnh02eUtAbNDOw2MfHkvNQ059CHOsRU99vDxYhKXt7
-	 vit/P0fUJ3Q1Fdij3Rpolx/Bjd5n5gQEy+dOsP9hDJgFvZpHViTnJNBLuCntrxlzRm
-	 45+oqW8LoqDcKA8k4nG/gqp6QP/yPQubFrpCeejequuS5/T2OBUF34Br4sw9waNrgt
-	 jsqu0/NtZNKhw==
-Date: Sun, 16 Feb 2025 16:07:29 +0000
-From: Simon Horman <horms@kernel.org>
-To: Alexis =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Ajay Singh <ajay.kathat@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Kalle Valo <kvalo@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Marek Vasut <marex@denx.de>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-bluetooth@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 09/12] wifi: wilc1000: disable firmware power save if
- bluetooth is in use
-Message-ID: <20250216160729.GG1615191@kernel.org>
-References: <20250212-wilc3000_bt-v1-0-9609b784874e@bootlin.com>
- <20250212-wilc3000_bt-v1-9-9609b784874e@bootlin.com>
+	s=arc-20240116; t=1739742801; c=relaxed/simple;
+	bh=2HdV9K1090TNcWMgtBDZ/CrmvyVDjRkPYrKYHVxxQiI=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=CMseJNyD4GczOhjf9tPdkJv0TRcbSwnzY3ztFFjWIn5mUWDRerexoMQRiRVoxQJuP3PBmfUdFg8tka6Ab/qzgBu49NawRVJpwyilR7JMdXSvsPD+8ApggfVLeCZ/udepsxyvNwCPtju4S+heBehLG6wW/SyT5xzENBGMPDzbtE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3d14950ac9fso65868965ab.2
+        for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 13:53:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739742799; x=1740347599;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8j34y60xPQfNM3NuVW72lMLYLLNzfF/77lksqY3ZGos=;
+        b=kOcGRi9uIiHTlBV7LJGW9h0NNF/b/X9TjrDD/z7ItOU3LsNxEFqrmWHcyTuNbXmky4
+         ssi3LK8dF4pwvWb7z7UcYs5gUinwbf4BQtcS8vJgJxdI6yWx1vNLreMIl4jXlOYMwDuk
+         NiLHy2lrQlKcV9HZMTgsk4hbUmyfCgouShQUhnPEbOKNH1jPuOsE0X7Mzqrps5RBQvOg
+         pmHtSzT2YDrqhNW5dPj82nTPQB5qKYkTuA4qMOm2TAJ+2FBXj8XQI3UVMt606fiGmt40
+         LKR2vI9HeDaFZOc5KufCkfpTHGZTChXaxxUV6YRMW3dkxr2D20exPRNFiSbD6Ur6nzv3
+         sxnA==
+X-Forwarded-Encrypted: i=1; AJvYcCVMYLlnzbuBkGP9LGEnAEANmEZhQCH/AJpC40Q0DhRfR+hpQCPY/nxAAjjX/a64/xyV4zSVlCnnkP1W8MYBCQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfpS9qSlNuLK/kyfRwcxrsSgnu9QKC1uLOr7PJLyPs8tRhtSU8
+	959Mxg34H4ErAlPNNA3W1K2UF31Xjb+TPj1WgtQTcdhLdxAZ+98XF2Z53ainSYwsKFslnVACmir
+	oxrD16L0+S2apKetsPUWQUt4Klu3F9RLCfxp2/5kD4YD+iJGdJhkwrfM=
+X-Google-Smtp-Source: AGHT+IG2MFvfRLzbqLO5UDabd4n/3XziSxoOym4jvpO3IAILNVCNMeyyKALPLOteFzRAcBMFVvdmIKPnvREtlY67sjtjOWmYBeEq
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250212-wilc3000_bt-v1-9-9609b784874e@bootlin.com>
+X-Received: by 2002:a05:6e02:12c8:b0:3cf:b626:66c2 with SMTP id
+ e9e14a558f8ab-3d280921393mr50007475ab.19.1739742799584; Sun, 16 Feb 2025
+ 13:53:19 -0800 (PST)
+Date: Sun, 16 Feb 2025 13:53:19 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67b25e4f.050a0220.173698.0016.GAE@google.com>
+Subject: [syzbot] Monthly wireless report (Feb 2025)
+From: syzbot <syzbot+list8ccdbcb0368002fe97e4@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Feb 12, 2025 at 04:46:28PM +0100, Alexis Lothoré wrote:
-> If the wlan interface exposed by wilc driver has power save enabled
-> (either explicitly with iw dev wlan set power_save on, or because
-> kernel is built with CONFIG_CFG80211_DEFAULT_PS), it will send a power
-> management command to the wlan firmware when corresponding interface is
-> brought up. The bluetooth part, if used, is supposed to work
-> independently from the WLAN CPU. Unfortunately, this power save
-> management, if applied by the WLAN side, disrupts bluetooth operations
-> (the bluetooth CPU does not answer any command anymore on the UART
-> interface)
-> 
-> Make sure that the bluetooth part can work independently by disabling
-> power save in wlan firmware when bluetooth is in use.
-> 
-> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-> ---
->  drivers/net/wireless/microchip/wilc1000/bt.c       | 29 +++++++++++++++++++---
->  drivers/net/wireless/microchip/wilc1000/cfg80211.c |  5 +++-
->  drivers/net/wireless/microchip/wilc1000/netdev.h   |  3 +++
->  3 files changed, 33 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/microchip/wilc1000/bt.c b/drivers/net/wireless/microchip/wilc1000/bt.c
-> index b0f68a5479a5bd6f70e2390a35512037dc6c332b..f0eb5fb506eddf0f6f4f3f0b182eaa650c1c7a87 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/bt.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/bt.c
-> @@ -7,6 +7,7 @@
->  #include <linux/of_platform.h>
->  #include <linux/platform_device.h>
->  #include <net/wilc.h>
-> +#include "cfg80211.h"
->  #include "netdev.h"
->  #include "wlan_if.h"
->  #include "wlan.h"
-> @@ -261,22 +262,36 @@ static int wilc_bt_start(struct wilc *wilc)
->  int wilc_bt_init(void *wilc_wl_priv)
->  {
->  	struct wilc *wilc = (struct wilc *)wilc_wl_priv;
-> +	struct wilc_vif *vif;
->  	int ret;
->  
-> +	wilc->bt_enabled = true;
-> +
->  	if (!wilc->hif_func->hif_is_init(wilc)) {
->  		dev_info(wilc->dev, "Initializing bus before starting BT");
->  		acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
->  		ret = wilc->hif_func->hif_init(wilc, false);
->  		release_bus(wilc, WILC_BUS_RELEASE_ONLY);
-> -		if (ret)
-> +		if (ret) {
-> +			wilc->bt_enabled = false;
->  			return ret;
-> +		}
->  	}
->  
-> +	/* Power save feature managed by WLAN firmware may disrupt
-> +	 * operations from the bluetooth CPU, so disable it while bluetooth
-> +	 * is in use (if enabled, it will be enabled back when bluetooth is
-> +	 * not used anymore)
-> +	 */
-> +	vif = wilc_get_wl_to_vif(wilc);
-> +	if (wilc->power_save_mode && wilc_set_power_mgmt(vif, false))
-> +		goto hif_deinit;
+Hello wireless maintainers/developers,
 
-Hi Alexis,
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-Jumping to hif_deinit will result in the function returning ret.
-But ret may not not be initialised until a few lines below.
+During the period, 5 new issues were detected and 7 were fixed.
+In total, 58 issues are still open and 155 have already been fixed.
 
-Flagged by Smatch.
+Some of the still happening issues:
 
-> +
->  	mutex_lock(&wilc->radio_fw_start);
->  	ret = wilc_bt_power_up(wilc);
->  	if (ret) {
->  		dev_err(wilc->dev, "Error powering up bluetooth chip\n");
-> -		goto hif_deinit;
-> +		goto reenable_power_save;
->  	}
->  	ret = wilc_bt_firmware_download(wilc);
->  	if (ret) {
-> @@ -293,10 +308,14 @@ int wilc_bt_init(void *wilc_wl_priv)
->  
->  power_down:
->  	wilc_bt_power_down(wilc);
-> -hif_deinit:
-> +reenable_power_save:
-> +	if (wilc->power_save_mode_request)
-> +		wilc_set_power_mgmt(vif, true);
->  	mutex_unlock(&wilc->radio_fw_start);
-> +hif_deinit:
->  	if (!wilc->initialized)
->  		wilc->hif_func->hif_deinit(wilc);
-> +	wilc->bt_enabled = false;
->  	return ret;
->  }
->  EXPORT_SYMBOL(wilc_bt_init);
+Ref  Crashes Repro Title
+<1>  88473   Yes   WARNING in __ieee80211_beacon_get
+                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
+<2>  7039    Yes   WARNING in rate_control_rate_init (3)
+                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
+<3>  6511    Yes   WARNING in ath6kl_bmi_get_target_info (2)
+                   https://syzkaller.appspot.com/bug?extid=92c6dd14aaa230be6855
+<4>  6323    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<5>  4563    Yes   WARNING in __rate_control_send_low (3)
+                   https://syzkaller.appspot.com/bug?extid=34463a129786910405dd
+<6>  2622    Yes   WARNING in plfxlc_mac_release
+                   https://syzkaller.appspot.com/bug?extid=51a42f7c2e399392ea82
+<7>  1200    Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<8>  809     Yes   INFO: task hung in rfkill_global_led_trigger_worker (3)
+                   https://syzkaller.appspot.com/bug?extid=50499e163bfa302dfe7b
+<9>  550     Yes   INFO: task hung in crda_timeout_work (8)
+                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
+<10> 388     Yes   INFO: task hung in reg_check_chans_work (7)
+                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
 
-...
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
 
