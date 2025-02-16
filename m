@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-18976-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18977-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B87AA37377
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:44:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1395BA37379
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEA2A3AB65F
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:43:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE5D916CEE9
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2902A18DB34;
-	Sun, 16 Feb 2025 09:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BB318DB3F;
+	Sun, 16 Feb 2025 09:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JIeoNxwr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eljzTsvi"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B90E18DB32
-	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A3D18DB00
+	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739699026; cv=none; b=LggZbv4ZPQl5JyNake4oGs9RDudK43t6piI05uZTZwmZbEf2O+g5tdJrT5z4GXTuoTdu0t8bixFUsqSZKVEKxfvO/+h9wNJYb/OXgOA8PgjmAqBcnIjKjGAo3IK45bxzJXq2PZ6V9CWPrtW4mIxUtaxasSaW0oBHT+S6WJOf2bE=
+	t=1739699027; cv=none; b=WXAAxBpJJAaZapm+ZnnqVTliCgfgiB2FLqyZibL5Yasenl1vEi1ngrK1XqIbs3rC/AS6FganDhdciWp9wQdR4rnEqlv9WUufiLWnQatgQ6jREi/tUfhoN+0rSyzi7w0aO1UciOzq43sN0q9KPWyCIMIdX2prcyEgAg2te6hdewQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739699026; c=relaxed/simple;
-	bh=AYQ+zzrVGucofk4cdqrD6e4Yt8ZE6YuE/VbPBK3YnqI=;
+	s=arc-20240116; t=1739699027; c=relaxed/simple;
+	bh=Q213pkjPH8ewenhXpjbN0UfSXudJQTstDYbbu/reBOE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oMBqzsKTrsTRauFa+cWJHc133UUY1wv/nXevuYR6Ni+4JaTBz03uKodaAKPnDwrC7tIy0LQc1o+STHxf2T3oLyiwTv6NAS3RaK2g5EOb2cVP6Mn+d6rAqqE3L6u3xsISWsl5N9HICLM/MZg3Qbgan81+MD0ET++BlKmT+a9loCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JIeoNxwr; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=bxzpIlyF+a2ucSIPmmPRoSPLnPY6OQyhu0zeNQ3MFf68lGrPkYf12t3oxrstpeKksB29YBrjAtIFuKiLnTt1vU9Mssq1fupWBQpmxNQzIhtJteJrz5yPbFLGV/q8d6l/PtTwxNlvV89dC2EJsybVwQvWxMQLDIsF7DiAjKH+/CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eljzTsvi; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739699024; x=1771235024;
+  t=1739699025; x=1771235025;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AYQ+zzrVGucofk4cdqrD6e4Yt8ZE6YuE/VbPBK3YnqI=;
-  b=JIeoNxwrTBBn6sMrieiqDw/UYC1tScsIyf8+b2+J1OWyi4MJkzU4gqSf
-   qzP1dWygET4G92suz1pRciblpDZtVvh/y+T+5ZXYQs4K3RCh5zsp4jQyc
-   aJyzhJdMzis0KxFgIFisZ/Oc9EUsIhe33wAXPEAWr8kVSuLq5I4DR9i64
-   69gvCiWpJHkhXcBpvj8DLwCZjIUBC+71GBLlScZZWAFc1k3ergO9Br6Pw
-   cvxt8NX2MDWtwVBhYSWcr5yS2f/sM/2gIvVqHB8vMy7+I71uldLtVUQA7
-   xVaktraadJt1Kg8mC6Gs+n2AjOyYEPq1dvDMRyXijboJDxHuf3Id5uWeN
-   Q==;
-X-CSE-ConnectionGUID: HQfCSA8wQ+iXgjedtJl81w==
-X-CSE-MsgGUID: Aea5oo/tTiCX1Ld9mLopDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323366"
+  bh=Q213pkjPH8ewenhXpjbN0UfSXudJQTstDYbbu/reBOE=;
+  b=eljzTsvinGdSKmpEER7yV8DOi2SPvFfBZR5bRilgg/2TwB7Kicm3PZWO
+   Qg10WVxGXlJFnXcsmA1OBfkgp4mAqRFqLGzqxDZ1TPArVDR5Lr8PYGqOh
+   K4QUI0xbmub9ah3nw/IOKRHxkzUOE3yXC75R9bNCERD5yCVeia2absH7R
+   GzgebxQEbGG4JJfkT9Z0PohA5plLemXUtFmir+DBiYjwsY+nOdfHDflLV
+   wSO0HjH3RKTKzRchv0Ae7F5bEjEnU2Y/bCumNjsrPsFR5rk/RD7Z+/MeA
+   A5FEGNZtTFa5KLTjHTwtvhiLHYUB+yRZoIuZAlokIDhVVDkh5rM6DWNDe
+   A==;
+X-CSE-ConnectionGUID: YRm9euhwRyKjUmK0lyX8Zw==
+X-CSE-MsgGUID: vYBgzx+gQu+EPyzFw8dbBw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323369"
 X-IronPort-AV: E=Sophos;i="6.13,290,1732608000"; 
-   d="scan'208";a="40323366"
+   d="scan'208";a="40323369"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:43 -0800
-X-CSE-ConnectionGUID: CZO7O202Ry6FLs5F+RQIUg==
-X-CSE-MsgGUID: i9xwSUDAS3mz6GzGLlJUKA==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:45 -0800
+X-CSE-ConnectionGUID: aj1HAxrNTMqBvUWiLXVYXA==
+X-CSE-MsgGUID: lhe5KAAESnmjgBBVvNUDAA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118785220"
+   d="scan'208";a="118785223"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:42 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:44 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 06/42] wifi: iwlwifi: mld: add file debugfs.h/c
-Date: Sun, 16 Feb 2025 11:42:45 +0200
-Message-Id: <20250216111648.483434e60617.I0b7cf709fb85564fd7b29765e980f71f10136e40@changeid>
+Subject: [PATCH 07/42] wifi: iwlwifi: mld: add file ftm-initiator.h/c
+Date: Sun, 16 Feb 2025 11:42:46 +0200
+Message-Id: <20250216111648.22a28a8eeaab.I192b3cd636b2203a4a39f41c77b60caf761192cd@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
 References: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
@@ -76,1054 +76,494 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-this file is handling debugfs
+this file is handling a FTM
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mld/debugfs.c  | 826 ++++++++++++++++++
- .../net/wireless/intel/iwlwifi/mld/debugfs.h  | 200 +++++
- 2 files changed, 1026 insertions(+)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/debugfs.h
+ .../intel/iwlwifi/mld/ftm-initiator.c         | 451 ++++++++++++++++++
+ .../intel/iwlwifi/mld/ftm-initiator.h         |  15 +
+ 2 files changed, 466 insertions(+)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.h
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.c
 new file mode 100644
-index 000000000000..e21fe9ff48b3
+index 000000000000..f77ba21a174d
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
-@@ -0,0 +1,826 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++++ b/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.c
+@@ -0,0 +1,451 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
-+ * Copyright (C) 2024-2025 Intel Corporation
++ * Copyright (C) 2025 Intel Corporation
 + */
-+
++#include <linux/etherdevice.h>
++#include <linux/math64.h>
++#include <net/cfg80211.h>
 +#include "mld.h"
-+#include "debugfs.h"
-+#include "iwl-io.h"
-+#include "hcmd.h"
 +#include "iface.h"
-+#include "sta.h"
-+#include "tlc.h"
-+#include "power.h"
-+#include "notif.h"
-+#include "ap.h"
-+#include "iwl-utils.h"
-+#ifdef CONFIG_THERMAL
-+#include "thermal.h"
-+#endif
++#include "phy.h"
++#include "iwl-io.h"
++#include "iwl-prph.h"
++#include "constants.h"
++#include "fw/api/location.h"
++#include "ftm-initiator.h"
 +
-+#include "fw/api/rs.h"
-+#include "fw/api/dhc.h"
-+#include "fw/api/rfi.h"
-+
-+#define MLD_DEBUGFS_READ_FILE_OPS(name, bufsz)				\
-+	_MLD_DEBUGFS_READ_FILE_OPS(name, bufsz, struct iwl_mld)
-+
-+#define MLD_DEBUGFS_ADD_FILE_ALIAS(alias, name, parent, mode) do {	\
-+	debugfs_create_file(alias, mode, parent, mld,			\
-+			    &iwl_dbgfs_##name##_ops);			\
-+	} while (0)
-+#define MLD_DEBUGFS_ADD_FILE(name, parent, mode)			\
-+	MLD_DEBUGFS_ADD_FILE_ALIAS(#name, name, parent, mode)
-+
-+static bool iwl_mld_dbgfs_fw_cmd_disabled(struct iwl_mld *mld)
++static void iwl_mld_ftm_cmd_common(struct iwl_mld *mld,
++				   struct ieee80211_vif *vif,
++				   struct iwl_tof_range_req_cmd *cmd,
++				   struct cfg80211_pmsr_request *req)
 +{
-+#ifdef CONFIG_PM_SLEEP
-+	return !mld->fw_status.running || mld->fw_status.in_d3;
-+#else
-+	return !mld->fw_status.running;
-+#endif /* CONFIG_PM_SLEEP */
-+}
++	int i;
 +
-+static ssize_t iwl_dbgfs_fw_dbg_clear_write(struct iwl_mld *mld,
-+					    char *buf, size_t count)
-+{
-+	/* If the firmware is not running, silently succeed since there is
-+	 * no data to clear.
++	cmd->initiator_flags =
++		cpu_to_le32(IWL_TOF_INITIATOR_FLAGS_MACADDR_RANDOM |
++			    IWL_TOF_INITIATOR_FLAGS_NON_ASAP_SUPPORT);
++	cmd->request_id = req->cookie;
++	cmd->num_of_ap = req->n_peers;
++
++	/* Use a large value for "no timeout". Don't use the maximum value
++	 * because of fw limitations.
 +	 */
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return 0;
-+
-+	iwl_fw_dbg_clear_monitor_buf(&mld->fwrt);
-+
-+	return count;
-+}
-+
-+static ssize_t iwl_dbgfs_fw_nmi_write(struct iwl_mld *mld, char *buf,
-+				      size_t count)
-+{
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	IWL_ERR(mld, "Triggering an NMI from debugfs\n");
-+
-+	if (count == 6 && !strcmp(buf, "nolog\n"))
-+		mld->fw_status.do_not_dump_once = true;
-+
-+	iwl_force_nmi(mld->trans);
-+
-+	return count;
-+}
-+
-+static ssize_t iwl_dbgfs_fw_restart_write(struct iwl_mld *mld, char *buf,
-+					  size_t count)
-+{
-+	int __maybe_unused ret;
-+
-+	if (!iwlwifi_mod_params.fw_restart)
-+		return -EPERM;
-+
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	if (count == 6 && !strcmp(buf, "nolog\n")) {
-+		mld->fw_status.do_not_dump_once = true;
-+		set_bit(STATUS_SUPPRESS_CMD_ERROR_ONCE, &mld->trans->status);
-+	}
-+
-+	/* take the return value to make compiler happy - it will
-+	 * fail anyway
-+	 */
-+	ret = iwl_mld_send_cmd_empty(mld, WIDE_ID(LONG_GROUP, REPLY_ERROR));
-+
-+	return count;
-+}
-+
-+static ssize_t iwl_dbgfs_send_echo_cmd_write(struct iwl_mld *mld, char *buf,
-+					     size_t count)
-+{
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	return iwl_mld_send_cmd_empty(mld, ECHO_CMD) ?: count;
-+}
-+
-+struct iwl_mld_sniffer_apply {
-+	struct iwl_mld *mld;
-+	const u8 *bssid;
-+	u16 aid;
-+};
-+
-+static bool iwl_mld_sniffer_apply(struct iwl_notif_wait_data *notif_data,
-+				  struct iwl_rx_packet *pkt, void *data)
-+{
-+	struct iwl_mld_sniffer_apply *apply = data;
-+
-+	apply->mld->monitor.cur_aid = cpu_to_le16(apply->aid);
-+	memcpy(apply->mld->monitor.cur_bssid, apply->bssid,
-+	       sizeof(apply->mld->monitor.cur_bssid));
-+
-+	return true;
-+}
-+
-+static ssize_t
-+iwl_dbgfs_he_sniffer_params_write(struct iwl_mld *mld, char *buf,
-+				  size_t count)
-+{
-+	struct iwl_notification_wait wait;
-+	struct iwl_he_monitor_cmd he_mon_cmd = {};
-+	struct iwl_mld_sniffer_apply apply = {
-+		.mld = mld,
-+	};
-+	u16 wait_cmds[] = {
-+		WIDE_ID(DATA_PATH_GROUP, HE_AIR_SNIFFER_CONFIG_CMD),
-+	};
-+	u32 aid;
-+	int ret;
-+
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	if (!mld->monitor.on)
-+		return -ENODEV;
-+
-+	ret = sscanf(buf, "%x %2hhx:%2hhx:%2hhx:%2hhx:%2hhx:%2hhx", &aid,
-+		     &he_mon_cmd.bssid[0], &he_mon_cmd.bssid[1],
-+		     &he_mon_cmd.bssid[2], &he_mon_cmd.bssid[3],
-+		     &he_mon_cmd.bssid[4], &he_mon_cmd.bssid[5]);
-+	if (ret != 7)
-+		return -EINVAL;
-+
-+	he_mon_cmd.aid = cpu_to_le16(aid);
-+
-+	apply.aid = aid;
-+	apply.bssid = (void *)he_mon_cmd.bssid;
-+
-+	/* Use the notification waiter to get our function triggered
-+	 * in sequence with other RX. This ensures that frames we get
-+	 * on the RX queue _before_ the new configuration is applied
-+	 * still have mld->cur_aid pointing to the old AID, and that
-+	 * frames on the RX queue _after_ the firmware processed the
-+	 * new configuration (and sent the response, synchronously)
-+	 * get mld->cur_aid correctly set to the new AID.
-+	 */
-+	iwl_init_notification_wait(&mld->notif_wait, &wait,
-+				   wait_cmds, ARRAY_SIZE(wait_cmds),
-+				   iwl_mld_sniffer_apply, &apply);
-+
-+	ret = iwl_mld_send_cmd_pdu(mld,
-+				   WIDE_ID(DATA_PATH_GROUP,
-+					   HE_AIR_SNIFFER_CONFIG_CMD),
-+				   &he_mon_cmd);
-+
-+	/* no need to really wait, we already did anyway */
-+	iwl_remove_notification(&mld->notif_wait, &wait);
-+
-+	return ret ?: count;
-+}
-+
-+static ssize_t
-+iwl_dbgfs_he_sniffer_params_read(struct iwl_mld *mld, size_t count,
-+				 char *buf)
-+{
-+	return scnprintf(buf, count,
-+			 "%d %02hhx:%02hhx:%02hhx:%02hhx:%02hhx:%02hhx\n",
-+			 le16_to_cpu(mld->monitor.cur_aid),
-+			 mld->monitor.cur_bssid[0], mld->monitor.cur_bssid[1],
-+			 mld->monitor.cur_bssid[2], mld->monitor.cur_bssid[3],
-+			 mld->monitor.cur_bssid[4], mld->monitor.cur_bssid[5]);
-+}
-+
-+/* The size computation is as follows:
-+ * each number needs at most 3 characters, number of rows is the size of
-+ * the table; So, need 5 chars for the "freq: " part and each tuple afterwards
-+ * needs 6 characters for numbers and 5 for the punctuation around. 32 bytes
-+ * for feature support message.
-+ */
-+#define IWL_RFI_DDR_BUF_SIZE (IWL_RFI_DDR_LUT_INSTALLED_SIZE *\
-+				(5 + IWL_RFI_DDR_LUT_ENTRY_CHANNELS_NUM *\
-+					(6 + 5)) + 32)
-+#define IWL_RFI_DLVR_BUF_SIZE (IWL_RFI_DLVR_LUT_INSTALLED_SIZE *\
-+				(5 + IWL_RFI_DLVR_LUT_ENTRY_CHANNELS_NUM *\
-+					(6 + 5)) + 32)
-+#define IWL_RFI_DESENSE_BUF_SIZE IWL_RFI_DDR_BUF_SIZE
-+
-+/* Extra 32 for "DDR and DLVR table" message */
-+#define IWL_RFI_BUF_SIZE (IWL_RFI_DDR_BUF_SIZE + IWL_RFI_DLVR_BUF_SIZE +\
-+				IWL_RFI_DESENSE_BUF_SIZE + 32)
-+
-+WIPHY_DEBUGFS_WRITE_FILE_OPS_MLD(fw_nmi, 10);
-+WIPHY_DEBUGFS_WRITE_FILE_OPS_MLD(fw_restart, 10);
-+WIPHY_DEBUGFS_READ_WRITE_FILE_OPS_MLD(he_sniffer_params, 32);
-+WIPHY_DEBUGFS_WRITE_FILE_OPS_MLD(fw_dbg_clear, 10);
-+WIPHY_DEBUGFS_WRITE_FILE_OPS_MLD(send_echo_cmd, 8);
-+
-+static ssize_t iwl_dbgfs_wifi_6e_enable_read(struct iwl_mld *mld,
-+					     size_t count, u8 *buf)
-+{
-+	int err;
-+	u32 value;
-+
-+	err = iwl_bios_get_dsm(&mld->fwrt, DSM_FUNC_ENABLE_6E, &value);
-+	if (err)
-+		return err;
-+
-+	return scnprintf(buf, count, "0x%08x\n", value);
-+}
-+
-+MLD_DEBUGFS_READ_FILE_OPS(wifi_6e_enable, 64);
-+
-+static ssize_t iwl_dbgfs_inject_packet_write(struct iwl_mld *mld,
-+					     char *buf, size_t count)
-+{
-+	struct iwl_op_mode *opmode = container_of((void *)mld,
-+						  struct iwl_op_mode,
-+						  op_mode_specific);
-+	struct iwl_rx_cmd_buffer rxb = {};
-+	struct iwl_rx_packet *pkt;
-+	int n_bytes = count / 2;
-+	int ret = -EINVAL;
-+
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	rxb._page = alloc_pages(GFP_KERNEL, 0);
-+	if (!rxb._page)
-+		return -ENOMEM;
-+	pkt = rxb_addr(&rxb);
-+
-+	ret = hex2bin(page_address(rxb._page), buf, n_bytes);
-+	if (ret)
-+		goto out;
-+
-+	/* avoid invalid memory access and malformed packet */
-+	if (n_bytes < sizeof(*pkt) ||
-+	    n_bytes != sizeof(*pkt) + iwl_rx_packet_payload_len(pkt))
-+		goto out;
-+
-+	local_bh_disable();
-+	iwl_mld_rx(opmode, NULL, &rxb);
-+	local_bh_enable();
-+	ret = 0;
-+
-+out:
-+	iwl_free_rxb(&rxb);
-+
-+	return ret ?: count;
-+}
-+
-+WIPHY_DEBUGFS_WRITE_FILE_OPS_MLD(inject_packet, 512);
-+
-+#ifdef CONFIG_THERMAL
-+
-+static ssize_t iwl_dbgfs_stop_ctdp_write(struct iwl_mld *mld,
-+					 char *buf, size_t count)
-+{
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	return iwl_mld_config_ctdp(mld, mld->cooling_dev.cur_state,
-+				   CTDP_CMD_OPERATION_STOP) ? : count;
-+}
-+
-+WIPHY_DEBUGFS_WRITE_FILE_OPS_MLD(stop_ctdp, 8);
-+
-+static ssize_t iwl_dbgfs_start_ctdp_write(struct iwl_mld *mld,
-+					  char *buf, size_t count)
-+{
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	return iwl_mld_config_ctdp(mld, mld->cooling_dev.cur_state,
-+				   CTDP_CMD_OPERATION_START) ? : count;
-+}
-+
-+WIPHY_DEBUGFS_WRITE_FILE_OPS_MLD(start_ctdp, 8);
-+
-+#endif /* CONFIG_THERMAL */
-+
-+void
-+iwl_mld_add_debugfs_files(struct iwl_mld *mld, struct dentry *debugfs_dir)
-+{
-+	/* Add debugfs files here */
-+
-+	MLD_DEBUGFS_ADD_FILE(fw_nmi, debugfs_dir, 0200);
-+	MLD_DEBUGFS_ADD_FILE(fw_restart, debugfs_dir, 0200);
-+	MLD_DEBUGFS_ADD_FILE(wifi_6e_enable, debugfs_dir, 0400);
-+	MLD_DEBUGFS_ADD_FILE(he_sniffer_params, debugfs_dir, 0600);
-+	MLD_DEBUGFS_ADD_FILE(fw_dbg_clear, debugfs_dir, 0200);
-+	MLD_DEBUGFS_ADD_FILE(send_echo_cmd, debugfs_dir, 0200);
-+#ifdef CONFIG_THERMAL
-+	MLD_DEBUGFS_ADD_FILE(start_ctdp, debugfs_dir, 0200);
-+	MLD_DEBUGFS_ADD_FILE(stop_ctdp, debugfs_dir, 0200);
-+#endif
-+	MLD_DEBUGFS_ADD_FILE(inject_packet, debugfs_dir, 0200);
-+
-+	/* Create a symlink with mac80211. It will be removed when mac80211
-+	 * exits (before the opmode exits which removes the target.)
-+	 */
-+	if (!IS_ERR(debugfs_dir)) {
-+		char buf[100];
-+
-+		snprintf(buf, 100, "../../%pd2", debugfs_dir->d_parent);
-+		debugfs_create_symlink("iwlwifi", mld->wiphy->debugfsdir,
-+				       buf);
-+	}
-+}
-+
-+#define VIF_DEBUGFS_WRITE_FILE_OPS(name, bufsz)			\
-+	WIPHY_DEBUGFS_WRITE_FILE_OPS(vif_##name, bufsz, vif)
-+
-+#define VIF_DEBUGFS_READ_WRITE_FILE_OPS(name, bufsz)			    \
-+	IEEE80211_WIPHY_DEBUGFS_READ_WRITE_FILE_OPS(vif_##name, bufsz, vif) \
-+
-+#define VIF_DEBUGFS_ADD_FILE_ALIAS(alias, name, parent, mode) do {	\
-+	debugfs_create_file(alias, mode, parent, vif,			\
-+			    &iwl_dbgfs_vif_##name##_ops);		\
-+	} while (0)
-+#define VIF_DEBUGFS_ADD_FILE(name, parent, mode)			\
-+	VIF_DEBUGFS_ADD_FILE_ALIAS(#name, name, parent, mode)
-+
-+static ssize_t iwl_dbgfs_vif_bf_params_write(struct iwl_mld *mld, char *buf,
-+					     size_t count, void *data)
-+{
-+	struct ieee80211_vif *vif = data;
-+	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	int link_id = vif->active_links ? __ffs(vif->active_links) : 0;
-+	struct ieee80211_bss_conf *link_conf;
-+	int val;
-+
-+	if (!strncmp("bf_enable_beacon_filter=", buf, 24)) {
-+		if (sscanf(buf + 24, "%d", &val) != 1)
-+			return -EINVAL;
-+	} else {
-+		return -EINVAL;
-+	}
-+
-+	if (val != 0 && val != 1)
-+		return -EINVAL;
-+
-+	link_conf = link_conf_dereference_protected(vif, link_id);
-+	if (WARN_ON(!link_conf))
-+		return -ENODEV;
-+
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	mld_vif->disable_bf = !val;
-+
-+	if (val)
-+		return iwl_mld_enable_beacon_filter(mld, link_conf,
-+						    false) ?: count;
++	if (req->timeout)
++		cmd->req_timeout_ms = cpu_to_le32(min(req->timeout, 0xfffff));
 +	else
-+		return iwl_mld_disable_beacon_filter(mld, vif) ?: count;
-+}
++		cmd->req_timeout_ms = cpu_to_le32(0xfffff);
 +
-+static ssize_t iwl_dbgfs_vif_pm_params_write(struct iwl_mld *mld,
-+					     char *buf,
-+					     size_t count, void *data)
-+{
-+	struct ieee80211_vif *vif = data;
-+	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	int val;
++	memcpy(cmd->macaddr_template, req->mac_addr, ETH_ALEN);
++	for (i = 0; i < ETH_ALEN; i++)
++		cmd->macaddr_mask[i] = ~req->mac_addr_mask[i];
 +
-+	if (!strncmp("use_ps_poll=", buf, 12)) {
-+		if (sscanf(buf + 12, "%d", &val) != 1)
-+			return -EINVAL;
++	if (vif->cfg.assoc) {
++		memcpy(cmd->range_req_bssid, vif->bss_conf.bssid, ETH_ALEN);
++
++		/* AP's TSF is only relevant if associated */
++		for (i = 0; i < req->n_peers; i++) {
++			if (req->peers[i].report_ap_tsf) {
++				struct iwl_mld_vif *mld_vif =
++					iwl_mld_vif_from_mac80211(vif);
++
++				cmd->tsf_mac_id = cpu_to_le32(mld_vif->fw_id);
++				return;
++			}
++		}
 +	} else {
-+		return -EINVAL;
++		eth_broadcast_addr(cmd->range_req_bssid);
 +	}
 +
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	mld_vif->use_ps_poll = val;
-+
-+	return iwl_mld_update_mac_power(mld, vif, false) ?: count;
++	/* Don't report AP's TSF */
++	cmd->tsf_mac_id = cpu_to_le32(0xff);
 +}
 +
-+static ssize_t iwl_dbgfs_vif_low_latency_write(struct iwl_mld *mld,
-+					       char *buf, size_t count,
-+					       void *data)
++static int
++iwl_mld_ftm_set_target_chandef(struct iwl_mld *mld,
++			       struct cfg80211_pmsr_request_peer *peer,
++			       struct iwl_tof_range_req_ap_entry *target)
 +{
-+	struct ieee80211_vif *vif = data;
-+	u8 value;
++	u32 freq = peer->chandef.chan->center_freq;
++
++	target->channel_num = ieee80211_frequency_to_channel(freq);
++
++	switch (peer->chandef.width) {
++	case NL80211_CHAN_WIDTH_20_NOHT:
++		target->format_bw = IWL_LOCATION_FRAME_FORMAT_LEGACY;
++		target->format_bw |= IWL_LOCATION_BW_20MHZ << LOCATION_BW_POS;
++		break;
++	case NL80211_CHAN_WIDTH_20:
++		target->format_bw = IWL_LOCATION_FRAME_FORMAT_HT;
++		target->format_bw |= IWL_LOCATION_BW_20MHZ << LOCATION_BW_POS;
++		break;
++	case NL80211_CHAN_WIDTH_40:
++		target->format_bw = IWL_LOCATION_FRAME_FORMAT_HT;
++		target->format_bw |= IWL_LOCATION_BW_40MHZ << LOCATION_BW_POS;
++		break;
++	case NL80211_CHAN_WIDTH_80:
++		target->format_bw = IWL_LOCATION_FRAME_FORMAT_VHT;
++		target->format_bw |= IWL_LOCATION_BW_80MHZ << LOCATION_BW_POS;
++		break;
++	case NL80211_CHAN_WIDTH_160:
++		target->format_bw = IWL_LOCATION_FRAME_FORMAT_HE;
++		target->format_bw |= IWL_LOCATION_BW_160MHZ << LOCATION_BW_POS;
++		break;
++	default:
++		IWL_ERR(mld, "Unsupported BW in FTM request (%d)\n",
++			peer->chandef.width);
++		return -EINVAL;
++}
++
++	/* non EDCA based measurement must use HE preamble */
++	if (peer->ftm.trigger_based || peer->ftm.non_trigger_based)
++		target->format_bw |= IWL_LOCATION_FRAME_FORMAT_HE;
++
++	target->ctrl_ch_position =
++		(peer->chandef.width > NL80211_CHAN_WIDTH_20) ?
++		iwl_mld_get_fw_ctrl_pos(&peer->chandef) : 0;
++
++	target->band = iwl_mld_nl80211_band_to_fw(peer->chandef.chan->band);
++	return 0;
++}
++
++#define FTM_SET_FLAG(flag) (target->initiator_ap_flags |= \
++			    cpu_to_le32(IWL_INITIATOR_AP_FLAGS_##flag))
++
++static void
++iwl_mld_ftm_set_target_flags(struct iwl_mld *mld,
++			     struct cfg80211_pmsr_request_peer *peer,
++			     struct iwl_tof_range_req_ap_entry *target)
++{
++	target->initiator_ap_flags = cpu_to_le32(0);
++
++	if (peer->ftm.asap)
++		FTM_SET_FLAG(ASAP);
++
++	if (peer->ftm.request_lci)
++		FTM_SET_FLAG(LCI_REQUEST);
++
++	if (peer->ftm.request_civicloc)
++		FTM_SET_FLAG(CIVIC_REQUEST);
++
++	if (IWL_MLD_FTM_INITIATOR_DYNACK)
++		FTM_SET_FLAG(DYN_ACK);
++
++	if (IWL_MLD_FTM_INITIATOR_ALGO == IWL_TOF_ALGO_TYPE_LINEAR_REG)
++		FTM_SET_FLAG(ALGO_LR);
++	else if (IWL_MLD_FTM_INITIATOR_ALGO == IWL_TOF_ALGO_TYPE_FFT)
++		FTM_SET_FLAG(ALGO_FFT);
++
++	if (peer->ftm.trigger_based)
++		FTM_SET_FLAG(TB);
++	else if (peer->ftm.non_trigger_based)
++		FTM_SET_FLAG(NON_TB);
++
++	if ((peer->ftm.trigger_based || peer->ftm.non_trigger_based) &&
++	    peer->ftm.lmr_feedback)
++		FTM_SET_FLAG(LMR_FEEDBACK);
++}
++
++static void iwl_mld_ftm_set_sta(struct iwl_mld *mld, struct ieee80211_vif *vif,
++				struct cfg80211_pmsr_request_peer *peer,
++				struct iwl_tof_range_req_ap_entry *target)
++{
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	u32 sta_id_mask;
++
++	target->sta_id = IWL_INVALID_STA;
++
++	/* TODO: add ftm_unprotected debugfs support */
++
++	if (!vif->cfg.assoc || !mld_vif->ap_sta)
++		return;
++
++	sta_id_mask = iwl_mld_fw_sta_id_mask(mld, mld_vif->ap_sta);
++	if (WARN_ON(hweight32(sta_id_mask) != 1))
++		return;
++
++	target->sta_id = __ffs(sta_id_mask);
++
++	if (mld_vif->ap_sta->mfp &&
++	    (peer->ftm.trigger_based || peer->ftm.non_trigger_based))
++		FTM_SET_FLAG(PMF);
++}
++
++static int
++iwl_mld_ftm_set_target(struct iwl_mld *mld, struct ieee80211_vif *vif,
++		       struct cfg80211_pmsr_request_peer *peer,
++		       struct iwl_tof_range_req_ap_entry *target)
++{
++	u32 i2r_max_sts;
 +	int ret;
 +
-+	ret = kstrtou8(buf, 0, &value);
++	ret = iwl_mld_ftm_set_target_chandef(mld, peer, target);
 +	if (ret)
 +		return ret;
 +
-+	if (value > 1)
-+		return -EINVAL;
++	memcpy(target->bssid, peer->addr, ETH_ALEN);
++	target->burst_period = cpu_to_le16(peer->ftm.burst_period);
++	target->samples_per_burst = peer->ftm.ftms_per_burst;
++	target->num_of_bursts = peer->ftm.num_bursts_exp;
++	iwl_mld_ftm_set_target_flags(mld, peer, target);
++	iwl_mld_ftm_set_sta(mld, vif, peer, target);
 +
-+	iwl_mld_vif_update_low_latency(mld, vif, value, LOW_LATENCY_DEBUGFS);
++	/* TODO: add secured ranging support */
 +
-+	return count;
-+}
++	i2r_max_sts = IWL_MLD_FTM_I2R_MAX_STS > 1 ? 1 :
++		IWL_MLD_FTM_I2R_MAX_STS;
 +
-+static ssize_t iwl_dbgfs_vif_low_latency_read(struct ieee80211_vif *vif,
-+					      size_t count, char *buf)
-+{
-+	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	char format[] = "traffic=%d\ndbgfs=%d\nvif_type=%d\nactual=%d\n";
-+	u8 ll_causes;
++	target->r2i_ndp_params = IWL_MLD_FTM_R2I_MAX_REP |
++		(IWL_MLD_FTM_R2I_MAX_STS << IWL_LOCATION_MAX_STS_POS) |
++		(IWL_MLD_FTM_R2I_MAX_TOTAL_LTF << IWL_LOCATION_TOTAL_LTF_POS);
++	target->i2r_ndp_params = IWL_MLD_FTM_I2R_MAX_REP |
++		(i2r_max_sts << IWL_LOCATION_MAX_STS_POS) |
++		(IWL_MLD_FTM_I2R_MAX_TOTAL_LTF << IWL_LOCATION_TOTAL_LTF_POS);
 +
-+	if (WARN_ON(count < sizeof(format)))
-+		return -EINVAL;
++	if (peer->ftm.non_trigger_based) {
++		target->min_time_between_msr =
++			cpu_to_le16(IWL_MLD_FTM_NON_TB_MIN_TIME_BETWEEN_MSR);
++		target->burst_period =
++			cpu_to_le16(IWL_MLD_FTM_NON_TB_MAX_TIME_BETWEEN_MSR);
++	} else {
++		target->min_time_between_msr = cpu_to_le16(0);
++	}
 +
-+	ll_causes = READ_ONCE(mld_vif->low_latency_causes);
-+
-+	/* all values in format are boolean so the size of format is enough
-+	 * for holding the result string
++	/* TODO: Beacon interval is currently unknown, so use the common value
++	 * of 100 TUs.
 +	 */
-+	return scnprintf(buf, count, format,
-+			 !!(ll_causes & LOW_LATENCY_TRAFFIC),
-+			 !!(ll_causes & LOW_LATENCY_DEBUGFS),
-+			 !!(ll_causes & LOW_LATENCY_VIF_TYPE),
-+			 !!(ll_causes));
++	target->beacon_interval = cpu_to_le16(100);
++
++	return 0;
 +}
 +
-+VIF_DEBUGFS_WRITE_FILE_OPS(pm_params, 32);
-+VIF_DEBUGFS_WRITE_FILE_OPS(bf_params, 32);
-+VIF_DEBUGFS_READ_WRITE_FILE_OPS(low_latency, 45);
-+
-+static int
-+_iwl_dbgfs_inject_beacon_ie(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+			    char *bin, ssize_t len,
-+			    bool restore)
++int iwl_mld_ftm_start(struct iwl_mld *mld, struct ieee80211_vif *vif,
++		      struct cfg80211_pmsr_request *req)
 +{
-+	struct iwl_mld_vif *mld_vif;
-+	struct iwl_mld_link *mld_link;
-+	struct iwl_mac_beacon_cmd beacon_cmd = {};
-+	int n_bytes = len / 2;
++	struct iwl_tof_range_req_cmd cmd;
++	struct iwl_host_cmd hcmd = {
++		.id = WIDE_ID(LOCATION_GROUP, TOF_RANGE_REQ_CMD),
++		.dataflags[0] = IWL_HCMD_DFL_DUP,
++		.data[0] = &cmd,
++		.len[0] = sizeof(cmd),
++	};
++	u8 i;
++	int ret;
 +
-+	/* Element len should be represented by u8 */
-+	if (n_bytes >= U8_MAX)
++	lockdep_assert_wiphy(mld->wiphy);
++
++	if (mld->ftm_initiator.req)
++		return -EBUSY;
++
++	if (req->n_peers > ARRAY_SIZE(cmd.ap))
 +		return -EINVAL;
 +
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
++	memset(&cmd, 0, sizeof(cmd));
 +
-+	if (!vif)
++	iwl_mld_ftm_cmd_common(mld, vif, (void *)&cmd, req);
++
++	for (i = 0; i < cmd.num_of_ap; i++) {
++		struct cfg80211_pmsr_request_peer *peer = &req->peers[i];
++		struct iwl_tof_range_req_ap_entry *target = &cmd.ap[i];
++
++		ret = iwl_mld_ftm_set_target(mld, vif, peer, target);
++		if (ret)
++			return ret;
++	}
++
++	/* TODO: get the status from the response*/
++	ret = iwl_mld_send_cmd(mld, &hcmd);
++	if (!ret) {
++		mld->ftm_initiator.req = req;
++		mld->ftm_initiator.req_wdev = ieee80211_vif_to_wdev(vif);
++	}
++
++	return ret;
++}
++
++static void iwl_mld_ftm_reset(struct iwl_mld *mld)
++{
++	lockdep_assert_wiphy(mld->wiphy);
++
++	mld->ftm_initiator.req = NULL;
++	mld->ftm_initiator.req_wdev = NULL;
++	memset(mld->ftm_initiator.responses, 0,
++	       sizeof(mld->ftm_initiator.responses));
++}
++
++static int iwl_mld_ftm_range_resp_valid(struct iwl_mld *mld, u8 request_id,
++					u8 num_of_aps)
++{
++	if (IWL_FW_CHECK(mld, request_id != (u8)mld->ftm_initiator.req->cookie,
++			 "Request ID mismatch, got %u, active %u\n",
++			 request_id, (u8)mld->ftm_initiator.req->cookie))
 +		return -EINVAL;
 +
-+	mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	mld_vif->beacon_inject_active = true;
-+	mld->hw->extra_beacon_tailroom = n_bytes;
++	if (IWL_FW_CHECK(mld, num_of_aps > mld->ftm_initiator.req->n_peers ||
++			 num_of_aps > IWL_TOF_MAX_APS,
++			 "FTM range response: invalid num of APs (%u)\n",
++			 num_of_aps))
++		return -EINVAL;
 +
-+	for_each_mld_vif_valid_link(mld_vif, mld_link) {
-+		u32 offset;
-+		struct ieee80211_tx_info *info;
-+		struct ieee80211_bss_conf *link_conf =
-+			link_conf_dereference_protected(vif, link_id);
-+		struct ieee80211_chanctx_conf *ctx =
-+			wiphy_dereference(mld->wiphy, link_conf->chanctx_conf);
-+		struct sk_buff *beacon =
-+			ieee80211_beacon_get_template(mld->hw, vif,
-+						      NULL, link_id);
++	return 0;
++}
 +
-+		if (!beacon)
-+			return -EINVAL;
++static int iwl_mld_ftm_find_peer(struct cfg80211_pmsr_request *req,
++				 const u8 *addr)
++{
++	for (int i = 0; i < req->n_peers; i++) {
++		struct cfg80211_pmsr_request_peer *peer = &req->peers[i];
 +
-+		if (!restore && (WARN_ON(!n_bytes || !bin) ||
-+				 hex2bin(skb_put_zero(beacon, n_bytes),
-+					 bin, n_bytes))) {
-+			dev_kfree_skb(beacon);
-+			return -EINVAL;
++		if (ether_addr_equal_unaligned(peer->addr, addr))
++			return i;
++	}
++
++	return -ENOENT;
++}
++
++static void iwl_mld_debug_range_resp(struct iwl_mld *mld, u8 index,
++				     struct cfg80211_pmsr_result *res)
++{
++	s64 rtt_avg = div_s64(res->ftm.rtt_avg * 100, 6666);
++
++	IWL_DEBUG_INFO(mld, "entry %d\n", index);
++	IWL_DEBUG_INFO(mld, "\tstatus: %d\n", res->status);
++	IWL_DEBUG_INFO(mld, "\tBSSID: %pM\n", res->addr);
++	IWL_DEBUG_INFO(mld, "\thost time: %llu\n", res->host_time);
++	IWL_DEBUG_INFO(mld, "\tburst index: %d\n", res->ftm.burst_index);
++	IWL_DEBUG_INFO(mld, "\tsuccess num: %u\n", res->ftm.num_ftmr_successes);
++	IWL_DEBUG_INFO(mld, "\trssi: %d\n", res->ftm.rssi_avg);
++	IWL_DEBUG_INFO(mld, "\trssi spread: %d\n", res->ftm.rssi_spread);
++	IWL_DEBUG_INFO(mld, "\trtt: %lld\n", res->ftm.rtt_avg);
++	IWL_DEBUG_INFO(mld, "\trtt var: %llu\n", res->ftm.rtt_variance);
++	IWL_DEBUG_INFO(mld, "\trtt spread: %llu\n", res->ftm.rtt_spread);
++	IWL_DEBUG_INFO(mld, "\tdistance: %lld\n", rtt_avg);
++}
++
++void iwl_mld_handle_ftm_resp_notif(struct iwl_mld *mld,
++				   struct iwl_rx_packet *pkt)
++{
++	struct iwl_tof_range_rsp_ntfy *fw_resp = (void *)pkt->data;
++	u8 num_of_aps, last_in_batch;
++
++	if (IWL_FW_CHECK(mld, !mld->ftm_initiator.req,
++			 "FTM response without a pending request\n"))
++		return;
++
++	if (iwl_mld_ftm_range_resp_valid(mld, fw_resp->request_id,
++					 fw_resp->num_of_aps))
++		return;
++
++	num_of_aps = fw_resp->num_of_aps;
++	last_in_batch = fw_resp->last_report;
++
++	IWL_DEBUG_INFO(mld, "Range response received\n");
++	IWL_DEBUG_INFO(mld, "request id: %llu, num of entries: %u\n",
++		       mld->ftm_initiator.req->cookie, num_of_aps);
++
++	for (int i = 0; i < num_of_aps; i++) {
++		struct cfg80211_pmsr_result result = {};
++		struct iwl_tof_range_rsp_ap_entry_ntfy *fw_ap;
++		int peer_idx;
++
++		fw_ap = &fw_resp->ap[i];
++		result.final = fw_ap->last_burst;
++		result.ap_tsf = le32_to_cpu(fw_ap->start_tsf);
++		result.ap_tsf_valid = 1;
++
++		peer_idx = iwl_mld_ftm_find_peer(mld->ftm_initiator.req,
++						 fw_ap->bssid);
++		if (peer_idx < 0) {
++			IWL_WARN(mld,
++				 "Unknown address (%pM, target #%d) in FTM response\n",
++				 fw_ap->bssid, i);
++			continue;
 +		}
 +
-+		info = IEEE80211_SKB_CB(beacon);
++		switch (fw_ap->measure_status) {
++		case IWL_TOF_ENTRY_SUCCESS:
++			result.status = NL80211_PMSR_STATUS_SUCCESS;
++			break;
++		case IWL_TOF_ENTRY_TIMING_MEASURE_TIMEOUT:
++			result.status = NL80211_PMSR_STATUS_TIMEOUT;
++			break;
++		case IWL_TOF_ENTRY_NO_RESPONSE:
++			result.status = NL80211_PMSR_STATUS_FAILURE;
++			result.ftm.failure_reason =
++				NL80211_PMSR_FTM_FAILURE_NO_RESPONSE;
++			break;
++		case IWL_TOF_ENTRY_REQUEST_REJECTED:
++			result.status = NL80211_PMSR_STATUS_FAILURE;
++			result.ftm.failure_reason =
++				NL80211_PMSR_FTM_FAILURE_PEER_BUSY;
++			result.ftm.busy_retry_time = fw_ap->refusal_period;
++			break;
++		default:
++			result.status = NL80211_PMSR_STATUS_FAILURE;
++			result.ftm.failure_reason =
++				NL80211_PMSR_FTM_FAILURE_UNSPECIFIED;
++			break;
++		}
++		memcpy(result.addr, fw_ap->bssid, ETH_ALEN);
 +
-+		beacon_cmd.flags =
-+			cpu_to_le16(iwl_mld_get_rate_flags(mld, info, vif,
-+							   link_conf,
-+							   ctx->def.chan->band));
-+		beacon_cmd.byte_cnt = cpu_to_le16((u16)beacon->len);
-+		beacon_cmd.link_id =
-+			cpu_to_le32(mld_link->fw_id);
++		/* TODO: convert the timestamp from the result to systime */
++		result.host_time = ktime_get_boottime_ns();
 +
-+		iwl_mld_set_tim_idx(mld, &beacon_cmd.tim_idx,
-+				    beacon->data, beacon->len);
++		result.type = NL80211_PMSR_TYPE_FTM;
++		result.ftm.burst_index = mld->ftm_initiator.responses[peer_idx];
++		mld->ftm_initiator.responses[peer_idx]++;
++		result.ftm.rssi_avg = fw_ap->rssi;
++		result.ftm.rssi_avg_valid = 1;
++		result.ftm.rssi_spread = fw_ap->rssi_spread;
++		result.ftm.rssi_spread_valid = 1;
++		result.ftm.rtt_avg = (s32)le32_to_cpu(fw_ap->rtt);
++		result.ftm.rtt_avg_valid = 1;
++		result.ftm.rtt_variance = le32_to_cpu(fw_ap->rtt_variance);
++		result.ftm.rtt_variance_valid = 1;
++		result.ftm.rtt_spread = le32_to_cpu(fw_ap->rtt_spread);
++		result.ftm.rtt_spread_valid = 1;
 +
-+		offset = iwl_find_ie_offset(beacon->data,
-+					    WLAN_EID_S1G_TWT,
-+					    beacon->len);
++		cfg80211_pmsr_report(mld->ftm_initiator.req_wdev,
++				     mld->ftm_initiator.req,
++				     &result, GFP_KERNEL);
 +
-+		beacon_cmd.btwt_offset = cpu_to_le32(offset);
++		if (fw_has_api(&mld->fw->ucode_capa,
++			       IWL_UCODE_TLV_API_FTM_RTT_ACCURACY))
++			IWL_DEBUG_INFO(mld, "RTT confidence: %u\n",
++				       fw_ap->rttConfidence);
 +
-+		iwl_mld_send_beacon_template_cmd(mld, beacon, &beacon_cmd);
-+		dev_kfree_skb(beacon);
++		iwl_mld_debug_range_resp(mld, i, &result);
 +	}
 +
-+	if (restore)
-+		mld_vif->beacon_inject_active = false;
-+
-+	return 0;
++	if (last_in_batch) {
++		cfg80211_pmsr_complete(mld->ftm_initiator.req_wdev,
++				       mld->ftm_initiator.req,
++				       GFP_KERNEL);
++		iwl_mld_ftm_reset(mld);
++	}
 +}
 +
-+static ssize_t
-+iwl_dbgfs_vif_inject_beacon_ie_write(struct iwl_mld *mld,
-+				     char *buf, size_t count,
-+				     void *data)
++void iwl_mld_ftm_restart_cleanup(struct iwl_mld *mld)
 +{
-+	struct ieee80211_vif *vif = data;
-+	int ret = _iwl_dbgfs_inject_beacon_ie(mld, vif, buf,
-+					      count, false);
-+
-+	mld->hw->extra_beacon_tailroom = 0;
-+	return ret ?: count;
-+}
-+
-+VIF_DEBUGFS_WRITE_FILE_OPS(inject_beacon_ie, 512);
-+
-+static ssize_t
-+iwl_dbgfs_vif_inject_beacon_ie_restore_write(struct iwl_mld *mld,
-+					     char *buf,
-+					     size_t count,
-+					     void *data)
-+{
-+	struct ieee80211_vif *vif = data;
-+	int ret = _iwl_dbgfs_inject_beacon_ie(mld, vif, NULL,
-+					      0, true);
-+
-+	mld->hw->extra_beacon_tailroom = 0;
-+	return ret ?: count;
-+}
-+
-+VIF_DEBUGFS_WRITE_FILE_OPS(inject_beacon_ie_restore, 512);
-+
-+static ssize_t
-+iwl_dbgfs_vif_twt_setup_write(struct iwl_mld *mld, char *buf, size_t count,
-+			      void *data)
-+{
-+	struct iwl_host_cmd hcmd = {
-+		.id = WIDE_ID(IWL_ALWAYS_LONG_GROUP, DEBUG_HOST_COMMAND),
++	struct cfg80211_pmsr_result result = {
++		.status = NL80211_PMSR_STATUS_FAILURE,
++		.final = 1,
++		.host_time = ktime_get_boottime_ns(),
++		.type = NL80211_PMSR_TYPE_FTM,
 +	};
-+	struct ieee80211_vif *vif = data;
-+	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	struct iwl_dhc_twt_operation *dhc_twt_cmd;
-+	struct iwl_dhc_cmd *cmd __free(kfree);
-+	u64 target_wake_time;
-+	u32 twt_operation, interval_exp, interval_mantissa, min_wake_duration;
-+	u8 trigger, flow_type, flow_id, protection, tenth_param;
-+	u8 twt_request = 1, broadcast = 0;
-+	int ret;
 +
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
++	if (!mld->ftm_initiator.req)
++		return;
 +
-+	ret = sscanf(buf, "%u %llu %u %u %u %hhu %hhu %hhu %hhu %hhu",
-+		     &twt_operation, &target_wake_time, &interval_exp,
-+		     &interval_mantissa, &min_wake_duration, &trigger,
-+		     &flow_type, &flow_id, &protection, &tenth_param);
++	for (int i = 0; i < mld->ftm_initiator.req->n_peers; i++) {
++		memcpy(result.addr, mld->ftm_initiator.req->peers[i].addr,
++		       ETH_ALEN);
 +
-+	/* the new twt_request parameter is optional for station */
-+	if ((ret != 9 && ret != 10) ||
-+	    (ret == 10 && vif->type != NL80211_IFTYPE_STATION &&
-+	     tenth_param == 1))
-+		return -EINVAL;
-+
-+	/* The 10th parameter:
-+	 * In STA mode - the TWT type (broadcast or individual)
-+	 * In AP mode - the role (0 responder, 2 unsolicited)
-+	 */
-+	if (ret == 10) {
-+		if (vif->type == NL80211_IFTYPE_STATION)
-+			broadcast = tenth_param;
-+		else
-+			twt_request = tenth_param;
++		cfg80211_pmsr_report(mld->ftm_initiator.req_wdev,
++				     mld->ftm_initiator.req,
++				     &result, GFP_KERNEL);
 +	}
 +
-+	cmd = kzalloc(sizeof(*cmd) + sizeof(*dhc_twt_cmd), GFP_KERNEL);
-+	if (!cmd)
-+		return -ENOMEM;
-+
-+	dhc_twt_cmd = (void *)cmd->data;
-+	dhc_twt_cmd->mac_id = cpu_to_le32(mld_vif->fw_id);
-+	dhc_twt_cmd->twt_operation = cpu_to_le32(twt_operation);
-+	dhc_twt_cmd->target_wake_time = cpu_to_le64(target_wake_time);
-+	dhc_twt_cmd->interval_exp = cpu_to_le32(interval_exp);
-+	dhc_twt_cmd->interval_mantissa = cpu_to_le32(interval_mantissa);
-+	dhc_twt_cmd->min_wake_duration = cpu_to_le32(min_wake_duration);
-+	dhc_twt_cmd->trigger = trigger;
-+	dhc_twt_cmd->flow_type = flow_type;
-+	dhc_twt_cmd->flow_id = flow_id;
-+	dhc_twt_cmd->protection = protection;
-+	dhc_twt_cmd->twt_request = twt_request;
-+	dhc_twt_cmd->negotiation_type = broadcast ? 3 : 0;
-+
-+	cmd->length = cpu_to_le32(sizeof(*dhc_twt_cmd) >> 2);
-+	cmd->index_and_mask =
-+		cpu_to_le32(DHC_TABLE_INTEGRATION | DHC_TARGET_UMAC |
-+			    DHC_INT_UMAC_TWT_OPERATION);
-+
-+	hcmd.len[0] = sizeof(*cmd) + sizeof(*dhc_twt_cmd);
-+	hcmd.data[0] = cmd;
-+
-+	ret = iwl_mld_send_cmd(mld, &hcmd);
-+
-+	return ret ?: count;
++	cfg80211_pmsr_complete(mld->ftm_initiator.req_wdev,
++			       mld->ftm_initiator.req, GFP_KERNEL);
++	iwl_mld_ftm_reset(mld);
 +}
-+
-+VIF_DEBUGFS_WRITE_FILE_OPS(twt_setup, 256);
-+
-+static ssize_t
-+iwl_dbgfs_vif_twt_operation_write(struct iwl_mld *mld, char *buf, size_t count,
-+				  void *data)
-+{
-+	struct ieee80211_vif *vif = data;
-+	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	struct iwl_twt_operation_cmd twt_cmd = {};
-+	int link_id = vif->active_links ? __ffs(vif->active_links) : 0;
-+	struct iwl_mld_link *mld_link = iwl_mld_link_dereference_check(mld_vif,
-+								       link_id);
-+	int ret;
-+
-+	if (WARN_ON(!mld_link))
-+		return -ENODEV;
-+
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	if (hweight16(vif->active_links) > 1)
-+		return -EOPNOTSUPP;
-+
-+	ret = sscanf(buf, "%u %llu %u %u %u %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu",
-+		     &twt_cmd.twt_operation, &twt_cmd.target_wake_time,
-+		     &twt_cmd.interval_exponent, &twt_cmd.interval_mantissa,
-+		     &twt_cmd.minimum_wake_duration, &twt_cmd.trigger,
-+		     &twt_cmd.flow_type, &twt_cmd.flow_id,
-+		     &twt_cmd.twt_protection, &twt_cmd.ndp_paging_indicator,
-+		     &twt_cmd.responder_pm_mode, &twt_cmd.negotiation_type,
-+		     &twt_cmd.twt_request, &twt_cmd.implicit,
-+		     &twt_cmd.twt_group_assignment, &twt_cmd.twt_channel,
-+		     &twt_cmd.restricted_info_present, &twt_cmd.dl_bitmap_valid,
-+		     &twt_cmd.ul_bitmap_valid, &twt_cmd.dl_tid_bitmap,
-+		     &twt_cmd.ul_tid_bitmap);
-+
-+	if (ret != 21)
-+		return -EINVAL;
-+
-+	twt_cmd.link_id = cpu_to_le32(mld_link->fw_id);
-+
-+	ret = iwl_mld_send_cmd_pdu(mld,
-+				   WIDE_ID(MAC_CONF_GROUP, TWT_OPERATION_CMD),
-+				   &twt_cmd);
-+	return ret ?: count;
-+}
-+
-+VIF_DEBUGFS_WRITE_FILE_OPS(twt_operation, 256);
-+
-+void iwl_mld_add_vif_debugfs(struct ieee80211_hw *hw,
-+			     struct ieee80211_vif *vif)
-+{
-+	struct dentry *mld_vif_dbgfs =
-+		debugfs_create_dir("iwlmld", vif->debugfs_dir);
-+	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	struct iwl_mld *mld = IWL_MAC80211_GET_MLD(hw);
-+	char target[3 * 3 + 11 + (NL80211_WIPHY_NAME_MAXLEN + 1) +
-+		    (7 + IFNAMSIZ + 1) + 6 + 1];
-+	char name[7 + IFNAMSIZ + 1];
-+
-+	/* Create symlink for convenience pointing to interface specific
-+	 * debugfs entries for the driver. For example, under
-+	 * /sys/kernel/debug/iwlwifi/0000\:02\:00.0/iwlmld/
-+	 * find
-+	 * netdev:wlan0 -> ../../../ieee80211/phy0/netdev:wlan0/iwlmld/
-+	 */
-+	snprintf(name, sizeof(name), "%pd", vif->debugfs_dir);
-+	snprintf(target, sizeof(target), "../../../%pd3/iwlmld",
-+		 vif->debugfs_dir);
-+	mld_vif->dbgfs_slink =
-+		debugfs_create_symlink(name, mld->debugfs_dir, target);
-+
-+	if (iwlmld_mod_params.power_scheme != IWL_POWER_SCHEME_CAM &&
-+	    vif->type == NL80211_IFTYPE_STATION) {
-+		VIF_DEBUGFS_ADD_FILE(pm_params, mld_vif_dbgfs, 0200);
-+		VIF_DEBUGFS_ADD_FILE(bf_params, mld_vif_dbgfs, 0200);
-+	}
-+
-+	if (vif->type == NL80211_IFTYPE_AP) {
-+		VIF_DEBUGFS_ADD_FILE(inject_beacon_ie, mld_vif_dbgfs, 0200);
-+		VIF_DEBUGFS_ADD_FILE(inject_beacon_ie_restore,
-+				     mld_vif_dbgfs, 0200);
-+	}
-+
-+	VIF_DEBUGFS_ADD_FILE(low_latency, mld_vif_dbgfs, 0600);
-+	VIF_DEBUGFS_ADD_FILE(twt_setup, mld_vif_dbgfs, 0200);
-+	VIF_DEBUGFS_ADD_FILE(twt_operation, mld_vif_dbgfs, 0200);
-+}
-+
-+#define LINK_DEBUGFS_WRITE_FILE_OPS(name, bufsz)			\
-+	WIPHY_DEBUGFS_WRITE_FILE_OPS(link_##name, bufsz, bss_conf)
-+
-+#define LINK_DEBUGFS_ADD_FILE_ALIAS(alias, name, parent, mode) do {	\
-+	debugfs_create_file(alias, mode, parent, link_conf,		\
-+			    &iwl_dbgfs_link_##name##_ops);		\
-+	} while (0)
-+#define LINK_DEBUGFS_ADD_FILE(name, parent, mode)			\
-+	LINK_DEBUGFS_ADD_FILE_ALIAS(#name, name, parent, mode)
-+
-+void iwl_mld_add_link_debugfs(struct ieee80211_hw *hw,
-+			      struct ieee80211_vif *vif,
-+			      struct ieee80211_bss_conf *link_conf,
-+			      struct dentry *dir)
-+{
-+	struct dentry *mld_link_dir;
-+
-+	mld_link_dir = debugfs_lookup("iwlmld", dir);
-+
-+	/* For non-MLO vifs, the dir of deflink is the same as the vif's one.
-+	 * so if iwlmld dir already exists, this means that this is deflink.
-+	 * If not, this is a per-link dir of a MLO vif, add in it the iwlmld
-+	 * dir.
-+	 */
-+	if (!mld_link_dir)
-+		mld_link_dir = debugfs_create_dir("iwlmld", dir);
-+}
-+
-+static ssize_t iwl_dbgfs_fixed_rate_write(struct iwl_mld *mld, char *buf,
-+					  size_t count, void *data)
-+{
-+	struct ieee80211_link_sta *link_sta = data;
-+	struct iwl_mld_link_sta *mld_link_sta;
-+	u32 rate;
-+	u32 partial = false;
-+	char pretty_rate[100];
-+	int ret;
-+	u8 fw_sta_id;
-+
-+	mld_link_sta = iwl_mld_link_sta_from_mac80211(link_sta);
-+	if (WARN_ON(!mld_link_sta))
-+		return -EINVAL;
-+
-+	fw_sta_id = mld_link_sta->fw_id;
-+
-+	if (sscanf(buf, "%i %i", &rate, &partial) == 0)
-+		return -EINVAL;
-+
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	ret = iwl_mld_send_tlc_dhc(mld, fw_sta_id,
-+				   partial ? IWL_TLC_DEBUG_PARTIAL_FIXED_RATE :
-+					     IWL_TLC_DEBUG_FIXED_RATE,
-+				   rate);
-+
-+	rs_pretty_print_rate(pretty_rate, sizeof(pretty_rate), rate);
-+
-+	IWL_DEBUG_RATE(mld, "sta_id %d rate %s partial: %d, ret:%d\n",
-+		       fw_sta_id, pretty_rate, partial, ret);
-+
-+	return ret ? : count;
-+}
-+
-+static ssize_t iwl_dbgfs_tlc_dhc_write(struct iwl_mld *mld, char *buf,
-+				       size_t count, void *data)
-+{
-+	struct ieee80211_link_sta *link_sta = data;
-+	struct iwl_mld_link_sta *mld_link_sta;
-+	u32 type, value;
-+	int ret;
-+	u8 fw_sta_id;
-+
-+	mld_link_sta = iwl_mld_link_sta_from_mac80211(link_sta);
-+	if (WARN_ON(!mld_link_sta))
-+		return -EINVAL;
-+
-+	fw_sta_id = mld_link_sta->fw_id;
-+
-+	if (sscanf(buf, "%i %i", &type, &value) != 2) {
-+		IWL_DEBUG_RATE(mld, "usage <type> <value>\n");
-+		return -EINVAL;
-+	}
-+
-+	if (iwl_mld_dbgfs_fw_cmd_disabled(mld))
-+		return -EIO;
-+
-+	ret = iwl_mld_send_tlc_dhc(mld, fw_sta_id, type, value);
-+
-+	return ret ? : count;
-+}
-+
-+#define LINK_STA_DEBUGFS_ADD_FILE_ALIAS(alias, name, parent, mode) do {	\
-+	debugfs_create_file(alias, mode, parent, link_sta,		\
-+			    &iwl_dbgfs_##name##_ops);			\
-+	} while (0)
-+#define LINK_STA_DEBUGFS_ADD_FILE(name, parent, mode)			\
-+	LINK_STA_DEBUGFS_ADD_FILE_ALIAS(#name, name, parent, mode)
-+
-+#define LINK_STA_WIPHY_DEBUGFS_WRITE_OPS(name, bufsz)			\
-+	WIPHY_DEBUGFS_WRITE_FILE_OPS(name, bufsz, link_sta)
-+
-+LINK_STA_WIPHY_DEBUGFS_WRITE_OPS(tlc_dhc, 64);
-+LINK_STA_WIPHY_DEBUGFS_WRITE_OPS(fixed_rate, 64);
-+
-+void iwl_mld_add_link_sta_debugfs(struct ieee80211_hw *hw,
-+				  struct ieee80211_vif *vif,
-+				  struct ieee80211_link_sta *link_sta,
-+				  struct dentry *dir)
-+{
-+	LINK_STA_DEBUGFS_ADD_FILE(fixed_rate, dir, 0200);
-+	LINK_STA_DEBUGFS_ADD_FILE(tlc_dhc, dir, 0200);
-+}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.h b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.h
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.h b/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.h
 new file mode 100644
-index 000000000000..04c536db8b16
+index 000000000000..ff6021659442
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.h
-@@ -0,0 +1,200 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++++ b/drivers/net/wireless/intel/iwlwifi/mld/ftm-initiator.h
+@@ -0,0 +1,15 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
-+ * Copyright (C) 2024 Intel Corporation
++ * Copyright (C) 2025 Intel Corporation
 + */
-+#include "iface.h"
-+#include "sta.h"
++#ifndef __iwl_mld_ftm_initiator_h__
++#define __iwl_mld_ftm_initiator_h__
 +
-+#define MLD_DEBUGFS_OPEN_WRAPPER(name, buflen, argtype)			\
-+struct dbgfs_##name##_data {						\
-+	argtype *arg;							\
-+	bool read_done;							\
-+	ssize_t rlen;							\
-+	char buf[buflen];						\
-+};									\
-+static int _iwl_dbgfs_##name##_open(struct inode *inode,		\
-+				    struct file *file)			\
-+{									\
-+	struct dbgfs_##name##_data *data;				\
-+									\
-+	if ((file->f_flags & O_ACCMODE) == O_RDWR)			\
-+		return -EOPNOTSUPP;					\
-+									\
-+	data = kzalloc(sizeof(*data), GFP_KERNEL);			\
-+	if (!data)							\
-+		return -ENOMEM;						\
-+									\
-+	data->read_done = false;					\
-+	data->arg = inode->i_private;					\
-+	file->private_data = data;					\
-+									\
-+	return 0;							\
-+}
++int iwl_mld_ftm_start(struct iwl_mld *mld, struct ieee80211_vif *vif,
++		      struct cfg80211_pmsr_request *req);
 +
-+#define MLD_DEBUGFS_READ_WRAPPER(name)					\
-+static ssize_t _iwl_dbgfs_##name##_read(struct file *file,		\
-+					char __user *user_buf,		\
-+					size_t count, loff_t *ppos)	\
-+{									\
-+	struct dbgfs_##name##_data *data = file->private_data;		\
-+									\
-+	if (!data->read_done) {						\
-+		data->read_done = true;					\
-+		data->rlen = iwl_dbgfs_##name##_read(data->arg,		\
-+						     sizeof(data->buf),\
-+						     data->buf);	\
-+	}								\
-+									\
-+	if (data->rlen < 0)						\
-+		return data->rlen;					\
-+	return simple_read_from_buffer(user_buf, count, ppos,		\
-+				       data->buf, data->rlen);		\
-+}
++void iwl_mld_handle_ftm_resp_notif(struct iwl_mld *mld,
++				   struct iwl_rx_packet *pkt);
++void iwl_mld_ftm_restart_cleanup(struct iwl_mld *mld);
 +
-+static int _iwl_dbgfs_release(struct inode *inode, struct file *file)
-+{
-+	kfree(file->private_data);
-+	return 0;
-+}
-+
-+#define _MLD_DEBUGFS_READ_FILE_OPS(name, buflen, argtype)		\
-+MLD_DEBUGFS_OPEN_WRAPPER(name, buflen, argtype)				\
-+MLD_DEBUGFS_READ_WRAPPER(name)						\
-+static const struct file_operations iwl_dbgfs_##name##_ops = {		\
-+	.read = _iwl_dbgfs_##name##_read,				\
-+	.open = _iwl_dbgfs_##name##_open,				\
-+	.llseek = generic_file_llseek,					\
-+	.release = _iwl_dbgfs_release,					\
-+}
-+
-+#define WIPHY_DEBUGFS_HANDLER_WRAPPER(name)				\
-+static ssize_t iwl_dbgfs_##name##_write_handler(struct wiphy *wiphy,	\
-+				       struct file *file, char *buf,	\
-+				       size_t count, void *data)	\
-+{									\
-+	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);		\
-+	struct iwl_mld *mld = IWL_MAC80211_GET_MLD(hw);			\
-+	return iwl_dbgfs_##name##_write(mld, buf, count, data);		\
-+}
-+
-+static inline struct iwl_mld *
-+iwl_mld_from_link_sta(struct ieee80211_link_sta *link_sta)
-+{
-+	struct ieee80211_vif *vif =
-+		iwl_mld_sta_from_mac80211(link_sta->sta)->vif;
-+	return iwl_mld_vif_from_mac80211(vif)->mld;
-+}
-+
-+static inline struct iwl_mld *
-+iwl_mld_from_bss_conf(struct ieee80211_bss_conf *link)
-+{
-+	return iwl_mld_vif_from_mac80211(link->vif)->mld;
-+}
-+
-+static inline struct iwl_mld *iwl_mld_from_vif(struct ieee80211_vif *vif)
-+{
-+	return iwl_mld_vif_from_mac80211(vif)->mld;
-+}
-+
-+#define WIPHY_DEBUGFS_WRITE_WRAPPER(name, bufsz, objtype)		\
-+WIPHY_DEBUGFS_HANDLER_WRAPPER(name)					\
-+static ssize_t __iwl_dbgfs_##name##_write(struct file *file,		\
-+					  const char __user *user_buf,	\
-+					  size_t count, loff_t *ppos)	\
-+{									\
-+	struct ieee80211_##objtype *arg = file->private_data;		\
-+	struct iwl_mld *mld = iwl_mld_from_##objtype(arg);		\
-+	char buf[bufsz] = {};						\
-+									\
-+	return wiphy_locked_debugfs_write(mld->wiphy, file,		\
-+				buf, sizeof(buf),			\
-+				user_buf, count,			\
-+				iwl_dbgfs_##name##_write_handler,	\
-+				arg);					\
-+}
-+
-+#define WIPHY_DEBUGFS_WRITE_FILE_OPS(name, bufsz, objtype)		\
-+	WIPHY_DEBUGFS_WRITE_WRAPPER(name, bufsz, objtype)		\
-+	static const struct file_operations iwl_dbgfs_##name##_ops = {	\
-+		.write = __iwl_dbgfs_##name##_write,			\
-+		.open = simple_open,					\
-+		.llseek = generic_file_llseek,				\
-+	}
-+
-+#define WIPHY_DEBUGFS_HANDLER_WRAPPER_MLD(name)				\
-+static ssize_t iwl_dbgfs_##name##_write_handler(struct wiphy *wiphy,	\
-+				       struct file *file, char *buf,	\
-+				       size_t count, void *data)	\
-+{									\
-+	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);		\
-+	struct iwl_mld *mld = IWL_MAC80211_GET_MLD(hw);			\
-+	return iwl_dbgfs_##name##_write(mld, buf, count);		\
-+}
-+
-+#define WIPHY_DEBUGFS_WRITE_WRAPPER_MLD(name)				\
-+WIPHY_DEBUGFS_HANDLER_WRAPPER_MLD(name)					\
-+static ssize_t __iwl_dbgfs_##name##_write(struct file *file,		\
-+					  const char __user *user_buf,	\
-+					  size_t count, loff_t *ppos)	\
-+{									\
-+	struct dbgfs_##name##_data *data = file->private_data;		\
-+	struct iwl_mld *mld = data->arg;				\
-+									\
-+	return wiphy_locked_debugfs_write(mld->wiphy, file,		\
-+				data->buf, sizeof(data->buf),		\
-+				user_buf, count,			\
-+				iwl_dbgfs_##name##_write_handler,	\
-+				NULL);					\
-+}
-+
-+#define WIPHY_DEBUGFS_WRITE_FILE_OPS_MLD(name, bufsz)			\
-+	MLD_DEBUGFS_OPEN_WRAPPER(name, bufsz, struct iwl_mld)		\
-+	WIPHY_DEBUGFS_WRITE_WRAPPER_MLD(name)				\
-+	static const struct file_operations iwl_dbgfs_##name##_ops = {	\
-+		.write = __iwl_dbgfs_##name##_write,			\
-+		.open = _iwl_dbgfs_##name##_open,			\
-+		.llseek = generic_file_llseek,				\
-+		.release = _iwl_dbgfs_release,				\
-+	}
-+
-+#define WIPHY_DEBUGFS_READ_WRITE_FILE_OPS_MLD(name, bufsz)		\
-+	MLD_DEBUGFS_OPEN_WRAPPER(name, bufsz, struct iwl_mld)		\
-+	WIPHY_DEBUGFS_WRITE_WRAPPER_MLD(name)				\
-+	MLD_DEBUGFS_READ_WRAPPER(name)					\
-+	static const struct file_operations iwl_dbgfs_##name##_ops = {	\
-+		.write = __iwl_dbgfs_##name##_write,			\
-+		.read = _iwl_dbgfs_##name##_read,			\
-+		.open = _iwl_dbgfs_##name##_open,			\
-+		.llseek = generic_file_llseek,				\
-+		.release = _iwl_dbgfs_release,				\
-+	}
-+
-+#define WIPHY_DEBUGFS_WRITE_WRAPPER_IEEE80211(name, bufsz, objtype)	\
-+WIPHY_DEBUGFS_HANDLER_WRAPPER(name)					\
-+static ssize_t _iwl_dbgfs_##name##_write(struct file *file,		\
-+					  const char __user *user_buf,	\
-+					  size_t count, loff_t *ppos)	\
-+{									\
-+	struct dbgfs_##name##_data *data = file->private_data;		\
-+	struct ieee80211_##objtype *arg = data->arg;			\
-+	struct iwl_mld *mld = iwl_mld_from_##objtype(arg);		\
-+	char buf[bufsz] = {};						\
-+									\
-+	return wiphy_locked_debugfs_write(mld->wiphy, file,		\
-+				buf, sizeof(buf),			\
-+				user_buf, count,			\
-+				iwl_dbgfs_##name##_write_handler,	\
-+				arg);					\
-+}
-+
-+#define IEEE80211_WIPHY_DEBUGFS_READ_WRITE_FILE_OPS(name, bufsz, objtype) \
-+	MLD_DEBUGFS_OPEN_WRAPPER(name, bufsz, struct ieee80211_##objtype) \
-+	WIPHY_DEBUGFS_WRITE_WRAPPER_IEEE80211(name, bufsz, objtype)	  \
-+	MLD_DEBUGFS_READ_WRAPPER(name)					  \
-+	static const struct file_operations iwl_dbgfs_##name##_ops = {	  \
-+		.write = _iwl_dbgfs_##name##_write,			  \
-+		.read = _iwl_dbgfs_##name##_read,			  \
-+		.open = _iwl_dbgfs_##name##_open,			  \
-+		.llseek = generic_file_llseek,				  \
-+		.release = _iwl_dbgfs_release,				  \
-+	}
++#endif /* __iwl_mld_ftm_initiator_h__ */
 -- 
 2.34.1
 
