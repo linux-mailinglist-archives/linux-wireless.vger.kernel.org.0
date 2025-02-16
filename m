@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-19001-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19003-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A15A37394
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:46:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C6CA37396
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:46:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 427E43AFD0D
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:45:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C7BC3ACB80
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F651991AE;
-	Sun, 16 Feb 2025 09:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA92719340D;
+	Sun, 16 Feb 2025 09:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DwMrv7kk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y5uMY2GI"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD52198A19
-	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E312C1990C1
+	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739699058; cv=none; b=AZnnB0Ytd3qipBUfVs/WZ8+bLFGp2oGjx4iRzMcjs3qhrPZ/k55eOtUBFXf7rHLf3XCKESoT9fZ1IFNM0yVqmkriSCaF4UbiMHzyrYrX8Kp8ibW/nDE6I7I79ztaO/3Fe1osVtk5VVVx1cZfxz7MW0WdshqZWmlATeGNWP7+aqQ=
+	t=1739699060; cv=none; b=pBfX1xLZ49ZwN5V9JVCbC+xDEcv3Yj4SN2VC86TjLNw/CjCe9FUQka4Iw3B05XhSlpzYli+40dTb4pzni4zYc2vct05XObRAiGKpSL7CUKRp6j/k3W9KmpNVljh/ZVvE6+YqEXA4fjk/rWodFXyaM5F9RCYYZ1T3FaBVQ8ODoew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739699058; c=relaxed/simple;
-	bh=ANxuN+qSgZBj9I+DS27dAHg6mHxWQSrm8VsSTFy/tSQ=;
+	s=arc-20240116; t=1739699060; c=relaxed/simple;
+	bh=vXKlR16QYb8t4Vp1LmPwN2lSMFWLYT1a2hEM+FFDvs8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sin4LDmitziJtJ+4EH+Y2YNdTHrQIvywyHhCxf0mL5evlep4Dj6amso+UdDv8PK90hsvn1SJpGKsM4oftwVyCMwuUzwa3j9b7m9oH3xlHDWbPQ8JOKTjt/RRbUxgHi1SZ9P7t5HIL/mh7+STrLZA2X0fEQyaPT6x1jZ5Jt6F/+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DwMrv7kk; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=gFM2yHfL3Yt08Hub3hY6QtqaL1J2fVA5TkxYGktfTxy2WIhqosfMFKFAI1YvEnzIopY7EjS+496Ec/tdb5W4YRzspEpx/A4CoYe0zwbPDSffvAiWI3wwNU5JQE0gGRYxgzR1DXDUm1VmJsnK09A7x5vBmACtpy/OV6MX/3bEZas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y5uMY2GI; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739699057; x=1771235057;
+  t=1739699058; x=1771235058;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ANxuN+qSgZBj9I+DS27dAHg6mHxWQSrm8VsSTFy/tSQ=;
-  b=DwMrv7kkw9idXaZrHZSp3dHE/Gm21/EyTibT9JvwahllsswYy4qcDwho
-   2m2sUZ1xm9FiCHLt5tMAHwzEMqhJyuLTPHgV5AFbgKeGtF1bhGSYw8MG0
-   wNFSL6M0mCTrHUgUD7ylfa0SLffnQmbizKZU1wrPdvbzyfkGDOSJkQFlK
-   KqrlIqHvXKgPp4bneUcv+UF1Ja4URkIEU4MGb7nz1tOkMSrXk/yvlV5fj
-   8cIkRclIeo6iLFc1IAGfJzLH0lKdS0rmwUH8c4Y+71i66YOOuC7lo00Dp
-   pf9lRL153w633BjA9snkFniI+0oKS6bfce2DlzKohPDJvS1Omy7rv/R2A
+  bh=vXKlR16QYb8t4Vp1LmPwN2lSMFWLYT1a2hEM+FFDvs8=;
+  b=Y5uMY2GI1L6PPMXx1DOXwqZKkAL/TbmKRAKiotsxCd5azDJL+chlUU1/
+   zp1o+PzDmR+B/KB3lK6fHNsQuigi++Mbxn0TaZ2wNuy21ZRas9JzSXdPX
+   KADl7eQb4ySiBRG0xQ9odO0Go23FFap4K00CId3hxMZZQXIbRZbP79c3q
+   RP/1iupOQCsTUDK8xzwI0iNjQPfgz+r4SA1g08O72RttWolHRWoyWp/6J
+   jhZeJ4B7L6dop6b4oTI91Ik3uWFThWq8CxXrVHHsuKxBNp7e1JSXayCRB
+   h4n7AV3+mKTcpBSfgFkHhX4gpJVJzwjQsAKrQALBo8+LwRwAbKkdcySbL
    w==;
-X-CSE-ConnectionGUID: HpiN2pLrR4W1HIL3brNRkA==
-X-CSE-MsgGUID: vHs6YJ6IStm1lqnEfonnsA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323421"
+X-CSE-ConnectionGUID: DcFa8ARWRT+VNth7U6isog==
+X-CSE-MsgGUID: oS7ZzL2LQueAfK1kEVxkbw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323423"
 X-IronPort-AV: E=Sophos;i="6.13,290,1732608000"; 
-   d="scan'208";a="40323421"
+   d="scan'208";a="40323423"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:17 -0800
-X-CSE-ConnectionGUID: FqmPJb07T3u/Cwu15P6xRQ==
-X-CSE-MsgGUID: /RqbPDoOS7CVF5BfRv1+cA==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:18 -0800
+X-CSE-ConnectionGUID: ee0UHwRHQuiLfDjv3sTEIA==
+X-CSE-MsgGUID: 9I/UBU3kS0W6/uvSIG2cAQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118785276"
+   d="scan'208";a="118785279"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:15 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:44:17 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 32/42] wifi: iwlwifi: mld: add file tlc.h/c
-Date: Sun, 16 Feb 2025 11:43:11 +0200
-Message-Id: <20250216111649.2ad9f09966aa.I79d7f4e468b8c1cfa98566d29e7c7a3bbaa987d6@changeid>
+Subject: [PATCH 33/42] wifi: iwlwifi: mld: add file tx.h/c
+Date: Sun, 16 Feb 2025 11:43:12 +0200
+Message-Id: <20250216111649.e49f34a74de5.If9265c323b18a9ad0523b53a6b7ed7d5acf17b71@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
 References: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
@@ -76,768 +76,1479 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-these files are handling Tx Link Control
+these fils are handling TX
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/tlc.c | 717 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/tlc.h |  23 +
- 2 files changed, 740 insertions(+)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tlc.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tlc.h
+ drivers/net/wireless/intel/iwlwifi/mld/tx.c | 1374 +++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mld/tx.h |   77 ++
+ 2 files changed, 1451 insertions(+)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tx.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tx.h
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tlc.c b/drivers/net/wireless/intel/iwlwifi/mld/tlc.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.c b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
 new file mode 100644
-index 000000000000..85ec358f1417
+index 000000000000..543abe72e465
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/tlc.c
-@@ -0,0 +1,717 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+@@ -0,0 +1,1374 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
-+ * Copyright (C) 2024 Intel Corporation
++ * Copyright (C) 2024 - 2025 Intel Corporation
 + */
++#include <net/ip.h>
 +
-+#include <net/mac80211.h>
-+
-+#include "tlc.h"
-+#include "hcmd.h"
++#include "tx.h"
 +#include "sta.h"
++#include "hcmd.h"
++#include "iwl-utils.h"
++#include "iface.h"
 +
++#include "fw/dbg.h"
++
++#include "fw/api/tx.h"
 +#include "fw/api/rs.h"
-+#include "fw/api/context.h"
-+#include "fw/api/dhc.h"
++#include "fw/api/txq.h"
++#include "fw/api/datapath.h"
++#include "fw/api/time-event.h"
 +
-+static u8 iwl_mld_fw_bw_from_sta_bw(const struct ieee80211_link_sta *link_sta)
++#define MAX_ANT_NUM 2
++
++/* Toggles between TX antennas. Receives the bitmask of valid TX antennas and
++ * the *index* used for the last TX, and returns the next valid *index* to use.
++ * In order to set it in the tx_cmd, must do BIT(idx).
++ */
++static u8 iwl_mld_next_ant(u8 valid, u8 last_idx)
 +{
-+	switch (link_sta->bandwidth) {
-+	case IEEE80211_STA_RX_BW_320:
-+		return IWL_TLC_MNG_CH_WIDTH_320MHZ;
-+	case IEEE80211_STA_RX_BW_160:
-+		return IWL_TLC_MNG_CH_WIDTH_160MHZ;
-+	case IEEE80211_STA_RX_BW_80:
-+		return IWL_TLC_MNG_CH_WIDTH_80MHZ;
-+	case IEEE80211_STA_RX_BW_40:
-+		return IWL_TLC_MNG_CH_WIDTH_40MHZ;
-+	case IEEE80211_STA_RX_BW_20:
-+	default:
-+		return IWL_TLC_MNG_CH_WIDTH_20MHZ;
-+	}
-+}
++	u8 index = last_idx;
 +
-+static __le16
-+iwl_mld_get_tlc_cmd_flags(struct iwl_mld *mld,
-+			  struct ieee80211_vif *vif,
-+			  struct ieee80211_link_sta *link_sta,
-+			  const struct ieee80211_sta_he_cap *own_he_cap,
-+			  const struct ieee80211_sta_eht_cap *own_eht_cap)
-+{
-+	struct ieee80211_sta_ht_cap *ht_cap = &link_sta->ht_cap;
-+	struct ieee80211_sta_vht_cap *vht_cap = &link_sta->vht_cap;
-+	struct ieee80211_sta_he_cap *he_cap = &link_sta->he_cap;
-+	bool has_vht = vht_cap->vht_supported;
-+	u16 flags = 0;
-+
-+	/* STBC flags */
-+	if (mld->cfg->ht_params->stbc &&
-+	    (hweight8(iwl_mld_get_valid_tx_ant(mld)) > 1)) {
-+		if (he_cap->has_he && he_cap->he_cap_elem.phy_cap_info[2] &
-+				      IEEE80211_HE_PHY_CAP2_STBC_RX_UNDER_80MHZ)
-+			flags |= IWL_TLC_MNG_CFG_FLAGS_STBC_MSK;
-+		else if (vht_cap->cap & IEEE80211_VHT_CAP_RXSTBC_MASK)
-+			flags |= IWL_TLC_MNG_CFG_FLAGS_STBC_MSK;
-+		else if (ht_cap->cap & IEEE80211_HT_CAP_RX_STBC)
-+			flags |= IWL_TLC_MNG_CFG_FLAGS_STBC_MSK;
++	for (int i = 0; i < MAX_ANT_NUM; i++) {
++		index = (index + 1) % MAX_ANT_NUM;
++		if (valid & BIT(index))
++			return index;
 +	}
 +
-+	/* LDPC */
-+	if (mld->cfg->ht_params->ldpc &&
-+	    ((ht_cap->cap & IEEE80211_HT_CAP_LDPC_CODING) ||
-+	     (has_vht && (vht_cap->cap & IEEE80211_VHT_CAP_RXLDPC))))
-+		flags |= IWL_TLC_MNG_CFG_FLAGS_LDPC_MSK;
++	WARN_ONCE(1, "Failed to toggle between antennas 0x%x", valid);
 +
-+	if (he_cap->has_he && (he_cap->he_cap_elem.phy_cap_info[1] &
-+	    IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
-+		flags |= IWL_TLC_MNG_CFG_FLAGS_LDPC_MSK;
-+
-+	if (own_he_cap &&
-+	    !(own_he_cap->he_cap_elem.phy_cap_info[1] &
-+			IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
-+		flags &= ~IWL_TLC_MNG_CFG_FLAGS_LDPC_MSK;
-+
-+	/* DCM */
-+	if (he_cap->has_he &&
-+	    (he_cap->he_cap_elem.phy_cap_info[3] &
-+	     IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_MASK &&
-+	     own_he_cap &&
-+	     own_he_cap->he_cap_elem.phy_cap_info[3] &
-+			IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_TX_MASK))
-+		flags |= IWL_TLC_MNG_CFG_FLAGS_HE_DCM_NSS_1_MSK;
-+
-+	/* Extra EHT LTF */
-+	if (own_eht_cap &&
-+	    own_eht_cap->eht_cap_elem.phy_cap_info[5] &
-+		IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF &&
-+	    link_sta->eht_cap.has_eht &&
-+	    link_sta->eht_cap.eht_cap_elem.phy_cap_info[5] &
-+	    IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF) {
-+		flags |= IWL_TLC_MNG_CFG_FLAGS_EHT_EXTRA_LTF_MSK;
-+	}
-+
-+	return cpu_to_le16(flags);
++	return last_idx;
 +}
 +
-+static u8 iwl_mld_get_fw_chains(struct iwl_mld *mld)
++void iwl_mld_toggle_tx_ant(struct iwl_mld *mld, u8 *ant)
 +{
-+	u8 chains = iwl_mld_get_valid_tx_ant(mld);
-+	u8 fw_chains = 0;
-+
-+	if (chains & ANT_A)
-+		fw_chains |= IWL_TLC_MNG_CHAIN_A_MSK;
-+	if (chains & ANT_B)
-+		fw_chains |= IWL_TLC_MNG_CHAIN_B_MSK;
-+
-+	return fw_chains;
-+}
-+
-+static u8 iwl_mld_get_fw_sgi(struct ieee80211_link_sta *link_sta)
-+{
-+	struct ieee80211_sta_ht_cap *ht_cap = &link_sta->ht_cap;
-+	struct ieee80211_sta_vht_cap *vht_cap = &link_sta->vht_cap;
-+	struct ieee80211_sta_he_cap *he_cap = &link_sta->he_cap;
-+	u8 sgi_chwidths = 0;
-+
-+	/* If the association supports HE, HT/VHT rates will never be used for
-+	 * Tx and therefor there's no need to set the
-+	 * sgi-per-channel-width-support bits
-+	 */
-+	if (he_cap->has_he)
-+		return 0;
-+
-+	if (ht_cap->cap & IEEE80211_HT_CAP_SGI_20)
-+		sgi_chwidths |= BIT(IWL_TLC_MNG_CH_WIDTH_20MHZ);
-+	if (ht_cap->cap & IEEE80211_HT_CAP_SGI_40)
-+		sgi_chwidths |= BIT(IWL_TLC_MNG_CH_WIDTH_40MHZ);
-+	if (vht_cap->cap & IEEE80211_VHT_CAP_SHORT_GI_80)
-+		sgi_chwidths |= BIT(IWL_TLC_MNG_CH_WIDTH_80MHZ);
-+	if (vht_cap->cap & IEEE80211_VHT_CAP_SHORT_GI_160)
-+		sgi_chwidths |= BIT(IWL_TLC_MNG_CH_WIDTH_160MHZ);
-+
-+	return sgi_chwidths;
++	*ant = iwl_mld_next_ant(iwl_mld_get_valid_tx_ant(mld), *ant);
 +}
 +
 +static int
-+iwl_mld_get_highest_fw_mcs(const struct ieee80211_sta_vht_cap *vht_cap,
-+			   int nss)
++iwl_mld_get_queue_size(struct iwl_mld *mld, struct ieee80211_txq *txq)
 +{
-+	u16 rx_mcs = le16_to_cpu(vht_cap->vht_mcs.rx_mcs_map) &
-+		(0x3 << (2 * (nss - 1)));
-+	rx_mcs >>= (2 * (nss - 1));
++	struct ieee80211_sta *sta = txq->sta;
++	struct ieee80211_link_sta *link_sta;
++	unsigned int link_id;
++	int max_size = IWL_DEFAULT_QUEUE_SIZE;
 +
-+	switch (rx_mcs) {
-+	case IEEE80211_VHT_MCS_SUPPORT_0_7:
-+		return IWL_TLC_MNG_HT_RATE_MCS7;
-+	case IEEE80211_VHT_MCS_SUPPORT_0_8:
-+		return IWL_TLC_MNG_HT_RATE_MCS8;
-+	case IEEE80211_VHT_MCS_SUPPORT_0_9:
-+		return IWL_TLC_MNG_HT_RATE_MCS9;
-+	default:
++	lockdep_assert_wiphy(mld->wiphy);
++
++	for_each_sta_active_link(txq->vif, sta, link_sta, link_id) {
++		if (link_sta->eht_cap.has_eht) {
++			max_size = IWL_DEFAULT_QUEUE_SIZE_EHT;
++			break;
++		}
++
++		if (link_sta->he_cap.has_he)
++			max_size = IWL_DEFAULT_QUEUE_SIZE_HE;
++	}
++
++	return max_size;
++}
++
++static int iwl_mld_allocate_txq(struct iwl_mld *mld, struct ieee80211_txq *txq)
++{
++	u8 tid = txq->tid == IEEE80211_NUM_TIDS ? IWL_MGMT_TID : txq->tid;
++	u32 fw_sta_mask = iwl_mld_fw_sta_id_mask(mld, txq->sta);
++	/* We can't know when the station is asleep or awake, so we
++	 * must disable the queue hang detection.
++	 */
++	unsigned int watchdog_timeout = txq->vif->type == NL80211_IFTYPE_AP ?
++				IWL_WATCHDOG_DISABLED :
++				mld->trans->trans_cfg->base_params->wd_timeout;
++	int queue, size;
++
++	lockdep_assert_wiphy(mld->wiphy);
++
++	if (tid == IWL_MGMT_TID)
++		size = max_t(u32, IWL_MGMT_QUEUE_SIZE,
++			     mld->trans->cfg->min_txq_size);
++	else
++		size = iwl_mld_get_queue_size(mld, txq);
++
++	queue = iwl_trans_txq_alloc(mld->trans, 0, fw_sta_mask, tid, size,
++				    watchdog_timeout);
++
++	if (queue >= 0)
++		IWL_DEBUG_TX_QUEUES(mld,
++				    "Enabling TXQ #%d for sta mask 0x%x tid %d\n",
++				    queue, fw_sta_mask, tid);
++	return queue;
++}
++
++static int iwl_mld_add_txq(struct iwl_mld *mld, struct ieee80211_txq *txq)
++{
++	struct iwl_mld_txq *mld_txq = iwl_mld_txq_from_mac80211(txq);
++	int id;
++
++	lockdep_assert_wiphy(mld->wiphy);
++
++	/* This will alse send the SCD_QUEUE_CONFIG_CMD */
++	id = iwl_mld_allocate_txq(mld, txq);
++	if (id < 0)
++		return id;
++
++	mld_txq->fw_id = id;
++	mld_txq->status.allocated = true;
++
++	rcu_assign_pointer(mld->fw_id_to_txq[id], txq);
++
++	return 0;
++}
++
++void iwl_mld_add_txq_list(struct iwl_mld *mld)
++{
++	lockdep_assert_wiphy(mld->wiphy);
++
++	while (!list_empty(&mld->txqs_to_add)) {
++		struct ieee80211_txq *txq;
++		struct iwl_mld_txq *mld_txq =
++			list_first_entry(&mld->txqs_to_add, struct iwl_mld_txq,
++					 list);
++		int failed;
++
++		txq = container_of((void *)mld_txq, struct ieee80211_txq,
++				   drv_priv);
++
++		failed = iwl_mld_add_txq(mld, txq);
++
++		local_bh_disable();
++		spin_lock(&mld->add_txqs_lock);
++		list_del_init(&mld_txq->list);
++		spin_unlock(&mld->add_txqs_lock);
++		/* If the queue allocation failed, we can't transmit. Leave the
++		 * frames on the txq, maybe the attempt to allocate the queue
++		 * will succeed.
++		 */
++		if (!failed)
++			iwl_mld_tx_from_txq(mld, txq);
++		local_bh_enable();
++	}
++}
++
++void iwl_mld_add_txqs_wk(struct wiphy *wiphy, struct wiphy_work *wk)
++{
++	struct iwl_mld *mld = container_of(wk, struct iwl_mld,
++					   add_txqs_wk);
++
++	/* will reschedule to run after restart */
++	if (mld->fw_status.in_hw_restart)
++		return;
++
++	iwl_mld_add_txq_list(mld);
++}
++
++void
++iwl_mld_free_txq(struct iwl_mld *mld, u32 fw_sta_mask, u32 tid, u32 queue_id)
++{
++	struct iwl_scd_queue_cfg_cmd remove_cmd = {
++		.operation = cpu_to_le32(IWL_SCD_QUEUE_REMOVE),
++		.u.remove.tid = cpu_to_le32(tid),
++		.u.remove.sta_mask = cpu_to_le32(fw_sta_mask),
++	};
++
++	iwl_mld_send_cmd_pdu(mld,
++			     WIDE_ID(DATA_PATH_GROUP, SCD_QUEUE_CONFIG_CMD),
++			     &remove_cmd);
++
++	iwl_trans_txq_free(mld->trans, queue_id);
++}
++
++void iwl_mld_remove_txq(struct iwl_mld *mld, struct ieee80211_txq *txq)
++{
++	struct iwl_mld_txq *mld_txq = iwl_mld_txq_from_mac80211(txq);
++	u32 sta_msk, tid;
++
++	lockdep_assert_wiphy(mld->wiphy);
++
++	spin_lock_bh(&mld->add_txqs_lock);
++	if (!list_empty(&mld_txq->list))
++		list_del_init(&mld_txq->list);
++	spin_unlock_bh(&mld->add_txqs_lock);
++
++	if (!mld_txq->status.allocated ||
++	    WARN_ON(mld_txq->fw_id >= ARRAY_SIZE(mld->fw_id_to_txq)))
++		return;
++
++	sta_msk = iwl_mld_fw_sta_id_mask(mld, txq->sta);
++
++	tid = txq->tid == IEEE80211_NUM_TIDS ? IWL_MGMT_TID :
++					       txq->tid;
++
++	iwl_mld_free_txq(mld, sta_msk, tid, mld_txq->fw_id);
++
++	RCU_INIT_POINTER(mld->fw_id_to_txq[mld_txq->fw_id], NULL);
++	mld_txq->status.allocated = false;
++}
++
++#define OPT_HDR(type, skb, off) \
++	(type *)(skb_network_header(skb) + (off))
++
++static __le32
++iwl_mld_get_offload_assist(struct sk_buff *skb, bool amsdu)
++{
++	struct ieee80211_hdr *hdr = (void *)skb->data;
++	u16 mh_len = ieee80211_hdrlen(hdr->frame_control);
++	u16 offload_assist = 0;
++#if IS_ENABLED(CONFIG_INET)
++	u8 protocol = 0;
++
++	/* Do not compute checksum if already computed */
++	if (skb->ip_summed != CHECKSUM_PARTIAL)
++		goto out;
++
++	/* We do not expect to be requested to csum stuff we do not support */
++
++	/* TBD: do we also need to check
++	 * !(mvm->hw->netdev_features & IWL_TX_CSUM_NETIF_FLAGS) now that all
++	 * the devices we support has this flags?
++	 */
++	if (WARN_ONCE(skb->protocol != htons(ETH_P_IP) &&
++		      skb->protocol != htons(ETH_P_IPV6),
++		      "No support for requested checksum\n")) {
++		skb_checksum_help(skb);
++		goto out;
++	}
++
++	if (skb->protocol == htons(ETH_P_IP)) {
++		protocol = ip_hdr(skb)->protocol;
++	} else {
++#if IS_ENABLED(CONFIG_IPV6)
++		struct ipv6hdr *ipv6h =
++			(struct ipv6hdr *)skb_network_header(skb);
++		unsigned int off = sizeof(*ipv6h);
++
++		protocol = ipv6h->nexthdr;
++		while (protocol != NEXTHDR_NONE && ipv6_ext_hdr(protocol)) {
++			struct ipv6_opt_hdr *hp;
++
++			/* only supported extension headers */
++			if (protocol != NEXTHDR_ROUTING &&
++			    protocol != NEXTHDR_HOP &&
++			    protocol != NEXTHDR_DEST) {
++				skb_checksum_help(skb);
++				goto out;
++			}
++
++			hp = OPT_HDR(struct ipv6_opt_hdr, skb, off);
++			protocol = hp->nexthdr;
++			off += ipv6_optlen(hp);
++		}
++		/* if we get here - protocol now should be TCP/UDP */
++#endif
++	}
++
++	if (protocol != IPPROTO_TCP && protocol != IPPROTO_UDP) {
 +		WARN_ON_ONCE(1);
++		skb_checksum_help(skb);
++		goto out;
++	}
++
++	/* enable L4 csum */
++	offload_assist |= BIT(TX_CMD_OFFLD_L4_EN);
++
++	/* Set offset to IP header (snap).
++	 * We don't support tunneling so no need to take care of inner header.
++	 * Size is in words.
++	 */
++	offload_assist |= (4 << TX_CMD_OFFLD_IP_HDR);
++
++	/* Do IPv4 csum for AMSDU only (no IP csum for Ipv6) */
++	if (skb->protocol == htons(ETH_P_IP) && amsdu) {
++		ip_hdr(skb)->check = 0;
++		offload_assist |= BIT(TX_CMD_OFFLD_L3_EN);
++	}
++
++	/* reset UDP/TCP header csum */
++	if (protocol == IPPROTO_TCP)
++		tcp_hdr(skb)->check = 0;
++	else
++		udp_hdr(skb)->check = 0;
++
++out:
++#endif
++	mh_len /= 2;
++	offload_assist |= mh_len << TX_CMD_OFFLD_MH_SIZE;
++
++	if (amsdu)
++		offload_assist |= BIT(TX_CMD_OFFLD_AMSDU);
++	else if (ieee80211_hdrlen(hdr->frame_control) % 4)
++		/* padding is inserted later in transport */
++		offload_assist |= BIT(TX_CMD_OFFLD_PAD);
++
++	return cpu_to_le32(offload_assist);
++}
++
++static void iwl_mld_get_basic_rates_and_band(struct iwl_mld *mld,
++					     struct ieee80211_vif *vif,
++					     struct ieee80211_tx_info *info,
++					     unsigned long *basic_rates,
++					     u8 *band)
++{
++	u32 link_id = u32_get_bits(info->control.flags,
++				   IEEE80211_TX_CTRL_MLO_LINK);
++
++	*basic_rates = vif->bss_conf.basic_rates;
++	*band = info->band;
++
++	if (link_id == IEEE80211_LINK_UNSPECIFIED &&
++	    ieee80211_vif_is_mld(vif)) {
++		/* shouldn't do this when >1 link is active */
++		WARN_ON(hweight16(vif->active_links) != 1);
++		link_id = __ffs(vif->active_links);
++	}
++
++	if (link_id < IEEE80211_LINK_UNSPECIFIED) {
++		struct ieee80211_bss_conf *link_conf;
++
++		rcu_read_lock();
++		link_conf = rcu_dereference(vif->link_conf[link_id]);
++		if (link_conf) {
++			*basic_rates = link_conf->basic_rates;
++			if (link_conf->chanreq.oper.chan)
++				*band = link_conf->chanreq.oper.chan->band;
++		}
++		rcu_read_unlock();
++	}
++}
++
++u8 iwl_mld_get_lowest_rate(struct iwl_mld *mld,
++			   struct ieee80211_tx_info *info,
++			   struct ieee80211_vif *vif)
++{
++	struct ieee80211_supported_band *sband;
++	u16 lowest_cck = IWL_RATE_COUNT, lowest_ofdm = IWL_RATE_COUNT;
++	unsigned long basic_rates;
++	u8 band, rate;
++	u32 i;
++
++	iwl_mld_get_basic_rates_and_band(mld, vif, info, &basic_rates, &band);
++
++	sband = mld->hw->wiphy->bands[band];
++	for_each_set_bit(i, &basic_rates, BITS_PER_LONG) {
++		u16 hw = sband->bitrates[i].hw_value;
++
++		if (hw >= IWL_FIRST_OFDM_RATE) {
++			if (lowest_ofdm > hw)
++				lowest_ofdm = hw;
++		} else if (lowest_cck > hw) {
++			lowest_cck = hw;
++		}
++	}
++
++	if (band == NL80211_BAND_2GHZ && !vif->p2p &&
++	    vif->type != NL80211_IFTYPE_P2P_DEVICE &&
++	    !(info->flags & IEEE80211_TX_CTL_NO_CCK_RATE)) {
++		if (lowest_cck != IWL_RATE_COUNT)
++			rate = lowest_cck;
++		else if (lowest_ofdm != IWL_RATE_COUNT)
++			rate = lowest_ofdm;
++		else
++			rate = IWL_FIRST_CCK_RATE;
++	} else if (lowest_ofdm != IWL_RATE_COUNT) {
++		rate = lowest_ofdm;
++	} else {
++		rate = IWL_FIRST_OFDM_RATE;
++	}
++
++	return rate;
++}
++
++static u32 iwl_mld_mac80211_rate_idx_to_fw(struct iwl_mld *mld,
++					   struct ieee80211_tx_info *info,
++					   int rate_idx)
++{
++	u32 rate_flags = 0;
++	u8 rate_plcp;
++
++	/* if the rate isn't a well known legacy rate, take the lowest one */
++	if (rate_idx < 0 || rate_idx >= IWL_RATE_COUNT_LEGACY)
++		rate_idx = iwl_mld_get_lowest_rate(mld, info,
++						   info->control.vif);
++
++	WARN_ON_ONCE(rate_idx < 0);
++
++	/* Set CCK or OFDM flag */
++	if (rate_idx <= IWL_LAST_CCK_RATE)
++		rate_flags |= RATE_MCS_CCK_MSK;
++	else
++		rate_flags |= RATE_MCS_LEGACY_OFDM_MSK;
++
++	/* Legacy rates are indexed:
++	 * 0 - 3 for CCK and 0 - 7 for OFDM
++	 */
++	rate_plcp = (rate_idx >= IWL_FIRST_OFDM_RATE ?
++		     rate_idx - IWL_FIRST_OFDM_RATE : rate_idx);
++
++	return (u32)rate_plcp | rate_flags;
++}
++
++static u32 iwl_mld_get_tx_ant(struct iwl_mld *mld,
++			      struct ieee80211_tx_info *info,
++			      struct ieee80211_sta *sta, __le16 fc)
++{
++	if (sta && ieee80211_is_data(fc)) {
++		struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
++
++		return BIT(mld_sta->data_tx_ant) << RATE_MCS_ANT_POS;
++	}
++
++	return BIT(mld->mgmt_tx_ant) << RATE_MCS_ANT_POS;
++}
++
++static u32 iwl_mld_get_inject_tx_rate(struct iwl_mld *mld,
++				      struct ieee80211_tx_info *info,
++				      struct ieee80211_sta *sta,
++				      __le16 fc)
++{
++	struct ieee80211_tx_rate *rate = &info->control.rates[0];
++	u32 result;
++
++	/* we only care about legacy/HT/VHT so far, so we can
++	 * build in v1 and use iwl_new_rate_from_v1()
++	 * FIXME: in newer devices we only support the new rates, build
++	 * the rate_n_flags in the new format here instead of using v1 and
++	 * converting it.
++	 */
++
++	if (rate->flags & IEEE80211_TX_RC_VHT_MCS) {
++		u8 mcs = ieee80211_rate_get_vht_mcs(rate);
++		u8 nss = ieee80211_rate_get_vht_nss(rate);
++
++		result = RATE_MCS_VHT_MSK_V1;
++		result |= u32_encode_bits(mcs, RATE_VHT_MCS_RATE_CODE_MSK);
++		result |= u32_encode_bits(nss, RATE_MCS_NSS_MSK);
++
++		if (rate->flags & IEEE80211_TX_RC_SHORT_GI)
++			result |= RATE_MCS_SGI_MSK_V1;
++
++		if (rate->flags & IEEE80211_TX_RC_40_MHZ_WIDTH)
++			result |= u32_encode_bits(1, RATE_MCS_CHAN_WIDTH_MSK_V1);
++		else if (rate->flags & IEEE80211_TX_RC_80_MHZ_WIDTH)
++			result |= u32_encode_bits(2, RATE_MCS_CHAN_WIDTH_MSK_V1);
++		else if (rate->flags & IEEE80211_TX_RC_160_MHZ_WIDTH)
++			result |= u32_encode_bits(3, RATE_MCS_CHAN_WIDTH_MSK_V1);
++
++		result = iwl_new_rate_from_v1(result);
++	} else if (rate->flags & IEEE80211_TX_RC_MCS) {
++		result = RATE_MCS_HT_MSK_V1;
++		result |= u32_encode_bits(rate->idx,
++					  RATE_HT_MCS_RATE_CODE_MSK_V1 |
++					  RATE_HT_MCS_NSS_MSK_V1);
++		if (rate->flags & IEEE80211_TX_RC_SHORT_GI)
++			result |= RATE_MCS_SGI_MSK_V1;
++		if (rate->flags & IEEE80211_TX_RC_40_MHZ_WIDTH)
++			result |= u32_encode_bits(1, RATE_MCS_CHAN_WIDTH_MSK_V1);
++		if (info->flags & IEEE80211_TX_CTL_LDPC)
++			result |= RATE_MCS_LDPC_MSK_V1;
++		if (u32_get_bits(info->flags, IEEE80211_TX_CTL_STBC))
++			result |= RATE_MCS_STBC_MSK;
++
++		result = iwl_new_rate_from_v1(result);
++	} else {
++		result = iwl_mld_mac80211_rate_idx_to_fw(mld, info, rate->idx);
++	}
++
++	if (info->control.antennas)
++		result |= u32_encode_bits(info->control.antennas,
++					  RATE_MCS_ANT_AB_MSK);
++	else
++		result |= iwl_mld_get_tx_ant(mld, info, sta, fc);
++
++	return result;
++}
++
++static u32 iwl_mld_get_tx_rate_n_flags(struct iwl_mld *mld,
++				       struct ieee80211_tx_info *info,
++				       struct ieee80211_sta *sta, __le16 fc)
++{
++	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_RATE_INJECT))
++		return iwl_mld_get_inject_tx_rate(mld, info, sta, fc);
++
++	return iwl_mld_mac80211_rate_idx_to_fw(mld, info, -1) |
++		iwl_mld_get_tx_ant(mld, info, sta, fc);
++}
++
++static void
++iwl_mld_fill_tx_cmd_hdr(struct iwl_tx_cmd_gen3 *tx_cmd,
++			struct sk_buff *skb, bool amsdu)
++{
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct ieee80211_hdr *hdr = (void *)skb->data;
++	struct ieee80211_vif *vif;
++
++	/* Copy MAC header from skb into command buffer */
++	memcpy(tx_cmd->hdr, hdr, ieee80211_hdrlen(hdr->frame_control));
++
++	if (!amsdu || !skb_is_gso(skb))
++		return;
++
++	/* As described in IEEE sta 802.11-2020, table 9-30 (Address
++	 * field contents), A-MSDU address 3 should contain the BSSID
++	 * address.
++	 *
++	 * In TSO, the skb header address 3 contains the original address 3 to
++	 * correctly create all the A-MSDU subframes headers from it.
++	 * Override now the address 3 in the command header with the BSSID.
++	 *
++	 * Note: we fill in the MLD address, but the firmware will do the
++	 * necessary translation to link address after encryption.
++	 */
++	vif = info->control.vif;
++	switch (vif->type) {
++	case NL80211_IFTYPE_STATION:
++		ether_addr_copy(tx_cmd->hdr->addr3, vif->cfg.ap_addr);
++		break;
++	case NL80211_IFTYPE_AP:
++		ether_addr_copy(tx_cmd->hdr->addr3, vif->addr);
++		break;
++	default:
++		break;
++	}
++}
++
++static void
++iwl_mld_fill_tx_cmd(struct iwl_mld *mld, struct sk_buff *skb,
++		    struct iwl_device_tx_cmd *dev_tx_cmd,
++		    struct ieee80211_sta *sta)
++{
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct ieee80211_hdr *hdr = (void *)skb->data;
++	struct iwl_mld_sta *mld_sta = sta ? iwl_mld_sta_from_mac80211(sta) :
++					    NULL;
++	struct iwl_tx_cmd_gen3 *tx_cmd;
++	bool amsdu = ieee80211_is_data_qos(hdr->frame_control) &&
++		     (*ieee80211_get_qos_ctl(hdr) &
++		      IEEE80211_QOS_CTL_A_MSDU_PRESENT);
++	u32 rate_n_flags = 0;
++	u16 flags = 0;
++
++	dev_tx_cmd->hdr.cmd = TX_CMD;
++
++	if (!info->control.hw_key)
++		flags |= IWL_TX_FLAGS_ENCRYPT_DIS;
++
++	/* For data and mgmt packets rate info comes from the fw.
++	 * Only set rate/antenna for injected frames with fixed rate, or
++	 * when no sta is given.
++	 */
++	if (unlikely(!sta ||
++		     info->control.flags & IEEE80211_TX_CTRL_RATE_INJECT)) {
++		flags |= IWL_TX_FLAGS_CMD_RATE;
++		rate_n_flags = iwl_mld_get_tx_rate_n_flags(mld, info, sta,
++							   hdr->frame_control);
++	} else if (!ieee80211_is_data(hdr->frame_control) ||
++		   (mld_sta &&
++		    mld_sta->sta_state < IEEE80211_STA_AUTHORIZED)) {
++		/* These are important frames */
++		flags |= IWL_TX_FLAGS_HIGH_PRI;
++	}
++
++	tx_cmd = (void *)dev_tx_cmd->payload;
++
++	iwl_mld_fill_tx_cmd_hdr(tx_cmd, skb, amsdu);
++
++	tx_cmd->offload_assist = iwl_mld_get_offload_assist(skb, amsdu);
++
++	/* Total # bytes to be transmitted */
++	tx_cmd->len = cpu_to_le16((u16)skb->len);
++
++	tx_cmd->flags = cpu_to_le16(flags);
++
++	tx_cmd->rate_n_flags = cpu_to_le32(rate_n_flags);
++}
++
++/* Caller of this need to check that info->control.vif is not NULL */
++static struct iwl_mld_link *
++iwl_mld_get_link_from_tx_info(struct ieee80211_tx_info *info)
++{
++	struct iwl_mld_vif *mld_vif =
++		iwl_mld_vif_from_mac80211(info->control.vif);
++	u32 link_id = u32_get_bits(info->control.flags,
++				   IEEE80211_TX_CTRL_MLO_LINK);
++
++	if (link_id == IEEE80211_LINK_UNSPECIFIED) {
++		if (info->control.vif->active_links)
++			link_id = ffs(info->control.vif->active_links) - 1;
++		else
++			link_id = 0;
++	}
++
++	return rcu_dereference(mld_vif->link[link_id]);
++}
++
++static int
++iwl_mld_get_tx_queue_id(struct iwl_mld *mld, struct ieee80211_txq *txq,
++			struct sk_buff *skb)
++{
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct ieee80211_hdr *hdr = (void *)skb->data;
++	__le16 fc = hdr->frame_control;
++	struct iwl_mld_vif *mld_vif;
++	struct iwl_mld_link *link;
++
++	if (txq && txq->sta)
++		return iwl_mld_txq_from_mac80211(txq)->fw_id;
++
++	if (!info->control.vif)
++		return IWL_MLD_INVALID_QUEUE;
++
++	switch (info->control.vif->type) {
++	case NL80211_IFTYPE_AP:
++	case NL80211_IFTYPE_ADHOC:
++		link = iwl_mld_get_link_from_tx_info(info);
++
++		if (WARN_ON(!link))
++			break;
++
++		/* ucast disassociate/deauth frames without a station might
++		 * happen, especially with reason 7 ("Class 3 frame received
++		 * from nonassociated STA").
++		 */
++		if (ieee80211_is_mgmt(fc) &&
++		    (!ieee80211_is_bufferable_mmpdu(skb) ||
++		     ieee80211_is_deauth(fc) || ieee80211_is_disassoc(fc)))
++			return link->bcast_sta.queue_id;
++
++		if (is_multicast_ether_addr(hdr->addr1) &&
++		    !ieee80211_has_order(fc))
++			return link->mcast_sta.queue_id;
++
++		WARN_ONCE(info->control.vif->type != NL80211_IFTYPE_ADHOC,
++			  "Couldn't find a TXQ. fc=0x%02x", le16_to_cpu(fc));
++		return link->bcast_sta.queue_id;
++	case NL80211_IFTYPE_P2P_DEVICE:
++		mld_vif = iwl_mld_vif_from_mac80211(info->control.vif);
++
++		if (mld_vif->roc_activity == ROC_NUM_ACTIVITIES) {
++			IWL_DEBUG_DROP(mld, "Drop tx outside ROC\n");
++			return IWL_MLD_INVALID_DROP_TX;
++		}
++
++		WARN_ON(!ieee80211_is_mgmt(fc));
++
++		return mld_vif->deflink.aux_sta.queue_id;
++	default:
++		/* TODO: consider monitor (task=monitor) */
++		WARN_ONCE(1, "Unsupported vif type\n");
 +		break;
 +	}
 +
-+	return 0;
++	return IWL_MLD_INVALID_QUEUE;
 +}
 +
-+static void
-+iwl_mld_fill_vht_rates(const struct ieee80211_link_sta *link_sta,
-+		       const struct ieee80211_sta_vht_cap *vht_cap,
-+		       struct iwl_tlc_config_cmd_v4 *cmd)
++static void iwl_mld_probe_resp_set_noa(struct iwl_mld *mld,
++				       struct sk_buff *skb)
 +{
-+	u16 supp;
-+	int i, highest_mcs;
-+	u8 max_nss = link_sta->rx_nss;
-+	struct ieee80211_vht_cap ieee_vht_cap = {
-+		.vht_cap_info = cpu_to_le32(vht_cap->cap),
-+		.supp_mcs = vht_cap->vht_mcs,
-+	};
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct iwl_mld_link *mld_link =
++		&iwl_mld_vif_from_mac80211(info->control.vif)->deflink;
++	struct iwl_probe_resp_data *resp_data;
++	u8 *pos;
 +
-+	/* the station support only a single receive chain */
-+	if (link_sta->smps_mode == IEEE80211_SMPS_STATIC)
-+		max_nss = 1;
++	if (!info->control.vif->p2p)
++		return;
 +
-+	for (i = 0; i < max_nss && i < IWL_TLC_NSS_MAX; i++) {
-+		int nss = i + 1;
++	rcu_read_lock();
 +
-+		highest_mcs = iwl_mld_get_highest_fw_mcs(vht_cap, nss);
-+		if (!highest_mcs)
-+			continue;
++	resp_data = rcu_dereference(mld_link->probe_resp_data);
++	if (!resp_data)
++		goto out;
 +
-+		supp = BIT(highest_mcs + 1) - 1;
-+		if (link_sta->bandwidth == IEEE80211_STA_RX_BW_20)
-+			supp &= ~BIT(IWL_TLC_MNG_HT_RATE_MCS9);
++	if (!resp_data->notif.noa_active)
++		goto out;
 +
-+		cmd->ht_rates[i][IWL_TLC_MCS_PER_BW_80] = cpu_to_le16(supp);
-+		/* Check if VHT extended NSS indicates that the bandwidth/NSS
-+		 * configuration is supported - only for MCS 0 since we already
-+		 * decoded the MCS bits anyway ourselves.
-+		 */
-+		if (link_sta->bandwidth == IEEE80211_STA_RX_BW_160 &&
-+		    ieee80211_get_vht_max_nss(&ieee_vht_cap,
-+					      IEEE80211_VHT_CHANWIDTH_160MHZ,
-+					      0, true, nss) >= nss)
-+			cmd->ht_rates[i][IWL_TLC_MCS_PER_BW_160] =
-+				cmd->ht_rates[i][IWL_TLC_MCS_PER_BW_80];
++	if (skb_tailroom(skb) < resp_data->noa_len) {
++		if (pskb_expand_head(skb, 0, resp_data->noa_len, GFP_ATOMIC)) {
++			IWL_ERR(mld,
++				"Failed to reallocate probe resp\n");
++			goto out;
++		}
 +	}
++
++	pos = skb_put(skb, resp_data->noa_len);
++
++	*pos++ = WLAN_EID_VENDOR_SPECIFIC;
++	/* Set length of IE body (not including ID and length itself) */
++	*pos++ = resp_data->noa_len - 2;
++	*pos++ = (WLAN_OUI_WFA >> 16) & 0xff;
++	*pos++ = (WLAN_OUI_WFA >> 8) & 0xff;
++	*pos++ = WLAN_OUI_WFA & 0xff;
++	*pos++ = WLAN_OUI_TYPE_WFA_P2P;
++
++	memcpy(pos, &resp_data->notif.noa_attr,
++	       resp_data->noa_len - sizeof(struct ieee80211_vendor_ie));
++
++out:
++	rcu_read_unlock();
 +}
 +
-+static u16 iwl_mld_he_mac80211_mcs_to_fw_mcs(u16 mcs)
++/* This function must be called with BHs disabled */
++static int iwl_mld_tx_mpdu(struct iwl_mld *mld, struct sk_buff *skb,
++			   struct ieee80211_txq *txq)
 +{
-+	switch (mcs) {
-+	case IEEE80211_HE_MCS_SUPPORT_0_7:
-+		return BIT(IWL_TLC_MNG_HT_RATE_MCS7 + 1) - 1;
-+	case IEEE80211_HE_MCS_SUPPORT_0_9:
-+		return BIT(IWL_TLC_MNG_HT_RATE_MCS9 + 1) - 1;
-+	case IEEE80211_HE_MCS_SUPPORT_0_11:
-+		return BIT(IWL_TLC_MNG_HT_RATE_MCS11 + 1) - 1;
-+	case IEEE80211_HE_MCS_NOT_SUPPORTED:
++	struct ieee80211_hdr *hdr = (void *)skb->data;
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct ieee80211_sta *sta = txq ? txq->sta : NULL;
++	struct iwl_device_tx_cmd *dev_tx_cmd;
++	int queue = iwl_mld_get_tx_queue_id(mld, txq, skb);
++	u8 tid = IWL_MAX_TID_COUNT;
++
++	if (WARN_ONCE(queue == IWL_MLD_INVALID_QUEUE, "Invalid TX Queue id") ||
++	    queue == IWL_MLD_INVALID_DROP_TX)
++		return -1;
++
++	if (unlikely(ieee80211_is_any_nullfunc(hdr->frame_control)))
++		return -1;
++
++	dev_tx_cmd = iwl_trans_alloc_tx_cmd(mld->trans);
++	if (unlikely(!dev_tx_cmd))
++		return -1;
++
++	if (unlikely(ieee80211_is_probe_resp(hdr->frame_control))) {
++		if (IWL_MLD_NON_TRANSMITTING_AP)
++			return -1;
++
++		iwl_mld_probe_resp_set_noa(mld, skb);
++	}
++
++	iwl_mld_fill_tx_cmd(mld, skb, dev_tx_cmd, sta);
++
++	if (ieee80211_is_data(hdr->frame_control)) {
++		if (ieee80211_is_data_qos(hdr->frame_control))
++			tid = ieee80211_get_tid(hdr);
++		else
++			tid = IWL_TID_NON_QOS;
++	}
++
++	IWL_DEBUG_TX(mld, "TX TID:%d from Q:%d len %d\n",
++		     tid, queue, skb->len);
++
++	/* From now on, we cannot access info->control */
++	memset(&info->status, 0, sizeof(info->status));
++	memset(info->driver_data, 0, sizeof(info->driver_data));
++
++	info->driver_data[1] = dev_tx_cmd;
++
++	if (iwl_trans_tx(mld->trans, skb, dev_tx_cmd, queue))
++		goto err;
++
++	/* Update low-latency counter when a packet is queued instead
++	 * of after TX, it makes sense for early low-latency detection
++	 */
++	if (sta)
++		iwl_mld_low_latency_update_counters(mld, hdr, sta, 0);
++
++	return 0;
++
++err:
++	iwl_trans_free_tx_cmd(mld->trans, dev_tx_cmd);
++	IWL_DEBUG_TX(mld, "TX from Q:%d dropped\n", queue);
++	return -1;
++}
++
++#ifdef CONFIG_INET
++
++/* This function handles the segmentation of a large TSO packet into multiple
++ * MPDUs, ensuring that the resulting segments conform to AMSDU limits and
++ * constraints.
++ */
++static int iwl_mld_tx_tso_segment(struct iwl_mld *mld, struct sk_buff *skb,
++				  struct ieee80211_sta *sta,
++				  struct sk_buff_head *mpdus_skbs)
++{
++	struct ieee80211_hdr *hdr = (void *)skb->data;
++	netdev_features_t netdev_flags = NETIF_F_CSUM_MASK | NETIF_F_SG;
++	unsigned int mss = skb_shinfo(skb)->gso_size;
++	unsigned int num_subframes, tcp_payload_len, subf_len;
++	u16 snap_ip_tcp, pad, max_tid_amsdu_len;
++	u8 tid;
++
++	snap_ip_tcp = 8 + skb_network_header_len(skb) + tcp_hdrlen(skb);
++
++	if (!ieee80211_is_data_qos(hdr->frame_control) ||
++	    !sta->cur->max_rc_amsdu_len)
++		return iwl_tx_tso_segment(skb, 1, netdev_flags, mpdus_skbs);
++
++	/* Do not build AMSDU for IPv6 with extension headers.
++	 * Ask stack to segment and checksum the generated MPDUs for us.
++	 */
++	if (skb->protocol == htons(ETH_P_IPV6) &&
++	    ((struct ipv6hdr *)skb_network_header(skb))->nexthdr !=
++	    IPPROTO_TCP) {
++		netdev_flags &= ~NETIF_F_CSUM_MASK;
++		return iwl_tx_tso_segment(skb, 1, netdev_flags, mpdus_skbs);
++	}
++
++	tid = ieee80211_get_tid(hdr);
++	if (WARN_ON_ONCE(tid >= IWL_MAX_TID_COUNT))
++		return -EINVAL;
++
++	max_tid_amsdu_len = sta->cur->max_tid_amsdu_len[tid];
++	if (!max_tid_amsdu_len)
++		return iwl_tx_tso_segment(skb, 1, netdev_flags, mpdus_skbs);
++
++	/* Sub frame header + SNAP + IP header + TCP header + MSS */
++	subf_len = sizeof(struct ethhdr) + snap_ip_tcp + mss;
++	pad = (4 - subf_len) & 0x3;
++
++	/* If we have N subframes in the A-MSDU, then the A-MSDU's size is
++	 * N * subf_len + (N - 1) * pad.
++	 */
++	num_subframes = (max_tid_amsdu_len + pad) / (subf_len + pad);
++
++	if (sta->max_amsdu_subframes &&
++	    num_subframes > sta->max_amsdu_subframes)
++		num_subframes = sta->max_amsdu_subframes;
++
++	tcp_payload_len = skb_tail_pointer(skb) - skb_transport_header(skb) -
++		tcp_hdrlen(skb) + skb->data_len;
++
++	/* Make sure we have enough TBs for the A-MSDU:
++	 *	2 for each subframe
++	 *	1 more for each fragment
++	 *	1 more for the potential data in the header
++	 */
++	if ((num_subframes * 2 + skb_shinfo(skb)->nr_frags + 1) >
++	    mld->trans->max_skb_frags)
++		num_subframes = 1;
++
++	if (num_subframes > 1)
++		*ieee80211_get_qos_ctl(hdr) |= IEEE80211_QOS_CTL_A_MSDU_PRESENT;
++
++	/* This skb fits in one single A-MSDU */
++	if (tcp_payload_len <= num_subframes * mss) {
++		__skb_queue_tail(mpdus_skbs, skb);
 +		return 0;
 +	}
 +
-+	WARN(1, "invalid HE MCS %d\n", mcs);
-+	return 0;
-+}
-+
-+static void
-+iwl_mld_fill_he_rates(const struct ieee80211_link_sta *link_sta,
-+		      const struct ieee80211_sta_he_cap *own_he_cap,
-+		      struct iwl_tlc_config_cmd_v4 *cmd)
-+{
-+	const struct ieee80211_sta_he_cap *he_cap = &link_sta->he_cap;
-+	u16 mcs_160 = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
-+	u16 mcs_80 = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_80);
-+	u16 tx_mcs_80 = le16_to_cpu(own_he_cap->he_mcs_nss_supp.tx_mcs_80);
-+	u16 tx_mcs_160 = le16_to_cpu(own_he_cap->he_mcs_nss_supp.tx_mcs_160);
-+	int i;
-+	u8 nss = link_sta->rx_nss;
-+
-+	/* the station support only a single receive chain */
-+	if (link_sta->smps_mode == IEEE80211_SMPS_STATIC)
-+		nss = 1;
-+
-+	for (i = 0; i < nss && i < IWL_TLC_NSS_MAX; i++) {
-+		u16 _mcs_160 = (mcs_160 >> (2 * i)) & 0x3;
-+		u16 _mcs_80 = (mcs_80 >> (2 * i)) & 0x3;
-+		u16 _tx_mcs_160 = (tx_mcs_160 >> (2 * i)) & 0x3;
-+		u16 _tx_mcs_80 = (tx_mcs_80 >> (2 * i)) & 0x3;
-+
-+		/* If one side doesn't support - mark both as not supporting */
-+		if (_mcs_80 == IEEE80211_HE_MCS_NOT_SUPPORTED ||
-+		    _tx_mcs_80 == IEEE80211_HE_MCS_NOT_SUPPORTED) {
-+			_mcs_80 = IEEE80211_HE_MCS_NOT_SUPPORTED;
-+			_tx_mcs_80 = IEEE80211_HE_MCS_NOT_SUPPORTED;
-+		}
-+		if (_mcs_80 > _tx_mcs_80)
-+			_mcs_80 = _tx_mcs_80;
-+		cmd->ht_rates[i][IWL_TLC_MCS_PER_BW_80] =
-+			cpu_to_le16(iwl_mld_he_mac80211_mcs_to_fw_mcs(_mcs_80));
-+
-+		/* If one side doesn't support - mark both as not supporting */
-+		if (_mcs_160 == IEEE80211_HE_MCS_NOT_SUPPORTED ||
-+		    _tx_mcs_160 == IEEE80211_HE_MCS_NOT_SUPPORTED) {
-+			_mcs_160 = IEEE80211_HE_MCS_NOT_SUPPORTED;
-+			_tx_mcs_160 = IEEE80211_HE_MCS_NOT_SUPPORTED;
-+		}
-+		if (_mcs_160 > _tx_mcs_160)
-+			_mcs_160 = _tx_mcs_160;
-+		cmd->ht_rates[i][IWL_TLC_MCS_PER_BW_160] =
-+			cpu_to_le16(iwl_mld_he_mac80211_mcs_to_fw_mcs(_mcs_160));
-+	}
-+}
-+
-+static void iwl_mld_set_eht_mcs(__le16 ht_rates[][3],
-+				enum IWL_TLC_MCS_PER_BW bw,
-+				u8 max_nss, u16 mcs_msk)
-+{
-+	if (max_nss >= 2)
-+		ht_rates[IWL_TLC_NSS_2][bw] |= cpu_to_le16(mcs_msk);
-+
-+	if (max_nss >= 1)
-+		ht_rates[IWL_TLC_NSS_1][bw] |= cpu_to_le16(mcs_msk);
-+}
-+
-+static const
-+struct ieee80211_eht_mcs_nss_supp_bw *
-+iwl_mld_get_eht_mcs_of_bw(enum IWL_TLC_MCS_PER_BW bw,
-+			  const struct ieee80211_eht_mcs_nss_supp *eht_mcs)
-+{
-+	switch (bw) {
-+	case IWL_TLC_MCS_PER_BW_80:
-+		return &eht_mcs->bw._80;
-+	case IWL_TLC_MCS_PER_BW_160:
-+		return &eht_mcs->bw._160;
-+	case IWL_TLC_MCS_PER_BW_320:
-+		return &eht_mcs->bw._320;
-+	default:
-+		return NULL;
-+	}
-+}
-+
-+static u8 iwl_mld_get_eht_max_nss(u8 rx_nss, u8 tx_nss)
-+{
-+	u8 tx = u8_get_bits(tx_nss, IEEE80211_EHT_MCS_NSS_TX);
-+	u8 rx = u8_get_bits(rx_nss, IEEE80211_EHT_MCS_NSS_RX);
-+	/* the max nss that can be used,
-+	 * is the min with our tx capa and the peer rx capa.
++	/* Trick the segmentation function to make it create SKBs that can fit
++	 * into one A-MSDU.
 +	 */
-+	return min(tx, rx);
++	return iwl_tx_tso_segment(skb, num_subframes, netdev_flags, mpdus_skbs);
 +}
 +
-+#define MAX_NSS_MCS(mcs_num, rx, tx) \
-+	iwl_mld_get_eht_max_nss((rx)->rx_tx_mcs ##mcs_num## _max_nss, \
-+				(tx)->rx_tx_mcs ##mcs_num## _max_nss)
-+
-+static void
-+iwl_mld_fill_eht_rates(struct ieee80211_vif *vif,
-+		       const struct ieee80211_link_sta *link_sta,
-+		       const struct ieee80211_sta_he_cap *own_he_cap,
-+		       const struct ieee80211_sta_eht_cap *own_eht_cap,
-+		       struct iwl_tlc_config_cmd_v4 *cmd)
++/* Manages TSO (TCP Segmentation Offload) packet transmission by segmenting
++ * large packets when necessary and transmitting each segment as MPDU.
++ */
++static int iwl_mld_tx_tso(struct iwl_mld *mld, struct sk_buff *skb,
++			  struct ieee80211_txq *txq)
 +{
-+	/* peer RX mcs capa */
-+	const struct ieee80211_eht_mcs_nss_supp *eht_rx_mcs =
-+		&link_sta->eht_cap.eht_mcs_nss_supp;
-+	/* our TX mcs capa */
-+	const struct ieee80211_eht_mcs_nss_supp *eht_tx_mcs =
-+		&own_eht_cap->eht_mcs_nss_supp;
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct sk_buff *orig_skb = skb;
++	struct sk_buff_head mpdus_skbs;
++	unsigned int payload_len;
++	int ret;
 +
-+	enum IWL_TLC_MCS_PER_BW bw;
-+	struct ieee80211_eht_mcs_nss_supp_20mhz_only mcs_rx_20;
-+	struct ieee80211_eht_mcs_nss_supp_20mhz_only mcs_tx_20;
++	if (WARN_ON(!txq || !txq->sta))
++		return -1;
 +
-+	/* peer is 20 MHz only */
-+	if (vif->type == NL80211_IFTYPE_AP &&
-+	    !(link_sta->he_cap.he_cap_elem.phy_cap_info[0] &
-+	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_MASK_ALL)) {
-+		mcs_rx_20 = eht_rx_mcs->only_20mhz;
-+	} else {
-+		mcs_rx_20.rx_tx_mcs7_max_nss =
-+			eht_rx_mcs->bw._80.rx_tx_mcs9_max_nss;
-+		mcs_rx_20.rx_tx_mcs9_max_nss =
-+			eht_rx_mcs->bw._80.rx_tx_mcs9_max_nss;
-+		mcs_rx_20.rx_tx_mcs11_max_nss =
-+			eht_rx_mcs->bw._80.rx_tx_mcs11_max_nss;
-+		mcs_rx_20.rx_tx_mcs13_max_nss =
-+			eht_rx_mcs->bw._80.rx_tx_mcs13_max_nss;
-+	}
++	payload_len = skb_tail_pointer(skb) - skb_transport_header(skb) -
++		tcp_hdrlen(skb) + skb->data_len;
 +
-+	/* NIC is capable of 20 MHz only */
-+	if (!(own_he_cap->he_cap_elem.phy_cap_info[0] &
-+	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_MASK_ALL)) {
-+		mcs_tx_20 = eht_tx_mcs->only_20mhz;
-+	} else {
-+		mcs_tx_20.rx_tx_mcs7_max_nss =
-+			eht_tx_mcs->bw._80.rx_tx_mcs9_max_nss;
-+		mcs_tx_20.rx_tx_mcs9_max_nss =
-+			eht_tx_mcs->bw._80.rx_tx_mcs9_max_nss;
-+		mcs_tx_20.rx_tx_mcs11_max_nss =
-+			eht_tx_mcs->bw._80.rx_tx_mcs11_max_nss;
-+		mcs_tx_20.rx_tx_mcs13_max_nss =
-+			eht_tx_mcs->bw._80.rx_tx_mcs13_max_nss;
-+	}
++	if (payload_len <= skb_shinfo(skb)->gso_size)
++		return iwl_mld_tx_mpdu(mld, skb, txq);
 +
-+	/* rates for 20/40/80 MHz */
-+	bw = IWL_TLC_MCS_PER_BW_80;
-+	iwl_mld_set_eht_mcs(cmd->ht_rates, bw,
-+			    MAX_NSS_MCS(7, &mcs_rx_20, &mcs_tx_20),
-+			    GENMASK(7, 0));
-+	iwl_mld_set_eht_mcs(cmd->ht_rates, bw,
-+			    MAX_NSS_MCS(9, &mcs_rx_20, &mcs_tx_20),
-+			    GENMASK(9, 8));
-+	iwl_mld_set_eht_mcs(cmd->ht_rates, bw,
-+			    MAX_NSS_MCS(11, &mcs_rx_20, &mcs_tx_20),
-+			    GENMASK(11, 10));
-+	iwl_mld_set_eht_mcs(cmd->ht_rates, bw,
-+			    MAX_NSS_MCS(13, &mcs_rx_20, &mcs_tx_20),
-+			    GENMASK(13, 12));
++	if (!info->control.vif)
++		return -1;
 +
-+	/* rates for 160/320 MHz */
-+	for (bw = IWL_TLC_MCS_PER_BW_160; bw <= IWL_TLC_MCS_PER_BW_320; bw++) {
-+		const struct ieee80211_eht_mcs_nss_supp_bw *mcs_rx =
-+			iwl_mld_get_eht_mcs_of_bw(bw, eht_rx_mcs);
-+		const struct ieee80211_eht_mcs_nss_supp_bw *mcs_tx =
-+			iwl_mld_get_eht_mcs_of_bw(bw, eht_tx_mcs);
++	__skb_queue_head_init(&mpdus_skbs);
 +
-+		/* got unsupported index for bw */
-+		if (!mcs_rx || !mcs_tx)
++	ret = iwl_mld_tx_tso_segment(mld, skb, txq->sta, &mpdus_skbs);
++	if (ret)
++		return ret;
++
++	WARN_ON(skb_queue_empty(&mpdus_skbs));
++
++	while (!skb_queue_empty(&mpdus_skbs)) {
++		skb = __skb_dequeue(&mpdus_skbs);
++
++		ret = iwl_mld_tx_mpdu(mld, skb, txq);
++		if (!ret)
 +			continue;
 +
-+		/* break out if we don't support the bandwidth */
-+		if (cmd->max_ch_width < (bw + IWL_TLC_MNG_CH_WIDTH_80MHZ))
-+			break;
++		/* Free skbs created as part of TSO logic that have not yet
++		 * been dequeued
++		 */
++		__skb_queue_purge(&mpdus_skbs);
 +
-+		iwl_mld_set_eht_mcs(cmd->ht_rates, bw,
-+				    MAX_NSS_MCS(9, mcs_rx, mcs_tx),
-+				    GENMASK(9, 0));
-+		iwl_mld_set_eht_mcs(cmd->ht_rates, bw,
-+				    MAX_NSS_MCS(11, mcs_rx, mcs_tx),
-+				    GENMASK(11, 10));
-+		iwl_mld_set_eht_mcs(cmd->ht_rates, bw,
-+				    MAX_NSS_MCS(13, mcs_rx, mcs_tx),
-+				    GENMASK(13, 12));
-+	}
-+
-+	/* the station support only a single receive chain */
-+	if (link_sta->smps_mode == IEEE80211_SMPS_STATIC ||
-+	    link_sta->rx_nss < 2)
-+		memset(cmd->ht_rates[IWL_TLC_NSS_2], 0,
-+		       sizeof(cmd->ht_rates[IWL_TLC_NSS_2]));
-+}
-+
-+static void
-+iwl_mld_fill_supp_rates(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+			struct ieee80211_link_sta *link_sta,
-+			struct ieee80211_supported_band *sband,
-+			const struct ieee80211_sta_he_cap *own_he_cap,
-+			const struct ieee80211_sta_eht_cap *own_eht_cap,
-+			struct iwl_tlc_config_cmd_v4 *cmd)
-+{
-+	int i;
-+	u16 non_ht_rates = 0;
-+	unsigned long rates_bitmap;
-+	const struct ieee80211_sta_ht_cap *ht_cap = &link_sta->ht_cap;
-+	const struct ieee80211_sta_vht_cap *vht_cap = &link_sta->vht_cap;
-+	const struct ieee80211_sta_he_cap *he_cap = &link_sta->he_cap;
-+
-+	/* non HT rates */
-+	rates_bitmap = link_sta->supp_rates[sband->band];
-+	for_each_set_bit(i, &rates_bitmap, BITS_PER_LONG)
-+		non_ht_rates |= BIT(sband->bitrates[i].hw_value);
-+
-+	cmd->non_ht_rates = cpu_to_le16(non_ht_rates);
-+	cmd->mode = IWL_TLC_MNG_MODE_NON_HT;
-+
-+	if (link_sta->eht_cap.has_eht && own_he_cap && own_eht_cap) {
-+		cmd->mode = IWL_TLC_MNG_MODE_EHT;
-+		iwl_mld_fill_eht_rates(vif, link_sta, own_he_cap,
-+				       own_eht_cap, cmd);
-+	} else if (he_cap->has_he && own_he_cap) {
-+		cmd->mode = IWL_TLC_MNG_MODE_HE;
-+		iwl_mld_fill_he_rates(link_sta, own_he_cap, cmd);
-+	} else if (vht_cap->vht_supported) {
-+		cmd->mode = IWL_TLC_MNG_MODE_VHT;
-+		iwl_mld_fill_vht_rates(link_sta, vht_cap, cmd);
-+	} else if (ht_cap->ht_supported) {
-+		cmd->mode = IWL_TLC_MNG_MODE_HT;
-+		cmd->ht_rates[IWL_TLC_NSS_1][IWL_TLC_MCS_PER_BW_80] =
-+			cpu_to_le16(ht_cap->mcs.rx_mask[0]);
-+
-+		/* the station support only a single receive chain */
-+		if (link_sta->smps_mode == IEEE80211_SMPS_STATIC)
-+			cmd->ht_rates[IWL_TLC_NSS_2][IWL_TLC_MCS_PER_BW_80] =
-+				0;
++		/* skb here is not necessarily same as skb that entered
++		 * this method, so free it explicitly.
++		 */
++		if (skb == orig_skb)
++			ieee80211_free_txskb(mld->hw, skb);
 +		else
-+			cmd->ht_rates[IWL_TLC_NSS_2][IWL_TLC_MCS_PER_BW_80] =
-+				cpu_to_le16(ht_cap->mcs.rx_mask[1]);
++			kfree_skb(skb);
++
++		/* there was error, but we consumed skb one way or
++		 * another, so return 0
++		 */
++		return 0;
 +	}
++
++	return 0;
 +}
-+
-+static void iwl_mld_send_tlc_cmd(struct iwl_mld *mld,
-+				 struct ieee80211_vif *vif,
-+				 struct ieee80211_link_sta *link_sta,
-+				 enum nl80211_band band)
++#else
++static int iwl_mld_tx_tso(struct iwl_mld *mld, struct sk_buff *skb,
++			  struct ieee80211_txq *txq)
 +{
-+	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(link_sta->sta);
-+	struct ieee80211_supported_band *sband = mld->hw->wiphy->bands[band];
-+	const struct ieee80211_sta_he_cap *own_he_cap =
-+		ieee80211_get_he_iftype_cap_vif(sband, vif);
-+	const struct ieee80211_sta_eht_cap *own_eht_cap =
-+		ieee80211_get_eht_iftype_cap_vif(sband, vif);
-+	struct iwl_tlc_config_cmd_v4 cmd = {
-+		/* For AP mode, use 20 MHz until the STA is authorized */
-+		.max_ch_width = mld_sta->sta_state > IEEE80211_STA_ASSOC ?
-+			iwl_mld_fw_bw_from_sta_bw(link_sta) :
-+			IWL_TLC_MNG_CH_WIDTH_20MHZ,
-+		.flags = iwl_mld_get_tlc_cmd_flags(mld, vif, link_sta,
-+						   own_he_cap, own_eht_cap),
-+		.chains = iwl_mld_get_fw_chains(mld),
-+		.sgi_ch_width_supp = iwl_mld_get_fw_sgi(link_sta),
-+		.max_mpdu_len = cpu_to_le16(link_sta->agg.max_rc_amsdu_len),
-+	};
-+	int fw_sta_id = iwl_mld_fw_sta_id_from_link_sta(mld, link_sta);
-+	int ret;
++	/* Impossible to get TSO without CONFIG_INET */
++	WARN_ON(1);
 +
-+	if (fw_sta_id < 0)
++	return -1;
++}
++#endif /* CONFIG_INET */
++
++void iwl_mld_tx_skb(struct iwl_mld *mld, struct sk_buff *skb,
++		    struct ieee80211_txq *txq)
++{
++	if (skb_is_gso(skb)) {
++		if (!iwl_mld_tx_tso(mld, skb, txq))
++			return;
++		goto err;
++	}
++
++	if (likely(!iwl_mld_tx_mpdu(mld, skb, txq)))
 +		return;
 +
-+	cmd.sta_id = fw_sta_id;
-+
-+	iwl_mld_fill_supp_rates(mld, vif, link_sta, sband,
-+				own_he_cap, own_eht_cap,
-+				&cmd);
-+
-+	IWL_DEBUG_RATE(mld,
-+		       "TLC CONFIG CMD, sta_id=%d, max_ch_width=%d, mode=%d\n",
-+		       cmd.sta_id, cmd.max_ch_width, cmd.mode);
-+
-+	/* Send async since this can be called within a RCU-read section */
-+	ret = iwl_mld_send_cmd_with_flags_pdu(mld, WIDE_ID(DATA_PATH_GROUP,
-+							   TLC_MNG_CONFIG_CMD),
-+					      CMD_ASYNC, &cmd);
-+	if (ret)
-+		IWL_ERR(mld, "Failed to send TLC cmd (%d)\n", ret);
++err:
++	ieee80211_free_txskb(mld->hw, skb);
 +}
 +
-+static void iwl_mld_recalc_amsdu_len(struct iwl_mld *mld,
-+				     struct ieee80211_link_sta *link_sta)
++void iwl_mld_tx_from_txq(struct iwl_mld *mld, struct ieee80211_txq *txq)
 +{
-+	const struct ieee80211_sta_ht_cap *ht_cap = &link_sta->ht_cap;
++	struct iwl_mld_txq *mld_txq = iwl_mld_txq_from_mac80211(txq);
++	struct sk_buff *skb = NULL;
++	u8 zero_addr[ETH_ALEN] = {};
 +
-+	/* For EHT, HE and VHT - we can use the value as it was calculated by
-+	 * mac80211.
++	/*
++	 * No need for threads to be pending here, they can leave the first
++	 * taker all the work.
++	 *
++	 * mld_txq->tx_request logic:
++	 *
++	 * If 0, no one is currently TXing, set to 1 to indicate current thread
++	 * will now start TX and other threads should quit.
++	 *
++	 * If 1, another thread is currently TXing, set to 2 to indicate to
++	 * that thread that there was another request. Since that request may
++	 * have raced with the check whether the queue is empty, the TXing
++	 * thread should check the queue's status one more time before leaving.
++	 * This check is done in order to not leave any TX hanging in the queue
++	 * until the next TX invocation (which may not even happen).
++	 *
++	 * If 2, another thread is currently TXing, and it will already double
++	 * check the queue, so do nothing.
 +	 */
-+	if (link_sta->eht_cap.has_eht || link_sta->he_cap.has_he ||
-+	    link_sta->vht_cap.vht_supported)
-+		goto recalc;
++	if (atomic_fetch_add_unless(&mld_txq->tx_request, 1, 2))
++		return;
 +
-+	/* But for HT, mac80211 doesn't enforce to 4095, so force it here */
-+	if (ht_cap->ht_supported && ht_cap->cap & IEEE80211_HT_CAP_MAX_AMSDU)
-+		/* Agg is offloaded, so we need to assume that agg are enabled
-+		 * and max mpdu in ampdu is 4095 (spec 802.11-2016 9.3.2.1)
-+		 */
-+		link_sta->agg.max_amsdu_len = IEEE80211_MAX_MPDU_LEN_HT_BA;
++	rcu_read_lock();
++	do {
++		while (likely(!mld_txq->status.stop_full) &&
++		       (skb = ieee80211_tx_dequeue(mld->hw, txq)))
++			iwl_mld_tx_skb(mld, skb, txq);
++	} while (atomic_dec_return(&mld_txq->tx_request));
 +
-+recalc:
-+	link_sta->agg.max_rc_amsdu_len = link_sta->agg.max_amsdu_len;
-+	ieee80211_sta_recalc_aggregates(link_sta->sta);
++	IWL_DEBUG_TX(mld, "TXQ of sta %pM tid %d is now empty\n",
++		     txq->sta ? txq->sta->addr : zero_addr, txq->tid);
++
++	rcu_read_unlock();
 +}
 +
-+int iwl_mld_send_tlc_dhc(struct iwl_mld *mld, u8 sta_id, u32 type, u32 data)
++static void iwl_mld_hwrate_to_tx_rate(u32 rate_n_flags,
++				      struct ieee80211_tx_info *info)
 +{
-+	struct {
-+		struct iwl_dhc_cmd dhc;
-+		struct iwl_dhc_tlc_cmd tlc;
-+	} __packed cmd = {
-+		.tlc.sta_id = sta_id,
-+		.tlc.type = cpu_to_le32(type),
-+		.tlc.data[0] = cpu_to_le32(data),
-+		.dhc.length = cpu_to_le32(sizeof(cmd.tlc) >> 2),
-+		.dhc.index_and_mask =
-+			cpu_to_le32(DHC_TABLE_INTEGRATION | DHC_TARGET_UMAC |
-+				    DHC_INTEGRATION_TLC_DEBUG_CONFIG),
-+	};
-+	int ret;
++	enum nl80211_band band = info->band;
++	struct ieee80211_tx_rate *tx_rate = &info->status.rates[0];
++	u32 sgi = rate_n_flags & RATE_MCS_SGI_MSK;
++	u32 chan_width = rate_n_flags & RATE_MCS_CHAN_WIDTH_MSK;
++	u32 format = rate_n_flags & RATE_MCS_MOD_TYPE_MSK;
 +
-+	ret = iwl_mld_send_cmd_with_flags_pdu(mld,
-+					      WIDE_ID(IWL_ALWAYS_LONG_GROUP,
-+						      DEBUG_HOST_COMMAND),
-+					      CMD_ASYNC, &cmd);
-+	IWL_DEBUG_RATE(mld, "sta_id %d, type: 0x%X, value: 0x%X, ret%d\n",
-+		       sta_id, type, data, ret);
++	if (sgi)
++		tx_rate->flags |= IEEE80211_TX_RC_SHORT_GI;
++
++	switch (chan_width) {
++	case RATE_MCS_CHAN_WIDTH_20:
++		break;
++	case RATE_MCS_CHAN_WIDTH_40:
++		tx_rate->flags |= IEEE80211_TX_RC_40_MHZ_WIDTH;
++		break;
++	case RATE_MCS_CHAN_WIDTH_80:
++		tx_rate->flags |= IEEE80211_TX_RC_80_MHZ_WIDTH;
++		break;
++	case RATE_MCS_CHAN_WIDTH_160:
++		tx_rate->flags |= IEEE80211_TX_RC_160_MHZ_WIDTH;
++		break;
++	default:
++		break;
++	}
++
++	switch (format) {
++	case RATE_MCS_HT_MSK:
++		tx_rate->flags |= IEEE80211_TX_RC_MCS;
++		tx_rate->idx = RATE_HT_MCS_INDEX(rate_n_flags);
++		break;
++	case RATE_MCS_VHT_MSK:
++		ieee80211_rate_set_vht(tx_rate,
++				       rate_n_flags & RATE_MCS_CODE_MSK,
++				       FIELD_GET(RATE_MCS_NSS_MSK,
++						 rate_n_flags) + 1);
++		tx_rate->flags |= IEEE80211_TX_RC_VHT_MCS;
++		break;
++	case RATE_MCS_HE_MSK:
++		/* mac80211 cannot do this without ieee80211_tx_status_ext()
++		 * but it only matters for radiotap
++		 */
++		tx_rate->idx = 0;
++		break;
++	default:
++		tx_rate->idx =
++			iwl_mld_legacy_hw_idx_to_mac80211_idx(rate_n_flags,
++							      band);
++		break;
++	}
++}
++
++void iwl_mld_handle_tx_resp_notif(struct iwl_mld *mld,
++				  struct iwl_rx_packet *pkt)
++{
++	struct iwl_tx_resp *tx_resp = (void *)pkt->data;
++	int txq_id = le16_to_cpu(tx_resp->tx_queue);
++	struct agg_tx_status *agg_status = &tx_resp->status;
++	u32 status = le16_to_cpu(agg_status->status);
++	u32 pkt_len = iwl_rx_packet_payload_len(pkt);
++	size_t notif_size = sizeof(*tx_resp) + sizeof(u32);
++	int sta_id = IWL_TX_RES_GET_RA(tx_resp->ra_tid);
++	int tid = IWL_TX_RES_GET_TID(tx_resp->ra_tid);
++	struct ieee80211_link_sta *link_sta;
++	struct iwl_mld_sta *mld_sta;
++	u16 ssn;
++	struct sk_buff_head skbs;
++	u8 skb_freed = 0;
++	bool mgmt = false;
++	bool tx_failure = (status & TX_STATUS_MSK) != TX_STATUS_SUCCESS;
++
++	if (IWL_FW_CHECK(mld, tx_resp->frame_count != 1,
++			 "Invalid tx_resp notif frame_count (%d)\n",
++			 tx_resp->frame_count))
++		return;
++
++	/* validate the size of the variable part of the notif */
++	if (IWL_FW_CHECK(mld, notif_size != pkt_len,
++			 "Invalid tx_resp notif size (expected=%zu got=%u)\n",
++			 notif_size, pkt_len))
++		return;
++
++	ssn = le32_to_cpup((__le32 *)agg_status +
++			   tx_resp->frame_count) & 0xFFFF;
++
++	__skb_queue_head_init(&skbs);
++
++	/* we can free until ssn % q.n_bd not inclusive */
++	iwl_trans_reclaim(mld->trans, txq_id, ssn, &skbs, false);
++
++	while (!skb_queue_empty(&skbs)) {
++		struct sk_buff *skb = __skb_dequeue(&skbs);
++		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++		struct ieee80211_hdr *hdr = (void *)skb->data;
++
++		skb_freed++;
++
++		iwl_trans_free_tx_cmd(mld->trans, info->driver_data[1]);
++
++		memset(&info->status, 0, sizeof(info->status));
++
++		info->flags &= ~(IEEE80211_TX_STAT_ACK | IEEE80211_TX_STAT_TX_FILTERED);
++
++		/* inform mac80211 about what happened with the frame */
++		switch (status & TX_STATUS_MSK) {
++		case TX_STATUS_SUCCESS:
++		case TX_STATUS_DIRECT_DONE:
++			info->flags |= IEEE80211_TX_STAT_ACK;
++			break;
++		default:
++			break;
++		}
++
++		/* If we are freeing multiple frames, mark all the frames
++		 * but the first one as acked, since they were acknowledged
++		 * before
++		 */
++		if (skb_freed > 1)
++			info->flags |= IEEE80211_TX_STAT_ACK;
++
++		if (tx_failure) {
++			enum iwl_fw_ini_time_point tp =
++				IWL_FW_INI_TIME_POINT_TX_FAILED;
++
++			if (ieee80211_is_action(hdr->frame_control))
++				tp = IWL_FW_INI_TIME_POINT_TX_WFD_ACTION_FRAME_FAILED;
++			else if (ieee80211_is_mgmt(hdr->frame_control))
++				mgmt = true;
++
++			iwl_dbg_tlv_time_point(&mld->fwrt, tp, NULL);
++		}
++
++		iwl_mld_hwrate_to_tx_rate(le32_to_cpu(tx_resp->initial_rate),
++					  info);
++
++		if (likely(!iwl_mld_time_sync_frame(mld, skb, hdr->addr1)))
++			ieee80211_tx_status_skb(mld->hw, skb);
++	}
++
++	IWL_DEBUG_TX_REPLY(mld,
++			   "TXQ %d status 0x%08x ssn=%d initial_rate 0x%x retries %d\n",
++			   txq_id, status, ssn, le32_to_cpu(tx_resp->initial_rate),
++			   tx_resp->failure_frame);
++
++	if (tx_failure && mgmt)
++		iwl_mld_toggle_tx_ant(mld, &mld->mgmt_tx_ant);
++
++	if (IWL_FW_CHECK(mld, sta_id >= mld->fw->ucode_capa.num_stations,
++			 "Got invalid sta_id (%d)\n", sta_id))
++		return;
++
++	rcu_read_lock();
++
++	link_sta = rcu_dereference(mld->fw_id_to_link_sta[sta_id]);
++	if (!link_sta) {
++		/* This can happen if the TX cmd was sent before pre_rcu_remove
++		 * but the TX response was received after
++		 */
++		IWL_DEBUG_TX_REPLY(mld,
++				   "Got valid sta_id (%d) but sta is NULL\n",
++				   sta_id);
++		goto out;
++	}
++
++	if (IS_ERR(link_sta))
++		goto out;
++
++	mld_sta = iwl_mld_sta_from_mac80211(link_sta->sta);
++
++	if (tx_failure && mld_sta->sta_state < IEEE80211_STA_AUTHORIZED)
++		iwl_mld_toggle_tx_ant(mld, &mld_sta->data_tx_ant);
++
++	if (tid < IWL_MAX_TID_COUNT)
++		iwl_mld_count_mpdu_tx(link_sta, 1);
++
++out:
++	rcu_read_unlock();
++}
++
++static void iwl_mld_tx_reclaim_txq(struct iwl_mld *mld, int txq, int index,
++				   bool in_flush)
++{
++	struct sk_buff_head reclaimed_skbs;
++
++	__skb_queue_head_init(&reclaimed_skbs);
++
++	iwl_trans_reclaim(mld->trans, txq, index, &reclaimed_skbs, in_flush);
++
++	while (!skb_queue_empty(&reclaimed_skbs)) {
++		struct sk_buff *skb = __skb_dequeue(&reclaimed_skbs);
++		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++
++		iwl_trans_free_tx_cmd(mld->trans, info->driver_data[1]);
++
++		memset(&info->status, 0, sizeof(info->status));
++
++		/* Packet was transmitted successfully, failures come as single
++		 * frames because before failing a frame the firmware transmits
++		 * it without aggregation at least once.
++		 */
++		if (!in_flush)
++			info->flags |= IEEE80211_TX_STAT_ACK;
++		else
++			info->flags &= ~IEEE80211_TX_STAT_ACK;
++
++		ieee80211_tx_status_skb(mld->hw, skb);
++	}
++}
++
++int iwl_mld_flush_link_sta_txqs(struct iwl_mld *mld, u32 fw_sta_id)
++{
++	struct iwl_tx_path_flush_cmd_rsp *rsp;
++	struct iwl_tx_path_flush_cmd flush_cmd = {
++		.sta_id = cpu_to_le32(fw_sta_id),
++		.tid_mask = cpu_to_le16(0xffff),
++	};
++	struct iwl_host_cmd cmd = {
++		.id = TXPATH_FLUSH,
++		.len = { sizeof(flush_cmd), },
++		.data = { &flush_cmd, },
++		.flags = CMD_WANT_SKB,
++	};
++	int ret, num_flushed_queues;
++	u32 resp_len;
++
++	IWL_DEBUG_TX_QUEUES(mld, "flush for sta id %d tid mask 0x%x\n",
++			    fw_sta_id, 0xffff);
++
++	ret = iwl_mld_send_cmd(mld, &cmd);
++	if (ret) {
++		IWL_ERR(mld, "Failed to send flush command (%d)\n", ret);
++		return ret;
++	}
++
++	resp_len = iwl_rx_packet_payload_len(cmd.resp_pkt);
++	if (IWL_FW_CHECK(mld, resp_len != sizeof(*rsp),
++			 "Invalid TXPATH_FLUSH response len: %d\n",
++			 resp_len)) {
++		ret = -EIO;
++		goto free_rsp;
++	}
++
++	rsp = (void *)cmd.resp_pkt->data;
++
++	if (IWL_FW_CHECK(mld, le16_to_cpu(rsp->sta_id) != fw_sta_id,
++			 "sta_id %d != rsp_sta_id %d\n", fw_sta_id,
++			 le16_to_cpu(rsp->sta_id))) {
++		ret = -EIO;
++		goto free_rsp;
++	}
++
++	num_flushed_queues = le16_to_cpu(rsp->num_flushed_queues);
++	if (IWL_FW_CHECK(mld, num_flushed_queues > IWL_TX_FLUSH_QUEUE_RSP,
++			 "num_flushed_queues %d\n", num_flushed_queues)) {
++		ret = -EIO;
++		goto free_rsp;
++	}
++
++	for (int i = 0; i < num_flushed_queues; i++) {
++		struct iwl_flush_queue_info *queue_info = &rsp->queues[i];
++		int read_after = le16_to_cpu(queue_info->read_after_flush);
++		int txq_id = le16_to_cpu(queue_info->queue_num);
++
++		if (IWL_FW_CHECK(mld,
++				 txq_id >= ARRAY_SIZE(mld->fw_id_to_txq),
++				 "Invalid txq id %d\n", txq_id))
++			continue;
++
++		IWL_DEBUG_TX_QUEUES(mld,
++				    "tid %d txq_id %d read-before %d read-after %d\n",
++				    le16_to_cpu(queue_info->tid), txq_id,
++				    le16_to_cpu(queue_info->read_before_flush),
++				    read_after);
++
++		iwl_mld_tx_reclaim_txq(mld, txq_id, read_after, true);
++	}
++
++free_rsp:
++	iwl_free_resp(&cmd);
 +	return ret;
 +}
 +
-+void iwl_mld_config_tlc_link(struct iwl_mld *mld,
-+			     struct ieee80211_vif *vif,
-+			     struct ieee80211_bss_conf *link_conf,
-+			     struct ieee80211_link_sta *link_sta)
++int iwl_mld_ensure_queue(struct iwl_mld *mld, struct ieee80211_txq *txq)
 +{
-+	enum nl80211_band band;
-+
-+	if (WARN_ON_ONCE(!link_conf->chanreq.oper.chan))
-+		return;
-+
-+	band = link_conf->chanreq.oper.chan->band;
-+
-+	iwl_mld_recalc_amsdu_len(mld, link_sta);
-+
-+	iwl_mld_send_tlc_cmd(mld, vif, link_sta, band);
-+}
-+
-+void iwl_mld_config_tlc(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+			struct ieee80211_sta *sta)
-+{
-+	struct ieee80211_bss_conf *link;
-+	int link_id;
++	struct iwl_mld_txq *mld_txq = iwl_mld_txq_from_mac80211(txq);
++	int ret;
 +
 +	lockdep_assert_wiphy(mld->wiphy);
 +
-+	for_each_vif_active_link(vif, link, link_id) {
-+		struct ieee80211_link_sta *link_sta =
-+			link_sta_dereference_check(sta, link_id);
-+
-+		if (!link || !link_sta)
-+			continue;
-+
-+		iwl_mld_config_tlc_link(mld, vif, link, link_sta);
-+	}
-+}
-+
-+static u16
-+iwl_mld_get_amsdu_size_of_tid(struct iwl_mld *mld,
-+			      struct ieee80211_link_sta *link_sta,
-+			      unsigned int tid)
-+{
-+	struct ieee80211_sta *sta = link_sta->sta;
-+	struct ieee80211_vif *vif = iwl_mld_sta_from_mac80211(sta)->vif;
-+	const u8 tid_to_mac80211_ac[] = {
-+		IEEE80211_AC_BE,
-+		IEEE80211_AC_BK,
-+		IEEE80211_AC_BK,
-+		IEEE80211_AC_BE,
-+		IEEE80211_AC_VI,
-+		IEEE80211_AC_VI,
-+		IEEE80211_AC_VO,
-+		IEEE80211_AC_VO,
-+	};
-+	unsigned int result = link_sta->agg.max_rc_amsdu_len;
-+	u8 ac, txf, lmac;
-+
-+	lockdep_assert_wiphy(mld->wiphy);
-+
-+	/* Don't send an AMSDU that will be longer than the TXF.
-+	 * Add a security margin of 256 for the TX command + headers.
-+	 * We also want to have the start of the next packet inside the
-+	 * fifo to be able to send bursts.
-+	 */
-+
-+	if (WARN_ON(tid >= ARRAY_SIZE(tid_to_mac80211_ac)))
++	if (likely(mld_txq->status.allocated))
 +		return 0;
 +
-+	ac = tid_to_mac80211_ac[tid];
++	ret = iwl_mld_add_txq(mld, txq);
 +
-+	/* For HE redirect to trigger based fifos */
-+	if (link_sta->he_cap.has_he)
-+		ac += 4;
++	spin_lock_bh(&mld->add_txqs_lock);
++	if (!list_empty(&mld_txq->list))
++		list_del_init(&mld_txq->list);
++	spin_unlock_bh(&mld->add_txqs_lock);
 +
-+	txf = iwl_mld_mac80211_ac_to_fw_tx_fifo(ac);
-+
-+	/* Only one link: take the lmac according to the band */
-+	if (hweight16(sta->valid_links) <= 1) {
-+		enum nl80211_band band;
-+		struct ieee80211_bss_conf *link =
-+			wiphy_dereference(mld->wiphy,
-+					  vif->link_conf[link_sta->link_id]);
-+
-+		if (WARN_ON(!link || !link->chanreq.oper.chan))
-+			band = NL80211_BAND_2GHZ;
-+		else
-+			band = link->chanreq.oper.chan->band;
-+		lmac = iwl_mld_get_lmac_id(mld, band);
-+
-+	/* More than one link but with 2 lmacs: take the minimum */
-+	} else if (fw_has_capa(&mld->fw->ucode_capa,
-+			       IWL_UCODE_TLV_CAPA_CDB_SUPPORT)) {
-+		lmac = IWL_LMAC_5G_INDEX;
-+		result = min_t(unsigned int, result,
-+			       mld->fwrt.smem_cfg.lmac[lmac].txfifo_size[txf] - 256);
-+		lmac = IWL_LMAC_24G_INDEX;
-+	/* More than one link but only one lmac */
-+	} else {
-+		lmac = IWL_LMAC_24G_INDEX;
-+	}
-+
-+	return min_t(unsigned int, result,
-+		     mld->fwrt.smem_cfg.lmac[lmac].txfifo_size[txf] - 256);
++	return ret;
 +}
 +
-+void iwl_mld_handle_tlc_notif(struct iwl_mld *mld,
-+			      struct iwl_rx_packet *pkt)
++int iwl_mld_update_sta_txqs(struct iwl_mld *mld,
++			    struct ieee80211_sta *sta,
++			    u32 old_sta_mask, u32 new_sta_mask)
 +{
-+	struct iwl_tlc_update_notif *notif = (void *)pkt->data;
-+	struct ieee80211_link_sta *link_sta;
-+	u32 flags = le32_to_cpu(notif->flags);
-+	u32 enabled;
-+	u16 size;
++	struct iwl_scd_queue_cfg_cmd cmd = {
++		.operation = cpu_to_le32(IWL_SCD_QUEUE_MODIFY),
++		.u.modify.old_sta_mask = cpu_to_le32(old_sta_mask),
++		.u.modify.new_sta_mask = cpu_to_le32(new_sta_mask),
++	};
 +
-+	if (IWL_FW_CHECK(mld, notif->sta_id >= mld->fw->ucode_capa.num_stations,
-+			 "Invalid sta id (%d) in TLC notification\n",
-+			 notif->sta_id))
-+		return;
++	lockdep_assert_wiphy(mld->wiphy);
 +
-+	link_sta = wiphy_dereference(mld->wiphy,
-+				     mld->fw_id_to_link_sta[notif->sta_id]);
++	for (int tid = 0; tid <= IWL_MAX_TID_COUNT; tid++) {
++		struct ieee80211_txq *txq =
++			sta->txq[tid != IWL_MAX_TID_COUNT ?
++					tid : IEEE80211_NUM_TIDS];
++		struct iwl_mld_txq *mld_txq =
++			iwl_mld_txq_from_mac80211(txq);
++		int ret;
 +
-+	if (WARN(IS_ERR_OR_NULL(link_sta),
-+		 "link_sta of sta id (%d) doesn't exist\n", notif->sta_id))
-+		return;
++		if (!mld_txq->status.allocated)
++			continue;
 +
-+	if (flags & IWL_TLC_NOTIF_FLAG_RATE) {
-+		struct iwl_mld_link_sta *mld_link_sta =
-+			iwl_mld_link_sta_from_mac80211(link_sta);
-+		char pretty_rate[100];
-+
-+		if (WARN_ON(!mld_link_sta))
-+			return;
-+
-+		mld_link_sta->last_rate_n_flags = le32_to_cpu(notif->rate);
-+
-+		rs_pretty_print_rate(pretty_rate, sizeof(pretty_rate),
-+				     mld_link_sta->last_rate_n_flags);
-+		IWL_DEBUG_RATE(mld, "TLC notif: new rate = %s\n", pretty_rate);
-+	}
-+
-+	/* We are done processing the notif */
-+	if (!(flags & IWL_TLC_NOTIF_FLAG_AMSDU))
-+		return;
-+
-+	enabled = le32_to_cpu(notif->amsdu_enabled);
-+	size = le32_to_cpu(notif->amsdu_size);
-+
-+	if (size < 2000) {
-+		size = 0;
-+		enabled = 0;
-+	}
-+
-+	if (IWL_FW_CHECK(mld, size > link_sta->agg.max_amsdu_len,
-+			 "Invalid AMSDU len in TLC notif: %d (Max AMSDU len: %d)\n",
-+			 size, link_sta->agg.max_amsdu_len))
-+		return;
-+
-+	link_sta->agg.max_rc_amsdu_len = size;
-+
-+	for (int i = 0; i < IWL_MAX_TID_COUNT; i++) {
-+		if (enabled & BIT(i))
-+			link_sta->agg.max_tid_amsdu_len[i] =
-+				iwl_mld_get_amsdu_size_of_tid(mld, link_sta, i);
++		if (tid == IWL_MAX_TID_COUNT)
++			cmd.u.modify.tid = cpu_to_le32(IWL_MGMT_TID);
 +		else
-+			link_sta->agg.max_tid_amsdu_len[i] = 0;
++			cmd.u.modify.tid = cpu_to_le32(tid);
++
++		ret = iwl_mld_send_cmd_pdu(mld,
++					   WIDE_ID(DATA_PATH_GROUP,
++						   SCD_QUEUE_CONFIG_CMD),
++					   &cmd);
++		if (ret)
++			return ret;
 +	}
 +
-+	ieee80211_sta_recalc_aggregates(link_sta->sta);
-+
-+	IWL_DEBUG_RATE(mld,
-+		       "AMSDU update. AMSDU size: %d, AMSDU selected size: %d, AMSDU TID bitmap 0x%X\n",
-+		       le32_to_cpu(notif->amsdu_size), size, enabled);
++	return 0;
 +}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tlc.h b/drivers/net/wireless/intel/iwlwifi/mld/tlc.h
++
++void iwl_mld_handle_compressed_ba_notif(struct iwl_mld *mld,
++					struct iwl_rx_packet *pkt)
++{
++	struct iwl_compressed_ba_notif *ba_res = (void *)pkt->data;
++	u32 pkt_len = iwl_rx_packet_payload_len(pkt);
++	u16 tfd_cnt = le16_to_cpu(ba_res->tfd_cnt);
++	u8 sta_id = ba_res->sta_id;
++	struct ieee80211_link_sta *link_sta;
++
++	if (!tfd_cnt)
++		return;
++
++	if (IWL_FW_CHECK(mld, struct_size(ba_res, tfd, tfd_cnt) > pkt_len,
++			 "Short BA notif (tfd_cnt=%d, size:0x%x)\n",
++			 tfd_cnt, pkt_len))
++		return;
++
++	IWL_DEBUG_TX_REPLY(mld,
++			   "BA notif received from sta_id=%d, flags=0x%x, sent:%d, acked:%d\n",
++			   sta_id, le32_to_cpu(ba_res->flags),
++			   le16_to_cpu(ba_res->txed),
++			   le16_to_cpu(ba_res->done));
++
++	for (int i = 0; i < tfd_cnt; i++) {
++		struct iwl_compressed_ba_tfd *ba_tfd = &ba_res->tfd[i];
++		int txq_id = le16_to_cpu(ba_tfd->q_num);
++		int index = le16_to_cpu(ba_tfd->tfd_index);
++
++		if (IWL_FW_CHECK(mld,
++				 txq_id >= ARRAY_SIZE(mld->fw_id_to_txq),
++				 "Invalid txq id %d\n", txq_id))
++			continue;
++
++		iwl_mld_tx_reclaim_txq(mld, txq_id, index, false);
++	}
++
++	if (IWL_FW_CHECK(mld, sta_id >= mld->fw->ucode_capa.num_stations,
++			 "Got invalid sta_id (%d)\n", sta_id))
++		return;
++
++	rcu_read_lock();
++
++	link_sta = rcu_dereference(mld->fw_id_to_link_sta[sta_id]);
++	if (IWL_FW_CHECK(mld, IS_ERR_OR_NULL(link_sta),
++			 "Got valid sta_id (%d) but link_sta is NULL\n",
++			 sta_id))
++		goto out;
++
++	iwl_mld_count_mpdu_tx(link_sta, le16_to_cpu(ba_res->txed));
++out:
++	rcu_read_unlock();
++}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.h b/drivers/net/wireless/intel/iwlwifi/mld/tx.h
 new file mode 100644
-index 000000000000..7861316a41b8
+index 000000000000..2e3dc24d4db2
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/tlc.h
-@@ -0,0 +1,23 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.h
+@@ -0,0 +1,77 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
 + * Copyright (C) 2024 Intel Corporation
 + */
-+#ifndef __iwl_mld_tlc_h__
-+#define __iwl_mld_tlc_h__
++#ifndef __iwl_mld_tx_h__
++#define __iwl_mld_tx_h__
 +
 +#include "mld.h"
 +
-+void iwl_mld_config_tlc_link(struct iwl_mld *mld,
-+			     struct ieee80211_vif *vif,
-+			     struct ieee80211_bss_conf *link_conf,
-+			     struct ieee80211_link_sta *link_sta);
++#define IWL_MLD_INVALID_QUEUE		0xFFFF
++#define IWL_MLD_INVALID_DROP_TX		0xFFFE
 +
-+void iwl_mld_config_tlc(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+			struct ieee80211_sta *sta);
++/**
++ * struct iwl_mld_txq - TX Queue data
++ *
++ * @fw_id: the fw id of this txq. Only valid when &status.allocated is true.
++ * @status: bitmap of the txq status
++ * @status.allocated: Indicates that the queue was allocated.
++ * @status.stop_full: Indicates that the queue is full and should stop TXing.
++ * @list: list pointer, for &mld::txqs_to_add
++ * @tx_request: makes sure that if there are multiple threads that want to tx
++ *	from this txq, only one of them will do all the TXing.
++ *	This is needed to avoid spinning the trans txq lock, which is expensive
++ */
++struct iwl_mld_txq {
++	/* Add here fields that need clean up on restart */
++	struct_group(zeroed_on_hw_restart,
++		u16 fw_id;
++		struct {
++			u8 allocated:1;
++			u8 stop_full:1;
++		} status;
++	);
++	struct list_head list;
++	atomic_t tx_request;
++	/* And here fields that survive a fw restart */
++};
 +
-+void iwl_mld_handle_tlc_notif(struct iwl_mld *mld,
-+			      struct iwl_rx_packet *pkt);
++static inline void iwl_mld_init_txq(struct iwl_mld_txq *mld_txq)
++{
++	INIT_LIST_HEAD(&mld_txq->list);
++	atomic_set(&mld_txq->tx_request, 0);
++}
 +
-+int iwl_mld_send_tlc_dhc(struct iwl_mld *mld, u8 sta_id, u32 type, u32 data);
++static inline struct iwl_mld_txq *
++iwl_mld_txq_from_mac80211(struct ieee80211_txq *txq)
++{
++	return (void *)txq->drv_priv;
++}
 +
-+#endif /* __iwl_mld_tlc_h__ */
++void iwl_mld_add_txqs_wk(struct wiphy *wiphy, struct wiphy_work *wk);
++void iwl_mld_remove_txq(struct iwl_mld *mld, struct ieee80211_txq *txq);
++void iwl_mld_add_txq_list(struct iwl_mld *mld);
++void
++iwl_mld_free_txq(struct iwl_mld *mld, u32 fw_sta_mask, u32 tid, u32 queue_id);
++void iwl_mld_tx_from_txq(struct iwl_mld *mld, struct ieee80211_txq *txq);
++void iwl_mld_handle_tx_resp_notif(struct iwl_mld *mld,
++				  struct iwl_rx_packet *pkt);
++int iwl_mld_flush_link_sta_txqs(struct iwl_mld *mld, u32 fw_sta_id);
++int iwl_mld_ensure_queue(struct iwl_mld *mld, struct ieee80211_txq *txq);
++
++int iwl_mld_update_sta_txqs(struct iwl_mld *mld,
++			    struct ieee80211_sta *sta,
++			    u32 old_sta_mask, u32 new_sta_mask);
++
++void iwl_mld_handle_compressed_ba_notif(struct iwl_mld *mld,
++					struct iwl_rx_packet *pkt);
++void iwl_mld_toggle_tx_ant(struct iwl_mld *mld, u8 *ant);
++
++u8 iwl_mld_get_lowest_rate(struct iwl_mld *mld,
++			   struct ieee80211_tx_info *info,
++			   struct ieee80211_vif *vif);
++
++void iwl_mld_tx_skb(struct iwl_mld *mld, struct sk_buff *skb,
++		    struct ieee80211_txq *txq);
++
++#endif /* __iwl_mld_tx_h__ */
 -- 
 2.34.1
 
