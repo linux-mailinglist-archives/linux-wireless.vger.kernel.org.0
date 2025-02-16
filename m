@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-18987-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-18988-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C2A0A37383
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:44:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5857A37384
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 10:45:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35B3F16CF75
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:44:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C380188BB5A
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2025 09:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC14E1917E7;
-	Sun, 16 Feb 2025 09:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E987718DB19;
+	Sun, 16 Feb 2025 09:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UxW7nBKn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hvwR6hIF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA46618DB19
-	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EE7190696
+	for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 09:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739699040; cv=none; b=CaUxgCURM2i/+NXdHYbgp0C5Jxw9zdZ7DpXbXSaekna0H7H6ZDDniem8wb33LiZBpRcIYr3+i9J3O9Bo3DAbpwE2IbXfhDLACog7Yle4szUgP6Z5vD+sVkRAm0bArR1j9GqQX0XeIe4hqHFz/pe1Pb5pOuI4O4NRXJLCJ07e8EU=
+	t=1739699041; cv=none; b=syw/j1cRkZDDgGjRwvVJwz6hqoGr9sspDqX3imIrL9xCuzQP19efEgbxRBNKFNFdhMsyTBXs3w8t82XFQVC6h2kAuD8fvR1VZ8AVtnTev6Ge+JGfjqgjpjUMCuIgblHdg0unHutYVn2oaPA8umQ0fYLd4LZ2MOLmrd+JOgcRaJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739699040; c=relaxed/simple;
-	bh=UaSdZXMg17ItZuUQyYc4aIZmUYWNFvTYy24HSeVDnAM=;
+	s=arc-20240116; t=1739699041; c=relaxed/simple;
+	bh=H/5+l5/rAoiBt64HXABZKpD0sDj6zlNdhvfyfNpCq1s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RhhSWYr5QVpvBeI4rBl68VX2/e0TVzGbhvLqRozpdEbwH+yFH2c9eBcGsIJnzRcoDGsAz9ZTBdjaaUAFZCx4c/oQavSNUqFvSmwwlUqn9dMWGv9wFHbPc3qcCRCNh2Cp7/yCql1DZ/d9EtYRnSsNOQuurn+ASZm5WplfGahg0I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UxW7nBKn; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=ByRhcLr1twCjRShNutyfX93Q9u2yheKgPPJRaG34BQ5XRiTnbPDiGR6aNXkC2Q6xOzNDMo4Z872IcxFnbqe3x/clwWIEDygO1dCq1xNc6teg1QxsfQCj2j6b5cDQdPM8d9+2UPevddJXzfTsZdIdJDsmoIWrDuGz0xK+2Qcutds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hvwR6hIF; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739699038; x=1771235038;
+  t=1739699039; x=1771235039;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UaSdZXMg17ItZuUQyYc4aIZmUYWNFvTYy24HSeVDnAM=;
-  b=UxW7nBKnhN4rU0PW1LytW+FNwn3Ul0cdNjqe8xqsSruoyVhqiBotTd3G
-   727WOm4XbarKxvS/1enw9daMZosqkSVLF6WaXzKcQXrJYnACjyhJGx8dn
-   E4wDeGsZA6fJo1qnSau+t/EywtzXDX54opn32F31EJt02PPvORHXAdKox
-   f4PPZ8zg7asfTqSA8KyEPBL57WiCGP3Ugeqv7+0tgXrY7E6s8HvswrpMx
-   0X5e0GBjJi3dvpDNIGSro6DNmEiET7YaQxcdIsYPmkm5NWS07RxckhINe
-   hO6flhEfi2L2o+azmwIwWkl7AjTUNY3iNILhwnCA3Ks0q7a0hDfHL8J77
-   Q==;
-X-CSE-ConnectionGUID: YGzzYJjvT1KOAR2lvrUphQ==
-X-CSE-MsgGUID: fzFjmZfZSi2kUBCoWBBpYw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323390"
+  bh=H/5+l5/rAoiBt64HXABZKpD0sDj6zlNdhvfyfNpCq1s=;
+  b=hvwR6hIFy3Xcz1KTDMHYZvIYziVsAJC43ifln10UuT60EtpEBBu5S6Km
+   5keoKc56a1t2z1sAboL6txeVOSSgXGG4YWglz+xWmaolMiHlAY7KuBpxY
+   ZwT3MRQCksBky0KGL6VHFCAjxX87DwiWkMtga9gumm3Su1FaqHEKW4MO1
+   cJC4BcB3vnVDC4llKAo0dzoSS/LX1s25VDqLQOP4eOPZ/PerncZlccwdU
+   wss1R1RPk/ngUCcnRw8niebmbhJXLzYRy2Tmay+SImQSu+WJA/UGAEeZO
+   S5dFMDwrSTbNGbjNuGaGDTerApDdGIApFaC0igvIzjNywl6Uqynfke1Uj
+   g==;
+X-CSE-ConnectionGUID: Ae7og01ASsO6ifmbrmFfUQ==
+X-CSE-MsgGUID: Ny5Jtk1nTXWv8mYn+VcKAA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40323392"
 X-IronPort-AV: E=Sophos;i="6.13,290,1732608000"; 
-   d="scan'208";a="40323390"
+   d="scan'208";a="40323392"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:58 -0800
-X-CSE-ConnectionGUID: Zv3IVwRPTHOyxi55fGqX4A==
-X-CSE-MsgGUID: gIe4Dc4lReyCc/L31r3I2w==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:59 -0800
+X-CSE-ConnectionGUID: GnI4ukEyRoGK6i06wWiicg==
+X-CSE-MsgGUID: a/xzMENLTIWTlM4h65jn3g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118785244"
+   d="scan'208";a="118785246"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:56 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 01:43:58 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 17/42] wifi: iwlwifi: mld: add file mld.h/c
-Date: Sun, 16 Feb 2025 11:42:56 +0200
-Message-Id: <20250216111648.9245e56fded3.Ib878ab1aaf497469bc95819f0c536ff531e77cee@changeid>
+Subject: [PATCH 18/42] wifi: iwlwifi: mld: add file mlo.h/c
+Date: Sun, 16 Feb 2025 11:42:57 +0200
+Message-Id: <20250216111648.11d4a0a17f73.I5d078b0ca0e6375d0a280c09c95d1fc9fc410134@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
 References: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
@@ -76,1321 +76,1178 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-these files contain the opmode management.
+this file is handling a link object
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/mld.c | 707 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/mld.h | 586 +++++++++++++++
- 2 files changed, 1293 insertions(+)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mld.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mld.h
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.c | 993 +++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.h | 157 +++
+ 2 files changed, 1150 insertions(+)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mlo.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/mlo.h
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
 new file mode 100644
-index 000000000000..adc3d23aa019
+index 000000000000..fbc8c8584925
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -0,0 +1,707 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
+@@ -0,0 +1,993 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
 + * Copyright (C) 2024-2025 Intel Corporation
 + */
-+
-+#include <net/mac80211.h>
-+
-+#include "fw/api/rx.h"
-+#include "fw/api/datapath.h"
-+#include "fw/api/commands.h"
-+#include "fw/api/offload.h"
-+#include "fw/api/coex.h"
-+#include "fw/dbg.h"
-+#include "fw/uefi.h"
-+
-+#include "mld.h"
 +#include "mlo.h"
-+#include "mac80211.h"
-+#include "led.h"
-+#include "scan.h"
-+#include "tx.h"
-+#include "sta.h"
-+#include "regulatory.h"
-+#include "thermal.h"
-+#include "low_latency.h"
-+#include "hcmd.h"
-+#include "fw/api/location.h"
 +
-+#define DRV_DESCRIPTION "Intel(R) MLD wireless driver for Linux"
-+MODULE_DESCRIPTION(DRV_DESCRIPTION);
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("IWLWIFI");
++/* Block reasons helper */
++#define HANDLE_EMLSR_BLOCKED_REASONS(HOW)	\
++	HOW(PREVENTION)			\
++	HOW(WOWLAN)			\
++	HOW(FW)				\
++	HOW(ROC)			\
++	HOW(NON_BSS)			\
++	HOW(TMP_NON_BSS)		\
++	HOW(TPT)
 +
-+static const struct iwl_op_mode_ops iwl_mld_ops;
-+
-+static int __init iwl_mld_init(void)
++static const char *
++iwl_mld_get_emlsr_blocked_string(enum iwl_mld_emlsr_blocked blocked)
 +{
-+	int ret = iwl_opmode_register("iwlmld", &iwl_mld_ops);
++	/* Using switch without "default" will warn about missing entries  */
++	switch (blocked) {
++#define REASON_CASE(x) case IWL_MLD_EMLSR_BLOCKED_##x: return #x;
++	HANDLE_EMLSR_BLOCKED_REASONS(REASON_CASE)
++#undef REASON_CASE
++	}
 +
-+	if (ret)
-+		pr_err("Unable to register MLD op_mode: %d\n", ret);
-+
-+	return ret;
-+}
-+module_init(iwl_mld_init);
-+
-+static void __exit iwl_mld_exit(void)
-+{
-+	iwl_opmode_deregister("iwlmld");
-+}
-+module_exit(iwl_mld_exit);
-+
-+VISIBLE_IF_IWLWIFI_KUNIT
-+void iwl_construct_mld(struct iwl_mld *mld, struct iwl_trans *trans,
-+		       const struct iwl_cfg *cfg, const struct iwl_fw *fw,
-+		       struct ieee80211_hw *hw, struct dentry *dbgfs_dir)
-+{
-+	mld->dev = trans->dev;
-+	mld->trans = trans;
-+	mld->cfg = cfg;
-+	mld->fw = fw;
-+	mld->hw = hw;
-+	mld->wiphy = hw->wiphy;
-+	mld->debugfs_dir = dbgfs_dir;
-+
-+	iwl_notification_wait_init(&mld->notif_wait);
-+
-+	/* Setup async RX handling */
-+	spin_lock_init(&mld->async_handlers_lock);
-+	INIT_LIST_HEAD(&mld->async_handlers_list);
-+	wiphy_work_init(&mld->async_handlers_wk,
-+			iwl_mld_async_handlers_wk);
-+
-+	/* Dynamic Queue Allocation */
-+	spin_lock_init(&mld->add_txqs_lock);
-+	INIT_LIST_HEAD(&mld->txqs_to_add);
-+	wiphy_work_init(&mld->add_txqs_wk, iwl_mld_add_txqs_wk);
-+
-+	/* Setup RX queues sync wait queue */
-+	init_waitqueue_head(&mld->rxq_sync.waitq);
-+}
-+EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_construct_mld);
-+
-+static void __acquires(&mld->wiphy->mtx)
-+iwl_mld_fwrt_dump_start(void *ctx)
-+{
-+	struct iwl_mld *mld = ctx;
-+
-+	wiphy_lock(mld->wiphy);
++	return "ERROR";
 +}
 +
-+static void __releases(&mld->wiphy->mtx)
-+iwl_mld_fwrt_dump_end(void *ctx)
++static void iwl_mld_print_emlsr_blocked(struct iwl_mld *mld, u32 mask)
 +{
-+	struct iwl_mld *mld = ctx;
-+
-+	wiphy_unlock(mld->wiphy);
++#define NAME_FMT(x) "%s"
++#define NAME_PR(x) (mask & IWL_MLD_EMLSR_BLOCKED_##x) ? "[" #x "]" : "",
++	IWL_DEBUG_INFO(mld,
++		       "EMLSR blocked = " HANDLE_EMLSR_BLOCKED_REASONS(NAME_FMT)
++		       " (0x%x)\n",
++		       HANDLE_EMLSR_BLOCKED_REASONS(NAME_PR)
++		       mask);
++#undef NAME_FMT
++#undef NAME_PR
 +}
 +
-+static bool iwl_mld_d3_debug_enable(void *ctx)
++/* Exit reasons helper */
++#define HANDLE_EMLSR_EXIT_REASONS(HOW)	\
++	HOW(BLOCK)			\
++	HOW(MISSED_BEACON)		\
++	HOW(FAIL_ENTRY)			\
++	HOW(CSA)			\
++	HOW(EQUAL_BAND)			\
++	HOW(BANDWIDTH)			\
++	HOW(LOW_RSSI)			\
++	HOW(LINK_USAGE)			\
++	HOW(BT_COEX)			\
++	HOW(CHAN_LOAD)			\
++	HOW(RFI)
++
++static const char *
++iwl_mld_get_emlsr_exit_string(enum iwl_mld_emlsr_exit exit)
 +{
-+	return IWL_MLD_D3_DEBUG;
++	/* Using switch without "default" will warn about missing entries  */
++	switch (exit) {
++#define REASON_CASE(x) case IWL_MLD_EMLSR_EXIT_##x: return #x;
++	HANDLE_EMLSR_EXIT_REASONS(REASON_CASE)
++#undef REASON_CASE
++	}
++
++	return "ERROR";
 +}
 +
-+static int iwl_mld_fwrt_send_hcmd(void *ctx, struct iwl_host_cmd *host_cmd)
++static void iwl_mld_print_emlsr_exit(struct iwl_mld *mld, u32 mask)
 +{
-+	struct iwl_mld *mld = (struct iwl_mld *)ctx;
-+	int ret;
-+
-+	wiphy_lock(mld->wiphy);
-+	ret = iwl_mld_send_cmd(mld, host_cmd);
-+	wiphy_unlock(mld->wiphy);
-+
-+	return ret;
++#define NAME_FMT(x) "%s"
++#define NAME_PR(x) (mask & IWL_MLD_EMLSR_EXIT_##x) ? "[" #x "]" : "",
++	IWL_DEBUG_INFO(mld,
++		       "EMLSR exit = " HANDLE_EMLSR_EXIT_REASONS(NAME_FMT)
++		       " (0x%x)\n",
++		       HANDLE_EMLSR_EXIT_REASONS(NAME_PR)
++		       mask);
++#undef NAME_FMT
++#undef NAME_PR
 +}
 +
-+static const struct iwl_fw_runtime_ops iwl_mld_fwrt_ops = {
-+	.dump_start = iwl_mld_fwrt_dump_start,
-+	.dump_end = iwl_mld_fwrt_dump_end,
-+	.send_hcmd = iwl_mld_fwrt_send_hcmd,
-+	.d3_debug_enable = iwl_mld_d3_debug_enable,
-+};
-+
-+static void
-+iwl_mld_construct_fw_runtime(struct iwl_mld *mld, struct iwl_trans *trans,
-+			     const struct iwl_fw *fw,
-+			     struct dentry *debugfs_dir)
++void iwl_mld_emlsr_prevent_done_wk(struct wiphy *wiphy, struct wiphy_work *wk)
 +{
-+	iwl_fw_runtime_init(&mld->fwrt, trans, fw, &iwl_mld_fwrt_ops, mld,
-+			    NULL, NULL, debugfs_dir);
++	struct iwl_mld_vif *mld_vif = container_of(wk, struct iwl_mld_vif,
++						   emlsr.prevent_done_wk.work);
++	struct ieee80211_vif *vif =
++		container_of((void *)mld_vif, struct ieee80211_vif, drv_priv);
 +
-+	iwl_fw_set_current_image(&mld->fwrt, IWL_UCODE_REGULAR);
++	if (WARN_ON(!(mld_vif->emlsr.blocked_reasons &
++		      IWL_MLD_EMLSR_BLOCKED_PREVENTION)))
++		return;
++
++	iwl_mld_unblock_emlsr(mld_vif->mld, vif,
++			      IWL_MLD_EMLSR_BLOCKED_PREVENTION);
 +}
 +
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_legacy_names[] = {
-+	HCMD_NAME(UCODE_ALIVE_NTFY),
-+	HCMD_NAME(INIT_COMPLETE_NOTIF),
-+	HCMD_NAME(PHY_CONTEXT_CMD),
-+	HCMD_NAME(SCAN_CFG_CMD),
-+	HCMD_NAME(SCAN_REQ_UMAC),
-+	HCMD_NAME(SCAN_ABORT_UMAC),
-+	HCMD_NAME(SCAN_COMPLETE_UMAC),
-+	HCMD_NAME(TX_CMD),
-+	HCMD_NAME(TXPATH_FLUSH),
-+	HCMD_NAME(LEDS_CMD),
-+	HCMD_NAME(WNM_80211V_TIMING_MEASUREMENT_NOTIFICATION),
-+	HCMD_NAME(WNM_80211V_TIMING_MEASUREMENT_CONFIRM_NOTIFICATION),
-+	HCMD_NAME(SCAN_OFFLOAD_UPDATE_PROFILES_CMD),
-+	HCMD_NAME(POWER_TABLE_CMD),
-+	HCMD_NAME(PSM_UAPSD_AP_MISBEHAVING_NOTIFICATION),
-+	HCMD_NAME(BEACON_NOTIFICATION),
-+	HCMD_NAME(BEACON_TEMPLATE_CMD),
-+	HCMD_NAME(TX_ANT_CONFIGURATION_CMD),
-+	HCMD_NAME(REDUCE_TX_POWER_CMD),
-+	HCMD_NAME(MISSED_BEACONS_NOTIFICATION),
-+	HCMD_NAME(MAC_PM_POWER_TABLE),
-+	HCMD_NAME(MFUART_LOAD_NOTIFICATION),
-+	HCMD_NAME(RSS_CONFIG_CMD),
-+	HCMD_NAME(SCAN_ITERATION_COMPLETE_UMAC),
-+	HCMD_NAME(REPLY_RX_MPDU_CMD),
-+	HCMD_NAME(BA_NOTIF),
-+	HCMD_NAME(MCC_UPDATE_CMD),
-+	HCMD_NAME(MCC_CHUB_UPDATE_CMD),
-+	HCMD_NAME(MCAST_FILTER_CMD),
-+	HCMD_NAME(REPLY_BEACON_FILTERING_CMD),
-+	HCMD_NAME(PROT_OFFLOAD_CONFIG_CMD),
-+	HCMD_NAME(MATCH_FOUND_NOTIFICATION),
-+	HCMD_NAME(WOWLAN_PATTERNS),
-+	HCMD_NAME(WOWLAN_CONFIGURATION),
-+	HCMD_NAME(WOWLAN_TSC_RSC_PARAM),
-+	HCMD_NAME(WOWLAN_KEK_KCK_MATERIAL),
-+	HCMD_NAME(DEBUG_HOST_COMMAND),
-+	HCMD_NAME(LDBG_CONFIG_CMD),
-+};
-+
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_system_names[] = {
-+	HCMD_NAME(SHARED_MEM_CFG_CMD),
-+	HCMD_NAME(SOC_CONFIGURATION_CMD),
-+	HCMD_NAME(INIT_EXTENDED_CFG_CMD),
-+	HCMD_NAME(FW_ERROR_RECOVERY_CMD),
-+	HCMD_NAME(RFI_GET_FREQ_TABLE_CMD),
-+	HCMD_NAME(SYSTEM_STATISTICS_CMD),
-+	HCMD_NAME(SYSTEM_STATISTICS_END_NOTIF),
-+};
-+
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_reg_and_nvm_names[] = {
-+	HCMD_NAME(LARI_CONFIG_CHANGE),
-+	HCMD_NAME(NVM_GET_INFO),
-+	HCMD_NAME(TAS_CONFIG),
-+	HCMD_NAME(SAR_OFFSET_MAPPING_TABLE_CMD),
-+	HCMD_NAME(MCC_ALLOWED_AP_TYPE_CMD),
-+};
-+
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_debug_names[] = {
-+	HCMD_NAME(HOST_EVENT_CFG),
-+	HCMD_NAME(DBGC_SUSPEND_RESUME),
-+};
-+
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_mac_conf_names[] = {
-+	HCMD_NAME(LOW_LATENCY_CMD),
-+	HCMD_NAME(SESSION_PROTECTION_CMD),
-+	HCMD_NAME(MAC_CONFIG_CMD),
-+	HCMD_NAME(LINK_CONFIG_CMD),
-+	HCMD_NAME(STA_CONFIG_CMD),
-+	HCMD_NAME(AUX_STA_CMD),
-+	HCMD_NAME(STA_REMOVE_CMD),
-+	HCMD_NAME(ROC_CMD),
-+	HCMD_NAME(MISSED_BEACONS_NOTIF),
-+	HCMD_NAME(EMLSR_TRANS_FAIL_NOTIF),
-+	HCMD_NAME(ROC_NOTIF),
-+	HCMD_NAME(CHANNEL_SWITCH_ERROR_NOTIF),
-+	HCMD_NAME(SESSION_PROTECTION_NOTIF),
-+	HCMD_NAME(PROBE_RESPONSE_DATA_NOTIF),
-+	HCMD_NAME(CHANNEL_SWITCH_START_NOTIF),
-+};
-+
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_data_path_names[] = {
-+	HCMD_NAME(TRIGGER_RX_QUEUES_NOTIF_CMD),
-+	HCMD_NAME(WNM_PLATFORM_PTM_REQUEST_CMD),
-+	HCMD_NAME(WNM_80211V_TIMING_MEASUREMENT_CONFIG_CMD),
-+	HCMD_NAME(RFH_QUEUE_CONFIG_CMD),
-+	HCMD_NAME(TLC_MNG_CONFIG_CMD),
-+	HCMD_NAME(RX_BAID_ALLOCATION_CONFIG_CMD),
-+	HCMD_NAME(SCD_QUEUE_CONFIG_CMD),
-+	HCMD_NAME(OMI_SEND_STATUS_NOTIF),
-+	HCMD_NAME(ESR_MODE_NOTIF),
-+	HCMD_NAME(MONITOR_NOTIF),
-+	HCMD_NAME(TLC_MNG_UPDATE_NOTIF),
-+	HCMD_NAME(MU_GROUP_MGMT_NOTIF),
-+};
-+
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_location_names[] = {
-+	HCMD_NAME(TOF_RANGE_REQ_CMD),
-+	HCMD_NAME(TOF_RANGE_RESPONSE_NOTIF),
-+};
-+
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_phy_names[] = {
-+	HCMD_NAME(CMD_DTS_MEASUREMENT_TRIGGER_WIDE),
-+	HCMD_NAME(CTDP_CONFIG_CMD),
-+	HCMD_NAME(TEMP_REPORTING_THRESHOLDS_CMD),
-+	HCMD_NAME(PER_CHAIN_LIMIT_OFFSET_CMD),
-+	HCMD_NAME(CT_KILL_NOTIFICATION),
-+	HCMD_NAME(DTS_MEASUREMENT_NOTIF_WIDE),
-+};
-+
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_statistics_names[] = {
-+	HCMD_NAME(STATISTICS_OPER_NOTIF),
-+	HCMD_NAME(STATISTICS_OPER_PART1_NOTIF),
-+};
-+
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_prot_offload_names[] = {
-+	HCMD_NAME(STORED_BEACON_NTF),
-+};
-+
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_coex_names[] = {
-+	HCMD_NAME(PROFILE_NOTIF),
-+};
-+
-+VISIBLE_IF_IWLWIFI_KUNIT
-+const struct iwl_hcmd_arr iwl_mld_groups[] = {
-+	[LEGACY_GROUP] = HCMD_ARR(iwl_mld_legacy_names),
-+	[LONG_GROUP] = HCMD_ARR(iwl_mld_legacy_names),
-+	[SYSTEM_GROUP] = HCMD_ARR(iwl_mld_system_names),
-+	[MAC_CONF_GROUP] = HCMD_ARR(iwl_mld_mac_conf_names),
-+	[DATA_PATH_GROUP] = HCMD_ARR(iwl_mld_data_path_names),
-+	[LOCATION_GROUP] = HCMD_ARR(iwl_mld_location_names),
-+	[REGULATORY_AND_NVM_GROUP] = HCMD_ARR(iwl_mld_reg_and_nvm_names),
-+	[DEBUG_GROUP] = HCMD_ARR(iwl_mld_debug_names),
-+	[PHY_OPS_GROUP] = HCMD_ARR(iwl_mld_phy_names),
-+	[STATISTICS_GROUP] = HCMD_ARR(iwl_mld_statistics_names),
-+	[PROT_OFFLOAD_GROUP] = HCMD_ARR(iwl_mld_prot_offload_names),
-+	[BT_COEX_GROUP] = HCMD_ARR(iwl_mld_coex_names),
-+};
-+EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_mld_groups);
-+
-+#if IS_ENABLED(CONFIG_IWLWIFI_KUNIT_TESTS)
-+const unsigned int global_iwl_mld_goups_size = ARRAY_SIZE(iwl_mld_groups);
-+EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(global_iwl_mld_goups_size);
-+#endif
-+
-+static void
-+iwl_mld_configure_trans(struct iwl_op_mode *op_mode)
++void iwl_mld_emlsr_tmp_non_bss_done_wk(struct wiphy *wiphy,
++				       struct wiphy_work *wk)
 +{
-+	const struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
-+	static const u8 no_reclaim_cmds[] = {TX_CMD};
-+	struct iwl_trans_config trans_cfg = {
-+		.op_mode = op_mode,
-+		/* Rx is not supported yet, but add it to avoid warnings */
-+		.rx_buf_size = iwl_amsdu_size_to_rxb_size(),
-+		.command_groups = iwl_mld_groups,
-+		.command_groups_size = ARRAY_SIZE(iwl_mld_groups),
-+		.fw_reset_handshake = true,
-+		.queue_alloc_cmd_ver =
-+			iwl_fw_lookup_cmd_ver(mld->fw,
-+					      WIDE_ID(DATA_PATH_GROUP,
-+						      SCD_QUEUE_CONFIG_CMD),
-+					      0),
-+		.no_reclaim_cmds = no_reclaim_cmds,
-+		.n_no_reclaim_cmds = ARRAY_SIZE(no_reclaim_cmds),
-+		.cb_data_offs = offsetof(struct ieee80211_tx_info,
-+					 driver_data[2]),
-+	};
-+	struct iwl_trans *trans = mld->trans;
++	struct iwl_mld_vif *mld_vif = container_of(wk, struct iwl_mld_vif,
++						   emlsr.prevent_done_wk.work);
++	struct ieee80211_vif *vif =
++		container_of((void *)mld_vif, struct ieee80211_vif, drv_priv);
 +
-+	trans->rx_mpdu_cmd = REPLY_RX_MPDU_CMD;
-+	trans->iml = mld->fw->iml;
-+	trans->iml_len = mld->fw->iml_len;
-+	trans->wide_cmd_header = true;
++	if (WARN_ON(!(mld_vif->emlsr.blocked_reasons &
++		      IWL_MLD_EMLSR_BLOCKED_TMP_NON_BSS)))
++		return;
 +
-+	iwl_trans_configure(trans, &trans_cfg);
++	iwl_mld_unblock_emlsr(mld_vif->mld, vif,
++			      IWL_MLD_EMLSR_BLOCKED_TMP_NON_BSS);
 +}
 +
-+/*
-+ *****************************************************
-+ * op mode ops functions
-+ *****************************************************
-+ */
++#define IWL_MLD_TRIGGER_LINK_SEL_TIME	(HZ * IWL_MLD_TRIGGER_LINK_SEL_TIME_SEC)
++#define IWL_MLD_SCAN_EXPIRE_TIME	(HZ * IWL_MLD_SCAN_EXPIRE_TIME_SEC)
 +
-+#define NUM_FW_LOAD_RETRIES	3
-+static struct iwl_op_mode *
-+iwl_op_mode_mld_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
-+		      const struct iwl_fw *fw, struct dentry *dbgfs_dir)
++/* Exit reasons that can cause longer EMLSR prevention */
++#define IWL_MLD_PREVENT_EMLSR_REASONS	(IWL_MLD_EMLSR_EXIT_MISSED_BEACON | \
++					 IWL_MLD_EMLSR_EXIT_LINK_USAGE)
++#define IWL_MLD_PREVENT_EMLSR_TIMEOUT	(HZ * 400)
++
++#define IWL_MLD_EMLSR_PREVENT_SHORT	(HZ * 300)
++#define IWL_MLD_EMLSR_PREVENT_LONG	(HZ * 600)
++
++static void iwl_mld_check_emlsr_prevention(struct iwl_mld *mld,
++					   struct iwl_mld_vif *mld_vif,
++					   enum iwl_mld_emlsr_exit reason)
 +{
-+	struct ieee80211_hw *hw;
-+	struct iwl_op_mode *op_mode;
-+	struct iwl_mld *mld;
-+	u32 eckv_value;
-+	int ret;
++	unsigned long delay;
 +
-+	/* Allocate and initialize a new hardware device */
-+	hw = ieee80211_alloc_hw(sizeof(struct iwl_op_mode) +
-+				sizeof(struct iwl_mld),
-+				&iwl_mld_hw_ops);
-+	if (!hw)
-+		return ERR_PTR(-ENOMEM);
++	/*
++	 * Reset the counter if more than 400 seconds have passed between one
++	 * exit and the other, or if we exited due to a different reason.
++	 * Will also reset the counter after the long prevention is done.
++	 */
++	if (time_after(jiffies, mld_vif->emlsr.last_exit_ts +
++				IWL_MLD_PREVENT_EMLSR_TIMEOUT) ||
++	    mld_vif->emlsr.last_exit_reason != reason)
++		mld_vif->emlsr.exit_repeat_count = 0;
 +
-+	op_mode = hw->priv;
++	mld_vif->emlsr.last_exit_reason = reason;
++	mld_vif->emlsr.last_exit_ts = jiffies;
++	mld_vif->emlsr.exit_repeat_count++;
 +
-+	op_mode->ops = &iwl_mld_ops;
++	/*
++	 * Do not add a prevention when the reason was a block. For a block,
++	 * EMLSR will be enabled again on unblock.
++	 */
++	if (reason == IWL_MLD_EMLSR_EXIT_BLOCK)
++		return;
 +
-+	mld = IWL_OP_MODE_GET_MLD(op_mode);
++	/* Set prevention for a minimum of 30 seconds */
++	mld_vif->emlsr.blocked_reasons |= IWL_MLD_EMLSR_BLOCKED_PREVENTION;
++	delay = IWL_MLD_TRIGGER_LINK_SEL_TIME;
 +
-+	iwl_construct_mld(mld, trans, cfg, fw, hw, dbgfs_dir);
++	/* Handle repeats for reasons that can cause long prevention */
++	if (mld_vif->emlsr.exit_repeat_count > 1 &&
++	    reason & IWL_MLD_PREVENT_EMLSR_REASONS) {
++		if (mld_vif->emlsr.exit_repeat_count == 2)
++			delay = IWL_MLD_EMLSR_PREVENT_SHORT;
++		else
++			delay = IWL_MLD_EMLSR_PREVENT_LONG;
 +
-+	iwl_mld_construct_fw_runtime(mld, trans, fw, dbgfs_dir);
++		/*
++		 * The timeouts are chosen so that this will not happen, i.e.
++		 * IWL_MLD_EMLSR_PREVENT_LONG > IWL_MLD_PREVENT_EMLSR_TIMEOUT
++		 */
++		WARN_ON(mld_vif->emlsr.exit_repeat_count > 3);
++	}
 +
-+	iwl_mld_get_bios_tables(mld);
-+	iwl_uefi_get_sgom_table(trans, &mld->fwrt);
-+	iwl_uefi_get_step_table(trans);
-+	if (iwl_bios_get_eckv(&mld->fwrt, &eckv_value))
-+		IWL_DEBUG_RADIO(mld, "ECKV table doesn't exist in BIOS\n");
++	IWL_DEBUG_INFO(mld,
++		       "Preventing EMLSR for %ld seconds due to %u exits with the reason = %s (0x%x)\n",
++		       delay / HZ, mld_vif->emlsr.exit_repeat_count,
++		       iwl_mld_get_emlsr_exit_string(reason), reason);
++
++	wiphy_delayed_work_queue(mld->wiphy,
++				 &mld_vif->emlsr.prevent_done_wk, delay);
++}
++
++static int _iwl_mld_exit_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			       enum iwl_mld_emlsr_exit exit, u8 link_to_keep,
++			       bool sync)
++{
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	u16 new_active_links;
++	int ret = 0;
++
++	lockdep_assert_wiphy(mld->wiphy);
++
++	/* On entry failure need to exit anyway, even if entered from debugfs */
++	if (exit != IWL_MLD_EMLSR_EXIT_FAIL_ENTRY && !IWL_MLD_AUTO_EML_ENABLE)
++		return 0;
++
++	/* Ignore exit request if EMLSR is not active */
++	if (!iwl_mld_emlsr_active(vif))
++		return 0;
++
++	if (WARN_ON(!ieee80211_vif_is_mld(vif) || !mld_vif->authorized))
++		return 0;
++
++	if (WARN_ON(!(vif->active_links & BIT(link_to_keep))))
++		link_to_keep = __ffs(vif->active_links);
++
++	new_active_links = BIT(link_to_keep);
++	IWL_DEBUG_INFO(mld,
++		       "Exiting EMLSR. reason = %s (0x%x). Current active links=0x%x, new active links = 0x%x\n",
++		       iwl_mld_get_emlsr_exit_string(exit), exit,
++		       vif->active_links, new_active_links);
++
++	if (sync)
++		ret = ieee80211_set_active_links(vif, new_active_links);
 +	else
-+		trans->ext_32khz_clock_valid = !!eckv_value;
-+	iwl_bios_setup_step(trans, &mld->fwrt);
-+	mld->bios_enable_puncturing = iwl_uefi_get_puncturing(&mld->fwrt);
++		ieee80211_set_active_links_async(vif, new_active_links);
 +
-+	/* Configure transport layer with the opmode specific params */
-+	iwl_mld_configure_trans(op_mode);
++	/* Update latest exit reason and check EMLSR prevention */
++	iwl_mld_check_emlsr_prevention(mld, mld_vif, exit);
 +
-+	/* Needed for sending commands */
-+	wiphy_lock(mld->wiphy);
++	return ret;
++}
 +
-+	for (int i = 0; i < NUM_FW_LOAD_RETRIES; i++) {
-+		ret = iwl_mld_load_fw(mld);
-+		if (!ret)
-+			break;
++void iwl_mld_exit_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			enum iwl_mld_emlsr_exit exit, u8 link_to_keep)
++{
++	_iwl_mld_exit_emlsr(mld, vif, exit, link_to_keep, false);
++}
++
++static int _iwl_mld_emlsr_block(struct iwl_mld *mld, struct ieee80211_vif *vif,
++				enum iwl_mld_emlsr_blocked reason,
++				u8 link_to_keep, bool sync)
++{
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++
++	lockdep_assert_wiphy(mld->wiphy);
++
++	if (!IWL_MLD_AUTO_EML_ENABLE || !iwl_mld_vif_has_emlsr_cap(vif))
++		return 0;
++
++	if (mld_vif->emlsr.blocked_reasons & reason)
++		return 0;
++
++	mld_vif->emlsr.blocked_reasons |= reason;
++
++	IWL_DEBUG_INFO(mld,
++		       "Blocking EMLSR mode. reason = %s (0x%x)\n",
++		       iwl_mld_get_emlsr_blocked_string(reason), reason);
++	iwl_mld_print_emlsr_blocked(mld, mld_vif->emlsr.blocked_reasons);
++
++	if (reason == IWL_MLD_EMLSR_BLOCKED_TPT)
++		wiphy_delayed_work_cancel(mld_vif->mld->wiphy,
++					  &mld_vif->emlsr.check_tpt_wk);
++
++	return _iwl_mld_exit_emlsr(mld, vif, IWL_MLD_EMLSR_EXIT_BLOCK,
++				   link_to_keep, sync);
++}
++
++void iwl_mld_block_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif,
++		       enum iwl_mld_emlsr_blocked reason, u8 link_to_keep)
++{
++	_iwl_mld_emlsr_block(mld, vif, reason, link_to_keep, false);
++}
++
++int iwl_mld_block_emlsr_sync(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			   enum iwl_mld_emlsr_blocked reason, u8 link_to_keep)
++{
++	return _iwl_mld_emlsr_block(mld, vif, reason, link_to_keep, true);
++}
++
++static void _iwl_mld_select_links(struct iwl_mld *mld,
++				  struct ieee80211_vif *vif);
++
++void iwl_mld_trigger_link_selection(struct iwl_mld *mld,
++				    struct ieee80211_vif *vif)
++{
++	bool last_scan_was_recent =
++		time_before(jiffies, mld->scan.last_mlo_scan_jiffies +
++				     IWL_MLD_SCAN_EXPIRE_TIME);
++
++	if (last_scan_was_recent) {
++		IWL_DEBUG_EHT(mld, "MLO scan was recent, skip.\n");
++		_iwl_mld_select_links(mld, vif);
++	} else {
++		IWL_DEBUG_EHT(mld, "Doing link selection after MLO scan\n");
++		iwl_mld_int_mlo_scan(mld, vif);
 +	}
++}
 +
-+	if (ret) {
-+		wiphy_unlock(mld->wiphy);
-+		iwl_fw_flush_dumps(&mld->fwrt);
-+		goto free_hw;
-+	}
++void iwl_mld_unblock_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			 enum iwl_mld_emlsr_blocked reason)
++{
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
 +
-+	iwl_mld_stop_fw(mld);
++	lockdep_assert_wiphy(mld->wiphy);
 +
-+	wiphy_unlock(mld->wiphy);
++	if (!IWL_MLD_AUTO_EML_ENABLE || !iwl_mld_vif_has_emlsr_cap(vif))
++		return;
 +
-+	ret = iwl_mld_leds_init(mld);
-+	if (ret)
-+		goto free_nvm;
++	if (!(mld_vif->emlsr.blocked_reasons & reason))
++		return;
 +
-+	ret = iwl_mld_alloc_scan_cmd(mld);
-+	if (ret)
-+		goto leds_exit;
++	mld_vif->emlsr.blocked_reasons &= ~reason;
 +
-+	ret = iwl_mld_low_latency_init(mld);
-+	if (ret)
-+		goto free_scan_cmd;
++	IWL_DEBUG_INFO(mld,
++		       "Unblocking EMLSR mode. reason = %s (0x%x)\n",
++		       iwl_mld_get_emlsr_blocked_string(reason), reason);
++	iwl_mld_print_emlsr_blocked(mld, mld_vif->emlsr.blocked_reasons);
 +
-+	ret = iwl_mld_register_hw(mld);
-+	if (ret)
-+		goto low_latency_free;
++	if (reason == IWL_MLD_EMLSR_BLOCKED_TPT)
++		wiphy_delayed_work_queue(mld_vif->mld->wiphy,
++					 &mld_vif->emlsr.check_tpt_wk,
++					 round_jiffies_relative(IWL_MLD_TPT_COUNT_WINDOW));
 +
-+	iwl_mld_toggle_tx_ant(mld, &mld->mgmt_tx_ant);
++	if (mld_vif->emlsr.blocked_reasons)
++		return;
 +
-+	iwl_mld_add_debugfs_files(mld, dbgfs_dir);
-+	iwl_mld_thermal_initialize(mld);
-+
-+	iwl_mld_ptp_init(mld);
-+
-+	return op_mode;
-+
-+low_latency_free:
-+	iwl_mld_low_latency_free(mld);
-+free_scan_cmd:
-+	kfree(mld->scan.cmd);
-+leds_exit:
-+	iwl_mld_leds_exit(mld);
-+free_nvm:
-+	kfree(mld->nvm_data);
-+free_hw:
-+	ieee80211_free_hw(mld->hw);
-+	return ERR_PTR(ret);
++	IWL_DEBUG_INFO(mld, "EMLSR is unblocked\n");
++	iwl_mld_trigger_link_selection(mld, vif);
 +}
 +
 +static void
-+iwl_op_mode_mld_stop(struct iwl_op_mode *op_mode)
++iwl_mld_vif_iter_emlsr_mode_notif(void *data, u8 *mac,
++				  struct ieee80211_vif *vif)
 +{
-+	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	struct iwl_esr_mode_notif *notif = (void *)data;
 +
-+	iwl_mld_ptp_remove(mld);
-+	iwl_mld_leds_exit(mld);
++	if (!iwl_mld_vif_has_emlsr_cap(vif))
++		return;
 +
-+	wiphy_lock(mld->wiphy);
-+	iwl_mld_thermal_exit(mld);
-+	iwl_mld_low_latency_stop(mld);
-+	iwl_mld_deinit_time_sync(mld);
-+	wiphy_unlock(mld->wiphy);
-+
-+	ieee80211_unregister_hw(mld->hw);
-+
-+	iwl_fw_runtime_free(&mld->fwrt);
-+	iwl_mld_low_latency_free(mld);
-+
-+	iwl_trans_op_mode_leave(mld->trans);
-+
-+	kfree(mld->nvm_data);
-+	kfree(mld->scan.cmd);
-+	kfree(mld->error_recovery_buf);
-+	kfree(mld->mcast_filter_cmd);
-+
-+	ieee80211_free_hw(mld->hw);
++	switch (le32_to_cpu(notif->action)) {
++	case ESR_RECOMMEND_ENTER:
++		iwl_mld_unblock_emlsr(mld_vif->mld, vif,
++				      IWL_MLD_EMLSR_BLOCKED_FW);
++		break;
++	case ESR_RECOMMEND_LEAVE:
++		iwl_mld_block_emlsr(mld_vif->mld, vif,
++				    IWL_MLD_EMLSR_BLOCKED_FW,
++				    iwl_mld_get_primary_link(vif));
++		break;
++	case ESR_FORCE_LEAVE:
++	default:
++		/* ESR_FORCE_LEAVE should not happen at this point */
++		IWL_WARN(mld_vif->mld, "Unexpected EMLSR notification: %d\n",
++			 le32_to_cpu(notif->action));
++	}
 +}
 +
-+static void iwl_mld_queue_state_change(struct iwl_op_mode *op_mode,
-+				       int hw_queue, bool queue_full)
++void iwl_mld_handle_emlsr_mode_notif(struct iwl_mld *mld,
++				     struct iwl_rx_packet *pkt)
 +{
-+	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
-+	struct ieee80211_txq *txq;
-+	struct iwl_mld_sta *mld_sta;
-+	struct iwl_mld_txq *mld_txq;
++	ieee80211_iterate_active_interfaces_mtx(mld->hw,
++						IEEE80211_IFACE_ITER_NORMAL,
++						iwl_mld_vif_iter_emlsr_mode_notif,
++						pkt->data);
++}
 +
-+	rcu_read_lock();
++static void
++iwl_mld_vif_iter_disconnect_emlsr(void *data, u8 *mac,
++				  struct ieee80211_vif *vif)
++{
++	if (!iwl_mld_vif_has_emlsr_cap(vif))
++		return;
 +
-+	txq = rcu_dereference(mld->fw_id_to_txq[hw_queue]);
-+	if (!txq) {
-+		rcu_read_unlock();
++	ieee80211_connection_loss(vif);
++}
 +
-+		if (queue_full) {
-+			/* An internal queue is not expected to become full */
-+			IWL_WARN(mld,
-+				 "Internal hw_queue %d is full! stopping all queues\n",
-+				 hw_queue);
-+			/* Stop all queues, as an internal queue is not
-+			 * mapped to a mac80211 one
-+			 */
-+			ieee80211_stop_queues(mld->hw);
-+		} else {
-+			ieee80211_wake_queues(mld->hw);
-+		}
++void iwl_mld_handle_emlsr_trans_fail_notif(struct iwl_mld *mld,
++					   struct iwl_rx_packet *pkt)
++{
++	const struct iwl_esr_trans_fail_notif *notif = (const void *)pkt->data;
++	u32 fw_link_id = le32_to_cpu(notif->link_id);
++	struct ieee80211_bss_conf *bss_conf =
++		iwl_mld_fw_id_to_link_conf(mld, fw_link_id);
 +
++	IWL_DEBUG_INFO(mld, "Failed to %s EMLSR on link %d (FW: %d), reason %d\n",
++		       le32_to_cpu(notif->activation) ? "enter" : "exit",
++		       bss_conf ? bss_conf->link_id : -1,
++		       le32_to_cpu(notif->link_id),
++		       le32_to_cpu(notif->err_code));
++
++	if (IWL_FW_CHECK(mld, !bss_conf,
++			 "FW reported failure to %sactivate EMLSR on a non-existing link: %d\n",
++			 le32_to_cpu(notif->activation) ? "" : "de",
++			 fw_link_id)) {
++		ieee80211_iterate_active_interfaces_mtx(
++			mld->hw, IEEE80211_IFACE_ITER_NORMAL,
++			iwl_mld_vif_iter_disconnect_emlsr, NULL);
 +		return;
 +	}
 +
-+	mld_txq = iwl_mld_txq_from_mac80211(txq);
-+	mld_sta = txq->sta ? iwl_mld_sta_from_mac80211(txq->sta) : NULL;
-+
-+	mld_txq->status.stop_full = queue_full;
-+
-+	if (!queue_full && mld_sta &&
-+	    mld_sta->sta_state != IEEE80211_STA_NOTEXIST) {
-+		local_bh_disable();
-+		iwl_mld_tx_from_txq(mld, txq);
-+		local_bh_enable();
++	/* Disconnect if we failed to deactivate a link */
++	if (!le32_to_cpu(notif->activation)) {
++		ieee80211_connection_loss(bss_conf->vif);
++		return;
 +	}
 +
-+	rcu_read_unlock();
++	/*
++	 * We failed to activate the second link, go back to the link specified
++	 * by the firmware as that is the one that is still valid now.
++	 */
++	iwl_mld_exit_emlsr(mld, bss_conf->vif, IWL_MLD_EMLSR_EXIT_FAIL_ENTRY,
++			   bss_conf->link_id);
 +}
 +
-+static void
-+iwl_mld_queue_full(struct iwl_op_mode *op_mode, int hw_queue)
++/* Active non-station link tracking */
++static void iwl_mld_count_non_bss_links(void *_data, u8 *mac,
++					struct ieee80211_vif *vif)
 +{
-+	iwl_mld_queue_state_change(op_mode, hw_queue, true);
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	int *count = _data;
++
++	if (ieee80211_vif_type_p2p(vif) == NL80211_IFTYPE_STATION)
++		return;
++
++	*count += iwl_mld_count_active_links(mld_vif->mld, vif);
 +}
 +
-+static void
-+iwl_mld_queue_not_full(struct iwl_op_mode *op_mode, int hw_queue)
++struct iwl_mld_update_emlsr_block_data {
++	bool block;
++	int result;
++};
++
++static void iwl_mld_vif_iter_update_emlsr_non_bss_block(void *_data, u8 *mac,
++						       struct ieee80211_vif *vif)
 +{
-+	iwl_mld_queue_state_change(op_mode, hw_queue, false);
++	struct iwl_mld_update_emlsr_block_data *data = _data;
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	int ret;
++
++	if (data->block) {
++		ret = iwl_mld_block_emlsr_sync(mld_vif->mld, vif,
++					       IWL_MLD_EMLSR_BLOCKED_NON_BSS,
++					       iwl_mld_get_primary_link(vif));
++		if (ret)
++			data->result = ret;
++	} else {
++		iwl_mld_unblock_emlsr(mld_vif->mld, vif,
++				      IWL_MLD_EMLSR_BLOCKED_NON_BSS);
++	}
++}
++
++int iwl_mld_emlsr_check_non_bss_block(struct iwl_mld *mld,
++				      int pending_link_changes)
++{
++	/* An active link of a non-station vif blocks EMLSR. Upon activation
++	 * block EMLSR on the bss vif. Upon deactivation, check if this link
++	 * was the last non-station link active, and if so unblock the bss vif
++	 */
++	struct iwl_mld_update_emlsr_block_data block_data = {};
++	int count = pending_link_changes;
++
++	/* No need to count if we are activating a non-BSS link */
++	if (count <= 0)
++		ieee80211_iterate_active_interfaces_mtx(mld->hw,
++							IEEE80211_IFACE_ITER_NORMAL,
++							iwl_mld_count_non_bss_links,
++							&count);
++
++	/*
++	 * We could skip updating it if the block change did not change (and
++	 * pending_link_changes is non-zero).
++	 */
++	block_data.block = !!count;
++
++	ieee80211_iterate_active_interfaces_mtx(mld->hw,
++						IEEE80211_IFACE_ITER_NORMAL,
++						iwl_mld_vif_iter_update_emlsr_non_bss_block,
++						&block_data);
++
++	return block_data.result;
++}
++
++#define EMLSR_SEC_LINK_MIN_PERC 10
++#define EMLSR_MIN_TX 3000
++#define EMLSR_MIN_RX 400
++
++void iwl_mld_emlsr_check_tpt(struct wiphy *wiphy, struct wiphy_work *wk)
++{
++	struct iwl_mld_vif *mld_vif = container_of(wk, struct iwl_mld_vif,
++						   emlsr.check_tpt_wk.work);
++	struct ieee80211_vif *vif =
++		container_of((void *)mld_vif, struct ieee80211_vif, drv_priv);
++	struct iwl_mld *mld = mld_vif->mld;
++	struct iwl_mld_sta *mld_sta;
++	struct iwl_mld_link *sec_link;
++	unsigned long total_tx = 0, total_rx = 0;
++	unsigned long sec_link_tx = 0, sec_link_rx = 0;
++	u8 sec_link_tx_perc, sec_link_rx_perc;
++	s8 sec_link_id;
++
++	if (!iwl_mld_vif_has_emlsr_cap(vif) || !mld_vif->ap_sta)
++		return;
++
++	mld_sta = iwl_mld_sta_from_mac80211(mld_vif->ap_sta);
++
++	/* We only count for the AP sta in a MLO connection */
++	if (!mld_sta->mpdu_counters)
++		return;
++
++	/* This wk should only run when the TPT blocker isn't set.
++	 * When the blocker is set, the decision to remove it, as well as
++	 * clearing the counters is done in DP (to avoid having a wk every
++	 * 5 seconds when idle. When the blocker is unset, we are not idle anyway)
++	 */
++	if (WARN_ON(mld_vif->emlsr.blocked_reasons & IWL_MLD_EMLSR_BLOCKED_TPT))
++		return;
++	/*
++	 * TPT is unblocked, need to check if the TPT criteria is still met.
++	 *
++	 * If EMLSR is active, then we also need to check the secondar link
++	 * requirements.
++	 */
++	if (iwl_mld_emlsr_active(vif)) {
++		sec_link_id = iwl_mld_get_other_link(vif, iwl_mld_get_primary_link(vif));
++		sec_link = iwl_mld_link_dereference_check(mld_vif, sec_link_id);
++		if (WARN_ON_ONCE(!sec_link))
++			return;
++		/* We need the FW ID here */
++		sec_link_id = sec_link->fw_id;
++	} else {
++		sec_link_id = -1;
++	}
++
++	/* Sum up RX and TX MPDUs from the different queues/links */
++	for (int q = 0; q < mld->trans->num_rx_queues; q++) {
++		struct iwl_mld_per_q_mpdu_counter *queue_counter =
++			&mld_sta->mpdu_counters[q];
++
++		spin_lock_bh(&queue_counter->lock);
++
++		/* The link IDs that doesn't exist will contain 0 */
++		for (int link = 0;
++		     link < ARRAY_SIZE(queue_counter->per_link);
++		     link++) {
++			total_tx += queue_counter->per_link[link].tx;
++			total_rx += queue_counter->per_link[link].rx;
++		}
++
++		if (sec_link_id != -1) {
++			sec_link_tx += queue_counter->per_link[sec_link_id].tx;
++			sec_link_rx += queue_counter->per_link[sec_link_id].rx;
++		}
++
++		memset(queue_counter->per_link, 0,
++		       sizeof(queue_counter->per_link));
++
++		spin_unlock_bh(&queue_counter->lock);
++	}
++
++	IWL_DEBUG_INFO(mld, "total Tx MPDUs: %ld. total Rx MPDUs: %ld\n",
++		       total_tx, total_rx);
++
++	/* If we don't have enough MPDUs - exit EMLSR */
++	if (total_tx < IWL_MLD_ENTER_EMLSR_TPT_THRESH &&
++	    total_rx < IWL_MLD_ENTER_EMLSR_TPT_THRESH) {
++		iwl_mld_block_emlsr(mld, vif, IWL_MLD_EMLSR_BLOCKED_TPT,
++				    iwl_mld_get_primary_link(vif));
++		return;
++	}
++
++	/* EMLSR is not active */
++	if (sec_link_id == -1)
++		return;
++
++	IWL_DEBUG_INFO(mld, "Secondary Link %d: Tx MPDUs: %ld. Rx MPDUs: %ld\n",
++		       sec_link_id, sec_link_tx, sec_link_rx);
++
++	/* Calculate the percentage of the secondary link TX/RX */
++	sec_link_tx_perc = total_tx ? sec_link_tx * 100 / total_tx : 0;
++	sec_link_rx_perc = total_rx ? sec_link_rx * 100 / total_rx : 0;
++
++	/*
++	 * The TX/RX percentage is checked only if it exceeds the required
++	 * minimum. In addition, RX is checked only if the TX check failed.
++	 */
++	if ((total_tx > EMLSR_MIN_TX &&
++	     sec_link_tx_perc < EMLSR_SEC_LINK_MIN_PERC) ||
++	    (total_rx > EMLSR_MIN_RX &&
++	     sec_link_rx_perc < EMLSR_SEC_LINK_MIN_PERC)) {
++		iwl_mld_exit_emlsr(mld, vif, IWL_MLD_EMLSR_EXIT_LINK_USAGE,
++				   iwl_mld_get_primary_link(vif));
++		return;
++	}
++
++	/* Check again when the next window ends  */
++	wiphy_delayed_work_queue(mld_vif->mld->wiphy,
++				 &mld_vif->emlsr.check_tpt_wk,
++				 round_jiffies_relative(IWL_MLD_TPT_COUNT_WINDOW));
++}
++
++void iwl_mld_emlsr_unblock_tpt_wk(struct wiphy *wiphy, struct wiphy_work *wk)
++{
++	struct iwl_mld_vif *mld_vif = container_of(wk, struct iwl_mld_vif,
++						   emlsr.unblock_tpt_wk);
++	struct ieee80211_vif *vif =
++		container_of((void *)mld_vif, struct ieee80211_vif, drv_priv);
++
++	iwl_mld_unblock_emlsr(mld_vif->mld, vif, IWL_MLD_EMLSR_BLOCKED_TPT);
++}
++
++/*
++ * Link selection
++ */
++struct iwl_mld_link_sel_data {
++	u8 link_id;
++	const struct cfg80211_chan_def *chandef;
++	s32 signal;
++	u16 grade;
++};
++
++s8 iwl_mld_get_emlsr_rssi_thresh(struct iwl_mld *mld,
++				 const struct cfg80211_chan_def *chandef,
++				 bool low)
++{
++	if (WARN_ON(chandef->chan->band != NL80211_BAND_2GHZ &&
++		    chandef->chan->band != NL80211_BAND_5GHZ &&
++		    chandef->chan->band != NL80211_BAND_6GHZ))
++		return S8_MAX;
++
++#define RSSI_THRESHOLD(_low, _bw)			\
++	(_low) ? IWL_MLD_LOW_RSSI_THRESH_##_bw##MHZ	\
++	       : IWL_MLD_HIGH_RSSI_THRESH_##_bw##MHZ
++
++	switch (chandef->width) {
++	case NL80211_CHAN_WIDTH_20_NOHT:
++	case NL80211_CHAN_WIDTH_20:
++	/* 320 MHz has the same thresholds as 20 MHz */
++	case NL80211_CHAN_WIDTH_320:
++		return RSSI_THRESHOLD(low, 20);
++	case NL80211_CHAN_WIDTH_40:
++		return RSSI_THRESHOLD(low, 40);
++	case NL80211_CHAN_WIDTH_80:
++		return RSSI_THRESHOLD(low, 80);
++	case NL80211_CHAN_WIDTH_160:
++		return RSSI_THRESHOLD(low, 160);
++	default:
++		WARN_ON(1);
++		return S8_MAX;
++	}
++#undef RSSI_THRESHOLD
++}
++
++static u32
++iwl_mld_emlsr_disallowed_with_link(struct iwl_mld *mld,
++				   struct ieee80211_vif *vif,
++				   struct iwl_mld_link_sel_data *link,
++				   bool primary)
++{
++	struct wiphy *wiphy = mld->wiphy;
++	struct ieee80211_bss_conf *conf;
++	enum iwl_mld_emlsr_exit ret = 0;
++
++	conf = wiphy_dereference(wiphy, vif->link_conf[link->link_id]);
++	if (WARN_ON_ONCE(!conf))
++		return false;
++
++	if (link->chandef->chan->band == NL80211_BAND_2GHZ && mld->bt_is_active)
++		ret |= IWL_MLD_EMLSR_EXIT_BT_COEX;
++
++	if (link->signal <
++	    iwl_mld_get_emlsr_rssi_thresh(mld, link->chandef, false))
++		ret |= IWL_MLD_EMLSR_EXIT_LOW_RSSI;
++
++	if (conf->csa_active)
++		ret |= IWL_MLD_EMLSR_EXIT_CSA;
++
++	if (ret) {
++		IWL_DEBUG_INFO(mld,
++			       "Link %d is not allowed for EMLSR as %s\n",
++			       link->link_id,
++			       primary ? "primary" : "secondary");
++		iwl_mld_print_emlsr_exit(mld, ret);
++	}
++
++	return ret;
++}
++
++static u8
++iwl_mld_set_link_sel_data(struct iwl_mld *mld,
++			  struct ieee80211_vif *vif,
++			  struct iwl_mld_link_sel_data *data,
++			  unsigned long usable_links,
++			  u8 *best_link_idx)
++{
++	u8 n_data = 0;
++	u16 max_grade = 0;
++	unsigned long link_id;
++
++	/*
++	 * TODO: don't select links that weren't discovered in the last scan
++	 * This requires mac80211 (or cfg80211) changes to forward/track when
++	 * a BSS was last updated. cfg80211 already tracks this information but
++	 * it is not exposed within the kernel.
++	 */
++	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
++		struct ieee80211_bss_conf *link_conf =
++			link_conf_dereference_protected(vif, link_id);
++
++		if (WARN_ON_ONCE(!link_conf))
++			continue;
++
++		/* Ignore any BSS that was not seen in the last 5 seconds */
++		if (ktime_before(link_conf->bss->ts_boottime,
++				 ktime_sub_ns(ktime_get_boottime_ns(),
++					      (u64)5 * NSEC_PER_SEC)))
++			continue;
++
++		data[n_data].link_id = link_id;
++		data[n_data].chandef = &link_conf->chanreq.oper;
++		data[n_data].signal = MBM_TO_DBM(link_conf->bss->signal);
++		data[n_data].grade = iwl_mld_get_link_grade(mld, link_conf);
++
++		if (n_data == 0 || data[n_data].grade > max_grade) {
++			max_grade = data[n_data].grade;
++			*best_link_idx = n_data;
++		}
++		n_data++;
++	}
++
++	return n_data;
 +}
 +
 +static bool
-+iwl_mld_set_hw_rfkill_state(struct iwl_op_mode *op_mode, bool state)
++iwl_mld_valid_emlsr_pair(struct ieee80211_vif *vif,
++			 struct iwl_mld_link_sel_data *a,
++			 struct iwl_mld_link_sel_data *b)
 +{
-+	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	struct iwl_mld *mld = mld_vif->mld;
++	enum iwl_mld_emlsr_exit ret = 0;
 +
-+	iwl_mld_set_hwkill(mld, state);
-+
-+	return false;
-+}
-+
-+static void
-+iwl_mld_free_skb(struct iwl_op_mode *op_mode, struct sk_buff *skb)
-+{
-+	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
-+	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-+
-+	iwl_trans_free_tx_cmd(mld->trans, info->driver_data[1]);
-+	ieee80211_free_txskb(mld->hw, skb);
-+}
-+
-+static void iwl_mld_read_error_recovery_buffer(struct iwl_mld *mld)
-+{
-+	u32 src_size = mld->fw->ucode_capa.error_log_size;
-+	u32 src_addr = mld->fw->ucode_capa.error_log_addr;
-+	u8 *recovery_buf;
-+	int ret;
-+
-+	/* no recovery buffer size defined in a TLV */
-+	if (!src_size)
-+		return;
-+
-+	recovery_buf = kzalloc(src_size, GFP_ATOMIC);
-+	if (!recovery_buf)
-+		return;
-+
-+	ret = iwl_trans_read_mem_bytes(mld->trans, src_addr,
-+				       recovery_buf, src_size);
-+	if (ret) {
-+		IWL_ERR(mld, "Failed to read error recovery buffer (%d)\n",
-+			ret);
-+		kfree(recovery_buf);
-+		return;
-+	}
-+
-+	mld->error_recovery_buf = recovery_buf;
-+}
-+
-+static void iwl_mld_restart_nic(struct iwl_mld *mld)
-+{
-+	iwl_mld_read_error_recovery_buffer(mld);
-+
-+	mld->fwrt.trans->dbg.restart_required = false;
-+
-+	ieee80211_restart_hw(mld->hw);
-+}
-+
-+static void
-+iwl_mld_nic_error(struct iwl_op_mode *op_mode,
-+		  enum iwl_fw_error_type type)
-+{
-+	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
-+	bool trans_dead = test_bit(STATUS_TRANS_DEAD, &mld->trans->status);
-+
-+	if (type == IWL_ERR_TYPE_CMD_QUEUE_FULL)
-+		IWL_ERR(mld, "Command queue full!\n");
-+	else if (!trans_dead && !mld->fw_status.do_not_dump_once)
-+		iwl_fwrt_dump_error_logs(&mld->fwrt);
-+
-+	mld->fw_status.do_not_dump_once = false;
-+
-+	/* It is necessary to abort any os scan here because mac80211 requires
-+	 * having the scan cleared before restarting.
-+	 * We'll reset the scan_status to NONE in restart cleanup in
-+	 * the next drv_start() call from mac80211. If ieee80211_hw_restart
-+	 * isn't called scan status will stay busy.
-+	 */
-+	iwl_mld_report_scan_aborted(mld);
-+
-+	/*
-+	 * This should be first thing before trying to collect any
-+	 * data to avoid endless loops if any HW error happens while
-+	 * collecting debug data.
-+	 * It might not actually be true that we'll restart, but the
-+	 * setting doesn't matter if we're going to be unbound either.
-+	 */
-+	if (type != IWL_ERR_TYPE_RESET_HS_TIMEOUT)
-+		mld->fw_status.in_hw_restart = true;
-+}
-+
-+static void iwl_mld_dump_error(struct iwl_op_mode *op_mode,
-+			       struct iwl_fw_error_dump_mode *mode)
-+{
-+	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
-+
-+	/* if we come in from opmode we have the mutex held */
-+	if (mode->context == IWL_ERR_CONTEXT_FROM_OPMODE) {
-+		lockdep_assert_wiphy(mld->wiphy);
-+		iwl_fw_error_collect(&mld->fwrt);
-+	} else {
-+		wiphy_lock(mld->wiphy);
-+		if (mode->context != IWL_ERR_CONTEXT_ABORT)
-+			iwl_fw_error_collect(&mld->fwrt);
-+		wiphy_unlock(mld->wiphy);
-+	}
-+}
-+
-+static bool iwl_mld_sw_reset(struct iwl_op_mode *op_mode,
-+			     enum iwl_fw_error_type type)
-+{
-+	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
-+
-+	/* Do restart only in the following conditions are met:
-+	 * - we consider the FW as running
-+	 * - The trigger that brought us here is defined as one that requires
-+	 *   a restart (in the debug TLVs)
-+	 */
-+	if (!mld->fw_status.running || !mld->fwrt.trans->dbg.restart_required)
++	/* Per-link considerations */
++	if (iwl_mld_emlsr_disallowed_with_link(mld, vif, a, true) ||
++	    iwl_mld_emlsr_disallowed_with_link(mld, vif, b, false))
 +		return false;
 +
-+	iwl_mld_restart_nic(mld);
++	if (a->chandef->chan->band == b->chandef->chan->band) {
++		ret |= IWL_MLD_EMLSR_EXIT_EQUAL_BAND;
++	} else if (a->chandef->width != b->chandef->width) {
++		/* TODO: task=EMLSR task=statistics
++		 * replace BANDWIDTH exit reason with channel load criteria
++		 */
++		ret |= IWL_MLD_EMLSR_EXIT_BANDWIDTH;
++	}
++
++	if (ret) {
++		IWL_DEBUG_INFO(mld,
++			       "Links %d and %d are not a valid pair for EMLSR\n",
++			       a->link_id, b->link_id);
++		IWL_DEBUG_INFO(mld,
++			       "Links bandwidth are: %d and %d\n",
++			       nl80211_chan_width_to_mhz(a->chandef->width),
++			       nl80211_chan_width_to_mhz(b->chandef->width));
++		iwl_mld_print_emlsr_exit(mld, ret);
++		return false;
++	}
++
 +	return true;
 +}
 +
-+static void
-+iwl_mld_time_point(struct iwl_op_mode *op_mode,
-+		   enum iwl_fw_ini_time_point tp_id,
-+		   union iwl_dbg_tlv_tp_data *tp_data)
-+{
-+	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
++/* Calculation is done with fixed-point with a scaling factor of 1/256 */
++#define SCALE_FACTOR 256
 +
-+	iwl_dbg_tlv_time_point(&mld->fwrt, tp_id, tp_data);
++/*
++ * Returns the combined grade of two given links.
++ * Returns 0 if EMLSR is not allowed with these 2 links.
++ */
++static
++unsigned int iwl_mld_get_emlsr_grade(struct iwl_mld *mld,
++				     struct ieee80211_vif *vif,
++				     struct iwl_mld_link_sel_data *a,
++				     struct iwl_mld_link_sel_data *b,
++				     u8 *primary_id)
++{
++	struct ieee80211_bss_conf *primary_conf;
++	struct wiphy *wiphy = ieee80211_vif_to_wdev(vif)->wiphy;
++	unsigned int primary_load;
++
++	lockdep_assert_wiphy(wiphy);
++
++	/* a is always primary, b is always secondary */
++	if (b->grade > a->grade)
++		swap(a, b);
++
++	*primary_id = a->link_id;
++
++	if (!iwl_mld_valid_emlsr_pair(vif, a, b))
++		return 0;
++
++	primary_conf = wiphy_dereference(wiphy, vif->link_conf[*primary_id]);
++
++	if (WARN_ON_ONCE(!primary_conf))
++		return 0;
++
++	primary_load = iwl_mld_get_chan_load(mld, primary_conf);
++
++	/* The more the primary link is loaded, the more worthwhile EMLSR becomes */
++	return a->grade + ((b->grade * primary_load) / SCALE_FACTOR);
 +}
 +
-+#ifdef CONFIG_PM_SLEEP
-+static void iwl_mld_device_powered_off(struct iwl_op_mode *op_mode)
++static void _iwl_mld_select_links(struct iwl_mld *mld,
++				  struct ieee80211_vif *vif)
 +{
-+	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
++	struct iwl_mld_link_sel_data data[IEEE80211_MLD_MAX_NUM_LINKS];
++	struct iwl_mld_link_sel_data *best_link;
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	int max_active_links = iwl_mld_max_active_links(mld, vif);
++	u16 new_active, usable_links = ieee80211_vif_usable_links(vif);
++	u8 best_idx, new_primary, n_data;
++	u16 max_grade;
 +
-+	wiphy_lock(mld->wiphy);
-+	mld->trans->system_pm_mode = IWL_PLAT_PM_MODE_DISABLED;
-+	iwl_mld_stop_fw(mld);
-+	mld->fw_status.in_d3 = false;
-+	wiphy_unlock(mld->wiphy);
++	lockdep_assert_wiphy(mld->wiphy);
++
++	if (!mld_vif->authorized || hweight16(usable_links) <= 1)
++		return;
++
++	if (WARN(time_before(mld->scan.last_mlo_scan_jiffies,
++			     jiffies - IWL_MLD_SCAN_EXPIRE_TIME),
++		"Last MLO scan was too long ago, can't select links\n"))
++		return;
++
++	/* The logic below is simple and not suited for more than 2 links */
++	WARN_ON_ONCE(max_active_links > 2);
++
++	n_data = iwl_mld_set_link_sel_data(mld, vif, data, usable_links,
++					   &best_idx);
++
++	if (WARN(!n_data, "Couldn't find a valid grade for any link!\n"))
++		return;
++
++	/* Default to selecting the single best link */
++	best_link = &data[best_idx];
++	new_primary = best_link->link_id;
++	new_active = BIT(best_link->link_id);
++	max_grade = best_link->grade;
++
++	/* If EMLSR is not possible, activate the best link */
++	if (max_active_links == 1 || n_data == 1 ||
++	    !iwl_mld_vif_has_emlsr_cap(vif) || !IWL_MLD_AUTO_EML_ENABLE ||
++	    mld_vif->emlsr.blocked_reasons)
++		goto set_active;
++
++	/* Try to find the best link combination */
++	for (u8 a = 0; a < n_data; a++) {
++		for (u8 b = a + 1; b < n_data; b++) {
++			u8 best_in_pair;
++			u16 emlsr_grade =
++				iwl_mld_get_emlsr_grade(mld, vif,
++							&data[a], &data[b],
++							&best_in_pair);
++
++			/*
++			 * Prefer (new) EMLSR combination to prefer EMLSR over
++			 * a single link.
++			 */
++			if (emlsr_grade < max_grade)
++				continue;
++
++			max_grade = emlsr_grade;
++			new_primary = best_in_pair;
++			new_active = BIT(data[a].link_id) |
++				     BIT(data[b].link_id);
++		}
++	}
++
++set_active:
++	IWL_DEBUG_INFO(mld, "Link selection result: 0x%x. Primary = %d\n",
++		       new_active, new_primary);
++
++	mld_vif->emlsr.selected_primary = new_primary;
++	mld_vif->emlsr.selected_links = new_active;
++
++	ieee80211_set_active_links_async(vif, new_active);
 +}
-+#else
-+static void iwl_mld_device_powered_off(struct iwl_op_mode *op_mode)
-+{}
-+#endif
 +
-+static const struct iwl_op_mode_ops iwl_mld_ops = {
-+	.start = iwl_op_mode_mld_start,
-+	.stop = iwl_op_mode_mld_stop,
-+	.rx = iwl_mld_rx,
-+	.rx_rss = iwl_mld_rx_rss,
-+	.queue_full = iwl_mld_queue_full,
-+	.queue_not_full = iwl_mld_queue_not_full,
-+	.hw_rf_kill = iwl_mld_set_hw_rfkill_state,
-+	.free_skb = iwl_mld_free_skb,
-+	.nic_error = iwl_mld_nic_error,
-+	.dump_error = iwl_mld_dump_error,
-+	.sw_reset = iwl_mld_sw_reset,
-+	.time_point = iwl_mld_time_point,
-+	.device_powered_off = pm_sleep_ptr(iwl_mld_device_powered_off),
-+};
++static void iwl_mld_vif_iter_select_links(void *_data, u8 *mac,
++					   struct ieee80211_vif *vif)
++{
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	struct iwl_mld *mld = mld_vif->mld;
 +
-+struct iwl_mld_mod_params iwlmld_mod_params = {
-+	.power_scheme = IWL_POWER_SCHEME_BPS,
-+};
++	_iwl_mld_select_links(mld, vif);
++}
 +
-+module_param_named(power_scheme, iwlmld_mod_params.power_scheme, int, 0444);
-+MODULE_PARM_DESC(power_scheme,
-+		 "power management scheme: 1-active, 2-balanced, default: 2");
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.h b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
++void iwl_mld_select_links(struct iwl_mld *mld)
++{
++	ieee80211_iterate_active_interfaces_mtx(mld->hw,
++						IEEE80211_IFACE_ITER_NORMAL,
++						iwl_mld_vif_iter_select_links,
++						NULL);
++}
++
++void iwl_mld_emlsr_check_equal_bw(struct iwl_mld *mld,
++				  struct ieee80211_vif *vif,
++				  struct ieee80211_bss_conf *link)
++{
++	u8 other_link_id = iwl_mld_get_other_link(vif, link->link_id);
++	struct ieee80211_bss_conf *other_link =
++		link_conf_dereference_check(vif, other_link_id);
++
++	if (!ieee80211_vif_link_active(vif, link->link_id) ||
++	    !iwl_mld_emlsr_active(vif) ||
++	    WARN_ON(link->link_id == other_link_id || !other_link))
++		return;
++
++	if (link->chanreq.oper.width != other_link->chanreq.oper.width)
++		iwl_mld_exit_emlsr(mld, vif, IWL_MLD_EMLSR_EXIT_BANDWIDTH,
++				   iwl_mld_get_primary_link(vif));
++}
++
++static void iwl_mld_emlsr_check_bt_iter(void *_data, u8 *mac,
++					struct ieee80211_vif *vif)
++{
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	struct iwl_mld *mld = mld_vif->mld;
++	struct ieee80211_bss_conf *link;
++	unsigned int link_id;
++
++	if (!mld->bt_is_active) {
++		iwl_mld_retry_emlsr(mld, vif);
++		return;
++	}
++
++	/* BT is turned ON but we are not in EMLSR, nothing to do */
++	if (!iwl_mld_emlsr_active(vif))
++		return;
++
++	/* In EMLSR and BT is turned ON */
++
++	for_each_vif_active_link(vif, link, link_id) {
++		if (WARN_ON(!link->chanreq.oper.chan))
++			continue;
++
++		if (link->chanreq.oper.chan->band == NL80211_BAND_2GHZ) {
++			iwl_mld_exit_emlsr(mld, vif, IWL_MLD_EMLSR_EXIT_BT_COEX,
++					   iwl_mld_get_primary_link(vif));
++			return;
++		}
++	}
++}
++
++void iwl_mld_emlsr_check_bt(struct iwl_mld *mld)
++{
++	ieee80211_iterate_active_interfaces_mtx(mld->hw,
++						IEEE80211_IFACE_ITER_NORMAL,
++						iwl_mld_emlsr_check_bt_iter,
++						NULL);
++}
++
++static void iwl_mld_emlsr_check_chan_load_iter(void *_data, u8 *mac,
++					       struct ieee80211_vif *vif)
++{
++	struct iwl_mld *mld = (struct iwl_mld *)_data;
++	struct ieee80211_bss_conf *prim_link;
++	unsigned int prim_link_id;
++	int chan_load;
++
++	if (!iwl_mld_emlsr_active(vif))
++		return;
++
++	prim_link_id = iwl_mld_get_primary_link(vif);
++	prim_link = link_conf_dereference_protected(vif, prim_link_id);
++	if (WARN_ON(!prim_link))
++		return;
++
++	chan_load = iwl_mld_get_chan_load_by_others(mld, prim_link, true);
++
++	if (chan_load < 0)
++		return;
++
++	/* chan_load is in range [0,255] */
++	if (chan_load < NORMALIZE_PERCENT_TO_255(IWL_MLD_CHAN_LOAD_THRESH))
++		iwl_mld_exit_emlsr(mld, vif, IWL_MLD_EMLSR_EXIT_CHAN_LOAD,
++				   prim_link_id);
++}
++
++void iwl_mld_emlsr_check_chan_load(struct iwl_mld *mld)
++{
++	ieee80211_iterate_active_interfaces_mtx(mld->hw,
++					       IEEE80211_IFACE_ITER_NORMAL,
++					       iwl_mld_emlsr_check_chan_load_iter,
++					       (void *)(uintptr_t)mld);
++}
++
++void iwl_mld_retry_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif)
++{
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++
++	if (!iwl_mld_vif_has_emlsr_cap(vif) || iwl_mld_emlsr_active(vif) ||
++	    mld_vif->emlsr.blocked_reasons)
++		return;
++
++	iwl_mld_trigger_link_selection(mld, vif);
++}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.h b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
 new file mode 100644
-index 000000000000..9467eecb2a49
+index 000000000000..56f9f0e4a75e
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
-@@ -0,0 +1,586 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
+@@ -0,0 +1,157 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
 + * Copyright (C) 2024-2025 Intel Corporation
 + */
-+#ifndef __iwl_mld_h__
-+#define __iwl_mld_h__
++#ifndef __iwl_mld_mlo_h__
++#define __iwl_mld_mlo_h__
 +
-+#include <linux/leds.h>
++#include <linux/ieee80211.h>
++#include <linux/types.h>
 +#include <net/mac80211.h>
-+
-+#include <net/mac80211.h>
-+
++#include "iwl-config.h"
 +#include "iwl-trans.h"
-+#include "iwl-op-mode.h"
-+#include "fw/runtime.h"
-+#include "fw/notif-wait.h"
-+#include "fw/api/commands.h"
-+#include "fw/api/scan.h"
-+#include "fw/api/mac-cfg.h"
-+#include "fw/api/mac.h"
-+#include "fw/api/phy-ctxt.h"
-+#include "fw/api/datapath.h"
-+#include "fw/api/rx.h"
-+#include "fw/api/rs.h"
-+#include "fw/api/context.h"
-+#include "fw/api/coex.h"
-+#include "fw/api/location.h"
++#include "iface.h"
 +
-+#include "fw/dbg.h"
++struct iwl_mld;
 +
-+#include "notif.h"
-+#include "scan.h"
-+#include "rx.h"
-+#include "thermal.h"
-+#include "low_latency.h"
-+#include "constants.h"
-+#include "ptp.h"
-+#include "time_sync.h"
++void iwl_mld_emlsr_prevent_done_wk(struct wiphy *wiphy, struct wiphy_work *wk);
++void iwl_mld_emlsr_tmp_non_bss_done_wk(struct wiphy *wiphy,
++				       struct wiphy_work *wk);
 +
-+/**
-+ * DOC: Introduction
-+ *
-+ * iwlmld is an operation mode (a.k.a. op_mode) for Intel wireless devices.
-+ * It is used for devices that ship after 2024 which typically support
-+ * the WiFi-7 features. MLD stands for multi-link device. Note that there are
-+ * devices that do not support WiFi-7 or even WiFi 6E and yet use iwlmld, but
-+ * the firmware APIs used in this driver are WiFi-7 compatible.
-+ *
-+ * In the architecture of iwlwifi, an op_mode is a layer that translates
-+ * mac80211's APIs into commands for the firmware and, of course, notifications
-+ * from the firmware to mac80211's APIs. An op_mode must implement the
-+ * interface defined in iwl-op-mode.h to interact with the transport layer
-+ * which allows to send and receive data to the device, start the hardware,
-+ * etc...
-+ */
-+
-+/**
-+ * DOC: Locking policy
-+ *
-+ * iwlmld has a very simple locking policy: it doesn't have any mutexes. It
-+ * relies on cfg80211's wiphy->mtx and takes the lock when needed. All the
-+ * control flows originating from mac80211 already acquired the lock, so that
-+ * part is trivial, but also notifications that are received from the firmware
-+ * and handled asynchronously are handled only after having taken the lock.
-+ * This is described in notif.c.
-+ * There are spin_locks needed to synchronize with the data path, around the
-+ * allocation of the queues, for example.
-+ */
-+
-+/**
-+ * DOC: Debugfs
-+ *
-+ * iwlmld adds its share of debugfs hooks and its handlers are synchronized
-+ * with the wiphy_lock using wiphy_locked_debugfs. This avoids races against
-+ * resources deletion while the debugfs hook is being used.
-+ */
-+
-+/**
-+ * DOC: Main resources
-+ *
-+ * iwlmld is designed with the life cycle of the resource in mind. The
-+ * resources are:
-+ *
-+ *  - struct iwl_mld (matches mac80211's struct ieee80211_hw)
-+ *
-+ *  - struct iwl_mld_vif (matches macu80211's struct ieee80211_vif)
-+ *    iwl_mld_vif contains an array of pointers to struct iwl_mld_link
-+ *    which describe the links for this vif.
-+ *
-+ *  - struct iwl_mld_sta (matches mac80211's struct ieee80211_sta)
-+ *    iwl_mld_sta contains an array of points to struct iwl_mld_link_sta
-+ *    which describes the link stations for this station
-+ *
-+ * Each object has properties that can survive a firmware reset or not.
-+ * Asynchronous firmware notifications can declare themselves as dependent on a
-+ * certain instance of those resources and that means that the notifications
-+ * will be cancelled once the instance is destroyed.
-+ */
-+
-+#define IWL_MLD_MAX_ADDRESSES		5
-+
-+/**
-+ * struct iwl_mld - MLD op mode
-+ *
-+ * @fw_id_to_bss_conf: maps a fw id of a link to the corresponding
-+ *	ieee80211_bss_conf.
-+ * @fw_id_to_vif: maps a fw id of a MAC context to the corresponding
-+ *	ieee80211_vif. Mapping is valid only when the MAC exists in the fw.
-+ * @fw_id_to_txq: maps a fw id of a txq to the corresponding
-+ *	ieee80211_txq.
-+ * @used_phy_ids: a bitmap of the phy IDs used. If a bit is set, it means
-+ *	that the index of this bit is already used as a PHY id.
-+ * @num_igtks: the number if iGTKs that were sent to the FW.
-+ * @monitor: monitor related data
-+ * @monitor.on: does a monitor vif exist (singleton hence bool)
-+ * @monitor.ampdu_ref: the id of the A-MPDU for sniffer
-+ * @monitor.ampdu_toggle: the state of the previous packet to track A-MPDU
-+ * @monitor.cur_aid: current association id tracked by the sniffer
-+ * @monitor.cur_bssid: current bssid tracked by the sniffer
-+ * @monitor.p80: primary channel position relative to he whole bandwidth, in
-+ * steps of 80 MHz
-+ * @fw_id_to_link_sta: maps a fw id of a sta to the corresponding
-+ *	ieee80211_link_sta. This is not cleaned up on restart since we want to
-+ *	preserve the fw sta ids during a restart (for SN/PN restoring).
-+ *	FW ids of internal stations will be mapped to ERR_PTR, and will be
-+ *	re-allocated during a restart, so make sure to free it in restart
-+ *	cleanup using iwl_mld_free_internal_sta
-+ * @netdetect: indicates the FW is in suspend mode with netdetect configured
-+ * @p2p_device_vif: points to the p2p device vif if exists
-+ * @bt_is_active: indicates that BT is active
-+ * @dev: pointer to device struct. For printing purposes
-+ * @trans: pointer to the transport layer
-+ * @cfg: pointer to the device configuration
-+ * @fw: a pointer to the fw object
-+ * @hw: pointer to the hw object.
-+ * @wiphy: a pointer to the wiphy struct, for easier access to it.
-+ * @nvm_data: pointer to the nvm_data that includes all our capabilities
-+ * @fwrt: fw runtime data
-+ * @debugfs_dir: debugfs directory
-+ * @notif_wait: notification wait related data.
-+ * @async_handlers_list: a list of all async RX handlers. When a notifciation
-+ *	with an async handler is received, it is added to this list.
-+ *	When &async_handlers_wk runs - it runs these handlers one by one.
-+ * @async_handlers_lock: a lock for &async_handlers_list. Sync
-+ *	&async_handlers_wk and RX notifcation path.
-+ * @async_handlers_wk: A work to run all async RX handlers from
-+ *	&async_handlers_list.
-+ * @ct_kill_exit_wk: worker to exit thermal kill
-+ * @fw_status: bitmap of fw status bits
-+ * @running: true if the firmware is running
-+ * @do_not_dump_once: true if firmware dump must be prevented once
-+ * @in_d3: indicates FW is in suspend mode and should be resumed
-+ * @in_hw_restart: indicates that we are currently in restart flow.
-+ *	rather than restarted. Should be unset upon restart.
-+ * @radio_kill: bitmap of radio kill status
-+ * @radio_kill.hw: radio is killed by hw switch
-+ * @radio_kill.ct: radio is killed because the device it too hot
-+ * @addresses: device MAC addresses.
-+ * @scan: instance of the scan object
-+ * @wowlan: WoWLAN support data.
-+ * @led: the led device
-+ * @mcc_src: the source id of the MCC, comes from the firmware
-+ * @bios_enable_puncturing: is puncturing enabled by bios
-+ * @fw_id_to_ba: maps a fw (BA) id to a corresponding Block Ack session data.
-+ * @num_rx_ba_sessions: tracks the number of active Rx Block Ack (BA) sessions.
-+ *	the driver ensures that new BA sessions are blocked once the maximum
-+ *	supported by the firmware is reached, preventing firmware asserts.
-+ * @rxq_sync: manages RX queue sync state
-+ * @txqs_to_add: a list of &ieee80211_txq's to allocate in &add_txqs_wk
-+ * @add_txqs_wk: a worker to allocate txqs.
-+ * @add_txqs_lock: to lock the &txqs_to_add list.
-+ * @error_recovery_buf: pointer to the recovery buffer that will be read
-+ *	from firmware upon fw/hw error and sent back to the firmware in
-+ *	reconfig flow (after NIC reset).
-+ * @mcast_filter_cmd: pointer to the multicast filter command.
-+ * @mgmt_tx_ant: stores the last TX antenna index; used for setting
-+ *	TX rate_n_flags for non-STA mgmt frames (toggles on every TX failure).
-+ * @low_latency: low-latency manager.
-+ * @tzone: thermal zone device's data
-+ * @cooling_dev: cooling device's related data
-+ * @ibss_manager: in IBSS mode (only one vif can be active), indicates what
-+ *	firmware indicated about having transmitted the last beacon, i.e.
-+ *	being IBSS manager for that time and needing to respond to probe
-+ *	requests
-+ * @ptp_data: data of the PTP clock
-+ * @time_sync: time sync data.
-+ * @ftm_initiator: FTM initiator data
-+ */
-+struct iwl_mld {
-+	/* Add here fields that need clean up on restart */
-+	struct_group(zeroed_on_hw_restart,
-+		struct ieee80211_bss_conf __rcu *fw_id_to_bss_conf[IWL_FW_MAX_LINK_ID + 1];
-+		struct ieee80211_vif __rcu *fw_id_to_vif[NUM_MAC_INDEX_DRIVER];
-+		struct ieee80211_txq __rcu *fw_id_to_txq[IWL_MAX_TVQM_QUEUES];
-+		u8 used_phy_ids: NUM_PHY_CTX;
-+		u8 num_igtks;
-+		struct {
-+			bool on;
-+			u32 ampdu_ref;
-+			bool ampdu_toggle;
-+			u8 p80;
-+#ifdef CONFIG_IWLWIFI_DEBUGFS
-+			__le16 cur_aid;
-+			u8 cur_bssid[ETH_ALEN];
-+#endif
-+		} monitor;
-+#ifdef CONFIG_PM_SLEEP
-+		bool netdetect;
-+#endif /* CONFIG_PM_SLEEP */
-+		struct ieee80211_vif *p2p_device_vif;
-+		bool bt_is_active;
-+	);
-+	struct ieee80211_link_sta __rcu *fw_id_to_link_sta[IWL_STATION_COUNT_MAX];
-+	/* And here fields that survive a fw restart */
-+	struct device *dev;
-+	struct iwl_trans *trans;
-+	const struct iwl_cfg *cfg;
-+	const struct iwl_fw *fw;
-+	struct ieee80211_hw *hw;
-+	struct wiphy *wiphy;
-+	struct iwl_nvm_data *nvm_data;
-+	struct iwl_fw_runtime fwrt;
-+	struct dentry *debugfs_dir;
-+	struct iwl_notif_wait_data notif_wait;
-+	struct list_head async_handlers_list;
-+	spinlock_t async_handlers_lock;
-+	struct wiphy_work async_handlers_wk;
-+	struct wiphy_delayed_work ct_kill_exit_wk;
-+
-+	struct {
-+		u32 running:1,
-+		    do_not_dump_once:1,
-+#ifdef CONFIG_PM_SLEEP
-+		    in_d3:1,
-+#endif
-+		    in_hw_restart:1;
-+
-+	} fw_status;
-+
-+	struct {
-+		u32 hw:1,
-+		    ct:1;
-+	} radio_kill;
-+
-+	struct mac_address addresses[IWL_MLD_MAX_ADDRESSES];
-+	struct iwl_mld_scan scan;
-+#ifdef CONFIG_PM_SLEEP
-+	struct wiphy_wowlan_support wowlan;
-+#endif /* CONFIG_PM_SLEEP */
-+#ifdef CONFIG_IWLWIFI_LEDS
-+	struct led_classdev led;
-+#endif
-+	enum iwl_mcc_source mcc_src;
-+	bool bios_enable_puncturing;
-+
-+	struct iwl_mld_baid_data __rcu *fw_id_to_ba[IWL_MAX_BAID];
-+	u8 num_rx_ba_sessions;
-+
-+	struct iwl_mld_rx_queues_sync rxq_sync;
-+
-+	struct list_head txqs_to_add;
-+	struct wiphy_work add_txqs_wk;
-+	spinlock_t add_txqs_lock;
-+
-+	u8 *error_recovery_buf;
-+	struct iwl_mcast_filter_cmd *mcast_filter_cmd;
-+
-+	u8 mgmt_tx_ant;
-+
-+	struct iwl_mld_low_latency low_latency;
-+
-+	bool ibss_manager;
-+#ifdef CONFIG_THERMAL
-+	struct thermal_zone_device *tzone;
-+	struct iwl_mld_cooling_device cooling_dev;
-+#endif
-+
-+	struct ptp_data ptp_data;
-+
-+	struct iwl_mld_time_sync_data __rcu *time_sync;
-+
-+	struct {
-+		struct cfg80211_pmsr_request *req;
-+		struct wireless_dev *req_wdev;
-+		int responses[IWL_TOF_MAX_APS];
-+	} ftm_initiator;
-+};
-+
-+/* memset the part of the struct that requires cleanup on restart */
-+#define CLEANUP_STRUCT(_ptr)                             \
-+	memset((void *)&(_ptr)->zeroed_on_hw_restart, 0, \
-+	       sizeof((_ptr)->zeroed_on_hw_restart))
-+
-+/* Cleanup function for struct iwl_mld_vif, will be called in restart */
-+static inline void
-+iwl_cleanup_mld(struct iwl_mld *mld)
++static inline bool iwl_mld_emlsr_active(struct ieee80211_vif *vif)
 +{
-+	CLEANUP_STRUCT(mld);
-+	CLEANUP_STRUCT(&mld->scan);
-+
-+	mld->fw_status.in_d3 = false;
-+
-+	iwl_mld_low_latency_restart_cleanup(mld);
-+
-+	/* Empty the list of async notification handlers so we won't process
-+	 * notifications from the dead fw after the reconfig flow.
-+	 */
-+	iwl_mld_purge_async_handlers_list(mld);
++	/* Set on phy context activation, so should be a good proxy */
++	return !!(vif->driver_flags & IEEE80211_VIF_EML_ACTIVE);
 +}
 +
-+enum iwl_power_scheme {
-+	IWL_POWER_SCHEME_CAM = 1,
-+	IWL_POWER_SCHEME_BPS,
-+};
-+
-+/**
-+ * struct iwl_mld_mod_params - module parameters for iwlmld
-+ * @power_scheme: one of enum iwl_power_scheme
-+ */
-+struct iwl_mld_mod_params {
-+	int power_scheme;
-+};
-+
-+extern struct iwl_mld_mod_params iwlmld_mod_params;
-+
-+/* Extract MLD priv from op_mode */
-+#define IWL_OP_MODE_GET_MLD(_iwl_op_mode)		\
-+	((struct iwl_mld *)(_iwl_op_mode)->op_mode_specific)
-+
-+#define IWL_MAC80211_GET_MLD(_hw)			\
-+	IWL_OP_MODE_GET_MLD((struct iwl_op_mode *)((_hw)->priv))
-+
-+#ifdef CONFIG_IWLWIFI_DEBUGFS
-+void
-+iwl_mld_add_debugfs_files(struct iwl_mld *mld, struct dentry *debugfs_dir);
-+#else
-+static inline void
-+iwl_mld_add_debugfs_files(struct iwl_mld *mld, struct dentry *debugfs_dir)
-+{}
-+#endif
-+
-+int iwl_mld_run_fw_init_sequence(struct iwl_mld *mld);
-+int iwl_mld_load_fw(struct iwl_mld *mld);
-+void iwl_mld_stop_fw(struct iwl_mld *mld);
-+int iwl_mld_start_fw(struct iwl_mld *mld);
-+void iwl_mld_send_recovery_cmd(struct iwl_mld *mld, u32 flags);
-+
-+static inline void iwl_mld_set_ctkill(struct iwl_mld *mld, bool state)
++static inline bool iwl_mld_vif_has_emlsr_cap(struct ieee80211_vif *vif)
 +{
-+	mld->radio_kill.ct = state;
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
 +
-+	wiphy_rfkill_set_hw_state(mld->wiphy,
-+				  mld->radio_kill.hw || mld->radio_kill.ct);
-+}
++	/* We only track/permit EMLSR state once authorized */
++	if (!mld_vif->authorized)
++		return false;
 +
-+static inline void iwl_mld_set_hwkill(struct iwl_mld *mld, bool state)
-+{
-+	mld->radio_kill.hw = state;
-+
-+	wiphy_rfkill_set_hw_state(mld->wiphy,
-+				  mld->radio_kill.hw || mld->radio_kill.ct);
-+}
-+
-+static inline u8 iwl_mld_get_valid_tx_ant(const struct iwl_mld *mld)
-+{
-+	u8 tx_ant = mld->fw->valid_tx_ant;
-+
-+	if (mld->nvm_data && mld->nvm_data->valid_tx_ant)
-+		tx_ant &= mld->nvm_data->valid_tx_ant;
-+
-+	return tx_ant;
-+}
-+
-+static inline u8 iwl_mld_get_valid_rx_ant(const struct iwl_mld *mld)
-+{
-+	u8 rx_ant = mld->fw->valid_rx_ant;
-+
-+	if (mld->nvm_data && mld->nvm_data->valid_rx_ant)
-+		rx_ant &= mld->nvm_data->valid_rx_ant;
-+
-+	return rx_ant;
-+}
-+
-+static inline u8 iwl_mld_nl80211_band_to_fw(enum nl80211_band band)
-+{
-+	switch (band) {
-+	case NL80211_BAND_2GHZ:
-+		return PHY_BAND_24;
-+	case NL80211_BAND_5GHZ:
-+		return PHY_BAND_5;
-+	case NL80211_BAND_6GHZ:
-+		return PHY_BAND_6;
-+	default:
-+		WARN_ONCE(1, "Unsupported band (%u)\n", band);
-+		return PHY_BAND_5;
-+	}
-+}
-+
-+static inline u8 iwl_mld_phy_band_to_nl80211(u8 phy_band)
-+{
-+	switch (phy_band) {
-+	case PHY_BAND_24:
-+		return NL80211_BAND_2GHZ;
-+	case PHY_BAND_5:
-+		return NL80211_BAND_5GHZ;
-+	case PHY_BAND_6:
-+		return NL80211_BAND_6GHZ;
-+	default:
-+		WARN_ONCE(1, "Unsupported phy band (%u)\n", phy_band);
-+		return NL80211_BAND_5GHZ;
-+	}
++	/* No EMLSR on dual radio devices */
++	return ieee80211_vif_type_p2p(vif) == NL80211_IFTYPE_STATION &&
++	       ieee80211_vif_is_mld(vif) &&
++	       vif->cfg.eml_cap & IEEE80211_EML_CAP_EMLSR_SUPP &&
++	       !CSR_HW_RFID_IS_CDB(mld_vif->mld->trans->hw_rf_id);
 +}
 +
 +static inline int
-+iwl_mld_legacy_hw_idx_to_mac80211_idx(u32 rate_n_flags,
-+				      enum nl80211_band band)
++iwl_mld_max_active_links(struct iwl_mld *mld, struct ieee80211_vif *vif)
 +{
-+	int format = rate_n_flags & RATE_MCS_MOD_TYPE_MSK;
-+	int rate = rate_n_flags & RATE_LEGACY_RATE_MSK;
-+	bool is_lb = band == NL80211_BAND_2GHZ;
++	if (vif->type == NL80211_IFTYPE_AP)
++		return mld->fw->ucode_capa.num_beacons;
 +
-+	if (format == RATE_MCS_LEGACY_OFDM_MSK)
-+		return is_lb ? rate + IWL_FIRST_OFDM_RATE : rate;
++	if (ieee80211_vif_type_p2p(vif) == NL80211_IFTYPE_STATION)
++		return IWL_FW_MAX_ACTIVE_LINKS_NUM;
 +
-+	/* CCK is not allowed in 5 GHz */
-+	return is_lb ? rate : -1;
++	/* For now, do not accept more links on other interface types */
++	return 1;
 +}
 +
-+extern const struct ieee80211_ops iwl_mld_hw_ops;
-+
-+/**
-+ * enum iwl_rx_handler_context: context for Rx handler
-+ * @RX_HANDLER_SYNC: this means that it will be called in the Rx path
-+ *	which can't acquire the wiphy->mutex.
-+ * @RX_HANDLER_ASYNC: If the handler needs to hold wiphy->mutex
-+ *	(and only in this case!), it should be set as ASYNC. In that case,
-+ *	it will be called from a worker with wiphy->mutex held.
-+ */
-+enum iwl_rx_handler_context {
-+	RX_HANDLER_SYNC,
-+	RX_HANDLER_ASYNC,
-+};
-+
-+/**
-+ * struct iwl_rx_handler: handler for FW notification
-+ * @val_fn: input validation function.
-+ * @sizes: an array that mapps a version to the expected size.
-+ * @fn: the function is called when notification is handled
-+ * @cmd_id: command id
-+ * @n_sizes: number of elements in &sizes.
-+ * @context: see &iwl_rx_handler_context
-+ * @obj_type: the type of the object that this handler is related to.
-+ *	See &iwl_mld_object_type. Use IWL_MLD_OBJECT_TYPE_NONE if not related.
-+ * @cancel: function to cancel the notification. valid only if obj_type is not
-+ *	IWL_MLD_OBJECT_TYPE_NONE.
-+ */
-+struct iwl_rx_handler {
-+	union {
-+		bool (*val_fn)(struct iwl_mld *mld, struct iwl_rx_packet *pkt);
-+		const struct iwl_notif_struct_size *sizes;
-+	};
-+	void (*fn)(struct iwl_mld *mld, struct iwl_rx_packet *pkt);
-+	u16 cmd_id;
-+	u8 n_sizes;
-+	u8 context;
-+	enum iwl_mld_object_type obj_type;
-+	bool (*cancel)(struct iwl_mld *mld, struct iwl_rx_packet *pkt,
-+		       u32 obj_id);
-+};
-+
-+/**
-+ * struct iwl_notif_struct_size: map a notif ver to the expected size
-+ *
-+ * @size: the size to expect
-+ * @ver: the version of the notification
-+ */
-+struct iwl_notif_struct_size {
-+	u32 size:24, ver:8;
-+};
-+
-+#if IS_ENABLED(CONFIG_IWLWIFI_KUNIT_TESTS)
-+extern const struct iwl_hcmd_arr iwl_mld_groups[];
-+extern const unsigned int global_iwl_mld_goups_size;
-+extern const struct iwl_rx_handler iwl_mld_rx_handlers[];
-+extern const unsigned int iwl_mld_rx_handlers_num;
-+
-+bool
-+iwl_mld_is_dup(struct iwl_mld *mld, struct ieee80211_sta *sta,
-+	       struct ieee80211_hdr *hdr,
-+	       const struct iwl_rx_mpdu_desc *mpdu_desc,
-+	       struct ieee80211_rx_status *rx_status, int queue);
-+
-+void iwl_construct_mld(struct iwl_mld *mld, struct iwl_trans *trans,
-+		       const struct iwl_cfg *cfg, const struct iwl_fw *fw,
-+		       struct ieee80211_hw *hw, struct dentry *dbgfs_dir);
-+#endif
-+
-+#define IWL_MLD_INVALID_FW_ID 0xff
-+
-+#define IWL_MLD_ALLOC_FN(_type, _mac80211_type)						\
-+static int										\
-+iwl_mld_allocate_##_type##_fw_id(struct iwl_mld *mld,					\
-+				 u8 *fw_id,				\
-+				 struct ieee80211_##_mac80211_type *mac80211_ptr)	\
-+{											\
-+	u8 rand = IWL_MLD_DIS_RANDOM_FW_ID ? 0 : get_random_u8();			\
-+	u8 arr_sz = ARRAY_SIZE(mld->fw_id_to_##_mac80211_type);				\
-+	if (__builtin_types_compatible_p(typeof(*mac80211_ptr),				\
-+					 struct ieee80211_link_sta))			\
-+		arr_sz = mld->fw->ucode_capa.num_stations;				\
-+	if (__builtin_types_compatible_p(typeof(*mac80211_ptr),				\
-+					 struct ieee80211_bss_conf))			\
-+		arr_sz = mld->fw->ucode_capa.num_links;					\
-+	for (int i = 0; i < arr_sz; i++) {						\
-+		u8 idx = (i + rand) % arr_sz;						\
-+		if (rcu_access_pointer(mld->fw_id_to_##_mac80211_type[idx]))		\
-+			continue;							\
-+		IWL_DEBUG_INFO(mld, "Allocated at index %d / %d\n", idx, arr_sz);	\
-+		*fw_id = idx;								\
-+		rcu_assign_pointer(mld->fw_id_to_##_mac80211_type[idx], mac80211_ptr);	\
-+		return 0;								\
-+	}										\
-+	return -ENOSPC;									\
-+}
-+
-+static inline struct ieee80211_bss_conf *
-+iwl_mld_fw_id_to_link_conf(struct iwl_mld *mld, u8 fw_link_id)
++static inline int
++iwl_mld_count_active_links(struct iwl_mld *mld, struct ieee80211_vif *vif)
 +{
-+	if (IWL_FW_CHECK(mld, fw_link_id >= mld->fw->ucode_capa.num_links,
-+			 "Invalid fw_link_id: %d\n", fw_link_id))
-+		return NULL;
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	struct iwl_mld_link *mld_link;
++	int n_active = 0;
 +
-+	return wiphy_dereference(mld->wiphy,
-+				 mld->fw_id_to_bss_conf[fw_link_id]);
++	for_each_mld_vif_valid_link(mld_vif, mld_link) {
++		if (rcu_access_pointer(mld_link->chan_ctx))
++			n_active++;
++	}
++
++	return n_active;
 +}
 +
-+#define MSEC_TO_TU(_msec)	((_msec) * 1000 / 1024)
++static inline u8 iwl_mld_get_primary_link(struct ieee80211_vif *vif)
++{
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
 +
-+void iwl_mld_add_vif_debugfs(struct ieee80211_hw *hw,
-+			     struct ieee80211_vif *vif);
-+void iwl_mld_add_link_debugfs(struct ieee80211_hw *hw,
-+			      struct ieee80211_vif *vif,
-+			      struct ieee80211_bss_conf *link_conf,
-+			      struct dentry *dir);
-+void iwl_mld_add_link_sta_debugfs(struct ieee80211_hw *hw,
++	lockdep_assert_wiphy(mld_vif->mld->wiphy);
++
++	if (!ieee80211_vif_is_mld(vif) || WARN_ON(!vif->active_links))
++		return 0;
++
++	/* In AP mode, there is no primary link */
++	if (vif->type == NL80211_IFTYPE_AP)
++		return __ffs(vif->active_links);
++
++	if (iwl_mld_emlsr_active(vif) &&
++	    !WARN_ON(!(BIT(mld_vif->emlsr.primary) & vif->active_links)))
++		return mld_vif->emlsr.primary;
++
++	return __ffs(vif->active_links);
++}
++
++/*
++ * For non-MLO/single link, this will return the deflink/single active link,
++ * respectively
++ */
++static inline u8 iwl_mld_get_other_link(struct ieee80211_vif *vif, u8 link_id)
++{
++	switch (hweight16(vif->active_links)) {
++	case 0:
++		return 0;
++	default:
++		WARN_ON(1);
++		fallthrough;
++	case 1:
++		return __ffs(vif->active_links);
++	case 2:
++		return __ffs(vif->active_links & ~BIT(link_id));
++	}
++}
++
++s8 iwl_mld_get_emlsr_rssi_thresh(struct iwl_mld *mld,
++				 const struct cfg80211_chan_def *chandef,
++				 bool low);
++
++/* EMLSR block/unblock and exit */
++void iwl_mld_block_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			 enum iwl_mld_emlsr_blocked reason, u8 link_to_keep);
++int iwl_mld_block_emlsr_sync(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			     enum iwl_mld_emlsr_blocked reason, u8 link_to_keep);
++void iwl_mld_unblock_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			   enum iwl_mld_emlsr_blocked reason);
++void iwl_mld_exit_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			enum iwl_mld_emlsr_exit exit, u8 link_to_keep);
++
++int iwl_mld_emlsr_check_non_bss_block(struct iwl_mld *mld,
++				      int pending_link_changes);
++
++void iwl_mld_handle_emlsr_mode_notif(struct iwl_mld *mld,
++				     struct iwl_rx_packet *pkt);
++void iwl_mld_handle_emlsr_trans_fail_notif(struct iwl_mld *mld,
++					   struct iwl_rx_packet *pkt);
++
++void iwl_mld_emlsr_check_tpt(struct wiphy *wiphy, struct wiphy_work *wk);
++void iwl_mld_emlsr_unblock_tpt_wk(struct wiphy *wiphy, struct wiphy_work *wk);
++
++void iwl_mld_select_links(struct iwl_mld *mld);
++
++void iwl_mld_emlsr_check_equal_bw(struct iwl_mld *mld,
 +				  struct ieee80211_vif *vif,
-+				  struct ieee80211_link_sta *link_sta,
-+				  struct dentry *dir);
++				  struct ieee80211_bss_conf *link);
 +
-+/* Utilities */
++void iwl_mld_emlsr_check_bt(struct iwl_mld *mld);
 +
-+static inline u8 iwl_mld_mac80211_ac_to_fw_tx_fifo(enum ieee80211_ac_numbers ac)
-+{
-+	static const u8 mac80211_ac_to_fw_tx_fifo[] = {
-+		IWL_BZ_EDCA_TX_FIFO_VO,
-+		IWL_BZ_EDCA_TX_FIFO_VI,
-+		IWL_BZ_EDCA_TX_FIFO_BE,
-+		IWL_BZ_EDCA_TX_FIFO_BK,
-+		IWL_BZ_TRIG_TX_FIFO_VO,
-+		IWL_BZ_TRIG_TX_FIFO_VI,
-+		IWL_BZ_TRIG_TX_FIFO_BE,
-+		IWL_BZ_TRIG_TX_FIFO_BK,
-+	};
-+	return mac80211_ac_to_fw_tx_fifo[ac];
-+}
++void iwl_mld_emlsr_check_chan_load(struct iwl_mld *mld);
 +
-+static inline u32
-+iwl_mld_get_lmac_id(struct iwl_mld *mld, enum nl80211_band band)
-+{
-+	if (!fw_has_capa(&mld->fw->ucode_capa,
-+			 IWL_UCODE_TLV_CAPA_CDB_SUPPORT) ||
-+	    band == NL80211_BAND_2GHZ)
-+		return IWL_LMAC_24G_INDEX;
-+	return IWL_LMAC_5G_INDEX;
-+}
++void iwl_mld_trigger_link_selection(struct iwl_mld *mld,
++				    struct ieee80211_vif *vif);
 +
-+/* Check if we had an error, but reconfig flow didn't start yet */
-+static inline bool iwl_mld_error_before_recovery(struct iwl_mld *mld)
-+{
-+	return mld->fw_status.in_hw_restart &&
-+		!iwl_trans_fw_running(mld->trans);
-+}
++/**
++ * iwl_mld_retry_emlsr - Retry entering EMLSR
++ * @mld: MLD context
++ * @vif: VIF to retry EMLSR on
++ *
++ * Retry entering EMLSR on the given VIF.
++ * Use this if one of the parameters that can prevent EMLSR has changed.
++ */
++void iwl_mld_retry_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif);
 +
-+int iwl_mld_tdls_sta_count(struct iwl_mld *mld);
-+
-+#endif /* __iwl_mld_h__ */
++#endif /* __iwl_mld_mlo_h__ */
 -- 
 2.34.1
 
