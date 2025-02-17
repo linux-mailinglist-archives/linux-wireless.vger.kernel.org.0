@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-19080-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19081-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C9FA38FA3
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 00:31:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F78AA38FA4
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 00:32:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 114393A1361
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 23:31:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BFED3A6419
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 23:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E1B1A5B83;
-	Mon, 17 Feb 2025 23:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEE41A5B83;
+	Mon, 17 Feb 2025 23:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jqlcly+m"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fiynd5H8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A67115666D
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 23:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA1B15666D
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 23:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739835080; cv=none; b=ePkO6FN4nKjtEaJavuy+EZPWQPE6gsFyKZ9xpXwUvjy4glhTtocGSDNw8m4XyD3ZqDTux4PaRkXEez2d3eTy4ACGRf4YsGKiCA+5m785oKRaP11z+b7C/Ty4qBkScBS15ZlW5kNb4zx0Tqlzym6c7zxxS6kdVrW2O/uJLqS5Qa4=
+	t=1739835116; cv=none; b=dLHAPFc75Mf0nk6TAV1lT3lgnPfdYwp0R2vFVnxKB7esb5QgK9uWXIf3TtEjEeajW8AAvdKjRCbwBShZ+twkQ1axaHfA/g/AWaMMxCJCa/KfsKi8DvqYDaECER7XtnuSuju+v4gOVcyIox/5YmizqIMRzzRegWrE8tqTC3p+uN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739835080; c=relaxed/simple;
-	bh=CxrkcZKE4VXQPi2QTsOFsi71IG/Ky29WMT54QPm8cQE=;
+	s=arc-20240116; t=1739835116; c=relaxed/simple;
+	bh=jokbDHz0CUJ0CmtHFimD+XYpo8uAS3BkuZB9tPg+yu0=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=gRmeFyTYJvsa87wkS0mnkhiP2P6L37P1OFaAh2jQQ77FgmwiSlJZwRSn84FATaixjRIWUgn4WCPnX9W0Voicj9AijB2+asPtmAiqVAfru6evlVS5nQUVUj2V7mUhkSUvHwlXSO/8sSLNLmad8Zoo4aDDPXsej6iojwDlY9CaqPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jqlcly+m; arc=none smtp.client-ip=209.85.218.42
+	 In-Reply-To:Content-Type; b=IjW9EnD/aguWdAOvAVr9po2x2QRUu/+RCQ+YzJTmTZBc4W604oZOtGM4frj5eldFhhSDpg6p/PKMf8JTQTX6kku6tSTyTXcLY7cb0U6qquQR11yTLaYPAUcC4TcMmSXhPkgrBmN8C3E/r1QcIUdYK4q6KmuGpNhfHh0trfykoFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fiynd5H8; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aaf3c3c104fso806876666b.1
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 15:31:18 -0800 (PST)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-abadccdfe5aso574182266b.0
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 15:31:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739835077; x=1740439877; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739835113; x=1740439913; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=TsK6bNM5LqoZMcp+twKiN43bkararPMEamGn+YryHi8=;
-        b=jqlcly+mHvlTipCY0agjnP2R7PxRmSHJgr5W6TEXCswpl2NPzMQKW3r+3Nrw9J28y0
-         xz0rDYVnQ3l+3E3UViTNc1ukvB2V69BZz4O4xuXIab5tTIq/WsNyoUpbpWKfC8leeu6A
-         68pYChK2+7HrB930qcs/JtNyuG1139kWWV05fBiFsV5K1TsWr60YnutmmftYQxIrReYR
-         /in+ttkUgLvshyw0mD53BC7A2EFwWQFDWRueOqeZdmhoOgIpDAr3KI3UJ+VzVHjLQgA4
-         MLbGZj2ZEW0JVCufVc5NMkQAHqsnXR+oM+EV6gFlWz6NKETKYK5GWpO/xdpnWWfQBHX6
-         qP0g==
+        bh=TXn0E312stjAPoplpuzfblOhCJFbCZSNVcXgpY5Gpb8=;
+        b=Fiynd5H8BQfTmqpnHpkU8RqhSusuEYMV6ZXx4ZkKl90YFkYE68eqpD0P0r7DnO8FGQ
+         rZxewVOWVnuHf+W7Ksi3gvUv8kK42gBFPE6PQaYcF1IWhWAEhI36G5jdee9PwlO4eV1d
+         MxKVN5nnyK6/0YPjs5fueSeEq5N/SR/gt90yYTwfg3u4cGdDOOpZKNlo+X6yzym7qMGy
+         n29rjpSUCDsNu80woKji7yCC1hz4/srof0uwv9CfXDzqQw8iCpBthSgzK83DVp57QK0m
+         /4W15BgqvJA64O0NXioCrSuXv0R4LRKV9j36YqQUAoxZ+Quza4r5HxzUk5lJLPPC+cjB
+         GZUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739835077; x=1740439877;
+        d=1e100.net; s=20230601; t=1739835113; x=1740439913;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TsK6bNM5LqoZMcp+twKiN43bkararPMEamGn+YryHi8=;
-        b=lEa0YWiGbC9HjZnvN9t2w0F+HciCjpCO+h+SuViHrKFitTWZDBO6YOaalVdsqZ5JgZ
-         aDWV6nfWm8BepHVI9RPF+Kegfa1cPd1U+HpqHf2KekRRQ5HLYnSVKKHpWDEqeGjnA805
-         7m2I2Y7+MF9RUJhaNUMrukKlNMo0vEgaQ6SQ7XmimkhUUdHT4nYBjnVeasg1sKgGjJyo
-         pDY9HfH8hpgxBRLdQO4DIPkgKtVRmF42vmUiH7V0Rmcqwn9jQCzxWnCR39Ns41woVT73
-         I6KLmzE9gwfKH2mwGdpVm09Ds0on6zqbfmwa9jvBOO1ZqKewCakHiCQdx6uuO2YbCcNP
-         aSpA==
-X-Gm-Message-State: AOJu0YxVhVbpU7BOaOEnBWDPjdW1M9806pc8uKLNqpVhDGoSKsCZ3bQH
-	QgzTSeSs3zHw/lVNpWGXMPoww7BDWLZWQuF9tL84Gg/fYs8HtFGSJo8ZCg==
-X-Gm-Gg: ASbGncs3YM1T0WqjUzSwW8VEfGrf9+L1Htyuc0l0bjmhgGHA9grJfKT36Kf63AmeEZJ
-	tzS/Y2EBLeTybI28Brz0ir39a1P78csEO56v0RS5+twqr8/NzrELwceG/CHo+p1weqNvljYUbO3
-	KZirbRB3jK8KxOLpwZJzBz0RJohC7nLchKJ5r95/OnmITgTLLxKIwc9iLSTyfrBKbHijsYgkU0h
-	+WsJWY2n1vX9Gq8KZM91b6KM+6NRtD+iRBEZ42OuE+12AJ5DYxljNDEGbGrmfsnoRbU2BMqf/Gj
-	152C/0cg9BgAlfL5OvZdeo6O
-X-Google-Smtp-Source: AGHT+IHZVHO0HTl8KOGDW2jVnE4PULmD2NFQlMGWSiQ18AJfXezct1qLMeRObQyxyUvyFe6gq15orw==
-X-Received: by 2002:a17:907:72c8:b0:abb:33ff:c5f4 with SMTP id a640c23a62f3a-abb70d679bbmr1252581666b.36.1739835076650;
-        Mon, 17 Feb 2025 15:31:16 -0800 (PST)
+        bh=TXn0E312stjAPoplpuzfblOhCJFbCZSNVcXgpY5Gpb8=;
+        b=DqV5kVrID5Vz9UCur734AIBLlPQfH5VzcIbFCdPl2QJlakB5MS9T0temANdZjYer1I
+         pqRbB8O9TfIImHwLD5LIWg0Z//RcQhk8J8ugDi6qyLK3TOlSfberEXuAX1ZLwuHIlgPC
+         df4ezc2GtPWNd4rqQC0KKKaXjmU8bI8+uKlgn1oMCpOSerK2uNEaIMBad9tPaxcB2ZXh
+         LYMs12OG7iKHYmfcx8a7z9Lr7LtWOt/gV4sd/oO0tAYnOGtNaRyhB/g2iRzrt6DWsKqH
+         YGRbqyQYKb5EUkznsRBWxUlyZcepJuJ/ZYZ0RaBMHB4GkCFWhP+VMRG6d3PXKjqFkXST
+         z3UQ==
+X-Gm-Message-State: AOJu0YyFXLeMFqOTsksy4GFh16HDlaO9CCDx3tOQcIAnkUTEXqOWNbul
+	0j+2F/pFM43XTVbH5AECWMSOKITj83QwDCsXa6tweDL0e0tK0csfQ0IIrw==
+X-Gm-Gg: ASbGncuRpk5O5OXLU7Ap7aQA9MMrHYb3jJol7/6tQerqlnVZrT2RVOo7izxlS7fLgbU
+	wsSFgKdSrZdc/9cAOLP+ADHZFO43vOehJlaz8dnEMXRMdB2+ewRyPtDbcWbBWxWHwpkqIbv7FJl
+	eUV3F0A8SrljZJcWrgkXeCrS3OO1uTYtwrpIENHiBTZpaSDUXKWezaT9KeCPsuVSTx3ZBxGjgBv
+	cn9fk9oQM8xYi+WHD29xEN8jb4pqb5knxZWHAFAFpimGScrNNQxRTv1ffYV2GvKgKEPeIfdcVCK
+	OZ8NBgFsvjf54baQXNX1mqvx
+X-Google-Smtp-Source: AGHT+IG3YM4UAtJzCEkfYoCuvVval7a0tKAEcj+IdK9hzpkF+V+imLVquwQtslyxAI9fpGOvsqjqtg==
+X-Received: by 2002:a17:907:9716:b0:ab9:5544:5eb3 with SMTP id a640c23a62f3a-abb70b354e7mr1068716766b.26.1739835113348;
+        Mon, 17 Feb 2025 15:31:53 -0800 (PST)
 Received: from [192.168.0.50] ([79.119.240.253])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba532322b9sm959505266b.37.2025.02.17.15.31.14
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbac60d938sm131984966b.147.2025.02.17.15.31.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Feb 2025 15:31:15 -0800 (PST)
-Message-ID: <39e3c7cf-37ed-4c0e-af00-dcd9eab351f0@gmail.com>
-Date: Tue, 18 Feb 2025 01:31:13 +0200
+        Mon, 17 Feb 2025 15:31:52 -0800 (PST)
+Message-ID: <e1e532c9-8733-4ec8-84fe-ced4af6c08da@gmail.com>
+Date: Tue, 18 Feb 2025 01:31:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,7 +80,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v3 5/8] wifi: rtw88: Fix rtw_rx_phy_stat() for RTL8814AU
+Subject: [PATCH v3 6/8] wifi: rtw88: Extend rtw_phy_config_swing_table() for
+ RTL8814AU
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
@@ -90,7 +91,7 @@ In-Reply-To: <3908a496-d687-40fb-a1af-6add5c7e1dd4@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Record statistics for the 3SS rates too.
+Select the TX power tracking tables for RF paths C and D as well.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 Acked-by: Ping-Ke Shih <pkshih@realtek.com>
@@ -101,52 +102,70 @@ v2:
 v3:
  - No change.
 ---
- drivers/net/wireless/realtek/rtw88/main.h | 7 +++++++
- drivers/net/wireless/realtek/rtw88/rx.c   | 6 ++++++
- 2 files changed, 13 insertions(+)
+ drivers/net/wireless/realtek/rtw88/phy.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 24ac749271cc..c15e0f55d09a 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -386,6 +386,9 @@ enum rtw_evm {
- 	RTW_EVM_1SS,
- 	RTW_EVM_2SS_A,
- 	RTW_EVM_2SS_B,
-+	RTW_EVM_3SS_A,
-+	RTW_EVM_3SS_B,
-+	RTW_EVM_3SS_C,
- 	/* keep it last */
- 	RTW_EVM_NUM
- };
-@@ -403,6 +406,10 @@ enum rtw_snr {
- 	RTW_SNR_2SS_B,
- 	RTW_SNR_2SS_C,
- 	RTW_SNR_2SS_D,
-+	RTW_SNR_3SS_A,
-+	RTW_SNR_3SS_B,
-+	RTW_SNR_3SS_C,
-+	RTW_SNR_3SS_D,
- 	/* keep it last */
- 	RTW_SNR_NUM
- };
-diff --git a/drivers/net/wireless/realtek/rtw88/rx.c b/drivers/net/wireless/realtek/rtw88/rx.c
-index 90fc8a5fa89e..8b0afaaffaa0 100644
---- a/drivers/net/wireless/realtek/rtw88/rx.c
-+++ b/drivers/net/wireless/realtek/rtw88/rx.c
-@@ -73,6 +73,12 @@ static void rtw_rx_phy_stat(struct rtw_dev *rtwdev,
- 		rate_ss_evm = 2;
- 		evm_id = RTW_EVM_2SS_A;
- 		break;
-+	case DESC_RATEMCS16...DESC_RATEMCS23:
-+	case DESC_RATEVHT3SS_MCS0...DESC_RATEVHT3SS_MCS9:
-+		rate_ss = 3;
-+		rate_ss_evm = 3;
-+		evm_id = RTW_EVM_3SS_A;
-+		break;
- 	default:
- 		rtw_warn(rtwdev, "unknown pkt rate = %d\n", pkt_stat->rate);
- 		return;
+diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
+index b487457d2215..55be0d8e0c28 100644
+--- a/drivers/net/wireless/realtek/rtw88/phy.c
++++ b/drivers/net/wireless/realtek/rtw88/phy.c
+@@ -2458,32 +2458,56 @@ void rtw_phy_config_swing_table(struct rtw_dev *rtwdev,
+ 			swing_table->n[RF_PATH_A] = tbl->pwrtrk_2g_ccka_n;
+ 			swing_table->p[RF_PATH_B] = tbl->pwrtrk_2g_cckb_p;
+ 			swing_table->n[RF_PATH_B] = tbl->pwrtrk_2g_cckb_n;
++			swing_table->p[RF_PATH_C] = tbl->pwrtrk_2g_cckc_p;
++			swing_table->n[RF_PATH_C] = tbl->pwrtrk_2g_cckc_n;
++			swing_table->p[RF_PATH_D] = tbl->pwrtrk_2g_cckd_p;
++			swing_table->n[RF_PATH_D] = tbl->pwrtrk_2g_cckd_n;
+ 		} else {
+ 			swing_table->p[RF_PATH_A] = tbl->pwrtrk_2ga_p;
+ 			swing_table->n[RF_PATH_A] = tbl->pwrtrk_2ga_n;
+ 			swing_table->p[RF_PATH_B] = tbl->pwrtrk_2gb_p;
+ 			swing_table->n[RF_PATH_B] = tbl->pwrtrk_2gb_n;
++			swing_table->p[RF_PATH_C] = tbl->pwrtrk_2gc_p;
++			swing_table->n[RF_PATH_C] = tbl->pwrtrk_2gc_n;
++			swing_table->p[RF_PATH_D] = tbl->pwrtrk_2gd_p;
++			swing_table->n[RF_PATH_D] = tbl->pwrtrk_2gd_n;
+ 		}
+ 	} else if (IS_CH_5G_BAND_1(channel) || IS_CH_5G_BAND_2(channel)) {
+ 		swing_table->p[RF_PATH_A] = tbl->pwrtrk_5ga_p[RTW_PWR_TRK_5G_1];
+ 		swing_table->n[RF_PATH_A] = tbl->pwrtrk_5ga_n[RTW_PWR_TRK_5G_1];
+ 		swing_table->p[RF_PATH_B] = tbl->pwrtrk_5gb_p[RTW_PWR_TRK_5G_1];
+ 		swing_table->n[RF_PATH_B] = tbl->pwrtrk_5gb_n[RTW_PWR_TRK_5G_1];
++		swing_table->p[RF_PATH_C] = tbl->pwrtrk_5gc_p[RTW_PWR_TRK_5G_1];
++		swing_table->n[RF_PATH_C] = tbl->pwrtrk_5gc_n[RTW_PWR_TRK_5G_1];
++		swing_table->p[RF_PATH_D] = tbl->pwrtrk_5gd_p[RTW_PWR_TRK_5G_1];
++		swing_table->n[RF_PATH_D] = tbl->pwrtrk_5gd_n[RTW_PWR_TRK_5G_1];
+ 	} else if (IS_CH_5G_BAND_3(channel)) {
+ 		swing_table->p[RF_PATH_A] = tbl->pwrtrk_5ga_p[RTW_PWR_TRK_5G_2];
+ 		swing_table->n[RF_PATH_A] = tbl->pwrtrk_5ga_n[RTW_PWR_TRK_5G_2];
+ 		swing_table->p[RF_PATH_B] = tbl->pwrtrk_5gb_p[RTW_PWR_TRK_5G_2];
+ 		swing_table->n[RF_PATH_B] = tbl->pwrtrk_5gb_n[RTW_PWR_TRK_5G_2];
++		swing_table->p[RF_PATH_C] = tbl->pwrtrk_5gc_p[RTW_PWR_TRK_5G_2];
++		swing_table->n[RF_PATH_C] = tbl->pwrtrk_5gc_n[RTW_PWR_TRK_5G_2];
++		swing_table->p[RF_PATH_D] = tbl->pwrtrk_5gd_p[RTW_PWR_TRK_5G_2];
++		swing_table->n[RF_PATH_D] = tbl->pwrtrk_5gd_n[RTW_PWR_TRK_5G_2];
+ 	} else if (IS_CH_5G_BAND_4(channel)) {
+ 		swing_table->p[RF_PATH_A] = tbl->pwrtrk_5ga_p[RTW_PWR_TRK_5G_3];
+ 		swing_table->n[RF_PATH_A] = tbl->pwrtrk_5ga_n[RTW_PWR_TRK_5G_3];
+ 		swing_table->p[RF_PATH_B] = tbl->pwrtrk_5gb_p[RTW_PWR_TRK_5G_3];
+ 		swing_table->n[RF_PATH_B] = tbl->pwrtrk_5gb_n[RTW_PWR_TRK_5G_3];
++		swing_table->p[RF_PATH_C] = tbl->pwrtrk_5gc_p[RTW_PWR_TRK_5G_3];
++		swing_table->n[RF_PATH_C] = tbl->pwrtrk_5gc_n[RTW_PWR_TRK_5G_3];
++		swing_table->p[RF_PATH_D] = tbl->pwrtrk_5gd_p[RTW_PWR_TRK_5G_3];
++		swing_table->n[RF_PATH_D] = tbl->pwrtrk_5gd_n[RTW_PWR_TRK_5G_3];
+ 	} else {
+ 		swing_table->p[RF_PATH_A] = tbl->pwrtrk_2ga_p;
+ 		swing_table->n[RF_PATH_A] = tbl->pwrtrk_2ga_n;
+ 		swing_table->p[RF_PATH_B] = tbl->pwrtrk_2gb_p;
+ 		swing_table->n[RF_PATH_B] = tbl->pwrtrk_2gb_n;
++		swing_table->p[RF_PATH_C] = tbl->pwrtrk_2gc_p;
++		swing_table->n[RF_PATH_C] = tbl->pwrtrk_2gc_n;
++		swing_table->p[RF_PATH_D] = tbl->pwrtrk_2gd_p;
++		swing_table->n[RF_PATH_D] = tbl->pwrtrk_2gd_n;
+ 	}
+ }
+ EXPORT_SYMBOL(rtw_phy_config_swing_table);
 -- 
 2.48.1
 
