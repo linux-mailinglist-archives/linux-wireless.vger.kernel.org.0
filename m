@@ -1,77 +1,81 @@
-Return-Path: <linux-wireless+bounces-19071-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19072-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FAA1A38928
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 17:31:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4E8A38B0F
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 19:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BF631691F6
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 16:31:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1231318926C8
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 18:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D7521D59D;
-	Mon, 17 Feb 2025 16:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C46D22B5A3;
+	Mon, 17 Feb 2025 18:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gC5iJJdd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VXk86ekM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1951531DC
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 16:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AFE17DE2D;
+	Mon, 17 Feb 2025 18:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739809862; cv=none; b=i5sqIm2H84B70XRUEARxqJzYKGw0LsukajeXWAFi1Rr3OZK5xDAW9S009DQVKLSwFm5UPzgWK50rp2b/GF/v6+F/jQnzXTvlb9o04Ry0RPyZ6pH0RY1Z/g+yoBMMg0utpGnrwEF/Pygnlu3YyS4NK0adwrtCixYXYT5FBWWQS8w=
+	t=1739815688; cv=none; b=S/82n15AHw5tNS131cCEsp/2+/ug8cyP3afvUw1ZVOjcdl2rHhS/ssUQkXQmkJnoX7v4RsHn87/73Bd5En04HvqLRvVM7FRBLpZUQAb8QH2ILF+s+yQY3NkXmsUKAcgvkebiBe95t+12Lerc6gWyHuGqMk7GvkXwMRmNnHZaOtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739809862; c=relaxed/simple;
-	bh=DlHyTM2wIfgM/OxQ/A9ZgPiaeOgS3PnW8/ppZcTRwck=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kV85pxf69laQr6+xAK+GSwieYLZ65E+Gu46CN+NpswLUfFWu0iIepIX0jF6OxR77bTEWUSvvXkWiv9MbsVCM+RqlNb8hyOVFQFGxYqQCCGz7vJZAEDvMND8FhMT0fK1NkUZU+yxkzdykNsCwkzYlGPjLkYAbDCbs8gHmqiFalxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gC5iJJdd; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739809861; x=1771345861;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DlHyTM2wIfgM/OxQ/A9ZgPiaeOgS3PnW8/ppZcTRwck=;
-  b=gC5iJJddymUlW+GAr5SmTbv3Cu5HCh10B4T802ju04Hs1UvFRVc+p5Mf
-   S/VwemctuZcc9ge9lh7jn45Yyz2jvjb4UbvrSpU3zve+sOeuN80eqplg9
-   h2L2EdVxvqXtYZ3InktZugLtajFkQMPwxVVZvhRoDCcw/CW6aITZmTbXw
-   +ENGFeOQSEasynbEz9O6nw7XTEAp2y5CjOgTKqWtHzMOeqSboKTmn8LaN
-   zVLZ4TfhhYBezNhScTavORcdZ7NmejHJYt1DMksxkuqVpngWU7HneXWHk
-   mCHNlYB+2eM3W8zFv3SdMB4wucMvmvJuQQxlphHpJsy8xgs6vDaxwMxi6
-   A==;
-X-CSE-ConnectionGUID: Bb9ySeL3ToK8EWiCDXINAw==
-X-CSE-MsgGUID: 6+uJYDXAT2WIosrlM3VWrg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="51477957"
-X-IronPort-AV: E=Sophos;i="6.13,293,1732608000"; 
-   d="scan'208";a="51477957"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 08:31:00 -0800
-X-CSE-ConnectionGUID: rngo6N8WRYCMLSHIHbRZOg==
-X-CSE-MsgGUID: bwDG5knoTmCGB3aUPKOjJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="118789814"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 17 Feb 2025 08:30:58 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tk41I-001DLP-0e;
-	Mon, 17 Feb 2025 16:30:56 +0000
-Date: Tue, 18 Feb 2025 00:30:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexander Wetzel <Alexander@wetzel-home.de>,
-	linux-wireless@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Alexander Wetzel <alexander@wetzel-home.de>
-Subject: Re: [PATCH v2 08/10] wifi: mac80211: Simplify AMPDU handling
-Message-ID: <202502180007.MFwMk2L7-lkp@intel.com>
-References: <20250217081721.45110-9-Alexander@wetzel-home.de>
+	s=arc-20240116; t=1739815688; c=relaxed/simple;
+	bh=0cgiwHdJUiqDd905XAXqkQAM/6cAJN9rNptm0Rl0Vog=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=T6vicPkxbPQaREHwyhxmENGjrXMpHSjTw2SJ3DPYpEpSLVtKcQPYlaSUtAcTS6RcvHOHwHS0UhYP6AKhznf0BO5o6HB4QjPmzxirOVCGdZzO33jny43yNhxgGtjz8Pd0ZjtKrEZmSv/BVuQTIrCZ6kMvw+P9TGNd8sVdR2vaLsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VXk86ekM; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43962f7b0e4so28290255e9.3;
+        Mon, 17 Feb 2025 10:08:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739815685; x=1740420485; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fjBgXZkOH3whhpyjfxwclXrAjddu2E5bK4wpZeedqEg=;
+        b=VXk86ekMLeeafrM0xi+lPrCMdM0hQu602k45bP48TGTddDBfBuz6ib1n2GWKzQ3vlq
+         u9pbmanYLDCHgUgysrTjXJ8h/BKGuvcifUe5thJ8JNnlsga4wJ0b8a32ge/10AXrTSAZ
+         ljtFS5KErhZKEK6PfWrZrLPlHc1Snk+6aD+O7W927IPiyb83GyzRIiGYP7rKcORsiF3x
+         YbIGFxe4tUId8edMHx+d6Hi3dmOIAzUy71Zcw+hdIFufaoxlYezMNEA049dNmIECKr3n
+         9cF2jw8D8TGFM6mkG/SqvKM3TFVn55RxOv9oQCY4Y6ziaG0xQsvq/ogb80huhJlQm5X/
+         HGkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739815685; x=1740420485;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fjBgXZkOH3whhpyjfxwclXrAjddu2E5bK4wpZeedqEg=;
+        b=jl6+pX03KlHlQjzwvCjbvICOzgYe3Vuw2s/svRVM6X8tDsNHnB5RKrR/QZFK4JRPzU
+         tAgd7AcT1bs4t0ZEquNmDwH6aaLGqNneJdPL+SzetTZJd3bTqSl+E4UVcp2ouAa1R4h9
+         A21xj98Zkt28m0vFt140M9gohOVugr64aM/BJiFhd1qPdvzyr4/CluSS4QmNsbWBgg1l
+         1PGbj/iVOU4Hyzui+tLTpzBcEuqDv3or5a+ZxMkGH/9C419vngpdfr/dkUC38c4elygo
+         BDq6j5dpcvB2vvZ0wu4oVy6GQJFBM8anvngHxzSql3oz6fOkTDkLPlKBV2SCBTI3/nor
+         a++g==
+X-Forwarded-Encrypted: i=1; AJvYcCVjIFtgVzNLYz44389BIakaDxRjGXmMVI7TLQzHqYx51b3Uz/ecyAFdvU1+pT8dXOGFw9s43ObQ3/4HVH3mYw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSBjkliU8oAoDdmMm+PnVvK+rWBEX6GSEvylwWt45IvCaasNps
+	VK4/mY4l/0rR8mIrlTHphG29xAHjIIpF0DO6OdCzdYLirzl8kUwlFtW9XA==
+X-Gm-Gg: ASbGnctXKVfsJ1hP03TseVvhaUB710oNodVgoX+XHwTAz/j6GGFt+ikGLf2ax66EPvQ
+	vVLmWsWAU/DfuI1jURG1Ar6Iktt0GsnKxwQeynVoqRjGOqcG22fkUQPhJtIcbbibFGST82pFIBO
+	1h4ztTOewPvVkbqBRHGxbqRTQMPj1LNe8epLGj2+MCQO4fD6jOX37Wavg6tEW3KD0UThdAtAj2F
+	Us3DBFoOY6bsqx0UR/2NUWlDqUPWUkchKDoZ4hnCI42YlnvGCM7UbjiWecWaf+8dHM5UJjlZlo2
+	+tuhkiOUF0orO8lY
+X-Google-Smtp-Source: AGHT+IGVVM2BqVoNfvQ36nc2E02wxjyOaOlr3JaZKfNm3XH15asvLolOrMOVBHPAx7AiQHGsADj2tA==
+X-Received: by 2002:a05:600c:5125:b0:439:44eb:2d84 with SMTP id 5b1f17b1804b1-4396e6c9315mr82494435e9.9.1739815684676;
+        Mon, 17 Feb 2025 10:08:04 -0800 (PST)
+Received: from Red ([2a01:cb1d:894:1200:4a02:2aff:fe07:1efc])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4395a04ee48sm160267705e9.3.2025.02.17.10.08.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Feb 2025 10:08:04 -0800 (PST)
+Date: Mon, 17 Feb 2025 19:08:02 +0100
+From: Corentin Labbe <clabbe.montjoie@gmail.com>
+To: kvalo@kernel.org, linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Subject: unknow Network controller: Intel Corporation Device 093c (rev 3a)
+Message-ID: <Z7N7AvQvv8k4OY-o@Red>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,121 +84,32 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250217081721.45110-9-Alexander@wetzel-home.de>
 
-Hi Alexander,
+Hello
 
-kernel test robot noticed the following build warnings:
+I have a thinkpad t460s laptop with an unknow network device.
+Since the laptop does not have wifi, I suspect it is the wifi card.
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main ath/ath-next linus/master v6.14-rc3 next-20250217]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The laptop is running Debian bookworm, and I tried to update pci.ids, no more information.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Wetzel/wifi-mac80211-move-rate-control-setup/20250217-162046
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20250217081721.45110-9-Alexander%40wetzel-home.de
-patch subject: [PATCH v2 08/10] wifi: mac80211: Simplify AMPDU handling
-config: i386-buildonly-randconfig-004-20250217 (https://download.01.org/0day-ci/archive/20250218/202502180007.MFwMk2L7-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250218/202502180007.MFwMk2L7-lkp@intel.com/reproduce)
+lspci -vx give:
+03:00.0 Network controller: Intel Corporation Device 093c (rev 3a)
+	Subsystem: Intel Corporation Device 2181
+	Flags: fast devsel, IRQ 255, IOMMU group 10
+	Memory at f1100000 (64-bit, non-prefetchable) [disabled] [size=8K]
+	Capabilities: [c8] Power Management version 3
+	Capabilities: [d0] MSI: Enable- Count=1/1 Maskable- 64bit+
+	Capabilities: [40] Express Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [140] Device Serial Number aa-bb-cc-ff-ff-dd-ee-ff
+	Capabilities: [14c] Latency Tolerance Reporting
+	Capabilities: [154] L1 PM Substates
+00: 86 80 3c 09 00 00 10 00 3a 00 80 02 00 00 00 00
+10: 04 00 10 f1 00 00 00 00 00 00 00 00 00 00 00 00
+20: 00 00 00 00 00 00 00 00 00 00 00 00 86 80 81 21
+30: 00 00 00 00 c8 00 00 00 00 00 00 00 ff 01 00 00
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502180007.MFwMk2L7-lkp@intel.com/
+I see no loading problem, nor firmware missing message in dmesg.
 
-All warnings (new ones prefixed by >>):
-
-   net/mac80211/tx.c: In function 'ieee80211_tx_prepare':
->> net/mac80211/tx.c:1140:14: warning: variable 'aggr_check' set but not used [-Wunused-but-set-variable]
-    1140 |         bool aggr_check = false;
-         |              ^~~~~~~~~~
---
-   net/mac80211/rx.c: In function 'ieee80211_rx_mesh_fast_forward':
->> net/mac80211/rx.c:2778:30: warning: variable 'tid_tx' set but not used [-Wunused-but-set-variable]
-    2778 |         struct tid_ampdu_tx *tid_tx;
-         |                              ^~~~~~
-
-
-vim +/aggr_check +1140 net/mac80211/tx.c
-
-1a7915501ca94a Felix Fietkau    2021-06-29  1126  
-58d4185e36913d Johannes Berg    2007-09-26  1127  /*
-58d4185e36913d Johannes Berg    2007-09-26  1128   * initialises @tx
-7c10770f995820 Johannes Berg    2015-03-20  1129   * pass %NULL for the station if unknown, a valid pointer if known
-7c10770f995820 Johannes Berg    2015-03-20  1130   * or an ERR_PTR() if the station is known not to exist
-58d4185e36913d Johannes Berg    2007-09-26  1131   */
-9ae54c8463691b Johannes Berg    2008-01-31  1132  static ieee80211_tx_result
-3b8d81e020f77c Johannes Berg    2009-06-17  1133  ieee80211_tx_prepare(struct ieee80211_sub_if_data *sdata,
-3b8d81e020f77c Johannes Berg    2009-06-17  1134  		     struct ieee80211_tx_data *tx,
-7c10770f995820 Johannes Berg    2015-03-20  1135  		     struct sta_info *sta, struct sk_buff *skb)
-e2ebc74d7e3d71 Johannes Berg    2007-07-27  1136  {
-3b8d81e020f77c Johannes Berg    2009-06-17  1137  	struct ieee80211_local *local = sdata->local;
-58d4185e36913d Johannes Berg    2007-09-26  1138  	struct ieee80211_hdr *hdr;
-e039fa4a4195ac Johannes Berg    2008-05-15  1139  	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-1a7915501ca94a Felix Fietkau    2021-06-29 @1140  	bool aggr_check = false;
-e2ebc74d7e3d71 Johannes Berg    2007-07-27  1141  
-e2ebc74d7e3d71 Johannes Berg    2007-07-27  1142  	memset(tx, 0, sizeof(*tx));
-e2ebc74d7e3d71 Johannes Berg    2007-07-27  1143  	tx->skb = skb;
-e2ebc74d7e3d71 Johannes Berg    2007-07-27  1144  	tx->local = local;
-3b8d81e020f77c Johannes Berg    2009-06-17  1145  	tx->sdata = sdata;
-252b86c43225d0 Johannes Berg    2011-11-16  1146  	__skb_queue_head_init(&tx->skbs);
-e2ebc74d7e3d71 Johannes Berg    2007-07-27  1147  
-cd8ffc800ce18e Johannes Berg    2009-03-23  1148  	/*
-cd8ffc800ce18e Johannes Berg    2009-03-23  1149  	 * If this flag is set to true anywhere, and we get here,
-cd8ffc800ce18e Johannes Berg    2009-03-23  1150  	 * we are doing the needed processing, so remove the flag
-cd8ffc800ce18e Johannes Berg    2009-03-23  1151  	 * now.
-cd8ffc800ce18e Johannes Berg    2009-03-23  1152  	 */
-cc20ff2c6b5d3e Felix Fietkau    2020-09-08  1153  	info->control.flags &= ~IEEE80211_TX_INTCFL_NEED_TXPROCESSING;
-cd8ffc800ce18e Johannes Berg    2009-03-23  1154  
-58d4185e36913d Johannes Berg    2007-09-26  1155  	hdr = (struct ieee80211_hdr *) skb->data;
-58d4185e36913d Johannes Berg    2007-09-26  1156  
-7c10770f995820 Johannes Berg    2015-03-20  1157  	if (likely(sta)) {
-7c10770f995820 Johannes Berg    2015-03-20  1158  		if (!IS_ERR(sta))
-7c10770f995820 Johannes Berg    2015-03-20  1159  			tx->sta = sta;
-7c10770f995820 Johannes Berg    2015-03-20  1160  	} else {
-3f0e0b220f8007 Felix Fietkau    2010-01-08  1161  		if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN) {
-f14543ee4d0681 Felix Fietkau    2009-11-10  1162  			tx->sta = rcu_dereference(sdata->u.vlan.sta);
-7c10770f995820 Johannes Berg    2015-03-20  1163  			if (!tx->sta && sdata->wdev.use_4addr)
-3f0e0b220f8007 Felix Fietkau    2010-01-08  1164  				return TX_DROP;
-10cb8e617560fc Markus Theil     2021-02-06  1165  		} else if (tx->sdata->control_port_protocol == tx->skb->protocol) {
-b4d57adb727ec7 Felix Fietkau    2010-01-31  1166  			tx->sta = sta_info_get_bss(sdata, hdr->addr1);
-3f0e0b220f8007 Felix Fietkau    2010-01-08  1167  		}
-1a7915501ca94a Felix Fietkau    2021-06-29  1168  		if (!tx->sta && !is_multicast_ether_addr(hdr->addr1)) {
-abe60632f311d5 Johannes Berg    2009-11-25  1169  			tx->sta = sta_info_get(sdata, hdr->addr1);
-1a7915501ca94a Felix Fietkau    2021-06-29  1170  			aggr_check = true;
-1a7915501ca94a Felix Fietkau    2021-06-29  1171  		}
-7c10770f995820 Johannes Berg    2015-03-20  1172  	}
-58d4185e36913d Johannes Berg    2007-09-26  1173  
-badffb725c86cc Jiri Slaby       2007-08-28  1174  	if (is_multicast_ether_addr(hdr->addr1)) {
-5cf121c3cdb955 Johannes Berg    2008-02-25  1175  		tx->flags &= ~IEEE80211_TX_UNICAST;
-e039fa4a4195ac Johannes Berg    2008-05-15  1176  		info->flags |= IEEE80211_TX_CTL_NO_ACK;
-6fd67e937ece53 Simon Wunderlich 2011-11-18  1177  	} else
-5cf121c3cdb955 Johannes Berg    2008-02-25  1178  		tx->flags |= IEEE80211_TX_UNICAST;
-58d4185e36913d Johannes Berg    2007-09-26  1179  
-a26eb27ab43014 Johannes Berg    2011-10-07  1180  	if (!(info->flags & IEEE80211_TX_CTL_DONTFRAG)) {
-a26eb27ab43014 Johannes Berg    2011-10-07  1181  		if (!(tx->flags & IEEE80211_TX_UNICAST) ||
-a26eb27ab43014 Johannes Berg    2011-10-07  1182  		    skb->len + FCS_LEN <= local->hw.wiphy->frag_threshold ||
-a26eb27ab43014 Johannes Berg    2011-10-07  1183  		    info->flags & IEEE80211_TX_CTL_AMPDU)
-a26eb27ab43014 Johannes Berg    2011-10-07  1184  			info->flags |= IEEE80211_TX_CTL_DONTFRAG;
-58d4185e36913d Johannes Berg    2007-09-26  1185  	}
-58d4185e36913d Johannes Berg    2007-09-26  1186  
-e2ebc74d7e3d71 Johannes Berg    2007-07-27  1187  	if (!tx->sta)
-e039fa4a4195ac Johannes Berg    2008-05-15  1188  		info->flags |= IEEE80211_TX_CTL_CLEAR_PS_FILT;
-f7418bc10d8402 Felix Fietkau    2015-09-24  1189  	else if (test_and_clear_sta_flag(tx->sta, WLAN_STA_CLEAR_PS_FILT)) {
-e039fa4a4195ac Johannes Berg    2008-05-15  1190  		info->flags |= IEEE80211_TX_CTL_CLEAR_PS_FILT;
-f7418bc10d8402 Felix Fietkau    2015-09-24  1191  		ieee80211_check_fast_xmit(tx->sta);
-f7418bc10d8402 Felix Fietkau    2015-09-24  1192  	}
-58d4185e36913d Johannes Berg    2007-09-26  1193  
-e039fa4a4195ac Johannes Berg    2008-05-15  1194  	info->flags |= IEEE80211_TX_CTL_FIRST_FRAGMENT;
-e2ebc74d7e3d71 Johannes Berg    2007-07-27  1195  
-9ae54c8463691b Johannes Berg    2008-01-31  1196  	return TX_CONTINUE;
-e2ebc74d7e3d71 Johannes Berg    2007-07-27  1197  }
-e2ebc74d7e3d71 Johannes Berg    2007-07-27  1198  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards
 
