@@ -1,302 +1,217 @@
-Return-Path: <linux-wireless+bounces-19033-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19034-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29DBAA37B61
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 07:32:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0030A37B76
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 07:35:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DF003A6B3A
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 06:31:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E813416C0DE
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 06:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE79C18DB30;
-	Mon, 17 Feb 2025 06:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3290D19340E;
+	Mon, 17 Feb 2025 06:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="rP4R/36m"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FwzWUHRI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA4B18F2C3
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 06:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA6D192B63
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 06:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739773902; cv=none; b=iUpZB5iVsfBpq8fM1iD648rKDc7m89nyhdP08obUcQkBjAI714rwI/ZsTZ3kw96quUsF9Ioer0O1zjSoO/a/88sJFA62W0Dht1rtD65qbztIODYXOk+iRAZstjDBD+v7IAFiC+IITcRi72ri3mLcMYTUqUXlFLtoHCvyNUikHg0=
+	t=1739774060; cv=none; b=OphLjc5oH1rgNpS0qClKa3kZbJkCOwBbO4Aqap14BU3LlzTc0xhbzvBepBeEMHFa+gHeDqENZMBwAMCU2/Ve/s+IRUOWqUt0/6r6ya2yFgHl7N8bumKjZIjkif6EtS3EiN1MsNRsRdfS5YIOzVlWIxbDSPCY3tMacXxUrWpUtr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739773902; c=relaxed/simple;
-	bh=PW2v35eLkeIS8+rXee34LTk8aFFLZyhoO2rIykFjv58=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QnIwct5LK5vCcedRiu5lBI9elFWiahBnSZ7NrvsGjNp2/idhTTIMbqyb989p4MtSA8jbKxgwSEQSmuY4N5mMHKC0RukEDeSBa3uwFzINjSdKbymmbP+cc0kln2uPsi2+kDj509TGldhAEz7f1IbfyySenVkj0Hnn79yE+GAfPqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=rP4R/36m; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51H6VbE122636807, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1739773897; bh=PW2v35eLkeIS8+rXee34LTk8aFFLZyhoO2rIykFjv58=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=rP4R/36mAhH6dIjo5Jg9gd2PbvF62qaCr53neH+Yqwf9xjZgAWfayMXIrrW0NV2Z/
-	 Fpx8hGNBqmJVH4M0FBHxnahTes26kfsDGmPGnkdPdKlNT4b+8qmGI59f/wTJ91Q9GF
-	 8UiDmCOCnvvtIhAHAN0enE9XfJ28rJ12BE8YsjpqRZEb9Dv5XmOgNZr87ZVxy1y0+I
-	 OvHEgUkE8NsVUKa1v+lqWdYGR56J1jNVRnCRodbZgKEUsJUvyaWhPdJ53vbysphtev
-	 ZpHs1THPvJdY3KIe9tGcEY8bB5qM3qAhHpWlNEJZlfIG7Scznl5k9HGHbAADQPbWS5
-	 Oon6tXQEhfs7g==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51H6VbE122636807
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 14:31:37 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 17 Feb 2025 14:31:38 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 17 Feb
- 2025 14:31:37 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/2] wifi: rtw89: add H2C command of TX time for WiFi 7 chips
-Date: Mon, 17 Feb 2025 14:30:53 +0800
-Message-ID: <20250217063053.38936-3-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250217063053.38936-1-pkshih@realtek.com>
-References: <20250217063053.38936-1-pkshih@realtek.com>
+	s=arc-20240116; t=1739774060; c=relaxed/simple;
+	bh=30TEJAABnUpwa1kh8H5tuBGWqBc57PSEMyTn4o46Oe8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aF02ZHl5csyJw17umhXnsE3c0w4MZCq+jvGCVCxXZeFiqZxSZxl/I//lPKHuDXIgRg9NFcSydF0CIXMMfcolhw4hIbK2YqdTIi6A4Bt61SYsjT3tt5Nzcpz/ugF0CDq+Z/Qzx9fTCZZ8uv0yMoiX0+i9jUqDmifZNWYaC6DgkVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FwzWUHRI; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51H02vBb018265
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 06:34:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=iQXoj8H5b3looSrGKhddD/
+	8Lrybt4a5ABYSR1D4Re5s=; b=FwzWUHRI6EyRImOKj+nGoAp8kj49VXCHa604rW
+	Gh9LJ7xKrLtbgz+R/mgxm+uC54lbriqnET3Z7DEwMvlc61KJiEXwYKv4pM7XvsKd
+	OapR+Wx2ya2te819xvoAkK9/yN1vrSbCZftLCiwu5elm3S321vVv6yibjzUk0+dd
+	/vLhSZPtN3+U/ZOnyT0RcGJM9DR1DBv7oIha91ILQd4BiEHaxt0TaGWNSGX/cEqK
+	9NrtYHhIgusfPrhfp4eYJFfqSqi8dU6fsGiddPlWbbwd2e1MrhVGpEWGic6kcyNA
+	nUwIkDxdynDiXkQAYuWzs+bj209rBi8bqBojNjJz13IMt0Jg==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ut7srpj9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 06:34:17 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2fc1c7c8396so7047360a91.0
+        for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 22:34:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739774057; x=1740378857;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iQXoj8H5b3looSrGKhddD/8Lrybt4a5ABYSR1D4Re5s=;
+        b=R38RauU8LR3EQCnuAhveDT//B0oPRnN5SzmwZc2EfF69SM7vCimgut/wcXm81ck/d8
+         Tay25/HG5b0w/QwYrCFtYgMDIDni6OggvJbe+8qHPVqI6m2UuiRtIM8AFiMOfwjsR38Z
+         N7loomD96xG9MbwSfdt43n7ruQ/8c7kCC+6m+Ih2XV7MVUu4cweuJtsBnYQsA7NjgDQs
+         Q12HtJWo0YUqJu25mV3qTG0vesNfAij7NOOPjQrUSg2Z923vq+hJe1gHlpGCmrJJSX9M
+         0SETjN3nAB+U7ftsfJivH6ATHTt3Ua6eBDtRXDZ7fMYSGNlyuS+JtjY6bqk5AxDDHNL1
+         fy+g==
+X-Forwarded-Encrypted: i=1; AJvYcCU9xxtYPL2CC/wSzAiFFyUeoCPKGrFJCL6fMiwDAmQeek48Q+6kD2CXvxdQs3I7mYldYz2VvujgKcmjH/rTrw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5QtlWi6Voq9nn1wqayiORqkaOrsIp0y/yEU+o5Ta1hOju6/Dy
+	rxqfdS/ZTtt6NIPYwzSbz54AXqaLOx6ZZrwqTycvY8dLUlFskfw+vCaQvpdKg1YOyarf/MGVOx2
+	q4nQyzZkvw/NM3TzZUXX72vIAst95uNVLBp+bq72iwm7GKEC/HD3b6sUIJyeA1sEamA==
+X-Gm-Gg: ASbGncuEYB9RI67b1oqXSVYzpSaLNepI89lYY5538Xm/0B9o1o28iY1FF6u5E+NjAip
+	BHqry+4+r2pb0Cl9fdOmpQBl/LThoh8vz1BwEndOELyZ4coteFWlGVFRjXPei6kXr/l4eZ6I8qQ
+	dbDWBHFOK8RFhV/rzPSF2AJss/Quq+jSzL6KjGi2XOKptVNqx/YLNwYwEPXYc+/PAoXU45X6dks
+	V/WIHjSlzSLYsv2ALLXE2+5jgu/KwzE1VLEKEe3QJwThyII4oRJpNBK/aR0yrwY240DQ1MjProP
+	0dHR1KZHDFHQDJl4KSqOYECI5mGDBUTaTAUv9yM7
+X-Received: by 2002:a05:6a20:734c:b0:1ee:7ea6:8e0c with SMTP id adf61e73a8af0-1ee8cac55c9mr18266081637.8.1739774056606;
+        Sun, 16 Feb 2025 22:34:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG1648r3e9k3f7j/0JUKAhKP4VZHlpB+D2ION+yxkiLqbGo7Uymf7YvEB+nmMyv3aO5xRKwhA==
+X-Received: by 2002:a05:6a20:734c:b0:1ee:7ea6:8e0c with SMTP id adf61e73a8af0-1ee8cac55c9mr18266034637.8.1739774056186;
+        Sun, 16 Feb 2025 22:34:16 -0800 (PST)
+Received: from hu-krichai-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73263b79287sm3771800b3a.29.2025.02.16.22.34.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Feb 2025 22:34:15 -0800 (PST)
+From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Subject: [PATCH 0/8] bus: mhi: host: Add support for mhi bus bw
+Date: Mon, 17 Feb 2025 12:04:07 +0530
+Message-Id: <20250217-mhi_bw_up-v1-0-9bad1e42bdb1@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF/YsmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDI0Nz3dyMzPik8vjSAt00Y0NjA7NEUzNjwyQloPqCotS0zAqwWdGxtbU
+ AtPwk3FsAAAA=
+To: Bjorn Helgaas <bhelgaas@google.com>,
+        =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+        Rob Herring <robh@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, mhi@lists.linux.dev,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        quic_jjohnson@quicinc.com, quic_pyarlaga@quicinc.com,
+        quic_vbadigan@quicinc.com, quic_vpernami@quicinc.com,
+        quic_mrana@quicinc.com,
+        Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+        Miaoqing Pan <quic_miaoqing@quicinc.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739774050; l=4167;
+ i=krishna.chundru@oss.qualcomm.com; s=20230907; h=from:subject:message-id;
+ bh=30TEJAABnUpwa1kh8H5tuBGWqBc57PSEMyTn4o46Oe8=;
+ b=vG+PKK75gdfNitdrSzZxvdfDkylUvvuDHb5LhND5dvYUjy4b7le09Q4AB1LGAes3zdqMUKfKk
+ TVbD5AtySEcDUbKMf/G6dkUnLGx09o2ZlvM5F6/WQFsMiBJXAPG03rI
+X-Developer-Key: i=krishna.chundru@oss.qualcomm.com; a=ed25519;
+ pk=10CL2pdAKFyzyOHbfSWHCD0X0my7CXxj8gJScmn1FAg=
+X-Proofpoint-GUID: zXWNdq5Thp9-9tTJP8iE0VF8TaqFKAfJ
+X-Proofpoint-ORIG-GUID: zXWNdq5Thp9-9tTJP8iE0VF8TaqFKAfJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-17_03,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 mlxlogscore=999 phishscore=0 spamscore=0 clxscore=1011
+ mlxscore=0 suspectscore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502170056
 
-BT-coexistence configure WiFi TX time to share time slots with Bluetooth
-devices. Since the format is different from WiFi 6 chips, add the new
-format accordingly.
+As per MHI spec sec 14, MHI supports bandwidth scaling to reduce power
+consumption. MHI bandwidth scaling is advertised in devices that contain
+the bandwidth scaling capability registers. If enabled, the device
+aggregates bandwidth requirements and sends them to the host in the form
+of an event. After the host performs the bandwidth switch, it sends an
+acknowledgment by ringing a doorbell.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+if the host supports bandwidth scaling events, then it must set
+BW_CFG.ENABLED bit, set BW_CFG.DB_CHAN_ID to the channel ID to the
+doorbell that will be used by the host to communicate the bandwidth
+scaling status and BW_CFG.ER_INDEX to the index for the event ring
+to which the device should send bandwidth scaling request in the
+bandwidth scaling capability register.
+
+As part of mmio init check if the bw scale capability is present or not,
+if present advertise host supports bw scale by setting all the required
+fields.
+
+MHI layer will only forward the bw scaling request to the controller
+driver, it is responsibility of the controller driver to do actual bw
+scaling and then pass status to the MHI. MHI will response back to the
+device based up on the status of the bw scale received.
+
+Add a new get_misc_doorbell() to get doorbell for misc capabilities to
+use the doorbell with mhi events like MHI BW scale etc.
+
+Use workqueue & mutex for the bw scale events as the pci_set_target_speed()
+which will called by the mhi controller driver can sleep.
+
+If the driver want to move higher data rate/speed then the current data
+rate/speed then the controller driver may need to change certain votes
+so that link may come up in requested data rate/speed like QCOM PCIe
+controllers need to change their RPMh (Resource Power Manager-hardened)
+state. And also once link retraining is done controller drivers needs
+to adjust their votes based on the final data rate/speed.
+
+Some controllers also may need to update their bandwidth voting like
+ICC bw votings etc.
+
+So, add pre_scale_bus_bw() & post_scale_bus_bw() op to call before & after
+the link re-train.
+
+In case of PCIe switch, if there is a request to change target speed for a
+downstream port then no need to call these function ops as these are
+outside the scope of the controller drivers.
+
+Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h     |  2 +
- drivers/net/wireless/realtek/rtw89/fw.c       | 55 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/fw.h       | 11 ++++
- drivers/net/wireless/realtek/rtw89/mac.c      |  6 +-
- drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
- .../net/wireless/realtek/rtw89/rtw8852bt.c    |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |  1 +
- 10 files changed, 77 insertions(+), 3 deletions(-)
+Krishna Chaitanya Chundru (6):
+      PCI: update current bus speed as part of pci_bus_add_devices()
+      PCI/bwctrl: Add support to scale bandwidth before & after link re-training
+      PCI: dwc: Implement .pre_scale_bus_bw() & .post_scale_bus_bw hook
+      PCI: dwc: qcom: Update ICC & OPP votes based upon the requested speed
+      bus: mhi: host: Add support for Bandwidth scale
+      PCI: Make pcie_link_speed variable public & export pci_set_target_speed()
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index b3fdd8eded21..057cb7a3766a 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3676,6 +3676,8 @@ struct rtw89_chip_ops {
- 	int (*h2c_ampdu_cmac_tbl)(struct rtw89_dev *rtwdev,
- 				  struct rtw89_vif_link *rtwvif_link,
- 				  struct rtw89_sta_link *rtwsta_link);
-+	int (*h2c_txtime_cmac_tbl)(struct rtw89_dev *rtwdev,
-+				   struct rtw89_sta_link *rtwsta_link);
- 	int (*h2c_default_dmac_tbl)(struct rtw89_dev *rtwdev,
- 				    struct rtw89_vif_link *rtwvif_link,
- 				    struct rtw89_sta_link *rtwsta_link);
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 35b86970db2a..0529424e70f6 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -3573,6 +3573,61 @@ int rtw89_fw_h2c_txtime_cmac_tbl(struct rtw89_dev *rtwdev,
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(rtw89_fw_h2c_txtime_cmac_tbl);
-+
-+int rtw89_fw_h2c_txtime_cmac_tbl_g7(struct rtw89_dev *rtwdev,
-+				    struct rtw89_sta_link *rtwsta_link)
-+{
-+	struct rtw89_h2c_cctlinfo_ud_g7 *h2c;
-+	u32 len = sizeof(*h2c);
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
-+	if (!skb) {
-+		rtw89_err(rtwdev, "failed to alloc skb for txtime_cmac_g7\n");
-+		return -ENOMEM;
-+	}
-+	skb_put(skb, len);
-+	h2c = (struct rtw89_h2c_cctlinfo_ud_g7 *)skb->data;
-+
-+	h2c->c0 = le32_encode_bits(rtwsta_link->mac_id, CCTLINFO_G7_C0_MACID) |
-+		  le32_encode_bits(1, CCTLINFO_G7_C0_OP);
-+
-+	if (rtwsta_link->cctl_tx_time) {
-+		h2c->w3 |= le32_encode_bits(1, CCTLINFO_G7_W3_AMPDU_TIME_SEL);
-+		h2c->m3 |= cpu_to_le32(CCTLINFO_G7_W3_AMPDU_TIME_SEL);
-+
-+		h2c->w2 |= le32_encode_bits(rtwsta_link->ampdu_max_time,
-+					   CCTLINFO_G7_W2_AMPDU_MAX_TIME);
-+		h2c->m2 |= cpu_to_le32(CCTLINFO_G7_W2_AMPDU_MAX_TIME);
-+	}
-+	if (rtwsta_link->cctl_tx_retry_limit) {
-+		h2c->w2 |= le32_encode_bits(1, CCTLINFO_G7_W2_DATA_TXCNT_LMT_SEL) |
-+			   le32_encode_bits(rtwsta_link->data_tx_cnt_lmt,
-+					    CCTLINFO_G7_W2_DATA_TX_CNT_LMT);
-+		h2c->m2 |= cpu_to_le32(CCTLINFO_G7_W2_DATA_TXCNT_LMT_SEL |
-+				       CCTLINFO_G7_W2_DATA_TX_CNT_LMT);
-+	}
-+
-+	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
-+			      H2C_CAT_MAC, H2C_CL_MAC_FR_EXCHG,
-+			      H2C_FUNC_MAC_CCTLINFO_UD_G7, 0, 1,
-+			      len);
-+
-+	ret = rtw89_h2c_tx(rtwdev, skb, false);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to send h2c\n");
-+		goto fail;
-+	}
-+
-+	return 0;
-+fail:
-+	dev_kfree_skb_any(skb);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(rtw89_fw_h2c_txtime_cmac_tbl_g7);
- 
- int rtw89_fw_h2c_txpath_cmac_tbl(struct rtw89_dev *rtwdev,
- 				 struct rtw89_sta_link *rtwsta_link)
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 994d109a9c3c..53a4083ba128 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -4588,6 +4588,8 @@ int rtw89_fw_h2c_ampdu_cmac_tbl_g7(struct rtw89_dev *rtwdev,
- 				   struct rtw89_sta_link *rtwsta_link);
- int rtw89_fw_h2c_txtime_cmac_tbl(struct rtw89_dev *rtwdev,
- 				 struct rtw89_sta_link *rtwsta_link);
-+int rtw89_fw_h2c_txtime_cmac_tbl_g7(struct rtw89_dev *rtwdev,
-+				    struct rtw89_sta_link *rtwsta_link);
- int rtw89_fw_h2c_txpath_cmac_tbl(struct rtw89_dev *rtwdev,
- 				 struct rtw89_sta_link *rtwsta_link);
- int rtw89_fw_h2c_update_beacon(struct rtw89_dev *rtwdev,
-@@ -4869,6 +4871,15 @@ static inline int rtw89_chip_h2c_ampdu_cmac_tbl(struct rtw89_dev *rtwdev,
- 	return 0;
- }
- 
-+static inline
-+int rtw89_chip_h2c_txtime_cmac_tbl(struct rtw89_dev *rtwdev,
-+				   struct rtw89_sta_link *rtwsta_link)
-+{
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+
-+	return chip->ops->h2c_txtime_cmac_tbl(rtwdev, rtwsta_link);
-+}
-+
- static inline
- int rtw89_chip_h2c_ba_cam(struct rtw89_dev *rtwdev, struct rtw89_sta *rtwsta,
- 			  bool valid, struct ieee80211_ampdu_params *params)
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 0b2e4ad52774..513c317b286c 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -6441,7 +6441,7 @@ __rtw89_mac_set_tx_time(struct rtw89_dev *rtwdev, struct rtw89_sta_link *rtwsta_
- 
- 	if (rtwsta_link->cctl_tx_time) {
- 		rtwsta_link->ampdu_max_time = (max_tx_time - 512) >> 9;
--		ret = rtw89_fw_h2c_txtime_cmac_tbl(rtwdev, rtwsta_link);
-+		ret = rtw89_chip_h2c_txtime_cmac_tbl(rtwdev, rtwsta_link);
- 	} else {
- 		ret = rtw89_mac_check_mac_en(rtwdev, mac_idx, RTW89_CMAC_SEL);
- 		if (ret) {
-@@ -6507,9 +6507,9 @@ int rtw89_mac_set_tx_retry_limit(struct rtw89_dev *rtwdev,
- 
- 	if (!resume) {
- 		rtwsta_link->cctl_tx_retry_limit = true;
--		ret = rtw89_fw_h2c_txtime_cmac_tbl(rtwdev, rtwsta_link);
-+		ret = rtw89_chip_h2c_txtime_cmac_tbl(rtwdev, rtwsta_link);
- 	} else {
--		ret = rtw89_fw_h2c_txtime_cmac_tbl(rtwdev, rtwsta_link);
-+		ret = rtw89_chip_h2c_txtime_cmac_tbl(rtwdev, rtwsta_link);
- 		rtwsta_link->cctl_tx_retry_limit = false;
- 	}
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index 82289dbad1f4..3ef07d80caf1 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -2423,6 +2423,7 @@ static const struct rtw89_chip_ops rtw8851b_chip_ops = {
- 	.h2c_default_cmac_tbl	= rtw89_fw_h2c_default_cmac_tbl,
- 	.h2c_assoc_cmac_tbl	= rtw89_fw_h2c_assoc_cmac_tbl,
- 	.h2c_ampdu_cmac_tbl	= NULL,
-+	.h2c_txtime_cmac_tbl	= rtw89_fw_h2c_txtime_cmac_tbl,
- 	.h2c_default_dmac_tbl	= NULL,
- 	.h2c_update_beacon	= rtw89_fw_h2c_update_beacon,
- 	.h2c_ba_cam		= rtw89_fw_h2c_ba_cam,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 2046832d021f..bcd71d6fce29 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2149,6 +2149,7 @@ static const struct rtw89_chip_ops rtw8852a_chip_ops = {
- 	.h2c_default_cmac_tbl	= rtw89_fw_h2c_default_cmac_tbl,
- 	.h2c_assoc_cmac_tbl	= rtw89_fw_h2c_assoc_cmac_tbl,
- 	.h2c_ampdu_cmac_tbl	= NULL,
-+	.h2c_txtime_cmac_tbl	= rtw89_fw_h2c_txtime_cmac_tbl,
- 	.h2c_default_dmac_tbl	= NULL,
- 	.h2c_update_beacon	= rtw89_fw_h2c_update_beacon,
- 	.h2c_ba_cam		= rtw89_fw_h2c_ba_cam,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 652914a36245..2ef534b4e951 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -776,6 +776,7 @@ static const struct rtw89_chip_ops rtw8852b_chip_ops = {
- 	.h2c_default_cmac_tbl	= rtw89_fw_h2c_default_cmac_tbl,
- 	.h2c_assoc_cmac_tbl	= rtw89_fw_h2c_assoc_cmac_tbl,
- 	.h2c_ampdu_cmac_tbl	= NULL,
-+	.h2c_txtime_cmac_tbl	= rtw89_fw_h2c_txtime_cmac_tbl,
- 	.h2c_default_dmac_tbl	= NULL,
- 	.h2c_update_beacon	= rtw89_fw_h2c_update_beacon,
- 	.h2c_ba_cam		= rtw89_fw_h2c_ba_cam,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-index 6f15245b2f74..8f2dccc07bb5 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-@@ -710,6 +710,7 @@ static const struct rtw89_chip_ops rtw8852bt_chip_ops = {
- 	.h2c_default_cmac_tbl	= rtw89_fw_h2c_default_cmac_tbl,
- 	.h2c_assoc_cmac_tbl	= rtw89_fw_h2c_assoc_cmac_tbl,
- 	.h2c_ampdu_cmac_tbl	= NULL,
-+	.h2c_txtime_cmac_tbl	= rtw89_fw_h2c_txtime_cmac_tbl,
- 	.h2c_default_dmac_tbl	= NULL,
- 	.h2c_update_beacon	= rtw89_fw_h2c_update_beacon,
- 	.h2c_ba_cam		= rtw89_fw_h2c_ba_cam,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index ecc1ff358583..5876b1e8bb6b 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2941,6 +2941,7 @@ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
- 	.h2c_default_cmac_tbl	= rtw89_fw_h2c_default_cmac_tbl,
- 	.h2c_assoc_cmac_tbl	= rtw89_fw_h2c_assoc_cmac_tbl,
- 	.h2c_ampdu_cmac_tbl	= NULL,
-+	.h2c_txtime_cmac_tbl	= rtw89_fw_h2c_txtime_cmac_tbl,
- 	.h2c_default_dmac_tbl	= NULL,
- 	.h2c_update_beacon	= rtw89_fw_h2c_update_beacon,
- 	.h2c_ba_cam		= rtw89_fw_h2c_ba_cam,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-index 898a65a721dc..f3661eb894dc 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-@@ -2702,6 +2702,7 @@ static const struct rtw89_chip_ops rtw8922a_chip_ops = {
- 	.h2c_default_cmac_tbl	= rtw89_fw_h2c_default_cmac_tbl_g7,
- 	.h2c_assoc_cmac_tbl	= rtw89_fw_h2c_assoc_cmac_tbl_g7,
- 	.h2c_ampdu_cmac_tbl	= rtw89_fw_h2c_ampdu_cmac_tbl_g7,
-+	.h2c_txtime_cmac_tbl	= rtw89_fw_h2c_txtime_cmac_tbl_g7,
- 	.h2c_default_dmac_tbl	= rtw89_fw_h2c_default_dmac_tbl_v2,
- 	.h2c_update_beacon	= rtw89_fw_h2c_update_beacon_be,
- 	.h2c_ba_cam		= rtw89_fw_h2c_ba_cam_v1,
+Miaoqing Pan (1):
+      wifi: ath11k: add support for MHI bandwidth scaling
+
+Vivek Pernamitta (1):
+      bus: mhi: host: Add support to read MHI capabilities
+
+ drivers/bus/mhi/common.h                          |  18 ++++
+ drivers/bus/mhi/host/init.c                       |  93 ++++++++++++++++++-
+ drivers/bus/mhi/host/internal.h                   |   7 +-
+ drivers/bus/mhi/host/main.c                       | 102 ++++++++++++++++++++-
+ drivers/bus/mhi/host/pm.c                         |  10 ++-
+ drivers/net/wireless/ath/ath11k/mhi.c             |  41 +++++++++
+ drivers/pci/bus.c                                 |   3 +
+ drivers/pci/controller/dwc/pcie-designware-host.c |  21 +++++
+ drivers/pci/controller/dwc/pcie-designware.h      |   2 +
+ drivers/pci/controller/dwc/pcie-qcom.c            | 105 ++++++++++++++++------
+ drivers/pci/pci.h                                 |   1 -
+ drivers/pci/pcie/bwctrl.c                         |  16 ++++
+ include/linux/mhi.h                               |  13 +++
+ include/linux/pci.h                               |   3 +
+ 14 files changed, 402 insertions(+), 33 deletions(-)
+---
+base-commit: 0ad2507d5d93f39619fc42372c347d6006b64319
+change-id: 20250217-mhi_bw_up-f31306a5631b
+
+Best regards,
 -- 
-2.25.1
+Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 
 
