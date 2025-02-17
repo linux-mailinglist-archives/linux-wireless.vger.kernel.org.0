@@ -1,87 +1,88 @@
-Return-Path: <linux-wireless+bounces-19052-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19051-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B73BA37C0B
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 08:21:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2065A37C07
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 08:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C574A188496D
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 07:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04538188A131
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 07:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC3E1A2381;
-	Mon, 17 Feb 2025 07:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B33819C57C;
+	Mon, 17 Feb 2025 07:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="XoLh2itd"
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="aTHjcRJu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+Received: from mail-io1-f99.google.com (mail-io1-f99.google.com [209.85.166.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8466018DB23
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 07:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F04195F0D
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 07:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739776741; cv=none; b=U2biGIanFH1SBOCjZ7NqPRFK8L+axe+Q8w5Y6P/aG0KCqL3L9xobKQHZZSGZi8MqVaG1F0Dxv6fwkcwM2cgU1RO0A/sCaI2ta8qWuoVtaf1xUCbZ1I2jpZcuFF0hCgwhL4SBSROHpVGoUD8GFQiqRROWb8gxjsblPjvfoeM7Ev8=
+	t=1739776740; cv=none; b=f+7gGWb7PrvLYdvNG7roe7xGpSiox04fR4ZysrZ2QEkSaS31ronGk/5PvEmlLoXGBJQ7n5T6hGR7JPXlYqHC8yPybQaLwsuyWKKLZfz/F1NiDE7XCDmtxpQ2YSSj/KbSIfMXJDT617GdEyueIFSJ8Mnuz4NTdb51r6uxkRgh+Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739776741; c=relaxed/simple;
-	bh=dnDgHpwmNAM4El0fmPzxiQAyrovPX9sKfPKrFaww9hI=;
+	s=arc-20240116; t=1739776740; c=relaxed/simple;
+	bh=9SP3e+84PPazYbiy6XBKwEpLpUqLgr7OPIfv2oglgb8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mmeeG31KIuR9Rhr7PGTAtJI6inyQ17ZxQwCNdQ1ORt/e8LiH7E3m5Xo0cY9ZP0CL+DDL4ES1qeS7r9qGctCXoKalaVn5gu0JC9W5fmlI/ksATUpFxwgt0cqqsGqkcI1+uaMOu/F8Q5uUcK65eEXaHC2D8+OhEQ6bGqgmm9Nu1gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=XoLh2itd; arc=none smtp.client-ip=209.85.216.99
+	 In-Reply-To:To:Cc; b=F5qDolWBMXn+wvThD33aA3VOtPe2U9jtcFTav6GoWRryzpinjzFLhI7FXvKCqzcF1DKGb4+ECLNqCg5XhsdSEgQd2nVriF7YBRe9wIM+5P1lDsJ1LKJNcWe62OicZ0Kzkljn7Xx+GGnPxHcvtag1+xJGz0GnLnXAxCENTrDget4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=aTHjcRJu; arc=none smtp.client-ip=209.85.166.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
-Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-2fc32756139so3498114a91.1
-        for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 23:18:59 -0800 (PST)
+Received: by mail-io1-f99.google.com with SMTP id ca18e2360f4ac-85571df0265so215223139f.2
+        for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 23:18:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1739776739; x=1740381539; darn=vger.kernel.org;
+        d=purestorage.com; s=google2022; t=1739776737; x=1740381537; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8cBmh37uPVBcmhlXxEMy2GuaEBsjFiFq6M7nLH4l7tQ=;
-        b=XoLh2itderA3sMcYcj1lLrEEPxV/68549ZwNitqYoJ5slUHqym2f6FxFodgfYI/Soc
-         p0b1exURBbKWNgdo1bSNrd5/99+DJoh6BJgKDSyK0GLFUtH/WqpOXRx/kkxxoy3Gv3xX
-         3RXoSI8I8044G7/9Z9ZOkm6JmyTmwztHJ8XnNWpXB/uX1H4D7JjFAsYVOZveOVErt/tD
-         2X7Ta/qrqdIgghs0vJGTUfG/Ogj8Y/R+QVoif+4SjfQppsRzlXl/1OG6Ygzh7+oTR1XG
-         q5q6Zh3XifwmhFeZRTD93s2o68ArWgFNiubXnQPOW71rPKqZ53udrPied4HkXxCZuU1p
-         0GBg==
+        bh=A/lIZdaULwllL9eB2jMZEZDqOXSYIw/jFwTSaiFKlq0=;
+        b=aTHjcRJuLuyLq+pF401Nn8NQtqH2NR4tzDOpmXVkgeduIxUKFJTGfpNk3n3N9Gl8uN
+         CRXQ//nmKFP5oq0ZNyDzw2Cx0K2bSJJU1IGZ+gL1rrMlTnIWfT4xQzLSYIglrbt+CtVx
+         q2HPOOfqjXrvLlQbcrrd9q4IplaifycFQFj6A8oDhpE1jwinyAUEWZc+f+WnQX32be7l
+         0l99xGuPK3P0Vjnl9V9unaVwcxC2JgC4nsLV+Qu/WEdwHbRDzVvSNzySRIX62X2nv2I6
+         AUedkrMy2Kx/HAV3JmCuvKfv9A43XH9Emah7ekCQc527Z4RWOJAU+vXwHGCN5eOYSIaV
+         rVRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739776739; x=1740381539;
+        d=1e100.net; s=20230601; t=1739776737; x=1740381537;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8cBmh37uPVBcmhlXxEMy2GuaEBsjFiFq6M7nLH4l7tQ=;
-        b=kYeS/yK3dQeB7OpJttI5cXihutmkDV4IoSSeXwpyoViBnExzQ+5YR+0/XB3qEue89Z
-         BekFdOgAIdsqccTQT0YJP0CsrxmQzSHTsvvir72qTJMpCN2wSqRwGc8/JNPpamIlCz7d
-         8L0aUsXH8F15D60C04iiCb3MQlicI2TD13auL+CUcqpxm66YpKn7mXuLGDjKcUM+7ngw
-         iLRSbMYnE4nwphtCQnaXTek0qdHC1O+5elSqcn+QSwhLreuKpIWG/vX7t8smur+DowAT
-         aae8825Yt/XSXupPH29ZEZ+Uzsu4N6VFm8Oa0hG5HE/WHDN9PdcQtm7UVtWzjFzWEohk
-         zahQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW5SpzNlgstgBge1hhUG42PTRCU3q9VB+SwEaj/zVlr89oz9q6XJ9xKmos173+MSYmWqxHSC+ZDtZ7xPAc5fg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhFncD+3R2hr0wPGTgtX4j1kQVZF3hO+Jn70cicTKtku7V8MxX
-	Bo6vEm9HTTbLq7d1ywMLEo3PsigZr4wrpyhLH9K6/bY2SHaeXkej6/CBZbZiMmkKKsuRKvy3Srg
-	CbI05L+FoVnllamoDJXGWlLe08XPRJGtUU3PrLiQz9zU9WOxT
-X-Gm-Gg: ASbGnctjIuStshVatF6P82t6Ivhpzamcwaz23M2w23BfIANhgjViGw/7iuRpp1oiDj2
-	leXOQwBKdYfLlNS6w1JJ8/oMbNVuunswhMb+jGZONfnigJ8Dl2+xlHjH+AcILMk+1182GYF1t/U
-	D4G6QJnPYpRiBA2ioSkDRsfZIs09U2cKgxH3LC9TSO0tHvYlZ+oQHNFQJulGW37Tf/emgyf3FXq
-	2DSol4f7brATjv8CpgzhWwUoh+usWP7OWW9GB4ciJjjvvbsSj4ZtApJ8pNoaqK6PcSbN9EhVvxn
-	WdRxOxE0GvuOFRwlSDXT5jc2
-X-Google-Smtp-Source: AGHT+IGTZ3Pw8uBs5dET/+qPFQerIYgP72QZp+sbHdWicZ0OeWZxKgm7kdMPv1hA6BlZzyPlOmeJ0DZjY9YI
-X-Received: by 2002:a17:90b:2248:b0:2fa:b8e:3d26 with SMTP id 98e67ed59e1d1-2fc41154ca5mr12278543a91.30.1739776737254;
+        bh=A/lIZdaULwllL9eB2jMZEZDqOXSYIw/jFwTSaiFKlq0=;
+        b=hmyc3iXH1mOEZ+uwjl/L+8pGHY8B5nHIYE+mZKsu+1u9pIwvK4IOuSFpp5Q8+UKAR8
+         bB7bsK10Ao8nuWSmnFLVbm+uMPjuQPm8ich/mdsAml+m2Nd264KKM+lPdDmrbTd2VIlr
+         zoTgMZpRWomzVBt1j7TORHwQlmc9rNEeC32kpjclB4LoeI22gozOqpLYGwlHdD9f2oTZ
+         GShSW4RPZRN2FLaA1FmzoVvlGlGJgOOgLqRfIe0OWuVNQyRJme5tZJWWn5xArLSz6B1C
+         ql0C6ZS7QobyMkYHe1Qtzn+drLksmJLQO52lZLrQiT7j5zSLEHQrxU08y1WoXY00G3/H
+         jR3g==
+X-Forwarded-Encrypted: i=1; AJvYcCXss+L/24Oge3zeG3jgq19Nj9WpMozx+9ChLoFuIOLWkvSdFqUOey0EmrG4fgWswy000/qqKCxJm3R+2gLEzA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyONH158Xp8iV7/784EyLoeazvobbg5ZqDDT6qutnSHT8U6TvXj
+	kwEHA+eQYrUntvSFiNkGS1pvDFV08vo/61W7uzf6jIhuQlEC3CUOHBC1/jG4g0kjKMNgvcxMRIz
+	uyLPVW6/g10VsW4h+7Z1mAmgv9mcDDnkPMuRApB5tvNhf4t5D
+X-Gm-Gg: ASbGncu1eqUOy/JbyH89K57T6CA2ruID9vH9IYBK4pYjSHmMYa35w1tw6pNh0aNf5N0
+	uYob1enckdM8huHZ44wZG7A0D+EEaf6jOLzkJ78+HsJvDXhDUxiUBXqEXMpRfPqL7yVsqcyZOc6
+	IILa6g9Pkv+Vv+mlM7wdfYkdQuIc0DUmTMM/OdeJmgao2OMLCaG1KZI+AXPjeapBNe7Vu/4nqht
+	tA/wipEohK4jEqtujxGAO+o28ITFGdcwA/rvw7e9UlP4TmVOl+ZoVKjGFwWxfAYZowDDmnFP86R
+	0VSHdzp9ca0RXYzFsjEW12BA
+X-Google-Smtp-Source: AGHT+IFmspdvwMqwmo9Ic5vcbstKN1DL+FAbVNevL9CSgdJK6lu5bk2Az58mcvHOy5eaTMPPofayKyIj+Bmv
+X-Received: by 2002:a05:6602:6408:b0:855:6fa2:c324 with SMTP id ca18e2360f4ac-8557a0ce310mr872509839f.4.1739776737129;
         Sun, 16 Feb 2025 23:18:57 -0800 (PST)
 Received: from c7-smtp-2023.dev.purestorage.com ([2620:125:9017:12:36:3:5:0])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-2fbf98d473bsm695853a91.9.2025.02.16.23.18.56
+        by smtp-relay.gmail.com with ESMTPS id 8926c6da1cb9f-4ed282a0d77sm547484173.54.2025.02.16.23.18.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Sun, 16 Feb 2025 23:18:57 -0800 (PST)
 X-Relaying-Domain: purestorage.com
-Received: from dev-ushankar.dev.purestorage.com (dev-ushankar.dev.purestorage.com [IPv6:2620:125:9007:640:7:70:36:0])
-	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 8E6A93406EA;
+Received: from dev-ushankar.dev.purestorage.com (dev-ushankar.dev.purestorage.com [10.7.70.36])
+	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 8E1E334035D;
 	Mon, 17 Feb 2025 00:18:55 -0700 (MST)
 Received: by dev-ushankar.dev.purestorage.com (Postfix, from userid 1557716368)
-	id 7D4AEE40402; Mon, 17 Feb 2025 00:18:55 -0700 (MST)
+	id 84744E56BB7; Mon, 17 Feb 2025 00:18:55 -0700 (MST)
 From: Uday Shankar <ushankar@purestorage.com>
-Date: Mon, 17 Feb 2025 00:18:44 -0700
-Subject: [PATCH net-next v4 1/3] net: Add non-RCU dev_getbyhwaddr() helper
+Date: Mon, 17 Feb 2025 00:18:45 -0700
+Subject: [PATCH net-next v4 2/3] net, treewide: define and use
+ MAC_ADDR_STR_LEN
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,7 +91,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250217-netconsole-v4-1-0c681cef71f1@purestorage.com>
+Message-Id: <20250217-netconsole-v4-2-0c681cef71f1@purestorage.com>
 References: <20250217-netconsole-v4-0-0c681cef71f1@purestorage.com>
 In-Reply-To: <20250217-netconsole-v4-0-0c681cef71f1@purestorage.com>
 To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -102,114 +103,125 @@ To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
  Johannes Berg <johannes@sipsolutions.net>, Jonathan Corbet <corbet@lwn.net>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-wireless@vger.kernel.org, linux-doc@vger.kernel.org, 
- Uday Shankar <ushankar@purestorage.com>, kuniyu@amazon.com, 
- Kuniyuki Iwashima <kuniyu@amazon.com>
+ Uday Shankar <ushankar@purestorage.com>, 
+ Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 X-Mailer: b4 0.14.2
 
-From: Breno Leitao <leitao@debian.org>
+There are a few places in the tree which compute the length of the
+string representation of a MAC address as 3 * ETH_ALEN - 1. Define a
+constant for this and use it where relevant. No functionality changes
+are expected.
 
-Add dedicated helper for finding devices by hardware address when
-holding rtnl_lock, similar to existing dev_getbyhwaddr_rcu(). This prevents
-PROVE_LOCKING warnings when rtnl_lock is held but RCU read lock is not.
-
-Extract common address comparison logic into dev_comp_addr().
-
-The context about this change could be found in the following
-discussion:
-
-Link: https://lore.kernel.org/all/20250206-scarlet-ermine-of-improvement-1fcac5@leitao/
-
-Cc: kuniyu@amazon.com
-Cc: ushankar@purestorage.com
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
 ---
- include/linux/netdevice.h |  2 ++
- net/core/dev.c            | 37 ++++++++++++++++++++++++++++++++++---
- 2 files changed, 36 insertions(+), 3 deletions(-)
+ drivers/net/netconsole.c           | 2 +-
+ drivers/nvmem/brcm_nvram.c         | 2 +-
+ drivers/nvmem/layouts/u-boot-env.c | 2 +-
+ include/linux/if_ether.h           | 3 +++
+ lib/net_utils.c                    | 4 +---
+ net/mac80211/debugfs_sta.c         | 7 ++++---
+ 6 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index fccc03cd21646fdff257a4b440d60d44ce575053..d41c5bca896e9f463b539ee8ce6b48d29b656265 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3276,6 +3276,8 @@ static inline struct net_device *first_net_device_rcu(struct net *net)
- }
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index f77eddf221850fe2778cd479e49c91ad695aba3c..12699831e3c9fdbafd4862a339aea4ef04cf522b 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -721,7 +721,7 @@ static ssize_t remote_mac_store(struct config_item *item, const char *buf,
  
- int netdev_boot_setup_check(struct net_device *dev);
-+struct net_device *dev_getbyhwaddr(struct net *net, unsigned short type,
-+				   const char *hwaddr);
- struct net_device *dev_getbyhwaddr_rcu(struct net *net, unsigned short type,
- 				       const char *hwaddr);
- struct net_device *dev_getfirstbyhwtype(struct net *net, unsigned short type);
-diff --git a/net/core/dev.c b/net/core/dev.c
-index d5ab9a4b318ea4926c200ef20dae01eaafa18c6b..19c3eb015f2a5a19faa0a1afd6c74f7e12546a75 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -1122,6 +1122,12 @@ int netdev_get_name(struct net *net, char *name, int ifindex)
- 	return ret;
- }
+ 	if (!mac_pton(buf, remote_mac))
+ 		goto out_unlock;
+-	if (buf[3 * ETH_ALEN - 1] && buf[3 * ETH_ALEN - 1] != '\n')
++	if (buf[MAC_ADDR_STR_LEN] && buf[MAC_ADDR_STR_LEN] != '\n')
+ 		goto out_unlock;
+ 	memcpy(nt->np.remote_mac, remote_mac, ETH_ALEN);
  
-+static bool dev_comp_addr(struct net_device *dev, unsigned short type,
-+			  const char *ha)
-+{
-+	return dev->type == type && !memcmp(dev->dev_addr, ha, dev->addr_len);
-+}
-+
- /**
-  *	dev_getbyhwaddr_rcu - find a device by its hardware address
-  *	@net: the applicable net namespace
-@@ -1130,7 +1136,7 @@ int netdev_get_name(struct net *net, char *name, int ifindex)
-  *
-  *	Search for an interface by MAC address. Returns NULL if the device
-  *	is not found or a pointer to the device.
-- *	The caller must hold RCU or RTNL.
-+ *	The caller must hold RCU.
-  *	The returned device has not had its ref count increased
-  *	and the caller must therefore be careful about locking
-  *
-@@ -1142,14 +1148,39 @@ struct net_device *dev_getbyhwaddr_rcu(struct net *net, unsigned short type,
- 	struct net_device *dev;
- 
- 	for_each_netdev_rcu(net, dev)
--		if (dev->type == type &&
--		    !memcmp(dev->dev_addr, ha, dev->addr_len))
-+		if (dev_comp_addr(dev, type, ha))
- 			return dev;
- 
- 	return NULL;
- }
- EXPORT_SYMBOL(dev_getbyhwaddr_rcu);
- 
-+/**
-+ * dev_getbyhwaddr - find a device by its hardware address
-+ * @net: the applicable net namespace
-+ * @type: media type of device
-+ * @ha: hardware address
-+ *
-+ * Similar to dev_getbyhwaddr_rcu(), but the owner needs to hold
-+ * rtnl_lock.
-+ *
-+ * Context: rtnl_lock() must be held.
-+ * Return: pointer to the net_device, or NULL if not found
-+ */
-+struct net_device *dev_getbyhwaddr(struct net *net, unsigned short type,
-+				   const char *ha)
-+{
-+	struct net_device *dev;
-+
-+	ASSERT_RTNL();
-+	for_each_netdev(net, dev)
-+		if (dev_comp_addr(dev, type, ha))
-+			return dev;
-+
-+	return NULL;
-+}
-+EXPORT_SYMBOL(dev_getbyhwaddr);
-+
- struct net_device *dev_getfirstbyhwtype(struct net *net, unsigned short type)
+diff --git a/drivers/nvmem/brcm_nvram.c b/drivers/nvmem/brcm_nvram.c
+index b810df727b446b1762a1851750f743e0de6e8788..b4cf245fb2467d281111001bb7ed8db5993a09b2 100644
+--- a/drivers/nvmem/brcm_nvram.c
++++ b/drivers/nvmem/brcm_nvram.c
+@@ -100,7 +100,7 @@ static int brcm_nvram_read_post_process_macaddr(void *context, const char *id, i
  {
- 	struct net_device *dev, *ret = NULL;
+ 	u8 mac[ETH_ALEN];
+ 
+-	if (bytes != 3 * ETH_ALEN - 1)
++	if (bytes != MAC_ADDR_STR_LEN)
+ 		return -EINVAL;
+ 
+ 	if (!mac_pton(buf, mac))
+diff --git a/drivers/nvmem/layouts/u-boot-env.c b/drivers/nvmem/layouts/u-boot-env.c
+index 731e6f4f12b2bf28e4547d128954a095545ad461..436426d4e8f910b51b92f88acddfbb40d374587a 100644
+--- a/drivers/nvmem/layouts/u-boot-env.c
++++ b/drivers/nvmem/layouts/u-boot-env.c
+@@ -37,7 +37,7 @@ static int u_boot_env_read_post_process_ethaddr(void *context, const char *id, i
+ {
+ 	u8 mac[ETH_ALEN];
+ 
+-	if (bytes != 3 * ETH_ALEN - 1)
++	if (bytes != MAC_ADDR_STR_LEN)
+ 		return -EINVAL;
+ 
+ 	if (!mac_pton(buf, mac))
+diff --git a/include/linux/if_ether.h b/include/linux/if_ether.h
+index 8a9792a6427ad9cf58b50c79cbfe185615800dcb..61b7335aa037c7232a0caa45572043057c02dde3 100644
+--- a/include/linux/if_ether.h
++++ b/include/linux/if_ether.h
+@@ -19,6 +19,9 @@
+ #include <linux/skbuff.h>
+ #include <uapi/linux/if_ether.h>
+ 
++/* XX:XX:XX:XX:XX:XX */
++#define MAC_ADDR_STR_LEN (3 * ETH_ALEN - 1)
++
+ static inline struct ethhdr *eth_hdr(const struct sk_buff *skb)
+ {
+ 	return (struct ethhdr *)skb_mac_header(skb);
+diff --git a/lib/net_utils.c b/lib/net_utils.c
+index 42bb0473fb22f977409f7a6792bb1340f4e911c3..215cda672fee1b5a029c2b61529c6813c0edab11 100644
+--- a/lib/net_utils.c
++++ b/lib/net_utils.c
+@@ -7,11 +7,9 @@
+ 
+ bool mac_pton(const char *s, u8 *mac)
+ {
+-	size_t maxlen = 3 * ETH_ALEN - 1;
+ 	int i;
+ 
+-	/* XX:XX:XX:XX:XX:XX */
+-	if (strnlen(s, maxlen) < maxlen)
++	if (strnlen(s, MAC_ADDR_STR_LEN) < MAC_ADDR_STR_LEN)
+ 		return false;
+ 
+ 	/* Don't dirty result unless string is valid MAC. */
+diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
+index a67a9d3160086ac492d77092a0c8a74d2384b28c..a8948f4d983e5edee45d90ad267582657ed38e38 100644
+--- a/net/mac80211/debugfs_sta.c
++++ b/net/mac80211/debugfs_sta.c
+@@ -457,11 +457,12 @@ static ssize_t link_sta_addr_read(struct file *file, char __user *userbuf,
+ 				  size_t count, loff_t *ppos)
+ {
+ 	struct link_sta_info *link_sta = file->private_data;
+-	u8 mac[3 * ETH_ALEN + 1];
++	u8 mac[MAC_ADDR_STR_LEN + 2];
+ 
+ 	snprintf(mac, sizeof(mac), "%pM\n", link_sta->pub->addr);
+ 
+-	return simple_read_from_buffer(userbuf, count, ppos, mac, 3 * ETH_ALEN);
++	return simple_read_from_buffer(userbuf, count, ppos, mac,
++				       MAC_ADDR_STR_LEN + 1);
+ }
+ 
+ LINK_STA_OPS(addr);
+@@ -1240,7 +1241,7 @@ void ieee80211_sta_debugfs_add(struct sta_info *sta)
+ 	struct ieee80211_local *local = sta->local;
+ 	struct ieee80211_sub_if_data *sdata = sta->sdata;
+ 	struct dentry *stations_dir = sta->sdata->debugfs.subdir_stations;
+-	u8 mac[3*ETH_ALEN];
++	u8 mac[MAC_ADDR_STR_LEN + 1];
+ 
+ 	if (!stations_dir)
+ 		return;
 
 -- 
 2.34.1
