@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-19053-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19055-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8D4A37CE3
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 09:17:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5B6A37CE5
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 09:17:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9AC516CF53
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 08:17:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 845BC3AEDEC
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 08:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694B5194C77;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7143F19CC02;
 	Mon, 17 Feb 2025 08:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="jUj5sdHS"
+	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="Gyk2ORYc"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42BA19259D
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68CB192B63
 	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 08:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739780258; cv=none; b=p5hTtZ1a9+4VhzALCu2Fpa26rVgvZdYxh/NhREuqcukuC8QhZmpb9ia7gHRJRXzi5znNtnUGPti+N8tlwIeGGPT3D2dNW+aL0THOIjFQR6qgd6WVyEMIwYnJMWGRU0QP/B/jqcV0qkoHEx4bJ/85MwTp2sGWb+BcgiX6t8cikkc=
+	t=1739780258; cv=none; b=cfdkimLPtoHnpjkSyTuKAIwJNvbKg4zK+teGjTBbFPaPuxDI1rGqI5WyhSsjPA5fqC8M66ICCuzN9Cv6oUZWGu01HyOQ0dd45ehgo32fFKjYuPc8UeA0zwwF8d+U8WJ4xpJdybo6SPVdNK9Pa1L7lDgOMWb91M92/7zLiVe/lg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739780258; c=relaxed/simple;
-	bh=8Drd6O/upxVbT4QAey6W5dYjVmuG+cJLFaZtYNFg6WM=;
+	bh=nrlMihG98ezkLx2B4JeFZ+tmQHrn+JW2RWVV428K4nQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKYj4C6oJso1nqnYc/jAc834ea/O8uXfLXCDOW7ZyzljWWgbZ3VCT9/mPu3XoQE9BMlb3QqzddXMkakxmTHR5iWP5TDUBEqFqIG+9b1vTPWpw0a/CWBGBGiwNeXHXa0oocjvMIJmQ8mOqJTxW18Dt+mX3zbg9IRbuFvcthwxqeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=jUj5sdHS; arc=none smtp.client-ip=5.252.227.236
+	 MIME-Version; b=FKMxwc/aUHnBanZUQeM99i7RAh3XScc4cuLp9juRPUvUTaqfF709kxOr1gnfKqK3h+JCzXbtpIJkZ8eHQmGUSTGQbK7b5F+lbPB5tNkP/p39q7tH7EMB6JIGvLqaVpcBKUaYdhn1lCPlehxhc8nioCr0TyhK1iyAPS7nekktIqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=Gyk2ORYc; arc=none smtp.client-ip=5.252.227.236
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
 From: Alexander Wetzel <Alexander@wetzel-home.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
 	s=wetzel-home; t=1739780252;
-	bh=8Drd6O/upxVbT4QAey6W5dYjVmuG+cJLFaZtYNFg6WM=;
+	bh=nrlMihG98ezkLx2B4JeFZ+tmQHrn+JW2RWVV428K4nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jUj5sdHSLwyUcRs6/M2ooGyXzW8PTJI1SoNPjOPhzyPuVxBRNwFPMzBrTdgPUCakX
-	 DqJxnUjxAbldhveAMBDf0OLfZOuUL3Ge59XLTIP9oAhMZWiMVSS8a4iMjmMQzRatYQ
-	 vg1RpImL3vHlZThW51XMUj590kTyDhOr1gU2yTbs=
+	b=Gyk2ORYciGX3pBKJyvCr30hJasRYcSMWsSZc5LM+SA18IkdcxmQ+OQ/49KKvPGPV5
+	 CnJZP2FKoM05N4xYlLRSVDKG25nuPobvj1YypUZGkml4FXG66JKtpA3l9diJdq3P3j
+	 HG+yLTKrXmRnW9fjMBlCzaRxK5iHt7mBsPPY8CWs=
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Alexander Wetzel <Alexander@wetzel-home.de>
-Subject: [PATCH v2 01/10] wifi: mac80211: move rate control setup
-Date: Mon, 17 Feb 2025 09:17:12 +0100
-Message-ID: <20250217081721.45110-2-Alexander@wetzel-home.de>
+	Alexander Wetzel <alexander@wetzel-home.de>
+Subject: [PATCH v2 02/10] wifi: mac80211: Always provide the MMPDU TXQ
+Date: Mon, 17 Feb 2025 09:17:13 +0100
+Message-ID: <20250217081721.45110-3-Alexander@wetzel-home.de>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250217081721.45110-1-Alexander@wetzel-home.de>
 References: <20250217081721.45110-1-Alexander@wetzel-home.de>
@@ -54,90 +54,95 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Move setting up the rate control into ieee80211_sdata_init() to ensure
-rates are also set up for the virtual monitor interface.
+From: Alexander Wetzel <alexander@wetzel-home.de>
 
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Always providing and use the MMPDU TX queue to prepare to move all TX
+into TXQs.
+
+For drivers not supporting the MMPDU TXQ, mac80211 will handle it
+internally.
+
+Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
 ---
- net/mac80211/iface.c | 51 ++++++++++++++++++++++----------------------
- 1 file changed, 26 insertions(+), 25 deletions(-)
+ net/mac80211/driver-ops.h | 12 ++++++++++++
+ net/mac80211/sta_info.c   |  1 -
+ net/mac80211/tx.c         | 19 ++-----------------
+ 3 files changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 77d0078616fb..e01beda8c414 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1118,6 +1118,31 @@ static void ieee80211_sdata_init(struct ieee80211_local *local,
- 	 * MLD connection, we get a separate allocation for it.
- 	 */
- 	ieee80211_link_init(sdata, -1, &sdata->deflink, &sdata->vif.bss_conf);
+diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
+index 307587c8a003..992fa2957621 100644
+--- a/net/mac80211/driver-ops.h
++++ b/net/mac80211/driver-ops.h
+@@ -1364,6 +1364,18 @@ static inline void drv_wake_tx_queue(struct ieee80211_local *local,
+ 		return;
+ 
+ 	trace_drv_wake_tx_queue(local, sdata, txq);
 +
-+	for (int i = 0; i < NUM_NL80211_BANDS; i++) {
-+		struct ieee80211_supported_band *sband;
-+
-+		sband = local->hw.wiphy->bands[i];
-+		sdata->rc_rateidx_mask[i] =
-+			sband ? (1 << sband->n_bitrates) - 1 : 0;
-+		if (sband) {
-+			__le16 cap;
-+			u16 *vht_rate_mask;
-+
-+			memcpy(sdata->rc_rateidx_mcs_mask[i],
-+			       sband->ht_cap.mcs.rx_mask,
-+			       sizeof(sdata->rc_rateidx_mcs_mask[i]));
-+
-+			cap = sband->vht_cap.vht_mcs.rx_mcs_map;
-+			vht_rate_mask = sdata->rc_rateidx_vht_mcs_mask[i];
-+			ieee80211_get_vht_mask_from_cap(cap, vht_rate_mask);
-+		} else {
-+			memset(sdata->rc_rateidx_mcs_mask[i], 0,
-+			       sizeof(sdata->rc_rateidx_mcs_mask[i]));
-+			memset(sdata->rc_rateidx_vht_mcs_mask[i], 0,
-+			       sizeof(sdata->rc_rateidx_vht_mcs_mask[i]));
-+		}
++	/* Driver support for MPDU TXQ support is optional */
++	if (unlikely(txq->txq.tid == IEEE80211_NUM_TIDS &&
++		     ((sdata->vif.type == NL80211_IFTYPE_STATION &&
++		       !ieee80211_hw_check(&sdata->local->hw, STA_MMPDU_TXQ)) ||
++		      (sdata->vif.type != NL80211_IFTYPE_STATION &&
++		       !ieee80211_hw_check(&sdata->local->hw,
++					   BUFF_MMPDU_TXQ))))) {
++		ieee80211_handle_wake_tx_queue(&local->hw, &txq->txq);
++		return;
 +	}
++
+ 	local->ops->wake_tx_queue(&local->hw, &txq->txq);
  }
  
- int ieee80211_add_virtual_monitor(struct ieee80211_local *local)
-@@ -2076,7 +2101,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 	struct net_device *ndev = NULL;
- 	struct ieee80211_sub_if_data *sdata = NULL;
- 	struct txq_info *txqi;
--	int ret, i;
-+	int ret;
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index f83268fa9f92..3ba03b6142cc 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -638,7 +638,6 @@ __sta_info_alloc(struct ieee80211_sub_if_data *sdata,
+ 	for (i = 0; i < ARRAY_SIZE(sta->sta.txq); i++) {
+ 		struct txq_info *txq = txq_data + i * size;
  
- 	ASSERT_RTNL();
- 	lockdep_assert_wiphy(local->hw.wiphy);
-@@ -2165,30 +2190,6 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 	wiphy_delayed_work_init(&sdata->dec_tailroom_needed_wk,
- 				ieee80211_delayed_tailroom_dec);
+-		/* might not do anything for the (bufferable) MMPDU TXQ */
+ 		ieee80211_txq_init(sdata, sta, txq, i);
+ 	}
  
--	for (i = 0; i < NUM_NL80211_BANDS; i++) {
--		struct ieee80211_supported_band *sband;
--		sband = local->hw.wiphy->bands[i];
--		sdata->rc_rateidx_mask[i] =
--			sband ? (1 << sband->n_bitrates) - 1 : 0;
--		if (sband) {
--			__le16 cap;
--			u16 *vht_rate_mask;
--
--			memcpy(sdata->rc_rateidx_mcs_mask[i],
--			       sband->ht_cap.mcs.rx_mask,
--			       sizeof(sdata->rc_rateidx_mcs_mask[i]));
--
--			cap = sband->vht_cap.vht_mcs.rx_mcs_map;
--			vht_rate_mask = sdata->rc_rateidx_vht_mcs_mask[i];
--			ieee80211_get_vht_mask_from_cap(cap, vht_rate_mask);
--		} else {
--			memset(sdata->rc_rateidx_mcs_mask[i], 0,
--			       sizeof(sdata->rc_rateidx_mcs_mask[i]));
--			memset(sdata->rc_rateidx_vht_mcs_mask[i], 0,
--			       sizeof(sdata->rc_rateidx_vht_mcs_mask[i]));
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 20179db88c4a..914fba53d7f1 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1311,10 +1311,6 @@ static struct txq_info *ieee80211_get_txq(struct ieee80211_local *local,
+ 		     ieee80211_is_bufferable_mmpdu(skb) ||
+ 		     vif->type == NL80211_IFTYPE_STATION) &&
+ 		    sta && sta->uploaded) {
+-			/*
+-			 * This will be NULL if the driver didn't set the
+-			 * opt-in hardware flag.
+-			 */
+ 			txq = sta->sta.txq[IEEE80211_NUM_TIDS];
+ 		}
+ 	} else if (sta) {
+@@ -1521,21 +1517,10 @@ void ieee80211_txq_init(struct ieee80211_sub_if_data *sdata,
+ 		return;
+ 	}
+ 
+-	if (tid == IEEE80211_NUM_TIDS) {
+-		if (sdata->vif.type == NL80211_IFTYPE_STATION) {
+-			/* Drivers need to opt in to the management MPDU TXQ */
+-			if (!ieee80211_hw_check(&sdata->local->hw,
+-						STA_MMPDU_TXQ))
+-				return;
+-		} else if (!ieee80211_hw_check(&sdata->local->hw,
+-					       BUFF_MMPDU_TXQ)) {
+-			/* Drivers need to opt in to the bufferable MMPDU TXQ */
+-			return;
 -		}
++	if (tid == IEEE80211_NUM_TIDS)
+ 		txqi->txq.ac = IEEE80211_AC_VO;
+-	} else {
++	else
+ 		txqi->txq.ac = ieee80211_ac_from_tid(tid);
 -	}
--
- 	ieee80211_set_default_queues(sdata);
  
- 	/* setup type-dependent data */
+ 	txqi->txq.sta = &sta->sta;
+ 	txqi->txq.tid = tid;
 -- 
 2.48.1
 
