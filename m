@@ -1,51 +1,76 @@
-Return-Path: <linux-wireless+bounces-19064-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19058-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F55A37CF3
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 09:19:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0E5A37CED
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 09:18:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06A633B1C31
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 08:18:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 030CC3B0EFC
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 08:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694641A23B8;
-	Mon, 17 Feb 2025 08:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104E31A3152;
+	Mon, 17 Feb 2025 08:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="xA33+qFz"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="CKcLsElR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D0119259D
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 08:17:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3840C19ABC2
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 08:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739780262; cv=none; b=qj6WPfS/9dcZ1G3SKnzmQtxGy0AJwFtrDoodomsD55N6ydhDvRVe5g4bGPz8ip9fRbbFDkLcvwp0SeEI6l5D1IEnjvR+ps/W0dYb2jK6kUU28JAqeWv+JLY7U76qZ2xOeTDfaG7Z8wM2wCe4C3QitMEpkLdc7ZQMywA/Du5bN1A=
+	t=1739780260; cv=none; b=JkBZ6vdTvElQor9cmlA5r+HgG9oj81C48hEkU5Q06qx5HUslwZ+b33KiIkzsiuZYyU48xjY/L6AUalXw/Uh6pm8h/xhIYEyjExFF2S01T2C0gZ006CfMXilJvYkbpV7FqG8EulfNIJMTRYdNP5z3BtZUt/3eags0nNksZRIOByU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739780262; c=relaxed/simple;
-	bh=XcKPGs7W7qwnW4V6Ira6eRFtRXWI0MVldvJMmYfwXYY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQBUhtOAPwAN4YqBEWPUzhPEYorLw+LAA9PikRz2KDgGFrBw8q5GYTJo7BjKX4JFT6EmIZvg6qwCeOA2n+SvAjgUBO8OcvcBSFXGV9Op7T8AE6YQsV3Dxv+s3Y8vir1m2mCpZzAcsMu4FKWDIqkGH7wYFGiOkmKtNsUox107+pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=xA33+qFz; arc=none smtp.client-ip=5.252.227.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
-From: Alexander Wetzel <Alexander@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-	s=wetzel-home; t=1739780253;
-	bh=XcKPGs7W7qwnW4V6Ira6eRFtRXWI0MVldvJMmYfwXYY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xA33+qFzE+oDalTXp4AWmh00hesIEQLPAn92WyqlNRu43nj2wc14dxEIdVFV0aKRp
-	 7tgrNfOiWFNjUoBUHBgtk44GS5dTySJySd/tKiStqtTRLFgwvVeYC6fHWM+qXxPVSc
-	 vT919sNHT8C2R1QE9eh5PPKYb0CIv6ScqRKVBDaM=
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Alexander Wetzel <Alexander@wetzel-home.de>
-Subject: [PATCH v2 10/10] wifi: mac80211: Cleanup *ieee80211_wake_txq* naming
-Date: Mon, 17 Feb 2025 09:17:21 +0100
-Message-ID: <20250217081721.45110-11-Alexander@wetzel-home.de>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250217081721.45110-1-Alexander@wetzel-home.de>
-References: <20250217081721.45110-1-Alexander@wetzel-home.de>
+	s=arc-20240116; t=1739780260; c=relaxed/simple;
+	bh=bF0a/IkpMyhveh/0YJtcjCGRAW3EzNu18BCkrIKXgDc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oR29oj5S4cZRu5b1EczBTW5KQiU2RegyQUx0ESvlO+LLSbw2AQ06QrCE643FofOLs/kkpjv3wjKynT70KXJw4JPnXPeSK+lugbpTAuZuqlyzDj7VRrlWj0G6crh+t1KehTaOr/mWDCh4N4M/yNoKERLGxGpgdoGS3d9tlqad2s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=CKcLsElR; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: a2f0e8c0ed0711ef8eb9c36241bbb6fb-20250217
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=9fPO9d8tYshbXLSHxcUn0DWQk7YnJL564Z+u2kxwoI0=;
+	b=CKcLsElRYJ9hxawIgWdhOUnsWm/tR5ytxi6+mpsTZWbpvYMzz+vW6cQLkQRAImEMDJfpNK8SSr8JxNqvD6IYXCXNmuObTHzjLhN3zj84ps82ObyZuho2KYL5Ou1OL/Rc+Sc9BGrHuuNxTB1HuoHLkmWFxY8OPtvPVsUU8c1a8pk=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.46,REQID:59a48b1a-d7af-437d-86f6-f0caa8119a1c,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:60aa074,CLOUDID:4fffdf24-96bd-4ac5-8f2e-15aa1ef9defa,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: a2f0e8c0ed0711ef8eb9c36241bbb6fb-20250217
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1300824870; Mon, 17 Feb 2025 16:17:32 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Mon, 17 Feb 2025 16:17:31 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Mon, 17 Feb 2025 16:17:31 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7925: introduce MLO capability control
+Date: Mon, 17 Feb 2025 16:17:29 +0800
+Message-ID: <20250217081729.1840930-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,114 +78,79 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-ieee80211_wake_txq() and ieee80211_wake_txqs() are not used.
-Rename:
-	_ieee80211_wake_txqs()  -> ieee80211_wake_txqs()
-	__ieee80211_wake_txqs() -> _ieee80211_wake_txqs()
-	__ieee80211_wake_txq()  -> ieee80211_wake_txq()
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+This patch introduces MLO capability control for the MT792x Wi-Fi driver.
+It removes the unused `MT792x_CHIP_CAP_MLO_EVT_EN` flag and introduces new
+capability flags `MT792x_CHIP_CAP_MLO_EN` and `MT792x_CHIP_CAP_MLO_EML_EN`
+to enable MLO and EML features based on firmware capabilities.
+
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
- net/mac80211/iface.c |  2 +-
- net/mac80211/util.c  | 20 ++++++++++----------
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c  | 10 ++++++++--
+ drivers/net/wireless/mediatek/mt76/mt792x.h      |  3 ++-
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 0437e87ec8f2..2a2aaec68d58 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -467,7 +467,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	lockdep_assert_wiphy(local->hw.wiphy);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 98daf80ac131..ad47a4b153da 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -251,7 +251,7 @@ int mt7925_init_mlo_caps(struct mt792x_phy *phy)
+ 		},
+ 	};
  
- 	clear_bit(SDATA_STATE_RUNNING, &sdata->state);
--	synchronize_rcu(); /* flush _ieee80211_wake_txqs() */
-+	synchronize_rcu(); /* flush ieee80211_wake_txqs() */
+-	if (!(phy->chip_cap & MT792x_CHIP_CAP_MLO_EVT_EN))
++	if (!(phy->chip_cap & MT792x_CHIP_CAP_MLO_EN))
+ 		return 0;
  
- 	cancel_scan = rcu_access_pointer(local->scan_sdata) == sdata;
- 	if (cancel_scan)
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 7125a5004776..e85ecbda9afa 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -320,8 +320,8 @@ EXPORT_SYMBOL(ieee80211_handle_wake_tx_queue);
+ 	ext_capab[0].eml_capabilities = phy->eml_cap;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 15815ad84713..5f40c3c1ffa1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2559,6 +2559,7 @@ mt7925_mcu_bss_mld_tlv(struct sk_buff *skb,
+ 	struct ieee80211_vif *vif = link_conf->vif;
+ 	struct mt792x_bss_conf *mconf = mt792x_link_conf_to_mconf(link_conf);
+ 	struct mt792x_vif *mvif = (struct mt792x_vif *)link_conf->vif->drv_priv;
++	struct mt792x_phy *phy = mvif->phy;
+ 	struct bss_mld_tlv *mld;
+ 	struct tlv *tlv;
+ 	bool is_mld;
+@@ -2574,8 +2575,13 @@ mt7925_mcu_bss_mld_tlv(struct sk_buff *skb,
+ 	mld->group_mld_id = is_mld ? mvif->bss_conf.mt76.idx : 0xff;
+ 	mld->own_mld_id = mconf->mt76.idx + 32;
+ 	mld->remap_idx = 0xff;
+-	mld->eml_enable = !!(link_conf->vif->cfg.eml_cap &
+-			     IEEE80211_EML_CAP_EMLSR_SUPP);
++
++	if (phy->chip_cap & MT792x_CHIP_CAP_MLO_EML_EN) {
++		mld->eml_enable = !!(link_conf->vif->cfg.eml_cap &
++				     IEEE80211_EML_CAP_EMLSR_SUPP);
++	} else {
++		mld->eml_enable = 0;
++	}
  
- __releases(&local->fq->lock)
- __acquires(&local->fq->lock)
--static void __ieee80211_wake_txq(struct ieee80211_local *local,
--				 struct ieee80211_txq *txq)
-+static void ieee80211_wake_txq(struct ieee80211_local *local,
-+			       struct ieee80211_txq *txq)
- {
- 	struct txq_info *txqi = to_txq_info(txq);
- 	struct fq *fq = &local->fq;
-@@ -334,7 +334,7 @@ static void __ieee80211_wake_txq(struct ieee80211_local *local,
- 	}
+ 	memcpy(mld->mac_addr, vif->addr, ETH_ALEN);
  }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
+index 32ed01a96bf7..454c6f523cc2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
+@@ -27,8 +27,9 @@
  
--static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
-+static void _ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- {
- 	struct ieee80211_local *local = sdata->local;
- 	struct fq *fq = &local->fq;
-@@ -365,11 +365,11 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 	 */
+ #define MT792x_CHIP_CAP_CLC_EVT_EN BIT(0)
+ #define MT792x_CHIP_CAP_RSSI_NOTIFY_EVT_EN BIT(1)
+-#define MT792x_CHIP_CAP_MLO_EVT_EN BIT(2)
+ #define MT792x_CHIP_CAP_WF_RF_PIN_CTRL_EVT_EN BIT(3)
++#define MT792x_CHIP_CAP_MLO_EN BIT(8)
++#define MT792x_CHIP_CAP_MLO_EML_EN BIT(9)
  
- 	if (ac == txq_fb->ac)
--		__ieee80211_wake_txq(local, txq_fb);
-+		ieee80211_wake_txq(local, txq_fb);
- 
- 	if (txq_mc && ac == txq_mc->ac &&
- 	    (!ps || !atomic_read(&ps->num_sta_ps)))
--		__ieee80211_wake_txq(local, txq_mc);
-+		ieee80211_wake_txq(local, txq_mc);
- 
- 	/* STA TXQs */
- 	list_for_each_entry_rcu(sta, &local->sta_list, list) {
-@@ -390,7 +390,7 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 				continue;
- 
- 			/* releases and retakes fq->lock */
--			__ieee80211_wake_txq(local, txq);
-+			ieee80211_wake_txq(local, txq);
- 		}
- 	}
- out:
-@@ -401,7 +401,7 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- static void
- __releases(&local->queue_stop_reason_lock)
- __acquires(&local->queue_stop_reason_lock)
--_ieee80211_wake_txqs(struct ieee80211_local *local, unsigned long *flags)
-+ieee80211_wake_txqs(struct ieee80211_local *local, unsigned long *flags)
- {
- 	struct ieee80211_sub_if_data *sdata;
- 	int n_acs = IEEE80211_NUM_ACS;
-@@ -428,7 +428,7 @@ _ieee80211_wake_txqs(struct ieee80211_local *local, unsigned long *flags)
- 
- 				if (ac_queue == i ||
- 				    sdata->vif.cab_queue == i)
--					__ieee80211_wake_txqs(sdata, ac);
-+					_ieee80211_wake_txqs(sdata, ac);
- 			}
- 		}
- 		spin_lock_irqsave(&local->queue_stop_reason_lock, *flags);
-@@ -472,13 +472,13 @@ static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
- 		tasklet_schedule(&local->tx_pending_tasklet);
- 
- 	/*
--	 * Calling _ieee80211_wake_txqs here can be a problem because it may
-+	 * Calling ieee80211_wake_txqs here can be a problem because it may
- 	 * release queue_stop_reason_lock which has been taken by
- 	 * __ieee80211_wake_queue's caller. It is certainly not very nice to
- 	 * release someone's lock, but it is fine because all the callers of
- 	 * __ieee80211_wake_queue call it right before releasing the lock.
- 	 */
--	_ieee80211_wake_txqs(local, flags);
-+	ieee80211_wake_txqs(local, flags);
- }
- 
- static int ac_has_active_txq(struct ieee80211_local *local)
+ /* NOTE: used to map mt76_rates. idx may change if firmware expands table */
+ #define MT792x_BASIC_RATES_TBL	11
 -- 
-2.48.1
+2.45.2
 
 
