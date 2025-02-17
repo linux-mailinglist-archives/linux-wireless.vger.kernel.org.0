@@ -1,156 +1,156 @@
-Return-Path: <linux-wireless+bounces-19048-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19049-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B629A37BA5
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 07:44:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1953EA37BFC
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 08:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D628188D6BE
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 06:44:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4933C16B5D1
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 07:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F9518F2C3;
-	Mon, 17 Feb 2025 06:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBBA19ABC2;
+	Mon, 17 Feb 2025 07:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="NvDBsMU3"
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="CHthldAF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-il1-f226.google.com (mail-il1-f226.google.com [209.85.166.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04CD18DB3A
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 06:44:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75061953A1
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 07:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739774657; cv=none; b=A/GXUqni7f8cOuRnGRtiMIudHPFZlXKm6JJd5O4kLAPnjHQKtBMmji0hXhn8aeJK5NnK8TJ71DW8Xwhbi/guIXOwRqBOfp8X5kvWJaGYFozpb1VHeh12FDw+7vMsE9KK4XqjDEztvXR8s9Z4uOrwV5rjnds0ZesN8u7dxrPudWA=
+	t=1739776739; cv=none; b=tBmyOjZB30aqoFiqfDyoFIgGcGqWAgLd4hZMEyA6eJvPOyVsA6h3ygrLtIUmbaEX51m8fbz8QX1kC/bmlAeLdo4JY0adKXpV1Ghm2XXGAUB8zLrCcDz+jLqNo3ISSqZE+7siAbur+IT+SDH6XbwWoST3YvJueW49LsycI6krYuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739774657; c=relaxed/simple;
-	bh=i6LML01k6ox02Cmep8wWm/EbJHTch9V8ckb/pf+uh9Y=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fLraZ05OD+m3hmffy70bDgzZwEJHyXeryVTcBgQdhhku+Zd91rpNcEm1MTA4Q5rkUekcfdhgiuhMW76rSABRs/mSGxaekBuDWTpBncx+1dibuJj/RHhqcD3vjHSVrqTXaKko03byhOjixayq9Do8CBAWoDnzZeeaGHzZau4U7uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=NvDBsMU3; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51H6iDdwD2646958, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1739774653; bh=i6LML01k6ox02Cmep8wWm/EbJHTch9V8ckb/pf+uh9Y=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=NvDBsMU3OTeC/c/2+GTOORdhTC7rOFhv8j9VbLaTLbSbn2MvcRz48MwhFjsZQh3pu
-	 aFurYDaXJwX8tnzrvSKYUclejdkOEz9cEgnzJHdoWXzWF8Mvb0zYfek+SdM801mvfp
-	 BrOx71d0z2ZMZF7ZTk8KHV4EYxX6tIk/lxOmZCP5zJNgnLJCL9qMRsI4Dw788MVV3Q
-	 PuF+ZBDtvJxMQ/U3mMl2bpkWS2uet5OwwogdTgDc7/aPeWuolSn9ygqXhoRKATXHHS
-	 dHxHuIuvMIYwbpB6/1QvzpCUD2M9O4s1vE3ICeuSdiV29E8XgjJnnfw2JYuRZM9oMh
-	 xjZ2cLeoIEQMA==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51H6iDdwD2646958
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 14:44:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 17 Feb 2025 14:44:14 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 17 Feb
- 2025 14:44:14 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 5/5] wifi: rtw89: fw: safely cast mfw_hdr pointer from firmware->data
-Date: Mon, 17 Feb 2025 14:43:08 +0800
-Message-ID: <20250217064308.43559-6-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250217064308.43559-1-pkshih@realtek.com>
-References: <20250217064308.43559-1-pkshih@realtek.com>
+	s=arc-20240116; t=1739776739; c=relaxed/simple;
+	bh=I4jElsKLO3xjHp4+FGR34gEFeHf8DAoYrFYY9fzZwhI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hS+cIn1r1YT75QCASA9SRMvJkVo+gDyLSUGK+1gYWeRbuHOA9ILVtsW1ExBwPWhqk4xxUjO0neTGWTI/Q+jSFDvjxivJInUsXvTrfTEWeHxBZ5hrQFvGKxHPdT0z+nG3Q7WOO9q1MMuqBU538KITvRdum6LKlrUw726Ao9onbrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=CHthldAF; arc=none smtp.client-ip=209.85.166.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+Received: by mail-il1-f226.google.com with SMTP id e9e14a558f8ab-3d04932a36cso38062775ab.1
+        for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2025 23:18:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1739776737; x=1740381537; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gbNYgolpmdlkL880GB4JAqCw8CX2Bv040wvl7gMCZ38=;
+        b=CHthldAFUFjxeHujru+Jvv7nzw4s/Jqs35h1XS1Eyx2mD9bVQh/6MhD3uu11WShvba
+         2onfH7B053q01+iGNcqtE2nmLhb20UFALmYTW4vPlTdl7k1+VbARKNMOdALR4zbLmvwQ
+         XJYk/sv4CdlBsPVcUpKqlees1A/tyRiprQAWi//VwkHWh9EOI9Rt2s+/agK/vzjolrtb
+         FYEZZwL9kJgjWumIEeqzh8CcbFLfJgyOqXzEMouFFHPQPEzMpDbRMPGATJnM2HSlmdOF
+         WFd1rnrShQalAg0WCiH27UWrsxyTazJpxiRV5yMpcbpgNaDxY/x3ujnr2H06nuBD6joY
+         Rp5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739776737; x=1740381537;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gbNYgolpmdlkL880GB4JAqCw8CX2Bv040wvl7gMCZ38=;
+        b=XYYgEpZWXmh+WmpUGFnse0p1+x6B9YPQbYJxD5X1ibxk5BmE3TRZQs5HGadsNHZz9A
+         SPGA6Bqyoq2WdegK/+1+7yMfGNXRGAxraubkp6G3l/sbzRfCYQrdpfOn4Ek9gQuuE/+E
+         zvOQBNS5zZKexfd3L+7Aw+PYHGifvWGPjlmhIpsdpBeq7yPsoVLz/biwEOQgfJKjo3LS
+         vm0Apsu0grfMAWJBPCgO9qQhGOMxhKcSUxr/mDh5iGJwcRU103beM9XG2zifQB8CwyfN
+         ez5arbyCcSPafTSkkNTGSdsBssvJN0zVzYUxucRmg2821iL6jxcpG6ni7xPvdsfEPUu2
+         2o6A==
+X-Forwarded-Encrypted: i=1; AJvYcCXaJaIny4N+kH9ECy8Bu19Idf5OTO6xo1Jja95fOt+O07c+MSdMe6EPZm/aUAzoOHMexlnOyt0W13KWiuNPWA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoNMSMS/z+K3zhhv0Kpus01qyfFf1hoOZHj2tlsagC58oEsvL9
+	5LsMn+Kv1bNpd723bUBiuAorY6ruSKd6R9pCRsXjRB/3EaT9OVvWNNFUNmIVcQLSNfe6BbDybWI
+	Q0HyDkhNsr+fYaGPpjk9RLmIzlHdTXpWi
+X-Gm-Gg: ASbGncvKnJNBhlj5btMTELHjB6xpWjOYQN5yrqK1kIPJUqEAwqSOWtE/IGwwtjb8CL8
+	yBm7OSCZFAgqQ19+f9M0xXtRjbc0ahsh1JmBOm3TqkcMRYD45kaPvvjwqaBu8pNjxRaG6FFSRZd
+	5E5qiHeJKzGGfXprzc+c/ClwgVoaa9MJZuP7E2Xt/UDuBLm17Y+eUAKB1C1N7LYyU+7pBf6sxUP
+	FweFeIUwjvvjQMt+xfQ/mKArr+Lpv6gP/dM49AEFZiZlBnlkqC+epatVosp0E2IqEecdYB/4Gqw
+	uojk5U5HrcqpvopJpUKw+iyc0c0drlQSUm+tP7Y=
+X-Google-Smtp-Source: AGHT+IGx14t/coTa0nDHuRYAjHq9TCbFyk7Yy6Dj0apGzi6Dm2S+35KcW2ni8rQ+sOqnrwLIP6VX4564qiy7
+X-Received: by 2002:a05:6e02:1a8b:b0:3cf:c8bf:3b87 with SMTP id e9e14a558f8ab-3d28076c338mr59775375ab.1.1739776736932;
+        Sun, 16 Feb 2025 23:18:56 -0800 (PST)
+Received: from c7-smtp-2023.dev.purestorage.com ([208.88.159.128])
+        by smtp-relay.gmail.com with ESMTPS id 8926c6da1cb9f-4ed28171124sm524265173.16.2025.02.16.23.18.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Feb 2025 23:18:56 -0800 (PST)
+X-Relaying-Domain: purestorage.com
+Received: from dev-ushankar.dev.purestorage.com (dev-ushankar.dev.purestorage.com [10.7.70.36])
+	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 861D73402B1;
+	Mon, 17 Feb 2025 00:18:55 -0700 (MST)
+Received: by dev-ushankar.dev.purestorage.com (Postfix, from userid 1557716368)
+	id 78229E56B89; Mon, 17 Feb 2025 00:18:55 -0700 (MST)
+From: Uday Shankar <ushankar@purestorage.com>
+Subject: [PATCH net-next v4 0/3] netconsole: allow selection of egress
+ interface via MAC address
+Date: Mon, 17 Feb 2025 00:18:43 -0700
+Message-Id: <20250217-netconsole-v4-0-0c681cef71f1@purestorage.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANTismcC/23NTQ6CMBAF4KuQWVvTHwrqynsYF1in0ERb0mKDI
+ dzdsSuNLl/evG8WSBgdJjhUC0TMLrngKdSbCszQ+R6Zu1IGyaXmktfM42SCT+GGrDaN4CjtrhU
+ GaDBGtG4u2Anojm7nCc7UDC5NIT7LlyxL/w/MknGm0Wq8aNtw3RzHR8T3tOtxa8K9YFl9AvoLU
+ AQIJTslrGjFfv8LrOv6AnJvS+31AAAA
+X-Change-ID: 20250204-netconsole-4c610e2f871c
+To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+ =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>, 
+ Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ Johannes Berg <johannes@sipsolutions.net>, Jonathan Corbet <corbet@lwn.net>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Uday Shankar <ushankar@purestorage.com>, kuniyu@amazon.com, 
+ Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+X-Mailer: b4 0.14.2
 
-Check size of struct mfw_hdr within firmware->size before type casting
-to ensure to validly dereference fields from mfm_hdr pointer. Then,
-check if signature field is equal to RTW89_MFW_SIG to assert current
-is multi-firmware.
+This series adds support for selecting a netconsole egress interface by
+specifying the MAC address (in place of the interface name) in the
+boot/module parameter.
 
-Addresses-Coverity-ID: 1494046 ("Untrusted loop bound")
-Addresses-Coverity-ID: 1544385 ("Untrusted array index read")
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 30 ++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 6 deletions(-)
+Changes in v4:
+- Incorporate Breno Leitao's patch to add (non-RCU) dev_getbyhwaddr and
+  use it (Jakub Kicinski)
+- Use MAC_ADDR_STR_LEN in ieee80211_sta_debugfs_add as well (Michal
+  Swiatkowski)
+- Link to v3: https://lore.kernel.org/r/20250205-netconsole-v3-0-132a31f17199@purestorage.com
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index abbf406a202d..7a591ddb910f 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -542,6 +542,23 @@ static int rtw89_fw_hdr_parser(struct rtw89_dev *rtwdev,
- 	}
- }
- 
-+static
-+const struct rtw89_mfw_hdr *rtw89_mfw_get_hdr_ptr(struct rtw89_dev *rtwdev,
-+						  const struct firmware *firmware)
-+{
-+	const struct rtw89_mfw_hdr *mfw_hdr;
-+
-+	if (sizeof(*mfw_hdr) > firmware->size)
-+		return NULL;
-+
-+	mfw_hdr = (const struct rtw89_mfw_hdr *)firmware->data;
-+
-+	if (mfw_hdr->sig != RTW89_MFW_SIG)
-+		return NULL;
-+
-+	return mfw_hdr;
-+}
-+
- static int rtw89_mfw_validate_hdr(struct rtw89_dev *rtwdev,
- 				  const struct firmware *firmware,
- 				  const struct rtw89_mfw_hdr *mfw_hdr)
-@@ -572,14 +589,15 @@ int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
- {
- 	struct rtw89_fw_info *fw_info = &rtwdev->fw;
- 	const struct firmware *firmware = fw_info->req.firmware;
-+	const struct rtw89_mfw_info *mfw_info = NULL, *tmp;
-+	const struct rtw89_mfw_hdr *mfw_hdr;
- 	const u8 *mfw = firmware->data;
- 	u32 mfw_len = firmware->size;
--	const struct rtw89_mfw_hdr *mfw_hdr = (const struct rtw89_mfw_hdr *)mfw;
--	const struct rtw89_mfw_info *mfw_info = NULL, *tmp;
- 	int ret;
- 	int i;
- 
--	if (mfw_hdr->sig != RTW89_MFW_SIG) {
-+	mfw_hdr = rtw89_mfw_get_hdr_ptr(rtwdev, firmware);
-+	if (!mfw_hdr) {
- 		rtw89_debug(rtwdev, RTW89_DBG_FW, "use legacy firmware\n");
- 		/* legacy firmware support normal type only */
- 		if (type != RTW89_FW_NORMAL)
-@@ -635,13 +653,13 @@ static u32 rtw89_mfw_get_size(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_fw_info *fw_info = &rtwdev->fw;
- 	const struct firmware *firmware = fw_info->req.firmware;
--	const struct rtw89_mfw_hdr *mfw_hdr =
--		(const struct rtw89_mfw_hdr *)firmware->data;
- 	const struct rtw89_mfw_info *mfw_info;
-+	const struct rtw89_mfw_hdr *mfw_hdr;
- 	u32 size;
- 	int ret;
- 
--	if (mfw_hdr->sig != RTW89_MFW_SIG) {
-+	mfw_hdr = rtw89_mfw_get_hdr_ptr(rtwdev, firmware);
-+	if (!mfw_hdr) {
- 		rtw89_warn(rtwdev, "not mfw format\n");
- 		return 0;
- 	}
+Changes in v3:
+- Rename MAC_ADDR_LEN to MAC_ADDR_STR_LEN (Johannes Berg)
+- Link to v2: https://lore.kernel.org/r/20250204-netconsole-v2-0-5ef5eb5f6056@purestorage.com
+
+---
+Breno Leitao (1):
+      net: Add non-RCU dev_getbyhwaddr() helper
+
+Uday Shankar (2):
+      net, treewide: define and use MAC_ADDR_STR_LEN
+      netconsole: allow selection of egress interface via MAC address
+
+ Documentation/networking/netconsole.rst |  6 +++-
+ drivers/net/netconsole.c                |  2 +-
+ drivers/nvmem/brcm_nvram.c              |  2 +-
+ drivers/nvmem/layouts/u-boot-env.c      |  2 +-
+ include/linux/if_ether.h                |  3 ++
+ include/linux/netdevice.h               |  2 ++
+ include/linux/netpoll.h                 |  6 ++++
+ lib/net_utils.c                         |  4 +--
+ net/core/dev.c                          | 37 ++++++++++++++++++++++--
+ net/core/netpoll.c                      | 51 +++++++++++++++++++++++++--------
+ net/mac80211/debugfs_sta.c              |  7 +++--
+ 11 files changed, 97 insertions(+), 25 deletions(-)
+---
+base-commit: 0784d83df3bfc977c13252a0599be924f0afa68d
+change-id: 20250204-netconsole-4c610e2f871c
+
+Best regards,
 -- 
-2.25.1
+Uday Shankar <ushankar@purestorage.com>
 
 
