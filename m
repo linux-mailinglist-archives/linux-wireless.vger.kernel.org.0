@@ -1,63 +1,77 @@
-Return-Path: <linux-wireless+bounces-19104-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19105-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2E9A3AA7C
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 22:07:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65B2A3AB3F
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 22:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F33497A30CC
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 21:06:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5096188DE91
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 21:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB6E286287;
-	Tue, 18 Feb 2025 21:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2651C1C5D6E;
+	Tue, 18 Feb 2025 21:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JdwPBw5R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JMA1cZHG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E012862A2
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Feb 2025 21:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2692862AD
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Feb 2025 21:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739912832; cv=none; b=Kw3+TIyjM95j0PMZyCtjH9B6FDdwK28MIvRDeOUtRelrU0g60qOeJLZx+JU+ELt9bmPglH5UUD4C95fAxPVW3EmFfTAUQ999DBzSZ7d+muMk72Yjw7mW5jG3r54DeTKM/JZowHW7ydhp9BgrXLQypS9nbjkh0aQFSmSyY3Y0bM0=
+	t=1739914954; cv=none; b=hG5CBnetYKlwgd78tslIqJc/WvcneeDF4CnkGSAkm4blIlb3UXcDuVKznzBodirb6gS8H6KGDIt56ZABPxpk6M98yNg6E56fdQB8PlY9JTP/Ex9s8jBWtmYDTWM3MXGP/xh4z/no4P3ctfF8L/wF785Unwwievo4DN0gUbGgvvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739912832; c=relaxed/simple;
-	bh=8lhppBDa0yUTyc8VnMLYSVXTn2E9Un6ts4+FH3lJbO8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=PCz2vHPdoqtRSKO1NCUkXntX9emajVaB/4fvOp+DPIbhr5Q3pRjsQXCfrbGkDUvJAWT89Pp779iWlSVSgni6ENR+iUNCawsSVgpj/hiwtdmeJDHt0CWdHvvlcL+UsdsU48prPDlO4/UGkJaB/OgXxq2xfJNiqkglhQ09QXFOOCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JdwPBw5R; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51IIwKJm001819;
-	Tue, 18 Feb 2025 21:07:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	tNqR930C4CnK824An0yd34Tx7MRifk807WJETRzoTUc=; b=JdwPBw5RAbHoZazo
-	bk1PoYxDeFmbaLKzUSsQJZxiGsDX/CP7NiHT5jIwZanbON0lScGioLmY0ZjQgnZD
-	t6Q4jQhj0UxZn3AOqJZqzUIOQcPv/NDdggKNjh8hXLAgn3Q7ubiCsHOOMCmKyRDX
-	Ol+EZQWnYol0M9V1qxb88ExN0Tzy+BieTx2jfFs/4jVN808B05nVF0laKH7IKOS4
-	pU6KxB2bhQ5neLJ6hDRRHuL6iHd4h5X+Ohu6T0VvRbeCR+YKvUePkfW4Kvm4O8UN
-	rvoGuW7nU06PjhIGGRaIzv4suMLLYbPSdp/pC8fX1XbTOQQXNlGK2NwCkD69jUod
-	v3cynw==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44vyy289my-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 21:07:06 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51IL76Xm013056
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 21:07:06 GMT
-Received: from [10.227.108.41] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 18 Feb
- 2025 13:07:05 -0800
-Message-ID: <d22383c8-642c-4c47-8d4b-c145d1ca5f70@quicinc.com>
-Date: Tue, 18 Feb 2025 13:07:05 -0800
+	s=arc-20240116; t=1739914954; c=relaxed/simple;
+	bh=dvT+OGJFnH+id/Afx4qY9wUNsaN0FnPaOn15yIyAI9k=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=ZvvFlZEeaTH0boAIfi4ssTEybWFL9EM8NFiWYCxTOxJ1+UbNZj47rqRc+eZdUFfRj4JsnVptuSPSp/byTTlwB87L8xN9is0mUsLLx6RyrrTeyND4etVZwOfLj7VHeYbsowY+IzkpO7IojbjD9IV7RVRqE3WBquMmJ7dNhVWT/wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JMA1cZHG; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-abb79af88afso637816466b.1
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Feb 2025 13:42:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739914950; x=1740519750; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lbzWCcbRbOTgT4JZLAfnqovMcN7JLOQtCl2OkmB7qPE=;
+        b=JMA1cZHG1ETjbXc4GHJqJsriey9Zk1oo0krOWncKCY4fuKWjL811TLVSHf8kaRMJHc
+         rWx5/Sey0J9BqWvwvAb1GXijIJP78yulqQ5GGAaY95X3OOmcJBP6dqGgjC14BSaFYrcx
+         jh9UjK1ZlWgk2qqhPHCNwntckSoF2oStcEtg89OCJcmO3lTihy+H3HLEHQhsZC3gvWoh
+         EXluLcp01bH7CIu9WtNIMD2Z70uCJxCylJTlwYQ+xZ9/2ZrN88Y8wdWME2Dg32gpGt92
+         ifd3jD4Qud80e3vLn+nkyjIU9cxCEtDXRRoRRIpnORM//HpGE74BksiwgNwQetpFqbL/
+         k1Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739914950; x=1740519750;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lbzWCcbRbOTgT4JZLAfnqovMcN7JLOQtCl2OkmB7qPE=;
+        b=g4oiHMBZXBD4joX/Hb6tcCvZHFic+q4oN2aNttjjaXB6+CD6MbOZuLGts7mnOugGNr
+         euUS+6Dg7Clvwz3gexzhsxSurjRMuxEbaQn29bZEgv+P6GmUCdyWHd53BLnkAIdOCgVp
+         /lBY1F4tACzQjZ1syQTkV+kv5t24jciVhFHeGV06nKJtei4dCymK4pPddAXCVrzm8YeC
+         9/+frf/Q4+LCls4enmBgOD08DAWctLRLBo2RijCpsAGk6wF0GtMUAFtD+jn5UKbfplta
+         WMB+CY4Pu2MugLdmoVzcTu4edFzsImBbz3AtRwuCOLO7zldej9/KB1pJI4R048phefs5
+         b7Zg==
+X-Gm-Message-State: AOJu0YzpRgUo0bzLfOafgYKRUV4mBKxS4xEzmWqx6r2a3KUD3rWGbddS
+	kSOcPE+vUvImk93vSBVPB0dKhP5bv1IWA3j3jHiaEv7JmN9iC90EEG9awQ==
+X-Gm-Gg: ASbGncsDZjfAgBlBNDB2aEE7WepGQSKjWOAqu3+dXKxUWps6UPG8YWo/6VwMjWy2mjK
+	Dc/VpJiyx1QTzkYBbBuiYA/kiv81aPLHEKsbNNYCZhd8jJ59dkLb8+DQ3XQcbSY3WMj6ymM6Vth
+	AUCtVoGWurfojnJGKbSswdufqPK50eL2ahyVCzTlXU6/6yNsiq6vkAU93h9mVSCpWfctDpxEGXM
+	lFlpCukP7YKijytfgPLdqvA4frX4q6xE3LGTmWaR3POlLjSicVeV+EP1pImy4VxdzzZ4X2bOScl
+	c8nZoFk7Pw7zDzgzFV5kNm00
+X-Google-Smtp-Source: AGHT+IF3uqBX1tx0sYshgezudLhj6V4db33vMVJr9meTAQQEZnxA6I1SdEhQHqLKeHsz865wnaGYqQ==
+X-Received: by 2002:a17:906:c154:b0:aaf:74dc:5dbc with SMTP id a640c23a62f3a-abb70bbe128mr1780329166b.29.1739914948048;
+        Tue, 18 Feb 2025 13:42:28 -0800 (PST)
+Received: from [192.168.0.50] ([79.119.240.155])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbbb6553bcsm189674166b.185.2025.02.18.13.42.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Feb 2025 13:42:27 -0800 (PST)
+Message-ID: <0c91ac77-a652-4ab4-b911-e0a2386fb863@gmail.com>
+Date: Tue, 18 Feb 2025 23:42:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,53 +79,40 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V10 1/9] wifi: ath12k: push HE MU-MIMO params to hardware
-To: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Muna Sinada <quic_msinada@quicinc.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-References: <20250213012439.278373-1-quic_pradeepc@quicinc.com>
- <20250213012439.278373-2-quic_pradeepc@quicinc.com>
- <73645538-06c2-48b7-a95d-9e47b06674b0@oss.qualcomm.com>
 Content-Language: en-US
-From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-In-Reply-To: <73645538-06c2-48b7-a95d-9e47b06674b0@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: HfZXvtdUTRUPqpIk3vaWOM9nL4_QPgCb
-X-Proofpoint-GUID: HfZXvtdUTRUPqpIk3vaWOM9nL4_QPgCb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-18_10,2025-02-18_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 clxscore=1015 adultscore=0 phishscore=0 mlxlogscore=942
- bulkscore=0 malwarescore=0 impostorscore=0 priorityscore=1501 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502180142
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtlwifi: pci: Fix condition to wake the queues
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+The TX queues should be woken when there are at least 4 available
+entries, not when there are at most 4.
 
->>       ret = ath12k_wmi_send_peer_assoc_cmd(ar, peer_arg);
->>       if (ret) {
->>           ath12k_warn(ar->ab, "failed to run peer assoc for %pM vdev 
->> %i: %d\n",
->> @@ -3873,6 +4012,13 @@ static void ath12k_mac_bss_info_changed(struct 
->> ath12k *ar,
->>           ether_addr_copy(arvif->bssid, info->bssid);
->>       if (changed & BSS_CHANGED_BEACON_ENABLED) {
->> +        if (info->enable_beacon) {
->> +            ret = ath12k_mac_set_he_txbf_conf(arvif);
->> +            if (ret)
->> +                ath12k_warn(ar->ab,
->> +                        "failed to set HE TXBF config for vdev: %d\n",
->> +                        arvif->vdev_id
-> 
-> So when you bring up AP in non-HE mode i.e HT/VHT and all, this print 
-> will appear which will be misleading.
-> 
-Thanks Aditya, I agree with your suggestion. I will make these changes 
-and submit an updated patchet v11. Thank you for your valuable input.
+Tested with RTL8821AE.
+
+Fixes: d0311314d002 ("rtlwifi: rtl8192ee: Fix handling of new style descriptors")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 0eafc4d125f9..9614a9e752b9 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -520,7 +520,7 @@ static void _rtl_pci_tx_isr(struct ieee80211_hw *hw, int prio)
+ 			rtl_tx_ackqueue(hw, skb);
+ 		}
+ 
+-		if ((ring->entries - skb_queue_len(&ring->queue)) <= 4) {
++		if ((ring->entries - skb_queue_len(&ring->queue)) >= 4) {
+ 			rtl_dbg(rtlpriv, COMP_ERR, DBG_DMESG,
+ 				"more desc left, wake skb_queue@%d, ring->idx = %d, skb_queue_len = 0x%x\n",
+ 				prio, ring->idx,
+-- 
+2.48.1
+
 
