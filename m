@@ -1,81 +1,95 @@
-Return-Path: <linux-wireless+bounces-19084-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19085-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA981A38FB8
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 00:47:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6370A38FDC
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 01:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BC663ACE11
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2025 23:47:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89CE1188FE65
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 00:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00FD1A3A80;
-	Mon, 17 Feb 2025 23:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2C4A47;
+	Tue, 18 Feb 2025 00:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qbBJnJ85"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="d/6Fxrv4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE39E7404E;
-	Mon, 17 Feb 2025 23:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414BB819
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Feb 2025 00:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739836022; cv=none; b=Uh1AYyy+S7STORUzlwUyKYttytLCFe/81d2N06UaQDQZKTRDWIgxXMBWpqr73HFjCAsJcgQqZiPvTDzdxI0kXA6ulcnWTrZJUc2UR/ElKQ+52NIR23quEespbkmJOVj7RiL7oB6CBR3hl89XILqcAsLBQ+AxOq9pUKYhoi4D9G8=
+	t=1739837530; cv=none; b=DWluxJ9JRPWOV3DGqXttbC0uimfjAewfKe9UA9zwYIIKeKXdIaIwUBzPz/N6bpDL+70hHNL+OCJGpnldwCOsSalmdDs7gbKIAMKmYsKEiBt2zQjSIQC3xz8sVAYuxVekNLEBip6cfGcVBeQ6/Qmmvx7THuHwBZRdhyf4MMQ5ads=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739836022; c=relaxed/simple;
-	bh=KtTFA6BxoMx2wTauDjB3MIJGMaVanSteNnBqy7zSKnI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pTOaM2ViBP07W5NNFdZjXrXcqeQZh4Fm/p/8gbmyAadkvVKFsC7Xm/0BnOnbvnVZNFIR5/SMA0GT+5faqmR6fXe3pYK31UBe4IjmXif8Mn6zWb/gmJl0K2lpHIJ+0OFijaLuzCj0tmZvZFtL0bpNO8zMmKBMvdcGhic3mQnF5+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qbBJnJ85; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6985CC4CED1;
-	Mon, 17 Feb 2025 23:47:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739836022;
-	bh=KtTFA6BxoMx2wTauDjB3MIJGMaVanSteNnBqy7zSKnI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qbBJnJ85+I82OYuJeWf6Ydzop158a+pw12JLnJ9gxr4USVUlpj8mQsTzfa8yZdzpe
-	 Qa6E3w0Zlg5qQVfY5fn/c7iUCuc9yaoKcP3pfgbFvgtkGhg+rK7SQdn+G/5h0jwdxP
-	 SUqtf899+tILoA8UvS/XgvmEWw4ml0W6y0rdHr4WiC+Xtfo5xzCikA7pSV6n+VvY7X
-	 vHOsHZjCphmvc92crZZIpqo+sdHeVAOhgDp16tGLYO4sAaLt50k7xLmZFCQYiVmONi
-	 I/2okhAlZDqyxOmW1AE7PRH9foK0LNfKRApayfG2dM6oNz8FrjmGyLonaAeh99O7ZW
-	 wsk3TSufu9zQA==
-Date: Mon, 17 Feb 2025 15:47:00 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Uday Shankar <ushankar@purestorage.com>
-Cc: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Srinivas Kandagatla
- <srinivas.kandagatla@linaro.org>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
- <rafal@milecki.pl>, Simon Horman <horms@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Johannes Berg <johannes@sipsolutions.net>,
- Jonathan Corbet <corbet@lwn.net>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-doc@vger.kernel.org, kuniyu@amazon.com, Michal Swiatkowski
- <michal.swiatkowski@linux.intel.com>
-Subject: Re: [PATCH net-next v4 0/3] netconsole: allow selection of egress
- interface via MAC address
-Message-ID: <20250217154700.34616bd7@kernel.org>
-In-Reply-To: <20250217-netconsole-v4-0-0c681cef71f1@purestorage.com>
-References: <20250217-netconsole-v4-0-0c681cef71f1@purestorage.com>
+	s=arc-20240116; t=1739837530; c=relaxed/simple;
+	bh=EL5ftmjCC+CAFwwswqNOLfq3lcfH4JJ8ZweYsMDXMSE=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=WNCUSiOOYkBD4cIwkaGgJwdj63ZOV0XUSb+PveBPi7mEdb/Iont1hZZCpiWo/IEh6qHhrk8waJYzhdpQp0fgyo7YxB7UB7qnhVW9e8Oatt8XaaTNHfmLqn8N4cFZQIgtCQHtePnT1ftJWGGUD7t1uFtn5ZZJwLsfy5LtQbgg42w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=d/6Fxrv4; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51I0C2TQ03877033, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1739837522; bh=EL5ftmjCC+CAFwwswqNOLfq3lcfH4JJ8ZweYsMDXMSE=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=d/6Fxrv4YiYqp4KHidzRYs0aSohE0LPVuMBz40kP60UXlbGkVzXJvs1B6TykQKdKS
+	 zHf+7TKnD+m1vBr3f2oWHq6G0SHM3uZXhmdpDr8m4ky20KEhOl6hFuqhrqrll7iLEu
+	 NQqBDafiwpRCJoJ2ugXPfPDrGeD19PStYL8t/fsywHBN7tOjRL/hzD5VEkN8I6ljsV
+	 N+7L1YxmCV4wLY4DD30OMcLuzZ7QPMEATHxwEqGdJ08EbIHfaDY0hgt/+2toAD6H7g
+	 6X+Kr76rFz83wccoe4icMgCbMcgLgjkDG6UiKEB9vtRmvxbhXpVcMd5fPSzzAwTkgH
+	 c4nS3dbgntmRg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51I0C2TQ03877033
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Feb 2025 08:12:02 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 18 Feb 2025 08:12:03 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 18 Feb 2025 08:12:02 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b%5]) with mapi id
+ 15.01.2507.035; Tue, 18 Feb 2025 08:12:02 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH v3 2/8] wifi: rtw88: Fix rtw_desc_to_mcsrate() to handle MCS16-31
+Thread-Topic: [PATCH v3 2/8] wifi: rtw88: Fix rtw_desc_to_mcsrate() to handle
+ MCS16-31
+Thread-Index: AQHbgZPci7CtFw9y4UagSy9JkNAgWrNMMDQA
+Date: Tue, 18 Feb 2025 00:12:02 +0000
+Message-ID: <2d45cc0434844265a60a9cb148b25205@realtek.com>
+References: <3908a496-d687-40fb-a1af-6add5c7e1dd4@gmail.com>
+ <d0a5a86b-4869-47f6-a5a7-01c0f987cc7f@gmail.com>
+In-Reply-To: <d0a5a86b-4869-47f6-a5a7-01c0f987cc7f@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On Mon, 17 Feb 2025 00:18:43 -0700 Uday Shankar wrote:
-> This series adds support for selecting a netconsole egress interface by
-> specifying the MAC address (in place of the interface name) in the
-> boot/module parameter.
-
-Breno is submitting the first patch with a fix, please wait for it 
-to appear in net-next then rebase and repost. It's probably going
-to happen on Friday.
--- 
-pw-bot: defer
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBUaGlz
+IGZ1bmN0aW9uIHRyYW5zbGF0ZXMgdGhlIHJhdGUgbnVtYmVyIHJlcG9ydGVkIGJ5IHRoZSBoYXJk
+d2FyZSBpbnRvDQo+IHNvbWV0aGluZyBtYWM4MDIxMSBjYW4gdW5kZXJzdGFuZC4gSXQgd2FzIGln
+bm9yaW5nIHRoZSAzU1MgYW5kIDRTUyBIVA0KPiByYXRlcy4gVHJhbnNsYXRlIHRoZW0gdG9vLg0K
+PiANCj4gQWxzbyBzZXQgKm5zcyB0byAwIGZvciB0aGUgSFQgcmF0ZXMsIGp1c3QgdG8gbWFrZSBz
+dXJlIGl0J3MNCj4gaW5pdGlhbGlzZWQuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVl
+IFNtaXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4NCg0KQWNrZWQtYnk6IFBpbmctS2UgU2hp
+aCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KDQoNCg==
 
