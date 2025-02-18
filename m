@@ -1,62 +1,61 @@
-Return-Path: <linux-wireless+bounces-19095-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19096-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25A3A393DF
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 08:40:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B326A39503
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 09:21:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC2D43A6EE4
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 07:40:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED2187A2849
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 08:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85961B87CF;
-	Tue, 18 Feb 2025 07:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41AB241136;
+	Tue, 18 Feb 2025 08:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VATh4IjY"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="fOjh5k2v"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1CD1ADC81
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Feb 2025 07:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F256241122;
+	Tue, 18 Feb 2025 08:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739864435; cv=none; b=WvpZ1mLqmYjc7CFu+xqo6d0UbWFBVBgJQqWU0I4l5yc5kZ8BzXoIIXMPip/KFqM/GokNy+k3zlgVgGCMpgpNSyViJjXw5/y691P7oni1k8djHb4OXjymWti2cTg4J20yqlgxZ5cPb+/5L90DFWqtB6f/9JWttdQBMgtnWtV/DFM=
+	t=1739866527; cv=none; b=qsQypNVAQBvWGFVwhM7AW4zvEXGq2t7k/SmObbmXDrcuANdDz5r6C5icl1moxh2krDOu9AYgYbp5DGSqNh0YxSTvX1e7vS0BCcd07uPv3qi82Cbu+7iK4QvjiofAEoLNH9EN35BJU3rvu4YrWFV9q9jAeFSLf3R39W9YGJJ3kIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739864435; c=relaxed/simple;
-	bh=Zbq+iFyGrqY1DGMya38wMUj5eUk2k7cBqw92Q1rUOgk=;
+	s=arc-20240116; t=1739866527; c=relaxed/simple;
+	bh=kIzCi96nV3/q5JwgPyMeC5hhqR1+he9F7aU3vXLhIJg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lFGfG9zPKg/Y14OdVRAymCHEfUkj0eHTxADO8G1mN4OuLwJVyREm1Q4YJJzQrn8xiS5SOBuwSzs3gBAee9yTat9SH3zcIqEPU5GfzwP7SQDdVdHEaV8VLnYqG81swOavIOVwg01gwOSu7hkEWc4S8BlZfNf/NI/aSHstldZeq78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VATh4IjY; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=ZDIto8KfuxXsbkhEeeri6rt0mT1RtGuY4QE+l+WYLOYvNHKVRcD2PTaR/vcRyRDj7i3xkHyUimpVZd/04NsIch3JSqnlZSBhTmTakV3iXCyTjkXx5aWEr2GJ24/qsM91YzOblaJwJQ5wb3+g1gf1QfQkIG+mI91t2+oliELj21I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=fOjh5k2v; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Zbq+iFyGrqY1DGMya38wMUj5eUk2k7cBqw92Q1rUOgk=;
-	t=1739864434; x=1741074034; b=VATh4IjYUuVM4vyUiFbEIXs9euEDRKQeLnAOR2dnGHPYwHe
-	PkqQ/FIEXSrAUM0l0eDgvBvB/XOC4xtzBt5h03GuUMXRj2EELsj3e+cUGqoa7VnhW/1b5kXvUywBe
-	2u9hM0dNdRik5cgTfJ4VVxbP18Mi8ofCv4MdlDrJNaJxG4rhus3EU8AMD4Vp2WMIK2XpLSN1VtZIy
-	X/WoOtbOJXWYOmNCQHE1+lFxZlNiCbMUebGTOai79uIGh2B1TqRXX7nG3XcuFU62ZSzAGlP7UIeJE
-	PvGpC1wGmIQEZm3ZOZP8FQmOGTZblXZoitYTTh1aUveta0s6AV7un6aUEmzvZeHA==;
+	Resent-Cc:Resent-Message-ID; bh=72etSD4IW1fdoCqIDb0MAOspZxQRpcvYAHDUFcZyj8M=;
+	t=1739866526; x=1741076126; b=fOjh5k2vwuLnhfGIpqmLuB2M2Od+0kK9+kemXTGaWyMFPdg
+	67SDUfqQWHyf0U/vvqcE7ABYEvg2IFMAR0ABNB9M5NoYvnsVRfWNuBwfB7c1sEDmkDH9vo8Lw+/VZ
+	T8pVDaSBZSDrgC+irJ/zkdWiIhEJ0oh44x8u/DpoEJtMiPX0eZXuUOIGtt6ypgcu+oHxxyETX+kyV
+	LDUqikhcDfs9t5nBc6tceVebCKXpsf6tik2LJmafVMnKwO00k1uR84CpArv4ZlwV+XwC1Dt7fEdst
+	HR3KW0SE3K4sx7mTur+fUL3QzKd9cAIydNCahAtsOoqyVEN5bP2vd/DlP0yoN1Ww==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1tkIDS-00000001Gs7-3jtM;
-	Tue, 18 Feb 2025 08:40:27 +0100
-Message-ID: <5e433cd8d070682cb6ed31de3a2dd337e6f48b50.camel@sipsolutions.net>
-Subject: Re: [PATCH] wireless-regdb: Update regulatory rules for Iran (IR)
- on both 2.4 and 5Ghz for 2019
+	id 1tkIlF-00000001HxQ-1ViY;
+	Tue, 18 Feb 2025 09:15:21 +0100
+Message-ID: <6a5eb58c06cc1d5bdeb67fe877ef3a98520627ed.camel@sipsolutions.net>
+Subject: Re: unknow Network controller: Intel Corporation Device 093c (rev
+ 3a)
 From: Johannes Berg <johannes@sipsolutions.net>
-To: wens@kernel.org, Ping-Ke Shih <pkshih@gmail.com>
-Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org, 
-	mobin@mobintestserver.ir
-Date: Tue, 18 Feb 2025 08:40:23 +0100
-In-Reply-To: <CAGb2v66Qev8nQvt54dKDC+Q+rJ5m6+erWO2L4_vSMVqrTe_DRQ@mail.gmail.com>
-References: <20250218025957.13818-1-pkshih@gmail.com>
-	 <CAGb2v66Qev8nQvt54dKDC+Q+rJ5m6+erWO2L4_vSMVqrTe_DRQ@mail.gmail.com>
+To: Corentin Labbe <clabbe.montjoie@gmail.com>, kvalo@kernel.org, 
+	linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Date: Tue, 18 Feb 2025 09:15:16 +0100
+In-Reply-To: <Z7N7AvQvv8k4OY-o@Red>
+References: <Z7N7AvQvv8k4OY-o@Red>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -68,27 +67,28 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Tue, 2025-02-18 at 13:29 +0800, Chen-Yu Tsai wrote:
-> There are NO-INDOOR and NO-OUTDOOR flags for the database. The kernel
-> doesn't have a matching IEEE80211_CHAN_OUTDOOR_ONLY flag though.
-> Maybe that should be added?
+On Mon, 2025-02-17 at 19:08 +0100, Corentin Labbe wrote:
+> Hello
 >=20
-> Johannes, what do you think?
+> I have a thinkpad t460s laptop with an unknow network device.
 
-Good question. I guess we could have it, though I'm not sure we'd have
-any mechanics to actually _use_ such a thing right now? Something, say
-hostapd (?) would have to promise it's actually outdoors?
+According to ifixit teardown images, that came with an 8260 WiFi NIC.
 
-More information doesn't hurt and I don't mind adding it at all, but I
-do think we'd probably not be able to use it at this time.
+> Since the laptop does not have wifi, I suspect it is the wifi card.
+>=20
+> The laptop is running Debian bookworm, and I tried to update pci.ids, no =
+more information.
+>=20
+> lspci -vx give:
+> 03:00.0 Network controller: Intel Corporation Device 093c (rev 3a)
+> 	Subsystem: Intel Corporation Device 2181
 
-Or we could add it to the db.txt file but ignore it in parsing now and
-skip the band for the binary for now?
+But that doesn't match at all, not even close.
 
-The thing is I don't think we have a good way to say "older kernel skips
-this range" - or perhaps we set the NO_IR flag so older kernel cannot
-use it but then allow OUTDOOR_ONLY to override that given some
-conditions?
+I cannot find any record for WiFi of these numbers, so either the device
+is not WiFi or is malfunctioning. You could try to open it up, take a
+picture so we can see what the WiFi NIC is, and also maybe re-seat the
+NIC while at is, occasionally that fixes such issues.
 
 johannes
 
