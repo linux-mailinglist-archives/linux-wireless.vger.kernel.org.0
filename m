@@ -1,162 +1,188 @@
-Return-Path: <linux-wireless+bounces-19092-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19093-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F913A39157
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 04:34:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D85FFA392A0
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 06:30:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 182D23B1FC3
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 03:33:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB09016A8BE
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 05:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DFB156C62;
-	Tue, 18 Feb 2025 03:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEBB1B0F09;
+	Tue, 18 Feb 2025 05:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="tUmx8OtJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqWxarKh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EB915B115;
-	Tue, 18 Feb 2025 03:33:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D2C1AAE01
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Feb 2025 05:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739849636; cv=none; b=P8UsmzDMAVFCDsWcFnWtZZgMNXA/EwMrepAi5gT4E+78oXzV0Y/Ia14tgFq5fz9U3/Lrbfv6hFNVSoKwm4luOhdNgNLV0U1fYyZc44oMit5/3tX66Oau2H3K9oFmPkWzayM1CNiHJNLniIDHFvICQwkQ34zvlbr4ggst0TnOj/U=
+	t=1739856609; cv=none; b=rWVPmRaOXKZ5EqJBwrMFVgOIvQgGY1yObcDN6U57WakhPAGi2IAvyWzNLfrwzPs+sfxpLafiRJolSXXNruLX34OXwodzdZR2ByPxCbpPRY817qubr8ZYRf7dPRd4z9914IEm5u+YJXfravLqliMlkjF/eQ4pfW0BUz40qQhnQIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739849636; c=relaxed/simple;
-	bh=g3CVzc0N4QCovs4cPbDtedwoOVxTlanqyloRgtqqMl8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kkSWVcZau/cZP1saFx7C6U2pyW9H5zpSSAR2Hc2hnwrwz6AI2a6OsBt9dU1O6JQFn9oD1F49l1LtKa6IkvWdTCsiUX3fXxHXZa8VlXJdcb2Cw2QHstRZnjGqUeWV1QwfiDe9vvCyaECxBI2idc33YosfHlnfRBiV6tqAtm800iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=tUmx8OtJ; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 28945dc6eda911efaae1fd9735fae912-20250218
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=jYfLsQz2vVDXyMu7G7dGGNxPBYtbHclJtLhy9S100qM=;
-	b=tUmx8OtJiCl3XNJi+vKA1IZmEeORwuvrfLhu6uUi96RPPtE2GJ+TRPRe8QdKwD15Y5JZGfnAgx4Z6XdiGtbCRG72k37sZ5J1Rc+pOOak3PridAq+CdhslYg4NJM1OnRA6LP8eWNzq008iiO29LcH8OypTlvnhU5HPre1d+Ecg9E=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.46,REQID:48e772b0-f9f0-43a1-bfdf-afa85c1c3ad4,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:60aa074,CLOUDID:6a007aa3-3e52-4e5b-a515-5e42bbdb1515,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-UUID: 28945dc6eda911efaae1fd9735fae912-20250218
-Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw01.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 2007115265; Tue, 18 Feb 2025 11:33:45 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Tue, 18 Feb 2025 11:33:44 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Tue, 18 Feb 2025 11:33:44 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>, <kvalo@kernel.org>,
-	<kuba@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
-	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, Nick Morrow <usbwifi2024@gmail.com>,
-	<stable@vger.kernel.org>, Salah Coronya <salah.coronya@gmail.com>
-Subject: [net-next, v3] wifi: mt76: mt7921: fix kernel panic due to null pointer dereference
-Date: Tue, 18 Feb 2025 11:33:42 +0800
-Message-ID: <20250218033343.1999648-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1739856609; c=relaxed/simple;
+	bh=SRLhRMvGZy9+ksm1deWp4jZ3fd0gE+mMpKcQ0UJAkIM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BCIC9ZyCg5cCjcQ4rurnAw+mAy5xKoVg6DpVD9CUlJDXTwhR4HRU02dj4tV0z4DzW/SzU/eEcnndlPkCJKrSRd8YKzONxoTteAAf4N++7dIwwDBLLk6bOJx6zCBmP9VsNcq6f7CN+pNkb3CG+B8Oi0KDLIc95LA/GrRJ9FownRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqWxarKh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC35C4CEE2
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Feb 2025 05:30:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739856608;
+	bh=SRLhRMvGZy9+ksm1deWp4jZ3fd0gE+mMpKcQ0UJAkIM=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=cqWxarKhJPBp/RsAzgzFFOSN3FeHYRB6BWTCy8WIXbIbv2Dh/+SwUFCqROBSJbCgd
+	 d9zzFKMw6gcFzFtLwvlW6L/Yxk5LkF91vrn6PZ//7NSbvmZ6v38pfcdrPEQDh91y/n
+	 jsBgTSCJqQUOxB+85cnswt1bgmUi0B61QImvxx1sY7KIyUWVbA9fGBLg5Tk4ZVAt9I
+	 A78YeMO9WrS1xiY9nienjkJCqZe95IRNlFFGP+a9kHJz0v7iwKCSMGxGGzDt5I0fHK
+	 wJSVUyYUikzcJfl35Ot1HUG/HjZe0bXaHKwtaAmnWv17xvEByCh/SiJNddLWoSiMNj
+	 jKyUWR4inP86w==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30761be8fa8so55205491fa.2
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2025 21:30:08 -0800 (PST)
+X-Gm-Message-State: AOJu0YxM68/mMGiP+TYr1zaP50J8zhrL6aQOo/yr/0Wjfqbl+9QUFUsR
+	04KNrhHANvOrN1Tk40swycHompqJwEpblvWX/1O5pRzf5VD5qHVSEgNVoZJbDt4Zils6p3rX7gZ
+	TI89JM/Z0vCI6dIfnhE7ub/AuTBU=
+X-Google-Smtp-Source: AGHT+IGjxjNnioiZl84qFq+LDVdB0u0Ed9PGp4NJYT1Sr6MQj/z9h9q+qSimQbuw5rwlezSF/74BT96NwfiQjRJKDbw=
+X-Received: by 2002:a2e:7010:0:b0:309:25ce:8b8b with SMTP id
+ 38308e7fff4ca-30927a42c1cmr35628981fa.4.1739856607076; Mon, 17 Feb 2025
+ 21:30:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+References: <20250218025957.13818-1-pkshih@gmail.com>
+In-Reply-To: <20250218025957.13818-1-pkshih@gmail.com>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Tue, 18 Feb 2025 13:29:52 +0800
+X-Gmail-Original-Message-ID: <CAGb2v66Qev8nQvt54dKDC+Q+rJ5m6+erWO2L4_vSMVqrTe_DRQ@mail.gmail.com>
+X-Gm-Features: AWEUYZkZEgvpDeQmCWC4hackSWfOSldOfUQ5KzPGEVw6moEyk4SbA4xKG7JzsCg
+Message-ID: <CAGb2v66Qev8nQvt54dKDC+Q+rJ5m6+erWO2L4_vSMVqrTe_DRQ@mail.gmail.com>
+Subject: Re: [PATCH] wireless-regdb: Update regulatory rules for Iran (IR) on
+ both 2.4 and 5Ghz for 2019
+To: Ping-Ke Shih <pkshih@gmail.com>, Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org, 
+	mobin@mobintestserver.ir
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+On Tue, Feb 18, 2025 at 11:00=E2=80=AFAM Ping-Ke Shih <pkshih@gmail.com> wr=
+ote:
+>
+> From: Ping-Ke Shih <pkshih@realtek.com>
+>
+> Decision No. 4004-01DEC-CRA, 8th Edition - February 2019,
+> Radiocommunications and Regulatory Organization.
+> General radio license for the use of parts of the frequency bands
+> 2400-2483.5 MHz, 5150-5250 MHz, 5350-5250 MHz, 5470-5725 MHz, and
+> 5850-5725 MHz in radio access networks. [1]
+>
+> * 2400 - 2483.5
+>   - 100 mW e.i.r.p
+>   - 10dBm in every 1Mhz
 
-Address a kernel panic caused by a null pointer dereference in the
-`mt792x_rx_get_wcid` function. The issue arises because the `deflink` structure
-is not properly initialized with the `sta` context. This patch ensures that the
-`deflink` structure is correctly linked to the `sta` context, preventing the 
-null pointer dereference.
+Should keep a note saying for outdoor only usage, the limit is 4000 mW.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000400
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
- CPU: 0 UID: 0 PID: 470 Comm: mt76-usb-rx phy Not tainted 6.12.13-gentoo-dist #1
- Hardware name:  /AMD HUDSON-M1, BIOS 4.6.4 11/15/2011
- RIP: 0010:mt792x_rx_get_wcid+0x48/0x140 [mt792x_lib]
- RSP: 0018:ffffa147c055fd98 EFLAGS: 00010202
- RAX: 0000000000000000 RBX: ffff8e9ecb652000 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8e9ecb652000
- RBP: 0000000000000685 R08: ffff8e9ec6570000 R09: 0000000000000000
- R10: ffff8e9ecd2ca000 R11: ffff8e9f22a217c0 R12: 0000000038010119
- R13: 0000000080843801 R14: ffff8e9ec6570000 R15: ffff8e9ecb652000
- FS:  0000000000000000(0000) GS:ffff8e9f22a00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000400 CR3: 000000000d2ea000 CR4: 00000000000006f0
- Call Trace:
-  <TASK>
-  ? __die_body.cold+0x19/0x27
-  ? page_fault_oops+0x15a/0x2f0
-  ? search_module_extables+0x19/0x60
-  ? search_bpf_extables+0x5f/0x80
-  ? exc_page_fault+0x7e/0x180
-  ? asm_exc_page_fault+0x26/0x30
-  ? mt792x_rx_get_wcid+0x48/0x140 [mt792x_lib]
-  mt7921_queue_rx_skb+0x1c6/0xaa0 [mt7921_common]
-  mt76u_alloc_queues+0x784/0x810 [mt76_usb]
-  ? __pfx___mt76_worker_fn+0x10/0x10 [mt76]
-  __mt76_worker_fn+0x4f/0x80 [mt76]
-  kthread+0xd2/0x100
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x34/0x50
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- ---[ end trace 0000000000000000 ]---
+> * 5150 - 5250
+>   - 200 mW e.i.r.p
+>   - 10dBm/MHz per 1MHz bandwidth or -6dBm/25kHz per 25kHz bandwidth
+> * 5250 - 5350
+>   - 200 mW e.i.r.p
+>   - 10dBm/MHz per 1MHz bandwidth
+>   - DFS
 
-Reported-by: Nick Morrow <usbwifi2024@gmail.com>
-Closes: https://github.com/morrownr/USB-WiFi/issues/577
-Cc: stable@vger.kernel.org
-Fixes: 90c10286b176 ("wifi: mt76: mt7925: Update mt792x_rx_get_wcid for per-link STA")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Tested-by: Salah Coronya <salah.coronya@gmail.com>
----
-v2:
-  - Change Nick from "Tested-by" to "Reported-by".
-v3:
-  - Rewrite the commit msg in the imperative mood.
-  - Remove the boot time for code trace.
----
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 1 +
- 1 file changed, 1 insertion(+)
+For outdoor only usage, the limit is 1000 mW.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 13e58c328aff..78b77a54d195 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -811,6 +811,7 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	msta->deflink.wcid.phy_idx = mvif->bss_conf.mt76.band_idx;
- 	msta->deflink.wcid.tx_info |= MT_WCID_TX_INFO_SET;
- 	msta->deflink.last_txs = jiffies;
-+	msta->deflink.sta = msta;
- 
- 	ret = mt76_connac_pm_wake(&dev->mphy, &dev->pm);
- 	if (ret)
--- 
-2.45.2
+Also, for outdoor usage, TPC is required, and there is no provision
+for 3 dB power reduction if TPC is not implemented.
 
+So I would mark this band as indoor only for now.
+
+> * 5470 - 5725
+>   - 1000 mW e.i.r.p
+>   - 17dBm/MHz per 1MHz bandwidth
+>   - DFS
+>   - If TPC is not used, the maximum radiated e.i.r.p. must be reduced
+>     by 3dB.
+>   - Outdoor use only
+>     (Since NO-INDOOR flag is not supported by current format, don't add
+>      this entry.)
+
+There are NO-INDOOR and NO-OUTDOOR flags for the database. The kernel
+doesn't have a matching IEEE80211_CHAN_OUTDOOR_ONLY flag though.
+Maybe that should be added?
+
+Johannes, what do you think?
+
+> * 5725 - 5850
+>   - 4000 mW e.i.r.p
+>   - 36dBm in every 500 kHz
+>   - DFS
+>   - Outdoor use only
+>     (Since NO-INDOOR flag is not supported by current format, don't add
+>      this entry.)
+
+This band is point to point only. TPC is required without provision for no =
+TPC.
+
+> These information is from [4], Mobin Aydinfar shared the official link [1=
+]
+> (inaccessible from outside of Iran), a mirror version [2] and translated
+> version [3].
+>
+> [1] https://asnad.cra.ir/fa/Public/Documents/Details/73af8590-f065-eb11-9=
+68f-0050569b0899
+> [2] https://mobintestserver.ir/Iran-2.4Ghz-5Ghz-cra-official-doc.pdf
+> [3] https://mobintestserver.ir/Iran-2.4Ghz-5Ghz-cra-official-table.ods
+> [4] https://lore.kernel.org/linux-wireless/c9ccf5ba-c091-45c4-9283-970bfa=
+4f1afe@mobintestserver.ir/T/#u
+>
+> Cc: Mobin Aydinfar <mobin@mobintestserver.ir>
+
+Please use "Reported-by" instead, and also add
+
+Closes: https://lore.kernel.org/linux-wireless/c9ccf5ba-c091-45c4-9283-970b=
+fa4f1afe@mobintestserver.ir/T/#u
+
+
+Thanks
+ChenYu
+
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+>  db.txt | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/db.txt b/db.txt
+> index d56ad32d31c9..0189355dff17 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -934,9 +934,12 @@ country IN:
+>         (5470 - 5725 @ 160), (24), DFS
+>         (5725 - 5875 @ 80), (30)
+>
+> -country IR: DFS-JP
+> -       (2402 - 2482 @ 40), (20)
+> -       (5735 - 5835 @ 80), (30)
+> +# Source:
+> +# https://asnad.cra.ir/fa/Public/Documents/Details/73af8590-f065-eb11-96=
+8f-0050569b0899
+> +country IR: DFS-ETSI
+> +       (2400 - 2483.5 @ 40), (100 mW)
+> +       (5150 - 5250 @ 80), (200 mW)
+> +       (5250 - 5350 @ 80), (200 mW), DFS
+>
+>  # IS as part of CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 8=
+93)
+>  # and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 4=
+40)
+> --
+> 2.25.1
+>
 
