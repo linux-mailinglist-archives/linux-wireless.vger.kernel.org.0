@@ -1,196 +1,103 @@
-Return-Path: <linux-wireless+bounces-19097-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19098-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4079EA39741
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 10:39:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8940A39970
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 11:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D064169182
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 09:39:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 636047A2FAB
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 10:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E926922F166;
-	Tue, 18 Feb 2025 09:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCBA2376FD;
+	Tue, 18 Feb 2025 10:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GukoeIkN"
+	dkim=pass (4096-bit key) header.d=sdinet.de header.i=@sdinet.de header.b="mNmsaUl0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mail.sdinet.de (hydra.sdinet.de [136.243.3.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E5222E40A
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Feb 2025 09:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DE223644D;
+	Tue, 18 Feb 2025 10:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.243.3.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739871575; cv=none; b=cfyAyaMEpei0kogwsBHOjIcmzaIQW/Iaf448SC5GUEAG5ZPmaR9VY6j9JzjzqdqecFmCDIWEAPfXJdLc+vN+amdoiIAqx5wXeo0ciqK6qlmEuQpgwtMbg4IaTeIy5AGjvfqmGKIg5i8A9ibFAEUOmeDh2cJOt2Z/1VNvGI+ittM=
+	t=1739875593; cv=none; b=TZW6Kp7XvgiDbdh//+ew7yZ6xp7LFEG41FfaLa0BH+buwvW6ypqYxUXqpHzYhceleQwp+fJwtogXKf8mjWmhkLTZa7WpOSIff4XAPVkB9zljAL8lPVJIdeiHuUZOH05muC0nzqjerUT15BtYWgmvGgPRH6CwtwRAMU9ZLUw+NLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739871575; c=relaxed/simple;
-	bh=nroSZLFnBcYNxLfLC2e65u4r8G48Yxqdimswv1HgsCg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=HXcRyqmOQ7dmdWZO2/yHsf5UqXKXE0lVcNYdO2OlxbPtNVLHjVrpUzUGNO3tOyrCM54kG0pBJxn/v4YD49RQYBOhS64FCrT9+CGcvOX9tL9Ep9aFmgOc8SRQeltUgwGLIJRsHQcWZnIWTBhAREnbHZSEBTvf4ZaQcmrxZIdcFrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GukoeIkN; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51I2hBoV003007;
-	Tue, 18 Feb 2025 09:39:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	CjbiGCSL/gwyQwfjRzEyZ/fRqUDIw/RiQV7sx5O8kjs=; b=GukoeIkNsptKcAQi
-	Q+sO7x28cZqUcCg3uqRqjrY+F4Do3m8LzL6ZccvozD8NwoSipawoud8fVrdkZKuH
-	UFbmXKALcBs1BGPg5EZ6g1RA1DcON7ECQ2kjceyK781WKGGALm9iNmqviMMwdp15
-	RPIKSHwON7O0QV5tokOU20SwdszmHqxBZovlHbqhrHflPai4MYgVnXWKTb94Ll6H
-	I4r0tmtMlzalIctAqqBgAfZxuiNjE3Vo/TdSP9WZ7cWYjEvcqQQTlKvBe90nvUy/
-	H9SuKbkIqCUuoBuL/JBGqPh7PDR8JJanDY6g52p/Mw2qKzMrI+cZ1iwkccOpZ2rB
-	DBdojA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ut7tvcsp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 09:39:29 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51I9dSgm028576
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 09:39:28 GMT
-Received: from [10.151.40.197] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 18 Feb
- 2025 01:39:26 -0800
-Message-ID: <cc715114-4e3b-619a-49dc-a4878075e1dc@quicinc.com>
-Date: Tue, 18 Feb 2025 15:09:23 +0530
+	s=arc-20240116; t=1739875593; c=relaxed/simple;
+	bh=8hwAEfYHLi1qKR0YP1FUgTPhNsoxFHO8NvCdNPecFbk=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=gVehoRXiVw7DLwszWCbmraZUd2hp7iw8FEITHzktdhL5ka+qFZwMnuvSER5Fvhi/8OhCSaulAzyapJ/8BLGbVqQcigFhYmTgUGGOF4sFjxHgORrsOv3ns794duzaSl1jmcc8PekwEoF51/PwnLt5bEf7cRkj82Trvu499JZqTOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sdinet.de; spf=pass smtp.mailfrom=sdinet.de; dkim=pass (4096-bit key) header.d=sdinet.de header.i=@sdinet.de header.b=mNmsaUl0; arc=none smtp.client-ip=136.243.3.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sdinet.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdinet.de
+Received: from aurora64.sdinet.de (aurora64.sdinet.de [193.103.159.64])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: haegar)
+	by mail.sdinet.de (bofa-smtpd) with ESMTPSA id D1C3934003A;
+	Tue, 18 Feb 2025 11:38:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdinet.de; s=mail2024;
+	t=1739875121;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+i9Iw2wxStBEEjo8w2Ll1bq83y0kUgzFah+tO1rE1yE=;
+	b=mNmsaUl02ujcoirbeRUBrWHbfOnXEe84lH/3UD2K8o3WkE+f0/ixSJC7MbknlPXm/T24+M
+	csmyHJmlZGdRqQ8mARo+KuWYKcyYR8FYiCYcMJKmjD9no8reWWd03O8/34IMv9TnsxMS72
+	R620cx/EZmqLRzgjwuj2HQmgzn/4rwNP+3o9KjwndkTa4/JnY1AoONngc7yEDI8qVoALtG
+	3yfCJhKfP6RuDz+lSOXBn0Wzm0dg3G5Mj31ksJ7Qjj0Z3Ok92Wc8eFq4S8VE2bXIem1UdN
+	xGzD4TXFwh7I4N4Zoh/Pko7MbB8bVef4BJMVcot1vHvaGBl1O1rRtLAyXrBGEY+4GVmO5a
+	aQE8DX/sDTMpKchYvDRx7DXB7R4MoLcyGWvtSy/KN+Chx4VifXFAxzrpn0j2+1OEIPooNu
+	FTRtyhf3JU4qwZqkJmf1u2V2hZEvIs8Ds/L51hWxYMwm9MMeMQttBM1lzDXxX9UK4P4IpL
+	cZi6SFZ/x3/m3EK25OivgxLN2moTbJR4g+aqasKWUPQ3e4wlhYeVVFpxzvpKXi4jJon2yG
+	skWKyskIzR8PqOnA3blPAvytGLH6Ro5w34azGjUvXPKP+vDbxjEvvQv7S4ohFd3uEnUTD3
+	BNtB1vS75eoSsv7l1kaGInB3K1c3hf+/Bzmw3c64GXxVg7LOomhA8=
+Date: Tue, 18 Feb 2025 11:36:22 +0100 (CET)
+From: Sven-Haegar Koch <haegar@sdinet.de>
+To: Johannes Berg <johannes@sipsolutions.net>
+cc: Corentin Labbe <clabbe.montjoie@gmail.com>, kvalo@kernel.org, 
+    linux-wireless@vger.kernel.org, 
+    Linux-Kernel-Mailinglist <linux-kernel@vger.kernel.org>
+Subject: Re: unknow Network controller: Intel Corporation Device 093c (rev
+ 3a)
+In-Reply-To: <6a5eb58c06cc1d5bdeb67fe877ef3a98520627ed.camel@sipsolutions.net>
+Message-ID: <8eb241a2-d8d7-f01c-c2ca-b615e8a1cc41@sdinet.de>
+References: <Z7N7AvQvv8k4OY-o@Red> <6a5eb58c06cc1d5bdeb67fe877ef3a98520627ed.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 2/2] wifi: mac80211: Drop cooked monitor support
-To: Alexander Wetzel <Alexander@wetzel-home.de>,
-        <linux-wireless@vger.kernel.org>
-CC: Johannes Berg <johannes@sipsolutions.net>
-References: <20250204111352.7004-1-Alexander@wetzel-home.de>
- <20250204111352.7004-2-Alexander@wetzel-home.de>
-Content-Language: en-US
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-In-Reply-To: <20250204111352.7004-2-Alexander@wetzel-home.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: zQx4FfIPzOYwdhUPrEiQHxXv4OyVfKmP
-X-Proofpoint-ORIG-GUID: zQx4FfIPzOYwdhUPrEiQHxXv4OyVfKmP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-18_03,2025-02-18_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- suspectscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
- mlxscore=0 mlxlogscore=999 clxscore=1011 phishscore=0 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502180074
+Content-Type: text/plain; charset=US-ASCII
 
+On Tue, 18 Feb 2025, Johannes Berg wrote:
 
-
-On 2/4/2025 4:43 PM, Alexander Wetzel wrote:
-> Hostapd switched from cooked monitor interfaces to nl80211 Dec 2011.
-> Drop support for the outdated cooked monitor interfaces and fix
-> creating the virtual monitor interfaces in the following cases:
+> On Mon, 2025-02-17 at 19:08 +0100, Corentin Labbe wrote:
+> > The laptop is running Debian bookworm, and I tried to update pci.ids, no more information.
+> > 
+> > lspci -vx give:
+> > 03:00.0 Network controller: Intel Corporation Device 093c (rev 3a)
+> > 	Subsystem: Intel Corporation Device 2181
 > 
->   1) We have one non-monitor and one monitor interface with
->      %MONITOR_FLAG_ACTIVE enabled and then delete the non-monitor
->      interface.
+> But that doesn't match at all, not even close.
 > 
->   2) We only have monitor interfaces enabled on resume while at least one
->      has %MONITOR_FLAG_ACTIVE set.
-> 
-> Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-> ---
-> Checkpatch is kind of unhappy here:
->   ERROR: Macros with complex values should be enclosed in parentheses
->   #285: FILE: net/mac80211/main.c:1747:
->   +#define V(x)   #x,
-> 
-> I don't see how to get rid of that error and more or less accidentially
-> moved the line when cleaning up.
-> 
-> Since the code is from commit baa951a1c177 ("mac80211: use the new drop
-> reasons infrastructure") from 2023 I assume it's one of the rare cases
-> where we can ignore an error?
-> ---
->   include/net/dropreason.h   |   6 --
->   net/mac80211/cfg.c         |   9 +-
->   net/mac80211/drop.h        |  21 ++--
->   net/mac80211/ieee80211_i.h |  11 +--
->   net/mac80211/iface.c       |  50 ++++------
->   net/mac80211/main.c        |  16 +--
->   net/mac80211/rx.c          | 194 ++++++++++---------------------------
->   net/mac80211/status.c      |  34 +------
->   net/mac80211/tx.c          |   2 +-
->   9 files changed, 94 insertions(+), 249 deletions(-)
-> 
+> I cannot find any record for WiFi of these numbers, so either the device
+> is not WiFi or is malfunctioning. You could try to open it up, take a
+> picture so we can see what the WiFi NIC is, and also maybe re-seat the
+> NIC while at is, occasionally that fixes such issues.
 
-...
+https://linux-hardware.org/?id=pci:8086-093c-8086-2181
 
-> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-> index 0ea7e77860b7..7d3ebfcb8c2b 100644
-> --- a/net/mac80211/iface.c
-> +++ b/net/mac80211/iface.c
+Suggests it to be a "Intel Wireless Gigabit 17265", with no linux driver 
+existing for it.
 
-...
-
-> @@ -1326,27 +1323,24 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
->   		}
->   		break;
->   	case NL80211_IFTYPE_MONITOR:
-> -		if (sdata->u.mntr.flags & MONITOR_FLAG_COOK_FRAMES) {
-> -			local->cooked_mntrs++;
-> -			break;
-> -		}
-> -
->   		if ((sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE) ||
->   		    ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR)) {
->   			res = drv_add_interface(local, sdata);
->   			if (res)
->   				goto err_stop;
-> -		} else if (local->monitors == 0 && local->open_count == 0) {
-> -			res = ieee80211_add_virtual_monitor(local);
-> -			if (res)
-> -				goto err_stop;
-> -		}
-> +		} else {
-> +			if (local->monitors == 0 && local->open_count == 0) {
-> +				res = ieee80211_add_virtual_monitor(local);
-> +				if (res)
-> +					goto err_stop;
-> +			}
-> +			local->monitors++;
->   
-> -		/* must be before the call to ieee80211_configure_filter */
-> -		local->monitors++;
-
-Regression on NO_VIRTUAL_MONITOR support drivers.
-
-Here local->monitors increment not done for NO_VIRTUAL_MONITOR.
-Which causing packet drop in Rx path (code snip below)
-
-net/mac80211/rx.c: ieee80211_rx_monitor()
-
-if (!local->monitors || (status->flag & RX_FLAG_SKIP_MONITOR)) {
-	if (only_monitor) {
-		dev_kfree_skb(origskb);
-		return NULL;
-	}
-
-	return ieee80211_clean_skb(origskb, present_fcs_len,
-				   rtap_space);
-}
-	
+c'ya
+sven-haegar
 
 -- 
-Karthikeyan Periyasamy
---
-கார்த்திகேயன் பெரியசாமி
+Three may keep a secret, if two of them are dead.
+- Ben F.
 
