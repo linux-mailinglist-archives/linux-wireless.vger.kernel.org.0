@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-19118-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19119-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C63A3B077
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2025 05:49:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C673A3B078
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2025 05:50:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 220DB16A114
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2025 04:49:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BAEF1897927
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2025 04:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67D619AD89;
-	Wed, 19 Feb 2025 04:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7787F1A7046;
+	Wed, 19 Feb 2025 04:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="iTN/G+mM"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ENtYfQER"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBD333E7
-	for <linux-wireless@vger.kernel.org>; Wed, 19 Feb 2025 04:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C604E19AD89
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Feb 2025 04:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739940577; cv=none; b=jgtiDtFmclK89Jk59vj8tGhIkNjgyVqyKoR1p6tszvt3CJfYd/AgwIa70s10xYm2JdlvG5DA2wdt4M+DRr9qC8K092QhuYhjm1vraz34VkhIUiNLp27C3C8NszgP7Wfi4gfGq/QkWSAarDZt5NapjAm+d/Bk4jyvmoynMz64Qzo=
+	t=1739940627; cv=none; b=LJZKDGj9GsIbkE3HFmeS/Vh4hFsukuIZgnkVOQRtdZlHQ9/0g/E1YHY+fZ831McjIV5am66In01ftzFv448WMprOFxN/Jw/p20qonO4tHqn14x9xZwif8P1yv7MEiNIFcbDFt3+hBh03mTFaOUiLcctKlmPprqpDph+HANfaNn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739940577; c=relaxed/simple;
-	bh=GhSZdek+DqYpSvt4+seMEyRP7HA/rHsuUZ9ZpPrFhKY=;
+	s=arc-20240116; t=1739940627; c=relaxed/simple;
+	bh=w9VHkpfReh8HoHFPgWZsTgsYsyAr+8rLurET5NwJxnw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=DxAOkEDqJNNJYauWcnxq5+U5vtwGB+KwNd73fGNC5hizWci2EhIaMK0BRQTPa7Z3WVHXuYHa9FZbzIvH0sUit5PsQMDOOQ1+lbV0Jx/ajLGBTQLLxhGw7/g6pC8dfJCZmv4z51n4Bz+vZnR5hNSERY1p/jwd2DZgZPTEDZ/UDXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=iTN/G+mM; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=qpll5jjqF1ix4i41AJuZPQobfom4Cr65AGXLiv36Y3LKve3+vpkYYbiHgmh2OZmvZJX2QmCVmot2iqQ0IDHAlRcnaH5H4tcxjUp2Wqa4k3kRMHr2mGTOAT6st+dnotXsCIs6qRAl9Xs7iBybRLyM9SyWQDhBlmfiGQai66iZQcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ENtYfQER; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51IIwLsp007560;
-	Wed, 19 Feb 2025 04:49:34 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51IIwai8011654;
+	Wed, 19 Feb 2025 04:50:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	dBDez1gHWr6DJVbenzZtY1TU72AbOHG5WgdgavhFaAs=; b=iTN/G+mMGEq8dP7P
-	av0GPRT0LeF7ems+4eM3UW6gVjhnFCNOtee/yae0U+yFegOjiSqswqPvGdnCUXBD
-	qMUDWIske4YVopDeB7/eiaw2NqT7NOz4vV4uuLOyuNK+ZRg3ZII45J2XmSbUvyJu
-	Zr6+zaIyFY9jT70g+DNE9Ztk9AwuN8sIINUsoNEqt4jTV5g1f9jxq9wlzs4zi90M
-	WwZ2WobENaOOCbMZsLacUmgQfcFTmxlISXTdixbz/cgS8Gc+EjN/xMOR8RheFgKG
-	r5TeyjWt6LVR3baHukKff587N5oGmPlfrrweparwr1JKYMo52pKcqJmNkezTy3U6
-	wg9iuQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44vyy2s7w6-1
+	lLiWWXFslGBx9r4UiWosh5LFHlx3fy9YWoZjc5WRmAo=; b=ENtYfQERCWOgUBKo
+	5D6TiYAaE+U76bf8+YrhfHsebe/a9ZT2lzPi3Nd5WmfPUQ3PygITcBZi01bb19OE
+	x6lgpg0wb46KCd1xpoAL//lA51+WBK32tZ5HLeZUpp3xwjzLlgKHI2E0lI1daPx4
+	ArusGk2/j7D3n7iJlQEah+Ix/kNslj6NoPU/w47YHQ2rb2tfHAq9MpM2iZBd9EPZ
+	UXOEqzz3KV+f4vDWTxaYPS/yepr7Xirkj+ka7jWOnmprvuxkNuFp8/YP+xiMcN45
+	QSse3QvMKfQpkYPaxK9Ct6fmr7Q0XUVXrCR9v499+a8pMGgLKGD16z/Pg9dC5GBe
+	oljHsA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44vyy3h76w-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Feb 2025 04:49:34 +0000 (GMT)
+	Wed, 19 Feb 2025 04:50:22 +0000 (GMT)
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51J4nX8m007933
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51J4oL46005206
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Feb 2025 04:49:33 GMT
+	Wed, 19 Feb 2025 04:50:21 GMT
 Received: from [10.216.26.155] (10.80.80.8) by nalasex01b.na.qualcomm.com
  (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 18 Feb
- 2025 20:49:31 -0800
-Message-ID: <fa4ac4f0-6f86-6ee9-e6af-6a8a0fd8e180@quicinc.com>
-Date: Wed, 19 Feb 2025 10:19:28 +0530
+ 2025 20:50:19 -0800
+Message-ID: <cc0e1b77-8015-e699-a7db-93b01b0c28d9@quicinc.com>
+Date: Wed, 19 Feb 2025 10:20:16 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,16 +81,16 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: iZrElE5KO0xzTyVrNW-tEh1qTRHh0pjz
-X-Proofpoint-GUID: iZrElE5KO0xzTyVrNW-tEh1qTRHh0pjz
+X-Proofpoint-ORIG-GUID: 0UqblyqdKoM6qxXzKWu9eFXnR7Db4wwu
+X-Proofpoint-GUID: 0UqblyqdKoM6qxXzKWu9eFXnR7Db4wwu
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-19_02,2025-02-18_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- clxscore=1015 priorityscore=1501 suspectscore=0 mlxscore=0 bulkscore=0
- impostorscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502190034
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 spamscore=0
+ lowpriorityscore=0 phishscore=0 priorityscore=1501 clxscore=1015
+ malwarescore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502100000 definitions=main-2502190033
 
 
 
@@ -115,8 +115,6 @@ On 2/12/2025 12:01 PM, Kang Yang wrote:
 > 
 > Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 > Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-
-The actual patch looks good to me other than a comment on the patch order
 
 Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
