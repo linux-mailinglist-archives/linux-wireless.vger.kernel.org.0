@@ -1,132 +1,184 @@
-Return-Path: <linux-wireless+bounces-19106-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19107-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C26A3AB79
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 23:07:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5FDA3AD0A
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2025 01:25:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59A421897944
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2025 22:07:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B75413AB834
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2025 00:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED29A1D5AC3;
-	Tue, 18 Feb 2025 22:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEA7BA45;
+	Wed, 19 Feb 2025 00:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XBWsNAQn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kfS4clM4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60B91C701A;
-	Tue, 18 Feb 2025 22:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC3717BA5
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Feb 2025 00:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739916450; cv=none; b=bQPC7pVxyP+cYy3TnOm0IYoXkonIrRdfXFposG9A2h8idOupj/Hi8pjQDJfyIlh09yPgwyGj+mlDEbeEKd5W7nT6iK0olRP6r+g7R35XAEL9lfdmO7ntUAlwzWMZtZ2n2Czeahk/dgPNYvndlbKbKtaOhmmD+o3/mnLuxJaXZ/A=
+	t=1739924713; cv=none; b=fQMVlAVlrTpxSCbolBy8Egeq/gJsx4kqncDnki6t5dscRiCJ5Fk4I0x0370/xNdFN6536W/TN2SGaT4nA6+CNp4HIedOOaZriC/IF8uh0xvwn39pVcBwuzN1d+EPSZQIIVUg1OhDOThp6eIBtog3eOuJKrRS4krgNiRzAfy0u8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739916450; c=relaxed/simple;
-	bh=NZOWiC+glLsY8qZo0mE4K4nGd+wVcIoNUq4I6bumeiU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=co6zHLJAKma3Bq5y/xrnI4pawUOktAtQODf3yAPxPn0IjUDYOmO1VCy2eTsu6o/QOT6EKGJFFYAJbmhpDy2wUlo0v8NIl3W1NNb36+vazkgJx5R+rMvhKsDRkOBS6TFRx7awesjLv0VFzcMB66ELLogXq7f4cmjmvoNPd3JpLk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XBWsNAQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A86C4CEE2;
-	Tue, 18 Feb 2025 22:07:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739916450;
-	bh=NZOWiC+glLsY8qZo0mE4K4nGd+wVcIoNUq4I6bumeiU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=XBWsNAQnXEBFVzMi2wOxo+aI15uZwNSrE7WK8dzWdCzuS131u3gCjVmwyiEFHMNm3
-	 pM6H8UtOGiaVKAMtsQvc6PPBZ1SJOTiF9SXc0SzOe2qKqNznBRCwvGn2bAaxNUkvqL
-	 o1Eeab/OepqaasRX0QMayV8ABDywbK5xFer3PEHM760RpbkNoqIytbQmtzqryOuX/V
-	 x10DlupQiN7JHfUdErs+Ya7QroonPr2jf2IZa0qJRneU1f/r509POY5CNCt2i49Czm
-	 sMG+SJDZ4n6lgQGEnnhWhiCjXSSk4SXGH4V3LRpDeCEkchs49lb/kxYshH3Hi6D1l+
-	 bodSzda7o3FvA==
-Date: Tue, 18 Feb 2025 16:07:28 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	mhi@lists.linux.dev, linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org, quic_jjohnson@quicinc.com,
-	quic_pyarlaga@quicinc.com, quic_vbadigan@quicinc.com,
-	quic_vpernami@quicinc.com, quic_mrana@quicinc.com
-Subject: Re: [PATCH 4/8] PCI: dwc: qcom: Update ICC & OPP votes based upon
- the requested speed
-Message-ID: <20250218220728.GA194681@bhelgaas>
+	s=arc-20240116; t=1739924713; c=relaxed/simple;
+	bh=YvYq41GiwCVlJ3YpydlzY6jjMypg864VlNF6gGimVAM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pPl+mIJhopFu9KnPQgIVrwWbil+DTqJE54Xk4D6wcYCibIAzAbkUpOrq+7sx5p6vVSCjHE388ArNw1AlqHTUG0hsfIDmpfxLzDqdUh/YslOOW/FccgMaOxUq6RZf7IKC0AoIuiitnGS3uMCiKlOlOJyvnkH2II75nUVyB9j2BzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kfS4clM4; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aba868c6e88so748049666b.2
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Feb 2025 16:25:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739924709; x=1740529509; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=65jUrLBN/LLKjwx7RNV0Qdqfa/uMv6KZrrsG3GDWlyQ=;
+        b=kfS4clM4iIfel/X+8n9D4/FmvxOYv0q6LFoPGbItzuU9kreB/LE2l32tgHb6Wi6HCc
+         PmXdli/NiV/Cne3IbW9pPEhl54Un4avr4IOPjVR1bS12MqMMH+78U8xYMeW7M8XLovOo
+         zAzr2Iy+W5aYUz/sNNB/Q5pJVmkJxhlIuFy7mHgrS4jtSaS4y2VxI/5xQxXySw+U5tKs
+         YxVoWjdfOa+3B09yhGUBrSuTpNhWqMAFrxphaNUtI9JWQ/n+yl8J4+tS2qyPAevBrmDN
+         dnXaXbZfzfTHnPbIjAeMWR/xeefW4J8RV9Hr64oEATVycOhfe/JhRYRW0fwcBRcjaKAE
+         IQPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739924709; x=1740529509;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=65jUrLBN/LLKjwx7RNV0Qdqfa/uMv6KZrrsG3GDWlyQ=;
+        b=u0S2Uld957mnP/y9/4aIsKFNuSTN2JNELgzMEzWVFOEEJ2ipTByV58x2Ky60k5bWNx
+         31elkC+ZxZiRxHyQkeDT5mPnV8+fsojvwX3gQdHfz3No2T6GQqK2Rx6LOSj8vp+/VHaT
+         xmnCYhe1owVcY3Qg7gAAuEagYsB09rcddx2+Y2HssrjbNoaB/ws599z4rlZxcOrTPBmP
+         F83bJZq/Plsy+QyVZ6yMymLN1Kk+aswCMkLt7x/8QnbChjJxt5t3FCvh6LaBb4/eeYhh
+         7sz/fnwiFAF5Lzg8bVi+u58djFh7+TkHop9JHuFkUNgkszgXoJOo4JddbGp/HSMcKjIC
+         D7JA==
+X-Forwarded-Encrypted: i=1; AJvYcCWUQTm2qVloWOekpZvh1BnL5rimLQbKUAe4zKvOkL9Cdk2YDjQVi3PpJpZzwANnpodRVSPj5ACNxcyaYdSytQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1F2lZu318vRHVxjxAQ8XpWB5i+vryED+6cUhTkZ1uk6F/S0YX
+	L0z+rXHKr6tuYJcVfYvXMjQ/kvH/lekKdWftvuCC91V30jdN3uDjfa9FkfJpW2WZdwXNOrw2X7h
+	c2swyaRXJhWBEuwAcoeVaxWdYpt4=
+X-Gm-Gg: ASbGncsMY1DqU+03tX3kcUPFq/Enhnsu9BFevEWctTWPOqYfiX2ruVIMQK5Y8/RN6pD
+	cP5LL+sUVb4KB6iLz9n9ZtrRryCRt4D52MnFckNxPGm0lNvGD19Pn5uUwOerfTQoZ8kFfD10B
+X-Google-Smtp-Source: AGHT+IH/eRR+jHwglhsHt7CzzanpkgEslZqXG2/Nd6MIcEZbE9Rc6okmt7/3o1ZBvkjMnyoEp1P+NF9j/633VosvxnA=
+X-Received: by 2002:a17:907:7b8b:b0:aa6:7737:199c with SMTP id
+ a640c23a62f3a-abb70b1f29bmr1591523566b.15.1739924709310; Tue, 18 Feb 2025
+ 16:25:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250217-mhi_bw_up-v1-4-9bad1e42bdb1@oss.qualcomm.com>
+References: <20250218025957.13818-1-pkshih@gmail.com> <7c909df2-2651-497c-91c2-624a7e3db43f@mobintestserver.ir>
+In-Reply-To: <7c909df2-2651-497c-91c2-624a7e3db43f@mobintestserver.ir>
+From: Ping-Ke Shih <pkshih@gmail.com>
+Date: Wed, 19 Feb 2025 08:24:58 +0800
+X-Gm-Features: AWEUYZlVZBxj6AnTShq8nRpf9OMSgEmG2Ug6PpgLVdF15aiALjJJO9rGTHrKMhg
+Message-ID: <CAHrRpu=kD7TdyKfD+MNFjFv2jRqfOS5wPzCsKa2O4hFnu8n80w@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=D9=BE=D8=A7=D8=B3=D8=AE=3A_=5BPATCH=5D_wireless=2Dregdb=3A_Update_regulat?=
+	=?UTF-8?Q?ory_rules_for_Iran_=28IR=29_on_both_2=2E4_and_5Ghz_for_2019?=
+To: Mobin Aydinfar <mobin@mobintestserver.ir>
+Cc: wens@kernel.org, linux-wireless@vger.kernel.org, 
+	wireless-regdb@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Make subject line match history for this file.
+Mobin Aydinfar <mobin@mobintestserver.ir> wrote:
+>
+> =DB=B1=DB=B8 =D9=81=D9=88=D8=B1=DB=8C=D9=87 =DB=B2=DB=B0=DB=B2=DB=B5 =DB=
+=B0=DB=B6:=DB=B3=DB=B0:=DB=B3=DB=B8 Ping-Ke Shih <pkshih@gmail.com>:
+>
+> > From: Ping-Ke Shih <pkshih@realtek.com>
+> >
+> > Decision No. 4004-01DEC-CRA, 8th Edition - February 2019,
+> > Radiocommunications and Regulatory Organization.
+> > General radio license for the use of parts of the frequency bands
+> > 2400-2483.5 MHz, 5150-5250 MHz, 5350-5250 MHz, 5470-5725 MHz, and
+> > 5850-5725 MHz in radio access networks. [1]
+> >
+> > * 2400 - 2483.5
+> >   - 100 mW e.i.r.p
+> >   - 10dBm in every 1Mhz
+> > * 5150 - 5250
+> >   - 200 mW e.i.r.p
+> >   - 10dBm/MHz per 1MHz bandwidth or -6dBm/25kHz per 25kHz bandwidth
+> > * 5250 - 5350
+> >   - 200 mW e.i.r.p
+> >   - 10dBm/MHz per 1MHz bandwidth
+> >   - DFS
+> > * 5470 - 5725
+> >   - 1000 mW e.i.r.p
+> >   - 17dBm/MHz per 1MHz bandwidth
+> >   - DFS
+> >   - If TPC is not used, the maximum radiated e.i.r.p. must be reduced
+> >     by 3dB.
+> >   - Outdoor use only
+> >     (Since NO-INDOOR flag is not supported by current format, don't add
+> >      this entry.)
+> > * 5725 - 5850
+> >   - 4000 mW e.i.r.p
+> >   - 36dBm in every 500 kHz
+> >   - DFS
+> >   - Outdoor use only
+> >     (Since NO-INDOOR flag is not supported by current format, don't add
+> >      this entry.)
+> >
+> > These information is from [4], Mobin Aydinfar shared the official link
+> > [1]
+> > (inaccessible from outside of Iran), a mirror version [2] and
+> > translated
+> > version [3].
+> >
+> > [1]
+> > https://asnad.cra.ir/fa/Public/Documents/Details/73af8590-f065-eb11-968=
+f-0050569b0899
+> > [2] https://mobintestserver.ir/Iran-2.4Ghz-5Ghz-cra-official-doc.pdf
+> > [3] https://mobintestserver.ir/Iran-2.4Ghz-5Ghz-cra-official-table.ods
+> > [4]
+> > https://lore.kernel.org/linux-wireless/c9ccf5ba-c091-45c4-9283-970bfa4f=
+1afe@mobintestserver.ir/T/#u
+> >
+> > Cc: Mobin Aydinfar <mobin@mobintestserver.ir>
+> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> > ---
+> > db.txt | 9 ++++++---
+> > 1 file changed, 6 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/db.txt b/db.txt
+> > index d56ad32d31c9..0189355dff17 100644
+> > --- a/db.txt
+> > +++ b/db.txt
+> > @@ -934,9 +934,12 @@ country IN:
+> >     (5470 - 5725 @ 160), (24), DFS
+> >     (5725 - 5875 @ 80), (30)
+> >
+> > -country IR: DFS-JP
+> > -   (2402 - 2482 @ 40), (20)
+> > -   (5735 - 5835 @ 80), (30)
+> > +# Source:
+> > +#
+> > https://asnad.cra.ir/fa/Public/Documents/Details/73af8590-f065-eb11-968=
+f-0050569b0899
+> > +country IR: DFS-ETSI
+> > +   (2400 - 2483.5 @ 40), (100 mW)
+> > +   (5150 - 5250 @ 80), (200 mW)
+> > +   (5250 - 5350 @ 80), (200 mW), DFS
+> >
+> > # IS as part of CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301
+> > 893)
+> > # and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300
+> > 440)
+> > --
+> > 2.25.1
+>
+> Thanks for the patch, I should mention the document date is February
+> 2021, Not 2019.
+>
 
-On Mon, Feb 17, 2025 at 12:04:11PM +0530, Krishna Chaitanya Chundru wrote:
-> QCOM PCIe controllers needs to disable ASPM before initiating link
-> re-train. So as part of pre_bw_scale() disable ASPM and as part of
-> post_scale_bus_bw() enable ASPM back.
-
-s/needs/need/
-
-Why does Qcom need to disable ASPM?  Is there a PCIe spec restriction
-about this that should be applied to all PCIe host bridges?  Or is
-this a Qcom defect?
-
-> Update ICC & OPP votes based on the requested speed so that RPMh votes
-> gets updated based on the speed.
-
-s/gets/get/
-
-> Bring out the core logic from qcom_pcie_icc_opp_update() to new function
-> qcom_pcie_set_icc_opp().
-
-This refactoring possibly could be a separate patch to make the meat
-of this change clearer.
-
-> +static int qcom_pcie_set_icc_opp(struct qcom_pcie *pcie, int speed, int width)
-> +{
-> +	struct dw_pcie *pci = pcie->pci;
-> +	unsigned long freq_kbps;
-> +	struct dev_pm_opp *opp;
-> +	int ret, freq_mbps;
-> +
-> +	if (pcie->icc_mem) {
-> +		ret = icc_set_bw(pcie->icc_mem, 0,
-> +				 width * QCOM_PCIE_LINK_SPEED_TO_BW(speed));
-> +		if (ret) {
-> +			dev_err(pci->dev, "Failed to set bandwidth for PCIe-MEM interconnect path: %d\n",
-> +				ret);
-> +		}
-> +	} else if (pcie->use_pm_opp) {
-> +		freq_mbps = pcie_dev_speed_mbps(pcie_link_speed[speed]);
-> +		if (freq_mbps < 0)
-> +			return -EINVAL;
-> +
-> +		freq_kbps = freq_mbps * KILO;
-> +		opp = dev_pm_opp_find_freq_exact(pci->dev, freq_kbps * width,
-> +						 true);
-> +		if (!IS_ERR(opp)) {
-> +			ret = dev_pm_opp_set_opp(pci->dev, opp);
-> +			if (ret)
-> +				dev_err(pci->dev, "Failed to set OPP for freq (%lu): %d\n",
-> +					freq_kbps * width, ret);
-> +			dev_pm_opp_put(opp);
-> +		}
-> +	}
-> +
-> +	return ret;
-
-Looks uninitialized in some paths.
+I did copy and paste from Google translation. I will correct the by v3. Tha=
+nks.
 
