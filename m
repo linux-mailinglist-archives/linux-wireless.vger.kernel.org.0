@@ -1,77 +1,77 @@
-Return-Path: <linux-wireless+bounces-19139-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19141-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F02CA3C6C0
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2025 18:52:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F596A3C6C3
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2025 18:52:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F1AA179D32
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2025 17:52:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADBB3188E2EF
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2025 17:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10EBD2144D7;
-	Wed, 19 Feb 2025 17:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC161F61C;
+	Wed, 19 Feb 2025 17:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=easyb-ch.20230601.gappssmtp.com header.i=@easyb-ch.20230601.gappssmtp.com header.b="biEUQeAK"
+	dkim=pass (2048-bit key) header.d=easyb-ch.20230601.gappssmtp.com header.i=@easyb-ch.20230601.gappssmtp.com header.b="LPNTkBSM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438E0211710
-	for <linux-wireless@vger.kernel.org>; Wed, 19 Feb 2025 17:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568DA2144C2
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Feb 2025 17:52:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739987557; cv=none; b=V1JEaqwy5105U7QfCs3GP8Ch04m7fVCdr0/dM/EzGW+YdL4/EiOBYoq51kgvt7bCkQNqNrYdcVEiLHrp9iq42vQxWUmdxvBmws1RWAQs7q/q3XcRG//JH99CDJSfz7tCvk4a+/dBIDx4+kfqs8TCOCfeH/aHA1+YtFccVVdEGR8=
+	t=1739987557; cv=none; b=fMfsd4VHlKgnTgfJplnJKwFsgLbye8qBzA5jYKRaDPg9Ox0hse0FH8YR9LnBbGe0JqRKbvHAkMV/qj3juSLjcEgRXbralzPgVl7vGC//tcCyTmAiNsbYzRK8SIqHT2O8Iq4cqZqrPQp2DqOBSCvQFSsKV6bIT+6KyKEfjXZzthk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739987557; c=relaxed/simple;
-	bh=8qGFuFio7l8v13Ta0jMDRd6cxQsLpGb2k9QIoKlKuiw=;
+	bh=9jlL8FHPIH1N42D2mIsNAvjz9LKZdnGoCEB7pryW02g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ek+Lkmp0e1Y3DfyThK2OHAJHLz7m/tLFi+HkNqYLzjbpWE0QLkdeIo+eWjyT/AiJ5/NHjanLtVmytLzE4aUGNQpR9zO5FBsji7+txYnJv9ZAXQKJmJ+EcC7XJyinT61XDouJBp3BQ9pAqphxWsD6MCcfPePmQbNjxsTSgWYse8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=easyb.ch; spf=none smtp.mailfrom=easyb.ch; dkim=pass (2048-bit key) header.d=easyb-ch.20230601.gappssmtp.com header.i=@easyb-ch.20230601.gappssmtp.com header.b=biEUQeAK; arc=none smtp.client-ip=209.85.221.49
+	 MIME-Version; b=S7rZEM8AKPmpzJCeEVhCYTCta9kFyguwftPG+jJODcnPJMTUFltgEtihQjADATh6WlDKFjRqqdj6gv+lMvX/9c5NGIxvi0oCzF+mVEOTSDUsTgIpbMTPZxEmOfG7Jn3UMHCTp0N3yGd0atb5jOpEzxnjDF5rqNAX8i1l8bOsEf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=easyb.ch; spf=none smtp.mailfrom=easyb.ch; dkim=pass (2048-bit key) header.d=easyb-ch.20230601.gappssmtp.com header.i=@easyb-ch.20230601.gappssmtp.com header.b=LPNTkBSM; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=easyb.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=easyb.ch
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-38f2b7ce2e5so30116f8f.2
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Feb 2025 09:52:34 -0800 (PST)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-439846bc7eeso125325e9.3
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Feb 2025 09:52:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=easyb-ch.20230601.gappssmtp.com; s=20230601; t=1739987553; x=1740592353; darn=vger.kernel.org;
+        d=easyb-ch.20230601.gappssmtp.com; s=20230601; t=1739987554; x=1740592354; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PHVE96KLX78DAXjrskuXfsR7w+mAU4Aaw0RqwGEgCi0=;
-        b=biEUQeAKcRD5lrfnngQRwc/LGvta/p0V8+5LSamh3UYyfmRQjmIn/TLlnXomTRodlX
-         kxdv8kuQyl2y53tiytGjHcPF97MPTDAzmVC/lwx1Ylt7fALvzF5jvo9hCGWMuduvRJcf
-         m2kQGwKLhZK101ZyQMZe9YXeFkokwHUy3dcpeXcMCenhKSV5hj7b/MZqX4i8+6IGfz3k
-         PiFZ9w/ZzxP4qMhGvc8sEFqBPJtPiMPWZ+K6MuXMvHYEynPYnQhPBRCrTT50bPPfZWGH
-         uA3pyppnlHicbmlPUKzzGVilc4MStDHljUcsg3/mWqIJB8U3jYYRcu4HZy29swVoLolg
-         gNBQ==
+        bh=XW9032whOdtI+Ha5IRd/YBfMaQPHihazNStVLJHmubE=;
+        b=LPNTkBSMCGCL6iZmB3d88RZAkfxYcE8+o2xSPFDz1VOY8lcP4umdL6612ZVGtrnqlD
+         8Al7zV1soxO2NjNQTe7c2+qneSsKEzU/6rC5HeSGdhb77obPBIov0wb5A2bRa1lJ1pWW
+         ioJFpEiOBFrQW46HTJO/2hzDE3hbAUjqvmnBdU/qdT/Y1lFhJ7j/s5RNLv7nKWHFHxNa
+         qRKudCUUQ2mB1YUa9/NLotHGPSBxpJdY2uXMmeygahzM0Fa//xltcH/RH0MvZvCOTbAq
+         ysTAGt12xX+/MqfMFwBaBBqMxYRlDZBMKbPmpdP/dTXdBGIaQcScGVbRuUi1M2aNz/od
+         Cb8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739987553; x=1740592353;
+        d=1e100.net; s=20230601; t=1739987554; x=1740592354;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PHVE96KLX78DAXjrskuXfsR7w+mAU4Aaw0RqwGEgCi0=;
-        b=i6mQ7MlqBorG9+DBErnKhA8xQvd6Ywl6yVh9xx2mWIetLQNSk+t/fxVb+i//rudCSM
-         Sl7y801wYRW20KKQmczUuMwffxhqjjncZKdAFCbMGPv5hFAKJ7fsavDnazjW4OZ3SqzW
-         wE5Vi0FzrHV5/FdwbNeLOsZlK1SVt2CxHpLesUiOIs9xeOUWyLEcEXTixjoYZFZQY3mA
-         YzOb3AKdEC7nj37zQ+qRQrLfHwO9Wyp58dKGkM8TvYTnlpigzkzglbcKdfNe5YAe59dq
-         DwT6dB8sC0XBKTSaKq30ob7IjbwdN036FABA+MfjQcDu3jKW4yGAZrdyF0wjHgBz5C6E
-         /bnw==
-X-Gm-Message-State: AOJu0YwpTtGg9np70DSactwIY9FOZikvqsta4oWgbYHnoUz01kysrs0L
-	7O5guXDU8KdYzeKQw9GDXpJrOQl+pB4xyiCYcQCBI5r7GOyVK8lAoDJG5ehhy3rCjdThOTIdSBL
-	aUIQ=
-X-Gm-Gg: ASbGncsolA6OxVwufhxSi/gjRCYbbpHorM4/g15LMQhCOfDwV05R97elXGVwyWuwkxG
-	GtYQN1ceDw3rHtiujdrLZxw5GevZ7zW+0Z/rrWkJK1ReQv/sYmWgrWUtkxQxgD/gl4RvRUh34EO
-	C6UyPeRe8JQ0Je15FJb/onrD/5g3IMzPD0zjfYTrWlh0K4C91yxidbEVJ6jw5ummN9FxUAZzNm6
-	KP1lOC3pyW9attxcv2sgleNDAGNUi+7z8kn13S8BuNH69fOIHYJ8hQo6wfIAUmS15jgbbR1ttvO
-	bXTI5TdMzbpO
-X-Google-Smtp-Source: AGHT+IHYzEAVZ5TYBQJ7blXzKEME+tGvXKWL7txGlCnv2Z/gOuu5GbNuybba/CmJ4HGiO01XUxKoWA==
-X-Received: by 2002:a5d:64cd:0:b0:38f:295e:6331 with SMTP id ffacd0b85a97d-38f33f3d70dmr16958711f8f.19.1739987552891;
-        Wed, 19 Feb 2025 09:52:32 -0800 (PST)
+        bh=XW9032whOdtI+Ha5IRd/YBfMaQPHihazNStVLJHmubE=;
+        b=YArOweo3YZoLOA3XIPS4WoOU09voURXVYjf6qwz+J5cnTGaNtCIlrsnUL9qSzTicN0
+         Ec94G+nuPs3e1CGz5nN+CTecHT7TwSfps6vt0WNW3sPTgJ3QOi5y5CgwK3C7AqHC9smL
+         I7rmBeKMa2QOixbA2eGP1vGKmnVu2y9K0/ymT2JLG59A5vtGe6om1QNTVJND3kFP6Ubt
+         Z6RvLjuIARLYiu/hW/pGC381mWvoX+E3GtxgODIEL7xeH8bjNxfILFVi+wJxpBRIxxS2
+         6eZ7hDf23G0RBlW8BS4/gpHK5imyQgT0/Zual69AST7D5WDTzF+ZPcLnesiTU+KTEouk
+         whXw==
+X-Gm-Message-State: AOJu0Yw1OdRIVzMmo2Q6xvoVcbTLJmsPS2qHkQG9TTMQlJR+4h9XjoIe
+	SSOe7LOD+owx/tYl0hvRpuF+6leBMF2Qy6t6QhA+/HxKHnRGzRdZO6Uy2LejuOrOpDRnMQP4RYf
+	h+o4=
+X-Gm-Gg: ASbGnctu87QYoUiQIouxwm5bbRJ/HSFRkYFTpQIifeDsP/hVzEoI/mHYDM5AmPtg+JX
+	I06Q+pHowZoCfjZ8I0RrKQMPID7v1NL851orTD4tDEBJQhGDtYABOkCSSlHRgaVNdmVgTyn6wSg
+	84GEZTHP4tANOAly8d0Un8Q5u2p9J9zta/PmJG6gaWIIVxSl7TvLm5AXjr4bBoaIv149p+m7qep
+	l/2ul4bj4VRwrIgMFU0E+O7wj2mJoNbAHd2x/lgnlxXLqKqGLstohWXLcAkmkCYoTkuLKFketZM
+	W368TNL1VBAZ
+X-Google-Smtp-Source: AGHT+IHNxtzm/tJWHM0XwQprsi7MIkTHrPoS45vtxdLA+gBrXN1vmKFsfTQFjWZ7/bGfhWRpc4lEnQ==
+X-Received: by 2002:a05:600c:3501:b0:439:955d:7ad9 with SMTP id 5b1f17b1804b1-43999da89c7mr52150455e9.14.1739987554065;
+        Wed, 19 Feb 2025 09:52:34 -0800 (PST)
 Received: from fraxinus.easyland ([2001:1620:4675:0:25b:f7ee:9a39:7e51])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43983264ef8sm99269695e9.4.2025.02.19.09.52.32
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43983264ef8sm99269695e9.4.2025.02.19.09.52.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 09:52:32 -0800 (PST)
+        Wed, 19 Feb 2025 09:52:33 -0800 (PST)
 From: Ezra Buehler <ezra@easyb.ch>
 To: linux-wireless@vger.kernel.org
 Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
@@ -82,9 +82,9 @@ Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Reto Schneider <reto.schneider@husqvarnagroup.com>,
 	Ezra Buehler <ezra.buehler@husqvarnagroup.com>
-Subject: [PATCH v1 2/3] wifi: rtl8xxxu: Use macid in rtl8xxxu_fill_txdesc_v1()
-Date: Wed, 19 Feb 2025 18:52:27 +0100
-Message-ID: <20250219175228.850583-3-ezra@easyb.ch>
+Subject: [PATCH v1 3/3] wifi: rtl8xxxu: Make sure TX rate is reported in AP mode
+Date: Wed, 19 Feb 2025 18:52:28 +0100
+Message-ID: <20250219175228.850583-4-ezra@easyb.ch>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250219175228.850583-1-ezra@easyb.ch>
 References: <20250219175228.850583-1-ezra@easyb.ch>
@@ -98,44 +98,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
 
-This is needed in order for AP mode to work correctly on gen1 devices
-like the RTL8192CU.
-
-For more information, see the corresponding change for gen2 devices,
-commit 9aa45598d054 ("wifi: rtl8xxxu: Put the macid in txdesc").
+Without this change, e.g., "iw station dump" will show "tx bitrate:
+(unknown)" when in AP mode.
 
 Signed-off-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/core.c     | 2 ++
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h | 1 +
- 2 files changed, 3 insertions(+)
+Note: The code was simply copied over from rtl8xxxu_bss_info_changed()
+---
+ drivers/net/wireless/realtek/rtl8xxxu/core.c | 24 ++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index cbd9efd22e3f..2fa22d3145a4 100644
+index 2fa22d3145a4..eb497301b625 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -5302,6 +5302,8 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 		dev_info(dev, "%s: TX rate: %d, pkt size %u\n",
- 			 __func__, rate, le16_to_cpu(tx_desc->pkt_size));
- 
-+	tx_desc->txdw1 |= cpu_to_le32(macid & TXDESC32_MACID_MASK);
+@@ -7576,6 +7576,12 @@ static int rtl8xxxu_sta_add(struct ieee80211_hw *hw,
+ 	mutex_lock(&priv->sta_mutex);
+ 	ewma_rssi_init(&sta_info->avg_rssi);
+ 	if (vif->type == NL80211_IFTYPE_AP) {
++		struct rtl8xxxu_ra_report *rarpt = &priv->ra_report;
++		u32 ramask;
++		int sgi = 0;
++		u8 highest_rate;
++		u8 bw;
 +
- 	seq_number = IEEE80211_SEQ_TO_SN(le16_to_cpu(hdr->seq_ctrl));
- 
- 	tx_desc->txdw5 = cpu_to_le32(rate);
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index f42463e595cc..dde578f65d69 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -489,6 +489,7 @@ struct rtl8xxxu_txdesc40 {
- #define TXDESC_PKT_OFFSET_SZ		0
- #define TXDESC32_AGG_ENABLE		BIT(5)
- #define TXDESC32_AGG_BREAK		BIT(6)
-+#define TXDESC32_MACID_MASK		GENMASK(4, 0)
- #define TXDESC40_MACID_SHIFT		0
- #define TXDESC40_MACID_MASK		0x00f0
- #define TXDESC_QUEUE_SHIFT		8
--- 
-2.43.0
+ 		sta_info->rssi_level = RTL8XXXU_RATR_STA_INIT;
+ 		sta_info->macid = rtl8xxxu_acquire_macid(priv);
+ 		if (sta_info->macid >= RTL8XXXU_MAX_MAC_ID_NUM) {
+@@ -7584,6 +7590,24 @@ static int rtl8xxxu_sta_add(struct ieee80211_hw *hw,
+ 		}
 
+ 		rtl8xxxu_refresh_rate_mask(priv, 0, sta, true);
++
++		/* TODO: Set bits 28-31 for rate adaptive id */
++		ramask = (sta->deflink.supp_rates[0] & 0xfff) |
++			sta->deflink.ht_cap.mcs.rx_mask[0] << 12 |
++			sta->deflink.ht_cap.mcs.rx_mask[1] << 20;
++		if (sta->deflink.ht_cap.cap &
++		    (IEEE80211_HT_CAP_SGI_40 | IEEE80211_HT_CAP_SGI_20))
++			sgi = 1;
++
++		highest_rate = fls(ramask) - 1;
++		if (rtl8xxxu_ht40_2g &&
++		    (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40))
++			bw = RATE_INFO_BW_40;
++		else
++			bw = RATE_INFO_BW_20;
++
++		rtl8xxxu_update_ra_report(rarpt, highest_rate, sgi, bw);
++
+ 		priv->fops->report_connect(priv, sta_info->macid, H2C_MACID_ROLE_STA, true);
+ 	} else {
+ 		switch (rtlvif->port_num) {
+--
+2.43.0
 
