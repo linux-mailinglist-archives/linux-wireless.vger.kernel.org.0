@@ -1,65 +1,83 @@
-Return-Path: <linux-wireless+bounces-19170-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19171-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799ADA3D181
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 07:44:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24128A3D292
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 08:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70957188DE79
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 06:44:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBA86177462
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 07:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605DA5223;
-	Thu, 20 Feb 2025 06:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0600722F11;
+	Thu, 20 Feb 2025 07:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="YGaDBpuG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H7Z2otDh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508611C5D5E
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 06:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B63A930
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 07:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740033883; cv=none; b=tfGSfnhvuHsLi9NF1uImocchcQzAwf6fZFbjDg1z/HXKTySRB3Sk0kRn23KsGbGOvd1VwLyW9dFrHz5wRL/VB9YLjlVp4RQ4KpVNlsVbpcar2oDsLNFMQ6pLUNh0iH2uP+yn5ES9iTFL1kc1wQd2witqGMAALsx03Fk+7q7C770=
+	t=1740037640; cv=none; b=sGBQUG+bGxt44VOIyL03vnwEfD4kIa6uKeVV46cvxqFKap+qJ3fou6FFkvImPWQQc6dDO1fAnxw0FJgJf8DxjXySv9028hC3R1GdXBsBn3+3oR43beVl15okc4gVCux5zaShkbkRfGd+P/EkarrW1MT8djnGWYOxko7Xy9+xfLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740033883; c=relaxed/simple;
-	bh=pEMbmpDqncFsJ9KSh804r+vBx9ic33Z1Bx+AmrqoWgY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=B3Rs47kHGkpFi+PuCF/KpwRFRvP02y72LhJ5D2fDP9ESG26Z2ZWMHVfRg37d38UytTGT6dFsoOe354AafhoyAbKVJxt+9a9smU2xEJBou/k5uhu3G33jUPnlJfILYkTDlB6wLnCTt3vW+HQnHk1T3UadSeXGa/CR7N1Lv24fv0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=YGaDBpuG; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51K6ibVuB722637, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1740033877; bh=pEMbmpDqncFsJ9KSh804r+vBx9ic33Z1Bx+AmrqoWgY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=YGaDBpuG+hT2tmBWYDq5TSJFi6o+fH0ASKPQc8GuIFKvIGcH62zTWBL3FrOucb06y
-	 sIi2FRoFg40xzx+ZkHKj/vgrKoQSuT2Vln7fJ7qFqrqAC68Kj8vOs0iixk7HsAKkQ2
-	 Lh6SyDP2Ntr4uq7t9jE+CWQhpnhPzSywtJ1UPJGAGqpKo82HffA/7MW1wONYusQgBF
-	 oQ8w8NPEtlHlLCg+Gza4eACESPOScsB/Ylm8D1zWyIiCAtbQWDTPc+XyTS5FSNM6Pp
-	 dfjG5Ul9o1CJBxKaI8nYhKo7ZgL8Ief0F7Z+2NQWH1cbEAALcXDIk06qhMTO8vTu7J
-	 RNOpdscjLMvSQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51K6ibVuB722637
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 14:44:37 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 20 Feb 2025 14:44:38 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 20 Feb
- 2025 14:44:37 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <gary.chang@realtek.com>
-Subject: [PATCH] wifi: rtw89: Parse channel from IE to correct invalid hardware reports during scanning
-Date: Thu, 20 Feb 2025 14:43:57 +0800
-Message-ID: <20250220064357.17962-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1740037640; c=relaxed/simple;
+	bh=It+tj5dxzDDZ1PsV6/nRtONXZfIprABDx3R6pGIVavQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BGhVLMUpDC3YASzAqw0bo9I4KL5k4jy9LioCIyi4l4TlCz1HkS5wA/9t9uDtT4Bpwoc3yvHxXgO80h4kcXdM03QGOldrNJzwAVaVmmE4StZ1llsWGUbP2Yv+gOzJ03o7S4NspsMMp6gW0R/YGja8fkOJ6xncLlRgmigfa7onAKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H7Z2otDh; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-abb892fe379so111100266b.0
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Feb 2025 23:47:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740037637; x=1740642437; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kizMZXBvZWYMp3UdtimJt8rL4L1g53Q7nNsYzh45q0U=;
+        b=H7Z2otDhnEwUL5tXBH5dSkTj3IfOEFahtdOYJDZogz7xf+kZLsc/Ifvz3ZWb3qtjX5
+         8S0KBOuacz3xCrLfv+1D1A/U0kqnmDhui8tI0T4Q5WayyOsUH1J/biN6q2OZy5pvUBH9
+         th6BOF1NOxVhSA8V9eUTKGq2o9QxGPnCkFS/TpybUVshkg+dTjtqB3gyomiUlZ8aiCom
+         MyPNRVojGEjHbP55BZmFIpFnspRmrNVRnatv6LjVPjXDL/QfDYIfX7QawyOXPi9qRyvN
+         Aaa+g12d46XOuPq5KG+yYr+Rw/Kh8mxcJ9xICZQ692UpFdRWSmyQcNJpu8FHUOszpUu+
+         yGqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740037637; x=1740642437;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kizMZXBvZWYMp3UdtimJt8rL4L1g53Q7nNsYzh45q0U=;
+        b=oMyVe8a+ve12CTcPumkKVpDA2Lu39JKuR2yRSb/3CCm8Pn6Q6G0fByE/1mjM4MLVVQ
+         QEVl2ClV9BvQx9izW8os9PC5Zx4hHvLFQxfjndTt604XrtpKTb6ChQg83u9TVDNl5/o1
+         bqYkakMxW34VwC3BdpvuTHlRA8srfiSFhCoTEeQOuOnb4UKyL/UV2GIlmKSdfXoDwN77
+         VJ4BqBtbKe+owKbuqQmhpL6I2RjUfMFlWVFz1vjWXSJ1TvfhbbsmY4kWEst+KgV//E24
+         eWxT7/57Mz27yDv1Rt/t201NeohWq2G2fnJEPd0JVkpq2dkyQ2wejGEFwAvNDa0aQkbi
+         Ru2g==
+X-Gm-Message-State: AOJu0YwCOuzjhWz8tTstBA1yjlRSREIpYtZHEhFOJdAMPn0TBU2f9Y9k
+	aGvki6uAB1d+35RZF7FTomlsjc8GxzEfMZwFQCTZmGt4wGVF5HNk140+NQ==
+X-Gm-Gg: ASbGnctSmIXaYoFp0tUq4WajJZUagj2PFz6hNIy3PP2ssVJa9bMD+yFZL163D6328uI
+	SM7sDFcOK/HlDWGD6DpQglJVPi23Zc0i6wtQKvYNmwq3Mn9zYoSzRqyHrgW8zlGTkFDSHpIacaa
+	raGbrMX/vQiEgfWsbZJUEumMqvWZgjTr6JOMZJD5e7UJtFPEgxPGH9enyCmQ+b2lIMQ6lOOYbQl
+	Raz90seuRtZJ1YtbZnQ5Ut/6zPrT2iD6JR9hW7onplM8CXiOzEwzrAcI0FG5Zbz8mm+64lPyX40
+	jNYcfdouYGep0JKGUrQEeBtg9KSh2qs9HZvFUbJkCIjz5omDsDmvJHRzvCjTYHtqbnYC3NzswjJ
+	wH3W2IUk1ULHgISOvcDYgWX5dDyhQTXw=
+X-Google-Smtp-Source: AGHT+IG/WHLp4u84QnvngTw5Udsuxk0XKdyFT/RHArDNto1L5ul9jTuTrZFMWBU03cHHbBaqcY/TAQ==
+X-Received: by 2002:a05:6402:1f13:b0:5dc:80ba:dda1 with SMTP id 4fb4d7f45d1cf-5e03602e5d6mr49278966a12.9.1740037637096;
+        Wed, 19 Feb 2025 23:47:17 -0800 (PST)
+Received: from hp.NAT.swidnica_mmp.vectranet.pl (178235177162.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.162])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb7d4dc4dasm956292666b.3.2025.02.19.23.47.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Feb 2025 23:47:16 -0800 (PST)
+From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Subject: [PATCH] wifi: nl80211: report real HE length
+Date: Thu, 20 Feb 2025 08:46:57 +0100
+Message-ID: <20250220074657.120288-1-janusz.dziedzic@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -67,176 +85,47 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+Report real length for:
+ - supported HE-MCS and NSS set
+ - PPE Thresholds
 
-For some packets, we could not get channel information from PPDU status.
-And this causes wrong frequencies being reported. Parse the channel
-information from IE if provided by AP to fix this.
-
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Janusz Dziedzic <janusz.dziedzic@gmail.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c     | 44 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/core.h     |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
- .../net/wireless/realtek/rtw89/rtw8852bt.c    |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |  1 +
- 8 files changed, 51 insertions(+)
+ net/wireless/nl80211.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 8d5dc22fb508..4d286182e21d 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2382,6 +2382,49 @@ static void rtw89_core_validate_rx_signal(struct ieee80211_rx_status *rx_status)
- 		rx_status->flag |= RX_FLAG_NO_SIGNAL_VAL;
- }
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 8bd09110d393..c0772e24cc2e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -1873,6 +1873,12 @@ nl80211_send_iftype_data(struct sk_buff *msg,
+ 		return -ENOBUFS;
  
-+static void rtw89_core_update_rx_freq_from_ie(struct rtw89_dev *rtwdev,
-+					      struct sk_buff *skb,
-+					      struct ieee80211_rx_status *rx_status)
-+{
-+	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
-+	size_t hdr_len, ielen;
-+	u8 *variable;
-+	int chan;
+ 	if (he_cap->has_he) {
++		u8 mcs_nss_size, ppe_thresh_size;
 +
-+	if (!rtwdev->chip->rx_freq_frome_ie)
-+		return;
++		mcs_nss_size = ieee80211_he_mcs_nss_size(&he_cap->he_cap_elem);
++		ppe_thresh_size = ieee80211_he_ppe_size(he_cap->ppe_thres[0],
++					he_cap->he_cap_elem.phy_cap_info);
 +
-+	if (!rtwdev->scanning)
-+		return;
-+
-+	if (ieee80211_is_beacon(mgmt->frame_control)) {
-+		variable = mgmt->u.beacon.variable;
-+		hdr_len = offsetof(struct ieee80211_mgmt,
-+				   u.beacon.variable);
-+	} else if (ieee80211_is_probe_resp(mgmt->frame_control)) {
-+		variable = mgmt->u.probe_resp.variable;
-+		hdr_len = offsetof(struct ieee80211_mgmt,
-+				   u.probe_resp.variable);
-+	} else {
-+		return;
-+	}
-+
-+	if (skb->len > hdr_len)
-+		ielen = skb->len - hdr_len;
-+	else
-+		return;
-+
-+	/* The parsing code for both 2GHz and 5GHz bands is the same in this
-+	 * function.
-+	 */
-+	chan = cfg80211_get_ies_channel_number(variable, ielen, NL80211_BAND_2GHZ);
-+	if (chan == -1)
-+		return;
-+
-+	rx_status->band = chan > 14 ? RTW89_BAND_5G : RTW89_BAND_2G;
-+	rx_status->freq = ieee80211_channel_to_frequency(chan, rx_status->band);
-+}
-+
- static void rtw89_core_rx_to_mac80211(struct rtw89_dev *rtwdev,
- 				      struct rtw89_rx_phy_ppdu *phy_ppdu,
- 				      struct rtw89_rx_desc_info *desc_info,
-@@ -2399,6 +2442,7 @@ static void rtw89_core_rx_to_mac80211(struct rtw89_dev *rtwdev,
- 	rtw89_core_update_rx_status_by_ppdu(rtwdev, rx_status, phy_ppdu);
- 	rtw89_core_update_radiotap(rtwdev, skb_ppdu, rx_status);
- 	rtw89_core_validate_rx_signal(rx_status);
-+	rtw89_core_update_rx_freq_from_ie(rtwdev, skb_ppdu, rx_status);
+ 		if (nla_put(msg, NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC,
+ 			    sizeof(he_cap->he_cap_elem.mac_cap_info),
+ 			    he_cap->he_cap_elem.mac_cap_info) ||
+@@ -1880,10 +1886,9 @@ nl80211_send_iftype_data(struct sk_buff *msg,
+ 			    sizeof(he_cap->he_cap_elem.phy_cap_info),
+ 			    he_cap->he_cap_elem.phy_cap_info) ||
+ 		    nla_put(msg, NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET,
+-			    sizeof(he_cap->he_mcs_nss_supp),
+-			    &he_cap->he_mcs_nss_supp) ||
++			    mcs_nss_size, &he_cap->he_mcs_nss_supp) ||
+ 		    nla_put(msg, NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE,
+-			    sizeof(he_cap->ppe_thres), he_cap->ppe_thres))
++			    ppe_thresh_size, he_cap->ppe_thres))
+ 			return -ENOBUFS;
+ 	}
  
- 	/* In low power mode, it does RX in thread context. */
- 	local_bh_disable();
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 676f5e21744f..50a608a0c2be 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4279,6 +4279,7 @@ struct rtw89_chip_info {
- 	bool support_ant_gain;
- 	bool ul_tb_waveform_ctrl;
- 	bool ul_tb_pwr_diff;
-+	bool rx_freq_frome_ie;
- 	bool hw_sec_hdr;
- 	bool hw_mgmt_tx_encrypt;
- 	bool hw_tkip_crypto;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index e5ccd55655b6..76a66b19567b 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -2498,6 +2498,7 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
- 	.support_ant_gain	= false,
- 	.ul_tb_waveform_ctrl	= true,
- 	.ul_tb_pwr_diff		= false,
-+	.rx_freq_frome_ie	= true,
- 	.hw_sec_hdr		= false,
- 	.hw_mgmt_tx_encrypt	= false,
- 	.hw_tkip_crypto		= false,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 42642135d274..e8c1cf2917d9 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2216,6 +2216,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
- 	.support_ant_gain	= false,
- 	.ul_tb_waveform_ctrl	= false,
- 	.ul_tb_pwr_diff		= false,
-+	.rx_freq_frome_ie	= true,
- 	.hw_sec_hdr		= false,
- 	.hw_mgmt_tx_encrypt	= false,
- 	.hw_tkip_crypto		= false,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index e9ff6bcdd9ec..e36b171a0382 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -852,6 +852,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
- 	.support_ant_gain	= true,
- 	.ul_tb_waveform_ctrl	= true,
- 	.ul_tb_pwr_diff		= false,
-+	.rx_freq_frome_ie	= true,
- 	.hw_sec_hdr		= false,
- 	.hw_mgmt_tx_encrypt	= false,
- 	.hw_tkip_crypto		= false,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-index 2f5804f77f9d..ec8243926479 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-@@ -785,6 +785,7 @@ const struct rtw89_chip_info rtw8852bt_chip_info = {
- 	.support_ant_gain	= true,
- 	.ul_tb_waveform_ctrl	= true,
- 	.ul_tb_pwr_diff		= false,
-+	.rx_freq_frome_ie	= true,
- 	.hw_sec_hdr		= false,
- 	.hw_mgmt_tx_encrypt     = false,
- 	.hw_tkip_crypto		= true,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 89f258b98e75..6494239ac1f5 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -3011,6 +3011,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.support_ant_gain	= true,
- 	.ul_tb_waveform_ctrl	= false,
- 	.ul_tb_pwr_diff		= true,
-+	.rx_freq_frome_ie	= false,
- 	.hw_sec_hdr		= true,
- 	.hw_mgmt_tx_encrypt	= true,
- 	.hw_tkip_crypto		= true,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-index 99221677065c..9cf6aed456cf 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-@@ -2770,6 +2770,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
- 	.support_ant_gain	= false,
- 	.ul_tb_waveform_ctrl	= false,
- 	.ul_tb_pwr_diff		= false,
-+	.rx_freq_frome_ie	= false,
- 	.hw_sec_hdr		= true,
- 	.hw_mgmt_tx_encrypt	= true,
- 	.hw_tkip_crypto		= true,
 -- 
-2.25.1
+2.43.0
 
 
