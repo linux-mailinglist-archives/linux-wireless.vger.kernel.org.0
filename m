@@ -1,48 +1,51 @@
-Return-Path: <linux-wireless+bounces-19189-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19191-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2413A3D73B
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 11:48:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE69A3D735
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 11:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21DB919C202A
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 10:47:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 814337A401E
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 10:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A4F1F3D31;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A410E1F3D20;
 	Thu, 20 Feb 2025 10:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="cHcBh+MK"
+	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="axZChxku"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E351F1509
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 10:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059B71F3B92
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 10:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740048285; cv=none; b=WUOFR2tnCV2QIO62I1of/huftECrgi/9i3H3GPyYRkRpAVDsSmO0GRMV3JgWhcFaWcwZMQh+24UqXWsVJP+mJYBw0Exj8mG3lx0neJeUvS+PvMVs3hw9fniEnrFaJLu9lKaRoqU8qF/eXrJu3zUvltPqCgwgK0wXe+S2tAn1BSQ=
+	t=1740048285; cv=none; b=QuWsJfdO1yW3+dWlaQuNDivanfWPCh+cg1ULmmr1bcDj/9/MASW/RlPs1eKo3VPY/4QXX+CG6XHkvYHSxVG6JHdG7eef4B4ddCd062UTrIUdwBNHHKhLPNjUoYQpmkhvN0I3SIUeP8Jg+Qgq4Fz/nOqa08s4FAnCTVHu68eA61o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740048285; c=relaxed/simple;
-	bh=k0Kavqc5GSWlTP2gjPov7R9qU0IQVWHr3+g2m7yE/kU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m68Fvl1SdMcolkcRbsUBpplaRJ0oGEH7qpF3dEmORHF2ysLJJXbF5xekYBYb0mEZR5gLibEySnrlpdrOn+LOLTTmMAWRnPKmecMNlHPKqHkhNkdTOG4X8/3RwpAlzrMQvauXq6mKn9GOrybXoIVrC8UDqD3qvKOUp9P8P38PECY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=cHcBh+MK; arc=none smtp.client-ip=5.252.227.236
+	bh=tGx2EV38wBwrG3IpJ3NAsu9iteg8bo6B8Wt13suMfOc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=B+dwS7xWnrVCOPvIOwv5Y9W1zbTz+TvBkLQYNO4cFh/47MULsMoOJSGiop3i7BLKW/waoBo15sAhcy+w5r7t4aFAgns/ms7lzHM1Nge6p+0ceDSE8zyqjMeQVlgQQMLs6lXtr+pQveKXI6oxDj7HwSsKja903r0fdZ8nxH+y0Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=axZChxku; arc=none smtp.client-ip=5.252.227.236
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
 From: Alexander Wetzel <Alexander@wetzel-home.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-	s=wetzel-home; t=1740048278;
-	bh=k0Kavqc5GSWlTP2gjPov7R9qU0IQVWHr3+g2m7yE/kU=;
-	h=From:To:Cc:Subject:Date;
-	b=cHcBh+MK5f+KiKgfIBJDTzWlrGW2pjOrOkaXglNI1sq/Jv20e/xQ+2l5n9nXmAmpH
-	 Q50XXrBCjFLf2ES+n+oTnC1K8M3iFNpxP72Ky04wyCALhSw+5acE/qLORAdQsdjX16
-	 4/+jlQqywU8yB76gPhr6NRX1BCJz1VSALVHnDjDU=
+	s=wetzel-home; t=1740048280;
+	bh=tGx2EV38wBwrG3IpJ3NAsu9iteg8bo6B8Wt13suMfOc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=axZChxkuuGJCgRPNHL4flExP6CXY2UydNLTnfVE8yZxWPCMTwReLg/6bcAnsj2ziq
+	 tOy8TfRWoJSap7Ix6uSLUGoQuyC6NxKLjPkfzIadN4Acgh1Ff1xtw+p/LY7U43lwXf
+	 /KsvHem7z6di+qD2Trdt71s6N1vu9zqfRwO9NqbY=
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes@sipsolutions.net>,
 	Alexander Wetzel <Alexander@wetzel-home.de>
-Subject: [PATCH v3 00/10] Convert mac80211 to TXQs only
-Date: Thu, 20 Feb 2025 11:44:16 +0100
-Message-ID: <20250220104426.82011-1-Alexander@wetzel-home.de>
+Subject: [PATCH v3 01/10] wifi: mac80211: move rate control setup
+Date: Thu, 20 Feb 2025 11:44:17 +0100
+Message-ID: <20250220104426.82011-2-Alexander@wetzel-home.de>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250220104426.82011-1-Alexander@wetzel-home.de>
+References: <20250220104426.82011-1-Alexander@wetzel-home.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -51,208 +54,90 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series switches all TX handling in mac80211 over to TXQs.
-TXQs can take over buffering in many - potentially even all - cases
-where we use separate solutions so far.
-This reduces the complexity of the TX path and making it simpler to use
-TX in mac8021.
+Move setting up the rate control into ieee80211_sdata_init() to ensure
+rates are also set up for the virtual monitor interface.
 
-These patches continue the work to get rid of the legacy TX path we
-started drivers with
-https://lore.kernel.org/r/20221009163040.25637-1-alexander@wetzel-home.de
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+---
+ net/mac80211/iface.c | 51 ++++++++++++++++++++++----------------------
+ 1 file changed, 26 insertions(+), 25 deletions(-)
 
-and was inspired by this old discussion on the wireless mailing list:
-https://lore.kernel.org/r/1507217947.2387.60.camel@sipsolutions.net/
-
-Changes compared to RFC and v1/v2 are documented in the individual
-patches, where applicable (v3 only updates "Simplify AMPDU handling").
-
-A quick overview of the patches in the series:
-  wifi: mac80211: move rate control setup
-	Broken off from "Add new TX queues to replace legacy TX" as
-	requested. Moves some exiting code around.
-
-  wifi: mac80211: Always provide the MMPDU TXQ
-	When only using TXQs for TX we akways need this.
-	Creates and uses MMPDU TXQs even for drivers not supporting
-	them.
-
-  wifi: mac80211: Convert vif->txq to an array
-	We need some more TXQs for the patch below. Create them.
-
-  wifi: mac80211: Add new TX queues to replace legacy TX
-	This starts the core of the move to TXQs.
-	Creats all the missing TXQs and updates the support function for
-	them. It also directly switches traffic to them, when possible.
-	(Only offchannel is sticking to legacy TX after that.)
-
-  wifi: mac80211: Stop using legacy TX path
-	Drop the legacy TX functions and move offchannel TX to the new
-	alternate TXQ path named TXQ_NOQUEUE (so far).
-        With that mac80211 has two TX paths both using TXQ:
-         - The existing one, which uses the TXQ for queuing and
-         - TXQ_NOQUEUE. Which just puts frames into a TXQ and
-           immediately sends out the frame by also calling drv_tx() for
-           it. There never can be more than one frame in any of these
-           TXQs. They never see a wake_tx_queue call by the driver or
-           mac80211.
-
-  wifi: mac80211: Call ieee80211_tx_h_select_key only once
-	A optimization which could be without the patches, too. Would
-	just be done differently. (Not required)
-
-  wifi: mac80211: Rename IEEE80211_TX_INTFL_OFFCHAN_TX_OK
-	Rename the flag used to select the NOQUEU TX path to make its
-	use more obvious.
-
-  wifi: mac80211: Simplify AMPDU handling
-	Uses TXQs to buffer frames when AMPDU is started/stopped.
-
-  wifi: mac80211: Migrate TX to kthread
-	Moves all TX operation except TXQ_NOQUEUE to a new kthread.
-        This hooks into the existing txq scheduling and uses
-	local->active_txqs to determine which TXQs need to run.
-
-  wifi: mac80211: Cleanup *ieee80211_wake_txq* naming
-	Rename a few functions.
-
- drivers/net/wireless/ath/ath10k/mac.c         |   8 +-
- drivers/net/wireless/ath/ath9k/ath9k.h        |   2 +-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   6 +-
- .../net/wireless/mediatek/mt76/mt7603/main.c  |   3 +-
- .../net/wireless/mediatek/mt76/mt7615/main.c  |   5 +-
- .../net/wireless/mediatek/mt76/mt76x02_util.c |   3 +-
- .../net/wireless/mediatek/mt76/mt7915/main.c  |   6 +-
- .../net/wireless/mediatek/mt76/mt7921/main.c  |   5 +-
- .../net/wireless/mediatek/mt76/mt7925/main.c  |   5 +-
- .../net/wireless/mediatek/mt76/mt7996/main.c  |   5 +-
- drivers/net/wireless/realtek/rtw88/mac80211.c |   4 +-
- drivers/net/wireless/realtek/rtw88/main.c     |   2 +-
- drivers/net/wireless/realtek/rtw89/mac80211.c |   2 +-
- include/net/mac80211.h                        |  60 +-
- net/mac80211/agg-tx.c                         | 129 +---
- net/mac80211/cfg.c                            |   8 +-
- net/mac80211/debugfs_netdev.c                 |  46 +-
- net/mac80211/debugfs_sta.c                    |   2 -
- net/mac80211/driver-ops.h                     |  28 +-
- net/mac80211/ieee80211_i.h                    |  32 +-
- net/mac80211/iface.c                          | 144 ++--
- net/mac80211/main.c                           |   9 +-
- net/mac80211/mesh.c                           |  13 +-
- net/mac80211/mlme.c                           |   2 +-
- net/mac80211/offchannel.c                     |   2 +-
- net/mac80211/rx.c                             |  13 +-
- net/mac80211/scan.c                           |   2 +-
- net/mac80211/sta_info.c                       |   6 +-
- net/mac80211/sta_info.h                       |  30 +-
- net/mac80211/tx.c                             | 621 ++++--------------
- net/mac80211/util.c                           | 162 +++--
- 31 files changed, 535 insertions(+), 830 deletions(-)
-
--- 
-2.48.1
-
-From 303b44b166edc64f3a396c82841ac7e1e07a9a19 Mon Sep 17 00:00:00 2001
-From: Alexander Wetzel <Alexander@wetzel-home.de>
-Date: Wed, 5 Feb 2025 17:24:11 +0100
-Subject: [RFC v2 PATCH 00/10] Convert mac80211 to TXQs only
-
-This series switches all TX handling in mac80211 to TXQs.
-With TXQs taking over buffering many - or even all - buffering can be
-taken over by them. This also reduces the complexity of the TX paths and
-always use the same set of core functions for TX.
-
-These patches continue the work to get rid of the legacy TX path we
-started here for the drivers:
-https://lore.kernel.org/r/20221009163040.25637-1-alexander@wetzel-home.de
-
-Changes compared to RFC v1 are documented in the individual patches.
-But I've also cut off the patches TXQ flush and monitor interface
-handling. (These or the redesigned versions were submitted as
-independent patches.)
-
-A quick overview of the patches in the series:
-  wifi: mac80211: move rate control setup
-	Broken off from "Add new TX queues to replace legacy TX" as
-	requested. Moves some exiting code around.
-
-  wifi: mac80211: Always provide the MMPDU TXQ
-	When only using TXQs for TX we can't have this queue optionally.
-	Creates and uses MMPDU TXQs even for drivers not supporting
-	them.
-
-  wifi: mac80211: Convert vif->txq to an array
-	We need some more TXQs for the patch below. Create them.
-
-  wifi: mac80211: Add new TX queues to replace legacy TX
-	This starts the core of the move to TXQs.
-	Creats all the missing TXQs and updates the support function for
-	them. It also directly switches traffic to them, when possible.
-	(Only offchannel is sticking to legacy TX after that.)
-
-  wifi: mac80211: Stop using legacy TX path
-	Drop the legacy TX functions and move offchannel TX to the new
-	alternate TXQ path named TXQ_NOQUEUE (so far).
-        With that mac80211 has two TX paths both using TXQ:
-         - The existing one, which uses the TXQ for queuing and
-         - TXQ_NOQUEUE. Which just puts frames into a TXQ and
-           immediately sends out the frame by also calling drv_tx() for
-           it. There never can be more than one frame in any of these
-           TXQs. They never see a wake_tx_queue call by the driver or
-           mac80211.
-
-  wifi: mac80211: Call ieee80211_tx_h_select_key only once
-	A optimization which could be without the patches, too. Would
-	just be done differently. (Not required)
-
-  wifi: mac80211: Rename IEEE80211_TX_INTFL_OFFCHAN_TX_OK
-	Rename the flag used to select the NOQUEU TX path to make its
-	use more obvious.
-
-  wifi: mac80211: Simplify AMPDU handling
-	Uses TXQs to buffer frames when AMPDU is started/stopped.
-
-  wifi: mac80211: Migrate TX to kthread
-	Moves all TX operation except TXQ_NOQUEUE to a new kthread.
-        This hooks into the existing txq scheduling and uses local->active_txqs
-        to determine which TXQs need to run.
-
-  wifi: mac80211: Cleanup *ieee80211_wake_txq* naming
-	Rename a few functions.
-
- drivers/net/wireless/ath/ath10k/mac.c         |   8 +-
- drivers/net/wireless/ath/ath9k/ath9k.h        |   2 +-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   6 +-
- .../net/wireless/mediatek/mt76/mt7603/main.c  |   3 +-
- .../net/wireless/mediatek/mt76/mt7615/main.c  |   5 +-
- .../net/wireless/mediatek/mt76/mt76x02_util.c |   3 +-
- .../net/wireless/mediatek/mt76/mt7915/main.c  |   6 +-
- .../net/wireless/mediatek/mt76/mt7921/main.c  |   5 +-
- .../net/wireless/mediatek/mt76/mt7925/main.c  |   5 +-
- .../net/wireless/mediatek/mt76/mt7996/main.c  |   5 +-
- drivers/net/wireless/realtek/rtw88/mac80211.c |   4 +-
- drivers/net/wireless/realtek/rtw88/main.c     |   2 +-
- drivers/net/wireless/realtek/rtw89/mac80211.c |   2 +-
- include/net/mac80211.h                        |  60 +-
- net/mac80211/agg-tx.c                         | 129 +---
- net/mac80211/cfg.c                            |   8 +-
- net/mac80211/debugfs_netdev.c                 |  46 +-
- net/mac80211/debugfs_sta.c                    |   2 -
- net/mac80211/driver-ops.h                     |  28 +-
- net/mac80211/ieee80211_i.h                    |  32 +-
- net/mac80211/iface.c                          | 144 ++--
- net/mac80211/main.c                           |   9 +-
- net/mac80211/mesh.c                           |  13 +-
- net/mac80211/mlme.c                           |   2 +-
- net/mac80211/offchannel.c                     |   2 +-
- net/mac80211/rx.c                             |  11 +-
- net/mac80211/scan.c                           |   2 +-
- net/mac80211/sta_info.c                       |   6 +-
- net/mac80211/sta_info.h                       |  30 +-
- net/mac80211/tx.c                             | 616 ++++--------------
- net/mac80211/util.c                           | 162 +++--
- 31 files changed, 534 insertions(+), 824 deletions(-)
-
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index b0423046028c..7525fe9e62de 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1120,6 +1120,31 @@ static void ieee80211_sdata_init(struct ieee80211_local *local,
+ 	 * MLD connection, we get a separate allocation for it.
+ 	 */
+ 	ieee80211_link_init(sdata, -1, &sdata->deflink, &sdata->vif.bss_conf);
++
++	for (int i = 0; i < NUM_NL80211_BANDS; i++) {
++		struct ieee80211_supported_band *sband;
++
++		sband = local->hw.wiphy->bands[i];
++		sdata->rc_rateidx_mask[i] =
++			sband ? (1 << sband->n_bitrates) - 1 : 0;
++		if (sband) {
++			__le16 cap;
++			u16 *vht_rate_mask;
++
++			memcpy(sdata->rc_rateidx_mcs_mask[i],
++			       sband->ht_cap.mcs.rx_mask,
++			       sizeof(sdata->rc_rateidx_mcs_mask[i]));
++
++			cap = sband->vht_cap.vht_mcs.rx_mcs_map;
++			vht_rate_mask = sdata->rc_rateidx_vht_mcs_mask[i];
++			ieee80211_get_vht_mask_from_cap(cap, vht_rate_mask);
++		} else {
++			memset(sdata->rc_rateidx_mcs_mask[i], 0,
++			       sizeof(sdata->rc_rateidx_mcs_mask[i]));
++			memset(sdata->rc_rateidx_vht_mcs_mask[i], 0,
++			       sizeof(sdata->rc_rateidx_vht_mcs_mask[i]));
++		}
++	}
+ }
+ 
+ int ieee80211_add_virtual_monitor(struct ieee80211_local *local)
+@@ -2080,7 +2105,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 	struct net_device *ndev = NULL;
+ 	struct ieee80211_sub_if_data *sdata = NULL;
+ 	struct txq_info *txqi;
+-	int ret, i;
++	int ret;
+ 
+ 	ASSERT_RTNL();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+@@ -2169,30 +2194,6 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 	wiphy_delayed_work_init(&sdata->dec_tailroom_needed_wk,
+ 				ieee80211_delayed_tailroom_dec);
+ 
+-	for (i = 0; i < NUM_NL80211_BANDS; i++) {
+-		struct ieee80211_supported_band *sband;
+-		sband = local->hw.wiphy->bands[i];
+-		sdata->rc_rateidx_mask[i] =
+-			sband ? (1 << sband->n_bitrates) - 1 : 0;
+-		if (sband) {
+-			__le16 cap;
+-			u16 *vht_rate_mask;
+-
+-			memcpy(sdata->rc_rateidx_mcs_mask[i],
+-			       sband->ht_cap.mcs.rx_mask,
+-			       sizeof(sdata->rc_rateidx_mcs_mask[i]));
+-
+-			cap = sband->vht_cap.vht_mcs.rx_mcs_map;
+-			vht_rate_mask = sdata->rc_rateidx_vht_mcs_mask[i];
+-			ieee80211_get_vht_mask_from_cap(cap, vht_rate_mask);
+-		} else {
+-			memset(sdata->rc_rateidx_mcs_mask[i], 0,
+-			       sizeof(sdata->rc_rateidx_mcs_mask[i]));
+-			memset(sdata->rc_rateidx_vht_mcs_mask[i], 0,
+-			       sizeof(sdata->rc_rateidx_vht_mcs_mask[i]));
+-		}
+-	}
+-
+ 	ieee80211_set_default_queues(sdata);
+ 
+ 	/* setup type-dependent data */
 -- 
 2.48.1
 
