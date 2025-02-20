@@ -1,65 +1,66 @@
-Return-Path: <linux-wireless+bounces-19168-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19169-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D29A3D15C
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 07:24:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656D5A3D163
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 07:26:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 379DE175D48
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 06:24:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC43E7A8C0D
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 06:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C721E04A9;
-	Thu, 20 Feb 2025 06:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5711E3DE8;
+	Thu, 20 Feb 2025 06:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="LKyrat99"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="le0vitOK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33B71DE4EF
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 06:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3C31E25EB
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 06:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740032667; cv=none; b=kwOLRm5uXdB0PH1DRTnj/Q7l8CN2Ye4n/YWxdAhA7pRPysZqkbHN8brvZZx68xR/oJc17jmNBrT4qy5sEKSQJ/bbmJs0yXZDAnf7HAgbZKINcYXeWlG+2PUOaC82yeJiRmQ3sU+0TQk/vYPWuEBJEgc5Qua2+gSkzYfich0PRaw=
+	t=1740032797; cv=none; b=eg2+9jWEGdwGqiwhpjAy7vDtBzP/ZkqvSlmnekFIwBzs2j+dxUs84/5LdSbQuodV8lZZ32tAEnQ2EKRtkKGnDugHJwt9t1MFFnerdUHWLkigAPQGt3ibeptdZ2kvTSYaHjwcTZ3eJTIu74nMbnVzAZIyLiLZq3tuWxZ3ULAh1T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740032667; c=relaxed/simple;
-	bh=KJJ14EIpeuGUEKORWyHq+6EULKFS3YvDIB4C/RIEJ0Q=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GEudhZz2dA8kb7DmOAedrp5xuymJ8AJEc4WK/1pvn404a3exPxlU7gVXRUJyY9jDAORnsNKuL9enMB1U/uMPSbXhW0KUBStHBUE+cP/9eaQ7oH/PE13YZW+2bA1eNh53IPZCAq/pwPpOMxUHheXjq62TG6hVK77UFWq3P7NDGRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=LKyrat99; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51K6ONKk8684903, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1740032663; bh=KJJ14EIpeuGUEKORWyHq+6EULKFS3YvDIB4C/RIEJ0Q=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=LKyrat99WOvRDgr/kmsf7ys9VBBJx4FLLJen9OK57qbJ3y4JTkp8wR7HSGkf5eoFy
-	 aj1pdxAc079fcbZnzb1EVkPb2PuprJfCzzVE7Qslk9glxWu9mbqm1xRax32x60xLy1
-	 R7FPV5Suf5WX75+jeHPMf9HFCBAqYFiZdlilRKInx3+sjdU5vGaJB0qrgfJr8wdyY0
-	 DOS/F60R4YowCtbHE9RXwgchCpYKnlpUufOcLqyj60s6VPNZPTA/gmbucTW69uuY/c
-	 kmVmMu/Dh+Ex9yMN18VFwJG5VU7L6omn4xtTWmfzwSe8BK1rYnTt/j/1GbLiGnAVfI
-	 4wpUh+ALBTXVw==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51K6ONKk8684903
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 14:24:23 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+	s=arc-20240116; t=1740032797; c=relaxed/simple;
+	bh=x0Ex3MrQ7DAFFXp3l/zv621Gzo+XaHHSvbA5hWEQ1rE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cEyjTXcDUT4ufx+aX0gxUtp0rqEbBhbN0e4YWTKj2IeNgE1ElFG0XaNSjh6IBV9ZO0/KKDZJUGlgchGv/XxoIoPxIoaqILv03cRZtft9zvY5AFDNjJkmxkciW8HSQELkyF7jpnipP+sdalTrMyDrYk4iMNM0Rrix7Jq0wTyP/mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=le0vitOK; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51K5vdrj001823;
+	Thu, 20 Feb 2025 06:26:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=ZN02vA5wrClz74b0lSkMNj
+	pSSaLmOreN/dVo8caRP3o=; b=le0vitOKLNu0Ia+XSrg3RxLz3cvLqvhjfyO5t+
+	O65T4QxDveCVheIpWyZNVMumZEzyoKGKdENQCc2bpk4HAh2o0wBBQ3LhffHCBdBt
+	TN5c35CYT+k8ewUtJOwPZq2Ex3LmGqSTTdZqBDE7EzdY/yiELbD1tWNQYKrO4e3I
+	WdWFEhSAbr+k5QDQohBr8IsGjEPXc2N92HlY8rHJBsZLJiCQfFGLG6NmepFMxFo/
+	0TDmgRPTpG9zu/UiCKIhQkzMbXWQzMpRzH7sHe21+dPxERJSbRIwJrThwUMARrZw
+	KXiSKa2K26BdfLknjhh9KLtO90XS/i4mtfr+NcErR0Wp5Ziw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44vyy2d342-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Feb 2025 06:26:32 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51K6QVqc005597
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Feb 2025 06:26:31 GMT
+Received: from kangyang.ap.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 20 Feb 2025 14:24:23 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 20 Feb
- 2025 14:24:23 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <damon.chen@realtek.com>
-Subject: [PATCH] wifi: rtw89: add support for HW TKIP crypto
-Date: Thu, 20 Feb 2025 14:23:44 +0800
-Message-ID: <20250220062344.15836-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+ 15.2.1544.9; Wed, 19 Feb 2025 22:26:29 -0800
+From: Kang Yang <quic_kangyang@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
+Subject: [PATCH v2] wifi: ath12k: read country code from SMBIOS for WCN7850
+Date: Thu, 20 Feb 2025 14:26:07 +0800
+Message-ID: <20250220062607.334-1-quic_kangyang@quicinc.com>
+X-Mailer: git-send-email 2.34.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,146 +69,171 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 2qg0V7eQinovthJCYR2UCxUmZF2fmFIJ
+X-Proofpoint-GUID: 2qg0V7eQinovthJCYR2UCxUmZF2fmFIJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-20_02,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 clxscore=1015 adultscore=0 phishscore=0 mlxlogscore=999
+ bulkscore=0 malwarescore=0 impostorscore=0 priorityscore=1501 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502200044
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+Read the country code from SMBIOS and send it to the firmware. The 
+firmware will then indicate the regulatory domain information for 
+the country code, which ath12k will use.
 
-For 8852BTE, 8852CE, and 8922AE, TKIP encryption and decryption
-will be handled by hardware. All other chips will retain their
-existing software-based encryption and decryption.
+dmesg:
+[ 1242.637253] ath12k_pci 0000:02:00.0: worldwide regdomain setting from SMBIOS
+[ 1242.637259] ath12k_pci 0000:02:00.0: bdf variant name not found.
+[ 1242.637261] ath12k_pci 0000:02:00.0: SMBIOS bdf variant name not set.
+[ 1242.927543] ath12k_pci 0000:02:00.0: set current country pdev id 0 alpha2 00
 
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-02582-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
 ---
- drivers/net/wireless/realtek/rtw89/cam.c       | 6 ++++++
- drivers/net/wireless/realtek/rtw89/core.h      | 1 +
- drivers/net/wireless/realtek/rtw89/mac_be.c    | 4 ++--
- drivers/net/wireless/realtek/rtw89/rtw8851b.c  | 1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c  | 1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c  | 1 +
- drivers/net/wireless/realtek/rtw89/rtw8852bt.c | 1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c  | 1 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c  | 1 +
- 9 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index 8fa1e6c1ce13..eca3d767ff60 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -476,6 +476,12 @@ int rtw89_cam_sec_key_add(struct rtw89_dev *rtwdev,
- 	case WLAN_CIPHER_SUITE_WEP104:
- 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP104;
- 		break;
-+	case WLAN_CIPHER_SUITE_TKIP:
-+		if (!chip->hw_tkip_crypto)
-+			return -EOPNOTSUPP;
-+		hw_key_type = RTW89_SEC_KEY_TYPE_TKIP;
-+		key->flags |= IEEE80211_KEY_FLAG_GENERATE_MMIC;
-+		break;
- 	case WLAN_CIPHER_SUITE_CCMP:
- 		hw_key_type = RTW89_SEC_KEY_TYPE_CCMP128;
- 		if (!chip->hw_mgmt_tx_encrypt)
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index b3fdd8eded21..676f5e21744f 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4281,6 +4281,7 @@ struct rtw89_chip_info {
- 	bool ul_tb_pwr_diff;
- 	bool hw_sec_hdr;
- 	bool hw_mgmt_tx_encrypt;
-+	bool hw_tkip_crypto;
- 	u8 rf_path_num;
- 	u8 tx_nss;
- 	u8 rx_nss;
-diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-index 16ee378c5418..d2a37eead66e 100644
---- a/drivers/net/wireless/realtek/rtw89/mac_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-@@ -708,8 +708,8 @@ static int sec_eng_init_be(struct rtw89_dev *rtwdev)
- 	val32 |= B_BE_CLK_EN_CGCMP | B_BE_CLK_EN_WAPI | B_BE_CLK_EN_WEP_TKIP |
- 		 B_BE_SEC_TX_ENC | B_BE_SEC_RX_DEC |
- 		 B_BE_MC_DEC | B_BE_BC_DEC |
--		 B_BE_BMC_MGNT_DEC | B_BE_UC_MGNT_DEC;
--	val32 &= ~B_BE_SEC_PRE_ENQUE_TX;
-+		 B_BE_BMC_MGNT_DEC | B_BE_UC_MGNT_DEC |
-+		 B_BE_SEC_PRE_ENQUE_TX;
- 	rtw89_write32(rtwdev, R_BE_SEC_ENG_CTRL, val32);
+Depends-On:
+        [PATCH v11 0/4] wifi: ath12k: add 11d scan offload support and handle country code for WCN7850
+        https://lore.kernel.org/linux-wireless/20250220031056.216-1-quic_kangyang@quicinc.com/
+
+v2: 
+    1. rebase on tag: ath/main(ath-202502181756).
+	2. rewrite commit message.
+
+---
+ drivers/net/wireless/ath/ath12k/core.c | 26 +++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath12k/core.h | 27 +++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/mac.c  | 11 +++++++++++
+ 3 files changed, 61 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 8eaf9dd95a6b..0bdd0cd4f071 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -629,7 +629,7 @@ static void ath12k_core_stop(struct ath12k_base *ab)
+ 	/* De-Init of components as needed */
+ }
  
- 	rtw89_write32_set(rtwdev, R_BE_SEC_MPDU_PROC, B_BE_APPEND_ICV | B_BE_APPEND_MIC);
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index 82289dbad1f4..e5ccd55655b6 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -2500,6 +2500,7 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
- 	.ul_tb_pwr_diff		= false,
- 	.hw_sec_hdr		= false,
- 	.hw_mgmt_tx_encrypt	= false,
-+	.hw_tkip_crypto		= false,
- 	.rf_path_num		= 1,
- 	.tx_nss			= 1,
- 	.rx_nss			= 1,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 2046832d021f..42642135d274 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2218,6 +2218,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
- 	.ul_tb_pwr_diff		= false,
- 	.hw_sec_hdr		= false,
- 	.hw_mgmt_tx_encrypt	= false,
-+	.hw_tkip_crypto		= false,
- 	.rf_path_num		= 2,
- 	.tx_nss			= 2,
- 	.rx_nss			= 2,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 652914a36245..e9ff6bcdd9ec 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -854,6 +854,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
- 	.ul_tb_pwr_diff		= false,
- 	.hw_sec_hdr		= false,
- 	.hw_mgmt_tx_encrypt	= false,
-+	.hw_tkip_crypto		= false,
- 	.rf_path_num		= 2,
- 	.tx_nss			= 2,
- 	.rx_nss			= 2,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-index 6f15245b2f74..2f5804f77f9d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-@@ -787,6 +787,7 @@ const struct rtw89_chip_info rtw8852bt_chip_info = {
- 	.ul_tb_pwr_diff		= false,
- 	.hw_sec_hdr		= false,
- 	.hw_mgmt_tx_encrypt     = false,
-+	.hw_tkip_crypto		= true,
- 	.rf_path_num		= 2,
- 	.tx_nss			= 2,
- 	.rx_nss			= 2,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index ecc1ff358583..89f258b98e75 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -3013,6 +3013,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.ul_tb_pwr_diff		= true,
- 	.hw_sec_hdr		= true,
- 	.hw_mgmt_tx_encrypt	= true,
-+	.hw_tkip_crypto		= true,
- 	.rf_path_num		= 2,
- 	.tx_nss			= 2,
- 	.rx_nss			= 2,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-index 898a65a721dc..99221677065c 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-@@ -2772,6 +2772,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
- 	.ul_tb_pwr_diff		= false,
- 	.hw_sec_hdr		= true,
- 	.hw_mgmt_tx_encrypt	= true,
-+	.hw_tkip_crypto		= true,
- 	.rf_path_num		= 2,
- 	.tx_nss			= 2,
- 	.rx_nss			= 2,
+-static void ath12k_core_check_bdfext(const struct dmi_header *hdr, void *data)
++static void ath12k_core_check_cc_code_bdfext(const struct dmi_header *hdr, void *data)
+ {
+ 	struct ath12k_base *ab = data;
+ 	const char *magic = ATH12K_SMBIOS_BDF_EXT_MAGIC;
+@@ -651,6 +651,28 @@ static void ath12k_core_check_bdfext(const struct dmi_header *hdr, void *data)
+ 		return;
+ 	}
+ 
++	spin_lock_bh(&ab->base_lock);
++
++	switch (smbios->country_code_flag) {
++	case ATH12K_SMBIOS_CC_ISO:
++		ab->new_alpha2[0] = u16_get_bits(smbios->cc_code, 0xff);
++		ab->new_alpha2[1] = u16_get_bits(smbios->cc_code, 0xff);
++		ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot smbios cc_code %c%c\n",
++			   ab->new_alpha2[0], ab->new_alpha2[1]);
++		break;
++	case ATH12K_SMBIOS_CC_WW:
++		ab->new_alpha2[0] = '0';
++		ab->new_alpha2[1] = '0';
++		ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot smbios worldwide regdomain\n");
++		break;
++	default:
++		ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot ignore smbios country code setting %d\n",
++			   smbios->country_code_flag);
++		break;
++	}
++
++	spin_unlock_bh(&ab->base_lock);
++
+ 	if (!smbios->bdf_enabled) {
+ 		ath12k_dbg(ab, ATH12K_DBG_BOOT, "bdf variant name not found.\n");
+ 		return;
+@@ -690,7 +712,7 @@ static void ath12k_core_check_bdfext(const struct dmi_header *hdr, void *data)
+ int ath12k_core_check_smbios(struct ath12k_base *ab)
+ {
+ 	ab->qmi.target.bdf_ext[0] = '\0';
+-	dmi_walk(ath12k_core_check_bdfext, ab);
++	dmi_walk(ath12k_core_check_cc_code_bdfext, ab);
+ 
+ 	if (ab->qmi.target.bdf_ext[0] == '\0')
+ 		return -ENODATA;
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 569ff02de09a..bd0c106b5098 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -172,9 +172,34 @@ struct ath12k_ext_irq_grp {
+ 	struct net_device *napi_ndev;
+ };
+ 
++enum ath12k_smbios_cc_type {
++	/* disable country code setting from SMBIOS */
++	ATH12K_SMBIOS_CC_DISABLE = 0,
++
++	/* set country code by ANSI country name, based on ISO3166-1 alpha2 */
++	ATH12K_SMBIOS_CC_ISO = 1,
++
++	/* worldwide regdomain */
++	ATH12K_SMBIOS_CC_WW = 2,
++};
++
+ struct ath12k_smbios_bdf {
+ 	struct dmi_header hdr;
+-	u32 padding;
++	u8 features_disabled;
++
++	/* enum ath12k_smbios_cc_type */
++	u8 country_code_flag;
++
++	/* To set specific country, you need to set country code
++	 * flag=ATH12K_SMBIOS_CC_ISO first, then if country is United
++	 * States, then country code value = 0x5553 ("US",'U' = 0x55, 'S'=
++	 * 0x53). To set country to INDONESIA, then country code value =
++	 * 0x4944 ("IN", 'I'=0x49, 'D'=0x44). If country code flag =
++	 * ATH12K_SMBIOS_CC_WW, then you can use worldwide regulatory
++	 * setting.
++	 */
++	u16 cc_code;
++
+ 	u8 bdf_enabled;
+ 	u8 bdf_ext[];
+ } __packed;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 3b60534fb0f4..e17a35759456 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -11502,6 +11502,17 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
+ 			goto err_unregister_hw;
+ 		}
+ 
++		if (ar->ab->hw_params->current_cc_support && ab->new_alpha2[0]) {
++			struct wmi_set_current_country_arg current_cc = {};
++
++			memcpy(&current_cc.alpha2, ab->new_alpha2, 2);
++			memcpy(&ar->alpha2, ab->new_alpha2, 2);
++			ret = ath12k_wmi_send_set_current_country_cmd(ar, &current_cc);
++			if (ret)
++				ath12k_warn(ar->ab,
++					    "failed set cc code for mac register: %d\n", ret);
++		}
++
+ 		ath12k_debugfs_register(ar);
+ 	}
+ 
+
+base-commit: f22471c17f5849b2f20e2c56ec9fcd9dd8d5bf28
+prerequisite-patch-id: 4d98208c1659b01545c48494f7a84c5ba4888da0
+prerequisite-patch-id: dc095f4a1f0d9f6c4f6f850fa1dfe3d804f41e47
+prerequisite-patch-id: 7bffae693031c27eadd2b3452a059bb224070e0b
+prerequisite-patch-id: 3711a8bb24847dd69c5805d7425416b239144898
 -- 
-2.25.1
+2.34.1
 
 
