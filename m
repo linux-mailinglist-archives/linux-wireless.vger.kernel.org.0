@@ -1,79 +1,79 @@
-Return-Path: <linux-wireless+bounces-19215-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19216-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752C7A3DBCA
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 14:56:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AC4A3DBFA
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 15:01:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 582B017C7DA
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 13:56:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BEE3188FDBE
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 14:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D04A1F9AB6;
-	Thu, 20 Feb 2025 13:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8184D1FAC30;
+	Thu, 20 Feb 2025 13:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M3daON+2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WSGQBoMA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF10D1F91E3
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 13:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26BA1F9AB6
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 13:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740059760; cv=none; b=BNmtcKezv84/ImkrVPq5Qh3Ma486V7A9p9AcBv1kuOxyw3Gvs+9BDFBn1tD8u+caMydeCPbCd/hhlqzraNWtEsKDbrSHloEzmpGbK/4XFx75MHz/pfdJ+SNEOCI6TsbturGFmsOKwvNS4zfJWBTDLnGJlIiQ4vZIhkuytecP/L4=
+	t=1740059819; cv=none; b=Aiw31/EGDbK9xuI37Sz8l5S/vmMGdpWoPBECsWIW3UGX/y20/9IyJPlc3K+VN9mJCSPZa7ZCrnPYhYgK2lkY6QkJo2RVaXssjleZCn8ZGvcPYSaC6CVa9IYjqQaLC75KsSfVl8CMn/uR1Ju+dJOrXg3IoatJ3q2EVYN/R5jkVc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740059760; c=relaxed/simple;
-	bh=E8R7d+nbY0Cbw1Bt89Ilj/wJog3OxmHABvuKNlKv5qw=;
+	s=arc-20240116; t=1740059819; c=relaxed/simple;
+	bh=SuPwTUl1+D+jR/4WrqO+zOBr8f2Al33bxXl4oTe9mmo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tMpg/69WVCSdGgm0LATIgA4Z0cCLgLAQLWVvP6Te3B2oAE9wNlb66Nfuhe0HVHiYyEdRsSq8XZVTuzQWbMONlzs+Y6VLfv7pZ5Q5oZnqudyIfwPmEAEHwQwd3hL0OkQNEGr222oAMcZJHlUeX9YjFE/bjjoTQOP0D6S7YqZ4DoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M3daON+2; arc=none smtp.client-ip=209.85.219.43
+	 In-Reply-To:Content-Type; b=cU2qNwdNT9GTo6yTxhjlg7eWWXZf5NtUQ1RTAPalxu7sMzFSVJiZ+qNoN2/JEWRMMHLDTGjBQ1DOXDu6U7lnZ3m9f6SMYGNcFes25Q27aVDcapbTXdhTJrF8oOIzxLtaOM1UY/nJvDZuGtDaCkTGBE22xBCHx7bPetieD1VWPjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WSGQBoMA; arc=none smtp.client-ip=209.85.222.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6e6827984b2so10340086d6.1
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 05:55:58 -0800 (PST)
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c0b9f35dc7so123138785a.2
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 05:56:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740059757; x=1740664557; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740059816; x=1740664616; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=pSs/K2VQQrrOagAXRPAvXhDuiMH4NijPOc7sJYHkPsg=;
-        b=M3daON+2cov2sUkv+9hKlD1ghNAI3Za2+5r7PWab5EIgEj+FlrarVl8iKY7ch/B/5B
-         /88zWFdLIkKH5d983YCmdDWuw3HpPxtSa3LSS6N5eySiql0ecyz7Zvesmob390cZ1yNc
-         nOJNu3B4fzkEZ3Re5ud/o1lxOB2dAlkQ1V4Q+cLpzdsgOWv6Oh3CaQ1EM2h707eamwFg
-         oC6c1ndV2vLlIXHU+wy0O4NOj89LJrKBry7TULJi/RHoINZ4J8jkSATbrYfY89OPx1eW
-         CE2MXOZB4GTQBUMBPxuyKfbK1RHT/e65OkfgXSMPg6RFhjcz16M5UPOX7C0wJfu+3Xeo
-         bn3g==
+        bh=RW0UCqWX/l+n3jYLyBzuECOY8BYnHFlum299EUoN1U8=;
+        b=WSGQBoMA2kXLCQY3seVbH9hjHbppvWSxCTZSB9oINjRfHRG3iDjEXp9/u04ru6gKZD
+         Ge/G4Ru35ceSttcIA/2lgFzdJRIFsXwzRDzPMog92PTwzM8l7TtpT7NDV2xBUQ1isgxX
+         PuSQUSP/X8fz/u21zoMXQJ6j/toh0tFqhv9WRkKdRGn7G2bp2VIlOgK8Ydj4OfifFwTH
+         OT6EOLZEy9fDyj20w8KdmKrxN4NQRfcm1UYPMOenAsYSGw+NbbKPH+SiSV7YbgjIf8O+
+         2nUyuQgihNq4/XP3oYnlUG61tfLYUiAr/hp7RArxfSjHjDaT0n6Xp+qJFxTGx8H12rDa
+         XKiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740059757; x=1740664557;
+        d=1e100.net; s=20230601; t=1740059816; x=1740664616;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pSs/K2VQQrrOagAXRPAvXhDuiMH4NijPOc7sJYHkPsg=;
-        b=BnlBBvDFxecVzJlxpxgojgl4UNk+fJ9Z6Gfc3Tq6AAkb9Efx/yxFoofE+EkpNHz6zI
-         RsZgBIUcBuq+NkSfgeMfjUyV37tEpG1i6NqWR23ksHA0ylgaTfpux+zT96qGFHb0GiOh
-         TRTy5T/rj1DUoCnfHSYwDrFyKFeunTsPxSzwv8ZhyQk1CEYS6jxKNWodXYYH7p6SuEKf
-         9N8xyDAzSb6/ybh3Aan3YV4CRgbmVdXhavWAyBMPVaNP13tcRXuwMakGZLTMys+q+ZA0
-         Ogw+nXsmsGO5kc9rebSS4OOPTtvn4YsFV9S0i7nU+i1YWAlHThwpqYnpt7vqeNpmZ/Zq
-         t7Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhlzIY2WMBv3JGeEEC59KDd/hzWfTdl8wA2gkjCgilX5faakfBda92lMYk4MWzrPN2uAJ3kbjhiPmo10U/eQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywsm9RFz7FRxRK7V8rXflTGLhDamEKtHQoeeIY/PWwgpOIFZjGX
-	DD56Kvz02GIXQqqOdV/W9fHwSwemtF8wVd08d8zj4cfVuXturYjJ
-X-Gm-Gg: ASbGncuEHWY+KdGnkoHLjG++zKMUNNAE0HuLnQAaoisq61vwJNeNU5ZprCkl/kh+pps
-	dvOeCgFuzLhGQ45GyRSFkiDHxf2GZABa572Wv3CnqX0wfaUYrxWBg/5VOSmrIyBwfIx3Qi7gZSU
-	nWrUUw40jYHieEhdzeS/b3FYqBMpgpkvAC2Bm6+BN3p+d+BFwQu+kKzVpZ4vMGlx+G2KeIp0ECu
-	qf1T3do+oKwbFnpdIBLv7rQnGE9ekHwTv4KWjCNaefUZCs/hLJrRBeGXEWbwDFmvapox+x+tHAt
-	raeudBSiMRoWWgYqSKk=
-X-Google-Smtp-Source: AGHT+IG//EwMg38LvAk1MF7ryiTZFxH2eRowNFWBaeVsSmMv9351WHPYqaTDf4aQnLSkkZsRhf8o6g==
-X-Received: by 2002:ad4:5fcd:0:b0:6d8:a0c8:e468 with SMTP id 6a1803df08f44-6e66ccd4b26mr282933056d6.24.1740059757566;
-        Thu, 20 Feb 2025 05:55:57 -0800 (PST)
+        bh=RW0UCqWX/l+n3jYLyBzuECOY8BYnHFlum299EUoN1U8=;
+        b=ln4SEtiDwrNhWjI5MCrW4lFwWHw3HqgXqxhGOK5E85+KT59k2U53NbBpBChBKupwYe
+         jV8m7nC6JLktdKpqcdJrpo9tjUny1/Ua6ocv52uOLPYZBYYHvsIDTiGz6JlI7Gc+yD2f
+         bNRQvtxE8Z792FN4LaCYCvBuol1tMdlf9zAbV7u+0M0gwZLFdtjK3IuDIQFQ6vfE7FjE
+         gPx1ZZACulLhAabla2EJ24YJR9mh2ljOfke95gqt0Nm7Ub4iGGeKosLl2q0QEZkOG0bi
+         mmP0CBxFzbdMJ3ORWOsg3nQcwKBbNA27nxRWLVMjnGl1mkUc50ffZl+kDenp0w8xDFjP
+         Umiw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/OJ7xH5FIjmiI8xrDdULB/nWN9xo8E2ApvbT6wXHzt8FpYDMD3xYvnbmdfPCSrGaiIOiF5fAaBvn8eGACvQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyM6R3EmKA+5iAXhwjZSZKR3SEhJOWmqQqitNy3VObFNcAZAmhG
+	R0d7YHh0Bc6PZNO+14bbRHv5e9yCfbxHVSOwL2GbvPxOiBCR2xQH
+X-Gm-Gg: ASbGncs+dMVc6k6nTQ/9sdojFtDoC7LEk61aL4tiau3nQK8ZYm4c9dd26lkEIbP9GMD
+	04uE3V++Zm9jJY0MJrQCtGjq551gp0Iva3VNlQRMo4/Q1JZgFliQNo/F9rf6zpFHeByxmQbTms3
+	CSUo0K6knYLVzTrPuvduESP24F7J15uBtfxFTelCJymb7iIRRCCSFHRrhiKAOIteKVdhmB5PPao
+	2IJt+cgQfMRN8cFLPuQuiOR6c53z6hy29H3vbrhFUy1wfSM1tWgB88vdg70ymmd4FDnGt9Ynfis
+	hUHzOwuzrrD/8JnTEjs=
+X-Google-Smtp-Source: AGHT+IFyMpMdZjPWG7BXix80U9jYLJDhistuhM5RgZth54SZJl3KVv1PWz94DWh7WI6Z2Kk7SNjB7Q==
+X-Received: by 2002:a05:620a:2a13:b0:7c0:79c3:fd2a with SMTP id af79cd13be357-7c0b53080dcmr1101097285a.43.1740059816622;
+        Thu, 20 Feb 2025 05:56:56 -0800 (PST)
 Received: from [10.100.121.195] ([152.193.78.90])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e65dcf946asm86463026d6.125.2025.02.20.05.55.56
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c0a526cc38sm409417985a.91.2025.02.20.05.56.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Feb 2025 05:55:57 -0800 (PST)
-Message-ID: <966f3c12-4995-4b46-a833-3b5522921764@gmail.com>
-Date: Thu, 20 Feb 2025 05:55:54 -0800
+        Thu, 20 Feb 2025 05:56:56 -0800 (PST)
+Message-ID: <ebeb4471-9c89-4b33-9889-b87f2d218508@gmail.com>
+Date: Thu, 20 Feb 2025 05:56:54 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,108 +81,57 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] ath10k: failed to flush transmit queue
-To: Kalle Valo <kvalo@kernel.org>, Felix Fietkau <nbd@nbd.name>
-Cc: Cedric Veilleux <veilleux.cedric@gmail.com>,
- linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-References: <CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com>
- <1df0c5cc-ce58-450e-9f91-7f8f599cb11d@nbd.name> <87le1hjupo.fsf@kernel.org>
+Subject: Re: [PATCH v2 00/10] Convert mac80211 to TXQs only
+To: Alexander Wetzel <alexander@wetzel-home.de>,
+ linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>, ath10k@lists.infradead.org,
+ Remi Pommarel <repk@triplefau.lt>
+References: <20250217081721.45110-1-Alexander@wetzel-home.de>
+ <548270b0-8267-4a94-85ab-597ade0f5082@gmail.com>
+ <6586339a-d9c5-4787-95e4-202368341541@wetzel-home.de>
 Content-Language: en-US
 From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <87le1hjupo.fsf@kernel.org>
+In-Reply-To: <6586339a-d9c5-4787-95e4-202368341541@wetzel-home.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi All,
+Hi,
 
-On 7/31/24 11:13 AM, Kalle Valo wrote:
-> Felix Fietkau <nbd@nbd.name> writes:
+On 2/19/25 1:27 PM, Alexander Wetzel wrote:
+> On 19.02.25 20:19, James Prestwood wrote:
+> ...
+>>>
+>> Trying to get some clarity if this might fix a regression [1] with 
+>> ath10k where upon roaming the TX queue hangs on flush for ~4-10 
+>> seconds. I was hopeful for another set [2] but it looks like this 
+>> only effected AP mode and with that applied I still notice the behavior.
+>>
+>> In the worse case we see two failures, which add up to about 10 
+>> seconds of delays, more often its just the single "failed to flush 
+>> transmit queue"
+>>
+>> Feb 19 14:15:59 kernel: ath10k_pci 0000:02:00.0: failed to flush sta 
+>> txq (sta 6a:3a:0e:22:45:08 skip 0 ar-state 1): 0
+>> Feb 19 14:16:04 kernel: ath10k_pci 0000:02:00.0: failed to flush 
+>> transmit queue (skip 0 ar-state 1): 0
+>>
+>> Crossing my fingers this set will have some positive effect here
+>>
 >
->> On 12.07.24 04:23, Cedric Veilleux wrote:
+> I had a quick look at ath10k driver and the error message you have. 
+> The patch series here will probably not help with that. From driver 
+> perspective nothing relevant should be different...
+Well thank you for looking at least, I appreciate that.
+>
+>
+>> [1] https://lore.kernel.org/all/ 
+>> CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com/
+>> [2] https://lore.kernel.org/linux-wireless/ 
+>> cover.1732293922.git.repk@triplefau.lt/
 >>
->>> AP mode.
->>> Both 2.4 and 5ghz channels.
->>> Using WLE600VX (QCA986x/988x), we are seeing the following errors in
->>> kernel logs:
->>> [12978.022077] ath10k_pci 0000:04:00.0: failed to flush transmit
->>> queue
->>> (skip 0 ar-state 1): 0
->>> [13343.069189] ath10k_pci 0000:04:00.0: failed to flush transmit queue
->>> (skip 0 ar-state 1): 0
->>> They are somewhat random but frequent. Can happen once a day or many
->>> times per hour.
->>> They are associated with 3-4 seconds of radio silence. Full packet
->>> loss. Then everything resumes normally, STA are still associated and
->>> traffic resumes.
->>> I have tested with major kernel versions:
->>> 6.1.97: stable (tested for many days on 10+ access points)
->>> 6.2.16: stable (tested for few hours single machine)
->>> 6.3.13: stable (tested for few hours single machine)
->>> 6.4.16: unstable  (we have errors within an hour)
->>> 6.5.13: unstable  (we have errors within an hour)
->>> 6.6.39: unstable  (we have errors within an hour)
->>> 6.7.12: unstable  (we have errors within an hour)
->>> 6.8.10: unstable  (we have errors within an hour)
->>> 6.9.7: unstable  (we have errors within an hour)
->>>   From these tests I believe something changed in 6.4 series causing
->>> instabilities and the dreaded "failed to flush transmit queue" error.
->>> This is a custom linux distribution. Only change is the kernel. All
->>> other packages are same versions. Everything rebuilt from source using
->>> bitbake/yocto. Same linux-firmware files.
->> I'm pretty sure it's caused by this commit:
+>> Thanks,
 >>
->> commit 0b75a1b1e42e07ae84e3a11d2368b418546e2bec
->> Author: Johannes Berg <johannes.berg@intel.com>
->> Date:   Fri Mar 31 16:59:16 2023 +0200
+>> James
 >>
->>      wifi: mac80211: flush queues on STA removal
->>
->> I guess somebody needs to look into making the queue flush on ath10k
->> more reliable (or even better, implement a more lightweight .flush_sta
->> op).
->>
->> I don't have time to do the work myself, but hopefully this
->> information could help somebody else take care of it.
-> Adding ath10k list so that everyone see this.
-
-I want to revive this thread and provide some additional data. This is 
-not just something that happens in AP mode, or specifically with the 
-hardware mentioned. After upgrading from 6.2 to 6.8 we started seeing 
-this on client devices running the QCA6174 hw 3.2 firmware ver 
-WLAN.RM.4.4.1-00288- api 6. We see it during disconnects which isn't as 
-big of a deal, the more concerning time is during roams which makes 
-roams go from less than 200ms to over 5 seconds.
-
-Based on this report I have tried using Remi's set of patches [1] which 
-implement flush_sta(), but we end up with the same ~5 second hang, just 
-in ath10k_flush_sta() instead of ath10k_flush(). I'm unsure if this is a 
-firmware problem, or some race within the driver itself. In the past I 
-have reduced timeouts [2] to work around these type of things but its 
-really just a band-aid.
-
-I would agree that this was "introduced" by Johannes' commit above, but 
-the original commit does make sense... This is just an ath10k problem 
-with flushing the queue's.
-
-At this point I'm really left with two options:
-
-  - Revert Johannes commit to flush the queues, thereby reducing 
-security, OR
-
-  - Reduce the timeout from 5 seconds to something more manageable, like 
-1 second (hopefully someone more in the know can comment here).
-
-Has anyone else looked at this regression? Maybe has some workaround 
-other than my options above?
-
-Thanks,
-
-James
-
-[1] 
-https://lore.kernel.org/linux-wireless/17d26d6a3e80ff03939ee7935fdc07f979b61a4f.1732293922.git.repk@triplefau.lt/
-
-[2] 
-https://lore.kernel.org/linux-wireless/20240814164507.996303-2-prestwoj@gmail.com/
-
+>
 
