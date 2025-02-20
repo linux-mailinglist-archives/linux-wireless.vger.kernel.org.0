@@ -1,49 +1,90 @@
-Return-Path: <linux-wireless+bounces-19186-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19187-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D47A3D4FE
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 10:42:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3599DA3D50B
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 10:45:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DECAA167FF6
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 09:42:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECD1E17CE34
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2025 09:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C1F1B87EE;
-	Thu, 20 Feb 2025 09:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3CE1B87EE;
+	Thu, 20 Feb 2025 09:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="uY7c/eWL"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XKxfOPPk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3371EF0B4
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 09:41:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABD61F12E7
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 09:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740044518; cv=none; b=niyjyS7KeS48UKq1g62KvO2Pq0o38FYIF5Wuu5cZdvLwBzDqo9J+Of27RjAMd6CwLB488fi82+JZg9BZVh4A2v9NI4HkHh2xlu/Au3/AcFtRvpTAmPzkuvD49aDCJsGPSCKgZ864lIhpkuDugEWv17Yed1K37+NEY4pVfGsJriw=
+	t=1740044546; cv=none; b=UqmQqQGloj6oGZ73WZ6ycK+/ejZXlccGxCXw/jPdnT6lVTZqE73K/LG/r1QcwyjgidrS8CU0hcJ5pnLSegxycXaDt1yq0vL1TcgPMpnFtlB+8L2nfzZuGTzuv86GWv6PkutkZYgwRYZnWnmFFR2SOs4Vhk2DAMEb9wD0SeeRi/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740044518; c=relaxed/simple;
-	bh=seoy02n/WqhkIUBVMv9VcfS9c/U2yF581RasKyG0pAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pNZCA2j2hXvBNSp0eX404v8fhd9+/VWjjdkyPtjziHRRpMscs4GAIJIXADZDltNr6QVnSKwqKS93KSOSopYjnv9LBrzFZF9g2OeYmsnXoDWyZG29ZN3tty6c3RJ0q6snhhLlapbKWS3GxgduPlx3deGWsFE/CGUCE/qvfG2U9zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=uY7c/eWL; arc=none smtp.client-ip=5.252.227.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
-From: Alexander Wetzel <Alexander@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-	s=wetzel-home; t=1740044510;
-	bh=seoy02n/WqhkIUBVMv9VcfS9c/U2yF581RasKyG0pAs=;
-	h=From:To:Cc:Subject:Date;
-	b=uY7c/eWL939GDnKrSwZi47yGuh5MKnps5WZfiqGMxsZL2b1sVg7f8fNqU3tVgajdS
-	 SWCgGktmGky9WtU8b1RIMy/uREjwuJAjgRcPy58XcwkpHa4LKG5+c2kyOl9ex5sEZl
-	 YXYtr+77nPO7aUvVK9OMqAtVd5H6nhG9K/Bbo4+w=
-To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Alexander Wetzel <Alexander@wetzel-home.de>
-Subject: [PATCH] wifi: mac80211: Add counter for all monitor interfaces
-Date: Thu, 20 Feb 2025 10:41:39 +0100
-Message-ID: <20250220094139.61459-1-Alexander@wetzel-home.de>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1740044546; c=relaxed/simple;
+	bh=XHcDvB3Uc7CK2nES/8CU5k642FBnDGhY1lbECelYAWg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Uz4SkHAYfVnsAzacXsEYqMixwnJHAFxPTnib6tq5iD/th/9KlADKD2rOsDUHiJI5oe/67z9NQo2f+CBCWfzpCOWuKjw2YV6BAY/yctx8uuszcshfsZeL78baOKoC3vszdQnLk7CpmRBWg/GYK6g0vGNl90Cn8aBcayh4mx4/uoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XKxfOPPk; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51K6VfJP009730
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 09:42:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=LR2M3r4Qw3jzfTGn7g1ZdStQCqlIY9oK4gL
+	MTdorMp8=; b=XKxfOPPktzeR2AAjkyOpbhKl+ii09V3//JRQvH2W2nLUl6BA2b8
+	fIikqNiHGSmkRKaJV3JTZ3/nTi23zgEqXHwGBKCx5GjSDOR0t5u/7jR8lpaUADka
+	FtfcBPiTviKa249eECoyWsgjV8Q8DDGgsAUU/AGKSdU5Nxv2NoVC3ILQxost5Ba1
+	xvah5o0M91rxuEa/Ot2jALe4kTCN3jBxhPVgg2jCOYiSSAMIprhhPc9NX/wy5Fjx
+	7A0pkqYmKXb/J8Uq65oYUXwhm8UDKcYMiBgqyvOb7UzQjHHIN1hLUR4cJli6wyv7
+	ug7tkkaV3nlQCxj838P4Fd5oQlQVP0ztpug==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44vyy1wqhh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 09:42:23 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-220d6018858so16284715ad.2
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2025 01:42:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740044542; x=1740649342;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LR2M3r4Qw3jzfTGn7g1ZdStQCqlIY9oK4gLMTdorMp8=;
+        b=FszZ3xItp5DlCRq2ueOjINCik3PYgfPhAcPPy/KS2iqqwqOj3yuqUf0S2sSwpu3aEj
+         GAOfGb/B0lJPW3JrCx/3BJHYtKlHrYomRbAD8tYdbdRVCv6M0lKmosqFwGoByuTfum71
+         iiS80apqkDScW7QtU7DKiNJp4hgCofaQPngqnGVyBRQkPHqqnPutmKq4ZqMDjXZVszTL
+         J1Ep9VLxGVfQbcXvs4YvJY0YtFBRARZ/28kDoBi1R2U0hsJXGIpLyaruGJg5IHMnxXI8
+         N2enkG6dDvyrPXxXZojG6y2WS/JlPUlVnwU6dNCnRkp8UJ/U218Z07vSv9mhQ1aVVUym
+         Q+zA==
+X-Gm-Message-State: AOJu0Yx/q4AlmOQu7ZbgexXsQlNkCmQzI3aUznanA7aTt6xlzxF5r1EC
+	BctMrMgdR0eyvDrcy8DGOUlOY0lmniHc8Crhf54nCpUjx6HOSGqhq4OapJ+bHNgJr/c/eEHxsx9
+	9AVNDu5V8+xMpEes09c5L22dZSjfuphrEiF7r9gIV8lSCpPhFjKzGnrJTHrXzt+rqLQ==
+X-Gm-Gg: ASbGncsuh0YHFnzs0Zx/mB2aN4YNp/SVWnuexg3VzOYLBoODv6hgRPx7gM0/GqEwk2+
+	Vu0ZsWyVHBTcT6kBs4qgo1vduWgstexY1R5AYxQNvAM28+gqom5zSFjshX2ZuJJToMMm3FQfdhR
+	vWEhJD92dndBytgJa+SSv1awghiE19LEhZcD45QUBojd4GES9hamauf/dt5K6OfuFCq6itW9UMP
+	hsISumdqp94ePztc1ipvoTLlyFKjFk031OYcqLCe0wTKqmwj8Gc6tJItr3kQTLwo3sQobJsQjft
+	v/A/Bsu4K0c5SYac79udE1mwhw7GKJ5GuaCsMKqovU1Wv7jBPr2Q4Nar2464fVDdKSv9Y/7bLeS
+	wYyI5rIfUcYFh1w+iwG7RQbY=
+X-Received: by 2002:a17:903:22c7:b0:216:6901:d588 with SMTP id d9443c01a7336-22104034f22mr362288285ad.15.1740044542645;
+        Thu, 20 Feb 2025 01:42:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEHAFrsQCsrhnXkXShXrGtgzKREm8ND/PlDw2E4ELTjPoILnIMyAHV/W9gwhM2IKoy/z/ryxg==
+X-Received: by 2002:a17:903:22c7:b0:216:6901:d588 with SMTP id d9443c01a7336-22104034f22mr362288025ad.15.1740044542231;
+        Thu, 20 Feb 2025 01:42:22 -0800 (PST)
+Received: from hu-ppranees-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220dacfc769sm115526905ad.201.2025.02.20.01.42.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Feb 2025 01:42:21 -0800 (PST)
+From: P Praneesh <praneesh.p@oss.qualcomm.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH v2] wifi: ath12k: Fix double budget decrement while reaping monitor ring
+Date: Thu, 20 Feb 2025 15:12:11 +0530
+Message-Id: <20250220094211.2445395-1-praneesh.p@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -51,172 +92,52 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: NmVuNLRqoe8SCMwF4wNwIiy4qxYjkjKA
+X-Proofpoint-ORIG-GUID: NmVuNLRqoe8SCMwF4wNwIiy4qxYjkjKA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-20_04,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 malwarescore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 lowpriorityscore=0 mlxscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502200070
 
-Count open monitor interfaces regardless of the monitor interface type.
-The new counter virt_monitors takes over counting interfaces depending
-on the virtual monitor interface while monitors is used for all active
-monitor interfaces.
+Currently, the budget for monitor ring is reduced during each ring entry
+reaping and again when the end reason is HAL_MON_END_OF_PPDU, leading to
+inefficient budget use. The below mentioned commit intended to decrement
+the budget only for HAL_MON_END_OF_PPDU but did not remove the other
+decrement. Fix this by eliminating the budget decrement for each ring entry
+reaping, ensuring the driver always reaps one full PPDU worth of entries
+from the monitor destination ring.
 
-This fixes monitor packet mirroring when using MONITOR_FLAG_ACTIVE or
-NO_VIRTUAL_MONITOR interfaces.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Fixes: 286e69677065 ("wifi: mac80211: Drop cooked monitor support")
-Reported-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Closes: https://lore.kernel.org/r/cc715114-4e3b-619a-49dc-a4878075e1dc@quicinc.com
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Fixes: 394a3fa7c538 ("wifi: ath12k: Optimize NAPI budget by adjusting PPDU processing")
+Signed-off-by: P Praneesh <praneesh.p@oss.qualcomm.com>
 ---
-This should fix the issue from the Reported-by above.
-I can't verify that myself, though. Can you confirm that solves the
-issue?
-
-Alexander
+v2:
+	- Corrected version log.
 ---
- net/mac80211/cfg.c         |  5 ++---
- net/mac80211/ethtool.c     |  2 +-
- net/mac80211/ieee80211_i.h |  2 +-
- net/mac80211/iface.c       | 22 +++++++++++++---------
- net/mac80211/util.c        |  3 ++-
- 5 files changed, 19 insertions(+), 15 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 5785fe30adaa..09708a060bb7 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4370,9 +4370,8 @@ static int ieee80211_cfg_get_channel(struct wiphy *wiphy,
- 	if (chanctx_conf) {
- 		*chandef = link->conf->chanreq.oper;
- 		ret = 0;
--	} else if (!ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR) &&
--		   local->open_count > 0 &&
--		   local->open_count == local->monitors &&
-+	} else if (local->open_count > 0 &&
-+		   local->open_count == local->virt_monitors &&
- 		   sdata->vif.type == NL80211_IFTYPE_MONITOR) {
- 		*chandef = local->monitor_chanreq.oper;
- 		ret = 0;
-diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
-index 42f7ee142ce3..0397755a3bd1 100644
---- a/net/mac80211/ethtool.c
-+++ b/net/mac80211/ethtool.c
-@@ -158,7 +158,7 @@ static void ieee80211_get_stats(struct net_device *dev,
- 	if (chanctx_conf)
- 		channel = chanctx_conf->def.chan;
- 	else if (local->open_count > 0 &&
--		 local->open_count == local->monitors &&
-+		 local->open_count == local->virt_monitors &&
- 		 sdata->vif.type == NL80211_IFTYPE_MONITOR)
- 		channel = local->monitor_chanreq.oper.chan;
- 	else
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index f23be8b5d0d8..845888ac3d2c 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1384,7 +1384,7 @@ struct ieee80211_local {
- 	spinlock_t queue_stop_reason_lock;
+diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+index d22800e89485..6d1fa6a6c9bb 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+@@ -3259,7 +3259,6 @@ int ath12k_dp_mon_srng_process(struct ath12k *ar, int *budget,
+ 	ath12k_hal_srng_access_begin(ab, srng);
  
- 	int open_count;
--	int monitors, tx_mntrs;
-+	int monitors, virt_monitors, tx_mntrs;
- 	/* number of interfaces with corresponding FIF_ flags */
- 	int fif_fcsfail, fif_plcpfail, fif_control, fif_other_bss, fif_pspoll,
- 	    fif_probe_req;
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 77d0078616fb..b0423046028c 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -582,11 +582,13 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 		/* no need to tell driver */
- 		break;
- 	case NL80211_IFTYPE_MONITOR:
-+		local->monitors--;
-+
- 		if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE) &&
- 		    !ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR)) {
- 
--			local->monitors--;
--			if (local->monitors == 0) {
-+			local->virt_monitors--;
-+			if (local->virt_monitors == 0) {
- 				local->hw.conf.flags &= ~IEEE80211_CONF_MONITOR;
- 				hw_reconf_flags |= IEEE80211_CONF_CHANGE_MONITOR;
- 			}
-@@ -683,7 +685,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	case NL80211_IFTYPE_AP_VLAN:
- 		break;
- 	case NL80211_IFTYPE_MONITOR:
--		if (local->monitors == 0)
-+		if (local->virt_monitors == 0)
- 			ieee80211_del_virtual_monitor(local);
- 
- 		ieee80211_recalc_idle(local);
-@@ -720,7 +722,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	ieee80211_configure_filter(local);
- 	ieee80211_hw_config(local, hw_reconf_flags);
- 
--	if (local->monitors == local->open_count)
-+	if (local->virt_monitors == local->open_count)
- 		ieee80211_add_virtual_monitor(local);
- }
- 
-@@ -979,7 +981,7 @@ static bool ieee80211_set_sdata_offload_flags(struct ieee80211_sub_if_data *sdat
- 		    local->hw.wiphy->frag_threshold != (u32)-1)
- 			flags &= ~IEEE80211_OFFLOAD_ENCAP_ENABLED;
- 
--		if (local->monitors)
-+		if (local->virt_monitors)
- 			flags &= ~IEEE80211_OFFLOAD_ENCAP_ENABLED;
- 	} else {
- 		flags &= ~IEEE80211_OFFLOAD_ENCAP_ENABLED;
-@@ -989,7 +991,7 @@ static bool ieee80211_set_sdata_offload_flags(struct ieee80211_sub_if_data *sdat
- 	    ieee80211_iftype_supports_hdr_offload(sdata->vif.type)) {
- 		flags |= IEEE80211_OFFLOAD_DECAP_ENABLED;
- 
--		if (local->monitors &&
-+		if (local->virt_monitors &&
- 		    !ieee80211_hw_check(&local->hw, SUPPORTS_CONC_MON_RX_DECAP))
- 			flags &= ~IEEE80211_OFFLOAD_DECAP_ENABLED;
- 	} else {
-@@ -1333,20 +1335,22 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
- 			if (res)
- 				goto err_stop;
- 		} else {
--			if (local->monitors == 0 && local->open_count == 0) {
-+			if (local->virt_monitors == 0 && local->open_count == 0) {
- 				res = ieee80211_add_virtual_monitor(local);
- 				if (res)
- 					goto err_stop;
- 			}
--			local->monitors++;
-+			local->virt_monitors++;
- 
- 			/* must be before the call to ieee80211_configure_filter */
--			if (local->monitors == 1) {
-+			if (local->virt_monitors == 1) {
- 				local->hw.conf.flags |= IEEE80211_CONF_MONITOR;
- 				hw_reconf_flags |= IEEE80211_CONF_CHANGE_MONITOR;
- 			}
- 		}
- 
-+		local->monitors++;
-+
- 		ieee80211_adjust_monitor_flags(sdata, 1);
- 		ieee80211_configure_filter(local);
- 		ieee80211_recalc_offload(local);
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 7f02bd5891eb..e2680589254f 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2156,7 +2156,8 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 
-  wake_up:
- 
--	if (local->monitors == local->open_count && local->monitors > 0)
-+	if (local->virt_monitors > 0 &&
-+	    local->virt_monitors == local->open_count)
- 		ieee80211_add_virtual_monitor(local);
- 
- 	/*
+ 	while (likely(*budget)) {
+-		*budget -= 1;
+ 		mon_dst_desc = ath12k_hal_srng_dst_peek(ab, srng);
+ 		if (unlikely(!mon_dst_desc))
+ 			break;
+
+base-commit: f22471c17f5849b2f20e2c56ec9fcd9dd8d5bf28
 -- 
-2.48.1
+2.34.1
 
 
