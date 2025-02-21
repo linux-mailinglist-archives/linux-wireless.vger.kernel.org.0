@@ -1,117 +1,129 @@
-Return-Path: <linux-wireless+bounces-19302-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19303-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AECBA3FFD2
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 20:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B70B1A3FFFB
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 20:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 882FD19E0D3F
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 19:37:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EABA319E066A
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 19:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5722528E4;
-	Fri, 21 Feb 2025 19:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF831FECCB;
+	Fri, 21 Feb 2025 19:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nXuh8rCG"
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="Ewl2gdGZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f228.google.com (mail-pl1-f228.google.com [209.85.214.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2E11D7E50;
-	Fri, 21 Feb 2025 19:37:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0442A2512F0
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Feb 2025 19:46:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740166631; cv=none; b=WruvxAK7FFkF9clZ5vCpWqlkXLGqmWvJRta3G6WMko6FDE8DC3cYwlcLUGMYh9rhkQ5BVpDzGJdzH4SxSnypEQCVg+YousihfUjC4mXWfdg2yR87cEvdQy4AmBJVSl7pAyI/JX+5BosqcnDQhgKgxE4Y3WIMpXa6CTjY/AMAt8E=
+	t=1740167166; cv=none; b=LvzhcFGCWsqnjr2FDR/f0cgyZh1vZz3iL3YlK/m1oXJ1sTx8WJlecm9i63Kms6zaYLcUewpot8nbs3TXPmEslKroi31g5af9mxZTSZzuQAtTWwbXf6PZPdIEwKEVH3tBwvgTNMZK1tTsAJKcEw/0HuAgpbEHjhNUzLMhdS6IxR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740166631; c=relaxed/simple;
-	bh=zDxTSXduPQXA4xHKPlyHXnfxQxWR7o6zkvl4FTCCsPY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dmMWGoXoXEY6oa8NJhs9jrpdSplL+kDw7q2ViLlL0fllnhUaeKbbPldHibjk69kcp+JDhLIgdDjn64HeK+mChoNMUEZPIZpmWG6GvWoWFC8XUaYIrxRjYVJtiUslNOCSHXFSHRhinOh8y343oOmD50Fr5SuOr26mT0jwz/8vYhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nXuh8rCG; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=zDxTSXduPQXA4xHKPlyHXnfxQxWR7o6zkvl4FTCCsPY=;
-	t=1740166629; x=1741376229; b=nXuh8rCGqsfC3M2xAznPkwmoiPBWtC+d9yFk7989Wm+EiBe
-	cq6CGtatT5XGh/DqtDIy+UVkvnpDwSnALN0h3GIkDMzWpdgd0M5LrLl9kUwr0WoiJ2jv9rXYWI98t
-	BX94haLt4oatQhLfxjfHjJ8bLruAkrTbhAq3hnbNU5LBsY850740i8Yk2zyjzlGjCma/Q8f9c/yHY
-	4YT8TYd3DU76NDpemOfAkK2N1vbWMftzJ6EIK6LI8rw1hG1xmbpVS/h91s7ASEIGED99av4bwzot4
-	uPBPOv8Vz33cBJ18VPWaTfUWMohuHYnxweLYJFnPgprQtfISwoRrqINnv6hgqgDg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tlYp2-00000005Y57-49wJ;
-	Fri, 21 Feb 2025 20:36:29 +0100
-Message-ID: <9af9413b7ab41c6b2db5f862d0fa50e9de279d67.camel@sipsolutions.net>
-Subject: Re: [PATCH *-next 00/18] Remove weird and needless 'return' for
- void APIs
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Stephen Hemminger <stephen@networkplumber.org>, Zijun Hu
-	 <quic_zijuhu@quicinc.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Will Deacon	
- <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andrew
- Morton	 <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>, Peter
- Zijlstra	 <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Thomas
- Gleixner	 <tglx@linutronix.de>, Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Danilo Krummrich	 <dakr@kernel.org>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski	 <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman	 <horms@kernel.org>, Jamal Hadi Salim
- <jhs@mojatatu.com>, Cong Wang	 <xiyou.wangcong@gmail.com>, Jiri Pirko
- <jiri@resnulli.us>, Jason Gunthorpe	 <jgg@ziepe.ca>, Leon Romanovsky
- <leon@kernel.org>, Linus Walleij	 <linus.walleij@linaro.org>, Bartosz
- Golaszewski <brgl@bgdev.pl>, Lee Jones	 <lee@kernel.org>, Thomas Graf
- <tgraf@suug.ch>, Christoph Hellwig <hch@lst.de>,  Marek Szyprowski
- <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, Miquel
- Raynal	 <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>,
- Vignesh Raghavendra <vigneshr@ti.com>, Zijun Hu <zijun_hu@icloud.com>,
- linux-arch@vger.kernel.org, 	linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-pm@vger.kernel.org, 	iommu@lists.linux.dev,
- linux-mtd@lists.infradead.org
-Date: Fri, 21 Feb 2025 20:36:26 +0100
-In-Reply-To: <20250221110042.2ec3c276@hermes.local>
-References: <20250221-rmv_return-v1-0-cc8dff275827@quicinc.com>
-	 <20250221110042.2ec3c276@hermes.local>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1740167166; c=relaxed/simple;
+	bh=Qe8yglpOVRl08XDC6oKRGtJ6QXAw8XWVocSPl5/Xr4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JcL8X/JwadbSidpBm3IHtCKJHGBpW0QEoYB+VPtSLMsIcpgzAsW6DEkPllbv0CEuM7jwFvmlP8mVHq5cl8Sva/KHorIyPNJOArpp29zLEEiuZuy7xq0pbnMH+j+nhUReUv/ggTZBL5vyYd9l7OEgPa8hoz14jgDZamHsiF04U8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=Ewl2gdGZ; arc=none smtp.client-ip=209.85.214.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+Received: by mail-pl1-f228.google.com with SMTP id d9443c01a7336-22128b7d587so50284775ad.3
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Feb 2025 11:46:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1740167164; x=1740771964; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qe8yglpOVRl08XDC6oKRGtJ6QXAw8XWVocSPl5/Xr4g=;
+        b=Ewl2gdGZqUnw+1NGxfN9LFXUi/jnRhe6kbiReEtsGi8aUUe97RrDO8ixR8GSL9hEqU
+         IkD/jMKWng8UIUEiD46a8jzaNdsMAhxuS90sc9fEli64C0s53Mh631xZOmn9kUlhag+5
+         Mc9zdUtG/kDorSNTItki/BIyuJ+8wSvshCjzMgv732qTvWboIzwsYZaUdTNsN5bMGFly
+         pQndzMBfmJDRVWTP366HHkf9xC6WNZBEUdIV9QtraPiycEtVGGJJf0nxa+dt3tQwLZAX
+         J7+aUWBh+P2+2Bsl0UGAKn+jKVGBSaHsQtwiFqwm2Kp650L35hZgzTZrjVlsF+zVWGeO
+         xizA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740167164; x=1740771964;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qe8yglpOVRl08XDC6oKRGtJ6QXAw8XWVocSPl5/Xr4g=;
+        b=nHetVY/P+N8Axs0T3DXjDtrtXAsLJBAtCIpPUVingQdkhN6e1LavRXcDnmpCVgOygU
+         Vt7WkHAvhVGwPnjUlRX94dwpsVujqSMPwiWLwN+1Ky9fZKbINdi8VVeuYl2pJFzCrFz/
+         +gb+CUk8kFHx798euhb9eoTHLRDySGvytSWBbs8/L5iZahc9ynN0GWbssrkwdX4qxPQd
+         9sXLLXg70vUqr+S0WTiK+Co2lBRszkAXMBblowGBQbpbuVCMUO+hfOhbfDsNsjBuUedw
+         fGbocE2nUB0+0eMtNCRuuIgbKzjayXRm6BWn2ETY0tGq9Zo7SohSCgPMwjDKhy7FnsjQ
+         PVMw==
+X-Forwarded-Encrypted: i=1; AJvYcCUoIYkzAdGBF9o/MhP68j+Zz/79n54AqOgl8EcWiZXzZVrfq7NZZxSSTOhmU8/4dLypqgplr/ffPurRQad70w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6M3M+0Sw2qFnJRTUGD3DdHPYU27RSB36BA1lvlIA2RpxRoQ//
+	kV9NFXJoT5Fb46JSfjGDXgkXnoK1FIeyRmO+J3i+YRcOqkDuqcpB2FO88VyJ1fFygR+111dohLV
+	X02iQ7nueqUDS4jICNSZ/nD6M8CYQ5kkv
+X-Gm-Gg: ASbGncvcp1sMWpul18ccfDAg4sFwftEwIgC4wj7zVnwrdLAfa8WgRQLCVpwvnx/oxhK
+	CgJ1QYjMhfU190EaWNLoSYkr+78I1Bwy6NjignjvNK3OWTBydKcdxWWgB1Z4giESvVLAfYH5iUt
+	eJPsdKdxiEy4aq13EkwHLEq+XjWxdTJGXhzDHCWDD6l9LrgRwbXuqmyovTldDICJ/+GmQSJT5iZ
+	BzPI0VF0tUUDoZY5YCq/eGNhoSKT35xMerGuheJxoiffLObfEWR9x7Ksp7fnSCDsjfCim4lBt4w
+	Zt/rAKDsoFmHCV+v4bWSx/KHfDwuqZ/VxhADTgCnbuNG+lnvFQ==
+X-Google-Smtp-Source: AGHT+IE99U6jlftn3nPn0N6zw6A91ELHQp6V/gmyF5loNHs5o/JogzFMPNpAfsJgR8a+p2Gm7+cQJsAVNGtn
+X-Received: by 2002:a17:902:8686:b0:220:ff3f:6ccb with SMTP id d9443c01a7336-2219ffd3251mr58361775ad.42.1740167164247;
+        Fri, 21 Feb 2025 11:46:04 -0800 (PST)
+Received: from c7-smtp-2023.dev.purestorage.com ([208.88.159.129])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-220d5431e51sm9073475ad.116.2025.02.21.11.46.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Feb 2025 11:46:04 -0800 (PST)
+X-Relaying-Domain: purestorage.com
+Received: from dev-ushankar.dev.purestorage.com (dev-ushankar.dev.purestorage.com [10.7.70.36])
+	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 6B312340216;
+	Fri, 21 Feb 2025 12:46:03 -0700 (MST)
+Received: by dev-ushankar.dev.purestorage.com (Postfix, from userid 1557716368)
+	id 60ECCE56BF4; Fri, 21 Feb 2025 12:46:03 -0700 (MST)
+Date: Fri, 21 Feb 2025 12:46:03 -0700
+From: Uday Shankar <ushankar@purestorage.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Subject: Re: [PATCH net-next v5 1/2] net, treewide: define and use
+ MAC_ADDR_STR_LEN
+Message-ID: <Z7jX+z/Ucq5iu5bS@dev-ushankar.dev.purestorage.com>
+References: <20250220-netconsole-v5-0-4aeafa71debf@purestorage.com>
+ <20250220-netconsole-v5-1-4aeafa71debf@purestorage.com>
+ <20250221131750.0630c720@pumpkin>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250221131750.0630c720@pumpkin>
 
-On Fri, 2025-02-21 at 11:00 -0800, Stephen Hemminger wrote:
->=20
-> Is this something that could be done with a coccinelle script?
->=20
+On Fri, Feb 21, 2025 at 01:17:50PM +0000, David Laight wrote:
+> The fact that you have to keep adding 1 or 2 is a good indication that
+> it really isn't a good idea.
 
-Almost enough to do this:
+Having to adjust by 1 when converting between string lengths and buffer
+sizes is super standard in C since strings are NUL-terminated. There are
+tons of preexisting examples in the tree.
 
-@@
-identifier fn;
-expression E;
-@@
-void fn(...)
-{
-...
--return
-E;
-}
+I agree that the + 2 is a bit of an eyesore but its needed in that case
+because that code wants to tack on a newline in addition to a
+NUL-terminator. Maybe adding a comment there would help?
 
+In any case, MAC_ADDR_STR_LEN is a much more descriptive name for what
+all the changed code is actually doing compared against 3 * ETH_ALEN -
+1.
 
-It takes a long time to run though, and does some wrong things as well:
-if the return is in the middle of the function, it still matches and
-removes it erroneously.
-
-johannes
 
