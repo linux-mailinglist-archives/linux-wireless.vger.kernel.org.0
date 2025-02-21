@@ -1,88 +1,88 @@
-Return-Path: <linux-wireless+bounces-19297-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19298-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45554A3FED1
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 19:29:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 532D0A3FEE4
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 19:34:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3D1E3A0868
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 18:27:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B41C3B56D7
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 18:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032251FBCA9;
-	Fri, 21 Feb 2025 18:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0821F7561;
+	Fri, 21 Feb 2025 18:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZeFuqcCf"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JKPOhH0a"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340631FBCB1
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Feb 2025 18:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB3D1F03F2
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Feb 2025 18:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740162467; cv=none; b=pMgT3kPLXwFnFj2ASsZ3M7zoboWK7DIgrBGEuG+Sr2H6WWMWcqWrCHbls4QM3oGNIo8/Mpfjm/++vobgtPoUsaMZ/zKyQE6Ph+DJIii/tXRyHdaTy78g9SylExYpArOFY1EpH/VI1kNFg2QxMcmZJxNViUO6iFqPZjagzIu15S8=
+	t=1740162725; cv=none; b=QUG+MVFTM9wRe3Q6qXdd+hrRELFquP8ZQNHjiIe9Yx2yLibTvLzhYZEueFgBTq3GoH/oCP1X3VWH7550vBs0bd7BAO7HC+hzvcjNu22e36MD1rauB9T+QG8L9/4KURsiM5T3wBEvksoJD8sWXVxPUKaVfkna4vWiJsMEKmB1JUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740162467; c=relaxed/simple;
-	bh=Nr9FIh/dtO+kWPQ4HZjMg+DtgcV9/dEKq7dWwOmN2lI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=UMraFEHgknHWD5RwzQCUsCJepfu9NzEupdEouZsWz2d0qysYoL+Z0dAWIFOj6zr+Ry7tYhCxxdzB3Ce6uDHoJMyLGmx3gOT/rPUEcYdbCHjIfZPPLfPqk16b4q34br1FVfwsPd4fp7ZY7/4wHzYhZ/NwUbljegoQ46FdR/2raBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZeFuqcCf; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1740162725; c=relaxed/simple;
+	bh=0JXu8xC+o3WRG0/ovetoaqq1qinilGdOO9j3DG5iDU0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=n4kfTlOaIbGI8Kz3QJkXlqDRMqa+hFdD48lX6uz3kB0h5qI+ozx5AXWMVqJrGTlWqSkEcbVpOb93I8XCMXsg6HhZ4IKHm4LxCEIOv5TkJYXzhZEu0wvxxgdNSIeFt3pC9ydW3LAyXsyYrfoDRqkoHsEHiNKhLrLhDc/GrjPFBKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JKPOhH0a; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51LGbVaB026612
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Feb 2025 18:27:44 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51LCSwtq014987
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Feb 2025 18:32:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	iMFEkd+cYZgRaPOdXQcI2vNcH06Vl6UBqI6ZYLo77XY=; b=ZeFuqcCfbbPp0Eqs
-	NkIqI+sGw2oE+7C63K/dv75c7WCowb5QaYEQQqWJe5h6G8NBw5z95Pv/kS6k6bzU
-	caRHWD3M0Frhj+9YZAw3TfDB5RxWx0gcRA81RZpnm610Z4oh3M2fOp1DtS0sWuEm
-	OraFullDrB9clQpkkb4dWv0a3kpnePUy6VZuHBFnyqkAgBFcoICzB27b5hZ76O3s
-	ByQagzvCfR3mpOFveNqxqX8R7BFKz2vqZQA2+iTsfFOaP8S6UK7k6sRrXMX2eCDW
-	qPbRDULE7ql4yWtx7Q3/yCVE0sxspjMksJAp6e1tEIxsIAU1I9V5ATarsbhTyLHH
-	lghusg==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44x2r3w3qp-1
+	rhC3bwMh1zSJjESMPaEPiau2/0hZQf2QwnREzFhtQhA=; b=JKPOhH0acMgfA8uu
+	xIMHOO3r2bgQvTpdwnuHVBJVd0JnX4DpWj8xKRn2lPSK0wkhoNMTIEoDT3hvdtAi
+	028irxGp5ouqyMeusdMhlE9A6r3FvsSLcJn0auVLzURJxIDno471/kFsVHiUD3bv
+	APGkTWUw/UqgIAdoMkifl0pAY23Wbh875g/V/Uf2jffsRty8ctiEnKKTUqYuUMVz
+	Ldm4LPSEHhV6xCQRifgUtjv8y/KMsmH3oSrAE9TORgskuTKThAbplKK0aqdhJgx4
+	D2gRkV2U6GUM1CWqfyG0jc47rxX7MvxpmNKcWX6l1H48byuIDWHJMys/19kkL9yc
+	SQ4c/Q==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44vyy1avyx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Feb 2025 18:27:43 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-220e62c4fc2so51872585ad.3
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Feb 2025 10:27:43 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Feb 2025 18:32:02 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2fc2b258e82so5365246a91.0
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Feb 2025 10:32:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740162463; x=1740767263;
-        h=content-transfer-encoding:in-reply-to:cc:content-language:from
+        d=1e100.net; s=20230601; t=1740162721; x=1740767521;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iMFEkd+cYZgRaPOdXQcI2vNcH06Vl6UBqI6ZYLo77XY=;
-        b=obyQn23Ea5/v6f/6nEju5NPEm6h4GToIKP7M+w8uDp13wTa4/BK6YwytQxHZC4KA64
-         y04h4zrbhQS1W36iqSDyzmfNNrq8QzTpuYLRW66tzL/rF17+IuSF1pg+Ap9LR9FJQJdL
-         8molh7K1wkdl6Q1FTILY/lKZWQ9GO212KOH2dtaCqkWrnQHXjMXKcbt2wVshVOkACsiu
-         su8Ca/1NLxMfrILt7biqGFR5QyWULMzWEgYbjUP+RHbc2S6rOWXewlmeB/ihB65sEPrR
-         HcxVTIyYYHwQ7HjPaAcIa6a5j6vznuj/hvQpr/W1V0xK2N2/hbS4QOODhZllhxczv3CQ
-         ZerA==
-X-Forwarded-Encrypted: i=1; AJvYcCWAnlQashpp0LtJFALmT9hGj8bXssDF+2cthe1hf65LddQESYq8ZS6t9bGVg10jXRaeKWvCQZE8j37xt6AQhw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxs5L9gJm2QwSQngGHbeKc0fvhCVwehTb6ppp0sn21Q4plimbj/
-	1Yq4uUAv42CzwT/vCsbNfHB38CVglY2yl5ydceAWgQc1BoyqC3U93FVel9r2VwiQmMsWB3WL8UQ
-	+pcQSByvsWgq630J3bcI1GDOgD+OfiM1g1KQ3FUhnJLHR7cBVBofZO/AsLqn/A2nLog==
-X-Gm-Gg: ASbGncuveG+pn3AW17I9AkcE3JFt3QR+0/haOR5V1g5T8dTHiEQ/zm8BHIYHMSW1qCU
-	dhy3jxg1bhYLWPV8O0df4EfOMREXtuJHA6ojTT5RsNViS4dtF90CeY0wHPXbZcRS0zAoSyCuQ/u
-	4Xteo/WgmnOaadaXburchNv9aG/rsQf41oIpnxEVANaBgYAVyjVdIATXMUDJIIhgIqeJciUbK2G
-	TN3+F4bprAazprNtNCgHGWSUzN1CxVvXZLF40N8MLwS08N5DaRGpxyTrg0T5WshfJEChvuROKm3
-	TSdZlUL0hovLH9TiqDmdGj9nE2TWU7Nqnu0SRJiaecW0kWKngab0v5SsmkiKeT0YSOwLab38x2A
-	Yi3D/TLR9
-X-Received: by 2002:a17:902:d50b:b0:220:fe24:7910 with SMTP id d9443c01a7336-2219ff4e74emr71196485ad.15.1740162463062;
-        Fri, 21 Feb 2025 10:27:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHqT0lhdlf9xUs5u4H9+hR1MDcGNjhy1drF8rRGCFmhOjcsTVDF/mRwDk9hIOl4FkKbEbM5zg==
-X-Received: by 2002:a17:902:d50b:b0:220:fe24:7910 with SMTP id d9443c01a7336-2219ff4e74emr71196075ad.15.1740162462656;
-        Fri, 21 Feb 2025 10:27:42 -0800 (PST)
+        bh=rhC3bwMh1zSJjESMPaEPiau2/0hZQf2QwnREzFhtQhA=;
+        b=sEl/P5x3nqb0VLXe5HHc4j4igyRZe4gu1jWg1jzLSf6OviFMa9zQqOQedr/ct5wSep
+         /HKOnNnT70lq+LNBg3Dxs+YykwairCoSg21B31+jBZnNyXJ/lO3FaIHQFwj/4Jx5wPAb
+         GmmRtRwoJBpvixwaG5bG9beDgILI6EhO/cT9x8mZmN4GeBSBxmUAhWzF1zhaLKufSp+g
+         wmYcQ1VokETRKpWgWhcuUdUW91p1j2LaRA+E1qIa/Cq4kvIBuj7cpVd+hCqDUoSeuoPN
+         FLRyruxUxheXG1Uu4r49GqA3U/zCzIM0EllM3ysi1nUMif6adKah4QcTBLHUCbFb1bDJ
+         4CQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV75x3EyFRQUMwIhzrpL1COZymBRby3xKhMwNV+EDlBnGVwpvB3vfl975wmXkHnaM1z3e9SOuB0BD5fLNulmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCbS3TKN5hhJ2dUY2Cq7mC8ypGnegG9kcr5EznBAOUrVsTdX1e
+	6NORbPCCTU51pyte/OvAg8/zawXkbfO5tYOnge/ippLtVAMqB5hkpOrWTc2+MaeWKL8522fVu/d
+	vqwBtuHNBrp4in5/BvxOpYqBTn2XD7hIGrHletIktDV0ZOrEsKRcHB2kgrfkmfAQgsg==
+X-Gm-Gg: ASbGncv0egndU88B6tTBeNMZV3lOYihe9UQvm3EF7uqgb1uX/5zTBbGgaTUku5f2fdj
+	tsEPMtFhpMCkkHU9JCoLv7tOLT39/C/OdHxyPEChHTJnCbXvDU4xB3gCGRolC5YZIXdBBnZ0peo
+	CX2XNtowlZloeD2ntq12vnla7r8EU6atcU+gOkTfYJ2zbCsVn9Ph66/TmoSTP9x8txGvPyc+B0O
+	pfQ8MeUC4y5iMontFV69sv6Sw562xHZhMwvTcCGwh/IhOnAVZA0If5FjCLcllcBAzhQ87z/k86/
+	+yXbha7rgSqbCrxDgDUI7/aFmH9pw5Gji1krKuqlzkgyXzJxcJaaQrGsrQGh9K/CDKL38IuacgB
+	1ntAshA6+
+X-Received: by 2002:a05:6a00:17a2:b0:732:24ad:8e08 with SMTP id d2e1a72fcca58-73426c8555cmr6050361b3a.1.1740162721391;
+        Fri, 21 Feb 2025 10:32:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEf5f09al3rVnKIctUkaNJwh9uBNopYGAdJw5I3zqswOJYkgGrLDlJasRb3swANLFbBEi51Kw==
+X-Received: by 2002:a05:6a00:17a2:b0:732:24ad:8e08 with SMTP id d2e1a72fcca58-73426c8555cmr6050323b3a.1.1740162720927;
+        Fri, 21 Feb 2025 10:32:00 -0800 (PST)
 Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d537ca99sm139294875ad.106.2025.02.21.10.27.42
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7324275bd28sm15883247b3a.122.2025.02.21.10.32.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Feb 2025 10:27:42 -0800 (PST)
-Message-ID: <7c7498fd-ede6-407b-b583-e9b8caf56bda@oss.qualcomm.com>
-Date: Fri, 21 Feb 2025 10:27:41 -0800
+        Fri, 21 Feb 2025 10:32:00 -0800 (PST)
+Message-ID: <2e55eb5b-9df3-48e2-8e93-511249672b05@oss.qualcomm.com>
+Date: Fri, 21 Feb 2025 10:31:59 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,79 +90,66 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: please use tree tags in patches
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-References: <ec3a3d891acfe5ed8763271a1df4151d75daf25f.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: cfg80211: convert timeouts to secs_to_jiffies()
+To: Easwar Hariharan <eahariha@linux.microsoft.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "open list:802.11 (including CFG80211/NL80211)"
+ <linux-wireless@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20250219203240.141272-1-eahariha@linux.microsoft.com>
 From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-Cc: "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>,
-        Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-In-Reply-To: <ec3a3d891acfe5ed8763271a1df4151d75daf25f.camel@sipsolutions.net>
+In-Reply-To: <20250219203240.141272-1-eahariha@linux.microsoft.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: uKMqcHGCOeuHyG6iEXgpuvlDI3O0S2pl
-X-Proofpoint-GUID: uKMqcHGCOeuHyG6iEXgpuvlDI3O0S2pl
+X-Proofpoint-GUID: OI5GNb6hQPHYktusuN60W7pq7VPRAPpY
+X-Proofpoint-ORIG-GUID: OI5GNb6hQPHYktusuN60W7pq7VPRAPpY
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-21_05,2025-02-20_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- bulkscore=0 phishscore=0 mlxlogscore=999 suspectscore=0 priorityscore=1501
- mlxscore=0 spamscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
- definitions=main-2502210128
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 clxscore=1015
+ suspectscore=0 spamscore=0 mlxlogscore=999 mlxscore=0 bulkscore=0
+ malwarescore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502100000 definitions=main-2502210128
 
-On 2/21/2025 4:17 AM, Johannes Berg wrote:
-> Hi,
+On 2/19/2025 12:32 PM, Easwar Hariharan wrote:
+> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+> secs_to_jiffies().  As the value here is a multiple of 1000, use
+> secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
 > 
-> I couldn't (yet?) figure out how to make the nipa bot stuff run
-> properly, so please start using
+> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+> the following Coccinelle rules:
 > 
->   [PATCH wireless] wifi: xyz
+> @depends on patch@
+> expression E;
+> @@
 > 
-> or
+> -msecs_to_jiffies(E * 1000)
+> +secs_to_jiffies(E)
 > 
->   [PATCH wireless-next] wifi: xyz
+> -msecs_to_jiffies(E * MSEC_PER_SEC)
+> +secs_to_jiffies(E)
 > 
-> for the subject line. This way the automation can pick it up, see e.g.
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> ---
+>  net/wireless/scan.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> https://patchwork.kernel.org/project/linux-wireless/list/?series=936374
-> 
-> I'll need to fix some username stuff etc.
-> 
-> I likely also need to add more trees to it - please reply with your
-> subject tags, trees and branches to use, e.g.
-> 
-> wireless: main
-> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/
-> 
-> wireless-next: main
-> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/
-> 
-> but perhaps we want to have
-> 
-> rtw-next: rtw-next
-> https://github.com/pkshih/rtw
-> 
-> or so? Not sure if you maintain a fixes branch there too?
-> 
-> 
-> Anyway, good luck to me, and please don't try to attack it ;-) I spent
-> all day setting it up, and haven't pulled out everything yet.
+> diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+> index cd2124329521..1de25e9763cb 100644
+> --- a/net/wireless/scan.c
+> +++ b/net/wireless/scan.c
+> @@ -1365,7 +1365,7 @@ void cfg80211_bss_age(struct cfg80211_registered_device *rdev,
+>                        unsigned long age_secs)
+>  {
+>  	struct cfg80211_internal_bss *bss;
+> -	unsigned long age_jiffies = msecs_to_jiffies(age_secs * MSEC_PER_SEC);
+> +	unsigned long age_jiffies = secs_to_jiffies(age_secs);
+>  
+>  	spin_lock_bh(&rdev->bss_lock);
+>  	list_for_each_entry(bss, &rdev->bss_list, list)
 
-First of all, thank you for adding any automation which improves the lives of
-the maintainers. Aditya has been working on that for the ath.git tree as well.
+Reviewed-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
-ath.git contains both ath-current and ath-next branches in the same tree:
-https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/log/?h=ath-current
-https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/log/?h=ath-next
-
-So we can use:
-	[PATCH ath] for current (this branch gets little use)
-	[PATCH ath-next] for next
-if that helps your automation.
-
-And for Qualcomm contributions we've been asking the developers to always
-supply a base: hash to also denote the basis of a patchset.
-
-/jeff
 
