@@ -1,125 +1,92 @@
-Return-Path: <linux-wireless+bounces-19305-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19306-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A969A4004A
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 21:02:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3101A403B2
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Feb 2025 00:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E35EC16592B
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 20:02:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3DE142177B
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 23:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFC325334D;
-	Fri, 21 Feb 2025 20:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC8F254B13;
+	Fri, 21 Feb 2025 23:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="UteSg52R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KM/ZfJRW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7023F1D5173;
-	Fri, 21 Feb 2025 20:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8791220AF8E;
+	Fri, 21 Feb 2025 23:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740168131; cv=none; b=VS+AcolZ/TkO3dJfx3zKTFZ9roP4n7LREBC00b+xOFwGSXJsw6ED3gY0ii0if7KPf0yS8gUGm2EjdYn2Tw65gfclm665n7bbR5kARje1GD0LOO0JR3nOZkzrbVb7GE0P4ipXxXmlvDY9cO/uuMaaybIVkJ7u24XdTYJQBUe/3e0=
+	t=1740181674; cv=none; b=L6RVtffEbeBy4sOI8DYVq/j4eDlIulX9+i5RoXWdDsNZXfrIDRAwnwzhzSEjH1rO6QMARcF5NZUdwV7UMPJH3HxTDHfxPc3kpfnRoBnVeJJxwl9N5kJWspDiIiq3Iu3NMw0aULHcF1eFEqXxuqQWH0jYDGreR9twn/WVk5/Wt6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740168131; c=relaxed/simple;
-	bh=cqpH7TG6SAX4ZNWACei1aBxwCR5Ybf1VnjsqFb3f5zs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lbIbHYxroP0u8MyRKX32VtKC0CmrrPyh+zI/l67SIEG4d3qR7kigXCsJJ+6muaJ4bTWkJl+fiE90kmg89OxeWrLZSuswOaiKCsOADOJvza0xQWlmwtWQ56w2QTjSN676QRVZeWYuxDa1lIS63g9IFQh5CAg0k/rV+zh2L9kz7ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=UteSg52R; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7gGBaRe4JgYzbdGSQQDl/iu7LJKLfKjaa+/NCZsQ+Ao=; b=UteSg52R0cyjvV7m5TTbonCM1h
-	nNaAO3jaW9OJTFD62ZSqIMkpbxkqDB1DnXGCDq1E9j76theeavHA/RRU5cr9Ld3y9wfjpXqbzl6ny
-	StfdLe4oNTNBs7AUNYsLHfvw/kaINS1IKRZ1sucXhgJkMsTs/iy5t0nieQstbQpmCN/ql5vASIsCB
-	garNWnx82z7wKP48scb0FcUXdE8h/CiJr7AzuSeezFGNc+OEyw6P8aofPitbVwLiEyPVPm69UbSh3
-	xtKeubLPCtDZQLsl/R9x4n93qUl1H2Gyc9cbQjUEI73Ffxu18HzmEy3NN4RJTxgXH80wZWZPvSf6f
-	vY9JATuw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tlZDO-00000002in9-0hY9;
-	Fri, 21 Feb 2025 20:01:38 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 48E7130066A; Fri, 21 Feb 2025 21:01:37 +0100 (CET)
-Date: Fri, 21 Feb 2025 21:01:37 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Zijun Hu <quic_zijuhu@quicinc.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>,
-	Thomas Graf <tgraf@suug.ch>, Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Zijun Hu <zijun_hu@icloud.com>, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-	iommu@lists.linux.dev, linux-mtd@lists.infradead.org
-Subject: Re: [PATCH *-next 01/18] mm/mmu_gather: Remove needless return in
- void API tlb_remove_page()
-Message-ID: <20250221200137.GH7373@noisy.programming.kicks-ass.net>
-References: <20250221-rmv_return-v1-0-cc8dff275827@quicinc.com>
- <20250221-rmv_return-v1-1-cc8dff275827@quicinc.com>
+	s=arc-20240116; t=1740181674; c=relaxed/simple;
+	bh=YpqZyI6XQkE+I/cz0HVGo821pG3xUv+i2G8tH9sw4Ck=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UUMzq3OCOo3uSMiOn2/HZRqHWoOU8FUHE+iHE0nXy3/pNG5H9hF+ZgsaRcjmnmTAufq6JvmUhRXlMnEhEHEUY8SJAab14l2FmY2yhq9p1GtwG1sowqb7JIG2tS73tB6Ef3M7cRhLGIJCGHuxJDYNLZqrF7yJ39tmHv2Zzwl+9Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KM/ZfJRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305A7C4CED6;
+	Fri, 21 Feb 2025 23:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740181673;
+	bh=YpqZyI6XQkE+I/cz0HVGo821pG3xUv+i2G8tH9sw4Ck=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KM/ZfJRW4Ao62YReF/CByxvaytS6eCg7A62ykfem1F7ZlcxARc/ttMS+Eo7QSiRoC
+	 L/Yjcd2caMn4ObZZCnCGyEuo9xgC6WZot/rpFAy5wigXVK3ut+VHILxglTeHRYA9kk
+	 k60pF94LnYZ/h3hrEAauaHfon//iQu4AioNB3aq2W2kbk7oEuocz2/ygkH/nvqljBK
+	 2J+2++rVJPifxTn81/PKTdrWtLY/Om1L+itbDoBh6z+E8Cwe1RdbvdUeamo4+pUpWj
+	 /c4yBKxGb0jQHXag71qQxP+sWONgV0p8K4pbQVmHScKyB2/E2s11Z7gaJWVk4E/s5B
+	 mJf6Xz30VzUiw==
+Date: Fri, 21 Feb 2025 15:47:51 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Xiao Liang <shaw.leon@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, Kuniyuki
+ Iwashima <kuniyu@amazon.com>, "David S. Miller" <davem@davemloft.net>,
+ David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Simon
+ Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Donald Hunter
+ <donald.hunter@gmail.com>, Alexander Aring <alex.aring@gmail.com>, Stefan
+ Schmidt <stefan@datenfreihafen.org>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, Steffen Klassert
+ <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ linux-rdma@vger.kernel.org, linux-can@vger.kernel.org,
+ osmocom-net-gprs@lists.osmocom.org, bpf@vger.kernel.org,
+ linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
+ linux-wireless@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org,
+ bridge@lists.linux.dev, linux-wpan@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v10 00/13] net: Improve netns handling in
+ rtnetlink
+Message-ID: <20250221154751.54318ae5@kernel.org>
+In-Reply-To: <20250219125039.18024-1-shaw.leon@gmail.com>
+References: <20250219125039.18024-1-shaw.leon@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250221-rmv_return-v1-1-cc8dff275827@quicinc.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 21, 2025 at 05:02:06AM -0800, Zijun Hu wrote:
-> Remove needless 'return' in void API tlb_remove_page() since both the
-> API and tlb_remove_page_size() are void functions.
+On Wed, 19 Feb 2025 20:50:26 +0800 Xiao Liang wrote:
+> Patch 01 avoids link name conflict in different netns.
 > 
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
->  include/asm-generic/tlb.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> To achieve 2), there're mainly 3 steps:
 > 
-> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-> index e402aef79c93..812110813b84 100644
-> --- a/include/asm-generic/tlb.h
-> +++ b/include/asm-generic/tlb.h
-> @@ -501,7 +501,7 @@ static __always_inline bool __tlb_remove_page(struct mmu_gather *tlb,
->   */
->  static inline void tlb_remove_page(struct mmu_gather *tlb, struct page *page)
->  {
-> -	return tlb_remove_page_size(tlb, page, PAGE_SIZE);
-> +	tlb_remove_page_size(tlb, page, PAGE_SIZE);
->  }
+>  - Patch 02 packs newlink() parameters into a struct, including
+>    the original "src_net" along with more netns context. No semantic
+>    changes are introduced.
+>  - Patch 03 ~ 09 converts device drivers to use the explicit netns
+>    extracted from params.
+>  - Patch 10 ~ 11 removes the old netns parameter, and converts
+>    rtnetlink to create device in target netns directly.
+> 
+> Patch 12 ~ 13 adds some tests for link name and link netns.
 
-So I don't mind removing it, but note that that return enforces
-tlb_remove_page_size() has void return type.
-
-It might not be your preferred coding style, but it is not completely
-pointless.
+Nice work, thank you!
 
