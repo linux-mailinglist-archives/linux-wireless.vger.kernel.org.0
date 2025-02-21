@@ -1,97 +1,117 @@
-Return-Path: <linux-wireless+bounces-19301-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19302-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D128A3FF45
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 20:03:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AECBA3FFD2
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 20:37:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED2484256EA
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 19:03:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 882FD19E0D3F
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2025 19:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC19D2512C9;
-	Fri, 21 Feb 2025 19:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5722528E4;
+	Fri, 21 Feb 2025 19:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="Bilcq9IE"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nXuh8rCG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from pv50p00im-ztdg10011201.me.com (pv50p00im-ztdg10011201.me.com [17.58.6.39])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467F21FE478
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Feb 2025 19:03:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2E11D7E50;
+	Fri, 21 Feb 2025 19:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740164613; cv=none; b=ADqezUw6sZEw8wQjuku0Lj0Se0amfhhjSkw9Buu3LCrIfFNAXv8SgeC6zyBJliZAbcvTFFXfKsEuPanQAx+Vc94ZEDbJC4AKOb1B7/4d/JJQ4MIqpMRPav8avx2UkM6H0K245JU9RcyTmhCjM1OU/tvyVHDWN/Ko0S3irsTl750=
+	t=1740166631; cv=none; b=WruvxAK7FFkF9clZ5vCpWqlkXLGqmWvJRta3G6WMko6FDE8DC3cYwlcLUGMYh9rhkQ5BVpDzGJdzH4SxSnypEQCVg+YousihfUjC4mXWfdg2yR87cEvdQy4AmBJVSl7pAyI/JX+5BosqcnDQhgKgxE4Y3WIMpXa6CTjY/AMAt8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740164613; c=relaxed/simple;
-	bh=7FI96NB56x8g5ULl28oXb+zIk7PEsGKwNCZ8Jpn8hzc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=eYkHa3W9fA6lkoPBHRFih8aB7+mEscQfnv586FzV899QWvUHWVgPdMFiSBQte5BRzWw/XKv98iEq9xxIs8fA71lNKIDw7ND3exQH8WPvwlW+Yfw09fwopOxXZOGWoQ521hGjiVrl2RuSd4mxWF6GmdIruB6YLeYcYKNlp+lpa5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=Bilcq9IE; arc=none smtp.client-ip=17.58.6.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=p3DNeByxz36nxI9Sc2NbQ1+CjktRgWe76wtYGzfZ5aY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=Bilcq9IELzeRgTYqAAcDnu0f2zE0EAmJcOqWhgiNP/FpPoC4v9vmrubo0qOSOclij
-	 9S2GjaQKn6xO3IJ+hs5BedPTS/ZYCqYOP/6ghdAyZdsUUtOUMwNHB1RPkdKLEMpDLb
-	 PJa0Ow4IhnNO1SPJObT3nPrFcaRga3Gch0wRJJp8XqVyoUiqyekFeW/EPVY1NFSLO8
-	 Z6KMH3wA3mF4RhwXfM2fX8dimnhKk+v74yKEeQbf1GxTOx5rsmjJbiLxqb1/eZoaJO
-	 tv9ict3Bs2dIwZOBkRyDn2Sxn1/Z3kH9Tc6Dyw0K+7j/2eDypniLvhlM+/cBVftgHX
-	 GS/d+bT5U+aCQ==
-Received: from [172.31.0.20] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10011201.me.com (Postfix) with ESMTPSA id 4859368023E;
-	Fri, 21 Feb 2025 19:03:28 +0000 (UTC)
-Message-ID: <035d9edc-9290-49ac-b875-749e709074d4@icloud.com>
-Date: Fri, 21 Feb 2025 11:01:57 -0800
+	s=arc-20240116; t=1740166631; c=relaxed/simple;
+	bh=zDxTSXduPQXA4xHKPlyHXnfxQxWR7o6zkvl4FTCCsPY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dmMWGoXoXEY6oa8NJhs9jrpdSplL+kDw7q2ViLlL0fllnhUaeKbbPldHibjk69kcp+JDhLIgdDjn64HeK+mChoNMUEZPIZpmWG6GvWoWFC8XUaYIrxRjYVJtiUslNOCSHXFSHRhinOh8y343oOmD50Fr5SuOr26mT0jwz/8vYhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nXuh8rCG; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=zDxTSXduPQXA4xHKPlyHXnfxQxWR7o6zkvl4FTCCsPY=;
+	t=1740166629; x=1741376229; b=nXuh8rCGqsfC3M2xAznPkwmoiPBWtC+d9yFk7989Wm+EiBe
+	cq6CGtatT5XGh/DqtDIy+UVkvnpDwSnALN0h3GIkDMzWpdgd0M5LrLl9kUwr0WoiJ2jv9rXYWI98t
+	BX94haLt4oatQhLfxjfHjJ8bLruAkrTbhAq3hnbNU5LBsY850740i8Yk2zyjzlGjCma/Q8f9c/yHY
+	4YT8TYd3DU76NDpemOfAkK2N1vbWMftzJ6EIK6LI8rw1hG1xmbpVS/h91s7ASEIGED99av4bwzot4
+	uPBPOv8Vz33cBJ18VPWaTfUWMohuHYnxweLYJFnPgprQtfISwoRrqINnv6hgqgDg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tlYp2-00000005Y57-49wJ;
+	Fri, 21 Feb 2025 20:36:29 +0100
+Message-ID: <9af9413b7ab41c6b2db5f862d0fa50e9de279d67.camel@sipsolutions.net>
+Subject: Re: [PATCH *-next 00/18] Remove weird and needless 'return' for
+ void APIs
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Stephen Hemminger <stephen@networkplumber.org>, Zijun Hu
+	 <quic_zijuhu@quicinc.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Will Deacon	
+ <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andrew
+ Morton	 <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>, Peter
+ Zijlstra	 <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Thomas
+ Gleixner	 <tglx@linutronix.de>, Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Danilo Krummrich	 <dakr@kernel.org>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski	 <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman	 <horms@kernel.org>, Jamal Hadi Salim
+ <jhs@mojatatu.com>, Cong Wang	 <xiyou.wangcong@gmail.com>, Jiri Pirko
+ <jiri@resnulli.us>, Jason Gunthorpe	 <jgg@ziepe.ca>, Leon Romanovsky
+ <leon@kernel.org>, Linus Walleij	 <linus.walleij@linaro.org>, Bartosz
+ Golaszewski <brgl@bgdev.pl>, Lee Jones	 <lee@kernel.org>, Thomas Graf
+ <tgraf@suug.ch>, Christoph Hellwig <hch@lst.de>,  Marek Szyprowski
+ <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, Miquel
+ Raynal	 <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>,
+ Vignesh Raghavendra <vigneshr@ti.com>, Zijun Hu <zijun_hu@icloud.com>,
+ linux-arch@vger.kernel.org, 	linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, 	iommu@lists.linux.dev,
+ linux-mtd@lists.infradead.org
+Date: Fri, 21 Feb 2025 20:36:26 +0100
+In-Reply-To: <20250221110042.2ec3c276@hermes.local>
+References: <20250221-rmv_return-v1-0-cc8dff275827@quicinc.com>
+	 <20250221110042.2ec3c276@hermes.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: /proc/net/wireless has gone missing in 6.13
-To: "Artem S. Tashkinov" <aros@gmx.com>, linux-wireless@vger.kernel.org
-References: <ea0541a6-9d4f-4d1c-8b4b-4bb29eb84639@gmx.com>
-Content-Language: en-US
-From: Alex Gavin <a_gavin@icloud.com>
-In-Reply-To: <ea0541a6-9d4f-4d1c-8b4b-4bb29eb84639@gmx.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: gU7wIrNnePemKP9C-30Q76jDxnhTY74Y
-X-Proofpoint-GUID: gU7wIrNnePemKP9C-30Q76jDxnhTY74Y
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-21_07,2025-02-20_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 malwarescore=0
- mlxscore=0 mlxlogscore=999 clxscore=1011 suspectscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2502210131
+X-malware-bazaar: not-scanned
 
-On 2025-02-21 9:10 a.m., Artem S. Tashkinov wrote:
-> Hello,
-> 
-> Multiple people report[1] that /proc/net/wireless has gone missing in 6.13.
-> 
-> Many utilities/applications depend on this file presence.
-> 
-> Please restore it as the kernel mustn't break userspace [interfaces].
-> 
-> 
-> 1. https://bugzilla.redhat.com/show_bug.cgi?id=2334171
-> 
-> 
-> Regards,
-> Artem
-> 
+On Fri, 2025-02-21 at 11:00 -0800, Stephen Hemminger wrote:
+>=20
+> Is this something that could be done with a coccinelle script?
+>=20
 
-Support for /proc/net/wireless is still present in the kernel. However, in the GitHub issue
-referenced by the bug report you linked, user 'clnhub' noted that Fedora has removed wireless
-extensions (wext) support from their 6.12+ kernel builds [1].
+Almost enough to do this:
 
-You can still build it into the kernel by enabling 'WIRELESS_PROC' in your configuration.
+@@
+identifier fn;
+expression E;
+@@
+void fn(...)
+{
+...
+-return
+E;
+}
 
-[1] https://github.com/clnhub/rtl8192eu-linux/issues/111#issuecomment-2562629866
+
+It takes a long time to run though, and does some wrong things as well:
+if the return is in the middle of the function, it still matches and
+removes it erroneously.
+
+johannes
 
