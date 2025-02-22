@@ -1,208 +1,246 @@
-Return-Path: <linux-wireless+bounces-19324-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19325-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E0FA407F0
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Feb 2025 12:38:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A09A408E0
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Feb 2025 15:14:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C479422333
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Feb 2025 11:38:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C04E19C2FCD
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Feb 2025 14:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84EC209693;
-	Sat, 22 Feb 2025 11:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40014145348;
+	Sat, 22 Feb 2025 14:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="gsqDCwTC"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kF2cwUdp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazolkn19011038.outbound.protection.outlook.com [52.103.66.38])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02BD207E18;
-	Sat, 22 Feb 2025 11:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.38
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740224317; cv=fail; b=ItQbHlN5DwqAp5JTviPO4ULExekAQ5Xe9y1P8mXTbLUX9wdDM5iAaZ3IPBqBXISxnTKNl87zBPyoxfVhbCud58KizgrfUszFdc5/bogdpp4YpxT+Mbtm3t08bkE9iQcBGpEIAfKosD+9eOheXsN6b3KVcBr0wpfKxdWrNxKE5nQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740224317; c=relaxed/simple;
-	bh=M7RJQRynjQyqzPnchgGJdJSMd6JIKLnppQGHywOc4QM=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=MxAVZikIVfer/PQKc5rvpkltwceqh8K9wVaoO2IBI3Y1t3TPRUFZ79kUhbqkkGqyOe2zuF+T0LtCmKCeA+jdybeo0gJnMahRXj0Alma912q9lzxQduHustC5OJqZ8m2Lr1WHByYAEHViVSdtCpvEqxnSJAFMG0oOLc3UjgBeYBc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=gsqDCwTC; arc=fail smtp.client-ip=52.103.66.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u0OBmW8EN9maWqv7Se+W+kgEZQVNWxwlrRXx+/hcStkzfyAGq/sgxYD+Z2eyCEXpGtt7UozbZfvc3tcOj5w/SYPJOEwSUwR+Dx+xJpfPUtCbns0gilaEHuTWsHR8lWst0wsEIVqhDn4gLEzf/LwbTbn/HwPC9OrPM5Kt/dP/yvhPSzSDnwdRmHWqh2sPHXtsOqfY3q3LL4d9MT8VESfS9HnV0YpxptkusNL4k1IEMs++CBx0LO1XyR+Vft0dcSIf0JABJQFrvHyDXOoOOqOcjx+oWTXeZkFDtyOXYJ91r3PQKSdbxBsJtMgBs7s6iZjU1mPsZbLrLAe52za4/8LSzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ad21MWO3PVvCVn9RQHDRoECV32T9c2wTWkFN8j79BuY=;
- b=vuk2fX6dbXGDh6ByajDapt+UVj+Sgiqb1bzLDW4EQ9PJ5Uf6erdJioNfuB5eRnm9IOZs1cMUk41S82nL/6VcVm75Pfepg5KBOIlLRbZbek6Hqbh8I7iekx4PfO4sKoXhh+mXDT/cbA4Ei/HirxoLVZKxPVdYrW7Loek9NvNKfEnKtm4WnpHMOJvWi/s0J7z46x7lFkjs9Wdx34etlU0O/aYmObI1AglxM6vM0QJL4sny5/17KyM29hdlPf2lTlrXoO+nR5laeoJqe0HE72GeyLIv5MQLy2hzqmnVeUoL65hO4/h259lyggyiE0LaawVSVxNNSqqkhZkKMvimKwTtsg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ad21MWO3PVvCVn9RQHDRoECV32T9c2wTWkFN8j79BuY=;
- b=gsqDCwTCLkxxpRk+SKvAR0MoSwhzaE54ugRFKL54c0f5Uvkfvfcz4UTUx03AR79BuZNRLMHsHGKfULpyKmjIVBQ/N9OuoVvb2dLEkGDcsT96beYRsLKtn7nZ3ho4LMuxIs1UgEaMjazMb1oxzhs2Z4cKEb3PRdBi5jCvbmHx5IVXJgC814O8h0iLwUcEk5vfjAk9B9SthYJq8VSV+v9WIPfDWCeUBezq86w4DljCSFS98OXW7PJw4V7FnodxSG8wqJp61aXjUNU8qrynCpUzJl5nN+ayyZ5P2Q7fUSjWQI2VWMprt21n4g/HQ0TlmnkIGHJonhjZwk4wpeRXkhV1Pw==
-Received: from TYCPR01MB8437.jpnprd01.prod.outlook.com (2603:1096:400:156::5)
- by TYYPR01MB14294.jpnprd01.prod.outlook.com (2603:1096:405:210::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Sat, 22 Feb
- 2025 11:38:17 +0000
-Received: from TYCPR01MB8437.jpnprd01.prod.outlook.com
- ([fe80::83e7:751f:f3af:768f]) by TYCPR01MB8437.jpnprd01.prod.outlook.com
- ([fe80::83e7:751f:f3af:768f%5]) with mapi id 15.20.8466.016; Sat, 22 Feb 2025
- 11:38:17 +0000
-From: Shengyu Qu <wiagn233@outlook.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Cc: johannes@sipsolutions.net,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	Shengyu Qu <wiagn233@outlook.com>,
-	Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH v1] mt76: mt7915: wed: find rx token by physical address
-Date: Sat, 22 Feb 2025 19:38:13 +0800
-Message-ID:
- <TYCPR01MB8437EE1595CD4AB581C006E898C62@TYCPR01MB8437.jpnprd01.prod.outlook.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYCP286CA0153.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:383::15) To TYCPR01MB8437.jpnprd01.prod.outlook.com
- (2603:1096:400:156::5)
-X-Microsoft-Original-Message-ID: <20250222113813.8265-1-wiagn233@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBE9139566
+	for <linux-wireless@vger.kernel.org>; Sat, 22 Feb 2025 14:14:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740233653; cv=none; b=dLNmsefWFwGbVnW7hgT41RnYVmYGAX99KhXo79tuhecqUFmcrswD+6lq5FPNYdHGB5VeOkZyrckdH0altJJdvzGAAx+Q+1CSh9t59GTCTYAFtxKK0184smX+KBTvVo7R9nmUdAXC/9LfQMUH3vg8cF0m+BTZWJaXzUU3BaRuVJk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740233653; c=relaxed/simple;
+	bh=tVcrP5/gr8jTB7ZyTGvHArma+IO5/SLwqBsU1PbFCU0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h1WKvKgizVt0Jtfe9mCwpcFiq0X95McJuGQAvfGmshc25oC90nZFA3vfEghFvphLDXhmjetkBa6DdpwL6XzZwk53EjHLKew7vT+eQOZYGKZTnpPXHifW54R/rtGmNBVtiIk+9vyvyaMxyxNqGy8rb+jTMxIbLgzquWx+ButRfWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kF2cwUdp; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51MCxKk4028522
+	for <linux-wireless@vger.kernel.org>; Sat, 22 Feb 2025 14:14:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	11Ysi9GncpivA4iZhlsuFvjSxWJFI3QjA/kbsHHdxxM=; b=kF2cwUdpMYe7ArLe
+	aM7iPtR0elv6DvqbCvmI+2SWd7cMXhRDgpCdfgsNgGJRu5OTTf32kwf33riFyu/i
+	A+3cpIJXCjG6/u6607IFuQW/WGm08BoSHHKzbY4M51jTTv5yTLq+vljqSEJpC6Tg
+	u9xAlz0vBsPMK6NZeTA61XBnmspo1G0QuUNHrJMO6/bzt1SbxKDmCu1B3+37dPcq
+	08xIR+kglfzeH1y2DpRzJGOAx39yqFag4DuL8olFGiYtE3KvfRCKcw5QSGQx8Xke
+	m32dKe6cOBa8gwkdjx6VtEAjzfAz9FR+HkwMrdO7/Wleg9RH50Hu7miw/F1EFHmq
+	bGPdKw==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44y7bf0pwd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Sat, 22 Feb 2025 14:14:10 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-220cb5924a4so104648435ad.2
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Feb 2025 06:14:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740233649; x=1740838449;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=11Ysi9GncpivA4iZhlsuFvjSxWJFI3QjA/kbsHHdxxM=;
+        b=CD/4miEVSscd8ZA1Ene7dliDhnEW/W14Bw58OF/WExr46PEMWGD9DfyWfFSWht/My2
+         PKKDghvzFTaffpKt9zMSvXdkTUuCK5vmc2ka2OcTSGlXtWWfzLu4nOSy4ZkcyzfgEMZV
+         6HtRAT3HXbWdYdtJcHFdG8/sfWR9TEmhBv7WaAdorm1sQYoZl3ulcCMc6Xj0J7YWJjZY
+         GPFm04Yl+Fk/qsYqldAnO9cfwJyjqMzLHHCF2DQNegxtmM1MR6EhcAB52wW3S+2mX+rj
+         QzTvlbKF82QC96I3GRkmxj1vRo6umOIlHp9t9R37xGHh6KcQWZvCE3S+Ykcku8oN9GsS
+         j4CA==
+X-Gm-Message-State: AOJu0Yw7sAGn6yLu7IgOcn5QJ71nkNhogFcsxeHBxu5hbhFvyNfgYHDQ
+	kDaEVnzt5zdxfqcfcb8TrXmL0nlAh+rBV3i2uFtHEvSOixIEmUo4FaDwo+YDOeWSl0QyHaJVMgP
+	ooCtxHMPzcd7S8Uh7jQ+47bBm7mTSACup9pX1YBicp7aS7yGqvfjLcRvzvHAIg/u8/A==
+X-Gm-Gg: ASbGncutejeuDXaeOEPJQB77squEKJB5SSBRQsnm3dbshPKjTTtIUP5Fk/BB1+4H3AP
+	lNytVJ0ycAeghNRPajbFAuz/BYF9X5RuLLmLNJav18WKt4oyrn9qM8RiLahJucp16R5pC+L4RYc
+	qLCEI4fLiIrCsINsaUMBjK+8eU8XF4B8Puff8DVZuhgunnFbeH2iwKDtxLRhxRKcAuy//7uPtSh
+	r0QsfgPIfEEt7/qyTRgylO87lI7QOR4ZkaS6QRZeTjMEk1BWYOl/6hssyFei5SoE6J0N2xgVBgX
+	wvV12M/fX4taEaPn1c9HUQvyW3zw2gbMX6ScjgFBu3gkF6+Wn1Le3xBNxo8D
+X-Received: by 2002:a17:902:f712:b0:220:ecf7:4b5c with SMTP id d9443c01a7336-2219ff515dfmr133984505ad.14.1740233649319;
+        Sat, 22 Feb 2025 06:14:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFH8sD4+nQjwo6K4SBTdob+GiTVg6eTkZ8AQCtt9sa0XWlNmOlScXD/NaeiBJYaHF2Y5/CBJQ==
+X-Received: by 2002:a17:902:f712:b0:220:ecf7:4b5c with SMTP id d9443c01a7336-2219ff515dfmr133984105ad.14.1740233648944;
+        Sat, 22 Feb 2025 06:14:08 -0800 (PST)
+Received: from [192.168.225.142] ([157.46.94.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7340a4b3779sm6768454b3a.109.2025.02.22.06.14.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 22 Feb 2025 06:14:08 -0800 (PST)
+Message-ID: <8385965d-1be7-12e7-b636-1a0750ee8762@oss.qualcomm.com>
+Date: Sat, 22 Feb 2025 19:44:05 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB8437:EE_|TYYPR01MB14294:EE_
-X-MS-Office365-Filtering-Correlation-Id: ca774258-fc09-4483-eeca-08dd53356657
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|7092599003|5062599005|5072599009|8060799006|15080799006|461199028|19110799003|1602099012|10035399004|13041999003|3412199025|4302099013|440099028|19111999003|41001999003|14041999003|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?DqnKHhX9R60T8BxhYuHcCi/1pXfm3Lfr+lWspo059xjcrQ3+mUtgwgj9wMiG?=
- =?us-ascii?Q?q7pjE0Iie4SGrxq0ACCf5kwsqnOVbWM/yRFS9XlvOQFWJKMj4fFXtSwFNP1d?=
- =?us-ascii?Q?Q4izGvcl1a/liNIkwbe5W+R8iDY85YfOWeyteo701r7r6O14e/eQM6jGeR0N?=
- =?us-ascii?Q?eKGbMxGD2EXj1lHMwFCKm8nqo0zv46nliOTBxi4XvJaYim8iW03GkDUUZLNu?=
- =?us-ascii?Q?fjN0/np3g5AMfTcSwprmuwNoeAaY9ZER6ZivLfnsqYLlF/O0dYrpOwxH5L6a?=
- =?us-ascii?Q?GVVxybQdf/5pmDEmWCoSRHfNTCxvdVWlAxaW8bRDAgj1B7aBUlv2LdEA0cCL?=
- =?us-ascii?Q?8gifCo/Cw1ZgytTShpwfRN4PNbbBU8oY0eWySeojR60F8K6cB5xzCG5JHmo9?=
- =?us-ascii?Q?03aT+7lMT+ifz3T9EeYhPHQrqW5HvxgPNlkMyq6vu5InWWVjHAL1typ/r5TQ?=
- =?us-ascii?Q?6AVwtuKmdJUgJIaW+GZrh+WSo1DGKb9KrbdQn3y6krRSZE1ceZlVYJnqLaDd?=
- =?us-ascii?Q?UVVoeosZnPcNKrVeDYGjGSIUoAo0qptZDuQJZWkQy79y3kpBJQAn1Lcuq2t6?=
- =?us-ascii?Q?VPkyFIzXpBeOm54cLr1XD3dPJTDz4P1fvLxMJ22jdO67bYLzDEsOD8w8bhXX?=
- =?us-ascii?Q?F+rhhFmFz8noxHpFErSB6c4AewdTZdRHxh0nv+mimeCIZCdb3G2jfndeGcrx?=
- =?us-ascii?Q?nYIPUW7DqnUPAIzn6KQaEsGqGEReJdFBq1NyAJlCHZRUMHSD0Lqj3QPl9eK5?=
- =?us-ascii?Q?MU/8PrFfidYuCewBLQ7vV/WwiLTHlosJb7xpcyC6if2tH9Fxvp53sAFB0oI/?=
- =?us-ascii?Q?N9kaT7KKxoFLNt12SnNbDykYRsk4w55sjdObUNOEFehAAWiUEy5pC3g9BymS?=
- =?us-ascii?Q?xJS3y6NW9N5odh1kyPL8ae4j2CyPBrmN5Evp7ADwQos2V74Ztj9IR3L225q/?=
- =?us-ascii?Q?+yLHHeTtjzZDZQY7tcNrUw+WUyN4NoMkX9x1dQLAb5b4QDwdDY9KkexpRkyb?=
- =?us-ascii?Q?xYdNONRlpeQozVlK8NC85wlFjeCclu5jGOIPy/4IjqDVboWXHT0NbyBZ/bBv?=
- =?us-ascii?Q?5EdSc3x90kNDtXzLghtScSMacwK2LyQuQjYtSfkSFbiFq2rbfcwLzWVkwTU3?=
- =?us-ascii?Q?SN82fX7qVmFkXkHbccdF5h3bKsOi5wSdFiJ9CNZQniKC/is3tEG826h8UipO?=
- =?us-ascii?Q?HKEHUbs9U12SUiXDIMme0Ty74Qq72iHlQ3V+qQRoh3Tk2kSHvU4zQhVDiH+m?=
- =?us-ascii?Q?CfpAti4Qt/XWx/JRqWV3xymLaW/pBmsbpAfHuija4zBRAzZr634YWbEMDoC1?=
- =?us-ascii?Q?DDVJ6QnwGPiyJ6Zd6OyL6VK8rFTaGlG3ae843zQWRmPCjmiRS6/O+UiCii3K?=
- =?us-ascii?Q?9K9uCIDJuQNgfQbu7KuInmzn8vxZ?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?42icxF7SlW9PU8Ir63h9hWV0xs/0aYOR/Xk4OmbKDSE5906ALGfpRkQ9OM/U?=
- =?us-ascii?Q?rN0anVxBxXnEN5eBE1Rq3pKfnW/Fntd4QTYYtDRlbijWjMHyp0wQPn6eR0Rr?=
- =?us-ascii?Q?RZ1oZw9VGqGqIP0Rdy/XfBvFRL9YzLJW0eqqYckP55N4oeYbeqj23FKq9Y2E?=
- =?us-ascii?Q?pW1ZcdeMNBnBZekX3OFBELHAoOUbeoSDZpSGVzy6tTlubbsqrN9KAJ6kenjP?=
- =?us-ascii?Q?MMIv9+eR0i841gYXE7pBVf+7HVZc08gCN/Cwt+nUYQTBBNHWzToDKsmFjEgW?=
- =?us-ascii?Q?/gwIbftzT4jyyZSirMcCOOPlAkQM4qO51rU9nU4HKxDsDwNAZuj+JXMXYDBi?=
- =?us-ascii?Q?SeXaPTe76cXFoQDuYPFxYR9sI0wo9ZKhsfKdxh/+ReGbiNeP2SRfcqLzMnwe?=
- =?us-ascii?Q?+fTR2HEnIEAEk+CEpZZab8WC51qrbG/itlo5p92HIVOduqLNEgV4Cs+8bcRK?=
- =?us-ascii?Q?Jmcc34rHFTkmjT94CMr4WqoaLm9h6W+Lx7oE2g/EBfQVhspCZSK0jdhR+1y/?=
- =?us-ascii?Q?XRW1rN37fUjHoEorDZcvGdFP7dx8tA5IiekSxGdb+5lnLyUmwwpVbEaSFCc7?=
- =?us-ascii?Q?UkEvq+yCUHygBbPs/A/bqJFX7Yy++C5z67PKkxwuq1dDqPFR+i4vkWqM4H19?=
- =?us-ascii?Q?3dv2hAOTs1wlXO+mHjLZOIsvzBvjzwAazWoCwgkZzK9aRZXQC5k1EPbEcYae?=
- =?us-ascii?Q?KZvRXEh0ugALe7t86yNo5yu526xbHOIq8DuqhQD+Gdlftwk7r+Ch2ud+a9xQ?=
- =?us-ascii?Q?lxzL1jxz9JuOIYcTWV5kvfNNj3q3mYLP0AXpg88F9cAKJrYc/9hBaer+W/4V?=
- =?us-ascii?Q?ZEaCf177HZMaTfrWgzST+2bJHnbkwjXoslhqmmTmOLXA0xw9Q5Crh4/FFbmP?=
- =?us-ascii?Q?hMLnBZhn5BKcJP9Uk5szqrEUngL5PWFwesLFOT24Eb7tuZdElecWchtamJct?=
- =?us-ascii?Q?cKNvYY9ngQ9LbsEOCQsw108uV7LfoRVokvBGzxWxXkH1S2VlbvI0TmCr70Xa?=
- =?us-ascii?Q?1c6RlhGR1fPKyRc9iOyeiIbBPNMWM3/zPvrbtkuhR8soLCag5W2CFmg+XrA+?=
- =?us-ascii?Q?lPImPpOcYxi/tOL/31OSJ679Xhzxhz4i7ARq/6oRC1RUAm9UND/aDh57bPyl?=
- =?us-ascii?Q?FO0LlCRrdxX7I4UIp7G5BewI1GilYB0JwTm1SWHHrA0C42frGhJn9TeMnia6?=
- =?us-ascii?Q?LhWOPa0LTi6CAnq7vMpvvFhrN3u6K4StrfvEezJ5G0EE9G3YQogRxNG1Chf3?=
- =?us-ascii?Q?UwMvoSaNIpWnzz/R86ITkU7FwxhoJd/AHXc3TirRd87ZNlh8LMihjvXqXTKq?=
- =?us-ascii?Q?wmc=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca774258-fc09-4483-eeca-08dd53356657
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB8437.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2025 11:38:17.5156
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYPR01MB14294
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v7 9/9] wifi: ath12k: add monitor interface support on
+ QCN9274
+Content-Language: en-US
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, P Praneesh <quic_ppranees@quicinc.com>
+References: <20250222033002.3886215-1-quic_periyasa@quicinc.com>
+ <20250222033002.3886215-10-quic_periyasa@quicinc.com>
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20250222033002.3886215-10-quic_periyasa@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 1uDI5YAz1sIyLJ55AwhptjPSBbo2j9kq
+X-Proofpoint-ORIG-GUID: 1uDI5YAz1sIyLJ55AwhptjPSBbo2j9kq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-22_06,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 mlxscore=0 bulkscore=0 adultscore=0 spamscore=0
+ mlxlogscore=999 impostorscore=0 suspectscore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502220114
 
-The token id in RxDMAD may be incorrect when it is not the last frame
-due to WED HW bug. Lookup correct token id by physical address in sdp0.
 
-Downstream patch link: https://git01.mediatek.com/plugins/gitiles/openwrt/feeds/mtk-openwrt-feeds/+/737340322ab22b138fd200e020d61ffdbe3e36a9/autobuild/autobuild_5.4_mac80211_release/mt7988_wifi7_mac80211_mlo/package/kernel/mt76/patches/0062-mtk-wifi-mt76-mt7915-wed-find-rx-token-by-physical-a.patch
 
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
----
- drivers/net/wireless/mediatek/mt76/dma.c | 25 +++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+On 2/22/2025 9:00 AM, Karthikeyan Periyasamy wrote:
+> From: P Praneesh <quic_ppranees@quicinc.com>
+> 
+> Currently, the monitor interface is not supported. To support the monitor
+> interface, configure the monitor vdev state identifier, configure the HTT
+> filter setup, subscribe the mac80211 NO_VIRTUAL_MONITOR feature and
+> prevent monitor interface to transmit packet. Therefore, add these
+> procedures to add monitor interface support and enable the monitor
+> interface support on the QCN9274 platform through the hardware parameter.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> ---
+>   drivers/net/wireless/ath/ath12k/core.c  |  5 +++++
+>   drivers/net/wireless/ath/ath12k/dp_tx.c |  6 +++++
+>   drivers/net/wireless/ath/ath12k/hw.c    |  4 ++--
+>   drivers/net/wireless/ath/ath12k/mac.c   | 30 ++++++++++++++++++++++++-
+>   4 files changed, 42 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+> index 0b2dec081c6e..ed7365ce7f95 100644
+> --- a/drivers/net/wireless/ath/ath12k/core.c
+> +++ b/drivers/net/wireless/ath/ath12k/core.c
+> @@ -1306,6 +1306,11 @@ static void ath12k_core_pre_reconfigure_recovery(struct ath12k_base *ab)
+>   				     ath12k_mac_tx_mgmt_pending_free, ar);
+>   			idr_destroy(&ar->txmgmt_idr);
+>   			wake_up(&ar->txmgmt_empty_waitq);
+> +
+> +			ar->monitor_vdev_id = -1;
+> +			ar->monitor_conf_enabled = false;
+> +			ar->monitor_vdev_created = false;
+> +			ar->monitor_started = false;
+>   		}
+>   	}
+>   
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+> index 46a55554c19c..a74afa8b2236 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_tx.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+> @@ -7,6 +7,7 @@
+>   #include "core.h"
+>   #include "dp_tx.h"
+>   #include "debug.h"
+> +#include "debugfs.h"
+>   #include "hw.h"
+>   #include "peer.h"
+>   #include "mac.h"
+> @@ -1431,6 +1432,11 @@ int ath12k_dp_tx_htt_rx_monitor_mode_ring_config(struct ath12k *ar, bool reset)
+>   					HTT_RX_MON_MO_CTRL_FILTER_FLASG3 |
+>   					HTT_RX_MON_FP_DATA_FILTER_FLASG3 |
+>   					HTT_RX_MON_MO_DATA_FILTER_FLASG3;
+> +	} else {
+> +		tlv_filter = ath12k_mac_mon_status_filter_default;
+> +
+> +		if (ath12k_debugfs_is_extd_rx_stats_enabled(ar))
+> +			tlv_filter.rx_filter = ath12k_debugfs_rx_filter(ar);
+>   	}
+>   
+>   	if (ab->hw_params->rxdma1_enable) {
+> diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
+> index a106ebed7870..021a4b565e8b 100644
+> --- a/drivers/net/wireless/ath/ath12k/hw.c
+> +++ b/drivers/net/wireless/ath/ath12k/hw.c
+> @@ -1,7 +1,7 @@
+>   // SPDX-License-Identifier: BSD-3-Clause-Clear
+>   /*
+>    * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+> - * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+> + * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+>    */
+>   
+>   #include <linux/types.h>
+> @@ -1049,7 +1049,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
+>   					BIT(NL80211_IFTYPE_AP) |
+>   					BIT(NL80211_IFTYPE_MESH_POINT) |
+>   					BIT(NL80211_IFTYPE_AP_VLAN),
+> -		.supports_monitor = false,
+> +		.supports_monitor = true,
+>   
+>   		.idle_ps = false,
+>   		.download_calib = true,
+> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+> index 54af9cbbf7cb..b90dad5cb2e0 100644
+> --- a/drivers/net/wireless/ath/ath12k/mac.c
+> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+> @@ -1349,9 +1349,15 @@ static int ath12k_mac_monitor_start(struct ath12k *ar)
+>   		return ret;
+>   	}
+>   
+> +	ret = ath12k_dp_tx_htt_monitor_mode_ring_config(ar, false);
+> +	if (ret) {
+> +		ath12k_warn(ar->ab, "fail to set monitor filter: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+>   	ar->monitor_started = true;
+>   	ar->num_started_vdevs++;
+> -	ret = ath12k_dp_tx_htt_monitor_mode_ring_config(ar, false);
+> +
+>   	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac monitor started ret %d\n", ret);
+>   
+>   	return ret;
+> @@ -7334,6 +7340,11 @@ static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
+>   	u8 link_id;
+>   	int ret;
+>   
+> +	if (ahvif->vdev_type == WMI_VDEV_TYPE_MONITOR) {
+> +		ieee80211_free_txskb(hw, skb);
+> +		return;
+> +	}
+> +
+>   	link_id = u32_get_bits(info->control.flags, IEEE80211_TX_CTRL_MLO_LINK);
+>   	memset(skb_cb, 0, sizeof(*skb_cb));
+>   	skb_cb->vif = vif;
+> @@ -8083,6 +8094,9 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
+>   
+>   	lockdep_assert_wiphy(hw->wiphy);
+>   
+> +	if (vif->type == NL80211_IFTYPE_MONITOR && ar->monitor_vdev_created)
+> +		return -EINVAL;
+> +
 
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index 844af16ee551..5bf63014263c 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -444,9 +444,32 @@ mt76_dma_get_buf(struct mt76_dev *dev, struct mt76_queue *q, int idx,
- 	mt76_dma_should_drop_buf(drop, ctrl, buf1, desc_info);
- 
- 	if (mt76_queue_is_wed_rx(q)) {
-+		u32 id, find = 0;
- 		u32 token = FIELD_GET(MT_DMA_CTL_TOKEN, buf1);
--		struct mt76_txwi_cache *t = mt76_rx_token_release(dev, token);
-+		struct mt76_txwi_cache *t;
-+
-+		if (*more) {
-+			spin_lock_bh(&dev->rx_token_lock);
-+
-+			idr_for_each_entry(&dev->rx_token, t, id) {
-+				if (t->dma_addr == le32_to_cpu(desc->buf0)) {
-+					find = 1;
-+					token = id;
-+
-+					/* Write correct id back to DMA*/
-+					u32p_replace_bits(&buf1, id,
-+							  MT_DMA_CTL_TOKEN);
-+					WRITE_ONCE(desc->buf1, cpu_to_le32(buf1));
-+					break;
-+				}
-+			}
-+
-+			spin_unlock_bh(&dev->rx_token_lock);
-+			if (!find)
-+				return NULL;
-+		}
- 
-+		t = mt76_rx_token_release(dev, token);
- 		if (!t)
- 			return NULL;
- 
--- 
-2.43.0
+Some comment on the scenario that is being handled here might be helpful?
 
+
+Vasanth
 
