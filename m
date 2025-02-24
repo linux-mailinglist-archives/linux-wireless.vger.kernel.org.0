@@ -1,133 +1,216 @@
-Return-Path: <linux-wireless+bounces-19372-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19373-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5E25A42449
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 15:54:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98747A42647
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 16:32:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2BBB443E9B
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 14:47:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 439613A2DFD
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 15:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1351EA7E6;
-	Mon, 24 Feb 2025 14:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090572837B;
+	Mon, 24 Feb 2025 15:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="QlrLaWEd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W15ouCed"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from pv50p00im-ztdg10021801.me.com (pv50p00im-ztdg10021801.me.com [17.58.6.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7167718A6BA
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 14:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F0119C54E;
+	Mon, 24 Feb 2025 15:24:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408372; cv=none; b=Hn+PfC9nhYKGrSGVfRv37UWTOWTDIzNVEzTegYbSudI621okHry2dw5wiKngHmqshjKQFzF51o6gKXrQvnXVeRETZpxY2ed4G5TsEfw07hDAEu1cEGFk6+VVQpBaEUsuKWu7ACAu7OpQ0jZ2+ZEWjtcxrC2oQztg9c8Q9p9dehc=
+	t=1740410661; cv=none; b=CNXCxExf6Yjnzkm6PoKlzAWQyV78SRRlVf0CyULw8K6Zu+thFMbjH3QCv6VTvhe0bAuvBS2LJdAmIJjKS30qZZRcLriKSpUegn+Pyv0FHgdXBne3SaeuA7D2BX5XaCP26SITTf/8stNuoNdy4fgK7CgMRmdIS74VRo6ZVi5dd5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408372; c=relaxed/simple;
-	bh=fxHn5PpLrOvrhy3T9+DU0/Qq00yPM+Mp8t95xmMWsSI=;
+	s=arc-20240116; t=1740410661; c=relaxed/simple;
+	bh=+JH9WFIVg0ke/75TFC25dWturzu4JHdGKnJIyiQPccM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ppREOxntXM4gV6nKSftPh4K3ywf56l/61J0pDsgXD9QSUDRp0WKVO6uh7NQfuVkJXLCLuc400wfwEvzJJj4ZtAqIYX1r8XWpEhKoHkEGKb5E1r9WsIAKmGmoFZ1GwL9dnOYj6/5wmEqfrn0QFOVyJ/aw13ZBCF4jseOwLvaI7Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=QlrLaWEd; arc=none smtp.client-ip=17.58.6.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=SxARc5+mPnL0BjR2iW5rWJ4TF8233iOHpKnJbbHiSqw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=QlrLaWEdYFkfsu8fuz6nbUdcj79Q8tJSmKk2HA1yeaCmsuHQSOTGqxvHL7yUmSH26
-	 akU6WkcZrQNFnHq+BJaLeGPq0iB3wrn9quZ3+XX7TL6W2416KdFvIkp5eq2vQ9b1mC
-	 1W3KDPpIj0DisqfGR5RfGhPUGajT30GJk6SpSRctraMh5Bn8xJKesYr+HLgu8FHVrW
-	 5Dfwx7CMvdnY4JwcEN6gg2auvHgazI6WEAwJkihz3N6RwdjmSunhSudO5G6dDlNdEp
-	 B1QbwPUm6oUVtf0ONAKjCUdMnGgia+x/d6OTzrZdtjaV4ethm0Xnv3yRyjfFnT2Mpt
-	 tk5oRw9q9GBwg==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10021801.me.com (Postfix) with ESMTPSA id 01FF82010282;
-	Mon, 24 Feb 2025 14:45:49 +0000 (UTC)
-Message-ID: <a28f04e5-ccde-4a08-b8fa-a9fa685240b1@icloud.com>
-Date: Mon, 24 Feb 2025 22:45:44 +0800
+	 In-Reply-To:Content-Type; b=q/you+aBKq7dJ+joVq+ka63Vta0b+TqWcsrafvCIsufliUBu9YXAJGJ/JFvGys7H2y6O//iTzYkwEmSBIxJ0TZQYrfNxI+9tXratBApyO3YHEZUwGQfD4WTiXTb54yXOCVbM6yTZxsIqJd1Y5E2mAoQlAoLsMN2BLrqgVHZLm+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W15ouCed; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-abb81285d33so874841866b.0;
+        Mon, 24 Feb 2025 07:24:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740410658; x=1741015458; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=90b7JTu64HyQeEwAMfpKEcwfZyjyUK0IOy6HdZ/FyAs=;
+        b=W15ouCedxAj7B9Oa5TVxKG8joKlxu/lhNekNMTWhqfNuN+JP/nW4gdxExLVipl0RPr
+         sbQZej8tAM0TD0vnBz3hArfOJwztMyGnyuqcqUukykIz5uVTZnNDLP07sO4wgwqNahm+
+         +q0TFUpnNzGk+ObxqrpFeL745qb02VbtH5OF+6jb3TDgGnVcvFdn1hWDZ3L3TEUMPXEp
+         M1yxX8jQJyMTN14cnrxmLhPAiuby010XsWB/RAS4hutxX4E5Z7umwryAPp5P2UpmlYi9
+         DYQCvxKR7HOVe49YDqj8Lfpgn1V5F3lz5k1mBfTZyNQ79tfiCmMFylyDwVZIFHa/zJIR
+         Q92Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740410658; x=1741015458;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=90b7JTu64HyQeEwAMfpKEcwfZyjyUK0IOy6HdZ/FyAs=;
+        b=R9BtLimFQCXkt+eEE/HB8sCIHh6ITD7J6JIjHKbNtElp7X2TZRv7CmEhzR5M3QB5PX
+         dQPCUkf2A0ISqes9hU+eWQqWBlPFBCC9vO6mgJIF3LIFIwPiMr2e8y31x8R+C9/7p2Sa
+         C0aDOdX5Pim0DHVQc/k8Ou6DibqZPsRe34rvkQao/ssa/p5cAjvbTopRB6o/bcifRU+K
+         SigGrfoy/BnBAuD+i4UQZ6K4PiVgQXsqvxRxXh0xhOjpz6OJXlEjeSpdTg8GIiqp3KvY
+         HeXQ/qG0lnfahYPOYNu1F0RaeA93v8WC2O+lNZKBSjsJc+bBJKdonPG125sbAeb60GZ5
+         LImg==
+X-Forwarded-Encrypted: i=1; AJvYcCULYRHg1mzgd9qrXrKI8NmjZtnAFyPbwoUYaLxAwjRgUQiDmcG9a8wynShtXu3dOaU/Rw0eRA8w/HEfRTxV@vger.kernel.org, AJvYcCVEuaxg5OY02XCRsjG8aXOVZdY/pK5G92n5fFJVX3YGas1l8QykNyZWt3+oIicIBYfyK13Qpvdywa0hEvRW@vger.kernel.org, AJvYcCW1KewY0vtk7QWlhjCN/aQkinmx32IXC8VTGF8XUBLKYVKAy5/FwJoaeyeanbYlVUidYDjv4BdauZ6L5oY=@vger.kernel.org, AJvYcCWUMVlEgFo9MAJdTHiBdbxArf0ffsLQNZYqUOh/Grf3rbW3Bh/LwReNnnq8HqYRvyiylWJROXKwCVtugmU=@vger.kernel.org, AJvYcCWXCaNE4z3FfBRU70v/zq5Ghf1NV8uNTswumP/CYY9tHmFilQaVzgKhhj9jC4i54gnylIeiA3S7@vger.kernel.org, AJvYcCXXhh6AatyGWOPXNTc7BqJEN694h0uWNgvL6vkiggzGpgoelWe1Ef66cOQ8cXank89mzhSsUKZARDOEidAJFWw=@vger.kernel.org, AJvYcCXyhGM6EHEGJtY/vH05kw3A4G4u6stNHN1scl3tEnxaB4gnb8A5R9JdrnkJZsbNc77CCcE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/GHpGs480zr2aVtxqVHV5ZZTsGBV8AsyzYLFK5kHcxyEvjwFd
+	edYlEPVXr7KOpbTs3UA2yfavnNrdXBCHdkjSGgInTFsACWUP3Pmu
+X-Gm-Gg: ASbGncucznpWvUSFF2v5t2s03hDCiGIyhu90jbdvbzusOgUwm9Bp14x9lwA0KiG+Mj1
+	LuAZ0+6mM1X1lRz341+/rShWIV/AAhy0E47B3jHfhCJbufwS3/t7NzReUBQ7Eoe5uH+61y7fyWR
+	F6EjkWe+jTvWOa+deBD4mQbNIcaeuVrr+uLY+Zw1G7DU3T8mw0oh/QMsURuxCcMyhht3gT+e7Se
+	L69W6LqNvHwsO2snAsbQFouBRGG33s/UNXHXhjv8H0J52QD6inqTaPxvvFEj0cl3jG4Kj/bxlF6
+	ur7Okl1C7eG4qnKRPtc++EE2YAk=
+X-Google-Smtp-Source: AGHT+IFuxTp/JUjRKgHm6bk8HGglm4eMoWBRrY8PM6xIIRBJOeg9hhqPfUM+m5fxkbKuGg8YC/F0FQ==
+X-Received: by 2002:a17:907:c29:b0:ab7:86ae:4bb8 with SMTP id a640c23a62f3a-abc09a0bc37mr1270641566b.23.1740410658075;
+        Mon, 24 Feb 2025 07:24:18 -0800 (PST)
+Received: from [192.168.1.100] ([46.248.82.114])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb9f8442c0sm1531734566b.150.2025.02.24.07.24.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Feb 2025 07:24:17 -0800 (PST)
+Message-ID: <d080a2d6-9ec7-1c86-4cf4-536400221f68@gmail.com>
+Date: Mon, 24 Feb 2025 16:24:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH *-next 01/18] mm/mmu_gather: Remove needless return in
- void API tlb_remove_page()
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Johannes Berg <johannes@sipsolutions.net>,
- Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>,
- Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>,
- Thomas Graf <tgraf@suug.ch>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 03/17] x86: Replace open-coded parity calculation with
+ parity8()
+To: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de,
+ Ingo Molnar <mingo@redhat.com>, bp@alien8.de, dave.hansen@linux.intel.com,
+ x86@kernel.org, jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
+ andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ airlied@gmail.com, simona@ffwll.ch, dmitry.torokhov@gmail.com,
+ mchehab@kernel.org, awalls@md.metrocast.net, hverkuil@xs4all.nl,
+ miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+ louis.peens@corigine.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, parthiban.veerasooran@microchip.com,
+ arend.vanspriel@broadcom.com, johannes@sipsolutions.net,
+ gregkh@linuxfoundation.org, jirislaby@kernel.org, yury.norov@gmail.com,
+ akpm@linux-foundation.org, mingo@kernel.org
+Cc: hpa@zytor.com, alistair@popple.id.au, linux@rasmusvillemoes.dk,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsi@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
+ linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mtd@lists.infradead.org, oss-drivers@corigine.com,
  netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-pm@vger.kernel.org, iommu@lists.linux.dev,
- linux-mtd@lists.infradead.org
-References: <20250221-rmv_return-v1-0-cc8dff275827@quicinc.com>
- <20250221-rmv_return-v1-1-cc8dff275827@quicinc.com>
- <20250221200137.GH7373@noisy.programming.kicks-ass.net>
- <8f36be7c-6052-4c5d-85ff-0eed27cf1456@icloud.com>
- <20250224132354.GC11590@noisy.programming.kicks-ass.net>
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-serial@vger.kernel.org, bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
+ Yu-Chun Lin <eleanor15x@gmail.com>
+References: <20250223164217.2139331-1-visitorckw@gmail.com>
+ <20250223164217.2139331-4-visitorckw@gmail.com>
 Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <20250224132354.GC11590@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
+From: Uros Bizjak <ubizjak@gmail.com>
+In-Reply-To: <20250223164217.2139331-4-visitorckw@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: rwcKYw_iCScrLPUxt294xX4BCs8xvrO1
-X-Proofpoint-GUID: rwcKYw_iCScrLPUxt294xX4BCs8xvrO1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-24_06,2025-02-24_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=911 mlxscore=0 bulkscore=0
- adultscore=0 spamscore=0 malwarescore=0 phishscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2502240105
 
-On 2025/2/24 21:23, Peter Zijlstra wrote:
-> On Sat, Feb 22, 2025 at 07:00:28PM +0800, Zijun Hu wrote:
->> On 2025/2/22 04:01, Peter Zijlstra wrote:
->>>>   */
->>>>  static inline void tlb_remove_page(struct mmu_gather *tlb, struct page *page)
->>>>  {
->>>> -	return tlb_remove_page_size(tlb, page, PAGE_SIZE);
->>>> +	tlb_remove_page_size(tlb, page, PAGE_SIZE);
->>>>  }
->>> So I don't mind removing it, but note that that return enforces
->>> tlb_remove_page_size() has void return type.
->>>
->>
->> tlb_remove_page_size() is void function already. (^^)
+
+
+On 23. 02. 25 17:42, Kuan-Wei Chiu wrote:
+> Refactor parity calculations to use the standard parity8() helper. This
+> change eliminates redundant implementations and improves code
+> efficiency.
+
+The patch improves parity assembly code in bootflag.o from:
+
+   58:	89 de                	mov    %ebx,%esi
+   5a:	b9 08 00 00 00       	mov    $0x8,%ecx
+   5f:	31 d2                	xor    %edx,%edx
+   61:	89 f0                	mov    %esi,%eax
+   63:	89 d7                	mov    %edx,%edi
+   65:	40 d0 ee             	shr    %sil
+   68:	83 e0 01             	and    $0x1,%eax
+   6b:	31 c2                	xor    %eax,%edx
+   6d:	83 e9 01             	sub    $0x1,%ecx
+   70:	75 ef                	jne    61 <sbf_init+0x51>
+   72:	39 c7                	cmp    %eax,%edi
+   74:	74 7f                	je     f5 <sbf_init+0xe5>
+   76:
+
+to:
+
+   54:	89 d8                	mov    %ebx,%eax
+   56:	ba 96 69 00 00       	mov    $0x6996,%edx
+   5b:	c0 e8 04             	shr    $0x4,%al
+   5e:	31 d8                	xor    %ebx,%eax
+   60:	83 e0 0f             	and    $0xf,%eax
+   63:	0f a3 c2             	bt     %eax,%edx
+   66:	73 64                	jae    cc <sbf_init+0xbc>
+   68:
+
+which is faster and smaller (-10 bytes) code.
+
+Reviewed-by: Uros Bizjak <ubizjak@gmail.com>
+
+Thanks,
+Uros.
+
 > 
-> Yes, but if you were to change that, the above return would complain.
+> Co-developed-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> ---
+>   arch/x86/kernel/bootflag.c | 18 +++---------------
+>   1 file changed, 3 insertions(+), 15 deletions(-)
 > 
->>> It might not be your preferred coding style, but it is not completely
->>> pointless.
->>
->> based on below C spec such as C17 description. i guess language C does
->> not like this usage "return void function in void function";
-> 
-> This is GNU extension IIRC. Note kernel uses GNU11, not C11
-
-any link to share about GNU11's description for this aspect ? (^^)
-
-
-
+> diff --git a/arch/x86/kernel/bootflag.c b/arch/x86/kernel/bootflag.c
+> index 3fed7ae58b60..314ff0e84900 100644
+> --- a/arch/x86/kernel/bootflag.c
+> +++ b/arch/x86/kernel/bootflag.c
+> @@ -8,6 +8,7 @@
+>   #include <linux/string.h>
+>   #include <linux/spinlock.h>
+>   #include <linux/acpi.h>
+> +#include <linux/bitops.h>
+>   #include <asm/io.h>
+>   
+>   #include <linux/mc146818rtc.h>
+> @@ -20,26 +21,13 @@
+>   
+>   int sbf_port __initdata = -1;	/* set via acpi_boot_init() */
+>   
+> -static int __init parity(u8 v)
+> -{
+> -	int x = 0;
+> -	int i;
+> -
+> -	for (i = 0; i < 8; i++) {
+> -		x ^= (v & 1);
+> -		v >>= 1;
+> -	}
+> -
+> -	return x;
+> -}
+> -
+>   static void __init sbf_write(u8 v)
+>   {
+>   	unsigned long flags;
+>   
+>   	if (sbf_port != -1) {
+>   		v &= ~SBF_PARITY;
+> -		if (!parity(v))
+> +		if (!parity8(v))
+>   			v |= SBF_PARITY;
+>   
+>   		printk(KERN_INFO "Simple Boot Flag at 0x%x set to 0x%x\n",
+> @@ -70,7 +58,7 @@ static int __init sbf_value_valid(u8 v)
+>   {
+>   	if (v & SBF_RESERVED)		/* Reserved bits */
+>   		return 0;
+> -	if (!parity(v))
+> +	if (!parity8(v))
+>   		return 0;
+>   
+>   	return 1;
 
