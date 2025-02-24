@@ -1,122 +1,124 @@
-Return-Path: <linux-wireless+bounces-19369-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19370-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73937A41FE6
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 14:05:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC34A42089
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 14:27:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 230301897E04
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 13:05:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FF96160801
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 13:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9776E23BD1A;
-	Mon, 24 Feb 2025 13:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E5024BBF3;
+	Mon, 24 Feb 2025 13:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="eWt5ocmZ"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="iS/A260A"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E17C23BCF6
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 13:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F82E24886D;
+	Mon, 24 Feb 2025 13:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740402335; cv=none; b=uKAWUlQFBCBa3DGjo5zEqlXxc1mleXbfqUw8ydpLyiUUTLc6h0qPOKNG4mczX6ts5oJjQWMslB+YYGuFsHN2f8ZVG4VTPBBZAyKkDw15TxNgS+4B2DT5NpC5deDWUOaRLToaw8gns96O9dBSUQ9TV/FHdljOQjmA4Nkm0O9yPCk=
+	t=1740403456; cv=none; b=YOCQspX/5qtQcTBaOdKgwGKyZWnkdinTQy5JbcbWoA1S09d2UgM3lD3u/Cc9kNSsO71eHk6ej7hxBw08DWNSR/b+fxVuQX+Ml+ZSKvaE8SBpPfI6gk9hi2HSfVn8dwrw1a0eVetaM7YXQeiGrue8Y3XU+vMV2tV69I5w6WhQ1R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740402335; c=relaxed/simple;
-	bh=ARIAIXxMGeZPkoEUlwbrO9yUGSRMd3fYh8DiaMwKedI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RZZle2jc7rxcZC/1CLmpIL2zsqenxb3J7ks5CTdY+BXD5aF8YXwe2l5w7bz6A66M1eZa6R96Fg+9QNyeBLY2uZfdCF16ademRjbAOVVXwAIlqIvT1iINaiTTjrzbfW1tDO84yY9MjNZGab+aXkpSTrRYvbiGGw7U15/lGY8U2ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=eWt5ocmZ; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 03fed64cf2b011ef8eb9c36241bbb6fb-20250224
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=XYp6nqL/SIf1dkq4IbZ5jeSHZcsYeSObKvTPW+JE3bg=;
-	b=eWt5ocmZnWWfB2zK+oQWqlVwZ71Je1FEDuHrt+XWyR3QADcf2YetGoZFn4YjqlQbj6Aq+rQDrEutyEedx9zKsMZYjfoz+koRyG+uqcscePG5e3ZWnKAMM/4DRMg6hkvOMjhRymoUGQpfMjm0wWz+wIzFs5chjWjw5KWFFuo6CsI=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.46,REQID:83100970-329b-4ba9-b91f-0ea10e1c0aab,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:60aa074,CLOUDID:43ef44dc-d480-4873-806f-0f365159227b,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 03fed64cf2b011ef8eb9c36241bbb6fb-20250224
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
-	(envelope-from <quan.zhou@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1308122370; Mon, 24 Feb 2025 21:05:26 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Mon, 24 Feb 2025 21:05:25 +0800
-Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Mon, 24 Feb 2025 21:05:24 +0800
-From: Quan Zhou <quan.zhou@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC: Sean Wang <sean.wang@mediatek.com>, Deren Wu <Deren.Wu@mediatek.com>,
-	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
-	Leon Yen <Leon.Yen@mediatek.com>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, Allan Wang <allan.wang@mediatek.com>, KM Lin
-	<km.lin@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, Shengxi Xu
-	<shengxi.xu@mediatek.com>, Eric-SY Chang <Eric-SY.Chang@mediatek.com>, CH Yeh
-	<ch.yeh@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, linux-wireless
-	<linux-wireless@vger.kernel.org>, linux-mediatek
-	<linux-mediatek@lists.infradead.org>, Quan Zhou <quan.zhou@mediatek.com>
-Subject: [patch] wifi: mt76: mt7925: Simplify HIF suspend handling to avoid suspend fail
-Date: Mon, 24 Feb 2025 21:05:14 +0800
-Message-ID: <34208c7280325f57a651363d339399eb1744d3b7.1740400998.git.quan.zhou@mediatek.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1740403456; c=relaxed/simple;
+	bh=1k6wjU0I1KWrs2CqF0lxTRBsEKFiGTnFa6NfOjTfvFg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ix+LZILOXgXIdW3Q9i/vi8bDakVUz7MhKHmxT0FAGiq6hP3s7WSSx1JE4CTQBfZe49kkzm23B1eqg8j3g6gBqoaTxMiOtnygpm09sbPGxEKUgUpOdPnVzu/JB6qRJHqXkcKhgTR1JHG+pawH8brR1Fe3o6/icglL3E2CShwE+pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=iS/A260A; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=OwmwOu+Cjzvd/Dyh2oCLg1P9uzBvkTbz8Qibak6RkKs=; b=iS/A260A40VI6SQ9dsr0Pe2Ec0
+	+4I/Bpalp0CX65hp2mHNsbxfdLQ3ZQMp/MO3XTCmulOZ1LdYifv6XmmjBsEkUzc7/Ofye9OegILGU
+	jhMbWZFAabjv9F1E7Tdsq+St//fzgpJbTghlaQ08rLhkZfj4YHNl3RsAgWE0X2VcL1qmU/ZGIqy9s
+	q3djqUzHMEgyRNxqJ4zMlGJrlo+rBDv3+zWiBCnZolwsUOv1flDL0UYKwJjrhfaGLVZBSL82vN7Ui
+	z/ItUQgAbHGrhpvvZGv/LP7zX+kb01JmoNnF7MGJbWqiG9NuEPEKF3SG3il1lVkgYfzh0ukPwqkvp
+	tlhJKBVg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tmYR9-00000007Gtp-2twK;
+	Mon, 24 Feb 2025 13:23:55 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id B2A18300164; Mon, 24 Feb 2025 14:23:54 +0100 (CET)
+Date: Mon, 24 Feb 2025 14:23:54 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>,
+	Thomas Graf <tgraf@suug.ch>, Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+	iommu@lists.linux.dev, linux-mtd@lists.infradead.org
+Subject: Re: [PATCH *-next 01/18] mm/mmu_gather: Remove needless return in
+ void API tlb_remove_page()
+Message-ID: <20250224132354.GC11590@noisy.programming.kicks-ass.net>
+References: <20250221-rmv_return-v1-0-cc8dff275827@quicinc.com>
+ <20250221-rmv_return-v1-1-cc8dff275827@quicinc.com>
+ <20250221200137.GH7373@noisy.programming.kicks-ass.net>
+ <8f36be7c-6052-4c5d-85ff-0eed27cf1456@icloud.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8f36be7c-6052-4c5d-85ff-0eed27cf1456@icloud.com>
 
-System suspend failures may occur due to inappropriate
-handling of traffic not idle event by the WiFi driver.
-The WiFi firmware's traffic not idle indication does
-not need to be tied to suspend. Fix the flow to ensuring
-the system can suspend properly.
+On Sat, Feb 22, 2025 at 07:00:28PM +0800, Zijun Hu wrote:
+> On 2025/2/22 04:01, Peter Zijlstra wrote:
+> >>   */
+> >>  static inline void tlb_remove_page(struct mmu_gather *tlb, struct page *page)
+> >>  {
+> >> -	return tlb_remove_page_size(tlb, page, PAGE_SIZE);
+> >> +	tlb_remove_page_size(tlb, page, PAGE_SIZE);
+> >>  }
+> > So I don't mind removing it, but note that that return enforces
+> > tlb_remove_page_size() has void return type.
+> >
+> 
+> tlb_remove_page_size() is void function already. (^^)
 
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+Yes, but if you were to change that, the above return would complain.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 04762a8eac51..740e5c62929a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -348,14 +348,10 @@ mt7925_mcu_handle_hif_ctrl_basic(struct mt792x_dev *dev, struct tlv *tlv)
- 	basic = (struct mt7925_mcu_hif_ctrl_basic_tlv *)tlv;
- 
- 	if (basic->hifsuspend) {
--		if (basic->hif_tx_traffic_status == HIF_TRAFFIC_IDLE &&
--		    basic->hif_rx_traffic_status == HIF_TRAFFIC_IDLE)
--			/* success */
--			dev->hif_idle = true;
--		else
--			/* busy */
--			/* invalid */
--			dev->hif_idle = false;
-+		dev->hif_idle = true;
-+		if (!(basic->hif_tx_traffic_status == HIF_TRAFFIC_IDLE &&
-+		      basic->hif_rx_traffic_status == HIF_TRAFFIC_IDLE))
-+			dev_info(dev->mt76.dev, "Hif traffic not idle.\n");
- 	} else {
- 		dev->hif_resumed = true;
- 	}
--- 
-2.46.0
+> > It might not be your preferred coding style, but it is not completely
+> > pointless.
+> 
+> based on below C spec such as C17 description. i guess language C does
+> not like this usage "return void function in void function";
 
+This is GNU extension IIRC. Note kernel uses GNU11, not C11
 
