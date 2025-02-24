@@ -1,124 +1,94 @@
-Return-Path: <linux-wireless+bounces-19365-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19366-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2158A41783
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 09:38:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDFFAA41948
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 10:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEC63188FD60
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 08:38:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D6523B1D57
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 09:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B87C19259E;
-	Mon, 24 Feb 2025 08:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322ED17C7C4;
+	Mon, 24 Feb 2025 09:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="RwdNCw0w"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E0035893;
-	Mon, 24 Feb 2025 08:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE8978F2E
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 09:34:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740386241; cv=none; b=Ai4WrGsS3fE9RA1Wwfl4Z0rdAdzijMGEPL6y1lr3nIKwXX2DqKUA/KWYUVuWO7HFm49R6P4xG3gVzXmd7Kwd4JFJHKim9RBUqzpe50lMPGWFyz9iWs1RP005UP2rkH7UeLtGDu1d4wTxKz3JK7yXsMdZIc84jXYw06Qfoye2Aw4=
+	t=1740389695; cv=none; b=rFzmf+TWvDlLyhiBRjB/nG6ZKfucfdmnVLke7ya3q9FgOdFUfnhf45UE2glK1uFFSmhEoVYbmdYMXWwZC0oj6gXvymGgixQXjw4htTUs7oXFjY7qV2dJEiJkaPZutolIE+ogWovh6qTt0bAZnFQWy9cMwzxEaVApnnEbhjb9n78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740386241; c=relaxed/simple;
-	bh=qPNVOCdhV9D0BTv6UKMJgx08V8ryL4MBKvGY/0pzI5s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nBsIVyVJbJ/a+uArgZoairqzdgZzIT7IY6xM9DHNyc2rAlfOHlSEIsQr610W3RSB45InWU84Y/o0ahNdinFJb7TQqbFqYnTtNCk/a8hSA60g8n9pnSau8HHsAnq9/+XMB9A648U6RyUp5LgKUZMt8NzBWIntapUz9PbOGaGB15U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51O7gOWF008533;
-	Mon, 24 Feb 2025 00:37:11 -0800
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 44yeyqhktd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 24 Feb 2025 00:37:10 -0800 (PST)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Mon, 24 Feb 2025 00:37:10 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Mon, 24 Feb 2025 00:37:07 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <kvalo@kernel.org>, <rand.sec96@gmail.com>,
-        <gregkh@linuxfoundation.org>, <m@bues.ch>,
-        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <zhe.he@windriver.com>
-Subject: [PATCH 6.1.y] ssb: Fix potential NULL pointer dereference in ssb_device_uevent()
-Date: Mon, 24 Feb 2025 16:37:07 +0800
-Message-ID: <20250224083707.2532381-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1740389695; c=relaxed/simple;
+	bh=CJO7xG3EAN70VUq1R21jk906E/iuANyww0uJF+3Xzdo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qDHDWKx5RuW7eDecPs84o+kcDtiF/wfAqT6pvwIpuhVMrfMt33A21GsacNCcV8kyIdz7T87AJftZDjLp0X0jTsi8P+tH98c0RZ4QChCGoxCaciMfK70VzG5bCQgutp3qvLZ0D+naONpmGR8APRUOfIWNdArFaqv/XL7xjIz1GL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=RwdNCw0w; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=CJO7xG3EAN70VUq1R21jk906E/iuANyww0uJF+3Xzdo=;
+	t=1740389693; x=1741599293; b=RwdNCw0w8V0c8HZiVrghcqlgyvv8KEXwgy6ifmSg1in1Ycf
+	WEXeivBqEL55DfoeEK5CT9wm/WPsWGAj5g9hum5FRqqIlsGhsExcN45DoNNmsPDaKEcL8CK0HTaoP
+	j0nfLvYt11vOceO+5faSeUYSzyCU0+UzIP9arYikoFRBPWlJ22sFl9NTOlf+vW/d/A5rEOyiCD2Ta
+	k3Z4zUeW9ojFAZ6eBPj24isXoANTcu4Jp407s0MzlnHGeSpVBjem1E6v6uce31ML/RjQeUPaohwIU
+	nxoKrI1RTbSsheCltbHBqZwj+edx63q97oOc7zBzJBkF5A3i6fbaK5EvB+/82yXQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tmUqi-00000008cye-1PaZ;
+	Mon, 24 Feb 2025 10:34:06 +0100
+Message-ID: <eab28c11ea4cc4249c01557121b4741e19cf6a83.camel@sipsolutions.net>
+Subject: Re: please use tree tags in patches
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ping-Ke Shih <pkshih@realtek.com>, "linux-wireless@vger.kernel.org"
+	 <linux-wireless@vger.kernel.org>
+Date: Mon, 24 Feb 2025 10:33:57 +0100
+In-Reply-To: <a5451ef8e9534ed4b2223f50c3ddda14@realtek.com>
+References: 
+	<ec3a3d891acfe5ed8763271a1df4151d75daf25f.camel@sipsolutions.net>
+	 <a5451ef8e9534ed4b2223f50c3ddda14@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=AbBLH2XG c=1 sm=1 tr=0 ts=67bc2fb6 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=T2h4t0Lz3GQA:10 a=bC-a23v3AAAA:8 a=pGLkceISAAAA:8 a=HH5vDtPzAAAA:8 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8
- a=maAJvPpQ-1jnF_CgM8MA:9 a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=QM_-zKB-Ew0MsOlNKMB5:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: fy6Bdt89WwP2EvdsYcR57cgnOrC_ViHc
-X-Proofpoint-GUID: fy6Bdt89WwP2EvdsYcR57cgnOrC_ViHc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-24_03,2025-02-20_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=740
- phishscore=0 suspectscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 clxscore=1015 adultscore=0 spamscore=0 lowpriorityscore=0
- mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.21.0-2502100000
- definitions=main-2502240062
+X-malware-bazaar: not-scanned
 
-From: Rand Deeb <rand.sec96@gmail.com>
+On Mon, 2025-02-24 at 01:18 +0000, Ping-Ke Shih wrote:
+>=20
+>=20
+> Thanks for the automation. I think it will be very useful for me to detec=
+t
+> patch errors earlier, so submitters can fix problems earlier before I'm
+> trying to merge.=20
 
-[ Upstream commit 789c17185fb0f39560496c2beab9b57ce1d0cbe7 ]
+Hopefully. Right now we still need to get the [PATCH rtw] tags into the
+patches before. Perhaps we can auto-detect somehow later.
 
-The ssb_device_uevent() function first attempts to convert the 'dev' pointer
-to 'struct ssb_device *'. However, it mistakenly dereferences 'dev' before
-performing the NULL check, potentially leading to a NULL pointer
-dereference if 'dev' is NULL.
+> I have created rtw branch as the fixes branch, so
+>=20
+> [PATCH rtw-next]
+> https://github.com/pkshih/rtw rtw-next
+> (clone from wirless-next/main; this is for regular development)
+>=20
+> [PATCH rtw]
+> https://github.com/pkshih/rtw rtw
+> (clone from wireless/main; this is for urgent fixes)
 
-To fix this issue, move the NULL check before dereferencing the 'dev' pointer,
-ensuring that the pointer is valid before attempting to use it.
+Added both, I hope :)
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240306123028.164155-1-rand.sec96@gmail.com
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
----
-Verified the build test.
----
- drivers/ssb/main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-index d52e91258e98..aae50a5dfb57 100644
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -341,11 +341,13 @@ static int ssb_bus_match(struct device *dev, struct device_driver *drv)
- 
- static int ssb_device_uevent(struct device *dev, struct kobj_uevent_env *env)
- {
--	struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
-+	struct ssb_device *ssb_dev;
- 
- 	if (!dev)
- 		return -ENODEV;
- 
-+	ssb_dev = dev_to_ssb_dev(dev);
-+
- 	return add_uevent_var(env,
- 			     "MODALIAS=ssb:v%04Xid%04Xrev%02X",
- 			     ssb_dev->id.vendor, ssb_dev->id.coreid,
--- 
-2.25.1
-
+johannes
 
