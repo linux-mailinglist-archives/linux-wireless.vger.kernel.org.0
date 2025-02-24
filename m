@@ -1,136 +1,206 @@
-Return-Path: <linux-wireless+bounces-19377-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19378-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BA7A4273C
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 17:04:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86EFBA428D2
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 18:05:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98363164EC0
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 16:03:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 612AB3B8E9A
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 17:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F3B261561;
-	Mon, 24 Feb 2025 16:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC76F267AE8;
+	Mon, 24 Feb 2025 16:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mYhjsrvx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cEZhAAqz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661CC25B66A
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 16:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10711266599;
+	Mon, 24 Feb 2025 16:56:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740413034; cv=none; b=ABxAwjq54GhRBFBs4sADRx9cNuI4z92n3w2rdxSn1iKqGXnpaJI5Q9oYCCM1saT5IG9GCgs+eTK4VgtE+vfc0Nrf9n/HVUrGzUsA7yowsGUuRg/QMeyXP6OLpqrshbfKiVOpHp/GlU6NnghR2Mc/4OzJPliWQGGXH1nndAK5w6k=
+	t=1740416204; cv=none; b=DoUmvSGWWM3iYnbYAR9/EO1jLSJ0DIYvvQ9O9o7y4LpTo6mN05cMH5n86ufTjtTsFo73p53FKIeiRHmkQqHVg7uuPW+RS5ZGHao9uJqm1mrMoLYhJefKvCIqlJpWebd7n4oCfa2RaB+7Yuct/h679HdPR1O1KDL2dB69SJQG+L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740413034; c=relaxed/simple;
-	bh=ENgRVTZmEOr1DVHn94gfxDc0b7DjztY1OQKD/CTX0CI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=mifJZVr140rX6U7vo/VOKPiQlvcye2nhuElTUmZKwF4XzGKgRxR+FZmisOo31Lt2hklxm3Je9hjK6QBWWJjA6QL+SOL7JYKWKzfdddKmt+14bYOYnyCv4Zs1WZfpSrFRaSsxiHKxxR+xTYoyP0KNmsQZBiEfc/tdtXQ+KDvXfmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mYhjsrvx; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51OE0xrY024625
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 16:03:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	KihX8fWcq5dMXnYeD5x2k3Y6zz16EVIuv0fXLuyFB0A=; b=mYhjsrvx5HCPARus
-	nU4McE4ETAtX0SJ+p3+xZ+J1CUUb6YCNBR8/wtsKZIXPtbq/CVWLMXr9pPDvSm2L
-	FaHBO5pjjb9EBdOxYV/kpdm4lcm0618VDfFqVtegh3fVhtLgJ+oFpMDVD8k9of0r
-	Rk6yEa1BP7/rGWLFmHHUR8CgEdjxWMIoAQpOObaI4K3seFzjkMl1JmuYy0trDAmn
-	qtdcgjICJ4Khb34w6tvBabncPV7O+oioBwZZqmHhOeK4f8PwHGDnwQraap/9XuwW
-	e833FqwEsUJSXtoS+NndNRisONqBkFppDVxkcECQfWlNXdZqSG5YpKYKJJyTEvfS
-	+p2Qeg==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 450m3d9sfn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 16:03:51 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-220c86b3ef3so112611635ad.1
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 08:03:51 -0800 (PST)
+	s=arc-20240116; t=1740416204; c=relaxed/simple;
+	bh=5G5oGYh1CaRHc2d1pU1YAOARWQsm2s7Z+o+/b8xWRQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cQbbtxpCnUwiFym8551S2GhQX4biMNstcQhnTeiQNkcLMDjOzhop9eZR8wupPaxtkz2/slpu8ZvKbZ9dMQqpuT1CcUF1neb/q47RL4WmHM1MpCRA8aG27TWLr7a7eujWPRuyYCqwMQGaEqAYAM4MSly4SUibo0iAXMfDBMXqEr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cEZhAAqz; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-221057b6ac4so89038365ad.2;
+        Mon, 24 Feb 2025 08:56:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740416202; x=1741021002; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uiOFRZn2H6lerxDkJoj1wxqiGhkAtJgTGIELTuQhums=;
+        b=cEZhAAqzCsAWehsy2m8SvMlKBj6e4Rf3fkqkxHM+Euy8xATo2R35GQ0bt9RwE/fcFh
+         y1uvBeeGvg0ujDplELvufLpbMYQwU/6n3mhQ8zPfGkDewFXyaD0l5IcoSZ1C2tfgLFk+
+         d5CRXcmqVXitlh58Fn7FOwh2agJ10BJiSH9Qb2ZyO/cM9I6Hy/KuVAA0i0Wt9hNLixf5
+         iZ4FjI8LjgsxGExu5FP5ZBJg9agTe0SElmgqHcM+rPKaYuEkfTyREygd4cMQ6CjO8dm6
+         v4kKEz/L1B2mgK0vivaUclcfl5nqBBmNc110t13DKAB1O0TCJyY+bWT3n+VJkh80zm6k
+         90vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740413030; x=1741017830;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KihX8fWcq5dMXnYeD5x2k3Y6zz16EVIuv0fXLuyFB0A=;
-        b=Vmi9lsOMSm4KlM6xG9RI57jGW691G0zMEGn+hs9do+tAJktuckt+gAhu4LwcYyXAYX
-         Z7mVB7jwQdDznK5qTHme782VA/PAxJxd3a1kTLURnBAvN93oTyxMXsJiCe2vblZmmKsO
-         7VNUTL4SVIvF2eVPMemlMli+Nvh7yJL5CVaXRP7JyZs7v9mW4nDhJQRSAB2P/bfI4d6m
-         EO5Gs1TqYCwF1AEYu2wGBbi/xhJP9vvOoHOAL2XuefDCIw8PXfRMubToS2OD3xeeL0Bl
-         UUB0c+CDw6/1FBKyo7KQ+w5nvu3K5W9JlwbCK9p1zq2yW1YNBvGNHxADWqbmY6UKPEKx
-         /bbQ==
-X-Gm-Message-State: AOJu0YxGfFWVVmBhIKVLqoZE2MOu0gmB6ePP25dLihQqbqUy9gWGF2O+
-	DDKlROKiWiU2plUh55lsnLzLBy2NXY725KBbeWto1by+oj3+uOlj7kyGpAr+A9iTg7Cf8GZ0nfz
-	6mDjP5j4vLWnIc3IAPGsGyWijPDUYGHf9rMFinSm6fvdqhpzyCvXz95OIRw0DZTnewg==
-X-Gm-Gg: ASbGnct5yxhFUpUyUUweiXZ28c1kXYf5Qzb3qSgW+xvmyvpRFF4xVtBD0FP4s7YcDV2
-	JBgJ6Ncv+JYs2xGmZqpzvpgcBqRq5NYSrk1KNBVF+8NQ/VKgQB6DArsqG4R/h1IlWur4tyX3iL/
-	NCqoo+4XxSvY7sHT/r+JcyQH9l+8U3NLuNA1mfXqNcqrRdMBbOpMRyJgYTQC/Y+A9alI/ukI5Bb
-	2Qsei3VHjxwhuToFZjrVSXr8icb94t0nLl+E8d+9ie8/w2/pypMV1jj25HJe6OS/YJHI78SnrBX
-	9w25z2mJBGdxN9VMuD1QEieKrDZgym5KDiRf6kKBYqy5BkjfjUFU
-X-Received: by 2002:a05:6a00:228b:b0:726:a820:921d with SMTP id d2e1a72fcca58-73425cecdfdmr26648080b3a.10.1740413030476;
-        Mon, 24 Feb 2025 08:03:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEAQcuYU29yB2OA7EOTXyr62KvF4Bwf4grfQff9Ffr4ql6Y66zQ/N2fX5qaEmA175P/28JFdA==
-X-Received: by 2002:a05:6a00:228b:b0:726:a820:921d with SMTP id d2e1a72fcca58-73425cecdfdmr26648038b3a.10.1740413030080;
-        Mon, 24 Feb 2025 08:03:50 -0800 (PST)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7328371e36esm14470744b3a.61.2025.02.24.08.03.49
+        d=1e100.net; s=20230601; t=1740416202; x=1741021002;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uiOFRZn2H6lerxDkJoj1wxqiGhkAtJgTGIELTuQhums=;
+        b=l8f/NsfAuAR3PReXRRsuYVzQOHEv4/3KaZ5VT/jkV4SxrwPxHGcZpZyJRDV3kMHhZE
+         kbhNUvrPGziCrWQKRPvLsVOVbONTyAULPWmZmXxxtu2JRzOqOJFv45nj3xAkV+SV6uDX
+         TIJ3A5N63E219Q/djhRPDiugxyPbNMDMw6Kfx2uZIpY1ax6PxT04NnT2/IEJJZNIZyC4
+         T4TxHmiCKSabZqQXDRUSFGf28DtOEq8v75FltwjAh6PFqTyVpOi9QjfN9xBM/b5HB+Ko
+         gJP/O3xe7EZwjtPm71yQWTFka6+dJueoSX2fI/mWEeVv4SyyFXhBcgxrAruXxNWI3DN5
+         paMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUCgCbaBzq9fKe6FKJEYKAcFFTrnZx2udHzb0F0vYdJVmp1XYzhiuNM24084X/zy+rNSCKkmX8ywoe4lcU7@vger.kernel.org, AJvYcCUOVpPu6Lh3dBC5DqE79mqP3AhLLqDHhWoG/wcytDKp62p1pTpkIFHzHIn4hw6vfmuPw2L3vbR8MxkgK4IXIpQ=@vger.kernel.org, AJvYcCV6eaHqzGSYhiIyN9ZMKon+gXyFH/SV4278oVJcwgrEBHk38hhTaEQWWqJAb7DNAtb9545OWAKYkLIJ9LSi@vger.kernel.org, AJvYcCVIyEQUQD1rTXw+I4IgViyWIs0Wb0LLRTymfULJ13/d6lJsO6oWynO2v0CGiSEe0IEaaxM=@vger.kernel.org, AJvYcCVyt57IAKQv77uOT39maNHKVXX3xc34itm7bFrRG/zYsxVWoUfrI7nhoDdKBv43Qq7aQ7vmwDit38pVw+o=@vger.kernel.org, AJvYcCXeOGlUtvEujBwq+2eLJo6hRE396LATNA+O+tx4lN7LoJ8JEjV09KjJT55dqFjnCDOO1YcH/Mpf@vger.kernel.org, AJvYcCXfSi1yw1ly9s5TovwmcdXKdmtRSs+zzFvwOde9jNRkPd1UzflW8iBBDFMT9xu1cCD04HiF/gI7klADCLE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyK+XKClVqyfk/K9SEIcrKr77+7160Fj2D6o7Ap6NM3e1bASkue
+	aHFVkF+dC7ukofjnyCpCBHUQfvfLcEl+w7RWF5CDE2ja3IzsJaWl
+X-Gm-Gg: ASbGncsFufCa1KHv59coqIT4kIwy10FUKS6ZmnCe908AO0EJ37yK9zyRuEgAyySdz2T
+	h6Xt2mOn/5JulXy7WVF7CqJoatb9DLvgjyRp1zWko2TV0IWNakC2r3gjgDglk+vhJaiLlrUylVA
+	pRMhj1CSShhmtKyLG9zIZP+Xy+kaVyKukxZgSPvFRq+pkToykR2VaEResVv/JkyCLtSIV8+O4kB
+	LFP61iGnavhcC9Go/Iy4OiWV/btY/HY5eOl1UnwQxirKwmq8qKKl//0y7k18Nqd0Yv6E84s0c9o
+	IR4CmWWihJzkFYyd0n3bLBeabqw3
+X-Google-Smtp-Source: AGHT+IFVgQBLmZYFNL+ZV4HrxXg4lZgXZnXGnGr0U7DF5esCoQcIST0NuWk3m7oQnTUJjc9HIW9Ozw==
+X-Received: by 2002:a17:902:d492:b0:220:c63b:d93c with SMTP id d9443c01a7336-221a11b9493mr230835105ad.44.1740416201946;
+        Mon, 24 Feb 2025 08:56:41 -0800 (PST)
+Received: from eleanor-wkdl ([140.116.96.203])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d534afadsm185140065ad.26.2025.02.24.08.56.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 08:03:49 -0800 (PST)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: ath12k@lists.infradead.org, Roopni Devanathan <quic_rdevanat@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-In-Reply-To: <20250221041250.769491-1-quic_rdevanat@quicinc.com>
-References: <20250221041250.769491-1-quic_rdevanat@quicinc.com>
-Subject: Re: [PATCH] wifi: ath12k: Add NULL check to validate tpc_stats
-Message-Id: <174041302955.2901106.8080221910773071155.b4-ty@oss.qualcomm.com>
-Date: Mon, 24 Feb 2025 08:03:49 -0800
+        Mon, 24 Feb 2025 08:56:41 -0800 (PST)
+Date: Tue, 25 Feb 2025 00:56:29 +0800
+From: Yu-Chun Lin <eleanor15x@gmail.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Kuan-Wei Chiu <visitorckw@gmail.com>,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, jk@ozlabs.org,
+	joel@jms.id.au, eajames@linux.ibm.com, andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org, rfoss@kernel.org,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+	dmitry.torokhov@gmail.com, mchehab@kernel.org,
+	awalls@md.metrocast.net, hverkuil@xs4all.nl,
+	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+	louis.peens@corigine.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+	yury.norov@gmail.com, akpm@linux-foundation.org, hpa@zytor.com,
+	alistair@popple.id.au, linux@rasmusvillemoes.dk,
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+	jernej.skrabec@gmail.com, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+	oss-drivers@corigine.com, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw
+Subject: Re: [PATCH 02/17] bitops: Add generic parity calculation for u64
+Message-ID: <Z7ykvf1g03XDLXKc@eleanor-wkdl>
+References: <20250223164217.2139331-1-visitorckw@gmail.com>
+ <20250223164217.2139331-3-visitorckw@gmail.com>
+ <bde62fee-4617-4db7-b92c-59fb958c4ca6@kernel.org>
+ <20250224133431.2c38213f@pumpkin>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.0
-X-Proofpoint-GUID: rwHhjwpjnC_upHQQz9feU6DQOzExMSOk
-X-Proofpoint-ORIG-GUID: rwHhjwpjnC_upHQQz9feU6DQOzExMSOk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-24_08,2025-02-24_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- bulkscore=0 impostorscore=0 phishscore=0 mlxscore=0 mlxlogscore=870
- clxscore=1015 malwarescore=0 lowpriorityscore=0 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502240112
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250224133431.2c38213f@pumpkin>
 
-
-On Fri, 21 Feb 2025 09:42:50 +0530, Roopni Devanathan wrote:
-> While processing TPC stats received from firmware, there are chances that
-> the tpc_stats might not be filled and the data is not available. This can
-> happen under two scenarios. First, when firmware sends a non-zero event
-> count before event count 0. When this happens, tpc_stats will be checked
-> for data before memory allocation and the tpc_stats will be unavailable.
-> Second, when memory allocation failed when event count received is 0 and
-> the firmware still sends a non-zero event. When this happens, memory will
-> not be allocated for tpc_stats though event count is 0, so when non-zero
-> event count is received, tpc_stats will be empty. There are checks to
-> validate if tpc_stats variable is filled that are used in two subsequent
-> places, but these are placed after tpc_stats is dereference without
-> checking if it is NULL or has valid data.
+On Mon, Feb 24, 2025 at 01:34:31PM +0000, David Laight wrote:
+> On Mon, 24 Feb 2025 08:09:43 +0100
+> Jiri Slaby <jirislaby@kernel.org> wrote:
 > 
-> [...]
+> > On 23. 02. 25, 17:42, Kuan-Wei Chiu wrote:
+> > > Several parts of the kernel open-code parity calculations using
+> > > different methods. Add a generic parity64() helper implemented with the
+> > > same efficient approach as parity8().
+> > > 
+> > > Co-developed-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> > > Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> > > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> > > ---
+> > >   include/linux/bitops.h | 22 ++++++++++++++++++++++
+> > >   1 file changed, 22 insertions(+)
+> > > 
+> > > diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+> > > index fb13dedad7aa..67677057f5e2 100644
+> > > --- a/include/linux/bitops.h
+> > > +++ b/include/linux/bitops.h
+> > > @@ -281,6 +281,28 @@ static inline int parity32(u32 val)
+> > >   	return (0x6996 >> (val & 0xf)) & 1;
+> > >   }
+> > >   
+> > > +/**
+> > > + * parity64 - get the parity of an u64 value
+> > > + * @value: the value to be examined
+> > > + *
+> > > + * Determine the parity of the u64 argument.
+> > > + *
+> > > + * Returns:
+> > > + * 0 for even parity, 1 for odd parity
+> > > + */
+> > > +static inline int parity64(u64 val)
+> > > +{
+> > > +	/*
+> > > +	 * One explanation of this algorithm:
+> > > +	 * https://funloop.org/codex/problem/parity/README.html
+> > > +	 */
+> > > +	val ^= val >> 32;  
+> > 
+> > Do we need all these implementations? Can't we simply use parity64() for 
+> > any 8, 16 and 32-bit values too? I.e. have one parity().
+> 
+> I'm not sure you can guarantee that the compiler will optimise away
+> the unnecessary operations.
 
-Applied, thanks!
+Hi Jiri and David,
 
-[1/1] wifi: ath12k: Add NULL check to validate tpc_stats
-      commit: e180a01bf2c4a67db13d70d2d91410a8c6f74be3
+Unless we can be certain about the compiler's optimization behavior, we
+prefer to follow an approach similar to hweight, distinguishing
+implementations based on different bit sizes.
+
+> 
+> But:
+> static inline int parity64(u64 val)
+> {
+> 	return parity32(val ^ (val >> 32))
+> }
+> 
+> should be ok.
+
+We will adopt this approach, as it is indeed more concise.
+
+Thank you all for your feedback.
 
 Best regards,
--- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
+Yu-Chun Lin
+
+> It will also work on x86-32 where parity32() can just check the parity flag.
+> Although you are unlikely to manage to use the the PF the xor sets.
+> 
+> 	David
+> 
+> > 
+> > > +	val ^= val >> 16;
+> > > +	val ^= val >> 8;
+> > > +	val ^= val >> 4;
+> > > +	return (0x6996 >> (val & 0xf)) & 1;
+> > > +}
+> > > +
+> > >   /**
+> > >    * __ffs64 - find first set bit in a 64 bit word
+> > >    * @word: The 64 bit word  
+> > 
+> > 
+> 
 
