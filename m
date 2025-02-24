@@ -1,100 +1,113 @@
-Return-Path: <linux-wireless+bounces-19359-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19360-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1B3A4123F
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 00:23:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 136ABA41294
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 02:19:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1B511891C47
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Feb 2025 23:23:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 332DA16F72D
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2025 01:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BB4155A2F;
-	Sun, 23 Feb 2025 23:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C5418B03;
+	Mon, 24 Feb 2025 01:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NhM4NRdr"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="e+fpQwIt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-185.mta1.migadu.com (out-185.mta1.migadu.com [95.215.58.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6582054EF
-	for <linux-wireless@vger.kernel.org>; Sun, 23 Feb 2025 23:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC7A28F1
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 01:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740352996; cv=none; b=Vx1myGqov/C3C5ziUCJmYe5kKnv0Q/OJ4NPGHHpKs/VCuBllOLrbsCfx5bYj/fD80l3ZdHx8qtNtQM3gBhdj4auRyLgmdW4Oqa4jNB8ai9ilU2OzLYNWmbBB+jOwb8/fkBIC9jV+pymawElxiQJiq5iBdmDIn7pzoavuXxGPLrs=
+	t=1740359913; cv=none; b=LlRr5OPYO9O2ZaFiTxWZ9g5C2wWQm3n6OqtCJZ/9H5OODCs7fuujJOMcFRKwbE6XMKCP2sDhwyWcNFvxvvPaGuKdPYsjgzLnjcpdsUHednExycjFyrA+qqu/+UH8XrW5okXifBgxe9RU95Gby32uP2fpYgew+cGF1qJrRhZYl+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740352996; c=relaxed/simple;
-	bh=/7wxowOkYbnMXkMeQiZtVc9d8lfYPNAXlRlkAXmrcBg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EuWT98gyddzqH/gwH34t4D54h9PlF/QHWtB4PhTwnkCzbsBZ21Af5LsH0W4SkSd3cH4N+jLruCQO+BSR3qFIOnUXQfmAchkvKWZkSMn6BKbOliThEkImEsJZ+DntR7/0S85dKH9xTclE1AG+V4V2pFey6f4fFc6yqSij+QIWQxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NhM4NRdr; arc=none smtp.client-ip=95.215.58.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740352981;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ZXsjCNy4V+kCyFuif8XWdLqtmoN0EswAxYS9Q53oLPQ=;
-	b=NhM4NRdr+vfHRpfKDz22u8xvKhUui2K8mcLNioPcSxfF7v5JjqpR0/ERdZSgFG2uDTT5hD
-	tlFGWAu1i1X8Kg/Nn60k4bs2QHbmmaVu1fd1IOdGJhAEHRmRBUM/aMHkqvwEjuh0E0DDKm
-	DNuClbuZB9unk0HeYhqZroEoNVzxhdo=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Deren Wu <deren.wu@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Quan Zhou <quan.zhou@mediatek.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH wireless-next] wifi: mt76: mt7925: Remove unnecessary if-check
-Date: Mon, 24 Feb 2025 00:21:24 +0100
-Message-ID: <20250223232127.99357-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1740359913; c=relaxed/simple;
+	bh=28YIXNDKMA/QiM84VabvPq3AaIwgTayLdE8EcOt2sVU=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=dzpd93WXaNBmEZITtfLlkKzeRlvs7NYhezOozQTQ/u0FMlgE7TD7hvHT9qjNHLotQy9CkLZR8unLjBT45QBLmRbP1F0SLd0ZHIhCPknouDsUtHbbOgHKQeWOXgu6Sdtu4z/upmrmi5pZBUO0Qnlt4Yxp73vX72N8LAVq3Kr7mGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=e+fpQwIt; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51O1IIg142777736, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1740359898; bh=28YIXNDKMA/QiM84VabvPq3AaIwgTayLdE8EcOt2sVU=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=e+fpQwItmnnL7t2mXaFjYY2ps43USWXKlnt1lGIbf0N/WQBqIctwoLrt+O6mdvAZA
+	 snSgk99z20sjkyfQeodGszOL6tIy9Q7C69PgHUwXQiqYohtzCDtdSmIdXanMPxPrps
+	 5DzCFZ1mG/gmOgKPOhYxFBeXhK+vkjq8iPDLoqHRlGKxPlgmoZ9exzwpse9Il0xQpt
+	 +1W+UN7NmKtfaRst6OVwY4lzHpNbimPWCVUIyB5HHZ6rMOYmXBWRNPzgTD5Rwrs/R+
+	 H2wJWE34SQAWdKE/WEgUQzKE8IWfvSpv32sZrle3ItcSqUuNpkhaXTXuXtFsjGCJsr
+	 XfxFLfx5Ry1wA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51O1IIg142777736
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Feb 2025 09:18:18 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 24 Feb 2025 09:18:19 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 24 Feb 2025 09:18:19 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b%5]) with mapi id
+ 15.01.2507.035; Mon, 24 Feb 2025 09:18:19 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: please use tree tags in patches
+Thread-Topic: please use tree tags in patches
+Thread-Index: AQHbhFq+62BYiV3itUS6AdtCRa4fPLNVocQw
+Date: Mon, 24 Feb 2025 01:18:19 +0000
+Message-ID: <a5451ef8e9534ed4b2223f50c3ddda14@realtek.com>
+References: <ec3a3d891acfe5ed8763271a1df4151d75daf25f.camel@sipsolutions.net>
+In-Reply-To: <ec3a3d891acfe5ed8763271a1df4151d75daf25f.camel@sipsolutions.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-The if and else branches implement the same logic. Remove the
-unnecessary if-check and simplify the code.
-
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 15815ad84713..7e4935965d35 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1983,11 +1983,7 @@ int mt7925_mcu_sta_update(struct mt792x_dev *dev,
- 		mlink = mt792x_sta_to_link(msta, link_sta->link_id);
- 	}
- 	info.wcid = link_sta ? &mlink->wcid : &mvif->sta.deflink.wcid;
--
--	if (link_sta)
--		info.newly = state != MT76_STA_INFO_STATE_ASSOC;
--	else
--		info.newly = state == MT76_STA_INFO_STATE_ASSOC ? false : true;
-+	info.newly = state != MT76_STA_INFO_STATE_ASSOC;
- 
- 	if (ieee80211_vif_is_mld(vif))
- 		err = mt7925_mcu_mlo_sta_cmd(&dev->mphy, &info);
--- 
-2.48.1
-
+Sm9oYW5uZXMgQmVyZyA8am9oYW5uZXNAc2lwc29sdXRpb25zLm5ldD4gd3JvdGU6DQo+IEhpLA0K
+PiANCj4gSSBjb3VsZG4ndCAoeWV0PykgZmlndXJlIG91dCBob3cgdG8gbWFrZSB0aGUgbmlwYSBi
+b3Qgc3R1ZmYgcnVuDQo+IHByb3Blcmx5LCBzbyBwbGVhc2Ugc3RhcnQgdXNpbmcNCj4gDQo+ICAg
+W1BBVENIIHdpcmVsZXNzXSB3aWZpOiB4eXoNCj4gDQo+IG9yDQo+IA0KPiAgIFtQQVRDSCB3aXJl
+bGVzcy1uZXh0XSB3aWZpOiB4eXoNCj4gDQo+IGZvciB0aGUgc3ViamVjdCBsaW5lLiBUaGlzIHdh
+eSB0aGUgYXV0b21hdGlvbiBjYW4gcGljayBpdCB1cCwgc2VlIGUuZy4NCj4gDQo+IGh0dHBzOi8v
+cGF0Y2h3b3JrLmtlcm5lbC5vcmcvcHJvamVjdC9saW51eC13aXJlbGVzcy9saXN0Lz9zZXJpZXM9
+OTM2Mzc0DQo+IA0KPiBJJ2xsIG5lZWQgdG8gZml4IHNvbWUgdXNlcm5hbWUgc3R1ZmYgZXRjLg0K
+PiANCj4gSSBsaWtlbHkgYWxzbyBuZWVkIHRvIGFkZCBtb3JlIHRyZWVzIHRvIGl0IC0gcGxlYXNl
+IHJlcGx5IHdpdGggeW91cg0KPiBzdWJqZWN0IHRhZ3MsIHRyZWVzIGFuZCBicmFuY2hlcyB0byB1
+c2UsIGUuZy4NCj4gDQo+IHdpcmVsZXNzOiBtYWluDQo+IGh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcv
+cHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3dpcmVsZXNzL3dpcmVsZXNzLmdpdC8NCj4gDQo+IHdp
+cmVsZXNzLW5leHQ6IG1haW4NCj4gaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4
+L2tlcm5lbC9naXQvd2lyZWxlc3Mvd2lyZWxlc3MtbmV4dC5naXQvDQo+IA0KPiBidXQgcGVyaGFw
+cyB3ZSB3YW50IHRvIGhhdmUNCj4gDQo+IHJ0dy1uZXh0OiBydHctbmV4dA0KPiBodHRwczovL2dp
+dGh1Yi5jb20vcGtzaGloL3J0dw0KPiANCj4gb3Igc28/IE5vdCBzdXJlIGlmIHlvdSBtYWludGFp
+biBhIGZpeGVzIGJyYW5jaCB0aGVyZSB0b28/DQo+IA0KPiANCj4gQW55d2F5LCBnb29kIGx1Y2sg
+dG8gbWUsIGFuZCBwbGVhc2UgZG9uJ3QgdHJ5IHRvIGF0dGFjayBpdCA7LSkgSSBzcGVudA0KPiBh
+bGwgZGF5IHNldHRpbmcgaXQgdXAsIGFuZCBoYXZlbid0IHB1bGxlZCBvdXQgZXZlcnl0aGluZyB5
+ZXQuDQo+IA0KDQpUaGFua3MgZm9yIHRoZSBhdXRvbWF0aW9uLiBJIHRoaW5rIGl0IHdpbGwgYmUg
+dmVyeSB1c2VmdWwgZm9yIG1lIHRvIGRldGVjdA0KcGF0Y2ggZXJyb3JzIGVhcmxpZXIsIHNvIHN1
+Ym1pdHRlcnMgY2FuIGZpeCBwcm9ibGVtcyBlYXJsaWVyIGJlZm9yZSBJJ20NCnRyeWluZyB0byBt
+ZXJnZS4gDQoNCkkgaGF2ZSBjcmVhdGVkIHJ0dyBicmFuY2ggYXMgdGhlIGZpeGVzIGJyYW5jaCwg
+c28NCg0KW1BBVENIIHJ0dy1uZXh0XQ0KaHR0cHM6Ly9naXRodWIuY29tL3Brc2hpaC9ydHcgcnR3
+LW5leHQNCihjbG9uZSBmcm9tIHdpcmxlc3MtbmV4dC9tYWluOyB0aGlzIGlzIGZvciByZWd1bGFy
+IGRldmVsb3BtZW50KQ0KDQpbUEFUQ0ggcnR3XQ0KaHR0cHM6Ly9naXRodWIuY29tL3Brc2hpaC9y
+dHcgcnR3DQooY2xvbmUgZnJvbSB3aXJlbGVzcy9tYWluOyB0aGlzIGlzIGZvciB1cmdlbnQgZml4
+ZXMpDQoNClBpbmctS2UNCg0K
 
