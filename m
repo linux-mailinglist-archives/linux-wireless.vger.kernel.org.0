@@ -1,164 +1,198 @@
-Return-Path: <linux-wireless+bounces-19437-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19438-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F23A44F1B
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 22:43:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13CC4A45070
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 23:46:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84BEA189BB57
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 21:43:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 827FF1895F90
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 22:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBC8210185;
-	Tue, 25 Feb 2025 21:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E243523098D;
+	Tue, 25 Feb 2025 22:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="iwkrKkZf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IUcU74Do"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F95520E31F
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 21:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D8B22FF3A;
+	Tue, 25 Feb 2025 22:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740519814; cv=none; b=s/siE4b5EFMh0pdDdecmjtXfmRriUooC+LJpXTHq23Rz3hGnQP8qzMt5lNWEand5he1GM4Gh53eMRDWuJVTjBI2Wst0/VuRO+ROZlCm10CXd2YmNUj9cz5lZafY3tG9D/e1oNlHwT+8Y1W/fnc0Ei8HSy8qY/8kb019+YCwIedA=
+	t=1740523589; cv=none; b=iwuvOuCru/NhDnyCbs8XISwXHUW3b8qIMGZ0pFrIfICQdekBccHeYHVNKFhgO1icncsHQ7pnRVbDvz5imu54AIk3nomWSJQXwcXiyMpskNZ6+xEvbu1TdF+yu6mU/L/z7iGReXLniOM1IZSPzIXC30bclW1GxtAwuTYna2+2ByE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740519814; c=relaxed/simple;
-	bh=v6VBRIDfPPAuGSOJ6DX9lU3J+goTuMImOESXIUQcXCg=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=lCUbV+1r37Lp6r4x88AniA5DZS63Z3ym+CQknJPFDD8yFwjisF/T2KhD0c4Do5a6/acODXVY7RzN7/kFUmKb/GZwjxgi6PchOZLmSrdvAVEs4Am29EiHA1vXw2IRlRXrqdxTwOyArJs2/7pCF/ACnljPbbL+M+DCP1GwkkXZyL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=iwkrKkZf; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-38f3913569fso133719f8f.1
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 13:43:32 -0800 (PST)
+	s=arc-20240116; t=1740523589; c=relaxed/simple;
+	bh=hDdsaKuLGPPO2QMEwawtpGkH8Byraw3yse7aBvdGdaw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kjnqrcmVOByK9mAtJZFKSxXPyL1DrhuqyzT709/JyaqfDID9bCSsI3BNxxwEaGRf6pYyGxDsjKhDEAzUvqnfPtJENrjteKOfgaNpjCsCHObKU6HDnn0Sr2TTd1vY02HQ1AUWBeQKn1B5sVQr5qMOq7Kew0eme1kJvsVudw00Twg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IUcU74Do; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4398e839cd4so1710225e9.0;
+        Tue, 25 Feb 2025 14:46:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citrix.com; s=google; t=1740519811; x=1741124611; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:subject:references:cc:to:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=v6VBRIDfPPAuGSOJ6DX9lU3J+goTuMImOESXIUQcXCg=;
-        b=iwkrKkZfK5JLovU1AIT6FvRG5xXzwhjAndt70ieTPZUZ3hWeCAwvl8WsEhTub+jbMZ
-         FduPMPMiLE05BfqfKEoWYZDTGo3AkijYv2FS/e3thDGMoBC99j/OdpbWJK5mCfnw+MEO
-         wUjVUS9YC9Yc5V7JFngbKuVXqBV5ti6ueYYhA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740519811; x=1741124611;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:subject:references:cc:to:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1740523586; x=1741128386; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=v6VBRIDfPPAuGSOJ6DX9lU3J+goTuMImOESXIUQcXCg=;
-        b=QOdqsrJv/NELX1W+xUsHZgYcdCoCHY4XeZ6nRm7+SudrcAaoV/BfT5y5W8eeXVghKt
-         uqdkVerdYyLQ/APQ7IOliA6r9J4lDX5uWY+9lklH2GA2C3jvQpu4qDqZFpjr6QCTxhtI
-         sCTAPahGYRP0a+Zx/tvJRUjw9VxG8c9v9j82HDKQWG16UNlxS/uklYuA+QBzobbJNHd4
-         VxkVgNjokvbPLEvnql9wzBKJMLSQNh95Wo0m4IgSLWynD7FzVyN4/sdjOV7xV0dcGPIw
-         ceGSTY6FFRMgjEDg8oMpvH9VPZxLS9rZThREwuZLwy0Bvtcyz2GQvmpBptRQ4iYl/tj1
-         acQg==
-X-Forwarded-Encrypted: i=1; AJvYcCXtEGsvYDMqKCWaMuqEwzYbs7fD2Z5wvzoOdIT40Q9Id163lLZhA1zM6IX2iGvLykQoinmmG231qA4xYFqAeQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjZue41cr17uwbNo3KxA7hb/foZkX+kPTQ9hh5YNE7icyMFTLY
-	ihE2zrQFgJFdniyAZwiEEy/xPaaOgA08ZMjg8o9juq3JofPkrpAPa1EphXEx9Mo=
-X-Gm-Gg: ASbGncuKEHt72437hDwqKf+NXyRdmIOUmi7e/W1UcB/937N4gEyCHcH9piTs3Tur3Wy
-	ofz55FOIx3A0tWs1E9ccGY7WE+m9fnW9t6PW328fFrFCAQCmc5TTWEooRHr0DpUQSMw5dC7qdOo
-	63Ci4Xq0im6H7V+kuk9hMRL3TGmO1MEyIsIPs0f20IF+nVFGb6LnZGU5uX7GVzukzP0VBNM4HbX
-	cobnhvaBCPAVBI2XrPU5P9DSCHAfz3yrEsGiliFOV7QxHCi5v5QaarDDaV712QASIREz6dcumJN
-	X3kxqZuA9Oa4Jj0K+eG1fROIM3SPMWTgynR+Qz1SXwN0c+mBrrzU/RCM4eU6EMQkEg==
-X-Google-Smtp-Source: AGHT+IHSlhsBYfXGudlA126ARnimf5DJid2NXAt0zMRZRmjxnTP+DlMFj1fR7Dt14yukNzUQAYX1Dg==
-X-Received: by 2002:a5d:64a7:0:b0:38b:f4e6:21aa with SMTP id ffacd0b85a97d-38f6f3c50b0mr11926957f8f.5.1740519810679;
-        Tue, 25 Feb 2025 13:43:30 -0800 (PST)
-Received: from [192.168.1.10] (host-92-26-98-202.as13285.net. [92.26.98.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd8fcf29sm3520900f8f.100.2025.02.25.13.43.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Feb 2025 13:43:30 -0800 (PST)
-Message-ID: <8052b316-9f72-42c7-9e11-e23e690d80c4@citrix.com>
-Date: Tue, 25 Feb 2025 21:43:27 +0000
+        bh=3xEzm5a7MvJg/wvZ+Z8+F/9tGDPPJZX+eI/HEgAntBA=;
+        b=IUcU74DoHKoBFhqHqPpR5SQggee6J36UZ4NL0eZTB51wogpIgFfTaYaQmoMUX73S+W
+         GIGnZyyQch8RlMP2+aWkw8z9gtDj+SkMnOAU3QdZdgcNmskGUpLHqZQ26PZGpTO/9suV
+         DKLXPzdO88LBf6oe+cWPeGPgYX7fUUTzCrDssHWP+pOy8cf2VCpuBz0BB51inAxXuoTu
+         BVmSxG6ZtxjhY9a3/1sJL8tC0I6Km09/eQ2O2gEcLjpxygtMO3z42WhWS7lwXDKK3Wwh
+         T6Q2tf0XjG78mopihuebjDmZJ2R+tvWEGth/a/NAe5MeCAX7xqG1SjKX1q7/W0WX6Yaz
+         3Nqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740523586; x=1741128386;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3xEzm5a7MvJg/wvZ+Z8+F/9tGDPPJZX+eI/HEgAntBA=;
+        b=kJzv/PnasdCF9hx4KALki2q+ZRShawgrDQIVC7HXzLi0rAsoHEcTSVqZARLZxgojvM
+         XqgpzenpK0/Gvbl9oaoAbd4MHz/cK2iQmd2sqSUilRq+oDRf7qVbZKnbMs5uK0dhJfrq
+         uHC9KARaijowWK1K6Ubf4Nr91xWzjLYEgyjCje2kxivSpU44VT5ugBJCV+f9iV9rg+Mk
+         bdf6XejXnTz0i9WpYYtu24WczX3GBSUpO6WETBWlYa20jN+G2z944f4ifqWMS5qk/7pL
+         lPnOsG0+BzxYlqMLA9pWBy642EZcoEJow6H2Uk0yX75X2hD9KjS7dupCDJBpotI2Uryb
+         iM7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVJF4nxrj6rsUgdeQo7ypN9E7cNSDhU2Ch9y0kavM508oRHnv9zqlm7CqTSmo+CPMGIb8c1+z0AM7RX7LR3@vger.kernel.org, AJvYcCWAnQil3ZMe5OwYmJd5zeQnS5p4a5XD9rYvI1sXduLBMUr6a2JQfvlCiOmtmhnytgPDismBecfHsrBiOtc=@vger.kernel.org, AJvYcCWuHIeeNNNEE8s2BxZpyEFew4Dq/dmjmQn8X8pqM4GBRkSfNsbi4wfaCnI7jie4cIXNDlqEnH5c@vger.kernel.org, AJvYcCX2cm8RJpTTUWr96GYqVxsVk7e38Wr0doLb779AfeWS9KUXLQVSUrOw5cYPwDayE6hx8PBglKb4+xub+AI=@vger.kernel.org, AJvYcCX32993tip4Wk+R1NVWEymsz5fL1oWPepAUmaueHIpI8ikdl9LSJkOIQKE8q65ZqNVRGMS+pyZW5fwmjdef@vger.kernel.org, AJvYcCX6c9M6BvnWv0Np7/MaLPokGIgMuhd/xoL3BN2eII5KXYz+bnjd9WL7WOkK+eG8YGof1VI41wpOnUKrfica75k=@vger.kernel.org, AJvYcCXCO/dX/I0Ax0KErb1V2SZet1QHNdpwdD1CmfJ+0qb1ir0wWm5j2dfg2oIM6DjlzrzS3AY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzWFRIH4+hD/+cBPeTvpiTRDdwWjaqVGuY7zZzmkxAbqvYdh9i
+	qzwuiWYC0MvVBXJlsXnNYQLkF/Z9aHTvqGed8Oc+Nz+EB6W+uOhe
+X-Gm-Gg: ASbGncu9hgNjwDor857YjeUfzzuAXzA4TCMlkxvcITLv9plqxosY7pTMbQ3AaC2izzd
+	bdZdCGnoJHsaAfozyIpOX1FHOvG3ndtF3lkbYmJoGYjB18stMolGltDd6xvBif/dfPSSC4L1xz0
+	pDUfUIAvynf30q1INtXOSNpBsI+WxqhebmOpEu8tPRpbqSKptcOW4uRa+Ab2SGsXdHwhxC7N6pE
+	KiGSBf6nmjf6MuTi0ekNOPV5v5feJ6skhv96iY7CvGTHw6Sq9u32sufYoA2txEyvBP0rorONVMI
+	Z/RXx7cqXBaN7ngFDdUaDerBjWywTbrJreicCK9oCdDjygGTka+8vF6PJMigibVC
+X-Google-Smtp-Source: AGHT+IFjrInluoqnbFjbjbGFkCsa4TCd0YMAhHctzgy+ODQ6ToD9u7urtlYhpUHFZQok7JnATsU7Wg==
+X-Received: by 2002:a05:6000:144d:b0:38f:4f17:ee29 with SMTP id ffacd0b85a97d-38f6f3dca7amr14183257f8f.17.1740523586194;
+        Tue, 25 Feb 2025 14:46:26 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd88295dsm3621054f8f.45.2025.02.25.14.46.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2025 14:46:25 -0800 (PST)
+Date: Tue, 25 Feb 2025 22:46:23 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>, Kuan-Wei Chiu <visitorckw@gmail.com>,
+ tglx@linutronix.de, Ingo Molnar <mingo@redhat.com>, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, jk@ozlabs.org, joel@jms.id.au,
+ eajames@linux.ibm.com, andrzej.hajda@intel.com, neil.armstrong@linaro.org,
+ rfoss@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
+ hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
+ vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+ johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+ jirislaby@kernel.org, yury.norov@gmail.com, akpm@linux-foundation.org,
+ mingo@kernel.org, alistair@popple.id.au, linux@rasmusvillemoes.dk,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsi@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
+ linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mtd@lists.infradead.org, oss-drivers@corigine.com,
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-serial@vger.kernel.org, bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
+ Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: Re: [PATCH 03/17] x86: Replace open-coded parity calculation with
+ parity8()
+Message-ID: <20250225224623.6edaaaa9@pumpkin>
+In-Reply-To: <e0b1c299-7f19-4453-a1ce-676068601213@zytor.com>
+References: <20250223164217.2139331-1-visitorckw@gmail.com>
+	<20250223164217.2139331-4-visitorckw@gmail.com>
+	<d080a2d6-9ec7-1c86-4cf4-536400221f68@gmail.com>
+	<e0b1c299-7f19-4453-a1ce-676068601213@zytor.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: hpa@zytor.com
-Cc: Laurent.pinchart@ideasonboard.com, airlied@gmail.com,
- akpm@linux-foundation.org, alistair@popple.id.au, andrew+netdev@lunn.ch,
- andrzej.hajda@intel.com, arend.vanspriel@broadcom.com,
- awalls@md.metrocast.net, bp@alien8.de, bpf@vger.kernel.org,
- brcm80211-dev-list.pdl@broadcom.com, brcm80211@lists.linux.dev,
- dave.hansen@linux.intel.com, davem@davemloft.net,
- david.laight.linux@gmail.com, dmitry.torokhov@gmail.com,
- dri-devel@lists.freedesktop.org, eajames@linux.ibm.com, edumazet@google.com,
- eleanor15x@gmail.com, gregkh@linuxfoundation.org, hverkuil@xs4all.nl,
- jernej.skrabec@gmail.com, jirislaby@kernel.org, jk@ozlabs.org,
- joel@jms.id.au, johannes@sipsolutions.net, jonas@kwiboo.se,
- jserv@ccns.ncku.edu.tw, kuba@kernel.org, linux-fsi@lists.ozlabs.org,
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-serial@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux@rasmusvillemoes.dk, louis.peens@corigine.com,
- maarten.lankhorst@linux.intel.com, mchehab@kernel.org, mingo@redhat.com,
- miquel.raynal@bootlin.com, mripard@kernel.org, neil.armstrong@linaro.org,
- netdev@vger.kernel.org, oss-drivers@corigine.com, pabeni@redhat.com,
- parthiban.veerasooran@microchip.com, rfoss@kernel.org, richard@nod.at,
- simona@ffwll.ch, tglx@linutronix.de, tzimmermann@suse.de, vigneshr@ti.com,
- visitorckw@gmail.com, x86@kernel.org, yury.norov@gmail.com
-References: <3BC57C78-1DFF-4B83-85AA-A908DBF2B958@zytor.com>
-Subject: Re: [PATCH 02/17] bitops: Add generic parity calculation for u64
-Content-Language: en-GB
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
- 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
- 6+ahAA==
-In-Reply-To: <3BC57C78-1DFF-4B83-85AA-A908DBF2B958@zytor.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> Incidentally, in all of this, didn't anyone notice __builtin_parity()?
+On Mon, 24 Feb 2025 13:55:28 -0800
+"H. Peter Anvin" <hpa@zytor.com> wrote:
 
-Yes.  It it has done sane for a decade on x86, yet does things such as
-emitting a library call on other architectures.
+> On 2/24/25 07:24, Uros Bizjak wrote:
+> > 
+> > 
+> > On 23. 02. 25 17:42, Kuan-Wei Chiu wrote:  
+> >> Refactor parity calculations to use the standard parity8() helper. This
+> >> change eliminates redundant implementations and improves code
+> >> efficiency.  
+...
+> Of course, on x86, parity8() and parity16() can be implemented very simply:
+> 
+> (Also, the parity functions really ought to return bool, and be flagged 
+> __attribute_const__.)
+> 
+> static inline __attribute_const__ bool _arch_parity8(u8 val)
+> {
+> 	bool parity;
+> 	asm("and %0,%0" : "=@ccnp" (parity) : "q" (val));
+> 	return parity;
+> }
+> 
+> static inline __attribute_const__ bool _arch_parity16(u16 val)
+> {
+> 	bool parity;
+> 	asm("xor %h0,%b0" : "=@ccnp" (parity), "+Q" (val));
+> 	return parity;
+> }
 
-https://godbolt.org/z/6qG3noebq
+The same (with fixes) can be done for parity64() on 32bit.
 
-~Andrew
+> 
+> In the generic algorithm, you probably should implement parity16() in 
+> terms of parity8(), parity32() in terms of parity16() and so on:
+> 
+> static inline __attribute_const__ bool parity16(u16 val)
+> {
+> #ifdef ARCH_HAS_PARITY16
+> 	if (!__builtin_const_p(val))
+> 		return _arch_parity16(val);
+> #endif
+> 	return parity8(val ^ (val >> 8));
+> }
+> 
+> This picks up the architectural versions when available.
+
+Not the best way to do that.
+Make the name in the #ifdef the same as the function and define
+a default one if the architecture doesn't define one.
+So:
+
+static inline parity16(u16 val)
+{
+	return __builtin_const_p(val) ? _parity_const(val) : _parity16(val);
+}
+
+#ifndef _parity16
+static inline _parity16(u15 val)
+{
+	return _parity8(val ^ (val >> 8));
+}
+#endif
+
+You only need one _parity_const().
+
+> 
+> Furthermore, if a popcnt instruction is known to exist, then the parity 
+> is simply popcnt(x) & 1.
+
+Beware that some popcnt instructions are slow.
+
+	David
+
+> 
+> 	-hpa
+> 
+> 
+
 
