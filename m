@@ -1,55 +1,48 @@
-Return-Path: <linux-wireless+bounces-19419-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19420-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14999A43BD9
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 11:37:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5514A43BE8
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 11:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ED33163743
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 10:32:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E8FB168FA1
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 10:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BC8242938;
-	Tue, 25 Feb 2025 10:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22577260A3D;
+	Tue, 25 Feb 2025 10:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="D1LUvCjJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="er/yb3It"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8598024EF9D;
-	Tue, 25 Feb 2025 10:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82B31FE47F;
+	Tue, 25 Feb 2025 10:34:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740479545; cv=none; b=QnykZHf8CYZrJFljtzIlR75zLVquJk0D1n5Gb3YUhSkAI9Wu1uhtFPnGwCFs3K2uDG3h02/k37OQ6G1FwNDrYOgk9WMb7eFtIByR2wKDZ66a8LLAcO4rdk8e3d3pf1AY/v0Hj4EIoyqdmqnxvsYFpBJI+E7KaVHJ2tCwVlUrpo0=
+	t=1740479685; cv=none; b=Vnp3+3ykZ+p7rSZIUaWUHpzodZ6WKLGzlwcPdcduW7gtZ+vD4iqAYNuZKj5DY11+6hGMT2Lf/A/ED3S0Kb11zI0TioVJnnFX2LbK0td1nJB1QLy4XLyaGOS0vRSRzbT9DJa/trhDVKqYf0gZsyGWSFeEWRgHfDW+Sf31eKXijRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740479545; c=relaxed/simple;
-	bh=+OCR+GIe5xLZeikUC6PfXnk5joRi3BkvxLM8KgsPD/I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I4y7i/HIIjFfgUWK8N2F0nTXdzxecPYXeVpnASy6oIZeQn3vxUm/XEBpd4cfE3FyFiqzE3J7KvriPdtspVR4w4d46qPLJyGI9qmug/TviDFMRa0W8sv9DVpKt+YNTVMfdliVkmE+9uN1+x5xGifRWwjWyhMoLUrv436lzWSDArM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=D1LUvCjJ; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1740479535;
-	bh=+OCR+GIe5xLZeikUC6PfXnk5joRi3BkvxLM8KgsPD/I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=D1LUvCjJ/Lp9/MzZCTPHnFDrM/RaVCl63na+WpzXRc258xsAnex+V63/K8eHEI9AZ
-	 S07lTsMu1yM1M7uoFWiTkDQPHXgvb0L8Zf9gs5NUCWOxrz0ukXyAR9xqEGDJdBt/9B
-	 KyHuEc5Hsfoiy2d3Iuk52Ns0Fr9tMh5G2gJCFMkd4sHRPgR8vOi3P6QX8xWHOArICs
-	 8AQ4dbE3VSVzfoqGqYG3C5W1R2kI/sVsT3wJLYqUrya5tiO/phtTFyC0CWuSLl3flo
-	 Ul8m6a1ivzYJ6wVyaaXEskD9gTVokV0snqchY1o+eeu6fPQhEzwpb3awOlo2uhh2xO
-	 EHSLXkmPxIEbA==
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0881917E0B64;
-	Tue, 25 Feb 2025 11:32:14 +0100 (CET)
-Message-ID: <184de5d2-ad02-4387-b850-b45b615cf164@collabora.com>
-Date: Tue, 25 Feb 2025 11:32:14 +0100
+	s=arc-20240116; t=1740479685; c=relaxed/simple;
+	bh=XJluooaCyPB2jljIMQRMoaWqXuID8XVavs2nSqxk9dM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=k1HWHjVxAiu3/zRX62Nwt9jFzkomnyluYPLQxTQKJC1mKxvfTxFpIwiZnlPwx4BCeX/l7ibPRQTQPJvpwesNR7k8yLx38POSENluw0tU0KBpwuB0oPeaMfRHlXMpF9RRwIOCiEhvi6ikLo09TIvjEAVqXKGIszDL0LTEPwiT1bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=er/yb3It; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C29C4CEDD;
+	Tue, 25 Feb 2025 10:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740479684;
+	bh=XJluooaCyPB2jljIMQRMoaWqXuID8XVavs2nSqxk9dM=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=er/yb3Itjw7P47kNjm8+yzln8Ojk+87rbgL9HdjU4v2JVWcP8HA7Yv1+aZjCu1ibQ
+	 CHD/HQt2c9KoJBpOy5YUY4mWX0itxuIlnKNoEVYLu0mudOoDshz4xp1nvwC7aQloO2
+	 PXs8QVtH/Akg9tQCfsAnn15hZ2Qoq27a4vQ2RNH312Qwrgq1IMHhSP7OSjbAXyNWrS
+	 nMFSVJpOBmZ4fKOrlenUeNN0El2GwNoVjLl9mh0O7QvhJ/6BeFdnLwu8rNY4jwxr2m
+	 WKn2fGUyJLXsOOMEc9GSDYpi6iOzPXWHKwndjjofyUEvzcf8nB7/oDyE6+ZEYedoTX
+	 rQFfGdJo7mASg==
+Message-ID: <4c3009e1-6cd8-4477-95f9-b0fb35b7dc4e@kernel.org>
+Date: Tue, 25 Feb 2025 11:34:38 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,65 +50,92 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] wifi: ath10k/ath11k/ath12k: Strip device prefix from
- calibration properties
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
- ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
- ath11k@lists.infradead.org, ath12k@lists.infradead.org
-References: <20250225-b-wifi-qcom-calibration-variant-v1-0-3b2aa3f89c53@linaro.org>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: Re: [PATCH v6 01/13] dt-bindings: net: wireless: describe the ath12k
+ AHB module for IPQ5332
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Cc: ath12k@lists.infradead.org, Johannes Berg <johannes@sipsolutions.net>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250225064834.2002499-1-quic_rajkbhag@quicinc.com>
+ <20250225064834.2002499-2-quic_rajkbhag@quicinc.com>
+ <20250225-abstract-arcane-chimpanzee-ca7e4f@krzk-bin>
 Content-Language: en-US
-In-Reply-To: <20250225-b-wifi-qcom-calibration-variant-v1-0-3b2aa3f89c53@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250225-abstract-arcane-chimpanzee-ca7e4f@krzk-bin>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Il 25/02/25 10:05, Krzysztof Kozlowski ha scritto:
-> Devicetree properties describing exactly the same thing should be
-> reusable between device bindings.  All Qualcomm Atheros WiFi chips needs
-> certain calibration data, so properties should not be prefixed with
-> device family (ath10k).
+On 25/02/2025 09:47, Krzysztof Kozlowski wrote:
+> On Tue, Feb 25, 2025 at 12:18:22PM +0530, Raj Kumar Bhagat wrote:
+>> +  memory-region:
+>> +    description:
+>> +      Memory regions used by the ath12k firmware.
+>> +    items:
+>> +      - description: Q6 memory region
+>> +      - description: m3 dump memory region
+>> +      - description: Q6 caldata memory region
+>> +      - description: Multi Link Operation (MLO) Global memory region
+>> +
+>> +  memory-region-names:
+>> +    items:
+>> +      - const: q6-region
+>> +      - const: m3-dump
+>> +      - const: q6-caldb
+>> +      - const: mlo-global-mem
+>> +
+>> +  qcom,ath12k-calibration-variant:
 > 
-> Deprecate qcom,ath10k-calibration-variant and alike, so we gradually
-> switch to a common property.  This will also allow moving these
-> properties to common schema, if desired.
-> 
-> Why? Because people add qcom,ath12k-calibration-data and probably they
-> will add qcom,ath13k-calibration-data, qcom,ath14k-calibration-data and
-> so on.
-> 
-> I will fix DTS in separate series.
-> 
+> qcom,calibration-variant
 
-For the whole series
+FYI:
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+https://lore.kernel.org/linux-devicetree/20250225-b-wifi-qcom-calibration-variant-v1-0-3b2aa3f89c53@linaro.org/
 
-> Best regards,
-> Krzysztof
-> 
-> ---
-> Krzysztof Kozlowski (5):
->        dt-bindings: wireless: ath10k: Strip ath10k prefix from calibration properties
->        dt-bindings: wireless: ath11k: Strip ath11k prefix from calibration property
->        dt-bindings: wireless: ath12k: Strip ath12k prefix from calibration property
->        wifi: ath10k: Deprecate qcom,ath10k-calibration-variant properties
->        wifi: ath11k: Deprecate qcom,ath11k-calibration-variant properties
-> 
->   .../bindings/net/wireless/qcom,ath10k.yaml         | 25 ++++++++++++++++++++--
->   .../bindings/net/wireless/qcom,ath11k-pci.yaml     |  9 +++++++-
->   .../bindings/net/wireless/qcom,ath11k.yaml         |  7 ++++++
->   .../bindings/net/wireless/qcom,ath12k-wsi.yaml     | 13 ++++++++---
->   drivers/net/wireless/ath/ath10k/core.c             | 13 ++++++++---
->   drivers/net/wireless/ath/ath11k/core.c             |  5 ++++-
->   6 files changed, 62 insertions(+), 10 deletions(-)
-> ---
-> base-commit: 8936cec5cb6e27649b86fabf383d7ce4113bba49
-> change-id: 20250225-b-wifi-qcom-calibration-variant-92a02995e996
-> 
-> Best regards,
-
+Best regards,
+Krzysztof
 
