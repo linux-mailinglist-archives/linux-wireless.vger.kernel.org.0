@@ -1,133 +1,171 @@
-Return-Path: <linux-wireless+bounces-19427-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19428-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B55A44421
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 16:18:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C32DA4444A
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 16:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3DDB1899F78
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 15:18:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80CC9171E52
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 15:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18C426BDAD;
-	Tue, 25 Feb 2025 15:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6EB26BD8A;
+	Tue, 25 Feb 2025 15:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U39ei3bt"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="BUMWjRPI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E724526BDA1
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 15:17:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07AF26AA93;
+	Tue, 25 Feb 2025 15:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740496680; cv=none; b=UHiTYt5xEgV7FtaN0TOkLL/UYATW5S/YkqhKn4zm2GgYJH60lWPClitIDEMG+OyFZ+TrtPxa4oIrgygEcFLuZDWYHsCx7FFCjqLgnEuxef7t0nH7uiXMSbnHfyJQVC1PciX4CSLw/vPfEoEsRxIkLZTf83zNKtYXuIATBLw9fqI=
+	t=1740497155; cv=none; b=FgKGX2w8FVCwnEtQjKAqHL9QJKYEFt+h8s6+Q+/O1Wzw2Ac7fZsgNLY0Q7nLwAvN23eEQy1pdTWWcS+cWUnLCwKR8c2kHrFO80WZ863bpXYdUEMdLjsF42fAicL+fUQQ+vu0CZy+y+mZWHcenUxbpoePwaxETpoKGfLK7Zg8Vg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740496680; c=relaxed/simple;
-	bh=rALszVeWffksEsP/Rrj6WAtB7agsaUXOmR/msDwji8U=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=X49nCBSekph2bgFl9vJHxiMBJCFqh9rXc9RMOi5X76gBHxdHCvVid3a4Djx0qLRvWwQC41TkUwWetCt+ScJRBB+IoIJ2RXvrq5txst7WaHCf267otwbcdHCqwRYoaZlIu0uyO4qELxC6RgfocBB9i3C/ATnar8nVmxWd23UI/F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U39ei3bt; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740496676;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+QyH+Q7MigOrd7puvdyRTTPCeyR6wog0WvQSvTNgWAg=;
-	b=U39ei3btKwBOAStLAO777Q6YylssBQ9Gerr3F/4z2TNV3j4txdMYdXs/MqECCbyKLA9aSn
-	mrscj8ffHp7wI87UJ7f3gebmsm0qeIIlghsvdlmPWRwuQOehLZ762H2nn6LbT/9D+R8Icq
-	rFzU/hzB7IPSWVPri8ITBQK3Jp5jH58=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-q8YtqpU0OC6xToOGXJ3YDQ-1; Tue,
- 25 Feb 2025 10:17:53 -0500
-X-MC-Unique: q8YtqpU0OC6xToOGXJ3YDQ-1
-X-Mimecast-MFC-AGG-ID: q8YtqpU0OC6xToOGXJ3YDQ_1740496667
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1840F1A24789;
-	Tue, 25 Feb 2025 15:16:53 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.9])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A8A29180194B;
-	Tue, 25 Feb 2025 15:16:37 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <8f36be7c-6052-4c5d-85ff-0eed27cf1456@icloud.com>
-References: <8f36be7c-6052-4c5d-85ff-0eed27cf1456@icloud.com> <20250221-rmv_return-v1-0-cc8dff275827@quicinc.com> <20250221-rmv_return-v1-1-cc8dff275827@quicinc.com> <20250221200137.GH7373@noisy.programming.kicks-ass.net>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-    Will Deacon <will@kernel.org>,
-    "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-    Andrew Morton <akpm@linux-foundation.org>,
-    Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-    Thomas Gleixner <tglx@linutronix.de>,
-    Herbert Xu <herbert@gondor.apana.org.au>,
-    "David S. Miller" <davem@davemloft.net>,
-    "Rafael J. Wysocki" <rafael@kernel.org>,
-    Danilo Krummrich <dakr@kernel.org>,
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-    Johannes Berg <johannes@sipsolutions.net>,
-    Jamal Hadi Salim <jhs@mojatatu.com>,
-    Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
-    Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-    Linus Walleij <linus.walleij@linaro.org>,
-    Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>,
-    Thomas Graf <tgraf@suug.ch>, Christoph Hellwig <hch@lst.de>,
-    Marek Szyprowski <m.szyprowski@samsung.com>,
-    Robin Murphy <robin.murphy@arm.com>,
-    Miquel Raynal <miquel.raynal@bootlin.com>,
-    Richard Weinberger <richard@nod.at>,
-    Vignesh Raghavendra <vigneshr@ti.com>, linux-arch@vger.kernel.org,
-    linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-    linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
-    linux-wireless@vger.kernel.org, linux-rdma@vger.kernel.org,
-    linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-    iommu@lists.linux.dev, linux-mtd@lists.infradead.org
-Subject: Re: [PATCH *-next 01/18] mm/mmu_gather: Remove needless return in void API tlb_remove_page()
+	s=arc-20240116; t=1740497155; c=relaxed/simple;
+	bh=kZ993xbPUrqxt9evRYhTDaW4rgAsxIjUaJ0fumHopmc=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=UJEEvAHGDgFA5ZAu4awRbGShzs9DCxFIHBRjcC0Q/mx9jZxP+ORd/SNL4WNrqMIbRdpOhiVnoOI23puORRiZyRCA//kvDTtGVSWlyWFMecW3vTZik8TrZNl6KZiQmj/yiztmlFbNBwThgflUW2HyD8jhV74zgDTTcNhZIpHrs3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=BUMWjRPI; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 51PFLeJx1321966
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 25 Feb 2025 07:21:41 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 51PFLeJx1321966
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1740496908;
+	bh=IFxVykDS0g8xLLyPz9dDn1sgxptbnK+YyCXg+3CY3aM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=BUMWjRPIFaLk9eEljQvZOhLwrBHl5WiOz4myJbzxM1DiE4BYZIZywLpG+8lH6L2Ld
+	 bFtraaKU3/cK4+FeRWQF5FbFz83DA8Z/AQnawksvD4yyCe21dX2Z0rgdJKhBBHLj1z
+	 s4I9gcurp+Edn27zjQimLT1osW8ygdQmmUepB5mDrHI/BX4Xi6bUBzkmawhEaTO/H0
+	 x2/DVO+Y+FeNzDFJllD1SIrMR4JwTWu/5UrL2K1pJJDRRfeaeW4lVKsfyboLsLCJ0g
+	 GbLOzT769Ufnz8kospEBAiCZ1QDPJbYxD0w9NG/sbS9pBQyDxcESpuh28quuCen1V2
+	 4+wvwE+cqOncg==
+Date: Tue, 25 Feb 2025 07:21:38 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: David Laight <david.laight.linux@gmail.com>,
+        Jiri Slaby <jirislaby@kernel.org>
+CC: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
+        andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+        dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
+        hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
+        vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+        parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+        johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+        yury.norov@gmail.com, akpm@linux-foundation.org, alistair@popple.id.au,
+        linux@rasmusvillemoes.dk, Laurent.pinchart@ideasonboard.com,
+        jonas@kwiboo.se, jernej.skrabec@gmail.com, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+        dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+        oss-drivers@corigine.com, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+        brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+        bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
+        Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: Re: [PATCH 02/17] bitops: Add generic parity calculation for u64
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20250224133431.2c38213f@pumpkin>
+References: <20250223164217.2139331-1-visitorckw@gmail.com> <20250223164217.2139331-3-visitorckw@gmail.com> <bde62fee-4617-4db7-b92c-59fb958c4ca6@kernel.org> <20250224133431.2c38213f@pumpkin>
+Message-ID: <949B0809-3BB9-4E18-8FA1-A12BD47F2843@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2298250.1740496596.1@warthog.procyon.org.uk>
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 25 Feb 2025 15:16:36 +0000
-Message-ID: <2298251.1740496596@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Zijun Hu <zijun_hu@icloud.com> wrote:
+On February 24, 2025 5:34:31 AM PST, David Laight <david=2Elaight=2Elinux@g=
+mail=2Ecom> wrote:
+>On Mon, 24 Feb 2025 08:09:43 +0100
+>Jiri Slaby <jirislaby@kernel=2Eorg> wrote:
+>
+>> On 23=2E 02=2E 25, 17:42, Kuan-Wei Chiu wrote:
+>> > Several parts of the kernel open-code parity calculations using
+>> > different methods=2E Add a generic parity64() helper implemented with=
+ the
+>> > same efficient approach as parity8()=2E
+>> >=20
+>> > Co-developed-by: Yu-Chun Lin <eleanor15x@gmail=2Ecom>
+>> > Signed-off-by: Yu-Chun Lin <eleanor15x@gmail=2Ecom>
+>> > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail=2Ecom>
+>> > ---
+>> >   include/linux/bitops=2Eh | 22 ++++++++++++++++++++++
+>> >   1 file changed, 22 insertions(+)
+>> >=20
+>> > diff --git a/include/linux/bitops=2Eh b/include/linux/bitops=2Eh
+>> > index fb13dedad7aa=2E=2E67677057f5e2 100644
+>> > --- a/include/linux/bitops=2Eh
+>> > +++ b/include/linux/bitops=2Eh
+>> > @@ -281,6 +281,28 @@ static inline int parity32(u32 val)
+>> >   	return (0x6996 >> (val & 0xf)) & 1;
+>> >   }
+>> >  =20
+>> > +/**
+>> > + * parity64 - get the parity of an u64 value
+>> > + * @value: the value to be examined
+>> > + *
+>> > + * Determine the parity of the u64 argument=2E
+>> > + *
+>> > + * Returns:
+>> > + * 0 for even parity, 1 for odd parity
+>> > + */
+>> > +static inline int parity64(u64 val)
+>> > +{
+>> > +	/*
+>> > +	 * One explanation of this algorithm:
+>> > +	 * https://funloop=2Eorg/codex/problem/parity/README=2Ehtml
+>> > +	 */
+>> > +	val ^=3D val >> 32; =20
+>>=20
+>> Do we need all these implementations? Can't we simply use parity64() fo=
+r=20
+>> any 8, 16 and 32-bit values too? I=2Ee=2E have one parity()=2E
+>
+>I'm not sure you can guarantee that the compiler will optimise away
+>the unnecessary operations=2E
+>
+>But:
+>static inline int parity64(u64 val)
+>{
+>	return parity32(val ^ (val >> 32))
+>}
+>
+>should be ok=2E
+>It will also work on x86-32 where parity32() can just check the parity fl=
+ag=2E
+>Although you are unlikely to manage to use the the PF the xor sets=2E
+>
+>	David
+>
+>>=20
+>> > +	val ^=3D val >> 16;
+>> > +	val ^=3D val >> 8;
+>> > +	val ^=3D val >> 4;
+>> > +	return (0x6996 >> (val & 0xf)) & 1;
+>> > +}
+>> > +
+>> >   /**
+>> >    * __ffs64 - find first set bit in a 64 bit word
+>> >    * @word: The 64 bit word =20
+>>=20
+>>=20
+>
 
-> >>  static inline void tlb_remove_page(struct mmu_gather *tlb, struct pa=
-ge *page)
-> >>  {
-> >> -	return tlb_remove_page_size(tlb, page, PAGE_SIZE);
-> >> +	tlb_remove_page_size(tlb, page, PAGE_SIZE);
-> >>  }
-> > So I don't mind removing it, but note that that return enforces
-> > tlb_remove_page_size() has void return type.
-> >
-> =
-
-> tlb_remove_page_size() is void function already. (^^)
-
-That may be true... for now.  But if that is changed in the future, then y=
-ou
-will get an error indicating something you need to go and look at... so in
-that regard, it's *better* to do this ;-)
-
-David
-
+Sure you can; you do need an 8- and a 16-bit arch implementation though (t=
+he 16 bit one being xor %rh,%rl)
 
