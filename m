@@ -1,125 +1,93 @@
-Return-Path: <linux-wireless+bounces-19430-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19431-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 526F4A446F1
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 17:53:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8626A447C1
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 18:19:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDF4618850A3
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 16:53:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 771421890047
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 17:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6171DB375;
-	Tue, 25 Feb 2025 16:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8B120D4FF;
+	Tue, 25 Feb 2025 17:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZfWkPO2t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vhuyi1T7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B931A0BDB
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 16:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209F720D4F3;
+	Tue, 25 Feb 2025 17:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740502079; cv=none; b=Z6oLHkLePuYlhiBhNQKAK91RUUiDuLeCPjyXg5sa2mBzg+x8L7lMG/dze5VC3nBPDhJUv4PwbL2NjYcRG4YmxhujHPk6/87Hs+I/7F5vbONYItsTlAAESLsLeBLuETEjU5UybTP476MtucpeZGiVFyrxQTUPzpd6vHLBBDplwwk=
+	t=1740503585; cv=none; b=Tkxgy45CrsvAI5KHcHSOhIwGrBb5ltDpjdsXP504xjJD5knxpvOaAhzsHx9J1/1SGRlViBs4fF/3VPdC2zUNh08h1tQqtU51eLOevXbBCMVWDpy4b20yQF6eXw3Dpx2jTBf/Erop7ISRpZe3w+OIVJJ0+R3i15N98jvlzps+izE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740502079; c=relaxed/simple;
-	bh=9ZDVrOfhGJwI3TSbSIuZAzkP2eTAltfjgpAh9EQGfog=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V6scJUq+Ez4x8MLIV4M/mbnf80f1b3t4CekN6l8GOJVDBOqCY/WQZ2anxQWNeHyYR6KGw712bftqapvx23hEr1s0si6C//jab5OZsCBXOUYlBub+4aPWorV8Ky1akmGsi+tbIFGKwo9oHn/w6MPmjNJKsiwO3HNChml/qa6J4eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZfWkPO2t; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51P8aCHY010037
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 16:47:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	9ZDVrOfhGJwI3TSbSIuZAzkP2eTAltfjgpAh9EQGfog=; b=ZfWkPO2te79Al0Cq
-	Gs1OU6yTBTQU5uA7j3wIsU90Kk2jGp6AZ7IzjJApkcIqnbN5SiRyC5qvu4OYr8aC
-	lJFBPhX1iwt95jgOhxkUARQGua9ofW1i/NltO9BLxUvOLflUGGHhG0XR1m6wEM0b
-	p43ovatiNfszES1CMRavudjkHgYi5SOL2+qTZEFOUgPmBAx+/ryNDGWcavTsxexe
-	Ez8Nj4VOaroLWQZLhQfiwjuxLbVowtqe8hwqmYm5bCHEusWhtMocUvow/AzBJ++y
-	5GTDImaA1YybpbJfVJI89mIUe7DQABX6SurWTDoixYpeCv/YwQypoXsDHRVo9Yd5
-	rAQyVw==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44y3xnhrhf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 16:47:57 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2fc1e7efdffso19284987a91.0
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 08:47:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740502075; x=1741106875;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9ZDVrOfhGJwI3TSbSIuZAzkP2eTAltfjgpAh9EQGfog=;
-        b=p6EFr5C1bDgic85pFanoaeN5rugdW+UufTrKHRMMqHbkxb6ZhWPcMH5rf4kPoMkxZf
-         3I0zurLGTnEiHnMd4UQm49FegPtKRf8HHdvl2pcXgrugZ9YEMAkKFKbuS7UV+aJjXNja
-         0042EQFDOVm3lXptQkF3hFhkEgB2OV2dZC1L9hGMX9hQ0vNKnNbk+OCQBGEKJ3r0U2Bn
-         /pLIAb1O1iTktdY3fJi3AVOKZLmeVqO8ZlIFUeuHWN+w8Z2QsRih9oLtf01QvKCX2Ssn
-         GRwQiaWfJbjxsqIdmtLzVUv/gnXp5Ql09/NdPz+lwuDMc8ghqu8IKkMzCDe7kTf0jXv3
-         OBmQ==
-X-Gm-Message-State: AOJu0YwNF2v2tp5+pvtk/Htav78mvgC2m1U3ehZNm/LggKqyFf9YgulQ
-	NpG7RalOqbz+DrLLec9vyXmIwWnjEDvYaADmW3xTWUtm1sQHaSdp+caTVwcK12ZSb6h9o8I7924
-	imMva1+tc8yh4QRBrozi9kmSx5g5W3g5eoeXrXUZOEdncr+gBSVDp/viwrml3J1n9E2bn8z9i5g
-	==
-X-Gm-Gg: ASbGnctJWzmt+9p62yCd1N5bsbnG/+E6iNBCbtzoF7fMBdTS6v9Z91nyzIM4TRwQ14m
-	Oahc5xdchm6MDddksJamKzyIU1fMX3bT/w4hfvIZGnQrZfro/V0NKXua4Rj2zIdeU69vq9PkXXY
-	hsTlhzPwxGpmq9vkk1+Qa4XSFsAcGF4MPMDJQ/WUba0LddUjAec6HMzdvWBdtC2z0bwMKQT519i
-	+0qfZ4qVF0heVeSZO495bZEDumt0/tXFHogmd/gsKwJ7DBgO84Uju/FKD2Ue8lSR7tr3BFZqRLw
-	KxwnfMYIm6MbF0/3t43wDsCBfa9wUvksM0Rv4bbPld+I/DALMkp2RqXUn7dAvrzIoqWaR2Y=
-X-Received: by 2002:a05:6a20:840d:b0:1f0:e547:2a95 with SMTP id adf61e73a8af0-1f0fc77fbc4mr7690916637.31.1740502075588;
-        Tue, 25 Feb 2025 08:47:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFdPfLWKKNqt+lqaJWqGpH+fK0ZqBAaMQEednaibGK9nTCW7SkhcF0zLldZAyJp0Yf7PYgmjA==
-X-Received: by 2002:a05:6a20:840d:b0:1f0:e547:2a95 with SMTP id adf61e73a8af0-1f0fc77fbc4mr7690858637.31.1740502075031;
-        Tue, 25 Feb 2025 08:47:55 -0800 (PST)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aeda79a23dfsm1367185a12.21.2025.02.25.08.47.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Feb 2025 08:47:54 -0800 (PST)
-Message-ID: <c2b540d6-a30d-44e2-b928-4e95a78d9d6c@oss.qualcomm.com>
-Date: Tue, 25 Feb 2025 08:47:53 -0800
+	s=arc-20240116; t=1740503585; c=relaxed/simple;
+	bh=BX69y1ANjPvnVIyBiB7P24k5Cj6FcQsBECZ68cv6mf4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D2UQQV+Y1EspX3y+nVhatlin23LK/PZ5w6KIwWyc9iR8GIpmGq71QJD2lyBkZYnCd4mGUoj9XddU92jeDN9n6v+2l3mo2as3LC1BCkDaXAwdlk0H0xuXViWdOP3xLgcoQZmumhWQpkaUJ5AItXEBKO/lcR0oGAPuDPBJTEnGRas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vhuyi1T7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFDAC4CEDD;
+	Tue, 25 Feb 2025 17:13:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740503585;
+	bh=BX69y1ANjPvnVIyBiB7P24k5Cj6FcQsBECZ68cv6mf4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Vhuyi1T7ESRLApERLkzkFWy0Yz52Ys0tSw5GRFbkhaCcoGkKO5Pw/QHqC3myPk7Kj
+	 1OLVtR2mPq+xUtimvS3VUCep+s4F112qgFo4tAesCPKI9OOxh2cyLLKxyrzUTxM/Qb
+	 u5mmBFRWfu7Ui975CP7ERxb/aoZP54qLgp5caxj6hbxo4GOAFuak7cpnM8zD9XptaB
+	 LX7OLarJMnWEqz5JepBsho0A+VRj3mYn9G8meozrgzkjQCU621aNVHIyARDmo4J437
+	 bHKqaXgebTdiKwdSD0UKMQEv6EjJ0R87NpXTRDP9wselJkbdbpNjk/gbzQleQtESw7
+	 ryBtdQ0YsMFyw==
+Date: Tue, 25 Feb 2025 11:13:03 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: linux-kernel@vger.kernel.org, Jeff Johnson <jjohnson@kernel.org>,
+	ath10k@lists.infradead.org, ath12k@lists.infradead.org,
+	ath11k@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-wireless@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>
+Subject: Re: [PATCH 1/5] dt-bindings: wireless: ath10k: Strip ath10k prefix
+ from calibration properties
+Message-ID: <174050358243.2711030.9886778077090867092.robh@kernel.org>
+References: <20250225-b-wifi-qcom-calibration-variant-v1-0-3b2aa3f89c53@linaro.org>
+ <20250225-b-wifi-qcom-calibration-variant-v1-1-3b2aa3f89c53@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] wifi: ath11k: Clear affinity hint before calling
- ath11k_pcic_free_irq() in error path
-To: Baochen Qiang <quic_bqiang@quicinc.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        jjohnson@kernel.org
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org
-References: <20250225053447.16824-1-manivannan.sadhasivam@linaro.org>
- <20250225053447.16824-2-manivannan.sadhasivam@linaro.org>
- <4dc9e860-7417-480f-ba89-439498138d3f@quicinc.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <4dc9e860-7417-480f-ba89-439498138d3f@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: 1LWZd1k23kTCGgpl0mXOxPlmu5Dz3Ya5
-X-Proofpoint-GUID: 1LWZd1k23kTCGgpl0mXOxPlmu5Dz3Ya5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-25_05,2025-02-25_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=733 bulkscore=0
- suspectscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
- priorityscore=1501 spamscore=0 malwarescore=0 phishscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
- definitions=main-2502250107
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250225-b-wifi-qcom-calibration-variant-v1-1-3b2aa3f89c53@linaro.org>
 
-On 2/24/2025 11:23 PM, Baochen Qiang wrote:
-> LGTM
 
-Suggest you reply with an official Reviewed-by: tag
-This helps build your reputation.
+On Tue, 25 Feb 2025 10:05:32 +0100, Krzysztof Kozlowski wrote:
+> Devicetree properties describing exactly the same thing should be
+> reusable between device bindings.  All Qualcomm Atheros WiFi chips needs
+> certain calibration data, so properties should not be prefixed with
+> device family (ath10k).
+> 
+> Deprecate qcom,ath10k-calibration-variant and alike, so we gradually
+> switch to a common property.  This will also allow moving these
+> properties to common schema, if desired.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> ---
+> 
+> Why? Because people add qcom,ath12k-calibration-data and probably they
+> will add qcom,ath13k-calibration-data, qcom,ath14k-calibration-data and
+> so on.
+> ---
+>  .../bindings/net/wireless/qcom,ath10k.yaml         | 25 ++++++++++++++++++++--
+>  1 file changed, 23 insertions(+), 2 deletions(-)
+> 
 
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
 
