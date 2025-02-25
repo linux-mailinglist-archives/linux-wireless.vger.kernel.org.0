@@ -1,81 +1,81 @@
-Return-Path: <linux-wireless+bounces-19415-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19416-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B78A43916
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 10:17:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD75EA438F2
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 10:13:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5724519C5A0C
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 09:11:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B20413BCEBC
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 09:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD0E269809;
-	Tue, 25 Feb 2025 09:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0EF426981C;
+	Tue, 25 Feb 2025 09:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZvyjRDyW"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HUsJ0JZZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE75B261360
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 09:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D611E269828
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 09:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740474349; cv=none; b=jnbgDEkvPBnfkZNOKUnQN8XOibkJ2wHxo8XFwOAnXhREMrM/uS9Ix+A0sAqU7wOuoaNtHxsuzHlXShYiCmo7KZZ9N5zXqjDaZdx4tCdsIwdeyLowUB2QI9GjMkdItvE4fUP0Tj+CwRHxidud6OFJusIkhdAeljZgSJWGzDH/feQ=
+	t=1740474352; cv=none; b=HCNM6ZMh2w6ba2aoIuD/R1eR3RojOyf93Rv54w5POkwn+962sClmuRtXIdrlh3M41Z5VdCefh+CfZYCORzYt9g2/GdrbwHgKgSRtl86fyjsUUhWejs+RIxQ1+5z81JEv/d2HlTw5TOw9QeV7K8455EdnsVaZSZfSu2xBNweYwGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740474349; c=relaxed/simple;
-	bh=8usnTAEFm1Piu5Yd2wL1LXpPE1HGz8E+rmzlqa0grM8=;
+	s=arc-20240116; t=1740474352; c=relaxed/simple;
+	bh=JTVJkXQ8vZ6nxJX4jG3BnwDYUC+zBILYi0/GP0SyV34=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tjT8npHIYZrgPn3yQT8Cr18riQBp71xA/3Vzq2NM1yJ9Qtd8LnQQDdZd5y8l9/9/iOT78+2qINtHm4jQ4ZCznwiA6HYP0jIdBPPBNACkxBTmMAoyK8yr5CwWFjnr572cYVxhaS0sd0au8QH394PPy82K0WlDBhRjKN1Ymq4NSqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZvyjRDyW; arc=none smtp.client-ip=209.85.218.54
+	 In-Reply-To:To:Cc; b=EVGdTMysFXkBofskhtNr4k4DHUUPrfL0UMOxjSZ1dwecheFwoXmS4fffSc1rQsvYymNvdCFDYP+Yon9m77dN6m+2XvF5kGgQaaVSPnBEx0LfllOOX/hCdWogUCXhTUuh3PqlCUhRC9uzSpooisC4NrVTmRDFRosH5VUo9NYe06c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HUsJ0JZZ; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-abc28af1ba4so46397766b.1
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 01:05:47 -0800 (PST)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-abb9fac29d8so81191766b.0
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 01:05:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740474346; x=1741079146; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1740474349; x=1741079149; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fY0h+JkzJEPC+Fr2bSYHihmywLYc/knwfAjtuNnsAeo=;
-        b=ZvyjRDyWyuzvdhfxc4IqorIjCR9E6jeug4IXPPdsKBCVchDAiv4mAYAINQcYbY3lSJ
-         KDLvG7PTyIB7vc7Aa2P7KhQUK51i8xXDZb37hU23vWK5kVDrIpytfdrgH1BuzRGgqFqs
-         q0xS4mww45KeXQdJb6EgxtuATDkrLrTux7o7fDDv4QD7d+CKlSPS/lgSWkvQEHO6/hyY
-         tgQvI+URPj0h+Uwws4ZJYYnQFWaF9Q1UvyRIao522uvXBY29COLOawly6AhUtU8IhauB
-         7u6bJmjwigRTU5hiUIBkCY6ikmlMnAHj1ChfS91cQhDwDLjrrUvLZrY6rmQqmJS5TvA3
-         LhyQ==
+        bh=5sAL967SIYKC/s55u5inAE7XXnuMpEFX5DsCH7UXWsg=;
+        b=HUsJ0JZZoXi4Ve5GDn1QZdj4oEyV4iZo6rXORGGcIK55Sh5i8cn1J63R954ivbK3Ea
+         YjI2EXejdAdooyB2JgRY1XiU0ObrbrXZokCkpXclQJXFw0CGqGx9aG00hQfrzHxAUnQ2
+         KtUad4eKqGYY+yTW5kLf3XAcTRBMRG3vnFfVsmoaStcQHrLwyxlSwhHxQuMAfSOL+XGS
+         TZ2MVJsT2jTKjiw6SN4DDVm6rfQ8JiR1Xpkktyz4ctOIwBUg5FeiFSMBPcuoCWL9K/fG
+         BWGOWRrCZz+ZVyZ/Yn1HLjtCwgtY6XArshVJK/cZICzvXGP73jr5RN3ZVNcz7CxUO/SE
+         +5nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740474346; x=1741079146;
+        d=1e100.net; s=20230601; t=1740474349; x=1741079149;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fY0h+JkzJEPC+Fr2bSYHihmywLYc/knwfAjtuNnsAeo=;
-        b=pza2ZgfQCK1XH/yxx8tVDu8atFmZZ0gt6tMEt387+cMwDEVhqkVVzXt7D5UORUDN1P
-         jd9g3LwM9tYASfNyJ45uzsBH7v2iPbPALzfMPkOOggyzjX24eY8v0ty189vPTWDktg54
-         jO7gsBCyiRVvX3n3U45OdIPtHHEGhu3dKOHEESo2vamsQ0E6lsDuX0cWh+GMSZMP4H5j
-         Le34o5baA7Y5WcIN9z1evFPHs2QwSrjfW5WpimYJRCw3gLVbACwtkOOaljJFUCe1L8jE
-         Dkk4yWHM3IBJLBTTn/Am4MfhKcTK1XKvx+ZJjMK1akS00U0/Ne48OALSgIpGWwrfxwaP
-         E01A==
-X-Gm-Message-State: AOJu0YzNXhdkqYDbHIPNeMEQqq0aUD1BE8EPve7s0gFqnhU0zAi6xRkS
-	HqrPrs7RVvPEGcri1yV9OeonttGGf0TPlUKiKb7flsviqLtAvYXYI4S/wKXy0WBgWzd6PYoTqxd
-	0px4=
-X-Gm-Gg: ASbGncs8SXFjg6sG8h5z2t4wyIFnezwJ1TEzN4mDznJquy6+GbAtfwF7FuL0zOA3rKd
-	Co2nW9kpa/WSYv00JXJlnWRr8rdh6XD3eEilstNr3DeYV7549evXhhs0YRRCyz6Enu4zGIOjaBq
-	zYcgDqNZgUy5QHihCQ43/FeoBYWKQcR2AO2JQ7y2JSqF/YhgMAgeSZwtnYQ3hUHU0K5lICI+sT3
-	siMBi79KA7qD6B2jRdnHbhJaAjfh1OXCz1hYsiV2IEK1bTXMd/A7DA50ro4fGmIz/Iemo8FxWlg
-	h6Ew80KJ0uZrexfCETo5VPnMLXhVx8666adFxPOm0yDnhiv+R1y3QH9pBGHEv5bSy34UQ3Qq9cE
-	J
-X-Google-Smtp-Source: AGHT+IGkqhINat7Gxz1iDEnab5crobr9JPjoaawiIMmvU8LrPtIbqlI6khHbhhpw1r11PcRLe2kLUA==
-X-Received: by 2002:a17:907:3d8e:b0:ab3:2719:ca30 with SMTP id a640c23a62f3a-abc09bcce60mr682984466b.10.1740474345817;
-        Tue, 25 Feb 2025 01:05:45 -0800 (PST)
+        bh=5sAL967SIYKC/s55u5inAE7XXnuMpEFX5DsCH7UXWsg=;
+        b=S+b75Cs/B8q+JSM+KuIkYkosJYM3l/r0e7JALMr1CX2oZjXqM+YIjpM7qj7FE4gFtI
+         KenauhJw8ZdMrORJb6LmNvp0OUxP/UvzkM03T0XZ01VV5DgiowolTuJ7qugZuFIN+kyV
+         fz9i5ZLER862AjW29cZa5fEBJV/jlD5CWQZq0kdTH6E+Hb7SDbfwQ/C+h19JJjuGEQOp
+         H0DKuFb8ocynxpgC+Fv0fkmVRHiex0GgVnzokoMdSOZ8Mb+VdQTmvfIHVS0E89zij7ZE
+         slWHcPErNzDYudC01acH/yLacBTvkldVH9A0xnxDZblBpABvMC2krT7NIOTg8hC+zi8P
+         3jEQ==
+X-Gm-Message-State: AOJu0Yyxg6CG8ytRP+ZN8U8iyfOV6qvXJTnSLtAVIV1Luy8mtoeXn/uw
+	PJoG34zsRxjk6uNRvwEDuWKjaL94wmUAApt5MUYZySPVn2ExvYh99ZWeMLtgmo8rLvT6i89T5Pj
+	3W0s=
+X-Gm-Gg: ASbGncu9+5H2OixpEU6o5OWcXspA+o69Jac0zpYz9JCjaAzIKcCIQ7fu8bos94sEUEh
+	hrmNaBlmW7F4aS/rfEjSsTO2DVifA2kUCXbRMdYdUM+Nt3BLIQRh6z1BF50M6LRNmaahLoS3o1T
+	aSSS3n+Pl/0lyYqxhvlCkL958+pZEGj2MvAPqNp5N+dsXGdsk2oo+HvpC8weP5w2ry2b8o08eww
+	ngY29pGJyG/Ckg68w4J/KPBXwqdF9gpgBBUGwzHeS9fGnNlDejCGOqoDwLJibRN+zioCDRocfNd
+	tGT4qIOtqB3b9Fm8T8zJ+kJ4LuuSNG4WNohJQUNglPHC+nr3G5ofLCa66uo9qczFRj0/+IINw0P
+	f
+X-Google-Smtp-Source: AGHT+IGN/O451uNdobw5eR4f+pisbXs6lLZFYeSNFMLURRhFrS1Naf+7h53+qP3DXrYTQROzZHfugA==
+X-Received: by 2002:a17:907:9713:b0:ab7:5fcd:d4be with SMTP id a640c23a62f3a-abc099c6a2dmr697998666b.1.1740474348822;
+        Tue, 25 Feb 2025 01:05:48 -0800 (PST)
 Received: from [127.0.1.1] (78-11-220-99.static.ip.netia.com.pl. [78.11.220.99])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed2054d58sm106681566b.148.2025.02.25.01.05.44
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed2054d58sm106681566b.148.2025.02.25.01.05.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 01:05:45 -0800 (PST)
+        Tue, 25 Feb 2025 01:05:47 -0800 (PST)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Tue, 25 Feb 2025 10:05:33 +0100
-Subject: [PATCH 2/5] dt-bindings: wireless: ath11k: Strip ath11k prefix
+Date: Tue, 25 Feb 2025 10:05:34 +0100
+Subject: [PATCH 3/5] dt-bindings: wireless: ath12k: Strip ath12k prefix
  from calibration property
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -85,7 +85,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250225-b-wifi-qcom-calibration-variant-v1-2-3b2aa3f89c53@linaro.org>
+Message-Id: <20250225-b-wifi-qcom-calibration-variant-v1-3-3b2aa3f89c53@linaro.org>
 References: <20250225-b-wifi-qcom-calibration-variant-v1-0-3b2aa3f89c53@linaro.org>
 In-Reply-To: <20250225-b-wifi-qcom-calibration-variant-v1-0-3b2aa3f89c53@linaro.org>
 To: Johannes Berg <johannes@sipsolutions.net>, 
@@ -96,88 +96,85 @@ Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
  ath11k@lists.infradead.org, ath12k@lists.infradead.org, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2961;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2540;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=8usnTAEFm1Piu5Yd2wL1LXpPE1HGz8E+rmzlqa0grM8=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBnvYfh6CpkJd8c70kQJfWzDAjgLHF01wrk68d68
- hSc3oJt3RyJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ72H4QAKCRDBN2bmhouD
- 11UmD/wNk1W++Osvh3b2yso4MtXvuq3PwwRO5Yiz8g4FfR+ea8vdj3Um0ZQ6m48tUIyZ+JMX9St
- URu3XSQHi//YmHCI9eyHnkTUvxjvVLjgee37/OiwUTVMXN4xN6cKjHE1+mGQDP0JzPQGkdTDlIK
- TxSazB/bESJwr2RzDNB9MQIRwUDiWjAJ9oTP6661PQsMlRW0XF+H2OSJ+JDe1lPAbF7/wK4D9uL
- C1IG0uzI2RPu39ZzHnyo9uvdnE8SRQ+Xd+Dbzz4TH8zzEKXaVJljrMLWVF/A/oNGbsZxmRvi5Q6
- VDPw7Xfz5PIY/P++793HL5UFBlqQtl43wRKIOKFMaaUE6z60LM4a1YyMErH3vVXD5bcdeT/WE1q
- Ph+mzNZANDXPdL7CpefayVOEFupDOR5aijsD+z5gOF6pHSxk1HLL0jMRXW90/8PkxsyK5iQI47/
- ZMCrjf0D+KHE+V0sWqazBQyizUIfEDnvImMIrWx3YyPcza/apucuDYzppT4nD+/k4TKUZVBlaC+
- fAhFxaRn3YR9/2+0cbJAi3lyAfLdBTahyMEvV6OA2c83nf+a/jLiCyXikoVwOOrSzlIMJcXhEdd
- c+qjpbafFiIf04McwHGosxH8vkeAkYvgojJ4K+LDDM5tBGfmHfZpLsB3RdhAu3u2nFVm6w3VfMt
- cHMvTQ/ajd2nsBA==
+ bh=JTVJkXQ8vZ6nxJX4jG3BnwDYUC+zBILYi0/GP0SyV34=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBnvYfiP7AFaiu4hFbS1G2fGNJ16ZvacyJZZcJr4
+ ReBMJiTMmSJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ72H4gAKCRDBN2bmhouD
+ 163kD/9429RBSJrEM4OsIa9/ktExaWuclrDJQb33xACbdd4jmZjrfjtDiE3ESWVQIMqreGJF05i
+ UgWZj38mrrVTZYpuTLyBQzdQ4EMS3tkMqaqKDCaLrfiAXybkDMtJ4FeU/TUcHmixMaEjJRiln6/
+ 7xfL/EYwvmiiaT3MWxptJ1udSDkqiHc6HUNvTxU7aUT53fQhKxwaju1811sc174zOGGfgTKchfU
+ 3Y2+ngkl3645+n3JUwq5RJc7Ynwc0mWKFohm6IbFyBS9Oc7YI10FY55siDqulHQDf8Vee8PVrvG
+ 5ySm+X0rcV9Kz/oZwClVEAXUPTAjEMzU24eNl+fK2gU2ze4c87Y19xDYsPhpDnnXxAhP3KXpyYj
+ onMZ+FQeuDpZE8Bb84fXSI78eUUuJn6zQabIo3iFuETZRoUlDY03EXWXBpx0iGm+52mO1KS6lRm
+ MMiwgTopTmUTsof2I+Jylsyxn12jyIkRAk40ThFH62eb+Ey186eN6Z+C8M90Qtn8acrN8ZU2+J9
+ Vodz/d1LBcFeNHFVqwL02bkAe8oDr61MQS7cmmQv26tAqwiU+pueOt8BZYq4q+hKiOMlbUE/NkN
+ ucrK4S2RMjgglWL2lf93gqTRFRgt88OZxY8QVyFaphwzPZAHYjSD22jvfZoknxC9ak3zscZDi0n
+ T5wq/ixczbgRvAw==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
 Devicetree properties describing exactly the same thing should be
 reusable between device bindings.  All Qualcomm Atheros WiFi chips needs
 certain calibration data, so properties should not be prefixed with
-device family (ath11k).
+device family (ath12k).
 
-Deprecate qcom,ath11k-calibration-variant and alike, so we gradually
+Deprecate qcom,ath12k-calibration-variant and alike, so we gradually
 switch to a common property.  This will also allow moving these
 properties to common schema, if desired.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- .../devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml        | 9 ++++++++-
- Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml  | 7 +++++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml   | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
-index a4425cf196aba58e4181e690a0448236aee15e50..653b319fee880ef0944d8e35c545890b60611756 100644
---- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
-@@ -22,8 +22,15 @@ properties:
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml
+index 318f305405e3b34e66a31bec7460c0a9d020ebc1..589960144fe1d56eb6f15f63a2d594210e045d27 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml
+@@ -52,8 +52,15 @@ properties:
    reg:
      maxItems: 1
  
 +  qcom,calibration-variant:
 +    $ref: /schemas/types.yaml#/definitions/string
-+    description: |
-+      string to uniquely identify variant of the calibration data for designs
++    description:
++      String to uniquely identify variant of the calibration data for designs
 +      with colliding bus and device ids
 +
-   qcom,ath11k-calibration-variant:
-     $ref: /schemas/types.yaml#/definitions/string
-+    deprecated: true
-     description: |
-       string to uniquely identify variant of the calibration data for designs
-       with colliding bus and device ids
-@@ -127,7 +134,7 @@ examples:
-                 vddrfa1p2-supply = <&vreg_pmu_rfa_1p2>;
-                 vddrfa1p8-supply = <&vreg_pmu_rfa_1p7>;
- 
--                qcom,ath11k-calibration-variant = "LE_X13S";
-+                qcom,calibration-variant = "LE_X13S";
-             };
-         };
-     };
-diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-index a69ffb7b3cb884a4eeb51064cc1c8136b433f285..c089677702cf17f3016b054d21494d2a7706ce5d 100644
---- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-@@ -41,8 +41,15 @@ properties:
-         * reg
-         * reg-names
- 
-+  qcom,calibration-variant:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description:
-+      string to uniquely identify variant of the calibration data in the
-+      board-2.bin for designs with colliding bus and device specific ids
-+
-   qcom,ath11k-calibration-variant:
+   qcom,ath12k-calibration-variant:
      $ref: /schemas/types.yaml#/definitions/string
 +    deprecated: true
      description:
-       string to uniquely identify variant of the calibration data in the
-       board-2.bin for designs with colliding bus and device specific ids
+       String to uniquely identify variant of the calibration data for designs
+       with colliding bus and device ids
+@@ -103,7 +110,7 @@ examples:
+                 compatible = "pci17cb,1109";
+                 reg = <0x0 0x0 0x0 0x0 0x0>;
+ 
+-                qcom,ath12k-calibration-variant = "RDP433_1";
++                qcom,calibration-variant = "RDP433_1";
+ 
+                 ports {
+                     #address-cells = <1>;
+@@ -139,7 +146,7 @@ examples:
+                 compatible = "pci17cb,1109";
+                 reg = <0x0 0x0 0x0 0x0 0x0>;
+ 
+-                qcom,ath12k-calibration-variant = "RDP433_2";
++                qcom,calibration-variant = "RDP433_2";
+                 qcom,wsi-controller;
+ 
+                 ports {
+@@ -176,7 +183,7 @@ examples:
+                 compatible = "pci17cb,1109";
+                 reg = <0x0 0x0 0x0 0x0 0x0>;
+ 
+-                qcom,ath12k-calibration-variant = "RDP433_3";
++                qcom,calibration-variant = "RDP433_3";
+ 
+                 ports {
+                     #address-cells = <1>;
 
 -- 
 2.43.0
