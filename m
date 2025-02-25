@@ -1,86 +1,91 @@
-Return-Path: <linux-wireless+bounces-19390-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19391-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38391A4348B
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 06:35:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E73EAA4348F
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 06:35:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A59797A9D13
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 05:34:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EFF5189CEE5
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 05:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFB11B7F4;
-	Tue, 25 Feb 2025 05:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C9E2561DE;
+	Tue, 25 Feb 2025 05:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="grf/fUEi"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="x3Ko8wH5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECB92571A3
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 05:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558092561C9
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 05:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740461696; cv=none; b=i/HbaXkl1f0xAg2EBj2Tlfocau1sPhvQq4hY1IxWLwFpnToycAoUHqd3VTfRS2OcPbL/gii88dDnX3Ytqv3ImoAFLJlsUCvxlGA0dIC2dsBPWhHsdqC6Ch8MhcH4bQ5TAcTRFyEt5lRsutGco2Ta+fCAygC4wkMml0B8V9TXvAk=
+	t=1740461699; cv=none; b=E/jOMq0AYk6+HpBAj+cmMUP0t/Ncyf6JFo5H56yx3Q2+5Ujku9LfEzAiYFHOB5tPImZj3bBa0dG0S6kewqRCMalV/BBWbU73FCLqsaMKdvzBKE6uI7B6UkHHTgVh36ujgvP+pu5nnGOtstqLPql+UGF+4n1dV4QH1eNttAqFXsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740461696; c=relaxed/simple;
-	bh=mmG+LHSr5wQDq0zrxPGlfjS43+NwfjSyToS3LM1GNsI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=E2SSDZuz0+gzzHHgpYdW13fPQB3CgVbtlodmyic9SVatkmSYZn2x2K/co7L1cMkA90B10vEK7B4Gr034q51BkMWrgAwvhCgtnv4HPvVXz4qzgbYNe9nGakfvM0vzE/U89Db7phz4Q/jLAiKGxNOSA6zHEua4TSyorPuTKzW6uYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=grf/fUEi; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1740461699; c=relaxed/simple;
+	bh=LdVk8C3dYDmty4gxkSuuGDDu8zkpk1p5J4v3VnCRaC8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FltPnofc+0noUg0TFZiEYARbcYMQiQyY5nGgdvbpFKwKTIxCAgZVicy+V9hFFlI+lABXwImDJyPhZ8W/jOCyxy3eNTTcgy33OGf8IkRE/KtXwWzIY8l2WbPXLv5nQZtEqpaNRkh50nYxJd91W5gnvn4oHfZ13gRPXzTyuQYTqrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=x3Ko8wH5; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2211cd4463cso104061435ad.2
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 21:34:55 -0800 (PST)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2212a930001so28602935ad.0
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 21:34:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740461695; x=1741066495; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=COFBXMHPskIsoIit0YmVND2fstaviJl+t/pdbf0Dt6Q=;
-        b=grf/fUEijyXm7cdF4rfiALoJX1KlFNYcQRFjraipbtaOVT7Zu44yZFIvONOrAcW3S3
-         WWpv7LPztVoEKntFjoyIRNs7HaEw4hpYVFPrKlQGYHS4EsFMg0Hmpacr/Ko/x4OGMZCT
-         X9SaYfwKxv45WZdcRjNmYdCVn06LwCvuPVfoduWNHxwCTBP9V/nriGCajgOCB6wUG34v
-         fuoMmN/ZYonehhZiFtkX9wOd/ERkv0dnbSbWgsnKa+cx2GsXnCUsyIZfO7ECi99atoB1
-         +e8rDhqE6SNRGVFy8HmVzEtdpnHU7H7cNlEiAI0Wid/9lOyHZ44hAruuxC+o23bxDIYo
-         ZRbw==
+        d=linaro.org; s=google; t=1740461697; x=1741066497; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Alp/86Yl8dv5OV9OIvJcS/PHlfX7ulpzzZhhzjQV/Tg=;
+        b=x3Ko8wH5y0SutybJLEXTKcO6rncamISSQugXgiyYV8h1OhRXzX04W1KSZedh6vrDDX
+         vFYQ7akej4z3CMCMzKdy/JZ3vFzn74sm+itk/OuUnhnVTRSm5FW/kgjE9r1P4qlO7slJ
+         nROorqbMhqGGMQhoHIAFyt69aojvB7/nLHgPefsx4kMCaDGV0hUpPG03d+8Xesllh8A0
+         JnRLsdTrSWrOtAZcdK5CG8+RA3DGxfmJkEajy3ngjHTIJ5tlqJ+S988BKXc+zqgDJe1M
+         +xTm8KHRZasiC4fpJ09YtS/CKire6fSv/n1uhSjnAW67ukdhmTVL1KcwT4y3L4i6ykUb
+         O/kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740461695; x=1741066495;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=COFBXMHPskIsoIit0YmVND2fstaviJl+t/pdbf0Dt6Q=;
-        b=L416OUjHSwenjIQbuHIAOkNeAQsxNp4VZpzNqf97zFXS7Y9BWTEl8+LmSBEyihhtg8
-         3dnANPmLu2uNJkSjA9MpL85uyub6RIG1jMuI36byuEmjegB37qlepCnkrOENrxXrf2wV
-         EgPMosI++ZoTsnlFKAbuks+PWkdnpD9AiIg9OKtQVhlK5wM3SsduQ01NjQ7VeccaqLGy
-         WRtMb1ScBctc0RqsZSuItVtzIz1ANX6bVh0oqYBLr64E44S5DtRDlhQ7gg4V5qb1VCdz
-         qcCTkFyzGFofaBdIWsgkAmzlYi8w+NXkD0RkC16wv0PFqR/0+bzKuMM7KAzWn3j38QN8
-         w1Kg==
-X-Gm-Message-State: AOJu0YyfLhJe41CWY0M5BDzA2ljMesps6CaYpKUCnYFPDkbdBSpKpL6W
-	6REtoZCSVkIzGZNJvhYtwGdvNoLe9xGj5abHYZh50+3Ugd26Gw9cZL32YZR4VvIETsdxi/3PVag
+        d=1e100.net; s=20230601; t=1740461697; x=1741066497;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Alp/86Yl8dv5OV9OIvJcS/PHlfX7ulpzzZhhzjQV/Tg=;
+        b=txbY9LIcLYDbPHVlGJLvZwW9qrminrKVRMz6n560ninpjrfwbBY9FW/NcqWD63FO6Y
+         DQ91mSnpPPI9ugTI6qXpyRI+DcHqMaDQMBCtCiA/CzTXzRjAsalLQ6tnl1gHIRmnMvjL
+         W6klLdoDWHHbFOnKIOAZNbbye7tM99Xnk+OUmYM8+iVDQT8Pg23YGi0CgcZnHX5QMhx3
+         VQ/1NQCyVssFLacX0qP9HP74D1CvVQ3AL+UjcH6q6WjRRoJJ5MVTVHTtQyBGFmmfXui2
+         vVY5smNC0IszGqQE0Y7L0Mt3nD44OWgl5Dc+UE3IpPU5Hm0eJ2E7iCoIJXmTbsuAuvIE
+         Gt4Q==
+X-Gm-Message-State: AOJu0Yxv/G9apNcfu2iBRpBKwptR9TDc3bZBmCVzHKV6t2HIhIKSCtMR
+	g4QKb3HDOFEi2TLp/2zlxLDyTe2NLVmx/b+Ycn++mOLkPCMUhdxM+wb3/LOhjwSUMaW7ejcvH3w
 	=
-X-Gm-Gg: ASbGnct4U3j5FuF1cE3j3Bvro6wQfwI+POTbqMjzFPrhvOPAPKLwAlOok5uoWC4es6Q
-	g1bv2Mdz5+lBk9Bvs9BcjuCIe0a9NQjfspXBVk1uW5bHlFSOu08fktZ70i8iJbVE3AKzYDJZ/fe
-	C2YJqo53htM6NDGwtti4Ul5vV2rFwFgt3fsklmKpZrs/GELfaBkPDN4EDsaEgKpvcfyludrJIMV
-	spCRb+p3/mncWbM/Pb/lsSqp7SoW9ZLay6XjnX4iPwXOKFboIqTbcktg7UV7WVEsS0LXfzCaErO
-	E7DWoSbGWMXocyixxaj76+iQ2BdQ21wrjYpsnZmymErJqywra+SZcw==
-X-Google-Smtp-Source: AGHT+IEcKJ/dXx95j55XEtJ2Yr2v+/ULOkI6H8gKJVMhyZk/j4JRz3SW0id9uRnQMpLfQLa1g1/udg==
-X-Received: by 2002:a05:6a00:228c:b0:730:8ad5:90c1 with SMTP id d2e1a72fcca58-73479101286mr3756467b3a.14.1740461694618;
-        Mon, 24 Feb 2025 21:34:54 -0800 (PST)
+X-Gm-Gg: ASbGncs730SkKxx32X8WMFkaXmnMTdOe5MpRCCk40IcMEhgVHJyd0u16fnUH4tN4QtS
+	w5jhDVrjGD1k1gJ4eutjlIgGHe8kfgI7Djvvl1QO5NR30K4gZ+zQQZCI53SGtg2GHWBHE6Qum3V
+	voRtVdny10ObN+Es2aoO2EOzKdcGgtgMfPLj6K9tQBQjeWmkqEXbTXC17YbKCQz13VBZljsqBsB
+	6Mt+38yNDC69Xh4vS+tOLd5Ek0UIC+YZMddsG6OZy0LGkU9J0wwMqB07ylaFvjkyGifzEDmAzMU
+	BGpDl/4Zlq8UbPoOlJx60cIorTc4CdL4enPJHgiv99IXwnZOJHWOFg==
+X-Google-Smtp-Source: AGHT+IHmuD1aWu/v1EBbeaPKC/rVSjBidCILD+wsg56kWI0wnKQ941LQEdS/f9KRvfrcz7v3nfAKMw==
+X-Received: by 2002:a05:6a20:a103:b0:1ee:dcd3:80e6 with SMTP id adf61e73a8af0-1eef517dd67mr30705278637.0.1740461697436;
+        Mon, 24 Feb 2025 21:34:57 -0800 (PST)
 Received: from localhost.localdomain ([36.255.17.214])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7347a7f9af3sm582101b3a.110.2025.02.24.21.34.52
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7347a7f9af3sm582101b3a.110.2025.02.24.21.34.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 21:34:54 -0800 (PST)
+        Mon, 24 Feb 2025 21:34:56 -0800 (PST)
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: jjohnson@kernel.org
 Cc: linux-wireless@vger.kernel.org,
 	ath12k@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	ath11k@lists.infradead.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH v2 0/3] wifi: ath11k/ath12k: IRQ affinity fixes
-Date: Tue, 25 Feb 2025 11:04:44 +0530
-Message-Id: <20250225053447.16824-1-manivannan.sadhasivam@linaro.org>
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>
+Subject: [PATCH v2 1/3] wifi: ath11k: Clear affinity hint before calling ath11k_pcic_free_irq() in error path
+Date: Tue, 25 Feb 2025 11:04:45 +0530
+Message-Id: <20250225053447.16824-2-manivannan.sadhasivam@linaro.org>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250225053447.16824-1-manivannan.sadhasivam@linaro.org>
+References: <20250225053447.16824-1-manivannan.sadhasivam@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,35 +94,49 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+If a shared IRQ is used by the driver due to platform limitation, then the
+IRQ affinity hint is set right after the allocation of IRQ vectors in
+ath11k_pci_alloc_msi(). This does no harm unless one of the functions
+requesting the IRQ fails and attempt to free the IRQ. This results in the
+below warning:
 
-This series fixes a warning from kernel IRQ core that gets triggered in the
-error path of QCA6390 probe. While fixing that I also noticed the same issue in
-the ath12k driver, so added an untested patch for the same.
+WARNING: CPU: 7 PID: 349 at kernel/irq/manage.c:1929 free_irq+0x278/0x29c
+Call trace:
+ free_irq+0x278/0x29c
+ ath11k_pcic_free_irq+0x70/0x10c [ath11k]
+ ath11k_pci_probe+0x800/0x820 [ath11k_pci]
+ local_pci_probe+0x40/0xbc
 
-Finally, updated the irq_set_affinity_hint() API in both drivers as it was
-deprecated.
+The warning is due to not clearing the affinity hint before freeing the
+IRQs.
 
-- Mani
+So to fix this issue, clear the IRQ affinity hint before calling
+ath11k_pcic_free_irq() in the error path. The affinity will be cleared once
+again further down the error path due to code organization, but that does
+no harm.
 
-Changes in v2:
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
 
-- Instead of moving the affinity setting, cleared the affinity hint in the error
-  path before freeing the IRQs
-- Rebased on top of v6.14-rc1
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>
+Fixes: 39564b475ac5 ("wifi: ath11k: fix boot failure with one MSI vector")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+ drivers/net/wireless/ath/ath11k/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Manivannan Sadhasivam (3):
-  wifi: ath11k: Clear affinity hint before calling
-    ath11k_pcic_free_irq() in error path
-  wifi: ath12k: Clear affinity hint before calling ath12k_pci_free_irq()
-    in error path
-  wifi: ath11k/ath12k: Replace irq_set_affinity_hint() with
-    irq_set_affinity_and_hint()
-
- drivers/net/wireless/ath/ath11k/pci.c | 4 +++-
- drivers/net/wireless/ath/ath12k/pci.c | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index b93f04973ad7..eaac9eabcc70 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -939,6 +939,8 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
+ 	return 0;
+ 
+ err_free_irq:
++	/* __free_irq() expects the caller to have cleared the affinity hint */
++	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
+ 	ath11k_pcic_free_irq(ab);
+ 
+ err_ce_free:
 -- 
 2.25.1
 
