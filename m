@@ -1,135 +1,111 @@
-Return-Path: <linux-wireless+bounces-19393-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19394-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88339A434A1
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 06:36:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6E8A4354F
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 07:32:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09BA3189CD94
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 05:35:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C9D1173B0C
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2025 06:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24D4257423;
-	Tue, 25 Feb 2025 05:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C8925A343;
+	Tue, 25 Feb 2025 06:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XCzWZ9Dp"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ATVTdfAo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3EA17E4
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 05:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0B425A34F
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2025 06:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740461704; cv=none; b=cVYHfbSFTg7I9+uZusi1aVmf85XbNdJF7/jQP06MpD9mUcunPAgMHrM4hrCnB9JpcKUQRQUf40AGTUo/jsifLMZsXLBFWcfSRXvttZYpQLkHXI5jpdGMmQy5+KAHK5U5hXjt0jaW9SPuQryO/RkPL34t6iUdzBssCyWDa597O3M=
+	t=1740465007; cv=none; b=IaD52T/69mGvplCTuekretlzzjARayOGwOOPOgkRe0wYcR0nLVX/QSENLJpmrwrfZbCtE2pzj+mGFle0kj6hlKcVmxIKtzDc1LpKX/EmIR3m9y/n/p76g7MFAyr0sOY3G7sYNYAslsn/LnVp965jvDaTJxQWhMvhdCA5HUBocYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740461704; c=relaxed/simple;
-	bh=m0ENAYkK9uSzSQgO0nychnr6WiQxO2uAemDG45GIDpA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Sne9qBlpYXylfD8yF2WdmPfZNdMH8VNmErJsuAbg3awkNT1+jXed1OL79JWtMqhKXFE6N5L2Alf6XTICC4lNtXjf5dpcIJqUKISPKKL6pEGBVkavQck5lKs4j3SV3zJalhapmYSHaYFaBYh33xDpVmsFBCr07lxKjRoPAk7MZKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XCzWZ9Dp; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-220f4dd756eso107622515ad.3
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 21:35:03 -0800 (PST)
+	s=arc-20240116; t=1740465007; c=relaxed/simple;
+	bh=RYfyD32sRASx29xi497H3XJdDF3XXVn40eOIf2rnFm0=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=i2CSn7IoaqRkZs6NgXB30D1fTDv9nFt6aytQCVdP40jTtnrOy5Xrnaxv369CXzPQFi7iNbaR6SsFZYs9Du7c/oA7BTxbN2G27he5fMRCjVGtjZsuHKf0fEPWOPSj+ZdnG/qU7Jnb1kPUIqDEksKvawW6o1tH0s38E7lrZOM5SC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ATVTdfAo; arc=none smtp.client-ip=209.85.167.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3f3eade4116so2262239b6e.0
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2025 22:30:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740461702; x=1741066502; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AYmnWqCfl4BTw5dpDwtuCHljGqr5uXG7tQyflbiZ1TI=;
-        b=XCzWZ9DpJfpUhieCl8OvFY+EfDWk/cJL0RAhHrDsUD6/YRxTBeZuxaGFvf3jE+6Y5R
-         7wWgYtsEeo1msxdc01+ZFx3K9u5RsWKaVV0Qt3jdT5BVYVfGca8uKJaDZ+qF/d5Sq02x
-         feJLwKbPfzUOnJ1XkYpIkoXfn7QB0kQ3fEkx+VfPlLWJfIzkcX7Ncz1sT92/3fEtzH9N
-         3F171KxK+622g0DovPjnksnVGQVaHSZac0pwrXnoKHi1HMnWkPcD0X6X6MKyYX5WTmoZ
-         PNYq4DfaFMTwlh7xzyxmwDME80ibQ10X/X0yyIfYOcL1UINGP1gf6WwX0/iTV4fR+gsJ
-         aMRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740461702; x=1741066502;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=broadcom.com; s=google; t=1740465004; x=1741069804; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AYmnWqCfl4BTw5dpDwtuCHljGqr5uXG7tQyflbiZ1TI=;
-        b=cyJ16hKOPee9biZ85yWH5ucfBjGGWudS3klO278F8Z3GC89gU5E/xKtoSbVee8Vftv
-         n9Omiq+ycO3ZMi3wJfynaUrEVenFZey05mmhLo+GkhWiv8PbfNIJ62qm4UVgt8eNBncE
-         7Eu/eiIlWIimQD+aPrvslqAJiJPWYY94J5+nYUlNYiz9K8vBBsJQTYElH1az/lOmgc1D
-         gZKe8yPU6Hl5VUVZhR0bKzTr+hROzgFvv+oZt3aW5+8Ph3Za/8ESw615VKWpDegu9RSG
-         PV7BhExl9ZsZCMgrdJYk6C8Xc0KPFamjJ45F25PpYkNcdy8qh2owBr/BSBY2/7g8OjXo
-         Jf9w==
-X-Gm-Message-State: AOJu0Yx5TPyvedRmbwyV+ftrzjPtMsjDAm5MtzpgA8HtzNHWSZ4owROJ
-	OGFkUYheTab80oTO+3zmZ511LzNh3RFMis0vFEuMyv4cxgpA1xIj5qypw61uUA==
-X-Gm-Gg: ASbGncseTqXbdAo4ax1LpZrMzdr+PEfPMlQnZqxZzPUf2MVdXddCYRTyZYuMZJ7UcC4
-	KzS1usXP1fItCGb6QrcCmekZVvbXJYTXNSUd21cA+tnZI9vXB6Ra0zJA1j1yq29roSSU0Sb7W02
-	BfFKYjlbXzq6LZt541Jn1KnmYZZ/dWjk3PiO29bRQWpNws1t4mCtutl9uiRpek1tqXYGv/+QMw7
-	T6SlVrep0+pmhipjoRFCaPYowlcbHG1EBmJ9gZ25oDXZvXMD9QyRFYjnwX84c6CkrSi/jEVkNr+
-	+baWKIdZPLx5b+Yh0Sd9mszF3QoxTG1ZFOf6ztJSDhxBKXSbNo3NlA==
-X-Google-Smtp-Source: AGHT+IEHljzwJD36eza1aeKcaU2dWlFSTtvnEQrg+fmzOtR5w21SUg7QvbAbtZaZAXH1YQPPhdGwlg==
-X-Received: by 2002:a05:6a00:2e9c:b0:730:8526:5db4 with SMTP id d2e1a72fcca58-734790f8cfemr3218117b3a.13.1740461702511;
-        Mon, 24 Feb 2025 21:35:02 -0800 (PST)
-Received: from localhost.localdomain ([36.255.17.214])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7347a7f9af3sm582101b3a.110.2025.02.24.21.35.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 21:35:02 -0800 (PST)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: jjohnson@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH v2 3/3] wifi: ath11k/ath12k: Replace irq_set_affinity_hint() with irq_set_affinity_and_hint()
-Date: Tue, 25 Feb 2025 11:04:47 +0530
-Message-Id: <20250225053447.16824-4-manivannan.sadhasivam@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250225053447.16824-1-manivannan.sadhasivam@linaro.org>
-References: <20250225053447.16824-1-manivannan.sadhasivam@linaro.org>
+        bh=4+mBAQq6Mkez/2/DMWHStf85qnBYyGFLVJqfvqnbkxk=;
+        b=ATVTdfAoZ8/xxq1ZmnjF7OLKA0Xgvb7CoBQQ87W4nCqYvgoKGF1WfWw7itwOEF/kQ2
+         qSEC712GTgta39biH0N9ptdUCZON99uEGDNtQAHraF5yqKkiQif0P3PLLx4dOpd02hU3
+         w51m7o1mLP/kdvlplhEAUBZB0iorvyx/M6eRY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740465004; x=1741069804;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4+mBAQq6Mkez/2/DMWHStf85qnBYyGFLVJqfvqnbkxk=;
+        b=bbjPZg7YU1UjFo0EG5XLrB17qPujtWDfwxfImrF2jk+lZJbeBr3Dn+lComdHB9D58w
+         ORSGo7l1IXdl6nKyG02DxzHm20qj9I0rQYklnTYk6CqHOp8iC0pyC9Q3h918/MwrSisf
+         9HvCcZaExDeu1qbhydNM17s7oVucbwbgLjNpEUciA4QDG1a9s7KfruamXBAq5X9F3wK/
+         OOpMmtuKgKPldekiJHD6E9dVdlAwCW3vq4z8Ssmzu2z29BaDrqNeqNdR196NHKbSac20
+         tBJ4rL+FYIrz582iMEs4LEvF8e9pxP1PAZVjS6s/GEQwxQnIp9ATyHYoseb3RNMWPiq3
+         gnsA==
+X-Forwarded-Encrypted: i=1; AJvYcCXicI+12UUiAKKg3ehlbQId7nPYsVfVml2JVgeFY+eICX/+Iybr9p6/bjaX+l8ZH+4L/n+eTwh2nHQGd8GO3g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGPSR+pMoF2w2JDcgVZA/LUucx8g0nQflcAVXD+4jVqiyHIca/
+	8OfR33PlEAUlgyKPAkTO0QhDff6W+E3XN4dbhlZwQvnW3t0ZUqOcLLBo3MMglQ==
+X-Gm-Gg: ASbGncuT8KqB3OeLjGADKoA2ZMuGRorl0JHaBA8S+IlMN4M+5D0SMrzCMGhy3dbFGRS
+	lBHsmqa7h8XQOEL77ZOZywm0Oz4m9MfHGBVLER8cH4U2Q3bjnjC9dFPw8VILAAqJhSEH8okv7zo
+	us9hp9BYRcZ4KFYv7ecwzJZP5tPcPupgqXyCPPVH0pBLVc4luRCPO16K0ZVh73bCADxYUD+gP9R
+	pkRNqA8L+DYBk3Tw8AOUbjxIv/vMDfJ7nxoKryyrkE+KrtPWqj7O4xWcz5lTkgH2QvqDTrZgoEL
+	Fc+qGnH977O/roICWJ8GvpdXhFyofz2BRTzgpiIZbU1za7OfL1fHZP56eRT8KDbF
+X-Google-Smtp-Source: AGHT+IFdXMbhGx7fP9GFKGlpguOITWaZZGOBzMRAt9OnDAJpr0Tf6LoZNYE9WcUj4WMJOinaxdWK7Q==
+X-Received: by 2002:a05:6808:3c8f:b0:3f3:e8e7:2001 with SMTP id 5614622812f47-3f424777eb0mr12305946b6e.26.1740465004283;
+        Mon, 24 Feb 2025 22:30:04 -0800 (PST)
+Received: from [192.168.178.74] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f541bd992bsm190300b6e.16.2025.02.24.22.29.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Feb 2025 22:30:03 -0800 (PST)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: "Kuan-Wei Chiu" <visitorckw@gmail.com>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>, <jk@ozlabs.org>, <joel@jms.id.au>, <eajames@linux.ibm.com>, <andrzej.hajda@intel.com>, <neil.armstrong@linaro.org>, <rfoss@kernel.org>, <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>, <tzimmermann@suse.de>, <airlied@gmail.com>, <simona@ffwll.ch>, <dmitry.torokhov@gmail.com>, <mchehab@kernel.org>, <awalls@md.metrocast.net>, <hverkuil@xs4all.nl>, <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>, <louis.peens@corigine.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>, <parthiban.veerasooran@microchip.com>, <johannes@sipsolutions.net>, <gregkh@linuxfoundation.org>, <jirislaby@kernel.org>, <yury.norov@gmail.com>, <akpm@linux-foundation.org>
+CC: <hpa@zytor.com>, <alistair@popple.id.au>, <linux@rasmusvillemoes.dk>, <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>, <jernej.skrabec@gmail.com>, <kuba@kernel.org>, <linux-kernel@vger.kernel.org>, <linux-fsi@lists.ozlabs.org>, <dri-devel@lists.freedesktop.org>, <linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>, <linux-mtd@lists.infradead.org>, <oss-drivers@corigine.com>, <netdev@vger.kernel.org>, <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <linux-serial@vger.kernel.org>, <bpf@vger.kernel.org>, <jserv@ccns.ncku.edu.tw>, "Yu-Chun Lin" <eleanor15x@gmail.com>
+Date: Tue, 25 Feb 2025 07:29:46 +0100
+Message-ID: <1953bcc1790.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <20250223164217.2139331-12-visitorckw@gmail.com>
+References: <20250223164217.2139331-1-visitorckw@gmail.com>
+ <20250223164217.2139331-12-visitorckw@gmail.com>
+User-Agent: AquaMail/1.54.1 (build: 105401536)
+Subject: Re: [PATCH 11/17] wifi: brcm80211: Replace open-coded parity calculation with parity32()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
 
-irq_set_affinity_hint() API is deprecated now, so let's use the recommended
-equivalent irq_set_affinity_and_hint().
+On February 23, 2025 5:44:54 PM Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
 
-Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
+> Refactor parity calculations to use the standard parity32() helper.
+> This change eliminates redundant implementations and improves code
+> efficiency.
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/net/wireless/ath/ath11k/pci.c | 2 +-
- drivers/net/wireless/ath/ath12k/pci.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+While the dust settles on the exact implementation from driver perspective 
+looks fine to me so...
 
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index eaac9eabcc70..be2791cd79d5 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -735,7 +735,7 @@ static int ath11k_pci_set_irq_affinity_hint(struct ath11k_pci *ab_pci,
- 	if (test_bit(ATH11K_FLAG_MULTI_MSI_VECTORS, &ab_pci->ab->dev_flags))
- 		return 0;
- 
--	return irq_set_affinity_hint(ab_pci->pdev->irq, m);
-+	return irq_set_affinity_and_hint(ab_pci->pdev->irq, m);
- }
- 
- static int ath11k_pci_probe(struct pci_dev *pdev,
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 2851f6944b86..9883cb2de548 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -646,7 +646,7 @@ static int ath12k_pci_set_irq_affinity_hint(struct ath12k_pci *ab_pci,
- 	if (test_bit(ATH12K_PCI_FLAG_MULTI_MSI_VECTORS, &ab_pci->flags))
- 		return 0;
- 
--	return irq_set_affinity_hint(ab_pci->pdev->irq, m);
-+	return irq_set_affinity_and_hint(ab_pci->pdev->irq, m);
- }
- 
- static int ath12k_pci_config_irq(struct ath12k_base *ab)
--- 
-2.25.1
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+>
+> Co-developed-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> ---
+> .../wireless/broadcom/brcm80211/brcmsmac/dma.c   | 16 +---------------
+> 1 file changed, 1 insertion(+), 15 deletions(-)
+
+
 
 
