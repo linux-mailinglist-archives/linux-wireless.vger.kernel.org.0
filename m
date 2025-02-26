@@ -1,180 +1,137 @@
-Return-Path: <linux-wireless+bounces-19500-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19501-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20352A469DD
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 19:34:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D5FA46A17
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 19:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93F91166043
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 18:33:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE07216D5E1
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 18:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E231E22D794;
-	Wed, 26 Feb 2025 18:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C57258CE8;
+	Wed, 26 Feb 2025 18:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EpawnAZq"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AsvBCora"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628D121CC53;
-	Wed, 26 Feb 2025 18:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A38C23372B
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 18:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740594803; cv=none; b=S4QcQLqenvCMIsGbD88oYeeQkQIxjX5ynvei6QvwPoTvQSQ28ZQkfucZzkwzjmwBd9lnUV/ByRsLqKsChpMghrEXiCDce8ZFEoHYE0/wmmd2zY/AAyRejm2i4ObQP7qH4oIaZ6/f1TTco1Zjfl/1NZuZYbTDocuW7o7xGimGtSU=
+	t=1740595711; cv=none; b=O5dz5ttZETAi2xhgJ8meFtFe/ZFynrbCV0foZuXlIl7hdeqcpy/+NslKhTx7fEwDAgzd6BK2pjQDXzJLPtkO5ahJr7EjTkiFmdiBMAkuQCys9RhIwwqLfqLE+RiwVkmmw1+NRRaTVNUj1BOg15Ut42Xfd61lZzNjKfRuXg1SwvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740594803; c=relaxed/simple;
-	bh=06Bx46w4WKqnLcEDcMImX2Rgvc4s7Az8+qGa2ZiH2i0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K38H0bpA7GUHZm+YgoSnrBVQWzcsdFAMJkRgQKd4lJWwfLmRhqQnh6Vmr8wZ8hBN7GLT/yirWstq6yPjd9m16u78NyvG6TG0X9XA+mcDlxQoJ9zdcn/BszewItxfDTlk1OZiu1O+eKHf9GYNSkGJ7gW+gfbTPs4LHb8/UKz1kXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EpawnAZq; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-22114b800f7so1069885ad.2;
-        Wed, 26 Feb 2025 10:33:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740594801; x=1741199601; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8NV8NW5Mq8hnlsfnK7VYLX7Lb9iIPf134td0bPOEzZY=;
-        b=EpawnAZq/kdSM+6C3tHt1DTf10h9jzDh+WY2mSN4+gpboVFRDEHryGA/0t+fFgfAta
-         yReRXzJB3JR+0vbRVUObb2ma49Z8CYIZmE2vyOlM6zlCAHObPMls0CzJCQwnOwy9//6h
-         QbTqMa9Lww7VGBAtrnZHZX5PGwvL7Ray5MwuuOxeGYPVmSLn8fzJJY3Td9KdkomhHoaZ
-         sZMpdDqgfL92HWT+a+Gs3UofhtamlGm/aglfBOjfC80zOLnfvqhX+wIVySV9I3IeZjkS
-         8QlHXRuEG1vzmkuNqgvtH8kONxqCOvxHHd07TjqBHF8Ebur2rNX+cbn9bq50R+IZ2Ztw
-         xEjA==
+	s=arc-20240116; t=1740595711; c=relaxed/simple;
+	bh=OoGOLMaGsNQszYB6jKm47ECCNClphzCGZMmBcwTAMHk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=BVv+hQWpRg+4s2NA8foNk9bqCsYyhBckdXw5BK1WE4/ZAKQtEI3IbbcSutLIxTMTCKJK9n6q2lilH5ptzhuFFkmOYpTT1t5tJChmtvH+PNTlHRMBpkIzG3Fd/Yljgqti9fKk+1CZVLgjbPu3dMpeiKg4lz5XCdWHHCpttbAnO1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AsvBCora; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51Q9aFSZ011847
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 18:48:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	6MLX0Q2dEhZ9snK7anZeDvn6rpn475XVQphjBDwoTus=; b=AsvBCorau3gfAbbC
+	8JLHXkXGZyh9uod1rSTe4VhpGCOhHOS+eVZ+g8UdYcodMPHN2NMcCNzG+jjCj3HA
+	SoGcVdB8W4/ZSdHBKj+X+1fOkxRQDuAV011EWuCzD4O/PcmpojAEQ/zWXPCDCL3i
+	BkeRNYGd2Nj+DYXWkDjNuqc0qF6Wyr35eMqvoEDnjtNCPf4ZXu0KuGX/HAeKm3M7
+	vDFNhoo43mTmCHrdfrnVA7sQ+6jEORPwvFBOuyGfrlE9z98TzfETDcfCma2cVJBL
+	YmYKN8W3teWVQt2A6mgSi+TnYrxHBELkd5ewB3Iba4ffp11Bi5HOnP2PqEyIfnNJ
+	YEh2cQ==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 451prkb02u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 18:48:28 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2234dddbd6fso63965ad.0
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 10:48:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740594801; x=1741199601;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8NV8NW5Mq8hnlsfnK7VYLX7Lb9iIPf134td0bPOEzZY=;
-        b=fa9Ky0jHC9BUNbJBYy171n8rC65LzlHvMMvK+s1wX+V0DsDyWjfepLwBptn1GNHtBw
-         3LeCEuDSlB4jnkAJqPJk3Q02Y9duQvHUQEI0JVgp1KlG7J9H+Ef8FRFc4dlWv32Ro/ib
-         6N3BIQDIZIfRkMrTIMAcuR20CUtp2cikehLg6jrKaDxA74im74uozY0l8L3MIIksR30m
-         nzdoBeeIK220QqUmZXiT3JtpbHpqtgh/sq2kpFGN+Ozd+UGTUYs2Z1ul4UNc+WB32NyO
-         kXdOY5pBkRNi3rLliJt9fNMDcAebPzIRqox3MTJMEN2J35ynTGf3LSDNd7Lrghe5PHzY
-         aBgw==
-X-Forwarded-Encrypted: i=1; AJvYcCU0HR1bgjQ8Jyr5IP3uaBHLHzWwGs5PgG2kstM3RITbLhLMOXa1IHoAuoY34JBTDGx4nx0=@vger.kernel.org, AJvYcCUOyJVXqU2p58b+PlLtWzqCm9M7IcWbxOpxxS07h8hn3hATQabj7vsVsjcIXNr2pUoNQYXMDAaEwB9+AkWm@vger.kernel.org, AJvYcCV0zPjq/B65QolHTSI3DwKfyUBJSbz6joMd8o0Iuol4krTiPHUYaL4JXGubdsJzGVB0GdLLuiXb9PT4Ix0=@vger.kernel.org, AJvYcCVwO1LPwYgrSVboCtdkOXZRiQgrk8Pv5snhpd7jc4VCwoZX5wiAFRLFEaCL87KbPnsADApvFYNoevjxgFGQ@vger.kernel.org, AJvYcCWIvHtg+wax6vXltb+6Q+st1agfA7oVs6RCnYIBLCKhxUpaf/NUkYYbkG0tsYQZ5UKoAZZKk2bDiCuRbys=@vger.kernel.org, AJvYcCXRB0QfiC7YSWTWesOIGgv6oEQccDVfW54p8ZnfHg5lMbQStWn1TT5Hk7YC5w0LI7vc8aVx9bntTqPhHeyu+qE=@vger.kernel.org, AJvYcCXUWnioz6RMKjH4TKMAUMuaBajfGMnSxoyPdfsQQXMGFqak9N5dFqHnZOWT2u3GwoJkN7H7M4HU@vger.kernel.org
-X-Gm-Message-State: AOJu0YwydCMtNCDxOgNk6fUwcbNc/2Rc3Y/wqwRCgZxrAlUOh3VqtBUp
-	kF+p/lUZM8X61dBCgpNOtOuMkU9RQ142YXQgxbuVqno25YYr3+YV
-X-Gm-Gg: ASbGnct5PvI/yq/DSrzSRNbuHzzfjZhdj6VpJYHouEWBeROBIar8BxS1E7W17sAUfS6
-	McZvsNqC5MZVA4LckJwjsQWNAESpux4P2dGYd3n6TPIyuB594JyIQaPgo/hTbnf4rLXYwmKg1ap
-	bvLFLUg/bgxEYjdyMh4ZbsURp+xqoZlqaeEY66Me03JdiSL5bJJsRMCg39JlR8Lf09ECx2u/y1N
-	FJBSXBp7ohcQz/aLyc8aEO8ybQbxoa1Oawv5rPCAGj0LDsnfWWTxykUZoXCSaSRDJmnur01iksG
-	az2dMhbM4tSeMhdDPt1rAa2ejDEvE0kKQ8EFaeWAKAZxfZpFMw==
-X-Google-Smtp-Source: AGHT+IEhO/8zynHAj/XQ8CfYcqOsDet7/XXIGYhA3zqO2mHTqzuioBsUax6Pz3NWu+JgRkwDnM6ajg==
-X-Received: by 2002:a17:90b:2d88:b0:2ee:c918:cd60 with SMTP id 98e67ed59e1d1-2fe7e33d442mr6780868a91.20.1740594801403;
-        Wed, 26 Feb 2025 10:33:21 -0800 (PST)
-Received: from localhost (maglev-oncall.nvidia.com. [216.228.125.128])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fe825eb82fsm1917776a91.32.2025.02.26.10.33.20
+        d=1e100.net; s=20230601; t=1740595706; x=1741200506;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6MLX0Q2dEhZ9snK7anZeDvn6rpn475XVQphjBDwoTus=;
+        b=i6ti7jj17pHm8KmSZBGiN2FRFa4/2uU1ZJXrkZm81M9yWTHBjgSjgC5XbmjW+qORGv
+         wbqf9/X/B+guL+n72YtinQZK1N5zDtJVhOaY0vy45fGqNzA3l0nASPgbDItHhvgl45x0
+         94e5cxc2vhnpjWJevefxiGaiSPnyiiQmrI4lREGPmTSBJT9tn4Y0iQMMu9okrvBl7Nef
+         r16C0T7HQ90DTtIjYfMyb81G56B8BpDsOItzXvV5DzU8vLshWU99+Oqep8noilAFc8Lf
+         EOTqFqwwux3aaktyqC1EAM7ilzckinES3GCUu2Cb2d5N5Yi1xGgrtWDZqfG/GiqqkTjH
+         ed3w==
+X-Gm-Message-State: AOJu0YxGQ+urTXbcs/51vigmWGinnzJI56x9au1WdLFi0yD5uPPATx7F
+	WCvERXtqhbqA/K2f/+UGTv1pr00EM9v/U/a6uPt6+E95cdSKP7j5tS10Yu0Y4afm647M/A/rdfM
+	W7db1QCOBjzZ43C3k8l3Mrb1IfToJhIWWjDU8YsymVN31kE2T9ahnvwTbmtcrZaBl35HwCuKaoA
+	==
+X-Gm-Gg: ASbGncte9XAksWBs6PKZtDOLos7tA13BI0DpraZqldA82ueaEyAEtlT+R9Dg8Q+o5JY
+	AGN0YS41NDjJnX9S336uB7jP75DfRMo2nbm/jdARDGzo1tDlLCanSDHk64Ta5KfSB1m7iVeR9Is
+	l4mdZ3cKkpYsnGnKx1kL1pLXNj5hApAV1wus1NX1bZvbxIzsSx2uYhCMmft+oETy2FfVNPnAeJl
+	z83BiMJEl4xZ+9XNBQkDYs/K1BEW4HMsrGIakFvP0dBmlhGLPh1v3f7uyd6x86YPco+DBcGl1JR
+	lXw4ZtQ81nhNtyBa7YwnKUIrRaDd8biHLfGYBxwjbx90Ovs6gBMo
+X-Received: by 2002:a17:902:d4d2:b0:223:3eed:f680 with SMTP id d9443c01a7336-2234b05ebcamr5375275ad.18.1740595706608;
+        Wed, 26 Feb 2025 10:48:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFQ15Vf44+Aee27H94lto+wJ2ly/0QZaUFoOURT9xRzc3vn7iSFG3Y4N/butAeJ8iwsmZSAWw==
+X-Received: by 2002:a17:902:d4d2:b0:223:3eed:f680 with SMTP id d9443c01a7336-2234b05ebcamr5374225ad.18.1740595704725;
+        Wed, 26 Feb 2025 10:48:24 -0800 (PST)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7347a8393ffsm3932214b3a.170.2025.02.26.10.48.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 10:33:20 -0800 (PST)
-Date: Wed, 26 Feb 2025 13:33:18 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, jk@ozlabs.org, joel@jms.id.au,
-	eajames@linux.ibm.com, andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org, rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-	dmitry.torokhov@gmail.com, mchehab@kernel.org,
-	awalls@md.metrocast.net, hverkuil@xs4all.nl,
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-	louis.peens@corigine.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
-	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org, hpa@zytor.com, alistair@popple.id.au,
-	linux@rasmusvillemoes.dk, Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se, jernej.skrabec@gmail.com, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-	oss-drivers@corigine.com, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
-	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
-	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: Re: [PATCH 02/17] bitops: Add generic parity calculation for u64
-Message-ID: <Z79ebv630yuNOJKV@thinkpad>
-References: <20250223164217.2139331-1-visitorckw@gmail.com>
- <20250223164217.2139331-3-visitorckw@gmail.com>
- <Z7zIBwH4aUA7G9MY@thinkpad>
- <Z73FxIv353lbXO3A@visitorckw-System-Product-Name>
- <b5236ae4-7ebe-4a88-bbc9-3b9b3374de53@kernel.org>
+        Wed, 26 Feb 2025 10:48:24 -0800 (PST)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: ath12k@lists.infradead.org, Roopni Devanathan <quic_rdevanat@quicinc.com>
+Cc: linux-wireless@vger.kernel.org,
+        Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
+In-Reply-To: <20250207060005.153835-1-quic_rdevanat@quicinc.com>
+References: <20250207060005.153835-1-quic_rdevanat@quicinc.com>
+Subject: Re: [PATCH] wifi: ath12k: Improve BSS discovery with hidden SSID
+ in 6 GHz band
+Message-Id: <174059570392.3119794.15041194806483744481.b4-ty@oss.qualcomm.com>
+Date: Wed, 26 Feb 2025 10:48:23 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b5236ae4-7ebe-4a88-bbc9-3b9b3374de53@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0
+X-Proofpoint-GUID: X1ovbNx5IBmnusaARTaQsfopxy8cHVMg
+X-Proofpoint-ORIG-GUID: X1ovbNx5IBmnusaARTaQsfopxy8cHVMg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-26_04,2025-02-26_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
+ bulkscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0
+ mlxlogscore=695 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502260148
 
-On Wed, Feb 26, 2025 at 08:14:14AM +0100, Jiri Slaby wrote:
-> On 25. 02. 25, 14:29, Kuan-Wei Chiu wrote:
-> > > +#define parity(val)					\
-> > > +({							\
-> > > +	u64 __v = (val);				\
-> > > +	int __ret;					\
-> > > +	switch (BITS_PER_TYPE(val)) {			\
-> > > +	case 64:					\
-> > > +		__v ^= __v >> 32;			\
-> > > +		fallthrough;				\
-> > > +	case 32:					\
-> > > +		__v ^= __v >> 16;			\
-> > > +		fallthrough;				\
-> > > +	case 16:					\
-> > > +		__v ^= __v >> 8;			\
-> > > +		fallthrough;				\
-> > > +	case 8:						\
-> > > +		__v ^= __v >> 4;			\
-> > > +		__ret =  (0x6996 >> (__v & 0xf)) & 1;	\
-> > > +		break;					\
-> > > +	default:					\
-> > > +		BUILD_BUG();				\
-> > > +	}						\
-> > > +	__ret;						\
-> > > +})
-> > > +
-> > > +#define parity8(val)	parity((u8)(val))
-> > > +#define parity32(val)	parity((u32)(val))
-> > > +#define parity64(val)	parity((u64)(val))
-> > What do you think about using these inline functions instead of macros?
-> > Except for parity8(), each function is a single line and follows the
-> > same logic. I find inline functions more readable, and coding-style.rst
-> > also recommends them over macros.
->
-> Not in cases where macros are inevitable. I mean, do we need parityXX() for
-> XX in (8, 16, 32, 64) at all? Isn't the parity() above enough for everybody?
 
-The existing codebase has something like:
+On Fri, 07 Feb 2025 11:30:05 +0530, Roopni Devanathan wrote:
+> Currently, sometimes, the station is unable to identify the configured
+> AP SSID in its scan results when the AP is not broadcasting its name
+> publicly and has a hidden SSID.
+> 
+> Currently, channel dwell time for an ath12k station is 30 ms. Sometimes,
+> station can send broadcast probe request to AP close to the end of dwell
+> time. In some of these cases, before AP sends a response to the received
+> probe request, the dwell time on the station side would come to an end.
+> So, the station will move to scan next channel and will not be able to
+> acknowledge the unicast probe response.
+> 
+> [...]
 
-        int ret;
+Applied, thanks!
 
-        ret = i3c_master_get_free_addr(m, last_addr + 1);
-        ret |= parity8(ret) ? 0 : BIT(7)
+[1/1] wifi: ath12k: Improve BSS discovery with hidden SSID in 6 GHz band
+      commit: 27d38bdfd416f4db70e09c3bef3b030c86fd235a
 
-So if we'll switch it to a macro like one above, it will become a
-32-bit parity. It wouldn't be an error because i3c_master_get_free_addr()
-returns an u8 or -ENOMEM, and the error code is checked explicitly. 
+Best regards,
+-- 
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
-But if we decide to go with parity() only, some users will have to
-call it like parity((u8)val) explicitly. Which is not bad actually.
-
-> And if not, you can have all those parityXX() as inlines as you suggest, but
-> also provide a macro such as the above to call (optimized) parityXX() as per
-> datatype len.
-
-Yes, if we need fixed-type parity's, they should all be one-liners
-calling the same macro. Macros or inline functions - no preference for
-me.
-
-Thanks,
-Yury
 
