@@ -1,101 +1,136 @@
-Return-Path: <linux-wireless+bounces-19472-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19473-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D0CA4590C
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 09:55:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155EAA45921
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 09:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 735641889F5F
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 08:55:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A8473AAD12
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 08:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFADB22424E;
-	Wed, 26 Feb 2025 08:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0031E1DF6;
+	Wed, 26 Feb 2025 08:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="T6AYdOyq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qB0nVSxA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474B1258CC0
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 08:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56841258CC6
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 08:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740560061; cv=none; b=YFU5LSqe/Zz147/f75VwllDvp0rmvebHZ1NR7q2r9D+6GDhfd+tc9ngpFNlaIaNQDZm9pYOJ2QrK/ZU15DEYT0/jqM9grWmPQzmjeEXwMlJ+8u/D4HQE6sdy3djdEShDqbq/3ZjFDF0DH0Rci8PnX6XiFx5g9l6ZgVqmHH3DGN4=
+	t=1740560312; cv=none; b=DD4RkGVKyEXZDhoALp75KU+AZocW9voFHoybtmBuzIMf3smEgxYG6pPM6zu3NoKyVO8ANwun5wQMBK/8Wt4Td+S3at3P6hX4hAMrnK5IsBEs/vsXElWaqCUEj5NYKvWyORGVzJBfx3jU1dyto6VYylDIqrLNdYiTiomoSJLSp6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740560061; c=relaxed/simple;
-	bh=Ya7r0FNLiVcmazO8mWhrA+bQ+hKKnFyNdmWwCuQhQho=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KuyZZ59AHO/Lps/C2pSb2HUlbh8Q3kgDlY1Gf969PNQZMrhB2X7yo8M2VwHv5bn8QPqSPqaF7XmGijDs9c37omshPTclGKwF/9p4BqRlB/fD4VHDsHtpLRI9VXsgxjS3aFLDmaYbamDzETx0yODfs85OT+LQLgnsAzlaPPD5Sgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=T6AYdOyq; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51Q8sIe353439551, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1740560058; bh=Ya7r0FNLiVcmazO8mWhrA+bQ+hKKnFyNdmWwCuQhQho=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=T6AYdOyqYPN1foEOjQ3ejSP3UW9lOUrMpHIqCdyzmV1+pAqbgDVIxwE7NiPTJpyxz
-	 C+qlZF+h2m/ka21dK+7I4k23pnUqw/QydW5ZjGJVn5qHhatvdNbzsAOkoHH1BnY/Rw
-	 efw0aZLszkXqWllyY/du1tM3jga87CCapvbtt7Ak57hhrjOdgKI/vN74FNTuIwu9y7
-	 Ck0dCefen6rTbVn658Tz4UgdKgfTU8QTVUzXm+UTPXyhp/tpvFzhU6VdV8EAGmN9gu
-	 mvQ7Gf05iXmP+R1YGa16ROgtByHrgbJYcGpkA5kx0k8jUkfK1X8Ukx/W9HGOf8JtU6
-	 UJn7bu6RW5JTw==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51Q8sIe353439551
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 16:54:18 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 26 Feb 2025 16:54:18 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 26 Feb
- 2025 16:54:18 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <phhuang@realtek.com>
-Subject: [PATCH rtw-next 3/3] wifi: rtw89: fw: correct debug message format in rtw89_build_txpwr_trk_tbl_from_elm()
-Date: Wed, 26 Feb 2025 16:53:15 +0800
-Message-ID: <20250226085315.263982-4-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250226085315.263982-1-pkshih@realtek.com>
-References: <20250226085315.263982-1-pkshih@realtek.com>
+	s=arc-20240116; t=1740560312; c=relaxed/simple;
+	bh=r+d2GDeEhk5nWbfN0eIqGCaqhybLzeYgFAkmXjneBe8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EWzUBM5NwdaZQWZJQiHoKYMNwRhGEJhU5KkCXD8/CUfMCcOcTnoyxS/PzA5FZ4bYQDFlOdi6MKEVvYYp0WVNp2S2kISWBv8PGqgUIyf8ohWGChyCKP+qCda/3iPqjJB4Q7fe05exOYzZeKHtsSugMZzoocbqKHWoe0kxu8Cu6KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qB0nVSxA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C116BC4CEE9
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 08:58:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740560311;
+	bh=r+d2GDeEhk5nWbfN0eIqGCaqhybLzeYgFAkmXjneBe8=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=qB0nVSxA1tmQwga2VQOqFxRsMUekM3hkFMfaQrvHGYM9/x0LqnraFJWriHjkPp0l2
+	 cNC8tViPwlNoIhnBHp0k6+kaw5bcRDEGLn64wf0WSqPiqDcICd0/7jls/3ChRTcRGm
+	 xTTvEUrlF54Wi2u4/rrg3gYi4zybhSCWiP932CtP6O6gqIdfCBW5Ze6bqviSGHumEQ
+	 RVIGtI1TQwq45M7/IGtJhFTy+SMUm6GSDiVCppUX0oEKJL1dOd9qwt3cSuImGltJAU
+	 0mh3P8cCT8pTodA6+6fxuFsqYBgPTLFEySqsqOT2Pl+Le7+qVByn/YityVPRrPjheC
+	 Z9SY5H6fi4a/w==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-546237cd3cbso6646596e87.0
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 00:58:31 -0800 (PST)
+X-Gm-Message-State: AOJu0YxMINENtAVuRmrCD2Y5DGPy6pAB4udv8VAIP8Cao3xdPHV9jJWU
+	3l+KYeEx/IaF/Gm9m2lF0BX7gR4EHJPHDuzayALtoIcBSE59AKUJpfYsXDeWZshrIrY6WdjkKOV
+	iku/c0dsWWtRbDQWJIBjvVtW/JPs=
+X-Google-Smtp-Source: AGHT+IF+5iYiZmdfk3MQsoUCofo2kaSekZRjfw2qLdrcNSedt79i1Hy8VAPwzBKEG496hBcpldV30BYSDaISadXxJn4=
+X-Received: by 2002:a05:6512:114d:b0:546:2ea9:6662 with SMTP id
+ 2adb3069b0e04-54851109c6emr4425914e87.51.1740560310105; Wed, 26 Feb 2025
+ 00:58:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+References: <000201db8822$98f28da0$cad7a8e0$@gmail.com>
+In-Reply-To: <000201db8822$98f28da0$cad7a8e0$@gmail.com>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Wed, 26 Feb 2025 16:58:18 +0800
+X-Gmail-Original-Message-ID: <CAGb2v65490c1m3W_1RkxJ-E7Q=3V_K8xqS2jmd6awcOdzWHXzQ@mail.gmail.com>
+X-Gm-Features: AQ5f1JooJqS3tNZUNR5r1a1dhMiVLAirpBoNgek75sBI8ivoUWypoas7gORZiNc
+Message-ID: <CAGb2v65490c1m3W_1RkxJ-E7Q=3V_K8xqS2jmd6awcOdzWHXzQ@mail.gmail.com>
+Subject: Re: wireless-regdb: Allow 6ghz in the US
+To: rmandrad@gmail.com
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org, 
+	Dennis Bland <dennis@dbperformance.com>, Ping-Ke Shih <pkshih@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The format should be "%08x". Fix the mistakes.
+CC-ing Dennis, the original submitter, and also Ping-Ke, who has done
+a lot of 6 GHz updates, for more information.
 
-Fixes: d60e73e5dd70 ("wifi: rtw89: fw: load TX power track tables from fw_element")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, Feb 26, 2025 at 4:03=E2=80=AFPM <rmandrad@gmail.com> wrote:
+>
+> Allow 6ghz in the US
+>
+> https://www.federalregister.gov/documents/2020/05/26/2020-11236/unlicense=
+d-u
+> se-of-the-6-ghz-band allows the use of 6ghz in the US namely section
+> 59 https://www.federalregister.gov/d/2020-11236/p-66 with absolute radiat=
+ed
+> power of 30 dBm for the 320 megahertz channel
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 1965a62746c2..15d6bda1fcf0 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -1099,7 +1099,7 @@ int rtw89_build_txpwr_trk_tbl_from_elm(struct rtw89_dev *rtwdev,
- 	bitmap = le32_to_cpu(elm->u.txpwr_trk.bitmap);
- 
- 	if ((bitmap & needed_bitmap) != needed_bitmap) {
--		rtw89_warn(rtwdev, "needed txpwr trk bitmap %08x but %0x8x\n",
-+		rtw89_warn(rtwdev, "needed txpwr trk bitmap %08x but %08x\n",
- 			   needed_bitmap, bitmap);
- 		return -ENOENT;
- 	}
--- 
-2.25.1
+Please don't wrap URLs.
 
+Please see the original submission [1], which explains why the power limit
+is so low. Basically, neither the database nor the kernel supports
+specifying power spectral density limits, so we can only take the
+narrowest bandwidth to calculate the applicable power limit.
+
+[1] https://lore.kernel.org/wireless-regdb/CAPRryQp6j4UKvLZCkMAuQdaxepMBETQ=
+UJ1eNULJSh3ZWXC0f5Q@mail.gmail.com/
+
+> based on this remove NO-IR flag and allow 30 dBm max power
+
+The original submission mentioned NO-IR requirements, though I did not
+find such wording. Dennis, do you have any ideas?
+
+> Signed-off-by: Rudy Andram <rmandrad@gmail.com>
+>
+> diff --git a/db.txt b/db.txt
+> index 803f1bc..bc2b4fe 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -1953,7 +1953,8 @@ country US: DFS-FCC
+>         (5850 - 5895 @ 40), (27), NO-OUTDOOR, AUTO-BW, NO-IR
+>         # 6g band
+>         #
+> https://www.federalregister.gov/documents/2020/05/26/2020-11236/unlicense=
+d-u
+> se-of-the-6ghz-band
+> -       (5925 - 7125 @ 320), (12), NO-OUTDOOR, NO-IR
+> +       (5925 - 6425 @ 320), (30), NO-OUTDOOR
+> +       (6525 - 6875 @ 320), (30), NO-OUTDOOR
+
+The database entry targets LPI usage instead of standard usage, which
+requires the presence of AFC, which is also a requirement that the
+database is unable to represent. And under LPI usage, the full 6GHz
+band (U-NII-5, 6, 7) is available.
+
+
+Thanks
+ChenYu
+
+>         # 60g band
+>         # reference: section IV-D
+> https://docs.fcc.gov/public/attachments/FCC-16-89A1.pdf
+>         # channels 1-6 EIRP=3D40dBm(43dBm peak)
+>
+>
+>
 
