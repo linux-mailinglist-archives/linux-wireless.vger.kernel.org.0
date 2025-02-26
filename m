@@ -1,113 +1,85 @@
-Return-Path: <linux-wireless+bounces-19492-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19491-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04C5A4672B
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 17:58:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B698CA466DB
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 17:44:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83BA61882D3F
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 16:50:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C77FA3A496A
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 16:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5250B2904;
-	Wed, 26 Feb 2025 16:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809C2218823;
+	Wed, 26 Feb 2025 16:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="r2a44Nfm"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="edVlc3rM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5D442A8F
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 16:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B501014EC62
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 16:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740588553; cv=none; b=eHU2dDxH+p/Wswq7efCnFZQf5NAAwjAwIJQnJ+AqP1Yt3iXnaHi63gb4FlCoKn1FEjxkSHrm5Gtqi47+D0I5oTm1QN/tGEMYgQ/ablMBnKUEVAgGwX1rW6hElHslO1WA5LyPgVSu9JhKNsIKpL0sKc45LXbI18SMlVeZQJ8+UI4=
+	t=1740588267; cv=none; b=Afx7pRzfJ0rB0k1C84oottoTkQPLGajqR7PlFXXaXXuSwLFhrzDrvI12EDGs8O7FmbaiJo8aGbPQ0DHDrBB7kTc7oYdIpU9uw30l9X6uFOzaKK3bH+x4BeMMtRb3o0fzfnAXJjkE5SEQZsFUzPiX9UFVhmlvbqUoKNZziTSwcbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740588553; c=relaxed/simple;
-	bh=3e7dVIn1p/TbysnevVyDajXRE3ZYVCJcx3x05dMdMRE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=IJe+7Xx+u7E+HIfRecx3+SkYS/Y1yu66/8nkUu0/7iN/3LvRoKzUXTie78Ldjprs/S4sMrvtyM6R2lOUeXPTNEa1vQaRrbODLFCGPek7eGG68P50yIUOiDFU0DYDlXM0GaGNiXvS+flPKaE6q8euanTd45oW62W5iyCq3UjNbYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=r2a44Nfm; arc=none smtp.client-ip=5.252.227.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
-Message-ID: <8fa3ffd9-ebaa-4db1-8d1d-ed0cb6802872@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-	s=wetzel-home; t=1740588160;
-	bh=3e7dVIn1p/TbysnevVyDajXRE3ZYVCJcx3x05dMdMRE=;
-	h=Date:Subject:To:References:From:In-Reply-To;
-	b=r2a44NfmlA6fZXxF4jwyehpD76nZzbl/BwgNFj7uwEr3MVJf3+lNsVfdjqgHwLOMN
-	 py4dI1aIpZfZOe1dRovIMk7YsQdQEqxyJphlVpuKAdteTeaplTSaIuqxBFv6M8+9yE
-	 TUo262gKvA8xOAUbEuj0MWO+Nh48/8NQdmDzLd1o=
-Date: Wed, 26 Feb 2025 17:42:40 +0100
+	s=arc-20240116; t=1740588267; c=relaxed/simple;
+	bh=bo9T8ojXtui1TXdtJPKM3TpchjaapRwHEqTXns48zrI=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pNRFV69b5G05ftna5BISPopQmUbu+Dt22baar1S9jhsxH4Px85YQNmhgXGB6b2x940DcEok9PT4CZgQevhv5rZCyZZNvExCRLyCOptnNfz3O3ytrimr9bNkFsdcaEV8ZdSedMm0QKKqPIoUdZc/kpdK94UQWggDrWr7V17L7w4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=edVlc3rM; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=bo9T8ojXtui1TXdtJPKM3TpchjaapRwHEqTXns48zrI=;
+	t=1740588265; x=1741797865; b=edVlc3rMDEawXNMx8ildINCvZLKLWJDy6GlxQ+37qeQoQBU
+	xmNlis+S9w9dFnN8Za9F6V/jYqOvrZG7ptbNxIoqoItj1H8/SEddH8O0seKvzxsNonE+zVT+xgXfK
+	MHEuqVCspFn/NM07JFnPXzeHLggptWEqmyifn+r9itcM2bhFn9YZ0ZVhNO8gWFcK8atuQC3C0BY1f
+	IY6K/2zbxD3CRfPj9jBpF7I1og0ooAy3JYzEK81cNRQq5LpdPB4rYg73JzTlXsizVmPcP4hcVmXSy
+	01tlM8QkkceaFoA0jbjpmSBStrVS/C8bbt0bIRRs8TZaJbPmnyjh6Nulo4I7NMwg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tnKWE-0000000BcUG-2J7l;
+	Wed, 26 Feb 2025 17:44:22 +0100
+Message-ID: <cced003772c7174f4b2c9bf59d1b556c25b23bce.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 00/10] Convert mac80211 to TXQs only
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Alexander Wetzel <alexander@wetzel-home.de>, 
+	linux-wireless@vger.kernel.org
+Date: Wed, 26 Feb 2025 17:44:21 +0100
+In-Reply-To: <8fa3ffd9-ebaa-4db1-8d1d-ed0cb6802872@wetzel-home.de>
+References: <20250220104426.82011-1-Alexander@wetzel-home.de>
+	 <1fa2f33a67ee1c6e537095888df44c7adeae64d2.camel@sipsolutions.net>
+	 <8fa3ffd9-ebaa-4db1-8d1d-ed0cb6802872@wetzel-home.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/10] Convert mac80211 to TXQs only
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-References: <20250220104426.82011-1-Alexander@wetzel-home.de>
- <1fa2f33a67ee1c6e537095888df44c7adeae64d2.camel@sipsolutions.net>
-Content-Language: en-US, de-DE
-From: Alexander Wetzel <alexander@wetzel-home.de>
-In-Reply-To: <1fa2f33a67ee1c6e537095888df44c7adeae64d2.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-On 26.02.25 16:37, Johannes Berg wrote:
-> On Thu, 2025-02-20 at 11:44 +0100, Alexander Wetzel wrote:
->> This series switches all TX handling in mac80211 over to TXQs.
->>
-> 
-> I really wanted to apply this, but looks like it's nowhere near ready.
-> 
-> There were a number of compiler and sparse warnings, which I mostly
-> fixed, but also testing with hostap/hwsim tests blows up completely,
-> e.g.:
-> 
-> ========================================================
-> WARNING: possible irq lock inversion dependency detected
-> 6.13.0-rc7-01678-g0d8fd15558f7 #110 Not tainted
-> --------------------------------------------------------
-> mac80211-phy0/114 just changed the state of lock:
-> 000000006c784f08 (_xmit_ETHER#2){+.-.}-{3:3}, at: __dev_queue_xmit+0xb0c/0xc83
-> but this lock took another, SOFTIRQ-unsafe lock in the past:
->   (&local->active_txq_lock[i]){+.+.}-{3:3}
-> 
-> 
-> and interrupts could create inverse lock ordering between them.
-> 
-> 
-> other info that might help us debug this:
->   Possible interrupt unsafe locking scenario:
-> 
->         CPU0                    CPU1
->         ----                    ----
->    lock(&local->active_txq_lock[i]);
->                                 local_irq_disable();
->                                 lock(_xmit_ETHER#2);
->                                 lock(&local->active_txq_lock[i]);
->    <Interrupt>
->      lock(_xmit_ETHER#2);
-> 
->   *** DEADLOCK ***
-> 
-> which actually seems to happen as a deadlock, since my tests are no
-> longer making progress at some point.
+On Wed, 2025-02-26 at 17:42 +0100, Alexander Wetzel wrote:
+>=20
+> I'll try to reproduce that. Are there some instructions somewhere to get=
+=20
+> a comparable testsetup to the one you are using?
+>=20
 
-I checked the hostapd tests with the series, it was working for me...
-But besides the kernel the rest on my testvm is roughly two years old, 
-including hostapd. AND my attempt to try the patches on my openwrt 
-router on the weekend also deadlocked after some minutes. I suspected a 
-porting issue so far, but with that I better start looking elsewhere.
+I'm just using the UML based tests:
 
-I'll try to reproduce that. Are there some instructions somewhere to get 
-a comparable testsetup to the one you are using?
+https://w1.fi/cgit/hostap/tree/tests/hwsim/vm/README
 
+my current kernel .config is here:
+https://p.sipsolutions.net/4d1a905718fa54e3.txt
 
-Alexander
-
-
-
+johannes
 
