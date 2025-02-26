@@ -1,349 +1,172 @@
-Return-Path: <linux-wireless+bounces-19460-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19461-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D644A4542B
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 04:52:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE1DA45672
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 08:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BF491754F1
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 03:52:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45D0E3AA648
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 07:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49246266F08;
-	Wed, 26 Feb 2025 03:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD42E26B089;
+	Wed, 26 Feb 2025 07:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FpNcZV1R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9xkau5H"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15593218821;
-	Wed, 26 Feb 2025 03:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BD01993B1;
+	Wed, 26 Feb 2025 07:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740541956; cv=none; b=go6eEIwLYgH7HLl8TM8s9BJLHHes3+C5HHCSQJHPqPpiDV5O53ivZNeOQ7drwJrKuExLC+EwWRyBYwrry94cCStc92xHxpNudXvd2ksAuMbt4tc5tXraAw0ELJSLJ4gQVVxNItm8Eulm/Ugw5HmsKunL3YEZoMT174C3Cq+gp0g=
+	t=1740554067; cv=none; b=O89MPQYKmIbU05RYMagaa9yF7rRBE2NK2giI4EXLOaIdfXfe2ahwJUm8mhfgqWA7o5XZnH5BEo4mOp61ES9bqhLFx8rtVx0BgP5S7GNdDfHqRnXjz6+L/Yq4d4ZccVtQiggglZ+Eh3Qfe+Pn5ryeukO9FQE/roNXKLV60WKEFBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740541956; c=relaxed/simple;
-	bh=OBm/ktjRULhvR+Dl6u2sMQDmw8mJ6M9OwWXPNkjttKc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ce/IevglD+tAZrHtOf0pMzTUn/qTKbOzrrwD9KJz9FMagEFCd68f0Wh3plQaCpJpKHonmct3y+V9xJDhrXkdyom6kQ4pA4GhJVBAHA1f69guZvPl4CGnAd+lL0sszfAQ7NR1ohE6p8lFSPYPOdp7MGBqUXvgIpoMoA1TPL1ecxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FpNcZV1R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82F3C4CED6;
-	Wed, 26 Feb 2025 03:52:34 +0000 (UTC)
+	s=arc-20240116; t=1740554067; c=relaxed/simple;
+	bh=lQkzvtRW6Jq4FuyRixXr8DUVI6AFJhoAhKyzE5400LQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ftl+Sg/WlN61ekFMAgp0leX83VZZh3QC3ZXyFbYuxeI4ewWhPH+JzNiflef39mFFAy/DNpm1kS9EpRK/TnZsx47XEAmyBAWC/Ffp1EzymADbB6BTyInjkbYUP5mbkVMKyyEUw6KaavOtWf1ja9+6EsKBQrKn/aaynhF6jYrkE1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c9xkau5H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438FBC4CED6;
+	Wed, 26 Feb 2025 07:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740541955;
-	bh=OBm/ktjRULhvR+Dl6u2sMQDmw8mJ6M9OwWXPNkjttKc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FpNcZV1Rx9gCAbniiVBT3niX4lja3lc8UTa7H47JHlJBFiNXUXSHXWlgymTeEuiIn
-	 mq5KH0gkYQS5EhsSAI8WnlOz8OD7lcyGxWyKlI1aWwBQzwoIn0gcg71Au2tWECwoDG
-	 8SS/PmWsOHdqJ3gDEIJICkDfJlQlpu4iJJphJswatwHMHIqwrD1ywVURsYvAaqkDcG
-	 M7cKR3abiwhPZ0fCOYd0Hcpe084ltQnlVRqe54EJHve4r1mr4Y/Kbe33AKTd1fvibb
-	 BPYfzE7NUagOdqcX22BkDWSw7nCw/kbHH3Zb/9TqIyP5T4AYa/P0odlH6KmSZMIeH1
-	 KtGlScGkVX8tw==
-Date: Tue, 25 Feb 2025 21:52:32 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Cc: Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ath12k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: qcom: add wifi node for IPQ5332 based
- RDP441
-Message-ID: <3iwfhcl5gmpwfiatsawwkm5qns4pmzvhcrroq236y45kklw244@6rngcplttabx>
-References: <20250130045900.1903927-1-quic_rajkbhag@quicinc.com>
+	s=k20201202; t=1740554067;
+	bh=lQkzvtRW6Jq4FuyRixXr8DUVI6AFJhoAhKyzE5400LQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=c9xkau5HstyyjAg+iCdOXFOoMRN9gnbT8mNRacDl1qqOOEr2Pq8Bc3D7hnNRKDz/L
+	 Tu9ZvDrY/wElfwtV1neqWspf8wbf4oC2L/j+OEvpjw/goqGU26MmrFZ9Oc2pJ6Hs0B
+	 72RYUhuo2JcIrJxETLtfaIqRY49WkLjZ1zEMNhnoqjDdkXTBqXJru/B9qDLncNi/Eb
+	 e2nVCZsoZ66fneV3XoE/ALeo1pAmgwoXp6eKOoa7e18dlurjsRFLv0hSmH7K3QK9sS
+	 SQbIpkVIf/syJfo7iHK93LiG8SEzI5DMNZfERkxh5iXkxNV5JkYSnyoqdg3SAM/shb
+	 3hDZQq7nH9bkw==
+Message-ID: <b5236ae4-7ebe-4a88-bbc9-3b9b3374de53@kernel.org>
+Date: Wed, 26 Feb 2025 08:14:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250130045900.1903927-1-quic_rajkbhag@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/17] bitops: Add generic parity calculation for u64
+To: Kuan-Wei Chiu <visitorckw@gmail.com>, Yury Norov <yury.norov@gmail.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, jk@ozlabs.org, joel@jms.id.au,
+ eajames@linux.ibm.com, andrzej.hajda@intel.com, neil.armstrong@linaro.org,
+ rfoss@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
+ hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
+ vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+ johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+ akpm@linux-foundation.org, hpa@zytor.com, alistair@popple.id.au,
+ linux@rasmusvillemoes.dk, Laurent.pinchart@ideasonboard.com,
+ jonas@kwiboo.se, jernej.skrabec@gmail.com, kuba@kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+ dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+ oss-drivers@corigine.com, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+ bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
+ Yu-Chun Lin <eleanor15x@gmail.com>
+References: <20250223164217.2139331-1-visitorckw@gmail.com>
+ <20250223164217.2139331-3-visitorckw@gmail.com> <Z7zIBwH4aUA7G9MY@thinkpad>
+ <Z73FxIv353lbXO3A@visitorckw-System-Product-Name>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <Z73FxIv353lbXO3A@visitorckw-System-Product-Name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 30, 2025 at 10:29:00AM +0530, Raj Kumar Bhagat wrote:
-> RDP441 is based on IPQ5332. It has inbuilt AHB bus based IPQ5332 WiFi
-> device.
-> 
-> Describe and add WiFi node for RDP441. Also, reserve the memory
-> required by IPQ5332 firmware.
-> 
-> Depends-On: [PATCH V2 0/2] mailbox: tmel-qmp: Introduce QCOM TMEL QMP mailbox driver
-> Depends-On: [PATCH V3 0/8] Add new driver for WCSS secure PIL loading
-> Link: https://lore.kernel.org/lkml/20241231054900.2144961-1-quic_srichara@quicinc.com/
-> Link: https://lore.kernel.org/lkml/20250107101647.2087358-1-quic_gokulsri@quicinc.com/
+On 25. 02. 25, 14:29, Kuan-Wei Chiu wrote:
+>> +#define parity(val)					\
+>> +({							\
+>> +	u64 __v = (val);				\
+>> +	int __ret;					\
+>> +	switch (BITS_PER_TYPE(val)) {			\
+>> +	case 64:					\
+>> +		__v ^= __v >> 32;			\
+>> +		fallthrough;				\
+>> +	case 32:					\
+>> +		__v ^= __v >> 16;			\
+>> +		fallthrough;				\
+>> +	case 16:					\
+>> +		__v ^= __v >> 8;			\
+>> +		fallthrough;				\
+>> +	case 8:						\
+>> +		__v ^= __v >> 4;			\
+>> +		__ret =  (0x6996 >> (__v & 0xf)) & 1;	\
+>> +		break;					\
+>> +	default:					\
+>> +		BUILD_BUG();				\
+>> +	}						\
+>> +	__ret;						\
+>> +})
+>> +
+>> +#define parity8(val)	parity((u8)(val))
+>> +#define parity32(val)	parity((u32)(val))
+>> +#define parity64(val)	parity((u64)(val))
+>>   
+> What do you think about using these inline functions instead of macros?
+> Except for parity8(), each function is a single line and follows the
+> same logic. I find inline functions more readable, and coding-style.rst
+> also recommends them over macros.
 
-Please run "git log --grep 'Depends-on'" to see how this tag is expected
-to be used. As you can see, dependencies on other patches in flight does
-not go into the git history, and should as such be mentioned only below
-the --- line below.
+Not in cases where macros are inevitable. I mean, do we need parityXX() 
+for XX in (8, 16, 32, 64) at all? Isn't the parity() above enough for 
+everybody? And if not, you can have all those parityXX() as inlines as 
+you suggest, but also provide a macro such as the above to call 
+(optimized) parityXX() as per datatype len.
 
-Please wait for these dependencies to be accepted before resubmitting
-this Devicetree change.
-
-> 
-> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-> ---
-> NOTE:
-> The DT binding changes for this patch has been posted along with the
-> driver ath12k AHB series.
-> Link: https://lore.kernel.org/all/20250130043508.1885026-1-quic_rajkbhag@quicinc.com/
-> 
-> v2:
-> - Dropped 'dt-bindings: net: wireless: describe the ath12k AHB module'.
->   This DT binding is posted along with the ath12k AHB driver changes.
-> - Reserved four memory regions required by IPQ5332 ath12k firmware in DTS.
->   These memory regions are also referenced in the WiFi node.
-> - Moved 'qcom,smem-states' and 'qcom,smem-states' to the ipq5332.dtsi file.
-> - Used lowercase hex values for the reg property.
-> 
-> v1: https://lore.kernel.org/all/20250128091012.2574478-1-quic_rajkbhag@quicinc.com/
-> ---
->  arch/arm64/boot/dts/qcom/ipq5332-rdp441.dts |  64 ++++++++++-
->  arch/arm64/boot/dts/qcom/ipq5332.dtsi       | 113 ++++++++++++++++++++
->  2 files changed, 176 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/ipq5332-rdp441.dts b/arch/arm64/boot/dts/qcom/ipq5332-rdp441.dts
-> index 846413817e9a..4b7a75e450ca 100644
-> --- a/arch/arm64/boot/dts/qcom/ipq5332-rdp441.dts
-> +++ b/arch/arm64/boot/dts/qcom/ipq5332-rdp441.dts
-> @@ -2,7 +2,7 @@
->  /*
->   * IPQ5332 AP-MI01.2 board device tree source
->   *
-> - * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-> + * Copyright (c) 2022-2025 Qualcomm Innovation Center, Inc. All rights reserved.
->   */
->  
->  /dts-v1/;
-> @@ -12,6 +12,61 @@
->  / {
->  	model = "Qualcomm Technologies, Inc. IPQ5332 MI01.2";
->  	compatible = "qcom,ipq5332-ap-mi01.2", "qcom,ipq5332";
-> +
-> +	/*                 Default Profile
-
-Why is the title "Default Profile", is this expected to be changed by
-someone? At what point?
-
-> +	 * +============+==============+=====================+
-> +	 * |            |              |                     |
-> +	 * | Region     | Start Offset |       Size          |
-
-"Start Offset" relative to address 0 is typically called "base address".
-
-> +	 * |            |              |                     |
-> +	 * +------------+--------------+---------------------+
-> +	 * |            |              |                     |
-> +	 * |            |              |                     |
-> +	 * |            |              |                     |
-> +	 * | WLAN Q6    |  0x4A900000  |       43MB          |
-> +	 * |            |              |                     |
-> +	 * |            |              |                     |
-> +	 * +------------+--------------+---------------------+
-> +	 * | M3 Dump    |  0x4D400000  |       1MB           |
-> +	 * +------------+--------------+---------------------+
-> +	 * | Q6 caldb   |  0x4D500000  |       5MB           |
-> +	 * +------------+--------------+---------------------+
-> +	 * | MLO        |  0x4DB00000  |       18MB          |
-
-18MB is the same size in your graph as the 1MB segment, but somehow the
-43MB segment is 5 times the size of the 18MB segment. So the graph isn't
-to scale...
-
-> +	 * +============+==============+=====================+
-> +	 * |                                                 |
-> +	 * |                                                 |
-> +	 * |                                                 |
-> +	 * |            Rest of memory for Linux             |
-> +	 * |                                                 |
-> +	 * |                                                 |
-> +	 * |                                                 |
-> +	 * +=================================================+
-
-Doesn't DDR start on a more even address, such as 0x40000000? I presume
-the purpose of your picture was to give a good overview of the memory
-layout of this system, but the only thing it added to the table below is
-a curious question about what happened to the first 169MB of DDR.
-
-
-Please omit the graph, it doesn't add value beyond what's provided by
-the below text form of the "same" data.
-
-> +	 */
-> +
-> +	reserved-memory {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		q6_region: wcss@4a900000 {
-> +			reg = <0x0 0x4a900000 0x0 0x02b00000>;
-> +			no-map;
-> +		};
-> +
-> +		m3_dump: m3-dump@4d400000 {
-> +			reg = <0x0 0x4d400000 0x0 0x100000>;
-> +			no-map;
-> +		};
-> +
-> +		q6_caldb: q6-caldb@4d500000 {
-> +			reg = <0x0 0x4d500000 0x0 0x500000>;
-> +			no-map;
-> +		};
-> +
-> +		mlo_mem: mlo-global-mem@4db00000 {
-> +			reg = <0x0 0x4db00000 0x0 0x01200000>;
-> +			no-map;
-> +		};
-> +	};
->  };
->  
->  &blsp1_i2c1 {
-> @@ -63,3 +118,10 @@ data-pins {
->  		};
->  	};
->  };
-> +
-> +&wifi0 {
-> +	memory-region = <&q6_region>, <&m3_dump>, <&q6_caldb>, <&mlo_mem>;
-> +	memory-region-names = "q6-region", "m3-dump", "q6-caldb", "mlo-global-mem";
-
-As you are resubmitting this, it would be nice to have these two
-properties wrapped (one entry per line), to increase readability...
-
-Regards,
-Bjorn
-
-> +	qcom,rproc = <&q6v5_wcss>;
-> +	status = "okay";
-> +};
-> diff --git a/arch/arm64/boot/dts/qcom/ipq5332.dtsi b/arch/arm64/boot/dts/qcom/ipq5332.dtsi
-> index 85e10b20342a..1653da89d413 100644
-> --- a/arch/arm64/boot/dts/qcom/ipq5332.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/ipq5332.dtsi
-> @@ -485,6 +485,119 @@ frame@b128000 {
->  			};
->  		};
->  
-> +		wifi0: wifi@c000000 {
-> +			compatible = "qcom,ipq5332-wifi";
-> +			reg = <0x0c000000 0x1000000>;
-> +			clocks = <&gcc GCC_XO_CLK>;
-> +			clock-names = "xo";
-> +			interrupts-extended = <&wcss_smp2p_in 8 IRQ_TYPE_NONE>,
-> +					      <&wcss_smp2p_in 9 IRQ_TYPE_NONE>,
-> +					      <&wcss_smp2p_in 12 IRQ_TYPE_NONE>,
-> +					      <&wcss_smp2p_in 11 IRQ_TYPE_NONE>,
-> +					      <&intc GIC_SPI 559 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 560 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 561 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 422 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 423 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 424 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 425 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 426 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 427 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 428 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 429 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 430 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 431 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 432 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 433 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 491 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 495 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 493 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 544 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 457 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 497 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 454 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 453 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 452 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 451 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 488 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 488 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 484 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 554 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 554 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 549 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 507 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 500 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 499 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 498 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 450 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 449 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 447 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 543 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 486 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 486 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 482 IRQ_TYPE_EDGE_RISING>,
-> +					      <&intc GIC_SPI 419 IRQ_TYPE_EDGE_RISING>;
-> +			interrupt-names = "fatal",
-> +					  "ready",
-> +					  "spawn",
-> +					  "stop-ack",
-> +					  "misc-pulse1",
-> +					  "misc-latch",
-> +					  "sw-exception",
-> +					  "ce0",
-> +					  "ce1",
-> +					  "ce2",
-> +					  "ce3",
-> +					  "ce4",
-> +					  "ce5",
-> +					  "ce6",
-> +					  "ce7",
-> +					  "ce8",
-> +					  "ce9",
-> +					  "ce10",
-> +					  "ce11",
-> +					  "host2wbm-desc-feed",
-> +					  "host2reo-re-injection",
-> +					  "host2reo-command",
-> +					  "host2rxdma-monitor-ring1",
-> +					  "reo2ost-exception",
-> +					  "wbm2host-rx-release",
-> +					  "reo2host-status",
-> +					  "reo2host-destination-ring4",
-> +					  "reo2host-destination-ring3",
-> +					  "reo2host-destination-ring2",
-> +					  "reo2host-destination-ring1",
-> +					  "rxdma2host-monitor-destination-mac3",
-> +					  "rxdma2host-monitor-destination-mac2",
-> +					  "rxdma2host-monitor-destination-mac1",
-> +					  "host2rxdma-host-buf-ring-mac3",
-> +					  "host2rxdma-host-buf-ring-mac2",
-> +					  "host2rxdma-host-buf-ring-mac1",
-> +					  "host2tcl-input-ring4",
-> +					  "host2tcl-input-ring3",
-> +					  "host2tcl-input-ring2",
-> +					  "host2tcl-input-ring1",
-> +					  "wbm2host-tx-completions-ring4",
-> +					  "wbm2host-tx-completions-ring3",
-> +					  "wbm2host-tx-completions-ring2",
-> +					  "wbm2host-tx-completions-ring1",
-> +					  "host2tx-monitor-ring1",
-> +					  "txmon2host-monitor-destination-mac3",
-> +					  "txmon2host-monitor-destination-mac2",
-> +					  "txmon2host-monitor-destination-mac1",
-> +					  "umac-reset";
-> +
-> +			qcom,smem-states = <&wcss_smp2p_out 8>,
-> +					   <&wcss_smp2p_out 9>,
-> +					   <&wcss_smp2p_out 10>;
-> +			qcom,smem-state-names = "shutdown",
-> +						"stop",
-> +						"spawn";
-> +			status = "disabled";
-> +		};
-> +
->  		q6v5_wcss: remoteproc@d100000 {
->  			compatible = "qcom,ipq5332-wcss-sec-pil";
->  			reg = <0xd100000 0x4040>;
-> -- 
-> 2.34.1
-> 
+thanks,
+-- 
+js
+suse labs
 
