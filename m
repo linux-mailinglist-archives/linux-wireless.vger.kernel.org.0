@@ -1,107 +1,146 @@
-Return-Path: <linux-wireless+bounces-19489-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19490-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360F0A46576
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 16:49:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B414FA465AE
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 16:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3AEB188D461
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 15:45:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0058B425CDE
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 15:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CD921CA0D;
-	Wed, 26 Feb 2025 15:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="M6u6qPtu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE78121CC7A;
+	Wed, 26 Feb 2025 15:44:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA69E21C184
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 15:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7F219ABC3
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 15:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740584499; cv=none; b=lNQ3ngQn6HJxUd3zh2+qgF8Xh5pg9cBk8VAO4yqRxKQMMCuS//8Z+t5SWdbIO+nwTfyiMgCeV1rFoyV8dw9aJLjo7AjUhnzRVfa5fTUwR2h+lVgvrfv8d30PZzJ8/bRCBDUNHBrU39UM44WrCBt0dSVcMRTtcOxKS4u/IXrZBR4=
+	t=1740584661; cv=none; b=nG+RN9fKalz1jDDPsxnBzzDXaWzHRaW1NuqaAPZU8RA4rIPA1TEWIHRkvW/7uIFtNjBr+uKNxHpDLdUigJba9PCHuD4Tzo9aUDt+FLDVVFKsBZ4QXy//8chWE5IaKhKLaiqgW3HvGefWK3Yi0X/DKgMIREacRh+s7l7K9+o6c/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740584499; c=relaxed/simple;
-	bh=DYbbrihvY9VK+pJ/1a0oZ86TF0pZa109AvZvp1O4h60=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qrGpC4P/JlB7V/dXgMLyNYKTbmkhbSwcssYkDAugFsw2ZirrmXyrCC3PZ6ym7LzeYIT9mI6JELQriWlD8zh7BEjosU0ff4sJJ8Jd8O3DPnyi9+EWSsnYG0xvSmDtaBjo0N4M4P/i8abBo7vMIGXRGFpFD2zDziElImIeVMcaggo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=M6u6qPtu; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=0rqEx1JIJk33ngiSUO4cdqF4BLaua3FGJwHk6KrixOI=; b=M6u6qPtuLagpX0JLoJrMrSn3iJ
-	09GY08Hby3B3wCqxPg8HlSi0ufUK8YyoASTOiC/5liJPSaS30gOnNvoTJXU8I3/AhMvjPQoL8ZSL+
-	2VCOSWOfzEKkIV9Vr7bMxXlH40gGaESPqP490UNEOdB3vMPvGaq/AqjCN2jLg6MOwltA=;
-Received: from [2a01:599:111:e844:5f8:d024:31b4:5c46] (helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1tnJXQ-00AnCq-1d;
-	Wed, 26 Feb 2025 16:41:32 +0100
-Message-ID: <5c322fb9-711e-4c5e-86f2-58d6ed706001@nbd.name>
-Date: Wed, 26 Feb 2025 16:41:31 +0100
+	s=arc-20240116; t=1740584661; c=relaxed/simple;
+	bh=jQWGtiwUMbK9EpvVC6A07sD50bV3LE9jiqhidCemgEM=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=pqCTyFCtNNzpVyvtYZU9ifC5SE6UmcKfOZnoGgq0Es+Ld7UBWizTwlGpRvgJ77Cp94UHjbW+H/m1+d868lE2cjSYwAQkrGVH/leTH+sCcz/FZiORWiNzUpBzf9Q4zoj5QpwqGv6ejZUMweO/5mXQMPHbGackVod6Zw0ikXBwDRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-3ce3bbb2b9dso57832525ab.3
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 07:44:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740584659; x=1741189459;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gW3c0T4SQd+xntB/X6MFD4fJslBbj6oN4QbWpGD4aAk=;
+        b=XWzaa2elAgrFyaL3UkfJD/HKnntlTfNo/KGxIS9B9AVcHTNhB11gegIUkdowqDeVqm
+         vdpjKM/Tw+PPzM1jHocwCJFNS92hJcQiXb8AZW0Irry5poIAKL0YDtaJHGg3cLxhE4Km
+         kxknF4UWt5/XYKkEyuex1iE+1Eb/k4GH2G2mopN0Mpmknq1fiZiBqYJEgqky62RvkPEQ
+         DdSIT9fAaoB7XRckkTB65CWT+G2YINA5b1+JPMRANBWJ7VqqvsFTBykmdtuR0snklHhQ
+         c/yHGPDm3AGioqKuYbMW/P1in9OgphZ59pqj7sIXh8uh4jU6YVq7EFpgnaDjVO2yVxK1
+         00Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCXKfo+hAXcUjDVaX+3NqsqiqpO8yRZflTxSSRr/OtI60zpW+mixTuoVB/4oNaWg6t6s4cvLsaqCyJXKHg5udQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+gY4++QJO1OpQDum729yAYreCZIMILePGXvZhW5F21rMlg/QD
+	fi//V3sZUPsXOvUoW28tWZoCamNCSzc4m7K4PucjUZBUs9rRRAqvJWHY+rZAdPIDnjdUOMaFB0j
+	K254CeB/MkQRHovvJ7ah1B1zdy64TX4SEwCUdHADuLLW1W+OWOjsDmbk=
+X-Google-Smtp-Source: AGHT+IFHAPreiTBW/x4aw1EHkJ+xwFEwTp7VKuG/mVJow7Yr8RLePATwqXZ4fsrz1nfOajC8ztz3lRiQ+gIc4ySw3aLXDkSDqeA7
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: wifi: mt76: mt7915: fix broken background radar implementation
-To: lukasz.michalski@onet.pl
-Cc: linux-wireless@vger.kernel.org, lorenzo@kernel.org
-References: <003401db8476$348684c0$9d938e40$@onet.pl>
- <da6e61d7-0457-43d6-8ce9-a5a94ecf431a@nbd.name>
- <003601db8862$65a75800$30f60800$@onet.pl>
-From: Felix Fietkau <nbd@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <003601db8862$65a75800$30f60800$@onet.pl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a92:c545:0:b0:3d1:78f8:7490 with SMTP id
+ e9e14a558f8ab-3d30487a027mr64643795ab.14.1740584659314; Wed, 26 Feb 2025
+ 07:44:19 -0800 (PST)
+Date: Wed, 26 Feb 2025 07:44:19 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67bf36d3.050a0220.38b081.01ff.GAE@google.com>
+Subject: [syzbot] [wireless?] KMSAN: uninit-value in cfg80211_tx_mlme_mgmt
+From: syzbot <syzbot+5a7b40bcb34dea5ca959@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 26.02.25 16:23, lukasz.michalski@onet.pl wrote:
-> Hi Felix, thanks for the info.
-> 
-> Is it only about mt7981 or mt7986 too?
-> Strange that patched code works flawlessly (or maybe firmware just sliently ignores scan requests?).
+Hello,
 
-I think MT7986 also doesn't have that feature. Additionally, the feature 
-is only available on devices that have a separate antenna just for DFS.
+syzbot found the following issue on:
 
-I think with your patch it wasn't performing any actual background radar 
-detection, but the driver and mac80211 weren't noticing. So it only 
-appeared to work but wasn't compliant in any way.
+HEAD commit:    ff202c5028a1 Merge tag 'soc-fixes-6.14' of git://git.kerne..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12d447a4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=aca5947365998f67
+dashboard link: https://syzkaller.appspot.com/bug?extid=5a7b40bcb34dea5ca959
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: i386
 
-- Felix
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/788b15dfbf95/disk-ff202c50.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/48f236cd3e71/vmlinux-ff202c50.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/b92116dbc946/bzImage-ff202c50.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+5a7b40bcb34dea5ca959@syzkaller.appspotmail.com
+
+ cfg80211_wiphy_work+0x396/0x860 net/wireless/core.c:435
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0xc1a/0x1e80 kernel/workqueue.c:3317
+ worker_thread+0xea7/0x14f0 kernel/workqueue.c:3398
+ kthread+0x6b9/0xef0 kernel/kthread.c:464
+ ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+---[ end trace 0000000000000000 ]---
+=====================================================
+BUG: KMSAN: uninit-value in cfg80211_tx_mlme_mgmt+0x155/0x300 net/wireless/mlme.c:226
+ cfg80211_tx_mlme_mgmt+0x155/0x300 net/wireless/mlme.c:226
+ ieee80211_report_disconnect net/mac80211/mlme.c:4238 [inline]
+ ieee80211_sta_connection_lost+0xfa/0x150 net/mac80211/mlme.c:7811
+ ieee80211_sta_work+0x1dea/0x4ef0
+ ieee80211_iface_work+0x1900/0x1970 net/mac80211/iface.c:1684
+ cfg80211_wiphy_work+0x396/0x860 net/wireless/core.c:435
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0xc1a/0x1e80 kernel/workqueue.c:3317
+ worker_thread+0xea7/0x14f0 kernel/workqueue.c:3398
+ kthread+0x6b9/0xef0 kernel/kthread.c:464
+ ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+Local variable frame_buf created at:
+ ieee80211_sta_connection_lost+0x43/0x150 net/mac80211/mlme.c:7806
+ ieee80211_sta_work+0x1dea/0x4ef0
+
+CPU: 1 UID: 0 PID: 4086 Comm: kworker/u8:16 Tainted: G        W          6.14.0-rc3-syzkaller-00267-gff202c5028a1 #0
+Tainted: [W]=WARN
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Workqueue: events_unbound cfg80211_wiphy_work
+=====================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
