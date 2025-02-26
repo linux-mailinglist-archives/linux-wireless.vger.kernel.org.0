@@ -1,140 +1,268 @@
-Return-Path: <linux-wireless+bounces-19493-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19494-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F8AA46763
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 18:06:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2324A467F6
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 18:23:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25BF03A39D2
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 17:06:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE4F53B159F
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 17:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06B5223716;
-	Wed, 26 Feb 2025 17:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE05224AFA;
+	Wed, 26 Feb 2025 17:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/8x3DgJ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ldwW9sbJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B4E221DA1;
-	Wed, 26 Feb 2025 17:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425DE21CA1B;
+	Wed, 26 Feb 2025 17:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740589599; cv=none; b=CaEeYgcns8BONft+EgJNvRfBAfjeDwKA8KD8rJbgYjpVxbuNK2kfV3xAxbRsWoB7yEAV/IUO43e2u9Acv3Lgja47HgHI/z+iWtP9VHhJs23tNiZC8xmFMCxehYwdZAjtKlwTRUSKeQQUFA1GnP/Sy9fIbA2Gb4IrS2/+3SjC9pY=
+	t=1740590627; cv=none; b=HJHGN34Ye0rWE6ME2G12twJHXxQLBpdT6l7S233ZMWlzDjZ9Cd00X28Fm5vO8dMd5XWeAAgu4a2DsBuVlDvRzmaZ8Dq8s2BxWfaija0YVv9Nxz2zBanai06rui5tH3vVM5Ke+9lkNcN+TzzrGwjnLUKLS40w89VG50+BvaIGeSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740589599; c=relaxed/simple;
-	bh=2R180IJ7APaALd1g+yyfkVhGYnf3hIvGDgk8lsKLG8A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m8TRhcxJ8E3aPz7bLSpfkPrnIcocCIott6ZVLDDO4z+gY8rni9T+BvmmjRIctFzF+QofmMWLcAbFzwExQjXQKv+VdbrC7nG5puN8Tlh/W1fTC0RneefW5rLhcyxMzR4OaDhIurtyCinpqBw8CK1ldNMHBnFs7mFA3Ih+1KSupnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/8x3DgJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC56BC116B1;
-	Wed, 26 Feb 2025 17:06:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740589599;
-	bh=2R180IJ7APaALd1g+yyfkVhGYnf3hIvGDgk8lsKLG8A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=a/8x3DgJgskglabgyo16PGJtzrAVaL3wlI4GWiUa2t3h6Arsj1fdxCDGHHUKE1qz+
-	 MkWqGYj4HEBPBct7yYViRQUjlal1IbYHMnBCcmswporwMRHlB0Nx9dMjqXBPC9R6BF
-	 4qXyHcAPiRTt8nxgOwp7kjYrgjhT3u1JQIevs3oxA6uy6x3/jSFm7QuEaI+C811iY+
-	 4AL2jhdvnuhR4d5R91R5M0A3eER7PnxdjHvqOLqUclMX+1F16ZGFfW+dcq/tsjnLMP
-	 kSGz3A674HrBV9uFQqMNpCDNbxrVVIxuFXU3Ie1gj1RsPLiIjEfUxTtzaPunB5VN6E
-	 gP899WOFULZWA==
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-5fcd811d939so580383eaf.0;
-        Wed, 26 Feb 2025 09:06:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU1vPJFgkoyBTCdNw1rIiYiW8YUNF9HhM9VaqAZ4B4yEPdqoAAbEIDZ0o0Q6Rg5rux9WYh+meLb8lRKx12/@vger.kernel.org, AJvYcCUSDPE2Kl8M+7tbz7bCGjoKzqd1onjZylURVRI7FCYD6YzZyFNz6OdTPv/yOB0vjrMYKxRtBtjs5iD/hQ==@vger.kernel.org, AJvYcCUe+0MrzgLg5q81ot+3P7kXDFDDpCqjtquPJiLom3G8IZ/8+eEHtpmsu/JMEky5b95OP+iinJOa40YGBQ==@vger.kernel.org, AJvYcCV4bSwqvhjKgmoG7xQK1fRFqHrNEzNyFrQKgf8A3P/jZ7IA907+RNDZvJBWZJ6Bpirf5av6EhxOGc/4pd4ID/0=@vger.kernel.org, AJvYcCVPbHi1at06YwsIaMt0Yofh9Iwv1VohDT4wWsmGIcx4EpBCu4T/tD7p9UEfYG9rlvSwSAoVlLHREZrQFlwV@vger.kernel.org, AJvYcCVTiZbwv8Bom8+ndrw4bl9f5hnk6gLmH0fayyhA5BVKbndv4YgviLbEX6DI8qlpCDqPcjsvG5kv@vger.kernel.org, AJvYcCXMHLoZc61wf+WW7M961lIzX55prjUjgLz7iTtu4ijfS77SVyJYe4v5UlPajl+1kFx25VCrojkxJ0Oz@vger.kernel.org, AJvYcCXZPGPzuoeF0XjVRL9NSA/jtSnHijtGwqtGUeFEJ6VjYlVg8dhoxntEjp6qhuAJqrAI7eQ0MD8Nyrs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUiLgECOSOV+P096p4zKi6lxpj31zoCwRXzUM5tyAHOu1AF5mD
-	ZW3hbalWNlyMwAQpTLuHY8M5UEb3cCkCAJm1MCd6JNjTztaTELU4KRvgfYXrI+t+qzqkEFYJi52
-	bSGcfhHiGLdpvzdJFsVkC6RobjMc=
-X-Google-Smtp-Source: AGHT+IHyPLVjXp7kw5kgInAMNb4jd7h5cWQZCWKEZs0yMGYHKslrekdKrqf86zX892n/fj3IchT6bMpb2Dem6Q8+U3o=
-X-Received: by 2002:a05:6871:d20d:b0:2bd:286:d713 with SMTP id
- 586e51a60fabf-2c155700434mr67466fac.11.1740589597661; Wed, 26 Feb 2025
- 09:06:37 -0800 (PST)
+	s=arc-20240116; t=1740590627; c=relaxed/simple;
+	bh=HGwnlz6pv/Fb7lL2quyyqZ4JE/enMKnRrNzyVvBqoiU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=a7dM7O+jlLsiJqaqIrs6pYM+J3FOSnCM11txlVy8I8/JKyI3CZ5TVFRPZta26s9wn+cItM+ODW6rBGjItQD2my6ttiIN9pDdZZQFuIZfCyOUHi86iqPfYKkt66KM943a9PvDsgwLxCSxj2+WMNfSzlbBZVnv8ryiNy/wMY/SAj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ldwW9sbJ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51Q9o1M0015555;
+	Wed, 26 Feb 2025 17:23:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	nEdct1oFohxhIryKjdAIwPhbqyjIFSucHG1dtgoTYW8=; b=ldwW9sbJdK8eVdTb
+	Y1qjMT6hmMa6r1EwpjOQBILpl9C5irTB9Ue30CgjgG2JbNu6SHXULSok6QLY7jcd
+	rPyeaJvWl03/hu8OLA2CpV+kW5F2E8B3bx8+UCtiDS4kBLGqSmt388QKqZas+7GN
+	a6kKLUxF3ApoGDLtKeDtfuQwhNNR6CSSQSPS1PRXZFophbIN07NUn9+6GTCWAtWF
+	1LBerOpzNi/bmab2A/oMAOM29YbYB++tfkK5TZn4oNk65t0ActhOYCuD8vH1pv//
+	88gHL6rQO45TQyWyUAd8tsphqu2FAhgesi9pwBFTAya4WNX7t5D6tCxbuNUGxXw2
+	3e0bTw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 451prnjser-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Feb 2025 17:23:37 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51QHNaDp019195
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Feb 2025 17:23:36 GMT
+Received: from [10.216.2.27] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 26 Feb
+ 2025 09:23:32 -0800
+Message-ID: <cedf59c5-dd2a-4d1e-960e-d76e45d9c215@quicinc.com>
+Date: Wed, 26 Feb 2025 22:53:13 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250221-rmv_return-v1-0-cc8dff275827@quicinc.com> <20250221-rmv_return-v1-14-cc8dff275827@quicinc.com>
-In-Reply-To: <20250221-rmv_return-v1-14-cc8dff275827@quicinc.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 26 Feb 2025 18:06:26 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0i-_08mhOpsecuU+XzS8rKbk9mtgr_Kwx-QGRPh9jumKw@mail.gmail.com>
-X-Gm-Features: AQ5f1Jo18T3Py72uAV75_Jf5fdQvWu4rZ8JYWNQWcMOGXjnJR1QY3tpi4Yj9mbE
-Message-ID: <CAJZ5v0i-_08mhOpsecuU+XzS8rKbk9mtgr_Kwx-QGRPh9jumKw@mail.gmail.com>
-Subject: Re: [PATCH *-next 14/18] PM: wakeup: Remove needless return in three
- void APIs
-To: Zijun Hu <quic_zijuhu@quicinc.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Thomas Gleixner <tglx@linutronix.de>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S. Miller" <davem@davemloft.net>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Johannes Berg <johannes@sipsolutions.net>, Jamal Hadi Salim <jhs@mojatatu.com>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>, Thomas Graf <tgraf@suug.ch>, 
-	Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Zijun Hu <zijun_hu@icloud.com>, 
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org, iommu@lists.linux.dev, 
-	linux-mtd@lists.infradead.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 5/5] wifi: ath12k: Enable IPQ5424 WiFi device support
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Kalle Valo
+	<kvalo@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jeff Johnson
+	<jjohnson@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Sowmiya Sree Elavalagan
+	<quic_ssreeela@quicinc.com>,
+        Saravanakumar Duraisamy
+	<quic_saradura@quicinc.com>
+References: <20250130051838.1924079-1-quic_rajkbhag@quicinc.com>
+ <20250130051838.1924079-6-quic_rajkbhag@quicinc.com>
+ <20250130-offbeat-sparkling-nyala-042b72@krzk-bin>
+Content-Language: en-US
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <20250130-offbeat-sparkling-nyala-042b72@krzk-bin>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: lkeT0pJan9TQ6_etFbuLf8TCvP01r3Iy
+X-Proofpoint-ORIG-GUID: lkeT0pJan9TQ6_etFbuLf8TCvP01r3Iy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-26_04,2025-02-26_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ mlxscore=0 mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502260137
 
-On Fri, Feb 21, 2025 at 2:03=E2=80=AFPM Zijun Hu <quic_zijuhu@quicinc.com> =
-wrote:
->
-> Remove needless 'return' in the following void APIs:
->
->  __pm_wakeup_event()
->  pm_wakeup_event()
->  pm_wakeup_hard_event()
->
-> Since both the API and callee involved are void functions.
->
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
->  include/linux/pm_wakeup.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/include/linux/pm_wakeup.h b/include/linux/pm_wakeup.h
-> index d501c09c60cd..51e0e8dd5f9e 100644
-> --- a/include/linux/pm_wakeup.h
-> +++ b/include/linux/pm_wakeup.h
-> @@ -205,17 +205,17 @@ static inline void device_set_awake_path(struct dev=
-ice *dev)
->
->  static inline void __pm_wakeup_event(struct wakeup_source *ws, unsigned =
-int msec)
->  {
-> -       return pm_wakeup_ws_event(ws, msec, false);
-> +       pm_wakeup_ws_event(ws, msec, false);
->  }
->
->  static inline void pm_wakeup_event(struct device *dev, unsigned int msec=
-)
->  {
-> -       return pm_wakeup_dev_event(dev, msec, false);
-> +       pm_wakeup_dev_event(dev, msec, false);
->  }
->
->  static inline void pm_wakeup_hard_event(struct device *dev)
->  {
-> -       return pm_wakeup_dev_event(dev, 0, true);
-> +       pm_wakeup_dev_event(dev, 0, true);
->  }
->
->  /**
->
-> --
+On 1/30/2025 2:09 PM, Krzysztof Kozlowski wrote:
+> On Thu, Jan 30, 2025 at 10:48:38AM +0530, Raj Kumar Bhagat wrote:
+>> From: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+>>
+>> Currently, ath12k AHB (in IPQ5332) uses SCM calls to authenticate the
+>> firmware image to bring up userpd. From IPQ5424 onwards, Q6 firmware can
+>> directly communicate with the Trusted Management Engine - Lite (TME-L),
+>> eliminating the need for SCM calls for userpd bring-up.
+>>
+>> Hence, to enable IPQ5424 device support, use qcom_mdt_load_no_init() and
+>> skip the SCM call as Q6 will directly authenticate the userpd firmware.
+>>
+>> Tested-on: IPQ5424 hw1.0 AHB WLAN.WBE.1.5-01053-QCAHKSWPL_SILICONZ-1
+>> Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+>> Co-developed-by: Saravanakumar Duraisamy <quic_saradura@quicinc.com>
+>> Signed-off-by: Saravanakumar Duraisamy <quic_saradura@quicinc.com>
+>> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+>> ---
+>>  drivers/net/wireless/ath/ath12k/ahb.c | 80 +++++++++++++++++----------
+>>  drivers/net/wireless/ath/ath12k/ahb.h |  9 +++
+>>  2 files changed, 61 insertions(+), 28 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
+>> index d502b59a78d8..75767915dec3 100644
+>> --- a/drivers/net/wireless/ath/ath12k/ahb.c
+>> +++ b/drivers/net/wireless/ath/ath12k/ahb.c
+>> @@ -21,6 +21,9 @@ static const struct of_device_id ath12k_ahb_of_match[] = {
+>>  	{ .compatible = "qcom,ipq5332-wifi",
+>>  	  .data = (void *)ATH12K_HW_IPQ5332_HW10,
+>>  	},
+>> +	{ .compatible = "qcom,ipq5424-wifi",
+>> +	  .data = (void *)ATH12K_HW_IPQ5424_HW10,
+>> +	},
+>>  	{ }
+>>  };
+>>  
+>> @@ -398,8 +401,8 @@ static int ath12k_ahb_power_up(struct ath12k_base *ab)
+>>  		ATH12K_AHB_UPD_SWID;
+>>  
+>>  	/* Load FW image to a reserved memory location */
+>> -	ret = qcom_mdt_load(dev, fw, fw_name, pasid, mem_region, mem_phys, mem_size,
+>> -			    &mem_phys);
+>> +	ret = ab_ahb->ahb_ops->mdt_load(dev, fw, fw_name, pasid, mem_region, mem_phys,
+>> +					mem_size, &mem_phys);
+>>  	if (ret) {
+>>  		ath12k_err(ab, "Failed to load MDT segments: %d\n", ret);
+>>  		goto err_fw;
+>> @@ -430,11 +433,13 @@ static int ath12k_ahb_power_up(struct ath12k_base *ab)
+>>  		goto err_fw2;
+>>  	}
+>>  
+>> -	/* Authenticate FW image using peripheral ID */
+>> -	ret = qcom_scm_pas_auth_and_reset(pasid);
+>> -	if (ret) {
+>> -		ath12k_err(ab, "failed to boot the remote processor %d\n", ret);
+>> -		goto err_fw2;
+>> +	if (ab_ahb->scm_auth_enabled) {
+>> +		/* Authenticate FW image using peripheral ID */
+>> +		ret = qcom_scm_pas_auth_and_reset(pasid);
+>> +		if (ret) {
+>> +			ath12k_err(ab, "failed to boot the remote processor %d\n", ret);
+>> +			goto err_fw2;
+>> +		}
+>>  	}
+>>  
+>>  	/* Instruct Q6 to spawn userPD thread */
+>> @@ -491,13 +496,15 @@ static void ath12k_ahb_power_down(struct ath12k_base *ab, bool is_suspend)
+>>  
+>>  	qcom_smem_state_update_bits(ab_ahb->stop_state, BIT(ab_ahb->stop_bit), 0);
+>>  
+>> -	pasid = (u32_encode_bits(ab_ahb->userpd_id, ATH12K_USERPD_ID_MASK)) |
+>> -		ATH12K_AHB_UPD_SWID;
+>> -	/* Release the firmware */
+>> -	ret = qcom_scm_pas_shutdown(pasid);
+>> -	if (ret)
+>> -		ath12k_err(ab, "scm pas shutdown failed for userPD%d: %d\n",
+>> -			   ab_ahb->userpd_id, ret);
+>> +	if (ab_ahb->scm_auth_enabled) {
+>> +		pasid = (u32_encode_bits(ab_ahb->userpd_id, ATH12K_USERPD_ID_MASK)) |
+>> +			 ATH12K_AHB_UPD_SWID;
+>> +		/* Release the firmware */
+>> +		ret = qcom_scm_pas_shutdown(pasid);
+>> +		if (ret)
+>> +			ath12k_err(ab, "scm pas shutdown failed for userPD%d\n",
+>> +				   ab_ahb->userpd_id);
+>> +	}
+>>  }
+>>  
+>>  static void ath12k_ahb_init_qmi_ce_config(struct ath12k_base *ab)
+>> @@ -707,6 +714,14 @@ static int ath12k_ahb_map_service_to_pipe(struct ath12k_base *ab, u16 service_id
+>>  	return 0;
+>>  }
+>>  
+>> +static const struct ath12k_ahb_ops ahb_ops_ipq5332 = {
+>> +	.mdt_load = qcom_mdt_load,
+>> +};
+>> +
+>> +static const struct ath12k_ahb_ops ahb_ops_ipq5424 = {
+>> +	.mdt_load = qcom_mdt_load_no_init,
+>> +};
+>> +
+>>  static const struct ath12k_hif_ops ath12k_ahb_hif_ops_ipq5332 = {
+>>  	.start = ath12k_ahb_start,
+>>  	.stop = ath12k_ahb_stop,
+>> @@ -1041,19 +1056,9 @@ static int ath12k_ahb_probe(struct platform_device *pdev)
+>>  	struct device_node *mem_node;
+>>  	struct ath12k_ahb *ab_ahb;
+>>  	enum ath12k_hw_rev hw_rev;
+>> -	u32 addr, userpd_id;
+>> +	u32 addr;
+>>  	int ret;
+>>  
+>> -	hw_rev = ath12k_ahb_get_hw_rev(pdev);
+>> -	switch (hw_rev) {
+>> -	case ATH12K_HW_IPQ5332_HW10:
+>> -		hif_ops = &ath12k_ahb_hif_ops_ipq5332;
+>> -		userpd_id = ATH12K_IPQ5332_USERPD_ID;
+>> -		break;
+>> -	default:
+>> -		return -EOPNOTSUPP;
+>> -	}
+> 
+> You just added this code in previous patchset, why are you moving it?
+> 
 
-Applied as 6.15 material, thanks!
+In the v6 of dependent series ([PATCH v6 00/13] wifi: ath12k: add Ath12k AHB driver
+support for IPQ5332), we have moved this part of the code in the required position.
+In the next version the above hunk will not be required.
+
+>> -
+>>  	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
+>>  	if (ret) {
+>>  		dev_err(&pdev->dev, "Failed to set 32-bit coherent dma\n");
+>> @@ -1067,13 +1072,32 @@ static int ath12k_ahb_probe(struct platform_device *pdev)
+>>  		return -ENOMEM;
+>>  	}
+>>  
+>> +	ab_ahb = ath12k_ab_to_ahb(ab);
+>> +	ab_ahb->ab = ab;
+>> +
+>> +	hw_rev = ath12k_ahb_get_hw_rev(pdev);
+>> +	switch (hw_rev) {
+>> +	case ATH12K_HW_IPQ5332_HW10:
+>> +		hif_ops = &ath12k_ahb_hif_ops_ipq5332;
+>> +		ab_ahb->userpd_id = ATH12K_IPQ5332_USERPD_ID;
+>> +		ab_ahb->scm_auth_enabled = true;
+>> +		ab_ahb->ahb_ops = &ahb_ops_ipq5332;
+>> +		break;
+>> +	case ATH12K_HW_IPQ5424_HW10:
+>> +		hif_ops = &ath12k_ahb_hif_ops_ipq5332;
+>> +		ab_ahb->userpd_id = ATH12K_IPQ5332_USERPD_ID;
+>> +		ab_ahb->scm_auth_enabled = false;
+>> +		ab_ahb->ahb_ops = &ahb_ops_ipq5424;
+> 
+> Why you cannot store just proper driver data structure in match data?
+> This entire switch is redundant.
+> 
+
+Thanks for this optimization suggestion. Will implement this in the next version.
+
 
