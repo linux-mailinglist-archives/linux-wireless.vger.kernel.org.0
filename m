@@ -1,241 +1,158 @@
-Return-Path: <linux-wireless+bounces-19477-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19478-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1000A45A71
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 10:40:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1AAFA45C37
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 11:54:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E48B41640AC
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 09:40:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8172216CBD2
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 10:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBD220CCEA;
-	Wed, 26 Feb 2025 09:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ig8xaAZ8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB99726BD8D;
+	Wed, 26 Feb 2025 10:54:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8DD1E1E18
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 09:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7AA26B097
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 10:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740562852; cv=none; b=aRx+eq9ZM0d4zHfKlNVfzcfVZNTy85M0I7JXf+hRJSBp+m9QvEZDE4pBhNO7RRsk7LizNP2eTuQXaS7cs2e9+S7WdQ0koz9FDjURTm1cmcC7Dl24RSj5crSNdAGwQ97PO4+vizWzzY32WRnnk4foHnAHUnugRFPhtvDASQpyQhg=
+	t=1740567262; cv=none; b=CEoRKSLKkxzMYsjmdU0yZzIz4LmMsV1YA+50HY5qq+tvJe1Nd8Zi+dFty4waW1fhg9hjeY50FUA/ftFMpage6yzvZb5k0w9NedgfxW3ocVDe5ByHJcy4l/b9shWLLBCZ602A+dlGeuB/VZ3FjjC/PmdFMdubN0nO68z0eOo6diI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740562852; c=relaxed/simple;
-	bh=YUJJpJ5/aWlFMGux962pJCUa7AL5cIHhdQA6myu8mHE=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=V+ZTm+rObT5li5yQGRN6JryoSAqFHvJvuC6I6HHXemTej6773tfPO0lpV19eaysB20b3tNluiIsE8MBLs4Q0r6VOZMcCEtm6yNGCH6WxyiZ82esMz5J3LntNCi6CSOKh5OZUdJrtXA0zcQ5/Xsbmebi9wZ3NVZ6t0J4R06uGxkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ig8xaAZ8; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43989226283so44805865e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 01:40:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740562848; x=1741167648; darn=vger.kernel.org;
-        h=content-language:thread-index:content-transfer-encoding
-         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xlx2uT4DE3pUEcJGEI859f4n1olSxyWc3awOxYZ3fLI=;
-        b=Ig8xaAZ8wyQoiqczaiS6bdrfH4xha5Td64EVhF25oM7mXjEDTRKf0eGkd6ZUsyhugF
-         Xr20gR3H+ZhXerHyu42yJIATSl0fu333DFNP9mnGddb6KObMra0IZr5fjM8GQEApgk89
-         uYQ+2uuR3CXyWeaB/aR4pI/k25jn0IXgbDGV1z0NwndaH/ojP2FRvPoP+oTaAhXaHCat
-         z+N7j9Hv8xK6nAjE6OpRdj0foj8mWXLyo/XtgmEdtTQjaW3++jqPiW/SPLY35CsqbNRR
-         SNNCmxY2mo8IBKob7j/SV7hGSpFcvK1V8pNxEhWQ03iE+ClklPe4m5wmGg4LVN38zhDs
-         0zcQ==
+	s=arc-20240116; t=1740567262; c=relaxed/simple;
+	bh=Qs2eopeLtj6FqaBsS/f9Lvq9GwF7fXrRnRy9gdlOVDw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=pJNnvqjL8ULOgTs2BH54qzT/qa1CzxKyVdrZZqDj8/A/XE73381fWkWX+UE9T6IxWrZRVhmynNXBQU59EkLi3/XOZ/6BTgCXH1Q5gf4u6CgNARghivkE+LG9bZoCtjJvO9AlSxrMktKm3D5jvXyEoRnEjCVBCxHrIJiWT4HIpBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3ce8cdf1898so55705155ab.1
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 02:54:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740562848; x=1741167648;
-        h=content-language:thread-index:content-transfer-encoding
-         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xlx2uT4DE3pUEcJGEI859f4n1olSxyWc3awOxYZ3fLI=;
-        b=Vci6R/3H+ghOVp6oTF82rfHxJtvtLF/tdVgQRSTYD+YgBszmeeity1ylzVWwvPzpR8
-         ujd3I10C0zlgU6l77bYtgCRC3bnNrH4OQ4kOgUFdfgEZBP9hGufObsDVxR79KrPuTzMO
-         Lr9cX5L3fA8oY5dfGrMzr52Tc5u3fAbeK3ZpP8rZzBiXcpZQOYnQgDksnVuU3bSV9jxR
-         qn2hV2zn45n6CxBElHMPCe1gFRsPES1t6srsEip5No106SZliI6ppWW18FM7R4g+CRD3
-         hPQWv/EWX9/g+i1ocvYyLF4Kt9OYMp5Ss/s98ifZvMIPFKHa5q1Prwm9STG28onDbe/T
-         zrZg==
-X-Gm-Message-State: AOJu0Yws8HpbGeykQbTvcMR57reh0OKdLDINTQkfZhAPlOrd20uAMoaK
-	q/gs5EmC4P1NdjlQ25FoF/+qoeOBYW/uMSsIiugCD0WkTS+P/MrgNhoc
-X-Gm-Gg: ASbGncv3yVC8rveAZ58ZxDKrEJvNByLI2Wiv4QQslSeqGZhM2JAMfVzddZktEXjqnwU
-	OmcrLNagxmGTmi/64gEFKwUd4NULNMNoLxufCMJ8h1K9i4+G14EvVpg1txEjfyfWHmPzGHHnxeg
-	nkwnzcQ2CxQZ4sQkdchKgC0GyfnPa7WaiPK0PultJGHDtEolCPTLN866CHXV3rFnFS2h+ZmfYCJ
-	uzukfnCCEBQgVTwxERRi/uH+PM2e5BlDL8pVHr7NjfwSSTOBiCL8Fy5HBpekP4pYfYaa1VbeBqk
-	AGLlv00MjM4+gZFEe0hPbxJAm1rpy7RGlWJnwWpYkenrVJQdlqTmLuASNjfsLH6hzzH1+Y3x12T
-	4KzVarxKvM+2c
-X-Google-Smtp-Source: AGHT+IFCRBFK66HToInMDDQ0ANVk7duqA1/AyY83wgfmnH6uV5aa0JKbAV76OMWZeyd/wn46035+fw==
-X-Received: by 2002:a05:600c:458e:b0:439:91dd:cfa3 with SMTP id 5b1f17b1804b1-439ae221d72mr167483875e9.29.1740562848194;
-        Wed, 26 Feb 2025 01:40:48 -0800 (PST)
-Received: from winhome (cpc112753-pert6-2-0-cust678.16-4.cable.virginm.net. [86.18.22.167])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba57145esm14718615e9.30.2025.02.26.01.40.47
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 26 Feb 2025 01:40:47 -0800 (PST)
-From: <rmandrad@gmail.com>
-To: <wens@kernel.org>
-Cc: "'linux-wireless'" <linux-wireless@vger.kernel.org>,
-	"'wireless-regdb'" <wireless-regdb@lists.infradead.org>
-References: <000201db8822$98f28da0$cad7a8e0$@gmail.com> <CAGb2v65490c1m3W_1RkxJ-E7Q=3V_K8xqS2jmd6awcOdzWHXzQ@mail.gmail.com> <000901db882d$8cb13090$a61391b0$@gmail.com> <CAGb2v642utRqjhKth9he-jicA_E5RfYoXTPRyZaVykLNXQCXvg@mail.gmail.com>
-In-Reply-To: <CAGb2v642utRqjhKth9he-jicA_E5RfYoXTPRyZaVykLNXQCXvg@mail.gmail.com>
-Subject: RE: wireless-regdb: Allow 6ghz in the US
-Date: Wed, 26 Feb 2025 09:40:47 -0000
-Message-ID: <001e01db8832$844ef130$8cecd390$@gmail.com>
+        d=1e100.net; s=20230601; t=1740567260; x=1741172060;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6ywVTkBOTGXpD4dtX6/3aeHzuNHi338K7wvDLA2azj8=;
+        b=BZNOOfqdbSl5l5Cco/K5FtgRVRfTd1319n3ylfC/K1UOTEKjIv8co0svJrILiSwyg2
+         jNvIc3s4/MwX0D5qu5i4sfLHdorUsYCAkyo6YIsGKM7AYOLYapyqFuvIYh48jTZr8RJ+
+         OQPov4z3G70ArPM8qrN5VBUTnC5vaFw0FyOPSLfhsA+uPK7xwzXj21wV9WMdnjX5i2pn
+         1oz8Y7drF2qqvVxQ9cEkHqzmfi+7YX3Ir6qwIHA5bB9ZzMWkuQhezL7KMhYjcVek3U37
+         MU3cR0RMNDWqA0bq9uWIYDHkY1sb3Iy4EJ104NiFXOizETQErq2dXktP3z9DMkzo2RhL
+         SwVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXuBQhSL7if8gID5vNuzDtadoncwGzWsdha8QzGeeG68J7s2TujHXccjJlKkxwDZqSEEpLjR9Vctl2whHO9pA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoB3cJWSF2k4Z5igtn60mhlilSmNfloF5uPizKzN7j2p8wJm1l
+	ehdgJomxLi1GBe2J+xlyenT5TyAXoD7yl02/RPF33egJkOe93jGfD01vjYqTy1FZVWuIsfwIyo9
+	tqlJtRwJdh5qSHRSR3pfE2td7AZGncNj0Q1MiYVXCTtYCjiZF4N5XomE=
+X-Google-Smtp-Source: AGHT+IF8gLd4yzsv1WPHl52n1M8hACs+R+LGrr6hGH0ZFK52nrRI7fUoPV6viMHZct4cOmlyoMGezzjmXyyVoIK1u1F2nsklBAC9
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQMUrzCf8XdNoAU6+fu4ECJnDc0awgHIktuQAWl/dqQCwiE64rC3Ybxg
-Content-Language: en-gb
+X-Received: by 2002:a05:6e02:12e8:b0:3d1:966c:fc8c with SMTP id
+ e9e14a558f8ab-3d2cb514b1emr187392555ab.17.1740567260091; Wed, 26 Feb 2025
+ 02:54:20 -0800 (PST)
+Date: Wed, 26 Feb 2025 02:54:20 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67bef2dc.050a0220.38b081.00f9.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in ieee80211_set_disassoc
+From: syzbot <syzbot+91d7214a5ebebe3792cf@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-wireless-regdb: Allow 6ghz in the US by removing NO-IR
+Hello,
 
-The Federal Communications Commission on 05/26/2020 allowed for the use =
-unlicensed use of the 6GHz band [1]. Currently the settings for US have =
-non-IR. In order to comply with this legislation [1], the patch removes =
-the NO-IR flag
+syzbot found the following issue on:
 
-The power limit is not increased from 12 dBm to 30 dBm to comply with =
-the PSD requirements when using a 20 MHz channel
+HEAD commit:    e5d3fd687aac Add linux-next specific files for 20250218
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=15b73498580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4e945b2fe8e5992f
+dashboard link: https://syzkaller.appspot.com/bug?extid=91d7214a5ebebe3792cf
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
-[1] =
-https://www.federalregister.gov/documents/2020/05/26/2020-11236/unlicense=
-d-use-of-the-6-ghz-band#p-66
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Signed-off-by: Rudy Andram <rmandrad@gmail.com>
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/ef079ccd2725/disk-e5d3fd68.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/99f2123d6831/vmlinux-e5d3fd68.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/eadfc9520358/bzImage-e5d3fd68.xz
 
-diff --git a/db.txt b/db.txt
-index 803f1bc..ffcb0a6 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1953,7 +1953,7 @@ country US: DFS-FCC
-        (5850 - 5895 @ 40), (27), NO-OUTDOOR, AUTO-BW, NO-IR
-        # 6g band
-        # =
-https://www.federalregister.gov/documents/2020/05/26/2020-11236/unlicense=
-d-use-of-the-6ghz-band
--       (5925 - 7125 @ 320), (12), NO-OUTDOOR, NO-IR
-+       (5925 - 7125 @ 320), (12), NO-OUTDOOR
-        # 60g band
-        # reference: section IV-D =
-https://docs.fcc.gov/public/attachments/FCC-16-89A1.pdf
-        # channels 1-6 EIRP=3D40dBm(43dBm peak)
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+91d7214a5ebebe3792cf@syzkaller.appspotmail.com
+
+wlan1: deauthenticating from 08:02:11:00:00:00 by local choice (Reason: 3=DEAUTH_LEAVING)
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 18257 at net/mac80211/mlme.c:3920 ieee80211_set_disassoc+0x1177/0x1620 net/mac80211/mlme.c:3920
+Modules linked in:
+CPU: 0 UID: 0 PID: 18257 Comm: kworker/u8:17 Not tainted 6.14.0-rc3-next-20250218-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Workqueue: netns cleanup_net
+RIP: 0010:ieee80211_set_disassoc+0x1177/0x1620 net/mac80211/mlme.c:3920
+Code: 00 00 00 48 3b 84 24 a0 00 00 00 0f 85 b1 04 00 00 48 8d 65 d8 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc e8 2a 4b 2d f6 90 <0f> 0b 90 eb b4 e8 1f 4b 2d f6 90 0f 0b 90 eb a9 e8 14 4b 2d f6 90
+RSP: 0018:ffffc9000b7aed20 EFLAGS: 00010293
+RAX: ffffffff8b94b3b6 RBX: 0000000000000001 RCX: ffff88802ff78000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffffc9000b7aee10 R08: ffffffff8b94a435 R09: 1ffffffff207b48e
+R10: dffffc0000000000 R11: fffffbfff207b48f R12: 0000000000000001
+R13: dffffc0000000000 R14: ffff88804fc70d80 R15: ffffc9000b7aeda8
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f651f2d7d60 CR3: 0000000068174000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ ieee80211_mgd_deauth+0xa88/0x1080 net/mac80211/mlme.c:9754
+ rdev_deauth net/wireless/rdev-ops.h:509 [inline]
+ cfg80211_mlme_deauth+0x582/0x930 net/wireless/mlme.c:519
+ cfg80211_sme_disconnect net/wireless/sme.c:667 [inline]
+ cfg80211_disconnect+0x3e7/0x7e0 net/wireless/sme.c:1557
+ cfg80211_netdev_notifier_call+0x1ba/0x1490 net/wireless/core.c:1540
+ notifier_call_chain+0x1a5/0x3f0 kernel/notifier.c:85
+ call_netdevice_notifiers_extack net/core/dev.c:2180 [inline]
+ call_netdevice_notifiers net/core/dev.c:2194 [inline]
+ __dev_close_many+0x145/0x350 net/core/dev.c:1663
+ dev_close_many+0x24e/0x4c0 net/core/dev.c:1714
+ dev_close+0x1c0/0x2c0 net/core/dev.c:1740
+ cfg80211_shutdown_all_interfaces+0xbb/0x1d0 net/wireless/core.c:277
+ ieee80211_remove_interfaces+0x108/0x700 net/mac80211/iface.c:2285
+ ieee80211_unregister_hw+0x5d/0x2c0 net/mac80211/main.c:1681
+ mac80211_hwsim_del_radio+0x2c4/0x4c0 drivers/net/wireless/virtual/mac80211_hwsim.c:5665
+ hwsim_exit_net+0x5c1/0x670 drivers/net/wireless/virtual/mac80211_hwsim.c:6545
+ ops_exit_list net/core/net_namespace.c:172 [inline]
+ cleanup_net+0x812/0xd60 net/core/net_namespace.c:652
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0xabe/0x18e0 kernel/workqueue.c:3319
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3400
+ kthread+0x7a9/0x920 kernel/kthread.c:464
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
 
------Original Message-----
-From: Chen-Yu Tsai <wens@kernel.org>=20
-Sent: 26 February 2025 09:16
-To: rmandrad@gmail.com
-Cc: linux-wireless <linux-wireless@vger.kernel.org>; wireless-regdb =
-<wireless-regdb@lists.infradead.org>
-Subject: Re: wireless-regdb: Allow 6ghz in the US
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-(When replying, please reply to all)
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-On Wed, Feb 26, 2025 at 5:05=E2=80=AFPM <rmandrad@gmail.com> wrote:
->
-> Thank you. Apologies this is the first time submitting a kernel patch. =
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-> The original submission set NO-IR where clearly the document notes it=20
-> is allowed as section 59 states hence the patch - with increase usage=20
-> of 6Ghz we have now Openwrt users complaining they can't the band in=20
-> the US due to NO-IR
->
-> Shall I update the patch to only remove NO-IR and increase power to 30 =
-dBm ?
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-As explained, the limit is lowered from 30 dBm to 12 dBm to comply with =
-the PSD requirements when using a 20 MHz channel. I suspect no one would =
-use such a narrow band, but the requirements exist and the database rule =
-should not be written in a way that allows the user to exceed the limit, =
-i.e. using 30 dBm on a 20 MHz channel.
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-So please update the patch to only remove NO-IR. You can look at =
-previous commits to see how we put URLs in the commit message.
-
-Thanks
-ChenYu
-
-> Thank you again
->
-> -----Original Message-----
-> From: Chen-Yu Tsai <wens@kernel.org>
-> Sent: 26 February 2025 08:58
-> To: rmandrad@gmail.com
-> Cc: linux-wireless@vger.kernel.org;=20
-> wireless-regdb@lists.infradead.org; Dennis Bland=20
-> <dennis@dbperformance.com>; Ping-Ke Shih <pkshih@realtek.com>
-> Subject: Re: wireless-regdb: Allow 6ghz in the US
->
-> CC-ing Dennis, the original submitter, and also Ping-Ke, who has done =
-a lot of 6 GHz updates, for more information.
->
-> On Wed, Feb 26, 2025 at 4:03=E2=80=AFPM <rmandrad@gmail.com> wrote:
-> >
-> > Allow 6ghz in the US
-> >
-> > https://www.federalregister.gov/documents/2020/05/26/2020-11236/unli
-> > ce nsed-u se-of-the-6-ghz-band allows the use of 6ghz in the US=20
-> > namely section
-> > 59 https://www.federalregister.gov/d/2020-11236/p-66 with absolute=20
-> > radiated power of 30 dBm for the 320 megahertz channel
->
-> Please don't wrap URLs.
->
-> Please see the original submission [1], which explains why the power =
-limit is so low. Basically, neither the database nor the kernel supports =
-specifying power spectral density limits, so we can only take the =
-narrowest bandwidth to calculate the applicable power limit.
->
-> [1]=20
-> https://lore.kernel.org/wireless-regdb/CAPRryQp6j4UKvLZCkMAuQdaxepMBET
-> QUJ1eNULJSh3ZWXC0f5Q@mail.gmail.com/
->
-> > based on this remove NO-IR flag and allow 30 dBm max power
->
-> The original submission mentioned NO-IR requirements, though I did not =
-find such wording. Dennis, do you have any ideas?
->
-> > Signed-off-by: Rudy Andram <rmandrad@gmail.com>
-> >
-> > diff --git a/db.txt b/db.txt
-> > index 803f1bc..bc2b4fe 100644
-> > --- a/db.txt
-> > +++ b/db.txt
-> > @@ -1953,7 +1953,8 @@ country US: DFS-FCC
-> >         (5850 - 5895 @ 40), (27), NO-OUTDOOR, AUTO-BW, NO-IR
-> >         # 6g band
-> >         #
-> > https://www.federalregister.gov/documents/2020/05/26/2020-11236/unli
-> > ce
-> > nsed-u
-> > se-of-the-6ghz-band
-> > -       (5925 - 7125 @ 320), (12), NO-OUTDOOR, NO-IR
-> > +       (5925 - 6425 @ 320), (30), NO-OUTDOOR
-> > +       (6525 - 6875 @ 320), (30), NO-OUTDOOR
->
-> The database entry targets LPI usage instead of standard usage, which =
-requires the presence of AFC, which is also a requirement that the =
-database is unable to represent. And under LPI usage, the full 6GHz band =
-(U-NII-5, 6, 7) is available.
->
->
-> Thanks
-> ChenYu
->
-> >         # 60g band
-> >         # reference: section IV-D
-> > https://docs.fcc.gov/public/attachments/FCC-16-89A1.pdf
-> >         # channels 1-6 EIRP=3D40dBm(43dBm peak)
-> >
-> >
-> >
->
-
+If you want to undo deduplication, reply with:
+#syz undup
 
