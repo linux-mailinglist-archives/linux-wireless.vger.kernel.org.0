@@ -1,109 +1,145 @@
-Return-Path: <linux-wireless+bounces-19447-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19448-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0882DA45261
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 02:48:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45517A45279
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 02:56:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F1F33A37B2
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 01:47:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 435FF176BE7
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 01:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BA72A1B2;
-	Wed, 26 Feb 2025 01:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BF3383A5;
+	Wed, 26 Feb 2025 01:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="IFPh+oDo"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ejyXS7gx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCA64689
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 01:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBFAEBE;
+	Wed, 26 Feb 2025 01:56:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740534435; cv=none; b=X6K83QRcy5UARWo5Nkq/RDEeMktL6HVBPArcCC3iDQzeZ/qV0yE3fM8MMKzwr8t1pcARk+4yG+tZAkg5bHbELFQ+6nOWNMDUIzcikCWM906roW8RHtgS0FWy0pFMzDBCfx3QQ0POKAxaQxl42+Awrzh6fP5qoV94QoVG4l+2qLw=
+	t=1740535003; cv=none; b=j17t3YL+1DZoyyANz0cll2A5ndXCmta0DX2hTU5huZ1GFvjlw6/5wY0HqdhIEeW6UYNz2gMBwyX650ezhKflnKOPlI9ar/ixudcXdXh2f3lCzji8zbhkHDF8RiNzDpGWWCaTDNXNkLRFdWxUnfmeUF/QrvZLIgKhmLWSkwiXjb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740534435; c=relaxed/simple;
-	bh=hj3KIeFbDESE2TkGMEGaSCOsGwmKEnPHvZ1I+4cBc+w=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RxES79+N0xyffp1YYd6SVeZ/P8OVkPvzrKP32j11glJdnSetE6WDxPKVnot+hUQBpERRYg0JhiGHGU79Lv4UHAcLaHeTF521btacGuS88yVhMcN/bcC6rxPSmdrpWNBs4fT06BA6Hfx/drlwvWTSLVqqDYu+Yg0Phb4fIk+zFcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=IFPh+oDo; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51Q1l7NP12865215, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1740534428; bh=hj3KIeFbDESE2TkGMEGaSCOsGwmKEnPHvZ1I+4cBc+w=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=IFPh+oDowUWxi9uejv3LjGmk7RGTsyQJL0zRX1/ru2Q401BPL8pyIN+1L+cgTtnre
-	 5YgK3r/VDeSFl6UqbbXTSHuP+YPQiC9+J9a6KryaIzkiFxf7LO0iXICt+yXosJaiAt
-	 KJaxKefry/hveVKoJ9aiWB7Q7VtVEZbiGfD3tas9EHsV2jtqouViwFuohFsL6gfSRu
-	 r8uOKXghqZyQ0a0KOqRoS+O10pQAUARxTUN/JbT2vuapta4+9UUYUmbLXQ36Ga3Che
-	 53/LqHhb09RjyGZUNTfeChd0BRq8xiozIJ2Fnn5yHgSSiy/9nc/PT6Xee7xa1Ur8RC
-	 dEH9aniCK6vGg==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51Q1l7NP12865215
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 26 Feb 2025 09:47:07 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 26 Feb 2025 09:47:08 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 26 Feb 2025 09:47:07 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b]) by
- RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b%5]) with mapi id
- 15.01.2507.035; Wed, 26 Feb 2025 09:47:07 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH] wifi: rtlwifi: pci: Fix condition to wake the queues
-Thread-Topic: [PATCH] wifi: rtlwifi: pci: Fix condition to wake the queues
-Thread-Index: AQHbgk4F7yF1CrP6lkuUlCsBtIqcQLNY2RZA
-Date: Wed, 26 Feb 2025 01:47:07 +0000
-Message-ID: <cc99f85cd4864077b2a53a27611e81bf@realtek.com>
-References: <0c91ac77-a652-4ab4-b911-e0a2386fb863@gmail.com>
-In-Reply-To: <0c91ac77-a652-4ab4-b911-e0a2386fb863@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1740535003; c=relaxed/simple;
+	bh=RSeGTVc9uBDKd744DoAdIrG+MrqAx8bj6Fr4Q3FGl+g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=NDVJyXLOW+Z7Y8H3MUtJiwc2k+Y+LKjNZHCWJJApnzbklwt/SDPQLpu5BO2lbhhoZsXua9GM52MfesIYDTxgaNXlVY1bcOIrrGebD3ZpyLZXXyIMnAviicghLv1UA37Zw8S6/vxHxpRm72ob2zC67Ge8BeqnX+2BFbtaLOn3Re4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ejyXS7gx; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51PMWsHa007454;
+	Wed, 26 Feb 2025 01:56:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	nkdabU7qyv7CkhotreBergtJRVj196HcN164i5DlU2Y=; b=ejyXS7gx//NQ4YlP
+	9Cb0QEg2ijEMzP6lez9JUGuR1RJ0QTvk6lppYWmzwKlHUPaY6gjlgGxlYvtLM00K
+	Jg80ixPGJJS16w/NunOjQcW9ZjVyTyUziSU7PexqjjxU+Xh9DzKWtmjjbdo6H86F
+	z8GshDInsbHY4EVsBhULi6rw1bGzh1OPOmwxMDOvrocrVC9E2pXnjSAD07pcNkuT
+	eYpNS9QIS2e9M5imf2C+KGWW4ry9I8L30+ddF74/p1u0hapql2E71uOS5gPjdtVB
+	BCoikG+4YH2JAoAWG8XUUv1G93V3640eIpAi47h55L5KL5Wx2EMVSINE773qYdIV
+	NXeNlQ==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 451prmrbyq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Feb 2025 01:56:36 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51Q1uaG6030767
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Feb 2025 01:56:36 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 25 Feb
+ 2025 17:56:34 -0800
+Message-ID: <8579334b-7b95-4b2a-b022-b121422cc48b@quicinc.com>
+Date: Wed, 26 Feb 2025 09:56:30 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] wifi: ath11k: Clear affinity hint before calling
+ ath11k_pcic_free_irq() in error path
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        <jjohnson@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <ath11k@lists.infradead.org>
+References: <20250225053447.16824-1-manivannan.sadhasivam@linaro.org>
+ <20250225053447.16824-2-manivannan.sadhasivam@linaro.org>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <20250225053447.16824-2-manivannan.sadhasivam@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 2VlwqJ6MmK0YVPmeXe0ZPEaz9OPJk6NG
+X-Proofpoint-ORIG-GUID: 2VlwqJ6MmK0YVPmeXe0ZPEaz9OPJk6NG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-25_08,2025-02-25_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 malwarescore=0 impostorscore=0 mlxlogscore=999
+ phishscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ adultscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502100000 definitions=main-2502260012
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3BjaS5jIGIvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3BjaS5jDQo+IGluZGV4IDBlYWZjNGQx
-MjVmOS4uOTYxNGE5ZTc1MmI5IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0bHdpZmkvcGNpLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
-ay9ydGx3aWZpL3BjaS5jDQo+IEBAIC01MjAsNyArNTIwLDcgQEAgc3RhdGljIHZvaWQgX3J0bF9w
-Y2lfdHhfaXNyKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LCBpbnQgcHJpbykNCj4gICAgICAgICAg
-ICAgICAgICAgICAgICAgcnRsX3R4X2Fja3F1ZXVlKGh3LCBza2IpOw0KPiAgICAgICAgICAgICAg
-ICAgfQ0KPiANCj4gLSAgICAgICAgICAgICAgIGlmICgocmluZy0+ZW50cmllcyAtIHNrYl9xdWV1
-ZV9sZW4oJnJpbmctPnF1ZXVlKSkgPD0gNCkgew0KPiArICAgICAgICAgICAgICAgaWYgKChyaW5n
-LT5lbnRyaWVzIC0gc2tiX3F1ZXVlX2xlbigmcmluZy0+cXVldWUpKSA+PSA0KSB7DQo+ICAgICAg
-ICAgICAgICAgICAgICAgICAgIHJ0bF9kYmcocnRscHJpdiwgQ09NUF9FUlIsIERCR19ETUVTRywN
-Cj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAibW9yZSBkZXNjIGxlZnQsIHdha2Ug
-c2tiX3F1ZXVlQCVkLCByaW5nLT5pZHggPSAlZCwgc2tiX3F1ZXVlX2xlbiA9DQo+IDB4JXhcbiIs
-DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcHJpbywgcmluZy0+aWR4LA0KDQpS
-ZWFkaW5nIHRoZSBjb2RlIGFib3V0IGNhbGxpbmcgaWVlZTgwMjExX3N0b3BfcXVldWUoKSBhbmQN
-CmllZWU4MDIxMV93YWtlX3F1ZXVlKCkgYWdhaW4uIEl0IGxvb2tzIGxpa2UNCg0KSW4gVFggcGF0
-aCAocnRsX3BjaV90eCk6DQoNCiAgICBpZiAocmVtYWluaW5nIDwgMikNCiAgICAgICAgaWVlZTgw
-MjExX3N0b3BfcXVldWUoKTsNCg0KSW4gVFggY29tcGxldGlvbiBwYXRoIChfcnRsX3BjaV90eF9p
-c3IpOg0KDQogICAgaWYgKHJlbWFpbmluZyA8PSA0KQ0KICAgICAgICBpZWVlODAyMTFfd2FrZV9x
-dWV1ZSgpOw0KDQpJIGd1ZXNzIGl0IHVzZXMgIjw9IDQiIGluIFRYIGNvbXBsZXRpb24gcGF0aCBi
-ZWNhdXNlIG9yaWdpbiBwYXRjaCBkb2Vzbid0DQp3YW50IHRvIGNhbGwgaWVlZTgwMjExX3dha2Vf
-cXVldWUoKSByZWR1bmRhbnRseSwgYnV0IGxvb2tzIG5vdCBzbyByZWFzb25hYmxlLg0KVGhlIGJl
-dHRlciB3YXkgbWF5IHVzZSBpZWVlODAyMTFfcXVldWVfc3RvcHBlZCgpIGluc3RlYWQuDQoNCg==
+
+
+On 2/25/2025 1:34 PM, Manivannan Sadhasivam wrote:
+> If a shared IRQ is used by the driver due to platform limitation, then the
+> IRQ affinity hint is set right after the allocation of IRQ vectors in
+> ath11k_pci_alloc_msi(). This does no harm unless one of the functions
+> requesting the IRQ fails and attempt to free the IRQ. This results in the
+> below warning:
+> 
+> WARNING: CPU: 7 PID: 349 at kernel/irq/manage.c:1929 free_irq+0x278/0x29c
+> Call trace:
+>  free_irq+0x278/0x29c
+>  ath11k_pcic_free_irq+0x70/0x10c [ath11k]
+>  ath11k_pci_probe+0x800/0x820 [ath11k_pci]
+>  local_pci_probe+0x40/0xbc
+> 
+> The warning is due to not clearing the affinity hint before freeing the
+> IRQs.
+> 
+> So to fix this issue, clear the IRQ affinity hint before calling
+> ath11k_pcic_free_irq() in the error path. The affinity will be cleared once
+> again further down the error path due to code organization, but that does
+> no harm.
+> 
+> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
+> 
+> Cc: Baochen Qiang <quic_bqiang@quicinc.com>
+> Fixes: 39564b475ac5 ("wifi: ath11k: fix boot failure with one MSI vector")
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
+>  drivers/net/wireless/ath/ath11k/pci.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+> index b93f04973ad7..eaac9eabcc70 100644
+> --- a/drivers/net/wireless/ath/ath11k/pci.c
+> +++ b/drivers/net/wireless/ath/ath11k/pci.c
+> @@ -939,6 +939,8 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
+>  	return 0;
+>  
+>  err_free_irq:
+> +	/* __free_irq() expects the caller to have cleared the affinity hint */
+> +	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
+>  	ath11k_pcic_free_irq(ab);
+>  
+>  err_ce_free:
+
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+
 
