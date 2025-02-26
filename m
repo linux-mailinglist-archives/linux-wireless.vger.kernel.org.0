@@ -1,94 +1,110 @@
-Return-Path: <linux-wireless+bounces-19486-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19487-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99532A46341
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 15:41:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DF3A4647C
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 16:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63EE83A6433
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 14:41:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAB80163B67
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2025 15:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01C321C9E7;
-	Wed, 26 Feb 2025 14:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7A535968;
+	Wed, 26 Feb 2025 15:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="e6wWM2Mt"
+	dkim=pass (1024-bit key) header.d=onet.pl header.i=@onet.pl header.b="PZjV9AUe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtpo92.poczta.onet.pl (smtpo92.poczta.onet.pl [213.180.149.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366CE221542
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 14:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B649C21519B
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 15:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.180.149.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740580886; cv=none; b=L1W2BzNaXY46W3Z4BhQ2iSvJeK786+KxLEZd306nwCgpL775VNoSOemM+jQiqFOwazB8DyrDxuve8qz9MovmLvaMaPmdHNEf2wHGkSUjae7K+2Cs0bryZ4My29pnA2ygNFN7UjndLRZSLHdeCUvXQJpRTojYEIio5yhWN/nv0Zw=
+	t=1740583430; cv=none; b=cpoyMTpYJRhrhgR+wN2LzKcd57uyvZ2cya3JaQRew0zXH8i4MvzDmkbVKbVikLEfakbFV8VzAa4RsF7YAXUx2dwNTmePt3viugPxiZ5qryMdSyn+yBnhQhc7jqzGMMK6kdX0KocAGf0qQ7BLtg8K0Ck7e+CWhWWXbg5aGVLmdgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740580886; c=relaxed/simple;
-	bh=M0vtbFjBRFoNamDGlYi0cwxQk4heqtx6laK9L1615Fw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=koUyDvyhcKg2jT8joRagxAJYdhrfBWr4GFYonfDVhxtqd2bQO7YHhbeCnhAU242YasohGJx77pFXkdbS5bslLIwYcSEsNIU4e55DMnM/fIchBn8K/mG71tRVIu2gnwOf1jxV4tlbjnQ0Jy9xp5dumiHwRbqVYpHrUvG6BCdpbAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=e6wWM2Mt; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=M0vtbFjBRFoNamDGlYi0cwxQk4heqtx6laK9L1615Fw=;
-	t=1740580885; x=1741790485; b=e6wWM2MtTtpPwyIH1gzt9+YYo+J5T+gvD6z4jM3RzwikDu+
-	ghSoVqtgrMlb15iOTC4gC5IfhVGkzfpgDJjpxNNuxBKBdzT3XEAnX6vjKBJtPT1m2/Ya9oVxAO04q
-	8f9Skw+PnpdkWDacxw5GR7v7BF8qCXq0v1kWK2FkMILk8yLe738TTPBZTrirPMtTQATnv0VZZJOWo
-	zLVxqU9ch3ZO1IbBVALHYBn2Nqm/dH4itJvaP+dA6cuvlJMV1EpoHG/R3UHHR+H/JtBniJM9cvUZA
-	mtfy0a4P1/eZZt9IaaMXCuUz9ljyLgXZsOoZipe55kENHUMFVtFzjZj83Gtv2W5w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tnIbC-0000000BXgd-0TxA;
-	Wed, 26 Feb 2025 15:41:22 +0100
-Message-ID: <0aa5d6e8667350c7a3d80af4ce3956cad7096fba.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] wifi: mac80211: Add support for management frames
- stats
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Muna Sinada <muna.sinada@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, Ramya Gnanasekar
-	 <ramya.gnanasekar@oss.qualcomm.com>, Jeff Johnson
-	 <jeff.johnson@oss.qualcomm.com>
-Date: Wed, 26 Feb 2025 15:41:21 +0100
-In-Reply-To: <20250211202518.126305-1-muna.sinada@oss.qualcomm.com>
-References: <20250211202518.126305-1-muna.sinada@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1740583430; c=relaxed/simple;
+	bh=psmCIxILVrSlvKN6uc1XX2DuSOpdIg3jbS1hoKUqPFU=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fTZ5qfTJ0o8s+Ema/WbgLqPSqz3W0bESmOKtSbKbn2H/VxJyXo8xWwyxhdC1LhcWKhOpdj2QJcP0cE/fVhbKMsG1xRbOhOfR5LHINEpAolkq/G2lb6EgJ/G1NipNk4rlq5pv9+KDkqopyJWQahNylTQICbsKyrbbRnHjubCcbCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onet.pl; spf=pass smtp.mailfrom=onet.pl; dkim=pass (1024-bit key) header.d=onet.pl header.i=@onet.pl header.b=PZjV9AUe; arc=none smtp.client-ip=213.180.149.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onet.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onet.pl
+Received: from DESKTOP (unknown [94.40.123.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: lukasz.michalski@onet.pl)
+	by smtp.poczta.onet.pl (Onet) with ESMTPSA id 4Z2ysy0mrqz1y3Q;
+	Wed, 26 Feb 2025 16:23:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onet.pl; s=2011;
+	t=1740583415; bh=psmCIxILVrSlvKN6uc1XX2DuSOpdIg3jbS1hoKUqPFU=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:From;
+	b=PZjV9AUewiK9q266EJUroBAZP5oql6VCR/poou0rIryKbqyRyKKwkUFR3yIcCE7A2
+	 pi2rngfDuArdk3eWHjq1WmHxG1RqKv8y4lDA/aIAr7dh4V5GNjBh9fl7ChtgLEjS+g
+	 r8TmNiSKtJvKjsanttrtYp1gEEaPFutKFGQCXbvk=
+From: <lukasz.michalski@onet.pl>
+To: "'Felix Fietkau'" <nbd@nbd.name>
+Cc: <linux-wireless@vger.kernel.org>,
+	<lorenzo@kernel.org>
+References: <003401db8476$348684c0$9d938e40$@onet.pl> <da6e61d7-0457-43d6-8ce9-a5a94ecf431a@nbd.name>
+In-Reply-To: <da6e61d7-0457-43d6-8ce9-a5a94ecf431a@nbd.name>
+Subject: RE: wifi: mt76: mt7915: fix broken background radar implementation
+Date: Wed, 26 Feb 2025 16:23:29 +0100
+Message-ID: <003601db8862$65a75800$30f60800$@onet.pl>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: pl
+Thread-Index: AQLsRp1oNBYaHL+h2+W9Cnf47rjT4wJAtc24sSYxOUA=
 
-On Tue, 2025-02-11 at 12:25 -0800, Muna Sinada wrote:
-> Currently there aren't statistics in mac80211 that keep track of the
-> management frames that are processed in both Tx and Rx. This type of
-> statistics is useful in tracking if management frames are successfully
-> transmitted or are dropped. These statistics are also needed to
-> provide information regarding how many management frames are received.
+Hi Felix, thanks for the info.
 
-A very, very long time ago, when a lot of statistics were being added
-(and required by Android?) I suggested that perhaps we should add way to
-run BPF programs on incoming frames to keep track of these things
-instead of having counters across the code for all kinds of things all
-the time. I suspect that in the time since that has become much simpler,
-since now BPF programs can be attached to tracepoints and adding a
-tracepoint or a few could be very easily done.
-In this case that'd really only require a TX and TX status tracepoint,
-where the latter is getting the 'acked' indication, so that's basically
-trace point definition + 2 lines of code.
+Is it only about mt7981 or mt7986 too?
+Strange that patched code works flawlessly (or maybe firmware just =
+sliently ignores scan requests?).
 
-I wonder what you think about that. All of these counters add a pretty
-large permanent memory (2 KiB here) and code cost, and having them in
-debugfs _only_ can also be annoying for certain use cases.
+Lukasz Michalski
 
-johannes
+-----Original Message-----
+From: Felix Fietkau <nbd@nbd.name>=20
+Sent: Tuesday, February 25, 2025 9:30 PM
+To: lukasz.michalski@onet.pl; linux-wireless@vger.kernel.org; =
+lorenzo@kernel.org
+Subject: Re: wifi: mt76: mt7915: fix broken background radar =
+implementation
+
+Hi Lukasz,
+
+On 21.02.25 16:35, lukasz.michalski@onet.pl wrote:
+> Currently enabling background radar in hostapd results in unreachable =
+AP.
+> There is because of mistake in enabling background radar=20
+> implementation for
+> mt7915 mcu driver - 3rd and 4th parameters are swapped.
+> mt76_connac_mcu_rdd_cmd requires rx_sel as a fourth parameter but this =
+
+> parameter is provided as third argument.
+> Fix was tested on mt7981 and background radar works now correctly.=20
+> Other
+> mt76 drivers do not have similar issues.
+> The issue was also described here:
+> https://github.com/openwrt/mt76/issues/958
+>=20
+> Signed-off-by: Lukasz Michalski <lukasz.michalski@onet.pl>
+
+MediaTek informed me that MT7981 does not actually have background radar =
+detection in hardware, so this patch can't be merged.
+We should instead change the driver code to refuse attempts to enable =
+background radar detection on this chip.
+
+- Felix
+
 
