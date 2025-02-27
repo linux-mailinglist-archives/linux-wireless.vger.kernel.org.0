@@ -1,160 +1,104 @@
-Return-Path: <linux-wireless+bounces-19532-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19533-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B451A478B9
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 10:10:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED5FA47932
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 10:31:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A43C16E19E
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 09:10:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F04031670D5
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 09:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA8422689C;
-	Thu, 27 Feb 2025 09:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03A6C2FB;
+	Thu, 27 Feb 2025 09:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="K7/WSRID"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="v6NRGyGp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C368E227599;
-	Thu, 27 Feb 2025 09:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D6B2222D4
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 09:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740647397; cv=none; b=R3vvH9JcLwq++d66J/DpRMtm3aq5V/uyetqxBMKzHZ5V/wYRS5OymVoQhZc/23KOA5Jhh34eSLfhWNiwJDnWwu7T5ecQdLOwQ6Uf4KdPhWbIabV6E1a+14wbmo/81QWdk+QXwVe5m4JO/WcU1abggX10J24gCZs2PKTPO7+1nAA=
+	t=1740648681; cv=none; b=c3BytZjtYvX4As3X20XRmfcUnYOuxNucw+2vErepn7s1B+XMiOtecchE/3M/nGGhCauULd06Rrilpnb1Ndt7ZcFeoufR5cjj8OaNdQU+gJEUAySpQevNtV8+P3KpMqGgrAAwDjaOYcCDXYltHPUyKPbHzC6Dh8CpjCRGHvjGXc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740647397; c=relaxed/simple;
-	bh=q4fTeH/nbZrefwpHXFO12Wt1mXAveSSHfKduO66DD4o=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HZCcFj+MHCpGk3at7ZeTuZlenstzpmAsALsA3ArpaEXgMS2PBi+Tctm6CrDBUm0YYvZURJNn9Wy1Q5n3q2ZtJE4k0RluIOSeWryT/00R54OZ9ZP8aSY3DpDhV42N75PQT9t0xMZ5FssRxOoueZZELbcuVcJPPtvumiRMbOj6cao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=K7/WSRID; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51R8xjtH015835;
-	Thu, 27 Feb 2025 09:09:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	uNP+sYpdWfNUyQbmq6LgNiGEAnkG36MM90R8M1Njlpo=; b=K7/WSRIDkP7tJK6l
-	LnHHjhqNHKhsauweDELC0vWU/alNCdvNNptoMUPk/U/I1+FhhQZODYJ7k+oO3qmv
-	MLwX9BRcDAjQZA5btHr1GVPxBzxeYd87OlEg0Qe4mn+fuLi2K0/JzmvE8PFgoRrH
-	bItnB2I5n3Ngc3VWwP1iaD1r4SdeeTb6dlVGIrPJRY2N+44Tf5+kinAfOl192uk3
-	y6EYCP0fZxwclGSJXRnw1QDpO/c6hkEWYHFBC4aljck+6p/uAgr1OFNoNs+uOMK8
-	aMM+zoflq87gJLThc0/wvalYpUD2myyVzhB2ps9JA5APUbCbOfv+uiphE3DEvL3l
-	L0h8iw==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 451prnn1y1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Feb 2025 09:09:49 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51R99mWU012790
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Feb 2025 09:09:48 GMT
-Received: from zhonhan-gv.qualcomm.com (10.80.80.8) by
- nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+	s=arc-20240116; t=1740648681; c=relaxed/simple;
+	bh=oFYqInCAhyEw8iMWyo4uPtRXKOSYxUsHS0Js4VIZT4U=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=VmXuaiwWFjO47ATNI71iui+2XXRV7+snUnOdpCSqmeJL2IcOPrkQwi11FlTtd43TUGzvWkUW3fqAKYgEebtb4PjfOtKxulUtwv4UBO1MbTIGKToffpgFVo55BciuEogcccBL0JacLqdDCtAD0UlSOB5bDost48Zno0EjDGHMgrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=v6NRGyGp; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51R9UR2901578942, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1740648627; bh=oFYqInCAhyEw8iMWyo4uPtRXKOSYxUsHS0Js4VIZT4U=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=v6NRGyGpUzlGcnUy9wF0VrI5B3keJgbEYQbXrJeEJw0606Kwp6pyJMtSdh5n/KGfp
+	 ljb5O82kRBxujs7yZT7SQ2TS0r1VHR80kJau2vY5qOdfAjlLSvOIGH9g7UQEpZtf6A
+	 aBWq0/I89Rap2z+5ZFSNuY5oms+rVLUmK7Ghk6KsTjKY0oWgN2GIaucYnKj4vyf8/7
+	 onIuXKUBusCdA6PEEwbeX1JN98BJ40Dh5EaTx3r2z7zDdnLg/03DvwVi0gji0FoIJk
+	 f0qStPxU7KnIcBduvaN//Dp5qy5rf9aGMWouNok50vwBdwZPy8lMGqMbMCOyWZi4J1
+	 jsZJalBXGsNqw==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51R9UR2901578942
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 27 Feb 2025 17:30:27 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 27 Feb 2025 01:09:45 -0800
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
-To: <johannes@sipsolutions.net>, <miriam.rachel.korenblit@intel.com>,
-        <syzbot+5a7b40bcb34dea5ca959@syzkaller.appspotmail.com>
-CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_zhonhan@quicinc.com>, <syzkaller-bugs@googlegroups.com>
-Subject: [RFC PATCH] wifi: mac80211: Prevent disconnect reports when no AP is associated
-Date: Thu, 27 Feb 2025 17:09:32 +0800
-Message-ID: <20250227090932.1871272-1-quic_zhonhan@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <67bf36d3.050a0220.38b081.01ff.GAE@google.com>
-References: <67bf36d3.050a0220.38b081.01ff.GAE@google.com>
+ 15.1.2507.39; Thu, 27 Feb 2025 17:30:27 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 27 Feb 2025 17:30:27 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b%5]) with mapi id
+ 15.01.2507.035; Thu, 27 Feb 2025 17:30:27 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Sarika Sharma
+	<quic_sarishar@quicinc.com>,
+        "ath12k@lists.infradead.org"
+	<ath12k@lists.infradead.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Jeff
+ Johnson" <jeff.johnson@oss.qualcomm.com>
+Subject: RE: [PATCH v3 0/5] wifi: mac80211/ath12k: add support to fill link statistics of multi-link station
+Thread-Topic: [PATCH v3 0/5] wifi: mac80211/ath12k: add support to fill link
+ statistics of multi-link station
+Thread-Index: AQHbiNRWxqr3IXhrSUK4baRfUgVXCrNaTpeAgACTN7A=
+Date: Thu, 27 Feb 2025 09:30:27 +0000
+Message-ID: <df26e3aeb3724d969f444eab65d8c872@realtek.com>
+References: <20250227045824.91480-1-quic_sarishar@quicinc.com>
+ <bac3fdc3bd39e45150e5b7d60be01b5d732a04bf.camel@sipsolutions.net>
+In-Reply-To: <bac3fdc3bd39e45150e5b7d60be01b5d732a04bf.camel@sipsolutions.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ZnuO2-MDAEpci2UNhs0ZfTQBhNSFOfi5
-X-Proofpoint-ORIG-GUID: ZnuO2-MDAEpci2UNhs0ZfTQBhNSFOfi5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-27_04,2025-02-26_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- mlxscore=0 mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 malwarescore=0 clxscore=1011
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502270069
 
-syzbot reports that cfg80211_tx_mlme_mgmt is using uninit-value:
-
-=====================================================
-BUG: KMSAN: uninit-value in cfg80211_tx_mlme_mgmt+0x155/0x300 net/wireless/mlme.c:226
-cfg80211_tx_mlme_mgmt+0x155/0x300 net/wireless/mlme.c:226
-ieee80211_report_disconnect net/mac80211/mlme.c:4238 [inline]
-ieee80211_sta_connection_lost+0xfa/0x150 net/mac80211/mlme.c:7811
-ieee80211_sta_work+0x1dea/0x4ef0
-ieee80211_iface_work+0x1900/0x1970 net/mac80211/iface.c:1684
-cfg80211_wiphy_work+0x396/0x860 net/wireless/core.c:435
-process_one_work kernel/workqueue.c:3236 [inline]
-process_scheduled_works+0xc1a/0x1e80 kernel/workqueue.c:3317
-worker_thread+0xea7/0x14f0 kernel/workqueue.c:3398
-kthread+0x6b9/0xef0 kernel/kthread.c:464
-ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:148
-ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-Local variable frame_buf created at:
-ieee80211_sta_connection_lost+0x43/0x150 net/mac80211/mlme.c:7806
-ieee80211_sta_work+0x1dea/0x4ef0
-=====================================================
-
-The reason is that the local variable frame_buf on the stack cannot be
-initialized by default. However one more question is that avoiding the
-uninit-value bug by explicitly initializing it is not enough. Since commit
-687a7c8a7227 ("wifi: mac80211: change disassoc sequence a bit"), if there
-is no AP station, frame_buf has no chance to be assigned a valid value.
-The function ieee80211_report_disconnect should not continue executing
-with the frame_buf parameter that is merely initialized to zero.
-
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Fixes: 687a7c8a7227 ("wifi: mac80211: change disassoc sequence a bit")
-Reported-by: syzbot+5a7b40bcb34dea5ca959@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67bf36d3.050a0220.38b081.01ff.GAE@google.com/
----
-Please kindy help thoroughly review this patch as I am not a wireless network expert.
-
- net/mac80211/mlme.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 4e8f0a5f6251..4f3b535b1174 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4414,6 +4414,10 @@ static void ieee80211_report_disconnect(struct ieee80211_sub_if_data *sdata,
- 		.u.mlme.data = tx ? DEAUTH_TX_EVENT : DEAUTH_RX_EVENT,
- 		.u.mlme.reason = reason,
- 	};
-+	struct sta_info *ap_sta = sta_info_get(sdata, sdata->vif.cfg.ap_addr);
-+
-+	if (WARN_ON(!ap_sta))
-+		return;
- 
- 	if (tx)
- 		cfg80211_tx_mlme_mgmt(sdata->dev, buf, len, reconnect);
-@@ -8070,7 +8074,7 @@ static void ieee80211_sta_timer(struct timer_list *t)
- void ieee80211_sta_connection_lost(struct ieee80211_sub_if_data *sdata,
- 				   u8 reason, bool tx)
- {
--	u8 frame_buf[IEEE80211_DEAUTH_FRAME_LEN];
-+	u8 frame_buf[IEEE80211_DEAUTH_FRAME_LEN] = {0};
- 
- 	ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH, reason,
- 			       tx, frame_buf);
--- 
-2.25.1
-
+SGkgSm9oYW5uZXMsDQoNCkpvaGFubmVzIEJlcmcgPGpvaGFubmVzQHNpcHNvbHV0aW9ucy5uZXQ+
+IHdyb3RlOg0KPiBPbiBUaHUsIDIwMjUtMDItMjcgYXQgMTA6MjggKzA1MzAsIFNhcmlrYSBTaGFy
+bWEgd3JvdGU6DQo+ID4gQ3VycmVudGx5LCBzdGF0aW9uIHN0YXRpc3RpY3MgYXJlIGZpbGxlZCBh
+dCBkZWZsaW5rIGZvciBib3RoIG5vbi1NTCBhbmQNCj4gPiBtdWx0aS1saW5rKE1MKSBzdGF0aW9u
+Lg0KPiA+DQo+ID4gSGVuY2UsIGFkZCBzdXBwb3J0IHRvIGZpbGwgc3RhdGlvbiBzdGF0aXN0aWNz
+IGZvciB0aGUgY29ycmVzcG9uZGluZw0KPiA+IGxpbmsgb2Ygc3RhdGlvbi4NCj4gPg0KPiA+IERl
+cGVuZHMtT246IFtSRkMsdjMsMDAvMTJdIHdpZmk6IGNmZzgwMjExL21hYzgwMjExOiBhZGQgc3Vw
+cG9ydCB0bw0KPiA+ICAgICAgICAgICAgIGhhbmRsZSBwZXIgbGluayBzdGF0aXN0aWNzIG9mIG11
+bHRpLWxpbmsgc3RhdGlvbg0KPiA+IExpbms6DQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5v
+cmcvcHJvamVjdC9saW51eC13aXJlbGVzcy9jb3Zlci8yMDI1MDIxMzE3MTYzMi4xNjQ2NTM4LTEt
+cXVpY19zYXJpc2hhckBxdWljaQ0KPiBuYy5jb20vDQo+IA0KPiBUaGF0IGNhbid0IHdvcmsgZm9y
+IHRoZSBhdXRvbWF0aW9uLi4uDQoNCkkgaGF2ZSBlbmNvdW50ZXJlZCBzdHJ1Y3R1cmFsIChub3Qg
+ZnVuY3Rpb25hbCkgZGVwZW5kZW5jeSBwcm9ibGVtIHRvby4gDQpDb3VsZCB5b3Ugc2hhcmUgaG93
+IEkgY2FuIHRlbGwgTklQQSB0aGUgZGVwZW5kZW5jeSBiZXR3ZWVuIHR3byBwYXRjaHNldD8NCg0K
+UGluZy1LZQ0KDQo=
 
