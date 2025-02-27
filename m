@@ -1,137 +1,153 @@
-Return-Path: <linux-wireless+bounces-19546-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19547-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 274EAA48651
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 18:13:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E8EA486CE
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 18:37:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 028811882484
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 17:10:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B173B3A476F
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 17:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31261DB951;
-	Thu, 27 Feb 2025 17:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441E61D63CF;
+	Thu, 27 Feb 2025 17:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BERq+M6+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k2CPtnoX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574F01BD000
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 17:10:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B5C1DDC29;
+	Thu, 27 Feb 2025 17:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740676224; cv=none; b=R1+T3PjRBiy2bQ44sMNgqbps6Qi+j8YmxWEPTMc1M4FuUnFjzF/BVqY6RKJIOHZQ7E0bcO5D/BeeZgUzlUwrk9C7q3iuziVxyRp4nS/VtMhej6v4DpRLq/lXGxAMbgNUoSLmRmdx0gm9QPK/JGMm65ghgvnv7mNhTmJh8B56zTg=
+	t=1740677828; cv=none; b=AR7wnk5c7f5o3Bjl2LIZjcz9dZUsLwuhSv1GPJbV6vNm5abTB0epkSduUZhg7ofTw936rF1Z7lLqxUxBlfhYbbcDK4yN9BbdpIvHBRjOg7Vzw16pdplOytspWD0GZYDsbmnfZIfoK8pQzK+dazbtRvVZczNRiM+Knlfq9xsUEh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740676224; c=relaxed/simple;
-	bh=1g9zGpMtV/3hFLrkn0fT/XCmZn80mQtN2HY9mqPIfMI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=nuFM3Vv7AA6LJXEQuVMNkHjMEPwZRvET3HKtuuM6/FXgGZDthKywzxp9TOS0yPe1tmAKYegDcDfHfcq6kmDn/UjUOd8jlj86f/ZmdM9NKUFqBOPJt3wRulGJZmEIQXkDONNir5sCoAEacU5+VEjXaVgNoUvLcinq8YFeDKUJdaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BERq+M6+; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51R9SCMM012246
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 17:10:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	TBqpguxGGsbuHVyIoyeYvAcOEVkUt7dp6bLQG0fntUQ=; b=BERq+M6+nBauRddH
-	EEW4jz44O3mA6RP8mXiK0q7+x58Wp91sL6LI2Ywy42Y7jSQyzKBAAQlE/z/ibh+w
-	UwY0z9dJLNhY+75yX1jU0O0r/4w/hWAnhWiF0dOvnxlhbRkMJ7HT1eFLyltvw5RX
-	2f6iw3TSrJrlr5WXauV5NABby1uXa6Oxcl8JuuluDFlAgm+0h4LT5CMN5u0hJMAp
-	O7SymVQHZuP/1tSUDlvV9tM4sCgh6zw7gXkd3WxYBOYoCzRVrCIXsuy8dsQ11c0T
-	IBKTbtWIXEiFXao3g81e2abtsAvDVdZ9xZMi5TGDkHMr4A45Pfegx8RmFtj9ns9G
-	BOnCog==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 451prk6g95-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 17:10:21 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-22366901375so2865555ad.0
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 09:10:21 -0800 (PST)
+	s=arc-20240116; t=1740677828; c=relaxed/simple;
+	bh=3VhhTqGt87a5LXVZ8xAbJKCD+r0MSBo9AvP4EXdhZvc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ezwsb0trh6xyZeC+AoW6+B+ljnMChTreoH31oFLGPbRllrsMUlUjfhGqF33Ol1UH0l2W94vCQxc6AW+5+flmKmwHXo2VWkYwpm8GeT0u4ZqoF2IVVKy4ZqlYyE+00iA9tSHrrIPMbw0iejaa7+kzwWEDMDSwR68BAlLu+ShxVzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k2CPtnoX; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-223378e2b0dso20452605ad.0;
+        Thu, 27 Feb 2025 09:37:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740677826; x=1741282626; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VUAFuA6WyxlqIwMao9P+DyP+C2TxjteBYJ1MyyDLQfw=;
+        b=k2CPtnoXP+Nu/D9591DpLIaKIB63ulgvz8LnuAS0Gvpy9tT7B2X8uSVT7amvEwHYN5
+         xVS9I4r+3RVO5D94QO85PqOFY6Zp3qgx98bOkOWLt4Wiu4tiG3UvwEUzcWqicEPZg3wW
+         DrpkJcct3mPAd/teLAglXvpBIOZv2OhEqbg7BVLvTD4piL1wskgOYWI2OFLey43KQVwz
+         JujPkxDVtkSPoC9Y01eeNxNLX06GizP3MKRHs/aT0whflsBfOXPBPxHEMdx10HKEdUdm
+         nHuxJQeCsYqKcBCUaLS1TSAkaUoK/66c657XNZ7MzdvTOdCV8F7+j+hc7+9LtJ8CFncw
+         YQlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740676220; x=1741281020;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TBqpguxGGsbuHVyIoyeYvAcOEVkUt7dp6bLQG0fntUQ=;
-        b=JhLsR53yfZh0kFVdcSjMw49049Y9j1a4j5Nc4ifpEQDMAYamUXSBhA950v3CnCoRaX
-         7J6MpspPFrFBfMYs/zNd4OT028F8taMKKkwRKBbICG28TdIMHPDxQITEyE6dmIisNFxu
-         F96VqkRrcHfZSQ0o9FhcZRtd0W6L3+p0E1f/68SLgmvnDqb1eEqGkZPbkq8JQl1ZGAkx
-         Kk/wyUehv/XNco7UKOEXnmSZ55kipc5CWgTKTey/mSavkymatf+7TlP0byZtFiG1hSrN
-         cQxtq5SfGaT7uEbL+4V/iZm25q+cdBEqcLClnuq3CpCoP3atTgmWdSzllq0ZJTR2mvlc
-         BTyg==
-X-Gm-Message-State: AOJu0YwbffGJwMv+wPlWbqYd1yXIwbuVgmaQmEezbdy9vZzme+CZUrQb
-	SmPm2u3OWLN+qLi5T3uQVldM7hNkn9DB8l14SadEZIhd44dM3O1p9qTbToj2ERM4Hut4Wdvz9Yl
-	uohyNCesuoYLEys3ftM2pPCIQgs++sl9T4ZyVBGuFWnB992ZRfMD38o1dCVvGaaEfYTt9/DXhIg
-	==
-X-Gm-Gg: ASbGncvl6fFqVHnZ92tumml7ARfgBONZXZNEV6aaZcbQLCjxeFVQzOM8jSWaWS71O18
-	8Rllumt1zGYcQZ5Jj8BGkJ9eVtditxCmZxxgjKWwJUkWE9/mS+ivgnnP92lp77Xqw7LIfbeu7tP
-	p/n81g0p8/xFn/irIw75B9PeN3U6WBx3beOA00EIdcyG4RwBoIrcoF0xou8TiejTJctiPK59ffZ
-	P9TgLSUd2AIyOmhr7b9KVCCSHKfgLmjIsjualvmVdHgcfVBKZfU3V//M1GbGDR85Z3IJwkTbmwp
-	2UUDvlvVMJkYE6DEU2AMXomprW0fhKRWy78zrHnm2rsJ6oCfmUxH
-X-Received: by 2002:a05:6a00:4c8e:b0:725:f1e9:5334 with SMTP id d2e1a72fcca58-7349d2f3d9emr8293952b3a.8.1740676220212;
-        Thu, 27 Feb 2025 09:10:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGAgr/wxwNt0KZqGBy+I7l36MHGLD404qGwiZ4rO8yQRGGh2MVohZXLl3ovVhLQ8DhfSndYDw==
-X-Received: by 2002:a05:6a00:4c8e:b0:725:f1e9:5334 with SMTP id d2e1a72fcca58-7349d2f3d9emr8293899b3a.8.1740676219808;
-        Thu, 27 Feb 2025 09:10:19 -0800 (PST)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7349fe2a61fsm1896855b3a.8.2025.02.27.09.10.19
+        d=1e100.net; s=20230601; t=1740677826; x=1741282626;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VUAFuA6WyxlqIwMao9P+DyP+C2TxjteBYJ1MyyDLQfw=;
+        b=CBW51xVRP/LaIIU1A6CZ4OkqZgrUu7nfhjFZxIgfGDo1MHeLTMhoBk9ls9aSHnsDEJ
+         Hq+I/rEhi3ZvI+LTdwCfGZPul2qRFflSFwVypc9sxMGK/73EaXD81gNmJRO0ZxnRshjC
+         7byUXeIDC5XhpRRdk/keR4/Vqaj2Sj0ftemu+0NRgC7BFGizWLQ1wt1UjWNHW1fnLBHZ
+         hBc+KIaV2cj5yQ7MPhgs3lgClVUJC0CF+Nfh7gwYi28ihhiy7Ar+Vi5sw+vXQ/R8/cB4
+         vZNw/Bb2hoblNmV89dDBLZrPAHpgzRpiI9+tsCit7EyEDhQ7BOiCMi9O+FIj2ZOp5UCx
+         nSBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9j0q98O9kyB9dWy5+b/tCfcMULttjt2DdRUxvfMxTLipKIVPbXk36nnKn8ofIZXzKtnv5o5EW8XCJzfM2@vger.kernel.org, AJvYcCUU6DzcBdtZZlq0E1+Y65cMvM5A/vA56hExKka8pqUJSXol/OIszuzTLD7LRf8m3msgoow=@vger.kernel.org, AJvYcCUWoy5TgbRAMHlO22hv3NOK7IdgC4Dqz/uXeEKAGFFb9bQuPI97kIfvolb6QfhpcjBc5CtbcUB/iRGVdqj1Gf0=@vger.kernel.org, AJvYcCVYyDkiB2aBGstAzk7mXzYSeUUTbes3GGJGZGd7CCnrhDl1n3r5rSSQJf5eVYm6EFMZ+GdoGX19igFjUuk=@vger.kernel.org, AJvYcCVlFQZSDXAlsbdAdSwO1zAj04bh4oPZ6xPbwX22YjTub52352CSEKLD7CiQJjZrQp2E8tAUgrr4@vger.kernel.org, AJvYcCWOtFmG0JEQTKrqkgsWR/0Jav2B60EvClk8mWib2+01meIMohoVedGCHepPH//u4qoj5PIzSpZ0IxR9GjhB@vger.kernel.org, AJvYcCX1xVA7bQ90BxTYRQOzgeZ8GmLaqz5Ju20K54lixDEkIlByWx1apZHF9TG2jT8v5/Uayny7RHf4pqeUhPc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKRHiQFsKxRA/aOoRfrGExObZRfbhIy6eAK1GbCUQvo3xvzOUH
+	3M6UBSB0EaoN1bNAwSbbAuGw2bfeZfCy/gR4LMK0dymuk5b6Uu7C
+X-Gm-Gg: ASbGncs53cL6ikyZG4g3aeg9EySDog3pal+DI2I48LU8w6YCk+ekeaiHRf1K53mh2y3
+	+BhxobvZ76YBn+DXHMq12bFe97eX0jQCyuuMCYylHw/Yl/UWSsJL7WF44n/xXJwCHvhQO3q69oK
+	PQEoouzvrFevT7/yAsIhAfYkD4XLbcRjcDMf9yazm7xeSU+LjSo/YWFwTqWWODEmrdwY+0WHVjl
+	kowOZGonIYgf+9GfkpJfBDRu880K4DuM4v/Di256mKI0+MTK6v6SiD+1ohubIjOVNmk3ePSNKRL
+	mggknlz/2No67vWDjkJj+nM45VuFkp/IJl9vmpaBeLYcQM2g9w==
+X-Google-Smtp-Source: AGHT+IGK2yvXxMwGzFuS4qAPXT9dc4oLUeTze+y8wAtciDVfBiItiQouqHwlR4imml9fxjD4qYJfDg==
+X-Received: by 2002:a05:6a20:9146:b0:1ee:d6da:b651 with SMTP id adf61e73a8af0-1f0fc993ffdmr22305716637.35.1740677825727;
+        Thu, 27 Feb 2025 09:37:05 -0800 (PST)
+Received: from localhost (maglev-oncall.nvidia.com. [216.228.125.128])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7de19d3fsm1745501a12.18.2025.02.27.09.37.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 09:10:19 -0800 (PST)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: jjohnson@kernel.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org
-In-Reply-To: <20250225053447.16824-1-manivannan.sadhasivam@linaro.org>
-References: <20250225053447.16824-1-manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v2 0/3] wifi: ath11k/ath12k: IRQ affinity fixes
-Message-Id: <174067621913.3801911.12667754541994215143.b4-ty@oss.qualcomm.com>
-Date: Thu, 27 Feb 2025 09:10:19 -0800
+        Thu, 27 Feb 2025 09:37:05 -0800 (PST)
+Date: Thu, 27 Feb 2025 12:37:02 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, jk@ozlabs.org, joel@jms.id.au,
+	eajames@linux.ibm.com, andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org, rfoss@kernel.org,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+	dmitry.torokhov@gmail.com, mchehab@kernel.org,
+	awalls@md.metrocast.net, hverkuil@xs4all.nl,
+	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+	louis.peens@corigine.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+	akpm@linux-foundation.org, hpa@zytor.com, alistair@popple.id.au,
+	linux@rasmusvillemoes.dk, Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se, jernej.skrabec@gmail.com, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+	oss-drivers@corigine.com, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
+	Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: Re: [PATCH 02/17] bitops: Add generic parity calculation for u64
+Message-ID: <Z8Civv0QaBzmFPTq@thinkpad>
+References: <20250223164217.2139331-1-visitorckw@gmail.com>
+ <20250223164217.2139331-3-visitorckw@gmail.com>
+ <Z7zIBwH4aUA7G9MY@thinkpad>
+ <Z73FxIv353lbXO3A@visitorckw-System-Product-Name>
+ <b5236ae4-7ebe-4a88-bbc9-3b9b3374de53@kernel.org>
+ <Z79ebv630yuNOJKV@thinkpad>
+ <a8c29dec-6178-4f8f-80f5-aece636c410b@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.0
-X-Proofpoint-GUID: 4w09KgJDcBfDhXu-i2ZbX7zrXbjUlAY1
-X-Proofpoint-ORIG-GUID: 4w09KgJDcBfDhXu-i2ZbX7zrXbjUlAY1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-27_06,2025-02-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- lowpriorityscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- phishscore=0 spamscore=0 mlxscore=0 mlxlogscore=782 malwarescore=0
- adultscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502270128
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a8c29dec-6178-4f8f-80f5-aece636c410b@kernel.org>
 
-
-On Tue, 25 Feb 2025 11:04:44 +0530, Manivannan Sadhasivam wrote:
-> This series fixes a warning from kernel IRQ core that gets triggered in the
-> error path of QCA6390 probe. While fixing that I also noticed the same issue in
-> the ath12k driver, so added an untested patch for the same.
+On Thu, Feb 27, 2025 at 07:38:58AM +0100, Jiri Slaby wrote:
+> On 26. 02. 25, 19:33, Yury Norov wrote:
+> > > Not in cases where macros are inevitable. I mean, do we need parityXX() for
+> > > XX in (8, 16, 32, 64) at all? Isn't the parity() above enough for everybody?
+> > 
+> > The existing codebase has something like:
+> > 
+> >          int ret;
+> > 
+> >          ret = i3c_master_get_free_addr(m, last_addr + 1);
+> >          ret |= parity8(ret) ? 0 : BIT(7)
+> > 
+> > So if we'll switch it to a macro like one above, it will become a
+> > 32-bit parity. It wouldn't be an error because i3c_master_get_free_addr()
+> > returns an u8 or -ENOMEM, and the error code is checked explicitly.
+> > 
+> > But if we decide to go with parity() only, some users will have to
+> > call it like parity((u8)val) explicitly. Which is not bad actually.
 > 
-> Finally, updated the irq_set_affinity_hint() API in both drivers as it was
-> deprecated.
-> 
-> [...]
+> That cast looks ugly -- we apparently need parityXX(). (In this particular
+> case we could do parity8(last_addr), but I assume there are more cases like
+> this.) Thanks for looking up the case for this.
 
-Applied, thanks!
+This parity8() is used in just 2 drivers - i3c and hwmon/spd5118. The hwmon
+driver looks good. I3C, yeah, makes this implied typecast, which is nasty
+regardless.
 
-[1/3] wifi: ath11k: Clear affinity hint before calling ath11k_pcic_free_irq() in error path
-      commit: 68410c5bd381a81bcc92b808e7dc4e6b9ed25d11
-[2/3] wifi: ath12k: Clear affinity hint before calling ath12k_pci_free_irq() in error path
-      commit: b43b1e2c52db77c872bd60d30cdcc72c47df70c7
-[3/3] wifi: ath11k/ath12k: Replace irq_set_affinity_hint() with irq_set_affinity_and_hint()
-      commit: 6f2d839d11b36c630dbcad2c68613f15409de392
+This is the new code, and I think if we all agree that generic parity()
+would be a better API, it's a good time to convert existing users now.
 
-Best regards,
--- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-
+Thanks,
+Yury
 
