@@ -1,77 +1,78 @@
-Return-Path: <linux-wireless+bounces-19505-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19506-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED8BA47053
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 01:36:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC4AA47056
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 01:37:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C30C316E00A
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 00:36:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33F4A7A387B
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 00:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C55270042;
-	Thu, 27 Feb 2025 00:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247C1270058;
+	Thu, 27 Feb 2025 00:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NGT1pBfL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JUkcdDSh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB76E545
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 00:36:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD5927004D
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 00:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740616575; cv=none; b=ioQbF3xEEjRVCjZPihvz5+vqy0s7t4+xIoxCBkGpNyQ2o0OHeodPi5YjAZ4MCjIYaGT1rqS3PabLBPDBebg+HeJte0PkN17nxXmwFTp9yQCic1hM3s30W/hi9L/08w1xtQpyDpDRd3MtNsnrwHws4+AMqIhOw61BLf+uiNwZ8uY=
+	t=1740616634; cv=none; b=gkhvicR2Bb4Cr3LRpD97yZjwsQB8j1OyrAetjyTLO8q6dgCRB330YFUdkLYZx6loidBDpg0ZQjVCnvbjKkV5ITUkDva/D3+/+KXWwQFoom6E2+F7iFKcXyGMOwr0FhgW9ibIXgE0K41TnsfFWKjKLRKfarJvfrEbhs71jSDdXmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740616575; c=relaxed/simple;
-	bh=qrrfvJEfB3aTKM488wYcHln6UNo3BaeE4/DyKezwzwg=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=dLpzk46i2im5GsraK588Tpwve23oo7c1KAt2Ayicqlf1v3E0K2DdGyAROMjWXzrmQJ6C1Pp3xpQJ3xaoC47wPsVSxhe7lEP3Vtmd+5w9OW6q61rRcwno3vRP+UUSmzIvHKqLMu7K8zvZDe4lgjDBbNOaqc6HNRt92+sz42xSOrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NGT1pBfL; arc=none smtp.client-ip=209.85.218.53
+	s=arc-20240116; t=1740616634; c=relaxed/simple;
+	bh=GIR1Gs2pdP57VP2x61fBuIMMkpbloGhmhv6eJUTYVTQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=IBskoMKGu0QeqHuXIDH636n0HemBuVngyOiJ0um4H2unvVWkCxlWMHwDLk0WwtkoQ/c4G0PR77au8nOgfXsxAnBIVFOeCXzl9ae5m4w9pRf9ECAOwOjHYUjRJW5+YarxuuKouknJqXczIA2k/7C5dVLYaP6oGSSLiZJk4s0kQrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JUkcdDSh; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-aaec61d0f65so66511166b.1
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 16:36:13 -0800 (PST)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5e0b70fb1daso503464a12.1
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2025 16:37:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740616572; x=1741221372; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jshC1WgvKeS/X/xxAqOcynD+UIW2oEfxfloI6izBUD8=;
-        b=NGT1pBfLY2MIocLFuzCgzV2pG0a0aFRRPhlNggQJkF283aX+GCuK029ewMmwl+HiUP
-         Bycf6dyYt0U2+3VKqd/of4I472KRCQT1LZ2Rj+Og62QGCcXO9d8rv24J1r/B9FFgnyJb
-         vv7CVmHBPaXEwHhH1CwsSsrS22IIF6boTPH8AFkhsSjpBB1jzwuvCDbrFfSp7tBGs90S
-         9BqyTivhuArqyN+t2zmrjpb6BmtVY74GehxQ956viTJwDPK8d0XzdK+uP0tKGRcG2Ut5
-         en/IEcKpmTgPRR1PrXSK07Eyyt/kERcfRWXmpd2Z0Dq+P8XxhDTIg3HUKnwHP8tftnOZ
-         sy8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740616572; x=1741221372;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+        d=gmail.com; s=20230601; t=1740616630; x=1741221430; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=jshC1WgvKeS/X/xxAqOcynD+UIW2oEfxfloI6izBUD8=;
-        b=HlwIbnnlTLkSS8njInBk/6td2sRO4kg7U76x2U3gQKRKxbt+v3aafl3khGJffV3UFJ
-         CGU4Pbke8BBhTzhzxfMZ+c2mP2iaVOWkT5IcSOMCW1Q8l7fIgCHsciDTNkG9XZK7pj/t
-         nGvmRFtGGnzV2buNz7ub2QZYHp7ZU6OLQlYamEF3yRV/um9hgdgPz3wunbQ51WsGb45a
-         ertKK1ciX0AZ9camMvTR4D+u8UnOJzDnT7PDhq2mwGWLjotu7dIi9ZowgF3qNnyIbqJy
-         TG5I8y+xe3QGPJp/P+QzhSI1YSRfygh59LTHQKScUcjNBgzpAKoJBzU2/I3ghpv0Vo1Q
-         RTtA==
-X-Gm-Message-State: AOJu0YzDZyUTZ0tMYuhJtu8MYspNb8J5V3QpupKTO2d26br9UmTEPPwc
-	327YtXvCgxakA7M9TZAx+Am39X6Y1sSHWl7HoFy0UygXROim6Mbm58JUWQ==
-X-Gm-Gg: ASbGncvvNaYLksqdSqwBif8y3pMd/80vOK+KkI8rUyPVNC1IdwIfUNwsEB0hShj8Llb
-	nHrEgVNwXCBMqsQ1S5pi8ZamIy5xX0YeaeSC5/hxlfg3TJxUXhC/BFEAZCPs5L5CiaagF24epAY
-	dddtb/Kr/yCDFdVZs6XIXAx5/hqDu6hoTXPAJUI2UsJN19nMrQVK9MysfyMtUwduNugPcU+cZWv
-	Lul3zxDHAE/XrN1YMDLN8VLyNLhSwUcAnMFBi9ei6BvQfmUlElCItWw1CsoA/9I7PGMRHt4E73S
-	PSDP8R4F+XpiyOzUIIHn5YrC24Nqs1d//mU=
-X-Google-Smtp-Source: AGHT+IE5/yw36k+Hk2trOVAAb1OQDR+qTx4DVHDX/beEQD2FzLT2njIobxF8pKDpzmrR2THXIdaM6g==
-X-Received: by 2002:a17:907:7fa6:b0:abe:c8ff:32a7 with SMTP id a640c23a62f3a-abed0db724fmr1157883566b.31.1740616571820;
-        Wed, 26 Feb 2025 16:36:11 -0800 (PST)
+        bh=IJrh8CoC7l6jkeRYomleiynidFDTKA3ItURKqMmta8Y=;
+        b=JUkcdDSh7RoWkpXPaI0D62mlIUQPam9mAiSf1umP/3UuMqoK8hWtolB2PvxWuOBcl3
+         +Y4L1Zn4t7TasIeHQpVTEdcTV4uDN3W8X0hDGV6UGyPe9Jp1ofTEZSwVHyqw3jmbAseb
+         KKulHhdp/V84fhlG3U43wR3p0B7W43FRXQemkZc45KsCfKxO3GwTJqGBDopFptiLx7vI
+         rLJsGgyjOWmCcBRt+6PvAS1jJcDiSPox03ESuq4Yp8hE7HGL15QisyzOP+PdblUDIk0X
+         OH95U7NAbvIMMvg3rMmtqNx2kRZRt1LI5+AYRiAd6FKC9xNYMWgm74LYZOQnIC4CLDxB
+         1OhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740616630; x=1741221430;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IJrh8CoC7l6jkeRYomleiynidFDTKA3ItURKqMmta8Y=;
+        b=xAWAllzyYu14o7GgLWn/gRlqiycX33utwdO0dW9hElrZRaMubP0+f0lZ14z6BQFPWM
+         MDWqISudCuslLkQ7xxUl1fFyU7/OstbUVIevcBIg1v+FrWxY50gocGABCeZ8CI2GGKC1
+         W6sPNg9hqNbeYsGDwLnWV1AF3BCBwRFwRDceb/weUvAmPl9vmS9j/s29eua/XO/koVaD
+         Tz0mkLoayILkHQWTSk06JtaXzcDpHtocJcnrfXQoHd30GUQfVnPnyEoidvdgfCejqWn6
+         PSLg90yM7+uYl3R2frY6znEUmS+5sx4FdxoYVt1t7/mBLUciAWqcZ5ye0TbVZfxEitOg
+         TUDQ==
+X-Gm-Message-State: AOJu0YweAsgLIcZSMohjtJWzwNKvGFMJdghBebVw/J+q+m+7ULgjsU5A
+	0I+EOocDSNvAYyIRmELO2zSY+3glZ5wOHfPamy24Cc7hSSWsLlqGAl8ljA==
+X-Gm-Gg: ASbGncvzhDY9B9WKNWMbI3dSgn3kaFr4ZwutWAjsivD+ZI7CiSXlYjhqWoCUGhSANX4
+	OHFUqYA4QCwlBItGO/kUaEweZfTH73PYRxwOHUGuie+FZeXd2XOPsTMXbxQ6jMA3E9egWAeUUAh
+	jEnpFZe1DAkkQKWIpIKePefNyni5icYOUPgM2j26TKR0BWww5SH4Mxo+rKp8zm9zZACZ6qjQKKP
+	Iwv2dYts/Fc161YDDRw3th7z1OPxJiXLQ1CFKuvfj74xCj6g9fvsG8IC+1wQJF/c4NSwGWh4nGJ
+	FUcAd5t4et7tFnh/6SK4szdVtcHeFK8e5Bs=
+X-Google-Smtp-Source: AGHT+IHVH37+Lt/fzF02yYhwwmY//Z5gGz+sGuV4Q3R8dw3gTQRZD1B+H3ai4hArVRKyCKJYGgGtSw==
+X-Received: by 2002:a05:6402:5107:b0:5de:481a:cbc1 with SMTP id 4fb4d7f45d1cf-5e4a0d88e47mr8335295a12.16.1740616630259;
+        Wed, 26 Feb 2025 16:37:10 -0800 (PST)
 Received: from [192.168.0.50] ([79.119.240.155])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c0fca3dsm28969766b.77.2025.02.26.16.36.09
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e4c3fb51f9sm252629a12.55.2025.02.26.16.37.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Feb 2025 16:36:10 -0800 (PST)
-Message-ID: <8e9d900e-0721-425c-8466-bd57742c9f86@gmail.com>
-Date: Thu, 27 Feb 2025 02:36:08 +0200
+        Wed, 26 Feb 2025 16:37:09 -0800 (PST)
+Message-ID: <2a18fa0f-0a80-4059-b69c-907e18d85893@gmail.com>
+Date: Thu, 27 Feb 2025 02:37:08 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,70 +80,174 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-US
+Subject: [PATCH rtw-next 1/7] wifi: rtw88: Add some definitions for RTL8814AU
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH rtw-next 0/7] Add support for RTL8814AE and RTL8814AU
+References: <8e9d900e-0721-425c-8466-bd57742c9f86@gmail.com>
+Content-Language: en-US
+In-Reply-To: <8e9d900e-0721-425c-8466-bd57742c9f86@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-These patches add 3 new modules: rtw88_8814au for USB devices,
-rtw88_8814ae for PCI devices, and rtw88_8814a which has all the logic
-for both.
+Add various register definitions which will be used by the new driver.
 
-Originally it was supposed to be only RTL8814AU. Recently I realised
-that RTL8814AE can be supported too with minimal effort, so here it is,
-just one extra file and a few lines in rtw8814a.{c,h}.
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw88/reg.h | 45 +++++++++++++++++++++---
+ 1 file changed, 41 insertions(+), 4 deletions(-)
 
-Another set of patches will improve performance a bit.
-
-Bitterblue Smith (7):
-  wifi: rtw88: Add some definitions for RTL8814AU
-  wifi: rtw88: Add rtw8814a_table.c (part 1/2)
-  wifi: rtw88: Add rtw8814a_table.c (part 2/2)
-  wifi: rtw88: Add rtw8814a.{c,h}
-  wifi: rtw88: Add rtw8814ae.c
-  wifi: rtw88: Add rtw8814au.c
-  wifi: rtw88: Enable the new RTL8814AE/RTL8814AU drivers
-
- drivers/net/wireless/realtek/rtw88/Kconfig    |    25 +
- drivers/net/wireless/realtek/rtw88/Makefile   |     9 +
- drivers/net/wireless/realtek/rtw88/reg.h      |    45 +-
- drivers/net/wireless/realtek/rtw88/rtw8814a.c |  2251 ++
- drivers/net/wireless/realtek/rtw88/rtw8814a.h |    64 +
- .../wireless/realtek/rtw88/rtw8814a_table.c   | 23930 ++++++++++++++++
- .../wireless/realtek/rtw88/rtw8814a_table.h   |    40 +
- .../net/wireless/realtek/rtw88/rtw8814ae.c    |    31 +
- .../net/wireless/realtek/rtw88/rtw8814au.c    |    54 +
- 9 files changed, 26445 insertions(+), 4 deletions(-)
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814a.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814a.h
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814a_table.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814a_table.h
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814ae.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814au.c
-
-
-base-commit: c61da149b9c2e439abe27845a71dae5ce5f5985c
-prerequisite-patch-id: cbbeefd71b59d1fcea72cda22b1eb0e62b40a751
-prerequisite-patch-id: 18beb866f984f1ed6769d95b3ab7894d75b3e7d1
-prerequisite-patch-id: e1e0ceb709fe71d6c48e063768698c78558f11c0
-prerequisite-patch-id: 17ec15a2287ce8766e35b1113fd043d25ebba9ed
-prerequisite-patch-id: 36ff8f0da543fbc931db6cad60d8512dba82ecd0
-prerequisite-patch-id: 0b5c2a854227b26491421be28b9348e098195881
-prerequisite-patch-id: aef15a0990448c435356fe7631ddafbf35606731
-prerequisite-patch-id: 56dda569e509fef7403a02d4700b22f27301ea37
-prerequisite-patch-id: 0cc73f75273b064d6e8783b8ac4ed06a1025ced2
-prerequisite-patch-id: 04fd029f6ae8a5f3d944ecb4c959e55d2599dd87
-prerequisite-patch-id: fd5c77b6933048355029ecbcdaf3107183c26aba
-prerequisite-patch-id: 6f50c5e526f96008b795477ce97e3c75845f113f
-prerequisite-patch-id: 6d85bbc95c0eec75de67992a176907afa1fdbd4e
-prerequisite-patch-id: 1e4fd27474a3622807b7fe5bfd3a5a09261fba46
-prerequisite-patch-id: a762f356fc162e29375af231beedfc06dc3a4fc2
-prerequisite-patch-id: 1c68d0186aabcd2c7ae21b605288aaa872651307
-prerequisite-patch-id: b0c4ae910737add0d3068aa92efa265d11dd66e4
-prerequisite-patch-id: 5b58a4a0870850a6768eca1a2e9d1523dfdeae84
+diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
+index 209b6fc08a73..e87cccc2ffdd 100644
+--- a/drivers/net/wireless/realtek/rtw88/reg.h
++++ b/drivers/net/wireless/realtek/rtw88/reg.h
+@@ -8,6 +8,7 @@
+ #define REG_SYS_FUNC_EN		0x0002
+ #define BIT_FEN_EN_25_1		BIT(13)
+ #define BIT_FEN_ELDR		BIT(12)
++#define BIT_FEN_PCIEA		BIT(6)
+ #define BIT_FEN_CPUEN		BIT(2)
+ #define BIT_FEN_USBA		BIT(2)
+ #define BIT_FEN_BB_GLB_RST	BIT(1)
+@@ -39,6 +40,9 @@
+ #define BIT_RF_RSTB		BIT(1)
+ #define BIT_RF_EN		BIT(0)
+ 
++#define REG_RF_CTRL1		0x0020
++#define REG_RF_CTRL2		0x0021
++
+ #define REG_AFE_CTRL1		0x0024
+ #define BIT_MAC_CLK_SEL		(BIT(20) | BIT(21))
+ #define REG_EFUSE_CTRL		0x0030
+@@ -73,6 +77,8 @@
+ #define BIT_BT_PTA_EN		BIT(5)
+ #define BIT_WLRFE_4_5_EN	BIT(2)
+ 
++#define REG_GPIO_PIN_CTRL	0x0044
++
+ #define REG_LED_CFG		0x004C
+ #define BIT_LNAON_SEL_EN	BIT(26)
+ #define BIT_PAPE_SEL_EN		BIT(25)
+@@ -110,6 +116,7 @@
+ #define BIT_SDIO_PAD_E5		BIT(18)
+ 
+ #define REG_RF_B_CTRL		0x76
++#define REG_RF_CTRL3		0x0076
+ 
+ #define REG_AFE_CTRL_4		0x0078
+ #define BIT_CK320M_AFE_EN	BIT(4)
+@@ -603,6 +610,13 @@
+ #define REG_CCA2ND		0x0838
+ #define REG_L1PKTH		0x0848
+ #define REG_CLKTRK		0x0860
++#define REG_CSI_MASK_SETTING1	0x0874
++#define REG_NBI_SETTING		0x087c
++#define BIT_NBI_ENABLE		BIT(13)
++#define REG_CSI_FIX_MASK0	0x0880
++#define REG_CSI_FIX_MASK1	0x0884
++#define REG_CSI_FIX_MASK6	0x0898
++#define REG_CSI_FIX_MASK7	0x089c
+ #define REG_ADCCLK		0x08AC
+ #define REG_HSSI_READ		0x08B0
+ #define REG_FPGA0_XCD_RF_PARA	0x08B4
+@@ -611,7 +625,7 @@
+ #define REG_ANTSEL_SW		0x0900
+ #define REG_DAC_RSTB		0x090c
+ #define REG_SINGLE_TONE_CONT_TX	0x0914
+-
++#define REG_AGC_TABLE		0x0958
+ #define REG_RFE_CTRL_E		0x0974
+ #define REG_2ND_CCA_CTRL	0x0976
+ #define REG_IQK_COM00		0x0978
+@@ -623,8 +637,10 @@
+ #define REG_RXSB		0x0a00
+ #define REG_CCK_RX		0x0a04
+ #define REG_CCK_PD_TH		0x0a0a
+-
+-#define REG_CCK0_FAREPORT	0xa2c
++#define REG_CCK0_TX_FILTER1	0x0a20
++#define REG_CCK0_TX_FILTER2	0x0a24
++#define REG_CCK0_DEBUG_PORT	0x0a28
++#define REG_CCK0_FAREPORT	0x0a2c
+ #define BIT_CCK0_2RX		BIT(18)
+ #define BIT_CCK0_MRC		BIT(22)
+ #define REG_FA_CCK		0x0a5c
+@@ -647,6 +663,7 @@
+ 
+ #define REG_3WIRE_SWA		0x0c00
+ #define REG_RX_IQC_AB_A		0x0c10
++#define REG_RX_IQC_CD_A		0x0c14
+ #define REG_TXSCALE_A		0x0c1c
+ #define BB_SWING_MASK		GENMASK(31, 21)
+ #define REG_TX_AGC_A_CCK_11_CCK_1		0xc20
+@@ -674,7 +691,7 @@
+ #define REG_LSSI_WRITE_A	0x0c90
+ #define REG_PREDISTA		0x0c90
+ #define REG_TXAGCIDX		0x0c94
+-
++#define REG_TX_AGC_A		0x0c94
+ #define REG_RFE_PINMUX_A	0x0cb0
+ #define REG_RFE_INV_A		0x0cb4
+ #define REG_RFE_CTRL8		0x0cb4
+@@ -683,6 +700,7 @@
+ #define DPDT_CTRL_PIN		0x77
+ #define RFE_INV_MASK		0x3ff00000
+ #define REG_RFECTL_A		0x0cb8
++#define REG_RFE_INV0		0x0cbc
+ #define REG_RFE_INV8		0x0cbd
+ #define BIT_MASK_RFE_INV89	GENMASK(1, 0)
+ #define REG_RFE_INV16		0x0cbe
+@@ -703,6 +721,7 @@
+ 
+ #define REG_3WIRE_SWB		0x0e00
+ #define REG_RX_IQC_AB_B		0x0e10
++#define REG_RX_IQC_CD_B		0x0e14
+ #define REG_TXSCALE_B		0x0e1c
+ #define REG_TX_AGC_B_CCK_11_CCK_1		0xe20
+ #define REG_TX_AGC_B_OFDM18_OFDM6		0xe24
+@@ -729,6 +748,7 @@
+ #define REG_LSSI_WRITE_B	0x0e90
+ #define REG_PREDISTB		0x0e90
+ #define REG_INIDLYB		0x0e94
++#define REG_TX_AGC_B		0x0e94
+ #define REG_RFE_PINMUX_B	0x0eb0
+ #define REG_RFE_INV_B		0x0eb4
+ #define REG_RFECTL_B		0x0eb8
+@@ -746,6 +766,8 @@
+ #define REG_FA_OFDM		0x0f48
+ #define REG_CCA_CCK		0x0fcc
+ 
++#define REG_SYS_CFG3_8814A	0x1000
++
+ #define REG_ANAPARSW_MAC_0	0x1010
+ #define BIT_CF_L_V2		GENMASK(29, 28)
+ 
+@@ -863,10 +885,25 @@
+ #define LTECOEX_WRITE_DATA REG_WL2LTECOEX_INDIRECT_ACCESS_WRITE_DATA_V1
+ #define LTECOEX_READ_DATA REG_WL2LTECOEX_INDIRECT_ACCESS_READ_DATA_V1
+ 
++#define REG_RX_IQC_AB_C		0x1810
++#define REG_RX_IQC_CD_C		0x1814
++#define REG_TXSCALE_C		0x181c
++#define REG_CK_MONHC		0x185c
++#define REG_AFE_PWR1_C		0x1860
+ #define REG_IGN_GNT_BT1	0x1860
++#define REG_TX_AGC_C		0x1894
++#define REG_RFE_PINMUX_C	0x18b4
+ 
+ #define REG_RFESEL_CTRL	0x1990
+ 
++#define REG_RX_IQC_AB_D		0x1a10
++#define REG_RX_IQC_CD_D		0x1a14
++#define REG_TXSCALE_D		0x1a1c
++#define REG_CK_MONHD		0x1a5c
++#define REG_AFE_PWR1_D		0x1a60
++#define REG_TX_AGC_D		0x1a94
++#define REG_RFE_PINMUX_D	0x1ab4
++
+ #define REG_NOMASK_TXBT	0x1ca7
+ #define REG_ANAPAR	0x1c30
+ #define BIT_ANAPAR_BTPS	BIT(22)
 -- 
 2.48.1
 
