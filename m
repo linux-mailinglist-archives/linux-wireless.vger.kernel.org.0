@@ -1,198 +1,141 @@
-Return-Path: <linux-wireless+bounces-19548-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19549-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BF2A48741
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 19:05:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 658C9A487B5
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 19:23:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 969043AB0F7
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 18:05:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FFBD16A965
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 18:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286281EB5FE;
-	Thu, 27 Feb 2025 18:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9BF1B424D;
+	Thu, 27 Feb 2025 18:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WXhWdZT+"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="F/WxPH3F"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1B9199239;
-	Thu, 27 Feb 2025 18:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874D717D355
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 18:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740679537; cv=none; b=YhdjqBQZUKT1Qrl+Fcr2004Q4olIvQod7hUAVDQK/zcg697uF16zMHzuxtjDya5qnI+9/LPv/n6UHXVSzlgvq58kTaWCV/GTPIJI1lAa/L9S8WgYgM62M8+KK87rSQho/Kd8A/+BlU3ZjhFP+EXsIr8TRC4+urT/u0WYlKXu490=
+	t=1740680598; cv=none; b=P8NnuuiPqGXcVb7qPp6j5fLTkxxOQH8VOeFSfJv/3Zv60ZY3/7XW14c88rkmO8abiY2FRaVW1cRrtoPe2MHSMzbQeJ/Xvm2Jw967WBjgRXYfDJB7CAR13qW+vhItfHKS5Il3Jc7F974G9YthyD79efXae7O6s+o+a7KEhbFqJ0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740679537; c=relaxed/simple;
-	bh=OqW0tsQmgxjdGZPx5rAhLoVP8V4pb2gw1BYl3oruHT4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LgDV0vBNodeEfsiCl+HwZUeMnFVnsjwphR1i5TMLYKxZRc5oZLY2mxWZ7ciZ3E6Bvu7gjywfmmYbN9pSqAKYHHiHnw6/FKrjGaWQsg3B9HM6kJqjO8esNBOYF0v/GiYoJzrh0QMAOvKM2xQxApaDoQ16Wu9O5ql4DjVWuOYGE4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WXhWdZT+; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22128b7d587so26093375ad.3;
-        Thu, 27 Feb 2025 10:05:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740679533; x=1741284333; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WlMEi7Una8TwxGaYzKJCUvFP5cGs/B6xguOFMjaN1Ww=;
-        b=WXhWdZT++ZKFUZZuuaJgXszFfZKOpoSM/O04xrXT+dCiWQGM5+73jDujpOsXqYHnKM
-         g9/PD2QiA40krUYtxjZWSMrDKF8TY2xBMgm7YbMLnErz8J87FgcVKACbY1TXCUEUvJfH
-         5eJzjYEsqQ8OSXuU6lmpWcoLkpjFNoVNMmTNdg4SBcbdwMFO+WheE7bsRe3xutyyaUZZ
-         taI5ldwnLBniPDkCI6+dY1H/Ccn1j3HsEX78vXmSa748gAFparbsKHEu85Y/qSi1Gna3
-         4aW08JbW6UXbf9Hwv9j2WB+HICj7SJhR9c8WoDWGn3zIPHxTzEaQ+Pz4/nZ6NdhtbPsC
-         GO6g==
+	s=arc-20240116; t=1740680598; c=relaxed/simple;
+	bh=EZIcLlrc9ADOHADM1/PPyPeBvQM+hLSbtlzcQrHoGO0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=JIoU6nfCdkPG0CowT2DSh2Cn0CRZZKMMquFTJ3YZufgdJUcXg4mu61/GOcWhTHHfJ+sMisYzKEhI9NCBgOpW4fv+g/CDP6CX58IY3+j8JTPlJrET9kyow1WDDKZjxV/uamcVDfFxDc19Z/3LPLQTeYfnsS3EgTDKCbg/VTvjIZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=F/WxPH3F; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51RAmH38003268
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 18:23:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	1Hl+zF8QNyQfwFouw6ZqfSKASevUsAV0jer/ijkH+9c=; b=F/WxPH3FdeDBMkEK
+	tm25oAh/TsmZnhjZMDPqN/QFN28s8IkYPadjDPQ3iLpzX87GIPKwRwBRxT2BpD1r
+	SH1BLmA31HdZ69BsZEuy56qQ4SARAS+csRl3ZcBMGFyG4TogUUSqK+IrXOFaPWZv
+	RlBeDf0pChYA5+iIqPCqgL0Em2jUs/6U2shpZRlRdP3GpeUSZ6yXRUx7370PQ6TR
+	HrwlsICwVWqcrFqlWyLT/yvsX7RSUnyJvA6tYUujc9gfV8FP8f/mMD6u3g0I1CdM
+	o1dE5M32oxseuUXTN1l2AQZGKOTTheMH8v4teAxvRbwj0ubWG5kC71FcEZDH9DIx
+	x0WNnA==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 452pm7hbmr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 18:23:14 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2fc43be27f8so4446706a91.1
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 10:23:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740679533; x=1741284333;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WlMEi7Una8TwxGaYzKJCUvFP5cGs/B6xguOFMjaN1Ww=;
-        b=XtaUh+eB/z5dw3gFcWewVPWWyW9dDEBIj4Stz2ikvwqJ9pwiBO2poKzAMupGacarG/
-         OJ+Fr6okO7zh+TwrXVOE9Pf9FhVc0XA50QIwc3u67zmuPEZzw7cXBtD0EAK5hTaSmK3u
-         MtfbBN0LQIGg54C1IuoZoG0GKVhl+bD2+ixE4GewvmvdFEpAJNm9+xD2D5gmMhJ4Azfa
-         5W/ybXTiMZcw3KTB06QugZhaBl+CbReqnK6l6z6DCgBmiReNiUT1+sM6KDM96CPV5l6i
-         5i05+OxTX4ypaTpKpg0PlxHXtcwgtB5zO2YFUqncXo7gkslh8yCebX8vE/P6kCstbBk0
-         9hTw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5z/4n8RaGNON2r6gttDPg27P4q0C9P//6AU4aB9ov6a2FmHm31ZUdPI4Fg/z6edP63ud/jxUu7M8etbY=@vger.kernel.org, AJvYcCUloTK7+5mLRr2JHYPKOeUnb8UWf6nax04Na2odSWkSdxQxVJ7u2M9NAarAqkbf544jVG+QGNZQPs9XlbWE@vger.kernel.org, AJvYcCV/6edSUYe4Icqo5rO05+Z99SWddner0zPXeZ8D9HMIBJc8u422XI/osqfAA/62fjnKkXgDKnxtSPUCiChJ@vger.kernel.org, AJvYcCV5O7ONXrrvXoiTzUhbga9I5ODFf6ZHJhOn7MBWLUFZ5/sJyFxAAsjycGnRmQ87xuaaFFEpfg7jDDWhnz0=@vger.kernel.org, AJvYcCV8w1FFuhbgINSlUhDwMbMZy6CminDJrsTdG3rBs37YjQEYm9w3Uv/QazZLDf9gqehte3j72SXY@vger.kernel.org, AJvYcCWvei9fQ/+f3Dd4L/7BpHlby/dVl5zabazVEZAzB0yy7FQoO9UgEFDIJjv/VgrADJUYQ4Q=@vger.kernel.org, AJvYcCXt4G3iGa4Zy6O0GWfwK+HOAXLDaDQ5xs0ZBAEr/2Z5RfZomVUKO/4DLbPIEwOA2kQwpgt9HKgKVacBtTpbK2I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6G+IvkEVXjMvp/tBK/0KlwVtCFA9kKLVE5Myw4gs4IOSBozeo
-	uM7adgKhJq3kBiUzCdGvET5MgYrLHz66E/yxOCl3nEDAHFcOVwj8XmRDEl1zBWQ=
-X-Gm-Gg: ASbGncsfecPtMrsqPwlsOOrIlawfEP9l0pIAU68Oze4g1QwD1iNdNo0Yj5sd82ISFLm
-	uzjGLjD73igTHNmT1gAYRgNBKFaPr7Oz4Z1Devhv8o+iqguu58i9CdXn+IjBtBppvw3NZXw2mS+
-	aKQHO0WRgf/YXNU75qW2ooaNk9SFhRER3eJodMc3BOux0MAz6MX6DmhPpj+GIeXRF4LhnH+3Et4
-	Yf5T776+KRyLSUMVYJkujEIQ3v4CzJxbz6Pc2Tl8GVvwAN1R2ZBeVIn+sNQIGBgtx8QhtSN+5GO
-	z50GVUK/BrMVMfFbICctl6UMukYAdnpvlOIhx6AGrQuO0/2+kQ==
-X-Google-Smtp-Source: AGHT+IEnEhzc2owT1KH+D6qO8Y01zbjbSELOHxZjQy0YabJgdb+peb2Mulxfa+PI8nU5R7zu0Cxkog==
-X-Received: by 2002:a05:6a00:806:b0:732:2170:b6a3 with SMTP id d2e1a72fcca58-734ac44b986mr473864b3a.21.1740679532704;
-        Thu, 27 Feb 2025 10:05:32 -0800 (PST)
-Received: from localhost (maglev-oncall.nvidia.com. [216.228.125.128])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734a00600e1sm2015088b3a.171.2025.02.27.10.05.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 10:05:32 -0800 (PST)
-Date: Thu, 27 Feb 2025 13:05:29 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, jk@ozlabs.org, joel@jms.id.au,
-	eajames@linux.ibm.com, andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org, rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-	dmitry.torokhov@gmail.com, mchehab@kernel.org,
-	awalls@md.metrocast.net, hverkuil@xs4all.nl,
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-	louis.peens@corigine.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
-	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
-	jirislaby@kernel.org, akpm@linux-foundation.org, hpa@zytor.com,
-	alistair@popple.id.au, linux@rasmusvillemoes.dk,
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
-	jernej.skrabec@gmail.com, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-	oss-drivers@corigine.com, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
-	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
-	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: Re: [PATCH 02/17] bitops: Add generic parity calculation for u64
-Message-ID: <Z8CpaaHv0ahHFVuK@thinkpad>
-References: <20250223164217.2139331-1-visitorckw@gmail.com>
- <20250223164217.2139331-3-visitorckw@gmail.com>
- <Z7zIBwH4aUA7G9MY@thinkpad>
- <20250226222911.22cb0c18@pumpkin>
+        d=1e100.net; s=20230601; t=1740680594; x=1741285394;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Hl+zF8QNyQfwFouw6ZqfSKASevUsAV0jer/ijkH+9c=;
+        b=oBJrvZW7MRZNEwIt6T3BIXta7L/AxF8foQiZo+/h1os0lCLvo1uGpLncF++JK6iEAj
+         ClgwDV5S17FYnt4Mc6ZUusRLd+iGh7qdNER0K7kwm8bU41mAA6xPTRbDvWYzbyJkCLN0
+         vyGk9g14zCF6HZ2SlL2nzGNnkrR3cVdlWEbx2hecCxLNYbhr2se8U0aHKblTNTc60sdG
+         NMD2cQ+Z61x5CaPy8m6v7fZuFvvUtYZO0/9mO65tfyJeeqOEgk95UfUb0PW0QWSWPI/G
+         +Q3Rj5zvJqpiPKiAse063wgOG58RlegCiyiF+qfSRLCCE1gkQhSPNShFfs6Y87q888bQ
+         2N4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVHvVonz3oOJPrXsz+RawsgWKXWUhXCcreT0BfC4Fm4tpMEe4a8bNIagbmRNJUY05gJw94tWi9Wxq5dAFfoVA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyqyD2yYRKg7g4jp9O4FoYOwJv/r7eOeeCxKpc/D0wvE2QgwC5
+	L6xhqZlr82w0BwRHvYFoKga5pHkWefi/YJqHbMxs3ksTINpcoVP3qfLAggOFaQrUSgth4W+Ovy4
+	ml00Ajv6bJtaz1m3AYLzP6Fwb6/IezS758MNDX4Z1+vcbJSmxIUAVTGHOZZKsux3omA==
+X-Gm-Gg: ASbGncuu6vBRsMCmP3r7LkVLZGTsk/NsKrFrJeDJUZIjJRb7kT8DGqv8fggKtRlUEV4
+	75KpfH/Ge9/T1GG0Lqv4TO5Z314dLSH2nKbSPrWC34BYeMVv3ccU94suz4d1LghFLZPG0FC5g9V
+	vzetdWJFm/25GNZ3dKuZEBObkHvvJJ6zh2kBk1DsI0dGRpiJL5zExzsa49UKvdvUITbvrdo+T7+
+	n5X8pnM72LnNffbaUYdegGmsn2PGZgWNW50FUcW7TTKJO3nDRZ0KZAzScF0zKc8/REAdr7qmRgp
+	/1BRXhFFMzhg1nOqwD0TBCtrziTv6sKZfrgH8IRGpjrkp/HxKkiKdrB2WcH5clGOPhP7U2MrqNb
+	8BZMKva/k
+X-Received: by 2002:a05:6a20:1596:b0:1ee:63d7:1d32 with SMTP id adf61e73a8af0-1f2f4b04c28mr300505637.0.1740680593663;
+        Thu, 27 Feb 2025 10:23:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGGXRitzuYgffUGuphu7En7wMz69ElRq83ucDmvaPv90kC8coNbpr5toZlJdzUgT4nTOIZkww==
+X-Received: by 2002:a05:6a20:1596:b0:1ee:63d7:1d32 with SMTP id adf61e73a8af0-1f2f4b04c28mr300452637.0.1740680593217;
+        Thu, 27 Feb 2025 10:23:13 -0800 (PST)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7ddf20b8sm1822889a12.7.2025.02.27.10.23.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Feb 2025 10:23:12 -0800 (PST)
+Message-ID: <e7497816-1c15-407c-913d-4979edd11d6f@oss.qualcomm.com>
+Date: Thu, 27 Feb 2025 10:23:12 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250226222911.22cb0c18@pumpkin>
+User-Agent: Mozilla Thunderbird
+Subject: Re: please use tree tags in patches
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <ec3a3d891acfe5ed8763271a1df4151d75daf25f.camel@sipsolutions.net>
+ <a5451ef8e9534ed4b2223f50c3ddda14@realtek.com>
+ <eab28c11ea4cc4249c01557121b4741e19cf6a83.camel@sipsolutions.net>
+ <d361db20975c8f2c88df6c0c11db963f6aaaaf02.camel@sipsolutions.net>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <d361db20975c8f2c88df6c0c11db963f6aaaaf02.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: -Tz_WUscArqsase0qcDm504oqdgp9eVE
+X-Proofpoint-GUID: -Tz_WUscArqsase0qcDm504oqdgp9eVE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-27_07,2025-02-27_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=981
+ impostorscore=0 spamscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 adultscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0
+ mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502270136
 
-On Wed, Feb 26, 2025 at 10:29:11PM +0000, David Laight wrote:
-> On Mon, 24 Feb 2025 14:27:03 -0500
-> Yury Norov <yury.norov@gmail.com> wrote:
-> ....
-> > +#define parity(val)					\
-> > +({							\
-> > +	u64 __v = (val);				\
-> > +	int __ret;					\
-> > +	switch (BITS_PER_TYPE(val)) {			\
-> > +	case 64:					\
-> > +		__v ^= __v >> 32;			\
-> > +		fallthrough;				\
-> > +	case 32:					\
-> > +		__v ^= __v >> 16;			\
-> > +		fallthrough;				\
-> > +	case 16:					\
-> > +		__v ^= __v >> 8;			\
-> > +		fallthrough;				\
-> > +	case 8:						\
-> > +		__v ^= __v >> 4;			\
-> > +		__ret =  (0x6996 >> (__v & 0xf)) & 1;	\
-> > +		break;					\
-> > +	default:					\
-> > +		BUILD_BUG();				\
-> > +	}						\
-> > +	__ret;						\
-> > +})
-> > +
+On 2/24/2025 3:15 AM, Johannes Berg wrote:
+> On Mon, 2025-02-24 at 10:33 +0100, Johannes Berg wrote:
+>> On Mon, 2025-02-24 at 01:18 +0000, Ping-Ke Shih wrote:
+>>>
+>>>
+>>> Thanks for the automation. I think it will be very useful for me to detect
+>>> patch errors earlier, so submitters can fix problems earlier before I'm
+>>> trying to merge. 
+>>
+>> Hopefully. Right now we still need to get the [PATCH rtw] tags into the
+>> patches before. Perhaps we can auto-detect somehow later.
+>>
 > 
-> You really don't want to do that!
-> gcc makes a right hash of it for x86 (32bit).
-> See https://www.godbolt.org/z/jG8dv3cvs
-
-GCC fails to even understand this. Of course, the __v should be an
-__auto_type. But that way GCC fails to understand that case 64 is
-a dead code for all smaller type and throws a false-positive 
-Wshift-count-overflow. This is a known issue, unfixed for 25 years!
-
-https://gcc.gnu.org/bugzilla/show_bug.cgi?id=4210
- 
-> You do better using a __v32 after the 64bit xor.
-
-It should be an __auto_type. I already mentioned. So because of that,
-we can either do something like this:
-
-  #define parity(val)					\
-  ({							\
-  #ifdef CLANG                                          \
-  	__auto_type __v = (val);			\
-  #else /* GCC; because of this and that */             \
-  	u64 __v = (val);			        \
-  #endif                                                \
-  	int __ret;					\
-
-Or simply disable Wshift-count-overflow for GCC.
-
-> Even the 64bit version is probably sub-optimal (both gcc and clang).
-> The whole lot ends up being a bit single register dependency chain.
-> You want to do:
-
-No, I don't. I want to have a sane compiler that does it for me.
-
-> 	mov %eax, %edx
-> 	shrl $n, %eax
-> 	xor %edx, %eax
-> so that the 'mov' and 'shrl' can happen in the same clock
-> (without relying on the register-register move being optimised out).
+> FWIW I'm running this now:
+> https://github.com/jmberg/nipa/tree/configurable-list-wifi
 > 
-> I dropped in the arm64 for an example of where the magic shift of 6996
-> just adds an extra instruction.
+> In case anyone wants to take a look and/or help out with the tree
+> detection.
 
-It's still unclear to me that this parity thing is used in hot paths.
-If that holds, it's unclear that your hand-made version is better than
-what's generated by GCC.
+Probably related, can you check:
+https://patchwork.kernel.org/project/linux-wireless/patch/20250226113118.7626-1-quic_lingbok@quicinc.com/
 
-Do you have any perf test?
-
-Thanks,
-Yury
+This uses the "ath-next" tag but triggered:
+jmberg/fixes_present	fail	Series targets non-next tree, but doesn't contain any Fixes tags
 
