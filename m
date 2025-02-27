@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-19541-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19542-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C45A47EA7
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 14:13:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1623CA47EA8
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 14:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 445207A2FC9
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 13:12:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F94F3AD713
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 13:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479E022F38E;
-	Thu, 27 Feb 2025 13:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C246A22F166;
+	Thu, 27 Feb 2025 13:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="azbLaBDY"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZlI88Hw6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A1122F38C
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 13:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC10E22FDF7
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 13:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740661980; cv=none; b=A1+PCVjO3STIv+2yzoewi5i16xylPGasAuBPmlXHwEFLg94qYGF43TlDxVVPyMuE5Ctn5J1RPW74LKI6kmn97KWtXhICoak63verRFEQHcYkqYgmN6hioiMWPgYMUpPuWMGh/1ExiCQHBEJfGE9q/W60YcX0Gtn+hT3uCf2VcGg=
+	t=1740661982; cv=none; b=nCliP2KMnyl8YNlfeBK2jX44Le3Fb7g5Yv7BnHJSrJBER95zu7aspBNyWh1rXjgqpExrJn6/3ykDpIxkSLs9sCH0Y6XVRSid2DgQWF1Gm0GWeHtVIV4g2VSr/GPAgamylmT50F8a0pEj+HkRfdtbghYR2tKF0HkmakKgx5odN1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740661980; c=relaxed/simple;
-	bh=MMZhUFE1+XtMYgoOLegOV9XNdpPbTTETSrSwEbU8dMg=;
+	s=arc-20240116; t=1740661982; c=relaxed/simple;
+	bh=mQl79HBGcBsG5mBWkYwPI7UIpF8NCNdfT6rOM0HTbTc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IgUpTosYYqySy/gWHDyY8QhasR+0To4Oo9H8zL7YqLOMXvhU/sNHhjuAjdGbKAQKzuwPTdoE/I+5AkB++dO5We5xs9J9blk9RxKClQlqHkaqIjWvdJHcyuZBfW12hom2FIIKbB+oHY+5C32BuNDSg51+9AGws0mehaUWAOWPfZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=azbLaBDY; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=LQ8C7U7Sm2fKJ5rdXTulrjUgU6JhECDNENyxnmp5Rdxq8JZiLMf/D5X916ON3GwjmBx+pGTQ/cibBaVnNjOYQfUHqL6NjJ0tPenUt7KY8K5+pM1Xo0OJXYPk+bH0bwAyjh/mJcabHkBLl4AR8r8MitOgdnDA4bcYzPeeOd7aQSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZlI88Hw6; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51RDCs5Y22008957, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51RDCvpeE2008960, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1740661974; bh=MMZhUFE1+XtMYgoOLegOV9XNdpPbTTETSrSwEbU8dMg=;
+	t=1740661978; bh=mQl79HBGcBsG5mBWkYwPI7UIpF8NCNdfT6rOM0HTbTc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=azbLaBDYn4gFMzpLD6QMteCKW0XtFF3dTAAaXF33b9AOcXULdNwF2umKpMSn/CLCJ
-	 8FoxjPaxyrHKkYxsQYq5Y20skVO3mt0jgHTqcbUodnBcs31buczDqNL1aTqdpSJRim
-	 DsDAVTWgGBj6jl3ok7rz1ytL4Y13H2qytFgaO8ESbL1s2380fjIKlBOL6IgB0u+Twb
-	 ed/XRhwy6igD6abtH8ESWIR34i+lmscRmTzotmgYv+GMQqPdvmwDVm7Ttz4ihplm48
-	 9d7KSDlCSIeYwPHvnUWiwT4wk25bdSnldGAPWpwiAv7+Bg6b7kZ0tUnAYu2hBIAw5H
-	 Yl70wKSGzJKSQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51RDCs5Y22008957
+	b=ZlI88Hw6htATZC9BIr3Y/2RfeFaAkc6VGSHqheTwIUP7gaiGI6rKAN6i/BoHkxPAI
+	 O8og+gq24wJn+H+/ZYBmGonOZCHKg5nM4hNk84+QMdzWhr3qEtl6c5ELwkto217K8k
+	 mChbZjhSd+Rt+kiGO2hNWd2W1L4A96C+GLCqzyWP72w0iw0OwbAcv81GANRV9Sna33
+	 lMINatGsXXDczJurTQhKf0tFmQ3cpoMRSPUHuS9qGnbUUEZ8jy2ccAntkGOizdL0I6
+	 aSduce15ydrjlV8qJmSV6ZiEh/ftN1exeJ1ZOb8rh4n9IRf58aU5g0xmwcM60f7V/F
+	 769IF0AQ6+6og==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51RDCvpeE2008960
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 21:12:54 +0800
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 21:12:58 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 27 Feb 2025 21:12:54 +0800
+ 15.1.2507.39; Thu, 27 Feb 2025 21:12:58 +0800
 Received: from [127.0.1.1] (172.16.24.143) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 27 Feb
- 2025 21:12:54 +0800
+ 2025 21:12:58 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <phhuang@realtek.com>
-Subject: [PATCH rtw-next v2 3/4] wifi: rtw89: fw: correct debug message format in rtw89_build_txpwr_trk_tbl_from_elm()
-Date: Thu, 27 Feb 2025 21:12:27 +0800
-Message-ID: <20250227131228.8457-4-pkshih@realtek.com>
+Subject: [PATCH rtw-next v2 4/4] wifi: rtw89: fw: don't reject firmware in blacklist to prevent breaking users
+Date: Thu, 27 Feb 2025 21:12:28 +0800
+Message-ID: <20250227131228.8457-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250227131228.8457-1-pkshih@realtek.com>
 References: <20250227131228.8457-1-pkshih@realtek.com>
@@ -74,29 +74,61 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-The format should be "%08x". Fix the mistakes.
+Once update driver blacklist of firmware, users' firmware might be in
+the list, and then driver stops working. Since breaking users is not
+expected, report a significant message instead of stopping.
 
-Fixes: d60e73e5dd70 ("wifi: rtw89: fw: load TX power track tables from fw_element")
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
-v2: no change
+v2: added by v2
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 1965a62746c2..15d6bda1fcf0 100644
+index 15d6bda1fcf0..d0a246f415ff 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -1099,7 +1099,7 @@ int rtw89_build_txpwr_trk_tbl_from_elm(struct rtw89_dev *rtwdev,
- 	bitmap = le32_to_cpu(elm->u.txpwr_trk.bitmap);
+@@ -372,7 +372,7 @@ static int __check_secure_blacklist(struct rtw89_dev *rtwdev,
+ 		return 0;
  
- 	if ((bitmap & needed_bitmap) != needed_bitmap) {
--		rtw89_warn(rtwdev, "needed txpwr trk bitmap %08x but %0x8x\n",
-+		rtw89_warn(rtwdev, "needed txpwr trk bitmap %08x but %08x\n",
- 			   needed_bitmap, bitmap);
+ 	if (!chip_blacklist) {
+-		rtw89_err(rtwdev, "chip no blacklist for secure firmware\n");
++		rtw89_warn(rtwdev, "chip no blacklist for secure firmware\n");
  		return -ENOENT;
  	}
+ 
+@@ -380,14 +380,14 @@ static int __check_secure_blacklist(struct rtw89_dev *rtwdev,
+ 	bit_mask = BIT(section_content->blacklist.bit_in_chip_list & 0x7);
+ 
+ 	if (section_content->blacklist.ver > chip_blacklist->ver) {
+-		rtw89_err(rtwdev, "chip blacklist out of date (%u, %u)\n",
+-			  section_content->blacklist.ver, chip_blacklist->ver);
++		rtw89_warn(rtwdev, "chip blacklist out of date (%u, %u)\n",
++			   section_content->blacklist.ver, chip_blacklist->ver);
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (chip_blacklist->list[byte_idx] & bit_mask) {
+-		rtw89_err(rtwdev, "firmware %u in chip blacklist\n",
+-			  section_content->blacklist.ver);
++		rtw89_warn(rtwdev, "firmware %u in chip blacklist\n",
++			   section_content->blacklist.ver);
+ 		return -EPERM;
+ 	}
+ 
+@@ -427,7 +427,10 @@ static int __parse_security_section(struct rtw89_dev *rtwdev,
+ 		info->secure_section_exist = true;
+ 	}
+ 
+-	return __check_secure_blacklist(rtwdev, info, section_info, content);
++	ret = __check_secure_blacklist(rtwdev, info, section_info, content);
++	WARN_ONCE(ret, "Current firmware in blacklist. Please update firmware.\n");
++
++	return 0;
+ }
+ 
+ static int rtw89_fw_hdr_parser_v1(struct rtw89_dev *rtwdev, const u8 *fw, u32 len,
 -- 
 2.25.1
 
