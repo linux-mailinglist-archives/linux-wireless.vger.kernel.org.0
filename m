@@ -1,150 +1,103 @@
-Return-Path: <linux-wireless+bounces-19537-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19538-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD9BA47E7A
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 14:04:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 686B4A47EA3
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 14:12:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99CD016D685
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 13:04:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C7B3188C64C
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 13:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A756E22F38E;
-	Thu, 27 Feb 2025 13:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9927D224246;
+	Thu, 27 Feb 2025 13:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Dpw3udR3"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="KKQXM1w7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3111EB5ED;
-	Thu, 27 Feb 2025 13:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F2922837F
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 13:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740661469; cv=none; b=C5ITfpT4jcwVHPphaBwnLNLxsBkWZHknJf27p7kLafZYNzsQER/8cbATXfJsQxWxRP/npSOGDLcCO5/bLgmvkUnLpvlmWGW3/ENqC6AsLofmqOyBFVXt0Ajxu0L+/fFxJjbo8K8zyDG/dLPRB0tDdypV7v1CnzhT1G7feaUyEvw=
+	t=1740661971; cv=none; b=hm6C9q5GfKudn5PrC6nqcRgYpqkE+gMm/1efIHfUG6o5EoT6bFbkS3D9aeBM/z+H6NK6fqFLDZl3mUKgdMzjFqr9KBD3NZXEXp9ZhzhQ1y+8qmnvUK41Hl0o7KN3ioB/1nEQc2pnCanyfPaUJvJxkJzGJMb5iKaCc6o3o6i1lJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740661469; c=relaxed/simple;
-	bh=RhAn648KZjGR1zL9fk7lBgC1kuhesOSbeueMHlrV+FQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h3fhmBk9yNtZedd0uJfc6NMuRGpGM6oJBgaLn6l9YyJbMAPgyUga06ncKCQdauJ7mN5K9jc3/6wZd4tpACP54NvLTeDhZdJ4sfAKyhZ4b9DIjjshdPzL99wzFGw3EedNmfPBQQis/Uj4MELnRO0Ozx9ytmCHG+sOgLxtS5hvPzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Dpw3udR3; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=C4NTJOJ3dCAJ9+vpvzEprQrWJrpsHSJFBRqUQ8todYw=; b=Dpw3udR3BJAFq9SyV4WrEEtnAj
-	4AK/f2BJmM2iCspBbFHcvyAYokish3HnL+MnOj7JlEsRpxTpwaGNuOZ0GjF1xl2kJOx4qt3J2ahuW
-	az6fb102wILROrGzFvXwJPaH58zNpMOOcrCBc343TieQO3/CDGnn7X1+s/6kO95pgHKXAnEejIoZr
-	eB7TVgWCB6dlZRGlAflwAymbuHq47SCX9B61CP43qWtZ2O6ijiX7nvvVtATjJJOXC5cOJJTTKtd0a
-	0oXIb31u03yt/F+rw+NDupYNgVgy0IBHz3v3ZGkJAqcax4tYjHYegxiTUmQ4/XbT5eUfHjXU340Lp
-	d0XLYfiw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tndYL-0000000Hb1D-0gW6;
-	Thu, 27 Feb 2025 13:03:49 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 45472300472; Thu, 27 Feb 2025 14:03:47 +0100 (CET)
-Date: Thu, 27 Feb 2025 14:03:47 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>,
-	Thomas Graf <tgraf@suug.ch>, Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-	iommu@lists.linux.dev, linux-mtd@lists.infradead.org
-Subject: Re: [PATCH *-next 00/18] Remove weird and needless 'return' for void
- APIs
-Message-ID: <20250227130347.GA5880@noisy.programming.kicks-ass.net>
-References: <20250221-rmv_return-v1-0-cc8dff275827@quicinc.com>
- <46d17d84-5298-4460-96b0-9c62672167a0@icloud.com>
+	s=arc-20240116; t=1740661971; c=relaxed/simple;
+	bh=v3ywQeivL9E/RIyzAyzVLmmPBn9iDoF048wR2D3AYO0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XvHifBsHirngr1Qv1MjelkFz9NbH+sxw6auNCwIsuoHapOojoZRDUQXhkkK9GmL0/ebyXG6A6NNyRG/N456waXwRz4+nDyJVVSGgmW541qY+CZmjvlFr1yNWVI36MWoUqVims1Y9c523nfVNl8CpnJS5enSN1jitF974/DewHcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=KKQXM1w7; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51RDCiDC22008947, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1740661964; bh=v3ywQeivL9E/RIyzAyzVLmmPBn9iDoF048wR2D3AYO0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=KKQXM1w7mJfDEXQGtuPcB/EB+iAk/ea1xLIuAiQbID/zXq0sgNhaduMo7TifW85nm
+	 VG8JvBf1wwlTY/k197mGaN8bk3y5cTveVrbRZYJKZ2ioupi/xVptvqU4vNucHvzxnk
+	 Ae/hTKWbLDbwhTp8sBD/2YXIuoQ7D/Vvh30JY0g9q5K0yQIDmw7FPS+AbYc23kOdTh
+	 exOMO6RuFAu+BUtR7JkkTyKw/+ar6AtAZ6DusWzqSaejDzqTO5dY2dKJ9+FZ8Zl24c
+	 mo7c+UOzCc7tXP5BSSGAbGzfI3+8uEtDUxbbfiwvJ3hv7Kq77p1DIEscPgC4jl9UYQ
+	 oqq0RZ3eSv2Sw==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51RDCiDC22008947
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 21:12:44 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 27 Feb 2025 21:12:45 +0800
+Received: from [127.0.1.1] (172.16.24.143) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 27 Feb
+ 2025 21:12:44 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <phhuang@realtek.com>
+Subject: [PATCH rtw-next v2 0/4] wifi: rtw89: fw: update role_maintain H2C command
+Date: Thu, 27 Feb 2025 21:12:24 +0800
+Message-ID: <20250227131228.8457-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46d17d84-5298-4460-96b0-9c62672167a0@icloud.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On Thu, Feb 27, 2025 at 08:48:19PM +0800, Zijun Hu wrote:
-> On 2025/2/21 21:02, Zijun Hu wrote:
-> > void api_func_a(...);
-> > 
-> > static inline void api_func_b(...)
-> > {
-> > 	return api_func_a(...);
-> > }
-> 
-> The Usage : Return void function in void function
-> 
-> IMO, perhaps, the usage is not good since:
-> 
-> A) STD C does not like the usage, and i find GCC has no description
-> about the usage.
->    C11/C17: 6.8.6.4 The return statement
->    "A return statement with an expression shall not appear in a
-> function whose return type is void"
+The role_maintain H2C command is to tell firmware the role of a mac_id,
+and two additional fields are added by this patchset to support coming
+MLO.
 
-We really don't use STD C, the kernel is littered with extensions.
+The patch 3/4 is to correct message format by the way.
 
-> B) According to discussion, the usage have function that return type
->    of the callee api_func_a() is monitored. but this function has below
-> shortcoming as well:
-> 
-> the monitor is not needed if the caller api_func_b() is in the same
-> module with the callee api_func_a(), otherwise, provided the callee is
-> a API and provided by author of other module. the author needs to clean
-> up lot of usages of the API if he/she changes the API's return type from
-> void to any other type, so it is not nice to API provider.
-> 
-> C) perhaps, most ordinary developers don't known the function mentioned
->    by B), and also feel strange for the usage
+The patch 4/4 is to prevent breaking users that use obsolete firmware.
 
-It is quite common to do kernel wide updates using scripts / cocinelle.
+v2:
+ - add patch 4/4 that is structural dependency
 
-If you have a specialization that wraps a function to fill out a default
-value, then you want the return types to keep matching.
+Ping-Ke Shih (2):
+  wifi: rtw89: fw: correct debug message format in
+    rtw89_build_txpwr_trk_tbl_from_elm()
+  wifi: rtw89: fw: don't reject firmware in blacklist to prevent
+    breaking users
 
-Ex.
+Po-Hao Huang (2):
+  wifi: rtw89: fw: use struct to fill role_maintain H2C command
+  wifi: rtw89: fw: update role_maintain H2C command for roles operating
+    on band 1
 
-return_type foo(type1 a1, type2 a2);
+ drivers/net/wireless/realtek/rtw89/fw.c | 42 +++++++++++++++----------
+ drivers/net/wireless/realtek/rtw89/fw.h | 28 ++++++-----------
+ 2 files changed, 36 insertions(+), 34 deletions(-)
 
-return_type my_foo(type1 a1)
-{
-	return foo(a1, value);
-}
+-- 
+2.25.1
 
-is a normal thing to do. The whole STD C cannot return void bollocks
-breaks that when return_type := void, so in that regards I would call
-this a STD C defect.
 
