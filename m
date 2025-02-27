@@ -1,173 +1,228 @@
-Return-Path: <linux-wireless+bounces-19566-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19567-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6076A48A7E
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 22:30:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F52A48AEF
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 22:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DCA67A56D2
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 21:29:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57DA07A61EA
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2025 21:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68FDD270EC8;
-	Thu, 27 Feb 2025 21:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610B327180D;
+	Thu, 27 Feb 2025 21:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZdIYL2EA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ToEsXxGf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFD71E51D
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 21:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4D4227B8E;
+	Thu, 27 Feb 2025 21:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740691796; cv=none; b=BULyt2UiWAx251z3irpHxq9LYTY/1u1OpkKd/8cCAK+uif/Lc2Zf+3xpJAQbhci5FAkMMaZIDAM3NwupWjKnHV7EozbNpqfupEQDsVySvybiTV7ZimAJIYu1irjuwR8/IVUrcF+ya7lmB+O5W6yf1N2E5p/TXn2jV95kYpTJj54=
+	t=1740693468; cv=none; b=nFDuoNtECG/5sgI6JCOw3esOZhvFPKiAEjv5qChh0VJLREQvkfjxnHKrdzv989jDoZ9GgqWNdOcY27xCX+zsDYOOpEAbJnXcIdTXqEiCtKtFBhhROr+v03sCV4Fn3F7oBotgWt3ChG5z/cms78nHLXm76bSozEZH+CZWu9OiOs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740691796; c=relaxed/simple;
-	bh=IbhFrwvrOeKF+rXRRkZ6fqZl5K1adBxM3bk6gjsCr2A=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=Nteplhqt/MgUyt1O0M88W5thkldRewFGVQvGmjJvfWVqWse6vwKiMWoyNKh63Dq9PAwNH9DY9y2TIlYdigeg3vMtLyR9zcwlx5T02GIgS3Q48WtSWRVbr4XRktbT3tqMSDxQnjSqhuzZQrDy4p1BYvWCj7IfNHieX3mbSKgugPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZdIYL2EA; arc=none smtp.client-ip=209.85.221.54
+	s=arc-20240116; t=1740693468; c=relaxed/simple;
+	bh=KRFx2VPv0/SkpIJsIryj+VgjCDlLd6MvWLHprVAY+pE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IETrppeE5j5A/vm2ID4MH8lPSC6nm+Wr5KpHGaEq5Mbz+d8J98QS511gtJzFZM13k4Xxollwh/wVyWIZh724m476nY7AVcUVqUoeQw/umJprH2kVcNQqiMGtP6iGcaG+dGTeogwUpO63W/ChWJBLXcKQfQrgBrMl5E5GRw3LztU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ToEsXxGf; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38f406e9f80so1164579f8f.2
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2025 13:29:54 -0800 (PST)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43998deed24so14228255e9.2;
+        Thu, 27 Feb 2025 13:57:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740691792; x=1741296592; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:to:subject:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1740693465; x=1741298265; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oRDBPJLvEEnaQNddtrHjN36HP6FLHCQ7Z9gf28EHYyQ=;
-        b=ZdIYL2EA+oRJoTB4teeqhO0FRW8lg/U6joBFDHBTUqBm2eMvp/z8CjSTIMwWhSLdIN
-         Z/joL/C7AEBlebgyEidGU/t9ZixCi1ZsXLIHvUU2viQS6/SSAp7FyslIfU+6n4GXLW4a
-         ngqF3AMRR8RrH1Q2x1fgUxYrtMs5mp+I6Tj7Ai2eBpF+DQ6Od98NdiUA2ttTVAQ7DAyY
-         5L6PDqcKjZakJ66fNGQWdLbyT71QzOds9n9XWQtzrZaT/Lg+TOqpygvAPVJbmmt4FJRK
-         5E+ya85XUtuGXnhIZ2YTJJLQOFlfyEAwnYWfe4tIXriCvs0ga9jodIWuLss+d1ja7eWP
-         kmhQ==
+        bh=yMuX81k7SiNTHz2+bDlgy5RWfBuIrQmuJh6Y3XOI5k0=;
+        b=ToEsXxGfke+y6Hq/oOz1RYCu15/2WWOkF5RJbdy8dwuC3s/lfsgCeOfIzAp6MZX7Y6
+         lwlSvvy/+4Lu99wB20NLPAdKr450ji4lDezm+9BjLdQmXoBiC7n52Q3x0raX/VHceWUa
+         PAh0l12jljs4UshLtvf8qtFm/Q6v08Bv50PwyWRTC/BIft0l7rt2yuJ8t0UyKJ0vb3HX
+         03yW1/jwdG8Sd6fIdRbJOhmd0Ir+hzB7or8mmnIbzrysVcwwME7J9HoT+jmzI6lJLlLS
+         KG37noP74COukptatoxiaPYRQhmvQb1mn2KsevjVC/uyHNF5iA3J2/2YpExnzBAzhdXO
+         dbLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740691792; x=1741296592;
-        h=content-transfer-encoding:content-language:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=oRDBPJLvEEnaQNddtrHjN36HP6FLHCQ7Z9gf28EHYyQ=;
-        b=fY4Rk6pjkCOAfnM4zci/RNfs2lK8j8Uf5vZTGH8z+wMqQ/jeK3Y4dMnhDg47X6gBPu
-         r4EyiANHZY8irZuAxm/P996n+lXXZqSSPfFHGWGy32Q6SGJx3+tUygVpRM0Ehkld1S5u
-         5a+dkWR0sDsr5AcYuhxKXEtqKAagKyeWX9bafDCk9HxOrxv09TZp4J2QrecZJGn6g6wD
-         OEEbBIarkMbGE1YlH9+uuMSWDG7+3E6wfySQ9DVauGCm79g339QgcYE2KrA+6rZNtEOx
-         vtczv7DjZof5r08Gtpf72uzsQjF5sse6/XBhUqaCVtkV8k3T4sXFTYnCnW1nTn0HQp4h
-         P1eA==
-X-Gm-Message-State: AOJu0YzbR9PlHwMXN55NmAUZICQE1fy8SFpNd23tmDMKlKCy8Gbxgfo/
-	W8TP50LY3xOdDcjzJchcPOoJeaMEKTyb+AfH5Oi8YWoODTEs5FD312QMvulW
-X-Gm-Gg: ASbGncuJzZbvgafD0Dy+B9/GvFtilHOm1YJXdos5Q6f6gsWyXbSgGm8ykbpw58sWXJr
-	BRGZ8Elg4TCFu9g8zGoRnloyire/OICIdvW6t/L6IBDUwwrAOQ8euKB7lBEWVa3CwI/Ll+cVgE0
-	6t8iIbwWPhuiN63/mCdMOBWABtRgCMwuDgiO5tZDxCu4ScFmWZoiC5ExzoXjQvZ5WOaxHpXm/jF
-	t1PC+0TJ+m4BU2GpILp0KNvJ3x18KJ5RqXlp76tv5cklqxwsSbEUNayQj+I5TVZVs+gLZKqyBik
-	08yht7f0YxlKawfCqzQVAgt8lxpjyu+vkBnMacqXnzMsXCCW4mGUn+XxWlQydunPWORC2oXTz/L
-	Q
-X-Google-Smtp-Source: AGHT+IEKZ8+K3elsWBF3oFFJO9FkjEZviLfgLdFR2V1A6jtdwNsnNDTCkVrzdkzSE6E1gvkn+9meZw==
-X-Received: by 2002:a5d:584f:0:b0:38f:355b:141e with SMTP id ffacd0b85a97d-390ec7ca397mr667746f8f.3.1740691791713;
-        Thu, 27 Feb 2025 13:29:51 -0800 (PST)
-Received: from [192.168.68.113] (194-96-30-82.hdsl.highway.telekom.at. [194.96.30.82])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e484489esm3267490f8f.68.2025.02.27.13.29.51
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Feb 2025 13:29:51 -0800 (PST)
-Message-ID: <878385e7-a28d-4aff-b849-ca12489d992b@gmail.com>
-Date: Thu, 27 Feb 2025 22:29:50 +0100
+        d=1e100.net; s=20230601; t=1740693465; x=1741298265;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yMuX81k7SiNTHz2+bDlgy5RWfBuIrQmuJh6Y3XOI5k0=;
+        b=YXhgLZTR3RmdGr59jOTBs32lE1Xoxn83vvnTUAr5H/qsJ3YDws+XdUXkskXTZVQ83E
+         yC+91jxcCnLVnUV0dHTYMj0FdorgTpkdakyzYWn2Vk+a338VexqroFS5GcyDkqyVCEg+
+         g39cma4VhO6XkrF0SdSbTC1R3T38+zmnjllfRVGowkyQsJY1I1ux2PuaLxJIiF3EfSSq
+         bIxtbGzbfipJrQY3odDd+nXsiZoHA9OaXsSeFb8TX7PXuMYCfI8rchFMU10k+wxwKBHH
+         kkydfmlvhAWxan6yVSJ6h2LkCPmeRaBh0QMR9o+Y4xK9edhMhTMZg4DL6qOhUD3iZyDY
+         s5/g==
+X-Forwarded-Encrypted: i=1; AJvYcCUdEW5yTpG/e+24LgmsbUTjOUBKdkH9p5REJoHWqQA+RssP0qwwf/7rHsQ6IbC/FOk+EXxxd4y74Y/nWUE+@vger.kernel.org, AJvYcCUwNbF521BK830oD3GxhxnLjcNF65UUDOJLppcag2/pWCH3L0qACiyRewfceW096I5ELpo=@vger.kernel.org, AJvYcCV7QEoYPKNz+D1Cn2lgn/p//XeHvdddrd2zH1LeP5KcxJBZWgTB3pDy9LbGeP8C8r0Jpvh4KgiP@vger.kernel.org, AJvYcCVS9ptc+dH4lUmelDv95d/mvOHqdpNjMPm3OtvBGKNrVCBhWam0XvwgrLccxc7jaIPRUrj8A6v5g2tZ0GLB9e8=@vger.kernel.org, AJvYcCWxBudOva1ksIu4FT7POmrdKaVZ6DXB+XZ6nhkLQcTn4l1vZu0nSVHuTWs9FxLshrSKUQmp+sNvBJzEhCz9@vger.kernel.org, AJvYcCXnsegOL/9kmLMVujOu99B/+5YJNiLoXOrMhulVp0RDFFdL8D4KyDGOG1Pg8rna7NvWxw4NZOGT9zHSPY0=@vger.kernel.org, AJvYcCXouRFZZf4fxqEjcjv0Xg6lcGdkAIeSCbt1R+ABrtDs2JyBavVQ8pbII6AAUn0efwsdigIgRZ2wj+ugfAw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2hJ65avONXpKJjigjXmufkhuNPeW/Zq3DE7qZ4RbFVLauYTZx
+	CoLTW1VpJWjoR0G2Ibtw81JG+pQM6G0O8LhntKM2CEqd43lOPzhj
+X-Gm-Gg: ASbGncs8bSZynR3d04PBfZd1zDtTHWf9GUlXzJ+FtIT/iMq1l4qm7I+sbMwtAxUirHP
+	3+Utsyj7PAs8wZzcwnMNdGRLz9RZheS1fXOMkfarJoIzFaEiQoGktr62I0oR/f/LgYfMkxcrZiQ
+	3lcZMvpWH+ciE6p0sJGONgxMno/FQTIlA/oWE/NYwVBfSPPmbLZW0uMf8KdhY/Z9q7Hkpuqg8Sg
+	JhG3yKsmqgoptEK4JH3cXDMI9L58/mKTqfqphbGOanrqhBWQNP0xL0XJxz/1RsZBznGAcZZHM/J
+	vmefVdXAm4VBlV3/WPgYF2kf0WWI1kDp55nREqCixrJzrtUbN3EWnJw4LZjNP3cT
+X-Google-Smtp-Source: AGHT+IEhn6JpdK4VbGGBYqWA0Kpl3+orzugSC/uMKlJ9X/pPv2vI6Oa6V51Yx+DCCez80jfd4SeOMA==
+X-Received: by 2002:a05:600c:1912:b0:439:a1b8:a246 with SMTP id 5b1f17b1804b1-43ba66f9643mr7425895e9.8.1740693464406;
+        Thu, 27 Feb 2025 13:57:44 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43b7370372dsm35525085e9.11.2025.02.27.13.57.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Feb 2025 13:57:43 -0800 (PST)
+Date: Thu, 27 Feb 2025 21:57:41 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ x86@kernel.org, jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
+ andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ airlied@gmail.com, simona@ffwll.ch, dmitry.torokhov@gmail.com,
+ mchehab@kernel.org, awalls@md.metrocast.net, hverkuil@xs4all.nl,
+ miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+ louis.peens@corigine.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com,
+ parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+ johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+ jirislaby@kernel.org, akpm@linux-foundation.org, hpa@zytor.com,
+ alistair@popple.id.au, linux@rasmusvillemoes.dk,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsi@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
+ linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mtd@lists.infradead.org, oss-drivers@corigine.com,
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-serial@vger.kernel.org, bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
+ Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: Re: [PATCH 02/17] bitops: Add generic parity calculation for u64
+Message-ID: <20250227215741.1c2e382f@pumpkin>
+In-Reply-To: <Z8CpaaHv0ahHFVuK@thinkpad>
+References: <20250223164217.2139331-1-visitorckw@gmail.com>
+	<20250223164217.2139331-3-visitorckw@gmail.com>
+	<Z7zIBwH4aUA7G9MY@thinkpad>
+	<20250226222911.22cb0c18@pumpkin>
+	<Z8CpaaHv0ahHFVuK@thinkpad>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Till Kamppeter <till.kamppeter@gmail.com>
-Subject: Google Summer of Code 2025 - Linux Foundation accepted as mentoring
- organization! We need mentors now!
-To: linux-wireless <linux-wireless@vger.kernel.org>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Hi,
+On Thu, 27 Feb 2025 13:05:29 -0500
+Yury Norov <yury.norov@gmail.com> wrote:
 
-today the mentoring organizations accepted for this year's Google Summer of Code 
-got announced, and the Linux Foundation is one of them!
+> On Wed, Feb 26, 2025 at 10:29:11PM +0000, David Laight wrote:
+> > On Mon, 24 Feb 2025 14:27:03 -0500
+> > Yury Norov <yury.norov@gmail.com> wrote:
+> > ....  
+> > > +#define parity(val)					\
+> > > +({							\
+> > > +	u64 __v = (val);				\
+> > > +	int __ret;					\
+> > > +	switch (BITS_PER_TYPE(val)) {			\
+> > > +	case 64:					\
+> > > +		__v ^= __v >> 32;			\
+> > > +		fallthrough;				\
+> > > +	case 32:					\
+> > > +		__v ^= __v >> 16;			\
+> > > +		fallthrough;				\
+> > > +	case 16:					\
+> > > +		__v ^= __v >> 8;			\
+> > > +		fallthrough;				\
+> > > +	case 8:						\
+> > > +		__v ^= __v >> 4;			\
+> > > +		__ret =  (0x6996 >> (__v & 0xf)) & 1;	\
+> > > +		break;					\
+> > > +	default:					\
+> > > +		BUILD_BUG();				\
+> > > +	}						\
+> > > +	__ret;						\
+> > > +})
+> > > +  
+> > 
+> > You really don't want to do that!
+> > gcc makes a right hash of it for x86 (32bit).
+> > See https://www.godbolt.org/z/jG8dv3cvs  
+> 
+> GCC fails to even understand this. Of course, the __v should be an
+> __auto_type. But that way GCC fails to understand that case 64 is
+> a dead code for all smaller type and throws a false-positive 
+> Wshift-count-overflow. This is a known issue, unfixed for 25 years!
 
-https://summerofcode.withgoogle.com/programs/2025-ao/organizations/the-linux-foundation
+Just do __v ^= __v >> 16 >> 16
 
-This means that now we have to everything to get amazing projects going this summer.
+> 
+> https://gcc.gnu.org/bugzilla/show_bug.cgi?id=4210
+>  
+> > You do better using a __v32 after the 64bit xor.  
+> 
+> It should be an __auto_type. I already mentioned. So because of that,
+> we can either do something like this:
+> 
+>   #define parity(val)					\
+>   ({							\
+>   #ifdef CLANG                                          \
+>   	__auto_type __v = (val);			\
+>   #else /* GCC; because of this and that */             \
+>   	u64 __v = (val);			        \
+>   #endif                                                \
+>   	int __ret;					\
+> 
+> Or simply disable Wshift-count-overflow for GCC.
 
-First, you are probably all actively working on finding contributors 
-(open-source newcomers or students), familiarizing them with your code base, 
-integrating them into your community, giveing them assignments to learn about 
-how things work in your project, ... If not, start with this ASAP and do not 
-accept candidates only showing up during the official application window in 
-March 24 - April 8, or even worse, only their proposal appearing in the list you 
-see after the deadline. The earlier you interact with the person, the better you 
-can decide on whether they are the right one for your project.
-
-Technically the having gotten accepted means that we can register mentors, and 
-as in the other years we need as many mentors as possible, 2 mentors per 
-contributor project we want to run (usually they do not give us more contribuotr 
-slot than half the number of registered mentors).
-
-If you want to mentor you have to register as follows (According to the official 
-e-mail which the org admins got today):
+For 64bit values on 32bit it is probably better to do:
+int p32(unsigned long long x)
+{
+    unsigned int lo = x;
+    lo ^= x >> 32;
+    lo ^= lo >> 16;
+    lo ^= lo >> 8;
+    lo ^= lo >> 4;
+    return (0x6996 >> (lo & 0xf)) & 1;
+}
+That stops the compiler doing 64bit shifts (ok on x86, but probably not elsewhere).
+It is likely to be reasonably optimal for most 64bit cpu as well.
+(For x86-64 it probably removes a load of REX prefix.)
+(It adds an extra instruction to arm because if its barrel shifter.)
 
 
-     - Returning Mentors (who mentored with us in 2022, 2023, or 2024):
-       o Log in to https://g.co/gsoc and agree to the 2025 Program Rules and
-         Org Member agreement
-       o Inform the org admins (Aveek and me) that you have done so
-       o One of the org admins will accept your request
+> 
+> > Even the 64bit version is probably sub-optimal (both gcc and clang).
+> > The whole lot ends up being a bit single register dependency chain.
+> > You want to do:  
+> 
+> No, I don't. I want to have a sane compiler that does it for me.
+> 
+> > 	mov %eax, %edx
+> > 	shrl $n, %eax
+> > 	xor %edx, %eax
+> > so that the 'mov' and 'shrl' can happen in the same clock
+> > (without relying on the register-register move being optimised out).
+> > 
+> > I dropped in the arm64 for an example of where the magic shift of 6996
+> > just adds an extra instruction.  
+> 
+> It's still unclear to me that this parity thing is used in hot paths.
+> If that holds, it's unclear that your hand-made version is better than
+> what's generated by GCC.
 
-     - New Mentors:
-       o Org Admins have to invite you. So tell the org admins (Aveek or me) that
-         you want to mentor
-       o They will invite you and you get an e-mail from GSoC telling so. Please
-         check also your spam folder if you do not find this e-mail
-       o Follow the link in the e-mail to register and agree to the 2025 program
-         rules and terms. Tell the org admins when you are done.
-       o One of the org admins will finally accept your request
+I wasn't seriously considering doing that optimisation.
+Perhaps just hoping is might make a compiler person think :-)
 
-There is no deadline for registering as mentor, but please register ASAP, the 
-sooner your register the sooner
+	David
 
-     - We can see that we get enough mentors and do not need to chase after them.
-     - You get important e-mails from the GSoC organizers about your duties and
-       how to proceed. All these e-mails are also available on
+> 
+> Do you have any perf test?
+> 
+> Thanks,
+> Yury
 
-https://docs.google.com/document/d/1DFlES2qkSaVRnUBaODNtdD3eY5M0hFPfYerSyxf85Pw/
-
-       but it is always better to get them right when they get posted.
-
-Please also join the communication channels of the sub-group in which you want 
-to mentor (in case you are not already there as part of the sub-group). Please 
-interact with the contributor candidates who are introducing themselves there.
-
-Also see our project ideas lists to find out which projects you prefer to mentor:
-
-https://wiki.linuxfoundation.org/gsoc/google-summer-code-2025
-
-Important is also to get the candidates interacting with the code base. 
-Therefore please let them first build the code base on which they are supposed 
-to work on and then give them assignments, like bug reports, to work on. Only 
-accept proposals from candidates who are well onboarded, do not base you 
-decisions on a just a proposal you find in the submission list after the 
-application deadline.
-
-And keep in mind:
-
-     - A person can be GSoC contributor not more than 2 times
-     - A person cannot be GSoC contributor any more if they have been mentor at
-       least once.
-
-So make sure you do not want to participate as contributor before doing your 
-first registration as mentor. And ask contributor candidates if they already 
-have been contributor and how often.
-
-I hope we will have a great GSoC 2025 with all of you!
-
-    Till
 
