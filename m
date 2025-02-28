@@ -1,211 +1,123 @@
-Return-Path: <linux-wireless+bounces-19571-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19572-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B7DA48E36
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 02:55:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E40A491C6
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 07:49:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C69E188D535
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 01:55:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9DE67A87E9
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 06:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFE776026;
-	Fri, 28 Feb 2025 01:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722F01C1F12;
+	Fri, 28 Feb 2025 06:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="hc1Wnley"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GJcXqIbM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3C33596A;
-	Fri, 28 Feb 2025 01:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428D9139E;
+	Fri, 28 Feb 2025 06:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740707694; cv=none; b=MVcY+OUHKRQoVYGJ4Iuw/Li+wYHu5Pn93ey6V1Dbw8PN20fwPSsL+yYcNATTdFxA53VDYGLV8nmKU0hKZI5+yFHeeueUewSqIdX3KFhyc6WzLnN7JzY/YiuIseQuJS/EyHv65p8TY4wFUWUJqQ1oPRlAf+VGHJiMhe7rfomnao0=
+	t=1740725392; cv=none; b=WI9Np6P0AkgVelyGX/2/CNt9SHO3Fx9QvtHm/Mc65GzzYUmWAortYl01etQxtDloRdl/zH3RoVFjaLEjcuA3VKNyfdV8FaQW/cBwdlB/TNZrB+mdeOb93b3JeaSiLLY8gCEV9rrfqY1IuQphGef/MobV44ddnmqdjkyBCMCx6tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740707694; c=relaxed/simple;
-	bh=Lp1jbP3VtIoZJb7DDjRQCPnuT/WqIWZRzxbJAQE3YnA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=sUhwxFtUg5sQeFToy9qKPq/jAjjiANiSkNnECv0FVDxh0NPznBVx4EMQS1swHyYlkcYKmef1Mt+RTowM2DbKTpS6KCGYGbZbHyBy6o5vMpZHTpspSVQwTI58XBQsxIGnLVXdVPD9aSQN+UsTBCo1PdGkmnEYx65O7YoqTCNweeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=hc1Wnley; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 51S1ouig2394050
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 27 Feb 2025 17:50:57 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 51S1ouig2394050
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1740707463;
-	bh=zdxlCZN7qRmiM8/WMWaSChORmP5U1+mg9Dd2GNfsbGA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=hc1WnleyPiNvmeMgkj0Fbb3sTWrGCmnnaxiRXiZvVvO6Is3ZJKu6mp+YJv2Dbs05X
-	 aVxT1zsm98Egcx7g7dDapGUM1ppk6QkyAa2wZSKXLVi8I4OeDG/xzxwpW4dEA2MBFx
-	 T1ntM64Z768sGTrScS8Wa6oiWHo2Bu8akRlkAIPTgcwVRV0sgRtvWguE9SobXFYNdw
-	 ClhsdUIvwPyfzfAd+XeT/JQ5MtCRtjegffTL4YeiMAwTwSfCb9k77v5gFOVLmhUpKy
-	 VYHzzZXLAdv9xzXZj/lrKYrLB5diO6XmkXYCixEjE5jI7GVtxQxUpXMNKybtxiJAEr
-	 DXDmmmDy5eD+w==
-Date: Thu, 27 Feb 2025 17:50:55 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: David Laight <david.laight.linux@gmail.com>,
-        Yury Norov <yury.norov@gmail.com>
-CC: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
-        andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-        dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
-        hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
-        vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
-        johannes@sipsolutions.net, gregkh@linuxfoundation.org,
-        jirislaby@kernel.org, akpm@linux-foundation.org, alistair@popple.id.au,
-        linux@rasmusvillemoes.dk, Laurent.pinchart@ideasonboard.com,
-        jonas@kwiboo.se, jernej.skrabec@gmail.com, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-        dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-        oss-drivers@corigine.com, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-        brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
-        bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
-        Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: Re: [PATCH 02/17] bitops: Add generic parity calculation for u64
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250227215741.1c2e382f@pumpkin>
-References: <20250223164217.2139331-1-visitorckw@gmail.com> <20250223164217.2139331-3-visitorckw@gmail.com> <Z7zIBwH4aUA7G9MY@thinkpad> <20250226222911.22cb0c18@pumpkin> <Z8CpaaHv0ahHFVuK@thinkpad> <20250227215741.1c2e382f@pumpkin>
-Message-ID: <EF874FA4-2719-44EA-B0DB-93A0980142BE@zytor.com>
+	s=arc-20240116; t=1740725392; c=relaxed/simple;
+	bh=rXw9+brQeTau2dxyqBTQ41APqTeb6N30ZtiNWP/sOuk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JhiG4Gh33H3ASrndcXAGkmuGYe2GuREkQWRr1iqkYcP2rkfWLpUFApBwrFUAUyIymqlkCb+3gDDsR9ey2Y8X06XcJt85zViESIIAa/Dw66HIhn5B7S+1vjp+JiB2Xtbu3GNJ5G9XNK50qD2rOYSdwKCV3tDM8qBWbyIzHrq7jhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GJcXqIbM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50CB4C4CED6;
+	Fri, 28 Feb 2025 06:49:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740725391;
+	bh=rXw9+brQeTau2dxyqBTQ41APqTeb6N30ZtiNWP/sOuk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GJcXqIbMe1WqxF/P4TuxzoQ2UcsxtjKLs7YymQYjgt/3sv2ciecaTJ34B8wyDrwiS
+	 Ssmf3qUP2eHhHC93fsa7XiQ2jhbNi/7pvynqjXzmC9irq5+pGe8LqDCMJrudeJue0f
+	 UcXIoKK1PjRaJI6ye6+nc9jTwD/QfzrlJuac4/XAbN4Hv19YWya+tU8MO0gLa+D+5z
+	 dwQrVtkAXrzqSFrAslEhBPR2t3rZKg6IdO77bWgwlIjdx2WrDjEI4jhAa7LoN+CBHh
+	 KSDa4EtbVINVJkyKYDrDsyPCRt5cLgCi9GccnFcN24nOg7ym7suWXPMpBCd4rzqbYY
+	 /QQ0/mTVNLihg==
+Message-ID: <2d7cedd6-48f6-4cc8-82c3-ce560d7af545@kernel.org>
+Date: Fri, 28 Feb 2025 07:49:45 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 01/13] dt-bindings: net: wireless: describe the ath12k
+ AHB module for IPQ5332
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
+Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250227191034.1949954-1-quic_rajkbhag@quicinc.com>
+ <20250227191034.1949954-2-quic_rajkbhag@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250227191034.1949954-2-quic_rajkbhag@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On February 27, 2025 1:57:41 PM PST, David Laight <david=2Elaight=2Elinux@g=
-mail=2Ecom> wrote:
->On Thu, 27 Feb 2025 13:05:29 -0500
->Yury Norov <yury=2Enorov@gmail=2Ecom> wrote:
->
->> On Wed, Feb 26, 2025 at 10:29:11PM +0000, David Laight wrote:
->> > On Mon, 24 Feb 2025 14:27:03 -0500
->> > Yury Norov <yury=2Enorov@gmail=2Ecom> wrote:
->> > =2E=2E=2E=2E =20
->> > > +#define parity(val)					\
->> > > +({							\
->> > > +	u64 __v =3D (val);				\
->> > > +	int __ret;					\
->> > > +	switch (BITS_PER_TYPE(val)) {			\
->> > > +	case 64:					\
->> > > +		__v ^=3D __v >> 32;			\
->> > > +		fallthrough;				\
->> > > +	case 32:					\
->> > > +		__v ^=3D __v >> 16;			\
->> > > +		fallthrough;				\
->> > > +	case 16:					\
->> > > +		__v ^=3D __v >> 8;			\
->> > > +		fallthrough;				\
->> > > +	case 8:						\
->> > > +		__v ^=3D __v >> 4;			\
->> > > +		__ret =3D  (0x6996 >> (__v & 0xf)) & 1;	\
->> > > +		break;					\
->> > > +	default:					\
->> > > +		BUILD_BUG();				\
->> > > +	}						\
->> > > +	__ret;						\
->> > > +})
->> > > + =20
->> >=20
->> > You really don't want to do that!
->> > gcc makes a right hash of it for x86 (32bit)=2E
->> > See https://www=2Egodbolt=2Eorg/z/jG8dv3cvs =20
->>=20
->> GCC fails to even understand this=2E Of course, the __v should be an
->> __auto_type=2E But that way GCC fails to understand that case 64 is
->> a dead code for all smaller type and throws a false-positive=20
->> Wshift-count-overflow=2E This is a known issue, unfixed for 25 years!
->
->Just do __v ^=3D __v >> 16 >> 16
->
->>=20
->> https://gcc=2Egnu=2Eorg/bugzilla/show_bug=2Ecgi?id=3D4210
->> =20
->> > You do better using a __v32 after the 64bit xor=2E =20
->>=20
->> It should be an __auto_type=2E I already mentioned=2E So because of tha=
-t,
->> we can either do something like this:
->>=20
->>   #define parity(val)					\
->>   ({							\
->>   #ifdef CLANG                                          \
->>   	__auto_type __v =3D (val);			\
->>   #else /* GCC; because of this and that */             \
->>   	u64 __v =3D (val);			        \
->>   #endif                                                \
->>   	int __ret;					\
->>=20
->> Or simply disable Wshift-count-overflow for GCC=2E
->
->For 64bit values on 32bit it is probably better to do:
->int p32(unsigned long long x)
->{
->    unsigned int lo =3D x;
->    lo ^=3D x >> 32;
->    lo ^=3D lo >> 16;
->    lo ^=3D lo >> 8;
->    lo ^=3D lo >> 4;
->    return (0x6996 >> (lo & 0xf)) & 1;
->}
->That stops the compiler doing 64bit shifts (ok on x86, but probably not e=
-lsewhere)=2E
->It is likely to be reasonably optimal for most 64bit cpu as well=2E
->(For x86-64 it probably removes a load of REX prefix=2E)
->(It adds an extra instruction to arm because if its barrel shifter=2E)
->
->
->>=20
->> > Even the 64bit version is probably sub-optimal (both gcc and clang)=
-=2E
->> > The whole lot ends up being a bit single register dependency chain=2E
->> > You want to do: =20
->>=20
->> No, I don't=2E I want to have a sane compiler that does it for me=2E
->>=20
->> > 	mov %eax, %edx
->> > 	shrl $n, %eax
->> > 	xor %edx, %eax
->> > so that the 'mov' and 'shrl' can happen in the same clock
->> > (without relying on the register-register move being optimised out)=
-=2E
->> >=20
->> > I dropped in the arm64 for an example of where the magic shift of 699=
-6
->> > just adds an extra instruction=2E =20
->>=20
->> It's still unclear to me that this parity thing is used in hot paths=2E
->> If that holds, it's unclear that your hand-made version is better than
->> what's generated by GCC=2E
->
->I wasn't seriously considering doing that optimisation=2E
->Perhaps just hoping is might make a compiler person think :-)
->
->	David
->
->>=20
->> Do you have any perf test?
->>=20
->> Thanks,
->> Yury
->
+On 27/02/2025 20:10, Raj Kumar Bhagat wrote:
+> Add device-tree bindings for the ATH12K module found in the IPQ5332
+> device.
+> 
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> ---
 
-What the compiler people need to do is to not make __builtin_parity*() gen=
-erate crap=2E
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
