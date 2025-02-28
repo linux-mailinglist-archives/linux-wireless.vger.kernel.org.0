@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-19583-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19584-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D7AA49A38
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 14:07:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED1DA49A59
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 14:16:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EBAB3AB2A7
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 13:07:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C1AE18943CC
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 13:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1BC26B2B5;
-	Fri, 28 Feb 2025 13:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B7B260385;
+	Fri, 28 Feb 2025 13:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FtWHZPOp"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="l7jr1LfQ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFA9261579
-	for <linux-wireless@vger.kernel.org>; Fri, 28 Feb 2025 13:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCEE26B96C
+	for <linux-wireless@vger.kernel.org>; Fri, 28 Feb 2025 13:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740748065; cv=none; b=j/pRG5MDZI2iN7nNHdhwy2PFeOQtO/J91+5qsBuxHJ4SVPqRb0LXhHypYRggFnn32wnzPpFo/+GJ9pyfxclEEtwNikmUx/ukO6CiprbsTDERQGFvznIC4/ZOkhvOBqDORGTiulGgGGjuEQsk+f70cRMqBlshILGrb/wbTVQJWe8=
+	t=1740748570; cv=none; b=pyiTfCRqMRd58jjSYaj+DWNxCK6Bq9OB/r6iS5R3S1S1Jou7qVYDX+1QhlM7NIRq9povXvJV351HaF6Kmaa29Z93NPyaVTuqbVdCNck6PwXNq4uCyPxzCTiseedAdE6EQ4LiRrjLgBDGOSX+Cf+0Gyo4/zZ20wAfKrO0oL6qJqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740748065; c=relaxed/simple;
-	bh=Uq1h+69+qYmUC9sParZp2ddH0EktnCvKVE9q6U8BVxA=;
+	s=arc-20240116; t=1740748570; c=relaxed/simple;
+	bh=qZwY6N0PceFwIDk6aLaT8Ls033oUm6ifDXhJiAsYB8M=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GPfO6K/YcDHRV0SENXCRB88Xx3RmgN/WiCSXenXoEkPihK5QchC/a3ALjX3sWI5IresKvvGtFrFOB7vcq9op6zEbr/n6SmDLOyMFb4LzqK5Fnw0B5poVp2EeCOqutRLcJSvZwSvEMrn31AD1OiXBEwkEXSJWTlLsfpaqHmnMUXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FtWHZPOp; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=JXIDjdGSY0YiQsRLjdFaXnqL9bOfyaRQdeXUhacJFXxcYp6dpFjTpvOkiq6NmAZ52TXOpQY63lr/xtB1CAAzcifQzxoDmAS1uCioYJ0v48sYq7SImK6UpYmAteSe4Ke4ECcNUaWX1zCh8+RW7RYy1AjWJBxbL7xbvEbIECjDTkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=l7jr1LfQ; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=gZ+p23IhPGjhdfkt5MnaRPC+cPVhMnkKfjG6wjjrmJQ=;
-	t=1740748063; x=1741957663; b=FtWHZPOpYE0A7Y9pE9Zd4H/TJiIA4+xE9yye1/AUqTkI/zX
-	lzFehzj6IExRiv8iAYo+YbreAWy1iA7LcnQcUh1PIf6IH2mTZVlz6ObaMmMJ5+7/29+vq4vjZRr6x
-	ZD/M//yqbf9Kes0T/EeWVtDLo3D2wBgCG0I4ZY+Hk8lrX9LJlY+6gTSrAlikHZ7rSg+YXCq6FNjx1
-	nm+ldVPhflS8J18vu4KTPOidPt+P2FNhUyvFrOaaIIK0K61s7fMd9kad+abgrOpBvx8l6P6GZlwev
-	7pUC6u0d8vG3l09gXJ07yucrj6Ff/KCjOvfEKyedPYjsesTJcy2DpCA2Pv1SbN2A==;
+	Resent-Cc:Resent-Message-ID; bh=/8IKjghX0ae++1FQWsxK/kTlOr7Vb66IETKu1PWG7JU=;
+	t=1740748568; x=1741958168; b=l7jr1LfQjuYefFmWiUYC7a6IfrH2pWLWzY/h7LeXRG/Ok2V
+	HX+IkxfB7c4EuWJWOJ49bac578iwgXWbABwym5hMN3CO5ikKr8APaSTwlcqedu4QEg4zyiJl39JYw
+	+WJMw6KcvvtqvmhOwWixcKt4aLtyCB8kkmGaCDvogcxM7L9e02gDrjLlDb3AYI/Zgn+c7d/pne9Cl
+	frgGn7vM7NYzBM/9+6pOetPk8xGc1K3z092YHhYHcQz+iIlEaPxGoTCDDRC16rEjl7+aaH5KV/Yfj
+	3liZQ6fae4Flm/NujupWU2Fw1WPUDCgPyZ3bU42OReqbSZIMdE/0Xb8FlwmkttTw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1to05c-0000000DkV3-2KdB;
-	Fri, 28 Feb 2025 14:07:40 +0100
-Message-ID: <497038580b4a41221616070dfe0f42a69ce47b75.camel@sipsolutions.net>
-Subject: Re: [PATCH v4 3/5] wifi: mac80211: Set RTS threshold on per-radio
- basis
+	id 1to0Dl-0000000Dktk-1syr;
+	Fri, 28 Feb 2025 14:16:05 +0100
+Message-ID: <38d1d5f8be439e8553cddd2df03bf3553bafb82f.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 03/12] wifi: mac80211: add support towards MLO
+ handling of station statistics
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>
+To: Sarika Sharma <quic_sarishar@quicinc.com>
 Cc: linux-wireless@vger.kernel.org
-Date: Fri, 28 Feb 2025 14:07:39 +0100
-In-Reply-To: <20250129155246.155587-4-quic_rdevanat@quicinc.com>
-References: <20250129155246.155587-1-quic_rdevanat@quicinc.com>
-	 <20250129155246.155587-4-quic_rdevanat@quicinc.com>
+Date: Fri, 28 Feb 2025 14:16:04 +0100
+In-Reply-To: <20250213171632.1646538-4-quic_sarishar@quicinc.com>
+References: <20250213171632.1646538-1-quic_sarishar@quicinc.com>
+	 <20250213171632.1646538-4-quic_sarishar@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -67,62 +67,108 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Wed, 2025-01-29 at 21:22 +0530, Roopni Devanathan wrote:
+On Thu, 2025-02-13 at 22:46 +0530, Sarika Sharma wrote:
 >=20
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-> @@ -126,7 +126,7 @@ struct iwl_mvm_time_event_data {
->   /* Power management */
-> =20
->  /**
-> - * enum iwl_power_scheme
-> + * enum iwl_power_scheme - enum iwl power sceme set by debugfs
+> -	if (!sta->deflink.pcpu_rx_stats)
+> +	if (link_id < 0)
+> +		link_sta_info =3D &sta->deflink;
+> +	else
+> +		link_sta_info =3D
+> +			rcu_dereference_protected(sta->link[link_id],
+> +						  lockdep_is_held(&sta->local->hw.wiphy->mtx));
 
-How does that belong here?!
+We have all kinds of helper macros for that? Even this very specific
+case: link_sta_dereference_protected()
 
-> +++ b/net/mac80211/cfg.c
-> @@ -3038,7 +3038,13 @@ static int ieee80211_set_wiphy_params(struct wiphy=
- *wiphy, u8 radio_id, u32 chan
->  	}
-> =20
->  	if (changed & WIPHY_PARAM_RTS_THRESHOLD) {
-> -		err =3D drv_set_rts_threshold(local, wiphy->rts_threshold);
-> +		u32 rts_threshold;
+> +	stats =3D &link_sta_info->rx_stats;
+
+Should you check that link_sta_info even exists, just in case some link
+IDs get mixed up? Not sure.
+
+> -unsigned long ieee80211_sta_last_active(struct sta_info *sta)
+> +unsigned long ieee80211_sta_last_active(struct sta_info *sta, int link_i=
+d)
+>  {
+> -	struct ieee80211_sta_rx_stats *stats =3D sta_get_last_rx_stats(sta);
+> +	struct ieee80211_sta_rx_stats *stats =3D sta_get_last_rx_stats(sta, lin=
+k_id);
+> +	struct link_sta_info *link_sta_info;
 > +
-> +		if (radio_id >=3D wiphy->n_radio)
-> +			rts_threshold =3D wiphy->rts_threshold;
-> +		else
-> +			rts_threshold =3D wiphy->radio_cfg[radio_id].rts_threshold;
-> +		err =3D drv_set_rts_threshold(local, radio_id, rts_threshold);
-
-Should we really just leave it all up to the driver, or perhaps call it
-multiple times for each radio? Dunno.
-
-> @@ -715,8 +716,14 @@ ieee80211_tx_h_rate_ctrl(struct ieee80211_tx_data *t=
-x)
->  		    tx->sdata->vif.type =3D=3D NL80211_IFTYPE_OCB);
+> +	if (link_id < 0)
+> +		link_sta_info =3D &sta->deflink;
+> +	else
+> +		link_sta_info =3D
+> +			rcu_dereference_protected(sta->link[link_id],
+> +						  lockdep_is_held(&sta->local->hw.wiphy->mtx));
 > =20
->  	/* set up RTS protection if desired */
-> -	if (len > tx->local->hw.wiphy->rts_threshold) {
-> -		txrc.rts =3D true;
-> +	if (tx->local->hw.wiphy->n_radio) {
-> +		for (i =3D 0; i < tx->local->hw.wiphy->n_radio; i++) {
-> +			if (len > tx->local->hw.wiphy->radio_cfg[i].rts_threshold)
-> +				txrc.rts =3D true;
-> +		}
-> +	} else {
-> +		if (len > tx->local->hw.wiphy->rts_threshold)
-> +			txrc.rts =3D true;
->  	}
+> -	if (!sta->deflink.status_stats.last_ack ||
+> -	    time_after(stats->last_rx, sta->deflink.status_stats.last_ack))
+> +	if (!link_sta_info->status_stats.last_ack ||
+> +	    time_after(stats->last_rx, link_sta_info->status_stats.last_ack))
+>  		return stats->last_rx;
+> -	return sta->deflink.status_stats.last_ack;
+> +
+> +	return link_sta_info->status_stats.last_ack;
+>  }
 
-Are you sure you need this? Seems odd to me.
+This seems wrong, if you ask for -1 you get deflink but that's no longer
+updated at all, so you break the current/updated sta_set_sinfo() usage
+with this since you just use -1 statically there now (with this patch.)
 
-> +static ssize_t rts_threshold_read(struct file *file, char __user *user_b=
-uf,
-> +				  size_t count, loff_t *ppos)
+>  static void sta_update_codel_params(struct sta_info *sta, u32 thr)
+> diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+> index 07b7ec39a52f..7e600c82a6e1 100644
+> --- a/net/mac80211/sta_info.h
+> +++ b/net/mac80211/sta_info.h
+> @@ -947,7 +947,7 @@ void ieee80211_sta_ps_deliver_wakeup(struct sta_info =
+*sta);
+>  void ieee80211_sta_ps_deliver_poll_response(struct sta_info *sta);
+>  void ieee80211_sta_ps_deliver_uapsd(struct sta_info *sta);
+> =20
+> -unsigned long ieee80211_sta_last_active(struct sta_info *sta);
+> +unsigned long ieee80211_sta_last_active(struct sta_info *sta, int link_i=
+d);
+> =20
+>  void ieee80211_sta_set_max_amsdu_subframes(struct sta_info *sta,
+>  					   const u8 *ext_capab,
+> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+> index f6b631faf4f7..1e2cb33030da 100644
+> --- a/net/mac80211/util.c
+> +++ b/net/mac80211/util.c
+> @@ -3276,14 +3276,28 @@ int ieee80211_put_srates_elem(struct sk_buff *skb=
+,
+>  	return 0;
+>  }
+> =20
+> -int ieee80211_ave_rssi(struct ieee80211_vif *vif)
+> +int ieee80211_ave_rssi(struct ieee80211_vif *vif, int link_id)
+>  {
+>  	struct ieee80211_sub_if_data *sdata =3D vif_to_sdata(vif);
+> +	struct ieee80211_link_data *link_data;
+> +	int rssi;
+> =20
+>  	if (WARN_ON_ONCE(sdata->vif.type !=3D NL80211_IFTYPE_STATION))
+>  		return 0;
+> =20
+> -	return -ewma_beacon_signal_read(&sdata->deflink.u.mgd.ave_beacon_signal=
+);
+> +	if (link_id < 0)
+> +		link_data =3D &sdata->deflink;
+> +	else
+> +		link_data =3D
+> +			rcu_dereference_protected(sdata->link[link_id],
+> +						  lockdep_is_held(&sdata->local->hw.wiphy->mtx));
+> +
+> +	if (WARN_ON(!link_data))
+> +		return -99;
+> +
+> +	rssi =3D -ewma_beacon_signal_read(&link_data->u.mgd.ave_beacon_signal);
+> +
+> +	return rssi;
 
-I'm not convinced it's worth keeping this at all since you can retrieve
-it via nl80211?
+what's the point in the trivial intermediate 'rssi' variable? It's not
+even for line length since "rssi =3D " is the same length as "return "?
 
 johannes
+
 
