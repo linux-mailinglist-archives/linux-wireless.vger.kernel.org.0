@@ -1,63 +1,88 @@
-Return-Path: <linux-wireless+bounces-19598-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19599-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D937A49E4B
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 17:06:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F005A49FCD
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 18:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 925BB1898B8B
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 16:06:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34D79164F94
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 17:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8818318FC67;
-	Fri, 28 Feb 2025 16:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7749D2755E3;
+	Fri, 28 Feb 2025 17:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="AzI0zl6Q"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RvaEOCPP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB778188CCA;
-	Fri, 28 Feb 2025 16:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A44274255
+	for <linux-wireless@vger.kernel.org>; Fri, 28 Feb 2025 17:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740758796; cv=none; b=l560K95ISfYtrVvC+udOoe2m0vGObjMI8A7Ql+Uex+uGQbwALTP0rT8hltxIij13Ffcv6Lbuf0VzGYNvzhRr+snguVkolYZYFpowW/M6V9LitKF3ACw23BrAgU5nKiJoEvsYO05PXT8RB8hRVXoj0ZRhR3F/0tj0nkEvc4Wn88o=
+	t=1740762458; cv=none; b=kCr/IMKbBJHpw7NQ1iXoWLuCFHJB2DUAUFGVd+RFEgJyzlpp4t+rA4YkjPLlvukLllhZGCgjXkLgFby2sc+HJGuilwd7n5wtG6baUtC6kkCuUFZlxqBYWK1P1i/Qy02IjmnI+andbbl+fNHTFgz9DJv9Ypie5Ez9soS7sTG74No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740758796; c=relaxed/simple;
-	bh=dXAorRSjssnR7ekcMMO6QNLlWu/MVv+vqvNfNfvlUrw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Hwn6PtXXTFE1KUiIPxRUaA/u8EvEsmHSKvBG1ztpR4xE1rL7hgT3XGw1l/9WPMPnS0qmjlsx+tbHtnjSPJlY81mlSSEqq/X5ymbqQgdXZmxxOKtK+1f9+K/s6CD0LQAe7OlmrNYrLz4v9Fy4Ss5obJPzP7uzCi9w9biBLD8gJ/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=AzI0zl6Q; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51SAXFD3020127;
-	Fri, 28 Feb 2025 16:06:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	s=arc-20240116; t=1740762458; c=relaxed/simple;
+	bh=C2fZ4SBsHF3j7jycBO4AvxzSaVFIR8J5mdhIZvJyKWA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hBdIaMNl0AixSIV7VTRL8e2a7P0l2c5tcNHQRhmrgzJy6KjgHdtCeqglw94y/O20h7xpzBEfDMcqEc1A7RDRHDxcNKpJm1XXJY+AgCFrx8e/Tkfw3J8gjj2qgvN9e6Wt4o3twFQNi5pHEHlc0I1RYE95sHDQdOm3jVdV49dWxIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RvaEOCPP; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51SAXMqg018966
+	for <linux-wireless@vger.kernel.org>; Fri, 28 Feb 2025 17:07:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	toaKbtWzPqfCKonl++yXx0474yo6RKTVtoUSN/vQrF8=; b=AzI0zl6QB8CN6n1Z
-	YULzHYME47bzzjuyL0Hk25qD+1AzCNPMhdjcAxBom/bxDEXO6NQvbdz8Y0GMgNjw
-	Zu470QjN56RcFX+MM66chsJV4kF39pg6lHyi/pGT+yYGO4Bn/qxx9SyaUgnxXksZ
-	ui9R6W7ygL8i0IvM3X9WDKANf0lD2+zpLms/TApDAc2eYSpz5jSHRKHUjraYHGHL
-	mEf44YT7+o5Qtd9xIGAkxApdGCzSwd/7hhDsLxbQtef+4Wln5Bkb7Bkqb9obLNBR
-	WDOkSziN43njgHtqJdNaNdCSTyxAFw60tUuBJWBVqwWxv1iXYiQPJ20sZtjTHzNU
-	5DEbpw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4539uphaap-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Feb 2025 16:06:26 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51SG6PhO011248
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Feb 2025 16:06:25 GMT
-Received: from [10.216.20.93] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 28 Feb
- 2025 08:06:21 -0800
-Message-ID: <8f35ef14-49e8-4484-9a66-58b91a537681@quicinc.com>
-Date: Fri, 28 Feb 2025 21:36:18 +0530
+	w03EvNkmgGsEYw7MVxLcdlGbwxuHVUXTAOgcgpkzv4M=; b=RvaEOCPP2CqdlTEx
+	YmICOPsvT8qDNLF/rY03JeVucRCUWDlDCxk7VMqdR/MKLLqCZsXsFSL8pXs/Stjb
+	w5jSTiS2EyM84aqSeEzjMizz7qfRwGIeg1FmaGj7JZyuVWRX8TxniWWNJvO3RjhD
+	8ElwnNl6jLWk+jaPWohPyzmyv6zBsONiYpv24Sbz6EjcZTeGBZMbx4R2fKJHyYo9
+	hYidZ4SEDB37DSwiYfUsvCgS8rPQMej4jDRRKVXyBzEscxw42QyGjjf7BoeY3AgQ
+	OzsV7NQq5fbl9FNt/8gIDR4JyhTDu/5rqc3aSeoT6YcxpnOHWotPJwyMdFaFrI2I
+	MKSSug==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 451prna0g6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 28 Feb 2025 17:07:35 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2fea1685337so4332334a91.0
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Feb 2025 09:07:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740762454; x=1741367254;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=w03EvNkmgGsEYw7MVxLcdlGbwxuHVUXTAOgcgpkzv4M=;
+        b=CN0hsqT4L1hzcfObYryDzxu/PAcJMVBjuzIoagFVOPFgewFkPQbSp6MB5kttGQrbw5
+         FrvzqEU6A52CN6mbv5qNN4b2Bgxbw0J/erCGT4WxWnD0WhXdhRUAndELzQLqveJRstvw
+         OgHCtX6EPhfLnNtIUKjROlI3TKtDwXC8qZgGWRaa51ywX3yAEoO423eb+lTBwUudAmK8
+         rztte7x5QjZScvfCuPLeRkDaZ5+2DuXnV0GlmWwzygLOR1dlqK02KkJmU/P+m4Z+NdkR
+         PsY262Z3utEtv58fkDZJKhw97kFWSpwN624PmBwlJidOoEYEl+UAde5EqEdJZ6SpJr/u
+         U7Jg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7Wwaq5zEcUrkoiUxp8YdyxwUO3aTwc4MPO6DCIUFedTQA0X9A9LasarS7CqiJTJNQm2pQ/fT4ALsCLg1KzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJECbJIqSC8pGrzLfDF2XDeK2GbPjERvg7RaT3VGKK36i2kcH0
+	fQRlySGNnuK/Gj+STxLd6nAFCIr07MiXY+XTFCkunbmjj35pRbinGURa32Ob3pM34ay+w48o6pK
+	c1Hhd9TUjsBK2eFSLmaMQ1mLTEqjhv4ifF9TD0Rq5Kh/xg1AxQgRWNq24xwfDt3UTiA==
+X-Gm-Gg: ASbGncuoZDKUXVX/lMEVViZJ4OqHKA7ekg4grr1UPDaiWZsQkWlsxQEhrkYJkXrlYe2
+	aPh39eUfO4Pk/+y9Hbu5BgW8wN5NBO9exnH24bt8haXJilJ6Y2R4ZVcZtNq7kCSPNEijFCuPJMy
+	dV5Cfl0TZXflusx2uBOMT1Q1opHAlmxLAGDoNxMRhfqpjOwrVvaX9/HGxPjzjgi089GuRNJLKP+
+	GGML4F/Por+KFM+U+Itcn+M8CP9Bnn12IlsJR/iOVjbL8H2S73WGbkI+CLUN6YPurdWAdazsrQN
+	ZHPR3ZEqhB1rdHYT6g6Lvd+Ns6dcQzztkP9zQNs8EZHAugsnMMcNU/LVQASZMMCqcKzbQaUf2FV
+	Uo4WcDswR
+X-Received: by 2002:a17:90b:1e51:b0:2ee:c30f:33c9 with SMTP id 98e67ed59e1d1-2feba92bfc9mr7182352a91.14.1740762454209;
+        Fri, 28 Feb 2025 09:07:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG4woKH6wlCEHEAUo+YddSp5Hk9b4m/JxWUHwlF3vZcka5jmfSVtvgX0c8jPPD9KSmBmIjhjw==
+X-Received: by 2002:a17:90b:1e51:b0:2ee:c30f:33c9 with SMTP id 98e67ed59e1d1-2feba92bfc9mr7182301a91.14.1740762453739;
+        Fri, 28 Feb 2025 09:07:33 -0800 (PST)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fea679dc51sm4036250a91.21.2025.02.28.09.07.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Feb 2025 09:07:33 -0800 (PST)
+Message-ID: <1f8fa248-c18a-4bb9-b995-0961f7f3fa37@oss.qualcomm.com>
+Date: Fri, 28 Feb 2025 09:07:32 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,137 +90,36 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 07/13] wifi: ath12k: add support for fixed QMI firmware
- memory
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, <ath12k@lists.infradead.org>
-CC: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20250227191034.1949954-1-quic_rajkbhag@quicinc.com>
- <20250227191034.1949954-8-quic_rajkbhag@quicinc.com>
- <e702e39a-e199-4ea4-a066-0b2e26253f98@oss.qualcomm.com>
+Subject: Re: ath11k: WCN6855: possible ring buffer corruption
+To: Johan Hovold <johan@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+References: <Zh6b-38tGGXo-ee7@hovoldconsulting.com>
+ <Z8Gr-IMD-UZTU-X5@hovoldconsulting.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-In-Reply-To: <e702e39a-e199-4ea4-a066-0b2e26253f98@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <Z8Gr-IMD-UZTU-X5@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: FsXWok401kwqd_11_vK3FRmt0B_GHnf4
-X-Proofpoint-GUID: FsXWok401kwqd_11_vK3FRmt0B_GHnf4
+X-Proofpoint-ORIG-GUID: DC7w-vsd2uNYI4mdNM4Xf0E6uOHLCZ3z
+X-Proofpoint-GUID: DC7w-vsd2uNYI4mdNM4Xf0E6uOHLCZ3z
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-28_04,2025-02-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
- adultscore=0 phishscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
- impostorscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502280117
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 clxscore=1015 mlxscore=0 adultscore=0 mlxlogscore=964
+ suspectscore=0 phishscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502280124
 
-On 2/28/2025 9:08 PM, Jeff Johnson wrote:
-> On 2/27/2025 11:10 AM, Raj Kumar Bhagat wrote:
-> ...
->> +static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
->> +{
->> +	struct reserved_mem *rmem;
->> +	phys_addr_t bdf_size;
->> +	int i, idx, ret;
->> +
->> +	for (i = 0, idx = 0; i < ab->qmi.mem_seg_count; i++) {
->> +		switch (ab->qmi.target_mem[i].type) {
->> +		case HOST_DDR_REGION_TYPE:
->> +			rmem = ath12k_core_get_reserved_mem(ab, 0);
->> +			if (!rmem) {
->> +				ret = -ENODEV;
->> +				goto out;
->> +			}
->> +
->> +			if (rmem->size < ab->qmi.target_mem[i].size) {
->> +				ath12k_dbg(ab, ATH12K_DBG_QMI,
->> +					   "failed to assign mem type %d req size %d avail size %lld\n",
->> +					   ab->qmi.target_mem[i].type,
->> +					   ab->qmi.target_mem[i].size,
->> +					   rmem->size);
+On 2/28/2025 4:28 AM, Johan Hovold wrote:
+> Hi Jeff,
 > 
-> The v6 version had a kernel test robot build warning here when building for
-> MIPS and it looks like nothing has changed.
-> 
+> The ath11k ring-buffer corruption issue is hurting some users of the
+> Lenovo ThinkPad X13s quite bad so I promised to try to escalate this
+> with you and Qualcomm.
 
-The kernel test robot warning came just after I posted the v7. Thus, the v7
-version also have the same warning. I will send v8 in sometime to address this.
+I've escalated this with the development team.
 
-> I don't know the history of why struct reserved_mem::size is of type
-> phys_addr_t, but that type has a different size depending upon architecture,
-> therefore you can't use %lld.
-> 
-> To print it correctly you either need to use the %paa format that is meant for
-> that type, or probably better would be to assign it to a variable of type
-> size_t and then use %zu (and use that variable in the size test as well)
-> 
-
-Sure will use variable to type size_t to address this.
-
-> (also consider if the other %d formats should be %u instead)
-> 
-
-will update to %u.
-
->> +				ret = -EINVAL;
->> +				goto out;
->> +			}
->> +
->> +			ab->qmi.target_mem[idx].paddr = rmem->base;
->> +			ab->qmi.target_mem[idx].v.ioaddr =
->> +				ioremap(ab->qmi.target_mem[idx].paddr,
->> +					ab->qmi.target_mem[i].size);
->> +			if (!ab->qmi.target_mem[idx].v.ioaddr) {
->> +				ret = -EIO;
->> +				goto out;
->> +			}
->> +			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
->> +			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
->> +			idx++;
->> +			break;
->> +		case BDF_MEM_REGION_TYPE:
->> +			rmem = ath12k_core_get_reserved_mem(ab, 0);
->> +			if (!rmem) {
->> +				ret = -ENODEV;
->> +				goto out;
->> +			}
->> +
->> +			bdf_size = rmem->size - ab->hw_params->bdf_addr_offset;
->> +			if (bdf_size < ab->qmi.target_mem[i].size) {
->> +				ath12k_dbg(ab, ATH12K_DBG_QMI,
->> +					   "failed to assign mem type %d req size %d avail size %lld\n",
->> +					   ab->qmi.target_mem[i].type,
->> +					   ab->qmi.target_mem[i].size,
->> +					   bdf_size);
-> 
-> the same issue exists here.
-> again this would be fixed by making bdf_size type size_t and using %zu
-> 
-
-Will use a common variable (size_t avail_size) to address this and the above.
-
->> +				ret = -EINVAL;
->> +				goto out;
->> +			}
->> +			ab->qmi.target_mem[idx].paddr =
->> +				rmem->base + ab->hw_params->bdf_addr_offset;
->> +			ab->qmi.target_mem[idx].v.ioaddr =
->> +				ioremap(ab->qmi.target_mem[idx].paddr,
->> +					ab->qmi.target_mem[i].size);
->> +			if (!ab->qmi.target_mem[idx].v.ioaddr) {
->> +				ret = -EIO;
->> +				goto out;
->> +			}
->> +			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
->> +			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
->> +			idx++;
->> +			break;
-
+/jeff
 
