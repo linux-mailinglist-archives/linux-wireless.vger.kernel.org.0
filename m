@@ -1,127 +1,137 @@
-Return-Path: <linux-wireless+bounces-19574-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19575-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE7AA49728
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 11:25:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0911A49944
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 13:28:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76D673B8B73
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 10:24:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71B8D7AA9C1
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 12:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C64125D543;
-	Fri, 28 Feb 2025 10:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A7426B95A;
+	Fri, 28 Feb 2025 12:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="ddtPTh25"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRpXfb9t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01BA25CC7A;
-	Fri, 28 Feb 2025 10:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0D526B949;
+	Fri, 28 Feb 2025 12:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740738242; cv=none; b=ipV+DX0uh7vuMm0130zogHbsEr5F04OlrqZwTJ36SQ9JQXksXFphD1Tq25Yr//pRTZcuYUszwndQT6zAVpdmbs/U3xmnU0HYEOMZpEsU2fIfNcvyVku5HLD0agTQATrET7QC/ohLyhZCVWdbFfkWCqq567YP/SsE4mssiZwEsW0=
+	t=1740745706; cv=none; b=rrYIwyTUyRR4dBgyp++xFbi6GKcBNEM1k7lM2Xr5t4EAOBz3ZJlsh7XcaFZ2nFAwzpgk5P2I6k7RbyYPjfX/UgUHXy2zg8k2w3T5Pc2d0NrebiWWM+kwyTThpMsaCr61MCRP0VTnxJcPka1HosuWW2cH4QwxdyTuUg6QBiqApUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740738242; c=relaxed/simple;
-	bh=BkSaTDuV8aJKGAcY1isKai6ZQgdmPKzjoJ58bSGSBxc=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=mCzHbB1OrlGfqk1trbcMPgbWlImYW5OYjcM4bfUD44rxGfjw9gFvRUDE4cPq5CfPwEi8km+1u01ssLZM604J8ghaWbU8DOZLesc4VeaU+Iwg2fILZAmUVOKVpAFzcGOBK7VYddrsC1cVwocV3YnPtflqEMUnC8uaP/BF/RZXVis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=ddtPTh25; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1740738230; x=1741343030; i=markus.elfring@web.de;
-	bh=ovxM7W/WZIC5scrJGTKL2uStXu/qsFMpBnArw0UcDQ8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=ddtPTh254seY7zcYg2bKxeLqxZanfoRHPVPW3rmv4irdCf+AOTGDztjZwwE60Np4
-	 x6ExurIdZYgyN7L9valb3fi5zxVGRG9gm5bPUsxPSiTynWegolSrfr6V20QDcUnPA
-	 x2cCXZVkXYr8/hMYeXnd/UV1/bsrbYaS28Gx0KSGdbpjBD9NTbBgtig4DuHJZQ3SU
-	 FxwDMnaw51bf7SoiYNmpsnCIUgCu5lh852VaNDa2Y7xKeBO6Dt57kpoGpWJNys3g9
-	 F18MZumBoXlh0nU5+Wre2eyWsSV1CQNYuxajgQ16eI9oIRmYJ/KB4pLJ7WYg1Dv6l
-	 8XQamzzYUyCvnD7fhg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.93.27]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mmhjw-1tP6IN3njK-00ibfZ; Fri, 28
- Feb 2025 11:23:49 +0100
-Message-ID: <b8a3ccdf-a059-4550-8a9a-bfe66ce28cb2@web.de>
-Date: Fri, 28 Feb 2025 11:23:27 +0100
+	s=arc-20240116; t=1740745706; c=relaxed/simple;
+	bh=1KhkYt4yF0gE6rueJYBwI3PIyKx9a9jUDZzdIh9Onzc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DjLlOpUkUeGUI2qsKE7h0w2zeZh4bWNRU1hQoe3sZG0Z4XaI1Oj7Zj96CCNljNM6qoAn4OFLJs89jVrl50xOCB+TEuXtW+OeQx63B+tanMXb4rB3M3gLoL2nlT3wLOLjZzPTZ8drp7PX4lgsh6Xgo8h8WXOiX3tcSqBmfUjnCBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRpXfb9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D28C4CEE7;
+	Fri, 28 Feb 2025 12:28:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740745706;
+	bh=1KhkYt4yF0gE6rueJYBwI3PIyKx9a9jUDZzdIh9Onzc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GRpXfb9tr3J8U6boxisV61tke6CkDG3i6rUPt5Tof0k4JkaHI++Cjq/5H0Z9Aek9c
+	 VQpkXfAqta5TXdY9vSf4tq762cGsy+X1+1a3raUa13h3tU091BcFlCdY30Gn4mD8jC
+	 gET7u1NOdsxMw7Mn33E8EfAAwSyg8SJqDFwWUfEVyGmhNX1Ey6BFwZXWtnovRTnHG1
+	 FluajsEwUsJEPJLdpH48Ljf33acFeHl+/VaTjwyOYi8rB8nMyEmBeGCB2OoEmmxvR2
+	 oBTAoBTrMVdLRPj+l+zViYhni1cg0MmSlDv/YgydtUJIb0zp+oLOoc5pEvMYRW7tUg
+	 otViz9fKAaHIw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tnzTs-000000004ys-0xFE;
+	Fri, 28 Feb 2025 13:28:40 +0100
+Date: Fri, 28 Feb 2025 13:28:40 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: Re: ath11k: WCN6855: possible ring buffer corruption
+Message-ID: <Z8Gr-IMD-UZTU-X5@hovoldconsulting.com>
+References: <Zh6b-38tGGXo-ee7@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: linux-wireless@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>
-Content-Language: en-GB
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org,
- Qasim Ijaz <qasdev00@gmail.com>
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] mac80211: minstrel_ht: Simplify minimum determination in
- minstrel_ht_refill_sample_rates()
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:XuA7nY+nhwadQfw+MMVyvJ230D1hW3bunm6pGUkc2LipmnUHF4m
- 26XI9/fbk1qdykyzOgoE0u43wJk3KbsHaoMs9aabsXMhh4CSMkcxpTJDUYCDXO/759hufB0
- uEbp863mkDIYxTvHQ1s721Bmtvo5tPm6POQEHVVWSCMkhdq4t6+FDFsB1IpmdZlPnSdHNx9
- bWT8ptSSSVPcLgB/+NC6A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:uk0zUWPff3I=;njChae6bie3Tf72Sprwkwvi9wHM
- Plf3p1plltYSQ7iVJaI+NRos96qIhBV+U/aQXXR2dTDY8fCUtxcnky1Li50Q+VvxabdNUZFZR
- QIDahz0MuB10cAY7W4mh4NJlU/EndHiYLtwPVffulY03h/ZHGRegEztWRzWx3SKe0O9vVUHEn
- EsBxoCzaY/PnXO3gDuldxAR4kXeKwv2fkEnEWz6+H7W+keZH60GJkBNDVDIdslG3mLHWZmPRI
- maMHxcyyFC2EqMdd8Bg4q1bh7HkKhZmhPfAFcRI3GACxYRaaHgnoYU4B3AcGqSSesYHEJVugN
- OgGx593Hb0bHAKTC6OSengYNCLnq4ZHX9TWJOcd++MLHJBtEHzi2W9kbq3Zx9GXNiefpCgUbN
- 5MasKkEQHdCxgmcqa0SVO8XhLDHwpRr0kk2oMl/x/uvRqNECizfXKwrr2dFcteMWKPk5msvZw
- eh2xN3UHTU8NI+mgVLIZByWNFVaK9SRssNhOnoyFt39Pq/Qh0boUGlD3Tv0jSp5LalrDTmGiG
- cprFxCmedSRLwvObw9iXnELIzYd/9gqH2S+Ym6Y5B3wIeE/YSe0tan9MwNJarxLlXHrozql1Y
- pWbfC/9uZo4NLLNwmFdrbQO5uSkH4f+33AlZNOhtnIOY3qv9Le2pRjm00QaZQqd9BImu9mNEQ
- 72x10RYEnLet/rrEw/gpWUy4WN7UQRKcKS2rV4V1JSjaQ895CHn2JGe99nT0hvtloXlQNKupg
- vqpLMTG5N+f6MYJae6cSYU6b1gx7xjrMl0lC5gAN2tm70b4kJK3i1e+KF31qFweBHASOL951Q
- d3oS3DhQuHmni0XslZD4lIRUfG6A3OQHWYXTvpJ3Sr/DkZ64nuFzip8AQ7dOfbg9QrWRMmTEw
- XLapuAw2B2Ce1yn+itosvgaGsC7RAA0BnhgNdViseu5jtIuVO9GV3cFmISUkRLGxVDbEPmVLx
- lMQ+US6qHyXWPSh5y6f6vrsusUWiGrQ/yRo3YKbGnv4AuYluVhJIZRshXebH/DYI3buA/MGuO
- xgslm7cFLfbCmMf+4ohmSD3J8g0GNkDrE+P3T3ACxMtge17N/UOf/KsBczPIgfUOTpoDKZbqN
- qxzFgEQ6ss/kDJwFx9ucZaYsmoerp8KaeADu4hjXJz69RG/qKb/8uMDykQWw1z5biz50Mafd/
- RmP1J23LV8EJr5CmVlnzk0SEu5odzKeFwWSCy370Ad9TOUXeFv7l5s33NwGk2GSekt9KjRnxb
- 17dowOg7/OtTpBqtT4EUFt31iSu9a725liA8JN5BwEF/WklYAoqnWisD8Y3fP1DJtQlOtJman
- U0EvqbPu2y8gWbgKBDP7+0hVZdSPvcARHOVPd5QA9zBjurcMU4hMVPP0okpTB7tpc0Bt84v1s
- jQlrt8e0Kg+M8vcPQdAKKTYuytAYa/phkFL3OwW1xSnqGVhxxWpwP09TlHmuUPH1h36Q6VtyS
- TRnhDWPe6+jG8Tzn5BqqLqORN38A=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zh6b-38tGGXo-ee7@hovoldconsulting.com>
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 28 Feb 2025 11:13:58 +0100
+Hi Jeff,
 
-Replace nested min() calls by single min3() call in this
-function implementation.
+The ath11k ring-buffer corruption issue is hurting some users of the
+Lenovo ThinkPad X13s quite bad so I promised to try to escalate this
+with you and Qualcomm.
 
-This issue was transformed by using the Coccinelle software.
+The chance of hitting the bug seems to depend on the AP/network, and it
+also seems my hypothesis that enabling the GIC ITS, which increases
+parallelism by spreading interrupt handling over all cores, do indeed
+make it easier to hit this.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- net/mac80211/rc80211_minstrel_ht.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The latter could indicate a driver bug, even this could very well be a
+firmware issue.
 
-diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_min=
-strel_ht.c
-index 706cbc99f718..31a3b6e4c58d 100644
-=2D-- a/net/mac80211/rc80211_minstrel_ht.c
-+++ b/net/mac80211/rc80211_minstrel_ht.c
-@@ -1010,7 +1010,7 @@ minstrel_ht_refill_sample_rates(struct minstrel_ht_s=
-ta *mi)
- 	u32 prob_dur =3D minstrel_get_duration(mi->max_prob_rate);
- 	u32 tp_dur =3D minstrel_get_duration(mi->max_tp_rate[0]);
- 	u32 tp2_dur =3D minstrel_get_duration(mi->max_tp_rate[1]);
--	u32 fast_rate_dur =3D min(min(tp_dur, tp2_dur), prob_dur);
-+	u32 fast_rate_dur =3D min3(tp_dur, tp2_dur, prob_dur);
- 	u32 slow_rate_dur =3D max(max(tp_dur, tp2_dur), prob_dur);
- 	u16 *rates;
- 	int i, j;
-=2D-
-2.48.1
+Have you had a chance to look into this yet? Can you tell from the logs
+and reported symptoms whether this is a firmware bug or not?
 
+On Tue, Apr 16, 2024 at 05:40:43PM +0200, Johan Hovold wrote:
+
+> Over the past year I've received occasional reports from users of the
+> Lenovo ThinkPad X13s (aarch64) that the wifi sometimes stops working.
+> When this happens the kernel log is filled with errors like:
+> 
+> [ 1164.962227] ath11k_warn: 222 callbacks suppressed
+> [ 1164.962238] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
+> [ 1164.962309] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
+> [ 1164.962994] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1476, expected 1484
+> [ 1164.963405] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1488
+> [ 1164.963701] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1480, expected 1484
+> [ 1164.963852] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1468, expected 1480
+> [ 1164.964491] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
+> [ 1164.964733] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1488, expected 1492
+> [ 1165.198329] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1488
+> [ 1165.198470] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1476
+> [ 1166.266513] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 2699 at byte 348 (1132 bytes left, 64788 expected)
+> [ 1166.542803] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 4270 at byte 348 (1128 bytes left, 63772 expected)
+> [ 1166.768238] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 0 at byte 376 (1112 bytes left, 11730 expected)
+> [ 1166.900152] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 3 at byte 790 (694 bytes left, 16256 expected)
+> [ 1168.499073] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 1 at byte 62 (1426 bytes left, 3089 expected)
+> [ 1168.818086] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 63063 at byte 1466 (10 bytes left, 50467 expected)
+> [ 1169.032885] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 0 at byte 364 (1120 bytes left, 12483 expected)
+> [ 1169.308546] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 3092 at byte 348 (1128 bytes left, 64780 expected)
+> [ 1169.563928] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 1 at byte 348 (1124 bytes left, 44062 expected)
+> 
+> which after a quick look at the driver seems to suggest that we may be
+> hitting some kind of ring buffer corruption.
+> 
+> Rebinding the driver supposedly sometimes make things work again, but
+> not always.
+> 
+> The issue has been confirmed with the 6.8 kernel and the latest firmware
+> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37.
+> 
+> I've triggered this issue twice myself with 6.6 and .23 firmware, but
+> the reports date back to at least 6.2 and likely when using even older
+> firmware.
+> 
+> An unconfirmed hypothesis is that we may be hitting this more often when
+> enabling the GIC ITS so that the interrupt processing is spread out over
+> all cores (unlike when using the DWC controller's internal MSI
+> implementation). This change is now merged for 6.10.
+> 
+> Do you have any immediate theories about what could be causing this?
+> Does it look like a firmware or driver issue to you, for example? Is it
+> something you've seen before?
+> 
+> Note that I've previously reported this here:
+> 
+> 	https://bugzilla.kernel.org/show_bug.cgi?id=218623
+ 
+Johan
 
