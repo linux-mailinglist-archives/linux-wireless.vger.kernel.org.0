@@ -1,62 +1,61 @@
-Return-Path: <linux-wireless+bounces-19577-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19578-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62CEA49977
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 13:37:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D70C8A499BA
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 13:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE4C31899268
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 12:37:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B00373AA2D7
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 12:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD01C24169E;
-	Fri, 28 Feb 2025 12:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D701A3BD7;
+	Fri, 28 Feb 2025 12:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ud8xjHvs"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Nzy92Aup"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2585726AABF
-	for <linux-wireless@vger.kernel.org>; Fri, 28 Feb 2025 12:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A190C26B2DE
+	for <linux-wireless@vger.kernel.org>; Fri, 28 Feb 2025 12:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740746200; cv=none; b=NLneoexkSGqAga31rQgukaVsqLzIzNd+El+ciyxIDMxLhunni2hmJq8VivQ4C2vNsI4I4psEhJargI4fMmjMXbxk3stZKhQ/vC+JZa7M0MSDfhc1rfU7Ci2Exri8CjciJQBiz8SvhfF2+OPg7OCwt185mYOUPlq9TmhFPbKfIfw=
+	t=1740746796; cv=none; b=Yu55ND3CCDdFpUXL2zRWzOw6NxS2nmYqlZw9PDuUeJwi6kypPOPumPukPWVuVv7Wt0K17h6f4OovuH+LXehmf9BsrfR0WSFlB46UBERALC1zjtFDEjpeA12DDzNmiFYXTzLfPTYkaE1TKIqyldt3CIoHoH8cHHr4XyHpPylN9iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740746200; c=relaxed/simple;
-	bh=BlJkAPi7TtSThY++9j4bwryPcT/1pEspX86BgHiQUaQ=;
+	s=arc-20240116; t=1740746796; c=relaxed/simple;
+	bh=kikcQnXjAoSFmMpTA94WHzhNNEW8zAYGK1hKrGm4Hc0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FSP+oRJPfO5c6u8inac2oEgAE4PN5sCg2ZGEqsaOly4pUN8N0zd8RS6zuAJyi8fuq064C2+APs1pThQ1qjF+pGiIYWZmvDyzhf/GtdBhUrcBOE24lDId/IvwoozGNAn10iaTxDbvFe8nQAmLeBUfjtHk2XryuTC5uW05I/uJ/tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ud8xjHvs; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=d3lUIrRx0PMBZwC20xbXQwjqWFNYiPw1auSav7M7pZMzWr7ws+0kVTcGcQg371oQaL9tYxt02bXXQ1Y8fQ2IRVPaOxfcJC2Ltkr+YTVLH4Lw0HJXt09p5CniciCjzd6i0hBiSrnGM/FNERimS+CdpC8ZsGm0pJOlmRF7BYgdPic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Nzy92Aup; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=a3QrVW6TwH9xFwBZFv/DZmk93f0848KDMZG173d60qw=;
-	t=1740746199; x=1741955799; b=ud8xjHvsRo4jvKd4eBURkM8dQxPiSawDRsl5xfR5ZczcyAX
-	PKNXN+8yVaYUs+ICpgXRo9e9YPWNZxesUR7dU8H6wBMXlyxKrB0/wOZ6UtOzXVv7NHges3RNby6y+
-	M//OaUGplx1jLVLtFf1lPIThFbf19IvJrGOqdKH5cd7s3U5QDKVl2deNU7j+pfjYxmH2lU/b4cmAT
-	Fz+9h9H3rvKReIekNX6e2vUfAISqlWf7NvbGXm2aJBCAZjs4HfsdUU+IQva0FrE2EbI+w2y1+IopF
-	2xvRfkZl1qJqMZdVOg60Eer6F+aUSIEWNUTYsZOcW9+Lwar41yb6zzsLd9E66xpw==;
+	Resent-Cc:Resent-Message-ID; bh=SP9g1ecrL0MxmICMni8DABlBWg2gpZkDmVSmgoO2jSs=;
+	t=1740746794; x=1741956394; b=Nzy92AupY+0og7l7NCRYG+A9WBLwtFARAy5TllSRRM20UBC
+	IBTOEHi5eZaY6JqnsAi3ffj7FxyKJUmle1D01p64zLv+qngrrtI4Kq4djJYYAOvzoUVXcslbTt+8s
+	i5CyryFJttillvUUbfx51A7/32GhkYsP2ani9Uk1PMg1L1Hsx4FAH3hpqOMrjNE9jxEPenMLewEO2
+	j6UB5lgR7gyz7cSOm9VukCcO2MzCCWS8WTzU0FVlMQ37dCNN/sPfrlbQfJrIRHEsZZXvAKHZSPxsZ
+	5X8Q53QdwFWvhQtQn7qiIm8p+rV4DOluPylRIHhwFA0h53RYxZdwywXTszQ7d0Lg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1tnzbX-0000000DjCM-1oji;
-	Fri, 28 Feb 2025 13:36:35 +0100
-Message-ID: <cb41175353348bbc56791c3bb0c38a42ac4fc6d8.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 3/3] wifi: ath12k: update EMLSR capabilities of ML
- Station
+	id 1tnzl9-0000000DjfN-18L0;
+	Fri, 28 Feb 2025 13:46:31 +0100
+Message-ID: <a5c7e7a5160c11c93052bb3f862a8089b0617bec.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/2] wifi: mac80211: Create separate links for VLAN
+ interfaces
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, Ramasamy
- Kaliappan <quic_rkaliapp@quicinc.com>
-Date: Fri, 28 Feb 2025 13:36:34 +0100
-In-Reply-To: <20250117170416.2907530-4-quic_ramess@quicinc.com>
-References: <20250117170416.2907530-1-quic_ramess@quicinc.com>
-	 <20250117170416.2907530-4-quic_ramess@quicinc.com>
+To: Muna Sinada <quic_msinada@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Fri, 28 Feb 2025 13:46:30 +0100
+In-Reply-To: <20250118015400.1919688-2-quic_msinada@quicinc.com>
+References: <20250118015400.1919688-1-quic_msinada@quicinc.com>
+	 <20250118015400.1919688-2-quic_msinada@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -68,87 +67,116 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Fri, 2025-01-17 at 22:34 +0530, Rameshkumar Sundaram wrote:
+On Fri, 2025-01-17 at 17:53 -0800, Muna Sinada wrote:
+> Currently, MLD links for an AP_VLAN interface type is not fully
+> supported.
 >=20
-> +static u32 ath12k_wmi_get_emlsr_pad_delay_us(u16 eml_cap)
-> +{
-> +	/* IEEE Std 802.11be-2024 Table 9-417i=E2=80=94Encoding of the EMLSR
-> +	 * Padding Delay subfield.
-> +	 */
-> +	u32 pad_delay =3D u16_get_bits(eml_cap, IEEE80211_EML_CAP_EMLSR_PADDING=
-_DELAY);
-> +	static const u32 pad_delay_us[EMLSR_PAD_DELAY_MAX] =3D {0, 32, 64, 128,=
- 256};
-> +
-> +	if (pad_delay >=3D EMLSR_PAD_DELAY_MAX)
-> +		return 0;
-> +
-> +	return pad_delay_us[pad_delay];
-> +}
-> +
-> +static u32 ath12k_wmi_get_emlsr_trans_delay_us(u16 eml_cap)
-> +{
-> +	/* IEEE Std 802.11be-2024 Table 9-417j=E2=80=94Encoding of the EMLSR
-> +	 * Transition Delay subfield.
-> +	 */
-> +	u32 trans_delay =3D u16_get_bits(eml_cap,
-> +				       IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY);
-> +	static const u32 trans_delay_us[EMLSR_TRANS_DELAY_MAX] =3D {
-> +		0, 16, 32, 64, 128, 256
-> +	};
-> +
-> +	if (trans_delay >=3D EMLSR_TRANS_DELAY_MAX)
-> +		return 0;
-> +
-> +	return trans_delay_us[trans_delay];
-> +}
-> +
-> +static u32 ath12k_wmi_get_emlsr_trans_timeout_us(u16 eml_cap)
-> +{
-> +	/* IEEE Std 802.11be-2024 Table 9-417m=E2=80=94Encoding of the
-> +	 * Transition Timeout subfield.
-> +	 */
-> +	u8 timeout =3D u16_get_bits(eml_cap, IEEE80211_EML_CAP_TRANSITION_TIMEO=
-UT);
-> +	static const u32 trans_timeout_us[EML_TRANS_TIMEOUT_MAX] =3D {
-> +		0, 128, 256, 512,
-> +		TU_TO_USEC(1),
-> +		TU_TO_USEC((1U << 1)),
-> +		TU_TO_USEC((1U << 2)),
-> +		TU_TO_USEC((1U << 3)),
-> +		TU_TO_USEC((1U << 4)),
-> +		TU_TO_USEC((1U << 5)),
-> +		TU_TO_USEC((1U << 6)),
-> +	};
-> +
-> +	if (timeout >=3D EML_TRANS_TIMEOUT_MAX)
-> +		return 0;
-> +
-> +	return trans_timeout_us[timeout];
-> +}
+> Add allocation of separate links for each VLAN interface and copy
+> chanctx and chandef of master AP to VLAN where necessary. Separate
+> links are created because for Dynamic VLAN each link will have its own
+> default_multicast_key.
 >=20
+> Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
+> ---
+>  net/mac80211/chan.c        |  3 ++
+>  net/mac80211/ieee80211_i.h |  2 +
+>  net/mac80211/iface.c       | 23 +++++++++-
+>  net/mac80211/link.c        | 86 ++++++++++++++++++++++++++++++++++++--
+>  4 files changed, 108 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+> index a442cb667520..553fc998f5d0 100644
+> --- a/net/mac80211/chan.c
+> +++ b/net/mac80211/chan.c
+> @@ -2124,6 +2124,9 @@ void ieee80211_link_release_channel(struct ieee8021=
+1_link_data *link)
+>  {
+>  	struct ieee80211_sub_if_data *sdata =3D link->sdata;
+> =20
+> +	if (sdata->vif.type =3D=3D NL80211_IFTYPE_AP_VLAN)
+> +		return;
+> +
+>  	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+> =20
+>  	if (rcu_access_pointer(link->conf->chanctx_conf))
+> diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+> index 9f0db39b28ff..fdd2d422ac5e 100644
+> --- a/net/mac80211/ieee80211_i.h
+> +++ b/net/mac80211/ieee80211_i.h
+> @@ -2057,6 +2057,8 @@ static inline void ieee80211_vif_clear_links(struct=
+ ieee80211_sub_if_data *sdata
+>  	ieee80211_vif_set_links(sdata, 0, 0);
+>  }
+> =20
+> +void ieee80211_apvlan_link_setup(struct ieee80211_sub_if_data *sdata);
+> +
+>  /* tx handling */
+>  void ieee80211_clear_tx_pending(struct ieee80211_local *local);
+>  void ieee80211_tx_pending(struct tasklet_struct *t);
+> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+> index 806dffa48ef9..28aa45a9601c 100644
+> --- a/net/mac80211/iface.c
+> +++ b/net/mac80211/iface.c
+> @@ -493,6 +493,10 @@ static void ieee80211_do_stop(struct ieee80211_sub_i=
+f_data *sdata, bool going_do
+>  			break;
+>  		list_del_rcu(&sdata->u.mntr.list);
+>  		break;
+> +	case NL80211_IFTYPE_AP_VLAN:
+> +		sdata->wdev.valid_links =3D 0;
+> +		ieee80211_vif_clear_links(sdata);
+> +		break;
 
-Some of these should probably be in ieee80211.h, and also - making a
-table of shifted values? That seems ... awkward at best?
+Would maybe make sense to move the wdev.valid_links elsewhere too, since
+you have the other change to it also in link.c?
+=20
+> +static void ieee80211_update_apvlan_links(struct ieee80211_sub_if_data *=
+sdata)
+> +{
+> +	struct ieee80211_sub_if_data *vlan;
+> +	struct ieee80211_link_data *link;
+> +	u16 master_links =3D sdata->vif.valid_links;
+> +	u16 new_links, vlan_links;
+> +	unsigned long add;
+> +
+> +	list_for_each_entry(vlan, &sdata->u.ap.vlans, u.vlan.list) {
+> +		int link_id;
+> +
+> +		if (!vlan)
+> +			continue;
+> +
+> +		/* No support for 4addr with MLO yet */
+> +		if (vlan->wdev.use_4addr)
+> +			return;
 
-static inline u32 ieee80211_emlsr_delay_in_us(u16 eml_cap)
-{
-	/* IEEE Std 802.11be-2024 Table 9-417j=E2=80=94Encoding of the EMLSR
-	 * Transition Delay subfield.
-	 */
-	u32 trans_delay =3D u16_get_bits(eml_cap,
-				       IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY);
+That's weird, how would it happen that the vlan has 4-addr but you
+cannot check the main 'sdata' value? We don't even let you set that, I
+believe?
 
+> @@ -31,6 +87,22 @@ void ieee80211_link_init(struct ieee80211_sub_if_data =
+*sdata,
+>  	rcu_assign_pointer(sdata->vif.link_conf[link_id], link_conf);
+>  	rcu_assign_pointer(sdata->link[link_id], link);
+> =20
+> +	if (sdata->vif.type =3D=3D NL80211_IFTYPE_AP_VLAN) {
+> +		struct ieee80211_sub_if_data *master;
+> +		struct ieee80211_bss_conf *master_conf;
+> +
+> +		master =3D container_of(sdata->bss,
+> +				      struct ieee80211_sub_if_data, u.ap);
+> +		if (!master)
+> +			goto skip_vlan_conf;
+> +
+> +		master_conf =3D sdata_dereference(master->vif.link_conf[link_id],
+> +						master);
+> +
+> +		memcpy(link_conf, master_conf, sizeof(*link_conf));
+> +	}
+> +
+> +skip_vlan_conf:
 
-	/* invalid values also just use 0 */
-	if (!trans_delay ||
-	    trans_delay > IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_256US)
-		return 0;
-
-	return 16 * (1 << (trans_delay - 1));
-}
-
-seems a lot more effective?
+You can easily get rid of the goto, and please find better names then
+'master'.
 
 johannes
 
