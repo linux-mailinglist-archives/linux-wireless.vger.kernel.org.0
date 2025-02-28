@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-19580-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19581-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828D9A49A1B
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 14:01:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3755A49A25
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 14:03:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EED33B2658
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 13:01:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01D59160918
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 13:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C572E28371;
-	Fri, 28 Feb 2025 13:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DE626A1D0;
+	Fri, 28 Feb 2025 13:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ZidfNPo+"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QLwQkZpb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424BA2F41
-	for <linux-wireless@vger.kernel.org>; Fri, 28 Feb 2025 13:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124D52F41
+	for <linux-wireless@vger.kernel.org>; Fri, 28 Feb 2025 13:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740747701; cv=none; b=uNcdJtXLj5UGWvirSH7j2AzQ78nMmiWzYy1FlZjIPDmxwfrl0Z37vPwc0Hoqfas9/J5fBNElMf+jU77XbXPd6wvchiSm3Bz2i0yyfyyDWb/ALkHDXEY+7NmcdXGEijbwEZZw1HwCQHhlf0mBCk8Jk1zfKeQD6cjafkVI8SrxUic=
+	t=1740747784; cv=none; b=LwUWvQEE19jAd/ZKdjXk28wwO3cennCHeuLWqXKODO18jWBEBEoRF/3js1YvfYPZz3Gwe2kTUDR94Z8Dej3zfwacmTaaiwnWu+Nsiqz3kmNG5v8yQWsWZoqFICBqLjfZftuY4X5IqUaoQlAhLH7minz0ZFXf6DzQXP1I8JSwqxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740747701; c=relaxed/simple;
-	bh=4MB3SQ3TT2F9EocqR4pt8QsukIj2V2T/5ASp7Us/khE=;
+	s=arc-20240116; t=1740747784; c=relaxed/simple;
+	bh=g8d54fYP3kg0OupH7FPUoVTqtQ0w5TmDFCs/DdOLm/M=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JfpA3x48YpFmId+MgI5CytV4gzUX7K+iNx9TPkebPg+ol16362FIHIAMDdM3Ku4GGU6U5aIVWGRYmpF4snqfSteolXy4jvFZ8dlqVT7zHXE7wIdRMnGWhn2Cg3IjJVAJNAxiob2TBHRYrvdfGLLY9hgZlBemf1XLl4NrgfTRwfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ZidfNPo+; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=nEB9xi6MVBoS4pukUmBbgNj/QofbsKt1O+MogaJ8sNzPMGt0BAOqBozweXRxTSAjmKM867QkpMx0AZo8ZmSjM7M/NiKgdggP+1xd2NposHuWJRyKqQOnIycPjF/qcliFfoyNVcwbyGbF/N8oT9xlUQBDYZRIwyG8pCLyPxi7Rdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QLwQkZpb; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=OzmIZZojPzFOS9a5GR4aXyT9MXjyNvm04Hn8yW4pxo4=;
-	t=1740747700; x=1741957300; b=ZidfNPo+WNOjYQM7wXZZbg1O4LdTBv83yzkyJtyjL28RqGb
-	mOO3siVSHZPNpe9MSodgyxOYgg4lxb6UGPy6XvTACO+j/ohpXfa//JA4SQXh4LepE9Ntt4YGxYgkk
-	KKDrDOpjGKkgQ+Ie308bk7sLLngiUv309ENqJdhMqE4Qkr1U88Q2I6GPuHFdiBzFsEulDeiUpTaKm
-	mhNURgE7eVmCiBIC3JbENup3cDKKxbSF3K96y2AyxTNuZK0YUo6+KWH+Wv5zYvII5mt/Ra18esur3
-	bxvXB7sdK6g0ZA36fbBfhp+QczYYpc0YWNATCpWGXXyxvhNxvg1m2r+i4/7IWqDQ==;
+	Resent-Cc:Resent-Message-ID; bh=X+YrtBwxMz3rYPjBwJsSEgS3pqswkWwqhrYEWZkYMa8=;
+	t=1740747783; x=1741957383; b=QLwQkZpbMeV/i6SouPdHy3g6zAIvw2PPrpel6sk9ZSCq54t
+	fEQf6ZH0jwBXyJzltkeoJtc4priIl4KB974RoH360AxYnxfmziI+nKoIkkMDH9qfR+zFseWSsFlRR
+	TZVdaum6L6eXwpF3Zfg6kDZrBsKr+YLJk7tXfkm1OMfOfAYaSrJ+BaeTMqPTZS9aRGK7cyFCNwI1l
+	/9mBozPH2IxKxjXplbR+SfRpBhrz3/R2KCvcHSqTTj2rMvtpz0Xw1QHQM1abhnCSqfRsKuHzMEp9S
+	hDaqPw7ehx7ut8ypxOLWRPYrLKjc9tM/J5ksgFw9w1wVqJJOqCehC2SaooCUgMQA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1tnzzk-0000000DkH5-3wzd;
-	Fri, 28 Feb 2025 14:01:37 +0100
-Message-ID: <6f25563f9d68f4e2c230ff426cbabec43ea56335.camel@sipsolutions.net>
+	id 1to015-0000000DkKD-3pby;
+	Fri, 28 Feb 2025 14:03:00 +0100
+Message-ID: <a2bcb0b6507c843b13e0ef98d76727a76b53f129.camel@sipsolutions.net>
 Subject: Re: [PATCH v4 1/5] wifi: cfg80211: Add Support to Set RTS Threshold
  for each Radio
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Roopni Devanathan <quic_rdevanat@quicinc.com>
 Cc: linux-wireless@vger.kernel.org
-Date: Fri, 28 Feb 2025 14:01:36 +0100
+Date: Fri, 28 Feb 2025 14:02:59 +0100
 In-Reply-To: <20250129155246.155587-2-quic_rdevanat@quicinc.com>
 References: <20250129155246.155587-1-quic_rdevanat@quicinc.com>
 	 <20250129155246.155587-2-quic_rdevanat@quicinc.com>
@@ -67,60 +67,31 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-> +/**
-> + * struct wiphy_radio_cfg - physical radio config of a wiphy
-> + * This structure describes the configurations of a physical radio in a
-> + * wiphy. It is used to denote per-radio attributes belonging to a wiphy=
-.
+On Wed, 2025-01-29 at 21:22 +0530, Roopni Devanathan wrote:
+>=20
+> +			result =3D rdev_set_wiphy_params(rdev, radio_id, changed);
+> +			if (result) {
+> +				rdev->wiphy.retry_short =3D old_retry_short;
+> +				rdev->wiphy.retry_long =3D old_retry_long;
+> +				rdev->wiphy.frag_threshold =3D old_frag_threshold;
+> +				rdev->wiphy.rts_threshold =3D old_rts_threshold;
+> +				rdev->wiphy.coverage_class =3D old_coverage_class;
+> +				rdev->wiphy.txq_limit =3D old_txq_limit;
+> +				rdev->wiphy.txq_memory_limit =3D old_txq_memory_limit;
+> +				rdev->wiphy.txq_quantum =3D old_txq_quantum;
+> +				return result;
+> +			}
+> +
+> +			for (i =3D 0 ; i < rdev->wiphy.n_radio; i++) {
+> +				rdev->wiphy.radio_cfg[i].rts_threshold =3D
+> +					rdev->wiphy.rts_threshold;
+> +			}
 >=20
 
-Seems like there should be a blank line after the short description so
-it doesn't all end up in there?
-
-> + * @NL80211_ATTR_WIPHY_RADIO_INDEX: Integer attribute denoting the index=
- of
-> + *	the radio in interest. Internally a value of 0xff is used to indicate
-> + *	this attribute is not present, and hence any associated attributes ar=
-e
-> + *	deemed to be applicable to all radios
-
-Please document the type here. Also, the description of the internal
-0xff handling and all that is inappropriate in the public API
-documentation.
-
-However, it seems using -1, would be nicer? Also,
-NL80211_WIPHY_RADIO_ID_MAX is a _really_ bad name for that.
-
-> +++ b/net/wireless/core.c
-> @@ -1077,6 +1077,23 @@ int wiphy_register(struct wiphy *wiphy)
->  		return res;
->  	}
-> =20
-> +	/* Allocate radio configuration space for multi-radio wiphy.
-> +	 */
-> +	if (wiphy->n_radio) {
-> +		int idx;
-> +
-> +		wiphy->radio_cfg =3D kcalloc(wiphy->n_radio, sizeof(*wiphy->radio_cfg)=
-,
-> +					   GFP_KERNEL);
-> +		if (!wiphy->radio_cfg)
-> +			return -ENOMEM;
-> +		/*
-> +		 * Initialize wiphy radio parameters to IEEE 802.11 MIB default values=
-.
-> +		 * RTS threshold is disabled by default with the special -1 value.
-> +		 */
-> +		for (idx =3D 0; idx < wiphy->n_radio; idx++)
-> +			wiphy->radio_cfg[idx].rts_threshold =3D (u32)-1;
-> +	}
-
-This error handling is obviously all wrong. Please ask someone else to
-review before you resubmit.
-
-
-The later code in nl80211.c could also use some refactoring, rather than
-just indent it a bit and call it done.
+The order here also seems really odd? That basically means the driver
+now needs to propagate it to all the radios, but you still have
+different per-radio values at that point, that seems bad. You also
+didn't even document any such assumptions.
 
 johannes
 
