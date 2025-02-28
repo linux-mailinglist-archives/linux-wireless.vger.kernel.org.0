@@ -1,124 +1,143 @@
-Return-Path: <linux-wireless+bounces-19594-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19595-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F55A49C5D
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 15:47:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A40A49D05
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 16:15:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B56681896619
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 14:47:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F7187A4028
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2025 15:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1AC2686A0;
-	Fri, 28 Feb 2025 14:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336CA2500CD;
+	Fri, 28 Feb 2025 15:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="vAYEbWTQ"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=ps.report@gmx.net header.b="KZJgsuSY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D32A25A2C0
-	for <linux-wireless@vger.kernel.org>; Fri, 28 Feb 2025 14:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2A81EF381;
+	Fri, 28 Feb 2025 15:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740754041; cv=none; b=WWcyfG59ahH803kdEihvmgVHCxFbpiAuurbWaNlLAKphUHS5BbcxcZNP5SOITymrQhyLaAUO8srNN3PvSfnZw5lwb3YN99Cw6EenBCibs+We3xiILtsS+PHV/wcGC7cSm2wj5yHFSbdtfh9Yp+Z//sOz5408ljrLEvletHSd5Pg=
+	t=1740755684; cv=none; b=Z7KdYiHu1XkC9PousFWU9aI4HniJMGxHCJy4iDwlA+Nx+cQCYpBO1yhY9p8BhRluk3lI4Vtxax4qwgYymtxG6TrYkt1zDU/ZZgMyS4/LuQwMLpiu2prpdiZxqeWm0S/dlB1YQx2w7HuFolBIEkXmDwy5r5CpvncTZeB+8fVyIVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740754041; c=relaxed/simple;
-	bh=MdfHUlpQoLC0Nugq4IOdqz977pXtsk3eezHFYl/8Tmc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nS+2sQw0gQHW8eAQTXOT/iYKMftJ9sAHqwWFl3951zKNjQ1FPYVLcus2WOT5z9zdE53AatwuLj5VLHh42fVb/eHwkpm+nPWciKZAwoTVg79jPASqQWFT5gu9bqH6HIDbzk0idmzSWqOGR3CAx72oPMRgxReqc34kcV8JboCIf1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=vAYEbWTQ; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=kGLhWHWHHrUcn/K2DevO7C/lKbip8Fc6iOYRxlyVDXY=;
-	t=1740754039; x=1741963639; b=vAYEbWTQddyUqT3C4stOUGewWv/gnP76fyoIWTCf1/hIQbC
-	4isCwB+c5oHdMEiOkH/wq4r8QHeuDTw4MZXM4TlaAgd3r6BlC4UGDWfZHyS7ZC+JDxXcDH//tz6Pc
-	lU7DZVwOBOXcUu0/C1iJ+fGd1cC2wFbF5zkEiywZ2H3mMvPhFtGwPskDYwrmw7WXzvaQoBRvW8zJ5
-	//N2FHNm7K4kcZH47mznC3sQFxOscAsOWpoO0WRlj02p+KItYitXjSgfwtNwksaIKN9cL95JGlcSt
-	l+Vwt1daOxRK82bwOYm3baFC3AIW/ilWYYsfAYwo0BZD55kJv8zWMPk8gNeM1OPw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1to1e0-0000000DoXa-0fId;
-	Fri, 28 Feb 2025 15:47:16 +0100
-Message-ID: <470352b7b5ead19e80be47f9b49d9285b870b65d.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/2] wifi: cfg80211: Allow monitor creation in
- NO_VIRTUAL_MONITOR mode with active AP
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Fri, 28 Feb 2025 15:47:15 +0100
-In-Reply-To: <ad67cbfc-e158-8fb2-c94f-e1e3b01a5c28@quicinc.com>
-References: <20250123010950.1958211-1-quic_nithp@quicinc.com>
-	 <20250123010950.1958211-2-quic_nithp@quicinc.com>
-	 <61c22a40a2b8bfe28175c2e7031b0a22fff2ca06.camel@sipsolutions.net>
-	 <ad67cbfc-e158-8fb2-c94f-e1e3b01a5c28@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1740755684; c=relaxed/simple;
+	bh=NOIaiVi7loLRevJWOYiXC61BcUpEJwIqE3YlfRh2sRE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OC/THrrJ1RV07ckAKDxNC3drVsLF/xes/BwlFkT7JimA+xMrV2zm29Tk92rPxp/tQ+lFPIe3usBwXx75i1hIBOJugItO79i4K1uPwYacH+JOBPWSny6r0GUVdqq4BEoJwJ+q/iiqfwvQHHP8ug9y7Vta4yCGFVFiuajIgPV3tXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=ps.report@gmx.net header.b=KZJgsuSY; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1740755662; x=1741360462; i=ps.report@gmx.net;
+	bh=Bm77GiaKy4B5E8U7E3Q8p7UvT2yl7qRHpaz9uX0zrNM=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=KZJgsuSY7KBn5JLzAhrB/Z2J97PkcmTio/JMwanPF9Abq3Fv6zLEtg/ImvVBHh0/
+	 +gcW8iw8+rQ9XlxttEnXAINtZFEFoCfdtFm8ZjjpHrBCG9CRRU1e1VPqu7JhwDh4o
+	 QCPU328PDvFYZYxd6/E1qqFTRVzLfW4lWE4pTUAjFaHt6aVqiRuAOSapV2/Qe8XQy
+	 DF/wHuvsddWy7O/X5TLvDJ8ldWFavzAeit80V5mhmULhGbezTy2L3ZjON9JsKpt6V
+	 PX6dlVc411+eHCWzU3Yb/xBZEEQnscyafKsGUetzfiV3XO5RF7gZ9pSIFwx/PHaUT
+	 PMVQKYNVWsgCGg0gaw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost ([82.135.81.95]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MzQkK-1t1PYs0Z9M-00zhNV; Fri, 28
+ Feb 2025 16:14:22 +0100
+Date: Fri, 28 Feb 2025 16:14:20 +0100
+From: Peter Seiderer <ps.report@gmx.net>
+To: Christian Heusel <christian@heusel.eu>
+Cc: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, stable@vger.kernel.org,
+ Benjamin Xiao <fossben@pm.me>, linux-kernel@vger.kernel.org,
+ regressions@lists.linux.dev, linux-mediatek@lists.infradead.org,
+ linux-wireless@vger.kernel.org
+Subject: Re: [REGRESSION][BISECTED][STABLE] MT7925 wifi throughput halved
+ with 6.13.2
+Message-ID: <20250228161420.11ac4696@gmx.net>
+In-Reply-To: <b994a256-ee2f-4831-ad61-288ae7bc864b@heusel.eu>
+References: <b994a256-ee2f-4831-ad61-288ae7bc864b@heusel.eu>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-suse-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:i4T6/EbgFwr0KfP3Z8OoxJOOCwMntS0pNgUxOQPDz3qE9Yunna5
+ yYQNNRVMcrb1ujz1h5zgD4pXfZ1i8xNE7W6i+TJ0OO33ufyZIGS1/nhLPDOIe23ricKukSR
+ 1qDvL/xABENHxxZA8JvW6kqQSRqQuPsXVMpycxZsHxxFH8UwvS9sguMgMBlKmJ3Fz4sIJ3d
+ fQ7K0RFosbpTR+RpA0zBQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:vn2tnnWN6Fo=;Rtv/w94WvvtCQ5op19orjFAa30U
+ 3/hYOSUd6X+HGBVZrfzjiABuAhXF6qPtrF7qCQ4WvrTat3V1//t2hbwAj3iD23Pxd2WqFLrRG
+ xoinsfikG+HgqUs3BquPocL8a/BlAUI4qmApFf+pqv2b9kQnL5FCUk8HCwoV6FenpgV8Tujdf
+ EecoSvicsKHLt2A3sPGxevdSahVvaNXpBRnv4Rwcn7Ch0VJ02l0VjyanHBtAzm9JmNspPM7om
+ KR4YCw8QsHKwfeEbVzTchIwfIwA3BBMO54dyszZ/tLA/dLqH+AU0ouKMSkvR+/YOSM85wT3x8
+ byv4nAVRXcL66DbuvXRLH8bLiYvjE3jOyZ1NW+xVq3eblxeg2kDlphTgSttQIojwKCblneQKi
+ pe6vWpIVKIR59k8SLq16WoPqf+18xazwe76/N8n2IDv7TkcetZ0EuoxWtOv9jNPCOe3FgUI1g
+ gH9GNM9ASR2fcBuSXrrUldLU04Oz6/awgmUM28TkEZH5wVLU6DKT/4jSBogjwcFIrXcgHxyF8
+ 8LaV6GBRpinx7LD7NxZ+dSwgu4nj09EI9wztMitlwaGkT3w5sFVqLpsNejdqZnPlu6Cs0l6Pf
+ RyhMm8uExhL+TOcpakXGe5Zxj6KwYEnUDJaT6aDy5TCZnjrbEjjzTz1rosbDNvl/Ri3xAGkHH
+ JEmA0JJdD3G3ixtc13a7iJSQ8rkOEsYifUEmvgtfb5z84xXzJXC9HTPgsvldqIev7stf371YL
+ mPzojRhlRZaKZV+LRv6dRJrHGJIIstipNcKKv2uwe5BIusoL6BGUG1uN42jxB6maPuNByfGnU
+ 28jtym+mo5B/8+2NE6OU1OhVVNSro9Obqnxpi794YSjwBIUwqYhv2u0UD8MhYWYWV32oGJTtS
+ CtDxm9jn5e1y0lEgjWc+UZKOi0CmMtVf/BAgX7sk5WQfGFimoLAPvXe2PiZ7oMg04fwk5NaeQ
+ mVxJWc0WkFNQSb8X4vsFWwIX4O6dODzElS96VPJJsKWonUoX6Fb+GcMbBggtRwPk9zKzKvW2m
+ f2zQePbJ3iOWdis6GfHhvS9ecVtFfqDVKjAwjSphKlt1zIoLqe1JryFtMI9lakiEyzfDZaLhb
+ dQxy171z/vBuJfMESu9MyColPywNTxGs4KVnI/vvsZKF+MySy3HSRoLy5Ez5Du+tKfzFywlsv
+ l8ubZmCtN5hoES/U6gNi6uL5mYuM22btrEncBUb/S/bAHAWuQLM8MKW/XY3XX97cYcsTHI5bk
+ Nsh4HQfehWur5ZWEypRwdAEqs9fNnYymj11l+46BJ4O/RoAup3acw32SFfYbdlG6aGl6TQRA5
+ hEA9U4qSbNPzh3OlHE95RXquWq0CuKIHoBvGUsDePwvdFkuSqCp4F9cleyyd3EPDZxzC2rlmI
+ +v9nMhumKfB+ikfrEzGLfVp4593hU/CfwsiTREyc3Yohche+bXp5kDhiEZ
 
-On Fri, 2025-02-28 at 20:15 +0530, Nithyanantham Paramasivam wrote:
-> On 2/28/2025 6:20 PM, Johannes Berg wrote:
-> > On Thu, 2025-01-23 at 06:39 +0530, Nithyanantham Paramasivam wrote:
-> > > Currently, in NO_VIRTUAL_MONITOR mode, when creating an
-> > > AP/STA + monitor, there is a restriction: if the AP/STA is running,
-> > > setting the channel for the monitor is not allowed. For example,
-> > > in a scenario with three supported radios where the AP uses only the
-> > > 2 GHz and 5 GHz bands, the 6 GHz band remains available. However,
-> > > due to the restriction that rdev->num_running_ifaces must equal
-> > > rdev->num_running_monitor_ifaces in cfg80211_has_monitors_only(),
-> > > we are unable to create the monitor interface.
-> > >=20
-> > > cfg80211_set_monitor_channel -> cfg80211_has_monitors_only()
-> > >=20
-> > > static inline bool cfg80211_has_monitors_only() {
-> > > ...
-> > >     return rdev->num_running_ifaces =3D=3D rdev->num_running_monitor_=
-ifaces
-> > >          && rdev->num_running_ifaces > 0;
-> > > }
-> > >=20
-> > > To address this, add the new wiphy flag
-> > > WIPHY_FLAG_SUPPORTS_NO_VIRTUAL_MONITOR to advertise no virtual monito=
-r
-> > > support to cfg80211. This flag will allow the creation of a monitor
-> > > interface by bypassing the cfg80211_has_monitors_only() function.
-> >=20
-> > I think it would make sense to call this differently in cfg80211, per
-> > what it actually _achieves_, rather than per the *mac80211* logic about
-> > it...
-> >=20
->=20
-> Sure. Perhaps I'll rename it to "WIPHY_FLAG_AP_MONITOR_SUPPORT"
+Hello Christian,
 
-I don't think it's about "AP" either, really, it's about "concurrent" or
-so?
+On Fri, 28 Feb 2025 11:19:52 +0100, Christian Heusel <christian@heusel.eu>=
+ wrote:
 
->=20
-> > > There is no need for special handling after this, as
-> > > cfg80211_set_monitor_channel() will manage all interface combinations
-> > > and allowed radio conditions.
-> >=20
-> > This sentence just can't be right - you're changing
-> > cfg80211_set_monitor_channel() and there's no more code after it?
-> >=20
->=20
-> Sure. It's better if i remove this sentence.
+> Hello everyone,
+>
+> on the Arch Linux Bugtracker[1] Benjamin (also added in CC) reported
+> that his MT7925 wifi card has halved it's throughput when updating from
+> the v6.13.1 to the v6.13.2 stable kernel. The problem is still present
+> in the 6.13.5 stable kernel.
+>
+> We have bisected this issue together and found the backporting of the
+> following commit responsible for this issue:
+>
+>     4cf9f08632c0 ("wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba =
+for MLO")
 
-Well seems you should still explain what happens then - i.e. that the
-driver, or in this case mac80211, needs to check that it's possible?
+Seems there is already a suggested revert of the mentioned commit, see
 
-johannes
+	[PATCH v4 1/6] Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_=
+ba for MLO"
+	https://lore.kernel.org/linux-wireless/20250226025647.102904-1-sean.wang@=
+kernel.org/#r
+
+Regards,
+Peter
+
+
+>
+> We unfortunately didn't have a chance to test the mainline releases as
+> the reporter uses the (out of tree) nvidia modules that were not
+> compatible with mainline release at the time of testing. We will soon
+> test against Mainline aswell.
+>
+> I have attached dmesg outputs of a good and a bad boot aswell as his
+> other hardware specs and will be available to debug this further.
+>
+> Cheers,
+> Christian
+>
+> [1]: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/i=
+ssues/112
+
 
