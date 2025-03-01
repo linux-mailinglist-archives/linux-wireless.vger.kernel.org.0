@@ -1,172 +1,137 @@
-Return-Path: <linux-wireless+bounces-19636-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19637-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC02A4AAEA
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 13:28:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A212A4AAF6
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 13:38:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEB1B16F521
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 12:28:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5F693B3C34
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 12:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDF51DED6B;
-	Sat,  1 Mar 2025 12:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD791DE4D2;
+	Sat,  1 Mar 2025 12:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="zaxc8Sea"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="d9WjBtFl";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="m2kl+B2U"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.12])
+Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E645ABA3D
-	for <linux-wireless@vger.kernel.org>; Sat,  1 Mar 2025 12:28:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4C11D8A0B;
+	Sat,  1 Mar 2025 12:38:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740832128; cv=none; b=RK86K6e+iXoxcHy4+WSYPuq4Xt1FFX1jOrmt6t9xdpzHforvHY4d34HgdnvQ/A05ytw56ZvInaGeNKpr8nSfDVD686QunCKwZ9Fohd/5Ugoo+4g9U31nBGRjeNbS0V5oNFYJd2bak5BIZ4ZO8UklWi4deNT7y7CoeJuqgfwWTkk=
+	t=1740832721; cv=none; b=AACZj84qHqL7Cki4swxR8Ra5Mxiw4AyNJROdTe4LmaI2npBFOpUS8S4bt1MKlINxFi6WOO51mFAvT4+mCPAjh6FTDzTuwCOXRHq9lr2D7rvjF2a2JhVa3wMIQPYCX+BWPJgPw+p2kKl7JsRIYslI5azUGWQS2LqlfFtmXYMWhcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740832128; c=relaxed/simple;
-	bh=NqrbvWy4FjnXM7il11X7GEnPis/8CASWT3OsbTC9DsY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JamLD4YiCvBkYr0UNg2ZqZD4iCwfZGqUtg2TWdrq3v1e4eRALQck4Am7o1+soDOi53Keurcqv558QclljWSWhHU9ZTKumC272tOStir4rBrx7xmD2zjkdy0Xx30OZ2Rwe/okM0DuRpFO6nHhsep+fQi4Kr85GMHehC1FsfH58iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=zaxc8Sea; arc=none smtp.client-ip=212.77.101.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 36133 invoked from network); 1 Mar 2025 13:28:35 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1740832115; bh=3hL3gu4+phjo6I/CspOjLAoXyyGic55LKqTv9Puz30w=;
-          h=From:To:Cc:Subject;
-          b=zaxc8SeaUciiZUKVbZnqy47FCT1BHrj84ds+FBPeBI09vDaB8KbgbVH4m+cTUhCB4
-           +CQug0EJ3oEa4T+AYLwL/ZECP2RN/XheLfmfphVQ7cJ/0EKSlSkjC4aFDMW2T3lhfI
-           XzmZnEnLGqtMxCUteejldUTJVQqesxl6qcPMEHZs6gqzust+SInUAFiI55WKge9jyy
-           uSlN4gcUf5Ax7gEXqf9JdhqKnBRuqfXHVI40CvpxqIxIwVjOFDV8/0GnHZzA6bqpuU
-           UZz2puN11B5Tmn1VPnR2eb+zhAPV4Ba/X76GVxPjWvKClZ0RDO1nbU9Bzuk1e45LkL
-           6okDkiqz3y5eg==
-Received: from 89-64-0-97.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.0.97])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <arnd@kernel.org>; 1 Mar 2025 13:28:35 +0100
-Date: Sat, 1 Mar 2025 13:28:34 +0100
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] [v2] iwlegacy: don't warn for unused variables with
- DEBUG_FS=n
-Message-ID: <20250301122834.GA55739@wp.pl>
-References: <20250225145359.1126786-1-arnd@kernel.org>
+	s=arc-20240116; t=1740832721; c=relaxed/simple;
+	bh=rrGNkFrv3f5CmhlRM+Joi7hAYrfRQG7h7GhOvXiAyM8=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=P3Utfz1/ljLnJ8sONMyQKO9Im5CKRIP286VExYsNo8xCFc851oy2scl3XOWhiZ+Xhbzde9hL0er+5Ji9dBdKY6xoHgVRtslouqH6tS3lUPTVCEsoyWOh5QpZ5JmrMAzP+toUJiri0TePwwW32HGcU+Px5JJJuHgKsNM5yl8xOh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=d9WjBtFl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=m2kl+B2U; arc=none smtp.client-ip=202.12.124.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfout.stl.internal (Postfix) with ESMTP id 858D21140100;
+	Sat,  1 Mar 2025 07:38:37 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-09.internal (MEProxy); Sat, 01 Mar 2025 07:38:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1740832717;
+	 x=1740919117; bh=tjeEIDFBTv0qw01qPUrH5f6Cwruc5eD9G/E2Cffx1vw=; b=
+	d9WjBtFl/SGX449KuGzSDcog2c4nuPXOGlzsuIlTJhrR7JqBbHMfgM51fMNGC9a5
+	1iHv0GQnrhTEqqDJP39/MIMgxC6BKwbQa66anD1EAUHEoFJPJQPCdtSO5lVgxZ87
+	IRovlOKhLhb9BNVcJZR53TLiX/LDSuoM4C4UJReLAqgxE54FoFg8icE8MR3Wg7W2
+	bIRK6VQbPQd2eTfYiHnjd76MWbV+BBHq4Q39uReET3NFci/QZzi9NOi8D9EkBeXx
+	lb0zHNDlvaBqxJNgYK7uQzZ2cQDF2mEU+G5amKyW+YY+WGJtTmFOxxtW8KjAqizF
+	Gs4I+7GDImNh5IR1UQRdyA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1740832717; x=
+	1740919117; bh=tjeEIDFBTv0qw01qPUrH5f6Cwruc5eD9G/E2Cffx1vw=; b=m
+	2kl+B2UmzqKjszI6BZVkxRDpeOm5s2+BfERL1redhPBOkRMjRq+CA9k4ruXf9ro9
+	RuyLRfw1uigTxWGgr5zIoHrXIp9uiKXxnigvQ8GGn6Zjos4pHQrekjzJ462Ds5YJ
+	vSoyX7XTjLL+zE6/uYifInvG0y5nefKflmMrq3j64zbsf3HLePhPBpd+kJEyZd59
+	sTVu+HgHhOSaf+OqV8me9c//bYQu5QvUD0XVYkL3Wb0EulDucJX94pCN9UQH3X8F
+	Nizg3qaEX3b63Je7OG0zlIjCxmpKnEsiDdFOs/GRJILMvLgekGL2lTmqCEHNLDJC
+	OeXywMaHVYXl1XS5doNnQ==
+X-ME-Sender: <xms:zP_CZ1OWu5WI8zETg8KQm-IqFWfLVuTaKcyKChLPjhmiCf7SQf3Bsw>
+    <xme:zP_CZ3-vZyAmYFLqbKPpLdvr7aw-ecF1acaEhq7vhV-OFMrCnrdyz0fRBhbqUYgH5
+    9Rp6Qa0ShbPRdNR8AA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelfeefvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
+    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
+    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeel
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsvghnseguvggtrgguvghnthdroh
+    hrghdruhhkpdhrtghpthhtoheprghrnhgusehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehguhhsthgrvhhorghrsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhvrghloh
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhohhgrnhhnvghssehsihhpshholhhu
+    thhiohhnshdrnhgvthdprhgtphhtthhopehlihhnuhigsehtrhgvsghlihhgrdhorhhgpd
+    hrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepshhtfhgpgihlseifphdrphhl
+X-ME-Proxy: <xmx:zP_CZ0QrRtZQjU55u5UbdpqUANRnsA1AkYAmdL7V-cE7KT8w-v-7Eg>
+    <xmx:zP_CZxvwUmZsVblgf8Un_wuVROzAhaWqTmBdmxXAojpbvNec9KriEQ>
+    <xmx:zP_CZ9dBMBSj_WT2SfWyIK_BUUvGyXn8B8ixX8GzYMEwZ6ozyKhJkA>
+    <xmx:zP_CZ93OzZh-u1-R0xAj1F79i26s2psWyhdO6CE7z48STvKJYvu1_g>
+    <xmx:zf_CZ8xspkblI34gXURum3Zsi6wELjUiCFWHx3GCp2C9SbAa7Xl1OGfD>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id BE2B52220072; Sat,  1 Mar 2025 07:38:36 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250225145359.1126786-1-arnd@kernel.org>
-X-WP-MailID: 42cec4a7e71b348584fd2301367d5215
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000001 [geIR]                               
+Date: Sat, 01 Mar 2025 13:38:16 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Stanislaw Gruszka" <stf_xl@wp.pl>, "Arnd Bergmann" <arnd@kernel.org>
+Cc: "Johannes Berg" <johannes@sipsolutions.net>,
+ "Kalle Valo" <kvalo@kernel.org>, "Ben Hutchings" <ben@decadent.org.uk>,
+ linux <linux@treblig.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <994e4827-0e16-4e05-be7c-1ca7a86e4daf@app.fastmail.com>
+In-Reply-To: <20250301122834.GA55739@wp.pl>
+References: <20250225145359.1126786-1-arnd@kernel.org>
+ <20250301122834.GA55739@wp.pl>
+Subject: Re: [PATCH] [v2] iwlegacy: don't warn for unused variables with DEBUG_FS=n
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 25, 2025 at 03:53:53PM +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The reference to il_rate_mcs is inside of an #ifdef, causing a W=1 warning:
-> 
-> drivers/net/wireless/intel/iwlegacy/4965-rs.c:189:38: error: unused variable 'il_rate_mcs' [-Werror,-Wunused-const-variable]
-> static const struct il_rate_mcs_info il_rate_mcs[RATE_COUNT] = {
-> 
-> Replace the #ifdef with a PTR_IF() for better compile time analysis.
-> The dead code will still get eliminated, but the warning goes away.
+On Sat, Mar 1, 2025, at 13:28, Stanislaw Gruszka wrote:
+> On Tue, Feb 25, 2025 at 03:53:53PM +0100, Arnd Bergmann wrote:
+>
+> But then the code will be compiled for !CONFIG_MAC80211_DEBUGFS
+> case, it does compile for me:
+>
+> -  22475	   1160	      0	  23635	   
+> 5c53	drivers/net/wireless/intel/iwlegacy/4965-rs.o
+> +  23008	   1168	      0	  24176	   
+> 5e70	drivers/net/wireless/intel/iwlegacy/4965-rs.o
 
-But then the code will be compiled for !CONFIG_MAC80211_DEBUGFS
-case, it does compile for me:
+Very strange, this really shouldn't happen. Which symbols
+exactly do you see the compiler fail to drop with my patch,
+and which compiler version are you using?
 
--  22475	   1160	      0	  23635	   5c53	drivers/net/wireless/intel/iwlegacy/4965-rs.o
-+  23008	   1168	      0	  24176	   5e70	drivers/net/wireless/intel/iwlegacy/4965-rs.o
+> How about moving  
+> static const struct il_rate_mcs_info il_rate_mcs[RATE_COUNT]
+> under CONFIG_MAC80211_DEBUGFS ? Maybe inside the function that use it ? 
 
-How about moving  
-static const struct il_rate_mcs_info il_rate_mcs[RATE_COUNT]
-under CONFIG_MAC80211_DEBUGFS ? Maybe inside the function that use it ? 
+It's not supposed to make a difference, let's try to figure
+out if there is a compiler bug or a mistake in my patch first
+and then fix it in the right place.
 
-Regards
-Stanislaw
-
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> v2: use correct config symbol consistently
-> ---
->  drivers/net/wireless/intel/iwlegacy/4965-rs.c | 15 ++-------------
->  drivers/net/wireless/intel/iwlegacy/common.h  |  2 --
->  2 files changed, 2 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlegacy/4965-rs.c b/drivers/net/wireless/intel/iwlegacy/4965-rs.c
-> index 718efb1aa1b0..f754fb979546 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/4965-rs.c
-> +++ b/drivers/net/wireless/intel/iwlegacy/4965-rs.c
-> @@ -132,15 +132,8 @@ static void il4965_rs_fill_link_cmd(struct il_priv *il,
->  static void il4965_rs_stay_in_table(struct il_lq_sta *lq_sta,
->  				    bool force_search);
->  
-> -#ifdef CONFIG_MAC80211_DEBUGFS
->  static void il4965_rs_dbgfs_set_mcs(struct il_lq_sta *lq_sta,
->  				    u32 *rate_n_flags, int idx);
-> -#else
-> -static void
-> -il4965_rs_dbgfs_set_mcs(struct il_lq_sta *lq_sta, u32 * rate_n_flags, int idx)
-> -{
-> -}
-> -#endif
->  
->  /*
->   * The following tables contain the expected throughput metrics for all rates
-> @@ -2495,8 +2488,6 @@ il4965_rs_free_sta(void *il_r, struct ieee80211_sta *sta, void *il_sta)
->  	D_RATE("leave\n");
->  }
->  
-> -#ifdef CONFIG_MAC80211_DEBUGFS
-> -
->  static void
->  il4965_rs_dbgfs_set_mcs(struct il_lq_sta *lq_sta, u32 * rate_n_flags, int idx)
->  {
-> @@ -2758,7 +2749,6 @@ il4965_rs_add_debugfs(void *il, void *il_sta, struct dentry *dir)
->  	debugfs_create_u8("tx_agg_tid_enable", 0600, dir,
->  			  &lq_sta->tx_agg_tid_en);
->  }
-> -#endif
->  
->  /*
->   * Initialization of rate scaling information is done by driver after
-> @@ -2781,9 +2771,8 @@ static const struct rate_control_ops rs_4965_ops = {
->  	.free = il4965_rs_free,
->  	.alloc_sta = il4965_rs_alloc_sta,
->  	.free_sta = il4965_rs_free_sta,
-> -#ifdef CONFIG_MAC80211_DEBUGFS
-> -	.add_sta_debugfs = il4965_rs_add_debugfs,
-> -#endif
-> +	.add_sta_debugfs = PTR_IF(IS_ENABLED(CONFIG_MAC80211_DEBUGFS),
-> +				  il4965_rs_add_debugfs),
->  };
->  
->  int
-> diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
-> index 92285412ab10..52610f5e57a3 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/common.h
-> +++ b/drivers/net/wireless/intel/iwlegacy/common.h
-> @@ -2815,9 +2815,7 @@ struct il_lq_sta {
->  	struct il_scale_tbl_info lq_info[LQ_SIZE];	/* "active", "search" */
->  	struct il_traffic_load load[TID_MAX_LOAD_COUNT];
->  	u8 tx_agg_tid_en;
-> -#ifdef CONFIG_MAC80211_DEBUGFS
->  	u32 dbg_fixed_rate;
-> -#endif
->  	struct il_priv *drv;
->  
->  	/* used to be in sta_info */
-> -- 
-> 2.39.5
-> 
+     Arnd
 
