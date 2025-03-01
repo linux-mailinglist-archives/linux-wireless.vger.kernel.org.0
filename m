@@ -1,167 +1,221 @@
-Return-Path: <linux-wireless+bounces-19639-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19640-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D905A4AB5E
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 14:50:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF819A4ABB0
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 15:25:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1583818976B4
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 13:50:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25FC33B9BA5
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 14:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12CBA1DED51;
-	Sat,  1 Mar 2025 13:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7DD1E0DEA;
+	Sat,  1 Mar 2025 14:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="TJAjIFPK";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="xqYomUpX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i3ndEQJC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B86B2FC23;
-	Sat,  1 Mar 2025 13:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2B51E0DB0;
+	Sat,  1 Mar 2025 14:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740837004; cv=none; b=hoUJ95ScdWoNpqs3fScWJOeknXWDSHG06tW2qj73ZRmd/6ayVSuuvDeVWwn9Kc1nqbTM4OlKVRFdqBf2Fr52ZDbLQDapO5p1++8XOJKTl3ocbbAnTHMltLAoYm4HGFuViBYARy+2WwhXh75IiaXDPUOyGo2fQQrXkc18wBidpwA=
+	t=1740839117; cv=none; b=gNoAk6/cQSX19VzRQSTM5GUOmNgdFqYvEr+m55EMCxwuHbavA+vCSHI6mui0AiKG7IawU8gp1L4QeVZIVa+IPBPmNg+k25kVK38KoKI9YHrFE4GZGvR7H1aKUTTcb9+BLLxCWowmFNzlkXR9V3Z9fkJa0QOoOt6z+r6GxSs5jEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740837004; c=relaxed/simple;
-	bh=sY//qPp22PMpSlwhTwo5L3jRdXujgnSb3V8Mf2jN9X8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=hxPcNyrId1wvtuQv72PqMqXUHSvUukaCu1EvHkKKBmnIfZaYoNucVy9jxFCLslRZaF/vvRtwRxe0nSrJ3qP1XJNtEijy8INNotApGt3PbvX+4rYJGTJe1dxSMeFqTHvyWoXOftaOCKd/4bCvkal2sOIcC34Wa+McgOpmRPMfops=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=TJAjIFPK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=xqYomUpX; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfout.stl.internal (Postfix) with ESMTP id 018671140166;
-	Sat,  1 Mar 2025 08:49:59 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-09.internal (MEProxy); Sat, 01 Mar 2025 08:50:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1740836999;
-	 x=1740923399; bh=ihRc8/uUUJkepGXewCKoZVfK5186pYNj66y9b1/NoDI=; b=
-	TJAjIFPKsV3FznpN7aD/TDQgKZJFY9s/9Hfcd9IcTreR23u1ofldF5/Yzkir3fZg
-	d67VHPg1Pl/2dj9NV/0WTqCcd4cfG1ym4m8Ve0lxpTwlTrr6p4x/B0fmOBxdgsCP
-	m6mOUqtwBsZ/gsXmgoXCZ+Y6Xe+0q4ZSZe6Y5Xctk6D6JmETyHN6R3E8k3HwtdtU
-	N9ouwdxliZEiZxotSs/utlHLvZJF4M2u5LLXO3wcVhp/w5zb823oQY0ogRa2WQEC
-	aXQJNc4VL/658fPR5ECN6EnJVcgNGldaJiTCaR/RHaf4CnMZqkT5aVUXSLnnasab
-	73d6dRpmyoIPejDyqURruw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1740836999; x=
-	1740923399; bh=ihRc8/uUUJkepGXewCKoZVfK5186pYNj66y9b1/NoDI=; b=x
-	qYomUpXPm15l7GX4VDXk2aURPYYyWHRgh+RprvAIQgk4QlIl19atqgQwJOuQjedy
-	Wiobse3uZ/jQ1vqj0z5Fwls69BrKUin7VO6AXZB6dKxulAZrghFSPuP18esS53S1
-	b1YH9Cpcpwo2aXMM4uUhMDXsyk/u6Is3mXHDArDmFmunPA1XC9apOMdUoVZYlsUc
-	ixkW1sjDpwdT/Kv4yVOIn90Pnw7HfLtO6fFa39yKNgsexunortsXT8f5NvDTEB/M
-	8A7OBbVItqfAC6fXfZunWA9dCoeqzPCZ2cSm6f6iVdpbe9alcBTNOqnAST4jP8vS
-	/DQFJQl8IeK6bkKiCi+yw==
-X-ME-Sender: <xms:hxDDZ3ip4CzrSj31ZDCM1M-QRIyJjSG8J3ZVxtuSBW0JwFXrxB3KeQ>
-    <xme:hxDDZ0AUgIb9JSeOcF4n5ZvKxHx-QRAe2eXtyQgGSKj7y5xHZppi8qJ8UuQFWiz5a
-    ZxSrb7QNO5CvHrKh_k>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelfeegiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
-    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
-    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
-    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeel
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsvghnseguvggtrgguvghnthdroh
-    hrghdruhhkpdhrtghpthhtoheprghrnhgusehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehguhhsthgrvhhorghrsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhvrghloh
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhohhgrnhhnvghssehsihhpshholhhu
-    thhiohhnshdrnhgvthdprhgtphhtthhopehlihhnuhigsehtrhgvsghlihhgrdhorhhgpd
-    hrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrd
-    horhhgpdhrtghpthhtohepshhtfhgpgihlseifphdrphhl
-X-ME-Proxy: <xmx:hxDDZ3F3Gnkg07VHfsAKyqx_EbWNDfaPl0nCE505LqQ7suhvppU4EQ>
-    <xmx:hxDDZ0TNo7YQxEQiwEAuBW7nI48W68n_uwCzyqqOs1ay3NnpRPdlrw>
-    <xmx:hxDDZ0xCHV131qAuMhIgsMDeZKxH47W_HKGS3-EsZlDYSlbUIVcn1A>
-    <xmx:hxDDZ64e_HUxaPeAVjYxZBzOuGoUgpDW3o-ho2UiLwQ5y43EDvy65w>
-    <xmx:hxDDZzkeiqsVJu5OKgBZBUnY1tE824qgzG3Pg0CiVJkwYlye7BQwFSfv>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 34CB82220072; Sat,  1 Mar 2025 08:49:59 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1740839117; c=relaxed/simple;
+	bh=cIgJmn96AbC/m2stobLaS3QgXAnH7idqnvJn+4l7pgc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ocXxjKUPNZHYxDb8C6vxQNaT+W2BQnHlJjgtomRM74F0nwtAKA8iMJISAPxI3TOInouHWCKFT1lRTuC3cGI2ScnyJ2r16d82IZzJ9uB3xzFlnilosdxUAYFNNjl+cnc3VRyiAotYX5v5ZINItaR/VZLP1RznfhfpXO1EtNO57Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i3ndEQJC; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2239f8646f6so57445ad.2;
+        Sat, 01 Mar 2025 06:25:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740839115; x=1741443915; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DNP1gcd9iHRxzh69rYhVl4jkjT7XmE00fWzfP312xis=;
+        b=i3ndEQJClmDzMWL3NOKYrEJ4gwyeV+dugWN9ELB8HKagKqg2KPmf8luEz4A3qFaUys
+         yko/p+6vq8nD++wEFtdlMMdxlJGf6CjdBA8uHA573gwR1+s7FjHgnI4M4iuEbE/aqgKr
+         mlSfcTRXaQNXuBEp3CEttHLdQApbgvY3UW+s81l+uKweh6JyJF6fWv/Cejcyts3vCff/
+         KnQ3WgVLSYTUmY1IOsz+5LWO75eLBU4mJH52WzF+XSfd8ziL48DQ8fI1i+9a7M0dI6pf
+         h+c1lG/nALmM2hIUeQjnAOR3k9J+zU7OhOkfAlZGcomKZTK8gtm6LuzoGua/dWVCB98E
+         zcSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740839115; x=1741443915;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DNP1gcd9iHRxzh69rYhVl4jkjT7XmE00fWzfP312xis=;
+        b=nzL0UKzKgXsh+dXNjnAjYd66d4t6HTyIzkWvdCLdZJNX9nZ4Jt6084QnthQecnZHkE
+         eXs+dDCvO5hvysHYn1XFry+F0c+nE4K4n6HQbCzWh0ZurwYLxtc2pJeck+2aRzuOZkGq
+         54QZrrLvY7cZEmXu0YEqIN4k6a5PAlQCGZw7SfzJljPNzuTCAXjIAw54lROnBZ+WZZ6U
+         teiFfTqPtFunaNHJsbsJydSL5VAtjEo8HkKUIVHhWIMKCGclo6E1v6Wk6as3vOMntK78
+         RfksWeqU5O2bPCyFq73e4PVeuEnfCSE/c0ApOw5TbaQ/2u4iVdZH/GBMMJqSB5mVZNvH
+         qA4w==
+X-Forwarded-Encrypted: i=1; AJvYcCUioUEt7t7V7c/ZwCt/tPaua6oJmIReFKpkTIvYWgBL0iKfE8QYLx+nZaWN9na1/g7q7shg3ZC4cLbl49Ozgnw=@vger.kernel.org, AJvYcCV/VBIPZ9qQ0vzEuZPv5F97aQQ9rk02srOoMrdcnJfZh16bs9sdKNSqZ6POha5SM8g6QVHyhUkBXUuWxVU=@vger.kernel.org, AJvYcCVTVbxgZeKEVpZvZo0xqZLqe/ti61NbQ6wZCWHwfQS5QGe5lDvRDkOCWNQ6Ymt0hBy5tM2Xpm0vZujEw3E=@vger.kernel.org, AJvYcCVr5yb25BL70ZfQQU1f+BAhXQCs5J/B32dxDr383DaxTl8jpQLhXtezWIV4tcWXBoUQ4Ok=@vger.kernel.org, AJvYcCWhqIm2y/pfqo0w+XbakgaGQwVpgopTl7lhLa7lwc9BZXRXSi0LRdJAca6JFQGXxJZClfU+nyBkhFR4bwfP@vger.kernel.org, AJvYcCXUxRZ9d8ig+DZIocM7n7Hn3Exh1W1FvcVxHkyVuRDo/oZ8Q7ZmRaY9Wlo3pSv6aZOA69nQb7r5@vger.kernel.org, AJvYcCXmNUbVm1Iu/xszePIt0idmKi1dwOki2eCNT5hcSTPA6q1RNy3yH434ahHVn4fHKTW/OYkAU7MTGBf3I3H1@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcKu5mdP09HZDzmhGHMiNlt3oKwdbjsKlMHfqOiHjrfo46Xx3O
+	b1mX7y+0hYLP53Dizsqb5KvQW5gkvUSeXgujrL6Ce5Ji6iqvbBkm
+X-Gm-Gg: ASbGncvIRE7m57OKmUjcluZ342g8I6mAzBzMtTCH5vAz4t15kR1bDCeoMUGNM9gXOmn
+	7RcYhQ7wDWuMAWUQYyW+G4yvqdLuUYt5Tczz9HwfM2nPpHLWqhbKP5NuHQKzqq2XDviOUtZr6v8
+	6MGM3wmFMyIoSf/B8ppn4F+aTNIjpwoIgb9vET9nbca65Rtl9ctVuJQxN7Pl2d/qN6rqM5Ibbo2
+	wtwRAE3OvHGMJ4SsW/+Ct4DLN+4JrFZj0UJBCdmn9vfGgZpZEReUIO4YxH3qjGDpqcGOzq+/OsK
+	HVAwhjXwhpG/LLaFnbLArbLVCNjoX1APvWYmVTww3tgWGg+e010QmJQ2U57g2lcVrrN6gkYHCas
+	=
+X-Google-Smtp-Source: AGHT+IFmQ7+Wt4EJx82M81pMqmqG6vjS1UaCqAsjmQIBhBcvOofXBIwpdWFf7GWkoh7LWsBn9NTlfg==
+X-Received: by 2002:a17:902:c948:b0:220:d79f:60f1 with SMTP id d9443c01a7336-2236920765bmr101611195ad.42.1740839114994;
+        Sat, 01 Mar 2025 06:25:14 -0800 (PST)
+Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223501fa8f1sm49231965ad.90.2025.03.01.06.25.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Mar 2025 06:25:14 -0800 (PST)
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	jk@ozlabs.org,
+	joel@jms.id.au,
+	eajames@linux.ibm.com,
+	andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dmitry.torokhov@gmail.com,
+	mchehab@kernel.org,
+	awalls@md.metrocast.net,
+	hverkuil@xs4all.nl,
+	miquel.raynal@bootlin.com,
+	richard@nod.at,
+	vigneshr@ti.com,
+	louis.peens@corigine.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	parthiban.veerasooran@microchip.com,
+	arend.vanspriel@broadcom.com,
+	johannes@sipsolutions.net,
+	gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	yury.norov@gmail.com,
+	akpm@linux-foundation.org
+Cc: hpa@zytor.com,
+	alistair@popple.id.au,
+	linux@rasmusvillemoes.dk,
+	Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsi@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org,
+	linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	oss-drivers@corigine.com,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-serial@vger.kernel.org,
+	bpf@vger.kernel.org,
+	jserv@ccns.ncku.edu.tw,
+	david.laight.linux@gmail.com,
+	andrew.cooper3@citrix.com,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: [PATCH v2 00/18] Introduce and use generic parity16/32/64 helper
+Date: Sat,  1 Mar 2025 22:23:51 +0800
+Message-Id: <20250301142409.2513835-1-visitorckw@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sat, 01 Mar 2025 14:49:38 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Stanislaw Gruszka" <stf_xl@wp.pl>
-Cc: "Arnd Bergmann" <arnd@kernel.org>,
- "Johannes Berg" <johannes@sipsolutions.net>, "Kalle Valo" <kvalo@kernel.org>,
- "Ben Hutchings" <ben@decadent.org.uk>, linux <linux@treblig.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <7e472cbe-bf29-432b-93da-d1fc87630939@app.fastmail.com>
-In-Reply-To: <20250301133652.GA60453@wp.pl>
-References: <20250225145359.1126786-1-arnd@kernel.org>
- <20250301122834.GA55739@wp.pl>
- <994e4827-0e16-4e05-be7c-1ca7a86e4daf@app.fastmail.com>
- <20250301133652.GA60453@wp.pl>
-Subject: Re: [PATCH] [v2] iwlegacy: don't warn for unused variables with DEBUG_FS=n
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat, Mar 1, 2025, at 14:36, Stanislaw Gruszka wrote:
-> On Sat, Mar 01, 2025 at 01:38:16PM +0100, Arnd Bergmann wrote:
->> On Sat, Mar 1, 2025, at 13:28, Stanislaw Gruszka wrote:
->> > On Tue, Feb 25, 2025 at 03:53:53PM +0100, Arnd Bergmann wrote:
->> >
->> > But then the code will be compiled for !CONFIG_MAC80211_DEBUGFS
->> > case, it does compile for me:
->> >
->> > -  22475	   1160	      0	  23635	   
->> > 5c53	drivers/net/wireless/intel/iwlegacy/4965-rs.o
->> > +  23008	   1168	      0	  24176	   
->> > 5e70	drivers/net/wireless/intel/iwlegacy/4965-rs.o
->> 
->> Very strange, this really shouldn't happen. Which symbols
->> exactly do you see the compiler fail to drop with my patch,
->
-> nm 4965-rs.o diffrence before and after patch:
+Several parts of the kernel contain redundant implementations of parity
+calculations for 16/32/64-bit values. Introduces generic
+parity16/32/64() helpers in bitops.h, providing a standardized
+and optimized implementation.  
 
->  00000000000000dd t il4965_rs_alloc_sta.cold
-> -0000000000001810 t il4965_rs_collect_tx_data.isra.0
-> -00000000000012b0 t il4965_rs_fill_link_cmd
-> -0000000000000495 t il4965_rs_fill_link_cmd.cold
-> +0000000000001850 t il4965_rs_collect_tx_data.isra.0
-> +0000000000000e90 t il4965_rs_dbgfs_set_mcs.isra.0
-> +00000000000002f6 t il4965_rs_dbgfs_set_mcs.isra.0.cold
-> +0000000000001340 t il4965_rs_fill_link_cmd
-> +0000000000000518 t il4965_rs_fill_link_cmd.cold
->  00000000000002a0 t il4965_rs_free
+Subsequent patches refactor various kernel components to replace
+open-coded parity calculations with the new helpers, reducing code
+duplication and improving maintainability.
 
-Ah, so the debugfs files get eliminated, but
-il4965_rs_dbgfs_set_mcs() does not.
+Co-developed-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+---
 
-I think this should do it:
+This patch series is based on next-20250228.
 
---- a/drivers/net/wireless/intel/iwlegacy/4965-rs.c
-+++ b/drivers/net/wireless/intel/iwlegacy/4965-rs.c
-@@ -2495,6 +2495,9 @@ il4965_rs_dbgfs_set_mcs(struct il_lq_sta *lq_sta, u32 * rate_n_flags, int idx)
-        u8 valid_tx_ant;
-        u8 ant_sel_tx;
- 
-+       if (!IS_ENABLED(CONFIG_MAC80211_DEBUGFS))
-+               return;
-+
-        il = lq_sta->drv;
-        valid_tx_ant = il->hw_params.valid_tx_ant;
-        if (lq_sta->dbg_fixed_rate) {
+Changes in v2:
+- Provide fallback functions for __builtin_parity() when the compiler
+  decides not to inline it
+- Use __builtin_parity() when no architecture-specific implementation
+  is available
+- Optimize for constant folding when val is a compile-time constant
+- Add a generic parity() macro
+- Drop the x86 bootflag conversion patch since it has been merged into
+  the tip tree
 
-or possibly il4965_rs_dbgfs_set_mcs() can stay in the #ifdef
-if you prefer.
+Kuan-Wei Chiu (18):
+  lib/parity: Add __builtin_parity() fallback implementations
+  bitops: Optimize parity8() using __builtin_parity()
+  bitops: Add parity16(), parity32(), and parity64() helpers
+  media: media/test_drivers: Replace open-coded parity calculation with
+    parity8()
+  media: pci: cx18-av-vbi: Replace open-coded parity calculation with
+    parity8()
+  media: saa7115: Replace open-coded parity calculation with parity8()
+  serial: max3100: Replace open-coded parity calculation with parity8()
+  lib/bch: Replace open-coded parity calculation with parity32()
+  Input: joystick - Replace open-coded parity calculation with
+    parity32()
+  net: ethernet: oa_tc6: Replace open-coded parity calculation with
+    parity32()
+  wifi: brcm80211: Replace open-coded parity calculation with parity32()
+  drm/bridge: dw-hdmi: Replace open-coded parity calculation with
+    parity32()
+  mtd: ssfdc: Replace open-coded parity calculation with parity32()
+  fsi: i2cr: Replace open-coded parity calculation with parity32()
+  fsi: i2cr: Replace open-coded parity calculation with parity64()
+  Input: joystick - Replace open-coded parity calculation with
+    parity64()
+  nfp: bpf: Replace open-coded parity calculation with parity64()
+  bitops: Add parity() macro for automatic type-based selection
 
-      Arnd
+ drivers/fsi/fsi-master-i2cr.c                 |  18 +--
+ .../drm/bridge/synopsys/dw-hdmi-ahb-audio.c   |   8 +-
+ drivers/input/joystick/grip_mp.c              |  17 +--
+ drivers/input/joystick/sidewinder.c           |  24 +---
+ drivers/media/i2c/saa7115.c                   |  12 +-
+ drivers/media/pci/cx18/cx18-av-vbi.c          |  12 +-
+ .../media/test-drivers/vivid/vivid-vbi-gen.c  |   8 +-
+ drivers/mtd/ssfdc.c                           |  17 +--
+ drivers/net/ethernet/netronome/nfp/nfp_asm.c  |   7 +-
+ drivers/net/ethernet/oa_tc6.c                 |  19 +--
+ .../broadcom/brcm80211/brcmsmac/dma.c         |  16 +--
+ drivers/tty/serial/max3100.c                  |   3 +-
+ include/linux/bitops.h                        | 115 ++++++++++++++++--
+ lib/Makefile                                  |   2 +-
+ lib/bch.c                                     |  14 +--
+ lib/parity.c                                  |  48 ++++++++
+ 16 files changed, 185 insertions(+), 155 deletions(-)
+ create mode 100644 lib/parity.c
+
+-- 
+2.34.1
+
 
