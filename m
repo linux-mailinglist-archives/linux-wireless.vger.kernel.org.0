@@ -1,169 +1,135 @@
-Return-Path: <linux-wireless+bounces-19659-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19660-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61886A4AC44
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 15:35:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF93A4AD33
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 19:02:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38AEC17238B
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 14:35:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B00A918942B9
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Mar 2025 18:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41351E25ED;
-	Sat,  1 Mar 2025 14:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB401BBBFD;
+	Sat,  1 Mar 2025 18:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WqipW6TB"
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="osXgXLC9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCFF19D8A7
-	for <linux-wireless@vger.kernel.org>; Sat,  1 Mar 2025 14:34:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D340157A6B
+	for <linux-wireless@vger.kernel.org>; Sat,  1 Mar 2025 18:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740839661; cv=none; b=IPJRxKdZK+J3dadf6UPMm2LxSdKpug1GZwClcoa4MLVaUdyAqvjovPC/5A7MoTWRznmbHrplltaGJ5T7hnTLMvBMYYagLX5CJ6BSi7rCvFgPIPMOQ2XGFkMTfSh5rhyANFPKrZZ+H6OOz8Qyp7JjtTn0wyC5+DgbGNZ1IEzvJaI=
+	t=1740852168; cv=none; b=jk7hqR9eVCxaPXkx23/aOfZDqkLYvBj2oAcwwcyGva7ckj04WqBaLzNI4nlriwrc7dAZ2S4qFWy8HSmlqOqfFVVZgxN2o9LUvas2g2nwYkI8dDOTuKigusgJdZTGCtPYee6kV/iZ4r03dOg44IIbFz7kgJyuilfe/kuIS72jJhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740839661; c=relaxed/simple;
-	bh=aEN41t3EjeoHDDbRJFPEKXVVy3icY3tMrZ7Vf15MjBM=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=qxQ5P5RpQc+7ee48oDXWaAgG1z+mLFk87pkF2vTMXu4xPFXXKZaL9F0X0jM4HEvHf8bqNof8zjf5soIsdh2mzF1TMSVzJCXoYS2uPg7rTv5CBdIP5YFy4oWBYtRxoqqyPgH5kyz2mfj3lHsyKp+mFMD/4BBxBeeIKQFpLKliSvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WqipW6TB; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740839660; x=1772375660;
-  h=date:from:to:cc:subject:message-id;
-  bh=aEN41t3EjeoHDDbRJFPEKXVVy3icY3tMrZ7Vf15MjBM=;
-  b=WqipW6TB01DURqmqNWwdoKdKypTeA2Fd0+ZUyCp6SxIht6ZSG2JTU5xv
-   ZmARhBJI/p4AJJtmf7Eu8tLo6DtAtba0pT26eI6nsKfboRqpGXMtmRX8E
-   uJ3QHzR7n7399HyiJPZxdHF9JAqSpqi1zxdqWhKQd7V7LFv6D5jpImwgq
-   fzqV19F+MgwYP+1XmzEdv9uh+MCYkBd4PKNCC2ACLWCbsBIAqCLNEyzdt
-   LT43oFww+RUUPydrTuYTBQfor97FisWmij2692PHWjlgwJPVDaC6U3tCJ
-   jJNUSfBlBfM3lEBUzkwilYrKFJeQZG+W/3I0egSlKomHQscgvjQX37QuQ
-   A==;
-X-CSE-ConnectionGUID: jk4G7s79SGyVh2O8gyvg5A==
-X-CSE-MsgGUID: TblEDPatTGyL0i3pEBddmQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11359"; a="59171031"
-X-IronPort-AV: E=Sophos;i="6.13,325,1732608000"; 
-   d="scan'208";a="59171031"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2025 06:34:20 -0800
-X-CSE-ConnectionGUID: +Kfey+lyRKKx54/hrSu1dw==
-X-CSE-MsgGUID: NDXIr4ZdQkqYpzVc4vzkPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,325,1732608000"; 
-   d="scan'208";a="117582765"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 01 Mar 2025 06:34:18 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1toNuK-000GKI-28;
-	Sat, 01 Mar 2025 14:33:45 +0000
-Date: Sat, 01 Mar 2025 22:33:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- e5328c14590d034dc586e56aaab88e966d06efa7
-Message-ID: <202503012206.gXDsqFoa-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1740852168; c=relaxed/simple;
+	bh=PMZphVDkAF5aPMon3qh5vtfYZi7nELusLHYh4ZNi3yo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QfNiNCtGUTxXNZVGlzXWTCS143oKPwY1v9SuWPvt6Hy0bp7g+h76cajRKOtIltkEXPRmsQAnJmPig+4mz+mtE+4EAnKc1d6T1ty2PHZ4DSEDYApWxpVlj1jzLyefkjfUyh4ISWNq30ztu1ua12Dx09IAhn82xXLacKwTTzmBhJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=osXgXLC9; arc=none smtp.client-ip=212.77.101.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Received: (wp-smtpd smtp.wp.pl 15599 invoked from network); 1 Mar 2025 19:02:41 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1740852161; bh=72eOQ/MqtKm4OU9kul9+dWtDYSCW8AaG4vLVBVfVUzs=;
+          h=From:To:Cc:Subject;
+          b=osXgXLC9pJX8RfrLXisZ8+LebRpXM+m9zvsTerBwTA7JyQOodLGIBZjLpJzi1mMqF
+           TqO+SF0hTyeR60ieHyM2m4nNQv7nxH+mAuJg5REGofU1BTYF3z/6PFDuKOAXQCm3G+
+           ytYrfSOvhqzRpJbW97mx4NWpg5T8dulhrS9mhhqbEoOjMjQR8Dxqg6/6/tJ7gDcm/R
+           FH3TlHnB3eeO2xuRdnwFeJ6bMMrxcq57IpKoZnjdL2Z9PFqXWW1hirIzYZPXjeX0Pj
+           yTOlqidswEh3PNGcnb7AKznqPXEcZ4U43sOnYqKVIQ8Cs8l8MJKaufc0HP7lei2eNc
+           EoC0vtyg1B0+A==
+Received: from 89-64-0-97.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.0.97])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <arnd@arndb.de>; 1 Mar 2025 19:02:41 +0100
+Date: Sat, 1 Mar 2025 19:02:40 +0100
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Arnd Bergmann <arnd@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Kalle Valo <kvalo@kernel.org>, Ben Hutchings <ben@decadent.org.uk>,
+	linux <linux@treblig.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [v2] iwlegacy: don't warn for unused variables with
+ DEBUG_FS=n
+Message-ID: <20250301180240.GA61229@wp.pl>
+References: <20250225145359.1126786-1-arnd@kernel.org>
+ <20250301122834.GA55739@wp.pl>
+ <994e4827-0e16-4e05-be7c-1ca7a86e4daf@app.fastmail.com>
+ <20250301133652.GA60453@wp.pl>
+ <7e472cbe-bf29-432b-93da-d1fc87630939@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7e472cbe-bf29-432b-93da-d1fc87630939@app.fastmail.com>
+X-WP-MailID: 31fa1973e68bfed795e2c0e3bcfcda2b
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [oaOU]                               
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: e5328c14590d034dc586e56aaab88e966d06efa7  wifi: mac80211: refactor populating mesh related fields in sinfo
+On Sat, Mar 01, 2025 at 02:49:38PM +0100, Arnd Bergmann wrote:
+> On Sat, Mar 1, 2025, at 14:36, Stanislaw Gruszka wrote:
+> > On Sat, Mar 01, 2025 at 01:38:16PM +0100, Arnd Bergmann wrote:
+> >> On Sat, Mar 1, 2025, at 13:28, Stanislaw Gruszka wrote:
+> >> > On Tue, Feb 25, 2025 at 03:53:53PM +0100, Arnd Bergmann wrote:
+> >> >
+> >> > But then the code will be compiled for !CONFIG_MAC80211_DEBUGFS
+> >> > case, it does compile for me:
+> >> >
+> >> > -  22475	   1160	      0	  23635	   
+> >> > 5c53	drivers/net/wireless/intel/iwlegacy/4965-rs.o
+> >> > +  23008	   1168	      0	  24176	   
+> >> > 5e70	drivers/net/wireless/intel/iwlegacy/4965-rs.o
+> >> 
+> >> Very strange, this really shouldn't happen. Which symbols
+> >> exactly do you see the compiler fail to drop with my patch,
+> >
+> > nm 4965-rs.o diffrence before and after patch:
+> 
+> >  00000000000000dd t il4965_rs_alloc_sta.cold
+> > -0000000000001810 t il4965_rs_collect_tx_data.isra.0
+> > -00000000000012b0 t il4965_rs_fill_link_cmd
+> > -0000000000000495 t il4965_rs_fill_link_cmd.cold
+> > +0000000000001850 t il4965_rs_collect_tx_data.isra.0
+> > +0000000000000e90 t il4965_rs_dbgfs_set_mcs.isra.0
+> > +00000000000002f6 t il4965_rs_dbgfs_set_mcs.isra.0.cold
+> > +0000000000001340 t il4965_rs_fill_link_cmd
+> > +0000000000000518 t il4965_rs_fill_link_cmd.cold
+> >  00000000000002a0 t il4965_rs_free
+> 
+> Ah, so the debugfs files get eliminated, but
+> il4965_rs_dbgfs_set_mcs() does not.
+> 
+> I think this should do it:
+> 
+> --- a/drivers/net/wireless/intel/iwlegacy/4965-rs.c
+> +++ b/drivers/net/wireless/intel/iwlegacy/4965-rs.c
+> @@ -2495,6 +2495,9 @@ il4965_rs_dbgfs_set_mcs(struct il_lq_sta *lq_sta, u32 * rate_n_flags, int idx)
+>         u8 valid_tx_ant;
+>         u8 ant_sel_tx;
+>  
+> +       if (!IS_ENABLED(CONFIG_MAC80211_DEBUGFS))
+> +               return;
+> +
+>         il = lq_sta->drv;
+>         valid_tx_ant = il->hw_params.valid_tx_ant;
+>         if (lq_sta->dbg_fixed_rate) {
+> 
+> or possibly il4965_rs_dbgfs_set_mcs() can stay in the #ifdef
+> if you prefer.
 
-elapsed time: 1445m
+I'm ok with this solution. The size stays the same with above
+change.
 
-configs tested: 76
-configs skipped: 1
+Regards
+Stanislaw
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                           allyesconfig    gcc-14.2.0
-arc                             allmodconfig    gcc-13.2.0
-arc                             allyesconfig    gcc-13.2.0
-arc                  randconfig-001-20250301    gcc-13.2.0
-arc                  randconfig-002-20250301    gcc-13.2.0
-arm                             allmodconfig    gcc-14.2.0
-arm                             allyesconfig    gcc-14.2.0
-arm                  randconfig-001-20250301    gcc-14.2.0
-arm                  randconfig-002-20250301    gcc-14.2.0
-arm                  randconfig-003-20250301    clang-21
-arm                  randconfig-004-20250301    clang-21
-arm64                randconfig-001-20250301    gcc-14.2.0
-arm64                randconfig-002-20250301    clang-21
-arm64                randconfig-003-20250301    clang-15
-arm64                randconfig-004-20250301    clang-17
-csky                 randconfig-001-20250301    gcc-14.2.0
-csky                 randconfig-002-20250301    gcc-14.2.0
-hexagon                         allmodconfig    clang-21
-hexagon                         allyesconfig    clang-18
-hexagon              randconfig-001-20250301    clang-21
-hexagon              randconfig-002-20250301    clang-21
-i386       buildonly-randconfig-001-20250301    clang-19
-i386       buildonly-randconfig-002-20250301    clang-19
-i386       buildonly-randconfig-003-20250301    clang-19
-i386       buildonly-randconfig-004-20250301    clang-19
-i386       buildonly-randconfig-005-20250301    gcc-12
-i386       buildonly-randconfig-006-20250301    clang-19
-loongarch            randconfig-001-20250301    gcc-14.2.0
-loongarch            randconfig-002-20250301    gcc-14.2.0
-nios2                randconfig-001-20250301    gcc-14.2.0
-nios2                randconfig-002-20250301    gcc-14.2.0
-openrisc                         allnoconfig    gcc-14.2.0
-openrisc                        allyesconfig    gcc-14.2.0
-parisc                          allmodconfig    gcc-14.2.0
-parisc                           allnoconfig    gcc-14.2.0
-parisc                          allyesconfig    gcc-14.2.0
-parisc               randconfig-001-20250301    gcc-14.2.0
-parisc               randconfig-002-20250301    gcc-14.2.0
-powerpc                         allmodconfig    gcc-14.2.0
-powerpc                          allnoconfig    gcc-14.2.0
-powerpc              randconfig-001-20250301    clang-17
-powerpc              randconfig-002-20250301    clang-19
-powerpc              randconfig-003-20250301    clang-21
-powerpc64            randconfig-001-20250301    gcc-14.2.0
-powerpc64            randconfig-002-20250301    clang-21
-powerpc64            randconfig-003-20250301    gcc-14.2.0
-riscv                            allnoconfig    gcc-14.2.0
-riscv                randconfig-001-20250301    gcc-14.2.0
-riscv                randconfig-002-20250301    gcc-14.2.0
-s390                            allmodconfig    clang-19
-s390                             allnoconfig    clang-15
-s390                            allyesconfig    gcc-14.2.0
-s390                 randconfig-001-20250301    clang-15
-s390                 randconfig-002-20250301    gcc-14.2.0
-sh                              allmodconfig    gcc-14.2.0
-sh                              allyesconfig    gcc-14.2.0
-sh                   randconfig-001-20250301    gcc-14.2.0
-sh                   randconfig-002-20250301    gcc-14.2.0
-sparc                           allmodconfig    gcc-14.2.0
-sparc                randconfig-001-20250301    gcc-14.2.0
-sparc                randconfig-002-20250301    gcc-14.2.0
-sparc64              randconfig-001-20250301    gcc-14.2.0
-sparc64              randconfig-002-20250301    gcc-14.2.0
-um                              allmodconfig    clang-21
-um                               allnoconfig    clang-18
-um                              allyesconfig    gcc-12
-um                   randconfig-001-20250301    gcc-12
-um                   randconfig-002-20250301    gcc-12
-x86_64     buildonly-randconfig-001-20250228    clang-19
-x86_64     buildonly-randconfig-002-20250228    clang-19
-x86_64     buildonly-randconfig-003-20250228    gcc-12
-x86_64     buildonly-randconfig-004-20250228    clang-19
-x86_64     buildonly-randconfig-005-20250228    gcc-12
-x86_64     buildonly-randconfig-006-20250228    gcc-12
-xtensa               randconfig-001-20250301    gcc-14.2.0
-xtensa               randconfig-002-20250301    gcc-14.2.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
