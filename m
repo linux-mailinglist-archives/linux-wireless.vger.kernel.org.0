@@ -1,112 +1,98 @@
-Return-Path: <linux-wireless+bounces-19696-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19697-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E36A4BBE4
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 11:19:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6F0A4BBE6
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 11:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F22E16E4B5
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 10:19:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAC5916E498
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 10:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175621EE7DC;
-	Mon,  3 Mar 2025 10:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BB41EE7DC;
+	Mon,  3 Mar 2025 10:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mCSsTR48"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="dl+phk2Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995091EDA04
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 10:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF9B1EDA04
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 10:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740997184; cv=none; b=QdmA0rXOr0j/7oNV1SNMF0S1BSTN+6mE9AGDFClwdN/Juyx4CZwUyudfoE1ytBE4drK/YsC0tOMBZdmvT8PuIBrFneTtLPDMvmyb5hk5++It4FUU9JcyMNnZH2lPfSzw9Vb87FWbAPf9W8oK18C9GviNt0KUFGRwk5VXAMOVAVk=
+	t=1740997240; cv=none; b=r0oMdgSKzWLqItpDdQn4MuqnU0czl9Vl+yp5cgO+HR7YPJJgnzxQDf+tQxs9wDhxHwwSg0GsGy9Y5fnr+ah9UjvWLRR5esLvECP+T2T727si5bv5dE5iSLwxrdH+eD2rqO425sb3kblcBXSD30uakl05W+eeIAaXc5g9jTRUfgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740997184; c=relaxed/simple;
-	bh=uRADvBsyODQqdhrDtGP0SBQu60ng1+/sJaPm2F2Zjwo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=DlRb40CapQjztSlhQVqXYAeLW4PifWMEfiHZAroDWVp0Gs7sagUPZz6OIgdqa1gCeLGH7nKocCjz07J3uIPveApyZR/Cv9tAre35iZY7Uf9KWwleu2aLj0jW6/3g/j6+/LKZZradz8pQOUb18gFcKwxN8hF4vb85V1B9UegSA1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mCSsTR48; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 522Nb1aU021907;
-	Mon, 3 Mar 2025 10:19:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ymjyMYU8K4jEiwpdWi54nBIgeBtbpvHZJbMO26RaR54=; b=mCSsTR48eSxlE+dY
-	sEOVzb3Q5hiCb1I+z8AyacEH+mfQ3aluJwihbzSB9cLYTMSHhBdOC3CdCSV11jPB
-	8Gb/t4TRiQqbyvzrbmkST92EAPkTC9PBzgNbu2EaXoO+PIjOQI0bsBBbIast73ro
-	OjKn4WK1hUI2OSXK0vNDngmw4V/aW2fxrYlGfd3Xf4gLRnZg7k/GjjyXoKVqLrte
-	1VodSmQLwVzHwqhez0q5piWWXzhwHFbcAFoEuE871e54PnBTytEzQwGEDI++Jt8B
-	cEtEufbFw5JnSFrhdJo8F6VZWvwTCchKLI67NIRyhtk6rAHKFOuTdBeHdvKRcJKW
-	14+cwg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 453uh748yc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Mar 2025 10:19:38 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 523AJbZg026879
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 3 Mar 2025 10:19:37 GMT
-Received: from [10.152.206.29] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 3 Mar 2025
- 02:19:36 -0800
-Message-ID: <c207680b-0461-46d5-894e-45b6d627ee93@quicinc.com>
-Date: Mon, 3 Mar 2025 15:49:33 +0530
+	s=arc-20240116; t=1740997240; c=relaxed/simple;
+	bh=XeFbnFcAK2zQyKLrv4wf5LagDM886IAczDHShwWuPdg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ph38GJgZv3Ag/fnNqfKNhgSSdnW+PYAa77Hw8rXRDodK4pbio8KK+D0fVNrDFlSP+gJeW22VuoFlMCqgJ2UcLkyri4wad71gLAomeZyYhRnCCwl9Wl6CFHJtGSJTHzMMAc1/xfDZP1tVvHszp48VaFRPcdaMinUXtRaFpmpdpK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=dl+phk2Y; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=XeFbnFcAK2zQyKLrv4wf5LagDM886IAczDHShwWuPdg=;
+	t=1740997239; x=1742206839; b=dl+phk2YTJXuogHpktHkBTrreReFb1RoNdnH75/sC7x6fJi
+	Uw6vkzYc3pI0JZLBQZQWfC1a3DZ2aQ66OR0cdVqzV/qiZLBPSA2cBdsl4RRRPLJY8EZU265A0dZ9t
+	w0k1bFEeqxxtJdsc/Ghv4EnXzFrQ27LsNWPR7VYNINV5kkIAyhOAvkAHYi89b/SeTOipKiLQVKZpT
+	rYNWV6xQ4KuweXDiRO1Sr9hxOyG55FzlUao0V36hlZvVq07/rotP7PIkj8JxHnxmnma12A79YnSb7
+	ZnrG4rYI2OTDKF6jzCLezRI8qKQEz0xdwE6ImIbdKlZPQu5jqG/4LrcOTP0pRQ0A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tp2uZ-0000000H666-2A1v;
+	Mon, 03 Mar 2025 11:20:35 +0100
+Message-ID: <2ed1cf759e1b8eed21cae42f856c1012dcdb59e9.camel@sipsolutions.net>
+Subject: Re: [PATCH v4 1/5] wifi: cfg80211: Add Support to Set RTS Threshold
+ for each Radio
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Roopni Devanathan <quic_rdevanat@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Mon, 03 Mar 2025 11:20:34 +0100
+In-Reply-To: <28d36a7f-3408-4072-9857-8bd652260926@quicinc.com>
+References: <20250129155246.155587-1-quic_rdevanat@quicinc.com>
+	 <20250129155246.155587-2-quic_rdevanat@quicinc.com>
+	 <a2bcb0b6507c843b13e0ef98d76727a76b53f129.camel@sipsolutions.net>
+	 <28d36a7f-3408-4072-9857-8bd652260926@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/5] wifi: cfg80211: Report per-radio RTS threshold to
- userspace
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20250129155246.155587-1-quic_rdevanat@quicinc.com>
- <20250129155246.155587-3-quic_rdevanat@quicinc.com>
- <7ff2d1dd2a83d9047c128035296db1651bcb6b91.camel@sipsolutions.net>
-Content-Language: en-US
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-In-Reply-To: <7ff2d1dd2a83d9047c128035296db1651bcb6b91.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: tR48CK6-l8J9Mgzv831hFGMtKDMZpF7i
-X-Proofpoint-ORIG-GUID: tR48CK6-l8J9Mgzv831hFGMtKDMZpF7i
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-03_04,2025-03-03_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 impostorscore=0 clxscore=1015
- priorityscore=1501 adultscore=0 mlxscore=0 spamscore=0 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2503030079
+X-malware-bazaar: not-scanned
 
+On Mon, 2025-03-03 at 15:48 +0530, Roopni Devanathan wrote:
+> >=20
+> > The order here also seems really odd? That basically means the driver
+> > now needs to propagate it to all the radios, but you still have
+> > different per-radio values at that point, that seems bad. You also
+> > didn't even document any such assumptions.
+>=20
+> The idea is to maintain different variables for global RTS threshold and
+> per-radio RTS threshold. Each time RTS threshold of a radio is getting
+> changed, we are trying to update the RTS threshold for that radio alone. =
+If
+> global RTS threshold(rdev->wiphy.rts_threshold) is updated, we are trying=
+ to
+> change the RTS threshold of all radios. This is the reason we are assigni=
+ng
+> same value - rts_threshold, to all radios.
+>=20
 
+Sure, I get that, I just thought maybe it should be *before* calling the
+driver, that way the driver can always access the per-radio thresholds
+anyway, and just has to figure out whether to set all or not?
 
-On 2/28/2025 6:33 PM, Johannes Berg wrote:
-> 
->> @@ -2449,6 +2450,9 @@ static int nl80211_put_radio(struct wiphy *wiphy, struct sk_buff *msg, int idx)
->>  	if (nla_put_u32(msg, NL80211_WIPHY_RADIO_ATTR_INDEX, idx))
->>  		goto nla_put_failure;
->>  
->> +	if (nla_put_u32(msg, NL80211_WIPHY_RADIO_ATTR_RTS_THRESHOLD, rcfg->rts_threshold))
->> +		goto nla_put_failure;
->>
-> 
-> There is, fwiw, still a preference for shorter lines.
-> 
-Sure, I'll change this appropriately, thanks.
+Then you have to roll back if it fails, but the driver doesn't have to
+track it individually itself?
 
-> johannes
+johannes
 
