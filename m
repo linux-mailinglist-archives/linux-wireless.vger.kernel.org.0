@@ -1,117 +1,132 @@
-Return-Path: <linux-wireless+bounces-19702-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19703-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98872A4BD7B
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 12:08:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C69A4BE97
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 12:31:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAA6B164245
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 11:05:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79DDA1656AF
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 11:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB591F0E28;
-	Mon,  3 Mar 2025 11:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C101F891F;
+	Mon,  3 Mar 2025 11:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="M9LNaQQM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mr85p00im-hyfv06021401.me.com (mr85p00im-hyfv06021401.me.com [17.58.23.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCAD3FFD
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 11:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6361F869E
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 11:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740999931; cv=none; b=bTXhTPOuyKzBIAx9G5HLa8rp2WtOuKWJvoXFmXCddhBqj8/eMHs8PjJscTMKbORkDVZ95DTFNacV7akvpo8o5AJYOgX7k3mgaBzxZmZjoZY63AUwfUFRWGGsgcGZpjIAQ+eCUDxrgl8iwbIZlNBagjex/M11KsXd53RDfSVAJCA=
+	t=1741001435; cv=none; b=MlSyve2erj4PfUgftZ5jKFNbVWItiqp57aey053ZvohVghks7HZqLXten0iJhZXFusE9to8vwekjFJXKMoE/jK74lPqyNBeaYmPR7zAMyAHgYid8sbQnBEVW2gey+g/DFamkHOaHqAYLKooYKR28oGBkvTyzRQV2xL+wV0AR+o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740999931; c=relaxed/simple;
-	bh=IYNG7ZSxm+gJJKaOYzuYWh7ZU9GnGeB3lvFCEd27NYo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=moiIS4wIkY+HnmjlyARrjULqJqHfqp9FFmqKvVz2M6deJJhxKUsLCEFEJ9b9AP6HzoE/YAc2lYUaPIvRKFV5A9Uw6YSXWeKX1sgGWhlnWREHNQCZaXfAD7F1rbWSGZWngmw5czhSNSa1UM7Oy/lQsZoUeSXRjCtxadODM1Nv1Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tp3by-0002ly-SI; Mon, 03 Mar 2025 12:05:26 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tp3by-003mXq-1B;
-	Mon, 03 Mar 2025 12:05:26 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tp3by-00AiGo-0p;
-	Mon, 03 Mar 2025 12:05:26 +0100
-Date: Mon, 3 Mar 2025 12:05:26 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: linux-wireless@vger.kernel.org
-Cc: David Lin <yu-hao.lin@nxp.com>, Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Johannes Berg <johannes@sipsolutions.net>, kernel@pengutronix.de
-Subject: Future of mwifiex driver
-Message-ID: <Z8WM9jn1QFscWZBQ@pengutronix.de>
+	s=arc-20240116; t=1741001435; c=relaxed/simple;
+	bh=X0LU3aYn4lUmJVogH7zjqoCFEavVUNcoV5t1PZiDF6c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YRlBYnEOp9BpHZlxSLftsnzJOf5yx4zpNOF/qiXN/bWzlWOHAlAFD0pxyhdZCpSWYp6MwRPxGl21dxl37TdIUSTf1P0deMT4xv4KXOIBzu36Zn5doWFpXm2Qgm5UTMJvoAmxwst4Jw2Ak1iQbo+ax4/UvEjtQdGLqKy9wzORLrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=M9LNaQQM; arc=none smtp.client-ip=17.58.23.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; bh=OZOLugLSboUaxk503olOimdjHThkYZSt/rnUocHx7qo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
+	b=M9LNaQQMBVnDvn7O9dkyxfqENe+n3CTiJTPQ2UQFIHq6HOYn5yqN3iDQ3RVhMcn23
+	 RYbgEyO7lbqW+H+rJi6eLqXyW0ofbGlb2TozfcwQt+N3LDxfRINewpBQO64R70O6JP
+	 Fj4pbqb3B74JtNoj/kfZRb0TgXmhRDVBpuDr2nHUHUnQnsoslms9i4lxHUEqE597f0
+	 dsKBFbP0qhEmAOCAG72w3Jw4tGGCdcmaS+BdhFHar4cmpTgkAp9kjNy3bhZerCy1fm
+	 yb4VLYz3eRYNRP0qJgIXtuCQgNCwAPfOp2U/Lehb0PDMMPAW6dfU3J1HAJf8t1L7ga
+	 V8U2HDDNFoYsA==
+Received: from [192.168.1.26] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-hyfv06021401.me.com (Postfix) with ESMTPSA id D31F830384C0;
+	Mon,  3 Mar 2025 11:30:17 +0000 (UTC)
+Message-ID: <ca719ca0-ee14-4022-bf61-5794d7ec8d3a@icloud.com>
+Date: Mon, 3 Mar 2025 19:30:13 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH *-next 00/18] Remove weird and needless 'return' for void
+ APIs
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
+ Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>,
+ Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>,
+ Thomas Graf <tgraf@suug.ch>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, iommu@lists.linux.dev,
+ linux-mtd@lists.infradead.org
+References: <20250221-rmv_return-v1-0-cc8dff275827@quicinc.com>
+ <46d17d84-5298-4460-96b0-9c62672167a0@icloud.com>
+ <20250227130347.GA5880@noisy.programming.kicks-ass.net>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <20250227130347.GA5880@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: VRiK2BwrsvBlqf3istvRC36nkjOjRITT
+X-Proofpoint-GUID: VRiK2BwrsvBlqf3istvRC36nkjOjRITT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-03_07,2025-03-03_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 suspectscore=0
+ mlxscore=0 adultscore=0 clxscore=1015 mlxlogscore=855 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2503030088
 
-I am worried about the future of the mwifiex driver. NXP has an ongoing
-effort of forking the driver to support their new chips, but the forked
-driver lacks support for the old chips supported by the current mwifiex
-driver.
+On 2025/2/27 21:03, Peter Zijlstra wrote:
+>> C) perhaps, most ordinary developers don't known the function mentioned
+>>    by B), and also feel strange for the usage
+> It is quite common to do kernel wide updates using scripts / cocinelle.
+> 
+> If you have a specialization that wraps a function to fill out a default
+> value, then you want the return types to keep matching.
+> 
+> Ex.
+> 
+> return_type foo(type1 a1, type2 a2);
+> 
+> return_type my_foo(type1 a1)
+> {
+> 	return foo(a1, value);
+> }
+> 
+> is a normal thing to do. The whole STD C cannot return void bollocks
+> breaks that when return_type := void, so in that regards I would call
+> this a STD C defect.
 
-Overall this leaves us and our customers using the mwifiex driver in a
-very bad situation.  Johannes made clear that he is not going to merge a
-driver that is 70% identical to the existing driver and on the other
-hand the existing driver doesn't get forward due to its odd-fixes state
-and the potential rise of a new driver which would render work on the
-existing driver useless.
+The usage is a GCC extension.
+but the usage is prone to be used within *inappropriate* context, take
+this patch series for an example:
 
-I think part of the solution should be that we start cleaning up the
-mwifiex driver so that at one point it could
+1)  both foo() and my_foo() are in the same module
+2)  or it seems return type void is the best type for foo(). so no good
+reason to track its type.
 
-a) be a robust base for a fork, or
-b) make the fork unnecessary
 
-This would help people using the mwifiex driver to get a better support
-for their hardware.  It would also help NXP by splitting the necessary
-changes into easier swallowable parts that are actually reviewable.
-Should we really need a fork at some point then much of the review would
-have already been done.
-
-I have a series here [1] doing some cleanup work which I'd still like to
-get forward.  Johannes made some remarks in [2] and [3] on which parts
-of the driver need cleanup. Some more things for cleanup can also be
-found in the forked driver code.
-
-I am willing to put more work into the driver in creating and also
-reviewing and testing patches, but I would need some path forward for
-the driver and I think this needs a commitment from NXP to take the
-detour over the mwifiex driver to get their stuff upstream.
-
-Any thoughts?
-
-[1] https://lore.kernel.org/linux-wireless/87ldwyumvq.fsf@kernel.org/
-[2] https://lore.kernel.org/lkml/57ff2078632d8f14ca73c8307dc43585b3d09f50.camel@sipsolutions.net/#r
-[2] https://lore.kernel.org/lkml/5f5c42585e168e252a5fa3f43325aaa360f6d27a.camel@sipsolutions.net/
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
