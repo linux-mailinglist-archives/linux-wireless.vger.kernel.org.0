@@ -1,214 +1,143 @@
-Return-Path: <linux-wireless+bounces-19687-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19688-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9801DA4B9BD
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 09:47:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF8FA4B9E3
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 09:53:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 900581890F01
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 08:48:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44523189315F
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 08:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8A4B667;
-	Mon,  3 Mar 2025 08:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7711EEA57;
+	Mon,  3 Mar 2025 08:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="STNQX5Kk"
+	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="XI8SQK7g"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mail.crpt.ru (mail.crpt.ru [91.236.205.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38FA22611
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 08:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B171EE7AD;
+	Mon,  3 Mar 2025 08:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740991616; cv=none; b=lazpnqwSTSCwCyvy+EtyqQQm4t1OSCV7nZk4FhG9G4MsbyL+6uC3g//qwpfdJ+YslD9pU043yLCRCJ7+r1HHlJFcBckYX5SsXVUpQHzhLfTtKNs9HYM3qtkXh6oH7Qm0tgSbgey5fbSPzWs8OlnabumC4xU+n7MtyFQWXIe/oNE=
+	t=1740991740; cv=none; b=ljqr25FWT7r5QVXAhuw5113NBTJAnt+7lGrj7/IVoqANvKgoH4dfyayttstlKjP/39E/q+HgXTa8OJonqH0WjDha93X+9PKTbaqo7JgwO3DMcF1nN+xdkTRFcK2SDJ5LWlSlugkjLGCfvrNDANNLF8hs39Bu1qxRB1RHUSEy1FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740991616; c=relaxed/simple;
-	bh=fOxpqGGb2y6WEQPQJB/JbqbqQ8YKVfIjjzkY9TzG5nc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=olf7Hzrfdeff6Y3zy5Rf8WWu9eT/hIWVuptVc93ki5UN18a7DsJnZu/B7RS8HO2ZwJfyydaxD4/dOAozzT41EwoUhoGsKGeuY9OR8ujQzt+g8V+/kyEjpV+nqwwRD4uUOWS9Hb+Azft0Jw8gvt5+Yhn5t3EUYT/xIeh+u1yBcnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=STNQX5Kk; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 522NTtcA009143;
-	Mon, 3 Mar 2025 08:46:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2hUdwLPmioySthKILoBhoRlwKbOykAoYEZSYsDqbR18=; b=STNQX5Kk+fFrlYa5
-	cjqdKHhsr5gBOSZv68ruhvN2KpwsIlM7UXXoKynke5iuiLqcKTBRFRgzZ0nDBn7S
-	4wpVGz5bROd+MzPsSczKlcBLmsfJl57OG1JKZ0lQwl1x27PIcimootmn/HlCwbQ3
-	mFszWKT1hP7kxexWz6MOUrUXXSXBA1tYDN7GetmhC4BTziHAcDir/brHV/vDGOhQ
-	W8e5QD5E2U1UNvOivg5lWeH8yIUGwXaCa2L7Aj4S1b0N1bIa3cLXDKFzzdiwPcgw
-	poZYIrdhRr89l4cOEH6UvUeXI//aKjS/fSKjBAUmnQswE+Ady2HohzPDR8S9tZ7o
-	rOFpNw==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 453t9945ng-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Mar 2025 08:46:50 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5238koi5019732
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 3 Mar 2025 08:46:50 GMT
-Received: from [10.152.201.120] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 3 Mar 2025
- 00:46:48 -0800
-Message-ID: <c3c5fc43-9140-4793-9e61-279b7176150d@quicinc.com>
-Date: Mon, 3 Mar 2025 14:16:46 +0530
+	s=arc-20240116; t=1740991740; c=relaxed/simple;
+	bh=dlzlgK1uuPwJmnwi9znbAsJgAX3BfyutzQnKO6E48gM=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Wd+itwxcAOOkbjJOpSVpGmw4ODSrK1w6z5SbXDIbG/NcOXD1BaE9vnj5xxpt03JP5lHct16U5A+rk3ALGEwYuv9vkSKjPq914wt7wuQfhGVxM3kbT1DJG1bMDUtFlEWdMlgwvUi3c0a7CTNge1Bi0MllVASCeKmNJdobzkPpmzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=XI8SQK7g; arc=none smtp.client-ip=91.236.205.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
+Received: from mail.crpt.ru ([192.168.60.4])
+	by mail.crpt.ru  with ESMTP id 5238mbWO013501-5238mbWQ013501
+	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
+	Mon, 3 Mar 2025 11:48:37 +0300
+Received: from EX1.crpt.local (192.168.60.3) by ex2.crpt.local (192.168.60.4)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Mon, 3 Mar
+ 2025 11:48:36 +0300
+Received: from EX1.crpt.local ([192.168.60.3]) by EX1.crpt.local
+ ([192.168.60.3]) with mapi id 15.01.2507.044; Mon, 3 Mar 2025 11:48:36 +0300
+From: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>, Jeff Johnson
+	<jjohnson@kernel.org>, Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+	Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>, Govindaraj Saminathan
+	<quic_gsamin@quicinc.com>, "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>, "ath11k@lists.infradead.org"
+	<ath11k@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>
+Subject: [PATCH] ath11k: fix overflow in tx stats calculation
+Thread-Topic: [PATCH] ath11k: fix overflow in tx stats calculation
+Thread-Index: AQHbjBkN1hoxjWOKr0amjmSVfS9ptA==
+Date: Mon, 3 Mar 2025 08:48:36 +0000
+Message-ID: <20250303084831.61876-1-a.vatoropin@crpt.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/12] wifi: mac80211: add support towards MLO handling
- of station statistics
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20250213171632.1646538-1-quic_sarishar@quicinc.com>
- <20250213171632.1646538-4-quic_sarishar@quicinc.com>
- <38d1d5f8be439e8553cddd2df03bf3553bafb82f.camel@sipsolutions.net>
-Content-Language: en-US
-From: Sarika Sharma <quic_sarishar@quicinc.com>
-In-Reply-To: <38d1d5f8be439e8553cddd2df03bf3553bafb82f.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: C9Vd9Wx70HxVkSVE0Ncw-OxNrmZ4hlLe
-X-Proofpoint-GUID: C9Vd9Wx70HxVkSVE0Ncw-OxNrmZ4hlLe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-03_03,2025-03-03_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=941
- mlxscore=0 lowpriorityscore=0 suspectscore=0 priorityscore=1501
- clxscore=1015 spamscore=0 adultscore=0 impostorscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2503030066
+X-FEAS-Client-IP: 192.168.60.4
+X-FE-Policy-ID: 2:4:0:SYSTEM
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
+ h=from:to:cc:subject:date:message-id:content-type:mime-version;
+ bh=GXCR2/qllsmPA+9VDf1WpC/D25nO4d0B9V4QL8xXBpM=;
+ b=XI8SQK7gVFOwGxTsYVEGbivOvCizx/6U/Qwcox6F8Zbuq9xSWNt/b+EZaxDRoROTS3cGZgX/Vnd2
+	B2ehybR+dUFKd3Yvy/L2h9t3BD2LUsiFSqA3JGZGlpvrOkNDbq7j0TOxreJ1xem6/SXbMmpvO4xy
+	OrF/dT56ewIB6smBikaPuXWac3mfxgAqrMdqdsbZqiLga/osIpPmOMVnToH9gzM+L1lDxroPtHLj
+	DwXgBhAwhfLidHW/9cs4gvq+KOmqcaK3Rby2BiAPwuAHJvcX7mas6mHoWZUGPRBL16BPK9C8UjM8
+	C8xkwcx1Pa3cEZXehsh9HzH+zesrkQXhXkvX0w==
 
-On 2/28/2025 6:46 PM, Johannes Berg wrote:
-> On Thu, 2025-02-13 at 22:46 +0530, Sarika Sharma wrote:
->>
->> -	if (!sta->deflink.pcpu_rx_stats)
->> +	if (link_id < 0)
->> +		link_sta_info = &sta->deflink;
->> +	else
->> +		link_sta_info =
->> +			rcu_dereference_protected(sta->link[link_id],
->> +						  lockdep_is_held(&sta->local->hw.wiphy->mtx));
-> 
-> We have all kinds of helper macros for that? Even this very specific
-> case: link_sta_dereference_protected()
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-Sure, will check this and use link_sta_dereference_protected() instead.
+Size of variable peer_stats->succ_bytes equals four bytes.
+Size of variable peer_stats->retry_bytes equals four bytes.
 
-> 
->> +	stats = &link_sta_info->rx_stats;
-> 
-> Should you check that link_sta_info even exists, just in case some link
-> IDs get mixed up? Not sure.
+The expression peer_stats->succ_bytes+peer_stats->retry_bytes is currently
+being evaluated using 32-bit arithmetic. So during the addition an
+overflow may occur.
 
-No, here it is not required, as already lock is acquired and checked 
-existence of link_sta_info in it's caller.
+Since a value of type 'u64' is used to store the eventual he, it is
+necessary to perform the 64-bit arithmetic to avoid overflow during the
+multiplication.
 
-> 
->> -unsigned long ieee80211_sta_last_active(struct sta_info *sta)
->> +unsigned long ieee80211_sta_last_active(struct sta_info *sta, int link_id)
->>   {
->> -	struct ieee80211_sta_rx_stats *stats = sta_get_last_rx_stats(sta);
->> +	struct ieee80211_sta_rx_stats *stats = sta_get_last_rx_stats(sta, link_id);
->> +	struct link_sta_info *link_sta_info;
->> +
->> +	if (link_id < 0)
->> +		link_sta_info = &sta->deflink;
->> +	else
->> +		link_sta_info =
->> +			rcu_dereference_protected(sta->link[link_id],
->> +						  lockdep_is_held(&sta->local->hw.wiphy->mtx));
->>   
->> -	if (!sta->deflink.status_stats.last_ack ||
->> -	    time_after(stats->last_rx, sta->deflink.status_stats.last_ack))
->> +	if (!link_sta_info->status_stats.last_ack ||
->> +	    time_after(stats->last_rx, link_sta_info->status_stats.last_ack))
->>   		return stats->last_rx;
->> -	return sta->deflink.status_stats.last_ack;
->> +
->> +	return link_sta_info->status_stats.last_ack;
->>   }
-> 
-> This seems wrong, if you ask for -1 you get deflink but that's no longer
-> updated at all, so you break the current/updated sta_set_sinfo() usage
-> with this since you just use -1 statically there now (with this patch.)
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+      =20
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+---
+ drivers/net/wireless/ath/ath11k/debugfs_sta.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Yes, I updated the usage, passing -1 as of now with this patch.
-But deflink is still filled whenever we use -1.
-
-Example:
-Here, in sta_set_tidstats() we check
-if (link_id < 0)
-+		link_sta_info = &sta->deflink;
-
-> 
->>   static void sta_update_codel_params(struct sta_info *sta, u32 thr)
->> diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
->> index 07b7ec39a52f..7e600c82a6e1 100644
->> --- a/net/mac80211/sta_info.h
->> +++ b/net/mac80211/sta_info.h
->> @@ -947,7 +947,7 @@ void ieee80211_sta_ps_deliver_wakeup(struct sta_info *sta);
->>   void ieee80211_sta_ps_deliver_poll_response(struct sta_info *sta);
->>   void ieee80211_sta_ps_deliver_uapsd(struct sta_info *sta);
->>   
->> -unsigned long ieee80211_sta_last_active(struct sta_info *sta);
->> +unsigned long ieee80211_sta_last_active(struct sta_info *sta, int link_id);
->>   
->>   void ieee80211_sta_set_max_amsdu_subframes(struct sta_info *sta,
->>   					   const u8 *ext_capab,
->> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
->> index f6b631faf4f7..1e2cb33030da 100644
->> --- a/net/mac80211/util.c
->> +++ b/net/mac80211/util.c
->> @@ -3276,14 +3276,28 @@ int ieee80211_put_srates_elem(struct sk_buff *skb,
->>   	return 0;
->>   }
->>   
->> -int ieee80211_ave_rssi(struct ieee80211_vif *vif)
->> +int ieee80211_ave_rssi(struct ieee80211_vif *vif, int link_id)
->>   {
->>   	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
->> +	struct ieee80211_link_data *link_data;
->> +	int rssi;
->>   
->>   	if (WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_STATION))
->>   		return 0;
->>   
->> -	return -ewma_beacon_signal_read(&sdata->deflink.u.mgd.ave_beacon_signal);
->> +	if (link_id < 0)
->> +		link_data = &sdata->deflink;
->> +	else
->> +		link_data =
->> +			rcu_dereference_protected(sdata->link[link_id],
->> +						  lockdep_is_held(&sdata->local->hw.wiphy->mtx));
->> +
->> +	if (WARN_ON(!link_data))
->> +		return -99;
->> +
->> +	rssi = -ewma_beacon_signal_read(&link_data->u.mgd.ave_beacon_signal);
->> +
->> +	return rssi;
-> 
-> what's the point in the trivial intermediate 'rssi' variable? It's not
-> even for line length since "rssi = " is the same length as "return "?
-
-Oops! sure, will use return directly.
-
-> 
-> johannes
-> 
-
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wi=
+reless/ath/ath11k/debugfs_sta.c
+index f56a24b6c8da..982a7add6ea6 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs_sta.c
++++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+@@ -69,26 +69,26 @@ void ath11k_debugfs_sta_add_tx_stats(struct ath11k_sta =
+*arsta,
+=20
+ 		if (txrate->flags & RATE_INFO_FLAGS_HE_MCS) {
+ 			STATS_OP_FMT(AMPDU).he[0][mcs] +=3D
+-			peer_stats->succ_bytes + peer_stats->retry_bytes;
++			peer_stats->succ_bytes + (u64)peer_stats->retry_bytes;
+ 			STATS_OP_FMT(AMPDU).he[1][mcs] +=3D
+ 			peer_stats->succ_pkts + peer_stats->retry_pkts;
+ 		} else if (txrate->flags & RATE_INFO_FLAGS_MCS) {
+ 			STATS_OP_FMT(AMPDU).ht[0][mcs] +=3D
+-			peer_stats->succ_bytes + peer_stats->retry_bytes;
++			peer_stats->succ_bytes + (u64)peer_stats->retry_bytes;
+ 			STATS_OP_FMT(AMPDU).ht[1][mcs] +=3D
+ 			peer_stats->succ_pkts + peer_stats->retry_pkts;
+ 		} else {
+ 			STATS_OP_FMT(AMPDU).vht[0][mcs] +=3D
+-			peer_stats->succ_bytes + peer_stats->retry_bytes;
++			peer_stats->succ_bytes + (u64)peer_stats->retry_bytes;
+ 			STATS_OP_FMT(AMPDU).vht[1][mcs] +=3D
+ 			peer_stats->succ_pkts + peer_stats->retry_pkts;
+ 		}
+ 		STATS_OP_FMT(AMPDU).bw[0][bw] +=3D
+-			peer_stats->succ_bytes + peer_stats->retry_bytes;
++			peer_stats->succ_bytes + (u64)peer_stats->retry_bytes;
+ 		STATS_OP_FMT(AMPDU).nss[0][nss] +=3D
+-			peer_stats->succ_bytes + peer_stats->retry_bytes;
++			peer_stats->succ_bytes + (u64)peer_stats->retry_bytes;
+ 		STATS_OP_FMT(AMPDU).gi[0][gi] +=3D
+-			peer_stats->succ_bytes + peer_stats->retry_bytes;
++			peer_stats->succ_bytes + (u64)peer_stats->retry_bytes;
+ 		STATS_OP_FMT(AMPDU).bw[1][bw] +=3D
+ 			peer_stats->succ_pkts + peer_stats->retry_pkts;
+ 		STATS_OP_FMT(AMPDU).nss[1][nss] +=3D
+--=20
+2.43.0
 
