@@ -1,365 +1,194 @@
-Return-Path: <linux-wireless+bounces-19678-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19679-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74F1A4B639
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 03:47:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F847A4B6D8
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 04:44:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 508373ABD29
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 02:47:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88E3416C7DE
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 03:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEA31922F6;
-	Mon,  3 Mar 2025 02:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58B51D9663;
+	Mon,  3 Mar 2025 03:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lh93H9n/"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="jpDWnxT0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B36913D8B1;
-	Mon,  3 Mar 2025 02:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DB81C3BE9
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 03:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740970053; cv=none; b=u6+avoOL32y7q5quiqBmxkqDm/ETgwstySvpfsSEVLzmEb9ZHdFjrBK2S+Qqh/itUVxhfQr+5RMyWqyMhFhekOM5F6DStUxYzQM0PjSgwBAAKevCJbAk5nrnQrPwW7Tv+s8AIYD/ZgTGHOieBYAhqOd3SsFQ7rt8d1dTmn+4cjs=
+	t=1740973444; cv=none; b=VTcxAVdZODYMTdvySKKBgC2LD+uBfNsK2fNRiYVxG8wvvQJpXFF521cIsLHdNMP4x1XA7z1xharUxUA3LPEfv/h8D+uo1ZvVHjCDxzqUYfZxIFuswfGchLPMvMco6FOmFBBtaSndcFKY1vOO+GloB6PFtQfiyXBQmO0fLFn+qp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740970053; c=relaxed/simple;
-	bh=pNFlzvLr3KiOS4uSJIEzxgq2L6/EJ3NXDTQ131OQuYk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VSi30vLkaYD41R0/CohnkZpvBLzm6IjFkjMNIrQ0JnABHO4Jg649XZQCn9GVsiNbv1ECcbCJlPSPCS5kf8V6GQje6MTcyatT/G3si/IbxF5rv9a4I8xfPRl6wObiwXxnJ8xewRRVntJSR+rTUcdBypEjxC9EhrXCdX48NnUwl9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lh93H9n/; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2239f8646f6so14504305ad.2;
-        Sun, 02 Mar 2025 18:47:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740970050; x=1741574850; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y/sZXPafCnfjPrX+eEhFZ+/W9i9aWnu/LtnJisycSy4=;
-        b=lh93H9n/JienRQ+AzGIKAbwN58/63AKGs8jMnJwunYP6nbBSOPR70zJGmaRrli4bUi
-         F74qryGOMO/7In3DeF4kA/XSTvngbuSR+ANi93rnYx+7/1gAMy2eCB9hivVwQZibA+2e
-         tqE4vsUbVvmEV1sRjjA5STejl0F5WuyE/E2yrIImAsykxfMGR2hCAJjf3zLkv7BXvh6E
-         wJrSAUYFGdICmzp83dOGSWDO7+ubr9BVfXJucfYXPbO3VgHJEmyZJdB0/mRCixg1Z72S
-         f/3+a8vkSLz2SjKzilnEkBTweGAsP8AxqtYz6eoMT08AMlFVCfTc5qGozbDhyR0x4X6e
-         KoGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740970050; x=1741574850;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y/sZXPafCnfjPrX+eEhFZ+/W9i9aWnu/LtnJisycSy4=;
-        b=tZ4Sdg9Y4/UfwmxxN28ubeSZiXU8OJLIEMfFkGiUAc83edrWbYaKxXIjScpvIb2zNZ
-         dYN2yelKGZblun+kSEIWpOLIHum5ZCNROMOvg2PBiWNlJLBxkfgHJVA8KyU3DbrqRYqf
-         XXyKIVDAidJVOntSuIJU3kXav04HbyTKhi4jmTqM70zMBDJIRXV5GabcSB4TeIxbZCI2
-         o1LkMBLdH0TqNUBct5fUHDzviG+gMF2fUvlr5V5aB0ToJuIiO3d5USRJWV4LeifHlHcD
-         Ty3F9RcEanMbsD2WdbfWmdXOdyv+P+GzxSyrJT/ecN4rb4xqcT7P7xH1A0eCU1rQiYRW
-         1qJg==
-X-Forwarded-Encrypted: i=1; AJvYcCU+6Ur4L2C6jMCbC4KI66TJWJ/wPMvJhmFxC9rvXxGVpmjuvoR6OajX+UmnUoe+pdrwHfJfhiAMXRo4nJTRy68=@vger.kernel.org, AJvYcCUUNHc4eoeA99Wx87BNifbnTsMwXMucAuZqr6KG4U4dYTlSMbwqEkisam/teTHceP3ndvMqppN1hcuui/A=@vger.kernel.org, AJvYcCVpsbz64ox+Bupgiwk+Ow+64CFOYV7OtRMDOvaf0aqYCtJ7PenVJow00YbCkGoNMSrKhPIt1wqHOpXSiG5i@vger.kernel.org, AJvYcCW+bDBhkQRK5j23UyiZ98OamuDYBzJopwcVjTinQncZkxkj0nxz/9wNSr2cTybsufw7hcEtsy5cyR+YtvLI@vger.kernel.org, AJvYcCWQy+6N8JjC1dSwmGiR9oqi1RzT//+AMSSMnMLphcwqJQn1gXepTrlZpx4FP10tG96Y40UV1MPgEbG90bc=@vger.kernel.org, AJvYcCX/sAmK2Jpn8rR6DF5Dz24bqJopXw3SzGGwdy33G32XXdNK0NnENenQtaKw6lgLwktSfzWk/oxi@vger.kernel.org, AJvYcCX9ndo/KnrZbY3BAlVu3h8KM9wMXdD3t79v0vf4m6ZPCnHBEGIXMRE70pNgeTcpcGJEtqI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEU4MHRpF1J1QwHWbIikJT6OmR1gFUt5q37373yldB0xMvQhkV
-	u3N1fB9aX6I4QJrjyiBtevMBnvPkQpmbAPtNzolx4d1jWe+6DIgs
-X-Gm-Gg: ASbGnctPIgCaj2s1sx0zqLX42ydiieZ4I7jvvZjEymxPVgbsuxc9QCg8B1tPu/nKlvz
-	46yGAmpPxAU0bQSG5k8pzB5R/THKBYUpv8OHhhZpEAFXkbc1ZR2AqbBm1pcTfmMXuOLEGgptwFq
-	vJaXdoDfue5gZj4Q9SEPCKhdy1HaKzxVLMSs/6nfCm/a66RWcYipGEMzMEVppHG3gyhK3vWMUNy
-	vMCTy276U/F1ikMAwjty768DimWyJnUQbytbrzLUFrUUnTRZ4j++F19EqoAhKwBw2NffvSwEHPi
-	1x4lYlX52ZJp03ukRns55YIWX71QV8Hkxebz6HGGlWVnvHP0KYE7zL73gLcP2if9crNhxbn8
-X-Google-Smtp-Source: AGHT+IEaGtdMZBEy2bxwSPGd2bD8qrXnPe8PVMJ2bjqQlITrRKiZTP6g3iWQ0ddz5yh+ocZy4OpOpA==
-X-Received: by 2002:a17:903:2302:b0:216:2bd7:1c2f with SMTP id d9443c01a7336-22368f7b5d3mr144431425ad.18.1740970050255;
-        Sun, 02 Mar 2025 18:47:30 -0800 (PST)
-Received: from visitorckw-System-Product-Name ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734a00255d8sm7660595b3a.88.2025.03.02.18.47.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Mar 2025 18:47:29 -0800 (PST)
-Date: Mon, 3 Mar 2025 10:47:20 +0800
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Yury Norov <yury.norov@gmail.com>, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
-	andrzej.hajda@intel.com, neil.armstrong@linaro.org,
-	rfoss@kernel.org, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	simona@ffwll.ch, dmitry.torokhov@gmail.com, mchehab@kernel.org,
-	awalls@md.metrocast.net, hverkuil@xs4all.nl,
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-	louis.peens@corigine.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
-	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
-	jirislaby@kernel.org, akpm@linux-foundation.org, hpa@zytor.com,
-	alistair@popple.id.au, linux@rasmusvillemoes.dk,
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
-	jernej.skrabec@gmail.com, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-	oss-drivers@corigine.com, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
-	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
-	andrew.cooper3@citrix.com, Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: Re: [PATCH v2 01/18] lib/parity: Add __builtin_parity() fallback
- implementations
-Message-ID: <Z8UYOD2tyjS25gIc@visitorckw-System-Product-Name>
-References: <20250301142409.2513835-1-visitorckw@gmail.com>
- <20250301142409.2513835-2-visitorckw@gmail.com>
- <Z8PMHLYHOkCZJpOh@thinkpad>
- <Z8QUsgpCB0m2qKJR@visitorckw-System-Product-Name>
- <Z8SBBM_81wyHfvC0@thinkpad>
- <Z8SVb4xD4tTiMEpL@visitorckw-System-Product-Name>
- <20250302190954.2d7e068f@pumpkin>
+	s=arc-20240116; t=1740973444; c=relaxed/simple;
+	bh=LdYo0EnK6X+jo5eNl7D3jBqxFBKtN3nX/CdNwdJ84nA=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=etORXHkcmzgmUFjaVZAfhNsFY0Kpk63nvFEk2qpVxGsAXatxxJp20wHzPZ/gg9iv2a0ELVUd7a/+UYwBuBluuWe8VfkI/3iMjbcpgJETC0Epp3wZltr/1RN8bmOXiVUC/UPAMHrxRxK7TeiPkGjTIXqMv0kfi0mbHOKiPO+s82w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=jpDWnxT0; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5233hvyM7556089, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1740973437; bh=LdYo0EnK6X+jo5eNl7D3jBqxFBKtN3nX/CdNwdJ84nA=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=jpDWnxT0XU6GS8ROYQjIJqm3rlGwPPqAyQXczLKrVZ6TZoAkiZudY1Qx0gIJPg3St
+	 M8lXrNvMUWW0MeEG78RaFhTFKjcBO6Uq30SC3K9nx6RH6R4kp8aGFw9KH1Nj3qP+hF
+	 T+X1pFUOUz8xY2a8+hL2W4NfWKYUcCKyjUf7+Uwl2xwbLePccPgRPBy+oai+5oFMnM
+	 swswozVj3mLR0lhwWE4y+JKEazqVUs88VS/W0ypxfmSjCBGwPm+iPsHDDnPjlR5h35
+	 jVajPCVHCCCj3QfEUDmSY46gx+sWJxVJX9KkjxfVLyMxEBb5mT0fbQ6RPaArmbgh/1
+	 ZRfJjYEN+pYGA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5233hvyM7556089
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 3 Mar 2025 11:43:57 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 3 Mar 2025 11:43:57 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 3 Mar 2025 11:43:57 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b%5]) with mapi id
+ 15.01.2507.035; Mon, 3 Mar 2025 11:43:57 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH rtw-next 4/7] wifi: rtw88: Add rtw8814a.{c,h}
+Thread-Topic: [PATCH rtw-next 4/7] wifi: rtw88: Add rtw8814a.{c,h}
+Thread-Index: AQHbiLBKBoWfiurke0qLjSVsSYaLurNgrf7A
+Date: Mon, 3 Mar 2025 03:43:56 +0000
+Message-ID: <731d409432734057ab05ea8b5b052432@realtek.com>
+References: <8e9d900e-0721-425c-8466-bd57742c9f86@gmail.com>
+ <5041313a-ffaf-4297-81b7-d8884666fed3@gmail.com>
+In-Reply-To: <5041313a-ffaf-4297-81b7-d8884666fed3@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250302190954.2d7e068f@pumpkin>
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On Sun, Mar 02, 2025 at 07:09:54PM +0000, David Laight wrote:
-> On Mon, 3 Mar 2025 01:29:19 +0800
-> Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
-> 
-> > Hi Yury,
-> > 
-> > On Sun, Mar 02, 2025 at 11:02:12AM -0500, Yury Norov wrote:
-> > > On Sun, Mar 02, 2025 at 04:20:02PM +0800, Kuan-Wei Chiu wrote:  
-> > > > Hi Yury,
-> > > > 
-> > > > On Sat, Mar 01, 2025 at 10:10:20PM -0500, Yury Norov wrote:  
-> > > > > On Sat, Mar 01, 2025 at 10:23:52PM +0800, Kuan-Wei Chiu wrote:  
-> > > > > > Add generic C implementations of __paritysi2(), __paritydi2(), and
-> > > > > > __parityti2() as fallback functions in lib/parity.c. These functions
-> > > > > > compute the parity of a given integer using a bitwise approach and are
-> > > > > > marked with __weak, allowing architecture-specific implementations to
-> > > > > > override them.
-> > > > > > 
-> > > > > > This patch serves as preparation for using __builtin_parity() by
-> > > > > > ensuring a fallback mechanism is available when the compiler does not
-> > > > > > inline the __builtin_parity().
-> > > > > > 
-> > > > > > Co-developed-by: Yu-Chun Lin <eleanor15x@gmail.com>
-> > > > > > Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-> > > > > > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-> > > > > > ---
-> > > > > >  lib/Makefile |  2 +-
-> > > > > >  lib/parity.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
-> > > > > >  2 files changed, 49 insertions(+), 1 deletion(-)
-> > > > > >  create mode 100644 lib/parity.c
-> > > > > > 
-> > > > > > diff --git a/lib/Makefile b/lib/Makefile
-> > > > > > index 7bab71e59019..45affad85ee4 100644
-> > > > > > --- a/lib/Makefile
-> > > > > > +++ b/lib/Makefile
-> > > > > > @@ -51,7 +51,7 @@ obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
-> > > > > >  	 bsearch.o find_bit.o llist.o lwq.o memweight.o kfifo.o \
-> > > > > >  	 percpu-refcount.o rhashtable.o base64.o \
-> > > > > >  	 once.o refcount.o rcuref.o usercopy.o errseq.o bucket_locks.o \
-> > > > > > -	 generic-radix-tree.o bitmap-str.o
-> > > > > > +	 generic-radix-tree.o bitmap-str.o parity.o
-> > > > > >  obj-y += string_helpers.o
-> > > > > >  obj-y += hexdump.o
-> > > > > >  obj-$(CONFIG_TEST_HEXDUMP) += test_hexdump.o
-> > > > > > diff --git a/lib/parity.c b/lib/parity.c
-> > > > > > new file mode 100644
-> > > > > > index 000000000000..a83ff8d96778
-> > > > > > --- /dev/null
-> > > > > > +++ b/lib/parity.c
-> > > > > > @@ -0,0 +1,48 @@
-> > > > > > +// SPDX-License-Identifier: GPL-2.0-only
-> > > > > > +/*
-> > > > > > + * lib/parity.c
-> > > > > > + *
-> > > > > > + * Copyright (C) 2025 Kuan-Wei Chiu <visitorckw@gmail.com>
-> > > > > > + * Copyright (C) 2025 Yu-Chun Lin <eleanor15x@gmail.com>
-> > > > > > + *
-> > > > > > + * __parity[sdt]i2 can be overridden by linking arch-specific versions.
-> > > > > > + */
-> > > > > > +
-> > > > > > +#include <linux/export.h>
-> > > > > > +#include <linux/kernel.h>
-> > > > > > +
-> > > > > > +/*
-> > > > > > + * One explanation of this algorithm:
-> > > > > > + * https://funloop.org/codex/problem/parity/README.html  
-> > > > > 
-> > > > > I already asked you not to spread this link. Is there any reason to
-> > > > > ignore it?
-> > > > >   
-> > > > In v2, this algorithm was removed from bitops.h, so I moved the link
-> > > > here instead. I'm sorry if it seemed like I ignored your comment.  
-> > > 
-> > > Yes, it is.
-> > >    
-> > > > In v1, I used the same approach as parity8() because I couldn't justify
-> > > > the performance impact in a specific driver or subsystem. However,
-> > > > multiple people commented on using __builtin_parity or an x86 assembly
-> > > > implementation. I'm not ignoring their feedback-I want to address these  
-> > > 
-> > > Please ask those multiple people: are they ready to maintain all that
-> > > zoo of macros, weak implementations, arch implementations and stubs
-> > > for no clear benefit? Performance is always worth it, but again I see
-> > > not even a hint that the drivers care about performance. You don't
-> > > measure it, so don't care as well. Right?
-> > >   
-> > > > comments. Before submitting, I sent an email explaining my current
-> > > > approach: using David's suggested method along with __builtin_parity,
-> > > > but no one responded. So, I decided to submit v2 for discussion
-> > > > instead.  
-> > > 
-> > > For discussion use tag RFC.
-> > >   
-> > > > 
-> > > > To avoid mistakes in v3, I want to confirm the following changes before
-> > > > sending it:
-> > > > 
-> > > > (a) Change the return type from int to bool.
-> > > > (b) Avoid __builtin_parity and use the same approach as parity8().
-> > > > (c) Implement parity16/32/64() as single-line inline functions that
-> > > >     call the next smaller variant after xor.
-> > > > (d) Add a parity() macro that selects the appropriate parityXX() based
-> > > >     on type size.
-> > > > (e) Update users to use this parity() macro.
-> > > > 
-> > > > However, (d) may require a patch affecting multiple subsystems at once
-> > > > since some places that already include bitops.h have functions named
-> > > > parity(), causing conflicts. Unless we decide not to add this macro in
-> > > > the end.
-> > > > 
-> > > > As for checkpatch.pl warnings, they are mostly pre-existing coding
-> > > > style issues in this series. I've kept them as-is, but if preferred,
-> > > > I'm fine with fixing them.  
-> > > 
-> > > Checkpatch only complains on new lines. Particularly this patch should
-> > > trigger checkpatch warning because it adds a new file but doesn't touch
-> > > MAINTAINERS. 
-> > >   
-> > For example, the following warning:
-> > 
-> > ERROR: space required after that ',' (ctx:VxV)
-> > #84: FILE: drivers/input/joystick/sidewinder.c:368:
-> > +                       if (!parity64(GB(0,33)))
-> >                                           ^
-> > 
-> > This issue already existed before this series, and I'm keeping its
-> > style unchanged for now.
-> > 
-> > > > If anything is incorrect or if there are concerns, please let me know.
-> > > > 
-> > > > Regards,
-> > > > Kuan-Wei
-> > > > 
-> > > > diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-> > > > index c1cb53cf2f0f..47b7eca8d3b7 100644
-> > > > --- a/include/linux/bitops.h
-> > > > +++ b/include/linux/bitops.h
-> > > > @@ -260,6 +260,43 @@ static inline int parity8(u8 val)
-> > > >  	return (0x6996 >> (val & 0xf)) & 1;
-> > > >  }
-> > > > 
-> > > > +static inline bool parity16(u16 val)
-> > > > +{
-> > > > +	return parity8(val ^ (val >> 8));
-> > > > +}
-> > > > +
-> > > > +static inline bool parity32(u32 val)
-> > > > +{
-> > > > +	return parity16(val ^ (val >> 16));
-> > > > +}
-> > > > +
-> > > > +static inline bool parity64(u64 val)
-> > > > +{
-> > > > +	return parity32(val ^ (val >> 32));
-> > > > +}  
-> > > 
-> > > That was discussed between Jiri and me in v2. Fixed types functions
-> > > are needed only in a few very specific cases. With the exception of
-> > > I3C driver (which doesn't look good for both Jiri and me), all the
-> > > drivers have the type of variable passed to the parityXX() matching 
-> > > the actual variable length. It means that fixed-type versions of the
-> > > parity() are simply not needed. So if we don't need them, please don't
-> > > introduce it.
-> > >  
-> > So, I should add the following parity() macro in v3, remove parity8(),
-> > and update all current parity8() users to use this macro, right?
-> > 
-> > I changed u64 to __auto_type and applied David's suggestion to replace
-> > the >> 32 with >> 16 >> 16 to avoid compiler warnings.
-> > 
-> > Regards,
-> > Kuan-Wei
-> > 
-> > #define parity(val)					\
-> > ({							\
-> > 	__auto_type __v = (val);			\
-> > 	bool __ret;					\
-> > 	switch (BITS_PER_TYPE(val)) {			\
-> > 	case 64:					\
-> > 		__v ^= __v >> 16 >> 16;			\
-> > 		fallthrough;				\
-> > 	case 32:					\
-> > 		__v ^= __v >> 16;			\
-> > 		fallthrough;				\
-> > 	case 16:					\
-> > 		__v ^= __v >> 8;			\
-> > 		fallthrough;				\
-> > 	case 8:						\
-> > 		__v ^= __v >> 4;			\
-> > 		__ret =  (0x6996 >> (__v & 0xf)) & 1;	\
-> > 		break;					\
-> > 	default:					\
-> > 		BUILD_BUG();				\
-> > 	}						\
-> > 	__ret;						\
-> > })
-> 
-> I'm seeing double-register shifts for 64bit values on 32bit systems.
-> And gcc is doing 64bit double-register maths all the way down.
-> 
-> That is fixed by changing the top of the define to
-> #define parity(val)					\
-> ({							\
-> 	unsigned int __v = (val);			\
-> 	bool __ret;					\
-> 	switch (BITS_PER_TYPE(val)) {			\
-> 	case 64:					\
-> 		__v ^= val >> 16 >> 16;			\
-> 		fallthrough;				\
-> 
-> But it's need changing to only expand 'val' once.
-> Perhaps:
-> 	auto_type _val = (val);
-> 	u32 __ret = val;
-> and (mostly) s/__v/__ret/g
->
-I'm happy to make this change, though I'm a bit confused about how much
-we care about the code generated by gcc. So this is the macro expected
-in v3:
-
-#define parity(val)					\
-({							\
-	__auto_type __v = (val);			\
-	u32 __ret = val;				\
-	switch (BITS_PER_TYPE(val)) {			\
-	case 64:					\
-                __ret ^= __v >> 16 >> 16;		\
-		fallthrough;				\
-	case 32:					\
-		__ret ^= __ret >> 16;			\
-		fallthrough;				\
-	case 16:					\
-		__ret ^= __ret >> 8;			\
-		fallthrough;				\
-	case 8:						\
-		__ret ^= __ret >> 4;			\
-		__ret = (0x6996 >> (__ret & 0xf)) & 1;	\
-		break;					\
-	default:					\
-		BUILD_BUG();				\
-	}						\
-	__ret;						\
-})
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBUaGVz
+ZSBjb250YWluIGFsbCB0aGUgbG9naWMgZm9yIHRoZSBSVEw4ODE0QSBjaGlwLg0KPiANCj4gU2ln
+bmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQoN
+ClsuLi5dDQoNCj4gK3N0YXRpYyB2b2lkIHJ0dzg4MTRhX2NvbmZpZ19jY2tfcnhfYW50ZW5uYV9p
+bml0KHN0cnVjdCBydHdfZGV2ICpydHdkZXYpDQo+ICt7DQo+ICsgICAgICAgLyogQ0NLIDJSIEND
+QSBwYXJhbWV0ZXJzICovDQo+ICsNCj4gKyAgICAgICAvKiBEaXNhYmxlIEFudCBkaXZlcnNpdHkg
+Ki8NCj4gKyAgICAgICBydHdfd3JpdGUzMl9tYXNrKHJ0d2RldiwgUkVHX1JYU0IsIEJJVCgxNSks
+IDB4MCk7DQoNCiNkZWZpbmUgQklUX1JYU0JfQU5BX0RJViBCSVQoMTUpDQoNCj4gKyAgICAgICAv
+KiBDb25jdXJyZW50IENDQSBhdCBMU0IgJiBVU0IgKi8NCj4gKyAgICAgICBydHdfd3JpdGUzMl9t
+YXNrKHJ0d2RldiwgMHhhNzAsIEJJVCg3KSwgMCk7DQoNCiNkZWZpbmUgUkVHX0NDQSAweGE3MA0K
+I2RlZmluZSBCSVRfQ0NBX0NPIEJJVCg3KQ0KDQo+ICsgICAgICAgLyogUlggcGF0aCBkaXZlcnNp
+dHkgZW5hYmxlICovDQo+ICsgICAgICAgcnR3X3dyaXRlMzJfbWFzayhydHdkZXYsIDB4YTc0LCBC
+SVQoOCksIDApOw0KDQojZGVmaW5lIFJFR19BTlRTRUwgMHhhNzQNCiNkZWZpbmUgQklUX0FOVF9C
+WUNPIEJJVCg4KQ0KDQo+ICsgICAgICAgLyogcl9lbl9tcmNfYW50c2VsICovDQo+ICsgICAgICAg
+cnR3X3dyaXRlMzJfbWFzayhydHdkZXYsIDB4YTE0LCBCSVQoNyksIDApOw0KDQojZGVmaW5lIFJF
+R19QUkVDVFJMIDB4YTE0DQojZGVmaW5lIEJJVF9ESVNfQ09fUEFUSFNFTCBCSVQoNykNCg0KPiAr
+ICAgICAgIC8qIE1CQyB3ZWlnaHRpbmcgKi8NCj4gKyAgICAgICBydHdfd3JpdGUzMl9tYXNrKHJ0
+d2RldiwgMHhhMjAsIEJJVCg1KSB8IEJJVCg0KSwgMSk7DQoNCiNkZWZpbmUgUkVHX0NDQV9NRiAw
+eGEyMA0KI2RlZmluZSBCSVRfTUJDX1dJTiBHRU5NQVNLKDUsIDQpDQoNCj4gKyAgICAgICAvKiAy
+UiBDQ0Egb25seSAqLw0KPiArICAgICAgIHJ0d193cml0ZTMyX21hc2socnR3ZGV2LCAweGE4NCwg
+QklUKDI4KSwgMSk7DQoNCiNkZWZpbmUgUkVHX0NDS1RYIDB4YTg0DQojZGVmaW5lIEJJVF9DTUJf
+Q0NBXzJSIEJJVCgyOCkNCg0KU2hhcmUgc29tZSBuYW1lcywgYnV0IHdlIGRvbid0IGhhdmUgb2Zm
+aWNpYWwgbmFtZXMgZm9yIHRoZXNlLCBzbyBpZiB0aGV5DQphcmUgY29uZmxpY3Qgd2l0aCBvdGhl
+cnMsIHBsZWFzZSBhZGQgc3VmZml4IGxpa2UgVjEgb3Igc29tZXRoaW5nIGVsc2UuDQoNClsuLi5d
+DQoNCj4gK3N0YXRpYyB2b2lkIHJ0dzg4MTRhX3NldF9yZmVfcmVnXzI0ZyhzdHJ1Y3QgcnR3X2Rl
+diAqcnR3ZGV2KQ0KPiArew0KPiArICAgICAgIHN3aXRjaCAocnR3ZGV2LT5lZnVzZS5yZmVfb3B0
+aW9uKSB7DQo+ICsgICAgICAgY2FzZSAyOg0KPiArICAgICAgICAgICAgICAgcnR3X3dyaXRlMzIo
+cnR3ZGV2LCBSRUdfUkZFX1BJTk1VWF9BLCAweDcyNzA3MjcwKTsNCj4gKyAgICAgICAgICAgICAg
+IHJ0d193cml0ZTMyKHJ0d2RldiwgUkVHX1JGRV9QSU5NVVhfQiwgMHg3MjcwNzI3MCk7DQo+ICsg
+ICAgICAgICAgICAgICBydHdfd3JpdGUzMihydHdkZXYsIFJFR19SRkVfUElOTVVYX0MsIDB4NzI3
+MDcyNzApOw0KPiArICAgICAgICAgICAgICAgcnR3X3dyaXRlMzIocnR3ZGV2LCBSRUdfUkZFX1BJ
+Tk1VWF9ELCAweDc3NzA3NzcwKTsNCj4gKw0KPiArICAgICAgICAgICAgICAgcnR3X3dyaXRlMzJf
+bWFzayhydHdkZXYsIDB4MUFCQywgMHgwZmYwMDAwMCwgMHg3Mik7DQoNCiNkZWZpbmUgUkVHX1JG
+RV9JTlZTRUxfRCAweDFhYmMNCiNkZWZpbmUgQklUX1JGRV9TRUxTVzBfRCBHRU5NQVNLKDI3LCAy
+MCkNCg0KWy4uLl0NCg0KPiArDQo+ICtzdGF0aWMgdm9pZCBydHc4ODE0YV9hZGNfY2xrKHN0cnVj
+dCBydHdfZGV2ICpydHdkZXYpDQo+ICt7DQo+ICsgICAgICAgc3RhdGljIGNvbnN0IHUzMiByeGlx
+Y19yZWdbMl1bNF0gPSB7DQo+ICsgICAgICAgICAgICAgICB7IFJFR19SWF9JUUNfQUJfQSwgUkVH
+X1JYX0lRQ19BQl9CLA0KPiArICAgICAgICAgICAgICAgICBSRUdfUlhfSVFDX0FCX0MsIFJFR19S
+WF9JUUNfQUJfRCB9LA0KPiArICAgICAgICAgICAgICAgeyBSRUdfUlhfSVFDX0NEX0EsIFJFR19S
+WF9JUUNfQ0RfQiwNCj4gKyAgICAgICAgICAgICAgICAgUkVHX1JYX0lRQ19DRF9DLCBSRUdfUlhf
+SVFDX0NEX0QgfQ0KPiArICAgICAgIH07DQo+ICsgICAgICAgdTMyIGJiX3JlZ184ZmMsIGJiX3Jl
+Z184MDgsIHJ4aXFjWzRdOw0KPiArICAgICAgIHUzMiBpID0gMCwgbWFjX2FjdGl2ZSA9IDE7DQo+
+ICsgICAgICAgdTggbWFjX3JlZ181MjI7DQo+ICsNCj4gKyAgICAgICBpZiAocnR3ZGV2LT5oYWwu
+Y3V0X3ZlcnNpb24gIT0gUlRXX0NISVBfVkVSX0NVVF9BKQ0KPiArICAgICAgICAgICAgICAgcmV0
+dXJuOw0KPiArDQo+ICsgICAgICAgLyogMSBTdGVwMS4gTUFDIFRYIHBhdXNlICovDQo+ICsgICAg
+ICAgbWFjX3JlZ181MjIgPSBydHdfcmVhZDgocnR3ZGV2LCBSRUdfVFhQQVVTRSk7DQo+ICsgICAg
+ICAgYmJfcmVnXzhmYyA9IHJ0d19yZWFkMzIocnR3ZGV2LCAweDhmYyk7DQo+ICsgICAgICAgYmJf
+cmVnXzgwOCA9IHJ0d19yZWFkMzIocnR3ZGV2LCBSRUdfUlhQU0VMKTsNCj4gKyAgICAgICBydHdf
+d3JpdGU4KHJ0d2RldiwgUkVHX1RYUEFVU0UsIDB4M2YpOw0KPiArDQo+ICsgICAgICAgLyogMSBT
+dGVwIDIuIEJhY2t1cCByeGlxYyAmIHJ4aXFjID0gMCAqLw0KPiArICAgICAgIGZvciAoaSA9IDA7
+IGkgPCA0OyBpKyspIHsNCj4gKyAgICAgICAgICAgICAgIHJ4aXFjW2ldID0gcnR3X3JlYWQzMihy
+dHdkZXYsIHJ4aXFjX3JlZ1swXVtpXSk7DQo+ICsgICAgICAgICAgICAgICBydHdfd3JpdGUzMihy
+dHdkZXYsIHJ4aXFjX3JlZ1swXVtpXSwgMHgwKTsNCj4gKyAgICAgICAgICAgICAgIHJ0d193cml0
+ZTMyKHJ0d2RldiwgcnhpcWNfcmVnWzFdW2ldLCAweDApOw0KPiArICAgICAgIH0NCj4gKyAgICAg
+ICBydHdfd3JpdGUzMl9tYXNrKHJ0d2RldiwgMHhhMTQsIDB4MDAwMDAzMDAsIDB4Myk7DQoNCiNk
+ZWZpbmUgQklUX0lRX1dHVCBHRU5NQUtTKDksIDgpDQoNCj4gKyAgICAgICBpID0gMDsNCj4gKw0K
+PiArICAgICAgIC8qIDEgU3RlcCAzLiBNb25pdG9yIE1BQyBJRExFICovDQo+ICsgICAgICAgcnR3
+X3dyaXRlMzIocnR3ZGV2LCAweDhmYywgMHgwKTsNCg0KI2RlZmluZSBSRUdfREJHU0VMIDB4OGZj
+DQoNCj4gKyAgICAgICB3aGlsZSAobWFjX2FjdGl2ZSkgew0KPiArICAgICAgICAgICAgICAgbWFj
+X2FjdGl2ZSA9IHJ0d19yZWFkMzIocnR3ZGV2LCAweGZhMCkgJiAweDgwM2UwMDA4Ow0KDQojZGVm
+aW5lIFJFR19EQkdSUFQgMHhmYTANCg0KPiArICAgICAgICAgICAgICAgaSsrOw0KPiArICAgICAg
+ICAgICAgICAgaWYgKGkgPiAxMDAwKQ0KPiArICAgICAgICAgICAgICAgICAgICAgICBicmVhazsN
+Cj4gKyAgICAgICB9DQo+ICsNCg0KWy4uLl0NCg0KPiArDQo+ICtzdGF0aWMgdm9pZA0KPiArcnR3
+ODgxNGFfc2V0X3R4X3Bvd2VyX2luZGV4X2J5X3JhdGUoc3RydWN0IHJ0d19kZXYgKnJ0d2Rldiwg
+dTggcGF0aCwgdTggcnMpDQo+ICt7DQo+ICsgICAgICAgc3RydWN0IHJ0d19oYWwgKmhhbCA9ICZy
+dHdkZXYtPmhhbDsNCj4gKyAgICAgICB1MzIgdHhhZ2NfdGFibGVfd2Q7DQo+ICsgICAgICAgdTgg
+cmF0ZSwgcHdyX2luZGV4Ow0KPiArICAgICAgIGludCBqOw0KPiArDQo+ICsgICAgICAgZm9yIChq
+ID0gMDsgaiA8IHJ0d19yYXRlX3NpemVbcnNdOyBqKyspIHsNCj4gKyAgICAgICAgICAgICAgIHJh
+dGUgPSBydHdfcmF0ZV9zZWN0aW9uW3JzXVtqXTsNCj4gKw0KPiArICAgICAgICAgICAgICAgcHdy
+X2luZGV4ID0gaGFsLT50eF9wd3JfdGJsW3BhdGhdW3JhdGVdICsgMjsNCj4gKyAgICAgICAgICAg
+ICAgIGlmIChwd3JfaW5kZXggPiBydHdkZXYtPmNoaXAtPm1heF9wb3dlcl9pbmRleCkNCj4gKyAg
+ICAgICAgICAgICAgICAgICAgICAgcHdyX2luZGV4ID0gcnR3ZGV2LT5jaGlwLT5tYXhfcG93ZXJf
+aW5kZXg7DQo+ICsNCj4gKyAgICAgICAgICAgICAgIHR4YWdjX3RhYmxlX3dkID0gMHgwMDgwMTAw
+MDsNCj4gKyAgICAgICAgICAgICAgIHR4YWdjX3RhYmxlX3dkIHw9IChwd3JfaW5kZXggPDwgMjQp
+IHwgKHBhdGggPDwgOCkgfCByYXRlOw0KPiArDQo+ICsgICAgICAgICAgICAgICBydHdfd3JpdGUz
+MihydHdkZXYsIDB4MTk5OCwgdHhhZ2NfdGFibGVfd2QpOw0KDQojZGVmaW5lIFJFR19BR0NfVEJM
+IDB4MTk5OA0KDQo+ICsNCj4gKyAgICAgICAgICAgICAgIC8qIGZpcnN0IHRpbWUgdG8gdHVybiBv
+biB0aGUgdHhhZ2MgdGFibGUNCj4gKyAgICAgICAgICAgICAgICAqIHNlY29uZCB0byB3cml0ZSB0
+aGUgYWRkcjANCj4gKyAgICAgICAgICAgICAgICAqLw0KPiArICAgICAgICAgICAgICAgaWYgKHJh
+dGUgPT0gREVTQ19SQVRFMU0pDQo+ICsgICAgICAgICAgICAgICAgICAgICAgIHJ0d193cml0ZTMy
+KHJ0d2RldiwgMHgxOTk4LCB0eGFnY190YWJsZV93ZCk7DQo+ICsgICAgICAgfQ0KPiArfQ0KPiAr
+DQoNClsuLi5dDQoNCj4gKw0KPiArc3RhdGljIHZvaWQgcnR3ODgxNGFfaXFrX2NvbmZpZ3VyZV9t
+YWMoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4gK3sNCj4gKyAgICAgICBydHdfd3JpdGU4KHJ0
+d2RldiwgUkVHX1RYUEFVU0UsIDB4M2YpOw0KPiArICAgICAgIHJ0d193cml0ZTMyX2NscihydHdk
+ZXYsIFJFR19CQ05fQ1RSTCwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgKEJJVF9FTl9CQ05f
+RlVOQ1RJT04gPDwgOCkgfCBCSVRfRU5fQkNOX0ZVTkNUSU9OKTsNCj4gKw0KPiArICAgICAgIC8q
+IFJYIGFudGUgb2ZmICovDQo+ICsgICAgICAgcnR3X3dyaXRlOChydHdkZXYsIFJFR19SWFBTRUws
+IDB4MDApOw0KPiArICAgICAgIC8qIENDQSBvZmYgKi8NCj4gKyAgICAgICBydHdfd3JpdGUzMl9t
+YXNrKHJ0d2RldiwgUkVHX0NDQTJORCwgMHhmLCAweGUpOw0KPiArICAgICAgIC8qIENDSyBSWCBw
+YXRoIG9mZiAqLw0KPiArICAgICAgIHJ0d193cml0ZTMyX3NldChydHdkZXYsIDB4YTE0LCBCSVQo
+OSkgfCBCSVQoOCkpOw0KPiArICAgICAgIHJ0d193cml0ZTMyKHJ0d2RldiwgUkVHX1JGRV9QSU5N
+VVhfQSwgMHg3Nzc3Nzc3Nyk7DQo+ICsgICAgICAgcnR3X3dyaXRlMzIocnR3ZGV2LCBSRUdfUkZF
+X1BJTk1VWF9CLCAweDc3Nzc3Nzc3KTsNCj4gKyAgICAgICBydHdfd3JpdGUzMihydHdkZXYsIFJF
+R19SRkVfUElOTVVYX0MsIDB4Nzc3Nzc3NzcpOw0KPiArICAgICAgIHJ0d193cml0ZTMyKHJ0d2Rl
+diwgUkVHX1JGRV9QSU5NVVhfRCwgMHg3Nzc3Nzc3Nyk7DQo+ICsgICAgICAgcnR3X3dyaXRlMzJf
+bWFzayhydHdkZXYsIDB4MWFiYywgMHgwZmYwMDAwMCwgMHg3Nyk7DQo+ICsgICAgICAgcnR3X3dy
+aXRlMzJfbWFzayhydHdkZXYsIDB4OTEwLCBCSVQoMjMpIHwgQklUKDIyKSwgMHgwKTsNCg0KI2Rl
+ZmluZSBSRUdfUFNEIDB4OTEwDQojZGVmaW5lIEJJVF9QU0RfSU5JIEdFTk1BU0soMjMsIDIyKQ0K
+DQpbLi4uXQ0KDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
+dzg4L3J0dzg4MTRhLmgNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0
+dzg4MTRhLmgNCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gaW5kZXggMDAwMDAwMDAwMDAwLi42
+MjJmY2M1OGMxMzQNCj4gLS0tIC9kZXYvbnVsbA0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVz
+cy9yZWFsdGVrL3J0dzg4L3J0dzg4MTRhLmgNCj4gQEAgLTAsMCArMSw2NCBAQA0KPiArLyogU1BE
+WC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAgT1IgQlNELTMtQ2xhdXNlICovDQo+ICsvKiBD
+b3B5cmlnaHQoYykgMjAyNSAgUmVhbHRlayBDb3Jwb3JhdGlvbg0KPiArICovDQo+ICsNCj4gKyNp
+Zm5kZWYgX19SVFc4ODE0QV9IX18NCj4gKyNkZWZpbmUgX19SVFc4ODE0QV9IX18NCj4gKw0KPiAr
+I2RlZmluZSBSRl9SQ0sxICAgICAgICAgICAgICAgIDB4MWMNCg0KUHV0IGluIHJlZy5oDQoNClsu
+Li5dDQoNCg0K
 
