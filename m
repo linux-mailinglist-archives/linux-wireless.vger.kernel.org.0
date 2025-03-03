@@ -1,181 +1,129 @@
-Return-Path: <linux-wireless+bounces-19709-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19710-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1342EA4C416
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 16:01:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2506A4C430
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 16:06:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8EC21896A1C
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 15:01:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C4B517170E
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 15:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E3F21422C;
-	Mon,  3 Mar 2025 15:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6B584D13;
+	Mon,  3 Mar 2025 15:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KPU0XJGi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N1N/zcAR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261CE156F5E
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 15:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D9A213228;
+	Mon,  3 Mar 2025 15:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741014028; cv=none; b=Vk9JXVO0vKa9F2czN28F3lHNYsxa3qImMLgs18LetljTcMYgjAEJtjpxVDIaX/0Vesnu6pnc4H1EDwZOvbqGTkTQpvrqk/cNhriHPNRPS6IncPzPJGHQR1Nibxy/sCvck16xjqQiXRSLOs+/xVmrRcEPFENeF/HKJ77YoG2iAyY=
+	t=1741014366; cv=none; b=qtDla4bPZaEAm/hFx6WT6SUhJqBumyI49RIi4G7C6vc/gHxxVlONUq28KQ8ITB3AyXCcMyDDnbs0Ndgbzdn0KpPQkhaCNvhdhOe65QbUMxw5Y3u4hZ0Bh3EHIo9zAKQ9jo2nGeBMnKLnspIHw/H4KcZgS67rj6P+jKNNHBRgv1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741014028; c=relaxed/simple;
-	bh=YYeGUb3k93KBXD4drA2C9f+vdF4GK7YW6npk41CFHg4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=b38VZYBRckDT9ItfaxEWwVOyaAP3VQQvIxs/zo980u+gKlv+HGyphwoWMoRzfZAoYuMYFG6Z+FVczDJrd5HVEztgJAULiOZbtI7J9ZtznTxZQapfyi1ve/sPWaE537/Ef1qspVWu1sZi2tBq10VnAF0j1ERfIfCONfIi1RFZc3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KPU0XJGi; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-38f2f391864so2525418f8f.3
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Mar 2025 07:00:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741014023; x=1741618823; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CS8fOkB/2o1tqv0C/vSIKz5akXsPp61Y6yRvRf4d3qg=;
-        b=KPU0XJGivr7YJE0a0FTD3hXgPa/k7z74xhQRAZrI1qq8tRNDpSh/tu8C+YdJG7ix+l
-         L5j82wMWek5f0Sjc0Tzv6CVETw5eqJXDHtnnAcu+edqeBdfuGV7Bbf0iCD5EbRBmGJkq
-         ed5TdmXm5BfXYoE897X3Pi3OCx0lQ9M/UmI3vE1VevdVvEPRp2Paeyl/52kkWMM7dpMc
-         yRgBQxFCahd7+8bJT89J0DNr2NY4J+0zUvxYs7pMZa0mYLkNf4Bmj9wDUmd37h0Cl4Hf
-         vq3w8DDOvnVfEh7l4BOU8dRIKTdgsmGJls+XDi7R2q7JKWjRf4cR1+Qt8IAxMP9h6i5I
-         CWXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741014023; x=1741618823;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CS8fOkB/2o1tqv0C/vSIKz5akXsPp61Y6yRvRf4d3qg=;
-        b=kpVtyDLJYBjc06kc5jWAV9c84JyjRsvrIP+UwMmj7XnnU6uAHpnfcIYvokH+uTLWT1
-         YUaDWKPCP1sBU8OBp4+9XpRoh7fVKBbbsfXKuXgVd/UPp70YZziDAuw8m1GPneFrTPKT
-         w+kVv614TmIXG/xyAPAUIG0S10h5pM5qjEDuw7RQDj9KH6h7GROrr//0vnN3wQg3OEkK
-         W7LH/0gG0JiQSbC5Hk2bmmGYmwRCddQJylxI+L30xNHfSvELJn8livSwP3TmTl1STIxH
-         usIIx0mbx9dFV1a8A67olXENADw5wKsDpTrtHbfK1IhWm7TrPjeVNFblbp63i9ZVn4o2
-         hRqA==
-X-Forwarded-Encrypted: i=1; AJvYcCVmJScwLU4uIXxtpqx3J6GCtfkVV3q7NdB05bU/sNwqM1Z0ICGVBxwIoKipIg8uphTlK5aTJICszVPQZKNwWA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtaCwT0pSxHPgM19RHCmQczP8kf5HQ5FnIML0D7gphGcp6VPny
-	B6i726lrHglkFv4rlgohn+ha/HekProIuyiY7iQccSaaJGgtZAc/D5jV7HFxMM8=
-X-Gm-Gg: ASbGncvUWKPa2KFuBz+JA+/3HLWQBScaPeadB1GwSKHoSi7TK8gvZEygEtRDap5Sz76
-	3g3Xdn/HKG/klF7rRff+h7/21AEALdyKpmP7ITHLuJl2Jy/taUgHlQS+2Ncz6+A7M3YZlbfmLKL
-	d6RP3UFHl8T1hu4ImVoCr+EWIcC1TLGCtj1jllKpt6TXA9HzNh390on9W5UWTHEIY5y7PcZdIRt
-	0MPCNp6eM7FAaG8KkmTTF4gSH41zOVEZiBvEeTG2kAnJAZaMLXfdlLxNamllNPC4zWo9Zm9GQft
-	99UE6di5pGPe5gXCXtqtb2AR1PA+IiKX5j0KVRph8E1sLrHT2xIlxVKYbXrBwjU1yQ==
-X-Google-Smtp-Source: AGHT+IGzxcAosUY7UZOkZGBKGsfyOleMjoBQWswmFK4WzjmdOJ8Zb7pyuQRUwLOTwEQbHnLoZZ+osw==
-X-Received: by 2002:a05:6000:1a8f:b0:390:ef12:2ee4 with SMTP id ffacd0b85a97d-390ef122f8emr11173836f8f.25.1741014023167;
-        Mon, 03 Mar 2025 07:00:23 -0800 (PST)
-Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e485e03asm14985727f8f.95.2025.03.03.07.00.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 07:00:22 -0800 (PST)
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Date: Mon, 03 Mar 2025 16:00:20 +0100
-Subject: [PATCH net] wifi: ath12k: properly set single_chip_mlo_supp to
- true in ath12k_core_alloc()
+	s=arc-20240116; t=1741014366; c=relaxed/simple;
+	bh=disuNk2jqDN9ewEpsE1y/bJZDemQDRRzm/NUW3oa98k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MLWfwSXYXn3BN274IoUC7jzW6iPzKZBP3g10b4WhzXZBwDQmduDYmOrAkWVLalNctOSHcNAt0kh0yo67bvKSzAeczFWOaKAMU9qVA+z1ez73fnF9IF67UHlYk4MRZ41SNfzpJ0ltEw1Dd7rjKCz47HqsloEFNPzBRuu+eUWqWoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N1N/zcAR; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741014365; x=1772550365;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=disuNk2jqDN9ewEpsE1y/bJZDemQDRRzm/NUW3oa98k=;
+  b=N1N/zcARdEDk6p/3um/+tRFrD5DAzsJM1NM/iuD9lAndLYPCuopO11Bl
+   Sg7xoxi3Kqph1YIlSqNADrn+ovhyjol5Z3pE3E+kB0TPWo3hCdVt/ZFRO
+   HPA8hktMyup3WfEWzt9m+cJ1oFgyrWIydSPLvrbWTRVBWwJKgUBIPxGh/
+   L+L6v6MwAmFaWczRct1DKUJYDjsNNieBbfb6DyrHSyaSk01SoTOAWYTSg
+   cd0sluRgIfShf8GHSoE9qeHUSaee5q+tY8CzqMSETc93TVeFvGS1xpbU2
+   WkquFefALeK7DxKl3tzu1QfFLgDsXj4uoas4YAyXfIIyoz8sfaj4+i+t6
+   w==;
+X-CSE-ConnectionGUID: /hulnJ8LRP24hMDl3A1fRw==
+X-CSE-MsgGUID: YDuvDCF2SkmNR871f/O+xA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="52530136"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; 
+   d="scan'208";a="52530136"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 07:06:04 -0800
+X-CSE-ConnectionGUID: 1/GrhkcFRDSDSEtYNt/n8A==
+X-CSE-MsgGUID: Hsr/re+LR2utUfDgB/YJWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="122176463"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by fmviesa003.fm.intel.com with ESMTP; 03 Mar 2025 07:06:03 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tp7Mm-000Id1-1y;
+	Mon, 03 Mar 2025 15:06:00 +0000
+Date: Mon, 3 Mar 2025 23:05:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
+	linux-wireless@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+	linux-devel@silabs.com,
+	=?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>
+Subject: Re: [PATCH v2 2/5] wifi: wfx: declare support for WoWLAN
+Message-ID: <202503032232.o7HgZDMO-lkp@intel.com>
+References: <20250302144731.117409-3-jerome.pouiller@silabs.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250303-topic-ath12k-fix-crash-v1-1-f871d4e4d968@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAAPExWcC/x2MWwqAIBAArxL73YKPDOwq0YfYlkugoRJBdPekz
- 2GYeaBQZiowdQ9kurhwig1k34EPLu6EvDYGJZQRWmis6WSPrgapDtz4Rp9dCThYssIYP0onocV
- npib/8QyRKizv+wEmJKefbQAAAA==
-X-Change-ID: 20250303-topic-ath12k-fix-crash-49e9055c61a1
-To: Johannes Berg <johannes@sipsolutions.net>, 
- Jeff Johnson <jjohnson@kernel.org>, 
- Aditya Kumar Singh <quic_adisi@quicinc.com>, Kalle Valo <kvalo@kernel.org>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
- linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- Neil Armstrong <neil.armstrong@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3032;
- i=neil.armstrong@linaro.org; h=from:subject:message-id;
- bh=YYeGUb3k93KBXD4drA2C9f+vdF4GK7YW6npk41CFHg4=;
- b=owEBbQKS/ZANAwAKAXfc29rIyEnRAcsmYgBnxcQGiac9YMG/uxNSPYupMemIH+BO2QczD7l4HE93
- pmHw18GJAjMEAAEKAB0WIQQ9U8YmyFYF/h30LIt33NvayMhJ0QUCZ8XEBgAKCRB33NvayMhJ0Z8gD/
- oCcwjPhgqu+IULIv7xd9PpGqkN/jqJgGafyQmUriQbfj7JnoGNj2DO86DHIKhjb/1vi0+6LC0imcBd
- /EtuQk9MZWgAfqYQYEOCbPVk9UtJnpG5C6osAjU6j73F90p5bF0MZkvU3asA8H6Gps5tNXqpwumVGG
- OV4cXFWX/20HZ4w/T+WZLWh5dJsJ7YFvrigU0x10VtEoz5eIGkS7rcznvKdOARlksoxr/WMQNI9CLc
- gDNltzB1STfhE5y0EnBbfhEs58cHcK1QOrx2IUits+JgXmmRiDmgtplYoMzxz78lDyrMZOpl2aFpfZ
- 0TxpPa270xeoyFBppIdyJcoxw9H/T3SuvoPrZbIO2o1XUBmVhUjzapQTiNzHfgkkuc3TKDr3f9vkNq
- wzQIEhMh9+Avtsx7dH/9Ml5zPFRHYJmFe8dZo4XlgNyWvZlO+QbqRyT3yIj+Z9tGONDZX6HpuWNivJ
- +ndvDl/MFsLEcxsyqs4m3eVpyIt3yoNn2mDUNm7qRn2JGuJmqlymvihHGZB4MJ330YYmY/3cgXy/Te
- Z6U4C27bdtZRgyAZvtoKZnvs0rb4fDXK39kq8b2M4YWry/N4+aHTo8UoO/o5+e6rDQVzJfqAeA4iW3
- bDivOa6LJ3bzuntyU+fEf+bDWUWLU+1v+K+lxjQ+mTzfq6uavdLN5BB9r6tQ==
-X-Developer-Key: i=neil.armstrong@linaro.org; a=openpgp;
- fpr=89EC3D058446217450F22848169AB7B1A4CFF8AE
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250302144731.117409-3-jerome.pouiller@silabs.com>
 
-In commit 46d16f7e1d14 ("wifi: ath12k: rename mlo_capable_flags to single_chip_mlo_supp")
-the line:
-	ab->mlo_capable_flags = ATH12K_INTRA_DEVICE_MLO_SUPPORT;
-was incorrectly updated to:
-	ab->single_chip_mlo_supp = false;
-leading to always disabling INTRA_DEVICE_MLO even if the device supports it.
+Hi Jérôme,
 
-The firmware "WLAN.HMT.1.1.c5-00156-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1"
-crashes on driver initialization with:
- ath12k_pci 0000:01:00.0: chip_id 0x2 chip_family 0x4 board_id 0x3d soc_id 0x40170200
- ath12k_pci 0000:01:00.0: fw_version 0x110f009c fw_build_timestamp 2024-05-30 11:35 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HMT.1.1.c5-00156-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
- ath12k_pci 0000:01:00.0: ignore reset dev flags 0x200
- ath12k_pci 0000:01:00.0: failed to receive wmi unified ready event: -110
- ath12k_pci 0000:01:00.0: failed to start core: -110
- failed to send QMI message
- ath12k_pci 0000:01:00.0: qmi failed to send mode request, mode: 4, err = -5
- ath12k_pci 0000:01:00.0: qmi failed to send wlan mode off
+kernel test robot noticed the following build warnings:
 
-With ab->single_chip_mlo_supp set to True, firmware loads nominally.
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main linus/master v6.14-rc5 next-20250303]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Fixes: 46d16f7e1d14 ("wifi: ath12k: rename mlo_capable_flags to single_chip_mlo_supp")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
----
-Bisect log for reference:
-The bisect leaded to:
-git bisect start 'v6.14-rc4' 'v6.12'
-git bisect good 5757b31666277e2b177b406e48878dc48d587a46
-git bisect bad d78794d4f4dbeac0a39e15d2fbc8e917741b5b7c
-git bisect bad cf33d96f50903214226b379b3f10d1f262dae018
-git bisect good 12e070eb6964b341b41677fd260af5a305316a1f
-git bisect bad 6917d207b469ee81e6dc7f8ccca29c234a16916d
-git bisect good 4fefbc66dfb356145633e571475be2459d73ce16
-git bisect bad a6ac667467b642c94928c24ac2eb40d20110983c
-git bisect bad b05d30c2b6df7e2172b18bf1baee9b202f9c6b53
-git bisect good 56dcbf0b520796e26b2bbe5686bdd305ad924954
-git bisect bad d302ac65ac938516487f57ae20f11e9cf6327606
-git bisect good 8c2143702d0719a0357600bca0236900781ffc78
-git bisect good a5686ae820fa7ab03226a3b0ff529720b7bac599
-git bisect bad 6f245ea0ec6c29b90c8fa4fdf6e178c646125d7e
-git bisect bad 46d16f7e1d1413ad7ff99c1334d8874623717745
----
- drivers/net/wireless/ath/ath12k/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/J-r-me-Pouiller/wifi-wfx-align-declarations-between-bus_spi-c-and-bus_sdio-c/20250302-231700
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20250302144731.117409-3-jerome.pouiller%40silabs.com
+patch subject: [PATCH v2 2/5] wifi: wfx: declare support for WoWLAN
+config: hexagon-allyesconfig (https://download.01.org/0day-ci/archive/20250303/202503032232.o7HgZDMO-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250303/202503032232.o7HgZDMO-lkp@intel.com/reproduce)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 0606116d6b9c491b6ede401b2e1aedfb619339a8..33aba5fceec946fad5a47a11a4d86b7be96e682e 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1927,7 +1927,7 @@ struct ath12k_base *ath12k_core_alloc(struct device *dev, size_t priv_size,
- 	ab->dev = dev;
- 	ab->hif.bus = bus;
- 	ab->qmi.num_radios = U8_MAX;
--	ab->single_chip_mlo_supp = false;
-+	ab->single_chip_mlo_supp = true;
- 
- 	/* Device index used to identify the devices in a group.
- 	 *
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503032232.o7HgZDMO-lkp@intel.com/
 
----
-base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
-change-id: 20250303-topic-ath12k-fix-crash-49e9055c61a1
+All warnings (new ones prefixed by >>):
 
-Best regards,
+>> drivers/net/wireless/silabs/wfx/main.c:124:42: warning: unused variable 'wfx_wowlan_support' [-Wunused-const-variable]
+     124 | static const struct wiphy_wowlan_support wfx_wowlan_support = {
+         |                                          ^~~~~~~~~~~~~~~~~~
+   1 warning generated.
+
+
+vim +/wfx_wowlan_support +124 drivers/net/wireless/silabs/wfx/main.c
+
+   123	
+ > 124	static const struct wiphy_wowlan_support wfx_wowlan_support = {
+   125		.flags = WIPHY_WOWLAN_ANY | WIPHY_WOWLAN_DISCONNECT,
+   126	};
+   127	
+
 -- 
-Neil Armstrong <neil.armstrong@linaro.org>
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
