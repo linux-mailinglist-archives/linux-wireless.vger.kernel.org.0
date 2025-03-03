@@ -1,93 +1,164 @@
-Return-Path: <linux-wireless+bounces-19693-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19694-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDF3A4BBA7
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 11:06:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F309A4BBE1
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 11:19:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 828391891FD3
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 10:06:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CBCE3AC089
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 10:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1DC1E9907;
-	Mon,  3 Mar 2025 10:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E800C1F1905;
+	Mon,  3 Mar 2025 10:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="bbk09i0D"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VjgoimUx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EB21E570E
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 10:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CAB1EDA04
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 10:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740996371; cv=none; b=cXjtIfsRQ0LJCuyS6PfQ6yZ6tYZv8NjZy5o0ZRUTmWxurEqrFJEqQVG4KQ8/FFk8Rch2WnzG0xIOwMYKvTGvVrWnh5+GKE4or8RtE3dz83VIdSocgr6He6IzhUl91Tnrt7xFxBFoakfiF1XkRHUvMRsRKLz3v713ShHz8yS6CO4=
+	t=1740997127; cv=none; b=dsB4LGcppvdhHpa+WPu0VlYSZ2buGXnJlNZ1mEVYfqgTzu8MFj++I+5mbg6vFbcwjSc/HA248PQOTM6tvtb92SznB1T/yuasREUDdMs4Y2Bqab80ud9Ir2PLBQY8ek7OwOmCfHwrpK/OXrlYfo+nw9ubYDuHyhj4EsdTKPODw9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740996371; c=relaxed/simple;
-	bh=cQlZbjoKSzqqTjwid/Ru0pMnApb0q6R+4NC73421qCk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EAFjsuTftarziFk7QBMb0cM/ObmvDWl3dtLyg+sLGjfFDpYacN675/u7Z4bVsmQcWQJRmoE1qZRButaSQAy5VbFQLN6H2H49/o7HG0yMDhic4dH8Ru9VM7w5V7UHScFcBMk7E3n5AoQCyFDlYciZHOLIHY4cL4PgP/oxJ0/dh4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=bbk09i0D; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=b07YiUJkSHqI+qKE8R7BYMf6Lt43OLzKt8l01yZPl24=; t=1740996370; x=1742205970; 
-	b=bbk09i0DWs3fJFIc2i327a5HJwg1QA5bEnhp/AUdltrEavlIlvNO0i/EVugtIwvM1RTFaCNQBXh
-	XHRd1544NraW6XMxArcah6r5VXRtGibAz/hgr5xIWb8SxBATmjI5qMA+0D1kOIzAr4OR+Q1QUuYnU
-	0djGJhrOt+z0Wx6wkfoGApXI1Fs1hjMHXgCF88/HXNEVtaREqacOKIBTxZGa/SUo9S9TOUpz75jiF
-	r4kh41PmzuvEG//L2sNhRDUHXNtS6a0Z+LJZcjrUMUoJFI6ybpK1p3isTxwEe1sjmBCA1CBj+gF1y
-	Fy5PgS/hY3/lrRwjD1w7rln+rke1orz/zobA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tp2gZ-0000000H5Vx-3v8E;
-	Mon, 03 Mar 2025 11:06:08 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless v2] wifi: nl80211: disable multi-link reconfiguration
-Date: Mon,  3 Mar 2025 11:05:36 +0100
-Message-ID: <20250303110538.fbeef42a5687.Iab122c22137e5675ebd99f5c031e30c0e5c7af2e@changeid>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1740997127; c=relaxed/simple;
+	bh=18JoiGu++6FnPrq1+QGw2bVsdp5I+Af3yjJrch2BlQo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=lmozHOWMvldnux9uIOu0V1qT4bTkOJnhEpdC7RfGOUJQaYQfbE1SQ7lSrnxtsiwhT58Ro9NQjVf1iAb/IGDsNZIBa/Ebo6aX7e2ZuaZPcUN/pBtjypoCzY6hvnGZQ5CJ82lDxIZ7kr7Lq0DuSb4zTd/FDpwaRn98sU8Um1ZCpBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VjgoimUx; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 522NfjE6003941;
+	Mon, 3 Mar 2025 10:18:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	J/lRz/OPYuF4ykGl/7vX3TSprk6U1/0ugtqhkEUfBnE=; b=VjgoimUxWcFvt/P4
+	G73awsppMBy0bWxWgx2MWKPjjbiFlIvbPgJYEoCxrBeuN3qRJNEoCSJZ3UM/Ahc+
+	RgpM5KPlr9og1HKMaeTIsmlwYRvObk87vkoFIccVdDInHGRKV946pCAZ266214K2
+	b1iFJkVc7LJCH6IREB47IBKinmU5DyLc2OMpV5OXJlJBv5wgj2UFMU1W7mK7yPLz
+	8R5LLAyGNfDo8Fb+gR8WuHNhzlvL/T+bVReOADQMx5IZfsmvAeI852FGjhdyJYfw
+	txVibALKkab+kofzCCNHiCUxcKR7oukbzJhgPpgLyDbQpUgTDO6fKqJny8OMdEu7
+	fQH5HA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 453t7hvj7y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Mar 2025 10:18:41 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 523AIeF3001367
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 3 Mar 2025 10:18:40 GMT
+Received: from [10.152.206.29] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 3 Mar 2025
+ 02:18:39 -0800
+Message-ID: <133849d8-759e-4a31-9894-917a4b509623@quicinc.com>
+Date: Mon, 3 Mar 2025 15:48:32 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/5] wifi: cfg80211: Add Support to Set RTS Threshold
+ for each Radio
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+References: <20250129155246.155587-1-quic_rdevanat@quicinc.com>
+ <20250129155246.155587-2-quic_rdevanat@quicinc.com>
+ <6f25563f9d68f4e2c230ff426cbabec43ea56335.camel@sipsolutions.net>
+Content-Language: en-US
+From: Roopni Devanathan <quic_rdevanat@quicinc.com>
+In-Reply-To: <6f25563f9d68f4e2c230ff426cbabec43ea56335.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 2wnEzrfQP-6cfgSBnLbAQ1nvRrlCcJuo
+X-Proofpoint-ORIG-GUID: 2wnEzrfQP-6cfgSBnLbAQ1nvRrlCcJuo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-03_04,2025-03-03_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 impostorscore=0 phishscore=0 spamscore=0 malwarescore=0
+ adultscore=0 suspectscore=0 mlxlogscore=720 clxscore=1015 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503030079
 
-From: Johannes Berg <johannes.berg@intel.com>
 
-Both the APIs in cfg80211 and the implementation in mac80211
-aren't really ready yet, we have a large number of fixes. In
-addition, it's not possible right now to discover support for
-this feature from userspace. Disable it for now, there's no
-rush.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/nl80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 2/28/2025 6:31 PM, Johannes Berg wrote:
+>> +/**
+>> + * struct wiphy_radio_cfg - physical radio config of a wiphy
+>> + * This structure describes the configurations of a physical radio in a
+>> + * wiphy. It is used to denote per-radio attributes belonging to a wiphy.
+>>
+> 
+> Seems like there should be a blank line after the short description so
+> it doesn't all end up in there?
+> 
+Sure, I'll add one.
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index fdb2aac951d1..e87267fbb442 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -16534,7 +16534,7 @@ static int nl80211_assoc_ml_reconf(struct sk_buff *skb, struct genl_info *info)
- 		goto out;
- 	}
- 
--	err = cfg80211_assoc_ml_reconf(rdev, dev, links, rem_links);
-+	err = -EOPNOTSUPP;
- 
- out:
- 	for (link_id = 0; link_id < ARRAY_SIZE(links); link_id++)
--- 
-2.48.1
+>> + * @NL80211_ATTR_WIPHY_RADIO_INDEX: Integer attribute denoting the index of
+>> + *	the radio in interest. Internally a value of 0xff is used to indicate
+>> + *	this attribute is not present, and hence any associated attributes are
+>> + *	deemed to be applicable to all radios
+> 
+> Please document the type here. Also, the description of the internal
+> 0xff handling and all that is inappropriate in the public API
+> documentation.
+> 
+Sure, I'll add a detailed description of those here.
 
+> However, it seems using -1, would be nicer? Also,
+> NL80211_WIPHY_RADIO_ID_MAX is a _really_ bad name for that.> 
+We are using u8 to store the radio_id to serve two purposes. First is to check if
+the number of radios in the device is greater than the value in wiphy->n_radio.
+Second is to check if the number of radios is given in the user-space. Both these
+checks culminate in using a common - if (radio_id > wiphy->n_radio), to check if
+radio_id is valid. If -1 is used, we might need to check if radio_id is -1 and is
+greater than wiphy->n_radio separately. 
+
+Can we stick to using 0xff if radio_id is not given in userspace?
+
+>> +++ b/net/wireless/core.c
+>> @@ -1077,6 +1077,23 @@ int wiphy_register(struct wiphy *wiphy)
+>>  		return res;
+>>  	}
+>>  
+>> +	/* Allocate radio configuration space for multi-radio wiphy.
+>> +	 */
+>> +	if (wiphy->n_radio) {
+>> +		int idx;
+>> +
+>> +		wiphy->radio_cfg = kcalloc(wiphy->n_radio, sizeof(*wiphy->radio_cfg),
+>> +					   GFP_KERNEL);
+>> +		if (!wiphy->radio_cfg)
+>> +			return -ENOMEM;
+>> +		/*
+>> +		 * Initialize wiphy radio parameters to IEEE 802.11 MIB default values.
+>> +		 * RTS threshold is disabled by default with the special -1 value.
+>> +		 */
+>> +		for (idx = 0; idx < wiphy->n_radio; idx++)
+>> +			wiphy->radio_cfg[idx].rts_threshold = (u32)-1;
+>> +	}
+> 
+> This error handling is obviously all wrong. Please ask someone else to
+> review before you resubmit.
+> 
+Sure, I'll make modifications, get it reviewed internally and re-send.
+> 
+> The later code in nl80211.c could also use some refactoring, rather than
+> just indent it a bit and call it done.
+> 
+I caught your review comments in your other reply to this patch, thanks.
+
+> johannes
 
