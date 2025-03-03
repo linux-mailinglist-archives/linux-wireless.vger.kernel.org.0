@@ -1,80 +1,87 @@
-Return-Path: <linux-wireless+bounces-19722-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19723-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35BCA4CA38
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 18:49:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF25A4CB78
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 19:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39B83189CCE2
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 17:45:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1D7918970EB
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 18:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7703DF9E6;
-	Mon,  3 Mar 2025 17:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0130422DFB5;
+	Mon,  3 Mar 2025 18:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="HOfScUYC"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WreSL/YT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0086214A8B
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 17:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDB11E285A
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 18:58:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741023660; cv=none; b=U0xnRLsyRy1gi1p6gGSG59wxLEgytzto7oc+Qic1TfZZCQ57wFcqOB9DFV7o+/LVAr3Yl3s9m1XSI/Lbq1/UEMK1ja0fujxJplwuoeziIcTuMpvl3sjhTvKRfu5fmJD+cjG90yJ57OusWlMKYHI/lEOK9LY2VMr851QbPIyN4v4=
+	t=1741028286; cv=none; b=TTMmEqLp1KIYYUJV2YlYahv8kVmKOaTklreDZIUZeZ6QJ9pNmXmn0PRiAqyL726HKYBxyjI7BCgvuEi1j9nU5r5YeF+4XySDKqheGCEkHRRMFqf7UH49xPR/WX4R53BnPY/OZSkJzFwGcDx8ayBmBo06bgQ8gZP+9kKfJH4oqmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741023660; c=relaxed/simple;
-	bh=yO/Csw21Kwq7v5toIRGaMpmx4Pd/PwSMnmP5ZLTuvrM=;
+	s=arc-20240116; t=1741028286; c=relaxed/simple;
+	bh=F7/J1lYM6kjT4iz9iYchuF8pBS6zBMP3fO7RXSp1dXQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g1ZKeAvBvV8ea77ltNqQACxCToXeQ6jEFr3XE1fAck3TR7Ex3b2OsPMzMpJAYX/H15ifAQVhQA5yHR84xhGRnu+FaqiVMydwHPsU0YPbdoA3rb7q8NYbLuUCyziG8ILFcJMiuGRWfgnb3qWhnmGmsbWVRUYEy7W1i7ke8uDMjX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=HOfScUYC; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43bc38bb6baso7343055e9.3
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Mar 2025 09:40:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1741023655; x=1741628455; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zDR3lMogJrf4PYr/+w+695QkINLYBS4lEPuSB4vRXe0=;
-        b=HOfScUYCvAu+cu0mjbMIZdDiAU0takoxy7ZSP8vQSAkgGHaRpPMUyBpCxarXSCKAZj
-         OM31psdV6JV2cUioOcJ81vnRs8yrebBQf+Oqh2Ydi67UDv9paNubmXqBlBPHBvY0KGoo
-         zxn7ud2PbB7E3cxTVUK+OSBdsxW2O4BC6Y9jmhnb9daNNBn+qcMj6FplFtP/UCaUJJ6u
-         H30wlOFwX9iLm6zXPFDy91uNzhP7fCxt7ZNFBnnujHGZmYUd0kAuC/CisrZYusIpyyFb
-         JwKeR6V0Vjx49uCM2ZHPQGxrM4Ue2LggeyQdUfsuGinone+hOlL8UKKp+PjxDZ4wqQ3B
-         JoMA==
+	 In-Reply-To:Content-Type; b=TMURTvtyrQu2aNMUTY8WASWOxwQoQqcNYqukWxWlEvBcUESIDw7GY+VHouEmqx1wIoPuCKzROG+5vwG1kOG0+s0cwzDsalmE8s9lNbBwZke7WpUqPknRXqQxb+fS1uL9rta5OIZUn7GO/+ZuUGegEoXpJxJDh6wPlFHZAUMcbcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WreSL/YT; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 523BF1pd025951
+	for <linux-wireless@vger.kernel.org>; Mon, 3 Mar 2025 18:58:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	YsKHwPyakFDRtES+T+7/Q0gwDO/LMXT6KYV55aqeyaw=; b=WreSL/YTco6Yth3N
+	1PaARfUGv3SRN0b5i+PFGVu1qFL2ld4AUMDbfscADxapdjw3M8Lw6qx7S+zLbxhf
+	64QbsI3vkyaRE3vRpX+ovRjLM5PhSwR2WSQbJb9TpMj2ELpGGUOiiYywllQDGrLb
+	bmBYQ/RtqLOVyWoEQzuOHGNJAMhUOd+TuWfTN5lJDOWA83FoifwWhOXlVvtempTQ
+	qOMmdzN8jzpOmHRgUp/ZjkF6Xp66xGNowMdqUYtwWoKItpFkPHjRs5Y3Ygxmc+/A
+	yfn5xJXDxfAh1lcuVaTYyIVJoZAjgMGeUpxzCdaQ4VsipzwWBAYUwJ98/1BLtIm5
+	36eG7Q==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 453t6k5nr2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 03 Mar 2025 18:58:04 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-22349ce68a9so7619815ad.0
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Mar 2025 10:58:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741023655; x=1741628455;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=1e100.net; s=20230601; t=1741028283; x=1741633083;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zDR3lMogJrf4PYr/+w+695QkINLYBS4lEPuSB4vRXe0=;
-        b=HDwf2GYUAHi6TmFawQ23QjTXAnt0mZm0e3nSInbonfF4rD3KMAZv+haxoTsTUtW2Cf
-         azSsEMgIRPNZ5OJ1NWgrPUNqpvlc6QQ4GZRAql++UndTJpY75P0lmQCc8aKlvOjfDjT6
-         kTgFqBmUGQcNaQb/2lxIWgArM2y3vrZN/lJIZzMCn6Yvh9HNG12hSnRWGQz71QTW2Akq
-         u8MQ3qqSDdL2bONGZIjRBVYrCDwUpc30KV9WV5fHRlLyIs5zXRopA2e8GiG9uqeUaV8j
-         d9zEGRgvQeTldmWcXa8OlWXf3d074V6JAQWhmnHaCX7dEBgzLtAVL7k2N49/RYaMuIeT
-         5Dog==
-X-Gm-Message-State: AOJu0Yw4MeG6WP5447btI/tLrddv8DjyAgXx+qvwT+adXxxI56V9tfnY
-	Z/85WqN4XpZUYjNR8+tSCW9IUzZFBI57Ffh1uhih3WDwaKtXCoeoZVvqe0X7PdocmCyugJNHn/p
-	5
-X-Gm-Gg: ASbGncsPosY0ep7SAYmXn79VVoczM8vESq8P8Y3EQ550o8uaDIRB7wHFs7eU//uFzuN
-	8QKsItnHkYDlwkFJhFh0xqvU3quprAxBgEukBI7MX7PBXc0Q6OuilKaonDefWRaIoa0kISc7gdg
-	mqMQW8iF/W6Je+hJIGRoAXPK9AjquHPsL8IJUgZ8assgZNGN0BQi3v4i9pqSjAaLg+WRr8cSBV2
-	dO9npjuhgzo82zI4NXuBO//GKgul+Dy9jOgp6PIJm8t82RBrmx0NSxZtmNFIk3IM3BzCqtZhUPl
-	+heQMkvwrP2Eg8CEzOk7mGu1gNUOJzWWC1C0/DfNERZm21NAT7dKynb7xcOhFL6EY6iif3m5CWK
-	2
-X-Google-Smtp-Source: AGHT+IEZXHnZUKv5riFkdBr7jaB8F76tJvfsoUYGS8tiMEZJGRySZjWIQgn8kN2pM+LM59W6HlPGwQ==
-X-Received: by 2002:a05:600c:4f14:b0:43b:c034:57b1 with SMTP id 5b1f17b1804b1-43bc0345ceamr36558365e9.20.1741023654700;
-        Mon, 03 Mar 2025 09:40:54 -0800 (PST)
-Received: from [192.168.108.121] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43b73703f83sm169369395e9.13.2025.03.03.09.40.54
+        bh=YsKHwPyakFDRtES+T+7/Q0gwDO/LMXT6KYV55aqeyaw=;
+        b=oyzeump8t2/wuD1DNjGns4xx1Jc0Ih9TbjEL9j+4+VY/SxlX9c/MlHqnxEu3ZUk5uk
+         zA4bw+EBZtjwlR5A967miabm7Ux4lVurpmPif/hEEo4EFf20+vsDEYIokPn1N9EWXfil
+         qrXq70P2030QPy2ZpOmAGw5CNa3w5W8d1ZqAiHYkGUPrQ7phR2NXvd1TVx96XR43NHfA
+         wAGwEyz6aQxNFD3q9fno5zgBsEjAHU/vQ+9ZPoONXRzOs80Z9T2zrI+DLjGr29I3G+WY
+         UtD6HsaiN6S4BcD5tzbE+xlpZ78hj49McbBWpNKuC+OYAvBCbw5JI/aX2+DxVZxvq1/S
+         MckA==
+X-Gm-Message-State: AOJu0YwbMBJ3iiG0xqRlB18nWxabIqbFsv44o79kwgCTZq1BpPfGW+Wa
+	F+uFOsUw8d24b1r4YN9Lt+TwvPRNmOOK1VPgyA4BNPGsqlfIh70vcrnBhnyb76x0JV1gh47KpBl
+	0pRSfBeG9f8GalTYQtiba37zcU3c9Y6zFjA74yP8tMQiGPKZIT7yCDhxo52olXYzaYA==
+X-Gm-Gg: ASbGnct5wqDcdQ/hMaLCUW3Jby9bmXqpkKQxbazPE0nNWlnsRWUMfvEqcgC+qp4gOa1
+	VRX+QTzngEWQ3+58jAcxkSz1qEiIxKYEu84v8FeJlnMiWgd2JcCfPvQBAf8xSdFODgZqW69LhfU
+	yfu0w36nrGBVeLkrRhXSZAyXm0twL9XmIDMAR+AybYRe+EDfjvTH9tFFdCxV1feQZe+faBpxgbq
+	qPZeErJs9ypyK9YbC0BVHEDWEn6Q5XZnQbWznvb6fv/Cc1mt/lOB+BxzUHB499c0xLYKJJEgB/k
+	PdxE84XyS5UIBk90aV1+FwmiWSAqUqslS3exNiZGJpVwNlTctlCDoJtaUHVQqVvcL9c9GdfKqpn
+	PSH/vH2sr
+X-Received: by 2002:a05:6a21:110:b0:1f1:817:64cf with SMTP id adf61e73a8af0-1f2f4e4e495mr23799816637.37.1741028283229;
+        Mon, 03 Mar 2025 10:58:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGUykW5x9XbBIshU6ygZB6a+zQ9TtV2CwGQnAIwjD0aEsfN4kQZdY/EyizdJ71iGLwfZjj53Q==
+X-Received: by 2002:a05:6a21:110:b0:1f1:817:64cf with SMTP id adf61e73a8af0-1f2f4e4e495mr23799789637.37.1741028282855;
+        Mon, 03 Mar 2025 10:58:02 -0800 (PST)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734af6abc02sm7152633b3a.110.2025.03.03.10.58.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 09:40:54 -0800 (PST)
-Message-ID: <e9b79e01-5204-4a29-ba5c-669c5908b1fd@freebox.fr>
-Date: Mon, 3 Mar 2025 18:40:54 +0100
+        Mon, 03 Mar 2025 10:58:02 -0800 (PST)
+Message-ID: <d926be86-94d2-4c72-b9ad-4686583f8663@oss.qualcomm.com>
+Date: Mon, 3 Mar 2025 10:58:01 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,36 +89,79 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ieee80211: fix interopt issue with MT7927 chipset
-To: Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH 1/2] wifi: ath12k: Pass correct values of center freq1 and
+ center freq2 for 160 MHz
+To: Suraj P Kizhakkethil <quic_surapk@quicinc.com>, ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-References: <20250120114551.1542812-1-pmartin-gomez@freebox.fr>
- <17a9044d-4bab-40df-a119-8c43ebd60bc2@freebox.fr>
- <e3b99a7bbba8b22b3ce091ad79a271c85dc261de.camel@sipsolutions.net>
+References: <20250204053451.2703834-1-quic_surapk@quicinc.com>
+ <20250204053451.2703834-2-quic_surapk@quicinc.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
-In-Reply-To: <e3b99a7bbba8b22b3ce091ad79a271c85dc261de.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20250204053451.2703834-2-quic_surapk@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: ZholzvvfTj3C9hCJz3R9Mo54YnrWbDYT
+X-Proofpoint-ORIG-GUID: ZholzvvfTj3C9hCJz3R9Mo54YnrWbDYT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-03_09,2025-03-03_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 priorityscore=1501 bulkscore=0 mlxlogscore=999 mlxscore=0
+ lowpriorityscore=0 clxscore=1015 spamscore=0 malwarescore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503030145
 
-On 26/02/2025 15:33, Johannes Berg wrote:
-> On Mon, 2025-02-10 at 10:48 +0100, Pablo MARTIN-GOMEZ wrote:
->> On 20/01/2025 12:45, Pablo Martin-Gomez wrote:
->> [...]
-> Took me some time to look into this, but I don't think the band needs to
-> be unknown. I'd still split this and use the existing version for
-> *local* data, such as callers in net/wireless/nl80211.c, and have the
-> band used for parsing in net/mac80211/parse.c. We already pass e.g.
-> "from_ap" in the parsing context, so we can have the band too. Most
-> callers aren't even affected since they don't need to parse this, it'd
-> only be those in net/mac80211/mlme.c, and we can default to
-> NUM_NL80211_BANDS (unknown) for ieee802_11_parse_elems_crc().
->
-> Want to take a stab at that?
-I'm very new at any sort of kernel development, but I'm ready to try to 
-figure it out given that you pre-chewed some of the work. I'll come back 
-before the end of the month either with a RFC patch or a white flag.
+On 2/3/2025 9:34 PM, Suraj P Kizhakkethil wrote:
+> Currently, for 160 MHz bandwidth, center frequency1 and
+> center frequency2 are not passed correctly to the firmware.
+> Set center frequency1 as the center frequency
+> of the primary 80 MHz channel segment and center frequency2 as
+> the center frequency of the 160 MHz channel and pass the values
+> to the firmware.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Suraj P Kizhakkethil <quic_surapk@quicinc.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/wmi.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+> index f934d49acee6..848a65268194 100644
+> --- a/drivers/net/wireless/ath/ath12k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
+> @@ -1037,14 +1037,24 @@ int ath12k_wmi_vdev_down(struct ath12k *ar, u8 vdev_id)
+>  static void ath12k_wmi_put_wmi_channel(struct ath12k_wmi_channel_params *chan,
+>  				       struct wmi_vdev_start_req_arg *arg)
+>  {
+> +	u32 center_freq1 = arg->band_center_freq1;
+> +
+>  	memset(chan, 0, sizeof(*chan));
+>  
+>  	chan->mhz = cpu_to_le32(arg->freq);
+>  	chan->band_center_freq1 = cpu_to_le32(arg->band_center_freq1);
 
-Pablo MG
+s/arg->band_center_freq1/center_freq1/ here and below
+
+same for the 2/2 patch
+
+
+> -	if (arg->mode == MODE_11AC_VHT80_80)
+> +	if (arg->mode == MODE_11BE_EHT160) {
+> +		if (arg->freq > arg->band_center_freq1)
+> +			chan->band_center_freq1 = cpu_to_le32(center_freq1 + 40);
+> +		else
+> +			chan->band_center_freq1 = cpu_to_le32(center_freq1 - 40);
+> +
+> +		chan->band_center_freq2 = cpu_to_le32(arg->band_center_freq1);
+> +	} else if (arg->mode == MODE_11BE_EHT80_80) {
+>  		chan->band_center_freq2 = cpu_to_le32(arg->band_center_freq2);
+> -	else
+> +	} else {
+>  		chan->band_center_freq2 = 0;
+> +	}
+>  
+>  	chan->info |= le32_encode_bits(arg->mode, WMI_CHAN_INFO_MODE);
+>  	if (arg->passive)
 
 
