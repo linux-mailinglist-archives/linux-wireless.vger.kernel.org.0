@@ -1,88 +1,63 @@
-Return-Path: <linux-wireless+bounces-19716-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19717-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD03A4C5F0
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 17:01:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8EBA4C671
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 17:15:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52FDB3A35E6
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 16:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4007189ABE1
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Mar 2025 16:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49195189BB0;
-	Mon,  3 Mar 2025 16:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF461215065;
+	Mon,  3 Mar 2025 16:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FGwuvb7f"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VqXVI3nd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF03C7080D
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 16:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDC9213E67
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Mar 2025 16:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741017703; cv=none; b=ClsmvZAApC7Lty83/uda45zEm8mx7+wUVoB3K//vFrHGTvo58O0PKz5T3b3naJWtSbfJd0Mv6DQS47m1AGoz3J7tXeEmGjHNNAC0jzCFn+jwWa2KZkjyP1s0I1kTmgeIa6gPc/LnogLAeRl0afDjsP0mloljWCge1KFiTwAOvJw=
+	t=1741018071; cv=none; b=lD/w/PUhC1ova9s7oeWZv9eNH73uJVnpsg70rOjxXUZb5bmeK67uwZBkpbBMwBd8fowx79ytXP+Lk8Yvhc2PpdEFMRPQmVSj0gYPEe0GoVLKUAZJhCg9+IlmOUFBLenFi4SIdj8JGwc9uhdKJLC2LTvKD6AU4h7dO047negPThk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741017703; c=relaxed/simple;
-	bh=DQ2ARohgT2WIxx2+PKksbW62z0i8lh6jAaz6kyrI3Po=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qWhcsDEc7aclWofeRH+1tyQW76ICOKu3K/t9TpRNsvRgJACePE3Ud7FbIavjcPfUmoI9O+NmcVPkvRE94QEvdEcLchvV8VSeFcZ7hSgzX/vOe9gymKDPuot+6v95pLfBwin6b8dRTA7GX0m8OyLxrJuNR2OZrIuB1/IPiIXYkVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FGwuvb7f; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5237iUue025431
-	for <linux-wireless@vger.kernel.org>; Mon, 3 Mar 2025 16:01:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	s=arc-20240116; t=1741018071; c=relaxed/simple;
+	bh=pr8OmdHvv54CYnBx6xwUnrG+HwfXr5zmcgPBpWBNh+k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZIl1QKKd0O67V2VbG94DLPubclOD0zOopvR1/BCADs+cN9bu129FrhY+gWhdXLBzf7qjfuZyUbbUzak81Xc5L/R0BcxbUhhk356EkEnJ9nw0vgPoa8CJb5O44um9lmj2vkDZPJA1VIPADy3jo2dJwuyhDC1hoKX4fNND+mTHB98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VqXVI3nd; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 523BCu2u025618;
+	Mon, 3 Mar 2025 16:07:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	xjaEGavEZhaf/n/BWdL16Lx6yvyWPHtzKIlO2g0w1kc=; b=FGwuvb7fPeCdUYmt
-	kSEV+tNt2exVNAVOVU5hX26IERHMoo9UNVgLlvIpctgCziJsB3TAnNYrv80c6wY4
-	qLkEGYNmMZ+3bbVGLkD/J5X2+gYwmQgbHjY+SXhE0UMgV6VDdQFWkKAQg3CoQuZP
-	04Hvo2JICh4Y8BSk90bxpKmLNPuWcxbZQRnQiqMXnOg9KADvtuDne/5x9zmJfVxF
-	JpHEAZInTpXaqZMeqDl0VioKXJijBoA5tbOyfe9tO5uXSqGViZZU/uCgVvV4Zlij
-	rAx+wUzKOsj8bXHWXE4/zTqtM0XMxTw3v9iHqxtwk4vJuUuLOpPsUjr8N3epnCD1
-	tc0V8g==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4558a61dpg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 03 Mar 2025 16:01:40 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2fe86c01f4aso9092982a91.2
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Mar 2025 08:01:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741017699; x=1741622499;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xjaEGavEZhaf/n/BWdL16Lx6yvyWPHtzKIlO2g0w1kc=;
-        b=VLh6itHe/SlDNm6Uy+fogIz/ibiTbE798Nvl2x7ymbIn5BwolFeDA/SZ+wY2XAXH0k
-         XeKFFdf6etGYyfsGGbf31IepgnW83jYuHCyqzNFQmifNrfWkoGtJD+AbFM3WHGVk+2hs
-         xOQoDacMq4KZ/T5lY+XhyRiZu0gY5+1syot9RIQrlA5hY5026QcdZ7JVd6dsweSSsN6h
-         yYcEXFUNTiw+oJFrOAMzcCZ3kisvp6+GZqLd9cnG0ksjRSkXo5S1oFnSdtLOQOhZp2iu
-         wJxgqpIwoXUReEEOCiWMF5o3VCIDo5nq5stmyYKM+RHS9X/RlTQgzvaiztH512k0LJEc
-         Dtgw==
-X-Forwarded-Encrypted: i=1; AJvYcCWkGaQANy4pRuMuJKvpyse3PYex+qwpwVg2lFqVcuL7j2u/SsQfBQvgUqv+fjhZ7kI7uWJw1ApOJXBhwaAzFA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaAHFj4f5sVNY38XjbqlMnAcrr2pLJUI4yf8upaMtMMH4C+xWt
-	rFNyC3E2usgICG4nDXTRceZKj/syf2Q7+NTS6hfXaiD6cyYi/K4kTZh/hgOW0kB4XVphG5XfkYX
-	jeF6RR8y25BJCQ14m76T2emvnBdqP5ruiOWdD8aBO/c2ZOxdyjpdO4CYxR9L2haIX/w==
-X-Gm-Gg: ASbGncvneaBAAM42uePEnu03P+aGNh51i0zS3sNR2lxDEzG5VGqZA//qgdhQjKXtXfA
-	chiZKWga46uuspdJdmoLKkJgdLDSFhF1JgyYHzMlrbeqnbzS28NZ1Xf0+m1/Uw2eferDAi6nNVY
-	oB5/OLLi6PIN1Wit5qaBwbOCu3AhxXSibP6om19c26Xmd/5eXsK3g6S7H5mKSoPvfdprqijbhWo
-	Z+8zmqCERc1CU+jE0agh/nwK0Ll0fqmP1Xmv40AmhfnkRb/Mpiu9dQfuJVmyeRz7l6qECvXa6r8
-	IzxO2esDXKxGcJ7qOdRtHFBHk+k9iuUOyzqXM1vluL5uztL2o7FZKsXPrKVq2BdwnQN+jqeYM//
-	lIAlyVxJe
-X-Received: by 2002:a05:6a21:4613:b0:1ee:cfaa:f174 with SMTP id adf61e73a8af0-1f2f4e4c89emr22116730637.42.1741017698937;
-        Mon, 03 Mar 2025 08:01:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGQ7lQhwdPu7F1bK4GZ8FGaLSacV4bEWANJf/oaDv1AOnK27gH8LHesKf32x0Ct88uuBV+zUA==
-X-Received: by 2002:a05:6a21:4613:b0:1ee:cfaa:f174 with SMTP id adf61e73a8af0-1f2f4e4c89emr22116685637.42.1741017698472;
-        Mon, 03 Mar 2025 08:01:38 -0800 (PST)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7ddf29f4sm8326270a12.11.2025.03.03.08.01.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 08:01:38 -0800 (PST)
-Message-ID: <0d92ca31-c22b-4798-aa60-5feb66def31b@oss.qualcomm.com>
-Date: Mon, 3 Mar 2025 08:01:37 -0800
+	8aguj+DouiTDz86DITOeENQzEs5tk7VT06PcNWaFf2Q=; b=VqXVI3ndU2KRhL7k
+	g2OF+n5KFYOvMdFpj/YNuGyl6EvKY+urmiSydZjTWAEP0/wnRY0mHeUPr0j7sYvy
+	0gAdLuWmWMYjCRj1rF2wkSQAeRPdXdYfED+Qtst0M4Sk5NttZZ1aeaPy2akg+CPJ
+	vBFmYFUwBL69EQzx6x2awTUqWVoLfpFqlOLfyHMNaFLQyrYTISmFwCvwgySLAsOB
+	FZiufiJ7MSmRZG2O78sS0wPfbm5hWOrrApfMEWS9at9KGigP2yNWVVt6O7IXQFH5
+	WuJkP+lO4yg9pTBYcqdONw2VP7Q1TUvNw8ovcNObveBoTg1BcjZsWrVzPOe12/ST
+	ii/eJQ==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 453t6k586p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Mar 2025 16:07:45 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 523G7iWx020757
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 3 Mar 2025 16:07:44 GMT
+Received: from [10.50.29.230] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 3 Mar 2025
+ 08:07:43 -0800
+Message-ID: <e989f3fb-4fa7-4839-9b98-d9a8c7341b1d@quicinc.com>
+Date: Mon, 3 Mar 2025 21:37:40 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,46 +65,171 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k: WCN6855: possible ring buffer corruption
-To: Johan Hovold <johan@kernel.org>
-Cc: Jeff Johnson <jjohnson@kernel.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kalle Valo <kvalo@kernel.org>
-References: <Zh6b-38tGGXo-ee7@hovoldconsulting.com>
- <Z8Gr-IMD-UZTU-X5@hovoldconsulting.com>
- <1f8fa248-c18a-4bb9-b995-0961f7f3fa37@oss.qualcomm.com>
- <Z8VWAWl5UdZQYGgr@hovoldconsulting.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: Re: [PATCH v3 07/12] wifi: cfg80211: extend statistics for link level
+ in sinfo
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+References: <20250213171632.1646538-1-quic_sarishar@quicinc.com>
+ <20250213171632.1646538-8-quic_sarishar@quicinc.com>
+ <6c6be5e9552d32d0598af6aee55ceae450209f7e.camel@sipsolutions.net>
 Content-Language: en-US
-In-Reply-To: <Z8VWAWl5UdZQYGgr@hovoldconsulting.com>
-Content-Type: text/plain; charset=UTF-8
+From: Sarika Sharma <quic_sarishar@quicinc.com>
+In-Reply-To: <6c6be5e9552d32d0598af6aee55ceae450209f7e.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: aYS8U8NKJn5q7Q_fqzThnUwnXV4csMDG
-X-Proofpoint-ORIG-GUID: aYS8U8NKJn5q7Q_fqzThnUwnXV4csMDG
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: EWQFBZPZWcwRcXTNNv9lpzjfSZnp4PJI
+X-Proofpoint-ORIG-GUID: EWQFBZPZWcwRcXTNNv9lpzjfSZnp4PJI
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-03_07,2025-03-03_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 malwarescore=0
- priorityscore=1501 clxscore=1015 phishscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=969 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2503030122
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 priorityscore=1501 bulkscore=0 mlxlogscore=999 mlxscore=0
+ lowpriorityscore=0 clxscore=1015 spamscore=0 malwarescore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503030123
 
-On 3/2/2025 11:10 PM, Johan Hovold wrote:
-> On Fri, Feb 28, 2025 at 09:07:32AM -0800, Jeff Johnson wrote:
->> On 2/28/2025 4:28 AM, Johan Hovold wrote:
-> 
->>> The ath11k ring-buffer corruption issue is hurting some users of the
->>> Lenovo ThinkPad X13s quite bad so I promised to try to escalate this
->>> with you and Qualcomm.
+On 2/28/2025 6:51 PM, Johannes Berg wrote:
+> On Thu, 2025-02-13 at 22:46 +0530, Sarika Sharma wrote:
+>> Currently, statistics is supported at deflink( or one of the links)
+>> level for station. This has problems when applied to multi-link(ML)
+>> connections.
 >>
->> I've escalated this with the development team.
+>> Hence, add changes to support link level statistics in sinfo structure.
+>> Additionally, remove mlo_params_valid from the sinfo structure and
+>> add valid_links to indicate bitmap of valid links for MLO.
+>>
+>> This will be helpful to check the link related statistics during MLO.
+>>
+>> The statistics could be embedded into NL message as below:
 > 
-> Thanks, Jeff. Just let me know if you need any help with testing patches
-> or firmware updates. We have a couple of users that can reproduce this
-> very easily and that are also able to test patches.
+> "could be"?
 
-There is a patch under development -- you should see it this week.
+Oops, sure will change it to "will look like"
 
-/jeff
+> 
+>> For MLO:
+>> cmd ->
+>> 	NL80211_ATTR_IFINDEX
+>> 	NL80211_ATTR_MAC
+>> 	NL80211_ATTR_GENERATION
+>> 	.......etc
+>> 	NL80211_ATTR_STA_INFO | nest flag
+>> 		NL80211_STA_INFO_CONNECTED_TIME,
+>> 		NL80211_STA_INFO_STA_FLAGS,
+>> 		........etc
+>> 	NL80211_ATTR_MLO_LINK_ID,
+>> 	NL80211_ATTR_MLD_ADDR,
+>> 	NL80211_ATTR_MLO_LINKS | nested
+> 
+> you're being inconsistent with "| nested" and "| nest flag" but I'm not
+> sure it's necessary anyway?
+
+No, it is not necessary, will make it consistent.
+
+> 
+>> 		link_id-1 | nested
+>> 		NL80211_ATTR_MLO_LINK_ID,
+> 
+> And that should be indented further, perhaps? Maybe not use tabs then
+> but just 4 spaces or so :)
+
+Sure, will correct it.
+
+>>
+>> Station 00:03:7f:04:31:78 (on wlan0)
+>> 	authorized:     yes
+>> 	authenticated:  yes
+>> 	associated:     yes
+>> 	preamble:       long
+>> 	WMM/WME:        yes
+>> 	MFP:            yes
+>> 	TDLS peer:      no
+>> 	connected time: 383 seconds
+>> 	associated at [boottime]:       93.740s
+>> 	associated at:  93685 ms
+>> 	current time:   340046 ms
+>>          MLD address: 00:03:7f:04:31:78
+> 
+> the indentation seems odd, but maybe that's just a copy/paste thing?
+
+Sure will check this.
+
+> 
+>>          Link 0:
+>>                  Address: 00:03:7f:04:31:78
+>>                  inactive time:  330120 ms
+>>                  rx bytes:       116
+>>                  rx packets:     3
+>>                  tx bytes:       0
+>>                  tx packets:     0
+>>                  tx retries:     0
+>>                  tx failed:      0
+>>                  rx drop misc:   0
+>>                  signal:         -95 dBm
+>>                  tx bitrate:     6.0 MBit/s
+>>                  tx duration:    2669 us
+>>                  rx duration:    0 us
+>> 	        DTIM period:    2
+>> 	        beacon interval:100
+>>          Link 1:
+>>                  Address: 00:03:7f:04:31:79
+>>                  inactive time:  81268 ms
+>>                  rx bytes:       1323
+>>                  rx packets:     12
+>>                  tx bytes:       1538
+>>                  tx packets:     8
+>>                  tx retries:     0
+>>                  tx failed:      0
+>>                  rx drop misc:   0
+>>                  signal:         -95 dBm
+>>                  tx bitrate:     6.0 MBit/s
+>>                  tx duration:    2669 us
+>>                  rx bitrate:     6.0 MBit/s
+>>                  rx duration:    0 us
+>> 	        DTIM period:    2
+>> 	        beacon interval:100
+> 
+> This looks like it's missing the roll-up to the global counters and
+> timestamps? Why would that not break backward compatibility?
+
+For non-MLO it will not effect, for MLO I have added accumulated stats 
+for packets, bytes and signal, rates at mld level.
+
+For inactive time, DTIM period, beacon interval can I add least of the 
+values among links ? and add as a separate patch?
+
+> 
+>>   static inline void cfg80211_sinfo_release_content(struct station_info *sinfo)
+>>   {
+>> -	if (sinfo->links[0]) {
+>> -		kfree(sinfo->links[0]->pertid);
+>> -		kfree(sinfo->links[0]);
+>> +	int link_id;
+>> +
+>> +	if (sinfo->valid_links) {
+>> +		for_each_valid_link(sinfo, link_id) {
+>> +			if (sinfo->links[link_id]) {
+>> +				kfree(sinfo->links[link_id]->pertid);
+>> +				kfree(sinfo->links[link_id]);
+>> +			}
+>> +		}
+>> +	} else {
+>> +		if (sinfo->links[0]) {
+>> +			kfree(sinfo->links[0]->pertid);
+>> +			kfree(sinfo->links[0]);
+>> +		}
+>>   	}
+> 
+> Don't be so complicated ... check what "for_each_valid_link()" does if
+> valid_links is 0.
+
+Sure, will check and update accordingly.
+
+> 
+> johannes
+
 
