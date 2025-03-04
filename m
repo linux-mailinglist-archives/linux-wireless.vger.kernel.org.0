@@ -1,78 +1,91 @@
-Return-Path: <linux-wireless+bounces-19737-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19743-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A2DA4D3DF
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 07:29:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A463A4D3EE
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 07:33:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51E5C188EBE7
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 06:29:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A57091894424
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 06:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5C91F540F;
-	Tue,  4 Mar 2025 06:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFB81D7E35;
+	Tue,  4 Mar 2025 06:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Vrc+E5AN"
+	dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b="bnqZxSVb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEED3152E02
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 06:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1621E3DE5
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 06:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741069767; cv=none; b=r5d9ZnVh8Rey07XnuLZdVr04LqsUu/cOoPU8SUY9MWpFAjrZtlFCPMgSRoJm4oLYv3f3V87VkBguMzfSV1W6MRxw5l5Yhh2c2Uvqt6j39ckmHCvQMH+nJ0URxidgtrvV9NcsAhFdcuEP7jERWUGaDZkPayY9AG/2f0JOzCjRvLo=
+	t=1741070013; cv=none; b=TqmxS9h7GLwwz+ynKWc6leB0+6IQv0pt0nyjK8E3qlbdxeAXhz0beK74vM/ZTFsxZxVYSrk53WdUsXdLyqWA0QFNW2wkkyKBkTQ6C2UX2QYhepUzLtzpzDWqCLgOlbc7TRm/1RTqyBya+UEuOA6RsW7ASQExCcna4AymE0rR60A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741069767; c=relaxed/simple;
-	bh=MhdGOWyDb3J3sLkjQUBKJ44AgLT4mn8KkeheNyyeJ20=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OdsnhH0M3cysJC0KuYj/TDvrhpRnX4dY4FmHvQcJ+T1I54PeqrP0w7wpmLzl0BsY+aJhkg+8DaSW0W11snDzYz27pcQ5+gyx1tGLTuO+jxs0Zi5f66XjGEWYZA3AQdvZxl5XcYhnszCdpd4awMsWbXuT3VEbfJDjWuN2UCfPy5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Vrc+E5AN; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: ff85eb92f8c111efaae1fd9735fae912-20250304
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=QL63nKQ5zhGPJAzD3ldqXor2EXRLJquzuUF6q4duBX0=;
-	b=Vrc+E5ANc2K/IEW4qtvKqNs7xHVRBaw0caeLynstjmezrArivF3yHcHv2+ikyMelT3DUcIJLn7DPSO5Qzuicb4/qRjvv2aE8cPl47AU68pvqMhBeBPpuRrYX3NrSMe9fYPmtxgM2Slp/HKQ4OdhFbZNs7UjCqjjxHW7Ens/Fym4=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.1,REQID:53a8fe7b-b406-456d-93a2-8b97ebff2b1c,IP:0,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-5
-X-CID-META: VersionHash:0ef645f,CLOUDID:c99bd1b5-a2a1-4ef3-9ef9-e116773da0a7,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0|50,EDM:-3
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: ff85eb92f8c111efaae1fd9735fae912-20250304
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1516777867; Tue, 04 Mar 2025 14:29:17 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Tue, 4 Mar 2025 14:29:16 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Tue, 4 Mar 2025 14:29:16 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>
-Subject: [PATCH v2 6/6] wifi: mt76: mt7925: add MTCL support to enhance the reulatory compliance
-Date: Tue, 4 Mar 2025 14:28:54 +0800
-Message-ID: <20250304062854.829194-6-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250304062854.829194-1-mingyen.hsieh@mediatek.com>
-References: <20250304062854.829194-1-mingyen.hsieh@mediatek.com>
+	s=arc-20240116; t=1741070013; c=relaxed/simple;
+	bh=0L9jk7jDl4R7Tch+PFoZUAPpOUQGpTxhl+ZUFKtbat4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YH1T7gXHs4y0wpeQfnY09fD6RIZNXQPSPQ/HEVA6OoTmhsCjHrDBUm0seN4U2DULmhc0Ogcx+AfNfsch6JEeL4E1IUfmvpItszHqgnFEjKWeky+jHAphql3mPjT2jTzrJ7i4OV18a85dPwG14WH6V9zhCwSoK4D5rK3oxEl1VEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org; spf=pass smtp.mailfrom=kali.org; dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b=bnqZxSVb; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kali.org
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3f417de5e25so2585026b6e.3
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Mar 2025 22:33:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kali.org; s=google; t=1741070011; x=1741674811; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0L9jk7jDl4R7Tch+PFoZUAPpOUQGpTxhl+ZUFKtbat4=;
+        b=bnqZxSVbDFqNV6psdfJMuqY7320OSzHiUmp+C+40y9qH6vFrEW1Ssl2+cLGfQrGruR
+         PUFWUTx/EEsgrFP60M4b8YzeoNqeiOM4bbc0OO2GdNQzkyKA8DhXKNK6DlVcPl7TtT9v
+         fMdX14sFXve2KCPt5IMx/aa+EGDgyDX3zAETAScAT7miq97JiFTqVAxQ05Lvm/+LQ2Vj
+         kDL7Fru70kaDNczmGIjVDFLa7Mkh4xrg5IVn1QMP9MS1H+xaVGv9jcbaeYZSAELWHVUu
+         mQBwfJ4v6jtcO+OdErZExycent1d0c15q5JkyPUomkW7u7GVzPuRVOO6nFR3GUUga5uS
+         I0qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741070011; x=1741674811;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0L9jk7jDl4R7Tch+PFoZUAPpOUQGpTxhl+ZUFKtbat4=;
+        b=nkLCnZiSZ5KPKtkmIUFpnnfnRCI04eGIqBr/nuWj0iIvGHlcoldvCb2QVuM/Latt3c
+         /ISOxJHS1h+/9RD3Bp3eQMM8PQe4UwUbsFMVA+TgY5r0ntwq0fvAkGQnZxXPsGch2SNA
+         VhzF4KtsfhKvm46j/+UFT0vWZzqlKtuCh5fIoI15ERwf7+3X25jXmVrvMZIH7N1s44j/
+         9cOqBxMmktlK8T4MKQFbS7dVp7QRTxaaY5EnWLifshgq6eeKM1hPjqRcG796uvd7qVYm
+         9Xk+Lc9Ylhv3IwC5okkPPSlI1nS5AHW0IBDdIAqqHEkp9Y3ZU23panO/aXjA7QWYtE/3
+         V6rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVDhW3+1eF4GUSMPKR/shohL7TKNm3iEIPsUt4svVftmkSKkH2MiX6L49qRhrq7POdxLyx5Nq5ekw1sd2sgBg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyx9aCzX1KVMuoorv083bSEsV1ettlvbVMbFsCE7jUId3ZWepIH
+	GDFjuZBcnTw0Jgo5/5sUdmpBBd4zginLnDCzmpzIUSTtwQYlZZ9m6NZsge+yF5k=
+X-Gm-Gg: ASbGncuP2O32e0jKCHONazwzM7mi3ozTDDcTX/A1mK/UNeIooW/DggDr/iCLueguuSz
+	VGxzIrleFUZjj/DLpe/xWFNgQ5RWvVQtSxJP5UZbmbJ+kdArKR2VdBtLwd/KX5bq5Fkh34iiuLq
+	WtXNjR26bjCCeKl494XNHSrzDMnfQOeNR3icSfEF7PezQvMkVFyOcLt+fFJ39F5r0X2INRJIrS1
+	bbY3c999WWvrJY6yYLFDCxju3JSmpsQZ6PuiuZayzOHaJjkdA0crcp2V66S3USP2kYQ624z5zSX
+	o0lXiSZ1LD8WeRDKsECTo7Nr9sr8NeBeOcYBAuorp7GZ6queVSMwrpeeyUJJeRPoUnUzS2KagQY
+	/zduQ7BxDLNUy
+X-Google-Smtp-Source: AGHT+IF836u3HRurnaD3JNQQMkTOVJFkdb7saaYaAdjJKb8CcB9Uh6cD4rojnwwaZzpJu95yORRjaw==
+X-Received: by 2002:a05:6808:2e96:b0:3eb:3b69:8ff4 with SMTP id 5614622812f47-3f5585254ffmr10749480b6e.15.1741070011245;
+        Mon, 03 Mar 2025 22:33:31 -0800 (PST)
+Received: from localhost (104-48-214-220.lightspeed.snantx.sbcglobal.net. [104.48.214.220])
+        by smtp.gmail.com with UTF8SMTPSA id 5614622812f47-3f66e8449f6sm539684b6e.1.2025.03.03.22.33.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 22:33:29 -0800 (PST)
+From: Steev Klimaszewski <steev@kali.org>
+To: hzyitc@outlook.com
+Cc: ath11k@lists.infradead.org,
+	jjohnson@kernel.org,
+	johannes@sipsolutions.net,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/1] wifi: ath11k: pcic: make memory access more readable
+Date: Tue,  4 Mar 2025 00:33:28 -0600
+Message-ID: <20250304063328.33762-1-steev@kali.org>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <TYZPR01MB55566065525ADA7F71F516D4C9C92@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+References: <TYZPR01MB55566065525ADA7F71F516D4C9C92@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,63 +93,25 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Hi Ziyang,
 
-Apply the MTCL configuration to improving channel availability and
-regulatory compliance if MTCL table is supported.
+With this patch applied, on the Thinkpad X13s which has an ath11k, I am seeing
+the following:
 
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
-v2: no change
----
- .../net/wireless/mediatek/mt76/mt7925/init.c    | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ ath11k_pci 0006:01:00.0: chip_id 0x2 chip_family 0xb board_id 0x8c soc_id 0x400c0210
+ ath11k_pci 0006:01:00.0: fw_version 0x11088c35 fw_build_timestamp 2024-04-17 08:34 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+ ath11k_pci 0006:01:00.0: firmware crashed: MHI_CB_EE_RDDM
+ ath11k_pci 0006:01:00.0: ignore reset dev flags 0xc800
+ ath11k_pci 0006:01:00.0: failed to receive control response completion, polling..
+ ath11k_pci 0006:01:00.0: ctl_resp never came in (-110)
+ ath11k_pci 0006:01:00.0: failed to connect to HTC: -110
+ ath11k_pci 0006:01:00.0: failed to start core: -110
+ failed to send QMI message
+ ath11k_pci 0006:01:00.0: failed to send wlan mode request (mode 4): -5
+ ath11k_pci 0006:01:00.0: qmi failed to send wlan mode off: -5
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-index 8561ab310f16..1bd30a857be5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -64,8 +64,15 @@ void mt7925_regd_be_ctrl(struct mt792x_dev *dev, u8 *alpha2)
- 	struct mt7925_clc_rule_v2 *rule;
- 	struct mt7925_clc *clc;
- 	bool old = dev->has_eht, new = true;
-+	u32 mtcl_conf = mt792x_acpi_get_mtcl_conf(&dev->phy, alpha2);
- 	u8 *pos;
- 
-+	if (mtcl_conf != MT792X_ACPI_MTCL_INVALID &&
-+	    (((mtcl_conf >> 4) & 0x3) == 0)) {
-+		new = false;
-+		goto out;
-+	}
-+
- 	if (!phy->clc[MT792x_CLC_BE_CTRL])
- 		goto out;
- 
-@@ -101,11 +108,21 @@ mt7925_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
- {
- #define IS_UNII_INVALID(idx, sfreq, efreq) \
- 	(!(dev->phy.clc_chan_conf & BIT(idx)) && (cfreq) >= (sfreq) && (cfreq) <= (efreq))
-+#define MT7925_UNII_59G_IS_VALID	0x1
-+#define MT7925_UNII_6G_IS_VALID	0x1e
- 	struct ieee80211_supported_band *sband;
- 	struct mt76_dev *mdev = &dev->mt76;
- 	struct ieee80211_channel *ch;
-+	u32 mtcl_conf = mt792x_acpi_get_mtcl_conf(&dev->phy, mdev->alpha2);
- 	int i, cfreq;
- 
-+	if (mtcl_conf != MT792X_ACPI_MTCL_INVALID) {
-+		if ((mtcl_conf & 0x3) == 0)
-+			dev->phy.clc_chan_conf &= ~MT7925_UNII_59G_IS_VALID;
-+		if (((mtcl_conf >> 2) & 0x3) == 0)
-+			dev->phy.clc_chan_conf &= ~MT7925_UNII_6G_IS_VALID;
-+	}
-+
- 	sband = wiphy->bands[NL80211_BAND_5GHZ];
- 	if (!sband)
- 		return;
--- 
-2.34.1
+I'm pretty sure this isn't supposed to happen?
 
+--steev
 
