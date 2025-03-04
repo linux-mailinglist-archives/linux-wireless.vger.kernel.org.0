@@ -1,71 +1,75 @@
-Return-Path: <linux-wireless+bounces-19751-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19754-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACEF0A4D959
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 10:54:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E1CA4DCB6
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 12:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB37916362A
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 09:54:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 614D8188B35A
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 11:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DDC1EE7AD;
-	Tue,  4 Mar 2025 09:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7041FF7D5;
+	Tue,  4 Mar 2025 11:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="K45pTLIA"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="N4ykHHAM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6688342077
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 09:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F0B200BB5
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 11:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741082055; cv=none; b=sklYeXz//u4wZqo38d+bN154qO+IK+6aeaskkSfrRtgXNn5DuFwOvzVRqR8ikzjfvcSn7EOi9yFqw+I3ZEi1aM/PAy7PyLcXyaFjZvwunTS9R8xG1XoGxiYLA4dDLlg9r9TcdnvX/MNJHKFKWPZ1ik9ySTzXC6JBa38w6PVav+Y=
+	t=1741088222; cv=none; b=UvVVNfRMZdqeb9qIm5ncIlKrwDwahjmaZ6lM1gaaJf4v+ElbA/vJwHcLAcnxyHNCN2TQ15h8oMNk3ruBudvqG+2mDSzmrk6BcH+R3fzXlq8I8999s6aVcOMeUNiJuJAwn3yJO730OQKyWE5fE6mZdrzuYI3TNYQGqV1QjG2uYWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741082055; c=relaxed/simple;
-	bh=7WPS4oVdq6yXEYhCudW+D46qcT3a38/VC1nQg3o7B6k=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ga7SoX6Bo4WIsj8TNdebmR3v91KcL9zyd55ch3SpHSjYK+0QHak5cL2lay97tOnuKjFXrIeBwSALpTqm2pXqNg6n5K+6X04jPmLBJNVVWdpdlBFbnmKcsDESpK7OjPHeU9UUFppuXJMHvz5lvH3PQVAhhuthiHCsZUi0Mm0Wm7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=K45pTLIA; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5249Sm9n012764;
-	Tue, 4 Mar 2025 09:54:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	YlJ0qlR0+66MUXiXPJvUVirWZSEYVjo9iceen10ezWQ=; b=K45pTLIA6TpafRvW
-	XF/qoV2BxgkNIIMDeDzk7qUMdArLRRQwnGm6LgZkRjev+sp2oRIgK8gU5GG3Vj/y
-	inW0UjlqLJquO2GiuWVolf4icEe+1ikDiTMh2r88u56wz5+Dkv0SSU6KioPewFVg
-	mqs0MPLTi7gappNCujc12/11eiP35HLOl3UHAGlaF/Q7ZcMiBE2MbXfgrBKwLAFQ
-	jjLnb2NZED8r8Ceweme/CtXIj4LFyBgsAMvPfza6fq5iZia3JndJv7AhC66qkyWq
-	YGE95OpSq0cemEz2AofbGLYUeNf4bs4V0y2VHLjZ7v6/LvSeH16NwVJuyCWjiw0/
-	36XL9A==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 455p6t1evp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Mar 2025 09:54:11 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5249sBsH027937
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 4 Mar 2025 09:54:11 GMT
-Received: from hu-surapk-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+	s=arc-20240116; t=1741088222; c=relaxed/simple;
+	bh=vfXq3GEOpMEF3wCAaswmpxMFGYsVLoXcPD+sHwEbq+k=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KvJQcR/1dPs/4tYsZOO7idRCH/b5DyIWRMykniItkMCVy71oaqJRxZdn+hgqY+/+VfMGY1P1Nsq6R4dtRhjVyqhjF/6SUqkrOVF7zNYF86LMzAkQM7xDk0OUDvz6/pcDnND5j5PJplh/FxAIOODRHDyTj591WMGUPVI9W527FfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=N4ykHHAM; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: f8df6338f8ec11ef8eb9c36241bbb6fb-20250304
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Y5MztexKnc2jfacW5/m7S9fajAe3Mx5T/kXfkSqqol0=;
+	b=N4ykHHAMJN6kmJADbx46Dddz84AFZ13T67A5HLonBeUg8dkKmy5Tq6MImBvwHE/m6OukxfpoVpZwYJVex6E7NXa4PTQ2A32D48B4wHXAEWlFtFhTWw+nWN6zxJnozzfycanWIR2fKu0gSoJ66FuxQmHvtOVDME2FQZ4RJ4iAFo4=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.2.1,REQID:9bef3a04-e1ce-41be-8659-dbc85f30a922,IP:0,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-25
+X-CID-META: VersionHash:0ef645f,CLOUDID:47f9cfa4-5c06-4e72-8298-91cabc9efadf,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: f8df6338f8ec11ef8eb9c36241bbb6fb-20250304
+Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 51721400; Tue, 04 Mar 2025 19:36:54 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 4 Mar 2025 01:54:09 -0800
-From: Suraj P Kizhakkethil <quic_surapk@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>,
-        Suraj P Kizhakkethil <quic_surapk@quicinc.com>
-Subject: [PATCH v2 2/2] wifi: ath12k: Pass correct values of center freq1 and center freq2 for 320 MHz
-Date: Tue, 4 Mar 2025 15:23:15 +0530
-Message-ID: <20250304095315.3050325-3-quic_surapk@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250304095315.3050325-1-quic_surapk@quicinc.com>
-References: <20250304095315.3050325-1-quic_surapk@quicinc.com>
+ 15.2.1258.28; Tue, 4 Mar 2025 19:36:53 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Tue, 4 Mar 2025 19:36:53 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>
+Subject: [PATCH v3 1/6] wifi: mt76: mt7925: load the appropriate CLC data based on hardware type
+Date: Tue, 4 Mar 2025 19:36:44 +0800
+Message-ID: <20250304113649.867387-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,61 +78,132 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: D1josDCKOqByJCmw01A6hbupzwQdkMx1
-X-Authority-Analysis: v=2.4 cv=P5XAhjAu c=1 sm=1 tr=0 ts=67c6cdc3 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=OyfERs9buAgBwf57kVEA:9 a=iQ38tI3Jhiso9qxjJTu-:22
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: D1josDCKOqByJCmw01A6hbupzwQdkMx1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-04_04,2025-03-03_04,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
- bulkscore=0 priorityscore=1501 suspectscore=0 clxscore=1015
- lowpriorityscore=0 malwarescore=0 phishscore=0 adultscore=0 spamscore=0
- mlxlogscore=999 classifier=spam authscore=0 adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502100000 definitions=main-2503040083
 
-From: Sriram R <quic_srirrama@quicinc.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-Currently, for 320 MHz bandwidth, center frequency1 and
-center frequency2 are not passed correctly to the firmware.
-Set center frequency1 as the center frequency of the
-primary 160 MHz channel segment and center frequency2 as the center
-frequency of the 320 MHz channel and pass the values
-to the firmware.
+Read the EEPROM to determine the hardware type and uses this to load the
+correct CLC data.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-Signed-off-by: Suraj P Kizhakkethil <quic_surapk@quicinc.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+v2: no change
+v3:
+  - change "__packed *res" from "__packed * res"
+  - reorder the local variables in X'mas tree order
+---
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 61 ++++++++++++++++++-
+ .../wireless/mediatek/mt76/mt7925/mt7925.h    |  3 +
+ 2 files changed, 63 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index bed8c24aef20..d6068ae10421 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -1043,7 +1043,15 @@ static void ath12k_wmi_put_wmi_channel(struct ath12k_wmi_channel_params *chan,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index d4fac7c2d0e6..fe789e7978fc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -800,6 +800,54 @@ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
+ 				 enable, false);
+ }
  
- 	chan->mhz = cpu_to_le32(arg->freq);
- 	chan->band_center_freq1 = cpu_to_le32(center_freq1);
--	if (arg->mode == MODE_11BE_EHT160) {
-+	if (arg->mode == MODE_11BE_EHT320) {
-+		if (arg->freq > center_freq1)
-+			chan->band_center_freq1 = cpu_to_le32(center_freq1 + 80);
-+		else
-+			chan->band_center_freq1 = cpu_to_le32(center_freq1 - 80);
++static int mt7925_mcu_read_eeprom(struct mt792x_dev *dev, u32 offset, u8 *val)
++{
++	struct {
++		u8 rsv[4];
 +
-+		chan->band_center_freq2 = cpu_to_le32(center_freq1);
++		__le16 tag;
++		__le16 len;
 +
-+	} else if (arg->mode == MODE_11BE_EHT160) {
- 		if (arg->freq > center_freq1)
- 			chan->band_center_freq1 = cpu_to_le32(center_freq1 + 40);
- 		else
++		__le32 addr;
++		__le32 valid;
++		u8 data[MT7925_EEPROM_BLOCK_SIZE];
++	} __packed req = {
++		.tag = cpu_to_le16(1),
++		.len = cpu_to_le16(sizeof(req) - 4),
++		.addr = cpu_to_le32(round_down(offset,
++				    MT7925_EEPROM_BLOCK_SIZE)),
++	};
++	struct evt {
++		u8 rsv[4];
++
++		__le16 tag;
++		__le16 len;
++
++		__le32 ver;
++		__le32 addr;
++		__le32 valid;
++		__le32 size;
++		__le32 magic_num;
++		__le32 type;
++		__le32 rsv1[4];
++		u8 data[32];
++	} __packed *res;
++	struct sk_buff *skb;
++	int ret;
++
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_WM_UNI_CMD_QUERY(EFUSE_CTRL),
++					&req, sizeof(req), true, &skb);
++	if (ret)
++		return ret;
++
++	res = (struct evt *)skb->data;
++	*val = res->data[offset % MT7925_EEPROM_BLOCK_SIZE];
++
++	dev_kfree_skb(skb);
++
++	return 0;
++}
++
+ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
+ {
+ 	const struct mt76_connac2_fw_trailer *hdr;
+@@ -808,13 +856,20 @@ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
+ 	struct mt76_dev *mdev = &dev->mt76;
+ 	struct mt792x_phy *phy = &dev->phy;
+ 	const struct firmware *fw;
++	u8 *clc_base = NULL, hw_encap = 0;
+ 	int ret, i, len, offset = 0;
+-	u8 *clc_base = NULL;
+ 
+ 	if (mt7925_disable_clc ||
+ 	    mt76_is_usb(&dev->mt76))
+ 		return 0;
+ 
++	if (mt76_is_mmio(&dev->mt76)) {
++		ret = mt7925_mcu_read_eeprom(dev, MT_EE_HW_TYPE, &hw_encap);
++		if (ret)
++			return ret;
++		hw_encap = u8_get_bits(hw_encap, MT_EE_HW_TYPE_ENCAP);
++	}
++
+ 	ret = request_firmware(&fw, fw_name, mdev->dev);
+ 	if (ret)
+ 		return ret;
+@@ -859,6 +914,10 @@ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
+ 		if (phy->clc[clc->idx])
+ 			continue;
+ 
++		/* header content sanity */
++		if (u8_get_bits(clc->type, MT_EE_HW_TYPE_ENCAP) != hw_encap)
++			continue;
++
+ 		phy->clc[clc->idx] = devm_kmemdup(mdev->dev, clc,
+ 						  le32_to_cpu(clc->len),
+ 						  GFP_KERNEL);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+index 3f7187309513..abecaf897159 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+@@ -167,9 +167,12 @@ enum mt7925_eeprom_field {
+ 	MT_EE_CHIP_ID =		0x000,
+ 	MT_EE_VERSION =		0x002,
+ 	MT_EE_MAC_ADDR =	0x004,
++	MT_EE_HW_TYPE =		0xa71,
+ 	__MT_EE_MAX =		0x9ff
+ };
+ 
++#define MT_EE_HW_TYPE_ENCAP     GENMASK(1, 0)
++
+ enum {
+ 	TXPWR_USER,
+ 	TXPWR_EEPROM,
 -- 
 2.34.1
 
