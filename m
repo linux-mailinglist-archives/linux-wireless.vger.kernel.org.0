@@ -1,57 +1,58 @@
-Return-Path: <linux-wireless+bounces-19741-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19739-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405C3A4D3E4
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 07:29:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA95A4D3E1
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 07:29:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0DC616F9FC
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 06:29:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A98516E4F9
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 06:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFB5AD24;
-	Tue,  4 Mar 2025 06:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C81B1F5825;
+	Tue,  4 Mar 2025 06:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="cx9Ajk1r"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="VbW3DC4B"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6AA1F5433
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 06:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAA5AD24
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 06:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741069769; cv=none; b=ab7srb+N1ZdFIM0Zhkkp5ZE1zpK9jKGwHgxzY2KfK+mu8RqDqo4JZ+cJAi0/Cvq947FE5jnwZMkTfDn9JdETll3xL2pIThDhAqls+qLRgZ/jAtH1O7qclTG48XEGocpo4QrDFrejfSWMp+FzXxI8p7MMXTO65OOFXcHgr1amKfQ=
+	t=1741069768; cv=none; b=TkjPDUaMgMGEz48eieLn3wP8mH4tufFdbaLr4BolekLOD1w0y4YuNtkW1UwHlRF/dRID6bZ32Ik6kCCQA+dgRPz9ObH8Nl5k25wm/WcHJu1pLmeFJyFVd0yEZfNBnhgii7KeKjV6Sos0G1NrrIwNmDZUP4CddZFkc6hD6E4+tqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741069769; c=relaxed/simple;
-	bh=vwGC/c6KJfSB5bbX7fOM2iVb6T3Uxip0xmaZsAEpP1w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=p9mHb5wtYFoMkvr3aPiWgVGMMNc280XMX5o84CAAW9+YcrO00A5h1ovWylHEbTEEPT2cSEeqBRHjePnxXV6rtb7Ycg8CX75who3U6ntD4hSTDsL8K7BtP7M80k8PPCRJETQHW4brqXIUsOZFfKpWObDr8eSux+LzZ8e3rBSyzIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=cx9Ajk1r; arc=none smtp.client-ip=60.244.123.138
+	s=arc-20240116; t=1741069768; c=relaxed/simple;
+	bh=g8eiBPLxOCc2cSjMpwTn1GJXsQKKwc4Jjffo/agA7q0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fxX0eL+BLBH1sSUWq7ZOc4IcNtPaFMs+38h08yywsNB2xLEwogE2JZx5C/7+fWcXcjgm408BavOjSawBS32JoXiwLO1ZVOUtxqtZrxQiX9df7ZCptfElS9zsEvwYok+B4ucxO/04a3zEFhJSQKvMKvCTy/KsRq/MCTPXeTFYIt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=VbW3DC4B; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: ff7fca8cf8c111efaae1fd9735fae912-20250304
+X-UUID: ff938d24f8c111efaae1fd9735fae912-20250304
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=r5kByBeCqu622n3YUG0/W+GJpuZRh20sXHpK26Cm+FE=;
-	b=cx9Ajk1rNgsA4bZmuVXM/526U8K4Ieo5YW4Qx4YlUnTmWq7RuCCteOI2Gb0JGWmFrRwECco6BmfzF6JpH189Zt9tFmPODfugJVW0WajlaH9NCctJXS0xgKmZ5gOJXaX9l2xGnR0dxusCBs7RL2lbsI7jAs80hc/jKmFSImP4jOo=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=XM8U4LA3x2aJnZkttxX8Qk5zIDrSgDUxCsycih5eebU=;
+	b=VbW3DC4BSh6RaPdgR0S81vgG3NQcIZI5rA6shZ4pAJdeA7OcpHKfwr2g//mh6tkXvpour7P/QJxGbdmw+OID9JRJugQleNt3w4xq+FSgR0fMKLYLo8wY8OI16/4ZHYrKMUy0dfyd2siKXBfcw2MnU/4ejRYwFThhQu2k3HTT3+g=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.1,REQID:9391962a-9dd9-4056-8401-f6cea5c2ffb3,IP:0,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-25
-X-CID-META: VersionHash:0ef645f,CLOUDID:223f7f29-e0f8-414e-b8c3-b75c08217be8,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-O-INFO: VERSION:1.2.1,REQID:328940cb-8280-45b5-8b12-8f1403e2b148,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:0ef645f,CLOUDID:d0a11e03-a373-400e-87fc-32443f153737,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0|50,EDM:-3
+	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: ff7fca8cf8c111efaae1fd9735fae912-20250304
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
+X-UUID: ff938d24f8c111efaae1fd9735fae912-20250304
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
 	(envelope-from <mingyen.hsieh@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 742154635; Tue, 04 Mar 2025 14:29:17 +0800
+	with ESMTP id 1026314930; Tue, 04 Mar 2025 14:29:17 +0800
 Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1258.28; Tue, 4 Mar 2025 14:29:15 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
@@ -66,10 +67,12 @@ CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
 	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
 	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
 	<mingyen.hsieh@mediatek.com>
-Subject: [PATCH v2 1/6] wifi: mt76: mt7925: load the appropriate CLC data based on hardware type
-Date: Tue, 4 Mar 2025 14:28:49 +0800
-Message-ID: <20250304062854.829194-1-mingyen.hsieh@mediatek.com>
+Subject: [PATCH v2 2/6] wifi: mt76: mt7925: add EHT control support based on the CLC data
+Date: Tue, 4 Mar 2025 14:28:50 +0800
+Message-ID: <20250304062854.829194-2-mingyen.hsieh@mediatek.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250304062854.829194-1-mingyen.hsieh@mediatek.com>
+References: <20250304062854.829194-1-mingyen.hsieh@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,125 +84,196 @@ Content-Type: text/plain
 
 From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-Read the EEPROM to determine the hardware type and uses this to load the
-correct CLC data.
+Some countries do not support EHT modulation for now. To prevent violating
+regulations, the MT7925 chipset should control the EHT capabilities.
+Therefore, when a regulatory domain change is detected during scanning,
+the `mt7925_regd_be_ctrl` will process the CLC data to update the EHT
+capabilities.
 
 Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
 v2: no change
 ---
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 61 ++++++++++++++++++-
- .../wireless/mediatek/mt76/mt7925/mt7925.h    |  3 +
- 2 files changed, 63 insertions(+), 1 deletion(-)
+ .../net/wireless/mediatek/mt76/mt7925/init.c  | 38 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7925/main.c  |  3 ++
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 10 +++--
+ .../wireless/mediatek/mt76/mt7925/mt7925.h    | 27 +++++++++++--
+ drivers/net/wireless/mediatek/mt76/mt792x.h   |  1 +
+ 5 files changed, 72 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index d4fac7c2d0e6..505a6467f147 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -800,6 +800,54 @@ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
- 				 enable, false);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+index b40d979f1b65..94d7b762fe40 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+@@ -58,6 +58,44 @@ static int mt7925_thermal_init(struct mt792x_phy *phy)
+ 	return PTR_ERR_OR_ZERO(hwmon);
  }
  
-+static int mt7925_mcu_read_eeprom(struct mt792x_dev *dev, u32 offset, u8 *val)
++void mt7925_regd_be_ctrl(struct mt792x_dev *dev, u8 *alpha2)
 +{
-+	struct {
-+		u8 rsv[4];
++	struct mt792x_phy *phy = &dev->phy;
++	struct mt7925_clc_rule_v2 *rule;
++	struct mt7925_clc *clc;
++	bool old = dev->has_eht, new = true;
++	u8 *pos;
 +
-+		__le16 tag;
-+		__le16 len;
++	if (!phy->clc[MT792x_CLC_BE_CTRL])
++		goto out;
 +
-+		__le32 addr;
-+		__le32 valid;
-+		u8 data[MT7925_EEPROM_BLOCK_SIZE];
-+	} __packed req = {
-+		.tag = cpu_to_le16(1),
-+		.len = cpu_to_le16(sizeof(req) - 4),
-+		.addr = cpu_to_le32(round_down(offset,
-+				    MT7925_EEPROM_BLOCK_SIZE)),
-+	};
-+	struct evt {
-+		u8 rsv[4];
++	clc = (struct mt7925_clc *)phy->clc[MT792x_CLC_BE_CTRL];
++	pos = clc->data;
 +
-+		__le16 tag;
-+		__le16 len;
++	while (1) {
++		rule = (struct mt7925_clc_rule_v2 *)pos;
 +
-+		__le32 ver;
-+		__le32 addr;
-+		__le32 valid;
-+		__le32 size;
-+		__le32 magic_num;
-+		__le32 type;
-+		__le32 rsv1[4];
-+		u8 data[32];
-+	} __packed * res;
-+	struct sk_buff *skb;
-+	int ret;
++		if (rule->alpha2[0] == alpha2[0] &&
++		    rule->alpha2[1] == alpha2[1]) {
++			new = false;
++			break;
++		}
 +
-+	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_WM_UNI_CMD_QUERY(EFUSE_CTRL),
-+					&req, sizeof(req), true, &skb);
-+	if (ret)
-+		return ret;
++		/* Check the last one */
++		if (rule->flag && BIT(0))
++			break;
 +
-+	res = (struct evt *)skb->data;
-+	*val = res->data[offset % MT7925_EEPROM_BLOCK_SIZE];
-+
-+	dev_kfree_skb(skb);
-+
-+	return 0;
-+}
-+
- static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
- {
- 	const struct mt76_connac2_fw_trailer *hdr;
-@@ -809,12 +857,19 @@ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
- 	struct mt792x_phy *phy = &dev->phy;
- 	const struct firmware *fw;
- 	int ret, i, len, offset = 0;
--	u8 *clc_base = NULL;
-+	u8 *clc_base = NULL, hw_encap = 0;
- 
- 	if (mt7925_disable_clc ||
- 	    mt76_is_usb(&dev->mt76))
- 		return 0;
- 
-+	if (mt76_is_mmio(&dev->mt76)) {
-+		ret = mt7925_mcu_read_eeprom(dev, MT_EE_HW_TYPE, &hw_encap);
-+		if (ret)
-+			return ret;
-+		hw_encap = u8_get_bits(hw_encap, MT_EE_HW_TYPE_ENCAP);
++		pos += sizeof(*rule);
 +	}
 +
- 	ret = request_firmware(&fw, fw_name, mdev->dev);
- 	if (ret)
- 		return ret;
-@@ -859,6 +914,10 @@ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
- 		if (phy->clc[clc->idx])
++out:
++	if (old == new)
++		return;
++
++	dev->has_eht = new;
++	mt7925_set_stream_he_eht_caps(phy);
++}
++
+ void mt7925_regd_update(struct mt792x_dev *dev)
+ {
+ 	struct mt76_dev *mdev = &dev->mt76;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index cefb9068fa72..80aa7f329cf8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1449,6 +1449,9 @@ void mt7925_scan_work(struct work_struct *work)
+ 				if (!is_valid_alpha2(evt->alpha2))
+ 					break;
+ 
++				if (memcmp(evt->alpha2, mdev->alpha2, 2))
++					mt7925_regd_be_ctrl(phy->dev, evt->alpha2);
++
+ 				if (mdev->alpha2[0] != '0' && mdev->alpha2[1] != '0')
+ 					break;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 505a6467f147..e73320c5d8c0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -915,7 +915,9 @@ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
  			continue;
  
-+		/* header content sanity */
-+		if (u8_get_bits(clc->type, MT_EE_HW_TYPE_ENCAP) != hw_encap)
+ 		/* header content sanity */
+-		if (u8_get_bits(clc->type, MT_EE_HW_TYPE_ENCAP) != hw_encap)
++		if ((clc->idx == MT792x_CLC_BE_CTRL &&
++		     u8_get_bits(clc->t2.type, MT_EE_HW_TYPE_ENCAP) != hw_encap) ||
++		    u8_get_bits(clc->t0.type, MT_EE_HW_TYPE_ENCAP) != hw_encap)
+ 			continue;
+ 
+ 		phy->clc[clc->idx] = devm_kmemdup(mdev->dev, clc,
+@@ -1024,7 +1026,6 @@ mt7925_mcu_parse_phy_cap(struct mt792x_dev *dev, char *data)
+ 	mdev->phy.chainmask = mdev->phy.antenna_mask;
+ 	mdev->phy.cap.has_2ghz = cap->hw_path & BIT(WF0_24G);
+ 	mdev->phy.cap.has_5ghz = cap->hw_path & BIT(WF0_5G);
+-	dev->has_eht = cap->eht;
+ }
+ 
+ static void
+@@ -3427,7 +3428,7 @@ __mt7925_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
+ 	if (!clc)
+ 		return 0;
+ 
+-	pos = clc->data + sizeof(*seg) * clc->nr_seg;
++	pos = clc->data + sizeof(*seg) * clc->t0.nr_seg;
+ 	last_pos = clc->data + le32_to_cpu(*(__le32 *)(clc->data + 4));
+ 	while (pos < last_pos) {
+ 		struct mt7925_clc_rule *rule = (struct mt7925_clc_rule *)pos;
+@@ -3473,6 +3474,9 @@ int mt7925_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
+ 
+ 	/* submit all clc config */
+ 	for (i = 0; i < ARRAY_SIZE(phy->clc); i++) {
++		if (i == MT792x_CLC_BE_CTRL)
 +			continue;
 +
- 		phy->clc[clc->idx] = devm_kmemdup(mdev->dev, clc,
- 						  le32_to_cpu(clc->len),
- 						  GFP_KERNEL);
+ 		ret = __mt7925_mcu_set_clc(dev, alpha2, env_cap,
+ 					   phy->clc[i], i);
+ 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index 3f7187309513..abecaf897159 100644
+index abecaf897159..e6ca9021f487 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -167,9 +167,12 @@ enum mt7925_eeprom_field {
- 	MT_EE_CHIP_ID =		0x000,
- 	MT_EE_VERSION =		0x002,
- 	MT_EE_MAC_ADDR =	0x004,
-+	MT_EE_HW_TYPE =		0xa71,
- 	__MT_EE_MAX =		0x9ff
+@@ -137,6 +137,12 @@ enum {
+ 	MT7925_CLC_MAX_NUM,
  };
  
-+#define MT_EE_HW_TYPE_ENCAP     GENMASK(1, 0)
++struct mt7925_clc_rule_v2 {
++	u32 flag;
++	u8 alpha2[2];
++	u8 rsv[10];
++} __packed;
 +
+ struct mt7925_clc_rule {
+ 	u8 alpha2[2];
+ 	u8 type[2];
+@@ -152,14 +158,26 @@ struct mt7925_clc_segment {
+ 	u8 rsv2[4];
+ } __packed;
+ 
+-struct mt7925_clc {
+-	__le32 len;
+-	u8 idx;
+-	u8 ver;
++struct mt7925_clc_type0 {
+ 	u8 nr_country;
+ 	u8 type;
+ 	u8 nr_seg;
+ 	u8 rsv[7];
++} __packed;
++
++struct mt7925_clc_type2 {
++	u8 type;
++	u8 rsv[9];
++} __packed;
++
++struct mt7925_clc {
++	__le32 len;
++	u8 idx;
++	u8 ver;
++	union {
++		struct mt7925_clc_type0 t0;
++		struct mt7925_clc_type2 t2;
++	};
+ 	u8 data[];
+ } __packed;
+ 
+@@ -239,6 +257,7 @@ int mt7925_mcu_chip_configv2(struct mt792x_dev *dev, const char *cmd);
+ int mt7925_mcu_set_rxfilter(struct mt792x_dev *dev, u32 fif,
+ 			    u8 bit_op, u32 bit_map);
+ 
++void mt7925_regd_be_ctrl(struct mt792x_dev *dev, u8 *alpha2);
+ void mt7925_regd_update(struct mt792x_dev *dev);
+ int mt7925_mac_init(struct mt792x_dev *dev);
+ int mt7925_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
+index 281df43d9060..85f07f936be5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
+@@ -71,6 +71,7 @@ struct mt792x_fw_features {
  enum {
- 	TXPWR_USER,
- 	TXPWR_EEPROM,
+ 	MT792x_CLC_POWER,
+ 	MT792x_CLC_POWER_EXT,
++	MT792x_CLC_BE_CTRL,
+ 	MT792x_CLC_MAX_NUM,
+ };
+ 
 -- 
 2.34.1
 
