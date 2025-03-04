@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-19745-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19746-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E643AA4D7A4
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 10:14:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C6DA4D7A7
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 10:14:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBB88188B90F
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 09:10:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2806A16CD20
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 09:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DD71EEA54;
-	Tue,  4 Mar 2025 09:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE871FC7F6;
+	Tue,  4 Mar 2025 09:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Y5Jjesi0"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="S3p3YHNn"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3E21EE7AD
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 09:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85A51FC7C9
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 09:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741079421; cv=none; b=TKNsTV0pDnyvC/KHNVW4vcCQaLQ2ql2UrBgfD9BI7/F2SARHcqvnS3hfeHbdpRdVcTpaialCIiXidBElTaQRHE4XJ7ZlqmZjXIzGY0u1ecQGk9w08sbTyzSMNhK/UUKRZuPN+3sHxg3xG2EHUHSdzrIGFu2INrf8EH4Emn4dfqU=
+	t=1741079643; cv=none; b=asMspr+EF2iwWZnAArLYftyIKhfcKtZIdKkQ0vBB9vl9crrwQsXy9WZ8FxJjRWjiaw+z83XYxeRw2tH8XgKZK1O9XZ6pvAnfhbCLfMhm1ayo2R9ROGFS6IjRQw3vVps0hdCiRuDU39z7g7V3954SPzFHQWFLnk0x+usn8fS70qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741079421; c=relaxed/simple;
-	bh=jYdkDxnoJ48wFdMn+AqStOlIArwn5pY5Wg9Gs0egQOQ=;
+	s=arc-20240116; t=1741079643; c=relaxed/simple;
+	bh=U14yuLNH47gG7qspn1mFqtdeSsWKIMSVCGKOHmNCaNI=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Fme9Rzp7RY7Ux6GZLG9v34xR05eBWMUj45AdlLYdL+eMQji24YElUgxHLcZit/OdLuJO7JQ2IScina1ZVqnqRKhonBdIjnC0TFNMEh9hj9qd98ugja97RKo8cTclRcFoSTmVnMVSY1C3k0BfzElpm7hkkFfwRV8VRmT/bAsPYgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Y5Jjesi0; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:MIME-Version; b=fYH0QZyi4UwE6dbwY74TsQxx10HJPqldoZED8KfuDmIiPgvUPH08HchU29VLO5vMylJ/oN8kOhe5lT4CKAsp09a355buJurg4n/uYYHqS1eVO+dRLup8qk1DXpgZYNGZqYRF9LHLS/OEDgXVZKq3xOfzRzAwCL+cSC9Oz3afuxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=S3p3YHNn; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5249A1wB43431317, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5249Di6823446908, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1741079401; bh=jYdkDxnoJ48wFdMn+AqStOlIArwn5pY5Wg9Gs0egQOQ=;
+	t=1741079624; bh=U14yuLNH47gG7qspn1mFqtdeSsWKIMSVCGKOHmNCaNI=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=Y5Jjesi0He1NUo5a33pDpyd5xQCjbJgDJ4MolKMoeeAP8/GjAqR3AqAEAnuhYnnrq
-	 B4SoOBEO67kr1cuQPzAhnYTVPidVqq1M+fZ7dD/wM6ZxuGchIHS4zbsRyw0beKPTCN
-	 wgkIwwtKSipr0osu3NcRFrULQ2Do9J+km4eYdm8ng/KYJkOjJRNcfRVBl4N+VCJzjo
-	 eoW2Qmi66X+bHN4A+PKOK2ujIDBjNCtTCYoFinVeK55QWfEZvZhJX0RuBEmhb5S/OI
-	 ca/oOqokQrO3/5XvaV5aB7nMgJP2uGRori0RyaBDdZmx9NgMjlfeFB0tQVcrLnhWkI
-	 1/08ppM1xQJ9A==
+	b=S3p3YHNn9lC8S6Lxp6Ue5e1CFJDghHtLujjdocUezF1VIL92nObI43B87gJVM7gsy
+	 BcN4HfCSNsS1wG4nVKVUACIvH9kOIFAliwgT6vWyRnAtUAGScq1Q+byubXRyw/4mi7
+	 GRB4KNBQHF3pSWXNtmIJatCgbEE+NJHukUbtsWUfpym5cB2vNygPouz2qr4JHJWn4R
+	 Y6rGrWJDGX2myQTd20yOdnE9WpsnYe9oKJJxcEkRe+C0Xh7Nkd6fHquYx+t3VUECvj
+	 8zkG8+ehJ2r9VdD36sDZ0oIFO87ZYFtmwmDjfnnx3oXCrN1RaaKAggy79xB9t9aqee
+	 JS9XfxrfH1sPQ==
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5249A1wB43431317
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5249Di6823446908
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Mar 2025 17:10:01 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+	Tue, 4 Mar 2025 17:13:44 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 4 Mar 2025 17:10:01 +0800
+ 15.1.2507.39; Tue, 4 Mar 2025 17:13:45 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 4 Mar 2025 17:10:01 +0800
+ 15.1.2507.35; Tue, 4 Mar 2025 17:13:44 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b]) by
  RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b%5]) with mapi id
- 15.01.2507.035; Tue, 4 Mar 2025 17:10:01 +0800
+ 15.01.2507.035; Tue, 4 Mar 2025 17:13:44 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, "nbd@nbd.name" <nbd@nbd.name>,
         "lorenzo@kernel.org" <lorenzo@kernel.org>
@@ -74,15 +74,15 @@ CC: "deren.wu@mediatek.com" <deren.wu@mediatek.com>,
         "Shayne.Chen@mediatek.com" <Shayne.Chen@mediatek.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>
-Subject: RE: [PATCH v2 2/6] wifi: mt76: mt7925: add EHT control support based on the CLC data
-Thread-Topic: [PATCH v2 2/6] wifi: mt76: mt7925: add EHT control support based
- on the CLC data
-Thread-Index: AQHbjM7PI/j8mJkHIkCfOgfmxs+AIbNir+DQ
-Date: Tue, 4 Mar 2025 09:10:00 +0000
-Message-ID: <3c240deaec6e4a4887a8e144f558158d@realtek.com>
+Subject: RE: [PATCH v2 3/6] wifi: mt76: mt7925: update the channel usage when the regd domain changed
+Thread-Topic: [PATCH v2 3/6] wifi: mt76: mt7925: update the channel usage when
+ the regd domain changed
+Thread-Index: AQHbjM7N2KFn0uDwKkCbcB2eIcZbBbNisOEA
+Date: Tue, 4 Mar 2025 09:13:44 +0000
+Message-ID: <96503735cafd4e1eaafccb3e0479e9fc@realtek.com>
 References: <20250304062854.829194-1-mingyen.hsieh@mediatek.com>
- <20250304062854.829194-2-mingyen.hsieh@mediatek.com>
-In-Reply-To: <20250304062854.829194-2-mingyen.hsieh@mediatek.com>
+ <20250304062854.829194-3-mingyen.hsieh@mediatek.com>
+In-Reply-To: <20250304062854.829194-3-mingyen.hsieh@mediatek.com>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 Content-Type: text/plain; charset="us-ascii"
@@ -98,47 +98,49 @@ Mingyen Hsieh <mingyen.hsieh@mediatek.com> wrote:
 
 [...]
 
->=20
-> +void mt7925_regd_be_ctrl(struct mt792x_dev *dev, u8 *alpha2)
+> +static void
+> +mt7925_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
 > +{
-> +       struct mt792x_phy *phy =3D &dev->phy;
-> +       struct mt7925_clc_rule_v2 *rule;
-> +       struct mt7925_clc *clc;
-> +       bool old =3D dev->has_eht, new =3D true;
-> +       u8 *pos;
-> +
-> +       if (!phy->clc[MT792x_CLC_BE_CTRL])
-> +               goto out;
-> +
-> +       clc =3D (struct mt7925_clc *)phy->clc[MT792x_CLC_BE_CTRL];
-> +       pos =3D clc->data;
-> +
-> +       while (1) {
+> +#define IS_UNII_INVALID(idx, sfreq, efreq) \
+> +       (!(dev->phy.clc_chan_conf & BIT(idx)) && (cfreq) >=3D (sfreq) && =
+(cfreq) <=3D (efreq))
 
-while (1) could lead infinite loop unexpectedly.=20
-Adding a checking of clc->len would be safer.=20
+Implicitly using 'cfreq' would be missing something by reviewers.
+How about adding it as an argument of macro?
 
-> +               rule =3D (struct mt7925_clc_rule_v2 *)pos;
+> +       struct ieee80211_supported_band *sband;
+> +       struct mt76_dev *mdev =3D &dev->mt76;
+> +       struct ieee80211_channel *ch;
+> +       int i, cfreq;
 > +
-> +               if (rule->alpha2[0] =3D=3D alpha2[0] &&
-> +                   rule->alpha2[1] =3D=3D alpha2[1]) {
-> +                       new =3D false;
-> +                       break;
-> +               }
-> +
-> +               /* Check the last one */
-> +               if (rule->flag && BIT(0))
-> +                       break;
-> +
-> +               pos +=3D sizeof(*rule);
-> +       }
-> +
-> +out:
-> +       if (old =3D=3D new)
+> +       sband =3D wiphy->bands[NL80211_BAND_5GHZ];
+> +       if (!sband)
 > +               return;
 > +
-> +       dev->has_eht =3D new;
-> +       mt7925_set_stream_he_eht_caps(phy);
+> +       for (i =3D 0; i < sband->n_channels; i++) {
+> +               ch =3D &sband->channels[i];
+> +               cfreq =3D ch->center_freq;
+> +
+> +               /* UNII-4 */
+> +               if (IS_UNII_INVALID(0, 5845, 5925))
+> +                       ch->flags |=3D IEEE80211_CHAN_DISABLED;
+> +       }
+> +
+> +       sband =3D wiphy->bands[NL80211_BAND_6GHZ];
+> +       if (!sband)
+> +               return;
+> +
+> +       for (i =3D 0; i < sband->n_channels; i++) {
+> +               ch =3D &sband->channels[i];
+> +               cfreq =3D ch->center_freq;
+> +
+> +               /* UNII-5/6/7/8 */
+> +               if (IS_UNII_INVALID(1, 5925, 6425) ||
+> +                   IS_UNII_INVALID(2, 6425, 6525) ||
+> +                   IS_UNII_INVALID(3, 6525, 6875) ||
+> +                   IS_UNII_INVALID(4, 6875, 7125))
+> +                       ch->flags |=3D IEEE80211_CHAN_DISABLED;
+> +       }
 > +}
 > +
 
