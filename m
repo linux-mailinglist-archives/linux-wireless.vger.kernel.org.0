@@ -1,78 +1,156 @@
-Return-Path: <linux-wireless+bounces-19758-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19759-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD523A4DD7C
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 13:07:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6F0A4DE2E
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 13:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C91D3A58E0
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 12:07:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F57E3AD5DF
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 12:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5361FAC50;
-	Tue,  4 Mar 2025 12:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D566202976;
+	Tue,  4 Mar 2025 12:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="EYrfYFgn"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nPF8Zdsn"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5B01FF61E
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 12:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F648472;
+	Tue,  4 Mar 2025 12:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741090045; cv=none; b=CygigdJaEzj7E0ijdFbjQo9/pcgTTlGlnSO1wY/coDdtK2g1p0yPZYorbfmXYmz7ocsvY7ix478Zvhsm3w/TTSYvAH8ldIP9JPHlzsleSxe9Pd77kNCtIq3AbqRU5OxMnMtrIcMkNynIiOxW/SxyoM1NPMmxMshBglG+Lgo5GKs=
+	t=1741092284; cv=none; b=hAwdsxjH1VTFwdtMHTGCVRFAqxmx0fUMoS7fwmdjGFL5mQ06DsYLwpg/81R/L0tUie9Pm0wGIylz574trQZue8ay3C9ZvhtWV/Z39Jcv3sQ3yxTh8HJy5wt0xwDI7O9U8isFNTebPjM7rYEHVSAraY32TC8zPPPQhXpVvDuA+g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741090045; c=relaxed/simple;
-	bh=Zz/RVO+UU78p74IVuuWlzljZhOxdKKKDgn5akDCPpQI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PfkaPgzCxqjjeUlC/C7mTP+1UqfVKUCYKJ89/0rvc1kO9IjORBCm7IGwP37LSlIH9Dx6HVsHtYC4Saz1tDub+O5CrdcbkdImWQ3tYpBRz/379SZ9FTy7b4/iFKeqot11xHE350/76Y3oa4QNWY4xTGncfL9HJoRDts70QonmO4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=EYrfYFgn; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1741092284; c=relaxed/simple;
+	bh=XEvvVwt2G5MZoqyN++xcMmzwL9nv97rZFKIS+i/NyeQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dXL+nMSLNPEcvYX3P5w7bMmO4AvjC9TJtyRgMUsGLgavsdP+8iuZ44aY48VSrnvVH125OjZBXC5n0ifGbb1blPL5bhJNlpdvRtg1/7HY4Cl+0pHoHSacZrwF3tPB6KiT2oUSu5WmJzTBAMFRGwep8RWp/u5+iKHMaAnUT54fhyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nPF8Zdsn; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=fcBCAi5ZPYODtL5S1VlGHDcYX79DQdoHNVkZdP48u8M=;
-	t=1741090044; x=1742299644; b=EYrfYFgnmi/Or07ONLl2VMH4Q1NEZO3RMB/aITumQedxm+h
-	jP3x4j4ZuG9KKCa1Oh9bqP6M+XW/bcAbx1pOw2g62BkuXex6beklqMUUtD5LUsjJZBBpsBi/gWZwE
-	uBS+DPSH3WcwYX+WavfsemLz5b3+JUKE1rc2KCG7x2NUDq7byvw+w3/q6thtkmYgHp9lwsZac9HLE
-	0AJSV5mBq4DOGo9gOO/OYJNFCBaJQ/QEyKuSEqOIVMWRCCM2O5BiMh/GqQTB9qYQRLrkhW7FjHuY5
-	PB8hkX9/SfDf23FYMeUH1dV+dTxje2SbWcSVXJnIo84Oa/+Qr7ncEF1r5j9bsA/w==;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=alnDlK3Jo4/jWHg0ZREeZpdX2eyO5TjSDiNCNdsWgDc=; t=1741092282; x=1742301882; 
+	b=nPF8ZdsnJCjv95HLKP2HADV1YcX0BruqHqIWyGBszdzf3opPAAFK89b07D/Y/eC9FGe9Z0cVYG9
+	t9sRA3bcMMdDvMSMw1uxFlyovpYI/gnxVJLvd2CAYikgvtIttSRKsA2Xti8hTnqDKn8SEMMkIUwVG
+	rRhmSodz6sh2xakgPu1jtZiB/NP/Lf/b/dZs/VDGMktMkvE5O23zNJokdPVoKnvLVXaaMZlID5GJJ
+	IyXWIL/4zx18PWjTEu3vtw7ajf5jjFw1TcYBvZtO2t3uQTxo2E87JNLVpRgttl7CzoGC1IBbKVfMc
+	7LejDmvYfQvOx79KzALR0n8ZRcxdigjBmnnw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1tpR3L-00000000g12-1jW3;
-	Tue, 04 Mar 2025 13:07:15 +0100
-Message-ID: <e558d3711868e342e63c7bce77864c587e02e1e5.camel@sipsolutions.net>
-Subject: Re: [PATCH 42/42] wifi: iwlwifi: mld: enable the new operation mode
+	id 1tpRdY-00000000hAz-0L6B;
+	Tue, 04 Mar 2025 13:44:40 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: netdev@vger.kernel.org
 Cc: linux-wireless@vger.kernel.org
-Date: Tue, 04 Mar 2025 13:07:14 +0100
-In-Reply-To: <20250216111649.980c4a14b7ca.Ib58a6d779cb85a52868f7dfb5f28221f35e5aedf@changeid>
-References: <20250216094321.537988-1-miriam.rachel.korenblit@intel.com>
-	 <20250216111649.980c4a14b7ca.Ib58a6d779cb85a52868f7dfb5f28221f35e5aedf@changeid>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+Subject: pull-request: wireless-2025-03-04
+Date: Tue,  4 Mar 2025 13:43:18 +0100
+Message-ID: <20250304124435.126272-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
+Hi,
 
-> +config IWLMLD
-> +	tristate "Intel Wireless WiFi MLD Firmware support"
-> +	depends on m
-> +	select BPAUTO_WANT_DEV_COREDUMP
+Here's another set of fixes, sorry for the delay.
 
-That's wrong.
+Please pull and let us know if there's any problem.
 
+Thanks,
 johannes
+
+
+
+The following changes since commit b76adb9758f8eaaf22b824d0bcdd694551ce0557:
+
+  MAINTAINERS: wifi: remove Kalle (2025-02-06 22:30:26 +0200)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-03-04
+
+for you to fetch changes up to 1f860eb4cdda634589d75e78ff586d5dff20b8af:
+
+  wifi: nl80211: disable multi-link reconfiguration (2025-03-04 12:50:25 +0100)
+
+----------------------------------------------------------------
+bugfixes for 6.14:
+ * regressions from this cycle:
+   - mac80211: fix sparse warning for monitor
+   - nl80211: disable multi-link reconfiguration (needs fixing)
+ * older issues:
+   - cfg80211: reject badly combined cooked monitor,
+               fix regulatory hint validity checks
+   - mac80211: handle TXQ flush w/o driver per-sta flush,
+               fix debugfs for monitor, fix element inheritance
+   - iwlwifi: fix rfkill, dead firmware handling, rate API
+              version, free A-MSDU handling, avoid large
+              allocations, fix string format
+   - brcmfmac: fix power handling on some boards
+
+----------------------------------------------------------------
+Alexander Wetzel (3):
+      wifi: mac80211: Cleanup sta TXQs on flush
+      wifi: mac80211: remove debugfs dir for virtual monitor
+      wifi: mac80211: Fix sparse warning for monitor_sdata
+
+Emmanuel Grumbach (3):
+      wifi: iwlwifi: mvm: don't dump the firmware state upon RFKILL while suspend
+      wifi: iwlwifi: mvm: don't try to talk to a dead firmware
+      wifi: iwlwifi: mvm: use the right version of the rate API
+
+Ilan Peer (2):
+      wifi: iwlwifi: Free pages allocated when failing to build A-MSDU
+      wifi: iwlwifi: Fix A-MSDU TSO preparation
+
+Johannes Berg (6):
+      wifi: iwlwifi: fw: allocate chained SG tables for dump
+      wifi: iwlwifi: mvm: clean up ROC on failure
+      wifi: iwlwifi: limit printed string from FW file
+      wifi: mac80211: fix MLE non-inheritance parsing
+      wifi: mac80211: fix vendor-specific inheritance
+      wifi: nl80211: disable multi-link reconfiguration
+
+Matthias Proske (1):
+      wifi: brcmfmac: keep power during suspend if board requires it
+
+Miri Korenblit (1):
+      wifi: iwlwifi: fw: avoid using an uninitialized variable
+
+Nikita Zhandarovich (1):
+      wifi: cfg80211: regulatory: improve invalid hints checking
+
+Vitaliy Shevtsov (1):
+      wifi: nl80211: reject cooked mode if it is set along with other flags
+
+ .../wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c  |  20 +--
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c        |  86 ++++++++-----
+ drivers/net/wireless/intel/iwlwifi/fw/dump.c       |   3 +
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c       |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |  77 ++++++++----
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c   |   7 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c      |   8 +-
+ .../net/wireless/intel/iwlwifi/mvm/time-event.c    |   2 +
+ drivers/net/wireless/intel/iwlwifi/pcie/internal.h |   5 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c  |   6 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c       |  20 +--
+ net/mac80211/driver-ops.c                          |  10 +-
+ net/mac80211/iface.c                               |  11 +-
+ net/mac80211/mlme.c                                |   1 +
+ net/mac80211/parse.c                               | 135 ++++++++++++++-------
+ net/mac80211/util.c                                |   5 +-
+ net/wireless/nl80211.c                             |   7 +-
+ net/wireless/reg.c                                 |   3 +-
+ 18 files changed, 274 insertions(+), 134 deletions(-)
 
