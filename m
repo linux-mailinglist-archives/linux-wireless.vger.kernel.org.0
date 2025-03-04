@@ -1,141 +1,102 @@
-Return-Path: <linux-wireless+bounces-19735-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19736-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D190A4D12D
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 02:47:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD08A4D1F9
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 04:16:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 795FE174024
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 01:47:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2D1A188A7E7
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 03:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE20738FAD;
-	Tue,  4 Mar 2025 01:45:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nlG5pdNz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB172E634;
+	Tue,  4 Mar 2025 03:16:28 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DF71BF37
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 01:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F91EB640;
+	Tue,  4 Mar 2025 03:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741052713; cv=none; b=R8axb7Hn77I74qoujtBIrYPWzxeffQx1Y2Lzul8TQ5FDSX+JSi2nB7QjjihFhBa53YF5uGfl/8aH0GKwwR9oAsD3sbg2kRVaGXru7XZgrL2U83Zu6Z5m9wQnQjZw6XUiUnxGnmlYb5o8pHB5P/MPwSRxQYKhQykuBDQylRUE/50=
+	t=1741058188; cv=none; b=nvhY5stlQ+uKNY+zzoUBtNsCVDFpYqn0qsyUrDkdgul1dR+8eENc1J1Et/rCljS+FaKNqlVzGk9stmZOvSiuM2s3luj2kFYEkRT+5JI/0Ws/luoXEKdOiwcgK5J9OxELIOWfeBv2IhrzK4ISaObgULjbzQp+ncfapHayB2TkBro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741052713; c=relaxed/simple;
-	bh=1hbBKhKn+M9MITSVZz04JZt4RK2NO2PHHwHQXMnuHws=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EKsJH2U3IQEIi3HTcJHSJV4SyBJxKRS9WxGk39JpKYYXlSw4F0WyKgsz42rXTSAINoxK2YjpQDjKGlt4k5coQeGB4Wt/l/3oH9WHF07YmfMof43Y775W1/C9QaOfVVvy3ZFYgi05KOi+KLPlIVbbVlD6P6d9ujg0P3KXLT85qQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=nlG5pdNz; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2232b12cd36so68562375ad.0
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Mar 2025 17:45:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1741052711; x=1741657511; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9GZZp8+oIePiapzrIPxDWnNkQ4bhl4hE+C4f4poaQfU=;
-        b=nlG5pdNz/6nXQ0DxRhf1WxmJWqGTcYnAY4dnOScJXBStiJwfmFF4vOUTmaG5jyfJTf
-         oQ8w6zFwFubsRQ5ByhC7NJvOugh81dgXvgMpDrdxLGauMdx7fY8ZEimt+iP4/qK9hXp/
-         OSjUAkhwc4bKA1mLD1xh3w17SguoTxXoGIAec=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741052711; x=1741657511;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9GZZp8+oIePiapzrIPxDWnNkQ4bhl4hE+C4f4poaQfU=;
-        b=f1qSxH+r84ukvO1eXzdmeU58s5G3AZLiyrdR0ytmzpPWTvUyCp95uDFLWXAqxNC7ub
-         zd9Dof68PbkHBXu3IxJiqC4zwPynaevX18NZBnnD/cQvbeSah7FdayCnlWBxupklnwB9
-         kNiV01frZFux8B04Qf5XAjU85u00z/x/dA6Igznd13BKGmupgV5njeET5Xg21dBkHfQz
-         /54VB+Iy+KkAqrd5S5CtPB5pSaR054w2T/IuhV3Q5X/KxTX1jfhfseS6WgAIYtFi/Syo
-         XNr9DKeA4gicDbsJPVmmvSYugoZHdx35xhy8QVngeFq1+IW4liHWoiFuH2olr/jZh1Z9
-         z5PA==
-X-Gm-Message-State: AOJu0Yzl2f8TPLbe2rytjTKpotH8yN0US9mPNKW9LZli1Fw5bDhqyh80
-	xZXLcM8kkeossjep/i3m6raZv+0U/7gkC9tFjc5itLyZA+1ks04xnb6zVQkACw==
-X-Gm-Gg: ASbGncv0DyzyvGOR7x6UDU75l7kiLT4pbLlxga+0uvx/OOUm56z74B7SIjd+tsk7XyY
-	1yjTx0esOrRanUjMZfQOqFjV1lxfk9nW1xnUi51p/zLKeik4hgwD1W+60/MZR77KY1Swjd+M6uE
-	4KAAROe7vKTFn9EXeICTDz+qsPJMyLBljcuvpYzBbOIdtKeauTvtCHV4YqomerCvS+k6RRgHU8R
-	NFPcjfDiHc5aVq040aASEHv63rZHX65Ya1fSbpYIR2TUE+B52/Nd5tnWOgi+8MPUZyrkabc31O7
-	CGJyPx5MSxSvtcKFc/KK3nfyOCjz4MQ3Y+XXvaukn/Qn2NKwHc41TgPYiarn4PV/MYva2/kbvS6
-	LPFvqSYQ=
-X-Google-Smtp-Source: AGHT+IFBjz9u5c57YZEu8MeorcMPm6BUOCBh4Jp5gkOE1eMd5wHIrbNEkucTTNlGtQhtOGq45+KIJg==
-X-Received: by 2002:a05:6a20:12c8:b0:1ee:c598:7a96 with SMTP id adf61e73a8af0-1f2f4cc0cafmr27333210637.16.1741052711321;
-        Mon, 03 Mar 2025 17:45:11 -0800 (PST)
-Received: from localhost ([2a00:79e0:2e14:7:1058:3168:66a5:183a])
-        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-aee7dcb4611sm8948428a12.0.2025.03.03.17.45.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 17:45:10 -0800 (PST)
-Date: Mon, 3 Mar 2025 17:45:09 -0800
-From: Brian Norris <briannorris@chromium.org>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: linux-wireless@vger.kernel.org, David Lin <yu-hao.lin@nxp.com>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Johannes Berg <johannes@sipsolutions.net>, kernel@pengutronix.de
-Subject: Re: Future of mwifiex driver
-Message-ID: <Z8ZbJYmxgnvd7Q1O@google.com>
-References: <Z8WM9jn1QFscWZBQ@pengutronix.de>
+	s=arc-20240116; t=1741058188; c=relaxed/simple;
+	bh=21uArsIzvAZGYIRg4tZeOsYknK6I+/gWgmKNVK2IuXk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RMPZ/y+c4DaB7VxwCuuZ0N935cVM0PqfG4r7CJmny+5XmOkeCPGOeoS3VyC20mcj0cUpjP0dpnFoWqh57T3WdFvUlcwMkWt0RCHHggISwaxQFHMBcVeQOoSar3C34MkYpUJbIPALcde7OXGtqeIBHSOOmj54RW3aIyMsYnASJrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowABHT9ODcMZnbqs4Eg--.8591S2;
+	Tue, 04 Mar 2025 11:16:20 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: stf_xl@wp.pl,
+	kvalo@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>
+Subject: [PATCH] iwlegacy/4965: Cancel deferred work on device init failure
+Date: Tue,  4 Mar 2025 11:16:03 +0800
+Message-ID: <20250304031603.1989-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8WM9jn1QFscWZBQ@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowABHT9ODcMZnbqs4Eg--.8591S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cw13Xr17GFW5WrykKr4fAFb_yoW8GFy8pr
+	srta4jkry5Ga1UWayDJay2yF1Yqa1Fy39xGFs5Aw4Y93ZYqryrZF4aqay5ta4rGrWkZ3W3
+	Zr1jy3W7Grn8JrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
+	6r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
+	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCI
+	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
+	AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
+	Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUehL0UU
+	UUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgwLA2fGHmnwjAAAso
 
-Hi Sascha,
+In __il4965_up(), deferred work is not canceled in time when device
+initialization fails. This is harmless if the device has not started.
+However, in il4965_bg_restart(), if the device remains operational
+in any state other than S_FW_ERROR or S_EXIT_PENDING, a dereference
+operation needs to be performed when __il4965_up() fails.
 
-On Mon, Mar 03, 2025 at 12:05:26PM +0100, Sascha Hauer wrote:
-> I am worried about the future of the mwifiex driver. NXP has an ongoing
-> effort of forking the driver to support their new chips, but the forked
-> driver lacks support for the old chips supported by the current mwifiex
-> driver.
-[...] 
-> I have a series here [1] doing some cleanup work which I'd still like to
-> get forward.
-[...]
-> [1] https://lore.kernel.org/linux-wireless/87ldwyumvq.fsf@kernel.org/
+Add il4965_cancel_deferred_work() to the failure path of
+__il4965_up() to prevent potential errors. Even if the current code
+does not exhibit the described issues, adding this change can prevent
+future problems at minimal cost, improving the robustness of the code.
 
-I'll apologize for that one stalling out a bit. IIRC, 11 of 12 patches
-looked great, but I got stuck on the "fix MAC address handling" patch,
-because it's a lot tougher to guarantee it doesn't break some use cases
-while fixing things. But really, it's probably mostly a bandwidth thing
-for me, as I really don't have many cycles to spend on things (and
-especially when it gets beyond "obvious cleanup" and requires
-substantial testing and/or reasoning).
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> Any thoughts?
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+index 05c4af41bdb9..3b21bd79f3a9 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+@@ -5591,6 +5591,8 @@ __il4965_up(struct il_priv *il)
+ 	__il4965_down(il);
+ 	clear_bit(S_EXIT_PENDING, &il->status);
+ 
++	il4965_cancel_deferred_work(il);
++
+ 	/* tried to restart and config the device for as long as our
+ 	 * patience could withstand */
+ 	IL_ERR("Unable to initialize device after %d attempts.\n", i);
+-- 
+2.42.0.windows.2
 
-In no particular order:
-
-1. even if NXP (or you, or anyone) does great work, I'm not going to be
-   a super helpful maintainer. I simply don't have time to review and
-   test substantial contributions.
-2. I get the feeling linux-wireless may have problems like #1 in
-   general. Johannes can't fill the entire gap Kalle left, for one.
-   (Feel free to correct me if I'm wrong! Or if other excellent people
-   have stepped up on review/maintenance.)
-3. Other drivers may look somewhat similar, and yet fork for good
-   reasons (like, firmware API revisions; or 802.11 generations; or some
-   cross-section of both). I'm looking at rtw88/rtw89 (that I was
-   involved with quite a bit), or ath10k/ath11k/ath12k/(have we made it
-   to 13 yet?). So forking even with quite a bit of similarity isn't
-   necessarily inherently wrong.
-4. A key difference between #3 and mwifiex is, like you say, that
-   mwifiex has a pretty low quality baseline. If I were maintaining it
-   from the beginning, I probably wouldn't have accepted it.
-5. I'm open to good people stepping up to fill in #1 -- i.e., include
-   more maintainers that have a stake in larger contributions. Frankly,
-   my only motivation here is to ensure that existing hardware supported
-   by mwifiex doesn't get worse.
-
-So all in all, I think I probably agree with you. But speaking openly, I
-don't think I can be a large part of the solution here.
-
-Regards,
-Brian
 
