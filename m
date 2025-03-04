@@ -1,117 +1,149 @@
-Return-Path: <linux-wireless+bounces-19743-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19744-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A463A4D3EE
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 07:33:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02AD2A4D799
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 10:12:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A57091894424
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 06:33:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D5751886F5D
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Mar 2025 09:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFB81D7E35;
-	Tue,  4 Mar 2025 06:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E961FA167;
+	Tue,  4 Mar 2025 09:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b="bnqZxSVb"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="knFgDYD6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1621E3DE5
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 06:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6525B1EB5FE
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Mar 2025 09:07:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741070013; cv=none; b=TqmxS9h7GLwwz+ynKWc6leB0+6IQv0pt0nyjK8E3qlbdxeAXhz0beK74vM/ZTFsxZxVYSrk53WdUsXdLyqWA0QFNW2wkkyKBkTQ6C2UX2QYhepUzLtzpzDWqCLgOlbc7TRm/1RTqyBya+UEuOA6RsW7ASQExCcna4AymE0rR60A=
+	t=1741079253; cv=none; b=JuDUa4M9Utz0FDXHWr5CI3L8XqXsdK96+uF7NB2Dlo+IOf1GZC3HYJWAQUEnZSw5dJkzCxxeIqG4NXODIz5tK+yuAEzi6yejLIDZAlUY8SG8gxalM++14OrtVtcvyf807Cb+DvW5H+Rinvtt3cE8Affc0SB8wfVQYzq7fHMcvFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741070013; c=relaxed/simple;
-	bh=0L9jk7jDl4R7Tch+PFoZUAPpOUQGpTxhl+ZUFKtbat4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YH1T7gXHs4y0wpeQfnY09fD6RIZNXQPSPQ/HEVA6OoTmhsCjHrDBUm0seN4U2DULmhc0Ogcx+AfNfsch6JEeL4E1IUfmvpItszHqgnFEjKWeky+jHAphql3mPjT2jTzrJ7i4OV18a85dPwG14WH6V9zhCwSoK4D5rK3oxEl1VEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org; spf=pass smtp.mailfrom=kali.org; dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b=bnqZxSVb; arc=none smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kali.org
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3f417de5e25so2585026b6e.3
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Mar 2025 22:33:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kali.org; s=google; t=1741070011; x=1741674811; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0L9jk7jDl4R7Tch+PFoZUAPpOUQGpTxhl+ZUFKtbat4=;
-        b=bnqZxSVbDFqNV6psdfJMuqY7320OSzHiUmp+C+40y9qH6vFrEW1Ssl2+cLGfQrGruR
-         PUFWUTx/EEsgrFP60M4b8YzeoNqeiOM4bbc0OO2GdNQzkyKA8DhXKNK6DlVcPl7TtT9v
-         fMdX14sFXve2KCPt5IMx/aa+EGDgyDX3zAETAScAT7miq97JiFTqVAxQ05Lvm/+LQ2Vj
-         kDL7Fru70kaDNczmGIjVDFLa7Mkh4xrg5IVn1QMP9MS1H+xaVGv9jcbaeYZSAELWHVUu
-         mQBwfJ4v6jtcO+OdErZExycent1d0c15q5JkyPUomkW7u7GVzPuRVOO6nFR3GUUga5uS
-         I0qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741070011; x=1741674811;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0L9jk7jDl4R7Tch+PFoZUAPpOUQGpTxhl+ZUFKtbat4=;
-        b=nkLCnZiSZ5KPKtkmIUFpnnfnRCI04eGIqBr/nuWj0iIvGHlcoldvCb2QVuM/Latt3c
-         /ISOxJHS1h+/9RD3Bp3eQMM8PQe4UwUbsFMVA+TgY5r0ntwq0fvAkGQnZxXPsGch2SNA
-         VhzF4KtsfhKvm46j/+UFT0vWZzqlKtuCh5fIoI15ERwf7+3X25jXmVrvMZIH7N1s44j/
-         9cOqBxMmktlK8T4MKQFbS7dVp7QRTxaaY5EnWLifshgq6eeKM1hPjqRcG796uvd7qVYm
-         9Xk+Lc9Ylhv3IwC5okkPPSlI1nS5AHW0IBDdIAqqHEkp9Y3ZU23panO/aXjA7QWYtE/3
-         V6rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVDhW3+1eF4GUSMPKR/shohL7TKNm3iEIPsUt4svVftmkSKkH2MiX6L49qRhrq7POdxLyx5Nq5ekw1sd2sgBg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyx9aCzX1KVMuoorv083bSEsV1ettlvbVMbFsCE7jUId3ZWepIH
-	GDFjuZBcnTw0Jgo5/5sUdmpBBd4zginLnDCzmpzIUSTtwQYlZZ9m6NZsge+yF5k=
-X-Gm-Gg: ASbGncuP2O32e0jKCHONazwzM7mi3ozTDDcTX/A1mK/UNeIooW/DggDr/iCLueguuSz
-	VGxzIrleFUZjj/DLpe/xWFNgQ5RWvVQtSxJP5UZbmbJ+kdArKR2VdBtLwd/KX5bq5Fkh34iiuLq
-	WtXNjR26bjCCeKl494XNHSrzDMnfQOeNR3icSfEF7PezQvMkVFyOcLt+fFJ39F5r0X2INRJIrS1
-	bbY3c999WWvrJY6yYLFDCxju3JSmpsQZ6PuiuZayzOHaJjkdA0crcp2V66S3USP2kYQ624z5zSX
-	o0lXiSZ1LD8WeRDKsECTo7Nr9sr8NeBeOcYBAuorp7GZ6queVSMwrpeeyUJJeRPoUnUzS2KagQY
-	/zduQ7BxDLNUy
-X-Google-Smtp-Source: AGHT+IF836u3HRurnaD3JNQQMkTOVJFkdb7saaYaAdjJKb8CcB9Uh6cD4rojnwwaZzpJu95yORRjaw==
-X-Received: by 2002:a05:6808:2e96:b0:3eb:3b69:8ff4 with SMTP id 5614622812f47-3f5585254ffmr10749480b6e.15.1741070011245;
-        Mon, 03 Mar 2025 22:33:31 -0800 (PST)
-Received: from localhost (104-48-214-220.lightspeed.snantx.sbcglobal.net. [104.48.214.220])
-        by smtp.gmail.com with UTF8SMTPSA id 5614622812f47-3f66e8449f6sm539684b6e.1.2025.03.03.22.33.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 22:33:29 -0800 (PST)
-From: Steev Klimaszewski <steev@kali.org>
-To: hzyitc@outlook.com
-Cc: ath11k@lists.infradead.org,
-	jjohnson@kernel.org,
-	johannes@sipsolutions.net,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/1] wifi: ath11k: pcic: make memory access more readable
-Date: Tue,  4 Mar 2025 00:33:28 -0600
-Message-ID: <20250304063328.33762-1-steev@kali.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <TYZPR01MB55566065525ADA7F71F516D4C9C92@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
-References: <TYZPR01MB55566065525ADA7F71F516D4C9C92@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+	s=arc-20240116; t=1741079253; c=relaxed/simple;
+	bh=YMbKoyT5ntVioX3ZPp76o2D1yPMXqlzCJLcvOjHafjY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Z1LtRumoerYx0hGNflNCFv6mMh/wVGr/boMKBIgxTPiReSZA04NORarUI+Th4yVUReWxCMIooIfqYYYzjJPxFgPVucjDHOP0rnNWwi/Sfo3cy1VKqW147ftEh1vaPbOyxLAZJtxS4i4UwqwcgtQL+3mK6DFITi7wGTqlnp6EFiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=knFgDYD6; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52496YXT03426696, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1741079195; bh=YMbKoyT5ntVioX3ZPp76o2D1yPMXqlzCJLcvOjHafjY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=knFgDYD6hohgNXdC99Tret2eJjTkwiJnPxjgOiX2vdiOR5d8LmTTsNPSTzEvMtvif
+	 JE0+vgFx2rktX8sbfbFsnQPlvVm01tONJUWSqT+5GIjpWz012ttvclNR9RvNCIe8cb
+	 N4NtW/r2NQZpYWZKFhDLEXlZr7VOvigHj2yyRvE/JmtscAl0uWAw3LjpMa51KHEtvz
+	 egwa2jTKEfcXbJqdIhSBisEpxIu4wCdV5hOn1xd0zkEFi6texMbI82Bvp46XCDMZMD
+	 px/1+hy3C1zfkGxVD/QfyF4qgMJnhFkuafKY/VOjvQnCOWqEs+V1IW3KHg6D13ZgFG
+	 Qb74HBIItUyNw==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52496YXT03426696
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Mar 2025 17:06:35 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 4 Mar 2025 17:06:35 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 4 Mar 2025 17:06:34 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b%5]) with mapi id
+ 15.01.2507.035; Tue, 4 Mar 2025 17:06:34 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, "nbd@nbd.name" <nbd@nbd.name>,
+        "lorenzo@kernel.org" <lorenzo@kernel.org>
+CC: "deren.wu@mediatek.com" <deren.wu@mediatek.com>,
+        "Sean.Wang@mediatek.com"
+	<Sean.Wang@mediatek.com>,
+        "Leon.Yen@mediatek.com" <Leon.Yen@mediatek.com>,
+        "Michael.Lo@mediatek.com" <Michael.Lo@mediatek.com>,
+        "allan.wang@mediatek.com" <allan.wang@mediatek.com>,
+        "Eric-SY.Chang@mediatek.com" <Eric-SY.Chang@mediatek.com>,
+        "km.lin@mediatek.com" <km.lin@mediatek.com>,
+        "Quan.Zhou@mediatek.com"
+	<Quan.Zhou@mediatek.com>,
+        "Ryder.Lee@mediatek.com" <Ryder.Lee@mediatek.com>,
+        "Shayne.Chen@mediatek.com" <Shayne.Chen@mediatek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>
+Subject: RE: [PATCH v2 1/6] wifi: mt76: mt7925: load the appropriate CLC data based on hardware type
+Thread-Topic: [PATCH v2 1/6] wifi: mt76: mt7925: load the appropriate CLC data
+ based on hardware type
+Thread-Index: AQHbjM7UNOPbi6v4JUCOaZmi+hVXCbNip7ew
+Date: Tue, 4 Mar 2025 09:06:34 +0000
+Message-ID: <4d4e50e6b76e46d5b949701316889ee6@realtek.com>
+References: <20250304062854.829194-1-mingyen.hsieh@mediatek.com>
+In-Reply-To: <20250304062854.829194-1-mingyen.hsieh@mediatek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi Ziyang,
+Mingyen Hsieh <mingyen.hsieh@mediatek.com> wrote:
 
-With this patch applied, on the Thinkpad X13s which has an ath11k, I am seeing
-the following:
+[...]
 
- ath11k_pci 0006:01:00.0: chip_id 0x2 chip_family 0xb board_id 0x8c soc_id 0x400c0210
- ath11k_pci 0006:01:00.0: fw_version 0x11088c35 fw_build_timestamp 2024-04-17 08:34 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
- ath11k_pci 0006:01:00.0: firmware crashed: MHI_CB_EE_RDDM
- ath11k_pci 0006:01:00.0: ignore reset dev flags 0xc800
- ath11k_pci 0006:01:00.0: failed to receive control response completion, polling..
- ath11k_pci 0006:01:00.0: ctl_resp never came in (-110)
- ath11k_pci 0006:01:00.0: failed to connect to HTC: -110
- ath11k_pci 0006:01:00.0: failed to start core: -110
- failed to send QMI message
- ath11k_pci 0006:01:00.0: failed to send wlan mode request (mode 4): -5
- ath11k_pci 0006:01:00.0: qmi failed to send wlan mode off: -5
+> +       struct evt {
+> +               u8 rsv[4];
+> +
+> +               __le16 tag;
+> +               __le16 len;
+> +
+> +               __le32 ver;
+> +               __le32 addr;
+> +               __le32 valid;
+> +               __le32 size;
+> +               __le32 magic_num;
+> +               __le32 type;
+> +               __le32 rsv1[4];
+> +               u8 data[32];
+> +       } __packed * res;
 
-I'm pretty sure this isn't supposed to happen?
+nit: no need space between * and res, i.e. "__packed *res".
 
---steev
+> +       struct sk_buff *skb;
+> +       int ret;
+> +
+> +       ret =3D mt76_mcu_send_and_get_msg(&dev->mt76, MCU_WM_UNI_CMD_QUER=
+Y(EFUSE_CTRL),
+> +                                       &req, sizeof(req), true, &skb);
+> +       if (ret)
+> +               return ret;
+> +
+> +       res =3D (struct evt *)skb->data;
+> +       *val =3D res->data[offset % MT7925_EEPROM_BLOCK_SIZE];
+> +
+> +       dev_kfree_skb(skb);
+> +
+> +       return 0;
+> +}
+> +
+>  static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
+>  {
+>         const struct mt76_connac2_fw_trailer *hdr;
+> @@ -809,12 +857,19 @@ static int mt7925_load_clc(struct mt792x_dev *dev, =
+const char *fw_name)
+>         struct mt792x_phy *phy =3D &dev->phy;
+>         const struct firmware *fw;
+>         int ret, i, len, offset =3D 0;
+> -       u8 *clc_base =3D NULL;
+> +       u8 *clc_base =3D NULL, hw_encap =3D 0;
+
+not sure if mt76 declare local variables in reverse X'mas tree order?
+
+
 
