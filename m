@@ -1,236 +1,223 @@
-Return-Path: <linux-wireless+bounces-19805-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19806-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0DDAA5034D
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 16:18:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B725A50374
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 16:28:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2006A1659B8
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 15:18:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A89953AB8E4
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 15:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC30A24C668;
-	Wed,  5 Mar 2025 15:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A6F2505A1;
+	Wed,  5 Mar 2025 15:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=silabs.com header.i=@silabs.com header.b="HX2z2kAB";
-	dkim=pass (1024-bit key) header.d=silabs.com header.i=@silabs.com header.b="FO5E7EOH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CyQ9FkZ8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0024c301.pphosted.com (mx0b-0024c301.pphosted.com [148.163.153.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCC324E005;
-	Wed,  5 Mar 2025 15:18:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.153.153
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741187931; cv=fail; b=BKOv0EtBvYrl01Wbew55eiRo436WeoPsRKrJVh6OBkhr3r694W9DupoOuWxRS5L7d6E2BxNMAC0OvivIJC/LKkhufkapj5qHPW8eJJgsbYuA4Rd4JhaKclXCbFFBqseOJR9ci68oBFhjxUeBKUZrW5DQJZmch+LU9wttHgTzbfo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741187931; c=relaxed/simple;
-	bh=fnL1AXoW1tNl0FqyDceWYeavj76wtRtBUveK6mqF0TY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pYAVvfh9ssdDjlr9oo0TxzELHQhYvChH2g8DZFfs1/6A+yyP5Jn9UNU99Fngvts7IttW8tog1HJ8hg76+WWaE6r9QbniIT/PjAjJHN+0v6O3Kxg1OhUDJm8IKFqTRIipqoPP6Xayo2Iur29DhCYhM8LJ25dIdhb0oFSb78ny6i0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=silabs.com; spf=pass smtp.mailfrom=silabs.com; dkim=pass (2048-bit key) header.d=silabs.com header.i=@silabs.com header.b=HX2z2kAB; dkim=pass (1024-bit key) header.d=silabs.com header.i=@silabs.com header.b=FO5E7EOH; arc=fail smtp.client-ip=148.163.153.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=silabs.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=silabs.com
-Received: from pps.filterd (m0101742.ppops.net [127.0.0.1])
-	by mx0a-0024c301.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5259tHfg022369;
-	Wed, 5 Mar 2025 09:18:42 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=silabs.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps12202023;
-	 bh=5ydPaH+P6yWO8Tg4HTignHXqQAu+6mgS9fVXK/OA3uY=; b=HX2z2kABJi+x
-	b8vAyxUIylJdCmnXwEGHpezvHNYlMGmqZC8M6rWtv8lkKGmcYSwKmy906l+FVzKH
-	qMmDKewRDnbxTuaaDgIqmhrpFtLlV5AbRv35HQN+QOpMiQ8TnBlJY+H3PjmT64+u
-	V4MeDei2QEGEqg5+nktu87feDHRN1LiLBmTJyG2+fHJ1df+pcpMYESM9kmfJK3eo
-	ZAsRDxmIymJrhTy+GIkBJ9eCOl2exlWit2/CXT2ZeexBDtmt19wSBm2Sp7sZ9+o/
-	WZF9s0wDBYzFSvnftQ1f3jCmN4CSIuhzDQa7mwW9WiRQ3i/yrUMm+hlbHSyAJAQA
-	W/EUM/SY5Q==
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2041.outbound.protection.outlook.com [104.47.58.41])
-	by mx0a-0024c301.pphosted.com (PPS) with ESMTPS id 455qchknhb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Mar 2025 09:18:42 -0600 (CST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d4BqZro8OE/lWwD+MYXwwTxyHEoAKrp84DzaXrPquzB4e5fdlnWiNJBSqxoih+s4YIeIozxKVOuf5cB/j7eOyUIAnfGdBAsVNDMP7WYFlNcar28HAJQxYxjOh2j2HxnH4HFjvLEnIo3XVTbNsrEiLX8HtK/R9GkZTFfTbw3pPKA3NPHIMDJu0NG/D10UsSwP0kfE8g/ycQkloYqKP3ASWV4utXl82crfr2/OjvF8ahLK3RhMdIlhac88FE8Ep5DYP1GYUR+rilaBuXDF2OXycnENVcLzfxTEDrTWiw3p2FCPD3C4PkNWfbzUDb1+ENyC4TmbVRiF8m22sv4yITV5Pg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5ydPaH+P6yWO8Tg4HTignHXqQAu+6mgS9fVXK/OA3uY=;
- b=u2DGhk5k2hskQp9+VmGGziGbb4FPspwgJjTSFZIi7vZg2iZp+CX//w6Vs221qEdAFGAshjv+hY0yClIINUmMhszngGQnANlSMuEUE5ylRQ9ShSr0wYuklP4aPBJW65c/AHgiJX1i/aW5kcqv3toj+LF5IzYQAfGM2XB4acdnUXaoR0KJ/vw2Ki5ebmBg/i7eqt3gG0LG7nkuOf6Pdox0I/8GJkXmbNMCDSrgRH76APMcT5Z4l05mmlE0Jf7ZC430nB6q808xhgO0xEPlt5mC07l6gubSBjmWsfzEW5C8t6SbkCJXkMcYt4RFXnP5zkQ5U6BJYVJ2RrnjD8WZCjRq/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=silabs.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5ydPaH+P6yWO8Tg4HTignHXqQAu+6mgS9fVXK/OA3uY=;
- b=FO5E7EOHxfBj4ychkqTqOUg26cGu1LW3Yxp5PMeb4mZ39L04B7L6P1C2yfvnQvYxXcC6xlKd3Gksu88vcWXswN+zRIgLj3ILuEcgcf+2lHriLbH114XIAn20iFIT/1dr2+GnrHwOtKiaS6yJy+AM2f+FWP9eCjZ8YSi0SKtt7p0=
-Received: from IA1PR11MB7773.namprd11.prod.outlook.com (2603:10b6:208:3f0::21)
- by PH8PR11MB7045.namprd11.prod.outlook.com (2603:10b6:510:217::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.28; Wed, 5 Mar
- 2025 15:18:36 +0000
-Received: from IA1PR11MB7773.namprd11.prod.outlook.com
- ([fe80::e78:8cb8:9f49:4005]) by IA1PR11MB7773.namprd11.prod.outlook.com
- ([fe80::e78:8cb8:9f49:4005%7]) with mapi id 15.20.8511.017; Wed, 5 Mar 2025
- 15:18:36 +0000
-From: =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
-To: linux-wireless@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        linux-devel@silabs.com
-Subject: Re: [PATCH v2 0/5] wfx: add support for WoWLAN on Silabs WF200
-Date: Wed, 05 Mar 2025 16:18:32 +0100
-Message-ID: <23857370.6Emhk5qWAg@nb0018864>
-Organization: Silicon Labs
-In-Reply-To: <98e39be3351190ec71ffb067c062c82883ebef24.camel@sipsolutions.net>
-References:
- <20250302144731.117409-1-jerome.pouiller@silabs.com>
- <2018315.usQuhbGJ8B@nb0018864>
- <98e39be3351190ec71ffb067c062c82883ebef24.camel@sipsolutions.net>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-ClientProxiedBy: PA7P264CA0010.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:2d3::6) To IA1PR11MB7773.namprd11.prod.outlook.com
- (2603:10b6:208:3f0::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8A424E4A0
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Mar 2025 15:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741188444; cv=none; b=D+ZOPZB2132Ym554/uJ4KDJ/cqoL2Bg/u3OtgAKI3Zes70VDElSp3MP1TkTve9BGkTWv54TN0zFaGG/UIkMQAo9+soCY1TRt1ayi4RCtfS3QVZI2xMBlrdHJLznZtFONXLYHyFU29MJDaLZhAWIIwQ4i4sQmwFpWSnp/GH5GnB0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741188444; c=relaxed/simple;
+	bh=X6KPMQ2A0yoM8p8xiPkC0yNS2EymQbmn1r7XkppxvCM=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=svaZI2Bo/YQQy0ASfyOlwx2mJhlA1ByNH03IvP0KtudvZYY1G+12R7A2Lxxi4IUTFeP9F5I5b92opU6qx0yOAxAUNygZmnLogc65E35xkmMkE2FxVIQlqZ+Tve3apks5nj6RS9cF2J3imywRy/XAoe3O7m8ei0rQBpntg1zGQww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CyQ9FkZ8; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-390eebcc371so3272290f8f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Mar 2025 07:27:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741188440; x=1741793240; darn=vger.kernel.org;
+        h=content-language:thread-index:content-transfer-encoding
+         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZUNOlfz4QA/sJfG98zHcorBM2yYfAKZgER92KCEyonA=;
+        b=CyQ9FkZ8O2BXdqkYHOxbLXTNb8vT4Le0KFGUHBCft2Vq4zPcg/mWzx6MAp6Hg2Cfk7
+         IGiCmdgYgxqn4jz4WwCe960oSjjzkwh6dn2HBeMpYkr1vHl5YGTVTu3J7C06zcufyH5Q
+         A8H0INwXdcz4u+esmDfVPanOZq6GxF7gdMPk0Q70CpEYIGhvDc9e5/Tz96+lVIXsBxF2
+         TcihNvXdMRyL8pQCWiBkyax8jMBiYp7LctTvaOv4ZmjnsidqK2Yg8vXNLIwquNnlOwQo
+         DcDqdQrxPgkKd2IaVwbfwKvQnXAxgL8XlZN7I6sEyVNdHKc7m5UlVSUUufoGgpUW0njg
+         WP2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741188440; x=1741793240;
+        h=content-language:thread-index:content-transfer-encoding
+         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZUNOlfz4QA/sJfG98zHcorBM2yYfAKZgER92KCEyonA=;
+        b=RgpNaCa6pmufEDSSd0OSa9CNwu77R0n5+mU5KQdmarhz5GozP8bSUphyVNJ5kVypbv
+         w6T6+Xt8ZiPvVIaWTFyhuJ16jTzJ36zuZzlzhNqSWBu7Lte0VZPwC+FQqZw2+iqPG9Ob
+         oyX5/mfIRLqNpzU1Df9V+sJT1V8PlN8ajglevhHrDFPt/cstJSPHibUdLMbBZ76cgm1y
+         eZzfoBcny+AXoDEqJb3s0WDWzBSyN5WMes7iUrKLZvlfBg07AoTdXJQ5EncaEjE6YpBi
+         a7xg8FLmxHD6ojo2j72iIK4VhRrskmN5/7MOwI2KgPWYmk6ZlXxz1bbnEiN8Ff854rn1
+         X4GA==
+X-Forwarded-Encrypted: i=1; AJvYcCVXopXb4jFwYD0W3JmEUGJCNNt4bnNGKhQFH5POZ8Hrn2NJQvVQfeugcBqX+j0UjUdFPNxwlpQIz8HrA56c+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0s93W7+mnz5C7nH080P0/NQYYfwL5mRz6iWW9hbhBzJ4CmFUv
+	a7sGqW1uTZij6wwcVJ3KuRVMGcOoXw+WVGAK2s5npMdaRKCcU9CdwQMyAGM=
+X-Gm-Gg: ASbGncuOrXfhcRQekP5UJOawJ8FjmXtxYdOS+o45oYBNKwWEewzVd2FwPaMPX+XebW2
+	d2iuqdOKLJCB53QJ/oUK6Xvj2HPpDE0JEPmCA2X/hNmi4DKFpK5LTguZi2ONlJD25eKNhwz2kER
+	YgqT1KGqabIitLezFvwWpT8hGV6r4Kewphnqcb7y6KSHtrsav3I50hMe94V10UrBPcqJ0bzDRQN
+	0g/LzAQ5glzeJ/Y2MPWWp61Vg02vxR2NssbWO6Du7sNzPuY+Dzyi6Ka4SJxHlPt5mkqbkBG9kxJ
+	98M8csLrilOrbnEh1ucZmT1fIGU2RKbENzCtHIgyhQebGfIrEDKvFTBcsDIdGUnSd6ZgDU9fA5s
+	w9KyNXvxxPylKa9qzg2d/V15yPNsSsyY=
+X-Google-Smtp-Source: AGHT+IGynrrO1AYCYWfxF5mTzcYIEuN10gQdVtirCk09RjQ6ik08z7m+wENAvlc52HD+ugmKX445VA==
+X-Received: by 2002:a5d:5850:0:b0:391:4f9:a039 with SMTP id ffacd0b85a97d-3911f7400aamr3778136f8f.16.1741188440201;
+        Wed, 05 Mar 2025 07:27:20 -0800 (PST)
+Received: from winhome (cpc112753-pert6-2-0-cust678.16-4.cable.virginm.net. [86.18.22.167])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e485d906sm21573380f8f.90.2025.03.05.07.27.19
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 05 Mar 2025 07:27:19 -0800 (PST)
+From: <rmandrad@gmail.com>
+To: <wens@kernel.org>
+Cc: "'Nicolas Cavallari'" <nicolas.cavallari@green-communications.fr>,
+	"'Dennis Bland'" <dennis@dbperformance.com>,
+	"'Ping-Ke Shih'" <pkshih@realtek.com>,
+	<linux-wireless@vger.kernel.org>,
+	<wireless-regdb@lists.infradead.org>,
+	"'Johannes Berg'" <johannes@sipsolutions.net>
+References: <000201db8822$98f28da0$cad7a8e0$@gmail.com> <CAGb2v65490c1m3W_1RkxJ-E7Q=3V_K8xqS2jmd6awcOdzWHXzQ@mail.gmail.com> <ff6ad414457e4b1cb68e834978a553c3@realtek.com> <CAPRryQobXZe5OwR=F-X0KHYyfBwUpFsi=Y5pKnENcUXTN42xAA@mail.gmail.com> <002d01db8da7$daf2ed50$90d8c7f0$@gmail.com> <CAGb2v66Y+rTsuKfQDgv-qwRTOorOucM+qfBOia-gY5sPCJp5qQ@mail.gmail.com> <319c9de5-e26f-45c0-9200-747c86bce303@green-communications.fr> <001a01db8ddc$019e8890$04db99b0$@gmail.com> <CAGb2v6689=CmxqOk9rCSXPctg8iCZzOUgcaxdNeB9uHSHzk39Q@mail.gmail.com>
+In-Reply-To: <CAGb2v6689=CmxqOk9rCSXPctg8iCZzOUgcaxdNeB9uHSHzk39Q@mail.gmail.com>
+Subject: RE: wireless-regdb: Allow 6ghz in the US
+Date: Wed, 5 Mar 2025 15:27:23 -0000
+Message-ID: <000101db8de3$18727b10$49577130$@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7773:EE_|PH8PR11MB7045:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4da03a3-845e-4c3b-20dc-08dd5bf8ffdb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?FTB5ruWO+srmh+QOhFgtG/CRSjo7jA3JVYhGGojVLXscHrgqA+9oM8mpER?=
- =?iso-8859-1?Q?Rhy8tmfJYdC/v688JGj6kPT4tk+TrYM4IwacXTkv1aa/A9hrjeBd3bnJkK?=
- =?iso-8859-1?Q?tSA1n+88qfgUb+PTO06urTjFckNGbt8o43m3YkZkMUS+uWbIC30PgAPnii?=
- =?iso-8859-1?Q?pqGHtg/BYQOorKTcaU4ZEmDFPSMKWaHLR4/B4UkciTJV0vBxS7UITiyoR2?=
- =?iso-8859-1?Q?TL+nLz9DwTat4szUM0Rg5ZJKkHJToTy5BWgJx8VfFw3EPOv/NrtjV9Xuwr?=
- =?iso-8859-1?Q?DSdStS8HwGisCuAN/Po6aXISA2m+A+19QofDhC/O5Na/pDeZhFWZgKdYmK?=
- =?iso-8859-1?Q?mC45lrCPFKKwbDCl3l3oqUpTev8n4MDSxDMHtl1B6kMHAPaRZrSevE9JN6?=
- =?iso-8859-1?Q?MYKb4gLss/BBWz4FaGCregR5b9/rrb+aqVGobx6ncDVIhF1TF9ttUiBdEg?=
- =?iso-8859-1?Q?hkM40CdPfjOJZpqlXCPDrJw4iwvrxEgftCrB2CfazdCA1WqsFBbmLYYLbZ?=
- =?iso-8859-1?Q?uNl9XtYnMysA5Dw3fEZe2ew6CLJmK8iGp7trhAoSK68lW9InAiFpTsT6D8?=
- =?iso-8859-1?Q?vwz9RDYteptwvRLvvc/ywx4/vDWacUvcP+SAoH8F+EnUjCoS89y5dCWz3h?=
- =?iso-8859-1?Q?5im3oLMGZR/2UOut44/EXroXCf0jfBHV1uwP/DkHamdBdTCj7Dpha2K7Nv?=
- =?iso-8859-1?Q?mULni/X4BKqc1+XDB75qCw6gV8PO1hwIU9pxFBIx7Tb/IcemQJ6WUskeMS?=
- =?iso-8859-1?Q?wObUVJung6FPERrbHrQQqDt9sbFMX2u67wefAzALhl2ik+d8Qz4k3TH4Vl?=
- =?iso-8859-1?Q?Jlp3fa1oh72UgQMCgB75mCvJuL648y64liIOZtp4w/V50FGCqc/+r7rhF4?=
- =?iso-8859-1?Q?U2ead5sudSpJRlBwf5RTkIX6MBAe6l9R91riH86ne6s3Ab0Hy6sm8Q9ska?=
- =?iso-8859-1?Q?pWz4dpPA60J+g7dr2rZdUnez0Utndz8hxIygG2b6Gf1upT6JRVwW/jwiKj?=
- =?iso-8859-1?Q?7oMiDSyZ0JjLt07qtEkTpmdR9/Tgj35/vdaMPcckdshNObtfnxhkPdZ99x?=
- =?iso-8859-1?Q?MgrviWJCL30oPuVpsS4wYhYOnziKxNOv9VzqkLx5gTSASAnsjiYg2eyh7h?=
- =?iso-8859-1?Q?4SQtIEkhTDziOVqbra2fNBTG6NV047VsBIvu/am1vAce1hmFghTGENURfY?=
- =?iso-8859-1?Q?iKHOO5GPmW9JtYeQjuh5NxOlT16mquLFQ6u35GOiVpfYAcjURmdLpXjskE?=
- =?iso-8859-1?Q?2OFWGc+vaEh1y+5nUoi7aAX0CrGDx7FTeejCH0aFpdoIgYpn43wgjeU99W?=
- =?iso-8859-1?Q?68xsPpAiVEJhEUVZFeKROpq91aFlSOuF5E2AKgKDjqvry95UKyybpDiems?=
- =?iso-8859-1?Q?qtrwdNZHZEH0rbdhmiOihYqClhIrpuzkkdDtrg/B1a7tZDkfxIixAQ3JQf?=
- =?iso-8859-1?Q?ufL7gey9qoTsmrNrNxS6omqLtnJO2p2GLntDKlyUX1+ievfnc7cNgN5Xkc?=
- =?iso-8859-1?Q?RA7ShgLURc85hUi/H/wmtZ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7773.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?1E1hIITczC/a/cw0/Lb9HSa6aL/O1KiclMSxnNRpQAeTbmpxhlrcv1GFQf?=
- =?iso-8859-1?Q?4yJpRKL4W/yk8mfLlfhh+AngoiWO/KJSXbO2v+5uOqvb7j4iUJZAw0F3nY?=
- =?iso-8859-1?Q?eUQPRMaRdm//PaG0/dge11FVJPKSZ6tXujgXVpnf/Wv6ycrbetdE/Cg6Ou?=
- =?iso-8859-1?Q?6G/+bQV1dz64m6MCWD4tzH83balSJdBeGd+jDlkbUUb7OaujSbUTzHMrvj?=
- =?iso-8859-1?Q?lJwWDhCCGK0n92bQ8DRvRPguBaOhhlVqLrGglps/ZQbVXDBJntrcjZx3te?=
- =?iso-8859-1?Q?rvaAKVUL8LjIi6iEyHpYxijPWCItVvxJ4HeOgp+dIJviYc8kBrV3Yho6AB?=
- =?iso-8859-1?Q?9umcsffJoyIplUJAsfvimKKw+0yR5R+J+HoV/lcsEPQAFEYYJEDMoTtHqx?=
- =?iso-8859-1?Q?oh93wDiZV1ExGhrCTeeOQxE55P7nrYmiTDrJg7XByzTRujC+mUAbxsPk/i?=
- =?iso-8859-1?Q?jWyM5uu5tjgdXlhilvshOYFvMR83+lIgIUpOp3fZniD7dn/hhO7YuCfmX3?=
- =?iso-8859-1?Q?g3QAPmbGBDufTZNAvWh5VVr5XolRJB+Vin6Lp8aLmeKbN7ljM5Gp0R1gNX?=
- =?iso-8859-1?Q?37WJRS0hWQyVA7RbSLZoAn9Q6tP37FiQl0VbkLMaHAp3IZ10SDpalsDPdc?=
- =?iso-8859-1?Q?YDfpdOuOBSBU1pZhASSZHxWfrdBjWH9egoHrUSI4Hud9fsFTsqSpaJTaQg?=
- =?iso-8859-1?Q?SBS0/SwtHWmVTqr75P1PezHxXYELA+L5m3ZpAwxJso/Zi3XIKtb715leqQ?=
- =?iso-8859-1?Q?qMF2HK/iltSQIpS1gFi9m9y2vWJfYfspoUEmM/cJ6C50ouP9aMobxVcJbV?=
- =?iso-8859-1?Q?0C6WtzorzOr+qTlKUuiZz9HMOZEbmF+Um0bJSsjPchOATWbXDeYbYh81xp?=
- =?iso-8859-1?Q?LPAF5A3mCRDFGs3mjD6AWFcLIf+1PGZKiL2iTs5CsALD4IutwHGbwGqiod?=
- =?iso-8859-1?Q?Yxw3lJl7/9k4muanZLOEvWN1X+jRoDlCclBDStgJzT5L3Oczo/f4409f7c?=
- =?iso-8859-1?Q?jLuDtWazQeTgHZqn6jWw2pDgg1oxaRVMlC8xWBiPbaVGPg+PF9V5YzLmSW?=
- =?iso-8859-1?Q?0n7KoH5zjmYgah0WHFej3yxKxtDYXzpaM35xb2e9eC1Vnuoov4ofeftSvI?=
- =?iso-8859-1?Q?TIiMpT96PugDRDQ64W0Tc1/PtUw532hEtGMT/YAH0sbedaxSOnnJ+lmR9p?=
- =?iso-8859-1?Q?OrmSQNjZMuxt7U70eM7pF3k6ixd01wi5PHaLjl7oWqw/NetMndEhuXr7Ij?=
- =?iso-8859-1?Q?5qr8okUQRF5JGdIEfPvEMRRcDTki7ztWq+IgIwESGZKhw86Q64f6fd6E0U?=
- =?iso-8859-1?Q?n1gW6w1B0a1iw0PVQpQ2THuvrZFwtsT4kqMPZKh46N896x+lN52/7HS595?=
- =?iso-8859-1?Q?np1RQkSVs+PVlA9VdlGQekomlLvSgxecE7HGEywRH2OdAsZcWk5BT4P2Or?=
- =?iso-8859-1?Q?kHA9SJDbMOnzhkUG4k14wo8EY0cYws/3NkjVkCDw7pqQzA9WboPn1pbL0c?=
- =?iso-8859-1?Q?h7Z8e8kLetASxHV1631U5FYlJvslawCjXTiIQT4F4ThQ1Mz/1mPdO/11al?=
- =?iso-8859-1?Q?UvU/cOOCOVZccp571SY/AzXz5dGONRhk01VqLSn0vomj28BJO3XzGuX88f?=
- =?iso-8859-1?Q?tHy/iKYtYImK1dyN+vVkTVa4d7h9yD9dWj?=
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4da03a3-845e-4c3b-20dc-08dd5bf8ffdb
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7773.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 15:18:36.0536
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qAUnD7XACqM1VLNdhOl59CPzdDzFpwVgg7g3HG08VJSgPJX3RrSpYEcYa9/beJn167W+SmCanZVngN++QesJzQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7045
-X-Authority-Analysis: v=2.4 cv=DPN14zNb c=1 sm=1 tr=0 ts=67c86b52 cx=c_pps a=OnljjeCONrlUuPUItWmgXA==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
- a=Vs1iUdzkB0EA:10 a=LLPZWm0_0O8A:10 a=i1IsUcr2s-wA:10 a=VwQbUJbxAAAA:8 a=stkexhm8AAAA:8 a=UWepBCwRbLjeA3XoiFEA:9 a=wPNLvfGTeEIA:10 a=1oIdJCuH23UA:10 a=pIW3pCRaVxJDc-hWtpF8:22
-X-Proofpoint-GUID: _JEVSMWqG5OKlSxxLKN-EZd2mUtYwIUX
-X-Proofpoint-ORIG-GUID: _JEVSMWqG5OKlSxxLKN-EZd2mUtYwIUX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-05_06,2025-03-05_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 impostorscore=0 adultscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 bulkscore=0 phishscore=0 clxscore=1015
- spamscore=0 mlxlogscore=670 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502100000
- definitions=main-2503050119
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQMUrzCf8XdNoAU6+fu4ECJnDc0awgHIktuQAg9ms7MCOQTCTwHce3oJAeRkceYB16Yw4QG9HTMVAdpTHyuweFySQA==
+Content-Language: en-gb
 
-On Wednesday 5 March 2025 08:40:51 CET Johannes Berg wrote:
-> On Tue, 2025-03-04 at 16:22 +0100, J=E9r=F4me Pouiller wrote:
+Thank you Wens for cc'ing Johannes
+
+One of the issues [1] reported with one the openwrt devices ... my =
+understanding / experience is that if there is NO-IR basically clients =
+will not connect (I can't think of a use case where there's prior =
+traffic)
+
+[1] https://github.com/openwrt/openwrt/issues/18079
+
+
+-----Original Message-----
+From: Chen-Yu Tsai <wens@kernel.org>=20
+Sent: 05 March 2025 15:11
+To: rmandrad@gmail.com
+Cc: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>; =
+Dennis Bland <dennis@dbperformance.com>; Ping-Ke Shih =
+<pkshih@realtek.com>; linux-wireless@vger.kernel.org; =
+wireless-regdb@lists.infradead.org; Johannes Berg =
+<johannes@sipsolutions.net>
+Subject: Re: wireless-regdb: Allow 6ghz in the US
+
+Cc-ing Johannes since I think this discussion also involves what =
+cfg80211 does.
+
+On Wed, Mar 5, 2025 at 10:36=E2=80=AFPM <rmandrad@gmail.com> wrote:
+>
+> See below
+>
+>
+> [1] Beacon Hints
+> " cfg80211 has a feature called beacon hinting to assist cfg80211 in =
+allowing a card to lift passive-scan and no-beaconing flags. =
+Passive-scan flags are used on channels to ensure that an interface will =
+not issue a probe request out. The no-ir flag exists to allow regulatory =
+domain definitions to disallow a device from initiating radiation of any =
+kind and that includes using beacons, so for example AP/IBSS/Mesh/GO =
+interfaces would not be able to initiate communication on these channels =
+unless the channel does not have this flag. If either of these flags are =
+present on a channel a device is prohibited from initiating =
+communication on cfg80211."
+
+Doesn't this do what the FCC rules say? No initiating communications =
+unless prior traffic has been seen on the channel for client devices.
+
+> ...
+>
+> " It is also important to note that the Linux kernel beacon hint =
+mechanism only trusts beacons from 802.11 APs, not Mesh or IBSS."
+>
+> [1[ =20
+> https://wireless.docs.kernel.org/en/latest/en/developers/regulatory/pr
+> ocessing_rules.html
+>
+> My experience is with Openwrt and APs. We have users in the US=20
+> complaining that they can't use 6GHz due to NO-IR
+
+OK. It would have helped if you explained that it is the AP side that is =
+not working.
+
+Regarding that, AFAIK we don't really have a way to specify different =
+rules for APs vs client devices. AFAIK all the power limits written in =
+the database are for client devices, because clients seem to have more =
+restrictions.
+
+ChenYu
+
+> -----Original Message-----
+> From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+> Sent: 05 March 2025 12:19
+> To: wens@kernel.org; rmandrad@gmail.com
+> Cc: Dennis Bland <dennis@dbperformance.com>; Ping-Ke Shih=20
+> <pkshih@realtek.com>; linux-wireless@vger.kernel.org;=20
+> wireless-regdb@lists.infradead.org
+> Subject: Re: wireless-regdb: Allow 6ghz in the US
+>
+> On 05/03/2025 09:58, Chen-Yu Tsai wrote:
+> > On Wed, Mar 5, 2025 at 4:23=E2=80=AFPM <rmandrad@gmail.com> wrote:
+> >>
+> >> That is not specifying NO-IR which basically is denying any 6Ghz in =
+
+> >> the US what it means in my opinion is
+> >>
+> >>
+> >>
+> >> Client devices (like phones, tablets, laptops) need to find Wi-Fi =
+networks before they can join them.
+> >>
+> >> One-way devices do this is by sending out probe requests. These are =
+little "Are you there?" signals that ask nearby access points (routers) =
+to respond, so the device knows which networks are available.
 > >
-> > Patchwork also reports two warnings that I am going to ignore:
+> > Section 122 says: The Commission therefore only permits a client=20
+> > device to send a probe request to an access point after it has=20
+> > detected a transmission from the access point. The client device=20
+> > will be required to send the probe request on the same frequency as=20
+> > the access point's transmission.
 > >
-> >   - "Target tree name not specified in the subject", I assume it
-> >     is "wireless-next", but in the doubt I prefer to refrain.
->=20
-> It should be wireless-next for anything that isn't fixes for the current
-> cycle, and please do add it - without it the checker won't always be
-> able to pick up the patches to test them:
->=20
-> https://urldefense.com/v3/__https://lore.kernel.org/linux-wireless/ec3a3d=
-891acfe5ed8763271a1df4151d75daf25f.camel@sipsolutions.net/__;!!N30Cs7Jr!X-P=
-jgfbhIZWbgAa9xgbQsoUtAFxrhIPOL3GoEq_3Nan4ktwxzvTu7V17Q3HSxfYgjtdupGn3xRoIJw=
-xLu9f0CcZx3Ys$
->=20
-> >   - Lines are larger then 80 columns. Checkpatch.pl now accepts up
-> >     to 100 columns. I am not aware any local exception in net/, right?
->=20
-> It looks like that's not documented
-> (https://urldefense.com/v3/__https://docs.kernel.org/process/maintainer-n=
-etdev.html__;!!N30Cs7Jr!X-PjgfbhIZWbgAa9xgbQsoUtAFxrhIPOL3GoEq_3Nan4ktwxzvT=
-u7V17Q3HSxfYgjtdupGn3xRoIJwxLu9f0sNiJZZA$ ), but I had a
-> conversation with Jakub about this in the past and he prefers to have
-> the checks still at 80 because people were, in his telling, abusing it
-> in a way and making really long lines for no good reason.
->=20
-> I'm not going to be super strict about it, but I'd encourage everyone
-> who sees that warning to see if they can do better.
->=20
-> In this particular case, it's just a comment, so could trivially be
-> wrapped, but I'm not going to complain about 85 columns. If someone's
-> going to 100 columns with (text) comments though then I think that'd
-> raise some eyebrows. Narrower text is easier to read anyway.
+> > I think this translates to "passive scanning only", which is what=20
+> > NO_IR is meant to specify. NO-IR was previously called PASSIVE-SCAN, =
 
-Thank you for the detailed answer.
-
-I will send a new version in a couple of days. Thus the various robots
-have time to test it.
-
---=20
-J=E9r=F4me Pouiller
-
+> > and was renamed when it was merged with NO-IBSS.
+> >
+> > Maybe the kernel's implementation needs work? I'm not a WiFi person=20
+> > so I really don't know all the details.
+> >
+> >> That is why drivers use the non 6Ghz for allowing clients to=20
+> >> identify the router has 6ghz capabilities=E2=80=A6 I don=E2=80=99t =
+think is for=20
+> >> wireless-regdb to take over the HW router compliance and=20
+> >> certification which is what 122.  is about
+> >
+> > No, section 122 is definitely about client devices, which is what=20
+> > Linux devices are.
+>
+> No, Linux also supports access point, IBSS, OBSS and mesh, not to =
+mention monitor injection.
+>
+> If you remove NO-IR, you are allowing Linux to create access points, =
+ad-hoc and mesh networks on the channel without conditions.
+>
 
 
