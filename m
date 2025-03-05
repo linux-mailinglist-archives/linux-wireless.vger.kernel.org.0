@@ -1,304 +1,122 @@
-Return-Path: <linux-wireless+bounces-19787-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19788-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD3CA4F22A
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 01:09:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC89DA4F32E
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 02:01:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D319188DB73
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 00:09:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8A5F188CA38
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 01:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1858F54;
-	Wed,  5 Mar 2025 00:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A91738DE3;
+	Wed,  5 Mar 2025 01:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="N/vhsiU1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8D1BA33;
-	Wed,  5 Mar 2025 00:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2C61E50B
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Mar 2025 01:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741133362; cv=none; b=EYYiJ9pBUPvBjpwXGTpDj5UZL5nU3qGaf9ybD0vHCUYjJxtVvi1Uj7Wd2eMk+Y1mvl6z1VExbxU4eYcRyyOAst2csKDO2o4RNbtnR0qJyqpvePqaU+Jy7GPg5GQ8NULM0X9pfDGfBLAXSa/pq0smRTMp7VcO9ON3kH27iRuTBlU=
+	t=1741136467; cv=none; b=NsWaYnJhpFqXNQ/NA7ovsNvj07uHKyfAYgcb0JrXCBL6CL9cSElOuTtK3mfks6tDv/E/WgBvIzPsFFW2jEj9f5MeZpVhYW4iH0dVq8B6ZUL9LnQ2SFk61IoeImAdqeUEc/d1paJFTyLxV42lovRLVuBqiJhst4+o7rvUIY41eQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741133362; c=relaxed/simple;
-	bh=03DJX5A+t/rFRpYZ7cbvfQOOkyQSZngBdnWGm3oSkjQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tQOp78VCr/15gv0DUEDJ0h5KUMkvP9X17b5IE/hzqjedmY8UJZhfeDtlwcXzHahHqF62wX79F3AxZg0U3vGRRGGkxTKaUb5dkJRLuUIo5WYUv2LH4jFjRjDhWRfv257fb7VuX2pm/O1bPpQ4jkpNurCIQ0Seukv3W++8A0tiofg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3f67e40ed03so316845b6e.3;
-        Tue, 04 Mar 2025 16:09:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741133360; x=1741738160;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wdMXQ8DVuTg7ZnWdsQQ0oBojxJey5AseHHD1u1BZ0G4=;
-        b=SOK2gaFkXtyHiIQ6ZrM0F5WgP+/WTHpssABF55q1wnjjeIiP51Bu93baLCUdHYEWoY
-         dIVfFCDAiH7OVH8+gpqj/QD7xbr3Ggfw6bnrhEfMpcLwirgpE91+zaHp68/GZeLoXkEB
-         Lsdu8gdJZvA3YIESLSQiMzzHRODLudmXU3AaqWRTAG4E97F34I4bQryDva6whS2V2eoT
-         UKo5WFIbv8HR3bk4jVSdmNcSlRdxe5vgFbkndaoFQ/2J12vK79PjbMPWmlzZAW8eJQTZ
-         6CqOyYSdOkur2ej0R9Rr603t5g+mMDqHrNJoHa/gu67TJoB60l3hsTrhGxIpDFMztmAa
-         EbRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUQFVjg3TOXDiq61AO+R7YWf/KWRoKYgbgqRJAX1cb5JzzYl1CtmEADCKpFX7zBmFnQ7cjvSmR1tyhF/yA3Dg==@vger.kernel.org, AJvYcCWAkBrbehmM+NRtxByfl2F35CXNUhNTEo0Q7BnRRRmG7e/kPHWYGyeCRVVJZxEtFVsJFID9cQHJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkBXbFkmF4dqaXDiL+HMxsBT/BUGj4lwjb9t3jwat22XjCcB5o
-	tzbpz7uursZUcioGI9DmaEk+5yqX9fwsbA+yB4YskYBSjeUpRS04
-X-Gm-Gg: ASbGncsTohvUxpFgMCw96YUdjFBhx5y6kJPYXxZ/2atUM6VB4qSfe+yUslc+Jxn3WOU
-	77cgN7JfEwbyjX/lTvTWWYBjewiGRCW7VLjxB6bRdsCbKxJJR5wUQloYEJ67EyuL74cB8oRj54P
-	s9j5hRAOPSgAe/gMNDTmv1WOy6F4ZsRiG+iafiRdqESxAxmzkWMygJLoy1R318ibrZG7yoZ8EH+
-	MTDiKlweNNl0z9QjdhBejk2ExZfNbdXkOeN4vTwo+auUXe6MY5F82tko04BcCIWv4dPcnYwzaBs
-	gqo8zOs4K9Iexywt4r8c1w7kbMAE0kHP2QEukTb66Q/zcdgpHCy0jqvmp8DdJw==
-X-Google-Smtp-Source: AGHT+IFahbflM/2sxhPc2hoXIoRKE+629RaJj0eVCjQn7LPrXNp8XwvlKkE+YUuntxdL8oWJdNV5PA==
-X-Received: by 2002:a05:6808:1306:b0:3f4:10eb:7fce with SMTP id 5614622812f47-3f683229a3fmr564639b6e.37.1741133359660;
-        Tue, 04 Mar 2025 16:09:19 -0800 (PST)
-Received: from sean-ThinkPad-T450s.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f67ee8f479sm299985b6e.40.2025.03.04.16.09.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 16:09:17 -0800 (PST)
-From: sean.wang@kernel.org
-To: nbd@nbd.name,
-	lorenzo.bianconi@redhat.com
-Cc: sean.wang@mediatek.com,
-	deren.wu@mediatek.com,
-	mingyen.hsieh@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	stable@vger.kernel.org,
-	Caleb Jorden <cjorden@gmail.com>
-Subject: [PATCH v5 6/6] wifi: mt76: mt7925: update the power-saving flow
-Date: Tue,  4 Mar 2025 16:08:51 -0800
-Message-Id: <20250305000851.493671-6-sean.wang@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250305000851.493671-1-sean.wang@kernel.org>
-References: <20250305000851.493671-1-sean.wang@kernel.org>
+	s=arc-20240116; t=1741136467; c=relaxed/simple;
+	bh=Qo25UDrkCgktUR5jsmUVMvq8f6x1jU9FQTWm1UZ4EUA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=kTytOGhSEJa9ng8RxLKUNjk5fvkWKW8uyJjKLkIVw59iixNWeeq43eh5ObujB5wfusOVRvoI9hdXKAucEOJ3aaAofk+rbc2Sv7Q6DQOKJvG3/CBqG2+5wgw/BZpYZPN9TEAa/o4oL9lhAK63rESIPJ6OombALwT2nTUDuBlDR6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=N/vhsiU1; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 525109bD4597793, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1741136410; bh=Qo25UDrkCgktUR5jsmUVMvq8f6x1jU9FQTWm1UZ4EUA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=N/vhsiU1R1u5Ntmqbpi+DK36ai+RIiy7U55m0yqpiJHHaT/wCE2mqpMlVeVFOzodJ
+	 T48xP2B+Ke/O6GcY/s7Nyfu7pGfnkEN1EX6i15hoTcCtfk5JhObc2iPIIpHT68Oc7Z
+	 Q83+c9fNLD0BG0XIvVjEqoeXbYZfXI6amfK68lcDrfO//7auxsQ9z4dC0G/KAdUMs8
+	 1ZR/PWhxWyko3K7IF2QiQuZnVrdkSUSE/FHxUoQor7HcGVFvRYwqB2gWGVNuC/movs
+	 06UmdqDb1vCyP45zmaYxr/RGxCbQ9uTFpjMT6AsviG3nDZM6IhmwqK+hIzIBifc9Nw
+	 o61gNX6qPUu3g==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 525109bD4597793
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Mar 2025 09:00:10 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 5 Mar 2025 09:00:10 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 5 Mar 2025 09:00:08 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Wed, 5 Mar 2025 09:00:08 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: =?utf-8?B?TWluZ3llbiBIc2llaCAo6Kyd5piO6Ku6KQ==?=
+	<Mingyen.Hsieh@mediatek.com>,
+        "nbd@nbd.name" <nbd@nbd.name>,
+        "lorenzo@kernel.org" <lorenzo@kernel.org>
+CC: =?utf-8?B?QWxsYW4gV2FuZyAo546L5a625YGJKQ==?= <Allan.Wang@mediatek.com>,
+        =?utf-8?B?RXJpYy1TWSBDaGFuZyAo5by15pu45rqQKQ==?=
+	<Eric-SY.Chang@mediatek.com>,
+        =?utf-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?=
+	<Deren.Wu@mediatek.com>,
+        Ryder Lee <Ryder.Lee@mediatek.com>,
+        =?utf-8?B?UXVhbiBaaG91ICjlkajlhagp?= <Quan.Zhou@mediatek.com>,
+        =?utf-8?B?TWljaGFlbCBMbyAo576F55Kn56ugKQ==?= <Michael.Lo@mediatek.com>,
+        =?utf-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= <Shayne.Chen@mediatek.com>,
+        Sean
+ Wang <Sean.Wang@mediatek.com>,
+        =?utf-8?B?TGVvbiBZZW4gKOmhj+iJr+WEkik=?=
+	<Leon.Yen@mediatek.com>,
+        =?utf-8?B?S00gTGluICjmnpfmmIbmsJEp?=
+	<km.lin@mediatek.com>,
+        "linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH v2 1/6] wifi: mt76: mt7925: load the appropriate CLC data based on hardware type
+Thread-Topic: [PATCH v2 1/6] wifi: mt76: mt7925: load the appropriate CLC data
+ based on hardware type
+Thread-Index: AQHbjM7UNOPbi6v4JUCOaZmi+hVXCbNip7ew//+Kx4CAAYVU4A==
+Date: Wed, 5 Mar 2025 01:00:08 +0000
+Message-ID: <3a874973725a4368885e3eafeea3479e@realtek.com>
+References: <20250304062854.829194-1-mingyen.hsieh@mediatek.com>
+	 <4d4e50e6b76e46d5b949701316889ee6@realtek.com>
+ <c3fcef13b2c626be49cf160e53fc93fcfe8af9b8.camel@mediatek.com>
+In-Reply-To: <c3fcef13b2c626be49cf160e53fc93fcfe8af9b8.camel@mediatek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-
-After joining MLO, ensure that all links are setup before
-enabling power-saving.
-
-Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
-Cc: stable@vger.kernel.org
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Tested-by: Caleb Jorden <cjorden@gmail.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
-v2:
-  1) generate the patch based on the latest mt76 tree
-  2) update the commit message
-v3:
-  1) fixed the merge conflict
-v4:
-  1) added tested-by tag
-v5:
-  1) fixed mt7925/main.c:1245:28: warning: unused variable "mvif" [-Wunused-variable]
-  2) update co-developed-by tag
-  3) rebase to wireless.git
----
- .../net/wireless/mediatek/mt76/mt7925/init.c  |  1 +
- .../net/wireless/mediatek/mt76/mt7925/main.c  | 67 ++++++++++++++++---
- .../wireless/mediatek/mt76/mt7925/mt7925.h    |  1 +
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  9 +++
- 4 files changed, 69 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-index f41ca4248497..a2bb36dab231 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -244,6 +244,7 @@ int mt7925_register_device(struct mt792x_dev *dev)
- 	dev->mt76.tx_worker.fn = mt792x_tx_worker;
- 
- 	INIT_DELAYED_WORK(&dev->pm.ps_work, mt792x_pm_power_save_work);
-+	INIT_DELAYED_WORK(&dev->mlo_pm_work, mt7925_mlo_pm_work);
- 	INIT_WORK(&dev->pm.wake_work, mt792x_pm_wake_work);
- 	spin_lock_init(&dev->pm.wake.lock);
- 	mutex_init(&dev->pm.mutex);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index a7464839318e..aea0151d25d6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -427,6 +427,7 @@ mt7925_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 	mvif->bss_conf.vif = mvif;
- 	mvif->sta.vif = mvif;
- 	mvif->deflink_id = IEEE80211_LINK_UNSPECIFIED;
-+	mvif->mlo_pm_state = MT792x_MLO_LINK_DISASSOC;
- 
- 	ret = mt7925_mac_link_bss_add(dev, &vif->bss_conf, &mvif->sta.deflink);
- 	if (ret < 0)
-@@ -1242,6 +1243,8 @@ void mt7925_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- {
- 	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
- 	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+
- 	struct {
- 		struct {
- 			u8 omac_idx;
-@@ -1283,6 +1286,8 @@ void mt7925_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 		mvif->wep_sta = NULL;
- 		ewma_rssi_init(&mvif->bss_conf.rssi);
- 	}
-+
-+	mvif->mlo_pm_state = MT792x_MLO_LINK_DISASSOC;
- }
- EXPORT_SYMBOL_GPL(mt7925_mac_sta_remove);
- 
-@@ -1354,6 +1359,38 @@ mt7925_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	return ret;
- }
- 
-+static void
-+mt7925_mlo_pm_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
-+{
-+	struct mt792x_dev *dev = priv;
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	unsigned long valid = ieee80211_vif_is_mld(vif) ?
-+				    mvif->valid_links : BIT(0);
-+	struct ieee80211_bss_conf *bss_conf;
-+	int i;
-+
-+	if (mvif->mlo_pm_state != MT792x_MLO_CHANGED_PS)
-+		return;
-+
-+	mt792x_mutex_acquire(dev);
-+	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
-+		bss_conf = mt792x_vif_to_bss_conf(vif, i);
-+		mt7925_mcu_uni_bss_ps(dev, bss_conf);
-+	}
-+	mt792x_mutex_release(dev);
-+}
-+
-+void mt7925_mlo_pm_work(struct work_struct *work)
-+{
-+	struct mt792x_dev *dev = container_of(work, struct mt792x_dev,
-+					      mlo_pm_work.work);
-+	struct ieee80211_hw *hw = mt76_hw(dev);
-+
-+	ieee80211_iterate_active_interfaces(hw,
-+					    IEEE80211_IFACE_ITER_RESUME_ALL,
-+					    mt7925_mlo_pm_iter, dev);
-+}
-+
- static bool is_valid_alpha2(const char *alpha2)
- {
- 	if (!alpha2)
-@@ -1903,6 +1940,9 @@ static void mt7925_vif_cfg_changed(struct ieee80211_hw *hw,
- 		mt7925_mcu_sta_update(dev, NULL, vif, true,
- 				      MT76_STA_INFO_STATE_ASSOC);
- 		mt7925_mcu_set_beacon_filter(dev, vif, vif->cfg.assoc);
-+
-+		if (ieee80211_vif_is_mld(vif))
-+			mvif->mlo_pm_state = MT792x_MLO_LINK_ASSOC;
- 	}
- 
- 	if (changed & BSS_CHANGED_ARP_FILTER) {
-@@ -1913,9 +1953,19 @@ static void mt7925_vif_cfg_changed(struct ieee80211_hw *hw,
- 	}
- 
- 	if (changed & BSS_CHANGED_PS) {
--		for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
--			bss_conf = mt792x_vif_to_bss_conf(vif, i);
-+		if (hweight16(mvif->valid_links) < 2) {
-+			/* legacy */
-+			bss_conf = &vif->bss_conf;
- 			mt7925_mcu_uni_bss_ps(dev, bss_conf);
-+		} else {
-+			if (mvif->mlo_pm_state == MT792x_MLO_LINK_ASSOC) {
-+				mvif->mlo_pm_state = MT792x_MLO_CHANGED_PS_PENDING;
-+			} else if (mvif->mlo_pm_state == MT792x_MLO_CHANGED_PS) {
-+				for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
-+					bss_conf = mt792x_vif_to_bss_conf(vif, i);
-+					mt7925_mcu_uni_bss_ps(dev, bss_conf);
-+				}
-+			}
- 		}
- 	}
- 
-@@ -1966,11 +2016,12 @@ static void mt7925_link_info_changed(struct ieee80211_hw *hw,
- 	if (changed & (BSS_CHANGED_QOS | BSS_CHANGED_BEACON_ENABLED))
- 		mt7925_mcu_set_tx(dev, info);
- 
--	if (changed & BSS_CHANGED_BSSID) {
--		if (ieee80211_vif_is_mld(vif) &&
--		    hweight16(mvif->valid_links) == 2)
--			/* Indicate the secondary setup done */
--			mt7925_mcu_uni_bss_bcnft(dev, info, true);
-+	if (mvif->mlo_pm_state == MT792x_MLO_CHANGED_PS_PENDING) {
-+		/* Indicate the secondary setup done */
-+		mt7925_mcu_uni_bss_bcnft(dev, info, true);
-+
-+		ieee80211_queue_delayed_work(hw, &dev->mlo_pm_work, 5 * HZ);
-+		mvif->mlo_pm_state = MT792x_MLO_CHANGED_PS;
- 	}
- 
- 	mt792x_mutex_release(dev);
-@@ -2054,8 +2105,6 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			goto free;
- 
- 		if (mconf != &mvif->bss_conf) {
--			mt7925_mcu_set_bss_pm(dev, link_conf, true);
--
- 			err = mt7925_set_mlo_roc(phy, &mvif->bss_conf,
- 						 vif->active_links);
- 			if (err < 0)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index fd5f9d4ea4a7..cb7b1a49fbd1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -268,6 +268,7 @@ int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
- int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool enable);
-+void mt7925_mlo_pm_work(struct work_struct *work);
- void mt7925_scan_work(struct work_struct *work);
- void mt7925_roc_work(struct work_struct *work);
- int mt7925_mcu_uni_bss_ps(struct mt792x_dev *dev,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 32ed01a96bf7..6e25a4421e12 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -81,6 +81,13 @@ enum mt792x_reg_power_type {
- 	MT_AP_VLP,
- };
- 
-+enum mt792x_mlo_pm_state {
-+	MT792x_MLO_LINK_DISASSOC,
-+	MT792x_MLO_LINK_ASSOC,
-+	MT792x_MLO_CHANGED_PS_PENDING,
-+	MT792x_MLO_CHANGED_PS,
-+};
-+
- DECLARE_EWMA(avg_signal, 10, 8)
- 
- struct mt792x_link_sta {
-@@ -134,6 +141,7 @@ struct mt792x_vif {
- 	struct mt792x_phy *phy;
- 	u16 valid_links;
- 	u8 deflink_id;
-+	enum mt792x_mlo_pm_state mlo_pm_state;
- 
- 	struct work_struct csa_work;
- 	struct timer_list csa_timer;
-@@ -239,6 +247,7 @@ struct mt792x_dev {
- 	const struct mt792x_irq_map *irq_map;
- 
- 	struct work_struct ipv6_ns_work;
-+	struct delayed_work mlo_pm_work;
- 	/* IPv6 addresses for WoWLAN */
- 	struct sk_buff_head ipv6_ns_list;
- 
--- 
-2.25.1
-
+PiA+ID4gKyAgICAgICBzdHJ1Y3QgZXZ0IHsNCj4gPiA+ICsgICAgICAgICAgICAgICB1OCByc3Zb
+NF07DQo+ID4gPiArDQo+ID4gPiArICAgICAgICAgICAgICAgX19sZTE2IHRhZzsNCj4gPiA+ICsg
+ICAgICAgICAgICAgICBfX2xlMTYgbGVuOw0KPiA+ID4gKw0KPiA+ID4gKyAgICAgICAgICAgICAg
+IF9fbGUzMiB2ZXI7DQo+ID4gPiArICAgICAgICAgICAgICAgX19sZTMyIGFkZHI7DQo+ID4gPiAr
+ICAgICAgICAgICAgICAgX19sZTMyIHZhbGlkOw0KPiA+ID4gKyAgICAgICAgICAgICAgIF9fbGUz
+MiBzaXplOw0KPiA+ID4gKyAgICAgICAgICAgICAgIF9fbGUzMiBtYWdpY19udW07DQo+ID4gPiAr
+ICAgICAgICAgICAgICAgX19sZTMyIHR5cGU7DQo+ID4gPiArICAgICAgICAgICAgICAgX19sZTMy
+IHJzdjFbNF07DQo+ID4gPiArICAgICAgICAgICAgICAgdTggZGF0YVszMl07DQo+ID4gPiArICAg
+ICAgIH0gX19wYWNrZWQgKiByZXM7DQo+ID4gDQo+ID4gbml0OiBubyBuZWVkIHNwYWNlIGJldHdl
+ZW4gKiBhbmQgcmVzLCBpLmUuICJfX3BhY2tlZCAqcmVzIi4NCj4gPiANCj4gSGkgUGluZy1LZSwN
+Cj4gDQo+IEkgYWxzbyB0aGluayB0aGlzIGlzIGJldHRlciwgYnV0IHRoaXMgd2FzIHN1Z2dlc3Rl
+ZCB0byBtZSBieQ0KPiBzY3JpcHQvY2hlY2twYXRjaC5wbC4NCj4NCg0KY2hlY2twYXRjaCBzYXlz
+ICJDSEVDSzpTUEFDSU5HOiBzcGFjZXMgcHJlZmVycmVkIGFyb3VuZCB0aGF0ICcqJyIgZm9yIHRo
+aXMNCmNhc2UsIGJlY2F1c2UgaXQgdHJlYXRzIGFzIGEgYmluYXJ5IG9wZXJhdG9yLCBzbyB0aGlz
+IGlzIGEgZmFsc2UgYWxhcm0uIA0KDQpCeSB0aGUgd2F5LCAiZ2l0IGdyZXAgIl9fcGFja2VkIFwq
+ICIgZHJpdmVycy9uZXQvd2lyZWxlc3MvIiBjYW4gc2VlIG1hbnkNCnNpbWlsYXIgaW5zdGFuY2Vz
+IEkgZ3Vlc3MgdGhleSBhcmUgYWxzbyBzdWdnZXN0ZWQgYnkgY2hlY2twYXRjaC4gDQoNCg0K
 
