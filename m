@@ -1,104 +1,164 @@
-Return-Path: <linux-wireless+bounces-19793-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19794-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49BE4A4F812
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 08:41:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E49A4F8C6
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 09:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9348F188B30C
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 07:41:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81B30170154
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Mar 2025 08:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6081EE7B3;
-	Wed,  5 Mar 2025 07:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D031C8FBA;
+	Wed,  5 Mar 2025 08:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="gktz8Uhk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nEqriGM8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6208B1DE4EC;
-	Wed,  5 Mar 2025 07:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053E11FBEBB
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Mar 2025 08:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741160472; cv=none; b=OBnIlFP72oJz/0zURh5NNAXSSW9P8OUNypYN2EWJoY1qH4dk9Sz6hB8i+rPqrSPr+OYUcdwvOh88RFAIDDgOjjApI19S2lsTFz6I82BJa83e7DYwYQBv6NkqwRNXkBIPyUD9eDT9P1S5FZ4bUW9umS9ixp+HlEYLIpin1cBokYQ=
+	t=1741163238; cv=none; b=tI7Kk0z+ooUtt4TlTktgP90oiphUBAcwESUGZ2F6zXLg4/0DYx34er3fwzrosY8OLLViSGWJqv0dM7rOX60WNIZamI7VtN4mk4/u12me9xZvx53nlQ/MBMTBNFhsJJB16/aDcQMN9vZX8G0MCOxvULP+b7WLbFyDRtAgHtddLls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741160472; c=relaxed/simple;
-	bh=LtWIFnniiqHthw+orxCSjnxOicCCXctZRD9e2kWFt+E=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VqW6hzpGUTwbUcDvwq5KO9vcc9Kc0B1tSisJDfRwx8gDITkk4X/xqwmc3a4WBN1bd7CYDl7dkFzxlId9pQJ3m/oz3WQ2AJPX18BUhqVLfieb0SJFAtMWfRn3ntXlydHvJjhuktJGzalJ9bOgK95bAA+S0oFLSZCzHN6ZLhXEvOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=gktz8Uhk; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=pL0ILPUfiLo8D7078PGmpAnb8Y1iCaIIVKVFNqbbuys=;
-	t=1741160466; x=1742370066; b=gktz8UhkOKZ+gaeM6Vc+P6pysmrdHQIjpuBomsTO/IZKqvy
-	FbHB8J/SQ40UcdLVDfF0x1hV8DD+3QlMfSeeYppZe3UdeaJPxh3pUHxZ5fOLaN8kntYtI3ozqqtiW
-	RP0lrjYALKAT6U1vHrSKFxqXUQHEhY5brdqMzghiy2enjWPytlHkBc5dqdYRylx0bDUQw8IA7QbdM
-	8g2wglkE2CoGzsEJFnkgDVynE6QWcW5934DoQvKJmwz6jLs88Lc/x2yzCvx2xqn6TTsxvyf1lTK6p
-	NcSaKEQuTWhOcxh45AEkUsq9Y9g+8vofMEMA0+je0EPCyWq6t7ZflnZ5GpH5a8KQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tpjN5-00000001bf5-3dpq;
-	Wed, 05 Mar 2025 08:40:52 +0100
-Message-ID: <98e39be3351190ec71ffb067c062c82883ebef24.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 0/5] wfx: add support for WoWLAN on Silabs WF200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>, 
-	linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>, 
-	linux-devel@silabs.com
-Date: Wed, 05 Mar 2025 08:40:51 +0100
-In-Reply-To: <2018315.usQuhbGJ8B@nb0018864>
-References: <20250302144731.117409-1-jerome.pouiller@silabs.com>
-	 <f808c48596ae1929c62704c226fb109cc03bbd2a.camel@sipsolutions.net>
-	 <2018315.usQuhbGJ8B@nb0018864>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1741163238; c=relaxed/simple;
+	bh=egIQ8DzuMpi8AfafxMEYlrQn44+DhYWzu2OuHYCGSoM=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gApZgY+UA6bIN3wapTqDrMganHkycvli2sw4+erB1zuXuNqxQWgtqI1hVvcWOhDT9Q85Mo7O8zDrCJoD7JxdPscLa7bql2K6x7Rky14wSDVh96kBrJAwgQOoRKB5PciGJ6TOdfm8xF4W3M0+0PF1DUroPhz8sOdGFTgq1W4AaNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nEqriGM8; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43bb6b0b898so29628485e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Mar 2025 00:27:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741163234; x=1741768034; darn=vger.kernel.org;
+        h=content-language:thread-index:content-transfer-encoding
+         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wx6niFNxB11vVymGAkoEEkkaFjOWfbgUXeUXpDwUHqs=;
+        b=nEqriGM8yuwQeYFcvGj1WewRt5OY+yIf47HXdKO9elRgasFsRppSj0IlWX17AC64z/
+         SHK+HRs6v1P9fFQ3ysAWkMY7bPGuhKBOS7iGTLXbE/Dz3kEAq/LoxjFqzsP636iWx5Aw
+         spmT5xdRdY/JwW5c1CKQQvaBMl2YEdf6x6wkJmbtzf9/PLGupUiX+bohpmMS9o3RmXPN
+         UCxwfb099xI7Z0NX7GmlNtcOqwJnlMF5yGu8TXbPEfgw4JhEhdE8WebiwIftVfCqTF8t
+         Ihnybc/PwuW0/G/o6H9xGsreyIbdJJ73VCPPt1oe0vysnegaAgWzoHVEVu1sZEl6bPHm
+         ZhDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741163234; x=1741768034;
+        h=content-language:thread-index:content-transfer-encoding
+         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wx6niFNxB11vVymGAkoEEkkaFjOWfbgUXeUXpDwUHqs=;
+        b=gmqr8rKNoMmazTzkSlyXRRxN11a2DWxu8gBpjf12olb6qlCDEQdxrQ44qFTmxlDhEP
+         8L6biQEkz9/gv9c0gFcKAA0fT0rxY7smluiC2yKwM+bHU3kJpvPViia5D2+yvXiyhY14
+         icXFoSgflsLBxLDwduuPipLiUTLNYDNnF72KYgh7RO1sQKSd+QQc236Uagj8aNSqxX70
+         VRZtFk7c6xmZZQ8q1peUh5C1g8o4Da1wzqidkbwc5hldYKXUedbvD915HTr2FyiHwht2
+         7LppjRBMo7HPQ9cQ7m2l6/Fzs78noGmOV2mieWfEY1VJRkObSLws8FpbDH6ADKrtOBfI
+         Pf4g==
+X-Gm-Message-State: AOJu0YwOIB+1jCCACGH8P6ZcNQ5oaSHjhJvKW1gyACFxyslM7qJWDfQY
+	5ZSwXl1l+VIdD0PuEkX2fRlaVnvemW/3qi+6IO/uYjB3dY4rcBMrDb4YqS4=
+X-Gm-Gg: ASbGncsu43oBLSKpmHnRcMa7KPf6ug2djQaOcb3hNmmnZ503Qn8m7gl8sleA5bj9mxY
+	kHkMMHvc0ykN9uWcpWObmtIWLf8u1zOGMDSa4lT98ozGWptHKCEjeCXTEPLlTXEz5+DmV26MwRh
+	5OWlCkPxnT7PHjMg6CG2OinEK8MQuN2h/n3+Ffk+e+z1dRTQvVu/soOF40157Oa40yoVXEyUe8o
+	heI8ddiilcZSqt3OogNhkTH1Ee9VXzxIRkWbG7uvU/bGmMlAGy1IaquqjWtdwxxcMM/Rv9qpgK4
+	YtkGnz3hEJrxOmumdDEb0N9WnAc0LI5zEvyIZ4PncI9AcKMpm6x7W+/Z4V7383qtqCUK1jDcVaA
+	Tsf3EUSYpXHP5LGxLTSU3wL7RtEeFNNg=
+X-Google-Smtp-Source: AGHT+IFo/BzBCp9DlgvFbq8tLwKtcaqZqQ+JEIfrk5TZCy8Dd0SOeQ7gch8CJZYZZZfbWo2aD7lGyQ==
+X-Received: by 2002:a05:6000:18ad:b0:391:1388:64b7 with SMTP id ffacd0b85a97d-3911f7c39c7mr1629746f8f.46.1741163233957;
+        Wed, 05 Mar 2025 00:27:13 -0800 (PST)
+Received: from winhome (cpc112753-pert6-2-0-cust678.16-4.cable.virginm.net. [86.18.22.167])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e479596dsm20161761f8f.7.2025.03.05.00.27.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 05 Mar 2025 00:27:13 -0800 (PST)
+From: <rmandrad@gmail.com>
+To: "'Dennis Bland'" <dennis@dbperformance.com>,
+	"'Ping-Ke Shih'" <pkshih@realtek.com>,
+	<wens@kernel.org>
+Cc: <linux-wireless@vger.kernel.org>,
+	<wireless-regdb@lists.infradead.org>
+References: <000201db8822$98f28da0$cad7a8e0$@gmail.com> <CAGb2v65490c1m3W_1RkxJ-E7Q=3V_K8xqS2jmd6awcOdzWHXzQ@mail.gmail.com> <ff6ad414457e4b1cb68e834978a553c3@realtek.com> <CAPRryQobXZe5OwR=F-X0KHYyfBwUpFsi=Y5pKnENcUXTN42xAA@mail.gmail.com>
+In-Reply-To: <CAPRryQobXZe5OwR=F-X0KHYyfBwUpFsi=Y5pKnENcUXTN42xAA@mail.gmail.com>
+Subject: RE: wireless-regdb: Allow 6ghz in the US
+Date: Wed, 5 Mar 2025 08:27:17 -0000
+Message-ID: <006301db8da8$686cbb20$39463160$@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQMUrzCf8XdNoAU6+fu4ECJnDc0awgHIktuQAg9ms7MCOQTCT7DBabeA
+Content-Language: en-gb
 
-On Tue, 2025-03-04 at 16:22 +0100, J=C3=A9r=C3=B4me Pouiller wrote:
+Hi Dennis, et all
+
+122. is not specifying NO-IR which basically is denying any 6Ghz in the =
+US what it means in my opinion is=20
+
+Client devices (like phones, tablets, laptops) need to find Wi-Fi =
+networks before they can join them.
+One-way devices do this is by sending out probe requests. These are =
+little "Are you there?" signals that ask nearby access points (routers) =
+to respond, so the device knows which networks are available.  This is =
+why drivers use the non 6Ghz for allowing clients to identify the router =
+has 6ghz capabilities=E2=80=A6 I don=E2=80=99t think is for =
+wireless-regdb to take over the HW router compliance and certification =
+which is  what 122.  is about
+
+Thank you
+Best Regards,
+Rudy
+
+From: Dennis Bland <dennis@dbperformance.com>=20
+Sent: 05 March 2025 05:49
+To: Ping-Ke Shih <pkshih@realtek.com>; wens@kernel.org
+Cc: rmandrad@gmail.com; linux-wireless@vger.kernel.org; =
+wireless-regdb@lists.infradead.org
+Subject: Re: wireless-regdb: Allow 6ghz in the US
+
+Hi everyone:
+
+Section 122 of Document 2020-11236 (Unlicensed Use of the 6 GHz Band) =
+mentions the following, which formed the basis of the NO-IR requirement:
+
+  122. The Commission recognizes the utility of permitting probe =
+requests to enable client devices to join an access point's network. =
+However, these probe requests have the potential to cause harmful =
+interference to licensed operations. The Commission therefore only =
+permits a client device to send a probe request to an access point after =
+it has detected a transmission from the access point.
+
+Best regards,
+
+Dennis
+
+
+On Wed, Feb 26, 2025 at 2:09=E2=80=AFAM Ping-Ke Shih =
+<mailto:pkshih@realtek.com> wrote:
+Chen-Yu Tsai <mailto:wens@kernel.org> wrote:
 >=20
-> Patchwork also reports two warnings that I am going to ignore:
+> > based on this remove NO-IR flag and allow 30 dBm max power
 >=20
->   - "Target tree name not specified in the subject", I assume it
->     is "wireless-next", but in the doubt I prefer to refrain.
+> The original submission mentioned NO-IR requirements, though I did not
+> find such wording. Dennis, do you have any ideas?
+>=20
 
-It should be wireless-next for anything that isn't fixes for the current
-cycle, and please do add it - without it the checker won't always be
-able to pick up the patches to test them:
+FYI. The description below in [1]
 
-https://lore.kernel.org/linux-wireless/ec3a3d891acfe5ed8763271a1df4151d75da=
-f25f.camel@sipsolutions.net/
+In all cases, an exception exists for transmitting brief messages to an
+access point when attempting to join its network after detecting a =
+signal
+that confirms that an access point is operating on a particular channel.
 
->   - Lines are larger then 80 columns. Checkpatch.pl now accepts up
->     to 100 columns. I am not aware any local exception in net/, right?
+[1] =
+https://www.federalregister.gov/documents/2020/05/26/2020-11236/unlicense=
+d-use-of-the-6-ghz-band
 
-It looks like that's not documented
-(https://docs.kernel.org/process/maintainer-netdev.html), but I had a
-conversation with Jakub about this in the past and he prefers to have
-the checks still at 80 because people were, in his telling, abusing it
-in a way and making really long lines for no good reason.
 
-I'm not going to be super strict about it, but I'd encourage everyone
-who sees that warning to see if they can do better.
-
-In this particular case, it's just a comment, so could trivially be
-wrapped, but I'm not going to complain about 85 columns. If someone's
-going to 100 columns with (text) comments though then I think that'd
-raise some eyebrows. Narrower text is easier to read anyway.
-
-johannes
 
