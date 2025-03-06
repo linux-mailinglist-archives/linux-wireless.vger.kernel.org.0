@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-19840-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19844-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0649A542B3
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 07:22:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EF9A542B7
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 07:23:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15AF2168C68
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 06:22:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59442189271A
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 06:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4D219CC39;
-	Thu,  6 Mar 2025 06:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0C91A23BC;
+	Thu,  6 Mar 2025 06:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PpHKlOHV"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="j+repSnf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BD619E966
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 06:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCF719F495
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 06:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741242168; cv=none; b=B6dz8q+W3ZEBgDNHouxxggVxYmzSmsqC0MlTn5nMMUVw5I2zkPV0pqBqZ2VkztVkDzAifAH7uOeoojw64hN1s37NwTHR1m8Ho6MlzeBb53+b4SC+vgfXy45b6RDV0TCWnigF0aZiqxIJaGoFH40C+Sempbee3Q9pTcBYmOiEv4A=
+	t=1741242177; cv=none; b=WuVwzUkg5JXym1uNahqF4qyeW1uL5MwVtp0D3SgIubQJROKXwUgux7LhKLqI9C0GK9FM3Tm3+ySjDEyz+lK71uqlJvXTT1bCCiFLsS9eBPW1LPeu9p0QHWI9ZSASdphLKSDFoRhYxw2XG+u0kO5h7eKFnJmtAg3WzyK10fOVU5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741242168; c=relaxed/simple;
-	bh=Z4Pz8EwNnciFbLJSFMgf1WL/VgL6AdVD7RFcJzyMp9w=;
+	s=arc-20240116; t=1741242177; c=relaxed/simple;
+	bh=c5SmEMan/FfnpMDTLt3JLqmmC/N8P69os032UEgThqI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NlT6CD+w1mT2NNy7TdoYr6rVXh1+REqLdBYRDd7NWy1dkfd+oMfdq17NiLIkXs3AN/osHa9ILs9pWPXGGpIBywdqI2RbeVx7xJRHiEIrj+dSRNgXMUMRIM+2ddcurrZ5adg+A3h7ywH/SL7HKVAS6/3OvbDzNAYbw+6tuQ40TYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PpHKlOHV; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=LUp8YjrFMT0CwbIIHvSd/HRuCzGm+nKdDYhVObZWX3VILC56OzVfSXhE6RUhMRO40BjElhnE8mj8XJH6VqgkD940J7pBrLqHDGX5U0DNTJxhhY7uRcNGmpeApEx/zQvL6JvCIouEuaK0gVHVyPQ7DxK7n6fDuD+bIQ/tCkmJC/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=j+repSnf; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 525MXns3013456;
-	Thu, 6 Mar 2025 06:22:21 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 525Ls2bt012458;
+	Thu, 6 Mar 2025 06:22:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	sOyLJCxCWgotecAeatb0eT9G/3CPxuQqleRoXy8QoC0=; b=PpHKlOHVf1Ay34vd
-	xXDVJyjgM8Szu5opSX4IAAEdgSlXqv6PNQr1IIf7VzsW4EQgjtdRwtg/C27MR6/B
-	PqRf0y250Rm3GSH2HfylSjvx2PAOndN8A40DTAVUs5/OOSNIQOfvKjyEVqxTO69Y
-	WNTQajC9UtLK0z99bE/dH6NkI4+9f/tCpftJfeU3IOXuk2amL5MEgwdBo6UEdBJP
-	KQNQou3mk6qY+uwCEYKNii9C8yVVYfljqItW0NIxIlZZ8nt0f5/Tkf/Cc/OSoiKm
-	30l1/Xj4vdidXb1YIiO5crwg4UVsmxKGTrSW1IhM8DlpAJ4v9O+AgPb52m+AJ0vb
-	Ay8aOg==
+	jsQYahd56p8iD7rT66MO+DkRt9uZksoQbbXlVQ/seuM=; b=j+repSnfihJgV5r5
+	554QI9op43uiCl851221EMUcG1MR0N2DXOjK/LVYH+F+hC0MjRVznCMGRgigmr6J
+	bT1FtVLTvhB43CTkPprgKKKCn4hsSxetEpXVL7t8Aqkc3Sh2OgnhSmGFV+jQsSQr
+	1P0t8qEx6ARifMQwuh9ouwC0gabo4xfHp+PTaWPOyPx0Y5fqep3FOzWs7MI+mHYT
+	3RmsW4sXVgTDDNGt944DbOt91UpTTkC6t7oDwAdKV0BL44RN4mtxWiTKaTVSJ1gA
+	DDQQ+ysGRqq5MH73U1j98CcVecFpE+yM0Kkiu5aLdVNyq/syZV2ShIvBsue7NRcQ
+	msdqAA==
 Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 455p6wqtjt-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 455p6wqtjw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Mar 2025 06:22:20 +0000 (GMT)
+	Thu, 06 Mar 2025 06:22:43 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5266MKif027444
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5266MMQG027475
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 6 Mar 2025 06:22:20 GMT
+	Thu, 6 Mar 2025 06:22:22 GMT
 Received: from hu-ramess-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 5 Mar 2025 22:22:17 -0800
+ 15.2.1544.9; Wed, 5 Mar 2025 22:22:20 -0800
 From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
@@ -63,9 +63,9 @@ CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
  Kaliappan" <quic_rkaliapp@quicinc.com>,
         Rameshkumar Sundaram
 	<quic_ramess@quicinc.com>
-Subject: [PATCH wireless-next v4 1/4] wifi: cfg80211: Add support to get EMLSR capabilities of non-AP MLD
-Date: Thu, 6 Mar 2025 11:51:54 +0530
-Message-ID: <20250306062157.1185769-2-quic_ramess@quicinc.com>
+Subject: [PATCH wireless-next v4 2/4] wifi: mac80211: update ML STA with EML capabilities
+Date: Thu, 6 Mar 2025 11:51:55 +0530
+Message-ID: <20250306062157.1185769-3-quic_ramess@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250306062157.1185769-1-quic_ramess@quicinc.com>
 References: <20250306062157.1185769-1-quic_ramess@quicinc.com>
@@ -81,10 +81,10 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=EZcyQOmC c=1 sm=1 tr=0 ts=67c93f1d cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=P1jSMS6-STP8i83e0X8A:9 a=xSf7fofPWiONnamsZ4Lw:22
+X-Authority-Analysis: v=2.4 cv=EZcyQOmC c=1 sm=1 tr=0 ts=67c93f33 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=1LoY2HbNQILQZSRJ-oMA:9 a=xSf7fofPWiONnamsZ4Lw:22
  a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: BCUABVju95WkKpm0IxazxVf07adh455L
-X-Proofpoint-ORIG-GUID: BCUABVju95WkKpm0IxazxVf07adh455L
+X-Proofpoint-GUID: QCeixElw_uHbsGs-Cj7fwL2eWnRxf_WJ
+X-Proofpoint-ORIG-GUID: QCeixElw_uHbsGs-Cj7fwL2eWnRxf_WJ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-06_03,2025-03-06_01,2024-11-22_01
@@ -93,107 +93,59 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscor
  clxscore=1015 priorityscore=1501 spamscore=0 impostorscore=0
  malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
- definitions=main-2503060045
+ definitions=main-2503060046
 
 From: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
 
-The Enhanced multi-link single-radio (EMLSR) operation allows a non-AP MLD
-with multiple receive chains to listen on one or more EMLSR links when the
-corresponding non-AP STA(s) affiliated with the non-AP MLD is (are) in
-the awake state. [IEEE 802.11be-2024, (35.3.17 Enhanced multi-link
-single-radio (EMLSR) operation)]
+When an AP and Non-AP MLD operates in EMLSR mode, EML capabilities
+advertised during Association contains information such as EMLSR
+transition delay, padding delay and transition timeout values.
 
-An MLD which intends to enable EMLSR operations will set the EML
-Capabilities Present subfield to 1 and shall set the EMLSR Support
-subfield in the Common Info field of the Basic Multi-Link element to 1 in
-all Management frames that include the Basic Multi-Link element except
-Authentication frames. EML capabilities contains information such as
-EML Transition timeout, Padding delay and Transition delay. These fields
-needs to updated to drivers to trigger EMLSR operation and to transmit and
-receive initial control frame and data frames.
-
-Add support to receive EML Capabilities subfield that non-AP MLD
-advertises during (re)association request and send it to underlying
-drivers during ADD/SET station.
+Save the EML capabilities information that is received during station
+addition and capabilities update in ieee80211_sta so that drivers can use
+it for triggering EMLSR operation.
 
 Signed-off-by: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
 Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
 ---
- include/net/cfg80211.h |  5 +++++
- net/wireless/nl80211.c | 16 +++++++++++++++-
- 2 files changed, 20 insertions(+), 1 deletion(-)
+ include/net/mac80211.h | 2 ++
+ net/mac80211/cfg.c     | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 6b170a8d086c..43343392878a 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1756,6 +1756,9 @@ struct cfg80211_ttlm_params {
-  * @supported_oper_classes_len: number of supported operating classes
-  * @support_p2p_ps: information if station supports P2P PS mechanism
-  * @airtime_weight: airtime scheduler weight for this station
-+ * @eml_cap_present: Specifies if EML capabilities field (@eml_cap) is
-+ *	present/updated
-+ * @eml_cap: EML capabilities of this station
-  * @link_sta_params: link related params.
-  */
- struct station_parameters {
-@@ -1780,6 +1783,8 @@ struct station_parameters {
- 	u8 supported_oper_classes_len;
- 	int support_p2p_ps;
- 	u16 airtime_weight;
-+	bool eml_cap_present;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index c498f685d01f..99c3224a081a 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -2488,6 +2488,7 @@ struct ieee80211_link_sta {
+  * @max_amsdu_subframes: indicates the maximal number of MSDUs in a single
+  *	A-MSDU. Taken from the Extended Capabilities element. 0 means
+  *	unlimited.
++ * @eml_cap: EML capabilities of this MLO station
+  * @cur: currently valid data as aggregated from the active links
+  *	For non MLO STA it will point to the deflink data. For MLO STA
+  *	ieee80211_sta_recalc_aggregates() must be called to update it.
+@@ -2522,6 +2523,7 @@ struct ieee80211_sta {
+ 	bool mlo;
+ 	bool spp_amsdu;
+ 	u8 max_amsdu_subframes;
 +	u16 eml_cap;
- 	struct link_station_parameters link_sta_params;
- };
  
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 2c4e06610a79..2aa971884d4c 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -833,6 +833,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
- 	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_MAX_NUM_AKM_SUITES] = { .type = NLA_REJECT },
-+	[NL80211_ATTR_EML_CAPABILITY] = { .type = NLA_U16 },
- 	[NL80211_ATTR_PUNCT_BITMAP] =
- 		NLA_POLICY_FULL_RANGE(NLA_U32, &nl80211_punct_bitmap_range),
+ 	struct ieee80211_sta_aggregates *cur;
  
-@@ -7095,7 +7096,8 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
- 		if (params->ext_capab || params->link_sta_params.ht_capa ||
- 		    params->link_sta_params.vht_capa ||
- 		    params->link_sta_params.he_capa ||
--		    params->link_sta_params.eht_capa)
-+		    params->link_sta_params.eht_capa ||
-+		    params->eml_cap_present)
- 			return -EINVAL;
- 		if (params->sta_flags_mask & BIT(NL80211_STA_FLAG_SPP_AMSDU))
- 			return -EINVAL;
-@@ -7462,6 +7464,12 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
- 		params.link_sta_params.he_6ghz_capa =
- 			nla_data(info->attrs[NL80211_ATTR_HE_6GHZ_CAPABILITY]);
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 09708a060bb7..e73f54a36aed 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2066,6 +2066,9 @@ static int sta_apply_parameters(struct ieee80211_local *local,
+ 	if (params->listen_interval >= 0)
+ 		sta->listen_interval = params->listen_interval;
  
-+	if (info->attrs[NL80211_ATTR_EML_CAPABILITY]) {
-+		params.eml_cap_present = true;
-+		params.eml_cap =
-+			nla_get_u16(info->attrs[NL80211_ATTR_EML_CAPABILITY]);
-+	}
++	if (params->eml_cap_present)
++		sta->sta.eml_cap = params->eml_cap;
 +
- 	if (info->attrs[NL80211_ATTR_AIRTIME_WEIGHT])
- 		params.airtime_weight =
- 			nla_get_u16(info->attrs[NL80211_ATTR_AIRTIME_WEIGHT]);
-@@ -7620,6 +7628,12 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
- 		}
- 	}
- 
-+	if (info->attrs[NL80211_ATTR_EML_CAPABILITY]) {
-+		params.eml_cap_present = true;
-+		params.eml_cap =
-+			nla_get_u16(info->attrs[NL80211_ATTR_EML_CAPABILITY]);
-+	}
-+
- 	if (info->attrs[NL80211_ATTR_HE_6GHZ_CAPABILITY])
- 		params.link_sta_params.he_6ghz_capa =
- 			nla_data(info->attrs[NL80211_ATTR_HE_6GHZ_CAPABILITY]);
+ 	ret = sta_link_apply_parameters(local, sta, STA_LINK_MODE_STA_MODIFY,
+ 					&params->link_sta_params);
+ 	if (ret)
 -- 
 2.34.1
 
