@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-19898-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19899-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FCD6A549F1
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 12:49:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B14A549F2
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 12:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A25C7A4FCE
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:48:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64B0C7A420C
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C08204590;
-	Thu,  6 Mar 2025 11:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BA220AF9B;
+	Thu,  6 Mar 2025 11:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eG+XXV/2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PCmyLxRe"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F6C20B1F2
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 11:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991B720AF96
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 11:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741261758; cv=none; b=a/zb10Clt1dfBeruQqDcyJBgIguYjzBxZYpHWXvv2bME9LKMbWdc/bblmIBrj1RgTPadSOJpODatzsJ94qygClJuMqCxEL1GwGnCqbzFF+rG+OlgWAye2xE3LGOx1PsHrBMGTFSuCrn8GZ0YRbuREP0DsPGO6lYTddoPl+YeN2k=
+	t=1741261761; cv=none; b=RAO92qlRKH5ufoTiNQnjfquBeNr1fS6IdH/fQVFnoB95h+xyUk/FOhecGk7Cdcwjk19BQdnCZQe43jDFW/7ecQMQK1PhP/Q9s/nF8aJ8AzyaaVsihunh1JabPa2Ad2ZpWQoL+0RfajJqD+lsj7YwnelZVqnXYsiHXCM9MbnSnNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741261758; c=relaxed/simple;
-	bh=9R/p5e27pnoiAY42Zg51kvE3IwL5/rlJmnxIW0GQFG4=;
+	s=arc-20240116; t=1741261761; c=relaxed/simple;
+	bh=Fdhe8LOAuCkCUmDReNXyM/ZFsBgc8ZmpMHkeGbiRBxk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p3gEkNlBbBMuRJV1duQ70I0WEUZoK0+Y9cofg3cs/k9UShJYHjLWbocKkUUA6ekM2YgG+26PGgni9RACUi6z4fpnJMZaROeHo/xyxQV0qPfKt8kNzeLOHS0l0m+Can/KObXuCL7wq2KKcrnlB7bszvLKvpPuazyOX1njlTml09w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eG+XXV/2; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=HkdWd9ZPLufwMrHZKwsWoaW71az4RK5U0skfqYvLYRwS6+o1LyT1RhvNOOE7HUZPYkxuX5dJbzyXjjwO4zOGNBmVnujIVluOjDFVcz7zkGXOXnwLV8uMEJvzBVkhVl64yjYGACfpzgA5ENEIz6OBPoZBKLeJNfuhV5L7xTzI5lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PCmyLxRe; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741261757; x=1772797757;
+  t=1741261760; x=1772797760;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9R/p5e27pnoiAY42Zg51kvE3IwL5/rlJmnxIW0GQFG4=;
-  b=eG+XXV/2q3dvRlHiKJLF9BDvvNDFiSSHTVcy/OwwfoaMWA6wr7dulSVk
-   uld7ue3aEoCO9ORtggzZ0eeJPVXZvCfZJAUvMJxB8DIdzD6BTatTI3ThY
-   GeyzU66sQNSWTJEHNIlGEMr+Zr/Tq516h1OnAEXX00XwocImthGl/+C4V
-   7P8EueExZv/PfVzZvQ9qLF3QLSlUAw0gOItfAz1fyk+MB/KXf1Np8dQIu
-   GkW+8ymBf6ClP0uiRWi7mtxDskbfvaLgFWHqVGVgiNVm+AJ2qyWz/dhb1
-   3+Uoni8u4zPzqF/O/zRPq/PqJNKrCVDVQ1Rf0FoUeI4P8OcMaB90BWPmT
-   Q==;
-X-CSE-ConnectionGUID: 5gw4D+kySzK6fyu0BW/kmw==
-X-CSE-MsgGUID: JFgJeKR4TkmEnfvyKV2xjw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52474520"
+  bh=Fdhe8LOAuCkCUmDReNXyM/ZFsBgc8ZmpMHkeGbiRBxk=;
+  b=PCmyLxReQHZpgEIfdOTuTngceGJd24onRJxOqJI+SJ3tLktw9e2SrKZR
+   GjYWvRklwWHZB7El2DQRjN8OopoaQiWpCpd8krs4KMAyXcp2wtQbszf4M
+   tr3YlBJeDxncktr/KALbvlxtS4o2FKeFyeDfzG9NrOSbO13k0FrpEYHkG
+   55e3+1JpsjTfKJUStcBwgd0/4Rm504AR8NnRM+sldsFQxAO88JEw084LO
+   A7BjjOU11AsSt45glZZYW519hybgYe643pvPLnRiyEKbsO5Q0QhDDrgG3
+   1wIlLbUEoG7GwVVN2isnUQNoRz4I+uQOEcN/sepnFg2XfG3X0sNNuDTI2
+   g==;
+X-CSE-ConnectionGUID: WE+bO3uUSxWZpYNmsJ4Jpw==
+X-CSE-MsgGUID: Ry0oWuQ8Sge/FcI1koT/og==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52474524"
 X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; 
-   d="scan'208";a="52474520"
+   d="scan'208";a="52474524"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 03:49:17 -0800
-X-CSE-ConnectionGUID: lnwdsGYbQfuvpPy3pvUT2A==
-X-CSE-MsgGUID: KIFmAmYVQcOgBeaKCZY5YA==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 03:49:18 -0800
+X-CSE-ConnectionGUID: Xf0O8owHSGqdLKqSDlPOpQ==
+X-CSE-MsgGUID: glsG06E9THyZMsFYp4dxWg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="119915538"
+   d="scan'208";a="119915543"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 03:49:14 -0800
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 03:49:16 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
-Subject: [PATCH wireless-next 05/19] wifi: iwlwifi: parse active and 20 MHz AP NVM channel flag
-Date: Thu,  6 Mar 2025 13:48:41 +0200
-Message-Id: <20250306134559.fa17d6e2f19a.I1f7f84f4485ed3928070c97a031110ccb608bda8@changeid>
+	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH wireless-next 06/19] wifi: iwlwifi: mvm: cleanup of TAS structure and enums
+Date: Thu,  6 Mar 2025 13:48:42 +0200
+Message-Id: <20250306134559.7e3f50cc412c.Ic2678dcb5afdacc2ca234d4aa4901e7e1f6e8dbb@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250306114855.4170261-1-miriam.rachel.korenblit@intel.com>
 References: <20250306114855.4170261-1-miriam.rachel.korenblit@intel.com>
@@ -78,83 +77,222 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-Configure 20 MHz AP mode based on NVM settings, set the
-NL80211_RRF_ALLOW_20MHZ_ACTIVITY flag, when the NVM indicates
-that an access point can operate in 20 MHz only.
+Removed mvm prefix from the following structures and enum names:
+1. struct iwl_tas_status_per_mac
+2. struct iwl_tas_status_resp
+3. enum iwl_tas_dyna_status
+4. enum iwl_tas_statically_disabled_reason
+As these structures and enums are not specific to mvm.
 
-Signed-off-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
+Replaced TAS_LMAC_BAND_LB, TAS_LMAC_BAND_HB, and TAS_LMAC_BAND_UHB macros
+with a generic BAND macro, as these macros are not specific to TAS.
+
 Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
-Depends on commit: "wifi: cfg80211: allow AP operations in 20 MHz
-configuration"
----
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 36 +++++++++++--------
- 1 file changed, 22 insertions(+), 14 deletions(-)
+ .../net/wireless/intel/iwlwifi/fw/api/debug.h | 39 ++++++++-----------
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  | 28 +++++--------
+ 2 files changed, 27 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index cd1b0048bb6d..018752b8c4d8 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -143,6 +143,9 @@ static struct ieee80211_rate iwl_cfg80211_rates[] = {
-  * @NVM_CHANNEL_VALID: channel is usable for this SKU/geo
-  * @NVM_CHANNEL_IBSS: usable as an IBSS channel and deprecated
-  *	when %IWL_NVM_SBANDS_FLAGS_LAR enabled.
-+ * @NVM_CHANNEL_ALLOW_20MHZ_ACTIVITY: active scanning allowed and
-+ *	AP allowed only in 20 MHz. Valid only
-+ *	when %IWL_NVM_SBANDS_FLAGS_LAR enabled.
-  * @NVM_CHANNEL_ACTIVE: active scanning allowed and allows IBSS
-  *	when %IWL_NVM_SBANDS_FLAGS_LAR enabled.
-  * @NVM_CHANNEL_RADAR: radar detection required
-@@ -159,20 +162,21 @@ static struct ieee80211_rate iwl_cfg80211_rates[] = {
-  * @NVM_CHANNEL_AFC: client support connection to UHB AFC AP
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
+index aa88e91d117e..e1b6795c1f64 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2005-2014, 2018-2024 Intel Corporation
++ * Copyright (C) 2005-2014, 2018-2025 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
   */
- enum iwl_nvm_channel_flags {
--	NVM_CHANNEL_VALID		= BIT(0),
--	NVM_CHANNEL_IBSS		= BIT(1),
--	NVM_CHANNEL_ACTIVE		= BIT(3),
--	NVM_CHANNEL_RADAR		= BIT(4),
--	NVM_CHANNEL_INDOOR_ONLY		= BIT(5),
--	NVM_CHANNEL_GO_CONCURRENT	= BIT(6),
--	NVM_CHANNEL_UNIFORM		= BIT(7),
--	NVM_CHANNEL_20MHZ		= BIT(8),
--	NVM_CHANNEL_40MHZ		= BIT(9),
--	NVM_CHANNEL_80MHZ		= BIT(10),
--	NVM_CHANNEL_160MHZ		= BIT(11),
--	NVM_CHANNEL_DC_HIGH		= BIT(12),
--	NVM_CHANNEL_VLP			= BIT(13),
--	NVM_CHANNEL_AFC			= BIT(14),
-+	NVM_CHANNEL_VALID                   = BIT(0),
-+	NVM_CHANNEL_IBSS                    = BIT(1),
-+	NVM_CHANNEL_ALLOW_20MHZ_ACTIVITY    = BIT(2),
-+	NVM_CHANNEL_ACTIVE                  = BIT(3),
-+	NVM_CHANNEL_RADAR                   = BIT(4),
-+	NVM_CHANNEL_INDOOR_ONLY             = BIT(5),
-+	NVM_CHANNEL_GO_CONCURRENT           = BIT(6),
-+	NVM_CHANNEL_UNIFORM                 = BIT(7),
-+	NVM_CHANNEL_20MHZ                   = BIT(8),
-+	NVM_CHANNEL_40MHZ                   = BIT(9),
-+	NVM_CHANNEL_80MHZ                   = BIT(10),
-+	NVM_CHANNEL_160MHZ                  = BIT(11),
-+	NVM_CHANNEL_DC_HIGH                 = BIT(12),
-+	NVM_CHANNEL_VLP                     = BIT(13),
-+	NVM_CHANNEL_AFC                     = BIT(14),
- };
+@@ -51,7 +51,7 @@ enum iwl_debug_cmds {
+ 	/**
+ 	 * @GET_TAS_STATUS:
+ 	 * sends command to fw to get TAS status
+-	 * the response is &struct iwl_mvm_tas_status_resp
++	 * the response is &struct iwl_tas_status_resp
+ 	 */
+ 	GET_TAS_STATUS = 0xA,
+ 	/**
+@@ -439,25 +439,20 @@ struct iwl_dbg_dump_complete_cmd {
+ 	__le32 tp_data;
+ } __packed; /* FW_DUMP_COMPLETE_CMD_API_S_VER_1 */
+ 
+-#define TAS_LMAC_BAND_HB       0
+-#define TAS_LMAC_BAND_LB       1
+-#define TAS_LMAC_BAND_UHB      2
+-#define TAS_LMAC_BAND_INVALID  3
+-
+ /**
+- * struct iwl_mvm_tas_status_per_mac - tas status per lmac
++ * struct iwl_tas_status_per_mac - tas status per lmac
+  * @static_status: tas statically enabled or disabled per lmac - TRUE/FALSE
+  * @static_dis_reason: TAS static disable reason, uses
+- *	&enum iwl_mvm_tas_statically_disabled_reason
++ *	&enum iwl_tas_statically_disabled_reason
+  * @dynamic_status: Current TAS  status. uses
+- *	&enum iwl_mvm_tas_dyna_status
++ *	&enum iwl_tas_dyna_status
+  * @near_disconnection: is TAS currently near disconnection per lmac? - TRUE/FALSE
+  * @max_reg_pwr_limit: Regulatory power limits in dBm
+  * @sar_limit: SAR limits per lmac in dBm
+  * @band: Band per lmac
+  * @reserved: reserved
+  */
+-struct iwl_mvm_tas_status_per_mac {
++struct iwl_tas_status_per_mac {
+ 	u8 static_status;
+ 	u8 static_dis_reason;
+ 	u8 dynamic_status;
+@@ -466,35 +461,35 @@ struct iwl_mvm_tas_status_per_mac {
+ 	__le16 sar_limit;
+ 	u8 band;
+ 	u8 reserved[3];
+-} __packed; /*DEBUG_GET_TAS_STATUS_PER_MAC_S_VER_1*/
++} __packed; /* DEBUG_GET_TAS_STATUS_PER_MAC_S_VER_1 */
  
  /**
-@@ -1659,6 +1663,10 @@ static u32 iwl_nvm_get_regdom_bw_flags(const u16 *nvm_chan,
- 	if (nvm_flags & NVM_CHANNEL_INDOOR_ONLY)
- 		flags |= NL80211_RRF_NO_OUTDOOR;
+- * struct iwl_mvm_tas_status_resp - Response to GET_TAS_STATUS
++ * struct iwl_tas_status_resp - Response to GET_TAS_STATUS
+  * @tas_fw_version: TAS FW version
+  * @is_uhb_for_usa_enable: is UHB enabled in USA? - TRUE/FALSE
+  * @curr_mcc: current mcc
+  * @block_list: country block list
+  * @tas_status_mac: TAS status per lmac, uses
+- *	&struct iwl_mvm_tas_status_per_mac
++ *	&struct iwl_tas_status_per_mac
+  * @in_dual_radio: is TAS in dual radio? - TRUE/FALSE
+  * @uhb_allowed_flags: see &enum iwl_tas_uhb_allowed_flags.
+  *	This member is valid only when fw has
+  *	%IWL_UCODE_TLV_CAPA_UHB_CANADA_TAS_SUPPORT capability.
+  * @reserved: reserved
+  */
+-struct iwl_mvm_tas_status_resp {
++struct iwl_tas_status_resp {
+ 	u8 tas_fw_version;
+ 	u8 is_uhb_for_usa_enable;
+ 	__le16 curr_mcc;
+ 	__le16 block_list[16];
+-	struct iwl_mvm_tas_status_per_mac tas_status_mac[2];
++	struct iwl_tas_status_per_mac tas_status_mac[2];
+ 	u8 in_dual_radio;
+ 	u8 uhb_allowed_flags;
+ 	u8 reserved[2];
+-} __packed; /*DEBUG_GET_TAS_STATUS_RSP_API_S_VER_3*/
++} __packed; /* DEBUG_GET_TAS_STATUS_RSP_API_S_VER_3 */
  
-+	if (nvm_flags & NVM_CHANNEL_ALLOW_20MHZ_ACTIVITY &&
-+	    flags & NL80211_RRF_NO_IR)
-+		flags |= NL80211_RRF_ALLOW_20MHZ_ACTIVITY;
-+
- 	/* Set the GO concurrent flag only in case that NO_IR is set.
- 	 * Otherwise it is meaningless
- 	 */
+ /**
+- * enum iwl_mvm_tas_dyna_status - TAS current running status
++ * enum iwl_tas_dyna_status - TAS current running status
+  * @TAS_DYNA_INACTIVE: TAS status is inactive
+  * @TAS_DYNA_INACTIVE_MVM_MODE: TAS is disabled due because FW is in MVM mode
+  *	or is in softap mode.
+@@ -507,7 +502,7 @@ struct iwl_mvm_tas_status_resp {
+  * @TAS_DYNA_ACTIVE: TAS is currently active
+  * @TAS_DYNA_STATUS_MAX: TAS status max value
+  */
+-enum iwl_mvm_tas_dyna_status {
++enum iwl_tas_dyna_status {
+ 	TAS_DYNA_INACTIVE,
+ 	TAS_DYNA_INACTIVE_MVM_MODE,
+ 	TAS_DYNA_INACTIVE_TRIGGER_MODE,
+@@ -516,16 +511,16 @@ enum iwl_mvm_tas_dyna_status {
+ 	TAS_DYNA_ACTIVE,
+ 
+ 	TAS_DYNA_STATUS_MAX,
+-}; /*_TAS_DYNA_STATUS_E*/
++};
+ 
+ /**
+- * enum iwl_mvm_tas_statically_disabled_reason - TAS statically disabled reason
++ * enum iwl_tas_statically_disabled_reason - TAS statically disabled reason
+  * @TAS_DISABLED_DUE_TO_BIOS: TAS is disabled because TAS is disabled in BIOS
+  * @TAS_DISABLED_DUE_TO_SAR_6DBM: TAS is disabled because SAR limit is less than 6 Dbm
+  * @TAS_DISABLED_REASON_INVALID: TAS disable reason is invalid
+  * @TAS_DISABLED_REASON_MAX: TAS disable reason max value
+  */
+-enum iwl_mvm_tas_statically_disabled_reason {
++enum iwl_tas_statically_disabled_reason {
+ 	TAS_DISABLED_DUE_TO_BIOS,
+ 	TAS_DISABLED_DUE_TO_SAR_6DBM,
+ 	TAS_DISABLED_REASON_INVALID,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 83e3c1160362..b453ad0000c8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2023, 2025 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -542,7 +542,7 @@ static ssize_t iwl_dbgfs_tas_get_status_read(struct file *file,
+ 					     size_t count, loff_t *ppos)
+ {
+ 	struct iwl_mvm *mvm = file->private_data;
+-	struct iwl_mvm_tas_status_resp *rsp = NULL;
++	struct iwl_tas_status_resp *rsp = NULL;
+ 	static const size_t bufsz = 1024;
+ 	char *buff, *pos, *endpos;
+ 	const char * const tas_dis_reason[TAS_DISABLED_REASON_MAX] = {
+@@ -598,23 +598,19 @@ static ssize_t iwl_dbgfs_tas_get_status_read(struct file *file,
+ 
+ 	pos += scnprintf(pos, endpos - pos, "TAS Conclusion:\n");
+ 	for (i = 0; i < rsp->in_dual_radio + 1; i++) {
+-		if (rsp->tas_status_mac[i].band != TAS_LMAC_BAND_INVALID &&
+-		    rsp->tas_status_mac[i].dynamic_status & BIT(TAS_DYNA_ACTIVE)) {
++		if (rsp->tas_status_mac[i].dynamic_status &
++		    BIT(TAS_DYNA_ACTIVE)) {
+ 			pos += scnprintf(pos, endpos - pos, "\tON for ");
+ 			switch (rsp->tas_status_mac[i].band) {
+-			case TAS_LMAC_BAND_HB:
++			case PHY_BAND_5:
+ 				pos += scnprintf(pos, endpos - pos, "HB\n");
+ 				break;
+-			case TAS_LMAC_BAND_LB:
++			case PHY_BAND_24:
+ 				pos += scnprintf(pos, endpos - pos, "LB\n");
+ 				break;
+-			case TAS_LMAC_BAND_UHB:
++			case PHY_BAND_6:
+ 				pos += scnprintf(pos, endpos - pos, "UHB\n");
+ 				break;
+-			case TAS_LMAC_BAND_INVALID:
+-				pos += scnprintf(pos, endpos - pos,
+-						 "INVALID BAND\n");
+-				break;
+ 			default:
+ 				pos += scnprintf(pos, endpos - pos,
+ 						 "Unsupported band (%d)\n",
+@@ -668,20 +664,16 @@ static ssize_t iwl_dbgfs_tas_get_status_read(struct file *file,
+ 
+ 		pos += scnprintf(pos, endpos - pos, "TAS status for ");
+ 		switch (rsp->tas_status_mac[i].band) {
+-		case TAS_LMAC_BAND_HB:
++		case PHY_BAND_5:
+ 			pos += scnprintf(pos, endpos - pos, "High band\n");
+ 			break;
+-		case TAS_LMAC_BAND_LB:
++		case PHY_BAND_24:
+ 			pos += scnprintf(pos, endpos - pos, "Low band\n");
+ 			break;
+-		case TAS_LMAC_BAND_UHB:
++		case PHY_BAND_6:
+ 			pos += scnprintf(pos, endpos - pos,
+ 					 "Ultra high band\n");
+ 			break;
+-		case TAS_LMAC_BAND_INVALID:
+-			pos += scnprintf(pos, endpos - pos,
+-					 "INVALID band\n");
+-			break;
+ 		default:
+ 			pos += scnprintf(pos, endpos - pos,
+ 					 "Unsupported band (%d)\n",
 -- 
 2.34.1
 
