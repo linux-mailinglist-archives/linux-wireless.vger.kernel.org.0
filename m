@@ -1,199 +1,143 @@
-Return-Path: <linux-wireless+bounces-19835-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19836-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE965A540A8
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 03:28:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10422A54165
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 04:51:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3613C7A6D39
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 02:27:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BE421892896
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 03:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4F2F9F8;
-	Thu,  6 Mar 2025 02:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC139199238;
+	Thu,  6 Mar 2025 03:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="qffaZTOF"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BqOlPHxo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AA12907;
-	Thu,  6 Mar 2025 02:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EB918C337
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 03:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741228131; cv=none; b=cgVQsrL6HrSfvfVVgQxvNKOXBC/167T03RmMatckJa08yv8/FlO90h8nPSSTAqWHFdOZyz8MiZ9Shh6oClAu9v7CopPzWVL3/2LQNj3lC/7PuOMZykbf3zUZNsF0SdsUN9N9/xybfdC8TrBYuJBwLYSmKDkOGTQ+0Y72KtCCTc8=
+	t=1741233081; cv=none; b=aFkUqbakYc0WUzuFhbI5F/Cs0CzMY9wq1Y3qYauhALmm56KYhJjDGSZeYFlTeZpZStpvqU1gLmw6+Tzko/gL2VyGGq0dGWGsey7XBkqY3laPkYVnYsxUlYQXtWoSUsnbRdp/O7MGImXyIJ4TzLBwCmgcX27Z09tHeZea8Au8KSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741228131; c=relaxed/simple;
-	bh=3dhtHCh58xOEShk9yT+stIKHGFWKjW+X/xW5WyTuYyo=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=GpTV1uiOIEl2LzrgL+PPmNhtAP0VolrN2Zfj80jj1hvOtVVL0z5DZ8salsydiy1fuqrlwwrQo20BbsVo8HCtJQ5dcGTPFQOejqY5Ll295L03Qk1iCZsSfE98s1uQoLLcF2w0KKJCoadggr7cL6gr9WDYboQ+IGD7WP+6y/mjo6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=qffaZTOF; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5262RLQQ02509779, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1741228041; bh=3dhtHCh58xOEShk9yT+stIKHGFWKjW+X/xW5WyTuYyo=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=qffaZTOFY6G5QtMg7KOMpJbczF9b5vgJpIkpbxYr2O/KxO9wvD3xvq9QfNPmZFptM
-	 8q7rI5AU/l6JWLzoyB8nqvjLf+h0qdLC7eVUkxbjjT487yAzjxQVgHxz39HSgG8KFp
-	 3rsVs+kdUIijke9XH1s83B8Ht1pZ9NrszD8FvBh0r8PPfO8ZHWovNvmOcVfbPxb/kZ
-	 Qu9y9gFnlM3kjCHYfejymMy1cW8TIGQficJrEibYmASvKSF40LlUlWuifAbBfbXxaK
-	 G2iDM2E+Lx+z/qBFOwC85g8mEGhm9pox6ljveYOLhR3QhT/jvuzlSCK4C13cBPA5cC
-	 rLOLNtDs0BkXg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5262RLQQ02509779
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Mar 2025 10:27:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 6 Mar 2025 10:27:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 6 Mar 2025 10:27:20 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Thu, 6 Mar 2025 10:27:20 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Shengyu Qu <wiagn233@outlook.com>, "nbd@nbd.name" <nbd@nbd.name>,
-        "lorenzo@kernel.org" <lorenzo@kernel.org>,
-        "ryder.lee@mediatek.com"
-	<ryder.lee@mediatek.com>,
-        "shayne.chen@mediatek.com"
-	<shayne.chen@mediatek.com>,
-        "sean.wang@mediatek.com"
-	<sean.wang@mediatek.com>,
-        "johannes@sipsolutions.net"
-	<johannes@sipsolutions.net>,
-        "matthias.bgg@gmail.com"
-	<matthias.bgg@gmail.com>,
-        "angelogioacchino.delregno@collabora.com"
-	<angelogioacchino.delregno@collabora.com>,
-        "miriam.rachel.korenblit@intel.com" <miriam.rachel.korenblit@intel.com>,
-        "nicolas.cavallari@green-communications.fr"
-	<nicolas.cavallari@green-communications.fr>,
-        "howard-yh.hsu@mediatek.com"
-	<howard-yh.hsu@mediatek.com>,
-        "greearb@candelatech.com"
-	<greearb@candelatech.com>,
-        "christophe.jaillet@wanadoo.fr"
-	<christophe.jaillet@wanadoo.fr>,
-        "benjamin-jw.lin@mediatek.com"
-	<benjamin-jw.lin@mediatek.com>,
-        "mingyen.hsieh@mediatek.com"
-	<mingyen.hsieh@mediatek.com>,
-        "quic_adisi@quicinc.com"
-	<quic_adisi@quicinc.com>,
-        "deren.wu@mediatek.com" <deren.wu@mediatek.com>,
-        "chui-hao.chiu@mediatek.com" <chui-hao.chiu@mediatek.com>,
-        "gustavoars@kernel.org" <gustavoars@kernel.org>,
-        "bo.jiao@mediatek.com"
-	<bo.jiao@mediatek.com>,
-        "sujuan.chen@mediatek.com"
-	<sujuan.chen@mediatek.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-        "linux-mediatek@lists.infradead.org"
-	<linux-mediatek@lists.infradead.org>
-Subject: RE: [PATCH v8] wifi: mt76: mt7915: add wds support when wed is enabled
-Thread-Topic: [PATCH v8] wifi: mt76: mt7915: add wds support when wed is
- enabled
-Thread-Index: AQHbjb8lReN6YdafAkq12sgLw/MaUbNlWkUA
-Date: Thu, 6 Mar 2025 02:27:20 +0000
-Message-ID: <c56c9714c754451a8255ece79353da2b@realtek.com>
-References: <TYCPR01MB84374EEAC0DDDA4223B8997298CB2@TYCPR01MB8437.jpnprd01.prod.outlook.com>
-In-Reply-To: <TYCPR01MB84374EEAC0DDDA4223B8997298CB2@TYCPR01MB8437.jpnprd01.prod.outlook.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1741233081; c=relaxed/simple;
+	bh=PyDSWogbuMLwJJUkiRPbuDwXzHUhvl6OXkNbENnYVbA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MwrfkJpCFPIj9FHEHNDh/rW0hhjZOr5LqWD/Ppnn+y1RRQnE5KQu2et4h0ktBQloWA0QXOef3BBz+02DRxXQfCHWI0dDavRb9F8Z/LFmKpWHhkEMTJRaEj8HHo3SvjYfI50R8ZsufDWrqYpufxQuPChFT4pWWuw9IpNyuPdjSiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BqOlPHxo; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 525LGbIF020148
+	for <linux-wireless@vger.kernel.org>; Thu, 6 Mar 2025 03:51:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Mp/6YXxA65JIhOvOJKohYGo0S11I79RtwIma3xS3OWo=; b=BqOlPHxo1eU8RaL7
+	AgemsoKD6fdgK98jr7xgjnraAnWZgusgB1wv0VuvpKjEsnehYSFzoSFhMOXhrmm4
+	2Ixsm0VlzIrw3Ed41hdDR/DlOpy6tZtCs2HelB9Cfy/iLTvpbUROyvLmx/5hC+iH
+	RDQZmfVBJB3UMySDBFtm4PCShfzSLJofRL7A16JuBShqrlZjCMT/xgHYFxm3dF14
+	t9Gpv62krCmTJ8/H/D1rR0bnpZ6YblimzHBIj5NS/wfg0BbPtU6omSRb9wKIRAcX
+	gf7fdDDyMuQ1/oaZTxuxenKqIjBGLnN9nruDScJeswYE49YTXGwN5BjOI+Tp+BSy
+	6GK2VQ==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 456xcugsm7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 06 Mar 2025 03:51:18 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2feb5cd04a0so522824a91.2
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Mar 2025 19:51:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741233077; x=1741837877;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mp/6YXxA65JIhOvOJKohYGo0S11I79RtwIma3xS3OWo=;
+        b=oNbVAbO9etXMtX2sLYCVhXPXJCsLlYhTRw8jmq0Sx6jBUbf69H9KuOCGPepLi8xMj9
+         LoPtYaHeV9nJZwfpPF9hU9fCszfvwzMflXG6/Wrqa6j43ckx33Z4jc5rmdi7av0cWKLw
+         gudN6LnBy4NXWecD+EKpk4lKgZZbQkoXub6vNpuptqdKog7nBCJlE8xffAdwh3AhX7Gm
+         hXk4cEursYHaTUtwrBALpV4XKVYfk5VoxgQNauqNWQodSp7BYVuhZXLOcGxqkiECSIos
+         c5WpxOLVWmbMkTRD9znf5FqoALn9+GjEU/FFf/pYQqLN13y3JtXWIZ4f0se7OlgAuYwe
+         8uBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWo3kAa642VBtwUmCoQSNpqkyt9G+FrQg3bl1U3h684erNBvfjh9wZImmSR5vmRu0zMDpEuUePm2saAj+cvOw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzykssm0phvwcXyddp0O6hUjXPPDZwtoHjQBt/WWkOLycklaV2e
+	dWZWxAYFfKeaxgW9DNzVPcftSiheD8vkDfIjce+kxhkz9RsuHNPQgkwTD+kzS72t3dDIIn+QEud
+	wNKJboplKjm3JEvWfm5uGY2ZlYeJHDe3kjj2jtx7OQk1zFmV3/ujueH/FaA/S7rVy9A==
+X-Gm-Gg: ASbGnct+0jZ717lAlDSxkUyxkcV6aVEiV3Hk2dJXiBC1NiijuTEQBfX1chHEGJbzV2J
+	rcJhjNRSc/LxJeZw15o7INbWRdcGEHGb+OM0BMLPoiznpzAjIT+MN1J0eBaA5M2AXktGNargKgO
+	Qh5mCbEF1tT+qxS1e0GKV5IuBehOwq+l5VY/YU1hxKCmJMKjCjm036OqJeIB3gqS3FSTlCkrJ/9
+	K1B+1CYFiKZw74m5WLudLV5miugn3bHiTl/326ODBA3uxQyuxke8TG8XRXIxgrp3DE5VrxypOqk
+	3EFYv2SBhenqp9+l8KOB8ZXXjw45MG6AJf5c7pI58uvJ/vUAOK10eG7csQ==
+X-Received: by 2002:a05:6a20:2444:b0:1f3:2a83:7548 with SMTP id adf61e73a8af0-1f3495c01aamr11494980637.38.1741233077600;
+        Wed, 05 Mar 2025 19:51:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGXCFBh9xo033zrGhysb3PJP32S0ZetoTc3J6B1zaxoFsgl/GvE1z20/MNB4ugW5rmtFHNnQw==
+X-Received: by 2002:a05:6a20:2444:b0:1f3:2a83:7548 with SMTP id adf61e73a8af0-1f3495c01aamr11494943637.38.1741233077208;
+        Wed, 05 Mar 2025 19:51:17 -0800 (PST)
+Received: from [10.152.204.0] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73698244180sm256743b3a.63.2025.03.05.19.51.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Mar 2025 19:51:16 -0800 (PST)
+Message-ID: <d0433fb3-e8f6-2f5b-6c6f-490aedc5aee6@oss.qualcomm.com>
+Date: Thu, 6 Mar 2025 09:21:12 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH ath-next v9 08/13] wifi: ath12k: add AHB driver support
+ for IPQ5332
+Content-Language: en-US
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
+Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Balamurugan S <quic_bselvara@quicinc.com>,
+        P Praneesh <quic_ppranees@quicinc.com>
+References: <20250305185501.2400888-1-quic_rajkbhag@quicinc.com>
+ <20250305185501.2400888-9-quic_rajkbhag@quicinc.com>
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20250305185501.2400888-9-quic_rajkbhag@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: DvM4Yrmc6Vf32L3IwL7XE5xYQRPaxdzV
+X-Proofpoint-GUID: DvM4Yrmc6Vf32L3IwL7XE5xYQRPaxdzV
+X-Authority-Analysis: v=2.4 cv=eeXHf6EH c=1 sm=1 tr=0 ts=67c91bb6 cx=c_pps a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=cKnEvPqYOVkaVG8RjQYA:9 a=QEXdDO2ut3YA:10
+ a=uKXjsCUrEbL0IQVhDsJ9:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-06_02,2025-03-05_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=735 mlxscore=0
+ impostorscore=0 malwarescore=0 bulkscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 lowpriorityscore=0
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503060024
 
-Shengyu Qu <wiagn233@outlook.com> wrote:
 
-[...]
 
-> @@ -1271,6 +1278,10 @@ static void mt7915_sta_set_4addr(struct ieee80211_=
-hw *hw,
->  {
->         struct mt7915_dev *dev =3D mt7915_hw_dev(hw);
->         struct mt7915_sta *msta =3D (struct mt7915_sta *)sta->drv_priv;
-> +       int min =3D MT76_WED_WDS_MIN, max =3D MT76_WED_WDS_MAX;
-> +       struct ieee80211_sta *pre_sta;
-> +       u8 flags =3D MT76_WED_DEFAULT;
-> +       int temp_idx;
+On 3/6/2025 12:24 AM, Raj Kumar Bhagat wrote:
+> From: Balamurugan S <quic_bselvara@quicinc.com>
+> 
+> Add Initial Ath12k AHB driver support for IPQ5332. IPQ5332 is AHB
+> based IEEE802.11be 2 GHz 2x2 WiFi device.
+> 
+> Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Balamurugan S <quic_bselvara@quicinc.com>
+> Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Co-developed-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 
-In general 'temp' is short for temperature. 'tmp' is preferred.
-
->=20
->         if (enabled)
->                 set_bit(MT_WCID_FLAG_4ADDR, &msta->wcid.flags);
-> @@ -1280,6 +1291,30 @@ static void mt7915_sta_set_4addr(struct ieee80211_=
-hw *hw,
->         if (!msta->wcid.sta)
->                 return;
->=20
-> +       if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
-> +           !is_mt7915(&dev->mt76) &&
-> +           (msta->wcid.idx < min || msta->wcid.idx > max - 1)) {
-> +               pre_sta =3D kzalloc(sizeof(*sta) + sizeof(*msta), GFP_KER=
-NEL);
-> +               memmove(pre_sta, sta, sizeof(*sta) + sizeof(*msta));
-
-Seemingly, kmemdup() =3D kzalloc() + memmove().
-
-> +
-> +               flags =3D test_bit(MT_WCID_FLAG_4ADDR, &msta->wcid.flags)=
- ?
-> +                       MT76_WED_WDS_ACTIVE : MT76_WED_ACTIVE;
-> +
-> +               temp_idx =3D __mt76_wcid_alloc(dev->mt76.wcid_mask, MT791=
-5_WTBL_STA, flags);
-
-Since __mt76_wcid_alloc() could return -1 for error case, shouldn't you han=
-dle that?
-
-> +               ((struct mt7915_sta *)pre_sta->drv_priv)->wcid.idx =3D (u=
-16)temp_idx;
-
-Define a local `struct mt7915_sta *pre_msta =3D (struct mt7915_sta *)pre_st=
-a->drv_priv`
-ahead. This statement would be simpler. Just `pre_msta-> wcid.idx =3D (u16)=
-temp_idx`,
-but casting of '(u16)' is still not very preferred.
-
-> +               mt7915_mac_sta_add(&dev->mt76, vif, pre_sta);
-> +               rcu_assign_pointer(dev->mt76.wcid[temp_idx], &msta->wcid)=
-;
-> +
-> +               temp_idx =3D msta->wcid.idx;
-> +               msta->wcid.idx =3D ((struct mt7915_sta *)pre_sta->drv_pri=
-v)->wcid.idx;
-> +               ((struct mt7915_sta *)pre_sta->drv_priv)->wcid.idx =3D (u=
-16)temp_idx;
-> +               rcu_assign_pointer(dev->mt76.wcid[temp_idx], NULL);
-> +
-> +               synchronize_rcu();
-> +               mt7915_mac_sta_remove(&dev->mt76, vif, pre_sta);
-> +               kfree(pre_sta);
-> +       }
-> +
->         mt76_connac_mcu_wtbl_update_hdr_trans(&dev->mt76, vif, sta);
->  }
->=20
-
-[...]
-
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
