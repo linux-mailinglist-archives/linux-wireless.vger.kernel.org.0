@@ -1,106 +1,174 @@
-Return-Path: <linux-wireless+bounces-19891-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19884-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63691A5483E
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:45:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0637A54836
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:44:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CBFF171BD7
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:44:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F1427A55EB
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A972080CF;
-	Thu,  6 Mar 2025 10:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD32020A5D1;
+	Thu,  6 Mar 2025 10:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CtsNgFwK"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="TsS6odNZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C64207DE2
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 10:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C55A2080FB;
+	Thu,  6 Mar 2025 10:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741257843; cv=none; b=EBS3PsUPuAPDOgXRmiWxLKGvUZ6j80xgecZp8j17D/QrdvOnwAb/z3gfEHrUh5yx68mLJO8m9kc3C9vOA6xgnuPmQubLioAth3Kf4NP0owwGsfdp8A7BzUQ5qamgiVuwKOFYmpkzlBfzLLWN4PGoVIg+vpgbxDPLfp6yK5LBYdU=
+	t=1741257832; cv=none; b=UBBOJDjpWRbs7zXr/pr2L8/ydpL2N9xnVt6HsDyfTJjjz3RQqZUfH0232F2P4nsojBS/cs/avr5yeOonUp4Gp58wslzyY1kOznM6ENmEdNeHTsaVbc0zwAe1hM7gCSyRA1OVJ89cy7sajO+YqCl8txYK2rUvEj+gzSB9HYUmh6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741257843; c=relaxed/simple;
-	bh=rcmeEKUl0grt5NqQFQ066GwHAD1piFf/75GVuUnDpDI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=afiw6P1nb6IFVar12YObwLBYsQPpTIWGoR4n4u1K9vcRqIP9kP3EfhjhFFOK0swsovZ46Ybk3e+Yux2V72ApVe+RklCeXbRp5UAEF0MUY4ly4lMxr9uzUDH94igeroig2RiaLZ6tF1QogpJjsQ5hEv8NRxhP3iRp8A6D/sDfy/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CtsNgFwK; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741257842; x=1772793842;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=rcmeEKUl0grt5NqQFQ066GwHAD1piFf/75GVuUnDpDI=;
-  b=CtsNgFwKUggoPTdaUwq9Hs9lpRY1LmXU13utxDKXEW8rdbJ8/YhBF0br
-   H08KX7zjhfwm6oC51i5Bu330SJBn1VJzXoMllnFw9N2vqXD5ZVKQbeiBm
-   daOzKgVz11g+nOb5K7u7K82msfizLsb/a9S0ovlA1YAG6I1VqTMjryQaW
-   FX9hT5HYTf3Z2J6IFZ8vfn0pot3zEykTWxnoaIPmANi1JypIAx/9XKCVB
-   0YqR1fRnkt4c7lVrUIeAwDFsGp+8lLWCYv5QXWdN3WpqCIaurQh+BXivD
-   PBkWbHe5MoXk3+Wlj7DBzqsMCnpNTBaC/2G2JgkvbfPmcBK62Fmfm4zR2
-   A==;
-X-CSE-ConnectionGUID: PuSxc7ATSQSj7bes/Y7qig==
-X-CSE-MsgGUID: nqjkTic4RreEFd8P1ottPw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="29844524"
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="29844524"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:44:02 -0800
-X-CSE-ConnectionGUID: hnrAqSpNTgCuZyi9LrmwRw==
-X-CSE-MsgGUID: /0tSTrmhSN2Newe66c511g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="118797792"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:44:00 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 15/15] wifi: mac80211: set WMM in ML reconfiguration
-Date: Thu,  6 Mar 2025 12:43:26 +0200
-Message-Id: <20250306124057.2b473bffdbcb.I362c3101d3f523a8db37c16cd7b5f573d76a36e6@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250306104326.4105722-1-miriam.rachel.korenblit@intel.com>
-References: <20250306104326.4105722-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1741257832; c=relaxed/simple;
+	bh=61sTIcpxdnrd5cAzz31qmm4JpGHVL+BQuYWc+ewBL0Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=faBr7sQZbGntqTRoYuG+UDoZHPh62EV3OI/QJ7Kjjm4KsJA2+0ViZK4N/KlaSoYqsmv2CVbTf6y4C9La9q1jqxOavqx1WPi1LqorY+/l9vivLH53RuzYHs7MJ3rnfgHLd+et8R+gzKYszaOAhwT/5fUiqk0gV8ZSVf5urZMsSHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=TsS6odNZ; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 1B57B1F96B;
+	Thu,  6 Mar 2025 11:43:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1741257828;
+	bh=nskpp7xo6FpLd4tlbD/YpaMXfWmCB453KZHTU3uQAM0=; h=From:To:Subject;
+	b=TsS6odNZBTXg+Cr73aZnO1/h+0iST9hQ0jgjlq0VHydLXfbuV82vxG7BTe6N9cDDm
+	 8Hwmh0zmDW8oc6LXsea7GipXU692PHnfNy3uquP4rb0HSuznK9ZSmQP5WHbkr5PEYh
+	 T3TABKJJUBa/IGDpyKyjqGyKaD3Ghsq2GP/Hvxb/IcgH/HtYwuyxpQY6znZw0z3H0i
+	 +g5DCt+IJTTcVhDgvfAjEGseMjavNgtQnsiNp0A49pbfNPDXY7I7f4nXE042Sn0ejN
+	 aAhvHbupOS1tQ3F+8wlXIi7Ji3mxZ3tZXQnVmb/0r1a30hwnyGcM60E2Sxvk+pSX8D
+	 l1eZci3LH9ohQ==
+Date: Thu, 6 Mar 2025 11:43:46 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Jeff Chen <jeff.chen_1@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	briannorris@chromium.org, johannes@sipsolutions.net,
+	francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
+	s.hauer@pengutronix.de
+Subject: Re: [PATCH v3 1/2] wifi: mwifiex: Part A of resolving the failure in
+ downloading calibration data.
+Message-ID: <20250306104346.GC19853@francesco-nb>
+References: <20250205012843.758714-1-jeff.chen_1@nxp.com>
+ <20250220061143.1417420-1-jeff.chen_1@nxp.com>
+ <20250220061143.1417420-2-jeff.chen_1@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250220061143.1417420-2-jeff.chen_1@nxp.com>
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hello Jeff,
 
-In the per-STA profiles for added links in multi-link reconfiguration
-the WMM element should be included. Fix that.
-dfjhds
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- net/mac80211/mlme.c | 1 +
- 1 file changed, 1 insertion(+)
+On Thu, Feb 20, 2025 at 02:11:42PM +0800, Jeff Chen wrote:
+> This patch corrects the command format used for downloading RF
+> calibration data to the firmware.
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 94d9d9ca42fe..bfd3653a5b84 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -10435,6 +10435,7 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
- 			return -ENOMEM;
- 
- 		data->assoc_link_id = -1;
-+		data->wmm = true;
- 
- 		uapsd_supported = true;
- 		ieee80211_ml_reconf_selectors(userspace_selectors);
--- 
-2.34.1
+Do we need any fixes tag? is this supposed to be backported to stable?
 
+Was the command format always broken? Do this format depends on the
+firmware version? We would need to explain why changing the format of
+this command here is safe.
+
+> 
+> This patch is a split from the previous submission.
+> 
+> Signed-off-by: Jeff Chen <jeff.chen_1@nxp.com>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/fw.h      |  7 +++++++
+>  drivers/net/wireless/marvell/mwifiex/sta_cmd.c | 14 +++++++++-----
+>  2 files changed, 16 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+> index 4a96281792cc..0c75a574a7ee 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/fw.h
+> +++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+> @@ -2352,6 +2352,12 @@ struct host_cmd_ds_add_station {
+>  	u8 tlv[];
+>  } __packed;
+>  
+> +struct host_cmd_ds_802_11_cfg_data {
+> +	__le16 action;
+> +	__le16 type;
+> +	__le16 data_len;
+> +} __packed;
+> +
+>  struct host_cmd_ds_command {
+>  	__le16 command;
+>  	__le16 size;
+> @@ -2431,6 +2437,7 @@ struct host_cmd_ds_command {
+>  		struct host_cmd_ds_pkt_aggr_ctrl pkt_aggr_ctrl;
+>  		struct host_cmd_ds_sta_configure sta_cfg;
+>  		struct host_cmd_ds_add_station sta_info;
+> +		struct host_cmd_ds_802_11_cfg_data cfg_data;
+>  	} params;
+>  } __packed;
+>  
+> diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+> index e2800a831c8e..6e7b2b5c7dc5 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+> @@ -1500,18 +1500,19 @@ int mwifiex_dnld_dt_cfgdata(struct mwifiex_private *priv,
+>  
+>  /* This function prepares command of set_cfg_data. */
+>  static int mwifiex_cmd_cfg_data(struct mwifiex_private *priv,
+> -				struct host_cmd_ds_command *cmd, void *data_buf)
+> +				struct host_cmd_ds_command *cmd, void *data_buf, u16 cmd_action)
+>  {
+>  	struct mwifiex_adapter *adapter = priv->adapter;
+>  	struct property *prop = data_buf;
+>  	u32 len;
+>  	u8 *data = (u8 *)cmd + S_DS_GEN;
+>  	int ret;
+> +	struct host_cmd_ds_802_11_cfg_data *pcfg_data = &cmd->params.cfg_data;
+>  
+>  	if (prop) {
+>  		len = prop->length;
+>  		ret = of_property_read_u8_array(adapter->dt_node, prop->name,
+> -						data, len);
+> +						data + sizeof(*pcfg_data), len);
+>  		if (ret)
+>  			return ret;
+>  		mwifiex_dbg(adapter, INFO,
+> @@ -1519,15 +1520,18 @@ static int mwifiex_cmd_cfg_data(struct mwifiex_private *priv,
+>  			    prop->name);
+>  	} else if (adapter->cal_data->data && adapter->cal_data->size > 0) {
+>  		len = mwifiex_parse_cal_cfg((u8 *)adapter->cal_data->data,
+> -					    adapter->cal_data->size, data);
+> +					    adapter->cal_data->size, data + sizeof(*pcfg_data));
+>  		mwifiex_dbg(adapter, INFO,
+>  			    "download cfg_data from config file\n");
+>  	} else {
+>  		return -1;
+>  	}
+>  
+> +	pcfg_data->action = cpu_to_le16(cmd_action);
+> +	pcfg_data->type = cpu_to_le16(2);
+> +	pcfg_data->data_len = cpu_to_le16(len);
+>  	cmd->command = cpu_to_le16(HostCmd_CMD_CFG_DATA);
+> -	cmd->size = cpu_to_le16(S_DS_GEN + len);
+> +	cmd->size = cpu_to_le16(S_DS_GEN + sizeof(*pcfg_data) + len);
+>  
+>  	return 0;
+>  }
+> @@ -1949,7 +1953,7 @@ int mwifiex_sta_prepare_cmd(struct mwifiex_private *priv, uint16_t cmd_no,
+>  		ret = mwifiex_cmd_get_hw_spec(priv, cmd_ptr);
+>  		break;
+>  	case HostCmd_CMD_CFG_DATA:
+> -		ret = mwifiex_cmd_cfg_data(priv, cmd_ptr, data_buf);
+> +		ret = mwifiex_cmd_cfg_data(priv, cmd_ptr, data_buf, cmd_action);
+>  		break;
+>  	case HostCmd_CMD_MAC_CONTROL:
+>  		ret = mwifiex_cmd_mac_control(priv, cmd_ptr, cmd_action,
+> -- 
+> 2.34.1
+> 
 
