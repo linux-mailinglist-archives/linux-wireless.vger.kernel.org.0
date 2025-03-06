@@ -1,103 +1,80 @@
-Return-Path: <linux-wireless+bounces-19912-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19913-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1410A54A0A
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 12:51:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 174C0A54A48
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 13:06:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58F7918888DF
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:50:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 504FA169FEF
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 12:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C6620CCF8;
-	Thu,  6 Mar 2025 11:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F57B204089;
+	Thu,  6 Mar 2025 12:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bKgHBoXj"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="vjc/xxcJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC40C20AF98
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 11:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B56201022
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 12:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741261780; cv=none; b=b7ejjCdFTe/3XU0lNL7JIVcsjx8nMiy4p1rfalUnpJX/jwzLwjgo/DgcIY8QSKnNK8BzbsXLfnmRUR1mQWPxZt1RbfP9ZZ1R8zHs45qBnhUXgqzY9UslW2PMOVXmegFIQVemL34l1h5TTZeZx9D6rE0GzdONXhd9/nVypF/x5VM=
+	t=1741262762; cv=none; b=URF9GGnoaOxxvRJeI30fA6Loqjs5rfUdESKh+JisCd6BlKthsHGFO2IfwbaUVdv6Wixp+bRLC5MoJ3Qentvoj83UYiK6yCQn+wLNNYZ2qIDrGf6gc+WGrlrgW8KJPjZWtO+tA0gXqt+XHjvDdDGuJXiMvkws2LtygkaN4BsKgMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741261780; c=relaxed/simple;
-	bh=g6BiFm89esW+8V8YJ24jsMF1JDmgXbzryMkXVjpvqIM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W2Jin2X77rpODV+o30TT727ZbHkLvj1u7oTp5UzvbCEFbhaVF2HnYchpRqN/7tTxJ/DDdkMgy46iNyn6aK+UceDveY/0inKJViM4boqj5MlrVYRA1uraWVebe0Vsm86aoe7FZmEpTXKZgcxQLg5iKu7yl4lmSRyBtZ8MkrCHEZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bKgHBoXj; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741261779; x=1772797779;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=g6BiFm89esW+8V8YJ24jsMF1JDmgXbzryMkXVjpvqIM=;
-  b=bKgHBoXjSlFnFfYyPy2sype4tXocUYiw6CXlrUjlUp60b8q7cjWteCV6
-   fqqqvvJcY+tIBbqnJWWNUG3c7PiJVzk1/+ob3pNr8ZNutV1wV4JG88z+r
-   Ix2OmcdVmUsGcd6F1wj+V62A7YBK+P8EoX+Rt/ufGVsGUcdlNTvasq+CP
-   Gf7ePvqBuPj0a2gSVO3JopKSPu4OjekBjlfJc8owisouqJbbir6uhBaNk
-   n9tuMIqyOzObixgXKGmU6Q3BpVf2bmBTIgd+BMGYQF+4rJKz+kY1sTFVJ
-   lrbpE+j6uu1EaOsQkc9X540w4jdyArxSKVsbaB4Oh3huxf1t648ROb//X
-   Q==;
-X-CSE-ConnectionGUID: 14y9wfqMTCCkIX2vsLuWTg==
-X-CSE-MsgGUID: GMR29ZgoReyOdt2BziGnoA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52474578"
-X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; 
-   d="scan'208";a="52474578"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 03:49:39 -0800
-X-CSE-ConnectionGUID: PFMGPfU8SkuXdx1SGLZMBQ==
-X-CSE-MsgGUID: S2a/eHwzQEaCmelOpnq57w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="119915597"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 03:49:37 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
+	s=arc-20240116; t=1741262762; c=relaxed/simple;
+	bh=b70l3XNMSbgL9GHJ3Cb3Q15vZeV4J/WbLfUNTy5wTZc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uRY2nufqXXldHK4EspdTx14lPfjozt/QBwRxc96i+AN6WqWnfNdRNGeOiIZppb0308npJLjh19Hs8K7zN+sXNpbhgjgcLIngWDF/DWEownzwu1mfd2iQt4WrmRWFDDKfqUXldlm8ky/ihQ3ZeEqWGV1cb7gGZfrKGsZpERLuf48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=vjc/xxcJ; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=b70l3XNMSbgL9GHJ3Cb3Q15vZeV4J/WbLfUNTy5wTZc=;
+	t=1741262760; x=1742472360; b=vjc/xxcJehQM4UN4vkngeZ2/ptkLaonvtB7hmTWrxmIqtjI
+	O2vonPElmt7pGJfdFPVaBsqpkCFw+vuI42rbvpI3Kx5PTacQwTkrfXW7tpuhEBD8lCpQPWozq/rNk
+	Is51dYodl0Oqh7Im5v98RUNequENfbhr50i72QiGtjgBNPskTBR8D3JKl5Tu9IG9JT0rOo6dMwCy4
+	v15TOr+wvm2/j1GuIh0rppSHG4Tof9LUSiBQdJNG/9IwZ28s8eCOuZ+Et026BTM2xPW8QRhA/Mlze
+	fKlLPAG72EcZKHbjtxqn41h07cGozECVjfuu6+vJ6sva4r5WfUDmiK6Jh/lR8ZwQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tq9zA-00000002pU2-3NGI;
+	Thu, 06 Mar 2025 13:05:56 +0100
+Message-ID: <dafd4da6ddcdbbde8a0effb9d51443bed57ad5be.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v4] wifi: mac80211: correct RX stats
+ packet increment for multi-link
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Sarika Sharma <quic_sarishar@quicinc.com>
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH wireless-next 19/19] wifi: iwlwifi: re-add IWL_AMSDU_8K case
-Date: Thu,  6 Mar 2025 13:48:55 +0200
-Message-Id: <20250306134559.fd4ec088400a.Ifbf89e7b7391cd7070267b7360c53230b3b2c57c@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250306114855.4170261-1-miriam.rachel.korenblit@intel.com>
-References: <20250306114855.4170261-1-miriam.rachel.korenblit@intel.com>
+Date: Thu, 06 Mar 2025 13:05:56 +0100
+In-Reply-To: <20250306062459.4089284-1-quic_sarishar@quicinc.com>
+References: <20250306062459.4089284-1-quic_sarishar@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-This case in iwl_trans_get_rb_size_order was accidently combined with
-the IWL_AMSDU_12K case. Fix this.
+On Thu, 2025-03-06 at 11:54 +0530, Sarika Sharma wrote:
+> Currently, RX stats packets are incremented for deflink member for
+> non-ML and multi-link(ML) station case. However, for ML station,
+> packets should be incremented based on the specific link.
 
-Fixes: 7391b2a4f7db ("wifi: iwlwifi: rework firmware error handling")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 1 +
- 1 file changed, 1 insertion(+)
+Should, I agree, but then they currently get lost entirely, no?
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 25fb4c50e38b..b9dc1b8794ce 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -328,6 +328,7 @@ iwl_trans_get_rb_size_order(enum iwl_amsdu_size rb_size)
- 	case IWL_AMSDU_4K:
- 		return get_order(4 * 1024);
- 	case IWL_AMSDU_8K:
-+		return get_order(8 * 1024);
- 	case IWL_AMSDU_12K:
- 		return get_order(16 * 1024);
- 	default:
--- 
-2.34.1
+So shouldn't this be part of the per-link statistics series?
+
+johannes
 
 
