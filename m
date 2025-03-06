@@ -1,115 +1,101 @@
-Return-Path: <linux-wireless+bounces-19867-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19868-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90526A547BD
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:26:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 647EAA547F7
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:38:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92DF16DFEC
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C70D916EC7C
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CDA1FFC70;
-	Thu,  6 Mar 2025 10:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFF32080D4;
+	Thu,  6 Mar 2025 10:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T0yYTMRB"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Rvc93h64"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AB620408A
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 10:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB1A201034;
+	Thu,  6 Mar 2025 10:37:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741256765; cv=none; b=LIVISZkdi4nmrD9UtsuluOPo+Q2UogNtVUF6MH6um29RrcU1vtnsXUD+XjHv1J+3Ho9u/z4EirY/oErojRbv1vJfcQrcqMr/UlOzZkvqyxF1pD9kuOKCOYzyGFJtb6EstKNq0E/Z5AKIo6Csx4PrkRUXmziRgkUyy19Vahuyuys=
+	t=1741257481; cv=none; b=A6YUJ9PlhS7/4i8A8ZEYLF0qCaD6R18Aoe1Bm6nUF3TaW8i1CNatkFuA3OXgffbMwT7tBiIHh1ivoaPKEat6m7/7lob8/L4/enjBjZUywBO0zkQZmNd9x1L9bkRcKw44RYO4YnkLmUTUfd7ZznPiyQw5Nq1OLbhwpDQJVNspawQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741256765; c=relaxed/simple;
-	bh=zZeOYL228Ua4pyQqLgM2r/C/r3cEF3n9jCXAxuXQesA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jLlvTHdbxDCXzcHVpjEdMQ6C5DVu1D5YmLj9pHO14XpkJoS9Cx1drIVJiWJJ+lR4TjjwMghfq+m2JMnzBsZL5K3zQ4pS8HilJH7iC1/cTNsIE31Oz1dof2hKP9YMq3CN3DRNLKvMpsOT4zb38fig72RpB/h+K/jDwzQqRJPTHHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T0yYTMRB; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741256764; x=1772792764;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=zZeOYL228Ua4pyQqLgM2r/C/r3cEF3n9jCXAxuXQesA=;
-  b=T0yYTMRBP/XFV8yMHO5nAKvXk92gdjwuVbWgngHCSlbiAneCMUnavS6G
-   xM7y20ASj+1EBZIostC1wLQcth/2gWryPWSAumvoHqDsx3Ttt/F/1gBqK
-   nQy29N1YSohr61tOUfW3fQCWQQ269PzN+sLtEarxzkRgMSZeNReiyiKpg
-   0u/L1IEPf3HlXLB8oinCbXY5dhNx9x6BUjAE2RLx0EY6b6omqZxw5BFq2
-   a+0WyRypH9VrfqCidcmVFfDI9FJFNq3Kx2Bgs3qiIVhCLVE3B1qBmpf0S
-   2R75Uv6df+bR2DFaY+URTgjqKhR9gcxYeGp4uSl/D7rlup3WAisR93oSS
-   g==;
-X-CSE-ConnectionGUID: BLU0f/khRN2MISB4t8q5Jg==
-X-CSE-MsgGUID: p02dT5SDTia4jtp8eXWNdQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41433446"
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="41433446"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:26:04 -0800
-X-CSE-ConnectionGUID: gSM5WS3zQumBuq9Jg93Peg==
-X-CSE-MsgGUID: IYiuHx/MQa6JxnAUL+T/tw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="142209572"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:26:03 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless 3/3] wifi: iwlwifi: trans: cancel restart work on op mode leave
-Date: Thu,  6 Mar 2025 12:25:48 +0200
-Message-Id: <20250306122425.801301ba1b8b.I6f6143f550b6335b699920c5d4b2b78449607a96@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250306102548.4056118-1-miriam.rachel.korenblit@intel.com>
-References: <20250306102548.4056118-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1741257481; c=relaxed/simple;
+	bh=NA/C/lQQJ7iC/V1D5CSud13PQVeHlXko0a0LHmZiKSM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VNWhMKhPsM7e/rhm0nLhiZwxp9UtDNfU0PJ6UbyyRmBk/bPm2cVvPo9Oz+y4YMgzbbeers7FUqaIJWwUjr5ONtoloRlhcEUxV8pcrTi6C1+R/7JasNp5Nb1utE7/twsfbL+3YZaE6qVcyN+V1xd6MltJHlALBLI7itn/EVOCnlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Rvc93h64; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 379E61F96B;
+	Thu,  6 Mar 2025 11:37:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1741257476;
+	bh=huaQNZUNLgBibcGAgOaoxe/NMXk/qcXn/Hj7HWtKGS8=; h=From:To:Subject;
+	b=Rvc93h64us6VwiXxhDBjO1m+aq7C+7yP5RrdvrIZcavhVkM0KgHGEDnGcbcLpuU6N
+	 VzMjGqsQSHBW4FXQOUHEoHxgdQ32XgJajInJ8lW489Nj5hZNmOHFX/0EC/S7JT8L3F
+	 g8GI706KyFHEwIz3Csz6kfcO4S0E2uZ28kZV5dD3gKbRNqgidIjfskocn4GtbtISEg
+	 +n/KJTE2VPjnID+Pf3R0u9tbtfpohoFTUnLJ7ciTFs4n+8Ih0024zcdst+uJ6qy7wp
+	 SUsCkEFxXEiQvRBcTI3qPgKh+EBcloVQGthU0dA1Q/wQFg9RDfOQ0HBp2r+0YnyuVx
+	 mlvNP4qKSucVQ==
+Date: Thu, 6 Mar 2025 11:37:54 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Jeff Chen <jeff.chen_1@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	briannorris@chromium.org, kvalo@kernel.org, francesco@dolcini.it,
+	tsung-hsien.hsieh@nxp.com, s.hauer@pengutronix.de
+Subject: Re: [PATCH v2 2/2] wifi: mwifiex: Fix HT40 bandwidth issue.
+Message-ID: <20250306103754.GB19853@francesco-nb>
+References: <20250205012843.758714-1-jeff.chen_1@nxp.com>
+ <20250205012843.758714-2-jeff.chen_1@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250205012843.758714-2-jeff.chen_1@nxp.com>
 
-If the restart work happens to run after the opmode left
-(i.e. called iwl_trans_op_mode_leave), then the opmode memory (including
-its mutex) is likely to be freed already, and trans->opmode is NULL.
+Hello Jeff,
 
-Although the hw is stopped in that stage, which means that this restart
-got aborted (i.e. STATUS_RESET_PENDING will be cleared),
-it still can access trans->opmode (NULL pointer dereference)
-or the opmodes memory (which is freed).
+On Wed, Feb 05, 2025 at 09:28:43AM +0800, Jeff Chen wrote:
+> This patch addresses an issue where, despite the AP supporting 40MHz
+> bandwidth, the connection was limited to 20MHz. Without this fix,
+> even if the access point supports 40MHz, the bandwidth after
+> connection remains at 20MHz. This issue is not a regression.
 
-Fix this by canceling the restart wk in iwl_trans_op_mode_leave.
-Also make sure that the restart wk is really aborted.
+As you know this patch came after us (Toradex) reported some issue
+connecting to 2.4GHz network using IW416.
 
-Fixes: 7391b2a4f7db ("wifi: iwlwifi: rework firmware error handling")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c | 2 ++
- 1 file changed, 2 insertions(+)
+However according to this commit message this actual fix is not related
+to the issue in which it was not possible to connect at all, but it's
+just an improvement. Can you confirm this?
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index 49c8507d1a6b..47854a36413e 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -403,6 +403,8 @@ void iwl_trans_op_mode_leave(struct iwl_trans *trans)
- 
- 	iwl_trans_pcie_op_mode_leave(trans);
- 
-+	cancel_work_sync(&trans->restart.wk);
-+
- 	trans->op_mode = NULL;
- 
- 	trans->state = IWL_TRANS_NO_FW;
--- 
-2.34.1
+Can you please also answer the last comment I had in the previous version of
+this patch, see https://lore.kernel.org/all/Z44vj59nWIiswq7s@gaggiata.pivistrello.it/
+?
+
+Reported here again for you convenience:
+
+  setting `radio_type |= (CHAN_BW_40MHZ << 2)` seems the only real change on this
+  patch, correct? Anything else is cosmetic, correct?
+  
+  would doing just this change be equivalent, right?
+  
+  	SET_SECONDARYCHAN(chan_list->chan_scan_param[0].
+  			  radio_type | (CHAN_BW_40MHZ << 2),
+  			  (bss_desc->bcn_ht_oper->ht_param &
+  			  IEEE80211_HT_PARAM_CHA_SEC_OFFSET));
+
+
+Thanks,
+Francesco
 
 
