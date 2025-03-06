@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-19896-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19897-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20F8A549F6
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 12:50:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2A4A549F0
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 12:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA995188BD69
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:49:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13C267A5238
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0329C20AF7D;
-	Thu,  6 Mar 2025 11:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E23420AF8D;
+	Thu,  6 Mar 2025 11:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a04chZsu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kD+luDmr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E1B20AF8D
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 11:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5686204590
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 11:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741261754; cv=none; b=uTmRMQF+GuD9ej6BbpOzZEDXfbNn9DtQUqy99e0D75qoNOgujqId5jngoE6sn6LrYPI2fGzMHcrFTj5HtMJaizcbdiz9iOZKBG7sGXrCfFwjjlTrEG3Jy1HABQJFWqN9XjEmOqt2UXXu1yXFcDokbxuRp0qyF3weh3IYB4eAUTk=
+	t=1741261756; cv=none; b=c4s1Qa+5zxgIe6CgPRaSISRLN4BarIlIDVcd75BC3mI7FpR7z/O3eKnnrRfs2HIl6ddbsArg60qVPsuke4tS07YdDEWtXY4lRXmF4L1xnKpsJfy5TTcAb4/6E2cYf6baj7uRMa4Fv7aw1RGAX+g3Og+nIHIc1CLHZN87xeE+vfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741261754; c=relaxed/simple;
-	bh=fJEr3aww8jhIlGGUZnSWrFYY4mHTE0hyHSsWOgAwZRg=;
+	s=arc-20240116; t=1741261756; c=relaxed/simple;
+	bh=jOSPCYdHjY3mmUmNQsjMfcaCD0ekcqINe9k3tizI2lk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sGoGSrJF97GIEqQJGXyfaRUqtPl1nyZ3abTQ20CAwnpY8jnyAz4PfsfNGIrtxwSFIvUdw0rsyd/KYfN24yfNwXtWzcV8gtaZzmVGETK7XV8btho6kAuDkDuLAcmKfmN5fv3FfkOcEWZ+3m2ascEHbvZ3uV7qV62N6Xf5NprygCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a04chZsu; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=nww6GYYlKrtXEusXA0+ShAPD+vD2k9/eRwb0uBu//DxcHDO5ipwtcFCg5KUNy6Ub85LU9yrJGcZBmEYClxb9vIqGPp7OtDrloZ3DmPU3yfEQ/b7ZkX1e/y91cDYQd+s+muoMcteyWfsHV9X9UpvPdjLkfja50PCKcYdbm0INUx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kD+luDmr; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741261753; x=1772797753;
+  t=1741261755; x=1772797755;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=fJEr3aww8jhIlGGUZnSWrFYY4mHTE0hyHSsWOgAwZRg=;
-  b=a04chZsuYCqiENQtz7sr0lVibRrp009+RrgrJ5o9P7mUa27Ci7iF9B9b
-   Ou6WNf0jOF2+3WYAajJ2xq+jtOTNTpBAkhZ1WW4m6EKZuqW1ozg9KvMLD
-   /xe1VWnZGUoGm6zp9T6wwCB5rgwkGqFnhRI8NRfKCBM2JcmjrEUDjCIyJ
-   478sXlFP/Wcf86M9fj4sS03nZdMMrpQ3GQ+TiIWC8YxWdQ57EhTsgT5Pw
-   +ylC0o1EE7cjNVkAt9qrf78LVYPOMQ5toZElE83gelFgwdTuIjUhx3JL+
-   rQSquOU3YijVgqbV2NGOBgxIcr6/FQ1N7sqQI3ubEsJ5BU+Fp/bmhZ6tR
-   g==;
-X-CSE-ConnectionGUID: 0rOQKa6qTkS6OIlGKFOeVw==
-X-CSE-MsgGUID: ddNhCtp9StODWmtOs0shdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52474513"
+  bh=jOSPCYdHjY3mmUmNQsjMfcaCD0ekcqINe9k3tizI2lk=;
+  b=kD+luDmrDLqdrn+HsfabT4aL3ZT5C0nQyyf4QFMMcuPnwxLp4z4ofz4a
+   Dd0JsaqRdmXqLBqQQwsNxi/NdnkQZAIHgxdAJx+C7e/ZBxuv5JCa2Ona4
+   sGYJwJNp4y0F+dOp41lQcvlH446QeB7WYCYDU4OiUW3M6hE6VvN+nbIXK
+   mmryr6f99H3XXAaezKzI2jk+Q7vLAnzeLqV/Be/4QjEXLhSglZW1avc3f
+   qnOo5hRW+yKej+nptkWtpxTRnWI8o8Uqeq1ukPAQ+VcwYDFcaTNgpgjKI
+   NK0e6+tEzu7PJV7Z0TwDlaTSeG7YpYz5zYAMvUrbiym0MFyVI6wjuLwpy
+   Q==;
+X-CSE-ConnectionGUID: ux40NAogSw6NFCQQqCvTtg==
+X-CSE-MsgGUID: DgwRDWY/SbKrv8D16ZChfQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52474517"
 X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; 
-   d="scan'208";a="52474513"
+   d="scan'208";a="52474517"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 03:49:13 -0800
-X-CSE-ConnectionGUID: 50fm+7zhSNOXqU4LxVkQDQ==
-X-CSE-MsgGUID: TEbJRFZ+R22MNbatk+mN1Q==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 03:49:15 -0800
+X-CSE-ConnectionGUID: hB6r4LO6RHaYjic/ZO8eYA==
+X-CSE-MsgGUID: RZoTj7XQRGWpWZ4gP3v1rQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="119915530"
+   d="scan'208";a="119915534"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 03:49:11 -0800
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 03:49:12 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH wireless-next 03/19] wifi: iwlwifi: fix the ECKV UEFI variable name
-Date: Thu,  6 Mar 2025 13:48:39 +0200
-Message-Id: <20250306134558.f1ca48767a2a.I2bc9d72c1dc2c4d7028f0265634a940c2fadbbb5@changeid>
+Subject: [PATCH wireless-next 04/19] wifi: iwlwifi: fix print for ECKV
+Date: Thu,  6 Mar 2025 13:48:40 +0200
+Message-Id: <20250306134558.f713ab5f35b9.I318fed724709f9ee7a0c369e1cf5e1038ddd546a@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250306114855.4170261-1-miriam.rachel.korenblit@intel.com>
 References: <20250306114855.4170261-1-miriam.rachel.korenblit@intel.com>
@@ -79,62 +79,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-This UEFI variable name was badly named. Fix its name and also use the
-right GUID to find it: we need to use the BT_WIFI (a.k.a. Common) GUID.
+The print was obviously wrong. We are handling ECKV and not WRDD in this
+function.
 
 Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 8 +++++---
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h | 4 ++--
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-index 78bd0eb7aa92..b4438b1f8dad 100644
+index b4438b1f8dad..386aadbce2a2 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright(c) 2021-2024 Intel Corporation
-+ * Copyright(c) 2021-2025 Intel Corporation
-  */
+@@ -690,7 +690,7 @@ int iwl_uefi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
  
- #include "iwl-drv.h"
-@@ -681,8 +681,10 @@ int iwl_uefi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
- 	struct uefi_cnv_var_eckv *data;
- 	int ret = 0;
- 
--	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_ECKV_NAME,
--					      "ECKV", sizeof(*data), NULL);
-+	data = iwl_uefi_get_verified_variable_guid(fwrt->trans,
-+						   &IWL_EFI_WIFI_BT_GUID,
-+						   IWL_UEFI_ECKV_NAME,
-+						   "ECKV", sizeof(*data), NULL);
- 	if (IS_ERR(data))
- 		return -EINVAL;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-index 0c8943a8bd01..eb3c05417da3 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright(c) 2021-2024 Intel Corporation
-+ * Copyright(c) 2021-2025 Intel Corporation
-  */
- #ifndef __iwl_fw_uefi__
- #define __iwl_fw_uefi__
-@@ -19,7 +19,7 @@
- #define IWL_UEFI_WTAS_NAME		L"UefiCnvWlanWTAS"
- #define IWL_UEFI_SPLC_NAME		L"UefiCnvWlanSPLC"
- #define IWL_UEFI_WRDD_NAME		L"UefiCnvWlanWRDD"
--#define IWL_UEFI_ECKV_NAME		L"UefiCnvWlanECKV"
-+#define IWL_UEFI_ECKV_NAME		L"UefiCnvCommonECKV"
- #define IWL_UEFI_DSM_NAME		L"UefiCnvWlanGeneralCfg"
- #define IWL_UEFI_WBEM_NAME		L"UefiCnvWlanWBEM"
- #define IWL_UEFI_PUNCTURING_NAME	L"UefiCnvWlanPuncturing"
+ 	if (data->revision != IWL_UEFI_ECKV_REVISION) {
+ 		ret = -EINVAL;
+-		IWL_DEBUG_RADIO(fwrt, "Unsupported UEFI WRDD revision:%d\n",
++		IWL_DEBUG_RADIO(fwrt, "Unsupported UEFI ECKV revision:%d\n",
+ 				data->revision);
+ 		goto out;
+ 	}
 -- 
 2.34.1
 
