@@ -1,117 +1,156 @@
-Return-Path: <linux-wireless+bounces-19860-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19861-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7528CA54793
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:19:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7540EA5479A
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:22:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A490171BAB
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:19:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EC51171703
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3AC202F9A;
-	Thu,  6 Mar 2025 10:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C16F1F63E1;
+	Thu,  6 Mar 2025 10:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VSpK8AoT"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JgoCirfN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AACA1EA7C5
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 10:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FD917B50B
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 10:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741256333; cv=none; b=ewAjDyxtVhuuFaGIzUr/NKJYNY+yoHA6p2MG2xtHfMiZoR1/el3HVR7RdaDuQqo4M9qWOu7DhgNfRbAS6N6wR+alZJQKTR7q2XeXUQGg948KZdhRW/WnkOk9nsLBBwY06Jp1IL8DO6kGE9Ckan0qJWvSVmY4utGdBeG4EW3VAM0=
+	t=1741256553; cv=none; b=Ii6NJO4HPCCqI9EiHcOPfH73v4NhUV3WzKCqS1uoVDy6gO7+v6hPw2me0BSCzzTuS5+n5fFT3wLGUPxjekIw40tr4RcA65J6vs34uijjo75BXKUO4LDHsgkS9z9We6hoFNE7XZ2NcThFGAlQkJLPeCrhrpFkR3xHeGsaHed6Ufk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741256333; c=relaxed/simple;
-	bh=ZYNfFyPn/uv9iaTmv1j53v2cCqjuDgD8vvhKJucMvTA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Zl+DCthYE9X1L3m//S0ah+yv5cfO5aLwJO/oiSE3jfsXfAt41lCHP4LXfHvHh/0l5eYht1jafGeg5duI5mx79YfwEoXYHUWyAKIE065wfuw4DQ2EQxMKStPoujQmnCayzD/jozQZnVfFufGwSx7fKcGAEGlLREgPPLw2vrQJGQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VSpK8AoT; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741256333; x=1772792333;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ZYNfFyPn/uv9iaTmv1j53v2cCqjuDgD8vvhKJucMvTA=;
-  b=VSpK8AoTlJ/uQiSVOXG/6/wWG9JfyapTPYJLrtlFAsoFUjNj73bqwq8w
-   qGDIKtYX60wuLUVEHWXH9I6xQM/1iK68vcnFpYiUed+Hi1LRjClqWO3Z4
-   2BvUsrS5aDv1CnFsPsAGmUHIfxJ8tBJTq+UgIdtIEdjR0n8ggsGMJsXMY
-   TSBhnN9Pd3KkRoaOoUjfEMjR0Fc0gEv9o7hGGxvz4EBPULNCbEn+0Hjhw
-   wYkkNZAIEj9PVCP1WHfQ5rjyPuOpP3/uz2RBo+Zlos5fCIQR5MMTNwmf1
-   kgqHF2QHy5OzO+OMCQ2XiW4jVr8Io7gI4tJNcGYA+zXFqhBwzzTEsCh09
-   w==;
-X-CSE-ConnectionGUID: P9nVbAmUScOMMMkRyAML0Q==
-X-CSE-MsgGUID: qk2Ygc80SUuJ5cJLFdOoDw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="46181384"
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="46181384"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:18:53 -0800
-X-CSE-ConnectionGUID: k5/LcENdRhGL1MLbBfMp0w==
-X-CSE-MsgGUID: b7wCvAsETNqMJlFvZxSDNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="118705731"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:18:51 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
+	s=arc-20240116; t=1741256553; c=relaxed/simple;
+	bh=X00IzEQ28QslI46KOYgLneN7bZprjgsDm5tTP3XlBVE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oC4rKhew3GCUmlrgKcEKDtkD5zvXdZT2qcIXhO29K0hs4YtqtSKvoC4TFmwZfPuvTElFrEMq4WzJP5Wf3egODJ3OdNMHYzCkpS5nq7UonikNwEdeurClICEODcrvLc4i5fTvGoREYTqldiPrQsP/XoPW5pVtPxH+DIObMh/C2pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JgoCirfN; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5268stWe027093
+	for <linux-wireless@vger.kernel.org>; Thu, 6 Mar 2025 10:22:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=mjXUleZqTEfN/C/LZajGZsmaBHaz6JmQbcU
+	3tNgRJJA=; b=JgoCirfNa3uM0clILZaZI1sU6yr8pf0wqVIC6+qZcm3uxd/LD40
+	T82JWT8DWaAjtbB4re2fWoq4iLtyxjmmlickcOjw3SbW7C1NV+MMLlyEM+9WPXfZ
+	Nz6M9ntUSXoNx6RxqgKjPE0ETxlxKerMYPArtnltElfaIXqrGNvqXCTj3x5WN1e3
+	+et6d4vPfjTwmc0vL/U21dX7nYSTJtDf8VVzMW6CDU4AyBaKtnhGVllfM5jJoUw2
+	nsiMuYhzmW+NtyOOSVBaaHo18TmlAAvSKL1FkbX0csQPEG/FabX8gTY0xtJaHOAX
+	iChRaTvmf+mLGiZejN/LEVNXoCsPXMVaylA==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 455p6trm07-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 06 Mar 2025 10:22:29 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-22379c2e96aso17043575ad.1
+        for <linux-wireless@vger.kernel.org>; Thu, 06 Mar 2025 02:22:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741256548; x=1741861348;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mjXUleZqTEfN/C/LZajGZsmaBHaz6JmQbcU3tNgRJJA=;
+        b=DPF3O8edfTx46KJF10oztwiIAQwXmVhbDnRaViZ0zSnWJ9nzqiLH/5PzYZZCgbamMl
+         haDcCAfHOZ9xG9D02UzRCWietZdV01ki85CYOWYw/X+ciVf7Pxuql07C1viFqt/z7lgs
+         6E8qCpx+PgxyOOwbBttEbh9/0chNJF9swHwsunPEDDnSuJOk5jWfAx7TX+5KlEuKzplt
+         Ww+5uovd46aFc5xw3nUJmJG4ISYlt8pX6e7EFo77Af0A5sSks9V6+fc5C19vr3fdAgYW
+         3quhA5lJW9E8EDSWR1M7R7jpBsw1vGBR75SRRNKNECnA6D5qdD4mCDkwONtfQ17jhUUp
+         i7yA==
+X-Gm-Message-State: AOJu0Yx3P1Y/bzv4jWG2LjoXdsIEdWy89YnabIcsEBPRMU2+ahbiVv98
+	ZAvZv8Syu6t/oOv9slClYxAIttv6fsmPfKQvtsIHFJraLJWO0xwPYluPr7GiDclyqxaMvIg4ewB
+	1opQFwB3jpZX8UZN9Fc72s5lgqzc0Ym3RW0qWOhdUJWBzF1ZezFCZQe4DAKEU0OcwSQ==
+X-Gm-Gg: ASbGncsLShQw3HNPmUFncZMABwRUo0mcVIiJMLePCwnTxcF3pvkPmu4lJnPzNpw9TKa
+	LKlOcjK98vTIIeiS+ZN3gmc1AnpY7NUD7KZvBJp7SF9FP2UcYRCv6qw+qqltLRHihL5iPPqzEJd
+	+EIYO8eaBuPArN1FpU7DO9Dzm5kC8+A+3IwLoor6hCVqLQgTr8CrWGUBZu7PggKf265eTw8jEpw
+	Se9b4o+L5IMf3Vp+JgQtJvRTtKX+jnggiY/HFBA7CKjcqWUPU8rTi8fndWEUumWf8SAYdgTCvhf
+	Q6NHVK5huvjp5/0695MiEZ+eFtS3ySJeMeIIjY04+PbzUNJDrSAbIBKEfJqymqr8gh8XVAAfPmi
+	qIIs7i/8wAXWZ/02NGfwBARiGaxlt1uRUIGzN1dJFRdGP
+X-Received: by 2002:a17:902:d511:b0:223:fd7f:2752 with SMTP id d9443c01a7336-223fd7f2b74mr77536135ad.29.1741256548688;
+        Thu, 06 Mar 2025 02:22:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE4kzypG6Kp3TpQntY2VNnfIigwepdapNs5G/uuxifg0RFmeMQa9GArBvqIenvxk+GgKCmouw==
+X-Received: by 2002:a17:902:d511:b0:223:fd7f:2752 with SMTP id d9443c01a7336-223fd7f2b74mr77535655ad.29.1741256548261;
+        Thu, 06 Mar 2025 02:22:28 -0800 (PST)
+Received: from hu-ramess-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-224109ddfa6sm8814785ad.33.2025.03.06.02.22.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 02:22:27 -0800 (PST)
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5/5] wifi: cfg80211: cancel wiphy_work before freeing wiphy
-Date: Thu,  6 Mar 2025 12:18:31 +0200
-Message-Id: <20250306121409.efd1d19f6e07.I48229f96f4067ef73f5b87302335e2fd750136c9@changeid>
+        Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Subject: [PATCH ath-next v3 0/2] wifi: ath12k: add support for get_txpower mac ops
+Date: Thu,  6 Mar 2025 15:52:13 +0530
+Message-Id: <20250306102215.1300522-1-rameshkumar.sundaram@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250306101831.4042303-1-miriam.rachel.korenblit@intel.com>
-References: <20250306101831.4042303-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=HZbuTjE8 c=1 sm=1 tr=0 ts=67c97766 cx=c_pps a=cmESyDAEBpBGqyK7t0alAg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17 a=Vs1iUdzkB0EA:10 a=PGcRVBYcp0WH4tafFE8A:9 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-GUID: GZhR3x90w7mUykAJjb7KlZifW_lrQ-is
+X-Proofpoint-ORIG-GUID: GZhR3x90w7mUykAJjb7KlZifW_lrQ-is
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-06_05,2025-03-06_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 mlxscore=0 spamscore=0 clxscore=1015 phishscore=0 bulkscore=0
+ priorityscore=1501 impostorscore=0 suspectscore=0 malwarescore=0
+ mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503060077
 
-A wiphy_work can be queued from the moment the wiphy is allocated and
-initialized (i.e. wiphy_new_nm). When a wiphy_work is queued, the
-rdev::wiphy_work is getting queued.
+Currently, driver does not support get_txpower mac ops because of which
+cfg80211 returns vif->bss_conf.txpower to user space. bss_conf.txpower
+gets its value from ieee80211_channel->max_reg_power. However, the final
+txpower is dependent on few other parameters apart from max regulatory
+supported power. It is the firmware which knows about all these parameters
+and considers the minimum for each packet transmission.
 
-If wiphy_free is called before the rdev::wiphy_work had a chance to run,
-the wiphy memory will be freed, and then when it eventally gets to run
-it'll use invalid memory.
+Firmware reports the final TX power in firmware pdev stats which falls
+under fw_stats. But currently, fw_stats is under debugfs.
 
-Fix this by canceling the work before freeing the wiphy.
+Add support for get_txpower mac ops to get the TX power from firmware
+leveraging fw_stats and return it accordingly.
 
-Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Also, move fw_stats out of debugfs so that get_txpower mac ops can
+function properly even when debugfs is disabled.
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 12b780de8779..828e29872633 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1191,6 +1191,13 @@ void cfg80211_dev_free(struct cfg80211_registered_device *rdev)
- {
- 	struct cfg80211_internal_bss *scan, *tmp;
- 	struct cfg80211_beacon_registration *reg, *treg;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
-+	WARN_ON(!list_empty(&rdev->wiphy_work_list));
-+	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
-+	cancel_work_sync(&rdev->wiphy_work);
-+
- 	rfkill_destroy(rdev->wiphy.rfkill);
- 	list_for_each_entry_safe(reg, treg, &rdev->beacon_registrations, list) {
- 		list_del(&reg->list);
+v3:
+ - Rebased on ToT, added tree tag
+v2:
+ - In PACTH 1/2
+   * added sanity check for stats pointer in
+   ath12k_wmi_tlv_fw_stats_data_parse()
+   * Moved ath12k_debugfs_fw_stats_reset to core.c
+   * Removed ath12k_debugfs_fw_stats_request() and reused
+     ath12k_mac_get_fw_stats() of mac.h as both are serving
+     same purpose
+ - In PATCH 2/2
+   * Modified ATH12K_PDEV_TX_POWER_INVALID to hold u32 max
+   * Saved power in dbm units in ar->chan_tx_pwr
+
+Aditya Kumar Singh (2):
+  wifi: ath12k: move firmware stats out of debugfs
+  wifi: ath12k: add get_txpower mac ops
+
+ drivers/net/wireless/ath/ath12k/core.c    |  53 ++++++
+ drivers/net/wireless/ath/ath12k/core.h    |   5 +
+ drivers/net/wireless/ath/ath12k/debugfs.c | 112 +------------
+ drivers/net/wireless/ath/ath12k/debugfs.h |   5 -
+ drivers/net/wireless/ath/ath12k/mac.c     | 188 +++++++++++++++++-----
+ drivers/net/wireless/ath/ath12k/mac.h     |   4 +
+ drivers/net/wireless/ath/ath12k/wmi.c     |  99 +++++++++---
+ 7 files changed, 294 insertions(+), 172 deletions(-)
+
+
+base-commit: 3148fc3cf193dbbd2e14eee59468a510a38bf604
 -- 
 2.34.1
 
