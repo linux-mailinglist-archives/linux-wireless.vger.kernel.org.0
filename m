@@ -1,73 +1,69 @@
-Return-Path: <linux-wireless+bounces-19874-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19875-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF24A547FF
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:39:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBCBAA5482A
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:43:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D541168875
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:39:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EECC16AFA0
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419A22045B6;
-	Thu,  6 Mar 2025 10:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06B72040BE;
+	Thu,  6 Mar 2025 10:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F465/mg8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bhJPzEZH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A0E209F4E
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 10:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6311FCCFA
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 10:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741257501; cv=none; b=BJNVb0LrIYM1juy94pFl1j044G4emhExX6/q1xGwhOfEkRK5L63NIZxnJVsP06VSz0AqFsHiSOHATFsdDB3jvxj1iwk9SkJxJwF4i6N4suLuap1eCJPol2O6nY9AIFZD+BvCrp02b8qbYY+MBXQ9O/YgenRjhy8FXlYx+dyq/3M=
+	t=1741257819; cv=none; b=JWYfY9RgaWjo5vQN9ob3NLyOTRlQ56tNwevpY8G1YhJLDp5owjnQvK25vaGoryAaN9GX/91srIhBWuvtj5OpUhZ2MWdMKRtgPp1uZzGjCLe9lb0e/EDJvKFfgZCl3WK1tzrMNIeL4FQ6ADNKgcPGhR/PHTgfAAv/Po9zVZfmVmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741257501; c=relaxed/simple;
-	bh=ZYNfFyPn/uv9iaTmv1j53v2cCqjuDgD8vvhKJucMvTA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oRP5VPc4qMVTRFUPPryqMKC8zt+NlcSTFpEImg6TTB4KX1HwS6am07gWM4HrufT3zMnXgymDqlt/Tc/wvFol4BhWfSgOUFtxMNeerq1DdXwa3XBZw/Ek9xmcL203MRMNX2xGHPPFAkJj7eHPwHVvwa+ye619KhQPi0C/D0SbhPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F465/mg8; arc=none smtp.client-ip=198.175.65.15
+	s=arc-20240116; t=1741257819; c=relaxed/simple;
+	bh=zFMCxF9FGKVXDgct+HlrPb5Gz9sXOilfo2LBrDi7Cpw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CDiN4A64XsBr9X8TyPRCBrjGCr8QaJycRypcHgS5/y8nCMXM8ctIYgoR5swHCkzZDV5Tt+09FC/wSG/sZhG67FqneDmMhqm+E+W2ajvNKRsQX3Tkwn4nrBbXuRV++qen8u1N1QsIDvgwRhOrUvhRfCTli4oFRlTj65xp5KPUKVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bhJPzEZH; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741257500; x=1772793500;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ZYNfFyPn/uv9iaTmv1j53v2cCqjuDgD8vvhKJucMvTA=;
-  b=F465/mg86x3u17FIOeDre2uuFORpJoPH2VVmmxSvsWBkuxc+5QKqmd+4
-   Ot4ewvTPru5M/R76BRZRuAee2ks7qkJmXE9YjkVrKZeIqk6iE3VE4EbBI
-   UvJKQ1Wylu7V0sXUzqlWAwIp3w9+gs8Mm838zTfr1nSModL0OnFt0UIW1
-   j3YWyS6/U7vzpxmpJXqW7+ftSmBkm/dWZ8rOx5qbQUKq37KSQV9ITWfze
-   hxP+wasnfVhrrWqmdKsCmtJWU0q+09MI2h7xVluJoewwf1aD1o+eg9inJ
-   4IeCRsuJ0TGi8Jj3LWKkgm+T2OLaIm+aiYbR3rZge+JpZFDaSCujszJf8
-   Q==;
-X-CSE-ConnectionGUID: kDrLiVQXQBKnoQjyYyGyPw==
-X-CSE-MsgGUID: uZ8nVQmqQ/KCwS5TOogaPQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="45915034"
+  t=1741257819; x=1772793819;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zFMCxF9FGKVXDgct+HlrPb5Gz9sXOilfo2LBrDi7Cpw=;
+  b=bhJPzEZHskvnqBWggjYDKfkb0NruNkRoMq9zl+X52fc3PpmtnbcaN04Q
+   cZDJX1YJG6qPuZYNaZ0FidM+HL7FmbNiHl1PN20YO7txnSZxyOxDmTFvm
+   PAHo3/Ub2OZnju0vbnfkRHSfdGB3E446iWlPcckBjd0M6uh3H7dnjOI4E
+   ivdiIlXtYFRyeOkKOF0qS3RzXHZL3nmS2EY9eoZffVgm91HWgaRb7/oDa
+   L81QIuwIxgJkaNrW5rO80JIiutWEGz3ZKdo64NbHAv039KFzomVSyjj22
+   iSi6yh6wW9IaLJ1jwK07Tqg8QDIgP9Lm00wiuZ9gU6nAU8ULKhDLUauKU
+   w==;
+X-CSE-ConnectionGUID: 7F/EE8mNQRGJs/b4sFTQGw==
+X-CSE-MsgGUID: gaDpTe8+Tp+nL8c0oO8JKQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="29844463"
 X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="45915034"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:38:19 -0800
-X-CSE-ConnectionGUID: S9u191tFRr+fnqDUvzteCw==
-X-CSE-MsgGUID: MCPepnbHS6+l6ZF4HdXALw==
+   d="scan'208";a="29844463"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:43:38 -0800
+X-CSE-ConnectionGUID: pnLGACYsSIGpVQqR3a/PiA==
+X-CSE-MsgGUID: srSlZkTCQEKNZ4hwPIQcdw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="123138395"
+X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
+   d="scan'208";a="118797694"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:38:18 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:43:37 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 wireless 5/5] wifi: cfg80211: cancel wiphy_work before freeing wiphy
-Date: Thu,  6 Mar 2025 12:37:59 +0200
-Message-Id: <20250306123626.efd1d19f6e07.I48229f96f4067ef73f5b87302335e2fd750136c9@changeid>
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH wireless-next 00/15] wifi: mac80211/cfg80211: updates - 2025-03-06
+Date: Thu,  6 Mar 2025 12:43:11 +0200
+Message-Id: <20250306104326.4105722-1-miriam.rachel.korenblit@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250306103759.4102293-1-miriam.rachel.korenblit@intel.com>
-References: <20250306103759.4102293-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,41 +73,53 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-A wiphy_work can be queued from the moment the wiphy is allocated and
-initialized (i.e. wiphy_new_nm). When a wiphy_work is queued, the
-rdev::wiphy_work is getting queued.
+Hi,
 
-If wiphy_free is called before the rdev::wiphy_work had a chance to run,
-the wiphy memory will be freed, and then when it eventally gets to run
-it'll use invalid memory.
+A few features, cleanups and bugfixes from our internal tree.
 
-Fix this by canceling the work before freeing the wiphy.
-
-Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Thanks,
+Miri
 ---
- net/wireless/core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 12b780de8779..828e29872633 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1191,6 +1191,13 @@ void cfg80211_dev_free(struct cfg80211_registered_device *rdev)
- {
- 	struct cfg80211_internal_bss *scan, *tmp;
- 	struct cfg80211_beacon_registration *reg, *treg;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
-+	WARN_ON(!list_empty(&rdev->wiphy_work_list));
-+	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
-+	cancel_work_sync(&rdev->wiphy_work);
-+
- 	rfkill_destroy(rdev->wiphy.rfkill);
- 	list_for_each_entry_safe(reg, treg, &rdev->beacon_registrations, list) {
- 		list_del(&reg->list);
+Anjaneyulu (1):
+  wifi: cfg80211: allow AP operations in 20 MHz configuration
+
+Avraham Stern (1):
+  wifi: mac80211: allow 320 MHz FTM measurements
+
+Ilan Peer (3):
+  wifi: mac80211_hwsim: Fix MLD address translation
+  wifi: cfg80211: Update the link address when a link is added
+  wifi: mac80211: Notify cfg80211 about added link addresses
+
+Johannes Berg (10):
+  wifi: cfg80211: move link reconfig parameters into a struct
+  wifi: cfg80211: allow setting extended MLD capa/ops
+  wifi: mac80211: mlme: support extended MLD capa/ops in assoc
+  wifi: mac80211: fix U-APSD check in ML reconfiguration
+  wifi: cfg80211: improve supported_selector documentation
+  wifi: mac80211: fix userspace_selectors corruption
+  wifi: mac80211: fix warning on disconnect during failed ML reconf
+  wifi: mac80211: fix ML reconf reset in disconnect
+  wifi: mac80211: don't include MLE in ML reconf per-STA profile
+  wifi: mac80211: set WMM in ML reconfiguration
+
+ drivers/net/wireless/virtual/mac80211_hwsim.c |  14 ++-
+ include/net/cfg80211.h                        |  30 ++++-
+ include/uapi/linux/nl80211.h                  |  68 ++++++-----
+ net/mac80211/cfg.c                            |   7 +-
+ net/mac80211/ieee80211_i.h                    |   9 +-
+ net/mac80211/mlme.c                           | 110 +++++++++++-------
+ net/wireless/chan.c                           |   8 +-
+ net/wireless/core.c                           |   3 +-
+ net/wireless/core.h                           |   6 +-
+ net/wireless/mlme.c                           |  17 +--
+ net/wireless/nl80211.c                        |  40 ++++---
+ net/wireless/rdev-ops.h                       |  10 +-
+ net/wireless/reg.c                            |   4 +-
+ net/wireless/trace.h                          |  17 +--
+ 14 files changed, 219 insertions(+), 124 deletions(-)
+
 -- 
 2.34.1
 
