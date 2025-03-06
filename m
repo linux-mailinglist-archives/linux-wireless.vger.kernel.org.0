@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-19866-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19867-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6EEA547BA
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:26:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90526A547BD
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA4193AE303
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:26:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92DF16DFEC
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC38202971;
-	Thu,  6 Mar 2025 10:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CDA1FFC70;
+	Thu,  6 Mar 2025 10:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JZuocFMR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T0yYTMRB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E78E1FFC70
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 10:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AB620408A
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 10:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741256764; cv=none; b=B01OzZnRG9DByo/oOUMZ7JJGO3IJB3Sl5hT6O7JQxq53wEFXVAYqbQoju82w3ovI8omZ2FIw5q3RhP9hM/EQ8wy413WyTsOCp1DsBTYGhtZ6igs6xVUx5w+e8EZHirQyOz500nkkmV70shQCipwkB2awM/r3p7UzeYMo79M+nY4=
+	t=1741256765; cv=none; b=LIVISZkdi4nmrD9UtsuluOPo+Q2UogNtVUF6MH6um29RrcU1vtnsXUD+XjHv1J+3Ho9u/z4EirY/oErojRbv1vJfcQrcqMr/UlOzZkvqyxF1pD9kuOKCOYzyGFJtb6EstKNq0E/Z5AKIo6Csx4PrkRUXmziRgkUyy19Vahuyuys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741256764; c=relaxed/simple;
-	bh=/IwYSDKfeJxFYICY3XqZiXWO+qjXMx97iRqVScmQJ0c=;
+	s=arc-20240116; t=1741256765; c=relaxed/simple;
+	bh=zZeOYL228Ua4pyQqLgM2r/C/r3cEF3n9jCXAxuXQesA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=POwYvxjR5GU7TmIsvV4oQPzyJR/OqnSLVrMrFphJCkaA34O3fUdK9S8L4F0ZDGYM+ruWCQegjovYj7rlGie33h1q5usjXVL7r+kM/OA8QSST23Roxkqwb32dVFvcWpWb+bU+mZM77AUaJBCSrPJblawr6qUQFMf/UAf/LwsaI0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JZuocFMR; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=jLlvTHdbxDCXzcHVpjEdMQ6C5DVu1D5YmLj9pHO14XpkJoS9Cx1drIVJiWJJ+lR4TjjwMghfq+m2JMnzBsZL5K3zQ4pS8HilJH7iC1/cTNsIE31Oz1dof2hKP9YMq3CN3DRNLKvMpsOT4zb38fig72RpB/h+K/jDwzQqRJPTHHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T0yYTMRB; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741256763; x=1772792763;
+  t=1741256764; x=1772792764;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=/IwYSDKfeJxFYICY3XqZiXWO+qjXMx97iRqVScmQJ0c=;
-  b=JZuocFMRRznPk7vgyspk8ezosuYUn3RPfDZzuO7S5BMWDQfDZTpHBrCH
-   bLZby5ZQdQG8GgP4d61qsiKU9tzy8YD3olrJBO/aRcFH4ctQKZc79zfCI
-   ZLK0FUR2isO6t+HaGknxUCQY73iF/w/Zp6GTT6G83zqeDJDb/Ojr4R7vH
-   OnA564/XCBXKI/q0nxQ6h+rVxVQS192SRAxP9nSY9Z3omomYwjykYP7ZJ
-   Y8nRH+qbelmGCzhOu8Oz96yxwON16jbwZH1O44z4ctnOm+Z7r/ArLtj6f
-   d5BwyfWbN56F5fYYTyyxQWnWlsVrWoMX3PbpslLJZw/TWE08vAvYEnr0e
-   w==;
-X-CSE-ConnectionGUID: 5rqKuc45SUe2gzrthC8Bpw==
-X-CSE-MsgGUID: 2ioi1wUaQGGRxH7l9CEqXw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41433442"
+  bh=zZeOYL228Ua4pyQqLgM2r/C/r3cEF3n9jCXAxuXQesA=;
+  b=T0yYTMRBP/XFV8yMHO5nAKvXk92gdjwuVbWgngHCSlbiAneCMUnavS6G
+   xM7y20ASj+1EBZIostC1wLQcth/2gWryPWSAumvoHqDsx3Ttt/F/1gBqK
+   nQy29N1YSohr61tOUfW3fQCWQQ269PzN+sLtEarxzkRgMSZeNReiyiKpg
+   0u/L1IEPf3HlXLB8oinCbXY5dhNx9x6BUjAE2RLx0EY6b6omqZxw5BFq2
+   a+0WyRypH9VrfqCidcmVFfDI9FJFNq3Kx2Bgs3qiIVhCLVE3B1qBmpf0S
+   2R75Uv6df+bR2DFaY+URTgjqKhR9gcxYeGp4uSl/D7rlup3WAisR93oSS
+   g==;
+X-CSE-ConnectionGUID: BLU0f/khRN2MISB4t8q5Jg==
+X-CSE-MsgGUID: p02dT5SDTia4jtp8eXWNdQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41433446"
 X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="41433442"
+   d="scan'208";a="41433446"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:26:03 -0800
-X-CSE-ConnectionGUID: YJniljhoQ8SItKmo1V4mDQ==
-X-CSE-MsgGUID: UImLFEnBQM2H8p/nTOY5UQ==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:26:04 -0800
+X-CSE-ConnectionGUID: gSM5WS3zQumBuq9Jg93Peg==
+X-CSE-MsgGUID: IYiuHx/MQa6JxnAUL+T/tw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="142209567"
+   d="scan'208";a="142209572"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:26:01 -0800
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:26:03 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless 2/3] wifi: iwlwifi: mvm: fix PNVM timeout for non-MSI-X platforms
-Date: Thu,  6 Mar 2025 12:25:47 +0200
-Message-Id: <20250306122425.0f2cf207aae1.I025d8f724b44f52eadf6c19069352eb9275613a8@changeid>
+Subject: [PATCH wireless 3/3] wifi: iwlwifi: trans: cancel restart work on op mode leave
+Date: Thu,  6 Mar 2025 12:25:48 +0200
+Message-Id: <20250306122425.801301ba1b8b.I6f6143f550b6335b699920c5d4b2b78449607a96@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250306102548.4056118-1-miriam.rachel.korenblit@intel.com>
 References: <20250306102548.4056118-1-miriam.rachel.korenblit@intel.com>
@@ -78,73 +77,38 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+If the restart work happens to run after the opmode left
+(i.e. called iwl_trans_op_mode_leave), then the opmode memory (including
+its mutex) is likely to be freed already, and trans->opmode is NULL.
 
-When MSI-X is not enabled, we mask all the interrupts in the interrupt
-handler and re-enable them when the interrupt thread runs. If
-STATUS_INT_ENABLED is not set, we won't re-enable in the thread.
-In order to get the ALIVE interrupt, we allow the ALIVE interrupt
-itself, and RX as well in order to receive the ALIVE notification (which
-is received as an RX from the firmware.
+Although the hw is stopped in that stage, which means that this restart
+got aborted (i.e. STATUS_RESET_PENDING will be cleared),
+it still can access trans->opmode (NULL pointer dereference)
+or the opmodes memory (which is freed).
 
-The problem is that STATUS_INT_ENABLED is clear until the op_mode calls
-trans_fw_alive which means that until trans_fw_alive is called, any
-notification from the firmware will not be received.
+Fix this by canceling the restart wk in iwl_trans_op_mode_leave.
+Also make sure that the restart wk is really aborted.
 
-This became a problem when we inserted the pnvm_load exactly between the
-ALIVE and trans_fw_alive.
-
-Fix that by calling trans_fw_alive before loading the PNVM. This will
-allow to get the notification from the firmware about PNVM load being
-complete and continue the flow normally.
-
-This didn't happen on MSI-X because we don't disable the interrupts in
-the ISR when MSI-X is available.
-
-The error in the log looks like this:
-
-iwlwifi 0000:00:03.0: Timeout waiting for PNVM load!
-iwlwifi 0000:00:03.0: Failed to start RT ucode: -110
-iwlwifi 0000:00:03.0: WRT: Collecting data: ini trigger 13 fired (delay=0ms).
-
-Fixes: 70d3ca86b025 ("iwlwifi: mvm: ring the doorbell and wait for PNVM load completion")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 7391b2a4f7db ("wifi: iwlwifi: rework firmware error handling")
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index df49dd2e2026..d10877856049 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -422,6 +422,8 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
- 	/* if reached this point, Alive notification was received */
- 	iwl_mei_alive_notif(true);
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+index 49c8507d1a6b..47854a36413e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+@@ -403,6 +403,8 @@ void iwl_trans_op_mode_leave(struct iwl_trans *trans)
  
-+	iwl_trans_fw_alive(mvm->trans, alive_data.scd_base_addr);
+ 	iwl_trans_pcie_op_mode_leave(trans);
+ 
++	cancel_work_sync(&trans->restart.wk);
 +
- 	ret = iwl_pnvm_load(mvm->trans, &mvm->notif_wait,
- 			    &mvm->fw->ucode_capa);
- 	if (ret) {
-@@ -430,8 +432,6 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
- 		return ret;
- 	}
+ 	trans->op_mode = NULL;
  
--	iwl_trans_fw_alive(mvm->trans, alive_data.scd_base_addr);
--
- 	/*
- 	 * Note: all the queues are enabled as part of the interface
- 	 * initialization, but in firmware restart scenarios they
+ 	trans->state = IWL_TRANS_NO_FW;
 -- 
 2.34.1
 
