@@ -1,70 +1,71 @@
-Return-Path: <linux-wireless+bounces-19856-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19858-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9BF9A5478F
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:18:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5B2A54791
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 11:19:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8F893A8E01
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:18:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1AB53A8F3E
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 10:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03121A08A6;
-	Thu,  6 Mar 2025 10:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483A01D61A4;
+	Thu,  6 Mar 2025 10:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MZA0qPaR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X1GMaQ0g"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488141FECAD
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 10:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98787200BBD
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 10:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741256328; cv=none; b=Ub4rjMNg5fWsAM5RNpxgGSOQk7QRsFPsWbR38vJ2kRZIWEcgajXoeDt9le9zcGa2RP5N30yAfZ64RTDi9cD0fxJn/wwKGm/rYjSOQlIhSb4cfWG2KOcLfveZVOtJgg4UeETSU8q0pgwiqbLuN7ZoF++d87BoS7tRJPaEar5pEdo=
+	t=1741256331; cv=none; b=GfhfUwt2MnywavgYrvRSj/NMWCNbMWjYRXur+7gv9WDXcAB9mvtNwwqaO+OUdfpL1NKOtl5j3G103KtAqhTfWG8wycuT9hTEP9ILfLblBY7q1J5jrA/Htm7ir49GqXRt+OvS4cqm7KgLzCxPYD6T36ehSXXbEUhZdPZgBA1qmUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741256328; c=relaxed/simple;
-	bh=BwWAWBnCM2qE7bC0penKeu0dyy/89DAB4sKhllmbuvQ=;
+	s=arc-20240116; t=1741256331; c=relaxed/simple;
+	bh=+IyaAiQko7O6fIX11o38VosR2w0paHLTBkTyiRr5jCM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jkkyZ09o03NRCHTfUQQQuaMC11JVJI0S11DWkWghjbqg5Z7Pfkv9wKONrFSDmLmtSPROWMakfm+hcPhnieQH+2fg5/ms2J99oNV2cBYcCPLc9IzMi5xRVZUi8TFsqmotAeyIJQAkpvdEFTwJdAu3vmV41W5HX+1MSX7J/9bgfS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MZA0qPaR; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=McWqhEnhd5w+QUThL638zflv7iOpadDaMSAVeOg8peM81uuRTy35UBM/aVm7ekrtaiy5c9adfRxLn9CDG4Ql0tOsA1SMpfxBqo23KqbKGk/oW+b/dGrXgjK0j6DB4YPBFckfP/qofs8VcgzHzq/HtSqG7KHT2etvsuvqRGukJsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X1GMaQ0g; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741256328; x=1772792328;
+  t=1741256331; x=1772792331;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=BwWAWBnCM2qE7bC0penKeu0dyy/89DAB4sKhllmbuvQ=;
-  b=MZA0qPaRJfNc77svgVZ+jCro9HqvrTI9dnd+9+/tkkB9zzE96+0HMCvq
-   pjsv2I4p4dTw1BaDvUvToTqch4Rmk6jKH2NsfkQfwJmjM+ksjWvOqxPha
-   PAKDhack1qzj8EmZoYdrKBUyWq9Bs1PmeF7tpNsLM4/FL6JC6Ub9aJnPu
-   ARMCfVjlPFM2HrMxnqmCRmzP/vILqZl5Hqn5soB72gK2F/AFsAWhY1KuD
-   kVVaVVuIJpLH+hPzil8W9RN5e27iPiBQBByhszMYlxT2VHERmpQa3UxAh
-   4ZRyvLnk2bzVN6AZjmVdiJ9vvDqtwSPKASmN85zYwsoazkR3g0N3RUYsr
-   w==;
-X-CSE-ConnectionGUID: e+GxszPgQneV3FJAGy+9YQ==
-X-CSE-MsgGUID: jLmRbJh7S7STWdX104ZBhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="46181366"
+  bh=+IyaAiQko7O6fIX11o38VosR2w0paHLTBkTyiRr5jCM=;
+  b=X1GMaQ0gvLcFzXafoamih+F34/awxefQDFH+GVhQy1FUklmw/70f+HAo
+   X8izyjS7whfOt+3Xf60uJb93b2No+i1GRGVeQyIzhbqXFex6m8kDwTF8c
+   llOBc4acfI5VpnPZBKVcwThsqugZwvzb7Bw61JJhSgvkGwmKtGH8hjOjK
+   b0GWH/bdvPn2/8gYdR+hMnr0XY+kcq4lDfy9usLuoDCBA3okjGlY+nBv/
+   tpKvCwGAGaxU8y1RdZuloB6aQK3WGOuvbmHsS4oG9CQukj9AhYVZmxym6
+   zNG1y/ALE7Hm0aaRtcqas0IrJiRMDkFY4oE9HD/b5Q2+JydBVLnuCfIoW
+   A==;
+X-CSE-ConnectionGUID: 47leLAguQn+p/v67mkmMKg==
+X-CSE-MsgGUID: qqUzbwzYTw23dGIAYHATAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="46181373"
 X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="46181366"
+   d="scan'208";a="46181373"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:18:48 -0800
-X-CSE-ConnectionGUID: Y8pXxOilT7qhkGK4iwXbjg==
-X-CSE-MsgGUID: Pk44ga9wSDGtbW0drpZYZg==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:18:50 -0800
+X-CSE-ConnectionGUID: VDWmSx/YRxeL+ObAn3MAhw==
+X-CSE-MsgGUID: zFt+1tUSQSGPp0GBinJfuA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="118705708"
+   d="scan'208";a="118705717"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:18:46 -0800
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:18:47 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 2/5] wifi: mac80211: don't queue sdata::work for a non-running sdata
-Date: Thu,  6 Mar 2025 12:18:28 +0200
-Message-Id: <20250306121409.1e02caf82640.I4949e71ed56e7186ed4968fa9ddff477473fa2f4@changeid>
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH 3/5] wifi: nl80211: fix assoc link handling
+Date: Thu,  6 Mar 2025 12:18:29 +0200
+Message-Id: <20250306121409.7b233d769c32.I62fd04a8667dd55cedb9a1c0414cc92dd098da75@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250306101831.4042303-1-miriam.rachel.korenblit@intel.com>
 References: <20250306101831.4042303-1-miriam.rachel.korenblit@intel.com>
@@ -77,43 +78,66 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-The worker really shouldn't be queued for a non-running interface.
-Also, if ieee80211_setup_sdata is called between queueing and executing
-the wk, it will be initialized, which will corrupt wiphy_work_list.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Fixes: f8891461a277 ("mac80211: do not start any work during reconfigure flow")
+The refactoring of the assoc link handling in order to
+support multi-link reconfiguration broke the setting
+of the assoc link ID, and thus resulted in the wrong
+BSS "use_for" value being selected. Fix that for both
+association and ML reconfiguration.
+
+Fixes: 720fa448f5a7 ("wifi: nl80211: Split the links handling of an association request")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/util.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/wireless/nl80211.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 7f02bd5891eb..fdda14c08e2b 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -6,7 +6,7 @@
-  * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2015-2017	Intel Deutschland GmbH
-- * Copyright (C) 2018-2024 Intel Corporation
-+ * Copyright (C) 2018-2025 Intel Corporation
-  *
-  * utilities for mac80211
-  */
-@@ -2193,8 +2193,10 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 		ieee80211_reconfig_roc(local);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index e87267fbb442..aac0e7298dc7 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -11123,6 +11123,7 @@ static struct cfg80211_bss *nl80211_assoc_bss(struct cfg80211_registered_device
  
- 		/* Requeue all works */
--		list_for_each_entry(sdata, &local->interfaces, list)
--			wiphy_work_queue(local->hw.wiphy, &sdata->work);
-+		list_for_each_entry(sdata, &local->interfaces, list) {
-+			if (ieee80211_sdata_running(sdata))
-+				wiphy_work_queue(local->hw.wiphy, &sdata->work);
-+		}
- 	}
+ static int nl80211_process_links(struct cfg80211_registered_device *rdev,
+ 				 struct cfg80211_assoc_link *links,
++				 int assoc_link_id,
+ 				 const u8 *ssid, int ssid_len,
+ 				 struct genl_info *info)
+ {
+@@ -11153,7 +11154,7 @@ static int nl80211_process_links(struct cfg80211_registered_device *rdev,
+ 		}
+ 		links[link_id].bss =
+ 			nl80211_assoc_bss(rdev, ssid, ssid_len, attrs,
+-					  link_id, link_id);
++					  assoc_link_id, link_id);
+ 		if (IS_ERR(links[link_id].bss)) {
+ 			err = PTR_ERR(links[link_id].bss);
+ 			links[link_id].bss = NULL;
+@@ -11350,8 +11351,8 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
+ 		req.ap_mld_addr = nla_data(info->attrs[NL80211_ATTR_MLD_ADDR]);
+ 		ap_addr = req.ap_mld_addr;
  
- 	ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
+-		err = nl80211_process_links(rdev, req.links, ssid, ssid_len,
+-					    info);
++		err = nl80211_process_links(rdev, req.links, req.link_id,
++					    ssid, ssid_len, info);
+ 		if (err)
+ 			goto free;
+ 
+@@ -16506,7 +16507,10 @@ static int nl80211_assoc_ml_reconf(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	add_links = 0;
+ 	if (info->attrs[NL80211_ATTR_MLO_LINKS]) {
+-		err = nl80211_process_links(rdev, links, NULL, 0, info);
++		err = nl80211_process_links(rdev, links,
++					    /* mark as MLO, but not assoc */
++					    IEEE80211_MLD_MAX_NUM_LINKS,
++					    NULL, 0, info);
+ 		if (err)
+ 			return err;
+ 
 -- 
 2.34.1
 
