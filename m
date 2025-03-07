@@ -1,31 +1,31 @@
-Return-Path: <linux-wireless+bounces-19992-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19993-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CA8A56438
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 10:47:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E38EA564B1
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 11:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBCD13AED49
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 09:47:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61669188A435
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 10:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB2220C46C;
-	Fri,  7 Mar 2025 09:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C7C20D4FD;
+	Fri,  7 Mar 2025 10:10:27 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB5A1EDA10
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Mar 2025 09:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EB220DD50
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Mar 2025 10:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741340841; cv=none; b=FT5S7FDSIah8mKUTpeqhFMuV4R0vY8mwehFW/X+LKcGDIKjMMUSCrBg/VXey19LvjWpbu06rmSgA/qF2N86jq31Q+Ii+xOH0H7Zk3UpxYAYsU7A+cwdoG3HSewc5kQS8redhLFWEuJGXMalpqZ24Rl8Y9BR8+lYMcgOaZz9cRIw=
+	t=1741342227; cv=none; b=mRQvdQpRyI03NDMh8CmGKbt5c1NdYtbzcMCEBXds+2lPJivD5b4ei+CRH0+nAdWwpbRwwpnTpYYPIPuL0KV39TKvljH9bvNB5FFHIn4IxHuBcEyH2OO7mkLFw7eGduDUefVkcun4jolVCYr7mlrswb6v9xLmD0uHM7kZr1/O1UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741340841; c=relaxed/simple;
-	bh=92nkMmAVYP7zX5gKkAp6xwPsdaBgiZRMK8Xb+OeG7r0=;
+	s=arc-20240116; t=1741342227; c=relaxed/simple;
+	bh=7Pstve0mAUr7eMVdFG/Tq73GVnmf4PPnRq7UUxm3NgA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UWCymkZjhSZVkulFmrNGjnFI4zts1BH9/Iv+gDsLFbI9NurL5QiBbd4+sofhZoetleCS/vGpVjWM9bDlxnZNe+SI23VjPIzqTWmsaJ6IUuzAfinzDxInrj1rQRFBPmNA+HFZScmk5jwUijMW6Ei08vwXy6yAzPdPlrFMfGXUpl4=
+	 Content-Type:Content-Disposition:In-Reply-To; b=W+IfToMbZ1OPb6A94dKL70tv4JNyISmYGC5G6JOlglTwVKzWIt2M2aVCTKOv2yZMPjyessztEoNXrOvyxbZerO0jnlHEuFMKcBQgFNuzOVmiFSQGVgwv0m1JoLL886vlw/tJsOKG0+RNrDIcnA+VUIrLeJDPdZK7KQe6SsuZnqs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -33,28 +33,29 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1tqUIO-0003FP-He; Fri, 07 Mar 2025 10:47:08 +0100
+	id 1tqUer-0007ck-Qj; Fri, 07 Mar 2025 11:10:21 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1tqUIO-004SpX-0b;
-	Fri, 07 Mar 2025 10:47:08 +0100
+	id 1tqUer-004T8P-1f;
+	Fri, 07 Mar 2025 11:10:21 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1tqUIO-000S6D-0F;
-	Fri, 07 Mar 2025 10:47:08 +0100
-Date: Fri, 7 Mar 2025 10:47:08 +0100
+	id 1tqUer-000SdI-1K;
+	Fri, 07 Mar 2025 11:10:21 +0100
+Date: Fri, 7 Mar 2025 11:10:21 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Brian Norris <briannorris@chromium.org>, linux-wireless@vger.kernel.org,
-	Francesco Dolcini <francesco@dolcini.it>, kernel@pengutronix.de,
-	David Lin <yu-hao.lin@nxp.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: linux-wireless@vger.kernel.org, David Lin <yu-hao.lin@nxp.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Johannes Berg <johannes@sipsolutions.net>, kernel@pengutronix.de,
+	Jeff Chen <jeff.chen_1@nxp.com>, tsung-hsien.hsieh@nxp.com,
+	Stefan Roese <sr@denx.de>
 Subject: Re: Future of mwifiex driver
-Message-ID: <Z8rAnAgDb7f_xhMp@pengutronix.de>
+Message-ID: <Z8rGDTjkwKAVaREL@pengutronix.de>
 References: <Z8WM9jn1QFscWZBQ@pengutronix.de>
- <Z8ZbJYmxgnvd7Q1O@google.com>
- <2587f323fe19b33d2e9ec49bdc3979f71b9c0ba0.camel@sipsolutions.net>
+ <20250306101715.GA19853@francesco-nb>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -63,7 +64,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2587f323fe19b33d2e9ec49bdc3979f71b9c0ba0.camel@sipsolutions.net>
+In-Reply-To: <20250306101715.GA19853@francesco-nb>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -73,60 +74,56 @@ X-SA-Exim-Mail-From: sha@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-On Fri, Mar 07, 2025 at 09:48:13AM +0100, Johannes Berg wrote:
-> Hi all,
+On Thu, Mar 06, 2025 at 11:17:15AM +0100, Francesco Dolcini wrote:
+> + Jeff Chen <jeff.chen_1@nxp.com>, tsung-hsien.hsieh@nxp.com
+> + Stefan Roese <sr@denx.de>
 > 
-> Sorry I didn't reply earlier - I was dragging my feet, but also didn't
-> really know if I can add anything beyond what I already wrote.
+> Hello Sascha,
 > 
-> 
-> On Mon, 2025-03-03 at 17:45 -0800, Brian Norris wrote:
-> > Hi Sascha,
+> On Mon, Mar 03, 2025 at 12:05:26PM +0100, Sascha Hauer wrote:
+> > I am worried about the future of the mwifiex driver. NXP has an ongoing
+> > effort of forking the driver to support their new chips, but the forked
+> > driver lacks support for the old chips supported by the current mwifiex
+> > driver.
 > > 
-> > On Mon, Mar 03, 2025 at 12:05:26PM +0100, Sascha Hauer wrote:
-> > > I am worried about the future of the mwifiex driver. NXP has an ongoing
-> > > effort of forking the driver to support their new chips, but the forked
-> > > driver lacks support for the old chips supported by the current mwifiex
-> > > driver.
-> > [...] 
-> > > I have a series here [1] doing some cleanup work which I'd still like to
-> > > get forward.
-> > [...]
-> > > [1] https://lore.kernel.org/linux-wireless/87ldwyumvq.fsf@kernel.org/
-> > 
-> > I'll apologize for that one stalling out a bit. IIRC, 11 of 12 patches
-> > looked great, but I got stuck on the "fix MAC address handling" patch,
-> > because it's a lot tougher to guarantee it doesn't break some use cases
-> > while fixing things. But really, it's probably mostly a bandwidth thing
-> > for me, as I really don't have many cycles to spend on things (and
-> > especially when it gets beyond "obvious cleanup" and requires
-> > substantial testing and/or reasoning).
+> > Overall this leaves us and our customers using the mwifiex driver in a
+> > very bad situation.  Johannes made clear that he is not going to merge a
+> > driver that is 70% identical to the existing driver and on the other
+> > hand the existing driver doesn't get forward due to its odd-fixes state
+> > and the potential rise of a new driver which would render work on the
+> > existing driver useless.
 > 
-> I guess that means could also partially resend the series, and get 11 of
-> the 12 in? I see the MAC address handling is first, but a cursory look
-> suggests that at least not all of the other would have a hard dependency
-> on it.
-
-OK, I'll respin the series without the MAC address patch. Next I'll have
-another look at the MAC address patch and see if I can improve it
-further and send this as a separate patch.
-
-> > 4. A key difference between #3 and mwifiex is, like you say, that
-> >    mwifiex has a pretty low quality baseline. If I were maintaining it
-> >    from the beginning, I probably wouldn't have accepted it.
+> While I agree on the challenging situation, I would not call it "very
+> bad" ... as you know there are multiple people with stake on this driver
+> (I added SR in Cc here, that I just discovered has some interested on
+> this).
 > 
-> Indeed, the above is _definitely_ not true for mwifiex/nxpwifi. I've
-> effectively proven in the other thread that it's just a straight up copy
-> without any modernisation etc. If there had actually been a real reason
-> to not work with the same code base, then that might have made sense -
-> perhaps with some library code split out.
+> In the short term I think that improving mwifiex driver is going to be
+> beneficial for everybody, currently this is not going as smooth as we'd
+> like, as you wrote and as already commented by Brian.
 > 
-> But copying an old crappy driver for the sake of "we don't want to
-> maintain an old crappy driver" is a really bad argument to make?!
+> And the next step would be to figure out how to enable newer Wi-Fi chip
+> solution from NXP in mainline, we all have our ideas and we are not
+> moving forward. NXP keeps pushing for a solution that was already
+> rejected multiple times and so far it was not successful on explaining
+> why this is the correct way forward. Here I would agree that the
+> situation is "very bad" at the moment.
 
-Thanks for your clear words. For me that means that I can put more
-effort into the mwifiex driver without risking that it becomes obsolete
-soon.
+I have a patch adding iw61x support to the mwifiex driver. Maybe if I
+send that for inclusion we can get NXP  to explain to us what's actually
+missing in this patch to properly support it.
+
+> 
+> 
+> > I think part of the solution should be that we start cleaning up the
+> > mwifiex driver
+> 
+> Ack. I would suggest that we focus on this. I can help with some
+> review/test (as partially done in the past), but I cannot commit to
+> actively work on much more than that as of now.
+
+Ok, I'll continue with my series then and skip the MAC address patch if
+that's what blocking it.
 
 Sascha
 
