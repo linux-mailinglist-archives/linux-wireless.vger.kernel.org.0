@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-19981-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19982-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73CBA5611F
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 07:48:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58786A56141
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 07:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7D8C1724D7
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 06:48:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DCDE1775D0
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 06:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7D219F12A;
-	Fri,  7 Mar 2025 06:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B44A1A2396;
+	Fri,  7 Mar 2025 06:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRMa6NMD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BO2PNjtT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A961922C6;
-	Fri,  7 Mar 2025 06:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088E31632D9;
+	Fri,  7 Mar 2025 06:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741330118; cv=none; b=Z1rJt8UErR7PkzIgAnRQW/szddaB9GsKVVsKKeP7stqge9DSx6vz5SyZhwj2ldQFE50xokH6kOYTPGlOgCfnhquzgIuyKfKHM5+v7R97nv4kpFAHUEoxgggNXP7gcCnmS6jEr+yiG44yEsx5SsVz79QCMZUBbj8KVsFCPu4x6dw=
+	t=1741330682; cv=none; b=ES0MsYZse+T/RMcmBrqPav9DwUMm0Y2I/7GHXaMPliRvgEg/VldN8FSpmjVJCkUeiLFZBV9Iqu3D2MSB715mWNZ5CBsTCgd0kKvFgTShoUGtBI9AUHCVmETRVbPBdiJ2t4KTC6L2EkiP47n1ji1ZyD8346vGSj/W5b+LPodt5+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741330118; c=relaxed/simple;
-	bh=3Ib8MYJh6bNU4odaUUgpJSg3E2tCBLVn7f1PANBy1dg=;
+	s=arc-20240116; t=1741330682; c=relaxed/simple;
+	bh=QR/u4eYHPicVkHtr7uGU7SfSHBfSkVI2Jt7KePffl1A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sl9fdYV0GWdWDLiyY1iYeOF2cNcRSkYdU6p2XNKHSWf53+5kPIG+dW0iFQ9OHa09Rxi5iy8Ck18GiKGTSB3qyiiYeIxICEZi3WU6UfUrBOtlgp8aSv9WQNSGqWwB5CBQMuWMpfwG0Z7Y51XNdpJAlafD9t5jz/L66i32RS7eIK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRMa6NMD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A4FC4CED1;
-	Fri,  7 Mar 2025 06:48:26 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=E73BCn1gDYkFkA/w7oDTFzbFB+NXYxiaXPISqbWHD/2b9Z/OVb1WxZmisA7ubI0kwp5fOqYtXeJ+br9NNtI8THXpx/G15M5pVnZtfA6qECH/wVhUTtC1iwW0OqJY3oUmdKPnItJS85VQ83IrCoZWs/A3dJvYVWMfHFrTs79soHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BO2PNjtT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A277EC4CED1;
+	Fri,  7 Mar 2025 06:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741330117;
-	bh=3Ib8MYJh6bNU4odaUUgpJSg3E2tCBLVn7f1PANBy1dg=;
+	s=k20201202; t=1741330681;
+	bh=QR/u4eYHPicVkHtr7uGU7SfSHBfSkVI2Jt7KePffl1A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DRMa6NMDOr9VDIXDP/sMrYitH9dLI3U4sNzyvNtVdxc0KtVceuKqYh98oSiUGE/2V
-	 /2eafLS+5hJIFhnQB10Z8IfVX/KS2aCMQT4LXou+3YtmH2hnkUwOVn99J+vHBz6/Vy
-	 OI0IS8tgAQkepk9BlN3XhOsYjk6eqqXOx7ZWaQ5gPEmsTVZre4mqAZoF+RZnETwkoo
-	 BhC8ZvT2hPH7Se5Xhh3a18UfluVtKR/HK7UpTmROiL8mg+H7KtQYf9TXQergnEq/kz
-	 IFqdvMsR5Kw84BwRQz7wEJyl87JiMXQhTbz2nGo8Aj68ZgwkCLEqV1uKUIDyGElFK0
-	 qS65TRlyHJzJA==
-Message-ID: <9d4b77da-18c5-4551-ae94-a2b9fe78489a@kernel.org>
-Date: Fri, 7 Mar 2025 07:48:24 +0100
+	b=BO2PNjtTjds6fps74Zxs4WG8UEoBmTLK3JGqU+00jLosvv1RXhYz82UonINQv4lJ3
+	 semTG8Bs9gmIjj4LDTDMqqquN0xy03A54aiX+zTtPzIU/iAu9KN5DB6DgFuybJJua2
+	 hseHc3rV3e1nHZrHTU8W/O9vfuHXae754xep0D3VirLTlTtpWh226cqxYPp5obPQQ8
+	 ItI34NWTqQS57aYuudwEBNpH9hCBL5G2O9xaxEIf/BgLEVWmmH+ZxG1HB3uyuYVxjU
+	 f3sieA0B8gGnyJdDAyZtNiT2QggkIvrBvR9aZKArMmfiQZMZfqnIz1Z8lbsnbemq6V
+	 7K9HVv63TvfOw==
+Message-ID: <3dfc81eb-caa1-42fe-8fd6-61101de0ef13@kernel.org>
+Date: Fri, 7 Mar 2025 07:57:48 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/16] bitops: Change parity8() return type to bool
+Subject: Re: [PATCH v3 00/16] Introduce and use generic parity16/32/64 helper
 To: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de,
  mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
  jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
@@ -74,7 +74,6 @@ Cc: hpa@zytor.com, alistair@popple.id.au, linux@rasmusvillemoes.dk,
  linux-serial@vger.kernel.org, bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
  Yu-Chun Lin <eleanor15x@gmail.com>
 References: <20250306162541.2633025-1-visitorckw@gmail.com>
- <20250306162541.2633025-2-visitorckw@gmail.com>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -119,44 +118,40 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20250306162541.2633025-2-visitorckw@gmail.com>
+In-Reply-To: <20250306162541.2633025-1-visitorckw@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 06. 03. 25, 17:25, Kuan-Wei Chiu wrote:
-> Change return type to bool for better clarity. Update the kernel doc
-> comment accordingly, including fixing "@value" to "@val" and adjusting
-> examples. Also mark the function with __attribute_const__ to allow
-> potential compiler optimizations.
+> Several parts of the kernel contain redundant implementations of parity
+> calculations for 16/32/64-bit values. Introduces generic
+> parity16/32/64() helpers in bitops.h, providing a standardized
+> and optimized implementation.
+> 
+> Subsequent patches refactor various kernel components to replace
+> open-coded parity calculations with the new helpers, reducing code
+> duplication and improving maintainability.
 > 
 > Co-developed-by: Yu-Chun Lin <eleanor15x@gmail.com>
 > Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
 > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
 > ---
->   include/linux/bitops.h | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-> index c1cb53cf2f0f..44e5765b8bec 100644
-> --- a/include/linux/bitops.h
-> +++ b/include/linux/bitops.h
-> @@ -231,26 +231,26 @@ static inline int get_count_order_long(unsigned long l)
->   
->   /**
->    * parity8 - get the parity of an u8 value
-> - * @value: the value to be examined
-> + * @val: the value to be examined
->    *
->    * Determine the parity of the u8 argument.
->    *
->    * Returns:
-> - * 0 for even parity, 1 for odd parity
-> + * false for even parity, true for odd parity
+> In v3, I use parityXX() instead of the parity() macro since the
+> parity() macro may generate suboptimal code and requires special hacks
+> to make GCC happy. If anyone still prefers a single parity() macro,
+> please let me know.
 
-This occurs somehow inverted to me. When something is in parity means 
-that it has equal number of 1s and 0s. I.e. return true for even 
-distribution. Dunno what others think? Or perhaps this should be dubbed 
-odd_parity() when bool is returned? Then you'd return true for odd.
+What is suboptimal and where exactly it matters? Have you actually 
+measured it?
+
+> Additionally, I changed parityXX() << y users to !!parityXX() << y
+> because, unlike C++, C does not guarantee that true casts to int as 1.
+
+How comes? ANSI C99 exactly states:
+===
+true
+which expands to the integer constant 1,
+===
 
 thanks,
 -- 
