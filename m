@@ -1,87 +1,77 @@
-Return-Path: <linux-wireless+bounces-19960-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19961-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01BF1A55986
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 23:17:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065D2A55BB9
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 01:21:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32E641898CB3
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Mar 2025 22:17:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0678B3B778C
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 00:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B51205AC0;
-	Thu,  6 Mar 2025 22:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B97F7F9;
+	Fri,  7 Mar 2025 00:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Q+LxRUoE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZWON7Bx4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE162046B1
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Mar 2025 22:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AAFDDA9
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Mar 2025 00:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741299434; cv=none; b=X3ZZbFwwam8q3i24OL22CGVHyVkEn38GoFwxR6VxDOFrJlL2VGr4aAXRAiexnpiv/pUYCSOaIaYDMUmpMm8d80m+eNEAjVwFBsxoyNwjWmyGGyDQm47AyYOx1L8jJBhxtg0tr6tKFBHkMBEZx3c663WBtibWtb2nUJhFwv0zX/k=
+	t=1741306862; cv=none; b=YcjcVUi6gELYL7aDbzA5EmoeqHy4RvjUU/PIdC7pZL5BtQVqB6cwzH3jxxeVYbAoEwUBpWwV3Ez6tvr27ZvZiHb1UrxGkZZaQcNXBH0DDR2hqn8wkMVSUYdEW7KY8mCDjYh09y4HtTRwd1/7iR2V0z0T5YpX1+rd2OXvehRlYjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741299434; c=relaxed/simple;
-	bh=ygUHcNFeTeISWy5b3kddHrotso3qarkSxVsa46XeKCU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UFOiKpbfHOOta2XugfCDrCcSUusiKOXrwlauwgUfOtQWOirwAav+ibGaWI1iA3NAcQgoPGKZ1hfiMW3WAAPkqIRMKsL/II8KwzI8IjBp9+e42eCDREJaNHt/s1qX74OgFWfAYO4p3H1UaLBdDsf+U8CgtqGWbNTAC8h8+9lcYvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Q+LxRUoE; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 526B3jc8032020
-	for <linux-wireless@vger.kernel.org>; Thu, 6 Mar 2025 22:17:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	eJoVHMvkUj5xlh5KCzsA1rdiyBq7K2TFf8c2dlVJ0Hw=; b=Q+LxRUoEO7Ffy+bk
-	fVVQ0zo4/h+K5Ey7RCGXBWq129WX1oRM51bYdHwa2hWihiv7KlN88W4MwDY4xbdO
-	64yIxJyrDbjC7nGKCWOguwZzMKd9wF/9FZv1292dBNNQtnddToUVu13LYDEoSogv
-	Uy/FblthK1vYjjgjypRxu77GeAMUdMtQKzO309R8qACELMQqRt64scD6jFjj3nOv
-	BV+dUNLg9N8XyyIZK208euv1AXy8raRBZ7bVsdMsqzvzikV7qb4xxPUmrMqSCuUn
-	iAfdD2INCXm6s1MuB6uDM8n5PQHutJE4utnKJJiE448FaatCQoceVQWBKEaesIYA
-	DhsB7g==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 457aghhts5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 06 Mar 2025 22:17:11 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2f816a85facso2113052a91.3
-        for <linux-wireless@vger.kernel.org>; Thu, 06 Mar 2025 14:17:11 -0800 (PST)
+	s=arc-20240116; t=1741306862; c=relaxed/simple;
+	bh=Y/RKtARV55hshgMMOThfeivNJmgdsnao2NCWo0F1xFs=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=mOxBTIFzk+IsmGWy05EGoWsokEinkGVRfRnN7lB0KKc0CbUxbdlsieYyiZZ1keXBffWcOHuuJpryJDOCxLIuCTudoemr2IHkLHv7ST4+j3Co+4jn6nsmbsyXXItDBppugPGDrj3zEVw/LidW9QbgIfbdF6YnngFut/bX9eFGPn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZWON7Bx4; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-abf6f3b836aso197819666b.3
+        for <linux-wireless@vger.kernel.org>; Thu, 06 Mar 2025 16:21:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741306859; x=1741911659; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8s8l1GoWqcEjsTPQFWOhmnTF1QA5xT4gV01fDhrslOQ=;
+        b=ZWON7Bx458liY/o+3w3B8vk2vkZrVkmNN72of9fLCPJhq03aKq5vKfuUXREZd8ihK1
+         MY3JqBkfM/omockghUJEsf/z/fNokX311mOFNXO5dqIe4aFdOIndNVcpreqiumdVhIjr
+         RAkijwTNcRN3qEB7kNPlCErIHwb1B4ZX/BdTo1rIjbsMT7NIyd7RRzgfBnjK+9wSU3qx
+         5bqmeLQtE6WGWwguk3KKGGDntB/ZOhRxdh/oqf4Hw4AdtKgtcUhUBu52/t7Oy1mSQybo
+         tGtgFftlfH64RP92QYMGbUjgF/7DyZHEUBe2sUSzjcRo8nz+X9Tz3pwEkt7sUIFtHbS2
+         nrFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741299430; x=1741904230;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eJoVHMvkUj5xlh5KCzsA1rdiyBq7K2TFf8c2dlVJ0Hw=;
-        b=iq3M12fPx8GKDzCHmJupkK63C29N/mAODTcsaJ9+9jCrZ4+0n9OH44IR182cprovi3
-         233X9RbneUa4ev7ftE6ffpb0JWpLfM05kkrqTEdB1BPXw2w5wMA1/YmnGenJRWKXZ59k
-         0B1uE9SdVvNOfMW0AibzdVUX1L6HqEpi0f5hZGbYG6LKOv1/HoBWgC5+bQoEgXEO7QpE
-         6cdXXm39oVSFxpBWoenFLPSM5Q7e/8X6XUkD+zTwLV9jFpsC0AA+5gHgMCIqmQFCnuKw
-         8w2x83wO4Oawk031OEinwYYaJtPTbGo7pKq4OFSMtoaWo0CNa6WHSY025WnAwHKZRe+V
-         GqVw==
-X-Gm-Message-State: AOJu0YyhCmveOTDGxdA7Di8bURQNnBS7hmeVmKw7YkpybKSC49117QF5
-	pbk7bMnupoNZi2EWOuioUWR/oCa3sjC/+EMryQ+x6cAdGi9x2kN+dm8+9C82aIbFls7hzsyBZFB
-	JtHrEuLPc2Yha255p3vwrsG3PIOu2yzJAlDkQV+9KkvtanisXs1LgmbkOuyOee5yVuQ==
-X-Gm-Gg: ASbGncsAnOE+iyp83E8yOPeYxcZFnxB+RFNUKcQTAOyPemfu7WKqjSxD6qxVlYX/Tf8
-	rnB7K/oqO7/Ut6E2kivkWStFh2HB/YyuprD/L8WP5tHDj3v0eJn5wLZ+zfgaUhH3jNYR1w9z8KA
-	PtTdM1gabYS+zQ3aNz4Bxfo2pT2o98BqvnO2EmZxaCAq6MbYF8iYF5a+5P7s1Ebyo3YM+WXKlzL
-	+/xErK5KQ0wxxnahqlAzmQPEqOdpTkP6yxDnZwn2RNeKZMk4t0YO4gfx8DTj7j2qQV76mvjVr+i
-	pCpIXm4ZNeu8v3R8CopSvo94wskEoiP0ScQz6IK9R4Tgs+aNCHV8FqY5436hLKag0iQ/Sbynq1A
-	vnThHsz9j
-X-Received: by 2002:a05:6a21:3394:b0:1f3:3da7:e7dc with SMTP id adf61e73a8af0-1f544ad882amr1480685637.9.1741299430580;
-        Thu, 06 Mar 2025 14:17:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHxvKrqgUh7WanqKPKT+aKjTalQWqsTAW25j/DuonljCYPdTl7tc6IBs982w/jwZnFw8sKxww==
-X-Received: by 2002:a05:6a21:3394:b0:1f3:3da7:e7dc with SMTP id adf61e73a8af0-1f544ad882amr1480662637.9.1741299430154;
-        Thu, 06 Mar 2025 14:17:10 -0800 (PST)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af28b766ce4sm641085a12.72.2025.03.06.14.17.09
+        d=1e100.net; s=20230601; t=1741306859; x=1741911659;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8s8l1GoWqcEjsTPQFWOhmnTF1QA5xT4gV01fDhrslOQ=;
+        b=SiGLiFZhUO//jqgDvThaPYuL/JJKGb7ws85Gs46tacMdSU0/rVW4EVgzOLXmI7kARO
+         wV9qwZHZssv7DRMhgbyUz0My8N5uRXyPKkEMEeOjGevEO9UlPNzrN3i7ZiqLfz0BXqEh
+         TNQ4BKmzttNThJwj7Q+xVSYT/yjgUsYQlkz7ggY4fs2gq3y/4OIUFPhZLdtEl6RuDq5/
+         +l1u4SZAVMkJwhuj5QGkEaMsmOXcRtwdK2HZJLu/JtYOLRJO++JFoaiE/9JieNUDPTm7
+         vm6JQuFhYOKbnBX53SleBcyRvqL+OoVxnllDGvpw1WoGv/jtVhqtOvdwy1ywsLA7kUPv
+         xhWw==
+X-Gm-Message-State: AOJu0YzYdWBzQj0I9x9OBXHNl2NrZqN+4AqFnANgFNsg1fjrr6hK+9Hi
+	qC09wSC0A1uRYu8uvsanGysqepScWpwwWWH1lgEIAe9bdl+HdFlWAyg8tw==
+X-Gm-Gg: ASbGncvzkxH56apJQjLB2ltgNKTHsCF3ovFHEKzIrKZMruaRLTnBIw+498JVhFoleKd
+	Snyro6UZpBTfQlJ3mLrpQydCRNw+H/TelFsIgjbqkvM0XCKlENpP3RBncpiA0hFDlvgYtY+6aP9
+	5ueS0DZMg9GV+WY6NcMgUxoklhOAjsHMbJqAi+HI8Jjb8NXkbYNDMYIZF6pR6xEqafjP0DR5HC0
+	CaCBm/oQNF4fhisCsiCRI2VYc0WwjsDDPO7Q8FbTEV7/jQtK3jKof+4/bJPBa4zNtoSi4hMcMGU
+	3hCxKnExDPAQ+g5fBHb6AJE37LkinuODS7kFgMLXLGJ4HVzTgNeb5A==
+X-Google-Smtp-Source: AGHT+IF2j7ADnlG5R2RRT1IgZZ3YSn7hCs4zegUqNRTy1CHbxoUuaUdxEeYM4FgTAC7nrXYEJVm8Vw==
+X-Received: by 2002:a17:907:3f2a:b0:abf:4bde:51b9 with SMTP id a640c23a62f3a-ac252f5ca60mr127985566b.35.1741306859288;
+        Thu, 06 Mar 2025 16:20:59 -0800 (PST)
+Received: from [192.168.0.50] ([79.119.240.155])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac23988e579sm175284466b.154.2025.03.06.16.20.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Mar 2025 14:17:09 -0800 (PST)
-Message-ID: <6708cd67-d944-4fc0-a9b7-1180c1e6107e@oss.qualcomm.com>
-Date: Thu, 6 Mar 2025 14:17:08 -0800
+        Thu, 06 Mar 2025 16:20:58 -0800 (PST)
+Message-ID: <d25331f4-653d-4ab1-b3dd-0ec1a73209e0@gmail.com>
+Date: Fri, 7 Mar 2025 02:20:56 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,74 +79,78 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 wireless-next 04/15] wifi: cfg80211: allow IR in 20 MHz
- configurations
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-        Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
-References: <20250306234939.fe65d7888206.I8a8f79e1c9eb74936929463960ee2a324712fe51@changeid>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <20250306234939.fe65d7888206.I8a8f79e1c9eb74936929463960ee2a324712fe51@changeid>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next v2 0/7] Add support for RTL8814AE and RTL8814AU
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: c4M32i6o7QrdZZAOir_GJwp2P_xm09dN
-X-Authority-Analysis: v=2.4 cv=R5D5GcRX c=1 sm=1 tr=0 ts=67ca1ee7 cx=c_pps a=RP+M6JBNLl+fLTcSJhASfg==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=QyXUC8HyAAAA:8 a=NTfEBhTFy7t0cwDD6JkA:9 a=QEXdDO2ut3YA:10
- a=bK4U8n-rULbcVNSXfz1l:22 a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-GUID: c4M32i6o7QrdZZAOir_GJwp2P_xm09dN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-06_08,2025-03-06_04,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- suspectscore=0 phishscore=0 mlxscore=0 priorityscore=1501 clxscore=1015
- spamscore=0 mlxlogscore=994 malwarescore=0 bulkscore=0 lowpriorityscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502100000
- definitions=main-2503060171
 
-On 3/6/2025 1:51 PM, Miri Korenblit wrote:
-> From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-> 
-> Some regulatory bodies doesn't allow IR (initiate radioation) on a
-> specific subband, but allows it for channels with a bandwidth of 20 MHz.
-> Add a channel flag that indicates that, and consider it in
-> cfg80211_reg_check_beaconing.
-> 
-> While on it, fix the indentation and kernel doc of enum
-> nl80211_reg_rule_flags.
-> 
-> Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+These patches add 3 new modules: rtw88_8814au for USB devices,
+rtw88_8814ae for PCI devices, and rtw88_8814a which has all the logic
+for both.
 
-S-O-B still doesn't match From:
+Originally it was supposed to be only RTL8814AU. Recently I realised
+that RTL8814AE can be supported too with minimal effort, so here it is,
+just one extra file and a few lines in rtw8814a.{c,h}.
 
-> Co-developed-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
+Another set of patches will improve performance a bit.
 
-I missed this in the last review. Missing S-O-B of the co-developer
+Bitterblue Smith (7):
+  wifi: rtw88: Add some definitions for RTL8814AU
+  wifi: rtw88: Add rtw8814a_table.c (part 1/2)
+  wifi: rtw88: Add rtw8814a_table.c (part 2/2)
+  wifi: rtw88: Add rtw8814a.{c,h}
+  wifi: rtw88: Add rtw8814ae.c
+  wifi: rtw88: Add rtw8814au.c
+  wifi: rtw88: Enable the new RTL8814AE/RTL8814AU drivers
 
-> Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-> ---
->  include/net/cfg80211.h       |  4 +++
->  include/uapi/linux/nl80211.h | 52 ++++++++++++++++++++----------------
->  net/wireless/chan.c          |  8 +++++-
->  net/wireless/nl80211.c       |  4 +++
->  net/wireless/reg.c           |  4 ++-
->  5 files changed, 47 insertions(+), 25 deletions(-)
-> ---
-> v2: rephrase the commit message
-> 
-> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-> index 29b9cf0fe6c8..9a4a5c20b568 100644
-> --- a/include/net/cfg80211.h
-> +++ b/include/net/cfg80211.h
-> @@ -127,6 +127,9 @@ struct wiphy;
->   *	even if it is otherwise disabled.
->   * @IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP: Allow using this channel for AP operation
->   *	with very low power (VLP), even if otherwise set to NO_IR.
-> + * @IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY: Allow using this channel for
-> + *	soft AP operations and active scan in 20 MHz bandwidth,
+ drivers/net/wireless/realtek/rtw88/Kconfig    |    25 +
+ drivers/net/wireless/realtek/rtw88/Makefile   |     9 +
+ drivers/net/wireless/realtek/rtw88/reg.h      |    66 +-
+ drivers/net/wireless/realtek/rtw88/rtw8814a.c |  2257 ++
+ drivers/net/wireless/realtek/rtw88/rtw8814a.h |    62 +
+ .../wireless/realtek/rtw88/rtw8814a_table.c   | 23930 ++++++++++++++++
+ .../wireless/realtek/rtw88/rtw8814a_table.h   |    40 +
+ .../net/wireless/realtek/rtw88/rtw8814ae.c    |    31 +
+ .../net/wireless/realtek/rtw88/rtw8814au.c    |    54 +
+ 9 files changed, 26470 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814a.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814a.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814a_table.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814a_table.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814ae.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8814au.c
 
-note this patch still uses the term "soft AP" in multiple places.
+
+base-commit: c61da149b9c2e439abe27845a71dae5ce5f5985c
+prerequisite-patch-id: cbbeefd71b59d1fcea72cda22b1eb0e62b40a751
+prerequisite-patch-id: 18beb866f984f1ed6769d95b3ab7894d75b3e7d1
+prerequisite-patch-id: e1e0ceb709fe71d6c48e063768698c78558f11c0
+prerequisite-patch-id: 17ec15a2287ce8766e35b1113fd043d25ebba9ed
+prerequisite-patch-id: 36ff8f0da543fbc931db6cad60d8512dba82ecd0
+prerequisite-patch-id: 0b5c2a854227b26491421be28b9348e098195881
+prerequisite-patch-id: aef15a0990448c435356fe7631ddafbf35606731
+prerequisite-patch-id: 56dda569e509fef7403a02d4700b22f27301ea37
+prerequisite-patch-id: 0cc73f75273b064d6e8783b8ac4ed06a1025ced2
+prerequisite-patch-id: 04fd029f6ae8a5f3d944ecb4c959e55d2599dd87
+prerequisite-patch-id: fd5c77b6933048355029ecbcdaf3107183c26aba
+prerequisite-patch-id: 6f50c5e526f96008b795477ce97e3c75845f113f
+prerequisite-patch-id: 6d85bbc95c0eec75de67992a176907afa1fdbd4e
+prerequisite-patch-id: 1e4fd27474a3622807b7fe5bfd3a5a09261fba46
+prerequisite-patch-id: a762f356fc162e29375af231beedfc06dc3a4fc2
+prerequisite-patch-id: 1c68d0186aabcd2c7ae21b605288aaa872651307
+prerequisite-patch-id: b0c4ae910737add0d3068aa92efa265d11dd66e4
+prerequisite-patch-id: 5b58a4a0870850a6768eca1a2e9d1523dfdeae84
+prerequisite-patch-id: aa98043b8ed5ddaba365c045aaf0466213d18dcc
+prerequisite-patch-id: af6b19b41c6357b9ff8714639465b8e95f74bf73
+prerequisite-patch-id: 2855bad33fc600e2d5145902462f0e20d6d92e0d
+prerequisite-patch-id: 70c46911f78d2e88af8ed220cb692e098e1572d6
+prerequisite-patch-id: 2321dc9826f91f47d58605b810b626842dbc4312
+prerequisite-patch-id: 55be10515d0350bcbfb3d42fd085e1492041aeb1
+prerequisite-patch-id: 0cdc30856400ecfeba230ed9b794829afda6a4d5
+-- 
+2.48.1
 
 
