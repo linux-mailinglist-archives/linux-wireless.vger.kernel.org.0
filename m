@@ -1,149 +1,178 @@
-Return-Path: <linux-wireless+bounces-19974-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19975-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7D1A55D79
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 03:07:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1851A55E11
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 04:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C36D7A5222
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 02:06:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAE6917551D
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 03:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD3963CF;
-	Fri,  7 Mar 2025 02:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9285A18C337;
+	Fri,  7 Mar 2025 03:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Dx7VkF05"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="sGqJJ5Zi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E2055897
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Mar 2025 02:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4741624F7;
+	Fri,  7 Mar 2025 03:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741313249; cv=none; b=aFq5oFXcY6nik32pKBUOlN15d3x/dzx1pUCP2uFML3WxBALVfdbL3+qH3CvLyXzHzg9nXkF44TQq8BAklwKLuKQbxC2+VkVEzhkGbohZPLJgZYF22o5Uj/VEhPQrUazllo408OgFRwaxiP+QpzM6Q0p3HcnfI3hvzVnhW8Gwdms=
+	t=1741317133; cv=none; b=U2LgPUPA00nsOPdeeCdBcLGD9yPMNIJnstj4cTsEcbdpmdJz/8bCJVZyvOirySEqZRXUiUEl3j/xHHZwSk8kEvM9H/7U9iF+Gwnu2dLM4Fph9bPmUai9MJa1W122bSSQC2HeRDF7T0eqPdpqHgp331dKGH6vfmnx/h76SnuR3f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741313249; c=relaxed/simple;
-	bh=G1UzyC1VxIoVG8gSbBIIf+7L0W+iBJ3Lf0jf67T6GdI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=APotaevr9Ft75Q40q5vRs3oAmBWKsqnN/4hI3zX5eOM8mE9RSckeoue4cxBHxS1LBC6pUqQd+dpL95S83rUk6jYTaE1A5H+VrB0wAzC3opzUfHWBHZ/Eo0/ofqJ0zL0rFNeI7w1hmXoh7tzYuI5jJlvVYdKtxhRwx8ehx1xErm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Dx7VkF05; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52727BHo8189541, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1741313231; bh=G1UzyC1VxIoVG8gSbBIIf+7L0W+iBJ3Lf0jf67T6GdI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=Dx7VkF059qqX4Ktdx41kGhU+Cl152jjL+cGh2ktEj/y3KNb5X0ZxUC2+Zq4qcONck
-	 YTRBas+OA6oiijAN5cJqwvHq4bWAp5T1s9zFDklol6ppf+bReUy7XPEfpYAOnSb9kg
-	 GqRDKPQSlg58+WB9zXpUrpXaZro5+hUNi8HjFJiOgfJsRaIYvh+GkGlt/PQOEOlhXx
-	 oGgp98gzh4M2tdphXSSac9pxLmT7O6MQr+bwoIrYtiocTut3locc8zczh7TYv0rDpj
-	 h/I5obj9UgZOwVA397SjLIWFD8eDsl6Zrbqr1bi0IfxW9UI7RQTs7mLJpC64ShAxR0
-	 8w2HWVRppf8Mw==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52727BHo8189541
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 7 Mar 2025 10:07:11 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 7 Mar 2025 10:07:11 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 7 Mar 2025 10:07:10 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Fri, 7 Mar 2025 10:07:10 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Ilan
- Peer" <ilan.peer@intel.com>
-Subject: RE: [PATCH wireless-next 11/15] wifi: cfg80211: Update the link address when a link is added
-Thread-Topic: [PATCH wireless-next 11/15] wifi: cfg80211: Update the link
- address when a link is added
-Thread-Index: AQHbjoTKbmHtT4miCEyW1AHCshD3RrNm69Kw
-Date: Fri, 7 Mar 2025 02:07:10 +0000
-Message-ID: <756726fac4484a1e862f0f4186691795@realtek.com>
-References: <20250306104326.4105722-1-miriam.rachel.korenblit@intel.com>
- <20250306124057.6ae37b21922b.I79b010ea9aab47893e4f22c266362fde30b7f9ac@changeid>
-In-Reply-To: <20250306124057.6ae37b21922b.I79b010ea9aab47893e4f22c266362fde30b7f9ac@changeid>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1741317133; c=relaxed/simple;
+	bh=OlN/qHw1EDH1QFP2vl6V3cxqhs9+TgVMXd8s9BxDCNk=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=QFnvbaqs3eHSy4MIAwBFJzlTlpbOLCq21fsftbIEpA6sjdljjMY0SQJ99j5qe286KGtd4aHdHqn7ZII3OazcI4M91tUdjF+fcIvV4PqdfCV6zLkObkHs/sqWq8Am+t/mGJw8NxzgkPAnfenFKsrz9TAgqZhOLuqb+eJ7sjNoXa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=sGqJJ5Zi; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 527388dS027163
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 6 Mar 2025 19:08:09 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 527388dS027163
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1741316897;
+	bh=SFgD9M+p5d4igshN6SMPc//iuzRVz2Eb/CCPvhQeQ4k=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=sGqJJ5ZiwQOefUeCTR61k1c1/2TpGWbrT4NEZVyWsBZiOfJ2/maPRM1og0k0XCX0F
+	 Ld9+eSu4xqDd+X+2qrgg7JjXoRBSSgs0lHVrfqkS0e4U4hcPmsGy5xSjZrm2c7Bevm
+	 P+0eFqVIMHPc1WjLrMn1MEEByE/9797DZwHHF0UTXNq820Vzgy2pkrWelyCfG+lCsx
+	 nB/AlVPUMY5B1hNLKjeBElqWXXgIcmEcq9Gwt93UJnzVfHFNvMcV/dXcWdGN56w6Rm
+	 KhOBkFgfo1x8Y55sRT52V0jFp1STtD7Fc+xR7U3FcWfuLN1A4EAU7/MZBEz8Gsc1SK
+	 DnEX3ZKMPW6zA==
+Date: Thu, 06 Mar 2025 19:08:06 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
+        andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+        dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
+        hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
+        vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+        parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+        johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+        jirislaby@kernel.org, yury.norov@gmail.com, akpm@linux-foundation.org
+CC: alistair@popple.id.au, linux@rasmusvillemoes.dk,
+        Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+        jernej.skrabec@gmail.com, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+        dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+        oss-drivers@corigine.com, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+        brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+        bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
+        Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: Re: [PATCH v3 00/16] Introduce and use generic parity16/32/64 helper
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20250306162541.2633025-1-visitorckw@gmail.com>
+References: <20250306162541.2633025-1-visitorckw@gmail.com>
+Message-ID: <4732F6F6-1D41-4E3F-BE24-E54489BC699C@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Miri Korenblit <miriam.rachel.korenblit@intel.com> wrote:
-> From: Ilan Peer <ilan.peer@intel.com>
->=20
-> When links are added, update the wireless device link addresses based
-> on the information provided by the driver.
->=20
-> Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-> Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-> ---
->  include/net/cfg80211.h | 1 +
->  net/wireless/mlme.c    | 4 ++++
->  2 files changed, 5 insertions(+)
->=20
-> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-> index 6f76059c0aa5..558dc88b9f07 100644
-> --- a/include/net/cfg80211.h
-> +++ b/include/net/cfg80211.h
-> @@ -9771,6 +9771,7 @@ struct cfg80211_mlo_reconf_done_data {
->         u16 added_links;
->         struct {
->                 struct cfg80211_bss *bss;
-> +               u8 *addr;
+On March 6, 2025 8:25:25 AM PST, Kuan-Wei Chiu <visitorckw@gmail=2Ecom> wro=
+te:
+>Several parts of the kernel contain redundant implementations of parity
+>calculations for 16/32/64-bit values=2E Introduces generic
+>parity16/32/64() helpers in bitops=2Eh, providing a standardized
+>and optimized implementation=2E=20
+>
+>Subsequent patches refactor various kernel components to replace
+>open-coded parity calculations with the new helpers, reducing code
+>duplication and improving maintainability=2E
+>
+>Co-developed-by: Yu-Chun Lin <eleanor15x@gmail=2Ecom>
+>Signed-off-by: Yu-Chun Lin <eleanor15x@gmail=2Ecom>
+>Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail=2Ecom>
+>---
+>In v3, I use parityXX() instead of the parity() macro since the
+>parity() macro may generate suboptimal code and requires special hacks
+>to make GCC happy=2E If anyone still prefers a single parity() macro,
+>please let me know=2E
+>
+>Additionally, I changed parityXX() << y users to !!parityXX() << y
+>because, unlike C++, C does not guarantee that true casts to int as 1=2E
+>
+>Changes in v3:
+>- Avoid using __builtin_parity=2E
+>- Change return type to bool=2E
+>- Drop parity() macro=2E
+>- Change parityXX() << y to !!parityXX() << y=2E
+>
+>
+>Changes in v2:
+>- Provide fallback functions for __builtin_parity() when the compiler
+>  decides not to inline it
+>- Use __builtin_parity() when no architecture-specific implementation
+>  is available
+>- Optimize for constant folding when val is a compile-time constant
+>- Add a generic parity() macro
+>- Drop the x86 bootflag conversion patch since it has been merged into
+>  the tip tree
+>
+>v1: https://lore=2Ekernel=2Eorg/lkml/20250223164217=2E2139331-1-visitorck=
+w@gmail=2Ecom/
+>v2: https://lore=2Ekernel=2Eorg/lkml/20250301142409=2E2513835-1-visitorck=
+w@gmail=2Ecom/
+>
+>Kuan-Wei Chiu (16):
+>  bitops: Change parity8() return type to bool
+>  bitops: Add parity16(), parity32(), and parity64() helpers
+>  media: media/test_drivers: Replace open-coded parity calculation with
+>    parity8()
+>  media: pci: cx18-av-vbi: Replace open-coded parity calculation with
+>    parity8()
+>  media: saa7115: Replace open-coded parity calculation with parity8()
+>  serial: max3100: Replace open-coded parity calculation with parity8()
+>  lib/bch: Replace open-coded parity calculation with parity32()
+>  Input: joystick - Replace open-coded parity calculation with
+>    parity32()
+>  net: ethernet: oa_tc6: Replace open-coded parity calculation with
+>    parity32()
+>  wifi: brcm80211: Replace open-coded parity calculation with parity32()
+>  drm/bridge: dw-hdmi: Replace open-coded parity calculation with
+>    parity32()
+>  mtd: ssfdc: Replace open-coded parity calculation with parity32()
+>  fsi: i2cr: Replace open-coded parity calculation with parity32()
+>  fsi: i2cr: Replace open-coded parity calculation with parity64()
+>  Input: joystick - Replace open-coded parity calculation with
+>    parity64()
+>  nfp: bpf: Replace open-coded parity calculation with parity64()
+>
+> drivers/fsi/fsi-master-i2cr=2Ec                 | 18 ++-----
+> =2E=2E=2E/drm/bridge/synopsys/dw-hdmi-ahb-audio=2Ec   |  8 +--
+> drivers/input/joystick/grip_mp=2Ec              | 17 +-----
+> drivers/input/joystick/sidewinder=2Ec           | 24 ++-------
+> drivers/media/i2c/saa7115=2Ec                   | 12 +----
+> drivers/media/pci/cx18/cx18-av-vbi=2Ec          | 12 +----
+> =2E=2E=2E/media/test-drivers/vivid/vivid-vbi-gen=2Ec  |  8 +--
+> drivers/mtd/ssfdc=2Ec                           | 20 ++-----
+> drivers/net/ethernet/netronome/nfp/nfp_asm=2Ec  |  7 +--
+> drivers/net/ethernet/oa_tc6=2Ec                 | 19 ++-----
+> =2E=2E=2E/broadcom/brcm80211/brcmsmac/dma=2Ec         | 16 +-----
+> drivers/tty/serial/max3100=2Ec                  |  3 +-
+> include/linux/bitops=2Eh                        | 52 +++++++++++++++++--
+> lib/bch=2Ec                                     | 14 +----
+> 14 files changed, 77 insertions(+), 153 deletions(-)
+>
 
-Should swap order of patch 12/15, which does assign addr?
-
-At first glance, this patch doesn't set addr and callee does memcpy(), whic=
-h
-kernel will raise NULL pointer dereference exception.
-
-And there are two callers, but patch 12/15 only set one of them.
-
-mac80211/mlme.c:3896:           cfg80211_mlo_reconf_add_done(sdata->dev, &d=
-one_data);
-mac80211/mlme.c:10125:  cfg80211_mlo_reconf_add_done(sdata->dev, &done_data=
-);
-
->         } links[IEEE80211_MLD_MAX_NUM_LINKS];
->  };
->=20
-> diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-> index 956d33b219df..05d44a443518 100644
-> --- a/net/wireless/mlme.c
-> +++ b/net/wireless/mlme.c
-> @@ -1360,6 +1360,10 @@ void cfg80211_mlo_reconf_add_done(struct net_devic=
-e *dev,
->                 if (data->added_links & BIT(link_id)) {
->                         wdev->links[link_id].client.current_bss =3D
->                                 bss_from_pub(bss);
-> +
-> +                       memcpy(wdev->links[link_id].addr,
-> +                              data->links[link_id].addr,
-> +                              ETH_ALEN);
->                 } else {
->                         cfg80211_unhold_bss(bss_from_pub(bss));
->                         cfg80211_put_bss(wiphy, bss);
-> --
-> 2.34.1
->=20
-
+(int)true most definitely is guaranteed to be 1=2E
 
