@@ -1,190 +1,112 @@
-Return-Path: <linux-wireless+bounces-19976-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19977-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCED8A55E26
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 04:17:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B80E9A55F35
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 05:09:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB7BC7A3783
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 03:16:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20DB81894D84
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 04:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009F418DB03;
-	Fri,  7 Mar 2025 03:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC89718DB1F;
+	Fri,  7 Mar 2025 04:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="XeY620eU"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZHAlsoVg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C41829408;
-	Fri,  7 Mar 2025 03:17:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2385DF49;
+	Fri,  7 Mar 2025 04:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741317461; cv=none; b=jsLoyJ6GxmDcLYRjYw++8rwdtYNbAMk3vGsyzYo1+zdjt44w1OY5S8xP47Id5Tuj5VqEIgkgQX9HUlqPACiOu4KuSkHOpTLt9+/f+onejQr/8uGwvbPrbw056EunbNe7pga9ZlaWdH1TUMd58zfeWqEZRc1Sdd2GWp1zhHNCJJE=
+	t=1741320561; cv=none; b=KCV6npI/rp1MTJiBz3ISv2relXyfc2VWv7Hd7R8CAA1W3pZW4yU0XJHCCtjsG7BQJq7cdh7Y2fm1qKO5er58OmKXRa5kV6Y+YIK1Lq1g6IypVgR5HiNagwmPs9K8WFAKjuY4PAopu0sffOQP6CmgLPN7JMfHZmcNY/VEFhOoK7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741317461; c=relaxed/simple;
-	bh=SaHWAsYe/9KqOVBf8OkOQT2uuUcRHvd28XQ7nb1mCP0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=rBWmGO0Sinox3+cbHVtlSt5POPG5Jbzh77JIWDRqIOW45dqoVONeEoKP9us/JF9rfWnLK9z74zEikQcCk0e1SdIU/wb8xeXoQKiWfyOBE53f61kTGj0+Pkp85gVIKC6m+Gx5uaUxO7c1Oot3/RWGBU6K+CB/hlC/6JkkDtKIOSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=XeY620eU; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5273EFGO029055
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 6 Mar 2025 19:14:16 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5273EFGO029055
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1741317259;
-	bh=hyUZKDF5+ooUtYLzko1Czdm29ayQGeHv7M7tkZymGRA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=XeY620eULnP2/+TN4Y4Oy+L1kjV0g9g4gLF3bGbxoub6oXCjIocCsux0s9lsBThor
-	 D5MCM8jchD63LZA41Z+zQXpcfDD0kw68ZvT5gJFtkglJP52RigyVCCeTtLHz5T59Sf
-	 BdcfD+nIIh4OJ7E3YNolewxhV+KD9eYVj9gc77UPIV5o6BkuLWAjitNYqDwOVS12jl
-	 DqNQVt47yWF1ZUW8TzhPps1sdTJ6LcbKbxzoFjRF0/a0IBkoL6S6dVIt6/UEGX2S2i
-	 fnnZIzD2De4gOv+3QNiBzF/iHmcOV6iyiEfSH8J1h96iKhLsl8VHaAdju6VU38SRaP
-	 yKG9JyADkfy7g==
-Date: Thu, 06 Mar 2025 19:14:13 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
-        andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-        dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
-        hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
-        vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
-        johannes@sipsolutions.net, gregkh@linuxfoundation.org,
-        jirislaby@kernel.org, yury.norov@gmail.com, akpm@linux-foundation.org
-CC: alistair@popple.id.au, linux@rasmusvillemoes.dk,
-        Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
-        jernej.skrabec@gmail.com, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-        dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-        oss-drivers@corigine.com, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-        brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
-        bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
-        Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: Re: [PATCH v3 00/16] Introduce and use generic parity16/32/64 helper
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250306162541.2633025-1-visitorckw@gmail.com>
-References: <20250306162541.2633025-1-visitorckw@gmail.com>
-Message-ID: <F134DC06-54DE-4B8E-8AE0-3740275835C1@zytor.com>
+	s=arc-20240116; t=1741320561; c=relaxed/simple;
+	bh=vYNXxjTEA5P8TI6zuQI7bgTFrFFYpBZ5P49z2LAHFLI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tGx6UbjmUnISJhGQJOu10dAPlZSGi2OxtFu0P4kLTxRmhLFxOj8G6FFWr3pEIYZ5b2JHiyXoQFpWfWFWy1+uxbAyEK3Cw4HwCtnRijwE4vMI7oRUYqOptJi+HzCe8lYLWaMyZlv6MmEf61inmF6CiRg070zm/1i5xm5AsIBEqAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZHAlsoVg; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 526LFcm5019600;
+	Fri, 7 Mar 2025 04:09:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=3myaz05gJUsn4Trep8ooUM
+	0g2cG7uUv7yvGPvMB7amE=; b=ZHAlsoVggCn7tpJS85kKQm4U8GwJhD4V17zsK6
+	ArgUy/cKolbYv1DpgTKXpFCI/VJTW/X60VcjpcYnHsKz4lnTZ6BAKnWqv+qSFZR5
+	edngswx1nDHRxzURyBly5ZIUg0MGgw1Uu8C5QBl7eG4qb+62LQ4AEpMibN1dVteO
+	27AjCet4lqiPrFFRkcg3DxaahklTaPHiQ3RLUJ7tgIYrQzvYfBkgKwI9H40ZQ7pu
+	K/8xpPwSiapYCqk1hkEqb0nVmvT+OkxdGVM3pFDwyqbKslkAntVvpO1EC3csk3/c
+	9uK0K8A3+mNxDsZl4Gp01nR7+o6OG+QFhvDraLdlTJyJv3sQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 457kfbgtrr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Mar 2025 04:09:15 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52749E7l008764
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 7 Mar 2025 04:09:14 GMT
+Received: from Z2-SFF-G9-MQ.ap.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 6 Mar 2025 20:09:12 -0800
+From: Miaoqing Pan <quic_miaoqing@quicinc.com>
+To: <quic_jjohnson@quicinc.com>
+CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Miaoqing Pan <quic_miaoqing@quicinc.com>
+Subject: [PATCH ath-next 0/2] wifi: ath11k: fix HTC rx insufficient length
+Date: Fri, 7 Mar 2025 12:08:46 +0800
+Message-ID: <20250307040848.3822788-1-quic_miaoqing@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: mVe9xauhExAEdFDTJ0TbcDPp49n6uBCj
+X-Authority-Analysis: v=2.4 cv=D/e9KuRj c=1 sm=1 tr=0 ts=67ca716b cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=G9Sqsl_jvRD_TnvheR8A:9
+X-Proofpoint-GUID: mVe9xauhExAEdFDTJ0TbcDPp49n6uBCj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-07_01,2025-03-06_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0 clxscore=1011
+ malwarescore=0 impostorscore=0 suspectscore=0 adultscore=0 bulkscore=0
+ mlxlogscore=649 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503070025
 
-On March 6, 2025 8:25:25 AM PST, Kuan-Wei Chiu <visitorckw@gmail=2Ecom> wro=
-te:
->Several parts of the kernel contain redundant implementations of parity
->calculations for 16/32/64-bit values=2E Introduces generic
->parity16/32/64() helpers in bitops=2Eh, providing a standardized
->and optimized implementation=2E=20
->
->Subsequent patches refactor various kernel components to replace
->open-coded parity calculations with the new helpers, reducing code
->duplication and improving maintainability=2E
->
->Co-developed-by: Yu-Chun Lin <eleanor15x@gmail=2Ecom>
->Signed-off-by: Yu-Chun Lin <eleanor15x@gmail=2Ecom>
->Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail=2Ecom>
->---
->In v3, I use parityXX() instead of the parity() macro since the
->parity() macro may generate suboptimal code and requires special hacks
->to make GCC happy=2E If anyone still prefers a single parity() macro,
->please let me know=2E
->
->Additionally, I changed parityXX() << y users to !!parityXX() << y
->because, unlike C++, C does not guarantee that true casts to int as 1=2E
->
->Changes in v3:
->- Avoid using __builtin_parity=2E
->- Change return type to bool=2E
->- Drop parity() macro=2E
->- Change parityXX() << y to !!parityXX() << y=2E
->
->
->Changes in v2:
->- Provide fallback functions for __builtin_parity() when the compiler
->  decides not to inline it
->- Use __builtin_parity() when no architecture-specific implementation
->  is available
->- Optimize for constant folding when val is a compile-time constant
->- Add a generic parity() macro
->- Drop the x86 bootflag conversion patch since it has been merged into
->  the tip tree
->
->v1: https://lore=2Ekernel=2Eorg/lkml/20250223164217=2E2139331-1-visitorck=
-w@gmail=2Ecom/
->v2: https://lore=2Ekernel=2Eorg/lkml/20250301142409=2E2513835-1-visitorck=
-w@gmail=2Ecom/
->
->Kuan-Wei Chiu (16):
->  bitops: Change parity8() return type to bool
->  bitops: Add parity16(), parity32(), and parity64() helpers
->  media: media/test_drivers: Replace open-coded parity calculation with
->    parity8()
->  media: pci: cx18-av-vbi: Replace open-coded parity calculation with
->    parity8()
->  media: saa7115: Replace open-coded parity calculation with parity8()
->  serial: max3100: Replace open-coded parity calculation with parity8()
->  lib/bch: Replace open-coded parity calculation with parity32()
->  Input: joystick - Replace open-coded parity calculation with
->    parity32()
->  net: ethernet: oa_tc6: Replace open-coded parity calculation with
->    parity32()
->  wifi: brcm80211: Replace open-coded parity calculation with parity32()
->  drm/bridge: dw-hdmi: Replace open-coded parity calculation with
->    parity32()
->  mtd: ssfdc: Replace open-coded parity calculation with parity32()
->  fsi: i2cr: Replace open-coded parity calculation with parity32()
->  fsi: i2cr: Replace open-coded parity calculation with parity64()
->  Input: joystick - Replace open-coded parity calculation with
->    parity64()
->  nfp: bpf: Replace open-coded parity calculation with parity64()
->
-> drivers/fsi/fsi-master-i2cr=2Ec                 | 18 ++-----
-> =2E=2E=2E/drm/bridge/synopsys/dw-hdmi-ahb-audio=2Ec   |  8 +--
-> drivers/input/joystick/grip_mp=2Ec              | 17 +-----
-> drivers/input/joystick/sidewinder=2Ec           | 24 ++-------
-> drivers/media/i2c/saa7115=2Ec                   | 12 +----
-> drivers/media/pci/cx18/cx18-av-vbi=2Ec          | 12 +----
-> =2E=2E=2E/media/test-drivers/vivid/vivid-vbi-gen=2Ec  |  8 +--
-> drivers/mtd/ssfdc=2Ec                           | 20 ++-----
-> drivers/net/ethernet/netronome/nfp/nfp_asm=2Ec  |  7 +--
-> drivers/net/ethernet/oa_tc6=2Ec                 | 19 ++-----
-> =2E=2E=2E/broadcom/brcm80211/brcmsmac/dma=2Ec         | 16 +-----
-> drivers/tty/serial/max3100=2Ec                  |  3 +-
-> include/linux/bitops=2Eh                        | 52 +++++++++++++++++--
-> lib/bch=2Ec                                     | 14 +----
-> 14 files changed, 77 insertions(+), 153 deletions(-)
->
+This series of patches is to address the issue reported in
+https://bugzilla.kernel.org/show_bug.cgi?id=218623.
 
-!!x is used with a value that is not necessary booleanized already, and is=
- exactly equivalent to (x ? true : false)=2E It is totally redundant on a v=
-alue known to be bool=2E
+ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1488, expected 1492
+ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
 
-If (int)true wasn't inherently 1, then !! wouldn't work either=2E=20
+Miaoqing Pan (2):
+  wifi: ath11k: add function to get next srng desc
+  wifi: ath11k: fix HTC rx insufficient length
 
-There was a time when some code would use as a temporary hack:=20
+ drivers/net/wireless/ath/ath11k/ce.c   | 32 ++++++++++++++++++++------
+ drivers/net/wireless/ath/ath11k/core.h |  1 +
+ drivers/net/wireless/ath/ath11k/hal.c  | 24 +++++++++++--------
+ drivers/net/wireless/ath/ath11k/hal.h  |  3 ++-
+ 4 files changed, 42 insertions(+), 18 deletions(-)
 
-typedef enum { false, true } bool;
 
-=2E=2E=2E when compiling on pre-C99 compilers; in that case a (bool) case =
-wouldn't necessarily work as expected, whereas !! would=2E Furthermore, unl=
-ike (bool), !! works in the preprocessor=2E
+base-commit: 3148fc3cf193dbbd2e14eee59468a510a38bf604
+-- 
+2.25.1
+
 
