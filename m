@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-19975-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-19976-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1851A55E11
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 04:12:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCED8A55E26
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 04:17:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAE6917551D
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 03:12:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB7BC7A3783
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 03:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9285A18C337;
-	Fri,  7 Mar 2025 03:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009F418DB03;
+	Fri,  7 Mar 2025 03:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="sGqJJ5Zi"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="XeY620eU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4741624F7;
-	Fri,  7 Mar 2025 03:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C41829408;
+	Fri,  7 Mar 2025 03:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741317133; cv=none; b=U2LgPUPA00nsOPdeeCdBcLGD9yPMNIJnstj4cTsEcbdpmdJz/8bCJVZyvOirySEqZRXUiUEl3j/xHHZwSk8kEvM9H/7U9iF+Gwnu2dLM4Fph9bPmUai9MJa1W122bSSQC2HeRDF7T0eqPdpqHgp331dKGH6vfmnx/h76SnuR3f4=
+	t=1741317461; cv=none; b=jsLoyJ6GxmDcLYRjYw++8rwdtYNbAMk3vGsyzYo1+zdjt44w1OY5S8xP47Id5Tuj5VqEIgkgQX9HUlqPACiOu4KuSkHOpTLt9+/f+onejQr/8uGwvbPrbw056EunbNe7pga9ZlaWdH1TUMd58zfeWqEZRc1Sdd2GWp1zhHNCJJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741317133; c=relaxed/simple;
-	bh=OlN/qHw1EDH1QFP2vl6V3cxqhs9+TgVMXd8s9BxDCNk=;
+	s=arc-20240116; t=1741317461; c=relaxed/simple;
+	bh=SaHWAsYe/9KqOVBf8OkOQT2uuUcRHvd28XQ7nb1mCP0=;
 	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=QFnvbaqs3eHSy4MIAwBFJzlTlpbOLCq21fsftbIEpA6sjdljjMY0SQJ99j5qe286KGtd4aHdHqn7ZII3OazcI4M91tUdjF+fcIvV4PqdfCV6zLkObkHs/sqWq8Am+t/mGJw8NxzgkPAnfenFKsrz9TAgqZhOLuqb+eJ7sjNoXa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=sGqJJ5Zi; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version:Content-Type; b=rBWmGO0Sinox3+cbHVtlSt5POPG5Jbzh77JIWDRqIOW45dqoVONeEoKP9us/JF9rfWnLK9z74zEikQcCk0e1SdIU/wb8xeXoQKiWfyOBE53f61kTGj0+Pkp85gVIKC6m+Gx5uaUxO7c1Oot3/RWGBU6K+CB/hlC/6JkkDtKIOSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=XeY620eU; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Received: from [127.0.0.1] ([76.133.66.138])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 527388dS027163
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5273EFGO029055
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 6 Mar 2025 19:08:09 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 527388dS027163
+	Thu, 6 Mar 2025 19:14:16 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5273EFGO029055
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1741316897;
-	bh=SFgD9M+p5d4igshN6SMPc//iuzRVz2Eb/CCPvhQeQ4k=;
+	s=2025021701; t=1741317259;
+	bh=hyUZKDF5+ooUtYLzko1Czdm29ayQGeHv7M7tkZymGRA=;
 	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=sGqJJ5ZiwQOefUeCTR61k1c1/2TpGWbrT4NEZVyWsBZiOfJ2/maPRM1og0k0XCX0F
-	 Ld9+eSu4xqDd+X+2qrgg7JjXoRBSSgs0lHVrfqkS0e4U4hcPmsGy5xSjZrm2c7Bevm
-	 P+0eFqVIMHPc1WjLrMn1MEEByE/9797DZwHHF0UTXNq820Vzgy2pkrWelyCfG+lCsx
-	 nB/AlVPUMY5B1hNLKjeBElqWXXgIcmEcq9Gwt93UJnzVfHFNvMcV/dXcWdGN56w6Rm
-	 KhOBkFgfo1x8Y55sRT52V0jFp1STtD7Fc+xR7U3FcWfuLN1A4EAU7/MZBEz8Gsc1SK
-	 DnEX3ZKMPW6zA==
-Date: Thu, 06 Mar 2025 19:08:06 -0800
+	b=XeY620eULnP2/+TN4Y4Oy+L1kjV0g9g4gLF3bGbxoub6oXCjIocCsux0s9lsBThor
+	 D5MCM8jchD63LZA41Z+zQXpcfDD0kw68ZvT5gJFtkglJP52RigyVCCeTtLHz5T59Sf
+	 BdcfD+nIIh4OJ7E3YNolewxhV+KD9eYVj9gc77UPIV5o6BkuLWAjitNYqDwOVS12jl
+	 DqNQVt47yWF1ZUW8TzhPps1sdTJ6LcbKbxzoFjRF0/a0IBkoL6S6dVIt6/UEGX2S2i
+	 fnnZIzD2De4gOv+3QNiBzF/iHmcOV6iyiEfSH8J1h96iKhLsl8VHaAdju6VU38SRaP
+	 yKG9JyADkfy7g==
+Date: Thu, 06 Mar 2025 19:14:13 -0800
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de, mingo@redhat.com,
         bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
@@ -77,7 +77,7 @@ Subject: Re: [PATCH v3 00/16] Introduce and use generic parity16/32/64 helper
 User-Agent: K-9 Mail for Android
 In-Reply-To: <20250306162541.2633025-1-visitorckw@gmail.com>
 References: <20250306162541.2633025-1-visitorckw@gmail.com>
-Message-ID: <4732F6F6-1D41-4E3F-BE24-E54489BC699C@zytor.com>
+Message-ID: <F134DC06-54DE-4B8E-8AE0-3740275835C1@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -174,5 +174,17 @@ w@gmail=2Ecom/
 > 14 files changed, 77 insertions(+), 153 deletions(-)
 >
 
-(int)true most definitely is guaranteed to be 1=2E
+!!x is used with a value that is not necessary booleanized already, and is=
+ exactly equivalent to (x ? true : false)=2E It is totally redundant on a v=
+alue known to be bool=2E
+
+If (int)true wasn't inherently 1, then !! wouldn't work either=2E=20
+
+There was a time when some code would use as a temporary hack:=20
+
+typedef enum { false, true } bool;
+
+=2E=2E=2E when compiling on pre-C99 compilers; in that case a (bool) case =
+wouldn't necessarily work as expected, whereas !! would=2E Furthermore, unl=
+ike (bool), !! works in the preprocessor=2E
 
