@@ -1,103 +1,84 @@
-Return-Path: <linux-wireless+bounces-20016-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20017-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E99A572CA
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 21:11:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5DC0A57309
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 21:45:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD768189B64D
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 20:11:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA764173E9D
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Mar 2025 20:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D700A2561D3;
-	Fri,  7 Mar 2025 20:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434621D932F;
+	Fri,  7 Mar 2025 20:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="CfSYRyIR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LXD7TEUl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f227.google.com (mail-yb1-f227.google.com [209.85.219.227])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1A92561D0
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Mar 2025 20:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416DD19DF53
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Mar 2025 20:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741378282; cv=none; b=u8VtUgcOmB0VI3lRnM2xetCaRR/1EzV1F+Ku+jFLSXknVIbnIkEOQrGLKGApaeKuqQ0otL/efxWv0qpJcSh/SL/7y59ZL2mtwpdjjY5ezz71w5a232+QfsT1yhP/x8lICV9gLBdlY0OaGBI3+B7wEC7xf+CqUGjPaGAaWegjq4k=
+	t=1741380333; cv=none; b=cTWP7MdsAh/UeAKV4ncN7KIjKOOtd7bxnjP9uV1zwyi+KceCBOZU+OhLiSjhwEhWwojZ7RXGJTjpJ/aNxmSoX98eNVilRu5wnbI/83tp6dP+a/u+TvBc1Lof8Z6krnPpKaWwHQdETgSckW9fZivbt1+2xaVXeh6G0tXvMPtBXSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741378282; c=relaxed/simple;
-	bh=XnokswpRVUawxvrh0+H2EO37FE3w3hGAjLgWW05bx5c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FVboDl7z2PiJeTUslNelTvEFnYuiNCPCn/qs80cMk+otrxcCjscaxHit9Am/zOxQb+Gnp/mvqLOTvxeX8nJyxLMBWTTiZSJ2qhAzkgJA2q5O8SRrhRNqp2vb0IwCLfFsd2INL5ZcQh4HcZGvHeLY94lUuPgr84KMV5w3xH+Uo1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=CfSYRyIR; arc=none smtp.client-ip=209.85.219.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
-Received: by mail-yb1-f227.google.com with SMTP id 3f1490d57ef6-e611ebd9a61so1972489276.1
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Mar 2025 12:11:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1741378279; x=1741983079; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XnokswpRVUawxvrh0+H2EO37FE3w3hGAjLgWW05bx5c=;
-        b=CfSYRyIRM0jvy6C5rlcEtYOXSsnlv7OSvkQwANLjzG2JXhoMm29V4p54eVVBQaje+J
-         fWjH37Oz3gCjbNIjGSRJDd58FFpgoTDu4qHV0L/RSIeIm5t50TJc7cj8na9T0Js1Wx/J
-         WtGmHs0cgm5U8BMk1qViLwLSPXK3GwdvDgVDX3krXqKGT6Y0eP+Er1BZoBVCG6zajfT0
-         IfFmQE8wEa5aBolFsh6lsZbzpq8YMdrRelsbbiCep5cpxj1AIOdCVkld3PupzTZ4EYnO
-         in26eGJxEloLkalZNdVzOEeZtjcFo4jpIQbpDpfO3IE1KSw0IGC/rym+0ZZLVNwj9SPP
-         /QPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741378279; x=1741983079;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XnokswpRVUawxvrh0+H2EO37FE3w3hGAjLgWW05bx5c=;
-        b=hov7zfaDbKYjUWvYbbyJ+7/7hvORk3U0GFf0RunWRY28A+UrKVZIaKqJgYlJPXGAfY
-         wqDY3/6YUHIXAViyQXMsuw+B+WiuDF6kWYJ7rqAjsGExZxiHdviYQ6NyyieaQD61/Ccy
-         d6xZqQ/r2lVS1LMbLLlwnCbHq5I7YaVm0gTd4QxShOc4rc2DdcjeKFMduyE0vV+fI929
-         yzgWvG31s6neSvU/bRRdcGJyJCVoDMZMrRADJfr1LT+8fooxhrZJ2kWG/mSJGJpikjbx
-         xS+vvv5FYUutoDZD3x+0cGj0jlzZrWDUoj5OD+JgHA3QjA2lmWqYzRO2A+UDSFmcsQrX
-         wCgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVykavCKotzk0Ot40aWmu4ylEkmRbBYl4qFAPIdy9/YZ3vpL8A0gs6BKy/7bzkc91P/pyoPfSxYN9TVtOfGIA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw95HbrBvOx300x8biSxcwPnwzeTZbjCzF8IG5GTvi25UfD0UC5
-	GjiulgXF6XEJFh2lahE/oCsZYTbjaffeSqdnVXlaMSGBLEGF3dbDqF3xR74h9YXO+pyzZyQ1HZM
-	e20uMWh7zeZxLKb7bqt5xBTZi4IMoHNRP
-X-Gm-Gg: ASbGncvXyWok6uEQS5K6c6bBUGqtLtKtDCe5vFN2JYHO28WmGCFi+rxgF1mMqzOOfl5
-	YhqVeEkC9tnSncRWSJbRO/MCU51rjwrm5sNZrPOyrdFAG5r0gMY+FVN4v9lku2oChWhIo1X6Boj
-	nxSIbwkyE8gRa23yGHlPg7He/dg9SGbBxN31KUdTml9Chux2iR3CtOBuyWo/QI3prWgea/HMcEH
-	uZi8Wwc/slONDuKrDP4s4CpwVhOrjbRmi6eKaHrsf9mU86Ye8MwPekI2UqXc6KkeVx9n3onNsKX
-	9hwXhmyiEGtQeqWb4DN5nkpNSUfEsYswbll5Z2GmylCDK9N1NQ==
-X-Google-Smtp-Source: AGHT+IFVIC1dPB2oQzuEy2i1L1p+CBm3CNBs2IFDf0LbWaFMmjn30sMZygpeRyebFOscyIQ6uTQhXSytdw3F
-X-Received: by 2002:a05:6902:18c5:b0:e63:3e25:d71a with SMTP id 3f1490d57ef6-e636f7e8b1cmr1236822276.15.1741378279189;
-        Fri, 07 Mar 2025 12:11:19 -0800 (PST)
-Received: from c7-smtp-2023.dev.purestorage.com ([208.88.159.129])
-        by smtp-relay.gmail.com with ESMTPS id 3f1490d57ef6-e636dfd2009sm42439276.12.2025.03.07.12.11.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 12:11:19 -0800 (PST)
-X-Relaying-Domain: purestorage.com
-Received: from dev-ushankar.dev.purestorage.com (dev-ushankar.dev.purestorage.com [10.7.70.36])
-	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 4B339340245;
-	Fri,  7 Mar 2025 13:11:18 -0700 (MST)
-Received: by dev-ushankar.dev.purestorage.com (Postfix, from userid 1557716368)
-	id 3F0D3E56FE8; Fri,  7 Mar 2025 13:11:18 -0700 (MST)
-Date: Fri, 7 Mar 2025 13:11:18 -0700
-From: Uday Shankar <ushankar@purestorage.com>
-To: Simon Horman <horms@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	s=arc-20240116; t=1741380333; c=relaxed/simple;
+	bh=OnF+c6iKgvROwnmlkSqLY//ObvyD+gGbs+74/GiIpgE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=VTctpcO9sCg4tEDPSA34/q0/U2Pm4ueEr2fBnH4qWwR1GU8p3sCQsPFVQDyge00kBaagEyTA9ugXyogcM7ElDXoOzzPLA4aYgzVZdXq/wKEJGbTpa1Rel0+u9yYYQo6W3URWDtFZacrjfoHuXSTUSrSeDjVEo88cPU7pZVaL170=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LXD7TEUl; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741380331; x=1772916331;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=OnF+c6iKgvROwnmlkSqLY//ObvyD+gGbs+74/GiIpgE=;
+  b=LXD7TEUlkiaCuBUwDX4ajsKUt9xWy9UmxdJDGni2vXMSUQc7Tx6y+cMz
+   N63I2w7c1FSmZx1UcRCcOa+aYhwWKio7954jrXKYYBUT8WWyQFAq2fGx7
+   FHsCUFnRr/KCdQAml5Odro399ACzqQN925rgWUjNPRzqZbTdCAx7Zf9/o
+   A0M7TnftSRGvC7sQdXSB3pNV/e9l8XspoTYGhHlTuoRr0WTqpfxt3XCii
+   T5DNTxz4Dsh7JFM80iXmpbOCZOvGiiIzzxzKCZU6mSDDS+6S685QsBuRu
+   8iawJjIkap+U+i7ijKXbWdtnoXI0XtZC2uRlzVI1MYJbw362MhSt1CKSr
+   w==;
+X-CSE-ConnectionGUID: acoM+ZoJQZOe9fx2G7Bc0w==
+X-CSE-MsgGUID: LOhdi4AwSc2arUmFTWFIxg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11366"; a="41696545"
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="41696545"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 12:45:31 -0800
+X-CSE-ConnectionGUID: wswzeBE2STSS0MPxzunhWA==
+X-CSE-MsgGUID: l/YLXj/3Qk6qkzSzyNknPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="119912389"
+Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
+  by fmviesa010.fm.intel.com with ESMTP; 07 Mar 2025 12:45:27 -0800
+Received: from kbuild by a4747d147074 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tqeZR-00012D-2D;
+	Fri, 07 Mar 2025 20:45:25 +0000
+Date: Sat, 8 Mar 2025 04:45:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev,
 	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next v5 2/2] netconsole: allow selection of egress
- interface via MAC address
-Message-ID: <Z8tS5t+warQdwFTs@dev-ushankar.dev.purestorage.com>
-References: <20250220-netconsole-v5-0-4aeafa71debf@purestorage.com>
- <20250220-netconsole-v5-2-4aeafa71debf@purestorage.com>
- <20250225144035.GY1615191@kernel.org>
+	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Shaul Triebitz <shaul.triebitz@intel.com>
+Subject: [wireless-next:main 1/8]
+ drivers/net/wireless/intel/iwlwifi/mld/mld.h:299:23: error: 'struct
+ <anonymous>' has no member named 'in_d3'
+Message-ID: <202503080456.h4DC9aDg-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -106,13 +87,125 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250225144035.GY1615191@kernel.org>
 
-On Tue, Feb 25, 2025 at 02:40:35PM +0000, Simon Horman wrote:
-> Reviewed-by: Simon Horman <horms@kernel.org>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+head:   fc56639937ce95a73c9876e39f8d18d1a8dd6a95
+commit: d1e879ec600f9b3bdd253167533959facfefb17b [1/8] wifi: iwlwifi: add iwlmld sub-driver
+config: arc-allyesconfig (https://download.01.org/0day-ci/archive/20250308/202503080456.h4DC9aDg-lkp@intel.com/config)
+compiler: arceb-elf-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250308/202503080456.h4DC9aDg-lkp@intel.com/reproduce)
 
-Hey, since this has gotten quiet for a while, just wanted to confirm
-that there's no action needed from my end? Is this in the queue for
-net-next?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503080456.h4DC9aDg-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
+
+   In file included from drivers/net/wireless/intel/iwlwifi/mld/mld.c:16:
+   drivers/net/wireless/intel/iwlwifi/mld/mld.h: In function 'iwl_cleanup_mld':
+>> drivers/net/wireless/intel/iwlwifi/mld/mld.h:299:23: error: 'struct <anonymous>' has no member named 'in_d3'
+     299 |         mld->fw_status.in_d3 = false;
+         |                       ^
+   In file included from arch/arc/include/asm/bug.h:30,
+                    from include/linux/bug.h:5,
+                    from include/net/mac80211.h:16,
+                    from drivers/net/wireless/intel/iwlwifi/mld/mld.c:6:
+   drivers/net/wireless/intel/iwlwifi/mld/hcmd.h: In function 'iwl_mld_send_cmd':
+>> drivers/net/wireless/intel/iwlwifi/mld/hcmd.h:13:35: error: 'struct <anonymous>' has no member named 'in_d3'
+      13 |         if (WARN_ON(mld->fw_status.in_d3))
+         |                                   ^
+   include/asm-generic/bug.h:123:32: note: in definition of macro 'WARN_ON'
+     123 |         int __ret_warn_on = !!(condition);                              \
+         |                                ^~~~~~~~~
+   In file included from drivers/net/wireless/intel/iwlwifi/mld/mlo.h:13,
+                    from drivers/net/wireless/intel/iwlwifi/mld/mld.c:17:
+   drivers/net/wireless/intel/iwlwifi/mld/iface.h: At top level:
+   drivers/net/wireless/intel/iwlwifi/mld/iface.h:170:5: warning: "CONFIG_PM_SLEEP" is not defined, evaluates to 0 [-Wundef]
+     170 | #if CONFIG_PM_SLEEP
+         |     ^~~~~~~~~~~~~~~
+--
+   In file included from drivers/net/wireless/intel/iwlwifi/mld/mac80211.c:9:
+   drivers/net/wireless/intel/iwlwifi/mld/mld.h: In function 'iwl_cleanup_mld':
+>> drivers/net/wireless/intel/iwlwifi/mld/mld.h:299:23: error: 'struct <anonymous>' has no member named 'in_d3'
+     299 |         mld->fw_status.in_d3 = false;
+         |                       ^
+   In file included from arch/arc/include/asm/bug.h:30,
+                    from include/linux/bug.h:5,
+                    from include/net/mac80211.h:16,
+                    from drivers/net/wireless/intel/iwlwifi/mld/mac80211.c:6:
+   drivers/net/wireless/intel/iwlwifi/mld/hcmd.h: In function 'iwl_mld_send_cmd':
+>> drivers/net/wireless/intel/iwlwifi/mld/hcmd.h:13:35: error: 'struct <anonymous>' has no member named 'in_d3'
+      13 |         if (WARN_ON(mld->fw_status.in_d3))
+         |                                   ^
+   include/asm-generic/bug.h:123:32: note: in definition of macro 'WARN_ON'
+     123 |         int __ret_warn_on = !!(condition);                              \
+         |                                ^~~~~~~~~
+   In file included from drivers/net/wireless/intel/iwlwifi/mld/mac80211.c:12:
+   drivers/net/wireless/intel/iwlwifi/mld/iface.h: At top level:
+   drivers/net/wireless/intel/iwlwifi/mld/iface.h:170:5: warning: "CONFIG_PM_SLEEP" is not defined, evaluates to 0 [-Wundef]
+     170 | #if CONFIG_PM_SLEEP
+         |     ^~~~~~~~~~~~~~~
+   drivers/net/wireless/intel/iwlwifi/mld/mac80211.c:1978:12: warning: 'iwl_mld_resume' defined but not used [-Wunused-function]
+    1978 | static int iwl_mld_resume(struct ieee80211_hw *hw)
+         |            ^~~~~~~~~~~~~~
+   drivers/net/wireless/intel/iwlwifi/mld/mac80211.c:1956:1: warning: 'iwl_mld_suspend' defined but not used [-Wunused-function]
+    1956 | iwl_mld_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wowlan)
+         | ^~~~~~~~~~~~~~~
+   drivers/net/wireless/intel/iwlwifi/mld/mac80211.c:1942:13: warning: 'iwl_mld_set_wakeup' defined but not used [-Wunused-function]
+    1942 | static void iwl_mld_set_wakeup(struct ieee80211_hw *hw, bool enabled)
+         |             ^~~~~~~~~~~~~~~~~~
+--
+   In file included from drivers/net/wireless/intel/iwlwifi/mld/fw.c:6:
+   drivers/net/wireless/intel/iwlwifi/mld/mld.h: In function 'iwl_cleanup_mld':
+>> drivers/net/wireless/intel/iwlwifi/mld/mld.h:299:23: error: 'struct <anonymous>' has no member named 'in_d3'
+     299 |         mld->fw_status.in_d3 = false;
+         |                       ^
+   In file included from arch/arc/include/asm/bug.h:30,
+                    from include/linux/bug.h:5,
+                    from include/linux/thread_info.h:13,
+                    from include/linux/sched.h:14,
+                    from include/linux/ratelimit.h:6,
+                    from include/linux/dev_printk.h:16,
+                    from include/linux/device.h:15,
+                    from include/linux/leds.h:12,
+                    from drivers/net/wireless/intel/iwlwifi/mld/mld.h:8:
+   drivers/net/wireless/intel/iwlwifi/mld/hcmd.h: In function 'iwl_mld_send_cmd':
+>> drivers/net/wireless/intel/iwlwifi/mld/hcmd.h:13:35: error: 'struct <anonymous>' has no member named 'in_d3'
+      13 |         if (WARN_ON(mld->fw_status.in_d3))
+         |                                   ^
+   include/asm-generic/bug.h:123:32: note: in definition of macro 'WARN_ON'
+     123 |         int __ret_warn_on = !!(condition);                              \
+         |                                ^~~~~~~~~
+
+
+vim +299 drivers/net/wireless/intel/iwlwifi/mld/mld.h
+
+   286	
+   287	/* memset the part of the struct that requires cleanup on restart */
+   288	#define CLEANUP_STRUCT(_ptr)                             \
+   289		memset((void *)&(_ptr)->zeroed_on_hw_restart, 0, \
+   290		       sizeof((_ptr)->zeroed_on_hw_restart))
+   291	
+   292	/* Cleanup function for struct iwl_mld_vif, will be called in restart */
+   293	static inline void
+   294	iwl_cleanup_mld(struct iwl_mld *mld)
+   295	{
+   296		CLEANUP_STRUCT(mld);
+   297		CLEANUP_STRUCT(&mld->scan);
+   298	
+ > 299		mld->fw_status.in_d3 = false;
+   300	
+   301		iwl_mld_low_latency_restart_cleanup(mld);
+   302	
+   303		/* Empty the list of async notification handlers so we won't process
+   304		 * notifications from the dead fw after the reconfig flow.
+   305		 */
+   306		iwl_mld_purge_async_handlers_list(mld);
+   307	}
+   308	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
