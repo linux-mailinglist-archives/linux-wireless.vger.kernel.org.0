@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-20033-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20035-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149D6A57E59
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:06:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D40A57E5B
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F29816D833
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 21:06:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7FF67A670F
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 21:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD76E1A08B1;
-	Sat,  8 Mar 2025 21:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BC11A08B1;
+	Sat,  8 Mar 2025 21:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mcD4WDiT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="azE0hwlu"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2B9374FF
-	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 21:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593C81A4E9D
+	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 21:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741467990; cv=none; b=Ll/tKz0rkEtaISVzyo9DHq76XupVOT+Jbr+5jYwpwlvhATGxYfy4tiJHfKait7VhIMNkFw4PMetpZ9c+2H8jYQc4papVJeYUXewj/7S6UK1TUBC64QJsGAFHMk0yiuuk5gRpw36wOY8vAJV+jw3qsuj73sRHjXP2EGPL798/VMk=
+	t=1741467998; cv=none; b=eYB/NqrQYE84BtildWL5O8J+h05BZ+xtQuNAjvHL3Fb2nXTPjRnRjG3f2hq2UPE20Mxu2mwd6ZfBX9hCeOv8RuES+fGDqKXykmvCKY//JA8pdnwUqz0HF6Ulw2XSqk5at8Ce5h/cc7bXEwtxLPrUVHzzb0Oi50/RB9U9DFzponA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741467990; c=relaxed/simple;
-	bh=s94LcA9sw7TLrMkJh5mCQaXdgRMBn6WyiEpLoQBX5DI=;
+	s=arc-20240116; t=1741467998; c=relaxed/simple;
+	bh=nNDNwW2ZN1Qp/TQmf5OAJQWk2mHc8zN7tz9Fxb4t+Q4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LSlkIYw+lAe379Oi/rYH1N4rtyAYzoDeR2XtzGgESVXhzL43vBfC+JyV8UWbMAMzXvVSb838DS3xNruR/6YaVde6n9psS9lWWLy7L3dG3PloDSb799KZQPVORHNetIy9SzN2oLPllKpau8ktU608mXxYfBqyGel1XulpqfWIi7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mcD4WDiT; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=U04mIPpvMbNojAEunGkWKVIh8TzGEJ00FmdZU4cFvdUmlge95k9K3eUCOuR5OJYehYODaPSpKWT26A4snKSTGv2UYdJ3Fm68RSDXJFdRrq40dTlvGgM+X/Zb+cjKKCqGTncP6nyBC/Be0H5W/VYTwj78yRmwsdKtyhmFoE5CfWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=azE0hwlu; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741467989; x=1773003989;
+  t=1741467997; x=1773003997;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=s94LcA9sw7TLrMkJh5mCQaXdgRMBn6WyiEpLoQBX5DI=;
-  b=mcD4WDiTGfN1e2elFwFXe85d+mwm9wIq+Uwe6r91y7B3xRQYW4GbDnrn
-   4JrVfYGUsU1k8cRoh3Cw6lXvdpo/nYheIUWhD1W3etYesCj3oIonOhW46
-   Sb+N/r6k++1s1C+1U2t+MF7qOfKxVnnQOEIZXMdujWq5MdeCg2UGGS79F
-   kmcPRyHNIIh87nV5eOKqV5EyJRRfr/xiwIUaKysjqYNONLZgVsP9oydbA
-   9GTaoeAD4BlZVKmY/lA8mnZRPyxv2IKf+y/7kMBronRKCn0sQyNirCKTw
-   vCxb50mawi9UPknryLlrUqdEMS0rHhCRR4e/N1HmbTLbEMt6ZrmqtxFqm
-   w==;
-X-CSE-ConnectionGUID: MJedEzBURdOrdwacfXk+tA==
-X-CSE-MsgGUID: d6+gzIf3RmC1oO1tpXakNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="42413059"
+  bh=nNDNwW2ZN1Qp/TQmf5OAJQWk2mHc8zN7tz9Fxb4t+Q4=;
+  b=azE0hwlu9oZJ4H4eJa6Eh+FGxW4fup04xDgikas/CtEAs0Llf5ncy7yf
+   xx16jA/2qzILmzo2WrfQUkIouoWT5Tzr3bctWInNXsf76hZ/QycZLbqfw
+   Z6Gua5C8Z7UGQqr2PEmIUBuf9rwyuZzZumxL7siKNvYdXt6WNVuEgZUE7
+   dZQvHFCW1PnG0dT1+Zx0JFbh1fTqUXVlqV6XCIGMYPUMMiVVi4Wk79+de
+   GbkRzVt71AgD9+leutS6GfjSysxS/sWvfFXmXjTKJJEGyNKgJ5Gifd1z4
+   c8H3GI4bUZoKgGkdWyBe5yo4WUdSNImpANpNL11Ciu+qmXk09IJRAWAYg
+   Q==;
+X-CSE-ConnectionGUID: SAH+7BpDTd+0UjnsyuSGVg==
+X-CSE-MsgGUID: AuzQ46sFSguZyW3JnoAgAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="42413065"
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="42413059"
+   d="scan'208";a="42413065"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:04:01 -0800
-X-CSE-ConnectionGUID: 4mPAFaCpRvWrouUF3vY/Gw==
-X-CSE-MsgGUID: HjXvuOtGT62HqGpY85eO3g==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:04:03 -0800
+X-CSE-ConnectionGUID: lMAH/DYNSBGQABUCVIxNog==
+X-CSE-MsgGUID: 1JqiwWZGRwaV0innl5nbmw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="124644369"
+   d="scan'208";a="124644375"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:04:00 -0800
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:04:02 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>,
 	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH RESEND wireless-next 05/15] wifi: mac80211: fix U-APSD check in ML reconfiguration
-Date: Sat,  8 Mar 2025 23:03:31 +0200
-Message-Id: <20250308225541.b4674be12a38.I01959e448c6a2a3e8bc5d561bbae9e8d2cca616a@changeid>
+Subject: [PATCH RESEND wireless-next 06/15] wifi: cfg80211: improve supported_selector documentation
+Date: Sat,  8 Mar 2025 23:03:32 +0200
+Message-Id: <20250308225541.ba402ff47314.I502b56111b62ea0be174ae76bd03684ae1d4aefb@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250308210341.2302222-1-miriam.rachel.korenblit@intel.com>
 References: <20250308210341.2302222-1-miriam.rachel.korenblit@intel.com>
@@ -80,39 +80,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-If U-APSD isn't enabled by us, then IEEE80211_STA_UAPSD_ENABLED
-won't be set, but the AP can still support it in that case. Only
-require U-APSD from the AP if we enabled it, don't require it to
-be disabled on the AP if we didn't.
+Improve the documentation for supported BSS selectors to make it more
+precise.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Reviewed-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/mlme.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ include/net/cfg80211.h       | 4 ++--
+ include/uapi/linux/nl80211.h | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 87ebeec2877d..426c0246fe1f 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -10492,12 +10492,11 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
- 			}
- 		}
- 
--		/* Require U-APSD support to be similar to the current valid
--		 * links
--		 */
--		if (uapsd_supported !=
--		    !!(sdata->u.mgd.flags & IEEE80211_STA_UAPSD_ENABLED)) {
-+		/* Require U-APSD support if we enabled it */
-+		if (sdata->u.mgd.flags & IEEE80211_STA_UAPSD_ENABLED &&
-+		    !uapsd_supported) {
- 			err = -EINVAL;
-+			sdata_info(sdata, "U-APSD on but not available on (all) new links\n");
- 			goto err_free;
- 		}
- 
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 0d423830a8ed..c61894c1265a 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -3148,10 +3148,10 @@ enum cfg80211_assoc_req_flags {
+  *	included in the Current AP address field of the Reassociation Request
+  *	frame.
+  * @flags:  See &enum cfg80211_assoc_req_flags
+- * @supported_selectors: supported selectors in IEEE 802.11 format
++ * @supported_selectors: supported BSS selectors in IEEE 802.11 format
+  *	(or %NULL for no change).
+  *	If %NULL, then support for SAE_H2E should be assumed.
+- * @supported_selectors_len: Length of supported_selectors in octets.
++ * @supported_selectors_len: number of supported BSS selectors
+  * @ht_capa:  HT Capabilities over-rides.  Values set in ht_capa_mask
+  *	will be used in ht_capa.  Un-supported values will be ignored.
+  * @ht_capa_mask:  The bits of ht_capa which are to be used.
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 95287289b3b4..a945ad223cfd 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2881,9 +2881,9 @@ enum nl80211_commands {
+  * @NL80211_ATTR_VIF_RADIO_MASK: Bitmask of allowed radios (u32).
+  *	A value of 0 means all radios.
+  *
+- * @NL80211_ATTR_SUPPORTED_SELECTORS: supported selectors, array of
+- *	supported selectors as defined by IEEE 802.11 7.3.2.2 but without the
+- *	length restriction (at most %NL80211_MAX_SUPP_SELECTORS).
++ * @NL80211_ATTR_SUPPORTED_SELECTORS: supported BSS Membership Selectors, array
++ *	of supported selectors as defined by IEEE Std 802.11-2020 9.4.2.3 but
++ *	without the length restriction (at most %NL80211_MAX_SUPP_SELECTORS).
+  *	This can be used to provide a list of selectors that are implemented
+  *	by the supplicant. If not given, support for SAE_H2E is assumed.
+  *
 -- 
 2.34.1
 
