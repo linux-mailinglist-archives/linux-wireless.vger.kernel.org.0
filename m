@@ -1,70 +1,69 @@
-Return-Path: <linux-wireless+bounces-20061-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20062-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445B3A57F2C
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 23:01:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B26A57F2E
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 23:01:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E6EB3ABC67
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:01:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0B3016B190
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0EF914D2BB;
-	Sat,  8 Mar 2025 22:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A454720DD5B;
+	Sat,  8 Mar 2025 22:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CJbyreTl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M9rsKUUj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C98018DB33
-	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 22:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5F91AA1DA
+	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 22:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741471301; cv=none; b=soKVA4TU6mmh+IwGLW6yCLXPMF0RJ4OwjvEYibP1/FgOFvWQCqb7CXjwC6HgtqERLjSKcIWW20S4sUdVVdNFbqLogOFQ+5oiXSiHAIOpuj5s96cNVMmKC2mysMXA+4Zwj3qXRuL7/lhNuPA+WAMPq4HbQDdTWAuBXYt47qf40i0=
+	t=1741471302; cv=none; b=Ai5zjz2TNE7YFb4didMKnQNka1pv/tGlNkaoFF8zQXwRS/zmFchbIG7EBe0ED48hjhcZQNgsjG6LM5ghbP94bO+sJlnJ3Ni3pq1BnXSPA0FIg/Zjw6yjo9+7P5nsDG1r1rQFfFJsgQOUAObKkAwOCBabBHIEZIKp9yZUeQl+rGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741471301; c=relaxed/simple;
-	bh=E5Z4OPGNz8H9581BuBj0UoVBdzsVdMpx+AwxQ29Ihwk=;
+	s=arc-20240116; t=1741471302; c=relaxed/simple;
+	bh=qiu6D3O5Fs5+np7jyjiuQi7ZEmGDSSmwq9OLd1BtLUI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=juvaGg3zhyPGgEJQFsU6Q+AcgVJ7O1p0Ds9G4EF3DH0vjh5LAluzdYA7yZZuzuNgATvYxNZa0B2LBUgaXz9VMW6xlFVngXthPRqUwLWkJ16E4Wvhv2EugNpEx1tUvPwVwTI+YXDaMMPK1CX5EqtqIf9K0oYj6HMBeBrs0Cb6keU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CJbyreTl; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=Sug6rWiQHBZG4Cqoew9yhunWpBhasjafMMO/B5yPzo7qO4H72rqBsObylBY3ZdzFp9EG4HbHVAoC7ta9uGLe/Xke+PnkihnDGB836ai2zjQw5HZ2dMInleR9XANUV+geXbMJV2dyYkkuaLDe/23hjsW+amLEzgw2wPfo01c4JpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M9rsKUUj; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741471300; x=1773007300;
+  t=1741471301; x=1773007301;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=E5Z4OPGNz8H9581BuBj0UoVBdzsVdMpx+AwxQ29Ihwk=;
-  b=CJbyreTlpXV9/H0THkqaQ2w4m0UufjR16gUn0Xq/tocteLL90skVf7IQ
-   qO8Nsy13tIQSJOcjwCfIY5BVj0EHGqH0JvxIT1ImJcbCrZpMH+rcLx119
-   gmVpRFx/ZDdvMSXzCGs0qrHhA4/Nr3XV0/FMLnqkIF4fSZpVYmK0WL0L5
-   u1pzLC0BGN0zUlt6G8m0HiH49gaj2gQ5+E/aEMM041zr4NPlIgMZk6ED6
-   o6dvL3PdiEhiUBs9NIp4BuDWeuIKfrUt7eQdMrN+Nt+N0kJYMSMvo5ZhI
-   hEDc2PZyM9bhkdCWDdgDGVnwK9BWllXnbFOtgbvSSna3BOgHidqa77Xyy
-   A==;
-X-CSE-ConnectionGUID: NETaJXCERMqFNQkGFXZRcg==
-X-CSE-MsgGUID: CxcnufoPSEWxwx8Vkmb6Lw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="42540613"
+  bh=qiu6D3O5Fs5+np7jyjiuQi7ZEmGDSSmwq9OLd1BtLUI=;
+  b=M9rsKUUjOZHE3hC8gl4XkT5juNIWf3VeAyCDSa3MSaLOPHvC3KDn8Yxu
+   y8HKtVxt7BkFkTcySrVdng7hsdfTHlpNR44m3kO1Il9nQ/XPTXOJOykI6
+   qYBYv3JLaQq6FQtVmsyJImGWtonoL4SnwR5vkxsPjMr49bbco8MwmP/F2
+   9lAIMkwns9DcsC6CXbT416j6Boya6ZXMQLqg3aOzQUb9xAlGGRJXsareg
+   kkjO4nEx5KSqv63kJ2or1hbaoL8I9Cl+24AQw2VwNEYXNQwh2CMvLY2cJ
+   sBwWuqFiBLA1UvyfDhZAHKL905+sxz2iS5ztz8cBCurt+vi/jW0hBjKY6
+   w==;
+X-CSE-ConnectionGUID: kqkRj5S8Sd65e2rXIGyNhg==
+X-CSE-MsgGUID: iuW+FuN/TqWE8WVBYPD9yA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="42540615"
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="42540613"
+   d="scan'208";a="42540615"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 14:01:39 -0800
-X-CSE-ConnectionGUID: LxBRsgRhQg2AuE5K9Z+5/g==
-X-CSE-MsgGUID: f5zKv7WPTzqlGy3/8EJjkw==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 14:01:40 -0800
+X-CSE-ConnectionGUID: pb9SOdo6QGGWaACy6hcLig==
+X-CSE-MsgGUID: w6bnXRUyRu6gGbyGXmDk6w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="120352062"
+   d="scan'208";a="120352065"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 14:01:38 -0800
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 14:01:39 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH wireless-next 01/15] wifi: iwlwifi: mld: fix build with CONFIG_PM_SLEEP undefined
-Date: Sun,  9 Mar 2025 00:01:11 +0200
-Message-Id: <20250308235203.6f7e44a27b87.I78b9311019b59477a1961cddc4640b255ceda651@changeid>
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH wireless-next 02/15] wifi: iwlwifi: mld: fix SMPS W/A
+Date: Sun,  9 Mar 2025 00:01:12 +0200
+Message-Id: <20250308235203.1cdeb78b19ba.I58fe02c062524029071b04b093a1b09c5e46f4ef@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250308220125.2388933-1-miriam.rachel.korenblit@intel.com>
 References: <20250308220125.2388933-1-miriam.rachel.korenblit@intel.com>
@@ -77,52 +76,115 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-fw_status.in_d3 is only defined under CONFIG_PM_SLEEP.
+If the user disables power save of a vif that didn't have it enabled
+(for example before association), mac80211 will not notify the driver
+with BSS_CHANGED_PS. This will cause the driver to not update the
+device-level power save to disabled.
+Fix this by checking the vif's power save status upon authorization, and
+stop considering the vif's power save status on disassociation.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/hcmd.h | 4 +++-
- drivers/net/wireless/intel/iwlwifi/mld/mld.h  | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ .../net/wireless/intel/iwlwifi/mld/iface.h    |  2 ++
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c | 25 +++++++++++++++----
+ .../net/wireless/intel/iwlwifi/mld/power.c    |  3 ++-
+ 3 files changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/hcmd.h b/drivers/net/wireless/intel/iwlwifi/mld/hcmd.h
-index 773bc1b09392..64a8d4248324 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/hcmd.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/hcmd.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2024 Intel Corporation
-+ * Copyright (C) 2024-2025 Intel Corporation
-  */
- #ifndef __iwl_mld_hcmd_h__
- #define __iwl_mld_hcmd_h__
-@@ -10,8 +10,10 @@ static inline int iwl_mld_send_cmd(struct iwl_mld *mld, struct iwl_host_cmd *cmd
- 	/* No commands, including the d3 related commands, should be sent
- 	 * after entering d3
- 	 */
-+#ifdef CONFIG_PM_SLEEP
- 	if (WARN_ON(mld->fw_status.in_d3))
- 		return -EIO;
-+#endif
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.h b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
+index 2c928113f680..57910660ed18 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/iface.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
+@@ -134,6 +134,7 @@ struct iwl_mld_emlsr {
+  * @beacon_inject_active: indicates an active debugfs beacon ie injection
+  * @low_latency_causes: bit flags, indicating the causes for low-latency,
+  *	see @iwl_mld_low_latency_cause.
++ * @ps_disabled: indicates that PS is disabled for this interface
+  * @mld: pointer to the mld structure.
+  * @deflink: default link data, for use in non-MLO,
+  * @link: reference to link data for each valid link, for use in MLO.
+@@ -159,6 +160,7 @@ struct iwl_mld_vif {
+ 		bool beacon_inject_active;
+ #endif
+ 		u8 low_latency_causes;
++		bool ps_disabled;
+ 	);
+ 	/* And here fields that survive a fw restart */
+ 	struct iwl_mld *mld;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+index d73bd0179f7d..ba149581e25d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+@@ -1262,6 +1262,23 @@ iwl_mld_mac80211_link_info_changed(struct ieee80211_hw *hw,
+ 		iwl_mld_set_tx_power(mld, link_conf, link_conf->txpower);
+ }
  
- 	if (!(cmd->flags & CMD_ASYNC))
- 		lockdep_assert_wiphy(mld->wiphy);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.h b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
-index 6eda6081c8b4..1ab98ba42c76 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
-@@ -296,7 +296,9 @@ iwl_cleanup_mld(struct iwl_mld *mld)
- 	CLEANUP_STRUCT(mld);
- 	CLEANUP_STRUCT(&mld->scan);
++static void
++iwl_mld_smps_wa(struct iwl_mld *mld, struct ieee80211_vif *vif, bool enable)
++{
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++
++	/* Send the device-level power commands since the
++	 * firmware checks the POWER_TABLE_CMD's POWER_SAVE_EN bit to
++	 * determine SMPS mode.
++	 */
++	if (mld_vif->ps_disabled == !enable)
++		return;
++
++	mld_vif->ps_disabled = !enable;
++
++	iwl_mld_update_device_power(mld, false);
++}
++
+ static
+ void iwl_mld_mac80211_vif_cfg_changed(struct ieee80211_hw *hw,
+ 				      struct ieee80211_vif *vif,
+@@ -1295,11 +1312,7 @@ void iwl_mld_mac80211_vif_cfg_changed(struct ieee80211_hw *hw,
+ 	}
  
-+#ifdef CONFIG_PM_SLEEP
- 	mld->fw_status.in_d3 = false;
-+#endif
+ 	if (changes & BSS_CHANGED_PS) {
+-		/* Send both device-level and MAC-level power commands since the
+-		 * firmware checks the POWER_TABLE_CMD's POWER_SAVE_EN bit to
+-		 * determine SMPS mode.
+-		 */
+-		iwl_mld_update_device_power(mld, false);
++		iwl_mld_smps_wa(mld, vif, vif->cfg.ps);
+ 		iwl_mld_update_mac_power(mld, vif, false);
+ 	}
  
- 	iwl_mld_low_latency_restart_cleanup(mld);
+@@ -1716,6 +1729,7 @@ static int iwl_mld_move_sta_state_up(struct iwl_mld *mld,
+ 						    FW_CTXT_ACTION_MODIFY);
+ 			if (ret)
+ 				return ret;
++			iwl_mld_smps_wa(mld, vif, vif->cfg.ps);
+ 		}
  
+ 		/* MFP is set by default before the station is authorized.
+@@ -1758,6 +1772,7 @@ static int iwl_mld_move_sta_state_down(struct iwl_mld *mld,
+ 						  &mld_vif->emlsr.check_tpt_wk);
+ 
+ 			iwl_mld_reset_cca_40mhz_workaround(mld, vif);
++			iwl_mld_smps_wa(mld, vif, true);
+ 		}
+ 
+ 		/* once we move into assoc state, need to update the FW to
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/power.c b/drivers/net/wireless/intel/iwlwifi/mld/power.c
+index ed7c0319f239..2f16c174b57e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/power.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/power.c
+@@ -15,11 +15,12 @@ static void iwl_mld_vif_ps_iterator(void *data, u8 *mac,
+ 				    struct ieee80211_vif *vif)
+ {
+ 	bool *ps_enable = (bool *)data;
++	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
+ 
+ 	if (vif->type != NL80211_IFTYPE_STATION)
+ 		return;
+ 
+-	*ps_enable &= vif->cfg.ps;
++	*ps_enable &= !mld_vif->ps_disabled;
+ }
+ 
+ int iwl_mld_update_device_power(struct iwl_mld *mld, bool d3)
 -- 
 2.34.1
 
