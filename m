@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-20067-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20068-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CFA8A57F35
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 23:02:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5366A57F36
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 23:02:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67C3B3ABD7D
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:01:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A91016B36B
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEB41B0411;
-	Sat,  8 Mar 2025 22:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C398C1EB5DF;
+	Sat,  8 Mar 2025 22:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mv7IRbYi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cwo/7kfA"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086101EB5DF
-	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 22:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD2721324B
+	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 22:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741471309; cv=none; b=L+c9pO5xrgwdxoxUkxs68cYyt5wt5UFFtG99BMyL3jW5MeAoveHlc3N+9Hg4rAMkzwywrULyxWxCZeSz++Hs16qgGO66dKxoJ5GVhUVo5dArad6caf69cWkU7C75oK+Rd41wmV7X1ZCWzfaMbdDlyX8Dj7ma6IZ+43vmcBhxsMk=
+	t=1741471311; cv=none; b=lEEHu32YW6PMcG4CtnkvnmkNOxxZ9zaOeuU/3QGLJaRMIX50L8g+KKe8mQKDM0tm271dIQgA0Au+WciHKFH+lZ8Notwj8abYnG8jK1Y07Uzb2F2rPoOZ7QYiKEq69uWNZfj67YQHmWdkxTacE1lTj8UdUH9HBcjScQFZ/vGIuII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741471309; c=relaxed/simple;
-	bh=WLUhtHJhudWqJPWAQV2HbGbmgk9SwTLmDIYLA1wZ0Bc=;
+	s=arc-20240116; t=1741471311; c=relaxed/simple;
+	bh=dIwur6ttrR6eDMU6ax+fbSD92MTmtuIeYgs5PrhU/Co=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k9/LCTpiww8kSayYP1iPqiaIndYY5xM9YCNV2AvyDv5pkBCJba9XQUSnKl2PwVo0LAd5oWOqonpfF2jTtXIwCKUnhIEhBPq4yKTs1MQ2xYABQnTYXI4f44CUGqz0Xxpgt362UpMJDiHRSrzUPGPnDD5As38Y+iOVKCBt7XAWQ4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mv7IRbYi; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=eu7LuS26kq+4c4MaBPLhPB3FuytqiJxLpBR4xvRv6wCLYYajoOOQt90dyr//WA/D4UqmVbjPU3FpyfyGqp0DLb1KLdGDW2PHdeLT7HY+lqFqsA5CS+LiEbQrrxr5fiPQn8Rwst/Lc8ZAKYM/wVO0ARCce16/mLL7yLyig7FubmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cwo/7kfA; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741471308; x=1773007308;
+  t=1741471310; x=1773007310;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WLUhtHJhudWqJPWAQV2HbGbmgk9SwTLmDIYLA1wZ0Bc=;
-  b=Mv7IRbYiKJTlW5YI/3Idy5hvuMl6pZZ3X1WLNm92EDxm7RCXgzPOBgIp
-   rhMfOU4Yiw26SBwtINV1BEUxL8hGlJSDQowYOCV9p5dxePys+9iPniFvz
-   3oGPsQ8Hnb+MmHhlcSFwB6PUOhmAAbz88F5z9JtCzWLnXpaMxY+7ZMp+f
-   rWSrwhvp8gMdednhROz6KQCiEgCegK1c0b+6N9uEvNsK1A8itIO93Uzup
-   PmjNjsaFpgot4ewjuHXQLCjHjIhUhEZ8KHwEtYqYDXqP14aIJrU/aG4CB
-   RBtRLd67+tKlR4FtWarhJPPCoL0CoVl4bsHuio85nXCH5M7O9nzeHpYO/
+  bh=dIwur6ttrR6eDMU6ax+fbSD92MTmtuIeYgs5PrhU/Co=;
+  b=Cwo/7kfAvFNkzZOjNFc0XR+K4FPUqi5nICYGYBrayCevdfEMNkVhqhLX
+   RY/GkfjnMHIsSNxgaS917ajmAoDh9nnbV7klKVDb4X4iS2jThbKfmw7Es
+   pgP2mTmUaijiAsyHhlkcQuk23PP818tRNmaX7AGWFokSqKGEBydotMt3I
+   vzKE8H+eBXHod1vKVTzzI2xtN1C9e8uCBD3cwCtHbg3f05PVzohmws1t9
+   Hd9PkrKTfjAt8/l3/gyELYYIG4clchNBkhW1E6fwK0eLVo9Lc0wOyeXLj
+   zLxgFRNDl/omfSKKg1+BI/1VkfDPg2Vlaf/V5AEuaRCs6xRLaoZfeo0ZZ
    Q==;
-X-CSE-ConnectionGUID: jZpc2hEkT7+8YWEgnRvUqA==
-X-CSE-MsgGUID: OcPz7VP8TUGjgqReaaqtRQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="42540631"
+X-CSE-ConnectionGUID: CAs+IwQQRNubQzGAQvNaKg==
+X-CSE-MsgGUID: zKTCvNIuQwm8B2ezE/se4Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="42540634"
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="42540631"
+   d="scan'208";a="42540634"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 14:01:48 -0800
-X-CSE-ConnectionGUID: LkzndhWxSYuwkfi9Dticmw==
-X-CSE-MsgGUID: mD0Gn6v4R76r1Xx/qxV3mA==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 14:01:49 -0800
+X-CSE-ConnectionGUID: 1IQiM08HT5e5WNHT1cZm5w==
+X-CSE-MsgGUID: D0Ci2pI7RsWr7NbhL7x2iQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="120352124"
+   d="scan'208";a="120352133"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 14:01:46 -0800
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 14:01:48 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH wireless-next 07/15] wifi: iwlwifi: mld: use the right iface iterator in low_latency
-Date: Sun,  9 Mar 2025 00:01:17 +0200
-Message-Id: <20250308235203.925cdca61ed0.I34f5c52d27414cb4c301bbd24df7c3530a43fa1d@changeid>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next 08/15] wifi: iwlwifi: mld: fix OMI time protection logic
+Date: Sun,  9 Mar 2025 00:01:18 +0200
+Message-Id: <20250308235203.58efb4c91655.Id596fcda2fb28f5945548d780be9ff90aee76b7e@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250308220125.2388933-1-miriam.rachel.korenblit@intel.com>
 References: <20250308220125.2388933-1-miriam.rachel.korenblit@intel.com>
@@ -78,34 +77,32 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-We used ieee80211_iterate_active_interfaces instead of
-ieee80211_iterate_active_interfaces_mtx, which is the one to use when
-the wiphy lock is held.
+From: Johannes Berg <johannes.berg@intel.com>
 
+We're allowed to enter OMI only 5 seconds after the last
+exit, so the logic needs to be inverted. Fix that.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
-Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/low_latency.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/link.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/low_latency.c b/drivers/net/wireless/intel/iwlwifi/mld/low_latency.c
-index 439fc10a4a41..e74e66735f52 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/low_latency.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/low_latency.c
-@@ -120,9 +120,9 @@ static void iwl_mld_low_latency_wk(struct wiphy *wiphy, struct wiphy_work *wk)
- 		wiphy_delayed_work_queue(mld->wiphy, &mld->low_latency.work,
- 					 MLD_LL_ACTIVE_WK_PERIOD);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+index 64ebafc35c9b..f6d482817f1b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+@@ -760,8 +760,8 @@ void iwl_mld_check_omi_bw_reduction(struct iwl_mld *mld)
+ 		return;
+ 	}
  
--	ieee80211_iterate_active_interfaces(mld->hw,
--					    IEEE80211_IFACE_ITER_NORMAL,
--					    iwl_mld_low_latency_iter, mld);
-+	ieee80211_iterate_active_interfaces_mtx(mld->hw,
-+						IEEE80211_IFACE_ITER_NORMAL,
-+						iwl_mld_low_latency_iter, mld);
- }
+-	if (time_is_before_jiffies(mld_link->rx_omi.exit_ts +
+-				   msecs_to_jiffies(IWL_MLD_OMI_EXIT_PROTECTION)))
++	if (time_is_after_jiffies(mld_link->rx_omi.exit_ts +
++				  msecs_to_jiffies(IWL_MLD_OMI_EXIT_PROTECTION)))
+ 		return;
  
- int iwl_mld_low_latency_init(struct iwl_mld *mld)
+ 	/* reduce bandwidth to 80 MHz to save power */
 -- 
 2.34.1
 
