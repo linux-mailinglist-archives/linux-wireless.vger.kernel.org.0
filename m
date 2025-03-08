@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-20035-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20036-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D40A57E5B
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:06:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D50A57E5C
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7FF67A670F
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 21:05:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED5D2188D823
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 21:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BC11A08B1;
-	Sat,  8 Mar 2025 21:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CF51A5BBD;
+	Sat,  8 Mar 2025 21:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="azE0hwlu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RbQe99vk"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593C81A4E9D
-	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 21:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8081EFF86
+	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 21:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741467998; cv=none; b=eYB/NqrQYE84BtildWL5O8J+h05BZ+xtQuNAjvHL3Fb2nXTPjRnRjG3f2hq2UPE20Mxu2mwd6ZfBX9hCeOv8RuES+fGDqKXykmvCKY//JA8pdnwUqz0HF6Ulw2XSqk5at8Ce5h/cc7bXEwtxLPrUVHzzb0Oi50/RB9U9DFzponA=
+	t=1741468001; cv=none; b=o7XIoYxo09nXNTqPr9Emv4QQmOHNLl5/bcjyu11MHXTh0Zvu38/oTPjuroTB1fr80hMctSW9B4rCuWXoatDEBaTPbInAodqSGIsdcj/0XR+jcSfT/58nxuz7QQTsn7NPBwh1R0UrxAlfXtPW2fNlDmCCIGXvYj77Dbw7ONOJcbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741467998; c=relaxed/simple;
-	bh=nNDNwW2ZN1Qp/TQmf5OAJQWk2mHc8zN7tz9Fxb4t+Q4=;
+	s=arc-20240116; t=1741468001; c=relaxed/simple;
+	bh=DYcltVUMLF4xMeT3uxSDwG6lZLJOWpkDsyW4wL2ahME=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=U04mIPpvMbNojAEunGkWKVIh8TzGEJ00FmdZU4cFvdUmlge95k9K3eUCOuR5OJYehYODaPSpKWT26A4snKSTGv2UYdJ3Fm68RSDXJFdRrq40dTlvGgM+X/Zb+cjKKCqGTncP6nyBC/Be0H5W/VYTwj78yRmwsdKtyhmFoE5CfWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=azE0hwlu; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=JetjeWXhay4qG5C4Ez8ZuyaghQF33EFxZnSeTDL3YPnO4/MSbzqRqGxejKIPRfpKXu4+xlYFd255gFtQWDlRhrv7sXHTJhEdFMHp45im527E8TzG3tP9zIdP9VwdkTcWl2+DJ8s9uhG3A5d6tddTNi2qq9jNiSOK0Q6bKrKLKoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RbQe99vk; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741467997; x=1773003997;
+  t=1741468000; x=1773004000;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=nNDNwW2ZN1Qp/TQmf5OAJQWk2mHc8zN7tz9Fxb4t+Q4=;
-  b=azE0hwlu9oZJ4H4eJa6Eh+FGxW4fup04xDgikas/CtEAs0Llf5ncy7yf
-   xx16jA/2qzILmzo2WrfQUkIouoWT5Tzr3bctWInNXsf76hZ/QycZLbqfw
-   Z6Gua5C8Z7UGQqr2PEmIUBuf9rwyuZzZumxL7siKNvYdXt6WNVuEgZUE7
-   dZQvHFCW1PnG0dT1+Zx0JFbh1fTqUXVlqV6XCIGMYPUMMiVVi4Wk79+de
-   GbkRzVt71AgD9+leutS6GfjSysxS/sWvfFXmXjTKJJEGyNKgJ5Gifd1z4
-   c8H3GI4bUZoKgGkdWyBe5yo4WUdSNImpANpNL11Ciu+qmXk09IJRAWAYg
-   Q==;
-X-CSE-ConnectionGUID: SAH+7BpDTd+0UjnsyuSGVg==
-X-CSE-MsgGUID: AuzQ46sFSguZyW3JnoAgAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="42413065"
+  bh=DYcltVUMLF4xMeT3uxSDwG6lZLJOWpkDsyW4wL2ahME=;
+  b=RbQe99vk+7GqqSRou1+PF3hfcunqGVs7BDbpOuuN7nPw4t4o/3hDev0v
+   00i5ewPk66fahJ6IUJCdufvXVouOJplIasCBOVK6pa4MvzpuhERmKLOCU
+   kDnOg9V7tEqP8r7eqTWlZ/EgihVdehQ07Q/xYTxOqfqhDjxLUlxUL6PpN
+   O1KKLdQMxN6z7g4/eRz3cVHbT7SFRxSfRrdfeCEDvt4zH+3HhTZparY9D
+   o+KmKAnNAcD8A70q6xgtQGnjGQEn9lOf1gnYB1kQNtViajt21LlwLRQLA
+   yqNd0ttNl/PWZQXPgsPLlhPxqUAS+RjRlm+DctmCZ56J40UvswQbVmwpC
+   w==;
+X-CSE-ConnectionGUID: uflHtL+aQPKgKoJHJghwRw==
+X-CSE-MsgGUID: zZbTZG0eRqS2y0e/5cRgtw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="42413067"
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="42413065"
+   d="scan'208";a="42413067"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:04:03 -0800
-X-CSE-ConnectionGUID: lMAH/DYNSBGQABUCVIxNog==
-X-CSE-MsgGUID: 1JqiwWZGRwaV0innl5nbmw==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:04:05 -0800
+X-CSE-ConnectionGUID: txid155XTOiNfAH0s6+ToQ==
+X-CSE-MsgGUID: rGjxDKDXRqGA55ShoOEMGA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="124644375"
+   d="scan'208";a="124644386"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:04:02 -0800
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:04:03 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH RESEND wireless-next 06/15] wifi: cfg80211: improve supported_selector documentation
-Date: Sat,  8 Mar 2025 23:03:32 +0200
-Message-Id: <20250308225541.ba402ff47314.I502b56111b62ea0be174ae76bd03684ae1d4aefb@changeid>
+	Avraham Stern <avraham.stern@intel.com>
+Subject: [PATCH RESEND wireless-next 07/15] wifi: mac80211: allow 320 MHz FTM measurements
+Date: Sat,  8 Mar 2025 23:03:33 +0200
+Message-Id: <20250308225541.91f4cbe66817.I9205c585fca6a54a2c5a9e4db98c7781bd1fc4e1@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250308210341.2302222-1-miriam.rachel.korenblit@intel.com>
 References: <20250308210341.2302222-1-miriam.rachel.korenblit@intel.com>
@@ -78,53 +77,37 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-Improve the documentation for supported BSS selectors to make it more
-precise.
+Add 320 MHz to the list of allowed bandwidths for FTM measurements.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/net/cfg80211.h       | 4 ++--
- include/uapi/linux/nl80211.h | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/wireless/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 0d423830a8ed..c61894c1265a 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -3148,10 +3148,10 @@ enum cfg80211_assoc_req_flags {
-  *	included in the Current AP address field of the Reassociation Request
-  *	frame.
-  * @flags:  See &enum cfg80211_assoc_req_flags
-- * @supported_selectors: supported selectors in IEEE 802.11 format
-+ * @supported_selectors: supported BSS selectors in IEEE 802.11 format
-  *	(or %NULL for no change).
-  *	If %NULL, then support for SAE_H2E should be assumed.
-- * @supported_selectors_len: Length of supported_selectors in octets.
-+ * @supported_selectors_len: number of supported BSS selectors
-  * @ht_capa:  HT Capabilities over-rides.  Values set in ht_capa_mask
-  *	will be used in ht_capa.  Un-supported values will be ignored.
-  * @ht_capa_mask:  The bits of ht_capa which are to be used.
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 95287289b3b4..a945ad223cfd 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2881,9 +2881,9 @@ enum nl80211_commands {
-  * @NL80211_ATTR_VIF_RADIO_MASK: Bitmask of allowed radios (u32).
-  *	A value of 0 means all radios.
-  *
-- * @NL80211_ATTR_SUPPORTED_SELECTORS: supported selectors, array of
-- *	supported selectors as defined by IEEE 802.11 7.3.2.2 but without the
-- *	length restriction (at most %NL80211_MAX_SUPP_SELECTORS).
-+ * @NL80211_ATTR_SUPPORTED_SELECTORS: supported BSS Membership Selectors, array
-+ *	of supported selectors as defined by IEEE Std 802.11-2020 9.4.2.3 but
-+ *	without the length restriction (at most %NL80211_MAX_SUPP_SELECTORS).
-  *	This can be used to provide a list of selectors that are implemented
-  *	by the supplicant. If not given, support for SAE_H2E is assumed.
-  *
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 15bbc9d06c9e..52728527c6f5 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -5,7 +5,7 @@
+  * Copyright 2006-2010		Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright 2015-2017	Intel Deutschland GmbH
+- * Copyright (C) 2018-2024 Intel Corporation
++ * Copyright (C) 2018-2025 Intel Corporation
+  */
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+@@ -793,6 +793,7 @@ int wiphy_register(struct wiphy *wiphy)
+ 				  BIT(NL80211_CHAN_WIDTH_80) |
+ 				  BIT(NL80211_CHAN_WIDTH_80P80) |
+ 				  BIT(NL80211_CHAN_WIDTH_160) |
++				  BIT(NL80211_CHAN_WIDTH_320) |
+ 				  BIT(NL80211_CHAN_WIDTH_5) |
+ 				  BIT(NL80211_CHAN_WIDTH_10))))
+ 			return -EINVAL;
 -- 
 2.34.1
 
