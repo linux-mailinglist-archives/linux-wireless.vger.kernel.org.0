@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-20023-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20024-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4CAA57972
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 10:22:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7F0A57977
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 10:26:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 325161890F55
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 09:22:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 996E5189021E
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 09:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BE413EFE3;
-	Sat,  8 Mar 2025 09:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2D014A0B7;
+	Sat,  8 Mar 2025 09:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lu5GRdwy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cLt7dQ+E"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FB3C2FA
-	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 09:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40E6C2FA
+	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 09:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741425730; cv=none; b=gJ+An9BkmXvDlCqs7iyoLnJ2JW5GlUhHSxLafqJUqxpUVlYLD3QwH/hQwP1Wq4YY49CUBjMtc9s40HhaXE/qqM4xbz3CE7s9uYXb/VlBPvfJs4sYaPsC0xkpqy7Tv2hJve19wNiZhUPzzx9v0eTVQLVX/Da2sRozwyyO3srXrAk=
+	t=1741425970; cv=none; b=Z++o0dWb8X0w7rhPEw+T2Vwx9b/dnIaWMSBji97xUCium4ZesXyPhvYG3QH/9wFTNG+HLD3TnK8Vi0V5aDb2aqnoYTvOItow0AA82g+uie3Fpn8yS2RvU2LLlFwXY6/lpFme5vQMvCYjs+wiReKDwlCoii1HLHqw1ICciuE0XW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741425730; c=relaxed/simple;
-	bh=AsrTXfFyPjWM2+5f1ejq4Bw0vaVKLYI1fBs3ag+fG3Q=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=KUZNSRPU5TBJv6bL6p8ZapbaY8Pm0DMtFbtfhhEvi/HR4IrQlYdMbzQ+3YHR9ZcH0BInkgYsdnK0ueJMu06ddBIDPThtQmAml3lS3DodE732UFMRtQcoJj5gsgqOcfPt6S02dBN/5AsigZvbY4wNbYhbHmPC9iqPNDuzfEUJeyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lu5GRdwy; arc=none smtp.client-ip=198.175.65.14
+	s=arc-20240116; t=1741425970; c=relaxed/simple;
+	bh=snJr9HC+XlNajPxfmvEx8EVhv4ZGM3834ei9nxC15ws=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=WXUdRYYh+9hvAV107R572MsaemhKjHxx5pvubbY69KX2qaLvvo6YDNljgPueRTpRM3GQidPoSwm/DixmW5XpLiSLtyk+Y7TwluFcy56J07Lz8i8JOorGAPxvETPdGbSlq2Uy1lgKPN5qOy9z7TH+Y2r1xBsvcu3s7xfTH3HCJps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cLt7dQ+E; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741425729; x=1772961729;
+  t=1741425969; x=1772961969;
   h=date:from:to:cc:subject:message-id;
-  bh=AsrTXfFyPjWM2+5f1ejq4Bw0vaVKLYI1fBs3ag+fG3Q=;
-  b=lu5GRdwyQ8MasqG/0uZDFOjRAAh+M7nZFP643WWir/dXheE6QWKAkEHE
-   y48y1P4LS2dCFvORuZE4MQlwfZdxUiEp4ixF4aizeAszbua9qgJlfkbfW
-   0txpHpnsa9Cajn9w3j/sjmgRbq3+bTbhB0+urMn+5++EzDeCtAmPbTYW5
-   sUSWXHfTFt019cdq6QPyFMrMnfZTY0tL92nPN4QgYSf/UKZo64DiND5PB
-   nCSwy7Qfu1TANeFoR9qgSttD1AbiHuRmZ3dsKpk3pOd5GclhCsbJ3MtKK
-   lmIWwjoq5iPEHgnHcemcy7oZKlkN3pHagxxEsY8944qSLtupJ0+l5c6eY
-   A==;
-X-CSE-ConnectionGUID: SM4EI+7TRKC+w7KRjNulwA==
-X-CSE-MsgGUID: Gnr9Tl+FSi+ArZBgiv5Kuw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11366"; a="46255778"
+  bh=snJr9HC+XlNajPxfmvEx8EVhv4ZGM3834ei9nxC15ws=;
+  b=cLt7dQ+ELghOw+apGyLvF/3OZH8QP9Q2ZRYKyBJWjCItj+915jf8YKiN
+   /DALp+jeSBU52lL+aN0Mdf7EUc8ORGJUkRc8zStRQfN6G0eLi/6f8cL/+
+   8CiNMbe6T/5qoJplU3mkW49DQfiFbgq0PKSdoc8lftOkWmCDZY0gxnrAV
+   E1g4B54EutX0ob6RlwMH0wY+9ou5BqJHgqlvJHMoiMMpDFh2x0/RonbH6
+   BraAllEx3dF+UX2dI6eNryiuUZOr8qqEvoGAn/5D2EFRVLZzBBmYUziN2
+   7wPtPl1xk+906MudjElZV/FFNJl0pei7Qx3KJDw6aBPis83KCcYS2iREp
+   w==;
+X-CSE-ConnectionGUID: bVf78UC1TCKELpXlHa55ZA==
+X-CSE-MsgGUID: CAViAuDSQM23WKY/0mpigA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11366"; a="46255851"
 X-IronPort-AV: E=Sophos;i="6.14,231,1736841600"; 
-   d="scan'208";a="46255778"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 01:22:08 -0800
-X-CSE-ConnectionGUID: ohgqwaecQZybhMPU6IehUw==
-X-CSE-MsgGUID: MuAmNBM3TlidwtA+g6EhIw==
+   d="scan'208";a="46255851"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 01:26:08 -0800
+X-CSE-ConnectionGUID: 8Bvj1nmlQTO+BG7FhkCHfw==
+X-CSE-MsgGUID: TxYYRqk4R0KK4DJGy+U4EQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="150483989"
+X-IronPort-AV: E=Sophos;i="6.14,231,1736841600"; 
+   d="scan'208";a="124126132"
 Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 08 Mar 2025 01:22:07 -0800
+  by fmviesa005.fm.intel.com with ESMTP; 08 Mar 2025 01:26:07 -0800
 Received: from kbuild by a4747d147074 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1tqqNg-0001kS-2G;
-	Sat, 08 Mar 2025 09:22:04 +0000
-Date: Sat, 08 Mar 2025 17:21:30 +0800
+	id 1tqqRY-0001ke-2v;
+	Sat, 08 Mar 2025 09:26:04 +0000
+Date: Sat, 08 Mar 2025 17:25:10 +0800
 From: kernel test robot <lkp@intel.com>
 To: Johannes Berg <johannes.berg@intel.com>
 Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD REGRESSION
- fc56639937ce95a73c9876e39f8d18d1a8dd6a95
-Message-ID: <202503081723.78KqkGLS-lkp@intel.com>
+Subject: [wireless:for-next] BUILD SUCCESS
+ 72d520476a2fab6f3489e8388ab524985d6c4b90
+Message-ID: <202503081704.iraUHyUr-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -74,42 +74,16 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: fc56639937ce95a73c9876e39f8d18d1a8dd6a95  wifi: wfx: allow to enable WoWLAN using NL80211
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 72d520476a2fab6f3489e8388ab524985d6c4b90  wifi: cfg80211: cancel wiphy_work before freeing wiphy
 
-Error/Warning (recently discovered and may have been fixed):
+elapsed time: 1448m
 
-    https://lore.kernel.org/oe-kbuild-all/202503080456.h4DC9aDg-lkp@intel.com
-
-    drivers/net/wireless/intel/iwlwifi/mld/hcmd.h:13:35: error: 'struct <anonymous>' has no member named 'in_d3'
-    drivers/net/wireless/intel/iwlwifi/mld/mld.h:299:23: error: 'struct <anonymous>' has no member named 'in_d3'
-
-Error/Warning ids grouped by kconfigs:
-
-recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-net-wireless-intel-iwlwifi-mld-hcmd.h:error:struct-anonymous-has-no-member-named-in_d3
-|   `-- drivers-net-wireless-intel-iwlwifi-mld-mld.h:error:struct-anonymous-has-no-member-named-in_d3
-|-- arc-allmodconfig
-|   |-- drivers-net-wireless-intel-iwlwifi-mld-hcmd.h:error:struct-anonymous-has-no-member-named-in_d3
-|   `-- drivers-net-wireless-intel-iwlwifi-mld-mld.h:error:struct-anonymous-has-no-member-named-in_d3
-|-- arc-allyesconfig
-|   |-- drivers-net-wireless-intel-iwlwifi-mld-hcmd.h:error:struct-anonymous-has-no-member-named-in_d3
-|   `-- drivers-net-wireless-intel-iwlwifi-mld-mld.h:error:struct-anonymous-has-no-member-named-in_d3
-|-- openrisc-allyesconfig
-|   |-- drivers-net-wireless-intel-iwlwifi-mld-hcmd.h:error:struct-anonymous-has-no-member-named-in_d3
-|   `-- drivers-net-wireless-intel-iwlwifi-mld-mld.h:error:struct-anonymous-has-no-member-named-in_d3
-|-- parisc-allmodconfig
-|   |-- drivers-net-wireless-intel-iwlwifi-mld-hcmd.h:error:struct-anonymous-has-no-member-named-in_d3
-|   `-- drivers-net-wireless-intel-iwlwifi-mld-mld.h:error:struct-anonymous-has-no-member-named-in_d3
-`-- parisc-allyesconfig
-    |-- drivers-net-wireless-intel-iwlwifi-mld-hcmd.h:error:struct-anonymous-has-no-member-named-in_d3
-    `-- drivers-net-wireless-intel-iwlwifi-mld-mld.h:error:struct-anonymous-has-no-member-named-in_d3
-
-elapsed time: 1443m
-
-configs tested: 138
+configs tested: 146
 configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
 tested configs:
 alpha                             allnoconfig    gcc-14.2.0
@@ -124,6 +98,7 @@ arm                              allmodconfig    gcc-14.2.0
 arm                               allnoconfig    clang-17
 arm                              allyesconfig    gcc-14.2.0
 arm                            dove_defconfig    gcc-14.2.0
+arm                           imxrt_defconfig    clang-19
 arm                        keystone_defconfig    gcc-14.2.0
 arm                             pxa_defconfig    gcc-14.2.0
 arm                   randconfig-001-20250307    clang-21
@@ -162,7 +137,9 @@ loongarch             randconfig-002-20250307    gcc-14.2.0
 m68k                             allmodconfig    gcc-14.2.0
 m68k                              allnoconfig    gcc-14.2.0
 m68k                             allyesconfig    gcc-14.2.0
+m68k                        m5307c3_defconfig    gcc-14.2.0
 m68k                            mac_defconfig    gcc-14.2.0
+m68k                        mvme16x_defconfig    gcc-14.2.0
 microblaze                       alldefconfig    gcc-14.2.0
 microblaze                       allmodconfig    gcc-14.2.0
 microblaze                        allnoconfig    gcc-14.2.0
@@ -189,6 +166,8 @@ parisc                randconfig-002-20250307    gcc-14.2.0
 powerpc                          allmodconfig    gcc-14.2.0
 powerpc                           allnoconfig    gcc-14.2.0
 powerpc                          allyesconfig    clang-16
+powerpc                      arches_defconfig    gcc-14.2.0
+powerpc                        fsp2_defconfig    gcc-14.2.0
 powerpc                   motionpro_defconfig    clang-17
 powerpc                 mpc832x_rdb_defconfig    gcc-14.2.0
 powerpc                     mpc83xx_defconfig    clang-21
@@ -217,10 +196,13 @@ sh                               allmodconfig    gcc-14.2.0
 sh                                allnoconfig    gcc-14.2.0
 sh                               allyesconfig    gcc-14.2.0
 sh                                  defconfig    gcc-14.2.0
+sh                               j2_defconfig    gcc-14.2.0
 sh                          lboxre2_defconfig    gcc-14.2.0
+sh                          polaris_defconfig    gcc-14.2.0
 sh                    randconfig-001-20250307    gcc-14.2.0
 sh                    randconfig-002-20250307    gcc-14.2.0
 sh                          rsk7201_defconfig    gcc-14.2.0
+sh                           se7705_defconfig    gcc-14.2.0
 sh                           se7724_defconfig    gcc-14.2.0
 sh                        sh7757lcr_defconfig    gcc-14.2.0
 sparc                            allmodconfig    gcc-14.2.0
