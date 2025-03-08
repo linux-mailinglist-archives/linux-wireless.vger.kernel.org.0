@@ -1,94 +1,90 @@
-Return-Path: <linux-wireless+bounces-20025-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20026-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BCAA57995
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 10:46:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E02A57A4C
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 13:58:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99DA172946
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 09:46:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 144E5188805C
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 12:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144C31991CF;
-	Sat,  8 Mar 2025 09:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4121DFF0;
+	Sat,  8 Mar 2025 12:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M1X9b4y2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F67BE4F
-	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 09:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D90C8BFF
+	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 12:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741427164; cv=none; b=O30do908CB1Ao7USlqn8NrPjbPFDmEcHXkvuBBrxlCcls8OC+PfA03QBcQX7ezSFlv4ARF+uhFbyMoVQDgj3Huw5E2c3jmKLTcEfDPm3WhJY4N9jlVkD/SugypKs/FwGR4pWtPSGZBmDzdfRZWhxoYgpz6ERtYHT4v5C7ZwhZxQ=
+	t=1741438718; cv=none; b=NvrvoHylb9WuM8JSu4QJ21Ck31AhGC5B+RjMzPUkcFf0dkR0zNP/Zu6JawnCwXYWr416DhoX/MEnN9oGnPBPdog53hENaTEfFaiSiCqCluYrv5IOptE1C1L4/N1SAKP3W3Ig6fOFALjIFsHkw249gCTd4PW2bOLIoQW0jPUYUU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741427164; c=relaxed/simple;
-	bh=FVlLejdFDbutlkTC1Y2NNLbITDrvuNqRxT+XMWiQ0dY=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=XpNU6kPSTgWXk452HVaJpuefzGURmPPf8bxN9NLBMhMpQn7X0MUrmKTWZs6MWd+KwU5wiv+VuYSvv947/U3Xyn0BmfhrrtMmJFZ/+tCAJOtoDkDmrzHiKh093vSICtrAVMN+3xYGXV2ENRMg5x5zHDRdO3imgsjtFet4bU5qHJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-85aec8c9633so524183339f.0
-        for <linux-wireless@vger.kernel.org>; Sat, 08 Mar 2025 01:46:02 -0800 (PST)
+	s=arc-20240116; t=1741438718; c=relaxed/simple;
+	bh=W1VbBZ7ioeuM974zi/e3FY0nOH4s67kpRraOm7geFKg=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=THW1PwGE4RI2k8/3rDFx79wDNgGkpMuMnXHoGwipdQgoQmOCnfdl0VVC0xKUHUkaBgWxBW/+IImN9jarrq5bLLIVY90DEXqS+XRuz3Le2x55fi5FgkzoZKB9PEWIzbpb9PN8/6O7jspCQcV4HUqCkjvPpEa0SnFTjzF7u/e9fNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M1X9b4y2; arc=none smtp.client-ip=209.85.219.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e5ad75ca787so2318887276.0
+        for <linux-wireless@vger.kernel.org>; Sat, 08 Mar 2025 04:58:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741438716; x=1742043516; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=W1VbBZ7ioeuM974zi/e3FY0nOH4s67kpRraOm7geFKg=;
+        b=M1X9b4y28BYup+PY+Hv2z/DJyBOor+xm3cLciNa1xWck38dPZOMAl/8RRNU4zMaKmQ
+         pon+wUDtfUQpbECO0GDUblDafNOpDHjcvb0tYDjvjRimfzC32eJ5+2Vel3ARO6HFvNCe
+         URdH1CfsQ5XnjiaeSc97rnTwFBlw8gaA4TNkZmXJ5vbQ8NUGkW0ajYvAseIdGpp74mnl
+         e8P1G0YVol4rtwxCHBHiKXvcAC2iLBvdc6yVGeVqynFfVQ9PQyZMO45jABRVa2qeuAk+
+         soXOhyfZ4RSsf8MYwr0S9UiKy/yMUoW/x04CvSjM9pB3vsxsG+DF4PP6ysG++PPKf3ZQ
+         bwLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741427161; x=1742031961;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nfAMxlt7hl4XrwSsiM1sMw4spJ1nfH3roCq3hk1GYYM=;
-        b=NXkDNh80+m5eDRMNPj7edkq2xPcmhyFyTH6hYqQatJC5q1fjNB5cAHYf3eZqPSVXcz
-         vWbxIUEnbS2/RnHclFekfhDCIc4jO83wCdMIMBOHVoCMi/j3bvS66koERZHpZ6PTNUpj
-         yHcArkKM2LKcSEro3srTx+RzgrKRKBXOVdCIPyBNt57jbm1m4yYojrN0i89kmbwyfWlb
-         E7enThJN9lR50iTZLR/K72E8hzWg2G5X+TWJ7007h3TD8dOMFCLMnxnWjR18elISQOI/
-         00Zb3P9Yt9HqtCAG0O809+PfIODNZ6wrn3Fh3r3fiA5MmhGQfVO2D7yjuINyjinHu689
-         VMjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUts85Ai7TNCTaA02GNO45b0sflsKkLz7O/YxtPFJu8bcpR4I0uzWDznPRDxLBsYH2NIjSk8Idz/oyIMM8Srg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm/HXYAdQaPn+kCu3F4ec7+Ond4qiIYmr3jMiUvpxS4E6Xgpla
-	0bm9x0ZpDADGubBYNRtAFoQ/vp5rXnHpkFsiYbq+KiWW4b1Quz4CSFVdIza/UEUrbuPlhgLTXM/
-	eHl9lCMyeifo3idLIB+J+zNr9PD8PI+wlqqVmmlJwg704BIhPMKJnWK0=
-X-Google-Smtp-Source: AGHT+IHvMAYa79194kZw/IW34l/QUa46VgEuUlYlL9gdZcDd8ttqdUVAXZ3b263TFEj87ZhuXJ63fOR+Blft5SPVzovxf1cuCVe+
+        d=1e100.net; s=20230601; t=1741438716; x=1742043516;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=W1VbBZ7ioeuM974zi/e3FY0nOH4s67kpRraOm7geFKg=;
+        b=Q9bSzhQZFKtMKGC1G/w+96bNKq7kuQZOgt5cn+dhGe7NkPNLat1F3PptmqTqdY9R38
+         /gpLae50LT+bz5XFXRYiFNDpznvqblrRCJYjCC06esp3A9nqiWAoNZbBZpUSlDKsJjX1
+         27Zbl3EsQ2qVwtM5KfZcS05KHQfc+Vnn4EW4keMUGLssk3fJVISLImAjFe/rFoOekUqx
+         VkkeymL4JU2pnZOuzS/k/KtcAQclouE/BFCCI5jTnp966DjLDXPt8KY1jYLOU94n6nFD
+         lZxpNsL5XjxmKr7jXJQuG9s7aTWw4Hu9JiZh+vmKHWqBGmJZ3QVxgaOL2zjhCcT9wVzd
+         QVPQ==
+X-Gm-Message-State: AOJu0Yyq9xzA68EG3c7sL7fVt7Qmg2hWdkntujHu+Oj6LNFOtuZkj/sD
+	xt4/y5pucX6glTzTC/U7aSsnk77YTXEGtcz/T+1fsXyLH53wPMItFajlXxowLmu5px7cJ4RyTDx
+	lnrQtq5Zt1venDneS2H3qA1r3ArBhQGxrtzoxEg==
+X-Gm-Gg: ASbGncsMIx+aBtwtFy20rAdXRlmeYWRVWy82ij9qVBQk7HeN6FACEVG7dYtbEBIL2Gj
+	71qzDWH1EsVtLhBKafxhpZgo8CUs34Xpzs1kKeCdROkvM0n4fM8+J2yGQLSNqvqaAtNpgfMuBzu
+	oRJ/UInxAdJPHz0xAHdzvZb2/0
+X-Google-Smtp-Source: AGHT+IGgskZfsyiNtqaytUmKOkh+8wMb4H5Tj4a2uOGfQw7lvzZtw6+KAmbpBl7VrNUu6cQryIrNS/XQYI+9TY9rn4E=
+X-Received: by 2002:a05:6902:230f:b0:e63:6987:6e61 with SMTP id
+ 3f1490d57ef6-e636f58d4c0mr4873928276.10.1741438716186; Sat, 08 Mar 2025
+ 04:58:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a92:c549:0:b0:3d4:2306:a875 with SMTP id
- e9e14a558f8ab-3d4418a5d9cmr72973195ab.8.1741427161648; Sat, 08 Mar 2025
- 01:46:01 -0800 (PST)
-Date: Sat, 08 Mar 2025 01:46:01 -0800
-In-Reply-To: <67012223.050a0220.49194.04be.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67cc11d9.050a0220.24a339.0090.GAE@google.com>
-Subject: Re: [syzbot] [wireless?] INFO: task hung in regdb_fw_cb (2)
-From: syzbot <syzbot+aff8125319e0457b4a25@syzkaller.appspotmail.com>
-To: bsegall@google.com, davem@davemloft.net, dietmar.eggemann@arm.com, 
-	edumazet@google.com, johannes@sipsolutions.net, juri.lelli@redhat.com, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	mgorman@suse.de, mingo@redhat.com, netdev@vger.kernel.org, pabeni@redhat.com, 
-	peterz@infradead.org, rostedt@goodmis.org, syzkaller-bugs@googlegroups.com, 
-	vincent.guittot@linaro.org, vschneid@redhat.com
+From: =?UTF-8?B?S3Jpc3TDs2YgTWljesOhaw==?= <kristofmiczak73@gmail.com>
+Date: Sat, 8 Mar 2025 13:58:28 +0100
+X-Gm-Features: AQ5f1JrELGGX7igyU-mpmJdO5eyrKoQLnGTJHscl7xMplVe-d4T0VC4Er68YiuQ
+Message-ID: <CAFK2OG-NZxtagiLK7DEgPgNsct1gq7BUTQq=oVkWBgXV2iLFpg@mail.gmail.com>
+Subject: Mediatek 7902
+To: linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-syzbot suspects this issue was fixed by commit:
+Dear Linux Networking Team, My question would be, when will the Linux
+Kernel support the Mediatek 7902 network card? It's a WIFI 6E card
+that functions on the 802.11ax standard. I also checked different
+devices on the same standard at linux hardware's website and it said
+that other devices on the same standard like intel products work. So
+again my two questions would be: WHen will the Linux Kernel support
+this particular device?, And When will it be publically available?
 
-commit 66951e4860d3c688bfa550ea4a19635b57e00eca
-Author: Peter Zijlstra <peterz@infradead.org>
-Date:   Mon Jan 13 12:50:11 2025 +0000
-
-    sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=13d29878580000
-start commit:   e32cde8d2bd7 Merge tag 'sched_ext-for-6.12-rc1-fixes-1' of..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1b5201b91035a876
-dashboard link: https://syzkaller.appspot.com/bug?extid=aff8125319e0457b4a25
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1561539f980000
-
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Best Regards, Christoph Miczak.
 
