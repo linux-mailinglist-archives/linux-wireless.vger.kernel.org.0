@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-20052-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20053-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F351CA57E7F
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:20:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08E3A57E80
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:20:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD7E03B1466
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 21:19:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E35F816E1D0
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 21:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34ACA212B37;
-	Sat,  8 Mar 2025 21:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6552080FB;
+	Sat,  8 Mar 2025 21:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WGpCBr8Q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DWLnHgEj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBB91F9F5C
-	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 21:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E41A20458B
+	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 21:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741468790; cv=none; b=YAv3G0oPNnjzndW9gO0R5ojTencySglfaoxvfxE88FHBYVMxb9+yWd7V5GeNc8bozrfLR33+Hb2nOcM47iUa9jdSDJ81k0xjwKPnK6Z8y9dW2m4TTXF/970W9qRODPpK9xMap+IQ+4NTIQMW5clxMLqygdj/76lmoRoiLNWWlhY=
+	t=1741468791; cv=none; b=pxuRZy5uBO36t2w4qdRdUmIIJXNjtagNRg39HZV2wzxYP7yOg5QxVcke3W2+9iIbll1Sew8jQBuAMrA4Id8EpgzrXHJO3O38rkUi151+2bW/db9l1UDpUq8xN0D8FuTDPWOFyx7AuTg55F/32WsH5xynfULHDIp12TobP9EC/Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741468790; c=relaxed/simple;
-	bh=sa7vOZzSkawInADUnsvelr4iWp2BgINI7uEkWPmoFzE=;
+	s=arc-20240116; t=1741468791; c=relaxed/simple;
+	bh=Pj0p2paligLz2ZvpOs3SXHK7UYAOvX5cSNksAWAn4lM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DN33p4jdx7I1mN1tYDwtfK0tSOALcQoc3z+u5y6iduQ51ZLyoU/oFIRxiOSqcUExjTzrky6J6qQ+tStUF1f1obGXvyU0W0MgtOYDzjrM/LyTjzeE+XzChnvsqQHKAmxHwPQ7UzVo/ZtKpxnelSmVUumv1U4XWS7G/UjYghj5ItM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WGpCBr8Q; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=iTmiVzRYn1d5ni0T6g2ZZmE13sNtfOYhcc9B+in8eb3pLjWikfSYLiAZJXpq3Ym8e9Y984rPwjA3dHFaZ8vM+qVE5iaKrA7ksu2rUBosZf6JX5r0dP++x3AUNF8KzPKeFE1IhUbwUXrTxbS+yKJRmyPPFmgkmbvWcktlC1pBsOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DWLnHgEj; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741468789; x=1773004789;
+  t=1741468790; x=1773004790;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=sa7vOZzSkawInADUnsvelr4iWp2BgINI7uEkWPmoFzE=;
-  b=WGpCBr8Q0swEZLHiZ+ExL/ztDxALOM+pR8F0I0HkNVb54szixJU7J6ps
-   7NIOdGHWTWWenLDUrF3uI0gulpHMUaCs1nIQ7QxFm9fNjKT0sqndJJn9i
-   3sk31igujsgw3btg+UTZQsPXFR+Y1Sp61pcP3tgZ5Czum43MlK9kUmg/Y
-   wqTRmXlFEZKhHiVjTa3GDlj6q2CD5wHUCEofthQQh9U086OczbU3yKq68
-   fRVyp+CMBxs6vaygITXNSy5CnwTtR3f/uhr6wH0TTky6OBZMyu/W/XBf+
-   Olz0Q1uRuo65K7pkrZO8wCCQlvdd/LNY37Uhwo/P0+khuG9ykIEiw3cTp
-   Q==;
-X-CSE-ConnectionGUID: IBiJIzVURAGfZX7ZCyp26w==
-X-CSE-MsgGUID: 3qP3VblrTF+z3jyqONOa3Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="60052375"
+  bh=Pj0p2paligLz2ZvpOs3SXHK7UYAOvX5cSNksAWAn4lM=;
+  b=DWLnHgEjeqv89V9GPvDou7dKNon8y8QU60IgnadMrbf7neBzy3pAR8oQ
+   1ggXtNMT29rmrixWr8PP/v7NLFseXIwrMxZztdSgq6zBs5qg+AIf8E/8U
+   ofr2uT50Uf8I5d6bB+GwQZv4n0yz+XlyRY2ewhuSCyhuAP4gOwb/ZcGKG
+   pKvS7NVOW3GjHw58bFJud3BealK0WSVFNVqHAZnRh5+3mazWhFBwINLeG
+   Y2XAHA+lUuj1wr/jyfPnyWeI+reZxM11zLn0t0mlh+3HOWOF81wxpCRV+
+   3DwSlUsptlnj9iITBl5uIJiRehxW99fCZQcBJOKMx+vEgHAz1zjHwOd/X
+   w==;
+X-CSE-ConnectionGUID: MIzG0OiGQxmSJno8uS8yKQ==
+X-CSE-MsgGUID: 843xX9x7Q066+7QjZP/qTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="60052378"
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="60052375"
+   d="scan'208";a="60052378"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:19:49 -0800
-X-CSE-ConnectionGUID: RuPR0SaWQEi7ieIV9ku5dA==
-X-CSE-MsgGUID: qscUSTSSTRun8eep1ReGag==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:19:50 -0800
+X-CSE-ConnectionGUID: hmHcc0tNQp23PNyAARua/g==
+X-CSE-MsgGUID: zW/K5i3vSPiZrhWK4ZGhvw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="142859926"
+   d="scan'208";a="142859933"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:19:47 -0800
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:19:49 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v3 wireless-next 07/14] wifi: iwlwifi: fix debug actions order
-Date: Sat,  8 Mar 2025 23:19:18 +0200
-Message-Id: <20250308231427.6de7fa8e63ed.I40632c48e2a67a8aca05def572a934b88ce7934b@changeid>
+	Daniel Gabay <daniel.gabay@intel.com>
+Subject: [PATCH v3 wireless-next 08/14] wifi: iwlwifi: w/a FW SMPS mode selection
+Date: Sat,  8 Mar 2025 23:19:19 +0200
+Message-Id: <20250308231427.7bf205efa027.I2c793ff1fc2a6779a95faaee1ded348100fd97f1@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250308211925.2332313-1-miriam.rachel.korenblit@intel.com>
 References: <20250308211925.2332313-1-miriam.rachel.korenblit@intel.com>
@@ -77,67 +77,92 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-The order of actions taken for debug was implemented incorrectly.
-Now we implemented the dump split and do the FW reset only in the
-middle of the dump (rather than the FW killing itself on error.)
-As a result, some of the actions taken when applying the config
-will now crash the device, so we need to fix the order.
+The FW is now responsible of determining the SMPS mode.
+If the user disabled power save in a certain vif, we send the vif-level
+power command to clear out the POWER_FLAGS_POWER_MANAGEMENT_ENA_MSK bit
+for that vif.
+But erroneously, the FW checks DEVICE_POWER_FLAGS_POWER_SAVE_ENA_MSK in
+the device-level command to determine the SMPS mode.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+To W/A this, send also the device-level command when the power save of a
+vif changes, and disable power save if there is any vif that has power
+save disabled.
+
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 15 +++++++++++++++
+ .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c |  3 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h      |  3 +++
+ 3 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index 08d990ba8a79..ce787326aa69 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 20aaef913e3f..1e916a0ce082 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -4100,6 +4100,20 @@ iwl_mvm_sta_state_authorized_to_assoc(struct iwl_mvm *mvm,
+ 	return 0;
+ }
+ 
++void iwl_mvm_smps_workaround(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
++			     bool update)
++{
++	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++
++	if (!iwl_mvm_has_rlc_offload(mvm))
++		return;
++
++	mvmvif->ps_disabled = !vif->cfg.ps;
++
++	if (update)
++		iwl_mvm_power_update_mac(mvm);
++}
++
+ /* Common part for MLD and non-MLD modes */
+ int iwl_mvm_mac_sta_state_common(struct ieee80211_hw *hw,
+ 				 struct ieee80211_vif *vif,
+@@ -4192,6 +4206,7 @@ int iwl_mvm_mac_sta_state_common(struct ieee80211_hw *hw,
+ 		   new_state == IEEE80211_STA_AUTHORIZED) {
+ 		ret = iwl_mvm_sta_state_assoc_to_authorized(mvm, vif, sta,
+ 							    callbacks);
++		iwl_mvm_smps_workaround(mvm, vif, true);
+ 	} else if (old_state == IEEE80211_STA_AUTHORIZED &&
+ 		   new_state == IEEE80211_STA_ASSOC) {
+ 		ret = iwl_mvm_sta_state_authorized_to_assoc(mvm, vif, sta,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 341a2a7a49ec..78d7153a0cfc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
 @@ -1,6 +1,6 @@
  // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
  /*
-- * Copyright (C) 2018-2024 Intel Corporation
-+ * Copyright (C) 2018-2025 Intel Corporation
+- * Copyright (C) 2022-2024 Intel Corporation
++ * Copyright (C) 2022-2025 Intel Corporation
   */
- #include <linux/firmware.h>
- #include "iwl-drv.h"
-@@ -1372,15 +1372,15 @@ void _iwl_dbg_tlv_time_point(struct iwl_fw_runtime *fwrt,
- 	switch (tp_id) {
- 	case IWL_FW_INI_TIME_POINT_EARLY:
- 		iwl_dbg_tlv_init_cfg(fwrt);
--		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		iwl_dbg_tlv_update_drams(fwrt);
- 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
-+		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		break;
- 	case IWL_FW_INI_TIME_POINT_AFTER_ALIVE:
- 		iwl_dbg_tlv_apply_buffers(fwrt);
- 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
--		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
-+		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		break;
- 	case IWL_FW_INI_TIME_POINT_PERIODIC:
- 		iwl_dbg_tlv_set_periodic_trigs(fwrt);
-@@ -1390,14 +1390,14 @@ void _iwl_dbg_tlv_time_point(struct iwl_fw_runtime *fwrt,
- 	case IWL_FW_INI_TIME_POINT_MISSED_BEACONS:
- 	case IWL_FW_INI_TIME_POINT_FW_DHC_NOTIFICATION:
- 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
--		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data,
- 				       iwl_dbg_tlv_check_fw_pkt);
-+		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		break;
- 	default:
- 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
--		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
-+		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		break;
+ #include "mvm.h"
+ 
+@@ -887,6 +887,7 @@ static void iwl_mvm_mld_vif_cfg_changed_station(struct iwl_mvm *mvm,
  	}
- }
+ 
+ 	if (changes & BSS_CHANGED_PS) {
++		iwl_mvm_smps_workaround(mvm, vif, false);
+ 		ret = iwl_mvm_power_update_mac(mvm);
+ 		if (ret)
+ 			IWL_ERR(mvm, "failed to update power mode\n");
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index b6e0b63cbd3c..f6391c7a3e29 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -3031,4 +3031,7 @@ iwl_mvm_send_ap_tx_power_constraint_cmd(struct iwl_mvm *mvm,
+ 					struct ieee80211_vif *vif,
+ 					struct ieee80211_bss_conf *bss_conf,
+ 					bool is_ap);
++
++void iwl_mvm_smps_workaround(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
++			     bool update);
+ #endif /* __IWL_MVM_H__ */
 -- 
 2.34.1
 
