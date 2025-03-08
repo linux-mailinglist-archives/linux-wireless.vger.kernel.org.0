@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-20049-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20050-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6724CA57E7C
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:20:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE3EA57E7D
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 22:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA96E18926EA
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 21:20:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 481BA3B13E4
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Mar 2025 21:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9A61EB5C8;
-	Sat,  8 Mar 2025 21:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436D920FA9B;
+	Sat,  8 Mar 2025 21:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JZTKXvY/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L1FWTWb4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECAE1FF61A
-	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 21:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A530B20E31D
+	for <linux-wireless@vger.kernel.org>; Sat,  8 Mar 2025 21:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741468786; cv=none; b=WkCBqzhHphHwmcLa/k2hdtU952YNgTUK0p/Zk0tmil8DXlm858ta4kNtrFDcgvgcU3EeXGWXctdrG65ctS5AIa/zms23kK7sUBjm+1cjaNWh+OMEtZQF1dx0n8eJH5PmTeA5e9/s/tsKV0Jr9dTYlXF+HKWNndLBFJPru9F7QFI=
+	t=1741468787; cv=none; b=T9Ov15VEw50bT17NF/Blr2AEN76jGj8DOuVJfQ3a+lz+W89xghsj6pilaUsFATXeL2h4svGoDKKQJcR8JlQMm+hoJM1Rgeod8G7N9Dz7rLWJ/ZVAyQQnvOZH9PGQQ//4NEOsstlfJUgZVCqOywz+FxArKYPoKE9bxIOWFgTcAEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741468786; c=relaxed/simple;
-	bh=Fdhe8LOAuCkCUmDReNXyM/ZFsBgc8ZmpMHkeGbiRBxk=;
+	s=arc-20240116; t=1741468787; c=relaxed/simple;
+	bh=kzX5tu+ew83PjbPqBkcMUrtdK5UVT24DkjBm499PVt0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ckqFoaOOl6gAMUSDXtEieoZj1Ye8iKBSK1nxTEY6hODXwTWEfMlGEATsyXOPv6oHNaNwCtB6e0oPQOSjymz50pkf6myYL6MurjP076CYQa6O4zAn75EFL+Oa6wsMrXBr2lUBZflBeNhq2dBDFjS1P/8uY1zbZXZfpH4W+EYMUgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JZTKXvY/; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=kZHz02enqQ3lJER02YSRayMaDsUgH0o1CPtoFawSIyNNhn5BiSsOC0AxIJtF39mVHuLlja0rtkN9hlO8TKtcf2OAZlP0VPI/m0NiRIcB4nkMIkGLXiJWCE73/t4wcebMjR87eM7NCnhJtvUlWgARnh6VLlWNLh3pkibbHw5oFRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L1FWTWb4; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741468785; x=1773004785;
+  t=1741468786; x=1773004786;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Fdhe8LOAuCkCUmDReNXyM/ZFsBgc8ZmpMHkeGbiRBxk=;
-  b=JZTKXvY/PVIcgEdTgILg6Q5co//aNog1e+jYHLwqbzlUAZK8VbO1GXzl
-   E5BhhuZIMB0pHlQ25xC94qYf9655bq3ONUmIgp7OwPgUbfUao+oJvAwNL
-   gRP5AVrk1otY2jOqq9HY5ipnczJF3tAYNKpI3SAHuJdVmt01jF58rPwM1
-   4o8If4VB5y4wIg3M5/qQ2iu4VQ88Uht5GKn3pQ6ibZ3EXvw/OL7Qwyz1g
-   K65zbhTBX7kwr6fibqv/HqcDSzZZGmmdjqIza8hu/Ll0v8eIvmiYsH2BW
-   nJKccvzU2ZBi07x1giPWSPh5r0Tm9ZtlLdUepkNbyRNkpKvrt1Wn1bvuJ
-   w==;
-X-CSE-ConnectionGUID: tJXHLAcoRy+EQqINEBfAbw==
-X-CSE-MsgGUID: eJ5db1dfQdGRyup/JB8hOA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="60052369"
+  bh=kzX5tu+ew83PjbPqBkcMUrtdK5UVT24DkjBm499PVt0=;
+  b=L1FWTWb45w8qBAWVz6Ub5eColHH/UKx4kC0pQtO0JWgAqOKrugQ70Ilb
+   449NCo9d6WeeXj6QiLe9IRiRed5L7N09DbF15brdqIwVpLCePyf+DF+Cz
+   j1TYBcfxFqRFemKt+xcOylGfty3mwORLdo9DF5He+aMFUx/uGax8+LbY6
+   qMle2N+XnJpesNrKmM8ocfT/mZOF53T8L0pZDxUYbSHtdEUMQBGj1tAlO
+   nNkXd5n3TaebaW0o8o/h0F5ren3/KOz/srPBkZQmxpdeqZuVqPuOjrSAz
+   UiUlaGi1hdASNsKXnSeg7RZoKiciDktB4p7VhXVmPHczq6iZkcs0MmxYA
+   g==;
+X-CSE-ConnectionGUID: V9YtvqmbTC+BuBwBCkzlug==
+X-CSE-MsgGUID: CCDo9NzGQLW58cvNrVWfkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="60052371"
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="60052369"
+   d="scan'208";a="60052371"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:19:44 -0800
-X-CSE-ConnectionGUID: VTcvC/jgQbSG3zKgYN9jnQ==
-X-CSE-MsgGUID: hBmR4+2+SxiOXBmNpsbm7A==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:19:46 -0800
+X-CSE-ConnectionGUID: CmetSVOAR3qjKl578KHb5Q==
+X-CSE-MsgGUID: RcLf6xpVRXyth5PAsYTfZw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="142859910"
+   d="scan'208";a="142859915"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:19:43 -0800
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 13:19:44 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Subject: [PATCH v3 wireless-next 04/14] wifi: iwlwifi: mvm: cleanup of TAS structure and enums
-Date: Sat,  8 Mar 2025 23:19:15 +0200
-Message-Id: <20250308231427.59144bee9987.Ic2678dcb5afdacc2ca234d4aa4901e7e1f6e8dbb@changeid>
+Subject: [PATCH v3 wireless-next 05/14] wifi: iwlwifi: Add new TAS disable reason for invalid table source
+Date: Sat,  8 Mar 2025 23:19:16 +0200
+Message-Id: <20250308231427.5e1272ef3508.I24f668ae716bee20cba15fdc73c3363693bbaf73@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250308211925.2332313-1-miriam.rachel.korenblit@intel.com>
 References: <20250308211925.2332313-1-miriam.rachel.korenblit@intel.com>
@@ -79,220 +79,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-Removed mvm prefix from the following structures and enum names:
-1. struct iwl_tas_status_per_mac
-2. struct iwl_tas_status_resp
-3. enum iwl_tas_dyna_status
-4. enum iwl_tas_statically_disabled_reason
-As these structures and enums are not specific to mvm.
-
-Replaced TAS_LMAC_BAND_LB, TAS_LMAC_BAND_HB, and TAS_LMAC_BAND_UHB macros
-with a generic BAND macro, as these macros are not specific to TAS.
+The new reason is added to the iwl_tas_statically_disabled_reason enum
+and the corresponding message is updated in the
+iwl_dbgfs_tas_get_status_read().
 
 Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/debug.h | 39 ++++++++-----------
- .../net/wireless/intel/iwlwifi/mvm/debugfs.c  | 28 +++++--------
- 2 files changed, 27 insertions(+), 40 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/api/debug.h | 3 +++
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c  | 2 ++
+ 2 files changed, 5 insertions(+)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
-index aa88e91d117e..e1b6795c1f64 100644
+index e1b6795c1f64..0cf1e5124fba 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2005-2014, 2018-2024 Intel Corporation
-+ * Copyright (C) 2005-2014, 2018-2025 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -51,7 +51,7 @@ enum iwl_debug_cmds {
- 	/**
- 	 * @GET_TAS_STATUS:
- 	 * sends command to fw to get TAS status
--	 * the response is &struct iwl_mvm_tas_status_resp
-+	 * the response is &struct iwl_tas_status_resp
- 	 */
- 	GET_TAS_STATUS = 0xA,
- 	/**
-@@ -439,25 +439,20 @@ struct iwl_dbg_dump_complete_cmd {
- 	__le32 tp_data;
- } __packed; /* FW_DUMP_COMPLETE_CMD_API_S_VER_1 */
- 
--#define TAS_LMAC_BAND_HB       0
--#define TAS_LMAC_BAND_LB       1
--#define TAS_LMAC_BAND_UHB      2
--#define TAS_LMAC_BAND_INVALID  3
--
- /**
-- * struct iwl_mvm_tas_status_per_mac - tas status per lmac
-+ * struct iwl_tas_status_per_mac - tas status per lmac
-  * @static_status: tas statically enabled or disabled per lmac - TRUE/FALSE
-  * @static_dis_reason: TAS static disable reason, uses
-- *	&enum iwl_mvm_tas_statically_disabled_reason
-+ *	&enum iwl_tas_statically_disabled_reason
-  * @dynamic_status: Current TAS  status. uses
-- *	&enum iwl_mvm_tas_dyna_status
-+ *	&enum iwl_tas_dyna_status
-  * @near_disconnection: is TAS currently near disconnection per lmac? - TRUE/FALSE
-  * @max_reg_pwr_limit: Regulatory power limits in dBm
-  * @sar_limit: SAR limits per lmac in dBm
-  * @band: Band per lmac
-  * @reserved: reserved
-  */
--struct iwl_mvm_tas_status_per_mac {
-+struct iwl_tas_status_per_mac {
- 	u8 static_status;
- 	u8 static_dis_reason;
- 	u8 dynamic_status;
-@@ -466,35 +461,35 @@ struct iwl_mvm_tas_status_per_mac {
- 	__le16 sar_limit;
- 	u8 band;
- 	u8 reserved[3];
--} __packed; /*DEBUG_GET_TAS_STATUS_PER_MAC_S_VER_1*/
-+} __packed; /* DEBUG_GET_TAS_STATUS_PER_MAC_S_VER_1 */
- 
- /**
-- * struct iwl_mvm_tas_status_resp - Response to GET_TAS_STATUS
-+ * struct iwl_tas_status_resp - Response to GET_TAS_STATUS
-  * @tas_fw_version: TAS FW version
-  * @is_uhb_for_usa_enable: is UHB enabled in USA? - TRUE/FALSE
-  * @curr_mcc: current mcc
-  * @block_list: country block list
-  * @tas_status_mac: TAS status per lmac, uses
-- *	&struct iwl_mvm_tas_status_per_mac
-+ *	&struct iwl_tas_status_per_mac
-  * @in_dual_radio: is TAS in dual radio? - TRUE/FALSE
-  * @uhb_allowed_flags: see &enum iwl_tas_uhb_allowed_flags.
-  *	This member is valid only when fw has
-  *	%IWL_UCODE_TLV_CAPA_UHB_CANADA_TAS_SUPPORT capability.
-  * @reserved: reserved
-  */
--struct iwl_mvm_tas_status_resp {
-+struct iwl_tas_status_resp {
- 	u8 tas_fw_version;
- 	u8 is_uhb_for_usa_enable;
- 	__le16 curr_mcc;
- 	__le16 block_list[16];
--	struct iwl_mvm_tas_status_per_mac tas_status_mac[2];
-+	struct iwl_tas_status_per_mac tas_status_mac[2];
- 	u8 in_dual_radio;
- 	u8 uhb_allowed_flags;
- 	u8 reserved[2];
--} __packed; /*DEBUG_GET_TAS_STATUS_RSP_API_S_VER_3*/
-+} __packed; /* DEBUG_GET_TAS_STATUS_RSP_API_S_VER_3 */
- 
- /**
-- * enum iwl_mvm_tas_dyna_status - TAS current running status
-+ * enum iwl_tas_dyna_status - TAS current running status
-  * @TAS_DYNA_INACTIVE: TAS status is inactive
-  * @TAS_DYNA_INACTIVE_MVM_MODE: TAS is disabled due because FW is in MVM mode
-  *	or is in softap mode.
-@@ -507,7 +502,7 @@ struct iwl_mvm_tas_status_resp {
-  * @TAS_DYNA_ACTIVE: TAS is currently active
-  * @TAS_DYNA_STATUS_MAX: TAS status max value
-  */
--enum iwl_mvm_tas_dyna_status {
-+enum iwl_tas_dyna_status {
- 	TAS_DYNA_INACTIVE,
- 	TAS_DYNA_INACTIVE_MVM_MODE,
- 	TAS_DYNA_INACTIVE_TRIGGER_MODE,
-@@ -516,16 +511,16 @@ enum iwl_mvm_tas_dyna_status {
- 	TAS_DYNA_ACTIVE,
- 
- 	TAS_DYNA_STATUS_MAX,
--}; /*_TAS_DYNA_STATUS_E*/
-+};
- 
- /**
-- * enum iwl_mvm_tas_statically_disabled_reason - TAS statically disabled reason
-+ * enum iwl_tas_statically_disabled_reason - TAS statically disabled reason
+@@ -518,12 +518,15 @@ enum iwl_tas_dyna_status {
   * @TAS_DISABLED_DUE_TO_BIOS: TAS is disabled because TAS is disabled in BIOS
   * @TAS_DISABLED_DUE_TO_SAR_6DBM: TAS is disabled because SAR limit is less than 6 Dbm
   * @TAS_DISABLED_REASON_INVALID: TAS disable reason is invalid
++ * @TAS_DISABLED_DUE_TO_TABLE_SOURCE_INVALID: TAS is disabled due to
++ *	table source invalid
   * @TAS_DISABLED_REASON_MAX: TAS disable reason max value
   */
--enum iwl_mvm_tas_statically_disabled_reason {
-+enum iwl_tas_statically_disabled_reason {
+ enum iwl_tas_statically_disabled_reason {
  	TAS_DISABLED_DUE_TO_BIOS,
  	TAS_DISABLED_DUE_TO_SAR_6DBM,
  	TAS_DISABLED_REASON_INVALID,
++	TAS_DISABLED_DUE_TO_TABLE_SOURCE_INVALID,
+ 
+ 	TAS_DISABLED_REASON_MAX,
+ }; /*_TAS_STATICALLY_DISABLED_REASON_E*/
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index 83e3c1160362..b453ad0000c8 100644
+index b453ad0000c8..6ffc04a23c6c 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2023, 2025 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -542,7 +542,7 @@ static ssize_t iwl_dbgfs_tas_get_status_read(struct file *file,
- 					     size_t count, loff_t *ppos)
- {
- 	struct iwl_mvm *mvm = file->private_data;
--	struct iwl_mvm_tas_status_resp *rsp = NULL;
-+	struct iwl_tas_status_resp *rsp = NULL;
- 	static const size_t bufsz = 1024;
- 	char *buff, *pos, *endpos;
- 	const char * const tas_dis_reason[TAS_DISABLED_REASON_MAX] = {
-@@ -598,23 +598,19 @@ static ssize_t iwl_dbgfs_tas_get_status_read(struct file *file,
- 
- 	pos += scnprintf(pos, endpos - pos, "TAS Conclusion:\n");
- 	for (i = 0; i < rsp->in_dual_radio + 1; i++) {
--		if (rsp->tas_status_mac[i].band != TAS_LMAC_BAND_INVALID &&
--		    rsp->tas_status_mac[i].dynamic_status & BIT(TAS_DYNA_ACTIVE)) {
-+		if (rsp->tas_status_mac[i].dynamic_status &
-+		    BIT(TAS_DYNA_ACTIVE)) {
- 			pos += scnprintf(pos, endpos - pos, "\tON for ");
- 			switch (rsp->tas_status_mac[i].band) {
--			case TAS_LMAC_BAND_HB:
-+			case PHY_BAND_5:
- 				pos += scnprintf(pos, endpos - pos, "HB\n");
- 				break;
--			case TAS_LMAC_BAND_LB:
-+			case PHY_BAND_24:
- 				pos += scnprintf(pos, endpos - pos, "LB\n");
- 				break;
--			case TAS_LMAC_BAND_UHB:
-+			case PHY_BAND_6:
- 				pos += scnprintf(pos, endpos - pos, "UHB\n");
- 				break;
--			case TAS_LMAC_BAND_INVALID:
--				pos += scnprintf(pos, endpos - pos,
--						 "INVALID BAND\n");
--				break;
- 			default:
- 				pos += scnprintf(pos, endpos - pos,
- 						 "Unsupported band (%d)\n",
-@@ -668,20 +664,16 @@ static ssize_t iwl_dbgfs_tas_get_status_read(struct file *file,
- 
- 		pos += scnprintf(pos, endpos - pos, "TAS status for ");
- 		switch (rsp->tas_status_mac[i].band) {
--		case TAS_LMAC_BAND_HB:
-+		case PHY_BAND_5:
- 			pos += scnprintf(pos, endpos - pos, "High band\n");
- 			break;
--		case TAS_LMAC_BAND_LB:
-+		case PHY_BAND_24:
- 			pos += scnprintf(pos, endpos - pos, "Low band\n");
- 			break;
--		case TAS_LMAC_BAND_UHB:
-+		case PHY_BAND_6:
- 			pos += scnprintf(pos, endpos - pos,
- 					 "Ultra high band\n");
- 			break;
--		case TAS_LMAC_BAND_INVALID:
--			pos += scnprintf(pos, endpos - pos,
--					 "INVALID band\n");
--			break;
- 		default:
- 			pos += scnprintf(pos, endpos - pos,
- 					 "Unsupported band (%d)\n",
+@@ -552,6 +552,8 @@ static ssize_t iwl_dbgfs_tas_get_status_read(struct file *file,
+ 			"Due To SAR Limit Less Than 6 dBm",
+ 		[TAS_DISABLED_REASON_INVALID] =
+ 			"N/A",
++		[TAS_DISABLED_DUE_TO_TABLE_SOURCE_INVALID] =
++			"Due to table source invalid",
+ 	};
+ 	const char * const tas_current_status[TAS_DYNA_STATUS_MAX] = {
+ 		[TAS_DYNA_INACTIVE] = "INACTIVE",
 -- 
 2.34.1
 
