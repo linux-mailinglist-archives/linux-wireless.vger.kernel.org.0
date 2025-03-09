@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-20088-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20089-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703D7A580AC
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Mar 2025 06:38:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C312EA580AD
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Mar 2025 06:38:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E31616BFBA
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Mar 2025 05:38:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 606643AA0ED
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Mar 2025 05:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28881531D5;
-	Sun,  9 Mar 2025 05:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1513C17A30C;
+	Sun,  9 Mar 2025 05:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XzbLNuoj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bcNW9Ppo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4D914AD0D
-	for <linux-wireless@vger.kernel.org>; Sun,  9 Mar 2025 05:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741DD17A2E7
+	for <linux-wireless@vger.kernel.org>; Sun,  9 Mar 2025 05:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741498646; cv=none; b=ak3wqS6BctD2fY+XFG0UKXI+XwbOnikSaFbvHHNrpNuysvk6+iw8b0fMo9+QYlGxmLF+i79LlY1XEpl0G8lTVLHQJWh/rgzmN9IRBbhddkD5UU25sGvJ0P4GCPjwiEAOHnaxfJe1YIvP6JtvHAAVtAFpU0OTH6TpsvO5cgjxJjM=
+	t=1741498648; cv=none; b=PG3m/yKNifRnBeDs0SIZMzq1U+PrTL6nfjAmcxEcxTtgUL+UlAvqhUjln0lyFd8Hcf8Ers+9d49/cSWIwf/e/DDrFcje0kT7kqLNHTExHmrPmxIVb0uX8XaQClaZSK+Na811d4wSzq0vULTZ2C6uj1tA6jIx7tdRhqiKcKoJwjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741498646; c=relaxed/simple;
-	bh=MgcSWvlqTSJCFqt7sKNDMj1UL66ZK5H+l2fI2n5tHi0=;
+	s=arc-20240116; t=1741498648; c=relaxed/simple;
+	bh=1Uq3jySGv9ULb9S2cyNHo9pQNUEfv4Td+lyJ/y//gUk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SKOzuRZ+kktTCSx1DKFSdZ/SoATl/CdvalZ9t1EJgzFACKsZFyV892QsCS84nyvK7ggZQ3vHHcuE9JuhKkROrijB/JtoYdKxlsiBdnExB4z01bn/w3pik6BEE+qnBGqeT+XXKu5wFpEa/sOxHRzC7mS1iPMYoYnI7cLtulkpwF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XzbLNuoj; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=SOJlWmy3SaSfzguPiI312k90cCN6A2THFBL6ixlH9iKoGAdsY+IXzRfc2q1pKJmzgrlB3QIkS0sNs+aI0J40Cif9BhwSjR5Pq1cZ3gWG7vGoWrGiWQdOUtqN8j1BFHZ8r+CdbpaR76fkdjaqOoUYR/wcdBFT9jDmJ/u902rjx2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bcNW9Ppo; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741498645; x=1773034645;
+  t=1741498646; x=1773034646;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=MgcSWvlqTSJCFqt7sKNDMj1UL66ZK5H+l2fI2n5tHi0=;
-  b=XzbLNuoje1+seG9VqULZiTTf74p/6/G+OSKIvCRar6IHyJXjaeBnTXZE
-   lewO0CMvyo5GGoMoXcnTvb2N6HLgtvClRiRVz3/+y16LA4S3DdUvlhy8/
-   8+3A7h+LOVX3f95SkhKjMLOD534bD302wXK33SYF8t2uNePUiQTjSXhpR
-   AT4rhey8yFWk4ba7vEgfXo4A9s7IpGMf35l+4I5XZalnSO45wgA5OHzXO
-   DPw2am3ixM1GgnGPi0maYfJ593lwEqGHEN5qxnxDdyo7s2OPD4joivdiQ
-   Fwhc6L1qz8rdDuae6kJbl8trbh/wLZ4JgEL5eHu6DDGjJHh20ivkj+fSC
-   g==;
-X-CSE-ConnectionGUID: eDwEfhikS0CMHd31+JwMZQ==
-X-CSE-MsgGUID: 1+c255ZYTMusnKyIxjmYFA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="41671709"
+  bh=1Uq3jySGv9ULb9S2cyNHo9pQNUEfv4Td+lyJ/y//gUk=;
+  b=bcNW9PpoXZbf/6bmI1bNj4lwSu0zd4Oy/WCtdLZ7tIft+Hf/e0mD8//U
+   M6IG1UD3dU6Ul5KmGLTYf5/Bz1q91JPkGskdXCveM62KcMSEao6l9v0qo
+   9ASmxdSabMTr78qHZiXQLLuf+wf6dtwNA08oY/8QOLcbZlP6vwMrmj2a3
+   PGjQKDTustA68LcxoSaGoP+8ZQ8NLb+oFZE4NeW+p6Nzt7TdpJkR9FkNd
+   3aJM6qd0X53Qc4WZR0mPp6KILlnSGbwlDWhIZp14MEZw0cAGHtZlj6RaL
+   r32R1dIXJqwBJUZ9nn9XpsZLHwfFkv+JzcnkpQoksyi6C+p1k6QGMaV2O
+   w==;
+X-CSE-ConnectionGUID: t5XbYC1FSoKNw9AHwFm3XA==
+X-CSE-MsgGUID: Rez/X56eTOG+9mXDLv9UGQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="41671711"
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="41671709"
+   d="scan'208";a="41671711"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 21:37:25 -0800
-X-CSE-ConnectionGUID: CkjbpTopQS2tsna5uTR10Q==
-X-CSE-MsgGUID: 3p/LK3RlRiSWDcTclfvJ7Q==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 21:37:26 -0800
+X-CSE-ConnectionGUID: HYGShvhMRV6asGjBF5cdkw==
+X-CSE-MsgGUID: bjwiEqGAR6mZ1o+9BWuWvA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,233,1736841600"; 
-   d="scan'208";a="150470657"
+   d="scan'208";a="150470660"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 21:37:23 -0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 21:37:25 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH v2 wireless-next 12/15] wifi: iwlwifi: mld: Correctly configure the A-MSDU max lengths
-Date: Sun,  9 Mar 2025 07:36:50 +0200
-Message-Id: <20250309073442.afc842633002.I68153b6b0c5d976f2c7525009631f8fa28e9987c@changeid>
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH v2 wireless-next 13/15] wifi: iwlwifi: mld: always do MLO scan before link selection
+Date: Sun,  9 Mar 2025 07:36:51 +0200
+Message-Id: <20250309073442.a4c96e5c49d4.Ie55697af49435c2c45dccf7c607de5857b370f7a@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250309053653.2697525-1-miriam.rachel.korenblit@intel.com>
 References: <20250309053653.2697525-1-miriam.rachel.korenblit@intel.com>
@@ -77,160 +77,106 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Ilan Peer <ilan.peer@intel.com>
+According to the requirements, if the last scan isn't older than 20
+seconds, we can use its results and do the link selection without
+scanning before.
+But this applies only when trying to get back to EMLSR, not if the link
+has bad RSSI/missed beacons.
+Since an MLO scan is cheap anyway, and results from 20 seconds before
+are really old, always scan before links switching.
 
-Refactor the setting of the A-MSDU maximal lengths as follows:
-
-- Move the setting of the maximal A-MSDU length in case of HT from TLC
-  logic to the station logic as it is not related to TLC.
-- As long as the station is not associated, set RC A-MSDU maximal
-  lengths to 1, to prevent iwlmld and mac80211 from building A-MSDUs.
-- Update the RC and the TID specific A-MSDU maximal lengths based on
-  the FW TLC notifications.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/sta.c | 24 +++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/tlc.c | 43 ++++++--------------
- 2 files changed, 37 insertions(+), 30 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/link.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.c  | 20 ++-----------------
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.h  |  3 ---
+ .../net/wireless/intel/iwlwifi/mld/stats.c    |  2 +-
+ 4 files changed, 4 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/sta.c b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-index 994d4561518b..332a7aecec2d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-@@ -606,6 +606,25 @@ iwl_mld_remove_link_sta(struct iwl_mld *mld,
- 		kfree_rcu(mld_link_sta, rcu_head);
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+index 1db69aee4e9f..6db8b5305349 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+@@ -913,7 +913,7 @@ void iwl_mld_handle_missed_beacon_notif(struct iwl_mld *mld,
+ 		ieee80211_cqm_beacon_loss_notify(vif, GFP_ATOMIC);
  
-+static void iwl_mld_set_max_amsdu_len(struct iwl_mld *mld,
-+				      struct ieee80211_link_sta *link_sta)
-+{
-+	const struct ieee80211_sta_ht_cap *ht_cap = &link_sta->ht_cap;
-+
-+	/* For EHT, HE and VHT we can use the value as it was calculated by
-+	 * mac80211. For HT, mac80211 doesn't enforce to 4095, so force it
-+	 * here
-+	 */
-+	if (link_sta->eht_cap.has_eht || link_sta->he_cap.has_he ||
-+	    link_sta->vht_cap.vht_supported ||
-+	    !ht_cap->ht_supported ||
-+	    !(ht_cap->cap & IEEE80211_HT_CAP_MAX_AMSDU))
-+		return;
-+
-+	link_sta->agg.max_amsdu_len = IEEE80211_MAX_MPDU_LEN_HT_BA;
-+	ieee80211_sta_recalc_aggregates(link_sta->sta);
-+}
-+
- int iwl_mld_update_all_link_stations(struct iwl_mld *mld,
- 				     struct ieee80211_sta *sta)
- {
-@@ -618,6 +637,9 @@ int iwl_mld_update_all_link_stations(struct iwl_mld *mld,
- 
- 		if (ret)
- 			return ret;
-+
-+		if (mld_sta->sta_state == IEEE80211_STA_ASSOC)
-+			iwl_mld_set_max_amsdu_len(mld, link_sta);
+ 		/* try to switch links, no-op if we don't have MLO */
+-		iwl_mld_trigger_link_selection(mld, vif);
++		iwl_mld_int_mlo_scan(mld, vif);
  	}
- 	return 0;
- }
-@@ -1222,6 +1244,8 @@ int iwl_mld_update_link_stas(struct iwl_mld *mld,
  
- 		link = link_conf_dereference_protected(mld_sta->vif,
- 						       link_sta->link_id);
-+
-+		iwl_mld_set_max_amsdu_len(mld, link_sta);
- 		iwl_mld_config_tlc_link(mld, vif, link, link_sta);
+ 	/* no more logic if we're not in EMLSR */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
+index bbaf9ad0e9eb..99ba4018fb24 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
+@@ -289,22 +289,6 @@ int iwl_mld_block_emlsr_sync(struct iwl_mld *mld, struct ieee80211_vif *vif,
+ static void _iwl_mld_select_links(struct iwl_mld *mld,
+ 				  struct ieee80211_vif *vif);
  
- 		sta_mask_added |= BIT(mld_link_sta->fw_id);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tlc.c b/drivers/net/wireless/intel/iwlwifi/mld/tlc.c
-index 85ec358f1417..f054cc921d9d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/tlc.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/tlc.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2024 Intel Corporation
-+ * Copyright (C) 2024-2025 Intel Corporation
-  */
- 
- #include <net/mac80211.h>
-@@ -467,7 +467,7 @@ static void iwl_mld_send_tlc_cmd(struct iwl_mld *mld,
- 						   own_he_cap, own_eht_cap),
- 		.chains = iwl_mld_get_fw_chains(mld),
- 		.sgi_ch_width_supp = iwl_mld_get_fw_sgi(link_sta),
--		.max_mpdu_len = cpu_to_le16(link_sta->agg.max_rc_amsdu_len),
-+		.max_mpdu_len = cpu_to_le16(link_sta->agg.max_amsdu_len),
- 	};
- 	int fw_sta_id = iwl_mld_fw_sta_id_from_link_sta(mld, link_sta);
- 	int ret;
-@@ -493,30 +493,6 @@ static void iwl_mld_send_tlc_cmd(struct iwl_mld *mld,
- 		IWL_ERR(mld, "Failed to send TLC cmd (%d)\n", ret);
- }
- 
--static void iwl_mld_recalc_amsdu_len(struct iwl_mld *mld,
--				     struct ieee80211_link_sta *link_sta)
+-void iwl_mld_trigger_link_selection(struct iwl_mld *mld,
+-				    struct ieee80211_vif *vif)
 -{
--	const struct ieee80211_sta_ht_cap *ht_cap = &link_sta->ht_cap;
+-	bool last_scan_was_recent =
+-		time_before(jiffies, mld->scan.last_mlo_scan_jiffies +
+-				     IWL_MLD_SCAN_EXPIRE_TIME);
 -
--	/* For EHT, HE and VHT - we can use the value as it was calculated by
--	 * mac80211.
--	 */
--	if (link_sta->eht_cap.has_eht || link_sta->he_cap.has_he ||
--	    link_sta->vht_cap.vht_supported)
--		goto recalc;
--
--	/* But for HT, mac80211 doesn't enforce to 4095, so force it here */
--	if (ht_cap->ht_supported && ht_cap->cap & IEEE80211_HT_CAP_MAX_AMSDU)
--		/* Agg is offloaded, so we need to assume that agg are enabled
--		 * and max mpdu in ampdu is 4095 (spec 802.11-2016 9.3.2.1)
--		 */
--		link_sta->agg.max_amsdu_len = IEEE80211_MAX_MPDU_LEN_HT_BA;
--
--recalc:
--	link_sta->agg.max_rc_amsdu_len = link_sta->agg.max_amsdu_len;
--	ieee80211_sta_recalc_aggregates(link_sta->sta);
+-	if (last_scan_was_recent) {
+-		IWL_DEBUG_EHT(mld, "MLO scan was recent, skip.\n");
+-		_iwl_mld_select_links(mld, vif);
+-	} else {
+-		IWL_DEBUG_EHT(mld, "Doing link selection after MLO scan\n");
+-		iwl_mld_int_mlo_scan(mld, vif);
+-	}
 -}
 -
- int iwl_mld_send_tlc_dhc(struct iwl_mld *mld, u8 sta_id, u32 type, u32 data)
+ void iwl_mld_unblock_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif,
+ 			   enum iwl_mld_emlsr_blocked reason)
  {
- 	struct {
-@@ -547,15 +523,22 @@ void iwl_mld_config_tlc_link(struct iwl_mld *mld,
- 			     struct ieee80211_bss_conf *link_conf,
- 			     struct ieee80211_link_sta *link_sta)
- {
-+	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(link_sta->sta);
- 	enum nl80211_band band;
- 
- 	if (WARN_ON_ONCE(!link_conf->chanreq.oper.chan))
+@@ -334,7 +318,7 @@ void iwl_mld_unblock_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif,
  		return;
  
--	band = link_conf->chanreq.oper.chan->band;
--
--	iwl_mld_recalc_amsdu_len(mld, link_sta);
-+	/* Before we have information about a station, configure the A-MSDU RC
-+	 * limit such that iwlmd and mac80211 would not be allowed to build
-+	 * A-MSDUs.
-+	 */
-+	if (mld_sta->sta_state < IEEE80211_STA_ASSOC) {
-+		link_sta->agg.max_rc_amsdu_len = 1;
-+		ieee80211_sta_recalc_aggregates(link_sta->sta);
-+	}
- 
-+	band = link_conf->chanreq.oper.chan->band;
- 	iwl_mld_send_tlc_cmd(mld, vif, link_sta, band);
+ 	IWL_DEBUG_INFO(mld, "EMLSR is unblocked\n");
+-	iwl_mld_trigger_link_selection(mld, vif);
++	iwl_mld_int_mlo_scan(mld, vif);
  }
  
-@@ -706,7 +689,7 @@ void iwl_mld_handle_tlc_notif(struct iwl_mld *mld,
- 			link_sta->agg.max_tid_amsdu_len[i] =
- 				iwl_mld_get_amsdu_size_of_tid(mld, link_sta, i);
- 		else
--			link_sta->agg.max_tid_amsdu_len[i] = 0;
-+			link_sta->agg.max_tid_amsdu_len[i] = 1;
+ static void
+@@ -1011,5 +995,5 @@ void iwl_mld_retry_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif)
+ 	    mld_vif->emlsr.blocked_reasons)
+ 		return;
+ 
+-	iwl_mld_trigger_link_selection(mld, vif);
++	iwl_mld_int_mlo_scan(mld, vif);
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.h b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
+index fd1abe8e6084..0f1b18f61c75 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
+@@ -141,9 +141,6 @@ void iwl_mld_emlsr_check_bt(struct iwl_mld *mld);
+ 
+ void iwl_mld_emlsr_check_chan_load(struct iwl_mld *mld);
+ 
+-void iwl_mld_trigger_link_selection(struct iwl_mld *mld,
+-				    struct ieee80211_vif *vif);
+-
+ /**
+  * iwl_mld_retry_emlsr - Retry entering EMLSR
+  * @mld: MLD context
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/stats.c b/drivers/net/wireless/intel/iwlwifi/mld/stats.c
+index 5633885c49ff..a9d3860d8f9c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/stats.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/stats.c
+@@ -384,7 +384,7 @@ static void iwl_mld_update_link_sig(struct ieee80211_vif *vif, int sig,
+ 	/* Handle inactive EMLSR, check whether to switch links */
+ 	if (!iwl_mld_emlsr_active(vif)) {
+ 		if (sig < IWL_MLD_LOW_RSSI_MLO_SCAN_THRESH)
+-			iwl_mld_trigger_link_selection(mld, vif);
++			iwl_mld_int_mlo_scan(mld, vif);
+ 		return;
  	}
  
- 	ieee80211_sta_recalc_aggregates(link_sta->sta);
 -- 
 2.34.1
 
