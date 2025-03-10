@@ -1,140 +1,309 @@
-Return-Path: <linux-wireless+bounces-20094-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20095-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68B3A5865E
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Mar 2025 18:42:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5A0A589B3
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Mar 2025 01:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F37301695D4
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Mar 2025 17:42:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07E6C169DBA
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Mar 2025 00:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9EA1EF387;
-	Sun,  9 Mar 2025 17:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1851BC3F;
+	Mon, 10 Mar 2025 00:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VGV6gQZi"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="jVzJU6wj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9B2D528;
-	Sun,  9 Mar 2025 17:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF04D2FB;
+	Mon, 10 Mar 2025 00:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741542161; cv=none; b=Pyw6tnD+Jx2jmYCTp5DVSzp/GfolLPdm0GtPntajqtd64fQHhMBvZa08t0DfbYg+GQSyvKSWBU4D9mW6a9Yi5QQYrbxabbh0Xh5Q0Nf24cCXHdpM4p6iua0Wa5H6WdAdY3uqH+TjuX68olo2Qs3PzOnz51F9MW9Ibjm29jTB1C4=
+	t=1741567019; cv=none; b=H7K59h3Y3rpRRBtrmTxiXWou1jfSyuFFatAhIzYxz/IBYmJ4Y0e4jfbWKClERQWNrpyG819ClaciV0VL0WDCXMZDXL5uAhVO3gWqgUwViZeEsxEn6WNeQLs8KAb97kWv0tcmOi9vzbu6hMhlQzoF/dMxIUUWWDX1veysm0DLsAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741542161; c=relaxed/simple;
-	bh=h2TWR4R5v9LgdKy3mRP4nVOO3I7rbrTQMFPj8W+wpFc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i8y/gf7TfpE9z1TzkxfSOraoy5B+oySibQ0R+/B5UsB5OiyXnSL14OcBj9GuZmHzl46tdtgI7hrJWxQ6bJbrusWGsLs+7eOsu15MMUiDNcgbrHJoY/wZGXu9cQ6BN9+8jLDKqiZCPoYLeppeg9WxHlaM+aDSpg0/piKQNxPMbIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VGV6gQZi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94215C4CEE3;
-	Sun,  9 Mar 2025 17:42:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741542161;
-	bh=h2TWR4R5v9LgdKy3mRP4nVOO3I7rbrTQMFPj8W+wpFc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VGV6gQZiYHw53AWazcfdtbJCxenU9E3XVQTqfv+tpidWqdHIo2sBkjR570wAgS46M
-	 K8pMSwFdJO7Ctjitf9IgMhyk0Kok4Io6/Bg2ZWew5dQPYyf6rjJ4rNrV6A8LPVkm+s
-	 gZW/ZHsAqmHonvl0zRfbbd213AgaTCsB2Aos6MmMZ0tUxX5GAQQoHRLt7sIN5yisaY
-	 h9s74y6e3MDjXR9LKiZSO1c8zsiH+jHiXh6p0DJFxyGBpTuC8SljJ6YMHW0LeEFkIX
-	 PrI6J3QSvghxH/UPA77s6sQbu11R6gzNeCLzMYfMAMqHcWD/pMwqS2hEsmvfd6kSme
-	 5fo8ySyCXeoSA==
-Message-ID: <3ed0aa20-1bed-4dc2-98a9-c3d72a24dbbb@kernel.org>
-Date: Sun, 9 Mar 2025 18:42:24 +0100
+	s=arc-20240116; t=1741567019; c=relaxed/simple;
+	bh=4h1t9rN4ICMWhjBR/mCrdznTowjXzA9D5KrBreqnjN8=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QzzvgJjGFb7+3Bgd64I6ATlDvCSx9S0WqQuEk+2RQDPTvjHWNWmxTP8Id39Y1yLHPL98824AvoH7rRrEZQDxl2iHAoOumiKk/grOHxf9Pzq9Ze1Ox7ZgTeQ8NiP7HfTEkQuhWYuWPml+sRfPOZT+Va4DQPvCrCapEL5olM8ot/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=jVzJU6wj; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52A0X9axC2169990, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1741566789; bh=4h1t9rN4ICMWhjBR/mCrdznTowjXzA9D5KrBreqnjN8=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=jVzJU6wjtNydKyYe0mZj7EChudlvOaFqZDGY6mI5DpgLA2NfS1tMRnktXBeXVEkEU
+	 0W4K15+myTRgA74H4poeQilm05D6x3GJmW2c/36nlWcTarsgxzmENhSHMpYDl8yVQN
+	 RwCnv/Xze6oVQmZCel14Z1x0INWzPVnQkGEMNzGQHVrnvjd+7gfihYgeg90NKEBXst
+	 inN8VbDWWA5QwA9ct0WHjnmTJL6CqvxC+FDIdmqF/HNtK9LQKinYJjtK6srZX+dgr2
+	 H57opsnwqzmdpJGkMME8H7CoUzj+wljC0ZXQ8Tj40lQRT2eJhtI0CYdnrFj8RXRFwb
+	 BYhUl6iOFLwlQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52A0X9axC2169990
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Mar 2025 08:33:09 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 10 Mar 2025 08:33:10 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 10 Mar 2025 08:33:09 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Mon, 10 Mar 2025 08:33:09 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Shengyu Qu <wiagn233@outlook.com>, "nbd@nbd.name" <nbd@nbd.name>,
+        "lorenzo@kernel.org" <lorenzo@kernel.org>,
+        "ryder.lee@mediatek.com"
+	<ryder.lee@mediatek.com>,
+        "shayne.chen@mediatek.com"
+	<shayne.chen@mediatek.com>,
+        "sean.wang@mediatek.com"
+	<sean.wang@mediatek.com>,
+        "johannes@sipsolutions.net"
+	<johannes@sipsolutions.net>,
+        "matthias.bgg@gmail.com"
+	<matthias.bgg@gmail.com>,
+        "angelogioacchino.delregno@collabora.com"
+	<angelogioacchino.delregno@collabora.com>,
+        "miriam.rachel.korenblit@intel.com" <miriam.rachel.korenblit@intel.com>,
+        "howard-yh.hsu@mediatek.com" <howard-yh.hsu@mediatek.com>,
+        "greearb@candelatech.com" <greearb@candelatech.com>,
+        "chui-hao.chiu@mediatek.com" <chui-hao.chiu@mediatek.com>,
+        "mingyen.hsieh@mediatek.com" <mingyen.hsieh@mediatek.com>,
+        "quic_adisi@quicinc.com" <quic_adisi@quicinc.com>,
+        "sujuan.chen@mediatek.com"
+	<sujuan.chen@mediatek.com>,
+        "gustavoars@kernel.org" <gustavoars@kernel.org>,
+        "bo.jiao@mediatek.com" <bo.jiao@mediatek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+        "linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>
+Subject: RE: [PATCH v9 RESEND] wifi: mt76: mt7915: add wds support when wed is enabled
+Thread-Topic: [PATCH v9 RESEND] wifi: mt76: mt7915: add wds support when wed
+ is enabled
+Thread-Index: AQHbkD+97GjFG0DhG0q+h/KT1ZUhfbNrhPNA
+Date: Mon, 10 Mar 2025 00:33:08 +0000
+Message-ID: <b6b52bfcdb614137ac63fddfdaf9cb97@realtek.com>
+References: <TYCPR01MB84376C7074C566865654F05098D42@TYCPR01MB8437.jpnprd01.prod.outlook.com>
+In-Reply-To: <TYCPR01MB84376C7074C566865654F05098D42@TYCPR01MB8437.jpnprd01.prod.outlook.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/16] Introduce and use generic parity16/32/64 helper
-To: Kuan-Wei Chiu <visitorckw@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>
-Cc: David Laight <david.laight.linux@gmail.com>,
- Andrew Cooper <andrew.cooper3@citrix.com>,
- Laurent.pinchart@ideasonboard.com, airlied@gmail.com,
- akpm@linux-foundation.org, alistair@popple.id.au, andrew+netdev@lunn.ch,
- andrzej.hajda@intel.com, arend.vanspriel@broadcom.com,
- awalls@md.metrocast.net, bp@alien8.de, bpf@vger.kernel.org,
- brcm80211-dev-list.pdl@broadcom.com, brcm80211@lists.linux.dev,
- dave.hansen@linux.intel.com, davem@davemloft.net, dmitry.torokhov@gmail.com,
- dri-devel@lists.freedesktop.org, eajames@linux.ibm.com, edumazet@google.com,
- eleanor15x@gmail.com, gregkh@linuxfoundation.org, hverkuil@xs4all.nl,
- jernej.skrabec@gmail.com, jk@ozlabs.org, joel@jms.id.au,
- johannes@sipsolutions.net, jonas@kwiboo.se, jserv@ccns.ncku.edu.tw,
- kuba@kernel.org, linux-fsi@lists.ozlabs.org, linux-input@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mtd@lists.infradead.org, linux-serial@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux@rasmusvillemoes.dk,
- louis.peens@corigine.com, maarten.lankhorst@linux.intel.com,
- mchehab@kernel.org, mingo@redhat.com, miquel.raynal@bootlin.com,
- mripard@kernel.org, neil.armstrong@linaro.org, netdev@vger.kernel.org,
- oss-drivers@corigine.com, pabeni@redhat.com,
- parthiban.veerasooran@microchip.com, rfoss@kernel.org, richard@nod.at,
- simona@ffwll.ch, tglx@linutronix.de, tzimmermann@suse.de, vigneshr@ti.com,
- x86@kernel.org, yury.norov@gmail.com
-References: <4732F6F6-1D41-4E3F-BE24-E54489BC699C@zytor.com>
- <efc2ee9d-5382-457f-b471-f3c44b81a190@citrix.com>
- <5A790652-1B22-4D13-AAC5-5D9931E90903@zytor.com>
- <20250307195310.58abff8c@pumpkin>
- <EB85C3C1-8A0D-4CB9-B501-BFEABDF3E977@zytor.com>
- <Z824SgB9Dt5zdWYc@visitorckw-System-Product-Name>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <Z824SgB9Dt5zdWYc@visitorckw-System-Product-Name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On 09. 03. 25, 16:48, Kuan-Wei Chiu wrote:
-> Would this work for everyone?
+Shengyu Qu <wiagn233@outlook.com> wrote:
+> @@ -1280,6 +1292,34 @@ static void mt7915_sta_set_4addr(struct ieee80211_=
+hw *hw,
+>         if (!msta->wcid.sta)
+>                 return;
+>=20
+> +       if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
+> +           !is_mt7915(&dev->mt76) &&
+> +           (msta->wcid.idx < min || msta->wcid.idx > max - 1)) {
+> +               pre_sta =3D kmemdup(sta, sizeof(*sta) + sizeof(*msta), GF=
+P_KERNEL | __GFP_ZERO);
 
-+1 for /me.
+Need to check if pre_sta !=3D NULL before using.=20
 
--- 
-js
-suse labs
+> +               pre_msta =3D (struct mt7915_sta *)pre_sta->drv_priv;
+> +
+> +               flags =3D test_bit(MT_WCID_FLAG_4ADDR, &msta->wcid.flags)=
+ ?
+> +                       MT76_WED_WDS_ACTIVE : MT76_WED_ACTIVE;
+> +
+> +               tmp_idx =3D __mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915=
+_WTBL_STA, flags);
+> +               if (tmp_idx =3D=3D -1)
+
+At other places, it checks this by 'idx < 0'.=20
+
+> +                       goto error;
+> +               pre_msta->wcid.idx =3D (u16)tmp_idx;
+> +               mt7915_mac_sta_add(&dev->mt76, vif, pre_sta);
+> +               rcu_assign_pointer(dev->mt76.wcid[tmp_idx], &msta->wcid);
+> +
+> +               tmp_idx =3D msta->wcid.idx;
+> +               msta->wcid.idx =3D pre_msta->wcid.idx;
+> +               pre_msta->wcid.idx =3D (u16)tmp_idx;
+> +               rcu_assign_pointer(dev->mt76.wcid[tmp_idx], NULL);
+> +
+> +               synchronize_rcu();
+> +               mt7915_mac_sta_remove(&dev->mt76, vif, pre_sta);
+> +
+> +error:
+> +               kfree(pre_sta);
+> +       }
+> +
+>         mt76_connac_mcu_wtbl_update_hdr_trans(&dev->mt76, vif, sta);
+>  }
+>=20
+
+[...]
+
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> index 9d790f234e82..32c5aa1a361e 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> @@ -2385,10 +2385,20 @@ int mt7915_mcu_init_firmware(struct mt7915_dev *d=
+ev)
+>=20
+>         mt76_connac_mcu_del_wtbl_all(&dev->mt76);
+>=20
+> -       if ((mtk_wed_device_active(&dev->mt76.mmio.wed) &&
+> -            is_mt7915(&dev->mt76)) ||
+> -           !mtk_wed_get_rx_capa(&dev->mt76.mmio.wed))
+> -               mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(CAPABILITY), 0, 0=
+, 0);
+> +#ifdef CONFIG_NET_MEDIATEK_SOC_WED
+
+if (IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED) ... ?
+
+> +       if (mtk_wed_device_active(&dev->mt76.mmio.wed)) {
+> +               if (is_mt7915(&dev->mt76) ||
+> +                   !mtk_wed_get_rx_capa(&dev->mt76.mmio.wed))
+> +                       ret =3D mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(C=
+APABILITY),
+> +                                               0, 0, 0);
+> +               else
+> +                       ret =3D mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(S=
+ET),
+> +                                               MCU_WA_PARAM_WED_VERSION,
+> +                                               dev->mt76.mmio.wed.rev_id=
+, 0);
+> +               if (ret)
+> +                       return ret;
+> +       }
+> +#endif
+>=20
+>         ret =3D mt7915_mcu_set_mwds(dev, 1);
+>         if (ret)
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+> b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+> index 49476a4182fd..c3dd0cb4a5d3 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+> @@ -278,6 +278,7 @@ enum {
+>         MCU_WA_PARAM_PDMA_RX =3D 0x04,
+>         MCU_WA_PARAM_CPU_UTIL =3D 0x0b,
+>         MCU_WA_PARAM_RED =3D 0x0e,
+> +       MCU_WA_PARAM_WED_VERSION =3D 0x32,
+>         MCU_WA_PARAM_RED_SETTING =3D 0x40,
+>  };
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/util.c b/drivers/net/wire=
+less/mediatek/mt76/util.c
+> index 95b3dc96e4c4..7fac9c79ebdf 100644
+> --- a/drivers/net/wireless/mediatek/mt76/util.c
+> +++ b/drivers/net/wireless/mediatek/mt76/util.c
+> @@ -42,9 +42,11 @@ bool ____mt76_poll_msec(struct mt76_dev *dev, u32 offs=
+et, u32 mask, u32 val,
+>  }
+>  EXPORT_SYMBOL_GPL(____mt76_poll_msec);
+>=20
+> -int mt76_wcid_alloc(u32 *mask, int size)
+> +int __mt76_wcid_alloc(u32 *mask, int size, u8 flag)
+>  {
+>         int i, idx =3D 0, cur;
+> +       int min =3D MT76_WED_WDS_MIN;
+> +       int max =3D MT76_WED_WDS_MAX;
+
+In reverse X'mas tree order?
+
+>=20
+>         for (i =3D 0; i < DIV_ROUND_UP(size, 32); i++) {
+>                 idx =3D ffs(~mask[i]);
+> @@ -53,16 +55,45 @@ int mt76_wcid_alloc(u32 *mask, int size)
+>=20
+>                 idx--;
+>                 cur =3D i * 32 + idx;
+> -               if (cur >=3D size)
+> +
+> +               switch (flag) {
+> +               case MT76_WED_ACTIVE:
+> +                       if (cur >=3D min && cur < max)
+> +                               continue;
+> +
+> +                       if (cur >=3D size) {
+> +                               u32 end =3D max - min - 1;
+> +
+> +                               i =3D min / 32;
+> +                               idx =3D ffs(~mask[i] & GENMASK(end, 0));
+> +                               if (!idx)
+> +                                       goto error;
+> +                               idx--;
+> +                               cur =3D min + idx;
+> +                       }
+> +
+>                         break;
+> +               case MT76_WED_WDS_ACTIVE:
+> +                       if (cur < min)
+> +                               continue;
+> +                       if (cur >=3D max)
+> +                               goto error;
+> +
+> +                       break;
+> +               default:
+> +                       if (cur >=3D size)
+> +                               goto error;
+> +                       break;
+> +               }
+>=20
+>                 mask[i] |=3D BIT(idx);
+>                 return cur;
+>         }
+>=20
+> +error:
+>         return -1;
+>  }
+> -EXPORT_SYMBOL_GPL(mt76_wcid_alloc);
+> +EXPORT_SYMBOL_GPL(__mt76_wcid_alloc);
+>=20
+>  int mt76_get_min_avg_rssi(struct mt76_dev *dev, u8 phy_idx)
+>  {
+> diff --git a/drivers/net/wireless/mediatek/mt76/util.h b/drivers/net/wire=
+less/mediatek/mt76/util.h
+> index 260965dde94c..99b7263c0a20 100644
+> --- a/drivers/net/wireless/mediatek/mt76/util.h
+> +++ b/drivers/net/wireless/mediatek/mt76/util.h
+> @@ -27,7 +27,12 @@ enum {
+>  #define MT76_INCR(_var, _size) \
+>         (_var =3D (((_var) + 1) % (_size)))
+>=20
+> -int mt76_wcid_alloc(u32 *mask, int size);
+> +int __mt76_wcid_alloc(u32 *mask, int size, u8 flags);
+> +
+> +static inline int mt76_wcid_alloc(u32 *mask, int size)
+> +{
+> +       return __mt76_wcid_alloc(mask, size, 0);
+
+return __mt76_wcid_alloc(mask, size, MT76_WED_DEFAULT); ?
+
+> +}
+>=20
+>  static inline void
+>  mt76_wcid_mask_set(u32 *mask, int idx)
+> --
+> 2.48.1
+
 
