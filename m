@@ -1,178 +1,153 @@
-Return-Path: <linux-wireless+bounces-20115-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20116-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42865A59C42
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Mar 2025 18:11:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A7EA5A451
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Mar 2025 21:02:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 083FD3A8D04
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Mar 2025 17:09:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B39D57A2DCA
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Mar 2025 20:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B759231CB0;
-	Mon, 10 Mar 2025 17:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FF11C5D40;
+	Mon, 10 Mar 2025 20:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GZM3LX80"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dSENz7Un"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B9822D786
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Mar 2025 17:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F123B15B971
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Mar 2025 20:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626572; cv=none; b=O2iBzIwvjxkyABjDIEN6xPespFJdlO5uDRu9iLhmu2SW/PZIbJN7BT73pnsq3JUW5YNJ9AsCFKZO3b2FZsaUtRslEQqpRIxIcK6Cb2HHPiOMJ3sDE9cFik9wD4SP1iMlml50VQsmInJf4tJbF20V0BntWFA6yFuiEqv5UAl+U/4=
+	t=1741636965; cv=none; b=k6VYu+8vBA9OVBkax1K7OJRcoZJkuc5HgiVIO2AjA+zy1ya7IMfmwCJyJFcqAOy5ZFhf81rVJg3Ox5ZhRq3xGNNHMsyjiUfZODfUcv1TTHhrSTnl8c41Oe4uriWYgQ/mcfm9qdrHBwBojdH2lvBYJXtlC1caoV9DoBTwsgLCMXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626572; c=relaxed/simple;
-	bh=vwwFEjCbBHP1TP6cNYmasyrSWTNU63nZlMAjN3MDtDg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MiFPPsKpN0XbCKS7dcD08WDJNP7XiyxKE5Z1O36r+KlF/5YT7Zu3Z/7/AqXc1EYHAEwk8e3WolZyyo/sCW9U4JDyUMLmrqx+xwMWi772LGq2LPndaDdF/sWXar6RGl7/5rIh3iTU9u22ePQnHbvtLLaV3eZtfT6ZqOoBg1Jjkic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GZM3LX80; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1741636965; c=relaxed/simple;
+	bh=lC8dy0n4da/v+Rg0aDe1N7NVZK+CduQEXy3bSoDvp54=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hSnMvx7uTE2nOyFyW5UDOOCa3Fm6nuhBy4bB7fteChM5hFdp57EONhLWinbhKzFRoiFCtNyp3BiQXIqvfn3DYjv9ukx7cyK61oKBMc8yRgC0urtNVSkNg9iwXhUXhKpuYg2Et0tgXiTc9qnn92eLodMOM8LmObxPXiiNorJZ0jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dSENz7Un; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52A9RnF9015437
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Mar 2025 17:09:28 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52AJPWxK015477
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Mar 2025 20:02:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	kiESE3wnTdm5MieLpe83ZPyzj9dW/TZ+6Up49ZLOMzc=; b=GZM3LX801WeCDYMT
-	cbDeQKWmHzZ3zyuO/fFPoM1zHm2nQpcQq8kFfvWGjZLUso1WgITgI7rcx2ZUdRh3
-	YfB0KH3gt/SHvgGZTtQBAy+ReEffpJtPrIWA9hwAmkrau07slfDyDr/x4AgC2/Rr
-	b/oQTdgXG9dC27LGPSqA8HaJxgbUXFdedxHQKYz+0qG51q9mVIAON3Ro+tkz3Cmb
-	rRGmRjtR1T5eCPHL4+/NVMWU38fTHIUTOVf5bTkxt05WWWVpOk14bwXwNO9G8i4e
-	VgmDOS8S55YbO0TPrSkf+3e3otZlYuVfpmbbowKkPAFXrGrb5wB6ltdBMpBucRS5
-	OOPyLA==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 458f0pwjya-1
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=5oUX7Uf0XBJGHkWsmznzvbRQqVZNW6xVAGM
+	ulJmOaps=; b=dSENz7Un/Ph8cWTiN7COayg0Yxh8eVcWO7uAB7S613LDemZeyS2
+	KsQdniwJ3bnBRPC4naTmtxv/0o7lP3BhelWYo27HSbAZGcnnP7+5Werr0OPBxrGm
+	hHaQPbFPJb/VniJ8j0IswNZ6o6doOfP2uPMYVN231ZkVsWeB5YJL58GzgrdsFbo6
+	OCclPTP9GiU/H0/Inn/3s+OlailqkOH2ziESGvN9Ht/OAmSNV4DrfwA3vuKgG5R+
+	NWVOb/Ty/P4x0eKJI+YDxb9D+E8Irj/lFTldBGNH+JxPLsinNGgWdVwv4v+gOy1V
+	xakt9pUGLfhh69LLE3mq1phEZlXQX+6wblw==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 458ex0x2kx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Mar 2025 17:09:28 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2ff798e8c93so6630390a91.2
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Mar 2025 10:09:28 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Mar 2025 20:02:42 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2242a6d5775so40304565ad.0
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Mar 2025 13:02:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741626567; x=1742231367;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kiESE3wnTdm5MieLpe83ZPyzj9dW/TZ+6Up49ZLOMzc=;
-        b=itxuhawmtIUFdgvAFmbAE/qv2dDIej3F9iav7iMpMLr1ifdtrgw1951FY+ghTbSHpZ
-         vy+3kc2zxOGem3VqziEj2p9XG7xuwgs5LMk7H0cksVHBG5XN3YjWEnaPTjxWVt7YC9Xn
-         NSlciBoU5mNd2eewMxAzFPMNcWztvleWcS2lgFJmmbIrLCjcc07dXL8N6xpc7RwMescM
-         fmzqLybVcBPFCT85puwpniIK6biX7cZWWwmDcU0I+2F/axBNbUzf01RCs00WfqkeVXJr
-         lIXjSi5ICXbo0jmHU9fxDub0u+QMyIU6TLZFa7dSh9DD50Y3hUYZ4er/yNv+V5K5ZBzD
-         JzMA==
-X-Gm-Message-State: AOJu0Yyc79Q2oRdInJWc5AvkU4Q+L/b23b3gej6606YXupKwDlmwSg4w
-	wG2+1BCLK2TE5atGrTO7LAZDX3AuIqxKMz2SR7cfQB5w5spOKsOjXbvuHJo5ijSYuJ7Ai6ngzIJ
-	NHq3JciQBksSfxNpZB34XTujSbIO4iRyOW7AtFEzgzQjutK2wDYP7tu3yH2jI/ETczg==
-X-Gm-Gg: ASbGncuPp/2mbT4xJC2SK+2tdCD0vDVNo95bVWpfxTIq0ff1nkAvGFL1cgMgb778s6p
-	Fo4ciSa7DwkErKgGaxymB0pUPX7YxTQVfzQA4k0+VQUMzJDEtkv3vwj92Teun6p3XyExPSusIHp
-	YyrFGaipBQvCjDdc1OtVGhfvLX7k39LPMuYQjWa4gUesdT5kmyW4nBBI2Bj/XouhsxVQxxQi/Cn
-	oaXjB7yDRiWuJVXocSKO5WXkvvhTw2MZEeVcQeKh7baemaMkQCeMFRF8qFnQO6kujyZ7Ju9c/Ej
-	AqN/yoA/o5ZEEJ/gRhnmlB4bl8or2PD8qGaDOk09VsVF1Atu3ZCF330BoxDrbEM0/pv8hSM=
-X-Received: by 2002:a17:90b:264e:b0:2fe:8c08:88c6 with SMTP id 98e67ed59e1d1-300ff0a9d81mr874143a91.7.1741626567198;
-        Mon, 10 Mar 2025 10:09:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGie2r7pmEwPgFFRIKxDe/DLR1ohRqxh9WveqVZp6iwrGPPw2SED4Us9MSYwIgkXhOSXnJwmA==
-X-Received: by 2002:a17:90b:264e:b0:2fe:8c08:88c6 with SMTP id 98e67ed59e1d1-300ff0a9d81mr874102a91.7.1741626566810;
-        Mon, 10 Mar 2025 10:09:26 -0700 (PDT)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff4d457cd0sm10153453a91.0.2025.03.10.10.09.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Mar 2025 10:09:26 -0700 (PDT)
-Message-ID: <0b9d4a5d-326c-4281-b9fe-c8e1b1e4a026@oss.qualcomm.com>
-Date: Mon, 10 Mar 2025 10:09:25 -0700
+        d=1e100.net; s=20230601; t=1741636961; x=1742241761;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5oUX7Uf0XBJGHkWsmznzvbRQqVZNW6xVAGMulJmOaps=;
+        b=uHAc9RqH4Hc1k8puRHI68tCXsv9n2BjYUmf/zdL3cWfMWzQFIof8x8Fk2/8fxWJl8Z
+         vmldBVn7c/aNJO+96hsBhQUX/970gX2JQR2gOFtEmAzoYftD5G2dxImZgFun6nMTWA2b
+         gwilEPdnn2cQNmhCwELwcOsljUIpOXt/YyZdgE12QYPLcS4Bb8ZZ/e/rcgq1b4XhZoVR
+         xIv3MHGDGsgweADS34ZJa01BI+LANrncHVGl3okWy3syZGpX0I9W1VU3jyDEv20VWhaH
+         Jj1UcRHcMvvUrp5sGdBXYQl+7Co2B/FSzO4LxSL62aPZ+BGDhLkL09hmwnQEd3IooYMf
+         lpJg==
+X-Gm-Message-State: AOJu0YxEv/2fT1fOh6l1VPDN5CtbvsILvwDxeeKuSAL2HeS000x7nKv7
+	xfCtodl/IV89XWZDRM2WRNSu+lmTntV4+x+0wolxt7MXlRR/8VswPrrSlHPTLMX88+tjCSMQjbQ
+	0+p2PqyXvuJCvVphT9i9nkxsRG1Bk8Wh3RuA7aJFVUPt0Gp/ApRVZkSmXnxLLKRE6LDHKsn75aA
+	==
+X-Gm-Gg: ASbGncsjsu/i0RERJPD3LIilqfsfng3Q4FyBCwDP3qTbZX8nWpZKlx+EDdWZqWXvmtC
+	HKYX6dFGv/B4EQPwDwFV4mumwPnV4bEYKtzX9MEod425lT6pjYLuVE4fP4+V3MpoubJeW4PMhT6
+	ylsalbHzEZADmVMMeQSQZwnlgJO/i9FhCRpTjGrCdugUFwLhr+mk1Rf2UwdtpM5aLMlU9udPoVY
+	zVelrOvHlB9my+6n2H6uE5PdvlS23boEkNapEbqPU/ZH3XUeiDCC7Jtf5klXGy6iEV+zyKZgu7b
+	z2PSClkvlxXUI97C6BlNXFo06msOu0gDteMyGVX1XznlJNqF2IX53QR3Y+WI9hBSSYCx6Q4=
+X-Received: by 2002:aa7:830c:0:b0:736:5486:781d with SMTP id d2e1a72fcca58-736eb87c1f4mr1113765b3a.19.1741636960909;
+        Mon, 10 Mar 2025 13:02:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHccAPmFHmrmLUpz0x0Yfyl2POultnDTom8ngSQxyThbFZtUXEn6Y2yz7Q9egfA1gSiBqweeA==
+X-Received: by 2002:aa7:830c:0:b0:736:5486:781d with SMTP id d2e1a72fcca58-736eb87c1f4mr1113742b3a.19.1741636960491;
+        Mon, 10 Mar 2025 13:02:40 -0700 (PDT)
+Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736cbe3fb3fsm3730419b3a.83.2025.03.10.13.02.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 13:02:40 -0700 (PDT)
+From: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
+To: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        ath11k@lists.infradead.org
+Cc: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
+Subject: [PATCH v4 0/3] wifi: MBSSID support in MLO
+Date: Mon, 10 Mar 2025 13:02:34 -0700
+Message-Id: <20250310200237.652950-1-aloka.dixit@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Possible Null pointer dereferences in net/mac80211/parse.c
-To: Brahmajit <brahmajit.xyz@gmail.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Cc: linux-wireless@vger.kernel.org, johannes.berg@intel.com,
-        ilan.peer@intel.com, miriam.rachel.korenblit@intel.com
-References: <qriquzbudggauxqm5oz55zvkh3uhpk5icx6icnacyzzijdtivr@m37pbcwiqblb>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <qriquzbudggauxqm5oz55zvkh3uhpk5icx6icnacyzzijdtivr@m37pbcwiqblb>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: SK6gRPY3ZKn5YyNtvVxCNdElANQxrYM7
-X-Authority-Analysis: v=2.4 cv=KK2gDEFo c=1 sm=1 tr=0 ts=67cf1cc8 cx=c_pps a=RP+M6JBNLl+fLTcSJhASfg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=b4LDLZbEAAAA:8 a=5Nd08vw50q0olsJ1Gb0A:9 a=QEXdDO2ut3YA:10
- a=iS9zxrgQBfv6-_F4QbHw:22 a=20T61YgZp4ItGotXEy2O:22
-X-Proofpoint-ORIG-GUID: SK6gRPY3ZKn5YyNtvVxCNdElANQxrYM7
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: rwTMwQ7I4EdEYNNA0rIWdyIYzTigV_rD
+X-Authority-Analysis: v=2.4 cv=f/qyBPyM c=1 sm=1 tr=0 ts=67cf4562 cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=Vs1iUdzkB0EA:10 a=AlxVFHAfxkVxK-neCP4A:9 a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-GUID: rwTMwQ7I4EdEYNNA0rIWdyIYzTigV_rD
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-10_06,2025-03-07_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- clxscore=1015 malwarescore=0 adultscore=0 impostorscore=0 mlxscore=0
- lowpriorityscore=0 priorityscore=1501 bulkscore=0 spamscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
- definitions=main-2503100134
+ definitions=2025-03-10_07,2025-03-07_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ bulkscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=319 clxscore=1015
+ priorityscore=1501 malwarescore=0 adultscore=0 suspectscore=0 mlxscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503100154
 
-On 3/10/2025 7:16 AM, Brahmajit wrote:
-> Coverity Scan reports that there might be a possible NULL pointer
-> dereferences in net/mac80211/parse.c: 1061 in
-> ieee802_11_parse_elems_full(). I understand that these reports are not
-> always correct.
-> 
-> I'm not sure whether the syntax
-> struct ieee80211_elems_parse_params sub = {};
-> is correct or falls under C11 standard[0].
+During non-transmitted (nontx) profile configuration, interface
+index of the transmitted (tx) profile is used to retrieve the
+wireless device (wdev) associated with it. With MLO, this 'wdev'
+may be part of an MLD with more than one link, hence only
+interface index is not sufficient anymore to retrieve the correct
+tx profile. Add a new attribute to configure link id of tx profile.
 
-{} initializers are extensions supported by both gcc and clang/LLVM which
-AFAIK are the only two compilers currently used by Linux.
+Similarly, storing 'vif' of tx profile inside 'vif' for nontx
+profiles is not sufficient for MLO, instead store tx link data
+inside each nontx link data structure.
 
-> 
-> initializer:
->          assignment-expression
->          { initializer-list }
->          { initializer-list , }
-> initializer-list:
->          designation(opt) initializer
->          initializer-list , designation(opt) initializer
-> 
-> I'm aware that C23 allows empty initialization[1].
-> 
-> braced-initializer:
->                     { }
->                     { initializer-list }
->                     { initializer-list , }
-> 
-> Considering [0], if we do something like
-> 
-> --- a/net/mac80211/parse.c
-> +++ b/net/mac80211/parse.c
-> @@ -997,7 +997,7 @@ ieee80211_mle_defrag_epcs(struct ieee80211_elems_parse *elems_parse)
->  struct ieee802_11_elems *
->  ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
->  {
-> -       struct ieee80211_elems_parse_params sub = {};
-> +       struct ieee80211_elems_parse_params sub = { 0 };
+v4:
+(1) Pre-requisite driver patches are merged in wireless-next
+    hence this series should apply cleanly now.
+(2) Refactored possible driver changes into a separate patch.
+(3) Found a change missed in HWSIM causing compilation errors,
+    replaced mbssid_tx_bss by tx_bss_conf and confirmed
+    successful compilation.
+(4) Replaced vif->bss_conf->ema_ap by link_conf->ema_ap.
 
-using one of the supported compilers, these are identical for this struct.
+Aloka Dixit (1):
+  wifi: ath12k: pass link_conf for tx_arvif retrieval
 
-note that {} is usually preferable to {0} since {} works even when the first
-member is not a scalar.
+Rameshkumar Sundaram (2):
+  wifi: nl80211: add link id of transmitted profile for MLO MBSSID
+  wifi: mac80211: restructure tx profile retrieval for MLO MBSSID
 
-and the coverity report indicates the issue is that sub.start can be NULL,
-which will initially be true with either of these initializers.
+ drivers/net/wireless/ath/ath11k/mac.c         | 10 ++-
+ drivers/net/wireless/ath/ath12k/mac.c         | 35 ++++++---
+ drivers/net/wireless/virtual/mac80211_hwsim.c |  7 +-
+ include/net/cfg80211.h                        |  2 +
+ include/net/mac80211.h                        |  7 +-
+ include/uapi/linux/nl80211.h                  |  6 ++
+ net/mac80211/cfg.c                            | 64 ++++++++++------
+ net/mac80211/ieee80211_i.h                    |  2 +
+ net/mac80211/iface.c                          | 73 +++++++++++++------
+ net/wireless/nl80211.c                        | 14 ++++
+ 10 files changed, 158 insertions(+), 62 deletions(-)
 
-so the question is can sub.start really be NULL at the point where it is
-passed to cfg80211_find_elem(), or does every path initialize it?
 
-that is the question you should try to answer
-
->         struct ieee80211_elems_parse *elems_parse;
->         const struct element *non_inherit = NULL;
->         struct ieee802_11_elems *elems;
-> 
-> Would it be incorrect? Would appreciate some feedback.
-> 
-> [0]: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf
-> [1]: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3054.pdf
+base-commit: fc56639937ce95a73c9876e39f8d18d1a8dd6a95
+-- 
+2.34.1
 
 
