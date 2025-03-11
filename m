@@ -1,105 +1,107 @@
-Return-Path: <linux-wireless+bounces-20166-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20167-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A190A5BE31
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 11:47:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A8BA5BE8C
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 12:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97B867A2ED5
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 10:46:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 057E9168B3F
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 11:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D19B24EF7C;
-	Tue, 11 Mar 2025 10:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9660250C1C;
+	Tue, 11 Mar 2025 11:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="gulUJNLp"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="w5PQ0fhI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B4E1DE4CD
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Mar 2025 10:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBDF23F295
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Mar 2025 11:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741690052; cv=none; b=q+PvAR9smH8LcG0pkn6UT+TFB2xPDNHobXNBiWC7CQVGT+UWzetQQXdfdsNvUSOc+KES2kKECFvvVRr8gWC+tUFIa852Pv2kPHDBAYKnTYn3SGD/j/DPOj1kCYX5c8WPv8RYpjVV6rCDciR3MVanPKrWefn58KV72h5emLUGhOU=
+	t=1741691410; cv=none; b=Q4dMYYpcR4kGKcCVYnVSG2XQ2k8DsF0QPywvcim4lYyeLwzriC7QA0pyK3u2R3kZUyATBNhZINKGODvyx3TANjJP/NZyr063tD8su1EuppLBqtKvAljEGoZdOzdAWbhDLOPPaoB9c7D9vJ9TyvmOqliQSgnSK43zBD1iMfh1X1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741690052; c=relaxed/simple;
-	bh=z6Om/n+aUZWYx8P76Y5JWV9BeSvqRDGu4FK7U5iWafc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=peaW13cOjIpz3WxIF0KgtooWfauoYNM+43wnPbjT9OX21FTb4Saokd7VmPfo5w12Aso+HvYKhe3lqUoWvTfuVejyjalQxKmgnSzZF/Iqxb3jDxdeyPcih9hFIns0oUH3zu8RUKzarP/+H9FXWBeQLHCmTdA/D+zkkLV7gy2iu04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=gulUJNLp; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=lZz0UOPMLlh0ooj55nmO3gRIqMGRPcGEJBQakNN+wQs=; b=gulUJNLp1PA3KTEcPqq3RsvQ/g
-	PZBEufStc/e74DpeM6F+Xoj1CRB59IUQ/vx5zNr1+vKdPh+aoahnrbjo5MugTsr323A8WRtYfRkaB
-	+tGtdVaPFZZDgjmTjCyAQ5jHvPJZ1v3OmAsgiTlQPdFNEqhunGft9FWvM7eEPWY+DQDQ=;
-Received: from p5b206ef1.dip0.t-ipconnect.de ([91.32.110.241] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1trx8t-00Fu5a-0G
-	for linux-wireless@vger.kernel.org;
-	Tue, 11 Mar 2025 11:47:23 +0100
-Message-ID: <ceb6f9fb-68b4-4fb8-913f-ecce8da7c727@nbd.name>
-Date: Tue, 11 Mar 2025 11:47:22 +0100
+	s=arc-20240116; t=1741691410; c=relaxed/simple;
+	bh=sndIPybr33k+pwCiLZ7oRrToZn5TBff+KJMZdDUiNNk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uIOFSiCD/I8b6McHrI+HImojJ5Z5sbfDs4/KF0cctEaOBtbx65qSldzBJABIetSo3E9AWtoZ0hZgsE7PjJ6fcTeI6UAqxek0PCT476553G1E1fDWL5hVnP6Hk4FM05v4kJGADefrDX6nECn5mxgFejLzAnjQjeary720TXXmWhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=w5PQ0fhI; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=0nIGdyXBNyqmkdGdSKh7c7g7CNu1WwFIdaaagQwLmG0=; t=1741691409; x=1742901009; 
+	b=w5PQ0fhILKCmcKv/GihsFNXSL/QXkd08R+OowSJvqhSW+mDimdOFVc276mWYEG8yNisX+4e4TMu
+	KtfVCGB9ACLnP4/bScDb5HwRBQom3EZ/EjaxuXMPmdRDmHyig7JMhBFn6l7oDUUb9rUb10B/IHrKI
+	prVBGBNOHftSHNhTnBoLSW3aGLE9jAyMZAZS/TZakKOVCE5TXwjuy37MGObDd4wRc8Vo2kJf3MT/I
+	q41V+27+w3bajxel/tI0c3V/hSxHIrSMwUvcI7bwqjQZHzErYDuUgHKPWrxP4TKkbnZeemNm/Ylr/
+	jNphJn32NuL0ME0J60BTY5vDpQYVG+6F0jsQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1trxUs-00000007ol7-2GPG;
+	Tue, 11 Mar 2025 12:10:06 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH wireless-next 1/2] wifi: mac80211: remove SSID from ML reconf
+Date: Tue, 11 Mar 2025 12:10:03 +0100
+Message-ID: <20250311121004.fdf08f90bc30.I07f88d3a6f592a0df65d48f55d65c46a4d261007@changeid>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/8] mt76: only mark tx-status-failed frames as ACKed on
- mt76x0/2
-From: Felix Fietkau <nbd@nbd.name>
-To: linux-wireless@vger.kernel.org
-References: <20250311103646.43346-1-nbd@nbd.name>
- <20250311103646.43346-6-nbd@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <20250311103646.43346-6-nbd@nbd.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11.03.25 11:36, Felix Fietkau wrote:
-> The interrupt status polling is unreliable, which can cause status events
-> to get lost. On all newer chips, txs-timeout is an indication that the
-> packet was either never sent, or never acked.
-> Fixes issues with inactivity polling.
-> 
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Forgot the wifi: prefix in the subject here - I will add it when I apply 
-the patch.
+The ML reconfiguration frame shouldn't contain an SSID,
+remove it.
 
-- Felix
+Fixes: 36e05b0b8390 ("wifi: mac80211: Support dynamic link addition and removal")
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/mlme.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index bfd3653a5b84..3dae02345ab8 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -10233,8 +10233,8 @@ ieee80211_build_ml_reconf_req(struct ieee80211_sub_if_data *sdata,
+ 		size += 2 + sizeof(struct ieee80211_mle_per_sta_profile) +
+ 			ETH_ALEN;
+ 
+-		/* SSID element + WMM */
+-		size += 2 + sdata->vif.cfg.ssid_len + 9;
++		/* WMM */
++		size += 9;
+ 		size += ieee80211_link_common_elems_size(sdata, iftype, cbss,
+ 							 elems_len);
+ 	}
+@@ -10346,11 +10346,6 @@ ieee80211_build_ml_reconf_req(struct ieee80211_sub_if_data *sdata,
+ 
+ 			capab_pos = skb_put(skb, 2);
+ 
+-			skb_put_u8(skb, WLAN_EID_SSID);
+-			skb_put_u8(skb, sdata->vif.cfg.ssid_len);
+-			skb_put_data(skb, sdata->vif.cfg.ssid,
+-				     sdata->vif.cfg.ssid_len);
+-
+ 			extra_used =
+ 				ieee80211_add_link_elems(sdata, skb, &capab, NULL,
+ 							 add_links_data->link[link_id].elems,
+-- 
+2.48.1
+
 
