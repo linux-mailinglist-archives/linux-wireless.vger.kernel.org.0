@@ -1,150 +1,117 @@
-Return-Path: <linux-wireless+bounces-20179-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20180-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76152A5CB0F
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 17:45:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4BFA5CC83
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 18:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16D7717ACB0
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 16:45:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0E6618992E5
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 17:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D968CF9D6;
-	Tue, 11 Mar 2025 16:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB2B1EDA2A;
+	Tue, 11 Mar 2025 17:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bVQC1W7L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G5kssCRw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFD533CA
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Mar 2025 16:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4929E1EBA1E
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Mar 2025 17:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741711549; cv=none; b=JtjHtcXWqdz3svJjLib/EdO0bEcOPV5lX3MPv/7+K4gUroObcK2JYGD3kXbABmhx+cb11OUc1Mq0xcRCXEDbsIlzSg+r7D1fApGzs3N3yjOzoVGjgbhGac3hywuU7Zjab3yJhxB54bHOaCB+Z93HvSrO7akHkjGqPphWWaPxKAs=
+	t=1741715116; cv=none; b=EKWt1V960m8ey/pAx2+fy2j1C2/uGtui1V70tY/uvSa3hlLEbJPUvAWt+oTQEy3sjIEAAHBFfLKJAwrX36TL8l9qpPIYxmGh/mIOs+URcUVg79dVzJwz6F7TQ/MOR/x0+EAv0NwbKGx8u/4cBxDO5iXZbhAkeJ+dxgw9SXzqO0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741711549; c=relaxed/simple;
-	bh=+JTmRPoe9rq3Z4AiPu7Wh/kWljD0ng5xmB0ycz2nFV8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=lwoBQsLWOLc+BdUGa5bPPVwWKtvPB1i25lJ6KpYEQnP/MzbxavplSPO1nEsvueqBlQ85j5y4OIf0UhQkFPBWAbVnZkzBUKGSZk7qVuwkwR+nZ+2ZPfXbLBifVyaoSjwsBO0KmLehxTVJa4rIH+4DGkeCaAhav2wQh+25fcYM52E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bVQC1W7L; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52BFdIXA031608
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Mar 2025 16:45:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	3g93QI/9e/9KODrRLKXGs/+j5hmHTgWZHXAv9B57BMM=; b=bVQC1W7L4W2f0gSL
-	aBtfFDQZkgmUZixkrLCUAPewEC6g+czVQa61PJcxLEZqyjsN5UyDFhjzhug4CXeH
-	aF2ald9nulF7RMcuSOQh7x2tanoS7iUkFSLZROgVxf3Ea427slDd8p5vQckUoRpr
-	n+Yc0CmvmV1JbDCsSrhnv9eh9zZeuQlpeNuoHFbZ0vjXEpb6o3BI6C8763VtnOLu
-	boppqcKVoDPq2xfxCjVTas1RBi9Ppa8REsjHMPyEEUIdURjsY+tHsPDCWOeYg6Zi
-	Zj2WLrj74Y05/JxJIxTAoIjxkgCQinE6Y3pW1h8CihG+CpYKVsrUTaREXvNuZR9E
-	qyfsjA==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45ah3kspwn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Mar 2025 16:45:47 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-224192ff68bso87245785ad.1
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Mar 2025 09:45:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741711546; x=1742316346;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3g93QI/9e/9KODrRLKXGs/+j5hmHTgWZHXAv9B57BMM=;
-        b=KYUOYry+Z/Ct+gCKSksVU7rCcww8Xcio6VGAZD1wYoNwdLfofbBsRPYKviw+QCqMj5
-         tL8VgT/KeTH4QGFGFknlm+f1GaXNeTenKuLEjXUwXQ8hDk6zMno8u5/qcyjtE62KrCiH
-         KqGjJT0R6fYI3XEVHEG46Fjy1G+JV3MqE2NM5NW5JesFg5Tlh8OWtvU7Ps8YZnKjId5b
-         6H17NAy4FnLq7ITYtO6xfr0j2a4MOHpEn4Mwa2bokoa4m5do7+puXMdM3+t8GrfMUZAK
-         +tyzr5CzdmlDLupchamS7s1YWKqwYTHiJh7w+N0X8MF4IggFzVKGlOlm5MBlo5EPlHyg
-         kICw==
-X-Forwarded-Encrypted: i=1; AJvYcCX8V4hGLmn4Lf9U5RhKf6eeHXd0FWccg4GzYdBaIKXVKlyxgM5PiyIziJt7dVFXgtIyTWaiVLKzzdO103mOsw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWwNMuq8WFxUz5fu96dLMfAphzb2KvepYm6FrIiLa68Nxj/N8L
-	602N3HtmDEHB781WxU9OoWTdouha2NbF1H/X47hqzRLp2nlwLOFeUR2P/VCemPKGJsGqRBbZ3oX
-	SUifjzAnSk/vYjy4aTQERxqem5g7Sd+/QucQxg+bumqypm6hW2URL/q1AFwZS7pAuLA==
-X-Gm-Gg: ASbGnctV6ODmbbXHnubNfOcA47kYORpOZFLow2T2/T51iwr9hfc9m1yR7a75WjOWaEd
-	4iLhBPcbEzfm7ym+jfMvcjr1iQOoOcdhJ5HguFvJNTAsOBoaTph7XfkkI1QX+Sei2Gj6yAPYQ8y
-	AWXFHvR5pZ17uT1jPD+uwP8N1PG4qy5ksEYb8+Ecb4gRmj8GBHtOAEB5Vij6VzHeHNBwiuj+fth
-	+0JRaX3x86DkOMyMM0jnmWi2GcnAumZZHDHjddg6WwYt2bizJNwix9dOMM5NDr2F215vs4lqaxR
-	Hocc+yon/6Q3GoSw+1oYc8Suf8rVcK6TSb15tJ00NZi/Dzw+V1Ech9J4NsXHDo9Y4L+hpu3y8H+
-	5K+sy
-X-Received: by 2002:a17:902:f70c:b0:223:49cb:5eaa with SMTP id d9443c01a7336-22593183d83mr62245305ad.35.1741711546428;
-        Tue, 11 Mar 2025 09:45:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFMKT0bhq9gObWNi1A7qYtgXk99hHQyFPCQuZU4Ev+zmdxvZYZAV0O9EZcj15+XH7XREyEbxQ==
-X-Received: by 2002:a17:902:f70c:b0:223:49cb:5eaa with SMTP id d9443c01a7336-22593183d83mr62245035ad.35.1741711546091;
-        Tue, 11 Mar 2025 09:45:46 -0700 (PDT)
-Received: from [192.168.69.142] (c-98-35-147-9.hsd1.ca.comcast.net. [98.35.147.9])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22410a91c50sm100408765ad.185.2025.03.11.09.45.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Mar 2025 09:45:45 -0700 (PDT)
-Message-ID: <8da45052-def5-40fd-9701-7599e8fd5bda@oss.qualcomm.com>
-Date: Tue, 11 Mar 2025 09:45:44 -0700
+	s=arc-20240116; t=1741715116; c=relaxed/simple;
+	bh=HsotVx6KpH1JEpP3CAmCRSuWKsczS3BnfeLb6xjVxBY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=P+KZ85X1+yBBgx4VHINdv2aAwCiZLMZt5UR4B3MYoGFkeB3yKMS1sv/KUq55FtH7fA4Oh79F46IJPu0vEp0l/AWfij5qHukgNBVE15auxD/n9BqnjxXa836Vtmlw2yxRCYn8A1dsTk6BeO70ylJa2jbcXQLx9RN9kQ6CVSA+2t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G5kssCRw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF06C4CEEC;
+	Tue, 11 Mar 2025 17:45:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741715116;
+	bh=HsotVx6KpH1JEpP3CAmCRSuWKsczS3BnfeLb6xjVxBY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=G5kssCRwzyB4/FViiPUYdFPYz46vIbGGPS1cA0pcwICqWGv1D7qAVe3/J8okR2QYi
+	 8RvdI6AmRI4tPCk2FCsmFCKQcWon2c6+hLrnOo0Hr+GAzt/EbU5FrIiAH3q4UGKPsg
+	 asXrvoLsr8RqLyQGdMs7HEjx+1RjWaE4A0gsyDlRt4K9+upUhkp3of22lhCmnkwKta
+	 wPFuo3MQeD7jYDEp11gnF64mxeTmE2v4UgB12e9a75d9CX/15b0bzQu8W+k5lQAxUF
+	 MNI5fzvw8bkhgTwJfrBPW3MOAn9PfTygbyFWFCI3SBUZwHTFOlOInxuYwWvpO+QGOm
+	 6AHzdy/ng9w2g==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH v2 00/13] wifi: mt76: mt7996: Preliminary work to support
+ MLO
+Date: Tue, 11 Mar 2025 18:44:59 +0100
+Message-Id: <20250311-mt7996-mlo-v2-0-31df6972519b@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] wifi: ath12k: pass link_conf for tx_arvif
- retrieval
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        ath11k@lists.infradead.org
-References: <20250310200237.652950-1-aloka.dixit@oss.qualcomm.com>
- <20250310200237.652950-4-aloka.dixit@oss.qualcomm.com>
- <289cca50-b559-4b7f-bc89-e089d7bdf6e0@oss.qualcomm.com>
- <b9ccf604-800e-4e4e-bf35-62d97cd1d90a@oss.qualcomm.com>
-Content-Language: en-US
-From: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
-In-Reply-To: <b9ccf604-800e-4e4e-bf35-62d97cd1d90a@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: MhWWMOhAeLaPADyHPeWa26eigqnLYrYK
-X-Authority-Analysis: v=2.4 cv=MJiamNZl c=1 sm=1 tr=0 ts=67d068bb cx=c_pps a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=UlYobBNIKLIdKoAhXwLdVw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=EUspDBNiAAAA:8 a=92TBJxoUzZZWgJSFfrcA:9 a=QEXdDO2ut3YA:10
- a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-GUID: MhWWMOhAeLaPADyHPeWa26eigqnLYrYK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-11_04,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- mlxscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0 mlxlogscore=999
- priorityscore=1501 adultscore=0 suspectscore=0 spamscore=0 bulkscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502100000
- definitions=main-2503110106
+X-B4-Tracking: v=1; b=H4sIAJt20GcC/23MSw6CMBSF4a2QO7amDyqWkfswDApeoBFac0saD
+ enerYwd/ic53w4RyWGEttqBMLnogi8hTxUMs/UTMvcoDZJLzaXkbN0aYy5sXQIzGs2IiluDHMr
+ hRTi694Hdu9Kzi1ugz2En8Vv/MkkwzlQ91LbvVSP09fZE8ricA03Q5Zy/xCM45qUAAAA=
+X-Change-ID: 20250220-mt7996-mlo-95e9fe30a9e0
+To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+ Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, 
+ Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, Bo Jiao <Bo.Jiao@mediatek.com>, 
+ Peter Chiu <chui-hao.chiu@mediatek.com>
+X-Mailer: b4 0.14.2
 
-On 3/10/2025 4:18 PM, Jeff Johnson wrote:
-> On 3/10/2025 1:06 PM, Aloka Dixit wrote:
->> On 3/10/2025 1:02 PM, Aloka Dixit wrote:
->>> Three out of four callers to ath12k_mac_get_tx_arvif() have
->>> link_conf pointer already set for other operations. Pass it
->>> as a parameter. Modify ath12k_control_beaconing() to set
->>> link_conf first.
->>>
->>> Signed-off-by: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
->>> ---
->>>    drivers/net/wireless/ath/ath12k/mac.c | 31 +++++++++++++++------------
->>>    1 file changed, 17 insertions(+), 14 deletions(-)
->>>
->>
->> Forgot to add tested on tag:
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
->>
->> Will send the driver changes again with the tag if required once
->> nl80211/mac80211 review completes.
-> 
-> If Johannes accepts the first two patches I can add this to the ath12k patch.
-> 
-> Note, however, that you forgot the wireless-next subject prefix tag ;)
-> 
-> /jeff
+This series is the first preliminary work needed to support MLO in
+MT7996 driver.
 
+---
+Changes in v2:
+- Rebase on top of mt76 master branch
+- get rid of mt76_sta_common_init utility routine and introduce
+  mt7996_sta_state routine
+- Link to v1: https://lore.kernel.org/r/20250220-mt7996-mlo-v1-0-34c4abb37158@kernel.org
 
-Yeah, I see a nice table with warnings now,
-will take care of it once the technical review is done :-)
+---
+Lorenzo Bianconi (9):
+      wifi: mt76: mt7996: Add chage_vif_links stub
+      wifi: mt76: mt7996: Introduce mt7996_sta_link container
+      wifi: mt76: mt7996: Add mt7996_sta_link struct in mt7996_vif_link
+      wifi: mt76: mt7996: Add vif_cfg_changed callback
+      wifi: mt76: mt7996: Add link_info_changed callback
+      wifi: mt76: mt7996: Add mt7996_sta_state routine
+      wifi: mt76: mt7996: Rely on mt7996_sta_link in sta_add/sta_remove callbacks
+      wifi: mt76: mt7996: Support MLO in mt7996_mac_sta_event()
+      wifi: mt76: mt7996: Rely on mt7996_vif_link and mt7996_sta_link in mt7996_mac_twt_teardown_flow signature
+
+Shayne Chen (4):
+      wifi: mt76: mt7996: Add mt7996_mac_sta_change_links callback
+      wifi: mt76: Check link_conf pointer in mt76_connac_mcu_sta_basic_tlv()
+      wifi: mt76: mt7996: Update mt7996_mcu_add_sta to MLO support
+      wifi: mt76: mt7996: Rely on mt7996_vif_link in mt7996_mcu_twt_agrt_update signature
+
+ drivers/net/wireless/mediatek/mt76/mac80211.c      |   5 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h          |   2 +
+ .../net/wireless/mediatek/mt76/mt76_connac_mcu.c   |   2 +-
+ .../net/wireless/mediatek/mt76/mt7996/debugfs.c    |  12 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c    | 125 +++--
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c   | 527 ++++++++++++++++-----
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 335 +++++++------
+ drivers/net/wireless/mediatek/mt76/mt7996/mmio.c   |   3 -
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  36 +-
+ 9 files changed, 689 insertions(+), 358 deletions(-)
+---
+base-commit: 33584256a5f38ffb9e8829d08302a3021f2a8475
+change-id: 20250220-mt7996-mlo-95e9fe30a9e0
+
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
+
 
