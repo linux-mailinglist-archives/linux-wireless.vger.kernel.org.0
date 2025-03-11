@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-20159-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20157-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65CEA5BE00
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 11:37:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9936A5BDFD
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 11:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECAC57A832A
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 10:35:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C0A616A589
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 10:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6244238D56;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86D5238170;
 	Tue, 11 Mar 2025 10:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="gpyLRpiT"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="YMFQgrQo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3624222DFA5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361D422D4FE
 	for <linux-wireless@vger.kernel.org>; Tue, 11 Mar 2025 10:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741689410; cv=none; b=cjLSl85rtJqJe3kHu8naY7YZVbh3zLYwN/jAKuxtKl58JU29fhOVnoLXkxomMtp5M3/Trl2LwlEm5810z+Ii9x9aNELp3tWRH+8iYh+3Jo6tfIBxOU0DudBtrN516mF7S/Ep/YWLBMb1L8LKk9kbn0LGZnupq+Qto1QuojE2rD4=
+	t=1741689410; cv=none; b=CgIKBSwCqCZrG38XOPRyrxw1VqL97maP75wJLs95V3oHj3Qk1LyGzEtj83UHGnf/pGLvEeGL0sGpXWUBX2CXd866LuGGWMcp9dzfborJJWzXrUU67zN9L9nNtQ3Vc5PxAzXFHw3jsYCP/L52+2hLOTC5QfaAvJrbdl6QgAhejgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741689410; c=relaxed/simple;
-	bh=3PsM/a0IkU7n3BK89EYMm2jXa+4qDVE2kWj2GN67rvg=;
+	bh=FMod+Y06YQYawP5IdhxQO2Qb4UYR3XOvPcD5junq88g=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q96Z8S0V5zxSdAk1YB6sXnOKlg6gaWCgR0PrxD6aFBz0V9OFcuJTviBtBJ1rTeOweqs0bp0TuopgxsUPp+l8VUYQhP8hNKpQdQiZFkgjATOEPVrCYEKXqMG2J4G+X8atmVo4AOdflXX4ijVyp5pNCtYwB5Ck/PaW9uQzyICq13A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=gpyLRpiT; arc=none smtp.client-ip=46.4.11.11
+	 MIME-Version; b=nQ9zKelgA/Q/kuMzSdkpTVNroGNJqTyXbIVzfReXqs5xOylIqNc8Z1PHgjdhfobOajSF58eM8S6gkyXvEOqZvYU8/21pj1aWzLXoaK+OdCImpGC9rn29fyNSh+yCFzOzEkDnbEb9vdM/HQiE/ZC4PhfbVJ/jE7awFPyesqnBLJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=YMFQgrQo; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -37,21 +37,21 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=wp7SY7DCzSVZWnM01H0IiLGf8ox/YZZ1QgCqwiy3ER4=; b=gpyLRpiT+NY7iBsuF7Pxx60y4u
-	wMDWPWZkFZhH1UPMUzdrn0UQ2CaHulh4nrtEGBJOhVZcv2UfV8ff14xk8o/bxCZGjln/JAWWeVVtk
-	UER2HX15G5WuxGsqLG2RZemZc9setJ4MEVmXA7I/wH2Bh3bTQCevJQj4QnwPtpgbh8O4=;
+	bh=ihyTzD7MFGuanbVO4dzWaUyTMuq9uBXI264Cmv8vAjU=; b=YMFQgrQoY8O8ODr30EBUt/8LcS
+	JBgl9rtsubGeZNRsyDWEIojwfkMCfpHJUzxcVHYZqR/lcix4qqhhYLGL7+vPgFTPQF6FU6RavclDc
+	jyKmHPUybeIocqvIK6lGDlGrzytv9KhGBs7eRNU7NEHcbWJ9Tgvqqc6nSTXLu1L1BA+M=;
 Received: from p5b206ef1.dip0.t-ipconnect.de ([91.32.110.241] helo=Maecks.lan)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1trwyd-00Ftvh-1H
+	id 1trwyd-00Ftvh-1o
 	for linux-wireless@vger.kernel.org;
 	Tue, 11 Mar 2025 11:36:47 +0100
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH 6/8] mt76: only mark tx-status-failed frames as ACKed on mt76x0/2
-Date: Tue, 11 Mar 2025 11:36:43 +0100
-Message-ID: <20250311103646.43346-6-nbd@nbd.name>
+Subject: [PATCH 7/8] wifi: mt76: mt7996: implement driver specific get_txpower function
+Date: Tue, 11 Mar 2025 11:36:44 +0100
+Message-ID: <20250311103646.43346-7-nbd@nbd.name>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311103646.43346-1-nbd@nbd.name>
 References: <20250311103646.43346-1-nbd@nbd.name>
@@ -63,103 +63,60 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The interrupt status polling is unreliable, which can cause status events
-to get lost. On all newer chips, txs-timeout is an indication that the
-packet was either never sent, or never acked.
-Fixes issues with inactivity polling.
+Fixes reporting tx power for vifs that don't have a channel context
+assigned. Report the tx power of a phy that is covered by the vif's
+radio mask.
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h       | 1 +
- drivers/net/wireless/mediatek/mt76/mt76x0/pci.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt76x0/usb.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt76x2/pci.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/tx.c         | 3 ++-
- 6 files changed, 11 insertions(+), 5 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7996/main.c  | 27 ++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index c16a6743ad64..b461273c3306 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -492,6 +492,7 @@ struct mt76_hw_cap {
- #define MT_DRV_RX_DMA_HDR		BIT(3)
- #define MT_DRV_HW_MGMT_TXQ		BIT(4)
- #define MT_DRV_AMSDU_OFFLOAD		BIT(5)
-+#define MT_DRV_IGNORE_TXS_FAILED	BIT(6)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 886b6ef3462b..89fc3f102555 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -602,6 +602,31 @@ static void mt7996_configure_filter(struct ieee80211_hw *hw,
+ 	mutex_unlock(&dev->mt76.mutex);
+ }
  
- struct mt76_driver_ops {
- 	u32 drv_flags;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-index b456ccd00d58..11c16d1fc70f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-@@ -156,7 +156,8 @@ mt76x0e_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	static const struct mt76_driver_ops drv_ops = {
- 		.txwi_size = sizeof(struct mt76x02_txwi),
- 		.drv_flags = MT_DRV_TX_ALIGNED4_SKBS |
--			     MT_DRV_SW_RX_AIRTIME,
-+			     MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.set_channel = mt76x0_set_channel,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-index b031c500b741..90e5666c0857 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-@@ -214,7 +214,8 @@ static int mt76x0u_probe(struct usb_interface *usb_intf,
- 			 const struct usb_device_id *id)
- {
- 	static const struct mt76_driver_ops drv_ops = {
--		.drv_flags = MT_DRV_SW_RX_AIRTIME,
-+		.drv_flags = MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.set_channel = mt76x0_set_channel,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-index 727bfdd00b40..2303019670e2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-@@ -22,7 +22,8 @@ mt76x2e_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	static const struct mt76_driver_ops drv_ops = {
- 		.txwi_size = sizeof(struct mt76x02_txwi),
- 		.drv_flags = MT_DRV_TX_ALIGNED4_SKBS |
--			     MT_DRV_SW_RX_AIRTIME,
-+			     MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.set_channel = mt76x2e_set_channel,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index e832ad53e239..3747f9ed31e6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -29,7 +29,8 @@ static int mt76x2u_probe(struct usb_interface *intf,
- 			 const struct usb_device_id *id)
- {
- 	static const struct mt76_driver_ops drv_ops = {
--		.drv_flags = MT_DRV_SW_RX_AIRTIME,
-+		.drv_flags = MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.set_channel = mt76x2u_set_channel,
-diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index af0c50c983ec..513916469ca2 100644
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -100,7 +100,8 @@ __mt76_tx_status_skb_done(struct mt76_dev *dev, struct sk_buff *skb, u8 flags,
- 		return;
- 
- 	/* Tx status can be unreliable. if it fails, mark the frame as ACKed */
--	if (flags & MT_TX_CB_TXS_FAILED) {
-+	if (flags & MT_TX_CB_TXS_FAILED &&
-+	    (dev->drv->drv_flags & MT_DRV_IGNORE_TXS_FAILED)) {
- 		info->status.rates[0].count = 0;
- 		info->status.rates[0].idx = -1;
- 		info->flags |= IEEE80211_TX_STAT_ACK;
++static int
++mt7996_get_txpower(struct ieee80211_hw *hw, struct ieee80211_vif *vif, int *dbm)
++{
++	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
++	struct mt7996_phy *phy = mt7996_vif_link_phy(&mvif->deflink);
++	struct mt7996_dev *dev = mt7996_hw_dev(hw);
++	struct wireless_dev *wdev;
++	int n_chains, delta, i;
++
++	if (!phy) {
++		wdev = ieee80211_vif_to_wdev(vif);
++		for (i = 0; i < hw->wiphy->n_radio; i++)
++			if (wdev->radio_mask & BIT(i))
++				phy = dev->radio_phy[i];
++
++		if (!phy)
++			return -EINVAL;
++	}
++
++	n_chains = hweight16(phy->mt76->chainmask);
++	delta = mt76_tx_power_nss_delta(n_chains);
++	*dbm = DIV_ROUND_UP(phy->mt76->txpower_cur + delta, 2);
++
++	return 0;
++}
+ static u8
+ mt7996_get_rates_table(struct mt7996_phy *phy, struct ieee80211_bss_conf *conf,
+ 		       bool beacon, bool mcast)
+@@ -1651,7 +1676,7 @@ const struct ieee80211_ops mt7996_ops = {
+ 	.remain_on_channel = mt76_remain_on_channel,
+ 	.cancel_remain_on_channel = mt76_cancel_remain_on_channel,
+ 	.release_buffered_frames = mt76_release_buffered_frames,
+-	.get_txpower = mt76_get_txpower,
++	.get_txpower = mt7996_get_txpower,
+ 	.channel_switch_beacon = mt7996_channel_switch_beacon,
+ 	.get_stats = mt7996_get_stats,
+ 	.get_et_sset_count = mt7996_get_et_sset_count,
 -- 
 2.47.1
 
