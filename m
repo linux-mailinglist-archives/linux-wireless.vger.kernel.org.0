@@ -1,117 +1,84 @@
-Return-Path: <linux-wireless+bounces-20158-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20164-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C732A5BDFE
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 11:36:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA11A5BE13
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 11:41:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D15616F844
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 10:36:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EF013B2236
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 10:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE413238D3B;
-	Tue, 11 Mar 2025 10:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A4923F373;
+	Tue, 11 Mar 2025 10:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="jP2pKUti"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Tn6Ij1Te"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D6422FF42
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Mar 2025 10:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A7B23F295;
+	Tue, 11 Mar 2025 10:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741689410; cv=none; b=O/ppiFQOo9FFqGcQWaZKJY5CZC69xrvPe0bn67xRrxmUtYkT9egH346yT8swBPlV/fVBFkd7wfsTKJv+yTzJatQQ9GdD0AQDDWXJWZ9ZkTE6+EOpL4g2M75oHHD5s8RlkOBfDgyRuVofDBleAyg5x9cxqiJObLPTgSzVw2VQAF0=
+	t=1741689668; cv=none; b=P0eAQOnlWmN7Mvwb3QMScebC8eSMs/78dTadFTfu5dvev9NYyIqWqcicoORMCdjMHTyNT4yDhFv9551IHmkM1JzxN2l3ut/uh3ImBvv6xNNYtauMsbrMTCqvoCQb2UoWjdpHlEkY21JVUfo8SY1g0FQGcaXyHZ8RC5v+WrHRtas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741689410; c=relaxed/simple;
-	bh=Ql3jeD299hUpA6PDCI9+FXsbclI7ZNRKOBRaJ22HgUw=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tomJxn95SUXBx9iZjTYb5TFMpozRzg3l4dCh2//rLrqcKwJytCBUEpWd010d9t7dJMKPn0jKnMjG44jLzr4u03o3uxS/+MQba3y9+yoJSwtFaKhd2L29jKqW3TMg/9KGFgkEqE91PLLYAnUi0EFJjbYz4ps+l4UxhgLGiOvWMik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=jP2pKUti; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=1R31MJGxdLJcun7W2dd3/KH41YsNm43S7N1AglG/HFY=; b=jP2pKUtixnSEeDb5aJtkz1oUyU
-	j1ys4zMsO8gKx6z1MU5xzl8BIvyX7YmupfFb012eVb0RmYoSo8cNtRhComnom6AI1rLlNlFTrtthn
-	ttk5TwA2iQhmZ7n9asBAD1FHezOW6ktAEmu8uU6aJjEq8wPoL3lfOyPYvTrgugaPjaek=;
-Received: from p5b206ef1.dip0.t-ipconnect.de ([91.32.110.241] helo=Maecks.lan)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1trwyd-00Ftvh-2P
-	for linux-wireless@vger.kernel.org;
-	Tue, 11 Mar 2025 11:36:47 +0100
-From: Felix Fietkau <nbd@nbd.name>
-To: linux-wireless@vger.kernel.org
-Subject: [PATCH 8/8] wifi: mt76: scan: fix setting tx_info fields
-Date: Tue, 11 Mar 2025 11:36:45 +0100
-Message-ID: <20250311103646.43346-8-nbd@nbd.name>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250311103646.43346-1-nbd@nbd.name>
-References: <20250311103646.43346-1-nbd@nbd.name>
+	s=arc-20240116; t=1741689668; c=relaxed/simple;
+	bh=nAUHNp2kBBjvtejugRrFk/HNYaC7Gw17aenNxh8GKss=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=m2+FBTItgR2SRbMRRwEXgsWZI6rw4hISqWjLTuGl+uyo3tKcnwYqW1JHnBJW8GWQzaFF3bAKnzNEqGV2Ux2Au+yT70PkzYSGM7NdUTMSI8WanDtPhbfSPigJb8ifJ0SAiEeqsroaPCXO2fIrEcxhB+UHGAItqtqa4JNFVh/4aR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Tn6Ij1Te; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=nAUHNp2kBBjvtejugRrFk/HNYaC7Gw17aenNxh8GKss=;
+	t=1741689663; x=1742899263; b=Tn6Ij1TeyZEJfLOSewYC1IF5ej+SBOxxntlHLJefrQjcjGV
+	yHYvw0wFy0XsBhAXRfXTwUWjLNnVgM139QpBqbD/cxuMACiKoQ6G3hvO/Bzn6aKkJJpYIaxAMH190
+	gKi5jqF1Wto+2rf+J/+UXJ+aDAsh+eNSW9A8v2T6FsQz1olRQYac1pU2mdpEQ04MSi0U+YyuA+DLL
+	fQTbkWhrTvFlfpzMjuH4PifTIx5xPOKHOtcG/MCSb1jwgGPu5HbOtNQtLZLuAP4fB1SBEAEQ2gj2O
+	ZaejAInwTp8M5dCt7s0xwkmcDEoIziHVjFFP0Xx/YUHksjmOxBuU5caUoqsrSNPg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1trx2h-00000007nwb-1OIV;
+	Tue, 11 Mar 2025 11:40:59 +0100
+Message-ID: <af8e60b46567a0612b71d4cd198b07dc93b046e4.camel@sipsolutions.net>
+Subject: Re: [PATCH][next] wifi: iwlwifi: dvm: Avoid
+ -Wflex-array-member-not-at-end warnings
+From: Johannes Berg <johannes@sipsolutions.net>
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, "Gustavo A. R. Silva"	
+ <gustavoars@kernel.org>, Miri Korenblit
+ <miriam.rachel.korenblit@intel.com>,  Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Date: Tue, 11 Mar 2025 11:40:57 +0100
+In-Reply-To: <75551003-17c7-450a-89b0-818b6a01051c@embeddedor.com>
+References: <Zr5QR03+wyw571zd@elsanto>
+	 <b0f25000-396c-4a83-abc1-1a07b3065c10@embeddedor.com>
+	 <75551003-17c7-450a-89b0-818b6a01051c@embeddedor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-ieee80211_tx_prepare_skb initializes the skb cb, so fields need to be set
-afterwards.
+On Mon, 2025-03-10 at 14:17 +1030, Gustavo A. R. Silva wrote:
+> Hi all,
+>=20
+> I wonder who can take this patch, please. :)
+>=20
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/scan.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+At the very least you're going to have to resend, I don't have the patch
+in patchwork any more.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/scan.c b/drivers/net/wireless/mediatek/mt76/scan.c
-index 1c4f9deaaada..9b20ccbeb8cf 100644
---- a/drivers/net/wireless/mediatek/mt76/scan.c
-+++ b/drivers/net/wireless/mediatek/mt76/scan.c
-@@ -52,11 +52,6 @@ mt76_scan_send_probe(struct mt76_dev *dev, struct cfg80211_ssid *ssid)
- 		ether_addr_copy(hdr->addr3, req->bssid);
- 	}
- 
--	info = IEEE80211_SKB_CB(skb);
--	if (req->no_cck)
--		info->flags |= IEEE80211_TX_CTL_NO_CCK_RATE;
--	info->control.flags |= IEEE80211_TX_CTRL_DONT_USE_RATE_MASK;
--
- 	if (req->ie_len)
- 		skb_put_data(skb, req->ie, req->ie_len);
- 
-@@ -64,10 +59,20 @@ mt76_scan_send_probe(struct mt76_dev *dev, struct cfg80211_ssid *ssid)
- 	skb_set_queue_mapping(skb, IEEE80211_AC_VO);
- 
- 	rcu_read_lock();
--	if (ieee80211_tx_prepare_skb(phy->hw, vif, skb, band, NULL))
--		mt76_tx(phy, NULL, mvif->wcid, skb);
--	else
-+
-+	if (!ieee80211_tx_prepare_skb(phy->hw, vif, skb, band, NULL)) {
- 		ieee80211_free_txskb(phy->hw, skb);
-+		goto out;
-+	}
-+
-+	info = IEEE80211_SKB_CB(skb);
-+	if (req->no_cck)
-+		info->flags |= IEEE80211_TX_CTL_NO_CCK_RATE;
-+	info->control.flags |= IEEE80211_TX_CTRL_DONT_USE_RATE_MASK;
-+
-+	mt76_tx(phy, NULL, mvif->wcid, skb);
-+
-+out:
- 	rcu_read_unlock();
- }
- 
--- 
-2.47.1
-
+johannes
 
