@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-20146-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20139-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ECA3A5B942
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 07:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78AFAA5B93A
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 07:27:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC3B2189594F
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 06:28:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 138FA1894572
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Mar 2025 06:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EEDE1EE7B9;
-	Tue, 11 Mar 2025 06:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB7E1EE035;
+	Tue, 11 Mar 2025 06:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Olvv6ep+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Xgz6u6Ck"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C113B1DE8A8
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Mar 2025 06:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2A61EB19F
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Mar 2025 06:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741674472; cv=none; b=RMqvkPGzk102NzQoVwiQubfYMSGSJW2aFfPjh/bxJisZAzxFIdU369o1oBbKfplfhD63XZdbZUEYamnNxQw2oPuhLdqCRXMeAK9LOc8K/sI1ppDd3VM9ZP2TJtzVIHt2X+ceLYFEet7LDZyEqAn4KDgGVPr3iKt6eowzAPYFkgg=
+	t=1741674458; cv=none; b=edZXUjbOySfi+Zb/3Ju7G9VmmK/3sFozdOyUMl9bWukRlXbms3gOwH0NnXIqf+uFIXRLCG8StI2seNDJhjLXNgQyw+oRRgSJm3qJB34eG8frEoLxJGW6yM3Frze/ydA3xLpk7lwS7feRqU2CctC2ejvtXiuioykVXIddtTEiToQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741674472; c=relaxed/simple;
-	bh=zQAgmaBTBSBzbG0pOc9NxcA2P9fXuxmJHI4Ku/6Gfoo=;
+	s=arc-20240116; t=1741674458; c=relaxed/simple;
+	bh=Pvov0gF6wrf7qrjHshWjpcTq+SKfmrE0ok22tEV4/7o=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IrdIfzuO5J5VJcfwgYH3xUwL4ioSNliZZ+mflFZ91mI/IrsbJimoltFghzaXIgtqTUNrIhv+w+8i4ryUprRX5D7VcURmC4HbpNW5ZK0j6IeXkEAscfDYeE+TKYWDaLmFN5xudbtWOI9rYv/0EVNN8lYEuK4A+3qYWjsoNO/Nh20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Olvv6ep+; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=fYk2dVjZDxTA6Owlzm/x6dHxviVy1aIA9Sau6tUDcHMeQuqCHgaFd4xS56hmWcNE47y0Lmpq8HIzXlN1vtm0QHT7ndYdB+9tul8frk12l1woJA6dgnOTe0bBQjGkATmaiiJjJQxiV4386IAuAp5Ev/Fp7mow7l84Bm0y19rhNrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Xgz6u6Ck; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52B19CZ5014492;
-	Tue, 11 Mar 2025 06:27:40 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52AJh71V016124;
+	Tue, 11 Mar 2025 06:27:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	k92y4hrpWKj2/gw4AWKYYwrdS6rTh1R4QVWyg9ReKVI=; b=Olvv6ep+NT52EDKP
-	N2d28bWv7x2x/J3EXCFCjDay7MguAusu+NTMPy3zMBy5p8ywG0Xo8cpg6xlQ0BKS
-	cfOfN4MwZ2RqjiKLImPHdCtpT8xIi90ic6UL2Uf/nXq3s11HhFiSBl2Coskkl6S2
-	DEqk/Ofd7zb/c1bTb3g8qHZDhimSVHMtsLh/0w2t9knQcn+HoDjbWD6Bqh+eA5y0
-	VxVA+wQUmTl2y1WTB4xpRgi6WPQhX6i0/vRb5hehLyQkAdT7CrFmpLkTg4GxcvJV
-	CH40ywPiHjiSaIoq6clFwPDGPQbXVpijAAO1nC3P97Ddxxrl7LA5D0nV+coKiw/j
-	ve7Wqw==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45ab8m0qr0-1
+	U0rKKBUpalcbIUwPpCcYj/96C7/WYu9YEnMwJ096WN4=; b=Xgz6u6CkoXgexKFN
+	hifBgWMGG+JgheHfWouV+VeeBjQ0UpBJ4xoHHRRFTDTPfPyTHja3Tmk+6NVZbNQm
+	SOJZM3m0cm3lmw3yEG7MfSOVXzQEMdDxg9Gw5DgzysbZUqywuse3+Qr5FjN8bYLS
+	zRa2Ps3jMeVfkP/AqOLlQJfGCGMizdgjxbMB9hqot5nnO1s5fdZSgvf12Rw7+xj/
+	gaVlDlhfRhU5qV6Em1Pl8PCodWQiFPix44cJVVALnWKbQ3sHjA6K/Q9im5Q6Rnq9
+	W1bA75swt2QCq7J55DMamQs5D4DbP4ZLfJ5mJz8lSKPH4+XpzED1A7xJMALK5jYg
+	q36aJQ==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 458ex6ycbb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 06:27:40 +0000 (GMT)
+	Tue, 11 Mar 2025 06:27:26 +0000 (GMT)
 Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52B6ROoK017769
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52B6RQhj027072
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 06:27:24 GMT
+	Tue, 11 Mar 2025 06:27:26 GMT
 Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
  nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 10 Mar 2025 23:27:22 -0700
+ 15.2.1544.9; Mon, 10 Mar 2025 23:27:24 -0700
 From: Sarika Sharma <quic_sarishar@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>,
         Sarika Sharma
 	<quic_sarishar@quicinc.com>
-Subject: [PATCH wireless-next v4 06/11] wifi: cfg80211: add flag to indicate driver supports ML station statistics
-Date: Tue, 11 Mar 2025 11:56:49 +0530
-Message-ID: <20250311062654.1407532-7-quic_sarishar@quicinc.com>
+Subject: [PATCH wireless-next v4 07/11] wifi: cfg80211: add accumulated statistics for MLO links
+Date: Tue, 11 Mar 2025 11:56:50 +0530
+Message-ID: <20250311062654.1407532-8-quic_sarishar@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250311062654.1407532-1-quic_sarishar@quicinc.com>
 References: <20250311062654.1407532-1-quic_sarishar@quicinc.com>
@@ -79,88 +79,264 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nasanex01c.na.qualcomm.com (10.45.79.139)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 2lhv-TfBieEpKNqeVJIA3OwxydxeQNKX
-X-Authority-Analysis: v=2.4 cv=K9nYHzWI c=1 sm=1 tr=0 ts=67cfd7dc cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=CilbYTUr6xf_O_4wI94A:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: 2lhv-TfBieEpKNqeVJIA3OwxydxeQNKX
+X-Authority-Analysis: v=2.4 cv=G8bmE8k5 c=1 sm=1 tr=0 ts=67cfd7ce cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=Xm4uXzMoczAWyOzwz2QA:9 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: HT8qSIC5T4ohg35okLowRj570eDUVAMv
+X-Proofpoint-ORIG-GUID: HT8qSIC5T4ohg35okLowRj570eDUVAMv
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-11_01,2025-03-07_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 spamscore=0 mlxlogscore=999 clxscore=1015
- priorityscore=1501 mlxscore=0 bulkscore=0 malwarescore=0 suspectscore=0
- adultscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 phishscore=0
+ malwarescore=0 mlxscore=0 suspectscore=0 clxscore=1015 bulkscore=0
+ adultscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
  definitions=main-2503110042
 
-Currently, while filling NL attributes for the link level station
-statistics, valid_links is checked. There might be the case when
-driver offload link station statistics and does not provide per-link
-statistics.
+Currently statistics are handled at link level for multi-link
+operation(MLO). There is no provision to check accumulated statistics
+for a multi-link(ML) station. Accumulated statistics are useful to
+provide comprehensive overview for the ML stations.
 
-Hence, add flag WIPHY_FLAG_SUPPORTS_MLO_STA_PER_LINK_STATS in wiphy
-structure to indicate that driver supports per link station statistics.
-Set this flag if driver supports per-link station statistics and
-check this flag while filling the station_info structure
-for MLO and while embedding the info into NL message.
+Statistics such as packets and bytes are useful for observing the
+total packets sent and received at the station level. However,
+MLO statistics for rates and signal can not be accumulated since it
+won't make much sense. Hence, a subsequent change will handle signal
+and rates bit differently at MLO level.
+
+Hence, add accumulated statistics for MLO station. Also, for non-ML
+station accumulated statistics make no sense.
+
+The statistics will be embedded into NL message as below:
+For MLO:
+cmd ->
+    NL80211_ATTR_IFINDEX
+    NL80211_ATTR_MAC
+    NL80211_ATTR_GENERATION
+    ......etc
+    NL80211_ATTR_STA_INFO | nested
+        NL80211_STA_INFO_CONNECTED_TIME,
+        NL80211_STA_INFO_STA_FLAGS,
+        NL80211_STA_INFO_RX_BYTES, //accumulated data
+        NL80211_STA_INFO_TX_BYTES,
+        ......etc
+    NL80211_ATTR_MLO_LINK_ID,
+    NL80211_ATTR_MLD_ADDR,
+    NL80211_ATTR_MLO_LINKS | nested
+        link_id-1 | nested
+        NL80211_ATTR_MLO_LINK_ID,
+        NL80211_ATTR_MAC,
+            NL80211_ATTR_STA_INFO | nested
+                NL80211_STA_INFO_RX_BYTES,
+                NL80211_STA_INFO_TX_BYTES,
+                ..........etc.
+        link_id-2 | nested
+        NL80211_ATTR_MLO_LINK_ID,
+        NL80211_ATTR_MAC,
+            NL80211_ATTR_STA_INFO | nest flag
+                NL80211_STA_INFO_RX_BYTES,
+                NL80211_STA_INFO_TX_BYTES,
+                .........etc
+
+The output of iw dev wlan0 station dump for MLO will look like below:
+
+Station 00:03:7f:04:31:78 (on wlan0)
+    authorized:     yes
+    authenticated:  yes
+    associated:     yes
+    preamble:       long
+    WMM/WME:        yes
+    MFP:            yes
+    TDLS peer:      no
+    connected time: 383 seconds
+    associated at [boottime]:       93.740s
+    associated at:  93685 ms
+    rx bytes:       1439
+    rx packets:     15
+    tx bytes:       1538
+    tx packets:     8
+    tx retries:     0
+    tx failed:      0
+    current time:   474340 ms
+    MLD address: 00:03:7f:04:31:78
+    Link 0:
+        Address: 00:03:7f:04:31:78
+        inactive time:  330120 ms
+        rx bytes:       116
+        rx packets:     3
+        tx bytes:       0
+        tx packets:     0
+        tx retries:     0
+        tx failed:      0
+        rx drop misc:   0
+        signal:         -95 dBm
+        tx bitrate:     6.0 MBit/s
+        tx duration:    2669 us
+        rx duration:    0 us
+        DTIM period:    2
+        beacon interval:100
+    Link 1:
+        Address: 00:03:7f:04:31:79
+        inactive time:  81268 ms
+        rx bytes:       1323
+        rx packets:     12
+        tx bytes:       1538
+        tx packets:     8
+        tx retries:     0
+        tx failed:      0
+        rx drop misc:   0
+        signal:         -95 dBm
+        tx bitrate:     6.0 MBit/s
+        tx duration:    2669 us
+        rx bitrate:     6.0 MBit/s
+        rx duration:    0 us
+        DTIM period:    2
+        beacon interval:100
 
 Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
 ---
- include/net/cfg80211.h | 7 +++++++
- net/wireless/nl80211.c | 2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ include/net/cfg80211.h | 13 ++++++++
+ net/wireless/nl80211.c | 69 ++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 79 insertions(+), 3 deletions(-)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index a7f7bfbc87f3..0874b0c54ef4 100644
+index 0874b0c54ef4..6eed887a93b1 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -2158,6 +2158,9 @@ struct link_station_info {
-  * @local_pm: local mesh STA power save mode
-  * @peer_pm: peer mesh STA power save mode
-  * @nonpeer_pm: non-peer mesh STA power save mode
-+ * @is_per_link_stats_support: false- for non-ML STA and for ML STA,if driver
-+ *	offload link decisions and do not provide per-link statistics.
-+ *	true- if driver provides per-link statistics.
-  * @assoc_link_id: Indicates MLO link ID of the AP, with which the station
-  *	completed (re)association. This information filled for both MLO
-  *	and non-MLO STA connections when the AP affiliated with an MLD.
-@@ -2201,6 +2204,7 @@ struct station_info {
- 	enum nl80211_mesh_power_mode peer_pm;
- 	enum nl80211_mesh_power_mode nonpeer_pm;
- 
-+	bool is_per_link_stats_support;
- 	u8 assoc_link_id;
- 	u8 mld_addr[ETH_ALEN] __aligned(2);
+@@ -2174,6 +2174,12 @@ struct link_station_info {
+  *	dump_station() callbacks. User space needs this information to determine
+  *	the accepted and rejected affiliated links of the connected station.
+  * @assoc_resp_ies_len: Length of @assoc_resp_ies buffer in octets.
++ * @rx_packets: total packets (MSDUs & MMPDUs) received from this station
++ * @tx_packets: total packets (MSDUs & MMPDUs) transmitted to this station
++ * @rx_bytes: total bytes (size of MPDUs) received from this station
++ * @tx_bytes: total bytes (size of MPDUs) transmitted to this station
++ * @tx_retries: cumulative retry counts (MPDUs)
++ * @tx_failed: number of failed transmissions (MPDUs) (retries exceeded, no ACK)
+  * @valid_links: bitmap of valid links, or 0 for non-MLO. Drivers fill this
+  *	information in cfg80211_new_sta(), cfg80211_del_sta_sinfo(),
+  *	get_station() and dump_station() callbacks.
+@@ -2210,6 +2216,13 @@ struct station_info {
  	const u8 *assoc_resp_ies;
-@@ -5065,6 +5069,8 @@ struct cfg80211_ops {
-  * @WIPHY_FLAG_SUPPORTS_NSTR_NONPRIMARY: support connection to non-primary link
-  *	of an NSTR mobile AP MLD.
-  * @WIPHY_FLAG_DISABLE_WEXT: disable wireless extensions for this device
-+ * @WIPHY_FLAG_SUPPORTS_MLO_STA_PER_LINK_STATS: The driver does not offload
-+ *	link decisions and provide per-link statistics for MLO STA.
-  */
- enum wiphy_flags {
- 	WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK		= BIT(0),
-@@ -5093,6 +5099,7 @@ enum wiphy_flags {
- 	WIPHY_FLAG_HAS_CHANNEL_SWITCH		= BIT(23),
- 	WIPHY_FLAG_NOTIFY_REGDOM_BY_DRIVER	= BIT(24),
- 	WIPHY_FLAG_CHANNEL_CHANGE_ON_BEACON     = BIT(25),
-+	WIPHY_FLAG_SUPPORTS_MLO_STA_PER_LINK_STATS = BIT(26),
- };
+ 	size_t assoc_resp_ies_len;
  
- /**
++	u32 rx_packets;
++	u32 tx_packets;
++	u64 rx_bytes;
++	u64 tx_bytes;
++	u32 tx_retries;
++	u32 tx_failed;
++
+ 	u16 valid_links;
+ 	/* TODO: Need to check and add protection access to links memory */
+ 	struct link_station_info *links[IEEE80211_MLD_MAX_NUM_LINKS];
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 619427513361..522bcad71874 100644
+index 522bcad71874..58ef0c5df670 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -6906,7 +6906,7 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
- 		    &sinfo->sta_flags))
+@@ -6860,6 +6860,22 @@ static int nl80211_fill_link_station(struct sk_buff *msg,
+ 	return -EMSGSIZE;
+ }
+ 
++static int nl80211_fill_mld_station(struct sk_buff *msg,
++				    struct station_info *sinfo)
++{
++	PUT_SINFO(RX_PACKETS, rx_packets, u32);
++	PUT_SINFO(TX_PACKETS, tx_packets, u32);
++	PUT_SINFO_U64(RX_BYTES, rx_bytes);
++	PUT_SINFO_U64(TX_BYTES, tx_bytes);
++	PUT_SINFO(TX_RETRIES, tx_retries, u32);
++	PUT_SINFO(TX_FAILED, tx_failed, u32);
++
++	return 0;
++
++nla_put_failure:
++	return -EMSGSIZE;
++}
++
+ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
+ 				u32 seq, int flags,
+ 				struct cfg80211_registered_device *rdev,
+@@ -6907,9 +6923,8 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
  		goto nla_put_failure;
  
--	if (sinfo->valid_links) {
-+	if (sinfo->is_per_link_stats_support && sinfo->valid_links) {
- 		/* TODO: Add accumulated stats for packets, bytes for
- 		 *	 better representation at MLO level.
- 		 */
+ 	if (sinfo->is_per_link_stats_support && sinfo->valid_links) {
+-		/* TODO: Add accumulated stats for packets, bytes for
+-		 *	 better representation at MLO level.
+-		 */
++		if (nl80211_fill_mld_station(msg, sinfo))
++			goto nla_put_failure;
+ 
+ 		/* Closing nested STA_INFO as MLO links ATTR should not
+ 		 * be in nested STA_INFO
+@@ -6986,6 +7001,50 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
+ #undef PUT_SINFO
+ #undef PUT_SINFO_U64
+ 
++static void cfg80211_sta_set_mld_sinfo(struct station_info *sinfo)
++{
++	struct link_station_info *link_sinfo;
++	int link_id;
++
++	for_each_valid_link(sinfo, link_id) {
++		link_sinfo = sinfo->links[link_id];
++		if (!link_sinfo)
++			continue;
++
++		if ((link_sinfo->filled & BIT_ULL(NL80211_STA_INFO_TX_PACKETS))) {
++			sinfo->tx_packets += link_sinfo->tx_packets;
++			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_PACKETS);
++		}
++
++		if ((link_sinfo->filled & BIT_ULL(NL80211_STA_INFO_RX_PACKETS))) {
++			sinfo->rx_packets += link_sinfo->rx_packets;
++			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_PACKETS);
++		}
++
++		if (link_sinfo->filled & (BIT_ULL(NL80211_STA_INFO_TX_BYTES) |
++					   BIT_ULL(NL80211_STA_INFO_TX_BYTES64))) {
++			sinfo->tx_bytes += link_sinfo->tx_bytes;
++			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BYTES);
++		}
++
++		if (link_sinfo->filled & (BIT_ULL(NL80211_STA_INFO_RX_BYTES) |
++					   BIT_ULL(NL80211_STA_INFO_TX_BYTES64))) {
++			sinfo->rx_bytes += link_sinfo->rx_bytes;
++			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_BYTES);
++		}
++
++		if (link_sinfo->filled & BIT_ULL(NL80211_STA_INFO_TX_RETRIES)) {
++			sinfo->tx_retries += link_sinfo->tx_retries;
++			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
++		}
++
++		if (link_sinfo->filled & BIT_ULL(NL80211_STA_INFO_TX_FAILED)) {
++			sinfo->tx_failed += link_sinfo->tx_failed;
++			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
++		}
++	}
++}
++
+ static int nl80211_dump_station(struct sk_buff *skb,
+ 				struct netlink_callback *cb)
+ {
+@@ -7021,6 +7080,8 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ 		if (err)
+ 			goto out_err;
+ 
++		cfg80211_sta_set_mld_sinfo(&sinfo);
++
+ 		if (nl80211_send_station(skb, NL80211_CMD_NEW_STATION,
+ 				NETLINK_CB(cb->skb).portid,
+ 				cb->nlh->nlmsg_seq, NLM_F_MULTI,
+@@ -7063,6 +7124,8 @@ static int nl80211_get_station(struct sk_buff *skb, struct genl_info *info)
+ 	if (err)
+ 		return err;
+ 
++	cfg80211_sta_set_mld_sinfo(&sinfo);
++
+ 	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+ 	if (!msg) {
+ 		cfg80211_sinfo_release_content(&sinfo);
 -- 
 2.34.1
 
