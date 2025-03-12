@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-20266-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20267-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01FE9A5E73E
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 23:23:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1062CA5E73F
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 23:23:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 757CF3B351D
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 22:22:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E17667A55E1
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 22:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830001EFFB5;
-	Wed, 12 Mar 2025 22:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80191EF0AD;
+	Wed, 12 Mar 2025 22:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QR2+R9I0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IpIFnBvr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25621EF0AD
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 22:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E861E2823
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 22:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741818174; cv=none; b=iLV0jim+kNoyB9SSXrxTYlwpypW34vl/rn5kBqLsfw6aApHimCEIO8N0Oe6I2TxvP5iEUxDiTDQMdWNiphU4A5lzLLHJkAn4zbtPS1EZ6a4vg1TDU8w7q8/Dwa32sqqtbqUZ0eiH4W4EDtRKQGMB7ZLli/w4e+8VBQTQqiiPUtk=
+	t=1741818175; cv=none; b=RHuWtwaoqQen7wZeZ6E3aZ+bJpyFcheVCW1BM85QQpUa8HyuxEjMi3df3yl09jaYJVkmLsEOvlJC7RxN6HJ0W6tel1G8YvHgrgKSxk0ZD9eMIyO8vhWi95KLYuNYwN1QtVbb7BggGSsvho8p7Vcg72jtTK7XVQenBnZxnxQ5xes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741818174; c=relaxed/simple;
-	bh=omaYo5lEnyaphu6ew7N6ZAtLtlltC/FJPVbBBRY8wl0=;
+	s=arc-20240116; t=1741818175; c=relaxed/simple;
+	bh=KvLOg2bYXDl2Hld/Vb7l0+A0g3pa5ZtZ3ZH2HeZuwNQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DsGw9+sTD6MufLJnuOrtJI5SGmKyI2WBvUJC8MZd7enOQsKYqbFt70aSFfePzQpqm19FJJWUeKBECf3AIHJX2x6OR466yNkL0bQfTVnOqvKVYdP96fXJoXT4G58ovtLYQW82orgYa+3sysNs4CqIHjX2fgmF129NQTpa02OV490=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QR2+R9I0; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=B+IQ8DyNd+8Hz4bLh+p5EgYpC/aoqRJHLmFxH6Ytrj1e7ffCVKDo0ox7Fe7nm2+tjEBiZYA+QiFqls3QTgMzSlN3CdrxxW1jtC6b5zG52u1eswquY9YvQckhwT8ULl7Ka3Ej68+ab5lHMFE0/WZikClUVkQhhg0KIzX/UDsyd8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IpIFnBvr; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741818173; x=1773354173;
+  t=1741818174; x=1773354174;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=omaYo5lEnyaphu6ew7N6ZAtLtlltC/FJPVbBBRY8wl0=;
-  b=QR2+R9I0WT7D61dP3/30ENN47nCW4KsV5FTH8EQ9C3lJw9DpP3MzACln
-   MRux4ZGtkrQGoWeVYXGOTj9O2S6C5mCD0zM3a1gqWe8jE0jLxqlmkONPH
-   iyPEdVhN2DhYrkrVYS9NN9TrGFtDk8FWX2VHL+9zvhVMzVrg8r4HxmTw7
-   IMHKldOnCPw7vTmz0B29UnspUeh5nxlOTqt/hu1hBET4++eQepZ0/Z+PQ
-   U2227qqaM616a51jQbPJGAYiy9y70NlMpT/t6GjIqanTp6MfkAyxvjez6
-   +7W5wuP3DqOvVuWjYb8oMEOr3pRxmogBkU8zkE4mQZJ0SL0j15SAPzlTQ
-   g==;
-X-CSE-ConnectionGUID: LFBhcuglTnK1NZWFAd4VUw==
-X-CSE-MsgGUID: 3TIlM3AARuyaYCbnaAs8nw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="42826729"
+  bh=KvLOg2bYXDl2Hld/Vb7l0+A0g3pa5ZtZ3ZH2HeZuwNQ=;
+  b=IpIFnBvrGhbxIWNd17rUCnVdNZ3OmpuC/eJAEHhs6In9O6z2g7HIRsrD
+   KbKsM1vYCvgPOg68ZCarGsXeL5Q6rZlbShSXOOkg5dnNvKJw4kxnpQpn7
+   xwqwDDcWIN6F1l4c3xeWdWhA1MmFbP5we2PPR0M8NspAwJm+iP6g5fF7A
+   sJ2E9CafZ+Vu+MfSggdISXcQCtvEgZIg6bDHVlXQXfa0Oqc/rWvUzvcBb
+   tGZAMuDQkieootIXVHXuwRMHPEpd8U2HGn2Opq1xr5Gx6/rzQhufKBxzc
+   c0lZKHGI0no2zwIVxdL/7DOOXpwgJfH8nOSEkMOG3Vhsp9wcjgLRE19Fx
+   Q==;
+X-CSE-ConnectionGUID: E7PyB06VQQ2UwaYBOhR3qg==
+X-CSE-MsgGUID: ouBsENO6RfyhPpFG65L0yg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="42826732"
 X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="42826729"
+   d="scan'208";a="42826732"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:22:53 -0700
-X-CSE-ConnectionGUID: nqbgWnuaQvOeZ8KabUeb4g==
-X-CSE-MsgGUID: 1cR/GTSoRbW1QJuFY1rq3A==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:22:54 -0700
+X-CSE-ConnectionGUID: m97gaGs7SEOqEoDJ+pfNFw==
+X-CSE-MsgGUID: vAamgqsrSOeZJc53Jw0OfA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="121267342"
+   d="scan'208";a="121267346"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:22:51 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:22:52 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH wireless-next 01/15] wifi: iwlwifi: mld: Rename WIPHY_DEBUGFS_HANDLER_WRAPPER to WIPHY_DEBUGFS_WRITE_HANDLER_WRAPPER
-Date: Thu, 13 Mar 2025 00:22:24 +0200
-Message-Id: <20250313002008.bb8a1d7907c8.I53325f2f37ccaad2b212d35d10616e06c1555e48@changeid>
+	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH wireless-next 02/15] wifi: iwlwifi: mld: Add support for WIPHY_DEBUGFS_READ_FILE_OPS_MLD macro
+Date: Thu, 13 Mar 2025 00:22:25 +0200
+Message-Id: <20250313002008.b0ddb6b0a144.I1fab63f2c6f52fea61cc5d7b27775aed58adfd8d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250312222238.2585340-1-miriam.rachel.korenblit@intel.com>
 References: <20250312222238.2585340-1-miriam.rachel.korenblit@intel.com>
@@ -80,81 +79,78 @@ Content-Transfer-Encoding: 8bit
 
 From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-Renamed the macro WIPHY_DEBUGFS_HANDLER_WRAPPER to
-WIPHY_DEBUGFS_WRITE_HANDLER_WRAPPER to better reflect its purpose as a
-write handler.
-
-Additionally, updated the corresponding macro
-WIPHY_DEBUGFS_HANDLER_WRAPPER_MLD to
-WIPHY_DEBUGFS_WRITE_HANDLER_WRAPPER_MLD for consistency.
-
-This change does not alter the functionality but enhances the
-maintainability of the code.
+Introduced the WIPHY_DEBUGFS_READ_FILE_OPS_MLD macro to enable reading
+data from the driver while holding the wiphy lock.
+This will enable read operations with wiphy locked.
 
 Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/debugfs.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ .../net/wireless/intel/iwlwifi/mld/debugfs.h  | 44 +++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.h b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.h
-index 04c536db8b16..13d97184a31f 100644
+index 13d97184a31f..900aaed90775 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.h
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2024 Intel Corporation
-+ * Copyright (C) 2024-2025 Intel Corporation
-  */
- #include "iface.h"
- #include "sta.h"
-@@ -67,7 +67,7 @@ static const struct file_operations iwl_dbgfs_##name##_ops = {		\
- 	.release = _iwl_dbgfs_release,					\
- }
- 
--#define WIPHY_DEBUGFS_HANDLER_WRAPPER(name)				\
-+#define WIPHY_DEBUGFS_WRITE_HANDLER_WRAPPER(name)			\
- static ssize_t iwl_dbgfs_##name##_write_handler(struct wiphy *wiphy,	\
- 				       struct file *file, char *buf,	\
- 				       size_t count, void *data)	\
-@@ -97,7 +97,7 @@ static inline struct iwl_mld *iwl_mld_from_vif(struct ieee80211_vif *vif)
- }
- 
- #define WIPHY_DEBUGFS_WRITE_WRAPPER(name, bufsz, objtype)		\
--WIPHY_DEBUGFS_HANDLER_WRAPPER(name)					\
-+WIPHY_DEBUGFS_WRITE_HANDLER_WRAPPER(name)				\
- static ssize_t __iwl_dbgfs_##name##_write(struct file *file,		\
- 					  const char __user *user_buf,	\
- 					  size_t count, loff_t *ppos)	\
-@@ -121,7 +121,7 @@ static ssize_t __iwl_dbgfs_##name##_write(struct file *file,		\
+@@ -121,6 +121,16 @@ static ssize_t __iwl_dbgfs_##name##_write(struct file *file,		\
  		.llseek = generic_file_llseek,				\
  	}
  
--#define WIPHY_DEBUGFS_HANDLER_WRAPPER_MLD(name)				\
-+#define WIPHY_DEBUGFS_WRITE_HANDLER_WRAPPER_MLD(name)			\
++#define WIPHY_DEBUGFS_READ_HANDLER_WRAPPER_MLD(name)			\
++static ssize_t iwl_dbgfs_##name##_read_handler(struct wiphy *wiphy,	\
++				       struct file *file, char *buf,	\
++				       size_t count, void *data)	\
++{									\
++	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);		\
++	struct iwl_mld *mld = IWL_MAC80211_GET_MLD(hw);			\
++	return iwl_dbgfs_##name##_read(mld, buf, count);		\
++}
++
+ #define WIPHY_DEBUGFS_WRITE_HANDLER_WRAPPER_MLD(name)			\
  static ssize_t iwl_dbgfs_##name##_write_handler(struct wiphy *wiphy,	\
  				       struct file *file, char *buf,	\
- 				       size_t count, void *data)	\
-@@ -132,7 +132,7 @@ static ssize_t iwl_dbgfs_##name##_write_handler(struct wiphy *wiphy,	\
+@@ -147,6 +157,40 @@ static ssize_t __iwl_dbgfs_##name##_write(struct file *file,		\
+ 				NULL);					\
  }
  
- #define WIPHY_DEBUGFS_WRITE_WRAPPER_MLD(name)				\
--WIPHY_DEBUGFS_HANDLER_WRAPPER_MLD(name)					\
-+WIPHY_DEBUGFS_WRITE_HANDLER_WRAPPER_MLD(name)				\
- static ssize_t __iwl_dbgfs_##name##_write(struct file *file,		\
- 					  const char __user *user_buf,	\
- 					  size_t count, loff_t *ppos)	\
-@@ -170,7 +170,7 @@ static ssize_t __iwl_dbgfs_##name##_write(struct file *file,		\
- 	}
- 
- #define WIPHY_DEBUGFS_WRITE_WRAPPER_IEEE80211(name, bufsz, objtype)	\
--WIPHY_DEBUGFS_HANDLER_WRAPPER(name)					\
-+WIPHY_DEBUGFS_WRITE_HANDLER_WRAPPER(name)				\
- static ssize_t _iwl_dbgfs_##name##_write(struct file *file,		\
- 					  const char __user *user_buf,	\
- 					  size_t count, loff_t *ppos)	\
++#define WIPHY_DEBUGFS_READ_WRAPPER_MLD(name)				\
++WIPHY_DEBUGFS_READ_HANDLER_WRAPPER_MLD(name)				\
++static ssize_t __iwl_dbgfs_##name##_read(struct file *file,		\
++					char __user *user_buf,		\
++					size_t count, loff_t *ppos)	\
++{									\
++	struct dbgfs_##name##_data *data = file->private_data;		\
++	struct iwl_mld *mld = data->arg;				\
++									\
++	if (!data->read_done) {						\
++		data->read_done = true;					\
++		data->rlen = wiphy_locked_debugfs_read(mld->wiphy,	\
++				file, data->buf, sizeof(data->buf),	\
++				user_buf, count, ppos,			\
++				iwl_dbgfs_##name##_read_handler, NULL);	\
++		return data->rlen;					\
++	}								\
++									\
++	if (data->rlen < 0)						\
++		return data->rlen;					\
++	return simple_read_from_buffer(user_buf, count, ppos,		\
++				       data->buf, data->rlen);		\
++}
++
++#define WIPHY_DEBUGFS_READ_FILE_OPS_MLD(name, bufsz)			\
++	MLD_DEBUGFS_OPEN_WRAPPER(name, bufsz, struct iwl_mld)		\
++	WIPHY_DEBUGFS_READ_WRAPPER_MLD(name)				\
++	static const struct file_operations iwl_dbgfs_##name##_ops = {	\
++		.read = __iwl_dbgfs_##name##_read,			\
++		.open = _iwl_dbgfs_##name##_open,			\
++		.llseek = generic_file_llseek,				\
++		.release = _iwl_dbgfs_release,				\
++	}
++
+ #define WIPHY_DEBUGFS_WRITE_FILE_OPS_MLD(name, bufsz)			\
+ 	MLD_DEBUGFS_OPEN_WRAPPER(name, bufsz, struct iwl_mld)		\
+ 	WIPHY_DEBUGFS_WRITE_WRAPPER_MLD(name)				\
 -- 
 2.34.1
 
