@@ -1,50 +1,50 @@
-Return-Path: <linux-wireless+bounces-20229-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20230-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863A7A5DB26
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 12:14:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D76E0A5DB27
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 12:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F9F6188C1B7
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 11:14:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54F2B3A71C2
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 11:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAF422DFB5;
-	Wed, 12 Mar 2025 11:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569BF23F28C;
+	Wed, 12 Mar 2025 11:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7lZNmSq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6zC6CEa"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D6122E011
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 11:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DE422E011
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 11:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741778048; cv=none; b=WQ3uX7DV+QVtJr/Ihjm4q4o34oiTpiUh5UnuVWKQRWkpPgt+y1LZMrnnZq/itrqktWw4oUSXoAqY8z9VnQyMjaJ4XLno473RJAYM5a0piV7Yt8qn9C03Lnc5aMVxXHASQYSd1yn3icFr+IzP1qSjgiP6Zx9yk0f5Z5QtMUVq3q4=
+	t=1741778051; cv=none; b=Hcnnoi37bb9SzygzvasdrkVbh0XlycYwVMIQaoZGecphmr0RTK5GJPC7PQMJX6NU2MJIrXNQUYiGbb0snTxaNIJDdF3Fp8+31zE8Trtp3jQwZiB7Te0VsG2BK+V/P+vla19wBFE/MKBvj7PYGx3L6RLFxBl7EPvOROwpGomWjck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741778048; c=relaxed/simple;
-	bh=EG3lLoWPuZSGQkinDAJwVshdVSbc3K3nCOlOSKDN8c4=;
+	s=arc-20240116; t=1741778051; c=relaxed/simple;
+	bh=o3Z2HSX6Z36gmVMxakkW1a7pxF0mIQUNgh9OhFtnEOY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=u7ZThbnvfrEVoNRueypfLk48SRsR5Ge4JA7+CT5/5aaHpIn62zoBpnAEKhuBhDwmR1jb9NyXFVRySd8v5NiYeZcNOsy3xsOQM/iHwGWWRBHOv4q7iT52OnrfJ3JIvl5mTv3+NyqL9Eo3+/ZPWAGKYkzkFuA2m4q9FUeXwpsAPfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7lZNmSq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FF4C4CEE3;
-	Wed, 12 Mar 2025 11:14:07 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=he9BCjIVPo5nkX9v4hHElwhlgJKK2JVJhkwB6Qp4vRopYYJjJOuC9NY6mwX5vp+F7r9yY29fZFVfeFFa8kRt4CHrZ9rjUMDvm+QPM4VIWjo/+5aR5oBMnko0Sb15hzkWm/DI0TFTz+vxfhqCdBaMMVKLZ1zJxU8vKdL8EZ0JyxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6zC6CEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F084C4CEE3;
+	Wed, 12 Mar 2025 11:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741778048;
-	bh=EG3lLoWPuZSGQkinDAJwVshdVSbc3K3nCOlOSKDN8c4=;
+	s=k20201202; t=1741778050;
+	bh=o3Z2HSX6Z36gmVMxakkW1a7pxF0mIQUNgh9OhFtnEOY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=c7lZNmSqLnR4R79tyF1sYpO+Jiq0dDUAYekJGW+Kzvupt/8lJMwV/feOrNCV8zL/M
-	 jweUMGyAFTXugzaht3j4yh/uy95KOlRzl7NppweM/FpRGfOvlK9dorNVL2OfsD6BKx
-	 t7p+H2G7JNhZNk0NQaew2j4Fo5tYXuORPWVwuJFwhNfhk1u/Gr16oXi/Bfp+x+vO/q
-	 3cefZhUAdXs+FehzMZgAc1Cs7Zbm/BdauUecQehfzSZYp6ANwsLaiFSd3Kb/VyXoC8
-	 PobPgiBOgCHFpvNl7t/uHzZq/GbWQ4mRraB/nVM25VrrIxfSV89i2pwqepWXm9tEuK
-	 wS6pMAJ7YBgQA==
+	b=Z6zC6CEaySiq6vXfIe6SY1BmrqmCowR08aRORTmVEL+vQKJjV3PUOXVtIn9l7/bT7
+	 opGQo7RLZCv4jsCCHu16Vj61p/WHngeZQCTx8b2jkV9t2ug8IiM0okoL+MMYqLqNvm
+	 /kcK4vbsLASSZpKVuwluy9KYLtZI9YzcKT8Ns0DhMHa1Vxn/gaw1Gxgu+2EGdMHaBQ
+	 DlzCenJMcB2SHAYWFeg4/TIGUDJW/67CQS9RUpHaIlbKRYaS3MNIs2TwGU1gM0k6Ky
+	 mNWrhOgEZrep2RgSd+z/MaJoxaFy9+JxaxqN0HayvYLrOyrBazKIX4oc99VF2i7l2n
+	 N+pyH+p5TlU7g==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Wed, 12 Mar 2025 12:13:47 +0100
-Subject: [PATCH 03/21] wifi: mt76: mt7996: Add mt7996_mcu_teardown_mld_sta
- rouine
+Date: Wed, 12 Mar 2025 12:13:48 +0100
+Subject: [PATCH 04/21] wifi: mt76: mt7996: rework mt7996_mac_write_txwi()
+ for MLO support
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250312-b4-mt7996-mlo-p2-v1-3-015b3d6fd928@kernel.org>
+Message-Id: <20250312-b4-mt7996-mlo-p2-v1-4-015b3d6fd928@kernel.org>
 References: <20250312-b4-mt7996-mlo-p2-v1-0-015b3d6fd928@kernel.org>
 In-Reply-To: <20250312-b4-mt7996-mlo-p2-v1-0-015b3d6fd928@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
@@ -69,8 +69,9 @@ X-Mailer: b4 0.14.2
 
 From: Shayne Chen <shayne.chen@mediatek.com>
 
-mt7996_mcu_teardown_mld_sta is used to remove MLO configuration from the
-MCU. This is a preliminary patch to enable MLO for MT7996 driver
+Update mt7996_mac_write_txwi routine and all the called subroutines to
+support MLO.
+This is a preliminary patch to enable MLO for MT7996 driver
 
 Co-developed-by: Bo Jiao <Bo.Jiao@mediatek.com>
 Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
@@ -80,86 +81,140 @@ Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c   | 12 +++++++++---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 18 ++++++++++++++++++
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  3 +++
- 3 files changed, 30 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 55 ++++++++++++++++++-------
+ 1 file changed, 41 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 25dbf086c8ef02307ef2510b21853b1eee28f922..642d633b5126ce81f3d32a9bd912603e2c328c8a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1017,6 +1017,7 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 		     struct ieee80211_sta *sta, enum mt76_sta_event ev)
- {
- 	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
-+	unsigned long links = sta->valid_links;
- 	struct ieee80211_link_sta *link_sta;
- 	unsigned int link_id;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 48ba975f069c5062f450326a359ff3442ac96f30..eed692cd64a6acedb2f6d9aaf6f459bf4a4f5b08 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -730,9 +730,8 @@ mt7996_mac_write_txwi_8023(struct mt7996_dev *dev, __le32 *txwi,
+ 	u32 val;
  
-@@ -1067,11 +1068,16 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 				mt7996_mac_twt_teardown_flow(dev, link,
- 							     msta_link, i);
+ 	if (wcid->sta) {
+-		struct ieee80211_sta *sta;
++		struct ieee80211_sta *sta = wcid_to_sta(wcid);
  
--			mt7996_mcu_add_sta(dev, link_conf, link_sta, link,
--					   msta_link, CONN_STATE_DISCONNECT,
--					   false);
-+			if (sta->mlo && links == BIT(link_id)) /* last link */
-+				mt7996_mcu_teardown_mld_sta(dev, link,
-+							    msta_link);
-+			else
-+				mt7996_mcu_add_sta(dev, link_conf, link_sta,
-+						   link, msta_link,
-+						   CONN_STATE_DISCONNECT, false);
- 			msta_link->wcid.sta_disabled = 1;
- 			msta_link->wcid.sta = 0;
-+			links = links & ~BIT(link_id);
- 			break;
- 		}
+-		sta = container_of((void *)wcid, struct ieee80211_sta, drv_priv);
+ 		wmm = sta->wme;
  	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index ac01eb880e2a6f6ef3a81591bcacd2b90c48986a..46c5e639b9630199ffa601e545fa76690f0101e3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2346,6 +2346,24 @@ int mt7996_mcu_add_sta(struct mt7996_dev *dev,
- 				     MCU_WMWA_UNI_CMD(STA_REC_UPDATE), true);
+ 
+@@ -759,7 +758,9 @@ mt7996_mac_write_txwi_8023(struct mt7996_dev *dev, __le32 *txwi,
+ 
+ static void
+ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
+-			    struct sk_buff *skb, struct ieee80211_key_conf *key)
++			    struct sk_buff *skb,
++			    struct ieee80211_key_conf *key,
++			    struct mt76_wcid *wcid)
+ {
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
+@@ -767,6 +768,7 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
+ 	bool multicast = is_multicast_ether_addr(hdr->addr1);
+ 	u8 tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
+ 	__le16 fc = hdr->frame_control, sc = hdr->seq_ctrl;
++	u16 seqno = le16_to_cpu(sc);
+ 	u8 fc_type, fc_stype;
+ 	u32 val;
+ 
+@@ -816,9 +818,13 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
+ 		txwi[3] |= cpu_to_le32(MT_TXD3_REM_TX_COUNT);
+ 	}
+ 
+-	if (info->flags & IEEE80211_TX_CTL_INJECTED) {
+-		u16 seqno = le16_to_cpu(sc);
++	if (multicast && ieee80211_vif_is_mld(info->control.vif)) {
++		val = MT_TXD3_SN_VALID |
++		      FIELD_PREP(MT_TXD3_SEQ, IEEE80211_SEQ_TO_SN(seqno));
++		txwi[3] |= cpu_to_le32(val);
++	}
+ 
++	if (info->flags & IEEE80211_TX_CTL_INJECTED) {
+ 		if (ieee80211_is_back_req(hdr->frame_control)) {
+ 			struct ieee80211_bar *bar;
+ 
+@@ -831,6 +837,19 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
+ 		txwi[3] |= cpu_to_le32(val);
+ 		txwi[3] &= ~cpu_to_le32(MT_TXD3_HW_AMSDU);
+ 	}
++
++	if (ieee80211_vif_is_mld(info->control.vif) &&
++	    (multicast || unlikely(skb->protocol == cpu_to_be16(ETH_P_PAE))))
++		txwi[5] |= cpu_to_le32(MT_TXD5_FL);
++
++	if (ieee80211_is_nullfunc(fc) && ieee80211_has_a4(fc) &&
++	    ieee80211_vif_is_mld(info->control.vif)) {
++		txwi[5] |= cpu_to_le32(MT_TXD5_FL);
++		txwi[6] |= cpu_to_le32(MT_TXD6_DIS_MAT);
++	}
++
++	if (!wcid->sta && ieee80211_is_mgmt(fc))
++		txwi[6] |= cpu_to_le32(MT_TXD6_DIS_MAT);
  }
  
-+int mt7996_mcu_teardown_mld_sta(struct mt7996_dev *dev,
-+				struct mt7996_vif_link *link,
-+				struct mt7996_sta_link *msta_link)
-+{
-+	struct sk_buff *skb;
+ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+@@ -846,6 +865,7 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 	bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
+ 	struct mt76_vif_link *mlink = NULL;
+ 	struct mt7996_vif *mvif;
++	unsigned int link_id;
+ 	u16 tx_count = 15;
+ 	u32 val;
+ 	bool inband_disc = !!(changed & (BSS_CHANGED_UNSOL_BCAST_PROBE_RESP |
+@@ -853,13 +873,15 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 	bool beacon = !!(changed & (BSS_CHANGED_BEACON |
+ 				    BSS_CHANGED_BEACON_ENABLED)) && (!inband_disc);
+ 
+-	if (vif) {
+-		mvif = (struct mt7996_vif *)vif->drv_priv;
+-		if (wcid->offchannel)
+-			mlink = rcu_dereference(mvif->mt76.offchannel_link);
+-		if (!mlink)
+-			mlink = &mvif->deflink.mt76;
+-	}
++	if (wcid != &dev->mt76.global_wcid)
++		link_id = wcid->link_id;
++	else
++		link_id = u32_get_bits(info->control.flags,
++				       IEEE80211_TX_CTRL_MLO_LINK);
 +
-+	skb = __mt76_connac_mcu_alloc_sta_req(&dev->mt76, &link->mt76,
-+					      &msta_link->wcid,
-+					      MT7996_STA_UPDATE_MAX_SIZE);
-+	if (IS_ERR(skb))
-+		return PTR_ERR(skb);
++	mvif = vif ? (struct mt7996_vif *)vif->drv_priv : NULL;
++	if (mvif)
++		mlink = rcu_dereference(mvif->mt76.link[link_id]);
+ 
+ 	if (mlink) {
+ 		omac_idx = mlink->omac_idx;
+@@ -911,7 +933,10 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 		val |= MT_TXD5_TX_STATUS_HOST;
+ 	txwi[5] = cpu_to_le32(val);
+ 
+-	val = MT_TXD6_DIS_MAT | MT_TXD6_DAS;
++	val = MT_TXD6_DAS;
++	if (q_idx >= MT_LMAC_ALTX0 && q_idx <= MT_LMAC_BCN0)
++		val |= MT_TXD6_DIS_MAT;
 +
-+	mt76_connac_mcu_add_tlv(skb, STA_REC_MLD_OFF, sizeof(struct tlv));
-+
-+	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
-+				     MCU_WMWA_UNI_CMD(STA_REC_UPDATE), true);
-+}
-+
- static int
- mt7996_mcu_sta_key_tlv(struct mt76_wcid *wcid,
- 		       struct sk_buff *skb,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index a91a50b72218c6a2d0dd32968681325ea7e6a042..c2a2916e0647cfdcbee9912e3915241465e32cac 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -578,6 +578,9 @@ int mt7996_mcu_add_sta(struct mt7996_dev *dev,
- 		       struct mt7996_vif_link *link,
- 		       struct mt7996_sta_link *msta_link,
- 		       int conn_state, bool newly);
-+int mt7996_mcu_teardown_mld_sta(struct mt7996_dev *dev,
-+				struct mt7996_vif_link *link,
-+				struct mt7996_sta_link *msta_link);
- int mt7996_mcu_add_tx_ba(struct mt7996_dev *dev,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool add);
+ 	if (is_mt7996(&dev->mt76))
+ 		val |= FIELD_PREP(MT_TXD6_MSDU_CNT, 1);
+ 	else if (is_8023 || !ieee80211_is_mgmt(hdr->frame_control))
+@@ -923,7 +948,7 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 	if (is_8023)
+ 		mt7996_mac_write_txwi_8023(dev, txwi, skb, wcid);
+ 	else
+-		mt7996_mac_write_txwi_80211(dev, txwi, skb, key);
++		mt7996_mac_write_txwi_80211(dev, txwi, skb, key, wcid);
+ 
+ 	if (txwi[1] & cpu_to_le32(MT_TXD1_FIXED_RATE)) {
+ 		bool mcast = ieee80211_is_data(hdr->frame_control) &&
+@@ -940,6 +965,8 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 		}
+ 
+ 		val = FIELD_PREP(MT_TXD6_TX_RATE, idx) | MT_TXD6_FIXED_BW;
++		if (mcast)
++			val |= MT_TXD6_DIS_MAT;
+ 		txwi[6] |= cpu_to_le32(val);
+ 		txwi[3] |= cpu_to_le32(MT_TXD3_BA_DISABLE);
+ 	}
 
 -- 
 2.48.1
