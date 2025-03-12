@@ -1,148 +1,130 @@
-Return-Path: <linux-wireless+bounces-20280-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20281-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3299EA5E74C
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 23:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D417A5E882
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 00:42:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A82C53B433B
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 22:23:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9429D3AAEA8
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 23:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FFF31F1307;
-	Wed, 12 Mar 2025 22:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE7A1F0E45;
+	Wed, 12 Mar 2025 23:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OHB+vPxc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEznmNDD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C601F1303
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 22:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915B216FF44;
+	Wed, 12 Mar 2025 23:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741818195; cv=none; b=SfR5qpR9i6isRcpXZB9z1UvHjvacoIutx5hAR/mKpG8v69aw9+W5hfF4T3OiarIxRzQf6T0MB2sAIZld/TKUDFNBzM73oKijtOzo4e2VFb113IEjT+jGj1jbSXPj/3rm+n+Ok+s6A4KQrJcr1mlBY60Tl9famOVRZSceLR+ElYY=
+	t=1741822953; cv=none; b=f+EIHdqlR/iFq+6OnwEO4GifTCKlQ2O+0QDST4wLdctFbeIk/CTDSSsfiALolFngbcIi+561OFCiGuur2G4KGGezYnNP3PoE7x9tbzmdbt1sHtFuY2UC1q4JrCvHFi1W0f2ZFxtIE+/nGKk2taCegZIzfYs47iix4wrWY0Mi0gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741818195; c=relaxed/simple;
-	bh=nUJrgbt9yEie7xuh9pvrPjNNC4swWBQVnPgjyyt/9/Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=E1tr+m70KRMIiQDsXLUXqoUuVal16/H+XyZvwUCp8WnFb+SqBSTvHTNS8XrTYGLlDuvaXEBKQ+PLnFXnRdHqTXIKA1R4UvgsUOAlQBDKa+l2fjfViRGawdCEPAmDtbMWstsWr8PgwYUssLTqJGqq0sRM/UTp9vuZChmvxTKpRmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OHB+vPxc; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741818194; x=1773354194;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=nUJrgbt9yEie7xuh9pvrPjNNC4swWBQVnPgjyyt/9/Y=;
-  b=OHB+vPxcTbqPNUq+IevIFmxzfQpHIYiF9RT0PuR7dfe0oKt0FFI8nm3j
-   MtRcZv7A3A95eGmORCw37FOpZasBkVtBfqdVkdR0DDqUHtWTs6e+1qpWf
-   /gnW/AIdCEeVvZGqpz4sGZpD4QAM74BkuwQjsc13ALHWd7+wg3XbdivT9
-   4yGf8b6hRkNXIdLQuI4P/Wi5RZtCWalnuTQLvGxo5nk73X5D0cKRKO4N4
-   lGiTAqw1MXNx6afLOJh4BEXjR3dNNIEaFB6n41pE7ngrQBTCXky8YCc8Z
-   d92w+Ft6afu1amFlFg3hVgHpnmz8oDWhYuhzLjEiOjRBFLwHnObrSsrsi
-   g==;
-X-CSE-ConnectionGUID: /dlaVGgKT1qEX8VPBgJNtw==
-X-CSE-MsgGUID: grDSDU/dSFSypbCe8KWLJA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="42826768"
-X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="42826768"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:23:14 -0700
-X-CSE-ConnectionGUID: p6SmO6RiRCCqo4ddSdnMsw==
-X-CSE-MsgGUID: 1zIfUYOSTPCam+Dbx/HiLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="121267429"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:23:12 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
+	s=arc-20240116; t=1741822953; c=relaxed/simple;
+	bh=qfr+2zQR+Sacn+n4lmc0XvBgQVef5IcvW3V6IrEHRjY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oAR13DXRzfo81w7wueIIbklCyN7xjL8o649pdOtT9QGLTWFyL1Fanam1rjMm4NXh9hwsFrXepiFGR4ACtsi2aRBFXzOKllgbBYOyAQBmPjmmvW74zxbGleUERROg+ixarbOenBNN8wBSLwvKoSIcpYjyI1noOUSAEcduibEM/fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEznmNDD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345DDC4CEE3;
+	Wed, 12 Mar 2025 23:42:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741822953;
+	bh=qfr+2zQR+Sacn+n4lmc0XvBgQVef5IcvW3V6IrEHRjY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QEznmNDDw2mWRCdJFMz0BQsGUXBUqqp4i2TF1aqfqFjbP0mcv+ee+/aXL/ng+BycS
+	 smOraYvyBoMajGCCiToJlWpLF5eKHeP7MJtOnkrlHJCMGr36vMEyEZwrfwPOIvv1LH
+	 myE6FBt5+CjyT2qeUOvovlA1f8cJkI2VgW/dRU67o2den8CLJ7jBGMFC3QJ6YtdUuK
+	 zvKuyeBfl+tgwxSFvs1b6SnVpN93VZkkioU1wR3m7dLno2VBdokwwyKxh8T9U+BNSZ
+	 vj+eOVVnfExX2MrBPgxSRLxRsPtTscma0wR2C0ERGKcUPQFqo8xMsg8x2Fs57H5LUy
+	 59Iu6HTg/Gt8w==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>
 Cc: linux-wireless@vger.kernel.org,
-	Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH wireless-next 15/15] wifi: iwlwifi: mld: add debugfs to control MLO scan
-Date: Thu, 13 Mar 2025 00:22:38 +0200
-Message-Id: <20250313002008.1a1c2d285336.I5163ceb97ac797e3cf00badf79b9aa9355d7327d@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250312222238.2585340-1-miriam.rachel.korenblit@intel.com>
-References: <20250312222238.2585340-1-miriam.rachel.korenblit@intel.com>
+	ath10k@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: ath10k: Drop of_get_property() call
+Date: Wed, 12 Mar 2025 18:42:27 -0500
+Message-ID: <20250312234228.1243477-1-robh@kernel.org>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Add a debugfs entry to start/stop an MLO scan. This is required for
-testing.
+There's no need to check the property presence and length before calling
+of_property_read_u8_array() as it will return an error if the property
+is missing or the length is too small. The return errno doesn't matter
+to the caller, so no change in behavior there.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
+Change of_property_read_u8_array() to of_property_read_variable_u8_array()
+as the former allows properties to be longer than the requested length.
+Now the property has to be the exact length requested as the removed
+check required.
+
+This part of a larger effort to remove DT functions like
+of_get_property() and of_find_property() which return raw DT data
+having no reference counting.
+
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- .../net/wireless/intel/iwlwifi/mld/debugfs.c  | 30 ++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/core.c | 22 ++++++----------------
+ 1 file changed, 6 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
-index 14330daa6d13..453ce2ba39d1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
-@@ -14,6 +14,7 @@
- #include "notif.h"
- #include "ap.h"
- #include "iwl-utils.h"
-+#include "scan.h"
- #ifdef CONFIG_THERMAL
- #include "thermal.h"
- #endif
-@@ -901,6 +902,33 @@ iwl_dbgfs_vif_twt_operation_write(struct iwl_mld *mld, char *buf, size_t count,
- 
- VIF_DEBUGFS_WRITE_FILE_OPS(twt_operation, 256);
- 
-+static ssize_t iwl_dbgfs_vif_int_mlo_scan_write(struct iwl_mld *mld, char *buf,
-+						size_t count, void *data)
-+{
-+	struct ieee80211_vif *vif = data;
-+	u32 action;
-+	int ret;
-+
-+	if (!vif->cfg.assoc || !ieee80211_vif_is_mld(vif))
-+		return -EINVAL;
-+
-+	if (kstrtou32(buf, 0, &action))
-+		return -EINVAL;
-+
-+	if (action == 0) {
-+		ret = iwl_mld_scan_stop(mld, IWL_MLD_SCAN_INT_MLO, false);
-+	} else if (action == 1) {
-+		iwl_mld_int_mlo_scan(mld, vif);
-+		ret = 0;
-+	} else {
-+		ret = -EINVAL;
-+	}
-+
-+	return ret ?: count;
-+}
-+
-+VIF_DEBUGFS_WRITE_FILE_OPS(int_mlo_scan, 32);
-+
- void iwl_mld_add_vif_debugfs(struct ieee80211_hw *hw,
- 			     struct ieee80211_vif *vif)
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index b3294287bce1..db7444af251d 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -1889,7 +1889,7 @@ static int ath10k_download_cal_file(struct ath10k *ar,
+ static int ath10k_download_cal_dt(struct ath10k *ar, const char *dt_name)
  {
-@@ -939,8 +967,8 @@ void iwl_mld_add_vif_debugfs(struct ieee80211_hw *hw,
- 	VIF_DEBUGFS_ADD_FILE(low_latency, mld_vif_dbgfs, 0600);
- 	VIF_DEBUGFS_ADD_FILE(twt_setup, mld_vif_dbgfs, 0200);
- 	VIF_DEBUGFS_ADD_FILE(twt_operation, mld_vif_dbgfs, 0200);
-+	VIF_DEBUGFS_ADD_FILE(int_mlo_scan, mld_vif_dbgfs, 0200);
- }
+ 	struct device_node *node;
+-	int data_len;
++	int data_len = ar->hw_params.cal_data_len;
+ 	void *data;
+ 	int ret;
+ 
+@@ -1900,28 +1900,18 @@ static int ath10k_download_cal_dt(struct ath10k *ar, const char *dt_name)
+ 		 */
+ 		return -ENOENT;
+ 
+-	if (!of_get_property(node, dt_name, &data_len)) {
+-		/* The calibration data node is optional */
+-		return -ENOENT;
+-	}
 -
- #define LINK_DEBUGFS_WRITE_FILE_OPS(name, bufsz)			\
- 	WIPHY_DEBUGFS_WRITE_FILE_OPS(link_##name, bufsz, bss_conf)
+-	if (data_len != ar->hw_params.cal_data_len) {
+-		ath10k_warn(ar, "invalid calibration data length in DT: %d\n",
+-			    data_len);
+-		ret = -EMSGSIZE;
+-		goto out;
+-	}
+-
+ 	data = kmalloc(data_len, GFP_KERNEL);
+ 	if (!data) {
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+ 
+-	ret = of_property_read_u8_array(node, dt_name, data, data_len);
++	ret = of_property_read_variable_u8_array(node, dt_name, data, data_len, data_len);
+ 	if (ret) {
+-		ath10k_warn(ar, "failed to read calibration data from DT: %d\n",
+-			    ret);
++		/* Don't warn if optional property not found  */
++		if (ret != -EINVAL)
++			ath10k_warn(ar, "failed to read calibration data from DT: %d\n",
++				    ret);
+ 		goto out_free;
+ 	}
  
 -- 
-2.34.1
+2.47.2
 
 
