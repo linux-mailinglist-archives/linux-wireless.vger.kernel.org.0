@@ -1,137 +1,107 @@
-Return-Path: <linux-wireless+bounces-20213-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20216-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5ACA5D6A1
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 07:52:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C6CA5D7C3
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 09:04:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4A233B7D47
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 06:52:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BEFA169C9B
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 08:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE1B1E5B70;
-	Wed, 12 Mar 2025 06:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9DD22CBFA;
+	Wed, 12 Mar 2025 08:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="i9d2TOrS"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="sBKMYHpI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39441E9B00
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 06:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE42E1E260A
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 08:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741762343; cv=none; b=nuU5sCSaU5Dq+UPJCeqVWDUItGcgd5pK6UYyrURVDKaxpIzZ+ERE/A/QeTF6697wb1OqyNX+KaPxt0V6/0HVYUq+h2/djRwTrAy8pSKMM+7qp78JZW67fE777wn9AzVjSUJNH5EawGI6Z3jdT/VsQn5Q5L+cx99nes0mksY9WFs=
+	t=1741766689; cv=none; b=W60obrVXHyMCseq/fy2FQrWOqFwCtRFDKougBCzLglx9E6MSpZEoUVTcDMxP/VGDyXeOlOMmndQTXnOynNgUzQDplIxXbmHsruhHt6LlrKFZrFf8RzqHOk8hhpSUGfCTea0aXhSU/srZ6tJ7FxteIo84H15BxPt706LazdbGNaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741762343; c=relaxed/simple;
-	bh=MAIoVozCuQp4oaKQWW9H9Yde1LiLxsfO+ytvOrPRrlM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iK5ng5s2uzAkMF84Zy+o9xtOgw9DJ79Ee8wvtXZW6cCZWDmK6GGI21Efib6kZWHeeGXSHtyVHodozjVNNgEaNnac41oDtBx077aal0mziWfFerv2BZSrIx52Xr4Bewre0DDVSsDf2zlcoEHDkWDKEG/5Y1WfU7qg4+8N0SYidTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=i9d2TOrS; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52BMHH0F019158;
-	Wed, 12 Mar 2025 06:52:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	QtOJiBRZyeoVQvmn25VkNhBTqiVDVStAs0J5FRCqnnc=; b=i9d2TOrSq7f/HrUs
-	CGnpDK9lA5ylQ7phOZBPSDGNJqLjSuRLsOotDIWjrSfNz9ZSvl13IMVGnTta7pS+
-	lJHs+QHR6dzAHnPa9EqEPjHD8awNYG1H6oaQC7vtqg9DvMTuwPxTPF4DnU0XYRnw
-	L0tvQ5CICZZz4oGzgLa1LA/Xn8IG8JIsg5W83CliUlDrMC2fNYy7b65smISxUeH5
-	GWcP6QZFuwsSOhb4/ysBaHPehoMpVlvQixIcQ/CNu0wAAaJyJz0SQO7a6Ritu9yu
-	AEzue1hBXC6JIJHeGPPX5elgxZgM7Kd9dQjp87zPJdnCtPe8lHaz+FKM1h9DVA8W
-	Hfn0mA==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45au2p1dj5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Mar 2025 06:52:10 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52C6q97q023998
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Mar 2025 06:52:09 GMT
-Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
- nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 11 Mar 2025 23:52:08 -0700
-From: Sarika Sharma <quic_sarishar@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Sarika Sharma
-	<quic_sarishar@quicinc.com>
-Subject: [PATCH wireless-next v5 11/11] wifi: mac80211: correct RX stats packet increment for multi-link
-Date: Wed, 12 Mar 2025 12:21:32 +0530
-Message-ID: <20250312065132.3397726-12-quic_sarishar@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250312065132.3397726-1-quic_sarishar@quicinc.com>
-References: <20250312065132.3397726-1-quic_sarishar@quicinc.com>
+	s=arc-20240116; t=1741766689; c=relaxed/simple;
+	bh=Y9XqFciRrefDmR4jX+tRgiQsBvElGnB+I7XeLoaCVrk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LnB6QmytII8VL9D7O9QrLms/wfsaTo5gcRO4YDKMrfd7r9jQClwfbajlEdNVBseay8BtkxKD5unQJOPyVHJl3ayHXMqx+CkX4DeUXBEsKPStnH+JvmDgjg+TXFAosSZ8g8t3XeWI03q4jaElxNSqmS3nXlgOl5mIOYd7KObY2Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=sBKMYHpI; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=Y9XqFciRrefDmR4jX+tRgiQsBvElGnB+I7XeLoaCVrk=;
+	t=1741766687; x=1742976287; b=sBKMYHpIrJcTgAaaDn/vYj72FwIJTFVGmX+Nh53fOrck7/5
+	kQobx/42rKeya5fC3UOwGV4TjHito/04LGgAzsopU6xvDyp0IdAzXlzXdErvopFiEKZOCoVpn61CP
+	jCCm/lxBaeUI8N3RJRGytDxdhLh71Pk1mux5iZ5NonBSMzap6yaEPxBWPGh4JO/fMG8wO9DNvGMg3
+	a1JcsS+38otvtlwvR0KW+tn5uX5k9uQZap8UkIBHatBBDQiomtTWRVUQJ5tpjmAOzJb/5aN8iRMiE
+	qQUIuLs8hi5WLRMlMEI/Ea5wMya6fUqfuYCyzsqY3QtL/tgzxx1zsekG2zhYAwSA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tsH4x-00000008n5d-3CsX;
+	Wed, 12 Mar 2025 09:04:40 +0100
+Message-ID: <517ce53bcf15f185972cc6016e37e8bab0788bd0.camel@sipsolutions.net>
+Subject: Re: [wireless-next v3 1/2] wifi: mac80211: Create separate links
+ for VLAN interfaces
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Muna Sinada <muna.sinada@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Wed, 12 Mar 2025 09:04:38 +0100
+In-Reply-To: <d3cc0cae-4e37-48e8-9c93-aa489099c3fd@oss.qualcomm.com>
+References: <20250310223528.3528897-1-muna.sinada@oss.qualcomm.com>
+	 <20250310223528.3528897-2-muna.sinada@oss.qualcomm.com>
+	 <6bd5a19c9c87b671af6a0c05a47f5167d032f30e.camel@sipsolutions.net>
+	 <d3cc0cae-4e37-48e8-9c93-aa489099c3fd@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=HP/DFptv c=1 sm=1 tr=0 ts=67d12f1a cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=DHE891H7Gske2VlohvUA:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: xFl5Glb4kP_xXTLt4Gv43DlpcFDqBEWQ
-X-Proofpoint-GUID: xFl5Glb4kP_xXTLt4Gv43DlpcFDqBEWQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-12_02,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=984
- clxscore=1015 priorityscore=1501 adultscore=0 impostorscore=0
- malwarescore=0 spamscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0
- mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503120044
+X-malware-bazaar: not-scanned
 
-Currently, RX stats packets are incremented for deflink member for
-non-ML and multi-link(ML) station case. However, for ML station,
-packets should be incremented based on the specific link.
+On Tue, 2025-03-11 at 16:50 -0700, Muna Sinada wrote:
+>=20
+> On 3/11/2025 3:29 AM, Johannes Berg wrote:
+> >=20
+> > Can this not use for_each_valid_link()? I think
+> > for_each_valid_link(&sdata->vif, link_id) should work? If not some new
+> > macro? I don't like open-coding this "if (valid_links)" etc. everywhere=
+.
+> >=20
+> > johannes
+> for_each_valid_link() is a cfg80211 macro that utilizes wdev to
+> access valid_links and links array.=C2=A0
 
-Therefore, if a valid link_id is present, fetch the corresponding
-link station information and increment the RX packets for that link.
-For non-MLO stations, the deflink will still be used.
+We probably discussed this before, sorry ...
 
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
----
- net/mac80211/rx.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+> Using this macro with &sdata->vif
+> will not work since, links array located in sdata and is named "link"
+> and valid_links is located inside vif.
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index f40e2ea1b09a..c9a6a94e254b 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -231,8 +231,19 @@ static void __ieee80211_queue_skb_to_iface(struct ieee80211_sub_if_data *sdata,
- 
- 	skb_queue_tail(&sdata->skb_queue, skb);
- 	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
--	if (sta)
--		sta->deflink.rx_stats.packets++;
-+	if (sta) {
-+		struct link_sta_info *link_sta_info;
-+
-+		if (link_id >= 0) {
-+			link_sta_info = rcu_dereference(sta->link[link_id]);
-+			if (!link_sta_info)
-+				return;
-+		} else {
-+			link_sta_info = &sta->deflink;
-+		}
-+
-+		link_sta_info->rx_stats.packets++;
-+	}
- }
- 
- static void ieee80211_queue_skb_to_iface(struct ieee80211_sub_if_data *sdata,
--- 
-2.34.1
+So valid_links would be fine, but we have links/link naming differences?
+That's unfortunate. But now that I think about it, also it's array of
+pointers in vif and array of structs in wdev?
 
+Anyway ...
+
+> Should I will go ahead and define a new macro that is similar but
+> utilizes sdata or should I stick to using for_each_valid_link() and
+> pass in &sdata->wdev.
+>=20
+
+We already have for_each_vif_active_link() so maybe add
+for_each_vif_valid_link()? Though honestly in this case you could as
+well just use for_each_vif_active_link(), it's basically the same in AP?
+
+johannes
 
