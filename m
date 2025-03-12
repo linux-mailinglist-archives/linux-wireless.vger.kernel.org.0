@@ -1,80 +1,88 @@
-Return-Path: <linux-wireless+bounces-20218-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20219-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0AF0A5D836
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 09:31:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E21BA5D83A
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 09:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C3EF188D2DE
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 08:31:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28C423A70FE
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 08:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B643823BE;
-	Wed, 12 Mar 2025 08:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F308235364;
+	Wed, 12 Mar 2025 08:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CVNNQtEK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tbWrMUD6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FB11DE3A4
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 08:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCE21E51FF
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 08:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741768267; cv=none; b=lqLlX4wgbZ9KCqPRUh0WOo3E/07PsXqAA80mT+0xcqYlJ4vPH3yST9mGpgmvD4YjCvCKlm2DvXgpWCOHaRCmnb7BfftfFcLM6rEHKKflDu2ETU1VK+GlwkimfHzPpbvceiX0PG8W1UqUPYhzVRbvWvrkVX663IzqhcGKdvcGj3E=
+	t=1741768308; cv=none; b=KtzBZbOMlCq8+xR4VxcwCYzHQuI8VMRrzU/JYSB7IwFTKXUj2kKbX1wcjSq1q2F10BQiD4TyF5AFDVy8d7s3pPlmx0AUJWCluf5iSmLnSkKh45X7t2oFrl4w8e1T/1XbkOoNqke4fzgnevAt3794MNciFRzh2IGEkINQcAiygB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741768267; c=relaxed/simple;
-	bh=hk+yURkq2Gf9MzzsxCEEhTmJESMJrfglduA8GJrOQpw=;
+	s=arc-20240116; t=1741768308; c=relaxed/simple;
+	bh=FT1oxj0Qgt13l0mXa+EPVobcY1J9Jerp6oe4CFShQJI=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Nw2F+MbX0miUNnalRD7OvJK84MjiwnrNPeGTk7Oz2VlcWKuhzQ4vka9ik4kDujluZG1HF/cWO7n07TkcwSTGDrE2dKqDQmEpedhFswgdXgnazRjpj6xh+yyi2U5twQ/t6qBo09c3B+u18ndjHv1JM3ckR/3YYOX+3MVTRj+386s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CVNNQtEK; arc=none smtp.client-ip=209.85.221.47
+	 Content-Disposition; b=WA/xsRBYOH/7o6+SuzfyaJtY4z4tF+7uTXT+ylJMbHOf/JboZePJlEUSYNzgopqUNiKe0LQJHSQKSJLKyKnK+1n9SquK0fD/9stS0U/Tky3ok4WJWxOF8wT6NiHe1rLnX7Qsg2Ut3qMm/KkhloX7keQMHDeDNVODQXOsxFCKaGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tbWrMUD6; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-39104c1cbbdso3139598f8f.3
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 01:31:05 -0700 (PDT)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38f2f391864so3288768f8f.3
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 01:31:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741768264; x=1742373064; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1741768304; x=1742373104; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=0SgeYPsRnQWwcRb4Y8tKKONrHt2oBoeKB8iGHaWIqNM=;
-        b=CVNNQtEKPq4ElxJLnBf9s7duR4PjEcOXl7sCeK9W5/a9rpijDPF8E+qT+xTFHpByNn
-         KgHmKGrBtyGcaUyAszwjt4GhNM0dVld1LV8d2v7FYZwzltBejsKP0MWcFje112k8DqFq
-         Ks3rv3sz8pCMo5yQazIayXScZQOe83rX8SpLiu/yeDcJKtMx6oodxubTeXl8JhctBNwP
-         CH13HI8VYWw3ZnPcngBsHhfwzwoGQktuWcyyft64pc/6IqDg+i0H3MY0ENiv1H0RXLaE
-         YS6LsfK5bshDk2OH3TfvjdvBWGDDHBVCxAA5Rusc6bAiSIG/+CbiJ86Ecpk3jVFxcPya
-         oSjQ==
+        bh=LJss9g7O/dMXFJMt3GukmQPPAokmf3Hhu32HSuWCJ2w=;
+        b=tbWrMUD6ZoqMKKOfJoldMDr7uzKzfGE9XlHAePg5Vn2uLXXztXqM18I6NsspXiZp7S
+         W59oWEzgwvSveEethtWfFCFuYsdQ1K7uCyQPEA/QxfEZke7IosMW8TVbjADg4/MccFyF
+         ih16ClDgljIjn/y7+rrpzOjdMkSDRUIuwIjViBon2RbMfRXZ2eliDB4pGjNUDkdayOkz
+         k70Hf1ubIEI9XuTO2ijLYtJwzFVjJS0eIcDIXzgzHMMYZvT0M5X0o++VLYREi1q4rHH+
+         GLFIQnrkaYeucerXZT6saquM1iGgQzuaIZyJsGE+ujUctgZUkjXHueHAdy/IT1NY1EWq
+         5xjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741768264; x=1742373064;
+        d=1e100.net; s=20230601; t=1741768304; x=1742373104;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0SgeYPsRnQWwcRb4Y8tKKONrHt2oBoeKB8iGHaWIqNM=;
-        b=orC099kQ8w34+NnWb6FWk4gdfpRuQSRuGjOImRaIjFsnZFYvRhy7rTLgBHC6VK+hLu
-         CG2iKz67Ble+k/xXKM/ZmGt7nLB3y7w4QVnyP3bGGhcnhjUJL6B1LZjekMzAYzyLbOeA
-         d/LDP4xcBXUVxixrIJSLr2T69hiQLM/0fYlJZAlKMUA3/JjB5fZAZF3RGAGkv7X0VO80
-         m9FqBxg0bmWdVP0XrdDYC3/WU3QSgzafpDUVd/LHSsJ84fkh3mUqCUFWkGVnJ4Ga7qlY
-         H7cfoqhzzGVTzrgbrtDhwQY9mdntRgOFMd/bh8ZDQQpAx2ROUz/c12GJcENkLi/m6BII
-         bHbA==
-X-Gm-Message-State: AOJu0YyklUddxg7MtG3xbHAwvIDJudlo9KTqRNrr2cyBF+8nivK6GLuy
-	422+SLJlTz/cGTptLdw/NjIHvohB83iFFWzPKeVttu9srXawCC3ZXjzLRq1YVJ0=
-X-Gm-Gg: ASbGncsfKU8LM8yBKpB6ct/T7nsnGIBMKmsEa6sBX2bgbdVWg2iYhk4lwJeLbn0Y6Zu
-	ZfMzicL8mucMSBdBMwOc3FwDuRgfeb3hbs7BTd44Y2ELbAB5OJ+Mr8X52uyXgFcgXj+7IlMc3lS
-	WCbll88/pv8Khr+BlqUsJUMhR8ClwDWljXuJDqImk2S0t1XumbNEOsLFSQBxMj0gZxV9rIPS+TF
-	x/ly3B+Lcch7fJAKrsaRhajFru0CqbxkoQ4+tLLttfRk6ALn7L7J/yX+fuGpMCsr0+KikOC21ZA
-	o3pVUPilPgxXS93BGgEkkh6/NHRs0OrwAGCBMJ9oVPcLmVmdsA==
-X-Google-Smtp-Source: AGHT+IFBchOjjy0tPxOIO+hvslBGs5cqcV8y0AMqPlXNKWbRrc3BFAJtV0xc2hf+cMSPqvIHEAjclQ==
-X-Received: by 2002:a5d:6d8b:0:b0:391:2b04:73d9 with SMTP id ffacd0b85a97d-3926c69b375mr6439525f8f.49.1741768263809;
-        Wed, 12 Mar 2025 01:31:03 -0700 (PDT)
+        bh=LJss9g7O/dMXFJMt3GukmQPPAokmf3Hhu32HSuWCJ2w=;
+        b=nfZxCVi5z8te6UJejRP4WBvV838emU/l4rygxc/tBXlg3pid3KVdQSUeBqL0dFnJM/
+         MYfgOcnTBmvWuiTuInwWbjzkyzK+XwrdXcI2Cl1mU84F9WMHtdJJbS9f3QQJkJXpMDye
+         kO2MtZAorYbIJrSGLgeULg5WcPKJI5tNthdAusUfyTfGNJnVUFh1e6UVB3t0hghiY949
+         j2B7y3nipTxG6UAIgNpLmGbBtHMyrtOEFL+d7EocHC12uqt7YD7IQWx3s9dpPEHdMPNQ
+         i5wfZUvjkpanxuxZMg0Zv1y+ltc49dxGo89DJzTLJIsX82ROU+aj7q1A5nT9l3Q+Ho0z
+         rbqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUxNtXR8RcAN3//eNvcKNqX+CYRzFCd28u2JWUya26KZdzEIYthf418mhQdpeap0N9gu0UtjGrX3Dh9z/LrJw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc+XtUFd7rQbVwgYJtHJxUpWMk8C/Xp5maWoQFpYkyhTuSir2Z
+	nsmt9r58+RdYMRZFQjmXrXFEumyJM8IkScZjrIiMzpwKKBitwNar7O0VrtWBe08=
+X-Gm-Gg: ASbGncuA0DnIi35XXo5oQUI2sbQvSpkG5hr/bjJKOi6ajgCRBz6xoB1rw9hvImCAO5r
+	YW7EPTQDkin2PSIUR3gsrHy5Vz/zJz3yKCFZTEBMrAG9F6YkGulD4KYqJEHKOInMp1+qPZS1Y4Z
+	irQ8kafxp9RerpqIlPUDQ7iTFoqe+hFhpJNu87QJ6R6qKNoXY9HxAiyoTwDR16vCuqm5UZ0t/fC
+	y74cfdUqIIyHcgsJ/TIRigEMOb7KDawpx7Hl+muldq7EQ9IHa/OWC3j2WRXqRgQS3J237LZINwB
+	/ZG9nUb3ZhS3gRAnMbo1AtiY4HJyqshGI9TCIkqNxQYHQ4dw9g==
+X-Google-Smtp-Source: AGHT+IGSSv9SOYrAJaJbwR1yeaga3JE6OR0syE92NYaNxFFvCniZMBgOzqpRGm8809U1/xszfdAp1g==
+X-Received: by 2002:a5d:6d04:0:b0:390:f0ff:2bf8 with SMTP id ffacd0b85a97d-39132d05f78mr16351423f8f.10.1741768304183;
+        Wed, 12 Mar 2025 01:31:44 -0700 (PDT)
 Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3912bfdfcb8sm20714183f8f.33.2025.03.12.01.31.03
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3912bfba8b6sm20754870f8f.11.2025.03.12.01.31.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 01:31:03 -0700 (PDT)
-Date: Wed, 12 Mar 2025 11:30:59 +0300
+        Wed, 12 Mar 2025 01:31:43 -0700 (PDT)
+Date: Wed, 12 Mar 2025 11:31:40 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
 To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: linux-wireless@vger.kernel.org
-Subject: [bug report] wifi: iwlwifi: add iwlmld sub-driver
-Message-ID: <6dc3c2d6-0457-4d2c-9784-b0e5920611c1@stanley.mountain>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH next] wifi: iwlwifi: Fix uninitialized variable with __free()
+Message-ID: <f7c17a7f-f173-43bf-bc39-316b8adde349@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -83,139 +91,34 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-Hello Miri Korenblit,
+Pointers declared with the __free(kfree) attribute need to be initialized
+because they will be passed to kfree() on every return path.  There are
+two return statement before the "cmd" pointer is initialized so this
+leads to an uninitialized variable bug.
 
-Commit d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver") from Feb
-16, 2025 (linux-next), leads to the following Smatch static checker
-warning:
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/net/wireless/intel/iwlwifi/mld/debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	drivers/net/wireless/intel/iwlwifi/mld/d3.c:1978 iwl_mld_wowlan_resume()
-	error: uninitialized symbol 'keep_connection'.
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+index c759c5c68dc0..1d4b2ad5d388 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+@@ -556,8 +556,8 @@ iwl_dbgfs_vif_twt_setup_write(struct iwl_mld *mld, char *buf, size_t count,
+ 	};
+ 	struct ieee80211_vif *vif = data;
+ 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	struct iwl_dhc_cmd *cmd __free(kfree) = NULL;
+ 	struct iwl_dhc_twt_operation *dhc_twt_cmd;
+-	struct iwl_dhc_cmd *cmd __free(kfree);
+ 	u64 target_wake_time;
+ 	u32 twt_operation, interval_exp, interval_mantissa, min_wake_duration;
+ 	u8 trigger, flow_type, flow_id, protection, tenth_param;
+-- 
+2.47.2
 
-drivers/net/wireless/intel/iwlwifi/mld/d3.c
-    1884 int iwl_mld_wowlan_resume(struct iwl_mld *mld)
-    1885 {
-    1886         struct ieee80211_vif *bss_vif;
-    1887         struct ieee80211_bss_conf *link_conf;
-    1888         struct iwl_mld_netdetect_res netdetect_res;
-    1889         struct iwl_mld_resume_data resume_data = {
-    1890                 .notifs_expected =
-    1891                         IWL_D3_NOTIF_WOWLAN_INFO |
-    1892                         IWL_D3_NOTIF_D3_END_NOTIF,
-    1893                 .netdetect_res = &netdetect_res,
-    1894         };
-    1895         int link_id;
-    1896         int ret;
-    1897         bool fw_err = false;
-    1898         bool keep_connection;
-    1899 
-    1900         lockdep_assert_wiphy(mld->wiphy);
-    1901 
-    1902         IWL_DEBUG_WOWLAN(mld, "Starting the wowlan resume flow\n");
-    1903 
-    1904         mld->trans->system_pm_mode = IWL_PLAT_PM_MODE_DISABLED;
-    1905         if (!mld->fw_status.in_d3) {
-    1906                 IWL_DEBUG_WOWLAN(mld,
-    1907                                  "Device_powered_off() was called during wowlan\n");
-    1908                 goto err;
-    1909         }
-    1910 
-    1911         mld->fw_status.in_d3 = false;
-    1912         mld->scan.last_start_time_jiffies = jiffies;
-    1913 
-    1914         bss_vif = iwl_mld_get_bss_vif(mld);
-    1915         if (WARN_ON(!bss_vif))
-    1916                 goto err;
-    1917 
-    1918         /* We can't have several links upon wowlan entry,
-    1919          * this is enforced in the suspend flow.
-    1920          */
-    1921         WARN_ON(hweight16(bss_vif->active_links) > 1);
-    1922         link_id = bss_vif->active_links ? __ffs(bss_vif->active_links) : 0;
-    1923         link_conf = link_conf_dereference_protected(bss_vif, link_id);
-    1924 
-    1925         if (WARN_ON(!link_conf))
-    1926                 goto err;
-    1927 
-    1928         iwl_fw_dbg_read_d3_debug_data(&mld->fwrt);
-    1929 
-    1930         if (iwl_mld_fw_needs_restart(mld, bss_vif)) {
-    1931                 fw_err = true;
-    1932                 goto err;
-    1933         }
-    1934 
-    1935         resume_data.wowlan_status = kzalloc(sizeof(*resume_data.wowlan_status),
-    1936                                             GFP_KERNEL);
-    1937         if (!resume_data.wowlan_status)
-    1938                 return -1;
-    1939 
-    1940         if (mld->netdetect)
-    1941                 resume_data.notifs_expected |= IWL_D3_ND_MATCH_INFO;
-    1942 
-    1943         ret = iwl_mld_wait_d3_notif(mld, &resume_data, true);
-    1944         if (ret) {
-    1945                 IWL_ERR(mld, "Couldn't get the d3 notifs %d\n", ret);
-    1946                 fw_err = true;
-    1947                 goto err;
-    1948         }
-    1949 
-    1950         if (resume_data.d3_end_flags & IWL_D0I3_RESET_REQUIRE) {
-    1951                 mld->fw_status.in_hw_restart = true;
-    1952                 goto process_wakeup_results;
-    1953         }
-    1954 
-    1955         iwl_mld_update_changed_regdomain(mld);
-    1956         iwl_mld_update_mac_power(mld, bss_vif, false);
-    1957         iwl_mld_enable_beacon_filter(mld, link_conf, false);
-    1958         iwl_mld_update_device_power(mld, false);
-    1959 
-    1960         if (mld->netdetect)
-    1961                 ret = iwl_mld_scan_stop(mld, IWL_MLD_SCAN_NETDETECT, false);
-    1962 
-    1963  process_wakeup_results:
-    1964         if (mld->netdetect) {
-    1965                 iwl_mld_process_netdetect_res(mld, bss_vif, &resume_data);
-    1966                 mld->netdetect = false;
-
-mld->netdetect is false but keep_connection is uninitialized.
-
-    1967         } else {
-    1968                 keep_connection =
-    1969                         iwl_mld_process_wowlan_status(mld, bss_vif,
-    1970                                                       resume_data.wowlan_status);
-    1971 
-    1972                 /* EMLSR state will be cleared if the connection is not kept */
-    1973                 if (keep_connection)
-    1974                         iwl_mld_unblock_emlsr(mld, bss_vif,
-    1975                                               IWL_MLD_EMLSR_BLOCKED_WOWLAN);
-    1976         }
-    1977 
---> 1978         if (!mld->netdetect && !keep_connection)
-                                         ^^^^^^^^^^^^^^^
-Uninitialized
-
-    1979                 ieee80211_resume_disconnect(bss_vif);
-    1980 
-    1981         goto out;
-    1982 
-    1983  err:
-    1984         if (fw_err) {
-    1985                 mld->trans->state = IWL_TRANS_NO_FW;
-    1986                 set_bit(STATUS_FW_ERROR, &mld->trans->status);
-    1987         }
-    1988 
-    1989         mld->fw_status.in_hw_restart = true;
-    1990         ret = 1;
-    1991  out:
-    1992         if (resume_data.wowlan_status) {
-    1993                 kfree(resume_data.wowlan_status->wake_packet);
-    1994                 kfree(resume_data.wowlan_status);
-    1995         }
-    1996 
-    1997         return ret;
-    1998 }
-
-regards,
-dan carpenter
 
