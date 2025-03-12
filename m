@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-20274-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20275-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280FCA5E746
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 23:23:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA0BA5E747
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 23:23:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 976503B416E
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 22:23:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA081189D83F
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 22:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688821F03E6;
-	Wed, 12 Mar 2025 22:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC531F03EF;
+	Wed, 12 Mar 2025 22:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LiIjxNtR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WeOBZV2H"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE2C1EF0AD
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 22:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521A91F03C5
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 22:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741818186; cv=none; b=cuHxpiT87vPtpX0AnNKqP/yPKE6gAvqFDlH3iG4KpZwJdQJ92FilQ2KfxUYa1DCvDKZCswdbvsMJSWpcI1hLOeM8elGFY72V25Lj2E+0fXvdPy0+WBPYiP3zYE8W0IVxkL6D9hpKwCZctje3Ni2TFNMwwYH+2VWTFQOu0arZ+V8=
+	t=1741818187; cv=none; b=lQoTKSwsm/co/L53HD0uBA33y3UrdxqpD+0B1/X1zlng4uSdVyCyd3lyR/VRNd7FApl29BzCiaFM2vcagUVgsu7xxo1I5VWKdVQION2td3og5DvH3nZ4zhLllL2uLJLWapJq/IYU2B8YNF8a3SiSN5Es3N1+6rT5pTr7+dDd6+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741818186; c=relaxed/simple;
-	bh=GjS7lGGESt/rvA4lexSx3lHXmgQxxPUxFvVmQtzoatI=;
+	s=arc-20240116; t=1741818187; c=relaxed/simple;
+	bh=1WBbeik5wi3drDYu/MVkynfo9xgawanZNjF0eIfzg0I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DgcPdVZXUKt/Vo7x9z7Wfes0fpGvYXsdP4/fO8VCZ/Lydiq+4v7fFiKXczfpGRJJ3Df8OJohIsvSscbXoOcQw6p6P3QZU4nnXiJcgpu1XofAZZFjU4x8sZxV4b+WzTkvBRawYmloH6RrXv8hg35mWAMSLcQ4LjR6umfrMJnPQjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LiIjxNtR; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=O9kcNux8gsdy+K6ge9F1hA+0/zlvqVkEp8mX7dSFSv46cyxs8Z16PuIWF7Ysv8Kl6zPFyfB2hvMzLMlygqTT4RgcZBjOzJinufd8+RJQsXeXJkIkoIeJJNZEGrKEK2C8zcDU9cQeNXzGaZRBUQvwmOPz4WyfPbTbVv9Vr8FoC1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WeOBZV2H; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741818185; x=1773354185;
+  t=1741818187; x=1773354187;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GjS7lGGESt/rvA4lexSx3lHXmgQxxPUxFvVmQtzoatI=;
-  b=LiIjxNtRCj/S9S0X53+eYnj1PzpDEKLsp126GpEujWK0qgcy2t6ClkaX
-   FMKHPD174RusPXP6rn9Fl57VjUTMzb1x8mPZ9SQYfazgqLpBRL5zK+/nB
-   DtL4P5tmqZExhCv9Hwc+Ojrd/YPiJb231QW1dADq35K5oKweXxxsBjGKB
-   PZ1m2PU+Q4mMZ8WueGskFNGSAJgHSMZEIrFon07Yx2eJwV83Bm+/o2ysA
-   Da08NrOAc/C60DqZxvjqNudx9g55JHpBfO26ur821/pJsLQ41OEhlilZc
-   Cok9yBZ/azRfM15sHfOJ0U1YaATPbGWKAIeKyG1k1hYY8uvFR1XrwtvwY
-   A==;
-X-CSE-ConnectionGUID: ZBslj8FSQdWWnsEsH2XIfg==
-X-CSE-MsgGUID: C1oAmiywS9uW+ECIUx4yNA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="42826754"
+  bh=1WBbeik5wi3drDYu/MVkynfo9xgawanZNjF0eIfzg0I=;
+  b=WeOBZV2HOjo8vosKzUaE/ZM9hUxaUtTtuKqVsDA8EyPwwwC1wf1BaCEd
+   BKh1Tl77qpSKBp5EIjHMo+2QgVgXJ2QKhjp5T+35ZKozS7ms8qigUUH23
+   HWG7CfBLTjD3LQtKTMMPUi82M/7o+q4rbmGhvPJcOF8bMkc+U0BFGmXjW
+   o6C/+UZpNwUL4bwoElCbqVXnCdavnEP4JSxZYDW3tQdyfXNXzfpoEkKaQ
+   ommWk8oGi82KW2ZlZSB+QMTXFXeF3RRYfjMk0mczobj/OPhfNaJNsOeQy
+   uLM7rJmxFNX8CGBNMPMysUyC82L4cWwxbHpDRYO9BXjD2sO0JhSSXIb+u
+   Q==;
+X-CSE-ConnectionGUID: uNqKldcLSjyZAE6C6Yj6+g==
+X-CSE-MsgGUID: ZZky04kXRaCiqaTEv/kUjA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="42826756"
 X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="42826754"
+   d="scan'208";a="42826756"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:23:05 -0700
-X-CSE-ConnectionGUID: 3Q1b7AfdRL2KTmMSdhdTeQ==
-X-CSE-MsgGUID: yW9dRUVCTheAuGPTTZ3pQA==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:23:07 -0700
+X-CSE-ConnectionGUID: ddohUVDFQ8q2f2AXcN/JnA==
+X-CSE-MsgGUID: He8AHmrGSLuW+Knjq78Kmw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="121267390"
+   d="scan'208";a="121267394"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:23:03 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:23:05 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH wireless-next 09/15] wifi: iwlwifi: mld: KUnit: create chanctx with a custom width
-Date: Thu, 13 Mar 2025 00:22:32 +0200
-Message-Id: <20250313002008.85a1285d34cd.Ia71cdcd4241fe73501bc93e3cb2c6bb3f631b9ec@changeid>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next 10/15] wifi: iwlwifi: mld: KUnit: test iwl_mld_channel_load_allows_emlsr
+Date: Thu, 13 Mar 2025 00:22:33 +0200
+Message-Id: <20250313002008.06fdf416c62f.If6e8f0e017287e79364eac9366f93c9ab964a673@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250312222238.2585340-1-miriam.rachel.korenblit@intel.com>
 References: <20250312222238.2585340-1-miriam.rachel.korenblit@intel.com>
@@ -77,79 +77,220 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Currently iwlmld_kunit_add_chanctx receives a band, picks a predefined
-static chandef, and creates the chanctx from it.
-Change it to receive a bandwidth as well. Otherwise, the bandwidth in
-the chanctx/phy will be different than what test specified in the
-iwl_mld_kunit_link.
+Add tests to check that iwl_mld_channel_load_allows_emlsr decides
+correctly whether EMLSR is allowed or not.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mld/tests/utils.c   |  5 +++--
- .../net/wireless/intel/iwlwifi/mld/tests/utils.h   | 14 ++++++++------
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.c  |   9 +-
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.h  |  14 ++
+ .../intel/iwlwifi/mld/tests/link-selection.c  | 131 ++++++++++++++++++
+ 3 files changed, 147 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c b/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c
-index fa2710661bd5..9712ee696509 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c
-@@ -346,7 +346,8 @@ iwlmld_kunit_setup_assoc(bool mlo, struct iwl_mld_kunit_link *assoc_link)
- 	else
- 		link = &vif->bss_conf;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
+index 9342f03c0908..dac72644ec78 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
+@@ -602,12 +602,6 @@ void iwl_mld_emlsr_unblock_tpt_wk(struct wiphy *wiphy, struct wiphy_work *wk)
+ /*
+  * Link selection
+  */
+-struct iwl_mld_link_sel_data {
+-	u8 link_id;
+-	const struct cfg80211_chan_def *chandef;
+-	s32 signal;
+-	u16 grade;
+-};
  
--	chan_ctx = iwlmld_kunit_add_chanctx(assoc_link->band);
-+	chan_ctx = iwlmld_kunit_add_chanctx(assoc_link->band,
-+					    assoc_link->bandwidth);
- 
- 	wiphy_lock(mld->wiphy);
- 	iwlmld_kunit_assign_chanctx_to_link(vif, link, chan_ctx);
-@@ -427,7 +428,7 @@ struct ieee80211_vif *iwlmld_kunit_assoc_emlsr(struct iwl_mld_kunit_link *link1,
- 	link = wiphy_dereference(mld->wiphy, vif->link_conf[link2->id]);
- 	KUNIT_EXPECT_NOT_NULL(test, link);
- 
--	chan_ctx = iwlmld_kunit_add_chanctx(link2->band);
-+	chan_ctx = iwlmld_kunit_add_chanctx(link2->band, link2->bandwidth);
- 	iwlmld_kunit_assign_chanctx_to_link(vif, link, chan_ctx);
- 
- 	wiphy_unlock(mld->wiphy);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.h b/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.h
-index bb757a7dd8e7..d3723653cf1b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.h
-@@ -65,24 +65,26 @@ struct ieee80211_chanctx_conf *
- iwlmld_kunit_add_chanctx_from_def(struct cfg80211_chan_def *def);
- 
- static inline struct ieee80211_chanctx_conf *
--iwlmld_kunit_add_chanctx(enum nl80211_band band)
-+iwlmld_kunit_add_chanctx(enum nl80211_band band, enum nl80211_chan_width width)
- {
--	struct cfg80211_chan_def *chandef;
-+	struct cfg80211_chan_def chandef;
- 
- 	switch (band) {
- 	case NL80211_BAND_2GHZ:
--		chandef = &chandef_2ghz;
-+		chandef = chandef_2ghz;
- 		break;
- 	case NL80211_BAND_5GHZ:
--		chandef = &chandef_5ghz;
-+		chandef = chandef_5ghz;
- 		break;
- 	default:
- 	case NL80211_BAND_6GHZ:
--		chandef = &chandef_6ghz;
-+		chandef = chandef_6ghz;
- 		break;
- 	}
- 
--	return iwlmld_kunit_add_chanctx_from_def(chandef);
-+	chandef.width = width;
-+
-+	return iwlmld_kunit_add_chanctx_from_def(&chandef);
+ s8 iwl_mld_get_emlsr_rssi_thresh(struct iwl_mld *mld,
+ 				 const struct cfg80211_chan_def *chandef,
+@@ -737,7 +731,7 @@ iwl_mld_get_min_chan_load_thresh(struct ieee80211_chanctx_conf *chanctx)
+ 	return 10;
  }
  
- void iwlmld_kunit_assign_chanctx_to_link(struct ieee80211_vif *vif,
+-static bool
++VISIBLE_IF_KUNIT bool
+ iwl_mld_channel_load_allows_emlsr(struct iwl_mld *mld,
+ 				  struct ieee80211_vif *vif,
+ 				  const struct iwl_mld_link_sel_data *a,
+@@ -794,6 +788,7 @@ iwl_mld_channel_load_allows_emlsr(struct iwl_mld *mld,
+ 
+ 	return false;
+ }
++EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_mld_channel_load_allows_emlsr);
+ 
+ static bool
+ iwl_mld_valid_emlsr_pair(struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.h b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
+index 6c652c17069f..4fb1fdbe3df9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
+@@ -150,4 +150,18 @@ void iwl_mld_emlsr_check_chan_load(struct ieee80211_hw *hw,
+  */
+ void iwl_mld_retry_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif);
+ 
++struct iwl_mld_link_sel_data {
++	u8 link_id;
++	const struct cfg80211_chan_def *chandef;
++	s32 signal;
++	u16 grade;
++};
++
++#if IS_ENABLED(CONFIG_IWLWIFI_KUNIT_TESTS)
++bool iwl_mld_channel_load_allows_emlsr(struct iwl_mld *mld,
++				       struct ieee80211_vif *vif,
++				       const struct iwl_mld_link_sel_data *a,
++				       const struct iwl_mld_link_sel_data *b);
++#endif
++
+ #endif /* __iwl_mld_mlo_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c b/drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c
+index 34782569d67e..295dcfd3f85d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c
+@@ -11,6 +11,7 @@
+ #include "link.h"
+ #include "iface.h"
+ #include "phy.h"
++#include "mlo.h"
+ 
+ static const struct link_grading_test_case {
+ 	const char *desc;
+@@ -170,3 +171,133 @@ static struct kunit_suite link_selection = {
+ };
+ 
+ kunit_test_suite(link_selection);
++
++static const struct channel_load_case {
++	const char *desc;
++	bool low_latency_vif;
++	u32 chan_load_not_by_us;
++	enum nl80211_chan_width bw_a;
++	enum nl80211_chan_width bw_b;
++	bool primary_link_active;
++	bool expected_result;
++} channel_load_cases[] = {
++	{
++		.desc = "Unequal bandwidth, primary link inactive, EMLSR not allowed",
++		.low_latency_vif = false,
++		.primary_link_active = false,
++		.bw_a = NL80211_CHAN_WIDTH_40,
++		.bw_b = NL80211_CHAN_WIDTH_20,
++		.expected_result = false,
++	},
++	{
++		.desc = "Equal bandwidths, sufficient channel load, EMLSR allowed",
++		.low_latency_vif = false,
++		.primary_link_active = true,
++		.chan_load_not_by_us = 11,
++		.bw_a = NL80211_CHAN_WIDTH_40,
++		.bw_b = NL80211_CHAN_WIDTH_40,
++		.expected_result = true,
++	},
++	{
++		.desc = "Equal bandwidths, insufficient channel load, EMLSR not allowed",
++		.low_latency_vif = false,
++		.primary_link_active = true,
++		.chan_load_not_by_us = 6,
++		.bw_a = NL80211_CHAN_WIDTH_80,
++		.bw_b = NL80211_CHAN_WIDTH_80,
++		.expected_result = false,
++	},
++	{
++		.desc = "Low latency VIF, sufficient channel load, EMLSR allowed",
++		.low_latency_vif = true,
++		.primary_link_active = true,
++		.chan_load_not_by_us = 6,
++		.bw_a = NL80211_CHAN_WIDTH_160,
++		.bw_b = NL80211_CHAN_WIDTH_160,
++		.expected_result = true,
++	},
++	{
++		.desc = "Different bandwidths (2x ratio), primary link load permits EMLSR",
++		.low_latency_vif = false,
++		.primary_link_active = true,
++		.chan_load_not_by_us = 30,
++		.bw_a = NL80211_CHAN_WIDTH_40,
++		.bw_b = NL80211_CHAN_WIDTH_20,
++		.expected_result = true,
++	},
++	{
++		.desc = "Different bandwidths (4x ratio), primary link load permits EMLSR",
++		.low_latency_vif = false,
++		.primary_link_active = true,
++		.chan_load_not_by_us = 45,
++		.bw_a = NL80211_CHAN_WIDTH_80,
++		.bw_b = NL80211_CHAN_WIDTH_20,
++		.expected_result = true,
++	},
++	{
++		.desc = "Different bandwidths (16x ratio), primary link load insufficient",
++		.low_latency_vif = false,
++		.primary_link_active = true,
++		.chan_load_not_by_us = 45,
++		.bw_a = NL80211_CHAN_WIDTH_320,
++		.bw_b = NL80211_CHAN_WIDTH_20,
++		.expected_result = false,
++	},
++};
++
++KUNIT_ARRAY_PARAM_DESC(channel_load, channel_load_cases, desc);
++
++static void test_iwl_mld_channel_load_allows_emlsr(struct kunit *test)
++{
++	const struct channel_load_case *params = test->param_value;
++	struct iwl_mld *mld = test->priv;
++	struct ieee80211_vif *vif;
++	struct cfg80211_chan_def chandef_a, chandef_b;
++	struct iwl_mld_link_sel_data a = {.chandef = &chandef_a,
++					  .link_id = 4};
++	struct iwl_mld_link_sel_data b = {.chandef = &chandef_b,
++					  .link_id = 5};
++	struct iwl_mld_kunit_link assoc_link = {
++		.id = params->primary_link_active ? a.link_id : b.link_id,
++		.bandwidth = params->primary_link_active ? params->bw_a : params->bw_b,
++	};
++	bool result;
++
++	vif = iwlmld_kunit_setup_mlo_assoc(BIT(a.link_id) | BIT(b.link_id),
++					   &assoc_link);
++
++	chandef_a.width = params->bw_a;
++	chandef_b.width = params->bw_b;
++
++	if (params->low_latency_vif)
++		iwl_mld_vif_from_mac80211(vif)->low_latency_causes = 1;
++
++	wiphy_lock(mld->wiphy);
++
++	/* Simulate channel load */
++	if (params->primary_link_active) {
++		struct iwl_mld_phy *phy =
++			iwlmld_kunit_get_phy_of_link(vif, a.link_id);
++
++		phy->avg_channel_load_not_by_us = params->chan_load_not_by_us;
++	}
++
++	result = iwl_mld_channel_load_allows_emlsr(mld, vif, &a, &b);
++
++	wiphy_unlock(mld->wiphy);
++
++	KUNIT_EXPECT_EQ(test, result, params->expected_result);
++}
++
++static struct kunit_case channel_load_criteria_test_cases[] = {
++	KUNIT_CASE_PARAM(test_iwl_mld_channel_load_allows_emlsr, channel_load_gen_params),
++	{}
++};
++
++static struct kunit_suite channel_load_criteria_tests = {
++	.name = "iwlmld_channel_load_allows_emlsr",
++	.test_cases = channel_load_criteria_test_cases,
++	.init = iwlmld_kunit_test_init,
++};
++
++kunit_test_suite(channel_load_criteria_tests);
 -- 
 2.34.1
 
