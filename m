@@ -1,136 +1,135 @@
-Return-Path: <linux-wireless+bounces-20264-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20265-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD79A5E596
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 21:46:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 064F2A5E73D
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 23:22:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90CE517B14B
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 20:46:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A22E17316F
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 22:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230C91C1F0C;
-	Wed, 12 Mar 2025 20:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035251EF0B2;
+	Wed, 12 Mar 2025 22:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J9dZ0kST"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ijulxti/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58669258A;
-	Wed, 12 Mar 2025 20:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B701E2823
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 22:22:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741812376; cv=none; b=V9PaRo2rYrl07x9qmfZNYQh4o5J6JoRufVfbAR48tv4Sm5n2T1Bg32xZlSvtAYsIE/tX+vqaAFv7sa0SJNarJIVCCZtHj9dTCEmcm/OPciA9hg1pDuWYkBy9PalTH2DoIW2bq4ph0lsWyk47pEC7yyWJpvRmlNrDlmR1N1TdqV8=
+	t=1741818172; cv=none; b=V3L2UFnfB43trlbmKaUuLZonzIVVSd/pA0iX/4RKIqzyFL04tv4cEwK+7DNnU0FLVAlUnV0GTMLVuwUYlDY3i4IbTC0EvhTJ2wFhqpn2iMCkv1TivCbH6NyKqo0tlOXmj0bzIGics7C9rsnlcrXjX5mnLx6sbty0IfY5dwN/JeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741812376; c=relaxed/simple;
-	bh=ZhAUqzJvHYObpWLH9mLcwnLhiQIQNi1h4k4+f9ZHKY4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AjI8YbVXGIFXh5kot83qppEBvT6Gif13xQXtBf89f2yUeiV0/I+8IsXfk1TR0Ibt7sOmMuW0kNhlujtnFjO6shKvt8e6bQtU0UpQVxaCmmULsgGdVdff6o+GPuYAYb0ukC3heefKkp4IpcNgiG3KfYVXoCOwJlb7idZeE29QAgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J9dZ0kST; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3913fdd0120so161755f8f.0;
-        Wed, 12 Mar 2025 13:46:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741812373; x=1742417173; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DGjJvpLZaNnI/h8nlwQZhmjhWQKA8BlfNqhabRPiDWQ=;
-        b=J9dZ0kST0EDisuYT2oDEQ22cr+rjSWq89F+rPC92ogp6VG/abuQmK3hsnvfSoiRVng
-         PVk/8IoAZQauxlF45aatw0GWzT0pYi1kog4YpDQ4XjynT9ZauqZ3MyF5aQI0WghexORJ
-         OLJkcrvqjMWfxCdZwt0Jlh2zzMdfIe/Cxkr6s9higdV8803k5pDFbNLxDcx4G5DwSt3M
-         jeEhVvI9zvaxMaLsdYenkLfxz+reJycqTEkKP/Ir2umlmMqGk8bXS7TmjRafTaM+Ddbc
-         BkQoowz0qq3JiwoXoWkigBKa3Y9c8Y84QvDpIbRjbCuG0wWerTtNiI3M5gDRGPSePAik
-         L6lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741812373; x=1742417173;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DGjJvpLZaNnI/h8nlwQZhmjhWQKA8BlfNqhabRPiDWQ=;
-        b=JrfXj8HNKGsdzInRmriG7vco6Scqzd8okXfE2f0a45ORG8N1uKpDGyRQ2xSIpMpdn+
-         ZPeIiqXA6jx/+yihBJpRheuOK1Xe2fIE3V1/mvk1FoZ9+PwBvBqgXtmUrj7/8ah6bo1N
-         KQcwRzje69wfufnawXx6IsIIhz9G8jPUv70vRVkuCUgnsSwMb8jcGrLNYPet9TeDSDM7
-         dvJ+evFqBubGYn8so1UifRibSlq0VxZmXrmS+5EP4bvob/Fm2T/1BA6vz7L/uaMwZxRq
-         1bITGZ8NbmId01xGLHKL4PWhF+K0zyb3Z4eLomt34J6FOqp/p6gjhb69RAOKoIE1sR82
-         2TQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYr3bPHvUicgJNasyo8f+ZKC5RycTbLl7uNT+XxgEvWHBb7LED37Xl1uMcV1NIETuqeseDeTJLh1+zKw+Vmvs=@vger.kernel.org, AJvYcCVOaZyHl3GZSWqmKOQ8f8oVOfc5IjHkp2M4sATx3jSC5SS+mxqXCWa53xwbnQ9gW+O5kJryrufdRdOm+NvNWMo=@vger.kernel.org, AJvYcCVffZtAtR+oJNDkVsLPwFvevUPHQhTKqo1wsxIsXX2azrQZSn1exeKIcwPcXguPx1Y0mLjGjPDQHMkiJlHl@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBzBIk+d7QZX9w9XcTQIprcErcia8VvMrTXoddpUikYVw3fXLq
-	b2fOwA4M1lpUHe7vWS/yWLupGsMJlRgyeSHhA4UWQNZCC576aaly
-X-Gm-Gg: ASbGncvEXURpoMmfL8VhYX/Iw8EoQJp229kp9ywuu4g/Tg2g5OMSXNtGOL4yWpfFPXa
-	aFGR8Mf5pFzWj08twP/0mUu5xE6yfQCX0pvCcF/EdYQfmFXco04DDKgYjAc4u4uguTIRVAMI5Ni
-	LI7XI60lmNMWnCT4pRVrngp2srW0kCaoDs7B1CZlw5iXe9/sa9THw6D2NULer5pZSJ3FB0OHrS+
-	Yqm6DP9wQcVOj7YcM2xBITVE0L1eT1m0peOtJeKlQSZiJrj88eYUreFfFRDEEOl0yLpgv+PW6sM
-	/YRDCcTKUz7WMFS8JTQgx8DRNnzNJooRTLfPLDvBVVLmTbg0LAmuBUXKoGiCy7MqbgsSk+orEcl
-	UlpvMHpINy2/OFbc/RLHqbniJEjeagzokenUNPXuXcfBnZcxQ
-X-Google-Smtp-Source: AGHT+IFyQpV8UXvbzdZ9eDgW3+95bDCiRDPHybVVQEL8Ud3eER+VffGLX9YUUdh0OfQZ5Nti/qcRqA==
-X-Received: by 2002:a5d:5987:0:b0:391:78a:33de with SMTP id ffacd0b85a97d-39132d1ca75mr15430230f8f.12.1741812372578;
-        Wed, 12 Mar 2025 13:46:12 -0700 (PDT)
-Received: from shift.daheim (p200300d5ff4f150050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff4f:1500:50f4:96ff:fe46:beef])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c103035sm21682889f8f.88.2025.03.12.13.46.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 13:46:12 -0700 (PDT)
-Received: from localhost.javelin ([127.0.0.1])
-	by shift.daheim with esmtp (Exim 4.98)
-	(envelope-from <chunkeey@gmail.com>)
-	id 1tsSx5-000000006HQ-3F5Q;
-	Wed, 12 Mar 2025 21:45:55 +0100
-Message-ID: <3793ce70-efed-4c86-8c34-7fe22f8e4b0f@gmail.com>
-Date: Wed, 12 Mar 2025 21:45:49 +0100
+	s=arc-20240116; t=1741818172; c=relaxed/simple;
+	bh=6k30MFVMWrDoNxqDmsGMXpI0rQz7X3i4bQGdHWnoV9k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZfynmisuZblgX9zTQcut0aI35mtZSM9MFnymj9N2gHWU7GXg4o0hhq84Cyp7iKbm/Nd1ffcY7rJwPfZULcHw0tWyvkn7p1ks5elPlKH1LC5zQsHjIogCV5chbjvLNYXlcz1I9BdOeqoc5ucSeIN/lNcYG1Inf6/9o4XtM4Ca7cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ijulxti/; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741818172; x=1773354172;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6k30MFVMWrDoNxqDmsGMXpI0rQz7X3i4bQGdHWnoV9k=;
+  b=Ijulxti/aQiyS/CXej1+yTxe7Hd21V0CG/+YMDaoiJ1LbDgGGNXqbiiv
+   irzP/cRTbo00nK30Cxbs9WL1amGkJ1sBTmutDwedWqOiJIDq+KFRBiA0k
+   OdU7ppOZ+PY5gMgkpOTHNavNrr+TxnlGXopDhHJYh6818DTu/ACY2QFmD
+   ZGyMrXU+OPBLwVrz0HEaMeZa6dsV3H1mU9YKhtLB+Y3iSKFYM9JE0j4Hf
+   itP0t1bsHor7wtvY89+s2cuS2Fp9E2Q9Zr9QCoLY5+Up1jCB4jktPPnnc
+   4AQISGawwLSzXk8u95HQUDNyNVS+bRGdcyb5wyBJQMF8+iHwB+ZpMp+T6
+   Q==;
+X-CSE-ConnectionGUID: hLDbUWx/THGIq6Bc2XUjFQ==
+X-CSE-MsgGUID: y/RodgT8SBaiz8CZNjt32g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="42826726"
+X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
+   d="scan'208";a="42826726"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:22:51 -0700
+X-CSE-ConnectionGUID: QPk3y5htQ7ayqPQM72yWww==
+X-CSE-MsgGUID: Itp5tqJ/RXmtAJ0hgtJNpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
+   d="scan'208";a="121267336"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 15:22:49 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH wireless-next 00/15] wifi: iwlwifi: updates - 2025-03-13
+Date: Thu, 13 Mar 2025 00:22:23 +0200
+Message-Id: <20250312222238.2585340-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: carl9170: Add __nonstring annotations for
- unterminated strings
-To: Kees Cook <kees@kernel.org>, Christian Lamparter <chunkeey@googlemail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-References: <20250310222339.work.654-kees@kernel.org>
-Content-Language: de-DE
-From: Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <20250310222339.work.654-kees@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-On 3/10/25 11:23 PM, Kees Cook wrote:
-> When a character array without a terminating NUL character has a static
-> initializer, GCC 15's -Wunterminated-string-initialization will only
-> warn if the array lacks the "nonstring" attribute[1]. Mark the arrays
-> with __nonstring to and correctly identify the char array as "not a C
-> string" and thereby eliminate the warning.
+Hi,
 
-Sure. Thank you!
+A few features, cleanups and bugfixes.
 
-> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
-> Cc: Christian Lamparter <chunkeey@googlemail.com>
-> Cc: Johannes Berg <johannes@sipsolutions.net>
-> Cc: linux-wireless@vger.kernel.org
-> Signed-off-by: Kees Cook <kees@kernel.org>
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
-> ---
->   drivers/net/wireless/ath/carl9170/fw.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/carl9170/fw.c b/drivers/net/wireless/ath/carl9170/fw.c
-> index 4c1aecd1163c..419f5530f885 100644
-> --- a/drivers/net/wireless/ath/carl9170/fw.c
-> +++ b/drivers/net/wireless/ath/carl9170/fw.c
-> @@ -15,7 +15,7 @@
->   #include "fwcmd.h"
->   #include "version.h"
->   
-> -static const u8 otus_magic[4] = { OTUS_MAGIC };
-> +static const u8 otus_magic[4] __nonstring = { OTUS_MAGIC };
->   
->   static const void *carl9170_fw_find_desc(struct ar9170 *ar, const u8 descid[4],
->   	const unsigned int len, const u8 compatible_revision)
+Thanks,
+Miri
+---
+
+Emmanuel Grumbach (1):
+  wifi: iwlwifi: mld: we support v6 of compressed_ba_notif
+
+Miri Korenblit (10):
+  wifi: iwlwifi: mld: remove IWL_MLD_EMLSR_BLOCKED_FW
+  wifi: iwlwifi: mld: prevent toggling EMLSR due to FW requests
+  wifi: iwlwifi: mld: allow EMLSR for unequal bandwidth
+  wifi: iwlwifi: mld: KUnit: introduce iwl_mld_kunit_link
+  wifi: iwlwifi: mld: KUnit: create chanctx with a custom width
+  wifi: iwlwifi: mld: KUnit: test iwl_mld_channel_load_allows_emlsr
+  wifi: iwlwifi: mld: make iwl_mld_run_fw_init_sequence static
+  wifi: iwlwifi: mld: fix copy/paste error
+  wifi: iwlwifi: mld: iwl_mld_remove_link can't fail
+  wifi: iwlwifi: mld: add debugfs to control MLO scan
+
+Pagadala Yesu Anjaneyulu (4):
+  wifi: iwlwifi: mld: Rename WIPHY_DEBUGFS_HANDLER_WRAPPER to
+    WIPHY_DEBUGFS_WRITE_HANDLER_WRAPPER
+  wifi: iwlwifi: mld: Add support for WIPHY_DEBUGFS_READ_FILE_OPS_MLD
+    macro
+  wifi: iwlwifi: mld: Ensure wiphy lock is held during debugfs read
+    operations
+  wifi: iwlwifi: mld: add support for DHC_TOOLS_UMAC_GET_TAS_STATUS
+    command
+
+ .../net/wireless/intel/iwlwifi/fw/api/dhc.h   |  97 +++++++
+ .../net/wireless/intel/iwlwifi/fw/dhc-utils.h |  75 +++++
+ .../wireless/intel/iwlwifi/mld/constants.h    |   2 +-
+ .../net/wireless/intel/iwlwifi/mld/debugfs.c  | 265 +++++++++++++++++-
+ .../net/wireless/intel/iwlwifi/mld/debugfs.h  |  60 +++-
+ drivers/net/wireless/intel/iwlwifi/mld/fw.c   |   2 +-
+ .../net/wireless/intel/iwlwifi/mld/iface.h    |  25 +-
+ drivers/net/wireless/intel/iwlwifi/mld/link.c |  19 +-
+ drivers/net/wireless/intel/iwlwifi/mld/link.h |   4 +-
+ .../wireless/intel/iwlwifi/mld/low_latency.c  |   4 +
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c |  16 +-
+ drivers/net/wireless/intel/iwlwifi/mld/mld.h  |   1 -
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.c  | 201 +++++++++----
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.h  |  23 +-
+ .../net/wireless/intel/iwlwifi/mld/notif.c    |   3 +-
+ .../net/wireless/intel/iwlwifi/mld/stats.c    |  10 +-
+ .../intel/iwlwifi/mld/tests/link-selection.c  | 144 +++++++++-
+ .../wireless/intel/iwlwifi/mld/tests/link.c   |  15 +-
+ .../wireless/intel/iwlwifi/mld/tests/utils.c  |  46 ++-
+ .../wireless/intel/iwlwifi/mld/tests/utils.h  |  36 ++-
+ 20 files changed, 875 insertions(+), 173 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/fw/dhc-utils.h
+
+-- 
+2.34.1
 
 
