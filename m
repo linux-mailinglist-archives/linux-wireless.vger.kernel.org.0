@@ -1,140 +1,113 @@
-Return-Path: <linux-wireless+bounces-20221-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20222-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A4BA5D892
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 09:47:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0479A5D8B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 09:55:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AB3D3B59F0
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 08:47:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 803453B5752
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Mar 2025 08:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5E3236A62;
-	Wed, 12 Mar 2025 08:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F97F235C16;
+	Wed, 12 Mar 2025 08:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="hGnc6ncO"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="g47B97lG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471DA1B6CF1;
-	Wed, 12 Mar 2025 08:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F921B6CF1
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Mar 2025 08:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741769261; cv=none; b=tXJHBDVAwp9Kgx7sYfkTb31KEZpPYb0kFe9a3NQmCDKAePtsGt1SiKGFdLup8Yn3Dje2fBdGTZPrOPxL9C3wD+W7ikJ34KqszHSXKyL6dIbkltVkBWcjembyrC3gPwAD/YgbLtRiXH1WQtDV6CW090k9i2nZdZQMsTD7+I/Vcws=
+	t=1741769751; cv=none; b=fZcneV4qljgOV9Btd4ZBNY1UDNGvBPaP7fDaZ1BLqBb5LH5Tf19gTZwLf8VtWE3LP49nBaGkZ3/UhAmES3A6V+xybWM6/hktrqVF2Ayf/twJnj/6L1AEj2vqD/DzB44XrrXkfJZqvXzOj1CnZu2kb67QfyegcgW1Mo3RSelTvRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741769261; c=relaxed/simple;
-	bh=1tRO4hH37QZmRWi+z2mHv/okE2DMGA9se8JzUfPJ/C8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dd82117fA6e3iLlN2kuu2JNhwOHJAgAiVHWKeETgscyl+zsRQua8vIua89cgQId811DuW75lR3nrupqOKPWtb/TjGn146/sAPf+Tt69fmrwQHHoVPISiF3Xp2rgSNUdcEQ879QLN0QTj6HMI5I9MM+dH5Zwm89pLPNcaGyclcWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=hGnc6ncO; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1741769751; c=relaxed/simple;
+	bh=g335ojpDUfo/UkoeZpSW+lOmGFMt8shtJloGM7+WDEc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Rn6yQ9ry437dJIbdny+YL8g+fa8doLd7Y5inr16WPv2fNFEqaeCvYJHFAnwEE109fQToDrhNF08xPSXBj27HmBwbkaNtCGQP+RwyS9TR1poxOMvQOU2rPIeFyeslT+zhLX3wCDWSKzdSegk4JTqebUI7ibEHpTkvOxJ36uiTvkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=g47B97lG; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=X95azJM+IT89U4VuWfxRFj2NsUsKwEYbn5FZ+PCLLUA=; t=1741769260; x=1742978860; 
-	b=hGnc6ncOy9Rf2id0sdNB5ZhzlIc/P+3PVRU4AmPIm+dPUt8i5ALoSbWZsY8kID0diMNZ11Gub+0
-	c52SCajsIlQcETGuEnJOraa5rQiuWhA8QbIPGbbC0YG4oBhMFHRFq9J5PsEtOjGEisn5Gzl6LC/8Y
-	+SgUAqYuR2jpVvqX/wiNijxrQBISaAlbvYSn7AXt5z/BV+gyGMOf4oARZlTimqhzkWLfsKrfHJz08
-	gR/Sfv/8p7wmYnURkfEet3za/8dzCRgUi5e5cnbU88G3XXyhSoF9esR0r4PiHIF1j5zyaMDLFAKbr
-	O1rUhgemUmAeMXP3YEL4+B54EsYTv2Ii2iag==;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=T+PilNQZoDFiaeryP0xd6L+XbRHr4cTqiRxLDV+1U+E=;
+	t=1741769750; x=1742979350; b=g47B97lGR/Y05JxrSzRxXGqIUgoAJNiyKj8eVboAjziIOaZ
+	AWe6VIZt9YuJgk5W5S18xHgJlUYGoGA4jSlouvHvtzHA/RaXLOwcxtoA6tKt5NDerzoRzjPBtyzme
+	Vz6aVi/LUClsBNVRTyiox6pTMLgVLgj3YmrUJDSp1erSwH3c01Wr16lkpTsusWI9mHcfsUMBcbBdR
+	r3nUus2qgP1dQ3Hd8fLYsOSSKRWTttIU3wbqApobKtjbLfttak2xN2AMuHhZxqk66mMo1UX6amzds
+	s78N3iyOUpTY++E5YVklrUXoBiFv4uH/+b8yxgMKNKq4czhQZalhDHEqCzcN92Ew==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1tsHkX-00000008oJ0-3IUZ;
-	Wed, 12 Mar 2025 09:47:38 +0100
+	id 1tsHsQ-00000008oaV-0mYh;
+	Wed, 12 Mar 2025 09:55:46 +0100
+Message-ID: <52beaa2c05c91590797cc1f53b779fca085c8850.camel@sipsolutions.net>
+Subject: Re: [PATCH v4 1/3] wifi: nl80211: add link id of transmitted
+ profile for MLO MBSSID
 From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: pull-request: wireless-2025-03-12
-Date: Wed, 12 Mar 2025 09:46:17 +0100
-Message-ID: <20250312084733.10574-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.48.1
+To: Aloka Dixit <aloka.dixit@oss.qualcomm.com>, 
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
+	ath11k@lists.infradead.org
+Cc: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>, Muna
+ Sinada	 <muna.sinada@oss.qualcomm.com>
+Date: Wed, 12 Mar 2025 09:55:44 +0100
+In-Reply-To: <20250310200237.652950-2-aloka.dixit@oss.qualcomm.com>
+References: <20250310200237.652950-1-aloka.dixit@oss.qualcomm.com>
+	 <20250310200237.652950-2-aloka.dixit@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-Hi,
+Hi Aloka, all,
 
-Looks like I hae a couple more fixes, but that should be
-the last from what I can see now.
+> + * @NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID: Link ID of the transmitted pr=
+ofile.
+> + *	This parameter is mandatory if the transmitted profile is part of an =
+MLD
+> + *	and the interface getting configured is a non-transmitted profile. Fo=
+r all
+> + *	other cases it will be ignored.
 
-FWIW Stephen reported some conflicts between wireless and
-wireless-next, so I'll probably pull wireless into -next
-to resolve that, once this goes in.
+So I guess it's a question of what "the interface getting configured"
+means, but I guess you could set up the transmitting interface?
 
-Please pull and let us know if there's any problem.
+> @@ -5561,6 +5563,18 @@ static int nl80211_parse_mbssid_config(struct wiph=
+y *wiphy,
+>  			}
+> =20
+>  			config->tx_wdev =3D tx_netdev->ieee80211_ptr;
+> +
+> +			if (config->tx_wdev->valid_links) {
+> +				if (!tb[NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID])
+> +					return -ENOLINK;
+> +
+> +				config->tx_link_id =3D
+> +					nla_get_u8(tb[NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID]);
+> +
+> +				if (!(config->tx_wdev->valid_links &
+> +				      BIT(config->tx_link_id)))
+> +					return -ENOLINK;
+> +			}
+>  		} else {
+>  			config->tx_wdev =3D dev->ieee80211_ptr;
+>  		}
 
-Thanks,
+So shouldn't that be one layer out, so the link ID can also apply if no
+interface index was given, i.e. we took the else branch? Seems like that
+should be applicable, or is there a specific reason not to apply in that
+case?
+
 johannes
-
-
-
-The following changes since commit 3c6a041b317a9bb0c707343c0b99d2a29d523390:
-
-  Merge tag 'wireless-2025-03-04' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless (2025-03-04 08:48:34 -0800)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-03-12
-
-for you to fetch changes up to 8ae227f8a7749eec92fc381dfbe213429c852278:
-
-  wifi: mac80211: fix MPDU length parsing for EHT 5/6 GHz (2025-03-12 09:29:14 +0100)
-
-----------------------------------------------------------------
-Few more fixes:
- - cfg80211/mac80211
-   - stop possible runaway wiphy worker
-   - EHT should not use reserved MPDU size bits
-   - don't run worker for stopped interfaces
-   - fix SA Query processing with MLO
-   - fix lookup of assoc link BSS entries
-   - correct station flush on unauthorize
- - iwlwifi:
-   - TSO fixes
-   - fix non-MSI-X platforms
-   - stop possible runaway restart worker
- - rejigger maintainers so I'm not CC'ed on
-   everything
-
-----------------------------------------------------------------
-Benjamin Berg (1):
-      wifi: mac80211: fix MPDU length parsing for EHT 5/6 GHz
-
-Emmanuel Grumbach (2):
-      wifi: iwlwifi: mvm: fix PNVM timeout for non-MSI-X platforms
-      wifi: mac80211: flush the station before moving it to UN-AUTHORIZED state
-
-Ilan Peer (1):
-      wifi: iwlwifi: pcie: Fix TSO preparation
-
-Johannes Berg (3):
-      wifi: rework MAINTAINERS entries a bit
-      wifi: nl80211: fix assoc link handling
-      wifi: mac80211: fix SA Query processing in MLO
-
-Miri Korenblit (3):
-      wifi: iwlwifi: trans: cancel restart work on op mode leave
-      wifi: mac80211: don't queue sdata::work for a non-running sdata
-      wifi: cfg80211: cancel wiphy_work before freeing wiphy
-
- MAINTAINERS                                    | 37 +++++++++++++++++++-------
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c |  2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c    |  6 ++---
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c   | 11 ++++----
- net/mac80211/eht.c                             |  9 ++++++-
- net/mac80211/rx.c                              | 10 +++----
- net/mac80211/sta_info.c                        | 20 +++++++++++---
- net/mac80211/util.c                            |  8 +++---
- net/wireless/core.c                            |  7 +++++
- net/wireless/nl80211.c                         | 12 ++++++---
- 10 files changed, 89 insertions(+), 33 deletions(-)
 
