@@ -1,88 +1,88 @@
-Return-Path: <linux-wireless+bounces-20356-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20357-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C4FFA604E7
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 23:59:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B8AAA60625
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Mar 2025 00:48:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2946E189D910
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 22:59:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7196416945B
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 23:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41C81F8AD7;
-	Thu, 13 Mar 2025 22:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8241F5831;
+	Thu, 13 Mar 2025 23:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="b8CMSaYB"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dwGqZGNB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0FF1F03C7
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 22:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CFE1F4630
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 23:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741906763; cv=none; b=ixZID7/JUlmPsLYU7thhk3qAMRRoHZXUG2xNnHNis0UHMafOgcsLSnJsMQZTWRmy2MP/lENAS21sI3Ytm0bUi+UPU9KO/zeDi5EkovIpUoX//GtZ0rjH8/h0XFVxHG6b5B3/rsz384EV0fUVxUxcA/BAqc7ES/G/NMm38pTwVQs=
+	t=1741909730; cv=none; b=Sfz8x6ITAP7e3AGew9Bp/Yhbfx9VXqpDgEvlMVhoya2yOLkqPM0ou5/VWHUSONJvheWya3ijcmVqO21xzlcrpbDE51dWTSBhnMZxsd0SFF9gMhOVNX6XfZlRlVoin+a1mdq6EsZCh8pIenxXBk4ys7BImQzrel3ZR87xOkEr27k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741906763; c=relaxed/simple;
-	bh=zTHADoDUZPfGql6VN26E3TGY4wawt8L83GfO6E1MRUU=;
+	s=arc-20240116; t=1741909730; c=relaxed/simple;
+	bh=0lu8oU1tyqYj57FgsKOmobIAzRwBp7FW+RRAsiYBpss=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=apWeEGlPAK0V+jTfuMOOGp65Qp09blZI8c+McR5sW8zahywiDtV/yHyCwG5LsiXt/DGNEku6yZ56IFcJ/X2AxAUzEWx1I43lyYdYtHoDGsOjbm3rXSt9WcM1dIi+gLIBV2x5nGfux75/XQ/8ucOJR9qqdR35gKDrAkISfF1qLbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=b8CMSaYB; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=tCEy9dFjAHEHYJ5enXbVQIu70qeBO856ZJMm/Gh7cPSgp1dZn/gg8kmCKWadi6qZkPUj3/LqJ4spUQpS54ZRiCggKqa5qEANIERiJcAxz9k00yzzk8OZ6VdVJxhs4SXqKRf5s3u5ltFMJz83bnOc2OIrtg3Pne24oZ0rOHljClw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dwGqZGNB; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DAa0RF003492
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 22:59:21 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DKDu4V029014
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 23:48:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	DlscsM8kt3jhJKPPI6WK1DrD4tGRZlDapuFyYmG6mcg=; b=b8CMSaYBktavQErc
-	gzusZSPvMwScqKoW3tctXMTYLyd4gcn2OOieGcI6SL/mRyT4xG0+Slv54X9a10/b
-	/N8QcUdtGMV9bnNoc8pSRuXMP6enZu4Be9umNz3O4+xit/f5KIff4kRw+HWSe0Fh
-	TBalFKphubh2sVN72QtDCdJ/7cKOWqd64OSdazkE35xxo9adt5J5BdlTL7K+Uoau
-	Ow8regM880z1csbIkMIaKIAdKhQaTTR/XDChREwF2P1mZjNF06ncWPFD3ZHV7UOG
-	aQ4m2bRbKj3OOnWIK8LQiH4/IBvVc6h1ZB3peYTO6UvIglweINVPtJJsawIptu+t
-	h/Lg/Q==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45b96yda50-1
+	Zkd/Jggqn86Uyh/5JzZQRlmlyi5xVymwBZ1NTqzN0CE=; b=dwGqZGNB2o/W1vhD
+	lMvadEKnxYanIo9kqSUDcDRjzYmf0TZceWIIFAN5IMf9GLnu0vKfBl3PmMir/KAk
+	WlP/r2ERc2k4tD8cZEiRtt8U6GhiW/3HsZAfKDfDxREL6QCLQJZumrxiCZoUrobj
+	pPSJMo/CUvLm3P7FqRGHPp/lUzAaaD0iIqgbxHEUd4/4JGcTN2GOIwGJM+Pw/Y24
+	/IjsOyMx6/5dwvtNvPO93+76BHj4j8w1KpQldr2S6nNQXj5cvMNNm1fjqL3bhgOJ
+	7VUI9ZyZbtkc0yR2cfQX6LW2QF7I3TlWpXNfCgJDt7E7kXr0g2A23DXmkNyrdAsY
+	oWs4Hg==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45c6730ddh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 22:59:20 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2240c997059so32950065ad.0
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 15:59:20 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 23:48:47 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-224191d9228so29679065ad.3
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 16:48:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741906759; x=1742511559;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=1e100.net; s=20230601; t=1741909727; x=1742514527;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DlscsM8kt3jhJKPPI6WK1DrD4tGRZlDapuFyYmG6mcg=;
-        b=aatVOPZSIQo1IfoaV7bLQbYzzCWnLRi/7pSSUfHDQwxm/Ia4mghABllskEhbUtAVWW
-         Sj1yLo+YI+kjwdQe4RRvbDxq23Bh1Ula1xW7MGYMxxGPs+h7T8L9eHA1WbwXIF6v56YY
-         SD+I9meX7mayEqmtt/rvd6x318tTVM0hH/Ypz4lCClg8JG62ggWnL7ZVs+GdWjyrVlSs
-         snEwDBeleQCpcv8kYO6yRv7clSpt5VcFT7KwJ5guhVmv2DQaIoLbwTWsINH8aDxmRzWL
-         4BWljYs/6P8KAqzSZeWhA2ZBaitt37j4kMdauYvr6FErywBjNTSzFlTBAkQvG5QcVni2
-         l68A==
-X-Forwarded-Encrypted: i=1; AJvYcCWhL6EjKHHwb91Io6bqCIJtB5C35UV+UZeOh9qARovQ8xX5HAhz/xP7Qbm48iytst5iG5gzAwUM3aL9SuIC5Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzARL7xXVmTIznuqUsbYf0bIUdKbuqBFD6EXl4vRpj/QUYK00co
-	gbmQkVTYwBDcB71SzlRGZvAdeMEWFsaGkVCTqkZj/w6dX4SBTbE82Ivr0ogCzXX6CsrJJJbycZe
-	1ChuJlQ7xX3AOV7X7+GZh02qeCQLxyq1NFhQwCvwnlBteLG3yK9e/MX6ddvtz/M0H5jcV6745sQ
-	==
-X-Gm-Gg: ASbGnct+WcgNEEO8/yF9ONNTAKZdDavfmp2TnPnYppI0AOmsY1A5lAZAQhSS96ToHTc
-	El78pWzwSFwRo50FLd4OEAEcH0V+ubL6C8qQt+8kzEHwKEUVdKo4EEe9cM8jv3iknSIugWHgWjT
-	GKyaagrC62iLW3L2WXLdxAdJyPLzq16kHVImSP7g2wyeYIwmiIXxnTNhNBUw/nMMNlmSHaTP+HJ
-	Ici9Gcjitj5jOP9FsrdD1Ev47cZSU3Q8WzhSZykC8xfAXiVwD5YTCvrMnqUvDVE3NWSZ1KWK5+v
-	Lu8XIstqxeSXCGzYp134qsUKh4+q6ToGEZPx7C4fkRfRPum578eCXc7ESu1Z/P7/++Inmjk+
-X-Received: by 2002:a05:6a00:a27:b0:736:4644:86ee with SMTP id d2e1a72fcca58-7372235af19mr315817b3a.14.1741906759460;
-        Thu, 13 Mar 2025 15:59:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFy3xVoqb3anhbGk6RmIqiQdZbFPhRI7ciTb9mdlxU62/8hh2eKyhDOtWNxtwvEg4Z7wcZKAA==
-X-Received: by 2002:a05:6a00:a27:b0:736:4644:86ee with SMTP id d2e1a72fcca58-7372235af19mr315798b3a.14.1741906759009;
-        Thu, 13 Mar 2025 15:59:19 -0700 (PDT)
-Received: from [10.227.89.219] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7371155077fsm1897725b3a.37.2025.03.13.15.59.18
+        bh=Zkd/Jggqn86Uyh/5JzZQRlmlyi5xVymwBZ1NTqzN0CE=;
+        b=atu0khc+VMXw37Mt5byZtMGkmatw6LWcHGUWXcA4tAclPJHq+p6oyO5NhcqY3flGaS
+         b3+tUxlnbqrBu3TAR3PzDrf+J/u3YXET2jo+FfERb/86ZrAjh4iFEibROrWnKkWtKLYd
+         jz8CJiz5S/L9+eDxq3+ta9EuJbFRs8jCVJUPKtslr0jnL2aC6L9wGggqyB/WfpYzGFbC
+         mxA09Bc+hN5SpBiL3dIV1wAofFblTD6snbkIUIrDbxSlXJ/1QoKxhrPk9EVEJ8kNUajV
+         IoxETLLWJy0OOcAKbTYfwMgAMo5Monz8vy2Jz8BDox05LFdnUhegiQoIkhPqHzjggn07
+         E/7w==
+X-Forwarded-Encrypted: i=1; AJvYcCX4BEnsNdBzhWRpomVA6Mi7jBJPHQ0emq3aRoPIJgVD0Da8uDfQzQPpEvAczSj/AZmLoXf7tWRJKnbgFmYe3Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZbRgCQXugCqiNV7jYUUjDLrOz7du7pI4ovFM4ylMyG6j89kNF
+	K3ktN7DUL/12d162FKTGQnTX9rpEStbs/3/TEYbY4r7QbUXSw1g4lvGbv3zSYW7TpNMJoAtQB0E
+	9K8QT/bP0dJ/e2+y4kiAVplv+yq5Vae1wAhXDLRW7ysC5F0szqABCOSegUt0ea3eLYQ==
+X-Gm-Gg: ASbGnctgv2uqki902txIMtsK76TLhXXUe1Eksy6QP+obmDrFUrrgtS9iltyY3gdlWVS
+	xYhd+K1UTdL9zJdunY/RBAuygBqSwaEEptFxIILjx9bfL8DYPvy/dbqEt7iU73mBmUqlxhdH82G
+	k8bEYst4O+yYfabNhFti7e9t/F9/uXgIDJtQ7IJCgro8TDJu340wNQIeUFnLkBv57s37c4H9/C1
+	kv/DIX0ThbhfvXwGWD+Tqlay3AN/SeIrVIB1VkfAKVcAjDR5Q5JuCU0pcGtEvUA6OR4ppzQ9GTD
+	ZXYkQELH7iUIPoiaJbOJA1ONjTsczrv6BMmiweRL+XfKAN8Nq3zMtUNj7cwmshKMHRXQvt9Mzyj
+	aPClXzZT0
+X-Received: by 2002:a17:902:ecc5:b0:223:f7ec:f834 with SMTP id d9443c01a7336-225e0a840camr4626005ad.31.1741909727064;
+        Thu, 13 Mar 2025 16:48:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHcphUQ8UCrGDx8Md02DmjuseFiFZVhQ2qPU88RhdsaxrxfnuW+c53+Y3w5UiXV4O9t74jPcQ==
+X-Received: by 2002:a17:902:ecc5:b0:223:f7ec:f834 with SMTP id d9443c01a7336-225e0a840camr4625785ad.31.1741909726725;
+        Thu, 13 Mar 2025 16:48:46 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c68887fcsm19356845ad.39.2025.03.13.16.48.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Mar 2025 15:59:18 -0700 (PDT)
-Message-ID: <4e4e4737-6040-4ec2-a3be-3fe1aba7b7cf@oss.qualcomm.com>
-Date: Thu, 13 Mar 2025 15:59:17 -0700
+        Thu, 13 Mar 2025 16:48:46 -0700 (PDT)
+Message-ID: <2654f986-eb8b-430d-b962-8e77d9e11826@oss.qualcomm.com>
+Date: Thu, 13 Mar 2025 16:48:44 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,84 +90,60 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] wifi: nl80211: add link id of transmitted profile
- for MLO MBSSID
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org,
-        ath12k@lists.infradead.org, ath11k@lists.infradead.org
-Cc: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-        Muna Sinada <muna.sinada@oss.qualcomm.com>
-References: <20250310200237.652950-1-aloka.dixit@oss.qualcomm.com>
- <20250310200237.652950-2-aloka.dixit@oss.qualcomm.com>
- <52beaa2c05c91590797cc1f53b779fca085c8850.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 09/10] PCI: Add function to convert lnkctl2speed to
+ pci_bus_speed
+To: Bjorn Helgaas <helgaas@kernel.org>,
+        Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+        Rob Herring <robh@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        mhi@lists.linux.dev, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, quic_pyarlaga@quicinc.com,
+        quic_vbadigan@quicinc.com, quic_vpernami@quicinc.com,
+        quic_mrana@quicinc.com
+References: <20250313171637.GA739165@bhelgaas>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-From: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
-In-Reply-To: <52beaa2c05c91590797cc1f53b779fca085c8850.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20250313171637.GA739165@bhelgaas>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: v0UN9W4yTQl5nJ-_B7xP0c9ZlBVDeWnV
-X-Authority-Analysis: v=2.4 cv=I+llRMgg c=1 sm=1 tr=0 ts=67d36348 cx=c_pps a=IZJwPbhc+fLeJZngyXXI0A==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=0-u4nmc4IinrO2lHwEAA:9 a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-GUID: v0UN9W4yTQl5nJ-_B7xP0c9ZlBVDeWnV
+X-Authority-Analysis: v=2.4 cv=a5Iw9VSF c=1 sm=1 tr=0 ts=67d36edf cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=wUlHnouiQKlN4MMnk_oA:9 a=QEXdDO2ut3YA:10
+ a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-GUID: xFYizk4AkeTsf1jYMR4LTYJBE5vsrFwZ
+X-Proofpoint-ORIG-GUID: xFYizk4AkeTsf1jYMR4LTYJBE5vsrFwZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-13_10,2025-03-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- lowpriorityscore=0 adultscore=0 clxscore=1015 impostorscore=0
- priorityscore=1501 spamscore=0 malwarescore=0 mlxscore=0 suspectscore=0
- phishscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=736
+ suspectscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 clxscore=1015 spamscore=0 mlxscore=0 adultscore=0
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503130175
+ definitions=main-2503130180
 
-On 3/12/2025 1:55 AM, Johannes Berg wrote:
-> Hi Aloka, all,
+On 3/13/2025 10:16 AM, Bjorn Helgaas wrote:
+> On Thu, Mar 13, 2025 at 05:10:16PM +0530, Krishna Chaitanya Chundru wrote:
+>> + * @speed: LNKCAP2 SLS value
+>> + *
+>> + * Returns pci_bus_speed
 > 
->> + * @NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID: Link ID of the transmitted profile.
->> + *	This parameter is mandatory if the transmitted profile is part of an MLD
->> + *	and the interface getting configured is a non-transmitted profile. For all
->> + *	other cases it will be ignored.
+> Not sure how strict kernel-doc is about this, but I've been told
+> it wants "Return:" with a colon here:
 > 
-> So I guess it's a question of what "the interface getting configured"
-> means, but I guess you could set up the transmitting interface?
-> 
-Right, if the interface getting configured is the transmitted profile 
-the link_id is ignored.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/doc-guide/kernel-doc.rst?id=v6.13#n142
 
->> @@ -5561,6 +5563,18 @@ static int nl80211_parse_mbssid_config(struct wiphy *wiphy,
->>   			}
->>   
->>   			config->tx_wdev = tx_netdev->ieee80211_ptr;
->> +
->> +			if (config->tx_wdev->valid_links) {
->> +				if (!tb[NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID])
->> +					return -ENOLINK;
->> +
->> +				config->tx_link_id =
->> +					nla_get_u8(tb[NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID]);
->> +
->> +				if (!(config->tx_wdev->valid_links &
->> +				      BIT(config->tx_link_id)))
->> +					return -ENOLINK;
->> +			}
->>   		} else {
->>   			config->tx_wdev = dev->ieee80211_ptr;
->>   		}
-> 
-> So shouldn't that be one layer out, so the link ID can also apply if no
-> interface index was given, i.e. we took the else branch? Seems like that
-> should be applicable, or is there a specific reason not to apply in that
-> case?
+Yes, patchwork is flagging kernel-doc issues in this series.
+However, there are numerous pre-existing kdoc issues in the MHI and PCI files
+being modified in this series. Just look at the patches with errors being
+flagged in patchwork (including build errors with 06/10):
 
-The 'else' case in the highlighted snippet above is the same scenario as 
-the 'else' case you referred to, which is one layer out: "else if 
-(!config->index) {".
+https://patchwork.kernel.org/project/linux-wireless/list/?series=943497
 
-Both are executed when the interface getting configured is the 
-transmitting interface. The difference between these two 'else's is that 
-in one case userspace explicitly provides 
-"NL80211_MBSSID_CONFIG_ATTR_TX_IFINDEX" and in other it hasn't.
-
-Similarly, for MLO, mac80211 does not need the link_id of the tx 
-interface because it already has the link_conf for it as part of basic 
-AP configuration parameters, hence link_id is ignored in both 'else's.
-
-Thanks.
 
