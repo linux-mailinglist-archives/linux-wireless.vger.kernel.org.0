@@ -1,213 +1,240 @@
-Return-Path: <linux-wireless+bounces-20325-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20326-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F2EA5F5BF
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 14:18:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2394BA5F5FB
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 14:32:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB6A47AFE38
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 13:11:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC7CF18868C0
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 13:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BC1267737;
-	Thu, 13 Mar 2025 13:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5BC41760;
+	Thu, 13 Mar 2025 13:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="QRP05isH"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="O7dwPxh8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazolkn19011030.outbound.protection.outlook.com [52.103.43.30])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D47267B0F;
-	Thu, 13 Mar 2025 13:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741871530; cv=fail; b=up2sPDZbWHtNLa6PPPHYx0aCw3fi6um8Yolwd7zoR9ZvxznI5frR3nBGozz0p2P3Ablgii8fgLgCIe/hc1E7444O/HsirpD6oSgyiku5KfALKvEa8xtHX1BJjyzPKJjmsJ7sDQOd5sMDZyayj7MQ7SiDiaOUo8zrmASBpfJI/dI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741871530; c=relaxed/simple;
-	bh=jqfZ6fx5MzBwVqtPR4t3d4TblKZS4aAPgxsBQFB2b5Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=lOkNmKnp5+iJMs7omsfxVTeFusPocb8PSbLtf9UohHq5UuDC/8tOi13WVGm6G3L/YhNGb9vujhnbVD5CxaFs9npO6W6gxl0b+iHjjHY7Hx03QFJJW97IfqBNFBZTO7od7GWa88Lu1SdkDqOavX1k9telcgaobYQJkgkbkH8ogZs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=QRP05isH; arc=fail smtp.client-ip=52.103.43.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cVUlpxOxv7w5dDypCtJtfS7zG0Zg1Kk9LNekVNRzoOeI9upr/LbJLIFpx83D3Zped9KcKoapcrEmll3qk2s0VZ/of0wfUCE88lDWgPUJiyAa9O9xNmnP54HtOXHJl2X0Efq4UmfEiKUDFYc8vAzf8rA7ITDaUXw9RtD0++NkCmw62Wa/xAZ4RTjshynhlbwiZnGYket63C10pLm0qaimgQa3VQdQ4f0jvtK/OeGaIJf++x2UDoIgmXQbJEjRDsq8NJ0eClElpuuo1W8Hb+pSoqITgvF0x/qWLGsjukobg+czV6PRRhK+xGJcAwSRNwC7dASmg6RlLy006pVeK9pNsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=coUtwsGeOyeiVNBV1R58PGVsckk+fK/0iBXL0lL/O/M=;
- b=RTuddb6EWO61xj3AO1ECxksLWme5eyaTd+5eiVpWL/jwiwGFIloE5T319esE9JO+BqcPgqNQTPmmdpqoV9SkI9KWi3IAeLV+gYdAlamWE5N16SWgWdyr1Q51p5A3CwgnGeDH5BXR60WofGkiSOlJtf/d0Sf1sbEaWSnpOIfYZ/QxuaQq9h/lJUpQm2CmG2qnpONR7N6PGUlHg79KAk9JmVgVmpztYRJAvQuPb6TzME+YeD7+7Fk5BsqRUaRatf/CNRNfRy5CANvfhUsejSSqkv+34PAbTe5Z8qG9lH3royr1zK+eUSk43RXcG3Jr3jhdlraGFb7KwseZRryEKog8Kw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=coUtwsGeOyeiVNBV1R58PGVsckk+fK/0iBXL0lL/O/M=;
- b=QRP05isHIBe/JP0A931lxgfK3wAJHn1hXOri0asDQeGN/UQzwRGzG52Xppc+QKKzk2UU8HKCt2bXA427aXczncxJpeVwl7fe7JaptwSFJQEy/zQZynmI9DehmmcJ9mh8tyu2Ie725EzSt1LXV/APfajpMy+SPqCettoGHLy9rKY+y6oJY3jXkjK3Izw4GJ3YPUPjXSAJUCkqNCvjdrC/1jPYLgDC+gBHE2MNSHI+/1melXfQt6YcYS+/hSrQ6fxeTb9oTAiTTdb0HlvX7oQVWj44iAnTNTWxMvEnMcVLpYXdecx5t/zVIidPt9VnSZc6wsNmOSpDvb4afcLNV3wSzQ==
-Received: from TYCPR01MB8437.jpnprd01.prod.outlook.com (2603:1096:400:156::5)
- by OS3PR01MB9802.jpnprd01.prod.outlook.com (2603:1096:604:1ec::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.28; Thu, 13 Mar
- 2025 13:12:04 +0000
-Received: from TYCPR01MB8437.jpnprd01.prod.outlook.com
- ([fe80::83e7:751f:f3af:768f]) by TYCPR01MB8437.jpnprd01.prod.outlook.com
- ([fe80::83e7:751f:f3af:768f%3]) with mapi id 15.20.8511.026; Thu, 13 Mar 2025
- 13:12:04 +0000
-From: Shengyu Qu <wiagn233@outlook.com>
-To: nbd@nbd.name,
-	pkshih@realtek.com,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	johannes@sipsolutions.net,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Cc: Shengyu Qu <wiagn233@outlook.com>,
-	Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH v2] mt76: mt7915: wed: find rx token by physical address
-Date: Thu, 13 Mar 2025 21:11:54 +0800
-Message-ID:
- <TYCPR01MB843753CE1DBAF4FAEF76B17698D32@TYCPR01MB8437.jpnprd01.prod.outlook.com>
-X-Mailer: git-send-email 2.48.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PSBPR02CA0001.apcprd02.prod.outlook.com (2603:1096:301::11)
- To TYCPR01MB8437.jpnprd01.prod.outlook.com (2603:1096:400:156::5)
-X-Microsoft-Original-Message-ID:
- <20250313131154.109012-1-wiagn233@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C258101E6;
+	Thu, 13 Mar 2025 13:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741872730; cv=none; b=gFlj8NXFNQisA99VyHB2PyLH9KKOxN9rhs9kfmuDznrWiEMCkTSJjdAbLD57Hv4sB3/v//s8hHwBTUOBg+v3+Y24xC2cty1BU+nVzxJ/EpRFmEJsTiLwMm/fv3z/rv6jbnnjxcpqVWeb5H+mL0gOLUl42aaxrpw8eWnoS/r9EQQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741872730; c=relaxed/simple;
+	bh=lv9WD/LyfzkEiwc6v8Z5TUZKz9TC2fvHQxlDBZKxZIc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JgPl/a+zYmKiTMrKZLj5F7LbnEFMzgTQsQI9usfV984FPFKSjbklURUmLMY334xZjM6NuwQTFlPaiQU+RhOuiG5nifux/1jinmRPFZX3frcnv6GelItCb2lBTWiOx0z4KVHtMwZTaBouo/7e/XbesKHTrhGxhvEFWEfuuWSjwn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=O7dwPxh8; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52D9SZ84028501;
+	Thu, 13 Mar 2025 13:32:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	C7BMESZ1albT009zS/aJeY7GPt60TCH4RI2gYZnDsn4=; b=O7dwPxh8+xa+D257
+	SoABzQ62NyFOR2Ex/VVRqQEjKQF+iu1BhK4FjpbXRFVRJciGjIMUb4Xsf9oFUU5e
+	d8Xl+4jT5+VwHsHXRStlK14doLUZDK7fXgifplk5CEllRiP2XeisWGfqyjBMg+/m
+	3QDbtSyvnQ1pxCl9+Bt9UGC6GNV5q6Fy4CqYxaWvJH3svH4hPmJWhVAbxEdrpfuY
+	DeoA/lc174hgHHqtWgHw2LUl7+9CjMrgd+dEM9mVbPhBMvxpjwX8ZRSyLkgrQQ0l
+	DwiG129nMxQ33wbabPCaCzyuFHyNuCLG8HLvKB8YbhU790o38bKFxzMw9H2eK1Cl
+	XEUEBg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45au2px03c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Mar 2025 13:32:03 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52DDW2Aa026700
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Mar 2025 13:32:02 GMT
+Received: from [10.253.32.44] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 13 Mar
+ 2025 06:32:00 -0700
+Message-ID: <8ea7fe7c-7b4d-4a6f-ae03-b9ca127c23f8@quicinc.com>
+Date: Thu, 13 Mar 2025 21:31:56 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB8437:EE_|OS3PR01MB9802:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4743880-1240-4528-d266-08dd6230a5f7
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|5072599009|15080799006|19110799003|5062599005|7092599003|8060799006|461199028|41001999003|19111999003|14041999003|1602099012|10035399004|13041999003|440099028|4302099013|3412199025|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WjIi0VFgEcXl7VF48G5at67SixuakCZXaTTKdy9M3zbgKhyWY+29tjj2mYNh?=
- =?us-ascii?Q?3GW86bPmenJGojyPiRMVce54/euaKYGzrJUHORbHeFbjHg17HJNOXU4vmZ5E?=
- =?us-ascii?Q?Z38q7l7tsmrBCQvtp1/Tjtu2EhCdzrn6X8Qp8J+uX33n4bVjvTcPW7QPhXV/?=
- =?us-ascii?Q?xvpAYJzftb6oRni0g4ZGSx4Tn4x1FCIO459somjHWvmCPS+2mgkFwt4NxfXy?=
- =?us-ascii?Q?aSiaBqMvf71dfPenhXsC6P3P6DRJsOi79jk8tHkbUzadVHM2SU58LKXN8la0?=
- =?us-ascii?Q?FulciyhNicp9TLwZkm04QwAl8nxFL4qpSZ+jhFgeOFWA5ezav2/V2rMZjwP7?=
- =?us-ascii?Q?ZePczjnQZzfoMsrE1bM6Rl7K3UK7Sw+tIwmwO37KtJP1/jmByRtx10H7NniO?=
- =?us-ascii?Q?eEAMCq2gwCpcSnCzAFUCRUrn9zSOVm6ssKAYN7AiD+M/SGYrUBGuIKQsLeuP?=
- =?us-ascii?Q?cBQr7ZH3pLmNGOFnXnxFiPjrTM4QW984YX7RzGVAYSEqIg1TLDY71fUq9M/8?=
- =?us-ascii?Q?sUKhE7K7pRLnKe1g2/kKsIYzMfgp7hjdBCKW3BYSrX0dzrmAIybGctV/acyI?=
- =?us-ascii?Q?tfUDbwyBjJP+k7xmcTkZbo/XtJtWC6hn/ToVGEjt7+SMXUV7MtF/Ujfk3v4l?=
- =?us-ascii?Q?P/q9JERomDTF326fSlE4sGzG2+gChueAqKfSDGfJtpPX/QSFb16MELMhyWsK?=
- =?us-ascii?Q?C42dqYWw4HP988ZpPJQBNLnriePc1i1+VpPLpEWyClMJsiv/WUWeyqFnQJ7c?=
- =?us-ascii?Q?npMuBo/fpvstdJzm93igx3+JsaQxqmzehaID0BsZTmgKYTRJBYJ7D5AGBEDk?=
- =?us-ascii?Q?gjCauGAWz1mY0oRrLrK4lhUsB3qZANmqiSfsD6gUfoLN2qMPwGF7tperzVQy?=
- =?us-ascii?Q?I2hbIyN7ocRrGIdM5Q2mvifprrk9W2+fuhjQQwYjVTK8iQ5jzEXU8v5ofZAw?=
- =?us-ascii?Q?AVZdj5UzijbTGgYhr2x0iFfNbVgxAefjGPYcxscwn2nd3nwqtem6mrO6VpW6?=
- =?us-ascii?Q?0lB/9cl7OjVS7shK6OelGLw3HddQho8/GpC/kbGcqQhNR3y6rL7sTc0PhtJZ?=
- =?us-ascii?Q?h7N+WTXlFVYThMm/FOsxVoUrkNMdrr2vLKOUgXs/u10f4a6FGtaf4qvLPV+H?=
- =?us-ascii?Q?d3n09Tvwcf+U6/3x7dX6ELNS44wn3whR+XTJR8mIBN0PM+kmiX2sin3YfmMW?=
- =?us-ascii?Q?1NP0emYxXfpH6PDqPpkoev+kldfrYxbwUDaKYq+HKg5SGyogb9shRGcQ7ooo?=
- =?us-ascii?Q?Wt5gG2pOOgAyE7C2zuqxWPJbzJk/SGC6udTvxKf4iioxLBV52OIaGwv06P2D?=
- =?us-ascii?Q?kMXlUJzaQ0Kd27YaPPgxFCTPacz5915zPOusJR57JyQOYnVxgCvlplWadQXR?=
- =?us-ascii?Q?F6kmq2wYKcgHTIYgm8qpsy9XsJNv?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TyQYh82RCkCr7BRUaXOQc22Ls2EYi9bs9XnEo1/2t2lZbcp/UI7snsOwX5/E?=
- =?us-ascii?Q?zcCA8bu//Sl27cg3OfKNVuH0rBOIyV0Ze99EQooPTsuhQnOmjmWRVfQ5CKg+?=
- =?us-ascii?Q?9ZTRgbhSE9UYumxb2IDaYHm1t2SSICCPh92qyn/8SYPGw02GHn4MZ7uQmnpI?=
- =?us-ascii?Q?U7f7BAPLe7Kpc2T8py/gXBKe3GNbDly7g9Cub6TrcWUEzltEcsAxDH9IrvkA?=
- =?us-ascii?Q?OaidVShCHv0wkWnynlDudjE3slHwX1SNZ8e6SKkPIcKoNNQPtiHkw8ahXGg6?=
- =?us-ascii?Q?BRTFw7yH1k820GHX4kX6Gx1dN1pn1leFxOsLRaBPsuT9DbSpsY8NvrgTD/Ai?=
- =?us-ascii?Q?LuDndM+hVC55ZbYb7ahL7L3a2rdYQUM5TRqBh+LwW/NuPYMifEBoaDj0mOQ3?=
- =?us-ascii?Q?vopc69MzVqz3Dht8cfSxMwD/9tsyX0zbhzMfRtlgy/PQpIt+1hyQ7/xtbZjR?=
- =?us-ascii?Q?o28Ar1D7TJ88JMF41Wd4TrEBOrM500CrPC/2jBspY+obpGz8mY/HZxHu2+Bl?=
- =?us-ascii?Q?mHgk3ZNRNmNmBdaSNQDLkUtGHINCMkZoq1f/uqopBu23BXZmsqkW9123Tp6a?=
- =?us-ascii?Q?eFsUxMnA6GzBwHxTM9EygELC8bkKdx3pPfcx63H+uaj3/3nXlrKvT0OLNz+v?=
- =?us-ascii?Q?xTXGUdZ5wX5OI0x1XuiGgUmeTd0GUm3MDUoYfEENJkCwLurTh15TZele1Nj/?=
- =?us-ascii?Q?D8YRcYK/yEkwx2y+m1jPDO88vEeQ26Zgi1l8v1wXq1HMjit4mNKXvF4lS0ZV?=
- =?us-ascii?Q?4uGpAl6T3ThaKSXb/L74TjN4OA6g9GsqkGayaAinHCCAHZmXvvkZghj96ZKP?=
- =?us-ascii?Q?ed7KOCwwlDieDUd9ZQechJWzW4ahAuCW68/wwIdClpdXDM3BBQVajRrvdpqm?=
- =?us-ascii?Q?L0tugkJ+Qq719Ekbp088LQbjk7O6BAcUEachYL0XGf5atguSgzIwN3ZCOMAk?=
- =?us-ascii?Q?TF121eGTMwd++ll8/5AvWLxxDavHCVwWZXJmwlBHjIt6T+zH4ncwB8rg8kI3?=
- =?us-ascii?Q?/KzJfNISFtZ5+jTLu0GxZWtZ/2wf2gYU1CjvN8OHew6TBu42yyRLI7SuETVu?=
- =?us-ascii?Q?//YNJxEXHn1rfvqXFZEoDu0bXDiVf8S5pdsIRtFDoQmEFx0aRUsw1qcGg9Fa?=
- =?us-ascii?Q?zCu0T2vQq+nG1JBlmaz69dxxsP6Sdw8iIP9hROomAuVkjk7lvAiaCjx5KojD?=
- =?us-ascii?Q?RQCxlnrq0zQgYbM1KeNKA0mR8NrfslCsimzHM0WYHtceMi/9lh4BgO+FLpxv?=
- =?us-ascii?Q?KAhauc1qRQuRxXEhO64hku7ZeIcaFzCMH1XQLIPK1VjmhzezF/mn4V8R+4N0?=
- =?us-ascii?Q?1y4=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4743880-1240-4528-d266-08dd6230a5f7
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB8437.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2025 13:12:04.2102
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB9802
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 ath-next 2/2] wifi: ath11k: fix HTC rx insufficient
+ length
+To: Johan Hovold <johan@kernel.org>
+CC: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <johan+linaro@kernel.org>
+References: <20250310010217.3845141-1-quic_miaoqing@quicinc.com>
+ <20250310010217.3845141-3-quic_miaoqing@quicinc.com>
+ <Z866cCj8SWyZjCoP@hovoldconsulting.com>
+ <7b1c5e40-b11d-421b-8c8b-117a2a53298b@quicinc.com>
+ <c0cdcaf2-655b-4d22-a949-1519c552e6a4@oss.qualcomm.com>
+ <72d95d77-674e-4ae7-83b0-ab58748b8251@quicinc.com>
+ <Z9G5zEOcTdGKm7Ei@hovoldconsulting.com>
+Content-Language: en-US
+From: Miaoqing Pan <quic_miaoqing@quicinc.com>
+In-Reply-To: <Z9G5zEOcTdGKm7Ei@hovoldconsulting.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=P506hjAu c=1 sm=1 tr=0 ts=67d2de53 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=POYSu9ou3bP9OeXHj2YA:9
+ a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: zzDgsTmd8_OvdzKPbx0FA4Ze8PppLFIs
+X-Proofpoint-ORIG-GUID: zzDgsTmd8_OvdzKPbx0FA4Ze8PppLFIs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-13_06,2025-03-11_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
+ mlxscore=0 spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ suspectscore=0 malwarescore=0 mlxlogscore=999 lowpriorityscore=0
+ adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503130106
 
-The token id in RxDMAD may be incorrect when it is not the last frame
-due to WED HW bug. Lookup correct token id by physical address in sdp0.
 
-Downstream patch link: https://git01.mediatek.com/plugins/gitiles/openwrt/feeds/mtk-openwrt-feeds/+/737340322ab22b138fd200e020d61ffdbe3e36a9/autobuild/autobuild_5.4_mac80211_release/mt7988_wifi7_mac80211_mlo/package/kernel/mt76/patches/0062-mtk-wifi-mt76-mt7915-wed-find-rx-token-by-physical-a.patch
 
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
----
-Changes since v1:
- - Reordered code sequence to reversed Xmas tree order
- - Renamed some variables
----
- drivers/net/wireless/mediatek/mt76/dma.c | 26 +++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+On 3/13/2025 12:43 AM, Johan Hovold wrote:
+> On Wed, Mar 12, 2025 at 09:11:45AM +0800, Miaoqing Pan wrote:
+>> On 3/11/2025 11:20 PM, Jeff Johnson wrote:
+>>> On 3/11/2025 1:29 AM, Miaoqing Pan wrote:
+>>>> On 3/10/2025 6:09 PM, Johan Hovold wrote:
+>>>>> I'm still waiting for feedback from one user that can reproduce the
+>>>>> ring-buffer corruption very easily, but another user mentioned seeing
+>>>>> multiple zero-length descriptor warnings over the weekend when running
+>>>>> with this patch:
+>>>>>
+>>>>> 	ath11k_pci 0006:01:00.0: rxed invalid length (nbytes 0, max 2048)
+>>>>>
+>>>>> Are there ever any valid reasons for seeing a zero-length descriptor
+>>>>> (i.e. unrelated to the race at hand)? IIUC the warning would only be
+>>>>> printed when processing such descriptors a second time (i.e. when
+>>>>> is_desc_len0 is set).
+>>>>
+>>>> That's exactly the logic, only can see the warning in a second time. For
+>>>> the first time, ath12k_ce_completed_recv_next() returns '-EIO'.
+>>>
+>>> That didn't answer Johan's first question:
+>>> Are there ever any valid reasons for seeing a zero-length descriptor?
+>>
+>> The events currently observed are all firmware logs. The discarded
+>> packets will not affect normal operation. I will adjust the logging to
+>> debug level.
+> 
+> That still does not answer the question whether there are ever any valid
+> reasons for seeing zero-length descriptors. I assume there are none?
+> 
+>>> We have an issue that there is a race condition where hardware updates the
+>>> pointer before it has filled all the data. The current solution is just to
+>>> read the data a second time. But if that second read also occurs before
+>>> hardware has updated the data, then the issue isn't fixed.
+>>   
+>> Thanks for the addition.
+>>
+>>> So should there be some forced delay before we read a second time?
+>>> Or should we attempt to read more times?
+>>
+>> The initial fix was to keep waiting for the data to be ready. The
+>> observed phenomenon is that when the second read fails, subsequent reads
+>> will continue to fail until the firmware's CE2 ring is full and triggers
+>> an assert after timeout. However, this situation is relatively rare, and
+>> in most cases, the second read will succeed. Therefore, adding a delay
+>> or multiple read attempts is not useful.
+> 
+> The proposed fix is broken since ath11k_hal_ce_dst_status_get_length()
+> not just reads the length but also sets it to zero so that the updated
+> length may indeed never be seen.
+> 
+> I've taken a closer look at the driver and it seems like we're missing a
+> read barrier to make sure that the updated descriptor is not read until
+> after the head pointer.
+> 
+> Miaoqing, could you try the below patch with your reproducer and see if
+> it is enough to fix the corruption?
+> 
+> If so I can resend with the warning removed and include a corresponding
+> fix for ath12k (it looks like there are further places where barriers
+> are missing too).
+> 
+> Johan
+> 
+> 
+>  From 656dbd0894741445aeb16ee8357e6fef51b6084c Mon Sep 17 00:00:00 2001
+> From: Johan Hovold <johan+linaro@kernel.org>
+> Date: Wed, 12 Mar 2025 16:49:20 +0100
+> Subject: [PATCH] wifi: ath11k: fix ring-buffer corruption
+> 
+> Users of the Lenovo ThinkPad X13s have reported that Wi-Fi sometimes
+> breaks and the log fills up with errors like:
+> 
+> 	ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
+> 	ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
+> 
+> which based on a quick look at the driver seemed to indicate some kind
+> of ring-buffer corruption.
+> 
+> Miaoqing Pan tracked it down to the host seeing the updated destination
+> ring head pointer before the updated descriptor, and the error handling
+> for that in turn leaves the ring buffer in an inconsistent state.
+> 
+> Add the missing the read barrier to make sure that the descriptor is
+> read after the head pointer to address the root cause of the corruption.
+> 
+> The error handling can be fixed separately in case there can ever be
+> actual zero-length descriptors.
+> 
+> FIXME: remove WARN_ON_ONCE() added for verification purposes
+> 
+> Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+> 
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218623
+> Link: https://lore.kernel.org/20250310010217.3845141-3-quic_miaoqing@quicinc.com
+> Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>
+> Cc: stable@vger.kernel.org	# 5.6
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>   drivers/net/wireless/ath/ath11k/ce.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/ath/ath11k/ce.c
+> index e66e86bdec20..423b970e288c 100644
+> --- a/drivers/net/wireless/ath/ath11k/ce.c
+> +++ b/drivers/net/wireless/ath/ath11k/ce.c
+> @@ -393,8 +393,12 @@ static int ath11k_ce_completed_recv_next(struct ath11k_ce_pipe *pipe,
+>   		goto err;
+>   	}
+>   
+> +	/* Make sure descriptor is read after the head pointer. */
+> +	dma_rmb();
+> +
+>   	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
+>   	if (*nbytes == 0) {
+> +		WARN_ON_ONCE(1);	// FIXME: remove
+>   		ret = -EIO;
+>   		goto err;
+>   	}
 
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index 844af16ee5513..25893686cbe85 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -445,8 +445,32 @@ mt76_dma_get_buf(struct mt76_dev *dev, struct mt76_queue *q, int idx,
- 
- 	if (mt76_queue_is_wed_rx(q)) {
- 		u32 token = FIELD_GET(MT_DMA_CTL_TOKEN, buf1);
--		struct mt76_txwi_cache *t = mt76_rx_token_release(dev, token);
-+		struct mt76_txwi_cache *t;
-+		bool found = false;
-+		u32 id;
-+
-+		if (*more) {
-+			spin_lock_bh(&dev->rx_token_lock);
-+
-+			idr_for_each_entry(&dev->rx_token, t, id) {
-+				if (t->dma_addr == le32_to_cpu(desc->buf0)) {
-+					token = id;
-+					found = 1;
-+
-+					/* Write correct id back to DMA*/
-+					u32p_replace_bits(&buf1, id,
-+							  MT_DMA_CTL_TOKEN);
-+					WRITE_ONCE(desc->buf1, cpu_to_le32(buf1));
-+					break;
-+				}
-+			}
-+
-+			spin_unlock_bh(&dev->rx_token_lock);
-+			if (!found)
-+				return NULL;
-+		}
- 
-+		t = mt76_rx_token_release(dev, token);
- 		if (!t)
- 			return NULL;
- 
--- 
-2.48.1
+This issue can still be reproduced.
+
+[ 3283.687469] WARNING: CPU: 0 PID: 0 at 
+/drivers/net/wireless/ath/ath11k/ce.c:405 
+ath11k_ce_per_engine_service+0x228/0x3e4 [ath11k]
+
+[ 3283.688685] Call trace:
+[ 3283.688692]  ath11k_ce_per_engine_service+0x228/0x3e4 [ath11k]
+[ 3283.688807]  ath11k_pcic_ce_tasklet+0x34/0x54 [ath11k]
+[ 3283.688920]  tasklet_action_common.isra.0+0xec/0x338
+[ 3283.688958]  tasklet_action+0x28/0x34
+[ 3283.688972]  handle_softirqs+0x120/0x36c
 
 
