@@ -1,274 +1,274 @@
-Return-Path: <linux-wireless+bounces-20354-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20355-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCF7A60256
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 21:20:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16205A6033C
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 22:10:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA1891896365
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 20:20:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F53A167FE6
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 21:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78156157E88;
-	Thu, 13 Mar 2025 20:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE36F1F4C91;
+	Thu, 13 Mar 2025 21:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hvO4MtQq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AMKGfFB6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F0342AA9
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 20:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741897212; cv=none; b=UFHAa1OWn1zjUeyRwg3BrVga/6RSTykBEM+hVcpBTbid/Ztf5Kua21GLjngwWyshwpv3lLuaXD7fer916HWvP4nbfcSEKEaObCfQHwcCd4ltECDdx3LdeSbg1GvsnpWwADaMZKYl4rlEqlDQpZJRNOhwrr2fssfTR7a/ZdEGAxw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741897212; c=relaxed/simple;
-	bh=srALS5zpDFQ8FdDl7bTGl11T2i9F4MoAQVr+hWs0b34=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=m17iwM8AHg3wAV7ZLnWV6cwnmlT1ftiKjlCoZvB8KlPJP2g0RDXMqXiEPbUY57/0Twnp/DzYfs4sEukkUnxI8MfkgrcFXXrZD/2c7nM7pNSwxgUKDSmS27h1Svd5IuLVxKbRPB4njCY4ifVaBPnvy4AmAs86uzQcn7ga7kFOla0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hvO4MtQq; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5e614da8615so2664656a12.1
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 13:20:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741897209; x=1742502009; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HN0MvMaE+fW87XKbX8FDINB7vpsyz6/+9Fj8lpX10YY=;
-        b=hvO4MtQqq/mwmyPqOPMgIqsTUKTch5lG5gGin5aO9iP4+tDa2D8lSzhLmK6vAy2HPu
-         EWKKzgUfbDbc7E4hzMCtxAE3E+3L3KxPcHABHgh+ABvcBU74hWGxhcPGU0yV6IcEtQAC
-         Ci/HCe4Cccs4Y/3Kvo+x8SQqqJ2YQ1F6lxP0l1h0921qVFpGCqJvfXugxt1XYLDs2fOG
-         ZIFqu8zx0xSkcwJL0LEITUNoGwWmENtoWYc/wzyDf0lVqOAeDZKep+lJw+1iby28GtIH
-         vaKFzNHHqYrOqEm2wI8CjhoFjzIY0sO3X3I94MhHlgSFDz6xRQQ8T/nBVSzzxH6yspyY
-         Gzyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741897209; x=1742502009;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HN0MvMaE+fW87XKbX8FDINB7vpsyz6/+9Fj8lpX10YY=;
-        b=FpV5bErtIeKXuMUwhFfE1zngzIUBfUlpF2m/mFaldC+kbnvQN8Zc13ScCfynBViLAC
-         Rwe3Vc13qfQba+Pwog3CwjIaGJJqC4yPe4t/kvt8AP3hk5OKAX5LWgk7A2LHChBtDGqP
-         aCgeGtK4zp+XZFYxOwXiGxtlqecdeLNDhdsQGPEyMUs22uxNVIFwXgk2BrZTJlEezwrY
-         Oylim4YQz7MSWpOy7xFFQYna0wcvSAXmtcVBe/VjrZLT/a/VFOktCt68FsI7IjgGf4di
-         +f30hkKgmIrJlt+O1VO34SzsUR3i+RY1o4rBT4m9YP9s+97tMTvtZ6/hRXHeCWgyNKuK
-         /0+A==
-X-Gm-Message-State: AOJu0YwI8xHn2oYbPcTDZxNPVNRN2uXY4gnM44CxQI9NiINgeZTZVaVd
-	M/E9fVoDkqnWFvg+Bf2qpCmrNaVBpkH8vDzRVblPwVycJG5EhP0A2yrZDw==
-X-Gm-Gg: ASbGncvwSZ1pQlTu2YNQsyz5VhtCzOXMPJd8739hdvg/ZB+/x4XskNS4hNQ7mZXygYl
-	lDyLbziGreeZy/Z0DRnaJDCcj/rcGAsz8HOsHJpfwyVJ44jHtbFI+8KLtY4K7xwuGaiparodiGp
-	0CVNZV+PAy8qlfSun+j+8+/pWSpaMmpFNBB7R+SUTnuY/5Yq9u2vL9Tzh/9FblwFKKUJh9PGT5T
-	661yHlYtl2Q6zsOIYpWV/TkqZEvDP/2qrONRrbcZlUNbNAssIBDtchJXnbG4J3Bo+HRnL/6xlQv
-	gymp//8RP2KvFrJ+7HxsU5LUv5I0/PywmAZFYAJ9AtfiCvWWZx3rlg==
-X-Google-Smtp-Source: AGHT+IHiRf+hlcKQ9LtNxcatmt3DCY7NNc9eU7kUYxdDPEJh5oH4+kZ7k5SvF98qjSztdDnUExn5Jw==
-X-Received: by 2002:a05:6402:1ecc:b0:5e0:6e6c:e2b5 with SMTP id 4fb4d7f45d1cf-5e814dedc7dmr4526179a12.9.1741897208359;
-        Thu, 13 Mar 2025 13:20:08 -0700 (PDT)
-Received: from [192.168.0.50] ([79.119.240.155])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816ad3914sm1061241a12.64.2025.03.13.13.20.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Mar 2025 13:20:06 -0700 (PDT)
-Message-ID: <9f9a16a3-d326-4f48-9853-134751b63864@gmail.com>
-Date: Thu, 13 Mar 2025 22:20:04 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C581D63C0;
+	Thu, 13 Mar 2025 21:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741900221; cv=fail; b=lXCK5nCWwHsdsIH+rZzydthT75puMaOPDsAOPWyTG7eT4dk1mmNT0GELsEe+/Ay1noKJV8SckmtakvPnWRrq1knnabG1jxaR8x1yAMRoNmrE75ss2DIyVkTPzQ/mzXyojrYk1FDUtAycr8hUdD+8tLBzWizSuEwApPqRsbf3yrc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741900221; c=relaxed/simple;
+	bh=DgrFpcxtnk79hkhZzOwuhSUsd8sSWyfhwC+GIOPZ77E=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=j7bFkvSXtEO6/FBw7QID7+ycgkjFqM1Kd9bJ57H5X/1RDVaTfpxYROKj+YkH0Ws4H0IMTJhemduqoXmsI8fOY150CPo4FqS62I4h5pC7EKejqG/q+ws9Z1vTa7vFY93z0p1Rmr1TrdREuLBE7Los6+sI0SrH2rsXGur2pGvCvWc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AMKGfFB6; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741900220; x=1773436220;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=DgrFpcxtnk79hkhZzOwuhSUsd8sSWyfhwC+GIOPZ77E=;
+  b=AMKGfFB66nBKoEPc+86OxqN/pPPx5RVjHes3iJL50MhENCUrFVDTDl+M
+   NDI8UHkpQ8Nc8JvvgfwlVHz4x3JvuffU1wQ2ZLpMJL7bTNj10X3yF8ymn
+   l8m8nU1fsSdn4/5+l2gcBXk8U8pEOLl43179kecF54dFaPKl1YFs0+gGr
+   9o8hR+1QkCmmgmipvxtnQuorFmt9l08VFUx1gxYXceBe96M2hTQZnirP9
+   7+HcPAGZLTna9JR/W9Emykw3CKt7MCVrAt83mDQkfWVYJDrg0bdSUieGV
+   4IowRU0jYNJmeayRviaYcU1NHjMD9lCiXZo7s1o3hwWL4HGR/KXisfbrT
+   A==;
+X-CSE-ConnectionGUID: eznO+EYZQTWB6ds6b/BrIQ==
+X-CSE-MsgGUID: Lp8p3MJARaeE30dW+ZM59g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="42766442"
+X-IronPort-AV: E=Sophos;i="6.14,245,1736841600"; 
+   d="scan'208";a="42766442"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 14:10:05 -0700
+X-CSE-ConnectionGUID: 7Jk+EKlTTCud49Jq2CsC/Q==
+X-CSE-MsgGUID: lOS3jH3ORRGuIfyct6B2Ng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,245,1736841600"; 
+   d="scan'208";a="120860987"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 14:10:03 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 13 Mar 2025 14:10:02 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Thu, 13 Mar 2025 14:10:02 -0700
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.169)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 13 Mar 2025 14:10:00 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=C/Z1W1z8ZlHGyQDvBnb8vkT/bDs2mr20Jr4z2+zsHsR7OUVF3YHmn5rQsSqQVYml4B+dS1dealJlkTAQ649p32G3ww+hnBzHeQDuJtpF55dh1HiKfsuvt9uu8yE5+UGV+xjWH+jIpVPA7c4uhQkK4ty95RrN3TtYVrDDqiO8Qhbx0k4QhESwDtBV0PxM4x8T2N+8i3+3qfaGmWrQxt7ipbYuph67USqZJpgucUwABg9vffgNwUiGk/utaBf925sfE0Ds/OB3Xeuo6rTT3ip+yNQJP7AP39lyO8ZdsHdqBsEwo9lySlwKyZfQ9VktMyerRhBG/oF+Mf9ArYQ/PD/ZXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E45ReUDgJlcJOBMmUBMkjqsOf7Q6u6VUkzeBkCoDTsI=;
+ b=YU2aqC8SEyrNocIxqrsRl6uLJKNvf5zuRGIDhW8J91qrNgHOhmV3OXVt2eqcYMv/Yde8RDfjVbHDfIwtdhzsUMMgBuY7NI7icvPvv12LDw5x00kTac6CC9s1mTRkWC98Y1ajqzEk0jAejI/EJYlCngxu6q0DOWmwvgw9xuHPTfrjqOY7s1oufzsFwGVNfUmftGjLUMZCJVfiHtMBqLPDZHDeULq8LtlDerJ52P53+M9sQQM1KZ5Ryq4HApixdJaOa0O9h/u88Qr4wCw0DslrJwXy5BNw48QLaBOpni3WOonLLTOQ7Nlm9a6nbHPCD96cyka4AzI8UJg2q4kPvkPi0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO1PR11MB5089.namprd11.prod.outlook.com (2603:10b6:303:9b::16)
+ by SJ0PR11MB4992.namprd11.prod.outlook.com (2603:10b6:a03:2d4::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.28; Thu, 13 Mar
+ 2025 21:09:26 +0000
+Received: from CO1PR11MB5089.namprd11.prod.outlook.com
+ ([fe80::7de8:e1b1:a3b:b8a8]) by CO1PR11MB5089.namprd11.prod.outlook.com
+ ([fe80::7de8:e1b1:a3b:b8a8%4]) with mapi id 15.20.8511.026; Thu, 13 Mar 2025
+ 21:09:26 +0000
+Message-ID: <b2b632cc-ca69-497f-9cf9-782bd02cac79@intel.com>
+Date: Thu, 13 Mar 2025 14:09:24 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/16] bitops: Change parity8() return type to bool
+To: "H. Peter Anvin" <hpa@zytor.com>, Yury Norov <yury.norov@gmail.com>
+CC: David Laight <david.laight.linux@gmail.com>, Jiri Slaby
+	<jirislaby@kernel.org>, Ingo Molnar <mingo@kernel.org>, Kuan-Wei Chiu
+	<visitorckw@gmail.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	<jk@ozlabs.org>, <joel@jms.id.au>, <eajames@linux.ibm.com>,
+	<andrzej.hajda@intel.com>, <neil.armstrong@linaro.org>, <rfoss@kernel.org>,
+	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+	<tzimmermann@suse.de>, <airlied@gmail.com>, <simona@ffwll.ch>,
+	<dmitry.torokhov@gmail.com>, <mchehab@kernel.org>, <awalls@md.metrocast.net>,
+	<hverkuil@xs4all.nl>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
+	<vigneshr@ti.com>, <louis.peens@corigine.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+	<parthiban.veerasooran@microchip.com>, <arend.vanspriel@broadcom.com>,
+	<johannes@sipsolutions.net>, <gregkh@linuxfoundation.org>,
+	<akpm@linux-foundation.org>, <alistair@popple.id.au>,
+	<linux@rasmusvillemoes.dk>, <Laurent.pinchart@ideasonboard.com>,
+	<jonas@kwiboo.se>, <jernej.skrabec@gmail.com>, <kuba@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-fsi@lists.ozlabs.org>,
+	<dri-devel@lists.freedesktop.org>, <linux-input@vger.kernel.org>,
+	<linux-media@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+	<oss-drivers@corigine.com>, <netdev@vger.kernel.org>,
+	<linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>,
+	<brcm80211-dev-list.pdl@broadcom.com>, <linux-serial@vger.kernel.org>,
+	<bpf@vger.kernel.org>, <jserv@ccns.ncku.edu.tw>, Yu-Chun Lin
+	<eleanor15x@gmail.com>
+References: <20250306162541.2633025-1-visitorckw@gmail.com>
+ <20250306162541.2633025-2-visitorckw@gmail.com>
+ <9d4b77da-18c5-4551-ae94-a2b9fe78489a@kernel.org>
+ <Z8ra0s9uRoS35brb@gmail.com>
+ <a4040c78-8765-425e-a44e-c374dfc02a9c@kernel.org>
+ <20250307193643.28065d2d@pumpkin>
+ <cbb26a91-807b-4227-be81-8114e9ea72cb@intel.com>
+ <0F794C6F-32A9-4F34-9516-CEE24EA4BC49@zytor.com> <Z9MGxknjluvbX19w@thinkpad>
+ <795281B1-9B8A-477F-8012-DECD14CB53E5@zytor.com>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+In-Reply-To: <795281B1-9B8A-477F-8012-DECD14CB53E5@zytor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0182.namprd04.prod.outlook.com
+ (2603:10b6:303:86::7) To CO1PR11MB5089.namprd11.prod.outlook.com
+ (2603:10b6:303:9b::16)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH rtw-next 4/4] wifi: rtw88: Don't set SUPPORTS_AMSDU_IN_AMPDU
- for RTL8814AU
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-References: <c845ff10-08d9-4057-8f54-1579a548788d@gmail.com>
-Content-Language: en-US
-In-Reply-To: <c845ff10-08d9-4057-8f54-1579a548788d@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR11MB5089:EE_|SJ0PR11MB4992:EE_
+X-MS-Office365-Filtering-Correlation-Id: 79b10f16-aaa7-4494-8167-08dd6273564e
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?b2xMdC9xZ0lWeDl5dW5sOVZMK1ovSFRPeUpnaUZnd3g2R1c0Wkcza1RjZHQw?=
+ =?utf-8?B?WCtSWnhUMldGN21SR1pmc2xDc0lidXpEZnpzRU1JYkNtbFFNYnVwM1V3R1Az?=
+ =?utf-8?B?bnVzb0EwdklhaVpwd0k0OVI2MVFCQjlKdGIzbG5zeEhURGFvY2ZmQkk4L3Fu?=
+ =?utf-8?B?c2Z4WEdSck4xR04veGdkVFpQNE1NVThaK0Q5WFpwRktFMVJHYmgzYWNQaGRk?=
+ =?utf-8?B?akxLTXJJQmFpOEZhRTBRS3BaYnlMRE1PcExwdWwxTjFtZ1VadkZSRVZYZ0FE?=
+ =?utf-8?B?NWVnakJJakoybGVJR0doQXZRT0loNnR1TG5kRHdRNGJscklwRXI1dnkrVXBk?=
+ =?utf-8?B?bUIrTGFhcCtseEZzQVVtQkYrRTl2bnlqdXF6V2szMVdhQS80M09XeVhTb2Fm?=
+ =?utf-8?B?QXhheVZyc1Ywd2ZqVlhKNUhFTjNpNWYwcnBUVHhibFQ2Sk00aTFmV2tRYTg0?=
+ =?utf-8?B?YmM4Uk1DVFJlMkhoNm1BOHprcmNXL0FZcEtKbytDT1Bzc1JpU3ZsZGhEb1pP?=
+ =?utf-8?B?TENreWpYN0Z4cjNKc2cxRFR5TzBtTHNFVENEK283NnMyMFMzZG9YaHBJL3VH?=
+ =?utf-8?B?SWZseUFXZEpkV3NBOE9yV1lncDRLNHpvdE1wWHRPZmZSR25IeCs1di81S1VF?=
+ =?utf-8?B?ZGIzMVErVU02TXVEVjNrelNnVnd6NTRlYzVwSU10RmVvaHV2RGlzcFFONjQz?=
+ =?utf-8?B?T1EwUzRmTjVYdGdxUTBESnBEaUlzN2tldEViVnM3dW5lcXVkZFNQS3lSdzZa?=
+ =?utf-8?B?ZEtUcmY0TzhOaFpmVFk2NERFQmluV1VqSUFPSktmQVc2S0lPbGxwK210Q3pG?=
+ =?utf-8?B?cXozQnpacExxZ0pwSUV0SGpablJ3NitCV1Npc0gvazlIV01qSnFHbEVzTHZP?=
+ =?utf-8?B?eFRsRUUvM1JJZVBTeHhJRHdiMURJL1hLTTNuVHBFZnd4NE9qWlRES2xNSHZo?=
+ =?utf-8?B?UE0xaEpidXRTV0pDc09uNUk3SWxsS1kzNDRGV2h1Um92eUduSGZzbFArOVhT?=
+ =?utf-8?B?NTF5emRYVStZL0xFd0JVN0ZiMkhlWEFSWHNOWG9ENmZhNTY1Zm13ZjcrMEJL?=
+ =?utf-8?B?enFJNDBVNzAyUkRvTWZ2U1NXNnZWNDFZSENjYWhQZEhuazhNcVJDL2RkaC9V?=
+ =?utf-8?B?V2VyNzFBQmQzVy9tUWdiSTBsc2h1M0JISTFlSTArSnFxK0VHcm81R3hNNmxK?=
+ =?utf-8?B?VUc1bXlyZ2Foa2YvVlhUYTh1Y05jT01CZHdkR0plQTBHVDNGbjR2LzY1QlVm?=
+ =?utf-8?B?dUgzYkYzSGRKNXJFYTRNWmE3cE9VcEFIOFZMNmpnUVhOc2Q1azR5ZlZPOWNJ?=
+ =?utf-8?B?dUVuWVJqRUI0dDNOamhqcXN4T2QvMkFDNjRBSXNxbzJsK2NaSjZDVGU3ODZR?=
+ =?utf-8?B?eDMxRE8zV2FrU2VqY2h1UXljeU0yUlFBSkQxZjJyNmtiODhXdkFPOGlPTGtq?=
+ =?utf-8?B?RE44QTQyeWpZVDFtN3lmSjFsUHdhakxqeDlaL1V0THhmSlVBMjVNb1lIaGtM?=
+ =?utf-8?B?QUIwUnFHeDIvYjlIY3V3QUVrdm1DeWloMmdhRXlCcDQxSk5OM2xzanlxWW5C?=
+ =?utf-8?B?UFJVYUdrZTlmNjV6REo5ciszZTVHR1ZMc2U0MjM4d2dDWC9WUGdLR3J3Rndm?=
+ =?utf-8?B?dE4rRjIzWnFNNWoyM2RCc0dvakVuN2pjQUc3dXVzSm5tOVhzQ0NlTjM1eThu?=
+ =?utf-8?B?OTF1dlJ5MjFKMXpveTBvYzFRQnROd1UvZW5zZ3RqZERzU2pHSFRvT0VUT1NX?=
+ =?utf-8?B?aXltcE5rWmNkZDNSQ09TT29ncHFtaEt3c1RIZ0R2dTVRc25GcEtlMEFTWWR5?=
+ =?utf-8?B?akRCVlgwK1hzaktuK2d4YnJha1h4dzRLdW9JeDlqQ2RiL1hVMGNqdDQxNVZP?=
+ =?utf-8?Q?6djIK3dZhi617?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5089.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UmdhTlR2RzdrbXhDcHArRmdPenZqeEhiV2s2YnY0Y01kS3VuRERPdkYyMzhR?=
+ =?utf-8?B?dzd1VlFZYjM1TUVwRGFGcHZmTXF6UkEwWDdSQm1mSGNZQk5NZVhlQWdQRzNI?=
+ =?utf-8?B?VXhPa2tQTnIyMk5EbGI4NFUyei90UzBjSVdzNW9mc0NhNU5RQ1JuREk0Zjc5?=
+ =?utf-8?B?RjBMU2RNeTlVaGxQQkl2OWhNUXBwRFZ0UGYxVGovRWRyQXFaby9EazFNMFVl?=
+ =?utf-8?B?TGRHUFhuUjg5MUJCalJnc2xaMXFBOVJBcGdaQWtWNFBvZGRZOWk1WHpzQWVs?=
+ =?utf-8?B?eStYVmhQSDVxSnhyVCtwUXRwb05yRFJkSnNVR0JGd1ZHZTlCL0dFYUJGK3Zv?=
+ =?utf-8?B?UmowUm81TVNoZFFSWnFIelRORERuWjU1VnkzL2hmeUZuSCtxYXhkNnphSW9H?=
+ =?utf-8?B?VUdUMDdnVTFBeW1WajlVZ2xDR0ttK2FOU1ZQVzQraHNrMlUybHl1VnlTVlh0?=
+ =?utf-8?B?cDU5ZlhiM0N0VnZwSUtRMWJJdXduVFJpQnRUa1ROU3F4YXNselIycHM0MGF1?=
+ =?utf-8?B?RkNtUmx4aE5SUFNuRW9wcjhqdUdyT3g1T2tFUWhYc1JxK0tyRm5nZmJQYXVm?=
+ =?utf-8?B?cEpoamRsZ1hhbCt2Z2ErbnhpdU83L0Jrb2hsMGNGL0RobGlyNzl3UktaWTJT?=
+ =?utf-8?B?Wlp6SGdhWit5eW1PZnNqczlubWpVN3pORWllSDVzVDlmbVNneDd5MG9jTGVT?=
+ =?utf-8?B?bndWS2NveU9FcGUzY05aNlQyV1k3U2RuQ2xETStNUmY3SnJXWEk4S3p4enhB?=
+ =?utf-8?B?b1Z6d0ZLczJPN1NUVmJwZGJDV1ZFWS8xM09xSitPUTdoRklneXU0SHloSkpT?=
+ =?utf-8?B?N2wrYVNaTWFSV1l5c1Y3YzVZRC9lYkJ2K0VLa0pldTRPTGgrZlBIY2laQzYr?=
+ =?utf-8?B?Yno1UW1acXI5eHJLYW4wTlRsTGVBMnp2OTlOWVdBSVdKbjVvUlZ1NHRzZ0dx?=
+ =?utf-8?B?aGh2VzRtY1MvNDNhclhTdXI0ZGdzTXlWbFp3THczdWg2MDl3bFZzQ1I5YkY0?=
+ =?utf-8?B?L3U2ODNiYXQ5OGE3aWRhMUxBMVEwaGVXcThOS2JNeFZJTExma2NXK2lvbkQw?=
+ =?utf-8?B?YzRBazljenZXdURXL2NVU3YrY3FJWWdpc2ZMNzJTSGJCSzJvOEVqbll5bWJY?=
+ =?utf-8?B?WUV3NmNPVThZUWU1SUdxN3hNY01jTnhDV2dMTXoxVGwwL0FCRkk3ZlBmUUhr?=
+ =?utf-8?B?QmdRT1RhaFpCa1VaZkFxbVlwbFVnRlF2Qy9pbHJiR0ZYaHVaZERhNi93Mlg1?=
+ =?utf-8?B?dlJWZGJQcjY1M1AzakJWUGJrRElWamJCRVdKcyt5c0F1R2dVWGVHRlRiekNy?=
+ =?utf-8?B?aXRmMlViUUNMWk4vdGtrQ203d3JaRXd5Q3lkaEI1RFI4aFJLazM5Um5XaFly?=
+ =?utf-8?B?dE8xaUhmMVpoS0xIcGpQYkxOU1pjTys5TVVUNEtYRWFiNitkNDNHWkIyc0RF?=
+ =?utf-8?B?SkZNakhRdU94RE5EaGp3Y3JaZWE0d29VTmUyUktFUEhHOXg1TUNuVmN4TTAv?=
+ =?utf-8?B?UzJBSmY4emFrVkxQUWZpMTNmeHVDV2dWSVk5YUVMN0tENVVQL3grNndwelkr?=
+ =?utf-8?B?Z1R3b0hibkJ4V0laNXlXczM5NnQyWko2bU92WkZTaGVBM25wZk9wbFNpc25R?=
+ =?utf-8?B?MkZrdWpIbjFDRDNjaSt0clRtR21vSXpHdy85NnAzMUhlWWtncVJ3NjV2UGdT?=
+ =?utf-8?B?enBvRnhJYW1hbTRrYUk4YVV3M3lTUmdERDZwRFFxaEg0TW5wdm15ZVIvMnIy?=
+ =?utf-8?B?cU5rWDZBUnp0ZHlUcThPdFlZMlN3MWRDVmdYRy9ocVhQeVJRZXhkTFRjcjBa?=
+ =?utf-8?B?UzF2TDBRUmF4bHh5Zi9ldS9HT3ZKMldBT0JOTVBKb09yYUJ2T0MrcVhxVE5C?=
+ =?utf-8?B?TWp6cjNkd2FvWGVVZTNtdTF6L2tyNC9YZThjWTFQT0pMU1ZscnJCQ0tCQVhV?=
+ =?utf-8?B?d2dMQW9YMVFLejBjQjZhNld0U2dlUXBId2F1dkFoTFFYMmRsdEc3M0NiZ3pj?=
+ =?utf-8?B?MWh4VTRvWGFYYlg5VUZ2UnNzK29CNHBxdTRrdVN3THkyMjYwaUtPOTVVcjBC?=
+ =?utf-8?B?WTdzdGhsOGlFNytwby9keE1XbUdUK2NzVlZDeTlHRGFvSnR5N0NrYk03eHl2?=
+ =?utf-8?B?aHRORXpGUVN2ZzNZelA4bFNuaHJOQnYzWU5EVzNoRDRhZzNDQVRxeGpZeWls?=
+ =?utf-8?B?TGc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79b10f16-aaa7-4494-8167-08dd6273564e
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5089.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2025 21:09:26.6569
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: l05o3X0cy9v7nJGc+IVjRhjuA1RbK8izJdn9E++fY2m/U5w6Dw8hyFeURYozIl3EdMxdxlYgyXDkRfNbnj4ipUCFlhAAyH/1uuo9rOvl8GA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4992
+X-OriginatorOrg: intel.com
 
-RTL8814AU doesn't work well with SUPPORTS_AMSDU_IN_AMPDU. The RX speed
-is noticeably lower and the VHT RX statistics are strange. Typical
-values with SUPPORTS_AMSDU_IN_AMPDU:
 
-Reverse mode, remote host 192.168.0.1 is sending
-[  5] local 192.168.0.50 port 60710 connected to 192.168.0.1 port 5201
-[ ID] Interval           Transfer     Bitrate
-[  5]   0.00-1.00   sec  74.6 MBytes   626 Mbits/sec
-[  5]   1.00-2.00   sec  79.2 MBytes   665 Mbits/sec
-[  5]   2.00-3.00   sec  84.9 MBytes   712 Mbits/sec
-[  5]   3.00-4.00   sec  83.8 MBytes   703 Mbits/sec
-[  5]   4.00-5.00   sec  85.9 MBytes   720 Mbits/sec
-[  5]   5.00-6.00   sec  78.9 MBytes   662 Mbits/sec
-[  5]   6.00-7.00   sec  81.2 MBytes   682 Mbits/sec
-[  5]   7.00-8.00   sec  80.5 MBytes   675 Mbits/sec
-[  5]   8.00-9.00   sec  79.4 MBytes   666 Mbits/sec
-[  5]   9.00-10.00  sec  82.2 MBytes   689 Mbits/sec
-[  5]  10.00-11.00  sec  82.0 MBytes   688 Mbits/sec
-[  5]  11.00-12.00  sec  84.2 MBytes   707 Mbits/sec
-[  5]  12.00-13.00  sec  71.0 MBytes   596 Mbits/sec
-[  5]  13.00-14.00  sec  69.4 MBytes   582 Mbits/sec
-[  5]  14.00-15.00  sec  80.2 MBytes   673 Mbits/sec
-[  5]  15.00-16.00  sec  74.5 MBytes   625 Mbits/sec
 
-[Rx Counter]:
- * CCA (CCK, OFDM, Total) = (0, 2455, 2455)
- * False Alarm (CCK, OFDM, Total) = (0, 69, 69)
- * CCK cnt (ok, err) = (0, 0)
- * OFDM cnt (ok, err) = (1239, 2)
- * HT cnt (ok, err) = (0, 0)
- * VHT cnt (ok, err) = (21, 12109)
+On 3/13/2025 9:36 AM, H. Peter Anvin wrote:
+> On March 13, 2025 9:24:38 AM PDT, Yury Norov <yury.norov@gmail.com> wrote:
+>> On Wed, Mar 12, 2025 at 05:09:16PM -0700, H. Peter Anvin wrote:
+>>> On March 12, 2025 4:56:31 PM PDT, Jacob Keller <jacob.e.keller@intel.com> wrote:
+>>
+>> [...]
+>>
+>>>> This is really a question of whether you expect odd or even parity as
+>>>> the "true" value. I think that would depend on context, and we may not
+>>>> reach a good consensus.
+>>>>
+>>>> I do agree that my brain would jump to "true is even, false is odd".
+>>>> However, I also agree returning the value as 0 for even and 1 for odd
+>>>> kind of made sense before, and updating this to be a bool and then
+>>>> requiring to switch all the callers is a bit obnoxious...
+>>>
+>>> Odd = 1 = true is the only same definition. It is a bitwise XOR, or sum mod 1.
+>>
+>> The x86 implementation will be "popcnt(val) & 1", right? So if we
+>> choose to go with odd == false, we'll have to add an extra negation.
+>> So because it's a purely conventional thing, let's just pick a simpler
+>> one?
+>>
+>> Compiler's builtin parity() returns 1 for odd.
+>>
+>> Thanks,
+>> Yury
+> 
+> The x86 implementation, no, but there will be plenty of others having that exact definition.
 
-The "VHT ok" number is not believable.
+Makes sense to stick with that existing convention then. Enough to
+convince me.
 
-And without SUPPORTS_AMSDU_IN_AMPDU:
-
-Reverse mode, remote host 192.168.0.1 is sending
-[  5] local 192.168.0.50 port 50030 connected to 192.168.0.1 port 5201
-[ ID] Interval           Transfer     Bitrate
-[  5]   0.00-1.00   sec  70.5 MBytes   591 Mbits/sec
-[  5]   1.00-2.00   sec  86.9 MBytes   729 Mbits/sec
-[  5]   2.00-3.00   sec  98.6 MBytes   827 Mbits/sec
-[  5]   3.00-4.00   sec  97.4 MBytes   817 Mbits/sec
-[  5]   4.00-5.00   sec  98.6 MBytes   827 Mbits/sec
-[  5]   5.00-6.00   sec  96.9 MBytes   813 Mbits/sec
-[  5]   6.00-7.00   sec  98.2 MBytes   824 Mbits/sec
-[  5]   7.00-8.00   sec  98.0 MBytes   822 Mbits/sec
-[  5]   8.00-9.00   sec  99.9 MBytes   838 Mbits/sec
-[  5]   9.00-10.00  sec  99.2 MBytes   833 Mbits/sec
-[  5]  10.00-11.00  sec  98.0 MBytes   822 Mbits/sec
-[  5]  11.00-12.00  sec  98.1 MBytes   823 Mbits/sec
-[  5]  12.00-13.00  sec  97.0 MBytes   814 Mbits/sec
-[  5]  13.00-14.00  sec  98.2 MBytes   824 Mbits/sec
-[  5]  14.00-15.00  sec  98.5 MBytes   826 Mbits/sec
-[  5]  15.00-16.00  sec  97.4 MBytes   817 Mbits/sec
-
-[Rx Counter]:
- * CCA (CCK, OFDM, Total) = (0, 3860, 3860)
- * False Alarm (CCK, OFDM, Total) = (0, 2, 2)
- * CCK cnt (ok, err) = (0, 0)
- * OFDM cnt (ok, err) = (1486, 0)
- * HT cnt (ok, err) = (0, 0)
- * VHT cnt (ok, err) = (7399, 9118)
-
-Add a new member "amsdu_in_ampdu" in struct rtw_chip_info and use it
-to set SUPPORTS_AMSDU_IN_AMPDU only for the other chips.
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
- drivers/net/wireless/realtek/rtw88/main.c     | 3 ++-
- drivers/net/wireless/realtek/rtw88/main.h     | 1 +
- drivers/net/wireless/realtek/rtw88/rtw8812a.c | 1 +
- drivers/net/wireless/realtek/rtw88/rtw8814a.c | 1 +
- drivers/net/wireless/realtek/rtw88/rtw8821a.c | 1 +
- drivers/net/wireless/realtek/rtw88/rtw8821c.c | 1 +
- drivers/net/wireless/realtek/rtw88/rtw8822b.c | 1 +
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 1 +
- 8 files changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index bc2c1a5a30b3..c4de5d114eda 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -2242,7 +2242,8 @@ int rtw_register_hw(struct rtw_dev *rtwdev, struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, SUPPORTS_PS);
- 	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
- 	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
--	ieee80211_hw_set(hw, SUPPORTS_AMSDU_IN_AMPDU);
-+	if (rtwdev->chip->amsdu_in_ampdu)
-+		ieee80211_hw_set(hw, SUPPORTS_AMSDU_IN_AMPDU);
- 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
- 	ieee80211_hw_set(hw, TX_AMSDU);
- 	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index f410c554da58..b0f1fabe9554 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1230,6 +1230,7 @@ struct rtw_chip_info {
- 	u16 fw_fifo_addr[RTW_FW_FIFO_MAX];
- 	const struct rtw_fwcd_segs *fwcd_segs;
- 
-+	bool amsdu_in_ampdu;
- 	u8 usb_tx_agg_desc_num;
- 	bool hw_feature_report;
- 	u8 c2h_ra_report_size;
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8812a.c b/drivers/net/wireless/realtek/rtw88/rtw8812a.c
-index 88daab22cdd6..34e052dd2e8b 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8812a.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8812a.c
-@@ -1086,6 +1086,7 @@ const struct rtw_chip_info rtw8812a_hw_spec = {
- 	.rfe_defs = rtw8812a_rfe_defs,
- 	.rfe_defs_size = ARRAY_SIZE(rtw8812a_rfe_defs),
- 	.rx_ldpc = false,
-+	.amsdu_in_ampdu = true,
- 	.hw_feature_report = false,
- 	.c2h_ra_report_size = 4,
- 	.old_datarate_fb_limit = true,
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8814a.c b/drivers/net/wireless/realtek/rtw88/rtw8814a.c
-index 57d8920832a3..516444391c46 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8814a.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8814a.c
-@@ -2197,6 +2197,7 @@ const struct rtw_chip_info rtw8814a_hw_spec = {
- 	.rx_ldpc = true,
- 	.max_power_index = 0x3f,
- 	.ampdu_density = IEEE80211_HT_MPDU_DENSITY_2,
-+	.amsdu_in_ampdu = false,
- 	.usb_tx_agg_desc_num = 3,
- 	.hw_feature_report = false,
- 	.c2h_ra_report_size = 6,
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821a.c b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
-index 73e2bb4d5d79..fa4b1a53303b 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821a.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
-@@ -1186,6 +1186,7 @@ const struct rtw_chip_info rtw8821a_hw_spec = {
- 	.rfe_defs = rtw8821a_rfe_defs,
- 	.rfe_defs_size = ARRAY_SIZE(rtw8821a_rfe_defs),
- 	.rx_ldpc = false,
-+	.amsdu_in_ampdu = true,
- 	.hw_feature_report = false,
- 	.c2h_ra_report_size = 4,
- 	.old_datarate_fb_limit = true,
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-index e99ea716b64f..9015625627a8 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -1996,6 +1996,7 @@ const struct rtw_chip_info rtw8821c_hw_spec = {
- 	.band = RTW_BAND_2G | RTW_BAND_5G,
- 	.page_size = TX_PAGE_SIZE,
- 	.dig_min = 0x1c,
-+	.amsdu_in_ampdu = true,
- 	.usb_tx_agg_desc_num = 3,
- 	.hw_feature_report = true,
- 	.c2h_ra_report_size = 7,
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index ef08729b9f4a..d631c7ade282 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -2537,6 +2537,7 @@ const struct rtw_chip_info rtw8822b_hw_spec = {
- 	.band = RTW_BAND_2G | RTW_BAND_5G,
- 	.page_size = TX_PAGE_SIZE,
- 	.dig_min = 0x1c,
-+	.amsdu_in_ampdu = true,
- 	.usb_tx_agg_desc_num = 3,
- 	.hw_feature_report = true,
- 	.c2h_ra_report_size = 7,
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index baf519043d43..910bd36b4974 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -5355,6 +5355,7 @@ const struct rtw_chip_info rtw8822c_hw_spec = {
- 	.band = RTW_BAND_2G | RTW_BAND_5G,
- 	.page_size = TX_PAGE_SIZE,
- 	.dig_min = 0x20,
-+	.amsdu_in_ampdu = true,
- 	.usb_tx_agg_desc_num = 3,
- 	.hw_feature_report = true,
- 	.c2h_ra_report_size = 7,
--- 
-2.48.1
-
+Thanks,
+Jake
 
