@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-20327-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20328-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE37A5FA85
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 16:57:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B528FA5FB2B
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 17:18:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0CFF3AF234
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 15:57:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A309D18933B1
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 16:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEDC267F7D;
-	Thu, 13 Mar 2025 15:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5C3268FFE;
+	Thu, 13 Mar 2025 16:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kfygOIBn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B3ILvSVd"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B8513AA2F;
-	Thu, 13 Mar 2025 15:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7CD77104;
+	Thu, 13 Mar 2025 16:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741881469; cv=none; b=UNxCGlIEE+hVt9bNtTT0uXYItlrFzA8MCYWOywGeZeLHc6a5xRak1i2P4TFTrtUZ5Yn0j1phlxUXr87ITgLXiQwrBcF2734KLzOx3YnOMbxzvufSmnFG6CAhqmBqSJpIcDSyOGTOI9Tvwgs2aUeH+HUWQBpqS3OAde3+xI4pwmU=
+	t=1741882449; cv=none; b=SWjxCLs4n2+bJ9frLWFZP9a+4ACauwCbjB+i1A0IRz3eY2SIydpjRLPz2qvJpRiRhSc4P8WzutOo/3IREJdccbkNvxmD+JhNxTrGMVIlERImnIZLp5Iy6hqXRnbiLxST2e0NhUDF2IwAVuMxbcaito57UTlrh09Fd153bFtti5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741881469; c=relaxed/simple;
-	bh=8xF8Ve++MFLvn3va/Rkql+bAxSWGx5T39bOEbMiYWV4=;
+	s=arc-20240116; t=1741882449; c=relaxed/simple;
+	bh=kVIx3poAd8OW3CFGk9U2phX4eDoS4t+1NFLX/Hlc1pY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=umN390nSe9zL+NNTE/G23dr4ySTTFREqbMHKy/RFSvmU15wLTNVgE+Dmv4ABtcOicQwi39nqzF/8IDLuD73ahESjLy/VuwPWU85Wr8QBs7X7zuoNk0CwzRtnRSLS1Qa/NLyd6fKlWwsLorIQwbXtJudwGdnZEQ3QPqu9dc/6QoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kfygOIBn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A190C4CEEA;
-	Thu, 13 Mar 2025 15:57:49 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ckXQG/eerux2HWfOT8d54Vd6I5DSXlPSKnO9MqIrv5ns1OIJq4KhP3e3IZ7ahH+4osZDQQQoHcVmn23R9+UBEroAN3NnoyoghFcIoQ2zEHPqt+a3sQlRHXTIpKFBQu9bznOSvUcKJLVedEjEoq5qjE7k8lraSvvEZCblq2BqUu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B3ILvSVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E72C4CEDD;
+	Thu, 13 Mar 2025 16:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741881469;
-	bh=8xF8Ve++MFLvn3va/Rkql+bAxSWGx5T39bOEbMiYWV4=;
+	s=k20201202; t=1741882448;
+	bh=kVIx3poAd8OW3CFGk9U2phX4eDoS4t+1NFLX/Hlc1pY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kfygOIBn+MElPBdc8pLT3Y2c7WzZIBn7MwCaeyRVq8JDPiauPA9nRZiYIya9SUAxU
-	 /uGdfziFVrBA9My39MJlD4IakdbB4AcT3vpHhycx3vscpZhSpfTIFKdQGRa/eo+I+B
-	 mJICM4n7Z9F1wzVsXv7FSgcTjJAq99Z65T5PNPbXuD7kDCAdVfxlzduSa0iICnXkE2
-	 IBei5DyA3F1zZboSFbuByEpXXdC8Gre4XW5jp2qNooksCDufLa/jGl3lTxA9cOT0/O
-	 GcafZDMAJNjtosrTrQQJkO4+ZYMBl+F+vHFWCNzKKIkQe+ZSJ4PXbHNeZLg+9/h1UW
-	 zvUlnzxXZxBTg==
+	b=B3ILvSVdjvltJY5TAkSIGJLsm90dXJMo1cCW7jVod3QaKlVR248Tyy4SWj3pfrW/k
+	 ZAdMDvgIKudqgO3z6zXzKrLpnDrjecypY5YDKmRk+blojfDQVQfIc4HOJWykrWPl5y
+	 kjHor3ltS0EnB7oPfm5KB+B+1lza9saKjbTLt01hSPSTIkO/tx+EC1C7bbOLelX3KQ
+	 wxANO0E47bx926Cevku1AyqdMWmx7/D3dNmXY0yGs7EGEo9wWFaLA5R8vVob8Q9oTB
+	 wX7tRu2PRPeKEmelIBgyZYdw1ULpfz0nTdp/EyMklez35o25vglBAunEzW5ma046Uz
+	 G2g4fyBv9UNjQ==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan@kernel.org>)
-	id 1tskwM-000000000Xu-0yWw;
-	Thu, 13 Mar 2025 16:57:46 +0100
-Date: Thu, 13 Mar 2025 16:57:46 +0100
+	id 1tslC9-000000000xS-3nxk;
+	Thu, 13 Mar 2025 17:14:06 +0100
+Date: Thu, 13 Mar 2025 17:14:05 +0100
 From: Johan Hovold <johan@kernel.org>
 To: Miaoqing Pan <quic_miaoqing@quicinc.com>
 Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
@@ -53,7 +53,7 @@ Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	linux-kernel@vger.kernel.org, johan+linaro@kernel.org
 Subject: Re: [PATCH v2 ath-next 2/2] wifi: ath11k: fix HTC rx insufficient
  length
-Message-ID: <Z9MAehaipGtwge8p@hovoldconsulting.com>
+Message-ID: <Z9METTzUJe9yqVEI@hovoldconsulting.com>
 References: <20250310010217.3845141-1-quic_miaoqing@quicinc.com>
  <20250310010217.3845141-3-quic_miaoqing@quicinc.com>
  <Z866cCj8SWyZjCoP@hovoldconsulting.com>
@@ -61,7 +61,7 @@ References: <20250310010217.3845141-1-quic_miaoqing@quicinc.com>
  <c0cdcaf2-655b-4d22-a949-1519c552e6a4@oss.qualcomm.com>
  <72d95d77-674e-4ae7-83b0-ab58748b8251@quicinc.com>
  <Z9G5zEOcTdGKm7Ei@hovoldconsulting.com>
- <8251fc50-5df4-4a3f-91bf-40c09c33cf6e@quicinc.com>
+ <8ea7fe7c-7b4d-4a6f-ae03-b9ca127c23f8@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,10 +70,24 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8251fc50-5df4-4a3f-91bf-40c09c33cf6e@quicinc.com>
+In-Reply-To: <8ea7fe7c-7b4d-4a6f-ae03-b9ca127c23f8@quicinc.com>
 
-On Thu, Mar 13, 2025 at 09:41:51AM +0800, Miaoqing Pan wrote:
+On Thu, Mar 13, 2025 at 09:31:56PM +0800, Miaoqing Pan wrote:
 > On 3/13/2025 12:43 AM, Johan Hovold wrote:
+> > On Wed, Mar 12, 2025 at 09:11:45AM +0800, Miaoqing Pan wrote:
+> >> On 3/11/2025 11:20 PM, Jeff Johnson wrote:
+
+> >>> That didn't answer Johan's first question:
+> >>> Are there ever any valid reasons for seeing a zero-length descriptor?
+> >>
+> >> The events currently observed are all firmware logs. The discarded
+> >> packets will not affect normal operation. I will adjust the logging to
+> >> debug level.
+
+Have you looked at the device side of things as well? Could it be that
+the firmware is doing something wrong when forwarding the logs?
+
+How sure are you that you only see this with firmware logs?
 
 > > I've taken a closer look at the driver and it seems like we're missing a
 > > read barrier to make sure that the updated descriptor is not read until
@@ -81,23 +95,29 @@ On Thu, Mar 13, 2025 at 09:41:51AM +0800, Miaoqing Pan wrote:
 > > 
 > > Miaoqing, could you try the below patch with your reproducer and see if
 > > it is enough to fix the corruption?
->
-> Sure, the stress test is running.
+  
+> > +	/* Make sure descriptor is read after the head pointer. */
+> > +	dma_rmb();
+> > +
+> >   	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
+> >   	if (*nbytes == 0) {
+> > +		WARN_ON_ONCE(1);	// FIXME: remove
+> >   		ret = -EIO;
+> >   		goto err;
+> >   	}
+> 
+> This issue can still be reproduced.
+> 
+> [ 3283.687469] WARNING: CPU: 0 PID: 0 at 
+> /drivers/net/wireless/ath/ath11k/ce.c:405 
+> ath11k_ce_per_engine_service+0x228/0x3e4 [ath11k]
 
-Thanks.
+Thanks for verifying.
 
-> > If so I can resend with the warning removed and include a corresponding
-> > fix for ath12k (it looks like there are further places where barriers
-> > are missing too).
+Which platform are you testing on and which kernel are you using?
 
-> If the DMA read barrier works, do you think my submitted patch series is 
-> still needed? Because the error handling is incorrect.
-
-Yeah, it would still be good to fix up the error handling even if you
-don't expect to ever see a descriptor with length 0.
-
-But unless the device is doing something wrong here, there shouldn't be
-a need for peeking at the descriptor and retrying.
+I'm still waiting to hear back from some people testing my patch on the
+X13s (sc8280xp).
 
 Johan
 
