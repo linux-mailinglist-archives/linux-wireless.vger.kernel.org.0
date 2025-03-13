@@ -1,123 +1,163 @@
-Return-Path: <linux-wireless+bounces-20328-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20330-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B528FA5FB2B
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 17:18:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05444A5FB73
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 17:24:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A309D18933B1
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 16:14:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFFFF188D0BB
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 16:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5C3268FFE;
-	Thu, 13 Mar 2025 16:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00AA4268FC9;
+	Thu, 13 Mar 2025 16:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B3ILvSVd"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eU1TdZLv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7CD77104;
-	Thu, 13 Mar 2025 16:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A01267F66
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 16:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741882449; cv=none; b=SWjxCLs4n2+bJ9frLWFZP9a+4ACauwCbjB+i1A0IRz3eY2SIydpjRLPz2qvJpRiRhSc4P8WzutOo/3IREJdccbkNvxmD+JhNxTrGMVIlERImnIZLp5Iy6hqXRnbiLxST2e0NhUDF2IwAVuMxbcaito57UTlrh09Fd153bFtti5g=
+	t=1741882886; cv=none; b=mq2240fZtsHxNKXEXLCaC2037EFXedUlbadCcvuaD7c/IYspRhmAMdMAqZiqpkymGcOellu6p+UZ6ul2K2GFEMNi4Zr88mmSpQIXOprZMdWRUBD6WD86NPw+JjETo4Q2OzLUlAinnGov0/l3N28dxWNTcO85RhZUw6ueWeha0V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741882449; c=relaxed/simple;
-	bh=kVIx3poAd8OW3CFGk9U2phX4eDoS4t+1NFLX/Hlc1pY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ckXQG/eerux2HWfOT8d54Vd6I5DSXlPSKnO9MqIrv5ns1OIJq4KhP3e3IZ7ahH+4osZDQQQoHcVmn23R9+UBEroAN3NnoyoghFcIoQ2zEHPqt+a3sQlRHXTIpKFBQu9bznOSvUcKJLVedEjEoq5qjE7k8lraSvvEZCblq2BqUu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B3ILvSVd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E72C4CEDD;
-	Thu, 13 Mar 2025 16:14:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741882448;
-	bh=kVIx3poAd8OW3CFGk9U2phX4eDoS4t+1NFLX/Hlc1pY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B3ILvSVdjvltJY5TAkSIGJLsm90dXJMo1cCW7jVod3QaKlVR248Tyy4SWj3pfrW/k
-	 ZAdMDvgIKudqgO3z6zXzKrLpnDrjecypY5YDKmRk+blojfDQVQfIc4HOJWykrWPl5y
-	 kjHor3ltS0EnB7oPfm5KB+B+1lza9saKjbTLt01hSPSTIkO/tx+EC1C7bbOLelX3KQ
-	 wxANO0E47bx926Cevku1AyqdMWmx7/D3dNmXY0yGs7EGEo9wWFaLA5R8vVob8Q9oTB
-	 wX7tRu2PRPeKEmelIBgyZYdw1ULpfz0nTdp/EyMklez35o25vglBAunEzW5ma046Uz
-	 G2g4fyBv9UNjQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tslC9-000000000xS-3nxk;
-	Thu, 13 Mar 2025 17:14:06 +0100
-Date: Thu, 13 Mar 2025 17:14:05 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Miaoqing Pan <quic_miaoqing@quicinc.com>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, johan+linaro@kernel.org
-Subject: Re: [PATCH v2 ath-next 2/2] wifi: ath11k: fix HTC rx insufficient
- length
-Message-ID: <Z9METTzUJe9yqVEI@hovoldconsulting.com>
-References: <20250310010217.3845141-1-quic_miaoqing@quicinc.com>
- <20250310010217.3845141-3-quic_miaoqing@quicinc.com>
- <Z866cCj8SWyZjCoP@hovoldconsulting.com>
- <7b1c5e40-b11d-421b-8c8b-117a2a53298b@quicinc.com>
- <c0cdcaf2-655b-4d22-a949-1519c552e6a4@oss.qualcomm.com>
- <72d95d77-674e-4ae7-83b0-ab58748b8251@quicinc.com>
- <Z9G5zEOcTdGKm7Ei@hovoldconsulting.com>
- <8ea7fe7c-7b4d-4a6f-ae03-b9ca127c23f8@quicinc.com>
+	s=arc-20240116; t=1741882886; c=relaxed/simple;
+	bh=cs9hooRbcmbtTjFvrxttAsC6moMKBDjUG2q2ocqhw0A=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Fs4edxEJtR2IVbTmhEwWKOaZ6JCcMSCc6fViNxY+55RmLoX0ssQTgFNFIm3y18bInB6RrRkfZAntbUMYVIwFQ+1jav42ug+GxT1BxIP4GvCpi+mmg5KKCubnP4ddWlnIKprtRgN0m10aepS3kHmND+ZKoApch2j5re60n0QbIk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eU1TdZLv; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52D9A5rN018566;
+	Thu, 13 Mar 2025 16:21:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=2TLGqwr/EfooU0nHKjDDqw
+	hdGOUepgySsQUyOXzY/l0=; b=eU1TdZLvkSEg7RtGYbaJCbFrp0Rkzd3RqsVBEW
+	ucjL73oUG20oZXfvOCZsTyj7vXGVNIyxpAgx+WXNN+AQrN+6/m5YMRtMB5P5+WX0
+	euIminQXe6IgaMnqjc5ijRm8PXUvyrRYAuaKjxJEf9vpw7zTQTKb4iXSiJpQBk27
+	MProx82WM1WePYycO3Oe3Zx8UDZm2TGql95O4dEIe41At2JgbpgdhUo2GCBq8LGZ
+	l6A8VGw3ye0JgXNyS4Vvq+NhtPwixclNbxGFhkc9awt51fsMSQ+rKk/WG2sSQwtL
+	DVOUYa4l4C7Dp1tfl8Mec5KbtzaZHJizKu4kx/XOaTYaD1kg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45au2nxh0k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Mar 2025 16:21:19 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52DGLImo023387
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Mar 2025 16:21:18 GMT
+Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 13 Mar 2025 09:21:17 -0700
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
+Subject: [PATCH v9 0/9] wifi: ath12k: Add monitor interface support on QCN9274
+Date: Thu, 13 Mar 2025 21:50:51 +0530
+Message-ID: <20250313162100.2364049-1-quic_periyasa@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8ea7fe7c-7b4d-4a6f-ae03-b9ca127c23f8@quicinc.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: rSd1orYhT0ViOfS19YWm6pVNCMeFfHp-
+X-Authority-Analysis: v=2.4 cv=Q4XS452a c=1 sm=1 tr=0 ts=67d305ff cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=3hzYR5l4f9l0F4qj52QA:9
+X-Proofpoint-ORIG-GUID: rSd1orYhT0ViOfS19YWm6pVNCMeFfHp-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-13_07,2025-03-11_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 adultscore=0
+ lowpriorityscore=0 mlxscore=0 clxscore=1015 phishscore=0 malwarescore=0
+ spamscore=0 impostorscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503130127
 
-On Thu, Mar 13, 2025 at 09:31:56PM +0800, Miaoqing Pan wrote:
-> On 3/13/2025 12:43 AM, Johan Hovold wrote:
-> > On Wed, Mar 12, 2025 at 09:11:45AM +0800, Miaoqing Pan wrote:
-> >> On 3/11/2025 11:20 PM, Jeff Johnson wrote:
+Currently, monitor interface not supported. Therefore, add the missed TLV
+tags parsing in the monitor parser, configure the monitor vdev state
+identifier with HTT filter setup.
 
-> >>> That didn't answer Johan's first question:
-> >>> Are there ever any valid reasons for seeing a zero-length descriptor?
-> >>
-> >> The events currently observed are all firmware logs. The discarded
-> >> packets will not affect normal operation. I will adjust the logging to
-> >> debug level.
+v9:
+ wifi: ath12k: fix NULL access in assign channel context handler
+  - Updated the commit message
+ wifi: ath12k: add monitor interface support on QCN9274
+  - Removed the mac80211 callback config handler procedure
+  - Removed "Reviewed-by" tag
+v8:
+ wifi: ath12k: add monitor interface support on QCN9274
+  - Added comment section for restricting one monitor i/f in each radio
+v7:
+ wifi: ath12k: Refactor the monitor channel context procedure
+  - Added new patch to avoid multiple change in a patch
+ wifi: ath12k: fix NULL access in assign channel context handler
+  - Added fixes tag
+v6:
+ wifi: ath12k: fix NULL access in assign channel context handler
+  - Added new patch
+ wifi: ath12k: add monitor interface support on QCN9274
+  - Moved to NO_VIRTUAL_MONITOR mac80211 feature for adapting single wiphy usecase
+  - Removed tags
+v5:
+ - updated the s-o-b as a last tag
+v4:
+ - Rebased on ToT
+ wifi: ath12k: Replace band define G with GHZ where appropriate
+  - Dropped the tags due to rebase changes
+v3:
+ - rebased to ToT
+v2:
+ wifi: ath12k: add monitor interface support on QCN9274
+  - remove redundant filter setting in ath12k_mac_monitor_start()
+  - set the default filter when the htt monitor configuration get disable
 
-Have you looked at the device side of things as well? Could it be that
-the firmware is doing something wrong when forwarding the logs?
+Hari Chandrakanthan (1):
+  wifi: ath12k: fix link valid field initialization in the monitor Rx
 
-How sure are you that you only see this with firmware logs?
+Karthikeyan Periyasamy (3):
+  wifi: ath12k: Replace band define G with GHZ where appropriate
+  wifi: ath12k: fix NULL access in assign channel context handler
+  wifi: ath12k: Refactor the monitor channel context procedure
 
-> > I've taken a closer look at the driver and it seems like we're missing a
-> > read barrier to make sure that the updated descriptor is not read until
-> > after the head pointer.
-> > 
-> > Miaoqing, could you try the below patch with your reproducer and see if
-> > it is enough to fix the corruption?
-  
-> > +	/* Make sure descriptor is read after the head pointer. */
-> > +	dma_rmb();
-> > +
-> >   	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
-> >   	if (*nbytes == 0) {
-> > +		WARN_ON_ONCE(1);	// FIXME: remove
-> >   		ret = -EIO;
-> >   		goto err;
-> >   	}
-> 
-> This issue can still be reproduced.
-> 
-> [ 3283.687469] WARNING: CPU: 0 PID: 0 at 
-> /drivers/net/wireless/ath/ath11k/ce.c:405 
-> ath11k_ce_per_engine_service+0x228/0x3e4 [ath11k]
+P Praneesh (5):
+  wifi: ath12k: Add extra TLV tag parsing support in monitor Rx path
+  wifi: ath12k: Avoid fetch Error bitmap and decap format from Rx TLV
+  wifi: ath12k: change the status update in the monitor Rx
+  wifi: ath12k: Avoid packet offset and FCS length from Rx TLV
+  wifi: ath12k: add monitor interface support on QCN9274
 
-Thanks for verifying.
+ drivers/net/wireless/ath/ath12k/core.c    |   5 +
+ drivers/net/wireless/ath/ath12k/core.h    |  18 +-
+ drivers/net/wireless/ath/ath12k/debugfs.c |   4 +-
+ drivers/net/wireless/ath/ath12k/dp.h      |   2 +
+ drivers/net/wireless/ath/ath12k/dp_mon.c  | 362 ++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/dp_mon.h  |   5 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c   |   6 +-
+ drivers/net/wireless/ath/ath12k/dp_tx.c   |   6 +
+ drivers/net/wireless/ath/ath12k/hal_rx.h  |  15 +-
+ drivers/net/wireless/ath/ath12k/hw.c      |   4 +-
+ drivers/net/wireless/ath/ath12k/mac.c     | 163 +++++-----
+ drivers/net/wireless/ath/ath12k/wmi.c     |  36 +--
+ drivers/net/wireless/ath/ath12k/wmi.h     |  16 +-
+ 13 files changed, 456 insertions(+), 186 deletions(-)
 
-Which platform are you testing on and which kernel are you using?
 
-I'm still waiting to hear back from some people testing my patch on the
-X13s (sc8280xp).
+base-commit: 42aa76e608ca845c98e79f9e23af0bdb07b2eb1d
+-- 
+2.34.1
 
-Johan
 
