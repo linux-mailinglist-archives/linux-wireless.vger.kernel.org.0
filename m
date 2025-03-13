@@ -1,176 +1,97 @@
-Return-Path: <linux-wireless+bounces-20283-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20284-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39DD4A5E8EC
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 01:13:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD59A5E926
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 02:00:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A63843B8123
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 00:13:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF00C1896E5E
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 01:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076D72905;
-	Thu, 13 Mar 2025 00:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2434FDDDC;
+	Thu, 13 Mar 2025 01:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="JP9c4+NI"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="h1WQyKQ3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BC217E;
-	Thu, 13 Mar 2025 00:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0020A847C
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 01:00:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741824817; cv=none; b=P46VO8yBf1qfzUZC/XKCoZehmFiTnoEAHvdNEA74FUE6/kD2MhLWucVzXhbaTIXVbEga//3jAP4maPNgxba7dKvRn4upQpnBdM1AE63dThZUg3YhNtihUWydVpcnccUi+XsDw1zkDg8F5V2+PVJJlrrJbN5tcfNikkc7stM2tBY=
+	t=1741827635; cv=none; b=jw9T/xHj6RTKQ0w5um7Md8Ky6qI3dIu1oXjQo4eZcdWUxmR8nTRMESOqe6tMamrO6qRhheYdGXSSpIXyQM1cY4Zu3zeuW8HONGx+HtAAaO1LRejm0JhP4lrNL41MVi9h8JDltPYlmlF69017HI7/+V0J4uOhqop7HlCHDWta9EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741824817; c=relaxed/simple;
-	bh=8dEfo6LCVjShHE42wf1ejHBUNUNXIYH6qPYnJMKcwbs=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=e+Z9mNW2E+fjkzEZatNWaCuhXNrgU27+PcKSN5Q0zdE/Nv20yul0jHxfUvkAdQNwZCNu9a/WaE3hM+iwwsJ9fxa3dUZXLG2CT0mYr+Y3MvYq2ErQj3GDqRMZclzt+ZD4o4+BNNtTFTBssKRbBlHB7u7kglEqyehze6zu49LFAg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=JP9c4+NI; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 52D09Gjf2730497
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 12 Mar 2025 17:09:16 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 52D09Gjf2730497
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1741824561;
-	bh=pOuTjU0DLlw9muSdV/bvRsUk/zEVswSeTDmcSBtrmzk=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=JP9c4+NI9BKncKU+1PsEB9cZeQpNxCxpJ0LmRuYoHNmwWD/IZKSycv5sN9IICpIEz
-	 fR/hn+rQhnfZM1uUiHFsG6gUoBL9neiS+JGil7wI30UkDhHcG1QRaLCxVEOb8Avej8
-	 KQCseXzhw1xoqlckAoMQLS0jGXtjlqSg5eaOuTyA+VT8jx0ImUcERkYzUzACSp2jWz
-	 iveP8ZtK+pI4qfkTCfKTJm+BI905HMMN61AY3/MbPJkw2r62IkxWg6XH1CtdvGTrlr
-	 6CALlw7rm8dk1ZxjmoEuThEn4j6+yLh7OqapigzBfq/66ixFRWdc3P5KvqHGfpwwnf
-	 wFX8jsnXRMF2A==
-Date: Wed, 12 Mar 2025 17:09:16 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Jacob Keller <jacob.e.keller@intel.com>,
-        David Laight <david.laight.linux@gmail.com>,
-        Jiri Slaby <jirislaby@kernel.org>
-CC: Ingo Molnar <mingo@kernel.org>, Kuan-Wei Chiu <visitorckw@gmail.com>,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, jk@ozlabs.org,
-        joel@jms.id.au, eajames@linux.ibm.com, andrzej.hajda@intel.com,
-        neil.armstrong@linaro.org, rfoss@kernel.org,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-        dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
-        hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
-        vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
-        johannes@sipsolutions.net, gregkh@linuxfoundation.org,
-        yury.norov@gmail.com, akpm@linux-foundation.org, alistair@popple.id.au,
-        linux@rasmusvillemoes.dk, Laurent.pinchart@ideasonboard.com,
-        jonas@kwiboo.se, jernej.skrabec@gmail.com, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-        dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-        oss-drivers@corigine.com, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-        brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
-        bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
-        Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: Re: [PATCH v3 01/16] bitops: Change parity8() return type to bool
-User-Agent: K-9 Mail for Android
-In-Reply-To: <cbb26a91-807b-4227-be81-8114e9ea72cb@intel.com>
-References: <20250306162541.2633025-1-visitorckw@gmail.com> <20250306162541.2633025-2-visitorckw@gmail.com> <9d4b77da-18c5-4551-ae94-a2b9fe78489a@kernel.org> <Z8ra0s9uRoS35brb@gmail.com> <a4040c78-8765-425e-a44e-c374dfc02a9c@kernel.org> <20250307193643.28065d2d@pumpkin> <cbb26a91-807b-4227-be81-8114e9ea72cb@intel.com>
-Message-ID: <0F794C6F-32A9-4F34-9516-CEE24EA4BC49@zytor.com>
+	s=arc-20240116; t=1741827635; c=relaxed/simple;
+	bh=KTUTE0GA+7UYYudrr3/wPuVw8R8wBvcP/1amXeMjpZU=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=rn+UTvEXKL5ezF1PppSydxmUWp1FiAc7630NgUnkci7Jg3o6aWklrF3ZnGs+AQcA52dFf1NRZ4u4BEA89zaukHr3VCrBp03ErMYKKBDXhJb7i0YiaMzi3uzk0nRBiaGp21Rhb3PSKcDgC97D94Fj8M5avB9FdBuwpgf3gFQaucA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=h1WQyKQ3; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52D10SiK4233704, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1741827628; bh=KTUTE0GA+7UYYudrr3/wPuVw8R8wBvcP/1amXeMjpZU=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date;
+	b=h1WQyKQ3Teui9n9iH8uSxKkPAByu5nwAr4y+8duzE/Ms8uIE3rYrGljAYuW0Df9PS
+	 94N/3QPqy6PbHIPb5u2T4qKvsT+ramb4qXy/R20CAyMorsZRUmL4+0Hsd7LU78tCIJ
+	 y3uek2RTtLYCqy0SQlWfvw84btgC50SNmJOeA3iHQTN1q/6EyiaKGu8OXPHst7xyVc
+	 ltGdYvRQFurT9+F0nVcabDZgZFhP7bybF/1NVhLdx17Igr03t9ubVtxWEq84a3onZF
+	 6044oN1v9JEXE7MH+WPE7DOYjnT9eW++BXLIVrK8UwqwAeQYBYp4IAVZGeXaPsMMRP
+	 ETRNQpTCgY7nA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52D10SiK4233704
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 09:00:28 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 13 Mar 2025 09:00:29 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 13 Mar
+ 2025 09:00:28 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <kevin_yang@realtek.com>, <dian_syuan0116@realtek.com>,
+        <damon.chen@realtek.com>
+Subject: Re: [PATCH rtw-next 1/5] wifi: rtw89: add support for negative values of dBm to linear conversion
+In-Reply-To: <20250306021144.12854-2-pkshih@realtek.com>
+References: <20250306021144.12854-1-pkshih@realtek.com> <20250306021144.12854-2-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+Message-ID: <7dc5ace7-ddd5-4399-b25a-24a9707c497b@RTEXMBS04.realtek.com.tw>
+Date: Thu, 13 Mar 2025 09:00:28 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On March 12, 2025 4:56:31 PM PDT, Jacob Keller <jacob=2Ee=2Ekeller@intel=2E=
-com> wrote:
->
->
->On 3/7/2025 11:36 AM, David Laight wrote:
->> On Fri, 7 Mar 2025 12:42:41 +0100
->> Jiri Slaby <jirislaby@kernel=2Eorg> wrote:
->>=20
->>> On 07=2E 03=2E 25, 12:38, Ingo Molnar wrote:
->>>>
->>>> * Jiri Slaby <jirislaby@kernel=2Eorg> wrote:
->>>>  =20
->>>>> On 06=2E 03=2E 25, 17:25, Kuan-Wei Chiu wrote: =20
->>>>>> Change return type to bool for better clarity=2E Update the kernel =
-doc
->>>>>> comment accordingly, including fixing "@value" to "@val" and adjust=
-ing
->>>>>> examples=2E Also mark the function with __attribute_const__ to allo=
-w
->>>>>> potential compiler optimizations=2E
->>>>>>
->>>>>> Co-developed-by: Yu-Chun Lin <eleanor15x@gmail=2Ecom>
->>>>>> Signed-off-by: Yu-Chun Lin <eleanor15x@gmail=2Ecom>
->>>>>> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail=2Ecom>
->>>>>> ---
->>>>>>    include/linux/bitops=2Eh | 10 +++++-----
->>>>>>    1 file changed, 5 insertions(+), 5 deletions(-)
->>>>>>
->>>>>> diff --git a/include/linux/bitops=2Eh b/include/linux/bitops=2Eh
->>>>>> index c1cb53cf2f0f=2E=2E44e5765b8bec 100644
->>>>>> --- a/include/linux/bitops=2Eh
->>>>>> +++ b/include/linux/bitops=2Eh
->>>>>> @@ -231,26 +231,26 @@ static inline int get_count_order_long(unsign=
-ed long l)
->>>>>>    /**
->>>>>>     * parity8 - get the parity of an u8 value
->>>>>> - * @value: the value to be examined
->>>>>> + * @val: the value to be examined
->>>>>>     *
->>>>>>     * Determine the parity of the u8 argument=2E
->>>>>>     *
->>>>>>     * Returns:
->>>>>> - * 0 for even parity, 1 for odd parity
->>>>>> + * false for even parity, true for odd parity =20
->>>>>
->>>>> This occurs somehow inverted to me=2E When something is in parity me=
-ans that
->>>>> it has equal number of 1s and 0s=2E I=2Ee=2E return true for even di=
-stribution=2E
->>>>> Dunno what others think? Or perhaps this should be dubbed odd_parity=
-() when
->>>>> bool is returned? Then you'd return true for odd=2E =20
->>>>
->>>> OTOH:
->>>>
->>>>   - '0' is an even number and is returned for even parity,
->>>>   - '1' is an odd  number and is returned for odd  parity=2E =20
->>>
->>> Yes, that used to make sense for me=2E For bool/true/false, it no long=
-er=20
->>> does=2E But as I wrote, it might be only me=2E=2E=2E
->>=20
->> No me as well, I've made the same comment before=2E
->> When reading code I don't want to have to look up a function definition=
-=2E
->> There is even scope for having parity_odd() and parity_even()=2E
->> And, with the version that shifts a constant right you want to invert
->> the constant!
->>=20
->> 	David
->
->This is really a question of whether you expect odd or even parity as
->the "true" value=2E I think that would depend on context, and we may not
->reach a good consensus=2E
->
->I do agree that my brain would jump to "true is even, false is odd"=2E
->However, I also agree returning the value as 0 for even and 1 for odd
->kind of made sense before, and updating this to be a bool and then
->requiring to switch all the callers is a bit obnoxious=2E=2E=2E
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-Odd =3D 1 =3D true is the only same definition=2E It is a bitwise XOR, or =
-sum mod 1=2E
+> From: Kuan-Chung Chen <damon.chen@realtek.com>
+> 
+> Enhanced the dBm to linear conversion function to accommodate negative
+> dBm values and improved the precision from 1 dBm to 0.25 dBm.
+> 
+> Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+
+5 patch(es) applied to rtw-next branch of rtw.git, thanks.
+
+3df4583ae0cf wifi: rtw89: add support for negative values of dBm to linear conversion
+8ef675fc797b wifi: rtw89: refine mechanism of TAS
+9c225e119866 wifi: rtw89: enable dynamic antenna gain based on country
+6f039d9ba9cb wifi: rtw89: 8922a: enable dynamic antenna gain
+a9b56f219a0f wifi: rtw89: set force HE TB mode when connecting to 11ax AP
+
+---
+https://github.com/pkshih/rtw.git
+
 
