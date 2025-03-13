@@ -1,114 +1,142 @@
-Return-Path: <linux-wireless+bounces-20303-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20304-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87308A5EFD5
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 10:45:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 427A9A5F052
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 11:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDD063AF33D
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 09:45:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46E07172D25
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 10:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035C31F03CD;
-	Thu, 13 Mar 2025 09:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0500E264FB8;
+	Thu, 13 Mar 2025 10:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bbZLkgWp"
+	dkim=pass (2048-bit key) header.d=8devices.com header.i=@8devices.com header.b="MlHaLa0k"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA721EF37D;
-	Thu, 13 Mar 2025 09:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD49264A7B
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 10:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741859121; cv=none; b=bcc5E+YckDYVikwK6VQRubcYuy3aGaF4LtrQvSwt68ThtQpBNeKMzVCvKqYAoyg8sI+Wwx4bxcWwVvqgWa7IfEwXyaAxEzfFoPgekxE2x3EUBaF8zdWY+8cYbjtBDJO1oFkJ+CJOryyzDKmq18uYmds0Og8qHl1Kb6jKIlN8GOM=
+	t=1741860637; cv=none; b=SIx6up6Y6f3PTogh6r3Mjxr6h5TP8Jcw8Y5MhxqcpQpjU8swUDTNsE4OQTcMkay9Xm/jJpL2wm2LeWrB/fWdERDirQ8Pd15FUm+phuGiu3NYyUO/uuwBBMZFLYAraxcDi9GqToh3I4X5OBCMTrZeilTWQ1v+KYH+e8IwkJpwaXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741859121; c=relaxed/simple;
-	bh=cmvhZ61KuCH6EtGoYseDt8GjbPbuKre81gGxvuEtC3w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=NYJDDuJAKeLO73P8uUsIZAUbLPS9stAeuA9xeUiU9KFHEcR/PV3AgY3dlgtLReVBpZTxevq6oxDCdv59RjLjgLNHs96jTJfkwtMQ3wjZu+rfTK9ASmsjFs79E+AehP/UD5J15obXawibReB1mOX/XQ7j/yULVi30VbNdyQL2AjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bbZLkgWp; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52D9A5DI018566;
-	Thu, 13 Mar 2025 09:45:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	cmvhZ61KuCH6EtGoYseDt8GjbPbuKre81gGxvuEtC3w=; b=bbZLkgWp0RM2P9bz
-	wbHiVUO7Z8sHTU5gLF9H27Ixd5zDKFg5/0lyWQkFp8kzTzWd+aJ/7FCvY6eyCsWf
-	UfljoXThpTVFkR2BCiEvDxQIBy1Iwp2lbKWx8//nLOejAr/Wa5AnLY/vWDskIXB/
-	KfQmXJrbEs4xjk8c3SssoLnYEkUDHaYK48pbSHiKWFpZ1XN2JmH6iCSEJF3GUVkq
-	dxSww+BPwj8d7r0+zRzH5qbMXfWnuEAI3SVsSUz5fkNU/OaqZN4XGS+2dhI+hINR
-	45zW8zqlmkYpWfBxIPOrVa7b0c20PUZD+QUaMTWx6GrhHsTZYjB6rjO1IvsprFO1
-	U6JhhQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45au2nwdhr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Mar 2025 09:45:12 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52D9jBpr002714
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Mar 2025 09:45:11 GMT
-Received: from [10.152.204.0] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 13 Mar
- 2025 02:45:08 -0700
-Message-ID: <a44f064f-19fd-16ea-222f-058486698951@quicinc.com>
-Date: Thu, 13 Mar 2025 15:15:05 +0530
+	s=arc-20240116; t=1741860637; c=relaxed/simple;
+	bh=hcFCnx3uS3TpvHJPQgKv8tXwbefp9V9rPmL9l2TgJdU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pBwFt9KsVo/BCg5SWvl8DBXewN9lOHa/f0GQ2X+f9Luo+smmwUs8eGPfFSRdD2HZ/ov2GvxG4Orx0kkj34Rm8G4xmjyhWMwdSigGpq11PHZneOfUtxGywY4V2509gowYP6jhgbuj0zGICG2Jgzz4fW9HCKOOih3ghJdIvrxbG9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=8devices.com; spf=pass smtp.mailfrom=8devices.com; dkim=pass (2048-bit key) header.d=8devices.com header.i=@8devices.com header.b=MlHaLa0k; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=8devices.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8devices.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-54298ec925bso1203154e87.3
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 03:10:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=8devices.com; s=8devices; t=1741860633; x=1742465433; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cB67YH6YfdXrNYVTUHeNhr27VpzrcXfl9PICsA70xKI=;
+        b=MlHaLa0kHzNRp0VPBw815ow93TkQzmIzwD4BFiA8BFye+9Aj8D1jzzR2bBBgJtYkBx
+         gyGpiwDuJEOB5WNOVKaK/iYbzJydtMrNWhKUkV8wExd5Nz5iDWhZMKNKVWDpTgMpkNUM
+         5nIS9YKqxqLW21CLHOCkPnJ+pFNVpt+hev1m2LgWCJHZPIAzwMJRMksv5FEDjKSnUq8L
+         ylqE5A71OVaxAhNkM1Dl9+MVzCntyOfCKV7mLlLeZg+OH0usAsnD8rG5Js2HyYCvFyZ1
+         PE8t9gjnxzHJ6RwycjPFbbJ9PGmrgRCEHhlhxv9qTsrLu5h8JxE0wNcAw/gTNGQ/pzED
+         9K1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741860633; x=1742465433;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cB67YH6YfdXrNYVTUHeNhr27VpzrcXfl9PICsA70xKI=;
+        b=uZrs2KMiZ5p6s3Uip/t6pgeSU/H1RsB2IdFULEVFMiteb+UbXg7TI64kfHQgrhSccJ
+         s0DNGS8fUzqIiC27pplZFhcZQaRGE1DfMaQv4Z52MJyOdB3piFYFjPUFvi0PAXKk26Oq
+         fzSHYv+xVhZm1/sw5NQq6jQrFQvRa8h9tx/rlH8N6D6iTQHYjz11TdGfaJ2Z8P0cNwNR
+         9CMsDdkwgC+HDqqZIvZKLf0Lo60ToM9BkQjGUAoI0t4h256M84mm1hFhGz6BN3kzP+2H
+         i288nVvQHeeklrr9Ky2bUZYvjRz26ZTMRcRyfENDwoEGCp7ICUJggkqoUlY35EeSBAge
+         kwDw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFq33+GKaso+hozMqwIAtKKIbsGRcxvCHhHp0I8PUtA3OgETwlid6L7iTjefKTUCrEkoWh9c/6C06R1fUiNQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4tHc93OxQx7Ptvi7V8RQ8HZapWKb1g3D2M7f6BJ+VGeYbgxMw
+	RDQ0F4Hkptj32+ewSW05/ZzB8FKFK6t5s0h/af2pVpmNCbIIWpeohrM++blgVuI=
+X-Gm-Gg: ASbGnctsS49+c0oTLIIEktUI9r+6dnxidj/O1P+RcDIHBtjHpm6JmorzG6azSDcIEvT
+	ySRyYfOEAtJJZhFQ9t6XjMMyOoYtd9W9AdmOJVNYxhoaX+Gkg6MDSuEofK/DpiOSvcKrE/hK4j5
+	mxJAEdn11piDipNuWK1G+S9JG5m94hmxFNXexQCAxqEGmaCCXrBUDtDcIww4qj1xRlJzhw1ppt3
+	wREd4wCW1u9NcOGk1Sf+xlHipK9uraWe3qgnpvNFDpQYnaXql1ZdxTtxx0LetG9ebfeVzusG+OI
+	Zk0e9Dxh/S4e3gBde359ujuwRhAN/0haTis5NizFMlOSToIChZcDTmRnAsc=
+X-Google-Smtp-Source: AGHT+IFG51K1w0HPoy9OtijujySdcKdTqN4yBf/VMBFgBwfH8an14pHCg9O3uX4RyxkS50AvoG6zCw==
+X-Received: by 2002:a05:6512:3988:b0:545:2e76:495c with SMTP id 2adb3069b0e04-54990e6729dmr6810635e87.25.1741860632590;
+        Thu, 13 Mar 2025 03:10:32 -0700 (PDT)
+Received: from [192.168.2.202] ([78.62.132.154])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba7c0723sm163463e87.70.2025.03.13.03.10.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Mar 2025 03:10:31 -0700 (PDT)
+Message-ID: <187c8be7-23ef-4bcb-9ac1-cf1882fe3e62@8devices.com>
+Date: Thu, 13 Mar 2025 12:10:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH ath-next] wifi: ath12k: limit WMI_SCAN_CHAN_LIST_CMDID
  argument size
-Content-Language: en-US
-To: Mantas Pucka <mantas@8devices.com>, <ath12k@lists.infradead.org>
-CC: Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson
-	<jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
+To: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
+ ath12k@lists.infradead.org
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 References: <20250310-limit-wmi-chanlist-v1-1-8f0fb45459a7@8devices.com>
-From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
-In-Reply-To: <20250310-limit-wmi-chanlist-v1-1-8f0fb45459a7@8devices.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+ <a44f064f-19fd-16ea-222f-058486698951@quicinc.com>
+Content-Language: en-US
+From: Mantas <mantas@8devices.com>
+In-Reply-To: <a44f064f-19fd-16ea-222f-058486698951@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: KnHX6KE_wvA54Rygmqn7yKA4oBbVvE17
-X-Authority-Analysis: v=2.4 cv=Q4XS452a c=1 sm=1 tr=0 ts=67d2a928 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=HwlXlOyzY4lq39rnBK0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: KnHX6KE_wvA54Rygmqn7yKA4oBbVvE17
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-13_04,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 adultscore=0
- lowpriorityscore=0 mlxscore=0 clxscore=1015 phishscore=0 malwarescore=0
- spamscore=0 impostorscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503130076
+
+On 2025-03-13 11:45, Vasanthakumar Thiagarajan wrote:
+>
+>
+> On 3/10/2025 6:58 PM, Mantas Pucka wrote:
+>> When using BDF with both 5GHz and 6GHz bands enabled on QCN9274, 
+>> interface
+>> fails to start. It happens because FW fails to process
+>> WMI_SCAN_CHAN_LIST_CMDID with argument size >2048, resulting in a 
+>> command
+>> timeout. The current code allows splitting channel list across 
+>> multiple WMI
+>> commands but uses WMI max_msg_len (4096) as chunk size, which is 
+>> still too
+>
+> Did you have any private changes to increase the message_len from current
+> 2048 ot 4096 bytes? As mentioned in a reply for your other patch, 
+> multi-band
+> in qcn9274 requires additional changes in driver, only scan mode is 
+> supported
+> even with those changes.
+>
+No private changes, using unmodified FW from:
+
+https://git.codelinaro.org/clo/ath-firmware/ath12k-firmware/-/tree/main/QCN9274/hw2.0/1.4.1/WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+max_msg_len comes from FW initialization message:
+
+ath12k_htc_connect_service max_msg_len=0 flags_len=0x0 assigned_eid=0
+boot htc service 'Control' ul pipe 0 dl pipe 1 eid 0 ready
+ath12k_htc_connect_service max_msg_len=2040 flags_len=0x7f80100 
+assigned_eid=1
+boot htc service 'HTT Data' ul pipe 4 dl pipe 1 eid 1 ready
+ath12k_htc_connect_service max_msg_len=4088 flags_len=0xff80200 
+assigned_eid=2
+boot htc service 'WMI' ul pipe 3 dl pipe 2 eid 2 ready
 
 
+Is support for multi-band AP/STA limited by FW? AFAIK it works with 
+proprietary driver.
 
-On 3/10/2025 6:58 PM, Mantas Pucka wrote:
-> When using BDF with both 5GHz and 6GHz bands enabled on QCN9274, interface
-> fails to start. It happens because FW fails to process
-> WMI_SCAN_CHAN_LIST_CMDID with argument size >2048, resulting in a command
-> timeout. The current code allows splitting channel list across multiple WMI
-> commands but uses WMI max_msg_len (4096) as chunk size, which is still too
 
-Did you have any private changes to increase the message_len from current
-2048 ot 4096 bytes? As mentioned in a reply for your other patch, multi-band
-in qcn9274 requires additional changes in driver, only scan mode is supported
-even with those changes.
+Mantas
 
-Vasanth
 
