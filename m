@@ -1,151 +1,128 @@
-Return-Path: <linux-wireless+bounces-20340-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20341-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A16A5FBBF
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 17:31:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B19A5FC32
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 17:41:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0425E3A723A
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 16:26:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7754D1895050
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 16:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED612269B13;
-	Thu, 13 Mar 2025 16:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611DF26B098;
+	Thu, 13 Mar 2025 16:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mf5EJQiq"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="TAd1C3YU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF628633F;
-	Thu, 13 Mar 2025 16:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C97326A0E3;
+	Thu, 13 Mar 2025 16:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741883196; cv=none; b=QJnlNZEIriI46bn+5rPdKhNrIo5O8NV6cGX99vziCixfEcw6vts3GdsoO4eipakQs3RLN4vHvkBUplJ3+bAhxmKey4SVOgpfFcxd7LraD+yfN51BdU1cSzvxtPvHwxvCXVjWKoCfQKIOHcuARd4JpY6qpa2HLVcFDoMu3AbDY/w=
+	t=1741884007; cv=none; b=Ho5ccutEvWUvgehKhax/lAM1zDIUjz9c3dLl67HOMwbhsXUsxRVle+DnSU4xqdoPd7Qyu+Cpq0q8xz+dP+E7YT655C1rHAKsFbe/gImTP8Xecs8o31E7EPnZB+lE2m92//Uqoi71JBcTb4LfGWSBgzVcXliIbFO/BA0HKSQMhy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741883196; c=relaxed/simple;
-	bh=QtQeFXXUyqLXG+oE2hxpLfZohC2eCqSYFWR9RbXR29s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n0h9JscqjkKhgLsggA/EhNdMYDZAGoO/K6MGTyo6fX4z96OBkK+7tT2ruOKOuiiGHpPrnUjkyCrYWL7zY6d3T5tVkCFDMA1YPcrhnRnlxYX5yJd6FxuzOj5UjTV3Q8OfWpULDMZXGFX+Qr63uOcToZ1Xe4OOaJnZEfMlrB+g6qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mf5EJQiq; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2fe9759e5c1so2124324a91.0;
-        Thu, 13 Mar 2025 09:26:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741883194; x=1742487994; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Dj58qb5Fdu7jAiSs8njputJgR05+QajXZnrH30MR1c=;
-        b=mf5EJQiqQ8+OohbZIxgzKw4VgejS0dfHWRTzV9HxLuP38mkTye9drfpWqv/TKd4eV4
-         t+m01QnXvanD2VbFhkDzDzQDBW6MauUK+1KGeOl4/F7M+xCegOIqlMUn4yxe6PPm4aqc
-         Os988q+DpNEoWHrCGop4/JDhjgENuiFqGI0hl7mHGB0Qg71R3EHRgVncGOMsXCcZULID
-         V+sUZpIOqe5ltdBDsrFU8DdNMWmpEKM4EA9VnlkaNaJX7xQRYMa+X7zTw5dNAxDwpeMn
-         gmMwj60Mz+RXYn6rAqpCU7oT4FQ6jFqGIhB2lMRAU/lCuuL0xKvltCZghFiPEpkWQMAh
-         np8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741883194; x=1742487994;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6Dj58qb5Fdu7jAiSs8njputJgR05+QajXZnrH30MR1c=;
-        b=fzAbB+QtKO7WGluPgh4Smie6ysRLNDFzX5JoZvhaD1yLcZgvEohPh2z8lMuc6aa3c2
-         Hsi7b9ICWgBTaW2KT9cmEu6JMLUpSMLiGA5emxp88drY8/2cbU+zt7iWejhMoADnq4hV
-         Y5jSxR8XtT3mqqwK0e4lzz4jGq0ig2RKnWulTpsd9CgCxc4KvumZ+yBlJCYAz7bsmX1z
-         pjuVUbE4vS/mUAO6WhYKAyFJ7RHFXIWSuOePN6D8rB62NO47Jgt0qYqKTXY7h5m+7yHi
-         0wApn0F02cde0MRC51EqL4pfSilZOtVJu22xCcpYz6XK/CgkcGK3HCVzxQDuKnU0Vfp4
-         VAyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPKqUgt96MAnD8qxgpOAWawBykIlacxEKagMTQGJtsepDBP1AyY6sw4Mfri1kgYwV2OKDOXyqzlRM16UMilJw=@vger.kernel.org, AJvYcCUlz8cvj0EF8mksDCcKJJKhl7UkugoyDbzFppBpst5Uh3vaIEYWYdKaXt8glgMsQUX71Zs=@vger.kernel.org, AJvYcCWsuFRYPxe5GcxSKhZj0eEwgCgS8runboRYXPr9QQiLscabLJKdmJizeOR/KJUWPw7sqa4+EwzxlPfIGqY=@vger.kernel.org, AJvYcCX+EH/tkzAiz2IYPZDk8KSPH6/qi4I66aNxVDgPrLh1mJx7NO8+HcqUoZpBdVhCPX9yzZLRaLuyZxnC5IM=@vger.kernel.org, AJvYcCXF1H+o5g/DrezSxDW4CKGI8grvPUgH9nQFuSULwATGztull58foYMJQOYo+rNe1w/OQqCWhVpNA5lqRhW3@vger.kernel.org, AJvYcCXOSywecWgjs2vePQESz0DI1nKA/WyNqJxmU0OMdoxSkW7tKt64yMBgWf1JIsE+EgJ7F4jFEk55kfkenvvI@vger.kernel.org, AJvYcCXbZ2XeenMUvK0ZPwypm18CC4SZjPR3Si07ZEAp/jGfudEG8A47IJQGl1NHOzuMkUdIwNuwhgr+@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKGpb1JHFsnqWtFDOfSP8wzrptaES1oQLfu3zmND+x19RwWdPk
-	nJsVzffpIDv4xSVRfzafkuFCB66CcPkBmpT/geVLnsNvQ1oxVnLY
-X-Gm-Gg: ASbGncvyfIh/Vq7kKSmT63ld06XA83HF+VREX5PifpPXyl4o4Gf5C5NWAvW837w2BPp
-	dLCFnNRE8nse7QRIjs6Y1iK+ofenkGSRfIhLCFYonapqr8d4JDvVfTS8PF4v8Wl006J3J9jWACm
-	VF4tCYThgm3OthCYbw4Uwl7A4PPe99vcXTeoY1fpVhyjxyXYaMy4yZVW/T8yY/fB3+pU/84cpbq
-	npbNDLA/Is4G/QcJT/NOw3bcVWzWcOyxgMUUXHn4zjTX1T7GhCVORyyDs3ypIPMtvvxmLdP28wY
-	GuY8LsDj4hxtRxuO/DuQKfjL0/iR4TuJk0e7TtiOANuX
-X-Google-Smtp-Source: AGHT+IGQ1B1r23bHH1y7f1P01LiOEnbRiq9HK7MEAu/5nbXG5vCyYer48OQlR5RqnwzzsBUWrNiOAw==
-X-Received: by 2002:a17:90b:3906:b0:2ee:c6c8:d89f with SMTP id 98e67ed59e1d1-300ff0d6160mr17644409a91.14.1741883194498;
-        Thu, 13 Mar 2025 09:26:34 -0700 (PDT)
-Received: from localhost ([216.228.125.129])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c6888a02sm15453765ad.40.2025.03.13.09.26.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 09:26:33 -0700 (PDT)
-Date: Thu, 13 Mar 2025 12:26:32 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
-	Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, jk@ozlabs.org, joel@jms.id.au,
-	eajames@linux.ibm.com, andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org, rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-	dmitry.torokhov@gmail.com, mchehab@kernel.org,
-	awalls@md.metrocast.net, hverkuil@xs4all.nl,
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-	louis.peens@corigine.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
-	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org, alistair@popple.id.au,
-	linux@rasmusvillemoes.dk, Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se, jernej.skrabec@gmail.com, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-	oss-drivers@corigine.com, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
-	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
-	Yu-Chun Lin <eleanor15x@gmail.com>
+	s=arc-20240116; t=1741884007; c=relaxed/simple;
+	bh=SaFIw7UgTgo6VXgT9++j90cTZypncDuuppnQ2OyQAgc=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=XwrVdY4yIgQLzHK/yci8I062cMN8L9HWzu3DZOXND7271pUjNd1O7agzs70OJWiMj/zpgKq58vOo+xFhQrKA6PdkUpUDKOrGGvWcxhYuFVf/nfdg8SSgDCGEAGYx7BCyrAN3hiv0+T5s4dq/SGu1JgAFQuQzRd+bpBo6sRndv9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=TAd1C3YU; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 52DGaDdt3043136
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 13 Mar 2025 09:36:13 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 52DGaDdt3043136
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1741883777;
+	bh=SaFIw7UgTgo6VXgT9++j90cTZypncDuuppnQ2OyQAgc=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=TAd1C3YUnz1/m04KvWprrt25c59hDoEqP/HObNA2f0Bp4rp+Nb9PEJCNVXCw14Iiu
+	 q9Abs6+zDLtcCpZhdLC2JCZczf1qLTKYIQIMECs16cttjTwMK/9bSrYGHwOie5HClz
+	 /jcP+3xeKGlwUu0aUrtIeDMZT1ZuV3Y4f2fDZOzvoKjLs6qNj/nOaMpj13f7/0wDQR
+	 FTgUDEoLrytWaP9YL4WrPdL93XJwGvTwIwSUgo+vtkpLhxBsY0ibsq0svVoyhEkaAa
+	 CHnCGjith9nzaUr6Ath+5dakagWjzMXxHAYsyl+rXq8ZXPjgmXLSW6QTYUQphTnOMM
+	 hLTpcEZzd0lKw==
+Date: Thu, 13 Mar 2025 09:36:11 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Yury Norov <yury.norov@gmail.com>
+CC: Jacob Keller <jacob.e.keller@intel.com>,
+        David Laight <david.laight.linux@gmail.com>,
+        Jiri Slaby <jirislaby@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        x86@kernel.org, jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
+        andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+        dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
+        hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
+        vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+        parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+        johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+        akpm@linux-foundation.org, alistair@popple.id.au,
+        linux@rasmusvillemoes.dk, Laurent.pinchart@ideasonboard.com,
+        jonas@kwiboo.se, jernej.skrabec@gmail.com, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+        dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+        oss-drivers@corigine.com, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+        brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+        bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
+        Yu-Chun Lin <eleanor15x@gmail.com>
 Subject: Re: [PATCH v3 01/16] bitops: Change parity8() return type to bool
-Message-ID: <Z9MHOOfnHnLsnhxu@thinkpad>
-References: <20250306162541.2633025-1-visitorckw@gmail.com>
- <20250306162541.2633025-2-visitorckw@gmail.com>
- <9d4b77da-18c5-4551-ae94-a2b9fe78489a@kernel.org>
- <Z8ra0s9uRoS35brb@gmail.com>
- <a4040c78-8765-425e-a44e-c374dfc02a9c@kernel.org>
- <Z8ri5h-nvNXNp6NB@gmail.com>
- <04AA7852-2D68-4B3F-9AA7-51AA57E3D23D@zytor.com>
- <Z8tJNt83uVBca0cj@thinkpad>
- <783456A8-67F9-47DD-AB15-914622A921CD@zytor.com>
+User-Agent: K-9 Mail for Android
+In-Reply-To: <Z9MGxknjluvbX19w@thinkpad>
+References: <20250306162541.2633025-1-visitorckw@gmail.com> <20250306162541.2633025-2-visitorckw@gmail.com> <9d4b77da-18c5-4551-ae94-a2b9fe78489a@kernel.org> <Z8ra0s9uRoS35brb@gmail.com> <a4040c78-8765-425e-a44e-c374dfc02a9c@kernel.org> <20250307193643.28065d2d@pumpkin> <cbb26a91-807b-4227-be81-8114e9ea72cb@intel.com> <0F794C6F-32A9-4F34-9516-CEE24EA4BC49@zytor.com> <Z9MGxknjluvbX19w@thinkpad>
+Message-ID: <795281B1-9B8A-477F-8012-DECD14CB53E5@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <783456A8-67F9-47DD-AB15-914622A921CD@zytor.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 07, 2025 at 11:33:40AM -0800, H. Peter Anvin wrote:
-> On March 7, 2025 11:30:08 AM PST, Yury Norov <yury.norov@gmail.com> wrote:
+On March 13, 2025 9:24:38 AM PDT, Yury Norov <yury=2Enorov@gmail=2Ecom> wro=
+te:
+>On Wed, Mar 12, 2025 at 05:09:16PM -0700, H=2E Peter Anvin wrote:
+>> On March 12, 2025 4:56:31 PM PDT, Jacob Keller <jacob=2Ee=2Ekeller@inte=
+l=2Ecom> wrote:
+>
+>[=2E=2E=2E]
+>
+>> >This is really a question of whether you expect odd or even parity as
+>> >the "true" value=2E I think that would depend on context, and we may n=
+ot
+>> >reach a good consensus=2E
+>> >
+>> >I do agree that my brain would jump to "true is even, false is odd"=2E
+>> >However, I also agree returning the value as 0 for even and 1 for odd
+>> >kind of made sense before, and updating this to be a bool and then
+>> >requiring to switch all the callers is a bit obnoxious=2E=2E=2E
+>>=20
+>> Odd =3D 1 =3D true is the only same definition=2E It is a bitwise XOR, =
+or sum mod 1=2E
+>
+>The x86 implementation will be "popcnt(val) & 1", right? So if we
+>choose to go with odd =3D=3D false, we'll have to add an extra negation=
+=2E
+>So because it's a purely conventional thing, let's just pick a simpler
+>one?
+>
+>Compiler's builtin parity() returns 1 for odd=2E
+>
+>Thanks,
+>Yury
 
-[...]
-
-> >> Instead of "bool" think of it as "bit" and it makes more sense
-> >
-> >So, to help people thinking that way we can introduce a corresponding
-> >type:
-> >        typedef unsigned _BitInt(1) u1;
-> >
-> >It already works for clang, and GCC is going to adopt it with std=c23.
-> >We can make u1 an alias to bool for GCC for a while. If you guys like
-> >it, I can send a patch.
-> >
-> >For clang it prints quite a nice overflow warning:
-> >
-> >tst.c:59:9: warning: implicit conversion from 'int' to 'u1' (aka 'unsigned _BitInt(1)') changes value from 2 to 0 [-Wconstant-conversion]
-> >   59 |         u1 r = 2;
-> >      |            ~   ^
-> >
-> >Thanks,
-> >Yury
-> 
-> No, for a whole bunch of reasons.
-
-Can you please elaborate?
+The x86 implementation, no, but there will be plenty of others having that=
+ exact definition=2E
 
