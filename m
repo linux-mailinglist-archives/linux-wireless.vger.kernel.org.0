@@ -1,88 +1,77 @@
-Return-Path: <linux-wireless+bounces-20349-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20350-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D87A5FE6F
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 18:43:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7798A60249
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 21:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F1CA188DDD5
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 17:43:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A1F5168D71
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 20:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD071C8633;
-	Thu, 13 Mar 2025 17:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3583157E88;
+	Thu, 13 Mar 2025 20:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="C0nMJUCC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BtkWWwMu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C816418F2FC
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 17:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F55A1F30DE
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 20:15:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741887819; cv=none; b=loBvvptnTnXicSSgbEZ8VBKiuBT8FIcz0nDVckEm+6OpfGwLr8X4G/lb4XnjstXJVBVicGEzwnnJU7Ipv1zMJHVy447I+DJ/fREcxhllmSZfJ47C6e97rzxNiXnXk9eNDrLDP6Co7Gw7vWapq1rzzWtMcbZyhA6tTQSAOMa1c14=
+	t=1741896931; cv=none; b=JavhhQx1to2EgemKFX9/ejZA2hj75eo/MLFhBSoVoS9Q7g3DdjcdJV9QrYyIIO2edzpoeqImcwsKnPRQlTyrWFdeQHLmMPAY03bu7scMj8qDc6E/ac+e6hGtI4ekaeMb7Vw5nTrpj4FWWCg0WQVW4nc2P9461+SoDfebcOyuu6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741887819; c=relaxed/simple;
-	bh=l4FUKGZsRIdPf4GJY3/NkLbvnoXG8vfF3EfbTjmupHI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=snuPh5lMlBDrMl8WNTy09htRUrBIotmZMZYFhcIOJ1/JP7/XF0mdhbVvMWoWpPMKxhfnXZ5cU66Na6G5wZ1i7Lv8CGk8d7VGBA2edn4xki4xSfZewdr9gjV+FOarCSuEOrJBpl1hVRSL30M7X4lA7dREUr9sbZoT17DDeUEaytY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=C0nMJUCC; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DAoCsX024132
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 17:43:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	RSWn7tl18hlF0bV3T6ruuTbfiE1zk9u8Mb11OU8HZR4=; b=C0nMJUCCYpiy9DSk
-	OZRw1sMn12XFi35M/j95NTaBwB/KI7WGmWuMdR2vS0qtwT0HCDyO3LfY34sRUrdi
-	mwsJGwtYDpZ88Kdt6cbMTylT+lvD8NKtxFwRStvzQK+4oMQu4AXth4tC2YN25SA1
-	I2cmioT92cSF6OQw4by2mwEzUs44XMDZqwEdQVt08QNTZxfssC1+oIUncNh08RgR
-	3Qz6yMH4G43yTt2VXgCiYRNZAJ3Suxs1UEwn+BDckE61D1VuiYDsArkN4TrPvzZX
-	yzZ0tIFryeWpPj6BjhA2F6A+KzhLThp0r8JkQOuVsPgwa3woIsJFUZZEJ5MI7MHl
-	VfX8vw==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45au2mpnyy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 17:43:36 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2241ae15dcbso25660635ad.0
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 10:43:36 -0700 (PDT)
+	s=arc-20240116; t=1741896931; c=relaxed/simple;
+	bh=QngvfZ6/rx4mQFlwr+5LOMxitE/J5+iTWWkzfPldOps=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=LJJ2nftLVQILF0ZHP+sd3e3KPz+S0zu5mB6Hx7IOs+z18fmVkcNJ6Vgq3ug5TyAtrX/kRpUHXh96j6YLTelISt4mNeOSpQoRSFlhlRfwQt4eerAAwV0wX6T3XaYI46A1vs+atjdAaoci8RIMsBRGTufZsyrpQ7OUApkLanJ7Uic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BtkWWwMu; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e5e0caa151so2455212a12.0
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 13:15:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741896928; x=1742501728; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rvULWRitkY8gBIJc8clZwEO8hikNtsML5HXcDGE0pS0=;
+        b=BtkWWwMuLhMJGYMaTmhSR807BqinHFyoEXBfHNYve98cbS8DM7XxkVKR/GIX6VQqp2
+         EqBNIPgSDPpNp2h6AcvwIj5LRImLD1Jd2VLO9zQNgu3H4t/pkftWPeS8t08wN9GjX1Dw
+         Nzc+FXZs5wiUU3K+iRPYooXVufM0wvAGD/19Z2JBNGmnATgHlDsRdiR7t2IW3V+wG0/l
+         wQ0JDQ8rqQTCQTmwY9bn159qaAJKn602YYiEUFU9voFIhBwTa7ViOmWBw5puenAf3eHC
+         OJxX5+mehg/9mFGerPII6QqmaPSKX1Z/AYHKg1Y8pTtwRxA0rm/RuLGXRRClfe952/Tj
+         b74A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741887816; x=1742492616;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RSWn7tl18hlF0bV3T6ruuTbfiE1zk9u8Mb11OU8HZR4=;
-        b=uxkRLdTM89g5ULAzg1prrBkGpWZkiR+g+l7/34/ilGnbrjRn2+oDfX/yfD0Tst7Hkm
-         COOX28rHzUhomg16vqk8MB7k4k9I934VLkCHMVJ/p27JxWs8ofWR2zWv0tPc9IcCvckU
-         PUUb2X9QI5QHGj8brnDNKu8SSB4A4TfduXhhEDvRUwBJACpuy3kyq13Y57eM5mRNeV7Z
-         +et0HKDKJqvqzZVDS6vgGm3Y/WpBOQbyXEBNKe1CzQ6wdkaR8tAwAZl1Rep4m73VxUnE
-         GJYA7EoMABqM3cPBSghMMOXdMvD5fo2yAS8yScRwSDQUVhc63KNzTCIh3OJLrcswcMOs
-         /8ug==
-X-Forwarded-Encrypted: i=1; AJvYcCV0IYKO87MAstjKiZZtn9StxY+CbpB4uee4Ce9/CU0CspY70SqC+AD6gj6aliVi1GCDBMV2Hh91+2ZnzgzIPw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYCWSd4C0iWRWGQGV4WKOp40dkxg+0/Yg2obg+Jz4dmnatipds
-	+8gD7oi89tZqSbSBRQL8E22G9YCuBejMt9pb3av4cBP7vsj0D0M4IignV1cncews30tK6vFwECI
-	dgE8DsQuyqzW1HvtBokusXEC0WgCPbaUzlK+TLYFLVOdSL+NVZubKTof9QJtxdqkxbw==
-X-Gm-Gg: ASbGncvYYMfnOOQfT6CM7pwqGGzaveRfHtaCPFfsXYsNP+mAegerPKXGlGLSA2MruBz
-	Ha5c6aH2kYm+5SO1op9C8Nd6ypgbmxJ2R+H6ZxEHp4wCTNGW7kYnZclUVQSY6z7sCE6U3vyKKxc
-	9fepRi/0mHFSWFoWF/Yb0vPBqxsJC5N1uY8IbLBwXEY1OhMuXhviy9mKtQsn0D2/RlsQFLyeZWU
-	Fygak+U6afeLCs4LBPAeK2FA6erCmg12gJjgof04KrBoMs7tkjIZLuwmMZiN3k0xyFTomT5xLHR
-	NazhYsuWI3aq/aXSYKEwf75YbsV3zvfdoqK4r3/KGlvn6B1vuQPkhZmotiu0Ywlo5spWBBPAl6Q
-	/s8uXaGaN
-X-Received: by 2002:a17:902:ce0d:b0:220:c86d:d7eb with SMTP id d9443c01a7336-225dd88fe5cmr6271735ad.36.1741887815980;
-        Thu, 13 Mar 2025 10:43:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFx3ng/NXylANuxu5gjtZAWZIsp0ZkJrHPk5CbkePCymLfb7smODzamdaJgGiEDES6vlLICIw==
-X-Received: by 2002:a17:902:ce0d:b0:220:c86d:d7eb with SMTP id d9443c01a7336-225dd88fe5cmr6271465ad.36.1741887815576;
-        Thu, 13 Mar 2025 10:43:35 -0700 (PDT)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c68883b8sm16213225ad.15.2025.03.13.10.43.34
+        d=1e100.net; s=20230601; t=1741896928; x=1742501728;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=rvULWRitkY8gBIJc8clZwEO8hikNtsML5HXcDGE0pS0=;
+        b=ZisfnOkv5Wz3aPVuYCGv5PlXZwrw7aPqXPz3+X6CR5lyTjvVdno9ol2Q+Ab2m5dr1F
+         UeZl7Ij/HYxU0Wzn9qZlrKATyNsdW1xVK6/qxz9x0h3BCH72gDPaLkGC+8/0dHzjWrX9
+         9cLQ/+UvB2oEaQQs0JDDikZFQU8l3xoidWeG1rWAVS00804rMWnd40DpEWRoZLrCZmv2
+         0Pf9FNeCwlVsPn31DUfbbLblNQzZEQXKBZSHej9FNwqI8kZVGv9o7zMeIKx4A+CdbeVn
+         jPXeERn1ucTxQN3Bx54CFFYDKmXRfQue+4TBnOAeIIylt5Svym79h1Un9k6Aj6XLpViA
+         ECFA==
+X-Gm-Message-State: AOJu0YwpD2FYzDjL5nNwD61ju13lxDEGC85Iwb7d3BgSNhmZJQnXcRNj
+	NrRg/EQTb6cNnKkOs4EhXHfdO+0kUmV5RdK7/TdOLugEijYdyr7L6FYN4Q==
+X-Gm-Gg: ASbGncsgX4b6Q7of+vzl8c3C43jc+J+VW1F/O4dH7JtJZ/nl6G8N9zr2soogLzFs2lK
+	7f1SpMQvBVPrbYT5SO2Pss+igVoOH3Sdo9DAHO0O8mM/3TFzldQxaHPRTEZICAvvYco1nW5CfKX
+	YR0+SqjJJK3Jj06Qga/Bc8sBMPCWw7GggEH/HWS4+gG4WnYzlsR9Ihg8WhHfHrwyDhv4+wt3Z99
+	vJWQI7Pisk3iOJ8yuhlnAGfUtl1xoiBc2RI3JexjQCHvYaK37656PnCnihZzH3UTJv3Amk3O9Kv
+	6ZtYA51DiWWypIt/qy6OaKc6N92j8fraTDX0hHGqtOULXlBuqc8UcQ==
+X-Google-Smtp-Source: AGHT+IExDFIne8yUiqFByz+Ni9xSmi4ecK4EmrDVUwnuTGKReDD35gKonp1Ru/VKnaumiPQ6G76yfQ==
+X-Received: by 2002:a17:906:dc89:b0:ac2:7d72:c2aa with SMTP id a640c23a62f3a-ac3296a3967mr81724266b.51.1741896927824;
+        Thu, 13 Mar 2025 13:15:27 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.155])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac314aa6083sm119073566b.182.2025.03.13.13.15.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Mar 2025 10:43:35 -0700 (PDT)
-Message-ID: <823b1c13-82c3-4164-9809-b42f567e264f@oss.qualcomm.com>
-Date: Thu, 13 Mar 2025 10:43:33 -0700
+        Thu, 13 Mar 2025 13:15:27 -0700 (PDT)
+Message-ID: <c845ff10-08d9-4057-8f54-1579a548788d@gmail.com>
+Date: Thu, 13 Mar 2025 22:15:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,78 +79,83 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH next] wifi: iwlwifi: Fix uninitialized variable with
- __free()
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Avraham Stern <avraham.stern@intel.com>,
-        Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-        Daniel Gabay <daniel.gabay@intel.com>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <f7c17a7f-f173-43bf-bc39-316b8adde349@stanley.mountain>
- <a21610ae-e155-44bc-bcc5-b9b8b1c8cbd1@oss.qualcomm.com>
- <341d748f-55ae-451b-983a-ca9684d265b7@stanley.mountain>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <341d748f-55ae-451b-983a-ca9684d265b7@stanley.mountain>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next 0/4] Improve RTL8814AU performance
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 1ocHwVBiCKRPKjxKWzCrV-mP8s-3Pa8k
-X-Authority-Analysis: v=2.4 cv=aKnwqa9m c=1 sm=1 tr=0 ts=67d31948 cx=c_pps a=IZJwPbhc+fLeJZngyXXI0A==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=KKAkSRfTAAAA:8 a=xNrqncJw_f-EE2unP_4A:9
- a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-ORIG-GUID: 1ocHwVBiCKRPKjxKWzCrV-mP8s-3Pa8k
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-13_08,2025-03-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=472 clxscore=1015
- adultscore=0 malwarescore=0 priorityscore=1501 phishscore=0 spamscore=0
- bulkscore=0 lowpriorityscore=0 impostorscore=0 mlxscore=0 suspectscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503130135
 
-On 3/12/2025 8:24 AM, Dan Carpenter wrote:
-> On Wed, Mar 12, 2025 at 08:15:18AM -0700, Jeff Johnson wrote:
->> On 3/12/2025 1:31 AM, Dan Carpenter wrote:
->>> Pointers declared with the __free(kfree) attribute need to be initialized
->>> because they will be passed to kfree() on every return path.  There are
->>> two return statement before the "cmd" pointer is initialized so this
->>> leads to an uninitialized variable bug.
->>>
->>> Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
->>> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
->>> ---
->>>  drivers/net/wireless/intel/iwlwifi/mld/debugfs.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
->>> index c759c5c68dc0..1d4b2ad5d388 100644
->>> --- a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
->>> +++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
->>> @@ -556,8 +556,8 @@ iwl_dbgfs_vif_twt_setup_write(struct iwl_mld *mld, char *buf, size_t count,
->>>  	};
->>>  	struct ieee80211_vif *vif = data;
->>>  	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
->>> +	struct iwl_dhc_cmd *cmd __free(kfree) = NULL;
->>
->> hmm, I thought the recommended convention was to define __free() pointers at
->> the point of allocation. cleanup.h explicitly says:
->>
->>  * Given that the "__free(...) = NULL" pattern for variables defined at
->>  * the top of the function poses this potential interdependency problem
->>  * the recommendation is to always define and assign variables in one
->>  * statement and not group variable definitions at the top of the
->>  * function when __free() is used.
->>
-> 
-> People do it either way.  I'm agnostic so long as it doesn't have bugs.
+This is the last set of patches for RTL8814AU. They make it go faster.
 
-I've been doing it with the allocation since that's what Linus said he wanted:
+Bitterblue Smith (4):
+  wifi: rtw88: usb: Enable switching the RTL8814AU to USB 3
+  wifi: rtw88: usb: Enable RX aggregation for RTL8814AU
+  wifi: rtw88: Set AMPDU factor to hardware
+  wifi: rtw88: Don't set SUPPORTS_AMSDU_IN_AMPDU for RTL8814AU
 
-https://lore.kernel.org/all/CAHk-=whO1+-4ALjFWSE0kzytz1kEbWPvy3xWvcUP1dJ4t-QqkA@mail.gmail.com/
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  2 ++
+ drivers/net/wireless/realtek/rtw88/main.c     | 35 ++++++++++++++++++-
+ drivers/net/wireless/realtek/rtw88/main.h     |  4 +++
+ drivers/net/wireless/realtek/rtw88/rtw8703b.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723x.c |  8 +++++
+ drivers/net/wireless/realtek/rtw88/rtw8723x.h |  6 ++++
+ drivers/net/wireless/realtek/rtw88/rtw8812a.c | 12 +++++++
+ drivers/net/wireless/realtek/rtw88/rtw8814a.c |  9 +++++
+ drivers/net/wireless/realtek/rtw88/rtw8821a.c | 12 +++++++
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |  7 ++++
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  7 ++++
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  7 ++++
+ drivers/net/wireless/realtek/rtw88/usb.c      |  4 ++-
+ 14 files changed, 113 insertions(+), 2 deletions(-)
 
-But this patch is already in wireless-next, so it's moot now.
+
+base-commit: c61da149b9c2e439abe27845a71dae5ce5f5985c
+prerequisite-patch-id: cbbeefd71b59d1fcea72cda22b1eb0e62b40a751
+prerequisite-patch-id: 18beb866f984f1ed6769d95b3ab7894d75b3e7d1
+prerequisite-patch-id: e1e0ceb709fe71d6c48e063768698c78558f11c0
+prerequisite-patch-id: 17ec15a2287ce8766e35b1113fd043d25ebba9ed
+prerequisite-patch-id: 36ff8f0da543fbc931db6cad60d8512dba82ecd0
+prerequisite-patch-id: 0b5c2a854227b26491421be28b9348e098195881
+prerequisite-patch-id: aef15a0990448c435356fe7631ddafbf35606731
+prerequisite-patch-id: 56dda569e509fef7403a02d4700b22f27301ea37
+prerequisite-patch-id: 0cc73f75273b064d6e8783b8ac4ed06a1025ced2
+prerequisite-patch-id: 04fd029f6ae8a5f3d944ecb4c959e55d2599dd87
+prerequisite-patch-id: fd5c77b6933048355029ecbcdaf3107183c26aba
+prerequisite-patch-id: 6f50c5e526f96008b795477ce97e3c75845f113f
+prerequisite-patch-id: 6d85bbc95c0eec75de67992a176907afa1fdbd4e
+prerequisite-patch-id: 1e4fd27474a3622807b7fe5bfd3a5a09261fba46
+prerequisite-patch-id: a762f356fc162e29375af231beedfc06dc3a4fc2
+prerequisite-patch-id: 1c68d0186aabcd2c7ae21b605288aaa872651307
+prerequisite-patch-id: b0c4ae910737add0d3068aa92efa265d11dd66e4
+prerequisite-patch-id: 5b58a4a0870850a6768eca1a2e9d1523dfdeae84
+prerequisite-patch-id: aa98043b8ed5ddaba365c045aaf0466213d18dcc
+prerequisite-patch-id: af6b19b41c6357b9ff8714639465b8e95f74bf73
+prerequisite-patch-id: 2855bad33fc600e2d5145902462f0e20d6d92e0d
+prerequisite-patch-id: 70c46911f78d2e88af8ed220cb692e098e1572d6
+prerequisite-patch-id: 2321dc9826f91f47d58605b810b626842dbc4312
+prerequisite-patch-id: 55be10515d0350bcbfb3d42fd085e1492041aeb1
+prerequisite-patch-id: 0cdc30856400ecfeba230ed9b794829afda6a4d5
+prerequisite-patch-id: 1c806351ccc18effddcfd95b0115a6c3ffe29361
+prerequisite-patch-id: d0db802298a4b1560837503141307f0868d14227
+prerequisite-patch-id: d4e1536329aa0b1f5c31380a6ebf55d53eba4371
+prerequisite-patch-id: 0fefff4d672b523926a8d34b5d7ee3f0f8dfc61f
+prerequisite-patch-id: e1abf7108e47677f5250c07e9efc019bec5be7db
+prerequisite-patch-id: 8364569d4b619093d9edb6f9c080997986a8c71b
+prerequisite-patch-id: b27f8b4a034b5460ce690085cc1eaa1938828355
+prerequisite-patch-id: a4d92512d9ed4e7c9203c3e4fcb0beed9fb3c569
+prerequisite-patch-id: 3f906d3cdfd1b89152e6d101807dd6784eaad9bd
+prerequisite-patch-id: 1784c002daf8d090cd51385d2d05e21578971a51
+prerequisite-patch-id: 9856826f786413a6924dbae33e4b32df90cbf6a7
+prerequisite-patch-id: 5641076795d7ffeffd074392e9555bdb33dc1f50
+prerequisite-patch-id: fcaa46bee8a8ed931144e3ae5d148b9dc1d26511
+prerequisite-patch-id: 561ac59d3eb36fe9795c46ff9df87a98d59d38b9
+prerequisite-patch-id: 168a0efb34774ea5e586a49c611739177977c03f
+prerequisite-patch-id: 5f6c96da03f26a152993e0e04d25683fd6ebef8d
+prerequisite-patch-id: 97d74ae58e8d1086da32c2a2036bb38aeae87c10
+-- 
+2.48.1
+
 
