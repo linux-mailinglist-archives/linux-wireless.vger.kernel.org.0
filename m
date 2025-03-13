@@ -1,140 +1,167 @@
-Return-Path: <linux-wireless+bounces-20348-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20349-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6C5A5FE4B
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 18:41:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D87A5FE6F
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 18:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 242B13AA1EB
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 17:41:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F1CA188DDD5
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 17:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82680376F1;
-	Thu, 13 Mar 2025 17:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD071C8633;
+	Thu, 13 Mar 2025 17:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AVCB+8cE"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="C0nMJUCC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A28155CBD
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 17:41:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C816418F2FC
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 17:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741887713; cv=none; b=F0mwNsLHNYLX4e2ZcgVZpH6vTBf9V3CQzjeH/t21IGmhqsDI1WzBg0x01/WaK2irm5YSfR6n3XvXpsj+7cd4Uat3LSCRR4ZgE7ONBGukLOmiNzE0ZNVCqPUClnBbbFZPW/HPPNXw04L/LMy3++i4J6cpG4pNh2ggQO2NgQcM1N4=
+	t=1741887819; cv=none; b=loBvvptnTnXicSSgbEZ8VBKiuBT8FIcz0nDVckEm+6OpfGwLr8X4G/lb4XnjstXJVBVicGEzwnnJU7Ipv1zMJHVy447I+DJ/fREcxhllmSZfJ47C6e97rzxNiXnXk9eNDrLDP6Co7Gw7vWapq1rzzWtMcbZyhA6tTQSAOMa1c14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741887713; c=relaxed/simple;
-	bh=70SzPkHoV7Uf2QL7Lqohydf14G7FdUmLWh2TxjNVjDI=;
+	s=arc-20240116; t=1741887819; c=relaxed/simple;
+	bh=l4FUKGZsRIdPf4GJY3/NkLbvnoXG8vfF3EfbTjmupHI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VeaPL7DYk8c9dDtcBsnRLpwezKHkcNp5BYFWSbs1UZYFamz8K/jB1Yndz5KQTQ/tBc+ZQQX8ztU/uKPI5mpstxlQZ3Zp8JsTNk/CTOu6Ouh/u3HjyRjrVhymSl5Q4QeW4f6MlvMz2qMXAH0X+3hdoanZvFSvM/nfNv7XdfCVovI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AVCB+8cE; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=snuPh5lMlBDrMl8WNTy09htRUrBIotmZMZYFhcIOJ1/JP7/XF0mdhbVvMWoWpPMKxhfnXZ5cU66Na6G5wZ1i7Lv8CGk8d7VGBA2edn4xki4xSfZewdr9gjV+FOarCSuEOrJBpl1hVRSL30M7X4lA7dREUr9sbZoT17DDeUEaytY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=C0nMJUCC; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52D9A52B018566
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 17:41:50 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DAoCsX024132
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 17:43:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nTbGDkMG71Vja7DElwOL23J/vRzorTHUbqxSp3pihno=; b=AVCB+8cEkqpDM10r
-	dJVFAf7dDVENY6tPE+JcBQFB3AhhQiGWIc3lTA4MRs1Uj1bKFxUoYo8kW8ntqtuE
-	xTihgqsOjQnrO+AmNumpRzm0WkinO230sMbpXmNMNfL39ywNgrNOL1O+oQvcrg/q
-	uOkZE2LCxA+AzhaYcKDyIgHt7+pojHXqKQbTYMSvM2oxQqCYf/w471uYszh0gDIo
-	2iGSp+d75rCCoqnwkDxxn3HterEmk2PKxYREcAw5Y6l366o8/mcwXJ2JxZVlz7dx
-	NllC2SVQLqaLRTlnpZihvyM1/3Ens9BFEZGURINm72fMZJpxMbq6l4C30mgAcG7C
-	Rrj4Ug==
+	RSWn7tl18hlF0bV3T6ruuTbfiE1zk9u8Mb11OU8HZR4=; b=C0nMJUCCYpiy9DSk
+	OZRw1sMn12XFi35M/j95NTaBwB/KI7WGmWuMdR2vS0qtwT0HCDyO3LfY34sRUrdi
+	mwsJGwtYDpZ88Kdt6cbMTylT+lvD8NKtxFwRStvzQK+4oMQu4AXth4tC2YN25SA1
+	I2cmioT92cSF6OQw4by2mwEzUs44XMDZqwEdQVt08QNTZxfssC1+oIUncNh08RgR
+	3Qz6yMH4G43yTt2VXgCiYRNZAJ3Suxs1UEwn+BDckE61D1VuiYDsArkN4TrPvzZX
+	yzZ0tIFryeWpPj6BjhA2F6A+KzhLThp0r8JkQOuVsPgwa3woIsJFUZZEJ5MI7MHl
+	VfX8vw==
 Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45au2nxr3y-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45au2mpnyy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 17:41:50 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-224347aef79so6719575ad.2
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 10:41:50 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 17:43:36 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2241ae15dcbso25660635ad.0
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 10:43:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741887709; x=1742492509;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1741887816; x=1742492616;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nTbGDkMG71Vja7DElwOL23J/vRzorTHUbqxSp3pihno=;
-        b=TgdiEHLIaAKZzVFnx9CInWnPFfZbj1gbJUKk7P1QnPC7+Ek9pRjTPKf1UO3SeFpHqJ
-         EuzQeZppf1u4vnoAFi8MjVX/I1IHEZMhZ/wH3IDTA6J3dHpAzjWhaHv1lKqMojcFV6ux
-         LGkSP15+/V42fGcradLS+WzCvfHWZn4oBRpfbTE8KJ1626swLUj3pHqKRPjQ1R3WKHTD
-         Hbr2SaY2oB2UjfGu+Seamaul9lwdYByJ3BMoHNNK/7ROrubR5BafBrgJiPrf7AHyhIPM
-         TLok/89fi6sPuUfiSbbP2bbcfk+NUyALE42EPA0kneVVTnLIfTK/lj6lsEtxLLFVvCXO
-         NW6Q==
-X-Gm-Message-State: AOJu0YwuLkH12Ww9m9Loj69a4WkBTqM1WyayLKcntneyyF3J7CMFg4YX
-	kjNMNOOF/TEpGtt+JBIDGAoNwGcXwX5N1uhs42xThjFSmhho/TYHdynu9ksUWhCsM8SKpYA1FIZ
-	J/1OHLs/XsqisJwxv7V9ZhBoCh8mH3eZKyX/6YT/4PMRc4TKGMZ3R2381b/ka1msHy0CuUx1vpA
-	==
-X-Gm-Gg: ASbGncv5Vt2PNaPJG1K9kSVNrK9eUNemrhAg7nHjPoqoFWd740W5dR/C96li4KII1Qh
-	zJ8FbE65eW6KXQxG6c+FMzqMCNo0IuuVyOmwb4BaVaMeOGUqDEFQT6lvyGcedX6nE25bHdquqVw
-	rQRlC7K7OUadt5uedA1mv8ng1eggHsL7Fyodj0hIfi1fEWdBxCTyeYkTDYbbSRiebUQ6tZdiZ6V
-	7FEnVc9YwZYBwRoGjWAB1D9Hlq0+7atNi01i/yCzRSf8IE8NVqv/XFmgJp4rONPafhiES57+zZV
-	giUocHHC7Hol0QA9N9K77Auy34kjpiBOWfajQBq5KX8GCwESFNDeEHEmdF/Y09TR
-X-Received: by 2002:a05:6a00:1c83:b0:736:6268:9ec9 with SMTP id d2e1a72fcca58-7371f1729a0mr531747b3a.16.1741887708763;
-        Thu, 13 Mar 2025 10:41:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+uA3/wpnHTBfcMzXqUODV9pt19PlgNU43UkdbZDOtFYgif7SoOnZsveKAVGUHK18cyQ5hzA==
-X-Received: by 2002:a05:6a00:1c83:b0:736:6268:9ec9 with SMTP id d2e1a72fcca58-7371f1729a0mr531724b3a.16.1741887708368;
-        Thu, 13 Mar 2025 10:41:48 -0700 (PDT)
-Received: from [192.168.225.142] ([157.51.162.105])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73711695a2esm1659613b3a.144.2025.03.13.10.41.46
+        bh=RSWn7tl18hlF0bV3T6ruuTbfiE1zk9u8Mb11OU8HZR4=;
+        b=uxkRLdTM89g5ULAzg1prrBkGpWZkiR+g+l7/34/ilGnbrjRn2+oDfX/yfD0Tst7Hkm
+         COOX28rHzUhomg16vqk8MB7k4k9I934VLkCHMVJ/p27JxWs8ofWR2zWv0tPc9IcCvckU
+         PUUb2X9QI5QHGj8brnDNKu8SSB4A4TfduXhhEDvRUwBJACpuy3kyq13Y57eM5mRNeV7Z
+         +et0HKDKJqvqzZVDS6vgGm3Y/WpBOQbyXEBNKe1CzQ6wdkaR8tAwAZl1Rep4m73VxUnE
+         GJYA7EoMABqM3cPBSghMMOXdMvD5fo2yAS8yScRwSDQUVhc63KNzTCIh3OJLrcswcMOs
+         /8ug==
+X-Forwarded-Encrypted: i=1; AJvYcCV0IYKO87MAstjKiZZtn9StxY+CbpB4uee4Ce9/CU0CspY70SqC+AD6gj6aliVi1GCDBMV2Hh91+2ZnzgzIPw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYCWSd4C0iWRWGQGV4WKOp40dkxg+0/Yg2obg+Jz4dmnatipds
+	+8gD7oi89tZqSbSBRQL8E22G9YCuBejMt9pb3av4cBP7vsj0D0M4IignV1cncews30tK6vFwECI
+	dgE8DsQuyqzW1HvtBokusXEC0WgCPbaUzlK+TLYFLVOdSL+NVZubKTof9QJtxdqkxbw==
+X-Gm-Gg: ASbGncvYYMfnOOQfT6CM7pwqGGzaveRfHtaCPFfsXYsNP+mAegerPKXGlGLSA2MruBz
+	Ha5c6aH2kYm+5SO1op9C8Nd6ypgbmxJ2R+H6ZxEHp4wCTNGW7kYnZclUVQSY6z7sCE6U3vyKKxc
+	9fepRi/0mHFSWFoWF/Yb0vPBqxsJC5N1uY8IbLBwXEY1OhMuXhviy9mKtQsn0D2/RlsQFLyeZWU
+	Fygak+U6afeLCs4LBPAeK2FA6erCmg12gJjgof04KrBoMs7tkjIZLuwmMZiN3k0xyFTomT5xLHR
+	NazhYsuWI3aq/aXSYKEwf75YbsV3zvfdoqK4r3/KGlvn6B1vuQPkhZmotiu0Ywlo5spWBBPAl6Q
+	/s8uXaGaN
+X-Received: by 2002:a17:902:ce0d:b0:220:c86d:d7eb with SMTP id d9443c01a7336-225dd88fe5cmr6271735ad.36.1741887815980;
+        Thu, 13 Mar 2025 10:43:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFx3ng/NXylANuxu5gjtZAWZIsp0ZkJrHPk5CbkePCymLfb7smODzamdaJgGiEDES6vlLICIw==
+X-Received: by 2002:a17:902:ce0d:b0:220:c86d:d7eb with SMTP id d9443c01a7336-225dd88fe5cmr6271465ad.36.1741887815576;
+        Thu, 13 Mar 2025 10:43:35 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c68883b8sm16213225ad.15.2025.03.13.10.43.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Mar 2025 10:41:48 -0700 (PDT)
-Message-ID: <9e0082a6-ac19-6f34-efb1-b22df836eacf@oss.qualcomm.com>
-Date: Thu, 13 Mar 2025 23:11:44 +0530
+        Thu, 13 Mar 2025 10:43:35 -0700 (PDT)
+Message-ID: <823b1c13-82c3-4164-9809-b42f567e264f@oss.qualcomm.com>
+Date: Thu, 13 Mar 2025 10:43:33 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v9 9/9] wifi: ath12k: add monitor interface support on
- QCN9274
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH next] wifi: iwlwifi: Fix uninitialized variable with
+ __free()
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Avraham Stern <avraham.stern@intel.com>,
+        Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+        Daniel Gabay <daniel.gabay@intel.com>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <f7c17a7f-f173-43bf-bc39-316b8adde349@stanley.mountain>
+ <a21610ae-e155-44bc-bcc5-b9b8b1c8cbd1@oss.qualcomm.com>
+ <341d748f-55ae-451b-983a-ca9684d265b7@stanley.mountain>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, P Praneesh <quic_ppranees@quicinc.com>
-References: <20250313162100.2364049-1-quic_periyasa@quicinc.com>
- <20250313162100.2364049-10-quic_periyasa@quicinc.com>
-From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-In-Reply-To: <20250313162100.2364049-10-quic_periyasa@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <341d748f-55ae-451b-983a-ca9684d265b7@stanley.mountain>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: yyqa5zpwzpedtsVfL21JLm6ZyWbnlTpX
-X-Authority-Analysis: v=2.4 cv=Q4XS452a c=1 sm=1 tr=0 ts=67d318de cx=c_pps a=IZJwPbhc+fLeJZngyXXI0A==:117 a=KnbpFunUQJgWYJTnieH9nw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=xH0xcr9_mYJ7sMi6Wl4A:9 a=QEXdDO2ut3YA:10
- a=uG9DUKGECoFWVXl0Dc02:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: yyqa5zpwzpedtsVfL21JLm6ZyWbnlTpX
+X-Proofpoint-GUID: 1ocHwVBiCKRPKjxKWzCrV-mP8s-3Pa8k
+X-Authority-Analysis: v=2.4 cv=aKnwqa9m c=1 sm=1 tr=0 ts=67d31948 cx=c_pps a=IZJwPbhc+fLeJZngyXXI0A==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=KKAkSRfTAAAA:8 a=xNrqncJw_f-EE2unP_4A:9
+ a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: 1ocHwVBiCKRPKjxKWzCrV-mP8s-3Pa8k
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-13_08,2025-03-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=892 adultscore=0
- lowpriorityscore=0 mlxscore=0 clxscore=1015 phishscore=0 malwarescore=0
- spamscore=0 impostorscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=472 clxscore=1015
+ adultscore=0 malwarescore=0 priorityscore=1501 phishscore=0 spamscore=0
+ bulkscore=0 lowpriorityscore=0 impostorscore=0 mlxscore=0 suspectscore=0
  classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2502280000
  definitions=main-2503130135
 
-
-
-On 3/13/2025 9:51 PM, Karthikeyan Periyasamy wrote:
-> From: P Praneesh <quic_ppranees@quicinc.com>
+On 3/12/2025 8:24 AM, Dan Carpenter wrote:
+> On Wed, Mar 12, 2025 at 08:15:18AM -0700, Jeff Johnson wrote:
+>> On 3/12/2025 1:31 AM, Dan Carpenter wrote:
+>>> Pointers declared with the __free(kfree) attribute need to be initialized
+>>> because they will be passed to kfree() on every return path.  There are
+>>> two return statement before the "cmd" pointer is initialized so this
+>>> leads to an uninitialized variable bug.
+>>>
+>>> Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+>>> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+>>> ---
+>>>  drivers/net/wireless/intel/iwlwifi/mld/debugfs.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+>>> index c759c5c68dc0..1d4b2ad5d388 100644
+>>> --- a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+>>> +++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+>>> @@ -556,8 +556,8 @@ iwl_dbgfs_vif_twt_setup_write(struct iwl_mld *mld, char *buf, size_t count,
+>>>  	};
+>>>  	struct ieee80211_vif *vif = data;
+>>>  	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
+>>> +	struct iwl_dhc_cmd *cmd __free(kfree) = NULL;
+>>
+>> hmm, I thought the recommended convention was to define __free() pointers at
+>> the point of allocation. cleanup.h explicitly says:
+>>
+>>  * Given that the "__free(...) = NULL" pattern for variables defined at
+>>  * the top of the function poses this potential interdependency problem
+>>  * the recommendation is to always define and assign variables in one
+>>  * statement and not group variable definitions at the top of the
+>>  * function when __free() is used.
+>>
 > 
-> Currently, the monitor interface is not supported. To support the monitor
-> interface, configure the monitor vdev state identifier, configure the HTT
-> filter setup, subscribe the mac80211 NO_VIRTUAL_MONITOR feature, remove
-> the mac80211 callback config handler functionality since align to
-> NO_VIRTUAL_MONITOR feature and prevent monitor interface to transmit
-> packet. Therefore, add these procedures to add monitor interface support
-> and enable the monitor interface support on the QCN9274 platform through
-> the hardware parameter.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> People do it either way.  I'm agnostic so long as it doesn't have bugs.
 
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+I've been doing it with the allocation since that's what Linus said he wanted:
+
+https://lore.kernel.org/all/CAHk-=whO1+-4ALjFWSE0kzytz1kEbWPvy3xWvcUP1dJ4t-QqkA@mail.gmail.com/
+
+But this patch is already in wireless-next, so it's moot now.
 
