@@ -1,71 +1,61 @@
-Return-Path: <linux-wireless+bounces-20292-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20293-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44306A5E99B
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 03:02:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B331EA5EA0E
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 04:02:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75291176537
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 02:02:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59F3A3AAF33
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Mar 2025 03:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4851C683;
-	Thu, 13 Mar 2025 02:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CE213AA2F;
+	Thu, 13 Mar 2025 03:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QdaBIjBG"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Q7/KcXL1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C9B23B0
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 02:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191818635E
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Mar 2025 03:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741831375; cv=none; b=czyA55MmVu/m09l0sIHMHO3D5Y+AJdUz3AUDOlKx632n5jt46QjZKy3l/oi6t68w1qmUUTyA63g0c/7R1u1LpWDpJdUzwurkSdgZ1FIvtRJxwjsCeEo1ByMvc2R2PQU7cXyQu20X2zY1GhwbC/KaQwC3Qje0ozfQZDsOIWxf7Xw=
+	t=1741834931; cv=none; b=Y9iC+anvnqVga9WoRrgP7m3AUU7Hjz0NEd0kA7oc/zzCHojkvJ3QNgpfcOqHHtSGxtpcF3nhlHVO5UiW/D9wyAL7q9lEZY8yn0sFtlQoY6fGTH5Qj7g+xx3atgEwxJwbiSzXhQnEPYSaaOvHW7ydzwBZNs7Evhsv8QC4vgXbsKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741831375; c=relaxed/simple;
-	bh=tdHku1km5UVjGiat8OFRdLR2F2Tx8WS4feNPB9UxsbU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SROIhMlago3bQLKgIwKY3BsiFPF1MDYtj1lQY5D8fk3zLBr8J7sayBDtl8nPCvsXSLUxcbsb5om7awuXJU6mygNNsa4ozpno9qcwzmnoTcX7p6Pbx6eRze6JbbPVnZnmMmpxSzDIr+IE1OWoBC/5CBbvIgbGl2rhbrzbv5Qo69g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QdaBIjBG; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52CLTI9x023249;
-	Thu, 13 Mar 2025 02:02:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=pFVxo0QOG6ak7Q1yS7aPKIRC
-	Ebxu8JQFeMNFvNiRkKI=; b=QdaBIjBGU48aPTTVy52xeqXsH/MCHs3baJQMM4pK
-	UQM3jRSRbatRFWXRfQBZmD8dtD3wQFD2igGEIdJ1gksWG9+gRdLwQZ3fpKMVxp6U
-	8UvEE5nGQCHeaixX4AZqPmoFncFbCZLy+pC8Hb8RYXmO4lYxVwesJ4KMx1UbN3Nn
-	ymSWOLadR4Z4jmdIQSbXj2lsmGLZfzdy2j7xXrk69DZ5Aj6NTzmyL0TN38dYUMDB
-	2BKhEuoPM8kEC6tKeDQQg8+Lz+PjpGze+DnHDZ8jJWxSjTINPds/8K/GkXRZtQoH
-	nSyfIXBTDgwKdVLy1k9x3X8rUtiheK2S/3g+YFUF+/TIKg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45au2mm6tj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Mar 2025 02:02:49 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52D22nCJ013331
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Mar 2025 02:02:49 GMT
-Received: from hu-nithp-blr.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+	s=arc-20240116; t=1741834931; c=relaxed/simple;
+	bh=3lB2CeSPev5Z/NoS7+29BuH9Uc/oIdbpXuOX/XjWe6c=;
+	h=From:To:CC:Subject:MIME-Version:Content-Type:Message-ID:Date; b=qjY+Tq5lZ+kB9ZZj66HzybWQSis0Kp7SKXVe7UAYaAtzWpLxP6XBB+GVHGpRf+W+uOoKbqPIoonxgAd/++qg3MMy8zCnTkcpvEUXxgRSogH1mtbBHPzjgcOWnDFCTzTYCPRPTVt9eu8MoJVe183of9JCgA/CWlaAyuAk3e/xN8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Q7/KcXL1; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52D31tqxE427077, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1741834915; bh=3lB2CeSPev5Z/NoS7+29BuH9Uc/oIdbpXuOX/XjWe6c=;
+	h=From:To:CC:Subject:MIME-Version:Content-Type:Message-ID:Date;
+	b=Q7/KcXL1e7TtARKLus3jyW4kNK1kTy14FGfZNyamVMQvk4GD1tFuoePdSg8tGZ4q0
+	 Ro6T4Az0zc4rDgllOo+BPfcFtbuKTpfVsWD/N7eTUEOwX9ewRlNSWDpxiE50H34Et1
+	 WpkSyd21XJeTgL3Ntrgyo5DopeX67X4WL16lFQEFRVblE/n6xeHz1tKl5pxN7sPf9e
+	 TJ9krEvKIg1gPvJmZcm5fyskTMF+j29ZfxhbWGrgNGY/X0wlx+bSJKj5zxP5BP05th
+	 OZ2BwnRlfQTKAjEHn+6V+s5boqOC1ZS/YnaJ2m/ykTL2/ILlfDKb+5f59WcBUpzBGE
+	 P/Wm0ROiwHffg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52D31tqxE427077
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Mar 2025 11:01:55 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 12 Mar 2025 19:02:47 -0700
-From: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Nithyanantham Paramasivam
-	<quic_nithp@quicinc.com>
-Subject: [PATCH wireless-next v2 2/2] wifi: mac80211: Set the WIPHY_FLAG_SUPPORTS_CONCUR_MONITOR_N_OTHER_VIF flag
-Date: Thu, 13 Mar 2025 07:31:54 +0530
-Message-ID: <20250313020154.4066212-3-quic_nithp@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250313020154.4066212-1-quic_nithp@quicinc.com>
-References: <20250313020154.4066212-1-quic_nithp@quicinc.com>
+ 15.1.2507.39; Thu, 13 Mar 2025 11:01:55 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 13 Mar
+ 2025 11:01:54 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-firmware@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <damon.chen@realtek.com>
+Subject: pull-request: update rtw89 fw for RTL8852C and RTL8922A
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,49 +63,42 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: KljnZ2ZgEd9GYfXM1buAebo5VU_0tMvU
-X-Authority-Analysis: v=2.4 cv=aKnwqa9m c=1 sm=1 tr=0 ts=67d23cc9 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=cAtGwYOs3FCezXbwKfAA:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: KljnZ2ZgEd9GYfXM1buAebo5VU_0tMvU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-13_01,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1015
- adultscore=0 malwarescore=0 priorityscore=1501 phishscore=0 spamscore=0
- bulkscore=0 lowpriorityscore=0 impostorscore=0 mlxscore=0 suspectscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503130015
+Message-ID: <6784cbe4-7afe-48ca-8d74-e30339c72ca9@RTEXMBS04.realtek.com.tw>
+Date: Thu, 13 Mar 2025 11:01:54 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Set the WIPHY_FLAG_SUPPORTS_CONCUR_MONITOR_N_OTHER_VIF flag in
-ieee80211_register_hw() when the driver advertises NO_VIRTUAL_MONITOR
-support. This wiphy flag enables cfg80211 to allow concurrent
-support for monitor mode alongside AP/STA/other interfaces.
+Hi,
 
-Signed-off-by: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+Update firmware of rtw89 divers including RTL8852C and RTL8922A with
+support of secure boot.
+
+Thank you
+Ping-Ke
+
 ---
- net/mac80211/main.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 741e6c7edcb7..a7fbec07a484 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1148,6 +1148,10 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 		    (!local->ops->start_nan || !local->ops->stop_nan)))
- 		return -EINVAL;
- 
-+	if (ieee80211_hw_check(hw, NO_VIRTUAL_MONITOR))
-+		local->hw.wiphy->flags |=
-+			WIPHY_FLAG_SUPPORTS_CONCUR_MONITOR_N_OTHER_VIF;
-+
- 	if (hw->wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO) {
- 		/*
- 		 * For drivers capable of doing MLO, assume modern driver
--- 
-2.17.1
+The following changes since commit 89ba9b7ce05c8dac3b659b6a0ebc87a601fc35b1:
 
+  Merge branch 'robot/pr-0-1741722400' into 'main' (2025-03-12 13:09:10 +0000)
+
+are available in the Git repository at:
+
+  https://github.com/pkshih/linux-firmware.git tags/rtw-fw-2025-03-13
+
+for you to fetch changes up to da086994b2ad7ca25167baa78cd0a5385092c584:
+
+  rtw89: 8922a: update fw to v0.35.64.0 (2025-03-13 10:58:03 +0800)
+
+----------------------------------------------------------------
+Kuan-Chung Chen (1):
+      rtw89: 8922a: update fw to v0.35.64.0
+
+Ping-Ke Shih (2):
+      rtw89: 8852c: update fw to v0.27.125.0
+      rtw89: 8922a: update fw to v0.35.63.0
+
+ rtw89/rtw8852c_fw-1.bin | Bin 2375560 -> 2399272 bytes
+ rtw89/rtw8922a_fw-3.bin | Bin 1725278 -> 1188926 bytes
+ 2 files changed, 0 insertions(+), 0 deletions(-)
 
