@@ -1,73 +1,68 @@
-Return-Path: <linux-wireless+bounces-20378-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20380-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E7AA60FE7
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Mar 2025 12:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A08C1A6109E
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Mar 2025 13:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC214882B95
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Mar 2025 11:25:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E417A3A387A
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Mar 2025 12:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C4F1FDE2C;
-	Fri, 14 Mar 2025 11:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881701FAC3D;
+	Fri, 14 Mar 2025 12:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="Gzx7nlWP";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="Q9Lkrh/k"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mqJ37J7F"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from e3i103.smtp2go.com (e3i103.smtp2go.com [158.120.84.103])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F911FDA7A
-	for <linux-wireless@vger.kernel.org>; Fri, 14 Mar 2025 11:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A09192D6B;
+	Fri, 14 Mar 2025 12:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741951551; cv=none; b=i/4dtiW+qCY+zJvV/tH+8DyDaJr8q2N7JaPBy/OGZlrpvTwHR1IZEPvgLpeH6tvldTj5uotVsCFrXHv22PMXwGasOeu4JOLhuqnWBfIzxbpfEjpWd/VYxFFbiO0xL8I6e8Dahf68r4qOh7myVcmT2ypRYCVz9DJh3a6t4qCoka0=
+	t=1741954004; cv=none; b=DvHjrDha+RZoW684U0EldqYCX8HIN9jgPdIAKHS7FvCDMQc6lLV4Hs7egyu3NvT6UOwAh5YYhaURjI8z+mvOYn8S3fPO3Xo+xDp3WYkMTy5QwzRcIa7wq8QlV3RmP2onqDM+alfCmGwfyxXqDg8U0U/uVWA52xv8qXruqbBKcG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741951551; c=relaxed/simple;
-	bh=bui+sgPyzR2G8LRYmNaQRxDDZhKG5Gh4x3fA0txGOy0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HWwYW2DROOCjz6zO/bgUD9s/yPmduCf9KrBgmLYLwMsRRbv3FBBJM7UdqZEs9/tjYwhyCrAL9emGZkqMdLF6ApF/Ak9thbOdiScq00u25e06hAt4Vz715ApVP2ZjOwnptLxOPp3FMrkqtsw63KmYyu5HBX1WU3H9TRxWuHmXh3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=Gzx7nlWP; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=Q9Lkrh/k; arc=none smtp.client-ip=158.120.84.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
- i=@smtpservice.net; q=dns/txt; s=a1-4; t=1741950641; h=feedback-id :
- x-smtpcorp-track : date : message-id : to : subject : from : reply-to
- : sender : list-unsubscribe : list-unsubscribe-post;
- bh=Tf4BrW1vWLMedPyDJ2iLarCXnf06nMp0xpM83vTGV/w=;
- b=Gzx7nlWPUXiRV7GFE84SA8oACifiTOHZz7UScBGXAmKx2VyquXEKAKtMi61cIoBuidaFo
- Psb8q9O2qyoAjkdfr70oHxW+H0sh6moU7g2qMfKUrUakTS+5azSo2OD+PyhNl0JhA/fAPZl
- qkYi6Ihet+mdejVfT0bdxdBJOk//THX2tbdOUISomZkf+9jLAvGmmT/4KmvY/3dWX9V1S61
- s5fP0ZPF99I74D+AJ5EvEC5d35yiOlVo7aDqbjin1OfaxoD61A7+wfkvhKKnFLKAMpiCKaX
- BMFd7EFoVDn5YW5ZXhHDSlEdyfGt6wkRLuQkUbYOCkm1W+YuFqc74x1f4Wzw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1741950641; h=from : subject
- : to : message-id : date;
- bh=Tf4BrW1vWLMedPyDJ2iLarCXnf06nMp0xpM83vTGV/w=;
- b=Q9Lkrh/kcv0ldNxO1RlSynp+LH0Xzw1kCYgPYZ6aE03ZuraVvyjG01v2FOtjfsZT+Udcg
- 1+naRidtNxZRbKi+t7HxCVIw0CZWw9+HsJldpExeRiBu192jSLktZMLxcdU+2SZFNTVhCi4
- KQi0aqvVbfdv1SZUcBFANtOyBr0hMH85lA340RjMISAEuZy1vra6tAPYBARUtdkQVJpavFi
- d9pONV1ihs1xvXb2seU38LD7htg3NPN/U411+WhGbK1h7KvTm9Nn1V//w7hP/GCilihF2So
- jdtMv6aVevX6xcZXDw4uR+w7+O6VcKVz5f8/7YoNDbik4VpSrEBJikgGhnyQ==
-Received: from [10.12.239.196] (helo=localhost)
-	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97.1-S2G)
-	(envelope-from <repk@triplefau.lt>)
-	id 1tt2w0-FnQW0hPoaKZ-lQRB;
-	Fri, 14 Mar 2025 11:10:36 +0000
-From: Remi Pommarel <repk@triplefau.lt>
-To: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Remi Pommarel <repk@triplefau.lt>
-Subject: [PATCH 2/2] wifi: mac80211: Purge vif txq in ieee80211_do_stop()
-Date: Fri, 14 Mar 2025 12:04:25 +0100
-Message-Id: <54c3c83ea8f58af89d275d410682d73cc6289dc8.1741950009.git.repk@triplefau.lt>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <cover.1741950009.git.repk@triplefau.lt>
-References: <cover.1741950009.git.repk@triplefau.lt>
+	s=arc-20240116; t=1741954004; c=relaxed/simple;
+	bh=8pNOnJ2LC70pKfJZznXtgqsVw3dIIVR2oklK86YS4/o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BDtBMv4/0Lf4GohNn8Mf2WugTea89Ei/u6RxxZRw8jCUL813yyx5wH3sCBsadH0eQB4Z25MUETtTr6zZPLVjDiQAN9QF8G/5k/RmA6KdFqtoN14K90pWFQO+RnOzekRPq2l512ojPvoznKzEfOIhMmHAZUNIVoPo3QP0eOXITYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mqJ37J7F; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52E9YDkr019596;
+	Fri, 14 Mar 2025 12:06:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=Bh21o9dLy7lEDe68zirb2d
+	JGXUgB9M6JRV3a9ZiHRpQ=; b=mqJ37J7FFAoxjprTR+G2mcoRA0gD2U5mKoxy4c
+	dA4YIywenHa9qQKGqGVXZCcjdxmU2f7OZHJj+nrSis8q++VdUokC0yi8pnQ4+1Ze
+	8WDWJsidCfwfts9anqPlBT3L0OcQwhUt/eG0oMvOp8XpLqN3XKZrC7RTrJEmaRUb
+	zBzlNhiydZ3XsE3NieBPaGQLmX0jKHMmVhsbPuxcSFWRLkfCNe9PWgxf/+y0eKfx
+	dhHtVGeOnen6Bou2zM+qi0RVBlCGjumXNHd51i3UMvDmQ20ysytmYdme0fhwOspl
+	XJGqZ93LvFH7EY/Q1xvPOn/WHCyW6KQj74p7+m/ZKTNknY1Q==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45au2p1752-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Mar 2025 12:06:33 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52EC6W4T027291
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Mar 2025 12:06:32 GMT
+Received: from zhonhan-gv.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Fri, 14 Mar 2025 05:06:30 -0700
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+To: <johannes@sipsolutions.net>, <miriam.rachel.korenblit@intel.com>
+CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_zhonhan@quicinc.com>,
+        <syzbot+5a7b40bcb34dea5ca959@syzkaller.appspotmail.com>
+Subject: [PATCH v2] wifi: mac80211: Prevent disconnect reports when no AP is associated
+Date: Fri, 14 Mar 2025 20:06:14 +0800
+Message-ID: <20250314120614.4032434-1-quic_zhonhan@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,112 +70,93 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 510616m:510616apGKSTK:510616s0w53aj45L
-X-smtpcorp-track: D3nc27VYU7tH.Wa8odZlMPFiX.r_NO_wlP4Rn
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: _yH3PE4g3TpHY-sTnofQESHunOcXBlqB
+X-Authority-Analysis: v=2.4 cv=Q4XS452a c=1 sm=1 tr=0 ts=67d41bc9 cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8 a=COk6AnOGAAAA:8 a=hSkVLCK3AAAA:8
+ a=IS6kxbfz1l1t9IyL_bAA:9 a=TjNXssC_j7lpFel5tvFf:22 a=cQPPKAXgyycSBL8etih5:22
+X-Proofpoint-ORIG-GUID: _yH3PE4g3TpHY-sTnofQESHunOcXBlqB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-14_05,2025-03-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 adultscore=0
+ lowpriorityscore=0 mlxscore=0 clxscore=1015 phishscore=0 malwarescore=0
+ spamscore=0 impostorscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503140095
 
-After ieee80211_do_stop() SKB from vif's txq could still be processed.
-Indeed another concurrent vif schedule_and_wake_txq call could cause
-those packets to be dequeued (see ieee80211_handle_wake_tx_queue())
-without checking the sdata current state.
+syzbot reports that cfg80211_tx_mlme_mgmt is using uninit-value:
 
-Because vif.drv_priv is now cleared in this function, this could lead to
-driver crash.
+=====================================================
+BUG: KMSAN: uninit-value in cfg80211_tx_mlme_mgmt+0x155/0x300 net/wireless/mlme.c:226
+cfg80211_tx_mlme_mgmt+0x155/0x300 net/wireless/mlme.c:226
+ieee80211_report_disconnect net/mac80211/mlme.c:4238 [inline]
+ieee80211_sta_connection_lost+0xfa/0x150 net/mac80211/mlme.c:7811
+ieee80211_sta_work+0x1dea/0x4ef0
+ieee80211_iface_work+0x1900/0x1970 net/mac80211/iface.c:1684
+cfg80211_wiphy_work+0x396/0x860 net/wireless/core.c:435
+process_one_work kernel/workqueue.c:3236 [inline]
+process_scheduled_works+0xc1a/0x1e80 kernel/workqueue.c:3317
+worker_thread+0xea7/0x14f0 kernel/workqueue.c:3398
+kthread+0x6b9/0xef0 kernel/kthread.c:464
+ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:148
+ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-For example in ath12k, ahvif is store in vif.drv_priv. Thus if
-ath12k_mac_op_tx() is called after ieee80211_do_stop(), ahvif->ah can be
-NULL, leading the ath12k_warn(ahvif->ah,...) call in this function to
-trigger the NULL deref below.
+Local variable frame_buf created at:
+ieee80211_sta_connection_lost+0x43/0x150 net/mac80211/mlme.c:7806
+ieee80211_sta_work+0x1dea/0x4ef0
+=====================================================
 
-  Unable to handle kernel paging request at virtual address dfffffc000000001
-  KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-  batman_adv: bat0: Interface deactivated: brbh1337
-  Mem abort info:
-    ESR = 0x0000000096000004
-    EC = 0x25: DABT (current EL), IL = 32 bits
-    SET = 0, FnV = 0
-    EA = 0, S1PTW = 0
-    FSC = 0x04: level 0 translation fault
-  Data abort info:
-    ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-    CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-    GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-  [dfffffc000000001] address between user and kernel address ranges
-  Internal error: Oops: 0000000096000004 [#1] SMP
-  CPU: 1 UID: 0 PID: 978 Comm: lbd Not tainted 6.13.0-g633f875b8f1e #114
-  Hardware name: HW (DT)
-  pstate: 10000005 (nzcV daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : ath12k_mac_op_tx+0x6cc/0x29b8 [ath12k]
-  lr : ath12k_mac_op_tx+0x174/0x29b8 [ath12k]
-  sp : ffffffc086ace450
-  x29: ffffffc086ace450 x28: 0000000000000000 x27: 1ffffff810d59ca4
-  x26: ffffff801d05f7c0 x25: 0000000000000000 x24: 000000004000001e
-  x23: ffffff8009ce4926 x22: ffffff801f9c0800 x21: ffffff801d05f7f0
-  x20: ffffff8034a19f40 x19: 0000000000000000 x18: ffffff801f9c0958
-  x17: ffffff800bc0a504 x16: dfffffc000000000 x15: ffffffc086ace4f8
-  x14: ffffff801d05f83c x13: 0000000000000000 x12: ffffffb003a0bf03
-  x11: 0000000000000000 x10: ffffffb003a0bf02 x9 : ffffff8034a19f40
-  x8 : ffffff801d05f818 x7 : 1ffffff0069433dc x6 : ffffff8034a19ee0
-  x5 : ffffff801d05f7f0 x4 : 0000000000000000 x3 : 0000000000000001
-  x2 : 0000000000000000 x1 : dfffffc000000000 x0 : 0000000000000008
-  Call trace:
-   ath12k_mac_op_tx+0x6cc/0x29b8 [ath12k] (P)
-   ieee80211_handle_wake_tx_queue+0x16c/0x260
-   ieee80211_queue_skb+0xeec/0x1d20
-   ieee80211_tx+0x200/0x2c8
-   ieee80211_xmit+0x22c/0x338
-   __ieee80211_subif_start_xmit+0x7e8/0xc60
-   ieee80211_subif_start_xmit+0xc4/0xee0
-   __ieee80211_subif_start_xmit_8023.isra.0+0x854/0x17a0
-   ieee80211_subif_start_xmit_8023+0x124/0x488
-   dev_hard_start_xmit+0x160/0x5a8
-   __dev_queue_xmit+0x6f8/0x3120
-   br_dev_queue_push_xmit+0x120/0x4a8
-   __br_forward+0xe4/0x2b0
-   deliver_clone+0x5c/0xd0
-   br_flood+0x398/0x580
-   br_dev_xmit+0x454/0x9f8
-   dev_hard_start_xmit+0x160/0x5a8
-   __dev_queue_xmit+0x6f8/0x3120
-   ip6_finish_output2+0xc28/0x1b60
-   __ip6_finish_output+0x38c/0x638
-   ip6_output+0x1b4/0x338
-   ip6_local_out+0x7c/0xa8
-   ip6_send_skb+0x7c/0x1b0
-   ip6_push_pending_frames+0x94/0xd0
-   rawv6_sendmsg+0x1a98/0x2898
-   inet_sendmsg+0x94/0xe0
-   __sys_sendto+0x1e4/0x308
-   __arm64_sys_sendto+0xc4/0x140
-   do_el0_svc+0x110/0x280
-   el0_svc+0x20/0x60
-   el0t_64_sync_handler+0x104/0x138
-   el0t_64_sync+0x154/0x158
+The reason is that the local variable frame_buf on the stack cannot be
+initialized by default. However one more question is that avoiding the
+uninit-value bug by explicitly initializing it is not enough. Since commit
+687a7c8a7227 ("wifi: mac80211: change disassoc sequence a bit"), if there
+is no AP station, frame_buf has no chance to be assigned a valid value.
+The function ieee80211_report_disconnect should not continue executing
+with the frame_buf parameter that is merely initialized to zero.
 
-To avoid that, empty vif's txq at ieee80211_do_stop() so no packet could
-be dequeued after ieee80211_do_stop() (new packets cannot be queued
-because SDATA_STATE_RUNNING is cleared at this point).
-
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Reported-by: syzbot+5a7b40bcb34dea5ca959@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67bf36d3.050a0220.38b081.01ff.GAE@google.com/
+Fixes: 687a7c8a7227 ("wifi: mac80211: change disassoc sequence a bit")
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
 ---
- net/mac80211/iface.c | 3 +++
- 1 file changed, 3 insertions(+)
+v1 -> v2:
+- Rebased on top of current next.
+- Reorder the tags.
+- Link to v1: https://lore.kernel.org/all/20250227090932.1871272-1-quic_zhonhan@quicinc.com/
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 738de269e13f..e60c1ffebaea 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -660,6 +660,9 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
- 		ieee80211_txq_remove_vlan(local, sdata);
- 
-+	if (sdata->vif.txq)
-+		ieee80211_txq_purge(sdata->local, to_txq_info(sdata->vif.txq));
+ net/mac80211/mlme.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index c010bb3d24e3..08fb3fb740fd 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4433,6 +4433,10 @@ static void ieee80211_report_disconnect(struct ieee80211_sub_if_data *sdata,
+ 		.u.mlme.data = tx ? DEAUTH_TX_EVENT : DEAUTH_RX_EVENT,
+ 		.u.mlme.reason = reason,
+ 	};
++	struct sta_info *ap_sta = sta_info_get(sdata, sdata->vif.cfg.ap_addr);
 +
- 	sdata->bss = NULL;
++	if (WARN_ON(!ap_sta))
++		return;
  
- 	if (local->open_count == 0)
+ 	if (tx)
+ 		cfg80211_tx_mlme_mgmt(sdata->dev, buf, len, reconnect);
+@@ -8090,7 +8094,7 @@ static void ieee80211_sta_timer(struct timer_list *t)
+ void ieee80211_sta_connection_lost(struct ieee80211_sub_if_data *sdata,
+ 				   u8 reason, bool tx)
+ {
+-	u8 frame_buf[IEEE80211_DEAUTH_FRAME_LEN];
++	u8 frame_buf[IEEE80211_DEAUTH_FRAME_LEN] = {0};
+ 
+ 	ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH, reason,
+ 			       tx, frame_buf);
 -- 
-2.40.0
+2.25.1
 
 
