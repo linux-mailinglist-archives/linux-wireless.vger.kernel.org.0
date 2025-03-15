@@ -1,119 +1,112 @@
-Return-Path: <linux-wireless+bounces-20408-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20409-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A32EA62FA7
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 16:52:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 006D4A62FDC
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 17:13:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FF5E18954EA
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 15:52:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C28C1896F44
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 16:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4214118C93C;
-	Sat, 15 Mar 2025 15:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A16201270;
+	Sat, 15 Mar 2025 16:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aIRgbK7m"
+	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="obF8/dha"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [178.154.239.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97084170A26
-	for <linux-wireless@vger.kernel.org>; Sat, 15 Mar 2025 15:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1DC1DFDAE;
+	Sat, 15 Mar 2025 16:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742053955; cv=none; b=TGbM/WDBULinL46m9fpjP2KVieGyfGwhi6tbHgDNYapO8ChR37oUhmO9svXyFmZr1KkVW6mFfqx9iSlILq9TTsmrHLdxItrxwCfmuwVqFDCYqwkycuEJrM4oo9HMNx0N6ThxDCSI7ntKKNz17P61H9Up2nHE+wpPynAT/AstRhA=
+	t=1742055231; cv=none; b=FmjJmrxWCbaOqXrLptk/nBQePywrkgYnI+R3168oC5mhps4H4mxZwmihZSqZXEE2g8LNRThv9J1/EaAVbNRGnO1WihyWTt1a7GXfTbXyowhpKFld9iVACoJvPaxVJyNkgQYwXQIue72CfE8SqHSSmz8u2sZyHIPr08PSH3fDJ/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742053955; c=relaxed/simple;
-	bh=ULQbQK3uafNZzIxbraWJoGoM4AAd+qDxpEvNoixXti8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pJVdiQmFWiH/18P3htPTgs0yVPJ4GyWye3XiMBM7ADKetiPLDvQElRtyw4ThCD6dFaYZ06mqfvlR1sb8bNG1TX/Fyr7xGIO3BAeD8o4p8j0rkEnGHjRh3tnX+d6sr9cf4K3y2uFPPgrYqMOtskRRexqnget9ug/vzU3E00ufvm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aIRgbK7m; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52FFhAcC032527;
-	Sat, 15 Mar 2025 15:52:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=Mq+2VhVyKi66Q+OnyxY5pLU2
-	2J5Xa5Ohmhz5gu/r5Ds=; b=aIRgbK7mOwHR4i8AH9kM5VqVPdlTuVVbl+XGzdYu
-	lBX7C4DcBJ3VOLv11KWB5yK5J3HI4YvGJl80p4DuG2pUkbuTG5IVfUFbrVAq1lX+
-	yZ5ZmIzeD3h5eqgUf+g+QhfOLsk1f6SV4TRGDYN8jvJs+Ym6o4FdNx/rwo4OL69l
-	vBpKagroXBmHls7nOKS6RhAo55JfqAmPaPOz+cvcaZ3RdfH2zr3w25QvbgUl7v/N
-	y/HQjFeRlxWL0qR1UJduvq1U/qkhspkLEAWnYfd6mPrCl7jiKX+lpOYbSB5ehJtS
-	nrAa4qKLIO6UVSgoB18nwQ1wsQbCcQGepITuilLxPmaElA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45d1utrw11-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 15 Mar 2025 15:52:30 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52FFqT7T016307
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 15 Mar 2025 15:52:29 GMT
-Received: from hu-nithp-blr.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sat, 15 Mar 2025 08:52:27 -0700
-From: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Nithyanantham Paramasivam
-	<quic_nithp@quicinc.com>
-Subject: [PATCH ath-next v3 3/3] wifi: ath12k: Enable REO queue lookup table feature on QCN9274
-Date: Sat, 15 Mar 2025 21:21:59 +0530
-Message-ID: <20250315155159.2475885-4-quic_nithp@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250315155159.2475885-1-quic_nithp@quicinc.com>
-References: <20250315155159.2475885-1-quic_nithp@quicinc.com>
+	s=arc-20240116; t=1742055231; c=relaxed/simple;
+	bh=y8MgAkStiT8tolKeBIFk0ywBLGTvKxVWNNSI8aghLOI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RqkB+fAkHX+snSKhHqCjN254IPkQa5m9vjGmUFEwl3imeYyhOnMeovgafERv55oBoXUOXHL06lGOAaVoc+Ou+V4J2jL/JFn2pct/75XEsuM7LBISoVRyTJcK7yHsujhN/UTI9pqZycE42sjQrzVSATx95a7wb74DJKGamsR0zbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=obF8/dha; arc=none smtp.client-ip=178.154.239.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
+Received: from mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:6100:0:640:f888:0])
+	by forward101a.mail.yandex.net (Yandex) with ESMTPS id AABA460B74;
+	Sat, 15 Mar 2025 19:13:35 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id RDIF5oOLlmI0-t8z3VJeh;
+	Sat, 15 Mar 2025 19:13:34 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
+	t=1742055215; bh=iDre0Mx+4FFuNw7KnuY7ck2mNKZRvmk1vRQXXtTAhVs=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=obF8/dhaj8qgPnD7Fjpw7l+ZRF7m/5A65IP5UEMogc39HtbZkMixkOP+4tAUikOAw
+	 zgRjcwbFdSv/xLWoTPjFeSauVM4nbzdKKftx8+k67OZYU/gsvSi03I1/XNciqWTmwT
+	 SFqKygB1P/LAEggoWFfc+BQnXZcE666Bfypu02rA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Shaul Triebitz <shaul.triebitz@intel.com>,
+	Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH v3] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
+Date: Sat, 15 Mar 2025 19:12:50 +0300
+Message-ID: <20250315161253.19399-1-m.lobanov@rosa.ru>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=H8Pbw/Yi c=1 sm=1 tr=0 ts=67d5a23e cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=VG1Z7HIe-OYZGDrRaVgA:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: 0Pw87wcr0CbvnqrPEblxMfe4tTEn8i1T
-X-Proofpoint-ORIG-GUID: 0Pw87wcr0CbvnqrPEblxMfe4tTEn8i1T
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-15_06,2025-03-14_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=955
- lowpriorityscore=0 bulkscore=0 adultscore=0 spamscore=0 priorityscore=1501
- mlxscore=0 suspectscore=0 malwarescore=0 clxscore=1015 impostorscore=0
- phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503150113
+Content-Transfer-Encoding: 8bit
 
-Enable the REO queue lookup table feature for QCN9274 by setting the
-reoq_lut_support flag.
+When userspace sets supported rates for a new station via
+NL80211_CMD_NEW_STATION, it might send a list that's empty
+or contains only invalid values. Currently, we process these
+values in sta_link_apply_parameters() without checking the result of
+ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+A similar issue was addressed for NL80211_CMD_SET_BSS in commit
+ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
+This patch applies the same approach in sta_link_apply_parameters()
+for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
+rate by inspecting the result of ieee80211_parse_bitrates().
 
-Signed-off-by: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
 ---
- drivers/net/wireless/ath/ath12k/hw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2: Fixed the patch subject to provide a complete description.
+v3: added the missing if as Christophe Jaillet (christophe.jaillet@wanadoo.fr) noticed.
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index 51c2033cec46..2433ade22e2f 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -1057,7 +1057,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.download_calib = true,
- 		.supports_suspend = false,
- 		.tcl_ring_retry = true,
--		.reoq_lut_support = false,
-+		.reoq_lut_support = true,
- 		.supports_shadow_regs = false,
+ net/mac80211/cfg.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 9351c64608a9..b4d18172da16 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1909,10 +1909,11 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
  
- 		.num_tcl_banks = 48,
+ 	if (params->supported_rates &&
+ 	    params->supported_rates_len) {
+-		ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
+-					 sband, params->supported_rates,
+-					 params->supported_rates_len,
+-					 &link_sta->pub->supp_rates[sband->band]);
++		if (!ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
++					      sband, params->supported_rates,
++					      params->supported_rates_len,
++					      &link_sta->pub->supp_rates[sband->band]))
++			return -EINVAL;
+ 	}
+ 
+ 	if (params->ht_capa)
 -- 
-2.17.1
+2.47.2
 
 
