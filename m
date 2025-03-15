@@ -1,118 +1,130 @@
-Return-Path: <linux-wireless+bounces-20404-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20405-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F278A62F32
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 16:29:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA34EA62FA4
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 16:52:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F571188D34B
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 15:29:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 020B93A930A
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 15:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18732036E8;
-	Sat, 15 Mar 2025 15:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55323175D39;
+	Sat, 15 Mar 2025 15:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="etUPQ6q1"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UM02w05R"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A8019049B;
-	Sat, 15 Mar 2025 15:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9528F18C93C
+	for <linux-wireless@vger.kernel.org>; Sat, 15 Mar 2025 15:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742052579; cv=none; b=C6xZ0v8khAj1Ch8Ha8muqT0TUdkLBGGF3MA/wMYSgaOZiQgeYLTzIi16kNAhJoo3nWPjmAQW1rVahpZAmLuy9QYEG2MOseAAV6Qh4zLAS5SrfVxrioSNxubtYs5EjE14mnrD5OA8Lri9fyIh/u7ViMs16wuz1od1mPCB+vpewhg=
+	t=1742053945; cv=none; b=QO/zmtniHDejB/s/D8LIcqBARAZ5JMm4LP81JRLpxxQhulefgnZFm902i2aeybWzxENJz+PyzJpgRA5FK9fselGcxrsJ9m3OlbV35cSYsy3PJzpA4vZyl04Lf3jrxXf8Jc2ah7CXX6uN2cHSs14fkDcpvz6t1PQK1MfMm5WVSoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742052579; c=relaxed/simple;
-	bh=t3Ud3bOuPundm90xIOsFE9Q5XrJOj0wTImWIRDm5/BA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gmMixTep6SoWyc4kSOSdv9+rMgga3qKrEA6ycp5JDrlS4FQFjCUFU5RE4jsvofi1MIUss8o8xl1KUz+Ptp61XI1kn+LWKLGd3A5ADfs2dWFsypxUFa+QqU44Cp2vxvEWjOLzczxKLFIyODwZi2rrJYbMKH0pymO7PKOJ6Ord6pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=etUPQ6q1; arc=none smtp.client-ip=80.12.242.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id tTJNtsJ0HtsZCtTJRtOle1; Sat, 15 Mar 2025 16:20:35 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1742052035;
-	bh=b3ARRYc1xIjRJmTM2Xw3fYywDOajj6cXs8QeBu+g8Jc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=etUPQ6q1HR8RFWvQI5hugo8wAhN5EBw82VRkpgLbJ9Iu+MQgVouU6jc7g+P0L4pIA
-	 x4owaUciYxrf5ZzY9lfaqmSUXCGSPrt3JizEWlaTOp0nBwFJqeJtyTnRSL15BbE9St
-	 lMsxqODATfmFdl+fSyoUx1j3t420Z2UeOC/aZb5LAvF+ZYHD4ID/vLL6yIfG+250Cw
-	 7YYS+Shc/PnOHJOuKt2p2uyGWr1626LOJ4KIJnI07haWF6fA4WQv8mNih0CzOtwZlU
-	 pav3DOm/pDD7NvO4cEZsQhk+ssWNPO8UdnJ8jt8eOcqKNL50+gHwnjYRVXrqt0g04C
-	 8XEJGg/SldFqg==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Sat, 15 Mar 2025 16:20:35 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <d1c6d869-d4ed-41d1-97e2-c73f87864bda@wanadoo.fr>
-Date: Sat, 15 Mar 2025 16:20:29 +0100
+	s=arc-20240116; t=1742053945; c=relaxed/simple;
+	bh=h6wJZHoRA1IShID/KhcQ2spl82FWpYcWrIE5Yb0XtBs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MtDaYzjUUMCm3f27ynDHrYaMK57vErCo08RxXTdeQCZQgLYVoNVfN0+mpG/knE3/zUTu+iHCEvXkrQRXln4AaY5Yy27vVoLIhg6eY8li/IqiMm0elONV9vCtNP8OQNl+nRG/RPK7MMITHmF/+zhufuegJopFdQw35JDWhPiJ3+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UM02w05R; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52FDo2Rv014225;
+	Sat, 15 Mar 2025 15:52:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	qcppdkim1; bh=/D7Ywb35E297OmtqBzCrmu5RX7Xuv1Atj3Q0hOpfTj8=; b=UM
+	02w05RAimKI2D7RannSulk2s6+VUSPXqesiZBW9+sY9tZNkyR9V1QcEyqTsBf5ol
+	n7mPRR8uP8kZYGk6bHe6D1Xsmiei/yry9zPlOgxroG6z/O1l+IpmV0k2G/Tq3EGX
+	+IuX9ibPFS55BZpVFNZaZHBVvHvH6JIv/e5K0BOIeonJ7C+eBCIfd/6k3wl5dvWJ
+	Zt6Gpc+uhSWkmecR1VQpI1LWz1U+8ChoBVPqAdPtNA5zyV6F8HB98VwzWPmhpMYO
+	ixR30Z+1grrMhOkSXubXxJWZZRMk+bc15sfmkCqIcJT/9ldNcR/CvF1IC2I7m2Zj
+	OMZ3Cu+8/BKenXxjbCsw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45d1r10wf7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 15 Mar 2025 15:52:18 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52FFqHqX016227
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 15 Mar 2025 15:52:17 GMT
+Received: from hu-nithp-blr.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Sat, 15 Mar 2025 08:52:15 -0700
+From: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Nithyanantham Paramasivam
+	<quic_nithp@quicinc.com>
+Subject: [PATCH ath-next v3 0/3] wifi: ath12k: Enable REO queue lookup table on QCN9274
+Date: Sat, 15 Mar 2025 21:21:56 +0530
+Message-ID: <20250315155159.2475885-1-quic_nithp@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: mac80211: check basic rates validity in
- sta_link_apply_parameters
-To: m.lobanov@rosa.ru
-Cc: johannes@sipsolutions.net, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
- shaul.triebitz@intel.com
-References: <20250315130119.75937-1-m.lobanov@rosa.ru>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20250315130119.75937-1-m.lobanov@rosa.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=LuaSymdc c=1 sm=1 tr=0 ts=67d5a232 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=tnCF6RmjttW7q9gwjsMA:9
+X-Proofpoint-GUID: RQ6MMTIKFbRMcgjXzX0DXUe7V0G_m7Cc
+X-Proofpoint-ORIG-GUID: RQ6MMTIKFbRMcgjXzX0DXUe7V0G_m7Cc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-15_06,2025-03-14_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ mlxscore=0 suspectscore=0 priorityscore=1501 phishscore=0 adultscore=0
+ clxscore=1015 lowpriorityscore=0 spamscore=0 mlxlogscore=464
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503150113
 
-Le 15/03/2025 à 14:01, Mikhail Lobanov a écrit :
-> When userspace sets supported rates for a new station via
-> NL80211_CMD_NEW_STATION, it might send a list that's empty
-> or contains only invalid values. Currently, we process these
-> values in sta_link_apply_parameters() without checking the result of
-> ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
-> 
-> A similar issue was addressed for NL80211_CMD_SET_BSS in commit
-> ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
-> This patch applies the same approach in sta_link_apply_parameters()
-> for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
-> rate by inspecting the result of ieee80211_parse_bitrates().
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
-> Signed-off-by: Mikhail Lobanov <m.lobanov-kcSV9N6+iMo@public.gmane.org>
-> ---
-> v2: Fixed the patch subject to provide a complete description.
-> 
->   net/mac80211/cfg.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-> index 9351c64608a9..e7c429aef980 100644
-> --- a/net/mac80211/cfg.c
-> +++ b/net/mac80211/cfg.c
-> @@ -1909,10 +1909,11 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
->   
->   	if (params->supported_rates &&
->   	    params->supported_rates_len) {
-> -		ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
-> +		(!ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
+Instead of storing the REO queue address inside peer entries, REO
+hardware module prefers them to be stored in SRAM which could be
+directly accessed by REO using peer_ID/TID based Lookup table(LUT)
+mechanism. This feature is expected to improve stability by reduced
+interaction between host and firmware during both MLO and non-MLO
+operations.This feature is enabled only for the QCN9274, so it does
+not impact the WCN7850.
 
-'if" missing?
+v3:
+- Rebased on TOT
+- Fixed 32bit compilation warning
 
->   					 sband, params->supported_rates,
->   					 params->supported_rates_len,
-> -					 &link_sta->pub->supp_rates[sband->band]);
-> +					 &link_sta->pub->supp_rates[sband->band]))
-> +		return -EINVAL;
->   	}
->   
->   	if (params->ht_capa)
+v2:
+- Removed junk version histories in cover letter
+
+Balamurugan S (1):
+  wifi: ath12k: Add support to clear qdesc array in REO cache
+
+Nithyanantham Paramasivam (1):
+  wifi: ath12k: Enable REO queue lookup table feature on QCN9274
+
+Sriram R (1):
+  wifi: ath12k: Fix the enabling of REO queue lookup table feature
+
+ drivers/net/wireless/ath/ath12k/dp.c     | 77 ++++++++++++++++--------
+ drivers/net/wireless/ath/ath12k/dp.h     |  5 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c  | 11 +++-
+ drivers/net/wireless/ath/ath12k/hal.h    |  9 ++-
+ drivers/net/wireless/ath/ath12k/hal_rx.c | 19 +++++-
+ drivers/net/wireless/ath/ath12k/hw.c     |  6 +-
+ drivers/net/wireless/ath/ath12k/hw.h     |  5 +-
+ drivers/net/wireless/ath/ath12k/wmi.c    |  8 ++-
+ drivers/net/wireless/ath/ath12k/wmi.h    |  1 +
+ 9 files changed, 107 insertions(+), 34 deletions(-)
+
+
+base-commit: a2ef9d802c470bc1cc8cb78391ac2e290422cee1
+-- 
+2.17.1
 
 
