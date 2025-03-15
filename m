@@ -1,111 +1,118 @@
-Return-Path: <linux-wireless+bounces-20403-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20404-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AA6A62D39
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 14:09:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F278A62F32
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 16:29:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F3B9177E2D
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 13:09:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F571188D34B
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 15:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE861DC9BE;
-	Sat, 15 Mar 2025 13:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18732036E8;
+	Sat, 15 Mar 2025 15:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="T3hfxvQS"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="etUPQ6q1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward203b.mail.yandex.net (forward203b.mail.yandex.net [178.154.239.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212461862;
-	Sat, 15 Mar 2025 13:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A8019049B;
+	Sat, 15 Mar 2025 15:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742044164; cv=none; b=PTWtmcyd573roCvHYYBrfFCe7q9qFHjq+mzLyvSXbA1r4FPyigNITB56usXt3/+svxW5g3RcrfzEHul6TJEWtIf3slaReDh55PBs7GfGAJqRaYsa/WUe79v4FyDqTyZBzB7reV3arbF/8JkXtqcgc9Oy4a2Jeytth3C8qumHHOk=
+	t=1742052579; cv=none; b=C6xZ0v8khAj1Ch8Ha8muqT0TUdkLBGGF3MA/wMYSgaOZiQgeYLTzIi16kNAhJoo3nWPjmAQW1rVahpZAmLuy9QYEG2MOseAAV6Qh4zLAS5SrfVxrioSNxubtYs5EjE14mnrD5OA8Lri9fyIh/u7ViMs16wuz1od1mPCB+vpewhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742044164; c=relaxed/simple;
-	bh=ka/9HjQteP+lsd/qliHZFPqBYpxHTM8lQfKFAIpmTVE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XXzMdpiAhTb4UQoTMSUG6UwgJI7iqhPJRW39WUSo8aGTkjWGAi16N8t88o8NIuq/zhiXou+p2s3nsu8L2CJ8J4r+8Ae7FiCyKcD45Pfp9KSlufbz/Dd4pTt8TMmt0kpRs/8e9k+ub/Iwe2dvShK7EU/UGXndvlEniwmGz+tv7ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=T3hfxvQS; arc=none smtp.client-ip=178.154.239.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
-Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d103])
-	by forward203b.mail.yandex.net (Yandex) with ESMTPS id C280363449;
-	Sat, 15 Mar 2025 16:01:45 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net [IPv6:2a02:6b8:c28:7d5:0:640:285a:0])
-	by forward103b.mail.yandex.net (Yandex) with ESMTPS id F34DB60AD1;
-	Sat, 15 Mar 2025 16:01:37 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id T1FSYvMLouQ0-acRp91rH;
-	Sat, 15 Mar 2025 16:01:37 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
-	t=1742043697; bh=re3pHChC+mQHbRAssqFb1hdzEHJMrzvzoEtkuNzfrNo=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=T3hfxvQSn8Y94kNXoMdFBRMuyqLYdNiaHP0PyjPdhPiYUCNaBoGZwUu4lHh/V4SMs
-	 FVAe7ha3WQMbUL8Mwxnzv02b6CZL5ZJTxIugzxn5e351Qdadxg0LXXxXCVFCSxiWKR
-	 +nkpGz+x/Ed6tG6d9h6JpGCKLUhJM0yzYMz/dbCM=
-Authentication-Results: mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
-From: Mikhail Lobanov <m.lobanov@rosa.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Shaul Triebitz <shaul.triebitz@intel.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH v2] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
-Date: Sat, 15 Mar 2025 16:01:16 +0300
-Message-ID: <20250315130119.75937-1-m.lobanov@rosa.ru>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1742052579; c=relaxed/simple;
+	bh=t3Ud3bOuPundm90xIOsFE9Q5XrJOj0wTImWIRDm5/BA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gmMixTep6SoWyc4kSOSdv9+rMgga3qKrEA6ycp5JDrlS4FQFjCUFU5RE4jsvofi1MIUss8o8xl1KUz+Ptp61XI1kn+LWKLGd3A5ADfs2dWFsypxUFa+QqU44Cp2vxvEWjOLzczxKLFIyODwZi2rrJYbMKH0pymO7PKOJ6Ord6pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=etUPQ6q1; arc=none smtp.client-ip=80.12.242.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id tTJNtsJ0HtsZCtTJRtOle1; Sat, 15 Mar 2025 16:20:35 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1742052035;
+	bh=b3ARRYc1xIjRJmTM2Xw3fYywDOajj6cXs8QeBu+g8Jc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=etUPQ6q1HR8RFWvQI5hugo8wAhN5EBw82VRkpgLbJ9Iu+MQgVouU6jc7g+P0L4pIA
+	 x4owaUciYxrf5ZzY9lfaqmSUXCGSPrt3JizEWlaTOp0nBwFJqeJtyTnRSL15BbE9St
+	 lMsxqODATfmFdl+fSyoUx1j3t420Z2UeOC/aZb5LAvF+ZYHD4ID/vLL6yIfG+250Cw
+	 7YYS+Shc/PnOHJOuKt2p2uyGWr1626LOJ4KIJnI07haWF6fA4WQv8mNih0CzOtwZlU
+	 pav3DOm/pDD7NvO4cEZsQhk+ssWNPO8UdnJ8jt8eOcqKNL50+gHwnjYRVXrqt0g04C
+	 8XEJGg/SldFqg==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Sat, 15 Mar 2025 16:20:35 +0100
+X-ME-IP: 90.11.132.44
+Message-ID: <d1c6d869-d4ed-41d1-97e2-c73f87864bda@wanadoo.fr>
+Date: Sat, 15 Mar 2025 16:20:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: mac80211: check basic rates validity in
+ sta_link_apply_parameters
+To: m.lobanov@rosa.ru
+Cc: johannes@sipsolutions.net, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
+ shaul.triebitz@intel.com
+References: <20250315130119.75937-1-m.lobanov@rosa.ru>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20250315130119.75937-1-m.lobanov@rosa.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-When userspace sets supported rates for a new station via
-NL80211_CMD_NEW_STATION, it might send a list that's empty
-or contains only invalid values. Currently, we process these
-values in sta_link_apply_parameters() without checking the result of
-ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
+Le 15/03/2025 à 14:01, Mikhail Lobanov a écrit :
+> When userspace sets supported rates for a new station via
+> NL80211_CMD_NEW_STATION, it might send a list that's empty
+> or contains only invalid values. Currently, we process these
+> values in sta_link_apply_parameters() without checking the result of
+> ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
+> 
+> A similar issue was addressed for NL80211_CMD_SET_BSS in commit
+> ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
+> This patch applies the same approach in sta_link_apply_parameters()
+> for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
+> rate by inspecting the result of ieee80211_parse_bitrates().
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
+> Signed-off-by: Mikhail Lobanov <m.lobanov-kcSV9N6+iMo@public.gmane.org>
+> ---
+> v2: Fixed the patch subject to provide a complete description.
+> 
+>   net/mac80211/cfg.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+> index 9351c64608a9..e7c429aef980 100644
+> --- a/net/mac80211/cfg.c
+> +++ b/net/mac80211/cfg.c
+> @@ -1909,10 +1909,11 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+>   
+>   	if (params->supported_rates &&
+>   	    params->supported_rates_len) {
+> -		ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
+> +		(!ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
 
-A similar issue was addressed for NL80211_CMD_SET_BSS in commit
-ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
-This patch applies the same approach in sta_link_apply_parameters()
-for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
-rate by inspecting the result of ieee80211_parse_bitrates().
+'if" missing?
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
----
-v2: Fixed the patch subject to provide a complete description.
-
- net/mac80211/cfg.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 9351c64608a9..e7c429aef980 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1909,10 +1909,11 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 
- 	if (params->supported_rates &&
- 	    params->supported_rates_len) {
--		ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
-+		(!ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
- 					 sband, params->supported_rates,
- 					 params->supported_rates_len,
--					 &link_sta->pub->supp_rates[sband->band]);
-+					 &link_sta->pub->supp_rates[sband->band]))
-+		return -EINVAL;
- 	}
- 
- 	if (params->ht_capa)
--- 
-2.47.2
+>   					 sband, params->supported_rates,
+>   					 params->supported_rates_len,
+> -					 &link_sta->pub->supp_rates[sband->band]);
+> +					 &link_sta->pub->supp_rates[sband->band]))
+> +		return -EINVAL;
+>   	}
+>   
+>   	if (params->ht_capa)
 
 
