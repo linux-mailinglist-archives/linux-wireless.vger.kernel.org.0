@@ -1,144 +1,134 @@
-Return-Path: <linux-wireless+bounces-20399-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20400-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D454DA62536
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 04:13:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2ECEA6286B
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 08:49:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BC8842101D
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 03:13:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC752189FAAA
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Mar 2025 07:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0571F186E2F;
-	Sat, 15 Mar 2025 03:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6524A19340D;
+	Sat, 15 Mar 2025 07:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="m1rnKBnb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.216.63.40])
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC176178CF8;
-	Sat, 15 Mar 2025 03:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.216.63.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03262AF07
+	for <linux-wireless@vger.kernel.org>; Sat, 15 Mar 2025 07:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742008389; cv=none; b=bWzfPMIgVp/Xw6dHxZ7RZcctFcrb91+ZEH8LuVFBXJzhMr622lBAihjAGX9CoklZzTv5DQuREPn6krG/kaj/u04MJOYBG/1poChusr6Ednk4rq2drz0yet4cj2C7+GUXUxxVnmoUTgjvdIIBwQVlm67tS6obHW+i4SX6D28LvAg=
+	t=1742024985; cv=none; b=YNEVoU6LCMsgylOPLW68xRaTViU2Nn6pqO8IlLtRZEYK89kWUo9LmKTfHF4aa5mCKjRM8n7sV3KkyqJA2GrV6rVfck+LbKATx6/PpN310/rCuDCrgdfsyyrKHzVXO2dxclRpz07liHGwoe9d9aZkOgMcRZkjowFVvbA2G+F7aCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742008389; c=relaxed/simple;
-	bh=clmIaqAeSifdCcY5HnUSdpYLwnaZiIp7MkwL/1ZH18Q=;
-	h=Date:Message-ID:Mime-Version:From:To:Cc:Subject:Content-Type; b=pY7kVTKrThJdmmTptxh4eZsktT+7Vefd14OeWuEGWh0b1MKhU+mCg9RQp2Qntxc03xpBgzfp6eg/1TKNREfA1iTFP48q6nDy+BrMqJeVukB1tOlEGZ3ffLTT7WwSYosARskO9IL4UJtoTFj6LL2yWK2SVoR7+BCIqdidqRSXsUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=63.216.63.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4ZF5s94y7Qz8QrkZ;
-	Sat, 15 Mar 2025 11:13:01 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl1.zte.com.cn with SMTP id 52F3CrZe043981;
-	Sat, 15 Mar 2025 11:12:53 +0800 (+08)
-	(envelope-from feng.wei8@zte.com.cn)
-Received: from mapi (xaxapp05[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Sat, 15 Mar 2025 11:12:54 +0800 (CST)
-Date: Sat, 15 Mar 2025 11:12:54 +0800 (CST)
-X-Zmail-TransId: 2afc67d4f036ffffffff8b0-b175a
-X-Mailer: Zmail v1.0
-Message-ID: <20250315111254625RMIKeUh51j1Xk9CWuu2LT@zte.com.cn>
+	s=arc-20240116; t=1742024985; c=relaxed/simple;
+	bh=R0Gg5Jt7lqUVrBZPRV6z1e75dkugdVy+iodMgGgZx0c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LkLMdvWXMO1VYS6Tq4fTAkE6r8oYddaUjc9py3eUAO1HssLWWuRRRiCtkPOHyaUZ6KWBGGGaE3A11E+V+uFQD+79ZpoGImpQov+xAAF4TqExbCjAWQFr4cuJ84CCJ2HdGHgJjV3vH7279ArzIE+qZuZnMfMon/lf2hO9WYDWyi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=m1rnKBnb; arc=none smtp.client-ip=35.89.44.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-5005a.ext.cloudfilter.net ([10.0.29.234])
+	by cmsmtp with ESMTPS
+	id tKcltGG5lMETltMH9tLm0D; Sat, 15 Mar 2025 07:49:43 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id tMH7t2JPAq3CNtMH8t4QlU; Sat, 15 Mar 2025 07:49:42 +0000
+X-Authority-Analysis: v=2.4 cv=VpfoAP2n c=1 sm=1 tr=0 ts=67d53116
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=6Vi/Wpy7sgpXGMLew8oZcg==:17
+ a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=7T7KSl7uo7wA:10
+ a=7XQe7QQrGAp21atFurkA:9 a=QEXdDO2ut3YA:10 a=QYH75iMubAgA:10
+ a=Xt_RvD8W3m28Mn_h3AK8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=UNKnXi0eqTGn5Iah8wJgR3gA8aNMiLmiP3z2WLfLaC8=; b=m1rnKBnbBQ//eMuv0LxYb7I4Xw
+	ulNkhmExLpXwVYxLPD1SBPrzthmE12QPN6TM0Xb25KW4355+q9+QDfPRVOE+ysemb7+dN6M159l+t
+	udPmqNR6s5kHVEKoXxL3DR82usEFr32OMEb5MerN2MvZgYb5dYFu9zBahTFfyR5Qd64fjc7xan3LR
+	ohWhHkrZBnkBTcaVNNS0ASO/PDRO1DY2uTWCszGx+xOEdQAznjdca28fKerEakgNZOlfOa8gBwR9F
+	XEpoEbPKg8RFAflC889nOUqQyeeWtNpG8YabA10QaJ6QzJfjj7Jls8FNavaR8kQLQcdHHpdmGQBcU
+	yuIWwJwg==;
+Received: from [45.124.203.140] (port=53936 helo=[192.168.0.160])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1ttMH5-00000003ubx-3aqH;
+	Sat, 15 Mar 2025 02:49:41 -0500
+Message-ID: <b6dd5eff-581f-41e0-a121-8d0614b1a469@embeddedor.com>
+Date: Sat, 15 Mar 2025 18:19:25 +1030
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <feng.wei8@zte.com.cn>
-To: <linux-kernel@vger.kernel.org>
-Cc: <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
-Subject: =?UTF-8?B?W1BBVENIXSBtYWM4MDIxMTogbWluc3RyZWxfaHQ6IFJlcGxhY2UgbmVzdGVkIG1pbigpIHdpdGggc2luZ2xlCgogbWluMygp?=
-Content-Type: multipart/mixed;
-	boundary="=====_001_next====="
-X-MAIL:mse-fl1.zte.com.cn 52F3CrZe043981
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 67D4F03D.003/4ZF5s94y7Qz8QrkZ
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] wifi: iwlwifi: dvm: Avoid
+ -Wflex-array-member-not-at-end warnings
+To: Johannes Berg <johannes@sipsolutions.net>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+References: <Zr5QR03+wyw571zd@elsanto>
+ <b0f25000-396c-4a83-abc1-1a07b3065c10@embeddedor.com>
+ <75551003-17c7-450a-89b0-818b6a01051c@embeddedor.com>
+ <af8e60b46567a0612b71d4cd198b07dc93b046e4.camel@sipsolutions.net>
+ <c058eedc7fe0d6b58dba376140291a0ba048a6d5.camel@sipsolutions.net>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <c058eedc7fe0d6b58dba376140291a0ba048a6d5.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 45.124.203.140
+X-Source-L: No
+X-Exim-ID: 1ttMH5-00000003ubx-3aqH
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.0.160]) [45.124.203.140]:53936
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfMMgW81Vl6jAOl/vcqgKJe2eFGQ/Izm94Je3bfzkxKfOIT68s+P8MBcBKijnXqiOJm5SlQMfqZrQD4mZcyBESUZmSrqtcUwIYP4YEHemEtMsnpfbO5er
+ yAIwdAwhRSfZGSGcuB1m4iJlzOE4fmGTXk4+vW6dXGpE54AaTP0cRj80dG9O4p5C8gO+teyreTJAk5tU/Y+ZY2xI6zl8koxkyTTASSWjnIjv583rJtO8+cVL
 
 
 
---=====_001_next=====
-Content-Type: multipart/related;
-	boundary="=====_002_next====="
+On 11/03/25 21:12, Johannes Berg wrote:
+> On Tue, 2025-03-11 at 11:40 +0100, Johannes Berg wrote:
+>> On Mon, 2025-03-10 at 14:17 +1030, Gustavo A. R. Silva wrote:
+>>> Hi all,
+>>>
+>>> I wonder who can take this patch, please. :)
+>>>
+>>
+>> At the very least you're going to have to resend, I don't have the patch
+>> in patchwork any more.
+>>
+> 
+> Oh, no, sorry, it's still there but assigned to Miri.
 
+I see.
 
---=====_002_next=====
-Content-Type: multipart/alternative;
-	boundary="=====_003_next====="
+It's been months. I wonder what can we do to move it to -next. :)
 
-
---=====_003_next=====
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
-
-RnJvbTogRmVuZ1dlaSA8ZmVuZy53ZWk4QHp0ZS5jb20uY24+DQoNClVzZSBtaW4zKCkgbWFjcm8g
-aW5zdGVhZCBvZiBuZXN0aW5nIG1pbigpIHRvIHNpbXBsaWZ5IHRoZSByZXR1cm4NCnN0YXRlbWVu
-dC4NCg0KU2lnbmVkLW9mZi1ieTogRmVuZ1dlaSA8ZmVuZy53ZWk4QHp0ZS5jb20uY24+DQotLS0N
-CiBuZXQvbWFjODAyMTEvcmM4MDIxMV9taW5zdHJlbF9odC5jIHwgMiArLQ0KIDEgZmlsZSBjaGFu
-Z2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KDQpkaWZmIC0tZ2l0IGEvbmV0L21h
-YzgwMjExL3JjODAyMTFfbWluc3RyZWxfaHQuYyBiL25ldC9tYWM4MDIxMS9yYzgwMjExX21pbnN0
-cmVsX2h0LmMNCmluZGV4IDA4ZjNmNTMwZjk4NC4uMzFhM2I2ZTRjNThkIDEwMDY0NA0KLS0tIGEv
-bmV0L21hYzgwMjExL3JjODAyMTFfbWluc3RyZWxfaHQuYw0KKysrIGIvbmV0L21hYzgwMjExL3Jj
-ODAyMTFfbWluc3RyZWxfaHQuYw0KQEAgLTEwMTAsNyArMTAxMCw3IEBAIG1pbnN0cmVsX2h0X3Jl
-ZmlsbF9zYW1wbGVfcmF0ZXMoc3RydWN0IG1pbnN0cmVsX2h0X3N0YSAqbWkpDQogCXUzMiBwcm9i
-X2R1ciA9IG1pbnN0cmVsX2dldF9kdXJhdGlvbihtaS0+bWF4X3Byb2JfcmF0ZSk7DQogCXUzMiB0
-cF9kdXIgPSBtaW5zdHJlbF9nZXRfZHVyYXRpb24obWktPm1heF90cF9yYXRlWzBdKTsNCiAJdTMy
-IHRwMl9kdXIgPSBtaW5zdHJlbF9nZXRfZHVyYXRpb24obWktPm1heF90cF9yYXRlWzFdKTsNCi0J
-dTMyIGZhc3RfcmF0ZV9kdXIgPSBtaW4odHBfZHVyLCB0cDJfZHVyLCBwcm9iX2R1cik7DQorCXUz
-MiBmYXN0X3JhdGVfZHVyID0gbWluMyh0cF9kdXIsIHRwMl9kdXIsIHByb2JfZHVyKTsNCiAJdTMy
-IHNsb3dfcmF0ZV9kdXIgPSBtYXgobWF4KHRwX2R1ciwgdHAyX2R1ciksIHByb2JfZHVyKTsNCiAJ
-dTE2ICpyYXRlczsNCiAJaW50IGksIGo7DQotLSANCjIuMjUuMQ==
-
-
---=====_003_next=====
-Content-Type: text/html ;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
-
-PGRpdiBjbGFzcz0iemNvbnRlbnRSb3ciPjxwPkZyb206IEZlbmdXZWkgJmx0O2Zlbmcud2VpOEB6
-dGUuY29tLmNuJmd0Ozxicj48L3A+PHA+PGJyPjwvcD48cD5Vc2UgbWluMygpIG1hY3JvIGluc3Rl
-YWQgb2YgbmVzdGluZyBtaW4oKSB0byBzaW1wbGlmeSB0aGUgcmV0dXJuPC9wPjxwPnN0YXRlbWVu
-dC48L3A+PHA+PGJyPjwvcD48cD5TaWduZWQtb2ZmLWJ5OiBGZW5nV2VpICZsdDtmZW5nLndlaThA
-enRlLmNvbS5jbiZndDs8L3A+PHA+LS0tPC9wPjxwPiZuYnNwO25ldC9tYWM4MDIxMS9yYzgwMjEx
-X21pbnN0cmVsX2h0LmMgfCAyICstPC9wPjxwPiZuYnNwOzEgZmlsZSBjaGFuZ2VkLCAxIGluc2Vy
-dGlvbigrKSwgMSBkZWxldGlvbigtKTwvcD48cD48YnI+PC9wPjxwPmRpZmYgLS1naXQgYS9uZXQv
-bWFjODAyMTEvcmM4MDIxMV9taW5zdHJlbF9odC5jIGIvbmV0L21hYzgwMjExL3JjODAyMTFfbWlu
-c3RyZWxfaHQuYzwvcD48cD5pbmRleCAwOGYzZjUzMGY5ODQuLjMxYTNiNmU0YzU4ZCAxMDA2NDQ8
-L3A+PHA+LS0tIGEvbmV0L21hYzgwMjExL3JjODAyMTFfbWluc3RyZWxfaHQuYzwvcD48cD4rKysg
-Yi9uZXQvbWFjODAyMTEvcmM4MDIxMV9taW5zdHJlbF9odC5jPC9wPjxwPkBAIC0xMDEwLDcgKzEw
-MTAsNyBAQCBtaW5zdHJlbF9odF9yZWZpbGxfc2FtcGxlX3JhdGVzKHN0cnVjdCBtaW5zdHJlbF9o
-dF9zdGEgKm1pKTwvcD48cD4mbmJzcDs8c3BhbiBzdHlsZT0id2hpdGUtc3BhY2U6cHJlIj4JPC9z
-cGFuPnUzMiBwcm9iX2R1ciA9IG1pbnN0cmVsX2dldF9kdXJhdGlvbihtaS0mZ3Q7bWF4X3Byb2Jf
-cmF0ZSk7PC9wPjxwPiZuYnNwOzxzcGFuIHN0eWxlPSJ3aGl0ZS1zcGFjZTpwcmUiPgk8L3NwYW4+
-dTMyIHRwX2R1ciA9IG1pbnN0cmVsX2dldF9kdXJhdGlvbihtaS0mZ3Q7bWF4X3RwX3JhdGVbMF0p
-OzwvcD48cD4mbmJzcDs8c3BhbiBzdHlsZT0id2hpdGUtc3BhY2U6cHJlIj4JPC9zcGFuPnUzMiB0
-cDJfZHVyID0gbWluc3RyZWxfZ2V0X2R1cmF0aW9uKG1pLSZndDttYXhfdHBfcmF0ZVsxXSk7PC9w
-PjxwPi08c3BhbiBzdHlsZT0id2hpdGUtc3BhY2U6cHJlIj4JPC9zcGFuPnUzMiBmYXN0X3JhdGVf
-ZHVyID0gbWluKHRwX2R1ciwgdHAyX2R1ciwgcHJvYl9kdXIpOzwvcD48cD4rPHNwYW4gc3R5bGU9
-IndoaXRlLXNwYWNlOnByZSI+CTwvc3Bhbj51MzIgZmFzdF9yYXRlX2R1ciA9IG1pbjModHBfZHVy
-LCB0cDJfZHVyLCBwcm9iX2R1cik7PC9wPjxwPiZuYnNwOzxzcGFuIHN0eWxlPSJ3aGl0ZS1zcGFj
-ZTpwcmUiPgk8L3NwYW4+dTMyIHNsb3dfcmF0ZV9kdXIgPSBtYXgobWF4KHRwX2R1ciwgdHAyX2R1
-ciksIHByb2JfZHVyKTs8L3A+PHA+Jm5ic3A7PHNwYW4gc3R5bGU9IndoaXRlLXNwYWNlOnByZSI+
-CTwvc3Bhbj51MTYgKnJhdGVzOzwvcD48cD4mbmJzcDs8c3BhbiBzdHlsZT0id2hpdGUtc3BhY2U6
-cHJlIj4JPC9zcGFuPmludCBpLCBqOzwvcD48cD4tLSZuYnNwOzwvcD48cD4yLjI1LjE8L3A+PHAg
-c3R5bGU9ImZvbnQtc2l6ZToxNHB4O2ZvbnQtZmFtaWx5OuW+rui9r+mbhem7kSxNaWNyb3NvZnQg
-WWFIZWk7Ij48YnI+PC9wPjxwIHN0eWxlPSJmb250LXNpemU6MTRweDtmb250LWZhbWlseTrlvq7o
-va/pm4Xpu5EsTWljcm9zb2Z0IFlhSGVpOyI+PGJyPjwvcD48cCBzdHlsZT0iZm9udC1zaXplOjE0
-cHg7Zm9udC1mYW1pbHk65b6u6L2v6ZuF6buRLE1pY3Jvc29mdCBZYUhlaTsiPjxicj48L3A+PHAg
-c3R5bGU9ImZvbnQtc2l6ZToxNHB4O2ZvbnQtZmFtaWx5OuW+rui9r+mbhem7kSxNaWNyb3NvZnQg
-WWFIZWk7Ij48YnI+PC9wPjwvZGl2Pg==
-
-
---=====_003_next=====--
-
---=====_002_next=====--
-
---=====_001_next=====--
-
+Thanks
+--
+Gustavo
 
