@@ -1,142 +1,163 @@
-Return-Path: <linux-wireless+bounces-20454-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20455-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D21A658BF
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 17:48:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF42BA65A81
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 18:21:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AA9619A0527
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 16:45:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 931581690B8
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 17:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26CF2066CF;
-	Mon, 17 Mar 2025 16:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15031A264A;
+	Mon, 17 Mar 2025 17:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eKwwAPEv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3mS6RQk"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0022066C2;
-	Mon, 17 Mar 2025 16:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9799F1553A3;
+	Mon, 17 Mar 2025 17:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229547; cv=none; b=brFTPQpJgxuNokRkluvajAMpZ3fvVNVENMO9XhMHqNrZ2MPbgHhPvcKDQTixuhjsoOwiwDzWMDYpo7059EmRrBa2TaMcSQXZwKv386h6EjzV6hmjbmeOQdby/OiUFpqenBTA9cg4UTP8U77E+VdAGICmy4JTbQ0uSvWv3XU1erg=
+	t=1742231976; cv=none; b=CrThQh8ad3N6ylzKAAMpSdT3lJr9lkQ7KK3NY4izlZV42xSV6F4vO4XhUozFdT9sf4jpLJKKofUtFHIE2ojpASRPQ2l2ZFhd5BaGhqJNQWb7GngxJrPwUal7KWILnN898OjH7Ma8V+yhpZDHFX4Br1vwK+z6RTBx1c00Qn1Pac0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229547; c=relaxed/simple;
-	bh=ZK3AXGTeHkIp609dpaT1sEowYHCDZF82DmaS+0Op8CQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TILnOwbFW1oG2/1xG+FmKD0fv58Wizm2ycgFUfsXuIM/SnjjDxkM/m0YfC7bbumg5LgAEyT/dSOt5iSKVAX9LHnU0dAsVNyRLC1qfU1ppYcsiUfcSQwpPiKoI8Vf+7I8ZMX8GUdIX/91m9L043Y+AUl/0W9sc8ITsuD6YjJZA10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eKwwAPEv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D4DC4CEE3;
-	Mon, 17 Mar 2025 16:39:06 +0000 (UTC)
+	s=arc-20240116; t=1742231976; c=relaxed/simple;
+	bh=ZEAT6RFypcPN7L/ki3+46/Vv2kxpEG6Ybgc4eh+vFoo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QtGgay0RFJqrYeFUrtwtNTf7KxPg76i0riomZPf42sbEAYYtinvHbUM+PhFKrIIH3EVJxJJaoxvV8Ai02Xun1zzz1e45fu6tnKETYGm1Sxw00C3NCCzenQHNNCuMKBrsJDL4dgZ5wlQ5mnJ1sJkNLtaW9pr9Ta7JijwGIimZ4og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3mS6RQk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA0FC4CEEC;
+	Mon, 17 Mar 2025 17:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229547;
-	bh=ZK3AXGTeHkIp609dpaT1sEowYHCDZF82DmaS+0Op8CQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eKwwAPEvQK7mvKHgTXOBr/KgOQrwakSXomI5NzmRIaxoO/JS6MHKGgaRG3tWE6IxR
-	 W3rf0IY+1sOozZ4jOBG0QjAy5s1UWeElFk5iPOQIiiu0rSGe1eGTnA5uJC0kGyKJGz
-	 PrwXIe5J+wFm/20xcRb86J+JeIy9Ch6CJoyKtGhfOkoarQkShN1jh+uuGCNBWd9+/v
-	 TScOCtuGySC+6deoqpJziU1wxuV2fMcTTwRiM4coAEgQ2fN7B21Smon2p2Q7RZCYVi
-	 9Ull19DKhujsiRmt7hV++63F8fnLvRO3prNmjDkSd1iqNO4Xab6Hbdi9I5Dw7xmt5A
-	 NDM9b74SlwMDw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 2/8] wifi: mac80211: flush the station before moving it to UN-AUTHORIZED state
-Date: Mon, 17 Mar 2025 12:38:56 -0400
-Message-Id: <20250317163902.1893378-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250317163902.1893378-1-sashal@kernel.org>
-References: <20250317163902.1893378-1-sashal@kernel.org>
+	s=k20201202; t=1742231976;
+	bh=ZEAT6RFypcPN7L/ki3+46/Vv2kxpEG6Ybgc4eh+vFoo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=b3mS6RQkrtJGb10kNAUFbhlWCr7o83NPgrxmqdG4GEt9eclcKu/5/TLcZhhasdTf+
+	 4elpQdWsr05S02wW2h2CmXf6SiEp7/XhMh2Lg+9XT4bfKVfyR4s/0brKM0ViR6AgXw
+	 CZuAYwHQiA97ce6tMAPe9QM6J0XpUcRYS4V6Z46NaoISE21+hSrx3lPFSmwprM9D82
+	 zFP/vnmHpfZx+aVrrJW+m1NhNzK2hpSQNhI8G3l5BuZqHO9YNQXvVJOcOhpTzuy6/m
+	 bSLpC7oMTRB5Kt5eO3FfJAsPQfm1LR8NYS+sIQYO4oD2lsDPInaaZhwBlZuMn/U2Pa
+	 stpywV2sloKtg==
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5dc89df7eccso7884657a12.3;
+        Mon, 17 Mar 2025 10:19:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWzPCtddxIjYnYGQ73JLtRbeNYSy7zL/eB8ETulWYibjOQJANrrxnhbazy+Pz5ESLse9JBpmbyKOeRFrn/V6NA=@vger.kernel.org, AJvYcCXbKw7nWXbas2myBdRmSznvbFks4izJAGTSpwSZJdW+/ljUVVY3g/wB3GYslNRiVPTnXLy6aEHHWcX9sc4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCXdmMMejNGq+GGWErPHfj/jNNfjO5dAbVlzN+X93cZR+uP4zY
+	djzscVwNhs1T/6Hmtrn8EKt+q+KqNAv4og0/1siqa5XPuaYew9aYN42r7x5nzaF+aFT80BLNhvl
+	R3pPym3GsMxfpwz50Aw+6V0p24g==
+X-Google-Smtp-Source: AGHT+IHci5hAASurc/lxodNyDclZIUpIuFlvwsFb/ZFbzWYKAntadGtYvqA1Ubo84Yz/rBl32SRf+JP56TiMbCS2Sng=
+X-Received: by 2002:a05:6402:4301:b0:5e5:bcd6:4ad8 with SMTP id
+ 4fb4d7f45d1cf-5e89f24c63fmr12982673a12.9.1742231974609; Mon, 17 Mar 2025
+ 10:19:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.83
-Content-Transfer-Encoding: 8bit
+References: <20250314233831.2535170-1-robh@kernel.org> <CAOiHx=mr+MFE_7Krue4BPrtvtyJW0pWUBXCrqbViVH5oOTT2Hw@mail.gmail.com>
+In-Reply-To: <CAOiHx=mr+MFE_7Krue4BPrtvtyJW0pWUBXCrqbViVH5oOTT2Hw@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 17 Mar 2025 12:19:23 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+L2W-=4m2c2zAKNAP9vsrbZkOBHUYqPevcdM9L_3xHtA@mail.gmail.com>
+X-Gm-Features: AQ5f1Jp7GjAUd9blnwfMaOZafCeEHVPVcCYh5g6hLxjUn1VGcrND5MvV8CKr6T0
+Message-ID: <CAL_Jsq+L2W-=4m2c2zAKNAP9vsrbZkOBHUYqPevcdM9L_3xHtA@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: ath10k: Drop of_get_property() call
+To: Jonas Gorski <jonas.gorski@gmail.com>
+Cc: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
+	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+On Sat, Mar 15, 2025 at 5:07=E2=80=AFAM Jonas Gorski <jonas.gorski@gmail.co=
+m> wrote:
+>
+> Hi,
+>
+> On Sat, Mar 15, 2025 at 12:39=E2=80=AFAM Rob Herring (Arm) <robh@kernel.o=
+rg> wrote:
+> >
+> > There's no need to check the property presence and length before callin=
+g
+> > of_property_read_u8_array() as it will return an error if the property
+> > is missing or the length is too small. The return errno doesn't matter
+> > to the caller, so no change in behavior there.
+> >
+> > Change of_property_read_u8_array() to of_property_read_variable_u8_arra=
+y()
+> > as the former allows properties to be longer than the requested length.
+> > Now the property has to be the exact length requested as the removed
+> > check required.
+> >
+> > This part of a larger effort to remove DT functions like
+> > of_get_property() and of_find_property() which return raw DT data
+> > having no reference counting.
+> >
+> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > ---
+> > v2:
+> >  - Add check that cal_data_len is non-zero
+> > ---
+> >  drivers/net/wireless/ath/ath10k/core.c | 24 +++++++-----------------
+> >  1 file changed, 7 insertions(+), 17 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wirel=
+ess/ath/ath10k/core.c
+> > index b3294287bce1..47206b171aa5 100644
+> > --- a/drivers/net/wireless/ath/ath10k/core.c
+> > +++ b/drivers/net/wireless/ath/ath10k/core.c
+> > @@ -1889,39 +1889,29 @@ static int ath10k_download_cal_file(struct ath1=
+0k *ar,
+> >  static int ath10k_download_cal_dt(struct ath10k *ar, const char *dt_na=
+me)
+> >  {
+> >         struct device_node *node;
+> > -       int data_len;
+> > +       int data_len =3D ar->hw_params.cal_data_len;
+> >         void *data;
+> >         int ret;
+> >
+> >         node =3D ar->dev->of_node;
+> > -       if (!node)
+> > +       if (!node || !data_len)
+> >                 /* Device Tree is optional, don't print any warnings if
+> >                  * there's no node for ath10k.
+> >                  */
+> >                 return -ENOENT;
+> >
+> > -       if (!of_get_property(node, dt_name, &data_len)) {
+> > -               /* The calibration data node is optional */
+> > -               return -ENOENT;
+> > -       }
+> > -
+> > -       if (data_len !=3D ar->hw_params.cal_data_len) {
+> > -               ath10k_warn(ar, "invalid calibration data length in DT:=
+ %d\n",
+> > -                           data_len);
+> > -               ret =3D -EMSGSIZE;
+> > -               goto out;
+> > -       }
+> > -
+> >         data =3D kmalloc(data_len, GFP_KERNEL);
+> >         if (!data) {
+> >                 ret =3D -ENOMEM;
+> >                 goto out;
+> >         }
+> >
+> > -       ret =3D of_property_read_u8_array(node, dt_name, data, data_len=
+);
+> > +       ret =3D of_property_read_variable_u8_array(node, dt_name, data,=
+ data_len, data_len);
+> >         if (ret) {
+>
+> of_property_read_u8_array() returns 0 on success, but
+> of_property_read_variable_u8_array() returns the number of elements
+> read on success, so this check needs to be ret < 0 now.
 
-[ Upstream commit 43e04077170799d0e6289f3e928f727e401b3d79 ]
+Indeed. Thanks for catching that.
 
-We first want to flush the station to make sure we no longer have any
-frames being Tx by the station before the station is moved to
-un-authorized state. Failing to do that will lead to races: a frame may
-be sent after the station's state has been changed.
-
-Since the API clearly states that the driver can't fail the sta_state()
-transition down the list of state, we can easily flush the station
-first, and only then call the driver's sta_state().
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250306123626.450bc40e8b04.I636ba96843c77f13309c15c9fd6eb0c5a52a7976@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/mac80211/sta_info.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
-
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 5d71e8d084c45..64cf5589989bb 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -4,7 +4,7 @@
-  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2023 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  */
- 
- #include <linux/module.h>
-@@ -1321,9 +1321,13 @@ static int _sta_info_move_state(struct sta_info *sta,
- 		sta->sta.addr, new_state);
- 
- 	/* notify the driver before the actual changes so it can
--	 * fail the transition
-+	 * fail the transition if the state is increasing.
-+	 * The driver is required not to fail when the transition
-+	 * is decreasing the state, so first, do all the preparation
-+	 * work and only then, notify the driver.
- 	 */
--	if (test_sta_flag(sta, WLAN_STA_INSERTED)) {
-+	if (new_state > sta->sta_state &&
-+	    test_sta_flag(sta, WLAN_STA_INSERTED)) {
- 		int err = drv_sta_state(sta->local, sta->sdata, sta,
- 					sta->sta_state, new_state);
- 		if (err)
-@@ -1399,6 +1403,16 @@ static int _sta_info_move_state(struct sta_info *sta,
- 		break;
- 	}
- 
-+	if (new_state < sta->sta_state &&
-+	    test_sta_flag(sta, WLAN_STA_INSERTED)) {
-+		int err = drv_sta_state(sta->local, sta->sdata, sta,
-+					sta->sta_state, new_state);
-+
-+		WARN_ONCE(err,
-+			  "Driver is not allowed to fail if the sta_state is transitioning down the list: %d\n",
-+			  err);
-+	}
-+
- 	sta->sta_state = new_state;
- 
- 	return 0;
--- 
-2.39.5
-
+Rob
 
