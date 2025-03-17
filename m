@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-20428-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20429-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF7AA6455A
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 09:27:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F93A64580
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 09:30:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B42C63AACD4
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 08:27:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE28A188A174
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 08:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8023021D3EA;
-	Mon, 17 Mar 2025 08:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B5621B9E4;
+	Mon, 17 Mar 2025 08:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PaWDc0JP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sC1A72dp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573FC481B1;
-	Mon, 17 Mar 2025 08:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7D7218E97;
+	Mon, 17 Mar 2025 08:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742200065; cv=none; b=OaxCCAd36Hrun9HUmjaqG2jgXLljNIsQLvEB2ce+ozyvFr6lwMSSWxcQTg0EfdSVKE8m72kdlK7AWKOZ5ysDANoetFOR9ly1LqUlLfzNNEJbg4uP2t7Or2vtBYxiniOEriLTiGPhWxUVd9zOK4zVfJzvZP5C19eRLZA2PozHUgk=
+	t=1742200238; cv=none; b=KKV4unXEB+zPcS2vJiLsgTuHsOb7x2frCf/ri4oQY+1bcur0pp731F1lyBHJbv3vvjqBplJYs3adIzf/swUR/U5ytb1gjYYtmLIDkW0qtAkIQzkGcXweHUunbyyk7xBtSE66eVQ/2czQd04duHWXxGC0CTy0DfnDDatAs7Xa3Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742200065; c=relaxed/simple;
-	bh=40FlTmzhVxRiavMgynfOwRoN6ULywpAMyBaopz7uY4U=;
+	s=arc-20240116; t=1742200238; c=relaxed/simple;
+	bh=lHA6TOk3fTmUThzjLN5Xhq86rsP01l5k8MeVoi3MEZU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ea4XgsnMRXbgjCWhD/JEytdTjIiPwZddIvvulJ489cCIFsyz+P5VlPbrary19ajWFMz17GxN2Ufg2/v+vFaEHUmW6EAS//iMhUnWJSFZuHnf3NKnWNVDp+jDC4wRSWbmyM3IPp8NywHs9q8cJO4F7MAj/VrdD/bkhz3YUH0F1Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PaWDc0JP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A127BC4CEE3;
-	Mon, 17 Mar 2025 08:27:41 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=KRmn4RGTNEcwYbQIxZgET8CSc7O/PCthiBm2Od35j/pKyoEIRg3U3Pr+SiDuiFg30bPsyOUjGEC4+Oq1HzyT/yDhjZKoOT+jigyI8h4uo5rr1bweSzLu3MXcJYeHKPSFgxjoHqnNmmtRLta0twNAikg/fcCCFT10leTrA7BmuIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sC1A72dp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C19AC4CEE3;
+	Mon, 17 Mar 2025 08:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742200064;
-	bh=40FlTmzhVxRiavMgynfOwRoN6ULywpAMyBaopz7uY4U=;
+	s=k20201202; t=1742200237;
+	bh=lHA6TOk3fTmUThzjLN5Xhq86rsP01l5k8MeVoi3MEZU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PaWDc0JPN1txOkyDC8hCtO0Ote4UCDxBVcUe1WeVsdCL1Ismf4NkaCWLCR6ck8MAv
-	 5uOJvVWQTfNLKB/nSB8+wbbN7HVD1mg25xAOjKkgQuYD377S3Z7p0RUkwhGsptu1DE
-	 NoNArvyTk9kRPxQMDQUA2qJRIfwCfKv09MDXi1Fh7M1LsIqQhsqukP7yjipeX1wPKB
-	 4kzUVaT5zO8tc9Xc4/4M8IzZP6QhyVP4+XSx+5DXp0mdWBUxRd5Nhwme5N56zlQgA8
-	 ytpMxs8qAKvS6C7wmB3emmUzO5Re6A20AUGJU/Zxjh7oiOc2qHENfFMtWfy6f6N20d
-	 rfIlHGnof97AA==
-Message-ID: <24629d2d-0432-4811-9eee-634e3fe55419@kernel.org>
-Date: Mon, 17 Mar 2025 09:27:38 +0100
+	b=sC1A72dpoiR3Pyk+Rdi7vWOSGUPaIQ3Hnz9L3Xy569oBihO811g97Q0C+o//dSaBU
+	 0QifO8VVfBz3ti7vqqMJ9WXPJw5RSD6r8elw8I5K8FmHaIZOsmhAXnt4p+xELfGiWz
+	 08Q21hCyOFd+Y+Rx871ShUtyZ33LhSFOO/sJoZPaMMwpbox+NZcUhzsJ+UBkfBYOpp
+	 laB5zVK6ozXElTHpB3zeyqPs6fWNfh+PQjaklv53DARTGBk2uhG4wBpdcfQ65O5qfr
+	 XChhJnLzOhA6Yg5CTKAPMFOOLdonPtz0ffEmPndHv3u2TMqg20zymzqoy2MwILAyex
+	 DGbk4My+xTRSw==
+Message-ID: <f6dfffc0-a9bd-4a5f-9d83-f3a4b7918010@kernel.org>
+Date: Mon, 17 Mar 2025 09:30:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -52,11 +52,12 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mac80211: minstrel_ht: Replace nested min() with single
  min3()
-To: feng.wei8@zte.com.cn, johannes@sipsolutions.net, xie.ludan@zte.com.cn,
- shao.mingyin@zte.com.cn, xie.ludan@zte.com.cn, tang.dongxing@zte.com.cn,
- davem@davemloft.net, feng.wei8@zte.com.cn
-Cc: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-References: <20250317125553028rN6mepsLlgyvSWxALaCDB@zte.com.cn>
+To: feng.wei8@zte.com.cn, linux-kernel@vger.kernel.org,
+ tang.dongxing@zte.com.cn, feng.wei8@zte.com.cn, shao.mingyin@zte.com.cn,
+ xie.ludan@zte.com.cn, yang.guang5@zte.com.cn, yang.yang29@zte.com.cn,
+ ye.xingchen@zte.com.cn, xu.xin16@zte.com.cn
+Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+References: <20250315111254625RMIKeUh51j1Xk9CWuu2LT@zte.com.cn>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -102,35 +103,37 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250317125553028rN6mepsLlgyvSWxALaCDB@zte.com.cn>
+In-Reply-To: <20250315111254625RMIKeUh51j1Xk9CWuu2LT@zte.com.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 17/03/2025 05:55, feng.wei8@zte.com.cn wrote:
-> I see the following commit：
-> |https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=ab936836ec09fa23954e8e5785d71a41e5ee8bcb 
-
-I do not see Johannes merged that. Do you understand how Git and kernel
-process work?
-
+On 15/03/2025 04:12, feng.wei8@zte.com.cn wrote:
+> From: FengWei <feng.wei8@zte.com.cn>
 > 
-> I don't think code optimization and unification is "garbage". If so, why did you choose to merge into a commit like "garbage".
-> I'm just bothered by this aspect when I usually look at the code, so why not be concise.
-
-No, you just run some static tools, coccinelle or whatever else and
-flood us with patches all over the tree, claiming that they improve
-anything.
-
-Nothing here was done in terms of choice of improvement but it's pure
-automation.
-
-In many places it was already pointed out that your automation is not
-even correct.
-
-> I would even like to implement `min4/max4` like `dml_min4/dml_max4`. Wouldn't that be more concise code?
+> Use min3() macro instead of nesting min() to simplify the return
+> statement.
 > 
-> As a newcomer, my perspectives may differ from those of the experts here. I apologize if this has caused any inconvenience.
+> Signed-off-by: FengWei <feng.wei8@zte.com.cn>
+> ---
+>  net/mac80211/rc80211_minstrel_ht.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
+> index 08f3f530f984..31a3b6e4c58d 100644
+> --- a/net/mac80211/rc80211_minstrel_ht.c
+> +++ b/net/mac80211/rc80211_minstrel_ht.c
+> @@ -1010,7 +1010,7 @@ minstrel_ht_refill_sample_rates(struct minstrel_ht_sta *mi)
+>  	u32 prob_dur = minstrel_get_duration(mi->max_prob_rate);
+>  	u32 tp_dur = minstrel_get_duration(mi->max_tp_rate[0]);
+>  	u32 tp2_dur = minstrel_get_duration(mi->max_tp_rate[1]);
+> -	u32 fast_rate_dur = min(tp_dur, tp2_dur, prob_dur);
+> +	u32 fast_rate_dur = min3(tp_dur, tp2_dur, prob_dur);
 
+This is automation-generated junk code. How does it "simplify the
+statement"?
+
+Can ZTE slow down this flood of automation or research experiment on
+kernel community?
 
 Best regards,
 Krzysztof
