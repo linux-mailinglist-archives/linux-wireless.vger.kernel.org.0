@@ -1,71 +1,63 @@
-Return-Path: <linux-wireless+bounces-20431-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20432-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55FD6A649D5
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 11:29:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1074DA64A02
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 11:32:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C914A3B8447
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 10:25:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 280C17A2E43
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 10:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746192356B9;
-	Mon, 17 Mar 2025 10:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F66D21B8E0;
+	Mon, 17 Mar 2025 10:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b="NA1NfbBf"
+	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="kVRyhvY9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from forward206b.mail.yandex.net (forward206b.mail.yandex.net [178.154.239.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8982D22F17B;
-	Mon, 17 Mar 2025 10:23:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742206985; cv=pass; b=ZdsDs9F9GBDE3STs/BblVJuV2c1Ca6H0oF1KWbjGuVpFSYL+af353m5+aYyzSzid22Mkh2Urkx2C0cFg2jOYziZ53cOdyUoHIG4Ac2c4FDk0ni5JYf4JQ9U8jizK0lOknPWIC9R+eFgzZJVOR9VmcOD7fFkR0Ort268/ExPI5sY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742206985; c=relaxed/simple;
-	bh=XolH65F1l7szuKiPhO962yVmzBfWf5QJ0pfKBmLw/hY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S6iofESSk1WYkMeu9K5ENe2hH/Af25gJbgyxWBJF3ZTu3HVlAVufOvlHmlymZOQwyvP+n2q3dhW0FW40yQFRGjmy9UjhBGKB/TLzRAhoZPrugLgQ+vYHXl4DNechfUF3nDPP/w7daszm71+tlYIiDgqV0suR+mObY+sXZwtLXl0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me; spf=pass smtp.mailfrom=icenowy.me; dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b=NA1NfbBf; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icenowy.me
-ARC-Seal: i=1; a=rsa-sha256; t=1742206973; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Wn8oedazNRVaMAx3l9vI9ODkCDq2sKU2A3F0BqMZLOZoVn09qOtIkpwtGohxxKEk3BKXXKbKRHI6ZvjXivhPFEZbE5ADGQr22F7121u9iupBuhJyZW/uIwgbUvbX+c6udeG7jtxX0V72ZzccYAEx56PUflWl39ZNLyy66bbLvAk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1742206973; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=MOZCjnFEPRZ+mZWx5sBcTALXGbiHOgYvrRPV11YeXzk=; 
-	b=cAxCSvW0iRMwqp7QQNfSbYHF3qGhHLazXx9QCUUC6MCLPcqiP9iutQRyCssk600v66BJ2pzJRVp8qcgbNrDqcYQzzRjW8aN4QuMULLoKTpT5TLs+UgfReQM7VN0dsgQAHmCzBHgboTcWu6nfUfyZnL0Is2La4v23Whl/vHX+ypk=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=icenowy.me;
-	spf=pass  smtp.mailfrom=uwu@icenowy.me;
-	dmarc=pass header.from=<uwu@icenowy.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1742206973;
-	s=zmail2; d=icenowy.me; i=uwu@icenowy.me;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=MOZCjnFEPRZ+mZWx5sBcTALXGbiHOgYvrRPV11YeXzk=;
-	b=NA1NfbBfMHYEZYPTuoI19PnRaJRprm/0ESgWpXqfFAr/39phtTloJCcG4Jn8a3Ul
-	h9cKpy2PNOUxzTro/2mX5nAoMho8o8j1RwpMaoBJLUHIhYEGhpCBEMwMg129YaWrO1O
-	c70fyKawbN0SmPJSgvRJdUUP2BPHJP9P5KxE82AG77Yh0LKcDRC00IJh1nlPRDzsXyE
-	O5rFJ7wdHyr+eVHqFiUTrXGVC7EvhY0P95BvnS0pGe05S/g8nJ2pkpNVs8XoO8wjB2t
-	x7zTd59YauIuh0XOBIcv4t1jrMGWRKEKL7lOJGBxykQWeeQUW/kZGe5OGSsOa5qLcHB
-	b9Z5NtKVXg==
-Received: by mx.zohomail.com with SMTPS id 1742206970523335.4972672946949;
-	Mon, 17 Mar 2025 03:22:50 -0700 (PDT)
-From: Icenowy Zheng <uwu@icenowy.me>
-To: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>
-Cc: linux-wireless@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3690222257F;
+	Mon, 17 Mar 2025 10:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742207526; cv=none; b=Suh+E+aGUWGwccMUtZ6PY1eARhaNdQABh+aVdVW75Z1GeOlQrz06IT9fihNcfYTGeat42qO0+AJqR1q1blrUmdAsoNM45F5D3zt7OOZQVEgZj6tjqL6ZGduLntAsTbMrPcajEGzippGjtdZ53wmLTTjCOuMRY1vLhStcLHrfsH8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742207526; c=relaxed/simple;
+	bh=jET+Zyh1y8nrRIS3OXbjRZuZGNjL5oCFgBMDHxziibQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pC0Z2/J28q7wMauzv4BZM2a3zFhaVKo82J0xJnhvb9QowT4IiTUElLJ1y2t1Mri++t7Zl78IYgLVqP498sQR5mgVGYQOW4EEHAyC8mkGDV7d7/6oP0CviZu830c9duCzIKXj7MZ7wyzaSsvVLv+jv3pZDFcMXeDdFmfI+8KmJss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=kVRyhvY9; arc=none smtp.client-ip=178.154.239.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
+	by forward206b.mail.yandex.net (Yandex) with ESMTPS id DBE6B63C27;
+	Mon, 17 Mar 2025 13:31:50 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1197:0:640:483c:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id ADAA960D7F;
+	Mon, 17 Mar 2025 13:31:42 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id fVEFdrTLmCg0-Elyelz8t;
+	Mon, 17 Mar 2025 13:31:42 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
+	t=1742207502; bh=BMnk+T7PyZ+YAEEVJakHyC7Oto5jKGTwpp7qVFsesHU=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=kVRyhvY9di75KJ+gGbP/RlmdrvxsBo+RByiEIUXoOE2EUMtlOQGwgqAUi1A7npHNg
+	 4Jlw8LDpMRWemNBfRCzc2bFM+EqMAL6hUP9omH66zwXJmu8mcDWsvv9eNCQlQ51K2E
+	 w6veXbyuQLv1SzdPo5OYxrbV7hhdwC+Rn6A6whuI=
+Authentication-Results: mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Shaul Triebitz <shaul.triebitz@intel.com>,
+	Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Icenowy Zheng <uwu@icenowy.me>
-Subject: [PATCH] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
-Date: Mon, 17 Mar 2025 18:22:35 +0800
-Message-ID: <20250317102235.1421726-1-uwu@icenowy.me>
-X-Mailer: git-send-email 2.48.1
+	lvc-project@linuxtesting.org
+Subject: [PATCH v4] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
+Date: Mon, 17 Mar 2025 13:31:37 +0300
+Message-ID: <20250317103139.17625-1-m.lobanov@rosa.ru>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,30 +65,55 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
-The TP-Link TL-WDN6200 "Driverless" version cards use a MT7612U chipset.
+When userspace sets supported rates for a new station via
+NL80211_CMD_NEW_STATION, it might send a list that's empty
+or contains only invalid values. Currently, we process these
+values in sta_link_apply_parameters() without checking the result of
+ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
 
-Add the USB ID to mt76x2u driver.
+A similar issue was addressed for NL80211_CMD_SET_BSS in commit
+ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
+This patch applies the same approach in sta_link_apply_parameters()
+for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
+rate by inspecting the result of ieee80211_parse_bitrates().
 
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
- 1 file changed, 1 insertion(+)
+v2: Fixed the patch subject to provide a complete description.
+v3: added the missing if as Christophe Jaillet (christophe.jaillet@wanadoo.fr) noticed.
+v4: put all braces into a single if statement as Johannes Berg (johannes@sipsolutions.net) noticed.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index e832ad53e2393..a4f4d12f904e7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -22,6 +22,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
- 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
- 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
- 	{ USB_DEVICE(0x045e, 0x02fe) },	/* XBox One Wireless Adapter */
-+	{ USB_DEVICE(0x2357, 0x0137) },	/* TP-Link TL-WDN6200 */
- 	{ },
- };
+ net/mac80211/cfg.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 9351c64608a9..b766472703b1 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1908,12 +1908,12 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 	}
  
+ 	if (params->supported_rates &&
+-	    params->supported_rates_len) {
+-		ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
+-					 sband, params->supported_rates,
+-					 params->supported_rates_len,
+-					 &link_sta->pub->supp_rates[sband->band]);
+-	}
++	    params->supported_rates_len &&
++	    !ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
++				      sband, params->supported_rates,
++				      params->supported_rates_len,
++				      &link_sta->pub->supp_rates[sband->band]))
++		return -EINVAL;
+ 
+ 	if (params->ht_capa)
+ 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
 -- 
-2.48.1
+2.47.2
 
 
