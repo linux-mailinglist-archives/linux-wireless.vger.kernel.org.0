@@ -1,229 +1,137 @@
-Return-Path: <linux-wireless+bounces-20459-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20460-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B200A65EAC
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 21:04:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70A2A65F69
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 21:43:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0534C3AB02F
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 20:04:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA2CE189EF5B
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 20:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECF91DE8A7;
-	Mon, 17 Mar 2025 20:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3065F1F5855;
+	Mon, 17 Mar 2025 20:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="ENDg0ENI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
+Received: from mail-yb1-f225.google.com (mail-yb1-f225.google.com [209.85.219.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7D5158A09
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Mar 2025 20:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEB51F5852
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Mar 2025 20:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742241870; cv=none; b=YOk9GUajaXNGybjqWuO/VR1aQcfqNhEqAA0jVIs+ic2Tn0ZvEqKedw75d2BQR8dFwcEzXSSc6L2Yy81AovrDlbrvzDuRPYkJh6ymfCOoh55lIhxO7+n/TphJsqwuI8YGcCI3OQrEG2f4whg/Q1MyzY9CqzW0atheEfhQrsOo/VI=
+	t=1742244200; cv=none; b=Te9t93wI7E9pVd25lBf4lO9BYDu5WudfyJm9UaUwRWJ0gze2JXU7X/32H9S9gzeZMk0w/41l1Pnw5sUCmNhqdKGMxhjw3HGRH35IELvh8tIV4ybg47KFnCkhD2e9NhgPploIPuHrWrboCrH5RAu+xOepvcqI/bY9fwkO+SGxp/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742241870; c=relaxed/simple;
-	bh=zDiqGRosoV+/3ssgCGb2SGIWovWyXkTfd75EIs4R0Yo=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=NPawLPMMGcqQaerwOTtFpjFjO6fjh265ERMsptgR6phy77ujp62nxEa1Dyhxqnwtm2Eb8wcsUrx1qJMCrAd/EDrs6yUSdIlUjhTFke+Rd7SR0ivgAwkUgnIgzn0xBeQF1/x+Qq6ahIuC9MmB3Sdodoqe3FteBij6ZyqkObrEqSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-85db4460f5dso889095639f.0
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Mar 2025 13:04:28 -0700 (PDT)
+	s=arc-20240116; t=1742244200; c=relaxed/simple;
+	bh=CaY9plOsZmG+vqb+Y1a/gKRrf/XFzCbAh8Gjy+jCWms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WCnIE6IRcW84i3Bhi/e7bqgS6oSEcYtIZRGT8nLDgNYaz206uBNhUhMJ1WapLsPikrKKJJ3UxD5WFQDs1wjzHD38Icnxon4zHlpxlM1VEz4cPZwAEBFiFzK1jh2/rfpqrXhf8BINa6t2xYc0FeUp+Vk/vrWEXSjQz3ZIav/15ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=ENDg0ENI; arc=none smtp.client-ip=209.85.219.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+Received: by mail-yb1-f225.google.com with SMTP id 3f1490d57ef6-e6405e4ab4dso2144942276.0
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Mar 2025 13:43:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1742244197; x=1742848997; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XMeuqQnVCFYcIh1s8lv0Ab4xH5GnpJ38EIK5c4gPr0c=;
+        b=ENDg0ENIuz6Aks1W7JswZhQRnFXeDkSWMoghPY5Xljiy195QJRAQZh40nBJXj8NEEd
+         t+sAvoGnQcSbUZBlMdFv6s/I3z36OZdXIVu5zuDrBKEOiP5SqgIt/WxMReR6xg4V/iYB
+         INfgpIYEorasNEIay7nMF/n7O9ty+caatL28RaJZ+bB8xjnGClZdn9huEoYAleLZzaPM
+         380ClgbkKoEOQ+A1ur/94l3YGPYGZ/FRCRsHV5LA1npPRf5eSh8H+OuzemKl2acsTdzD
+         QVj+ytAj7fSpF4ESVcA5OJqkSgwFntEDnPBb2y5pBA/VdM55oASbIPsvMS5T4ejyqrX/
+         qgsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742241868; x=1742846668;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=StTuGp4t5HsXJ4jfpO7DyuaszrNM9Zr0lwk+MnOE5aA=;
-        b=b087NmJ6zEyQfQxeIiYt90ELW6VJ5fDHrVfotIX4NJAkm6XllsgyYIu94CRrQ7C6nK
-         OBuom+/aC48abpkez3eL7hQ5WHmADrS/81wLFZUA2BvaD4RevvKlPvD1A6BuU2upfcoc
-         2h/GJUFr0hDliMip3Wl2yx8ONQBe8DHAUDit+aWmCnLou3C9+qBvI8jEalhLYQ+xVHzP
-         LWPNGdgG2Mqj7tt4vaXJzAkHawQOz73voANQjTdfl0IWLwfxNSci0SAURUwZYIDNitN7
-         knvcwYwjtAXD1POZXoy47kpo8fwB4vy573zPZPHzjDGr+VuliAYbwevYf+vrithjaPN1
-         wA6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUzGXE5l4EPjSDbyr0lSb0MxyN420FzTR5bCx3gD5FqMPKegubSfLC4JveOpR4AGt4MBsRLZNSB5DwOZV4Qdw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJEGxVWgG3ReXmtbqYEiSKAbLKSBOUiW1xbBurywICX2qM1S/g
-	dhSqVX3FiaYCxtZGZ/7SuJtEu9shYNdHQ49cxIZiTjKB/ial9wK5P3mL2cyUihbgLuVWX6tDL0C
-	EQ9+5kFGryvfGPfpvMwTDzLKjKLIJhAFVEt1MkackoS6nNBVXNVpoYrE=
-X-Google-Smtp-Source: AGHT+IGeF15yKLNNo1r8a8INaqF6xkYgfxfTQUNCS6v3ZgwGxHAJepaofrIpUvF9xjWF8HtBe5dVBrxfEzvhODoYQitLfeZnQdYv
+        d=1e100.net; s=20230601; t=1742244197; x=1742848997;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XMeuqQnVCFYcIh1s8lv0Ab4xH5GnpJ38EIK5c4gPr0c=;
+        b=EEUc7pX/UPB+RJXaxcW5Wq54K+HxJ35BmnhEQd9ZCPWkVcQpXnPu8hiUsYvpdhjR/B
+         FdHW63pBkTHzY054xwppXcI/D0Xfu4P/JORG/9Ks952ArL0lCP7OR9HegqFgXQsvwBTF
+         xpSmaw/XLZq/I3N/cKkvTtpLVcoses3WUDrLa+Gt826UUvHE6XfUwK7eDVa9c1OJNXOz
+         jsJK583BXYgJU6KmiH80WWRl9k5HpDOEd+Qqoij/bdx6E7tAW7Opexw9YP/xdOjpgn2h
+         YkOamON+LxFfVe/r3ecopzq4zCivo+WfbJAssExKhQiWPOHw14+THrzDMEpWO30Cw5e9
+         Lpqw==
+X-Forwarded-Encrypted: i=1; AJvYcCVrRbY7fuj8Hv7bUDcmyD61wUPSzAC5hHRw/tym1krv9VEv8YLfccqGsdfWp9TFmqpHJ+g6rII7QcVxAhJwkQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfGahUaPs0InmtW6qcx5glIKT+QyuJRhuQm300RETz4GL9cogC
+	IxzYkvGJ6MKXQwo+a+dduJL9ByCE3aIipLlLdmFmwNO3Ow6vbDqqyVRm5YsUyAuOKhqqysNmQrk
+	j3xP9fCz/iJpJfoXp4G+TQg21aY1mYPq/
+X-Gm-Gg: ASbGnctNlRMwg6QXA7E2F1pZktIy1PZdNPjKuoRCwLOAu2Vw1l7A/K5m5pbuaHSUoZ9
+	SYRVMzLvg7pkR65/A1cGWvwISLAzzDAstNBIS3lSsb6HBsCdc/+iEdvA2iP6j+6NgbnpSpqHbbd
+	SOeClPQcmlJrGGh7f6ym9wFVBcxA7Jr2/oEc3HbbUT1ttZ04X/PlZ1yMtxHpfv5pTmIoNlrH9os
+	8ljTLNm9F6D/V9HifeEj3prdJTlbHskAa+MDMw9+KqqW8NWjbVIy/j6ij26GRLolUgpZla8QvLj
+	zvFcTnOE98el2kxehORxvcsLHqjf9D1jAPXOCfOxCrmZGLGEow==
+X-Google-Smtp-Source: AGHT+IGhYQOQzoo1W81n7SvjULK8kea4ne4u7SJCVMHMBohbiO+5gVHT5Why/Jb0nEdWm7n7qdstRUUSezbb
+X-Received: by 2002:a81:c748:0:b0:6fe:bf32:a427 with SMTP id 00721157ae682-6ffeb390465mr12881107b3.0.1742244197208;
+        Mon, 17 Mar 2025 13:43:17 -0700 (PDT)
+Received: from c7-smtp-2023.dev.purestorage.com ([208.88.159.128])
+        by smtp-relay.gmail.com with ESMTPS id 00721157ae682-6ff32894af3sm4257537b3.37.2025.03.17.13.43.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 13:43:17 -0700 (PDT)
+X-Relaying-Domain: purestorage.com
+Received: from dev-ushankar.dev.purestorage.com (dev-ushankar.dev.purestorage.com [10.7.70.36])
+	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 3E38A340314;
+	Mon, 17 Mar 2025 14:43:16 -0600 (MDT)
+Received: by dev-ushankar.dev.purestorage.com (Postfix, from userid 1557716368)
+	id 324C6E4020B; Mon, 17 Mar 2025 14:43:16 -0600 (MDT)
+Date: Mon, 17 Mar 2025 14:43:16 -0600
+From: Uday Shankar <ushankar@purestorage.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next v5 2/2] netconsole: allow selection of egress
+ interface via MAC address
+Message-ID: <Z9iJZBh5ZFq3wC6s@dev-ushankar.dev.purestorage.com>
+References: <20250220-netconsole-v5-0-4aeafa71debf@purestorage.com>
+ <20250220-netconsole-v5-2-4aeafa71debf@purestorage.com>
+ <20250225144035.GY1615191@kernel.org>
+ <Z8tS5t+warQdwFTs@dev-ushankar.dev.purestorage.com>
+ <20250311111301.GL4159220@kernel.org>
+ <20250312203716.110b6677@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1d8e:b0:3cf:bb6e:3065 with SMTP id
- e9e14a558f8ab-3d48397f585mr130592785ab.0.1742241867792; Mon, 17 Mar 2025
- 13:04:27 -0700 (PDT)
-Date: Mon, 17 Mar 2025 13:04:27 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67d8804b.050a0220.2ca2c6.006b.GAE@google.com>
-Subject: [syzbot] [wireless?] INFO: trying to register non-static key in cfg80211_dev_free
-From: syzbot <syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250312203716.110b6677@kernel.org>
 
-Hello,
+On Wed, Mar 12, 2025 at 08:37:16PM +0100, Jakub Kicinski wrote:
+> On Tue, 11 Mar 2025 12:13:01 +0100 Simon Horman wrote:
+> > On Fri, Mar 07, 2025 at 01:11:18PM -0700, Uday Shankar wrote:
+> > > On Tue, Feb 25, 2025 at 02:40:35PM +0000, Simon Horman wrote:  
+> > > > Reviewed-by: Simon Horman <horms@kernel.org>  
+> > > 
+> > > Hey, since this has gotten quiet for a while, just wanted to confirm
+> > > that there's no action needed from my end? Is this in the queue for
+> > > net-next?  
+> > 
+> > It seems that this series has been marked as Changes Requested in
+> > patchwork, which may explain the lack of progress. But that designation
+> > doesn't seem correct to me. So let's see if this can move this series
+> > back into the queue for the maintainers.
+> 
+> Unclear why the designation was chosen, indeed, but let's get this
+> reposted per normal process. The posting is a month old.
 
-syzbot found the following issue on:
+Sounds good, I've posted a v6 which is listed at
+https://patchwork.kernel.org/project/netdevbpf/list/?series=943246 as
+"new" even though it has several reviews from maintainers. Anything else
+for me to do?
 
-HEAD commit:    4003c9e78778 Merge tag 'net-6.14-rc7' of git://git.kernel...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1763e04c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=317038cbd53153e8
-dashboard link: https://syzkaller.appspot.com/bug?extid=aaf0488c83d1d5f4f029
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12c5ddb0580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16d2b03f980000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-4003c9e7.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ce870bfb8bac/vmlinux-4003c9e7.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/195015b7ce43/bzImage-4003c9e7.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
-
-RBP: 0000000000000001 R08: 00007ffc330c8967 R09: 000055557c17e4c0
-R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000004
-R13: 00007fb851c063fc R14: 00007fb851bd6334 R15: 00007fb851c063e4
- </TASK>
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
-CPU: 0 UID: 0 PID: 5935 Comm: syz-executor550 Not tainted 6.14.0-rc6-syzkaller-00103-g4003c9e78778 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- assign_lock_key kernel/locking/lockdep.c:983 [inline]
- register_lock_class+0xc39/0x1240 kernel/locking/lockdep.c:1297
- __lock_acquire+0x135/0x3c40 kernel/locking/lockdep.c:5103
- lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5851
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:162
- cfg80211_dev_free+0x30/0x3d0 net/wireless/core.c:1196
- device_release+0xa1/0x240 drivers/base/core.c:2568
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x1e4/0x5a0 lib/kobject.c:737
- put_device+0x1f/0x30 drivers/base/core.c:3774
- wiphy_free net/wireless/core.c:1224 [inline]
- wiphy_new_nm+0x1c1f/0x2160 net/wireless/core.c:562
- ieee80211_alloc_hw_nm+0x1b7a/0x2260 net/mac80211/main.c:835
- mac80211_hwsim_new_radio+0x1d6/0x54e0 drivers/net/wireless/virtual/mac80211_hwsim.c:5185
- hwsim_new_radio_nl+0xb42/0x12b0 drivers/net/wireless/virtual/mac80211_hwsim.c:6242
- genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2533
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1312 [inline]
- netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1338
- netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1882
- sock_sendmsg_nosec net/socket.c:718 [inline]
- __sock_sendmsg net/socket.c:733 [inline]
- ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
- ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
- __sys_sendmsg+0x16e/0x220 net/socket.c:2659
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb851b909e9
-Code: 48 83 c4 28 c3 e8 c7 1b 00 00 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc330c8bc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007ffc330c8c20 RCX: 00007fb851b909e9
-RDX: 0000000020000000 RSI: 0000400000000140 RDI: 0000000000000003
-RBP: 0000000000000001 R08: 00007ffc330c8967 R09: 000055557c17e4c0
-R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000004
-R13: 00007fb851c063fc R14: 00007fb851bd6334 R15: 00007fb851c063e4
- </TASK>
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5935 at net/wireless/core.c:1197 cfg80211_dev_free+0x2e7/0x3d0 net/wireless/core.c:1197
-Modules linked in:
-CPU: 0 UID: 0 PID: 5935 Comm: syz-executor550 Not tainted 6.14.0-rc6-syzkaller-00103-g4003c9e78778 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:cfg80211_dev_free+0x2e7/0x3d0 net/wireless/core.c:1197
-Code: 00 00 49 8b bd e0 08 00 00 e8 85 7a 69 f7 4c 89 ef 48 83 c4 10 5b 5d 41 5c 41 5d 41 5e 41 5f e9 6f 7a 69 f7 e8 8a 0c 11 f7 90 <0f> 0b 90 e9 6f fd ff ff 4c 89 f7 e8 b9 2b 74 f7 e9 aa fe ff ff 4c
-RSP: 0018:ffffc90003e371b8 EFLAGS: 00010093
-RAX: 0000000000000000 RBX: 0000000000000293 RCX: ffffffff81972d2d
-RDX: ffff88802721c880 RSI: ffffffff8aa8e456 RDI: ffffc90003e37128
-RBP: ffff8880121b06a8 R08: 0000000000000001 R09: fffff520007c6e25
-R10: 0000000000000003 R11: 0000000000000001 R12: ffff8880121b06b8
-R13: ffff8880121b0000 R14: ffff8881050d1b80 R15: 0000000000000000
-FS:  000055557c17d380(0000) GS:ffff88806a600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000400000001ac0 CR3: 00000000122c0000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- device_release+0xa1/0x240 drivers/base/core.c:2568
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x1e4/0x5a0 lib/kobject.c:737
- put_device+0x1f/0x30 drivers/base/core.c:3774
- wiphy_free net/wireless/core.c:1224 [inline]
- wiphy_new_nm+0x1c1f/0x2160 net/wireless/core.c:562
- ieee80211_alloc_hw_nm+0x1b7a/0x2260 net/mac80211/main.c:835
- mac80211_hwsim_new_radio+0x1d6/0x54e0 drivers/net/wireless/virtual/mac80211_hwsim.c:5185
- hwsim_new_radio_nl+0xb42/0x12b0 drivers/net/wireless/virtual/mac80211_hwsim.c:6242
- genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2533
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1312 [inline]
- netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1338
- netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1882
- sock_sendmsg_nosec net/socket.c:718 [inline]
- __sock_sendmsg net/socket.c:733 [inline]
- ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
- ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
- __sys_sendmsg+0x16e/0x220 net/socket.c:2659
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb851b909e9
-Code: 48 83 c4 28 c3 e8 c7 1b 00 00 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc330c8bc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007ffc330c8c20 RCX: 00007fb851b909e9
-RDX: 0000000020000000 RSI: 0000400000000140 RDI: 0000000000000003
-RBP: 0000000000000001 R08: 00007ffc330c8967 R09: 000055557c17e4c0
-R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000004
-R13: 00007fb851c063fc R14: 00007fb851bd6334 R15: 00007fb851c063e4
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
