@@ -1,119 +1,130 @@
-Return-Path: <linux-wireless+bounces-20432-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20433-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1074DA64A02
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 11:32:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03017A64C51
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 12:21:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 280C17A2E43
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 10:31:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 576A116E882
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 11:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F66D21B8E0;
-	Mon, 17 Mar 2025 10:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE0E233141;
+	Mon, 17 Mar 2025 11:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="kVRyhvY9"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hnFHJXhJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward206b.mail.yandex.net (forward206b.mail.yandex.net [178.154.239.151])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3690222257F;
-	Mon, 17 Mar 2025 10:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AF519F133
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Mar 2025 11:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742207526; cv=none; b=Suh+E+aGUWGwccMUtZ6PY1eARhaNdQABh+aVdVW75Z1GeOlQrz06IT9fihNcfYTGeat42qO0+AJqR1q1blrUmdAsoNM45F5D3zt7OOZQVEgZj6tjqL6ZGduLntAsTbMrPcajEGzippGjtdZ53wmLTTjCOuMRY1vLhStcLHrfsH8=
+	t=1742210472; cv=none; b=XCfI9Y4misfuwe4HBuGWgV0w/pzGeqlJoU//RqWS85ROReR3DeQaXGRwkBWpx1ABc1vLednN/+mxf0F3oA2Fl1ASIEDHzHs0xc1oTwJa6KzmZtOUu8G+fYm3vJNwONVif8/axODieNxj2tB2jAOIrVrKQ0Mr4p5Hc+8FqlPjq5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742207526; c=relaxed/simple;
-	bh=jET+Zyh1y8nrRIS3OXbjRZuZGNjL5oCFgBMDHxziibQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pC0Z2/J28q7wMauzv4BZM2a3zFhaVKo82J0xJnhvb9QowT4IiTUElLJ1y2t1Mri++t7Zl78IYgLVqP498sQR5mgVGYQOW4EEHAyC8mkGDV7d7/6oP0CviZu830c9duCzIKXj7MZ7wyzaSsvVLv+jv3pZDFcMXeDdFmfI+8KmJss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=kVRyhvY9; arc=none smtp.client-ip=178.154.239.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
-	by forward206b.mail.yandex.net (Yandex) with ESMTPS id DBE6B63C27;
-	Mon, 17 Mar 2025 13:31:50 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1197:0:640:483c:0])
-	by forward102b.mail.yandex.net (Yandex) with ESMTPS id ADAA960D7F;
-	Mon, 17 Mar 2025 13:31:42 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id fVEFdrTLmCg0-Elyelz8t;
-	Mon, 17 Mar 2025 13:31:42 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
-	t=1742207502; bh=BMnk+T7PyZ+YAEEVJakHyC7Oto5jKGTwpp7qVFsesHU=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=kVRyhvY9di75KJ+gGbP/RlmdrvxsBo+RByiEIUXoOE2EUMtlOQGwgqAUi1A7npHNg
-	 4Jlw8LDpMRWemNBfRCzc2bFM+EqMAL6hUP9omH66zwXJmu8mcDWsvv9eNCQlQ51K2E
-	 w6veXbyuQLv1SzdPo5OYxrbV7hhdwC+Rn6A6whuI=
-Authentication-Results: mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
-From: Mikhail Lobanov <m.lobanov@rosa.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Shaul Triebitz <shaul.triebitz@intel.com>,
-	Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH v4] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
-Date: Mon, 17 Mar 2025 13:31:37 +0300
-Message-ID: <20250317103139.17625-1-m.lobanov@rosa.ru>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1742210472; c=relaxed/simple;
+	bh=UxrRMDIo5hLMMFoqT70xti5/uCUL6+CGxNljpBHqr0U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=W0TqtriLtBeaFu/gIS+5yIHp5bSSDwxVLke9dwoIntyww+MU/S/jZLlhc8hgXfIyEvVGL6nCYc/5xwtXGba2cAS6TFbrQNv+27XOnjaolEOrIVcCsGbdizSu3ZQBejxJlpsCIwFXEFHH71f0eUo13ErkYnI3sxBi7F0EjDNQlDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hnFHJXhJ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52HATkpm029610;
+	Mon, 17 Mar 2025 11:19:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	zopIfx1QvRmMBFxpsSX1oY2tGRbAZ1qFtE0Rlrkda5c=; b=hnFHJXhJvYO2WpNa
+	XcN9i1t0xWwhZRf1s3T3bYftc3c6bmtwfBHiOhPWLuv/bsb6pfy3F6pantRS4TI/
+	JNA1H2nzAyxjh6K+uy63cGa02qFC6h62M35XwZa9xaJELI8yJ/TjW1+8imeDzoi3
+	bGZ+VBCVog+lIWCBeTpv/KTXewCd/OriqCJMnDTZhxiQrAfbZwRf/xiNrtDGgpQB
+	c8vF9wyenNjFjsORSWJSG9FdJ9l81MFFtuTLi4bYBP67yLnI9uqkx/E5QvF6qhrT
+	pKOJthL2KZjSaDusl+rtyxltz6tDj4xpQLIzVxGRjo1tEHvRoGFxMhA4jfdhVvi+
+	ZWAf1Q==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45d1sxvffg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Mar 2025 11:19:03 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52HBJ25T003281
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Mar 2025 11:19:02 GMT
+Received: from [10.152.199.23] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 17 Mar
+ 2025 04:19:00 -0700
+Message-ID: <9fa954c2-f0fa-4237-840c-22e9eba8a307@quicinc.com>
+Date: Mon, 17 Mar 2025 16:48:57 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next v4 1/4] wifi: cfg80211: Add support to get
+ EMLSR capabilities of non-AP MLD
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Rameshkumar Sundaram
+	<quic_ramess@quicinc.com>
+CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        "Ramasamy
+ Kaliappan" <quic_rkaliapp@quicinc.com>
+References: <20250306062157.1185769-1-quic_ramess@quicinc.com>
+ <20250306062157.1185769-2-quic_ramess@quicinc.com>
+ <7cdc6950ba188625d691e8fd4726ef6872f6afa1.camel@sipsolutions.net>
+Content-Language: en-US
+From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+In-Reply-To: <7cdc6950ba188625d691e8fd4726ef6872f6afa1.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: FQXSEhAEP_bntlaKrgv35hnK2ZZ0TXDY
+X-Proofpoint-ORIG-GUID: FQXSEhAEP_bntlaKrgv35hnK2ZZ0TXDY
+X-Authority-Analysis: v=2.4 cv=XKcwSRhE c=1 sm=1 tr=0 ts=67d80527 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=tn7nk47zgIFjfK1QofoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-17_04,2025-03-17_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=999 priorityscore=1501 clxscore=1015 phishscore=0
+ impostorscore=0 adultscore=0 mlxscore=0 malwarescore=0 suspectscore=0
+ spamscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503170083
 
-When userspace sets supported rates for a new station via
-NL80211_CMD_NEW_STATION, it might send a list that's empty
-or contains only invalid values. Currently, we process these
-values in sta_link_apply_parameters() without checking the result of
-ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
 
-A similar issue was addressed for NL80211_CMD_SET_BSS in commit
-ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
-This patch applies the same approach in sta_link_apply_parameters()
-for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
-rate by inspecting the result of ieee80211_parse_bitrates().
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+On 3/11/2025 3:18 PM, Johannes Berg wrote:
+>>   
+>> @@ -7095,7 +7096,8 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
+>>   		if (params->ext_capab || params->link_sta_params.ht_capa ||
+>>   		    params->link_sta_params.vht_capa ||
+>>   		    params->link_sta_params.he_capa ||
+>> -		    params->link_sta_params.eht_capa)
+>> +		    params->link_sta_params.eht_capa ||
+>> +		    params->eml_cap_present)
+>>   			return -EINVAL;
+>>   		if (params->sta_flags_mask & BIT(NL80211_STA_FLAG_SPP_AMSDU))
+>>   			return -EINVAL;
+>>
+> 
+> EMLSR doesn't make sense for TDLS stations either, does it?
+> 
 
-Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
----
-v2: Fixed the patch subject to provide a complete description.
-v3: added the missing if as Christophe Jaillet (christophe.jaillet@wanadoo.fr) noticed.
-v4: put all braces into a single if statement as Johannes Berg (johannes@sipsolutions.net) noticed.
+Spec doesn't speak anything about MLO between TDLS peers, we shall 
+consider it as not applicable at this point.
 
- net/mac80211/cfg.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Also, seems we need to exclude other sta types such as mesh too, as MLO 
+is not applicable to Mesh as well. May be I'll add an exclusive case to 
+restrict EMLSR change only for CFG80211_STA_AP_CLIENT.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 9351c64608a9..b766472703b1 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1908,12 +1908,12 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 	}
- 
- 	if (params->supported_rates &&
--	    params->supported_rates_len) {
--		ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
--					 sband, params->supported_rates,
--					 params->supported_rates_len,
--					 &link_sta->pub->supp_rates[sband->band]);
--	}
-+	    params->supported_rates_len &&
-+	    !ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
-+				      sband, params->supported_rates,
-+				      params->supported_rates_len,
-+				      &link_sta->pub->supp_rates[sband->band]))
-+		return -EINVAL;
- 
- 	if (params->ht_capa)
- 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
 -- 
-2.47.2
+Ramesh
 
 
