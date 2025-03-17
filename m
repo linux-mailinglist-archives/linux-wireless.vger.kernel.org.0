@@ -1,187 +1,126 @@
-Return-Path: <linux-wireless+bounces-20424-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20425-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FA7A64366
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 08:21:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B5FA6437B
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 08:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE66F1887A1C
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 07:21:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C07E13AF3B1
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Mar 2025 07:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABF7215046;
-	Mon, 17 Mar 2025 07:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D7821A45E;
+	Mon, 17 Mar 2025 07:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="p653lR2M"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="M/5BFDYv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6C621B192;
-	Mon, 17 Mar 2025 07:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2206E21ADD6;
+	Mon, 17 Mar 2025 07:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742196064; cv=none; b=m0nIUfB7XKoRoQheaYGeieIJcJQqZbGV5bCcRsjI4D79JA+1kRTUkgNqFD3KDHjuXfMEkfJw7tcX2BPtSxTikEKIu9qpiaErmPna8NyACy4uNZoPR0p8zRKlt95XMqbfRsv7uPGEEgAGW23QoZczsOsjbONRM1hhTlecd8lEJ7M=
+	t=1742196354; cv=none; b=C0SDv60B2tXL0Wou47UmlFHC4qvLPbYGjAXnhKuQ7U4mAwiC+kDZlkON/b5cWziIyDLWduQqMue7hbTvrd+hsVibGuMZNYSniS4+V/3dWY62Gkux37Tar96MTGJGwj90xQXUITI8afL76SoB5ZS/RbgavRGyXanqz5j9LwoCCkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742196064; c=relaxed/simple;
-	bh=jyt/bGoR2PSQ32voMKs2Zgp4RY0D89NLXmHd5Ur0FmE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qcfreyuehCNQOajMwyc/r/jvOkGCbJg/ZVfEj54bCjwgTdTkeUbTkQcGPR1/VESiyWH/Mc5ffXCx/RF1+zDgJjINiR+VDVAgyjI5r6QXm78OVDIOSymqQopO04RvdFXCrFXbq5KZj9tbdHgnxL/UGMPKuj/xrVxWbTdLeKrgHYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=p653lR2M; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52GLDPCs024976;
-	Mon, 17 Mar 2025 07:20:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	0oBG6A5GCMjO1aWExZq0CyKU1/2CjZGE+WsC49+EMqk=; b=p653lR2MKFzGRPwJ
-	P/iLJYhGK6CRKaiue7yYO9Zp4/16l0M7wygqY15HAz8mNT9lCDmXFCeGqg9vDK93
-	aBCan8tS0Jw7aD9iErLAevYKFZh0KD2YYIXEGci8xWnZTy4tNh4CVf69WXXLDnRV
-	RET2cKrWtSHmv/R00eX9XryRBWsg74scBKW/847ZbXxKLdMELcBePApWHQtkP+d5
-	i3Vylru/KcH4u4BQg5UiSPnHOdcsUnhJzgjL8oiNXnaiftbO8bV5lNZMsh6EmCyY
-	2NMdc/vGbzYlprAVpdKTiGjSEFlpUQkdkoUnBxATaQfL7JXtw9MU61zQ0W+DvAxN
-	1Wxt5A==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45d1utur5q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Mar 2025 07:20:56 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52H7KtuW023158
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Mar 2025 07:20:55 GMT
-Received: from localhost.localdomain (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 17 Mar 2025 00:20:53 -0700
-From: Miaoqing Pan <quic_miaoqing@quicinc.com>
-To: <quic_jjohnson@quicinc.com>
-CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <johan+linaro@kernel.org>,
-        Miaoqing Pan
-	<quic_miaoqing@quicinc.com>
-Subject: [PATCH v4 ath-next 2/2] wifi: ath11k: fix HTC rx insufficient length
-Date: Mon, 17 Mar 2025 15:20:36 +0800
-Message-ID: <20250317072036.2066518-3-quic_miaoqing@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250317072036.2066518-1-quic_miaoqing@quicinc.com>
-References: <20250317072036.2066518-1-quic_miaoqing@quicinc.com>
+	s=arc-20240116; t=1742196354; c=relaxed/simple;
+	bh=CzLh11DqZtf8IqGapJ5m66ohkDySA4nKLkHEabqVZw4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UoNR6XC8q+2+HLytWgVrQa1osqHF0+vQjSeISS5qjnA0VGS4Ldj7cgDJ6doa2irT2JsKYFZC6y48fl5GFpeUfnY3dUobXjWADYIcYwXHwuySs8ZdPM8jSnm8jWfS/6D85VxbGNx8dLv4ZfgqIdnouF7hddq7eqMoFqPjc/FpfQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=M/5BFDYv; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=p3UTVc3ZDCRlY1xT6AkALtD92EQfzIhzYvG7PR0/6IQ=;
+	t=1742196352; x=1743405952; b=M/5BFDYvElKT0++0pL0u0/TxtUyh1/AlNYy2PvVMpyBketL
+	oLgONyjVWkkqdoCTzbdfxxF8JncQosdg89AeLsHUSOWZcSyDmCiPcDlsGLB7LiNrqg6kviQLMaJaX
+	r8MRiF2VYYmxQOZ05NQae0RL7SNRQdTDrCVSDD7+oTkk1GZxrQ+gHA+AM7yR5zn6uJtjyi3NDWBez
+	udCkDeNKElvQZVF9Myw2gqk7Bc6MH1iyBz5mFNK8cLxGyZcrJA0K7uKlAbtDetEDuwu0uH40oNlhT
+	PNXqQXBOlM+QY55zU8nX5irdoxzWU6FOlPtfXQfcK7O4Cewgn7Hk/pCo9PosupjQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tu4r4-0000000E1Gl-3Vkg;
+	Mon, 17 Mar 2025 08:25:47 +0100
+Message-ID: <a383d25de302699592bc99867dbf481cb2ab875b.camel@sipsolutions.net>
+Subject: Re: [PATCH v3] wifi: mac80211: check basic rates validity in
+ sta_link_apply_parameters
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Mikhail Lobanov <m.lobanov@rosa.ru>
+Cc: Shaul Triebitz <shaul.triebitz@intel.com>, Christophe Jaillet
+	 <christophe.jaillet@wanadoo.fr>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
+Date: Mon, 17 Mar 2025 08:25:43 +0100
+In-Reply-To: <20250315161253.19399-1-m.lobanov@rosa.ru>
+References: <20250315161253.19399-1-m.lobanov@rosa.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=H8Pbw/Yi c=1 sm=1 tr=0 ts=67d7cd58 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=YcQLN9OU0fFkaZwozdwA:9 a=RVmHIydaz68A:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: DisQPZIHI7a88h-6wECVvZhkjSVOVsnA
-X-Proofpoint-ORIG-GUID: DisQPZIHI7a88h-6wECVvZhkjSVOVsnA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-17_02,2025-03-17_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- lowpriorityscore=0 bulkscore=0 adultscore=0 spamscore=0 priorityscore=1501
- mlxscore=0 suspectscore=0 malwarescore=0 clxscore=1015 impostorscore=0
- phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503170052
+X-malware-bazaar: not-scanned
 
-A relatively unusual race condition occurs between host software
-and hardware, where the host sees the updated destination ring head
-pointer before the hardware updates the corresponding descriptor.
-When this situation occurs, the length of the descriptor returns 0.
+On Sat, 2025-03-15 at 19:12 +0300, Mikhail Lobanov wrote:
+> When userspace sets supported rates for a new station via
+> NL80211_CMD_NEW_STATION, it might send a list that's empty
+> or contains only invalid values. Currently, we process these
+> values in sta_link_apply_parameters() without checking the result of
+> ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
+>=20
+> A similar issue was addressed for NL80211_CMD_SET_BSS in commit
+> ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
+> This patch applies the same approach in sta_link_apply_parameters()
+> for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
+> rate by inspecting the result of ieee80211_parse_bitrates().
+>=20
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+>=20
+> Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from =
+station params")
+> Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+> ---
+> v2: Fixed the patch subject to provide a complete description.
+> v3: added the missing if as Christophe Jaillet (christophe.jaillet@wanado=
+o.fr) noticed.
+>=20
+>  net/mac80211/cfg.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+> index 9351c64608a9..b4d18172da16 100644
+> --- a/net/mac80211/cfg.c
+> +++ b/net/mac80211/cfg.c
+> @@ -1909,10 +1909,11 @@ static int sta_link_apply_parameters(struct ieee8=
+0211_local *local,
+> =20
+>  	if (params->supported_rates &&
+>  	    params->supported_rates_len) {
+> -		ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
+> -					 sband, params->supported_rates,
+> -					 params->supported_rates_len,
+> -					 &link_sta->pub->supp_rates[sband->band]);
+> +		if (!ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
+> +					      sband, params->supported_rates,
+> +					      params->supported_rates_len,
+> +					      &link_sta->pub->supp_rates[sband->band]))
+> +			return -EINVAL;
+>  	}
 
-The current error handling method is to increment descriptor tail
-pointer by 1, but 'sw_index' is not updated, causing descriptor and
-skb to not correspond one-to-one, resulting in the following error:
+Seems you could remove the braces, and put it all into a single if
+statement?
 
-ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1488, expected 1492
-ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
+ if (... && ... && !parse(...))
+     return -EINVAL;
 
-To address this problem and work around the broken hardware,
-temporarily skip processing the current descriptor and handle it
-again next time. Also, skip updating the length field of the
-descriptor when it is 0, because there's a racing update, may
-never see the updated length.
+I think?
 
-Tested-on: QCA6698AQ hw2.1 PCI WLAN.HSP.1.1-04546-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
-
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218623
-Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/ce.c  | 14 +++++++++++---
- drivers/net/wireless/ath/ath11k/hal.c |  6 +++++-
- 2 files changed, 16 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/ath/ath11k/ce.c
-index e66e86bdec20..2bc8bc97165a 100644
---- a/drivers/net/wireless/ath/ath11k/ce.c
-+++ b/drivers/net/wireless/ath/ath11k/ce.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2023, 2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include "dp_rx.h"
-@@ -387,18 +387,26 @@ static int ath11k_ce_completed_recv_next(struct ath11k_ce_pipe *pipe,
- 
- 	ath11k_hal_srng_access_begin(ab, srng);
- 
--	desc = ath11k_hal_srng_dst_get_next_entry(ab, srng);
-+	desc = ath11k_hal_srng_dst_peek(ab, srng);
- 	if (!desc) {
- 		ret = -EIO;
- 		goto err;
- 	}
- 
- 	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
--	if (*nbytes == 0) {
-+	if (unlikely(*nbytes == 0)) {
-+		/* A relatively unusual race condition occurs between host
-+		 * software and hardware, where the host sees the updated
-+		 * destination ring head pointer before the hardware updates
-+		 * the corresponding descriptor. Temporarily skip processing
-+		 * the current descriptor and handle it again next time.
-+		 */
- 		ret = -EIO;
- 		goto err;
- 	}
- 
-+	ath11k_hal_srng_dst_next(ab, srng);
-+
- 	*skb = pipe->dest_ring->skb[sw_index];
- 	pipe->dest_ring->skb[sw_index] = NULL;
- 
-diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index 211c085921b6..16e0b5713445 100644
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -600,7 +600,11 @@ u32 ath11k_hal_ce_dst_status_get_length(void *buf)
- 	u32 len;
- 
- 	len = FIELD_GET(HAL_CE_DST_STATUS_DESC_FLAGS_LEN, desc->flags);
--	desc->flags &= ~HAL_CE_DST_STATUS_DESC_FLAGS_LEN;
-+	/* Skip updating the length field of the descriptor when it is 0,
-+	 * because there's a racing update, may never see the updated length.
-+	 */
-+	if (likely(len))
-+		desc->flags &= ~HAL_CE_DST_STATUS_DESC_FLAGS_LEN;
- 
- 	return len;
- }
--- 
-2.25.1
-
+johannes
 
