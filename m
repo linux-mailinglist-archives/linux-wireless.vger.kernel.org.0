@@ -1,99 +1,96 @@
-Return-Path: <linux-wireless+bounces-20494-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20495-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209EBA6744A
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 13:50:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47EEDA67556
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 14:40:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54839188F4DB
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 12:50:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 399F87A28C1
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 13:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FCB8479;
-	Tue, 18 Mar 2025 12:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83ED148827;
+	Tue, 18 Mar 2025 13:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nO3jBkZw"
+	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="asv/mvU2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B7F290F
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Mar 2025 12:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE0120C470
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Mar 2025 13:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742302216; cv=none; b=gNHKrLuWOafFBqMnbokk7/Cggcs0WNRKbMkpF3eXrkb5Hex/dOb0dipIYtq72FgPr28iZi+Z2J0hwCLd1zpI4w67qC7DGaD9DBs+XHOl2mbemxuFFxISZODUTmbNvAGDlf+qFWFTqlgr4rE1oc2vFynm62mzeeOUwQNXUlapXCk=
+	t=1742305225; cv=none; b=chtFa3Bnt2EKmCyVZCKlMdx5aQLwT8HyNJ0Woj4T9W3OEzyGOrSKQuS0mCy1emHSrNx6J/Ne1+lDZClEik78Zslhb0XdSppJvttB8dQtjg3B91yvRb6no8FQ6twuyathO/jRFhKXnVJ8u+EaIvaA8+RqRtdR1rd77MBzKxynSnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742302216; c=relaxed/simple;
-	bh=uKI6wZxpBorfdAv7anMA+DXIMD8DywWnWPs1hpq93Wg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HnF9GyK68o+/e40bSDzDH+AW8QYEU9GaoA91umzBKMqJZBl/Lga/H/WhvKgmYZ7iIIOezIXswoGMH5stg4ngPbs+A+kLVjQ+mrpwD89NnNn22JaeEMn9W0W80UDXRfCHdpo/GInPsilkzQL2bOeEUP8bq0Riqb84Oa4Y8eJ55SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nO3jBkZw; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=vvMy5FpQloptZ2RxAHwVPBhVRkUoIkCV+N6DBD/dGHc=; t=1742302214; x=1743511814; 
-	b=nO3jBkZwqVhcfjzJ8grZ0TUlu/UsrHgN3oOREqZvPDcBUvE/GAPIigUfc6NL3yc38JvZxLRXjLO
-	/YvWxxWBBMlPen/9a56mZg4ELbezjzlzofXup+Y2hlQLBU3TP3dU91oYZpVp7NrHWouDsXTd9oE3Y
-	W37S1Vg88sYJ6MHb9nrznKIi/tYkICiHA6oKuyH3utGOhM9PFJCdsKGlwprvX2kIInRlm9PvAyNyj
-	C2pkpE93eEXQ0pbtdRS7ghm6CB5se6QYLnxm4jNnTZ9/sD3LKpupMUCYEloBJ6JQqZ9ol+rMsmD/2
-	xs+FWkgixrA20vzp4RIc4t71ZcMQDIAnEzPQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tuWOY-0000000FHmz-3xQA;
-	Tue, 18 Mar 2025 13:50:11 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next v3] wifi: nl80211: re-enable multi-link reconfiguration
-Date: Tue, 18 Mar 2025 13:50:08 +0100
-Message-ID: <20250318135009.a95c43837a0f.Ic6ed3d184e5be8ba47c6affa7271daaf824fd823@changeid>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1742305225; c=relaxed/simple;
+	bh=4GTnRkCrbpmyHi8zaZpK9BLvWBMQzoWqoJ9TgrjRbcc=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=Tdllabe6odjUhLcOHGqNJQGCEnGOBPaJbRfo5QkCxYKsiTmuanQIyKPMSS3ZC4S65i0Hj5/gFZ+bEHGU5MGISB9hbRbIpWVgFa4ocJB7GVu1VGWbonHMQ8RJFVxK3qfgARlDVXcSabvmS4mFhFms5M7XyWrWoDQ8ssxNssqhn0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=asv/mvU2; arc=none smtp.client-ip=157.90.84.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
+Received: from [192.168.178.76] (host-212-18-30-247.customer.m-online.net [212.18.30.247])
+	(Authenticated sender: g.gottleuber@tuxedocomputers.com)
+	by mail.tuxedocomputers.com (Postfix) with ESMTPSA id 28D912FC0190;
+	Tue, 18 Mar 2025 14:40:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
+	s=default; t=1742305219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Eq/ebP2CwM8wTQ/fwb2hWC6lSTwZgA4O8KrnlqmEgmU=;
+	b=asv/mvU2GdoK+zoyUo++r/22A6/BQ+1ibi6sY0mldkBVFa1zwoUySI6f0ZBoGNlNvRSgl2
+	yRyturHQY963jQjLs84wafwaG1JmDH/RCeJkqUnjxGD6TXYyDfG54KkQb0LA7h4TnKhI2Y
+	5RiBWxoDXFLy3Ndyp2Y2R377mme9nAc=
+Authentication-Results: mail.tuxedocomputers.com;
+	auth=pass smtp.auth=g.gottleuber@tuxedocomputers.com smtp.mailfrom=ggo@tuxedocomputers.com
+Message-ID: <398de7cb-e455-4cb4-98e8-31471bb740a6@tuxedocomputers.com>
+Date: Tue, 18 Mar 2025 14:40:18 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: linux-firmware@kernel.org
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+ Christoffer Sandberg <cs@tuxedocomputers.com>,
+ Werner Sembach <wse@tuxedocomputers.com>,
+ Georg Gottleuber <ggo@tuxedocomputers.com>
+From: Georg Gottleuber <ggo@tuxedocomputers.com>
+Subject: [PATCH] ath12k: WCN7850 hw2.0: update board-2.bin
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+Added an additional board string with qca-swiss-army-knife:
+bus=pci,vendor=17cb,device=1107,subsystem-vendor=1eac,subsystem-device=8001,
+qmi-chip-id=2,qmi-board-id=255
 
-With the recent fixes, we can re-enable multi-link
-reconfiguration. Also add a CMD() entry to allow
-userspace discovery for it.
+Tested with 2.4GHz, 5GHz and 6GHz (iperf3 -t30 --bidir)
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
 ---
- net/wireless/nl80211.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ ath12k/WCN7850/hw2.0/board-2.bin | Bin 1986952 -> 1987068 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 1a9fc403d50d..f039a7d0d6f7 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -2773,6 +2773,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 			CMD(update_ft_ies, UPDATE_FT_IES);
- 			if (rdev->wiphy.sar_capa)
- 				CMD(set_sar_specs, SET_SAR_SPECS);
-+			CMD(assoc_ml_reconf, ASSOC_MLO_RECONF);
- 		}
- #undef CMD
- 
-@@ -16557,7 +16558,7 @@ static int nl80211_assoc_ml_reconf(struct sk_buff *skb, struct genl_info *info)
- 		req.ext_mld_capa_ops =
- 			nla_get_u16(info->attrs[NL80211_ATTR_ASSOC_MLD_EXT_CAPA_OPS]);
- 
--	err = -EOPNOTSUPP;
-+	err = cfg80211_assoc_ml_reconf(rdev, dev, &req);
- 
- out:
- 	for (link_id = 0; link_id < ARRAY_SIZE(req.add_links); link_id++)
+diff --git a/ath12k/WCN7850/hw2.0/board-2.bin
+b/ath12k/WCN7850/hw2.0/board-2.bin
+index
+48f18e23014c4a8d1d771c4bd1ed1ceda00a33ef..659acff5411e6f10accbf227b46088fa83ec0291
+100644
+GIT binary patch
+delta 89
+zcmV-f0H*(lqj~(Jd4PlggaU*Egam{Iga(8Mgb0KQgbIWUgbaiYgbsucgb;)ggc5`k
+vgcO7ogcgJsgcyVwgc^h!v>f=90qB>ptr1g~OqCpV0WpV9l^nNEl^r>}c)}mC
+
+delta 87
+zcmV-d0I2``qj`v<d4PlggaU*Egam{Iga(8Mgb0KQgbIWUgbaiYgbsucgb;)ggc5`k
+tgcO7ogcgJsgcyVwgc^h!v>f=90d$wKtr1g~OqCpVhc=cRw>Fj?#=AG9A7=mn
+
 -- 
-2.48.1
+2.43.0
 
 
