@@ -1,113 +1,104 @@
-Return-Path: <linux-wireless+bounces-20486-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20487-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3309A66D37
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 09:02:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43781A66E3D
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 09:31:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEBF33BE474
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 08:00:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B9463B185A
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 08:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430ED1DE4C9;
-	Tue, 18 Mar 2025 08:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F309A13C8F3;
+	Tue, 18 Mar 2025 08:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZbL8ixVC"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="kQpLHWWJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165E738FA6;
-	Tue, 18 Mar 2025 08:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0A042C0B
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Mar 2025 08:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742284825; cv=none; b=u5EW0TJpBVRmwUUuIVQMVuE6xMkgnsFByA2Z935RJQfajHAYGI6SFDv1mU7S3g4UERWo2iLI+Scrl9iE7ShCKnGgO9wd+buuySDkK0j+6OCYCbZmDZanUuYfKxAHe6vh8pUAo93rOQx7pjzBoLl54X2kPAQcK7/n2dJNgH03HHo=
+	t=1742286659; cv=none; b=iBgKZRKtfCTbkVl1Xq5EvLpAGcpQK5rOXULvfFvJzahew1f+ur5oE5SiJoIiCpclNuOuYpUO+1Msb6ycWUNWj+1a040GJqIZuYFR8APGbyAksWVOu/O72fhTEWDaC8kb55PXRyaI24t7WeD5v9bF+8BfZSdjGKdyxsVSEHyRp8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742284825; c=relaxed/simple;
-	bh=q0iAie+/ac8TF5bdE35fwcBMcem45zb0jJnV1wd8xi8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ddDPp9TVgK+iR0upQ1d2I2A5GSzk9+RZwzzozQJaWVMlaCzuu8+hoDehW0eAUGgG1PMDO9lh65TShb6XopZC+u7oCRdIP9ZIHY56BteffOB+/x8eXkUU62v0LIQ2amlvEG5Q2zXH+lmsdBkdNEJSk9ascuIKVcQYPP7Wxc2CLzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZbL8ixVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD686C4CEE9;
-	Tue, 18 Mar 2025 08:00:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742284824;
-	bh=q0iAie+/ac8TF5bdE35fwcBMcem45zb0jJnV1wd8xi8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZbL8ixVCaLmi0JhXDNy7BmPTWxoFvHxUXC2b4VUE0DbnT0l/ZgkzsNGozV+WdM3FN
-	 Vj0Kt1acewQ71BM9re0gsKaqQiRUbGoShdF3B7i8qznckuOOF6af0CZfo9nOXZ39TO
-	 rLovjZvjmDwFpjV53d6zqobyS3S8kWvzMwRsLlV8c9oKoEAMQlbXtSQpSMk37yYsNW
-	 5i/l6RycOh+66MuaYqNnH0WcKgva6oQTPud7fWijAXjMGPBuAQCuOgexfkk5jlFOSI
-	 B5TNhAVhy4EMiOQiO2exhSBYBokUehhBMGFLCjPA4/fxofyuSENb5orO3MysFaItvi
-	 yub9cagFWkRYg==
-Date: Tue, 18 Mar 2025 09:00:20 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Cc: ath12k@lists.infradead.org, Johannes Berg <johannes@sipsolutions.net>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
-	linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH ath-next v11 00/13] wifi: ath12k: add Ath12k AHB driver
- support for IPQ5332
-Message-ID: <20250318-splendid-sceptical-gazelle-8abbef@krzk-bin>
-References: <20250317204639.1864742-1-quic_rajkbhag@quicinc.com>
+	s=arc-20240116; t=1742286659; c=relaxed/simple;
+	bh=ADnmFXFeM1/2YdPFG8HlA3L1YPgI8t5WD1M+og9aon4=;
+	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iocDRf1RrA2ax/U1dlPiw/TUaF/ib/QZwAwwE4U3QDsb9uNYhFeSeMlTyRf9ZiL20RfI60QModSMOwwrjYNEDmiVf07HZgHCrG7f4+Q/epnImuhODZlNiuEpinXfJVoU5GQ6v6BYIWOTo1K583RHy+SPSHatFB3D8FH76pV+mMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=kQpLHWWJ; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 4dc723cc03d311f0aae1fd9735fae912-20250318
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=ADnmFXFeM1/2YdPFG8HlA3L1YPgI8t5WD1M+og9aon4=;
+	b=kQpLHWWJ0FQnHPDGf+NzIqPlSDDM+JhEa/NJ8rZq3YifWCE+bIlZ0GgnkJ0Dl6WGWo3SJGWMvwrC1xBzMhrZOeNkWLaMAXXphD+1YsgWw85/6PzZfeqDCxhZZ0jvy7ZvTjJD60T25aKaZBG7KnDFmE2HhcGowkUJuDQXm2WotcY=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.2.1,REQID:3a785ff4-7101-4679-ae56-bca9bbcc4e76,IP:0,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:-5
+X-CID-META: VersionHash:0ef645f,CLOUDID:5c264de1-3561-4519-9a12-e2c881788b70,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|50,
+	EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
+	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 4dc723cc03d311f0aae1fd9735fae912-20250318
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+	(envelope-from <shayne.chen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 240455289; Tue, 18 Mar 2025 16:30:52 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Tue, 18 Mar 2025 16:30:51 +0800
+Received: from [10.233.130.16] (10.233.130.16) by mtkmbs11n1.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.2.1258.39 via Frontend
+ Transport; Tue, 18 Mar 2025 16:30:51 +0800
+Message-ID: <d584cae48470cf08b1029e0fef1383f92444970b.camel@mediatek.com>
+Subject: Re: [PATCH 20/21] wifi: mt76: mt7996: rework mt7996_ampdu_action to
+ support MLO
+From: Shayne Chen <shayne.chen@mediatek.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>, Ryder
+ Lee <ryder.lee@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Johannes
+ Berg <johannes@sipsolutions.net>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+CC: <linux-wireless@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>
+Date: Tue, 18 Mar 2025 16:30:51 +0800
+In-Reply-To: <38ab11261debaf7e0884080031412808396eea5b.camel@mediatek.com>
+References: <20250312-b4-mt7996-mlo-p2-v1-0-015b3d6fd928@kernel.org>
+	 <20250312-b4-mt7996-mlo-p2-v1-20-015b3d6fd928@kernel.org>
+	 <38ab11261debaf7e0884080031412808396eea5b.camel@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250317204639.1864742-1-quic_rajkbhag@quicinc.com>
 
-On Tue, Mar 18, 2025 at 02:16:26AM +0530, Raj Kumar Bhagat wrote:
-> Currently, Ath12k driver only supports WiFi devices that are based on
-> PCI bus. New Ath12k device IPQ5332 is based on AHB bus. Hence, add
-> Ath12k AHB support for IPQ5332.
-> 
-> IPQ5332 is IEEE802.11be 2 GHz 2x2 Wifi device. To bring-up IPQ5332
-> device:
-> - Add hardware parameters for IPQ5332.
-> - CE register address space in IPQ5332 is separate from WCSS register
->   space. Hence, add logic to remap CE register address.
-> - Add support for fixed QMI firmware memory for IPQ5332.
-> - Support userPD handling for WCSS secure PIL driver to enable ath12k
->   AHB support.
-> 
-> NOTE:
-> The working upstream DTS changes for this series have been posted as a
-> separate series.
-> [PATCH v2] arm64: dts: qcom: add wifi node for IPQ5332 based RDP441
-> 
-> v11:
-> - Updated Kconfig for ATH12k AHB.
-> - Replaced the API devm_ioremap_wc() with devm_memremap to fix ath12k-check
->   warning: "warning: cast removes address space '__iomem' of expression"
-> - Rebased on latest ToT.
-> - Removed tag "Reviewed-by: Vasanthakumar Thiagarajan", in the updated
->   patch [11/13] wifi: ath12k: Power up userPD
+Hi Lorenzo,
 
+Sorry, please ignore the previous mail.
+I just aware that the deflink is now used as the primary/assoc link, so
+it should work.
 
-This is v11 and still sent in a way it messes with toolset:
+Regards,
+Shayne
 
-  b4 diff -C 20250317204639.1864742-2-quic_rajkbhag@quicinc.com
-  Grabbing thread from lore.kernel.org/all/20250317204639.1864742-2-quic_rajkbhag@quicinc.com/t.mbox.gz
-  Checking for older revisions
-    Added from v10: 14 patches
-  ---
-  Analyzing 135 messages in the thread
-  Preparing fake-am for v11: dt-bindings: net: wireless: describe the ath12k AHB module for IPQ5332
-  ERROR: Could not fake-am version v11
-  ---
-  Could not create fake-am range for upper series v11
-
-Can you fix your process so the tools will be happy? Please read
-carefully your internal guideline go/upstream before posting next
-version.
-
-Best regards,
-Krzysztof
+On Tue, 2025-03-18 at 14:28 +0800, Shayne Chen wrote:
+> Hi Lorenzo,
+>=20
+> On Wed, 2025-03-12 at 12:14 +0100, Lorenzo Bianconi wrote:
+> >=20
+>=20
+> Regards,
+> Shayne
 
 
