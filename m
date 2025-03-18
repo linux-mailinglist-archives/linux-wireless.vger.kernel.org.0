@@ -1,57 +1,58 @@
-Return-Path: <linux-wireless+bounces-20492-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20493-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39CFCA66FCD
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 10:30:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83425A66FCF
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 10:30:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95A7D170919
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 09:30:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 712B919A22E2
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 09:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC401A7249;
-	Tue, 18 Mar 2025 09:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F5E1FECC6;
+	Tue, 18 Mar 2025 09:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="orNCR5xg"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="DFk2SsE3"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595731422AB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329711EF362
 	for <linux-wireless@vger.kernel.org>; Tue, 18 Mar 2025 09:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742290228; cv=none; b=ZT0N0OmTJG8ixP+aC4CDmklBAnkFv4jb0B/ScMEtvcapNlobLlEQZHMoNwGXy5DPq0bq2VXrJow5oerEB5XVELC+3/zOQaSppFXYW6Xjmc/Acuh1UFhtpaxRaUNx49Apv54rskzuFjj6g0nmRsIsVDf9F3anEowL/fYSuI8wmcI=
+	t=1742290230; cv=none; b=Za9lb8UCl6A8Wk3i0JLiAhw1pIxNKOgcuk0ClL8wchvn1bRv06D16wObTTLtASNwTnWxscbKE1Ua5ZOGqwxXg6BUdHh2aWcWiGeQUnDwrW435jMMUyV6QMKYPG8+CZZ1u0qrCbACffpbYsJ94yu4hw3I/o2vXk8YQpVsdRq3zuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742290228; c=relaxed/simple;
-	bh=+op1/v9dK/k7mvr9L9Qgoolnf8dCT50y4N+KBm7fZ+c=;
+	s=arc-20240116; t=1742290230; c=relaxed/simple;
+	bh=vDI3ChbCXhMo6c9IZtiHrXoWEID4pH8zAT3KiwivZBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0/fy5I5R5S4XW65VEJtWSQiyj/n+B1EISDbt5yCGaT2TBqY5B9mmBNUYvOjPLyW6WRbo3tc12zhaF5NGmeJNw4sDLIqMl7jAj7fJJNKcjrkREqEuE6erpig1FcA7mqtLYJXWncVileLJyNOarELh6swiSn6SGaJXtRe0mTZ8XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=orNCR5xg; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=aU+IQwkteboLw7Bg3PMT4NKp8DuivuVZf18v5pvmBGG/Wmz7O7yrabyBym3J2ZI+bI0h2wY/584qWVW/jSE79gqwwF6ypYmcNwl5BrZ97EUXQ9uBJy0kO5m3zGmsbZRrGiGMTj4m7BXUqprht86DgEY999kRNOg8GEFEx3U2Uc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=DFk2SsE3; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=QZ19+/2cTLIjgtsDbNRKLejFX5MVg4jDHuA/6Eb0aIo=;
-	t=1742290227; x=1743499827; b=orNCR5xgmWL4z5wGCI47yebICLrzioybc8/wfpp6osLLwBx
-	WFLfqtp+7lSgUJgmxXMR4K0JXAciaO66zHef1Zy7EWMXYEG9IedmCN5zzXCHUgIzGU2zWRaKpD8uv
-	qnDLPHPgbWMMDEI9a6B6E6pd340jbruHkG7mZUpwetApDV/QpCdSjXif97lUq/LnJ3pi8wjEijrXe
-	1PB4uttLCHMzBW8fmgebxOKKamWsEEmXUu1tUXP29WFqDZ0t48991X3h6zWIn3JLbf5QXpAGxlsTP
-	zbKcIdJTti7b5V73nzNyrYvZwiqkx1EAUdkkD3eH1xbuX4VFyKhSf8/9mgmPnizQ==;
+	Resent-Cc:Resent-Message-ID; bh=46ZcAyaWBG+s57DeRkrZL68XcLx2USy7Gd0nzXHTKHI=;
+	t=1742290228; x=1743499828; b=DFk2SsE3Tz0sckad4PTF8r64j6Thc3QtR0fbBWInS593J7G
+	I6q4c97qeWiSWw1bJN8kmOvL4SVd212UFkObli2zzk+pZSA/vDmkz19v6LcIuLyN0DapdPvO44giM
+	sRyKA/b2QpVjjBNcA5X8e1ntGjOAQlgnfGk3wdZHbmx2rSwdBfqJpSGgl8Cxqw895VSTfZNCDRLsR
+	hbxLR7Zh6++SDNJbh/gANQBhrf/nh7PgMNeCm6pD9XZWDFdqkvNV/8gVy+qpbEGm+Q/oQaRS3GpEL
+	JjLcPACPAqwZDv91eUj5Iqzg/ed1Y+4il5r+YeTeGE3NBE+ok9GK7In5TrF2rLPA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1tuTHE-0000000FBmW-0WPK;
-	Tue, 18 Mar 2025 10:30:24 +0100
+	id 1tuTHF-0000000FBmW-0bEl;
+	Tue, 18 Mar 2025 10:30:25 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH wireless-next 1/2] wifi: iwlwifi: remove a buggy else statement in op_mode selection
-Date: Tue, 18 Mar 2025 10:29:43 +0100
-Message-ID: <20250318103019.bf54d0474909.Icfb129d4cf13b42b13e2ac4aa1bd171ef46bf561@changeid>
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH wireless-next 2/2] wifi: iwlwifi: do not use iwlmld for non-wifi7 devices
+Date: Tue, 18 Mar 2025 10:29:44 +0100
+Message-ID: <20250318103019.df6df96df826.I0020ca9f6c6c928caa78721666df131a692c6186@changeid>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250318093019.185216-4-johannes@sipsolutions.net>
 References: <20250318093019.185216-4-johannes@sipsolutions.net>
@@ -65,35 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-This led to weird behavior. The next debug print was not printed.
+Roll-back to use iwlmvm for those devices. iwlmld will support wifi7
+capable devices only. The firmware for the non-wifi7 capable will soon
+be frozen and we don't want iwlmld to have to support devices that will
+require the old APIs.
 
 Fixes: d1e879ec600f9 ("wifi: iwlwifi: add iwlmld sub-driver")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index dcf07ac042f7..15d2211e565c 100644
+index 15d2211e565c..d36837501e08 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2005-2014, 2018-2024 Intel Corporation
-+ * Copyright (C) 2005-2014, 2018-2025 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -1732,7 +1732,6 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
+@@ -174,6 +174,11 @@ static inline char iwl_drv_get_step(int step)
+ 	return 'a' + step;
+ }
+ 
++static bool iwl_drv_is_wifi7_supported(struct iwl_trans *trans)
++{
++	return CSR_HW_RFID_TYPE(trans->hw_rf_id) >= IWL_CFG_RF_TYPE_FM;
++}
++
+ const char *iwl_drv_get_fwname_pre(struct iwl_trans *trans, char *buf)
+ {
+ 	char mac_step, rf_step;
+@@ -1730,10 +1735,12 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
+ 	}
+ 
  #if IS_ENABLED(CONFIG_IWLMLD)
- 	if (pieces->major >= IWL_MLD_SUPPORTED_FW_VERSION)
+-	if (pieces->major >= IWL_MLD_SUPPORTED_FW_VERSION)
++	if (pieces->major >= IWL_MLD_SUPPORTED_FW_VERSION &&
++	    iwl_drv_is_wifi7_supported(drv->trans))
  		op = &iwlwifi_opmode_table[MLD_OP_MODE];
--	else
  #else
- 	if (pieces->major >= IWL_MLD_SUPPORTED_FW_VERSION) {
+-	if (pieces->major >= IWL_MLD_SUPPORTED_FW_VERSION) {
++	if (pieces->major >= IWL_MLD_SUPPORTED_FW_VERSION &&
++	    iwl_drv_is_wifi7_supported(drv->trans)) {
  		IWL_ERR(drv,
+ 			"IWLMLD needs to be compiled to support this firmware\n");
+ 		mutex_unlock(&iwlwifi_opmode_table_mtx);
 -- 
 2.48.1
 
