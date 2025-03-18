@@ -1,150 +1,152 @@
-Return-Path: <linux-wireless+bounces-20503-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20504-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66ABA67B32
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 18:43:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A275A67B6E
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 18:56:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1743919C62B9
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 17:43:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7AB77A9566
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Mar 2025 17:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B182116E7;
-	Tue, 18 Mar 2025 17:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC7E21019E;
+	Tue, 18 Mar 2025 17:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fRwPBB89"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GXZXw4vl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B67D211711;
-	Tue, 18 Mar 2025 17:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC57F128816
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Mar 2025 17:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742319776; cv=none; b=ukntR7sIYviKFvo81Of1/WeIJiXLh5aL4+m3u6UE1/HS+MWLuxIkqcnsRoD3HJQaj+q0geV2DLW0PEV+t/pny+ObX4Ug1Wu6NpL4RQwMJeYb7JaPpqBLO8F99hI06Wu1Cy8ZlruMnodDhgVKRQkqhUamRvfECar8Pp2FrVgP7JA=
+	t=1742320561; cv=none; b=gixBdjAxEiRdiDhZLwblOOPmokYtus5F3PkgqkKOO5bG6CRPHyijiLovZFwLIs9FuB1SvKmPj0R/591q9rPhal36ZhonwtndEf6ye2Z17OZKu5a5JSKmOS96qD4W9Bp33CBBfRvt/0SsO/V1hzxqx7onOkg3d466dT1DWM2p8+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742319776; c=relaxed/simple;
-	bh=7UfjllCdR6JB488sLvQIQSOghIh0F09d0d7BjGP7AKc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XRGalxnFDMpVTc+ckuOvy8FPkDqgl4HbW34dkL6LN6rC7/g3K9Q5qEhKyJRsmLSMYNIhU8+kzYQ4TpbOoVxvI0n3gTndeCQUStvCg/Om9UejM5nAk6cRh8vpsq68hl8McDnOKyKIhKU3muHtaxXSvrWiZapsnOfzYeAguQyQQQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRwPBB89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E991C4CEDD;
-	Tue, 18 Mar 2025 17:42:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742319775;
-	bh=7UfjllCdR6JB488sLvQIQSOghIh0F09d0d7BjGP7AKc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fRwPBB89NwhX/vPxAPc3guEV+NVZu52CUcBCRPPD1kC/Xy+XANGy52n8UfMerGzQo
-	 4bUOuyvGmTlLlyA8yhM/odYmVCouHCCiBTr+euCcokpONBVnlEhqo+IT9SfDvaXLdY
-	 xlk9JYA7a2tdcAa1OQsW28FU9k75FiIJy097yZR9j4LyZTMIHJx5f1Js2VkZ3iarpV
-	 Dfw8bhM4B4qBhYEDsLdnC5pi1lF7sL2yRClmAOlzXlvdovVbGp3mwEWlhyReQ6qcq7
-	 FCcsO6Y/Z0Lv5xfyYFXNHepHj3SL5NC8M9rW1hGVsDmCFVWaKj7C35QDadj7ywQfRu
-	 2zu3pleJUtqTg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tuaxr-000000001Bw-3gPJ;
-	Tue, 18 Mar 2025 18:42:56 +0100
-Date: Tue, 18 Mar 2025 18:42:55 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Miaoqing Pan <quic_miaoqing@quicinc.com>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, johan+linaro@kernel.org
-Subject: Re: [PATCH v2 ath-next 2/2] wifi: ath11k: fix HTC rx insufficient
- length
-Message-ID: <Z9mwn3GzpPPZSiTG@hovoldconsulting.com>
-References: <c0cdcaf2-655b-4d22-a949-1519c552e6a4@oss.qualcomm.com>
- <72d95d77-674e-4ae7-83b0-ab58748b8251@quicinc.com>
- <Z9G5zEOcTdGKm7Ei@hovoldconsulting.com>
- <8ea7fe7c-7b4d-4a6f-ae03-b9ca127c23f8@quicinc.com>
- <Z9METTzUJe9yqVEI@hovoldconsulting.com>
- <b1c79589-4fcd-4630-9551-a620087e0c23@quicinc.com>
- <Z9PjjDFBuSJ7exVj@hovoldconsulting.com>
- <ecfe850c-b263-4bee-b888-c34178e690fc@quicinc.com>
- <Z9gd9Aw5Bug8IKSV@hovoldconsulting.com>
- <f30cf771-a9cd-4d8f-8d10-1640afd33c23@quicinc.com>
+	s=arc-20240116; t=1742320561; c=relaxed/simple;
+	bh=bVnws3x12+ykG1+kW3kLGujQaQdP727SU3Bb5cuBhDQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PhctLRbqB6NNY6VM9sskvEz5KFiYa09OkQ/EW8ijxDzungopIdk9m4lyY7MQGcp6vav/G64gjKzrFCGZR0EqIBjVV/+Mg3ymZXG0kSX2OY6nyNhw10ljv2D1T10JupiARQI+R+q00Xvz6Ce4qj7xXZeMjT4QC4AQwI/LpVKmcic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GXZXw4vl; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52IAcpYd027513
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Mar 2025 17:55:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	WYwU73RjEVKjZaZgWeYEmk1TjixaNfci3cjOuf+0t8k=; b=GXZXw4vl9ahAl03S
+	iNlo76xpfrnR24EiBGW5dQW3oTW7j7w8lJvhPRs/OhlkN3vYAnXtQ5vjSDvDDtS9
+	9UAqXf2tGwYj2TYYWd6JwcGBkVrzwFiGXnqKgA/nbgcBmkN22eSnNdGvfcqiwHk0
+	2jdXLArh4/sSI8ZPXoSIQxQ92ShZqmepDg2SvKjFJ0AVbTH5jwCSZR5SzrkN2oko
+	UBIl473EognT4n9yernmPfGvG7fKNZzRmb9Xu+uWUPt/7cAyWCKcdqQ+aHfcy5XS
+	v3Gx0kllQHE2qZQKBeDk0HDFzWRvkuel7N1DBIuPmLvnrzKE+tmF7QZzi3uTHHf+
+	YV7bNg==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45exwtjubh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Mar 2025 17:55:53 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-223a2770b75so110873185ad.1
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Mar 2025 10:55:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742320552; x=1742925352;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WYwU73RjEVKjZaZgWeYEmk1TjixaNfci3cjOuf+0t8k=;
+        b=Go5Y5t3ppdQno5JL10vaLMwX/fy8oqu09oS6dsOYB1mNXJGMBisAJVTXZBGNBncAml
+         UgospJIkG753YGB20+3zGs9SVlEtJ5nhqlKxqF/ioe/ufyVJreGiyJDa6kZ+NDQXmDMh
+         hmyQXdwwvywFGbin+eivQf9w847PgYFsB0ctm1cgLlKB4dGrP0CdHhWVHFd0e7WmenUX
+         3udRTKZTqaXzdhqs8givootOrVTk8hjItWM6DiZR0fGr6FA8aM9DdPl196IiK4YyPQFA
+         Yj8+WPViMrtFQoBL16pvlcb6j3BPzxdrNa7fK6uXWWYvJWfhsnC9xj0dP1AWf8dHLctk
+         xwxA==
+X-Forwarded-Encrypted: i=1; AJvYcCWqbINWTkRPYNb1rg9aMa41IgP3BaDg0/TAu284GWeFHxTIG8DOtg9TMo1HcvqO1kyY0wpwR2s1IbadxAaVHw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlWUAcVglqJShSgzFf+Z7nVdgzuan+YOhSsZHNravNP2+Mg9uu
+	pNNCsa16mnDAhkm0W7r2wfH1fMCbgnldvtnZAmdiEEKf0xek+Nrt1ToQdCTat+x/Kn5rzJJXQ++
+	cibt727g+1T98lC3ghKDxFky9mHHz0VEfN5kj8JalCsih04/IJpXcL/iTS4WFbuijXA==
+X-Gm-Gg: ASbGnctdu8fIWjp8/S749Zwqelw4bFl4PUjGZNwKaOCF/kSD57hrWe+yiVqsfgjMkOh
+	niY5P2OVJrA3WWTNhPhpXvuLnVHBdA80pZNXc+99pgzIvl/p4ZwVUPH90k71llAm09g9tEX6iKs
+	njPmQawQ/6wPLfR1XudcdluU1SD1V7wT57kGQ9d9+/AgZxI0897W5hp3SchpwjCjqfmjzG7Ia21
+	thnYQtYXqQ0SxOlpRF3UTGa407+49Y410vjeqHhL+y0TGdnV/iTySJ9vLCHnPKx4An8MahR0/Cp
+	t+0qVVOxrPgpjC+5GTfxEPHGGzzG0QKK8eHPJqGe3mn0fPK0nwY/9n8mDc8G+z+MQYVeDAw=
+X-Received: by 2002:a17:902:f545:b0:223:635d:3e2a with SMTP id d9443c01a7336-225e0a8f4a7mr210952995ad.23.1742320552122;
+        Tue, 18 Mar 2025 10:55:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFGQnb8IgzE4FIqsuGJu4IQxqgtuk/CstYaDph2XbU45sLrIAtach8WeFzSOU2ydIq8Q1MRIg==
+X-Received: by 2002:a17:902:f545:b0:223:635d:3e2a with SMTP id d9443c01a7336-225e0a8f4a7mr210952535ad.23.1742320551638;
+        Tue, 18 Mar 2025 10:55:51 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c68aa616sm98018595ad.93.2025.03.18.10.55.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Mar 2025 10:55:51 -0700 (PDT)
+Message-ID: <f35a6080-8dbd-45ca-8fb4-d6b01a5bb007@oss.qualcomm.com>
+Date: Tue, 18 Mar 2025 10:55:49 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f30cf771-a9cd-4d8f-8d10-1640afd33c23@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next v11 08/13] wifi: ath12k: add AHB driver support
+ for IPQ5332
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+        ath12k@lists.infradead.org
+Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Balamurugan S <quic_bselvara@quicinc.com>,
+        P Praneesh <quic_ppranees@quicinc.com>,
+        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+References: <20250317204639.1864742-1-quic_rajkbhag@quicinc.com>
+ <20250317204639.1864742-9-quic_rajkbhag@quicinc.com>
+ <683b16dd-a3e9-4cc3-836a-95f3747d3c0a@oss.qualcomm.com>
+ <0da16aae-2fa3-49a4-bdd3-f08a7655365f@kernel.org>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <0da16aae-2fa3-49a4-bdd3-f08a7655365f@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 5NxDwlUDv_tNmu4VpUfgcxfkg64JcLyX
+X-Proofpoint-ORIG-GUID: 5NxDwlUDv_tNmu4VpUfgcxfkg64JcLyX
+X-Authority-Analysis: v=2.4 cv=UoJjN/wB c=1 sm=1 tr=0 ts=67d9b3a9 cx=c_pps a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=PCo5qUFWOPHZosJy6w4A:9 a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-18_08,2025-03-17_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
+ phishscore=0 adultscore=0 clxscore=1015 spamscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503180130
 
-On Tue, Mar 18, 2025 at 03:53:39PM +0800, Miaoqing Pan wrote:
-> On 3/17/2025 9:04 PM, Johan Hovold wrote:
-
-> > Then it seems we are looking at two separate root causes for the
-> > corruption as the memory barrier appears to be all that is needed to fix
-> > the X13s issue.
-> > 
-> > A user who hit the corruption after 2 h without the fix has been running
-> > over the weekend with the memory barrier without any problems. I'll ask
-> > further users to test, but it certainly looks like it is working as
-> > intended.
-> > 
-> > And the memory barrier is de-facto missing as the head pointer and
-> > descriptor are accessed through (two separate) coherent mappings so
-> > there are no ordering guarantees without explicit barriers.
+On 3/18/2025 8:50 AM, Krzysztof Kozlowski wrote:
+> On 18/03/2025 16:44, Jeff Johnson wrote:
+>> On 3/17/2025 1:46 PM, Raj Kumar Bhagat wrote:
+>>> +	hw_rev = (enum ath12k_hw_rev)of_device_get_match_data(&pdev->dev);
+>>
+>> kernel test robot warns:
+>> cast to smaller integer type 'enum ath12k_hw_rev' from 'const void *'
+>>
+>> looks like others have fixed this by first casting to (uintptr_t)
+>> a few examples:
+>>
+> Cast via (kernel_ulong_t)
 > 
-> This situation should occur when there is only one descriptor in the 
-> ring. If, as you mentioned, the CPU tries to load the descriptor first, 
-> but the descriptor fetch fails before the HP load because the ring 
-> returns empty, it won't trigger the current issue.
+> But another point is that this patch at stage v11 should not have
+> compiler warnings and it's not our tools who should point it out. Except
+> W=1, all standard static analyzers (sparse, smatch and coccinelle) are
+> expected to be run.
 
-It could if the CPU observes the updates out of order due to the missing
-barrier. The driver could be processing an earlier interrupt when the
-new descriptor is added and head pointer updated. If for example the CPU
-speculatively fetches the descriptor before the head pointer is updated,
-then the descriptor length may be zero when the CPU sees the updated
-head pointer.
+I ran what I thought was a reasonable cross-section of builds and did not see
+this issue. Seems this issue is only flagged with config: um-allmodconfig ??
 
-This seems to be what is happening on the X13s since adding the memory
-barrier makes the zero-length descriptors go away.
- 
-> The Copy Engine hardware module copies the metadata to the Status 
-> Descriptor after the DMA is complete, then updates the HP to trigger an 
-> interrupt. I think there might be some issues in this process, such as 
-> the lack of a wmb instruction after the copy is complete, causing the HP 
-> to be updated first.
+Guess I need to add that configuration to my builds...
 
-Yeah, possibly. At least it seems there are more issues than the missing
-barrier on the machines you test.
- 
-> > Now obviously there are further issues in your system, which we should
-> > make sure we understand before adding workarounds to the driver.
-> > 
-> > Do you have a pointer to the downstream kernel sources you are testing
-> > with? Or even better, can you reproduce the issue with mainline after
-> > adding the PCIe patches that were posted to the lists for these
-> > platforms?
-> > 
-> https://github.com/qualcomm-linux/meta-qcom-hwe/blob/scarthgap/recipes-kernel/linux/linux-qcom-base_6.6.bb
-
-Thanks for the pointer. That's a lot of out-of-tree patches on top of
-stable so not that easy to check the state of the resulting tree.
-
-> > Does it make any difference if you use a full rmb() barrier?
-> > 
-> I've also tried rmb() and mb(), but they didn't work either.
-
-Thanks for checking.
-
-Just to be sure, you did add the barrier in the same place as my patch
-(i.e. just before the descriptor read)?
-
-> > And after modifying ath11k_hal_ce_dst_status_get_length() so that it
-> > does not clear the length, how many times you need to retry? Does it
-> > always work on the second try?
-> 
-> Yes, the test has been running continuously for over 48 hours, always 
-> work on the second try, updated in patch v4.
-
-Good, at least the descriptor-length-sometimes-never-updated issue is
-solved.
-
-Johan
+/jeff
 
