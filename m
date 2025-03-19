@@ -1,52 +1,53 @@
-Return-Path: <linux-wireless+bounces-20531-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20532-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D28A685FD
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 08:43:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C2FFA68602
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 08:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78934188D338
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 07:43:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E51633AB231
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 07:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DA9250C04;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C3A2512C8;
 	Wed, 19 Mar 2025 07:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iiKoPFKD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bv9/trWW"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEB72505C9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39CE250BE8;
 	Wed, 19 Mar 2025 07:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742370178; cv=none; b=S5Kv0/gWfXoRcUXoEdefNXcvYHp0bt4cJrd13n+zX+DAWaNn4Zs0oVZ608vqaFZty2kQPKVxNUkbj7i6D+m/Z2mvomgQ7px1p3jfcS1eBET10KF0XkZqwohRZSb5e2i9Xx4SUWEi4NlWUPNDU8w1e+HSpKib698F4kkaoD0Pa5o=
+	t=1742370179; cv=none; b=Z9vcA120djxXKNDSwIEtHLdbwdklnpFJNFRSPO7beuL7TZM1FYnRboeM6wdE8wq/9cOxe4+6rviagjXY3xv1t0KnuUuIFpJVEjV73KIKQUyzLAPDqTeZMucYlHPaaZiw1/SEpz7t9CqTV46arCfenluPcsRwFvZtonn6Ewzlw9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742370178; c=relaxed/simple;
-	bh=8PFrtxpnJpLFkdaeNeF+Kojf2rI5Gt9WPBc0gGLSfzc=;
+	s=arc-20240116; t=1742370179; c=relaxed/simple;
+	bh=WsQ0u5tUFXCTjiL5eblOj9asrKR1vH8dhgSLDWTqT24=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RAk0k3BApY4EfLZeBoTAmpXx8NxmsMk3kgW1fNUO28FXcz8d98BIbLAgJlTMe6W5FfcEfKUE7yKzuJ8IVTfv+vSSoLIePek0b7gcON/eHqex8mhzEBd9ezu6easNs2uzaPPCnRkexd889hkQzX0rBy8gx/nuSm9BbFkPB67ho7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iiKoPFKD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3D52CC4CEF3;
+	 In-Reply-To:To:Cc; b=oW60KxV6YuCWxD8LRf2XPjRrg0LwFAH8axuX2HY6nzUbqxWNB/uAgthTCKDR8Lt6kqj6WkqKaXtQ0gUpQbSCvU8jWBR6gQWS34z/pUaGNKbKU2IwO7Qq25wQkBku0IVGqLpJLyz3/ts3lpsjV46I3UKoQZ14gnzBIQr5+2vtDOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bv9/trWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 63055C4CEFC;
 	Wed, 19 Mar 2025 07:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1742370178;
-	bh=8PFrtxpnJpLFkdaeNeF+Kojf2rI5Gt9WPBc0gGLSfzc=;
+	bh=WsQ0u5tUFXCTjiL5eblOj9asrKR1vH8dhgSLDWTqT24=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=iiKoPFKDTc33xyKDhIHbKi5oNeIAReF9v27f2A/TwDGMlqH55f0okfelLEKFi7Ryr
-	 ALAk1Ojri4s0xRIXxikE0jXhdh0r3vhuV6FUm/3L54FA7CXkj50YCaYp/1wQkbjqmS
-	 xT4A+HSqiBsRyFlwnbF2GhJ/D94no0z9n7ptwYdmjS0K6g0MnYqXOMcgWtKlyNpmMC
-	 57/wCXho8RgNkZfA4WFzJfDnL0K8jR90UE4umDeBLKBpeSUP38E5J+0bfMOo60YaCF
-	 i1FBATmQOHwqazh8fxnnuLFzGghq3pLqH4V2ArXAW/D9azzzPN7g3I7OXbRXaIres5
-	 Utmmpvj5OWmBA==
+	b=Bv9/trWWiqz3CrIUHj91hAZkDVipJTOLrHKJ7y9XyYh34fxnkDa4kxqs3d+VL/C0d
+	 /S9YI+qqcm0f79OjaF9WNaFFyd5y8fS4x+/1wDldlUNEC0zOEjvZot5Zqa/Ftac/sZ
+	 u/Vz9A1nCH9ku88ZAW7zNJyx85I6o/Hlxo5/HnnJ4NcCkpn6r+dQc6SQi/KNeaz+rR
+	 ybHGD+T2ihKhXj1Hiqf10vFftlQNMrCKiOa6QWw56BqVFwyiotXjk5EVHHjuON1JBN
+	 xWzEivgCPlJJVM+xigdIPNjVzHBlKGm1fr7LPUCWAGZ1xX/VU45tT8QTOeoIRV+TSv
+	 /yN5YhSJpV/zQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D625C36000;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AA06C35FFA;
 	Wed, 19 Mar 2025 07:42:58 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 19 Mar 2025 08:42:47 +0100
-Subject: [PATCH v4 2/5] dt-bindings: net: Add generic wireless controller
+Date: Wed, 19 Mar 2025 08:42:48 +0100
+Subject: [PATCH v4 3/5] dt-bindings: wireless: bcm4329-fmac: Use
+ wireless-controller.yaml schema
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,7 +56,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250319-dt-bindings-network-class-v4-2-2329336802b4@ixit.cz>
+Message-Id: <20250319-dt-bindings-network-class-v4-3-2329336802b4@ixit.cz>
 References: <20250319-dt-bindings-network-class-v4-0-2329336802b4@ixit.cz>
 In-Reply-To: <20250319-dt-bindings-network-class-v4-0-2329336802b4@ixit.cz>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -75,66 +76,55 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, Janne Grunau <j@jannau.net>, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1188; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1082; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=s4h8B9gNJQ6JIaRS+FZDFjTYjzD5y6gNzE0ffwMuDco=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBn2nV/6rsk3oZ7Zyx3BHMSxD/3T7AS4K6Ut8/Ix
- lXZHWCc56KJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCZ9p1fwAKCRBgAj/E00kg
- crwXEADFNSgiKo48SYtQuekFHAo+4fG9ATvPU7eD5a5aQHSz43A2DGLbx1N0t0m5x+UamLuzAYR
- IMl7W1JI+To73ZgOCDkbdHrt9gOlO7OtyQtcIUENMFEba252GuCIeTbneN3qBnxdB33x5AufHx1
- S70mveR8HrembIKmCEtHpf8+GSNkZ+bD3NzxB945vapzCjoF8uKY0EsUEovQ62pRee+D1k8tQn8
- shug/+iZDVDBrCT7vopf6ENjZPzY+tqqCS+AxHq68frOCCEpro+2vZJEgV47dQ8Glve69kXQ/aD
- DGZ+zh610NGjdnMaJYlAub3CB1AkvwpIAO9ovR55JIZm3wNaZwSMMfLXexOsGZ1C40L2o6DVqXR
- ZNNCGhTGL7wt41wBzlCfSDyQAaWiJY30mpOb9ky6mR91exDXT1jHGLlRkOtPSsEiP+iENDCCgwd
- 4FAgcm/1INX6D4ny0yaF0ird6L3ius/ZRotszDiViVYiKOWztVRx3xSBUUBzH6FCfZOtQI6p3+D
- fIfCbd7Le45LQMXKKIh4MWOut9jogpciD+QexzNn+4OtJ+rIhVgCUlRFf2aONo8SS0HzQ5Fj5J6
- usYDTtjvhRDLtmqpDueELxfxaW3TKoYXB5Zn187clI6x3cW8dK7Lg+001d76FLMVG2sMHHtf7qc
- /BGK5UaVHz9dP1Q==
+ bh=Ykanx8wzDbyUa/ls65ZFTHRGPUtwaqJKAXv1MSG0rDU=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBn2nV/qIBBtD+92YGrTaZ6GD9reQMC2Inj3zs73
+ N+8JLdqnNCJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCZ9p1fwAKCRBgAj/E00kg
+ ct3SD/4jAIh8CmZO81HMcbQ37zZZgxfpTo6ov/fnVOOHd8MeKz5r5T8PvXv/fu60t0ou3WTXroy
+ lt2hSsnu13cX0uvqfKCaTffSJUGlE5kog1XKkcePDd9bdse3Eh07yNdaVAQSK9McZuvWi8Cw/gW
+ 7RM5rccSuFGlCwxZrNj26vAKtfDRjMjMrSOqoiibo2wuFJyu8gtzLm4f1H969QIFnR43TTsKRzo
+ wkops2UoeJR+DPBK+4fT5lwxRLtTVtLS1p8nTLFyN0gHdhNcKtZjPoX/tKiG+hD7dl8ErnxvyaI
+ l7uoKnO9Sqe6wDGAd6wTk3xMSMbl97JvPhx2a0Ox89vjDWvOCnwCZv4QEkyDCPueBd8oXt7mEtE
+ Lq6P7om+cW++205M2Oij7pwsPTWoUJLQuikRBoR4tlaN3WgV/s236zfu2BS0FS3I3ps2UDRjGSg
+ 4b6ItRoim5Kaln5vH1V2aFB7QNx9lSD9f25oFdudmktgcnaRmtw6GArJXiMEWAsCspNyIjJRix0
+ s3oGIiA+sKJ3+7UbvYgGCxk7re0aIavOrDBsZeY90mCrBAi8Zy2rgXnisMYPLMQ86OhLms1G7TE
+ 5wmTvgiNnKruWcP7MkCZFzc97zoMVq/Xf6g1Hx/UibkIQUkDmrd/twYyA0BsrfSDmjaAp1HhWhE
+ k96mQxvVC9Q+neA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-From: David Heidelberg <david@ixit.cz>
+From: Janne Grunau <j@jannau.net>
 
-Wireless controllers share the common properties.
+The wireless-controller schema specifies local-mac-address as
+used in the bcm4329-fmac device nodes of Apple silicon devices
+(arch/arm64/boot/dts/apple).
 
+Fixes `make dtbs_check` for those devices.
+
+Signed-off-by: Janne Grunau <j@jannau.net>
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- .../bindings/net/wireless/wireless-controller.yaml | 23 ++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/wireless-controller.yaml b/Documentation/devicetree/bindings/net/wireless/wireless-controller.yaml
-new file mode 100644
-index 0000000000000000000000000000000000000000..7379f6c1aa05c15a5bc7b34df6502cc174af9a90
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/wireless/wireless-controller.yaml
-@@ -0,0 +1,23 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/wireless/wireless-controller.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Wireless Controller Common Properties
-+
-+maintainers:
-+  - Lorenzo Bianconi <lorenzo@kernel.org>
-+
-+properties:
-+  $nodename:
-+    pattern: "^wifi(@.*)?$"
-+
-+allOf:
-+  - $ref: ieee80211.yaml#
-+  - $ref: /schemas/net/network-class.yaml#
-+
-+additionalProperties: true
-+
-+...
-+
+diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+index a3607d55ef3671514cdf2c884cf5bd0ccaadb162..7c8100e59a6cd045837a2f602e367f3f79ced5ba 100644
+--- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+@@ -16,7 +16,7 @@ description:
+   binding.
+ 
+ allOf:
+-  - $ref: ieee80211.yaml#
++  - $ref: /schemas/net/wireless/wireless-controller.yaml#
+ 
+ properties:
+   compatible:
 
 -- 
 2.49.0
