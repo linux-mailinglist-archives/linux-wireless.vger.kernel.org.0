@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-20569-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20570-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD05A694F2
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 17:29:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7971EA69502
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 17:31:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74760189250B
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 16:29:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEC141894514
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 16:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318111A316D;
-	Wed, 19 Mar 2025 16:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3131DD0D5;
+	Wed, 19 Mar 2025 16:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="KQWXBu6H"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="WAWv4AoB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BD733E4;
-	Wed, 19 Mar 2025 16:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFB815A85E;
+	Wed, 19 Mar 2025 16:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742401732; cv=none; b=qnuIJiiO0E4S+llGw0OGGA3ZUSUQmeSS5URhQaKr86s014QQPIayNEnlSjJ7N28/G3dZJ/qMnU9bv7Zi5LbOy9lvU+1OcRf8L1AuQLKHrIvYQinElIbK6ik5GI8pirJK04HlQDPmyj7QF7sbp8Kf623VS7cDKFOlf7MEiuJhPLc=
+	t=1742401879; cv=none; b=bWLkMHhhOw1LrKIkJ5t8qm4aE+QFq75tDqamLGtUTJZN3ofR9gw+rUU8wmg9tebel9apWIxzUj0OFq5h8bOZ7XfMeI8+QFzK2i7BMZR1fBsTIiGQnbL8+JQu87zW3zxMzC8c/W2VVJxNEDiqyvomRf+g1VqSOMVGOcEgRu5Y+Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742401732; c=relaxed/simple;
-	bh=SasE9p0+y6wZb3DFJ23rxyYn2KRAjE3ZwCT1ehhw2PU=;
+	s=arc-20240116; t=1742401879; c=relaxed/simple;
+	bh=pQTuBt0wisvk9x/Q3TKGzpZhJh+ONCcvBgZ0qUsV/hc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KIOz/pSR3HEb/QdN9Dbv4jVtYoHZFyXYnX1dbungDsWrrOFTxUa6A5udto7i6HXVtC70dMeghWr9AL2lbG1bYTxUNFoD/NJqX2nk6liIMbz/PD/490VKGlVidg74IOdzV5YKCXFlG45UW1cwJKSXUt2ep1k5bmcenui3mFDQm98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=KQWXBu6H; arc=none smtp.client-ip=217.194.8.81
+	 Content-Type:Content-Disposition:In-Reply-To; b=DYMdbTbc7Q3Ts6qXEhXt4PUvafEIdDkRTsWNn5A+W7LWwj/36CsJwsaWjO96m9prs6QdjAowipSoWlyOn3WpWpPlI95DWBJxdVzYtz24mmHUxeHGDUGcZBYBfE4sWST4mQAwRFfVux+o+a237VLokMM8bBqgBGQLgLUdsqOeRrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=WAWv4AoB; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Received: from francesco-nb (31-10-206-125.static.upc.ch [31.10.206.125])
-	by mail11.truemail.it (Postfix) with ESMTPA id A31971F92C;
-	Wed, 19 Mar 2025 17:28:46 +0100 (CET)
+	by mail11.truemail.it (Postfix) with ESMTPA id 63DA31F92C;
+	Wed, 19 Mar 2025 17:31:14 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1742401726;
-	bh=AYaLky7x4u/TYR46uP6h6WSnFZl+IKJDfQyAVabrXck=; h=From:To:Subject;
-	b=KQWXBu6HWWcT5usyEMXtIcuIfO9NkcqboVdlBV1dHBC8lJ8ppQZYHK6uBdaYs6pR0
-	 jdk3Ml06ibndift44iY07wC/skwg4qV16CDuvXEqIbdPxd0Yc593tdO2t5wRkRW3cq
-	 MREjzpqnppl2f/4F7gzUTxK7N8lsOfx740MDpSQuwUArIiEKEHK2mI8VtHLJbwGvKd
-	 QdDoJJDaaxrzZl8lg5qCFLgMclHYPD7WxjODP0pny3fhbp7nJxgo0rc985//YJojLQ
-	 Oq39ZyzASPWjx+l7h2EP62kBn/UdtZuQxONCbEfV5PozngnBSmvxDHnH47LSa8KyXn
-	 sTNsUP/91Ck6g==
-Date: Wed, 19 Mar 2025 17:28:42 +0100
+	s=default; t=1742401874;
+	bh=pQTuBt0wisvk9x/Q3TKGzpZhJh+ONCcvBgZ0qUsV/hc=; h=From:To:Subject;
+	b=WAWv4AoBFVzJqBgibuz68OsigQmKihdF7K370F8LPRFZQxQGohc+5PgnWZcCuCPhw
+	 rLtIZT9B7TWdrDcPuG+a+ukR+5QbE69PitXKgcZjDGKeqWeRaF6i+gYXBksrqJ08Uz
+	 9iiyv3nFCekO6IeWu3aosB8+hj7RL5FLseKv16ckliB6jlvnB+69WoVwbNCtq8Pd+M
+	 eyKhP535H5l2nQzLSPhAXeFNyOz2lWrnYD/qg/xzxBEiVJhik703DxFbh3Jm/bfpoq
+	 pR5EhE4OLWYR5GAJytbBg67REXIMBw0385rEG5iB2KRJJ2E/CS7T++yEAZL+esQwgv
+	 dxcCSHbbjKVvQ==
+Date: Wed, 19 Mar 2025 17:31:13 +0100
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Jeff Chen <jeff.chen_1@nxp.com>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
 	briannorris@chromium.org, johannes@sipsolutions.net,
 	francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
 	s.hauer@pengutronix.de
-Subject: Re: [PATCH v4 1/2] wifi: mwifiex: Fix premature release of RF
- calibration data.
-Message-ID: <20250319162842.GA46894@francesco-nb>
+Subject: Re: [PATCH v4 2/2] wifi: mwifiex: Fix RF calibration data download
+ from file
+Message-ID: <20250319163113.GB46894@francesco-nb>
 References: <20250220061143.1417420-2-jeff.chen_1@nxp.com>
- <20250318050739.2239376-2-jeff.chen_1@nxp.com>
+ <20250318050739.2239376-3-jeff.chen_1@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -63,25 +63,18 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250318050739.2239376-2-jeff.chen_1@nxp.com>
+In-Reply-To: <20250318050739.2239376-3-jeff.chen_1@nxp.com>
 
 Hello Jeff,
 
-On Tue, Mar 18, 2025 at 01:07:38PM +0800, Jeff Chen wrote:
-> This patch resolves an issue where RF calibration data was being
-> released before the download process. Without this fix, the
-> external calibration data file would not be downloaded
-> at all.
-> 
-> Fixes: d39fbc88956e ("mwifiex: remove cfg_data construction")
-> Signed-off-by: Jeff Chen <jeff.chen_1@nxp.com>
+On Tue, Mar 18, 2025 at 01:07:39PM +0800, Jeff Chen wrote:
+> While this patch restores the ability to download RF calibration data
+> from a file, it may inadvertently break the feature to download
+> calibration data from the device tree.
 
-The code looks ok to me, however I do not understand the commit you
-selected as fixes tag.
-
-From what I understand releasing the data before using it was done since
-the initial commit 388ec385d5ce ("mwifiex: add calibration data download
-feature"). What am I missing?
+I do not think this is acceptable. Fixing something by adding another
+bug is not ok. You should fix the calibration data from file, without
+breaking the device tree calibration functionality.
 
 Francesco
 
