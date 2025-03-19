@@ -1,140 +1,118 @@
-Return-Path: <linux-wireless+bounces-20524-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20525-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C37A6817D
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 01:28:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB63AA682AC
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 02:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981483BD9E1
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 00:28:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52146421945
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 01:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4F514F70;
-	Wed, 19 Mar 2025 00:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2341A920;
+	Wed, 19 Mar 2025 01:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="LC3MrbFw"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HJzbM3uu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E008F6D
-	for <linux-wireless@vger.kernel.org>; Wed, 19 Mar 2025 00:28:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2EE29A0
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Mar 2025 01:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742344129; cv=none; b=mg845CSA4QfBbayMcboIk8ATmx6BtPEKypTTqz8LqnFc62KZvuV57j942AFkaa8zNZv7tdsN45Y8yITxFq2wjO5yTTWa86OvzfgxtxdI6iFcovFy4MB6yvJu7unlMfpWjWXrFBZ982XH28epM8rhVY4gA93SkNNmWOTGQfnbVEM=
+	t=1742346867; cv=none; b=qz2yGyuSluwKImx0hWAjXNqC5xwEIkJ8foYlMBcJRptpkGR4khw9NQbl1PoBia4/TOx4r+NnaQo0MmBm3/wNNluuR7vxMKCMFz4xryIGuVqaPW2TNm6gaR0ahbbKYLdB9zmbLZd/prTmTteMqVbHOGWGTb4ct8etvqEbX8TXqTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742344129; c=relaxed/simple;
-	bh=ItGqurRi4G7UXl4mQd6Ktkc+b7m/l/3Ja6iLstVrIL4=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Y8yz02g2xWM0CuS7ywq+DWz4bSaxds+IrrnE12YTC9xhUS1l6qFzJEUtrzxlYmU9BYEmQ7iJBDh6Q8EQ3aPnblXtkCAEnh8n49/P2ENWNd1Unt5+arB0CENY6YWkL6s5LuXhIWBrjha8WIBi7XP+KREp3qFLPLco/QYObVy9lQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=LC3MrbFw; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52J0SejU63873093, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1742344120; bh=ItGqurRi4G7UXl4mQd6Ktkc+b7m/l/3Ja6iLstVrIL4=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=LC3MrbFwIRsblkl0ozwyvzgvtRWx8IxDdQtvu6YIX581/fHDKBfBNacKZViGyX0dw
-	 SMhZfH+7z/5pV8lWXxGlG0Dux/xOU2JTFYANFwa/vp5NwFXcHlF7O5bsEgobHH3Cmj
-	 WB0mFTrScTC1VOoaAsT8AdJCnuzjQME4AElEteweWtLsxy4pAqdLvdnSwMBgf+h4r5
-	 5QL5TiDzc4Fe2f8MGq2PAIJYjJJ6fv7fnzAxIsiIlbDBzcyHnsdQb4cX3DDqBIF+L6
-	 BNujWlpaNS6eBagyj6zKxbxlazDCkEoZruJtUK6qYMRuLbAsFRPayZpJ9JikO/a6hx
-	 7ZTriSHfysN8A==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52J0SejU63873093
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Mar 2025 08:28:40 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 19 Mar 2025 08:28:41 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 19 Mar 2025 08:28:40 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Wed, 19 Mar 2025 08:28:40 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next 3/4] wifi: rtw88: Set AMPDU factor to hardware
-Thread-Topic: [PATCH rtw-next 3/4] wifi: rtw88: Set AMPDU factor to hardware
-Thread-Index: AQHblFUnF3FHtd8BUESRxvtJE6hCX7N2ps5ggAAqRgCAAVhLgIAAknmAgADkWLA=
-Date: Wed, 19 Mar 2025 00:28:40 +0000
-Message-ID: <95da11e5ec6f43babaedc6dfc25c3cbf@realtek.com>
-References: <c845ff10-08d9-4057-8f54-1579a548788d@gmail.com>
- <289795d5-49ae-4789-8f14-b2d016843a53@gmail.com>
- <b972a60bb0b04b5f817047027970d896@realtek.com>
- <0ac48cfe-dc7a-442f-b893-41416cd3017d@gmail.com>
- <095328518444426887e039202fa8c609@realtek.com>
- <aa278922-5fac-4f47-acc2-25cc2c133365@gmail.com>
-In-Reply-To: <aa278922-5fac-4f47-acc2-25cc2c133365@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1742346867; c=relaxed/simple;
+	bh=CswRwcr6BInH0rC2zUiXNzcGBmmuixvamxGDYImMcFY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EgYTCleOMXCHR9Dd7U1yWH3qDQmwHPtoDb6sQu4q2y/w6nYQG9mnaNKstcvVcGx5XsIVJAfqawwULRglQauKzW8OfzYKGWOVcQvzBSj7Td5QQVzgiWKUw+OhkUiTab3cEoIxcsEOgwCzNR8XFr5N1/KMqdhpYAZTQGSmCY7hum8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HJzbM3uu; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-225fbdfc17dso58604905ad.3
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Mar 2025 18:14:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1742346865; x=1742951665; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uGrzJ1UuShQeE0bIlKrHo2bnT+e+KyM1SECLLJdxup0=;
+        b=HJzbM3uu3mOafxhhW4DGvZv/aIqkjDVSflvDnjv6UNT2OnkCn/GfASj84XexDg0UvB
+         tyUrO2gZjahk7qReVD5SiMiiD6ze2OI8J8SvVXuNb6bR3o21zNQNGBAI7QDqiz66uRhC
+         VUNdNsikIK8kwGBVmBy8Swb/BupSIS+prnUQk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742346865; x=1742951665;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uGrzJ1UuShQeE0bIlKrHo2bnT+e+KyM1SECLLJdxup0=;
+        b=DEC7s22FL+S2zZ++h6ZD7BKDG/+PPkvSUdRY0aib4MYLKW3qp/vhTBtcwZGLDy54fx
+         10HkLFIgW9IfMVd13usvYJ4Wd5AV7gyD1g2YM+Pemx6kgAEMwB6Be0GwQhX92tsFo8lf
+         S4pz9XFqurCw1D0GyDxGvxFR3+nU9qyODtmgNgSLLejMJULRvbdHcubqu9rhBwq3GGTU
+         E32X+TfG6M1XUy7KST0jYJugw9ReJaD8zth9K/cKWrCNFhjk+BwgH8k7m5kEq/GYo5w0
+         l+lpHl2TWaAIcZR/plvawusuujyzOIxlAAqPmlE1TxriDq+WyghlN9aSKUmLmphPcA6s
+         uvnA==
+X-Forwarded-Encrypted: i=1; AJvYcCUtmyTp+4D/NtdCRPOWm5HvDvOto4dwLli5zvsUwCZBUqQQTLlG7W5NRkXButJ9sZQq+bzh04jDFSeDOMzFjw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YymON3zqRWgppfxntrlcnllfZaP+XwXWUjzr/O+DBago64ANMNh
+	i9hF89CEdxqwltB8+cnuIphnqYKyAR2+FFENps2x2lD6GAagJLI14hQlRHD7jw==
+X-Gm-Gg: ASbGncsW4xSgS9jUu8q1Bv2zCd01vSRz6Pg4dSMpg+WgTiQsLHbmIe9qRb5GCkSyK21
+	tCCOhQBFAyezrkBAaTQaOsSq2eXLOXNeN6Db5Xu/79xzgwOxp0f6TCUn8fAq4QCJIbOQb/kMdoQ
+	LgRE28T+D9QlUg4Ch30txmRqXDKZUki5x7kn4xrGg/cB0F05RERw8j+WYePeUbne/tBoW9Qc+mM
+	qEvP65oP/owb0LJ6Fyd8r0alSbXPqYhajqw6xplXePA/w6+KDL5sgOf4aQGcFFTQSVTEjvdY2kQ
+	jRlxnYpnTvm45A9r+J8v03rCiQBIH78KbeEjVhy9L5RdG7bRg/nNSLwmAT7QHupFnV7HWTvn+nB
+	yr5KWsnw=
+X-Google-Smtp-Source: AGHT+IE2r4+WyvklTVYEM/9BkxUcBJdI34MNjXHXsEpIaA86ul85ljErrDO4kXiJnDAlxKXbr1mF3w==
+X-Received: by 2002:a17:902:e950:b0:224:1af1:87f4 with SMTP id d9443c01a7336-22649938840mr13243735ad.22.1742346865550;
+        Tue, 18 Mar 2025 18:14:25 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:cd95:bdc6:b8b6:b80b])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-225c6bbfb4fsm101883725ad.208.2025.03.18.18.14.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Mar 2025 18:14:24 -0700 (PDT)
+Date: Tue, 18 Mar 2025 18:14:23 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>, linux-wireless@vger.kernel.org,
+	David Lin <yu-hao.lin@nxp.com>,
+	Francesco Dolcini <francesco@dolcini.it>, kernel@pengutronix.de
+Subject: Re: Future of mwifiex driver
+Message-ID: <Z9oabwPsFJEJKaAD@google.com>
+References: <Z8WM9jn1QFscWZBQ@pengutronix.de>
+ <Z8ZbJYmxgnvd7Q1O@google.com>
+ <2587f323fe19b33d2e9ec49bdc3979f71b9c0ba0.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2587f323fe19b33d2e9ec49bdc3979f71b9c0ba0.camel@sipsolutions.net>
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBPbiAx
-OC8wMy8yMDI1IDA0OjA2LCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4gQml0dGVyYmx1ZSBTbWl0
-aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiA+PiBPbiAxNy8wMy8yMDI1IDA1
-OjAxLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4+PiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIx
-Y2VyZmUyQGdtYWlsLmNvbT4gd3JvdGU6DQo+ID4+Pj4NCj4gPj4+PiBUZWxsIHRoZSBjaGlwIHRo
-ZSBtYXhpbXVtIEFNUERVIHNpemUgc3VwcG9ydGVkIGJ5IHRoZSBBUC4gVGhpcyBncmVhdGx5DQo+
-ID4+Pj4gaW1wcm92ZXMgdGhlIFRYIHNwZWVkIG9mIFJUTDg4MTRBVSBpbiB0aGUgMi40IEdIeiBi
-YW5kLiBCZWZvcmU6IH45MA0KPiA+Pj4+IE1icHMuIEFmdGVyOiB+MzAwIE1icHMuDQo+ID4+Pj4N
-Cj4gPj4+PiBBZGQgdGhpcyBjb25maWd1cmF0aW9uIGZvciBhbGwgdGhlIGNoaXBzLCBldmVuIGlm
-IGl0IG9ubHkgaGFzIGFuIGVmZmVjdA0KPiA+Pj4+IG9uIFJUTDg4MTRBVSBpbiBteSB0ZXN0cy4g
-U3VyZWx5IHRoZXkgYWxsIG5lZWQgdGhpcy4NCj4gPj4+DQo+ID4+PiBUaGUgaGFyZHdhcmUgZGVm
-YXVsdCB2YWx1ZSBvZiBSRUdfQU1QRFVfTUFYX0xFTkdUSCBpcyAweGZmZmYgKHVubGltaXRlZCkN
-Cj4gPj4+IGZvciBtb3N0IGNoaXBzLiBJdCBzZWVtcyBsaWtlIFJUTDg4MTJBL1JUTDg4MjFBIGFy
-ZSBhbHNvIGV4Y2VwdGlvbnMsIHNvDQo+ID4+PiBhdCBwb3dlciBvbiBmdW5jdGlvbiB0aGV5IGRv
-DQo+ID4+PiAgICAgcnR3X3dyaXRlMzIocnR3ZGV2LCBSRUdfQU1QRFVfTUFYX0xFTkdUSCwgMHhm
-ZmZmZmZmZik7DQo+ID4+Pg0KPiA+Pj4gSSBmZWVsIFJUTDg4MTRBIGhhcyBzaW1pbGFyIHNldHRp
-bmcsIHNvIG1heWJlIHlvdSBjYW4ganVzdCBhZGQgc2ltaWxhcg0KPiA+Pj4gc3R1ZmYuDQo+ID4+
-Pg0KPiA+Pj4gQnkgdGhlIHdheSwgdGhlIEFNUERVIGlzIGNvbnRyb2xsZWQgYnkgVFggZGVzY3Jp
-cHRvciBiYXNpY2FsbHk6DQo+ID4+PiAgICAgICBwa3RfaW5mby0+YW1wZHVfZmFjdG9yID0gYW1w
-ZHVfZmFjdG9yOw0KPiA+Pj4gICAgICAgcGt0X2luZm8tPmFtcGR1X2RlbnNpdHkgPSBhbXBkdV9k
-ZW5zaXR5Ow0KPiA+Pj4gICAgICAgcGt0X2luZm8tPmFtcGR1X2VuID0gYW1wZHVfZW47DQo+ID4+
-Pg0KPiA+Pj4gU2luY2UgeW91IGRpZG4ndCBjaGFuZ2UgdGhpcyBwYXJ0IGF0IGFsbCwgSSBzdGls
-bCBmZWVsIHNldHRpbmcNCj4gPj4+IFJFR19BTVBEVV9NQVhfTEVOR1RIIHRvIDB4ZmZmZmZmZmYg
-Y2FuIGZpeCBsb3cgdGhyb3VnaHB1dCBwcm9ibGVtLg0KPiA+Pj4NCj4gPj4NCj4gPj4gSSB0cmll
-ZCAweGZmZmZmZmZmIGp1c3Qgbm93IGFuZCBpdCBkb2Vzbid0IHdvcmsuIEl0J3MgdGhlIHNhbWUg
-d2l0aA0KPiA+PiBib3RoIG9mIG15IHJvdXRlcnMuIFRoZXkgYWR2ZXJ0aXNlIGEgbWF4aW11bSBB
-TVBEVSBzaXplIG9mIDY0IEsuDQo+ID4+IEkgY2FuJ3QganVzdCBzZXQgaXQgdG8gMHhmZmZmIGVp
-dGhlciwgYmVjYXVzZSB0aGVuIHRoZSB1cGxvYWQgc3BlZWQNCj4gPj4gaW4gdGhlIDUgR0h6IGJh
-bmQgc3VmZmVycyBhIGxvdC4gVGhlIGR1YWwgYmFuZCByb3V0ZXIgYWR2ZXJ0aXNlcyBhDQo+ID4+
-IG1heGltdW0gQU1QRFUgc2l6ZSBvZiAyNTYgSyBpbiB0aGUgNSBHSHogYmFuZCBzbyBpdCBnZXRz
-IGEgdmFsdWUgb2YNCj4gPj4gMHgzZmZmZi4NCj4gPg0KPiA+IE5vdCBzdXJlIGlmIDB4ZmZmZmZm
-ZmYgaXMgYSBzcGVjaWFsIHZhbHVlLiBTaW5jZSB0aGlzIGlzIGEgbGltaXQgb2YNCj4gPiBBTVBE
-VSBsZW5ndGgsIHlvdSBjYW4gc2V0IGEgY29uc3RhbnQgbGFyZ2UgdmFsdWUgc3VjaCBhcyAweDNm
-ZmZmIHlvdQ0KPiA+IGhhdmUgdGVzdGVkLiBJcyB0aGVyZSBzcGVjaWFsIGNhc2UgaXQgY2FuJ3Qg
-aGFuZGxlPw0KPiA+DQo+ID4NCj4gDQo+IDB4M2ZmZmYgaXMgbm90IGdvb2QgZm9yIHRoZSAyLjQg
-R0h6IGJhbmQuIFRoZSB1cGxvYWQgaXMgb25seSB+OTAgTWJwcw0KPiB3aXRoIGJvdGggb2YgdGhl
-IHJvdXRlcnMgSSB0ZXN0ZWQuIFNhbWUgd2l0aCAweDFmZmZmLiBPbmx5IDB4ZmZmZg0KPiB3b3Jr
-cyB3ZWxsIGZvciB0aGVtLg0KDQpIYXZlIHlvdSBjaGVja2VkIHRoZSBwYWNrZXRzIGluIHRoZSBh
-aXI/IEhvdyBhYm91dCB0aGVpciBkaWZmZXJlbmNlPw0KSW50dWl0aXZlbHkgbGFyZ2VyIFJFR19B
-TVBEVV9NQVhfTEVOR1RIIHdvdWxkIGJlIGJldHRlci4NCg0KPiANCj4gMHhmZmZmIGlzIHRvbyBs
-aXR0bGUgZm9yIHRoZSA1IEdIeiBiYW5kLiBUaGUgdXBsb2FkIHNwZWVkIGlzIH4yMDAgTWJwcw0K
-PiBsZXNzIHRoYW4gd2l0aCAweDNmZmZmLg0KPiANCj4gSSBndWVzcyBpZiB5b3UgcmVhbGx5IGRv
-bid0IHdhbnQgdGhpcyBwYXRjaCBJIGNhbiBoYXJkY29kZSAweGZmZmYgYW5kDQo+IDB4M2ZmZmYg
-aW4gcnR3ODgxNGFfc3dpdGNoX2JhbmQoKS4gSSBqdXN0IGRvbid0IGtub3cgaWYgYWxsIGFjY2Vz
-cw0KPiBwb2ludHMgd2lsbCBiZSBoYXBweSB3aXRoIHRoYXQuDQoNCkluaXRpYWxseSBJIHdhbnRl
-ZCB0byBzaW1wbHkgdGhpcyBwYXRjaCwgYmVjYXVzZSBjaGFuZ2luZyBSRUdfQU1QRFVfTUFYX0xF
-TkdUSA0KZm9yIG90aGVyIGNoaXBzIHdpdGhvdXQgdGVzdGluZyBpcyByaXNreS4gV2l0aCB5b3Vy
-IHRlc3RzLCB0aGUgYmVoYXZpb3Igb2YNClJFR19BTVBEVV9NQVhfTEVOR1RIIHdvcmtzIG5vdCBm
-dWxseSBleHBlY3RlZCwgc28gSSBzdXNwZWN0IHRoZSByaXNrDQppcyBldmVuIGhpZ2hlci4gDQoN
-ClRoZXJlZm9yZSwgSSB3b3VsZCBsaWtlIGxpbWl0IHRoaXMgY2hhbmdlIHRvIFJUTDg4MTRBLiBU
-aG91Z2ggaGFyZGNvZGUgcHJvcG9zYWwNCmlzIG5vdCBzdXJlIHdvcmthYmxlIGZvciBhbGwgQVAs
-IHdlIGFsc28gZG9uJ3Qga25vdyB0aGlzIHBhdGNoIHdvcmtzIGZvciBhbGwNCkFQLiBBbnl3YXkg
-dGhpcyBwcm9wb3NhbCBpcyBmaW5lIHRvIG1lIGlmIHdlIGRvbid0IGhhdmUgb3RoZXIgaWRlYXMu
-DQoNCg0K
+On Fri, Mar 07, 2025 at 09:48:13AM +0100, Johannes Berg wrote:
+> But copying an old crappy driver for the sake of "we don't want to
+> maintain an old crappy driver" is a really bad argument to make?!
+
+Is that the argument? Honest question. It's not really clear to me.
+
+From
+https://lore.kernel.org/all/20240930063701.2566520-1-yu-hao.lin@nxp.com/:
+
+> [1] We had considered adding IW61x to mwifiex, however due to FW
+>     architecture, host command interface and supported features are
+>     significantly different, doing this on mwifiex will carry a lot of
+>     burdens. The effort of making sure no regression is also a huge effort.
+>     We must create a new driver nxpwifi. Subsequent NXP chipsets will be
+>     added and sustained on nxpwifi only.
+
+That sounds like you noted one of their reasons ("making sure no
+regression is also a huge effort"), but they also claim the FW
+architecture and host command interface is significantly different. I
+don't recall seeing a proper discussion of that -- although Sascha seems
+to claim [1] it wasn't that hard for him to support iw61x via mwifiex.
+
+Brian
+
+[1] https://lore.kernel.org/all/Z8rGDTjkwKAVaREL@pengutronix.de/
 
