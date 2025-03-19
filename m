@@ -1,79 +1,79 @@
-Return-Path: <linux-wireless+bounces-20581-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20582-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A697CA699BF
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 20:50:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E258A69BBD
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 23:04:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11E0A464A68
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 19:50:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 504B616A0AE
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 22:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D9F2101B3;
-	Wed, 19 Mar 2025 19:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0EA21A434;
+	Wed, 19 Mar 2025 22:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M9vZACxq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFu+Z6vx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62010A920;
-	Wed, 19 Mar 2025 19:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C63213E97
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Mar 2025 22:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742413816; cv=none; b=S7tVdxW3VO1cQLlUaY5dYJODz4LciM+cnKf1rbjGjUQOWqZHu5rkWAvmFtxFT4JWMond/i2d8tCJ7+RFI0UzRXXlf9hcELE+TlVRR4sS4XRm0W+T+wn7txf7DgOzSUT5n2HFYkyopqz/i4WkT6Cr9sdUCvjhl4898VULr9pvKUo=
+	t=1742421782; cv=none; b=B/tIDiJdjvoaCO3sya6t/OOGY0rZQlWqt3zHS+xTgoa4T56vgZ9iH57L2iEcysy3FTK9/b/35Tgv2cDduTjEbp2SrkLZIUGhTWhMkc+hePEvXjhxj5L2HI9cmHql5q526WBt17a0PTsdg0mZIRn4t0Z4O8EIrg+0J9pPxlpUBIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742413816; c=relaxed/simple;
-	bh=ZsbP6Tfa+TakJIzIxvjtnOXdCdqTl1sJleAd/BtH++E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jW4pptXor4n3cr6Ut7Pbd5nZy3683r7RdFuVXUn/RapkVGpo9iH3bGu06HycHiYDyTHa/bEvMVRCYgg59Duc8L0ND8CrXPtgWRTMRHCimaPu4Wh5BR5QOPR+uqlXaBHWYjk/D1dYD/yO/1NrrtfvxIXHMEDFbQdgZ1bZY4y9MGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M9vZACxq; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1742421782; c=relaxed/simple;
+	bh=2c286KXkTseFxBY7FxQO88NPSWw5WFg9mOOiTMqatqQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=eU2RCkNUfGXY5x0H1tSvhfusE0lGXGiJD0VqR5rQj17Z5WcUoTmBFcpl1M7X9VCrqlQdXRU9kG5UByzR6/2GmlAAK8h9keULHsu4PFfCfZ7ULz48m2yTtkeSjL1tYIWTYAXxNHFfBFT69uTSobSsZ+cx5NrNbw86Qxpkdx6aCJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFu+Z6vx; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ff6a98c638so93775a91.0;
-        Wed, 19 Mar 2025 12:50:14 -0700 (PDT)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-abf3d64849dso26579666b.3
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Mar 2025 15:03:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742413813; x=1743018613; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742421779; x=1743026579; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rOCrjFT8pPG35qudWbMcGszw7gK+zyViIVYP8L9Kl0U=;
-        b=M9vZACxqajJSaTjaKKsISGzWgQWJ+1OXTMda/0GvWz9oKB+AgDAIfkIq5Upy0RTsNM
-         Y5A4dhttMzt/XFd5c9AYPEfj2104r7ntERHQUQT+bzJ+tydHEEhya2Q4WJ2LP7XWTfi9
-         jdFXY0plWLKHC1AGgMXBQ7Nx8Tn0ES1yzvtvxtkKg4N8MbsjuN9REiPxHueJYanPtgww
-         QxjrwXoVaETpUlblIIitrVHR8JDO7lCumaA71++QC2VkrJPjci13s7IZNoTr5unFrCTZ
-         hvBA+55/kxusYSO1ga8ACfsmiaYsByHj+U30L9gFktSwiuOu06fwzw9XKlBmZd26kAQl
-         rn8g==
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6Hxs4yDZMMw7+63opFO1EZl0VnxUPMQxmPHmoHU6zfM=;
+        b=mFu+Z6vxOJHjl+T7sMG+niRoF0AEXtmHRp+lLW3sp0XTM1q5b5J9+F1q4BJajspgOp
+         1qbyM2kY8AJlU/AU4ki8cYyLFY4FU5b8syHLPYf+E0KZm6jppRYuAwRZ5TMOMdSd9pww
+         aI2NUCC3ldb4UMaOlUIyvc3r7uhu+inVi6DfH9oO/qMSGdAQp310RkVe40kWKIKoOOZt
+         ip8LcbxR95UZay1W7l0SMlMDMIUg49bpwwd5gM8Na0ZJ4o8QdIZKAF8ybjIJs7I0n1nS
+         6WcetEN3DIyL2bqleZZq4XgEnF2X2tvODP96/NlaUlxxcUkD2RE1HfCP5dnKMTXYXlp+
+         QINg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742413813; x=1743018613;
+        d=1e100.net; s=20230601; t=1742421779; x=1743026579;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rOCrjFT8pPG35qudWbMcGszw7gK+zyViIVYP8L9Kl0U=;
-        b=Jk5Q5TcB0gRSfYyjdbpTqao3Tw+pT5ZpCElIrp6Ta3iNV0l/4IKdZHs8r61RLI9C77
-         m+GKdUaWnjw5M6Aqp7fotxbiZsi8D2IgEpdjNreei9FtTcUMUGo5kl8jUuZaoe0Tmyc5
-         W9iT0gP4rUScA6JtSIvH6Q+uYbYgxRGYDb6FoXdZGcqcyfJfDdZuPlNGYEcgs16WtmyM
-         Ri2IrMbVhWGjshCZCMG6t++bqDjgzY8MitFOFw/ZTKHecw0sj+FRipDd9G7JlatKQYBB
-         2DO/V3pgOrr+X+Uz1PdIem57B4rvZPonyKTbzsNj4RnZiSzm58bF0yArPoQag0OuajFG
-         o3DA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMGn/n18f9tKDhvJn3Ci9HTiIizPkN60AqWxqJawMx8I6l9dxRlCqcZerdTh2+HanE3Ob55jowPZ6R4yJpVw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAKCfYum/Hv2TThYzUie1/qiOoo+Bc22B9u0lQ1FGGMhudTQr0
-	MnIz6HYNowtSnsKQJABWDndSqKDg2ZpMcH2g9zjsgtQ/wxABXFJX
-X-Gm-Gg: ASbGncvv4t3Xg61vpBq2V6+YuH1DmJDzxcBL4nl/RTOn+n/r7wEkq9VotKUyPY5BZOK
-	vmroLIgLeO3acSWTE54h8OprSaPesr5pI3kbqF1378aQK6nM2wA4wefxIxXYXw6yC9n4FSmZ4Os
-	7VMY4wJgKdvR5xfdSq43qb36ZQUAr7eS2LwDkAm/EmziMIW9AsHFhBUsXnttiT4R9Fy2jNiyd2v
-	F0J9BRtebGNQy8bKeZrHfTPzfgVCZGgUlwf299LPjV7Ez9gDlDV+VApH8rgPH27UW6+RXPodRlq
-	X0fVCankD4jyJn8MU1LhEtD3GIKOMlwwueMXZccOLutCZRcJ
-X-Google-Smtp-Source: AGHT+IG60Nv4IyKEwP5oBlRZaeZbJxv+QDR41nvkKlo0pUCU9APXKlZxdx1aNv2TezDy79IPBTgtig==
-X-Received: by 2002:a17:90b:3d10:b0:301:1c11:aa83 with SMTP id 98e67ed59e1d1-301be1f8caamr5530982a91.28.1742413813406;
-        Wed, 19 Mar 2025 12:50:13 -0700 (PDT)
-Received: from [10.100.121.195] ([152.193.78.90])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301bf58af67sm2087269a91.17.2025.03.19.12.50.11
+        bh=6Hxs4yDZMMw7+63opFO1EZl0VnxUPMQxmPHmoHU6zfM=;
+        b=EoFOPeyEFH8z4iH+bgBh9uv0bOM1bByo2UmGFlbvFiO3zirRcrgm6GO99bFqG5Jl2D
+         r3Y2gA16Xv+d9IocHsG/5waw2f901SuKMBeDC0tk0+N4FO31doZIuIi5clMJ75XsG/wn
+         50dTsRYRAe8+oEHupWoL9M+PPKCaSL6Ap7DJ7pjQij2acG/icecmraSf78aSwC8dyQCE
+         hsL5kH+BnXdiTUyFnx/XEpptcyWUqPVhlE5EtpjzolECsfXGmyKbjQ+orZ7z83kf22Dx
+         rJD0A84dEuHvb2Nqs85EvH6UYFlxWwJnqw0G+RG0n5nD2KQO+pFWUvxQtVZDGqQBE5a4
+         eyVg==
+X-Forwarded-Encrypted: i=1; AJvYcCUAYuzcUJ0bqW0mUajbs3DxG6So3DCOLRfvupAwaQ0Yld5Mo9CaklVIvJuSln02Y3kfIOzvS3SznC2ZO1lHCA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yywt/MnwA4CAlrtr4Kuj3cOGd+fWz1wiQAIXOyednIS3FXWk/kN
+	hzi+bi26A+ouZyqRTMLJndmG/OQM822C2S98zf6FrA6sPodzb8BTraXQMQ==
+X-Gm-Gg: ASbGncutSbIw8Ityr8xZuKEdHaeea32k38Wr9m+RGVPl+PKwMz4h1llp1L8LaLgqb15
+	NK6VtsGmPfFq2tpdkvNILxyXlgYOy5XXYEdsEhv3zk57LddQ83C/h2eK/spwLuHvbH4t+CQ8uql
+	Avff2olMmjfnok0rnEF2yrTUde/oSM9cmmmDbS/mgroJJ44HoukBCZvCZU0RexSeLMZx5eZwnA3
+	FGDUTkX90tIfROmHKBZ4K2IHyC9Vw2NCW3aZrNdSvRJJ8PMpmGQnXhmsjEDKSZZphzn95e5Cdl8
+	zKlSmigivzZ9eQPWyd8km18v/kAXjbNs7dgRCuvtDUl/oKlW1FWmnYF0rXQxXHdE
+X-Google-Smtp-Source: AGHT+IGel3lLZlc2GDF7VBZLuiHUuTKFCSrioG3F6/bALpeKJ10kXOC8d701PGkpQlEW1zKEDdOHjg==
+X-Received: by 2002:a17:907:d785:b0:abf:e7c1:b3bf with SMTP id a640c23a62f3a-ac3b7a9882dmr616952166b.11.1742421778904;
+        Wed, 19 Mar 2025 15:02:58 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.155])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac314aa6499sm1054741566b.183.2025.03.19.15.02.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Mar 2025 12:50:12 -0700 (PDT)
-Message-ID: <792bd4a3-4e51-49ef-ba55-1922505b1c8d@gmail.com>
-Date: Wed, 19 Mar 2025 12:50:10 -0700
+        Wed, 19 Mar 2025 15:02:57 -0700 (PDT)
+Message-ID: <b76818b3-e711-4721-a902-99c557e00a73@gmail.com>
+Date: Thu, 20 Mar 2025 00:02:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,140 +81,94 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mac80211: clip ADDBA instead of bailing out
-To: alexandre.ferrieux@orange.com,
- Alexandre Ferrieux <alexandre.ferrieux@gmail.com>,
- linux-wireless@vger.kernel.org
-Cc: Linux Kernel Network Developers <netdev@vger.kernel.org>,
- Johannes Berg <johannes@sipsolutions.net>
-References: <20250317163902.1893378-1-sashal@kernel.org>
- <20250317163902.1893378-2-sashal@kernel.org>
- <69c63a19-5419-4bbe-858f-6ca100345a28@orange.com>
- <1560b292-6366-4588-ad4d-654377613b84@gmail.com>
- <2b5c91c6-49db-42bb-803c-c01dc785e1f1@orange.com>
+Subject: Re: [PATCH rtw-next 3/4] wifi: rtw88: Set AMPDU factor to hardware
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <c845ff10-08d9-4057-8f54-1579a548788d@gmail.com>
+ <289795d5-49ae-4789-8f14-b2d016843a53@gmail.com>
+ <b972a60bb0b04b5f817047027970d896@realtek.com>
+ <0ac48cfe-dc7a-442f-b893-41416cd3017d@gmail.com>
+ <095328518444426887e039202fa8c609@realtek.com>
+ <aa278922-5fac-4f47-acc2-25cc2c133365@gmail.com>
+ <95da11e5ec6f43babaedc6dfc25c3cbf@realtek.com>
 Content-Language: en-US
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <2b5c91c6-49db-42bb-803c-c01dc785e1f1@orange.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <95da11e5ec6f43babaedc6dfc25c3cbf@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Alexandre,
-
-On 3/19/25 7:18 AM, alexandre.ferrieux@orange.com wrote:
-> Hi James,
->
-> There is roughly a 8x slowdown :}
-> I got these numbers from the colleagues who detected the issue
->
->    - physical available bandwidth 1.733 Gbps (as per iwconfig)
->    - ADDBA offer size=256
->    - effective bandwidth observed 1.2Gbps with accept-and-clip-ADDBA (size=64)
->    - vs. 150 Mbps with reject-ADDBA
-
-Fwiw I didn't see any difference in throughput with and without this 
-patch. We do use wifi 6/6e APs and wifi 5 clients (ath10k), but I 
-suspect it has something to do with our configuration not taking full 
-advantage of 6/6e speeds, so the APs may not be proposing an ADDBA size 
-that the client rejects. But I'll keep this in mind if we ever notice 
-the behavior.
-
-Overall though I didn't observe and regression-type behavior.
-
-Thanks,
-
-James
-
->
-> Note, as a Wifi rookie it is not immediately obvious to me how the semantics of
-> ack aggregation would interfere with broadcast actions, as ADDBA are supposedly
-> unicast. But you're the expert :)
->
->
->
-> On 19/03/2025 14:21, James Prestwood wrote:
->> --------------------------------------------------------------------------------------------------------------
->> CAUTION : This email originated outside the company. Do not click on any links or open attachments unless you are expecting them from the sender.
+On 19/03/2025 02:28, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> On 18/03/2025 04:06, Ping-Ke Shih wrote:
+>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>>> On 17/03/2025 05:01, Ping-Ke Shih wrote:
+>>>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>>>>>
+>>>>>> Tell the chip the maximum AMPDU size supported by the AP. This greatly
+>>>>>> improves the TX speed of RTL8814AU in the 2.4 GHz band. Before: ~90
+>>>>>> Mbps. After: ~300 Mbps.
+>>>>>>
+>>>>>> Add this configuration for all the chips, even if it only has an effect
+>>>>>> on RTL8814AU in my tests. Surely they all need this.
+>>>>>
+>>>>> The hardware default value of REG_AMPDU_MAX_LENGTH is 0xffff (unlimited)
+>>>>> for most chips. It seems like RTL8812A/RTL8821A are also exceptions, so
+>>>>> at power on function they do
+>>>>>     rtw_write32(rtwdev, REG_AMPDU_MAX_LENGTH, 0xffffffff);
+>>>>>
+>>>>> I feel RTL8814A has similar setting, so maybe you can just add similar
+>>>>> stuff.
+>>>>>
+>>>>> By the way, the AMPDU is controlled by TX descriptor basically:
+>>>>>       pkt_info->ampdu_factor = ampdu_factor;
+>>>>>       pkt_info->ampdu_density = ampdu_density;
+>>>>>       pkt_info->ampdu_en = ampdu_en;
+>>>>>
+>>>>> Since you didn't change this part at all, I still feel setting
+>>>>> REG_AMPDU_MAX_LENGTH to 0xffffffff can fix low throughput problem.
+>>>>>
+>>>>
+>>>> I tried 0xffffffff just now and it doesn't work. It's the same with
+>>>> both of my routers. They advertise a maximum AMPDU size of 64 K.
+>>>> I can't just set it to 0xffff either, because then the upload speed
+>>>> in the 5 GHz band suffers a lot. The dual band router advertises a
+>>>> maximum AMPDU size of 256 K in the 5 GHz band so it gets a value of
+>>>> 0x3ffff.
+>>>
+>>> Not sure if 0xffffffff is a special value. Since this is a limit of
+>>> AMPDU length, you can set a constant large value such as 0x3ffff you
+>>> have tested. Is there special case it can't handle?
+>>>
+>>>
 >>
->> ATTENTION : Cet e-mail provient de l'extérieur de l'entreprise. Ne cliquez pas sur les liens ou n'ouvrez pas les pièces jointes à moins de connaitre l'expéditeur.
->> --------------------------------------------------------------------------------------------------------------
+>> 0x3ffff is not good for the 2.4 GHz band. The upload is only ~90 Mbps
+>> with both of the routers I tested. Same with 0x1ffff. Only 0xffff
+>> works well for them.
+> 
+> Have you checked the packets in the air? How about their difference?
+> Intuitively larger REG_AMPDU_MAX_LENGTH would be better.
+> 
+
+I checked today. With 0xffffffff I see 29% retransmission rate. With
+0xffff the retransmission rate is only 8.6%.
+
 >>
->> Hi Alexandre,
+>> 0xffff is too little for the 5 GHz band. The upload speed is ~200 Mbps
+>> less than with 0x3ffff.
 >>
->> On 3/19/25 3:58 AM, Alexandre Ferrieux wrote:
->>> When a Linux Wifi{4,5} device talks to a Wifi6 AP, if the AP proposes a Block
->>> Acknowledgement aggregation size (ADDBA) exceeding its expectations, the code in
->>> mac80211 just bails out, rejecting the aggregation. This yields a big
->>> performance penalty on the ack path, which is observable in comparison with
->>> other OSes (Windows and MacOS) which "play smarter" and accept the proposal with
->>> a "clipped" size.
->> Out of curiosity do you have any performance numbers for this, like
->> Linux vs Windows vs MacOS? We ran into a significant performance hit
->> after I added multicast RX support on ath10k (after ~30 clients were on
->> the same channel). After looking into the pcaps we saw many ADDBA
->> failures and ultimately had to disable multicast RX. I want to give this
->> patch a try either way, but I was curious if you had any data on
->> performance improvements.
->>> A typical scenario would be:
->>>
->>>     AP -> Device : ADDBA_request(size=256)
->>>
->>> Current Linux reaction:
->>>
->>>     Device -> AP : ADDBA_reply(failure)
->>>
->>> Other OSes reaction:
->>>
->>>     Device -> AP : ADDBA_reply(size=64)
->>>
->>> Note that the IEEE802.11 standard allows for both reactions, but it sounds
->>> really suboptimal to be bailing out instead of clipping. The patch below does
->>> the latter.
->>>
->>> Signed-off-by: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
->>> ---
->>>
->>> diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
->>> index f3fbe5a4395e..264dad847842 100644
->>> --- a/net/mac80211/agg-rx.c
->>> +++ b/net/mac80211/agg-rx.c
->>> @@ -317,18 +317,20 @@ void __ieee80211_start_rx_ba_session(struct sta_info *sta,
->>>                   max_buf_size = IEEE80211_MAX_AMPDU_BUF_HT;
->>>
->>>           /* sanity check for incoming parameters:
->>> -        * check if configuration can support the BA policy
->>> -        * and if buffer size does not exceeds max value */
->>> +        * check if configuration can support the BA policy */
->>>           /* XXX: check own ht delayed BA capability?? */
->>>           if (((ba_policy != 1) &&
->>> -            (!(sta->sta.deflink.ht_cap.cap & IEEE80211_HT_CAP_DELAY_BA))) ||
->>> -           (buf_size > max_buf_size)) {
->>> -               status = WLAN_STATUS_INVALID_QOS_PARAM;
->>> +            (!(sta->sta.deflink.ht_cap.cap & IEEE80211_HT_CAP_DELAY_BA)))) {
->>> +               status = WLAN_STATUS_INVALID_QOS_PARAM;
->>>                   ht_dbg_ratelimited(sta->sdata,
->>>                                      "AddBA Req with bad params from %pM on tid
->>> %u. policy %d, buffer size %d\n",
->>>                                      sta->sta.addr, tid, ba_policy, buf_size);
->>>                   goto end;
->>>           }
->>> +       if (buf_size > max_buf_size) {
->>> +         buf_size = max_buf_size ; // Clip instead of bailing out
->>> +       }
->>> +
->>>           /* determine default buffer size */
->>>           if (buf_size == 0)
->>>                   buf_size = max_buf_size;
->>>
->>>
-> ____________________________________________________________________________________________________________
-> Ce message et ses pieces jointes peuvent contenir des informations confidentielles ou privilegiees et ne doivent donc
-> pas etre diffuses, exploites ou copies sans autorisation. Si vous avez recu ce message par erreur, veuillez le signaler
-> a l'expediteur et le detruire ainsi que les pieces jointes. Les messages electroniques etant susceptibles d'alteration,
-> Orange decline toute responsabilite si ce message a ete altere, deforme ou falsifie. Merci.
->
-> This message and its attachments may contain confidential or privileged information that may be protected by law;
-> they should not be distributed, used or copied without authorisation.
-> If you have received this email in error, please notify the sender and delete this message and its attachments.
-> As emails may be altered, Orange is not liable for messages that have been modified, changed or falsified.
-> Thank you.
+>> I guess if you really don't want this patch I can hardcode 0xffff and
+>> 0x3ffff in rtw8814a_switch_band(). I just don't know if all access
+>> points will be happy with that.
+> 
+> Initially I wanted to simply this patch, because changing REG_AMPDU_MAX_LENGTH
+> for other chips without testing is risky. With your tests, the behavior of
+> REG_AMPDU_MAX_LENGTH works not fully expected, so I suspect the risk
+> is even higher. 
+> 
+> Therefore, I would like limit this change to RTL8814A. Though hardcode proposal
+> is not sure workable for all AP, we also don't know this patch works for all
+> AP. Anyway this proposal is fine to me if we don't have other ideas.
+> 
+> 
+All right, I will limit this only to RTL8814A.
 
