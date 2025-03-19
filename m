@@ -1,63 +1,83 @@
-Return-Path: <linux-wireless+bounces-20577-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20578-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63328A69832
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 19:39:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 059A5A6995F
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 20:31:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FDEF8A80CB
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 18:39:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C1448A2849
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 19:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0256B20D4EA;
-	Wed, 19 Mar 2025 18:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E10A213E78;
+	Wed, 19 Mar 2025 19:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="NEBOmKjH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EMdXeWKC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072E1207DF1
-	for <linux-wireless@vger.kernel.org>; Wed, 19 Mar 2025 18:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FD62144B0
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Mar 2025 19:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742409572; cv=none; b=ucsfXj9U+uktYJG/tBu4eY7sEMiQ84Iw69Fjh2tv2k8sTQx4nYXgyxax1O1VJbtCUYGOnS3vlfqwxNj3JBidBeSBtJS/XbvdmFO9vMjFa9f1MWwWA6dfq/LEr8d+RcPLKmRTfBh9mHLOb6fQbs9xDOJNmLj0OtKmB7XlZfiTTV0=
+	t=1742412630; cv=none; b=jC09lsI+DlYnfhNQUImtkJiFjXnXEpNO28lRNvPiSgiI5d+UmDfr8K+SrB7TtvIgTXhwAqX3H2O2r5ichLNCh1TfxLib/JZCDZnQVuoxDvRFHWr0JGr+hEWYPG494TdsXxdSk0jDTBeMm7MPRsJobFVlVKn7YpRXGmHLw7BRZrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742409572; c=relaxed/simple;
-	bh=2ubWtw5Ij9/BJ3/5+2dsxukzEGfcln0TpU73iE7BI8g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ixaAkAVAZYtL9bUeQHJ4Kcfx4FyJVRtVmUM0mo4zt3jbN7JpmnP9YUhxcbBVbp3lY8H2mCmzST1foP+jcLBgnVkBNzISMxZlzavhvSOEin+0x26cr3ktAJlNMYHvmMzEv+cc1kUNdFP2YzvZTHKKRE/o1IBIW5ouDlkpyvLt9yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=NEBOmKjH; arc=none smtp.client-ip=67.231.154.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id C87422C00A2;
-	Wed, 19 Mar 2025 18:39:28 +0000 (UTC)
-Received: from corvid-conspiracy.candelatech.com (unknown [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 203B213C2B1;
-	Wed, 19 Mar 2025 11:39:28 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 203B213C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1742409568;
-	bh=2ubWtw5Ij9/BJ3/5+2dsxukzEGfcln0TpU73iE7BI8g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEBOmKjHdXnVZaW0HVh2R8FVk52gKC6GDp4tH+vE0HDqj/L4g1oG2RlvGodjzw/8X
-	 OOewyHGY3zS26Ur/aBDZRPmCF2u7gN8vtZVIhbvtTPbI7LCIMSUT647BAEc+3WrIIh
-	 NddQITSrIRAJWP9GB2exZYgLKPh+tXkZmvh+AjXA=
-From: Dylan Eskew <dylan.eskew@candelatech.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Dylan Eskew <dylan.eskew@candelatech.com>
-Subject: [PATCH iw v6 2/2] iw: scan: add eht capability parsing
-Date: Wed, 19 Mar 2025 11:39:18 -0700
-Message-ID: <20250319183918.1215853-3-dylan.eskew@candelatech.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250319183918.1215853-1-dylan.eskew@candelatech.com>
-References: <20250319183918.1215853-1-dylan.eskew@candelatech.com>
+	s=arc-20240116; t=1742412630; c=relaxed/simple;
+	bh=qSFtU4mNrmiYxY3sQ4koVcR+RKXgnZa0PS5FgL0Baig=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rFf45jJJT53gyx/a3bJ1BTYirwToKw2GFIfOMDDHxaBJ6Kk3EvAqKTJ+t9Rx2YYeJBg3Y8oyevLs6/LBJA544HEBQorJcT6rsajhKeKdZqWasJX4qpfAyNYtkMu7DK7eUeOMoH2yb9qA/+8pmsjoi0DLDGPTcSi0wGnY4pa7PQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EMdXeWKC; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5e686d39ba2so47035a12.2
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Mar 2025 12:30:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742412627; x=1743017427; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sei0lEG+ise7OEi5skmIvU6dZ79Ckpfvlz5UP8xO/dg=;
+        b=EMdXeWKCwCoFul1JuACSBeSzLU/vaeeTTl9gKk9YZX2doiDx4OAlP0sNmcmdpO9Rvz
+         BfQJ8unhXIBLIojUfgzs7R3kXwfvAjdHsQiJ98xX1fg0tgWYNigvznmRk0izYjmLu2aH
+         LelI+op61kKXzhrwSqxrEeB6vuZZfUbLsBF4l+gWXY/bItd1eOAGwzJfaizjs+EXAMsk
+         7CgxwpJTHhL+qtrrMQSezCy3A293b1M0CTRZpLRi5ba+V7ZORlwxGU6eSRuxDgQ60R27
+         DhRBmIGdHtWZS2P0oIUKwxBwqSZRKZIqcLmkmnIZAmsMSd0ft+CK8GZu6n1S12KERc0t
+         unJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742412627; x=1743017427;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sei0lEG+ise7OEi5skmIvU6dZ79Ckpfvlz5UP8xO/dg=;
+        b=qG5ia39KDC3ZuVVpM9L5ONzO75yRgQGzHXdJzuJl30b2sMAwrb/UuQ3mMygJHciNKG
+         lUAAypRjcFFOAPO87nc8hQCKEkQSdC8Mgil3mBsli5uAQq9tlUwQpPzioWaz066u0GcJ
+         Vxy4zG9Hfowo6hugvCPXB3NyWoFkDSEtithZ80wT2DDIqXcNR+y/mCN4LP/+0EZLlNrJ
+         LtxE/Xt1LDJ3dT9AFJGp9hLaMDut/ixP5qAvemV8rFK58qG2hUoZlUHf6ZjKWmouLsOn
+         +7nXm6IHp4tjMRcGvldw6mpfUHGtACitWEp1plSwsN6atUpgzIyTvX2qgFk8Q+WzVLVg
+         KIYw==
+X-Gm-Message-State: AOJu0Yx6z0/G/p0pmXdyucfB7mBrywy1aBSwgCZ3s4asAGh/t4fx4aDT
+	+9A+Q9NbsZQq2SstbLY4FweSBIkK4bDW/WZUQDkp1RQVy34ptpLthfuX/A==
+X-Gm-Gg: ASbGncs2Wf7z5mzx+IbmR5K5keRj3OLqUAHyO1TZRWkZwqruSskOAkIauYYy9/qoqaI
+	I63bnPRxW1edtNZ3jxSxwHy/RGSG7Mn7qb0hTo0Azr9AMr+8/g6OnOHRansPZJARpXIvSCiz7AL
+	6i8hZywhCmhm+nmCG2+sAKyu81pNnhHoRxy71BhHnDlk5GMaOVrn1T9iHEjFGE+v6bBAGS90BZE
+	LMegHbehgsYzsQmvhA5hyQEN2H6sJkcjTdGu6+bfMSoZd1ydP9WrjrWofMKFt4TsI5HTBZmibpN
+	kLwvYXq6Fkpo1Cs9W3I8EYOx6YlgBrMzoCFOEhr4VbMEtHN8tLywByyr3fbRjoXryw1SpxCPtIa
+	u9USPoZCGzEdpjcu/G9HkqbF5Ep/EWGl6txFwdK3THV3guy2Mq03enEsq+mXe
+X-Google-Smtp-Source: AGHT+IE+c4ojdUn18W9dhyzJ/7BCYtEFgKi6TAjG4es30XAwS0RFRooxmIworAywrTt2VtYykTmang==
+X-Received: by 2002:a05:6402:4313:b0:5eb:1c9f:9811 with SMTP id 4fb4d7f45d1cf-5eb80f93da1mr4320363a12.27.1742412626368;
+        Wed, 19 Mar 2025 12:30:26 -0700 (PDT)
+Received: from hp.NAT.swidnica_mmp.vectranet.pl (178235177162.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.162])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816afdfe6sm9773297a12.76.2025.03.19.12.30.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Mar 2025 12:30:25 -0700 (PDT)
+From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: jeff.johnson@oss.qualcomm.com,
+	Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Subject: [PATCH ath-next 1/3] wifi: ath10k: setup survey rx and bss_rx
+Date: Wed, 19 Mar 2025 20:29:44 +0100
+Message-ID: <20250319192946.1087196-1-janusz.dziedzic@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,188 +85,47 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1742409569-aK_Z01e8i73M
-X-MDID-O:
- us5;at1;1742409569;aK_Z01e8i73M;<dylan.eskew@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
-X-PPE-TRUSTED: V=1;DIR=OUT;
 
-Add ability to print out EHT capabilities from
-AP beacons.
+Fill survey rx and bss_rx time.
 
-Signed-off-by: Dylan Eskew <dylan.eskew@candelatech.com>
+Signed-off-by: Janusz Dziedzic <janusz.dziedzic@gmail.com>
 ---
- ieee80211.h |  1 +
- iw.h        |  2 +-
- link.c      |  5 +++--
- scan.c      | 34 +++++++++++++++++++++++++++-------
- 4 files changed, 32 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/ieee80211.h b/ieee80211.h
-index de05844..1e29371 100644
---- a/ieee80211.h
-+++ b/ieee80211.h
-@@ -99,6 +99,7 @@ enum elem_id {
- enum elem_id_ext {
- 	EID_EXT_HE_CAPABILITY		= 35,
- 	EID_EXT_HE_OPERATION		= 36,
-+	EID_EXT_EHT_CAPABILITY		= 108,
- };
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 5e061f7525a6..154bbf0324bf 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -5834,16 +5834,18 @@ static int ath10k_wmi_event_pdev_bss_chan_info(struct ath10k *ar,
  
- #define SUITE(oui, id)  (((oui) << 8) | (id))
-diff --git a/iw.h b/iw.h
-index 8cbb971..b8caccd 100644
---- a/iw.h
-+++ b/iw.h
-@@ -277,7 +277,7 @@ enum print_ie_type {
- #define BIT(x) (1ULL<<(x))
+ 	survey = &ar->survey[idx];
  
- void print_ies(unsigned char *ie, int ielen, bool unknown,
--	       enum print_ie_type ptype);
-+	       enum print_ie_type ptype, bool from_ap);
- 
- void parse_bitrate(struct nlattr *bitrate_attr, char *buf, int buflen);
- void iw_hexdump(const char *prefix, const __u8 *data, size_t len);
-diff --git a/link.c b/link.c
-index a7ee963..20ab927 100644
---- a/link.c
-+++ b/link.c
-@@ -93,7 +93,7 @@ static int link_bss_handler(struct nl_msg *msg, void *arg)
- 			if (bss[NL80211_BSS_INFORMATION_ELEMENTS])
- 				print_ies(nla_data(bss[NL80211_BSS_INFORMATION_ELEMENTS]),
- 					  nla_len(bss[NL80211_BSS_INFORMATION_ELEMENTS]),
--					  false, PRINT_LINK_MLO_MLD);
-+					  false, PRINT_LINK_MLO_MLD, false);
- 		}
- 	} else {
- 		memcpy(result->sta_addr, nla_data(bss[NL80211_BSS_BSSID]), 6);
-@@ -121,7 +121,8 @@ static int link_bss_handler(struct nl_msg *msg, void *arg)
- 	if (bss[NL80211_BSS_INFORMATION_ELEMENTS])
- 		print_ies(nla_data(bss[NL80211_BSS_INFORMATION_ELEMENTS]),
- 			  nla_len(bss[NL80211_BSS_INFORMATION_ELEMENTS]),
--			  false, result->mld ? PRINT_LINK_MLO_LINK : PRINT_LINK);
-+			  false, result->mld ? PRINT_LINK_MLO_LINK : PRINT_LINK,
-+			  false);
- 
- 	if (bss[NL80211_BSS_FREQUENCY_OFFSET])
- 		freq_offset = nla_get_u32(bss[NL80211_BSS_FREQUENCY_OFFSET]);
-diff --git a/scan.c b/scan.c
-index 6cf44d2..a366184 100644
---- a/scan.c
-+++ b/scan.c
-@@ -555,7 +555,9 @@ static void tab_on_first(bool *first)
- }
- 
- struct ie_context {
-+	bool from_ap;
- 	bool is_vht_cap;
-+	const uint8_t *he_cap;
- };
- 
- static void print_ssid(const uint8_t type, uint8_t len, const uint8_t *data,
-@@ -2393,12 +2395,21 @@ static void print_he_oper(const uint8_t type, uint8_t len, const uint8_t *data,
- 	print_he_operation(data, len);
- }
- 
-+static void print_eht_capa(const uint8_t type, uint8_t len,
-+			   const uint8_t *data, const struct ie_context *ctx)
-+{
-+	printf("\n");
-+	print_eht_capability(data, len, ctx->he_cap, ctx->from_ap);
-+}
-+
- static const struct ie_print ext_printers[] = {
- 	[EID_EXT_HE_CAPABILITY] = { "HE capabilities", print_he_capa, 21, 54, BIT(PRINT_SCAN), },
- 	[EID_EXT_HE_OPERATION] = { "HE Operation", print_he_oper, 6, 15, BIT(PRINT_SCAN), },
-+	[EID_EXT_EHT_CAPABILITY] = { "EHT capabilities", print_eht_capa, 13, 30, BIT(PRINT_SCAN), },
- };
- 
- static void print_extension(unsigned char len, unsigned char *ie,
-+			    const struct ie_context *ctx,
- 			    bool unknown, enum print_ie_type ptype)
- {
- 	unsigned char tag;
-@@ -2411,7 +2422,7 @@ static void print_extension(unsigned char len, unsigned char *ie,
- 	tag = ie[0];
- 	if (tag < ARRAY_SIZE(ext_printers) && ext_printers[tag].name &&
- 	    ext_printers[tag].flags & BIT(ptype)) {
--		print_ie(&ext_printers[tag], tag, len - 1, ie + 1, NULL);
-+		print_ie(&ext_printers[tag], tag, len - 1, ie + 1, ctx);
- 		return;
- 	}
- 
-@@ -2426,7 +2437,7 @@ static void print_extension(unsigned char len, unsigned char *ie,
- }
- 
- static void init_context(struct ie_context *ctx,
--			 unsigned char *ie, int ielen)
-+			 unsigned char *ie, int ielen, bool from_ap)
- {
- 	unsigned char *pos = ie;
- 	int remaining = ielen;
-@@ -2436,11 +2447,20 @@ static void init_context(struct ie_context *ctx,
- 	if (!ie || !ielen)
- 		return;
- 
-+	ctx->from_ap = from_ap;
-+
- 	while (remaining >= 2 && remaining - 2 >= pos[1]) {
- 		switch (pos[0]) {
- 		case EID_VHT_CAPABILITY:
- 			ctx->is_vht_cap = true;
- 			break;
-+		case EID_EXTENSION:
-+			switch (pos[2]) {
-+			case EID_EXT_HE_CAPABILITY:
-+				ctx->he_cap = pos + 3;
-+				break;
-+			}
-+			break;
- 		}
- 
- 		remaining -= pos[1] + 2;
-@@ -2449,14 +2469,14 @@ static void init_context(struct ie_context *ctx,
- }
- 
- void print_ies(unsigned char *ie, int ielen, bool unknown,
--	       enum print_ie_type ptype)
-+	       enum print_ie_type ptype, bool from_ap)
- {
- 	struct ie_context ctx;
- 
- 	if (!ie)
- 		return;
- 
--	init_context(&ctx, ie, ielen);
-+	init_context(&ctx, ie, ielen, from_ap);
- 
- 	while (ielen >= 2 && ielen - 2 >= ie[1]) {
- 		if (ie[0] < ARRAY_SIZE(ieprinters) &&
-@@ -2468,7 +2488,7 @@ void print_ies(unsigned char *ie, int ielen, bool unknown,
- 		} else if (ie[0] == 221 /* vendor */) {
- 			print_vendor(ie[1], ie + 2, unknown, ptype);
- 		} else if (ie[0] == 255 /* extension */) {
--			print_extension(ie[1], ie + 2, unknown, ptype);
-+			print_extension(ie[1], ie + 2, &ctx, unknown, ptype);
- 		} else if (unknown) {
- 			int i;
- 
-@@ -2673,13 +2693,13 @@ static int print_bss_handler(struct nl_msg *msg, void *arg)
- 			printf("\tInformation elements from Probe Response "
- 			       "frame:\n");
- 		print_ies(nla_data(ies), nla_len(ies),
--			  params->unknown, params->type);
-+			  params->unknown, params->type, true);
- 	}
- 	if (bss[NL80211_BSS_BEACON_IES] && show--) {
- 		printf("\tInformation elements from Beacon frame:\n");
- 		print_ies(nla_data(bss[NL80211_BSS_BEACON_IES]),
- 			  nla_len(bss[NL80211_BSS_BEACON_IES]),
--			  params->unknown, params->type);
-+			  params->unknown, params->type, true);
- 	}
- 
- 	return NL_SKIP;
+-	survey->noise     = noise_floor;
+-	survey->time      = div_u64(total, cc_freq_hz);
++	survey->noise = noise_floor;
++	survey->time = div_u64(total, cc_freq_hz);
+ 	survey->time_busy = div_u64(busy, cc_freq_hz);
+-	survey->time_rx   = div_u64(rx_bss, cc_freq_hz);
+-	survey->time_tx   = div_u64(tx, cc_freq_hz);
+-	survey->filled   |= (SURVEY_INFO_NOISE_DBM |
+-			     SURVEY_INFO_TIME |
+-			     SURVEY_INFO_TIME_BUSY |
+-			     SURVEY_INFO_TIME_RX |
+-			     SURVEY_INFO_TIME_TX);
++	survey->time_rx = div_u64(rx, cc_freq_hz);
++	survey->time_tx = div_u64(tx, cc_freq_hz);
++	survey->time_bss_rx = div_u64(rx_bss, cc_freq_hz);
++	survey->filled |= (SURVEY_INFO_NOISE_DBM |
++			   SURVEY_INFO_TIME |
++			   SURVEY_INFO_TIME_BUSY |
++			   SURVEY_INFO_TIME_RX |
++			   SURVEY_INFO_TIME_TX |
++			   SURVEY_INFO_TIME_BSS_RX);
+ exit:
+ 	spin_unlock_bh(&ar->data_lock);
+ 	complete(&ar->bss_survey_done);
 -- 
-2.48.1
+2.43.0
 
 
