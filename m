@@ -1,221 +1,145 @@
-Return-Path: <linux-wireless+bounces-20566-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20567-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2359A68F03
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 15:27:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16365A691F5
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 15:59:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5630016C505
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 14:25:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C6533AA3BD
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Mar 2025 14:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69464185935;
-	Wed, 19 Mar 2025 14:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A82211A1E;
+	Wed, 19 Mar 2025 14:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hrpcEvbH"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UoNjbZBq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70E533985;
-	Wed, 19 Mar 2025 14:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CF01B4F15
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Mar 2025 14:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394308; cv=none; b=FuNUNRMKpJ7BFpfFYk+QnBbEENtg7b17euWka6s1gv4PcAMvVEe6tD4mKrzK8BBxh1r1FpkQLHGgRBGAN6nZyTRX/CO7Nz8iXwOFZcNVIbEXIocFXxWqHbVSNL9DI8KHaeEsZQHvTPSVA1Iawn9eAhQIiV9vxCKGXKPOuLuMst4=
+	t=1742395412; cv=none; b=miE/S6SsdbLMB8q+2ZIPadYzBabEA5HGeyvE26RoURmh9tiVvte5X/5P2qcKyYxti6JEEdFkazRcs3aCVIqvAFip6zDgDduuaCpUkqrgzrh3D8COfibo9XBVjqeG1GkHKFEt71XxV8+3xz5I7Et2doxxSTte8nKFTC4UAuPkpiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394308; c=relaxed/simple;
-	bh=wDgw2csZBPQcWBrKVT5KpdphI4PqT1UDvWwdhE9RWlY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qk/M5abmELpiSX8eJQtgRKZ+a2QCOp8JEYtI8E0rK7GXbMggFLqzZySk9LIQNmuo9YzqxndRpPI46s/FEiKs1/NuNiuLAlWFMtQCfkB7cO026fYJQA2swMAoTTN3GAKm1BUwzb2zlEcr0Smx7W65nVcfiiDJI5JF0wMCIGfaviI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hrpcEvbH; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-22398e09e39so151093805ad.3;
-        Wed, 19 Mar 2025 07:25:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742394306; x=1742999106; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LNksdIhq+kJyMWp8wRFPS1me1SWYSJ97oSn66vlZssA=;
-        b=hrpcEvbHNNtzFYtlaEtKd9YKtYuXgWq0Q73IF1MR/a6Q/4Xz9R7aQqLEcPRQNYnTG+
-         dSfGa93tAsmUVVCZS2JyIOFpR5Tsd9C4XSiztv/aXPwjd3nVErShrssD7PJZ/Ixrqutk
-         Bhf4xFe6VU1AnLRezorONIcRsUVnxdpE3cIF/bxmlctq+eE4pNqf4/2Zp5M+TqruPuY4
-         mfqvFFssjhOXljny3qX4XuaAX59poye7lBkq3eQvIhT+6+ZCQU9V2KBsjDSEd9/vX0H/
-         dnYvk79RqJ7KX1BqMp1BtV69w6S7caoAU/JL+poOlV969eHpCXXtBB2rT3GQ0HGR4mGC
-         zkyA==
+	s=arc-20240116; t=1742395412; c=relaxed/simple;
+	bh=AanE0vCV38O/FAuVLfDGbo+3+cOqv7QLM9XwLXPBASk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=f+7EvZUkVrZM/kgtYfWiX7K18Ao7O8EmZIKEfYb7iJSD8d3zIZH4CpZzFPakxBzUzEyKT2D5m20vWbo4aesMcv0kZZGRevz7Nm1znt4K+ua01bt6VD7ervVbGnW8tygGlpSiHK70rPYkzQipSTk8KLBmo2KU0JoP1oWKsgiFSsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UoNjbZBq; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52JDcdus020421
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Mar 2025 14:43:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=fDks5bNiL4TTAIcOPwADQX
+	cQw6NbYQj8DQwp8LVt+vk=; b=UoNjbZBqA4OhTgbOjOojqE2me6qvca7X9xX89V
+	pDmymhE2M0tYQ6r98OGHX7KLJzIpcLBweA71BhSt6VA5/GtQCjQACQZ786bVyMo/
+	p/RF1QAGV6rfd8CAk2gNk9VE4nbI7dv7wWN2yFeviOPENE7t9Pfj3Fjr2lxJQCKQ
+	k548ORLFbFvYle7Othd4v4U6Ytj3h4dtTjyjUMVQzyScb1KM13w2QK6bR6QZHUIW
+	z4cw7AHPR2KV8INiFKxwxriD7RaOYQB193vzjKi5XyKhsKrA9oJ/L+rziZ5S8I8U
+	Osq9SqZtZ7r0wlKj+5XEh/EjLBcxj8OKZ7IEQOHNXLMP+ixg==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45fdmwu0g9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Mar 2025 14:43:29 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2ff605a7a43so12044047a91.3
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Mar 2025 07:43:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742394306; x=1742999106;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LNksdIhq+kJyMWp8wRFPS1me1SWYSJ97oSn66vlZssA=;
-        b=r0CD/pyNA4lJFjWocdaQaI7mTcmkGv9+iZ/pyTqKVKaQ3enTVYgWW6VggWPsJ6ZC3O
-         /8AEda19wjczkm1va/d/Fmrk336qpo+x/D7LVgxWcI3mW+DxavO9ArhmhgaV8urkLfS7
-         jph1uDHFPf1ZaBCvMtAOri/5McGk4IEmsNxqAKIVCMYmyzWjTwYLXWmiLf0I9hEbyN0t
-         QdThA2WtE6qUlqz4QKz7hBz4sip4HzJuzDAOQyCIYi1HYRMRjjC5CTIFUiiw7Rg9DzoC
-         aNao5l9KN0+e2bjcX273GYpFnhvE7+zs8grGepEXDIs9jFrQNeyCgyrJEIrbLq7U70KD
-         WEDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXNbt1Bw54e0EOsFChuJs4tm1NxpZQLhu8JzpUJ/HVGZoMNBARvvfR/kqJQxJZ7dA9l0tHfdUAWhOm/lfODVw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUIW4h6UUNfTu2Jzj9ACwZ+9llBd+6xd5uf3u3y+nm1h58n+S+
-	KoZm/gn4IKyGJMv0GyoY8f6DbZBrjcpb+7tAR8PsZ8XVDH9ea94b
-X-Gm-Gg: ASbGncvLGhPhNmUfZnMtwnVTbptvEKrBq1wvp+4CvmCyDI+oW/nXgto4Mq7fjl7L2Fl
-	bJtNB+ANPed/K2Ou3yxGT1Cr13b2Aht5nlOq9Bo8EVGj+UKjOJa2Sv55pYe1dZCwYnuMTA4+Crb
-	c5/yIibuvqmtBPOpN1IKTae0tna4yf3m+GeY0jIIKW9uhDUcZY/Y0Zuky9IsJdI3HiW+jy1BUfA
-	Oih5MTj2L7Q/wG+Q1SC56s2ECKAicBAuFFN56mFwc1TKZjSNUPok6AJa1HPKKWbT1QAPgexE2rv
-	990ZoNAJQDF3DrbZFJdJKzhzyGdtak08tmiKEM5dXyJrPh7NUlfG+nM+v9I=
-X-Google-Smtp-Source: AGHT+IFuU4AzNWF5DfOUG7KW8ZkLZqHClL5Z/kkY80OgTtVyGqqloU1ReDkB8cGLzcdqjKadIfM3Ng==
-X-Received: by 2002:a17:902:e847:b0:21f:4649:fd49 with SMTP id d9443c01a7336-22649a6a8e9mr42407545ad.49.1742394305643;
-        Wed, 19 Mar 2025 07:25:05 -0700 (PDT)
-Received: from [10.100.121.195] ([152.193.78.90])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c68887eesm114845355ad.25.2025.03.19.07.25.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Mar 2025 07:25:05 -0700 (PDT)
-Message-ID: <38569a89-778a-472c-a99c-f63f23870803@gmail.com>
-Date: Wed, 19 Mar 2025 07:25:02 -0700
+        d=1e100.net; s=20230601; t=1742395408; x=1743000208;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fDks5bNiL4TTAIcOPwADQXcQw6NbYQj8DQwp8LVt+vk=;
+        b=RVqd4mV3BeRVJbkXLZKcRhXSfLWSWRpYthD0ANdmkULhsqlr1Nw+LQSUJq85DaodC3
+         3sOvCCirZ76Z5IHICj4kTUivqQQK1SWyIzjwfO58nAfg696kr296im57lQqcOdOPpJfx
+         6c73mG+heq9yo4sXW1Ed9sebOYM3sxtpTlz3oGMC+6y/a6+C9VgbpVrDhffqhD3+s9TN
+         /C2xtkOljLjIdCtCoOiTy0+r67dQAieVWynJACKKJkUXHtq/+fT/Jgg8pTS7eR2Rubo9
+         7MsAr2fE7i4q4QMMlX4VVbtf2Arep8vsb7aBF6kHQFRjGu1BIVbakQ0YFe9r2DGEYvhZ
+         doXQ==
+X-Gm-Message-State: AOJu0YyDnfIu4hs+O4XwaIAg8sFlUR57OJzVLicFrS106CPPgO8TG1aB
+	/6X5h4WUQiusDsvk9jaXFtZiv1b/rngrHvQohcTbvwPadZ0v8Lkcgzn/yWdGF1dT4m3h8jrMjKz
+	dx4vyFTZ6jfOOsIfiHXqJE+7+Ks5yvkAIDy9UwhKsIbZpUdrQH2ct1+GC4hmnksWu5Q==
+X-Gm-Gg: ASbGnctRnqoBXI1WdV6ZIipgPt7sQSgge9Y48FpPiq7//CwrxBgMclm1p3KrkNKZkb6
+	v+FaD0whl5SGLlIq/480/GgVsvm4Xe2FMbab+sqDMXpk+bavHAWRUhMmvWfiQ7CsYFl+SiQYLWw
+	fZbV/esY6MDA/vl2azVwaMjH4dpib6ULPQ4WslYDovkHM4h74/vyZhqw4R6zEu/IO6259n7r/zh
+	WWvu4r5caEUIfZFPqjH/IquXYEgHvGIyVRToiQiUYSTFzGCwtYovAexdm++Cco2CJAfJFh1Z/zS
+	c8VtYETS1oDACnaK8ohc+zGEgFuROC0VIHhKtVscO9xQnytTOa+8
+X-Received: by 2002:a17:90b:180f:b0:2fe:ba82:ca5 with SMTP id 98e67ed59e1d1-301bde6cf2amr4834254a91.11.1742395408445;
+        Wed, 19 Mar 2025 07:43:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFg3Q75Qci5DvweZ40CsDBT7ekjQ3khqPBr2grYqgGrv6LYAsW+kKMMcACW6fjXgPFyqBx8Bg==
+X-Received: by 2002:a17:90b:180f:b0:2fe:ba82:ca5 with SMTP id 98e67ed59e1d1-301bde6cf2amr4834215a91.11.1742395407906;
+        Wed, 19 Mar 2025 07:43:27 -0700 (PDT)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301bf576acasm1659988a91.2.2025.03.19.07.43.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Mar 2025 07:43:27 -0700 (PDT)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Date: Wed, 19 Mar 2025 07:37:37 -0700
+Subject: [PATCH] wifi: iwlwifi: Add short description to enum
+ iwl_power_scheme
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mac80211: clip ADDBA instead of bailing out
-To: alexandre.ferrieux@orange.com,
- Alexandre Ferrieux <alexandre.ferrieux@gmail.com>,
- linux-wireless@vger.kernel.org
-Cc: Linux Kernel Network Developers <netdev@vger.kernel.org>,
- Johannes Berg <johannes@sipsolutions.net>
-References: <20250317163902.1893378-1-sashal@kernel.org>
- <20250317163902.1893378-2-sashal@kernel.org>
- <69c63a19-5419-4bbe-858f-6ca100345a28@orange.com>
- <1560b292-6366-4588-ad4d-654377613b84@gmail.com>
- <2b5c91c6-49db-42bb-803c-c01dc785e1f1@orange.com>
-Content-Language: en-US
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <2b5c91c6-49db-42bb-803c-c01dc785e1f1@orange.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250319-iwl_power_scheme-kdoc-v1-1-2033ae38b178@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIALDW2mcC/x3MQQqDMBBA0avIrDtgIgXtVUqRmIzNUE1kpjSCe
+ PemXb7F/wcoCZPCrTlA6MPKOVWYSwM+uvQk5FANtrXXtjMDclnGLReSUX2klfAVssd+8HPfTcF
+ Y46C2m9DM+/97f1RPTgknccnH362w0EKqmGh/4+o4wXl+AZ+BOFyMAAAA
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+X-Mailer: b4 0.14.0
+X-Proofpoint-ORIG-GUID: Jc7KseFNpJqzSJkp3h6vbWZ4SsP3SbLc
+X-Authority-Analysis: v=2.4 cv=ReKQC0tv c=1 sm=1 tr=0 ts=67dad811 cx=c_pps a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=EUspDBNiAAAA:8 a=mtRy20iSeC98bK40_qsA:9 a=QEXdDO2ut3YA:10
+ a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-GUID: Jc7KseFNpJqzSJkp3h6vbWZ4SsP3SbLc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-19_05,2025-03-19_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ phishscore=0 suspectscore=0 impostorscore=0 clxscore=1015 mlxscore=0
+ malwarescore=0 mlxlogscore=863 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503190099
 
+The kernel-doc script flagged the following:
 
-On 3/19/25 7:18 AM, alexandre.ferrieux@orange.com wrote:
-> Hi James,
->
-> There is roughly a 8x slowdown :}
-> I got these numbers from the colleagues who detected the issue
->
->    - physical available bandwidth 1.733 Gbps (as per iwconfig)
->    - ADDBA offer size=256
->    - effective bandwidth observed 1.2Gbps with accept-and-clip-ADDBA (size=64)
->    - vs. 150 Mbps with reject-ADDBA
->
-> Note, as a Wifi rookie it is not immediately obvious to me how the semantics of
-> ack aggregation would interfere with broadcast actions, as ADDBA are supposedly
-> unicast. But you're the expert :)
+drivers/net/wireless/intel/iwlwifi/mvm/mvm.h:130: warning: missing initial short description on line:
+ * enum iwl_power_scheme
+1 warnings as Errors
 
-"expert", your giving me too much credit :) My running theory is that 
-allowing multicast RX inadvertently caused the driver/firmware to 
-receive more than just the action frames we registered for, and in turn 
-bogged down the RX path, and introduced packet loss. We saw this 
-externally as ADDBA retries in the pcaps.
+Add a short description to address this warning.
 
-So it may have nothing to do with ADDBA rejections/failures, but when I 
-saw this patch it got me thinking. Thanks for the numbers, either way 
-this seems like a huge performance gain so I'm eager to test it out even 
-if it has no effect on the multicast action RX performance.
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index f6391c7a3e29..59483fbaaab0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -126,7 +126,7 @@ struct iwl_mvm_time_event_data {
+  /* Power management */
+ 
+ /**
+- * enum iwl_power_scheme
++ * enum iwl_power_scheme - iwl power schemes
+  * @IWL_POWER_SCHEME_CAM: Continuously Active Mode
+  * @IWL_POWER_SCHEME_BPS: Balanced Power Save (default)
+  * @IWL_POWER_SCHEME_LP: Low Power
 
-James
+---
+base-commit: 3fd552b2658eb6bf2a3b531553fe563340d37fdf
+change-id: 20250319-iwl_power_scheme-kdoc-89cf83bd121a
 
->
->
->
-> On 19/03/2025 14:21, James Prestwood wrote:
->> --------------------------------------------------------------------------------------------------------------
->> CAUTION : This email originated outside the company. Do not click on any links or open attachments unless you are expecting them from the sender.
->>
->> ATTENTION : Cet e-mail provient de l'extérieur de l'entreprise. Ne cliquez pas sur les liens ou n'ouvrez pas les pièces jointes à moins de connaitre l'expéditeur.
->> --------------------------------------------------------------------------------------------------------------
->>
->> Hi Alexandre,
->>
->> On 3/19/25 3:58 AM, Alexandre Ferrieux wrote:
->>> When a Linux Wifi{4,5} device talks to a Wifi6 AP, if the AP proposes a Block
->>> Acknowledgement aggregation size (ADDBA) exceeding its expectations, the code in
->>> mac80211 just bails out, rejecting the aggregation. This yields a big
->>> performance penalty on the ack path, which is observable in comparison with
->>> other OSes (Windows and MacOS) which "play smarter" and accept the proposal with
->>> a "clipped" size.
->> Out of curiosity do you have any performance numbers for this, like
->> Linux vs Windows vs MacOS? We ran into a significant performance hit
->> after I added multicast RX support on ath10k (after ~30 clients were on
->> the same channel). After looking into the pcaps we saw many ADDBA
->> failures and ultimately had to disable multicast RX. I want to give this
->> patch a try either way, but I was curious if you had any data on
->> performance improvements.
->>> A typical scenario would be:
->>>
->>>     AP -> Device : ADDBA_request(size=256)
->>>
->>> Current Linux reaction:
->>>
->>>     Device -> AP : ADDBA_reply(failure)
->>>
->>> Other OSes reaction:
->>>
->>>     Device -> AP : ADDBA_reply(size=64)
->>>
->>> Note that the IEEE802.11 standard allows for both reactions, but it sounds
->>> really suboptimal to be bailing out instead of clipping. The patch below does
->>> the latter.
->>>
->>> Signed-off-by: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
->>> ---
->>>
->>> diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
->>> index f3fbe5a4395e..264dad847842 100644
->>> --- a/net/mac80211/agg-rx.c
->>> +++ b/net/mac80211/agg-rx.c
->>> @@ -317,18 +317,20 @@ void __ieee80211_start_rx_ba_session(struct sta_info *sta,
->>>                   max_buf_size = IEEE80211_MAX_AMPDU_BUF_HT;
->>>
->>>           /* sanity check for incoming parameters:
->>> -        * check if configuration can support the BA policy
->>> -        * and if buffer size does not exceeds max value */
->>> +        * check if configuration can support the BA policy */
->>>           /* XXX: check own ht delayed BA capability?? */
->>>           if (((ba_policy != 1) &&
->>> -            (!(sta->sta.deflink.ht_cap.cap & IEEE80211_HT_CAP_DELAY_BA))) ||
->>> -           (buf_size > max_buf_size)) {
->>> -               status = WLAN_STATUS_INVALID_QOS_PARAM;
->>> +            (!(sta->sta.deflink.ht_cap.cap & IEEE80211_HT_CAP_DELAY_BA)))) {
->>> +               status = WLAN_STATUS_INVALID_QOS_PARAM;
->>>                   ht_dbg_ratelimited(sta->sdata,
->>>                                      "AddBA Req with bad params from %pM on tid
->>> %u. policy %d, buffer size %d\n",
->>>                                      sta->sta.addr, tid, ba_policy, buf_size);
->>>                   goto end;
->>>           }
->>> +       if (buf_size > max_buf_size) {
->>> +         buf_size = max_buf_size ; // Clip instead of bailing out
->>> +       }
->>> +
->>>           /* determine default buffer size */
->>>           if (buf_size == 0)
->>>                   buf_size = max_buf_size;
->>>
->>>
-> ____________________________________________________________________________________________________________
-> Ce message et ses pieces jointes peuvent contenir des informations confidentielles ou privilegiees et ne doivent donc
-> pas etre diffuses, exploites ou copies sans autorisation. Si vous avez recu ce message par erreur, veuillez le signaler
-> a l'expediteur et le detruire ainsi que les pieces jointes. Les messages electroniques etant susceptibles d'alteration,
-> Orange decline toute responsabilite si ce message a ete altere, deforme ou falsifie. Merci.
->
-> This message and its attachments may contain confidential or privileged information that may be protected by law;
-> they should not be distributed, used or copied without authorisation.
-> If you have received this email in error, please notify the sender and delete this message and its attachments.
-> As emails may be altered, Orange is not liable for messages that have been modified, changed or falsified.
-> Thank you.
 
