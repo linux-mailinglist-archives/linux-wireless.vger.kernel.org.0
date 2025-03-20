@@ -1,63 +1,48 @@
-Return-Path: <linux-wireless+bounces-20609-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20610-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835C9A6A002
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 07:55:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB7DA6A053
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 08:21:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7802F189696B
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 06:55:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D02657AA921
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 07:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391001581F0;
-	Thu, 20 Mar 2025 06:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37251EF382;
+	Thu, 20 Mar 2025 07:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="of07lCQk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQ+pWIg3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8A61E231D
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 06:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4FB1EDA3A;
+	Thu, 20 Mar 2025 07:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742453720; cv=none; b=AC8vgFGUNBcfEAtNgAbibNuQrsXxJ+gCRqVZhCfr2qC4B6ZvDDC6qwnMw9KFOTTSqy181HPH6OFGmlwNYc8a/xasP/sFi28uAPCJypracAAfwFBInLlneP7OoALE/KOm3VCzLvMobpm58HSIBhzwgPmelGedTlW7V63K6R+6qPc=
+	t=1742455308; cv=none; b=Qqm7Bmn3nN2nWgHKX89MGOs6BcANIU6iNG593kL2Ypb2qBi0quXSYFOpb82GFtjcjb4TLyNr62q7q9HdVeGZzyEnA97+T6PTmUqr9qYiQK/QsPevlJ1gj9XVogOvyl1forSCprIipEqoeuctOw6z5x9asxcIQFiB7WxKLBj8ksY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742453720; c=relaxed/simple;
-	bh=4pHtlz35iePettTke0/nQ3Bue5gXg8IVWxRgeb9Jaw4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=sJAO75Mdjs6f4/NtZ7qICKUt9u/8l7dl1lnBH9WCrBCgu5XFk2k2FbRMI4mSd0NOHeTPaYsRUlIWJbQ2OmoQX0+kQcZHB00yyfQBTrTTUmWLwxS7XXCf0SAFtY7hEGBVpeWlWsmQjvu6pGjyV5qEOfsf04aLYUMV1THVdQkcnCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=of07lCQk; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52K6Z70r025394;
-	Thu, 20 Mar 2025 06:55:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	epNXuiZgPOtdpXAoPWdzdTQN9ufPEX1JFxVWl3vDZ9s=; b=of07lCQkrV+tqkLW
-	8gLDImJsWIiDOUubo7nxFLS05CbpJrHueuXVgviLgAMw3uvnWaSndxGbK/SFIEAv
-	Qz6Bco7GWYxI1wwmJ0gjYJOf1hARWv9fnlXBQfyyiEVtYHvDBhZfSJEnhNiBs2OM
-	4lVM/sVQkmj7KsyOwbxY6y5gdvCr1uznJwXkfaTt7m4T1SKmAzEAn0XtflHMNArb
-	i1FIS90Nx/vhROw7XInzsqiVlva9brb8EF/82tD2OSIFlR0FI+9v1BZPUvsn9KkR
-	aWThqLn9ZbjyEWc5opo0uljeUWRnVY8ijdmeUGLhuOjYSCDRYctSfEZs8pDAhyof
-	DFaJ/Q==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45g15y1w56-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Mar 2025 06:55:08 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52K6t7wX003249
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Mar 2025 06:55:07 GMT
-Received: from [10.152.206.29] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 19 Mar
- 2025 23:55:05 -0700
-Message-ID: <c55d9dab-9ed5-4a0d-b1a6-31fcfa7e17bc@quicinc.com>
-Date: Thu, 20 Mar 2025 12:24:54 +0530
+	s=arc-20240116; t=1742455308; c=relaxed/simple;
+	bh=LPFNRfq1ARkgilTcOqF5DTW8sEDkK6LkNiXxUH933bg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OTcKNNXIE/N44Z4MRvyBwtiyi/+J2P4ZC7XN2VbEDK0JZxfE7y+JW6PcOXbwxvxKYjF8KuhZQIw0YlFEdNdqo6iIhaQ2WU9n8sHnzUvKnpdo6fR866hOvBf46nPaLE1q6KGOQ+ODQ8a/4sQIeFbv/FiNQaiwoV+xx/hVk9P7elM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQ+pWIg3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2D8C4CEDD;
+	Thu, 20 Mar 2025 07:21:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742455308;
+	bh=LPFNRfq1ARkgilTcOqF5DTW8sEDkK6LkNiXxUH933bg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PQ+pWIg3kVhN5Omh9Nx1hntZCFqbooR87jFiN8wUn69vxM3n2CNdZPfl/N9wnaWzg
+	 K62hXYU0q/wwCGVaEFm7zC2DgtIMFtqidwBYMqpXtwtjr3adtv2sLh2ekt7G7m0zHj
+	 izsFAVHwLBgGhgax2fJL57J9f6PUvSofjaAL0s8U0ysOz4jrMBTrMRXVyeJ1aaOEfU
+	 69t/6UDyRL8EgWhRmVa/4p61hL+pPlCoKW6vtQDxhaNuPWNospy2VNvO3JFo48vh7s
+	 L5D1ZFbpg/jzfUOlJdr5GoVfnJObhzbCwymoFaM34MMbgzjn99j75nsIhNEBkECT5t
+	 Q/cotZaFZm7IA==
+Message-ID: <6d946f17-704a-4f5e-8e1e-c05dcbb55d70@kernel.org>
+Date: Thu, 20 Mar 2025 08:21:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,102 +50,120 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v2] wifi: ath12k: Fix incorrect rates sent to
- firmware
-To: Ping-Ke Shih <pkshih@realtek.com>,
-        "ath12k@lists.infradead.org"
-	<ath12k@lists.infradead.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Pradeep Kumar Chitrapu" <quic_pradeepc@quicinc.com>
-References: <20250319153547.771843-1-quic_rdevanat@quicinc.com>
- <524e12be0cb6421883d353114089fb6e@realtek.com>
+Subject: Re: [PATCH net] wifi: ath12k: properly set single_chip_mlo_supp to
+ true in ath12k_core_alloc()
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>, neil.armstrong@linaro.org,
+ Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+ Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson
+ <jjohnson@kernel.org>, Aditya Kumar Singh <quic_adisi@quicinc.com>,
+ linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20250303-topic-ath12k-fix-crash-v1-1-f871d4e4d968@linaro.org>
+ <24b2f1f8-97bd-423a-acbd-9a5cd45e4a40@oss.qualcomm.com>
+ <7901d7f0-d6d0-4bf3-89ad-d710e88477b7@linaro.org>
+ <7b4b598f-bc13-aa4b-8677-71477e1f5434@quicinc.com>
+ <a5ebfdfb-107f-407f-b557-522b074c904f@linaro.org>
+ <38cd738c-1a2a-4382-80f8-d57feb7c829d@quicinc.com>
+ <91a5a1f7-6eef-4ea0-bcde-350640984a7b@kernel.org>
+ <vpumypwwywrxi54z6g6zmcosd4mbw5y33rdex4zdbzsymcww6s@5fsbhdy6vuju>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-In-Reply-To: <524e12be0cb6421883d353114089fb6e@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: eU3mYQUc7QF1vwAvZZMo0bVbTjTnFObg
-X-Proofpoint-ORIG-GUID: eU3mYQUc7QF1vwAvZZMo0bVbTjTnFObg
-X-Authority-Analysis: v=2.4 cv=VaD3PEp9 c=1 sm=1 tr=0 ts=67dbbbcc cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=aR5AiG0RSsZbc1Rv2rMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-20_02,2025-03-19_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- bulkscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=999 phishscore=0
- spamscore=0 priorityscore=1501 suspectscore=0 mlxscore=0 malwarescore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503200042
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <vpumypwwywrxi54z6g6zmcosd4mbw5y33rdex4zdbzsymcww6s@5fsbhdy6vuju>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+On 19/03/2025 12:25, Dmitry Baryshkov wrote:
+> On Wed, Mar 19, 2025 at 11:29:18AM +0100, Krzysztof Kozlowski wrote:
+>> On 19/03/2025 10:46, Baochen Qiang wrote:
+>>>
+>>>
+>>> On 3/19/2025 5:12 PM, neil.armstrong@linaro.org wrote:
+>>>> Hi,
+>>>>
+>>>> On 19/03/2025 10:06, Vasanthakumar Thiagarajan wrote:
+>>>>>
+>>>>>
+>>>>> On 3/19/2025 1:34 PM, Neil Armstrong wrote:
+>>>>>> On 18/03/2025 17:35, Jeff Johnson wrote:
+>>>>>>> On 3/3/2025 7:00 AM, Neil Armstrong wrote:
+>>>>>>>> In commit 46d16f7e1d14 ("wifi: ath12k: rename mlo_capable_flags to
+>>>>>>>> single_chip_mlo_supp")
+>>>>>>>> the line:
+>>>>>>>>     ab->mlo_capable_flags = ATH12K_INTRA_DEVICE_MLO_SUPPORT;
+>>>>>>>> was incorrectly updated to:
+>>>>>>>>     ab->single_chip_mlo_supp = false;
+>>>>>>>> leading to always disabling INTRA_DEVICE_MLO even if the device supports it.
+>>>>>>>>
+>>>>>>>> The firmware "WLAN.HMT.1.1.c5-00156-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1"
+>>>>>>>> crashes on driver initialization with:
+>>>>>>>>   ath12k_pci 0000:01:00.0: chip_id 0x2 chip_family 0x4 board_id 0x3d soc_id 0x40170200
+>>>>>>>>   ath12k_pci 0000:01:00.0: fw_version 0x110f009c fw_build_timestamp 2024-05-30 11:35
+>>>>>>>> fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HMT.1.1.c5-00156-
+>>>>>>>> QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+>>>
+>>> this FW version is not upstream yet, why are you testing with it?
+>>>
+>>> Generally we only support upstrmea driver + upstream FW.
+>> FW does not have to be upstream. We work, here in upstream, with all
+>> sort of vendors and all sorts of devices, for which vendors might not
+>> send yet their FW or we are unclear about licensing rules.
+> 
+> If you are working with non-supported firmware, then, basically, you are
+> on your own. I think you'd get the same response from any other vendor
+> shipping firmware files. Consider reporting an issue to i915 or amdgpu
+> driver _and_ stating that you are using some non-standard firmware files
+> that were not provided to you by the corresponding team.
 
 
+FW extracted from whatever-we-got-there is entire history of all WiFi
+drivers... And no one asked here for support.
 
-On 3/20/2025 5:54 AM, Ping-Ke Shih wrote:
->> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
->> index 9fda97667d4e..661167acaa69 100644
->> --- a/drivers/net/wireless/ath/ath12k/mac.c
->> +++ b/drivers/net/wireless/ath/ath12k/mac.c
->> @@ -3450,7 +3450,9 @@ static void ath12k_recalculate_mgmt_rate(struct ath12k *ar,
->>         }
->>
->>         sband = hw->wiphy->bands[def->chan->band];
->> -       basic_rate_idx = ffs(bss_conf->basic_rates) - 1;
->> +       basic_rate_idx = __ffs(bss_conf->basic_rates);
->> +       if (basic_rate_idx)
->> +               basic_rate_idx -= 1;
-> 
-> It looks like you misunderstood what I meant. 
-> 
-> The difference of ffs() and __ffs():
-> ffs(0x0) = 0, ffs(0x1) = 1
-> __ffs(0x0) = undefined, __ffs(0x1) = 0
-> 
-> So you need to ensure argument isn't zero before calling __ffs(), and no
-> need to minus 1 after the call.
-> 
-Noted the difference, thanks for explaining. I'll do something like:
-if (bss_conf->basic_rates)
-	basic_rate_idx = __ffs(bss_conf->basic_rates);
-else
-	basic_rate_idx = 0;
 
->>         bitrate = sband->bitrates[basic_rate_idx].bitrate;
->>
->>         hw_rate_code = ath12k_mac_get_rate_hw_value(bitrate);
->> @@ -3983,10 +3985,13 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
->>                 band = def.chan->band;
->>                 mcast_rate = info->mcast_rate[band];
->>
->> -               if (mcast_rate > 0)
->> +               if (mcast_rate > 0) {
->>                         rateidx = mcast_rate - 1;
->> -               else
->> -                       rateidx = ffs(info->basic_rates) - 1;
->> +               } else {
->> +                       rateidx = __ffs(info->basic_rates);
->> +                       if (rateidx)
->> +                               rateidx -= 1;
-> 
-> Here should be:
-> 
-> if (info->basic_rates)
->     rateidx = __ffs(info->basic_rates);
-> else
->     rateidx = 0;
-> 
-Sure, will change this in next version.
-
->> +               }
->>
->>                 if (ar->pdev->cap.supported_bands & WMI_HOST_WLAN_5G_CAP)
->>                         rateidx += ATH12K_MAC_FIRST_OFDM_RATE_IDX;
->>
->> base-commit: b6f473c96421b8b451a8df8ccb620bcd71d4b3f4
->> --
->> 2.34.1
->>
-> 
+Best regards,
+Krzysztof
 
