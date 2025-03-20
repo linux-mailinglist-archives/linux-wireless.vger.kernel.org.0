@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-20586-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20587-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3914AA69E01
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 03:00:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 328D2A69DFE
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 03:00:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 102E6468021
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 02:00:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAE963A41EC
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 02:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9653A40BF5;
-	Thu, 20 Mar 2025 01:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866BC1BD9E3;
+	Thu, 20 Mar 2025 01:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="O+PT9pfH"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="DsrAbZfk"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A9316F858
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 01:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64DB70807
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 01:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742435961; cv=none; b=BC/7ctsQzAJ7dwQAKaCPgNTD1x75WlT6wMfKe0AdIt+7S91n804CLnXz6vX9J09QtEkWofL02YJZYT5Oi3najAkvhufEax5p45XxhKVjGtdn/06z0cJknDKu/oWUm/AiTtN+wnaefVQ/0ME55HaX+dIrIP6bdPohDZlOu/Ulxxk=
+	t=1742435966; cv=none; b=jNNQlgxRAfRtXl8Q0J7iDpykjyLX2xsSNJCb1Ti2rlPcWFbyszoQ+6LVkyvCxe+01b6/vcJ1jziBQ2FX6/O8lX9tIl+OfoN/mWdd/2vGl7u08vfh8r1ZoEJIeiFuLPVV5EeGJXPWhBebeTwkBb5Ptv4qjP3Az1+UkfkTZ7WQzCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742435961; c=relaxed/simple;
-	bh=LBcejsuV+3fNq71w7qqgtyvKnpgs7MVJ3PEyy3xIpjw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GWWL/4NhpwjAPUnnIHvhjxFTYXSecfisdAxSiIXLMGLxyjqQERCtD8BAEiAJQfR9RSZHBg+p3DmLBeuQ5hiZYQ563nojZhr4ddUOYl0/9t1FNzDvzBanCbjYtT7px2ZJ/3VWtmyNKDKTvO5IPKJLZSNPKuTpbwZ6F9f007HVRdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=O+PT9pfH; arc=none smtp.client-ip=60.244.123.138
+	s=arc-20240116; t=1742435966; c=relaxed/simple;
+	bh=8lLaHUJO9dn54XtL/odgKxkTQxyC8lkRM1RdCTfeQPk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KZXvg+m7AOs+fJOMjFRGQJiwyDjAP3/RfS6M2+ah/MqvJW40qpqAq/74EAN/P7qTkZcKZZzsxyOVSDwYQqAG6OqOx/QqWEvgH0KMKo1wuBhqCCPMllxD3hWpdPPG0gC1izgFSyivQTUKxIXqa9pNjCmNIJT1cT0/N36S+VKu++w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=DsrAbZfk; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: ebd42392052e11f0aae1fd9735fae912-20250320
+X-UUID: f07de860052e11f0aae1fd9735fae912-20250320
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=nIzkOU3FGX5G2nyKSTH9J13QgxntUovD1/+noBIqG5s=;
-	b=O+PT9pfHiZduB4FxokPP9LLKCl6g8nrBQxbS7/LR/NmMIXxihVZ2BiJ6YZoJRpdAuvfKZrOq60IrzGknfoIjXFMxC4b/3+1F3+HqcFangP4QY7i5J1aLmponqT5fsfcYdxYz4iXMkPw4RkKdeyMbRbWOd2UJ+8rJkUhNTWicKws=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=d4M9TrzF3z+Kwm0/V6cKZKy99RwFdGVz2mKxi2tNmyM=;
+	b=DsrAbZfkZDgsZwvbykNC0ApHPp2YH7Y0ueuRVTM9bBZZCPdJdAaMEfZVXHL8UxUWowzpMykL8HffO/M9vv78NZjwF8AfYGYnQBCzHGAyVGnoc92Ub6xMs3WNlCC7IivpHki1WN73faPLVKCdaxe3najWGyTn2HdORq+Wogy8byw=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.1,REQID:73c9656d-60f1-49e2-b956-5b518c4c13ca,IP:0,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-25
-X-CID-META: VersionHash:0ef645f,CLOUDID:7b0e90c6-16da-468a-87f7-8ca8d6b3b9f7,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
+X-CID-O-INFO: VERSION:1.2.1,REQID:c953ab17-8691-49bc-aa38-32f50cda9ff6,IP:0,UR
+	L:0,TC:0,Content:0,EDM:-30,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-30
+X-CID-META: VersionHash:0ef645f,CLOUDID:75a6988c-f5b8-47d5-8cf3-b68fe7530c9a,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:2,IP:nil
+	,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:
+	1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: ebd42392052e11f0aae1fd9735fae912-20250320
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
+X-UUID: f07de860052e11f0aae1fd9735fae912-20250320
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
 	(envelope-from <stanleyyp.wang@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 303019661; Thu, 20 Mar 2025 09:59:13 +0800
+	with ESMTP id 876861974; Thu, 20 Mar 2025 09:59:20 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Thu, 20 Mar 2025 09:59:11 +0800
+ 15.2.1258.39; Thu, 20 Mar 2025 09:59:19 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
  mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Thu, 20 Mar 2025 09:59:11 +0800
+ 15.2.1258.39 via Frontend Transport; Thu, 20 Mar 2025 09:59:19 +0800
 From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 To: Felix Fietkau <nbd@nbd.name>
 CC: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, Ryder Lee
@@ -64,9 +64,9 @@ CC: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, Ryder Lee
 	<evelyn.tsai@mediatek.com>, <linux-wireless@vger.kernel.org>,
 	<linux-mediatek@lists.infradead.org>, StanleyYP Wang
 	<StanleyYP.Wang@mediatek.com>
-Subject: [PATCH 1/3] wifi: mt76: mt7915: set correct background radar capability
-Date: Thu, 20 Mar 2025 09:59:09 +0800
-Message-ID: <20250320015909.3948612-1-StanleyYP.Wang@mediatek.com>
+Subject: [PATCH 2/3] wifi: mt76: mt7915: rework radar HWRDD idx
+Date: Thu, 20 Mar 2025 09:59:18 +0800
+Message-ID: <20250320015918.3948643-1-StanleyYP.Wang@mediatek.com>
 X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -78,175 +78,354 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-MTK: N
 
-Some of the variants do not support background radar, so add a
-helper to report background radar capability.
-For mt7916, only the variant of 5G 2T2R + 1R supports background
-radar.
+The definition of MT_RX_SEL (for rdd_rx_sel) is mixed with the
+definition of HWRDD idx.
+For example, MT_RX_SEL2 is for background HWRDD idx, not an option
+of rdd_rx_sel.
+Therefore, add mt7915_get_rdd_idx as a helper function to get the
+HWRDD idx for each variants.
+
+Additionally, remove some parts of the code inherited from the legacy
+chips.
+For instance,
+1. rdd_state is used for single-band-dual-HWRDD chips (for 80+80),
+especially the 76xx series.
+2. rdd_rx_sel is also used for single-band-dual-HWRDD chips
+rx_sel = 0 => RDD0 for WF0, RDD1 for WF2
+rx_sel = 1 => RDD0 for WF1, RDD1 for WF3
+
+Chip Variants                  | 5G rdd idx(=bandidx)| Background rdd idx
+-------------------------------|---------------------|-------------------
+MT7915A                        | 0                   | 2
+MT7915D                        | 1                   | 2
+MT7916 2G + 5G (2T2R+1R)       | 1                   | 2
+MT7916 2G + 5G (3T3R)          | 1                   | N/A
+MT7981 2G + 5G                 | 1                   | N/A
+MT7986 2G + 5G (one adie DBDC) | 1                   | N/A
+MT7986 5G (one adie)           | 1 (bandidx=MT_BAND1)| N/A
+MT7986 2G + 5G (dual adie)     | 1                   | N/A
 
 Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- .../wireless/mediatek/mt76/mt7915/debugfs.c   |  5 +++
- .../wireless/mediatek/mt76/mt7915/eeprom.c    | 33 ++++++++++++++++++-
- .../wireless/mediatek/mt76/mt7915/eeprom.h    |  1 +
- .../net/wireless/mediatek/mt76/mt7915/init.c  |  7 ++--
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  8 +++--
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  3 +-
- 6 files changed, 49 insertions(+), 8 deletions(-)
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   | 23 +++++--
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 60 +++++++------------
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 40 +++++++++----
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  2 +-
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    | 22 +++++--
+ 5 files changed, 87 insertions(+), 60 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index 192e8eff970b..0384e9f519fb 100644
+index 0384e9f519fb..b287b7d9394e 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -445,6 +445,11 @@ mt7915_rdd_monitor(struct seq_file *s, void *data)
+@@ -211,13 +211,28 @@ static const struct file_operations mt7915_sys_recovery_ops = {
+ static int
+ mt7915_radar_trigger(void *data, u64 val)
+ {
+-	struct mt7915_dev *dev = data;
++#define RADAR_MAIN_CHAIN	1
++#define RADAR_BACKGROUND	2
++	struct mt7915_phy *phy = data;
++	struct mt7915_dev *dev = phy->dev;
++	int rdd_idx;
++
++	if (!val || val > RADAR_BACKGROUND)
++		return -EINVAL;
  
- 	mutex_lock(&dev->mt76.mutex);
- 
-+	if (!mt7915_eeprom_has_background_radar(dev)) {
-+		seq_puts(s, "no background radar capability\n");
-+		goto out;
+-	if (val > MT_RX_SEL2)
++	if (val == RADAR_BACKGROUND && !dev->rdd2_phy) {
++		dev_err(dev->mt76.dev, "Background radar is not enabled\n");
+ 		return -EINVAL;
 +	}
 +
- 	if (!cfg80211_chandef_valid(chandef)) {
- 		ret = -EINVAL;
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-index 928e0b07a9bf..c0f3402d30bb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-@@ -147,7 +147,7 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
- 		/* read eeprom data from efuse */
- 		block_num = DIV_ROUND_UP(eeprom_size, eeprom_blk_size);
- 		for (i = 0; i < block_num; i++) {
--			ret = mt7915_mcu_get_eeprom(dev, i * eeprom_blk_size);
-+			ret = mt7915_mcu_get_eeprom(dev, i * eeprom_blk_size, NULL);
- 			if (ret < 0)
- 				return ret;
- 		}
-@@ -361,6 +361,37 @@ s8 mt7915_eeprom_get_power_delta(struct mt7915_dev *dev, int band)
- 	return val & MT_EE_RATE_DELTA_SIGN ? delta : -delta;
++	rdd_idx = mt7915_get_rdd_idx(phy, val == RADAR_BACKGROUND);
++	if (rdd_idx < 0) {
++		dev_err(dev->mt76.dev, "No RDD found\n");
++		return -EINVAL;
++	}
+ 
+ 	return mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_RADAR_EMULATE,
+-				       val, 0, 0);
++				       rdd_idx, 0, 0);
  }
  
-+bool
-+mt7915_eeprom_has_background_radar(struct mt7915_dev *dev)
-+{
-+	u8 val, buf[MT7915_EEPROM_BLOCK_SIZE];
-+	u8 band_sel, tx_path, rx_path;
-+	int offs = MT_EE_WIFI_CONF + 1;
-+
-+	switch (mt76_chip(&dev->mt76)) {
-+	case 0x7915:
-+		return true;
-+	case 0x7906:
-+		/* read efuse to check background radar capability */
-+		if (mt7915_mcu_get_eeprom(dev, offs, buf))
-+			break;
-+
-+		val = buf[offs % MT7915_EEPROM_BLOCK_SIZE];
-+		band_sel = u8_get_bits(val, MT_EE_WIFI_CONF0_BAND_SEL);
-+		tx_path = u8_get_bits(val, MT_EE_WIFI_CONF0_TX_PATH);
-+		rx_path = u8_get_bits(val, MT_EE_WIFI_CONF0_RX_PATH);
-+
-+		return (band_sel == MT_EE_V2_BAND_SEL_5GHZ &&
-+			tx_path == rx_path && rx_path == 2);
-+	case 0x7981:
-+	case 0x7986:
-+	default:
-+		break;
-+	}
-+
-+	return false;
-+}
-+
- const u8 mt7915_sku_group_len[] = {
- 	[SKU_CCK] = 4,
- 	[SKU_OFDM] = 8,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-index 509fb43d8a68..31aec0f40232 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-@@ -55,6 +55,7 @@ enum mt7915_eeprom_field {
- #define MT_EE_CAL_DPD_SIZE_V2_7981		(102 * MT_EE_CAL_UNIT)	/* no 6g dpd data */
+ DEFINE_DEBUGFS_ATTRIBUTE(fops_radar_trigger, NULL,
+@@ -1247,7 +1262,7 @@ int mt7915_init_debugfs(struct mt7915_phy *phy)
+ 	if (!dev->dbdc_support || phy->mt76->band_idx) {
+ 		debugfs_create_u32("dfs_hw_pattern", 0400, dir,
+ 				   &dev->hw_pattern);
+-		debugfs_create_file("radar_trigger", 0200, dir, dev,
++		debugfs_create_file("radar_trigger", 0200, dir, phy,
+ 				    &fops_radar_trigger);
+ 		debugfs_create_devm_seqfile(dev->mt76.dev, "rdd_monitor", dir,
+ 					    mt7915_rdd_monitor);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 2ba6eb3038ce..9400e4af2a04 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -2035,16 +2035,15 @@ void mt7915_mac_work(struct work_struct *work)
+ static void mt7915_dfs_stop_radar_detector(struct mt7915_phy *phy)
+ {
+ 	struct mt7915_dev *dev = phy->dev;
++	int rdd_idx = mt7915_get_rdd_idx(phy, false);
  
- #define MT_EE_WIFI_CONF0_TX_PATH		GENMASK(2, 0)
-+#define MT_EE_WIFI_CONF0_RX_PATH		GENMASK(5, 3)
- #define MT_EE_WIFI_CONF0_BAND_SEL		GENMASK(7, 6)
- #define MT_EE_WIFI_CONF1_BAND_SEL		GENMASK(7, 6)
- #define MT_EE_WIFI_CONF_STREAM_NUM		GENMASK(7, 5)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index bee4beabc4eb..57d5be94624b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -392,9 +392,10 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
- 	if (!is_mt7915(&dev->mt76))
- 		wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_STA_TX_PWR);
+-	if (phy->rdd_state & BIT(0))
+-		mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_STOP, 0,
+-					MT_RX_SEL0, 0);
+-	if (phy->rdd_state & BIT(1))
+-		mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_STOP, 1,
+-					MT_RX_SEL0, 0);
++	if (rdd_idx < 0)
++		return;
++
++	mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_STOP, rdd_idx, 0, 0);
+ }
  
--	if (!mdev->dev->of_node ||
--	    !of_property_read_bool(mdev->dev->of_node,
--				   "mediatek,disable-radar-background"))
-+	if (mt7915_eeprom_has_background_radar(phy->dev) &&
-+	    (!mdev->dev->of_node ||
-+	     !of_property_read_bool(mdev->dev->of_node,
-+				    "mediatek,disable-radar-background")))
- 		wiphy_ext_feature_set(wiphy,
- 				      NL80211_EXT_FEATURE_RADAR_BACKGROUND);
+-static int mt7915_dfs_start_rdd(struct mt7915_dev *dev, int chain)
++static int mt7915_dfs_start_rdd(struct mt7915_dev *dev, int rdd_idx)
+ {
+ 	int err, region;
  
+@@ -2061,52 +2060,38 @@ static int mt7915_dfs_start_rdd(struct mt7915_dev *dev, int chain)
+ 		break;
+ 	}
+ 
+-	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_START, chain,
+-				      MT_RX_SEL0, region);
++	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_START, rdd_idx, 0, region);
+ 	if (err < 0)
+ 		return err;
+ 
+ 	if (is_mt7915(&dev->mt76)) {
+-		err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_SET_WF_ANT, chain,
++		err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_SET_WF_ANT, rdd_idx,
+ 					      0, dev->dbdc_support ? 2 : 0);
+ 		if (err < 0)
+ 			return err;
+ 	}
+ 
+-	return mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_DET_MODE, chain,
+-				       MT_RX_SEL0, 1);
++	return mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_DET_MODE, rdd_idx, 0, 1);
+ }
+ 
+ static int mt7915_dfs_start_radar_detector(struct mt7915_phy *phy)
+ {
+-	struct cfg80211_chan_def *chandef = &phy->mt76->chandef;
+ 	struct mt7915_dev *dev = phy->dev;
+-	int err;
++	int err, rdd_idx;
++
++	rdd_idx = mt7915_get_rdd_idx(phy, false);
++	if (rdd_idx < 0)
++		return -EINVAL;
+ 
+ 	/* start CAC */
+-	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_CAC_START,
+-				      phy->mt76->band_idx, MT_RX_SEL0, 0);
++	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_CAC_START, rdd_idx, 0, 0);
+ 	if (err < 0)
+ 		return err;
+ 
+-	err = mt7915_dfs_start_rdd(dev, phy->mt76->band_idx);
++	err = mt7915_dfs_start_rdd(dev, rdd_idx);
+ 	if (err < 0)
+ 		return err;
+ 
+-	phy->rdd_state |= BIT(phy->mt76->band_idx);
+-
+-	if (!is_mt7915(&dev->mt76))
+-		return 0;
+-
+-	if (chandef->width == NL80211_CHAN_WIDTH_160 ||
+-	    chandef->width == NL80211_CHAN_WIDTH_80P80) {
+-		err = mt7915_dfs_start_rdd(dev, 1);
+-		if (err < 0)
+-			return err;
+-
+-		phy->rdd_state |= BIT(1);
+-	}
+-
+ 	return 0;
+ }
+ 
+@@ -2148,12 +2133,12 @@ int mt7915_dfs_init_radar_detector(struct mt7915_phy *phy)
+ {
+ 	struct mt7915_dev *dev = phy->dev;
+ 	enum mt76_dfs_state dfs_state, prev_state;
+-	int err;
++	int err, rdd_idx = mt7915_get_rdd_idx(phy, false);
+ 
+ 	prev_state = phy->mt76->dfs_state;
+ 	dfs_state = mt76_phy_dfs_state(phy->mt76);
+ 
+-	if (prev_state == dfs_state)
++	if (prev_state == dfs_state || rdd_idx < 0)
+ 		return 0;
+ 
+ 	if (prev_state == MT_DFS_STATE_UNKNOWN)
+@@ -2177,8 +2162,7 @@ int mt7915_dfs_init_radar_detector(struct mt7915_phy *phy)
+ 	if (dfs_state == MT_DFS_STATE_CAC)
+ 		return 0;
+ 
+-	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_CAC_END,
+-				      phy->mt76->band_idx, MT_RX_SEL0, 0);
++	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_CAC_END, rdd_idx, 0, 0);
+ 	if (err < 0) {
+ 		phy->mt76->dfs_state = MT_DFS_STATE_UNKNOWN;
+ 		return err;
+@@ -2188,15 +2172,13 @@ int mt7915_dfs_init_radar_detector(struct mt7915_phy *phy)
+ 	return 0;
+ 
+ stop:
+-	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_NORMAL_START,
+-				      phy->mt76->band_idx, MT_RX_SEL0, 0);
++	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_NORMAL_START, rdd_idx, 0, 0);
+ 	if (err < 0)
+ 		return err;
+ 
+ 	if (is_mt7915(&dev->mt76)) {
+ 		err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_SET_WF_ANT,
+-					      phy->mt76->band_idx, 0,
+-					      dev->dbdc_support ? 2 : 0);
++					      rdd_idx, 0, dev->dbdc_support ? 2 : 0);
+ 		if (err < 0)
+ 			return err;
+ 	}
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 3643c72bb68d..c9a4c35001dd 100644
+index c9a4c35001dd..427542777abc 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2859,7 +2859,7 @@ int mt7915_mcu_set_eeprom(struct mt7915_dev *dev)
- 				 &req, sizeof(req), true);
+@@ -303,17 +303,35 @@ mt7915_mcu_rx_radar_detected(struct mt7915_dev *dev, struct sk_buff *skb)
+ {
+ 	struct mt76_phy *mphy = &dev->mt76.phy;
+ 	struct mt7915_mcu_rdd_report *r;
++	u32 sku;
+ 
+ 	r = (struct mt7915_mcu_rdd_report *)skb->data;
+ 
+-	if (r->band_idx > MT_RX_SEL2)
++	switch (r->rdd_idx) {
++	case MT_RDD_IDX_BAND0:
++		break;
++	case MT_RDD_IDX_BAND1:
++		sku = mt7915_check_adie(dev, true);
++		/* the main phy is bound to band 1 for this sku */
++		if (is_mt7986(&dev->mt76) &&
++		    (sku == MT7975_ONE_ADIE || sku == MT7976_ONE_ADIE))
++			break;
++		mphy = dev->mt76.phys[MT_BAND1];
++		break;
++	case MT_RDD_IDX_BACKGROUND:
++		if (!dev->rdd2_phy)
++			return;
++		mphy = dev->rdd2_phy->mt76;
++		break;
++	default:
++		dev_err(dev->mt76.dev, "Unknown RDD idx %d\n", r->rdd_idx);
+ 		return;
++	}
+ 
+-	if ((r->band_idx && !dev->phy.mt76->band_idx) &&
+-	    dev->mt76.phys[MT_BAND1])
+-		mphy = dev->mt76.phys[MT_BAND1];
++	if (!mphy)
++		return;
+ 
+-	if (r->band_idx == MT_RX_SEL2)
++	if (r->rdd_idx == MT_RDD_IDX_BACKGROUND)
+ 		cfg80211_background_radar_event(mphy->hw->wiphy,
+ 						&dev->rdd2_chandef,
+ 						GFP_ATOMIC);
+@@ -2697,11 +2715,14 @@ int mt7915_mcu_rdd_background_enable(struct mt7915_phy *phy,
+ 				     struct cfg80211_chan_def *chandef)
+ {
+ 	struct mt7915_dev *dev = phy->dev;
+-	int err, region;
++	int err, region, rdd_idx;
++
++	rdd_idx = mt7915_get_rdd_idx(phy, true);
++	if (rdd_idx < 0)
++		return -EINVAL;
+ 
+ 	if (!chandef) { /* disable offchain */
+-		err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_STOP, MT_RX_SEL2,
+-					      0, 0);
++		err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_STOP, rdd_idx, 0, 0);
+ 		if (err)
+ 			return err;
+ 
+@@ -2727,8 +2748,7 @@ int mt7915_mcu_rdd_background_enable(struct mt7915_phy *phy,
+ 		break;
+ 	}
+ 
+-	return mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_START, MT_RX_SEL2,
+-				       0, region);
++	return mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_START, rdd_idx, 0, region);
  }
  
--int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset)
-+int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset, u8 *read_buf)
- {
- 	struct mt7915_mcu_eeprom_info req = {
- 		.addr = cpu_to_le32(round_down(offset,
-@@ -2867,8 +2867,8 @@ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset)
- 	};
- 	struct mt7915_mcu_eeprom_info *res;
- 	struct sk_buff *skb;
-+	u8 *buf = read_buf;
- 	int ret;
--	u8 *buf;
+ int mt7915_mcu_set_chan_info(struct mt7915_phy *phy, int cmd)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index 092ed504a8f2..086ad89ecd91 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -57,7 +57,7 @@ struct mt7915_mcu_bcc_notify {
+ struct mt7915_mcu_rdd_report {
+ 	struct mt76_connac2_mcu_rxd_hdr rxd;
  
- 	ret = mt76_mcu_send_and_get_msg(&dev->mt76,
- 					MCU_EXT_QUERY(EFUSE_ACCESS),
-@@ -2877,8 +2877,10 @@ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset)
- 		return ret;
- 
- 	res = (struct mt7915_mcu_eeprom_info *)skb->data;
--	buf = dev->mt76.eeprom.data + le32_to_cpu(res->addr);
-+	if (!buf)
-+		buf = dev->mt76.eeprom.data + le32_to_cpu(res->addr);
- 	memcpy(buf, res->data, MT7915_EEPROM_BLOCK_SIZE);
-+
- 	dev_kfree_skb(skb);
- 
- 	return 0;
+-	u8 band_idx;
++	u8 rdd_idx;
+ 	u8 long_detected;
+ 	u8 constant_prf_detected;
+ 	u8 staggered_prf_detected;
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 533939f2b7ed..66bb94192297 100644
+index 66bb94192297..2e94347c46d6 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -425,6 +425,7 @@ int mt7915_eeprom_get_target_power(struct mt7915_dev *dev,
- 				   struct ieee80211_channel *chan,
- 				   u8 chain_idx);
- s8 mt7915_eeprom_get_power_delta(struct mt7915_dev *dev, int band);
-+bool mt7915_eeprom_has_background_radar(struct mt7915_dev *dev);
- int mt7915_dma_init(struct mt7915_dev *dev, struct mt7915_phy *phy2);
- void mt7915_dma_prefetch(struct mt7915_dev *dev);
- void mt7915_dma_cleanup(struct mt7915_dev *dev);
-@@ -473,7 +474,7 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
- 				   struct ieee80211_sta *sta,
- 				   void *data, u32 field);
- int mt7915_mcu_set_eeprom(struct mt7915_dev *dev);
--int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset);
-+int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset, u8 *read_buf);
- int mt7915_mcu_get_eeprom_free_block(struct mt7915_dev *dev, u8 *block_num);
- int mt7915_mcu_set_mac(struct mt7915_dev *dev, int band, bool enable,
- 		       bool hdr_trans);
+@@ -215,8 +215,6 @@ struct mt7915_phy {
+ 	s16 coverage_class;
+ 	u8 slottime;
+ 
+-	u8 rdd_state;
+-
+ 	u32 trb_ts;
+ 
+ 	u32 rx_ampdu_ts;
+@@ -331,10 +329,10 @@ enum {
+ 	__MT_WFDMA_MAX,
+ };
+ 
+-enum {
+-	MT_RX_SEL0,
+-	MT_RX_SEL1,
+-	MT_RX_SEL2, /* monitor chain */
++enum rdd_idx {
++	MT_RDD_IDX_BAND0,	/* RDD idx for band idx 0 (single-band) */
++	MT_RDD_IDX_BAND1,	/* RDD idx for band idx 1 */
++	MT_RDD_IDX_BACKGROUND,	/* RDD idx for background chain */
+ };
+ 
+ enum mt7915_rdd_cmd {
+@@ -354,6 +352,18 @@ enum mt7915_rdd_cmd {
+ 	RDD_IRQ_OFF,
+ };
+ 
++static inline int
++mt7915_get_rdd_idx(struct mt7915_phy *phy, bool is_background)
++{
++	if (!phy->mt76->cap.has_5ghz)
++		return -1;
++
++	if (is_background)
++		return MT_RDD_IDX_BACKGROUND;
++
++	return phy->mt76->band_idx;
++}
++
+ static inline struct mt7915_phy *
+ mt7915_hw_phy(struct ieee80211_hw *hw)
+ {
 -- 
 2.45.2
 
