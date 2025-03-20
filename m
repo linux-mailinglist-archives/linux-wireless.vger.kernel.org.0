@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-20601-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20602-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FD7A69EC5
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 04:28:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E1FA69EC9
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 04:29:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A5DA1896F7D
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 03:28:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24E587B1D73
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 03:27:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848DA1EB1BD;
-	Thu, 20 Mar 2025 03:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71011EDA1B;
+	Thu, 20 Mar 2025 03:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="iPLpg4Xp"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="rem7qBLb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036F51EDA3B
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 03:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F64A1EDA3B
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 03:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742441279; cv=none; b=pbSWLWVW7WzIu0Cw0eXPfHJzCb7Bhb/2ic6rXLfkkZpdxYU/L5LbOvsfKAP2LbPzRnjNzEzgW7g8OVvSI4k/IsxWLpcgaJmvMzVJIuspMX4lCk0IqgP4nBQECdz4WRq2UfrJfqQmR55i07X/nd7AmFsOMupRj+pKHvqqOurVT9o=
+	t=1742441282; cv=none; b=d3f4PbutM/XcKiS7bfNYsfMP8aO3/j5srubtThJTWfML8bkZro08QUgJ9/sAkPFPUH67HQyiPlhOtEH+DIrtMMIZQyKYzy3fcQqyYN56kUEiE1bkuIHKCSMzAyydW6cldRlB8lq51gaexuAOWia7GazA9R7ASlH6cwo03LxyRpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742441279; c=relaxed/simple;
-	bh=9R25HcfGxGAo8K3ONSIrjV6ektvazrNJA6/o4l5T7aY=;
+	s=arc-20240116; t=1742441282; c=relaxed/simple;
+	bh=mvi1io0sT8yf46jFk8OB3JhJ34oXZOyYfnpngYULfxk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pl9Xvk6jhCCukeDwtzbpBKcu1RIQumP0PDTSQOBId+XNis0kbqz6kSiu+zvzzgQr5qne3bg4Jzh+emkvbeXjCo6yIlUynStaNYardK/fkkJW6IOCrcJ56HA2zqiRnB6p22PmZkyCdE+tLjy/3zw8/hAETNnGedJ1gbklpSSvbZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=iPLpg4Xp; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=GdwYSOTBJ/Q3SXwyg8JFx+p6E2Gjhd+7P0JLXgHLU0yyCs6HK/RWM6ERjpja8pyhazdh2FY6Wt8YRFukJ6V4V4VaELqw7i2GB/dJk7NEjNH6aq1iQOq3Wl8NMA61pSOD8tdeqNP74oXb1dISLBwuJ/hVcTD6iof3Ul9ApI3LUcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=rem7qBLb; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52K3RsuA61750926, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52K3Rw9fA1750936, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1742441274; bh=9R25HcfGxGAo8K3ONSIrjV6ektvazrNJA6/o4l5T7aY=;
+	t=1742441278; bh=mvi1io0sT8yf46jFk8OB3JhJ34oXZOyYfnpngYULfxk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=iPLpg4XpYmmoHrRpUBPCl7zq0hK4lzI62Dh8w4xycJ14+6Jop7ofQ6GsYvkdZ/TVi
-	 z4NerrCsuz9nQAURtMOCfwkZmSxNYM2r2dOoEsLt1GY6yGu+tnpmKCS2VKdGmBNoj1
-	 OWsSbEJ2DBDvOwvzsL0PqbtPgLFyK1aCwfpQSLmFFSF0IHcH7xmpNm4ymFFA+JvYBY
-	 kWEyyMCpDB8cqbrsaHd5k3DGhuBI7YOhmr6WPmNsupGbK2wr0VSY9stY4tlXP1NPlY
-	 JRBBBTgQiA69uMDV51tooNZSPS7BANfaGsAGblnxOCQiVld9ebRl3ErSbZSW5yDBvG
-	 FYAWF9zDtujiQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52K3RsuA61750926
+	b=rem7qBLbpEsP/J8i+SN4WbQMeNWqTqnq7CwHfZcu7pVTpM48p4O2a2uOAaShMhia7
+	 9Gf8y7KcRia2EVG9rBl6SyO7YR/9NnLOvHTCkDkK/3Q3lJQabRGUPF/aopNk00tqgx
+	 svkI/N1mjxTbr+oEF7dSBfZuXticG6hxv64t2M/KICj/Q0sgz5rWIr/FG1KzjdsQLM
+	 pGa2JE2Xz6l0nSzIuYQW0P3PlEUy3hKvDSmTlC9z9HoZVLCxdh55Us1JVkCrQOwmUU
+	 Et5NsMh55D8sbe4uHbACZ7I0fSd5vu/Z+by3obU/RcuZDAwAWJ/3q3HUjQpXRZanv3
+	 abswl/8zsNrdQ==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52K3Rw9fA1750936
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 11:27:54 +0800
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 11:27:58 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 20 Mar 2025 11:27:55 +0800
+ 15.1.2507.39; Thu, 20 Mar 2025 11:27:58 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 20 Mar
- 2025 11:27:54 +0800
+ 2025 11:27:58 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 06/12] wifi: rtw89: acpi: support loading static SAR table
-Date: Thu, 20 Mar 2025 11:27:06 +0800
-Message-ID: <20250320032712.20284-7-pkshih@realtek.com>
+Subject: [PATCH rtw-next 07/12] wifi: rtw89: acpi: support loading dynamic SAR tables and indicator
+Date: Thu, 20 Mar 2025 11:27:07 +0800
+Message-ID: <20250320032712.20284-8-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250320032712.20284-1-pkshih@realtek.com>
 References: <20250320032712.20284-1-pkshih@realtek.com>
@@ -76,342 +76,55 @@ X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Support to load static SAR table with ACPI WRDS method. The format of
-a static SAR table is like the following, where according to header,
-antenna number could be either 2 or 4 and subband number could either
-contain 6 GHz or not. And then, an entry of it describes a TX power
-limitation with a given unit, which is also based on header, for the
-antenna under the subband. Though things can be determined by header,
-still not all combinations are allowed in content. For the recognizing
-flow, there is a list of allowed combinations.
+Support to load dynamic SAR tables with ACPI RWRD method. The content
+format of a single dynamic SAR table is basically the same as static
+SAR table. However, it's able to carry multiple dynamic SAR tables at
+one time. And, its header contains one more field to describe how many
+dynamic SAR tables are filled in the content. Either static SAR table
+or dynamic SAR tables can be supported, but not both simultaneously.
 
-               +--------------------------------+
-               |             header             |
-               +--------------------------------+
-               +---+---+---+---+---+------------+ +
-             / |   |   |   |   |   | ...        | | \
-               +---+---+---+---+---+------------+ |
-      antenna  |   |   |   |   |   | ...        | |
-      number   +---+---+---+---+---+------------+ |   content
-               |...|   |   |   |   | ...        | |
-               +---+---+---+---+---+------------+ |
-             \ |...|   |   |   |   | ...        | | /
-               +---+---+---+---+---+------------+ +
-                \                              /
-                          subband number
-
-Following the format above, try to load a static SAR table and normalize
-its content into SW structure. If any recognized is loaded, SW SAR flow
-is then set up with source from ACPI.
+Besides, also support to load indicator of dynamic SAR with ACPI RWSI
+method. The indicator will describe a target dynamic SAR table, which
+should be followed currently, by antenna. It can be changed at runtime
+according to platform mode. For example, tablet mode can use different
+SAR from normal mode. So, track indicator configuration if dynamic SAR
+is configured.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/acpi.c | 342 +++++++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/acpi.h |  61 ++++
- drivers/net/wireless/realtek/rtw89/core.h |   2 +
- 3 files changed, 404 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/acpi.c | 132 ++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/acpi.h |  20 ++++
+ drivers/net/wireless/realtek/rtw89/core.c |   2 +-
+ drivers/net/wireless/realtek/rtw89/core.h |  13 +++
+ drivers/net/wireless/realtek/rtw89/sar.c  | 106 +++++++++++++----
+ drivers/net/wireless/realtek/rtw89/sar.h  |   2 +-
+ 6 files changed, 253 insertions(+), 22 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/acpi.c b/drivers/net/wireless/realtek/rtw89/acpi.c
-index 97b069062ec8..b937832b0f7a 100644
+index b937832b0f7a..4356e7de58c3 100644
 --- a/drivers/net/wireless/realtek/rtw89/acpi.c
 +++ b/drivers/net/wireless/realtek/rtw89/acpi.c
-@@ -365,8 +365,348 @@ enum rtw89_band rtw89_acpi_sar_subband_to_band(struct rtw89_dev *rtwdev,
- 	}
+@@ -688,25 +688,157 @@ rtw89_acpi_evaluate_static_sar(struct rtw89_dev *rtwdev,
+ 	return rec;
  }
  
-+static u8 rtw89_acpi_sar_rfpath_to_hp_antidx(enum rtw89_rf_path rfpath)
-+{
-+	switch (rfpath) {
-+	default:
-+	case RF_PATH_B:
-+		return 0;
-+	case RF_PATH_A:
-+		return 1;
-+	}
-+}
-+
-+static u8 rtw89_acpi_sar_rfpath_to_rt_antidx(enum rtw89_rf_path rfpath)
-+{
-+	switch (rfpath) {
-+	default:
-+	case RF_PATH_A:
-+		return 0;
-+	case RF_PATH_B:
-+		return 1;
-+	}
-+}
-+
-+static s16 rtw89_acpi_sar_normalize_hp_val(u8 v)
-+{
-+	static const u8 bias = 10;
-+	static const u8 fct = 1;
-+	u16 res;
-+
-+	BUILD_BUG_ON(fct > TXPWR_FACTOR_OF_RTW89_ACPI_SAR);
-+
-+	res = (bias << TXPWR_FACTOR_OF_RTW89_ACPI_SAR) +
-+	      (v << (TXPWR_FACTOR_OF_RTW89_ACPI_SAR - fct));
-+
-+	return min_t(s32, res, MAX_VAL_OF_RTW89_ACPI_SAR);
-+}
-+
-+static s16 rtw89_acpi_sar_normalize_rt_val(u8 v)
-+{
-+	static const u8 fct = 3;
-+	u16 res;
-+
-+	BUILD_BUG_ON(fct > TXPWR_FACTOR_OF_RTW89_ACPI_SAR);
-+
-+	res = v << (TXPWR_FACTOR_OF_RTW89_ACPI_SAR - fct);
-+
-+	return min_t(s32, res, MAX_VAL_OF_RTW89_ACPI_SAR);
-+}
-+
-+static
-+void rtw89_acpi_sar_load_std_legacy(struct rtw89_dev *rtwdev,
-+				    const struct rtw89_acpi_sar_recognition *rec,
-+				    const void *content,
-+				    struct rtw89_sar_entry_from_acpi *ent)
-+{
-+	const struct rtw89_acpi_sar_std_legacy *ptr = content;
-+	enum rtw89_acpi_sar_subband subband;
-+	enum rtw89_rf_path path;
-+
-+	for (subband = 0; subband < NUM_OF_RTW89_ACPI_SAR_SUBBAND; subband++) {
-+		for (path = 0; path < NUM_OF_RTW89_ACPI_SAR_RF_PATH; path++) {
-+			u8 antidx = rec->rfpath_to_antidx(path);
-+
-+			if (subband < RTW89_ACPI_SAR_SUBBAND_NR_LEGACY)
-+				ent->v[subband][path] =
-+					rec->normalize(ptr->v[antidx][subband]);
-+			else
-+				ent->v[subband][path] = MAX_VAL_OF_RTW89_ACPI_SAR;
-+		}
-+	}
-+}
-+
-+static
-+void rtw89_acpi_sar_load_std_has_6ghz(struct rtw89_dev *rtwdev,
-+				      const struct rtw89_acpi_sar_recognition *rec,
-+				      const void *content,
-+				      struct rtw89_sar_entry_from_acpi *ent)
-+{
-+	const struct rtw89_acpi_sar_std_has_6ghz *ptr = content;
-+	enum rtw89_acpi_sar_subband subband;
-+	enum rtw89_rf_path path;
-+
-+	BUILD_BUG_ON(RTW89_ACPI_SAR_SUBBAND_NR_HAS_6GHZ != NUM_OF_RTW89_ACPI_SAR_SUBBAND);
-+
-+	for (subband = 0; subband < NUM_OF_RTW89_ACPI_SAR_SUBBAND; subband++) {
-+		for (path = 0; path < NUM_OF_RTW89_ACPI_SAR_RF_PATH; path++) {
-+			u8 antidx = rec->rfpath_to_antidx(path);
-+
-+			ent->v[subband][path] = rec->normalize(ptr->v[antidx][subband]);
-+		}
-+	}
-+}
-+
-+static
-+void rtw89_acpi_sar_load_sml_legacy(struct rtw89_dev *rtwdev,
-+				    const struct rtw89_acpi_sar_recognition *rec,
-+				    const void *content,
-+				    struct rtw89_sar_entry_from_acpi *ent)
-+{
-+	const struct rtw89_acpi_sar_sml_legacy *ptr = content;
-+	enum rtw89_acpi_sar_subband subband;
-+	enum rtw89_rf_path path;
-+
-+	for (subband = 0; subband < NUM_OF_RTW89_ACPI_SAR_SUBBAND; subband++) {
-+		for (path = 0; path < NUM_OF_RTW89_ACPI_SAR_RF_PATH; path++) {
-+			u8 antidx = rec->rfpath_to_antidx(path);
-+
-+			if (subband < RTW89_ACPI_SAR_SUBBAND_NR_LEGACY)
-+				ent->v[subband][path] =
-+					rec->normalize(ptr->v[antidx][subband]);
-+			else
-+				ent->v[subband][path] = MAX_VAL_OF_RTW89_ACPI_SAR;
-+		}
-+	}
-+}
-+
-+static
-+void rtw89_acpi_sar_load_sml_has_6ghz(struct rtw89_dev *rtwdev,
-+				      const struct rtw89_acpi_sar_recognition *rec,
-+				      const void *content,
-+				      struct rtw89_sar_entry_from_acpi *ent)
-+{
-+	const struct rtw89_acpi_sar_sml_has_6ghz *ptr = content;
-+	enum rtw89_acpi_sar_subband subband;
-+	enum rtw89_rf_path path;
-+
-+	BUILD_BUG_ON(RTW89_ACPI_SAR_SUBBAND_NR_HAS_6GHZ != NUM_OF_RTW89_ACPI_SAR_SUBBAND);
-+
-+	for (subband = 0; subband < NUM_OF_RTW89_ACPI_SAR_SUBBAND; subband++) {
-+		for (path = 0; path < NUM_OF_RTW89_ACPI_SAR_RF_PATH; path++) {
-+			u8 antidx = rec->rfpath_to_antidx(path);
-+
-+			ent->v[subband][path] = rec->normalize(ptr->v[antidx][subband]);
-+		}
-+	}
-+}
-+
-+static const struct rtw89_acpi_sar_recognition rtw89_acpi_sar_recs[] = {
-+	{
-+		.id = {
-+			.cid = RTW89_ACPI_SAR_CID_HP,
-+			.rev = RTW89_ACPI_SAR_REV_LEGACY,
-+			.size = RTW89_ACPI_SAR_SIZE_OF(std_legacy),
-+		},
-+
-+		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_hp_antidx,
-+		.normalize = rtw89_acpi_sar_normalize_hp_val,
-+		.load = rtw89_acpi_sar_load_std_legacy,
-+	},
-+	{
-+		.id = {
-+			.cid = RTW89_ACPI_SAR_CID_HP,
-+			.rev = RTW89_ACPI_SAR_REV_HAS_6GHZ,
-+			.size = RTW89_ACPI_SAR_SIZE_OF(std_has_6ghz),
-+		},
-+
-+		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_hp_antidx,
-+		.normalize = rtw89_acpi_sar_normalize_hp_val,
-+		.load = rtw89_acpi_sar_load_std_has_6ghz,
-+	},
-+	{
-+		.id = {
-+			.cid = RTW89_ACPI_SAR_CID_RT,
-+			.rev = RTW89_ACPI_SAR_REV_LEGACY,
-+			.size = RTW89_ACPI_SAR_SIZE_OF(std_legacy),
-+		},
-+
-+		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_rt_antidx,
-+		.normalize = rtw89_acpi_sar_normalize_rt_val,
-+		.load = rtw89_acpi_sar_load_std_legacy,
-+	},
-+	{
-+		.id = {
-+			.cid = RTW89_ACPI_SAR_CID_RT,
-+			.rev = RTW89_ACPI_SAR_REV_HAS_6GHZ,
-+			.size = RTW89_ACPI_SAR_SIZE_OF(std_has_6ghz),
-+		},
-+
-+		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_rt_antidx,
-+		.normalize = rtw89_acpi_sar_normalize_rt_val,
-+		.load = rtw89_acpi_sar_load_std_has_6ghz,
-+	},
-+	{
-+		.id = {
-+			.cid = RTW89_ACPI_SAR_CID_RT,
-+			.rev = RTW89_ACPI_SAR_REV_LEGACY,
-+			.size = RTW89_ACPI_SAR_SIZE_OF(sml_legacy),
-+		},
-+
-+		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_rt_antidx,
-+		.normalize = rtw89_acpi_sar_normalize_rt_val,
-+		.load = rtw89_acpi_sar_load_sml_legacy,
-+	},
-+	{
-+		.id = {
-+			.cid = RTW89_ACPI_SAR_CID_RT,
-+			.rev = RTW89_ACPI_SAR_REV_HAS_6GHZ,
-+			.size = RTW89_ACPI_SAR_SIZE_OF(sml_has_6ghz),
-+		},
-+
-+		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_rt_antidx,
-+		.normalize = rtw89_acpi_sar_normalize_rt_val,
-+		.load = rtw89_acpi_sar_load_sml_has_6ghz,
-+	},
-+};
-+
-+struct rtw89_acpi_sar_rec_parm {
-+	u32 pld_len;
-+	u8 tbl_cnt;
-+	u16 cid;
-+	u8 rev;
-+};
-+
 +static const struct rtw89_acpi_sar_recognition *
-+rtw89_acpi_sar_recognize(struct rtw89_dev *rtwdev,
-+			 const struct rtw89_acpi_sar_rec_parm *parm)
-+{
-+	const u32 tbl_len = parm->pld_len / parm->tbl_cnt;
-+	const struct rtw89_acpi_sar_recognition *rec;
-+	struct rtw89_acpi_sar_identifier id = {};
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_ACPI,
-+		    "%s: cid %u, rev %u, tbl len %u, tbl cnt %u\n",
-+		    __func__, parm->cid, parm->rev, tbl_len, parm->tbl_cnt);
-+
-+	if (unlikely(parm->pld_len % parm->tbl_cnt)) {
-+		rtw89_debug(rtwdev, RTW89_DBG_ACPI, "invalid pld len %u\n",
-+			    parm->pld_len);
-+		return NULL;
-+	}
-+
-+	if (unlikely(tbl_len > RTW89_ACPI_SAR_SIZE_MAX)) {
-+		rtw89_debug(rtwdev, RTW89_DBG_ACPI, "invalid tbl len %u\n",
-+			    tbl_len);
-+		return NULL;
-+	}
-+
-+	if (unlikely(parm->tbl_cnt > MAX_NUM_OF_RTW89_ACPI_SAR_TBL)) {
-+		rtw89_debug(rtwdev, RTW89_DBG_ACPI, "invalid tbl cnt %u\n",
-+			    parm->tbl_cnt);
-+		return NULL;
-+	}
-+
-+	switch (parm->cid) {
-+	case RTW89_ACPI_SAR_CID_HP:
-+	case RTW89_ACPI_SAR_CID_RT:
-+		id.cid = parm->cid;
-+		break;
-+	default:
-+		rtw89_debug(rtwdev, RTW89_DBG_ACPI, "invalid cid 0x%x\n",
-+			    parm->cid);
-+		return NULL;
-+	}
-+
-+	switch (parm->rev) {
-+	case RTW89_ACPI_SAR_REV_LEGACY:
-+	case RTW89_ACPI_SAR_REV_HAS_6GHZ:
-+		id.rev = parm->rev;
-+		break;
-+	default:
-+		rtw89_debug(rtwdev, RTW89_DBG_ACPI, "invalid rev %u\n",
-+			    parm->rev);
-+		return NULL;
-+	}
-+
-+	id.size = tbl_len;
-+	for (unsigned int i = 0; i < ARRAY_SIZE(rtw89_acpi_sar_recs); i++) {
-+		rec = &rtw89_acpi_sar_recs[i];
-+		if (memcmp(&rec->id, &id, sizeof(rec->id)) == 0)
-+			return rec;
-+	}
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_ACPI, "failed to recognize\n");
-+	return NULL;
-+}
-+
-+static const struct rtw89_acpi_sar_recognition *
-+rtw89_acpi_evaluate_static_sar(struct rtw89_dev *rtwdev,
-+			       struct rtw89_sar_cfg_acpi *cfg)
++rtw89_acpi_evaluate_dynamic_sar(struct rtw89_dev *rtwdev,
++				struct rtw89_sar_cfg_acpi *cfg)
 +{
 +	const struct rtw89_acpi_sar_recognition *rec = NULL;
-+	const struct rtw89_acpi_static_sar_hdr *hdr;
-+	struct rtw89_sar_entry_from_acpi tmp = {};
++	const struct rtw89_acpi_dynamic_sar_hdr *hdr;
 +	struct rtw89_acpi_sar_rec_parm parm = {};
 +	struct rtw89_sar_table_from_acpi *tbl;
 +	const struct rtw89_acpi_data *data;
 +	u32 len;
 +
-+	data = rtw89_acpi_evaluate_method(rtwdev, RTW89_ACPI_METHOD_STATIC_SAR);
++	data = rtw89_acpi_evaluate_method(rtwdev, RTW89_ACPI_METHOD_DYNAMIC_SAR);
 +	if (!data)
 +		return NULL;
 +
-+	rtw89_debug(rtwdev, RTW89_DBG_ACPI, "acpi load static sar\n");
++	rtw89_debug(rtwdev, RTW89_DBG_ACPI, "acpi load dynamic sar\n");
 +
 +	len = data->len;
 +	if (len <= sizeof(*hdr)) {
@@ -423,134 +136,423 @@ index 97b069062ec8..b937832b0f7a 100644
 +
 +	parm.cid = le16_to_cpu(hdr->cid);
 +	parm.rev = hdr->rev;
-+	parm.tbl_cnt = 1;
++	parm.tbl_cnt = hdr->cnt;
 +	parm.pld_len = len - sizeof(*hdr);
 +
 +	rec = rtw89_acpi_sar_recognize(rtwdev, &parm);
 +	if (!rec)
 +		goto out;
 +
-+	rec->load(rtwdev, rec, hdr->content, &tmp);
++	for (unsigned int i = 0; i < hdr->cnt; i++) {
++		const u8 *content = hdr->content + rec->id.size * i;
++		struct rtw89_sar_entry_from_acpi tmp = {};
 +
-+	tbl = &cfg->tables[0];
-+	for (u8 regd = 0; regd < RTW89_REGD_NUM; regd++)
-+		tbl->entries[regd] = tmp;
++		rec->load(rtwdev, rec, content, &tmp);
 +
-+	cfg->valid_num = 1;
++		tbl = &cfg->tables[i];
++		for (u8 regd = 0; regd < RTW89_REGD_NUM; regd++)
++			tbl->entries[regd] = tmp;
++	}
++
++	cfg->valid_num = hdr->cnt;
 +
 +out:
 +	kfree(data);
 +	return rec;
 +}
 +
++int rtw89_acpi_evaluate_dynamic_sar_indicator(struct rtw89_dev *rtwdev,
++					      struct rtw89_sar_cfg_acpi *cfg,
++					      bool *poll_changed)
++{
++	struct rtw89_sar_indicator_from_acpi *ind = &cfg->indicator;
++	struct rtw89_sar_indicator_from_acpi tmp = *ind;
++	struct rtw89_acpi_dynamic_sar_indicator *ptr;
++	const struct rtw89_acpi_data *data;
++	enum rtw89_rf_path path;
++	int ret = 0;
++	u32 len;
++
++	data = rtw89_acpi_evaluate_method(rtwdev, RTW89_ACPI_METHOD_DYNAMIC_SAR_INDICATOR);
++	if (!data)
++		return -EFAULT;
++
++	if (!poll_changed)
++		rtw89_debug(rtwdev, RTW89_DBG_ACPI, "acpi load dynamic sar indicator\n");
++
++	len = data->len;
++	if (len != sizeof(*ptr)) {
++		rtw89_debug(rtwdev, RTW89_DBG_ACPI, "invalid buf len %u\n", len);
++		ret = -EINVAL;
++		goto out;
++	}
++
++	ptr = (typeof(ptr))data->buf;
++
++	for (path = 0; path < NUM_OF_RTW89_ACPI_SAR_RF_PATH; path++) {
++		u8 antidx = ind->rfpath_to_antidx(path);
++		u8 sel;
++
++		if (antidx >= ind->fields)
++			antidx = 0;
++
++		sel = RTW89_ACPI_DYNAMIC_SAR_INDICATOR_GET_SEL(ptr, antidx);
++		if (sel >= cfg->valid_num)
++			sel = 0;
++
++		tmp.tblsel[path] = sel;
++	}
++
++	if (memcmp(ind, &tmp, sizeof(*ind)) == 0) {
++		if (poll_changed)
++			*poll_changed = false;
++	} else {
++		if (poll_changed)
++			*poll_changed = true;
++
++		*ind = tmp;
++	}
++
++out:
++	kfree(data);
++	return ret;
++}
++
  int rtw89_acpi_evaluate_sar(struct rtw89_dev *rtwdev,
  			    struct rtw89_sar_cfg_acpi *cfg)
  {
--	return -ENOENT;
-+	const struct rtw89_acpi_sar_recognition *rec;
++	struct rtw89_sar_indicator_from_acpi *ind = &cfg->indicator;
+ 	const struct rtw89_acpi_sar_recognition *rec;
++	bool fetch_indicator = false;
++	int ret;
+ 
+ 	rec = rtw89_acpi_evaluate_static_sar(rtwdev, cfg);
++	if (rec)
++		goto recognized;
 +
-+	rec = rtw89_acpi_evaluate_static_sar(rtwdev, cfg);
-+	if (!rec)
-+		return -ENOENT;
++	rec = rtw89_acpi_evaluate_dynamic_sar(rtwdev, cfg);
+ 	if (!rec)
+ 		return -ENOENT;
+ 
++	fetch_indicator = true;
 +
-+	switch (rec->id.cid) {
-+	case RTW89_ACPI_SAR_CID_HP:
-+		cfg->downgrade_2tx = 3 << TXPWR_FACTOR_OF_RTW89_ACPI_SAR;
-+		break;
-+	case RTW89_ACPI_SAR_CID_RT:
-+		cfg->downgrade_2tx = 0;
-+		break;
-+	default:
-+		return -EFAULT;
++recognized:
+ 	switch (rec->id.cid) {
+ 	case RTW89_ACPI_SAR_CID_HP:
+ 		cfg->downgrade_2tx = 3 << TXPWR_FACTOR_OF_RTW89_ACPI_SAR;
++		ind->fields = RTW89_ACPI_SAR_ANT_NR_STD;
+ 		break;
+ 	case RTW89_ACPI_SAR_CID_RT:
+ 		cfg->downgrade_2tx = 0;
++		ind->fields = 1;
+ 		break;
+ 	default:
+ 		return -EFAULT;
+ 	}
+ 
++	if (fetch_indicator) {
++		ind->rfpath_to_antidx = rec->rfpath_to_antidx;
++		ret = rtw89_acpi_evaluate_dynamic_sar_indicator(rtwdev, cfg, NULL);
++		if (ret)
++			fetch_indicator = false;
 +	}
 +
-+	return 0;
++	if (!fetch_indicator)
++		memset(ind->tblsel, 0, sizeof(ind->tblsel));
++
++	ind->enable_sync = fetch_indicator;
+ 	return 0;
  }
 diff --git a/drivers/net/wireless/realtek/rtw89/acpi.h b/drivers/net/wireless/realtek/rtw89/acpi.h
-index 1f5d732c33c0..68a3433dd41e 100644
+index 68a3433dd41e..a851e845cdec 100644
 --- a/drivers/net/wireless/realtek/rtw89/acpi.h
 +++ b/drivers/net/wireless/realtek/rtw89/acpi.h
-@@ -75,6 +75,67 @@ struct rtw89_acpi_rtag_result {
- 	u8 ant_gain_table[RTW89_ANT_GAIN_CHAIN_NUM][RTW89_ANT_GAIN_SUBBAND_NR];
+@@ -89,6 +89,8 @@ enum rtw89_acpi_sar_rev {
+ #define RTW89_ACPI_SAR_ANT_NR_SML 2
+ 
+ #define RTW89_ACPI_METHOD_STATIC_SAR "WRDS"
++#define RTW89_ACPI_METHOD_DYNAMIC_SAR "RWRD"
++#define RTW89_ACPI_METHOD_DYNAMIC_SAR_INDICATOR "RWSI"
+ 
+ struct rtw89_acpi_sar_std_legacy {
+ 	u8 v[RTW89_ACPI_SAR_ANT_NR_STD][RTW89_ACPI_SAR_SUBBAND_NR_LEGACY];
+@@ -112,6 +114,21 @@ struct rtw89_acpi_static_sar_hdr {
+ 	u8 content[];
  } __packed;
  
-+enum rtw89_acpi_sar_cid {
-+	RTW89_ACPI_SAR_CID_HP = 0x5048,
-+	RTW89_ACPI_SAR_CID_RT = 0x5452,
-+};
-+
-+enum rtw89_acpi_sar_rev {
-+	RTW89_ACPI_SAR_REV_LEGACY = 1,
-+	RTW89_ACPI_SAR_REV_HAS_6GHZ = 2,
-+};
-+
-+#define RTW89_ACPI_SAR_ANT_NR_STD 4
-+#define RTW89_ACPI_SAR_ANT_NR_SML 2
-+
-+#define RTW89_ACPI_METHOD_STATIC_SAR "WRDS"
-+
-+struct rtw89_acpi_sar_std_legacy {
-+	u8 v[RTW89_ACPI_SAR_ANT_NR_STD][RTW89_ACPI_SAR_SUBBAND_NR_LEGACY];
-+} __packed;
-+
-+struct rtw89_acpi_sar_std_has_6ghz {
-+	u8 v[RTW89_ACPI_SAR_ANT_NR_STD][RTW89_ACPI_SAR_SUBBAND_NR_HAS_6GHZ];
-+} __packed;
-+
-+struct rtw89_acpi_sar_sml_legacy {
-+	u8 v[RTW89_ACPI_SAR_ANT_NR_SML][RTW89_ACPI_SAR_SUBBAND_NR_LEGACY];
-+} __packed;
-+
-+struct rtw89_acpi_sar_sml_has_6ghz {
-+	u8 v[RTW89_ACPI_SAR_ANT_NR_SML][RTW89_ACPI_SAR_SUBBAND_NR_HAS_6GHZ];
-+} __packed;
-+
-+struct rtw89_acpi_static_sar_hdr {
++struct rtw89_acpi_dynamic_sar_hdr {
 +	__le16 cid;
 +	u8 rev;
++	u8 cnt;
 +	u8 content[];
 +} __packed;
 +
-+struct rtw89_acpi_sar_identifier {
-+	enum rtw89_acpi_sar_cid cid;
-+	enum rtw89_acpi_sar_rev rev;
-+	u8 size;
-+};
++#define RTW89_ACPI_DYNAMIC_SAR_INDICATOR_GET_SEL(indicator, ant_idx) \
++	((indicator)->tblidx_by_ant[ant_idx] - 1)
 +
-+/* for rtw89_acpi_sar_identifier::size */
-+#define RTW89_ACPI_SAR_SIZE_MAX U8_MAX
-+#define RTW89_ACPI_SAR_SIZE_OF(type) \
-+	(BUILD_BUG_ON_ZERO(sizeof(struct rtw89_acpi_sar_ ## type) > \
-+			   RTW89_ACPI_SAR_SIZE_MAX) + \
-+	 sizeof(struct rtw89_acpi_sar_ ## type))
++struct rtw89_acpi_dynamic_sar_indicator {
++	/* 1-base */
++	u8 tblidx_by_ant[RTW89_ACPI_SAR_ANT_NR_STD];
++} __packed;
 +
-+struct rtw89_acpi_sar_recognition {
-+	struct rtw89_acpi_sar_identifier id;
-+
-+	u8 (*rfpath_to_antidx)(enum rtw89_rf_path rfpath);
-+	s16 (*normalize)(u8 v);
-+	void (*load)(struct rtw89_dev *rtwdev,
-+		     const struct rtw89_acpi_sar_recognition *rec,
-+		     const void *content,
-+		     struct rtw89_sar_entry_from_acpi *ent);
-+};
-+
- enum rtw89_acpi_sar_subband rtw89_acpi_sar_get_subband(struct rtw89_dev *rtwdev,
- 						       u32 center_freq);
- enum rtw89_band rtw89_acpi_sar_subband_to_band(struct rtw89_dev *rtwdev,
+ struct rtw89_acpi_sar_identifier {
+ 	enum rtw89_acpi_sar_cid cid;
+ 	enum rtw89_acpi_sar_rev rev;
+@@ -148,5 +165,8 @@ int rtw89_acpi_evaluate_rtag(struct rtw89_dev *rtwdev,
+ 			     struct rtw89_acpi_rtag_result *res);
+ int rtw89_acpi_evaluate_sar(struct rtw89_dev *rtwdev,
+ 			    struct rtw89_sar_cfg_acpi *cfg);
++int rtw89_acpi_evaluate_dynamic_sar_indicator(struct rtw89_dev *rtwdev,
++					      struct rtw89_sar_cfg_acpi *cfg,
++					      bool *changed);
+ 
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 2088c6f4a98e..869728922def 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -3617,7 +3617,7 @@ static void rtw89_track_work(struct wiphy *wiphy, struct wiphy_work *work)
+ 	rtw89_phy_antdiv_track(rtwdev);
+ 	rtw89_phy_ul_tb_ctrl_track(rtwdev);
+ 	rtw89_phy_edcca_track(rtwdev);
+-	rtw89_tas_track(rtwdev);
++	rtw89_sar_track(rtwdev);
+ 	rtw89_chanctx_track(rtwdev);
+ 	rtw89_core_rfkill_poll(rtwdev, false);
+ 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index de0734c44985..f36546505b0d 100644
+index f36546505b0d..0789a943074f 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4645,6 +4645,8 @@ enum rtw89_acpi_sar_subband {
- 	RTW89_ACPI_SAR_6GHZ_SUBBAND_8,   /* U-NII-8 */
- 
- 	NUM_OF_RTW89_ACPI_SAR_SUBBAND,
-+	RTW89_ACPI_SAR_SUBBAND_NR_LEGACY = RTW89_ACPI_SAR_5GHZ_SUBBAND_3_4 + 1,
-+	RTW89_ACPI_SAR_SUBBAND_NR_HAS_6GHZ = RTW89_ACPI_SAR_6GHZ_SUBBAND_8 + 1,
+@@ -4666,10 +4666,23 @@ struct rtw89_sar_table_from_acpi {
+ 	struct rtw89_sar_entry_from_acpi entries[RTW89_REGD_NUM];
  };
  
- #define TXPWR_FACTOR_OF_RTW89_ACPI_SAR 3 /* unit: 0.125 dBm */
++struct rtw89_sar_indicator_from_acpi {
++	bool enable_sync;
++	unsigned int fields;
++	u8 (*rfpath_to_antidx)(enum rtw89_rf_path rfpath);
++
++	/* Select among @tables of container, rtw89_sar_cfg_acpi, by path.
++	 * Not design with pointers since addresses will be invalid after
++	 * sync content with local container instance.
++	 */
++	u8 tblsel[NUM_OF_RTW89_ACPI_SAR_RF_PATH];
++};
++
+ struct rtw89_sar_cfg_acpi {
+ 	u8 downgrade_2tx;
+ 	unsigned int valid_num;
+ 	struct rtw89_sar_table_from_acpi tables[MAX_NUM_OF_RTW89_ACPI_SAR_TBL];
++	struct rtw89_sar_indicator_from_acpi indicator;
+ };
+ 
+ struct rtw89_sar_info {
+diff --git a/drivers/net/wireless/realtek/rtw89/sar.c b/drivers/net/wireless/realtek/rtw89/sar.c
+index 8bf5b5d9ef37..120cf2088c9e 100644
+--- a/drivers/net/wireless/realtek/rtw89/sar.c
++++ b/drivers/net/wireless/realtek/rtw89/sar.c
+@@ -92,6 +92,21 @@ static int rtw89_query_sar_config_common(struct rtw89_dev *rtwdev,
+ 	return 0;
+ }
+ 
++static const struct rtw89_sar_entry_from_acpi *
++rtw89_sar_cfg_acpi_get_ent(const struct rtw89_sar_cfg_acpi *rtwsar,
++			   enum rtw89_rf_path path,
++			   enum rtw89_regulation_type regd)
++{
++	const struct rtw89_sar_indicator_from_acpi *ind = &rtwsar->indicator;
++	const struct rtw89_sar_table_from_acpi *tbl;
++	u8 sel;
++
++	sel = ind->tblsel[path];
++	tbl = &rtwsar->tables[sel];
++
++	return &tbl->entries[regd];
++}
++
+ static
+ s32 rtw89_sar_cfg_acpi_get_min(const struct rtw89_sar_entry_from_acpi *ent,
+ 			       enum rtw89_rf_path path,
+@@ -106,9 +121,8 @@ static int rtw89_query_sar_config_acpi(struct rtw89_dev *rtwdev,
+ 				       s32 *cfg)
+ {
+ 	const struct rtw89_sar_cfg_acpi *rtwsar = &rtwdev->sar.cfg_acpi;
+-	const struct rtw89_sar_table_from_acpi *tbl = rtwsar->tables;
++	const struct rtw89_sar_entry_from_acpi *ent_a, *ent_b;
+ 	enum rtw89_acpi_sar_subband subband_l, subband_h;
+-	const struct rtw89_sar_entry_from_acpi *ent;
+ 	u32 center_freq = sar_parm->center_freq;
+ 	const struct rtw89_6ghz_span *span;
+ 	enum rtw89_regulation_type regd;
+@@ -127,10 +141,12 @@ static int rtw89_query_sar_config_acpi(struct rtw89_dev *rtwdev,
+ 
+ 	band = rtw89_acpi_sar_subband_to_band(rtwdev, subband_l);
+ 	regd = rtw89_regd_get(rtwdev, band);
+-	ent = &tbl->entries[regd];
+ 
+-	cfg_a = rtw89_sar_cfg_acpi_get_min(ent, RF_PATH_A, subband_l, subband_h);
+-	cfg_b = rtw89_sar_cfg_acpi_get_min(ent, RF_PATH_B, subband_l, subband_h);
++	ent_a = rtw89_sar_cfg_acpi_get_ent(rtwsar, RF_PATH_A, regd);
++	ent_b = rtw89_sar_cfg_acpi_get_ent(rtwsar, RF_PATH_B, regd);
++
++	cfg_a = rtw89_sar_cfg_acpi_get_min(ent_a, RF_PATH_A, subband_l, subband_h);
++	cfg_b = rtw89_sar_cfg_acpi_get_min(ent_b, RF_PATH_B, subband_l, subband_h);
+ 	*cfg = min(cfg_a, cfg_b);
+ 
+ 	if (sar_parm->ntx == RTW89_2TX)
+@@ -502,18 +518,27 @@ static bool rtw89_tas_query_sar_config(struct rtw89_dev *rtwdev, s32 *cfg)
+ 	return true;
+ }
+ 
+-static void rtw89_tas_state_update(struct rtw89_dev *rtwdev,
+-				   enum rtw89_tas_state state)
++static bool __rtw89_tas_state_update(struct rtw89_dev *rtwdev,
++				     enum rtw89_tas_state state)
+ {
+ 	struct rtw89_tas_info *tas = &rtwdev->tas;
+ 
+ 	if (tas->state == state)
+-		return;
++		return false;
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_SAR, "tas: switch state: %s -> %s\n",
+ 		    rtw89_tas_state_str(tas->state), rtw89_tas_state_str(state));
+ 
+ 	tas->state = state;
++	return true;
++}
++
++static void rtw89_tas_state_update(struct rtw89_dev *rtwdev,
++				   enum rtw89_tas_state state)
++{
++	if (!__rtw89_tas_state_update(rtwdev, state))
++		return;
++
+ 	rtw89_core_set_chip_txpwr(rtwdev);
+ }
+ 
+@@ -608,7 +633,7 @@ static void rtw89_tas_history_update(struct rtw89_dev *rtwdev)
+ 		    rtw89_linear_to_db_quarter(div_u64(txpwr, PERCENT)));
+ }
+ 
+-static void rtw89_tas_rolling_average(struct rtw89_dev *rtwdev)
++static bool rtw89_tas_rolling_average(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_tas_info *tas = &rtwdev->tas;
+ 	s32 dpr_on_threshold, dpr_off_threshold;
+@@ -634,9 +659,9 @@ static void rtw89_tas_rolling_average(struct rtw89_dev *rtwdev)
+ 	else if (txpwr_avg < dpr_off_threshold)
+ 		state = RTW89_TAS_STATE_DPR_OFF;
+ 	else
+-		return;
++		return false;
+ 
+-	rtw89_tas_state_update(rtwdev, state);
++	return __rtw89_tas_state_update(rtwdev, state);
+ }
+ 
+ static void rtw89_tas_init(struct rtw89_dev *rtwdev)
+@@ -717,29 +742,28 @@ void rtw89_tas_reset(struct rtw89_dev *rtwdev, bool force)
+ 		    "tas: band: %u, freq: %u\n", chan->band_type, chan->freq);
+ }
+ 
+-void rtw89_tas_track(struct rtw89_dev *rtwdev)
++static bool rtw89_tas_track(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_tas_info *tas = &rtwdev->tas;
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+ 	s32 cfg;
+ 
+ 	if (hal->disabled_dm_bitmap & BIT(RTW89_DM_TAS))
+-		return;
++		return false;
+ 
+ 	if (!rtw89_tas_is_active(rtwdev))
+-		return;
++		return false;
+ 
+-	if (!rtw89_tas_query_sar_config(rtwdev, &cfg) || tas->block_regd) {
+-		rtw89_tas_state_update(rtwdev, RTW89_TAS_STATE_STATIC_SAR);
+-		return;
+-	}
++	if (!rtw89_tas_query_sar_config(rtwdev, &cfg) || tas->block_regd)
++		return __rtw89_tas_state_update(rtwdev, RTW89_TAS_STATE_STATIC_SAR);
+ 
+ 	if (tas->pause)
+-		return;
++		return false;
+ 
+ 	rtw89_tas_window_update(rtwdev);
+ 	rtw89_tas_history_update(rtwdev);
+-	rtw89_tas_rolling_average(rtwdev);
++
++	return rtw89_tas_rolling_average(rtwdev);
+ }
+ 
+ void rtw89_tas_scan(struct rtw89_dev *rtwdev, bool start)
+@@ -792,3 +816,45 @@ void rtw89_sar_init(struct rtw89_dev *rtwdev)
+ 	rtw89_set_sar_from_acpi(rtwdev);
+ 	rtw89_tas_init(rtwdev);
+ }
++
++static bool rtw89_sar_track_acpi(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_sar_cfg_acpi *cfg = &rtwdev->sar.cfg_acpi;
++	struct rtw89_sar_indicator_from_acpi *ind = &cfg->indicator;
++	const enum rtw89_sar_sources src = rtwdev->sar.src;
++	bool changed;
++	int ret;
++
++	lockdep_assert_wiphy(rtwdev->hw->wiphy);
++
++	if (src != RTW89_SAR_SOURCE_ACPI)
++		return false;
++
++	if (!ind->enable_sync)
++		return false;
++
++	ret = rtw89_acpi_evaluate_dynamic_sar_indicator(rtwdev, cfg, &changed);
++	if (likely(!ret))
++		return changed;
++
++	rtw89_debug(rtwdev, RTW89_DBG_SAR,
++		    "%s: failed to track indicator: %d; reset and disable\n",
++		    __func__, ret);
++
++	memset(ind->tblsel, 0, sizeof(ind->tblsel));
++	ind->enable_sync = false;
++	return true;
++}
++
++void rtw89_sar_track(struct rtw89_dev *rtwdev)
++{
++	unsigned int changes = 0;
++
++	changes += rtw89_sar_track_acpi(rtwdev);
++	changes += rtw89_tas_track(rtwdev);
++
++	if (!changes)
++		return;
++
++	rtw89_core_set_chip_txpwr(rtwdev);
++}
+diff --git a/drivers/net/wireless/realtek/rtw89/sar.h b/drivers/net/wireless/realtek/rtw89/sar.h
+index 2d30e0d8be1f..038a5c0d1e09 100644
+--- a/drivers/net/wireless/realtek/rtw89/sar.h
++++ b/drivers/net/wireless/realtek/rtw89/sar.h
+@@ -31,10 +31,10 @@ int rtw89_print_tas(struct rtw89_dev *rtwdev, char *buf, size_t bufsz);
+ int rtw89_ops_set_sar_specs(struct ieee80211_hw *hw,
+ 			    const struct cfg80211_sar_specs *sar);
+ void rtw89_tas_reset(struct rtw89_dev *rtwdev, bool force);
+-void rtw89_tas_track(struct rtw89_dev *rtwdev);
+ void rtw89_tas_scan(struct rtw89_dev *rtwdev, bool start);
+ void rtw89_tas_chanctx_cb(struct rtw89_dev *rtwdev,
+ 			  enum rtw89_chanctx_state state);
+ void rtw89_sar_init(struct rtw89_dev *rtwdev);
++void rtw89_sar_track(struct rtw89_dev *rtwdev);
+ 
+ #endif
 -- 
 2.25.1
 
