@@ -1,68 +1,83 @@
-Return-Path: <linux-wireless+bounces-20607-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20608-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7E5A69ED2
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 04:30:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA48A69F4C
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 06:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4208D8A05F2
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 03:28:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E317D189DC9E
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 05:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D95157A72;
-	Thu, 20 Mar 2025 03:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F03A18DB24;
+	Thu, 20 Mar 2025 05:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="SgkOcM3x"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Ll940Gy2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263181EE7A9
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 03:28:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B5B54F8C;
+	Thu, 20 Mar 2025 05:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742441303; cv=none; b=GmvLIDzKkdButO9E1DtYjD3zn/iIZ+mrX4ZtHNX+MmHdiVymBXvZ9oQ14DjircBi/WqEbKbyCBzXDRYg7DQahxW2inbuqdDJ2/k0PgVLLPw75Gd3GuCPT1F1Orj5T5JPwMMiiI2dPDxZlkN+qYz6VYy7CCBcRseSbhNwCuVoiak=
+	t=1742448740; cv=none; b=qxYWjmDOZ1QogyOmfRxsreEGn34gkCpachvSEyS0tLZ5+91tFNXOPa1eSNzlmSshz/1YqNC2dibgoDN1h+y0qIyshsEp73erq/BkVvZaT6fa3iYCLSRY2iI9z+Xm2k9405AYg+UAc0im97FgWzG42dLQ93W1ruSkGNIukkcDgZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742441303; c=relaxed/simple;
-	bh=8545nkNNbKMJdnTU3QxNiMSk9d4FWHLEUKrWn+M43P4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rMkv3TSPcs+WEr7VbtVggkmwPeY60dT5gqzNSn7wr8pVw7TdCgzW73PAV5+Vg3ppWMAKr3VHL29DXce6w17xQuGopn24tEpgWMsC9hEVT9sQMGhA4R9dY8+8T8z+PuDi9rAcNieZcTVDTi1cMqE2UKyGuYbEfh505AMYvDsdHik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=SgkOcM3x; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52K3SIQA01751023, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1742441298; bh=8545nkNNbKMJdnTU3QxNiMSk9d4FWHLEUKrWn+M43P4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=SgkOcM3x+KR/BB8GKsyZ9m+L6noaSp+1fA3F0y+otgHpwYTKcENrMwqxKhcPy0Oaa
-	 LyqBX1kaUYmTPy3s/48+4ULOrWpgOI3ZbMV1jywPmHE+Or+NjmehDbAou6naDH57xR
-	 Q23590+63dmEjgFRBtLtgib7QY06712hHQZzWI8MaRPKfMF6GyGI7mvWIV4fSlFUfl
-	 EDv/PCsRiQ+fg/8farfVuMoeUVwinaRYtxlxYRonsjmraIDieuHf+7U6rF6X1WiARq
-	 Q6k0nKKs4REjCouHUVyV4TcLzJGNjLKXZWc2+LGHJ/sjOIjtjLp//Tv43HWQIjq3PU
-	 a7wV0UFYgpc2w==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52K3SIQA01751023
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 11:28:18 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+	s=arc-20240116; t=1742448740; c=relaxed/simple;
+	bh=WHUdVJR5djkS+PkCuRWWKNhZVy8Id7tLXV/fdRJAqOM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZwSSc76HxNaNlYqSQw5MteOT0nwFiW7ctXaWSOlTIJqI3wb7yVwumWrJXz+FSpfCjSB7BIjzlAcgu8teBhKhAoxw/A133mT4QhTVmTWBgTnJGnISY1hi4bZCdul6luZGLmtUbBaloNhoqyPkU5jKLlomLuV8kGd9DCWVDIVN9h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Ll940Gy2; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52K2UdoI013162;
+	Thu, 20 Mar 2025 05:32:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=EaM28uuUQjLTLit8/Zrnw3
+	IUUiB5Hmv6M9vSeFjlxLM=; b=Ll940Gy2RKMPp95FRyu6I0FswGdbbw9fQ55QIj
+	VGzDdrLJ/qu0jfUF9pCXwvV3Izb7scUdgaxnRTOOIYsqPBEyaeZU6vMxr8eh4tTu
+	NjoirjzQR8qKl9W+t57W1+onePyvIrp3+6oGu10QypSJYuRmyLjrPT3T13DIkdsx
+	hhkQ+oLNIe9kbmQQDs84BNn9E6jWdZbZEVvfGMAzTdXkBh/LUKH0BQwWts1uEJ19
+	BHTUA9L1qNO3TGc6ijYE1MazAOyu5++Nig0XRm+nB6edk6psltiS6k+kylR9rEmS
+	5IQu73f5yVDFym+6pSlWn8oqRUEkgRq6Iiwz4FtHVsDmgR7A==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45exwtqvpu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Mar 2025 05:32:03 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52K5W2gs022637
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Mar 2025 05:32:02 GMT
+Received: from localhost.localdomain (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 20 Mar 2025 11:28:19 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 20 Mar
- 2025 11:28:18 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 12/12] wifi: rtw89: 8852bx: support different SAR configs by antenna
-Date: Thu, 20 Mar 2025 11:27:12 +0800
-Message-ID: <20250320032712.20284-13-pkshih@realtek.com>
+ 15.2.1544.9; Wed, 19 Mar 2025 22:31:58 -0700
+From: Stone Zhang <quic_stonez@quicinc.com>
+To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+        Maharaja Kennadyrajan <quic_mkenna@quicinc.com>,
+        Sven Eckelmann
+	<sven@narfation.org>,
+        Muna Sinada <quic_msinada@quicinc.com>,
+        "Govindaraj
+ Saminathan" <quic_gsamin@quicinc.com>,
+        Vasanthakumar Thiagarajan
+	<quic_vthiagar@quicinc.com>
+CC: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        John Crispin
+	<john@phrozen.org>,
+        Anilkumar Kolli <quic_akolli@quicinc.com>,
+        "Shashidhar
+ Lakkavalli" <slakkavalli@datto.com>,
+        <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <quic_miaoqing@quicinc.com>,
+        <quic_zhichen@quicinc.com>, <quic_yuzha@quicinc.com>,
+        Stone Zhang <quic_stonez@quicinc.com>
+Subject: [PATCH ath-next] wifi: ath11k: fix node corruption in ar->arvifs list
+Date: Thu, 20 Mar 2025 13:31:45 +0800
+Message-ID: <20250320053145.3445187-1-quic_stonez@quicinc.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250320032712.20284-1-pkshih@realtek.com>
-References: <20250320032712.20284-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,107 +86,94 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: sOjSiLJGgDQuVyA43OTtyxlxS0p3c4_f
+X-Proofpoint-ORIG-GUID: sOjSiLJGgDQuVyA43OTtyxlxS0p3c4_f
+X-Authority-Analysis: v=2.4 cv=UoJjN/wB c=1 sm=1 tr=0 ts=67dba853 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=2pyOCsQr0UlPjGJFVwcA:9 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-20_01,2025-03-19_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=895
+ phishscore=0 adultscore=0 clxscore=1011 spamscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503200032
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+In current WLAN recovery code flow, ath11k_core_halt() only
+reinitializes the "arvifs" list head. This will cause the
+list node immediately following the list head to become an
+invalid list node. Because the prev of that node still points
+to the list head "arvifs", but the next of the list head "arvifs"
+no longer points to that list node.
 
-Calculate difference of SAR configs between RF path A and RF path B.
-And then, based on the calculated result, set the TX power reference
-CR (control register). Finally, declare to support SAR by antenna in
-8852b/8852bt chip info.
+When a WLAN recovery occurs during the execution of a vif
+removal, and it happens before the spin_lock_bh(&ar->data_lock)
+in ath11k_mac_op_remove_interface(), list_del() will detect the
+previously mentioned situation, thereby triggering a kernel panic.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+The fix is to remove and reinitialize all vif list nodes from the
+list head "arvifs" during WLAN halt. The reinitialization is to make
+the list nodes valid, ensuring that the list_del() in
+ath11k_mac_op_remove_interface() can execute normally.
+
+Call trace:
+__list_del_entry_valid_or_report+0xb8/0xd0
+ath11k_mac_op_remove_interface+0xb0/0x27c [ath11k]
+drv_remove_interface+0x48/0x194 [mac80211]
+ieee80211_do_stop+0x6e0/0x844 [mac80211]
+ieee80211_stop+0x44/0x17c [mac80211]
+__dev_close_many+0xac/0x150
+__dev_change_flags+0x194/0x234
+dev_change_flags+0x24/0x6c
+devinet_ioctl+0x3a0/0x670
+inet_ioctl+0x200/0x248
+sock_do_ioctl+0x60/0x118
+sock_ioctl+0x274/0x35c
+__arm64_sys_ioctl+0xac/0xf0
+invoke_syscall+0x48/0x114
+...
+
+Tested-on: QCA6698AQ hw2.1 PCI WLAN.HSP.1.1-04591-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Stone Zhang <quic_stonez@quicinc.com>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |  2 +-
- .../wireless/realtek/rtw89/rtw8852b_common.c  | 24 +++++++++++++++++++
- .../net/wireless/realtek/rtw89/rtw8852bt.c    |  2 +-
- 3 files changed, 26 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 47233f0c6ea0..dec736a07c54 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -853,7 +853,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
- 	.support_unii4		= true,
- 	.support_ant_gain	= true,
- 	.support_tas		= false,
--	.support_sar_by_ant	= false,
-+	.support_sar_by_ant	= true,
- 	.ul_tb_waveform_ctrl	= true,
- 	.ul_tb_pwr_diff		= false,
- 	.rx_freq_frome_ie	= true,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c
-index 99c9505b3cbd..0cf03f18cbb1 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c
-@@ -8,6 +8,7 @@
- #include "phy.h"
- #include "reg.h"
- #include "rtw8852b_common.h"
-+#include "sar.h"
- #include "util.h"
- 
- static const struct rtw89_reg3_def rtw8852bx_pmac_ht20_mcs7_tbl[] = {
-@@ -1234,6 +1235,7 @@ static u32 rtw8852bx_bb_cal_txpwr_ref(struct rtw89_dev *rtwdev,
- 	       u32_encode_bits(ref, B_DPD_REF);
- }
- 
-+/* @pwr_ofst (unit: 1/8 dBm): power of path A minus power of path B */
- static void rtw8852bx_set_txpwr_ref(struct rtw89_dev *rtwdev,
- 				    enum rtw89_phy_idx phy_idx, s16 pwr_ofst)
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 3d39ff85ba94..8d08dd47bde9 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -2050,6 +2050,7 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
+ void ath11k_core_halt(struct ath11k *ar)
  {
-@@ -1336,6 +1338,27 @@ static void rtw8852bx_set_tx_shape(struct rtw89_dev *rtwdev,
- 			       tx_shape_ofdm);
+ 	struct ath11k_base *ab = ar->ab;
++	struct list_head *pos, *n;
+ 
+ 	lockdep_assert_held(&ar->conf_mutex);
+ 
+@@ -2065,7 +2066,12 @@ void ath11k_core_halt(struct ath11k *ar)
+ 
+ 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx], NULL);
+ 	synchronize_rcu();
+-	INIT_LIST_HEAD(&ar->arvifs);
++
++	spin_lock_bh(&ar->data_lock);
++	list_for_each_safe(pos, n, &ar->arvifs)
++		list_del_init(pos);
++	spin_unlock_bh(&ar->data_lock);
++
+ 	idr_init(&ar->txmgmt_idr);
  }
  
-+static s16 rtw8852bx_get_txpwr_sar_diff(struct rtw89_dev *rtwdev,
-+					const struct rtw89_chan *chan)
-+{
-+	struct rtw89_sar_parm sar_parm = {
-+		.center_freq = chan->freq,
-+		.force_path = true,
-+	};
-+	s16 sar_bb_a, sar_bb_b;
-+	s8 sar_mac;
-+
-+	sar_parm.path = RF_PATH_A;
-+	sar_mac = rtw89_query_sar(rtwdev, &sar_parm);
-+	sar_bb_a = rtw89_phy_txpwr_mac_to_bb(rtwdev, sar_mac);
-+
-+	sar_parm.path = RF_PATH_B;
-+	sar_mac = rtw89_query_sar(rtwdev, &sar_parm);
-+	sar_bb_b = rtw89_phy_txpwr_mac_to_bb(rtwdev, sar_mac);
-+
-+	return sar_bb_a - sar_bb_b;
-+}
-+
- static void rtw8852bx_set_txpwr_diff(struct rtw89_dev *rtwdev,
- 				     const struct rtw89_chan *chan,
- 				     enum rtw89_phy_idx phy_idx)
-@@ -1343,6 +1366,7 @@ static void rtw8852bx_set_txpwr_diff(struct rtw89_dev *rtwdev,
- 	s16 pwr_ofst;
- 
- 	pwr_ofst = rtw89_phy_ant_gain_pwr_offset(rtwdev, chan);
-+	pwr_ofst += rtw8852bx_get_txpwr_sar_diff(rtwdev, chan);
- 	rtw8852bx_set_txpwr_ref(rtwdev, phy_idx, pwr_ofst);
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-index 0903e902d8f4..3aaf70e32652 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-@@ -786,7 +786,7 @@ const struct rtw89_chip_info rtw8852bt_chip_info = {
- 	.support_unii4		= true,
- 	.support_ant_gain	= true,
- 	.support_tas		= false,
--	.support_sar_by_ant	= false,
-+	.support_sar_by_ant	= true,
- 	.ul_tb_waveform_ctrl	= true,
- 	.ul_tb_pwr_diff		= false,
- 	.rx_freq_frome_ie	= true,
+
+base-commit: b6f473c96421b8b451a8df8ccb620bcd71d4b3f4
 -- 
-2.25.1
+2.34.1
 
 
