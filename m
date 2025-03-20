@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-20603-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20604-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796B7A69ECF
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 04:30:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585A0A69ECB
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 04:29:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 532898875D1
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 03:28:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52C91179C8B
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Mar 2025 03:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2C11EB9E3;
-	Thu, 20 Mar 2025 03:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD161EDA2A;
+	Thu, 20 Mar 2025 03:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="v3prHqbF"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="NaJ/LQPg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E866F1EB1BA
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 03:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E862E1EB1BA
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 03:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742441287; cv=none; b=U8YBfLAopGNFHttHGi9jIEY7cucQ+WCgqoenlQPWRCJNw0LjR8DT6yhUvC90ynMCDymooSroPYXQUfU68iSxAJaAqD+OS9O+cjSiQq63MeJT44+yorDhXn2zvmPhGvBY23bVrJGmLJJRzGuC8djYGAHAByNbQVT5DAzNmuyRptY=
+	t=1742441290; cv=none; b=QR/6Sf/nbMKdR3fuTHfYKAVsVdDJ/phcqiXRmf5txiJNiLWxGuhiEdMNNrG2s7gHYLAUrKzMnRQa8JhsUStIO/oN7hcUJ4T5Vxvk6FrVIZXkZgu6tv2KEJ38W3iASpeTwJRx+YSvSrEt3UJbCZSDNW5fU/6bi7V2E2zs3oyPfS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742441287; c=relaxed/simple;
-	bh=R/kZxqvCKy4b3hnqc8w86ILQk+YLPOTaFEIIwkccSOU=;
+	s=arc-20240116; t=1742441290; c=relaxed/simple;
+	bh=k5a4azkwn78n7XC3qV9q7Or0K0zx+9VNVNkzxlJiKuk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tfOYS5nBy9AWF6DVeeMXUJqp+8oBHBC7xTRVcsEBu8VnSuuh8TPT8LLRHxfv8IIIQiGYOLkfbT+UU+38pWEuTyqHP87zvBbef1xMvA8jfOURNyrCyo2Jbsw31uF3YK2fslWDkbKWx3rmVuUopsLoQt5qDD/iLMcLMwT2j4iOolc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=v3prHqbF; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=LegzksJdiErrDTqXKwRI0dqk89rHpdIp7sNLIp1BVM97OOHlU9w5ZCOHIf2msBfNonVdOGcs2N1KalbfYQWEwtuH8fAtUAlVqWZkCT0A7eqJdZSyb2l1ygNfqF4fnY5KuqI6177sB8SRrsTVi3XTDMGTnaeCZoCYafFUogJlFmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=NaJ/LQPg; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52K3S2G301750952, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52K3S69A01750979, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1742441282; bh=R/kZxqvCKy4b3hnqc8w86ILQk+YLPOTaFEIIwkccSOU=;
+	t=1742441286; bh=k5a4azkwn78n7XC3qV9q7Or0K0zx+9VNVNkzxlJiKuk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=v3prHqbFVv8KlJiBtPmilqbbka164mWG3JiokvzWejvSpfDV3IoUG0EYjgPUq3QSS
-	 VtipFwZ16fnOOyoHqJwJM5TidTENkSChL7+c6E8Oiv/WEWotZE6YI7+6T7mh5DNBTX
-	 AjyNJ/XYOYVno1mUj6MH9ogA3tYkRBxCSoSW8uRvmNsspR6oOJLycGQhJKxGBVK6Kz
-	 GO90lT++Nddn+dR8FcCkirYeomqXqz3nz0Ml9ewgUc+6i7CMiS/9zeOoUm/A807QrW
-	 jl0bV/W6dLr74uJg2slVtG8q0knuccibUy2aVOQlM1b4tHTIBz0nTBoR9zUDNyLFb8
-	 K9e4hQGGklx4Q==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52K3S2G301750952
+	b=NaJ/LQPgAQC8C3fkmj11ifeZm4dUwlSbZMXpXVahQfwgo2k0vlfs7MzPGp8RvmNnt
+	 wavVVOG1rbRXZAYMUC09TxbGE9B04idEYzqEX8HwUedmAl45bwAbIWY1f5xOebu1aU
+	 iDF6bhV1V3aor08TJzbgsX2+yVx3Zzt9k2pCyafblYGqcdn0ujTqEg3okwP+qbXm3s
+	 Qzo+dsl/tNPw4aA4XYNCsxvyjugxtq2MVzFEMXOIteqt8pAlTiRQ6RXxW4o9B3rrO6
+	 BbbHmI0lig5M7BLR5r0VzZVbnlu5Nn/Rhzb795yjDMBeEjaazs+iqFrTNJumh7pbPM
+	 nEj4WCDdV6RsQ==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52K3S69A01750979
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 11:28:02 +0800
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Mar 2025 11:28:06 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 20 Mar 2025 11:28:02 +0800
+ 15.1.2507.39; Thu, 20 Mar 2025 11:28:06 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 20 Mar
- 2025 11:28:02 +0800
+ 2025 11:28:06 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 08/12] wifi: rtw89: acpi: support loading GEO SAR tables
-Date: Thu, 20 Mar 2025 11:27:08 +0800
-Message-ID: <20250320032712.20284-9-pkshih@realtek.com>
+Subject: [PATCH rtw-next 09/12] wifi: rtw89: sar: add skeleton for different configs by antenna
+Date: Thu, 20 Mar 2025 11:27:09 +0800
+Message-ID: <20250320032712.20284-10-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250320032712.20284-1-pkshih@realtek.com>
 References: <20250320032712.20284-1-pkshih@realtek.com>
@@ -76,524 +76,217 @@ X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Support to load GEO (geography) SAR tables with ACPI RWGS method. When
-SAR values could be different by regulatory, GEO SAR can be used. The
-format of GEO SAR is like the following, where regulatory number, band
-number, and delta number are determined by header of either static SAR
-or dynamic SAR. (It also means that no GEO SAR will be considered when
-neither static SAR nor dynamic SAR is configured.)
+Some SAR sources, e.g. ACPI, may allow different SAR configs by antenna.
+Previously, the minimum config between antennas was taken. Because there
+are differences between HW design, different chips might have different
+solutions to achieve this. So, it cannot be done through a single common
+handling. Now, add the relevant skeleton for this purpose ahead.
 
-                               delta number
-                             /               \
-                    + +-----+-----------------+
-                  / | | max | delta...        | \
-                 /  | +-----+-----------------+  band
-                /   | | max | delta...        |  number
-               /    | +-----+-----------------+
-              /     | |...                    | /
-                    + +-----+-----------------+
-                    | | max | delta...        | \
-       regulatory   | +-----+-----------------+  band
-       number       | | max | delta...        |  number
-                    | +-----+-----------------+
-                    | |...                    | /
-                    + +-----+-----------------+
-              \     | |...                    |
-               \    | |...                    |
-                \   | |...                    |
-                 \  | |                       |
-                  \ | |                       |
-                    + +-----+-----------------+
-
-Each entry of GEO SAR contains delta field(s), which are offset(s) used
-to tweak the loaded static/dynamic SAR table(s) by antenna, and one max
-field, which describes the maximum of the final SAR values after tweaked.
-Different entries should be configured based on both regulatory and band.
+First, add a flag into chip info to describe whether it has implemented
+this function or not. Second, support to query SAR config for a given RF
+path. With it, each chip can implement its own handling. Then, if a chip
+declares to support this function, when it queries SAR config without a
+given RF path, it gets a maximum config between antennas.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/acpi.c | 296 ++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/acpi.h |  89 +++++++
- 2 files changed, 385 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.h     |  1 +
+ drivers/net/wireless/realtek/rtw89/phy.h      | 14 +++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852bt.c    |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |  1 +
+ drivers/net/wireless/realtek/rtw89/sar.c      | 29 ++++++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/sar.h      |  3 ++
+ 10 files changed, 52 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/acpi.c b/drivers/net/wireless/realtek/rtw89/acpi.c
-index 4356e7de58c3..df85f3a0263d 100644
---- a/drivers/net/wireless/realtek/rtw89/acpi.c
-+++ b/drivers/net/wireless/realtek/rtw89/acpi.c
-@@ -501,6 +501,265 @@ void rtw89_acpi_sar_load_sml_has_6ghz(struct rtw89_dev *rtwdev,
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 0789a943074f..d49e06f81ba4 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -4284,6 +4284,7 @@ struct rtw89_chip_info {
+ 	bool support_rnr;
+ 	bool support_ant_gain;
+ 	bool support_tas;
++	bool support_sar_by_ant;
+ 	bool ul_tb_waveform_ctrl;
+ 	bool ul_tb_pwr_diff;
+ 	bool rx_freq_frome_ie;
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index 518a100375fb..cafb1a06d7b8 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -935,6 +935,20 @@ static inline s8 rtw89_phy_txpwr_dbm_to_mac(struct rtw89_dev *rtwdev, s8 dbm)
+ 	return clamp_t(s16, dbm << chip->txpwr_factor_mac, -64, 63);
  }
  
-+static s16 rtw89_acpi_geo_sar_normalize_delta(s8 delta)
++static inline s16 rtw89_phy_txpwr_mac_to_rf(struct rtw89_dev *rtwdev, s8 txpwr_mac)
 +{
-+	static const u8 fct = 1;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
 +
-+	BUILD_BUG_ON(fct > TXPWR_FACTOR_OF_RTW89_ACPI_SAR);
-+
-+	return delta << (TXPWR_FACTOR_OF_RTW89_ACPI_SAR - fct);
++	return txpwr_mac << (chip->txpwr_factor_rf - chip->txpwr_factor_mac);
 +}
 +
-+static enum rtw89_acpi_geo_sar_regd_hp
-+rtw89_acpi_geo_sar_regd_convert_hp_idx(enum rtw89_regulation_type regd)
++static inline s16 rtw89_phy_txpwr_mac_to_bb(struct rtw89_dev *rtwdev, s8 txpwr_mac)
 +{
-+	switch (regd) {
-+	case RTW89_FCC:
-+	case RTW89_IC:
-+	case RTW89_NCC:
-+	case RTW89_CHILE:
-+	case RTW89_MEXICO:
-+		return RTW89_ACPI_GEO_SAR_REGD_HP_FCC;
-+	case RTW89_ETSI:
-+	case RTW89_MKK:
-+	case RTW89_ACMA:
-+		return RTW89_ACPI_GEO_SAR_REGD_HP_ETSI;
-+	default:
-+	case RTW89_WW:
-+	case RTW89_NA:
-+	case RTW89_KCC:
-+		return RTW89_ACPI_GEO_SAR_REGD_HP_WW;
-+	}
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++
++	return txpwr_mac << (chip->txpwr_factor_bb - chip->txpwr_factor_mac);
 +}
 +
-+static enum rtw89_acpi_geo_sar_regd_rt
-+rtw89_acpi_geo_sar_regd_convert_rt_idx(enum rtw89_regulation_type regd)
-+{
-+	switch (regd) {
-+	case RTW89_FCC:
-+	case RTW89_NCC:
-+	case RTW89_CHILE:
-+	case RTW89_MEXICO:
-+		return RTW89_ACPI_GEO_SAR_REGD_RT_FCC;
-+	case RTW89_ETSI:
-+	case RTW89_ACMA:
-+		return RTW89_ACPI_GEO_SAR_REGD_RT_ETSI;
-+	case RTW89_MKK:
-+		return RTW89_ACPI_GEO_SAR_REGD_RT_MKK;
-+	case RTW89_IC:
-+		return RTW89_ACPI_GEO_SAR_REGD_RT_IC;
-+	case RTW89_KCC:
-+		return RTW89_ACPI_GEO_SAR_REGD_RT_KCC;
-+	default:
-+	case RTW89_WW:
-+	case RTW89_NA:
-+		return RTW89_ACPI_GEO_SAR_REGD_RT_WW;
-+	}
-+}
-+
-+static
-+void rtw89_acpi_geo_sar_load_by_hp(struct rtw89_dev *rtwdev,
-+				   const struct rtw89_acpi_geo_sar_hp_val *ptr,
-+				   enum rtw89_rf_path path, s16 *val)
-+{
-+	u8 antidx = rtw89_acpi_sar_rfpath_to_hp_antidx(path);
-+	s16 delta = rtw89_acpi_geo_sar_normalize_delta(ptr->delta[antidx]);
-+	s16 max = rtw89_acpi_sar_normalize_hp_val(ptr->max);
-+
-+	*val = clamp_t(s32, (*val) + delta, MIN_VAL_OF_RTW89_ACPI_SAR, max);
-+}
-+
-+static
-+void rtw89_acpi_geo_sar_load_by_rt(struct rtw89_dev *rtwdev,
-+				   const struct rtw89_acpi_geo_sar_rt_val *ptr,
-+				   s16 *val)
-+{
-+	s16 delta = rtw89_acpi_geo_sar_normalize_delta(ptr->delta);
-+	s16 max = rtw89_acpi_sar_normalize_rt_val(ptr->max);
-+
-+	*val = clamp_t(s32, (*val) + delta, MIN_VAL_OF_RTW89_ACPI_SAR, max);
-+}
-+
-+static
-+void rtw89_acpi_geo_sar_load_hp_legacy(struct rtw89_dev *rtwdev,
-+				       const void *content,
-+				       enum rtw89_regulation_type regd,
-+				       struct rtw89_sar_entry_from_acpi *ent)
-+{
-+	const struct rtw89_acpi_geo_sar_hp_legacy *ptr = content;
-+	const struct rtw89_acpi_geo_sar_hp_legacy_entry *ptr_ent;
-+	const struct rtw89_acpi_geo_sar_hp_val *ptr_ent_val;
-+	enum rtw89_acpi_geo_sar_regd_hp geo_idx =
-+		rtw89_acpi_geo_sar_regd_convert_hp_idx(regd);
-+	enum rtw89_acpi_sar_subband subband;
-+	enum rtw89_rf_path path;
-+	enum rtw89_band band;
-+
-+	ptr_ent = &ptr->entries[geo_idx];
-+
-+	for (subband = 0; subband < NUM_OF_RTW89_ACPI_SAR_SUBBAND; subband++) {
-+		band = rtw89_acpi_sar_subband_to_band(rtwdev, subband);
-+		switch (band) {
-+		case RTW89_BAND_2G:
-+			ptr_ent_val = &ptr_ent->val_2ghz;
-+			break;
-+		case RTW89_BAND_5G:
-+			ptr_ent_val = &ptr_ent->val_5ghz;
-+			break;
-+		default:
-+		case RTW89_BAND_6G:
-+			ptr_ent_val = NULL;
-+			break;
-+		}
-+
-+		if (!ptr_ent_val)
-+			continue;
-+
-+		for (path = 0; path < NUM_OF_RTW89_ACPI_SAR_RF_PATH; path++)
-+			rtw89_acpi_geo_sar_load_by_hp(rtwdev, ptr_ent_val, path,
-+						      &ent->v[subband][path]);
-+	}
-+}
-+
-+static
-+void rtw89_acpi_geo_sar_load_hp_has_6ghz(struct rtw89_dev *rtwdev,
-+					 const void *content,
-+					 enum rtw89_regulation_type regd,
-+					 struct rtw89_sar_entry_from_acpi *ent)
-+{
-+	const struct rtw89_acpi_geo_sar_hp_has_6ghz *ptr = content;
-+	const struct rtw89_acpi_geo_sar_hp_has_6ghz_entry *ptr_ent;
-+	const struct rtw89_acpi_geo_sar_hp_val *ptr_ent_val;
-+	enum rtw89_acpi_geo_sar_regd_hp geo_idx =
-+		rtw89_acpi_geo_sar_regd_convert_hp_idx(regd);
-+	enum rtw89_acpi_sar_subband subband;
-+	enum rtw89_rf_path path;
-+	enum rtw89_band band;
-+
-+	ptr_ent = &ptr->entries[geo_idx];
-+
-+	for (subband = 0; subband < NUM_OF_RTW89_ACPI_SAR_SUBBAND; subband++) {
-+		band = rtw89_acpi_sar_subband_to_band(rtwdev, subband);
-+		switch (band) {
-+		case RTW89_BAND_2G:
-+			ptr_ent_val = &ptr_ent->val_2ghz;
-+			break;
-+		case RTW89_BAND_5G:
-+			ptr_ent_val = &ptr_ent->val_5ghz;
-+			break;
-+		case RTW89_BAND_6G:
-+			ptr_ent_val = &ptr_ent->val_6ghz;
-+			break;
-+		default:
-+			ptr_ent_val = NULL;
-+			break;
-+		}
-+
-+		if (!ptr_ent_val)
-+			continue;
-+
-+		for (path = 0; path < NUM_OF_RTW89_ACPI_SAR_RF_PATH; path++)
-+			rtw89_acpi_geo_sar_load_by_hp(rtwdev, ptr_ent_val, path,
-+						      &ent->v[subband][path]);
-+	}
-+}
-+
-+static
-+void rtw89_acpi_geo_sar_load_rt_legacy(struct rtw89_dev *rtwdev,
-+				       const void *content,
-+				       enum rtw89_regulation_type regd,
-+				       struct rtw89_sar_entry_from_acpi *ent)
-+{
-+	const struct rtw89_acpi_geo_sar_rt_legacy *ptr = content;
-+	const struct rtw89_acpi_geo_sar_rt_legacy_entry *ptr_ent;
-+	const struct rtw89_acpi_geo_sar_rt_val *ptr_ent_val;
-+	enum rtw89_acpi_geo_sar_regd_rt geo_idx =
-+		rtw89_acpi_geo_sar_regd_convert_rt_idx(regd);
-+	enum rtw89_acpi_sar_subband subband;
-+	enum rtw89_rf_path path;
-+	enum rtw89_band band;
-+
-+	ptr_ent = &ptr->entries[geo_idx];
-+
-+	for (subband = 0; subband < NUM_OF_RTW89_ACPI_SAR_SUBBAND; subband++) {
-+		band = rtw89_acpi_sar_subband_to_band(rtwdev, subband);
-+		switch (band) {
-+		case RTW89_BAND_2G:
-+			ptr_ent_val = &ptr_ent->val_2ghz;
-+			break;
-+		case RTW89_BAND_5G:
-+			ptr_ent_val = &ptr_ent->val_5ghz;
-+			break;
-+		default:
-+		case RTW89_BAND_6G:
-+			ptr_ent_val = NULL;
-+			break;
-+		}
-+
-+		if (!ptr_ent_val)
-+			continue;
-+
-+		for (path = 0; path < NUM_OF_RTW89_ACPI_SAR_RF_PATH; path++)
-+			rtw89_acpi_geo_sar_load_by_rt(rtwdev, ptr_ent_val,
-+						      &ent->v[subband][path]);
-+	}
-+}
-+
-+static
-+void rtw89_acpi_geo_sar_load_rt_has_6ghz(struct rtw89_dev *rtwdev,
-+					 const void *content,
-+					 enum rtw89_regulation_type regd,
-+					 struct rtw89_sar_entry_from_acpi *ent)
-+{
-+	const struct rtw89_acpi_geo_sar_rt_has_6ghz *ptr = content;
-+	const struct rtw89_acpi_geo_sar_rt_has_6ghz_entry *ptr_ent;
-+	const struct rtw89_acpi_geo_sar_rt_val *ptr_ent_val;
-+	enum rtw89_acpi_geo_sar_regd_rt geo_idx =
-+		rtw89_acpi_geo_sar_regd_convert_rt_idx(regd);
-+	enum rtw89_acpi_sar_subband subband;
-+	enum rtw89_rf_path path;
-+	enum rtw89_band band;
-+
-+	ptr_ent = &ptr->entries[geo_idx];
-+
-+	for (subband = 0; subband < NUM_OF_RTW89_ACPI_SAR_SUBBAND; subband++) {
-+		band = rtw89_acpi_sar_subband_to_band(rtwdev, subband);
-+		switch (band) {
-+		case RTW89_BAND_2G:
-+			ptr_ent_val = &ptr_ent->val_2ghz;
-+			break;
-+		case RTW89_BAND_5G:
-+			ptr_ent_val = &ptr_ent->val_5ghz;
-+			break;
-+		case RTW89_BAND_6G:
-+			ptr_ent_val = &ptr_ent->val_6ghz;
-+			break;
-+		default:
-+			ptr_ent_val = NULL;
-+			break;
-+		}
-+
-+		if (!ptr_ent_val)
-+			continue;
-+
-+		for (path = 0; path < NUM_OF_RTW89_ACPI_SAR_RF_PATH; path++)
-+			rtw89_acpi_geo_sar_load_by_rt(rtwdev, ptr_ent_val,
-+						      &ent->v[subband][path]);
-+	}
-+}
-+
-+#define RTW89_ACPI_GEO_SAR_DECL_HANDLER(type) \
-+static const struct rtw89_acpi_geo_sar_handler \
-+rtw89_acpi_geo_sar_handler_ ## type = { \
-+	.data_size = RTW89_ACPI_GEO_SAR_SIZE_OF(type), \
-+	.load = rtw89_acpi_geo_sar_load_ ## type, \
-+}
-+
-+RTW89_ACPI_GEO_SAR_DECL_HANDLER(hp_legacy);
-+RTW89_ACPI_GEO_SAR_DECL_HANDLER(hp_has_6ghz);
-+RTW89_ACPI_GEO_SAR_DECL_HANDLER(rt_legacy);
-+RTW89_ACPI_GEO_SAR_DECL_HANDLER(rt_has_6ghz);
-+
- static const struct rtw89_acpi_sar_recognition rtw89_acpi_sar_recs[] = {
- 	{
- 		.id = {
-@@ -508,6 +767,7 @@ static const struct rtw89_acpi_sar_recognition rtw89_acpi_sar_recs[] = {
- 			.rev = RTW89_ACPI_SAR_REV_LEGACY,
- 			.size = RTW89_ACPI_SAR_SIZE_OF(std_legacy),
- 		},
-+		.geo = &rtw89_acpi_geo_sar_handler_hp_legacy,
- 
- 		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_hp_antidx,
- 		.normalize = rtw89_acpi_sar_normalize_hp_val,
-@@ -519,6 +779,7 @@ static const struct rtw89_acpi_sar_recognition rtw89_acpi_sar_recs[] = {
- 			.rev = RTW89_ACPI_SAR_REV_HAS_6GHZ,
- 			.size = RTW89_ACPI_SAR_SIZE_OF(std_has_6ghz),
- 		},
-+		.geo = &rtw89_acpi_geo_sar_handler_hp_has_6ghz,
- 
- 		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_hp_antidx,
- 		.normalize = rtw89_acpi_sar_normalize_hp_val,
-@@ -530,6 +791,7 @@ static const struct rtw89_acpi_sar_recognition rtw89_acpi_sar_recs[] = {
- 			.rev = RTW89_ACPI_SAR_REV_LEGACY,
- 			.size = RTW89_ACPI_SAR_SIZE_OF(std_legacy),
- 		},
-+		.geo = &rtw89_acpi_geo_sar_handler_rt_legacy,
- 
- 		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_rt_antidx,
- 		.normalize = rtw89_acpi_sar_normalize_rt_val,
-@@ -541,6 +803,7 @@ static const struct rtw89_acpi_sar_recognition rtw89_acpi_sar_recs[] = {
- 			.rev = RTW89_ACPI_SAR_REV_HAS_6GHZ,
- 			.size = RTW89_ACPI_SAR_SIZE_OF(std_has_6ghz),
- 		},
-+		.geo = &rtw89_acpi_geo_sar_handler_rt_has_6ghz,
- 
- 		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_rt_antidx,
- 		.normalize = rtw89_acpi_sar_normalize_rt_val,
-@@ -552,6 +815,7 @@ static const struct rtw89_acpi_sar_recognition rtw89_acpi_sar_recs[] = {
- 			.rev = RTW89_ACPI_SAR_REV_LEGACY,
- 			.size = RTW89_ACPI_SAR_SIZE_OF(sml_legacy),
- 		},
-+		.geo = &rtw89_acpi_geo_sar_handler_rt_legacy,
- 
- 		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_rt_antidx,
- 		.normalize = rtw89_acpi_sar_normalize_rt_val,
-@@ -563,6 +827,7 @@ static const struct rtw89_acpi_sar_recognition rtw89_acpi_sar_recs[] = {
- 			.rev = RTW89_ACPI_SAR_REV_HAS_6GHZ,
- 			.size = RTW89_ACPI_SAR_SIZE_OF(sml_has_6ghz),
- 		},
-+		.geo = &rtw89_acpi_geo_sar_handler_rt_has_6ghz,
- 
- 		.rfpath_to_antidx = rtw89_acpi_sar_rfpath_to_rt_antidx,
- 		.normalize = rtw89_acpi_sar_normalize_rt_val,
-@@ -797,6 +1062,35 @@ int rtw89_acpi_evaluate_dynamic_sar_indicator(struct rtw89_dev *rtwdev,
- 	return ret;
- }
- 
-+static
-+void rtw89_acpi_evaluate_geo_sar(struct rtw89_dev *rtwdev,
-+				 const struct rtw89_acpi_geo_sar_handler *hdl,
-+				 struct rtw89_sar_cfg_acpi *cfg)
-+{
-+	const struct rtw89_acpi_data *data;
-+	u32 len;
-+
-+	data = rtw89_acpi_evaluate_method(rtwdev, RTW89_ACPI_METHOD_GEO_SAR);
-+	if (!data)
-+		return;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_ACPI, "acpi load geo sar\n");
-+
-+	len = data->len;
-+	if (len != hdl->data_size) {
-+		rtw89_debug(rtwdev, RTW89_DBG_ACPI, "invalid buf len %u (expected %u)\n",
-+			    len, hdl->data_size);
-+		goto out;
-+	}
-+
-+	for (unsigned int i = 0; i < cfg->valid_num; i++)
-+		for (u8 regd = 0; regd < RTW89_REGD_NUM; regd++)
-+			hdl->load(rtwdev, data->buf, regd, &cfg->tables[i].entries[regd]);
-+
-+out:
-+	kfree(data);
-+}
-+
- int rtw89_acpi_evaluate_sar(struct rtw89_dev *rtwdev,
- 			    struct rtw89_sar_cfg_acpi *cfg)
+ void rtw89_phy_ra_assoc(struct rtw89_dev *rtwdev, struct rtw89_sta_link *rtwsta_link);
+ void rtw89_phy_ra_update(struct rtw89_dev *rtwdev);
+ void rtw89_phy_ra_update_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+index 0d482cd57f6e..174b90661037 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+@@ -2499,6 +2499,7 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
+ 	.support_unii4		= true,
+ 	.support_ant_gain	= false,
+ 	.support_tas		= false,
++	.support_sar_by_ant	= false,
+ 	.ul_tb_waveform_ctrl	= true,
+ 	.ul_tb_pwr_diff		= false,
+ 	.rx_freq_frome_ie	= true,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 286334e26c84..408c2f7b3eec 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -2217,6 +2217,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
+ 	.support_unii4		= false,
+ 	.support_ant_gain	= false,
+ 	.support_tas		= false,
++	.support_sar_by_ant	= false,
+ 	.ul_tb_waveform_ctrl	= false,
+ 	.ul_tb_pwr_diff		= false,
+ 	.rx_freq_frome_ie	= true,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index eceb4fb9880d..47233f0c6ea0 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -853,6 +853,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
+ 	.support_unii4		= true,
+ 	.support_ant_gain	= true,
+ 	.support_tas		= false,
++	.support_sar_by_ant	= false,
+ 	.ul_tb_waveform_ctrl	= true,
+ 	.ul_tb_pwr_diff		= false,
+ 	.rx_freq_frome_ie	= true,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
+index bbf37442c492..0903e902d8f4 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
+@@ -786,6 +786,7 @@ const struct rtw89_chip_info rtw8852bt_chip_info = {
+ 	.support_unii4		= true,
+ 	.support_ant_gain	= true,
+ 	.support_tas		= false,
++	.support_sar_by_ant	= false,
+ 	.ul_tb_waveform_ctrl	= true,
+ 	.ul_tb_pwr_diff		= false,
+ 	.rx_freq_frome_ie	= true,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 08bcdf246382..cbbb6a9169d1 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -3014,6 +3014,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
+ 	.support_unii4		= true,
+ 	.support_ant_gain	= true,
+ 	.support_tas		= true,
++	.support_sar_by_ant	= false,
+ 	.ul_tb_waveform_ctrl	= false,
+ 	.ul_tb_pwr_diff		= true,
+ 	.rx_freq_frome_ie	= false,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+index 8082592db84a..5b45c18fbbf6 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+@@ -2823,6 +2823,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
+ 	.support_unii4		= true,
+ 	.support_ant_gain	= true,
+ 	.support_tas		= false,
++	.support_sar_by_ant	= false,
+ 	.ul_tb_waveform_ctrl	= false,
+ 	.ul_tb_pwr_diff		= false,
+ 	.rx_freq_frome_ie	= false,
+diff --git a/drivers/net/wireless/realtek/rtw89/sar.c b/drivers/net/wireless/realtek/rtw89/sar.c
+index 120cf2088c9e..d15dafcae39b 100644
+--- a/drivers/net/wireless/realtek/rtw89/sar.c
++++ b/drivers/net/wireless/realtek/rtw89/sar.c
+@@ -120,6 +120,7 @@ static int rtw89_query_sar_config_acpi(struct rtw89_dev *rtwdev,
+ 				       const struct rtw89_sar_parm *sar_parm,
+ 				       s32 *cfg)
  {
-@@ -816,6 +1110,8 @@ int rtw89_acpi_evaluate_sar(struct rtw89_dev *rtwdev,
- 	fetch_indicator = true;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	const struct rtw89_sar_cfg_acpi *rtwsar = &rtwdev->sar.cfg_acpi;
+ 	const struct rtw89_sar_entry_from_acpi *ent_a, *ent_b;
+ 	enum rtw89_acpi_sar_subband subband_l, subband_h;
+@@ -147,7 +148,30 @@ static int rtw89_query_sar_config_acpi(struct rtw89_dev *rtwdev,
  
- recognized:
-+	rtw89_acpi_evaluate_geo_sar(rtwdev, rec->geo, cfg);
+ 	cfg_a = rtw89_sar_cfg_acpi_get_min(ent_a, RF_PATH_A, subband_l, subband_h);
+ 	cfg_b = rtw89_sar_cfg_acpi_get_min(ent_b, RF_PATH_B, subband_l, subband_h);
+-	*cfg = min(cfg_a, cfg_b);
 +
- 	switch (rec->id.cid) {
- 	case RTW89_ACPI_SAR_CID_HP:
- 		cfg->downgrade_2tx = 3 << TXPWR_FACTOR_OF_RTW89_ACPI_SAR;
-diff --git a/drivers/net/wireless/realtek/rtw89/acpi.h b/drivers/net/wireless/realtek/rtw89/acpi.h
-index a851e845cdec..f51a288b4e7c 100644
---- a/drivers/net/wireless/realtek/rtw89/acpi.h
-+++ b/drivers/net/wireless/realtek/rtw89/acpi.h
-@@ -91,6 +91,7 @@ enum rtw89_acpi_sar_rev {
- #define RTW89_ACPI_METHOD_STATIC_SAR "WRDS"
- #define RTW89_ACPI_METHOD_DYNAMIC_SAR "RWRD"
- #define RTW89_ACPI_METHOD_DYNAMIC_SAR_INDICATOR "RWSI"
-+#define RTW89_ACPI_METHOD_GEO_SAR "RWGS"
++	if (chip->support_sar_by_ant) {
++		/* With declaration of support_sar_by_ant, relax the general
++		 * SAR querying to return the maximum between paths. However,
++		 * expect chip has dealt with the corresponding SAR settings
++		 * by path. (To get SAR for a given path, chip can then query
++		 * with force_path.)
++		 */
++		if (sar_parm->force_path) {
++			switch (sar_parm->path) {
++			default:
++			case RF_PATH_A:
++				*cfg = cfg_a;
++				break;
++			case RF_PATH_B:
++				*cfg = cfg_b;
++				break;
++			}
++		} else {
++			*cfg = max(cfg_a, cfg_b);
++		}
++	} else {
++		*cfg = min(cfg_a, cfg_b);
++	}
  
- struct rtw89_acpi_sar_std_legacy {
- 	u8 v[RTW89_ACPI_SAR_ANT_NR_STD][RTW89_ACPI_SAR_SUBBAND_NR_LEGACY];
-@@ -144,6 +145,7 @@ struct rtw89_acpi_sar_identifier {
+ 	if (sar_parm->ntx == RTW89_2TX)
+ 		*cfg -= rtwsar->downgrade_2tx;
+@@ -285,6 +309,7 @@ s8 rtw89_query_sar(struct rtw89_dev *rtwdev, const struct rtw89_sar_parm *sar_pa
  
- struct rtw89_acpi_sar_recognition {
- 	struct rtw89_acpi_sar_identifier id;
-+	const struct rtw89_acpi_geo_sar_handler *geo;
+ 	return rtw89_txpwr_sar_to_mac(rtwdev, fct, cfg);
+ }
++EXPORT_SYMBOL(rtw89_query_sar);
  
- 	u8 (*rfpath_to_antidx)(enum rtw89_rf_path rfpath);
- 	s16 (*normalize)(u8 v);
-@@ -153,6 +155,93 @@ struct rtw89_acpi_sar_recognition {
- 		     struct rtw89_sar_entry_from_acpi *ent);
+ int rtw89_print_sar(struct rtw89_dev *rtwdev, char *buf, size_t bufsz,
+ 		    const struct rtw89_sar_parm *sar_parm)
+@@ -322,6 +347,8 @@ int rtw89_print_sar(struct rtw89_dev *rtwdev, char *buf, size_t bufsz,
+ 	p += scnprintf(p, end - p, "config: %d (unit: 1/%lu dBm)\n", cfg,
+ 		       BIT(fct));
+ 
++	p += scnprintf(p, end - p, "support different configs by antenna: %s\n",
++		       str_yes_no(rtwdev->chip->support_sar_by_ant));
+ out:
+ 	return p - buf;
+ }
+diff --git a/drivers/net/wireless/realtek/rtw89/sar.h b/drivers/net/wireless/realtek/rtw89/sar.h
+index 038a5c0d1e09..4b7f3d44f57b 100644
+--- a/drivers/net/wireless/realtek/rtw89/sar.h
++++ b/drivers/net/wireless/realtek/rtw89/sar.h
+@@ -13,6 +13,9 @@
+ struct rtw89_sar_parm {
+ 	u32 center_freq;
+ 	enum rtw89_ntx ntx;
++
++	bool force_path;
++	enum rtw89_rf_path path;
  };
  
-+struct rtw89_acpi_geo_sar_hp_val {
-+	u8 max;
-+	s8 delta[RTW89_ACPI_SAR_ANT_NR_STD];
-+} __packed;
-+
-+struct rtw89_acpi_geo_sar_hp_legacy_entry {
-+	struct rtw89_acpi_geo_sar_hp_val val_2ghz;
-+	struct rtw89_acpi_geo_sar_hp_val val_5ghz;
-+} __packed;
-+
-+struct rtw89_acpi_geo_sar_hp_has_6ghz_entry {
-+	struct rtw89_acpi_geo_sar_hp_val val_2ghz;
-+	struct rtw89_acpi_geo_sar_hp_val val_5ghz;
-+	struct rtw89_acpi_geo_sar_hp_val val_6ghz;
-+} __packed;
-+
-+enum rtw89_acpi_geo_sar_regd_hp {
-+	RTW89_ACPI_GEO_SAR_REGD_HP_FCC = 0,
-+	RTW89_ACPI_GEO_SAR_REGD_HP_ETSI = 1,
-+	RTW89_ACPI_GEO_SAR_REGD_HP_WW = 2,
-+
-+	RTW89_ACPI_GEO_SAR_REGD_NR_HP,
-+};
-+
-+struct rtw89_acpi_geo_sar_hp_legacy {
-+	struct rtw89_acpi_geo_sar_hp_legacy_entry
-+		entries[RTW89_ACPI_GEO_SAR_REGD_NR_HP];
-+} __packed;
-+
-+struct rtw89_acpi_geo_sar_hp_has_6ghz {
-+	struct rtw89_acpi_geo_sar_hp_has_6ghz_entry
-+		entries[RTW89_ACPI_GEO_SAR_REGD_NR_HP];
-+} __packed;
-+
-+struct rtw89_acpi_geo_sar_rt_val {
-+	u8 max;
-+	s8 delta;
-+} __packed;
-+
-+struct rtw89_acpi_geo_sar_rt_legacy_entry {
-+	struct rtw89_acpi_geo_sar_rt_val val_2ghz;
-+	struct rtw89_acpi_geo_sar_rt_val val_5ghz;
-+} __packed;
-+
-+struct rtw89_acpi_geo_sar_rt_has_6ghz_entry {
-+	struct rtw89_acpi_geo_sar_rt_val val_2ghz;
-+	struct rtw89_acpi_geo_sar_rt_val val_5ghz;
-+	struct rtw89_acpi_geo_sar_rt_val val_6ghz;
-+} __packed;
-+
-+enum rtw89_acpi_geo_sar_regd_rt {
-+	RTW89_ACPI_GEO_SAR_REGD_RT_FCC = 0,
-+	RTW89_ACPI_GEO_SAR_REGD_RT_ETSI = 1,
-+	RTW89_ACPI_GEO_SAR_REGD_RT_MKK = 2,
-+	RTW89_ACPI_GEO_SAR_REGD_RT_IC = 3,
-+	RTW89_ACPI_GEO_SAR_REGD_RT_KCC = 4,
-+	RTW89_ACPI_GEO_SAR_REGD_RT_WW = 5,
-+
-+	RTW89_ACPI_GEO_SAR_REGD_NR_RT,
-+};
-+
-+struct rtw89_acpi_geo_sar_rt_legacy {
-+	struct rtw89_acpi_geo_sar_rt_legacy_entry
-+		entries[RTW89_ACPI_GEO_SAR_REGD_NR_RT];
-+} __packed;
-+
-+struct rtw89_acpi_geo_sar_rt_has_6ghz {
-+	struct rtw89_acpi_geo_sar_rt_has_6ghz_entry
-+		entries[RTW89_ACPI_GEO_SAR_REGD_NR_RT];
-+} __packed;
-+
-+struct rtw89_acpi_geo_sar_handler {
-+	u8 data_size;
-+
-+	void (*load)(struct rtw89_dev *rtwdev,
-+		     const void *content,
-+		     enum rtw89_regulation_type regd,
-+		     struct rtw89_sar_entry_from_acpi *ent);
-+};
-+
-+/* for rtw89_acpi_geo_sar_handler::data_size */
-+#define RTW89_ACPI_GEO_SAR_SIZE_MAX U8_MAX
-+#define RTW89_ACPI_GEO_SAR_SIZE_OF(type) \
-+	(BUILD_BUG_ON_ZERO(sizeof(struct rtw89_acpi_geo_sar_ ## type) > \
-+			   RTW89_ACPI_GEO_SAR_SIZE_MAX) + \
-+	 sizeof(struct rtw89_acpi_geo_sar_ ## type))
-+
- enum rtw89_acpi_sar_subband rtw89_acpi_sar_get_subband(struct rtw89_dev *rtwdev,
- 						       u32 center_freq);
- enum rtw89_band rtw89_acpi_sar_subband_to_band(struct rtw89_dev *rtwdev,
+ struct rtw89_sar_handler {
 -- 
 2.25.1
 
