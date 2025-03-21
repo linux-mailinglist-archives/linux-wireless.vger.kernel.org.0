@@ -1,327 +1,250 @@
-Return-Path: <linux-wireless+bounces-20645-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20644-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4F0A6B694
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 10:04:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B35F0A6B690
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 10:03:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27A6D7A8074
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 09:03:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F9E718882AC
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 09:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3114F1E571A;
-	Fri, 21 Mar 2025 09:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73E51EF36C;
+	Fri, 21 Mar 2025 09:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Pp64UjKF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686D41E3DDE
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 09:04:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058B21EBA19
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 09:03:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742547876; cv=none; b=TyyPd0ckNgDBIJoeg5q8ZkKhw6ucR8Uwo04pwhA4GcMl4pT9+dWZwq9Qho8YNU08glxFroaNdly8+LVojQFpTn03a4Bu1+MCa/ttna4FcweTKon+z1oj5EO3c+XXf3jnLRPDE1AVwiBVLxN+ZVzxZ7ax59TuFyt4x72hqNhBd8c=
+	t=1742547816; cv=none; b=u+Ck7SavgM1/djGaajbeDfncuU/e1ye8yr9CXSTUZAiy/BmT5JbbRhh2pSl0EH6Pkpez4RcW8GHMX02bVUkKtdJlapMBFD5UjW5anx8jcdhtL31F+8+Vvsv2+gVwRAaFRE9IL8XCVrSegwUQQNvVE5auygeuL3DWQXkLT1aY4B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742547876; c=relaxed/simple;
-	bh=RT/By9ESQePM1lMVZhFUUAjFmapNV5c4SXpdDZdEehs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U7q8wy9mSZ1O39K6A6+Zwlc0++C7q3zvek7ny5ZsRrtyHDZZcaO7d2HnJDffpTiJ4NBqPauYBMYo+5E/QKl2/YBgpNm/sy7lrbgCxnOiJ9xeSwwL6LI4XLL+Hm+JMJsDanxwprBeongJZcZlE35ImOSrbcijrNj1IAk5SFd52Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tvYIp-0005l4-Jv; Fri, 21 Mar 2025 10:04:31 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tvYIo-000tsu-1N;
-	Fri, 21 Mar 2025 10:04:30 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tvY50-003L3W-0F;
-	Fri, 21 Mar 2025 09:50:14 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 21 Mar 2025 09:50:10 +0100
-Subject: [PATCH v4 10/10] wifi: mwifiex: drop asynchronous init waiting
- code
+	s=arc-20240116; t=1742547816; c=relaxed/simple;
+	bh=3PngFF9XZOmMU+rbM+XuEWgZ2Gt3kBI+Evvsry90quo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=D89aemH1cSepzB9ncVAjFfIPVB5T5FMSXauOttzRxvYXoVF1Xv27cry9IrGvDgDOKEmydf9kNpdyFPqW2cZOlnnwZ09bLPBBr+/SSKLjRETpvoTv9myGjjCPE87yVWXBKh9ovm+2fAWE0/7kIbQv3NEeL3co7dnKbgS/Egh324w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Pp64UjKF; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52L8jpeE024424;
+	Fri, 21 Mar 2025 09:03:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=1R9MWhYUvixquD0yxpkqIk
+	9LB5I87Y0CRWFs+ZFVZk0=; b=Pp64UjKFR3VT9iJaiYSdliu9uCCj/ssMbC30Ge
+	ClKIHIRAOBx2OpC0Nv+9lKVO6gFhOeG0Oga++1M3VZPmczafOKg+r/1tMM06STtb
+	pclB0Xnf+41kj6gw5Ba/mlO+osBM0TFrVdiUfSV23sDotr2WCIwl71udSwBN94Xc
+	xDrX8HfQobd55eT/8tA2z1xpVFIqm3oTyEeXO8kS2GvJEsuoUHigRJ4KGBlPRhBc
+	jW+zghsHk8rMHJyBgJiKGCw1FRA8+VZiEOLm6Dv2Jb+yeUC/+jq0CSNA+apRrA4D
+	OHIR05TtQ+n1/7Vknb4FoevRvxTt2XNqXxGjuiUnBTO3Zisw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45gbngmbh3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Mar 2025 09:03:32 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52L93Vot032326
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Mar 2025 09:03:31 GMT
+Received: from kangyang.ap.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Fri, 21 Mar 2025 02:03:30 -0700
+From: Kang Yang <quic_kangyang@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
+Subject: [PATCH ath-next v3] wifi: ath12k: read country code from SMBIOS for WCN7850
+Date: Fri, 21 Mar 2025 17:03:07 +0800
+Message-ID: <20250321090307.1397-1-quic_kangyang@quicinc.com>
+X-Mailer: git-send-email 2.34.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250321-mwifiex-cleanup-1-v4-10-4a32b21e2553@pengutronix.de>
-References: <20250321-mwifiex-cleanup-1-v4-0-4a32b21e2553@pengutronix.de>
-In-Reply-To: <20250321-mwifiex-cleanup-1-v4-0-4a32b21e2553@pengutronix.de>
-To: Brian Norris <briannorris@chromium.org>, 
- Francesco Dolcini <francesco@dolcini.it>
-Cc: Johannes Berg <johannes.berg@intel.com>, linux-wireless@vger.kernel.org, 
- linux-kernel@vger.kernel.org, David Lin <yu-hao.lin@nxp.com>, 
- kernel@pengutronix.de, Sascha Hauer <s.hauer@pengutronix.de>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1742547014; l=9066;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=RT/By9ESQePM1lMVZhFUUAjFmapNV5c4SXpdDZdEehs=;
- b=qu+b15rka++brt1RwNQRqvZXbuzKSL655WGLsPeIxKFdlHCuf0KC+9h3osGiXI0BmGeFwbCnD
- uXc7yT3YN6XAxqmFvWhMSYpFZ+ht5Xj340AYFDhukGNdMSiMgQlJo0q
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: s.hauer@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ndVmobFPHAPsBKw5yGSy13BS0FsNM5m0
+X-Authority-Analysis: v=2.4 cv=MJ5gmNZl c=1 sm=1 tr=0 ts=67dd2b64 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=c2OH02f2B1J9eqCLxTwA:9
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: ndVmobFPHAPsBKw5yGSy13BS0FsNM5m0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-21_03,2025-03-20_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1015
+ spamscore=0 priorityscore=1501 mlxscore=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503210066
 
-Historically all commands sent to the mwifiex driver have been
-asynchronous. The different commands sent during driver initialization
-have been queued at once and only the final command has been waited
-for being ready before finally starting the driver.
+Read the country code from SMBIOS and send it to the firmware. The
+firmware will then indicate the regulatory domain information for
+the country code, which ath12k will use.
 
-This has been changed in 7bff9c974e1a ("mwifiex: send firmware
-initialization commands synchronously"). With this the initialization
-is finished once the last mwifiex_send_cmd_sync() (now
-mwifiex_send_cmd()) has returned. This makes all the code used to
-wait for the last initialization command to be finished unnecessary,
-so it's removed in this patch.
+dmesg:
+[ 1242.637253] ath12k_pci 0000:02:00.0: worldwide regdomain setting from SMBIOS
+[ 1242.637259] ath12k_pci 0000:02:00.0: bdf variant name not found.
+[ 1242.637261] ath12k_pci 0000:02:00.0: SMBIOS bdf variant name not set.
+[ 1242.927543] ath12k_pci 0000:02:00.0: set current country pdev id 0 alpha2 00
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-02582-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
 ---
- drivers/net/wireless/marvell/mwifiex/cmdevt.c  | 16 ----------------
- drivers/net/wireless/marvell/mwifiex/init.c    | 18 +++++-------------
- drivers/net/wireless/marvell/mwifiex/main.c    | 25 +++----------------------
- drivers/net/wireless/marvell/mwifiex/main.h    |  6 ------
- drivers/net/wireless/marvell/mwifiex/sta_cmd.c |  6 ------
- drivers/net/wireless/marvell/mwifiex/util.c    | 18 ------------------
- 6 files changed, 8 insertions(+), 81 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cmdevt.c b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-index 90cb469c897eb..fa7641f09719b 100644
---- a/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-@@ -892,18 +892,6 @@ int mwifiex_process_cmdresp(struct mwifiex_adapter *adapter)
- 		ret = mwifiex_process_sta_cmdresp(priv, cmdresp_no, resp);
- 	}
- 
--	/* Check init command response */
--	if (adapter->hw_status == MWIFIEX_HW_STATUS_INITIALIZING) {
--		if (ret) {
--			mwifiex_dbg(adapter, ERROR,
--				    "%s: cmd %#x failed during\t"
--				    "initialization\n", __func__, cmdresp_no);
--			mwifiex_init_fw_complete(adapter);
--			return -1;
--		} else if (adapter->last_init_cmd == cmdresp_no)
--			adapter->hw_status = MWIFIEX_HW_STATUS_INIT_DONE;
--	}
--
- 	if (adapter->curr_cmd) {
- 		if (adapter->curr_cmd->wait_q_enabled)
- 			adapter->cmd_wait_q.status = ret;
-@@ -1022,10 +1010,6 @@ mwifiex_cmd_timeout_func(struct timer_list *t)
- 			mwifiex_cancel_pending_ioctl(adapter);
- 		}
- 	}
--	if (adapter->hw_status == MWIFIEX_HW_STATUS_INITIALIZING) {
--		mwifiex_init_fw_complete(adapter);
--		return;
--	}
- 
- 	if (adapter->if_ops.device_dump)
- 		adapter->if_ops.device_dump(adapter);
-diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
-index 8b61e45cd6678..fc58ca1a60ca8 100644
---- a/drivers/net/wireless/marvell/mwifiex/init.c
-+++ b/drivers/net/wireless/marvell/mwifiex/init.c
-@@ -487,7 +487,6 @@ int mwifiex_init_fw(struct mwifiex_adapter *adapter)
- 	int ret;
- 	struct mwifiex_private *priv;
- 	u8 i, first_sta = true;
--	int is_cmd_pend_q_empty;
- 
- 	adapter->hw_status = MWIFIEX_HW_STATUS_INITIALIZING;
- 
-@@ -509,7 +508,6 @@ int mwifiex_init_fw(struct mwifiex_adapter *adapter)
- 	}
- 	if (adapter->mfg_mode) {
- 		adapter->hw_status = MWIFIEX_HW_STATUS_READY;
--		ret = -EINPROGRESS;
- 	} else {
- 		for (i = 0; i < adapter->priv_num; i++) {
- 			ret = mwifiex_sta_init_cmd(adapter->priv[i],
-@@ -521,18 +519,12 @@ int mwifiex_init_fw(struct mwifiex_adapter *adapter)
- 		}
- 	}
- 
--	spin_lock_bh(&adapter->cmd_pending_q_lock);
--	is_cmd_pend_q_empty = list_empty(&adapter->cmd_pending_q);
--	spin_unlock_bh(&adapter->cmd_pending_q_lock);
--	if (!is_cmd_pend_q_empty) {
--		/* Send the first command in queue and return */
--		if (mwifiex_main_process(adapter) != -1)
--			ret = -EINPROGRESS;
--	} else {
--		adapter->hw_status = MWIFIEX_HW_STATUS_READY;
--	}
-+	adapter->hw_status = MWIFIEX_HW_STATUS_READY;
- 
--	return ret;
-+	if (adapter->if_ops.init_fw_port)
-+		adapter->if_ops.init_fw_port(adapter);
-+
-+	return 0;
+Depends-On:
+        [PATCH ath-next v12 0/4] wifi: ath12k: add 11d scan offload support and handle country code for WCN7850
+	https://lore.kernel.org/linux-wireless/20250321084518.1619-1-quic_kangyang@quicinc.com/
+
+Note: This patch is an old patch in public review written by
+Wen Gong. Just resend it for him.
+Link: https://lore.kernel.org/linux-wireless/20230913105156.17618-1-quic_wgong@quicinc.com/
+
+v3:
+    1. rebase on tag: ath-202503172347.
+    2. add branch tag.
+    3. add descripition for Wen Gong.
+v2: 
+    1. rebase on tag: ath/main(ath-202502181756).
+    2. rewrite commit message.
+
+---
+ drivers/net/wireless/ath/ath12k/core.c | 26 +++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath12k/core.h | 27 +++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/mac.c  | 11 +++++++++++
+ 3 files changed, 61 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 11c73fe45308..29a5b8f1fc0d 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -629,7 +629,7 @@ static void ath12k_core_stop(struct ath12k_base *ab)
+ 	/* De-Init of components as needed */
  }
  
- /*
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-index cdf239e91fc7d..12ae0b5446c9c 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -354,13 +354,6 @@ int mwifiex_main_process(struct mwifiex_adapter *adapter)
- 		if (adapter->cmd_resp_received) {
- 			adapter->cmd_resp_received = false;
- 			mwifiex_process_cmdresp(adapter);
--
--			/* call mwifiex back when init_fw is done */
--			if (adapter->hw_status == MWIFIEX_HW_STATUS_INIT_DONE) {
--				adapter->hw_status = MWIFIEX_HW_STATUS_READY;
--				mwifiex_init_fw_complete(adapter);
--				maybe_quirk_fw_disable_ds(adapter);
--			}
- 		}
- 
- 		/* Check if we need to confirm Sleep Request
-@@ -578,21 +571,11 @@ static int _mwifiex_fw_dpc(const struct firmware *firmware, void *context)
- 			goto err_dnld_fw;
+-static void ath12k_core_check_bdfext(const struct dmi_header *hdr, void *data)
++static void ath12k_core_check_cc_code_bdfext(const struct dmi_header *hdr, void *data)
+ {
+ 	struct ath12k_base *ab = data;
+ 	const char *magic = ATH12K_SMBIOS_BDF_EXT_MAGIC;
+@@ -651,6 +651,28 @@ static void ath12k_core_check_bdfext(const struct dmi_header *hdr, void *data)
+ 		return;
  	}
  
--	adapter->init_wait_q_woken = false;
- 	ret = mwifiex_init_fw(adapter);
--	if (ret == -1) {
-+	if (ret < 0)
- 		goto err_init_fw;
--	} else if (!ret) {
--		adapter->hw_status = MWIFIEX_HW_STATUS_READY;
--		goto done;
--	}
--	/* Wait for mwifiex_init to complete */
--	if (!adapter->mfg_mode) {
--		wait_event_interruptible(adapter->init_wait_q,
--					 adapter->init_wait_q_woken);
--		if (adapter->hw_status != MWIFIEX_HW_STATUS_READY)
--			goto err_init_fw;
--	}
++	spin_lock_bh(&ab->base_lock);
 +
-+	maybe_quirk_fw_disable_ds(adapter);
++	switch (smbios->country_code_flag) {
++	case ATH12K_SMBIOS_CC_ISO:
++		ab->new_alpha2[0] = u16_get_bits(smbios->cc_code, 0xff);
++		ab->new_alpha2[1] = u16_get_bits(smbios->cc_code, 0xff);
++		ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot smbios cc_code %c%c\n",
++			   ab->new_alpha2[0], ab->new_alpha2[1]);
++		break;
++	case ATH12K_SMBIOS_CC_WW:
++		ab->new_alpha2[0] = '0';
++		ab->new_alpha2[1] = '0';
++		ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot smbios worldwide regdomain\n");
++		break;
++	default:
++		ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot ignore smbios country code setting %d\n",
++			   smbios->country_code_flag);
++		break;
++	}
++
++	spin_unlock_bh(&ab->base_lock);
++
+ 	if (!smbios->bdf_enabled) {
+ 		ath12k_dbg(ab, ATH12K_DBG_BOOT, "bdf variant name not found.\n");
+ 		return;
+@@ -690,7 +712,7 @@ static void ath12k_core_check_bdfext(const struct dmi_header *hdr, void *data)
+ int ath12k_core_check_smbios(struct ath12k_base *ab)
+ {
+ 	ab->qmi.target.bdf_ext[0] = '\0';
+-	dmi_walk(ath12k_core_check_bdfext, ab);
++	dmi_walk(ath12k_core_check_cc_code_bdfext, ab);
  
- 	if (!adapter->wiphy) {
- 		if (mwifiex_register_cfg80211(adapter)) {
-@@ -1553,7 +1536,6 @@ mwifiex_reinit_sw(struct mwifiex_adapter *adapter)
- 
- 	adapter->hw_status = MWIFIEX_HW_STATUS_INITIALIZING;
- 	clear_bit(MWIFIEX_SURPRISE_REMOVED, &adapter->work_flags);
--	init_waitqueue_head(&adapter->init_wait_q);
- 	clear_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags);
- 	adapter->hs_activated = false;
- 	clear_bit(MWIFIEX_IS_CMD_TIMEDOUT, &adapter->work_flags);
-@@ -1721,7 +1703,6 @@ mwifiex_add_card(void *card, struct completion *fw_done,
- 
- 	adapter->hw_status = MWIFIEX_HW_STATUS_INITIALIZING;
- 	clear_bit(MWIFIEX_SURPRISE_REMOVED, &adapter->work_flags);
--	init_waitqueue_head(&adapter->init_wait_q);
- 	clear_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags);
- 	adapter->hs_activated = false;
- 	init_waitqueue_head(&adapter->hs_activate_wait_q);
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
-index a6e3dbfc76233..f30c8b7f6f68e 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.h
-+++ b/drivers/net/wireless/marvell/mwifiex/main.h
-@@ -239,7 +239,6 @@ struct mwifiex_dbg {
- enum MWIFIEX_HARDWARE_STATUS {
- 	MWIFIEX_HW_STATUS_READY,
- 	MWIFIEX_HW_STATUS_INITIALIZING,
--	MWIFIEX_HW_STATUS_INIT_DONE,
- 	MWIFIEX_HW_STATUS_RESET,
- 	MWIFIEX_HW_STATUS_NOT_READY
+ 	if (ab->qmi.target.bdf_ext[0] == '\0')
+ 		return -ENODATA;
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 116cf530621f..e2d300bd5972 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -172,9 +172,34 @@ struct ath12k_ext_irq_grp {
+ 	struct net_device *napi_ndev;
  };
-@@ -865,8 +864,6 @@ struct mwifiex_adapter {
- 	unsigned long work_flags;
- 	u32 fw_release_number;
- 	u8 intf_hdr_len;
--	u16 init_wait_q_woken;
--	wait_queue_head_t init_wait_q;
- 	void *card;
- 	struct mwifiex_if_ops if_ops;
- 	atomic_t bypass_tx_pending;
-@@ -919,7 +916,6 @@ struct mwifiex_adapter {
- 	struct cmd_ctrl_node *curr_cmd;
- 	/* spin lock for command */
- 	spinlock_t mwifiex_cmd_lock;
--	u16 last_init_cmd;
- 	struct timer_list cmd_timer;
- 	struct list_head cmd_free_q;
- 	/* spin lock for cmd_free_q */
-@@ -1060,8 +1056,6 @@ void mwifiex_free_priv(struct mwifiex_private *priv);
  
- int mwifiex_init_fw(struct mwifiex_adapter *adapter);
++enum ath12k_smbios_cc_type {
++	/* disable country code setting from SMBIOS */
++	ATH12K_SMBIOS_CC_DISABLE = 0,
++
++	/* set country code by ANSI country name, based on ISO3166-1 alpha2 */
++	ATH12K_SMBIOS_CC_ISO = 1,
++
++	/* worldwide regdomain */
++	ATH12K_SMBIOS_CC_WW = 2,
++};
++
+ struct ath12k_smbios_bdf {
+ 	struct dmi_header hdr;
+-	u32 padding;
++	u8 features_disabled;
++
++	/* enum ath12k_smbios_cc_type */
++	u8 country_code_flag;
++
++	/* To set specific country, you need to set country code
++	 * flag=ATH12K_SMBIOS_CC_ISO first, then if country is United
++	 * States, then country code value = 0x5553 ("US",'U' = 0x55, 'S'=
++	 * 0x53). To set country to INDONESIA, then country code value =
++	 * 0x4944 ("IN", 'I'=0x49, 'D'=0x44). If country code flag =
++	 * ATH12K_SMBIOS_CC_WW, then you can use worldwide regulatory
++	 * setting.
++	 */
++	u16 cc_code;
++
+ 	u8 bdf_enabled;
+ 	u8 bdf_ext[];
+ } __packed;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index ba9dd19b2e1d..4be937abe3ce 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -11619,6 +11619,17 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
+ 			goto err_unregister_hw;
+ 		}
  
--int mwifiex_init_fw_complete(struct mwifiex_adapter *adapter);
--
- void mwifiex_shutdown_drv(struct mwifiex_adapter *adapter);
- 
- int mwifiex_dnld_fw(struct mwifiex_adapter *, struct mwifiex_fw_image *);
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-index 30dd4e58e2b1d..da89e15e5fe76 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-@@ -2406,11 +2406,5 @@ int mwifiex_sta_init_cmd(struct mwifiex_private *priv, u8 first_sta, bool init)
- 	ret = mwifiex_send_cmd(priv, HostCmd_CMD_11N_CFG,
- 			       HostCmd_ACT_GEN_SET, 0, &tx_cfg, true);
- 
--	if (init) {
--		/* set last_init_cmd before sending the command */
--		priv->adapter->last_init_cmd = HostCmd_CMD_11N_CFG;
--		ret = -EINPROGRESS;
--	}
--
- 	return ret;
- }
-diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
-index ea28d604ee69c..4c5b1de0e936c 100644
---- a/drivers/net/wireless/marvell/mwifiex/util.c
-+++ b/drivers/net/wireless/marvell/mwifiex/util.c
-@@ -115,24 +115,6 @@ static struct mwifiex_debug_data items[] = {
- 
- static int num_of_items = ARRAY_SIZE(items);
- 
--/*
-- * Firmware initialization complete callback handler.
-- *
-- * This function wakes up the function waiting on the init
-- * wait queue for the firmware initialization to complete.
-- */
--int mwifiex_init_fw_complete(struct mwifiex_adapter *adapter)
--{
--
--	if (adapter->hw_status == MWIFIEX_HW_STATUS_READY)
--		if (adapter->if_ops.init_fw_port)
--			adapter->if_ops.init_fw_port(adapter);
--
--	adapter->init_wait_q_woken = true;
--	wake_up_interruptible(&adapter->init_wait_q);
--	return 0;
--}
--
- /*
-  * This function sends init/shutdown command
-  * to firmware.
++		if (ar->ab->hw_params->current_cc_support && ab->new_alpha2[0]) {
++			struct wmi_set_current_country_arg current_cc = {};
++
++			memcpy(&current_cc.alpha2, ab->new_alpha2, 2);
++			memcpy(&ar->alpha2, ab->new_alpha2, 2);
++			ret = ath12k_wmi_send_set_current_country_cmd(ar, &current_cc);
++			if (ret)
++				ath12k_warn(ar->ab,
++					    "failed set cc code for mac register: %d\n", ret);
++		}
++
+ 		ath12k_fw_stats_init(ar);
+ 		ath12k_debugfs_register(ar);
+ 	}
 
+base-commit: b6f473c96421b8b451a8df8ccb620bcd71d4b3f4
+prerequisite-patch-id: 4d98208c1659b01545c48494f7a84c5ba4888da0
+prerequisite-patch-id: dc095f4a1f0d9f6c4f6f850fa1dfe3d804f41e47
+prerequisite-patch-id: 7bffae693031c27eadd2b3452a059bb224070e0b
+prerequisite-patch-id: 3711a8bb24847dd69c5805d7425416b239144898
 -- 
-2.39.5
+2.34.1
 
 
