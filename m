@@ -1,157 +1,116 @@
-Return-Path: <linux-wireless+bounces-20667-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20668-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5542AA6BC31
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 14:57:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C603A6BD00
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 15:33:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6313618991D5
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 13:55:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D82D189BCF3
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 14:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82D270810;
-	Fri, 21 Mar 2025 13:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF36715530C;
+	Fri, 21 Mar 2025 14:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IZ4GNdwc"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KtuBaVk5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178C742A94
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 13:54:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFED48F6B
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 14:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742565298; cv=none; b=uJAiQnOxlbf/nJNYUKWV9TmEgd+kfHTv6o5hPJxHR8MxFc//tq2QMmc4SHSpCqKMAdT3XfETLYvCTMCmAJsNjwtPz7+MmEOInegXqDBJwIKTJgKH8tLPmFxLj6YkBtb+Jbb6rU8dLWghnxrXzYw02kqGb9jwVTU43iohKEIemxQ=
+	t=1742567607; cv=none; b=bgKmqy54skFMDtCILZMdTju5BECT3iJTxYSHdGcw8Smkv7kXwo3/HEQx3lVBWfMsyUjc/nRCT+dZA4hTbUmzSP+KVCDMEqZsZahq3REnjGttz92lMRdjRV00Np4ZPrBztLU/0HFT9jWgPjB/aT59ZNMrw2iJUhaUwZbCJ4T7dZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742565298; c=relaxed/simple;
-	bh=fHxtT8gFvT4FKtxPn8fZtyxgXV8JxihMBGCsFvBv64k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=trX114KdLB7zwPQwOHONSAnEKVZ2cWnWxZlDce5RqK0w4f2h48AwFzMd0PBMTqsuDochoYN7J3jeWITQR7SjMh1qeD5jUsScsUGXCvSZMsUNeTPiNc9xGGwnRoXtrsSeMTrIRQPmE1Jq62E86kWXFnDZXdNQc+HxRJxicT6SP64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IZ4GNdwc; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ac3eb3fdd2eso182693166b.0
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 06:54:56 -0700 (PDT)
+	s=arc-20240116; t=1742567607; c=relaxed/simple;
+	bh=UzuMyhJ9TUUzDWVFFoVxDSg/s6WUbD6J822qNIvZb8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=rnqhSTr1E3e21ZgSpf5+X8Okkhnwb92Al8KXLWsO2d4MbSMi5D1z5FZy6W2+yhCI6cTkdRkSY0Uzge3FIulNWJKRWhCo/1GTzrxca+R3npWuNStG1omdo7TxOzve5Zb8Pr8U0l0z5EMRhLKkBK4NoIGtbWbwSegxBLswmC2JP2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KtuBaVk5; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-399737f4fa4so1284099f8f.0
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 07:33:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742565295; x=1743170095; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hb2sejbtb68pqms6Kmyq53KuCFaYL00+nLToYQCj1ow=;
-        b=IZ4GNdwchT99Oq0RAkrExQFzVaD94n5A+LTIl6406NSgInhhHj1LEJSDHPQocTKHVn
-         qHfL76ca2jjmzWmaeWl5oig3pZp6i6Xzkwnox4nU82Upc05+3QlL2dtqx7NVljpEzi90
-         ZzeLp6o2rZ0ZstWtgF7z+iqeDqcwX9uqTamVf/B/99XJMu85QaCiKi3XE0F6DjPTAcUB
-         jQAnI7LIWE2ZKw4KFFYgZogGAmH8C9evqS9cvXvHW+pGP41LycK8eBhRJc48YFpImSUE
-         LHMzHYWQiVUi815L7HPOEqbIqWhWGLItFP8zXQnvBNzO1WeDJWSf7SxueCnpNDafvuhD
-         Qm2A==
+        d=linaro.org; s=google; t=1742567604; x=1743172404; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dCM/0pxY2Et0ZhXNOx5M/rBqqFuiIGPsmpAIcE+cA+0=;
+        b=KtuBaVk5GkAf42594HV56NpOewRTtZsrI3veLgwcBzIcLDjxVsimUJhwTuEI4fxN84
+         iiUzyC3Heuot2Q/urc+sPMJdZ8Btpo/7Aogmsg+z98rWXGFetkYvDQ6c350nxCgo5Cyu
+         rSQFzCutjrBfYiUz+QQewcmR5ljVBUYGrs5d61dTNYGdaLxyYi4eO/90cBT6GflLu9jy
+         1BBPe+wmvv6/VxWxj5cYIlji4rCxfkx2uomM8b6/R6jfQNQpmUTGH3NnqMlvbVzNeHRu
+         ZRBftu//3ROT4T+jJln5TJIfg6WZEHvPbMdXqaI+45mJY/NQN54tEfweODkjr9sJaquK
+         qg/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742565295; x=1743170095;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hb2sejbtb68pqms6Kmyq53KuCFaYL00+nLToYQCj1ow=;
-        b=YKmAeKNMijQl3XuCRZ1HiEstGt7VPc+0cmtR+TyDmteS+whSHPEX088RPpyCctGWCW
-         2vJGdf+nlLi8D5ZnV709pevnItfWzzLCHSPK27i+lBlo94tjHSXVfs7J7jfM2xoOkCZ3
-         SujmaDi/sfkYsEP0q3gQ+Ds9wHojzMVd22E9eRgm8+kzClT3C89Yn38AtFpqT05KgVa6
-         a8dBI9tb0EHMZT/sEm6rrriPUqdbrqBxwye+DfNsCmOY/PU8Jbu3aJI8P6/25BvDzDYw
-         11Y47w8tbOnmIsz/P4RsXKfzqDwb6qABum+Ur2txv/ufho2qLsmarCX250wRGsomZgOF
-         657w==
-X-Gm-Message-State: AOJu0YwAvPmFGdojR6e1yuvN7vbptu8H7eHBZtkHFpEbqzRjyZTYQ9pq
-	6l7xF5QdbLBeDmlMHYNk1rNyt4tJeFfgZ1XzDwk0ZLes4XUFu7lmTAzd9huFXc9pD51tlqGuElN
-	ACaa8v1YwQYPVAmRdeB20FYNzU6z4Cg==
-X-Gm-Gg: ASbGncv1kz2cuNCzB0cmyNxdZgNLUiy2KBxeLAhXLJ3gT3pnZU4ulwbBVV8H3coCcYT
-	4xDXOFntAABgvU4d5OzhkF6NNgcPLuXBqNCGnkfjBNAPz2p0cyvRSQRG4y00ETTExMj4UzSRB10
-	HVPtvAa+6ZuIU1UcRvelmqdivc9/Ii
-X-Google-Smtp-Source: AGHT+IGHvSGQAyjlfJawf7AfLCRNackjS3mAzAI8MqBsjlCJNg+cwaJQqxw9UY08mtg08noqM+m+Z0yAXNdoNYwOlV4=
-X-Received: by 2002:a17:907:e84c:b0:ac1:e5b1:86fb with SMTP id
- a640c23a62f3a-ac3f2100602mr378360866b.10.1742565294740; Fri, 21 Mar 2025
- 06:54:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742567604; x=1743172404;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dCM/0pxY2Et0ZhXNOx5M/rBqqFuiIGPsmpAIcE+cA+0=;
+        b=rIAYdnCQjJOdyHPXx+qqiZ6JJngEdEXYuo/ijzRDxzqN8MBLnNYu7PagJ7ye0OykkO
+         W4yuJe0dWgFLFkX+t9M4f5qh5LHwctuMU6h46rx/jgHYtzD7xf8uzlXFxl4FFKjIPmQN
+         GmKn0Jkt9fG0CjrxPDKAjCU5WendTSe9cmfF2IDBQ3DXtymoRdcSMo2ip7nu4QPA9oHr
+         A2EFseOyqTJdTNyowmM3vFqGg9P/2xp6ZDcB10mpoEDsoZy4bdKRj4b402qqE3pq/zvY
+         qwO3TEXlDfzsqxq4mqYfpIT+oldOEvi5VXY8U/XUbjfiDlEJAkzY/QHCxjGgHTufLZYG
+         hRgg==
+X-Gm-Message-State: AOJu0Yw0OCviDNfqLSMpDfci5s2pSI5749wqVdOo4w8EwFSnLliCf0kJ
+	nhrUTM617zeeSBeGR/sjfJbbz4a53J9KUyidxK4291meAowT3sFq+PmedirWcYLdx+acb88pbBI
+	o
+X-Gm-Gg: ASbGncsG2KJDO2tZpRFGz3zyHZWqwFOwQ0YEnhYucWdcOEZEMwZLE4nLz6UI/dNY2PX
+	szTK1CX86T/3kWmU97KhpLJG1WFfh/sD1KDa5I2v+L9lf65WroP3zoYDwSocRoWe8FRYY3QmC0g
+	zxYx9THoDBS9f2W08Km/F2oCkIeM4o2Nsit7xeCSxXWI8CnzwClLhEEjHKhL0n+Sb0qRpAzueeE
+	fUbo9gW8Euc/IarZDb6aq0TqbT8b28WiIs9LX5EC5gBc24zwi4QAnZSa7vpN2r1EDkOydpdbYR7
+	voSYyrUY+v43Kba8/OkqmB8efq7WNtb28A0fRzZ0lG93RD/Tew==
+X-Google-Smtp-Source: AGHT+IGWV/p7m8S7xqGZKFR3zF2W6QjG0ha40UpvzvNsYp/rwN5LamAAHEDfsFE/TVOy2+owapxVnQ==
+X-Received: by 2002:a5d:47a5:0:b0:390:f699:8c27 with SMTP id ffacd0b85a97d-3997f902e3dmr3289351f8f.12.1742567604149;
+        Fri, 21 Mar 2025 07:33:24 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3997f9efd61sm2542776f8f.91.2025.03.21.07.33.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Mar 2025 07:33:23 -0700 (PDT)
+Date: Fri, 21 Mar 2025 17:33:21 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Felix Fietkau <nbd@nbd.name>
+Cc: linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: [bug report] wifi: mt76: scan: set vif offchannel link for
+ scanning/roc
+Message-ID: <2f5c3a3c-89d9-407a-b163-4b5cc81da319@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250220074657.120288-1-janusz.dziedzic@gmail.com> <c5e627da-5822-4fc0-8575-431435add7f3@oss.qualcomm.com>
-In-Reply-To: <c5e627da-5822-4fc0-8575-431435add7f3@oss.qualcomm.com>
-From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
-Date: Fri, 21 Mar 2025 14:54:43 +0100
-X-Gm-Features: AQ5f1JqZ_oEDbgQ4oc_27Q9_fdg76btaJk3BTQ54Kl5doj4yDx66ZrtAXZBYjZg
-Message-ID: <CAFED-jmQ=vEhB53pTTmgX2yx63ni=PEqzffpp_yFNfnRnP=ugg@mail.gmail.com>
-Subject: Re: [PATCH] wifi: nl80211: report real HE length
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, johannes@sipsolutions.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-pt., 21 lut 2025 o 19:40 Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-napisa=C5=82(a):
->
-> On 2/19/2025 11:46 PM, Janusz Dziedzic wrote:
-> > Report real length for:
-> >  - supported HE-MCS and NSS set
-> >  - PPE Thresholds
->
-> Are there observable issues with the current code? If so, perhaps describ=
-e
-> them so that anybody with similar issues will be able to find this patch =
-via a
-> search engine?
->
-Not critical one. Just found it in my app when parse nl80211 HE caps.
+Hello Felix Fietkau,
 
-> Is a Fixes: tag warranted?
->
-While not critical, no.
+This is a semi-automatic email about new static checker warnings.
 
-> >
-> > Signed-off-by: Janusz Dziedzic <janusz.dziedzic@gmail.com>
->
-> Actual code LGTM,
-> Reviewed-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
->
-> > ---
-> >  net/wireless/nl80211.c | 11 ++++++++---
-> >  1 file changed, 8 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> > index 8bd09110d393..c0772e24cc2e 100644
-> > --- a/net/wireless/nl80211.c
-> > +++ b/net/wireless/nl80211.c
-> > @@ -1873,6 +1873,12 @@ nl80211_send_iftype_data(struct sk_buff *msg,
-> >               return -ENOBUFS;
-> >
-> >       if (he_cap->has_he) {
-> > +             u8 mcs_nss_size, ppe_thresh_size;
-> > +
-> > +             mcs_nss_size =3D ieee80211_he_mcs_nss_size(&he_cap->he_ca=
-p_elem);
-> > +             ppe_thresh_size =3D ieee80211_he_ppe_size(he_cap->ppe_thr=
-es[0],
-> > +                                     he_cap->he_cap_elem.phy_cap_info)=
-;
-> > +
-> >               if (nla_put(msg, NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC,
-> >                           sizeof(he_cap->he_cap_elem.mac_cap_info),
-> >                           he_cap->he_cap_elem.mac_cap_info) ||
-> > @@ -1880,10 +1886,9 @@ nl80211_send_iftype_data(struct sk_buff *msg,
-> >                           sizeof(he_cap->he_cap_elem.phy_cap_info),
-> >                           he_cap->he_cap_elem.phy_cap_info) ||
-> >                   nla_put(msg, NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET,
-> > -                         sizeof(he_cap->he_mcs_nss_supp),
-> > -                         &he_cap->he_mcs_nss_supp) ||
-> > +                         mcs_nss_size, &he_cap->he_mcs_nss_supp) ||
-> >                   nla_put(msg, NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE,
-> > -                         sizeof(he_cap->ppe_thres), he_cap->ppe_thres)=
-)
-> > +                         ppe_thresh_size, he_cap->ppe_thres))
-> >                       return -ENOBUFS;
-> >       }
-> >
->
+Commit 3ba20af886d1 ("wifi: mt76: scan: set vif offchannel link for
+scanning/roc") from Mar 11, 2025, leads to the following Smatch
+complaint:
 
+    drivers/net/wireless/mediatek/mt76/channel.c:307 mt76_put_vif_phy_link()
+    warn: variable dereferenced before IS_ERR check 'mlink' (see line 305)
 
---=20
-Janusz Dziedzic
+drivers/net/wireless/mediatek/mt76/channel.c
+   304		struct mt76_dev *dev = phy->dev;
+   305		struct mt76_vif_data *mvif = mlink->mvif;
+                                             ^^^^^^^^^^^
+The patch adds a dereference
+
+   306	
+   307		if (IS_ERR_OR_NULL(mlink) || !mlink->offchannel)
+                                   ^^^^^
+Checked too late.
+
+   308			return;
+   309	
+
+regards,
+dan carpenter
 
