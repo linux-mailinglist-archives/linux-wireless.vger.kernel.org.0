@@ -1,62 +1,63 @@
-Return-Path: <linux-wireless+bounces-20624-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20623-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0541AA6B2AE
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 02:39:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 219B4A6B2AD
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 02:38:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF79F17A92C
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 01:38:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A49333BA434
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 01:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EAA51DED40;
-	Fri, 21 Mar 2025 01:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4031E1DED56;
+	Fri, 21 Mar 2025 01:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="DGrXvMgo"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="P/4TwNBv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA381DE88A
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 01:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806701DE88A
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 01:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742521127; cv=none; b=DBKlRsytjNGCExu4p3E4ic23F71J0deWhywLWzIJhLu7V8nt/1dYrGcRKT8kfzgwks6SGtLh5FECWn7t7fr8dBqza8sd5htA1G/vVengnqYR7FSmLh2PMgQcJoHDoFlrKSx0sC21UQj6InO0uRdKOwqk0taM7w4k7uyoPliFUtQ=
+	t=1742521121; cv=none; b=tss8UaqvJH45rDH5xzPA9AOfeycoyISHVpqJL+CV+ZaY2YzXdSSzS92plx+A05tSI423wwg9WsugNPvYPo9ZiBzB0PMtsv9GvQrkJfjW91omWEfzh4aC2cHXBNMPDMAubRothdfEvmiVZDVdtGLYEyrzJt57VoYsLfsEAr5jx1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742521127; c=relaxed/simple;
-	bh=8hnqAiA/QQHg+j/6q0OUvHEGy5Fk8hyj/lmRrt9h4wY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qEkn3ryHtevf2f9xaltkS52KPcQfMCPSn5CMMD89nxU0dE/JD24k5qmExzVK/JuM53oGbhQVvztxIkQPx36p1K86adfbomUv4z5qfMuzBrkcCo614agn1jAXRSd5zTH0I6kXrRLRIm/x/XGNzvYoqmcG/GaHaaJ1OKKP4IblGC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=DGrXvMgo; arc=none smtp.client-ip=210.61.82.184
+	s=arc-20240116; t=1742521121; c=relaxed/simple;
+	bh=tPDUyk559OueJHQCQHSk0kek3wNXzQPcycbBEtLZ7lg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qMX9JKbTD/HiHUANAgv18yQXS37L1jhK2/4GOJP5arkZyWBNOrczZIXg9JyRVfqAxV3ZkH7YYeb6Q3TJDcgws1734C7iGUfSaKPmujeuI9veLhL7KmDRD4tgkwJmfIX28th9DmngR8LJrZL1me8gSsbteqN1Iy7++Hv88YKy7tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=P/4TwNBv; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 32798ed805f511f08eb9c36241bbb6fb-20250321
+X-UUID: 32ac964805f511f0aae1fd9735fae912-20250321
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=l0FtocxJhirF9M+Yr/kS+cMeBGXAMpd8hW0ziZIOYvc=;
-	b=DGrXvMgoS2o11rzJZakGwNkZHw50MIfA7/uh3axSpFPT7BJUg1Yq4yy4I8IuIlrkpusArxCkXAgNKEJC9uqskp9DaYODuAMQs+RVRKlJQuzckn8xdWjZ1ipcP6ihrZEdc4/aQJp9nWdKILa/boCSbPe2pq8KOO5/2J9tLwAtWjk=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=Oc3LOqQsO5ffU4e68W6QtCi7n5O2ITNAy/DuvZQSEoM=;
+	b=P/4TwNBvt6Q/94EdJLjgAifqXU0oefdCoR9rKB4h8XIe6+b5vcwiDrzwJklD5xk4NQdZXRjH9QueFBLtXDzjChCOX2K49j6Z5TDuhNSvz7sYpWu9ymB/G8Ov/D93cYl7tZG987PWpmSL2A7YeqPrBsp7EMeILxaVqvf2GnLz7h0=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.1,REQID:dd3884b2-350b-419e-903b-22a9a332ee98,IP:0,UR
+X-CID-O-INFO: VERSION:1.2.1,REQID:583259ff-c705-40a0-8c15-427ed21e84ea,IP:0,UR
 	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
 	elease,TS:0
-X-CID-META: VersionHash:0ef645f,CLOUDID:d769a48c-f5b8-47d5-8cf3-b68fe7530c9a,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
+X-CID-META: VersionHash:0ef645f,CLOUDID:fd46e3fd-c03c-4d2b-a585-04cfa9287728,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0|50,EDM:-3
+	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 32798ed805f511f08eb9c36241bbb6fb-20250321
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
+X-UUID: 32ac964805f511f0aae1fd9735fae912-20250321
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
 	(envelope-from <mingyen.hsieh@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 873793407; Fri, 21 Mar 2025 09:38:32 +0800
+	with ESMTP id 1768169157; Fri, 21 Mar 2025 09:38:32 +0800
 Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Fri, 21 Mar 2025 09:38:30 +0800
+ 15.2.1258.39; Fri, 21 Mar 2025 09:38:31 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
  mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Fri, 21 Mar 2025 09:38:30 +0800
+ 15.2.1258.39 via Frontend Transport; Fri, 21 Mar 2025 09:38:31 +0800
 From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
 To: <nbd@nbd.name>, <lorenzo@kernel.org>
 CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
@@ -66,10 +67,12 @@ CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
 	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
 	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
 	<mingyen.hsieh@mediatek.com>
-Subject: [PATCH v2 1/2] wifi: mt76: add mt76_connac_mcu_build_rnr_scan_param routine
-Date: Fri, 21 Mar 2025 09:38:28 +0800
-Message-ID: <20250321013829.3598-1-mingyen.hsieh@mediatek.com>
+Subject: [PATCH v2 2/2] wifi: mt76: mt7925: add RNR scan support for 6GHz
+Date: Fri, 21 Mar 2025 09:38:29 +0800
+Message-ID: <20250321013829.3598-2-mingyen.hsieh@mediatek.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250321013829.3598-1-mingyen.hsieh@mediatek.com>
+References: <20250321013829.3598-1-mingyen.hsieh@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,119 +84,146 @@ Content-Type: text/plain
 
 From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-Introduce mt76_connac_mcu_build_rnr_scan_param routine for handling
-RNR scan. This is a preliminary patch to enable RNR scan in mt7921 and
-mt7925 driver.
+Enhance the mt7925 to include RNR scan support. It adds
+the necessary RNR information to the scan command.
 
 Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
-v2: no changes
+v2:
+  - use '= {}' to replace the '= {0}' for short_ssid array.
+  - align with the open paranthesis for crc32_le.
+  - use ether_addr_copy() to replace the memcpy of bssid.
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h     | 12 ++++++
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 38 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  3 ++
- 3 files changed, 53 insertions(+)
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 36 ++++++++++++++++---
+ .../net/wireless/mediatek/mt76/mt7925/mcu.h   | 17 +++++----
+ 2 files changed, 41 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 2331097bccee..2095a7b04cee 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -162,6 +162,16 @@ enum mt76_dfs_state {
- 	MT_DFS_STATE_ACTIVE,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 243adace8799..22686faca1af 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -3042,6 +3042,7 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 	struct mt76_dev *mdev = phy->dev;
+ 	struct mt76_connac_mcu_scan_channel *chan;
+ 	struct sk_buff *skb;
++	u32 short_ssid[MT7925_RNR_SCAN_MAX_BSSIDS] = {};
+ 
+ 	struct scan_hdr_tlv *hdr;
+ 	struct scan_req_tlv *req;
+@@ -3054,8 +3055,8 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 	int max_len;
+ 
+ 	max_len = sizeof(*hdr) + sizeof(*req) + sizeof(*ssid) +
+-				sizeof(*bssid) + sizeof(*chan_info) +
+-				sizeof(*misc) + sizeof(*ie);
++		  sizeof(*bssid) * MT7925_RNR_SCAN_MAX_BSSIDS +
++		  sizeof(*chan_info) + sizeof(*misc) + sizeof(*ie);
+ 
+ 	skb = mt76_mcu_msg_alloc(mdev, NULL, max_len);
+ 	if (!skb)
+@@ -3078,7 +3079,11 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 	for (i = 0; i < sreq->n_ssids; i++) {
+ 		if (!sreq->ssids[i].ssid_len)
+ 			continue;
++		if (i > MT7925_RNR_SCAN_MAX_BSSIDS)
++			break;
+ 
++		short_ssid[i] = ~crc32_le(~0, sreq->ssids[i].ssid,
++					  sreq->ssids[i].ssid_len);
+ 		ssid->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
+ 		memcpy(ssid->ssids[i].ssid, sreq->ssids[i].ssid,
+ 		       sreq->ssids[i].ssid_len);
+@@ -3087,10 +3092,31 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 	ssid->ssid_type = n_ssids ? BIT(2) : BIT(0);
+ 	ssid->ssids_num = n_ssids;
+ 
+-	tlv = mt76_connac_mcu_add_tlv(skb, UNI_SCAN_BSSID, sizeof(*bssid));
+-	bssid = (struct scan_bssid_tlv *)tlv;
++	if (sreq->n_6ghz_params) {
++		u8 j;
++
++		mt76_connac_mcu_build_rnr_scan_param(mdev, sreq);
++
++		for (j = 0; j < mdev->rnr.bssid_num; j++) {
++			if (j > MT7925_RNR_SCAN_MAX_BSSIDS)
++				break;
++
++			tlv = mt76_connac_mcu_add_tlv(skb, UNI_SCAN_BSSID,
++						      sizeof(*bssid));
++			bssid = (struct scan_bssid_tlv *)tlv;
+ 
+-	memcpy(bssid->bssid, sreq->bssid, ETH_ALEN);
++			ether_addr_copy(bssid->bssid, mdev->rnr.bssid[j]);
++			bssid->match_ch = mdev->rnr.channel[j];
++			bssid->match_ssid_ind = MT7925_RNR_SCAN_MAX_BSSIDS;
++			bssid->match_short_ssid_ind = MT7925_RNR_SCAN_MAX_BSSIDS;
++		}
++		req->scan_func |= SCAN_FUNC_RNR_SCAN;
++	} else {
++		tlv = mt76_connac_mcu_add_tlv(skb, UNI_SCAN_BSSID, sizeof(*bssid));
++		bssid = (struct scan_bssid_tlv *)tlv;
++
++		ether_addr_copy(bssid->bssid, sreq->bssid);
++	}
+ 
+ 	tlv = mt76_connac_mcu_add_tlv(skb, UNI_SCAN_CHANNEL, sizeof(*chan_info));
+ 	chan_info = (struct scan_chan_info_tlv *)tlv;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index 0419aa922e17..96809c2fdff9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -196,6 +196,7 @@ enum {
+ 	UNI_SNIFFER_CONFIG,
  };
  
-+#define MT76_RNR_SCAN_MAX_BSSIDS       16
-+struct mt76_scan_rnr_param {
-+	u8 bssid[MT76_RNR_SCAN_MAX_BSSIDS][ETH_ALEN];
-+	u8 channel[MT76_RNR_SCAN_MAX_BSSIDS];
-+	u8 random_mac[ETH_ALEN];
-+	u8 seq_num;
-+	u8 bssid_num;
-+	u32 sreq_flag;
-+};
-+
- struct mt76_queue_buf {
- 	dma_addr_t addr;
- 	u16 len:15,
-@@ -941,6 +951,8 @@ struct mt76_dev {
- 	char alpha2[3];
- 	enum nl80211_dfs_regions region;
++#define MT7925_RNR_SCAN_MAX_BSSIDS	10
+ struct scan_hdr_tlv {
+ 	/* fixed field */
+ 	u8 seq_num;
+@@ -223,7 +224,7 @@ struct scan_req_tlv {
+ 	__le16 timeout_value;
+ 	__le16 probe_delay_time;
+ 	__le32 func_mask_ext;
+-};
++} __packed;
  
-+	struct mt76_scan_rnr_param rnr;
-+
- 	u32 debugfs_reg;
+ struct scan_ssid_tlv {
+ 	__le16 tag;
+@@ -235,9 +236,10 @@ struct scan_ssid_tlv {
+ 		       * BIT(2) + ssid_type_ext BIT(0) specified SSID only
+ 		       */
+ 	u8 ssids_num;
+-	u8 pad[2];
+-	struct mt76_connac_mcu_scan_ssid ssids[4];
+-};
++	u8 is_short_ssid;
++	u8 pad;
++	struct mt76_connac_mcu_scan_ssid ssids[MT7925_RNR_SCAN_MAX_BSSIDS];
++} __packed;
  
- 	u8 csa_complete;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 2276ef1b4370..97acb10d1eff 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1667,6 +1667,44 @@ int mt76_connac_mcu_uni_add_bss(struct mt76_phy *phy,
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_uni_add_bss);
+ struct scan_bssid_tlv {
+ 	__le16 tag;
+@@ -247,8 +249,9 @@ struct scan_bssid_tlv {
+ 	u8 match_ch;
+ 	u8 match_ssid_ind;
+ 	u8 rcpi;
+-	u8 pad[3];
+-};
++	u8 match_short_ssid_ind;
++	u8 pad[2];
++} __packed;
  
-+void mt76_connac_mcu_build_rnr_scan_param(struct mt76_dev *mdev,
-+					  struct cfg80211_scan_request *sreq)
-+{
-+	struct ieee80211_channel **scan_list = sreq->channels;
-+	int i, bssid_index = 0;
-+
-+	/* clear 6G active Scan BSSID table */
-+	memset(&mdev->rnr, 0, sizeof(mdev->rnr));
-+
-+	for (i = 0; i < sreq->n_6ghz_params; i++) {
-+		u8 ch_idx = sreq->scan_6ghz_params[i].channel_idx;
-+		int k = 0;
-+
-+		/* Remove the duplicated BSSID */
-+		for (k = 0; k < bssid_index; k++) {
-+			if (!memcmp(&mdev->rnr.bssid[k],
-+				    sreq->scan_6ghz_params[i].bssid,
-+				    ETH_ALEN))
-+				break;
-+		}
-+
-+		if (k == bssid_index &&
-+		    bssid_index < MT76_RNR_SCAN_MAX_BSSIDS) {
-+			memcpy(&mdev->rnr.bssid[bssid_index++],
-+			       sreq->scan_6ghz_params[i].bssid, ETH_ALEN);
-+			mdev->rnr.channel[k] = scan_list[ch_idx]->hw_value;
-+		}
-+	}
-+
-+	mdev->rnr.bssid_num = bssid_index;
-+
-+	if (sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
-+		memcpy(mdev->rnr.random_mac, sreq->mac_addr, ETH_ALEN);
-+		mdev->rnr.sreq_flag = sreq->flags;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_mcu_build_rnr_scan_param);
-+
- #define MT76_CONNAC_SCAN_CHANNEL_TIME		60
- int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 			    struct ieee80211_scan_request *scan_req)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 2e865a731d05..34636cd4b42e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -869,6 +869,7 @@ enum {
- #define NETWORK_WDS			BIT(21)
+ struct scan_chan_info_tlv {
+ 	__le16 tag;
+@@ -264,7 +267,7 @@ struct scan_chan_info_tlv {
+ 	u8 channels_num; /* valid when channel_type is 4 */
+ 	u8 pad[2];
+ 	struct mt76_connac_mcu_scan_channel channels[64];
+-};
++} __packed;
  
- #define SCAN_FUNC_RANDOM_MAC		BIT(0)
-+#define SCAN_FUNC_RNR_SCAN		BIT(3)
- #define SCAN_FUNC_SPLIT_SCAN		BIT(5)
- 
- #define CONNECTION_INFRA_STA		(STA_TYPE_STA | NETWORK_INFRA)
-@@ -1974,6 +1975,8 @@ int mt76_connac_mcu_start_patch(struct mt76_dev *dev);
- int mt76_connac_mcu_patch_sem_ctrl(struct mt76_dev *dev, bool get);
- int mt76_connac_mcu_start_firmware(struct mt76_dev *dev, u32 addr, u32 option);
- 
-+void mt76_connac_mcu_build_rnr_scan_param(struct mt76_dev *mdev,
-+					  struct cfg80211_scan_request *sreq);
- int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 			    struct ieee80211_scan_request *scan_req);
- int mt76_connac_mcu_cancel_hw_scan(struct mt76_phy *phy,
+ struct scan_ie_tlv {
+ 	__le16 tag;
 -- 
 2.34.1
 
