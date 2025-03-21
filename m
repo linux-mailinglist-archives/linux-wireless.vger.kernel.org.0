@@ -1,151 +1,139 @@
-Return-Path: <linux-wireless+bounces-20648-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20649-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942FFA6B87D
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 11:08:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24029A6B884
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 11:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1638D486EF9
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 10:08:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AB7B7A736C
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 10:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5DE1F2C34;
-	Fri, 21 Mar 2025 10:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23BE01F3B97;
+	Fri, 21 Mar 2025 10:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LhlkLEae"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3UFHg53"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AF51EBFF0;
-	Fri, 21 Mar 2025 10:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE5E1E1DF1;
+	Fri, 21 Mar 2025 10:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742551687; cv=none; b=pHqZ0b4GsycK0WGP+Y/bqVWF0pTMw8zq0WBmLv2CwfgMSO4rBKwk01TWd/SJwkb35ABYqcxJpe41FGSEEbtrw1ZpGawvvftkep32pyAXh8gUn+hgQ562WXkFdtZ6Xyz0C48BrdDiYZExTX2SsYd/tC0UlWr9FXv0XuSMTqv+7IQ=
+	t=1742551827; cv=none; b=PD+4i/YymMFsey9+jKHKClx+Npqijuq1cXJloEVZFO48fFwX12YhuKlDzLinyVYer5vj/L3UIrTzzNReiS6KKuq2beZ6Jup2VEfLk6dvIUE/6TmSTZpHpBbroPVzKL8tDCzjpB/stugvI1BCh2hZIlvZFDo7uhHttEsfwMJx0TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742551687; c=relaxed/simple;
-	bh=JUyYZgvHnMkO5Pzm34Kcy4R92KbnKob5xAR4ZC5hkhg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=A7DnwopBs6aUhtyS2YBCpDVmMjZInG+SbiNDUiH5Asw+EtGwWLIlZrCSXV5kGThZxQJ1+QToTzIEQqRHkZC70d23sYGMD6J1+2GCabBqzgW8INoUpmSzSop/Eq+gme9uaXGXuh5c5lJj+LvhUROCoq4+/5lREssRfnvyUVuFMXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LhlkLEae; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52L8k5KD014152;
-	Fri, 21 Mar 2025 10:07:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Wohi0atRJyGxd3ZMz+5DEGmp/UcLqgSt0+cwzpEAn7Q=; b=LhlkLEaeYTL0lYbX
-	OeJ0IIyA3TpDzoGu6JdBSEp0PgMN44rbc6EFIldxsYRSl4gwyopG7W9+N8uQCyGn
-	htBBfvZZaDnQysgrvXSx36AeTfbdeUrMB/5pbp7ALpTdpyBF/BQNhLNYMOImYruU
-	6gJnqDOgatxboTIRyROnDIoZLvDbKIa5mROtGfzuxNhitWd2bNRb2YqiDRvMNGvW
-	7tTfFMrxM7REW3VzjT2dg+SYQyk3oWQBuCjFYmri6fDs/rP7Ryr1+lOGoNYUXieE
-	cktD0/ROrJeqCdcfhudcH4TA1CoBber6d/3KuAYTupJXKJULnIrajREzN3W+MhFk
-	HP35KA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45h4p1097v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Mar 2025 10:07:56 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52LA7tV3022850
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Mar 2025 10:07:55 GMT
-Received: from [10.152.207.135] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 21 Mar
- 2025 03:07:52 -0700
-Message-ID: <10fd0006-8428-4bc6-9578-2a05dc1382e0@quicinc.com>
-Date: Fri, 21 Mar 2025 15:37:49 +0530
+	s=arc-20240116; t=1742551827; c=relaxed/simple;
+	bh=YH7fJ3j+cxz0C85hFBF2iuhtOqEPJCUhbKdA9IRCfXk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WIy23j5UHTj1dI6Szb6+Yw4qUSkN4wLaC/iU2cttNH81uri4GiFO1i7a+q57HMLrFF8iaip8O1GIA7wJ2qtulE3qZbOQ0yTpn4AmMo4z7UGerCLM3bV6QQ/LGBkbC3YfQ8Seiq7rN4dP1Ae5q10+Kf/9LNyET4YSTYhMBBXJdmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3UFHg53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651EEC4CEE3;
+	Fri, 21 Mar 2025 10:10:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742551826;
+	bh=YH7fJ3j+cxz0C85hFBF2iuhtOqEPJCUhbKdA9IRCfXk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V3UFHg53voc1NcSSosyBQlcYVGP2BnAOGZmo9ULUEr9fxMwUbemnjLqDJN0eB1mi5
+	 fwQKQxMJvxvw3ZYpgl2kgoUN8+TIXo4251vri90DEwBa9iVb15wQycA8FPx7nZ6sHw
+	 qxMImHkGk+Yrs4kBDrJpkaHRsvV88aYHdfJz08QQ1V+eIy2e54TUrvFa85bmN6VX3b
+	 tPG4dKxm2pOr152PaDPH5fTY4ejiPP3K7ydlNZI8LVuEDrHXU4ayuvGAa+XssYu87E
+	 luncr8XHXQBK1Bm8T2m+nBxt7fs6Z6M4GyGFNhvc0O5owso4K3VvB+sw0v2vlcDSPQ
+	 ow4vpZ1EuXPIg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tvZKe-000000005Uu-2F5b;
+	Fri, 21 Mar 2025 11:10:28 +0100
+Date: Fri, 21 Mar 2025 11:10:28 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Cc: quic_jjohnson@quicinc.com, ath11k@lists.infradead.org,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	johan+linaro@kernel.org
+Subject: Re: [PATCH v4 ath-next 2/2] wifi: ath11k: fix HTC rx insufficient
+ length
+Message-ID: <Z907FGWBV_MNlTcE@hovoldconsulting.com>
+References: <20250317072036.2066518-1-quic_miaoqing@quicinc.com>
+ <20250317072036.2066518-3-quic_miaoqing@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v11 00/13] wifi: ath12k: add Ath12k AHB driver
- support for IPQ5332
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: <ath12k@lists.infradead.org>, Johannes Berg <johannes@sipsolutions.net>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20250317204639.1864742-1-quic_rajkbhag@quicinc.com>
- <20250318-splendid-sceptical-gazelle-8abbef@krzk-bin>
-Content-Language: en-US
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-In-Reply-To: <20250318-splendid-sceptical-gazelle-8abbef@krzk-bin>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 6M9rfQf7dbn492hdifADri3wc56cF0kc
-X-Proofpoint-ORIG-GUID: 6M9rfQf7dbn492hdifADri3wc56cF0kc
-X-Authority-Analysis: v=2.4 cv=NZjm13D4 c=1 sm=1 tr=0 ts=67dd3a7c cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=VwQbUJbxAAAA:8 a=bsUYDfnVGbR25cQxC6AA:9
- a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-21_04,2025-03-20_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxlogscore=999
- priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 adultscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503210074
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250317072036.2066518-3-quic_miaoqing@quicinc.com>
 
-On 3/18/2025 1:30 PM, Krzysztof Kozlowski wrote:
-> On Tue, Mar 18, 2025 at 02:16:26AM +0530, Raj Kumar Bhagat wrote:
->> Currently, Ath12k driver only supports WiFi devices that are based on
->> PCI bus. New Ath12k device IPQ5332 is based on AHB bus. Hence, add
->> Ath12k AHB support for IPQ5332.
->>
->> IPQ5332 is IEEE802.11be 2 GHz 2x2 Wifi device. To bring-up IPQ5332
->> device:
->> - Add hardware parameters for IPQ5332.
->> - CE register address space in IPQ5332 is separate from WCSS register
->>   space. Hence, add logic to remap CE register address.
->> - Add support for fixed QMI firmware memory for IPQ5332.
->> - Support userPD handling for WCSS secure PIL driver to enable ath12k
->>   AHB support.
->>
->> NOTE:
->> The working upstream DTS changes for this series have been posted as a
->> separate series.
->> [PATCH v2] arm64: dts: qcom: add wifi node for IPQ5332 based RDP441
->>
->> v11:
->> - Updated Kconfig for ATH12k AHB.
->> - Replaced the API devm_ioremap_wc() with devm_memremap to fix ath12k-check
->>   warning: "warning: cast removes address space '__iomem' of expression"
->> - Rebased on latest ToT.
->> - Removed tag "Reviewed-by: Vasanthakumar Thiagarajan", in the updated
->>   patch [11/13] wifi: ath12k: Power up userPD
+On Mon, Mar 17, 2025 at 03:20:36PM +0800, Miaoqing Pan wrote:
+> A relatively unusual race condition occurs between host software
+> and hardware, where the host sees the updated destination ring head
+> pointer before the hardware updates the corresponding descriptor.
+> When this situation occurs, the length of the descriptor returns 0.
 > 
+> The current error handling method is to increment descriptor tail
+> pointer by 1, but 'sw_index' is not updated, causing descriptor and
+> skb to not correspond one-to-one, resulting in the following error:
 > 
-> This is v11 and still sent in a way it messes with toolset:
+> ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1488, expected 1492
+> ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
 > 
->   b4 diff -C 20250317204639.1864742-2-quic_rajkbhag@quicinc.com
->   Grabbing thread from lore.kernel.org/all/20250317204639.1864742-2-quic_rajkbhag@quicinc.com/t.mbox.gz
->   Checking for older revisions
->     Added from v10: 14 patches
->   ---
->   Analyzing 135 messages in the thread
->   Preparing fake-am for v11: dt-bindings: net: wireless: describe the ath12k AHB module for IPQ5332
->   ERROR: Could not fake-am version v11
->   ---
->   Could not create fake-am range for upper series v11
+> To address this problem and work around the broken hardware,
+> temporarily skip processing the current descriptor and handle it
+> again next time. Also, skip updating the length field of the
+> descriptor when it is 0, because there's a racing update, may
+> never see the updated length.
 > 
-> Can you fix your process so the tools will be happy? Please read
-> carefully your internal guideline go/upstream before posting next
-> version.
+> Tested-on: QCA6698AQ hw2.1 PCI WLAN.HSP.1.1-04546-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
 > 
+> Reported-by: Johan Hovold <johan+linaro@kernel.org>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218623
+> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
 
-It may be because, I did not use b4 tool for this.
-Will send the next version with b4 tool.
+As I've argued elsewhere, I think this should be fixed by adding the
+missing memory barrier which is needed to prevent ordering issues like
+this on aarch64:
+
+	https://lore.kernel.org/lkml/Z90yyrZcORhJJgNU@hovoldconsulting.com/
+
+The fact that this alone does not seem to be sufficient to address the
+issue on qcs615 (and qcs8300) suggests that there are further issues
+with these platforms that need to be properly understood before adding
+workarounds in one place in one driver.
+
+I've just posted my fix, a version of which users have been running now
+for a week without hitting the corruption (that some used to hit
+multiple times a daily), here:
+
+	https://lore.kernel.org/lkml/20250321094916.19098-1-johan+linaro@kernel.org/
+
+> @@ -387,18 +387,26 @@ static int ath11k_ce_completed_recv_next(struct ath11k_ce_pipe *pipe,
+>  
+>  	ath11k_hal_srng_access_begin(ab, srng);
+>  
+> -	desc = ath11k_hal_srng_dst_get_next_entry(ab, srng);
+> +	desc = ath11k_hal_srng_dst_peek(ab, srng);
+>  	if (!desc) {
+>  		ret = -EIO;
+>  		goto err;
+>  	}
+>  
+>  	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
+> -	if (*nbytes == 0) {
+> +	if (unlikely(*nbytes == 0)) {
+> +		/* A relatively unusual race condition occurs between host
+> +		 * software and hardware, where the host sees the updated
+> +		 * destination ring head pointer before the hardware updates
+> +		 * the corresponding descriptor. Temporarily skip processing
+> +		 * the current descriptor and handle it again next time.
+> +		 */
+>  		ret = -EIO;
+>  		goto err;
+
+Your tests suggested that you always see the correct length the next
+time you process the ring buffer, but AFAICT that is not guaranteed to
+happen (i.e. if you hit this on the last transfer).
+
+Johan
 
