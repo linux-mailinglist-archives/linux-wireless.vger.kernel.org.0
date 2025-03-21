@@ -1,30 +1,31 @@
-Return-Path: <linux-wireless+bounces-20636-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20641-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BB0A6B64C
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 09:51:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B1FA6B656
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 09:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34DF34A0363
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 08:50:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCB0419C51D5
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 08:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606E11F099D;
-	Fri, 21 Mar 2025 08:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762F7215770;
+	Fri, 21 Mar 2025 08:50:36 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242CC1DDA39
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 08:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F051F891F
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 08:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742547029; cv=none; b=iVmHJBR8UDKyePPDgx4WNL8ZoZ/RGSVwmtrn6sQrrfnIANmxKSS3/eEF/3TBeV3ZrgOApUojrTdBLk/IQmNEETmhmmD82Zxs6T1uZvnny925DWbss30NOZmdA9xYaE5kxUB9txvXiuCOIQD2y9GXWlLigB37KAYuESMW1LoXpzU=
+	t=1742547036; cv=none; b=Kh0oaSyiYlXS8vFebSeGnC6JSoWPEieGRhWTeiO9P5nQXV+Ev5EB5iwdkSE/7793v1jRz/5rXIibi9gLcA/9bWwj036P3r9P1CyYN9+Knop92F1wJzdoBdRl3Bi9oeivmhSblAaM/+PKY60Z5wb5dKFkjjL9Cwve76yLx+VVjhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742547029; c=relaxed/simple;
-	bh=PEFHWePWnB6ka1iySLs6qJHLDanRHnSk8JW7XM7Ehq4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Eaz2uePBOjDbmdcXVuAjJZ1mzt7BHMPC3XBepX2jw0L/0imSjqBs3IajoWQ/ICS7iyYYnt99MPk2raim2eFhqvYb8iBe0eBhMlKkzndm+RA+R6NFzyUPJ7gd1+tqOMtW0ubHzJwQVLPsZXC96e0gcWaesTEjD592JvinGvwdZis=
+	s=arc-20240116; t=1742547036; c=relaxed/simple;
+	bh=YJf7CTJU9cjm7wgH3iWlza8QlTGiJ6PyQ1angbO+zjg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=P5cBTLx+8LvcJrww6I2Ihh+Fpz05htPd5e4ohKteFK5h9lmDn4fYmPurkX15xbVql/EB8Y156cHwgDUMj7J/PCpX98mTQwIuTsTl2pFk+N3qY7dzFS/3BVm5Uz2mHQ9TUG1wauM4ayNh8FPyG7WBBzwv1UZNGRwNihSBePAL7nc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -32,22 +33,22 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tvY51-0001Ln-HC; Fri, 21 Mar 2025 09:50:15 +0100
+	id 1tvY51-0001Lm-HD; Fri, 21 Mar 2025 09:50:15 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tvY4z-000taJ-2I;
+	id 1tvY4z-000taK-2D;
 	Fri, 21 Mar 2025 09:50:14 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tvY50-003L3W-04;
+	id 1tvY50-003L3W-06;
 	Fri, 21 Mar 2025 09:50:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH v4 00/10] mwifiex: cleanups
-Date: Fri, 21 Mar 2025 09:50:00 +0100
-Message-Id: <20250321-mwifiex-cleanup-1-v4-0-4a32b21e2553@pengutronix.de>
+Date: Fri, 21 Mar 2025 09:50:01 +0100
+Subject: [PATCH v4 01/10] wifi: mwifiex: deduplicate code in
+ mwifiex_cmd_tx_rate_cfg()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -56,10 +57,9 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADko3WcC/33Nyw6CMBAF0F8hXVvTBy3oyv8wLqCdwiRaSHmII
- fy7hYUuJG5mcm8yZ2bSQUDoyDmZSYARO2x8DOkhIaYufAUUbcxEMJGyXGj6eKJDmKi5Q+GHlnJ
- aKiaVyVzhnCbxrg3gcNrM6y3mGru+Ca/txcjX9p82csqo0qBdDixuc2nBV0MfGo/T0QJZyVF8m
- RPP9xgRGWGZOmU8z6zcZ+SH4XHsMTIykmeFNsCsVeUPsyzLGxoXMqdFAQAA
+Message-Id: <20250321-mwifiex-cleanup-1-v4-1-4a32b21e2553@pengutronix.de>
+References: <20250321-mwifiex-cleanup-1-v4-0-4a32b21e2553@pengutronix.de>
+In-Reply-To: <20250321-mwifiex-cleanup-1-v4-0-4a32b21e2553@pengutronix.de>
 To: Brian Norris <briannorris@chromium.org>, 
  Francesco Dolcini <francesco@dolcini.it>
 Cc: Johannes Berg <johannes.berg@intel.com>, linux-wireless@vger.kernel.org, 
@@ -67,11 +67,11 @@ Cc: Johannes Berg <johannes.berg@intel.com>, linux-wireless@vger.kernel.org,
  kernel@pengutronix.de, Sascha Hauer <s.hauer@pengutronix.de>, 
  Francesco Dolcini <francesco.dolcini@toradex.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1742547013; l=2768;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1742547013; l=3171;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=PEFHWePWnB6ka1iySLs6qJHLDanRHnSk8JW7XM7Ehq4=;
- b=VQ9CwpDhw0Zv0fGWOPt4cKeBbZAKLvEyvRiLH1GNFxBmW9KFotCnbj8knC7yu7+gDSdMSrrF+
- WngEgpbTn56DUv8J/QiOBH0QDG4d6yzWRSzho6fo9zAtUvD6AaI+7UU
+ bh=YJf7CTJU9cjm7wgH3iWlza8QlTGiJ6PyQ1angbO+zjg=;
+ b=rWKONxzgra1MC4oZiWw/vz9HFP1OvOi5j4IA6Gq97+12HhtVYS0Zg1IW4m0EufP8hv1aopQEI
+ WisI804tQm9CUgbSmpRGSFpbC8SIvEwoTeCR8i3EX0emmQsWO77Vjgm
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -79,66 +79,80 @@ X-SA-Exim-Mail-From: s.hauer@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-This contains several cleanup patches for the mwifiex driver. I dropped
-the MAC address fixing patch this time as it needs more discussion, but
-the remaining patches sent here are nearly unchanged from v1 and should
-be good to go.
+The code block inside the if/else is the same with just using
+pbitmap_rates if non NULL or priv->bitmap_rates otherwise. Deduplicate
+the code by picking the correct pointer first and then using it
+unconditionally.
 
-Sascha
-
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-Changes in v4:
-- rebase and test on v6.14-rc7
-- drop "wifi: mwifiex: fix MAC address handling" because needs more
-  discussion
-- Link to v3: https://lore.kernel.org/r/20241202-mwifiex-cleanup-1-v3-0-317a6ce0dd5b@pengutronix.de
+ drivers/net/wireless/marvell/mwifiex/sta_cmd.c | 43 +++++++++-----------------
+ 1 file changed, 14 insertions(+), 29 deletions(-)
 
-Changes in v3:
-- Remove Cc: stable tag from 02/12 wifi: mwifiex: fix MAC address handling
-- Add better reasons for setting the locally admistered bit in 02/12
-  wifi: mwifiex: fix MAC address handling
-- Link to v2: https://lore.kernel.org/r/20240918-mwifiex-cleanup-1-v2-0-2d0597187d3c@pengutronix.de
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+index e2800a831c8ed..30dd4e58e2b1d 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+@@ -157,7 +157,7 @@ mwifiex_cmd_802_11_get_log(struct host_cmd_ds_command *cmd)
+  */
+ static int mwifiex_cmd_tx_rate_cfg(struct mwifiex_private *priv,
+ 				   struct host_cmd_ds_command *cmd,
+-				   u16 cmd_action, u16 *pbitmap_rates)
++				   u16 cmd_action, const u16 *pbitmap_rates)
+ {
+ 	struct host_cmd_ds_tx_rate_cfg *rate_cfg = &cmd->params.tx_rate_cfg;
+ 	struct mwifiex_rate_scope *rate_scope;
+@@ -174,34 +174,19 @@ static int mwifiex_cmd_tx_rate_cfg(struct mwifiex_private *priv,
+ 	rate_scope->type = cpu_to_le16(TLV_TYPE_RATE_SCOPE);
+ 	rate_scope->length = cpu_to_le16
+ 		(sizeof(*rate_scope) - sizeof(struct mwifiex_ie_types_header));
+-	if (pbitmap_rates != NULL) {
+-		rate_scope->hr_dsss_rate_bitmap = cpu_to_le16(pbitmap_rates[0]);
+-		rate_scope->ofdm_rate_bitmap = cpu_to_le16(pbitmap_rates[1]);
+-		for (i = 0; i < ARRAY_SIZE(rate_scope->ht_mcs_rate_bitmap); i++)
+-			rate_scope->ht_mcs_rate_bitmap[i] =
+-				cpu_to_le16(pbitmap_rates[2 + i]);
+-		if (priv->adapter->fw_api_ver == MWIFIEX_FW_V15) {
+-			for (i = 0;
+-			     i < ARRAY_SIZE(rate_scope->vht_mcs_rate_bitmap);
+-			     i++)
+-				rate_scope->vht_mcs_rate_bitmap[i] =
+-					cpu_to_le16(pbitmap_rates[10 + i]);
+-		}
+-	} else {
+-		rate_scope->hr_dsss_rate_bitmap =
+-			cpu_to_le16(priv->bitmap_rates[0]);
+-		rate_scope->ofdm_rate_bitmap =
+-			cpu_to_le16(priv->bitmap_rates[1]);
+-		for (i = 0; i < ARRAY_SIZE(rate_scope->ht_mcs_rate_bitmap); i++)
+-			rate_scope->ht_mcs_rate_bitmap[i] =
+-				cpu_to_le16(priv->bitmap_rates[2 + i]);
+-		if (priv->adapter->fw_api_ver == MWIFIEX_FW_V15) {
+-			for (i = 0;
+-			     i < ARRAY_SIZE(rate_scope->vht_mcs_rate_bitmap);
+-			     i++)
+-				rate_scope->vht_mcs_rate_bitmap[i] =
+-					cpu_to_le16(priv->bitmap_rates[10 + i]);
+-		}
++	if (!pbitmap_rates)
++		pbitmap_rates = priv->bitmap_rates;
++
++	rate_scope->hr_dsss_rate_bitmap = cpu_to_le16(pbitmap_rates[0]);
++	rate_scope->ofdm_rate_bitmap = cpu_to_le16(pbitmap_rates[1]);
++
++	for (i = 0; i < ARRAY_SIZE(rate_scope->ht_mcs_rate_bitmap); i++)
++		rate_scope->ht_mcs_rate_bitmap[i] = cpu_to_le16(pbitmap_rates[2 + i]);
++
++	if (priv->adapter->fw_api_ver == MWIFIEX_FW_V15) {
++		for (i = 0; i < ARRAY_SIZE(rate_scope->vht_mcs_rate_bitmap); i++)
++			rate_scope->vht_mcs_rate_bitmap[i] =
++				cpu_to_le16(pbitmap_rates[10 + i]);
+ 	}
+ 
+ 	rate_drop = (struct mwifiex_rate_drop_pattern *) ((u8 *) rate_scope +
 
-Changes in v2:
-- Add refence to 7bff9c974e1a in commit message of "wifi: mwifiex: drop
-  asynchronous init waiting code"
-- Add extra sentence about bss_started in "wifi: mwifiex: move common
-  settings out of switch/case"
-- Kill now unused MWIFIEX_BSS_TYPE_ANY
-- Collect reviewed-by tags from Francesco Dolcini
-- Link to v1: https://lore.kernel.org/r/20240826-mwifiex-cleanup-1-v1-0-56e6f8e056ec@pengutronix.de
-
----
-Sascha Hauer (10):
-      wifi: mwifiex: deduplicate code in mwifiex_cmd_tx_rate_cfg()
-      wifi: mwifiex: use adapter as context pointer for mwifiex_hs_activated_event()
-      wifi: mwifiex: drop unnecessary initialization
-      wifi: mwifiex: make region_code_mapping_t const
-      wifi: mwifiex: pass adapter to mwifiex_dnld_cmd_to_fw()
-      wifi: mwifiex: simplify mwifiex_setup_ht_caps()
-      wifi: mwifiex: fix indention
-      wifi: mwifiex: make locally used function static
-      wifi: mwifiex: move common settings out of switch/case
-      wifi: mwifiex: drop asynchronous init waiting code
-
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 34 ++++--------
- drivers/net/wireless/marvell/mwifiex/cfp.c      |  4 +-
- drivers/net/wireless/marvell/mwifiex/cmdevt.c   | 74 ++++++++-----------------
- drivers/net/wireless/marvell/mwifiex/init.c     | 18 ++----
- drivers/net/wireless/marvell/mwifiex/main.c     | 40 ++-----------
- drivers/net/wireless/marvell/mwifiex/main.h     | 11 +---
- drivers/net/wireless/marvell/mwifiex/sta_cmd.c  | 49 +++++-----------
- drivers/net/wireless/marvell/mwifiex/txrx.c     |  3 +-
- drivers/net/wireless/marvell/mwifiex/util.c     | 20 +------
- drivers/net/wireless/marvell/mwifiex/wmm.c      | 12 ++--
- 10 files changed, 71 insertions(+), 194 deletions(-)
----
-base-commit: 4701f33a10702d5fc577c32434eb62adde0a1ae1
-change-id: 20240826-mwifiex-cleanup-1-b5035c7faff6
-
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.5
 
 
