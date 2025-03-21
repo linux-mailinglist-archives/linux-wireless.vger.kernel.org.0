@@ -1,174 +1,144 @@
-Return-Path: <linux-wireless+bounces-20633-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20636-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24860A6B635
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 09:46:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3BB0A6B64C
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 09:51:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 756AA188D5F6
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 08:46:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34DF34A0363
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 08:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E031F0E4C;
-	Fri, 21 Mar 2025 08:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eqC3VD/5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606E11F099D;
+	Fri, 21 Mar 2025 08:50:29 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14DE1F03F0
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 08:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242CC1DDA39
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 08:50:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742546759; cv=none; b=P3qwt5FycdoCb57plzrp1PYjF3E/lsC6tdqvEuXoLTDwt5DvJopuWHRhKznNIvCFEVDjUER4DKjU4nvE74AYT4oxZqugfbJQk/UT5zQbT940HJTcgxlwL/RPREDcRQv1kjinAoWpGZYr7KvVnqxIlw+tF0K1XnWQUO6sDkm0WdQ=
+	t=1742547029; cv=none; b=iVmHJBR8UDKyePPDgx4WNL8ZoZ/RGSVwmtrn6sQrrfnIANmxKSS3/eEF/3TBeV3ZrgOApUojrTdBLk/IQmNEETmhmmD82Zxs6T1uZvnny925DWbss30NOZmdA9xYaE5kxUB9txvXiuCOIQD2y9GXWlLigB37KAYuESMW1LoXpzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742546759; c=relaxed/simple;
-	bh=udrPyoqaKdV5j32K+trKmL5O63rEsyCQimMbaLbjxTQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TS0aO305efoNEs0eKssLQqfWcpXyxtGAYu0tjWsNJD88OuCKMl5j//1w2guuQRWd1Er6QLPwd/oIdrbsYyN24k6Dfeb4iSS926yo/gRvDxLql7iIarhD6cir8zi/8fV3IZT4ztl0FLbD5MNlYcVWj4qqwbeOm9CGVYwUrkZ/D2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eqC3VD/5; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52L8jtO4013673;
-	Fri, 21 Mar 2025 08:45:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	QjUPhOlFhTPBgPKKQKhPE9sRb+heMP0c2CwVeAgTlhs=; b=eqC3VD/52+lBXJXv
-	S7Sm7wJzIf89vbI3ThlaUd0IkFsF9/GSJaLlDaDfPN4Iio5GNVrNSaU3SA4QcIsn
-	BDBnt61ZIAXxZup4/SAxQ8Pa8+JsZ9wSK5yvkQL4OnsDQ+xI172slq836LIwxxd5
-	86DaD3xXUQ1gL4LiTn3AIsKly35Wnm7ZQYf5HFNxwdmgQL5rliIBpFG4/VIjpQ+H
-	M7v/PaGMGB4owa30Kr2kAGMjfT4J3LcapgzXMcH86k6TpO8kr95wDEa4+kILSG8O
-	2OYTQdj4dGkagyOR4ABFX0da/fv41qfBac5hys6ccorwsGoop4fMNRU2doqS9PDV
-	cmUVMg==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45h4u9r07p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Mar 2025 08:45:55 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52L8jl6l021980
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Mar 2025 08:45:47 GMT
-Received: from kangyang.ap.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 21 Mar 2025 01:45:46 -0700
-From: kangyang <quic_kangyang@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
-Subject: [PATCH ath-next v12 4/4] wifi: ath12k: store and send country code to firmware after recovery
-Date: Fri, 21 Mar 2025 16:45:18 +0800
-Message-ID: <20250321084518.1619-5-quic_kangyang@quicinc.com>
-X-Mailer: git-send-email 2.34.1.windows.1
-In-Reply-To: <20250321084518.1619-1-quic_kangyang@quicinc.com>
-References: <20250321084518.1619-1-quic_kangyang@quicinc.com>
+	s=arc-20240116; t=1742547029; c=relaxed/simple;
+	bh=PEFHWePWnB6ka1iySLs6qJHLDanRHnSk8JW7XM7Ehq4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Eaz2uePBOjDbmdcXVuAjJZ1mzt7BHMPC3XBepX2jw0L/0imSjqBs3IajoWQ/ICS7iyYYnt99MPk2raim2eFhqvYb8iBe0eBhMlKkzndm+RA+R6NFzyUPJ7gd1+tqOMtW0ubHzJwQVLPsZXC96e0gcWaesTEjD592JvinGvwdZis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tvY51-0001Ln-HC; Fri, 21 Mar 2025 09:50:15 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tvY4z-000taJ-2I;
+	Fri, 21 Mar 2025 09:50:14 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tvY50-003L3W-04;
+	Fri, 21 Mar 2025 09:50:14 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH v4 00/10] mwifiex: cleanups
+Date: Fri, 21 Mar 2025 09:50:00 +0100
+Message-Id: <20250321-mwifiex-cleanup-1-v4-0-4a32b21e2553@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: k-7LMkMIUgmenk6pgefu13WO3q51e_7H
-X-Authority-Analysis: v=2.4 cv=FYE3xI+6 c=1 sm=1 tr=0 ts=67dd2743 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=d7ZbDmEs_mvt8H_whs4A:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: k-7LMkMIUgmenk6pgefu13WO3q51e_7H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-21_03,2025-03-20_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- impostorscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501 bulkscore=0
- phishscore=0 spamscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503210063
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADko3WcC/33Nyw6CMBAF0F8hXVvTBy3oyv8wLqCdwiRaSHmII
+ fy7hYUuJG5mcm8yZ2bSQUDoyDmZSYARO2x8DOkhIaYufAUUbcxEMJGyXGj6eKJDmKi5Q+GHlnJ
+ aKiaVyVzhnCbxrg3gcNrM6y3mGru+Ca/txcjX9p82csqo0qBdDixuc2nBV0MfGo/T0QJZyVF8m
+ RPP9xgRGWGZOmU8z6zcZ+SH4XHsMTIykmeFNsCsVeUPsyzLGxoXMqdFAQAA
+To: Brian Norris <briannorris@chromium.org>, 
+ Francesco Dolcini <francesco@dolcini.it>
+Cc: Johannes Berg <johannes.berg@intel.com>, linux-wireless@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, David Lin <yu-hao.lin@nxp.com>, 
+ kernel@pengutronix.de, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1742547013; l=2768;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=PEFHWePWnB6ka1iySLs6qJHLDanRHnSk8JW7XM7Ehq4=;
+ b=VQ9CwpDhw0Zv0fGWOPt4cKeBbZAKLvEyvRiLH1GNFxBmW9KFotCnbj8knC7yu7+gDSdMSrrF+
+ WngEgpbTn56DUv8J/QiOBH0QDG4d6yzWRSzho6fo9zAtUvD6AaI+7UU
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: s.hauer@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-From: Wen Gong <quic_wgong@quicinc.com>
+This contains several cleanup patches for the mwifiex driver. I dropped
+the MAC address fixing patch this time as it needs more discussion, but
+the remaining patches sent here are nearly unchanged from v1 and should
+be good to go.
 
-Currently ath12k does not send the country code to firmware after device
-recovery. As a result the country code will be the default one which
-is reported from firmware. Country code is important, so ath12k also
-need to restore it to the value which was used before recovery.
+Sascha
 
-This is only needed for platforms which support the current_cc_support
-hardware parameter.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 1 +
- drivers/net/wireless/ath/ath12k/core.h | 1 +
- drivers/net/wireless/ath/ath12k/mac.c  | 8 ++++++++
- drivers/net/wireless/ath/ath12k/reg.c  | 1 +
- 4 files changed, 11 insertions(+)
+Changes in v4:
+- rebase and test on v6.14-rc7
+- drop "wifi: mwifiex: fix MAC address handling" because needs more
+  discussion
+- Link to v3: https://lore.kernel.org/r/20241202-mwifiex-cleanup-1-v3-0-317a6ce0dd5b@pengutronix.de
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index b2b12ba10595..11c73fe45308 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1388,6 +1388,7 @@ static void ath12k_update_11d(struct work_struct *work)
- 		pdev = &ab->pdevs[i];
- 		ar = pdev->ar;
- 
-+		memcpy(&ar->alpha2, &arg.alpha2, 2);
- 		ret = ath12k_wmi_send_set_current_country_cmd(ar, &arg);
- 		if (ret)
- 			ath12k_warn(ar->ab,
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 5e27f5a3c1ae..116cf530621f 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -749,6 +749,7 @@ struct ath12k {
- 	u32 vdev_id_11d_scan;
- 	struct completion completed_11d_scan;
- 	enum ath12k_11d_state state_11d;
-+	u8 alpha2[REG_ALPHA2_LEN];
- 	bool regdom_set_by_user;
- 
- 	struct completion fw_stats_complete;
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index db60400c8276..ba9dd19b2e1d 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -10429,6 +10429,14 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
- 		ath12k_warn(ar->ab, "pdev %d successfully recovered\n",
- 			    ar->pdev->pdev_id);
- 
-+		if (ar->ab->hw_params->current_cc_support &&
-+		    ar->alpha2[0] != 0 && ar->alpha2[1] != 0) {
-+			struct wmi_set_current_country_arg arg = {};
-+
-+			memcpy(&arg.alpha2, ar->alpha2, 2);
-+			ath12k_wmi_send_set_current_country_cmd(ar, &arg);
-+		}
-+
- 		if (ab->is_reset) {
- 			recovery_count = atomic_inc_return(&ab->recovery_count);
- 
-diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wireless/ath/ath12k/reg.c
-index e6f0f563d370..893650f76fb2 100644
---- a/drivers/net/wireless/ath/ath12k/reg.c
-+++ b/drivers/net/wireless/ath/ath12k/reg.c
-@@ -85,6 +85,7 @@ ath12k_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
- 	for_each_ar(ah, ar, i) {
- 		if (ar->ab->hw_params->current_cc_support) {
- 			memcpy(&current_arg.alpha2, request->alpha2, 2);
-+			memcpy(&ar->alpha2, &current_arg.alpha2, 2);
- 			ret = ath12k_wmi_send_set_current_country_cmd(ar, &current_arg);
- 			if (ret)
- 				ath12k_warn(ar->ab,
+Changes in v3:
+- Remove Cc: stable tag from 02/12 wifi: mwifiex: fix MAC address handling
+- Add better reasons for setting the locally admistered bit in 02/12
+  wifi: mwifiex: fix MAC address handling
+- Link to v2: https://lore.kernel.org/r/20240918-mwifiex-cleanup-1-v2-0-2d0597187d3c@pengutronix.de
+
+Changes in v2:
+- Add refence to 7bff9c974e1a in commit message of "wifi: mwifiex: drop
+  asynchronous init waiting code"
+- Add extra sentence about bss_started in "wifi: mwifiex: move common
+  settings out of switch/case"
+- Kill now unused MWIFIEX_BSS_TYPE_ANY
+- Collect reviewed-by tags from Francesco Dolcini
+- Link to v1: https://lore.kernel.org/r/20240826-mwifiex-cleanup-1-v1-0-56e6f8e056ec@pengutronix.de
+
+---
+Sascha Hauer (10):
+      wifi: mwifiex: deduplicate code in mwifiex_cmd_tx_rate_cfg()
+      wifi: mwifiex: use adapter as context pointer for mwifiex_hs_activated_event()
+      wifi: mwifiex: drop unnecessary initialization
+      wifi: mwifiex: make region_code_mapping_t const
+      wifi: mwifiex: pass adapter to mwifiex_dnld_cmd_to_fw()
+      wifi: mwifiex: simplify mwifiex_setup_ht_caps()
+      wifi: mwifiex: fix indention
+      wifi: mwifiex: make locally used function static
+      wifi: mwifiex: move common settings out of switch/case
+      wifi: mwifiex: drop asynchronous init waiting code
+
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 34 ++++--------
+ drivers/net/wireless/marvell/mwifiex/cfp.c      |  4 +-
+ drivers/net/wireless/marvell/mwifiex/cmdevt.c   | 74 ++++++++-----------------
+ drivers/net/wireless/marvell/mwifiex/init.c     | 18 ++----
+ drivers/net/wireless/marvell/mwifiex/main.c     | 40 ++-----------
+ drivers/net/wireless/marvell/mwifiex/main.h     | 11 +---
+ drivers/net/wireless/marvell/mwifiex/sta_cmd.c  | 49 +++++-----------
+ drivers/net/wireless/marvell/mwifiex/txrx.c     |  3 +-
+ drivers/net/wireless/marvell/mwifiex/util.c     | 20 +------
+ drivers/net/wireless/marvell/mwifiex/wmm.c      | 12 ++--
+ 10 files changed, 71 insertions(+), 194 deletions(-)
+---
+base-commit: 4701f33a10702d5fc577c32434eb62adde0a1ae1
+change-id: 20240826-mwifiex-cleanup-1-b5035c7faff6
+
+Best regards,
 -- 
-2.34.1
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
