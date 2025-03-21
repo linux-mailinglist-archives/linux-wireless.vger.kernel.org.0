@@ -1,147 +1,151 @@
-Return-Path: <linux-wireless+bounces-20679-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20680-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75E0A6BFEB
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 17:31:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE84CA6C00C
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 17:37:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AAE117F1C7
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 16:31:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9E3A7A932A
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 16:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4112F1E5B68;
-	Fri, 21 Mar 2025 16:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA2422AE75;
+	Fri, 21 Mar 2025 16:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LpQ8sILj"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sQDh2FHd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06CC22D4D8
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 16:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236A522B8C4
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 16:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742574680; cv=none; b=m56vDVPDasYdP3NnuKVQf/tkXl+pdLpk1QOP+o3/OJhDxnk7nZm7XYUMQoN889fsLSH7alCwusQMYT9lPy3cokk48JznqzEgkLy0zbh2U4Jg7tTqqhOlmya8Tp8gv4V0fWBpXyY0Bd6lW0iRiSKq7WCvJNKml9RU7RmlW72AVPM=
+	t=1742575011; cv=none; b=TwC15uGrkdNw7KW7hcxceKNsF1rNb0WNE9d2KFT45VNJtwy8PWT4yli9M2krCIOqLt8KvAGgtH5D3NSV6mnVTMHrXs+qX1ugi5pfwCUmVFeRFGiZeZngPcMQ9+yjZk4O7KQk7+2tmGAuyXkYvWPhJfFLxmgcdtzw7bf5MBmvdhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742574680; c=relaxed/simple;
-	bh=zojdPWtEGUjvrbgAMqva/TKdcj3Cxw4XjqxiaqiNiiM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YZs7FhnHaNByjry9QjJsjT9DnOPN4lh0Qqtul1GktLPXlwRYF2pBzwFkrxferpSOD6qerPvJMl7QnKruAIeC0PV3SMDfHZ29+hyCW69ccY8kuCDkmaPLt/ecDYIgPLt/nbrr6z5kdy57bFEYE2e7oiRWorzjrVRJtteUyx25lH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LpQ8sILj; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52LATEuu011531
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 16:31:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	UQ+EQ5JGQ/p3NSEWSaxtIU/HftXFPwlWY/6AZof8vvA=; b=LpQ8sILjllXrzXkB
-	Ycfm98+ptIVH8dh0c5/x0khSiWKpeKQOftDjH1Sc2QVdINtGmdt02zndLn6KtTKj
-	bsCwXjVIqM8Pny+qYwZGc1+UixIP7cw4WA+nEIvcfFUWBMKBNPZy15KVtfrm5krY
-	jgXBW78KyDPMj1OjZuyuTcFOOxbr6C+Rqar+Lh8gCBMcjuupv42jFCaVLY9S4fmD
-	/KMtgJiImCu1xE+qFa70ZIT77TQxWl+153rgLDYo5hh27l/XVkgy0+2H32uyW7xQ
-	qc9TwaNKzebqs2l36TmE74LmqpzRICRl9pR5kI9CNfZsBh8TvedTSy58dmxzftiE
-	tcIKBg==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45g15y7257-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 16:31:17 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2ff82dd6de0so2901232a91.0
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 09:31:17 -0700 (PDT)
+	s=arc-20240116; t=1742575011; c=relaxed/simple;
+	bh=EYXvUxlOmseeifJZO5lf+exAGIwHnoh8eUMozDOfeNs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nj3IMQKxE3ZB5ZQt/L1iWAMXpziXTZoXLsbO5jcb5Olzq6XcYP7IiuNabUzhkay3bj+lNJQWZBbH8Dd/6hyU1TsQRWCyx5JUdvMlHxpzaY7YHzFiVgItJIGZrvZaXGhzkjMhqp+bc8+Z5wZNciOJKCfxyxeX88KXIcjL2nLH3dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sQDh2FHd; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3965c995151so1175583f8f.1
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 09:36:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742575007; x=1743179807; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5dfJ83Y79NwDQ+8qNzxM+p5WkOeUg86p4gkdxrYkNv4=;
+        b=sQDh2FHdP1ifr+hdjjuM9zb3UOf2lzxVRZCMxlPXwICKwVkXF5ByDKUUpo2NO+xsa7
+         rHT3koL2aeIK96CpVBS5u53o7hsXSZvTs/O41DuuQpbHdseDfiQmYBgUci4c4n3nyEI3
+         56C0yjvCtML7NVVUNvu67hsdK5xgb+MLl0cg2paN6lsmFLjyuv4XXAon2DoeVexv0AH4
+         FfI5q4srAwJnjqgnIvc+xlMrgiL6QxA4hbvRJxYEqe8tVuiqv5OPYS7j/XSQP5XmZTTs
+         pV3//M6X6skmM/G094GIVDpl5UUIa/4DGgHIQtqwHTE3lUveBRM7Ob7136u6bUpWU1Ca
+         nIzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742574676; x=1743179476;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UQ+EQ5JGQ/p3NSEWSaxtIU/HftXFPwlWY/6AZof8vvA=;
-        b=To9JZwblvNG04z1DCV8AVWGP1gk4iGVnYenFHn0/UrU9X9YAizkemuhEcrpMzLxhA9
-         4PL8GuoVy9LWqhpTaYSjq7rYr1s1qDP2vVecbQz/aUYAijDDKYYNVJPnsKgCVoXuc6Ll
-         ZLXr84c+V/VExoDBZWec6/7cYY5NPhc9EvmljHHqIiNPK0jvUEYpFRy0nnfrjp3xyP2o
-         Akr9Yn83AQod3a001mTf54ddBfGiJ4WRQuwFXzbIa/tOgVmyCcJyJ9qwuBVWbWDMPXNz
-         rTFqRrzf3XUHaZ7VeY1vLSSmcyQd3gW0eAEk4gkGMAQn30FOnXe/kDeMeUMeqAZdescM
-         h2DQ==
-X-Gm-Message-State: AOJu0YxPrgvU1qBQ7TaDBQJzx8g41kFpKjY5uU/VMY5+WV1LwbB/tBTV
-	MO9ouusuzDBglCHT4JtlYXG3aNkUSf/zXXdUZvM2hHxKXOibRKUSbhIKqjy20NgPOWEzCzbh1KN
-	e2OkxSzbhDttCYaKZ2DmggCQv1SW7pfB3El6gCdIezUB5jVriRAedaifjbs9MVzdwBw==
-X-Gm-Gg: ASbGncunKtnSxmMerPU7syqyey6SAnbESGGotAijKSaMRD9iSSbK9X/Lbn9NPIjyUVJ
-	PNE98kMmcvqnbq5WPsdvywM/4gv2SbwNV39e3ZdeyxXKS4YoqXdHjPW0TD7s4KJ0MRO+W4ebQrw
-	aPx1dfl1WluKEAtHzJx25bPJ1w0/+odoHMJ4dQ4Iu5IxGDy2ZO3TGQRdl3pEFtVQNIHtzI8w1y1
-	WiFMyG0/6RWADefQObZJlZVhHRojIAEN4M2u7zV4Fjr8Oyj8f0YilIWH20d6XZ31ojB3andChUd
-	Nis02Fah9cdAYeR2aIhpc7BrPXzC2cNzfBuZBNxsdQZfOG+m/FSIilpy1uBGxaxKQNq4I7nqzRK
-	Gz3N2vAsk
-X-Received: by 2002:a05:6a20:d81b:b0:1f5:93cd:59b5 with SMTP id adf61e73a8af0-1fe43327edbmr7689396637.28.1742574675870;
-        Fri, 21 Mar 2025 09:31:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHiuQMISl1eN9RX+Es821Eblup8CDwjYoGKpMH5CGlq8b1HHOajXsiimxB0ELiPyxoSm0dayA==
-X-Received: by 2002:a05:6a20:d81b:b0:1f5:93cd:59b5 with SMTP id adf61e73a8af0-1fe43327edbmr7689338637.28.1742574675301;
-        Fri, 21 Mar 2025 09:31:15 -0700 (PDT)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af8a2a4d016sm1690127a12.69.2025.03.21.09.31.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Mar 2025 09:31:14 -0700 (PDT)
-Message-ID: <89db5e91-2162-4724-bdf1-238f84bca8a6@oss.qualcomm.com>
-Date: Fri, 21 Mar 2025 09:31:13 -0700
+        d=1e100.net; s=20230601; t=1742575007; x=1743179807;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5dfJ83Y79NwDQ+8qNzxM+p5WkOeUg86p4gkdxrYkNv4=;
+        b=sq36paXmcb5FbYTTZrontrEhXEu5/AUUnRuHX0aobrDYQi2flk3Cewzt7K1Uso0mSL
+         K9nKVl1h7hcSlVsK7cR7PSiJrCp50qAy4spueTyR3vcozVshS1PIzB8SgHL0uCgHQJSH
+         1nJbzB/hIejoa2spJaNt3bcn5kLOhZY9zxabYFVFtezEGowG1FW21Hzr0E9TJ2Q3CJ5W
+         lD+GDYqLnQFH+VYeOSPCn/c7U0VNc+1zysblyewmAv2780ilDvRrCroJjt5KUNsWJdlZ
+         6EKTvdedqIvQQT2+xAlej9mLwOp5Pt2ripFk0k+7PgAEM2g0c8EPCLHsXRZwK8+o8nMp
+         ojpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWQNiumxhs6Qr2PSeTV8BQYWyaD9agzho+YQ8mMj/RIACZrZbu4AiY+sEUTU+u5AxE8MhCzCjjf23dBWcAE8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxi1nVSHpu87ZJ12+Z+wEOLBoatW0ud7IOGLxW4k5iNek9yW8+5
+	Td1PhZWQSsVUckxXKDEuxirPIdO3lSDQU397D9AEZR2wdKcn9vN/yKozRfHEWtU=
+X-Gm-Gg: ASbGncuogDREID53vWplk0X/gGypGwT7vbCoLEopRXY1UpCL1tjvjwrdvswmzo0+SyP
+	VfOhOyEuTKqasmgPXG/LhM8sRGFnapTH5VYX+LH49VVhEKdEEhN54zS5ZPpRd61y89n+b+Zsux6
+	Bxzw5avCCK59u6w8dHgnxkX07gX0MXxNvmcjg1cUHLhwEmHblhmolwR0dABATnEjMyLFw8rzsq8
+	kCYdx3p2mKlox418CBvTv6nXTlv6zb8qBXM7Mg9QN5S6IkiTRbJ1R+XqlniwT2ZG/jODIMIL5VB
+	5rPFiylMMlc1okuAeRZcz9DpgmxO8EaSizHatFABX23ABS6RTQ==
+X-Google-Smtp-Source: AGHT+IH1Gh+yAviT4FQBLCA4J0rbTJcI0EGBOTqg0d19KW+FNDv9FqBQEn8luqW5P6A+FmDu+T7bTA==
+X-Received: by 2002:a5d:6485:0:b0:391:4231:414 with SMTP id ffacd0b85a97d-3997f9397e6mr4352017f8f.40.1742575007313;
+        Fri, 21 Mar 2025 09:36:47 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-43d440eda26sm82421375e9.36.2025.03.21.09.36.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Mar 2025 09:36:46 -0700 (PDT)
+Date: Fri, 21 Mar 2025 19:36:44 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Qasim Ijaz <qasdev00@gmail.com>
+Cc: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com, sean.wang@mediatek.com,
+	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+	chui-hao.chiu@mediatek.com, Bo.Jiao@mediatek.com,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] wifi: mt76: mt7996: prevent uninit return in
+ mt7996_mac_sta_add_links
+Message-ID: <46a714fb-8a14-4d24-a0a6-a22cc9d45768@stanley.mountain>
+References: <20250320201914.48159-1-qasdev00@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next] wifi: ath12k: don't put ieee80211_chanctx_conf
- struct in ath12k_link_vif
-To: Baochen Qiang <quic_bqiang@quicinc.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-References: <20250321-ath12k-dont-put-chanctx-in-arvif-v1-1-c8e93061952b@quicinc.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20250321-ath12k-dont-put-chanctx-in-arvif-v1-1-c8e93061952b@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: fLL23puLyq5_1dwPMZYJT-6UxjwdeNh6
-X-Proofpoint-ORIG-GUID: fLL23puLyq5_1dwPMZYJT-6UxjwdeNh6
-X-Authority-Analysis: v=2.4 cv=VaD3PEp9 c=1 sm=1 tr=0 ts=67dd9455 cx=c_pps a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=bC-a23v3AAAA:8 a=VwQbUJbxAAAA:8 a=uvMg_fejPkrpZwH_nmEA:9 a=QEXdDO2ut3YA:10
- a=-FEs8UIgK8oA:10 a=uKXjsCUrEbL0IQVhDsJ9:22 a=FO4_E8m0qiDe52t0p3_H:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-21_05,2025-03-21_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- bulkscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=908 phishscore=0
- spamscore=0 priorityscore=1501 suspectscore=0 mlxscore=0 malwarescore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503210121
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250320201914.48159-1-qasdev00@gmail.com>
 
-On 3/20/2025 6:45 PM, Baochen Qiang wrote:
-> ieee80211_chanctx_conf struct is not put at the end of ath12k_link_vif.
-> Note ieee80211_chanctx_conf has flexible array member inside it, causing
-> below warning with GCC-14:
+On Thu, Mar 20, 2025 at 08:19:14PM +0000, Qasim Ijaz wrote:
+> If link_conf_dereference_protected() or mt7996_vif_link() 
+> or link_sta_dereference_protected() fail the code jumps to
+> the error_unlink label and returns ret which is uninitialised.
 > 
-> drivers/net/wireless/ath/ath12k/core.h:298:39: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> Fix this by setting err before jumping to error_unlink.
 > 
-> Although there is no issue for now since the array is not getting used,
-> this should be fixed to avoid any potential data corruption issue in the
-> future.
+> Fixes: c7e4fc362443 ("wifi: mt76: mt7996: Update mt7996_mcu_add_sta to MLO support")
+> Fixes: dd82a9e02c05 ("wifi: mt76: mt7996: Rely on mt7996_sta_link in sta_add/sta_remove callbacks")
+> Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7996/main.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
 > 
-> Remove this struct from ath12k_link_vif, fetch it from ieee80211_bss_conf
-> instead when needed.
-> 
-> This change only applies to WCN7850, and should has no impact on other
-> chipsets.
-> 
-> This is an alternative to the solution proposed in [1].
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Reported-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Link: https://msgid.link/Z8-Snz86Xfwdlyd7@kspp # [1]
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+> index 91c64e3a0860..78f7f1fc867e 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+> @@ -998,16 +998,22 @@ mt7996_mac_sta_add_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+>  			continue;
 
-I'll change this to Closes: in pending to address checkpatch:
-WARNING:BAD_REPORTED_BY_LINK: Reported-by: should be immediately followed by Closes: with a URL to the report
+What about if the list is empty or we hit this continue on every link?
 
+regards,
+dan carpenter
+
+>  
+>  		link_conf = link_conf_dereference_protected(vif, link_id);
+> -		if (!link_conf)
+> +		if (!link_conf) {
+> +			err = -EINVAL;
+>  			goto error_unlink;
+> +		}
+>  
+>  		link = mt7996_vif_link(dev, vif, link_id);
+> -		if (!link)
+> +		if (!link) {
+> +			err = -EINVAL;
+>  			goto error_unlink;
+> +		}
+>  
+>  		link_sta = link_sta_dereference_protected(sta, link_id);
+> -		if (!link_sta)
+> +		if (!link_sta) {
+> +			err = -EINVAL
+>  			goto error_unlink;
+> +		}
+>  
+>  		err = mt7996_mac_sta_init_link(dev, link_conf, link_sta, link,
+>  					       link_id);
+> -- 
+> 2.39.5
+> 
 
