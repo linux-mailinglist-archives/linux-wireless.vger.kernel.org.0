@@ -1,92 +1,92 @@
-Return-Path: <linux-wireless+bounces-20671-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20672-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853B5A6BD1D
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 15:37:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C9CA6BD22
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 15:37:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55F133B982A
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 14:35:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E18A3BAE69
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Mar 2025 14:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7061DFF7;
-	Fri, 21 Mar 2025 14:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6401DACB1;
+	Fri, 21 Mar 2025 14:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aAAaP09q"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yRwH971U"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DB31D798E
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 14:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621BC1D86F2
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 14:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742567742; cv=none; b=O4uWibMjmXWMWC7zpPtL8+/uGqZGkQN9S4o1cq14LgRz6CmCNuzR34x3wWb0OZ8DKanYKWCiw+D5PtyknEcqEpctLmSDUoIeC02sD54pmxueuxASniWP0WXEQQgBvIJgWXSgvh+LICjMGtOd1FmD6zFmwUA4fUX13EpA8A7fJtE=
+	t=1742567746; cv=none; b=RZerijH7wq+LgJ4rOT80jk+J9T9sYQKo3CEOpRM/ZpUccDTDioZ4GglRbOpxm43uA88ldB9BTOCVK1bKiMxfNFQiDiFq4T6RPytVn32CQSV4WWO4xo0Z3YdSMFYGDIZj2FvOgBzx7G46aTs0TDup97WJw/CQvgDca8LDz8raDB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742567742; c=relaxed/simple;
-	bh=2fWMldJmgwMUu39tdUGRd4PbG+rFiQ2bc0jCTZUfh8Q=;
+	s=arc-20240116; t=1742567746; c=relaxed/simple;
+	bh=unOxx1FBF35f82m52qxSk7k7s5uAwciJ4IP8upP94sU=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=CLOQUkRyO1mUPUsYwe8i/xl5SliNTV8bPYBN/4v3mpC8cT87VK5ibkICgAuNwDCO3daxyGJQ6+fKAvI3XoJ0VRK5qSUC3KzWV7AhTQ0Wiyvdcs57B5gG1AEbzJnsAVuIQ6lX+WBvr48CXvPVJkV5tk13hIvJiv7PSCWpfMG+UFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aAAaP09q; arc=none smtp.client-ip=209.85.221.46
+	 Content-Disposition; b=IxfbG6XUW1U/XtCbbWEJX34ixUzJyjZN1VDHD2qCL1HjrACs+HLRU80pF490ApWVnhucOATJehyclnGo7Uma3bvbm44Li28hQu6p+3ualgA/U3AAE0CnIgy3D5LBN+A2GlnexSmmqRdsJ1igHtNr8jvASbZvOLxgVrWj6+6t6Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yRwH971U; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3996af42857so2085091f8f.0
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 07:35:40 -0700 (PDT)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3912e96c8e8so1264799f8f.2
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Mar 2025 07:35:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742567739; x=1743172539; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1742567743; x=1743172543; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=3PPRppdrVJ7KjI6wixZGEvPAU+S5utOovE0gqiXmI0c=;
-        b=aAAaP09qNuJblyS4TtpIdwnKa8aYrpNyeRhPqWeeQSFO1f1eE5c3k14Jfel0LkSBt6
-         nnHwpvKWEjjnlv/FrgIIssRMLWtVqaesxqr3QGq2scm76uwOzd5Mimg3A3tXp7KUFheg
-         /IxbIZrjbJ3fFFND1LK9ItekDVG9YLnDNxCDFpmj/Wf7nfj5+X3Dl+66kdXpblOoMVuE
-         2cDroYA/mKt+8c8nvYo/+7Z5cYjSoJPDEoqCw4/G7VCK0vfMXHOUncYJ2yfNmagirg9M
-         JhpNhJVr64SWvBeCMiIOiLbxwunGI0E4Mc0eDThYfIT+TLk+P1xB23RnJrxPT7hO0JcQ
-         nuxg==
+        bh=ReU01VkkdQwGejdvSqZN3T6tHm1DJDLTnc3Lm0Bnfgg=;
+        b=yRwH971Uj/aI2r211Naevx8knD2GRJvk1ZMlqlmq4RJrnEG5J0ZmcT2AN5ZTxWxzfB
+         9mZajiJVgxgS4FhHnQg/VM9E14qwFLtWNjRWuM0T5x6PftQgzjNE8vEdPvgL23QZ2Bif
+         RN+mmLkTdwQ7h9vlS5SUF18H+rWTxrSd8iCyKF0yPFK1j6UASVmLsRzoFIguSZBxLdBu
+         mrLZMJ7vVvefvJtc77P7idyWYHjAC7FnrPIqeJ+YhsBtprw/0I/ut7+rioSb+dS6hV1g
+         QMq27HndM1vw01XJEIstNt8xA3csvpt0kPF67kXrDdrF6hbDwTE2pKz8gfLDd0eeKoN5
+         BLHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742567739; x=1743172539;
+        d=1e100.net; s=20230601; t=1742567743; x=1743172543;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3PPRppdrVJ7KjI6wixZGEvPAU+S5utOovE0gqiXmI0c=;
-        b=gjl3BNH8pwPfrboEENbIVy6A9HOlZ7n9W61ixTEyVauxHGBhk0T+dvombykboOrlUO
-         3wq5eDQoc1ZIbv1cRMfXLuqFtoNZKU2CUUHE4L9wpmKD5JUCQEqTIIvCgXWM7EzPNtCc
-         z+Nvkp1ec1YDuLQE5+AnGyjwOjMf7eidbbp+PtVnaVGYiJesMqLaHSHXSRizRmUerGsr
-         Sa0gDmVzX0iruAgJyVtloK2RPkZ8N6zwGbwHlzQJDB9B79oezvQYubD63wtHRzh4fwwM
-         cWYH1qfOFnxSEB4hqZ0kG/z83vmimT1VduSY4P5nKFctuhLxmuzwTDuLCFcxudk8H6Ya
-         hpkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV7ly3W01fwen/k69t8CCb3R5E5nFl0yEGolJAcUfGHbq4RJ23Fr0SmSmiT20pjCFycioomJh1k7o+fbrLp1Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsMWl+6SGcy7yEGCg3byG7BvQVLrzTB2cRPs48DhhlJmzW6v4w
-	DYWKSJcs0jEyepUmBiEQ18yUKvzj/q0Q9fDXd+14S3kt6MafLe2QuKTyfGB9Xfo=
-X-Gm-Gg: ASbGncuMD4BPIPrPQSQNJralT/6A9sTj+uiJeCKDzYmD5bgKczMGHwiU1Anhwnb4Y9e
-	C/3+T2OISm4n64b6F0hRKtgKmxFQ6A9GsB5NKtO2AfhVj94gifzzNpWmO14RuIiy5G7auv0iIGm
-	2cgYYorT7S+fGdyfW3XUpRNTyEcqLuiPfJf266YBC6qkpkTO0vmtxZWWitQ4JkktsmrAmGKzquv
-	DrPkD+NZ/n2o5jLMX5OVj6xhr+4UBK0z1kXONMAQPdQYzROJtM+skjmPm6Z+YblEzYmLm8hq1ik
-	tx+1vw8Dn5rNbNioAHZMeKA9JVPc2PYG82GkV4gJIBVtgXRdRg==
-X-Google-Smtp-Source: AGHT+IF2afE+amq9nc4FEedeUCaZRhGRjLvVfJvTuEgevNOAdUUfdZR/acRzOI2V9GG7bPnUNFsa8Q==
-X-Received: by 2002:a05:6000:1fa9:b0:390:e9ee:f27a with SMTP id ffacd0b85a97d-3997f93e053mr3439159f8f.28.1742567738601;
-        Fri, 21 Mar 2025 07:35:38 -0700 (PDT)
+        bh=ReU01VkkdQwGejdvSqZN3T6tHm1DJDLTnc3Lm0Bnfgg=;
+        b=DvMGSnsCZSfpCDlCNzaxVPbxhUB8QaDfAqsVptN7LYTcJlj3SMyfeu82eMR+TlIiBT
+         +7fljtQ7HGwLMVNJ1rC3sP4iifvuTrbnYvhTD0i3sduewom7YXNJQBt7T4CNcqAr3wTH
+         LT+WYk83xeDefDIz2fwOnj28QBbU3WM85DJZhFF3ZDeszUp3FeXVd2rjChniDR6FtdLH
+         IFZ1Wc2S0Vwg5O2qpA4NxBshexHCvo1PoQ5al1+cN5MQM/zuZEcfCKtdRhS3gREiZq7/
+         2Jiwh991pyCQl3Zcub3R5hgJ7dbjiuaRtvqfBuOi4JVV0TGKyx3RDoHOwk0nrC4wjVFC
+         7Wtg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0O85q1BTVT5YCbGraQcQP6JBbmTinL+GGu+Wo9N2SzZZWKNyfUxLWqjXT1C2MMvFSjN0W/f4eckk8QLef0Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT4zFgjqdoV7W1iMgHyPGAFoZdyvhEXkoGesg8cqCV+Mk39u7Q
+	miemBH7xDXfIafG+i/vA8YvY2btfP93df1chrccZAna9sSoVeCz5t4VVKjLFLkw=
+X-Gm-Gg: ASbGncvFAdeeg9RkeC9URX78R2k3DEydM1D7yPyoFlkT2YCg47eICoH8frRZBpAVx9H
+	jq6W3mjyOmlBf9DwdU9s9Qyf/mAmWRai83m0TqtNP1ku1y7Uz9Gd97SRE63g1jfHyuXZb36vQBX
+	UHN0hRELuon/MxM62zWvt7TfyI2UaonynKzjSWF77gPwFp311e+Ya3ExCiQ7mMvSo0n3csoju4F
+	JAyXw7rElvIb96tPixuq9HP1VRgQsdTKDkkjpXeRFVzD1yFNauL/h7GIlbYJ+pvtIz1U53r/SCt
+	QpYhs58e6p/vGuwYYn+oPned7aIawjcoP7b3k1fPlWF755tFhQ==
+X-Google-Smtp-Source: AGHT+IGhlqCe2mLQ6QE1+jNsut/3HpyriKLoQPJNlU/O0xCCy9UTKeLE9FjCB0uErwEBPN5BJ/Tizg==
+X-Received: by 2002:a5d:5f8c:0:b0:390:e7c1:59d3 with SMTP id ffacd0b85a97d-3997f8ee934mr2979865f8f.2.1742567742643;
+        Fri, 21 Mar 2025 07:35:42 -0700 (PDT)
 Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3997f9b26a6sm2493540f8f.44.2025.03.21.07.35.37
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3997f9957aasm2571305f8f.10.2025.03.21.07.35.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 07:35:38 -0700 (PDT)
-Date: Fri, 21 Mar 2025 17:35:35 +0300
+        Fri, 21 Mar 2025 07:35:42 -0700 (PDT)
+Date: Fri, 21 Mar 2025 17:35:40 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Shayne Chen <shayne.chen@mediatek.com>
+To: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
 	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
 	Sean Wang <sean.wang@mediatek.com>,
 	Matthias Brugger <matthias.bgg@gmail.com>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Bo Jiao <Bo.Jiao@mediatek.com>,
-	Howard Hsu <howard-yh.hsu@mediatek.com>,
+	Quan Zhou <quan.zhou@mediatek.com>,
+	Hao Zhang <hao.zhang@mediatek.com>,
+	Allan Wang <allan.wang@mediatek.com>,
 	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] wifi: mt76: mt7996: remove duplicate check in
- mt7996_mcu_sta_mld_setup_tlv()
-Message-ID: <fde7246b-08a2-4c2f-b2dc-c3fd0e6b300b@stanley.mountain>
+Subject: [PATCH next] wifi: mt76: mt7925: Fix logical vs bitwise typo
+Message-ID: <d323a443-4e81-4064-8563-b62274b53ef4@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -97,27 +97,27 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 
-The "msta_link" pointer has two NULL checks.  Delete the second check.
+This was supposed to be & instead of &&.
 
+Fixes: f0317215b367 ("wifi: mt76: mt7925: add EHT control support based on the CLC data")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index ddd555942c73..03539e20f5c5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2242,9 +2242,6 @@ mt7996_mcu_sta_mld_setup_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
- 		if (!link)
- 			continue;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+index 63cb08f4d87c..79639be0d29a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+@@ -89,7 +89,7 @@ void mt7925_regd_be_ctrl(struct mt792x_dev *dev, u8 *alpha2)
+ 		}
  
--		if (!msta_link)
--			continue;
--
- 		mld_setup_link->wcid = cpu_to_le16(msta_link->wcid.idx);
- 		mld_setup_link->bss_idx = link->mt76.idx;
- 		mld_setup_link++;
+ 		/* Check the last one */
+-		if (rule->flag && BIT(0))
++		if (rule->flag & BIT(0))
+ 			break;
+ 
+ 		pos += sizeof(*rule);
 -- 
 2.47.2
 
