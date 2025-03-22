@@ -1,132 +1,134 @@
-Return-Path: <linux-wireless+bounces-20700-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20701-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA4FA6CA85
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Mar 2025 15:19:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC992A6CB1A
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Mar 2025 16:05:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A02CD4811FF
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Mar 2025 14:19:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91F878A561F
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Mar 2025 14:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053B01D5CD4;
-	Sat, 22 Mar 2025 14:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81971DBB2E;
+	Sat, 22 Mar 2025 14:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MaAOGJnR"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="V/yAGRGD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49727BE5E;
-	Sat, 22 Mar 2025 14:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41BEB640;
+	Sat, 22 Mar 2025 14:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742653168; cv=none; b=MOAD1HbgLRwC5KhIC2s8CTr4Nkn1odawr7nLe+3JJT4m/uODnEMeRihqazRXQIDUJmTUxBrQRLBx/x8ZDlc5VaVZ2yMcvVScd30lBTZ0YpeaP1UwbRUk6bDxlwKdCwWVbCBcXvlulKj4Qb6vplnz6tRjB9nxfJ+dHs9drY46++k=
+	t=1742655383; cv=none; b=QB6vjXxcSn3GCxocinGqUS8WrsS5ldCs+1qvGDq3g9dfFhTY+72d12QUyoxShWdJYwzfqtLq87rr5yOOaiM79y9BOSUcEgq/NbrRzFw+PMf3f0pwvuRabTAqu28GuV6IH0BroejCGFwI3Ed3Q7qeFH+79F8Oi1rUNJTkt0iSrg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742653168; c=relaxed/simple;
-	bh=e7A5gAVyAWGlOLtYk66PZB1lgKiQZfDK5xM+JvmHXDg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m7k8wijWVPujClI7O8S1OMNS8v191RCQTvtblpHWhZ49Q5hqiMZkYrxerU8SL22W32tDWtDSy61jrksrLZeEDP4gZAAOzQk1m24GxWtG7FCODyDwUnzxhnVj2NsL7406zqOWzsIrKBAWfjlhjshgUmx+X4BJVtxlZ/ZqmGr1R5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MaAOGJnR; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cf628cb14so25618405e9.1;
-        Sat, 22 Mar 2025 07:19:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742653165; x=1743257965; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aF+lshiTJwsEbYCiQIvW3LTB1kytaT25WY+mnoTd02w=;
-        b=MaAOGJnR9aoomyKDyANoAxKaMo3eBALd7vVSTo4HmHn8RHSz2wzJQ+uKKYUm0G31HE
-         Q30br9P2dB9HZkV6g7RYo6OH5XpK1fEdpivgywfPQ54BfI5iR7XdjXfVko9+TB9ra+60
-         mf6/4WRMYiavxY/WTqXTS84az84ftq9x1tiTvCfYRxTH4oBUGvA1PKv8elpGBvQ6UPha
-         ntU59RpdZiKRU0XzKFF7j0PoAZpcah/+XVzoKwWf8y5V9G9k60kqHQhyrEQsovQubzeL
-         SJ+9eICpinv4PE67ZB0liwe2NwsKu8BPbx+nSTAXww6lJhE7jxWH+QnNZ9Fu6o+jICAz
-         d6gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742653165; x=1743257965;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aF+lshiTJwsEbYCiQIvW3LTB1kytaT25WY+mnoTd02w=;
-        b=sGx3hDHJQHvWvcvGSX810qtf+RBx/Hm/J4E1iVvSqwMX6I5K+eYpUVSUYS2+rhXOpp
-         jCXa5ZwvG1eqI3itgIj3+L/XKnP2Zka2VrljyL8N46b3ALtInEfI19MF3HZoJnpWIpv+
-         38kecjZnjGvk7Jgat4pg6k2yd2wIzXuRGvXR/+1F2CRtfK5M0aS3bXIm3YrBw9DTDHAI
-         guUbrxfxBwPnJex9qgPoyNt50CPSQfsiyr4T0DKPJUk94SEYRD8ZYMk/v13tV0vWN8Ax
-         tVXc5UkS+iaFnRDHS75bjb6XfYLWaTJba8j1War6q5sy8JirYbw729bnN/90A8qGm6jY
-         NoNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWsORsPlRdGWrXFC9l2HXzJDZLFD978jp7nSEMfB3mPKXpJy/JkUtvVEKoiuVZIzP2dldAKaxZKQwf2K5g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGogGNisqMzMTymJrCJckQfxGNhznL7kVJoDgTJhf7MkOFsuGm
-	5ZiHXJq8DZgLoM6U2PNQfJYM6Y5YL5MCGzrlJXtl6s/BILSWdhSw
-X-Gm-Gg: ASbGncvaMdCTez+LMM6ZvtdkFGjBZKO0KucqUwDhVf0KqUB9sJ8r5qFjakkSTwffUZs
-	Z+Qy/pKfJ06cmu6VX9oKhBn2bIwIQLSlRYJ0t0nLn69YEToF11olcgDc4xRrRLx3OyTlWzNN1ip
-	dYcWbDs6peRygwSok9XEF8ApTRu39OFo413xTKSm6hmcdoxUD+qKKEmWYwfpmCES33uLaIzevII
-	wKat8PO394sZGrN6ZnWxNBK69awnDkpAX4+en0UFC9/Cy9y/fBoAe3dSgH3/5fQSHGKxli8W8Av
-	2CJSYvB540L+bX/s9FVXquabtkDosM3BG41daLZwxNSc8z5VuatxIw6/
-X-Google-Smtp-Source: AGHT+IESFJJXx1OaHEDpiDrDpp/1v/90T162quMXGMiu0ErBsYhKB7IcQbevvYKVQEpCP+boy7enFQ==
-X-Received: by 2002:a5d:5989:0:b0:38a:4184:14ec with SMTP id ffacd0b85a97d-3997f8f7526mr6944813f8f.1.1742653165247;
-        Sat, 22 Mar 2025 07:19:25 -0700 (PDT)
-Received: from qasdev.Home ([2a02:c7c:6696:8300:c9a5:205c:4c36:bde4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9e6550sm5233487f8f.78.2025.03.22.07.19.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Mar 2025 07:19:24 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	chui-hao.chiu@mediatek.com,
-	Bo.Jiao@mediatek.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH] wifi: mt76: mt7996: avoid potential null deref in mt7996_get_et_stats()
-Date: Sat, 22 Mar 2025 14:19:10 +0000
-Message-Id: <20250322141910.4461-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1742655383; c=relaxed/simple;
+	bh=DqbaqiAFjI32cAkVWe/Rd7LM7v2AnsiJh+5WJN5GkCc=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=j3TxjNXWFTK7akWdVUJJVFyB5sXc0d71IAEobuOrXuRGAK8B9gGpCt3qRuMWf5aIht8a0mTQYL/zFHmT1Sgcxy18Z/ZPhoypWQTEkk1GZfJe51wupS0qy5AsEow98WDG8jd4tnqnSjr+tM07pIR6or0fAEkAxSrVNbo3Pv/0kdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=V/yAGRGD; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1742655351; x=1743260151; i=markus.elfring@web.de;
+	bh=KR1XGA5UlrZYB/EE75mcNea8LxdNsuvuyP1JLzY93YI=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=V/yAGRGDhlKct8VpACB6OwOKrXpExfRBs1IQg81eh5OKGLSyvTZzGq/Tjmjmm/xc
+	 aSWwUUFw+g+lJxV2SOEaCKL/ee5egi5HRmGkkzfxH8t5MLuO1qhXY7mtzcwvZczs3
+	 kiC1+n3qvhdXykumd1NPIx+7esq4idCz85Dw0PNBXrUuFBHlYIuuqBcRX1Wj2gvrn
+	 aQQ/AiW+hJeyXmXcwHqMZfTZD28SNGVUGL1etrS39k26TxnUkvqJ/MiFL+GDZ5+Mf
+	 Dp/YG+j/wWpSL/q11JgR4ayuNm40iIm7niFBepqv2k1WVnQABRuHTGvoXAN2pNUZJ
+	 /O4bK9eRevpv9iwZJw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.73]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1M59nK-1tutnf1ug0-001Qbn; Sat, 22
+ Mar 2025 15:55:51 +0100
+Message-ID: <d1df5d97-4691-40d4-a6cc-416505f35164@web.de>
+Date: Sat, 22 Mar 2025 15:55:49 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Qasim Ijaz <qasdev00@gmail.com>, linux-wireless@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Bo Jiao <bo.jiao@mediatek.com>, Dan Carpenter <dan.carpenter@linaro.org>,
+ Felix Fietkau <nbd@nbd.name>, Johannes Berg <johannes@sipsolutions.net>,
+ Lorenzo Bianconi <lorenzo@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Peter Chiu <chui-hao.chiu@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>,
+ Sean Wang <sean.wang@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
+References: <20250322141910.4461-1-qasdev00@gmail.com>
+Subject: Re: [PATCH] wifi: mt76: mt7996: avoid potential null deref in
+ mt7996_get_et_stats()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250322141910.4461-1-qasdev00@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:zGgYsMVFMC7gMzLMJMEaOqOzG4KCvD6WdUj5Wr+OkPGAGJatYKZ
+ MSyQ3MBAtAciAngF+P2u2paZGglBI3KYJ+Ca7K0VGJCaenqIS9f7Pq7uklBPKxLD1faeh/7
+ 3RB8qof/kEEvhVQQ/qetSRlrb1Chy9ljJPPLTtnXRoY5ywmKwgwqgVRKN7zyYDPXGy/lZTy
+ LI1yB6/ZhSRvt/TSPSPrA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:6WNxdDY6Ngo=;rgvjXtJMAoHIrEJ2fRmFicKctqo
+ nr6njC9l6NX9BsJ/sLJZrR5aB+TGnQsy33Dpy+HDmswmS9/DQ7h/3I7sZTx8LWwQgUBuj53pO
+ VzEQeUBFjZREWcp0fJF3QaXVpVHTc4zJ1jNBWN3M4gk1Dav9VekVaBg7GH3gfEIogNUCVdFXm
+ jOnhm7OGz7YEAHUSK01/OyQNQoZP/wkXJbWp7KMD98Wuxj1TcP66IiUYBYHUcXGzOBUhTfWpB
+ AvN+AKBtg5t6piGCQyJ9M2EZTDo+HAGdi1qOlOUuHLY89NZTOwhSJTWYT1JWqRr7v7QkjZMSs
+ dWV3IKlO1yFyIHakpjfySgmxuA6dzICdLpearWp9PcmWYiVdbEN5dfSMVtLzW6Zyr4x6Ls9NV
+ B7+ZT3/ehv942+YzTfN0mEIdYeTcEjZhVpAqmkDJ2Kj2NNyf92TgxU+x6VONSP+Uk/sIp/g0v
+ NKkCBz/DO4wQjCoSdxt6/jjCD9GCrIsBzcg7KRlcVpS2GHIo21exhqw1cDKyNQatzSe7iZa6y
+ CakUlSj0RwPGglZi289WqjrYFMm7bvP7kZ+3cnU7W4TG0cs3TSIIkjzEBpIPKmfq+nCamOOy5
+ kCHBi3+NqXEsPpCAnVMSS7qmgKBJtA7CcRUuhvZmhoEYDzCJgL1xSMlcwoHafdb0wJHKLOm0+
+ BJ4pydgUfAPzf50FttZozx7KccXgyXpk+1Dv7Fos0hAb861itqtRputaLB0ZdH1hTscJeS49Y
+ 5rpL50plO0m1GE8VCu7A6zWH/pPD+slwfU+GP5Vc/hS8j7KB8k8+/s+Iu9RUhygrGEkF4tPje
+ oqbtKuk0u3SELsGRzE2w1gxDk9rta3v7gt0iski9TC+ErkGM6yDxl6sKrQ1hHbFGShuxRBOWb
+ IO8RlyR6Hoyq7LKLvpQrA8SMtlnryUTabxZwM1LoiVCgciWFfc7mbGwnBXR1fFi27ikAaQfl4
+ W8y0p8pekQT4j+Rn93WAl+hDLn4c0TiRBsKwaITXW9yuScr0TX8uDy6PaebH401hwVykxM9Qw
+ kbSy50jOBFWLfViZ6/r0o+1ENqKIsBfO/kV3OOLlKuOaTpXnCKfBFWn0/MxaCUYqutxZQU+rG
+ c4uExsZKQB2am4TdfOKrowgLP01ergXdIR46T7y7w0JZhwdLHb+b2Rux8LB7f1UppfIWVX76g
+ duCUcnJUOV1LsPw3xRYkjbCMdIHVsQszN3wZUSQDSA9NrdpcAyXid+gzgPL/L5ABNSL7B37DL
+ rQZ862j/QbZPkHs61XwT/RkeTlwT7ETjmqkHazRYrzYMfrF/jPdEaAGLuZWB0BTD6UzNNH4Zb
+ ySHc35e3RhtlDbs7B9pG4AV1olV6yDCJDGCXz615i7YV2a+Zr/wnghstWGMbQ4q2QOf8XgJku
+ M4ofFROuDhs/3FhtF6gRsdsv9LkIY/pVFa6W2qxKxbkUQ7DaPYjWsjTV0kZUn4FzdY2YvQXfT
+ ETgyk8K8863+6+jtF5E433JlDT0di3gWbk0AwWcsHE7S4PN0l
 
-Ensure phy->mib is only accessed after the null sanity check for phy
-otherwise the code may trigger a potential null deref.
+> Ensure phy->mib is only accessed after the null sanity check for phy
+> otherwise the code may trigger a potential null deref.
 
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+* Would you like to use the term =E2=80=9Cnull pointer dereference=E2=80=
+=9D consistently?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 88e013577c0d..19391966ee3e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1875,7 +1875,7 @@ void mt7996_get_et_stats(struct ieee80211_hw *hw,
- 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
- 	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
- 	struct mt7996_phy *phy = mt7996_vif_link_phy(&mvif->deflink);
--	struct mt76_mib_stats *mib = &phy->mib;
-+	struct mt76_mib_stats *mib;
- 	struct mt76_ethtool_worker_info wi = {
- 		.data = data,
- 		.idx = mvif->deflink.mt76.idx,
-@@ -1886,6 +1886,8 @@ void mt7996_get_et_stats(struct ieee80211_hw *hw,
- 	if (!phy)
- 		return;
- 
-+	mib = &phy->mib;
-+	
- 	mutex_lock(&dev->mt76.mutex);
- 
- 	mt7996_mac_update_stats(phy);
--- 
-2.39.5
+* Were any known source code analysis tools involved also for
+  this software improvement?
 
+
+=E2=80=A6
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+=E2=80=A6
+> @@ -1886,6 +1886,8 @@ void mt7996_get_et_stats(struct ieee80211_hw *hw,
+>  	if (!phy)
+>  		return;
+>
+> +	mib =3D &phy->mib;
+> +
+>  	mutex_lock(&dev->mt76.mutex);
+>
+>  	mt7996_mac_update_stats(phy);
+
+I suggest to move such an assignment statement directly before the place
+where this variable is used finally.
+
+Regards,
+Markus
 
