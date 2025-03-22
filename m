@@ -1,120 +1,133 @@
-Return-Path: <linux-wireless+bounces-20692-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20693-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FE0A6C9BA
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Mar 2025 11:43:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD23A6C9D3
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Mar 2025 11:51:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1116F3B7621
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Mar 2025 10:43:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 628F1485B69
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Mar 2025 10:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD281F55F2;
-	Sat, 22 Mar 2025 10:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3361F8F09;
+	Sat, 22 Mar 2025 10:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="pe6nHEN4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ezbYVJ7n"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E38F20EB;
-	Sat, 22 Mar 2025 10:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAD01F3B83;
+	Sat, 22 Mar 2025 10:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742640201; cv=none; b=nqQ4fEbwf6JXs+KVEN3mJ6DFaykokLMs2wXcL7JFMBSGok7uh78yIgt3wuVK9DUTtg84WZi8XjWqNqhkXMAok+TtQgCoGUIDDDSTLUOLd8HNDi69A+pnyfxZ4mTZPRpUjDS1GRslZIBe8ik92wmEJhs5hCURVk1xuw/aE6UTVUU=
+	t=1742640667; cv=none; b=RABBNxM9Cuv2J07LkzL+yIKFAzc0CuwNpbpId8m1rxUIN+Un4Jb8qEeiENokbqpQgaYXQaQFJyE1r7m2aHYBkyj98MUfLFf21g4ITf5ji+5ZRWEW9Qpf31NQ28Ym//SaCgNJASsFv5HDAilCew/z1fr/a/6K20Qttz6JAPdZ3NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742640201; c=relaxed/simple;
-	bh=YkMRAD9WlCYn1xOedFDEZ4kBwzZAibmza3SX4Cxq/dQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lAWtvODlvdmcLj9/9Zc4HlNfGDT2AQ3349Zp7CHdN9d/NclH28Ze66RUYXS4krzojYVlPtztdfj+UPoLiMbqoiLsx733LLKPTmvjo42+PaKmQ4HS+VzRYbpfb8pYQKNjH7W+M2GfKohT2xI7zOnvQxKKnHq08hlwft8cgFixooA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=pe6nHEN4; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1742640191; x=1743244991; i=markus.elfring@web.de;
-	bh=YkMRAD9WlCYn1xOedFDEZ4kBwzZAibmza3SX4Cxq/dQ=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=pe6nHEN443O7V290nCMNqYFbUgzsFFTjoyl3Wvqbwnzf4w+p6zpK7BS8UhSmffsL
-	 ytu6vkmtKI46ys4CuejZ8O3NfzlnfpkzXq21WjmgnkvTppBZFi/Da182mZOKCP+yD
-	 SJo5LedQ2w0i/cE3gqelDZd2z3Fv4qx34jI2pszdZFuXj5/2OgslotItEXzN+DUwm
-	 zlTv2mq6Uk12nFst4Sj9/YVT5g2RPJomoDfzDsKlmziZQVJ5zTK6ivkp34kD5k9hz
-	 TZg72zAZyTG2ECGn5aova03xZ/QOahFG2QVTpvoAg9YZltklVN7J0361U5pXU2ESx
-	 nMC71wFJIWlof2J5eA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.70.73]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MqqTb-1tRIWF3nrl-00cVNO; Sat, 22
- Mar 2025 11:43:10 +0100
-Message-ID: <68543b3c-2004-43e8-999c-a6579b6aeb23@web.de>
-Date: Sat, 22 Mar 2025 11:43:09 +0100
+	s=arc-20240116; t=1742640667; c=relaxed/simple;
+	bh=JYyPCCShCHfqLDYAr7Vse/ZmJyZOdOWrV3Z1YVZd7hM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dw6BGh3owKwgwaUmvNJr2SeyN/pJnhG40IlUf5KPBfcq9Cu3PySNssUxvZZ7dnGnwrlZccOEh9i0ylNtjPP1ALzY08QwVTaXi0qnjr6gGImYcwBeW42H6rAql4PGVWtXc+s0zWgScMWzdowS1acSUWcQlEVen3gk5+L2aOpdHWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ezbYVJ7n; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3913d45a148so2299178f8f.3;
+        Sat, 22 Mar 2025 03:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742640663; x=1743245463; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KrpT+jmLuV0pMig4xoM27D18t14gkY3tPjFQzNc4T6g=;
+        b=ezbYVJ7npzl65MrNr32HdyVNZgATQNAYGPZZHTqAwCdKx8dQ7VDOvhisL2h5Yr2Vn9
+         sc/9deXTMryldnEJCenoiU57RKWdCjlC6v6XmVa9J49V95hAo5dHikvQpvnTxseuFAy0
+         YrU7i/kH7G85/lmgpQNmvs/JkVPBoqVH6CMkw8Db2Hkz3mWm3s28RBxZuezntEvwRobY
+         QuLMPKNDtSu+uH3Gt2n0hrMX3vNsPAHrfhQz/SeCBKQgminhoawL7DlYAAEAb9isVvj4
+         0u4Dg/zt4AXewgkHmGGStHEVqk7MRDYCu256fRh3Mv0ByvkD0hOUSD7SWmjsWeYRctgJ
+         XJnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742640663; x=1743245463;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KrpT+jmLuV0pMig4xoM27D18t14gkY3tPjFQzNc4T6g=;
+        b=BNnZPwXQnxSHPdK2hMupb8AYyAH66Hp0Jmy0Gwl+AcflAEeTLSavQSp29kDgSMo6q+
+         POL1JlwPV9dHrz2w9LBE/iHkWxAOJuNkQaH40EyYXZjshB0x/jqmw7e8QCkhO+cC4gBJ
+         Vv1duabiAa+iSiTwwFJEWhW0K6dQjRfj+jKoQzLTVNRP6JmmMiln8f7fUYmTc/5Q4RRf
+         fXuAOzehwv7aDkHYpnmQRYD2H1VJsKyQIbMzyp8pRcQAR7zVb2LAqq8SaT6W+QogLSEU
+         6pT7UyqT++Ii/zjyuoiPBNOy+7C38zMOQ2w5PKtLd1fVP0QDI6HHAornN7d6zMjKt5LZ
+         i8DA==
+X-Forwarded-Encrypted: i=1; AJvYcCXwA6ZBs9L/bI0mjwnUPI1xzjRi1hsAdeEeb5srJp64zVZvtCGFRE8LAAGG738TJX24Y5TgxLQZK2Og3vo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywps8T/L3WF6AN3y8c/nDjj6km4TRwwq5ocqlaNpwgrWu8Z99gS
+	LOKd9j6URtz+W432tq25uqorYINR9ocji6OsBpmufGVhuRWZBPaJ
+X-Gm-Gg: ASbGncsboOpcrlLdKhzT2mXSwXmDfBewUFic9Vxvjl3whhxcEOlTHBLLuiv3q4GTjJR
+	OvexpRbx8BTAQBIZ8osDzbEYs3l9kWGlBqPURUQth8uxHj16gyEC3YCGaKPyyFj+TJQU38wlS8D
+	50bfUg8076RFPUsS0FAVjeVV3V6IdcG1A18Uw+DAcdTnM+UkCE74+W0Bos09GFd9K8xUSbI+CFw
+	prk23wyWRhd1aWjYNs1V/AFndhu7VXBtYo1oS64m7Qldxf1L/HkixADpN8uHHxGKa2dRdmzvTkH
+	+kbEUTlUKFAPDjzYAQQUEP4VRzpQtrAJv6WlKEIMieN41Q==
+X-Google-Smtp-Source: AGHT+IEEaToUvEuqHUrucs2Mab5X6FQNEQACh4ItoD1rm1rGxrSkcKlwnmFnT1AV+XPhtU7H5TrVBg==
+X-Received: by 2002:a5d:47a2:0:b0:391:47d8:de25 with SMTP id ffacd0b85a97d-3997f937634mr5851686f8f.41.1742640663277;
+        Sat, 22 Mar 2025 03:51:03 -0700 (PDT)
+Received: from qasdev.Home ([2a02:c7c:6696:8300:924e:a190:c73a:b6bc])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9efe61sm4906161f8f.97.2025.03.22.03.51.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Mar 2025 03:51:02 -0700 (PDT)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	chui-hao.chiu@mediatek.com,
+	Bo.Jiao@mediatek.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH] wifi: mt76: mt7996: avoid NULL pointer dereference in mt7996_set_monitor()
+Date: Sat, 22 Mar 2025 10:50:52 +0000
+Message-Id: <20250322105052.19136-1-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: wifi: mt76: mt7996: prevent uninit return in
- mt7996_mac_sta_add_links
-To: Johannes Berg <johannes@sipsolutions.net>, Qasim Ijaz
- <qasdev00@gmail.com>, linux-wireless@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Bo Jiao <bo.jiao@mediatek.com>, Dan Carpenter <dan.carpenter@linaro.org>,
- Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Peter Chiu <chui-hao.chiu@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>,
- Sean Wang <sean.wang@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
-References: <20250320201914.48159-1-qasdev00@gmail.com>
- <061ebbe3-557b-46d7-acb8-308ae87105dd@web.de>
- <631977c57b2236edfefb8db7a28885ff6888c823.camel@sipsolutions.net>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <631977c57b2236edfefb8db7a28885ff6888c823.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:UOKGF5y3H0aWty2Ge0EpsSI/+m+zx9k401Kz+ZPa+Cty5ktLW31
- aihaZWCSZQ8UUJgs2fdMpbXv4M4sIsk5Bxl7nEJPGy2WBVUKBFYy8wi7tWGf1oEjpgsZixk
- /zt7z4uFGe47bHkQS5dpSgKfXmZtmxhcfnfQudPNSGBUUn7ZG5GyaLLRocR95xZtOmtgqLQ
- zBz2rpg5XWYDmenTzovSw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Ds9ibI0GWBM=;KJP8Mkrg79VhvVfIdkUcJpe2zWw
- P4FSt08PPWUj2iQAHDT2ruL4CnVguLWR/EwQmh5ySL8KLQV8wvvPPVc3Pg5XjgT6UfndggAIt
- crBf/FF+ra359BEX3+RFfoAmwLY1bsSWK8LtYzcC4Xo8nSJmfoT8YGG0va8RVeCZXPTfZ1JyE
- fo77rKDX/dwZquTpr5HkJvexItJty5X70gKOOej1U+/DHlFGWoScPyE+TC4xld/8+MsnmX/+C
- fS9MYGnhSt3p2xDG0Q3IavWIFDjOvFVv8IMug8R1gjEzHoovQXGk9iiukvMi4NhPN3zPbE+Rp
- jjSZCA5ECkkD8ZCHKS+0BgfdrrAjCvewf0Ewxw5S074ft/P6hQJweWl+z14Jl1ZpECe95hHNh
- RuU1q67X5ijvKU22JtCBh7Zpu8sbOmqCQiCGJlAk9lkYdjEZKFwUcaTmJJ0C2XvScqn1h6OAA
- czaWdhbakIwsDa90vnrdYhoS5di/DlGlDmb+DLfFn+toh9+XRuiF/ku5Y1HOSudYPso7Mn5Vo
- RHKLkqF5B3cV5IGJZvP/dQdeabUJilc10MCeVWUwIxG92W7Ldbf8YF7QleC1sySfx0Gt/P+BF
- 46vrloA2HHBuW/3tv0uYPFHEawnA59KCxdzO3Uhg9nlciIzKRmeC1+a0M6I/8zBvCMKuS7oh2
- U0+f9TuhXbB6EWYZ4dqtoDFiu26hxSHHR2kyYd80zi744upWndXlH6OqBthdIwIZCSXaHD6dF
- XsHbKPrlOrFtNCwRIx7QJuaWp8gF/j/D3gpS5HvdbFQuE6hspgsN8b61VVNgtL7oordRAnBnG
- y0WzoBoywS1+WF67aj9zp30yldJg9IGz1AmE+LS1/4n/xQpIHHcjdsWFrPWsEETZlnJ11j9xX
- v8G2Ix86kmrXvondv5Y9wXIyAj9PfYWcsi8Wys/fM4K69DcKqrEvYaEOdeA857urm7Pzf6V8B
- J1OOe4YBOuAeRU0qVeNOVK/bWGj1I/iWqCO3L1O3ITV4wCU25pnC04nHFmFlHPAqqecKpdDij
- yxhzYnGs548fLEEN6yf94h2DwlgcOIgFZWpEo0V+Ul3U0GCztOCIZIAyVRecOTT72DB5BKpxc
- N0FJtx2mwxxI83c4hPAYNJ2PWCRmcEB0Pgi/HJ/BPlF8oH++LwF+JnF4SsnM8M3fHhWS9neF2
- RGz1jn5avDfjjineWyQKkpHiU8eE9QHFe+EfiQsM0uRH7g9CyN89bsp+U3M7l42H1VH0MwDDO
- YeS+2yh+Fx/GxiU8meTZYKpNXVTkjJMO5VJVuUYzrlw8MMIB8EXAJrSdVcYkJ4g9QD/CjtRlB
- FONI1G0+X+O/lwgsREGWmEesogl5yX1XtrB0I6MKB4J38f62JTBpoqX3pRd+BU20oBd1jmuzq
- Ysv+X7Na/mNoWxfoBBrLJLZZ9n849354WbPMd/JpqdAf/O3Xa1hdYwGlHrq0itSbb6P0a79hX
- QuI+5Trhw9lfwEUS6aej6VmRaj53xRJfUD9pXjzpQQ0fj2DCt
+Content-Transfer-Encoding: 8bit
 
->> I suggest to avoid such repeated error code assignments.
->> Can an additional label be applied instead for this purpose?
->
-> Please stop your "suggestions" on this list. None have really been
-> helpful.
-It seems that you care less then for the avoidance of duplicate source cod=
-e
-also for affected error/exception handling.
+The function mt7996_set_monitor() dereferences phy before 
+the NULL sanity check.
 
-Regards,
-Markus
+Fix this to avoid NULL pointer dereference by moving the 
+dereference after the check.
+
+Fixes: 69d54ce7491d ("wifi: mt76: mt7996: switch to single multi-radio wiphy")
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 91c64e3a0860..66575698aef1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -414,11 +414,13 @@ static void mt7996_phy_set_rxfilter(struct mt7996_phy *phy)
+ 
+ static void mt7996_set_monitor(struct mt7996_phy *phy, bool enabled)
+ {
+-	struct mt7996_dev *dev = phy->dev;
++	struct mt7996_dev *dev;
+ 
+ 	if (!phy)
+ 		return;
+ 
++	dev = phy->dev;
++	
+ 	if (enabled == !(phy->rxfilter & MT_WF_RFCR_DROP_OTHER_UC))
+ 		return;
+ 
+-- 
+2.39.5
+
 
