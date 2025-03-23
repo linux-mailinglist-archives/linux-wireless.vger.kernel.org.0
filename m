@@ -1,94 +1,68 @@
-Return-Path: <linux-wireless+bounces-20706-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20707-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0327A6CD18
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Mar 2025 00:01:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F966A6CE48
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Mar 2025 08:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A730171D16
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Mar 2025 23:01:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A720B189265E
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Mar 2025 07:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637C2198E8C;
-	Sat, 22 Mar 2025 23:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32281FFC4F;
+	Sun, 23 Mar 2025 07:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hsz31ORs"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OxU4ijJp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0271519AE;
-	Sat, 22 Mar 2025 23:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B121F91C8
+	for <linux-wireless@vger.kernel.org>; Sun, 23 Mar 2025 07:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742684503; cv=none; b=XmLQD2nV9nabP/3P2HkL6cUUnIikfhGDRXykgqVtGLKI2ETuhlghFuooPC5TqImFBHeNBsR1v08ZtVJo755YkCgcpBwo5xm83rxg0UBFn/pmXyvfWVQZrOowJJT4lJsLNG4J2FcpzaROeWjeKUWNIxFDGLUY0wqTSNj4FeO++O0=
+	t=1742715636; cv=none; b=Irz5l/+ZuCxq+vmxHcLR8qpQZyDvUqrZoEch/rDtCRGkpGbAGzcppFmD4dgILQQIk0mcR8n2YRaNceCgirMBgtnEUuQWY58WS79oMtUk2kbWcz/7uxBHZzm1pOwBYHVXc9TWdB+t6/YvvLQLoSTzz2q5LrhXar4bxWYUuauSVXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742684503; c=relaxed/simple;
-	bh=nYE/GPBKgV5rdH3Np+KQo5T8RRPSiFT/CZ2aYXPJSFI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EDY0N31qANbal/NadclzVWyPHN0IMdKR2cv/PNZjEPJFhi2aOuTTIhPrK4SRBtnNAzZ8yapoGb2TwdMg193qU5ToHL7ngKH6wZTJNz6iRbzhCv5ui2EEc9QXnKAaO0qpDqldYOGm1NRCQTgjBMN1OpYfanaeDvuEkTPZirB5U/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hsz31ORs; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3912c09be7dso2036296f8f.1;
-        Sat, 22 Mar 2025 16:01:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742684500; x=1743289300; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4ZR2UVpqmeFDPx4PfDo4Uk4g9Hsu2oDRhSNi1KzWe7k=;
-        b=Hsz31ORs9BeJYwZU1pUBWIEyz0FiQB88KmXjq/kfQxvyQgRlzSCV0gKKbI4C81qW+A
-         2cy63d/cQ8MiwCpw/FkjgCEd5oj41TsqkwDl1ZEQTBQTOivZ7n04yBiLYgtTLuOXz9Wo
-         G1GTr/Bptj9Icu9GTb5NnVpfgZBpFDO10VhOMU/fD4+dDg76BAYyFVFpNyPfMPQXlF0L
-         R84xxzVtRfooutI36+ACzBgOA68lqrJ5HW20uV8a9JWmcUF8NTJaFIfWXkTXDeT5jwCR
-         7i8043+TdpfzfmzruLhZgnhg50IqkPN0PuFmLPwp419dJfJjiDqgMHrmKHLfD3s92c6M
-         I+6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742684500; x=1743289300;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4ZR2UVpqmeFDPx4PfDo4Uk4g9Hsu2oDRhSNi1KzWe7k=;
-        b=isMDPVqk2SIYqcP2VXEYaTAHIoPi/Un2Wgg2jLR03rCEaxV0AqNwBh9f9H0k0PvOPR
-         t3n5gp8ZTGT9+I0OuEH50XB88ZiuqyqLwJN9ajh6FKddpt47wHLssSs84sL4W5v5miSw
-         LmVw4qlRnDXxMWglZnURwEGAJdjt/mtxqAi602fZKZTqztrtJ4zqE5oErVOu2HH8MxN5
-         UArohNxtjhllNrDPTf5Gd2ANIW0er6zCfIcOl3oNikUJptv8noEydp9TDCeLhdVNdueE
-         cuQZWv4KtFG3z9wFSdaVgHSYMtJWiOQu7I1Th4RngMNd4YxX0mysDjcSqS1JA5iRugTz
-         z1VQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWEfsEwXswVBbAZ2kmhlAxlBi72Sdzu1jJH7/NGxs5PfM0Fs6jU0RDb6Lk8ge94qLSe0sbY0lfkxUGl3gE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6EH3IZLRl10d/6iRufvvabHCkrJXkoYo/HZ3i7AtfW7Gd5aTW
-	1NHqwA4PsMGybkfD1LrKSO0axgiaRcC76zfll/P9pHEGcnAwU293aAUmTA==
-X-Gm-Gg: ASbGncsn4P6G1VYdJas2NlF2LKL31ZTo92b/bONv0rKNJg+YZrkPf6Mu2MiqQJcFG2/
-	Lf5KRcdbfXXjQVeRFWjtngIX/NxGpi6+pAGvIe6O1HIl5W6PVTMjm4wlMSUe+vIl1Y3ePsIcTcS
-	pF7T45eUojMmThIQ1q5aktDb3GZe2AWE9+we3UAjj/p9knVLYmzvN4QihCzcnvbzH2pm/Y5jt3e
-	Sonz1vBHTBu2emRgQTsBHubBBrD+gTtE+LeztiQnr3prbuMpjSANhP6GRYYG+sLJB1m70HznUyI
-	9s5IqdDgM/r8O9KyI3p9aC7zsS41C90+v9Ez5EWyIYRJnw==
-X-Google-Smtp-Source: AGHT+IHjCKrhSEzyg1bOP/bYmKQPvVEa5OEsNqQOvW5LA8oKHtiOj2mV+K4xOb9q373wp3gepKGEtQ==
-X-Received: by 2002:a05:6000:1448:b0:391:253b:405d with SMTP id ffacd0b85a97d-3997f933da0mr7944371f8f.41.1742684499903;
-        Sat, 22 Mar 2025 16:01:39 -0700 (PDT)
-Received: from qasdev.Home ([2a02:c7c:6696:8300:ec99:3da1:428d:90b1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9a3f2asm6261120f8f.30.2025.03.22.16.01.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Mar 2025 16:01:39 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	chui-hao.chiu@mediatek.com,
-	Bo.Jiao@mediatek.com,
-	jonas.gorski@gmail.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH v2] wifi: mt76: mt7996: prevent uninit return in mt7996_mac_sta_add_links
-Date: Sat, 22 Mar 2025 23:01:37 +0000
-Message-Id: <20250322230137.28164-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1742715636; c=relaxed/simple;
+	bh=x+CL518J1026/8nJBX+nqpCGpiGQyNX8MCf0BGVO3Ys=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L3qFP6lrwMJ3cMPRhHQvzL0CDHTYVUIo6pqkpfex1D9m4h/4wUaj55icegUsOTFWHhCKjk1GVB9DmjUBKaR095vmn7UOaiFItyE9k6ct8g2UJIQnOHAG6zVL5Gl6NbE/p7igiVXA2gul59WOsRuxXtSWQl6Yh2FAbv67HIMDdFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OxU4ijJp; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52N5r8s5009976;
+	Sun, 23 Mar 2025 07:40:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=kNUCRGBBtaoUwOfO6dZkex
+	Ad0anESfj7mKnbFn6f/2M=; b=OxU4ijJpa7Z9k1z5UHqNjf5C15GcbkYgM9njth
+	F2J5zqoyv33Vr37UGUL8J9xT5PENby32U+4VPj7IiI+C3rjmKMYu+3jG3mZsdcuN
+	F6yLCFwNhwEjtAm+kqG1wI2ebMhTpRzReuEe2GsyCHQL2JrhIqou06FLmKEIMbmT
+	x8s76ECCXHOyZmW7N12lnWSQk8mJF3t3UZP1q1dVkQxDCGpyVRn9s63pWsybCQoV
+	BEjOAaBYq31Re90O1UM0Edq3RqDOg6+eaTc8+YoLoo61GvPSans98xym5zzucerC
+	7ub+g/IQcmA3kC8sCYcXs6aAimXzOnVrrcYsfbE8fjWoJAHg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45hnyj9nq2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 23 Mar 2025 07:40:18 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52N7eI6V005532
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 23 Mar 2025 07:40:18 GMT
+Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Sun, 23 Mar 2025 00:40:16 -0700
+From: Roopni Devanathan <quic_rdevanat@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>,
+        Roopni Devanathan
+	<quic_rdevanat@quicinc.com>
+Subject: [PATCH v5 0/5] wifi: cfg80211/mac80211: Set/get wiphy parameters on per-radio basis
+Date: Sun, 23 Mar 2025 13:09:54 +0530
+Message-ID: <20250323073959.2872641-1-quic_rdevanat@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -96,54 +70,130 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=Ybu95xRf c=1 sm=1 tr=0 ts=67dfbae2 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=NbrlMn_GpqCCBWAr1CkA:9
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: sLa9AeQjMVJlSbDLJaRRp5zRvGrwddTB
+X-Proofpoint-ORIG-GUID: sLa9AeQjMVJlSbDLJaRRp5zRvGrwddTB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-23_03,2025-03-21_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
+ suspectscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 mlxscore=0 malwarescore=0 bulkscore=0 clxscore=1015
+ adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503230057
 
-If link_conf_dereference_protected() or mt7996_vif_link()
-or link_sta_dereference_protected() fail the code jumps to
-the error_unlink label and returns ret which is uninitialised.
+Currently wiphy level configurations like RTS threshold, TX power etc.
+lacks radio level get/set support and same value is applied to all
+radios of wiphy. Add support to parse radio id attribute and use the
+same to apply the configuration to corresponding radio of a multi radio
+wiphy.
 
-Fix this by setting err before jumping to error_unlink.
- 
-Fixes: c7e4fc362443 ("wifi: mt76: mt7996: Update mt7996_mcu_add_sta to MLO support")
-Fixes: dd82a9e02c05 ("wifi: mt76: mt7996: Rely on mt7996_sta_link in sta_add/sta_remove callbacks")
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
----
+This design will not disturb the global wiphy configuration. If radio id
+is not passed from userspace, then the existing design of setting
+attribute to all the radios will hold good.
+
+Also add support to get the radio specific attributes in a multi-radio
+wiphy from userspace.
+
+The attributes that can be handled for each radio are:
+NL80211_ATTR_WIPHY_FREQ
+NL80211_ATTR_WIPHY_ANTENNA_TX
+NL80211_ATTR_WIPHY_ANTENNA_RX
+NL80211_ATTR_WIPHY_RETRY_SHORT
+NL80211_ATTR_WIPHY_RETRY_LONG
+NL80211_ATTR_WIPHY_FRAG_THRESHOLD
+NL80211_ATTR_WIPHY_RTS_THRESHOLD
+NL80211_ATTR_WIPHY_COVERAGE_CLASS
+NL80211_ATTR_WIPHY_DYN_AC
+
+With this design, the new userspace designed to set/get per-radio
+parameters can work with both traditional and multi-radio wiphys.
+
+v5:
+ - Changed default value of radio id from 0xff to -1.
+ - Changed driver callback order for global wiphy parameters.
+ - Fixed other minor comments related to code-cleanup.
+v4:
+ - Fixed stack frame size warning.
+ - Added S-O-B tag in patches 4/5 and 5/5.
+v3:
+ - Fixed warnings to refresh copyright, to curb long lines of code and
+   to include kernel documentation for a few variables.
 v2:
-- Added missing semi-colon as pointed out by Jonas Gorski
+ - Converted the series to [PATCH] from [PATCH RFC], link to which is,
+   https://patchwork.kernel.org/project/linux-wireless/cover/20250107182506.1838704-1-quic_ramess@quicinc.com/.
 
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Rameshkumar Sundaram (2):
+  wifi: cfg80211: set tx power per radio in a wiphy
+  wifi: mac80211: set tx power per radio in a wiphy
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 91c64e3a0860..70823bbb165c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -998,16 +998,22 @@ mt7996_mac_sta_add_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 			continue;
- 
- 		link_conf = link_conf_dereference_protected(vif, link_id);
--		if (!link_conf)
-+		if (!link_conf) {
-+			err = -EINVAL;
- 			goto error_unlink;
-+		}
- 
- 		link = mt7996_vif_link(dev, vif, link_id);
--		if (!link)
-+		if (!link) {
-+			err = -EINVAL;
- 			goto error_unlink;
-+		}
- 
- 		link_sta = link_sta_dereference_protected(sta, link_id);
--		if (!link_sta)
-+		if (!link_sta) {
-+			err = -EINVAL;
- 			goto error_unlink;
-+		}
- 
- 		err = mt7996_mac_sta_init_link(dev, link_conf, link_sta, link,
- 					       link_id);
+Roopni Devanathan (3):
+  wifi: cfg80211: Add Support to Set RTS Threshold for each Radio
+  wifi: cfg80211: Report per-radio RTS threshold to userspace
+  wifi: mac80211: Set RTS threshold on per-radio basis
+
+ drivers/net/wireless/ath/ar5523/ar5523.c      |   2 +-
+ drivers/net/wireless/ath/ath10k/mac.c         |   4 +-
+ drivers/net/wireless/ath/ath11k/mac.c         |   3 +-
+ drivers/net/wireless/ath/ath12k/mac.c         |   3 +-
+ drivers/net/wireless/ath/ath6kl/cfg80211.c    |   3 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_main.c |   2 +-
+ drivers/net/wireless/ath/wcn36xx/main.c       |   2 +-
+ drivers/net/wireless/ath/wil6210/cfg80211.c   |   2 +-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    |   4 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   2 +-
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |   4 +-
+ drivers/net/wireless/marvell/mwl8k.c          |   2 +-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |   2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02.h  |   2 +-
+ .../net/wireless/mediatek/mt76/mt76x02_util.c |   2 +-
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |   2 +-
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |   2 +-
+ .../net/wireless/mediatek/mt76/mt7925/main.c  |   2 +-
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |   2 +-
+ drivers/net/wireless/mediatek/mt7601u/main.c  |   2 +-
+ .../wireless/microchip/wilc1000/cfg80211.c    |   4 +-
+ drivers/net/wireless/purelifi/plfxlc/mac.c    |   2 +-
+ .../net/wireless/quantenna/qtnfmac/cfg80211.c |   4 +-
+ .../net/wireless/ralink/rt2x00/rt2800lib.c    |   2 +-
+ .../net/wireless/ralink/rt2x00/rt2800lib.h    |   2 +-
+ drivers/net/wireless/realtek/rtl8xxxu/core.c  |   2 +-
+ drivers/net/wireless/realtek/rtw88/mac80211.c |   2 +-
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   2 +-
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c   |   2 +
+ drivers/net/wireless/silabs/wfx/sta.c         |   2 +-
+ drivers/net/wireless/silabs/wfx/sta.h         |   2 +-
+ drivers/net/wireless/st/cw1200/sta.c          |   2 +-
+ drivers/net/wireless/st/cw1200/sta.h          |   2 +-
+ drivers/net/wireless/ti/wl1251/main.c         |   2 +-
+ drivers/net/wireless/ti/wlcore/main.c         |   2 +-
+ drivers/net/wireless/virtual/mac80211_hwsim.c |   3 +-
+ .../staging/rtl8723bs/os_dep/ioctl_cfg80211.c |   4 +-
+ include/net/cfg80211.h                        |  22 ++-
+ include/net/mac80211.h                        |   2 +-
+ include/uapi/linux/nl80211.h                  |  13 ++
+ net/mac80211/cfg.c                            |  27 +++-
+ net/mac80211/driver-ops.h                     |   6 +-
+ net/mac80211/trace.h                          |  24 +++-
+ net/mac80211/util.c                           |   8 +-
+ net/wireless/core.c                           |  18 +++
+ net/wireless/nl80211.c                        | 130 ++++++++++++------
+ net/wireless/rdev-ops.h                       |  12 +-
+ net/wireless/trace.h                          |  16 ++-
+ net/wireless/wext-compat.c                    |  12 +-
+ 50 files changed, 269 insertions(+), 113 deletions(-)
+
+
+base-commit: 1794d7ab34d2221ac7eb921b171e75b856e10561
 -- 
-2.39.5
+2.25.1
 
 
