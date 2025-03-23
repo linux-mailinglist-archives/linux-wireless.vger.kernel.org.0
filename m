@@ -1,122 +1,305 @@
-Return-Path: <linux-wireless+bounces-20717-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20718-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7197FA6D101
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Mar 2025 21:13:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD734A6D23C
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Mar 2025 23:49:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD7AF16B7C3
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Mar 2025 20:12:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30D461895C54
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Mar 2025 22:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367F4376F1;
-	Sun, 23 Mar 2025 20:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DAA1DA628;
+	Sun, 23 Mar 2025 22:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="Dke5Xn3y"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="gpzvbk1/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0E03595D
-	for <linux-wireless@vger.kernel.org>; Sun, 23 Mar 2025 20:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742760776; cv=pass; b=SWnrQXmAR3K32L4EokfbU/dLBJzvk08kVYJ+aj8I9uw3WsK0Hq/Y/Iy1lJAQKqGD/rTMGfPzbaT+7IcgVS34GIdB8w0UVRv/dAoDJxHrmzeTk/nY0lSL4UvE21VeWPEXDn+aDoMRrpXIY/BMgybkzvPJifjZDOaew/J2gqGI2kg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742760776; c=relaxed/simple;
-	bh=Xk/SWxoEAlQwcQRBUsT/OTxoa6JOj4uOFYybheT3Hz4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EdSw46yTIoiZXBT5RRDBy7VVLOaig6o1bbwbh0m41PYcWx1pB8ArHL8JyVoAbwkU47z/DjfxvRZNOG5yJ7eDmQsPtqqT3Po376iMJ+rGcgYw0xj5mfP8vFQtA5GNdaGh0wfEzdTmv4FaYhmdXmDeuUSxNgMrqk9dxQzjaJzkhuQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=Dke5Xn3y; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1742760765; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=AM1DN9WbGR93tp8Nt4Em/P4TSnXZE5tC61utHpEvDWs0BSaYTkDG89667KSmHt1bVkCs3WJ3oyefuthr5gHSbEO/Z6dtHv/4aeI1ALw+Dqp0Zrfc/f7Dabn/hDKAqbdrfxa2Yma1BmUkunS3df0OW2iAYbSGAfeF1TDSXvqa5y0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1742760765; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=t7Cs40h1I32QA6hah5heYVE4/zI7hWbUU2YmAjNIFo8=; 
-	b=ITz1lzJzEIj9uQnksnZoKa0F6xJA4wEf1qT5gMB+mHxLrAjAC+HJwgZcHi3mHDILuYv3YPE/IaICvry8hcE1wu9MOy1rn6cyn9VZ8wa7kkReTTdbwxio9VFkiIVuZIfMhoQv0XJdX1hgFakc5uTUNO23AAgIjRZoBd3vYm2iRYQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass header.from=<usama.anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1742760765;
-	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=t7Cs40h1I32QA6hah5heYVE4/zI7hWbUU2YmAjNIFo8=;
-	b=Dke5Xn3yagnMDoMgp2SbUANxyZLruYV1kMxWyv7n6OJNYxrVp0nhU1MtBoVNj4sV
-	v8JeQsiMhWbhIl1Nk+0VTisDu1ET8IwOssWw5OzEez9696bRGWom7OeCZyFIYcC5qH+
-	AkNZPFjVhYl1ezwdbk+6qUB7R6f+1QPC21shXtF4=
-Received: by mx.zohomail.com with SMTPS id 17427607646843.6235385042233474;
-	Sun, 23 Mar 2025 13:12:44 -0700 (PDT)
-Message-ID: <d71241e5-fa21-4aa6-936d-a7a97a8a07b5@collabora.com>
-Date: Mon, 24 Mar 2025 01:12:39 +0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0CDBA53;
+	Sun, 23 Mar 2025 22:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742769903; cv=none; b=EXQx/mtzicbN0ZghknNutBiLy8FVlBmTE/XEVT5137UaZKQ1fRH3GjNNGzJ7VNlHe1Alnh2cDj6VxeARYkpzZTWq9G5W5340NZrvs3GGb1J8M01KFdprSVuMTPS3lIcErqnyeuNBM0qcmFzG33xFPH0kceBFvHWHVBU067+YINI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742769903; c=relaxed/simple;
+	bh=xCqn5FiTDlk8VfRuuwEImn8dGmxcyVuO1Zhr3g0tNGI=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=e8wi+EwgAHPs2NSVtg4tAi5ws9ZdNv8lBxzcWwLmIhZvrgeV7swU95Crq5nj2CZBXbJ2HlM5LHHiOisvl2cHT9OANsW9yjTPML+7qqtTRkJSx+fBx6nDScLx9uWx6NFe1Tfl/sZI3m2OqFNE075ZPuE/lH08SpcCFjShtL3Pwdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=gpzvbk1/; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 52NMeKdo3968387
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Sun, 23 Mar 2025 15:40:20 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 52NMeKdo3968387
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025032001; t=1742769629;
+	bh=jX8qvOcg5sHOYMzS8O1ZeFoLDzr4b9fAXnawD1sDsAQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=gpzvbk1/xbueYaRDkNUQItniaCPabNWQpBYkbzyWYtmr70CkFDr1QjiA+EEsvKZvw
+	 x+NlI2wYpRq9XIxDM3W6qyI4muMLrm74m6hk9SQZhj6u/678GeAxC2aHNwRAd8Fz02
+	 eaUD2juyAsarROcyXcOXSBJeY7WSazHhunwmvS0uaYtHesKXlr5cVrOSTOXia+d9ur
+	 x0GW78E2/YRSCfLq+CgCW5Ss3gdvaEyZxBcb+3QJlbHUizJ8HRUBm+f0VKsMTTNTOb
+	 biBm8UgyfdkV3Cldwh9ks4o9ztz33Hpie/nEjLEaxfg2nLmHMgLWNzA/75tuDFoxiX
+	 JvvTdqoR1VRZA==
+Date: Sun, 23 Mar 2025 15:40:20 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Kuan-Wei Chiu <visitorckw@gmail.com>, Yury Norov <yury.norov@gmail.com>
+CC: David Laight <david.laight.linux@gmail.com>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Laurent.pinchart@ideasonboard.com, airlied@gmail.com,
+        akpm@linux-foundation.org, alistair@popple.id.au,
+        andrew+netdev@lunn.ch, andrzej.hajda@intel.com,
+        arend.vanspriel@broadcom.com, awalls@md.metrocast.net, bp@alien8.de,
+        bpf@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211@lists.linux.dev, dave.hansen@linux.intel.com,
+        davem@davemloft.net, dmitry.torokhov@gmail.com,
+        dri-devel@lists.freedesktop.org, eajames@linux.ibm.com,
+        edumazet@google.com, eleanor15x@gmail.com, gregkh@linuxfoundation.org,
+        hverkuil@xs4all.nl, jernej.skrabec@gmail.com, jirislaby@kernel.org,
+        jk@ozlabs.org, joel@jms.id.au, johannes@sipsolutions.net,
+        jonas@kwiboo.se, jserv@ccns.ncku.edu.tw, kuba@kernel.org,
+        linux-fsi@lists.ozlabs.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-serial@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux@rasmusvillemoes.dk,
+        louis.peens@corigine.com, maarten.lankhorst@linux.intel.com,
+        mchehab@kernel.org, mingo@redhat.com, miquel.raynal@bootlin.com,
+        mripard@kernel.org, neil.armstrong@linaro.org, netdev@vger.kernel.org,
+        oss-drivers@corigine.com, pabeni@redhat.com,
+        parthiban.veerasooran@microchip.com, rfoss@kernel.org, richard@nod.at,
+        simona@ffwll.ch, tglx@linutronix.de, tzimmermann@suse.de,
+        vigneshr@ti.com, x86@kernel.org
+Subject: Re: [PATCH v3 00/16] Introduce and use generic parity16/32/64 helper
+User-Agent: K-9 Mail for Android
+In-Reply-To: <Z+AlyB461xwMxMtG@visitorckw-System-Product-Name>
+References: <efc2ee9d-5382-457f-b471-f3c44b81a190@citrix.com> <5A790652-1B22-4D13-AAC5-5D9931E90903@zytor.com> <20250307195310.58abff8c@pumpkin> <EB85C3C1-8A0D-4CB9-B501-BFEABDF3E977@zytor.com> <Z824SgB9Dt5zdWYc@visitorckw-System-Product-Name> <Z9CyuowYsZyez36c@thinkpad> <80771542-476C-493E-858A-D2AF6A355CC1@zytor.com> <Z9GtcNJie8TRKywZ@thinkpad> <Z9G2Tyypb3iLoBjn@visitorckw-System-Product-Name> <Z9KMKwnZXA2mkD2s@visitorckw-System-Product-Name> <Z+AlyB461xwMxMtG@visitorckw-System-Product-Name>
+Message-ID: <05F7AC70-E8E7-4D14-A4EB-880D92A96534@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next 0/5] wifi: ath11k: bring hibernation support back
-To: Baochen Qiang <quic_bqiang@quicinc.com>, ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250320023003.65028-1-quic_bqiang@quicinc.com>
-Content-Language: en-US
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <20250320023003.65028-1-quic_bqiang@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 3/20/25 7:29 AM, Baochen Qiang wrote:
-> To handle the Lenovo unexpected wakeup issue [1], previously we revert
-> commit 166a490f59ac ("wifi: ath11k: support hibernation"). However we
-> need to bring it back, of course with additional changes such that Lenovo
-> machines would not break.
-> 
-> As those machines work well in Non-WoWLAN suspend mode, the thought here
-> is that we do WoWLAN suspend on Lenovo machines while do non-WoWLAN
-> suspend (which is done in the reverted commit) on other machines. This
-> requires us to identify Lenovo machines from others. For that purpose,
-> read machine info from DMI interface, match it against all known affected
-> machines. If there is a match, choose WoWLAN suspend mode, else choose
-> non-WoWLAN mode.
-> 
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
-I've tested the series and it works. Feel free to add my tag to the
-series. Let me know any more help with testing is required.
+On March 23, 2025 8:16:24 AM PDT, Kuan-Wei Chiu <visitorckw@gmail=2Ecom> wr=
+ote:
+>On Thu, Mar 13, 2025 at 03:41:49PM +0800, Kuan-Wei Chiu wrote:
+>> On Thu, Mar 13, 2025 at 12:29:13AM +0800, Kuan-Wei Chiu wrote:
+>> > On Wed, Mar 12, 2025 at 11:51:12AM -0400, Yury Norov wrote:
+>> > > On Tue, Mar 11, 2025 at 03:24:14PM -0700, H=2E Peter Anvin wrote:
+>> > > > On March 11, 2025 3:01:30 PM PDT, Yury Norov <yury=2Enorov@gmail=
+=2Ecom> wrote:
+>> > > > >On Sun, Mar 09, 2025 at 11:48:26PM +0800, Kuan-Wei Chiu wrote:
+>> > > > >> On Fri, Mar 07, 2025 at 12:07:02PM -0800, H=2E Peter Anvin wro=
+te:
+>> > > > >> > On March 7, 2025 11:53:10 AM PST, David Laight <david=2Elaig=
+ht=2Elinux@gmail=2Ecom> wrote:
+>> > > > >> > >On Fri, 07 Mar 2025 11:30:35 -0800
+>> > > > >> > >"H=2E Peter Anvin" <hpa@zytor=2Ecom> wrote:
+>> > > > >> > >
+>> > > > >> > >> On March 7, 2025 10:49:56 AM PST, Andrew Cooper <andrew=
+=2Ecooper3@citrix=2Ecom> wrote:
+>> > > > >> > >> >> (int)true most definitely is guaranteed to be 1=2E =20
+>> > > > >> > >> >
+>> > > > >> > >> >That's not technically correct any more=2E
+>> > > > >> > >> >
+>> > > > >> > >> >GCC has introduced hardened bools that intentionally hav=
+e bit patterns
+>> > > > >> > >> >other than 0 and 1=2E
+>> > > > >> > >> >
+>> > > > >> > >> >https://gcc=2Egnu=2Eorg/gcc-14/changes=2Ehtml
+>> > > > >> > >> >
+>> > > > >> > >> >~Andrew =20
+>> > > > >> > >>=20
+>> > > > >> > >> Bit patterns in memory maybe (not that I can see the Linu=
+x kernel using them) but
+>> > > > >> > >> for compiler-generated conversations that's still a given=
+, or the manager isn't C
+>> > > > >> > >> or anything even remotely like it=2E
+>> > > > >> > >>=20
+>> > > > >> > >
+>> > > > >> > >The whole idea of 'bool' is pretty much broken by design=2E
+>> > > > >> > >The underlying problem is that values other than 'true' and=
+ 'false' can
+>> > > > >> > >always get into 'bool' variables=2E
+>> > > > >> > >
+>> > > > >> > >Once that has happened it is all fubar=2E
+>> > > > >> > >
+>> > > > >> > >Trying to sanitise a value with (say):
+>> > > > >> > >int f(bool v)
+>> > > > >> > >{
+>> > > > >> > >	return (int)v & 1;
+>> > > > >> > >}   =20
+>> > > > >> > >just doesn't work (see https://www=2Egodbolt=2Eorg/z/MEndP3=
+q9j)
+>> > > > >> > >
+>> > > > >> > >I really don't see how using (say) 0xaa and 0x55 helps=2E
+>> > > > >> > >What happens if the value is wrong? a trap or exception?, g=
+ood luck recovering
+>> > > > >> > >from that=2E
+>> > > > >> > >
+>> > > > >> > >	David
+>> > > > >> >=20
+>> > > > >> > Did you just discover GIGO?
+>> > > > >>=20
+>> > > > >> Thanks for all the suggestions=2E
+>> > > > >>=20
+>> > > > >> I don't have a strong opinion on the naming or return type=2E =
+I'm still a
+>> > > > >> bit confused about whether I can assume that casting bool to i=
+nt always
+>> > > > >> results in 0 or 1=2E
+>> > > > >>=20
+>> > > > >> If that's the case, since most people prefer bool over int as =
+the
+>> > > > >> return type and some are against introducing u1, my current pl=
+an is to
+>> > > > >> use the following in the next version:
+>> > > > >>=20
+>> > > > >> bool parity_odd(u64 val);
+>> > > > >>=20
+>> > > > >> This keeps the bool return type, renames the function for bett=
+er
+>> > > > >> clarity, and avoids extra maintenance burden by having just on=
+e
+>> > > > >> function=2E
+>> > > > >>=20
+>> > > > >> If I can't assume that casting bool to int always results in 0=
+ or 1,
+>> > > > >> would it be acceptable to keep the return type as int?
+>> > > > >>=20
+>> > > > >> Would this work for everyone?
+>> > > > >
+>> > > > >Alright, it's clearly a split opinion=2E So what I would do myse=
+lf in
+>> > > > >such case is to look at existing code and see what people who re=
+ally
+>> > > > >need parity invent in their drivers:
+>> > > > >
+>> > > > >                                     bool      parity_odd
+>> > > > >static inline int parity8(u8 val)       -               -
+>> > > > >static u8 calc_parity(u8 val)           -               -
+>> > > > >static int odd_parity(u8 c)             -               +
+>> > > > >static int saa711x_odd_parity           -               +
+>> > > > >static int max3100_do_parity            -               -
+>> > > > >static inline int parity(unsigned x)    -               -
+>> > > > >static int bit_parity(u32 pkt)          -               -
+>> > > > >static int oa_tc6_get_parity(u32 p)     -               -
+>> > > > >static u32 parity32(__le32 data)        -               -
+>> > > > >static u32 parity(u32 sample)           -               -
+>> > > > >static int get_parity(int number,       -               -
+>> > > > >                      int size)
+>> > > > >static bool i2cr_check_parity32(u32 v,  +               -
+>> > > > >                        bool parity)
+>> > > > >static bool i2cr_check_parity64(u64 v)  +               -
+>> > > > >static int sw_parity(__u64 t)           -               -
+>> > > > >static bool parity(u64 value)           +               -
+>> > > > >
+>> > > > >Now you can refer to that table say that int parity(uXX) is what
+>> > > > >people want to see in their drivers=2E
+>> > > > >
+>> > > > >Whichever interface you choose, please discuss it's pros and con=
+s=2E
+>> > > > >What bloat-o-meter says for each option? What's maintenance burd=
+en?
+>> > > > >Perf test? Look at generated code?
+>> > > > >
+>> > > > >I personally for a macro returning boolean, something like I
+>> > > > >proposed at the very beginning=2E
+>> > > > >
+>> > > > >Thanks,
+>> > > > >Yury
+>> > > >=20
+>> > > > Also, please at least provide a way for an arch to opt in to usin=
+g the builtins, which seem to produce as good results or better at least on=
+ some architectures like x86 and probably with CPU options that imply fast =
+popcnt is available=2E
+>> > >=20
+>> > > Yeah=2E And because linux/bitops=2Eh already includes asm/bitops=2E=
+h
+>> > > the simplest way would be wrapping generic implementation with
+>> > > the #ifndef parity, similarly to how we handle find_next_bit case=
+=2E
+>> > >=20
+>> > > So:
+>> > > 1=2E Kuan-Wei, please don't invent something like ARCH_HAS_PARITY;
+>> > > 2=2E This may, and probably should, be a separate follow-up series,
+>> > >    likely created by corresponding arch experts=2E
+>> > >=20
+>> > I saw discussions in the previous email thread about both
+>> > __builtin_parity and x86-specific implementations=2E However, from th=
+e
+>> > discussion, I learned that before considering any optimization, we
+>> > should first ask: which driver or subsystem actually cares about pari=
+ty
+>> > efficiency? If someone does, I can help with a micro-benchmark to
+>> > provide performance numbers, but I don't have enough domain knowledge
+>> > to identify hot paths where parity efficiency matters=2E
+>> >=20
+>> IMHO,
+>>=20
+>> If parity is never used in any hot path and we don't care about parity:
+>>=20
+>> Then benchmarking its performance seems meaningless=2E In this case, a
+>> function with a u64 argument would suffice, and we might not even need
+>> a macro to optimize for different types=E2=80=94especially since the ma=
+cro
+>> requires special hacks to avoid compiler warnings=2E Also, I don't thin=
+k
+>> code size matters here=2E If it does, we should first consider making
+>> parity a non-inline function in a =2Ec file rather than an inline
+>> function/macro in a header=2E
+>>=20
+>> If parity is used in a hot path:
+>>=20
+>> We need different handling for different type sizes=2E As previously
+>> discussed, x86 assembly might use different instructions for u8 and
+>> u16=2E This may sound stubborn, but I want to ask again: should we
+>> consider using parity8/16/32/64 interfaces? Like in the i3c driver
+>> example, if we only have a single parity macro that selects an
+>> implementation based on type size, users must explicitly cast types=2E
+>> If future users also need parity in a hot path, they might not be aware
+>> of this requirement and end up generating suboptimal code=2E Since we
+>> care about efficiency and generated code, why not follow hweight() and
+>> provide separate implementations for different sizes?
+>>=20
+>It seems no one will reply to my two emails=2E So, I have summarized
+>different interface approaches=2E If there is a next version, I will send
+>it after the merge window closes=2E
+>
+>Interface 1: Single Function
+>Description: bool parity_odd(u64)
+>Pros: Minimal maintenance cost
+>Cons: Difficult to integrate with architecture-specific implementations
+>      due to the inability to optimize for different argument sizes
+>Opinions: Jiri supports this approach
+>
+>Interface 2: Single Macro
+>Description: parity_odd() macro
+>Pros: Allows type-specific implementation
+>Cons: Requires hacks to avoid warnings; users may need explicit
+>      casting; potential sub-optimal code on 32-bit x86
+>Opinions: Yury supports this approach
+>
+>Interface 3: Multiple Functions
+>Description: bool parity_odd8/16/32/64()
+>Pros: No need for explicit casting; easy to integrate
+>      architecture-specific optimizations; except for parity8(), all
+>      functions are one-liners with no significant code duplication
+>Cons: More functions may increase maintenance burden
+>Opinions: Only I support this approach
+>
+>Regards,
+>Kuan-Wei
 
-Tested-on: QCNFA765
-WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
-
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-
-> 
-> Baochen Qiang (5):
->   wifi: ath11k: determine PM policy based on machine model
->   wifi: ath11k: introduce ath11k_core_continue_suspend_resume()
->   wifi: ath11k: refactor ath11k_core_suspend/_resume()
->   wifi: ath11k: support non-WoWLAN mode suspend as well
->   Reapply "wifi: ath11k: restore country code during resume"
-> 
->  drivers/net/wireless/ath/ath11k/ahb.c  |   4 +-
->  drivers/net/wireless/ath/ath11k/core.c | 245 +++++++++++++++++++++++--
->  drivers/net/wireless/ath/ath11k/core.h |  11 ++
->  drivers/net/wireless/ath/ath11k/hif.h  |  14 +-
->  drivers/net/wireless/ath/ath11k/mhi.c  |  14 +-
->  drivers/net/wireless/ath/ath11k/mhi.h  |   5 +-
->  drivers/net/wireless/ath/ath11k/pci.c  |  44 ++++-
->  drivers/net/wireless/ath/ath11k/qmi.c  |   4 +-
->  8 files changed, 301 insertions(+), 40 deletions(-)
-> 
-> 
-> base-commit: b6f473c96421b8b451a8df8ccb620bcd71d4b3f4
-
-
--- 
-Regards,
-Usama
+You can add me to the final option=2E I think it makes most sense 
 
