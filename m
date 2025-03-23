@@ -1,306 +1,147 @@
-Return-Path: <linux-wireless+bounces-20715-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20716-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5489A6CFDA
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Mar 2025 16:16:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5CEA6D03A
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Mar 2025 18:31:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1E233A421A
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Mar 2025 15:16:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C10397A590E
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Mar 2025 17:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC921126C03;
-	Sun, 23 Mar 2025 15:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D11912B94;
+	Sun, 23 Mar 2025 17:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QSKErXam"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="euWeTzGb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9F6EEA8;
-	Sun, 23 Mar 2025 15:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AF72E337C;
+	Sun, 23 Mar 2025 17:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742742997; cv=none; b=h8j6FEDi/DkOYrc4A6WbistRwRtUZwFZ6uT4oZD8iROn0syU6tcbQPCTLczhCo9OGW3lYod0iSR3WAtQM61Vj+HJAjPKNuu7PbKK5bPvLES+uYPAMXhLOTEXdgHvSM76fJYClcSyEgu2hhsgoGk25CAHsZE4zb77AoWNVngd2jY=
+	t=1742751074; cv=none; b=OzDbv55BYpsSBcbFJ3kODxwNh4bZ3+U+wbxXbxLOg4Kkm8X27J7v4B2XBHqczzDq3mYMJWLF8qtCsFq81mwi+yQR7E2THpgfgP//KFI0F/wRL6EA1Jo0Ttbr6K8rznF82LgkRIxnUDUI5SW4iwKEFaKVqxS8kRvTjbgipdsNgYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742742997; c=relaxed/simple;
-	bh=z1iry3Q+ZuonlJJ0TwlMVAFT0se2HxhIpoPnsRsnLsc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QsC9avdn5V7N5OgzT8CTEP6aiIhHlKTSSf/2JUctaWs3+FJtTqrvuiNBRgTBVzgLWdUtCnZy/SbQ1MNAuzeFPudle/friGxj8oeC0KLJ1LlIjw6l3hz3pFV5xgEDyr+FzaU/BfW6zzbJewI6htLS7IxszzoSrxgdjxrBV76Jh88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QSKErXam; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-224019ad9edso86857995ad.1;
-        Sun, 23 Mar 2025 08:16:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742742995; x=1743347795; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8HAFSGGoHUlB/P//y8CRGPMxIiz2cZBE9oAiPUoftnU=;
-        b=QSKErXam2M/O3L3qT9hiT/LG33negg+IlgrywqMrof0yVzQPGEO8pMXP5NBg9zKyNB
-         5aQ5/axR7fELGSwcGzqs4Ls6A+MHtdFVxn41ScblbZgdJkRUKtsevNQO8AlqCu4yOUkB
-         IKOadC2A3ssnQ+qnuk6Hkd4cxOFkt7zTCfwJKyl9E2Mb8/R68s9igYXSguHsJgaUse0J
-         W70NvOTkGlTJFbH10x3O/LS2t1uJmBR/sLdMt9h7Zq2mX/t3C82wT4NSCfQSqxZbMbTS
-         bHLWM38cBHkpsrin3WcCBS5LjsZIhJkMMq9fimWdSNXK/gHIo9nvkrK1tQR668tLLUZy
-         GVrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742742995; x=1743347795;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8HAFSGGoHUlB/P//y8CRGPMxIiz2cZBE9oAiPUoftnU=;
-        b=IGeAD/cEFZTJXKjOtR4ucO07a3mkpPnft3u9FJua22FVRuRSE2h5ZH/y6M1bX+aBVh
-         V1jTNR9jEINon2X05IY2iQ9bfBk4eszjStGiYtYRqeaAczkDGxXJSJ7Q/G97jI8bgurv
-         9K6OSjSF3X0o5sIk+sxrmEyCiljC6qYIVuIK7SxoSERlDAJ8R6L6XoZiQMeoNWbSEQ2W
-         4uMz6NJyHEvBeRKERdYFR32pVXJdfZ/7XJe7AcX6TgIzQDLyL+cHdPWe8tpaD4lwuMTV
-         aKzscHDd4k7LYE9QmcGwZ8BqCnQ43IazbqX+UR8x7mH5yNJryEGK6d4xAqLxDOFZBrkW
-         mtKA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2Xw0v9ojtIYehIb2kR/2XB9VwSSJsLzXDj5gLrE8/5Gdm38qEalMQBrKVMHyVBdzEdUpK9kjd@vger.kernel.org, AJvYcCVU+Of6USSioyxNuo5IdCIWATJYaooAenKr4eb9H0FJ2qkOJEy/j8NXeJUNoXxS6Gpb6kY1jKwMxNdOGTZh@vger.kernel.org, AJvYcCVpkkFUxqc/wuVqnvhZXtviLd4ZE5eXQw0DqeSGHbZhfPd5MzdqS2XrV35lOfv84UsWVHEDuNE5lI117kM=@vger.kernel.org, AJvYcCVydyj1nXFQDpP9SNTvjtwjhBDF9aVFoNHTtiboBvJfW0yhCm6zP3RpYb0ePJ3FTFSDn2XqsKm4cLJcR4xv@vger.kernel.org, AJvYcCWEZcxqia3gXCYnh/A1uKylw8vzZ7zRJgLi9od+59xx2q7aFI8H84T10Urx2+X9CK+IzZNqpXnl/0XJpe0=@vger.kernel.org, AJvYcCX4RCUaVzTmys5wL9bRAr8L4SMjYRJVLKojuHhZUcH1pP2lcfDv2U4VObBvCtxA+GxIWis=@vger.kernel.org, AJvYcCXBSVsKoSCWAz5VyiJBiroGSLFolKjHw/il9YFZB8T5a4g0K3X2Sl/7DErVEGvnzCpVXOVWw4glANRaOyAFeTo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2RtgMAPbYx6CnzlH8PsLPdxnWweF5gwOI3Fng/WImvzT0UhV1
-	YN4bf23XjMEEg1ODqXhb/5KDQcCCd+c2ZbIzTBKkKU0R6CFSbQmC
-X-Gm-Gg: ASbGnct2vr76XZkQJBvEoyPRw4a1ebYFUw5JGCw939jmiNz5BBQXXNWkBw+llyb6X8u
-	pOttVrNqsgECm1y1EibdqpevRNh/DjXvBsZpstVpabNiYLxaVfmnbLPHYF3B/uRSPI6iSLAwgs3
-	5SGQXjo22U96msYWio4ChHviJ8lgJKrmMKVTTEs2DqIYL1jGcU6pSdq2kA+o+RNOgOBRGCP3m74
-	e/wdpRda0YTUUDYqhWjh4lJixJ4a7nhJHKZcpcnZRZxrm/Ey1OHks4ssGA+9dh/te5fd8n8qxKq
-	/pt98mOAfF+61MmM766RVzD3WYrQmsRCjGi9tya794eqm0yNvLXtjyFCsz+xGomPlq3fn4WI
-X-Google-Smtp-Source: AGHT+IFu7aSko21Sw2wxa8CSJ3BoLCLGU4XDLggoCqJDcaLIBubWzqHl2YbchxgGWLxoXzaA2oGt1A==
-X-Received: by 2002:a17:902:db12:b0:216:3d72:1712 with SMTP id d9443c01a7336-22780e1a30emr184600615ad.48.1742742994925;
-        Sun, 23 Mar 2025 08:16:34 -0700 (PDT)
-Received: from visitorckw-System-Product-Name ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22781207f3csm52440875ad.247.2025.03.23.08.16.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Mar 2025 08:16:34 -0700 (PDT)
-Date: Sun, 23 Mar 2025 23:16:24 +0800
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Laurent.pinchart@ideasonboard.com, airlied@gmail.com,
-	akpm@linux-foundation.org, alistair@popple.id.au,
-	andrew+netdev@lunn.ch, andrzej.hajda@intel.com,
-	arend.vanspriel@broadcom.com, awalls@md.metrocast.net, bp@alien8.de,
-	bpf@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-	brcm80211@lists.linux.dev, dave.hansen@linux.intel.com,
-	davem@davemloft.net, dmitry.torokhov@gmail.com,
-	dri-devel@lists.freedesktop.org, eajames@linux.ibm.com,
-	edumazet@google.com, eleanor15x@gmail.com,
-	gregkh@linuxfoundation.org, hverkuil@xs4all.nl,
-	jernej.skrabec@gmail.com, jirislaby@kernel.org, jk@ozlabs.org,
-	joel@jms.id.au, johannes@sipsolutions.net, jonas@kwiboo.se,
-	jserv@ccns.ncku.edu.tw, kuba@kernel.org, linux-fsi@lists.ozlabs.org,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-serial@vger.kernel.org, linux-wireless@vger.kernel.org,
-	linux@rasmusvillemoes.dk, louis.peens@corigine.com,
-	maarten.lankhorst@linux.intel.com, mchehab@kernel.org,
-	mingo@redhat.com, miquel.raynal@bootlin.com, mripard@kernel.org,
-	neil.armstrong@linaro.org, netdev@vger.kernel.org,
-	oss-drivers@corigine.com, pabeni@redhat.com,
-	parthiban.veerasooran@microchip.com, rfoss@kernel.org,
-	richard@nod.at, simona@ffwll.ch, tglx@linutronix.de,
-	tzimmermann@suse.de, vigneshr@ti.com, x86@kernel.org
-Subject: Re: [PATCH v3 00/16] Introduce and use generic parity16/32/64 helper
-Message-ID: <Z+AlyB461xwMxMtG@visitorckw-System-Product-Name>
-References: <efc2ee9d-5382-457f-b471-f3c44b81a190@citrix.com>
- <5A790652-1B22-4D13-AAC5-5D9931E90903@zytor.com>
- <20250307195310.58abff8c@pumpkin>
- <EB85C3C1-8A0D-4CB9-B501-BFEABDF3E977@zytor.com>
- <Z824SgB9Dt5zdWYc@visitorckw-System-Product-Name>
- <Z9CyuowYsZyez36c@thinkpad>
- <80771542-476C-493E-858A-D2AF6A355CC1@zytor.com>
- <Z9GtcNJie8TRKywZ@thinkpad>
- <Z9G2Tyypb3iLoBjn@visitorckw-System-Product-Name>
- <Z9KMKwnZXA2mkD2s@visitorckw-System-Product-Name>
+	s=arc-20240116; t=1742751074; c=relaxed/simple;
+	bh=vwsOFT8e65u6N+CcNPlcCQQ3RjoMD2CoARpH2XTneHQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=aJD7vk89FRfMZ1EwVZTyzFisKgAp6FvGWt53RzSA32w/s0lln4WJOVfF96Wagrsl9lwAmwPYgps96lO9yM8JkkL4v6/jIPTP6c1CW/n5NRoVMle2siuWEozolNTvjPh3RsXR3+HFvYBwfIuMpOdUXIWdS5Kc3jaXd5xVkxWE4vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=euWeTzGb; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1742751057; x=1743355857; i=markus.elfring@web.de;
+	bh=aS26mjbyN4abFalJdzaoStx6yXU3U8r5tdNKBbcsZHU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=euWeTzGb1rN8KKZiRijlg7gIUkM7JDUBfjL1gr+b0UK6l43xtJPFUz5CA95xrbCS
+	 MIe3kTPEEi81izfL1fEKwQgl6WArlH+zRuqSABOKbHDWSDB6lnT7+78msDp52/rLW
+	 iBjLCyZIdPSjolVmPV6siFilCy+spFpHYLmES7RJZPUE0vZfrELG47MweIOpyycCt
+	 GX9ELDgPqjlYRTpZoYO+ChKDY3UIUXUHwcq1F6YExWJsK7jLMYKkeTVK53y+Q0BJ7
+	 RHVNvNjXfVeo3IHHbnWIIv3Fj10sXgDYm+vbWYcL8EV/Y6Xi8c9vh8LLVKG8CFln0
+	 Q5W8brIWphi+HhXLyg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.71]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MQxo5-1tl4ju0s23-00NkmL; Sun, 23
+ Mar 2025 18:30:57 +0100
+Message-ID: <6a45eb0a-01e2-4316-bbee-93bdd490cfb5@web.de>
+Date: Sun, 23 Mar 2025 18:30:53 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z9KMKwnZXA2mkD2s@visitorckw-System-Product-Name>
+User-Agent: Mozilla Thunderbird
+To: Qasim Ijaz <qasdev00@gmail.com>, linux-wireless@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Bo Jiao <bo.jiao@mediatek.com>, Dan Carpenter <dan.carpenter@linaro.org>,
+ Felix Fietkau <nbd@nbd.name>, Jonas Gorski <jonas.gorski@gmail.com>,
+ Lorenzo Bianconi <lorenzo@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Peter Chiu <chui-hao.chiu@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>,
+ Sean Wang <sean.wang@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
+References: <20250322230137.28164-1-qasdev00@gmail.com>
+Subject: Re: [PATCH v2] wifi: mt76: mt7996: prevent uninit return in
+ mt7996_mac_sta_add_links
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250322230137.28164-1-qasdev00@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:mGNn0js7md32cTCJEgqZPPy4hyHljtu/hoMlFhXvzLekJuVU0Tn
+ ubdLUleIlTmQ7FNQCSSLtPk3mKbVE1DEfbxSLB79BnUzj0ur97GHBQwF9EHV/i7KatTE6dR
+ eTMGxaSKsHq6n6QcuxIs0sng4OWxo+1OkswkNWIjZaGXDAReJwO99DSIX357yW9zouy1SrU
+ BoE2zwzo8r3hXOcR1nTOw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:1mKSqeyZi18=;W19U/1M1dA8MGB8usvwUxEXkLrA
+ nX9et2qPU3TAVk6+9MNSRQc7tbID6fWCi0D4PfbYdhhiIQ1oSZEebgUpwfjDM4PR93C5jJhEP
+ opfXC85UGKH/Io5S82p8EF5KmzLv3i+o3ArlcyvLHaDClTwhKowH0CyUOAJvS/skGk9wGBvNW
+ Apt8Qi8092gawnDgyx7+fWk+Sn659QJhBxdTFeNs956DBuJub14R05/8lPYyyn7XieEhHvJ9Q
+ D7q05Bj+5ELl6touPRVUeUZ7dZbAJfh+CoHpgIr34/1J1XHwhrRC2dW7qvOvn1oUeKkP5uacD
+ id5Ry9xhNomJmnYViGiHAZS+6psqWBc1TisEhNkYPBK1ggSARrjA/E0IEv2La7irHVolti+im
+ Ju0Bv0TaNTuqUMKLDXaMVgpFqZjh+v5LmiS963ludUk10U9iny/76RWKFi62nmb0MomEA/Fdk
+ A2S9ZDalutNaPAPllTItGKLaCcHt4noqFjsk2oUllAUsBh1p7Vf1SrDtBBSLIdLHhYSMrTOMJ
+ tPtGTW+4YuFCAkG3CtXnNycKYzjANaEsapwMwZJrg7MKHCsZNctZnywCRdURarhMV32rDkwmj
+ 6leNKcFSfy8uNy4zhkHFeLEKp585UpENSzgWC9iWTh4BidpS7/O0+bHlWWjljuLWaJ/v9j6ba
+ E1i/7C5Mxxajxa+A3U1veEDXrfhjYjP72q4NX17/0D4PQx+m6uM2evxyMEKn7Z1FqgpvFqbVP
+ EOMOgVSSIBdGfkaHLrFqd2Z12XaRlhlNMDrTQiN7+d4FEJKoeL3y+wfgKcpQl5GRurIuCxzp3
+ GQHNyWiUynnWCFVBeQSlrJqDNZIWRHkFAEf6Td5ZLb0dHJ3Rk3D1F+GfxWX2Odf6kGYpefxB5
+ /KxjvhkMxmnnG1JOPQ+oTMP8lbGtELlxogzvDh+aRuQvSJFA8gi4Qn823ts8hKiWzwGlL0ofs
+ et/urC/Dh8Q1J46iFNE1I+M8apiX1DV1VFjpoN+MnhF/7YTFssXLtZdHIzfMJeGMHAZ6A+sJj
+ HNXVW/krAUfhEuFvrtbMk8ruB2xPFYPqSZJ8nckIBVmJ0kNv73Y/qwdHTCDjXGGiGejd0lAVb
+ Q0Ii60fhYvLfYY4JIGgatWLaZW9wsJfs2892vPFai1FUffWGi4ydcjy1PtNG+fHJ08sSmKrAr
+ o+H/z5LnthVDCtelaevV8Vhm1P0KlM6bvXBLn5NkzB0h+HALG/0Bh/CMHTk0lnDw7UacTN+Xz
+ 0GrP/uXKvuV9SpgEr+fXjbKHB7i0JOPS/r1hDdOTGKL3YOirQvHVnLDGIRow7u82hYAvtHqDk
+ OBnpau6DdgRyjn6h62bN6ZqhQCwC3O52ZgIlNJUUnceydse1LE0LO0wjqOMRc1t05NO6Ggkzo
+ ofdzDtHsPegqzSFjPOaScufqL80/wB7fKk9zI7DdO9H91BRuGGEzFtn1M06wAR1sgpAnr/c+e
+ PwnO2hzsS/4PaqwdgPbsmJDCJixtXFVD+na45TtlnprpYIOC+NdXl5v8LKgLBi1jWiEZc2A==
 
-On Thu, Mar 13, 2025 at 03:41:49PM +0800, Kuan-Wei Chiu wrote:
-> On Thu, Mar 13, 2025 at 12:29:13AM +0800, Kuan-Wei Chiu wrote:
-> > On Wed, Mar 12, 2025 at 11:51:12AM -0400, Yury Norov wrote:
-> > > On Tue, Mar 11, 2025 at 03:24:14PM -0700, H. Peter Anvin wrote:
-> > > > On March 11, 2025 3:01:30 PM PDT, Yury Norov <yury.norov@gmail.com> wrote:
-> > > > >On Sun, Mar 09, 2025 at 11:48:26PM +0800, Kuan-Wei Chiu wrote:
-> > > > >> On Fri, Mar 07, 2025 at 12:07:02PM -0800, H. Peter Anvin wrote:
-> > > > >> > On March 7, 2025 11:53:10 AM PST, David Laight <david.laight.linux@gmail.com> wrote:
-> > > > >> > >On Fri, 07 Mar 2025 11:30:35 -0800
-> > > > >> > >"H. Peter Anvin" <hpa@zytor.com> wrote:
-> > > > >> > >
-> > > > >> > >> On March 7, 2025 10:49:56 AM PST, Andrew Cooper <andrew.cooper3@citrix.com> wrote:
-> > > > >> > >> >> (int)true most definitely is guaranteed to be 1.  
-> > > > >> > >> >
-> > > > >> > >> >That's not technically correct any more.
-> > > > >> > >> >
-> > > > >> > >> >GCC has introduced hardened bools that intentionally have bit patterns
-> > > > >> > >> >other than 0 and 1.
-> > > > >> > >> >
-> > > > >> > >> >https://gcc.gnu.org/gcc-14/changes.html
-> > > > >> > >> >
-> > > > >> > >> >~Andrew  
-> > > > >> > >> 
-> > > > >> > >> Bit patterns in memory maybe (not that I can see the Linux kernel using them) but
-> > > > >> > >> for compiler-generated conversations that's still a given, or the manager isn't C
-> > > > >> > >> or anything even remotely like it.
-> > > > >> > >> 
-> > > > >> > >
-> > > > >> > >The whole idea of 'bool' is pretty much broken by design.
-> > > > >> > >The underlying problem is that values other than 'true' and 'false' can
-> > > > >> > >always get into 'bool' variables.
-> > > > >> > >
-> > > > >> > >Once that has happened it is all fubar.
-> > > > >> > >
-> > > > >> > >Trying to sanitise a value with (say):
-> > > > >> > >int f(bool v)
-> > > > >> > >{
-> > > > >> > >	return (int)v & 1;
-> > > > >> > >}    
-> > > > >> > >just doesn't work (see https://www.godbolt.org/z/MEndP3q9j)
-> > > > >> > >
-> > > > >> > >I really don't see how using (say) 0xaa and 0x55 helps.
-> > > > >> > >What happens if the value is wrong? a trap or exception?, good luck recovering
-> > > > >> > >from that.
-> > > > >> > >
-> > > > >> > >	David
-> > > > >> > 
-> > > > >> > Did you just discover GIGO?
-> > > > >> 
-> > > > >> Thanks for all the suggestions.
-> > > > >> 
-> > > > >> I don't have a strong opinion on the naming or return type. I'm still a
-> > > > >> bit confused about whether I can assume that casting bool to int always
-> > > > >> results in 0 or 1.
-> > > > >> 
-> > > > >> If that's the case, since most people prefer bool over int as the
-> > > > >> return type and some are against introducing u1, my current plan is to
-> > > > >> use the following in the next version:
-> > > > >> 
-> > > > >> bool parity_odd(u64 val);
-> > > > >> 
-> > > > >> This keeps the bool return type, renames the function for better
-> > > > >> clarity, and avoids extra maintenance burden by having just one
-> > > > >> function.
-> > > > >> 
-> > > > >> If I can't assume that casting bool to int always results in 0 or 1,
-> > > > >> would it be acceptable to keep the return type as int?
-> > > > >> 
-> > > > >> Would this work for everyone?
-> > > > >
-> > > > >Alright, it's clearly a split opinion. So what I would do myself in
-> > > > >such case is to look at existing code and see what people who really
-> > > > >need parity invent in their drivers:
-> > > > >
-> > > > >                                     bool      parity_odd
-> > > > >static inline int parity8(u8 val)       -               -
-> > > > >static u8 calc_parity(u8 val)           -               -
-> > > > >static int odd_parity(u8 c)             -               +
-> > > > >static int saa711x_odd_parity           -               +
-> > > > >static int max3100_do_parity            -               -
-> > > > >static inline int parity(unsigned x)    -               -
-> > > > >static int bit_parity(u32 pkt)          -               -
-> > > > >static int oa_tc6_get_parity(u32 p)     -               -
-> > > > >static u32 parity32(__le32 data)        -               -
-> > > > >static u32 parity(u32 sample)           -               -
-> > > > >static int get_parity(int number,       -               -
-> > > > >                      int size)
-> > > > >static bool i2cr_check_parity32(u32 v,  +               -
-> > > > >                        bool parity)
-> > > > >static bool i2cr_check_parity64(u64 v)  +               -
-> > > > >static int sw_parity(__u64 t)           -               -
-> > > > >static bool parity(u64 value)           +               -
-> > > > >
-> > > > >Now you can refer to that table say that int parity(uXX) is what
-> > > > >people want to see in their drivers.
-> > > > >
-> > > > >Whichever interface you choose, please discuss it's pros and cons.
-> > > > >What bloat-o-meter says for each option? What's maintenance burden?
-> > > > >Perf test? Look at generated code?
-> > > > >
-> > > > >I personally for a macro returning boolean, something like I
-> > > > >proposed at the very beginning.
-> > > > >
-> > > > >Thanks,
-> > > > >Yury
-> > > > 
-> > > > Also, please at least provide a way for an arch to opt in to using the builtins, which seem to produce as good results or better at least on some architectures like x86 and probably with CPU options that imply fast popcnt is available.
-> > > 
-> > > Yeah. And because linux/bitops.h already includes asm/bitops.h
-> > > the simplest way would be wrapping generic implementation with
-> > > the #ifndef parity, similarly to how we handle find_next_bit case.
-> > > 
-> > > So:
-> > > 1. Kuan-Wei, please don't invent something like ARCH_HAS_PARITY;
-> > > 2. This may, and probably should, be a separate follow-up series,
-> > >    likely created by corresponding arch experts.
-> > > 
-> > I saw discussions in the previous email thread about both
-> > __builtin_parity and x86-specific implementations. However, from the
-> > discussion, I learned that before considering any optimization, we
-> > should first ask: which driver or subsystem actually cares about parity
-> > efficiency? If someone does, I can help with a micro-benchmark to
-> > provide performance numbers, but I don't have enough domain knowledge
-> > to identify hot paths where parity efficiency matters.
-> > 
-> IMHO,
-> 
-> If parity is never used in any hot path and we don't care about parity:
-> 
-> Then benchmarking its performance seems meaningless. In this case, a
-> function with a u64 argument would suffice, and we might not even need
-> a macro to optimize for different types—especially since the macro
-> requires special hacks to avoid compiler warnings. Also, I don't think
-> code size matters here. If it does, we should first consider making
-> parity a non-inline function in a .c file rather than an inline
-> function/macro in a header.
-> 
-> If parity is used in a hot path:
-> 
-> We need different handling for different type sizes. As previously
-> discussed, x86 assembly might use different instructions for u8 and
-> u16. This may sound stubborn, but I want to ask again: should we
-> consider using parity8/16/32/64 interfaces? Like in the i3c driver
-> example, if we only have a single parity macro that selects an
-> implementation based on type size, users must explicitly cast types.
-> If future users also need parity in a hot path, they might not be aware
-> of this requirement and end up generating suboptimal code. Since we
-> care about efficiency and generated code, why not follow hweight() and
-> provide separate implementations for different sizes?
-> 
-It seems no one will reply to my two emails. So, I have summarized
-different interface approaches. If there is a next version, I will send
-it after the merge window closes.
+=E2=80=A6
+> or link_sta_dereference_protected() fail the code jumps to
+> the error_unlink label and returns ret which is uninitialised.
+=E2=80=A6
 
-Interface 1: Single Function
-Description: bool parity_odd(u64)
-Pros: Minimal maintenance cost
-Cons: Difficult to integrate with architecture-specific implementations
-      due to the inability to optimize for different argument sizes
-Opinions: Jiri supports this approach
+* Would you like to avoid typos in such a change description?
 
-Interface 2: Single Macro
-Description: parity_odd() macro
-Pros: Allows type-specific implementation
-Cons: Requires hacks to avoid warnings; users may need explicit
-      casting; potential sub-optimal code on 32-bit x86
-Opinions: Yury supports this approach
+* Can any background information become more relevant for the usage of
+  source code analysis tools?
 
-Interface 3: Multiple Functions
-Description: bool parity_odd8/16/32/64()
-Pros: No need for explicit casting; easy to integrate
-      architecture-specific optimizations; except for parity8(), all
-      functions are one-liners with no significant code duplication
-Cons: More functions may increase maintenance burden
-Opinions: Only I support this approach
+* Can the summary phrase be improved also another bit?
+
+
+=E2=80=A6
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+> @@ -998,16 +998,22 @@ mt7996_mac_sta_add_links(struct mt7996_dev *dev, s=
+truct ieee80211_vif *vif,
+>  			continue;
+>
+>  		link_conf =3D link_conf_dereference_protected(vif, link_id);
+> -		if (!link_conf)
+> +		if (!link_conf) {
+> +			err =3D -EINVAL;
+>  			goto error_unlink;
+> +		}
+>
+>  		link =3D mt7996_vif_link(dev, vif, link_id);
+> -		if (!link)
+> +		if (!link) {
+> +			err =3D -EINVAL;
+>  			goto error_unlink;
+> +		}
+=E2=80=A6
+
+Can software development interests evolve in ways which might make the avo=
+idance
+of duplicate source code more feasible also for affected error/exception h=
+andling?
 
 Regards,
-Kuan-Wei
+Markus
 
