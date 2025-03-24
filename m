@@ -1,127 +1,103 @@
-Return-Path: <linux-wireless+bounces-20742-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20743-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC54A6D556
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 08:43:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63126A6D5A3
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 09:00:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABA5B18864D1
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 07:43:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18E5C18906F2
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 08:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B2D25744F;
-	Mon, 24 Mar 2025 07:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TNjgYoIo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDE72512D8;
+	Mon, 24 Mar 2025 08:00:01 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4C525742D
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 07:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328631F92A;
+	Mon, 24 Mar 2025 07:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742802217; cv=none; b=u5crcrxWabDVNkObhYxfxlqarHPDvsrZ3cpwtcEqKBnsnhi+lVEjg3q8RfKDpwnnS57LoX9FjGcyQfXxp9hxKZHVCTBI1ZTRfeIppTjRZstx06cvF+g2L6ozEnOkKkm2usIUOi1zouB3nE2AQu5xlqY8/g1mSgEZEZlzR/76WOU=
+	t=1742803201; cv=none; b=rZmUPj0fpn24OS1zjSAxEkyqPuL5q3N9fH6cxToLSwIbxU1XWPG/CdLzxI1JGGdsSQ+W2p9HoFQtss8bvzLQmyI6x0uMFHtnr926DgPovXadsiQs8sFP1q+nuZ6aeCIqhkUGZT7A9IuPaZfgwnZgWAtEte1cdKzc97EZr/TNtoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742802217; c=relaxed/simple;
-	bh=Wja2HIkcCc/qn+fhg7yuV0A96iCH9nSXOnTIZdyzsNU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VyfaqQb2cbWh+gz4zrOxERnoonCkuJjWa0sxWrDCTln5m9IYVYu4vdzzWermp128lBs12p+nVdHrysNpKwxSc4N4Q4K+547murt8QR/XIM9vlOENfs4AL1zb2MixMjYA2oMWs57QNLb79ERpLjXiwTs93icf0NIPtUJTiSCgF4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TNjgYoIo; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4393dc02b78so27173275e9.3
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 00:43:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742802214; x=1743407014; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ENeTUflag0l1WgJ9MraeaFTIx2U/M6/MceOO9Gs6H40=;
-        b=TNjgYoIoyymn/4+AglCvAOvp4FaS/0FG8fA9O9PbdR/7fN9vrgyJjmc/SPY3lV8xlr
-         8/joueCTVzHixOvZN6frHL4ivVU/SsOsdNrawpEFsfFJX8Ye8aa8whkthKUs7mLen5w7
-         /mdFYAc64y6rOx7U4HGM27lvHLIqdGhs1KN61LnUwG7/Iil9yo7MSDHqhru4CPTbSyxm
-         RpZs9KA1TUh9A4GU1yGOuOJpeW7Myd7x4gsr/5+lo1M29K44IQgunwSBxZL1x3ZTX9wX
-         Qv7ykq1CMHn/DbwsVw006bHR3pW2kLj131sRb06ODHwzJRUyO15uRXw3eHQFKCLX66Fe
-         mOYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742802214; x=1743407014;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ENeTUflag0l1WgJ9MraeaFTIx2U/M6/MceOO9Gs6H40=;
-        b=nThn+NFjSHv0WR45HRDWA9uurv2YW0Hh4mfMdo92qgNyTpmqWQ9BaJDB3M8GpZL8HW
-         D6GKbsUBZWd9eb6C9EKwTbRk17D3blNQfnIgvi/7Aq2tNWn3UPDu0AnqRqsZLN3aYiUg
-         mEKBYuzJDCO8L8WEqaVL8X82rx26HFrKA4xtQlhGX055ixVjw91VgL3NAYbBs/4rZYtx
-         VTsDqU5HVMMu8pBPR3KZk0p4QX2bWyPYOsJz9giInKGw1uZma3duTTWT3Nm4We5Ti94p
-         xIMHAbX8dHR7Vbh9g7mo3pJ4nQbwIT6fUsMU3FY3idn8wzt3tPxnx21M7ycZIw/zd5S8
-         SxEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWhDACknoMFH3/mi6yodDddvQ7yVoYb5yi7D2CmeHYkJ1bPMQEZXaiRWkxbi5XLHVM+1kYx2WhWRRj59PQEWg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVXPnLrC72/XBi3fwomlavrXQA0uLdmoZK0RqoHyueaEf2Jqhf
-	yfJvp2a7YHfCnUorcbLyxEKVmtGVfEz9u4xOgwHHBDxh5kRtBnnYYNYQLByXbLA=
-X-Gm-Gg: ASbGncu3naxUARJ8LUCI4goLzzCx4FC+iuT4rVIDDltrNyCiHS+cbUV+Qjs0PzCXZuY
-	jfa9hdoBhNJEL+NPqxuKR6ADO8QH3pHufToVgFAxMJqxFsyxX7W50wjgZjIms0+FhlB1scsnCgr
-	BJyRzT+C/fdRhJ/eqEQdBCgxVdSowcH2y+X1Z3qrp9tvJERezJ9YNlj9P7GnGplcoPgit6HNEQa
-	5Grmi3F4B7xTwXeCSVMS1E5hRdrPqHQy9giQLzt6pO9m/1D3bin1kdM85w4IndDxNQ7a3ioWXxZ
-	DV8OfkjpnKMAr55l2HqYU90XJW8g6AaC07cuIz5a3B+Ofjlb/g==
-X-Google-Smtp-Source: AGHT+IGmGmS5ufUfMSrgfk7DIRjiH+iIQAHj6POw/bNjEYZrqwMBfch1zIjXMn5LOd+CGNnKdNiELw==
-X-Received: by 2002:a05:6000:2a2:b0:390:f400:2083 with SMTP id ffacd0b85a97d-3997f89a039mr9195803f8f.0.1742802214396;
-        Mon, 24 Mar 2025 00:43:34 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3997f9eff9asm10311692f8f.92.2025.03.24.00.43.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 00:43:33 -0700 (PDT)
-Date: Mon, 24 Mar 2025 10:43:31 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Qasim Ijaz <qasdev00@gmail.com>, linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Bo Jiao <bo.jiao@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
-	James Dutton <james.dutton@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>
-Subject: Re: wifi: mt76: mt7996: avoid potential null deref in
- mt7996_get_et_stats()
-Message-ID: <d723d5c1-ed17-41b8-9bc4-274fd8e2b615@stanley.mountain>
-References: <20250322141910.4461-1-qasdev00@gmail.com>
- <d1df5d97-4691-40d4-a6cc-416505f35164@web.de>
- <92d1a410788c54facedec033474046dda6a1a2cc.camel@sipsolutions.net>
- <CAAMvbhGrJ9b3Aab9+2a5zmvEgf0GZFmHLCC7Hud+egUE28voHQ@mail.gmail.com>
- <223c7280-443d-49b4-96b2-90472339dcd4@stanley.mountain>
- <46a53498-6c20-48fd-b090-02163baefddd@web.de>
+	s=arc-20240116; t=1742803201; c=relaxed/simple;
+	bh=yLzSLdOSTQGAedUztotqEWdGAwkwW1lUAnZ8Bvjjprg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s8Fyw3LHLBDVP0zEZJHwgdLOwd2ItnbiOe70nhZUhNQr4XXinGmbmEz3WP6jMlVKYJqJs7Ge8UG4AiNXPBo5KUybs3kRzUOXtIK7b5lPb6lSzzs2MW9f/AZDNAGHC8xCldRHgZHks3QeOqKg70Hs2XrmICJI0MyNqZK87ZDsZC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost (unknown [124.16.138.129])
+	by APP-03 (Coremail) with SMTP id rQCowAD3njvzEOFnkvfSAA--.3661S2;
+	Mon, 24 Mar 2025 15:59:47 +0800 (CST)
+From: Chen Ni <nichen@iscas.ac.cn>
+To: pkshih@realtek.com,
+	linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Chen Ni <nichen@iscas.ac.cn>
+Subject: [PATCH] wifi: rtw88: sdio: Remove redundant 'flush_workqueue()' calls
+Date: Mon, 24 Mar 2025 15:59:10 +0800
+Message-Id: <20250324075910.407999-1-nichen@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46a53498-6c20-48fd-b090-02163baefddd@web.de>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAD3njvzEOFnkvfSAA--.3661S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKF1xZFy7tr1DuryrtFyxZrb_yoWfKFbE9r
+	WxKFs3KFWUGr1Ika1j9F43ZFy0kryDXF1rZa9xtrZ8t3y2q3yUZr95Zr1UJ34DZ34UCF9x
+	C3s8Xa48Xr98WjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbskFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1lc2xSY4AK67AK6r4xMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
+	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+	67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+	x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73Uj
+	IFyTuYvjfUesjjDUUUU
+X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
 
-On Mon, Mar 24, 2025 at 08:33:39AM +0100, Markus Elfring wrote:
-> > Also the "phy" point will never be NULL so the check should be removed.
-> How many tools can help to determine such a software aspect with
-> inter-procedural analyses?
-> 
+'destroy_workqueue()' already drains the queue before destroying it, so
+there is no need to flush it explicitly.
 
-You can just review the code.  There is only one caller.
+Remove the redundant 'flush_workqueue()' calls.
 
-Btw, it's fine to have unnecessary NULL checks so long as they're done
-consistently.  Generally, we prefer people not add unnecessary code,
-but if it makes you feel safer, most maintainers aren't going to nit-pick
-you about it.  If you are doing the work then you get some say your own
-code.
+This was generated with coccinelle:
 
-regards,
-dan carpenter
+@@
+expression E;
+@@
+
+- flush_workqueue(E);
+  destroy_workqueue(E);
+
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+---
+ drivers/net/wireless/realtek/rtw88/sdio.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index 6209a49312f1..682fdd84a09b 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -1298,7 +1298,6 @@ static void rtw_sdio_deinit_tx(struct rtw_dev *rtwdev)
+ 	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
+ 	int i;
+ 
+-	flush_workqueue(rtwsdio->txwq);
+ 	destroy_workqueue(rtwsdio->txwq);
+ 	kfree(rtwsdio->tx_handler_data);
+ 
+-- 
+2.25.1
+
 
