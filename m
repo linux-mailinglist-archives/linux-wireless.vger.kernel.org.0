@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-20738-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20739-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B154BA6D503
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 08:24:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFEDA6D508
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 08:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A923A163E19
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 07:24:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9DF7188D385
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 07:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFB0153800;
-	Mon, 24 Mar 2025 07:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BD619C56D;
+	Mon, 24 Mar 2025 07:24:50 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A4D747F;
-	Mon, 24 Mar 2025 07:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C101C17BEBF;
+	Mon, 24 Mar 2025 07:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742801060; cv=none; b=tIjrt5K1PwOeoXkAOXFFIyv+k1owLu2Wg/mPUJbAUvyUfwFHXOAnJZaZ6aOujjcYehzOQKmdJRJn5xdeY9w2YM3Q/IBGUT2GhC4iqEoZ11JthWYczam2Iab2Ws1Nogy1uZrnriEqWLRTKrMpYurkE3pl6THLJbO2zcXtOod9/e0=
+	t=1742801090; cv=none; b=dmsnt4gTKGWmH1nE5kKBsKAhQTwbihwqf3D9gUkJXCM7S3eSWden4goEmYQt3lfFp7BXxg97JCP8TGeMVN+URhDObHb0ZZFROfCbeuEXjWcMHg89Z4jtHev0CYzBIQmvyKu+X2Mt34va3OVtZXsQwfdfMzt2a8Z6eaVtJZzaZ2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742801060; c=relaxed/simple;
-	bh=zuS+oHD3rFoZ8oG5/la2bXWYbCop2ycdrxK3niCI/JY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cOMdtA/MR2bWS4rmhZGDKHLQqx2C4rUZNpC5kV4SCHXoO0+tfz4ioea3AYGWNj72Sb3zyRX8KKm+/g5UqHjkxxYOX7aAqRk+WSfTvnK/cfH+vmM0/gQ8SfUCFNboxgJFo7KRCkA5QVImvpWEwY2jTL91fjx9GyoyBVIKuBonHaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+	s=arc-20240116; t=1742801090; c=relaxed/simple;
+	bh=fmrdMorHUIYIjq2+A+VxG0w07gVfjpPytidFn/XNkas=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bqTTtHT31awZOi8qvJCYfzMB7dgAEaGc2oxNMrdyGjXWzNLGlElCY6pYjQLUYKY7ZjK/+ukziWTJ3zy1FYJqrqZv6g3Nhpa25M5GgR6II0TJ0BQ5k08esvfWFQevoZQKauG2/f60BndbLNjaQw5vfrs4etUjgAApaNvXFQZ/hxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O6MvWq012667;
-	Mon, 24 Mar 2025 07:24:10 GMT
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O60Pgx012093;
+	Mon, 24 Mar 2025 00:24:37 -0700
 Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45hm68hskq-1
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45hvqk9fjv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 24 Mar 2025 07:24:10 +0000 (GMT)
+	Mon, 24 Mar 2025 00:24:37 -0700 (PDT)
 Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
  ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Mon, 24 Mar 2025 00:24:09 -0700
+ 15.1.2507.43; Mon, 24 Mar 2025 00:24:37 -0700
 Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
  ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Mon, 24 Mar 2025 00:24:05 -0700
+ 15.1.2507.43 via Frontend Transport; Mon, 24 Mar 2025 00:24:33 -0700
 From: <jianqi.ren.cn@windriver.com>
 To: <stable@vger.kernel.org>
 CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
@@ -51,9 +51,9 @@ CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
         <miriam.rachel.korenblit@intel.com>, <yedidya.ben.shimol@intel.com>,
         <daniel.gabay@intel.com>, <shaul.triebitz@intel.com>,
         <benjamin.berg@intel.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 6.6.y] wifi: iwlwifi: mvm: ensure offloading TID queue exists
-Date: Mon, 24 Mar 2025 15:24:04 +0800
-Message-ID: <20250324072404.3796160-1-jianqi.ren.cn@windriver.com>
+Subject: [PATCH 6.1.y] wifi: iwlwifi: mvm: ensure offloading TID queue exists
+Date: Mon, 24 Mar 2025 15:24:33 +0800
+Message-ID: <20250324072433.3796220-1-jianqi.ren.cn@windriver.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,17 +63,17 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: PNzTTe2AUCEqgp6DmQRlzTVzMHmQ8oiD
-X-Authority-Analysis: v=2.4 cv=etjfzppX c=1 sm=1 tr=0 ts=67e1089a cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=Vs1iUdzkB0EA:10 a=bC-a23v3AAAA:8 a=QyXUC8HyAAAA:8 a=t7CeM3EgAAAA:8 a=NfUTzc1LGNvJgRzytgEA:9 a=-FEs8UIgK8oA:10
+X-Authority-Analysis: v=2.4 cv=XNkwSRhE c=1 sm=1 tr=0 ts=67e108b5 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=Vs1iUdzkB0EA:10 a=bC-a23v3AAAA:8 a=QyXUC8HyAAAA:8 a=t7CeM3EgAAAA:8 a=dhpSTt-VO9tcCkpurSoA:9 a=-FEs8UIgK8oA:10
  a=FO4_E8m0qiDe52t0p3_H:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: PNzTTe2AUCEqgp6DmQRlzTVzMHmQ8oiD
+X-Proofpoint-GUID: 6-fA1YJeTypOe1mTG6mX2IYkoANMBYgj
+X-Proofpoint-ORIG-GUID: 6-fA1YJeTypOe1mTG6mX2IYkoANMBYgj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-24_03,2025-03-21_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- malwarescore=0 lowpriorityscore=0 mlxscore=0 adultscore=0 suspectscore=0
- impostorscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
- clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
+ mlxscore=0 impostorscore=0 adultscore=0 spamscore=0 phishscore=0
+ mlxlogscore=999 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
  definitions=main-2503240053
 
@@ -104,10 +104,10 @@ Verified the build test
  3 files changed, 38 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 592b9157d50c..a82cdd897173 100644
+index 53302c29c229..f8af851474e5 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -1293,7 +1293,9 @@ static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
+@@ -1286,7 +1286,9 @@ static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
  
  		mvm->net_detect = true;
  	} else {
@@ -116,9 +116,9 @@ index 592b9157d50c..a82cdd897173 100644
 +			.offloading_tid = 0,
 +		};
  
- 		wowlan_config_cmd.sta_id = mvmvif->deflink.ap_sta_id;
+ 		wowlan_config_cmd.sta_id = mvmvif->ap_sta_id;
  
-@@ -1305,6 +1307,11 @@ static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
+@@ -1298,6 +1300,11 @@ static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
  			goto out_noreset;
  		}
  
@@ -131,10 +131,10 @@ index 592b9157d50c..a82cdd897173 100644
  						vif, mvmvif, ap_sta);
  		if (ret)
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 84f4a9576cbd..662efded3125 100644
+index 6b52afcf0272..46bf158eb4b3 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -1501,6 +1501,34 @@ static int iwl_mvm_sta_alloc_queue(struct iwl_mvm *mvm,
+@@ -1419,6 +1419,34 @@ static int iwl_mvm_sta_alloc_queue(struct iwl_mvm *mvm,
  	return ret;
  }
  
@@ -170,20 +170,20 @@ index 84f4a9576cbd..662efded3125 100644
  {
  	struct iwl_mvm *mvm = container_of(wk, struct iwl_mvm,
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-index 95ef60daa62f..799ea7675e01 100644
+index f1a4fc3e4038..5f7e9311e7e5 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
 @@ -1,6 +1,6 @@
  /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
  /*
-- * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
+- * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
 + * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
   * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
   * Copyright (C) 2015-2016 Intel Deutschland GmbH
   */
-@@ -577,6 +577,7 @@ void iwl_mvm_modify_all_sta_disable_tx(struct iwl_mvm *mvm,
+@@ -544,6 +544,7 @@ void iwl_mvm_modify_all_sta_disable_tx(struct iwl_mvm *mvm,
+ 				       struct iwl_mvm_vif *mvmvif,
  				       bool disable);
- 
  void iwl_mvm_csa_client_absent(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
 +int iwl_mvm_sta_ensure_queue(struct iwl_mvm *mvm, struct ieee80211_txq *txq);
  void iwl_mvm_add_new_dqa_stream_wk(struct work_struct *wk);
