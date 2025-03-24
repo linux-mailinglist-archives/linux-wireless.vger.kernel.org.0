@@ -1,123 +1,135 @@
-Return-Path: <linux-wireless+bounces-20736-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20737-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA27FA6D486
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 08:02:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C93A6D4F0
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 08:21:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 611C51891246
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 07:02:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37AE516A7AF
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 07:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9199123F37E;
-	Mon, 24 Mar 2025 07:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A11B250C19;
+	Mon, 24 Mar 2025 07:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XQhiXis5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2B623ED76
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 07:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5B4250BFC
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 07:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742799746; cv=none; b=tc9yfQgMiuAgQTYmb03FiK12Y4aembdZiQ2Oc8ygxSzfJrnWTMeLuklgSSHxo4KqeXmYxl4UjDiapzwInNsoMAsYvpV63m/OnsA8MGPnglgty91RtKVuOEZyHmNUfcKCteo9c2YFI3n3lnGS4NCdD7UfIot4oFsUMyOPhcX8WZw=
+	t=1742800881; cv=none; b=EVMtLHp8ZfeUY608VCq5EeZSGS5XEiKqDyFFKMkf/Vox6E+j+02oXjAjI7OlyxVNZW+IH1m0aFClvYURm+1AM4lcF5xankNyniPDGCBCjLB3TEnBDSla1Ozz1CgXyzEn6cnGlZ7PocIugm1brpH66xxmtdR3y49onabpd7lwcEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742799746; c=relaxed/simple;
-	bh=HJqDwxWZVfqlU6dfLTGTpVmjksKf0kH6KxaX8CWxnQU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qZ4UhrYeZUML5vSiJeiDK7bjQYV0hK/a1dwJJRD0bzL9KLVt/jdPowDUSfBdwhf/6DbrD5Vb7jR0l/2vqWX8G5+slDwXKHaj14kPdFZKtJKkAG8pSkX4b1NaP2qvWqPGAub0uwuMx+OOwsOZns+Ucc/tPB7reqe6AilWgfREImM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1twbp9-0007gH-IM; Mon, 24 Mar 2025 08:02:15 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1twbp8-001Miw-1t;
-	Mon, 24 Mar 2025 08:02:15 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1twbp8-00DqVk-2w;
-	Mon, 24 Mar 2025 08:02:14 +0100
-Date: Mon, 24 Mar 2025 08:02:14 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Jeff Chen <jeff.chen_1@nxp.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	briannorris@chromium.org, johannes@sipsolutions.net,
-	francesco@dolcini.it, tsung-hsien.hsieh@nxp.com
-Subject: Re: [PATCH v4 2/2] wifi: mwifiex: Fix RF calibration data download
- from file
-Message-ID: <Z-EDdrA4s5GvHKvB@pengutronix.de>
-References: <20250220061143.1417420-2-jeff.chen_1@nxp.com>
- <20250318050739.2239376-3-jeff.chen_1@nxp.com>
+	s=arc-20240116; t=1742800881; c=relaxed/simple;
+	bh=E9owmNnpaBQQCQAwyR1buIix4ekPhB+GNCnSVEh6Bd4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ws0lFg46nKlkdp0GY2Z80c6ok5EikUMyvknxC5BEz4g2d34lBesthCB2/Olmq+CtzMk1GUF/NmIqgufnpJNMzYiDGmyTL4u9MK8lnq4Fs6sxgJqALMU8pHM71XBQuY8fo/dd76dNuhHzphGpDLs40hHLCcbk/xXfulkaUQ0ONxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XQhiXis5; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O6cMCf023049
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 07:21:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	HJ8685mCmgsitSKIEUunf1oA3s66xel4PR1PeM1GFJ0=; b=XQhiXis5GKV6C16X
+	JbS8qaaECp1gX+sun0SrsPD482pp8N4EsB89lAye1zoAPoe77E73fIKVGmZRDDF0
+	s5+9+aj0qYkxjMaV8+0j7eTq6LxXNYImbYzB0TE0L8T+23MBYVonFoR3yAz1qVvK
+	h7hmPj/gURjnu6/IeMX0RZBqHr5CtR1YVCZOFr9xFrhqkvoAvT1l+aMwJdtY7mbq
+	D2ZCksdizJvVcErvJtm9Wkc+amJlLdeIseUW9M9ffb/hLdRmZ2iByySfNvwV9btU
+	6IRQ++N/1yIWg4QTow8EDksFKWD6ndPmt2z634aP9pFmlxbiiYdoa9rNYAccNl3v
+	uP7JIg==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45hjwhkk9f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 07:21:12 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2255ae39f8fso90845895ad.0
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 00:21:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742800871; x=1743405671;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HJ8685mCmgsitSKIEUunf1oA3s66xel4PR1PeM1GFJ0=;
+        b=Jc7r/YDnoowCRd24LcrOt5R82OSontnW5kWSWd8AUCga0RLMYDNouSQIQINByRV8dz
+         WjZVFqHCpsYf9P4SZoK+LjNshJcuj6KliYsEvMzT09Sk4K7Epu8MVfW+AfHnqyx2N/aM
+         L6E4vYTpv5rRUfRAoT2oYUH/ZPXGuLdAXeiuO/w4MxphAomvYZa2r2PwsU2bSrJfReIK
+         2Na0yogzo0jS0ZF8agBSiB2xy/l3ScjobInZoKKvNTmnwxSXVUf/1ljE9eU+5HUQZCP4
+         UG39pz4j+ntB9PKJDh8PhJri36v8sbe2X1deC/83NjUki5MsYu0Vl3gACTo6axnWYr2d
+         RsNg==
+X-Gm-Message-State: AOJu0YyJtkbKoNxRgNXfGCxYVcoTr/Cv5pI6gWmIYhqXb9sMXV8uApb9
+	8b3abJ7FAulbBcBqOj37miBEwmWxbDughideYBNLfsru5Tf/Znym+TYbad+9fsX1Tw11Ii4JQ6y
+	WxUOasKjiTKNVWu1F2UUztarja5gCjTuf4+Ei9MhZpekyvAtI4oismMgggz3nhzP6iQ==
+X-Gm-Gg: ASbGncskNOoRh+cluY0G1mqjZoibVHgVw2Bma9HXPr2RJskW1HYmrSbx34G/4tZBQ1j
+	H84383Ow7nwH5vE+DckBUiyRUs8qrq7zCJUj/lyqAK85aoDZpO65s8jKecKk1aUCJqSviac18Lp
+	n9xujhpKtLi/I8HqD9GOwE+miXyH9oAq2060PJuJM2vai53IaFZITYt4mm0Pu8mJR6SQ8c00Ndv
+	me0zJd6nfpAaZtVXWQ/dEUrJoOurpx0qKH85qaVol7nzHAVfhCnTdenEjr90MM3Hr/Y6+rva+fl
+	AmvvGR975eqpbId6c10eKniqfxEAqcTj7f/j2aFbwvF1+fgJJqfexantwX6p0kI=
+X-Received: by 2002:aa7:9a8c:0:b0:736:4c3d:2cba with SMTP id d2e1a72fcca58-7377a1b1965mr26587288b3a.9.1742800871360;
+        Mon, 24 Mar 2025 00:21:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGqObw/iye2SAF7GUJa02kgdBGQNx+DF8iOEAXtzsMe81ACzu7mqqP9GDJu4G97SKez+5thFg==
+X-Received: by 2002:aa7:9a8c:0:b0:736:4c3d:2cba with SMTP id d2e1a72fcca58-7377a1b1965mr26587250b3a.9.1742800870665;
+        Mon, 24 Mar 2025 00:21:10 -0700 (PDT)
+Received: from [192.168.225.142] ([157.49.235.36])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af8a23dc8e4sm6457091a12.0.2025.03.24.00.21.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Mar 2025 00:21:10 -0700 (PDT)
+Message-ID: <30351fd9-3fe5-359e-de71-22575c4f48cd@oss.qualcomm.com>
+Date: Mon, 24 Mar 2025 12:51:06 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250318050739.2239376-3-jeff.chen_1@nxp.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v11 09/10] wifi: ath12k: Move to NO_VIRTUAL monitor
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250324062518.2752822-1-quic_periyasa@quicinc.com>
+ <20250324062518.2752822-10-quic_periyasa@quicinc.com>
+Content-Language: en-US
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20250324062518.2752822-10-quic_periyasa@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=H+jbw/Yi c=1 sm=1 tr=0 ts=67e107e8 cx=c_pps a=IZJwPbhc+fLeJZngyXXI0A==:117 a=P3F+j+0UjHwaDtf4GQVMUw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=R3Fj9Vh-w1QtjPU8CJIA:9 a=QEXdDO2ut3YA:10
+ a=uG9DUKGECoFWVXl0Dc02:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: JbTC3IkW73FImFEAUH9jut0jwfDl4OLP
+X-Proofpoint-ORIG-GUID: JbTC3IkW73FImFEAUH9jut0jwfDl4OLP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-24_03,2025-03-21_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 adultscore=0
+ phishscore=0 malwarescore=0 mlxlogscore=985 priorityscore=1501
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503240052
 
-On Tue, Mar 18, 2025 at 01:07:39PM +0800, Jeff Chen wrote:
-> This patch resolves an issue where RF calibration data from a
-> file could not be downloaded to the firmware. The feature to
-> download calibration data from a file was broken by the commit:
-> d39fbc88956e.
+
+
+On 3/24/2025 11:55 AM, Karthikeyan Periyasamy wrote:
+> Currently, VIRTUAL monitor handling is present. In multi radio model,
+> VIRTUAL monitor is not suitable since each radio needs a separate VIF and
+> channel context. Therefore, switch to NO_VIRTUAL_MONITOR feature. Remove
+> the monitor_conf_enabled flag and mac_op_config() handler as they are not
+> need for the NO_VIRTUAL_MONITOR feature. In NO_VIRTUAL_MONITOR handling,
+> each interface creation/deletion triggers the mac_op_add_interface() /
+> mac_op_remove_interface() callback. Consequently, remove the monitor vdev
+> create/delete/start/stop from the other vdev type handlers.
 > 
-> The issue arose because the function `mwifiex_cmd_cfg_data()`
-> was modified in a way that prevented proper handling of
-> file-based calibration data. While this patch restores the ability
-> to download RF calibration data from a file, it may inadvertently
-> break the feature to download calibration data from the device
-> tree. This is because the function `mwifiex_dnld_dt_cfgdata()`,
-> which also relies on `mwifiex_cmd_cfg_data()`, is still used for
-> device tree-based calibration data downloads.
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > 
-> Fixes: d39fbc88956e ("mwifiex: remove cfg_data construction")
-> Signed-off-by: Jeff Chen <jeff.chen_1@nxp.com>
-> ---
->  drivers/net/wireless/marvell/mwifiex/fw.h      | 14 ++++++++++++++
->  drivers/net/wireless/marvell/mwifiex/sta_cmd.c | 11 +++++++++--
->  2 files changed, 23 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-> index 4a96281792cc..91458f3bd14a 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/fw.h
-> +++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-> @@ -454,6 +454,11 @@ enum mwifiex_channel_flags {
->  #define HostCmd_RET_BIT                       0x8000
->  #define HostCmd_ACT_GEN_GET                   0x0000
->  #define HostCmd_ACT_GEN_SET                   0x0001
-> +#define HOST_CMD_ACT_GEN_SET                  0x0001
-> +/* Add this non-CamelCase-style macro to comply with checkpatch requirements.
-> + *  This macro will eventually replace all existing CamelCase-style macros in
-> + *  the future for consistency.
-> + */
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-Just ignore this checkpatch warning. We don't want to have duplicated
-defines just for silencing checkpatch. If anything we could change all
-the CamelCase defines throughout the driver in one go.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
