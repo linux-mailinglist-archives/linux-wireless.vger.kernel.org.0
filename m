@@ -1,70 +1,73 @@
-Return-Path: <linux-wireless+bounces-20769-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20771-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA0BA6DFD4
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 17:35:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A33DA6DFD7
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 17:35:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A68C3A87CA
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 16:34:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D315170D38
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 16:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDE1263C85;
-	Mon, 24 Mar 2025 16:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74B7263F2C;
+	Mon, 24 Mar 2025 16:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="pKMjuk9/";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="cWwiFe9L"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="urPNGqkZ";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="JmdGFrB/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from e3i165.smtp2go.com (e3i165.smtp2go.com [158.120.84.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E264263F29
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 16:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98D5264609
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 16:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742834065; cv=none; b=Ax3jyCWsRf54rjhfZ6FgRrG8kBYmIS64kbcf47UMb3pgziNI3ayLS2yxaPQsYkAM81aQSk/tWThFex8QAPQa+Ub71rV30NczW9CHxyHLfRwiMkpoZ3IyY2oKogfW1QOCs/BRsYvSgKjBcBS76rKySziY3vhw3zVRj5Gq+RLTQk8=
+	t=1742834071; cv=none; b=tebOhMkBUE0tbp/NC39Nln9nMQRpqJKlOjc7LvZudLpW8yy+JJC75NjQ0Bw0btWaYjHPkUIDyXnR4hMxzRi1FBAqTR1FQjnXGm+QO7zB2AWC7CQJWc6bO1lAjeldXCPqEM+/6REEw42n3L5Cei8Iy0HiwZCMfHA8QlsPpGHtEY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742834065; c=relaxed/simple;
-	bh=vtZr+kdulmEXyEwSmc6+O2wvWASjNK0fs9aMJTZW71o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i3/MsmhAekaxm1nXEpwyy3+fjkSjj4KvDS+i29Pod2V4XRf+/VHzP7QPEPiTr4U+5PjcbCvzQxUR4Dlsb1dWBb47b2wygbo7prS9RQu7ebZ2+42WYxNt1iQBCqMIfyh/GAAfA3SeZbbWsp4VaHeXFLeX7zldEs6tsECatTqLf8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=pKMjuk9/; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=cWwiFe9L; arc=none smtp.client-ip=158.120.84.165
+	s=arc-20240116; t=1742834071; c=relaxed/simple;
+	bh=rzhCWchD87I7ztxWtfLe2qG+z3B3I2xgab4DuMfQauE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=muP7D6yXXOFrRKqyjANa2XtDrbisp+794dapxIOnTq+rX7P105SqzAHli/tgoH8alwf2Hfi4F3MNqtFXQrndzeoA8X8kX3x29HysvL+BbPzBEKKANxAyQJMd6s98jfWNzpyhqy5MksiUdSEn95KtQUGj0lp8hX/Jgxdr/9+aj14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=urPNGqkZ; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=JmdGFrB/; arc=none smtp.client-ip=158.120.84.165
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
- i=@smtpservice.net; q=dns/txt; s=a1-4; t=1742834060; h=feedback-id :
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1742834064; h=feedback-id :
  x-smtpcorp-track : date : message-id : to : subject : from : reply-to
  : sender : list-unsubscribe : list-unsubscribe-post;
- bh=BwuwOuq+8Kdc1kpOd1ZfhyKeU2liqexDzuOzbtKiZao=;
- b=pKMjuk9/qqAg81EjL5aCnBxUeEridwKbh+WvQ/ed8Gq+gjf1KgDven4bSnj1SzcNmpDSM
- mg/amIde4SDY4hiEIJe8UeoiUcequF0czEessoRdICToxsLcmoBx6EyHmxc0nWcStj+6oW1
- LabMPrCZ0Wa1LaXFi6UzTfHpJh9Kz25TdmlnVOZXhcFyxdcrSE9XsKdmqF8nhN2oIB0FmZT
- dLHIkBOnW3S8fGKpocjJWOF7JGF33szfzLh7PHZT5ApWYV/h57pIiT+80m8fvFLGGr8cAMv
- 8Vjgeo44Bbu1qGXBIrzlJsS9TDbtpXdeTvG23ApN1RTRYWCgXy3ocWHmb/Ew==
+ bh=1NTS6jCiyypS+X7Y3GlJTmuu6rQHp2cIDev00qbGtlg=;
+ b=urPNGqkZg8C4YreF8rNtUX57XSrrMCCnxGdxobZBzRTz7JFeQYVlopABKvGju/kgzHqY6
+ NrvgpWOIZCUQR9tYMpJOEJkxLB6WFwe7+qdBuoX3lyE8867vrkMFoi5BrafT/JGWE5nxAia
+ fV6e7tRfYdsZbCEQilH9N1AZeLTy+LXlZR/59ULApcXfNwnHzoKnreKp7gpWMPONypJOA/3
+ uwq34/4t8bOMEWG8BqcE2221b1BB/x1nQrI8arSrfCjD8wijJ2G17JkM2P808PDIY4XbDvK
+ HgAxnAWnfYli31mTIg8t+Z5N3Gxr8e6pIj0lZ+z29+UOHTgs++PTn2NQ2aJA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1742834060; h=from : subject
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1742834064; h=from : subject
  : to : message-id : date;
- bh=BwuwOuq+8Kdc1kpOd1ZfhyKeU2liqexDzuOzbtKiZao=;
- b=cWwiFe9LuzSCwCEczS1+axqOvcvJunc7NJihJhZ7neLzkxmBf1Hhl9cGfdGpBYdHcKLAQ
- i84mI9zQDOqSHWE8RfZ0UVyyOTeH7zW1kv6gTvzN7gSHq0Wg004fZhlBCGt6chS7NVDsSfB
- 5ea5igIrl8PrlGiQYKQTZoK9HmqVDPZGAQONuBs2nAKajRU4WpeICXxEHszSlWXjF3bxe9D
- rxeAvoJpVF62BpO8M8LM3YUs9I7tFHhxuW5NTHynGb/W1wE6I8aLxbfmMeXSwmofKX7x1X9
- Vi0ZYAI98fg3acK1Uha8i95gvg2H+a4NvjvA3169HiiRA1rN1c0QYw2aVAXA==
+ bh=1NTS6jCiyypS+X7Y3GlJTmuu6rQHp2cIDev00qbGtlg=;
+ b=JmdGFrB/9W4a8RtfOU7s9mzPBE/gfo98gIvEvDjy6ZruJ9crhqFlvpEMdA8V6v0Y96XDN
+ 7QxeydoSX8DigO1q9BtWfVMPRDdmN0MMkwtNDxQIiaHDtnotCPg63rhkBZfU3kvhl9Wbxn6
+ A/v/5eL+9vQ65WVT4mJeF2OB6ZRTP83h4ZElWFsIuyGmX987rsNm9NCwcyPcml1xdrmXuBq
+ XY6n01FmUQBxhEoOb047xupD268Bx91ymfnCQztaAvSj9Sf56w3b4t3QlO4GMakBAHbNjAz
+ y2pW/k6ZwAHwwQ6x0v13tj8fylw+RD1iUYgz2E6t4vGVR8wqu/Yfd4BpEfmQ==
 Received: from [10.12.239.196] (helo=localhost)
 	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97.1-S2G)
 	(envelope-from <repk@triplefau.lt>)
-	id 1twkkj-4o5NDgrs054-kFOZ;
-	Mon, 24 Mar 2025 16:34:17 +0000
+	id 1twkkk-4o5NDgrs07b-lUJC;
+	Mon, 24 Mar 2025 16:34:18 +0000
 From: Remi Pommarel <repk@triplefau.lt>
 To: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Johannes Berg <johannes@sipsolutions.net>,
 	Remi Pommarel <repk@triplefau.lt>
-Subject: [PATCH wireless v2 0/2] Fix packets processed after vif is stopped
-Date: Mon, 24 Mar 2025 17:28:19 +0100
-Message-Id: <cover.1742833382.git.repk@triplefau.lt>
+Subject: [PATCH wireless v2 1/2] wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()
+Date: Mon, 24 Mar 2025 17:28:20 +0100
+Message-Id: <06aa507b853ca385ceded81c18b0a6dd0f081bc8.1742833382.git.repk@triplefau.lt>
 X-Mailer: git-send-email 2.40.0
+In-Reply-To: <cover.1742833382.git.repk@triplefau.lt>
+References: <cover.1742833382.git.repk@triplefau.lt>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,36 +76,93 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 510616m:510616apGKSTK:510616st8gJk_fpU
-X-smtpcorp-track: _-Q-zmYJZCGd.1NRQJBS7ei_w.CEjyQAltNCH
+Feedback-ID: 510616m:510616apGKSTK:510616s6QhpvA6O8
+X-smtpcorp-track: OvQ5fbPVu4PM.D5hr158FtnhK.cBrepwdM64H
 
-Those are a couple of fixes that prevent crashes due to processing
-packets (especially multicast ones) for TX after vif is stopped (either
-after a mesh interface left the group or interface is put down).
+The ieee80211 skb control block key (set when skb was queued) could have
+been removed before ieee80211_tx_dequeue() call. ieee80211_tx_dequeue()
+already called ieee80211_tx_h_select_key() to get the current key, but
+the latter do not update the key in skb control block in case it is
+NULL. Because some drivers actually use this key in their TX callbacks
+(e.g. ath1{1,2}k_mac_op_tx()) this could lead to the use after free
+below:
 
-The first one ensure the key info passed to drivers through ieee80211
-skb control block is up to date, even after key removal.
+  BUG: KASAN: slab-use-after-free in ath11k_mac_op_tx+0x590/0x61c
+  Read of size 4 at addr ffffff803083c248 by task kworker/u16:4/1440
 
-The second one ensure no packets get processed after vif driver private
-data is cleared in ieee80211_do_stop().
+  CPU: 3 UID: 0 PID: 1440 Comm: kworker/u16:4 Not tainted 6.13.0-ge128f627f404 #2
+  Hardware name: HW (DT)
+  Workqueue: bat_events batadv_send_outstanding_bcast_packet
+  Call trace:
+   show_stack+0x14/0x1c (C)
+   dump_stack_lvl+0x58/0x74
+   print_report+0x164/0x4c0
+   kasan_report+0xac/0xe8
+   __asan_report_load4_noabort+0x1c/0x24
+   ath11k_mac_op_tx+0x590/0x61c
+   ieee80211_handle_wake_tx_queue+0x12c/0x1c8
+   ieee80211_queue_skb+0xdcc/0x1b4c
+   ieee80211_tx+0x1ec/0x2bc
+   ieee80211_xmit+0x224/0x324
+   __ieee80211_subif_start_xmit+0x85c/0xcf8
+   ieee80211_subif_start_xmit+0xc0/0xec4
+   dev_hard_start_xmit+0xf4/0x28c
+   __dev_queue_xmit+0x6ac/0x318c
+   batadv_send_skb_packet+0x38c/0x4b0
+   batadv_send_outstanding_bcast_packet+0x110/0x328
+   process_one_work+0x578/0xc10
+   worker_thread+0x4bc/0xc7c
+   kthread+0x2f8/0x380
+   ret_from_fork+0x10/0x20
 
-v2:
-  - Add Fixes tag
-  - Clear SKB's control block key before in ieee80211_tx_dequeue()
-    instead of ieee80211_tx_h_select_key()
-  - Add wireless tag and fix type in subject
-  - Because subject changed, v1 can be found at
-    https://lore.kernel.org/lkml/cover.1741950009.git.repk@triplefau.lt/
+  Allocated by task 1906:
+   kasan_save_stack+0x28/0x4c
+   kasan_save_track+0x1c/0x40
+   kasan_save_alloc_info+0x3c/0x4c
+   __kasan_kmalloc+0xac/0xb0
+   __kmalloc_noprof+0x1b4/0x380
+   ieee80211_key_alloc+0x3c/0xb64
+   ieee80211_add_key+0x1b4/0x71c
+   nl80211_new_key+0x2b4/0x5d8
+   genl_family_rcv_msg_doit+0x198/0x240
+  <...>
 
-Remi Pommarel (2):
-  wifi: mac80211: Update skb's control block key in
-    ieee80211_tx_dequeue()
-  wifi: mac80211: Purge vif txq in ieee80211_do_stop()
+  Freed by task 1494:
+   kasan_save_stack+0x28/0x4c
+   kasan_save_track+0x1c/0x40
+   kasan_save_free_info+0x48/0x94
+   __kasan_slab_free+0x48/0x60
+   kfree+0xc8/0x31c
+   kfree_sensitive+0x70/0x80
+   ieee80211_key_free_common+0x10c/0x174
+   ieee80211_free_keys+0x188/0x46c
+   ieee80211_stop_mesh+0x70/0x2cc
+   ieee80211_leave_mesh+0x1c/0x60
+   cfg80211_leave_mesh+0xe0/0x280
+   cfg80211_leave+0x1e0/0x244
+  <...>
 
- net/mac80211/iface.c | 3 +++
- net/mac80211/tx.c    | 1 +
- 2 files changed, 4 insertions(+)
+Reset SKB control block key before calling ieee80211_tx_h_select_key()
+to avoid that.
 
+Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+---
+ net/mac80211/tx.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index a24636bda679..0c6214f12ea3 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3893,6 +3893,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	 * The key can be removed while the packet was queued, so need to call
+ 	 * this here to get the current key.
+ 	 */
++	info->control.hw_key = NULL;
+ 	r = ieee80211_tx_h_select_key(&tx);
+ 	if (r != TX_CONTINUE) {
+ 		ieee80211_free_txskb(&local->hw, skb);
 -- 
 2.40.0
 
