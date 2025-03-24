@@ -1,111 +1,82 @@
-Return-Path: <linux-wireless+bounces-20744-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20745-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A203BA6D5BE
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 09:03:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EEC8A6D711
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 10:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D86616B4BB
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 08:03:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C9E03A9FCC
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 09:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCB125C71B;
-	Mon, 24 Mar 2025 08:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4828D25D917;
+	Mon, 24 Mar 2025 09:11:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FIdz+bY9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB630EEAB;
-	Mon, 24 Mar 2025 08:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E1A25DAE3;
+	Mon, 24 Mar 2025 09:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742803391; cv=none; b=lsCHq+6xTSJHNvA/kkHb+GoseFZxusF86LSsz9MmYiIrAqcaOHuvoZ2a3KFIixOSEpqPFgAlIl6vhKauZcrsEKi/vjOkwh0RLIsZ4IIFwdkQmF9GozVKOQArmTXcZs0ySWAP0/bI9IEkN70pIRhemr1j2sWdHIBgUij84hxr0mk=
+	t=1742807505; cv=none; b=bOdjXPm6J4zRGSe9WN89xZzX9wm6f/ezPTgjRaGLJHc/CqqvwGPdlmSDAjeafv+NqWJp9bRFtK20VnQ1QI+w+OiwfSLcEhT3ppG7DazzXYzfRAlRg6G/cGv9mlBPl4ra1nSALPkOAslXxdk65Pv3+0+V9bcr2H2AwvTEGqjunDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742803391; c=relaxed/simple;
-	bh=FJY3fJQcYQfxI8Zea0PmPCWsuDdPzJkMEb6ylvOn5V0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BAjlI2ZpOYkRAnDwR/DhE/xSXkMmiYkS/NzYy3xrYRhwY0Vf9gpWtIfkukCKgfrB9Xi/QeBHR6I6teREAAz3x6cnV1jUgsznyQG125kfgUha825jqrGNHEJaBynciBdZfKbk224TrkmLFVpMNhuF9gyH+ODUbae4MU9ZbPTVv/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost (unknown [124.16.138.129])
-	by APP-03 (Coremail) with SMTP id rQCowADnkj+5EeFnzivTAA--.3732S2;
-	Mon, 24 Mar 2025 16:03:05 +0800 (CST)
-From: Chen Ni <nichen@iscas.ac.cn>
-To: pkshih@realtek.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Chen Ni <nichen@iscas.ac.cn>
-Subject: [PATCH] wifi: rtw88: usb: Remove redundant 'flush_workqueue()' calls
-Date: Mon, 24 Mar 2025 16:03:03 +0800
-Message-Id: <20250324080303.408084-1-nichen@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1742807505; c=relaxed/simple;
+	bh=xtSXh6+Zee/Qft/ZxFihJqkWvvhc0WQOhGMs9uEvn2g=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lDPkY0htH7Are60DnyDXNVD97j/L49JiRJZADQlWaRz3vNGwOzymmWSq5B7rGQk6l7ZKJxeu+/aBGwp1poORsXOz68DGDnbPmJLt2WFFicnjNCGShFyGjMyTLQy20pEsQYWpH5qvxvM8hNA2AbrmWkPBBGKAX5KP/j+x1dEr6zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FIdz+bY9; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=ClmexxLxtozHEJVd1kpHjy+FBvc2bx8jEjpjkQaesy0=;
+	t=1742807503; x=1744017103; b=FIdz+bY9YVYWs87kGsN8m6+Dzbl2uoaQzuqS4CHBlq0I+Ee
+	PnX0OlKV8szjS6h50YiI6Eln0xodcIzfw2bEUQBWbY4nVgnAfjivnmM42R5ilhB+mk3rkaSHZ2m3s
+	EmEhBzw+Srxa+fg46+DQANB6Sp6qqTKYULBzXOAzSEr0+1nCfyq1yGEsQmfKvieKvzMcvLq7VjslD
+	rX9Cc0XcMUYeJubsXaA4NwraXJE3zAMjvCuBPQr08wSfoSL3bc905wVrlFM4vruph6jD8flPqVeql
+	p9AdCnUn4JV+AuFHcvQ3sbTuSxuwduby088LgKn2+mbWA4rYxJk96kOp+Ejw9Dmw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1twdqH-00000003u77-0qg7;
+	Mon, 24 Mar 2025 10:11:33 +0100
+Message-ID: <c1848940ceaf2f716041eefcaba381202f5e50c4.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless] wifi: iwlwifi:: fix spelling errors
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Wang Liang <wangliang74@huawei.com>, miriam.rachel.korenblit@intel.com, 
+	ganjie182@gmail.com, emmanuel.grumbach@intel.com, avraham.stern@intel.com
+Cc: yuehaibing@huawei.com, zhangchangzhong@huawei.com, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 24 Mar 2025 10:11:31 +0100
+In-Reply-To: <20250324030021.2296493-1-wangliang74@huawei.com>
+References: <20250324030021.2296493-1-wangliang74@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowADnkj+5EeFnzivTAA--.3732S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKF1xZFy7tr1DuryrtFyxZrb_yoWkuwbE9r
-	WxKFsrKFWUGr1S9w4Utr1rZFy0vrWDZF43Xa93try5K3yjq3y5Zrs7Zr1kGrWDWw4UCF17
-	C34kX3W8X393WjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbsAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1lc2xSY4AK67AK6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-	67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-	x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
-	UI43ZEXa7VUjnXo7UUUUU==
-X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
+X-malware-bazaar: not-scanned
 
-'destroy_workqueue()' already drains the queue before destroying it, so
-there is no need to flush it explicitly.
+On Mon, 2025-03-24 at 11:00 +0800, Wang Liang wrote:
+> Fix some spelling errors in comments:
+>  - configuraiton -> configuration
+>  - notificaiton -> notification
+>=20
+> No functional changes.
+>=20
 
-Remove the redundant 'flush_workqueue()' calls.
+FWIW, spelling errors really don't need to be fixed on wireless, that
+can wait for wireless-next.
 
-This was generated with coccinelle:
-
-@@
-expression E;
-@@
-
-- flush_workqueue(E);
-  destroy_workqueue(E);
-
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
----
- drivers/net/wireless/realtek/rtw88/usb.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index c8092fa0d9f1..667473b7a9f5 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -948,7 +948,6 @@ static void rtw_usb_deinit_rx(struct rtw_dev *rtwdev)
- 
- 	skb_queue_purge(&rtwusb->rx_queue);
- 
--	flush_workqueue(rtwusb->rxwq);
- 	destroy_workqueue(rtwusb->rxwq);
- 
- 	skb_queue_purge(&rtwusb->rx_free_queue);
-@@ -977,7 +976,6 @@ static void rtw_usb_deinit_tx(struct rtw_dev *rtwdev)
- {
- 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
- 
--	flush_workqueue(rtwusb->txwq);
- 	destroy_workqueue(rtwusb->txwq);
- 	rtw_usb_tx_queue_purge(rtwusb);
- }
--- 
-2.25.1
-
+johannes
 
