@@ -1,175 +1,112 @@
-Return-Path: <linux-wireless+bounces-20785-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20787-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1601BA6E54A
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 22:15:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C237A6E6F3
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 23:59:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4C4189D394
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 21:12:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B28616AADE
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 22:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2CE1F1518;
-	Mon, 24 Mar 2025 21:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB111DA628;
+	Mon, 24 Mar 2025 22:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=conclusive.pl header.i=@conclusive.pl header.b="gjQCKM5R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvgPWPRc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE48F1E2852
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 21:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C391198A34;
+	Mon, 24 Mar 2025 22:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742850666; cv=none; b=JRZEHOFdK6vi+3zNMYSMs5AsT/04SoiPwgyCWnQLimvmxJVN22nEtcnA2PsxwUNZHBLZNDdmtmbkt80ewro48RhNkjUpa0O9kKaQwgnBWjMIPbICFaE4L2xUL1MXvQMnnYenm/LES0aUm09hiMhAKf58VPzbHymT3Bbz+S6CZng=
+	t=1742857193; cv=none; b=FaPSe23ou30lB53ANY0e/FJYIZ4k4sf7JemGs34N6arH0aOnbCAcApYae43pPE+vfKoxkVn4AjNEFsE+gC7ZFmMxsCNrfY+c1OoEub9AfoWdkD6Eu0GRHrOg2SNY3jH01VnL3tFMbxpfYW/AY4A4hZ9rBHm2SJ1wPkIOYIDoJwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742850666; c=relaxed/simple;
-	bh=4RQgTHTB8Ct6Xa+I+6KGuh64DGDd4HkaTwvKvZHrn6c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jY1cir4cr3/vMXEe+OYuvqHUVpTc23DeUtxIDRmKsziUrEjibVFPdwfF3FRHPBOxsiYGYNjMxn5zpzfop29O5yD8Ky/9nyRz/KLq1LVv2JhVVe34gyLuebMtevtIuWNr/SquOkGE3sohcqwmqJSSWHow5xjPCcwBouy2p73vQQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=conclusive.pl; spf=pass smtp.mailfrom=conclusive.pl; dkim=pass (2048-bit key) header.d=conclusive.pl header.i=@conclusive.pl header.b=gjQCKM5R; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=conclusive.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=conclusive.pl
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5e8be1c6ff8so8673739a12.1
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 14:11:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=conclusive.pl; s=google; t=1742850663; x=1743455463; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2JyTyzWQzsPLSAvCjZH0qopjCEpB8Oh/jlTrjLbGKY8=;
-        b=gjQCKM5RhsXU2FWx+QAPyuLE2aSr0a0JeiIi+vVJDwd4MD8VQkbt/lID5z3nRJQttL
-         ggPBddmJKb/27PJTK6ALT+a9M7BneiWBlvgh2poG2Sr7IkFJLXU4ERY4yXrUI1Y4ueF6
-         KEsprez5pihAZS4LLthy1dy3DAdm3ZjEAUEfX3KFXrNZXsIaNHd0gDEA/eCyEPnKESH5
-         i/rBsKltbv3KJ3hlZwd8TxWedSTV9miXPuUpyrysvdtKuXTSKBB6LvXJLbom44yYbhhn
-         uWNo1lwvPZIE+jKcRiXx136UDnG//cCUiPpQpRTYg9IoMzBbgmrQehHrkz2O91U1VQoh
-         4byA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742850663; x=1743455463;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2JyTyzWQzsPLSAvCjZH0qopjCEpB8Oh/jlTrjLbGKY8=;
-        b=ohPkFHsI4kLMtQOn5VhkRivdKzLh1xaiEobhwKt1Bgp0UP+fjdsGkR3fpdau1aX5Sk
-         BhQRzxKm3nFdtlJYJccOHXKT85FHls1QTnlBERqLz8kcNCOOw7BOCJYABp6f/Ms5Aoky
-         PGQRDr+2cA3oQyzbeQxeyCfMxMrTZ0xjKksuM2xRL4kjUZD4BWBz4SV8OLd1CUqaSaNT
-         BuaoxAnfwMiDx6efztyqPBncNt1YYqPIn42876A13JySfxktxjynzx0WaCoY6a3X7Cfr
-         ChqgQ74QBU8O/6ND1pLhOBy3nG5iOVg39HUWUaEtDg6eRFLQ/lCClhjelQ2v2tV3dmFW
-         JPpw==
-X-Gm-Message-State: AOJu0Yyjq7zBctoqMSkpz64bjgT3AeWHtuIzZSM2dHpbKhSA+0cNzYuT
-	nzZ/LDPPJjA8cjV6p2GLBBXPZcPF5TqiXloD5PFuQaQqOjSlA7uZgTMG16gS/m0=
-X-Gm-Gg: ASbGnctVCtw/BtVuAViKkPAWw8aB+6T+8Rv6EU94mcuvN0pI+AkBTTnbo+Ifx7L47jf
-	rNktG35D6gdx3K3TOXZ+Wx2TxKmSH6smclVF/MFbn4qkdMb5mhMgzfkOShIBm54sqhP0X9XGH05
-	S1l9lHE+MBUJRpBMbCTLPtK7nSn8jYREP8ahonGYLz4mLaZImcYiapFhfxqTLYuAJWEwQjZapz6
-	A2HcSyMVPNlgvIr5l6c/lCdd3HEcABKo7HsbjjZrsf/pkAxGvZevLzxO6FTsusUCm54ailzZYmj
-	ChLPYQ74u2hr+VCMdGnFoe9jsQjwwtiRJNzyeLp2oWtzBozY2F+R/Lf6W4kOrqzp2jKl/+3qIBc
-	o3nN6D0eBkvUg
-X-Google-Smtp-Source: AGHT+IHQu1Ep08TqCw8sMIrAIIK3Br1RIklS9BeCUwXWKUSLGw/dsImCMrXCZ7IuFKP4fu+js5jeqA==
-X-Received: by 2002:a05:6402:2708:b0:5ec:fb3d:f51f with SMTP id 4fb4d7f45d1cf-5ecfb3df8bfmr1335127a12.10.1742850663062;
-        Mon, 24 Mar 2025 14:11:03 -0700 (PDT)
-Received: from wiesia.conclusive.pl (host-89.25.128.123.static.3s.pl. [89.25.128.123])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ebcd0e0cb6sm6537097a12.79.2025.03.24.14.11.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 14:11:02 -0700 (PDT)
-From: Artur Rojek <artur@conclusive.pl>
-To: Johannes Berg <johannes@sipsolutions.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jakub Klama <jakub@conclusive.pl>,
-	Wojciech Kloska <wojciech@conclusive.pl>,
-	Ulf Axelsson <ulf.axelsson@nordicsemi.no>,
-	Artur Rojek <artur@conclusive.pl>
-Subject: [RFC PATCH 2/2] dt-bindings: wireless: Document Nordic nRF70 bindings
-Date: Mon, 24 Mar 2025 22:10:45 +0100
-Message-ID: <20250324211045.3508952-3-artur@conclusive.pl>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250324211045.3508952-1-artur@conclusive.pl>
-References: <20250324211045.3508952-1-artur@conclusive.pl>
+	s=arc-20240116; t=1742857193; c=relaxed/simple;
+	bh=Lw1mP4qAeaD2JWWbT/o7f/jVHtDLVrGkTT7I1/dyG1A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QbD3CNdzw42mLaz/rAvA4hUm0fva3wA1OORWSUzUlNkZwrrONIscvAYQG0bp6hqJxIFgF61CZqKQCS3dugEgNhfgQhmKbqM73+qoxk3jShgqJMrsaFE6Tc2khme5z2+LYhnCV6KJ14Yynft40wO0evrH4a4suAhNJVFGnWY7CEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvgPWPRc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1063C4CEF0;
+	Mon, 24 Mar 2025 22:59:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742857192;
+	bh=Lw1mP4qAeaD2JWWbT/o7f/jVHtDLVrGkTT7I1/dyG1A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=kvgPWPRcCAwczrYTg8HGdP9ePFv0PUMVMuiEiNTNBR6BagvCuXvhR8IwKaWnDyueA
+	 CqOQ1FAfY3znCDXqVmMxVTcDf+Mj9r7oXP9qIuQSq6ODFViw6fyqqQFZlBq3Wk84ML
+	 GuH4WqrqCKcMF1hItKbNJFHn+nHfkfVnzgWCEuugSG38PzZx1DlMck2TXf57CvyKZ7
+	 48uUi/LbipSHxBT8JK4fsqHZoIr07kjWT/oQx2VZWXeVtJQrrnvlK8U77ikuZPPrw2
+	 crgLVAI1xUj1LZSTa+7vX3QKEszseKJH9lDTsus8JdombMXir9gX7udJSBWXy0OZiX
+	 GTWYCU8z8BZAA==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e60cfef9cfso7384943a12.2;
+        Mon, 24 Mar 2025 15:59:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUjLK1QykkOH1bBS4H+3eJS35Bt20MTXB11UqwUeXj3Cu6bowEG2Xa+TwGLY+wlGawJ135fyXHEJw6tl2My@vger.kernel.org, AJvYcCVqGio8g587gbSRl8K9TBoXMwO3itOgl7bbak4t/+VYq0znrwe0pYGBNfZwiQfyzzEnsRI5QxeWctquiVHUcw4=@vger.kernel.org, AJvYcCW20IMCF++9h1mR3/jDPQaE/jqCRilwOK+OpuvQLYurwYGb98BjjdH7kauqnlgULrjpUSuRTSLBrOmEZjZtkQ==@vger.kernel.org, AJvYcCWMnE4qHNf07O2pPvt7FZYEGalkhCqoXcYMlIp6nR1b1oCG7mzRWTbU4MYWTRvtVy5PxKD+84XD@vger.kernel.org, AJvYcCWSYXFVHEWLNXUkfupe65Plc3GK7fLsivBoA0POroTTqxekuk7BTP1HYGcHZ4W5IfXCAohZA1yexo8XuvZIBuY=@vger.kernel.org, AJvYcCWel3+sfxmz1ZwITc674B/3zkEod87Kzou5qpIGIfUriNvUjHLoiAlaHEVgQZQWslQf1NGr0/DtIpB+kw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yze+TPpx4XP5yO/9BzmRuaKTVBBrTwTS5z25DpkUZdEu+78bMwH
+	WE8mDdsNpjVhdVXXHkpqVJ7e6Y+8idm+TVrSd47+LQdWvWuhRcVQdXYkaTFTH7ezOU+sRadf2hV
+	ek1yGG57glbtLoguKCd2Z9fcEsw==
+X-Google-Smtp-Source: AGHT+IGMI1Cl7DYidw+DSHuEV1LN/O9iU02wqw1tml5Iu5KEnu3G+HWexYp+f0u6TjbJC81n8Ym/RO+LHqMzqmOjC8w=
+X-Received: by 2002:a05:6402:13d0:b0:5eb:9673:feb with SMTP id
+ 4fb4d7f45d1cf-5ebcd4f8250mr12537192a12.25.1742857191292; Mon, 24 Mar 2025
+ 15:59:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250324-dt-bindings-network-class-v5-0-f5c3fe00e8f0@ixit.cz> <20250324-dt-bindings-network-class-v5-1-f5c3fe00e8f0@ixit.cz>
+In-Reply-To: <20250324-dt-bindings-network-class-v5-1-f5c3fe00e8f0@ixit.cz>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 24 Mar 2025 17:59:40 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJt-3mA4mnfMkS10pbPoAPKJ=Q4P3r0P0fzTZDLX+H5NA@mail.gmail.com>
+X-Gm-Features: AQ5f1Jol00ghFWSCxCHKge5D28bVFmC4YsOFGlu-gViPVE2B_vZ9pKfwkJkFqNk
+Message-ID: <CAL_JsqJt-3mA4mnfMkS10pbPoAPKJ=Q4P3r0P0fzTZDLX+H5NA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/5] dt-bindings: net: Add network-class schema for
+ mac-address properties
+To: david@ixit.cz
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Mailing List <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	van Spriel <arend@broadcom.com>, =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Andy Gross <agross@kernel.org>, Mailing List <devicetree-spec@vger.kernel.org>, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, Janne Grunau <j@jannau.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a documentation file to describe the Device Tree bindings for the
-Nordic Semiconductor nRF70 series wireless companion IC.
+On Mon, Mar 24, 2025 at 12:41=E2=80=AFPM David Heidelberg via B4 Relay
+<devnull+david.ixit.cz@kernel.org> wrote:
+>
+> From: Janne Grunau <j@jannau.net>
+>
+> The ethernet-controller schema specifies "mac-address" and
+> "local-mac-address" but other network devices such as wireless network
+> adapters use mac addresses as well.
+> The Devicetree Specification, Release v0.3 specifies in section 4.3.1
+> a generic "Network Class Binding" with "address-bits", "mac-address",
+> "local-mac-address" and "max-frame-size". This schema specifies the
+> "address-bits" property and moves the remaining properties over from
+> the ethernet-controller.yaml schema.
+>
+> The "max-frame-size" property is used to describe the maximal payload
+> size despite its name. Keep the description from ethernet-controller
+> specifying this property as MTU. The contradictory description in the
+> Devicetree Specification is ignored.
+>
+> Signed-off-by: Janne Grunau <j@jannau.net>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  .../bindings/net/ethernet-controller.yaml          | 25 +-----------
+>  .../devicetree/bindings/net/network-class.yaml     | 46 ++++++++++++++++=
+++++++
+>  2 files changed, 47 insertions(+), 24 deletions(-)
 
-Signed-off-by: Artur Rojek <artur@conclusive.pl>
----
- .../bindings/net/wireless/nordic,nrf70.yaml   | 56 +++++++++++++++++++
- 1 file changed, 56 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/wireless/nordic,nrf70.yaml
-
-diff --git a/Documentation/devicetree/bindings/net/wireless/nordic,nrf70.yaml b/Documentation/devicetree/bindings/net/wireless/nordic,nrf70.yaml
-new file mode 100644
-index 000000000000..1c61f7bdbf8a
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/wireless/nordic,nrf70.yaml
-@@ -0,0 +1,56 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/wireless/nordic,nrf70.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Nordic Semiconductor nRF70 series wireless companion IC
-+
-+maintainers:
-+  - Artur Rojek <artur@conclusive.tech>
-+
-+properties:
-+  compatible:
-+    const: nordic,nrf70
-+
-+    req:
-+      maxItems: 1
-+
-+  irq-gpios:
-+    maxItems: 1
-+    description: HOST_IRQ line, used for host processor interrupt requests.
-+
-+  bucken-gpios:
-+    maxItems: 1
-+    description: BUCKEN line, used for I/O voltage control.
-+
-+  iovdd-gpios:
-+    maxItems: 1
-+    description: External, GPIO-driven switch, found in some nRF70 based board
-+      designs, and used together with BUCKEN for I/O voltage control. Optional.
-+
-+required:
-+  - compatible
-+  - reg
-+  - irq-gpios
-+  - bucken-gpios
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        nrf7002@0 {
-+            compatible = "nordic,nrf70";
-+            reg = <0>;
-+            spi-max-frequency = <32000000>;
-+            voltage-ranges = <1800 1800>;
-+            bucken-gpios = <&gpio2 24 GPIO_ACTIVE_HIGH>;
-+            irq-gpios = <&gpio2 13 GPIO_ACTIVE_HIGH>;
-+            spi-rx-bus-width = <4>;
-+            spi-tx-bus-width = <4>;
-+        };
-+    };
--- 
-2.49.0
-
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
