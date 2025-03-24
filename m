@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-20771-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20770-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A33DA6DFD7
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 17:35:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E820A6DFD8
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 17:35:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D315170D38
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 16:35:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85B443A9E91
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 16:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74B7263F2C;
-	Mon, 24 Mar 2025 16:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DC92641FE;
+	Mon, 24 Mar 2025 16:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="urPNGqkZ";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="JmdGFrB/"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="eo5bA7fj";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="XcEIpdwh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from e3i165.smtp2go.com (e3i165.smtp2go.com [158.120.84.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98D5264609
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 16:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4882641C8
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 16:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742834071; cv=none; b=tebOhMkBUE0tbp/NC39Nln9nMQRpqJKlOjc7LvZudLpW8yy+JJC75NjQ0Bw0btWaYjHPkUIDyXnR4hMxzRi1FBAqTR1FQjnXGm+QO7zB2AWC7CQJWc6bO1lAjeldXCPqEM+/6REEw42n3L5Cei8Iy0HiwZCMfHA8QlsPpGHtEY0=
+	t=1742834069; cv=none; b=fofTNAhLk7kqEaiYa9xy3F5vIHe+msMRvKpIr17SPXagOUL1boP1jWt2HjQQ+unaM2FA4BcnPfZrK7TG/3uep7+QLL7HqHoh3UQcRcj2nrGsZVXhEcs3gSV6/aySWuwqub9xHGg6u/xTB1UbNBsBeyu99ui8VgZECclX/orN00g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742834071; c=relaxed/simple;
-	bh=rzhCWchD87I7ztxWtfLe2qG+z3B3I2xgab4DuMfQauE=;
+	s=arc-20240116; t=1742834069; c=relaxed/simple;
+	bh=pisJCmXutX3WKwnfaDBSqKdwJKeXZKOOQwNKBQF2pMs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=muP7D6yXXOFrRKqyjANa2XtDrbisp+794dapxIOnTq+rX7P105SqzAHli/tgoH8alwf2Hfi4F3MNqtFXQrndzeoA8X8kX3x29HysvL+BbPzBEKKANxAyQJMd6s98jfWNzpyhqy5MksiUdSEn95KtQUGj0lp8hX/Jgxdr/9+aj14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=urPNGqkZ; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=JmdGFrB/; arc=none smtp.client-ip=158.120.84.165
+	 MIME-Version; b=LLU8PXGffLaJ0J7auv9k0016qeY6/D1Zll+7P8I9VeqY151UO+kF53n8bktpxRT7g05evmqGHMTwNmyhbaGo0yrnVbSFYZi0FTPN2Xbh/4QTa4Pe3E4O/7rPMDgOmAmxUQx53hmmXWMCixInft+iCOoesXRElu/4uOznUGdR0Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=eo5bA7fj; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=XcEIpdwh; arc=none smtp.client-ip=158.120.84.165
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
- i=@smtpservice.net; q=dns/txt; s=a1-4; t=1742834064; h=feedback-id :
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1742834062; h=feedback-id :
  x-smtpcorp-track : date : message-id : to : subject : from : reply-to
  : sender : list-unsubscribe : list-unsubscribe-post;
- bh=1NTS6jCiyypS+X7Y3GlJTmuu6rQHp2cIDev00qbGtlg=;
- b=urPNGqkZg8C4YreF8rNtUX57XSrrMCCnxGdxobZBzRTz7JFeQYVlopABKvGju/kgzHqY6
- NrvgpWOIZCUQR9tYMpJOEJkxLB6WFwe7+qdBuoX3lyE8867vrkMFoi5BrafT/JGWE5nxAia
- fV6e7tRfYdsZbCEQilH9N1AZeLTy+LXlZR/59ULApcXfNwnHzoKnreKp7gpWMPONypJOA/3
- uwq34/4t8bOMEWG8BqcE2221b1BB/x1nQrI8arSrfCjD8wijJ2G17JkM2P808PDIY4XbDvK
- HgAxnAWnfYli31mTIg8t+Z5N3Gxr8e6pIj0lZ+z29+UOHTgs++PTn2NQ2aJA==
+ bh=FAxtQOdipdzJfzWqMTjMUuyF5PVy2Z3B7Fmnm9GNVKI=;
+ b=eo5bA7fjBPfiFdKYwt//k9JiHtues+T6CW32CNmWKDDcsOGf1yrlb1sV09njG1jY/qXVi
+ 50/p84DeT6fq5unyPj4KmUpN94gUJ6SCSZuhtjUvOVpse9bIuZbBIAAFdskWp5PmYE5ofOS
+ knM04qWC+PhsxglUbB/sywJfrijDKhepuCAFrv6iIdaiiQErZCfK3Wlvtu33lR3hCH+or6l
+ jnl/vsicY/9QwIHGseaVugmGIBhuqm6R3Y1Q5IMfCsbrLllgMWGcFBrvn5D8sodPLA6OAeo
+ 9sLWfaI3q/3j+DcgcS5T3VKz6Ah4sihq8zxH4Cf72/HZNuAnJuObSTC4GrUg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1742834064; h=from : subject
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1742834062; h=from : subject
  : to : message-id : date;
- bh=1NTS6jCiyypS+X7Y3GlJTmuu6rQHp2cIDev00qbGtlg=;
- b=JmdGFrB/9W4a8RtfOU7s9mzPBE/gfo98gIvEvDjy6ZruJ9crhqFlvpEMdA8V6v0Y96XDN
- 7QxeydoSX8DigO1q9BtWfVMPRDdmN0MMkwtNDxQIiaHDtnotCPg63rhkBZfU3kvhl9Wbxn6
- A/v/5eL+9vQ65WVT4mJeF2OB6ZRTP83h4ZElWFsIuyGmX987rsNm9NCwcyPcml1xdrmXuBq
- XY6n01FmUQBxhEoOb047xupD268Bx91ymfnCQztaAvSj9Sf56w3b4t3QlO4GMakBAHbNjAz
- y2pW/k6ZwAHwwQ6x0v13tj8fylw+RD1iUYgz2E6t4vGVR8wqu/Yfd4BpEfmQ==
+ bh=FAxtQOdipdzJfzWqMTjMUuyF5PVy2Z3B7Fmnm9GNVKI=;
+ b=XcEIpdwhkh/4AK95gQSLvEP1ozcgvdiBF3djiiSzqgv+e8YpU57G4Y/8Qmk7IZrViwXVy
+ TpQ54oWY1vZZq6tJsGhmUkeb5WL5VA986WHwovw3836AYoghPyTym8tqfuSMpIrusfYvTyr
+ vP9/rDVYGmy3/gvPV+avlCglOBZk7e4lgCDPFtDwGw5H71X0uNO9gkTTxKEwU4JuSe8A8lc
+ B4MdNJFeAfhDtciSp9KKvJ1ZIMgnnFM6qPh+HFjDn6k/twDxPflym1tkenrJ9psa1xp6t94
+ jLC6C00jYitJcsD6qVl4NW8EhbIbZSuSOHw6KJpXdV+d0+Y1u9r9JEsIO3pg==
 Received: from [10.12.239.196] (helo=localhost)
 	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97.1-S2G)
 	(envelope-from <repk@triplefau.lt>)
-	id 1twkkk-4o5NDgrs07b-lUJC;
-	Mon, 24 Mar 2025 16:34:18 +0000
+	id 1twkkm-FnQW0hQ0J4D-mkpw;
+	Mon, 24 Mar 2025 16:34:20 +0000
 From: Remi Pommarel <repk@triplefau.lt>
 To: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Johannes Berg <johannes@sipsolutions.net>,
 	Remi Pommarel <repk@triplefau.lt>
-Subject: [PATCH wireless v2 1/2] wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()
-Date: Mon, 24 Mar 2025 17:28:20 +0100
-Message-Id: <06aa507b853ca385ceded81c18b0a6dd0f081bc8.1742833382.git.repk@triplefau.lt>
+Subject: [PATCH wireless v2 2/2] wifi: mac80211: Purge vif txq in ieee80211_do_stop()
+Date: Mon, 24 Mar 2025 17:28:21 +0100
+Message-Id: <ff7849e268562456274213c0476e09481a48f489.1742833382.git.repk@triplefau.lt>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <cover.1742833382.git.repk@triplefau.lt>
 References: <cover.1742833382.git.repk@triplefau.lt>
@@ -76,93 +76,111 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 510616m:510616apGKSTK:510616s6QhpvA6O8
-X-smtpcorp-track: OvQ5fbPVu4PM.D5hr158FtnhK.cBrepwdM64H
+Feedback-ID: 510616m:510616apGKSTK:510616sP7fTJjXc7
+X-smtpcorp-track: hofQwEOkWDMu.s-JmAvo5abw4.Qh1MZwFnqWS
 
-The ieee80211 skb control block key (set when skb was queued) could have
-been removed before ieee80211_tx_dequeue() call. ieee80211_tx_dequeue()
-already called ieee80211_tx_h_select_key() to get the current key, but
-the latter do not update the key in skb control block in case it is
-NULL. Because some drivers actually use this key in their TX callbacks
-(e.g. ath1{1,2}k_mac_op_tx()) this could lead to the use after free
-below:
+After ieee80211_do_stop() SKB from vif's txq could still be processed.
+Indeed another concurrent vif schedule_and_wake_txq call could cause
+those packets to be dequeued (see ieee80211_handle_wake_tx_queue())
+without checking the sdata current state.
 
-  BUG: KASAN: slab-use-after-free in ath11k_mac_op_tx+0x590/0x61c
-  Read of size 4 at addr ffffff803083c248 by task kworker/u16:4/1440
+Because vif.drv_priv is now cleared in this function, this could lead to
+driver crash.
 
-  CPU: 3 UID: 0 PID: 1440 Comm: kworker/u16:4 Not tainted 6.13.0-ge128f627f404 #2
+For example in ath12k, ahvif is store in vif.drv_priv. Thus if
+ath12k_mac_op_tx() is called after ieee80211_do_stop(), ahvif->ah can be
+NULL, leading the ath12k_warn(ahvif->ah,...) call in this function to
+trigger the NULL deref below.
+
+  Unable to handle kernel paging request at virtual address dfffffc000000001
+  KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+  batman_adv: bat0: Interface deactivated: brbh1337
+  Mem abort info:
+    ESR = 0x0000000096000004
+    EC = 0x25: DABT (current EL), IL = 32 bits
+    SET = 0, FnV = 0
+    EA = 0, S1PTW = 0
+    FSC = 0x04: level 0 translation fault
+  Data abort info:
+    ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+    CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+    GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+  [dfffffc000000001] address between user and kernel address ranges
+  Internal error: Oops: 0000000096000004 [#1] SMP
+  CPU: 1 UID: 0 PID: 978 Comm: lbd Not tainted 6.13.0-g633f875b8f1e #114
   Hardware name: HW (DT)
-  Workqueue: bat_events batadv_send_outstanding_bcast_packet
+  pstate: 10000005 (nzcV daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : ath12k_mac_op_tx+0x6cc/0x29b8 [ath12k]
+  lr : ath12k_mac_op_tx+0x174/0x29b8 [ath12k]
+  sp : ffffffc086ace450
+  x29: ffffffc086ace450 x28: 0000000000000000 x27: 1ffffff810d59ca4
+  x26: ffffff801d05f7c0 x25: 0000000000000000 x24: 000000004000001e
+  x23: ffffff8009ce4926 x22: ffffff801f9c0800 x21: ffffff801d05f7f0
+  x20: ffffff8034a19f40 x19: 0000000000000000 x18: ffffff801f9c0958
+  x17: ffffff800bc0a504 x16: dfffffc000000000 x15: ffffffc086ace4f8
+  x14: ffffff801d05f83c x13: 0000000000000000 x12: ffffffb003a0bf03
+  x11: 0000000000000000 x10: ffffffb003a0bf02 x9 : ffffff8034a19f40
+  x8 : ffffff801d05f818 x7 : 1ffffff0069433dc x6 : ffffff8034a19ee0
+  x5 : ffffff801d05f7f0 x4 : 0000000000000000 x3 : 0000000000000001
+  x2 : 0000000000000000 x1 : dfffffc000000000 x0 : 0000000000000008
   Call trace:
-   show_stack+0x14/0x1c (C)
-   dump_stack_lvl+0x58/0x74
-   print_report+0x164/0x4c0
-   kasan_report+0xac/0xe8
-   __asan_report_load4_noabort+0x1c/0x24
-   ath11k_mac_op_tx+0x590/0x61c
-   ieee80211_handle_wake_tx_queue+0x12c/0x1c8
-   ieee80211_queue_skb+0xdcc/0x1b4c
-   ieee80211_tx+0x1ec/0x2bc
-   ieee80211_xmit+0x224/0x324
-   __ieee80211_subif_start_xmit+0x85c/0xcf8
-   ieee80211_subif_start_xmit+0xc0/0xec4
-   dev_hard_start_xmit+0xf4/0x28c
-   __dev_queue_xmit+0x6ac/0x318c
-   batadv_send_skb_packet+0x38c/0x4b0
-   batadv_send_outstanding_bcast_packet+0x110/0x328
-   process_one_work+0x578/0xc10
-   worker_thread+0x4bc/0xc7c
-   kthread+0x2f8/0x380
-   ret_from_fork+0x10/0x20
+   ath12k_mac_op_tx+0x6cc/0x29b8 [ath12k] (P)
+   ieee80211_handle_wake_tx_queue+0x16c/0x260
+   ieee80211_queue_skb+0xeec/0x1d20
+   ieee80211_tx+0x200/0x2c8
+   ieee80211_xmit+0x22c/0x338
+   __ieee80211_subif_start_xmit+0x7e8/0xc60
+   ieee80211_subif_start_xmit+0xc4/0xee0
+   __ieee80211_subif_start_xmit_8023.isra.0+0x854/0x17a0
+   ieee80211_subif_start_xmit_8023+0x124/0x488
+   dev_hard_start_xmit+0x160/0x5a8
+   __dev_queue_xmit+0x6f8/0x3120
+   br_dev_queue_push_xmit+0x120/0x4a8
+   __br_forward+0xe4/0x2b0
+   deliver_clone+0x5c/0xd0
+   br_flood+0x398/0x580
+   br_dev_xmit+0x454/0x9f8
+   dev_hard_start_xmit+0x160/0x5a8
+   __dev_queue_xmit+0x6f8/0x3120
+   ip6_finish_output2+0xc28/0x1b60
+   __ip6_finish_output+0x38c/0x638
+   ip6_output+0x1b4/0x338
+   ip6_local_out+0x7c/0xa8
+   ip6_send_skb+0x7c/0x1b0
+   ip6_push_pending_frames+0x94/0xd0
+   rawv6_sendmsg+0x1a98/0x2898
+   inet_sendmsg+0x94/0xe0
+   __sys_sendto+0x1e4/0x308
+   __arm64_sys_sendto+0xc4/0x140
+   do_el0_svc+0x110/0x280
+   el0_svc+0x20/0x60
+   el0t_64_sync_handler+0x104/0x138
+   el0t_64_sync+0x154/0x158
 
-  Allocated by task 1906:
-   kasan_save_stack+0x28/0x4c
-   kasan_save_track+0x1c/0x40
-   kasan_save_alloc_info+0x3c/0x4c
-   __kasan_kmalloc+0xac/0xb0
-   __kmalloc_noprof+0x1b4/0x380
-   ieee80211_key_alloc+0x3c/0xb64
-   ieee80211_add_key+0x1b4/0x71c
-   nl80211_new_key+0x2b4/0x5d8
-   genl_family_rcv_msg_doit+0x198/0x240
-  <...>
+To avoid that, empty vif's txq at ieee80211_do_stop() so no packet could
+be dequeued after ieee80211_do_stop() (new packets cannot be queued
+because SDATA_STATE_RUNNING is cleared at this point).
 
-  Freed by task 1494:
-   kasan_save_stack+0x28/0x4c
-   kasan_save_track+0x1c/0x40
-   kasan_save_free_info+0x48/0x94
-   __kasan_slab_free+0x48/0x60
-   kfree+0xc8/0x31c
-   kfree_sensitive+0x70/0x80
-   ieee80211_key_free_common+0x10c/0x174
-   ieee80211_free_keys+0x188/0x46c
-   ieee80211_stop_mesh+0x70/0x2cc
-   ieee80211_leave_mesh+0x1c/0x60
-   cfg80211_leave_mesh+0xe0/0x280
-   cfg80211_leave+0x1e0/0x244
-  <...>
-
-Reset SKB control block key before calling ieee80211_tx_h_select_key()
-to avoid that.
-
-Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
+Fixes: ba8c3d6f16a1 ("mac80211: add an intermediate software queue implementation")
 Signed-off-by: Remi Pommarel <repk@triplefau.lt>
 ---
- net/mac80211/tx.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/iface.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index a24636bda679..0c6214f12ea3 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3893,6 +3893,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
- 	 */
-+	info->control.hw_key = NULL;
- 	r = ieee80211_tx_h_select_key(&tx);
- 	if (r != TX_CONTINUE) {
- 		ieee80211_free_txskb(&local->hw, skb);
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 738de269e13f..e60c1ffebaea 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -660,6 +660,9 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+ 		ieee80211_txq_remove_vlan(local, sdata);
+ 
++	if (sdata->vif.txq)
++		ieee80211_txq_purge(sdata->local, to_txq_info(sdata->vif.txq));
++
+ 	sdata->bss = NULL;
+ 
+ 	if (local->open_count == 0)
 -- 
 2.40.0
 
