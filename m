@@ -1,118 +1,127 @@
-Return-Path: <linux-wireless+bounces-20741-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20742-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 021F3A6D524
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 08:34:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC54A6D556
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 08:43:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE8237A361B
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 07:33:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABA5B18864D1
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 07:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58DB3250C12;
-	Mon, 24 Mar 2025 07:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B2D25744F;
+	Mon, 24 Mar 2025 07:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="MfUf2jm8"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TNjgYoIo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E7A134D4;
-	Mon, 24 Mar 2025 07:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4C525742D
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 07:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742801652; cv=none; b=rgaGpvcPYo7DKAlYPBHeOgMHeO6Z7r/aug7DAVJBXy+T2Yhbfz6otlhGH2tjOPUtw0Bg6aK3MkV2RvlgJyB7N+XuWZ6Evy2AaDuxDYrygl7mtJ0EtF9yl6efDIzsZYyjcGELyORyFI3Z+bTL7yg3KdJQ8K+rE8W2ckJ3zzyi1VM=
+	t=1742802217; cv=none; b=u5crcrxWabDVNkObhYxfxlqarHPDvsrZ3cpwtcEqKBnsnhi+lVEjg3q8RfKDpwnnS57LoX9FjGcyQfXxp9hxKZHVCTBI1ZTRfeIppTjRZstx06cvF+g2L6ozEnOkKkm2usIUOi1zouB3nE2AQu5xlqY8/g1mSgEZEZlzR/76WOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742801652; c=relaxed/simple;
-	bh=lHCM6K2iW1+fqMDLh9KgVtF4x5CiQjRva8x012yrIyc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ubyXrgjz+PvFWWjF1N9TE//cantTm0riK+Nkk4G94gYMIvrRpa49JKChanJ9nGMBU5ZpJxQyFAfkFTI9ntpEUW2i0jlg4dTzUtxqjF3NyQUL17TINXZLiGofUh1tmN1NFLo46wz2rO/I0MVcRDODuPGE0GzQ0jJyrCn9Aljt9xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=MfUf2jm8; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1742801632; x=1743406432; i=markus.elfring@web.de;
-	bh=lHCM6K2iW1+fqMDLh9KgVtF4x5CiQjRva8x012yrIyc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=MfUf2jm8rzqT28e1mSOGEbVg8GcCrSXq2DnnZIIL6CTEKFw1O8B1YYAxVR3p93wK
-	 3jSrck64eNT3wIJZpj9xLbDs2WFdV+V3BrAUGpCKr7vLfVCO58+OYnJl61DhYjIlu
-	 MCzZwMljjNCF7kBE2aU4SN9wyn/V0zSZKLCt9KlPP1pneusEByXOSzQiyj2WNUyJh
-	 6uEf1GcbkuX99CUJheyEtV2PWaOJiviHiqgBRX5zMNJ5OUWFWi8bZkzQhHRe4OupG
-	 YPDLypzmvAauiEAh14zVPbCGoRXox3OQWwzKB4Oud7aSyFh1REI2kzew/1ph/8WXL
-	 gYY3wuMLFHS7Lub3Cw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.93.33]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mr7ac-1tKrO21bXi-00oDxV; Mon, 24
- Mar 2025 08:33:52 +0100
-Message-ID: <46a53498-6c20-48fd-b090-02163baefddd@web.de>
-Date: Mon, 24 Mar 2025 08:33:39 +0100
+	s=arc-20240116; t=1742802217; c=relaxed/simple;
+	bh=Wja2HIkcCc/qn+fhg7yuV0A96iCH9nSXOnTIZdyzsNU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VyfaqQb2cbWh+gz4zrOxERnoonCkuJjWa0sxWrDCTln5m9IYVYu4vdzzWermp128lBs12p+nVdHrysNpKwxSc4N4Q4K+547murt8QR/XIM9vlOENfs4AL1zb2MixMjYA2oMWs57QNLb79ERpLjXiwTs93icf0NIPtUJTiSCgF4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TNjgYoIo; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4393dc02b78so27173275e9.3
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 00:43:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742802214; x=1743407014; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ENeTUflag0l1WgJ9MraeaFTIx2U/M6/MceOO9Gs6H40=;
+        b=TNjgYoIoyymn/4+AglCvAOvp4FaS/0FG8fA9O9PbdR/7fN9vrgyJjmc/SPY3lV8xlr
+         8/joueCTVzHixOvZN6frHL4ivVU/SsOsdNrawpEFsfFJX8Ye8aa8whkthKUs7mLen5w7
+         /mdFYAc64y6rOx7U4HGM27lvHLIqdGhs1KN61LnUwG7/Iil9yo7MSDHqhru4CPTbSyxm
+         RpZs9KA1TUh9A4GU1yGOuOJpeW7Myd7x4gsr/5+lo1M29K44IQgunwSBxZL1x3ZTX9wX
+         Qv7ykq1CMHn/DbwsVw006bHR3pW2kLj131sRb06ODHwzJRUyO15uRXw3eHQFKCLX66Fe
+         mOYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742802214; x=1743407014;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ENeTUflag0l1WgJ9MraeaFTIx2U/M6/MceOO9Gs6H40=;
+        b=nThn+NFjSHv0WR45HRDWA9uurv2YW0Hh4mfMdo92qgNyTpmqWQ9BaJDB3M8GpZL8HW
+         D6GKbsUBZWd9eb6C9EKwTbRk17D3blNQfnIgvi/7Aq2tNWn3UPDu0AnqRqsZLN3aYiUg
+         mEKBYuzJDCO8L8WEqaVL8X82rx26HFrKA4xtQlhGX055ixVjw91VgL3NAYbBs/4rZYtx
+         VTsDqU5HVMMu8pBPR3KZk0p4QX2bWyPYOsJz9giInKGw1uZma3duTTWT3Nm4We5Ti94p
+         xIMHAbX8dHR7Vbh9g7mo3pJ4nQbwIT6fUsMU3FY3idn8wzt3tPxnx21M7ycZIw/zd5S8
+         SxEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWhDACknoMFH3/mi6yodDddvQ7yVoYb5yi7D2CmeHYkJ1bPMQEZXaiRWkxbi5XLHVM+1kYx2WhWRRj59PQEWg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVXPnLrC72/XBi3fwomlavrXQA0uLdmoZK0RqoHyueaEf2Jqhf
+	yfJvp2a7YHfCnUorcbLyxEKVmtGVfEz9u4xOgwHHBDxh5kRtBnnYYNYQLByXbLA=
+X-Gm-Gg: ASbGncu3naxUARJ8LUCI4goLzzCx4FC+iuT4rVIDDltrNyCiHS+cbUV+Qjs0PzCXZuY
+	jfa9hdoBhNJEL+NPqxuKR6ADO8QH3pHufToVgFAxMJqxFsyxX7W50wjgZjIms0+FhlB1scsnCgr
+	BJyRzT+C/fdRhJ/eqEQdBCgxVdSowcH2y+X1Z3qrp9tvJERezJ9YNlj9P7GnGplcoPgit6HNEQa
+	5Grmi3F4B7xTwXeCSVMS1E5hRdrPqHQy9giQLzt6pO9m/1D3bin1kdM85w4IndDxNQ7a3ioWXxZ
+	DV8OfkjpnKMAr55l2HqYU90XJW8g6AaC07cuIz5a3B+Ofjlb/g==
+X-Google-Smtp-Source: AGHT+IGmGmS5ufUfMSrgfk7DIRjiH+iIQAHj6POw/bNjEYZrqwMBfch1zIjXMn5LOd+CGNnKdNiELw==
+X-Received: by 2002:a05:6000:2a2:b0:390:f400:2083 with SMTP id ffacd0b85a97d-3997f89a039mr9195803f8f.0.1742802214396;
+        Mon, 24 Mar 2025 00:43:34 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3997f9eff9asm10311692f8f.92.2025.03.24.00.43.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Mar 2025 00:43:33 -0700 (PDT)
+Date: Mon, 24 Mar 2025 10:43:31 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Qasim Ijaz <qasdev00@gmail.com>, linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Bo Jiao <bo.jiao@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+	James Dutton <james.dutton@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>
+Subject: Re: wifi: mt76: mt7996: avoid potential null deref in
+ mt7996_get_et_stats()
+Message-ID: <d723d5c1-ed17-41b8-9bc4-274fd8e2b615@stanley.mountain>
+References: <20250322141910.4461-1-qasdev00@gmail.com>
+ <d1df5d97-4691-40d4-a6cc-416505f35164@web.de>
+ <92d1a410788c54facedec033474046dda6a1a2cc.camel@sipsolutions.net>
+ <CAAMvbhGrJ9b3Aab9+2a5zmvEgf0GZFmHLCC7Hud+egUE28voHQ@mail.gmail.com>
+ <223c7280-443d-49b4-96b2-90472339dcd4@stanley.mountain>
+ <46a53498-6c20-48fd-b090-02163baefddd@web.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: wifi: mt76: mt7996: avoid potential null deref in
- mt7996_get_et_stats()
-To: Dan Carpenter <dan.carpenter@linaro.org>, Qasim Ijaz
- <qasdev00@gmail.com>, linux-wireless@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Bo Jiao <bo.jiao@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
- James Dutton <james.dutton@gmail.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Jonas Gorski <jonas.gorski@gmail.com>, Lorenzo Bianconi
- <lorenzo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- Peter Chiu <chui-hao.chiu@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>,
- Sean Wang <sean.wang@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
-References: <20250322141910.4461-1-qasdev00@gmail.com>
- <d1df5d97-4691-40d4-a6cc-416505f35164@web.de>
- <92d1a410788c54facedec033474046dda6a1a2cc.camel@sipsolutions.net>
- <CAAMvbhGrJ9b3Aab9+2a5zmvEgf0GZFmHLCC7Hud+egUE28voHQ@mail.gmail.com>
- <223c7280-443d-49b4-96b2-90472339dcd4@stanley.mountain>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <223c7280-443d-49b4-96b2-90472339dcd4@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:hPisYZtNHtgdSzDYvkU7jZ10PJssmACwm0eKAkVLKsCDI3b7xsG
- lzCWmSJHsssVXlIH/WXbNoTQQWdL2uKRi5+cu2aBCoRq8td+NnkT20JfBooQvjsecx0XC+a
- Ml1Bx1ENSjGs/NZ8CrOU68lZCqAPXZoL5nCXm2TCFWIKoraDOy7dtISm16LVoMimIarUZ88
- wJXlpqLJg8q3B3nWr5f5A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:jO20oZj/TDE=;aGj7rYdAkRcQW7DeTxELt09CwZj
- IMJ4QmMwA/3OFvwsgsx+W+vN98ShDLwI66ERueilwHOK24GN90dOcZ2A1m+MUdhx2kH9EtOb8
- GpBM4wwOWefzfn5U56aJhfP1E3DwV6ungO7Vvh74LZqMJE6bGTdHJMTx6R4zKOtsb4INcAHwM
- poYPqYUg5HK0TM6npx137BrPjtnruqBeRO2GQsLqZ8FTj724duSrnDT3//T6S7aMztQUaFx6J
- SkDU9SXpaIdDOp6/YoaNw8JrB1RpTKSxNIpLOrF5wOCnormOMXjAmMM5e+vSmJ0M02DS7F1cl
- DYw5vfl/PBhGELoXNFOrMyp5oFu1x+O5E51HA22nRsGOXftFcaEWTSzdxsVEePdyG+QTWEjAJ
- wMPXa7wmzCXtohStcMSk3uRk/QbwW/PW2X6bUniVdn8oAcFwVQ+0YFGYyzEog9tasB1pHsWtw
- TYAZFhNFHl+u+CzIFI2/ozAYEtATj/tCrR0g7XUTxT6TSqB2Vdb9TjvcE+gGayNWtdXm/yM5U
- e1cCx7Q+Y2syqylyrykPExIaqEnzrFA8Lmq+eReqbjcav6EsWZUOvdSF7kwCaBefwGBvcf22f
- ROchFCHsXAhpSK9gBgrAzVxoQl4qblOrpsOENuTWx9jcHsDvv5w2vHkvW4GdpzGRPRKiq5l8j
- KbWP+xgKx1HV8FpskDsEAb7/1foieNAjOwCLRZJ7SGcoTeaVczjWxg3cTG+YulML9AmTgHBA0
- zffaTDuiMvucBG2SAj/2LloeSBPIMg0xQtjHwTWkEqGcppQN8hOYzNXKcGpJiVszgB3wnjW+0
- wIczXjNR4Z8Paj5H+g537DdGuw8lrAGoQNfWK1ScAauE2IYtJPyO+mFtEzQkmYNnyVk/ompDb
- 3PnMdlmAKZpPuzRbfCT+I+Z7ty9PEExDxvkJ6b3epvlbzLVtnYfPH+XSWwXIHGP+7HEehn4/s
- Rimek8h2ei3UvTqbuJK1crjfaXpN9urR0vFRJSANz0uTwLnUxicEX+vZ9RNl0TTikF2jzECix
- a1JaA88odXlJOG/WCeqZXv6AXYa6kwUXwQkBUnz22/J5H6+p9tqWcrhfA9WdtVDg+BCeV9niA
- /bRV8bytHFiTFBvTfULpmLU8HPC+bInE8AXFA5FI4r9FYSLQxHO+HKGSeTdSbL+h4lL78WAfc
- rIIjTih9nMGSlskR2OXtFxGnuIC6pOnrvPWespFIh47fwCDCzXv7v9Mo2aT6IA5NWAgtbL3Zg
- fWofTQ/7m+MeZu9VGM1GPm2mrWkMZnuGhTOdIcweduPdrWKQ6aR/zKIdha8QxSumnsIcXC9Ro
- lKvoiXS2En6XgEWktqn+GL5Q5O9Kfj1eZKVeHoKG3V769mQmQFGUXtJchtPR9FZL1FCyjwDS9
- L8/za+xtLeL4VD37A+P28rCywVzjlh5f7uhpm9p5HX05l1OMqNr+Hck7WhI+ww7k+NBvhXglG
- lbaKo5Cuq4xGEPQlwWhoMX2SpxUnXuT/h4kczqgy9ikO/HlEg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46a53498-6c20-48fd-b090-02163baefddd@web.de>
 
-> Also the "phy" point will never be NULL so the check should be removed.
-How many tools can help to determine such a software aspect with inter-procedural analyses?
+On Mon, Mar 24, 2025 at 08:33:39AM +0100, Markus Elfring wrote:
+> > Also the "phy" point will never be NULL so the check should be removed.
+> How many tools can help to determine such a software aspect with
+> inter-procedural analyses?
+> 
 
-Regards,
-Markus
+You can just review the code.  There is only one caller.
+
+Btw, it's fine to have unnecessary NULL checks so long as they're done
+consistently.  Generally, we prefer people not add unnecessary code,
+but if it makes you feel safer, most maintainers aren't going to nit-pick
+you about it.  If you are doing the work then you get some say your own
+code.
+
+regards,
+dan carpenter
 
