@@ -1,131 +1,169 @@
-Return-Path: <linux-wireless+bounces-20776-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20778-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EC2A6E065
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 18:00:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 194C5A6E1A6
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 18:54:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8381B16CACD
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 17:00:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B02716E874
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 17:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870A0262803;
-	Mon, 24 Mar 2025 17:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D0D267700;
+	Mon, 24 Mar 2025 17:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PesrHXDy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ggXUZl2D"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E2826158D;
-	Mon, 24 Mar 2025 17:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F7026462B;
+	Mon, 24 Mar 2025 17:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742835629; cv=none; b=KK8395dQdRXPTWU6kijUCr0EKdQnkkYAtSwtcamt+sJfSE0CeRTrxTHvu+qYhkBwliZ2eozJSx58/jc7SY6NfMSZoI8cDiR7qNe3NYNOjucZz0PWFp+SAopzUMWU0NOt2peURaHRxNgfbahP3x/aDZJC8Gx9Ivc0sEh3kF8qb80=
+	t=1742838103; cv=none; b=j7b87UMzzA9ikHO4kSl6s1p7k1OC+K5UDCGB08cTUwYOIsr7CSV2EhBpS2aM/FKmd/Yp6CQWVRzkTrGJCu71hAzCe2O5D24TRRA2ZXMnJj5uiqfOzqzh8xxal0lljtu6lrC+1s7pUx07zsvuc3vB6Tt7/rQoMnCceAoPcx9dpxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742835629; c=relaxed/simple;
-	bh=QZ+ADSPlR4WN2OpqtNqLf9bC//Y4z9l5vR66G7an/rM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bTLPSueC6EriTXAmWZFHugE+D6azMdNTx9gf7Nt2E4TEJdlb5gJ07KNQEhns9hf3FFiuIL4r1ePSP15Zg9LHzns7BzgW2p4tO/SB9k25XNMsECVrt1a8m7jD6PLVQ/sjMwhFEhY7k+mKF5fwTXtHk9v8PtfqIRStPPvJVQgiIk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PesrHXDy; arc=none smtp.client-ip=209.85.166.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-85e15dc801aso398341139f.2;
-        Mon, 24 Mar 2025 10:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742835627; x=1743440427; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XiK+XbItIIUrna1hCKyECwMMmXpIkkNG/K+3Wgt4kIY=;
-        b=PesrHXDyc2egOW3Yng5HB3nWuusGNns8nwmnrO1/I+aeD2jBUgJjM92xtalZNq2is2
-         bRNoUIc6FFmtzSZ/QaA/wCc7Y7OZTwimXWTOZYL6Y6+kjrFLJ+Lnf8GF0wu4ZDFpgJvo
-         MhdZxeEjHWJYhdF9ifCEVaGyjzImcne+TMYfdPWy4P4ra/ElCerxRvA9T5AAAajSJCms
-         dzUXDXPz+N6tl5VLyWBc8fxPbQ0dJsRmYh614DgRgnfN7tMOysfvmrQn2aacpeahK3O/
-         zQ0lY9/rMLhS92XzTDhVUc3M6ngxMNMTs1sfoy8Y4oHkri3I7BUk2GI9jWmad/BLmv4l
-         fvWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742835627; x=1743440427;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XiK+XbItIIUrna1hCKyECwMMmXpIkkNG/K+3Wgt4kIY=;
-        b=qTPoduoHGYxjCZKPno7uVckoCuL+07fJn7VCJ5Gf3Emvq+I/ZGGbgUQ+4E+4QLp1zq
-         SaYTp1opnO9zH+BEqrSd3BUj7pBy79gIeYPWA/m+VLyj+ue1wZNsxXXN27kxNxCpeaPw
-         QWJHMtASt73iXFuWExRYDwuB9MAQj8ExiE4Xn59lFbqJ6nNhuedjWxbds+nVwQzmdjgB
-         XZLhUjgFqh0SPTJWVzB+cy2snnrN4/YKyJYftSqTlX6Sx0TqvSj3E5J63DBHPYYX1qye
-         2cZgKESVH75uugncY1rq75jZ96O6qoFgYLDUg1LUjYVCCs6PbaOxrdHeXYtao0xKOXHc
-         Ot2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUTWNtpaynrCPPNZNQsQVNLdbcg/jGzDyVR2YnxqMI/jFn+QqVXIHO6GFxeNzF0rwnW9+tMFYU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEHCqUej0nVyPAsCVdezl1QLMMYh2UtMICZ+sYyBglEBmRpIHD
-	HQZpBiz8zaN4Jj9Hyu1+wvbP5eNonZul9XOuhUYxPVSS0cYAmMl6rEkB6zpo40wtIZ9e79kcKRD
-	hKvCg266jFKvGdfxBGsXDs3aMuks=
-X-Gm-Gg: ASbGncvi2Px1UpyA7GThXKGjS6cOYSIKczdtQOyDhB9f+4D/o2FoghtjoH65raO6xcg
-	fNt/4JtW8/94KSSXPbFaFqFMfnlPPv1Cxx7qFC4qAj6bxfbd9KtctQjEpTyAEgqi77sQ/rgJVA4
-	aBOKPRXnWoMyMSGZYPAHi9Sahdow==
-X-Google-Smtp-Source: AGHT+IHMCuHkLI+ZDUJnWpVX+8/mF1/t8QEJVpvny4ENE1co6tCTIr4wVdurMNYnEssqNhr49BHxYweG0qiMZKPx//w=
-X-Received: by 2002:a05:6e02:3207:b0:3d4:712e:29eb with SMTP id
- e9e14a558f8ab-3d5960ccfacmr148634145ab.5.1742835626661; Mon, 24 Mar 2025
- 10:00:26 -0700 (PDT)
+	s=arc-20240116; t=1742838103; c=relaxed/simple;
+	bh=sdcuRNAQFYtob6yEPETsohJyFlIPNbv+Zn2NcH7jrWI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=W+arckCWzn42MWxDuHCr6N4ol7IqLGgy2WEeJILehQBb/XsbzJRsVc12sE7ij9C3sKZhQfUwLMlMLS9s2vymwVcjCdmrexjV6YnaIBk/vP6JpoOl9lBg3fR9DVsZBd0NqrsQmxoEERnH/pSJU+o3B7vE8w0FISGP2k5CMR/WsvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ggXUZl2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 59F0DC4CEDD;
+	Mon, 24 Mar 2025 17:41:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742838102;
+	bh=sdcuRNAQFYtob6yEPETsohJyFlIPNbv+Zn2NcH7jrWI=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=ggXUZl2Dd5l7WjVO+CYEAbKgabvZGg99YA5B/EVisoMp2IRaUmrU9NsnSCxseMTja
+	 MHpKvbLiZQzsyVMLCtfa7Cdtm3RT4t4tXWSdWiH+LnwAsDD6Qj3kD8SE2MeFHeiqI5
+	 ZanSVghZAvvxz8FKy/fcxzoeSIwA7V0ut54LTHiUQzP04L4sB9juoEn2JG6ay5tUPe
+	 kbd9JqYK1M3HYW55W6nK9JEw8fiuF5TpOVSnwBu+QUUZBxIwKn8OQUBbuKKptGjSIk
+	 /Zg7yJkNCjHr+CVRFvUCqYN8J8rtz+K/dvpANp6p7zh1yDvHO0Ck7DKqllXeaeF5n4
+	 Nbe8z7IyFfXlg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45F2EC36002;
+	Mon, 24 Mar 2025 17:41:42 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH v5 0/5] dt-bindings: net: Add network-class.yaml schema
+Date: Mon, 24 Mar 2025 18:41:37 +0100
+Message-Id: <20250324-dt-bindings-network-class-v5-0-f5c3fe00e8f0@ixit.cz>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250313134942.52ff54a140ec.If390bbdc46904cf451256ba989d7a056c457af6e@changeid>
- <CAL+tcoB3zku2EtLT2yJ9qPCSuN2=x-T-avqcZ-LJ2Q-mU5xLVg@mail.gmail.com> <db7a40f500c0b595bc2ee0f9524bacbc592dc72d.camel@sipsolutions.net>
-In-Reply-To: <db7a40f500c0b595bc2ee0f9524bacbc592dc72d.camel@sipsolutions.net>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 25 Mar 2025 00:59:48 +0800
-X-Gm-Features: AQ5f1Jq5vlEVgzazVwvL-JDorvj_Ino1GgoGhgWzAbm9431-nmRADWw-ma4jpww
-Message-ID: <CAL+tcoBHbK=xDEp7RHqUHxSZqNOcd7kxAEdPC7aZq8RaWtDa0Q@mail.gmail.com>
-Subject: Re: [RFC PATCH] wifi: free SKBTX_WIFI_STATUS skb tx_flags flag
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFKZ4WcC/43O20oEMQwG4FdZem2WNJlDx6t9D/GiM4m7VelAW
+ 8fDMu9uRxEFYdmrEPjz/TmbrCloNre7s0m6hBzmWJf2Zmemk49HhSB1N4TESMggBcYQJcRjhqj
+ ldU5PMD37nMFx16tI1w9Cpt6PPiuMycfptAmICFIbJi1JFYqzlqq2JU8hlzm9fz2x2DrurulbL
+ CA0LSly3xKiHB59jP5lX2PmvrILXU3RRg1D5+r3Lfb8j+IfqkW27hLFGyVOsBF5GDt7CG+h7Ke
+ Pb6f56wyXnKY6xDQwdw5pbH6ddV0/AcDuXAC4AQAA
+X-Change-ID: 20230203-dt-bindings-network-class-8367edd679d2
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Mailing List <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, van Spriel <arend@broadcom.com>, 
+ =?utf-8?q?J=C3=A9r=C3=B4me_Pouiller?= <jerome.pouiller@silabs.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Andy Gross <agross@kernel.org>, 
+ Mailing List <devicetree-spec@vger.kernel.org>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, Janne Grunau <j@jannau.net>, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2987; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=sdcuRNAQFYtob6yEPETsohJyFlIPNbv+Zn2NcH7jrWI=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBn4ZlTrhhrbvdN7q/q0xl8VBJwCdheUpabZJum5
+ tkfNRJDy32JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCZ+GZUwAKCRBgAj/E00kg
+ cjJoD/445obenDkJ2ww6j/V4OnGgHkP5M0egpahzT0SriANaT7QkIObfDbx9udE25Un6znndbgt
+ 8vUbYA91FAokbS4DkynY4cXKxi46j7HOYnAicew45FZGRZaLajzGiIXVwvuQXn/F7hJtLDmUBUK
+ XrOlCDQrtMRKfH06dxoZITN9SWhp3aBm6Huq+9nBnw+xIkQUblfcWFdnRWkcyn/6tuuYZMvBnwJ
+ K66LZW3tL8nHZiEzrIMX3CD63GUo2kGfzqK3cmB7j9Dp3WGC0jh8iCgjUY2bsZije1q8K1m40OQ
+ LSmgTZJctX903izdObj6fvhuOl0nqvVBv+X9IZbL7EA9ykSdACJE4S4NoLnt6knBmcDJOCYwO/o
+ JaHIQh7VP9OuBX2raJcNMy3XcM3N+EdP6wH7omOzTeFMPiR299/EFLUnSl49NTdho+792cDHc9f
+ 46IwQ0P3TDkfxNAtFAR2rXkzwwdWNASfz5JuvrpnUvY1NI5PpUwjQ30sG088EOPKdBUMlrOEIKL
+ ee20LJGG2aOL0vD+dJnzrqXQv2uCr7P3Edm/ea+ZPXOJ89mOF0gGw5cuGXH3AYAUIFTpLd1rXQW
+ 0D4esR1/YpfKoxq/0S2FUFdpqCk+MhTF/FQy+rcfD7PtVhecHx9VZZBqZKP+KYAJCfbXCS4AVwp
+ haOaR4i1hClUEsA==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Tue, Mar 25, 2025 at 12:56=E2=80=AFAM Johannes Berg
-<johannes@sipsolutions.net> wrote:
->
-> On Tue, 2025-03-25 at 00:53 +0800, Jason Xing wrote:
-> >
-> > Thanks for working on this. After net-next is open, I will use this
-> > bit to finish the bpf timestamping in the rx path :)
->
-> :)
->
-> > > --- a/include/linux/skbuff.h
-> > > +++ b/include/linux/skbuff.h
-> > > @@ -481,9 +481,6 @@ enum {
-> > >         /* reserved */
-> > >         SKBTX_RESERVED =3D 1 << 3,
-> >
-> > It might conflict with the bluetooth commit [1], I presume.
-> >
-> > [1]: https://web.git.kernel.org/pub/scm/linux/kernel/git/bluetooth/blue=
-tooth-next.git/commit/?id=3Dc6c3dc495a6ce5b9dfed4df08c3220207e7103bd
->
-> True, just context though, we can deal with that.
->
-> > >
-> > > -       /* generate wifi status information (where possible) */
-> > > -       SKBTX_WIFI_STATUS =3D 1 << 4,
-> > > -
-> >
-> > Better use SKBTX_RESERVED. No strong preference here since I'm going to=
- use it.
->
-> I can't have two called SKBTX_RESERVED, but I'm not sure it's worth
-> renaming it rather than removing? No strong opinion though. The context
-> conflict will happen either way ;)
+The Devicetree Specification, Release v0.3 specifies in section 4.3.1
+a "Network Class Binding". This covers MAC address and maximal frame
+size properties. "local-mac-address" and "mac-address" with a fixed
+"address-size" of 48 bits are already in the ethernet-controller.yaml
+schema so move those over.
 
-Sure, we can ignore it. As I mentioned, this released bit will be used soon=
- :)
+Keep "address-size" fixed to 48 bits as it's unclear if network protocols
+using 64-bit mac addresses like ZigBee, 6LoWPAN and others are relevant for
+this binding. This allows mac address array size validation for ethernet
+and wireless lan devices.
 
->
-> johannes
->
+"max-frame-size" in the Devicetree Specification is written to cover the
+whole layer 2 ethernet frame but actual use for this property is the
+payload size. Keep the description from ethernet-controller.yaml which
+specifies the property as MTU.
+
+Signed-off-by: Janne Grunau <j@jannau.net>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Changes in v5:
+- Incorrect DCO chain, missing SoB. (Krzysztof)
+- Improved address-bits description. (Krzysztof)
+- Link to v4: https://lore.kernel.org/r/20250319-dt-bindings-network-class-v4-0-2329336802b4@ixit.cz
+
+Changes in v4:
+- Changed the mailing list address (Rob)
+- Copyied the whole description for the max-frame-size, including the
+  MTU x max-frame-size contradiction. (Rob)
+- Link to v3: https://lore.kernel.org/r/20250318-dt-bindings-network-class-v3-0-4d8d04ddfb61@ixit.cz
+
+Changes in v3:
+- Incorporated wireless-controller.yaml suggestion (Andrew)
+- Link to v2: https://lore.kernel.org/r/20230203-dt-bindings-network-class-v2-0-499686795073@jannau.net
+
+Changes in v2:
+- Added "max-frame-size" with the description from ethernet-controller.yaml
+- Restrict "address-size" to 48-bits
+- Fix the mac-address array size to 6 bytes
+- Drop duplicate default value from "max-frame-size" description
+- Link to v1: https://lore.kernel.org/r/20230203-dt-bindings-network-class-v1-0-452e0375200d@jannau.net
+
+---
+David Heidelberg (2):
+      dt-bindings: net: Add generic wireless controller
+      dt-bindings: wireless: qcom,wcnss: Use wireless-controller.yaml
+
+Janne Grunau (3):
+      dt-bindings: net: Add network-class schema for mac-address properties
+      dt-bindings: wireless: bcm4329-fmac: Use wireless-controller.yaml schema
+      dt-bindings: wireless: silabs,wfx: Use wireless-controller.yaml
+
+ .../bindings/net/ethernet-controller.yaml          | 25 +-----------
+ .../devicetree/bindings/net/network-class.yaml     | 46 ++++++++++++++++++++++
+ .../bindings/net/wireless/brcm,bcm4329-fmac.yaml   |  2 +-
+ .../bindings/net/wireless/silabs,wfx.yaml          |  5 +--
+ .../bindings/net/wireless/wireless-controller.yaml | 23 +++++++++++
+ .../devicetree/bindings/soc/qcom/qcom,wcnss.yaml   |  5 ++-
+ 6 files changed, 76 insertions(+), 30 deletions(-)
+---
+base-commit: 882a18c2c14fc79adb30fe57a9758283aa20efaa
+change-id: 20230203-dt-bindings-network-class-8367edd679d2
+
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
+
+
 
