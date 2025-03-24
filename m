@@ -1,195 +1,138 @@
-Return-Path: <linux-wireless+bounces-20739-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20740-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFEDA6D508
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 08:25:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92ECFA6D50F
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 08:26:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9DF7188D385
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 07:25:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19C1616B271
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 07:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BD619C56D;
-	Mon, 24 Mar 2025 07:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12BC1DE3AD;
+	Mon, 24 Mar 2025 07:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cnWdNtdS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C101C17BEBF;
-	Mon, 24 Mar 2025 07:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C1718D65E
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 07:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742801090; cv=none; b=dmsnt4gTKGWmH1nE5kKBsKAhQTwbihwqf3D9gUkJXCM7S3eSWden4goEmYQt3lfFp7BXxg97JCP8TGeMVN+URhDObHb0ZZFROfCbeuEXjWcMHg89Z4jtHev0CYzBIQmvyKu+X2Mt34va3OVtZXsQwfdfMzt2a8Z6eaVtJZzaZ2s=
+	t=1742801176; cv=none; b=hBz0D/+tZ4bsxTdjCGDPO73DHUIk0QL2zwnZpj0h0HXsda9G+Rl4baQ+Vx4VKfVP/vSEqEQgzFHax+pysnUEfr0XT48WmYjfH3eyjp+x4QMTp4CRGL2bKctMsc0+oSx8uso1PCBJqIcQ85hU1UhbfRErHH562JkeBFQbc47llB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742801090; c=relaxed/simple;
-	bh=fmrdMorHUIYIjq2+A+VxG0w07gVfjpPytidFn/XNkas=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bqTTtHT31awZOi8qvJCYfzMB7dgAEaGc2oxNMrdyGjXWzNLGlElCY6pYjQLUYKY7ZjK/+ukziWTJ3zy1FYJqrqZv6g3Nhpa25M5GgR6II0TJ0BQ5k08esvfWFQevoZQKauG2/f60BndbLNjaQw5vfrs4etUjgAApaNvXFQZ/hxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O60Pgx012093;
-	Mon, 24 Mar 2025 00:24:37 -0700
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45hvqk9fjv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 24 Mar 2025 00:24:37 -0700 (PDT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Mon, 24 Mar 2025 00:24:37 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Mon, 24 Mar 2025 00:24:33 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <jianqi.ren.cn@windriver.com>,
-        <gregory.greenman@intel.com>, <kvalo@kernel.org>,
-        <johannes.berg@intel.com>, <sashal@kernel.org>,
-        <miriam.rachel.korenblit@intel.com>, <yedidya.ben.shimol@intel.com>,
-        <daniel.gabay@intel.com>, <shaul.triebitz@intel.com>,
-        <benjamin.berg@intel.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 6.1.y] wifi: iwlwifi: mvm: ensure offloading TID queue exists
-Date: Mon, 24 Mar 2025 15:24:33 +0800
-Message-ID: <20250324072433.3796220-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1742801176; c=relaxed/simple;
+	bh=VUSpqpmOLf3nFPtgNXkhEgYQD8R3nFy+ZdiXVF2gJ04=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DkdhR4BVO/3GZeZbLImKHtrJCki3r5p6kZoesigKBw2Seu6Q8YX03//TK3BmpUCW5q0pFKjlzXMCFdQu+sJ14piC+CP6IwQQS8tmO5CHBXi2ScwNrlOsqAmy0S4UkGrqnqH0B32apMcJSXKC+nY/QkS1Q9PMgT3nyrlNSGL0C9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cnWdNtdS; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O6c26p026220
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 07:26:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	lR5ea+C2yLZfOeE/kBJES7M3KF97P1A35OVYH5oVxns=; b=cnWdNtdSQYIbD214
+	bzLpuHNqZ5XmHjAW/gLIo0zgtHnw6ZwyUW1C/kodpvFJyZmF04Me5OQ3YPxqbrQa
+	t0lpRIKCFoxa02SNu9g/iEnWgrBL4twq4nRfAxsD6Tmt+PjRxBvuelGEIAu7eez/
+	GPxDw1b/9ZbpQraIJsZYTjR6/56zeI5HRrrmTz7LRoUZeau8mwGNdcR/KBorxK0Y
+	2Gzu2UmH5kWVckb4yHaRPnGk9ShnF/g1//iZDWChogcRRmFRLB1XgWbTnyBYx++N
+	j7yV8fseHxPWbAIYoMGa65hgo7U2yQ/iN97T6lN6kZmRBpgq9ab6aCBW+H+O4RGo
+	VMVgNQ==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45hm79kh6h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 07:26:13 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2ff52e1c56fso11056580a91.2
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 00:26:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742801172; x=1743405972;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lR5ea+C2yLZfOeE/kBJES7M3KF97P1A35OVYH5oVxns=;
+        b=vIrmpjxM585AIw0qbEPL8AL/6aZaR4Tv0rryWEKfDEJwV9VdHuV+KvRjYgAk1yYCUu
+         RWr/owl8Faouq+9mt1YFopxlXkAMNb0IUb389jcjLuJhXmSDxQiC3mYN87VHUQl9Erpg
+         TtCrARaVQ7AYu7yzrBq7aKVyFaIwqRwbe8ERDGLRzsb4Vq7P1cVHDwiPPSgzcAJxehwc
+         epgiB9owV+KvysF2pP/+x6TGRxTZkaxLH5mrErGyudRtO591d93ZMX5kGD+CuNuWf7jY
+         O1t+o4jky58atVXPVwtyPWSAwQSNJKKQfDAitqs1kPV7/4wiMbO3N0GM8/SVR4aparAS
+         TXjA==
+X-Gm-Message-State: AOJu0YyHBv6bre+C+p/6PurouzPniEXMo6CDrxZRxeP+DoIiteZrLAx1
+	pvyHbOAsM4yY6loLHhtbTqoXl0pXjxVLP1cmjZIAA/UFtnlQZI8CWbF50GLV9PFKWWgEdBuPXYR
+	vk94c0fyI27PWZJ+MkDjmwOEuRxyE92VNCr8I/jxaHhn1K+9M3H17JoKCDGKeoQ7hUg==
+X-Gm-Gg: ASbGnctPrF6l6ui/FaSOo2uMINrVakWJSYDDnKl8CPSHnQg5MNf80o+zJvJMW1IB6ev
+	/5xLFtNZ5jhhAusKeaUsmk+oJ3mdO3/CmKEne1onpef5IGcLjS0G+NnhsjTAFJC/baU2+LiUr71
+	8B1AEiAz7HMS60PdkmJcOQj1SMbdZtC80A/4ZfSNzEDxPsxIHhJ9OvR4568fPDmd2cTG+EpJTA2
+	XG4kk9TpD/gK4It8FVkIo0Y8SZXqrZfpuJ7LMk4Cix3o3da6UrorWgAqtsk7+loR12CS2+ygvbx
+	9d/WECcMe6XdbREL3hEIZjqcDPGUGx/J1MfVeqeLP/U2gs1FUPa4RRKYV9veVT0=
+X-Received: by 2002:a17:90b:350f:b0:2ff:7c2d:6ff3 with SMTP id 98e67ed59e1d1-303100222fdmr17145929a91.35.1742801171736;
+        Mon, 24 Mar 2025 00:26:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOux8H1C/P8FvbfQViLsF5tSDzG91ByVRPbahiDPOqTskebo61TG8MwkLo3FPddFwJrxCxDQ==
+X-Received: by 2002:a17:90b:350f:b0:2ff:7c2d:6ff3 with SMTP id 98e67ed59e1d1-303100222fdmr17145900a91.35.1742801171205;
+        Mon, 24 Mar 2025 00:26:11 -0700 (PDT)
+Received: from [192.168.225.142] ([157.49.235.36])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301bf589fbcsm11397233a91.12.2025.03.24.00.26.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Mar 2025 00:26:10 -0700 (PDT)
+Message-ID: <5e293e8e-33d8-9a5a-0b32-929d2790b01a@oss.qualcomm.com>
+Date: Mon, 24 Mar 2025 12:56:06 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=XNkwSRhE c=1 sm=1 tr=0 ts=67e108b5 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=Vs1iUdzkB0EA:10 a=bC-a23v3AAAA:8 a=QyXUC8HyAAAA:8 a=t7CeM3EgAAAA:8 a=dhpSTt-VO9tcCkpurSoA:9 a=-FEs8UIgK8oA:10
- a=FO4_E8m0qiDe52t0p3_H:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: 6-fA1YJeTypOe1mTG6mX2IYkoANMBYgj
-X-Proofpoint-ORIG-GUID: 6-fA1YJeTypOe1mTG6mX2IYkoANMBYgj
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v11 10/10] wifi: ath12k: add monitor interface support on
+ QCN9274
+Content-Language: en-US
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, P Praneesh <quic_ppranees@quicinc.com>
+References: <20250324062518.2752822-1-quic_periyasa@quicinc.com>
+ <20250324062518.2752822-11-quic_periyasa@quicinc.com>
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20250324062518.2752822-11-quic_periyasa@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: QWwXlXtxfOBa4wy98eAfnyKdhgNatrp6
+X-Proofpoint-ORIG-GUID: QWwXlXtxfOBa4wy98eAfnyKdhgNatrp6
+X-Authority-Analysis: v=2.4 cv=IKYCChvG c=1 sm=1 tr=0 ts=67e10915 cx=c_pps a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=P3F+j+0UjHwaDtf4GQVMUw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=xH0xcr9_mYJ7sMi6Wl4A:9 a=QEXdDO2ut3YA:10
+ a=uKXjsCUrEbL0IQVhDsJ9:22 a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-24_03,2025-03-21_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- mlxscore=0 impostorscore=0 adultscore=0 spamscore=0 phishscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ phishscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0 spamscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 mlxlogscore=898 mlxscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2502280000
  definitions=main-2503240053
 
-From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 78f65fbf421a61894c14a1b91fe2fb4437b3fe5f ]
 
-The resume code path assumes that the TX queue for the offloading TID
-has been configured. At resume time it then tries to sync the write
-pointer as it may have been updated by the firmware.
+On 3/24/2025 11:55 AM, Karthikeyan Periyasamy wrote:
+> From: P Praneesh <quic_ppranees@quicinc.com>
+> 
+> Currently, the monitor interface is not supported. To support the monitor
+> interface, configure the monitor vdev state identifier, configure the HTT
+> filter setup, subscribe the mac80211 NO_VIRTUAL_MONITOR feature, remove
+> the VIRTUAL_MONITOR handler procedures since align to NO_VIRTUAL_MONITOR
+> feature and prevent monitor interface to transmit packet. Therefore, add
+> these procedures to add monitor interface support and enable the monitor
+> interface support on the QCN9274 platform through the hardware parameter.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-In the unusual event that no packets have been send on TID 0, the queue
-will not have been allocated and this causes a crash. Fix this by
-ensuring the queue exist at suspend time.
-
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240218194912.6632e6dc7b35.Ie6e6a7488c9c7d4529f13d48f752b5439d8ac3c4@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
----
-Verified the build test
----
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c  |  9 ++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 28 ++++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h |  3 ++-
- 3 files changed, 38 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 53302c29c229..f8af851474e5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -1286,7 +1286,9 @@ static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
- 
- 		mvm->net_detect = true;
- 	} else {
--		struct iwl_wowlan_config_cmd wowlan_config_cmd = {};
-+		struct iwl_wowlan_config_cmd wowlan_config_cmd = {
-+			.offloading_tid = 0,
-+		};
- 
- 		wowlan_config_cmd.sta_id = mvmvif->ap_sta_id;
- 
-@@ -1298,6 +1300,11 @@ static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
- 			goto out_noreset;
- 		}
- 
-+		ret = iwl_mvm_sta_ensure_queue(
-+			mvm, ap_sta->txq[wowlan_config_cmd.offloading_tid]);
-+		if (ret)
-+			goto out_noreset;
-+
- 		ret = iwl_mvm_get_wowlan_config(mvm, wowlan, &wowlan_config_cmd,
- 						vif, mvmvif, ap_sta);
- 		if (ret)
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 6b52afcf0272..46bf158eb4b3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -1419,6 +1419,34 @@ static int iwl_mvm_sta_alloc_queue(struct iwl_mvm *mvm,
- 	return ret;
- }
- 
-+int iwl_mvm_sta_ensure_queue(struct iwl_mvm *mvm,
-+			     struct ieee80211_txq *txq)
-+{
-+	struct iwl_mvm_txq *mvmtxq = iwl_mvm_txq_from_mac80211(txq);
-+	int ret = -EINVAL;
-+
-+	lockdep_assert_held(&mvm->mutex);
-+
-+	if (likely(test_bit(IWL_MVM_TXQ_STATE_READY, &mvmtxq->state)) ||
-+	    !txq->sta) {
-+		return 0;
-+	}
-+
-+	if (!iwl_mvm_sta_alloc_queue(mvm, txq->sta, txq->ac, txq->tid)) {
-+		set_bit(IWL_MVM_TXQ_STATE_READY, &mvmtxq->state);
-+		ret = 0;
-+	}
-+
-+	local_bh_disable();
-+	spin_lock(&mvm->add_stream_lock);
-+	if (!list_empty(&mvmtxq->list))
-+		list_del_init(&mvmtxq->list);
-+	spin_unlock(&mvm->add_stream_lock);
-+	local_bh_enable();
-+
-+	return ret;
-+}
-+
- void iwl_mvm_add_new_dqa_stream_wk(struct work_struct *wk)
- {
- 	struct iwl_mvm *mvm = container_of(wk, struct iwl_mvm,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-index f1a4fc3e4038..5f7e9311e7e5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  * Copyright (C) 2015-2016 Intel Deutschland GmbH
-  */
-@@ -544,6 +544,7 @@ void iwl_mvm_modify_all_sta_disable_tx(struct iwl_mvm *mvm,
- 				       struct iwl_mvm_vif *mvmvif,
- 				       bool disable);
- void iwl_mvm_csa_client_absent(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
-+int iwl_mvm_sta_ensure_queue(struct iwl_mvm *mvm, struct ieee80211_txq *txq);
- void iwl_mvm_add_new_dqa_stream_wk(struct work_struct *wk);
- int iwl_mvm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 			 struct iwl_mvm_int_sta *sta, u8 *addr, u32 cipher,
--- 
-2.25.1
-
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
