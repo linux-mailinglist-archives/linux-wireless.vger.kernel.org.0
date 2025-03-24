@@ -1,164 +1,127 @@
-Return-Path: <linux-wireless+bounces-20723-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20724-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5E13A6D3E5
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 06:50:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 044EDA6D437
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 07:26:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FB057A590D
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 05:49:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69F2F16BAA5
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 06:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4433E175D39;
-	Mon, 24 Mar 2025 05:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97AD18DB3D;
+	Mon, 24 Mar 2025 06:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EVjlNRCF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1VApnjZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B8678F4C
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Mar 2025 05:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C061D1B4F0E;
+	Mon, 24 Mar 2025 06:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742795445; cv=none; b=kqaXj6pXds38UNUcxagt6gXhgBLbZgCaNwM+7B6seq1iID2ZzSurNlA9EozzIGC49YA75wEbJ0ev7XfiiE/fX0nFrSJlcing71ZcWJlv3oYqUW47wt3Lm9U0lEzkgDnacTWUHfguoSLNQdqiC+eSEFFEGMPH/IdYNqOIjlaPI5Y=
+	t=1742797502; cv=none; b=W57Xo+veWI8ReWslqAnCpVsphY3lrk1kKL7lvbNOphjQvWmwLPGuXqZ13dpKZUDncvXr04EFswWeAbg2FPec4XlmAGMIo3vTt/vyg2jjY0qtwxvLdarsgHaxrmENasqCgYO8jSpj3KtqU61kprt8RDKBSxbfONXNfywDqk6IxTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742795445; c=relaxed/simple;
-	bh=oA91usqyqVBPuUrkzcyR4m1vhf7Mob5Ut2kSyX8cV48=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KbaGcBqXR2ku4M+8JllyoCOuRqMF2vfrtJexP1lfQRgL+hSUYRmCBsVvf9DNluP65P5PqKdxQ1TE8Cz1DwPlh5dOCusFRg/Ag43fec4OkcVuDK3r1Iz8zQ/0rNUmOxJw51RFE0oL50jJ8CW0W6yLQnEfVpX2i5Cvhp5nBk1IFtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EVjlNRCF; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43d04ea9d9aso17239435e9.3
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Mar 2025 22:50:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742795441; x=1743400241; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y17ZL3We+j0Um9q8f67tlcHCzUzcIfQ03LepCBYfNfQ=;
-        b=EVjlNRCFmFk/eP4K5WUK6/tuvYV0aYyJwHx77UiG5FcKi4yodD0LKI/orUE/S65/+U
-         +PjsZMNiTLTu/zFQut9OdQ+TGmSL7nJWKwgljmf2aBljOY8RbBfA0P8/B7o1hIrut4a7
-         htMeLnMfOfcDOgSG7HLcmNBJgLFhNW4ry9agPC0thyaUXcadarZiCfkJ6te1OWlB8s2r
-         hK4h8nTb+zxJ5ujCYqAlX64huFLIlzeouuJ2sqWOJhqceOMzHe69VRzqKpFxWbkeAMO3
-         ZHpH+btXqHqh57v0wHupqKY8hb9IXlro3UQYBCLEblEA00X4ZIh1zScItYRQs9iq/Jbn
-         dGGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742795441; x=1743400241;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y17ZL3We+j0Um9q8f67tlcHCzUzcIfQ03LepCBYfNfQ=;
-        b=GrA5yXonPaEu5uT/7j76FswyUbE685C9aOfvRJn7vGfRftMfkF2/yqZY5F0MCSdr0q
-         zQOaycS6eLhVy1DhgoL2BaoRdAKHii+3duU0o99THoXKk5X+OhvpDKfWbCw6l+PM5zwJ
-         J2lZhYKTNMaYy41ToYqFZskPa4NFSIU8cesHagLJKsp751+OHFsIuphyJJDKDYEr0mtE
-         GmV5iQP0nk9yBHwoj5YHnnwSTgYwLJTqOuUHLiML0jOoe/EP5nKzu44XnLsxrPJweCam
-         doi9Bn5ViOyksMhCq0kGo0b1yupX7TT8R3fEWeufMNc4aP6lfSB5edXBevcMvWzr6+aE
-         uOIw==
-X-Forwarded-Encrypted: i=1; AJvYcCVq6vk+/ZfS740kCuaTUfTbXWZtfxxrF4U607zvuiXgDmnB6aklo2x3XWS4edtcvhsVr6XEPZJR6llZsfymbw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxpa9KXh7jI1u1bsN7xFa969tXP8I01cQa0xDzbEx60OEqXygte
-	SG72b5o2nAZFCv35GmmpXQwVOEcvWD8eKA4lxHbZAagwn/oXH4krrRUKjEEG5K8=
-X-Gm-Gg: ASbGnctbQWPYiPG/O2wZ3l8n3BReiyHk+zdK1uvcN+uUBwLlkVLJYyVAciYbWJazvEF
-	z7Aoie0j+0/Cspu2NWohKYBn/XG4W6KWqXVulKR8OQvd9puxLqgejTpJcGan9KW/6O14Y3QdBcx
-	g4J7OtigX1Y3LtGsCUQWDdMMM3E9Q9qEu1OP4AuWkTQsHsQPeTkZYiGSEJcOIBmbfHT4A1weh9+
-	b52rgCMWaVeIDUvq28vLAaWqssGbeE5r/jFDsSAZq1ct1rZ3A7JbSkxvrlIlUASslC27f25qoLT
-	HqiNsLm2b/JwxeWshpv1UFELvOTgZbkYVdSaUGlxckFenIor4A==
-X-Google-Smtp-Source: AGHT+IHmTYmhdJOC8tWd9mJoKjnOkYwl7qqf/27G1AO/Qiuynr43p01EUz4e7kx3RkIBljch7G1LIg==
-X-Received: by 2002:a05:600c:c8a:b0:43d:46de:b0eb with SMTP id 5b1f17b1804b1-43d509ec4ebmr103517695e9.12.1742795440557;
-        Sun, 23 Mar 2025 22:50:40 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-43d43f332cfsm161996995e9.6.2025.03.23.22.50.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Mar 2025 22:50:40 -0700 (PDT)
-Date: Mon, 24 Mar 2025 08:50:37 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: James Dutton <james.dutton@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Markus Elfring <Markus.Elfring@web.de>,
-	Qasim Ijaz <qasdev00@gmail.com>, linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Bo Jiao <bo.jiao@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>
-Subject: Re: [PATCH] wifi: mt76: mt7996: avoid potential null deref in
- mt7996_get_et_stats()
-Message-ID: <223c7280-443d-49b4-96b2-90472339dcd4@stanley.mountain>
-References: <20250322141910.4461-1-qasdev00@gmail.com>
- <d1df5d97-4691-40d4-a6cc-416505f35164@web.de>
- <92d1a410788c54facedec033474046dda6a1a2cc.camel@sipsolutions.net>
- <CAAMvbhGrJ9b3Aab9+2a5zmvEgf0GZFmHLCC7Hud+egUE28voHQ@mail.gmail.com>
+	s=arc-20240116; t=1742797502; c=relaxed/simple;
+	bh=9XXXo3EWZtEobiajEK/dAZklZgfyP4VnNuDdDAvYcz4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=P9HSaVhwrXHbtBQ2LKQDTHv6MVOBEbgoieT473XjnUAZiGBIC1uLkDalUYY+gAZwFaHYtpDcdMKOOz0CBYbD9ERaAUgsH5OrAVtOIyTt3pxK7zxeiL8aC253uxLNLkqC7nXayeUplNm7kOIJMavTcn1OJIbAzsEoej0Mh/sMIHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1VApnjZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 33183C4CEEA;
+	Mon, 24 Mar 2025 06:25:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742797502;
+	bh=9XXXo3EWZtEobiajEK/dAZklZgfyP4VnNuDdDAvYcz4=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=o1VApnjZqBgmj6Mn6l0B+/7J8UV/5HCarFDwFRGPWpNB2lMe4LWw8HdZ/up7oF1Ii
+	 xFwYrE97kSNtVwi1a1t51GoX7q/xejRw4/j9yTmUNMhbQlkSXyxYwygNv4bgsiM4Hs
+	 hq6efF+UQ40WBYdj1OgBGtUMn77ee5ozDYGN6h8JWDx7I7pViVf37tbZ/sRWrilJ/h
+	 MpDDhh7Tyi5dWbQtWzXWhmtSOqLbt5Gc9ta1G0ELHIDlBhRSucmcXmbdFFOnuMpnwr
+	 bpRolNp7kGQcVvPULcoZrvgZC1HKuYtIKtohUdsgASlV5fE8Bd5dHMuBDmwJ+SX4RK
+	 qjgunBCTF/mHw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A65FC36008;
+	Mon, 24 Mar 2025 06:25:02 +0000 (UTC)
+From: George Moussalem via B4 Relay <devnull+george.moussalem.outlook.com@kernel.org>
+Date: Mon, 24 Mar 2025 10:24:59 +0400
+Subject: [PATCH] wifi: ath11k: support fetching mac address from nvmem
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAMvbhGrJ9b3Aab9+2a5zmvEgf0GZFmHLCC7Hud+egUE28voHQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250324-ath11k-nvmem-v1-1-d82bdf72820e@outlook.com>
+X-B4-Tracking: v=1; b=H4sIALv64GcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDYyMT3cSSDEPDbN28stzUXF3LJJM0U5M0ExNDCwsloJaCotS0zAqwcdG
+ xtbUAm2N0AF4AAAA=
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ George Moussalem <george.moussalem@outlook.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1742797500; l=1623;
+ i=george.moussalem@outlook.com; s=20250321; h=from:subject:message-id;
+ bh=KFf/U6jpX3DLdf5cfXG9vG8Hbqcu1hFbIGhlckUUI7s=;
+ b=PoKhNSfsaNEQZQFXjHirGqsZeV20EcazdhX8I5TzQPa2R5lvPNK6z6IzkvT152fkvWA0wqYRc
+ pYhUAbz+GmRA9jGIGq7rRxXYScv+jjqoQr0WP0xU9nY4HQw+aRbHwa9
+X-Developer-Key: i=george.moussalem@outlook.com; a=ed25519;
+ pk=/PuRTSI9iYiHwcc6Nrde8qF4ZDhJBlUgpHdhsIjnqIk=
+X-Endpoint-Received: by B4 Relay for george.moussalem@outlook.com/20250321
+ with auth_id=364
+X-Original-From: George Moussalem <george.moussalem@outlook.com>
+Reply-To: george.moussalem@outlook.com
 
-On Sun, Mar 23, 2025 at 11:59:45AM +0000, James Dutton wrote:
-> As a security side note in relation to the following patch:
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-> b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-> index 66575698aef1..88e013577c0d 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-> @@ -68,11 +68,13 @@ static int mt7996_start(struct ieee80211_hw *hw)
-> 
->  static void mt7996_stop_phy(struct mt7996_phy *phy)
->  {
-> -       struct mt7996_dev *dev = phy->dev;
-> +       struct mt7996_dev *dev;
-> 
->         if (!phy || !test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
->                 return;
-> 
-> +       dev = phy->dev;
-> +
->         cancel_delayed_work_sync(&phy->mt76->mac_work);
-> 
->         mutex_lock(&dev->mt76.mutex);
-> 
-> 
-> 
-> Prior to that patch, the code looks like this:
-> static void mt7996_stop_phy(struct mt7996_phy *phy)
->  {
->        struct mt7996_dev *dev = phy->dev;
-> 
->         if (!phy || !test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
->                 return;
-> 
-> 
-> The compiler will completely remove the !phy check entirely because of
-> the use above it, so it being present in the source code is completely
-> bogus.
+From: George Moussalem <george.moussalem@outlook.com>
 
-No, in the kernel we use the -fno-delete-null-pointer-checks so the
-NULL check will always be there.
+Many embedded devices with ath11k wifi chips store their mac address in
+nvmem partitions. Currently, the ath11k driver supports getting the
+mac address from the 'mac-address', 'local-mac-address', and 'address'
+device tree properties only. As such, add support for obtaining the mac
+address from nvmem if defined in a 'mac-address' cell by replacing the
+call to device_get_mac_address by of_get_mac_address which does exactly
+the same as the former but tries to get it from nvmem if it is not set
+by above mentioned DT properties,
 
-Also the "phy" point will never be NULL so the check should be removed.
+Tested-on: IPQ5018, QCN6122, and QCN9074
 
-regards,
-dan carpenter
+Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> If one actually needs a !phy check to be present in the compiled code,
-> one must arrange it as per the patch above.
-> 
-> The fact that the !phy check is in the source code, implies to me that
-> someone, in the past, thought it was necessary, but I think an opinion
-> could be taken that it is there to obfuscate a security vulnerability.
-> 
-> Kind Regards
-> 
-> James
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 97816916abac..49af6b9fc867 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -9,6 +9,7 @@
+ #include <linux/etherdevice.h>
+ #include <linux/bitfield.h>
+ #include <linux/inetdevice.h>
++#include <linux/of_net.h>
+ #include <net/if_inet6.h>
+ #include <net/ipv6.h>
+ 
+@@ -10379,7 +10380,7 @@ int ath11k_mac_register(struct ath11k_base *ab)
+ 	if (ret)
+ 		return ret;
+ 
+-	device_get_mac_address(ab->dev, mac_addr);
++	of_get_mac_address(ab->dev->of_node, mac_addr);
+ 
+ 	for (i = 0; i < ab->num_radios; i++) {
+ 		pdev = &ab->pdevs[i];
+
+---
+base-commit: 9388ec571cb1adba59d1cded2300eeb11827679c
+change-id: 20250324-ath11k-nvmem-9b4f54f44188
+
+Best regards,
+-- 
+George Moussalem <george.moussalem@outlook.com>
+
+
 
