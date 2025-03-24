@@ -1,62 +1,61 @@
-Return-Path: <linux-wireless+bounces-20747-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20748-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F11A6D9E5
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 13:14:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 580B7A6D9F0
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 13:17:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C19901887F98
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 12:14:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 861403A5F14
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 12:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505161DC985;
-	Mon, 24 Mar 2025 12:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C26025DCFA;
+	Mon, 24 Mar 2025 12:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="SQzDlLxo"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="NJ6iQPl5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE8844C94;
-	Mon, 24 Mar 2025 12:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA98418A6C1;
+	Mon, 24 Mar 2025 12:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742818455; cv=none; b=j5w1gO7K//poaXDCYp88+qxlVZ+h3VEdGb4yKAtHKZ/R/Ibh7vjqtBu9zCZFu5+TEHWeuivlcfiQJ0XdMPS3C8gwYS8WyTpZh9pC1gAnkaZdv3a6wyS4Wr3h0rD60VIPzhd6qj2Z4Sk32e2LOG9JFjcQnq2+61E02stbUTRnj1k=
+	t=1742818633; cv=none; b=PGaYVb3TzINPUfsLJDk+DQ7jtsvzr24DxJuOvMl7G0BTHOsl+VovtC3PTGUlwMjvGWjb/ZET/BgLqTDzzo60be6dg++QIereF8VLBzh64oGpSLdNUa2qGzwoK/plgFMfcqiTCeUuL+vJZ4sQPnnlYbC3SpWsWpijm1rn34x+jI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742818455; c=relaxed/simple;
-	bh=tZFx1JtKjwXHIsPl5kXPKqku9E/DMXdkMhCXftAhfFY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Bi5Xg41cqfQf3sa7INx1nEv+nZlcqdXTsmT9yG/gtQdgL74NzUYuxn3pMi17IFPWlS0vXuMhTI+a1Kt4zUtetQzMjz60rrRSFPE5YftmNeulVnRTu6Z1pVPECxWooYf4B5OcseWvzL7fZQf1uzMnjCJJAaP7QUPczn9m2z032uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=SQzDlLxo; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1742818633; c=relaxed/simple;
+	bh=OyJjb52U6SPYBHglOWIXqWpN8UNu0dZeWIIh91MnVXE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GOutc7R1QyJRyQ7tTgSEGhlHPgpG45bONQtrd6xMrCSCUeHD1xP8Op14AXhDKeSXkb/dAoV06RiUNZjxgryadYpoApyZ3MsFGYk6sDiy8kHwqGep/uvo6Ml+O54VCJlEZdG9+xezJEQcPeit0df+t/preXbg7OB0J2fy2Bsuang=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=NJ6iQPl5; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=tZFx1JtKjwXHIsPl5kXPKqku9E/DMXdkMhCXftAhfFY=;
-	t=1742818453; x=1744028053; b=SQzDlLxomT/Of7V+qG2sh3xilMV1sLfc9UJGCP2XG9w/lJ6
-	gg60tTMGyVbxSmbD1mehAN7azBtpA4h1mZZ7Mci2o4D8pSy3r/q+DIIC6YTMNImuGrt5dbY0ABN4y
-	Jd9417GKXR9MmwNTG32oVyiFyvNnTTTFeb/+F2LJTnog1hBKrbNWsuVt6LvoBekjz3F2/QJ45XAA9
-	mJGMwN9yaRzkZUiAKqumcjbBqbYywlSMMHX47b4urX7d5tbvZDbq6L3AA6zJreE9Ndgs2wXOC43o6
-	DVk+yRBzy17wRmbZTzzZOrhHx7fjbz6CgCXj5Nx/FBXCnjlBF03FHo5vBUO3bm6w==;
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=W6RQz0Iak2RKskEFG9tsWaSiFWE6qmsHQP5eJ4e7afM=;
+	t=1742818631; x=1744028231; b=NJ6iQPl5L7XWlR6HnxcEdxWRaiLDMWvu8LwIx5051qLI3IV
+	dxOFDT6AX6mXqSpcQuqham0u1I/8bixnwBAcH2Mo756UlboppBFehYEY+lKj9r3nShRUIHbpKIk5m
+	auKrVZ7EGABHTPV2/QG2VyznN+n6tzE2KWOTyviZS6OI2SkuHN3GtXy2ml19GCgxR+q4nsml0V2Rc
+	tuDir54fWKYJwKr8aofqyV3mBOSn6E8uYpIkFXNRrCiuZOoChABXXsyWtNP/mWsvZBOZ98nf+/BBZ
+	fBoKYY0ahW2g3pTEmyVyf/nxEZbe3lOqSIwbm9dOEnB0dlgA69b6bo6GkvtAk0pg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1twgh0-00000003zCm-45dh;
-	Mon, 24 Mar 2025 13:14:11 +0100
-Message-ID: <ca69081330005ec6f90b20d2ab8b1b594b90da50.camel@sipsolutions.net>
-Subject: Re: [PATCH v4 00/10] mwifiex: cleanups
+	id 1twgjt-00000003zJA-0m97;
+	Mon, 24 Mar 2025 13:17:09 +0100
+Message-ID: <754c24f1b1f7d37cb616478c57a85af18d119c21.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/2] wifi: mac80211: Update skb's NULL key in
+ ieee80211_tx_h_select_key()
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Sascha Hauer <s.hauer@pengutronix.de>, Brian Norris
-	 <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, David Lin
-	 <yu-hao.lin@nxp.com>, kernel@pengutronix.de, Francesco Dolcini
-	 <francesco.dolcini@toradex.com>
-Date: Mon, 24 Mar 2025 13:14:09 +0100
-In-Reply-To: <20250321-mwifiex-cleanup-1-v4-0-4a32b21e2553@pengutronix.de>
-References: <20250321-mwifiex-cleanup-1-v4-0-4a32b21e2553@pengutronix.de>
+To: Remi Pommarel <repk@triplefau.lt>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Mon, 24 Mar 2025 13:17:08 +0100
+In-Reply-To: <95269f93724a94ee0b22f8107fe5b5e8f2fbea76.1741950009.git.repk@triplefau.lt>
+References: <cover.1741950009.git.repk@triplefau.lt>
+	 <95269f93724a94ee0b22f8107fe5b5e8f2fbea76.1741950009.git.repk@triplefau.lt>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -68,24 +67,49 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Fri, 2025-03-21 at 09:50 +0100, Sascha Hauer wrote:
-> This contains several cleanup patches for the mwifiex driver. I dropped
-> the MAC address fixing patch this time as it needs more discussion, but
-> the remaining patches sent here are nearly unchanged from v1 and should
-> be good to go.
+On Fri, 2025-03-14 at 12:04 +0100, Remi Pommarel wrote:
+> The ieee80211 skb control block key (set when skb was queued) could have
+> been removed before ieee80211_tx_dequeue() call. ieee80211_tx_dequeue()
+> already called ieee80211_tx_h_select_key() to get the current key, but
+> the latter do not update the key in skb control block in case it is
+> NULL. Because some drivers actually use this key in their TX callbacks
+> (e.g. ath1{1,2}k_mac_op_tx()) this could lead to the use after free
+> below:
 >=20
-> Sascha
->=20
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
-> Changes in v4:
-> - rebase and test on v6.14-rc7
->=20
+>   BUG: KASAN: slab-use-after-free in ath11k_mac_op_tx+0x590/0x61c
+>   Read of size 4 at addr ffffff803083c248 by task kworker/u16:4/1440
 
-Should probably rebase on wireless-next, it doesn't apply there.
 
-Also please tag the tree in the subject, "[PATCH wireless-next NN/MM]"
-so the bot can identify the tree better.
+Maybe should have a Fixes: tag?
+
+And please also tag the subject "[PATCH wireless NN/MM]".
+
+> +++ b/net/mac80211/tx.c
+> @@ -668,6 +668,12 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *=
+tx)
+>  	} else if (ieee80211_is_data_present(hdr->frame_control) && tx->sta &&
+>  		   test_sta_flag(tx->sta, WLAN_STA_USES_ENCRYPTION)) {
+>  		return TX_DROP;
+> +	} else {
+> +		/* Clear SKB CB key reference, ieee80211_tx_h_select_key()
+> +		 * could have been called to update key info after its removal
+> +		 * (e.g. by ieee80211_tx_dequeue()).
+> +		 */
+> +		info->control.hw_key =3D NULL;
+>  	}
+
+I'm not sure this looks like the right place - should probably be done
+around line 3897 before the call:
+
+        /*
+         * The key can be removed while the packet was queued, so need to c=
+all
+         * this here to get the current key.
+         */
+        r =3D ieee80211_tx_h_select_key(&tx);
+
+
+I'd think?
 
 johannes
 
