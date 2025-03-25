@@ -1,161 +1,145 @@
-Return-Path: <linux-wireless+bounces-20808-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20809-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ACE9A70AB0
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 20:47:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6016FA70C14
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 22:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DA3F18879B1
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 19:48:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DDD47A7E8C
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 21:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409C21F0E5D;
-	Tue, 25 Mar 2025 19:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37851EFFBE;
+	Tue, 25 Mar 2025 21:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="kdM3Nj1M"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CnJQ8OaI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A0B19ABD4;
-	Tue, 25 Mar 2025 19:47:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9E6269B0E
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 21:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742932066; cv=none; b=SPBCxHYGTFJDsJuxke/a+nhPLdzzw0O2K0qB2VPErv6T1LVKvU05yVpSeeDs4k88mmGKkwVTrgs3D2FjPm2vwb8fWUSTWgsuEnK+erQk5iiy4MefiNwy5eKqDqdOod03NnIIDFGgjZnHDPULQ+nDVrvpQ5lMYvYIXV/pLbcST8Y=
+	t=1742938293; cv=none; b=g2cl0kipCFrT1d9G0W/bmlKEUw0m04zFOFThYq7l2qGenicHAPDW4Vs51t3fFw7x3M2adCkqA+gn9tb4aYYRZOlhV24k/g5JpmyvQhk3qqL4965HFQoaRFxdL8dLJvFLnO3S8orx/bIz0PwDby4m0ih/QWlcoCtB/9bLnm/itV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742932066; c=relaxed/simple;
-	bh=FQrF/wafsCwtQ5RHtBLJtng6uuJETqkLf6oOWt6uk9A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZOmKyxxzZDc4fAJ6QMrrVbwN+K/r5xeSJcn5yxbIwfqgHrqvSPqbZCPSksg+bGpCNP777kOfa20WFjq3GsYXrhpV+Ia5BiBfhn/m7a5Qp7xWx0MvlbR+/jcgj2IPv6Fyy+yB0SSq1MvrbFa6T4ZAwo4qD0WW1R3Vm0d3Hfyu1m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=kdM3Nj1M; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [IPV6:2601:646:8083:1982:248d:9102:5b8a:6e6c] ([IPv6:2601:646:8083:1982:248d:9102:5b8a:6e6c])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 52PJhUIl603946
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 25 Mar 2025 12:43:32 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 52PJhUIl603946
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025032001; t=1742931824;
-	bh=UJj21FC15p3nVLzkicX5dgxkBEi54nR03XqBTpnd5V4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kdM3Nj1MybR90X09rU1nRONRJ2jg1AtjqKoXLnxsg2cojdKgyvQq1sB0dmO1P9B7e
-	 Oh0GOCPxLEaRXZFe7o1Sfjp8n54w75H5iN/HAzeysNqCT9wYOr7jEP2Dae4W47cuTE
-	 IJENwVV1LUrY+RUTP8SIu8IuTBsqVtESVxKjQe2igsVqYUE9/vC+W48eqqzXH+7yPQ
-	 lLYCfriDAqV0glFFkq5y8djhKy78jC5zQ7rOCh2GQVPUddqvu2o3Kp1cuthMCi7rCc
-	 T1rY4JTt0lRSRGlEjcanOa/VKXXmOhoSIUQpV16G1iV32q6fHAz8KlUXWCNdcW9vny
-	 jM4Umn7OoVMWA==
-Message-ID: <eec0dfd7-5e4f-4a08-928c-b7714dbc4a17@zytor.com>
-Date: Tue, 25 Mar 2025 12:43:25 -0700
+	s=arc-20240116; t=1742938293; c=relaxed/simple;
+	bh=PnvMx8g87WQ64V3KvQg4C/R8SE2fIT9wB5boNhqMImQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ezJOJoHfeToMkbQm9YNCmtb9kktMAcGAIvTYPF+Zy/qwW2C9qqKiRpn9kamqvsVnSNjsv/Np9aaK6JiQaJ2KWTY6ZOQIFJYvZsLJR5XXwyRpp4h0wP0d3wnpYKXn/LMbIOwbukZ/1qLL4ugS1C6j+E9W16826DL2fTVLjGnvEA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CnJQ8OaI; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52PGb2GC010324
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 21:31:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=oWFTXCvQu1Y6hkFTI6Ft3wbcV6Qa00JuIc2
+	PM/P2UE0=; b=CnJQ8OaItAxLTFkAwo786SbJHGmkYOlY0gSz7ymavvAl/Vku5w5
+	QgCNbERy17txI6lcmI3ot2z8PjpCqK23YjIVRABPpe/GA7ElF5lIWCs2iz0ur6Xb
+	vYu4yNg1sfy83L5cNHJYFZvcnefvtyI0VHGbeHbfmTe1c/LCgauUt5wnE1CTkI9P
+	D7joZBnlrU2LGjMWG6sIrrIWG9m9TahVxSTqKDahdK90ETxrFR6NjEWMUVYuAMRN
+	0DRB/ZIHmAkabn+26Qmvq0svj5l9v1P4uEqSLfTX1axT0RblByjPq8uvW+ZK19Dw
+	Kyk84Jr66B+wMqKsIKc47gahGUn87/z1OEA==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45hm79s7bc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 21:31:30 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-22412127fd7so76446985ad.0
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 14:31:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742938289; x=1743543089;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oWFTXCvQu1Y6hkFTI6Ft3wbcV6Qa00JuIc2PM/P2UE0=;
+        b=k6vVhQUmcZ/Vhfl5NZWruJDWaoH9FZZsCtJJq1DYV609I//RFD+zD1gASI4lLxwx+u
+         uqnZxz2h7nkkZmKUza2KwE7HlALDEjdsxSwM97/W/ZWc6f5dg0DWySNR7Alh/6Exv/zX
+         hq6jkyJyoR5hj4xsHZLjn6KY5yFaAj7Is+I/cEj/AfmsE68w1uvW3xsIqozh3OdJ4nED
+         htXsl8OzQ75nDlyC/+0t7gUWN2D+rtbF+uUDXeA+zzYHERzmgqKWmJIenHvsOdWL0C74
+         9kadHH1p08BCPzSykMoMP+ncV/Or2whrosKMKSibsWkLOp8J9aOl4lZeXtiO5CR2tJ4i
+         HtAA==
+X-Gm-Message-State: AOJu0Yy+tfYYKnBR8OpNtOqmWxvlCM1oaQ5CJ1P6ovHIizCloEUjfTrz
+	/pCAIQswG67AoaaeZ++qw/48kRmsHZ84CM4rF9p/76XAqXenX8jHbOgdXTbOKZNT0brGiPX6On7
+	glS8nAQLsXPhmEHrXrg/tNuZX1Pve4h4gYFnV/Uw3ZzauurBHf5MkvCpGDfYwsAKPjg==
+X-Gm-Gg: ASbGncv8fuOyAuJPkqHI9oY0f3gzKVaoJNTTXHNK5VvDafOW8txERzG9WyHPmwHecFH
+	32JTnQHwvaolUl6tECCtCe6Ljuh+2kR5erOE1f5uIytCfIHoBswcil5AtE49lawJnSbNNbbWXGZ
+	neebUT+Xvpw9tFr4DgDG393BaH8LnfMhKwnmjSYlq1rGfgoXH7HfOn9LckmgmHe7XMDcM8ZL6Pm
+	Do8uC1u0VGMyUIxaRP1K15FjaLQWQMZYDM54r28dUInGcuiI5EET0LzE+bp74yqvKnDkW1ebuSl
+	f/YMjt4T/axOy3SBzqeoZUi8pJhxq1YMM4PaNShYD7hGlf1u/FImmAoQpDiYMPpmgNL2cu5r
+X-Received: by 2002:a17:902:ea07:b0:224:1935:fb7e with SMTP id d9443c01a7336-22780d8351fmr273533035ad.24.1742938289034;
+        Tue, 25 Mar 2025 14:31:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFWPa9oUss5GAJMv/yYXFTm00HG0JDPWj2VYN5so4LBZC2+8CwNNm4bZp0OXGWmRuCpHL6zpA==
+X-Received: by 2002:a17:902:ea07:b0:224:1935:fb7e with SMTP id d9443c01a7336-22780d8351fmr273532575ad.24.1742938288503;
+        Tue, 25 Mar 2025 14:31:28 -0700 (PDT)
+Received: from msinada-linux.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22780f3a2b5sm95599395ad.50.2025.03.25.14.31.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Mar 2025 14:31:28 -0700 (PDT)
+From: Muna Sinada <muna.sinada@oss.qualcomm.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org, Muna Sinada <muna.sinada@oss.qualcomm.com>
+Subject: [PATCH wireless-next v4 0/3] wifi: mac80211: MLO handling for Dynamic VLAN
+Date: Tue, 25 Mar 2025 14:31:22 -0700
+Message-Id: <20250325213125.1509362-1-muna.sinada@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/16] Introduce and use generic parity16/32/64 helper
-To: Kuan-Wei Chiu <visitorckw@gmail.com>, Yury Norov <yury.norov@gmail.com>
-Cc: David Laight <david.laight.linux@gmail.com>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Laurent.pinchart@ideasonboard.com, airlied@gmail.com,
-        akpm@linux-foundation.org, alistair@popple.id.au,
-        andrew+netdev@lunn.ch, andrzej.hajda@intel.com,
-        arend.vanspriel@broadcom.com, awalls@md.metrocast.net, bp@alien8.de,
-        bpf@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211@lists.linux.dev, dave.hansen@linux.intel.com,
-        davem@davemloft.net, dmitry.torokhov@gmail.com,
-        dri-devel@lists.freedesktop.org, eajames@linux.ibm.com,
-        edumazet@google.com, eleanor15x@gmail.com, gregkh@linuxfoundation.org,
-        hverkuil@xs4all.nl, jernej.skrabec@gmail.com, jirislaby@kernel.org,
-        jk@ozlabs.org, joel@jms.id.au, johannes@sipsolutions.net,
-        jonas@kwiboo.se, jserv@ccns.ncku.edu.tw, kuba@kernel.org,
-        linux-fsi@lists.ozlabs.org, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-serial@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux@rasmusvillemoes.dk,
-        louis.peens@corigine.com, maarten.lankhorst@linux.intel.com,
-        mchehab@kernel.org, mingo@redhat.com, miquel.raynal@bootlin.com,
-        mripard@kernel.org, neil.armstrong@linaro.org, netdev@vger.kernel.org,
-        oss-drivers@corigine.com, pabeni@redhat.com,
-        parthiban.veerasooran@microchip.com, rfoss@kernel.org, richard@nod.at,
-        simona@ffwll.ch, tglx@linutronix.de, tzimmermann@suse.de,
-        vigneshr@ti.com, x86@kernel.org
-References: <efc2ee9d-5382-457f-b471-f3c44b81a190@citrix.com>
- <5A790652-1B22-4D13-AAC5-5D9931E90903@zytor.com>
- <20250307195310.58abff8c@pumpkin>
- <EB85C3C1-8A0D-4CB9-B501-BFEABDF3E977@zytor.com>
- <Z824SgB9Dt5zdWYc@visitorckw-System-Product-Name> <Z9CyuowYsZyez36c@thinkpad>
- <80771542-476C-493E-858A-D2AF6A355CC1@zytor.com> <Z9GtcNJie8TRKywZ@thinkpad>
- <Z9G2Tyypb3iLoBjn@visitorckw-System-Product-Name>
- <Z9KMKwnZXA2mkD2s@visitorckw-System-Product-Name>
- <Z+AlyB461xwMxMtG@visitorckw-System-Product-Name>
-Content-Language: en-US
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <Z+AlyB461xwMxMtG@visitorckw-System-Product-Name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: IAEoY1qBOxOn-vhdas71KjpFeqpNCTll
+X-Proofpoint-ORIG-GUID: IAEoY1qBOxOn-vhdas71KjpFeqpNCTll
+X-Authority-Analysis: v=2.4 cv=IKYCChvG c=1 sm=1 tr=0 ts=67e320b2 cx=c_pps a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=Vs1iUdzkB0EA:10 a=tC2w3n1Uh1GYHlSDkNEA:9 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-25_09,2025-03-25_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ phishscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0 spamscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 mlxlogscore=820 mlxscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503250143
 
-On 3/23/25 08:16, Kuan-Wei Chiu wrote:
-> 
-> Interface 3: Multiple Functions
-> Description: bool parity_odd8/16/32/64()
-> Pros: No need for explicit casting; easy to integrate
->        architecture-specific optimizations; except for parity8(), all
->        functions are one-liners with no significant code duplication
-> Cons: More functions may increase maintenance burden
-> Opinions: Only I support this approach
-> 
+Currently for AP_VLAN interfaces that are a part of a MLD master AP,
+links are not created for the interface. Additionally, mac80211
+handles duplicating multicast traffic on each link when a driver/hw
+is not handling such action.
 
-OK, so I responded to this but I can't find my reply or any of the 
-followups, so let me go again:
+With the introduction of MLO, there are two areas where additional
+handling is needed to enable Dynamic VLAN traffic: creating separate
+links for AP_VLAN interface and enabling mac80211 to send multicast
+Dynamic VLAN traffic on each link.
 
-I prefer this option, because:
+4addr mode + MLO is not currently supported.
 
-a. Virtually all uses of parity is done in contexts where the sizes of 
-the items for which parity is to be taken are well-defined, but it is 
-*really* easy for integer promotion to cause a value to be extended to 
-32 bits unnecessarily (sign or zero extend, although for parity it 
-doesn't make any difference -- if the compiler realizes it.)
+v4:
+ - Add link iteration macro and utilize it.
 
-b. It makes it easier to add arch-specific implementations, notably 
-using __builtin_parity on architectures where that is known to generate 
-good code.
+v3:
+ - rebase to cleanly apply to wireless-next
 
-c. For architectures where only *some* parity implementations are 
-fast/practical, the generic fallbacks will either naturally synthesize 
-them from components via shift-xor, or they can be defined to use a 
-larger version; the function prototype acts like a cast.
+v2:
+ - update Author signoff to new email
 
-d. If there is a reason in the future to add a generic version, it is 
-really easy to do using the size-specific functions as components; this 
-is something we do literally all over the place, using a pattern so 
-common that it, itself, probably should be macroized:
+Muna Sinada (3):
+  wifi: mac80211: Add link iteration macro for link data
+  wifi: mac80211: Create separate links for VLAN interfaces
+  wifi: mac80211: VLAN traffic in multicast path
 
-#define parity(x) 				\
-({						\
-	typeof(x) __x = (x);			\
-	bool __y;				\
-	switch (sizeof(__x)) {			\
-		case 1:				\
-			__y = parity8(__x);	\
-			break;			\
-		case 2:				\
-			__y = parity16(__x);	\
-			break;			\
-		case 4:				\
-			__y = parity32(__x);	\
-			break;			\
-		case 8:				\
-			__y = parity64(__x);	\
-			break;			\
-		default:			\
-			BUILD_BUG();		\
-			break;			\
-	}					\
-	__y;					\
-})
-				
+ net/mac80211/chan.c        |  3 ++
+ net/mac80211/ieee80211_i.h | 12 +++++
+ net/mac80211/iface.c       | 12 ++++-
+ net/mac80211/link.c        | 90 ++++++++++++++++++++++++++++++++++++--
+ net/mac80211/tx.c          |  6 ++-
+ 5 files changed, 116 insertions(+), 7 deletions(-)
+
+
+base-commit: 1794d7ab34d2221ac7eb921b171e75b856e10561
+-- 
+2.34.1
+
 
