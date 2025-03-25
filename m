@@ -1,85 +1,88 @@
-Return-Path: <linux-wireless+bounces-20814-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20815-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D68A70CDF
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 23:27:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B7CA70D0A
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 23:41:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 191AC176413
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 22:26:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 184593BDF5D
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 22:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CF1269CE5;
-	Tue, 25 Mar 2025 22:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773BA26A0CA;
+	Tue, 25 Mar 2025 22:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Vi7sb70J"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="GQhYK1hd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9134926A084
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 22:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89CB26A0BE
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 22:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742941604; cv=none; b=cjh15R41/WFq5L9m4qIhbTGE+I9zFGx1LtmRKU6LfYi+o1JLlyJLKQawvdUxiRHdkw0CPcPBufyzL+V1rNr8WMl3Kfj7rsCeslN0J1VCoGZ3yqRRuh4EuOUU5/B6l1kZBlH5QdcG+06plm+M1a6nXjV0fJDt1gotRTRj4loy0Ws=
+	t=1742942427; cv=none; b=jIfSOAMv2me4qzpFZLcd4hfmfGyPdY7zXRE2XGBpSJ/gMis8w7N74/2CdXmdfqvxTNvQ8LJQ0ND543pKN78/Rqk/wA7vGGkXAFXgeSpNpP8Voh5hQVPyOVOPJov40JEb5zhsqPcGIP0OEqZ8XYIxt3zAgXsSmH/a0Gi8eqQYGWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742941604; c=relaxed/simple;
-	bh=Ax/xgb3TsFCNXd+hqnMtNKg6gGOsr2N5FRf66cIOIgg=;
+	s=arc-20240116; t=1742942427; c=relaxed/simple;
+	bh=pQ4UoyDlpkHuiZgOcYbiP4Xig7yGzQ3Q2/+D3ehiXNE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KNrXec2KsPBvGGI3o0XDdPqkDttgq4CodSZBBpHG9i/aRNg2z5nZaAPs1G1ymm+YK5tI+JVwiUH1jfG2qg5BfvtpSiVA6qj3syBgmQQgSEpkbQcmg+Dyj65exQYl9nnOfs3u6f40r87JGdqB31xBj1BsRUHiaBZJdzS1K5cKIUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Vi7sb70J; arc=none smtp.client-ip=209.85.214.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fmucd1QU/yesErwkkPzpiT71mk6EVq4MvlX1mZ5bWBIoSXNgyXfazDM2PoP7VMsaouHgAcui6rhPq5vq1AtQJBbad5dqG5/gR54adrqDmG5vWbXJKUylp02zsAeepjNpcVzW9b1y5cAPYBA6kfhi5OaIrVYAndqbBrv2OVcx+Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=GQhYK1hd; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22403cbb47fso122114815ad.0
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 15:26:42 -0700 (PDT)
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-301302a328bso11686193a91.2
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 15:40:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1742941602; x=1743546402; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1742942425; x=1743547225; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ax/xgb3TsFCNXd+hqnMtNKg6gGOsr2N5FRf66cIOIgg=;
-        b=Vi7sb70JtuukLn5QGDZk04k5Cnb/LmkT+4Bcd5F5LF6Ue7BmnVPKXComjR0tj04gIw
-         iukAnQ2ki9J5FupWsM0WhPvw8VqRm+G3jEzYb3m9eoX/n7T1x2gFGdT7qLzq+ZDRafqB
-         34LDoKzaA2fwQXL5FtT8v5Tvy8wLsQO75Qw2g=
+        bh=ZQ0mQOw62tpJtHtq3bDP+LhjKb7VU3twZUif4e7fNdo=;
+        b=GQhYK1hdsQPc38IdJ6AIvyattcUJJLw0K6nefnDPT46rZvc/BQs5h3hF377S31XDhK
+         3KxXg8htAQA1HPmJufoEETmGqsFahje/CjWGlEbF4b/fDpuKuDmG1pbmxk6XsG0vP9Bb
+         CU5VaaihLJgMKAFvhoL9BnTJAawhZOR5+Kd5s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742941602; x=1743546402;
+        d=1e100.net; s=20230601; t=1742942425; x=1743547225;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ax/xgb3TsFCNXd+hqnMtNKg6gGOsr2N5FRf66cIOIgg=;
-        b=feOrVGEnEWkvWmA1G03rklMo7TIuiMBENZngfsCVa7H2KeUL3h8xYGWWOqmUSqiaJy
-         QvKD/ZYvRBFzuTjXDogwemvUcOxdXAcOiuMMc7CX9ZRQvRuo6eqQeJNVztJP3YE8Mc9G
-         +3qD06Q7JlgtABwWcSpBcrb5bOOkhexxLyMXUgW7Y7Jk/krhclYTaNAfwoLzR30DgOh/
-         paYInOFiaRoa0oM+sb3EsrX/nmSV7hm3rcP4jTJWFXiykH1qC/0CwKoMcez+MLTrH1ds
-         Aj17msUQJumP9KBD9QrlTnvzrBbW1vpFS1b8SJqHSW6m1r+r+FkhftVGJDxMzL4ExD8J
-         d0ag==
-X-Forwarded-Encrypted: i=1; AJvYcCUbSDhrID+SJbnPQP+4KNklLZKq/HoCOFpwPyRyp3M5cqq7SrIydJv89ALSXfMqmPgSKXUenG+Ys4qmUWAuPA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGEz9ttpQxu/Bp1KHumhkRBh8dpPVUoMvl5B208VcZIVfHwkIp
-	z24KSE1202dK8LnTppQnOj/QZJFT9EAyQeT2ypEar2IX4Al65wjtkgH5oKO95Q==
-X-Gm-Gg: ASbGncux/u5bctTA9bulzUlUMQWVAx3PxWWuku8FErbjaBguQ/nBtfPXZiq6f7a5dj5
-	+ltLnF9F3qHx1kH3RjWB3gy9uWEF30Cs8T6EvmhkxtXMpd6w8lh55MZSpBW2Rt4wwLHOXUphWdq
-	rdHdvvRtbj2qQiJwoqedVidUhJNretM6mu2zTiR+xWKEXLvgItK9dMh1VxSoxutwWllZza++zrP
-	jpdvIL/KeN1pdhzo+BykGg524A5VlsArLAP7sZTZlWby4BcVXS+Gb7vKQDCEOSJakuLv1B78bha
-	6AQ5y5ebMvaZYwYFlqUy9Vr3P/yzx+n/GdSCxGnpdUtUdj4cOw0zq8z5zxxaO8U/cWjtHsOadFl
-	Kq2BRnhc=
-X-Google-Smtp-Source: AGHT+IHVHlRkM1Xo1gijBPKRyHa63UrZO0+fcBb9I1JM7qtE52PfSIfTdRLQC0cXlJNB8zkMo6XFeQ==
-X-Received: by 2002:a17:903:3285:b0:223:5ca1:3b0b with SMTP id d9443c01a7336-22780e122c6mr238387615ad.40.1742941601896;
-        Tue, 25 Mar 2025 15:26:41 -0700 (PDT)
+        bh=ZQ0mQOw62tpJtHtq3bDP+LhjKb7VU3twZUif4e7fNdo=;
+        b=Yggh7BXUh3ZlRlyeeU/euv2NSo+8JnXUZapqGaQv0MCxuInRNAGO3+u5LpIsrhLLAF
+         vyumtwR2gjbBKfhx47eTXAl5Qs2dBTO/gMkfb9cvHk5UlbMHyL9JsmzIRNdBGw8E1Ul8
+         jGnH2T05PANXj3RJLLplTn1RFggiVHFy+32PCCmfv6VmAAGvaMBMb7an5guwkb37bAX7
+         PO0T6JoJt8Fb+Xd+4+PEVDY3qXI6kcxDsJafq6NmxbOgArf+ffRIYpLm7rVsXz+Sqxdc
+         Wu52nWqpOGybAjTyWoSuKOP0m5kWweBU2E1x2es1xA2rt+vN/L1zUKdw9faa02dQvGH2
+         jxdw==
+X-Forwarded-Encrypted: i=1; AJvYcCUk4oq/hMbbPCgZ3nYkwGA+M2BY+bZVL/MMKBuXc5DYvkzaCWHpsGe+hfgKekybdJ8+h9C6my99/IRSHajD0g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yznzpm5GXIQszRcXWr9m66ISq8AnUU4Vq052q7kT/QoCr4tkgWj
+	V3a7s2bUUPEtO4W29bvgYU2ZApr9scXFp7lew2dneMFmkTMeHKsZjF3SQ+urSQ==
+X-Gm-Gg: ASbGnctPF/D4G5qdqzz6MgKtE+ZL2upmgkY8czxntiftYzK06BXzJMw0obaDHnOtLUX
+	h5zS7RG2TZvqMPeVDCDt1ypneROP3faTiJ+qflsLeKjjg2oHz1GLvQFwKGzXyD5MAn36GtJavtE
+	Gd40jT2xVsJRUgj+pBnichaOERaeazaSij6AW1eKa9MceRhPXLJxkWorlq5URhfFoniCFn6oZE1
+	OKYqq1UyY+LCMCkq4QZOUoOaji9ZmlHKPptIpRcFG87TtC2Hb/Bjq5s4ykHr8vC7oOpELB57uzn
+	2zo+JVqzTuwO8ne05mg0gs8PuNYzpObMwV6j1JFcsHkdz5mrAh9wbTSec5EShXyVNc0e6VmbWFP
+	rl9WQuBM=
+X-Google-Smtp-Source: AGHT+IFnMbdSPWJg/PZpthIfsM4Byyr22hmvQEezyxPZc4t6JJRig3bNhZIvvWZylXPImyBG3wYAXA==
+X-Received: by 2002:a17:90b:4d07:b0:2ff:69d4:6fe2 with SMTP id 98e67ed59e1d1-3030fe9c932mr32753804a91.16.1742942424766;
+        Tue, 25 Mar 2025 15:40:24 -0700 (PDT)
 Received: from localhost ([2a00:79e0:2e14:7:b885:47c3:6268:77fb])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22780f39d48sm96249485ad.37.2025.03.25.15.26.40
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-301bf61b525sm14937020a91.35.2025.03.25.15.40.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Mar 2025 15:26:41 -0700 (PDT)
-Date: Tue, 25 Mar 2025 15:26:40 -0700
+        Tue, 25 Mar 2025 15:40:24 -0700 (PDT)
+Date: Tue, 25 Mar 2025 15:40:22 -0700
 From: Brian Norris <briannorris@chromium.org>
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Kees Cook <kees@kernel.org>
 Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Allison Randal <allison@lohutok.net>,
 	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Lin <yu-hao.lin@nxp.com>, kernel@pengutronix.de,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH wireless-next v5 00/10] mwifiex: cleanups
-Message-ID: <Z-MtoOCLX2_1GztI@google.com>
-References: <20250324-mwifiex-cleanup-1-v5-0-1128a2be02af@pengutronix.de>
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] wifi: mwifiex: Add __nonstring annotations for
+ unterminated strings
+Message-ID: <Z-Mw1gvbkBQ1fZ7y@google.com>
+References: <20250310222332.work.202-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,22 +91,32 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250324-mwifiex-cleanup-1-v5-0-1128a2be02af@pengutronix.de>
+In-Reply-To: <20250310222332.work.202-kees@kernel.org>
 
-On Mon, Mar 24, 2025 at 02:24:01PM +0100, Sascha Hauer wrote:
-> This contains several cleanup patches for the mwifiex driver. I dropped
-> the MAC address fixing patch this time as it needs more discussion, but
-> the remaining patches sent here are nearly unchanged from v1 and should
-> be good to go.
+On Mon, Mar 10, 2025 at 03:23:32PM -0700, Kees Cook wrote:
+> When a character array without a terminating NUL character has a static
+> initializer, GCC 15's -Wunterminated-string-initialization will only
+> warn if the array lacks the "nonstring" attribute[1]. Mark the arrays
+> with __nonstring to and correctly identify the char array as "not a C
+> string" and thereby eliminate the warning.
+> 
+> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
+> Cc: Brian Norris <briannorris@chromium.org>
+> Cc: Francesco Dolcini <francesco@dolcini.it>
+> Cc: Johannes Berg <johannes@sipsolutions.net>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Allison Randal <allison@lohutok.net>
+> Cc: linux-wireless@vger.kernel.org
+> Signed-off-by: Kees Cook <kees@kernel.org>
 
-Thanks! For patches 1-9:
+This code is kinda weird, because only 2 bytes actually end up used, and
+yet we explicitly initialize it with 3 non-NUL bytes.
+
+This solutions seems fine though, as it is indeed not a C string and
+does not desire nor rely on a NUL byte:
 
 Acked-by: Brian Norris <briannorris@chromium.org>
 
-I had some issues with patch 10.
-
-If you respin before Johannes applies any of these, feel free to carry
-my Acked-by.
-
-Brian
+Looks like Johannes already applied it anyway.
 
