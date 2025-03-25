@@ -1,114 +1,213 @@
-Return-Path: <linux-wireless+bounces-20788-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20789-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659A6A6E71A
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 00:05:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE7CA6E7D8
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 02:04:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 999C316EED6
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Mar 2025 23:05:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5FC27A5F96
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 01:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D181EB5E2;
-	Mon, 24 Mar 2025 23:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D262AF03;
+	Tue, 25 Mar 2025 01:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOttCeAU"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OQBosDV4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BB018C930;
-	Mon, 24 Mar 2025 23:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B154111712;
+	Tue, 25 Mar 2025 01:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742857517; cv=none; b=JCtPps9wJila+pQpzNyBal6TRHXEZFUmh/ezrQrOqEvhT6PbVMVePs7xm+cmUFHS+vxjZIlPms/qrIrWNZ9HkL11oI1fithm6ntHSLyLiJ5551D5pV+4r0/rKXquPEjbsWbUNGrR/vVdKIrHAqIH5umkTLhxthePG+0DFXZzxH8=
+	t=1742864666; cv=none; b=VGOeRjLGW6ZhMAttCbklsqnqCY0EpKeG2p1MiSL0tGW7VaR8TDkBNT+3vemumtzFgp3wTtF8w37DxLv2nToVjaBmf3aE+MU3rUd1+hgr2NFxrFNNxlrz+29XzUGWTiqWEKGcsrQcF1BLR5vvB0vIEZ2zNmAkO1mHh1qHZ3wcV7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742857517; c=relaxed/simple;
-	bh=OwYsfyuskTjApvW7yDAsLEh534saPHvQL2Nj5uhaC7o=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=DAgujjjFn2Kah0A4d1GRtkDuliEj95dFnTKJN+xZKvBb4YumyL1qfqKyOyuncKRqhiuUOmgW590oCNybCy9sfLSt/ydA2njNVhQN5m978uvq99jFQgyuseKx+NTzR7vRh/z/+fSwBmsXAM4McDdXfLUXX3RgZvqgyrjgHTvv9c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOttCeAU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BCDC4CEDD;
-	Mon, 24 Mar 2025 23:05:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742857515;
-	bh=OwYsfyuskTjApvW7yDAsLEh534saPHvQL2Nj5uhaC7o=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=NOttCeAUxLlixkV9Vnff6ulrU6dN74p5cj4stKxcM6MH+LLMK2yVnEAQMLZGyivJ4
-	 E6hR0TkLH/k5tNkFZ/iInBTuwzROybHTYO+pKeoDkRd1NPyD0ALGoxK4BBW7Fch2jR
-	 pUXz3u0ChL8hZZFaXUfj+JIfazklTlrzHDrnrD9R9BGw5P2fabyft1jNh/f9hZkeQb
-	 MGWmPklbOmY+hs0Oz78poCp91lYRvUugocTsDXD105Mt0d9DT4r44104DvKgiAUhWj
-	 DUnTLXr4TqbwgltuSBy0D7iZhRm6aRCnw+em4SBuVL3v315K/6Ka0LDcr/tjzFj/E6
-	 GuhQXK5Hi3KFQ==
-Date: Mon, 24 Mar 2025 18:05:13 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1742864666; c=relaxed/simple;
+	bh=/f5KC+2i9wQJD5t8shE+KB71uBEgb0zHIKuzW2IFpHY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=cIDq0Lph+8YwwoFu5eumPvG7pg/i4ji3b/uLXozfWumm7Me03oWDYKvqShBGRDcgN/rAyGq4y7kWkuHgSePkFIJ2h7z3TNIwBkoRhFIkUM4im6YQ1lFTm6MQ9uvXnqgt5VFHwTH/brVaPQzRSJsGhvd2U1ska+nGorYMoJhmIRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OQBosDV4; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52OMwZm4015560;
+	Tue, 25 Mar 2025 01:04:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	HyTWSl4FFXzLuQLaenb4gwnDzJkBOmFvlp8r3VN/r4Y=; b=OQBosDV49WbHOgnU
+	Z7GfNvehMbv6ZQq3zBEIdhvZ56LODp+sREM/w1NXyW9wXGcb+HtuKo6kmXEZFV/d
+	tHwsFdODa8rGt26q2q8Kbt0A2qBdevtPMwyTrpuIzdH3VdWZXtwHo+/PgVxjgroZ
+	y4usmUlEgD8CwX2oE81sq8burnKRIEGqUkMGwMwxzTOYVWDjHZrNvjyj66koT5EJ
+	HM69xWevQ6Hwkr7q9cEPQ21Lwmca7Ed9H7+zr+5wYkjNiJexKzs5ValUuyqqwunk
+	gB+NfjTUjcIErNRJi6qfWAplnN6SJbp799aEqPmkFA1iRxK6UiTgpqR9iohsIIZs
+	ZbmLIQ==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45hpcp5w31-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Mar 2025 01:04:16 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52P14FcK010205
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Mar 2025 01:04:15 GMT
+Received: from [10.239.29.24] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 24 Mar
+ 2025 18:04:13 -0700
+Message-ID: <8ab7dddb-b4dc-408c-806b-e34846737d74@quicinc.com>
+Date: Tue, 25 Mar 2025 09:04:11 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
- Jakub Klama <jakub@conclusive.pl>, 
- Johannes Berg <johannes@sipsolutions.net>, 
- Wojciech Kloska <wojciech@conclusive.pl>, 
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
- Ulf Axelsson <ulf.axelsson@nordicsemi.no>, linux-wireless@vger.kernel.org
-To: Artur Rojek <artur@conclusive.pl>
-In-Reply-To: <20250324211045.3508952-3-artur@conclusive.pl>
-References: <20250324211045.3508952-1-artur@conclusive.pl>
- <20250324211045.3508952-3-artur@conclusive.pl>
-Message-Id: <174285751372.1003267.5777705239972389695.robh@kernel.org>
-Subject: Re: [RFC PATCH 2/2] dt-bindings: wireless: Document Nordic nRF70
- bindings
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 ath-next 2/2] wifi: ath11k: fix HTC rx insufficient
+ length
+To: Johan Hovold <johan@kernel.org>
+CC: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <johan+linaro@kernel.org>
+References: <Z9G5zEOcTdGKm7Ei@hovoldconsulting.com>
+ <8ea7fe7c-7b4d-4a6f-ae03-b9ca127c23f8@quicinc.com>
+ <Z9METTzUJe9yqVEI@hovoldconsulting.com>
+ <b1c79589-4fcd-4630-9551-a620087e0c23@quicinc.com>
+ <Z9PjjDFBuSJ7exVj@hovoldconsulting.com>
+ <ecfe850c-b263-4bee-b888-c34178e690fc@quicinc.com>
+ <Z9gd9Aw5Bug8IKSV@hovoldconsulting.com>
+ <f30cf771-a9cd-4d8f-8d10-1640afd33c23@quicinc.com>
+ <Z9mwn3GzpPPZSiTG@hovoldconsulting.com>
+ <a8fc9f07-013c-4e31-9d9e-46e042d81dbf@quicinc.com>
+ <Z90yyrZcORhJJgNU@hovoldconsulting.com>
+Content-Language: en-US
+From: Miaoqing Pan <quic_miaoqing@quicinc.com>
+In-Reply-To: <Z90yyrZcORhJJgNU@hovoldconsulting.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: hoScGWf54ahlJCS37E1mSFkrT-EBncqQ
+X-Proofpoint-ORIG-GUID: hoScGWf54ahlJCS37E1mSFkrT-EBncqQ
+X-Authority-Analysis: v=2.4 cv=PLYP+eqC c=1 sm=1 tr=0 ts=67e20110 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=xObAXXU4KUaL95rEUbgA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-24_07,2025-03-21_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 suspectscore=0 mlxscore=0 impostorscore=0 priorityscore=1501
+ phishscore=0 clxscore=1015 mlxlogscore=999 adultscore=0 malwarescore=0
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503250005
 
 
-On Mon, 24 Mar 2025 22:10:45 +0100, Artur Rojek wrote:
-> Add a documentation file to describe the Device Tree bindings for the
-> Nordic Semiconductor nRF70 series wireless companion IC.
+
+On 3/21/2025 5:35 PM, Johan Hovold wrote:
+> On Wed, Mar 19, 2025 at 02:47:12PM +0800, Miaoqing Pan wrote:
+>> On 3/19/2025 1:42 AM, Johan Hovold wrote:
 > 
-> Signed-off-by: Artur Rojek <artur@conclusive.pl>
-> ---
->  .../bindings/net/wireless/nordic,nrf70.yaml   | 56 +++++++++++++++++++
->  1 file changed, 56 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/nordic,nrf70.yaml
+>>> It could if the CPU observes the updates out of order due to the missing
+>>> barrier. The driver could be processing an earlier interrupt when the
+>>> new descriptor is added and head pointer updated. If for example the CPU
+>>> speculatively fetches the descriptor before the head pointer is updated,
+>>> then the descriptor length may be zero when the CPU sees the updated
+>>> head pointer.
+>>
+>> Sorry, I still think this situation won't happen. Please see the
+>> following code.
+>>
+>> ath11k_hal_srng_access_begin(ab, srng);
+>>     => srng->u.dst_ring.cached_hp = *srng->u.dst_ring.hp_addr;
+>> desc = ath11k_hal_srng_dst_get_next_entry(ab, srng);
+>>     => if (srng->u.dst_ring.tp == srng->u.dst_ring.cached_hp) return NULL;
+>> //dma_rmb();
+>> *nbytes = ath11k_hal_ce_dst_status_get_length(desc);
+>>
+>> If the condition 'srng->u.dst_ring.tp == srng->u.dst_ring.cached_hp' is
+>> true, the descriptor retrieval fails.
+> 
+> The CPU can still speculate that this condition will be false and load
+> the descriptor.
+> 
+> If the speculation later turns out to be correct, then the descriptor
+> may have stale values from before the head pointer was updated.
+> 
+>>> This seems to be what is happening on the X13s since adding the memory
+>>> barrier makes the zero-length descriptors go away.
+>>
+>> Hmm, it is indeed a bit strange. Could it be that dma_rmb() introduces
+>> some delay ?
+> 
+> It's only expected since you must use memory barriers on weakly ordered
+> architectures like aarch64 to guarantee the ordering.
+>   
+>>>> The Copy Engine hardware module copies the metadata to the Status
+>>>> Descriptor after the DMA is complete, then updates the HP to trigger an
+>>>> interrupt. I think there might be some issues in this process, such as
+>>>> the lack of a wmb instruction after the copy is complete, causing the HP
+>>>> to be updated first.
+>>>
+>>> Yeah, possibly. At least it seems there are more issues than the missing
+>>> barrier on the machines you test.
+>>>    
+>>>>> Now obviously there are further issues in your system, which we should
+>>>>> make sure we understand before adding workarounds to the driver.
+>>>>>
+>>>>> Do you have a pointer to the downstream kernel sources you are testing
+>>>>> with? Or even better, can you reproduce the issue with mainline after
+>>>>> adding the PCIe patches that were posted to the lists for these
+>>>>> platforms?
+>>>>>
+>>>> https://github.com/qualcomm-linux/meta-qcom-hwe/blob/scarthgap/recipes-kernel/linux/linux-qcom-base_6.6.bb
+>>>
+>>> Thanks for the pointer. That's a lot of out-of-tree patches on top of
+>>> stable so not that easy to check the state of the resulting tree.
+>>
+>> Yes, but there are only a few patches for ath11k.
+> 
+> Sure, but there are other components that come into play here such as
+> the PCIe controller driver.
+> 
+> A colleague of yours recently submitted an updated patch that overrides
+> the no_snoop bit for qcs8300:
+> 
+> 	https://lore.kernel.org/lkml/20250318053836.tievnd5ohzl7bmox@thinkpad/
+> 
+> but that flag appears not to be set in your downstream tree:
+> 
+> 	https://github.com/qualcomm-linux/meta-qcom-hwe/blob/scarthgap/recipes-kernel/linux/linux-qcom-base-6.6/drivers/qcs8300/0004-PCI-qcom-Add-QCS8300-PCIe-support.patch
+> 
+> Something like that may prevent a cached descriptor from being
+> invalidated when the controller updates it.
+> 
+> Similarly, the PCIe controllers are marked as dma-coherent in your
+> devicetrees. A misconfiguration there could also cause problems.
+
+Thank you very much for these suggestions. I tried setting no_snoop and 
+disabling relaxed_ordering, but unfortunately, these did not work.
+
+> 
+> I suggest we merge my fix that adds the missing memory barrier, and
+> which users have now been testing for a week without hitting the
+> corruption (which they used to see several times a day).
+> 
+Agreed, I previously mistakenly thought that the status descriptor was 
+not updated by DMA.
+
+
+> Then we can continue to track down why you are having coherency issues
+> on qcs615 and qcs8300. You really want to make sure that that is fixed
+> properly as it may lead to subtle bugs elsewhere too.
 > 
 
-My bot found errors running 'make dt_binding_check' on your patch:
+The same WLAN card is attached to qcs615, qcs8300 and sa8775p, and the 
+issue is never be seen on sa8775p, maybe I can compare the PCIE settings 
+to track down the root cause.
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/nordic,nrf70.yaml: properties:compatible: 'anyOf' conditional failed, one must be fixed:
-	'req' is not one of ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'dependentRequired', 'dependentSchemas', 'deprecated', 'description', 'else', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'items', 'if', 'minItems', 'minimum', 'maxItems', 'maximum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'required', 'then', 'typeSize', 'unevaluatedProperties', 'uniqueItems']
-	'type' was expected
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/nordic,nrf70.yaml: 'oneOf' conditional failed, one must be fixed:
-	'unevaluatedProperties' is a required property
-	'additionalProperties' is a required property
-	hint: Either unevaluatedProperties or additionalProperties must be present
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/nordic,nrf70.yaml: properties:compatible: Additional properties are not allowed ('req' was unexpected)
-	from schema $id: http://devicetree.org/meta-schemas/string-array.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250324211045.3508952-3-artur@conclusive.pl
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
 
 
