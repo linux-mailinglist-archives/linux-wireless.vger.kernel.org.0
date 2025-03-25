@@ -1,154 +1,210 @@
-Return-Path: <linux-wireless+bounces-20812-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20813-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AB6A70C18
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 22:33:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B521A70CD1
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 23:25:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C61319A0372
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 21:32:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E379B3B6B28
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Mar 2025 22:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DF226A08F;
-	Tue, 25 Mar 2025 21:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EB019AD48;
+	Tue, 25 Mar 2025 22:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Jh2O2weH"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="a6MF6CC2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8B7193086
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 21:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AF81EF088
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 22:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742938298; cv=none; b=k8RBrFkZKYUo6Dsj6lqLVmtZ3uPErJkSq1SXb5dUky1eG5A59s09yEKDz11HMQ2mFtkC+QNkRTTrGks3msZbM317zFJKQlwd4rSzZGk+qkfeAOZXdCXgJ8bsROaVf2kfL8hAWGGQ8vCpZr1BMK57BXXQtrS21ALl17iGROGD6uw=
+	t=1742941531; cv=none; b=Xh/oI4W+EwjeXL8cduNmsJI4ISTBdo68ej7jEGKqq9GZSOlkUDJ+DlpxjYgUu+0gISprYO6ACNERjbLhSlCLg35xIalcij8x2JLTiw4b/KR+AbW+KgzUZ4B2Uz4xn45CJCiWGDTbAcMlC32gw87N+XixsZGIuX8XIb9g0mPOmso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742938298; c=relaxed/simple;
-	bh=RTJ+5RqOkAqF3/agsOaoLpdHmhoRqCSit92HFwq+jwY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UTAq9GXrpg1osXnQ7uKbc2MVMn+PkG95x9vwAI+7yolpmIZatZNqQANYC7+0pu7acW7n9vzLCdONFZz0yIh2O4quzAgdRa1cTkkIKFZu4YdCoP6TY4mI4LWnASi4xhdzJZ4DDXSJotm5N3PHXB3VsUSmruOkZwmiOOCkrBDBPqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Jh2O2weH; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52PGalJY018592
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 21:31:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=DW3U8ZPosBK
-	VswDi6IctAB4+vmf1gyaDynADSK+zG4g=; b=Jh2O2weH77Kl/xnTa1mZw9l4ICl
-	/a24OYI+u7gEtoxT9VqwYWZNtPbye1aFzgBT/fILCbBy5nugHLAuMNX5uCgbR656
-	YpJ0zNzV3mq7lfGZmAMM7FvLjywVNIFqmfohMrfNezv9vHlzNHLSYjhWwlAgzzsb
-	uvdzFqKbc0XNm30EY2w1JY+rJ9ckNLDe8pSy/Vda8mXCEy7Ch7iXX5ryTpulxPIM
-	G1WDsdKJGBjZtAwnty1PZ083AxES+pfpYOIRWUNJKg0z0i7X/VWvdoZWGnsD2tRV
-	vDbk3dokaBa2KXkJ+3NaxxfXpVo/Xc2qoLc9TgzrHVX721NGQ9Grqt4tx+w==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45kyr9gqd2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 21:31:35 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2240a960f9cso100151385ad.0
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 14:31:35 -0700 (PDT)
+	s=arc-20240116; t=1742941531; c=relaxed/simple;
+	bh=DxbUnuBK5ISJePyX2IHCaXKQFXjrwR0Adn2978Bbh18=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bggsJAqJkYfGvNZ+jFtrjJOqoo8jmIKrvTBT4McKTlBTs0LvdLSTHUZy2G0y8B6nGi9RfMbmc0eNR1HlMpXvxGvxhMAF3P8xZ5etGAz8mUINechbAqhLUkmkVOC6ukpeKdcSUhn3JsaLSnLDv5AVCVv71To1t1DhT7ykHlwWjwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=a6MF6CC2; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3031354f134so7207764a91.3
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Mar 2025 15:25:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1742941529; x=1743546329; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=e872gGg4Gz2lxgWQ8PrbHnFp07xu+/jOZUr0j6fpLIg=;
+        b=a6MF6CC2oWz49InrEUZIAMfKaoSJktAMJO2sQt+JYyjKmXBOR2l95H4ffjGaTlWJzJ
+         y5TcWnEkUn1MliKJYNo15G98GN/9kLlcc4+AC3gZyqWE6p+T+WeirQ8WO5M4EOihxFUO
+         p8vJdh0ABQMCboa3q8JMjEfY4IjHPJhNvRSZ4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742938294; x=1743543094;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DW3U8ZPosBKVswDi6IctAB4+vmf1gyaDynADSK+zG4g=;
-        b=Hn0oJIsTWmODSxhnn75xadNdlp8pOEDPbMRMD7e2d7SrbHAMcq48ePPBQ8ZoN86w78
-         +UX1KiXEDNls5EwKCiZgnA5XDo5pezhymHgKu16uisUJlmZqP0ZoOqOlQuYsy9y2B2iZ
-         WEDuEUs9vlCMzqWmR7CRqKHODnZp7m15+OEbMDSbvgje8S3KA+Ls68s4YmZYqB4WDOQA
-         FMfb8H6pIxYtNoSZ3rH8Qpuk3fZk7hojVCo4WbS/QsINTgNu04KJoydmO+2C1tjKcyvC
-         +aHoY86QSwNPat3/1XfEDU4gzn76iW6fpzuKgWID/rcm5X3faud/TQqbviBYVpQeVSGa
-         JNiQ==
-X-Gm-Message-State: AOJu0YxUMbWmEGmxRI7gr2WOkBu8Xmxw2PEk9UdHYOefDnVnyPho8rF4
-	G6AvFmgwjqN2FdFG3LwygF6H/Ko+gUJuKb+jEpYj/6Yjdn8YlAUIfbadOku9O1xm+CoR/wwf9jv
-	thtQEHvTYPBsqIKH60HrZQ3Ftm3/yvfUeKeObYrHMPWtUA2wwJZs+Fhbqxcm00etUuQ==
-X-Gm-Gg: ASbGnctCJ9UuBG8Z/vfOW7jnVsmcog3A8+MB88adfiRDDRLMMLVyURILu3dNUj1ZDOf
-	YIBl+z01LRNTO6icaJojTPhkRyPVcwibC94k9B0aOUPFl6xOicC2t01YXKMz+/3AAsQrNfdaBi8
-	07nK2+PVdLumWVFDoUOVPVYnUGG5MKb+qGN6QrD12FD5lisB7Q3Ktn+vrXXDdZkO2vkCUVSUqtQ
-	rtIrKs7nwzs1R4lZHqr2U1CRurqh0D88EDFFh0hknYPDEH3RpPkH/P+lAZvCFI6zhzLqpMLb9wM
-	en5FdnHnUe9XIiEEZwB9ndSkjs/G+fKSksqqHm1gZeP0u4cA8WETKN5fyKXvNvOO95DwvBEa
-X-Received: by 2002:a17:903:22c4:b0:224:e33:889b with SMTP id d9443c01a7336-22780c7abb5mr286217295ad.12.1742938294121;
-        Tue, 25 Mar 2025 14:31:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFLa4bLdwOuXt39O3e4bc3TVtKi3CpdJrVsmyJn87VqQVVzbSAMbEUAvHkf25U9rwS1DFS9Nw==
-X-Received: by 2002:a17:903:22c4:b0:224:e33:889b with SMTP id d9443c01a7336-22780c7abb5mr286216785ad.12.1742938293605;
-        Tue, 25 Mar 2025 14:31:33 -0700 (PDT)
-Received: from msinada-linux.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22780f3a2b5sm95599395ad.50.2025.03.25.14.31.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Mar 2025 14:31:33 -0700 (PDT)
-From: Muna Sinada <muna.sinada@oss.qualcomm.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, Muna Sinada <muna.sinada@oss.qualcomm.com>
-Subject: [PATCH wireless-next v4 3/3] wifi: mac80211: VLAN traffic in multicast path
-Date: Tue, 25 Mar 2025 14:31:25 -0700
-Message-Id: <20250325213125.1509362-4-muna.sinada@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250325213125.1509362-1-muna.sinada@oss.qualcomm.com>
-References: <20250325213125.1509362-1-muna.sinada@oss.qualcomm.com>
+        d=1e100.net; s=20230601; t=1742941529; x=1743546329;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e872gGg4Gz2lxgWQ8PrbHnFp07xu+/jOZUr0j6fpLIg=;
+        b=KNOK78yGLiPXOLv1UI20YqeMVBr1wtFdfcvPcvP2WwcucuWHMAluNrzcSRB2+x7H5T
+         bDhB05A9dxQNOl8/sCJ6LHjl2gqvF4weeFq3ESF0X7K3mPZUxEtHEDoQvejzYl54forr
+         vq41MqJp8Jxxlu57zGOqSTI8JZu3nua3gkBAfk5g6qirrSoc5cLVJHyU4f0a6Ff5fkAN
+         Imset4mesUDHeKXN2+CPFIihFE4l4xs86pwVT4rLig8w28sD6amTHVGbcEteITf03o9K
+         EMKbJbrbFjTd7SWHnIy2YOqTEqXvwLE+WKX4SpMz3Uo5eLUgCINU5xxOnRcU4aJSYoWo
+         d7YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIJPak/KdUGcqmm13I/+9H86I3rfJ4vehmPa9BtUJRHDvNNzyCQQwNiffaW9Oo4U4EcMQnsGDBKu3uYxndzw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCL5v5kZHXV5fKfCUXPw8gMMSKJ7HuIy2c6wHZJJqb6zcoVUQR
+	SQ7FOzyN24MMxs4nBaBr27rLGCwlU3yX93PdhS+gmnU9F4gWyXD2oAAyAhSMVQ==
+X-Gm-Gg: ASbGnctEnu79hNBjYVM9JGDrXSZ4pgwxZVUuAN3p/S0UiFRCZXEIESqgPRhAShq4oVa
+	ayMsyUYKyx9McHPTh4wII4Iw/kfDKHBhANT9wbF4PLdC9ySfp087Ykl2XUN4MOlUAZu1bezHIZS
+	atRvbEe0qsQQSBJ+O2DhTgsuQ5l9ynJH63WQmuB0Ns33nK/8JFWXm1JvbcSlEanniYbRKpqxnKF
+	Bjn3yCnP4GehrN+x+LGtfOae9SLxnNHkaw7PROBXzp8aFSmL0S7jZzMvT9WtRBms6C1CnrTdjZW
+	sYYrTZht85ltHlvIwRniND1MKJo/ALpUXhVybg7zZgnlo1C6uGwFeNE7PnI01RDCJTTGoxx8yC9
+	Bp7/z4B8=
+X-Google-Smtp-Source: AGHT+IGfR3dYvOb5O7Gtf+Lz8lxv5DNfeDk0VRui04c4b/0fsh/5+kLMqM9QCS8L5AH9kKzdEgIq5Q==
+X-Received: by 2002:a17:90b:35c4:b0:2fe:80cb:ac05 with SMTP id 98e67ed59e1d1-3030fe7f0fcmr28488510a91.9.1742941529313;
+        Tue, 25 Mar 2025 15:25:29 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:b885:47c3:6268:77fb])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3037c8ec9fdsm36517a91.1.2025.03.25.15.25.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Mar 2025 15:25:28 -0700 (PDT)
+Date: Tue, 25 Mar 2025 15:25:26 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Johannes Berg <johannes.berg@intel.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	David Lin <yu-hao.lin@nxp.com>, kernel@pengutronix.de
+Subject: Re: [PATCH wireless-next v5 10/10] wifi: mwifiex: drop asynchronous
+ init waiting code
+Message-ID: <Z-MtVj4NpcLuZxJv@google.com>
+References: <20250324-mwifiex-cleanup-1-v5-0-1128a2be02af@pengutronix.de>
+ <20250324-mwifiex-cleanup-1-v5-10-1128a2be02af@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: ejxpznenfzYoKDYM0qic330roWEhvtee
-X-Authority-Analysis: v=2.4 cv=UblRSLSN c=1 sm=1 tr=0 ts=67e320b7 cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=Vs1iUdzkB0EA:10 a=EUspDBNiAAAA:8 a=gyU_N_hUvND95jcV2lsA:9 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-ORIG-GUID: ejxpznenfzYoKDYM0qic330roWEhvtee
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-25_09,2025-03-25_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 priorityscore=1501 phishscore=0 mlxscore=0 impostorscore=0
- adultscore=0 clxscore=1015 mlxlogscore=963 bulkscore=0 malwarescore=0
- spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503250143
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250324-mwifiex-cleanup-1-v5-10-1128a2be02af@pengutronix.de>
 
-Currently for MLO, sending out multicast frames on each link is handled by
-mac80211 only when IEEE80211_HW_MLO_MCAST_MULTI_LINK_TX flag is not set.
+Hi Sascha,
 
-Dynamic VLAN multicast traffic utilizes software encryption.
-Due to this, mac80211 should handle transmitting multicast frames on
-all links for multicast VLAN traffic.
+On Mon, Mar 24, 2025 at 02:24:11PM +0100, Sascha Hauer wrote:
+> Historically all commands sent to the mwifiex driver have been
+> asynchronous. The different commands sent during driver initialization
+> have been queued at once and only the final command has been waited
+> for being ready before finally starting the driver.
+> 
+> This has been changed in 7bff9c974e1a ("mwifiex: send firmware
+> initialization commands synchronously"). With this the initialization
+> is finished once the last mwifiex_send_cmd_sync() (now
+> mwifiex_send_cmd()) has returned. This makes all the code used to
+> wait for the last initialization command to be finished unnecessary,
+> so it's removed in this patch.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Signed-off-by: Muna Sinada <muna.sinada@oss.qualcomm.com>
----
-v4: no changes
+There are a few things that confuse me in here. See below.
 
-v3: rebase to cleanly apply to wireless-next
+> ---
+>  drivers/net/wireless/marvell/mwifiex/cmdevt.c  | 16 ----------------
+>  drivers/net/wireless/marvell/mwifiex/init.c    | 18 +++++-------------
+>  drivers/net/wireless/marvell/mwifiex/main.c    | 25 +++----------------------
+>  drivers/net/wireless/marvell/mwifiex/main.h    |  6 ------
+>  drivers/net/wireless/marvell/mwifiex/sta_cmd.c |  6 ------
+>  drivers/net/wireless/marvell/mwifiex/util.c    | 18 ------------------
+>  6 files changed, 8 insertions(+), 81 deletions(-)
+> 
+...
+> diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
+> index 8b61e45cd6678..fc58ca1a60ca8 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/init.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/init.c
+> @@ -487,7 +487,6 @@ int mwifiex_init_fw(struct mwifiex_adapter *adapter)
+>  	int ret;
+>  	struct mwifiex_private *priv;
+>  	u8 i, first_sta = true;
+> -	int is_cmd_pend_q_empty;
+>  
+>  	adapter->hw_status = MWIFIEX_HW_STATUS_INITIALIZING;
+>  
+> @@ -509,7 +508,6 @@ int mwifiex_init_fw(struct mwifiex_adapter *adapter)
+>  	}
+>  	if (adapter->mfg_mode) {
+>  		adapter->hw_status = MWIFIEX_HW_STATUS_READY;
+> -		ret = -EINPROGRESS;
 
-v2:
- - move clearing links for AP_VLAN into seperate function:
-   ieee80211_apvlan_link_clear()
- - remove use of goto
- - replaced "master" terminalogy with "AP bss"
- - update Author signoff to new email
+Why are you dropping this line? To be fair, I'm not sure I understand
+all the manufacturing-mode support anyway, but I equally don't
+understand why you're dropping this.
 
----
- net/mac80211/tx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+>  	} else {
+>  		for (i = 0; i < adapter->priv_num; i++) {
+>  			ret = mwifiex_sta_init_cmd(adapter->priv[i],
+> @@ -521,18 +519,12 @@ int mwifiex_init_fw(struct mwifiex_adapter *adapter)
+>  		}
+>  	}
+>  
+> -	spin_lock_bh(&adapter->cmd_pending_q_lock);
+> -	is_cmd_pend_q_empty = list_empty(&adapter->cmd_pending_q);
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 20179db88c4a..b6d6d0658e14 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4526,8 +4526,10 @@ netdev_tx_t ieee80211_subif_start_xmit(struct sk_buff *skb,
- 						     IEEE80211_TX_CTRL_MLO_LINK_UNSPEC,
- 						     NULL);
- 	} else if (ieee80211_vif_is_mld(&sdata->vif) &&
--		   sdata->vif.type == NL80211_IFTYPE_AP &&
--		   !ieee80211_hw_check(&sdata->local->hw, MLO_MCAST_MULTI_LINK_TX)) {
-+		   ((sdata->vif.type == NL80211_IFTYPE_AP &&
-+		     !ieee80211_hw_check(&sdata->local->hw, MLO_MCAST_MULTI_LINK_TX)) ||
-+		    ((sdata->vif.type == NL80211_IFTYPE_AP_VLAN) &&
-+		     !sdata->wdev.use_4addr))) {
- 		ieee80211_mlo_multicast_tx(dev, skb);
- 	} else {
- normal:
--- 
-2.34.1
+I believe your reasoning around the synchronous command logic, but would
+it help to include any sort of fail-safe here for the future? Something
+like:
 
+	WARN_ON(!list_empty(&adapter->cmd_pending_q));
+
+? Or am I being overly cautious?
+
+> -	spin_unlock_bh(&adapter->cmd_pending_q_lock);
+> -	if (!is_cmd_pend_q_empty) {
+> -		/* Send the first command in queue and return */
+> -		if (mwifiex_main_process(adapter) != -1)
+> -			ret = -EINPROGRESS;
+
+You need to update the function comments now that you're dropping this.
+
+Brian
+
+> -	} else {
+> -		adapter->hw_status = MWIFIEX_HW_STATUS_READY;
+> -	}
+> +	adapter->hw_status = MWIFIEX_HW_STATUS_READY;
+>  
+> -	return ret;
+> +	if (adapter->if_ops.init_fw_port)
+> +		adapter->if_ops.init_fw_port(adapter);
+> +
+> +	return 0;
+>  }
+>  
+>  /*
+...
+> diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+> index f2e9f582ae818..199a8e52e5b16 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+> @@ -2418,11 +2418,5 @@ int mwifiex_sta_init_cmd(struct mwifiex_private *priv, u8 first_sta, bool init)
+>  	ret = mwifiex_send_cmd(priv, HostCmd_CMD_11N_CFG,
+>  			       HostCmd_ACT_GEN_SET, 0, &tx_cfg, true);
+>  
+> -	if (init) {
+
+The 'init' function parameter is no longer used. Can you drop it from
+the function signature?
+
+Brian
+
+> -		/* set last_init_cmd before sending the command */
+> -		priv->adapter->last_init_cmd = HostCmd_CMD_11N_CFG;
+> -		ret = -EINPROGRESS;
+> -	}
+> -
+>  	return ret;
+>  }
+... 
 
