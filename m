@@ -1,65 +1,68 @@
-Return-Path: <linux-wireless+bounces-20825-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20826-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C230FA70EBD
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 03:07:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB70A70EBE
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 03:07:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FDDB7A5766
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 02:06:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D19D1771B0
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 02:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF732B9CF;
-	Wed, 26 Mar 2025 02:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBAC199BC;
+	Wed, 26 Mar 2025 02:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="GJeH60JT"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="unSyou4S"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E2D2629D
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 02:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB8A41C85
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 02:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742954823; cv=none; b=e0aSGti5zfWh7AFgfc6RR3vROQUTU01PxQ/NLuMrhXSF5t8CoboZk1S6bduo9n9KtXZsjYUYPJW8Vw26DQogf6mH2ZWjfRDnlNmPA+sXtKlKT6QMW1uieRCH/kf1RM472+LO2+2crZzFKWo7xw7asvMi6CQXADFIuVYhqLlJNy0=
+	t=1742954826; cv=none; b=GnGrKHupqaClUS8R3sZcpTbGUCN+3K377l2A3GOlWS2YKd3PvHfNVi+J4fD1yZ67zu8bo47pGNrXLpPVhhbpbbT2WRAOcLCjDMruy2AHOPLXw/UHjDssE7wb1c0lmiSgOgj+EXa4YCd49+AtD0bwgjAEMmXdV0mOXwpZLUTEQZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742954823; c=relaxed/simple;
-	bh=uup0+yYfkCq7LDFw3Ew8FQU6d/y+L+YP5WjmWnfTOq4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sLcmy4IF7SQICkwxUfnsWePl6JcSm3nFyEamIcy8MJW4KpgDPTcss8efO5HZmEbQhHgvbhcTx+QjZd68X8dlVRJRQ+iBsfnpcp/KqFdhY1YdxIDTG301gEooBdIMTENyMfIJifhvHlTnL9s9voe5387o3i0zpGuvX/i6i3AFQ6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=GJeH60JT; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1742954826; c=relaxed/simple;
+	bh=u7gwGjCu4oifg3Pirw4uW695nJM7NdOvK4/QLAeneSA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tTjlGIVKmXyqfJ7V8kOeq7rVraoqvtZHqIj9Yk0vg4j/zLPBvHZBdQpKApQSsKLb7fDY7bqTFaWa40CBYSlQqdXfd/RwS0fb+6/YKNHLD6BuZNNwKu7Ts4LQKbOUHFezqRvmuwsIOpDB6csrjmqrO8MHYASAhnbOPWk27r+164k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=unSyou4S; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52Q26wG021406985, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52Q272bxC1406997, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1742954818; bh=uup0+yYfkCq7LDFw3Ew8FQU6d/y+L+YP5WjmWnfTOq4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=GJeH60JTlfYN6Dde8HXl6PoUf8P+g4ZVKU1H7Mbc2z4kxwgtDaiZI05UcHPsRpIbY
-	 PMorR5MqsQ1JdXErmj7iSm7FlZqrdA+WE0uZncqoGPuF2VUQsSr2dOblrc9cwaFITn
-	 VX2xg8AT3NaaXlfew/rjitquEFky0/NhlLfzra62+9DDl8ub7ajTvEa2FiZjvny1Ql
-	 +rCvriveBMhCysdmSZXs71Psu1pJkjXrOPQgmFRAz7OblIRDbBDm4JcDVLhtRnBcR5
-	 e9myjZc4ccJJImvpLl0uspXiy9DR4F7eaua2D9NbeRLJtHwya+bq+GjCnnWhAgVSLr
-	 QLzJPlyjfoNKA==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52Q26wG021406985
+	t=1742954822; bh=u7gwGjCu4oifg3Pirw4uW695nJM7NdOvK4/QLAeneSA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=unSyou4SQqIK5UvvTyneqCvQwF1X+mxRwsXUXpRtdV6bEiik+HZbAZgrNlZoYibKh
+	 qTKj/fW3QXgYzzvnn0THX7LMs/ljVCxBitSM+fO27RtWtudu+dCOjEObT5dGgH/0wt
+	 Ot68KGLzMP2ZgJtOXvSL5GWdMXVw625BUmmlDqdpJ0DFoBTt2XGIN2zkz47tueW9Da
+	 WcW89/zGiPZrqsAeIWECV6hzS/S7KiSxksyx4IIdkqYkXmhhDPpK9YyI1uoYPFTG/W
+	 rpEKrAp0lhipXP+H3Qp0sFCySHnILErWVJv/0n6iJ+svV6I1f4+b3xBgDCXNxnGU7R
+	 6DLYPpsl4v4GA==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52Q272bxC1406997
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 10:06:58 +0800
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 10:07:02 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 26 Mar 2025 10:06:58 +0800
+ 15.1.2507.39; Wed, 26 Mar 2025 10:07:02 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 26 Mar
- 2025 10:06:58 +0800
+ 2025 10:07:01 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next v2 00/12] wifi: rtw89: support SAR from BIOS ACPI
-Date: Wed, 26 Mar 2025 10:06:31 +0800
-Message-ID: <20250326020643.14487-1-pkshih@realtek.com>
+Subject: [PATCH rtw-next v2 01/12] wifi: rtw89: fix typo of "access" in rtw89_sar_info description
+Date: Wed, 26 Mar 2025 10:06:32 +0800
+Message-ID: <20250326020643.14487-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250326020643.14487-1-pkshih@realtek.com>
+References: <20250326020643.14487-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,57 +74,32 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-The Realtek Windows driver has defined these SAR tables for ages, and
-people can install Linux on the x86 platform. To be consistent, implement
-to apply these tables, and later Linux distro can also use the same rules.
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-The SAR tables include static SAR table for basic use, and dynamic SAR
-table for platforms that can support yoga mode for example. GEO SAR
-table is to support different country's regulations.
+The "acces" should be "access".
+So, fix it.
 
-Since two antenna solution can possibly use different SAR limit, the last
-three patches add this feature to chips that can support delta of TX power
-from main antenna to aux antenna.
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+v2: no change
+---
+ drivers/net/wireless/realtek/rtw89/core.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v2:
- - "wifi: rtw89: acpi: support loading dynamic SAR tables and indicator"
-   (patch 7/12) is changed, because indicator field can be different
-   for different CID.
-
-Zong-Zhe Yang (12):
-  wifi: rtw89: fix typo of "access" in rtw89_sar_info description
-  wifi: rtw89: regd: introduce string getter for reuse
-  wifi: rtw89: sar: introduce structure to wrap query parameters
-  wifi: rtw89: sar: add skeleton for SAR configuration via ACPI
-  wifi: rtw89: acpi: introduce method evaluation function for reuse
-  wifi: rtw89: acpi: support loading static SAR table
-  wifi: rtw89: acpi: support loading dynamic SAR tables and indicator
-  wifi: rtw89: acpi: support loading GEO SAR tables
-  wifi: rtw89: sar: add skeleton for different configs by antenna
-  wifi: rtw89: 8922a: support different SAR configs by antenna
-  wifi: rtw89: 8852c: support different SAR configs by antenna
-  wifi: rtw89: 8852bx: support different SAR configs by antenna
-
- drivers/net/wireless/realtek/rtw89/acpi.c     | 992 +++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/acpi.h     | 174 +++
- drivers/net/wireless/realtek/rtw89/core.c     |   6 +-
- drivers/net/wireless/realtek/rtw89/core.h     |  63 +-
- drivers/net/wireless/realtek/rtw89/debug.c    |  33 +-
- drivers/net/wireless/realtek/rtw89/phy.c      |  12 +-
- drivers/net/wireless/realtek/rtw89/phy.h      |  14 +
- drivers/net/wireless/realtek/rtw89/reg.h      |   5 +
- drivers/net/wireless/realtek/rtw89/regd.c     |  32 +
- drivers/net/wireless/realtek/rtw89/rtw8851b.c |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |   1 +
- .../wireless/realtek/rtw89/rtw8852b_common.c  |  24 +
- .../net/wireless/realtek/rtw89/rtw8852bt.c    |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  27 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |  28 +
- drivers/net/wireless/realtek/rtw89/sar.c      | 282 ++++-
- drivers/net/wireless/realtek/rtw89/sar.h      |  19 +-
- 18 files changed, 1620 insertions(+), 95 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 4be05d6cad18..8e9697679aaa 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -4631,7 +4631,7 @@ struct rtw89_sar_cfg_common {
+ };
+ 
+ struct rtw89_sar_info {
+-	/* used to decide how to acces SAR cfg union */
++	/* used to decide how to access SAR cfg union */
+ 	enum rtw89_sar_sources src;
+ 
+ 	/* reserved for different knids of SAR cfg struct.
 -- 
 2.25.1
 
