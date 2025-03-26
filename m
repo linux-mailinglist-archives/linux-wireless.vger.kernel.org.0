@@ -1,116 +1,130 @@
-Return-Path: <linux-wireless+bounces-20854-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20855-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF9DA71B21
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 16:53:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2986A71B2E
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 16:56:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 744DC3A41F1
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 15:51:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C80B172BF5
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 15:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C1B1F4190;
-	Wed, 26 Mar 2025 15:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6671F4622;
+	Wed, 26 Mar 2025 15:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QJUHSdQ5"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VITi17hg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634771F192E;
-	Wed, 26 Mar 2025 15:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021471E5218
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 15:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743004326; cv=none; b=uEpkA7BcIOULQwoXypHZAC6S2Kst+u37qmO4qC/kbCOJBXggdRKLsPzeTtkcPxQwenBUKOJNfqFOdgbB8xCHMIkm0rfBoJlsGfWzHXT9yZ+H2fGZoRlyfpva82lu57c/nIdsmOKiZWMIQ48OUIPR72XoBjsroxkzq75HzLivFrk=
+	t=1743004544; cv=none; b=dd0r4SCyB6dJnHY2fHdLlbqG7Xe2yLZ2/pVobp33JhoSzzyV+1P0yWtYdwRVIRLA9qEDKUcSlbDsNShmB/yS1nAlqtK+3HxG9Pe7zjHv4Z/+oxN34sOoCDTzhwoDgSYolvEaHtdLWe8gjxgttoV+wb58Y9MuJ7GYuig2Qm3pIw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743004326; c=relaxed/simple;
-	bh=3usZOAbnVHLeoNs5mBoiAoWAvIhvqu9KzdrKYHwy5ps=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D/banMpsd8sMGko4oz0KXyt5TJlW7XxOxSWt6dVek33erBE8KKDO/RrwDJesppv51wjVRb1Fg6ad4DoaETlxqvj0MVuEmolsjsJ27lmcw675W7am4c1ZA+hVP7MvFoXxJeabs7evQatF8HQkX2qmpLYgY+D4y/+fCCBjCcgP0i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QJUHSdQ5; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-223fb0f619dso852705ad.1;
-        Wed, 26 Mar 2025 08:52:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743004324; x=1743609124; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DdI3T8Ok7IQ4l7knnga+WV3FdTZHD60Sol3JxkMqBnA=;
-        b=QJUHSdQ50tjVRgn44xbsQgwFFPJegfAaXKFstfGcc9F96Oc9eFpQotNXS0MsI4kSSK
-         aip3JNOOFKoZMH405bmgTSh/Ky5KauTy9n8nBEECNom5UJW59O2Wf+8sNQcxO+gj4Izi
-         AiDWe6VVe2XtZSdZ+OdaDSiBYra+bVrak/C25o62glGYvNwyFXnPIe2yU5DGSwLPALDz
-         pqccykbBk+LXTWqwfxsczLzikjwg2FjGpTFMou1uukb7zPywwfw6snonLgBcD5p5ZiPz
-         u9LSF4S0ekD6naTuqB13ns8KLQ03b5MU/EuwKq2N2TAoZ+dtToMLmDtJ+zSd/nbw0HD7
-         O+XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743004324; x=1743609124;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DdI3T8Ok7IQ4l7knnga+WV3FdTZHD60Sol3JxkMqBnA=;
-        b=hbAscsFyL6rmWwsk13/8n4gkjBIh2JptcbgChwHNUJcNGAfClwchUe3tgHo+6Bhtwj
-         //GTgMFIR7XpUOG/aRaHiEJX9+ILZVndiCvnFHfPd72VfSZJL1e5nF2GkURGSMhMzXml
-         KrBgR+tcfD9NGO1oXMJNm8TLICm9PrD5rCkGpFS1J4SDSiZSVyS9jnHa86YsgIBVk6RA
-         EHcLAJe1Ej0Ng/bns2VaNHYeA2x51V646DywSzF2RIueQtyDpKL0+4xUN/mbKu8PI92I
-         mc9Z0PEtGcLdx7M+IUReqIeTL20AFC9MCXD/HTwXwGdAGnPE1yohK5leYxKg391i0hPi
-         J3hw==
-X-Forwarded-Encrypted: i=1; AJvYcCUtCdwgwZoKxFqsILqNcHR+UlRWfDE1xiGDf8FcOkf3zUheVVs7A3x8Dz9HRTt7MvPxqzSrsUAElv2j2uwCV/Y=@vger.kernel.org, AJvYcCWPR2kfGBdHWZW6aAwSrVnUITTE8Rh17n2ZZsfURpJpM+sETYA7e1PgOVrW0qGuZ6t+tmJ9FAWtwU3rWDw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ7IBKCNlqh0FFA8NcBd2+HDGQkgA3NOpBNh0jC+ac+TgQyHOR
-	ZIk0oUnQSXFoyRFS6mmYnu2lLiDAqIt8tGydRePWekJNmi6CXCr2
-X-Gm-Gg: ASbGncs3RqHgVwaW0j7VtXJbF5v7Hdb8RcF6VYL1aUESG5XR6H0ajVdhcVFmUJaHF0s
-	04SllJJnAyS6WA4gud4veGcCUfmL6cUO8IsA3isrBnVxkWTcE5CfxezsKC82lT2ehe3lirJ/J02
-	b6UQi1pwwaWMsDWC3uFR1fZVhwiWIQzr41Kh7/6EyXNJ8pNGd8mkqZumE1LKD5vSBuu4K+eawxs
-	Qy2oBX94kzQ7ypzNfKwPMxBVEXbZqcHqtfsXPImoo/emx0yIx7JoBegizXNtqDNRyVf68I9sHdc
-	fBfeg08hMBG9PR89/HYz8/swuHOHLjyJ7gG1m9sF1mek
-X-Google-Smtp-Source: AGHT+IGBjdhWXohagh8cql7g4AaCRhBTm9LnLpJP7tH9k0cnHUBz47MG/2XEVNfI2+iyHgtpuQfa9w==
-X-Received: by 2002:a05:6a20:3d20:b0:1f3:4427:74ae with SMTP id adf61e73a8af0-1fea2e9f6a0mr445863637.25.1743004324397;
-        Wed, 26 Mar 2025 08:52:04 -0700 (PDT)
-Received: from localhost ([216.228.125.129])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-739061543aasm12314579b3a.126.2025.03.26.08.52.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 08:52:03 -0700 (PDT)
-From: Yury Norov <yury.norov@gmail.com>
-To: Christian Lamparter <chunkeey@googlemail.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Yury Norov <yury.norov@gmail.com>
-Subject: [PATCH] wifi: carl9170: micro-optimize carl9170_tx_shift_bm()
-Date: Wed, 26 Mar 2025 11:51:58 -0400
-Message-ID: <20250326155200.39895-1-yury.norov@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1743004544; c=relaxed/simple;
+	bh=d6DI9p0q+ycxc2DrnQ5e/KfIt0uGPW0dpVICY5k0wmg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ap5Sp3/YTZIkT6HsxOdxQLO6R9LuA146Y5a3nU0pcGoU0ZXj2/6iixXfRQ5D98gyguF3/nsn2sWnLP11r1hDslKPhwuaR9TOOhW3XlR1WgxCOITTJHA/tQ9evgzr2w/SecER8YWgBb9lROGXzFxb9+WqhoD3+PdS8XkhW6lP+48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VITi17hg; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=j69Pnhz4rRIFXKrweFvZzBXUcEhGGcYOm3Cm0yhgZZM=;
+	t=1743004543; x=1744214143; b=VITi17hgm3FqupFznsL/96KOY7slq6oIQFEKeXAqP+REI4H
+	RKlYHupvWynt/RiDQTQjivHiWHMljirCAAxe3IqOosCecr3oTEAq6DLsVMQb0yAz61U6tKlKnlDae
+	sZil+FZiFgrGduvYQ8YvWGL+BdRx5UIN0sxR9mCQ55ZMZVFEqigBMk3cAf5RtLsH2QCPJ699VT0Rl
+	r6kpbs/d6dqUq2HzYU1eWyMa/JWn7noh0MqCXkvrQRhYkS4pqn6XxjEhSKGrf0vNQbYtvGDD5vBtO
+	tcrgHa/W+2F9QF309agSYDEWg/fyjwsnAqzBZJZ+DiTnT8syDXusuyDUcUnbOA4A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1txT6R-00000006I8j-2DL7;
+	Wed, 26 Mar 2025 16:55:39 +0100
+Message-ID: <6ef5049a68157bae0e121f48afc1d872a25087f7.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless v2] wifi: rework MAINTAINERS entries a bit
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
+	linux-wireless@vger.kernel.org
+Cc: Johan Hovold <johan+linaro@kernel.org>
+Date: Wed, 26 Mar 2025 16:55:38 +0100
+In-Reply-To: <085bfa6c-cad5-43cf-9432-811b744da506@oss.qualcomm.com>
+References: 
+	<20250306092831.f7fdfe7df7b2.I7c86da443038af32e9bcbaa5f53b1e4128a0d1f9@changeid>
+	 <085bfa6c-cad5-43cf-9432-811b744da506@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-The function calls bitmap_empty() just before find_first_bit(). Both
-functions are O(N). Because find_first_bit() returns >= nbits in case of
-empty bitmap, the bitmap_empty() test may be avoided.
+On Wed, 2025-03-26 at 08:49 -0700, Jeff Johnson wrote:
+>=20
+> This patch has the unfortunate side-effect that get_maintainer.pl (and b4=
+) no
+> longer add linux-wireless to ath* patches, and hence they no longer show =
+up in
+> https://patchwork.kernel.org/project/linux-wireless/list/.
+>=20
 
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
----
- drivers/net/wireless/ath/carl9170/tx.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Oops. I _wanted_ that entry to no longer match so I don't get CC'ed on
+everything ... I guess we need to add L: entries to all the things I
+X:'ed. I sort of thought that might be there anyway, but I see that's
+not the case for everything ... below change perhaps?
 
-diff --git a/drivers/net/wireless/ath/carl9170/tx.c b/drivers/net/wireless/ath/carl9170/tx.c
-index 0226c31a6cae..b7717f9e1e9b 100644
---- a/drivers/net/wireless/ath/carl9170/tx.c
-+++ b/drivers/net/wireless/ath/carl9170/tx.c
-@@ -366,8 +366,7 @@ static void carl9170_tx_shift_bm(struct ar9170 *ar,
- 	if (WARN_ON_ONCE(off >= CARL9170_BAW_BITS))
- 		return;
- 
--	if (!bitmap_empty(tid_info->bitmap, off))
--		off = find_first_bit(tid_info->bitmap, off);
-+	off = min(off, find_first_bit(tid_info->bitmap, off));
- 
- 	tid_info->bsn += off;
- 	tid_info->bsn &= 0x0fff;
--- 
-2.43.0
+johannes
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d19627afa652..09bd9827f318 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3655,11 +3655,11 @@ T:	git git://github.com/AlbanBedel/linux
+ F:	Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
+ F:	drivers/phy/qualcomm/phy-ath79-usb.c
+=20
+-ATHEROS ATH GENERIC UTILITIES
++ATHEROS ATH WIRELESS UTILITIES AND DRIVERS
+ M:	Jeff Johnson <jjohnson@kernel.org>
+ L:	linux-wireless@vger.kernel.org
+ S:	Supported
+-F:	drivers/net/wireless/ath/*
++F:	drivers/net/wireless/ath/
+=20
+ ATHEROS ATH5K WIRELESS DRIVER
+ M:	Jiri Slaby <jirislaby@kernel.org>
+@@ -6208,6 +6208,7 @@ F:	Documentation/process/cve.rst
+=20
+ CW1200 WLAN driver
+ S:	Orphan
++L:	linux-wireless@vger.kernel.org
+ F:	drivers/net/wireless/st/
+ F:	include/linux/platform_data/net-cw1200.h
+=20
+@@ -13995,6 +13996,7 @@ S:	Odd fixes
+ F:	drivers/net/ethernet/marvell/sk*
+=20
+ MARVELL LIBERTAS WIRELESS DRIVER
++L:	linux-wireless@vger.kernel.org
+ L:	libertas-dev@lists.infradead.org
+ S:	Orphan
+ F:	drivers/net/wireless/marvell/libertas/
+@@ -21727,6 +21729,7 @@ F:	drivers/platform/x86/touchscreen_dmi.c
+=20
+ SILICON LABS WIRELESS DRIVERS (for WFxxx series)
+ M:	J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
++L:	linux-wireless@vger.kernel.org
+ S:	Supported
+ F:	Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
+ F:	drivers/net/wireless/silabs/
 
 
