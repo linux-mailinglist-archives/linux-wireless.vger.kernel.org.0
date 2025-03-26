@@ -1,134 +1,139 @@
-Return-Path: <linux-wireless+bounces-20852-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20853-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33B1A71A33
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 16:28:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4495BA71B0C
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 16:49:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C7F13B33EF
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 15:23:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D203F16F300
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 15:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5B63C1F;
-	Wed, 26 Mar 2025 15:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950DA1E5218;
+	Wed, 26 Mar 2025 15:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="VnSG6YCs"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ATWOLUve"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE658635C
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 15:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BEE4A29
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 15:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743002608; cv=none; b=ZEmSIeRsXtza5wIxynGykSw1hT/CMtvUOS0fnOLsb/81jQkV0WU4+tCcqFqZvQrkDqEbQsVMOPOoZqfhCuf3Svd9YQ70zMqu13rDeWV2rvWUxueWKe/zzzpjmmTzyJHcj8OrnYEtV5vKGcVqe08WqAPNeJVj5+q1pyMfa/t122o=
+	t=1743004170; cv=none; b=eW1KBbPm++hT4HiAWid3gil3Ts2+Z3ugaZuNLzAcZwyF0HmUNx8MDa46Y88SWvAlCOwSDAK4CFFLTvYZTjQBsj8cCfQufKY5YO/ixg2VTBZhX89vB5axu11fH4huVye3X1vxmMEI0nig/Hw+7s9fudFnCj43K/EqJc7D2S3OfLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743002608; c=relaxed/simple;
-	bh=k7CJgaBictxhGds/SNqY01GFqGuOdurOMdG05jQsVEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QwTe+393Xbio0VjIRAEaxqUGsnflq6BE0VnluTpzdCK+uwIVKGaPmSjhCCwlI4ZxgdtDyjK/Bra+uAAr2Socd1rQ309sRkSkseC+BAfjdufJ9MUBMkp+oYbzb6eabM+awOZEGv/D5NB73GQIp5OUk+HP3ceUZiVaXWeGL0poPAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=VnSG6YCs; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-223a7065ff8so276875ad.0
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 08:23:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1743002606; x=1743607406; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oLxpsj3MlyrxzxcTIdl+re05Lx90Epv1ZYMgB2IEZX8=;
-        b=VnSG6YCsDLu06T3AZofWIZpF3sCASyaBAApDq+oBCE4Yo9kK/1YRCgQ2tRVMVfF2vz
-         9h2hYpvMz6HRbSVw0fXN4hpnFABKKO7c/W35uxVnCbGlM+DYQiCQBRf3L7Ly6594b84K
-         /+ze7jiWHufPywIOQl7ML1ZLNXAh7+MSYC+ag=
+	s=arc-20240116; t=1743004170; c=relaxed/simple;
+	bh=ciiq+wa1JmR3N2lPnfaRsiXGiMxskH+bkoXftXUkjIw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lxNm0ik3IB6H8IQKXJMsUcGNF5zUTSkIUAHENfpCgy/m+zFCitiIhHkq789Z+cKt/gzfn48T46POrnDtC65woEnhj3YfJAM4deHh2BxXC2rtmfjLFmil4CH0ybmG0b6z8O+XRRgtrt5JJXQ58734irSblhPU2NQn+MZDxlE8hJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ATWOLUve; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QExAgZ024760
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 15:49:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ftx8bszKWuaDiRERb72/BG/+jeliiU1EiCgOEC0Exso=; b=ATWOLUve4ti6Ru/Y
+	51iYr370PH/VcwpHclUe0+A6Bf0tWQnoqiajDFES3nJRIG7D6+fuTEBFe5YH+2t0
+	yLJbv39hPre6bikhnMOm2WDTTGI2iW4zxwgmQvRr9LBECd4SaqVF8QSoNWWrkrFh
+	8nXn3SDqYS0D9E0ZyXCiwdPea/9ZSne2UySIYTlHXxZ1K0cOhqImzq6IM2LQGsnQ
+	HAc3pssdLa2DvhwZQajzDI/L062i3sVpYND1/NTQBs6hXwR/Tkgy0AuJqJEDvpc1
+	OpwPdbiPUAWBldBy5Qs0WLUAn/E3O/TFQKopMiUy0ZtlTmz2In+9PDW4W/YJxOcO
+	hnNQnw==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45kmd35fbk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 15:49:28 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2255ae39f8fso20586945ad.0
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 08:49:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743002606; x=1743607406;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oLxpsj3MlyrxzxcTIdl+re05Lx90Epv1ZYMgB2IEZX8=;
-        b=qNCA9C+XE3XLLGf2Jq1hbel8mHJ4hxeFIUWzNonyMrBSkITmkCsLXq3I1qFlMwCcnq
-         y3v6qSGpV279jInpEEdLMsKR+iN735D9LcDdJveTBqfIlKj+4fn2os8sL4pxDAHC74Vr
-         n0N9U6DjvfmLNbyjSQeTXJGNWOCP+aYkDPXO3U0I79WytdEVB5xmj1/ukG7jDAZNYkJj
-         +yw6eXFyfSqnMFBia42Y2VEQbgiRfxdFeNmCACrtqAprkaj+2hpVEVDrRlNE8Mx4QXgY
-         N/u+QrETjyniNtt385KqjTe4k3mBXq3FmMH/RnPmvl1woaq2cWEue1NXxdcV1Y3YI6Te
-         zV0w==
-X-Forwarded-Encrypted: i=1; AJvYcCU8SHX/ZQuLrbYzg9LEiXWanwLIE4lQmW+uUmQjDYr79PIaEicwprcZG5b03Z6m5uzY+nSWrKMCNQ10py+Amg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5SJWPNq5o+kLPb8ryNoNEIc7jhilsRSDy0LTiAlmVY+d4aIPC
-	1WcrBQ+92A3bk9NKRexL50rgFkiZoVIjdO+U4YMJUblHFiV4VAYYHM5R7AzNag==
-X-Gm-Gg: ASbGncuHik0ui9Xy2Wha/dknyDmPmYrzIlJ8a417tqnod7fTuUaxF70yXIw1tGOncHK
-	WgojdJwENYlBeL8ktkmL3ujr+AGAD/EQTz/WmKJ2uOWQ8mlsWky6gjuZWU8O6EQIM7GbSdc3Gs7
-	PcfxvCwQiypxMFRIr1hIJUVDZQSHYdSn9o1df51LpKqOmhYg+k67atASWgAGUfEjP2QaRAdhrNj
-	lZW1lgv4lapb4bTODww4S5g4F7og7KTU6V6ldSr5I4nEjnN6go8TZvswfguZmMy2xIe9dBc9DSy
-	V9PFqXonokZ0OzDhgFYEpMZP2BAlOvCJd/cEaFcHhlxMweamqHklwgxPl6CRJan3WRg6rMTjHhm
-	FJiGNsP4=
-X-Google-Smtp-Source: AGHT+IEvRqUnkr5RYindS5V2XIwmBMS49KB5BhJjqPUOz/O93KkRT4qX6ryr2KWxJyl0iEG0vMiRlg==
-X-Received: by 2002:a17:902:e88a:b0:21d:3bd7:afdd with SMTP id d9443c01a7336-2280456c1f9mr431375ad.0.1743002606123;
-        Wed, 26 Mar 2025 08:23:26 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:b885:47c3:6268:77fb])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7390611bd23sm12735632b3a.96.2025.03.26.08.23.24
+        d=1e100.net; s=20230601; t=1743004167; x=1743608967;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ftx8bszKWuaDiRERb72/BG/+jeliiU1EiCgOEC0Exso=;
+        b=cKU8R4AafjH6o3YlIckRbm+P7kdUkXKxMsFwRpalhH6LZjvfici186xX4N4WV6JwbX
+         pxmfoW8fDOkwK1zZ2TC7eAmAAhnL/qJMci+BDvgSOKULit/btOtxPLi5BkyjHQNIAQS3
+         AP/z0Ka7/QiwZttboD3RnPViO5ErDzWOThnfENVEldx9muVNn+Pab39kBiCgPKaY7hk0
+         xLmO+PQpwQrDl9HH4O1d0fRVHzVQpJIfw3qOYiNQNKWQPnIFIzj9AIes04gIDzKcdqDE
+         K5z987QRIouwJJY5McmWsAtsr/uIrT0/cimUtHUOuLVagovnQqEB/LyP4oXctSgr1vpc
+         IY9g==
+X-Forwarded-Encrypted: i=1; AJvYcCXx4qkQfznzBPvF01i5b6dVBP7/zowAyO4h0SdsgTn9w+5g870SxeOFb7sZeH/3iNT2ZKTq79IwsvRGCyi5lw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGBIM7w4hGbkEVIw/M6aMvsFBUwrNwEvtrVwYzMBWzBiGQvMEy
+	yqmMSEK9EJHpopo11rS4KNrDI93oiR0H6iZsaYRoeA6nkNDXj1QEgY6tzyee7T9n+F4dvyz7T9h
+	2JO544OOANAdcMH3me7DuQff/kgE80vqqQWRkX95tVwkdz0XaknOJES59LQtKbApOFg==
+X-Gm-Gg: ASbGncsOWWRQk6clhk7oSRE2d+UNk9bTQbY4y/Y4vSRCvKF73shS97s8TuPpoHASiNg
+	TJG3hbK+lXRoNaQbH3DXbD8hvyOnc+XC+PJDZEJg5/OjDVOVX0nrnvuTTHm8C9+7VCrwKFfRrgY
+	ydw5k2ebS+daMzPRy4ATJk7UutukkYT3Mstbfn2UFvVwR7y09kARktygPIanQvr94HMZkmEt/SE
+	uub+2jWirbFkoPKAYRnv9MafLplwMXzzY7etpDt7fl9XPKCA613Ndme0ePa3ntXizccl+iXTa9S
+	at6HM9fh5lIOnwXh1U64bkytsdfjo/iXiFPNVGLJJWLVMbBZwymHocJC+TrCs7HT7RJADAg=
+X-Received: by 2002:a05:6a21:700f:b0:1db:822f:36d8 with SMTP id adf61e73a8af0-1fea2d40a9fmr578586637.3.1743004167037;
+        Wed, 26 Mar 2025 08:49:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG8UTuqi7t5OuVGMa3PVeLVOGHZ+xFGRPs4+dMj0HCpFPMCjin77lPwftmniocTdk7sjC8Ohg==
+X-Received: by 2002:a05:6a21:700f:b0:1db:822f:36d8 with SMTP id adf61e73a8af0-1fea2d40a9fmr578529637.3.1743004166497;
+        Wed, 26 Mar 2025 08:49:26 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af8a2a4e5d5sm11192070a12.67.2025.03.26.08.49.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Mar 2025 08:23:25 -0700 (PDT)
-Date: Wed, 26 Mar 2025 08:23:23 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Jeff Chen <jeff.chen_1@nxp.com>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-	Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Subject: Re: [EXT] Re: [PATCH v4 1/2] wifi: mwifiex: Fix premature release of
- RF calibration data.
-Message-ID: <Z-Qb6_1-sTZ_LTPs@google.com>
-References: <20250220061143.1417420-2-jeff.chen_1@nxp.com>
- <20250318050739.2239376-2-jeff.chen_1@nxp.com>
- <20250319162842.GA46894@francesco-nb>
- <PAWPR04MB9910FE139C88507DE5904ABD9CA72@PAWPR04MB9910.eurprd04.prod.outlook.com>
- <Z-PwgtSRNoCd2L3z@gaggiata.pivistrello.it>
+        Wed, 26 Mar 2025 08:49:26 -0700 (PDT)
+Message-ID: <085bfa6c-cad5-43cf-9432-811b744da506@oss.qualcomm.com>
+Date: Wed, 26 Mar 2025 08:49:25 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z-PwgtSRNoCd2L3z@gaggiata.pivistrello.it>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless v2] wifi: rework MAINTAINERS entries a bit
+To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+        Johan Hovold <johan+linaro@kernel.org>
+References: <20250306092831.f7fdfe7df7b2.I7c86da443038af32e9bcbaa5f53b1e4128a0d1f9@changeid>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250306092831.f7fdfe7df7b2.I7c86da443038af32e9bcbaa5f53b1e4128a0d1f9@changeid>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 1hN22MKnGoxN2dr_n7_NpUQ4gLh21wzo
+X-Proofpoint-ORIG-GUID: 1hN22MKnGoxN2dr_n7_NpUQ4gLh21wzo
+X-Authority-Analysis: v=2.4 cv=P646hjAu c=1 sm=1 tr=0 ts=67e42208 cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=CBsQNda_XNR4200eS9IA:9 a=QEXdDO2ut3YA:10
+ a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-26_07,2025-03-26_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
+ suspectscore=0 phishscore=0 mlxlogscore=601 priorityscore=1501 bulkscore=0
+ mlxscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503260096
 
-On Wed, Mar 26, 2025 at 01:18:10PM +0100, Francesco Dolcini wrote:
-> On Tue, Mar 25, 2025 at 04:43:33PM +0000, Jeff Chen wrote:
-> > From: Francesco Dolcini <francesco@dolcini.it>
-> > > On Tue, Mar 18, 2025 at 01:07:38PM +0800, Jeff Chen wrote:
-> > > > This patch resolves an issue where RF calibration data was being
-> > > > released before the download process. Without this fix, the external
-> > > > calibration data file would not be downloaded at all.
-> > > >
-> > > > Fixes: d39fbc88956e ("mwifiex: remove cfg_data construction")
-> > > > Signed-off-by: Jeff Chen <jeff.chen_1@nxp.com>
-> > > 
-> > > The code looks ok to me, however I do not understand the commit you
-> > > selected as fixes tag.
-> > > 
-> > > From what I understand releasing the data before using it was done since the
-> > > initial commit 388ec385d5ce ("mwifiex: add calibration data download
-> > > feature"). What am I missing?
-> > 
-> > Thank you for reviewing the patch. You are correct-the Fixes tag I included was incorrect.
-> > After re-examining the issue, I found that the premature release of RF calibration data 
-> > cannot be reproduced, which invalidates the problem statement for this patch.  
-> > 
-> > I have decided to withdraw the patch. I appreciate your feedback and attention to detail, 
-> > which helped identify this oversight.  
+On 3/6/2025 12:28 AM, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
 > 
-> To me the code change is correct, and it is also merged in wireless-next. No
-> reason to drop it because of my comment on the fixes tag.
+> Since I really don't want to be CC'ed on every patch
+> add X: entries for all the drivers that are otherwise
+> covered. In some cases, add a bit more to drivers that
+> have other entries, mostly for the vendor directories,
+> but for libertas also add libertas_tf.
 > 
-> Brian: are you ok with that?
+> While at it, also add all nl80211-related (vendor)
+> UAPI header files to the nl80211 entry.
+> 
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-Oh, sorry, I don't think I really analyzed the nature of the reasons for
-"withdrawal". Yes, if it's just the Fixes tag, then reverting isn't even
-that helpful. I'm fine with keeping it as-is.
+Johannes,
 
-Brian
+This patch has the unfortunate side-effect that get_maintainer.pl (and b4) no
+longer add linux-wireless to ath* patches, and hence they no longer show up in
+https://patchwork.kernel.org/project/linux-wireless/list/.
+
+Thoughts on how to handle this?
+
+/jeff
 
