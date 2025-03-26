@@ -1,169 +1,175 @@
-Return-Path: <linux-wireless+bounces-20859-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20860-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F98A71D86
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 18:43:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F3FA71DFB
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 19:06:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1AC33A7690
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 17:40:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3B7616E0B4
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Mar 2025 18:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4ED234978;
-	Wed, 26 Mar 2025 17:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F15824EF75;
+	Wed, 26 Mar 2025 18:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Tp5ZoMhN"
+	dkim=pass (2048-bit key) header.d=web.de header.i=jwollrath@web.de header.b="Eos81tew"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mout.web.de (mout.web.de [212.227.15.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0EC1E1DEC
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 17:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912EC24EF7D;
+	Wed, 26 Mar 2025 18:06:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743010846; cv=none; b=JoP+ddZ28ZTnWy1PpeDe0oSdxPyqKKORDLsG4dml1S8YQD46+nMqc4I9GpHj0pI7jb1fXrfjpvjiNsi8nFqvBysGvOT6o2T7QRAfe/9GcKsi7rG4dZfVMCyKOSGQAhtH8PqseZmmpURZGSsWF8NEvaUd/08PounMSyVCexkRVW4=
+	t=1743012397; cv=none; b=lGywtpWVnGIDn3LT7bsRDUeMPBVRr8FWEfGvsNptk3EzFHjE0Qjzq/DH1P9i8/QfGr7zIKwwoYKHWSJ7yQsXBCnSkLCZeQlRyLoWHJ0fPFc4XDgJ72tT+IrBgpefwVNtXWi84EQNggREK9Wm2v/S0qAyVEiurc3exgzNcqEBtRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743010846; c=relaxed/simple;
-	bh=K+W8B8oX4XSvRqOcNqkrtJtgXCn5ryFU+TEG+KNgbKM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hym+NQOTl4TRm/Yn9RKYHYCl97TVsBDhzbDW4ZNE9bxUmmhSDqaWplaWxTG1nzACNrUb9cFIi64yawN+glRU3VmJzTAv2ssLY5czG79Uq5CGxWEH1q9yjHX7Bx1yaLROJDeP4dXFU0GrgWBt4J8uXLfen90vnj8x0gf0ZTb/xXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Tp5ZoMhN; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QA1ikq025364
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 17:40:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	XjdqfmANQE7XoAJoADExQqGV51um8c4JxtoMepVpYrY=; b=Tp5ZoMhNN/3zWDRF
-	ggZHgh+5QBNOaY6TG8fgXw6mKhbjG7CGaG8fWqxtzwLyDNxYU6734WDdsjoiHLsD
-	g7Zbk3F43BDzDSd/HVm0t4nJn+fPn05Ym6eyc+3Pbnx6MET+baP0gp52e3ivP0Hq
-	Ydg2RZcdQZfx+n5fYNOjnWDVXQnSW7g1NmhT6tWLf0io8/aOMsreKfjqqMp2zlEb
-	dsQCMYP2/pJZN5r0rf5iZntXDRelGlv7pVzhLeBCtxMQnkpaYXS+EIJnD0gRGMSf
-	Ew2TQ0SHprYkQMUEb4aFj/NQfxnj9iYeyGOOJCJEwEkhXama1F9BuO88i9eu/FU8
-	iOHrzg==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45mffch9y5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 17:40:42 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-30364fc706fso52922a91.3
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Mar 2025 10:40:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743010841; x=1743615641;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XjdqfmANQE7XoAJoADExQqGV51um8c4JxtoMepVpYrY=;
-        b=sp261deVmNfXrTkq7y1l+/kaC72nDKdgiVqaTzfGvNEdg9ulKhyh6R47Kgv4dUnzBx
-         dlv2vOPLYN9BIkyWMHRiWr6tpZDxERbWjgusq9V5iD5S3t638th0hqnGHrxBuYFqv/0T
-         0l8qAgYcIQvT/HZJbSHC95Kj2FzaHiq9W0Th4FL3GqPGda6v5qZwdQntNWgTxh6bX4JO
-         5AG4wuZyqMyoURdsy/x097u6wKeaJLKmsuTfCH4r/1QF1s1Uj7p9Vd2yD1wI2SwNohH+
-         1kgv4/BFAqrMWqkqguFK+sWpVWZAqylopy1Af0jW5fpG20a6glDwhNjmPa8S70QB1QV+
-         +BSw==
-X-Forwarded-Encrypted: i=1; AJvYcCVq+fWdCH1OkaNh0lFJ1gZZpvwH0W0CVc1knVMOdGDhQE3S+U1R0t8IGFmmXPBFaYue121ebI2DToKN3qM8LQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyX47jgeBmFWEsW2JrAOIQOYkguokgy75tDsTTz8qToaawYZ2OR
-	Z+rRZOXu2Scyx5twbuqcTvhFAdNfwsHYsGh+L/a7pPiOJcuD5YPGL9gPsLYuqJbCUp+9HJFDAXz
-	NpF7scGfYFPrNJfuqpe0KTNGtNnZsX41AuAamomp3yUHDUXRfZt6p4Qw2UQ6grbFzZ1KcmcGIKQ
-	==
-X-Gm-Gg: ASbGnctR3N72Kgv1jxdf745HtEVVwA2cYJTeVcySf6zGutSMdKLcjEGF8Zxb9n2DoWS
-	VF5HTN5G/PscyM95EtyXtHoPQ+yDoej2fJYiCMCM3vVy3Z/X4ufusECiRRisYWsSZSRx9gHpQow
-	mvX4qr/WyCQ8x3S9CqRxR6MXzr+qyhZv1M/u8+jc5DsmQ7vT1w5zAm5mGXPpVVYtOLgJqu7mFds
-	K3RcIMILOz9F62VXe/DsHwWGKtCMCb+BAz03G8XwR8KgG0eNxEiEMNurTc/Pjo6X1iiRsphipgZ
-	dBlTUGqzAUXJqPOOM4oxjhfbzonHa/dd3jxu9cCRpSnAYgfkPtNIhphFeDAOoWK0I1z6CyU=
-X-Received: by 2002:a05:6a20:9148:b0:1f3:293b:7aa with SMTP id adf61e73a8af0-1fea2d3effbmr1034953637.4.1743010841056;
-        Wed, 26 Mar 2025 10:40:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEzPzvBwB8dfFwDt/l+446jyef+m1d80JuTixPOpRYkKoUAkhVeFer8JzrCwYThrDl48WX7Lw==
-X-Received: by 2002:a05:6a20:9148:b0:1f3:293b:7aa with SMTP id adf61e73a8af0-1fea2d3effbmr1034918637.4.1743010840527;
-        Wed, 26 Mar 2025 10:40:40 -0700 (PDT)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af8a282be07sm11311060a12.34.2025.03.26.10.40.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Mar 2025 10:40:40 -0700 (PDT)
-Message-ID: <f5a0d68e-87f9-48f5-bb1c-a6ecaf19d58e@oss.qualcomm.com>
-Date: Wed, 26 Mar 2025 10:40:39 -0700
+	s=arc-20240116; t=1743012397; c=relaxed/simple;
+	bh=gbjKAFgB71V9E3Bslr8DsOC6gEuRlewbUsD3uvKJu6w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bn14RdtlIr0UyCvyJHh+Sq1TkkKRBVgls4AY5En7TwXS0RJydMrcmHivlIPMOsxCdb0H9HpUGkH27zeBnCZVa0E4gj0JBMbWUqY/5VCpA0ux7YLCZU8KvCkjqVo7xAvk8krdLoK9+uFBfPYxyJhC7ocuQ7XYzITvwfgFlyYt97w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=jwollrath@web.de header.b=Eos81tew; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1743012375; x=1743617175; i=jwollrath@web.de;
+	bh=bpRhe6RCKqjpwMwkouG+nGcRPzNhh2JSM9SYfRCWoAw=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Eos81tewP6FLrCWlbSdLx+8Hb7BFMxEswteE84RUz5HRCG90kWVE8ySt5pmg6zod
+	 epP9lXjgNcBCOfPcDDHXwm2fEhFf/NhJv+xiF0WHvO29OzYmdpgYrM5rnEvoKzI0t
+	 vrMxAaepJLhet3mF3RaUG+U49ke7PY6SddOELerXhW0irh4cV+ntUey+DUzbBFxBW
+	 n+eZc6B3R+zc6GjoelrLUOg0jPWcP43c7fpLPdpiXv8tq+adlyerk0kMoQyYewLjK
+	 qG1iXxCQZ1mr9vrrZO+7pA96wfKnYI4lS2u7+jzAEiB/cPSuz6bkD4fhK51plqM8s
+	 IU5WlKJ1Jpk9IdROSw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from mayene ([178.195.12.4]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1M2Pda-1tzA6K3iMY-008mYC; Wed, 26
+ Mar 2025 19:06:14 +0100
+Date: Wed, 26 Mar 2025 18:48:27 +0100
+From: Julian Wollrath <jwollrath@web.de>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson
+ <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
+ <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>, Muhammad
+ Usama Anjum <usama.anjum@collabora.com>
+Subject: Re: [PATCH ath-next v2 0/6] wifi: ath11k: bring hibernation support
+ back
+Message-ID: <20250326184754.0ca1e54d@mayene>
+In-Reply-To: <20250326-ath11k-bring-hibernation-back-v2-0-87fdc2d6428f@quicinc.com>
+References: <20250326-ath11k-bring-hibernation-back-v2-0-87fdc2d6428f@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless v2] wifi: rework MAINTAINERS entries a bit
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Cc: Johan Hovold <johan+linaro@kernel.org>
-References: <20250306092831.f7fdfe7df7b2.I7c86da443038af32e9bcbaa5f53b1e4128a0d1f9@changeid>
- <085bfa6c-cad5-43cf-9432-811b744da506@oss.qualcomm.com>
- <6ef5049a68157bae0e121f48afc1d872a25087f7.camel@sipsolutions.net>
- <f703bb34-45f8-4f8b-b940-72428efa3c46@oss.qualcomm.com>
- <7e4058cf8346ad75b93a932141801b42e4cd63e7.camel@sipsolutions.net>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <7e4058cf8346ad75b93a932141801b42e4cd63e7.camel@sipsolutions.net>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=CdgI5Krl c=1 sm=1 tr=0 ts=67e43c1a cx=c_pps a=0uOsjrqzRL749jD1oC5vDA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=NEAV23lmAAAA:8 a=jmPUxxVvAQEylilMrj8A:9 a=QEXdDO2ut3YA:10
- a=mQ_c8vxmzFEMiUWkPHU9:22
-X-Proofpoint-GUID: Y-EHoIWepbjAMHGpd6cH_5OOMRxVcVP5
-X-Proofpoint-ORIG-GUID: Y-EHoIWepbjAMHGpd6cH_5OOMRxVcVP5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-26_08,2025-03-26_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- spamscore=0 mlxlogscore=999 lowpriorityscore=0 suspectscore=0 phishscore=0
- clxscore=1015 bulkscore=0 impostorscore=0 adultscore=0 priorityscore=1501
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503260108
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:XKlqPR7CaYFNVTeUed8hujZfTgJ3sgDDS1VsGg5S/aYXvpRCQSU
+ hDKheiL0r7qwRqEAHRBZV9VgtB/PrVZqvQBBq0K903ZqLk7KZ0LrcUoANfuTOyab015H9j7
+ NehcQSyK9Of1IwPuYvdv1qi+6vUN3ub81KVgG+Sev25r5vsg67aR0ooVwF+fmFd3grx8PHT
+ 5AEbLCzAcnq0jCSk47cLA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:wg4lQbYzcsk=;QSlL76JITTF3FjDt65v9xEBXzYI
+ zrl1LC9yaIXU0mgcEXVJUXuxklNOTSv3/wCgUfhNd47YVa6+T4ZPk9P4i7Upoj49VlBcUodf9
+ Ksj9+/lLie6ZXRR7QdouGcsoLQwaoXhBYahUDs0uFXnyxkt9xabEBYbqvtviOudMGZyi/s41w
+ VSpoMNbPZXSVLThlqjlc5vu2P8Fl6a1Dv5pbNd+9BiPeoZyPnxtekBP9yOqgiqqWAhNAefQnw
+ unTyF9AEfMMEPLLSuhJY4X9fq8G9BYkg4L9o3MUKLrDhRuMJAJm4YJCfh32kW6I/1/xwin0En
+ EF3NHovUNCam8/Ee53V29RZwBkWGbi/x9o80XLWwy1ZO3udbP90MRT6LsGx+WY7O7tBBXvR0O
+ HWQ9N4kPjvZNhKG4Ig0IBTC8i1F6LZdoVyylgaSZnp6eDpTtZgjeY17f+09+oypWu1C6erFX0
+ 3mRe5Y5g7njMcKuSKrbfHgjJ+xqTsj4jXGiBILRVbaSetNhA3d33QfpcyMlGZgmOXrfpvkgr9
+ CV0Lk45fNUCxw2l6CjaXWGHOXLavPqlaAbdsk/7MDfwTzD4L2BSAYf61H3j++r/xwNM/xVnEK
+ g6P9a9iGIHNRXUaXZhzj2peFFDHrIk4L97igFl5BTwrKUOEKe4UAVHtIZM3v1EBHA1KT3sn5m
+ pFGCdj5bTJFGO3UllQLpsZD9Z+vJ3vz7XKVcK/K88tG4B33l4lCp7L5qNYBEl7zNw9tOub7eX
+ N2V8KIPVo2pvPG/QNJONcr8q3q/MsDPQzolvdn4wLP5x5k8/ZAChhgoh07kGgOd58lDnkuen3
+ qXaSaNN7q0nJhhyUQCaEFqbL6i33qDJ/XyD7yMF8m5Y90oVNA6f1lsBulHeVkxnDNUllBPTdU
+ SNj8p5y8ufDunWt0RNonN2kyLG1CDQbCUVxk9+0s6z+Y4/ziDNe7alray7GzNmVSaiNSegCMr
+ H+bFBHPdnQoqBsbed0FfRkMsbqCYCL+50THDdNKbVqpnQTUG1HFR5CRAcaqhS3x9eYyR/JTZv
+ Vhe4MmMGXeo6Aq2cNeMggXEGZ+G3cjQVLktLOjp1pwA3kiCIYzr4H5wykflB4Nh0qPakKaOmh
+ FtcuagQv+AURc6++62Wb6JEBzOehPK6x4GCB7lEUU52OP84vcPxZaJ6JvPSlY4NBxvPdv+ROd
+ hGzKbPPtihRSbulmcZjxreqOU5sG/wiSdmJxzeJEEVR50zbpnoPneaXBsR7BTuhqDRrxFqxGl
+ IEkUWKT3/e3cvio7x4TAEkL8skEaln7tFkKbTsA0XeEBEhaDmQnezSv+fVYq51njdrIZd5byM
+ czneFwgc65yBnsgX29JWnQH0iXoSYWTYGQ9M1TTePgpDVP85uVLNtrLMUoDbcuJgk9FfGmwl3
+ 3YyBuGlVluaXtwJfb7Du3XbuGkvy9wHhAgxCaJdU0/jkWMZD0JblcH65ZlWkv7oSwYBXidNiX
+ 2+KebJQ==
 
-On 3/26/2025 9:46 AM, Johannes Berg wrote:
-> On Wed, 2025-03-26 at 09:45 -0700, Jeff Johnson wrote:
->> On 3/26/2025 8:55 AM, Johannes Berg wrote:
->>> On Wed, 2025-03-26 at 08:49 -0700, Jeff Johnson wrote:
->>>>
->>>> This patch has the unfortunate side-effect that get_maintainer.pl (and b4) no
->>>> longer add linux-wireless to ath* patches, and hence they no longer show up in
->>>> https://patchwork.kernel.org/project/linux-wireless/list/.
->>>>
->>>
->>> Oops. I _wanted_ that entry to no longer match so I don't get CC'ed on
->>> everything ... I guess we need to add L: entries to all the things I
->>> X:'ed. I sort of thought that might be there anyway, but I see that's
->>> not the case for everything ... below change perhaps?
->>>
->>> johannes
->>>
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index d19627afa652..09bd9827f318 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -3655,11 +3655,11 @@ T:	git git://github.com/AlbanBedel/linux
->>>  F:	Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
->>>  F:	drivers/phy/qualcomm/phy-ath79-usb.c
->>>  
->>> -ATHEROS ATH GENERIC UTILITIES
->>> +ATHEROS ATH WIRELESS UTILITIES AND DRIVERS
->>>  M:	Jeff Johnson <jjohnson@kernel.org>
->>>  L:	linux-wireless@vger.kernel.org
->>>  S:	Supported
->>> -F:	drivers/net/wireless/ath/*
->>> +F:	drivers/net/wireless/ath/
->>
->> unfortunately the ath* specific entries will override so I think we need:
-> 
-> Hmm, really? Seems that if that were the case I wouldn't have been CC'ed
-> on every ath*k patch?
+Hi,
 
-ok, that was operator error. I thought I was applying your fixup but I was
-actually applying the original (merged) patch.
+Am Mi, 26 M=C3=A4r 2025 09:33:04 +0800
+schrieb Baochen Qiang <quic_bqiang@quicinc.com>:
 
-but this now indicates I maintain all of the drivers under ath instead of just
-maintaining the utilities that are in the top-level ath folder itself.
+> To handle the Lenovo unexpected wakeup issue [1], previously we revert
+> commit 166a490f59ac ("wifi: ath11k: support hibernation"). However we
+> need to bring it back, of course with additional changes such that
+> Lenovo machines would not break.
+>=20
+> For suspend (S3), as those machines work well in WoWLAN mode, the
+> thought here is that we put WLAN target into WoWLAN mode on those
+> machines while into non-WoWLAN mode (which is done in the reverted
+> commit) on other machines. This requires us to identify Lenovo
+> machines from others. For that purpose, read machine info from DMI
+> interface, match it against all known affected machines. If there is
+> a match, choose WoWLAN suspend mode, else choose non-WoWLAN mode.
+> This is done in patches [1 - 4/6]
+>=20
+> For hibernation (S4), non-WoWLAN mode is chosen for all machines. The
+> unexpected wakeup issue should not happen in this mode, since WLAN
+> target power is cut off. To know if the system is going to suspend or
+> to hibernate, register a notifier such that kernel can notify us of
+> such infomation. This is done in patch [5/6]
 
-so from that perspective I think the ath entry should not be modified and
-instead the additions should be made to the ath{10,11,12}k entries
+with this, I just want to confirm, everything now works as expected
+after hibernation.
 
-/jeff
 
+Best regards,
+Julian
+
+>=20
+> The last patch bring the reverted "wifi: ath11k: restore country code
+> during resume" commit back.
+>=20
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D219196
+>=20
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> ---
+> Changes in v2:
+> - fix compile warnings
+> - support hibernation on Lenovo machines listed in quirk table
+> - Link to v1:
+> https://lore.kernel.org/linux-wireless/20250320023003.65028-1-quic_bqiang=
+@quicinc.com/
+>=20
+> ---
+> Baochen Qiang (6):
+>       wifi: ath11k: determine PM policy based on machine model
+>       wifi: ath11k: introduce ath11k_core_continue_suspend_resume()
+>       wifi: ath11k: refactor ath11k_core_suspend/_resume()
+>       wifi: ath11k: support non-WoWLAN mode suspend as well
+>       wifi: ath11l: choose default PM policy for hibernation
+>       Reapply "wifi: ath11k: restore country code during resume"
+>=20
+>  drivers/net/wireless/ath/ath11k/ahb.c  |   4 +-
+>  drivers/net/wireless/ath/ath11k/core.c | 294
+> ++++++++++++++++++++++++++++++---
+> drivers/net/wireless/ath/ath11k/core.h |  16 ++
+> drivers/net/wireless/ath/ath11k/hif.h  |  14 +-
+> drivers/net/wireless/ath/ath11k/mhi.c  |  14 +-
+> drivers/net/wireless/ath/ath11k/mhi.h  |   5 +-
+> drivers/net/wireless/ath/ath11k/pci.c  |  45 ++++-
+> drivers/net/wireless/ath/ath11k/qmi.c  |   4 +- 8 files changed, 350
+> insertions(+), 46 deletions(-) ---
+> base-commit: b6f473c96421b8b451a8df8ccb620bcd71d4b3f4
+> change-id: 20250324-ath11k-bring-hibernation-back-e11ad8e82adf
+>=20
+> Best regards,
+
+
+
+--=20
+ ()  ascii ribbon campaign - against html e-mail=20
+ /\                        - against proprietary attachments
 
