@@ -1,181 +1,153 @@
-Return-Path: <linux-wireless+bounces-20871-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20872-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2ADA7288D
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Mar 2025 02:58:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2659A72885
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Mar 2025 02:57:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B9EC3AEC41
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Mar 2025 01:54:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A775189AA55
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Mar 2025 01:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4080761FF2;
-	Thu, 27 Mar 2025 01:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB833597A;
+	Thu, 27 Mar 2025 01:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Glw8C/qY"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Q8E0ZLS2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB4927442;
-	Thu, 27 Mar 2025 01:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CCF4502A
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Mar 2025 01:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743040380; cv=none; b=ASrIsO/X0VlMaUfMwohnW//X9zw/CUyZq7R6ZPHhGqNVQZ410z7WceupAhcDDf7k5ZaG3mSfrhtiyxUfo6hu18a10UrIGsk2dhz4raXjLpTaKCSlGFS7zQmPm6rvM5KtvJLo7ooJLzz8VkWhWJTUoKrM6xE2fwtfgmjP2i1Lj+8=
+	t=1743040580; cv=none; b=btNRhlhLI5AD4vlsHabsneGdYLw8/6Pz3N3BmLz6yKoI+1jqyNnDvLN7F+7728dDfki89ur6Ycrs6oTJmRPiBPQriXJcALl4iXX9nHjMkbQNCOAfP+7OWwrFNSyCdffZPfWHR84KES3w2XeSGjq3ouwZq+m8hlJOI7Z9t4M8eBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743040380; c=relaxed/simple;
-	bh=zBkAjJYQcEjMZXrG4b9cIHSfPiz7R+bfxV7ouadcOVg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GlJKLoQUhT6T1Vo2cmna5vlQwIJlcgwkLd5cH82qBjhALFlAtvpge8IA8bTIiz3r0nPPIFUkeWywKuL6G40BZDr6dALqTxff8OXAT44S/eSgThy/MlXSlkE+Fo6KQj+FWL4aNhUA4VdcR2wf6/Qn8H5ainLpFYZZj4phgUP1O74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Glw8C/qY; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1743040580; c=relaxed/simple;
+	bh=l0OYvLbza+/1ff9JOIddp7QjVQReII3z1rrsbrjJrH8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b3NF1VrjgtEXJL3QZ2xPsxbedvzgP7ZZ9RGYS2ka1ZjwmWRLJjI3XdpAVNwMJdGmlswdJWrrdqgYP+kec/Ab3yPIId9ZC8GMT33+1H+bdN7WsAfQYf/0TySXrMw+8PwVg63D4xfrCw3sq12VYxkzQyMMOaR/aUQENw0heCRoYgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Q8E0ZLS2; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QJYcer025368;
-	Thu, 27 Mar 2025 01:52:40 GMT
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QEZepe009175;
+	Thu, 27 Mar 2025 01:56:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Tk4288G6sX/3FaXUDW85OcAcHNu+8pg++zMQR478mPQ=; b=Glw8C/qYdz+Ga6iq
-	fBSm2wnLXHCFzMkyvUuakjFkNE07xgieVajAIVzrxaKEfUXFcBQlbf1/GrHR4d+l
-	7OzdPPixeyojQwY4L1LP0VSF+HCQeriC16rwkM9LpheCeu3E6MGjRXnTT+NXywbr
-	yGJ69sDMovWDBsoJbxwm9+IocadUZ24xY8otCBCunCfyWjEr+BrOHf+WOUUg+kcK
-	+GZaH0M+4hlPVAU1TPIw7oCWShmfpvhJx74pybJvd0M+1LpbjI+IoxuG64A6fG8j
-	7aHbwdsA9Vrzu2EDu7OKctd/gkedTG1pA45XCSuHoaBm/Eoqq6tkxPW+jt0XLjFC
-	qgoSVg==
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=zinkL6txSCyhyTncpj8m+a
+	ZRhR3oWbxEzPnM6wuYJv8=; b=Q8E0ZLS2gGZYcsY4ZA8pioRlDhkgAnDqbhgOqP
+	PlbwprSj6p9Ld8u5u2AgdHpcqEtIkQoJXB4HjuGA2oxqxbTiYxyz2L5Ga/VU0PcE
+	Y8G/ZydDPpEtENl9AiP+t2ooUSsoKj47bkefiVtAwPUQc4/4DsGzjkxb41LFJr8X
+	YzTs53FP8/nq4EJEKa4P8tkd0fjWZPnKtITPQkll64j1AKqcuVNC09jfXr9POUFF
+	GF4myygWJF1+FveXS0gG93V6NBKKha+1dNfaoREH0Fqov75ZcBqazpuf8+43oJXK
+	1k1epcAIyWk+n60u1Z8mLn/jeEBm3ecuQdSWySbLW587ht/A==
 Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45mffcjbw8-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45kmd4pycq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Mar 2025 01:52:40 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52R1qd6T017730
+	Thu, 27 Mar 2025 01:56:14 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52R1uDuS024279
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Mar 2025 01:52:39 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 26 Mar
- 2025 18:52:37 -0700
-Message-ID: <85c7729a-c410-43c6-9819-bd7ce415f406@quicinc.com>
-Date: Thu, 27 Mar 2025 09:52:33 +0800
+	Thu, 27 Mar 2025 01:56:13 GMT
+Received: from kangyang.ap.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 26 Mar 2025 18:56:12 -0700
+From: Kang Yang <quic_kangyang@quicinc.com>
+To: <ath12k@lists.infradead.org>, <quic_kangyang@quicinc.com>
+CC: <linux-wireless@vger.kernel.org>
+Subject: [PATCH v13 0/4] wifi: ath12k: add 11d scan offload support and handle country code for WCN7850
+Date: Thu, 27 Mar 2025 09:55:41 +0800
+Message-ID: <20250327015546.1501-1-quic_kangyang@quicinc.com>
+X-Mailer: git-send-email 2.34.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v2 0/6] wifi: ath11k: bring hibernation support
- back
-To: Julian Wollrath <jwollrath@web.de>
-CC: Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson
-	<jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        Muhammad Usama
- Anjum <usama.anjum@collabora.com>
-References: <20250326-ath11k-bring-hibernation-back-v2-0-87fdc2d6428f@quicinc.com>
- <20250326184754.0ca1e54d@mayene>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20250326184754.0ca1e54d@mayene>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=CdgI5Krl c=1 sm=1 tr=0 ts=67e4af68 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=-YL0jcYk9_dqnk2SXhsA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: Z6B_ToHK48bL7IwmN5IX4aquukU3rAW3
-X-Proofpoint-ORIG-GUID: Z6B_ToHK48bL7IwmN5IX4aquukU3rAW3
+X-Proofpoint-ORIG-GUID: qOe-N5y2gfNBwfQUN_Cuyhk1xL_TCDDY
+X-Proofpoint-GUID: qOe-N5y2gfNBwfQUN_Cuyhk1xL_TCDDY
+X-Authority-Analysis: v=2.4 cv=QLZoRhLL c=1 sm=1 tr=0 ts=67e4b03e cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=IvkglCj0MCVAe19RatQA:9
+ a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-26_09,2025-03-26_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- spamscore=0 mlxlogscore=999 lowpriorityscore=0 suspectscore=0 phishscore=0
- clxscore=1015 bulkscore=0 impostorscore=0 adultscore=0 priorityscore=1501
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503270011
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 phishscore=0
+ mlxlogscore=999 mlxscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0
+ bulkscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503270012
+
+This patch-set mainly does four things:
+1. Add handler to send WMI_SET_CURRENT_COUNTRY_CMDID to firmware.
+2. Use WMI_SET_CURRENT_COUNTRY_CMDID to set country code for WCN7850.
+3. Implement 11d scan offload, and update new channel list to firmware
+when 11d scan finished.
+4. Store country code, and update it to firmware after device recovery.
+
+With this patch-set, WCN7850 can do 11d offload scan and update country
+code to firmware successfully.
+
+Note: This patch-set is an old patch-set in public review written by
+Wen Gong. Just resend it for him.
+Link: https://patchwork.kernel.org/project/linux-wireless/cover/20230914090746.23560-1-quic_wgong@quicinc.com/
+
+v13: rebase on tag: ath/main(ath-202503251458).
+v12:
+    1. add reviewed-by tag.
+    2. add branch tag.
+    3. rebase on tag: ath-202503172347.
+v11:
+    1. swap the order of patch #2 and #3.
+    2. rebase on tag:ath/main(ath-202502181756).
+v10: rebase on tag: ath/main(ath-202502111625).
+v9: update copy right in patch #1, #2, #3.
+v8: rebase on tag: ath/main(ath-202501172342).
+v7:
+    1. rebase on tag: ath/main(ath-202412191756).
+    2. rewrite commit message for patch#2.
+v6: rebase on tag: ath/main(ath-202410161539).
+v5: rebase on tag: ath/main(ath-202410111606).
+v4: rebase on tag: ath-202410072115.
+v3:
+    1. use wiphy::mtx lock instead of adding a new lock(patch#2).
+    2. rename struct according to wmi naming convention(patch#1, #2).
+    3. update copyright in reg.h
+    4. modifiy patch#3, #4 due to struct name change.
+v2: change per Jeff.
+    1. change alpha2 length from 3 to 2.
+    2. change wmi_11d_new_cc_ev to wmi_11d_new_cc_event.
+
+Wen Gong (4):
+  wifi: ath12k: add configure country code for WCN7850
+  wifi: ath12k: use correct WMI command to set country code for WCN7850
+  wifi: ath12k: add 11d scan offload support
+  wifi: ath12k: store and send country code to firmware after recovery
+
+ drivers/net/wireless/ath/ath12k/core.c |  34 ++++-
+ drivers/net/wireless/ath/ath12k/core.h |  17 +++
+ drivers/net/wireless/ath/ath12k/hw.c   |   6 +
+ drivers/net/wireless/ath/ath12k/hw.h   |   1 +
+ drivers/net/wireless/ath/ath12k/mac.c  | 167 ++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/mac.h  |   7 ++
+ drivers/net/wireless/ath/ath12k/reg.c  |  72 ++++++++---
+ drivers/net/wireless/ath/ath12k/reg.h  |   2 +-
+ drivers/net/wireless/ath/ath12k/wmi.c  | 158 ++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/wmi.h  |  38 ++++++
+ 10 files changed, 480 insertions(+), 22 deletions(-)
 
 
-
-On 3/27/2025 1:48 AM, Julian Wollrath wrote:
-> Hi,
-> 
-> Am Mi, 26 Mär 2025 09:33:04 +0800
-> schrieb Baochen Qiang <quic_bqiang@quicinc.com>:
-> 
->> To handle the Lenovo unexpected wakeup issue [1], previously we revert
->> commit 166a490f59ac ("wifi: ath11k: support hibernation"). However we
->> need to bring it back, of course with additional changes such that
->> Lenovo machines would not break.
->>
->> For suspend (S3), as those machines work well in WoWLAN mode, the
->> thought here is that we put WLAN target into WoWLAN mode on those
->> machines while into non-WoWLAN mode (which is done in the reverted
->> commit) on other machines. This requires us to identify Lenovo
->> machines from others. For that purpose, read machine info from DMI
->> interface, match it against all known affected machines. If there is
->> a match, choose WoWLAN suspend mode, else choose non-WoWLAN mode.
->> This is done in patches [1 - 4/6]
->>
->> For hibernation (S4), non-WoWLAN mode is chosen for all machines. The
->> unexpected wakeup issue should not happen in this mode, since WLAN
->> target power is cut off. To know if the system is going to suspend or
->> to hibernate, register a notifier such that kernel can notify us of
->> such infomation. This is done in patch [5/6]
-> 
-> with this, I just want to confirm, everything now works as expected
-> after hibernation.
-
-Thank you for testing.
-
-> 
-> 
-> Best regards,
-> Julian
-> 
->>
->> The last patch bring the reverted "wifi: ath11k: restore country code
->> during resume" commit back.
->>
->> [1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
->>
->> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
->> ---
->> Changes in v2:
->> - fix compile warnings
->> - support hibernation on Lenovo machines listed in quirk table
->> - Link to v1:
->> https://lore.kernel.org/linux-wireless/20250320023003.65028-1-quic_bqiang@quicinc.com/
->>
->> ---
->> Baochen Qiang (6):
->>       wifi: ath11k: determine PM policy based on machine model
->>       wifi: ath11k: introduce ath11k_core_continue_suspend_resume()
->>       wifi: ath11k: refactor ath11k_core_suspend/_resume()
->>       wifi: ath11k: support non-WoWLAN mode suspend as well
->>       wifi: ath11l: choose default PM policy for hibernation
->>       Reapply "wifi: ath11k: restore country code during resume"
->>
->>  drivers/net/wireless/ath/ath11k/ahb.c  |   4 +-
->>  drivers/net/wireless/ath/ath11k/core.c | 294
->> ++++++++++++++++++++++++++++++---
->> drivers/net/wireless/ath/ath11k/core.h |  16 ++
->> drivers/net/wireless/ath/ath11k/hif.h  |  14 +-
->> drivers/net/wireless/ath/ath11k/mhi.c  |  14 +-
->> drivers/net/wireless/ath/ath11k/mhi.h  |   5 +-
->> drivers/net/wireless/ath/ath11k/pci.c  |  45 ++++-
->> drivers/net/wireless/ath/ath11k/qmi.c  |   4 +- 8 files changed, 350
->> insertions(+), 46 deletions(-) ---
->> base-commit: b6f473c96421b8b451a8df8ccb620bcd71d4b3f4
->> change-id: 20250324-ath11k-bring-hibernation-back-e11ad8e82adf
->>
->> Best regards,
-> 
-> 
-> 
+base-commit: 11cea2b6a2e3a5ddf3562314d1a378e7ea1c26eb
+-- 
+2.34.1
 
 
