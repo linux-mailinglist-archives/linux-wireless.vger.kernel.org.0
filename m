@@ -1,67 +1,73 @@
-Return-Path: <linux-wireless+bounces-20903-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20904-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDFDA741FA
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Mar 2025 02:16:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA232A74244
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Mar 2025 03:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 816F63B6508
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Mar 2025 01:16:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58311171B09
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Mar 2025 02:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71DA15746E;
-	Fri, 28 Mar 2025 01:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5394D20DD48;
+	Fri, 28 Mar 2025 02:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="hdzrZCD+"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="s2GIa2A+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ksmg01.maxima.ru (ksmg01.mt-integration.ru [81.200.124.38])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B835537F8;
-	Fri, 28 Mar 2025 01:16:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A28913D89D
+	for <linux-wireless@vger.kernel.org>; Fri, 28 Mar 2025 02:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743124606; cv=none; b=Hyjr5mQ4XX9ZPzsQKcwNjMnqLaArA255b6bWUH/UcDiL7DztQCePTqhptdFlArUR7sVlrP4NpAUTEjPLedILOkk9RaFd5VDBxolct2OvGQUYvLN0V4xEe0ptMFwBwSsrG8wNf9ml57cBzfTMBnGWxBmKYIqgsqt1B95rL/i8Uxw=
+	t=1743128953; cv=none; b=bZoFKVhTHqNgRv0XKZ2Ow820/T7UQ1UiM4bpLMHgeljOK3BamqGDK5fhdLh4ZJcVRhXTgyJlNDEAt5RY805uyQAIQm7AuRUic7t/1wYYtMKOI4x8GuIDflnJmlSsdGRnXAFejfvuvX8sk/vrz/H5FwZxnwC2UNudG4fnSLhZb+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743124606; c=relaxed/simple;
-	bh=7mFZoI3oUwSgsrtXYgoQO4zWvGggFBPc0QqMqh4qw+A=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lnfoGam3AYZqHxKJ3SN5D5aKKhgqgqeEiAfz17vfHtYq6cytsEzgu08QarDuHEZq1MQiQ6vpDJCTbBqRSj54azNoEiObiB4XOo5dujlhTHEUJafINFPbNh5rrGk5BySQukbtuYAx43UkY6IoC+2a9JTxY3BT/KfIGX1D8NNzG8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=hdzrZCD+; arc=none smtp.client-ip=81.200.124.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
-Received: from ksmg01.maxima.ru (localhost [127.0.0.1])
-	by ksmg01.maxima.ru (Postfix) with ESMTP id 2E78CC0006;
-	Fri, 28 Mar 2025 04:16:39 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg01.maxima.ru 2E78CC0006
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
-	s=sl; t=1743124599; bh=Kl/vgxvkF6dodXZC7H99NoGlSRboIwJ+apzfaBVvyhU=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=hdzrZCD+3zDPhxnZFcNkUbYYdjSZw7+VmbBOOHzyAS/FV9mcVY1qtHTQaEU75SRDN
-	 jkXQy41Fqr8CP8UyUvVQlRvRT+3eGtFAU1Wp11cUcyW0LChXv/7oqoXrhDAtQWdVQt
-	 3E+jksolptpjPbxbrxFU8Zpa3K5FjhTd7+tHIfuBcLM4KCRW2XHpgwJTAemvLgKMlI
-	 IDpYffeKC6Q42FdqQxaGvrsHCNRZtHsHiFoHWrEnPG/xQw2AubDbQglKE553DrSCo3
-	 dEyxFOehdCx14wcMHS8jg7FjPH1M5gsHV04cN/0jpXMk8V4CyIupeAaGSuIje4wvtb
-	 DDpKk3hJ+7FzA==
-Received: from ksmg01.maxima.ru (mail.maxima.ru [81.200.124.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
-	by ksmg01.maxima.ru (Postfix) with ESMTPS;
-	Fri, 28 Mar 2025 04:16:39 +0300 (MSK)
-Received: from db126-1-abramov-14-d-mosos.mti-lab.com (172.25.20.118) by
- mmail-p-exch01.mt.ru (81.200.124.61) with Microsoft SMTP Server
+	s=arc-20240116; t=1743128953; c=relaxed/simple;
+	bh=8sNg+4pMpR31vW1qiUyAY2O7pEjuo455g18wfSKcrQQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lKdW7uEce+YlfH+FQo57ux5IliOY0tgcuhHI22McmEgf2uUJzqpifTlTVO2snfbpMRb3Y4a+XNHLK4YAEEUODL5TCwG1uH1SLyKTsKS1csRNBliCJyj7BKFQ7if/hkhkaeVuDxb6ob1NeRe29QSDNAirJ8BP/6dd2nwbvI1JiP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=s2GIa2A+; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 681312e40b7c11f0aae1fd9735fae912-20250328
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=cj6WARRDUu81bD7FNguWIjaU7KS/9mR6wv5eamc6rus=;
+	b=s2GIa2A+denD+6380Z6UxwwBMw0Oyo6Pb8gmBsvuG7iuDguR3dZdJw2UWRxXVIxQGOkxVRQCCKcRvKHogWEreRfmvQ07yowkPEsZ5OMqqiEGn54pj4SFPhyVufVOO9/pqyoUnuOr+lmyHcShiYB9xwZ3G5tCKdvyJ+hv6Uynk9o=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.2.1,REQID:65793ade-f5b8-44a7-9b5b-58fe141366ae,IP:0,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:-5
+X-CID-META: VersionHash:0ef645f,CLOUDID:a137a94a-a527-43d8-8af6-bc8b32d9f5e9,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 681312e40b7c11f0aae1fd9735fae912-20250328
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+	(envelope-from <shayne.chen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1545091463; Fri, 28 Mar 2025 10:28:59 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Fri, 28 Mar 2025 04:16:38 +0300
-From: Ivan Abramov <i.abramov@mt-integration.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: Ivan Abramov <i.abramov@mt-integration.ru>, "John W. Linville"
-	<linville@tuxdriver.com>, "Eric W. Biederman" <ebiederm@xmission.com>,
-	<linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>
-Subject: [PATCH] cfg80211: Avoid calling WARN_ON() on -ENOMEM in cfg80211_switch_netns()
-Date: Fri, 28 Mar 2025 04:16:18 +0300
-Message-ID: <20250328011619.743980-1-i.abramov@mt-integration.ru>
-X-Mailer: git-send-email 2.39.5
+ 15.2.1258.39; Fri, 28 Mar 2025 10:28:58 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Fri, 28 Mar 2025 10:28:58 +0800
+From: Shayne Chen <shayne.chen@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>
+CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
+	<evelyn.tsai@mediatek.com>, linux-mediatek
+	<linux-mediatek@lists.infradead.org>, Ben Greear <greearb@candelatech.com>,
+	Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH mt76] Revert "wifi: mt76: mt7996: fill txd by host driver"
+Date: Fri, 28 Mar 2025 10:28:47 +0800
+Message-ID: <20250328022847.1612082-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,50 +76,55 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: mmail-p-exch02.mt.ru (81.200.124.62) To
- mmail-p-exch01.mt.ru (81.200.124.61)
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dmarc=none header.from=mt-integration.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
-X-KSMG-AntiSpam-Envelope-From: i.abramov@mt-integration.ru
-X-KSMG-AntiSpam-Info: LuaCore: 51 0.3.51 68896fb0083a027476849bf400a331a2d5d94398, {rep_avail}, {Tracking_from_domain_doesnt_match_to}, 81.200.124.61:7.1.2;ksmg01.maxima.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;mt-integration.ru:7.1.1;127.0.0.199:7.1.2, FromAlignment: s, ApMailHostAddress: 81.200.124.61
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 192175 [Mar 27 2025]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.11
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/03/27 22:37:00 #27871126
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 7
+X-MTK: N
 
-It's pointless to call WARN_ON() in case of an allocation failure in
-device_rename(), since it only leads to useless splats caused by deliberate
-fault injections, so avoid it.
+This reverts commit 3b522cadedfe6e9e0e8193d7d4ab5aa8d0c73209.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+The MTK connac3 has introduced new hardware, SDO (Software Defined
+Offload), to offload the process of filling the TX descriptor. Initially,
+there were some issues, but after several fixes, it should now be stable,
+allowing us to revert this commit.
 
-Fixes: 04600794958f ("cfg80211: support sysfs namespaces")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Additionally, activating SDO is essential for the proper functioning of
+features like TX checksum offload.
+
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- net/wireless/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 828e29872633..7c0ca2fd3b45 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -201,7 +201,7 @@ int cfg80211_switch_netns(struct cfg80211_registered_device *rdev,
- 	wiphy_net_set(&rdev->wiphy, net);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index a52b4e71b267..baa4aea109bc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1017,8 +1017,11 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 		return id;
  
- 	err = device_rename(&rdev->wiphy.dev, dev_name(&rdev->wiphy.dev));
--	WARN_ON(err);
-+	WARN_ON(err && err != -ENOMEM);
+ 	pid = mt76_tx_status_skb_add(mdev, wcid, tx_info->skb);
+-	mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, key,
+-			      pid, qid, 0);
++	memset(txwi_ptr, 0, MT_TXD_SIZE);
++	/* Transmit non qos data by 802.11 header and need to fill txd by host*/
++	if (!is_8023 || pid >= MT_PACKET_ID_FIRST)
++		mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, key,
++				      pid, qid, 0);
  
- 	nl80211_notify_wiphy(rdev, NL80211_CMD_NEW_WIPHY);
+ 	txp = (struct mt76_connac_txp_common *)(txwi + MT_TXD_SIZE);
+ 	for (i = 0; i < nbuf; i++) {
+@@ -1035,8 +1038,10 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	}
+ 	txp->fw.nbuf = nbuf;
  
+-	txp->fw.flags =
+-		cpu_to_le16(MT_CT_INFO_FROM_HOST | MT_CT_INFO_APPLY_TXD);
++	txp->fw.flags = cpu_to_le16(MT_CT_INFO_FROM_HOST);
++
++	if (!is_8023 || pid >= MT_PACKET_ID_FIRST)
++		txp->fw.flags |= cpu_to_le16(MT_CT_INFO_APPLY_TXD);
+ 
+ 	if (!key)
+ 		txp->fw.flags |= cpu_to_le16(MT_CT_INFO_NONE_CIPHER_FRAME);
 -- 
-2.39.5
+2.39.2
 
 
