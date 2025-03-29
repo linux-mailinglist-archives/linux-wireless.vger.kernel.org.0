@@ -1,108 +1,143 @@
-Return-Path: <linux-wireless+bounces-20941-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20942-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6F38A7510A
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Mar 2025 20:52:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39A9CA75432
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Mar 2025 05:49:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F0061738FF
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Mar 2025 19:52:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8C9E168AF3
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Mar 2025 04:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A901E1E13;
-	Fri, 28 Mar 2025 19:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D353595B;
+	Sat, 29 Mar 2025 04:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="DsWrrv4p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c8SlPQk7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ixit.cz (ip-89-177-23-149.bb.vodafone.cz [89.177.23.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B88E322B;
-	Fri, 28 Mar 2025 19:52:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.177.23.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA343208;
+	Sat, 29 Mar 2025 04:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743191554; cv=none; b=gYnwLt0+02ck4fuz17ADbcvxonxE+X3ot3mkuUiSfBha1YQEmO3KKDsY9OFKrwyF7Sla22SnL+2tJo7r4LU1Zojlj5nEZcmh+jmZchViLzPorwh1KBspomccwjeAWqu3ZWaid+Lkb8fco/D2zFsrewtGh9gvBEWimomODKbvEZI=
+	t=1743223751; cv=none; b=S+PFtWt9oNfBoCma+eOldrlQYgcfGgm9exQNBZn9eQ+6FJEWhAC57UIPYJAdKfVa9Cy3hgevrjPLZDzOIo4Le1QndHkUNhlpC1wNV+EKUGOp5Q5emR/6dC39ToOErxzyKBafUULJS6d4zfQL7qasHriTO1tO/h0TVOOUF99oMwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743191554; c=relaxed/simple;
-	bh=YaO70SFlWiugUmK0UvlOIGdArpJwA4i3j0CMMhbaJtg=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=FfEbr4oM9gpShlR+xtvO5WCfamDlXLDiMPF9CtcUANxMn+6zwVv3JOCWOdL/rZOpG1T0OtC6nezvbDfx6LlY3sV7bs4/Wl7ZH3IFNGnIJHCyOqswBY4w5477kzVUBoP+jlX20f8ljcOdlo+rwjl710uAaQWx6tjJMvaA0D/5lh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=DsWrrv4p; arc=none smtp.client-ip=89.177.23.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
-Received: from [127.0.0.1] (78-80-113-104.customers.tmcz.cz [78.80.113.104])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id C7768166734;
-	Fri, 28 Mar 2025 20:52:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1743191541;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YaO70SFlWiugUmK0UvlOIGdArpJwA4i3j0CMMhbaJtg=;
-	b=DsWrrv4pATyhBjy330V52YVR7/U6IEbdIN0bLmMqS7u0ypYW1s9HicPipP+Ea+DVpEzYEo
-	J4KpYiRjNreuP0JfptcLoB5gKSZWxU1UlErJQiedYNLxo97rB6/s3m9O76C0MBhROW00Q+
-	vR9LNUtjnlr3vUIDJsJfqMoYoxOISS4=
-Date: Fri, 28 Mar 2025 19:52:18 +0000
-From: David Heidelberg <david@ixit.cz>
-To: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Mailing List <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Lorenzo Bianconi <lorenzo@kernel.org>, van Spriel <arend@broadcom.com>,
- =?ISO-8859-1?Q?J=E9r=F4me_Pouiller?= <jerome.pouiller@silabs.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Andy Gross <agross@kernel.org>,
- Mailing List <devicetree-spec@vger.kernel.org>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- Janne Grunau <j@jannau.net>
-Subject: Re: [PATCH v5 0/5] dt-bindings: net: Add network-class.yaml schema
-In-Reply-To: <69bd300d79f7f6317a964030930252b307b85007.camel@sipsolutions.net>
-References: <20250324-dt-bindings-network-class-v5-0-f5c3fe00e8f0@ixit.cz> <3452b67752228665fa275030a7d8100b73063392.camel@sipsolutions.net> <CAL_JsqLv9THitHzj8nj7ppCp-aKn010-Oz=s+AUNKOCoDmBnbQ@mail.gmail.com> <bfb7433131cb9aeebc75666f86a67a6c71521229.camel@sipsolutions.net> <4B465FA3-E6B5-4EB1-A712-0C8874402FCE@ixit.cz> <69bd300d79f7f6317a964030930252b307b85007.camel@sipsolutions.net>
-Message-ID: <42F3BE66-15C3-4C95-8133-2EA19E54B32F@ixit.cz>
+	s=arc-20240116; t=1743223751; c=relaxed/simple;
+	bh=iXWg0/ExmdnFMsUmylEF7NRrPZlUdQuXUAuLue7nLSk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=psC76NODMCPr9C7nBTx1jTxefFA7H5DDQr5S5nQJgwwZ+ZCuFHX/pc8OPo5Q6+npbZSBYKA8XsBNbpC8tSPIBz+AMaShDCU3t9lsh9RvpYznV8GtFvxIsNsUrmg0FEvzqIzL3jCUuNmYRgU8gwns8BpGtj4f15Zf9Cc11m07/0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c8SlPQk7; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22928d629faso22387335ad.3;
+        Fri, 28 Mar 2025 21:49:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743223749; x=1743828549; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yeHokOBOLl5u009R5p56utczZ+uysy/ZnJJXJvXto7U=;
+        b=c8SlPQk77SZjlvglFdUujIBgh72/rWtidu34Da5sYM2IKq/BC67WNunKYpEFDUskEV
+         5NTqWOc7Ad1KLziihDGJpMqwDAhNfp90+cVLgIs7rKKKUkxCi448TxIlkuQB8gQgQPAe
+         ik0Bx/SqiK/DkYYQQaquEnO0OV43yLPryObqC6/GVv2TClvlFC+YvIW+lhjiynbUjj/X
+         iOJunw1iT6FslXcb8CkTcjS0FSg3UDOW3v7sQ1eIh/vj+x/aIQGNUiHff80m3AKcMqWx
+         4CfRJ5f0oQ+xmyMyRGYZvsfzXIpyzAx3RJyuwarZHXvp7/AEdonCjli/TZRhWrqWSD3y
+         E18g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743223749; x=1743828549;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yeHokOBOLl5u009R5p56utczZ+uysy/ZnJJXJvXto7U=;
+        b=i3oou2ZYFnujNpKMBrCb985Q5yuYCKUweppCxcIgTSGRdoPbiLUbrNCmoYWWg8WyOH
+         U1ynQVpZfv8JOdiLCCiZncZLB9z7MWJNBPy2EVaPHeupIKcMmmX4VjtFy0G5/SdlLQq9
+         PHDHYwS2G650KAVHg/dcvMP5UiPgEagB7FDF/vEURAJ4TMrR1SuT6XA0dvMccLDNmoPw
+         owTHemQuHFGwTB2c+c1zDWxipinIpNvKYVFm1M4MIOVBZgVbp2KlI6WI9+jdzEDKAvFa
+         bKgFN7P0YLiXQoaJ4tYh3G+xpsgNDcUKlqAWYpWXX2wuqw5iYKqGVRD+AwFrf/boGTI4
+         eZ2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVgOImOyTI+nVEzNB3At2OzH3lhPq1z3kQXGKb0hGekfctfagAF9w4y40C+SmRCU6lrS3wX3ZqWAmjU59A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWx2/fVZqsdG6CI70xs2mQliiMBJ59yXSROuc4WgLbkZM7Z/Sa
+	VHsQ71yxD/0Tm1dvkyMEsdY8/Y1KmHWbEEmEGpCzC/0BKRz7RNPhs+Wtiw==
+X-Gm-Gg: ASbGncsqsms5o+2bI7UNzJt1cN2T8OYpG2b9SLabQ6StKhIWx18muCTe2wjklzvTse7
+	EYwDY7zKHWS7n7TCfHuIYuuTBdnQzYclYKiB6BetyP6obWbSMewhjqyXcN0tDJTqMBQDTGDlNY4
+	0sE+kr49pbD1Eg/1g2hcsNCCmOWfozqPtbVd7RSWYW27/QiiXP6Wv4U9/Oj78jUOMRxR7dUGdil
+	vOMgPBUHZekG9i82HZMqHps/2t+ttNVZABuCdE4GdMndJ4SO85Gx60CH87ZkwOuxnSr7sIchVG7
+	mfQyDaSXhQUYU4dffpzpMt6Odn0sgXxxoOMed7d3GX+b
+X-Google-Smtp-Source: AGHT+IGrx6s54eq7C6Y3iirZauCCuUd98k4cbbbWcDiOtj9K2B2V+Jw5VVbEjkf6Ev8gA9MEvEmXvA==
+X-Received: by 2002:a05:6a00:439a:b0:739:4723:c4d7 with SMTP id d2e1a72fcca58-73980452946mr2402281b3a.22.1743223748554;
+        Fri, 28 Mar 2025 21:49:08 -0700 (PDT)
+Received: from [192.168.1.26] ([181.91.133.137])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7397109d361sm2780870b3a.138.2025.03.28.21.49.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Mar 2025 21:49:08 -0700 (PDT)
+From: Kurt Borja <kuurtb@gmail.com>
+Date: Sat, 29 Mar 2025 01:48:49 -0300
+Subject: [PATCH] wifi: iwlwifi: Fix iwl_pci_probe() regression
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250329-wifi-fix-v1-1-d6360e78f091@gmail.com>
+X-B4-Tracking: v=1; b=H4sIALB752cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDYyNL3fLMtEzdtMwKXYtEE0tjw2QDMzMjMyWg8oKiVKAw2Kjo2NpaACX
+ qTMRaAAAA
+X-Change-ID: 20250329-wifi-fix-8a4931c06626
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+ Johannes Berg <johannes.berg@intel.com>, 
+ Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Kurt Borja <kuurtb@gmail.com>
+X-Mailer: b4 0.14.2
 
-Hi Johannes,
+Fix the following probing error:
 
-from the functionality standpoint this bindings do not change anything=2E
+iwlwifi: No config found for PCI dev 2725/1674, rev=0x420, rfid=0x10d000
+iwlwifi 0000:3b:00.0: probe with driver iwlwifi failed with error -22
 
-From=20validation point, if the `make dtbs_check` will pass as expected, it =
-should yield only better results for integrators and developers=2E=20
+Which happens, as the comment suggests, due to an extra `!` when
+comparing the device bandwidth with the no_160 subsystem flag.
 
-Thou if you want to postpone it for 6=2E16, I'll understand=2E
+Fixes: 75a3313f52b7 ("wifi: iwlwifi: make no_160 more generic")
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+---
+Hi all,
 
-Thank you
-David
+After compiling and testing the latest commit on Linus's tree, I found
+that my wifi wasn't working. After bisecting I found:
 
-On Wed, 2025-03-26 at 23:08 +0000, David Heidelberg wrote:
-> > I can do that, but I suppose it's 6=2E16 material at this point=2E
->=20
-> Hi Johannes=2E=20
->=20
-> I assume you meant 6=2E15?=20
+first bad commit: [75a3313f52b7e08e7e73746f69a68c2b7c28bb2b] wifi: iwlwifi: make no_160 more generic
 
-No=2E 6=2E15 merge window just opened=2E
+And the culprit was an extra `!` when getting the device info.
 
-> This patchset should mainly clarify where these properties can be used a=
-nd address incorrect warnings regarding device-tree verification=2E=20
+This patch is based on the latest commit of Linus's tree.
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'm not really convinced that makes it a bugfix for the rc series
-though?
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 93446c37400814e2c27ddd2fe93136862fcf4eee..555323341e7d6d7b94e29b4b4530b056bf6433ec 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1449,7 +1449,7 @@ iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
+ 		 * !bw_limit to have a match.
+ 		 */
+ 		if (dev_info->bw_limit != IWL_CFG_BW_ANY &&
+-		    (dev_info->bw_limit == IWL_CFG_BW_NO_LIM) == !!bw_limit)
++		    (dev_info->bw_limit == IWL_CFG_BW_NO_LIM) == !bw_limit)
+ 			continue;
+ 
+ 		if (dev_info->cores != (u8)IWL_CFG_ANY &&
 
-johannes
+---
+base-commit: 7d06015d936c861160803e020f68f413b5c3cd9d
+change-id: 20250329-wifi-fix-8a4931c06626
+
+Best regards,
+-- 
+ ~ Kurt
+
 
