@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-20969-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20970-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54BFDA759B2
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Mar 2025 13:05:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A281A759D3
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Mar 2025 13:33:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDF61168519
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Mar 2025 11:05:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCF063AA32A
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Mar 2025 11:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED00175D50;
-	Sun, 30 Mar 2025 11:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF2B1624C0;
+	Sun, 30 Mar 2025 11:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="i+au7s5f"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="IoAYtVH5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8AB155A25;
-	Sun, 30 Mar 2025 11:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B25113A3ED;
+	Sun, 30 Mar 2025 11:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743332702; cv=none; b=IJSJ7sJfTyND7Dbo0isS+wYukyfFM6d06btbrseE9WhVuxXA8R5A5vMQCFN0uwGwOiEMipHht1SMHkNQJjxZaJkR0zsWLfPRy/pnepmb+PcBaOv7R3ToXMtDRPvqCl9C6MK72xJ65Ly6hkjyT19NtJov29WYHfASqBZ5yE+vIyQ=
+	t=1743334423; cv=none; b=FQuqmiAdmL9muhbQC2BpIuzVwDwLruBMUjtPTn5Bb3RsqNXy9h1wJkyhqGF4ZZVHbW+Ig+15bu3kjRdlGZKrEud8mkZiVYcXTOF+Wic1p00Qr0Lfa0mkd1ksvqSv5xfRL3RBo4ZVMKfpDU+PwC5I9vwrvK/M5C3ZCyig0RcVvec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743332702; c=relaxed/simple;
-	bh=pfNNxAdTq6eb1LHw7nhPWiLqqGrsqhtTtoSGYECEcEg=;
+	s=arc-20240116; t=1743334423; c=relaxed/simple;
+	bh=W4lWQYV1Nx1jpqIrn93+1vEwXgKDUXh7Sltms/g+zf0=;
 	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=D0ywTIlc0v2+4J3CYkxH4jXHBksYbimuFVHAVImEhdmF+wMorJJaYcFcP7HfStbIEmxOrFUFQJQMxx3TtA39lxzPopybWT1nctECp7rx6lY285JpU+D0iOzJZWnK7La/mlRvIMm9ZF04Sjl2pzl1Y/PaIPPQ1z1I9C7a7F2VMgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=i+au7s5f; arc=none smtp.client-ip=212.227.17.11
+	 In-Reply-To:Content-Type; b=m7KW0WBiCn/mlpORAMauu7VLGuMwWTTbDZLrAI0a9bQurvRAFkqhtgK5V73C7FTorLRW3y7h1p7bfoXh/QZ9fqjTJKR62V77INVBgeBiCULG/9GYP6Bs7k5PsEYNxwCLEqXMG2HQTXMR19NYXrC9IocNud9W6wM4Zc7drI56DbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=IoAYtVH5; arc=none smtp.client-ip=212.227.17.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1743332660; x=1743937460; i=markus.elfring@web.de;
-	bh=7XNR047n0tXM8NmFwSJtrXlOT11ohyoE+m+0m0SvfAQ=;
+	s=s29768273; t=1743334397; x=1743939197; i=markus.elfring@web.de;
+	bh=WjfpMDebyAxl+8+7FiZ92vWYLwsOPaQRFwBcgNho/1Y=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
 	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
 	 cc:content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=i+au7s5fEodaGPXUL0fhpGDPzMV4f56PQ5wU3WXtw/p+vagplHY9Em3B8szdU5ka
-	 BiDaVCj3c9/ywSK9/KoSgCipbL8hwFj8+Pu3vaugwCZJ5q9UmrzoPHo+ZbjzBddrz
-	 I2apm6XMSJINtioCwVwpQP+LKbEHiENGABZek3BXnS4lgGF68JbRFzAbqDK+Vt7wt
-	 cOX1lc/qyNk1OT+2l3bWaUES1692Kp4sp/ozQLEv/b34Z+TFrBTh3UOyuvyHe6mJc
-	 IfK5KKD1sRRliqFL6F3yFCjzsavWcMf4sck9ktWtxCkX5kNuVVgJWeQzsBriEu4pt
-	 CGVVxt4AQBU7A6/A5Q==
+	b=IoAYtVH5LaM1mLKcGnetcnOfovTlMDDrvFlZgMu5tGrVDDulsyU8CYYrc8i4MoyG
+	 /07H/yXtayftnXQrZJ+lQ8jwXfeL6yCCpRrTZdPKGiAJP6kvs0SC5VIuDtVfV+txS
+	 SPskuFfnbGr8/47CEEYSi/A1T/loY5r1QbxVoySMyg5ZGO5Idu24bGZhe7WNnfuDV
+	 Kf8rQrICsMdSzovgjUU9mhf9nMH7b7PoWB8aN5xbVlQXOzl9mHvYRk2UqnNq8+Dyk
+	 f9w3tQdOBav5ciKHjIPiWZG7tN+k/QlsgHNQSgI5fY258yJx8GQj2j1aACm0S2EmN
+	 oqHVLLIqw+Ea0QI0Cw==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.93.13]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MtPrY-1t7iDC0hwM-0163PR; Sun, 30
- Mar 2025 13:04:20 +0200
-Message-ID: <aaa4ce64-db4a-49b7-8725-4514c0a52e0b@web.de>
-Date: Sun, 30 Mar 2025 13:04:17 +0200
+Received: from [192.168.178.29] ([94.31.93.13]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N7QQB-1t2Soq1WZB-017Vkk; Sun, 30
+ Mar 2025 13:33:17 +0200
+Message-ID: <a7e5afa0-6f80-4685-b901-86112fca61c5@web.de>
+Date: Sun, 30 Mar 2025 13:33:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,58 +57,61 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Abdun Nihaal <abdun.nihaal@gmail.com>, linux-wireless@vger.kernel.org
-Cc: LKML <linux-kernel@vger.kernel.org>, Kalle Valo <kalle.valo@nokia.com>,
- Kalle Valo <kvalo@kernel.org>, "John W. Linville" <linville@tuxdriver.com>,
- Luciano Coelho <luciano.coelho@nokia.com>,
- Luciano Coelho <luciano.coelho@intel.com>,
- Vidhya Govindan <vidhya.govindan@nokia.com>,
- Vidhya Govindan <vidhya.govindan@vvdntech.in>
-References: <20250330093556.22417-1-abdun.nihaal@gmail.com>
-Subject: Re: [PATCH] Fix memory leak in wl1251_tx_work
+To: Abdun Nihaal <abdun.nihaal@gmail.com>,
+ brcm80211-dev-list.pdl@broadcom.com, brcm80211@lists.linux.dev,
+ linux-wireless@vger.kernel.org,
+ Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, Jacobe Zang
+ <jacobe.zang@wesion.com>, Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+ Kalle Valo <kvalo@kernel.org>, =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>,
+ Sai Krishna <saikrishnag@marvell.com>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+References: <20250330093505.22370-1-abdun.nihaal@gmail.com>
+Subject: Re: [PATCH] Fix memory leak in brcmf_get_module_param
 Content-Language: en-GB
 From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250330093556.22417-1-abdun.nihaal@gmail.com>
+In-Reply-To: <20250330093505.22370-1-abdun.nihaal@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:7aUbUz4Z3/RYjliKc8o9zNcxEEvOW9Bvrm25RrlUTmRWjgzs7cy
- 9Ye2b7t1K83gbNEgxQjzRTcMmNoaEI5nerVlRSrnsaEnrAdr24S0w5sUlwFjIKPQcZzOeBa
- ugJoS/96YfCnMT/yfTh6D8pl9HY5j92ApY1RKTvTl9DU6GTlhzg7dXV+5FQ6v8M0DcSuJzP
- bpJzFZQYwzqyOX0ZCcQ2Q==
+X-Provags-ID: V03:K1:A9YI4cvStLbW9DNbPUKkPtiLzIWEX+zwdwhlQfW369PgyboEdHI
+ fJYQZvDM1qLTUTc4hY2ypynCM91wkoodWkpOfHs/u2oVQxVesU1Xzb7hPVvYRqsOuV38WmG
+ EwRg3J2A8VOBveG/dDYkEM5vpXuBGwDmAFspc805DIrFB/blAnjhScVLPNNjz2SgZcUifhc
+ wFVzyhG++PWWKqevs6wGw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:OqojHTPAX3Q=;oJDEECPFHEGzg0csiHSvDiVMMtW
- 7X656/GoucVcmkCQxDSCYokEMr8BE1gsX/t925iSNIQiZRXJbKQLWnSEsE0twsXVVnWHHvppg
- ca2eeA/78cvMpwRl7MM1d/KFe3e+R8Bk8tqT1mTU0nzXeBK0kScbkb+jM557/Jth8AL0n1KXq
- LREDR5mUKpHAqILlfYH8B56heUKDk1tPeMa2ORdE9UdHKMSQvj7DLGe97h0FfrWGMwkRGbBme
- 2rr5FPrdNReJ80fRok9guzYIwAoAaQqFjUmVU5udauVMr38LNzGbLAWCSBAzwDtVvVQ0LtURz
- QF57P8douMLkMp9ZW0xMVHPGPwQeJ9T3clGbEz9sRvIMogrkkJFV+T3mynjJ0c4URBkp6ifpj
- c5jRW8+552TwEuzlRtOam0adc4mCFbniKfUhIeJmxs5T4ElVZZplbvSa9kzrg6m+HtqLOGqz9
- BWbyLZjXzasTttdnFfdb6FlgXVvrpfYQK18bX3Mpfe56puOov2cmvyWSY54UHvWoD+Q44Ax/N
- 5yP2dHPr29ReAfOKdnb0i3CjXSGq+/LV1qlYnybjJQaMqdp7sN+GZufeXRBG+ACBCO2lTer2q
- wj4gZBVIpmpdK0krjZDT0djnRpJoNEYBghE/rlk/qQUO8n9RoIEzMHpBxGdgrWuEtSxgrDlPq
- 9IIEH69UL73eQMJqnNsdFdpFIRVsXxEdwR8v0RT7gLhCOd7L+FLvxMEBaQWGlSesbm6Cg4hnN
- HCiNwVZ2B8Hu8ZGJgv9TZvr7gQYfi4NmYz43i10FqabzUTstdyeta8FMi0oWtOmYbipSVIe3q
- M0GBHZg7rlc6hlDkzek5YCy5pbS6wCcYblHKTFYfH6FNujL8iBF6NOIjIW2PgMglH3C2W9CZV
- JKb41d8XrWVKuTLMQqGrzD1FiRKa0DfZzitaBlfHsPZu2fnZ57SLl6iE3MrOn6E83ARkU50r2
- vu1f9UHwfJnSvfmiS21dxe5BdHcrneY/m99ADizeFLa1r096hZYCMsLoOYi70tLIcXqF349nj
- E4WjeeTG7OAt0ddjg1jWZckSWKq3nMd2uq2jfgGcGAZXlFi9rF4hgzYXY+0koofwoGFS4cxyo
- 3B7mquRqYx35p2m0AZ8A8TxwQ9kSPYSPwh2mDpD+blWhd4EyJ8VQq3jDusuk9itU16xNv7ud8
- smKXVBfEhHxqgoGsUcISGgAo65FG2wJJ/N3oqaT2Oh1WC+G1tpOc2KCojKbFQYmoZg7anyUMs
- miqfjVT4Dyk76yuRBKkHWqoKQt5IJoqAWmdwUVELb/7yStzpg2UVKThqF7ssfSIYeVOpa3/NC
- WmuXIzTClRCSfaGtTOqyCIhogDsYZed+VWFpI7sPvvVd5NGDIjUQ7LKWMQC28li+yqhGnwSL2
- nDKbCriJOjiwK+4z3gefJq6gTI1ZgfyLZ+pX7Q08RLRPBdGn9jGlxzlPzBZc1Joiabam6Owxx
- 9z3KmjJCOTkbOhqrRlj2dM6dS4VePXQ+G9NuuQiJtQNLjjKH0
+UI-OutboundReport: notjunk:1;M01:P0:IJ1jQ9MhSAU=;GFpVcOh+Iehhjx7G0SCZnXXgfPq
+ KvZ2WA8dlL9/z1yQdAN/vvjV7oj5iPA/NusJ1k9aUq6y8LED3hMDh2RWLv+0WfaVj7bgBwIeI
+ fBIs9JcvMxwMU5kW9OJjkDvAeoqCF/Cu4+l97x77Pb9H3F/awz48MVr1utQxEAN/pXn4zbNzV
+ DmYjwRwiR/cdKgieTOTaFZxYkmjWWuHzcC87mWKRy54NYbfoPL3rdulaPfYQa6FcP7VB5rnRJ
+ cH0BdvWL2zfOFO4pkizp3NNqZ013WiMh1RcqeFXGTALJidEl/ccHEeHXOEs+qCZ/LYyJn0g2Z
+ b7y0a5+tZ+6cipeoWC09JZm83JJUESLpOceM7RxQiWzFsmJf0aOcPP+Solvm89aGGyp0QOO7R
+ PdKLebrTPG2mTT1PLm30EJi7mJMmFXZ2wa+PgU/ZPV1J3dcduBpAuFX9GqQwXn+mRbkusGQ5T
+ NiRhXpgUugqQv/V0SmFVby1tPXFkUaW6h/aIjRvqtuUMb5uQkL7HGx+Ky4XhTbDc4TbdRKo7/
+ x9ssbQ9Ygt9jgHOq5B8Jns2ehkGTn/Awb9/Ee0xKytdR7eunmdjrNLBLJoMAu0ePKizFxgi5F
+ 4s8Fu6G3ucsHBTRmFMh22hYXAlyB7Xfwy43ligBcJEu0mCcsTnxnGm9jhM7s3q03gVNhRIBVb
+ zxA7F+Jkw5wC5iQGFDQ5gskFasLyUbQj1ffs0L+U7Ubervrf0C5UKz9cmCR82JgkYhtmQR2et
+ 5Mv/qndoxJAyZcv/kyA+RHnsiOSXWDIPNcap4pdUHqTKpVoDJDbkyRxGv9uwVwSuJ2rUI8e9Q
+ VwiwUpdp7Ed3VPYBgCIUz1NAt++2IVUsze8OUTP/ueSDscT6JZcyZBp6JYs1jnlvMm1S+7HAt
+ L3ECNzyfePx3uOUN6fKsT6Ikss00bVsNgQQNUEH4oBgaFJxYteBl7YisjPKSw9DWPoaIobQ7c
+ yGZKAunwDiMjT1Xi98DTJOL6jSbSk607Aoxb95Iwvu7r2P2L5T5Xoy0HJLFjJxRk3ta+ViG3a
+ RhSu8Xhg6Oa81MoS26WKmvAP6DuC5Q27yXubXg73BD2yPT0MagUWBVRhwK5YpCvY38CDsnHO/
+ ZL0KpOmpKTenrHmgaA+hJacrgQeGiBEbjfXaKYomeZhN2UIVgJ2QXsRjHSHDDkTFMpH3pPE2g
+ 6JtBx3ohSgL0wJqrw+YxW6jOjxhBiasObw/nGcCfAmA3PadJODmkHheNd68cEtCtEobQzPJjP
+ LBeXHfv6fP1HXLBoZiFkqau6mGJifu2idjiByj+3oxaLrwfX53tpTuYLey1TlxJl6vhBIc7Wy
+ fb8f84RVORZiqL5/UxbtoMQlVl4rLwUe1E0EOi9qz31IJilLtvt5n2H+0Uv4CXPGqZ5oSt+lf
+ pxgNItJhSD6YCPQfokN7h1SDz1yVlkUONAJLmV9ITjMKYvZ0gUvxXDfXbH/GSYQ2vPJUJPmrM
+ 4XgKujSUCzR7ykwPBPxVZhoj5daHwPnDDYfa3r2kfrWm5pTwx
 
-> The skb dequeued from tx_queue is lost when wl1251_ps_elp_wakeup fails
-> with a -ETIMEDOUT error. Fix that by queueing the skb back to tx_queue.
+> The memory allocated for settings is not freed when brcmf_of_probe
+> fails. Fix that by freeing settings before returning in error path.
 
-* Please reconsider the distribution of email addresses over recipient lists
-  once more.
-
-* A corresponding subsystem specification can usually be helpful here.
-  https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/net/wireless/ti/wl1251/tx.c?h=next-20250328
+  failed?
 
 * Would you like to append parentheses to any function names?
+
+* See also:
+  https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.14#n631
 
 
 Regards,
