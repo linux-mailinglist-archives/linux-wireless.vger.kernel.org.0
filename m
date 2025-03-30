@@ -1,93 +1,86 @@
-Return-Path: <linux-wireless+bounces-20962-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20963-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9B5A75924
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Mar 2025 11:35:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B57A75926
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Mar 2025 11:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13449188855C
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Mar 2025 09:35:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E164E165DE6
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Mar 2025 09:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1493516F858;
-	Sun, 30 Mar 2025 09:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22EE15820C;
+	Sun, 30 Mar 2025 09:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l4Zvk3xP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DD2dthyQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E44184F;
-	Sun, 30 Mar 2025 09:35:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C289184F;
+	Sun, 30 Mar 2025 09:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743327343; cv=none; b=ic39ZP/4WI0vaTqurX0DflAs5uZuspJ9wMRMgvBL7/bRixInN/oQsShuxCp/X+G1mGZjrhHgRnWVbMdASLvxOjdzVFx8fNkI/XbfsyFgFrW0S+ujYkUIF+CAgtlmfVlqRxzVBFhtBGxY1XCOPNG8Z27AgtpGC5Hko+8bA8WREKA=
+	t=1743327409; cv=none; b=FvyVQscv0vC2QZXo0xQVNBchOTFa9g/Bw0MUTjAJDTvLkIQcoA7IOXVEy/i5GTPuDp3LyHb4Nu4NRRSpkn46RLRUyNo7xudRahzOzgFS8YD8SVSrYMsCTdQ+15cdI5BNfj+ZnIX+tLmg9cW2FlZqidgDhz0q2oie/nAJQ1/nm2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743327343; c=relaxed/simple;
-	bh=vn4RWc04KCOkhQV8qOk2vm3dDMRh2QxXa9aIxVcgOm8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QGGOYWKsrPX7wDIRp0V7Hxu9CtNOHtBMRoRGGzJtYUWPFBtpVkFsWBHUF4sfVTUfacHfI4Jr+467Sd2qeNJuAmtRokIMPeuNn2SuUVkE/Py5qqxanvs6v/sbQCN2i8ky842zkbFX3JYkcFvWmCfY7uf9K0LxFIhPWh7cL60OJHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l4Zvk3xP; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1743327409; c=relaxed/simple;
+	bh=Z6N2sgFqDrc+LKPGTaLIbSzwuHDOUkrxXi0adkQkUsY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NWTuYjr4RaBs2emUpsgmAk3rIUfC2y+KOkhO58Ng3C8ItPmxziOWap+1hz2KtIkm3DHNN510D7fo0yAvQGVr4CvZIcIjSDpiW/MHlLWT/dVWV86U4dX6QWLRc5M4WTWaV3TR9XSiuU+CzwFfovWrnHc7op+erqzEyAwnqkwg6RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DD2dthyQ; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-224341bbc1dso63694535ad.3;
-        Sun, 30 Mar 2025 02:35:41 -0700 (PDT)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22423adf751so66245555ad.2;
+        Sun, 30 Mar 2025 02:36:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743327341; x=1743932141; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743327408; x=1743932208; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=damfXkqqkFLAicUXgLIJ1TCRf/zr9UzA9ia0GSR3ds0=;
-        b=l4Zvk3xPjhkjb0Wdo8myRhie3HEP44y/CD5uxfHP1rW8EzIpXM7pkAkKgJrhozK4Pz
-         sWiMKPGeRKq9RXF5KF26FswXZWIL1lLo/2g0VxoQJZmHsYLJdUprb7uYLevyal8rtGCr
-         B491AfZkcC27kv2fJ1wytu1nm7M3m4JuybqU8ehs+AvjkBhcUWz2NXR0k/n4csvXLuMK
-         e/ON8eyCXhr6A63xhGCeruTuBYmIsn1FGxosYzgbR/NvV2yBJjtx0flcA2gRphId3oY7
-         +9BIYAG5kUUTxlELvnUOf0au9l9/gGo8Put/JJ9kAY49NvDQoeyiCk20HoSS7gQ/KzXL
-         Njng==
+        bh=bYgs5EwCW20iv2ZHkUXjzYyA5IFX+7v48mlboekMnkI=;
+        b=DD2dthyQ/tGMKIjB7ykva+YaqW+uQLf34WP3XXAi4/wJbiND1ZSQu3VcWFVKk8ntal
+         9beFVdXyZn9lJT3UoIy+9qNaCutki0xBPXzSzgpnMNdRepyluZ+4NtGS/XEOjcGwR0gp
+         Q4jrGuRs+yKOgKvCTPb4K+/qgSEq9p8k1HxRNG7T1IB4ljmcxMQPwr+XTHe6FQTBaDh+
+         4ZJBIFUh4XvV41T8pG8bdzLVIkfZgFuxBZsHrVvoMvw+453qVWT6J3WPFtG4bjAYK/HB
+         391j1r9LOTciGGzbicu50oHKECiuKU9qi6g6Xc3i5LOujht+WJC4FjNis96yIV/wMqgt
+         7E7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743327341; x=1743932141;
+        d=1e100.net; s=20230601; t=1743327408; x=1743932208;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=damfXkqqkFLAicUXgLIJ1TCRf/zr9UzA9ia0GSR3ds0=;
-        b=avDcxqADjY0vkorV73wg4cOafhQW6yi1hm1o+z5Yy8EFzLLNkB0G1fiuxA7y0RIIwU
-         M6mrJ+a0buqPZ0L3HMJ7n9+CN2YwFIwM5aMR8dAize8m2of7cd4IiCHlec2sw8E/R496
-         rq7XAKueN5ExBgW+RXMLyL5/Esu5NO+J50MPxz038mc/s7Xx/lUgYIuck0FPW4h3Fc1E
-         9T0pL5zQ9K6FuzjUibILpgDJb7rlxbJTHnq6gnhmxAvVVw9t/M0Y18quokCHuftQOZcS
-         /6RcXvFBjnbgncr/9w0zSltJZZ+scDLRf/AvZHjwJ8aFJU85M228oEPTaGU45/uYLV7U
-         B/7g==
-X-Forwarded-Encrypted: i=1; AJvYcCUO/w8vAe7H9uQsAOBe1U/c+GgjOalYNOL0cLCl6uKngXYwzbanVkF3W+Ne0Yjk0e5iFl6fO0kGizFfJTO/rxI=@vger.kernel.org, AJvYcCUTulJjUaa3Y515qecfdxw5TBNAkWT2iQdvWmxrzQTvu0K9vD+iLxkxkyexgDfeuGRsW6qxmW91U3+m3R4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfqnHTIExsq5+kdmjfqcQFdFhNml4aA+c1k0jChRU8KPeX6ltL
-	1vmRv0m7tRjCL+MLPhxk3/arwwrbmQtJ6PVG9Lwr1SJaJ3GVGubmYCerbs7f
-X-Gm-Gg: ASbGncuEQ9AMsa/XtdNwC+xfEkr+a3Uw0aSOA3xpwaWQdRyOVwQasCHZbNvzgpP4EVQ
-	Pl3OuQJ0zIq93IZMHnz6jq8dj0xHB+kQpeqG4rXex/yD4jGPS6cVl9q0PPWZdFmF1l2gPVVQaiU
-	vMyvTuBRrEA2DgfHzLcucZ2Ghe0a0RO055W5EOrgSyxG+DMvWS7nXOs1rNajr/spU1mqDOD7uUo
-	nRjgFo9CZvF0SOPL9+37KPchjmuXHMclDcENTc0ynh3EjlXry5qEFGKq0sTt/0qmlvjA/YS9J6G
-	HV0u0BsEHsYCUeNuloi20m/w92lF6dpSwGFiYkT0nb0D0wB/vUq/oZk116nJ
-X-Google-Smtp-Source: AGHT+IHhL9J7HVAOvCji2SXZPw9XBxF0oBbuosaUN1df+eNPc5La+nJ642KSd3mgYAb7xdCZcYJavQ==
-X-Received: by 2002:a17:902:ea02:b0:224:216e:332f with SMTP id d9443c01a7336-2292f9fc054mr83797765ad.48.1743327340880;
-        Sun, 30 Mar 2025 02:35:40 -0700 (PDT)
+        bh=bYgs5EwCW20iv2ZHkUXjzYyA5IFX+7v48mlboekMnkI=;
+        b=cEx1J/MhoZzIlAmr6Ti7iK0egi2pux8u+gMidOIeHaqP9IsX8cNMwhyfzbHR7lD96j
+         jfVPjFM7yWkC8/LyQvdnuxgElYfuG43GVIck24zftvIEuDBN7hKF2Bz+SBypo7amUh0E
+         bjamGlav9AOaV7Xlmh2PIme+pcTgseiNsdG7S4QogTc9Hc/05EiMm0i0PjAsL5ce6Ort
+         5m9COf2elPYhMt1QT2nm+/lyEjoFI3u2EbaE8ydib0IhEpnlisg9pwX7rAjrOwwjBXw9
+         57t9GgeeVoclVUNMetlzA0JjCb364ooctcREZ227Cn4qGHUptVK0eQ8tiofzinhjoQNY
+         nsEg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7+S/uL3XYTWA4CYMJbyggUznWE7+U5YZ61yRcocNzSbHB2uxHKIGBgiHfgrMRCAZd7eWVSV3DaNhPHfTYFhc=@vger.kernel.org, AJvYcCWnRNZsLBlXCt2kUoDE0HFME8lUkv8YH8FmdEGA+a7A3v/oETfTwYJUKlKqyxCsNiEZRCl9oXxMNf/DkGY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyz7Qft4XfvADrzkNwfAGXsqV969jnaRVsm5S+at2N7QXaSNTUu
+	C7iU5ENBJyDvqYu66uRtA3x7Mld9na5//ElL2hWcNQJOqsVGipk0C3B71ESd
+X-Gm-Gg: ASbGncvbsZI8LFKFEFtPZguUhSvvyft9RnIGPKcSPX9Qju7CDRw7GMwTZfAvZTe+l/n
+	Uw6Yd9qNtBJrLZk1YoM9kQI1JbvS9OQeDzU2V1MdSxDVv/5ynhPLUDSW3G0YFCuvjsXTHYIiT6v
+	zFSPtEf7bvIev03sPys9xYTKE7SuhlcydM/F9CIq8yXMLM1Z3O34QESEYknMt4xPSPmpM24rsLz
+	j25iF/hwwbJTmgDIrWz7Re6t24sCEs9utv3JfobaJ+AKta/irKN/PS0zQhIlX9b1B21LxGIP4RN
+	IK4vlSjABU2Cx/LeCbndtt4rq6rNrU1NinZD+vqfwfPvU/bZAU6SO31M69G+
+X-Google-Smtp-Source: AGHT+IHQe5JLOQsc4DfiAdpRLI4eVuDTaOIkdGpNNABtdwCKbTWlJCrWgt8Qi6Cy1jR+TdLWnCW/7w==
+X-Received: by 2002:a17:903:1c2:b0:224:de2:7fd0 with SMTP id d9443c01a7336-2292f97482bmr74392445ad.25.1743327407659;
+        Sun, 30 Mar 2025 02:36:47 -0700 (PDT)
 Received: from localhost.localdomain ([49.37.217.226])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2291f1f7376sm48560055ad.245.2025.03.30.02.35.35
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2291f1df011sm48923455ad.194.2025.03.30.02.36.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Mar 2025 02:35:40 -0700 (PDT)
+        Sun, 30 Mar 2025 02:36:47 -0700 (PDT)
 From: Abdun Nihaal <abdun.nihaal@gmail.com>
-To: arend.vanspriel@broadcom.com
-Cc: kvalo@kernel.org,
-	jeff.johnson@oss.qualcomm.com,
-	abdun.nihaal@gmail.com,
-	toke@toke.dk,
-	jacobe.zang@wesion.com,
-	u.kleine-koenig@baylibre.com,
-	megi@xff.cz,
-	sebastian.reichel@collabora.com,
-	saikrishnag@marvell.com,
+To: abdun.nihaal@gmail.com
+Cc: luciano.coelho@nokia.com,
+	vidhya.govindan@nokia.com,
+	linville@tuxdriver.com,
+	kalle.valo@nokia.com,
 	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] Fix memory leak in brcmf_get_module_param
-Date: Sun, 30 Mar 2025 15:05:05 +0530
-Message-ID: <20250330093505.22370-1-abdun.nihaal@gmail.com>
+Subject: [PATCH] Fix memory leak in wl1251_tx_work
+Date: Sun, 30 Mar 2025 15:05:56 +0530
+Message-ID: <20250330093556.22417-1-abdun.nihaal@gmail.com>
 X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -97,31 +90,31 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The memory allocated for settings is not freed when brcmf_of_probe
-fails. Fix that by freeing settings before returning in error path.
+The skb dequeued from tx_queue is lost when wl1251_ps_elp_wakeup fails
+with a -ETIMEDOUT error. Fix that by queueing the skb back to tx_queue.
 
-Fixes: 0ff0843310b7 ("wifi: brcmfmac: Add optional lpo clock enable support")
+Fixes: c5483b719363 ("wl12xx: check if elp wakeup failed")
 Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c | 4 +++-
+ drivers/net/wireless/ti/wl1251/tx.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-index cfcf01eb0daa..f26e4679e4ff 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-@@ -561,8 +561,10 @@ struct brcmf_mp_device *brcmf_get_module_param(struct device *dev,
- 	if (!found) {
- 		/* No platform data for this device, try OF and DMI data */
- 		brcmf_dmi_probe(settings, chip, chiprev);
--		if (brcmf_of_probe(dev, bus_type, settings) == -EPROBE_DEFER)
-+		if (brcmf_of_probe(dev, bus_type, settings) == -EPROBE_DEFER) {
-+			kfree(settings);
- 			return ERR_PTR(-EPROBE_DEFER);
-+		}
- 		brcmf_acpi_probe(dev, bus_type, settings);
- 	}
- 	return settings;
+diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
+index 474b603c121c..adb4840b0489 100644
+--- a/drivers/net/wireless/ti/wl1251/tx.c
++++ b/drivers/net/wireless/ti/wl1251/tx.c
+@@ -342,8 +342,10 @@ void wl1251_tx_work(struct work_struct *work)
+ 	while ((skb = skb_dequeue(&wl->tx_queue))) {
+ 		if (!woken_up) {
+ 			ret = wl1251_ps_elp_wakeup(wl);
+-			if (ret < 0)
++			if (ret < 0) {
++				skb_queue_head(&wl->tx_queue, skb);
+ 				goto out;
++			}
+ 			woken_up = true;
+ 		}
+ 
 -- 
 2.47.2
 
