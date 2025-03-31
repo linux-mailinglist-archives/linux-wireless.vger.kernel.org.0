@@ -1,89 +1,88 @@
-Return-Path: <linux-wireless+bounces-20986-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-20987-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D69A75EB6
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Mar 2025 08:05:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1F0A75EB8
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Mar 2025 08:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 847403A6629
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Mar 2025 06:05:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00D7F1888BE3
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Mar 2025 06:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6290914F121;
-	Mon, 31 Mar 2025 06:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EF124B26;
+	Mon, 31 Mar 2025 06:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="uYE1f7JT"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="BAdSnx0v"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E873320E6;
-	Mon, 31 Mar 2025 06:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B1F20E6
+	for <linux-wireless@vger.kernel.org>; Mon, 31 Mar 2025 06:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743401118; cv=none; b=ie63NNqiSn+KzrvYfu+i05F1vW+Of45lMF74/OPUOEeWNb83sOFDJdyORj8tJv2t6iuLzbUkt39TztmI49nHQeUgDdS0s4ICSZgBcrlwlvlPB3P0tjp5ypJ7NuyFBUz+lK36/bEMqstb+AmG65vMxzhIaXTox4UONwCpLTmLz/g=
+	t=1743401154; cv=none; b=O8pM2LTILBhzDBczfodQSCGDBmcPM72xTNMNy51Ciq19XfOEXtMHuEBA4FeAK0+96F7dNw7CBBuFRIyOifRhh/bk54ZOzLP2s/DkiHuV7DSxp7dHSSBxtMqoTzIQIUAfmF/k1RNxSr40/qMRSl0i3+HBbXlxBRyHbOGTbRkvOBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743401118; c=relaxed/simple;
-	bh=mu8qc/H0Ji8c0nrIbZGL3y2aD+ZAMu1WKi7yAqEZ8RU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=JzDWbBdIPW4/9/NJoZTKik4GsIlmW9BBQrmnFtwSE9TKj1ycqRmlEtsZIhRYvUwMvKylSUpRnVynqV4AUq3yAMO77ACRcJCQivnxM/D8q6Jxrvp9LeJDnY2hODhk/SI/pLgOl3TrbUDjYtdny6Sfil0MBp/fAjYP2Tmz8EnIRFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=uYE1f7JT; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52V64Oar2697776
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 31 Mar 2025 01:04:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1743401064;
-	bh=EgWUKMQVvlDBHJMOpfOyaq0FyfdEaBQLxQjy0QudGdU=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=uYE1f7JTKGXmOgrnGMCWjH4qWOIeeitcpPwQjoXXxQU9dTxz9EoyiBwQhehYbZSwf
-	 ey7DghtlyEuemQGQkhCoLyKgeS4LttkpX8I/HOWiOUM7lkxRrmRQK1h9ld7mXEVE4l
-	 CzhPBbO1H0dZYl0QjDZnHg4oR98jAivWPCruJskc=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52V64NQP065831
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 31 Mar 2025 01:04:24 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 31
- Mar 2025 01:04:23 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 31 Mar 2025 01:04:23 -0500
-Received: from [137.167.1.99] (lt5cg1094w5k.dhcp.ti.com [137.167.1.99])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52V64Mff055814;
-	Mon, 31 Mar 2025 01:04:22 -0500
-Message-ID: <3876f271-b13d-414b-800d-c9a3bae5a436@ti.com>
-Date: Mon, 31 Mar 2025 09:04:21 +0300
+	s=arc-20240116; t=1743401154; c=relaxed/simple;
+	bh=QJcDUpcshZNozkH+fjeKChzE95Xi9U2mmvTrC223tCE=;
+	h=From:To:Subject:In-Reply-To:References:MIME-Version:Content-Type:
+	 Message-ID:Date; b=NEIXBL8PhUbJRfgFgObeP12IeRvKaMBSnEJa8bQ4a8ioM56beRHNjInpNZRnIGIahQv4NiwLiuJSxcj0INYWPKGrq+SpcBO34jDns7wbtgtKtqjtx0nJQpFl/tkVke41p25ztGxioa9N9T14+j5Y6tI0a4Aq26FHtYVgdtt4WqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=BAdSnx0v; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52V65oUD22870904, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1743401150; bh=QJcDUpcshZNozkH+fjeKChzE95Xi9U2mmvTrC223tCE=;
+	h=From:To:Subject:In-Reply-To:References:MIME-Version:Content-Type:
+	 Message-ID:Date;
+	b=BAdSnx0v8v7hQb6mOnic8RKJaIukA9dbYLhVidLBUn0SBJAGolzX97khGritq/ZE6
+	 NnvZ1dNjY5QA34jrw8tT4/77ovqyIrnaB2XvgLpuzLzsJNryx3rCn8aDjuQHDxJU3L
+	 Z5d3nOjIPWu2JM+GV7ZsCiotI7t9cHPliOJOA+rA9GEHUf2HNRkD3riri52trvXynG
+	 W/Itp0Vm4/1TqR3wAj6Ui4pkIQIvWk2CZJOipN3zkY8D63jlqDqNjYl/TLEe2rocWE
+	 bPKY+mfj1L9/exqu49MRgabN1pCjk18R/ukWpzcxq+0BFfrRCvGaAGJRvHU7ABBWj5
+	 WZq3+ugF2OK5Q==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52V65oUD22870904
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Mon, 31 Mar 2025 14:05:50 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 31 Mar 2025 14:05:51 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 31 Mar
+ 2025 14:05:50 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH rtw-next] wifi: rtw89: set 2TX for 1SS rate by default
+In-Reply-To: <20250321034736.6269-1-pkshih@realtek.com>
+References: <20250321034736.6269-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: wl1251: fix memory leak in wl1251_tx_work
-To: Abdun Nihaal <abdun.nihaal@gmail.com>, <kvalo@kernel.org>
-CC: <linville@tuxdriver.com>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20250330104532.44935-1-abdun.nihaal@gmail.com>
-Content-Language: en-US
-From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <20250330104532.44935-1-abdun.nihaal@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain
+Message-ID: <73e9f894-6841-444e-9236-0125e28a8160@RTEXMBS04.realtek.com.tw>
+Date: Mon, 31 Mar 2025 14:05:50 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On 3/30/2025 1:45 PM, Abdun Nihaal wrote:
-> The skb dequeued from tx_queue is lost when wl1251_ps_elp_wakeup fails
-> with a -ETIMEDOUT error. Fix that by queueing the skb back to tx_queue.
+Ping-Ke Shih <pkshih@realtek.com> wrote:
+
+> To improve performance in range, for 1SS rate, transmit the same signal
+> on 2 antenna, which is called 2TX.
 > 
-> Fixes: c5483b719363 ("wl12xx: check if elp wakeup failed")
-> Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com
-Reviewed-by: Michael Nemanov <michael.nemanov@ti.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+
+81433a8a4f40 wifi: rtw89: set 2TX for 1SS rate by default
+
+---
+https://github.com/pkshih/rtw.git
 
 
