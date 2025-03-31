@@ -1,129 +1,110 @@
-Return-Path: <linux-wireless+bounces-20999-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21000-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EEFBA7645C
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Mar 2025 12:36:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 200FAA76473
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Mar 2025 12:43:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D723AAC9F
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Mar 2025 10:36:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 560A71885071
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Mar 2025 10:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8571D1E0DBA;
-	Mon, 31 Mar 2025 10:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A781DF72E;
+	Mon, 31 Mar 2025 10:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dS7+oUsc"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="BLJcVXfd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD051DFDB9;
-	Mon, 31 Mar 2025 10:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D731DE3A8;
+	Mon, 31 Mar 2025 10:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743417378; cv=none; b=jsRx4YO57+sNN6yojKUE9qft3qC29BlN2xu9rhcG5w9Xk7gtZqDq02eiiaYmM4BJ6Y0j+D02P5xQeNu54HbFPCDoM9ebSiycWrpr8Ys3ErtYVbsY07H10Hw0/bKzTpTqnD9YDhLPHwUDLliucGC5H7cVoVM9c/powZtMyJlV+iY=
+	t=1743417779; cv=none; b=MHr48vGSvlI4leJaBAL02/x1XnB5Ev98qgsd1ygKUZc0YjAPCkRBkZeqRnDi3K7AZmJ5bL0JlQcRj0Y1upIWDFiugPi5UahzpGS8xYNUjPuubX/aoU0shlprYz+ntRyQ4xqkq7rOfTPlOpny+S/7gBqh5NAER3JuOuJJZdhuha0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743417378; c=relaxed/simple;
-	bh=6s6J2UuXf0fd6yPdiBPRy1K1INjkNRdNLX0Bedtvnqo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MGJPPHqDd7X8D2FRuADJsYSkon5/4tGlyfWQl6Dt94+TF9cB8xlXuk1nQ/T5E3cUBswd7oQZIWzrkU8gjTdeEqNj4Sefp652vkxurzk3Qs0vQbXd9ttzoIkFeR1IK4K9ubq+7f1RyFk5zPx2e7JH0twAx7SEqsORZtPkj6ZKy5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dS7+oUsc; arc=none smtp.client-ip=209.85.214.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-224341bbc1dso73361945ad.3;
-        Mon, 31 Mar 2025 03:36:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743417376; x=1744022176; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8hC4q30f9UkZjMp/7IensIAT+0r2jKyVixXgW1Ksqww=;
-        b=dS7+oUscaajc9UUGFa8+6VDvT/QkLhAn2RH+6EjvKx9gPcXuc2/U9bsc4NwEw+xx5r
-         8FV/E6/8OnTf7m6+OD9r5lJCBKVOYNUVsWG2xXPlH97XHrjllFzNmeT7XQUFN4f+bnON
-         dr4A0mzV3+DgR4gTE5BTzKytVu1MT84ekJypRKopA5VBbiFEY2X6YpmfSzGxc2eWKfIE
-         BzGpi9ywKNqZjH9P4F4cvft3ria7TbscpwXiRcQxExc58THh72xlF3QGEmCdefU7EWdb
-         DWbuk8Sf6+M1xC83vOv8BH2YV54N+p4kLoPFRfaMuIEY58aSnAVZWt4lpUCHbMARFIJ+
-         Zgaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743417376; x=1744022176;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8hC4q30f9UkZjMp/7IensIAT+0r2jKyVixXgW1Ksqww=;
-        b=b3FDa5riiWZt/GuGe9vN95w+ZMA6Y5no9amI9QWS0kL9Sm3oXHv5ztzTLD9+1tuJHP
-         nW1M9EtG73Yh4aMFU2Y0q6Y/5j9TeOZd/+8PMhwCorm52zbxjTNQjqNjqEFigB5NmqIe
-         OXv9YPwpwMuzzBLBcyJjLyEIrkO1mZKwLq7qWqOziW3VqqUcwY9PafC1FjDIMoAhcWfb
-         5tXF2YfjPj/ZotG6V7gEoa+b8QWj1V55ug1Y1d8seUtuXRyfaYMT9YePxi8e1XBp1w7N
-         WZEc1HrIwHjm50s3U4JVTJ+wc+78G6Z6uiF3fr4NXgmgE+QSEyj8fal21C+MG4PlaAhc
-         NIdg==
-X-Forwarded-Encrypted: i=1; AJvYcCVaqMlaAfleAszyHt1S3+xoh2JRwn3tJft32yDImVRsWhgLsmwTohrxPFsnWftHznR6YX90bop1AQSvkuSjcl8=@vger.kernel.org, AJvYcCWpjOS+iGXw5J5S8ihqmdzQXH631wVUUIsVMJXmdHIvLLzoFpoZ7D3X1BwbJm9f2kvwF5EOFJtbNOOZfW0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWGHAYkxo85J2rym/61d76wskwF673kx/9KHVqjmSgMVhS3uAM
-	xBamQDgAZf5sEwm6YGGMnoIal9qHHo67qLmj6d0U1W54OsdK6Z9h
-X-Gm-Gg: ASbGncsEQ0+2caSMXBlhp6xcgeGt/UsHn+ACZDjAcl8A3pDkZtwEvqzoanbvbFSb3QW
-	VJ6256bo7VOUB88CfC+JSUOW90H4Y38pFrrE/019SdmdcLmC9u8XgzVgDLXUjsFgszyqp2MxmVu
-	PKf8m5PcQ5hXG1LPyMm999IbqKxunu01/SX6xb5qu0ER5G4YJvBNU4yfF+qcqeoeXXvombpCBlx
-	DBfoI/gRQAiUFX2HmUtIzOB8OgJ0FKINCbzfDQmI42WSJ6zvnElnjmSSpHBwFUjsiSwYFKoKutZ
-	jb2bsRSSaTMfQPziDLxDTWi3p3NJoXC1VoL5z7mg1kUYx923BiKcIYCZgodpLccCt7hytiyuX0E
-	GFoFHIw==
-X-Google-Smtp-Source: AGHT+IEI3i1AQFr0jMC8FT29Lzc8UGqmVmTq4ieOAqus6bXWPKmXMnFF1f9vgpgb+tXlgciOTA5wLg==
-X-Received: by 2002:a17:902:ce0b:b0:220:ff3f:6cc0 with SMTP id d9443c01a7336-2292f9e62d6mr157774965ad.38.1743417376277;
-        Mon, 31 Mar 2025 03:36:16 -0700 (PDT)
-Received: from henry.localdomain ([111.202.148.167])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291f1f7dd8sm66104645ad.226.2025.03.31.03.36.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Mar 2025 03:36:15 -0700 (PDT)
-From: Henry Martin <bsdhenrymartin@gmail.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com
-Cc: shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	howard-yh.hsu@mediatek.com,
-	StanleyYP.Wang@mediatek.com,
-	chui-hao.chiu@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Henry Martin <bsdhenrymartin@gmail.com>
-Subject: [PATCH] wifi: mt76: mt7996: Add NULL check in mt7996_thermal_init
-Date: Mon, 31 Mar 2025 18:35:43 +0800
-Message-Id: <20250331103543.9154-1-bsdhenrymartin@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1743417779; c=relaxed/simple;
+	bh=PP2nLbUR4K+BHOjN3x6gO7ihm2saogOHP8pqQhFxx5o=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=nVVqd1tmZE90vdXqM/f6GFEH3YzHj8+LcK+qFC8Py+z/gigUCXScU0DUd66751x9R0OBoHWZwfeGnYARTjukOlDPcfWqaeSLZSp0Avk9iAm+wBC+Pv4Kyy3mwFpAHcdUTeUgZm8l1EUo9TlJU28Y4g08PfH9X5xFGrqqfOyZua0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=BLJcVXfd; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1743417737; x=1744022537; i=markus.elfring@web.de;
+	bh=9roccz9Qx+blLyXus8t6DHy/uRVh48jXrCw8kRAg0H4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=BLJcVXfdn7F6c57YB2ZHtWJofsXQswzqhogdQmbP+S2McdbvUNMcjV61uqmjoffb
+	 IkafM+0es/ktZVqRxHvx/2M6HDYuHsd01yLfsldBUAK5i0DR+8vPtJ7d+MBQwZkSU
+	 i9wtxNez83kkOACxSLhqMrYtcXsPrO2fJgjxlZTijTKHZlnoDugIy9HCSWnp3PJGk
+	 3YtvAmkk9hUi/HKzvBUeD/3Cxpg0xEIcHp3F8hUu6XsMz0+0S2zNF+cpB0WSn4l1i
+	 KoUIO2cdFok0CbORB9jElKjItrwKdJ7muYq0vDID8fERgrVH7z3+7ldGbUeQFPFNU
+	 3TAqevX4wxcaVoVsKQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.37]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MRk4e-1tVxhr1N4U-00TWSO; Mon, 31
+ Mar 2025 12:42:17 +0200
+Message-ID: <c29ec6bb-231d-442d-86fc-a767d45a150e@web.de>
+Date: Mon, 31 Mar 2025 12:42:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Abdun Nihaal <abdun.nihaal@gmail.com>, linux-wireless@vger.kernel.org,
+ Kalle Valo <kvalo@kernel.org>, Michael Nemanov <michael.nemanov@ti.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ "John W. Linville" <linville@tuxdriver.com>
+References: <20250330104532.44935-1-abdun.nihaal@gmail.com>
+Subject: Re: [PATCH v2] wifi: wl1251: fix memory leak in wl1251_tx_work
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250330104532.44935-1-abdun.nihaal@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:3iERD4b3Yw9llUC5thBKi3u3Gag7Irv/Wl557QXFBK7/RxzamDi
+ 09+ph2b9U2GUznP+jeG3sqs+LuVp0mYmbZt4caAsxyMU0f9L/Uaw99ScE7PqjabGAy/eph+
+ BNswROiax/V+RfxaCOQZwKfCKu8wp0UMdgveM+0UMC4HU4kbfrokPruepP5aJUJIoRv+yuM
+ OundTDu8eyUaTboXioqWA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:UEwMep2gVxQ=;1y4Va+sjGwAqmdY3Qdw1bdlnq7v
+ 4N/EbXaiHSmsOuiAGLrLQkKaMdFm/dcRrRuS93pBNj9FYIXUTEoPk+3tp0Hw2wBQzhpeXQv9x
+ nnlR8q/kupqJazZ8CPVdltOHO6fEXK846oyCua7qrx+zaQ+aslpkVaUxSPU7vfU9wJoz7UBsl
+ Oj1rcIOH8xIcAYmrkwGLH/2tgsQe4SfUuonKDyMC7Fdxl+1BVfaEuFHyLEazbUGo/f2/TV60e
+ 6+nU7DuB2KmRK0xeZu/zK4sKYRj06STkZdIuOh0VyqwXxj3eFojE5siHIkFD6Kh90LsM9b73J
+ 3+cgRvuUjvBwC5vBfKxVQ4sBqoPKjj+sBWJEk+ib0aqINvQj3/GWyVLsRaCrjsAxRGlwwL2DL
+ UPJUzQoQnJZ7rl3tFYA4kjfDp+7KV3XbRNZYCUdFBUl2sqwKjrwDYNrfLb2M8iYlFAL6pK2B9
+ UncgiZzxb4k9n2SEzG4HT2+ylSPArUXgTlYR4sJiFITAxn0xbIWLtjO+u5ppCjJbS0IvAnWrl
+ Bgo491kwwoJnyEBrQZQPkQqO0os0Bmacsf3Iy/e6zigFfuGXdCrBsL6GeC3NFy4rbvlRMb/gm
+ t8YLHkSyJlWOy6PkGQqTTQ3rMAsMcUTkyMr1a5JMhv7nTwxWiAOp5yTvQ2MEw2F6D/pG0bhCF
+ NvKpSJ+FCDUvWruzMWWC3taQdExpPD0HEYzC7sXhsAwaxY/dKz8Kf8g2krdkvbxg0d3kVWhhX
+ jJ/orOpaZLbFD8ZLzz+W9MrrE4/oiVjX8WLBEZmnj5eZB8tVdBYqDF5Vqu9Sx9FHoWk1FNE6w
+ n1viIEKEDd9bwqRUXOQH81z6IIdCBHwdGQg+JLQq8H1i/O2dusAL9ge6cGghTiefe4n3qLyDF
+ 2UiEZz1bly1oXr4ZZwD4iKX/0axzBxGwZUeqaCCAG2+Tq+E7Pbh3x56mWlgOZpOmf4+36oaFG
+ MJqVgyc/dU+da2Q/0xX3yHRjF8gZUp72M0pUgSUIgD4AqQuPCzSoUU3s42k5AYd3DXf3xYNgY
+ uoR/TGc66ITvB3N74YJwO9kvG2bKCZwW+xRV/NHmTR72uGrtyzEhCdYOZLP3Zjnt977bYW4uW
+ CpAJyJiUm/JSQ1DjQ7S/Afir2nMDR1eeDJljq942PdJl2o3g9sGFQG4p0OVtaI1L2Q6XM1AWN
+ bKkb/A1uAIRnRY9n3H0LpW8ez4cRth/LFaAy51lfFH/t0GdtGpDkqA9s5PLs8beDNL/3VuftC
+ /5Qj6wFWDPqzdwP7cVwxfpwYQpLA2zHIwk0mtTt3d7kiJA87prJl7U8J/wtEeknBlCRUml6L9
+ VEaI6rNtzfDkzoi69ylZjMeTS4cwJnbgwxX3tRGqdwZjqPuJM4j4rnjW0O4eILbHxhB/31xsP
+ qKONIEvGvYEAlxECbelfL3BOJpL43xFEDMlIxddWZ9x8EQuVUx/s3et22BZ11AY/60FWRuY4E
+ MgvDCgKBHWx5wmVYCGv05Rr32/uc6c7U8HIkiJsnwPUqTfMS5
 
-When devm_kasprintf() fails, it returns a NULL pointer. However, this return value is not properly checked in the function mt7996_thermal_init.
+> The skb dequeued from tx_queue is lost when wl1251_ps_elp_wakeup fails
 
-A NULL check should be added after the devm_kasprintf() to prevent potential NULL pointer dereference error.
+                                                                   failed?
 
-Fixes: 69d54ce7491d0 ("switch to single multi-radio wiphy")
 
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 2 ++
- 1 file changed, 2 insertions(+)
+> with a -ETIMEDOUT error. Fix that by queueing the skb back to tx_queue.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 6b660424aedc..702447022f0e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -217,6 +217,8 @@ static int mt7996_thermal_init(struct mt7996_phy *phy)
- 
- 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7996_%s.%d",
- 			      wiphy_name(wiphy), phy->mt76->band_idx);
-+	if (!name)
-+		return -ENOMEM;
- 	snprintf(cname, sizeof(cname), "cooling_device%d", phy->mt76->band_idx);
- 
- 	cdev = thermal_cooling_device_register(name, phy, &mt7996_thermal_ops);
--- 
-2.34.1
+Can an other summary phrase be more appropriate for such a software situation?
 
+Regards,
+Markus
 
