@@ -1,87 +1,88 @@
-Return-Path: <linux-wireless+bounces-21009-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21010-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34340A771DB
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Apr 2025 02:26:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E84DEA7723C
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Apr 2025 03:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFB131668CC
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Apr 2025 00:26:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 964D616B466
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Apr 2025 01:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCE9BA33;
-	Tue,  1 Apr 2025 00:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685F03595D;
+	Tue,  1 Apr 2025 01:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CgHsKl7F"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="A+qk9vhy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEAB2110
-	for <linux-wireless@vger.kernel.org>; Tue,  1 Apr 2025 00:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF9813C9C4
+	for <linux-wireless@vger.kernel.org>; Tue,  1 Apr 2025 01:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743467181; cv=none; b=f5M4xzcjMx4CVkKyREWPT+5DYCfoJwe8wdNfyiuD45anyLbHuUAwAVMXcHtSo9ev45U3rp6+NOtw0eJzvzo0qmvwTeibteoYhjnryLIcGU0XG985wxzglIYzVXDfQlQqhydxfG0lkXmDtUXAVLlOa02Nn6tgIdMx2AIWf4rfZoQ=
+	t=1743469806; cv=none; b=WkH3vK/pVSKxf221ur3R6sSsSXJLOpuErFsoa2wSNZnmqiDzVCmxi3+48hx6fvdLF11Z+G3G8zs/bAxs7yCOHkBjN9FGlz6IEbw++7QWtKoMuHXHs+jFX3lw66MWcO091/5QmJemIFuIuswulRNY+y4iUtiX4MDu+FhtgDRQuF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743467181; c=relaxed/simple;
-	bh=ZQoNzf9RJ9w6Lkjo3s7/Z0/1OXLRPTLMIOq2+w84wOg=;
+	s=arc-20240116; t=1743469806; c=relaxed/simple;
+	bh=TvHBbn/1Z1t1hMU1NVuElifu42kGrFoak5lYVhVnU+k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZjTzMEMYWUS7brH7XdAS1+25jFo4WNZog4YrQyTVEskySDxANTZo5jEuLLSbzp2Yk0frAD4CLH1NMDV37XwKAU62mSM1zCUffK/vJmxLfSaujDie6vk1zfc03XsEkEIG26/1WEq/Bm1Bc69UNKXIjMDGgQrGiOKJTUoAsiDZfA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CgHsKl7F; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=YFrD8+euweYYyJaX/NixJpczf+ZLVjtGKxV0SaUfcNny/zLKmzzIZI1UTdNhKsgEHT1EaWajGgEXztE12aBpyFH2kF9OFBBVdkmBvtwiUrOOjjSzt0I0RvUErFVnZN0+Xhe311VmlmC+CGnwvkuKy38Pt1zsgauJpKMG6R2Foc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=A+qk9vhy; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52VFCqnc025623
-	for <linux-wireless@vger.kernel.org>; Tue, 1 Apr 2025 00:26:17 GMT
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52VKGmSo008580
+	for <linux-wireless@vger.kernel.org>; Tue, 1 Apr 2025 01:10:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nj98MI/Ht+TuXfUcrmfWsvc4nni4nX6/r0YOfJeFQ2Q=; b=CgHsKl7Fdn/Qzyl3
-	hDaCLuKCRQnNGonBVJc+/rWIZj6e/F5p591B9UJOib1BXswWdVZ2wv2aHJxfm+bM
-	pa1j3kaaj0kZj+ThqZmaZTjH/BQMnbQpvNfAnvkJBxCOePwbXT5yQBVS5WjAppGB
-	3yq+tscgzeX8fJ6YS5LZy+1ccp/17MsoaLiWL8vFo0MTuYpmHqTg2l21QSuf7JA0
-	vIT7pZQDmdHchFnGMvGN10Z8/t7bTynzaNnRHBJZsP4Jjgn9s45PVDvnn+53rQhP
-	p6rq1JtzD2Mro/S1pvhfkST8UI4vaJnNpvK/2OOYbFHXMHpWfWE3Dt6cabM29sNS
-	w9M94w==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45p6jhp5n2-1
+	TDimoZo2P8VTxqz540h+sEpytFpZLIuPSm9TIjGfcG4=; b=A+qk9vhylXZ1gzmg
+	qWcxBJ98aWtlhgypR694U3Ill/9B5Gq1GezO9AXqBcMZnRG/cSOU6oss+VhqRgqy
+	QHcL+wzGwP3twXwI0K2UPmK12c/c2dnekbOVRzRoi9WbcEpG2Awk+Qv0MbZInEIk
+	Ah/m7rsKR6Z+fwN/UxtDSlb7uHs0ik2NDm7SgAG3B8lkPJbtNNPm78h5Wd/lPccH
+	P+g61VNS1b3V1nBTTQ3SZqrN4vB1kZUWOecK2jO4SndoJFS+DB1LdVNFpsPAMZYm
+	a5S1To3NUaTBXI+yjbcwQt8xOBy2gRXB98A1zeHafT/I7UL7lRsDFcpjB76AlyK2
+	scda9Q==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45r1xngh0x-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 01 Apr 2025 00:26:17 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2ff69646218so15030375a91.3
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Mar 2025 17:26:17 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Tue, 01 Apr 2025 01:10:03 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2ff62f96b10so9350479a91.0
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Mar 2025 18:10:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743467177; x=1744071977;
+        d=1e100.net; s=20230601; t=1743469801; x=1744074601;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nj98MI/Ht+TuXfUcrmfWsvc4nni4nX6/r0YOfJeFQ2Q=;
-        b=oxx3GYGu+3lopDLi1h79eorTzhQHUReVLNEtmAoNlwPCXZohunL53Ro7TYU9EVFPE2
-         JngKuEyaIQwfhjX+wiEOBIVrdcadulP31GnqzEJycN49fpDi0ENYFh/xM04bgLvnml4v
-         rBLJB+/tqUGcW2xvw93qtSv32u8s8IYhnKsB1z5EoYD1gQZMayYzn2m5oSbU/5+9dt4s
-         pYsAGw1lnqEYV4Qfkxd0Cyksl5A5/g1MlzODkI0tTl506Xk+Ydj0A8mSfrmdoA+/yRA9
-         StNha1Drw0TeFbKcwslRZEPd1egE30z3UvoEEV88DWydlTRei8fITMBSiXrsGHWMmJyN
-         u6tA==
-X-Gm-Message-State: AOJu0YxkCrgifmkJEb4FOk+tCMoS4iJrlcg0ndxwKUSHhWIDvJw1sxFL
-	lqzFcC8iflyjmKBMcRqQCDPElyuhS2s7mqglVPphdtM988Ju9p9s2DGsM1cofjHRHSHpk5uKhrC
-	pIl87583D5dgLHRBALNQc11+WshNzv5GQ2vSANYAzG0Dk/7+P6OPcdpkI8ZEiCbPQLw==
-X-Gm-Gg: ASbGnctqs0qYnsKFjF9A8sbpcCxCPSBgR52WiwD7wkRso4YaCWlYUP98gDK31pmwaXW
-	afADi9OdNC6T0J15nojA3HH78KDfNQrwCjyWRDqiNke1543kHMIyYuk1gwxQp9M3sJf7FbHBJyk
-	VDl+0j0gxl8TnHfQjg26aFn2+5d9TcvkRk3KCVjid/QJojLn/w7Fdt1FqB3PflkktWwsX16qqVN
-	FA9kUp7im6mQoEhMrVRBg/soVghO33xUkrn8sasFoYo7B/+hIrxR5TTlgHeg58+AHq4w8+dToX2
-	QdvpN3W2zpqGmsKRm3kgs/upNSnLAQSB5usSGft5EMXEP8abiXxSKEs5icCTscmB8eIEEcNkPgV
-	dqJwrL7BG
-X-Received: by 2002:a05:6a20:43a3:b0:1f5:8a1d:3904 with SMTP id adf61e73a8af0-2009f5bbad3mr20583410637.7.1743467176624;
-        Mon, 31 Mar 2025 17:26:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHx/aNjQmQG10wCwYwIB/c1wC1UJUayWNouRXjgmxojMWIKHkdkoMaR/aYPo2i9WrRTdbMBJw==
-X-Received: by 2002:a05:6a20:43a3:b0:1f5:8a1d:3904 with SMTP id adf61e73a8af0-2009f5bbad3mr20583378637.7.1743467176236;
-        Mon, 31 Mar 2025 17:26:16 -0700 (PDT)
+        bh=TDimoZo2P8VTxqz540h+sEpytFpZLIuPSm9TIjGfcG4=;
+        b=dUWBod1JSmVNaBlLUnYhGnk/dK+E/ro3OoStg6nnMnZD+wVtnVZ9Yhj6KNEYrQHOPK
+         JPzDIFOaIJw/3MrAlK0l2zXtBBPkECd+2CmUd6NVbFYOaSog45Cbx5HybSJHhslr9EhY
+         7XzVjuuwOuEBwkBHsp55mNyHpw3EjokYJcXs2Up7DOugplRLjVzHUTt21fEa+2442fWA
+         rgVrNnx4rsV2UAghj4iyDp40yhboujCyszrLOV2lUjpof+D9oqrTtdf6CV3lWkKXjJAU
+         2sGx+LpH9Lt0AeZp4muXWfAUanpZNwmq8nHYxjlkA3Sa5GU40q8NU7i5q9mDABKa9WqP
+         2zOA==
+X-Gm-Message-State: AOJu0Yx7cbCdelMLzuoa6lhoms93eto1q09gnRDTHMZkn/7KT9GkJkyV
+	ZswoFxFNkNiiMHbMD5xR5OmmBZHKEqRxncJWJSyOYGev+g9knLkDigdt16nzSNOZrmForvinGkF
+	cZhS7lXxpU4Mu9qqPJvKuLZFQjiH3HPG1vAzuyDr50kULKq5r8Jlne2azSSyUjQZiA5N3My0Z/w
+	==
+X-Gm-Gg: ASbGncuH1Ml09sOeDG5MwXlppfCawtBb+YQyQhYu/Fbw42ZENLKDJl5EyI2DObDBaI8
+	hHlNpXnO4rL/zT8r9ljNzdtjHN9gslW028PKJ85QwSUdI3BfHVEGiZbg0MVq5ggiEy1NRiE7nZo
+	GjrhnRQ1sKtEO6KnxI62YKITQlkIE+TfZK5Ek2DUlUyIitXWoVq63qu0ZpBNyGRq/2kFrAW1/XW
+	OX324yGUXlHtxXxKe+v4qFZsuEm+6S24LkT2iAcoyhYxGhsfy7JsENRzY41kJM96BTZOWuudIvV
+	MJRosiP0EkVuWuaMiYI2FQqiPELRaiIriGT+isaTt8M0w4FBlyRxTHfu9NUL00MvR7lY+52IuHc
+	pVq8FQPo4
+X-Received: by 2002:a05:6a20:9f44:b0:1f2:f1a8:70ca with SMTP id adf61e73a8af0-1feb5bab130mr22933179637.5.1743469801191;
+        Mon, 31 Mar 2025 18:10:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGNu+DeS/1piz9ZEhssl3P21WFLNtbVOHc7sE2xwL9HKaCDg3GuAyZ8Ge15Gm05dotzWpb9Cw==
+X-Received: by 2002:a05:6a20:9f44:b0:1f2:f1a8:70ca with SMTP id adf61e73a8af0-1feb5bab130mr22933137637.5.1743469800684;
+        Mon, 31 Mar 2025 18:10:00 -0700 (PDT)
 Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af93b8b4141sm6952697a12.51.2025.03.31.17.26.15
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af93b69f6f2sm5848712a12.30.2025.03.31.18.10.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Mar 2025 17:26:15 -0700 (PDT)
-Message-ID: <f5129046-4034-43db-8ca0-05b5c27e1d1e@oss.qualcomm.com>
-Date: Mon, 31 Mar 2025 17:26:14 -0700
+        Mon, 31 Mar 2025 18:10:00 -0700 (PDT)
+Message-ID: <d4ed05c7-41a3-4f99-89f5-72d2f8050b24@oss.qualcomm.com>
+Date: Mon, 31 Mar 2025 18:09:59 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,119 +90,116 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v14 0/4] wifi: ath12k: add 11d scan offload
- support and handle country code for WCN7850
-To: Kang Yang <quic_kangyang@quicinc.com>, ath12k@lists.infradead.org
+Subject: Re: [PATCH V11 0/9] wifi: ath12k: add MU-MIMO and 160 MHz bandwidth
+ support
+To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+        ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-References: <20250327020527.1527-1-quic_kangyang@quicinc.com>
+References: <20250220213025.2722206-1-quic_pradeepc@quicinc.com>
 From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <20250327020527.1527-1-quic_kangyang@quicinc.com>
+In-Reply-To: <20250220213025.2722206-1-quic_pradeepc@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: eowv0OJlVMnkgoglCBc71JPebrPzyjZl
-X-Proofpoint-ORIG-GUID: eowv0OJlVMnkgoglCBc71JPebrPzyjZl
-X-Authority-Analysis: v=2.4 cv=bZZrUPPB c=1 sm=1 tr=0 ts=67eb32a9 cx=c_pps a=vVfyC5vLCtgYJKYeQD43oA==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=hbj1clWKTLgvv7SpeOkA:9 a=QEXdDO2ut3YA:10
- a=rl5im9kqc5Lf4LNbBjHf:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: b5XSBC1STX8tDW2SaR6d4GFp3lMcSl2X
+X-Proofpoint-ORIG-GUID: b5XSBC1STX8tDW2SaR6d4GFp3lMcSl2X
+X-Authority-Analysis: v=2.4 cv=Qv1e3Uyd c=1 sm=1 tr=0 ts=67eb3ceb cx=c_pps a=0uOsjrqzRL749jD1oC5vDA==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=TUzAd_iuidMRmLO4f4QA:9 a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-31_11,2025-03-27_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 clxscore=1015 phishscore=0 adultscore=0
- lowpriorityscore=0 suspectscore=0 spamscore=0 malwarescore=0 mlxscore=0
- impostorscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504010001
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ mlxscore=0 impostorscore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ phishscore=0 malwarescore=0 mlxlogscore=999 lowpriorityscore=0
+ clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504010006
 
-On 3/26/2025 7:05 PM, Kang Yang wrote:
-> This patch-set mainly does four things:
-> 1. Add handler to send WMI_SET_CURRENT_COUNTRY_CMDID to firmware.
-> 2. Use WMI_SET_CURRENT_COUNTRY_CMDID to set country code for WCN7850.
-> 3. Implement 11d scan offload, and update new channel list to firmware
-> when 11d scan finished.
-> 4. Store country code, and update it to firmware after device recovery.
+On 2/20/2025 1:30 PM, Pradeep Kumar Chitrapu wrote:
+> Add support for
+> 1. enabling MU-MIMO in HE and EHT modes from hardware
+> 2. setting fixed HE rate/GI/LTF
+> 3. 160 MHz bandwidth in HE mode
+> 4. extended NSS bandwidth support
 > 
-> With this patch-set, WCN7850 can do 11d offload scan and update country
-> code to firmware successfully.
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > 
-> Note: This patch-set is an old patch-set in public review written by
-> Wen Gong. Just resend it for him.
-> Link: https://patchwork.kernel.org/project/linux-wireless/cover/20230914090746.23560-1-quic_wgong@quicinc.com/
+> changes in v11:
+>  patch 1/9:
+>   - fix return values in ath12k_mac_set_he_txbf_conf() and
+>     ath12k_mac_vif_recalc_sta_he_txbf()
+>  patch 6/9:
+>   - fix missing he_mcs initialization in ath12k_mac_init_arvif()
 > 
-> v14: add branch tag.
-> v13: rebase on tag: ath/main(ath-202503251458).
-> v12:
->     1. add reviewed-by tag.
->     2. add branch tag.
->     3. rebase on tag: ath-202503172347.
-> v11:
->     1. swap the order of patch #2 and #3.
->     2. rebase on tag:ath/main(ath-202502181756).
-> v10: rebase on tag: ath/main(ath-202502111625).
-> v9: update copy right in patch #1, #2, #3.
-> v8: rebase on tag: ath/main(ath-202501172342).
-> v7:
->     1. rebase on tag: ath/main(ath-202412191756).
->     2. rewrite commit message for patch#2.
-> v6: rebase on tag: ath/main(ath-202410161539).
-> v5: rebase on tag: ath/main(ath-202410111606).
-> v4: rebase on tag: ath-202410072115.
-> v3:
->     1. use wiphy::mtx lock instead of adding a new lock(patch#2).
->     2. rename struct according to wmi naming convention(patch#1, #2).
->     3. update copyright in reg.h
->     4. modifiy patch#3, #4 due to struct name change.
-> v2: change per Jeff.
->     1. change alpha2 length from 3 to 2.
->     2. change wmi_11d_new_cc_ev to wmi_11d_new_cc_event.
+> changes in v10:
+>  patch 6/9:
+>   - use ath12k_ahsta_to_sta()
+>   - fix rcu_dereference warning in ath12k_mac_set_bitrate_mask_iter()
+>   - change return type for ath12k_mac_validate_fixed_rate_settings()
+>   - improve readability by adhering to nl80211 definitions of GI
+>     NL80211_TXRATE_DEFAULT_GI. Introduce ath12k_mac_nlgi_to_wmigi()
+>     for conversion.
+>  patch 7/9:
+>   - do not change default MODE_11AC_VHT160 in
+>     ath12k_mac_get_phymode_vht() as it breaks clients which do not
+>     set VHT_CAP_SUPP_CHAN_WIDTH_160MHZ.
+>  patch 8/9:
+>   - Use IEEE80211_VHT_CAP_EXT_NSS_BW_MASK along with
+>     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ for determining VHT160
+>     phymode.
 > 
-> Wen Gong (4):
->   wifi: ath12k: add configure country code for WCN7850
->   wifi: ath12k: use correct WMI command to set country code for WCN7850
->   wifi: ath12k: add 11d scan offload support
->   wifi: ath12k: store and send country code to firmware after recovery
+> changes in v9: rebase on top of master branch with mlo changes
+>  patch 1/9 and 2/9:
+>   - fetch link_conf using ath12k_mac_get_link_bss_conf()
+>     instead of arvif->vif->bss_conf before mlo
+>  patch 6/9
+>   - fetch mcs/nss values from sta->link[] instead of sta->deflink
+>   - fix spelling of 'incompatibility'
+>  patch 8/9
+>   - replace sta->deflink.addr with arsta->addr in
+>     ath12k_peer_assoc_h_vht
+>  patch 9/9
+>   - replace sta->deflink.rx_nss with link_sta->rx_nss
 > 
->  drivers/net/wireless/ath/ath12k/core.c |  34 ++++-
->  drivers/net/wireless/ath/ath12k/core.h |  17 +++
->  drivers/net/wireless/ath/ath12k/hw.c   |   6 +
->  drivers/net/wireless/ath/ath12k/hw.h   |   1 +
->  drivers/net/wireless/ath/ath12k/mac.c  | 167 ++++++++++++++++++++++++-
->  drivers/net/wireless/ath/ath12k/mac.h  |   7 ++
->  drivers/net/wireless/ath/ath12k/reg.c  |  72 ++++++++---
->  drivers/net/wireless/ath/ath12k/reg.h  |   2 +-
->  drivers/net/wireless/ath/ath12k/wmi.c  | 158 ++++++++++++++++++++++-
->  drivers/net/wireless/ath/ath12k/wmi.h  |  38 ++++++
->  10 files changed, 480 insertions(+), 22 deletions(-)
+> changes in v8:
+>  - rebase and resolve KASAN warnings reported by Jeff in v7, in patch 6/9.
+> 
+> Pradeep Kumar Chitrapu (9):
+>   wifi: ath12k: push HE MU-MIMO params to hardware
+>   wifi: ath12k: push EHT MU-MIMO params to hardware
+>   wifi: ath12k: move HE MCS mapper to a separate function
+>   wifi: ath12k: generate rx and tx mcs maps for supported HE mcs
+>   wifi: ath12k: fix TX and RX MCS rate configurations in HE mode
+>   wifi: ath12k: add support for setting fixed HE rate/GI/LTF
+>   wifi: ath12k: clean up 80P80 support
+>   wifi: ath12k: add support for 160 MHz bandwidth
+>   wifi: ath12k: add extended NSS bandwidth support for 160 MHz
+> 
+>  drivers/net/wireless/ath/ath12k/core.h |    2 +
+>  drivers/net/wireless/ath/ath12k/mac.c  | 1141 ++++++++++++++++++++----
+>  drivers/net/wireless/ath/ath12k/mac.h  |   17 +
+>  drivers/net/wireless/ath/ath12k/wmi.c  |   24 +-
+>  drivers/net/wireless/ath/ath12k/wmi.h  |  107 ++-
+>  5 files changed, 1069 insertions(+), 222 deletions(-)
 > 
 > 
-> base-commit: 11cea2b6a2e3a5ddf3562314d1a378e7ea1c26eb
+> base-commit: f22471c17f5849b2f20e2c56ec9fcd9dd8d5bf28
 
-please rebase again, does not apply on ath-202503312147
+Sorry, this has been stuck in my backlog, and now it no longer applies.
+Please rebase.
 
-Applying: wifi: ath12k: add configure country code for WCN7850
+Applying: wifi: ath12k: push HE MU-MIMO params to hardware
 Using index info to reconstruct a base tree...
-M       drivers/net/wireless/ath/ath12k/wmi.c
-M       drivers/net/wireless/ath/ath12k/wmi.h
-Falling back to patching base and 3-way merge...
-Auto-merging drivers/net/wireless/ath/ath12k/wmi.h
-Auto-merging drivers/net/wireless/ath/ath12k/wmi.c
-Applying: wifi: ath12k: use correct WMI command to set country code for WCN7850
-Applying: wifi: ath12k: add 11d scan offload support
-Using index info to reconstruct a base tree...
-M       drivers/net/wireless/ath/ath12k/core.c
-M       drivers/net/wireless/ath/ath12k/core.h
 M       drivers/net/wireless/ath/ath12k/mac.c
-M       drivers/net/wireless/ath/ath12k/wmi.c
+M       drivers/net/wireless/ath/ath12k/mac.h
 M       drivers/net/wireless/ath/ath12k/wmi.h
 Falling back to patching base and 3-way merge...
 Auto-merging drivers/net/wireless/ath/ath12k/wmi.h
-Auto-merging drivers/net/wireless/ath/ath12k/wmi.c
+Auto-merging drivers/net/wireless/ath/ath12k/mac.h
 Auto-merging drivers/net/wireless/ath/ath12k/mac.c
 CONFLICT (content): Merge conflict in drivers/net/wireless/ath/ath12k/mac.c
-Auto-merging drivers/net/wireless/ath/ath12k/core.h
-Auto-merging drivers/net/wireless/ath/ath12k/core.c
 Recorded preimage for 'drivers/net/wireless/ath/ath12k/mac.c'
 error: Failed to merge in the changes.
-Patch failed at 0003 wifi: ath12k: add 11d scan offload support
+Patch failed at 0001 wifi: ath12k: push HE MU-MIMO params to hardware
 
 
