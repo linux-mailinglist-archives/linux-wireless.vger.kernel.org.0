@@ -1,87 +1,87 @@
-Return-Path: <linux-wireless+bounces-21008-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21009-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1164A771A8
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Apr 2025 02:04:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34340A771DB
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Apr 2025 02:26:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B0A71884618
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Apr 2025 00:04:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFB131668CC
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Apr 2025 00:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827BA2E336B;
-	Tue,  1 Apr 2025 00:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCE9BA33;
+	Tue,  1 Apr 2025 00:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GX6A6i50"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CgHsKl7F"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A534E53AC
-	for <linux-wireless@vger.kernel.org>; Tue,  1 Apr 2025 00:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEAB2110
+	for <linux-wireless@vger.kernel.org>; Tue,  1 Apr 2025 00:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743465832; cv=none; b=KtinLbd+UBih97GUDWeIv2vBOrJme4v3tHAdsdsedS7Z9vw7QXQhj/4iBQJjZq/bQUsfCrbiV51/cQFP9H9/zvvLx3/ioZ4ghPvMhYbgfcqhgcMGaGqdk6N2pfnyr/xl4bDYFGSkmgcCzQaa5Dj+g6Qrmqk+d+NJFUz2GSvuJuc=
+	t=1743467181; cv=none; b=f5M4xzcjMx4CVkKyREWPT+5DYCfoJwe8wdNfyiuD45anyLbHuUAwAVMXcHtSo9ev45U3rp6+NOtw0eJzvzo0qmvwTeibteoYhjnryLIcGU0XG985wxzglIYzVXDfQlQqhydxfG0lkXmDtUXAVLlOa02Nn6tgIdMx2AIWf4rfZoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743465832; c=relaxed/simple;
-	bh=cwqGr2JUrp9ldKBRfeiBnQsVQWMD2ezMlNyRYP43wFU=;
+	s=arc-20240116; t=1743467181; c=relaxed/simple;
+	bh=ZQoNzf9RJ9w6Lkjo3s7/Z0/1OXLRPTLMIOq2+w84wOg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=almJPyB/EtA3AU7XscOAscuP7+W/8l6PRokWOhWnftXa4WWvvlGuVzYL8IgBYSDZ+WBdSleZPVotlkJchaH5bXezbLAX3mrstBCqHyDUUzqHJ8ZKCaHKM4n04dBAKPnB6llwQsVuRMHjkgPNv3QiVe2KKEZxNsYDYAJbiAquJJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GX6A6i50; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=ZjTzMEMYWUS7brH7XdAS1+25jFo4WNZog4YrQyTVEskySDxANTZo5jEuLLSbzp2Yk0frAD4CLH1NMDV37XwKAU62mSM1zCUffK/vJmxLfSaujDie6vk1zfc03XsEkEIG26/1WEq/Bm1Bc69UNKXIjMDGgQrGiOKJTUoAsiDZfA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CgHsKl7F; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52VFCrSB032655
-	for <linux-wireless@vger.kernel.org>; Tue, 1 Apr 2025 00:03:49 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52VFCqnc025623
+	for <linux-wireless@vger.kernel.org>; Tue, 1 Apr 2025 00:26:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4cVIN1yqYhlAiuoox7wycBo/ZgfvnsCNIE+NcE0TS80=; b=GX6A6i50xwhx/WZH
-	3ruXVHt+GpN71ExJSeJMNJoS7fOIYoz3GGUe+m485hFHUFa3HBiIKIBXQx1LG/sr
-	LQyxuFzWTKckFDo52E3uLfX1eYPO3Sdj7d3Zp2bz6NIOzrFuzE+/b528VAh0Wfzl
-	JbSFV37KJES05TzDfyQCr6hIHxnWJEef8SzCXPxJ+Ppu3bfsDdARFMica4imbqmQ
-	9f3lrVftdGTrGRnrGb5kabLXwjBazuB6SRLnRxmex3VPXcCIVbQos63o1EfkRDJ5
-	N4KCEHC8L7wtyOJWdTtOg1j2o5JR15hqDOCPrsbJqpNHiRmVS+eykw/5AvJvNSjy
-	Oh8SeA==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45p67qe6jq-1
+	nj98MI/Ht+TuXfUcrmfWsvc4nni4nX6/r0YOfJeFQ2Q=; b=CgHsKl7Fdn/Qzyl3
+	hDaCLuKCRQnNGonBVJc+/rWIZj6e/F5p591B9UJOib1BXswWdVZ2wv2aHJxfm+bM
+	pa1j3kaaj0kZj+ThqZmaZTjH/BQMnbQpvNfAnvkJBxCOePwbXT5yQBVS5WjAppGB
+	3yq+tscgzeX8fJ6YS5LZy+1ccp/17MsoaLiWL8vFo0MTuYpmHqTg2l21QSuf7JA0
+	vIT7pZQDmdHchFnGMvGN10Z8/t7bTynzaNnRHBJZsP4Jjgn9s45PVDvnn+53rQhP
+	p6rq1JtzD2Mro/S1pvhfkST8UI4vaJnNpvK/2OOYbFHXMHpWfWE3Dt6cabM29sNS
+	w9M94w==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45p6jhp5n2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 01 Apr 2025 00:03:49 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-22406ee0243so70903125ad.3
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Mar 2025 17:03:48 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Tue, 01 Apr 2025 00:26:17 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2ff69646218so15030375a91.3
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Mar 2025 17:26:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743465828; x=1744070628;
+        d=1e100.net; s=20230601; t=1743467177; x=1744071977;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4cVIN1yqYhlAiuoox7wycBo/ZgfvnsCNIE+NcE0TS80=;
-        b=YKDGwtJnHK3Zku7FlBacNi3aEGzalSr44i7H9wgyXt/OdCnAhMUYDLpc7JRBij6JkV
-         Uhk9obxOgswle5iAtrQ0FH9aaGqvNn+b4wPmuGWv2f1RLLmF4HNz/NaKn43QXsHRL+y3
-         5cli3FdyF7K9p40+j4edBc+AreYdJvfPHTr+8kcXV9aEGC9gvgmujWTIsIdQxVzwur6g
-         owPZm3i6d0I3RZk+dnhVX9/tLQHnKi0IUdYh5MPKq9E//SIW0anSxBq1Ft7gQTN47nop
-         Vz1S8uYzJL+3EQiDOjF2zHHGyqDy8RLLvOsmTcSWn4fsEiuH7vC8Vtoh4KyZKpdi8N5r
-         kUuw==
-X-Gm-Message-State: AOJu0Yy9+NOu7L+x1a5EmMygXVThsRAxRHrGwqbPryXrY18xIVAqPWhh
-	2uDu394q4aNdMH3TokwqpjH//srkOSWPLni2Us4wWslGafttl+rhuxB+tLCipdivBSPggrW/zIi
-	DMvAz3vYVIfpOvyBXJ1+WXk5bYkeI1e1F0iPO7S3iNIXNBbjiDh6rXP4kfTMrjvKSRA==
-X-Gm-Gg: ASbGncsBZth2ydH/Dxe6hzep3r+mvqcmk/IdCpcsy5ad5bMLdOkeuVcVvvUk4q7TyvV
-	LezzrQJw6sF3pbo8UPhzBb1aoXK9T+5YPVUQelnIYPuRnFryzGHVJf18lMBkHPIYw+eWV8oJCNs
-	BYhuioS1SI/gk7fVIibWnaWPj4RHEXKL+NjQMDNAx4T3siEcM3QFUNCmsm1RYtaOIRPIayy02nm
-	SrKQA3XXyQeO33shKgfeIGy7O4a4dCFAHK9QjQ4VmPN10WdsM9TrAtqn1gZ32LKC6XZxD07xUvK
-	Fyuunc/FggnYqwQJo/pYRMdD51TUMNdfGZYyCjZ0zkFMLbNYw6OwkvtUXn3PLs3PwYMrPm9htr0
-	5EeGTw4fM
-X-Received: by 2002:a17:902:f54a:b0:216:53fa:634f with SMTP id d9443c01a7336-2292f9ef20emr175664755ad.48.1743465827812;
-        Mon, 31 Mar 2025 17:03:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHnMu2P7tyWZHMH46/iz8oKR/XbzPFIZC5WUvTC01ExGdFd92nY5GkYQ0CBpwAML4SYY8sXxw==
-X-Received: by 2002:a17:902:f54a:b0:216:53fa:634f with SMTP id d9443c01a7336-2292f9ef20emr175664275ad.48.1743465827319;
-        Mon, 31 Mar 2025 17:03:47 -0700 (PDT)
+        bh=nj98MI/Ht+TuXfUcrmfWsvc4nni4nX6/r0YOfJeFQ2Q=;
+        b=oxx3GYGu+3lopDLi1h79eorTzhQHUReVLNEtmAoNlwPCXZohunL53Ro7TYU9EVFPE2
+         JngKuEyaIQwfhjX+wiEOBIVrdcadulP31GnqzEJycN49fpDi0ENYFh/xM04bgLvnml4v
+         rBLJB+/tqUGcW2xvw93qtSv32u8s8IYhnKsB1z5EoYD1gQZMayYzn2m5oSbU/5+9dt4s
+         pYsAGw1lnqEYV4Qfkxd0Cyksl5A5/g1MlzODkI0tTl506Xk+Ydj0A8mSfrmdoA+/yRA9
+         StNha1Drw0TeFbKcwslRZEPd1egE30z3UvoEEV88DWydlTRei8fITMBSiXrsGHWMmJyN
+         u6tA==
+X-Gm-Message-State: AOJu0YxkCrgifmkJEb4FOk+tCMoS4iJrlcg0ndxwKUSHhWIDvJw1sxFL
+	lqzFcC8iflyjmKBMcRqQCDPElyuhS2s7mqglVPphdtM988Ju9p9s2DGsM1cofjHRHSHpk5uKhrC
+	pIl87583D5dgLHRBALNQc11+WshNzv5GQ2vSANYAzG0Dk/7+P6OPcdpkI8ZEiCbPQLw==
+X-Gm-Gg: ASbGnctqs0qYnsKFjF9A8sbpcCxCPSBgR52WiwD7wkRso4YaCWlYUP98gDK31pmwaXW
+	afADi9OdNC6T0J15nojA3HH78KDfNQrwCjyWRDqiNke1543kHMIyYuk1gwxQp9M3sJf7FbHBJyk
+	VDl+0j0gxl8TnHfQjg26aFn2+5d9TcvkRk3KCVjid/QJojLn/w7Fdt1FqB3PflkktWwsX16qqVN
+	FA9kUp7im6mQoEhMrVRBg/soVghO33xUkrn8sasFoYo7B/+hIrxR5TTlgHeg58+AHq4w8+dToX2
+	QdvpN3W2zpqGmsKRm3kgs/upNSnLAQSB5usSGft5EMXEP8abiXxSKEs5icCTscmB8eIEEcNkPgV
+	dqJwrL7BG
+X-Received: by 2002:a05:6a20:43a3:b0:1f5:8a1d:3904 with SMTP id adf61e73a8af0-2009f5bbad3mr20583410637.7.1743467176624;
+        Mon, 31 Mar 2025 17:26:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHx/aNjQmQG10wCwYwIB/c1wC1UJUayWNouRXjgmxojMWIKHkdkoMaR/aYPo2i9WrRTdbMBJw==
+X-Received: by 2002:a05:6a20:43a3:b0:1f5:8a1d:3904 with SMTP id adf61e73a8af0-2009f5bbad3mr20583378637.7.1743467176236;
+        Mon, 31 Mar 2025 17:26:16 -0700 (PDT)
 Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291eedc988sm76155715ad.59.2025.03.31.17.03.46
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af93b8b4141sm6952697a12.51.2025.03.31.17.26.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Mar 2025 17:03:46 -0700 (PDT)
-Message-ID: <64839c85-38f4-4a13-9ee1-273aed339a47@oss.qualcomm.com>
-Date: Mon, 31 Mar 2025 17:03:45 -0700
+        Mon, 31 Mar 2025 17:26:15 -0700 (PDT)
+Message-ID: <f5129046-4034-43db-8ca0-05b5c27e1d1e@oss.qualcomm.com>
+Date: Mon, 31 Mar 2025 17:26:14 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,134 +89,119 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] wifi: ath12k: Add support for link specific datapath
- stats
-To: "Tamizh Chelvam Raja (QUIC)" <quic_tamizhr@quicinc.com>,
-        "Balamurugan Mahalingam (QUIC)" <quic_bmahalin@quicinc.com>,
-        "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <20250203213237.2695131-1-quic_bmahalin@quicinc.com>
- <BL3PR02MB8163BE57AD5EF563FD8A76B383F72@BL3PR02MB8163.namprd02.prod.outlook.com>
+Subject: Re: [PATCH ath-next v14 0/4] wifi: ath12k: add 11d scan offload
+ support and handle country code for WCN7850
+To: Kang Yang <quic_kangyang@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250327020527.1527-1-quic_kangyang@quicinc.com>
 From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <BL3PR02MB8163BE57AD5EF563FD8A76B383F72@BL3PR02MB8163.namprd02.prod.outlook.com>
+In-Reply-To: <20250327020527.1527-1-quic_kangyang@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=fMI53Yae c=1 sm=1 tr=0 ts=67eb2d65 cx=c_pps a=IZJwPbhc+fLeJZngyXXI0A==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=UjqVY_aGyNUKZPdAsKEA:9 a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-ORIG-GUID: Tprrpjq-6WDgqLsRUR6pF3ckFq0Ty2PV
-X-Proofpoint-GUID: Tprrpjq-6WDgqLsRUR6pF3ckFq0Ty2PV
+X-Proofpoint-GUID: eowv0OJlVMnkgoglCBc71JPebrPzyjZl
+X-Proofpoint-ORIG-GUID: eowv0OJlVMnkgoglCBc71JPebrPzyjZl
+X-Authority-Analysis: v=2.4 cv=bZZrUPPB c=1 sm=1 tr=0 ts=67eb32a9 cx=c_pps a=vVfyC5vLCtgYJKYeQD43oA==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=hbj1clWKTLgvv7SpeOkA:9 a=QEXdDO2ut3YA:10
+ a=rl5im9kqc5Lf4LNbBjHf:22 a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-31_11,2025-03-27_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
- priorityscore=1501 phishscore=0 spamscore=0 impostorscore=0 clxscore=1015
- mlxlogscore=901 bulkscore=0 malwarescore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503310164
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 adultscore=0
+ lowpriorityscore=0 suspectscore=0 spamscore=0 malwarescore=0 mlxscore=0
+ impostorscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504010001
 
-On 2/4/2025 10:37 PM, Tamizh Chelvam Raja (QUIC) wrote:
-...
->> +static int ath12k_open_link_stats(struct inode *inode, struct file
->> +*file) {
->> +       struct ath12k_vif *ahvif = inode->i_private;
->> +       size_t len = 0, buf_len = (PAGE_SIZE * 2);
->> +       struct ath12k_link_stats linkstat;
->> +       struct ath12k_link_vif *arvif;
->> +       unsigned long links_map;
->> +       struct wiphy *wiphy;
->> +       int link_id, i;
->> +       char *buf;
->> +
->> +       if (!ahvif)
->> +               return -EINVAL;
->> +
->> +       buf = kzalloc(buf_len, GFP_KERNEL);
->> +       if (!buf)
->> +               return -ENOMEM;
->> +
->> +       wiphy = ahvif->ah->hw->wiphy;
->> +       wiphy_lock(wiphy);
->> +
->> +       links_map = ahvif->links_map;
->> +       for_each_set_bit(link_id, &links_map,
->> +                        IEEE80211_MLD_MAX_NUM_LINKS) {
->> +               arvif = rcu_dereference_protected(ahvif->link[link_id],
->> +
->> + lockdep_is_held(&wiphy->mtx));
->> +
+On 3/26/2025 7:05 PM, Kang Yang wrote:
+> This patch-set mainly does four things:
+> 1. Add handler to send WMI_SET_CURRENT_COUNTRY_CMDID to firmware.
+> 2. Use WMI_SET_CURRENT_COUNTRY_CMDID to set country code for WCN7850.
+> 3. Implement 11d scan offload, and update new channel list to firmware
+> when 11d scan finished.
+> 4. Store country code, and update it to firmware after device recovery.
 > 
-> Here arvif can be NULL, so it would be good to check before using it.
+> With this patch-set, WCN7850 can do 11d offload scan and update country
+> code to firmware successfully.
 > 
->> +               spin_lock_bh(&arvif->link_stats_lock);
->> +               linkstat = arvif->link_stats;
->> +               spin_unlock_bh(&arvif->link_stats_lock);
->> +
->> +               len += scnprintf(buf + len, buf_len - len,
->> +                                "link[%d] Tx Unicast Frames Enqueued  = %d\n",
->> +                                link_id, linkstat.tx_enqueued);
->> +               len += scnprintf(buf + len, buf_len - len,
->> +                                "link[%d] Tx Broadcast Frames Enqueued = %d\n",
->> +                                link_id, linkstat.tx_bcast_mcast);
->> +               len += scnprintf(buf + len, buf_len - len,
->> +                                "link[%d] Tx Frames Completed = %d\n",
->> +                                link_id, linkstat.tx_completed);
->> +               len += scnprintf(buf + len, buf_len - len,
->> +                                "link[%d] Tx Frames Dropped = %d\n",
->> +                                link_id, linkstat.tx_dropped);
->> +
->> +               len += scnprintf(buf + len, buf_len - len,
->> +                                "link[%d] Tx Frame descriptor Encap Type = ",
->> +                                link_id);
->> +
->> +               len += scnprintf(buf + len, buf_len - len,
->> +                                        " raw:%d",
->> +                                        linkstat.tx_encap_type[0]);
->> +
->> +               len += scnprintf(buf + len, buf_len - len,
->> +                                        " native_wifi:%d",
->> +                                        linkstat.tx_encap_type[1]);
->> +
->> +               len += scnprintf(buf + len, buf_len - len,
->> +                                        " ethernet:%d",
->> +                                        linkstat.tx_encap_type[2]);
+> Note: This patch-set is an old patch-set in public review written by
+> Wen Gong. Just resend it for him.
+> Link: https://patchwork.kernel.org/project/linux-wireless/cover/20230914090746.23560-1-quic_wgong@quicinc.com/
 > 
-> Like encrypt type stats below this also can be put it in a loop.
+> v14: add branch tag.
+> v13: rebase on tag: ath/main(ath-202503251458).
+> v12:
+>     1. add reviewed-by tag.
+>     2. add branch tag.
+>     3. rebase on tag: ath-202503172347.
+> v11:
+>     1. swap the order of patch #2 and #3.
+>     2. rebase on tag:ath/main(ath-202502181756).
+> v10: rebase on tag: ath/main(ath-202502111625).
+> v9: update copy right in patch #1, #2, #3.
+> v8: rebase on tag: ath/main(ath-202501172342).
+> v7:
+>     1. rebase on tag: ath/main(ath-202412191756).
+>     2. rewrite commit message for patch#2.
+> v6: rebase on tag: ath/main(ath-202410161539).
+> v5: rebase on tag: ath/main(ath-202410111606).
+> v4: rebase on tag: ath-202410072115.
+> v3:
+>     1. use wiphy::mtx lock instead of adding a new lock(patch#2).
+>     2. rename struct according to wmi naming convention(patch#1, #2).
+>     3. update copyright in reg.h
+>     4. modifiy patch#3, #4 due to struct name change.
+> v2: change per Jeff.
+>     1. change alpha2 length from 3 to 2.
+>     2. change wmi_11d_new_cc_ev to wmi_11d_new_cc_event.
 > 
->> +
->> +               len += scnprintf(buf + len, buf_len - len,
->> +                                "\nlink[%d] Tx Frame descriptor Encrypt Type = ",
->> +                                link_id);
->> +
->> +               for (i = 0; i < HAL_ENCRYPT_TYPE_MAX; i++) {
->> +                       len += scnprintf(buf + len, buf_len - len,
->> +                                        " %d:%d", i,
->> +                                        linkstat.tx_encrypt_type[i]);
->> +               }
->> +               len += scnprintf(buf + len, buf_len - len,
->> +                                "\nlink[%d] Tx Frame descriptor Type = buffer:%d
->> extension:%d\n",
->> +                                link_id, linkstat.tx_desc_type[0],
->> +                                linkstat.tx_desc_type[1]);
->> +
->> +               len += scnprintf(buf + len, buf_len - len,
->> +                               "------------------------------------------------------\n");
->> +       }
->> +
->> +       wiphy_unlock(wiphy);
->> +
->> +       file->private_data = buf;
->> +
->> +       return 0;
->> +}
+> Wen Gong (4):
+>   wifi: ath12k: add configure country code for WCN7850
+>   wifi: ath12k: use correct WMI command to set country code for WCN7850
+>   wifi: ath12k: add 11d scan offload support
+>   wifi: ath12k: store and send country code to firmware after recovery
+> 
+>  drivers/net/wireless/ath/ath12k/core.c |  34 ++++-
+>  drivers/net/wireless/ath/ath12k/core.h |  17 +++
+>  drivers/net/wireless/ath/ath12k/hw.c   |   6 +
+>  drivers/net/wireless/ath/ath12k/hw.h   |   1 +
+>  drivers/net/wireless/ath/ath12k/mac.c  | 167 ++++++++++++++++++++++++-
+>  drivers/net/wireless/ath/ath12k/mac.h  |   7 ++
+>  drivers/net/wireless/ath/ath12k/reg.c  |  72 ++++++++---
+>  drivers/net/wireless/ath/ath12k/reg.h  |   2 +-
+>  drivers/net/wireless/ath/ath12k/wmi.c  | 158 ++++++++++++++++++++++-
+>  drivers/net/wireless/ath/ath12k/wmi.h  |  38 ++++++
+>  10 files changed, 480 insertions(+), 22 deletions(-)
+> 
+> 
+> base-commit: 11cea2b6a2e3a5ddf3562314d1a378e7ea1c26eb
 
-Hi Maha,
+please rebase again, does not apply on ath-202503312147
 
-I didn't see any response to the two feedback comments given.
+Applying: wifi: ath12k: add configure country code for WCN7850
+Using index info to reconstruct a base tree...
+M       drivers/net/wireless/ath/ath12k/wmi.c
+M       drivers/net/wireless/ath/ath12k/wmi.h
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/ath/ath12k/wmi.h
+Auto-merging drivers/net/wireless/ath/ath12k/wmi.c
+Applying: wifi: ath12k: use correct WMI command to set country code for WCN7850
+Applying: wifi: ath12k: add 11d scan offload support
+Using index info to reconstruct a base tree...
+M       drivers/net/wireless/ath/ath12k/core.c
+M       drivers/net/wireless/ath/ath12k/core.h
+M       drivers/net/wireless/ath/ath12k/mac.c
+M       drivers/net/wireless/ath/ath12k/wmi.c
+M       drivers/net/wireless/ath/ath12k/wmi.h
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/ath/ath12k/wmi.h
+Auto-merging drivers/net/wireless/ath/ath12k/wmi.c
+Auto-merging drivers/net/wireless/ath/ath12k/mac.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/ath/ath12k/mac.c
+Auto-merging drivers/net/wireless/ath/ath12k/core.h
+Auto-merging drivers/net/wireless/ath/ath12k/core.c
+Recorded preimage for 'drivers/net/wireless/ath/ath12k/mac.c'
+error: Failed to merge in the changes.
+Patch failed at 0003 wifi: ath12k: add 11d scan offload support
 
-I'd like to clear this patch from my backlog, so either need a response why
-the feedback isn't applicable or need a v5 which incorporates the feedback.
-
-Thanks!
-/jeff
 
