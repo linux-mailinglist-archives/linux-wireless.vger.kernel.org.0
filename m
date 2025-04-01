@@ -1,155 +1,222 @@
-Return-Path: <linux-wireless+bounces-21007-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21008-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA780A77050
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Mar 2025 23:47:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1164A771A8
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Apr 2025 02:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E1C03A8B38
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Mar 2025 21:46:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B0A71884618
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Apr 2025 00:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F320821660F;
-	Mon, 31 Mar 2025 21:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827BA2E336B;
+	Tue,  1 Apr 2025 00:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GXeqDmld"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GX6A6i50"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE4A1DB12C
-	for <linux-wireless@vger.kernel.org>; Mon, 31 Mar 2025 21:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A534E53AC
+	for <linux-wireless@vger.kernel.org>; Tue,  1 Apr 2025 00:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743457623; cv=none; b=aWPlIWLtxxZRnAxZhb4E5DTuHe+Fl3oZirCKcPYx7z4sioFnhtxDf1brAqXqMNQ2Eb8msiuPZDHR/GWmrmFxnL07e3TwSYjaIhbQm1NXsZdIPFts57ENzL7PEtbvPgjKA1qYbwJIB1m9np5HbfwbKNXGj2FTuZkn5jcqnuzAahw=
+	t=1743465832; cv=none; b=KtinLbd+UBih97GUDWeIv2vBOrJme4v3tHAdsdsedS7Z9vw7QXQhj/4iBQJjZq/bQUsfCrbiV51/cQFP9H9/zvvLx3/ioZ4ghPvMhYbgfcqhgcMGaGqdk6N2pfnyr/xl4bDYFGSkmgcCzQaa5Dj+g6Qrmqk+d+NJFUz2GSvuJuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743457623; c=relaxed/simple;
-	bh=0W8Yhf56VLA+zLbZceUmvUaPvdsvvqd7uiFVijCU4ho=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=kOm4XynDxuwum7nt7QXyQCyA0oV3bbWGBcqn2s0IITOrfB3R7aovghzbrmwgKGdeO7UXxOshEyahewpaD+RTYsiz+et45EvyJEMcYdoShC9Fjp3acBjHYqfbIp8xTTCfTH+dCHpCaUcFrM/KU4L/l0aDoc3pGW7diIE/Ld1sGw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GXeqDmld; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1743465832; c=relaxed/simple;
+	bh=cwqGr2JUrp9ldKBRfeiBnQsVQWMD2ezMlNyRYP43wFU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=almJPyB/EtA3AU7XscOAscuP7+W/8l6PRokWOhWnftXa4WWvvlGuVzYL8IgBYSDZ+WBdSleZPVotlkJchaH5bXezbLAX3mrstBCqHyDUUzqHJ8ZKCaHKM4n04dBAKPnB6llwQsVuRMHjkgPNv3QiVe2KKEZxNsYDYAJbiAquJJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GX6A6i50; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52VKGQnE008414
-	for <linux-wireless@vger.kernel.org>; Mon, 31 Mar 2025 21:47:01 GMT
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52VFCrSB032655
+	for <linux-wireless@vger.kernel.org>; Tue, 1 Apr 2025 00:03:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	NS2zcXptxcgcU0tPvmrUCO30qFIX1zPhS7qEmUqi3zU=; b=GXeqDmldmketFn1n
-	5ygpr8H2o8Lt2ywjHkHaf4PWtDpwiIavmK31LWe9vNRtgKJF7i5k1BamQb+L7CtW
-	F17QVAxNjHNJYwaCRYRxwcXBJB5vZhqgyAMYqry7xpGTcBQruPCXNLtl3KJOX+ci
-	ddKbaX+fUnUnLOdGYR5hZow7t6n8lsmFXKPT8saDkC4oE7Ls1ExXlgswTVCeWguQ
-	WfuXVMmHaVO0S5rV3ENbtL07FMzc3XXEI5lzEmqRDReh6lieNhxt8Iu0ucAIbdz6
-	Jn6sg+ySihX30vBNtRK+jGlOY6Lf5sTYfERIHH+WTRRts97rXrzqxnFlk1xsuMKa
-	c1OO9g==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45r1xng57y-1
+	4cVIN1yqYhlAiuoox7wycBo/ZgfvnsCNIE+NcE0TS80=; b=GX6A6i50xwhx/WZH
+	3ruXVHt+GpN71ExJSeJMNJoS7fOIYoz3GGUe+m485hFHUFa3HBiIKIBXQx1LG/sr
+	LQyxuFzWTKckFDo52E3uLfX1eYPO3Sdj7d3Zp2bz6NIOzrFuzE+/b528VAh0Wfzl
+	JbSFV37KJES05TzDfyQCr6hIHxnWJEef8SzCXPxJ+Ppu3bfsDdARFMica4imbqmQ
+	9f3lrVftdGTrGRnrGb5kabLXwjBazuB6SRLnRxmex3VPXcCIVbQos63o1EfkRDJ5
+	N4KCEHC8L7wtyOJWdTtOg1j2o5JR15hqDOCPrsbJqpNHiRmVS+eykw/5AvJvNSjy
+	Oh8SeA==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45p67qe6jq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 31 Mar 2025 21:47:00 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-225974c6272so75779005ad.1
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Mar 2025 14:47:00 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Tue, 01 Apr 2025 00:03:49 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-22406ee0243so70903125ad.3
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Mar 2025 17:03:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743457619; x=1744062419;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NS2zcXptxcgcU0tPvmrUCO30qFIX1zPhS7qEmUqi3zU=;
-        b=xK2iXA3K9MllHpgsc0ClraRf8iLdtiNC9hBtOdoX8Q7nAwATRb0mMvxM6+HfYdHr67
-         QDOQu016GVjYs3jPpFjJ33deQiz2JG2XV80wOPnCpmQ9YdbhmEbSgvvvI4Jv179la7Rr
-         HzGX0FAKzdv/q1npcXPrXaL1Ld/U0a4Dig3ijU40tC+/SWAY0XdwIPM1TVnf2uEMENFa
-         Q0aoTDpYDJukpjmnJ1QADSB9rZG4RfH1Nql2HGXhn75GDBnqN2y1ki3TDoi9zAW2GXfn
-         ctZvqzMOAsYpI5FvLXxFz2Whi9XnZSfP+QAlMXL4bnQ291IrwuF9QEUb0mw+neKHza+K
-         e7IA==
-X-Gm-Message-State: AOJu0YxsP2C+1UcSpl7FmbgEQfEPcaEihmrlUv/KjyCZKd5wjpb6xoQA
-	8dFxJNVhAN5ildKWW7EWkhZFKw+VQkiyXeSYW4UaN+P0ISQHtOzB7WNtCpNxFgY3mHmegk9UKTt
-	IMsaW/Q7Ej8uV0GfTzRrOHuuTA0xfI/v8fOX/HkF3ddJg5MOJA273jJWQN1PxTIqlGQ==
-X-Gm-Gg: ASbGncvJmfy6o18jBOTMNvO52x7PLlsb681D2R38pit0RRwJxCW1+LDsslJnIR4eCiz
-	tFR8OVPXO9qpIDYTcMOEQGTVBq5s0ILjvlgc7yOvVakao2skmM7BwlJGQo1KpOUOfyxdVs7YewW
-	/FX9PTle9dlSV2Yup3iDQqQKWBRlkTljGBpf5WNx5I3o8kmDijlnSn+uKaoUZl9EucfIKnme4ST
-	5z44Q2F0FswJXF3Ahkwv7P2Ssx2DwfW4OtcTrkVkIpv+OIv+ri8PebdnB6PyoeTdqlbuScJIPBw
-	TT8Ydrz3SOmXYTvDusGnOBGJF14vhHBucV4IR3tBx071Pev9AxAE
-X-Received: by 2002:a17:903:98b:b0:224:7a4:b31 with SMTP id d9443c01a7336-2292ee06c99mr163911545ad.6.1743457619429;
-        Mon, 31 Mar 2025 14:46:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFtOEsVjvWiGJctpJPUZiJwd6njJX7AeXk869duUJ/FtkKLtpSuBHJ8GhZpYHgaGaLnzk8gTg==
-X-Received: by 2002:a17:903:98b:b0:224:7a4:b31 with SMTP id d9443c01a7336-2292ee06c99mr163911265ad.6.1743457618981;
-        Mon, 31 Mar 2025 14:46:58 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291f1f7dcdsm74092055ad.216.2025.03.31.14.46.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Mar 2025 14:46:58 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Takashi Iwai <tiwai@suse.de>
-In-Reply-To: <20250328-ath11k-bring-hibernation-back-v3-0-23405ae23431@quicinc.com>
-References: <20250328-ath11k-bring-hibernation-back-v3-0-23405ae23431@quicinc.com>
-Subject: Re: [PATCH ath-next v3 0/6] wifi: ath11k: bring hibernation
- support back
-Message-Id: <174345761819.1161294.6011866628558951179.b4-ty@oss.qualcomm.com>
-Date: Mon, 31 Mar 2025 14:46:58 -0700
+        d=1e100.net; s=20230601; t=1743465828; x=1744070628;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4cVIN1yqYhlAiuoox7wycBo/ZgfvnsCNIE+NcE0TS80=;
+        b=YKDGwtJnHK3Zku7FlBacNi3aEGzalSr44i7H9wgyXt/OdCnAhMUYDLpc7JRBij6JkV
+         Uhk9obxOgswle5iAtrQ0FH9aaGqvNn+b4wPmuGWv2f1RLLmF4HNz/NaKn43QXsHRL+y3
+         5cli3FdyF7K9p40+j4edBc+AreYdJvfPHTr+8kcXV9aEGC9gvgmujWTIsIdQxVzwur6g
+         owPZm3i6d0I3RZk+dnhVX9/tLQHnKi0IUdYh5MPKq9E//SIW0anSxBq1Ft7gQTN47nop
+         Vz1S8uYzJL+3EQiDOjF2zHHGyqDy8RLLvOsmTcSWn4fsEiuH7vC8Vtoh4KyZKpdi8N5r
+         kUuw==
+X-Gm-Message-State: AOJu0Yy9+NOu7L+x1a5EmMygXVThsRAxRHrGwqbPryXrY18xIVAqPWhh
+	2uDu394q4aNdMH3TokwqpjH//srkOSWPLni2Us4wWslGafttl+rhuxB+tLCipdivBSPggrW/zIi
+	DMvAz3vYVIfpOvyBXJ1+WXk5bYkeI1e1F0iPO7S3iNIXNBbjiDh6rXP4kfTMrjvKSRA==
+X-Gm-Gg: ASbGncsBZth2ydH/Dxe6hzep3r+mvqcmk/IdCpcsy5ad5bMLdOkeuVcVvvUk4q7TyvV
+	LezzrQJw6sF3pbo8UPhzBb1aoXK9T+5YPVUQelnIYPuRnFryzGHVJf18lMBkHPIYw+eWV8oJCNs
+	BYhuioS1SI/gk7fVIibWnaWPj4RHEXKL+NjQMDNAx4T3siEcM3QFUNCmsm1RYtaOIRPIayy02nm
+	SrKQA3XXyQeO33shKgfeIGy7O4a4dCFAHK9QjQ4VmPN10WdsM9TrAtqn1gZ32LKC6XZxD07xUvK
+	Fyuunc/FggnYqwQJo/pYRMdD51TUMNdfGZYyCjZ0zkFMLbNYw6OwkvtUXn3PLs3PwYMrPm9htr0
+	5EeGTw4fM
+X-Received: by 2002:a17:902:f54a:b0:216:53fa:634f with SMTP id d9443c01a7336-2292f9ef20emr175664755ad.48.1743465827812;
+        Mon, 31 Mar 2025 17:03:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHnMu2P7tyWZHMH46/iz8oKR/XbzPFIZC5WUvTC01ExGdFd92nY5GkYQ0CBpwAML4SYY8sXxw==
+X-Received: by 2002:a17:902:f54a:b0:216:53fa:634f with SMTP id d9443c01a7336-2292f9ef20emr175664275ad.48.1743465827319;
+        Mon, 31 Mar 2025 17:03:47 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291eedc988sm76155715ad.59.2025.03.31.17.03.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Mar 2025 17:03:46 -0700 (PDT)
+Message-ID: <64839c85-38f4-4a13-9ee1-273aed339a47@oss.qualcomm.com>
+Date: Mon, 31 Mar 2025 17:03:45 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] wifi: ath12k: Add support for link specific datapath
+ stats
+To: "Tamizh Chelvam Raja (QUIC)" <quic_tamizhr@quicinc.com>,
+        "Balamurugan Mahalingam (QUIC)" <quic_bmahalin@quicinc.com>,
+        "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20250203213237.2695131-1-quic_bmahalin@quicinc.com>
+ <BL3PR02MB8163BE57AD5EF563FD8A76B383F72@BL3PR02MB8163.namprd02.prod.outlook.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <BL3PR02MB8163BE57AD5EF563FD8A76B383F72@BL3PR02MB8163.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.0
-X-Proofpoint-GUID: JT94GZg2cexptFFOlxvRSsTdcuHMJoRM
-X-Proofpoint-ORIG-GUID: JT94GZg2cexptFFOlxvRSsTdcuHMJoRM
-X-Authority-Analysis: v=2.4 cv=Qv1e3Uyd c=1 sm=1 tr=0 ts=67eb0d54 cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=EUspDBNiAAAA:8 a=EgwDjV4hzmH0pz7qutYA:9 a=QEXdDO2ut3YA:10
- a=324X-CrmTo6CU4MGRt3R:22
+X-Authority-Analysis: v=2.4 cv=fMI53Yae c=1 sm=1 tr=0 ts=67eb2d65 cx=c_pps a=IZJwPbhc+fLeJZngyXXI0A==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=UjqVY_aGyNUKZPdAsKEA:9 a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-ORIG-GUID: Tprrpjq-6WDgqLsRUR6pF3ckFq0Ty2PV
+X-Proofpoint-GUID: Tprrpjq-6WDgqLsRUR6pF3ckFq0Ty2PV
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-31_10,2025-03-27_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- mlxscore=0 impostorscore=0 adultscore=0 priorityscore=1501 bulkscore=0
- phishscore=0 malwarescore=0 mlxlogscore=794 lowpriorityscore=0
- clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
+ definitions=2025-03-31_11,2025-03-27_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
+ priorityscore=1501 phishscore=0 spamscore=0 impostorscore=0 clxscore=1015
+ mlxlogscore=901 bulkscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503310149
+ definitions=main-2503310164
 
-
-On Fri, 28 Mar 2025 13:32:23 +0800, Baochen Qiang wrote:
-> To handle the Lenovo unexpected wakeup issue [1], previously we revert
-> commit 166a490f59ac ("wifi: ath11k: support hibernation"). However we
-> need to bring it back, of course with additional changes such that Lenovo
-> machines would not break.
+On 2/4/2025 10:37 PM, Tamizh Chelvam Raja (QUIC) wrote:
+...
+>> +static int ath12k_open_link_stats(struct inode *inode, struct file
+>> +*file) {
+>> +       struct ath12k_vif *ahvif = inode->i_private;
+>> +       size_t len = 0, buf_len = (PAGE_SIZE * 2);
+>> +       struct ath12k_link_stats linkstat;
+>> +       struct ath12k_link_vif *arvif;
+>> +       unsigned long links_map;
+>> +       struct wiphy *wiphy;
+>> +       int link_id, i;
+>> +       char *buf;
+>> +
+>> +       if (!ahvif)
+>> +               return -EINVAL;
+>> +
+>> +       buf = kzalloc(buf_len, GFP_KERNEL);
+>> +       if (!buf)
+>> +               return -ENOMEM;
+>> +
+>> +       wiphy = ahvif->ah->hw->wiphy;
+>> +       wiphy_lock(wiphy);
+>> +
+>> +       links_map = ahvif->links_map;
+>> +       for_each_set_bit(link_id, &links_map,
+>> +                        IEEE80211_MLD_MAX_NUM_LINKS) {
+>> +               arvif = rcu_dereference_protected(ahvif->link[link_id],
+>> +
+>> + lockdep_is_held(&wiphy->mtx));
+>> +
 > 
-> For suspend (S3), as those machines work well in WoWLAN mode, the thought
-> here is that we put WLAN target into WoWLAN mode on those machines while
-> into non-WoWLAN mode (which is done in the reverted commit) on other
-> machines. This requires us to identify Lenovo machines from others. For
-> that purpose, read machine info from DMI interface, match it against all
-> known affected machines. If there is a match, choose WoWLAN suspend mode,
-> else choose non-WoWLAN mode. This is done in patches [1 - 4/6]
+> Here arvif can be NULL, so it would be good to check before using it.
 > 
-> [...]
+>> +               spin_lock_bh(&arvif->link_stats_lock);
+>> +               linkstat = arvif->link_stats;
+>> +               spin_unlock_bh(&arvif->link_stats_lock);
+>> +
+>> +               len += scnprintf(buf + len, buf_len - len,
+>> +                                "link[%d] Tx Unicast Frames Enqueued  = %d\n",
+>> +                                link_id, linkstat.tx_enqueued);
+>> +               len += scnprintf(buf + len, buf_len - len,
+>> +                                "link[%d] Tx Broadcast Frames Enqueued = %d\n",
+>> +                                link_id, linkstat.tx_bcast_mcast);
+>> +               len += scnprintf(buf + len, buf_len - len,
+>> +                                "link[%d] Tx Frames Completed = %d\n",
+>> +                                link_id, linkstat.tx_completed);
+>> +               len += scnprintf(buf + len, buf_len - len,
+>> +                                "link[%d] Tx Frames Dropped = %d\n",
+>> +                                link_id, linkstat.tx_dropped);
+>> +
+>> +               len += scnprintf(buf + len, buf_len - len,
+>> +                                "link[%d] Tx Frame descriptor Encap Type = ",
+>> +                                link_id);
+>> +
+>> +               len += scnprintf(buf + len, buf_len - len,
+>> +                                        " raw:%d",
+>> +                                        linkstat.tx_encap_type[0]);
+>> +
+>> +               len += scnprintf(buf + len, buf_len - len,
+>> +                                        " native_wifi:%d",
+>> +                                        linkstat.tx_encap_type[1]);
+>> +
+>> +               len += scnprintf(buf + len, buf_len - len,
+>> +                                        " ethernet:%d",
+>> +                                        linkstat.tx_encap_type[2]);
+> 
+> Like encrypt type stats below this also can be put it in a loop.
+> 
+>> +
+>> +               len += scnprintf(buf + len, buf_len - len,
+>> +                                "\nlink[%d] Tx Frame descriptor Encrypt Type = ",
+>> +                                link_id);
+>> +
+>> +               for (i = 0; i < HAL_ENCRYPT_TYPE_MAX; i++) {
+>> +                       len += scnprintf(buf + len, buf_len - len,
+>> +                                        " %d:%d", i,
+>> +                                        linkstat.tx_encrypt_type[i]);
+>> +               }
+>> +               len += scnprintf(buf + len, buf_len - len,
+>> +                                "\nlink[%d] Tx Frame descriptor Type = buffer:%d
+>> extension:%d\n",
+>> +                                link_id, linkstat.tx_desc_type[0],
+>> +                                linkstat.tx_desc_type[1]);
+>> +
+>> +               len += scnprintf(buf + len, buf_len - len,
+>> +                               "------------------------------------------------------\n");
+>> +       }
+>> +
+>> +       wiphy_unlock(wiphy);
+>> +
+>> +       file->private_data = buf;
+>> +
+>> +       return 0;
+>> +}
 
-Applied, thanks!
+Hi Maha,
 
-[1/6] wifi: ath11k: determine PM policy based on machine model
-      commit: ce8669a27016354dfa8bf3c954255cb9f3583bae
-[2/6] wifi: ath11k: introduce ath11k_core_continue_suspend_resume()
-      commit: 3d2ce6ad9126b96a721542c6299a2f0967b5a63f
-[3/6] wifi: ath11k: refactor ath11k_core_suspend/_resume()
-      commit: 662cc5b92c327e94587a959d7ed75862eda4b059
-[4/6] wifi: ath11k: support non-WoWLAN mode suspend as well
-      commit: 88fd03cf51a7d67dac976ecce079ccfc79376966
-[5/6] wifi: ath11k: choose default PM policy for hibernation
-      commit: 32d93b51bc7e2e557771abe4a88da69c609e3d52
-[6/6] Reapply "wifi: ath11k: restore country code during resume"
-      commit: 3b199a58cc585f423a85af2e57045c9a783361bb
+I didn't see any response to the two feedback comments given.
 
-Best regards,
--- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+I'd like to clear this patch from my backlog, so either need a response why
+the feedback isn't applicable or need a v5 which incorporates the feedback.
 
+Thanks!
+/jeff
 
