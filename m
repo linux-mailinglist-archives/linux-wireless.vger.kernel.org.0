@@ -1,209 +1,129 @@
-Return-Path: <linux-wireless+bounces-21072-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21075-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 026EDA78EC0
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 14:40:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1325A78FBC
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 15:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB61A166775
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 12:39:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58FD518950AC
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 13:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA6C2397B9;
-	Wed,  2 Apr 2025 12:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D663C23A99F;
+	Wed,  2 Apr 2025 13:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HCdFlrZi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UtH73OU/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE8D23959B;
-	Wed,  2 Apr 2025 12:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CEF23959B;
+	Wed,  2 Apr 2025 13:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743597526; cv=none; b=uNpg/wzF37Szy8Fm8hcISWGjnj6bUBWplymAxwXV2RWBeue2n1t7cn0Ay/6iStY0P5D2zckECsCeLuZZxyjzXaC8IT/qevqk1mtM34NTYHM7XU3Y3Ybo9Q5U91lOTWqV4CGwrnWRgyF3UL3/BzU+77TGAmadFAMhmz+H5jaj4ao=
+	t=1743600421; cv=none; b=AH9xwMPgDpInymRCHi37yAdKOLMWcAIIe9JY8/V/dXZLCX0SLJ4zmIMbMwhnhQt53t165iKd52BtlvhEEa0suqbm4LT1g++SR7qjezA4OR8IdMwJDD8yrRJTKaUJPjh6/Jv0pvyXKFhiQ+FvnALN1ykZOA1V8BCXVqlTdEP1zyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743597526; c=relaxed/simple;
-	bh=oEhyNyNMZHsFewfythTjj6m7g/dZV8hw3gXRVCT8pNc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jcP6A96xOpNtHkod3l49+DE0xhg8dchRqbsb+R99uzAxvuW4lZ59ePsa5vFFwrpEn7BV/czNdKwFnlQq6hyh2VUpJvwmwuGJlewhETwSvD4LDlhbMRnlsEdkRDs5bHejZPk2wrRdYJk6/BlsK7Ql0wiQDhIQLbhn7SiW4zArH7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HCdFlrZi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46D7C4CEE9;
-	Wed,  2 Apr 2025 12:38:44 +0000 (UTC)
+	s=arc-20240116; t=1743600421; c=relaxed/simple;
+	bh=ClNiKdAaagNCBF9poM6ZVmYqqOtAci1UecszB5V3I5c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dh9S4qSBqkGlYAP7RFR2NOpfCNe9a10yzc1NYrK5dJehPMAyPTHoUwdZLntAeipocGPZ9FcCgywj88+izole9OsLwq9zQcUgy/P5VR5t0LU9bnSCrVhM/cDc9b6jPilevH6zUH1DQdlUQb3VvTBW+x2LvZC53YDHCI4dhi/cvxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UtH73OU/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255AEC4CEE9;
+	Wed,  2 Apr 2025 13:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743597524;
-	bh=oEhyNyNMZHsFewfythTjj6m7g/dZV8hw3gXRVCT8pNc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HCdFlrZivFl/UJ2eMNNSfT9+UYFDzF4gq16A9L9FZp24YoZaAz6/fL1v+ZsvmabGx
-	 FfVb5eltNG21n8hvETXN+F8aSCRv1JaELc3N9cZmNMxi2XEdwfhzL3LnpQPBR5S3o5
-	 EJd6NoP/8IUu/pu3A6RrSqgnRoPViqomT5lF8lHTpFwmATgtKJ2wzmrCuQJD9r27XB
-	 UTozMtVBJ2TlCDxA9A7PoIMyAhveFophTU4wtibnMkpMkgStfoKd4vpFNS3aEyLPKX
-	 dOmH3+IJ+CYAoy3dTQF9jrY9MEE/lVwHR6g7QloS9SxqlnyqP8zbsw09we9+fALFcA
-	 fjRsTa0533DYw==
+	s=k20201202; t=1743600421;
+	bh=ClNiKdAaagNCBF9poM6ZVmYqqOtAci1UecszB5V3I5c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UtH73OU/kW3B3D43xBbmfrpfLXDrN7UH9K2u9Xr+YmIyZLa7+A0rlj9pQUMSzrdwN
+	 SqYlJeNcA4LgKBPe6wjPh4bXUrlele19Yx/kkPTWT/ZECaSZw1G75/GnIfjYrEJ3Cv
+	 LSR+eouyTdZF3guzUAiF+buNxaoGIuqDwHIogrSCI3eOOh9j5L66OqPEzIkP0Ev+Nd
+	 Gds33G9CNdXLMMLWGx0Nun1b3tffn848JcPeVxNJiULVykTsTjtX2t0t5GxG8z7wEI
+	 1d1erz0Yb0jZHYFr0fzt9H86qKHoZVgB81RLEJ6ioGrbjJ7dAcbf91NerpywAfaqlz
+	 CSb7puTLyYjEA==
 Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tzxMn-000000001WI-1voi;
-	Wed, 02 Apr 2025 14:38:49 +0200
-Date: Wed, 2 Apr 2025 14:38:49 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1tzy7V-000000004iG-2W68;
+	Wed, 02 Apr 2025 15:27:06 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] PCI/pwrctrl: Rename pwrctrl Kconfig symbols and slot
- module
-Message-ID: <Z-0v2RAtDe0bSfWI@hovoldconsulting.com>
-References: <20250328143646.27678-1-johan+linaro@kernel.org>
- <20250328143646.27678-2-johan+linaro@kernel.org>
- <CAOiHx=mo6Qd+7WrO2JvBLhqjGR7oHds14FwFFAVoEkVWLnbhdA@mail.gmail.com>
+	Will Deacon <will@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH v2 0/4] PCI/arm64/ath11k/ath12k: Rename pwrctrl Kconfig symbols
+Date: Wed,  2 Apr 2025 15:26:30 +0200
+Message-ID: <20250402132634.18065-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOiHx=mo6Qd+7WrO2JvBLhqjGR7oHds14FwFFAVoEkVWLnbhdA@mail.gmail.com>
 
-On Wed, Apr 02, 2025 at 01:54:36PM +0200, Jonas Gorski wrote:
+The PCI pwrctrl framework was renamed after being merged, but the
+Kconfig symbols still reflect the old name ("pwrctl" without an "r").
 
-> I have some nitpicks ...
+This leads to people not knowing how to refer to the framework in
+writing, inconsistencies in module naming, etc.
 
-Thanks for taking a look.
+Let's rename also the Kconfig symbols before this gets any worse.
 
-> On Fri, Mar 28, 2025 at 3:41 PM Johan Hovold <johan+linaro@kernel.org> wrote:
-> >
-> > Commits b88cbaaa6fa1 ("PCI/pwrctrl: Rename pwrctl files to pwrctrl") and
-> > 3f925cd62874 ("PCI/pwrctrl: Rename pwrctrl functions and structures")
-> > renamed the "pwrctl" framework to "pwrctrl" for consistency reasons.
-> >
-> > Rename also the Kconfig symbols so that they reflect the new name while
-> > adding entries for the deprecated ones. The old symbols can be removed
-> > once everything that depends on them has been updated.
-> >
-> > The new slot module is also renamed to reflect the framework name and
-> > match the other pwrctrl modules.
-> >
-> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > ---
-> >  drivers/pci/pwrctrl/Kconfig  | 27 +++++++++++++++++++++------
-> >  drivers/pci/pwrctrl/Makefile |  8 ++++----
-> >  2 files changed, 25 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/drivers/pci/pwrctrl/Kconfig b/drivers/pci/pwrctrl/Kconfig
-> > index 990cab67d413..62f176e42e33 100644
-> > --- a/drivers/pci/pwrctrl/Kconfig
-> > +++ b/drivers/pci/pwrctrl/Kconfig
-> > @@ -1,19 +1,19 @@
-> >  # SPDX-License-Identifier: GPL-2.0-only
-> >
-> > -config HAVE_PWRCTL
-> > +config HAVE_PWRCTRL
-> >         bool
-> >
-> > -config PCI_PWRCTL
-> > +config PCI_PWRCTRL
-> >         tristate
-> >
-> > -config PCI_PWRCTL_PWRSEQ
-> > +config PCI_PWRCTRL_PWRSEQ
-> >         tristate
-> >         select POWER_SEQUENCING
-> > -       select PCI_PWRCTL
-> > +       select PCI_PWRCTRL
-> >
-> > -config PCI_PWRCTL_SLOT
-> > +config PCI_PWRCTRL_SLOT
-> >         tristate "PCI Power Control driver for PCI slots"
-> > -       select PCI_PWRCTL
-> > +       select PCI_PWRCTRL
-> >         help
-> >           Say Y here to enable the PCI Power Control driver to control the power
-> >           state of PCI slots.
-> > @@ -21,3 +21,18 @@ config PCI_PWRCTL_SLOT
-> >           This is a generic driver that controls the power state of different
-> >           PCI slots. The voltage regulators powering the rails of the PCI slots
-> >           are expected to be defined in the devicetree node of the PCI bridge.
-> > +
-> > +# deprecated
-> > +config HAVE_PWRCTL
-> > +       bool
-> > +       select HAVE_PWRCTRL
-> 
-> I'm not sure this will work as intended. This symbol can only be != n
-> if anything selects it, but there may also be (outdated) config
-> symbols that depend on its value. E.g. ath1*k has "select
-> PCI_PWRCTL_PWRSEQ if HAVE_PWRCTL", and if there is nothing selecting
-> HAVE_PWRCTL, but HAVE_PWRCTRL directly instead, HAVE_PWRCTL will be =n
-> and the condition will fail.
-> 
-> Since you rename the only one selecting HAVE_PWRCTL in patch 2/4, but
-> update ath1*k in 3/4 and 4/4, their select PCI_PWRCT(R)L_PWRSEQ use is
-> temporarily ineffective. Moving the arm64 patch last would avoid that
-> though, at least for the current state.
+The ath11k, ath12k and arm64 changes could go theoretically go through
+the corresponding subsystem trees in turn once they have the new
+symbols, but to avoid tracking dependencies over multiple cycles it is
+much preferred to have all of these go in through the PCI tree.
 
-You're right, thanks for catching this.
+The wifi patches have been acked by Jeff and I don't think Will or
+Catalin will mind the single rename in arm64 if they don't see this
+message in time.
 
-> The alternative would be split this by config symbol instead of per
-> tree, so all users would be atomatically updated as well. These
-> patches need to go through the same tree anyways, so I see no issue
-> doing it that way.
+Note that the patches could be squashed into one, but keeping them
+separate highlights the changes done to other subsystems. I also find it
+easier to review the changes this way.
 
-Moving the arm64 patch last would take care of the temporary glitch, but
-since it seems we need to take this through one tree (e.g. to avoid
-merging it over three cycles) perhaps we can just squash them.
+There are some new pwrctrl drivers and an arm64 defconfig change on the
+lists, but the former should also go in through PCI anyway while we can
+make sure that the defconfig update matches the new slot symbol.
 
-That said, it seems I would need to reverse the logic for HAVE_PWRCTL so
-that it is selected by HAVE_PWRCTRL if we think we still need to worry
-about new users of HAVE_PWRCTL being adding to other trees.
-
-If we could get this renamed already in rc1, we probably do no need to
-care about that though.
-
-> > +
-> > +# deprecated
-> > +config PCI_PWRCTL_PWRSEQ
-> > +       tristate
-> > +       select PCI_PWRCTRL_PWRSEQ
-> 
-> Similar issue, but there are no conditionals based on this, so this may be fine.
-
-Yeah, this one should be fine.
-
-> > +
-> > +# deprecated
-> > +config PCI_PWRCTL_SLOT
-> > +       tristate
-> > +       select PCI_PWRCTRL_SLOT
-> 
-> This one won't work. Its value will be automatically calculated based
-> on other symbols selecting it, and since there is nothing selecting
-> it, it will always be n, regardless what any existing .config says.
-> 
-> So unless you make this a user selectable symbol as well, this will
-> (potentially) break existing .configs since its value will be then
-> automatically calculated as =n, and the new symbol takes the default
-> =n (unless explicitly enabled, or selected by ath1*k).
-
-Right. Since PCI_PWRCTL_SLOT will be new in rc1 and there is nothing
-selecting it, I think we can just rename this one. At least if we can
-get this into rc1 and make sure that the pending defconfig update is
-respun.
-
-Otherwise it would indeed need to be user selectable.
-
-Let me respin this. Since this is all quite new, we should be able to
-just rip of the band-aid for rc1 and not need to worry about this going
-forward.
+Note that getting this rename into rc1 would be great as that way it
+would end up in most subsystem trees soon as well.
 
 Johan
+
+
+Changes in v2:
+ - drop deprecated symbol for the new slot driver to avoid having to a
+   add a new user visible symbol (e.g. any early adopters will be asked
+   to enable the renamed option again)
+
+ - move arm64 patch last two avoid temporarily not having the pwrseq
+   driver selected (Jonas)
+
+Johan Hovold (4):
+  PCI/pwrctrl: Rename pwrctrl Kconfig symbols and slot module
+  wifi: ath11k: switch to PCI_PWRCTRL_PWRSEQ
+  wifi: ath12k: switch to PCI_PWRCTRL_PWRSEQ
+  arm64: Kconfig: switch to HAVE_PWRCTRL
+
+ arch/arm64/Kconfig.platforms            |  2 +-
+ drivers/net/wireless/ath/ath11k/Kconfig |  2 +-
+ drivers/net/wireless/ath/ath12k/Kconfig |  2 +-
+ drivers/pci/pwrctrl/Kconfig             | 22 ++++++++++++++++------
+ drivers/pci/pwrctrl/Makefile            |  8 ++++----
+ 5 files changed, 23 insertions(+), 13 deletions(-)
+
+-- 
+2.49.0
+
 
