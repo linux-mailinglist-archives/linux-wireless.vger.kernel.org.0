@@ -1,119 +1,142 @@
-Return-Path: <linux-wireless+bounces-21062-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21063-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1242FA78939
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 09:56:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CF0A78962
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 10:00:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 067FB7A55F0
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 07:55:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8050C188CA77
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 08:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE2D2746C;
-	Wed,  2 Apr 2025 07:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50B91F1507;
+	Wed,  2 Apr 2025 08:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RdVqE+g1"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="E8KZeGlv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8ED52F5A
-	for <linux-wireless@vger.kernel.org>; Wed,  2 Apr 2025 07:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2814F2F5A
+	for <linux-wireless@vger.kernel.org>; Wed,  2 Apr 2025 08:00:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743580573; cv=none; b=WEXlm3+AQn4n0r5GHu0LKuWbwdUe80Stpgv4aXAfdk/IgNbAyv2TD07i0xhAHaAB356TJm1Ovx40Y4pN02AQ7/TE4m1AfrjlUG2ZiE12dx7GkgFZ72xqfY6Sro/covsoozE8jld91pwI1iOhrqreeqisNcBwT7aakDjdXgPdlmM=
+	t=1743580842; cv=none; b=MOJEsPDt2YdDCeMcISN7hzOZebUxAcVJ3KqJbcP2WqvJfJh5rrc0zoo5VCUn4VljQ/UH8WEmVxy7nwgSgvXCdIKi8BPf6zVlaGEotzU0Vby8S71dp4GpgKLKUSO6fWETOPkMlkySeJ8Tmn+N1K7ZgxHO8JtWBkmCrVoh5g5Jtn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743580573; c=relaxed/simple;
-	bh=mZS3xoWcPOwRbPbarw8xXtqa9LNu/1wjVra49z4kk/M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lWSS2SeSwAXgOC+1ARxTofWv1FnY74BPdP5otltEbVaDPdjtP1lXS+F+LSSekbl21i3HcovjJd4aXhcvniQfNRdywuTOtynIyepPusGxJBNVddYAEUgHtpNqBp5o5L90gEXDFZEC7GbWOd+BkjJQLKTeg4AOUCxGXhLbu+uTyHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RdVqE+g1; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ac25d2b2354so1048769066b.1
-        for <linux-wireless@vger.kernel.org>; Wed, 02 Apr 2025 00:56:11 -0700 (PDT)
+	s=arc-20240116; t=1743580842; c=relaxed/simple;
+	bh=0a4g2AA3yqI2lZl/rLdcxJlvVBoXlDU/3TS7Jxz9usY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fxzQuxJvDJF90jRDocYsHOSHB8V94WOQ/BkP/3hx5InJFC5abO6ujJMpx0QxdcUGzIB1PloblJBoyCiXlspuWCEHaEfjVBs1jYUhj7dCo1H8XDtRHiUZmKd+dCMt82u+Ij0uZQ/BxRMmTif5WGnecJyd6O4S2g2Xu1gnTGkb5FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=E8KZeGlv; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3032aa1b764so8266537a91.1
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Apr 2025 01:00:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743580570; x=1744185370; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mZS3xoWcPOwRbPbarw8xXtqa9LNu/1wjVra49z4kk/M=;
-        b=RdVqE+g154QDFGa5tAYNPH8ldG7T10jJ5sGF6BhDpVR7W8NQLxERfNhlC0yKxUjp8b
-         a6m9g13qt9RiRVwsCwew9vC0c+pSMCpKyqP4lCrvoKv0USMRY3dEdMkTgOqVlDHxTqXt
-         lh2UAm2MCRkwWEzLqUq56i/pepsOf14S+5V9InZNSTo5zIau0htoWonz4Y66DX8SGqc9
-         cq3OtX4nndT2N9j5AT//JvnR577HWPs4QbPhPae2D8SJl8k6NZELJ/mcwPTKFnU23Bod
-         j86rVrxTS4DYqmqr5C1LKbCZjNjdmIxuwnUAmYMmMDk10B+vZnk7Vw8mvmt2TEv3MxIA
-         nB0g==
+        d=linaro.org; s=google; t=1743580840; x=1744185640; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ctkJhtxKsp7SbmROJ/NcWvcFC2gk/L3/qKRnLMhq/34=;
+        b=E8KZeGlvhHQ5ZBVIMXgyhFY1Z97wEupWCdkGhGcJnW4mnUxYLPUcrb3IA4sTJsln57
+         w8tVtG/OSgh9g1Akc+dNZdsCD7+HEhHOcDDMmbQ0zjtxR54U5xvQCfYz22xHnWN+GkVd
+         4isG5cZUZvE4nldLhqIc8C7U09lrtlLCOZry9cpR4BLTrXRj+QndmXZ4ZDexQLiQsK63
+         G55FnqbrYoOFjEwo+lCHNdO8RNZu9nTC9qptiplN5GOLloztonZGHTx2084ODG0xC+2G
+         OLeqp2lXDqjO0Rp/dFp7Y8PPSNyqFBEydBFmorWUL4HmafopomhOHvOVSywi1fxOrf92
+         +QTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743580570; x=1744185370;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mZS3xoWcPOwRbPbarw8xXtqa9LNu/1wjVra49z4kk/M=;
-        b=OU3gkokKt7a1ab1mbufGO+DVVOQhG8aVfXtIkZbkrnDS2PvuVP5WFodnitikRvQGSl
-         9MMhlUcvrcW25CIctrVpT3H1XqPMQK7IluUwrDeeY22QPvL14WlQNiCLj6TSxkdJCAy/
-         UDUgQtxwHltYclbOJpyn8C75Rn31eIDdIcxw+DN9858ZmWFQh9QxDmzuge4wARw6kUrv
-         0uk3THsy+AN1eITIuDYI+AiyvyqtHnKHpftxlZEJ5mYElOHb8WiHH7uDo/Ju2WFk1O/a
-         aDMzycuvdyTWDD2A+aqTLwvAnXYUcvqPxHGiqIMaK/1jz7A7YVjaJvCDerWQEw2sxzfY
-         l2kg==
-X-Gm-Message-State: AOJu0YxlW8Xrz8GrTqRTrXomOU1NxulfukCSfgpo4b2p4oIm+U+tm1W3
-	2SiMooj7AASA7Jf41s5vTGHo4evs2sX2Xd6XYWX0x7vGpQoqCn+5RQegwtQgXitGdn3I7YRNNnM
-	y1CgQwiwojlp4dWc11y9oJMqvrjo=
-X-Gm-Gg: ASbGncuvbchtHHvgovArQHHd+gQ99gI6oBf2L37xtoe0ofe2QcTZOTtNpB7CHctS1nn
-	5BsbpVzzhZSIhKIUB95DUEbTV16iimlAC+0cWEwIWxsvuDFjjTRtevSLbdIOtHk474mnVZo40r1
-	BPCtDZzHybDI1cKjMPcdLvb6Pdhf31
-X-Google-Smtp-Source: AGHT+IEbfflbDcB6mSU1pIogbYDfLFDXNn42fuFbsYkKXgjUPTyutNd95lUDtiIvpCeavW2uEh/b5Bjln+kdIdYU7qY=
-X-Received: by 2002:a17:907:7d90:b0:ac6:f6ea:cc21 with SMTP id
- a640c23a62f3a-ac738c153a2mr1237816866b.55.1743580569862; Wed, 02 Apr 2025
- 00:56:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743580840; x=1744185640;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ctkJhtxKsp7SbmROJ/NcWvcFC2gk/L3/qKRnLMhq/34=;
+        b=Fazj05MmHkXC6ihWOby3EDCuP0+GsLNTiUwi3bIQDPL7HJGPPRoPnZ1Lxg2KslXIPz
+         euwokju615/AA61Aq53rw/HvJVB2G1ZYHytKuGOVEBkDlgPP2fOugzs/QMPwPumNn0+5
+         JisrwMw/OhWWeuAn1bsOQod6lSQRoPOITPfsKt5nVXYQ5kERLx5lUbECI/zbdeCKdWQW
+         mjeGHIKAyyQ1x7z77YyMZk/LG7VEPdjPlG2CmE1w8W8lBcyt5bVC6WDPoYgm+8NJinyM
+         On7VnULpssfiXit5V2+xqKFGhcotgX6X9JzYpib6Ql+4PUSM0w1nNZWDUrt6506PzPIx
+         JUNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUWCnSegNzVrdlFs/iFeTS3HwMw43S885OjpYqc7/JyajM5erXOvV+xnqba44rd4lzmC92CKp32SUyvS9pFkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiIwKI6QAPtKRJic0JT2+XqtbGq2YYN1ATayPForVbcs/2rbeD
+	1zHRY2JEwZZNII0CLhNwcIoB+7HUfyfQytn6E0XLa8D4JqZzCINFdUrcF26eQQ==
+X-Gm-Gg: ASbGncs5+frmYPFQAnRTOTxpptKXPcrnDJZ8qDdPu9IixGq5VlHA9dmgW8xM53JxHwm
+	v84EkGJPnaRsAYa2OdftPlupuKyrtW6m/HebmRpCEM4UuZhSO+3Jw03zptuZ/oYdRcPY5nNTlHG
+	47yyvd3rIzB4V07IwU5W4hfRCys+j0+mqjFy2Cisc+oELTuJZnDOgLEOQi7xaQhyQu3syklgBbk
+	/oLshEqGLLRVGgEZ39HbDmGCFmpOwIrLowsE3hYcYLFZYK5x5xENUsQalWa8GlODKqL8ROo4+Mh
+	lwmFhc4Qal2LMC3nAd/TYR2oJq+l/dG7dFc38YH0Bg7ZWBYyxKk33Egi
+X-Google-Smtp-Source: AGHT+IGTopCX2yplsS8GSpqfdGC18AVuR2urMTzElNFnwCLQ4BxN3uKkDEM1puu2xMXe8rc89mguVQ==
+X-Received: by 2002:a17:90b:1f92:b0:2fa:15ab:4dff with SMTP id 98e67ed59e1d1-3053215b176mr5797036a91.31.1743580840354;
+        Wed, 02 Apr 2025 01:00:40 -0700 (PDT)
+Received: from thinkpad ([120.56.205.103])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3056f979d6fsm1010122a91.45.2025.04.02.01.00.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Apr 2025 01:00:39 -0700 (PDT)
+Date: Wed, 2 Apr 2025 13:30:34 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, ath11k@lists.infradead.org, ath12k@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/4] PCI/arm64/ath11k/ath12k: Rename pwrctrl Kconfig
+ symbols
+Message-ID: <bsk4s5tlbpnvds73uxeasqxydcxolxpxvmtladtejhbi65yxob@4h5gy5srxlrr>
+References: <20250328143646.27678-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250401201259.50627-1-janusz.dziedzic@gmail.com>
- <9481e6a3844f897d03f8f4bfef335092f4ac76da.camel@sipsolutions.net>
- <CAFED-jm3Ot3urZuDnYaWE1vyXuAMDvw_W7vuxUOjQtRqN-y0uA@mail.gmail.com> <abf1538df6f224e38b1e42b66cc71b76c2645288.camel@sipsolutions.net>
-In-Reply-To: <abf1538df6f224e38b1e42b66cc71b76c2645288.camel@sipsolutions.net>
-From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
-Date: Wed, 2 Apr 2025 09:55:58 +0200
-X-Gm-Features: AQ5f1JrcriVcJSZFtqjFRwLqfJD5_UBHBktjCutJTmOUtv0SEL3H39KoFCQgNAo
-Message-ID: <CAFED-j=5KTpaCm8p7rbHnHVykTLvnRYu+ZO08ggh4jgxfuyoPg@mail.gmail.com>
-Subject: Re: [RFC wireless-next 0/2] wifi: allow tagged control packets
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, j@w1.fi
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250328143646.27678-1-johan+linaro@kernel.org>
 
-=C5=9Br., 2 kwi 2025 o 09:24 Johannes Berg <johannes@sipsolutions.net> napi=
-sa=C5=82(a):
->
-> On Wed, 2025-04-02 at 09:17 +0200, Janusz Dziedzic wrote:
-> >
-> > Just do minimal imp/check and share RFC, while don't know this
-> > approach could be accepted.
-> >
->
-> What choices are there? What's the alternative? Go back to sending the
-> frames via raw sockets? I guess it works but it's not great?
->
-Yes, back to netdev/bridge eap read in hostapd should fix receive path.
-But, don't see it on netdev/bridge when use tcpdump - guess we change
-smth here for rx path (or skip not protected when control port used).
+On Fri, Mar 28, 2025 at 03:36:42PM +0100, Johan Hovold wrote:
+> The PCI pwrctrl framework was renamed after being merged, but the
+> Kconfig symbols still reflect the old name ("pwrctl" without an "r").
+> 
+> This leads to people not knowing how to refer to the framework in
+> writing, inconsistencies in module naming, etc.
+> 
+> Let's rename also the Kconfig symbols before this gets any worse.
+> 
+> The arm64, ath11k and ath12k changes could go through the corresponding
+> subsystem trees once they have the new symbols (e.g. in the next cycle)
+> or they could all go in via the PCI tree with an ack from their
+> maintainers.
+> 
+> There are some new pwrctrl drivers and an arm64 defconfig change on the
+> lists so we may need to keep deprecated symbols for a release or two.
+> 
 
-Some background:
- - backhaul AP send primary_vlan_id in assoc resp in multi_ap IE
- - backhaul STA (agent) if support multi_ap profile >=3D 2 should tag
-EAPOLs with primary_vlan_id
- - with control_port we have today hostapd backhaul AP don't get this
-tagged EAPOLs
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-Other issue is sending tagged EAPOL from hostapd when backhaul STA
-multi_ap_profile >=3D 2.
-But RX path looks like regression compare to raw sockets.
+- Mani
 
-BR
-Janusz
+> Johan
+> 
+> 
+> Johan Hovold (4):
+>   PCI/pwrctrl: Rename pwrctrl Kconfig symbols and slot module
+>   arm64: Kconfig: switch to HAVE_PWRCTRL
+>   wifi: ath11k: switch to PCI_PWRCTRL_PWRSEQ
+>   wifi: ath12k: switch to PCI_PWRCTRL_PWRSEQ
+> 
+>  arch/arm64/Kconfig.platforms            |  2 +-
+>  drivers/net/wireless/ath/ath11k/Kconfig |  2 +-
+>  drivers/net/wireless/ath/ath12k/Kconfig |  2 +-
+>  drivers/pci/pwrctrl/Kconfig             | 27 +++++++++++++++++++------
+>  drivers/pci/pwrctrl/Makefile            |  8 ++++----
+>  5 files changed, 28 insertions(+), 13 deletions(-)
+> 
+> -- 
+> 2.48.1
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
