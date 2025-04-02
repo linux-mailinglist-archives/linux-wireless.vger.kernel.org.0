@@ -1,119 +1,115 @@
-Return-Path: <linux-wireless+bounces-21086-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21087-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AB0A7921C
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 17:26:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5841A79228
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 17:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC6A51705FB
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 15:26:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CFBE3A368A
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 15:28:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95A023C8D7;
-	Wed,  2 Apr 2025 15:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B316F23814E;
+	Wed,  2 Apr 2025 15:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mgXBAuIc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dIPrkcmJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B9623BCEC
-	for <linux-wireless@vger.kernel.org>; Wed,  2 Apr 2025 15:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F5F2E3385
+	for <linux-wireless@vger.kernel.org>; Wed,  2 Apr 2025 15:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743607567; cv=none; b=PPdRw9snegAlY783LLnz20AfE2m/exJpa+q90pEfaThjGPzr3VXgN5ANAleq3kjclPoLqt4UjToJXnb4thrm+PNFQIOwEn3GNo6Y1GQQDpng+vJBD0NxP+bGDWrLLWPfPjHReWq0DoZowxXCXTuGM6vfpEjGcCEDw2P4yiS0ug8=
+	t=1743607750; cv=none; b=Yp5B848QFDLchSCEATQkMcLi1cjAIoBjIA4ofYdKP1l2UzpCF+9fe0gIRcHGrIMHOcp/h7gNY5EngFHcstOspL+D3/iVd6MfKYMwXqHaNRbmyQ21o0rjcmWtw4JTxmQAiiJmUGCI1N8jhMzAFNR08dZSLHfbDs8RJQ3jUynz4Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743607567; c=relaxed/simple;
-	bh=ZEUX8Rtn2u0flAEcIs1UHuzpVqwrTUpwNmrY7CMg+pQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U1P+DtyPLQgNl2fPlVYXqPa3drRiTuE14cmOOiwTAeHt2K/99OLIDCE8rCNOnhegC+qC4JjFgCQRtu3QdwH19OvdJPjSEcKkW7u8KLhe6I5oM1vOuBI3gsnQt+gk7banpgf2072t9xZPa8TCDb09WtJxT2MF8Q8aWplIMHes+VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mgXBAuIc; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 532D60R6024515;
-	Wed, 2 Apr 2025 15:26:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=RXckf7qpqy+iKR9NQcsjI5qx
-	y3oCDe+Reqn+kdgNQRA=; b=mgXBAuIc1weKhls4FQXwLt/mzrLhIItwlm2ys5I0
-	KX1uzhZ00Wx6T3CIZ+4XZVGI3yKLNbGJBcvxH+/tgOVWPXc3lYKq3C5CBnn86Reb
-	OGODA/h+4gRdlPHQTzVVAnXoZstlQNFWQJzQDQs4JHtPLTW4C4vMtfCHzconFFI3
-	ipOGtnNj8ISY65E8/31jm/oe5r9Ubb0AueKbON7N3DT+QuUhgMQSBh6wLcIw982q
-	NweNZbGpwp2eY/KHirfLe8t6TcNFsNERSgdU0n7ESgZNSAvGFNO/Vz+lcK6u+8NW
-	VnYZcqBqy6TVA+a7if0p+3QymLEHmCDCKVLsZy0rPbO0cQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45rbpyvxwq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Apr 2025 15:26:03 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 532FQ3Db013293
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 2 Apr 2025 15:26:03 GMT
-Received: from hu-nithp-blr.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 2 Apr 2025 08:26:01 -0700
-From: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Nithyanantham Paramasivam
-	<quic_nithp@quicinc.com>
-Subject: [PATCH ath-next v4 3/3] wifi: ath12k: Enable REO queue lookup table feature on QCN9274
-Date: Wed, 2 Apr 2025 20:55:29 +0530
-Message-ID: <20250402152529.1649402-4-quic_nithp@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250402152529.1649402-1-quic_nithp@quicinc.com>
-References: <20250402152529.1649402-1-quic_nithp@quicinc.com>
+	s=arc-20240116; t=1743607750; c=relaxed/simple;
+	bh=jzfadB6FjRGKB0ycFpyIvIJwS5obpieogN6n+cksUiI=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=hRrFQxzAK7E3kXSfKkOAAVHgDkhMzGpC2lnG2P2qsz7pfd5DVx8N0P69j0cSTvKWTeyICnTV+p7ZwPd+aR/0C24JZrgn2rMZZDvVolZyxGywrx+Qqjyv+8WY+APnjR5ieA2AUCt4cvjAeoVGNSsL3YJpeV98bdUIqLRTahpI984=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dIPrkcmJ; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e6167d0536so8495317a12.1
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Apr 2025 08:29:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743607747; x=1744212547; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xvm2YPOgZV6SxEIRsisgEeLnYO7/oxdOdOaAy6MzmKU=;
+        b=dIPrkcmJPnHPLK2BqJQfnRnAB5dnIOj9nQQANdggGpfk393HA1TOvoTzlNkeAJl0uY
+         DzjVyJvL4PI45UgHqCX755h1fif7HDG6JLWAbyPsJp5C29xnd55e0Cfnxh/AHSQxJP/M
+         gfMnKajHEGWDgmnqBYFxaQFxSYg1y8FJYcG2KeIn8UtGVvZ+RBCcczPXc6bK7aj8DMKD
+         u1oYCzHz4drqqY42wC04xAa5zJeicTT4peyDrS3O2mfirVjOdCrK5K4tRAYRt/G5wUwv
+         wu3uG3tPHd8ZhKHYYD0djOL63ySBLosyg1Lgco1SQk2+IQymQsLGA2jjAmiU1z33d5cP
+         Aemw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743607747; x=1744212547;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=xvm2YPOgZV6SxEIRsisgEeLnYO7/oxdOdOaAy6MzmKU=;
+        b=kY63p1XEXcKbN2pABliU6zNfEwbpp06HLeg/arjvCxyhisiSztjaY5N7xH3j2N1O6Q
+         zYbUTRTJSwgLNoNk3Og/C0yOdfM3IYW9SlKAFOczQrPdsdc5mFLdJ5SFeVe2ucKIkT9y
+         UQYjbkyyx0cqwyFM/F2Bw2UOW1+C2FvzFuGifXfCO3nWAPChA1Epz8drkanRZgygFyLw
+         3Ul7zM9jJH5nS6HiHTeBJZz/JsTIntBUXGmKG/MEGL7ngOFZrYlmk5a3p8B0Wld2BV5q
+         Bs0My/JuUC9NxG9yG5YNaF2lvXrjP2+GO4FFvi3Hs8V7lMyD9ETMTQ51VXjiDQWVmAgZ
+         5P5A==
+X-Gm-Message-State: AOJu0YwJ+pOwvHcx76bW6cSFFmUwPe3dXzLEbZjoBqj8Mieq2Qr3nf69
+	CqkS1RnSusc8lflhjmivzmSn8yCJ7QLPlSiRubnXnbn593Rw+NhgjEgGnw==
+X-Gm-Gg: ASbGnctVPK+6VTbDs3X90E6RmsAZF3cPXEAOZDY8Hi11KfToaiCoKDgItgwRRUot+Uo
+	bU7e+/bkxUDU0koX4cNz3zlWOWrVTNKJaiZ7S5mLhLbzL/iAEhgR84xB+gGanKQ4vNwFYn1IIm6
+	0uQqvE6V6J87rVWaKXk5upIWtlTSGVX73de5tzbvKoQpJmFv+vr+fx6nwNNQeTZtqIGQ7qdqweG
+	MGdQ7FVzFnuNkYFpqcFsv6GZwS6DVoZ2rvJ03p7iEG7PmIJA3XQbRYPPtp2dsHtOyLvxxSvQ2jC
+	tKhlogFlxJ1XNcfH4ApAD2prJEFBHVauWdLdzTnV5q19I8lelKsWBA==
+X-Google-Smtp-Source: AGHT+IG50rJh83qeeGuN1ITO7cLjDiU4SxqzuhdztWMH5zascVGr6lkX3wJ/4j6qy9uI2+5SBPD5ug==
+X-Received: by 2002:a17:907:a4d:b0:ac6:eaea:c0e3 with SMTP id a640c23a62f3a-ac782e9571amr710843166b.49.1743607747025;
+        Wed, 02 Apr 2025 08:29:07 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.177])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac7196c8281sm942413166b.149.2025.04.02.08.29.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Apr 2025 08:29:06 -0700 (PDT)
+Message-ID: <257632d8-4347-45bc-ab39-4e88d87cdb3b@gmail.com>
+Date: Wed, 2 Apr 2025 18:29:03 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: IBa21SbHH_n4WrDaMkrxUrHrPvQuLEpJ
-X-Proofpoint-ORIG-GUID: IBa21SbHH_n4WrDaMkrxUrHrPvQuLEpJ
-X-Authority-Analysis: v=2.4 cv=ZNLXmW7b c=1 sm=1 tr=0 ts=67ed570c cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=VG1Z7HIe-OYZGDrRaVgA:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-02_06,2025-04-02_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 clxscore=1015 mlxscore=0 adultscore=0 mlxlogscore=966
- priorityscore=1501 bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504020098
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next v3 0/4] Improve RTL8814AU performance
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Enable the REO queue lookup table feature for QCN9274 by setting the
-reoq_lut_support flag.
+This is the last set of patches for RTL8814AU. They make it go faster.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Bitterblue Smith (4):
+  wifi: rtw88: usb: Enable switching the RTL8814AU to USB 3
+  wifi: rtw88: usb: Enable RX aggregation for RTL8814AU
+  wifi: rtw88: Set AMPDU factor to hardware for RTL8814A
+  wifi: rtw88: Don't set SUPPORTS_AMSDU_IN_AMPDU for RTL8814AU
 
-Signed-off-by: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/hw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  2 ++
+ drivers/net/wireless/realtek/rtw88/main.c     | 35 ++++++++++++++++++-
+ drivers/net/wireless/realtek/rtw88/main.h     |  4 +++
+ drivers/net/wireless/realtek/rtw88/rtw8703b.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8812a.c |  2 ++
+ drivers/net/wireless/realtek/rtw88/rtw8814a.c | 12 +++++++
+ drivers/net/wireless/realtek/rtw88/rtw8821a.c |  2 ++
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |  2 ++
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  2 ++
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  2 ++
+ drivers/net/wireless/realtek/rtw88/usb.c      |  4 ++-
+ 12 files changed, 67 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index 1d1a59819bbe..20f04f5c6b5b 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -1288,7 +1288,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.download_calib = true,
- 		.supports_suspend = false,
- 		.tcl_ring_retry = true,
--		.reoq_lut_support = false,
-+		.reoq_lut_support = true,
- 		.supports_shadow_regs = false,
- 
- 		.num_tcl_banks = 48,
 -- 
-2.17.1
+2.49.0
 
 
