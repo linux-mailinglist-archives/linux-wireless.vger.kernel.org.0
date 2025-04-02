@@ -1,108 +1,150 @@
-Return-Path: <linux-wireless+bounces-21045-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21046-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E32BEA7865E
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 04:22:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2456CA78688
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 04:46:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BED887A4023
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 02:21:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02A657A3409
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Apr 2025 02:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D400D26AFB;
-	Wed,  2 Apr 2025 02:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB631F5EA;
+	Wed,  2 Apr 2025 02:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MIjrjUJV"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YfDLTDrq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A53612E5D;
-	Wed,  2 Apr 2025 02:22:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441E6645;
+	Wed,  2 Apr 2025 02:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743560543; cv=none; b=EV4+B0yHanpmbZ/IlY3BLh+y9gNejxuW9i9gUjCg5MxMBbd+w+zlF8LtLfVFrAqocJsfkvDdVTfefL8iBvSzOos7Ybq4RecW247WiGqKAbZRaWCEcdwH81nUo1yECMfPi++vHB4XoBbueQcrsQvxjOxN3TzzkDpm028e6UT88M0=
+	t=1743561995; cv=none; b=oLY/bI7hKA451fmbBRQs3BnbFgzluHLoYDcrk2CBrGgjQI6ThVElEFMwLoETNRyNu9wCAS4XXiIbAmGJJakpyyPXGrArQsElkxZPy+r7ZuV03l4uYNmNM7nZoJYxrHl6f6kWnIRRaP0pZWNfhwh+Xl8VGBoAXUmHd0trtZ+Rk0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743560543; c=relaxed/simple;
-	bh=Ezb0gXYiADCJFtFN0p1p0sirzr0898/9abeWN2mwekw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hyEOR8d1UrzK5I/SGk82RgRzt/h8iHzpmMdrv/wR9mKKbJaOl0iWT0mYyYJU7HjYyDMYvFFY6NzJd3MOT8D9MGm1azunBczZdKkqQ5ExHYiT4Q7sdhlQvnQT6To4bCXzhTJCkrDCtvmf+LUnMmS5x0A3XcwIfOM2MiVhuPK3KlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MIjrjUJV; arc=none smtp.client-ip=209.85.214.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2295d78b433so29188375ad.2;
-        Tue, 01 Apr 2025 19:22:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743560541; x=1744165341; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8MPdUgh8f/qNoFhRiTrVF2+aMX5OLujKTxRfKz1h/h8=;
-        b=MIjrjUJVjGG/YkQ54/EEp/N9FGRR2QWnfLX+RGXpZ8Kv+ZJWrvVqKxJoFkfyNJcmzl
-         ygGylJknC8Rq3B/MQaACByxXWZEriJcOFElcqFoAUiZ2BZolujRJAuScmIsZNgpbNxUk
-         rAjl/54uhxsStx0L9d/96rS2gWEM0s5F4NeaH6ybuC5lI2mWxdIAWKJg2NQZfeCxQO4o
-         zLh6W16y7LHUdTq3iyE5QU/gYzxtWRQW5F+ieYS4EYYicg/508yK5pfsasFGRK6PcOcG
-         3oYy0AxF7HlAr1UN16yIl09gixyyzE1aV20TAbAUtRtmyVAEEeVc3Fv8CGUFXHUmvB1v
-         uE7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743560541; x=1744165341;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8MPdUgh8f/qNoFhRiTrVF2+aMX5OLujKTxRfKz1h/h8=;
-        b=A+NIiku/3wyZzE/LkqgqPfHhCgG2QRwE/5XgLQ0mBtNpH7aUCa5QUQZKQyL1LaxqAk
-         e3ZdJ1LI448AL4JGtpUzQpwZbCRO30brEHin+1YcLckTLoNsHz6DW3KRFOzSHhqA+0nD
-         xoXZesojtOm9JToDQvOvvmQc+HN2ORdtwb27WgQbfHGdzU+9XCCow0/mqme/PeSVz2DP
-         O9WtPYr1IvjB6hz5cWhvORbVR36OtA5FzCzpgWPbFiVgf0igscIHL8wIYWyUk8HFdc+U
-         sdd13EKtUf0KOYybdWNt9qOn1muet1ojDVGYyV8EBZuVAOoTtCyzi2hPNvQLETRlgtFF
-         DJHg==
-X-Forwarded-Encrypted: i=1; AJvYcCXfeWYuFTDL2FCs96w5z9N7hsK9vYUPkkOgaPcM4YTf1W1S5v8rWgc89L/iKC2XIKe7eosK5+emQDanQEI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHd701cU9MRLfO4iic23WLiFD2WEIsYJASx0WsqtZF0OPlPjjo
-	EaI+PyJUv5JzqDuR4gMXWBffElz1n7QfRM/09lhbWKtooCfJVfHs
-X-Gm-Gg: ASbGncuEsyxT2ltZSn1CQNwHJS8ESBGElVzKrBjZOEuf5duRUMBhIjlphC59oFvvVWz
-	mg/EE5Nlx+grLrugWZwv1nVfuW4SgGcL9e/9QIej2hUuQlxedi4e5DQYGfOyCOh9mIVqbFMp1od
-	X5gnPP6jIx/e0VJxcjSC0YyeJtRdm3TD5g2Ngh1t9ZMlcvWShsHo+WBmwdJlDX/y5AqM8fsiFzF
-	oOKl3WRK19h6NcxxFVgUfHjV4idKDUQDCk6et/diN9lq4MNt1OJEwm1V/OtQrhFqtG0zkTm4LX1
-	iR8V0e3MVSAf7Ie4Q5g7T1rMCy8PZJP92r+3g4vB4CUK6eGdtGNA/Oo+U32Oc1HlMkpeTos=
-X-Google-Smtp-Source: AGHT+IGthaBJm3CXEP2yCOB9RHfLuP8APhDG0hC12B14aou92sDbgmPo84Jth75Yx54QYIPHG7/gTg==
-X-Received: by 2002:a17:903:2311:b0:227:eb61:34b8 with SMTP id d9443c01a7336-2292f9777d6mr214498325ad.25.1743560541421;
-        Tue, 01 Apr 2025 19:22:21 -0700 (PDT)
-Received: from henry.localdomain ([111.202.148.167])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291eeca2cbsm97204115ad.52.2025.04.01.19.22.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 19:22:20 -0700 (PDT)
-From: Henry Martin <bsdhenrymartin@gmail.com>
-To: arend.vanspriel@broadcom.com
-Cc: linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] clk: bcm: rpi: Fix NULL check after devm_kasprintf()
-Date: Wed,  2 Apr 2025 10:22:15 +0800
-Message-Id: <20250402022215.42834-1-bsdhenrymartin@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <195f2498f70.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-References: <195f2498f70.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+	s=arc-20240116; t=1743561995; c=relaxed/simple;
+	bh=DFjoPJVa433yUGbfvRkgTxEuOvMLA5uQ2i/pw28UUiw=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=F1ZCxxBXho/L0iGnB2uiie1TelyQiDAse1yJZKjQG5zj7yCxGYuaEE300k7OWTvSpyCg5M9PE0RDiae/nnSpP5ZfcPW+RSsuN2UZQE+zF2a/X5LgIJlarsl5saSJrqevgMKHi4koGPT7kCm8o/AdIXghz+PV7phcMDK7bO+D3rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YfDLTDrq; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 532213px031799;
+	Wed, 2 Apr 2025 02:46:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=P8+J/WEXHW+N6WiJLt6Gva
+	lwDYhhJHWId9EuIpA/f0o=; b=YfDLTDrq3iNhfG703pz4RWXrvxpMz3PuARarBL
+	ZnqojapTJasxzku8/bBwL6xePI5imYv8DcbD7RZTKLv3cAo1kaPZS5UdTc7+NM8/
+	DhrLf6F6ZIXNPOO8kAHyu27HJGxxCSz9+1298Sm5glUGpzttqegzNFVd7oIQKK29
+	i6jloMK9BnIYqHy7oyPKgBx0usu2M1QIqOK86KxT/aYQwZelK9LvxfEiSicih3mC
+	7+ilnNuHhCQU7uzwJS48Dl4shvsxdJYNEoGfeCuHT0VVxq5MP93Ql073k9zhyMHb
+	mTX+Az73BunmsYJzCFQntmLn0+/b2Z2HB9xCfnDIIe9yA9FA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45qxa7vxcg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Apr 2025 02:46:12 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5322kClk014104
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 2 Apr 2025 02:46:12 GMT
+Received: from [127.0.1.1] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 1 Apr 2025
+ 19:46:10 -0700
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+Subject: [PATCH ath-next 0/9] wifi: ath12k: support MLO for WCN7850
+Date: Wed, 2 Apr 2025 10:45:39 +0800
+Message-ID: <20250402-ath12k-wcn7850-mlo-support-v1-0-bad47cf00704@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANSk7GcC/43NwRKCIBgE4FdxOPc3CCnaqfdoOgj8JlOBAZKN4
+ 7vHeOvmcWdnv11IQG8wkHOxEI/JBONsDuWhIGro7B3B6JwJo6yinAno4lCyB3yUFU1F4fV0EKZ
+ xdD6C7FFXLdMlbyXJwOixN/OGX0negcU5kltuBhOi89/tNYmt33OQBFCgdc+7lqIQWl7ek1HGq
+ qNyrw1OzX6syVjXSn7iAmVZV//Yuq4/Tye5+R0BAAA=
+X-Change-ID: 20250327-ath12k-wcn7850-mlo-support-bfed592d139b
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson
+	<jjohnson@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Baochen Qiang <quic_bqiang@quicinc.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Q8zWkXDUcknVGKTAxIoB5Q5Q2XAPtcLG
+X-Proofpoint-GUID: Q8zWkXDUcknVGKTAxIoB5Q5Q2XAPtcLG
+X-Authority-Analysis: v=2.4 cv=J9Oq7BnS c=1 sm=1 tr=0 ts=67eca4f4 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=S8qQzX23J8qjeTGorjwA:9 a=QEXdDO2ut3YA:10
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-02_01,2025-04-01_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 bulkscore=0
+ malwarescore=0 mlxscore=0 mlxlogscore=828 adultscore=0 spamscore=0
+ suspectscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504020017
 
-Hi Arend,  
+WCN7850 firmware uses API-1 so it can not advertise MLO support via
+firmware IE, but instead it uses single_chip_mlo_support flag in QMI
+message, the first three patches serve for this purpose.
 
-Thank you for your thorough review and catching the return type mismatch. Upon
-further investigation, I’ve confirmed that this issue was flagged by static
-analysis but appears to be a false positive, as all call sites already handle
-NULL checks appropriately.  
+Currently ml_arg->assoc_link flag is not set in
+WMI_VDEV_START_REQUEST_CMDID, this result in WCN7850 firmware crash
+in MLO case, so patch [04/9] sets it for assoc link.
 
-I appreciate your time and insight—please let me know if you’d like me to drop
-this patch or revise it differently.  
+Patch [05/9] makes sure we do assoc for assoc link before any other
+links, as requested by WCN7850 firmware.
 
-Best regards,  
-Henry Martin  
+Patch [08/9] change to send REO queue configuration to firmware
+for all links including non-primary link. For that purpose, preparation
+is done in patch [06,07/9].
+
+The last patch increases number of different channels to 2 for single
+pdev device, to avoid failing in bringup the second link.
+
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+---
+Baochen Qiang (9):
+      wifi: ath12k: introduce ath12k_fw_feature_supported()
+      wifi: ath12k: use fw_features only when it is valid
+      wifi: ath12k: support MLO as well if single_chip_mlo_support flag is set
+      wifi: ath12k: identify assoc link vif in station mode
+      wifi: ath12k: make assoc link associate first
+      wifi: ath12k: group REO queue buffer parameters together
+      wifi: ath12k: alloc REO queue per station
+      wifi: ath12k: don't skip non-primary links for WCN7850
+      wifi: ath12k: support 2 channels for single pdev device
+
+ drivers/net/wireless/ath/ath12k/core.c  |  23 ++---
+ drivers/net/wireless/ath/ath12k/core.h  |  15 +++
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 178 ++++++++++++++++++--------------
+ drivers/net/wireless/ath/ath12k/dp_rx.h |   4 +-
+ drivers/net/wireless/ath/ath12k/fw.c    |   9 +-
+ drivers/net/wireless/ath/ath12k/fw.h    |   3 +-
+ drivers/net/wireless/ath/ath12k/hw.c    |   8 ++
+ drivers/net/wireless/ath/ath12k/hw.h    |   3 +
+ drivers/net/wireless/ath/ath12k/mac.c   |  62 ++++++++++-
+ drivers/net/wireless/ath/ath12k/pci.c   |   4 +-
+ drivers/net/wireless/ath/ath12k/qmi.c   |   6 +-
+ 11 files changed, 213 insertions(+), 102 deletions(-)
+---
+base-commit: ba613742db305037ca2193b2b552b769c4f2a5f7
+change-id: 20250327-ath12k-wcn7850-mlo-support-bfed592d139b
+
+Best regards,
+-- 
+Baochen Qiang <quic_bqiang@quicinc.com>
+
 
