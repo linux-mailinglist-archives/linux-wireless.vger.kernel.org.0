@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-21149-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21150-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1D0A7ACDC
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 21:52:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF85A7ACE5
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 21:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EB603B52AF
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 19:46:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 053D67A79F9
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 19:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E14284B57;
-	Thu,  3 Apr 2025 19:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8747A29616D;
+	Thu,  3 Apr 2025 19:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IiXniznL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mNtZH96S"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50980284B26;
-	Thu,  3 Apr 2025 19:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E92725A2B6;
+	Thu,  3 Apr 2025 19:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707317; cv=none; b=QfYQxNwvHZE8MAr+ylyYL/v4WNr8iPsKtvHz+dVC5SE4kILxViE7oT5xbYl64V5F0jLmJg5oyu60ntPlGyRzzYkVGhNGvNxvk7uWo6j6LR+UwM2rPzXjJ8lZ5veonJRYSJ/22IFXmDkQG2GEHdDclCv3SKfa2gn7jLlGJQ9t86U=
+	t=1743707357; cv=none; b=FRrTgNSN4zoq20jLm7iV5y0ufrAMiCFBRQKydrRZLR9+IRu9YvhqAi0doSaygPJb9Qem/Pq7QL+1+QClVD0qllumHARVD4t5Imz8xCdNHbThlZzW/YSx5ZkckTGTMlpiJpFMR5mx+IesuKgs9BkEWwE9J97LZ2jt5k63i4j8uQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707317; c=relaxed/simple;
+	s=arc-20240116; t=1743707357; c=relaxed/simple;
 	bh=GNHJfVzVNAlpwYr3o5Fo+VsNpqk3jsX89c60zyBrKwU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SCcANTP8Zi0n68Mv6VJq4eRfD17ZQvEyBMayrFQPBvcbC3gYzX3e9WXc/da5c/pw8WOJD4f/7iJyhNifxBSgex8T7INAo9SwhLH/Ozfo2FF3YdKSlmgyE4FRt00F0elLzA7ZcDf0ebJvuWiGyA5FinnOaMueVqNSQmYnph5FSI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IiXniznL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E067CC4CEE8;
-	Thu,  3 Apr 2025 19:08:35 +0000 (UTC)
+	 MIME-Version; b=i2V46EsSjj+5gyKEFnwf9j/n6Q71LgtyrKCrhp9jyiSOnvdR8pZJNlcBWw/z8bpSPM1nBjL+sdKt4xJ0/dVK9HuyciFOR7zQ+bG7NIxkWz8lz3GLUYhf72M5gAFmGqW1g0lXStGrlPXtLeWkdj9lgidcLBdxwPrG/4BzzbOnY+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mNtZH96S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9381C4CEE3;
+	Thu,  3 Apr 2025 19:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707317;
+	s=k20201202; t=1743707357;
 	bh=GNHJfVzVNAlpwYr3o5Fo+VsNpqk3jsX89c60zyBrKwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IiXniznLUPnU5s4wS8HfXlaTnJn/xk4hdEdPMlBawrVec4B3Gl5LNchPJpYKajQdE
-	 RKHs/nrt8wrK6+Uajq3oyAmcNUfEXBVj105SHsGppy7nStlXqX7gM9WE5pMVNFFBPV
-	 EdtD+no0KNxw9Hm5fFLaaovmOGrTEwihKk6jhx23wMbkh23r3b/x/DUJv4YQRFIVUo
-	 LZNThAT7h/8q5vtq1beBErJvSukYgYBXeAsz8LpD/a5MxhEM7LqBCoNY9lzIv86L/m
-	 yleXcIDwcq0JMwYmGavbFo/9vksrWhQnhglo1gFpXjTRU+Zt0irciBZgr2/6P+5jZl
-	 Vs/SpjOB8gFCA==
+	b=mNtZH96SC7vejZoof6rb13cd2BmHITWz5AZ5zVhIMpl1nrI339vnsX3xu8Weky0fZ
+	 YeZ80LunGjsW//mHlS+ItEoJf+aHO+I0iy056fTJQMb/Brv0Pv2bxwTozusVHt9rW2
+	 O4Pl5T0CtmPe45VJ+FBK8ZJBEjP8gX0+w58nj1eSykCFqBhSzGHIeixdoHTr2f6Gac
+	 8uDWHNiY8ghFY8Ql4uWQ7GXRz3c+bTWcSj50qYajSndhBod84xc2L85VXtvXfm2nEF
+	 Kw70X1zdMGg4EHMMv2e3xBr7c95qFD/3ALyINWEaD2+ugEOB38zcbMidyemh91AMyd
+	 zR1AlSzHzUUzg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -54,12 +54,12 @@ Cc: Icenowy Zheng <uwu@icenowy.me>,
 	linux-wireless@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 22/26] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
-Date: Thu,  3 Apr 2025 15:07:41 -0400
-Message-Id: <20250403190745.2677620-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 14/18] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
+Date: Thu,  3 Apr 2025 15:08:40 -0400
+Message-Id: <20250403190845.2678025-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250403190745.2677620-1-sashal@kernel.org>
-References: <20250403190745.2677620-1-sashal@kernel.org>
+In-Reply-To: <20250403190845.2678025-1-sashal@kernel.org>
+References: <20250403190845.2678025-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.85
+X-stable-base: Linux 6.1.132
 Content-Transfer-Encoding: 8bit
 
 From: Icenowy Zheng <uwu@icenowy.me>
