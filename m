@@ -1,151 +1,112 @@
-Return-Path: <linux-wireless+bounces-21125-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21128-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE95A7A31B
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 14:46:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E33DA7A4C2
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 16:12:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CB417A3FB6
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 12:45:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07FE01897FAB
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 14:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820872E3385;
-	Thu,  3 Apr 2025 12:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B1A24EF6B;
+	Thu,  3 Apr 2025 14:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S7OqQMPD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lZh2tGRX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5BE1A704B
-	for <linux-wireless@vger.kernel.org>; Thu,  3 Apr 2025 12:46:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAE724EA88;
+	Thu,  3 Apr 2025 14:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743684378; cv=none; b=FiZ1censMJcEpPP+h1X/ERGfTaWSx5xw4jmB0AQsiTYqzYlSpS0sQfjlSkOFZwsD87l8H51o8UoidNRbuCTW2xQUbk7nnGpE1AqJ/HnBm3sO+fXQjmINECLXwpW3lP1kFbd7M/gwAOCAZWrs7eSGNhKh6qews9eUxT9F3tqTU2k=
+	t=1743689276; cv=none; b=qFCQnpuMNhWaTzGBTOtxpDGhU2PP+WK5FHlrQhGwJ/bZgf6rMhMDwZEJ3+ia61gLapI12Uj/lmlRL2sfXMl2GbneuONDYS7pV9w2rX4HbBFpGVj2f9VVCY/vt5IdtOZRJnXeq4n/JK/33pOnC7FErdIK1mKJGAsB2L7RRAZEZ6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743684378; c=relaxed/simple;
-	bh=kVDbMRccG592Brp1t4bC5wALWRrpFz42TX4DAxY1+ho=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UYOmP+uIJvtGlpOfNP9KxHWzZwNqDT1sNLIGXnEmKqtXSgrOwj+16BXGCWJe1KWDHRV5IsQmWUD7OCk8RJPPiXJTt2Du25r2M69rw11Q2rfa9n3+tx17dNOsFeSpnBhkeVLrq8+X5EIX+43gRDc7M/zd70qnu9J6dedcSuhyd/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S7OqQMPD; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5e5c9662131so1469016a12.3
-        for <linux-wireless@vger.kernel.org>; Thu, 03 Apr 2025 05:46:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743684375; x=1744289175; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G5u3sL2yzlJRQOm0fvUzyonRxpMlPosrwrOT6XH6urs=;
-        b=S7OqQMPDD7Z/FEd9fhlt9E0NBW4b5VBvFClFvC/ydYx1hfm2Dv5dZLPYplBVNQj6Yr
-         lTQDvpSIaFQrFTnck7XVJZe9/NB3LMjogGfUGSp024DwrGZy0hp1PURYcg4QfvZ3Li0O
-         dGaC8gPDxeq57AxOwItXPFFU/9zlXGC/27pXFtydOAURxeozUdVfPttLa5EaHhYI4//W
-         uBRPjckd1e1DV46KyETuW3RoZXMQtZPl2a3JWzZjQUXvKpEapZ1MG4cfAxpVerqamDyv
-         I1yaFm8oKBaAgAHVklQABm+0RWkEP04mysygcn3FV5kMyihjLH2ljc7OWZbUlOatTqOq
-         cg2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743684375; x=1744289175;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G5u3sL2yzlJRQOm0fvUzyonRxpMlPosrwrOT6XH6urs=;
-        b=s5/boDt8GxatqmPvOo1tItQLpbakMnnBage1qH3D7i9tHEItEkjSSpAshI2Zvwoz1o
-         xaRk0cbrT2nZnIUn7o88mLrqU/JmCJUWMpWNvJjoUiplp5MjNZt3g/JUIZ2tXFDb7WBv
-         8tZh+nVMWtBL77PPHTcbAAfjGyL6y7pplNS8Ncy5RZ/peXzy31f/PCvDE49QCm1V6Fht
-         1JQVUxpXJlltFagbSSasljNuufucspPzELYN8PBtDvspW+HYkfPaCfgs+PIeo+riJ5ma
-         wOh6lMmJ64BunA/fts7pt885VkHQ04vtHs26a2Du7RJ5dAifD1lqyYJblQnKmTmr9TEQ
-         l5QA==
-X-Gm-Message-State: AOJu0YwPGo2xlOMnnr1N/AyQvZ3VKTmNu+N/VjCMyxX2uBmH5JR5JVVK
-	rihZEOUedJnxx4TFiW9BoqJyaTPZL/eqpZ/eBDGO0kQWNtlo1S2HYxP5FhlYFzXJUjD5+oh22AN
-	GpA4Ok6WDu0p5eBNA97ahZu6cboo=
-X-Gm-Gg: ASbGncuIe7KfC+gUzSkvT0E16TzqrQlr4OcE3ATkPRhh6CfbTFdlVBn+baNo4F7eaLV
-	Rxgvad+bs7aOtmC3bCO0EiCRrI+l+2YK2AUhkErcITbdWZaZcT/0HOYYsO59YckktDwi4Sgj108
-	mclm65w4GUoV4JaxgGgblOcL7P1D2J
-X-Google-Smtp-Source: AGHT+IGhFIxuWlWRnkGLKj5tJZtHDmXkLWLwEwPglg4TzNkZtvxw/uT92DUyKtvF0/gctWQzG9L2WNC4AhxZP4v6I94=
-X-Received: by 2002:a05:6402:84e:b0:5e5:e78a:c501 with SMTP id
- 4fb4d7f45d1cf-5edfceaf2a6mr16582492a12.13.1743684374677; Thu, 03 Apr 2025
- 05:46:14 -0700 (PDT)
+	s=arc-20240116; t=1743689276; c=relaxed/simple;
+	bh=39VMYhU+74mMPI9DI3V/VxZjDFcE/1tMwt7m4qa+2nU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RLR6ToEwsW844Alx5zmQo6S85LPpp4bnAx8LCTZ70evTzIZ2PpFBRDXePaWYh9xQ9LMz4t0fDs01u/w8XdQNXf/Kn2F5mTcj+e07jqFYuj9HK4aaGU95MUgyxux/2NP6YVduxqT4Nu6YubUOOfT3EK5cuuO7uyZPkHHc66syZas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lZh2tGRX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 78660C4CEE3;
+	Thu,  3 Apr 2025 14:07:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743689275;
+	bh=39VMYhU+74mMPI9DI3V/VxZjDFcE/1tMwt7m4qa+2nU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=lZh2tGRXFrMH7vxDqCnyXt8z75iA2JMWeOKYtV+SV8WFAR5Jeof8bCbDWLXAs97OQ
+	 xdFz4nV4UUufzWKLJ7ZS54+e05h51S2x5EbLuSGYixNAddc0053ZQnykPCwk+Pp6vW
+	 pbfxyqwaDs7OoAdjp7maTuqO3CZEXJgDyoPMadyIy/mhKs0psXkgfaq85VjwF2y+iC
+	 5y4I/uqjl9DBC5mUQW8iGgc4owmlDHX02xtIWxwM8Y0w+vmvOor7MrzAWsAEf7/gZY
+	 7GcaIvxmErcA+hS4aRngkTm49MMG0lIyIOWlbbtX7j+27HWA14AGZlkDxT/E/9RCd7
+	 JKIbTHiPleHGA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 648BDC3600C;
+	Thu,  3 Apr 2025 14:07:55 +0000 (UTC)
+From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
+Subject: [PATCH 0/2] Onboard USB device support for RTL8188 2.4GHz USB WiFi
+ module
+Date: Thu, 03 Apr 2025 16:07:47 +0200
+Message-Id: <20250403-rtl-onboard-v1-0-10ca9a6a4ee0@posteo.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250401201259.50627-1-janusz.dziedzic@gmail.com>
- <9481e6a3844f897d03f8f4bfef335092f4ac76da.camel@sipsolutions.net>
- <CAFED-jm3Ot3urZuDnYaWE1vyXuAMDvw_W7vuxUOjQtRqN-y0uA@mail.gmail.com>
- <abf1538df6f224e38b1e42b66cc71b76c2645288.camel@sipsolutions.net> <CAFED-j=5KTpaCm8p7rbHnHVykTLvnRYu+ZO08ggh4jgxfuyoPg@mail.gmail.com>
-In-Reply-To: <CAFED-j=5KTpaCm8p7rbHnHVykTLvnRYu+ZO08ggh4jgxfuyoPg@mail.gmail.com>
-From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
-Date: Thu, 3 Apr 2025 14:46:03 +0200
-X-Gm-Features: ATxdqUG9XrIr6QEOV1mK3GTGTIQdL9LOLwaSOUY9pmoRtZBJsN-PT0OYDQpb_FU
-Message-ID: <CAFED-jmMT+jdMx=2cYOxMC-ybYVg0aSOMvcewBqD6kHuW5_UVA@mail.gmail.com>
-Subject: Re: [RFC wireless-next 0/2] wifi: allow tagged control packets
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, j@w1.fi
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIADOW7mcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDEwNj3aKSHN38vKT8xKIU3TRjC2NTkzSDJEOTJCWgjoKi1LTMCrBp0bG
+ 1tQB8OGQZXQAAAA==
+X-Change-ID: 20250403-rtl-onboard-f38354f0b14b
+To: Johannes Berg <johannes@sipsolutions.net>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Matthias Kaehlcke <mka@chromium.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Jes Sorensen <Jes.Sorensen@gmail.com>, linux-wireless@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-usb@vger.kernel.org, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1743689273; l=886;
+ i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
+ bh=39VMYhU+74mMPI9DI3V/VxZjDFcE/1tMwt7m4qa+2nU=;
+ b=GBtBg4J3jFJRTewN2BJhs+xjZvDIbF3WaNoVycTobq+8M+1FCplFQjhzYoe7LKvp7cOnCZZQn
+ J1i+FWjzMRFAP9zWIkQuT5OMKg/oKA3Iw3DhlMNPK2EfO2MHeNGPhRr
+X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
+ pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
+X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
+ auth_id=156
+X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+Reply-To: j.ne@posteo.net
 
-=C5=9Br., 2 kwi 2025 o 09:55 Janusz Dziedzic <janusz.dziedzic@gmail.com> na=
-pisa=C5=82(a):
->
-> =C5=9Br., 2 kwi 2025 o 09:24 Johannes Berg <johannes@sipsolutions.net> na=
-pisa=C5=82(a):
-> >
-> > On Wed, 2025-04-02 at 09:17 +0200, Janusz Dziedzic wrote:
-> > >
-> > > Just do minimal imp/check and share RFC, while don't know this
-> > > approach could be accepted.
-> > >
-> >
-> > What choices are there? What's the alternative? Go back to sending the
-> > frames via raw sockets? I guess it works but it's not great?
-> >
-> Yes, back to netdev/bridge eap read in hostapd should fix receive path.
-> But, don't see it on netdev/bridge when use tcpdump - guess we change
-> smth here for rx path (or skip not protected when control port used).
->
-> Some background:
->  - backhaul AP send primary_vlan_id in assoc resp in multi_ap IE
->  - backhaul STA (agent) if support multi_ap profile >=3D 2 should tag
-> EAPOLs with primary_vlan_id
->  - with control_port we have today hostapd backhaul AP don't get this
-> tagged EAPOLs
->
-> Other issue is sending tagged EAPOL from hostapd when backhaul STA
-> multi_ap_profile >=3D 2.
-> But RX path looks like regression compare to raw sockets.
->
+This patchset adds rtl8188 (usbbda,179) to the onboard_usb_dev driver.
+It is found in a set-top box called "Fernsehfee 3.0".
 
-OK, even if disarm control_port in net/mac80211/main.c
-(NL80211_EXT_FEATURE_CONTROL_PORT_
-*) still need this for rx path:
+As a side note, this device is currently marked untested in the RTL8XXXU
+driver. In my experience it works (tested with a WPA2 home network).
 
-@@ -2560,13 +2561,16 @@ static bool ieee80211_frame_allowed(stru
-       static const u8 pae_group_addr[ETH_ALEN] __aligned(2)
-               =3D { 0x01, 0x80, 0xC2, 0x00, 0x00, 0x03 };
-       struct ethhdr *ehdr =3D (struct ethhdr *) rx->skb->data;
-+       struct vlan_ethhdr *vhdr =3D (void *) ehdr;
+Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+---
+J. Neuschäfer (2):
+      dt-bindings: net: wireless: Add Realtek RTL8188 USB WiFi
+      usb: misc: onboard_dev: Add Realtek RTL8188 WiFi (0bda:0179)
 
-       /*
-        * Allow EAPOL frames to us/the PAE group address regardless of
-        * whether the frame was encrypted or not, and always disallow
-        * all other destination addresses for them.
-        */
--       if (unlikely(ehdr->h_proto =3D=3D rx->sdata->control_port_protocol)=
-)
-+       if (unlikely(ehdr->h_proto =3D=3D rx->sdata->control_port_protocol =
-||
-+                    (ehdr->h_proto =3D=3D cpu_to_be16(ETH_P_8021Q) &&
-+                     vhdr->h_vlan_encapsulated_proto =3D=3D
-rx->sdata->control_port_protocol)))
-               return ether_addr_equal(ehdr->h_dest, rx->sdata->vif.addr) |=
-|
-                      ether_addr_equal(ehdr->h_dest, pae_group_addr);
+ .../bindings/net/wireless/realtek,rtl8188.yaml     | 51 ++++++++++++++++++++++
+ drivers/usb/misc/onboard_usb_dev.c                 |  1 +
+ drivers/usb/misc/onboard_usb_dev.h                 |  8 ++++
+ 3 files changed, 60 insertions(+)
+---
+base-commit: 38fec10eb60d687e30c8c6b5420d86e8149f7557
+change-id: 20250403-rtl-onboard-f38354f0b14b
+
+Best regards,
+-- 
+J. Neuschäfer <j.ne@posteo.net>
 
 
-BR
-Jansz
 
