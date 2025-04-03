@@ -1,58 +1,62 @@
-Return-Path: <linux-wireless+bounces-21141-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21142-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC3EA7AA85
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 21:14:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA043A7AA5F
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 21:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32AD9179820
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 19:10:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C3B9188D185
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 19:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BB425A62B;
-	Thu,  3 Apr 2025 19:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F152F25D1F0;
+	Thu,  3 Apr 2025 19:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hZI5ybgB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nehykLpi"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692D125A625;
-	Thu,  3 Apr 2025 19:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C755725D1EA;
+	Thu,  3 Apr 2025 19:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707012; cv=none; b=hK0P5WExjZSDwGXjrLcSLhm6KSVuov2kzHqIoBXYUVDbHvPrXNa1RvcxJlU0T9r6Srz2f162TPeKG/qcbieWZEDXYXxvmIksj3u4FCf8PwZmdmlFF5r/iRGVsExY5HY+C5RLCn44M5EnMO9/uvkADIwy/j5CrRRT9fdtmL/0zK8=
+	t=1743707027; cv=none; b=nHm+G1ot6d2Pbw9pXfDKUoMMpq5EmWENZ1nC5UefiWMDJwUySHZNK8dhYJqM7igEtOuaSwpjXdgVpRD9m1SLkJ3eg9MRLMoKgFTqbdIKWZZje6KgWxWJe2w3Rx/p9Cz7c4uADuc2sHkwtwys8YN5oMp1K1a+Dgp4i3g8h6R+log=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707012; c=relaxed/simple;
-	bh=e2X8vBO+kcgjTqY+W0KycZj3PvkeEu+edKkaEEPzrlA=;
+	s=arc-20240116; t=1743707027; c=relaxed/simple;
+	bh=NilAVgNUnea1icERfhytbZ+XwefVTD71Tzk6Trb40CQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XXpijr01dyLhV8qC3FbdLJURLfboNv5FcfOPNoyVx7Vjs7y+8LZQCzElXvXv2AtUzCKrf6fxBEBw/LU6TeZArr4mVO3OakGgplV+8hhmvgskw/+pQgOuXJtZxI64lAu3q08B3Gi4fMYggShjTMmZCljAp302Cs4ImB4bJ7cDsB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hZI5ybgB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F77C4CEE8;
-	Thu,  3 Apr 2025 19:03:29 +0000 (UTC)
+	 MIME-Version; b=jWbC7VfqpS6fPO0CXpCIZbDx2A1aApLt49XG0SZYlUL9ySR8wCTIlgJH6InE9oZuWUDKAwKjwvyedoxjY5r/iFE9pZeUXbx59+JeELfLWRgArW7RiHWBHTGoiTcymSrwZftDZaDSYryjwq8q+/t0+h4CVa6H5B4DLnQkbo7YdkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nehykLpi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7611C4CEE8;
+	Thu,  3 Apr 2025 19:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707010;
-	bh=e2X8vBO+kcgjTqY+W0KycZj3PvkeEu+edKkaEEPzrlA=;
+	s=k20201202; t=1743707027;
+	bh=NilAVgNUnea1icERfhytbZ+XwefVTD71Tzk6Trb40CQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZI5ybgBeTP31Pl4wIzNNMa1YurR+q+/QMoUKnL3fs9KTcaoXRdiGFiAayZFzV9FR
-	 XLi0ztakVznvsku9FEjWCgF19ALcqxR6lVaEDc618HrGy61Hg+aPGu0kn0/VCk3kLG
-	 PkGNXxTyzAkohWvwAKIm6lfv1O98eWxYCkLYupKB5qt+B+789p7kDxnGwjR11oFRnL
-	 vJJH638Eio/g044yRJnvW1U0lygyIttRHtd/c7f3XFwrpgF66Cl0QDMvqD1qZGMG4e
-	 wgZJ03Olfe+n3UtQbgN62MWbzPAPv+9gJW7d/aZjnqddYw4p/8f6I7hTEc5hAwQAZj
-	 Ry17kQ44el7iw==
+	b=nehykLpiNWWTY5Ru3hy218VWrDu+1h74rnoUTcurv1WZMnUqF59GbqbeR8cahkRHz
+	 Q4ijOiiIop6gUGFBxWIs8QZ7BfgDV1V099KcU3ymcLVM6ZOG+j+dQss9pRNnGF1I4+
+	 zYBHSkliyNtNqeEB4aVq7fftwc1hB/UWrKbeAr1iGG393JEKLLMEvBPYaejXlQL7Lq
+	 /DrpvcsiIRkyekAA8LEjMgCqm6uD40o9pKtlEvdpiN8xO0iv4BaCnBvtFvYPpsfSdB
+	 qnxSkiOfjEHEbdmhyKQSJ8LLiyLXHxtxijkk2x/5GsfcjsCQ7AmdTQmlwBZx/++f+K
+	 yOGOLJ38kZPNg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Icenowy Zheng <uwu@icenowy.me>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 35/54] wifi: mac80211: fix userspace_selectors corruption
-Date: Thu,  3 Apr 2025 15:01:50 -0400
-Message-Id: <20250403190209.2675485-35-sashal@kernel.org>
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-wireless@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 42/54] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
+Date: Thu,  3 Apr 2025 15:01:57 -0400
+Message-Id: <20250403190209.2675485-42-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190209.2675485-1-sashal@kernel.org>
 References: <20250403190209.2675485-1-sashal@kernel.org>
@@ -67,93 +71,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit 700014d3ad1fd6e55c8f9ffa817514d3fbb5286e ]
+[ Upstream commit 06cccc2ebbe6c8a20f714f3a0ff3ff489d3004bb ]
 
-Spotted during code review, the selectors need to be large
-enough for a 128-bit bitmap, not a single unsigned long,
-otherwise we have stack corruption.
+The TP-Link TL-WDN6200 "Driverless" version cards use a MT7612U chipset.
 
-We should also allow passing selectors from userspace, but
-that should be a separate change.
+Add the USB ID to mt76x2u driver.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308225541.8f1bcf96a504.Ibeb8970c82a30c97279a4cc4e68faca5df1813a5@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Link: https://patch.msgid.link/20250317102235.1421726-1-uwu@icenowy.me
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 64fa3fba244eb..4951e4fa7373a 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -9648,8 +9648,6 @@ EXPORT_SYMBOL(ieee80211_disable_rssi_reports);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index e832ad53e2393..a4f4d12f904e7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -22,6 +22,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
+ 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
+ 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
+ 	{ USB_DEVICE(0x045e, 0x02fe) },	/* XBox One Wireless Adapter */
++	{ USB_DEVICE(0x2357, 0x0137) },	/* TP-Link TL-WDN6200 */
+ 	{ },
+ };
  
- static void ieee80211_ml_reconf_selectors(unsigned long *userspace_selectors)
- {
--	*userspace_selectors = 0;
--
- 	/* these selectors are mandatory for ML reconfiguration */
- 	set_bit(BSS_MEMBERSHIP_SELECTOR_SAE_H2E, userspace_selectors);
- 	set_bit(BSS_MEMBERSHIP_SELECTOR_HE_PHY, userspace_selectors);
-@@ -9669,7 +9667,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
- 		                sdata->u.mgd.reconf.removed_links;
- 	u16 link_mask, valid_links;
- 	unsigned int link_id;
--	unsigned long userspace_selectors;
-+	unsigned long userspace_selectors[BITS_TO_LONGS(128)] = {};
- 	size_t orig_len = len;
- 	u8 i, group_key_data_len;
- 	u8 *pos;
-@@ -9777,7 +9775,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
- 	}
- 
- 	ieee80211_vif_set_links(sdata, valid_links, sdata->vif.dormant_links);
--	ieee80211_ml_reconf_selectors(&userspace_selectors);
-+	ieee80211_ml_reconf_selectors(userspace_selectors);
- 	link_mask = 0;
- 	for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++) {
- 		struct cfg80211_bss *cbss = add_links_data->link[link_id].bss;
-@@ -9823,7 +9821,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
- 		link->u.mgd.conn = add_links_data->link[link_id].conn;
- 		if (ieee80211_prep_channel(sdata, link, link_id, cbss,
- 					   true, &link->u.mgd.conn,
--					   &userspace_selectors)) {
-+					   userspace_selectors)) {
- 			link_info(link, "mlo: reconf: prep_channel failed\n");
- 			goto disconnect;
- 		}
-@@ -10157,14 +10155,14 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
- 	 */
- 	if (added_links) {
- 		bool uapsd_supported;
--		unsigned long userspace_selectors;
-+		unsigned long userspace_selectors[BITS_TO_LONGS(128)] = {};
- 
- 		data = kzalloc(sizeof(*data), GFP_KERNEL);
- 		if (!data)
- 			return -ENOMEM;
- 
- 		uapsd_supported = true;
--		ieee80211_ml_reconf_selectors(&userspace_selectors);
-+		ieee80211_ml_reconf_selectors(userspace_selectors);
- 		for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS;
- 		     link_id++) {
- 			struct ieee80211_supported_band *sband;
-@@ -10240,7 +10238,7 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
- 						     data->link[link_id].bss,
- 						     true,
- 						     &data->link[link_id].conn,
--						     &userspace_selectors);
-+						     userspace_selectors);
- 			if (err)
- 				goto err_free;
- 		}
 -- 
 2.39.5
 
