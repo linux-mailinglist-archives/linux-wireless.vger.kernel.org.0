@@ -1,243 +1,307 @@
-Return-Path: <linux-wireless+bounces-21134-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21135-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49DEA7A83C
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 18:55:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEB7A7A9A2
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 20:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D8BF3AAB35
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 16:54:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDB19166A68
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 18:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCE72512F7;
-	Thu,  3 Apr 2025 16:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341C8253334;
+	Thu,  3 Apr 2025 18:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XuHJyOdK"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="iXR2sCOq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690AB2512C9;
-	Thu,  3 Apr 2025 16:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D91D2512D0
+	for <linux-wireless@vger.kernel.org>; Thu,  3 Apr 2025 18:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743699293; cv=none; b=caZVgsTGq3mHdKjWwJ5WNF5TOeHqEu4KmiLaz8JUZyT6qaGOD7lGz29rZ+e5YPZNkyFkJDuLi10rrFsqOTNOZPb8Youi3vI+9zBJmRoZq7tWWlFuLwbY0S85lDFFePRWFbqTtXDk4+RtR4SHS70xeKnG2t85JxJhfvL8H2aUGxQ=
+	t=1743705593; cv=none; b=uzH4Nocnbj5I/zSDbEf7GZbAJcTay7PkuinuvRrekOmX+KK6LsjHzip9C4Wrvb8i2+RQvetidWQlG4FWin4BU1QRfw7umo79wEa4ZArTrk0clo5Q6j6NHUxiRJUqLvYDN1IEgudg02JkJyIjF61geLJDBUPEqqn/O8HKg35mZ9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743699293; c=relaxed/simple;
-	bh=sxhZhxhLY0BwekVxfSgxhKbAPa1FnVtYBhNgH8ZGXAU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h7srVelrz6S3toyjSVeQT2iMoiKY+sHkJ/ParfsYhtEBwkuwvJN+TJshh9hACuxIcUtpOIRo0nPCNLBPZazZNOMf7ViynAwbzO3/ISmtF8sUC6jq7K0WMIjzpbNO9SwD12S6rm72CccNFGU2baEEVzusVepA1g2U5dKi4E4HlWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XuHJyOdK; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-736ad42dfd6so962206b3a.3;
-        Thu, 03 Apr 2025 09:54:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743699291; x=1744304091; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=FDa5eNS7BwA8fLuFV+VPTYw9CpDmGbyK6UKEScOkVlM=;
-        b=XuHJyOdKp+KVpWNaET6cFMoTxJIM/4nv7V8IeCvUq59U31+InKeHemM/Bc4IcL95Yq
-         +dhkCL/H8qjPjUj4/wSF8aovobwUPN1M/mLNWzcz6D77JVML54l+tpBUpatZ+bhxlTpI
-         3b74nbi66vyghgxXeEGx069jmcAZ8oKkczIthUyxJlZzBe1wdZ3h82plE7RNtFu/2yIz
-         gSrWvYkyB59Z78ZH7bD6H0a9MBDxjYipFC9F5bt1wmNmatU2KFda5uwr45MVgJ4UAkD0
-         G0aIHJtllGRPjP0wzz/daclw+/z0VPpg18wqXBWImoMgEOle/UyjQPIqQmf0jSFk43BE
-         x8EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743699291; x=1744304091;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FDa5eNS7BwA8fLuFV+VPTYw9CpDmGbyK6UKEScOkVlM=;
-        b=CxLFKeD0H5yOyMnkH4xuBCV1gSZtyRaAvmhKyGlT1Mwplgv5jw5E2QxFW9KF8hh3bw
-         DpwCWPCZgP3lmHXTmwAv5tRWVwM9IG+nMuF9vSSx1+4R9OiJWHh5DLxFkPabJ1z7eCOO
-         EKHncUAieKbW3UhUMyLWX0yRlZmg81R+FcUIb54n6sGH5Osf5lXoJRvE+5H+rdcbGYeo
-         HXhWcnrAoa2UfqXnmcJgavSmo5U8x1J7goX6+ft4gWzPfIB0SKqw3jvTzrc6MN+Ss+SL
-         65Jkiux/7y73NsIOMG87D2ZB+KFMAEyzzaBV03hQCJFnz5GDBTxDxKRBVGBEu9DFkr2H
-         1Q+g==
-X-Forwarded-Encrypted: i=1; AJvYcCU2W99SAYZxS02LIpy509IQX8JTENKvbvdAPEwvg5y8MhOLI1HQJXwjDrn+gs+Ld/g73dDEmR0TH1J9JFlg@vger.kernel.org, AJvYcCUMDHJFxqHJsSsyZhRX/j4UErk8K/3g3bsi+5toyRING3fN/+gUFW3D8HjDrTfXyfLEjttd8W2mN6PAujA=@vger.kernel.org, AJvYcCUl8dGL8RqG4wJvJtpSeAwEpJwPoQQAEnBxTXpaBEvDp72WLdsLqwQsWjyDWJ2445dfLoheAAjz2I/0PUU=@vger.kernel.org, AJvYcCWF96Fz+zXCDbd/mEEseXR7+zN6LMv26KkkYua3m6bJ4KGyshv5eqRTjIOMigxyy8PPwJG3J+Au@vger.kernel.org, AJvYcCX8uHRTEvajhEcj3dCefQUMC8NavVsjxBmWXzvPfDV7CsWtoL6rPoNzsqWomWbPrDrbd2qkq+c2cY9i5sD/wuE=@vger.kernel.org, AJvYcCXSQRdVApxfh5D3QSt0S55XSeRcYDZY9JQpg51RYtd+Z6+hEinnYS2OiR8d7Lrv30vKCwUJP9roVQIK7gp2@vger.kernel.org, AJvYcCXzhjpL7eidVcIl+LGJ4UGZboao8pihnLnzVuX7uAg20fu9hyfMHEmAXU2aTk+jMeAG25E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8tQ4aNmYwQgAay/SdGInF3tAUrPfGPJ+gvXGMpxv1xtENu9qf
-	VR02SZhWK1FO0F5avJhhHGlx2NqHJTo898wfC4gZvenaaCD2hvCC
-X-Gm-Gg: ASbGnct5JWGCRoe3VZIPBwky2akTdA+uvK1NUNrKyRJbPCRhA4dlz3tqndh1dQIIikI
-	Xzw5Hway+WHDNStrCQg6Fd8wkjC59n7u9cAQAewlAoIrwQDQ0Es6zps2jtx2QDuxHEmAVk+S+a/
-	pQmkdxONjaqkaUW9+lBaVwUCikG0HK4fxdXXL9stR9/YZZgsEpGT9gvVGIe8NJfb/ljduRhKTjC
-	JD6ZU1uwjGXqxJXRV9fDh/2N5muCNFa2kYrNhzFlfcPLheEkJAPYp+l2n9516Dh6nft0WuYj48P
-	N1hzw7y64PelhNuzI7MF4D3/7p6GUpiIFgJ/etIG3G0xGixWNPF17vjlX03ifzYKK3F34evv
-X-Google-Smtp-Source: AGHT+IFzbU3WoJeacDQdqibpo5DgjipppPJR8PTe9f3lGsTZ/tQbuHLEeyPY/scxBj5Gc9UqWtPEbg==
-X-Received: by 2002:a05:6a21:9011:b0:1f3:418c:6281 with SMTP id adf61e73a8af0-2010446ceb8mr238059637.4.1743699290513;
-        Thu, 03 Apr 2025 09:54:50 -0700 (PDT)
-Received: from visitorckw-System-Product-Name ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af9bc31c00csm1453293a12.20.2025.04.03.09.54.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Apr 2025 09:54:49 -0700 (PDT)
-Date: Fri, 4 Apr 2025 00:54:40 +0800
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: Yury Norov <yury.norov@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Laurent.pinchart@ideasonboard.com, airlied@gmail.com,
-	akpm@linux-foundation.org, alistair@popple.id.au,
-	andrew+netdev@lunn.ch, andrzej.hajda@intel.com,
-	arend.vanspriel@broadcom.com, awalls@md.metrocast.net, bp@alien8.de,
-	bpf@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-	brcm80211@lists.linux.dev, dave.hansen@linux.intel.com,
-	davem@davemloft.net, dmitry.torokhov@gmail.com,
-	dri-devel@lists.freedesktop.org, eajames@linux.ibm.com,
-	edumazet@google.com, eleanor15x@gmail.com,
-	gregkh@linuxfoundation.org, hverkuil@xs4all.nl,
-	jernej.skrabec@gmail.com, jirislaby@kernel.org, jk@ozlabs.org,
-	joel@jms.id.au, johannes@sipsolutions.net, jonas@kwiboo.se,
-	jserv@ccns.ncku.edu.tw, kuba@kernel.org, linux-fsi@lists.ozlabs.org,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-serial@vger.kernel.org, linux-wireless@vger.kernel.org,
-	linux@rasmusvillemoes.dk, louis.peens@corigine.com,
-	maarten.lankhorst@linux.intel.com, mchehab@kernel.org,
-	mingo@redhat.com, miquel.raynal@bootlin.com, mripard@kernel.org,
-	neil.armstrong@linaro.org, netdev@vger.kernel.org,
-	oss-drivers@corigine.com, pabeni@redhat.com,
-	parthiban.veerasooran@microchip.com, rfoss@kernel.org,
-	richard@nod.at, simona@ffwll.ch, tglx@linutronix.de,
-	tzimmermann@suse.de, vigneshr@ti.com, x86@kernel.org
-Subject: Re: [PATCH v3 00/16] Introduce and use generic parity16/32/64 helper
-Message-ID: <Z+69UOemf+H/EHvN@visitorckw-System-Product-Name>
-References: <Z824SgB9Dt5zdWYc@visitorckw-System-Product-Name>
- <Z9CyuowYsZyez36c@thinkpad>
- <80771542-476C-493E-858A-D2AF6A355CC1@zytor.com>
- <Z9GtcNJie8TRKywZ@thinkpad>
- <Z9G2Tyypb3iLoBjn@visitorckw-System-Product-Name>
- <Z9KMKwnZXA2mkD2s@visitorckw-System-Product-Name>
- <Z+AlyB461xwMxMtG@visitorckw-System-Product-Name>
- <eec0dfd7-5e4f-4a08-928c-b7714dbc4a17@zytor.com>
- <Z+6dh1ZVIKWWOKaP@visitorckw-System-Product-Name>
- <Z-6zzP2O-Q7zvTLt@thinkpad>
+	s=arc-20240116; t=1743705593; c=relaxed/simple;
+	bh=IkGyPJwRtQD9jkm9OH2lsvhlOaVyX4qrz/r4yRsyj3I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sl5PzKbsGc2g9yujJygUYJq5iAh5Nc++hnhZMDms9uCZsKzWwgqAjrFzr1k16rqGqf4zKg7Y9DEwHJ/KSgY6IhJnBkkPR/RU6OYbPdzdKADqr4n9ApYmhdZUlmB1TIGIcqhtqTrpn6H/G3T3W8uABghRX/UGfpk9Es6wxg7r88o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=iXR2sCOq; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+From: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1743705577; bh=IkGyPJwRtQD9jkm9OH2lsvhlOaVyX4qrz/r4yRsyj3I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=iXR2sCOqiB1CuHFkPPZznb8rexR4lWqPK1EDrEzicHP+WfCXp8VOESTQLVTkIJ6bh
+	 9Qul1044Yfts28+LeMzWyo+zqZvFMMyuzPbSYGBM9ZgH4jju8hEYoeIIhnOWTG/I08
+	 vFtZNcf/FlA8TAbV56fUTb9Nx48m5lmUWVEZopE4gWJ/CeJgz0hKKJxuMAHHGfR1g+
+	 5T0nIONXAyttCz1Q2ryg6vhcaa8fZxqOeKS9MmjZN4I1ihdeMKkzZVGfHYaIbGir5j
+	 BedKNNMC/1o+wtGrEs8x1f2OeUdh+99/zDOjEELyJ0D0ZDFXgjmool7LMNVrn9Qn1o
+	 VNmGtxIjPl5QA==
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Subject: [PATCH wireless-next] Revert "mac80211: Dynamically set CoDel parameters per station"
+Date: Thu,  3 Apr 2025 20:39:28 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <20250403183930.197716-1-toke@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z-6zzP2O-Q7zvTLt@thinkpad>
 
-On Thu, Apr 03, 2025 at 12:14:04PM -0400, Yury Norov wrote:
-> On Thu, Apr 03, 2025 at 10:39:03PM +0800, Kuan-Wei Chiu wrote:
-> > On Tue, Mar 25, 2025 at 12:43:25PM -0700, H. Peter Anvin wrote:
-> > > On 3/23/25 08:16, Kuan-Wei Chiu wrote:
-> > > > 
-> > > > Interface 3: Multiple Functions
-> > > > Description: bool parity_odd8/16/32/64()
-> > > > Pros: No need for explicit casting; easy to integrate
-> > > >        architecture-specific optimizations; except for parity8(), all
-> > > >        functions are one-liners with no significant code duplication
-> > > > Cons: More functions may increase maintenance burden
-> > > > Opinions: Only I support this approach
-> > > > 
-> > > 
-> > > OK, so I responded to this but I can't find my reply or any of the
-> > > followups, so let me go again:
-> > > 
-> > > I prefer this option, because:
-> > > 
-> > > a. Virtually all uses of parity is done in contexts where the sizes of the
-> > > items for which parity is to be taken are well-defined, but it is *really*
-> > > easy for integer promotion to cause a value to be extended to 32 bits
-> > > unnecessarily (sign or zero extend, although for parity it doesn't make any
-> > > difference -- if the compiler realizes it.)
-> > > 
-> > > b. It makes it easier to add arch-specific implementations, notably using
-> > > __builtin_parity on architectures where that is known to generate good code.
-> > > 
-> > > c. For architectures where only *some* parity implementations are
-> > > fast/practical, the generic fallbacks will either naturally synthesize them
-> > > from components via shift-xor, or they can be defined to use a larger
-> > > version; the function prototype acts like a cast.
-> > > 
-> > > d. If there is a reason in the future to add a generic version, it is really
-> > > easy to do using the size-specific functions as components; this is
-> > > something we do literally all over the place, using a pattern so common that
-> > > it, itself, probably should be macroized:
-> > > 
-> > > #define parity(x) 				\
-> > > ({						\
-> > > 	typeof(x) __x = (x);			\
-> > > 	bool __y;				\
-> > > 	switch (sizeof(__x)) {			\
-> > > 		case 1:				\
-> > > 			__y = parity8(__x);	\
-> > > 			break;			\
-> > > 		case 2:				\
-> > > 			__y = parity16(__x);	\
-> > > 			break;			\
-> > > 		case 4:				\
-> > > 			__y = parity32(__x);	\
-> > > 			break;			\
-> > > 		case 8:				\
-> > > 			__y = parity64(__x);	\
-> > > 			break;			\
-> > > 		default:			\
-> > > 			BUILD_BUG();		\
-> > > 			break;			\
-> > > 	}					\
-> > > 	__y;					\
-> > > })
-> > >
-> > Thank you for your detailed response and for explaining the rationale
-> > behind your preference. The points you outlined in (a)–(d) all seem
-> > quite reasonable to me.
-> > 
-> > Yury,
-> > do you have any feedback on this?
-> > Thank you.
-> 
-> My feedback to you:
-> 
-> I asked you to share any numbers about each approach. Asm listings,
-> performance tests, bloat-o-meter. But you did nothing or very little
-> in that department. You move this series, and it means you should be
-> very well aware of alternative solutions, their pros and cons.
->
-I'm willing to run micro-benchmarks, but even with performance data, I
-lack the domain knowledge to determine which users care about parity
-efficiency. No one in Cc has clarified this either.
+This reverts commit 484a54c2e597dbc4ace79c1687022282905afba0. The CoDel
+parameter change essentially disables CoDel on slow stations, with some
+questionable assumptions, as Dave pointed out in [0]. Quoting from
+there:
 
-> Instead, you started a poll to pick the best solution. This is not
-> what I expected, and this is not how the best solution can be found.
-> 
-> To H. Peter and everyone:
-> 
-> Thank you for sharing your opinion on this fixed parity(). Your
-> arguments may or may not be important, depending on what existing
-> users actually need. Unfortunately, Kuan-Wei didn't collect
-> performance numbers and opinions from those proposed users.
-> 
-> I already told that, and I will say again: with the lack of any
-> evidence that performance and/or code generation is important here,
-> the best solution is one that minimizes maintainers' (my!) burden.
-> 
-> In other words, bool parity(unsigned long long). I'm OK to maintain
-> a macro, as well. I understand that more complicated solutions may be
-> more effective. I will take them only if they will be well advocated.
-> 
-Before Peter suggested an arch-specific implementation, I planned to go
-with approach #1, as it minimizes maintenance overhead in the absence
-of clear user requirements.
+  But here are my pithy comments as to why this part of mac80211 is so
+  wrong...
 
-Peter,
-Have you identified any users who care about parity efficiency?
-If not, do we still need to introduce an arch-specific implementation?
+   static void sta_update_codel_params(struct sta_info *sta, u32 thr)
+   {
+  -       if (thr && thr < STA_SLOW_THRESHOLD * sta->local->num_sta) {
 
-Regards,
-Kuan-Wei
+  1) sta->local->num_sta is the number of associated, rather than
+  active, stations. "Active" stations in the last 50ms or so, might have
+  been a better thing to use, but as most people have far more than that
+  associated, we end up with really lousy codel parameters, all the
+  time. Mistake numero uno!
 
-> I hope this will help us to stop moving this discussion back and forth
-> and save our time, guys.
-> 
-> Thanks,
-> Yury
+  2) The STA_SLOW_THRESHOLD was completely arbitrary in 2016.
+
+  -               sta->cparams.target = MS2TIME(50);
+
+  This, by itself, was probably not too bad. 30ms might have been
+  better, at the time, when we were battling powersave etc, but 20ms was
+  enough, really, to cover most scenarios, even where we had low rate
+  2Ghz multicast to cope with. Even then, codel has a hard time finding
+  any sane drop rate at all, with a target this high.
+
+  -               sta->cparams.interval = MS2TIME(300);
+
+  But this was horrible, a total mistake, that is leading to codel being
+  completely ineffective in almost any scenario on clients or APS.
+  100ms, even 80ms, here, would be vastly better than this insanity. I'm
+  seeing 5+seconds of delay accumulated in a bunch of otherwise happily
+  fq-ing APs....
+
+  100ms of observed jitter during a flow is enough. Certainly (in 2016)
+  there were interactions with powersave that I did not understand, and
+  still don't, but if you are transmitting in the first place, powersave
+  shouldn't be a problemmmm.....
+
+  -               sta->cparams.ecn = false;
+
+  At the time we were pretty nervous about ecn, I'm kind of sanguine
+  about it now, and reliably indicating ecn seems better than turning it
+  off for any reason.
+
+  [...]
+
+  In production, on p2p wireless, I've had 8ms and 80ms for target and
+  interval for years now, and it works great.
+
+I think Dave's arguments above are basically sound on the face of it,
+and various experimentation with tighter CoDel parameters in the OpenWrt
+community have show promising results[1]. So I don't think there's any
+reason to keep this parameter fiddling; hence this revert.
+
+[0] https://lore.kernel.org/linux-wireless/CAA93jw6NJ2cmLmMauz0xAgC2MGbBq6n0ZiZzAdkK0u4b+O2yXg@mail.gmail.com/
+[1] https://forum.openwrt.org/t/reducing-multiplexing-latencies-still-further-in-wifi/133605/130
+
+Suggested-By: Dave Taht <dave.taht@gmail.com>
+In-memory-of: Dave Taht <dave.taht@gmail.com>
+Signed-off-by: Toke Høiland-Jørgensen <toke@toke.dk>
+---
+ include/net/mac80211.h     | 16 ----------------
+ net/mac80211/debugfs_sta.c |  6 ------
+ net/mac80211/rate.c        |  3 +--
+ net/mac80211/sta_info.c    | 28 ----------------------------
+ net/mac80211/sta_info.h    | 11 -----------
+ net/mac80211/tx.c          |  9 +--------
+ 6 files changed, 2 insertions(+), 71 deletions(-)
+
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index c498f685d01f..5349df596157 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -5346,22 +5346,6 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
+ 			    struct ieee80211_tx_rate *dest,
+ 			    int max_rates);
+ 
+-/**
+- * ieee80211_sta_set_expected_throughput - set the expected tpt for a station
+- *
+- * Call this function to notify mac80211 about a change in expected throughput
+- * to a station. A driver for a device that does rate control in firmware can
+- * call this function when the expected throughput estimate towards a station
+- * changes. The information is used to tune the CoDel AQM applied to traffic
+- * going towards that station (which can otherwise be too aggressive and cause
+- * slow stations to starve).
+- *
+- * @pubsta: the station to set throughput for.
+- * @thr: the current expected throughput in kbps.
+- */
+-void ieee80211_sta_set_expected_throughput(struct ieee80211_sta *pubsta,
+-					   u32 thr);
+-
+ /**
+  * ieee80211_tx_rate_update - transmit rate update callback
+  *
+diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
+index a67a9d316008..06376e1a1fcf 100644
+--- a/net/mac80211/debugfs_sta.c
++++ b/net/mac80211/debugfs_sta.c
+@@ -150,12 +150,6 @@ static ssize_t sta_aqm_read(struct file *file, char __user *userbuf,
+ 	spin_lock_bh(&local->fq.lock);
+ 	rcu_read_lock();
+ 
+-	p += scnprintf(p,
+-		       bufsz + buf - p,
+-		       "target %uus interval %uus ecn %s\n",
+-		       codel_time_to_us(sta->cparams.target),
+-		       codel_time_to_us(sta->cparams.interval),
+-		       sta->cparams.ecn ? "yes" : "no");
+ 	p += scnprintf(p,
+ 		       bufsz + buf - p,
+ 		       "tid ac backlog-bytes backlog-packets new-flows drops marks overlimit collisions tx-bytes tx-packets flags\n");
+diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
+index 0d056db9f81e..a63723ba691d 100644
+--- a/net/mac80211/rate.c
++++ b/net/mac80211/rate.c
+@@ -990,8 +990,6 @@ int rate_control_set_rates(struct ieee80211_hw *hw,
+ 	if (sta->uploaded)
+ 		drv_sta_rate_tbl_update(hw_to_local(hw), sta->sdata, pubsta);
+ 
+-	ieee80211_sta_set_expected_throughput(pubsta, sta_get_expected_throughput(sta));
+-
+ 	return 0;
+ }
+ EXPORT_SYMBOL(rate_control_set_rates);
+@@ -1040,3 +1038,4 @@ void rate_control_deinitialize(struct ieee80211_local *local)
+ 	local->rate_ctrl = NULL;
+ 	rate_control_free(local, ref);
+ }
++
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 30cdc783999d..da9d17e7bf0d 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -18,7 +18,6 @@
+ #include <linux/timer.h>
+ #include <linux/rtnetlink.h>
+ 
+-#include <net/codel.h>
+ #include <net/mac80211.h>
+ #include "ieee80211_i.h"
+ #include "driver-ops.h"
+@@ -701,12 +700,6 @@ __sta_info_alloc(struct ieee80211_sub_if_data *sdata,
+ 		}
+ 	}
+ 
+-	sta->cparams.ce_threshold = CODEL_DISABLED_THRESHOLD;
+-	sta->cparams.target = MS2TIME(20);
+-	sta->cparams.interval = MS2TIME(100);
+-	sta->cparams.ecn = true;
+-	sta->cparams.ce_threshold_selector = 0;
+-	sta->cparams.ce_threshold_mask = 0;
+ 
+ 	sta_dbg(sdata, "Allocated STA %pM\n", sta->sta.addr);
+ 
+@@ -2905,27 +2898,6 @@ unsigned long ieee80211_sta_last_active(struct sta_info *sta)
+ 	return sta->deflink.status_stats.last_ack;
+ }
+ 
+-static void sta_update_codel_params(struct sta_info *sta, u32 thr)
+-{
+-	if (thr && thr < STA_SLOW_THRESHOLD * sta->local->num_sta) {
+-		sta->cparams.target = MS2TIME(50);
+-		sta->cparams.interval = MS2TIME(300);
+-		sta->cparams.ecn = false;
+-	} else {
+-		sta->cparams.target = MS2TIME(20);
+-		sta->cparams.interval = MS2TIME(100);
+-		sta->cparams.ecn = true;
+-	}
+-}
+-
+-void ieee80211_sta_set_expected_throughput(struct ieee80211_sta *pubsta,
+-					   u32 thr)
+-{
+-	struct sta_info *sta = container_of(pubsta, struct sta_info, sta);
+-
+-	sta_update_codel_params(sta, thr);
+-}
+-
+ int ieee80211_sta_allocate_link(struct sta_info *sta, unsigned int link_id)
+ {
+ 	struct ieee80211_sub_if_data *sdata = sta->sdata;
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index 07b7ec39a52f..7a95d8d34fca 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -466,14 +466,6 @@ struct ieee80211_fragment_cache {
+ 	unsigned int next;
+ };
+ 
+-/*
+- * The bandwidth threshold below which the per-station CoDel parameters will be
+- * scaled to be more lenient (to prevent starvation of slow stations). This
+- * value will be scaled by the number of active stations when it is being
+- * applied.
+- */
+-#define STA_SLOW_THRESHOLD 6000 /* 6 Mbps */
+-
+ /**
+  * struct link_sta_info - Link STA information
+  * All link specific sta info are stored here for reference. This can be
+@@ -626,7 +618,6 @@ struct link_sta_info {
+  * @sta: station information we share with the driver
+  * @sta_state: duplicates information about station state (for debug)
+  * @rcu_head: RCU head used for freeing this station struct
+- * @cparams: CoDel parameters for this station.
+  * @reserved_tid: reserved TID (if any, otherwise IEEE80211_TID_UNRESERVED)
+  * @amsdu_mesh_control: track the mesh A-MSDU format used by the peer:
+  *
+@@ -717,8 +708,6 @@ struct sta_info {
+ 	struct dentry *debugfs_dir;
+ #endif
+ 
+-	struct codel_params cparams;
+-
+ 	u8 reserved_tid;
+ 	s8 amsdu_mesh_control;
+ 
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 20179db88c4a..25f38e7eb58a 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1402,16 +1402,9 @@ static struct sk_buff *fq_tin_dequeue_func(struct fq *fq,
+ 
+ 	local = container_of(fq, struct ieee80211_local, fq);
+ 	txqi = container_of(tin, struct txq_info, tin);
++	cparams = &local->cparams;
+ 	cstats = &txqi->cstats;
+ 
+-	if (txqi->txq.sta) {
+-		struct sta_info *sta = container_of(txqi->txq.sta,
+-						    struct sta_info, sta);
+-		cparams = &sta->cparams;
+-	} else {
+-		cparams = &local->cparams;
+-	}
+-
+ 	if (flow == &tin->default_flow)
+ 		cvars = &txqi->def_cvars;
+ 	else
+-- 
+2.48.1
+
 
