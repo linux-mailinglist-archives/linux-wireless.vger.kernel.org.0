@@ -1,144 +1,144 @@
-Return-Path: <linux-wireless+bounces-21120-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21121-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35281A79DF3
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 10:22:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F9E6A7A080
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 11:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06F2F3B670C
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 08:22:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE6BD173BC0
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 09:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459E32417D8;
-	Thu,  3 Apr 2025 08:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6380F244195;
+	Thu,  3 Apr 2025 09:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Taqp3uVh"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Gs6IRBSP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A88241CB2
-	for <linux-wireless@vger.kernel.org>; Thu,  3 Apr 2025 08:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE23A243387;
+	Thu,  3 Apr 2025 09:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743668543; cv=none; b=G20LlHTjKx8YCL/jT8CJdX5Cpb/D/wpJmRH2mjxuTuPwJeBBfPF5uIFvXSk2fL0Svhk757eltlTi1Mx8sbP9UtyrpvcQHykfGkbPt0GcYTantravbl6mG8nQq83qx5ei0WoBP2ZxABYt2NtEOsWh2OGs+J9Vmw6gJp+OaQW1LtM=
+	t=1743673987; cv=none; b=I0lZM9SCBHoFDPn3AHv89WTXiF8mZ0SqXf7GgY0MR0Kd/GFNOaj5TIMqGPGFX/b4tKOnzxESpbzGC1PdGVTl/7cKUO8gR6/oLl1YYlZuvLYpxRUEhFlDZo3ZGVGsQjWfryvFi0wYUPUMYTue8iTeGC6OXZ5O/n8yA5yndQ4LS14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743668543; c=relaxed/simple;
-	bh=ClJ02hH3Y3mmScI8ZNEenohqwAVSb93mPHcDzgfRtn4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t0/gcYMV6NeZjdCRi/dc6i3hUTrbhxZdoIuWKUteMxqTf98v9K5vF1BFBWOlVPAuG5duPwsxBPk03R1t+x49VA4/ZJCMO1oP5VbioGU8cbzOKw0zSTAjSTbHiqxLhRs4DRNEbxXqEeOx9gRjBybvvbUpUMX8FgBF97xpRZq6C/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Taqp3uVh; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53382moB022099
-	for <linux-wireless@vger.kernel.org>; Thu, 3 Apr 2025 08:22:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=6esBelNOAKg
-	OOsjfxg+XGMAKvus81FJOG5HagSUCP7M=; b=Taqp3uVhFgybDvlT0xCokgx0cVR
-	QKqJnrMAdlSFAErJGC0n8tS8LOoBWbBs4Jss1t0Jdp4AsVqRN7LszRsxLdpFZczD
-	b7LLi7ZpoQFEnQ+LBaL5ECDUL9vNfy1uP6QPUie9IjPngagXozwvDv9N7WpfTRnJ
-	kKMjhoh8bfs9qw/e3i9QcxlNqg8GtkaEB++FaYkoSW9GXQO7qXSPkS323MpXB9sy
-	KX/Iu4o+V0HwiiwSSqqN9PiV0n0UYkC1cmda2P5M7lRB+Qpnj1OztarxwMKJpnzf
-	X5nlbPbisg7W12DBv7DW6/VrVHEp2XM0pgzvoliLWOJKl0TGQZLfFr8G3iA==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45ryhfuqvj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 03 Apr 2025 08:22:20 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-7395d07a3dcso598068b3a.3
-        for <linux-wireless@vger.kernel.org>; Thu, 03 Apr 2025 01:22:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743668539; x=1744273339;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6esBelNOAKgOOsjfxg+XGMAKvus81FJOG5HagSUCP7M=;
-        b=uOgrgMoyhkDiSV8bsWNr4sU2YGDe+Hz33a4i1iAMjPiBffG6f8ElU/64KC24i9vWDm
-         35KYoHX00sphY5v2uJNnAc0KFL0awr5D7eriLP52u+Pkf31ZwjNo+uSVe6uiPCZtFLOr
-         qfSsQfFN6VL9egnAHMwnFf5rtrK2hwiYjCeFSas4gVqP3mVI5rMZcdmCw2oaYjKgS6Up
-         MTNxpLTFkfnzp2DF8CNHGU+MvmCKpOIIkXEp61g9LEuYlYOpnWa4L7mdQw78t2aeNC7+
-         MZgsX22Tqx5wdP44JWAABhUhG3T+2JNf9UUHSk7kb8diLl+fc6GnDLVCDeMWPkz5+uaL
-         e13Q==
-X-Gm-Message-State: AOJu0Yw2qxtchf8QjUFyYvuhJbjzsoz5B9KgHZyjopOljBB2TTlXaKuS
-	wIsEbLJV06Ucw0BrnsUcAn9jj21wy2aPoNOB29rOOxpV0m1qpi606uD1hSeUS2/cF531P6A+rTj
-	riYt5l+ZfgSYEM2keavmuebK3GyJT3xhqXNmKBNTXfW4zb9Wec+uaYA62qeIp5+L/L6WByI77wg
-	==
-X-Gm-Gg: ASbGnctAOQ1sxmGZ5GWNOqR/AoZR4wMS9veHJ3J0AKMvh/bJwASfqEaHgkQAKX1/ELY
-	viJiuvZMGTCRzl4RakPq5heLMtabJqr257j4i00vPQa3Oy2CDltcp9E1zITW/yXjO89xAMlXyPx
-	vIjYKTmbA59QkweJJ5BzYLDMRTI5PwwUNyAc+U/TAftdHZu51flbrcQfUFxmE8ai63DLbGSW4p/
-	cAIh9F+DvLB/Py5JkCd3YBbSGO4/w7LnlQXVwuhVtR38IEp83ykvbYWGOG0zN4tvGnC/dLN070K
-	bJIjCf1PW0sCA/ge/kWEcyH4WGHXtCAkbuL2o4peu+z/Cf+1Mm07oNEujPyXMRq9rK76LybW7mu
-	KF4jOmzGKBX2VR1JJExEto4a5wNFJ8G4gEYcjfwc=
-X-Received: by 2002:a05:6a00:1309:b0:736:450c:fa54 with SMTP id d2e1a72fcca58-7398036acbemr27470735b3a.6.1743668538609;
-        Thu, 03 Apr 2025 01:22:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGETLC/kmGTLpQGVF7+wK9Ovp6qgVpFH5bC1wFzQ+j22HSQk/gmxF+qKaR/EOTG5SXEk/YSPw==
-X-Received: by 2002:a05:6a00:1309:b0:736:450c:fa54 with SMTP id d2e1a72fcca58-7398036acbemr27470705b3a.6.1743668538089;
-        Thu, 03 Apr 2025 01:22:18 -0700 (PDT)
-Received: from hu-aarasahu-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-739d9ea080esm900381b3a.108.2025.04.03.01.22.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Apr 2025 01:22:17 -0700 (PDT)
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Subject: [PATCH ath-next 2/2] wifi: ath12k: Introduce check against zero for ahvif->key_cipher in ath12k_mac_op_tx()
-Date: Thu,  3 Apr 2025 13:52:07 +0530
-Message-Id: <20250403082207.3323938-3-aaradhana.sahu@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250403082207.3323938-1-aaradhana.sahu@oss.qualcomm.com>
-References: <20250403082207.3323938-1-aaradhana.sahu@oss.qualcomm.com>
+	s=arc-20240116; t=1743673987; c=relaxed/simple;
+	bh=KvtBM0ZRSiwhmzmpnxmIE3L/R2T+8ruIpO53DebI4po=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=gENIsIrPsiJnVHeZ1AomR3lJqLV+PIWobLwXRGodTCxnSBFvZyxBq3DMcK/zVvOizAtw/k7JCQyv9NPTa2ZbTttlRTOuY7zDX3b6I8lA29zN78qdwzRqrHl77zX3IR0HtMATqh6Tqj8uEBlNttJqWxWVUYB0ZZ4vM8rE9NDAlDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Gs6IRBSP; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1743673965; x=1744278765; i=markus.elfring@web.de;
+	bh=73c+mDPTV3enfh00xFQH0rkQ3B7hoaOfs79Gig8ynL4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Gs6IRBSP30nqBoVeW2m1+w37RYHjZS/3Xoi7eLsKGvsNN/bFKsw2/1W30XAJ8NG7
+	 35iYnymvevIJdmOxl9z/QqsiMSX1XM6G8w9ZXvMGZaeKqANUyIR4BYNpaZ9UCSB/t
+	 iHcfV+UpAoQGoCOiAiTZOZudkX1QO3Al3gWZRNxI4EBmSB3GW/B+bHPR33eL7pdrz
+	 4KB2nI4KlqIHemmYmsI1yCPjvSXV8XKLhcyVkv/aPzTBVQFzlp1Yauh1S26j+QD/D
+	 6R9l+iZSiseYo91FGF7OsGx2ckkT4a3gH8qs6PnPGHnk0QkFbOHvmFZKLn/IaJdfV
+	 EvoylHTGYio9O0ZV1A==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.50]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MgzeZ-1tSZWq0xRd-00ZikS; Thu, 03
+ Apr 2025 11:52:45 +0200
+Message-ID: <41f9ad4b-382c-4945-82ac-ec38bee87937@web.de>
+Date: Thu, 3 Apr 2025 11:52:42 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 4S1YWMgCVn1w_MtIZDem1BvbTP80YPMU
-X-Authority-Analysis: v=2.4 cv=RrfFLDmK c=1 sm=1 tr=0 ts=67ee453c cx=c_pps a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17 a=XR8D0OoHHMoA:10 a=EUspDBNiAAAA:8 a=mQDnMu6jyAvxAejt3JgA:9 a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-ORIG-GUID: 4S1YWMgCVn1w_MtIZDem1BvbTP80YPMU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-03_03,2025-04-02_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
- mlxscore=0 bulkscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- impostorscore=0 phishscore=0 mlxlogscore=999 clxscore=1015
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504030033
+User-Agent: Mozilla Thunderbird
+To: Henry Martin <bsdhenrymartin@gmail.com>, linux-wireless@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Chad Monroe <chad@monroe.io>, Felix Fietkau <nbd@nbd.name>,
+ Lorenzo Bianconi <lorenzo@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Peter Chiu <chui-hao.chiu@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>,
+ Sean Wang <sean.wang@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+ Shengyu Qu <wiagn233@outlook.com>
+References: <20250403065251.64749-1-bsdhenrymartin@gmail.com>
+Subject: Re: [PATCH] wifi: mt76: mt7915: Fix null-ptr-deref in
+ mt7915_mmio_wed_init()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250403065251.64749-1-bsdhenrymartin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:rMLkyUnskGPkc7CWGHQK0eH2zwgXWMQzE9a9IajwH62GgqYqjvN
+ tGX03ua54yJuhNQ3KNuKe4f58fK6oBxHaVa6MKzEKMld2Y1jFlSDVX0epXnx52t3W364gkR
+ gpLuVOGXzmiZqoBK50Wmd7cDVqWfCgXtsb+DzO775fp9ap/PNy9wee3eIPMcOfNMUL2CJ0R
+ 70uZfgZ7z3xr42aY5m8UA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:pD0NSjZ9QWw=;/baeS6cvg/lHM2Kyl7abZ4oanhf
+ o+3hFID+PCwZrrDLY26nD2hdcwEFUmUrq+z7MtMNKtcchbTSfVyJR2SdFujvBcOnBdqJpwItV
+ l6nxkTz3601pODWIPaRYRLAgQRQ1SxietJCd8fRjcNcJXfwrHlh0+xRdfCrXqXK79DMii6rd4
+ JzpK7hEgQW46dqrOAHJrjTmmC177feCJVktrA9t3PRxQbKBBZXlcCeiD+1htQi3NjgBxxXBBd
+ Pl4LYjdbclzx8HRdTXpanLfHWW3EseVrHr2U2q1DQoOXZblH0tApHhdX+J8gQF9olLb8p2DP4
+ qRdD0g3nL3siaQHEz6jWN+sCBjYt/q75VmyJCPDdALV+ZSUZp9J8tI/TNRL5iPauLwcNE9kFB
+ wmTf2ukFtILVy3kcULVLWWIZjq0DCmKrj+bc0v1n2z4pDxIjulbGEDBTtKrHoVxH7HLtg4Z70
+ kgdD2CJmoglxs2pMmkAz50wDy9RabVbUVllKVfM0Wkcb428cNIu+q0vBIe7L2EdSPWXF0FkXI
+ FzGrJbd1chORjvbLAGntd/AEjDsT0J0uQl9Ic+mKxudBP7GVLmBv4+CkpasZIYHDtqYymUTwy
+ qUsfwoKDNmOEzhRRqGiZxVpsMhfgCjdebxXeRnNHKgDSXoX1RKgMClBM9riDjvqGCsGKJXcxj
+ fKLIlKQ7m+QM2UeGuoKLB9GAzQzUktce7+x61fF0jngx6Gm+kGYNzIL6aJfWFdIPFwSzhSG3Y
+ MwRJopsdiBX8JkunzqTyx69jd+hQN9yf5W9xW6hXHX/t9YZvYy2jYzcYYab44bqmFYEwXpbqx
+ /wUH+azhxuYEUtySNf+asyfA9OR2C0dJodcIIPEn4YwLjoow9xQBY0dO5Cfxe4OGL74ZCoTM2
+ H4tfiD2VMZ4Eps7EF+Q2DlAlw/i+T48V5ROTnYkN0XJGoz+DwyJh/sXsDL9EV4M7bII1Hkezo
+ G2WuX04Lkn32+jSzYqHmGhZRgIKiYngquinFFOFSbdxWhOoHJqzdmrS8+0GYtG0sq5UY/2Cjr
+ wWk6Z0PjGQ251rh2eDyiCEc+pmIjDjBKtZkfMdamAhOTM7NW+mqxUCqxmRZNIba8U9rqFx8O0
+ v+JeW3QBNAZiO6KdV4SB8y+Bi7/Vr65aHE8I9HHOKPfA1hYiZRsQWaDXlyTfHGSqYpM4mUMUz
+ CYMj4uZWKKOFzV0ZtQY3VyrhACbVAuKShOO5VYuF9QsfApLxKppxZDRvURE7CZ4GvGwWCjIS0
+ HcqO78XXQ/rLAQJJxI1ahmnbMoNFgnmKCwuPY8idCZ5WMpfwZqJmfUOMqO760x290xE9vhuhf
+ ilVIAg7of4C18GB138dvksDDgZTQxi6K91vC5ZbUMUsVWABdT6PMYOOyqvE03kcWkbW41Ml+o
+ JpDDHeWMZQfcDn44YhkLu6Xe6ZgXS2n7IDkzXo6Yx8tzkE1g4D9dkJqP5uiWPUyRv6ewg2f/I
+ AkmhkbJXtI06dD5n6YQ1tOz0fR6OTIaf3nzgKEAu6xfnQhacf
 
-Currently, ahvif->key_cipher is compared with the enum value
-(WMI_CIPHER_NONE) inside ath12k_mac_op_tx(). However, ahvif->key_cipher is
-set using the macro value WLAN_CIPHER_SUITE_XXXX which seems inconsistent.
+=E2=80=A6
+> Add NULL check after devm_ioremap() to prevent this issue.
 
-To improve code consistency and readability, introduce check against zero
-for ahvif->key_cipher instead of comparing it with the enum
-(WMI_CIPHER_NONE).
+Can a summary phrase like =E2=80=9CPrevent null pointer dereference in mt7=
+915_mmio_wed_init()=E2=80=9D
+be a bit nicer?
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00209-QCAHKSWPL_SILICONZ-1
 
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+=E2=80=A6
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+> @@ -651,6 +651,8 @@ int mt7915_mmio_wed_init(struct mt7915_dev *dev, voi=
+d *pdev_ptr,
+>  		wed->wlan.base =3D devm_ioremap(dev->mt76.dev,
+>  					      pci_resource_start(pci_dev, 0),
+>  					      pci_resource_len(pci_dev, 0));
+> +		if (!wed->wlan.base)
+> +			return -ENOMEM;
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 0036178cf999..628504ac05f2 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -7493,7 +7493,7 @@ static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
- 			skb_cb->link_id = link_id;
- 
- 			/* For open mode, skip peer find logic */
--			if (unlikely(ahvif->key_cipher == WMI_CIPHER_NONE))
-+			if (unlikely(!ahvif->key_cipher))
- 				goto skip_peer_find;
- 
- 			spin_lock_bh(&tmp_ar->ab->base_lock);
--- 
-2.34.1
+Can a blank line be desirable after such a statement?
 
+
+=E2=80=A6
+> @@ -678,6 +680,8 @@ int mt7915_mmio_wed_init(struct mt7915_dev *dev, voi=
+d *pdev_ptr,
+>  		wed->wlan.bus_type =3D MTK_WED_BUS_AXI;
+>  		wed->wlan.base =3D devm_ioremap(dev->mt76.dev, res->start,
+>  					      resource_size(res));
+> +		if (!wed->wlan.base)
+> +			return -ENOMEM;
+
+Would the function =E2=80=9Cdevm_platform_get_and_ioremap_resource=E2=80=
+=9D be applicable
+in this else branch?
+https://elixir.bootlin.com/linux/v6.14-rc6/source/drivers/base/platform.c#=
+L87
+
+Regards,
+Markus
 
