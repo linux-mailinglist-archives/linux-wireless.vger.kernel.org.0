@@ -1,56 +1,58 @@
-Return-Path: <linux-wireless+bounces-21140-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21141-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF483A7AA46
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 21:10:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC3EA7AA85
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 21:14:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9677F3ADA5F
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 19:07:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32AD9179820
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 19:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80322586CC;
-	Thu,  3 Apr 2025 19:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BB425A62B;
+	Thu,  3 Apr 2025 19:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vQ3bPRcR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hZI5ybgB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD32F2586C8;
-	Thu,  3 Apr 2025 19:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692D125A625;
+	Thu,  3 Apr 2025 19:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743706991; cv=none; b=GCAr6U55PPNRAMHtAODKimgDh/tHZJIb3DSbFbBxys0gQC2saYuOJrJ7alfgUcEX8vGNWnGgZ6dwsMBjmORJ2q4T+Z6y/iXwp179T+i7kQqyfoz07KUYLrbqT5ooZ+ZzyTHny9NLdbdQiUBfUMr+q7s1gQDs7YHpPIDMe1WBtT0=
+	t=1743707012; cv=none; b=hK0P5WExjZSDwGXjrLcSLhm6KSVuov2kzHqIoBXYUVDbHvPrXNa1RvcxJlU0T9r6Srz2f162TPeKG/qcbieWZEDXYXxvmIksj3u4FCf8PwZmdmlFF5r/iRGVsExY5HY+C5RLCn44M5EnMO9/uvkADIwy/j5CrRRT9fdtmL/0zK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743706991; c=relaxed/simple;
-	bh=UbRoaPQiaPriiA58VAy2/csM024QjLTwPDPpJTqe79I=;
+	s=arc-20240116; t=1743707012; c=relaxed/simple;
+	bh=e2X8vBO+kcgjTqY+W0KycZj3PvkeEu+edKkaEEPzrlA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SUkQ6STpcw8jVfpd4wMdiRS0AhugDiphfw5gqISLMDvV4X32fiNBnc2d/FITKRZqEng58j/ui9EyujoEDDQ54kCh6zAVBCNGEYIX8O5pPRblCyCFERNim6TZQziZpqQzB9DrEQ51myo1zSr/mcotWeYMbjRflg6WCH1y+Nen1uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vQ3bPRcR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C641C4CEE3;
-	Thu,  3 Apr 2025 19:03:10 +0000 (UTC)
+	 MIME-Version; b=XXpijr01dyLhV8qC3FbdLJURLfboNv5FcfOPNoyVx7Vjs7y+8LZQCzElXvXv2AtUzCKrf6fxBEBw/LU6TeZArr4mVO3OakGgplV+8hhmvgskw/+pQgOuXJtZxI64lAu3q08B3Gi4fMYggShjTMmZCljAp302Cs4ImB4bJ7cDsB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hZI5ybgB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F77C4CEE8;
+	Thu,  3 Apr 2025 19:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743706991;
-	bh=UbRoaPQiaPriiA58VAy2/csM024QjLTwPDPpJTqe79I=;
+	s=k20201202; t=1743707010;
+	bh=e2X8vBO+kcgjTqY+W0KycZj3PvkeEu+edKkaEEPzrlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQ3bPRcRK0uqXoXpyIymwwYbRsUjR+x18djjFDnBuGqbUopgN9RaD0VgOSNxp5BUP
-	 8yHBXgpz5fWyy0tjDP3Bzl/t1L67OcKCbNokFwNKn69jKBHpz9yrig562AStrL9pPD
-	 MT4MSrwKkwGYl9O0kk4J1u1tv7JeHkqgWn/agBiZ7z2b0PfeEcXDvrqClW607dM4qI
-	 XgeX1KWm26GbGHNzgU6FX59mCMCJmbLTORhR1+VMHIKNfz0PeOZpP0KQek3LTtofDR
-	 1J9S7WpBPhiYo0wNW7D1MU558DdPzSaDxaqpPVAOq+xxbxBRoVu6adGReaQK7rZW0c
-	 hW/0Acf6uV72w==
+	b=hZI5ybgBeTP31Pl4wIzNNMa1YurR+q+/QMoUKnL3fs9KTcaoXRdiGFiAayZFzV9FR
+	 XLi0ztakVznvsku9FEjWCgF19ALcqxR6lVaEDc618HrGy61Hg+aPGu0kn0/VCk3kLG
+	 PkGNXxTyzAkohWvwAKIm6lfv1O98eWxYCkLYupKB5qt+B+789p7kDxnGwjR11oFRnL
+	 vJJH638Eio/g044yRJnvW1U0lygyIttRHtd/c7f3XFwrpgF66Cl0QDMvqD1qZGMG4e
+	 wgZJ03Olfe+n3UtQbgN62MWbzPAPv+9gJW7d/aZjnqddYw4p/8f6I7hTEc5hAwQAZj
+	 Ry17kQ44el7iw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zenm Chen <zenmchen@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 25/54] wifi: rtw88: Add support for Mercusys MA30N and D-Link DWA-T185 rev. A1
-Date: Thu,  3 Apr 2025 15:01:40 -0400
-Message-Id: <20250403190209.2675485-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 35/54] wifi: mac80211: fix userspace_selectors corruption
+Date: Thu,  3 Apr 2025 15:01:50 -0400
+Message-Id: <20250403190209.2675485-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190209.2675485-1-sashal@kernel.org>
 References: <20250403190209.2675485-1-sashal@kernel.org>
@@ -65,38 +67,93 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 80c4668d024ff7b5427d90b5fad655ce9461c7b1 ]
+[ Upstream commit 700014d3ad1fd6e55c8f9ffa817514d3fbb5286e ]
 
-Add two more USB IDs found in
-https://github.com/RinCat/RTL88x2BU-Linux-Driver
-to support Mercusys MA30N and D-Link DWA-T185 rev. A1.
+Spotted during code review, the selectors need to be large
+enough for a 128-bit bitmap, not a single unsigned long,
+otherwise we have stack corruption.
 
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250210073610.4174-1-zenmchen@gmail.com
+We should also allow passing selectors from userspace, but
+that should be a separate change.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250308225541.8f1bcf96a504.Ibeb8970c82a30c97279a4cc4e68faca5df1813a5@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822bu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/mac80211/mlme.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-index 8883300fc6adb..572d1f31832ee 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-@@ -73,6 +73,10 @@ static const struct usb_device_id rtw_8822bu_id_table[] = {
- 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* ELECOM WDB-867DU3S */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0107, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* Mercusys MA30H */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x010a, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* Mercusys MA30N */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3322, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* D-Link DWA-T185 rev. A1 */
- 	{},
- };
- MODULE_DEVICE_TABLE(usb, rtw_8822bu_id_table);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 64fa3fba244eb..4951e4fa7373a 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -9648,8 +9648,6 @@ EXPORT_SYMBOL(ieee80211_disable_rssi_reports);
+ 
+ static void ieee80211_ml_reconf_selectors(unsigned long *userspace_selectors)
+ {
+-	*userspace_selectors = 0;
+-
+ 	/* these selectors are mandatory for ML reconfiguration */
+ 	set_bit(BSS_MEMBERSHIP_SELECTOR_SAE_H2E, userspace_selectors);
+ 	set_bit(BSS_MEMBERSHIP_SELECTOR_HE_PHY, userspace_selectors);
+@@ -9669,7 +9667,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
+ 		                sdata->u.mgd.reconf.removed_links;
+ 	u16 link_mask, valid_links;
+ 	unsigned int link_id;
+-	unsigned long userspace_selectors;
++	unsigned long userspace_selectors[BITS_TO_LONGS(128)] = {};
+ 	size_t orig_len = len;
+ 	u8 i, group_key_data_len;
+ 	u8 *pos;
+@@ -9777,7 +9775,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	ieee80211_vif_set_links(sdata, valid_links, sdata->vif.dormant_links);
+-	ieee80211_ml_reconf_selectors(&userspace_selectors);
++	ieee80211_ml_reconf_selectors(userspace_selectors);
+ 	link_mask = 0;
+ 	for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++) {
+ 		struct cfg80211_bss *cbss = add_links_data->link[link_id].bss;
+@@ -9823,7 +9821,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
+ 		link->u.mgd.conn = add_links_data->link[link_id].conn;
+ 		if (ieee80211_prep_channel(sdata, link, link_id, cbss,
+ 					   true, &link->u.mgd.conn,
+-					   &userspace_selectors)) {
++					   userspace_selectors)) {
+ 			link_info(link, "mlo: reconf: prep_channel failed\n");
+ 			goto disconnect;
+ 		}
+@@ -10157,14 +10155,14 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
+ 	 */
+ 	if (added_links) {
+ 		bool uapsd_supported;
+-		unsigned long userspace_selectors;
++		unsigned long userspace_selectors[BITS_TO_LONGS(128)] = {};
+ 
+ 		data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 		if (!data)
+ 			return -ENOMEM;
+ 
+ 		uapsd_supported = true;
+-		ieee80211_ml_reconf_selectors(&userspace_selectors);
++		ieee80211_ml_reconf_selectors(userspace_selectors);
+ 		for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS;
+ 		     link_id++) {
+ 			struct ieee80211_supported_band *sband;
+@@ -10240,7 +10238,7 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
+ 						     data->link[link_id].bss,
+ 						     true,
+ 						     &data->link[link_id].conn,
+-						     &userspace_selectors);
++						     userspace_selectors);
+ 			if (err)
+ 				goto err_free;
+ 		}
 -- 
 2.39.5
 
