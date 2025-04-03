@@ -1,57 +1,56 @@
-Return-Path: <linux-wireless+bounces-21139-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21140-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2DCA7AA06
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 21:06:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF483A7AA46
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 21:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FA8D178ED1
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 19:04:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9677F3ADA5F
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 19:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C3B2561CB;
-	Thu,  3 Apr 2025 19:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80322586CC;
+	Thu,  3 Apr 2025 19:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q3rYHcqx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vQ3bPRcR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB00253B6E;
-	Thu,  3 Apr 2025 19:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD32F2586C8;
+	Thu,  3 Apr 2025 19:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743706959; cv=none; b=qAzv7iJa/ETJF+gX2FITdVw3gRfAhbVxAJ6XDC9lQaHTehYJJ66+OppR/mLXpZWOsOMkJiQCZnTVxOJW+Byu35i27kCbGxKTDe7SRV0cpglzC9oxC54ehdFA918ofRfrQdXsjM5syzJWXZRY5RQ8NLWyyiZkKrKTX7FjM/Mo1cQ=
+	t=1743706991; cv=none; b=GCAr6U55PPNRAMHtAODKimgDh/tHZJIb3DSbFbBxys0gQC2saYuOJrJ7alfgUcEX8vGNWnGgZ6dwsMBjmORJ2q4T+Z6y/iXwp179T+i7kQqyfoz07KUYLrbqT5ooZ+ZzyTHny9NLdbdQiUBfUMr+q7s1gQDs7YHpPIDMe1WBtT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743706959; c=relaxed/simple;
-	bh=Hr8jxDpVQqNKw09qnAHqDGLlOF048gJxHmZ2OIOWl8s=;
+	s=arc-20240116; t=1743706991; c=relaxed/simple;
+	bh=UbRoaPQiaPriiA58VAy2/csM024QjLTwPDPpJTqe79I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hB3yZw2/GmGVFK2Q+WarByW9YYE/XqN2512VT8jep2YnKFTvfVGYuTa/IJvUX4aY6IyP34+0GShTLmHMRD7Tw+K96WxBTfO1bvzFLSpdszjaRQZzxe4tDWGY8ldzv80NVg9SkWrpUZQnrtbZUwHyxWZ1qegkqXPhKsN34P4//fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q3rYHcqx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5888FC4CEE3;
-	Thu,  3 Apr 2025 19:02:38 +0000 (UTC)
+	 MIME-Version; b=SUkQ6STpcw8jVfpd4wMdiRS0AhugDiphfw5gqISLMDvV4X32fiNBnc2d/FITKRZqEng58j/ui9EyujoEDDQ54kCh6zAVBCNGEYIX8O5pPRblCyCFERNim6TZQziZpqQzB9DrEQ51myo1zSr/mcotWeYMbjRflg6WCH1y+Nen1uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vQ3bPRcR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C641C4CEE3;
+	Thu,  3 Apr 2025 19:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743706959;
-	bh=Hr8jxDpVQqNKw09qnAHqDGLlOF048gJxHmZ2OIOWl8s=;
+	s=k20201202; t=1743706991;
+	bh=UbRoaPQiaPriiA58VAy2/csM024QjLTwPDPpJTqe79I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q3rYHcqxdS6d//KoRctO1A6NXXYkaaQMMJ8G5SGWQVmjCZTW+MYb/JPfuBgD4Bx5b
-	 1YWKhbN5DtOpBXC08YKy1z3jxABVCb4R8xDqrG1dqdY5lkcVHoudGGCUP8WshZQ9hF
-	 1p4t0bogYLQaeCLOVE1mjKDSF5n3to/MB4CeSrMitR/bG39WTUN05+9HtsbkvlJ3x7
-	 22n8b2kb0PdFltuo8i8ydeToh31Fq6rrywDV8XWMeDOIIr0toabZPu0G78KrU7aY8V
-	 7/WKOBwv37sKs22TII5ZtlyObaetOi0ESVmNNhv1LqXlAwsIOw949qt3fliwMnfrMJ
-	 vK16n1VN/sNwA==
+	b=vQ3bPRcRK0uqXoXpyIymwwYbRsUjR+x18djjFDnBuGqbUopgN9RaD0VgOSNxp5BUP
+	 8yHBXgpz5fWyy0tjDP3Bzl/t1L67OcKCbNokFwNKn69jKBHpz9yrig562AStrL9pPD
+	 MT4MSrwKkwGYl9O0kk4J1u1tv7JeHkqgWn/agBiZ7z2b0PfeEcXDvrqClW607dM4qI
+	 XgeX1KWm26GbGHNzgU6FX59mCMCJmbLTORhR1+VMHIKNfz0PeOZpP0KQek3LTtofDR
+	 1J9S7WpBPhiYo0wNW7D1MU558DdPzSaDxaqpPVAOq+xxbxBRoVu6adGReaQK7rZW0c
+	 hW/0Acf6uV72w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Zenm Chen <zenmchen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 13/54] wifi: mac80211: ensure sdata->work is canceled before initialized.
-Date: Thu,  3 Apr 2025 15:01:28 -0400
-Message-Id: <20250403190209.2675485-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 25/54] wifi: rtw88: Add support for Mercusys MA30N and D-Link DWA-T185 rev. A1
+Date: Thu,  3 Apr 2025 15:01:40 -0400
+Message-Id: <20250403190209.2675485-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190209.2675485-1-sashal@kernel.org>
 References: <20250403190209.2675485-1-sashal@kernel.org>
@@ -66,48 +65,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Zenm Chen <zenmchen@gmail.com>
 
-[ Upstream commit 6c93fd502023dd919b5987ccbe990735410edd49 ]
+[ Upstream commit 80c4668d024ff7b5427d90b5fad655ce9461c7b1 ]
 
-This wiphy work is canceled when the iface is stopped,
-and shouldn't be queued for a non-running iface.
-If it happens to be queued for a non-running iface (due to a bug)
-it can cause a corruption of wiphy_work_list when ieee80211_setup_sdata
-is called. Make sure to cancel it in this case and warn on.
+Add two more USB IDs found in
+https://github.com/RinCat/RTL88x2BU-Linux-Driver
+to support Mercusys MA30N and D-Link DWA-T185 rev. A1.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20250205110958.99204c767c10.I84ce27a239059f6009cee197b252549a11426046@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250210073610.4174-1-zenmchen@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/iface.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822bu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 738de269e13f0..459fc391a4d93 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -8,7 +8,7 @@
-  * Copyright 2008, Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (c) 2016        Intel Deutschland GmbH
-- * Copyright (C) 2018-2024 Intel Corporation
-+ * Copyright (C) 2018-2025 Intel Corporation
-  */
- #include <linux/slab.h>
- #include <linux/kernel.h>
-@@ -807,6 +807,9 @@ static void ieee80211_set_multicast_list(struct net_device *dev)
-  */
- static void ieee80211_teardown_sdata(struct ieee80211_sub_if_data *sdata)
- {
-+	if (WARN_ON(!list_empty(&sdata->work.entry)))
-+		wiphy_work_cancel(sdata->local->hw.wiphy, &sdata->work);
-+
- 	/* free extra data */
- 	ieee80211_free_keys(sdata, false);
- 
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+index 8883300fc6adb..572d1f31832ee 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+@@ -73,6 +73,10 @@ static const struct usb_device_id rtw_8822bu_id_table[] = {
+ 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* ELECOM WDB-867DU3S */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0107, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* Mercusys MA30H */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x010a, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* Mercusys MA30N */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3322, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* D-Link DWA-T185 rev. A1 */
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(usb, rtw_8822bu_id_table);
 -- 
 2.39.5
 
