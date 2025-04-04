@@ -1,105 +1,285 @@
-Return-Path: <linux-wireless+bounces-21153-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21154-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EEC6A7AD8F
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 22:08:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C24A7B5EE
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Apr 2025 04:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 104A817C719
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Apr 2025 20:02:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5DAB3B8447
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Apr 2025 02:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D4F28CF57;
-	Thu,  3 Apr 2025 19:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA58B38F91;
+	Fri,  4 Apr 2025 02:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="osoQnYQk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVpmXOq9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B82A28CF55;
-	Thu,  3 Apr 2025 19:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCB32E62B4;
+	Fri,  4 Apr 2025 02:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707463; cv=none; b=DIjp7Qyr9ptf/lHQ6deXK61WbxmRW5PCvPH0qwb8nZoJAvIiD3xiW8U3VGtnQKzmTtQf6fl7/0qLHb4NbJ28P4kfvSd/jJDPnNP/IzHYpiTrZnWlnR6F2HJg0oxw9EvWgJUFrSDO+L+p/gaju7aiO0QyRnPB/3DA0t9jebWXRUI=
+	t=1743734523; cv=none; b=H5ju5znDYbyeDzayV8KL7Tk8aKx/n8EgT0InoFFwwHEGTp5XqUYqUIBNESn0oLOgmEyCtQwW+A8YsO1oCZeRJ+jNn6LpPDYaGNKASnzFNAJxnueGlQyhsjENXQ1VNY0wIYF14ZyE0qoWECoa3JlErzOcqB6PEluGs8MT24LRIkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707463; c=relaxed/simple;
-	bh=p0tKKu06Y829F+DUE1Ct7xBxdEYR3/AUxIgzVvJ3Lyg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=B3+ShjtOX747ruLstFlf/hN8HuVRTP+Ubpmx20ARmWw/qzKjyfEOoCGWpggKCCTxF4fzRzIbC0nDrey4EVX5arBuAPWoMoHheTc0BuVnYvpmIObH3wlwXvQ16ft+y8rawaYqEejUbTGzGXFh4zRa81/KlN4c/1C4kpnA9Ojj7Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=osoQnYQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3234C4CEE3;
-	Thu,  3 Apr 2025 19:11:01 +0000 (UTC)
+	s=arc-20240116; t=1743734523; c=relaxed/simple;
+	bh=HEGvr219F+jjZb9/wuTWMlS78qKx3UrYGOaUQS8/10o=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=bgSUWeZQgpB1SI9SXdRTkB+2+A/dr/C3beC+uGuI6JNjuYWd8ZDZI5CRfPh5M3Rw766WzF7pJkCGKvkz1nUI0RFdOwIcHJK5rNnhCdjdnVSGzyU1h1xF0Wrazx9uAcIP5knqNaId5oa4nr0t2V6iGG8GthqZS8Hp34UPqNsvNiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVpmXOq9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879CCC4CEE3;
+	Fri,  4 Apr 2025 02:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707463;
-	bh=p0tKKu06Y829F+DUE1Ct7xBxdEYR3/AUxIgzVvJ3Lyg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=osoQnYQkpnINrA2CaWCLL5cG7z/TKM10yEBblFUqLTLLW9w4lP2Tb63pu9/qqHG6j
-	 Uh7Q9b8wVdxkTc5IRfRpDYc+DqLnVp3vbdzJAaAqFkokDdSpw01jHtXTXYB5RcXtFW
-	 QtX/4kcFG3+cODEMiTGsxxAvKKRTng6voP64QUrIOf39jRSS6IRG3EwOL0YQ7Vi0n8
-	 hQArBsUBbUMwoGpXwlfLkRebkmbHx+6kHSB9BT/66FY0o0Qr65ECJ0jp+la2UyMcN+
-	 VX9GOdgUFHxTKU0Iy3WX104n/FlHgL6NxtWimsZRYjOJhqv9Xk5YdFBR2k+O4k6HiY
-	 678SbobnicPTA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Icenowy Zheng <uwu@icenowy.me>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 11/14] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
-Date: Thu,  3 Apr 2025 15:10:33 -0400
-Message-Id: <20250403191036.2678799-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250403191036.2678799-1-sashal@kernel.org>
-References: <20250403191036.2678799-1-sashal@kernel.org>
+	s=k20201202; t=1743734523;
+	bh=HEGvr219F+jjZb9/wuTWMlS78qKx3UrYGOaUQS8/10o=;
+	h=Date:From:To:Cc:Subject:From;
+	b=BVpmXOq9/uEKXRJYI5q4UMXDDOB3QbzRgpssliD+ZKvK2uuElEqXMsztrJMpv2pHo
+	 q/79t9aQ6VQEJ3JNmUYC1X3wfXgxtWECAorb8ZBppR0Jk9kjdPbHiYromv9wmpqZsi
+	 W9OE3OfEgph3+EEOgyBrlfxsWnH3YNf8S5DtiJwY+kA7hiddOVVvphgYb8lKQhqg7l
+	 EEUwWFYj9hiTcSbPTFT0jI63PIO/i0L1fiGRIJwSPAhAb5ifCQfAvV5e1XU1sw4HXM
+	 IufllFMHgFo7waiZibC+DgM60GjfI6t+94dgLAoVBK44zoAEHt50BOI06rd80+vIWH
+	 ewdOnhs13HJ8w==
+Date: Thu, 3 Apr 2025 20:42:00 -0600
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH][next] wifi: iwlwifi: mvm/fw: Avoid
+ -Wflex-array-member-not-at-end warnings
+Message-ID: <Z-9G-GHufhXKeYft@kspp>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.291
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-From: Icenowy Zheng <uwu@icenowy.me>
+-Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+getting ready to enable it, globally.
 
-[ Upstream commit 06cccc2ebbe6c8a20f714f3a0ff3ff489d3004bb ]
+So, in order to avoid ending up with a flexible-array member in the
+middle of multiple other structs, we use the `__struct_group()`
+helper to create a new tagged `struct iwl_tx_cmd_hdr`. This structure
+groups together all the members of the flexible `struct iwl_tx_cmd`
+except the flexible array.
 
-The TP-Link TL-WDN6200 "Driverless" version cards use a MT7612U chipset.
+As a result, the array is effectively separated from the rest of the
+members without modifying the memory layout of the flexible structure.
+We then change the type of the middle struct members currently causing
+trouble from `struct iwl_tx_cmd` to `struct iwl_tx_cmd_hdr`.
 
-Add the USB ID to mt76x2u driver.
+We also want to ensure that when new members need to be added to the
+flexible structure, they are always included within the newly created
+tagged struct. For this, we use `static_assert()`. This ensures that the
+memory layout for both the flexible structure and the new tagged struct
+is the same after any changes.
 
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Link: https://patch.msgid.link/20250317102235.1421726-1-uwu@icenowy.me
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This approach avoids having to implement `struct iwl_tx_cmd_hdr`
+as a completely separate structure, thus preventing having to maintain
+two independent but basically identical structures, closing the door
+to potential bugs in the future.
+
+We also use `container_of()` whenever we need to retrieve a pointer to
+the flexible structure, through which we can access the flexible-array
+member, if necessary.
+
+So, with these changes, fix the following warnings:
+
+drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tdls.h:134:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tdls.h:53:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tx.h:745:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tx.h:764:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tdls.h:134:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tdls.h:53:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tx.h:745:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tx.h:764:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
- 1 file changed, 1 insertion(+)
+This patch is quite similar to the following one:
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index 96a2b7ba6764b..8c392d55d59ba 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -19,6 +19,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
- 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
- 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
- 	{ USB_DEVICE(0x045e, 0x02fe) },	/* XBox One Wireless Adapter */
-+	{ USB_DEVICE(0x2357, 0x0137) },	/* TP-Link TL-WDN6200 */
- 	{ },
- };
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e74c0a7875cfec27c25f582f001cc4625a0f8c07
+
+Thanks!
+
+ .../net/wireless/intel/iwlwifi/fw/api/tdls.h  |  4 +-
+ .../net/wireless/intel/iwlwifi/fw/api/tx.h    | 60 ++++++++++---------
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  8 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/tdls.c | 10 ++--
+ 4 files changed, 44 insertions(+), 38 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h b/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
+index cfa6532a3cdd..02198bc37f8c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
+@@ -50,7 +50,7 @@ struct iwl_tdls_channel_switch_timing {
+  */
+ struct iwl_tdls_channel_switch_frame {
+ 	__le32 switch_time_offset;
+-	struct iwl_tx_cmd tx_cmd;
++	struct iwl_tx_cmd_hdr tx_cmd;
+ 	u8 data[IWL_TDLS_CH_SW_FRAME_MAX_SIZE];
+ } __packed; /* TDLS_STA_CHANNEL_SWITCH_FRAME_API_S_VER_1 */
  
+@@ -131,7 +131,7 @@ struct iwl_tdls_config_cmd {
+ 	struct iwl_tdls_sta_info sta_info[IWL_TDLS_STA_COUNT];
+ 
+ 	__le32 pti_req_data_offset;
+-	struct iwl_tx_cmd pti_req_tx_cmd;
++	struct iwl_tx_cmd_hdr pti_req_tx_cmd;
+ 	u8 pti_req_template[];
+ } __packed; /* TDLS_CONFIG_CMD_API_S_VER_1 */
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+index 0a39e4b6eb62..5c0c7bac36d6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+@@ -222,34 +222,36 @@ enum iwl_tx_offload_assist_flags_pos {
+  * and then the actial payload.
+  */
+ struct iwl_tx_cmd {
+-	__le16 len;
+-	__le16 offload_assist;
+-	__le32 tx_flags;
+-	struct {
+-		u8 try_cnt;
+-		u8 btkill_cnt;
+-		__le16 reserved;
+-	} scratch; /* DRAM_SCRATCH_API_U_VER_1 */
+-	__le32 rate_n_flags;
+-	u8 sta_id;
+-	u8 sec_ctl;
+-	u8 initial_rate_index;
+-	u8 reserved2;
+-	u8 key[16];
+-	__le32 reserved3;
+-	__le32 life_time;
+-	__le32 dram_lsb_ptr;
+-	u8 dram_msb_ptr;
+-	u8 rts_retry_limit;
+-	u8 data_retry_limit;
+-	u8 tid_tspec;
+-	__le16 pm_frame_timeout;
+-	__le16 reserved4;
+-	union {
+-		DECLARE_FLEX_ARRAY(u8, payload);
+-		DECLARE_FLEX_ARRAY(struct ieee80211_hdr, hdr);
+-	};
++	/* New members MUST be added within the __struct_group() macro below. */
++	__struct_group(iwl_tx_cmd_hdr, __hdr, __packed,
++		__le16 len;
++		__le16 offload_assist;
++		__le32 tx_flags;
++		struct {
++			u8 try_cnt;
++			u8 btkill_cnt;
++			__le16 reserved;
++		} scratch; /* DRAM_SCRATCH_API_U_VER_1 */
++		__le32 rate_n_flags;
++		u8 sta_id;
++		u8 sec_ctl;
++		u8 initial_rate_index;
++		u8 reserved2;
++		u8 key[16];
++		__le32 reserved3;
++		__le32 life_time;
++		__le32 dram_lsb_ptr;
++		u8 dram_msb_ptr;
++		u8 rts_retry_limit;
++		u8 data_retry_limit;
++		u8 tid_tspec;
++		__le16 pm_frame_timeout;
++		__le16 reserved4;
++	);
++	struct ieee80211_hdr hdr[];
+ } __packed; /* TX_CMD_API_S_VER_6 */
++static_assert(offsetof(struct iwl_tx_cmd, hdr) == sizeof(struct iwl_tx_cmd_hdr),
++	      "struct member likely outside of __struct_group()");
+ 
+ struct iwl_dram_sec_info {
+ 	__le32 pn_low;
+@@ -742,7 +744,7 @@ struct iwl_compressed_ba_notif {
+  * @frame: the template of the beacon frame
+  */
+ struct iwl_mac_beacon_cmd_v6 {
+-	struct iwl_tx_cmd tx;
++	struct iwl_tx_cmd_hdr tx;
+ 	__le32 template_id;
+ 	__le32 tim_idx;
+ 	__le32 tim_size;
+@@ -761,7 +763,7 @@ struct iwl_mac_beacon_cmd_v6 {
+  * @frame: the template of the beacon frame
+  */
+ struct iwl_mac_beacon_cmd_v7 {
+-	struct iwl_tx_cmd tx;
++	struct iwl_tx_cmd_hdr tx;
+ 	__le32 template_id;
+ 	__le32 tim_idx;
+ 	__le32 tim_size;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index bec18d197f31..f010e68b4a55 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -1032,7 +1032,9 @@ static int iwl_mvm_mac_ctxt_send_beacon_v6(struct iwl_mvm *mvm,
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mac_beacon_cmd_v6 beacon_cmd = {};
+ 
+-	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon, &beacon_cmd.tx);
++	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon,
++				container_of(&beacon_cmd.tx,
++					     struct iwl_tx_cmd, __hdr));
+ 
+ 	beacon_cmd.template_id = cpu_to_le32((u32)mvmvif->id);
+ 
+@@ -1052,7 +1054,9 @@ static int iwl_mvm_mac_ctxt_send_beacon_v7(struct iwl_mvm *mvm,
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mac_beacon_cmd_v7 beacon_cmd = {};
+ 
+-	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon, &beacon_cmd.tx);
++	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon,
++				container_of(&beacon_cmd.tx,
++					     struct iwl_tx_cmd, __hdr));
+ 
+ 	beacon_cmd.template_id = cpu_to_le32((u32)mvmvif->id);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+index 36379b738de1..bcfae05192ad 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+@@ -342,6 +342,8 @@ iwl_mvm_tdls_config_channel_switch(struct iwl_mvm *mvm,
+ 	struct iwl_tdls_channel_switch_cmd_tail *tail =
+ 		iwl_mvm_chan_info_cmd_tail(mvm, &cmd.ci);
+ 	u16 len = sizeof(cmd) - iwl_mvm_chan_info_padding(mvm);
++	struct iwl_tx_cmd *tx_cmd =
++		container_of(&tail->frame.tx_cmd, struct iwl_tx_cmd, __hdr);
+ 	int ret;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+@@ -410,14 +412,12 @@ iwl_mvm_tdls_config_channel_switch(struct iwl_mvm *mvm,
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+-		iwl_mvm_set_tx_cmd_ccmp(info, &tail->frame.tx_cmd);
++		iwl_mvm_set_tx_cmd_ccmp(info, tx_cmd);
+ 	}
+ 
+-	iwl_mvm_set_tx_cmd(mvm, skb, &tail->frame.tx_cmd, info,
+-			   mvmsta->deflink.sta_id);
++	iwl_mvm_set_tx_cmd(mvm, skb, tx_cmd, info, mvmsta->deflink.sta_id);
+ 
+-	iwl_mvm_set_tx_cmd_rate(mvm, &tail->frame.tx_cmd, info, sta,
+-				hdr->frame_control);
++	iwl_mvm_set_tx_cmd_rate(mvm, tx_cmd, info, sta, hdr->frame_control);
+ 	rcu_read_unlock();
+ 
+ 	memcpy(tail->frame.data, skb->data, skb->len);
 -- 
-2.39.5
+2.43.0
 
 
