@@ -1,108 +1,103 @@
-Return-Path: <linux-wireless+bounces-21173-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21174-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3D0A7D049
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Apr 2025 22:31:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CF1A7D060
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Apr 2025 22:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0D9E188C0D7
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Apr 2025 20:31:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BED9169C8D
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Apr 2025 20:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32F2190485;
-	Sun,  6 Apr 2025 20:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7880F1A5B8E;
+	Sun,  6 Apr 2025 20:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="gj0AAlkC"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="C8qbSjl1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2974720DF4;
-	Sun,  6 Apr 2025 20:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B921487F6;
+	Sun,  6 Apr 2025 20:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743971454; cv=none; b=tjn82NsbKJBFxi2DRjZupKhd5mau/v9k7rfL865CkSBhkhAT0rfRzs9CBmGBDM3ImjWaUOuoIgTsAGGTyDNmkMAtl3GvhZpJKnEhO+RL6M7BntkWb3i/Bf48hM2TEv8nLIazhn1OiaI4FaJDcdcSUid+KbOrZexGjporYw0uce4=
+	t=1743971939; cv=none; b=GzpigS2DlsszuKfgaki6gkeb3jocFhxqrhh/mjINMA2/t/O3aAHxrJwb9DPrO6lyPfPIB3d3wsrZSBZ8xb4sFBLH35UYRblwPJf6YFkB261rjZMyN8sD/lSZnVIj2d4MsI6iSAV5fUDP0Y9AQO+oORsxaViQNyKMc2wAcKqOiWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743971454; c=relaxed/simple;
-	bh=m9jlNqa4pAbX771RavgW558najkMJDIUT8wnRPRipqA=;
+	s=arc-20240116; t=1743971939; c=relaxed/simple;
+	bh=NI1/kyy0gTrSMXMDeYc9TiMNCu+lNoTvc7HFd6GFVr8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M4prXTggtlP6ZOud7EcnsHOJY5aQBC7p9k62rT3cP3P43HYSFuEHx0bAZlrZemmGICzBFujK6bQf8AiUQinx2uAM9j/lGLy45HfwcA843iaFwBVX3OnJ/hfsRfYJ9iYo1mLlfKSM0cY2Rza6UwMJJVo2mmTnfhKz4x2wQeA/Hwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=gj0AAlkC; arc=none smtp.client-ip=209.85.214.176
+	 To:Cc:Content-Type; b=H+n/BOXv1IKaRg9LOxDGYniT0IHu+SCYQjV65nGBXMsfzE5x7jD63I/bXVKryCz8rVPP81c2lTZrXmkkqjv+3u61YZz9jp2fFFtKp5FyYNNhTivDYQVMbbzEKJE4OCvtjdjXX6sr/yesG5oNvdfomo6gQXW0/WZbDQTw+HvPHao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=C8qbSjl1; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-22401f4d35aso37732715ad.2;
-        Sun, 06 Apr 2025 13:30:52 -0700 (PDT)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-223fd89d036so40654815ad.1;
+        Sun, 06 Apr 2025 13:38:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1743971452; x=1744576252; darn=vger.kernel.org;
+        d=googlemail.com; s=20230601; t=1743971937; x=1744576737; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=m9jlNqa4pAbX771RavgW558najkMJDIUT8wnRPRipqA=;
-        b=gj0AAlkCoBsPoRq4meU7spd6I8ioq1u1O1Y35RSgnQJfOWa99R5S+QX3ceHyxuf9sk
-         yOj8k8MhDFqaFfaHVPopAd80etKphTWF1srgwPETCG/BdCFhbEz2fmwyvrGYD3TAheP2
-         Ar5zXNOfko6LJBrXk8hM4BtKSj66Q6A9zhI9GONkwpoTZoRufkVrLRxt1vBUXlZDtjnK
-         9VCJv+RNDnFqVIvr1b4IVZOWoSedsVFGo3+OJBWAE35Tne5MBJjg6L1zA6MkBx70crg6
-         h4Yv41w7qEhScu6zl+aJpPQkSSaYOA7drz3GCzS5QyziBl4b/9fR1XRQC3ZDQf9bZxmb
-         AWag==
+        bh=ydwO1JyYbeugO8yOiEfHx3MM3FsXIUg1LfWXi3rj/4M=;
+        b=C8qbSjl1w73HTPnPSeQN6y3Q2za9i09nDD+6K5A8qppvqKxkW8ei4SRDbDkNJ7bykU
+         Dd2EKkPVECsyydhJzVcGw01i0k3XnC7+kpWhbc0MMITnSdg8Gb80X+QoRHvP2+kGq0Z+
+         B+z3FiqQmZ8GaD1ElgMiXaHInea1JAIQNbI3dtGQU09F15+w9PTMvGGXwVcNLxtgqe+D
+         sGFWHBNnJaXknjSxZjS4zOsfTboG6IO1eXHg8Q/D2468L9roosulC/+IZ9ujPvJJbXP+
+         1a0T4BA87JzLSSu8Y5mUxDGT11yDMZRx0p2BHyAejB/DsRcoEvrVf/VSl7XSMMHLg5Lh
+         nk6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743971452; x=1744576252;
+        d=1e100.net; s=20230601; t=1743971937; x=1744576737;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=m9jlNqa4pAbX771RavgW558najkMJDIUT8wnRPRipqA=;
-        b=otOdUPWJttWLfn9sbIDz5b6gxKuk1o/yCa5I6zhvtmN34iow8joJRZCgfunNXucdSm
-         CkWQRpnOVrkTYaV+L8PBwlCNFH0TqeVvtZkjI+fgNGhTWSdJvIJE7/QRKsrT+r4DLaQL
-         eLFcK80S6rwEWCui9Zie8y9netSR6iUxrPIzt9S/2JSxFj22uWwo6gFid0LRqZUZ7FAQ
-         m+NYrlU9pkoLPOr2SZ16YqTA4X55d14UBLkBRX2+hwG6JZl01DWDnAjZp4PgE3cprU+q
-         bu9/L0eVSCd3YE6Bw8PO36lauAB89/k+MZBJYMUImF7EKQYGRibvs8IEfQl0JmrJArcf
-         lvGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+bqWLM28izm2A+8AQIkeqpZQSF2wsHhLraUi+VrdNxO2PukJldftv7GgpGRClWjmHOyqh5O6vBhTlCv4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyw9NERObdr9wrkeCq458BrIFxKcVjJ0Vh4mX7Kb8yJpnDOuFqj
-	4rTfO6zYGu0GtEyZToN14RU2roGaVsTdgsOzVqBzfyCSzRpkhAPu0JuLG/8eSYRpsZQG1/TYvPq
-	ysoHLZhcnC6caD1Z3Q2zVQHSy8aalktnf
-X-Gm-Gg: ASbGnctc1H4Qpjxsujw7VdyB5+Fer3VY1ox6xpNNmh0XIVbzDwM4m/A6MlAAsmtkltT
-	QeJEzMLhmmrOROSsYa1I/9S0m1ZDjdpQLVdEsZx5vhUe7V9luVCP7x3fARMnp/5y+zkkZEmLpJw
-	GLwu78XRcGwtyvKXiE8uAL51WVGYMdl5Z6bvhLgjpExHvah+lBUaY=
-X-Google-Smtp-Source: AGHT+IFbGjD+kG+2VL7A52zfUwyhT3JWz1j3NFbMcDaqVUuRctRUJ4n/cFKv7nCL2+eQNkMxWUXAEaI9vSECk10y7zY=
-X-Received: by 2002:a17:902:f681:b0:223:525b:2a7 with SMTP id
- d9443c01a7336-22a9552aca3mr81441855ad.15.1743971452336; Sun, 06 Apr 2025
- 13:30:52 -0700 (PDT)
+        bh=ydwO1JyYbeugO8yOiEfHx3MM3FsXIUg1LfWXi3rj/4M=;
+        b=Dhgl0/Pzncv+UTIolytm8XX7Vs+wiNGgZzIl2qfPJGy2waUvJ/yjB1NeUzScrLdsDp
+         fTeeKABCv0U/4oOJvk6R8/jm7iLxnsE0f5Ydh8TLfzPsTXMiXAE03mQIJZaw3VM/ItcT
+         cT1knUPy4RK3GLgxOjGewAzTK4mIJGxuCTlMZvGtgdnqatK64/HmwO8OpHSmFYx+9t5b
+         XzGUEeqFNQWTaHbdI8YIs8hJ3CF1dZuOvnN+dyTmwb/UU741UwhG993JO4k0dKyxgl9u
+         Nz3F7RGSUC5JqgHDZrx7ukWZH/F3DSUNRStZrrRXMrX4xVKvmRi4WKHa+RHrAvpqDCwg
+         U3Fg==
+X-Forwarded-Encrypted: i=1; AJvYcCVG95vaJlo3OUbMiDDgiGKBGCNgmpQazqROrFvwdj9JpwD42xLiBuvfSdsPX8Ai8yyzV+AmR72tBieb@vger.kernel.org, AJvYcCVSNrI4MNA+/ml5uhWG26joZccThljyyZrf7AhUITJuqSOYQ5yNyEcLy3HiS5/+83kAMwonbGFa3+kTI0uCvBQ=@vger.kernel.org, AJvYcCX5EmEK/2tbaFjTWr2dxLOdSAvU3vwc6FctsiJ2Xhr5Ou/JnmOZ0U01HW9UgLHGR3tm0lJahP0jQaFL@vger.kernel.org, AJvYcCXPZjfMTilyV6evsZkt498oSO2t9j4qg/uovX7AhhO9doHKWjHLXJWKqtxhW2HiQvY22WRCGerHxm6QL73k@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAK3qgBBm7O7hKhlQxD4JpBK4f5ItYyKGtL0dLMT9qKoxgsZi4
+	SOmVorRF1nVpj/h27yGqZgUgEIzaXWfJyQeLmeaX/f9PvYmkUhLTosXJ6s8VH3+RkmdKxX86wFc
+	zVlwhmtBreQVdMkZKBdclteke//s=
+X-Gm-Gg: ASbGncuVsaH6GpPzGy+uE6j0yX2ZhHzhWoUYHaWBUMtzXPwbVaeIV1uUStNDXW1YckU
+	dEBOzAttB6Md/hbmM0i15L10C7ylZwFE9dDlxpD/7pydqQIzOcZjycKhOlGhTRdCENpbzQYCwzH
+	EySvXKtGyA1UXrb5eKZuuY1KG/vfAb3Y3Q3NTD4vtA
+X-Google-Smtp-Source: AGHT+IGDuS2E1gbvf+gLEVGC9aXsTzLI97TA0L4xSj8FjsSjT4qJXWhbv3i5QpV5K5VBN+QeBy8RRJfKYOEPI2TztGs=
+X-Received: by 2002:a17:903:2ec5:b0:216:6283:5a8c with SMTP id
+ d9443c01a7336-22a8a0a3599mr145741465ad.39.1743971937401; Sun, 06 Apr 2025
+ 13:38:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250402160310.996141-1-zhen.xin@nokia-sbell.com>
-In-Reply-To: <20250402160310.996141-1-zhen.xin@nokia-sbell.com>
+References: <20250403-rtl-onboard-v1-0-10ca9a6a4ee0@posteo.net> <20250403-rtl-onboard-v1-1-10ca9a6a4ee0@posteo.net>
+In-Reply-To: <20250403-rtl-onboard-v1-1-10ca9a6a4ee0@posteo.net>
 From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Sun, 6 Apr 2025 22:30:41 +0200
-X-Gm-Features: ATxdqUExSud6z-xJedyMrfC9F45Sr8s0vBA_9HEruEUXOZ8TMB_2Yt2yk_jsI8M
-Message-ID: <CAFBinCC8FBn0mFO-bRCR26tytiYtvfS6jNcx9ypCnrjik1hRug@mail.gmail.com>
-Subject: Re: [RFC -v1] wifi: rtw88: sdio: Tx status for management frames
-To: Zhen XIN <zhen.xin@nokia-sbell.com>, pkshih@realtek.com
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 6 Apr 2025 22:38:46 +0200
+X-Gm-Features: ATxdqUHvsyKfKqx08asuwFCr7vofQGUcWxylj7FIDVyn6z9dRxtd3LDG4d6Z8JE
+Message-ID: <CAFBinCADBn2uUvdL9he0LZEZx4Kt=qPqrhifw_MUn4=BxLeJFw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: Add Realtek RTL8188 USB WiFi
+To: j.ne@posteo.net
+Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	=?UTF-8?B?Si4gTmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>, 
+	Matthias Kaehlcke <mka@chromium.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Jes Sorensen <Jes.Sorensen@gmail.com>, linux-wireless@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-usb@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hello,
-
-thank you for sending the patch!
-
-On Wed, Apr 2, 2025 at 6:03=E2=80=AFPM Zhen XIN <zhen.xin@nokia-sbell.com> =
-wrote:
->
-> Rtl8732ds doesn't work in AP-Mode due to the missing tx status for manage=
-ment frames
-> This patch enables tx status report for all tx skbs
-Ping-Ke, there's a bit more discussion at [0]
-Do you have any suggestions regarding the approach used here?
-
-
-Best regards,
-Martin
-
-
-[0] https://github.com/lwfinger/rtw88/issues/245#issuecomment-2765046681
+On Thu, Apr 3, 2025 at 4:07=E2=80=AFPM J. Neusch=C3=A4fer via B4 Relay
+<devnull+j.ne.posteo.net@kernel.org> wrote:
+[...]
+> +description:
+> +  The Realtek RTL8188 is a USB-connected 2.4 GHz WiFi module.
+> +  TODO- website or soemthing
+When you re-send this patch (to update the email address) please
+delete the TODO (a website is not strictly necessary)
 
