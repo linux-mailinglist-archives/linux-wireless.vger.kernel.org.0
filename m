@@ -1,65 +1,52 @@
-Return-Path: <linux-wireless+bounces-21163-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21165-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED69AA7CB8E
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Apr 2025 20:48:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93647A7CD45
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Apr 2025 10:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 010DE188F1E0
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Apr 2025 18:48:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11D54167AC7
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Apr 2025 08:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2331A9B53;
-	Sat,  5 Apr 2025 18:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="q7/Jvgi8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DF3198E9B;
+	Sun,  6 Apr 2025 08:20:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D42019ADBA
-	for <linux-wireless@vger.kernel.org>; Sat,  5 Apr 2025 18:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D3C14F90;
+	Sun,  6 Apr 2025 08:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743878903; cv=none; b=TfZBBMwYVbxtgUnnWWD81Qt964Pr1bpjmnaz9M+DLQQY36HU2gh6/6Bye8fk6jIK7onrnIHUUWkPav8BTd1VX/7ccZnDTHyyteE/t/N4MtaSTpJkv/YuZqX9cgFjXA2i+hTGvPQY+6Uv7/kaTNWSLTRVhdZRAfk0X2HgbX0s1PA=
+	t=1743927631; cv=none; b=muJUQnQsgGQAN2ar+LQhIn4KQlmwAHtcc4brWx6vs7Avkfn8oiAIGcDhRc2fQ4NKKd4G37oznNX40+XaGCctA9fb24PA8Iu2ClE4IGWU4Ka5qvYoalI54zHt6YNPHLQcXSTBZbtXIBUkvF2xGPycURsdK24Bm8MRrQhSsLFNaAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743878903; c=relaxed/simple;
-	bh=nxiecPsmoFgWBEWbqtYIWuBltuSENEpmnmMMU0Henmk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=U4d8tO/zW5iOLUoeR5aZ4T0n5rJaPIqxlHvAJTVUu8BO2UKlbWUuf09acpLOasj6dT4FbCuWDyngfR/ZsU2SGArA1+J9EC9Y0JNfeu0rs5de+Y9Nkg3UNMGKlHcS7c6H6DOJCe5e022YxvA1B7yPukMHrU4aajZB+8GVYH3AoJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=q7/Jvgi8; arc=none smtp.client-ip=212.77.101.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 36638 invoked from network); 5 Apr 2025 20:48:17 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1743878898; bh=WuK/7uUTFYCOAJEY3KIz03StC1UqnJ+Dxx7t0VFtJU8=;
-          h=From:To:Cc:Subject;
-          b=q7/Jvgi8Y7Ezq1Z094NzCc82b2pKr9dn8A5p72Lnhb52AqkDpB8FnwdxR4OYbd956
-           26/BivpEZ5yu7oeXYE8EQHGM/sDgjjdUA4QlYGDKcvUfw8jSJo7fSvWbnVukluJRAK
-           gSDgvojikdfIM9MkDr82ZjIPS7Dt33VsU2SuzD2++wv3UMoILsp46i7MR33piCZpkU
-           LW5u5JQUjHPUcPEOZHH1neNIW57E/xhxF4NtCwRRKiBynVi1tcS78eWoZz3HoxuF3F
-           BaGQ4PLCStQvMpTSd34eMuqH1pvPfPVFp99FluKcbSru4U91vflfW/SXBYn7Bkp7Pb
-           7qsgnZJ5wwMhQ==
-Received: from 83.5.244.88.ipv4.supernova.orange.pl (HELO laptop-olek.home) (olek2@wp.pl@[83.5.244.88])
-          (envelope-sender <olek2@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <johannes@sipsolutions.net>; 5 Apr 2025 20:48:17 +0200
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
-To: johannes@sipsolutions.net,
-	ilan.peer@intel.com,
-	christopher.a.wills@intel.com,
-	slakkavalli@datto.com,
-	john@phrozen.org,
+	s=arc-20240116; t=1743927631; c=relaxed/simple;
+	bh=rgQGGLxGQ04eBTfkJXililQx1XDOFfLjUpGHn05Kjr8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qwPAluXjp9GYzQNQSNCLFhAvsrYFdbD6BlX1SGKneAGELe2auSgkK4umy38RLqWc+Itx30vBDRl6T35lB+nNQdzoS3ERbo2GaVgymQgSbMpOvG7c8Z1jL2+aOUH25hofo67LRF9FUr2INWEzANgS9VeTjgv6rcPu93PKb+2OPeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [221.222.48.127])
+	by APP-03 (Coremail) with SMTP id rQCowAAnzzs6OfJndDaNBg--.39362S2;
+	Sun, 06 Apr 2025 16:20:12 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: arend.vanspriel@broadcom.com,
+	kvalo@kernel.org
+Cc: christophe.jaillet@wanadoo.fr,
+	megi@xff.cz,
+	saikrishnag@marvell.com,
 	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Aleksander Jan Bajkowski <olek2@wp.pl>
-Subject: [PATCH iw,v2 3/3] iw: fix EHT capabilities on Big Endian platforms
-Date: Sat,  5 Apr 2025 20:48:07 +0200
-Message-Id: <20250405184807.701728-4-olek2@wp.pl>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250405184807.701728-1-olek2@wp.pl>
-References: <20250405184807.701728-1-olek2@wp.pl>
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] brcm80211: fmac: Add error check for brcmf_usb_dlneeded()
+Date: Sun,  6 Apr 2025 16:19:30 +0800
+Message-ID: <20250406081930.2909-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -67,101 +54,66 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-WP-DKIM-Status: good (id: wp.pl)                                                      
-X-WP-MailID: e04155a1f1dd2da3e5f435d7b4bec152
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [kaPE]                               
+X-CM-TRANSID:rQCowAAnzzs6OfJndDaNBg--.39362S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AFy3ur13Jry7uF1rCF47CFg_yoW8WF4Dpa
+	y7XFyUZr1kWrWrK3y5Jws3AFy5tw4rGa95Cay0vas3WF4kAw10kr4FgFyF9r1DCF4aka17
+	XF45ta4Yqrs8GrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJV
+	WxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
+	nIWIevJa73UjIFyTuYvjfUonmRUUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8EA2fyG7wugQAAsc
 
-IE fields are encoded in Little Endian and are not correctly
-printed on Big Endian platforms.
+The function brcmf_usb_dlneeded() calls the function brcmf_usb_dl_cmd()
+but dose not check its return value. The 'id.chiprev' is uninitialized if
+the function brcmf_usb_dl_cmd() fails, and may propagate to
+'devinfo->bus_pub.chiprev'.
 
-Fixes: 5a71b722270c ("iw: Print local EHT capabilities")
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Add error handling for brcmf_usb_dl_cmd() to return the function if the
+'id.chiprev' is uninitialized.
+
+Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
+Cc: stable@vger.kernel.org # v3.4+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- util.c | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/util.c b/util.c
-index 1870393..f105e07 100644
---- a/util.c
-+++ b/util.c
-@@ -1538,21 +1538,24 @@ static void __print_eht_capa(int band,
- 	const char *pre = indent ? "\t" : "";
- 	const char *mcs[] = { "0-7", "8-9", "10-11", "12-13"};
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+index 2821c27f317e..50dddac8a2ab 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+@@ -790,6 +790,7 @@ brcmf_usb_dlneeded(struct brcmf_usbdev_info *devinfo)
+ {
+ 	struct bootrom_id_le id;
+ 	u32 chipid, chiprev;
++	int err;
  
--	#define PRINT_EHT_CAP(_var, _idx, _bit, _str) \
-+	#define PRINT_EHT_MAC_CAP(_idx, _bit, _str) \
- 	do { \
--		if (_var[_idx] & BIT(_bit)) \
-+		if (le32toh(mac_cap[_idx]) & BIT(_bit)) \
- 			printf("%s\t\t\t" _str "\n", pre); \
- 	} while (0)
+ 	brcmf_dbg(USB, "Enter\n");
  
--	#define PRINT_EHT_CAP_MASK(_var, _idx, _shift, _mask, _str) \
-+	#define PRINT_EHT_PHY_CAP(_idx, _bit, _str) \
- 	do { \
--		if ((_var[_idx] >> _shift) & _mask) \
--			printf("%s\t\t\t" _str ": %d\n", pre, (_var[_idx] >> _shift) & _mask); \
-+		if (phy_cap[_idx] & BIT(_bit)) \
-+			printf("%s\t\t\t" _str "\n", pre); \
- 	} while (0)
+@@ -798,7 +799,11 @@ brcmf_usb_dlneeded(struct brcmf_usbdev_info *devinfo)
  
--	#define PRINT_EHT_MAC_CAP(...) PRINT_EHT_CAP(mac_cap, __VA_ARGS__)
--	#define PRINT_EHT_PHY_CAP(...) PRINT_EHT_CAP(phy_cap, __VA_ARGS__)
--	#define PRINT_EHT_PHY_CAP_MASK(...) PRINT_EHT_CAP_MASK(phy_cap, __VA_ARGS__)
-+	#define PRINT_EHT_PHY_CAP_MASK(_idx, _shift, _mask, _str) \
-+	do { \
-+		if ((le32toh(phy_cap[_idx]) >> _shift) & _mask) \
-+			printf("%s\t\t\t" _str ": %d\n", pre, \
-+			       (le32toh(phy_cap[_idx]) >> _shift) & _mask); \
-+	} while (0)
+ 	/* Check if firmware downloaded already by querying runtime ID */
+ 	id.chip = cpu_to_le32(0xDEAD);
+-	brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
++	err = brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
++	if (err) {
++		brcmf_err("DL_GETID Failed\n");
++		return false;
++	}
  
- 	printf("%s\t\tEHT MAC Capabilities (0x", pre);
- 	for (i = 0; i < 2; i++)
-@@ -1617,13 +1620,13 @@ static void __print_eht_capa(int band,
- 		printf("%02x", ((__u8 *)mcs_set)[i]);
- 	printf("):\n");
- 
--	if (!(he_phy_cap[0] & ((BIT(2) | BIT(3) | BIT(4)) << 8))){
-+	if (!(le16toh(he_phy_cap[0]) & ((BIT(2) | BIT(3) | BIT(4)) << 8))) {
- 		for (i = 0; i < 4; i++)
- 			printf("%s\t\tEHT bw=20 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
- 			       pre, mcs[i],
- 			       mcs_set[i] & 0xf, mcs_set[i] >> 4);
- 	} else {
--		if (he_phy_cap[0] & (BIT(2) << 8)) {
-+		if (le16toh(he_phy_cap[0]) & (BIT(2) << 8)) {
- 			for (i = 0; i < 3; i++)
- 				printf("%s\t\tEHT bw <= 80 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
- 				       pre, mcs[i + 1],
-@@ -1631,7 +1634,7 @@ static void __print_eht_capa(int band,
- 		}
- 		mcs_set += 3;
- 
--		if (he_phy_cap[0] & (BIT(3) << 8)) {
-+		if (le16toh(he_phy_cap[0]) & (BIT(3) << 8)) {
- 			for (i = 0; i < 3; i++)
- 				printf("%s\t\tEHT bw=160 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
- 				       pre, mcs[i + 1],
-@@ -1639,7 +1642,7 @@ static void __print_eht_capa(int band,
- 		}
- 
- 		mcs_set += 3;
--		if (band == NL80211_BAND_6GHZ && (phy_cap[0] & BIT(1))) {
-+		if (band == NL80211_BAND_6GHZ && (le32toh(phy_cap[0]) & BIT(1))) {
- 			for (i = 0; i < 3; i++)
- 				printf("%s\t\tEHT bw=320 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
- 				       pre, mcs[i + 1],
-@@ -1647,7 +1650,7 @@ static void __print_eht_capa(int band,
- 		}
- 	}
- 
--	if (ppet && ppet_len && (phy_cap[1] & BIT(11))) {
-+	if (ppet && ppet_len && (le32toh(phy_cap[1]) & BIT(11))) {
- 		printf("%s\t\tEHT PPE Thresholds ", pre);
- 		for (i = 0; i < ppet_len; i++)
- 			if (ppet[i])
+ 	chipid = le32_to_cpu(id.chip);
+ 	chiprev = le32_to_cpu(id.chiprev);
 -- 
-2.39.5
+2.42.0.windows.2
 
 
