@@ -1,36 +1,36 @@
-Return-Path: <linux-wireless+bounces-21165-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21166-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93647A7CD45
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Apr 2025 10:20:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 609B8A7CD53
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Apr 2025 10:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11D54167AC7
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Apr 2025 08:20:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4116E7A4C4D
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Apr 2025 08:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DF3198E9B;
-	Sun,  6 Apr 2025 08:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFAE14B08C;
+	Sun,  6 Apr 2025 08:45:49 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D3C14F90;
-	Sun,  6 Apr 2025 08:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D84219FC;
+	Sun,  6 Apr 2025 08:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743927631; cv=none; b=muJUQnQsgGQAN2ar+LQhIn4KQlmwAHtcc4brWx6vs7Avkfn8oiAIGcDhRc2fQ4NKKd4G37oznNX40+XaGCctA9fb24PA8Iu2ClE4IGWU4Ka5qvYoalI54zHt6YNPHLQcXSTBZbtXIBUkvF2xGPycURsdK24Bm8MRrQhSsLFNaAY=
+	t=1743929149; cv=none; b=HpfrP7ZDK8vhYfySXR/ebyE1AutaawyV9AvNNaqaN9PrxSlMcsQeqAZaE2Pkuu6ZHCefZcM9SV/FV0nA7dvijPshsNHVs5a/5Nk9rzuEiVY1vtusHWZL1LyDZMPy+zu13+XE6L6+rzhwGqpfzUKcBibpilgSfgmqDNS+1xq+oI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743927631; c=relaxed/simple;
-	bh=rgQGGLxGQ04eBTfkJXililQx1XDOFfLjUpGHn05Kjr8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qwPAluXjp9GYzQNQSNCLFhAvsrYFdbD6BlX1SGKneAGELe2auSgkK4umy38RLqWc+Itx30vBDRl6T35lB+nNQdzoS3ERbo2GaVgymQgSbMpOvG7c8Z1jL2+aOUH25hofo67LRF9FUr2INWEzANgS9VeTjgv6rcPu93PKb+2OPeQ=
+	s=arc-20240116; t=1743929149; c=relaxed/simple;
+	bh=LlzX1kcRFPEFmjGFFhIYoLpgsX3j0aUAkFJIpyNT7Jg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nk4zRVfKuNUaMECe5F9kLGhuHZa93nTRa5okRZv3zF8S1Ck1RivgOW1eb3A4R1c06YnIIalYiMJaoRHcWt1caFlOqtc1mA9BigSh62c7oJavG73Lhr13aku/reNaGKYMkiVBSX2hihWoo+eY5ZqYm33VI5Xyq2q1k/daJcgDljA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost.localdomain (unknown [221.222.48.127])
-	by APP-03 (Coremail) with SMTP id rQCowAAnzzs6OfJndDaNBg--.39362S2;
-	Sun, 06 Apr 2025 16:20:12 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAAn0z8wP_Jn47WOBg--.17314S2;
+	Sun, 06 Apr 2025 16:45:37 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
 To: arend.vanspriel@broadcom.com,
 	kvalo@kernel.org
@@ -43,9 +43,9 @@ Cc: christophe.jaillet@wanadoo.fr,
 	linux-kernel@vger.kernel.org,
 	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] brcm80211: fmac: Add error check for brcmf_usb_dlneeded()
-Date: Sun,  6 Apr 2025 16:19:30 +0800
-Message-ID: <20250406081930.2909-1-vulab@iscas.ac.cn>
+Subject: [PATCH] brcm80211: fmac: Add error handling for brcmf_usb_dl_writeimage()
+Date: Sun,  6 Apr 2025 16:45:15 +0800
+Message-ID: <20250406084515.2991-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -54,65 +54,57 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAnzzs6OfJndDaNBg--.39362S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFy3ur13Jry7uF1rCF47CFg_yoW8WF4Dpa
-	y7XFyUZr1kWrWrK3y5Jws3AFy5tw4rGa95Cay0vas3WF4kAw10kr4FgFyF9r1DCF4aka17
-	XF45ta4Yqrs8GrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:rQCowAAn0z8wP_Jn47WOBg--.17314S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJrykZr13Kw4UuFW5uryUZFb_yoW8XFyfp3
+	Z7XasrurykW3yaka17tFs7AFykK3WrJa4vkFW8Zwn3XF4kCw10krs0gFyFkw4DCrWfAa47
+	JF4DAry7Jrs8KFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
 	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJV
 	WxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
 	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
 	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8EA2fyG7wugQAAsc
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r43MxAIw28IcxkI7VAKI4
+	8JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xv
+	wVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjx
+	v20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20E
+	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
+	AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjKLvtUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBg0EA2fyGW47pwAAsy
 
-The function brcmf_usb_dlneeded() calls the function brcmf_usb_dl_cmd()
-but dose not check its return value. The 'id.chiprev' is uninitialized if
-the function brcmf_usb_dl_cmd() fails, and may propagate to
-'devinfo->bus_pub.chiprev'.
+The function brcmf_usb_dl_writeimage() calls the function
+brcmf_usb_dl_cmd() but dose not check its return value. The
+'state.state' and the 'state.bytes' are uninitialized if the
+function brcmf_usb_dl_cmd() fails. It is dangerous to use
+uninitialized variables in the conditions.
 
-Add error handling for brcmf_usb_dl_cmd() to return the function if the
-'id.chiprev' is uninitialized.
+Add error handling for brcmf_usb_dl_cmd() to jump to error
+handling path if the brcmf_usb_dl_cmd() fails and the
+'state.state' and the 'state.bytes' are uninitialized.
 
 Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
 Cc: stable@vger.kernel.org # v3.4+
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-index 2821c27f317e..50dddac8a2ab 100644
+index 50dddac8a2ab..1c97cd777225 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-@@ -790,6 +790,7 @@ brcmf_usb_dlneeded(struct brcmf_usbdev_info *devinfo)
- {
- 	struct bootrom_id_le id;
- 	u32 chipid, chiprev;
-+	int err;
+@@ -901,7 +901,9 @@ brcmf_usb_dl_writeimage(struct brcmf_usbdev_info *devinfo, u8 *fw, int fwlen)
+ 	}
  
- 	brcmf_dbg(USB, "Enter\n");
+ 	/* 1) Prepare USB boot loader for runtime image */
+-	brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
++	err = brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
++	if (err)
++		goto fail;
  
-@@ -798,7 +799,11 @@ brcmf_usb_dlneeded(struct brcmf_usbdev_info *devinfo)
- 
- 	/* Check if firmware downloaded already by querying runtime ID */
- 	id.chip = cpu_to_le32(0xDEAD);
--	brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
-+	err = brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
-+	if (err) {
-+		brcmf_err("DL_GETID Failed\n");
-+		return false;
-+	}
- 
- 	chipid = le32_to_cpu(id.chip);
- 	chiprev = le32_to_cpu(id.chiprev);
+ 	rdlstate = le32_to_cpu(state.state);
+ 	rdlbytes = le32_to_cpu(state.bytes);
 -- 
 2.42.0.windows.2
 
