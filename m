@@ -1,137 +1,351 @@
-Return-Path: <linux-wireless+bounces-21213-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21214-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E629A7EDB5
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 21:47:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313DFA7EEFA
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 22:20:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B055A3A4A56
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 19:40:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4FD2188872C
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 20:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884EC2153D1;
-	Mon,  7 Apr 2025 19:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52772222D2;
+	Mon,  7 Apr 2025 20:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ciFGuBtj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mE/zQBRl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBC721147C
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Apr 2025 19:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0102188A0E;
+	Mon,  7 Apr 2025 20:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744054870; cv=none; b=rshIKftvFM5iW4gyG0ZgXJ3hWgCJ9FTWh0mCGXmdteTPgUUTh5+2dCCx5Ag/EH1gj5DMAH6T7YH40RgN+mkmPcO+Gi1MW5D2F6pYkzwKKfsOxariSrPzb61jCU6HaSqBfgTEij8Bqmud0fzIsmZR75y57g8d7t0Y8WUudcjiNDU=
+	t=1744056913; cv=none; b=d8XpsRw1NJgoOHz1jRoUulqlFV9j4chcyl3SIxX7Yl2VxE/MY79WlYI9kjmKwf66uAsgQxFTGDCPGWlb/N4jdxcSK8dhkTzYARxwESo8c2NVQ2g7OoEGlMTAv47Cj90YydHVWTKLH10z/TEmQaOeyADkb0fPSsW6tvl8smLPVh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744054870; c=relaxed/simple;
-	bh=MkbSXAB5F7px5eilxXRYYWaFWvkDGNxLgdjCFZ2y2nc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=QRrUUixDKfH9NSkJmISSpDP8+231NY19c3hRA2Y+xbQy+sKe+CqQa9wb1UmAI6x5gFSBHzFcJDVkLRWwK5kEUCsR67KGWpIO6gkTWH+UlgcpaM5QDfTPCyRQQp80y2x+TW+W5m+q/RXF8iifgFDjqz6/bzYJS2XWJjYatR3hU3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ciFGuBtj; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 537Iev6t002203
-	for <linux-wireless@vger.kernel.org>; Mon, 7 Apr 2025 19:41:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	KscTYQy481PoZuE7Dp2EwtjkJkp0UdcKA2vsrikNWn0=; b=ciFGuBtjzEjnJlQZ
-	PwAh98GDTEwJm/0grZ/7fnzsFdqlnGzXr/B/TMm3nD+Fp2Hz6MY2Rd0xmlCY/Kqf
-	agD7OYeKbQgVrk669Xw83zBaFZ0OdQOLxAZ6t1TZ81EE9scoCm6hXOoJFEBoyqsW
-	EKJ5tB/HXndYLABzXP2xXFbvwMNnd8R+ROtkHGya/OfyiNL8q9YxjVKTHN/STemr
-	F+3jpAOOD2vHInnUaB5nhL94qjdwBL3NNDc5LquEs5sFuKDkY/vTNe515GtYbYm8
-	F4NT3UG8Fl32BQEHT7kr3cXeSzoU6Jdjd5g2CRylfJGZdnGJg3djfDMHBjiq6jLv
-	HttO5g==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twtawcup-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 07 Apr 2025 19:41:08 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-224191d9228so57140155ad.3
-        for <linux-wireless@vger.kernel.org>; Mon, 07 Apr 2025 12:41:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744054867; x=1744659667;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KscTYQy481PoZuE7Dp2EwtjkJkp0UdcKA2vsrikNWn0=;
-        b=NQk7KqSJ6GZaM0BsB1Ew5q+Hb79bXMhn9tutalUL/JJJSVRHPWGd0vurSvMi3m2kUS
-         /drFJJNsBJ0dF/vVn/PdNELS+7FUZgOKfTqJhHMrNQmkRfB3nHCalxbb1dAoapRUvk6B
-         hsKtUCKe9Uaqao0S28dNaaje99UKaaALR0/6KKHV1taL6NXD2thRogJr2pDL1qy9amZ6
-         Pth8GequwK6ubtSi5MOTLgWu6hWeK5JMBGSf0k0u9mNPQ4Wu4xG4dzp2Di28HqPPF8go
-         sbiA01IgMYLPpXc0Mvl1xXMf2xuvD3uuY7pj36VSxvd4BqTzz4HP6YBX8efJevXEX9D0
-         P/Pw==
-X-Gm-Message-State: AOJu0YxrjJqMECi+GXVcrkjS3G6hleZGwCxNqgzDUMRU+wkr1dw29wff
-	jN/eHRgC5aGnUxyy2pw37Oh6dNE+hYzkXlFnVqGdCvJVLArvh3b47HInZA/lH1OBRVtpyEZdnxi
-	Q5LP/qXDl0egCj2sQeclKKrM2cArpugWsyZt1f0gTR5qiUlVvW7+OMRKHhyl1r0E+V97LZJM9kQ
-	==
-X-Gm-Gg: ASbGncsjFPoF800oh5I86Lv5HtVb56c5TgA5jXRjQISqaR8f6/MC1JxkSX4LZ56D4Qk
-	OS32Id8qSD7ZfyjcRJDrggFxA+QZ7wjlfEUDKZDKxSTYRAjhHVJWJXJJrZNExCW6ReX0J0Fp6sf
-	iEQtwkMEEtIVpf1hllelVLs4/olDlgpVMB4m67QQFpp01Wk+qyp3+adf+ulbcRdpq+F5WtX4Eqv
-	35WXRrqeNW3kZRUn6TTeLVgEklj4jterTSbLNZEsUEK8lBkEiuNdh0TjNzWYJYKfFutkAvYXfJT
-	PMdfEO4Dc7fkeNZPfu09dtEJ+RRYDwM8Tm6A1mUGz47PSO4Phnq0
-X-Received: by 2002:a17:902:ea06:b0:220:e655:d77 with SMTP id d9443c01a7336-22a8a8b80d0mr159882675ad.36.1744054867157;
-        Mon, 07 Apr 2025 12:41:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEmGHIXWQeBBp1gmPxy3r2HeeVJ9kG9fvZKoCvwdCeWI7S9RPL6SmBh4Nrj+lTZnGTwahoMYQ==
-X-Received: by 2002:a17:902:ea06:b0:220:e655:d77 with SMTP id d9443c01a7336-22a8a8b80d0mr159882535ad.36.1744054866792;
-        Mon, 07 Apr 2025 12:41:06 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2297866e6fdsm84822225ad.165.2025.04.07.12.41.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Apr 2025 12:41:06 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20250407-upto-v1-1-23ca65f2ccdf@oss.qualcomm.com>
-References: <20250407-upto-v1-1-23ca65f2ccdf@oss.qualcomm.com>
-Subject: Re: [PATCH] wifi: ath12k: Fix misspelling "upto" in dp.c
-Message-Id: <174405486612.2865585.8066461311855235164.b4-ty@oss.qualcomm.com>
-Date: Mon, 07 Apr 2025 12:41:06 -0700
+	s=arc-20240116; t=1744056913; c=relaxed/simple;
+	bh=djtTgi5s+tmZT4o6LD+IJ6pJNRyecHdv2wWEjt/w0VM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hB4Dj54OZkOoHs30aW+5VuKdsU6KoaOAOkUAwqjcJUX0+qE6E5JBxPJA2mlrsfk7OaRdxpEx7GyiKaONVyH6wK8d4vPmzmo7yWuk1dAD2Kek42labjRRryR1WmBNQYsVtpn9VX2EgVYYbeFyEZw2ZwkMeJF1m0is8i7o+Tw/bgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mE/zQBRl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14040C4CEDD;
+	Mon,  7 Apr 2025 20:15:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744056913;
+	bh=djtTgi5s+tmZT4o6LD+IJ6pJNRyecHdv2wWEjt/w0VM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mE/zQBRlDe2033IjNnnYX8ikScEF9qNmludnavuNTVTaxKw6fH7X2GHoj9q9MWnqv
+	 xWgu1DvkbSfotzst9N6iOTY0WgY3rMViROJx6HqCoGJCXXwVQKzY19GbTXEbGYaMbZ
+	 gj4H4UnkF064a0/QyEd/4iXKYj7/aQxNqzikxVy5OInHNEbx1oa+LC1ySVvhMlw2jj
+	 YZWrJhIvI8BR4hdlZ1YlffWqy0KzI5i96LW3+3S29+k20wXKl7VzaNyy/HGl0gx7xL
+	 6m7UJ2KfqrluR+h0GzfOMjXqfZUleC00fkrk/hRNMpYVpnMau5Mjp55pvcsqsH0oQ3
+	 xjlgOt6DCSMHQ==
+Date: Mon, 7 Apr 2025 13:15:10 -0700
+From: Kees Cook <kees@kernel.org>
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH][next] wifi: iwlwifi: mvm: d3: Avoid
+ -Wflex-array-member-not-at-end warnings
+Message-ID: <202504071310.17CBF96EEA@keescook>
+References: <Z_FxXjiMvG5u73fi@kspp>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.0
-X-Proofpoint-GUID: fIB6podS5Ek9KoOGvW9flwNKxMT_M5WP
-X-Authority-Analysis: v=2.4 cv=LLlmQIW9 c=1 sm=1 tr=0 ts=67f42a54 cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=EUspDBNiAAAA:8 a=iowja3EhBKiS3qvbEMEA:9 a=QEXdDO2ut3YA:10
- a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-ORIG-GUID: fIB6podS5Ek9KoOGvW9flwNKxMT_M5WP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-07_05,2025-04-07_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- clxscore=1015 mlxlogscore=690 malwarescore=0 phishscore=0
- lowpriorityscore=0 priorityscore=1501 mlxscore=0 spamscore=0 adultscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504070138
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z_FxXjiMvG5u73fi@kspp>
 
-
-On Mon, 07 Apr 2025 11:28:26 -0700, Jeff Johnson wrote:
-> ath12k-check is flagging:
+On Sat, Apr 05, 2025 at 12:07:26PM -0600, Gustavo A. R. Silva wrote:
+> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+> getting ready to enable it, globally.
 > 
-> drivers/net/wireless/ath/ath12k/dp.c:1656: 'upto' may be misspelled - perhaps 'up to'?
+> Use the `DEFINE_RAW_FLEX()` helper for on-stack definitions of
+> a flexible structure where the size of the flexible-array member
+> is known at compile-time, and refactor the rest of the code,
+> accordingly.
 > 
-> Replace "upto" with "up to" and split the comment line so that it
-> doesn't exceed 80 columns.
+> So, with these changes, fix the following warnings:
 > 
-> [...]
+> drivers/net/wireless/intel/iwlwifi/mvm/d3.c:124:52: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2067:51: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2162:43: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2225:43: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 129 +++++++++-----------
+>  1 file changed, 61 insertions(+), 68 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+> index 3e8b7168af01..3e95799208fc 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+> @@ -120,19 +120,17 @@ static void iwl_mvm_wowlan_program_keys(struct ieee80211_hw *hw,
+>  	switch (key->cipher) {
+>  	case WLAN_CIPHER_SUITE_WEP40:
+>  	case WLAN_CIPHER_SUITE_WEP104: { /* hack it for now */
+> -		struct {
+> -			struct iwl_mvm_wep_key_cmd wep_key_cmd;
+> -			struct iwl_mvm_wep_key wep_key;
+> -		} __packed wkc = {
+> -			.wep_key_cmd.mac_id_n_color =
+> -				cpu_to_le32(FW_CMD_ID_AND_COLOR(mvmvif->id,
+> -								mvmvif->color)),
+> -			.wep_key_cmd.num_keys = 1,
+> -			/* firmware sets STA_KEY_FLG_WEP_13BYTES */
+> -			.wep_key_cmd.decryption_type = STA_KEY_FLG_WEP,
+> -			.wep_key.key_index = key->keyidx,
+> -			.wep_key.key_size = key->keylen,
+> -		};
+> +		DEFINE_RAW_FLEX(struct iwl_mvm_wep_key_cmd, wkc, wep_key, 1);
+> +		struct iwl_mvm_wep_key *wep_key = wkc->wep_key;
+> +
+> +		wkc->mac_id_n_color =
+> +			cpu_to_le32(FW_CMD_ID_AND_COLOR(mvmvif->id,
+> +							mvmvif->color));
+> +		wkc->num_keys = 1;
 
-Applied, thanks!
+Looks like struct iwl_mvm_wep_key_cmd::num_keys is the counted_by for
+struct iwl_mvm_wep_key_cmd::wep_key?
 
-[1/1] wifi: ath12k: Fix misspelling "upto" in dp.c
-      commit: 68218fa0862aaa8fcc5f968663efc781eb4c91df
+> +		/* firmware sets STA_KEY_FLG_WEP_13BYTES */
+> +		wkc->decryption_type = STA_KEY_FLG_WEP;
+> +		wep_key->key_index = key->keyidx;
+> +		wep_key->key_size = key->keylen;
+>  
+>  		/*
+>  		 * This will fail -- the key functions don't set support
+> @@ -142,18 +140,19 @@ static void iwl_mvm_wowlan_program_keys(struct ieee80211_hw *hw,
+>  		if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
+>  			break;
+>  
+> -		memcpy(&wkc.wep_key.key[3], key->key, key->keylen);
+> +		memcpy(&wep_key->key[3], key->key, key->keylen);
+>  		if (key->keyidx == mvmvif->tx_key_idx) {
+>  			/* TX key must be at offset 0 */
+> -			wkc.wep_key.key_offset = 0;
+> +			wep_key->key_offset = 0;
+>  		} else {
+>  			/* others start at 1 */
+>  			data->wep_key_idx++;
+> -			wkc.wep_key.key_offset = data->wep_key_idx;
+> +			wep_key->key_offset = data->wep_key_idx;
+>  		}
+>  
+>  		mutex_lock(&mvm->mutex);
+> -		ret = iwl_mvm_send_cmd_pdu(mvm, WEP_KEY, 0, sizeof(wkc), &wkc);
+> +		ret = iwl_mvm_send_cmd_pdu(mvm, WEP_KEY, 0,
+> +					   __struct_size(wkc), wkc);
+>  		data->error = ret != 0;
+>  
+>  		mvm->ptk_ivlen = key->iv_len;
+> @@ -2063,10 +2062,8 @@ static bool iwl_mvm_mlo_gtk_rekey(struct iwl_wowlan_status_data *status,
+>  		struct iwl_wowlan_mlo_gtk *mlo_key = &status->mlo_keys[i];
+>  		struct ieee80211_key_conf *key, *old_key;
+>  		struct ieee80211_key_seq seq;
+> -		struct {
+> -			struct ieee80211_key_conf conf;
+> -			u8 key[32];
+> -		} conf = {};
+> +		DEFINE_RAW_FLEX(struct ieee80211_key_conf, conf, key,
+> +				WOWLAN_KEY_MAX_SIZE);
 
-Best regards,
+Okay, yes, WOWLAN_KEY_MAX_SIZE == 32.
+
+>  		u16 flags = le16_to_cpu(mlo_key->flags);
+>  		int j, link_id, key_id, key_type;
+>  
+> @@ -2083,40 +2080,40 @@ static bool iwl_mvm_mlo_gtk_rekey(struct iwl_wowlan_status_data *status,
+>  			    key_type >= WOWLAN_MLO_GTK_KEY_NUM_TYPES))
+>  			continue;
+>  
+> -		conf.conf.cipher = old_keys->cipher[link_id][key_type];
+> +		conf->cipher = old_keys->cipher[link_id][key_type];
+>  		/* WARN_ON? */
+> -		if (!conf.conf.cipher)
+> +		if (!conf->cipher)
+>  			continue;
+>  
+> -		conf.conf.keylen = 0;
+> -		switch (conf.conf.cipher) {
+> +		conf->keylen = 0;
+> +		switch (conf->cipher) {
+>  		case WLAN_CIPHER_SUITE_CCMP:
+>  		case WLAN_CIPHER_SUITE_GCMP:
+> -			conf.conf.keylen = WLAN_KEY_LEN_CCMP;
+> +			conf->keylen = WLAN_KEY_LEN_CCMP;
+>  			break;
+>  		case WLAN_CIPHER_SUITE_GCMP_256:
+> -			conf.conf.keylen = WLAN_KEY_LEN_GCMP_256;
+> +			conf->keylen = WLAN_KEY_LEN_GCMP_256;
+>  			break;
+>  		case WLAN_CIPHER_SUITE_BIP_GMAC_128:
+> -			conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_128;
+> +			conf->keylen = WLAN_KEY_LEN_BIP_GMAC_128;
+>  			break;
+>  		case WLAN_CIPHER_SUITE_BIP_GMAC_256:
+> -			conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_256;
+> +			conf->keylen = WLAN_KEY_LEN_BIP_GMAC_256;
+>  			break;
+>  		case WLAN_CIPHER_SUITE_AES_CMAC:
+> -			conf.conf.keylen = WLAN_KEY_LEN_AES_CMAC;
+> +			conf->keylen = WLAN_KEY_LEN_AES_CMAC;
+>  			break;
+>  		case WLAN_CIPHER_SUITE_BIP_CMAC_256:
+> -			conf.conf.keylen = WLAN_KEY_LEN_BIP_CMAC_256;
+> +			conf->keylen = WLAN_KEY_LEN_BIP_CMAC_256;
+>  			break;
+>  		}
+>  
+> -		if (WARN_ON(!conf.conf.keylen ||
+> -			    conf.conf.keylen > sizeof(conf.key)))
+> +		if (WARN_ON(!conf->keylen ||
+> +			    conf->keylen > WOWLAN_KEY_MAX_SIZE))
+>  			continue;
+>  
+> -		memcpy(conf.conf.key, mlo_key->key, conf.conf.keylen);
+> -		conf.conf.keyidx = key_id;
+> +		memcpy(conf->key, mlo_key->key, conf->keylen);
+> +		conf->keyidx = key_id;
+>  
+>  		old_key = old_keys->key[link_id][key_id];
+>  		if (old_key) {
+> @@ -2128,7 +2125,7 @@ static bool iwl_mvm_mlo_gtk_rekey(struct iwl_wowlan_status_data *status,
+>  
+>  		IWL_DEBUG_WOWLAN(mvm, "Add MLO key id %d, link id %d\n",
+>  				 key_id, link_id);
+> -		key = ieee80211_gtk_rekey_add(vif, &conf.conf, link_id);
+> +		key = ieee80211_gtk_rekey_add(vif, conf, link_id);
+>  		if (WARN_ON(IS_ERR(key))) {
+>  			ret = false;
+>  			goto out;
+> @@ -2158,30 +2155,28 @@ static bool iwl_mvm_gtk_rekey(struct iwl_wowlan_status_data *status,
+>  {
+>  	int i, j;
+>  	struct ieee80211_key_conf *key;
+> -	struct {
+> -		struct ieee80211_key_conf conf;
+> -		u8 key[32];
+> -	} conf = {
+> -		.conf.cipher = gtk_cipher,
+> -	};
+> +	DEFINE_RAW_FLEX(struct ieee80211_key_conf, conf, key,
+> +			WOWLAN_KEY_MAX_SIZE);
+>  	int link_id = vif->active_links ? __ffs(vif->active_links) : -1;
+>  
+> +	conf->cipher = gtk_cipher;
+> +
+>  	BUILD_BUG_ON(WLAN_KEY_LEN_CCMP != WLAN_KEY_LEN_GCMP);
+> -	BUILD_BUG_ON(sizeof(conf.key) < WLAN_KEY_LEN_CCMP);
+> -	BUILD_BUG_ON(sizeof(conf.key) < WLAN_KEY_LEN_GCMP_256);
+> -	BUILD_BUG_ON(sizeof(conf.key) < WLAN_KEY_LEN_TKIP);
+> -	BUILD_BUG_ON(sizeof(conf.key) < sizeof(status->gtk[0].key));
+> +	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < WLAN_KEY_LEN_CCMP);
+> +	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < WLAN_KEY_LEN_GCMP_256);
+> +	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < WLAN_KEY_LEN_TKIP);
+> +	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < sizeof(status->gtk[0].key));
+>  
+>  	switch (gtk_cipher) {
+>  	case WLAN_CIPHER_SUITE_CCMP:
+>  	case WLAN_CIPHER_SUITE_GCMP:
+> -		conf.conf.keylen = WLAN_KEY_LEN_CCMP;
+> +		conf->keylen = WLAN_KEY_LEN_CCMP;
+>  		break;
+>  	case WLAN_CIPHER_SUITE_GCMP_256:
+> -		conf.conf.keylen = WLAN_KEY_LEN_GCMP_256;
+> +		conf->keylen = WLAN_KEY_LEN_GCMP_256;
+>  		break;
+>  	case WLAN_CIPHER_SUITE_TKIP:
+> -		conf.conf.keylen = WLAN_KEY_LEN_TKIP;
+> +		conf->keylen = WLAN_KEY_LEN_TKIP;
+>  		break;
+>  	default:
+>  		WARN_ON(1);
+> @@ -2191,14 +2186,14 @@ static bool iwl_mvm_gtk_rekey(struct iwl_wowlan_status_data *status,
+>  		if (!status->gtk[i].len)
+>  			continue;
+>  
+> -		conf.conf.keyidx = status->gtk[i].id;
+> +		conf->keyidx = status->gtk[i].id;
+>  		IWL_DEBUG_WOWLAN(mvm,
+>  				 "Received from FW GTK cipher %d, key index %d\n",
+> -				 conf.conf.cipher, conf.conf.keyidx);
+> -		memcpy(conf.conf.key, status->gtk[i].key,
+> +				 conf->cipher, conf->keyidx);
+> +		memcpy(conf->key, status->gtk[i].key,
+>  		       sizeof(status->gtk[i].key));
+>  
+> -		key = ieee80211_gtk_rekey_add(vif, &conf.conf, link_id);
+> +		key = ieee80211_gtk_rekey_add(vif, conf, link_id);
+>  		if (IS_ERR(key))
+>  			return false;
+>  
+> @@ -2220,42 +2215,40 @@ iwl_mvm_d3_igtk_bigtk_rekey_add(struct iwl_wowlan_status_data *status,
+>  				struct ieee80211_vif *vif, u32 cipher,
+>  				struct iwl_multicast_key_data *key_data)
+>  {
+> +	DEFINE_RAW_FLEX(struct ieee80211_key_conf, conf, key,
+> +			WOWLAN_KEY_MAX_SIZE);
+>  	struct ieee80211_key_conf *key_config;
+> -	struct {
+> -		struct ieee80211_key_conf conf;
+> -		u8 key[WOWLAN_KEY_MAX_SIZE];
+> -	} conf = {
+> -		.conf.cipher = cipher,
+> -		.conf.keyidx = key_data->id,
+> -	};
+>  	struct ieee80211_key_seq seq;
+>  	int link_id = vif->active_links ? __ffs(vif->active_links) : -1;
+>  
+> +	conf->cipher = cipher;
+> +	conf->keyidx = key_data->id;
+> +
+>  	if (!key_data->len)
+>  		return true;
+>  
+> -	iwl_mvm_d3_set_igtk_bigtk_ipn(key_data, &seq, conf.conf.cipher);
+> +	iwl_mvm_d3_set_igtk_bigtk_ipn(key_data, &seq, conf->cipher);
+>  
+>  	switch (cipher) {
+>  	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
+> -		conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_128;
+> +		conf->keylen = WLAN_KEY_LEN_BIP_GMAC_128;
+>  		break;
+>  	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
+> -		conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_256;
+> +		conf->keylen = WLAN_KEY_LEN_BIP_GMAC_256;
+>  		break;
+>  	case WLAN_CIPHER_SUITE_AES_CMAC:
+> -		conf.conf.keylen = WLAN_KEY_LEN_AES_CMAC;
+> +		conf->keylen = WLAN_KEY_LEN_AES_CMAC;
+>  		break;
+>  	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
+> -		conf.conf.keylen = WLAN_KEY_LEN_BIP_CMAC_256;
+> +		conf->keylen = WLAN_KEY_LEN_BIP_CMAC_256;
+>  		break;
+>  	default:
+>  		WARN_ON(1);
+>  	}
+> -	BUILD_BUG_ON(sizeof(conf.key) < sizeof(key_data->key));
+> -	memcpy(conf.conf.key, key_data->key, conf.conf.keylen);
+> +	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < sizeof(key_data->key));
+> +	memcpy(conf->key, key_data->key, conf->keylen);
+>  
+> -	key_config = ieee80211_gtk_rekey_add(vif, &conf.conf, link_id);
+> +	key_config = ieee80211_gtk_rekey_add(vif, conf, link_id);
+>  	if (IS_ERR(key_config))
+>  		return false;
+>  	ieee80211_set_key_rx_seq(key_config, 0, &seq);
+
+Reviewed-by: Kees Cook <kees@kernel.org>
+
 -- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-
+Kees Cook
 
