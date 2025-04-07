@@ -1,51 +1,92 @@
-Return-Path: <linux-wireless+bounces-21181-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21182-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B3AA7D2E2
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 06:21:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04BF3A7D3E6
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 08:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0529B167BC9
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 04:21:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6A53166204
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 06:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4462135AF;
-	Mon,  7 Apr 2025 04:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46AA218593;
+	Mon,  7 Apr 2025 06:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U/QvLLUW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pg1-f196.google.com (mail-pg1-f196.google.com [209.85.215.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ADA335C0;
-	Mon,  7 Apr 2025 04:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFC733CA;
+	Mon,  7 Apr 2025 06:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743999664; cv=none; b=BxKV2ich+Vdjj39OkpcO1CC7HW6ObDxbjdU1TCPFdbROFv3kOIdNrx6Kv6V8bzu3zjcZm0UJRcS8gViL0qEjq/sYPYQ7jV4vwg6TodX7Sk8x7z91jOdkY+0m+GW4hObF19EysD/2eU99HO4SqgReE5hHq0VUPE2EzboyTxXRk2U=
+	t=1744006756; cv=none; b=E6yiVYMyzp7ok85flLyhxms2jRnJQrbP+wufVCRthw2KmgBqD7+kpEkniph8YGdfupb/QNEuix9QAUVbK/kremnRRpQf8Q4n9t2pDOz8gIW+hBDp1oCyMv2yqrjoskkau+pdeMil2O7SGOQCTFjmrWTQtXpnKXnvUIFqdMyLDgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743999664; c=relaxed/simple;
-	bh=QAa+J/meRHMtog91cSwrp/o8jck/81Pbje00Mrsvge8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bUxeXZJBGYXI+DQmlLFoGPtJmRnGj1IMIX+7he9Iu09Vl6M+6CC+CluNFWkAJAmG/Din2k3Lb+JWX4pCgsisBAWyLeEQIFE4XgMISgmaWmbmjCctLPHecm2Eptuvur/OwLeABiHVqMXe8dK4uSX/lHBV08v98lvfeC4cOTvyw+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-05 (Coremail) with SMTP id zQCowAAXUwudUvNn2GrLBg--.10356S2;
-	Mon, 07 Apr 2025 12:20:46 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: arend.vanspriel@broadcom.com,
-	kvalo@kernel.org
-Cc: sebastian.reichel@collabora.com,
-	erick.archer@outlook.com,
-	megi@xff.cz,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
+	s=arc-20240116; t=1744006756; c=relaxed/simple;
+	bh=rMi4SaQfSsO2kX1MJ5kZcFlcuLlPcxUnvEN2ZnToOUE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DyaJBwTY9EKJEzMnl4e5YMHb/Dvq1lb9oPW8x4ncHUfmohm3+TRR1gZq32Zuzo4pceziWUNuFHe/0qREFi1moQV3H+h1CL54xOnIFXkrDOQemYn0cNCS3o9hvPe9wgN6EMsLobpQpZazsaA4RaG1okjC5CqznNhTsT9DD9fLddc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U/QvLLUW; arc=none smtp.client-ip=209.85.215.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f196.google.com with SMTP id 41be03b00d2f7-af9065f0fc0so2545447a12.2;
+        Sun, 06 Apr 2025 23:19:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744006754; x=1744611554; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7dFXeq2CgWYu3KZ9DVuWvCtQbxPHL6sdTWZtnaoyOKs=;
+        b=U/QvLLUWF0j+GKYLPwJjYpAApUWR0V6QF4qFlxtM+gTEkXewT/z83Gf1no5BHZRRFf
+         +EDI5cCdUiVF+zkE1SBkrUyA7HakFzGqZhBBiI2o18SMXuAzRcm7lrAjN85kODGakOZV
+         KF31loaG6ngEc4Bs2nsIYm4B8ej8/kBRZIbQrwWDrWdgAtfL4JjrNcLno7BX1yOeSWxV
+         zBtbvLSV0eJkcvAlteOq62r9icYTNrkS4/um1L16ZOSJH1UC3/ucNhLHUSwda+vI4ok/
+         fxEpM5si/mfkoXjKotY4WeoKE+i9WiwH7JskrWQH1LzxCuqMOI1d/7xDBPmqIyKgMdzV
+         2n7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744006754; x=1744611554;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7dFXeq2CgWYu3KZ9DVuWvCtQbxPHL6sdTWZtnaoyOKs=;
+        b=EG59S2LzAmttuxbarybJg4x6NP1c7H2XpUZ3Np971B8fWH4Bczw34Zr4kc+H4GrmTQ
+         pLWBDxbKAKTAJ5VXYaQpLk9oXusuKuq7wqYs6bRbHArUQVd5cDGB7Ilali0zHZwnjWnZ
+         QJkMKtnxQvCyUD1lia7YWSrAweLR1+zyuNO2LJVpJ9RKIdrM7Xi9IyEd/tp5enFOri2w
+         J4jQ18PA8NXDWUrZdf1PaE80+VTE4f17lWhncch4wDfYri06s2gSEYx3RK4HF9MGrhSH
+         9NJY767aAgBK6IgvRDWsLmbd2A78/AbTSoe50y+5o+L68FvoLihUJab1gnvWHMHMLeQj
+         G0Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCVbINI200Sbnrbmq6BE3ynOfSJib3shmZ0LZcvKyJJtFyL6zrJfmbjwJ5rx66CSLPnVPZeKUkHwtGsxtRo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ0tMfUQ3SLWko3Nr7DJlkTywn8siLZeQfrDOoNhCwQirBXOy3
+	4T7nxrVYBhcRPNjWFNl+zHTebPO2vf3XKA2dpbiTSTYCChDeODcX
+X-Gm-Gg: ASbGncsNfPf1ST452m0BKnMr+4mQSmN2CvVYBDkNA/8fSUtd/cYMqH7aFwtyFjiuuil
+	sVWID9MFRRPAFNI9TZiLEVpZx5a7wj/+qQIzBJJU5lb8uHkexe2CDK+AA7qnAzQEKNmGCuhO2Ok
+	3hQcPR5OYEy1Txr2uGkEFghYywUhm+FREza852kMgv/fML61yKpyCn9p1iL21NE76CQUbrnRoO7
+	AWZBrp5qvQbDTMSZR4/odw8mBEcsnpUvOoWjtjkemynAPOQfc0VM/ylbwzi2s7gblTPsLIYq3Se
+	n8mqXAa07kfGvap3d5k7wXm/XwtJYPgJU4Ghx0pq09EBmPsN59wCnZmN2GqIBrkHPo2Sbso=
+X-Google-Smtp-Source: AGHT+IHeXC09XSFChpRb9qXhzMWyzY1i/YN7qCwEDFJ4TLe1zHG3OW/lwBLze1CQACFTsx9I7iunWw==
+X-Received: by 2002:a17:90a:d450:b0:2ff:5357:1c7e with SMTP id 98e67ed59e1d1-306a48a4b94mr15463045a91.20.1744006754416;
+        Sun, 06 Apr 2025 23:19:14 -0700 (PDT)
+Received: from henry.localdomain ([111.202.148.133])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-305983b9cfbsm7967837a91.31.2025.04.06.23.19.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Apr 2025 23:19:13 -0700 (PDT)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>
-Subject: [PATCH] brcmfmac: Add an error log for brcmf_sdiod_ramrw()
-Date: Mon,  7 Apr 2025 12:20:28 +0800
-Message-ID: <20250407042028.1481-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	Henry Martin <bsdhenrymartin@gmail.com>
+Subject: [PATCH v2] wifi: mt76: mt7915: Fix null-ptr-deref in mt7915_mmio_wed_init()
+Date: Mon,  7 Apr 2025 14:19:00 +0800
+Message-Id: <20250407061900.85317-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,51 +94,46 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAXUwudUvNn2GrLBg--.10356S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Gw4xur47KF4fGFyxWw43Awb_yoWkZFbEqF
-	savrnxX34Sg34kuryDAFW2vrWvk34qqw1vgr1ayayfKr1IgFW3KrZ7ZFn5Jw17WF4IqFnx
-	Cwn8AFyUG3Z7ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb3kFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUqeHgUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAUFA2fzOrdHTAABsc
 
-The function brcmf_sdio_buscore_activate() calls the function
-brcmf_sdiod_ramrw(), but does not check its return value. Log
-the error message to prevent silent failure if the function fails.
+devm_ioremap() returns NULL on error. Currently, mt7915_mmio_wed_init()
+does not check for this case, which results in a NULL pointer
+dereference.
 
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Prevent null pointer dereference in mt7915_mmio_wed_init().
+
+Fixes: 4f831d18d12d ("wifi: mt76: mt7915: enable WED RX support")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+V1 -> V2: Add a blank line after each test and correct commit message.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index b1727f35217b..dd683c2582fb 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -3898,8 +3898,9 @@ static void brcmf_sdio_buscore_activate(void *ctx, struct brcmf_chip *chip,
- 
- 	if (rstvec)
- 		/* Write reset vector to address 0 */
--		brcmf_sdiod_ramrw(sdiodev, true, 0, (void *)&rstvec,
--				  sizeof(rstvec));
-+		if (brcmf_sdiod_ramrw(sdiodev, true, 0, (void *)&rstvec,
-+				      sizeof(rstvec)) < 0)
-+			brcmf_err("Fail to reset vector\n");
- }
- 
- static u32 brcmf_sdio_buscore_read32(void *ctx, u32 addr)
+ drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index 876f0692850a..9c4d5cea0c42 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -651,6 +651,9 @@ int mt7915_mmio_wed_init(struct mt7915_dev *dev, void *pdev_ptr,
+ 		wed->wlan.base = devm_ioremap(dev->mt76.dev,
+ 					      pci_resource_start(pci_dev, 0),
+ 					      pci_resource_len(pci_dev, 0));
++		if (!wed->wlan.base)
++			return -ENOMEM;
++
+ 		wed->wlan.phy_base = pci_resource_start(pci_dev, 0);
+ 		wed->wlan.wpdma_int = pci_resource_start(pci_dev, 0) +
+ 				      MT_INT_WED_SOURCE_CSR;
+@@ -678,6 +681,9 @@ int mt7915_mmio_wed_init(struct mt7915_dev *dev, void *pdev_ptr,
+ 		wed->wlan.bus_type = MTK_WED_BUS_AXI;
+ 		wed->wlan.base = devm_ioremap(dev->mt76.dev, res->start,
+ 					      resource_size(res));
++		if (!wed->wlan.base)
++			return -ENOMEM;
++
+ 		wed->wlan.phy_base = res->start;
+ 		wed->wlan.wpdma_int = res->start + MT_INT_SOURCE_CSR;
+ 		wed->wlan.wpdma_mask = res->start + MT_INT_MASK_CSR;
 -- 
-2.42.0.windows.2
+2.34.1
 
 
