@@ -1,49 +1,52 @@
-Return-Path: <linux-wireless+bounces-21191-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21192-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B072A7D891
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 10:53:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74892A7DA67
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 11:56:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4607416EEC6
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 08:53:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FBF4188C7F9
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 09:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852551494CF;
-	Mon,  7 Apr 2025 08:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02B82253B2;
+	Mon,  7 Apr 2025 09:56:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from ssh248.corpemail.net (ssh248.corpemail.net [210.51.61.248])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054E3226883;
-	Mon,  7 Apr 2025 08:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB873218ABD;
+	Mon,  7 Apr 2025 09:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.51.61.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744015996; cv=none; b=AR8FB6CVujhuUzO++lUC0Pfn9f7lrNlHKmXmMnrN8sle1tMixUVrmVw+8/7wgWP5OdqpqtCWKdNr2+e/kQ2RmGMkGqPc14lbtfuembaFQVGPCi7jHCaSKO6bYVwUyC+INpI4NiaT0y9dbIjHGPE5dkC9l+k4Uh0/r4MH8XFd3GY=
+	t=1744019766; cv=none; b=ZKCW+oaSTuBGHcpumOoy1XTL4SLOraldjjyHqxpw97pyNapYXwwSYYt085j4/GQFdh2U9wRKiugadwpY91EttmBMaCt5DJLC10+PjNl2SfO2TdGVJkjKsVcwFxxvIkjaKegKv7K6iOT9lNOaoyR+Ecb5PdpGzdL5PWGZ/O8YWVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744015996; c=relaxed/simple;
-	bh=3CMcARXpGUUmojvbSQDkeLpdlzz+J7hS6Fy6CnPgn8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fiG34I2FP4gCwsFCsDIxkF8jv2nJV1ujrEJAnJIbBZ8sIvcY6NSuM4FPODzXiO5jND80Zpx/5v6HyaJsjMd0b1LcslNn9y1IL08TJvEvefLIObMeDo82OxKF6SjPZznRNY5f69OlFzq8LITN+oudP/H1kof0uOSijSspzDodRtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-03 (Coremail) with SMTP id rQCowAB3JUJwkvNnIRXYBg--.33828S2;
-	Mon, 07 Apr 2025 16:53:06 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: miriam.rachel.korenblit@intel.com,
-	kvalo@kernel.org
-Cc: johannes.berg@intel.com,
-	emmanuel.grumbach@intel.com,
-	golan.ben.ami@intel.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>
-Subject: [PATCH v2] wifi: iwlwifi: mvm: Add error logging for iwl_finish_nic_init()
-Date: Mon,  7 Apr 2025 16:52:47 +0800
-Message-ID: <20250407085247.1992-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1744019766; c=relaxed/simple;
+	bh=gNhUjMpeEX7mTvcDB/ug16RwEOcyXW1AXaDwQ+wRowk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cws7nqQ0HkJ+YgvBtHV6yTWEO2uWyJi3KrhuJZXODyA4j9kZvdFaouc6Qrsz2qoj7QVvltwouLHfp3O118RBYHiI1YMbK1Ug1Tc3COp50GZMlaTUaR0kv6Ucouy1/ClJTpXeYo110EoAP3Qx1cDNcNOP99xpv2LUREmtG24p0d0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com; spf=pass smtp.mailfrom=inspur.com; arc=none smtp.client-ip=210.51.61.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inspur.com
+Received: from jtjnmail201606.home.langchao.com
+        by ssh248.corpemail.net ((D)) with ASMTP (SSL) id 202504071755536257;
+        Mon, 07 Apr 2025 17:55:53 +0800
+Received: from locahost.localdomain.com (10.94.5.217) by
+ jtjnmail201606.home.langchao.com (10.100.2.6) with Microsoft SMTP Server id
+ 15.1.2507.39; Mon, 7 Apr 2025 17:55:54 +0800
+From: Charles Han <hanchunchao@inspur.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>, <ryder.lee@mediatek.com>,
+	<shayne.chen@mediatek.com>, <sean.wang@mediatek.com>,
+	<matthias.bgg@gmail.com>, <angelogioacchino.delregno@collabora.com>,
+	<howard-yh.hsu@mediatek.com>, <StanleyYP.Wang@mediatek.com>,
+	<chui-hao.chiu@mediatek.com>
+CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
+	Charles Han <hanchunchao@inspur.com>
+Subject: [PATCH] wifi: mt76: mt7996: Add NULL check in mt7996_thermal_init
+Date: Mon, 7 Apr 2025 17:55:51 +0800
+Message-ID: <20250407095551.32127-1-hanchunchao@inspur.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -51,66 +54,39 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAB3JUJwkvNnIRXYBg--.33828S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7try7ur18tF48tw4kGw15Jwb_yoW8WFy3pF
-	4UGFW2krZ5K397Ca48Ja1IyF98ta1Fk3yDKF92kws5urs7Jr98tF95XFy5ta40g3yrXa4S
-	gF1jka4xGr1DZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUejjgDU
-	UUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwkFA2fzgEpPvAABsk
+Content-Type: text/plain
+tUid: 2025407175553cfc5208c70a300baf4f5d5e9bd496b54
+X-Abuse-Reports-To: service@corp-email.com
+Abuse-Reports-To: service@corp-email.com
+X-Complaints-To: service@corp-email.com
+X-Report-Abuse-To: service@corp-email.com
 
-The function iwl_pci_resume() calls the function iwl_finish_nic_init(),
-but does not check their return values.
+devm_kasprintf() can return a NULL pointer on failure,but this
+returned value in mt7996_thermal_init() is not checked.
+Add NULL check in mt7996_thermal_init(), to handle kernel NULL
+pointer dereference error.
 
-Log a detailed error message with the error code to aid in diagnosing
-root causes if encountering irreparable errors. While this does not fix
-the underlying problem, it assist debugging by making the failure
-visible in logs.
-
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Fixes: 69d54ce7491d ("wifi: mt76: mt7996: switch to single multi-radio wiphy")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
 ---
-v2: Fix improper code.
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 8fb2aa282242..34a7a3e4f7c0 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1616,6 +1616,7 @@ static int _iwl_pci_resume(struct device *device, bool restore)
- 	struct iwl_trans *trans = pci_get_drvdata(pdev);
- 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
- 	bool device_was_powered_off = false;
-+	int err;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 6b660424aedc..5af52bd1f1f1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -217,6 +217,9 @@ static int mt7996_thermal_init(struct mt7996_phy *phy)
  
- 	/* Before you put code here, think about WoWLAN. You cannot check here
- 	 * whether WoWLAN is enabled or not, and your code will run even if
-@@ -1647,7 +1648,11 @@ static int _iwl_pci_resume(struct device *device, bool restore)
- 		 * won't really know how to recover.
- 		 */
- 		iwl_pcie_prepare_card_hw(trans);
--		iwl_finish_nic_init(trans);
-+		err = iwl_finish_nic_init(trans);
-+		if (err)
-+			IWL_ERR(trans,
-+				"NIC initialization failed after power-off (error %d).",
-+				err);
- 		iwl_op_mode_device_powered_off(trans->op_mode);
- 	}
+ 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7996_%s.%d",
+ 			      wiphy_name(wiphy), phy->mt76->band_idx);
++	if (!name)
++		return -ENOMEM;
++
+ 	snprintf(cname, sizeof(cname), "cooling_device%d", phy->mt76->band_idx);
  
+ 	cdev = thermal_cooling_device_register(name, phy, &mt7996_thermal_ops);
 -- 
-2.42.0.windows.2
+2.43.0
 
 
