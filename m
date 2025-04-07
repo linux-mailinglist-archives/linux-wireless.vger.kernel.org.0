@@ -1,195 +1,137 @@
-Return-Path: <linux-wireless+bounces-21212-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21213-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BCBEA7ECCF
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 21:25:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E629A7EDB5
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 21:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6EFB189CB99
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 19:20:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B055A3A4A56
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 19:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35AD25D54E;
-	Mon,  7 Apr 2025 19:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884EC2153D1;
+	Mon,  7 Apr 2025 19:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKuHHoBt"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ciFGuBtj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A9925D545;
-	Mon,  7 Apr 2025 19:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBC721147C
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Apr 2025 19:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744052570; cv=none; b=iEKDxol4rVbK/6imeVkZxQ/Xr/PgUE8/NE73/nMlL9tfh5YGX+apBuqZA3InhW5c70xNo/Ezkbf6BEmKPi79lDKpdXVMGzJqM7ie3TrtJO/IxB4J7p1cFMjWz+UXSw85Q4c1y6U3mVlXLfMeAe3NvdQsdII8X2z5lLHkP6uST2w=
+	t=1744054870; cv=none; b=rshIKftvFM5iW4gyG0ZgXJ3hWgCJ9FTWh0mCGXmdteTPgUUTh5+2dCCx5Ag/EH1gj5DMAH6T7YH40RgN+mkmPcO+Gi1MW5D2F6pYkzwKKfsOxariSrPzb61jCU6HaSqBfgTEij8Bqmud0fzIsmZR75y57g8d7t0Y8WUudcjiNDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744052570; c=relaxed/simple;
-	bh=b/MXUmcAbF/lysUWjr8HjXUt9a43+bWo9N2Fk7BZ/x0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YO/C8n0yXeEUsbfSBiwB1dQKczUw8NzAR9V2kiG0D7tkKt/HDRdJLkkticjWnTHvIWqt/SP5HIXhgCA+OVi50l3lAmhAuOQYq9RT9JMltNizoeo8twZxVemu4DokSnHYo2/WDjteKLP3AMcEfo9KNmk+RmBBmDmhvs0TEiza/sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKuHHoBt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A283C4CEDD;
-	Mon,  7 Apr 2025 19:02:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744052570;
-	bh=b/MXUmcAbF/lysUWjr8HjXUt9a43+bWo9N2Fk7BZ/x0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DKuHHoBtemrJGN7x4S5oEc6HTjYwNK5EeCEgTP0fjHDv58jNQ+nOOWhYqlZSa1FKS
-	 wi/bninK4zyZoajNsDxcm3aAk6wHSfwg4QBtFZTq+aSllD9IcQYaFXXcHcJwaw77rn
-	 qnML7crgeQFJdX8LriJdxs6BFg6ADV8cfMMQNfMfqOzFRmBf4RZwdbRb1o8w6rCVrI
-	 WDfB5igRXqCZZ8PSGehRlOKh+wC22wsKqU5/eDTb3TGY5wkLjLq0uOZWsoPMh/9Kb5
-	 Tw/ZNA73fIV+h8UQeJkoaR9uT5T8+ptYaIc5WN9m6UhI96wCPUCp0CNkDK3aLeGYzI
-	 N5cVEkN+tWZFw==
-Date: Mon, 7 Apr 2025 12:02:47 -0700
-From: Kees Cook <kees@kernel.org>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] wifi: mac80211: Avoid
- -Wflex-array-member-not-at-end warnings
-Message-ID: <202504071200.565181DC1@keescook>
-References: <Z-SQdHZljwAgIlp9@kspp>
+	s=arc-20240116; t=1744054870; c=relaxed/simple;
+	bh=MkbSXAB5F7px5eilxXRYYWaFWvkDGNxLgdjCFZ2y2nc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=QRrUUixDKfH9NSkJmISSpDP8+231NY19c3hRA2Y+xbQy+sKe+CqQa9wb1UmAI6x5gFSBHzFcJDVkLRWwK5kEUCsR67KGWpIO6gkTWH+UlgcpaM5QDfTPCyRQQp80y2x+TW+W5m+q/RXF8iifgFDjqz6/bzYJS2XWJjYatR3hU3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ciFGuBtj; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 537Iev6t002203
+	for <linux-wireless@vger.kernel.org>; Mon, 7 Apr 2025 19:41:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	KscTYQy481PoZuE7Dp2EwtjkJkp0UdcKA2vsrikNWn0=; b=ciFGuBtjzEjnJlQZ
+	PwAh98GDTEwJm/0grZ/7fnzsFdqlnGzXr/B/TMm3nD+Fp2Hz6MY2Rd0xmlCY/Kqf
+	agD7OYeKbQgVrk669Xw83zBaFZ0OdQOLxAZ6t1TZ81EE9scoCm6hXOoJFEBoyqsW
+	EKJ5tB/HXndYLABzXP2xXFbvwMNnd8R+ROtkHGya/OfyiNL8q9YxjVKTHN/STemr
+	F+3jpAOOD2vHInnUaB5nhL94qjdwBL3NNDc5LquEs5sFuKDkY/vTNe515GtYbYm8
+	F4NT3UG8Fl32BQEHT7kr3cXeSzoU6Jdjd5g2CRylfJGZdnGJg3djfDMHBjiq6jLv
+	HttO5g==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twtawcup-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 07 Apr 2025 19:41:08 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-224191d9228so57140155ad.3
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Apr 2025 12:41:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744054867; x=1744659667;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KscTYQy481PoZuE7Dp2EwtjkJkp0UdcKA2vsrikNWn0=;
+        b=NQk7KqSJ6GZaM0BsB1Ew5q+Hb79bXMhn9tutalUL/JJJSVRHPWGd0vurSvMi3m2kUS
+         /drFJJNsBJ0dF/vVn/PdNELS+7FUZgOKfTqJhHMrNQmkRfB3nHCalxbb1dAoapRUvk6B
+         hsKtUCKe9Uaqao0S28dNaaje99UKaaALR0/6KKHV1taL6NXD2thRogJr2pDL1qy9amZ6
+         Pth8GequwK6ubtSi5MOTLgWu6hWeK5JMBGSf0k0u9mNPQ4Wu4xG4dzp2Di28HqPPF8go
+         sbiA01IgMYLPpXc0Mvl1xXMf2xuvD3uuY7pj36VSxvd4BqTzz4HP6YBX8efJevXEX9D0
+         P/Pw==
+X-Gm-Message-State: AOJu0YxrjJqMECi+GXVcrkjS3G6hleZGwCxNqgzDUMRU+wkr1dw29wff
+	jN/eHRgC5aGnUxyy2pw37Oh6dNE+hYzkXlFnVqGdCvJVLArvh3b47HInZA/lH1OBRVtpyEZdnxi
+	Q5LP/qXDl0egCj2sQeclKKrM2cArpugWsyZt1f0gTR5qiUlVvW7+OMRKHhyl1r0E+V97LZJM9kQ
+	==
+X-Gm-Gg: ASbGncsjFPoF800oh5I86Lv5HtVb56c5TgA5jXRjQISqaR8f6/MC1JxkSX4LZ56D4Qk
+	OS32Id8qSD7ZfyjcRJDrggFxA+QZ7wjlfEUDKZDKxSTYRAjhHVJWJXJJrZNExCW6ReX0J0Fp6sf
+	iEQtwkMEEtIVpf1hllelVLs4/olDlgpVMB4m67QQFpp01Wk+qyp3+adf+ulbcRdpq+F5WtX4Eqv
+	35WXRrqeNW3kZRUn6TTeLVgEklj4jterTSbLNZEsUEK8lBkEiuNdh0TjNzWYJYKfFutkAvYXfJT
+	PMdfEO4Dc7fkeNZPfu09dtEJ+RRYDwM8Tm6A1mUGz47PSO4Phnq0
+X-Received: by 2002:a17:902:ea06:b0:220:e655:d77 with SMTP id d9443c01a7336-22a8a8b80d0mr159882675ad.36.1744054867157;
+        Mon, 07 Apr 2025 12:41:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEmGHIXWQeBBp1gmPxy3r2HeeVJ9kG9fvZKoCvwdCeWI7S9RPL6SmBh4Nrj+lTZnGTwahoMYQ==
+X-Received: by 2002:a17:902:ea06:b0:220:e655:d77 with SMTP id d9443c01a7336-22a8a8b80d0mr159882535ad.36.1744054866792;
+        Mon, 07 Apr 2025 12:41:06 -0700 (PDT)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2297866e6fdsm84822225ad.165.2025.04.07.12.41.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Apr 2025 12:41:06 -0700 (PDT)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20250407-upto-v1-1-23ca65f2ccdf@oss.qualcomm.com>
+References: <20250407-upto-v1-1-23ca65f2ccdf@oss.qualcomm.com>
+Subject: Re: [PATCH] wifi: ath12k: Fix misspelling "upto" in dp.c
+Message-Id: <174405486612.2865585.8066461311855235164.b4-ty@oss.qualcomm.com>
+Date: Mon, 07 Apr 2025 12:41:06 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z-SQdHZljwAgIlp9@kspp>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0
+X-Proofpoint-GUID: fIB6podS5Ek9KoOGvW9flwNKxMT_M5WP
+X-Authority-Analysis: v=2.4 cv=LLlmQIW9 c=1 sm=1 tr=0 ts=67f42a54 cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=EUspDBNiAAAA:8 a=iowja3EhBKiS3qvbEMEA:9 a=QEXdDO2ut3YA:10
+ a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-ORIG-GUID: fIB6podS5Ek9KoOGvW9flwNKxMT_M5WP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-07_05,2025-04-07_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ clxscore=1015 mlxlogscore=690 malwarescore=0 phishscore=0
+ lowpriorityscore=0 priorityscore=1501 mlxscore=0 spamscore=0 adultscore=0
+ suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504070138
 
-On Wed, Mar 26, 2025 at 05:40:36PM -0600, Gustavo A. R. Silva wrote:
-> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-> getting ready to enable it, globally.
+
+On Mon, 07 Apr 2025 11:28:26 -0700, Jeff Johnson wrote:
+> ath12k-check is flagging:
 > 
-> Use the `DEFINE_RAW_FLEX()` helper for on-stack definitions of
-> a flexible structure where the size of the flexible-array member
-> is known at compile-time, and refactor the rest of the code,
-> accordingly.
+> drivers/net/wireless/ath/ath12k/dp.c:1656: 'upto' may be misspelled - perhaps 'up to'?
 > 
-> So, with these changes, fix the following warnings:
+> Replace "upto" with "up to" and split the comment line so that it
+> doesn't exceed 80 columns.
 > 
-> net/mac80211/spectmgmt.c:151:47: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> net/mac80211/spectmgmt.c:155:48: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> ---
->  net/mac80211/spectmgmt.c | 55 ++++++++++++++++++++--------------------
->  1 file changed, 27 insertions(+), 28 deletions(-)
-> 
-> diff --git a/net/mac80211/spectmgmt.c b/net/mac80211/spectmgmt.c
-> index c6015cd00372..7422888d3640 100644
-> --- a/net/mac80211/spectmgmt.c
-> +++ b/net/mac80211/spectmgmt.c
-> @@ -147,14 +147,14 @@ validate_chandef_by_6ghz_he_eht_oper(struct ieee80211_sub_if_data *sdata,
->  	struct ieee80211_local *local = sdata->local;
->  	u32 control_freq, center_freq1, center_freq2;
->  	enum nl80211_chan_width chan_width;
-> -	struct {
-> -		struct ieee80211_he_operation _oper;
-> -		struct ieee80211_he_6ghz_oper _6ghz_oper;
-> -	} __packed he;
-> -	struct {
-> -		struct ieee80211_eht_operation _oper;
-> -		struct ieee80211_eht_operation_info _oper_info;
-> -	} __packed eht;
-> +	DEFINE_RAW_FLEX(struct ieee80211_he_operation, he, optional,
-> +			sizeof(struct ieee80211_he_6ghz_oper));
-> +	struct ieee80211_he_6ghz_oper *_6ghz_oper =
-> +				(struct ieee80211_he_6ghz_oper *)he->optional;
-> +	DEFINE_RAW_FLEX(struct ieee80211_eht_operation, eht, optional,
-> +			sizeof(struct ieee80211_eht_operation_info));
-> +	struct ieee80211_eht_operation_info *_oper_info =
-> +			(struct ieee80211_eht_operation_info *)eht->optional;
+> [...]
 
-These are both packed, so any alignment issues with the trailing
-structures would be pre-existing.
+Applied, thanks!
 
->  	const struct ieee80211_eht_operation *eht_oper;
->  
->  	if (conn->mode < IEEE80211_CONN_MODE_HE) {
-> @@ -167,38 +167,38 @@ validate_chandef_by_6ghz_he_eht_oper(struct ieee80211_sub_if_data *sdata,
->  	center_freq2 = chandef->center_freq2;
->  	chan_width = chandef->width;
->  
-> -	he._oper.he_oper_params =
-> +	he->he_oper_params =
->  		le32_encode_bits(1, IEEE80211_HE_OPERATION_6GHZ_OP_INFO);
-> -	he._6ghz_oper.primary =
-> +	_6ghz_oper->primary =
->  		ieee80211_frequency_to_channel(control_freq);
-> -	he._6ghz_oper.ccfs0 = ieee80211_frequency_to_channel(center_freq1);
-> -	he._6ghz_oper.ccfs1 = center_freq2 ?
-> +	_6ghz_oper->ccfs0 = ieee80211_frequency_to_channel(center_freq1);
-> +	_6ghz_oper->ccfs1 = center_freq2 ?
->  		ieee80211_frequency_to_channel(center_freq2) : 0;
->  
->  	switch (chan_width) {
->  	case NL80211_CHAN_WIDTH_320:
-> -		he._6ghz_oper.ccfs1 = he._6ghz_oper.ccfs0;
-> -		he._6ghz_oper.ccfs0 += control_freq < center_freq1 ? -16 : 16;
-> -		he._6ghz_oper.control = IEEE80211_EHT_OPER_CHAN_WIDTH_320MHZ;
-> +		_6ghz_oper->ccfs1 = _6ghz_oper->ccfs0;
-> +		_6ghz_oper->ccfs0 += control_freq < center_freq1 ? -16 : 16;
-> +		_6ghz_oper->control = IEEE80211_EHT_OPER_CHAN_WIDTH_320MHZ;
->  		break;
->  	case NL80211_CHAN_WIDTH_160:
-> -		he._6ghz_oper.ccfs1 = he._6ghz_oper.ccfs0;
-> -		he._6ghz_oper.ccfs0 += control_freq < center_freq1 ? -8 : 8;
-> +		_6ghz_oper->ccfs1 = _6ghz_oper->ccfs0;
-> +		_6ghz_oper->ccfs0 += control_freq < center_freq1 ? -8 : 8;
->  		fallthrough;
->  	case NL80211_CHAN_WIDTH_80P80:
-> -		he._6ghz_oper.control =
-> +		_6ghz_oper->control =
->  			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_160MHZ;
->  		break;
->  	case NL80211_CHAN_WIDTH_80:
-> -		he._6ghz_oper.control =
-> +		_6ghz_oper->control =
->  			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_80MHZ;
->  		break;
->  	case NL80211_CHAN_WIDTH_40:
-> -		he._6ghz_oper.control =
-> +		_6ghz_oper->control =
->  			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_40MHZ;
->  		break;
->  	default:
-> -		he._6ghz_oper.control =
-> +		_6ghz_oper->control =
->  			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_20MHZ;
->  		break;
->  	}
-> @@ -206,15 +206,14 @@ validate_chandef_by_6ghz_he_eht_oper(struct ieee80211_sub_if_data *sdata,
->  	if (conn->mode < IEEE80211_CONN_MODE_EHT) {
->  		eht_oper = NULL;
->  	} else {
-> -		eht._oper.params = IEEE80211_EHT_OPER_INFO_PRESENT;
-> -		eht._oper_info.control = he._6ghz_oper.control;
-> -		eht._oper_info.ccfs0 = he._6ghz_oper.ccfs0;
-> -		eht._oper_info.ccfs1 = he._6ghz_oper.ccfs1;
-> -		eht_oper = &eht._oper;
-> +		eht->params = IEEE80211_EHT_OPER_INFO_PRESENT;
-> +		_oper_info->control = _6ghz_oper->control;
-> +		_oper_info->ccfs0 = _6ghz_oper->ccfs0;
-> +		_oper_info->ccfs1 = _6ghz_oper->ccfs1;
-> +		eht_oper = eht;
->  	}
->  
-> -	if (!ieee80211_chandef_he_6ghz_oper(local, &he._oper,
-> -					    eht_oper, chandef))
-> +	if (!ieee80211_chandef_he_6ghz_oper(local, he, eht_oper, chandef))
->  		chandef->chan = NULL;
->  }
+[1/1] wifi: ath12k: Fix misspelling "upto" in dp.c
+      commit: 68218fa0862aaa8fcc5f968663efc781eb4c91df
 
-The leading "_" on the identifiers is a little weird, but it retains the
-original convention. Conversions looks correct.
-
-Reviewed-by: Kees Cook <kees@kernel.org>
-
+Best regards,
 -- 
-Kees Cook
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+
 
