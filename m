@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-21214-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21215-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313DFA7EEFA
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 22:20:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DC3A7EF45
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 22:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4FD2188872C
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 20:18:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F32116899E
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 20:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52772222D2;
-	Mon,  7 Apr 2025 20:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9149219A71;
+	Mon,  7 Apr 2025 20:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mE/zQBRl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rLsnVkVo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0102188A0E;
-	Mon,  7 Apr 2025 20:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CB420B7EF;
+	Mon,  7 Apr 2025 20:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744056913; cv=none; b=d8XpsRw1NJgoOHz1jRoUulqlFV9j4chcyl3SIxX7Yl2VxE/MY79WlYI9kjmKwf66uAsgQxFTGDCPGWlb/N4jdxcSK8dhkTzYARxwESo8c2NVQ2g7OoEGlMTAv47Cj90YydHVWTKLH10z/TEmQaOeyADkb0fPSsW6tvl8smLPVh4=
+	t=1744057516; cv=none; b=KV1feIYOynu5unIRHNxC7JF4Fqx/1Kn7dyE0cz7VqEvLhs0yAOGErDmCpSvBt1mYGD9gR5ulLpfCSv2QkCC88FhcN/oYP4pF8aX+YUzGvNW6ntjH2eZ1M9wbgH6/jr1pbbUWxrdDSEvFnO327wyiju5zDmioy1RaXo4xeFkaVis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744056913; c=relaxed/simple;
-	bh=djtTgi5s+tmZT4o6LD+IJ6pJNRyecHdv2wWEjt/w0VM=;
+	s=arc-20240116; t=1744057516; c=relaxed/simple;
+	bh=1hRdzwq5DQRdhDsh8FcA4PbamMpCO4g0hKWxcPWFHsU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hB4Dj54OZkOoHs30aW+5VuKdsU6KoaOAOkUAwqjcJUX0+qE6E5JBxPJA2mlrsfk7OaRdxpEx7GyiKaONVyH6wK8d4vPmzmo7yWuk1dAD2Kek42labjRRryR1WmBNQYsVtpn9VX2EgVYYbeFyEZw2ZwkMeJF1m0is8i7o+Tw/bgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mE/zQBRl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14040C4CEDD;
-	Mon,  7 Apr 2025 20:15:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=aXt9QU/yOtP4IzQ41+54Kq9ja5sNhOxf3PXBaz2Xg1xgDawJgd+OF4klnIGqFigiKYWVX2KYnreP+FMdYE60YJnWpghW3PcMtxQTe/2ePlPtV+AmiJloiPIHogpl5/2ZIB79i6pZcA71QaC4IQFQoiZDGkvmsvW+06xWAzk3qFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rLsnVkVo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A71C4CEDD;
+	Mon,  7 Apr 2025 20:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744056913;
-	bh=djtTgi5s+tmZT4o6LD+IJ6pJNRyecHdv2wWEjt/w0VM=;
+	s=k20201202; t=1744057516;
+	bh=1hRdzwq5DQRdhDsh8FcA4PbamMpCO4g0hKWxcPWFHsU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mE/zQBRlDe2033IjNnnYX8ikScEF9qNmludnavuNTVTaxKw6fH7X2GHoj9q9MWnqv
-	 xWgu1DvkbSfotzst9N6iOTY0WgY3rMViROJx6HqCoGJCXXwVQKzY19GbTXEbGYaMbZ
-	 gj4H4UnkF064a0/QyEd/4iXKYj7/aQxNqzikxVy5OInHNEbx1oa+LC1ySVvhMlw2jj
-	 YZWrJhIvI8BR4hdlZ1YlffWqy0KzI5i96LW3+3S29+k20wXKl7VzaNyy/HGl0gx7xL
-	 6m7UJ2KfqrluR+h0GzfOMjXqfZUleC00fkrk/hRNMpYVpnMau5Mjp55pvcsqsH0oQ3
-	 xjlgOt6DCSMHQ==
-Date: Mon, 7 Apr 2025 13:15:10 -0700
+	b=rLsnVkVoYI7aUbOM+kQsa0XU7n5o1IfTmgUNU60hTC3kjUp8vDS03by/0pBKWqRBa
+	 v5eW9Z20dhN7lm4KDaDe3/CASnH6qW0zhTqRO32ZuAnFeStZqAwfyVcKSL8yaV1gBy
+	 Zwqv+2lsgs5Wyo+yg1KuVAP0N/cS3EJBwKQgIcb8Ck+WgNAkfcumai3T8elkLGFJMY
+	 KNK/I4k9/mq+yctrCTKDxOhw7Ry2SFX97W53caic6nFt0UdowZriziCXvFgIG88t6Q
+	 3+tNVTFjYU1CJEYANPeGv3lMZXO1c61wVxRbhfUVThHlvGoSkiolrGQrewcwjNj67D
+	 Deo3Y1aWEiekQ==
+Date: Mon, 7 Apr 2025 13:25:13 -0700
 From: Kees Cook <kees@kernel.org>
 To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] wifi: iwlwifi: mvm: d3: Avoid
+Subject: Re: [PATCH][next] wifi: iwlwifi: mvm/fw: Avoid
  -Wflex-array-member-not-at-end warnings
-Message-ID: <202504071310.17CBF96EEA@keescook>
-References: <Z_FxXjiMvG5u73fi@kspp>
+Message-ID: <202504071317.934FD6915@keescook>
+References: <Z-9G-GHufhXKeYft@kspp>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -60,289 +60,234 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z_FxXjiMvG5u73fi@kspp>
+In-Reply-To: <Z-9G-GHufhXKeYft@kspp>
 
-On Sat, Apr 05, 2025 at 12:07:26PM -0600, Gustavo A. R. Silva wrote:
+On Thu, Apr 03, 2025 at 08:42:00PM -0600, Gustavo A. R. Silva wrote:
 > -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
 > getting ready to enable it, globally.
 > 
-> Use the `DEFINE_RAW_FLEX()` helper for on-stack definitions of
-> a flexible structure where the size of the flexible-array member
-> is known at compile-time, and refactor the rest of the code,
-> accordingly.
+> So, in order to avoid ending up with a flexible-array member in the
+> middle of multiple other structs, we use the `__struct_group()`
+> helper to create a new tagged `struct iwl_tx_cmd_hdr`. This structure
+> groups together all the members of the flexible `struct iwl_tx_cmd`
+> except the flexible array.
+> 
+> As a result, the array is effectively separated from the rest of the
+> members without modifying the memory layout of the flexible structure.
+> We then change the type of the middle struct members currently causing
+> trouble from `struct iwl_tx_cmd` to `struct iwl_tx_cmd_hdr`.
+> 
+> We also want to ensure that when new members need to be added to the
+> flexible structure, they are always included within the newly created
+> tagged struct. For this, we use `static_assert()`. This ensures that the
+> memory layout for both the flexible structure and the new tagged struct
+> is the same after any changes.
+> 
+> This approach avoids having to implement `struct iwl_tx_cmd_hdr`
+> as a completely separate structure, thus preventing having to maintain
+> two independent but basically identical structures, closing the door
+> to potential bugs in the future.
+> 
+> We also use `container_of()` whenever we need to retrieve a pointer to
+> the flexible structure, through which we can access the flexible-array
+> member, if necessary.
 > 
 > So, with these changes, fix the following warnings:
 > 
-> drivers/net/wireless/intel/iwlwifi/mvm/d3.c:124:52: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2067:51: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2162:43: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2225:43: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tdls.h:134:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tdls.h:53:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tx.h:745:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tx.h:764:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tdls.h:134:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tdls.h:53:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tx.h:745:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tx.h:764:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
 > 
 > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 > ---
->  drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 129 +++++++++-----------
->  1 file changed, 61 insertions(+), 68 deletions(-)
+> This patch is quite similar to the following one:
 > 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-> index 3e8b7168af01..3e95799208fc 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-> @@ -120,19 +120,17 @@ static void iwl_mvm_wowlan_program_keys(struct ieee80211_hw *hw,
->  	switch (key->cipher) {
->  	case WLAN_CIPHER_SUITE_WEP40:
->  	case WLAN_CIPHER_SUITE_WEP104: { /* hack it for now */
-> -		struct {
-> -			struct iwl_mvm_wep_key_cmd wep_key_cmd;
-> -			struct iwl_mvm_wep_key wep_key;
-> -		} __packed wkc = {
-> -			.wep_key_cmd.mac_id_n_color =
-> -				cpu_to_le32(FW_CMD_ID_AND_COLOR(mvmvif->id,
-> -								mvmvif->color)),
-> -			.wep_key_cmd.num_keys = 1,
-> -			/* firmware sets STA_KEY_FLG_WEP_13BYTES */
-> -			.wep_key_cmd.decryption_type = STA_KEY_FLG_WEP,
-> -			.wep_key.key_index = key->keyidx,
-> -			.wep_key.key_size = key->keylen,
-> -		};
-> +		DEFINE_RAW_FLEX(struct iwl_mvm_wep_key_cmd, wkc, wep_key, 1);
-> +		struct iwl_mvm_wep_key *wep_key = wkc->wep_key;
-> +
-> +		wkc->mac_id_n_color =
-> +			cpu_to_le32(FW_CMD_ID_AND_COLOR(mvmvif->id,
-> +							mvmvif->color));
-> +		wkc->num_keys = 1;
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e74c0a7875cfec27c25f582f001cc4625a0f8c07
+> 
+> Thanks!
+> 
+>  .../net/wireless/intel/iwlwifi/fw/api/tdls.h  |  4 +-
+>  .../net/wireless/intel/iwlwifi/fw/api/tx.h    | 60 ++++++++++---------
+>  .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  8 ++-
+>  drivers/net/wireless/intel/iwlwifi/mvm/tdls.c | 10 ++--
+>  4 files changed, 44 insertions(+), 38 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h b/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
+> index cfa6532a3cdd..02198bc37f8c 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
+> @@ -50,7 +50,7 @@ struct iwl_tdls_channel_switch_timing {
+>   */
+>  struct iwl_tdls_channel_switch_frame {
+>  	__le32 switch_time_offset;
+> -	struct iwl_tx_cmd tx_cmd;
+> +	struct iwl_tx_cmd_hdr tx_cmd;
+>  	u8 data[IWL_TDLS_CH_SW_FRAME_MAX_SIZE];
+>  } __packed; /* TDLS_STA_CHANNEL_SWITCH_FRAME_API_S_VER_1 */
+>  
+> @@ -131,7 +131,7 @@ struct iwl_tdls_config_cmd {
+>  	struct iwl_tdls_sta_info sta_info[IWL_TDLS_STA_COUNT];
+>  
+>  	__le32 pti_req_data_offset;
+> -	struct iwl_tx_cmd pti_req_tx_cmd;
+> +	struct iwl_tx_cmd_hdr pti_req_tx_cmd;
+>  	u8 pti_req_template[];
+>  } __packed; /* TDLS_CONFIG_CMD_API_S_VER_1 */
+>  
+> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+> index 0a39e4b6eb62..5c0c7bac36d6 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+> @@ -222,34 +222,36 @@ enum iwl_tx_offload_assist_flags_pos {
+>   * and then the actial payload.
+>   */
+>  struct iwl_tx_cmd {
+> -	__le16 len;
+> -	__le16 offload_assist;
+> -	__le32 tx_flags;
+> -	struct {
+> -		u8 try_cnt;
+> -		u8 btkill_cnt;
+> -		__le16 reserved;
+> -	} scratch; /* DRAM_SCRATCH_API_U_VER_1 */
+> -	__le32 rate_n_flags;
+> -	u8 sta_id;
+> -	u8 sec_ctl;
+> -	u8 initial_rate_index;
+> -	u8 reserved2;
+> -	u8 key[16];
+> -	__le32 reserved3;
+> -	__le32 life_time;
+> -	__le32 dram_lsb_ptr;
+> -	u8 dram_msb_ptr;
+> -	u8 rts_retry_limit;
+> -	u8 data_retry_limit;
+> -	u8 tid_tspec;
+> -	__le16 pm_frame_timeout;
+> -	__le16 reserved4;
+> -	union {
+> -		DECLARE_FLEX_ARRAY(u8, payload);
+> -		DECLARE_FLEX_ARRAY(struct ieee80211_hdr, hdr);
+> -	};
 
-Looks like struct iwl_mvm_wep_key_cmd::num_keys is the counted_by for
-struct iwl_mvm_wep_key_cmd::wep_key?
+I see no mention in the commit log of the removal of this union (I assume
+"payload" is never used?)
 
-> +		/* firmware sets STA_KEY_FLG_WEP_13BYTES */
-> +		wkc->decryption_type = STA_KEY_FLG_WEP;
-> +		wep_key->key_index = key->keyidx;
-> +		wep_key->key_size = key->keylen;
+> +	/* New members MUST be added within the __struct_group() macro below. */
+> +	__struct_group(iwl_tx_cmd_hdr, __hdr, __packed,
+> +		__le16 len;
+> +		__le16 offload_assist;
+> +		__le32 tx_flags;
+> +		struct {
+> +			u8 try_cnt;
+> +			u8 btkill_cnt;
+> +			__le16 reserved;
+> +		} scratch; /* DRAM_SCRATCH_API_U_VER_1 */
+> +		__le32 rate_n_flags;
+> +		u8 sta_id;
+> +		u8 sec_ctl;
+> +		u8 initial_rate_index;
+> +		u8 reserved2;
+> +		u8 key[16];
+> +		__le32 reserved3;
+> +		__le32 life_time;
+> +		__le32 dram_lsb_ptr;
+> +		u8 dram_msb_ptr;
+> +		u8 rts_retry_limit;
+> +		u8 data_retry_limit;
+> +		u8 tid_tspec;
+> +		__le16 pm_frame_timeout;
+> +		__le16 reserved4;
+> +	);
+> +	struct ieee80211_hdr hdr[];
+>  } __packed; /* TX_CMD_API_S_VER_6 */
+> +static_assert(offsetof(struct iwl_tx_cmd, hdr) == sizeof(struct iwl_tx_cmd_hdr),
+> +	      "struct member likely outside of __struct_group()");
 >  
->  		/*
->  		 * This will fail -- the key functions don't set support
-> @@ -142,18 +140,19 @@ static void iwl_mvm_wowlan_program_keys(struct ieee80211_hw *hw,
->  		if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
->  			break;
+>  struct iwl_dram_sec_info {
+>  	__le32 pn_low;
+> @@ -742,7 +744,7 @@ struct iwl_compressed_ba_notif {
+>   * @frame: the template of the beacon frame
+>   */
+>  struct iwl_mac_beacon_cmd_v6 {
+> -	struct iwl_tx_cmd tx;
+> +	struct iwl_tx_cmd_hdr tx;
+>  	__le32 template_id;
+>  	__le32 tim_idx;
+>  	__le32 tim_size;
+> @@ -761,7 +763,7 @@ struct iwl_mac_beacon_cmd_v6 {
+>   * @frame: the template of the beacon frame
+>   */
+>  struct iwl_mac_beacon_cmd_v7 {
+> -	struct iwl_tx_cmd tx;
+> +	struct iwl_tx_cmd_hdr tx;
+>  	__le32 template_id;
+>  	__le32 tim_idx;
+>  	__le32 tim_size;
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+> index bec18d197f31..f010e68b4a55 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+> @@ -1032,7 +1032,9 @@ static int iwl_mvm_mac_ctxt_send_beacon_v6(struct iwl_mvm *mvm,
+>  	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+>  	struct iwl_mac_beacon_cmd_v6 beacon_cmd = {};
 >  
-> -		memcpy(&wkc.wep_key.key[3], key->key, key->keylen);
-> +		memcpy(&wep_key->key[3], key->key, key->keylen);
->  		if (key->keyidx == mvmvif->tx_key_idx) {
->  			/* TX key must be at offset 0 */
-> -			wkc.wep_key.key_offset = 0;
-> +			wep_key->key_offset = 0;
->  		} else {
->  			/* others start at 1 */
->  			data->wep_key_idx++;
-> -			wkc.wep_key.key_offset = data->wep_key_idx;
-> +			wep_key->key_offset = data->wep_key_idx;
->  		}
+> -	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon, &beacon_cmd.tx);
+> +	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon,
+> +				container_of(&beacon_cmd.tx,
+> +					     struct iwl_tx_cmd, __hdr));
 >  
->  		mutex_lock(&mvm->mutex);
-> -		ret = iwl_mvm_send_cmd_pdu(mvm, WEP_KEY, 0, sizeof(wkc), &wkc);
-> +		ret = iwl_mvm_send_cmd_pdu(mvm, WEP_KEY, 0,
-> +					   __struct_size(wkc), wkc);
->  		data->error = ret != 0;
+>  	beacon_cmd.template_id = cpu_to_le32((u32)mvmvif->id);
 >  
->  		mvm->ptk_ivlen = key->iv_len;
-> @@ -2063,10 +2062,8 @@ static bool iwl_mvm_mlo_gtk_rekey(struct iwl_wowlan_status_data *status,
->  		struct iwl_wowlan_mlo_gtk *mlo_key = &status->mlo_keys[i];
->  		struct ieee80211_key_conf *key, *old_key;
->  		struct ieee80211_key_seq seq;
-> -		struct {
-> -			struct ieee80211_key_conf conf;
-> -			u8 key[32];
-> -		} conf = {};
-> +		DEFINE_RAW_FLEX(struct ieee80211_key_conf, conf, key,
-> +				WOWLAN_KEY_MAX_SIZE);
-
-Okay, yes, WOWLAN_KEY_MAX_SIZE == 32.
-
->  		u16 flags = le16_to_cpu(mlo_key->flags);
->  		int j, link_id, key_id, key_type;
+> @@ -1052,7 +1054,9 @@ static int iwl_mvm_mac_ctxt_send_beacon_v7(struct iwl_mvm *mvm,
+>  	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+>  	struct iwl_mac_beacon_cmd_v7 beacon_cmd = {};
 >  
-> @@ -2083,40 +2080,40 @@ static bool iwl_mvm_mlo_gtk_rekey(struct iwl_wowlan_status_data *status,
->  			    key_type >= WOWLAN_MLO_GTK_KEY_NUM_TYPES))
->  			continue;
+> -	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon, &beacon_cmd.tx);
+> +	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon,
+> +				container_of(&beacon_cmd.tx,
+> +					     struct iwl_tx_cmd, __hdr));
 >  
-> -		conf.conf.cipher = old_keys->cipher[link_id][key_type];
-> +		conf->cipher = old_keys->cipher[link_id][key_type];
->  		/* WARN_ON? */
-> -		if (!conf.conf.cipher)
-> +		if (!conf->cipher)
->  			continue;
+>  	beacon_cmd.template_id = cpu_to_le32((u32)mvmvif->id);
 >  
-> -		conf.conf.keylen = 0;
-> -		switch (conf.conf.cipher) {
-> +		conf->keylen = 0;
-> +		switch (conf->cipher) {
->  		case WLAN_CIPHER_SUITE_CCMP:
->  		case WLAN_CIPHER_SUITE_GCMP:
-> -			conf.conf.keylen = WLAN_KEY_LEN_CCMP;
-> +			conf->keylen = WLAN_KEY_LEN_CCMP;
->  			break;
->  		case WLAN_CIPHER_SUITE_GCMP_256:
-> -			conf.conf.keylen = WLAN_KEY_LEN_GCMP_256;
-> +			conf->keylen = WLAN_KEY_LEN_GCMP_256;
->  			break;
->  		case WLAN_CIPHER_SUITE_BIP_GMAC_128:
-> -			conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_128;
-> +			conf->keylen = WLAN_KEY_LEN_BIP_GMAC_128;
->  			break;
->  		case WLAN_CIPHER_SUITE_BIP_GMAC_256:
-> -			conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_256;
-> +			conf->keylen = WLAN_KEY_LEN_BIP_GMAC_256;
->  			break;
->  		case WLAN_CIPHER_SUITE_AES_CMAC:
-> -			conf.conf.keylen = WLAN_KEY_LEN_AES_CMAC;
-> +			conf->keylen = WLAN_KEY_LEN_AES_CMAC;
->  			break;
->  		case WLAN_CIPHER_SUITE_BIP_CMAC_256:
-> -			conf.conf.keylen = WLAN_KEY_LEN_BIP_CMAC_256;
-> +			conf->keylen = WLAN_KEY_LEN_BIP_CMAC_256;
->  			break;
->  		}
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+> index 36379b738de1..bcfae05192ad 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+> @@ -342,6 +342,8 @@ iwl_mvm_tdls_config_channel_switch(struct iwl_mvm *mvm,
+>  	struct iwl_tdls_channel_switch_cmd_tail *tail =
+>  		iwl_mvm_chan_info_cmd_tail(mvm, &cmd.ci);
+>  	u16 len = sizeof(cmd) - iwl_mvm_chan_info_padding(mvm);
+> +	struct iwl_tx_cmd *tx_cmd =
+> +		container_of(&tail->frame.tx_cmd, struct iwl_tx_cmd, __hdr);
+>  	int ret;
 >  
-> -		if (WARN_ON(!conf.conf.keylen ||
-> -			    conf.conf.keylen > sizeof(conf.key)))
-> +		if (WARN_ON(!conf->keylen ||
-> +			    conf->keylen > WOWLAN_KEY_MAX_SIZE))
->  			continue;
->  
-> -		memcpy(conf.conf.key, mlo_key->key, conf.conf.keylen);
-> -		conf.conf.keyidx = key_id;
-> +		memcpy(conf->key, mlo_key->key, conf->keylen);
-> +		conf->keyidx = key_id;
->  
->  		old_key = old_keys->key[link_id][key_id];
->  		if (old_key) {
-> @@ -2128,7 +2125,7 @@ static bool iwl_mvm_mlo_gtk_rekey(struct iwl_wowlan_status_data *status,
->  
->  		IWL_DEBUG_WOWLAN(mvm, "Add MLO key id %d, link id %d\n",
->  				 key_id, link_id);
-> -		key = ieee80211_gtk_rekey_add(vif, &conf.conf, link_id);
-> +		key = ieee80211_gtk_rekey_add(vif, conf, link_id);
->  		if (WARN_ON(IS_ERR(key))) {
->  			ret = false;
+>  	lockdep_assert_held(&mvm->mutex);
+> @@ -410,14 +412,12 @@ iwl_mvm_tdls_config_channel_switch(struct iwl_mvm *mvm,
+>  			ret = -EINVAL;
 >  			goto out;
-> @@ -2158,30 +2155,28 @@ static bool iwl_mvm_gtk_rekey(struct iwl_wowlan_status_data *status,
->  {
->  	int i, j;
->  	struct ieee80211_key_conf *key;
-> -	struct {
-> -		struct ieee80211_key_conf conf;
-> -		u8 key[32];
-> -	} conf = {
-> -		.conf.cipher = gtk_cipher,
-> -	};
-> +	DEFINE_RAW_FLEX(struct ieee80211_key_conf, conf, key,
-> +			WOWLAN_KEY_MAX_SIZE);
->  	int link_id = vif->active_links ? __ffs(vif->active_links) : -1;
->  
-> +	conf->cipher = gtk_cipher;
-> +
->  	BUILD_BUG_ON(WLAN_KEY_LEN_CCMP != WLAN_KEY_LEN_GCMP);
-> -	BUILD_BUG_ON(sizeof(conf.key) < WLAN_KEY_LEN_CCMP);
-> -	BUILD_BUG_ON(sizeof(conf.key) < WLAN_KEY_LEN_GCMP_256);
-> -	BUILD_BUG_ON(sizeof(conf.key) < WLAN_KEY_LEN_TKIP);
-> -	BUILD_BUG_ON(sizeof(conf.key) < sizeof(status->gtk[0].key));
-> +	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < WLAN_KEY_LEN_CCMP);
-> +	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < WLAN_KEY_LEN_GCMP_256);
-> +	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < WLAN_KEY_LEN_TKIP);
-> +	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < sizeof(status->gtk[0].key));
->  
->  	switch (gtk_cipher) {
->  	case WLAN_CIPHER_SUITE_CCMP:
->  	case WLAN_CIPHER_SUITE_GCMP:
-> -		conf.conf.keylen = WLAN_KEY_LEN_CCMP;
-> +		conf->keylen = WLAN_KEY_LEN_CCMP;
->  		break;
->  	case WLAN_CIPHER_SUITE_GCMP_256:
-> -		conf.conf.keylen = WLAN_KEY_LEN_GCMP_256;
-> +		conf->keylen = WLAN_KEY_LEN_GCMP_256;
->  		break;
->  	case WLAN_CIPHER_SUITE_TKIP:
-> -		conf.conf.keylen = WLAN_KEY_LEN_TKIP;
-> +		conf->keylen = WLAN_KEY_LEN_TKIP;
->  		break;
->  	default:
->  		WARN_ON(1);
-> @@ -2191,14 +2186,14 @@ static bool iwl_mvm_gtk_rekey(struct iwl_wowlan_status_data *status,
->  		if (!status->gtk[i].len)
->  			continue;
->  
-> -		conf.conf.keyidx = status->gtk[i].id;
-> +		conf->keyidx = status->gtk[i].id;
->  		IWL_DEBUG_WOWLAN(mvm,
->  				 "Received from FW GTK cipher %d, key index %d\n",
-> -				 conf.conf.cipher, conf.conf.keyidx);
-> -		memcpy(conf.conf.key, status->gtk[i].key,
-> +				 conf->cipher, conf->keyidx);
-> +		memcpy(conf->key, status->gtk[i].key,
->  		       sizeof(status->gtk[i].key));
->  
-> -		key = ieee80211_gtk_rekey_add(vif, &conf.conf, link_id);
-> +		key = ieee80211_gtk_rekey_add(vif, conf, link_id);
->  		if (IS_ERR(key))
->  			return false;
->  
-> @@ -2220,42 +2215,40 @@ iwl_mvm_d3_igtk_bigtk_rekey_add(struct iwl_wowlan_status_data *status,
->  				struct ieee80211_vif *vif, u32 cipher,
->  				struct iwl_multicast_key_data *key_data)
->  {
-> +	DEFINE_RAW_FLEX(struct ieee80211_key_conf, conf, key,
-> +			WOWLAN_KEY_MAX_SIZE);
->  	struct ieee80211_key_conf *key_config;
-> -	struct {
-> -		struct ieee80211_key_conf conf;
-> -		u8 key[WOWLAN_KEY_MAX_SIZE];
-> -	} conf = {
-> -		.conf.cipher = cipher,
-> -		.conf.keyidx = key_data->id,
-> -	};
->  	struct ieee80211_key_seq seq;
->  	int link_id = vif->active_links ? __ffs(vif->active_links) : -1;
->  
-> +	conf->cipher = cipher;
-> +	conf->keyidx = key_data->id;
-> +
->  	if (!key_data->len)
->  		return true;
->  
-> -	iwl_mvm_d3_set_igtk_bigtk_ipn(key_data, &seq, conf.conf.cipher);
-> +	iwl_mvm_d3_set_igtk_bigtk_ipn(key_data, &seq, conf->cipher);
->  
->  	switch (cipher) {
->  	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
-> -		conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_128;
-> +		conf->keylen = WLAN_KEY_LEN_BIP_GMAC_128;
->  		break;
->  	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
-> -		conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_256;
-> +		conf->keylen = WLAN_KEY_LEN_BIP_GMAC_256;
->  		break;
->  	case WLAN_CIPHER_SUITE_AES_CMAC:
-> -		conf.conf.keylen = WLAN_KEY_LEN_AES_CMAC;
-> +		conf->keylen = WLAN_KEY_LEN_AES_CMAC;
->  		break;
->  	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
-> -		conf.conf.keylen = WLAN_KEY_LEN_BIP_CMAC_256;
-> +		conf->keylen = WLAN_KEY_LEN_BIP_CMAC_256;
->  		break;
->  	default:
->  		WARN_ON(1);
+>  		}
+> -		iwl_mvm_set_tx_cmd_ccmp(info, &tail->frame.tx_cmd);
+> +		iwl_mvm_set_tx_cmd_ccmp(info, tx_cmd);
 >  	}
-> -	BUILD_BUG_ON(sizeof(conf.key) < sizeof(key_data->key));
-> -	memcpy(conf.conf.key, key_data->key, conf.conf.keylen);
-> +	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < sizeof(key_data->key));
-> +	memcpy(conf->key, key_data->key, conf->keylen);
 >  
-> -	key_config = ieee80211_gtk_rekey_add(vif, &conf.conf, link_id);
-> +	key_config = ieee80211_gtk_rekey_add(vif, conf, link_id);
->  	if (IS_ERR(key_config))
->  		return false;
->  	ieee80211_set_key_rx_seq(key_config, 0, &seq);
+> -	iwl_mvm_set_tx_cmd(mvm, skb, &tail->frame.tx_cmd, info,
+> -			   mvmsta->deflink.sta_id);
+> +	iwl_mvm_set_tx_cmd(mvm, skb, tx_cmd, info, mvmsta->deflink.sta_id);
+>  
+> -	iwl_mvm_set_tx_cmd_rate(mvm, &tail->frame.tx_cmd, info, sta,
+> -				hdr->frame_control);
+> +	iwl_mvm_set_tx_cmd_rate(mvm, tx_cmd, info, sta, hdr->frame_control);
+>  	rcu_read_unlock();
+>  
+>  	memcpy(tail->frame.data, skb->data, skb->len);
+
+Otherwise looks good to me.
 
 Reviewed-by: Kees Cook <kees@kernel.org>
 
