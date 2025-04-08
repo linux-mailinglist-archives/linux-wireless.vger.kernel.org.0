@@ -1,132 +1,118 @@
-Return-Path: <linux-wireless+bounces-21218-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21219-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC53A7EF88
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 23:06:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24290A7F1A0
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 02:30:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44C043B6D1B
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Apr 2025 21:04:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3CFE174786
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 00:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDFE221D88;
-	Mon,  7 Apr 2025 21:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734BAD2FB;
+	Tue,  8 Apr 2025 00:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="T+1blWtA"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="cvF7i7dU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56CB1EF0A1;
-	Mon,  7 Apr 2025 21:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22AD12E7F;
+	Tue,  8 Apr 2025 00:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744059894; cv=none; b=hZ5HtYYBMu0IKEQ1V/bG01BfxnDGnot1M6AYyac55BqNFRLhczDEEbG98+nXdiZTdkJ8RNrlDN16NGiq4f9K+kqNL4jaDf50TKjlextSdVQFnLAizLVy0WUWcX6YRiW96M99KearHvIFJzg5lNZMIeBY4XuiRDHqzzCsBkJkoaM=
+	t=1744072139; cv=none; b=VeVGRj0Ie2/c5LPvdwSzE6G7OPmH+koK4Ea28Bh1VsPvwGIuPBw55L0FwVNpGlD7zmHNnl5W/o6vI16ZSJUfKHtUQl05yCisyFQ86zIvVGuZyVT6GTftI1LhmoKFR9eWfgEaLc5aVXPEUuD8y3p9vYDBsj/dDhmSE42nKDRoZ7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744059894; c=relaxed/simple;
-	bh=G5uP7XPUQhSzLLH8UfxXZM/eGXXHzeObBp2N9j2yJtE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qn/aGuD9SJSDVxPTzUEX5AMXJsYuzUZvUe2fH+Iii30z1PUYi1eFFjG8x33imbS0lOWARPMaZJD13ry948DLuyWds2mwEQfgCe+iTpMq7o0vZs7QSZYHKcowziMxYU3LO59No22q69fNbphz61fsh+7EgWh5B3Sl0mHEu5htJQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=T+1blWtA; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-22435603572so45649345ad.1;
-        Mon, 07 Apr 2025 14:04:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1744059892; x=1744664692; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mjEuDsYSQYIFtKozQixkgJ48XkY++Le1XcPNNG/znKI=;
-        b=T+1blWtA24hvKqapGKEKDfBgY20FnDlVz+Rn68gemLAvRIY48Sp+u3g7giBfyYmuL7
-         9AssRSlq2+dBEcSmUHWpocMwp6ZfTMpAhtwlgjUwX9u8h+ZuA9ecR8vUSSajjvw/CnYN
-         uVT4vWtDVl0ahKA1ew9R3eK+kYoKiB0zMBQPo3fTiGFhbpD+C5XroV2GzKu5GfPdAv1h
-         YIrnRrkKmLa59eIfh7TAVi15TLVYfHej1Brkuy1LMIzJTzHxJXhabfwhuIGMFy9HUJeY
-         xR4pca1EmrTtewtRhOKSNUOIMhLXe58TvOk5MhRgHe8KRdHYw7A6lJ3IfVNbRZjcvoqJ
-         vAvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744059892; x=1744664692;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mjEuDsYSQYIFtKozQixkgJ48XkY++Le1XcPNNG/znKI=;
-        b=Sk5Bosk/f0Z/zimLJEbgfDOQ4DqUduYyDYLhx37X6nUSQA89gfWSh9VLQEunA53age
-         WvNiwiMqIXjcCmd2Bf0Tqma70m+sQraWQP/fm1o58eujG6YpYc2w+FC8p0dbEgcuLX4M
-         svaHTltO1PqgHMqpvsI0re4SqqI9v41pN7fxuHgY4+5G8cXX8frT4fZ4Tnv9UeAa6FvQ
-         oa0wG/ouiUAr5IU8LMktVOeCNi9spG84dSw1ajkcDLCESgxrylaf0P1aVQN0HqqwyMW1
-         0iJjCYKA7fYor/QSCdE9bybiMfbVvuwwRv+ZIM4KhPogaA76R6i1cUwsxWXDTGoq61cx
-         495w==
-X-Forwarded-Encrypted: i=1; AJvYcCVHD7tv/yNVuqUkA9iEu/3153Sbl6xfTCgpbkLVpqM5+UmhHj7+ClfOMXwDy7/3jb7ciCWq9zdiLsc2tMo=@vger.kernel.org, AJvYcCWhCfBzlM/X9DQZh5jOjSJ5llToDNQGhPNJdlhVvZa66fyFvlKatVWUTMBdmcb3rX8nRHQlHQiVC9KBmp46qu0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLfoK96UqBpoYw78/wJPp638oUUC2RPbzz1mlmGAwkDm7BVnEV
-	yXZSgY8d6tWVSlYYfIc0qxqSogXYnaZWJ4hXtY7POMIN7GWPr3ZNwx4Enpf4wRFu6nCtkV2d9Jp
-	4T8H7P0QVSlTPTw4uw9VoAxnVLfVcIyvp
-X-Gm-Gg: ASbGncsiHOX/wu97OYB4LDs6uy9hkcJ3U/UiHROXF7zDlOrynrEJAAUm5PHOBbXJux+
-	oDJ3CVHPDNuS52WjrjRMVga6F+aQuLAvUAR6EbuXPOt0CisSKTkQ/HrwoNQJ66wDtt8koi0lXjE
-	6tiaZsvYV53TS32RSEB4pUJJIc96zq3JARhvVBkdZR+e3gGLL5Cg4nR9gPSoU=
-X-Google-Smtp-Source: AGHT+IHH5RMcyXoke2jciSka6ApKKu5PaRcMFCyvwlM+9FhNJj7Gsbcz5Irffj5p7yNZ6rp1qnSYGHbGKPjzHlpkikg=
-X-Received: by 2002:a17:902:ec8a:b0:224:3c9:19ae with SMTP id
- d9443c01a7336-22a8a8cedb3mr188635745ad.34.1744059891810; Mon, 07 Apr 2025
- 14:04:51 -0700 (PDT)
+	s=arc-20240116; t=1744072139; c=relaxed/simple;
+	bh=PyZ1cQ8Jh+NlsL//fjMKMfyETq9G8zTC5acak2Wp7rY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=PqEUVqe7ZM2WcsYct8Jk9rDAL8husoKzRNtGhxCsGWsPSXDzJSHWpKgnIDSW0qEA+qb6u+mjX2M5BvYCrLkEAdSBOCpueObNR6PYYeXvnhd+uVYsRu6M90bvjqR5exvjTCCFis4x6Kuu6N5jVbyjTnN4dN/fzPHHRUWRvXD06KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=cvF7i7dU; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5380Sif962101352, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1744072124; bh=PyZ1cQ8Jh+NlsL//fjMKMfyETq9G8zTC5acak2Wp7rY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=cvF7i7dUNLts+uc8myIuOw8cyTU+z60tTUG3e2CoCAJfL2CcTjKAwz6Uhe4zcxgK2
+	 Voqz77YhnQGMn9XDUMd5ZsslB1kbpHyMNGPenk5Kt7RG0Z7055bMhFHCL0eQKxBzRE
+	 WHgUeAt7OAYwdgFYpk2icw5y+yrFn4OS+uvca10OVf83URm6VXr1KJL9cXoAmmoyAl
+	 /MwewGi6PfWVKM/Z1QXkd/hGCwWflaV9sKMbEFj+8zSwketR8dejfegl7NO8PF/7b9
+	 3gA2NB7ShvtOvocjLtpWtxUb5l/Kwcq1eftolH1S8FZ/ywTTR/AbxYxVGvO5+dRaQB
+	 1tTpi3n1fylBQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5380Sif962101352
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 8 Apr 2025 08:28:44 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 8 Apr 2025 08:28:44 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 8 Apr 2025 08:28:44 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Tue, 8 Apr 2025 08:28:44 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+CC: Zhen XIN <zhen.xin@nokia-sbell.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [RFC -v1] wifi: rtw88: sdio: Tx status for management frames
+Thread-Topic: [RFC -v1] wifi: rtw88: sdio: Tx status for management frames
+Thread-Index: AQHbo+jJuNfRBVSN0k+LjlPmG1YP3LOXjoewgACk5QCAAL5oEA==
+Date: Tue, 8 Apr 2025 00:28:44 +0000
+Message-ID: <c6d200bad399484b9ebe8a265bcaa038@realtek.com>
+References: <20250402160310.996141-1-zhen.xin@nokia-sbell.com>
+ <9d908c7c77684260818470225b8a0980@realtek.com>
+ <CAFBinCD6fcTaJ3VE-0HBv=Vd_yhkqAgMH_8v9MVV1UMCO5m6vw@mail.gmail.com>
+In-Reply-To: <CAFBinCD6fcTaJ3VE-0HBv=Vd_yhkqAgMH_8v9MVV1UMCO5m6vw@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250402160310.996141-1-zhen.xin@nokia-sbell.com> <9d908c7c77684260818470225b8a0980@realtek.com>
-In-Reply-To: <9d908c7c77684260818470225b8a0980@realtek.com>
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Mon, 7 Apr 2025 23:04:40 +0200
-X-Gm-Features: ATxdqUHdwlTYqa-87bWtMFU8vcYwUQsHhYog4COWy0x487fj0A6vMNEqROGKoBc
-Message-ID: <CAFBinCD6fcTaJ3VE-0HBv=Vd_yhkqAgMH_8v9MVV1UMCO5m6vw@mail.gmail.com>
-Subject: Re: [RFC -v1] wifi: rtw88: sdio: Tx status for management frames
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Zhen XIN <zhen.xin@nokia-sbell.com>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Hi Ping-Ke,
-
-On Mon, Apr 7, 2025 at 5:30=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> wr=
-ote:
->
-> Hi Martin,
->
-> I replied original mail, because I think discussion would be clearer.
-makes sense, thank you!
-
-[...]
-> > @@ -1195,7 +1195,7 @@ static void rtw_sdio_indicate_tx_status(struct rt=
-w_dev *rtwdev,
-> >         skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
-> >
-> >         /* enqueue to wait for tx report */
-> > -       if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
-> > +       if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS && queue <=3D =
-RTW_TX_QUEUE_VO) {
->
-> Is this because you have seen "failed to get tx report"?
-> Have you tried to increasing RTW_TX_PROBE_TIMEOUT?
->
-> If it still can't get TX report, we might take this workaround with comme=
-nts
-> to mention why we need it. Or a local variable with proper naming to poin=
-t out
-> this, like
->
->         bool queue_has_no_tx_report =3D queue > RTW_TX_QUEUE_VO;
->
->
-> By the way, USB behavior is very like to SDIO, but TX report seems to wor=
-k well.
-On my RTL8822CS I can confirm your thought:
-I don't notice any extra "failed to get tx report" messages regardless
-of whether I have "&& queue <=3D RTW_TX_QUEUE_VO" or not.
-
-
-Best regards,
-Martin
+TWFydGluIEJsdW1lbnN0aW5nbCA8bWFydGluLmJsdW1lbnN0aW5nbEBnb29nbGVtYWlsLmNvbT4g
+d3JvdGU6DQo+IA0KPiBIaSBQaW5nLUtlLA0KPiANCj4gT24gTW9uLCBBcHIgNywgMjAyNSBhdCA1
+OjMw4oCvQU0gUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+IHdyb3RlOg0KPiA+DQo+
+ID4gSGkgTWFydGluLA0KPiA+DQo+ID4gSSByZXBsaWVkIG9yaWdpbmFsIG1haWwsIGJlY2F1c2Ug
+SSB0aGluayBkaXNjdXNzaW9uIHdvdWxkIGJlIGNsZWFyZXIuDQo+IG1ha2VzIHNlbnNlLCB0aGFu
+ayB5b3UhDQo+IA0KPiBbLi4uXQ0KPiA+ID4gQEAgLTExOTUsNyArMTE5NSw3IEBAIHN0YXRpYyB2
+b2lkIHJ0d19zZGlvX2luZGljYXRlX3R4X3N0YXR1cyhzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LA0K
+PiA+ID4gICAgICAgICBza2JfcHVsbChza2IsIHJ0d2Rldi0+Y2hpcC0+dHhfcGt0X2Rlc2Nfc3op
+Ow0KPiA+ID4NCj4gPiA+ICAgICAgICAgLyogZW5xdWV1ZSB0byB3YWl0IGZvciB0eCByZXBvcnQg
+Ki8NCj4gPiA+IC0gICAgICAgaWYgKGluZm8tPmZsYWdzICYgSUVFRTgwMjExX1RYX0NUTF9SRVFf
+VFhfU1RBVFVTKSB7DQo+ID4gPiArICAgICAgIGlmIChpbmZvLT5mbGFncyAmIElFRUU4MDIxMV9U
+WF9DVExfUkVRX1RYX1NUQVRVUyAmJiBxdWV1ZSA8PSBSVFdfVFhfUVVFVUVfVk8pIHsNCj4gPg0K
+PiA+IElzIHRoaXMgYmVjYXVzZSB5b3UgaGF2ZSBzZWVuICJmYWlsZWQgdG8gZ2V0IHR4IHJlcG9y
+dCI/DQo+ID4gSGF2ZSB5b3UgdHJpZWQgdG8gaW5jcmVhc2luZyBSVFdfVFhfUFJPQkVfVElNRU9V
+VD8NCj4gPg0KPiA+IElmIGl0IHN0aWxsIGNhbid0IGdldCBUWCByZXBvcnQsIHdlIG1pZ2h0IHRh
+a2UgdGhpcyB3b3JrYXJvdW5kIHdpdGggY29tbWVudHMNCj4gPiB0byBtZW50aW9uIHdoeSB3ZSBu
+ZWVkIGl0LiBPciBhIGxvY2FsIHZhcmlhYmxlIHdpdGggcHJvcGVyIG5hbWluZyB0byBwb2ludCBv
+dXQNCj4gPiB0aGlzLCBsaWtlDQo+ID4NCj4gPiAgICAgICAgIGJvb2wgcXVldWVfaGFzX25vX3R4
+X3JlcG9ydCA9IHF1ZXVlID4gUlRXX1RYX1FVRVVFX1ZPOw0KPiA+DQo+ID4NCj4gPiBCeSB0aGUg
+d2F5LCBVU0IgYmVoYXZpb3IgaXMgdmVyeSBsaWtlIHRvIFNESU8sIGJ1dCBUWCByZXBvcnQgc2Vl
+bXMgdG8gd29yayB3ZWxsLg0KPiBPbiBteSBSVEw4ODIyQ1MgSSBjYW4gY29uZmlybSB5b3VyIHRo
+b3VnaHQ6DQo+IEkgZG9uJ3Qgbm90aWNlIGFueSBleHRyYSAiZmFpbGVkIHRvIGdldCB0eCByZXBv
+cnQiIG1lc3NhZ2VzIHJlZ2FyZGxlc3MNCj4gb2Ygd2hldGhlciBJIGhhdmUgIiYmIHF1ZXVlIDw9
+IFJUV19UWF9RVUVVRV9WTyIgb3Igbm90Lg0KPiANCg0KVGhpcyB3b3JrYXJvdW5kIG1pZ2h0IG5l
+ZWQgYW4gY2hpcCBhdHRyaWJ1dGUgdG8gZW5hYmxlIHRoZW4uIA0KTm90IHN1cmUgaWYgcGVvcGxl
+IGluIHRoZSBHaXRIdWIgdGhyZWFkIGhhdmUgZXhwZXJpbWVudHMgb24gYWxsDQpzdXBwb3J0ZWQg
+U0RJTyBXaUZpIGNoaXBzLiANCg0K
 
