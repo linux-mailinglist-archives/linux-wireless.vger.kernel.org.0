@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-21282-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21283-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2FEA8159F
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 21:14:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B948A815A2
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 21:15:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD35A18976E8
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 19:14:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 045B97B964D
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 19:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07871245024;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8912451C3;
 	Tue,  8 Apr 2025 19:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GMwNhvyD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MPaiY989"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBA41DA60F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC0923F273;
 	Tue,  8 Apr 2025 19:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744139639; cv=none; b=USDRfvTpqVcGH6KZrIE4H8c+ra1xlq9zTVPhq97yLOXBJT7ULGJ/wJGZ79Yk9fw66HCOfscfTbic+LOkJ9yAlUTkyPJvhBZG4ksMWqZCYFjOH+S9YVdL2kaTEDMyCRaGdUfvpjRWD54vWI6RflmnxjxxtSRO4hatV0RenNtI8Z4=
+	t=1744139639; cv=none; b=P+irbqfA0uzfBdBjfg6ZHP3J92BkZONWln+u9e3AOtyvsZwglga2EbyCG1bAfA3ApxoLxAtCvl22JQoqofwnCW6YcQbnwzRNBXehmhb1gbf23kAYmJ9IaDwz5xgbsNkl5+7YgWcW5ooePDyVXG8CWw3pU0K/TmBlonND6kMo1Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744139639; c=relaxed/simple;
-	bh=CKwo4CEyVgAnPR0XP4Ca6WTn2rjHiPkVkvAQlXqXWe0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BM16VhJ6s0+cwRI8BPUtqZzwqeX/0+hUeOVOQlWfnI6vxcwnPfsSBg1j7058nry6eLr1oOAAgs5kaMSdepJUeU7/iS6Lsvefs6ZUtZeUcw+zgOJLrBNgYhI31VVly9q12AjI61YyYpIgtWx1kLsiaxylc6ybSqnVtfP1jRp/upw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMwNhvyD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 437FDC4CEE9;
+	bh=88n+/OmONN80dFebJ7pjCh/IqPsrPBPEi4aqhvPQZTw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=QZQw39hC8UClBkkob8xfqYWYKAWjjteSnSmMpWLUAdUb1rMqc36Sahhw0b3lubj4g4Oy5HS6IKTvOzQsIMhtbJdC3ARF4uruYMuXm1tjqHFnKzd0klMZAmSkMEAa+rZZBa1S4LhfiOU8XsA6+KNrm48W4vnmhRkOCVYu2RQ/Y+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MPaiY989; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 56D64C4CEE8;
 	Tue,  8 Apr 2025 19:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1744139639;
-	bh=CKwo4CEyVgAnPR0XP4Ca6WTn2rjHiPkVkvAQlXqXWe0=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=GMwNhvyDOpDoWFGo26E3SW0ae/kkNc24Lq4Cv5E/mo4j8nTScU7q+COs2fQWXJcRl
-	 ED+srwVtGI8EQBQlY42K5JrZnSLF5h5EGmevNL19C690piaXbdkuTl99+cnpz84Cfq
-	 2uIvmWeQTwo9r4sDihrK8Pi1rLGagGlxlSHIDbGygHAzWFcl78EtQ9cKbE/W6UAQuh
-	 Dqvjb/Z9ONzGie1TVxipTwGE7sHUam8Tj1puuWyOiRY6nbmW8Y6yIA2FCDA8EZ3o5y
-	 2XxzTSWsgE2fxDKKvUh/XswSRDYvwmZsLQvnybUICNi3RExisLGM3/0zSnyuoBIm/U
-	 NoU/066S23cww==
+	bh=88n+/OmONN80dFebJ7pjCh/IqPsrPBPEi4aqhvPQZTw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=MPaiY989micZMK2KwK14OkSWYH/nN4F5j2Ec0cwSThksUNrPDG7lKWAxV/1Iu23Ca
+	 W22FOxUIflzgBD5yHIYMVo4VlI6/OOURTh4PD7mAOfgbh10TfTDcak5cmTgig9CnDJ
+	 1udak+yhRGGUGJr/i+B0WR0VhkKaUULD4DSjRwI6zLLc9klB4iPcAQO1xmMgAYmUKM
+	 OvFc2sg0avd8zniS8QKQt4IaJXcnWkXUxYjDgyYDIi/1kfFEoenIIb/SpqY+Gb+HuD
+	 njYLki9jfKkCnC65tLEbmJv6ZBGWFsn7/wOqcV08aJiAxk4nUxW01mEYfHX9kKHTH6
+	 Vwrma25qVtEsQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 318EEC369A1;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41929C369A5;
 	Tue,  8 Apr 2025 19:13:59 +0000 (UTC)
 From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
-Subject: [PATCH v2 0/2] Onboard USB device support for RTL8188ETV 2.4GHz
- USB WiFi module
-Date: Tue, 08 Apr 2025 21:13:11 +0200
-Message-Id: <20250408-rtl-onboard-v2-0-0b6730b90e31@posteo.net>
+Date: Tue, 08 Apr 2025 21:13:12 +0200
+Subject: [PATCH v2 1/2] dt-bindings: net: wireless: Add Realtek RTL8188ETV
+ USB WiFi
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -56,10 +56,9 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAEd19WcC/23MywrCMBCF4VcpszYyuVTUVd9DukjaqQ1IpiQhK
- CXvbuza5X/gfDskip4S3LsdIhWfPIcW6tTBtNrwJOHn1qBQ9WhQi5hfgoNjG2ex6KvuzYJOGgf
- tsUVa/PvQHmPr1afM8XPgRf7W/06RAoXEyd7sxRoiHDZOmfgcKMNYa/0C8hFdd6cAAAA=
-X-Change-ID: 20250403-rtl-onboard-f38354f0b14b
+Message-Id: <20250408-rtl-onboard-v2-1-0b6730b90e31@posteo.net>
+References: <20250408-rtl-onboard-v2-0-0b6730b90e31@posteo.net>
+In-Reply-To: <20250408-rtl-onboard-v2-0-0b6730b90e31@posteo.net>
 To: Johannes Berg <johannes@sipsolutions.net>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Matthias Kaehlcke <mka@chromium.org>, 
@@ -70,11 +69,11 @@ Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
  linux-usb@vger.kernel.org, Bitterblue Smith <rtl8821cerfe2@gmail.com>, 
  =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744139638; l=1198;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744139638; l=2077;
  i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
- bh=CKwo4CEyVgAnPR0XP4Ca6WTn2rjHiPkVkvAQlXqXWe0=;
- b=uUhCgcSt/puX3o3dWNQZSDas53VdL2UfuHpeEbhOQOvmlroP9iHibEpRQjLg2ojIeIgbRcZ+a
- 0KTiyVQ+UswBYmyG95EETp/oya+UIrjBca2XXS3o0ODLyw+0pcTHz6E
+ bh=4nIhUGSI5Ng3z4pAy5LHnkaqH2Vjs66teKpBTHo1jxU=;
+ b=+vY+V/NyRm4aQpt4QGCRdBd1HVGT5r1dsJSfIREdxcTqOB3DKIiMrYUpU1cEl4rcc02hiyeDx
+ 48hktykm3uHDQtYx43hY+hvBe+POUGq04XV6kV1FXjHHpE9PxKasWPO
 X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
  pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
 X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
@@ -82,36 +81,85 @@ X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
 X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
 Reply-To: j.ne@posteo.net
 
-This patchset adds rtl8188etv (usbbda,179) to the onboard_usb_dev driver.
-It is found in a set-top box called "Fernsehfee 3.0".
+From: "J. Neuschäfer" <j.ne@posteo.net>
 
-As a side note, this device is currently marked untested in the RTL8XXXU
-driver. In my experience it works (tested with a WPA2 home network).
+This is an on-board USB device that requires a 3.3V supply.
 
 Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
 ---
-Changes in v2:
-- Fix editing errors (email address and TODO comment) in binding
-- Refer to more specific RTL8188ETV instead of RTL8188
-- Use unambiguous SPDX identifier GPL-2.0-only instead of GPL-2.0
-- Link to v1: https://lore.kernel.org/r/20250403-rtl-onboard-v1-0-10ca9a6a4ee0@posteo.net
 
+V2:
+- Use my current email address
+- Remove TODO comment
+- Rename schema file to realtek,rtl8188e.yaml. This is the same
+  granularity at which the rtl8xxxu driver is split into files, making
+  it unnecessary to rename the schema file if another similar chip is added
+  in the future.
+- Change license identifier from (GPL-2.0 OR BSD-2-Clause) to (GPL-2.0-only
+  OR BSD-2-Clause) because GPL-2.0 is ambiguous
 ---
-J. Neuschäfer (2):
-      dt-bindings: net: wireless: Add Realtek RTL8188ETV USB WiFi
-      usb: misc: onboard_dev: Add Realtek RTL8188ETV WiFi (0bda:0179)
-
  .../bindings/net/wireless/realtek,rtl8188e.yaml    | 50 ++++++++++++++++++++++
- drivers/usb/misc/onboard_usb_dev.c                 |  1 +
- drivers/usb/misc/onboard_usb_dev.h                 |  8 ++++
- 3 files changed, 59 insertions(+)
----
-base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-change-id: 20250403-rtl-onboard-f38354f0b14b
+ 1 file changed, 50 insertions(+)
 
-Best regards,
+diff --git a/Documentation/devicetree/bindings/net/wireless/realtek,rtl8188e.yaml b/Documentation/devicetree/bindings/net/wireless/realtek,rtl8188e.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..2769731e07083b14e2f7388858dcded92c442018
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/wireless/realtek,rtl8188e.yaml
+@@ -0,0 +1,50 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/wireless/realtek,rtl8188e.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Realtek RTL8188E USB WiFi
++
++maintainers:
++  - J. Neuschäfer <j.ne@posteo.net>
++
++description:
++  Realtek RTL8188E is a family of USB-connected 2.4 GHz WiFi modules.
++
++allOf:
++  - $ref: /schemas/usb/usb-device.yaml#
++
++properties:
++  compatible:
++    const: usbbda,179  # RTL8188ETV
++
++  reg: true
++
++  vdd-supply:
++    description:
++      Regulator for the 3V3 supply.
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    usb {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        wifi: wifi@1 {
++            compatible = "usbbda,179";
++            reg = <1>;
++            vdd-supply = <&vcc3v3>;
++        };
++    };
++
++...
+
 -- 
-J. Neuschäfer <j.ne@posteo.net>
+2.48.0.rc1.219.gb6b6757d772
 
 
 
