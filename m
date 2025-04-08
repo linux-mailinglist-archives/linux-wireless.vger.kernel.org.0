@@ -1,100 +1,117 @@
-Return-Path: <linux-wireless+bounces-21281-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21282-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCF8A8154E
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 21:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2FEA8159F
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 21:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C82C1BA4610
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 19:03:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD35A18976E8
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 19:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C38225A40;
-	Tue,  8 Apr 2025 19:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07871245024;
+	Tue,  8 Apr 2025 19:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHGbB9wr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GMwNhvyD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327AF21517D;
-	Tue,  8 Apr 2025 19:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBA41DA60F;
+	Tue,  8 Apr 2025 19:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744139019; cv=none; b=QfEY4xvOlqDTcdd08BmZ3WkbOu+fn3N7HBjEhTELj6R4vKTXMAkI5itwUQq4+COTMSxcZw9KtgZli0BzYegy5Acx/JqbSvU9Wp8bAmWkr+1CdwjByyq0ffgT3xAVFIIziKSE4qmHSgTrUQ68GWA1mDKUT3n8AFEx2XwHbmYIu/w=
+	t=1744139639; cv=none; b=USDRfvTpqVcGH6KZrIE4H8c+ra1xlq9zTVPhq97yLOXBJT7ULGJ/wJGZ79Yk9fw66HCOfscfTbic+LOkJ9yAlUTkyPJvhBZG4ksMWqZCYFjOH+S9YVdL2kaTEDMyCRaGdUfvpjRWD54vWI6RflmnxjxxtSRO4hatV0RenNtI8Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744139019; c=relaxed/simple;
-	bh=pHSSTO56neWEEEtpVKmutcv8dw9yWs0shUPmz9GS6v4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EyvAQIp4IIwl+RkUfQDCGYcuha1GBaB9J6/01AhwOnvoqjX+ernppMORB/wVNw+BWNa9BkQvcw+NAZIsz5As2dHRyHJoU4twpMJTZNyFDmspxNNbONwWP78lx9B6c11w5PlqqcMFY+U5CWcjocr7KK2rWgJCnVf0yN4IFnq3EWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHGbB9wr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE3CC4CEE5;
-	Tue,  8 Apr 2025 19:03:38 +0000 (UTC)
+	s=arc-20240116; t=1744139639; c=relaxed/simple;
+	bh=CKwo4CEyVgAnPR0XP4Ca6WTn2rjHiPkVkvAQlXqXWe0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BM16VhJ6s0+cwRI8BPUtqZzwqeX/0+hUeOVOQlWfnI6vxcwnPfsSBg1j7058nry6eLr1oOAAgs5kaMSdepJUeU7/iS6Lsvefs6ZUtZeUcw+zgOJLrBNgYhI31VVly9q12AjI61YyYpIgtWx1kLsiaxylc6ybSqnVtfP1jRp/upw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMwNhvyD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 437FDC4CEE9;
+	Tue,  8 Apr 2025 19:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744139018;
-	bh=pHSSTO56neWEEEtpVKmutcv8dw9yWs0shUPmz9GS6v4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jHGbB9wrS9Ga5nO6c0XIStwD4hEx9MwNOOY6sWYkQHLfuTLHDwrqeMnev/R8Eytb3
-	 XMBwXMzr/I5AKWpi5uzAkRBTixYzLesS10cKeUpijGLkpq1iN5gnEuzobgwtUXKgd2
-	 x7Hee3peXsAH5HBtzxDAzMNfxZd8SQDa9AF9mZ6JNCKQHC1y17umW6tT2PNuMJwT81
-	 dA2e6VCBSK3iBRYkZtOIlp17ky+mKuO4Hpeg1hOmn4w1Z7QNNbwnLG380iwzNdeGZs
-	 Jxkh2bTYEhWGeKNff2lSODAvwGwfajmmXBoMu7cDK9cnz3z4/g7DypdvsSNKfIyTyO
-	 0PsqvzaYQTRqw==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: ath11k: Use of_property_present() to test property presence
-Date: Tue,  8 Apr 2025 14:02:11 -0500
-Message-ID: <20250408190211.2505737-2-robh@kernel.org>
-X-Mailer: git-send-email 2.47.2
+	s=k20201202; t=1744139639;
+	bh=CKwo4CEyVgAnPR0XP4Ca6WTn2rjHiPkVkvAQlXqXWe0=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=GMwNhvyDOpDoWFGo26E3SW0ae/kkNc24Lq4Cv5E/mo4j8nTScU7q+COs2fQWXJcRl
+	 ED+srwVtGI8EQBQlY42K5JrZnSLF5h5EGmevNL19C690piaXbdkuTl99+cnpz84Cfq
+	 2uIvmWeQTwo9r4sDihrK8Pi1rLGagGlxlSHIDbGygHAzWFcl78EtQ9cKbE/W6UAQuh
+	 Dqvjb/Z9ONzGie1TVxipTwGE7sHUam8Tj1puuWyOiRY6nbmW8Y6yIA2FCDA8EZ3o5y
+	 2XxzTSWsgE2fxDKKvUh/XswSRDYvwmZsLQvnybUICNi3RExisLGM3/0zSnyuoBIm/U
+	 NoU/066S23cww==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 318EEC369A1;
+	Tue,  8 Apr 2025 19:13:59 +0000 (UTC)
+From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
+Subject: [PATCH v2 0/2] Onboard USB device support for RTL8188ETV 2.4GHz
+ USB WiFi module
+Date: Tue, 08 Apr 2025 21:13:11 +0200
+Message-Id: <20250408-rtl-onboard-v2-0-0b6730b90e31@posteo.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAEd19WcC/23MywrCMBCF4VcpszYyuVTUVd9DukjaqQ1IpiQhK
+ CXvbuza5X/gfDskip4S3LsdIhWfPIcW6tTBtNrwJOHn1qBQ9WhQi5hfgoNjG2ex6KvuzYJOGgf
+ tsUVa/PvQHmPr1afM8XPgRf7W/06RAoXEyd7sxRoiHDZOmfgcKMNYa/0C8hFdd6cAAAA=
+X-Change-ID: 20250403-rtl-onboard-f38354f0b14b
+To: Johannes Berg <johannes@sipsolutions.net>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Matthias Kaehlcke <mka@chromium.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Jes Sorensen <Jes.Sorensen@gmail.com>, linux-wireless@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-usb@vger.kernel.org, Bitterblue Smith <rtl8821cerfe2@gmail.com>, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744139638; l=1198;
+ i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
+ bh=CKwo4CEyVgAnPR0XP4Ca6WTn2rjHiPkVkvAQlXqXWe0=;
+ b=uUhCgcSt/puX3o3dWNQZSDas53VdL2UfuHpeEbhOQOvmlroP9iHibEpRQjLg2ojIeIgbRcZ+a
+ 0KTiyVQ+UswBYmyG95EETp/oya+UIrjBca2XXS3o0ODLyw+0pcTHz6E
+X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
+ pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
+X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
+ auth_id=156
+X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+Reply-To: j.ne@posteo.net
 
-The use of of_property_read_u32() isn't really correct as
-"memory-region" contains phandles (though those happen to be u32s. As
-it is just testing for property presence, use of_property_present()
-instead.
+This patchset adds rtl8188etv (usbbda,179) to the onboard_usb_dev driver.
+It is found in a set-top box called "Fernsehfee 3.0".
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+As a side note, this device is currently marked untested in the RTL8XXXU
+driver. In my experience it works (tested with a WPA2 home network).
+
+Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
 ---
-I'm assuming this should still go to linux-wireless list? I had to 
-manually add that, so looks like recent MAINTAINERS changes aren't quite 
-right.
+Changes in v2:
+- Fix editing errors (email address and TODO comment) in binding
+- Refer to more specific RTL8188ETV instead of RTL8188
+- Use unambiguous SPDX identifier GPL-2.0-only instead of GPL-2.0
+- Link to v1: https://lore.kernel.org/r/20250403-rtl-onboard-v1-0-10ca9a6a4ee0@posteo.net
 
- drivers/net/wireless/ath/ath11k/pci.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+---
+J. Neuschäfer (2):
+      dt-bindings: net: wireless: Add Realtek RTL8188ETV USB WiFi
+      usb: misc: onboard_dev: Add Realtek RTL8188ETV WiFi (0bda:0179)
 
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index 412f4a134e4a..87ef7f321065 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -929,7 +929,7 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
- {
- 	struct ath11k_base *ab;
- 	struct ath11k_pci *ab_pci;
--	u32 soc_hw_version_major, soc_hw_version_minor, addr;
-+	u32 soc_hw_version_major, soc_hw_version_minor;
- 	int ret;
- 	u32 sub_version;
- 
-@@ -955,8 +955,7 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
- 	 * from DT. If memory is reserved from DT for FW, ath11k driver need not
- 	 * allocate memory.
- 	 */
--	ret = of_property_read_u32(ab->dev->of_node, "memory-region", &addr);
--	if (!ret)
-+	if (of_property_present(ab->dev->of_node, "memory-region"))
- 		set_bit(ATH11K_FLAG_FIXED_MEM_RGN, &ab->dev_flags);
- 
- 	ret = ath11k_pci_claim(ab_pci, pdev);
+ .../bindings/net/wireless/realtek,rtl8188e.yaml    | 50 ++++++++++++++++++++++
+ drivers/usb/misc/onboard_usb_dev.c                 |  1 +
+ drivers/usb/misc/onboard_usb_dev.h                 |  8 ++++
+ 3 files changed, 59 insertions(+)
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250403-rtl-onboard-f38354f0b14b
+
+Best regards,
 -- 
-2.47.2
+J. Neuschäfer <j.ne@posteo.net>
+
 
 
