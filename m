@@ -1,180 +1,178 @@
-Return-Path: <linux-wireless+bounces-21266-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21267-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A864A80378
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 13:58:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC33A80BCB
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 15:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D79E6164CF1
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 11:53:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C00358C42F7
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 13:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3897268FE4;
-	Tue,  8 Apr 2025 11:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6096A26E142;
+	Tue,  8 Apr 2025 12:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHLCtdfO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45722676E1
-	for <linux-wireless@vger.kernel.org>; Tue,  8 Apr 2025 11:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B66C2676FA;
+	Tue,  8 Apr 2025 12:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113217; cv=none; b=TrWajWgpwDGtt0KCQIBCCzQYGMf7vmULFRF4KTUUmV+/lY+o3mNa+bC2mu78pDLdrH7tjXU+DYFjCQODKs2GzybldCGWFEvzVD3PgmJcdrlMAbhWTv3wZLdK4gADIFECOmGCefNJ1LfeGzcA7B861joVgs40T3wxlB+A+EA/RJ4=
+	t=1744116823; cv=none; b=DTO/sVPlRoB4cIrRbCOnEMmHM0ybig/bipFNpfwdK54E+5+W4xW9l5WtvNqBvg3TSWbz5vBj9XQAvVX9YIy8RmDfemIsw1cLfDB+I8arhaWD9bFQEI1SwEB3yWteseardN+3FTVP1dtpTlbZzLsPc2RknEXDlMlngYLahDOlP60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113217; c=relaxed/simple;
-	bh=30THijzDCW8+66lPVvkoM3syMpW+vUvCqZuAoTbI73s=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=LOAdLiI1iXezr9RyP4Raj38IomBxwHpyALJxCiNrF3LJpgzUCn3FzmL2V7q6s6fh5LsuoGKlSVPYSiBP0qMi/Mb5GACIFVvydCOS2skdGdUnzhaNmvrypKhQoPkNYCazt8Hs39j13/ejNAAMIEA78EL8tTH6Hi9xRZ2i0mzGv74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3d5b381656dso121682365ab.2
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Apr 2025 04:53:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744113215; x=1744718015;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+	s=arc-20240116; t=1744116823; c=relaxed/simple;
+	bh=ANRuPSUX1yQYlirs/55RG2vUbIaqAiDgBcLWkS79nlg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FwnLbkkc4SCCyrjZl9+LYENx2ASS6/6CDmmZQ/MeI5LLiknU/XBRFHlNH7L/9CfkvY/ldlcGFAKpeo/geQFlYH3YkPRQk3WOXddbK18bEhwZfavR1KrwE/yRlYzj2cQCk4ppO5I/2xLfbHZwTlhTEw67Oma6dxfwL5nxbHCUwKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHLCtdfO; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ac2963dc379so915846466b.2;
+        Tue, 08 Apr 2025 05:53:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744116818; x=1744721618; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=AI0o2WdZpjL1nB4AG/WVSQtJ8vhfG8kYbKtHGUAbqBs=;
-        b=li0CYCRVJmpMyNLUP8sOFiOHput3E4UUmnn9YWf2QTA8KAKEAb3nNFhJci9UPIxwjX
-         YGnrIVOpZ2Wluuz9xG8yStvX2KJsHR8ZOYcYQxzJ7qhYHkM4xUqGt11mSeOv+C11HkfH
-         CaN8nhGmr6OmQ+bM1eVyoL/2B9PL6zIpaLtJwxAKvfAL2xtTWlcAS0e5RJ8UlDOMWerj
-         Gcv8dfHpMrxYUe3U68RTut82YZ7VYyRep+yYcE/uG0PQvFYBZ4KoxggjGfL/bPIXniTI
-         urB8yAi6RMeVw15OERvw5rD5BUiRHF8TRVsurxOwNc6CXWJOyNH04iQ0T7TTcC9eM2jD
-         /WEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmPxQmujf5jsYUK/IYtVKr/WaNm9uJOHKFy6mtNXJSI02R3EyP84qt2MqNh6VijmDTg2192CfCMUSRxQbPyA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxP7vhR4udRixU/gQYLvkEhdvAClHnSRWfGIeI4tQgHP2o9Qd9I
-	ELAdJFDL/dHhOHZjTfZ4giRQ6gFx8RsJXCwol3HE0vMopB3S6ogdnTCTFCSDzc6cA+JbQNeJzzw
-	eXepuqfBsB4b5FqeWhFxK/+h6XwpSWeyatiUbAko5ZRPuNBCS3SD5dYA=
-X-Google-Smtp-Source: AGHT+IHmg4wlze6QGiItlM7J+FUsxRzgjmOlQgYeT56KsSFGrIrTnzWb3BUOsL6I8KKNqld4x+n6Oq7upXkBd863OwsyuWmzHinD
+        bh=23H5BtSYVmOZ7yC+0VeF4pw/eWnuPDNyjqSPU4O+LQE=;
+        b=nHLCtdfOoYqDgifY58NAR3Gl+KxLdpoziAFZRQS3sEr/RgIRbGDNhV+QuTbpJBNiiB
+         XpY/NNopeleCRv5Tn8VtH8Dfe7yuuwMAF7krlwGiD6gvgKV7Vr4m9c+pcUOFh9/79ZtF
+         KYujUSY3gwsxDP2shEsvOLvRHS+pOWl1V9loPgq8nXmyqdSn5CtcJDmpRfvxBiWDKMl2
+         Whj/j7d/cJNgSH6aJi+71TRZ1nSsSqYwbB5gXkcTCP7tjZ2BnFY+sIGCl5qr9yQL2YBz
+         f21npHnByTf/jcmNxHqKFHky//GuAeeR97lT6mIOEHge4wkkvg9EFGXKivpt6ymRW4HP
+         dfzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744116818; x=1744721618;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=23H5BtSYVmOZ7yC+0VeF4pw/eWnuPDNyjqSPU4O+LQE=;
+        b=JpWorw/3LVooKVRK4pxBTezTa/o3737945zTTM5n2UY9Kj9aH4nSNdA2/hV3CJL/NL
+         2mArclEgxn9Cysoetk2tpO4Ir6Zc/w+5JeqlJWsDBjl44uKNO38zW9YKJ3fRUCXe/H9H
+         qROnLFnfDaKDRcQg1EQ2WCdKwyP71jLxQthcU0KSFh9eLARhtaLo4cDrSFzH8NJwVNMv
+         UxcZSDN2nEGdrKm3UMYiSIaxoA6Z4SW+LBh6BQydLe6ZJrvKTMCown5+ly9CGgYUzVcl
+         t6puW67G4FDsxhYQr4GARZJFOun+9PgcEp9cnSbaehcvJoYZZJSTMyiVkgCeSKbOfTQ6
+         oavA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPNzuaP3ABFfjWejstCPBBG83T8pVyrKKJiKi+KifrxvQtI2jN+bnob6M+w4QuKjLLw8N88ZE/5nitYYg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6CCz9VbgZ3u4nEz06aVgU92GDyMRGcTSy7AqAPNVXPzl8Y9Gz
+	K5pjGQCEIQHDWLH13ow650CFY4EbSYlm+WNrI3WVtmT7HqJRNvcZ
+X-Gm-Gg: ASbGncv/I6Acz5ShTQdQSVyweRaXGQnYcFFz2vpeii25hrconh9wEeIbbu4ZWlxRyZH
+	k4Oib4AainZUu5OYUVU35WKpDHcZYsXtNfmvRj54HbTeM11QWK+t+SJ2x2bvqsQXu1eDzgPSkAf
+	9Ho1UULXtKkQTW6JLqy9h+Zg+bVbZd4r00Xj/HRNlSRG7y/0w96KJzcgIs9+UmUxcvqOy0a4gvh
+	T1aW6/69CTpBUX4wAbip3WFWzjI4DwwZG5EkEhJhVgQxb4XQbcMwgQ5GW4ulb7TUaAdsAN/7zNX
+	DznysGlvi/bwW/keMT3FfEKfIwBzwd/+iB3pef362GC8q1kpk674bQ==
+X-Google-Smtp-Source: AGHT+IGvmN1EO4VHRezExYMW/kUpvaSsqhCo9Bd2ESrlndGiMScDggYQTe9O53Y7t99TmRR9Zxt9lQ==
+X-Received: by 2002:a17:907:98a:b0:ac1:791c:1532 with SMTP id a640c23a62f3a-ac7d19f4f5cmr1566313466b.51.1744116818364;
+        Tue, 08 Apr 2025 05:53:38 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.177])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac7bfe67e17sm915537466b.34.2025.04.08.05.53.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Apr 2025 05:53:37 -0700 (PDT)
+Message-ID: <cc66d83c-fb1e-4982-ae68-d5ebd78bbbce@gmail.com>
+Date: Tue, 8 Apr 2025 15:53:36 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a92:cda7:0:b0:3a7:88f2:cfa9 with SMTP id
- e9e14a558f8ab-3d6e3f193f8mr155054905ab.11.1744113214979; Tue, 08 Apr 2025
- 04:53:34 -0700 (PDT)
-Date: Tue, 08 Apr 2025 04:53:34 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67f50e3e.050a0220.396535.0561.GAE@google.com>
-Subject: [syzbot] [wireless?] general protection fault in cfg80211_mlme_deauth
-From: syzbot <syzbot+00778a9a557a2a5e1a33@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [External] RE: [RFC -v1] wifi: rtw88: sdio: Tx status for
+ management frames
+To: Zhen XIN <zhen.xin@nokia-sbell.com>, Ping-Ke Shih <pkshih@realtek.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <b7651a17-afeb-4abd-ae23-29a85a2f6412@nokia-sbell.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <b7651a17-afeb-4abd-ae23-29a85a2f6412@nokia-sbell.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello,
+On 08/04/2025 06:29, Zhen XIN wrote:
+> 
+> On 1/1/1970 8:00 AM, Ping-Ke Shih wrote:
+>> Martin Blumenstingl <martin.blumenstingl@googlemail.com> wrote:
+>>>>> @@ -1195,7 +1195,7 @@ static void rtw_sdio_indicate_tx_status(struct rtw_dev *rtwdev,
+>>>>>          skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
+>>>>>
+>>>>>          /* enqueue to wait for tx report */
+>>>>> -       if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
+>>>>> +       if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS && queue
+>>>>> + <= RTW_TX_QUEUE_VO) {
+>>>> Is this because you have seen "failed to get tx report"?
+>>>> Have you tried to increasing RTW_TX_PROBE_TIMEOUT?
+>>>>
+>>>> If it still can't get TX report, we might take this workaround with
+>>>> comments to mention why we need it. Or a local variable with proper
+>>>> naming to point out this, like
+>>>>
+>>>>          bool queue_has_no_tx_report = queue > RTW_TX_QUEUE_VO;
+>>>>
+>>>>
+>>>> By the way, USB behavior is very like to SDIO, but TX report seems to work well.
+>>> On my RTL8822CS I can confirm your thought:
+>>> I don't notice any extra "failed to get tx report" messages regardless
+>>> of whether I have "&& queue <= RTW_TX_QUEUE_VO" or not.
+>>>
+>> This workaround might need an chip attribute to enable then.
+>> Not sure if people in the GitHub thread have experiments on all supported SDIO WiFi chips.
+> 
+> On my RTL8723DS, without condition"&& queue <= RTW_TX_QUEUE_VO", there are messages in the console:
+> 
+> [ 23.298425] rtw_8723ds mmc2:0001:1: failed to get tx report from firmware
+> 
+> Ever after I doubled the RTW_TX_PROBE_TIMEOUT (500 * 2), there messages were still there, and AP mode didn't work:
+> 
+> root@OpenWrt:~# iw dev phy0-ap0 station dump Station 04:ea:56:2f:6f:07 (on phy0-ap0) inactive time: 480 ms ... authorized: no authenticated: yes associated: yes
+> 
+> Seems tx status report didn't reach hostapd.
+> 
+> 
 
-syzbot found the following issue on:
+That's because management frames are going to the high queue instead
+of the management queue:
 
-HEAD commit:    0af2f6be1b42 Linux 6.15-rc1
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1284523f980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=66996a2350ef05e0
-dashboard link: https://syzkaller.appspot.com/bug?extid=00778a9a557a2a5e1a33
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13c9eb4c580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=179bbd98580000
+static u8 rtw_sdio_get_tx_qsel(struct rtw_dev *rtwdev, struct sk_buff *skb,
+			       u8 queue)
+{
+	switch (queue) {
+	case RTW_TX_QUEUE_BCN:
+		return TX_DESC_QSEL_BEACON;
+	case RTW_TX_QUEUE_H2C:
+		return TX_DESC_QSEL_H2C;
+	case RTW_TX_QUEUE_MGMT:
+		if (rtw_chip_wcpu_11n(rtwdev))
+			return TX_DESC_QSEL_HIGH;
+		else
+			return TX_DESC_QSEL_MGMT;
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-0af2f6be.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/3fcfb8eefe4d/vmlinux-0af2f6be.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/e06a39be2bd8/bzImage-0af2f6be.xz
+And the chip is not configured to provide TX reports for the high
+queue.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+00778a9a557a2a5e1a33@syzkaller.appspotmail.com
+All the chips should be using the management queue for management
+frames. What happens if you change it like this?
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 0 UID: 0 PID: 4854 Comm: kworker/0:3 Not tainted 6.15.0-rc1-syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: events cfg80211_conn_work
-RIP: 0010:ether_addr_equal include/linux/etherdevice.h:355 [inline]
-RIP: 0010:cfg80211_mlme_deauth+0x35a/0x940 net/wireless/mlme.c:514
-Code: 8d 9c 24 b0 00 00 00 48 89 d8 48 c1 e8 03 42 0f b6 04 28 84 c0 4c 8b 7c 24 28 0f 85 25 03 00 00 44 8b 23 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 28 84 c0 0f 85 2b 03 00 00 45 8b 37 48 8b 44 24 20 48
-RSP: 0018:ffffc90002cdf180 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff888045820e40 RCX: ffff888000b5c880
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffffc90002cdf268 R08: ffffffff8b8395d8 R09: 0000000000000003
-R10: 0000000000000009 R11: ffff888000b5c880 R12: 0000000000000000
-R13: dffffc0000000000 R14: 0000000000000003 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff88808c596000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f25d8438198 CR3: 000000001f4b4000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- cfg80211_conn_do_work+0x369/0xed0 net/wireless/sme.c:229
- cfg80211_conn_work+0x2c2/0x530 net/wireless/sme.c:273
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xac3/0x18e0 kernel/workqueue.c:3319
- worker_thread+0x870/0xd50 kernel/workqueue.c:3400
- kthread+0x7b7/0x940 kernel/kthread.c:464
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:ether_addr_equal include/linux/etherdevice.h:355 [inline]
-RIP: 0010:cfg80211_mlme_deauth+0x35a/0x940 net/wireless/mlme.c:514
-Code: 8d 9c 24 b0 00 00 00 48 89 d8 48 c1 e8 03 42 0f b6 04 28 84 c0 4c 8b 7c 24 28 0f 85 25 03 00 00 44 8b 23 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 28 84 c0 0f 85 2b 03 00 00 45 8b 37 48 8b 44 24 20 48
-RSP: 0018:ffffc90002cdf180 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff888045820e40 RCX: ffff888000b5c880
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffffc90002cdf268 R08: ffffffff8b8395d8 R09: 0000000000000003
-R10: 0000000000000009 R11: ffff888000b5c880 R12: 0000000000000000
-R13: dffffc0000000000 R14: 0000000000000003 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff88808c596000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f25d8438198 CR3: 000000001f4b4000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-----------------
-Code disassembly (best guess):
-   0:	8d 9c 24 b0 00 00 00 	lea    0xb0(%rsp),%ebx
-   7:	48 89 d8             	mov    %rbx,%rax
-   a:	48 c1 e8 03          	shr    $0x3,%rax
-   e:	42 0f b6 04 28       	movzbl (%rax,%r13,1),%eax
-  13:	84 c0                	test   %al,%al
-  15:	4c 8b 7c 24 28       	mov    0x28(%rsp),%r15
-  1a:	0f 85 25 03 00 00    	jne    0x345
-  20:	44 8b 23             	mov    (%rbx),%r12d
-  23:	4c 89 f8             	mov    %r15,%rax
-  26:	48 c1 e8 03          	shr    $0x3,%rax
-* 2a:	42 0f b6 04 28       	movzbl (%rax,%r13,1),%eax <-- trapping instruction
-  2f:	84 c0                	test   %al,%al
-  31:	0f 85 2b 03 00 00    	jne    0x362
-  37:	45 8b 37             	mov    (%r15),%r14d
-  3a:	48 8b 44 24 20       	mov    0x20(%rsp),%rax
-  3f:	48                   	rex.W
+	case RTW_TX_QUEUE_MGMT:
+		return TX_DESC_QSEL_MGMT;
 
+If that doesn't work, try to change the rqpn table as well. Right now
+it's like this:
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+static const struct rtw_rqpn rqpn_table_8723d[] = {
+	{RTW_DMA_MAPPING_NORMAL, RTW_DMA_MAPPING_NORMAL,
+	 RTW_DMA_MAPPING_LOW, RTW_DMA_MAPPING_LOW,
+	 RTW_DMA_MAPPING_EXTRA, RTW_DMA_MAPPING_HIGH},
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+I think RTW_DMA_MAPPING_EXTRA for dma_map_mg is wrong for SDIO. This
+is what the out of tree rtl8723ds driver does:
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+static const struct rtw_rqpn rqpn_table_8723d[] = {
+	{RTW_DMA_MAPPING_HIGH, RTW_DMA_MAPPING_NORMAL,
+	 RTW_DMA_MAPPING_LOW, RTW_DMA_MAPPING_LOW,
+	 RTW_DMA_MAPPING_HIGH, RTW_DMA_MAPPING_HIGH},
 
