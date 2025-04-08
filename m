@@ -1,215 +1,96 @@
-Return-Path: <linux-wireless+bounces-21271-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21272-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0C5A80DB6
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 16:22:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACAC9A80FFE
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 17:30:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F46D189F98D
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 14:18:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A2BC4C7BA4
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Apr 2025 15:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B5D1D5CCD;
-	Tue,  8 Apr 2025 14:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE46739AD6;
+	Tue,  8 Apr 2025 15:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YVKwoREK"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="WJjNqqC2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward206a.mail.yandex.net (forward206a.mail.yandex.net [178.154.239.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA551D7E50;
-	Tue,  8 Apr 2025 14:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3D71A8407
+	for <linux-wireless@vger.kernel.org>; Tue,  8 Apr 2025 15:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744121902; cv=none; b=jol15ybvVeZ15plirnKY0orqalThbNEuz2BWAD8ugTWSqvnQ4gSmPmuxjrsw5wBNrGIQhHPEFWKMz/7k6CRWNXskjekg/2uQtCR4KlstbxTiUcAYjLFdt13of+gCTQ1SBdHL+KOMxTi7bjYT+GVQIXbQLvIUT0VrSCb4Kyq9PJg=
+	t=1744125901; cv=none; b=h/niDd1ObVBgDz5MeRWYTfCjMHqaTBWpgh+Tjktp9d9TW6qcxuAOah9qLQ84ANE38RLSE2klY034u6EhXMUZ/poAAzqoZUln3P54mbRGRPU5PFc3AxoTlz3012NBzX6J+4+jjBwcw9mNzLO6lZDHRJ/kia1Kkwh4JZqMBGCAFFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744121902; c=relaxed/simple;
-	bh=VqHdVrhnWxsG2WFRn+D29hxb42dbm8U++BuJbJO/L8Y=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C8sbVZ+Oe0S3/33DbNK2nOGlkVdNgAABauM7QhlkjDE9Li/uvv00KEtUGna9fdvCvwgxzNTBNkO9TiAmTiTLCoqvYWAJ1cZvZ8oCHY7+0xAgwH+fJAvDzM7tSATS3jD7TqQjuOACnedQaKunkP7XVqhwlXusSswZSQ9YxqrsneU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YVKwoREK; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4394a823036so52283375e9.0;
-        Tue, 08 Apr 2025 07:18:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744121899; x=1744726699; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bq7rxg4Ac1YnglamO5gdlT02ySoE7jAKulc1nQkYOcU=;
-        b=YVKwoREKdW8txblIV/eAGchWgsPkLit/8ffT/jZAUOns8BQpfwi42YPrFRK+0uu2L+
-         ErgyFJF1bCwSUHlEtsu1tOXT4ThE769aD2GsX+eDJ22yvAIzOiboRCl4s/2L/r0K1Xh2
-         HmCtDEKkjD+f1FfRjUyxacyu6lit2xUP4M8QImGqwn4PGu4XV3xS6WwTBqdaz6+ct8I2
-         Z5B0+L+WbVE/GlSX2FHgWA9XOVID5JshHkSIPrGxmJ+qj1AUy6NLR5Blp5/9zpNIWngj
-         ZhBO5Po046Mf6Ev4XBIIXOCiAITcpFTynA34tbgfPPjncAQkec9oHerf7kD7YV0CqX07
-         qSvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744121899; x=1744726699;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bq7rxg4Ac1YnglamO5gdlT02ySoE7jAKulc1nQkYOcU=;
-        b=KFfVqNPM3oLZWhrn84GxDwSBuzZxpXOoveP0pvBIXgND3dXOSVUCS2Xhi7ZawWZGyF
-         hXChLaNktqYFkNOCMKdmyoq7m1sGp5A+tHUppcunrN/aSwfq4H2Il3RP2OvjyhwDadYc
-         2k7gNb2VwBnjexv+sqrkPPdsPgej7p7vwYx/UTJue5TxHEllcvc/LVLC2cInnNZmkESA
-         Wi3IKURhhBAdNEE4kBbc7kIGQxylvBz3F0Xhwz7tg+u9B7wyqp5e5PZjkvN1SrErCtwb
-         VlGSoher/RLORihLjaSbz1QrzkM0+8+Efo09K4P8iHbfc3Tqmiy/FzUmDznzh7Zfr3UF
-         HDFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUqQpPkN7TkqSwwiV2sYyzQ+02djtUcqBSA+7moVW2HcoXfgZBmarQpXcgnHAw+os9hihHLpmu/@vger.kernel.org, AJvYcCWeXBQK2bC+lkuN/VMpXv48siLmJuyXthR2Lgr5V9sxv5PxVgjpE1XgpAfT4EnNl3sZ5l51+xw5TvEXOaSLIy4=@vger.kernel.org, AJvYcCXbQmFsvO7Qxoy72Q+eQmCYF5a/QH3LeHYLJ/SqhYowzVDyQh6CErh+XS06s2dnPkwM0QI0am6JEEw5Xu8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUoh5iwdcZtyGuCUsHt2CQfcTgZ1jnItMz7NC6Dj4bNvsDSPSD
-	9Dt0Hj46Dxx4kOe2l+XqrptGRYSgZRqJGUOWhWDohfc1raofe3evqkn/Ow==
-X-Gm-Gg: ASbGncsp/xke45h6/oFIIPmkdkh5bW1C4A/iiHVX9TTmIlRHNPO9+hcHgqodUsaVCKT
-	1tPdsTd7ZUrz73JvHHYX2XtMPAVF5Q1X880eQb+TfbirZiVI0vO83jf07jBgpJfXc2Z74tMtamJ
-	tpsgYgLWvcGt8aBxHoAAe/hSuwVxW/fzimTEY6uf469UNjJYXimji0pF2Jf1y7stofuS8ZsypCx
-	1bpV7MgCwGn0IKwtlKhRKAaGtH7ODC0Ht37dH777O7ElRZrvxT/lcvKvJP17BJU1jCZcPrgWjVH
-	Zqc2/ThKF47nCMFAaie0dIAGxirHaz6B3+x/lQomogsrwQc=
-X-Google-Smtp-Source: AGHT+IGQCycoQDBJl+sBBS+lOvlIfmOAX6Au0jmRubX3LfX3aEl8R4I97yekR1uJdSOHb83yz8MAlg==
-X-Received: by 2002:a05:600c:4f02:b0:43d:fa59:af98 with SMTP id 5b1f17b1804b1-43ee07807f5mr84941955e9.33.1744121898645;
-        Tue, 08 Apr 2025 07:18:18 -0700 (PDT)
-Received: from qasdev.system ([2a02:c7c:6696:8300:1609:5a2:140b:e92d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec17b0a38sm164573735e9.34.2025.04.08.07.18.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Apr 2025 07:18:18 -0700 (PDT)
-Date: Tue, 8 Apr 2025 15:17:28 +0100
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [wireless?] general protection fault in
- cfg80211_mlme_deauth
-Message-ID: <Z_Uv-BhVqaK9HUdx@qasdev.system>
-References: <67f50e3e.050a0220.396535.0561.GAE@google.com>
+	s=arc-20240116; t=1744125901; c=relaxed/simple;
+	bh=XZB7FY0wFnS2ajbk0Dhz5xZt4Zn0N2u176zFNyhItmY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uru8kyA+wQaeXmqtVI0PDRTkBS1hPKUZUG+Zm6cmlTWTKxMb9PVax3hRVwkU4r4IaVAfwRPSS5dlHzHclZ7Rk2Ys4eIyiXWdOFvyE0sYe0eahKV9HHJvzF7QXt6gnyeIVUbSPhGQNxxU+Un3OEk5vXCPBHKie77v6ulpZN1yK5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=WJjNqqC2; arc=none smtp.client-ip=178.154.239.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d102])
+	by forward206a.mail.yandex.net (Yandex) with ESMTPS id A1C0462A0E
+	for <linux-wireless@vger.kernel.org>; Tue,  8 Apr 2025 18:18:05 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net [IPv6:2a02:6b8:c15:2ea0:0:640:5268:0])
+	by forward102a.mail.yandex.net (Yandex) with ESMTPS id DB94F60A7F;
+	Tue,  8 Apr 2025 18:17:57 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id uHfq8gCLm8c0-vC6Ymm98;
+	Tue, 08 Apr 2025 18:17:57 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1744125477; bh=iIvpXApKzSfHM7MU7wrNllj7Zcy75i9NXXOqEty0jYg=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=WJjNqqC2ZqT6o4a21ymqkuIjlGm7IXjjt7Lnv49fwFe8ELFm8nXde5o3agICUGM1o
+	 dNP2h2+K3oh9khSF18DdSPOq6Y4HuFsVoiDWjT/J+tZ57jwZQ4jMvJnnbyBNOVOLYt
+	 jsZQ42YPOKZTW8/B6vgj7uCJZMSIDj2OSQvdm3Vw=
+Authentication-Results: mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: Dmitry Kandybka <d.kandybka@gmail.com>,
+	linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: rtlwifi: add array bounds check in rtl92d_dm_rxgain_tracking_thermalmeter()
+Date: Tue,  8 Apr 2025 18:17:44 +0300
+Message-ID: <20250408151744.3907215-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67f50e3e.050a0220.396535.0561.GAE@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 08, 2025 at 04:53:34AM -0700, syzbot wrote:
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    0af2f6be1b42 Linux 6.15-rc1
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1284523f980000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=66996a2350ef05e0
-> dashboard link: https://syzkaller.appspot.com/bug?extid=00778a9a557a2a5e1a33
-> compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13c9eb4c580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=179bbd98580000
-> 
-> Downloadable assets:
-> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-0af2f6be.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/3fcfb8eefe4d/vmlinux-0af2f6be.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/e06a39be2bd8/bzImage-0af2f6be.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+00778a9a557a2a5e1a33@syzkaller.appspotmail.com
-> 
-> Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-> KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+In 'rtl92d_dm_rxgain_tracking_thermalmeter()', add an extra 'index_mapping'
+array bounds check and use the convenient 'array_index_nospec()' to protect
+against spectre. Compile tested only.
 
-I done some analysis and it looks like during cfg80211_conn_work() the 
-wdev->conn->params.bssid is NULL, this gets passed to cfg80211_conn_do_work() 
-which hits the CFG80211_CONN_ASSOC_FAILED label of the switch statement where 
-ether_addr_equal() compares the NULL bssid via ether_addr_equal().
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Regards,
-Qasim
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192d/dm_common.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> CPU: 0 UID: 0 PID: 4854 Comm: kworker/0:3 Not tainted 6.15.0-rc1-syzkaller #0 PREEMPT(full) 
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-> Workqueue: events cfg80211_conn_work
-> RIP: 0010:ether_addr_equal include/linux/etherdevice.h:355 [inline]
-> RIP: 0010:cfg80211_mlme_deauth+0x35a/0x940 net/wireless/mlme.c:514
-> Code: 8d 9c 24 b0 00 00 00 48 89 d8 48 c1 e8 03 42 0f b6 04 28 84 c0 4c 8b 7c 24 28 0f 85 25 03 00 00 44 8b 23 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 28 84 c0 0f 85 2b 03 00 00 45 8b 37 48 8b 44 24 20 48
-> RSP: 0018:ffffc90002cdf180 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff888045820e40 RCX: ffff888000b5c880
-> RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-> RBP: ffffc90002cdf268 R08: ffffffff8b8395d8 R09: 0000000000000003
-> R10: 0000000000000009 R11: ffff888000b5c880 R12: 0000000000000000
-> R13: dffffc0000000000 R14: 0000000000000003 R15: 0000000000000000
-> FS:  0000000000000000(0000) GS:ffff88808c596000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007f25d8438198 CR3: 000000001f4b4000 CR4: 0000000000352ef0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> Call Trace:
->  <TASK>
->  cfg80211_conn_do_work+0x369/0xed0 net/wireless/sme.c:229
->  cfg80211_conn_work+0x2c2/0x530 net/wireless/sme.c:273
->  process_one_work kernel/workqueue.c:3238 [inline]
->  process_scheduled_works+0xac3/0x18e0 kernel/workqueue.c:3319
->  worker_thread+0x870/0xd50 kernel/workqueue.c:3400
->  kthread+0x7b7/0x940 kernel/kthread.c:464
->  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:153
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
-> Modules linked in:
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:ether_addr_equal include/linux/etherdevice.h:355 [inline]
-> RIP: 0010:cfg80211_mlme_deauth+0x35a/0x940 net/wireless/mlme.c:514
-> Code: 8d 9c 24 b0 00 00 00 48 89 d8 48 c1 e8 03 42 0f b6 04 28 84 c0 4c 8b 7c 24 28 0f 85 25 03 00 00 44 8b 23 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 28 84 c0 0f 85 2b 03 00 00 45 8b 37 48 8b 44 24 20 48
-> RSP: 0018:ffffc90002cdf180 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff888045820e40 RCX: ffff888000b5c880
-> RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-> RBP: ffffc90002cdf268 R08: ffffffff8b8395d8 R09: 0000000000000003
-> R10: 0000000000000009 R11: ffff888000b5c880 R12: 0000000000000000
-> R13: dffffc0000000000 R14: 0000000000000003 R15: 0000000000000000
-> FS:  0000000000000000(0000) GS:ffff88808c596000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007f25d8438198 CR3: 000000001f4b4000 CR4: 0000000000352ef0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> ----------------
-> Code disassembly (best guess):
->    0:	8d 9c 24 b0 00 00 00 	lea    0xb0(%rsp),%ebx
->    7:	48 89 d8             	mov    %rbx,%rax
->    a:	48 c1 e8 03          	shr    $0x3,%rax
->    e:	42 0f b6 04 28       	movzbl (%rax,%r13,1),%eax
->   13:	84 c0                	test   %al,%al
->   15:	4c 8b 7c 24 28       	mov    0x28(%rsp),%r15
->   1a:	0f 85 25 03 00 00    	jne    0x345
->   20:	44 8b 23             	mov    (%rbx),%r12d
->   23:	4c 89 f8             	mov    %r15,%rax
->   26:	48 c1 e8 03          	shr    $0x3,%rax
-> * 2a:	42 0f b6 04 28       	movzbl (%rax,%r13,1),%eax <-- trapping instruction
->   2f:	84 c0                	test   %al,%al
->   31:	0f 85 2b 03 00 00    	jne    0x362
->   37:	45 8b 37             	mov    (%r15),%r14d
->   3a:	48 8b 44 24 20       	mov    0x20(%rsp),%rax
->   3f:	48                   	rex.W
-> 
-> 
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
-> 
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> 
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
-> 
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
-> 
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
-> 
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
-> 
-> If you want to undo deduplication, reply with:
-> #syz undup
-> 
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/dm_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/dm_common.c
+index 20373ce998bf..44f1d3b40d22 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/dm_common.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/dm_common.c
+@@ -139,6 +139,9 @@ static void rtl92d_dm_rxgain_tracking_thermalmeter(struct ieee80211_hw *hw)
+ 	u32 u4tmp;
+ 
+ 	idx = rtlpriv->efuse.eeprom_thermalmeter - rtlpriv->dm.thermalvalue_rxgain;
++	if (WARN_ON_ONCE(idx < 0 || idx >= ARRAY_SIZE(index_mapping)))
++		return;
++	idx = array_index_nospec(idx, ARRAY_SIZE(index_mapping));
+ 	u4tmp = index_mapping[idx] << 12;
+ 
+ 	rtl_dbg(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
+-- 
+2.49.0
+
 
