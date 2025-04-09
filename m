@@ -1,102 +1,156 @@
-Return-Path: <linux-wireless+bounces-21287-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21288-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803F4A81ACC
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Apr 2025 04:10:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A31A81AEC
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Apr 2025 04:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6302B4C004D
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Apr 2025 02:10:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D43B3A6BCD
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Apr 2025 02:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC81E78F3E;
-	Wed,  9 Apr 2025 02:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C3A192B74;
+	Wed,  9 Apr 2025 02:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="T+bltvVF"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JtWFgiU1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2118F49
-	for <linux-wireless@vger.kernel.org>; Wed,  9 Apr 2025 02:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA83086347;
+	Wed,  9 Apr 2025 02:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744164613; cv=none; b=ACcCBb26H8MNVkEtjwQTe9QhmcqxC0R8xE3xJ8yMIUe6p1DbwgyZx7Pqoi50fl7OWBFEn1DbUzpGZpMKXG/pFzZUEb50JJDEWbhldEANlivyMfr+ICVndX1b7P8/vEk4x9Z1zZWTRQ4NTp0I77pdGaqIHltBl07Ya4U+B2tfljQ=
+	t=1744165642; cv=none; b=TISlbLIJfJGnodwgQ+S6KI9BUapnSCISby8ovnksvTGKNgw7uCz7T4bKxzBB9OujPhIsjxoen4HXwm81XKZgRzwoNvMKBdkDxy5xpVh+13c6RPdJjLisg0Rp8w1CS4sm1gj9ktNRkmX7hYm+nVtwbSxLOffNhYwiEHGAv+jSegg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744164613; c=relaxed/simple;
-	bh=Uou+ET49cUARAIvSXcjIO1emCCxmMjHYb/D+NMK+ivE=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=n736WO40Yc38EOWXmn6VZvDypToBdNhhJHcw5E5kEJviyn+naepRCYDSrsx8tQNce70J7dDWbUKkXFoB6IifNj5ec8rIkedG619LbxaMYDZMM+JN1leXjLb3m4uxppOf3s+YKSGsd0KcMqTQ5gAaY2uyrPfweNdm5JlOu6N6c5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=T+bltvVF; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5392A6Vt8457215, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1744164606; bh=Uou+ET49cUARAIvSXcjIO1emCCxmMjHYb/D+NMK+ivE=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date;
-	b=T+bltvVFJM0cW+4p8TZG5gPYLgnvOIDoeuG8cq4ZuNkhmKGnQNSnKlpkCdaXeNnp2
-	 7Z/U72F5f6Fcvk0iu0I35us4//Wih3HFh4rb2220FXxWqK9EL9pk55rXsmPjBBgK7+
-	 1VMglp0k2BNtDo2Xj7869fQoMHT38w64i/sOUTbzFNMNDo4I6EEQr1iVih5sbz3+gO
-	 Ml0Dq7CCLLziI89vK0t2V4FLJw0o3TrHilG47HkWV6nbNNsjvl+NSasFBzb+8KjOWS
-	 /CXj5v005UnkgCZuNc/XavGaAir8Px+TuRDCa2AxHdaXIqozPYWJJE9uta1FmxqOGP
-	 rBkmvTb/M7x5w==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5392A6Vt8457215
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 9 Apr 2025 10:10:06 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 9 Apr 2025 10:10:06 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 9 Apr
- 2025 10:10:05 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [PATCH rtw-next] wifi: rtw88: Fix the module names printed in dmesg
-In-Reply-To: <29cd29ba-bc51-4d5b-ad48-a43c6ce72d56@gmail.com>
-References: <29cd29ba-bc51-4d5b-ad48-a43c6ce72d56@gmail.com>
+	s=arc-20240116; t=1744165642; c=relaxed/simple;
+	bh=cOQKJJUN0ZUxztgM0eKlTKhYfUoWSTxU9xmqweYIUcI=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=HG+Q2dgetMSzvkFWMJE0R+icp6F2YXlOWOMSrbOVsY99PJY0RRmZfwDRR+CyW72hFPxK1FdMzFq4nU5O74RvTy8FcdMA8RvFOZxWUCgxHzzNfXCafP5NsjZAcwpiepp61QfbX3ZwVHq6w2xOyOU4oafRxkqOLyWwAEvzLm9vZOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JtWFgiU1; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 538JYwbf015755;
+	Wed, 9 Apr 2025 02:27:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=7V4DAPO81kQa2KrxRoWP3B
+	yu/nrWhYhVsqeLtvyh9SY=; b=JtWFgiU1yH1velhJQsOc2phK/hrMj2mWCopPMT
+	XtY5MXWJdO0QZ6NVyBAaWuHiPUcvQSs9DVqyvPXXZ9oTRSXQhj1XuKMRb7FEsIf9
+	kqe9F3vrxLOGyXJ+RVb5Sr9aOckYeksNoAETWOP+0u8/JBQhRVTd6O1U8Qw1vGIz
+	ELII7eYgKydCi6vZJJ2RR5stXLX4C9F/kfKcIvPK4Xt2tYLaPxWPhXEWz3IMbtrt
+	WUDHO/vJNkkbXLMncZnnGGXzDtT5eA5JdOWz3WRAh79wKspwed1ZLSlhdvqmdSFi
+	yefvwSsO5qWN7/0DYt7aAJoc2E16kqs8NZ2pDCadJ+twsKDw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twd2ssma-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Apr 2025 02:27:11 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5392RB8u000881
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 9 Apr 2025 02:27:11 GMT
+Received: from [127.0.1.1] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 8 Apr 2025
+ 19:27:08 -0700
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+Subject: [PATCH ath-next v2 0/9] wifi: ath12k: support MLO for WCN7850
+Date: Wed, 9 Apr 2025 10:26:33 +0800
+Message-ID: <20250409-ath12k-wcn7850-mlo-support-v2-0-3801132ca2c3@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <62b01dba-f840-4c2c-82e9-a28db410e7e5@RTEXMBS04.realtek.com.tw>
-Date: Wed, 9 Apr 2025 10:10:05 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANra9WcC/43NzWrDMBAE4FcJOnfLSrKzdk55j9KDfta1aCM5k
+ uOmBL97hS8hFEqOwzDf3EThHLiIw+4mMi+hhBRrUC874UYTPxiCr1koVC1qRWDmUapP+HaRuhb
+ h9JWgXKYp5RnswL7tlZe6t6ICU+YhXDf8TdQdRL7O4r02Yyhzyj/b60Jb/8zBQoCA+0GbHpnI2
+ +P5ElyI7tWl0wYv3fNYVzHTW91oYiv37V9M3rEG1b+YrJg1viE3IBI2j9i6rr+ObOTWagEAAA=
+ =
+X-Change-ID: 20250327-ath12k-wcn7850-mlo-support-bfed592d139b
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson
+	<jjohnson@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Baochen Qiang <quic_bqiang@quicinc.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: XuOXCbZeLa9vstrAXzMSmcihv9AaQI4d
+X-Proofpoint-GUID: XuOXCbZeLa9vstrAXzMSmcihv9AaQI4d
+X-Authority-Analysis: v=2.4 cv=NaLm13D4 c=1 sm=1 tr=0 ts=67f5daff cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=S8qQzX23J8qjeTGorjwA:9
+ a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-09_01,2025-04-08_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=891 clxscore=1015 phishscore=0
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504090002
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+WCN7850 firmware uses API-1 so it can not advertise MLO support via
+firmware IE, but instead it uses single_chip_mlo_support flag in QMI
+message, the first three patches serve for this purpose.
 
-> The rtw88 module names all start with the "rtw88_" prefix, but the
-> messages in dmesg mostly use the "rtw_" prefix. The messages from
-> rtw88_8723cs don't even have the underscore.
-> 
-> Use the KBUILD_MODNAME macro in every driver. This ensures that the
-> messages in dmesg will always use the module name.
-> 
-> Before:
-> 
-> Mar 17 15:54:19 ideapad2 kernel: rtw_8814au 2-4:1.0: Firmware version 33.6.0, H2C version 6
-> 
-> After:
-> 
-> Mar 17 16:33:35 ideapad2 kernel: rtw88_8814au 2-4:1.0: Firmware version 33.6.0, H2C version 6
-> 
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Currently ml_arg->assoc_link flag is not set in
+WMI_VDEV_START_REQUEST_CMDID, this result in WCN7850 firmware crash
+in MLO case, so patch [04/9] sets it for assoc link.
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+Patch [05/9] makes sure we do assoc for assoc link before any other
+links, as requested by WCN7850 firmware.
 
-581cf3a9cb61 wifi: rtw88: Fix the module names printed in dmesg
+Patch [08/9] change to send REO queue configuration to firmware
+for all links including non-primary link. For that purpose, preparation
+is done in patch [06,07/9].
+
+The last patch increases number of different channels to 2 for single
+pdev device, to avoid failing in bringup the second link.
+
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+---
+Changes in v2:
+- rebase on ToT
+- Link to v1: https://lore.kernel.org/r/20250402-ath12k-wcn7850-mlo-support-v1-0-bad47cf00704@quicinc.com
 
 ---
-https://github.com/pkshih/rtw.git
+Baochen Qiang (9):
+      wifi: ath12k: introduce ath12k_fw_feature_supported()
+      wifi: ath12k: use fw_features only when it is valid
+      wifi: ath12k: support MLO as well if single_chip_mlo_support flag is set
+      wifi: ath12k: identify assoc link vif in station mode
+      wifi: ath12k: make assoc link associate first
+      wifi: ath12k: group REO queue buffer parameters together
+      wifi: ath12k: alloc REO queue per station
+      wifi: ath12k: don't skip non-primary links for WCN7850
+      wifi: ath12k: support 2 channels for single pdev device
+
+ drivers/net/wireless/ath/ath12k/core.c  |  23 ++---
+ drivers/net/wireless/ath/ath12k/core.h  |  15 +++
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 178 ++++++++++++++++++--------------
+ drivers/net/wireless/ath/ath12k/dp_rx.h |   4 +-
+ drivers/net/wireless/ath/ath12k/fw.c    |   9 +-
+ drivers/net/wireless/ath/ath12k/fw.h    |   3 +-
+ drivers/net/wireless/ath/ath12k/hw.c    |   8 ++
+ drivers/net/wireless/ath/ath12k/hw.h    |   3 +
+ drivers/net/wireless/ath/ath12k/mac.c   |  62 ++++++++++-
+ drivers/net/wireless/ath/ath12k/pci.c   |   4 +-
+ drivers/net/wireless/ath/ath12k/qmi.c   |   6 +-
+ 11 files changed, 213 insertions(+), 102 deletions(-)
+---
+base-commit: ac17b1211841c98a9b4c2900ba2a7f457c80cf90
+change-id: 20250327-ath12k-wcn7850-mlo-support-bfed592d139b
+
+Best regards,
+-- 
+Baochen Qiang <quic_bqiang@quicinc.com>
 
 
