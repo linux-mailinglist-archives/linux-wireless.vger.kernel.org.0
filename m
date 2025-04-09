@@ -1,57 +1,58 @@
-Return-Path: <linux-wireless+bounces-21318-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21325-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEA54A8274B
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Apr 2025 16:11:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E776A82754
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Apr 2025 16:12:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10FC017ED2F
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Apr 2025 14:08:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E755E4651CA
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Apr 2025 14:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E48D265633;
-	Wed,  9 Apr 2025 14:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61909265613;
+	Wed,  9 Apr 2025 14:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="qkHFp3xJ"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="sEVgqgXN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6944C265CC5
-	for <linux-wireless@vger.kernel.org>; Wed,  9 Apr 2025 14:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B09266B55
+	for <linux-wireless@vger.kernel.org>; Wed,  9 Apr 2025 14:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744207730; cv=none; b=f2a/n4rUOCH1Hke/J9xYGD0ROPDdEVMal6m7wh7Tb98eicWCJJ2P31j06typDoiDqAURFOiAgcuwRjKWd0/EmZkRI18SxEoCczUqn+sJjGjmqJ12e3rrF9YOnlUWcA5a88L7dFZpJd6v0ALE0Ph23odgV/fQDqBkepusZAx4zl4=
+	t=1744207736; cv=none; b=r6DE4Oocsz5TJ1FtyqAhnkmyMY8Kyz/HQmKZZ+YXAeg9Psd2y+3wO8KTypEXG/JgEEkxh07D1kBEI5Mi5G0JjnJg1SDca0Rg38b9ZBpacyWjpdG77geV4xJCrsGbyFc2r0B3rNYGzVJRA96JxSzhA3OkNvBzwSsvdDLgY0I+2Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744207730; c=relaxed/simple;
-	bh=lfUZ9JFEtMDZvTJoHbKz4ukQEx7V3c7TZ4/x3ztJxOE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Iy4XaB4ogvbmqQUNLwEN8KaQ8rk2HUlpTHPj0AoiMOOtzEDiBuFalNHTnrlQ7xjg3Q55h8lz/tl/AfN1DIMAB00sv+bGkRcgZD0jWyQZenReRYUBy6qdeyG0aRROCanEei2k+jBnjqlSpKVRFByYXq7mBykbj0F/5KSoEisMLK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=qkHFp3xJ; arc=none smtp.client-ip=60.244.123.138
+	s=arc-20240116; t=1744207736; c=relaxed/simple;
+	bh=yIu7UdfvnEdYFVRqLA/cc9n4vsWFXbwi/T/4p9bIl1g=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f8kfpfqcr+cxuh8x31DauSsocx+DoZk6Y06bHO2uyq3EwFMZqTvUAlebzOZ17OHUNq9zJjR5NIp7hI2fyvHBL7ma4VEvvqEDCsb0WtxajDRVWjT2+tvTqZqgt8QLM22y0ROfBRsaHv2nFsJsV5Wj2ZI/hem7o6GtzTNfuj9hhIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=sEVgqgXN; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 219d4f08154c11f0aae1fd9735fae912-20250409
+X-UUID: 21bc27de154c11f0aae1fd9735fae912-20250409
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=m9EjBbOxyoiI2wKi1uLjAzEdktlVYSr76yh0tHokIek=;
-	b=qkHFp3xJ/HCQSxqLYnN6/GB2Th0Fb061lm3QJf2HkJyC8MQSMCySf++gouk6b2SrAYKhvH/2NwK+wSkOYXlXtLGP75NNSnVdRglcECtw+0jn1S9tTlxIXDTRVfag+Rc85aoxa05uZwZE4/b6PyEmfEdJmKNijDgMFzWSI1y2RRU=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=QsdUmFFLDZj5FPXjU9QE40sGSmXARWdokfpO+ZrHuO8=;
+	b=sEVgqgXNM15oLteREOkZf4U62O3izr3cdvuXn+4BcNkYIzG/edrzTcJMuRl5kt5GzMsLrn2Cs9E8eWLeI3+n9Pc027CvAS9h5MnTHjjxZv8OSas+WQM2Q6EpvFz32WH/S9Hl2t2nETPBjzKNkiJTprT/pjXOKty0kjII3XwNZ+c=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.1,REQID:1948d3b6-7a71-4e1c-bf0f-bd59336b2e48,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:0ef645f,CLOUDID:6d745fc7-16da-468a-87f7-8ca8d6b3b9f7,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-O-INFO: VERSION:1.2.1,REQID:f93f0903-edb7-464f-85d2-1834d039a2a0,IP:0,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-25
+X-CID-META: VersionHash:0ef645f,CLOUDID:e31f688d-f5b8-47d5-8cf3-b68fe7530c9a,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0|50,EDM:-3
+	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-UUID: 219d4f08154c11f0aae1fd9735fae912-20250409
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 21bc27de154c11f0aae1fd9735fae912-20250409
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
 	(envelope-from <shayne.chen@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1799071360; Wed, 09 Apr 2025 22:08:37 +0800
+	with ESMTP id 1426528527; Wed, 09 Apr 2025 22:08:37 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ MTKMBS14N2.mediatek.inc (172.21.101.76) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1258.39; Wed, 9 Apr 2025 22:08:36 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
@@ -62,11 +63,14 @@ To: Felix Fietkau <nbd@nbd.name>
 CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
 	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
 	<evelyn.tsai@mediatek.com>, linux-mediatek
-	<linux-mediatek@lists.infradead.org>, Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH mt76-next v3 00/10] Add MT7990 support
-Date: Wed, 9 Apr 2025 22:07:40 +0800
-Message-ID: <20250409140750.724437-1-shayne.chen@mediatek.com>
+	<linux-mediatek@lists.infradead.org>, Shayne Chen <shayne.chen@mediatek.com>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>
+Subject: [PATCH mt76-next v3 01/10] wifi: mt76: mt7996: add macros for pci decive id
+Date: Wed, 9 Apr 2025 22:07:41 +0800
+Message-ID: <20250409140750.724437-2-shayne.chen@mediatek.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250409140750.724437-1-shayne.chen@mediatek.com>
+References: <20250409140750.724437-1-shayne.chen@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,55 +81,225 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-MTK: N
 
-This series introduces support for the MT7990 PCI Wi-Fi device, a Wi-Fi 7
-chipset that supports Dual-Band Dual Concurrent (DBDC) on both 2.4 GHz and
-5 GHz bands.
+The chipset name (i.e., brand name) used by the driver may cause confusion
+with the PCI device ID when adding support for new chipsets.
 
-This series is based on:
-https://patchwork.kernel.org/project/linux-wireless/patch/20250320015909.3948612-1-StanleyYP.Wang@mediatek.com/
+| Chipset name | PCI device id  |
+|--------------|----------------|
+| 7996         | 0x7990, 0x7991 |
+| 7992         | 0x7992, 0x799a |
+| 7990         | 0x7993, 0x799b |
 
-v2:
- - remove accidentally added tag in 03/10
- - fix variable used uninitialized in 06/10
- - add target tree name
+To prevent confusion, replace the code that directly uses the device ID
+with macros. This is a preliminary patch to support mt7990 chipset.
 
-v3:
- - no need to wait response for SDO command (03/10)
- - modify indentation of switch case bracket (09/10)
+Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7996/coredump.c  |  4 ++--
+ .../net/wireless/mediatek/mt76/mt7996/eeprom.c    |  8 ++++----
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c  |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c   |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7996/mmio.c  |  6 +++---
+ .../net/wireless/mediatek/mt76/mt7996/mt7996.h    |  9 +++++++--
+ drivers/net/wireless/mediatek/mt76/mt7996/pci.c   | 15 ++++++++-------
+ 7 files changed, 28 insertions(+), 22 deletions(-)
 
-Peter Chiu (4):
-  wifi: mt76: mt7996: rework WA mcu command for mt7990
-  wifi: mt76: mt7996: rework DMA configuration for mt7990
-  wifi: mt76: mt7996: adjust HW capabilities for mt7990
-  wifi: mt76: mt7996: add PCI device id for mt7990
-
-Shayne Chen (2):
-  wifi: mt76: mt7996: add macros for pci decive id
-  wifi: mt76: connac: rework TX descriptor and TX free for mt7990
-
-StanleyYP Wang (4):
-  wifi: mt76: connac: add support to load firmware for mt7990
-  wifi: mt76: mt7996: rework register mapping for mt7990
-  wifi: mt76: mt7996: add eeprom support for mt7990
-  wifi: mt76: mt7996: rework background radar check for mt7990
-
- .../net/wireless/mediatek/mt76/mt76_connac.h  |   7 +-
- .../wireless/mediatek/mt76/mt76_connac3_mac.h |   1 +
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  |   3 +-
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |   2 +
- .../wireless/mediatek/mt76/mt7996/coredump.c  |   4 +-
- .../net/wireless/mediatek/mt76/mt7996/dma.c   | 192 ++++++++++++------
- .../wireless/mediatek/mt76/mt7996/eeprom.c    |  41 +++-
- .../net/wireless/mediatek/mt76/mt7996/init.c  |  18 +-
- .../net/wireless/mediatek/mt76/mt7996/mac.c   |  42 +++-
- .../net/wireless/mediatek/mt76/mt7996/mcu.c   |  77 +++++--
- .../net/wireless/mediatek/mt76/mt7996/mcu.h   |   6 +
- .../net/wireless/mediatek/mt76/mt7996/mmio.c  | 192 ++++++++++++++++--
- .../wireless/mediatek/mt76/mt7996/mt7996.h    |  50 +++--
- .../net/wireless/mediatek/mt76/mt7996/pci.c   |  21 +-
- .../net/wireless/mediatek/mt76/mt7996/regs.h  |  51 +++--
- 15 files changed, 549 insertions(+), 158 deletions(-)
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/coredump.c b/drivers/net/wireless/mediatek/mt76/mt7996/coredump.c
+index ccab0d7b9be4..303d6e80a666 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/coredump.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/coredump.c
+@@ -48,8 +48,8 @@ const struct mt7996_mem_region*
+ mt7996_coredump_get_mem_layout(struct mt7996_dev *dev, u32 *num)
+ {
+ 	switch (mt76_chip(&dev->mt76)) {
+-	case 0x7990:
+-	case 0x7991:
++	case MT7996_DEVICE_ID:
++	case MT7996_DEVICE_ID_2:
+ 		*num = ARRAY_SIZE(mt7996_mem_regions);
+ 		return &mt7996_mem_regions[0];
+ 	default:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+index 53dfac02f8af..51b09956486b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+@@ -13,9 +13,9 @@ static int mt7996_check_eeprom(struct mt7996_dev *dev)
+ 	u16 val = get_unaligned_le16(eeprom);
+ 
+ 	switch (val) {
+-	case 0x7990:
++	case MT7996_DEVICE_ID:
+ 		return is_mt7996(&dev->mt76) ? 0 : -EINVAL;
+-	case 0x7992:
++	case MT7992_DEVICE_ID:
+ 		return is_mt7992(&dev->mt76) ? 0 : -EINVAL;
+ 	default:
+ 		return -EINVAL;
+@@ -25,7 +25,7 @@ static int mt7996_check_eeprom(struct mt7996_dev *dev)
+ static char *mt7996_eeprom_name(struct mt7996_dev *dev)
+ {
+ 	switch (mt76_chip(&dev->mt76)) {
+-	case 0x7992:
++	case MT7992_DEVICE_ID:
+ 		switch (dev->var.type) {
+ 		case MT7992_VAR_TYPE_23:
+ 			if (dev->var.fem == MT7996_FEM_INT)
+@@ -39,7 +39,7 @@ static char *mt7996_eeprom_name(struct mt7996_dev *dev)
+ 				return MT7992_EEPROM_DEFAULT_MIX;
+ 			return MT7992_EEPROM_DEFAULT;
+ 		}
+-	case 0x7990:
++	case MT7996_DEVICE_ID:
+ 	default:
+ 		switch (dev->var.type) {
+ 		case MT7996_VAR_TYPE_233:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 6b660424aedc..f017d30e1c49 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -929,13 +929,13 @@ static int mt7996_variant_type_init(struct mt7996_dev *dev)
+ 	u8 var_type;
+ 
+ 	switch (mt76_chip(&dev->mt76)) {
+-	case 0x7990:
++	case MT7996_DEVICE_ID:
+ 		if (val & MT_PAD_GPIO_2ADIE_TBTC)
+ 			var_type = MT7996_VAR_TYPE_233;
+ 		else
+ 			var_type = MT7996_VAR_TYPE_444;
+ 		break;
+-	case 0x7992:
++	case MT7992_DEVICE_ID:
+ 		if (val & MT_PAD_GPIO_ADIE_SINGLE)
+ 			var_type = MT7992_VAR_TYPE_23;
+ 		else if (u32_get_bits(val, MT_PAD_GPIO_ADIE_COMB_7992))
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index ddd555942c73..81cc50ae55b0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -13,7 +13,7 @@
+ #define fw_name(_dev, name, ...)	({			\
+ 	char *_fw;						\
+ 	switch (mt76_chip(&(_dev)->mt76)) {			\
+-	case 0x7992:						\
++	case MT7992_DEVICE_ID:						\
+ 		switch ((_dev)->var.type) {			\
+ 		case MT7992_VAR_TYPE_23:			\
+ 			_fw = MT7992_##name##_23;		\
+@@ -22,7 +22,7 @@
+ 			_fw = MT7992_##name;			\
+ 		}						\
+ 		break;						\
+-	case 0x7990:						\
++	case MT7996_DEVICE_ID:						\
+ 	default:						\
+ 		switch ((_dev)->var.type) {			\
+ 		case MT7996_VAR_TYPE_233:			\
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+index 13b188e281bd..8b07883f45cc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+@@ -350,7 +350,7 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
+ 				     MT_RXQ_RING_BASE(MT7996_RXQ_BAND0) +
+ 				     MT7996_RXQ_BAND0 * MT_RING_SIZE;
+ 
+-		wed->wlan.id = 0x7991;
++		wed->wlan.id = MT7996_DEVICE_ID_2;
+ 		wed->wlan.tx_tbit[0] = ffs(MT_INT_TX_DONE_BAND2) - 1;
+ 	} else {
+ 		wed->wlan.hw_rro = dev->has_rro; /* default on */
+@@ -443,13 +443,13 @@ static int mt7996_mmio_init(struct mt76_dev *mdev,
+ 	spin_lock_init(&dev->reg_lock);
+ 
+ 	switch (device_id) {
+-	case 0x7990:
++	case MT7996_DEVICE_ID:
+ 		dev->reg.base = mt7996_reg_base;
+ 		dev->reg.offs_rev = mt7996_offs;
+ 		dev->reg.map = mt7996_reg_map;
+ 		dev->reg.map_size = ARRAY_SIZE(mt7996_reg_map);
+ 		break;
+-	case 0x7992:
++	case MT7992_DEVICE_ID:
+ 		dev->reg.base = mt7996_reg_base;
+ 		dev->reg.offs_rev = mt7992_offs;
+ 		dev->reg.map = mt7996_reg_map;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 43e646ed6094..bc22c3e12d94 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -30,6 +30,11 @@
+ #define MT7996_RX_MCU_RING_SIZE		512
+ #define MT7996_RX_MCU_RING_SIZE_WA	1024
+ 
++#define MT7996_DEVICE_ID		0x7990
++#define MT7996_DEVICE_ID_2		0x7991
++#define MT7992_DEVICE_ID		0x7992
++#define MT7992_DEVICE_ID_2		0x799a
++
+ #define MT7996_FIRMWARE_WA		"mediatek/mt7996/mt7996_wa.bin"
+ #define MT7996_FIRMWARE_WM		"mediatek/mt7996/mt7996_wm.bin"
+ #define MT7996_FIRMWARE_DSP		"mediatek/mt7996/mt7996_dsp.bin"
+@@ -471,11 +476,11 @@ static inline bool
+ mt7996_has_background_radar(struct mt7996_dev *dev)
+ {
+ 	switch (mt76_chip(&dev->mt76)) {
+-	case 0x7990:
++	case MT7996_DEVICE_ID:
+ 		if (dev->var.type == MT7996_VAR_TYPE_233)
+ 			return false;
+ 		break;
+-	case 0x7992:
++	case MT7992_DEVICE_ID:
+ 		if (dev->var.type == MT7992_VAR_TYPE_23)
+ 			return false;
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
+index 04056181368a..a4338367aaa1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
+@@ -16,14 +16,14 @@ static DEFINE_SPINLOCK(hif_lock);
+ static u32 hif_idx;
+ 
+ static const struct pci_device_id mt7996_pci_device_table[] = {
+-	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7990) },
+-	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7992) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, MT7996_DEVICE_ID) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, MT7992_DEVICE_ID) },
+ 	{ },
+ };
+ 
+ static const struct pci_device_id mt7996_hif_device_table[] = {
+-	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7991) },
+-	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x799a) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, MT7996_DEVICE_ID_2) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, MT7992_DEVICE_ID_2) },
+ 	{ },
+ };
+ 
+@@ -63,8 +63,8 @@ static struct mt7996_hif *mt7996_pci_init_hif2(struct pci_dev *pdev)
+ {
+ 	hif_idx++;
+ 
+-	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7991, NULL) &&
+-	    !pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x799a, NULL))
++	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, MT7996_DEVICE_ID_2, NULL) &&
++	    !pci_get_device(PCI_VENDOR_ID_MEDIATEK, MT7992_DEVICE_ID_2, NULL))
+ 		return NULL;
+ 
+ 	writel(hif_idx | MT_PCIE_RECOG_ID_SEM,
+@@ -121,7 +121,8 @@ static int mt7996_pci_probe(struct pci_dev *pdev,
+ 
+ 	mt76_pci_disable_aspm(pdev);
+ 
+-	if (id->device == 0x7991 || id->device == 0x799a)
++	if (id->device == MT7996_DEVICE_ID_2 ||
++	    id->device == MT7992_DEVICE_ID_2)
+ 		return mt7996_pci_hif2_probe(pdev);
+ 
+ 	dev = mt7996_mmio_probe(&pdev->dev, pcim_iomap_table(pdev)[0],
 -- 
 2.39.2
 
