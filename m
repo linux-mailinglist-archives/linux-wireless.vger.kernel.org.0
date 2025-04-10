@@ -1,248 +1,130 @@
-Return-Path: <linux-wireless+bounces-21405-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21406-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B48AA84F54
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 23:56:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA33A84F90
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Apr 2025 00:17:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26F0A4C68FC
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 21:55:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A84639C1B92
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 22:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FC31EB9F9;
-	Thu, 10 Apr 2025 21:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF7320E6E1;
+	Thu, 10 Apr 2025 22:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="kt6cDyBj"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fsCz9ImP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4962F1EB1B7;
-	Thu, 10 Apr 2025 21:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FF21DE2A8
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 22:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744322143; cv=none; b=kkCpcNG2sED19rNSyPqxp6X6oYCjf7tLMF5xCLonTgj/5nAIXutD06LsCA5/SoWEbyN/SfWykUwdaZZcOSNMCeKnzWGlYVYYSjOaUrCc+b0znv8+E/bNbv2SthZ2kW7FMTPVjHjcXB+OAXeC+Tfx7J6lTdawy/DkRjOhKaGrf9E=
+	t=1744323421; cv=none; b=co0wxtGgX6U9Bj0wFK3E8Zp+EpsRbuUTaETLAkhCLbMCkSouPbjIASqTjFOJP/xdE+wNuLgrWBmwdBnDO/Sb5AJFFfPHrWh7OjtkyFxCjdDhyxsFRKQh7E9pimivJ0q136EoPzV3TumExiNkMLrFZzSpZbk+Z1WJRMX2sr81RZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744322143; c=relaxed/simple;
-	bh=fDnGzJ51J5/a9sHZkR0tANFKUezttWMIbMlufgjren8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2xCgrbO/4o2unJjAvP0vzuAHD6/h/nOIuXFpHOPNFMQGdusnBgDKmrhAG9qr6RHY565ggXQuLWZRqQ4hJKoRpniewKd73lFQD3316B5a8BGmKCpDoMfeXJLgnA81Q9IIR41IxqLcceRKiEm0r333WYTZvhtE+pwMwWzrP9dPLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=kt6cDyBj; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1744322130; x=1744926930; i=spasswolf@web.de;
-	bh=1GY5ZMdZjhKMFGAZ7nYgIWIy42frcEP+JsCHcKOsgqQ=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=kt6cDyBjk3di39ySKMXxNJJSDf7ACBvMcKxHVjuHSfx9XsSR9b33dx3RqDtl1KIZ
-	 s8Yt4x8Dvvm7oImGEkA+P4NjuL6jI0xxNpDnGJAO7MQmMEcbDU4JOCvSb7rzHuDt6
-	 XFbi2JZQ6bvUXn/SRX0Hixr+DHneHHPeH9/NzOQ7BjlEr9pT19+syt02GiM11LJpr
-	 Dsz/2D1ThNPxb+TuxTkgAdPJr3anvb48NBU1FZmxWYigzt8B4/UtdCc0gPH69MI8l
-	 mzw5gw6oqiXxQ1vsFdcDnSAif/Ru+OowM3ZhS85AO5wQLdAVp+U7BoL8ANwqppITp
-	 zJVVUeT++ZXHUecBAQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from localhost.localdomain ([95.223.134.88]) by smtp.web.de
- (mrweb106 [213.165.67.124]) with ESMTPSA (Nemesis) id
- 1N0qr9-1t9MTX1cPt-015Ira; Thu, 10 Apr 2025 23:55:30 +0200
-From: Bert Karwatzki <spasswolf@web.de>
-To: Remi Pommarel <repk@triplefau.lt>
-Cc: Bert Karwatzki <spasswolf@web.de>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	johannes@sipsolutions.net
-Subject: Re: [PATCH wireless v2 1/2] wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()
-Date: Thu, 10 Apr 2025 23:55:26 +0200
-Message-ID: <20250410215527.3001-1-spasswolf@web.de>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <06aa507b853ca385ceded81c18b0a6dd0f081bc8.1742833382.git.repk@triplefau.lt> 
-References: 
+	s=arc-20240116; t=1744323421; c=relaxed/simple;
+	bh=HFP9qPj8dyOE3lqE3Pe0T3S7rWACXve/V2CTd1pqhCc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lzugVq2DHBhsaonZhLK1y3AmjkxhBeKWOX1j9I1ot/Qih9FnPq9IxL/0RtRMhKNnJ88b0qcPo0KmjcvoBsDOdWzcgSG/evrKBpw40rF1714WRmkdkKQYm9aWjPPeveQaUMMBa47vRIBqqYGGITurCj3U1beEP3VpowP7m2Nvl3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fsCz9ImP; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53AG7rfU016309
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 22:16:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	SlD2Zoqck4pcF7VZMBOHU/52fauKubtGQptlE1KvI3Y=; b=fsCz9ImP98FsJt01
+	ASFcaidgTI8xN0WzSjLgQk2ozYggU+2fa2BXmRSCgo3b9J67QXlm03nEChTMn6mK
+	Bo3cpQIsU4gwA+Ls23trtcC0TGgdrDoQ0r1fC18gAqpfHejLjXu5l9LI0kpKX/di
+	lxWxmnHK6r7PZrYLv5Ro6WZTZ7Pp1VddGk3CVqqG8w7L0380ZxgcJfclQlaadTRx
+	guB/S+VXx5JlGHgUB8gjSjlPqPz7BKcgTAS/9rznOWIQMk+fFwKXXFN3moMrYKLd
+	jyoJcrY3hHioBBLdDczXT8iPgMW2iFfM/qxB46DYQWU2yoXmPdZHt1MTe6LcnkeB
+	sM5JnA==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twc1r9kp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 22:16:56 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-306e5d9c9a6so2248821a91.1
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 15:16:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744323415; x=1744928215;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SlD2Zoqck4pcF7VZMBOHU/52fauKubtGQptlE1KvI3Y=;
+        b=lZrBV0y1XTu8uQg58jF33VoAo+JWNM8wTPAg6n7bWkiJJ7k444yk5ZfSWlkQmtdblp
+         mzPgPE+0qZG+zMzch8thsSIuTvCZALjI3C776Sy6MQNNYH9SbcAF9bqR9YKG4pbvB84O
+         8uI+OMae+v+fc921MLkD+iAknfxObTQ/SacYfMvqzy4rC49xMetqpT/k8Nm6FO71oS48
+         fFL9c0mwn/hag3S/hJaOzjRoPIayR+dtyg3Ts6ptGX4fOGegatFakWyk+BVo0DnyzuYB
+         d5ff45xGVExiwUzlGcRlUCgGf+UMFNL2FTFEi3/Nev/z3JwkULY5vQs0kkp0Bt9iL0rw
+         O1Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCUXJy5kk2KGJFK+zzs5W3Tfz5GlabwPiyGye0Wr78Ik/xdyXkAKQudKzhPm8w0QLu9xdhYXB6hxxc0nCDAgNQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyo6wVhLGiOwbXL4rV9rsJFAl8/YnDekL4WvD5rjechzYNXWTGe
+	PkpKzYn5A/xigYWrZI1Vi3Qu+L+oJrbHYpgaps4W8tZoC0r3/barITyHT/ipmwpKm6rkB8Gk5Kd
+	n1nARXvnkOxMFYLXAg1mhJnUTnFhO5hpf+sD+Y33pLvUMFqdic/k2pjkc/9omd+FHnw==
+X-Gm-Gg: ASbGncvcM8ozaB4IQ4vPiz8psCHbM4WMXRiWh6Tsfn3R3C7wBH3P5kGmSX8DS2waAMk
+	bgt7M67/uatDQkiPumNoIgEeyyM/zmxY3fLfaCj6TPOhwAo6h2oKc/Goqj2nWcSVejgXZwEZ71i
+	YljmmZXhrb/ApWduL3GAmf5M7ZU33FBq/mA9/kKALUnZnMgn2z8nOYH2b+7GKjGw2EW9vxS81HU
+	JARLyhqtuQ1sZY3zqjQjlIiuf8zYPdrh/V+EfM8k5nqXHbgd+gODElEOBk06jjqD60bIJRQT830
+	wzq7Tmccj1t0MR3avexr0BEPk5l/Co/VQqHEn87I/U2Ix6dka9Yd2atIwV1Wst6Chj38e8HHCZV
+	MIrL/
+X-Received: by 2002:a17:90b:2743:b0:2fe:b174:31fe with SMTP id 98e67ed59e1d1-30823624700mr846381a91.2.1744323415420;
+        Thu, 10 Apr 2025 15:16:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF3q3badw0zIeHRu251yR5zxmnm+DYdPJGS2wgnmZo8bCO06H0BLiRjTFsUKI1g39u/REbl2w==
+X-Received: by 2002:a17:90b:2743:b0:2fe:b174:31fe with SMTP id 98e67ed59e1d1-30823624700mr846343a91.2.1744323414953;
+        Thu, 10 Apr 2025 15:16:54 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306dd1859e9sm4265767a91.43.2025.04.10.15.16.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Apr 2025 15:16:54 -0700 (PDT)
+Message-ID: <23e31f9f-4465-45c1-8919-c5d43034d33e@oss.qualcomm.com>
+Date: Thu, 10 Apr 2025 15:16:53 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:jlxP9/8AIyquEdtoNCqulxHz9+nHygCEXW2jW8hWQeTxaXavBpY
- 63/haJUpFk1ieYl9yYFurB0ZLRJF5xGDBNfsO9EV/HnsLhJCoYAbFUCS6w6TCkH9+Xvw/g1
- DTlv8uGQdIkRLYrdRgWDtfQk5FLd7SGqTzHPNC5L42nVJ++82df/XJWQDHz3wiRRupoqUbm
- HkH0jY7BnoBlKkaRbhxyA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:UsEJkpJn51k=;OR3GCSoMhdpY9ZcnUceXxgEdQky
- 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
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: Fix buffer overflow in debugfs
+To: Dan Carpenter <dan.carpenter@linaro.org>,
+        Dinesh Karthikeyan <quic_dinek@quicinc.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        Ramya Gnanasekar <quic_rgnanase@quicinc.com>,
+        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <35daefbd-d493-41d9-b192-96177d521b40@stanley.mountain>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <35daefbd-d493-41d9-b192-96177d521b40@stanley.mountain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: E1syZBN0fvXMiyNpPv1lsd1syy-su88g
+X-Authority-Analysis: v=2.4 cv=KtdN2XWN c=1 sm=1 tr=0 ts=67f84358 cx=c_pps a=RP+M6JBNLl+fLTcSJhASfg==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=eavArjg6gjGuu_xFX0IA:9 a=QEXdDO2ut3YA:10
+ a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-GUID: E1syZBN0fvXMiyNpPv1lsd1syy-su88g
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-10_07,2025-04-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0 spamscore=0
+ malwarescore=0 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=726 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504100162
 
-This commit breaks the mediatek mt7921 wireless driver. In linux-next-2025=
-0410
-my mt7921e Wi-Fi controller is no longer able to connect to a network.
-I bisected this to commit a104042e2bf6 ("wifi: mac80211: Update skb's cont=
-rol
-block key in ieee80211_tx_dequeue()").
+On 4/9/2025 4:01 AM, Dan Carpenter wrote:
+> If the user tries to write more than 32 bytes then it results in memory
+> corruption.  Fortunately, this is debugfs so it's limitted to root users.
 
-Hardware:
-04:00.0 Network controller: MEDIATEK Corp. MT7921K (RZ608) Wi-Fi 6E 80MHz
+I've fixed this in the 'pending' branch:
+WARNING:TYPO_SPELLING: 'limitted' may be misspelled - perhaps 'limited'?
 
-This debugging patch reveals that the change causes key to be NULL in
-mt7921_tx_prepare_skb().
+https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=b49ee0380e07efa34bdc4b012df22842b7fe2825
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers=
-/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-index 881812ba03ff..3b8552a1055c 100644
-=2D-- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-@@ -13,6 +13,7 @@ int mt7921e_tx_prepare_skb(struct mt76_dev *mdev, void *=
-txwi_ptr,
-        struct mt792x_dev *dev =3D container_of(mdev, struct mt792x_dev, m=
-t76);
-        struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(tx_info->skb);
-        struct ieee80211_key_conf *key =3D info->control.hw_key;
-+       dev_info(mdev->dev, "%s: key =3D %px\n", __func__, key);
-        struct mt76_connac_hw_txp *txp;
-        struct mt76_txwi_cache *t;
-        int id, pid;
-
-
-So why is info->control.hw_key not updated by ieee80211_tx_h_select_key()?
-
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 34f229a6eab0..2510e3533d13 100644
-=2D-- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -631,8 +631,10 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *t=
-x)
- 		case WLAN_CIPHER_SUITE_WEP40:
- 		case WLAN_CIPHER_SUITE_WEP104:
- 		case WLAN_CIPHER_SUITE_TKIP:
--			if (!ieee80211_is_data_present(hdr->frame_control))
-+			if (!ieee80211_is_data_present(hdr->frame_control)) {
-+				printk(KERN_INFO "%s %d: setting tx->key =3D NULL\n", __func__, __LIN=
-E__);
- 				tx->key =3D NULL;
-+			}
- 			break;
- 		case WLAN_CIPHER_SUITE_CCMP:
- 		case WLAN_CIPHER_SUITE_CCMP_256:
-@@ -641,19 +643,23 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *=
-tx)
- 			if (!ieee80211_is_data_present(hdr->frame_control) &&
- 			    !ieee80211_use_mfp(hdr->frame_control, tx->sta,
- 					       tx->skb) &&
--			    !ieee80211_is_group_privacy_action(tx->skb))
-+			    !ieee80211_is_group_privacy_action(tx->skb)) {
-+				printk(KERN_INFO "%s %d: setting tx->key =3D NULL\n", __func__, __LIN=
-E__);
- 				tx->key =3D NULL;
--			else
-+			} else {
- 				skip_hw =3D (tx->key->conf.flags &
- 					   IEEE80211_KEY_FLAG_SW_MGMT_TX) &&
- 					ieee80211_is_mgmt(hdr->frame_control);
-+			}
- 			break;
- 		case WLAN_CIPHER_SUITE_AES_CMAC:
- 		case WLAN_CIPHER_SUITE_BIP_CMAC_256:
- 		case WLAN_CIPHER_SUITE_BIP_GMAC_128:
- 		case WLAN_CIPHER_SUITE_BIP_GMAC_256:
--			if (!ieee80211_is_mgmt(hdr->frame_control))
-+			if (!ieee80211_is_mgmt(hdr->frame_control)) {
-+				printk(KERN_INFO "%s %d: setting tx->key =3D NULL\n", __func__, __LIN=
-E__);
- 				tx->key =3D NULL;
-+			}
- 			break;
- 		}
-
-@@ -662,9 +668,13 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *t=
-x)
- 			     tx->skb->protocol !=3D tx->sdata->control_port_protocol)
- 			return TX_DROP;
-
-+		printk(KERN_INFO "%s: skip_hw=3D%d tx->key=3D%px\n",
-+				__func__, skip_hw, tx->key);
- 		if (!skip_hw && tx->key &&
--		    tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
-+		    tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE) {
- 			info->control.hw_key =3D &tx->key->conf;
-+			printk(KERN_INFO "%s: info->control.hw_key =3D %px\n", __func__, info-=
->control.hw_key);
-+		}
- 	} else if (ieee80211_is_data_present(hdr->frame_control) && tx->sta &&
- 		   test_sta_flag(tx->sta, WLAN_STA_USES_ENCRYPTION)) {
- 		return TX_DROP;
-@@ -3894,6 +3904,8 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee8021=
-1_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
- 	 */
-+	printk(KERN_INFO "%s: info->control.hw_key =3D %px, setting to NULL\n",
-+			__func__, info->control.hw_key);
- 	info->control.hw_key =3D NULL;
- 	r =3D ieee80211_tx_h_select_key(&tx);
- 	if (r !=3D TX_CONTINUE) {
-
-This patch reveals that tx->key is set to NULL (in the @@ -641,19 +643,23 =
-@@ chunk)
-and so the updating of info->contro.hw_key is skipped:
-
-[   17.411298] [   T1232] ieee80211_tx_h_select_key 647: setting tx->key =
-=3D NULL
-[   17.411300] [   T1232] ieee80211_tx_h_select_key: skip_hw=3D0 tx->key=
-=3D0000000000000000
-[   17.411307] [   T1232] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: ke=
-y =3D 0000000000000000
-
-If I revert commit a104042e2bf6 while keeping the debug patches it shows t=
-hat
-the for mt7921e the key is never updated in ieee80211_tx_h_select_key(), m=
-t7921e
-relies on the key your patch is setting to NULL.
-
-Is this a problem with your patch or with the mt7921e driver that just got
-revealed by your patch?
-
-Bert Karwatzki
+/jeff
 
