@@ -1,237 +1,254 @@
-Return-Path: <linux-wireless+bounces-21365-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21366-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0017A835DF
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 03:43:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15014A83644
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 04:14:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 827F54470FC
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 01:43:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D7807A7F07
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 02:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040521991DB;
-	Thu, 10 Apr 2025 01:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D02F1C7007;
+	Thu, 10 Apr 2025 02:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YSLiPBhj"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="oGXzMqPn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F65BA33;
-	Thu, 10 Apr 2025 01:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FED918A6A9;
+	Thu, 10 Apr 2025 02:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744249378; cv=none; b=Z8hvYBTil84C1crbPLG3oAQotOv4nR6jqiCSo6ogcwJwclp8ALqHeeSneQeo0DvWdAqcfNPr5Hlz1h9XsMHX6XKi+B9piVX/x0LMyw/zc9Hvm0ob8TuPvtoYhoFb6OqPsuHh7HhYYGTPslTNZqhA780GpPnBF0k7pDKN4xlwuz4=
+	t=1744251237; cv=none; b=a/pEaPkaba+nukECgiKUCZY32D5OhIy/l1P8ArZyevcKgHeSkDcFWC2yapcaFRWClSzf0sUJyA7df3bo9USZdDUgLmLb7VKC99OxYUW/OtpE3SG1iQau2UtkHOGYKvU9n2CMUODyBcMG+MKMNjDkz5a0RLV/Bm63yS23Uy7JhiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744249378; c=relaxed/simple;
-	bh=FE5mg5D/FN4YxnnYwiIXf8DA/W0lGp9e0a8+yjUH2fM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oBQN6LngAmcRzUk/nmjLBUsbWdMHfKbjrqM4DvlIPkBIbrfCXd4BpKkKIHZfDfw4a7b32eoSF3XA+MjUa9ENMz9NuKc6W1KHbXEmwznQ7OmCbNxmEqLy0zT8A+LBPhV6EG7idbO7LXBro/u+QaJbm9rsZzGDHR3zX56e7daT3JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YSLiPBhj; arc=none smtp.client-ip=209.85.219.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e6e1cd3f1c5so266544276.0;
-        Wed, 09 Apr 2025 18:42:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744249376; x=1744854176; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T+pLSC11elsCS/6G5qk4DJNIoM6zld73Dfy4WuRuhA4=;
-        b=YSLiPBhjzWkfL25vqZ4c8uaBnprlwvAgKemjoO5GiU1W8BGpwFA0IpH5znWpan7mQf
-         3CSxVBYbekkji+BxIcjVdIT0UVaEJ+tx8c5hRoqmDwRcJiOlbilRoyPlNXyvh6oX3xXT
-         F8pySR06s8KjAwhz8k31ibxwD8KULK6n8VcsmDbf2Pw9wG1QREs1GxOsLSZI3xF90wNl
-         fdor0yNnIzTQlTNEQWfiM+W7W3A/OZuZQuSH4Wbd4+D02RXuwS/f4CerrWtwh4G3vAiZ
-         YCxTnSzk72JjlojzociGNKrvJl4GcvgjYsYcql202lwy7u/YdkX8UWtKJydZCYV4amVO
-         Drdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744249376; x=1744854176;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T+pLSC11elsCS/6G5qk4DJNIoM6zld73Dfy4WuRuhA4=;
-        b=YQi5qIfKcf19VX4W2ED+F5lBas5b5dnmiIEvHE2bRtVx5jFO+ZzHsR12cFngRljY27
-         Y665zbBwWHGncHyEPOyjRELI/5uSULQY+pfSVxJSbGiXhEJMlhLZAWbRAPV3DTFj9CTc
-         VUOH6YYWQ1NXKZrBwtylmT/kBRz4F+oMG1PTKKcBjlqnud5NbeTq52VgIaksQ8GGewyg
-         FPJXlGo4adiqkwmgxSHJipIAeIWDQv/X1IsTz6SNTdbr+2bdHvVZbLnqvXYh3UxAsz/e
-         r/QEKS+bKIX+GtO+1D3v5eaRW959URsaJCHpvEp16m9KmYL1HB3oMUuE/ra9iZludSI5
-         Wzgw==
-X-Forwarded-Encrypted: i=1; AJvYcCWaAJHDpHlvpa8rKW3xccqBulF/4iTAOn/UxprkSL00GXcaGlx7LkEtO1mWTUG1SCs2rVGkVuVp27YLHgM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJOsvFmCF4Onb6p2gKUw/Vqc1gBnrb2XS9UMQ1fpRY5kvMzuGM
-	OkS4ILexyg1T94bfSfjiz1ZQSIrNObGpvMS14edUGnqqNA+2HlWxMWtxUfmmH18BQTPDyi2DPyr
-	9gT2GxfpWVfcuoN1zUyYCZj7zVYqvcA==
-X-Gm-Gg: ASbGnctZM+cN98kW3wXF9AIqnxnFQF9Xa2FtR187DLkunr3IhEQXM2QX8IkBXI7SOrH
-	Am9EYrZ1jjIpyBaHWQRC95uI5SMwycNEnsEA3vvjlW/dy41IeZRXam5ENBNR7EaNB6c7iiQQPg4
-	FbNggL+/MgKDyynmcj1p9bGX3adnpdKDP0dLg=
-X-Google-Smtp-Source: AGHT+IGsUvTGRc4LfHfAtpGZm6PYwsb1DTq6D9tF/s/WMOl7uLwiGys2RtGoUMjI6FJv3Tl76eEvvS83n8Lf7wJSJow=
-X-Received: by 2002:a05:6902:478c:b0:e6b:834d:f0f5 with SMTP id
- 3f1490d57ef6-e703e1f9984mr1932648276.39.1744249376163; Wed, 09 Apr 2025
- 18:42:56 -0700 (PDT)
+	s=arc-20240116; t=1744251237; c=relaxed/simple;
+	bh=9u60sO7OOT1oWOmjPwikFu4rY64oDd58zik3I0OmYfo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jyrx9vcKh3bQBwlFUn5MCd03clO2cOnKXN0/VHVawSfJhx3OrL+vuYxCQixECWJov5lKBt9rI+r8GLFYxoRz9760wpu7sDj1ao+nLg7LgGmSn6bqt7pXWP/0AL3taPtxaXDAeo+2/qUhQxoOHG/dBa4OQKDjm6r/E2KJKIRCd1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=oGXzMqPn; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [IPV6:2601:646:8081:1f94:9d5:a0c2:3619:62ac] ([IPv6:2601:646:8081:1f94:9d5:a0c2:3619:62ac])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53A29YJd3849252
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Wed, 9 Apr 2025 19:09:34 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53A29YJd3849252
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025032001; t=1744250985;
+	bh=sYPb2HJP4fVpfYUaFUUZ0pgxUHfO2I9/b7H7IqJmj3c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oGXzMqPnDihlvH8csOG6X1vYEL5+OkVYip8jhTPp6IM9qVTa+TE2DQN/NL7CCufbI
+	 W70VoP5+eXYAecjlqh+Tn7MRcWyYYPY6ri9KgXYwsAfXP39A5RG5P/1U2MrIrPxIl4
+	 LgNJ7p5qe7PlXd1brGtIHKI9TjgO8NyN/0p80ooXB7kFpxcUb3DSe2qpaXbL6MYH5Y
+	 jkbPJIJLpQn1W597tFm89pO6yOJzSzHl/UbpTIyOav94ZVlYeTk/+v6ZOvSDveTwGk
+	 3WaanUXTgaBtSBGsUrLEl+lM6ukmEGPsrkHUnC15nBvJNz4rVyDO7jHqYWigKmp0ks
+	 M5Uu5VvWQnEFA==
+Message-ID: <e97a83a2-dabd-4dc3-b69a-840ca17d70b5@zytor.com>
+Date: Wed, 9 Apr 2025 19:09:28 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250410004130.49620-1-rosenp@gmail.com>
-In-Reply-To: <20250410004130.49620-1-rosenp@gmail.com>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Wed, 9 Apr 2025 18:42:45 -0700
-X-Gm-Features: ATxdqUEJb1ak6ViqGrp-RQbdrNKzRMl9LIVcUePjvSUpiyC72rKUHkX2lRQFDoA
-Message-ID: <CAKxU2N8y6Kj6hfx4LxC+K0Jc9VRYfE-LHBVBAaC-4EcXy_6GqQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] wifi: ath9k: use devm for irq and ioremap resource
-To: linux-wireless@vger.kernel.org
-Cc: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/13] Introduce parity_odd() and refactor redundant
+ parity code
+To: Yury Norov <yury.norov@gmail.com>, Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, jk@ozlabs.org,
+        joel@jms.id.au, eajames@linux.ibm.com, andrzej.hajda@intel.com,
+        neil.armstrong@linaro.org, rfoss@kernel.org,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+        dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
+        hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
+        vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+        parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+        johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+        jirislaby@kernel.org, akpm@linux-foundation.org, jdelvare@suse.com,
+        linux@roeck-us.net, alexandre.belloni@bootlin.com, pgaj@cadence.com,
+        alistair@popple.id.au, linux@rasmusvillemoes.dk,
+        Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+        jernej.skrabec@gmail.com, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+        dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+        oss-drivers@corigine.com, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+        brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+        bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw, Frank.Li@nxp.com,
+        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
+        david.laight.linux@gmail.com, andrew.cooper3@citrix.com,
+        Yu-Chun Lin <eleanor15x@gmail.com>
+References: <20250409154356.423512-1-visitorckw@gmail.com>
+ <Z_amQp3gK5Dm8Qz3@yury> <Z/a5Qh/OeLT8JBS4@visitorckw-System-Product-Name>
+ <Z_a9YpE46Xf8581l@yury>
+Content-Language: en-US
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <Z_a9YpE46Xf8581l@yury>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 9, 2025 at 5:41=E2=80=AFPM Rosen Penev <rosenp@gmail.com> wrote=
-:
->
-> Avoids having to manually free. Both of these get called and removed in
-> probe only and are safe to convert.
->
-> devm_platform_ioremap_resource is different as it also calls
-> devm_request_memory_region, which requires non overlapping memory
-> regions. Luckily, that seems to be the case.
->
-> Tested on a TP-Link Archer C7v2.
->
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-whoops. net-next should not be in the title.
-> ---
->  drivers/net/wireless/ath/ath9k/ahb.c | 22 ++++++----------------
->  drivers/net/wireless/ath/ath9k/pci.c |  9 +++------
->  2 files changed, 9 insertions(+), 22 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/=
-ath/ath9k/ahb.c
-> index d4805e02b927..636a487bf9b4 100644
-> --- a/drivers/net/wireless/ath/ath9k/ahb.c
-> +++ b/drivers/net/wireless/ath/ath9k/ahb.c
-> @@ -74,7 +74,6 @@ static int ath_ahb_probe(struct platform_device *pdev)
->         void __iomem *mem;
->         struct ath_softc *sc;
->         struct ieee80211_hw *hw;
-> -       struct resource *res;
->         const struct platform_device_id *id =3D platform_get_device_id(pd=
-ev);
->         int irq;
->         int ret =3D 0;
-> @@ -86,16 +85,10 @@ static int ath_ahb_probe(struct platform_device *pdev=
-)
->                 return -EINVAL;
->         }
->
-> -       res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       if (res =3D=3D NULL) {
-> -               dev_err(&pdev->dev, "no memory resource found\n");
-> -               return -ENXIO;
-> -       }
-> -
-> -       mem =3D devm_ioremap(&pdev->dev, res->start, resource_size(res));
-> -       if (mem =3D=3D NULL) {
-> +       mem =3D devm_platform_ioremap_resource(pdev, 0);
-> +       if (IS_ERR(mem)) {
->                 dev_err(&pdev->dev, "ioremap failed\n");
-> -               return -ENOMEM;
-> +               return PTR_ERR(mem);
->         }
->
->         irq =3D platform_get_irq(pdev, 0);
-> @@ -118,16 +111,16 @@ static int ath_ahb_probe(struct platform_device *pd=
-ev)
->         sc->mem =3D mem;
->         sc->irq =3D irq;
->
-> -       ret =3D request_irq(irq, ath_isr, IRQF_SHARED, "ath9k", sc);
-> +       ret =3D devm_request_irq(&pdev->dev, irq, ath_isr, IRQF_SHARED, "=
-ath9k", sc);
->         if (ret) {
->                 dev_err(&pdev->dev, "request_irq failed\n");
-> -               goto err_free_hw;
-> +               return ret;
->         }
->
->         ret =3D ath9k_init_device(id->driver_data, sc, &ath_ahb_bus_ops);
->         if (ret) {
->                 dev_err(&pdev->dev, "failed to initialize device\n");
-> -               goto err_irq;
-> +               goto err_free_hw;
->         }
->
->         ah =3D sc->sc_ah;
-> @@ -137,8 +130,6 @@ static int ath_ahb_probe(struct platform_device *pdev=
-)
->
->         return 0;
->
-> - err_irq:
-> -       free_irq(irq, sc);
->   err_free_hw:
->         ieee80211_free_hw(hw);
->         return ret;
-> @@ -152,7 +143,6 @@ static void ath_ahb_remove(struct platform_device *pd=
-ev)
->                 struct ath_softc *sc =3D hw->priv;
->
->                 ath9k_deinit_device(sc);
-> -               free_irq(sc->irq, sc);
->                 ieee80211_free_hw(sc->hw);
->         }
->  }
-> diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/=
-ath/ath9k/pci.c
-> index 27d4034c814e..48c7cae11e37 100644
-> --- a/drivers/net/wireless/ath/ath9k/pci.c
-> +++ b/drivers/net/wireless/ath/ath9k/pci.c
-> @@ -965,9 +965,9 @@ static int ath_pci_probe(struct pci_dev *pdev, const =
-struct pci_device_id *id)
->         }
->
->         if (!msi_enabled)
-> -               ret =3D request_irq(pdev->irq, ath_isr, IRQF_SHARED, "ath=
-9k", sc);
-> +               ret =3D devm_request_irq(&pdev->dev, pdev->irq, ath_isr, =
-IRQF_SHARED, "ath9k", sc);
->         else
-> -               ret =3D request_irq(pdev->irq, ath_isr, 0, "ath9k", sc);
-> +               ret =3D devm_request_irq(&pdev->dev, pdev->irq, ath_isr, =
-0, "ath9k", sc);
->
->         if (ret) {
->                 dev_err(&pdev->dev, "request_irq failed\n");
-> @@ -979,7 +979,7 @@ static int ath_pci_probe(struct pci_dev *pdev, const =
-struct pci_device_id *id)
->         ret =3D ath9k_init_device(id->device, sc, &ath_pci_bus_ops);
->         if (ret) {
->                 dev_err(&pdev->dev, "Failed to initialize device\n");
-> -               goto err_init;
-> +               goto err_irq;
->         }
->
->         sc->sc_ah->msi_enabled =3D msi_enabled;
-> @@ -991,8 +991,6 @@ static int ath_pci_probe(struct pci_dev *pdev, const =
-struct pci_device_id *id)
->
->         return 0;
->
-> -err_init:
-> -       free_irq(sc->irq, sc);
->  err_irq:
->         ieee80211_free_hw(hw);
->         return ret;
-> @@ -1006,7 +1004,6 @@ static void ath_pci_remove(struct pci_dev *pdev)
->         if (!is_ath9k_unloaded)
->                 sc->sc_ah->ah_flags |=3D AH_UNPLUGGED;
->         ath9k_deinit_device(sc);
-> -       free_irq(sc->irq, sc);
->         ieee80211_free_hw(sc->hw);
->  }
->
-> --
-> 2.49.0
->
+On 4/9/25 11:33, Yury Norov wrote:
+>>>
+>> I don't have a strong preference for the name, but if I had to guess
+>> the return value from the function prototype, I would intuitively
+>> expect an int to return "0 for even and 1 for odd," and a bool to
+>> return "true for even, false for odd." I recall Jiri and Jacob shared
+>> similar thoughts, which is why I felt adding _odd could provide better
+>> clarity.
+> 
+> I think they said they are convinced that parity should return 1 for
+> odd because of folding and __builtin_parity() arguments.
+> 
+
+And for bool, 0 == false, and 1 == true. In fact, the *definitions* for 
+false and true in C (but not C++) is:
+
+<stdbool.h>:
+typedef _Bool bool;
+#define false	0
+#define true	1
+
+If someone wants to make more clear, it would be better to put "typedef 
+bool bit_t" in a common header, but that personally seems ridiculous to me.
+   >>>> type from u8 to u64 for broader applicability, and updates its 
+return
+>>>> type from int to bool to make its usage and return semantics more
+>>>> intuitive-returning true for odd parity and false for even parity. It
+>>>> also adds __attribute_const__ to enable compiler optimizations.
+>>>
+>>> That's correct and nice, but can you support it with a bloat-o-meter's
+>>> before/after and/or asm snippets? I also think it worth to be a separate
+>>> patch, preferably the last patch in the series.
+>>>
+>> I quickly tested it with the x86 defconfig, and it appears that the
+>> generated code doesn't change. I forgot who requested the addition
+>> during the review process, but I initially thought it would either
+>> improve the generated code or leave it unchanged without significantly
+>> increasing the source code size.
+> 
+> That's what I actually expected, but was shy to guess openly. :). It's
+> hard to imagine how compiler may improve code generation in this case...
+> 
+> This attribute is used when there's an asm block, or some non-trivial
+> function call. In this case, the function is self-consistent and makes
+> no calls. And you see, const annotation raises more questions than
+> solves problems. Let's drop it.
+
+Ah yes; one of the quirks about gcc asm is that an asm is implicitly 
+assumed "const" (with no memory operands) or "pure" (with memory 
+operands) unless declared volatile or given an explicit "memory" clobber.
+
+So yes, the compiler can most definitely derive the constness from the 
+form of the function even in the variable case.
+
+I would still like to see __builtin_parity() being used as an 
+architecture opt-in; it can, of course, also be unconditionally used in 
+the constant case.
+
+So in the end one of these two become my preferred implementation, and I 
+really don't think it is very complicated:
+
+#ifndef use_builtin_parity
+#define use_builtin_parity(x) __builtin_constant_p(x)
+#endif
+
+static inline bool parity8(u8 val)
+{
+	if (use_builtin_parity(val))
+		return __builtin_parity(val);
+	val ^= val >> 4;
+	return (0x6996 >> (val & 0xf)) & 1;
+}
+
+static inline bool parity16(u16 val)
+{
+	if (use_builtin_parity(val))
+		return __builtin_parity(val);
+	return parity8(val ^ (val >> 8));
+}
+
+static inline bool parity32(u32 val)
+{
+	if (use_builtin_parity(val))
+		return __builtin_parity(val);
+	return parity16(val ^ (val >> 16));
+}
+
+static inline bool parity64(u64 val)
+{
+	if (use_builtin_parity(val))
+		return __builtin_parityll(val);
+	return parity32(val ^ (val >> 32));
+}
+
+This means that an architecture -- in particular, x86 -- can still ask 
+to use __builtin_parity*() directly. It means that architectures on 
+which __builtin_parity*() produces bad code should either complain to 
+the gcc/clang team and have it fixed, or we can add additional mechanism 
+for them to override the implementation at that time.
+
+The alternative is to stop worrying about overengineering, and just do 
+it once and for all:
+
+#ifndef parity8
+static inline bool parity8(u8 val)
+{
+	val ^= val >> 4;
+	return (0x6996 >> (val & 0xf)) & 1;
+}
+#endif
+
+#ifndef parity16
+static inline bool parity16(u16 val)
+{
+	return parity8(val ^ (val >> 8));
+}
+#endif
+
+#ifndef parity32
+static inline bool parity32(u32 val)
+{
+	return parity16(val ^ (val >> 16));
+}
+#endif
+
+#ifndef parity64
+static inline bool parity64(u64 val)
+{
+	return parity32(val ^ (val >> 32));
+}
+#endif
+
+In either case, instead of packing the cascade into one function, make 
+good use of it.
+
+In the latter case, __builtin_constant_p() isn't necessary as it puts 
+the onus on the architecture to separate out const and non-const cases, 
+if it matters -- which it doesn't if the architecture simply wants to 
+use __builtin_parity:
+
+#define parity8(x)  ((bool) __builtin_parity((u8)(x)))
+#define parity16(x) ((bool) __builtin_parity((u16)(x)))
+#define parity32(x) ((bool) __builtin_parity((u32)(x)))
+#define parity64(x) ((bool) __builtin_parityll((u64)(x)))
+
+As stated before, I don't really see that the parity function itself 
+would be very suitable for a generic helper, but if it were to, then 
+using the "standard" macro construct for it would seem to be the better 
+option.
+
+(And I would be very much in favor of not open-coding the helper 
+everywhere but to macroize it; effectively creating a C++ template 
+equivalent. It is out of scope for this project, though.)
+
+	-hpa
+
 
