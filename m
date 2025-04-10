@@ -1,151 +1,138 @@
-Return-Path: <linux-wireless+bounces-21400-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21401-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9918DA84AA9
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 19:06:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E489DA84AD2
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 19:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A16707B38C8
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 17:05:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 595AE17EDFC
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 17:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5198C1EE7B7;
-	Thu, 10 Apr 2025 17:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392021876;
+	Thu, 10 Apr 2025 17:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UGSnJkR5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cn7fvw13"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B121E832A;
-	Thu, 10 Apr 2025 17:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B1E1EB5F0
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 17:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744304800; cv=none; b=WHneoeoLBmEqDj0AwC206KevGtyoGJeWoLBmWwFaLe4FqvOE+C9f5QEfQ1kL7CIvH2hDVsGz9ag6/+HSu9NvMmXcXf9T3lv0nbCSBpcrNmS5KkPA1HBohkAiO/S6bcvpvbmbGtA9iALrJq7cPSMX12jaO6OBTNDWxvpzoK1xSqk=
+	t=1744305536; cv=none; b=eqt335iPZW8+f5JfW1Fc9LDL1mtsNR6ajWBh5Le4kyYruG06rSZsLqKmmvoZLucQ93u8t9zyZ/56zjE03pqa9LaiZDdH7rsuqL7fs6LPJ62l16iYLx2XNSJOzI9LT09wgRDiVa6eF1hcwc4Sydea+3fqTOhucFkAXX2CroFR1iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744304800; c=relaxed/simple;
-	bh=k4uvIuqJbG7f/BU7bv+4g8ZNeOlmaR1Btja9MgUIDXU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=aHF6VTlNE3Sc15IT2qj5/tVPpIFDsCSQnMe6qx0lZLbarU88ET2SycCZqpBwEZgwS5nImTMI+JeYUS5Rh17FFur42UkNYKI/e7fPoOqxtrubN25w3tUE2m22lVfkRVzF8D/yoRb8bZHuvFRnWv6LQJX/uo+zFYd7aN2BtvLcrRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UGSnJkR5; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53AD2sVk007171;
-	Thu, 10 Apr 2025 17:06:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	BF21VqHILgXSKki3imET/CfbbOUSYsGO44rNBA7fR5A=; b=UGSnJkR5G2/UerdF
-	k5ImmnQ009nbU9PufAdxB9FemHaf8cpJlBkveFqDVO+lpGte93GgXNCOqvbST9yQ
-	C+O8EVgbRh3N11h1TREcfoZayg3iXtSTrFEkBPTlGNl26Pd5MeS3QQGtnV3tmitk
-	UpGLH4rycWm60N8GD1YEQjTwIbSyQ7lJXmQMy0yQBiOfvUZzujdwGAV06Ex2x+GY
-	n0lwpsoBX36QIs990RiOKe8rZPRP59HOHLhw0OETv3E1Dbdseoy3JGWpZ6u/VT+i
-	+Ry+2m/HKOkXV1+A/zSk3fFgC4qq8YbsifnRYJhUqzc2+1aV2Dvm863IBIDGY2NJ
-	0P8QLw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45xeh3gqac-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Apr 2025 17:06:31 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53AH6TBX017695
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Apr 2025 17:06:29 GMT
-Received: from [10.216.57.178] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 10 Apr
- 2025 10:06:25 -0700
-Message-ID: <88ee501b-7c1b-c8d1-9c7d-ad11c87e7530@quicinc.com>
-Date: Thu, 10 Apr 2025 22:36:21 +0530
+	s=arc-20240116; t=1744305536; c=relaxed/simple;
+	bh=CUSKcv01A3Z7tGqgIubF31pMfSqEYNOwMRKyLZqVFL4=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=cqoLkqUlwq26agSwsL3R96Zs9da8kK47/1H5JUrn49EERPgBVxooNqe/Arsrko0tPEUOAhxHGl7gp5d600/jRjPAoxPuo3Eil7gJKkSwkWE23TQWHyai1fv+ukFeLxfjkmlGk4aNS4Va1emGhfRto4XRc2D6mT7RpwY5Uknx0Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cn7fvw13; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-30bf3f3539dso12519641fa.1
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 10:18:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744305532; x=1744910332; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/wKZjCOUm/+E+VVdkTgN6jg9pP3FthH13Jp89MA20y8=;
+        b=cn7fvw13PtLqP9kMW0CBcC7iBa6F+ZU49Q9FqIqXVFmfSV2iBe0tw/MSWNFjRzCcOm
+         uuan7fJMthpoek202AiwlM4FFA4KnYun0BbrRCFwm6gcCoo7vpXgxS/s7qIabgpB1Nw8
+         G99VEzW42tj6jekpl5D7reNPpEuU33qY/0sbv5F5CpAge1puN153sgWhZsZztM2PYomi
+         zoB0WbdSWqWarPxjikheoYkpY9RDzFaZMQ7uwEHQBKAXerKX/sj1lZSb085JhVyTEqSl
+         XNCjgYMzhvifcpwlq7XGcX4/j9d/P+G4WtBuVumcsvOI5dJwt1XZg5Q821UwHq9EYorG
+         Vv9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744305532; x=1744910332;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/wKZjCOUm/+E+VVdkTgN6jg9pP3FthH13Jp89MA20y8=;
+        b=wFxckoEuCHH3m9iXOl+Y9USvK9iTNrRCala5+y/xI8ui+nwVnS0uaOKSvtJeZ9GDh2
+         CWjV9nWo8EX4wQhObMUsJf82DCCde8qrDAilLFSyaLvNS9zmiR1F5jSg21Cj6rFCeyHp
+         82UWha4cNaP5retKtmLu7Vtvrgv89aOs68s7gYz8hZ1VfgGm2rVLgYBR4u1LLUyUl0o9
+         1Cmq1roqIBeZILdOCeetQIM06dXxVMSVeDgzVIDxc1c/4ZSRVYzkGs9BObQ9Nc/mLa6a
+         Uxo9esG7IPv6glD4vPL0sYxz9OSnSZPuBwr5GKaV3HG/Se+1eN7WixLLYOYVBfVGKsY7
+         tqjQ==
+X-Gm-Message-State: AOJu0YwQfzIeW5UQR2t4YKgdZkcmJGO/HHlzInfN5ZdPL6pzwT2tkRKn
+	680J7Gq7yNsh4NUXAx8AiAE/sAwahSMxgAocYb5pwTqtQI6o4vCQnMcmbAIR
+X-Gm-Gg: ASbGncv2mRfpB7JQktgI59mxi7oOK2Bk/VdcOw3BusX1yFrqbaCwWTvSbjhcG9987pH
+	QDMF9fSJnTM8NG/P6ILpYuMfo9/I9j/CwY5NF1kgQX8JNzUbLqKfeYmo4tK02lP54mXgI6q81qY
+	RgToauD7FJzN4pQw/DQVD12yqCTEDFIx5zG2Uzk9cVM0SP8/58hPi4Qb/mV3KVqwHjCJB5BOTGw
+	jSi10Fo21rSjMqNUcgo4+4eINnUEalM32eUrBqQ2Pl1zh8c5XaB3/3MgR3T0nIvJeUZZKO00VRL
+	7b3uwjeeN/Ysp3f6OG/iypqCiXNzDcXRZiqKaEZtKrG5e4MoPq8UfiF0yBI/+BCzYXCorvdYGLm
+	01iYrOUjzwqMGjb3G2inBQJBrg6a52Xtqk9CtK55p1alWX+i8umywB+hrNiXsXu/FuIDTsGqh2J
+	PW5s/OnmQVGDgL3WnUiT69
+X-Google-Smtp-Source: AGHT+IFKp2378vOb7HakoGS48OaC5ALxaLC8ME9nN6byoKfPO6QQdr4bkGBSpy/aS3+CD1fnUSjT6A==
+X-Received: by 2002:a2e:91ca:0:b0:30b:fc3a:5c49 with SMTP id 38308e7fff4ca-310156a8dfbmr10051751fa.9.1744305532026;
+        Thu, 10 Apr 2025 10:18:52 -0700 (PDT)
+Received: from ?IPV6:2001:7d0:832a:e200:762a:78d0:56a8:7217? (7217-56a8-78d0-762a-e200-832a-07d0-2001.dyn.estpak.ee. [2001:7d0:832a:e200:762a:78d0:56a8:7217])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30f464ea274sm5563681fa.52.2025.04.10.10.18.50
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Apr 2025 10:18:51 -0700 (PDT)
+Message-ID: <f85abad2-20eb-456b-9bd1-455a4a0f07b1@gmail.com>
+Date: Thu, 10 Apr 2025 20:18:46 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH next] wifi: ath12k: Fix a couple NULL vs IS_ERR() bugs
+User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To: Dan Carpenter <dan.carpenter@linaro.org>,
-        Sowmiya Sree Elavalagan
-	<quic_ssreeela@quicinc.com>
-CC: Jeff Johnson <jjohnson@kernel.org>,
-        Raj Kumar Bhagat
-	<quic_rajkbhag@quicinc.com>,
-        Vasanthakumar Thiagarajan
-	<vasanthakumar.thiagarajan@oss.qualcomm.com>,
-        Balamurugan S
-	<quic_bselvara@quicinc.com>,
-        P Praneesh <quic_ppranees@quicinc.com>,
-        <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <937abc74-9648-4c05-a2c3-8db408b3ed9e@stanley.mountain>
-From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
-In-Reply-To: <937abc74-9648-4c05-a2c3-8db408b3ed9e@stanley.mountain>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To: linux-wireless <linux-wireless@vger.kernel.org>
+From: Avamander <avamander@gmail.com>
+Subject: iwlwifi: bad HE/EHT 6 GHz operation
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=VbH3PEp9 c=1 sm=1 tr=0 ts=67f7fa97 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=EnhqhbNNt_GmlLj2XIYA:9
- a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: yaCjOL8_YHmEsaFV3MxYYQFSOZDw7Db3
-X-Proofpoint-ORIG-GUID: yaCjOL8_YHmEsaFV3MxYYQFSOZDw7Db3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-10_04,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 impostorscore=0 suspectscore=0 adultscore=0 spamscore=0
- clxscore=1011 malwarescore=0 priorityscore=1501 bulkscore=0 mlxscore=0
- mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504100123
+
+Hi,
+
+I was trying to connect my PC with an Intel AX210 card to an Aruba
+AP-655 on the 6GHz band with 160MHz bandwidth. Unfortunately this
+results in the following kernel log messages:
+
+     wlp4s0: bad HE/EHT 6 GHz operation
+     wlp4s0: AP appears to change mode (expected HE, found legacy),
+     disconnect
+
+I'm currently running 6.11.0 (-21-generic #21-Ubuntu), with matching
+iwlwifi ("driverversion=6.11.0-21-generic firmware=89.202a2f7b.0
+ty-a0-gf-a0-89.uc"). The network however seems to cause no issues for
+macOS devices.
+
+I've captured the beacon frame and it contains the following HE 6GHz
+operation information:
+
+     Control: 0x03
+     Primary Channel: 69
+     Channel Center Frequency Segment 0: 71
+     Channel Center Frequency Segment 1: 79
+     Minimum Rate: 1
+
+There's a very similar (and singular) issue on BugZilla (219159) also
+concerning operations with Aruba AP-s. But it seems that it's not
+exactly the same. First and foremost, the CCFS0 and CCFS1 seem to be
+correct in my case. 71 is a valid 80MHz channel, 79 is a valid 160MHz
+channel. (As per 802.11ax-2021, CCFS1 must be greater than zero and the
+absolute difference between CCFS0 and CCFS1 must equal to exactly 8,
+which seems to be the case.)
+
+Commit 91b193d546683558a8799ffb2e2f935d3800633e seems to be the most
+recent one that directly adjusts this logic. Manually checking
+all the channel/AP parameters against these new checks, everything seems
+to be valid. But as this code does not log which exact check failed,
+it's very difficult to say what's going wrong. (Given the relative
+complexity of this I imagine more detailed logging would be handy for many.)
+
+I would really appreciate any help debugging this.
 
 
 
-On 4/10/2025 9:56 PM, Dan Carpenter wrote:
-> The devm_memremap() function returns error pointers on error and the
-> ioremap() function returns NULL on error.  The error checking here got
-> those flipped around.
-> 
-> Fixes: c01d5cc9b9fe ("wifi: ath12k: Power up userPD")
-> Fixes: 6cee30f0da75 ("wifi: ath12k: add AHB driver support for IPQ5332")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> ---
->   drivers/net/wireless/ath/ath12k/ahb.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
-> index a9d9943a73f4..636dfe237a79 100644
-> --- a/drivers/net/wireless/ath/ath12k/ahb.c
-> +++ b/drivers/net/wireless/ath/ath12k/ahb.c
-> @@ -360,10 +360,10 @@ static int ath12k_ahb_power_up(struct ath12k_base *ab)
->   	mem_phys = rmem->base;
->   	mem_size = rmem->size;
->   	mem_region = devm_memremap(dev, mem_phys, mem_size, MEMREMAP_WC);
-> -	if (!mem_region) {
-> +	if (IS_ERR(mem_region)) {
->   		ath12k_err(ab, "unable to map memory region: %pa+%pa\n",
->   			   &rmem->base, &rmem->size);
-> -		return -ENOMEM;
-> +		return PTR_ERR(mem_region);
->   	}
->   
->   	snprintf(fw_name, sizeof(fw_name), "%s/%s/%s%d%s", ATH12K_FW_DIR,
-> @@ -929,7 +929,7 @@ static int ath12k_ahb_resource_init(struct ath12k_base *ab)
->   		 * for accessing them.
->   		 */
->   		ab->mem_ce = ioremap(ce_remap->base, ce_remap->size);
-> -		if (IS_ERR(ab->mem_ce)) {
-> +		if (!ab->mem_ce) {
->   			dev_err(&pdev->dev, "ce ioremap error\n");
->   			ret = -ENOMEM;
->   			goto err_mem_unmap;
+Best Regards,
+Avamander
 
-Thanks for fixing it.
-
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
