@@ -1,135 +1,99 @@
-Return-Path: <linux-wireless+bounces-21396-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21397-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25279A849A0
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 18:28:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03084A84A40
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 18:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2F2C4634AB
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 16:27:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40BA49C5E0B
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 16:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFDF1EF37C;
-	Thu, 10 Apr 2025 16:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0EB1F099C;
+	Thu, 10 Apr 2025 16:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l9sSImZE"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="cBHhV6n9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DC41EEA3B
-	for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 16:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDA51F09B3
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 16:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744302383; cv=none; b=Kcg7Hy9rBcH/UQTe4IEdObzEjMakaMzFY82iiOp8IGnHAK70Xur0AjqSRB3x3di9p+YC3pXnw3DrIfzYpOw2eZq2La6uSE8q36umT3aTZWHurFc8aWzQR9MFheelWTb4XcpLwWSdwpKPoP4q4OdROaop/Tgjrl1mpEXJpCEwdbA=
+	t=1744302785; cv=none; b=H71K5b8Wj2atP1zN90urbpU+1mUavqMpIKUlzRdpxK24EXh2vuwnkYwndaCXSqFJQVsmR+jn9BzjlCKa4AkR8X7IxdwWDD9HHCx7p8Z/i/1DGOzIPyAxoFDHhGawnJvJkG4QZZB31941RyNiFIpzDaCCzbvpaoPCzOz3hmors4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744302383; c=relaxed/simple;
-	bh=uahR4xkljdW6YAEH4HqJNn8IYJmLvcayuCU2q8UueVA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Eo4ueFv9zsHQh8hJn5j3HgciF+lK6T1/4UiSZxXqsuZJXX1A8ZPPTf9a5MnpE24LDCDRoTWw0GF2M0LN1Bjxl+nI1l+Iz3EdTPhdEP/1dnz6ROb8Mmm5VwzV8IsCj7WQHblvTzkdBpg1G/Tyz9LL6D6DJ/CmcybaF3gbVlgWOTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l9sSImZE; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cf034d4abso10849015e9.3
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 09:26:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744302380; x=1744907180; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y9ckJ5dfd0gLEO4J9dWqs05uCPbUjSjr2AMEvPSWIg4=;
-        b=l9sSImZE0eZRKee+ZfzwBqfW4Tq+KbG0zohtpgkkS7v6ndsheUuHJcxggaoqeIEdfT
-         sZWTbAQvdbqieo+2jOXwnJdDuG+Ya2IAz2foFfvpDLS+nCin0Jy3aZdlLwxgThxJ0YLS
-         TkQJ0UCcT4mvRz5bAr5YhqmNY6XgRm01tZLBmZJVbuntE74z2MWSxsgRbA6SZYw8xFHc
-         X+riralRPQycB3srXYL+3uEh6/+zf7i8KU24ALwZx6VIhXy7Kdy3hmnapZlS0ZpvJy5M
-         3WWXFsdO38dzYlGIr4svKU6e+0lru94G3M2pNCtxbohG9nVza3NNA5JuyY2Jz+wmU6hk
-         j4Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744302380; x=1744907180;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y9ckJ5dfd0gLEO4J9dWqs05uCPbUjSjr2AMEvPSWIg4=;
-        b=V5BflYgEtlSJ8okiL8cGJ6t97rvwtxtWZ9n6YfXT2L4fE9YuvoImBtFf6/x5uZSXjV
-         E+zfBZfylY3KIYDKt34rzbGa0bPRCBBprSNI2kU4q1WDt43jX6TIXy8ENOgmd4Agz+W1
-         UPtp2CA3ZpZhmZLRjn+NRJ04s1Dk6yxALG/1svRQ1ThmheXgYeYBUoNqN/6hE7YhITo8
-         LXw4g0Ku5wKdVk4MoWGbxD5p83LCpemapc03Yc2t05P+cYBtcXC3dWietJ+11iZqMbnb
-         1NsmqwTKDSmdxd0j8tObQFvp5oevyP/ejmTQSiVku+Ws66+ILI1B1smQHB+Wo76RpQ8Y
-         ikOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVKBY7doYc1erNV4ekS3bFQpSg0RRYawSfLjOf/BJPdBvYVPTds7TfnXm9LO+rLjgsCNzecKhEDp24TolG10A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9ulmcW8l26CwwfzWyQ0IUROU7aL5pxeLPhrY9J/agxbkTEdOZ
-	LGfqthVPoQ+DtAR6Whx6UtvVt9iy/HH6UUiXCl25/LgvaiTJbtTMe+6LUFjflxs=
-X-Gm-Gg: ASbGncsLS+Myl8mgLfCfPxcStH5ib7lLtHQTC0yIlWP/ma/TUzvM4a3XqaqzLOYeZIG
-	W2Sks6BblhxwFCEMWoDfVVhETlNecQZwpZqyCIHDk+m3O23u/bVRMpdcIH50OtsWoHBfGxZhtpG
-	Ft8LbRDjhFxU22vaVsBs1KL9VFsW9ScPHhUPLR/QnwIcHvrFcHAl7dFp/ckJNw+VZK94yAIcZEY
-	F673xPafGxwfdjZsgBYkpgKL7gqi/yBOb0GG+8FU4PSA67/CjebmgSV52+bM+5w2C0ZNDYE6gPe
-	wb0g5QXiso8dRO3hHvNKsz/VIb75E5ux5boRQubGduuWB6UXQ6+fDXiP
-X-Google-Smtp-Source: AGHT+IE1nYH0HBU/WHO1w0aQZJhBOQ2ARrY9ROHGDPijYcKFnQf4Jd5ojzOvEeX3hT9ouKniOfxAnQ==
-X-Received: by 2002:a05:600c:190c:b0:439:9e13:2dd7 with SMTP id 5b1f17b1804b1-43f2d798f17mr40725835e9.2.1744302379796;
-        Thu, 10 Apr 2025 09:26:19 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-39d89389ed6sm5196989f8f.41.2025.04.10.09.26.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 09:26:19 -0700 (PDT)
-Date: Thu, 10 Apr 2025 19:26:16 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>,
-	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Balamurugan S <quic_bselvara@quicinc.com>,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH next] wifi: ath12k: Fix a couple NULL vs IS_ERR() bugs
-Message-ID: <937abc74-9648-4c05-a2c3-8db408b3ed9e@stanley.mountain>
+	s=arc-20240116; t=1744302785; c=relaxed/simple;
+	bh=AHM4v+efvqjn3/JC8vnoKup5zjx2+4HsoX2xrO5ci+c=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=tYadMH+eHb9XHv8mWRoQQEC7qC0ca6vLT/wNjxupOEXHrKG5sbteFx97l5QFhZZ+pfyc13KRsG9lMrUWCCBadLyygpvxT6AyWkv5vL60pqxXQ+vGc7rUIHpNHW+QYT5a4eY/C5ySE7nxBBwrCHavBhG+EMIWLiArt3MvCiygu6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=cBHhV6n9; arc=none smtp.client-ip=67.231.154.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from engine.ppe-hosted.com (unknown [10.110.50.120])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id A425560124
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 16:33:02 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 1590C3C0091
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 16:33:00 +0000 (UTC)
+Received: from [192.168.100.159] (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 46D5213C2B0
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 09:33:00 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 46D5213C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1744302780;
+	bh=AHM4v+efvqjn3/JC8vnoKup5zjx2+4HsoX2xrO5ci+c=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=cBHhV6n9PSq9CXz3j5n8r7b/hDjoeCkggfFDT3sIb7V9K99sfVpMCwPP7THY0TZLH
+	 uByR5enZDKgSigHo1qwmVlZed/6B1pq1ldt1X/zlOZxQyiyGaVhoEcs5xpCBicfYI1
+	 OjjUgg6Wvd+sy1Or9As7rnbE3TNekgujRR2cVGl0=
+Message-ID: <427546e4-7e1b-6dbb-2bad-751d7061bb7d@candelatech.com>
+Date: Thu, 10 Apr 2025 09:33:00 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: iwlwifi: mld: Unused method iwl_mld_handle_tx_resp_notif
+ (6.15-rc1)
+Content-Language: en-US
+From: Ben Greear <greearb@candelatech.com>
+To: linux-wireless <linux-wireless@vger.kernel.org>
+References: <13cac1e0-6875-c63b-2b60-70cbbcfd951b@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <13cac1e0-6875-c63b-2b60-70cbbcfd951b@candelatech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MDID: 1744302781-5J_Ndvb8dgjZ
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;at1;1744302781;5J_Ndvb8dgjZ;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-The devm_memremap() function returns error pointers on error and the
-ioremap() function returns NULL on error.  The error checking here got
-those flipped around.
+On 4/10/25 09:23, Ben Greear wrote:
+> Hello,
+> 
+> I'm working on porting some patches we've previously added to mvm to the
+> mld driver.  Currently I'm looking at tx stats.  From what I can tell, this
+> method is not called from anywhere:
+> 
+> [greearb@ben-dt5 linux-2.6]$ git grep iwl_mld_handle_tx_resp_notif
+> drivers/net/wireless/intel/iwlwifi/mld/tx.c:void iwl_mld_handle_tx_resp_notif(struct iwl_mld *mld,
+> drivers/net/wireless/intel/iwlwifi/mld/tx.h:void iwl_mld_handle_tx_resp_notif(struct iwl_mld *mld,
 
-Fixes: c01d5cc9b9fe ("wifi: ath12k: Power up userPD")
-Fixes: 6cee30f0da75 ("wifi: ath12k: add AHB driver support for IPQ5332")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- drivers/net/wireless/ath/ath12k/ahb.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Bleh, nevermind.  A macro builds the method name.
 
-diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
-index a9d9943a73f4..636dfe237a79 100644
---- a/drivers/net/wireless/ath/ath12k/ahb.c
-+++ b/drivers/net/wireless/ath/ath12k/ahb.c
-@@ -360,10 +360,10 @@ static int ath12k_ahb_power_up(struct ath12k_base *ab)
- 	mem_phys = rmem->base;
- 	mem_size = rmem->size;
- 	mem_region = devm_memremap(dev, mem_phys, mem_size, MEMREMAP_WC);
--	if (!mem_region) {
-+	if (IS_ERR(mem_region)) {
- 		ath12k_err(ab, "unable to map memory region: %pa+%pa\n",
- 			   &rmem->base, &rmem->size);
--		return -ENOMEM;
-+		return PTR_ERR(mem_region);
- 	}
- 
- 	snprintf(fw_name, sizeof(fw_name), "%s/%s/%s%d%s", ATH12K_FW_DIR,
-@@ -929,7 +929,7 @@ static int ath12k_ahb_resource_init(struct ath12k_base *ab)
- 		 * for accessing them.
- 		 */
- 		ab->mem_ce = ioremap(ce_remap->base, ce_remap->size);
--		if (IS_ERR(ab->mem_ce)) {
-+		if (!ab->mem_ce) {
- 			dev_err(&pdev->dev, "ce ioremap error\n");
- 			ret = -ENOMEM;
- 			goto err_mem_unmap;
--- 
-2.47.2
+And I guess it would have failed on module load even though it compiled
+with the .c method ifdef'd out.
+
+Thanks,
+Ben
 
 
