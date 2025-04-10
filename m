@@ -1,31 +1,31 @@
-Return-Path: <linux-wireless+bounces-21387-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21383-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3774EA840C4
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 12:34:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E66FA840A7
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 12:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1ED33B5CD3
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 10:29:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2006169D9C
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Apr 2025 10:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35902280CF8;
-	Thu, 10 Apr 2025 10:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F8D277813;
+	Thu, 10 Apr 2025 10:28:51 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F545280CFD
-	for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 10:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E756280A4E
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Apr 2025 10:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744280940; cv=none; b=M7fa6rp7Ne5sOBfasG+f8J0HXfUpILmfNKPsaGRrdJUHu9cV+qmDGjtqb3VtvgiLuMES7uDK3fl2ei7/Icmord9dirac2T24lKN/lxnReSxb7OFn87rRQLMoUhVTHxmFDqN9WCyW8iQIOZ80qWBZ/yPOJogcfidq3F6MmJxkaIw=
+	t=1744280931; cv=none; b=Vc1AzheUkDd1KpbLdmwhynalfBnlPyhgbvs7AodDwq8YpP7dhjiZehn243oz2L5b869vs/qxXW8MPAsW5CIlYwJQSJcfVHQlni5PhHhx7UoAIM0w8yQs6TP94nEXvk1Euqzmxeo+zaBOGTknNmQnz2YqdWZkXTzfBmwwxMqTTHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744280940; c=relaxed/simple;
-	bh=eS+QnkEMEkAzBrpHYofoAiZZvZkIe9KxArzb61pHYag=;
+	s=arc-20240116; t=1744280931; c=relaxed/simple;
+	bh=F/FS/Nn37B1dBOxDyq7j+tMX77ijz2Mh/c7A8bjVWqk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DT1rTyb+irW0y51nILKYdylvMy056Trh+FJ1EJ/Kk3pD7m7V47FkhFwYuD/v4s8/wuD7a01khglIeFvG3coD9EQH/4cHm+QiQDqe1zFKYpm9wYWFLeH760X1cub9ySEtkwfyujfxpGJSLNIRHvq8iUCDB/R3taANmJyAJDc88zc=
+	 In-Reply-To:To:Cc; b=g9Oo5XUlQrBOpj5U+9u+M5bIkehkjbhlDikI2DZ/Gjyu7YWfK3iek+maNNRXLQEa78lRy6HX+TGADEnhDy01qHYtKYu58bkhGx6RySjOf1cwSb3c93xHCaqU3/H+QyNrDlIX6yuP1bVbSucFwWiQklf7KzlEXYu/PGEzELCvJ3s=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -33,21 +33,22 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u2p9L-0003R3-Jq; Thu, 10 Apr 2025 12:28:47 +0200
+	id 1u2p9L-0003R2-Jc; Thu, 10 Apr 2025 12:28:47 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u2p9L-004Foe-1D;
+	id 1u2p9L-004Fof-18;
 	Thu, 10 Apr 2025 12:28:47 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u2p9L-002cFD-0t;
+	id 1u2p9L-002cFD-0u;
 	Thu, 10 Apr 2025 12:28:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 10 Apr 2025 12:28:45 +0200
-Subject: [PATCH 3/4] wifi: mwifiex: drop asynchronous init waiting code
+Date: Thu, 10 Apr 2025 12:28:46 +0200
+Subject: [PATCH 4/4] wifi: mwifiex: remove mwifiex_sta_init_cmd() last
+ argument
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -56,7 +57,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250410-mwifiex-drop-asynchronous-init-v1-3-6a212fa9185e@pengutronix.de>
+Message-Id: <20250410-mwifiex-drop-asynchronous-init-v1-4-6a212fa9185e@pengutronix.de>
 References: <20250410-mwifiex-drop-asynchronous-init-v1-0-6a212fa9185e@pengutronix.de>
 In-Reply-To: <20250410-mwifiex-drop-asynchronous-init-v1-0-6a212fa9185e@pengutronix.de>
 To: Brian Norris <briannorris@chromium.org>, 
@@ -64,11 +65,11 @@ To: Brian Norris <briannorris@chromium.org>,
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
  kernel@pengutronix.de, Sascha Hauer <s.hauer@pengutronix.de>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744280927; l=8428;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744280927; l=3870;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=eS+QnkEMEkAzBrpHYofoAiZZvZkIe9KxArzb61pHYag=;
- b=e+I37lpjk8Hm0Ho0knm7zskaIgSepYhrS6lb/Ck57Yc8tlR45TECnM7s3CXr5VTFQ4XNFMCxw
- y9jSPjZ8bUfBKsi02wm/Hm87OgsxAXeZHVr6FFSp6d7ocGtC0pq5fWC
+ bh=F/FS/Nn37B1dBOxDyq7j+tMX77ijz2Mh/c7A8bjVWqk=;
+ b=cPDgqMWQoZBQLvFCW/FzwbmezrOQrsXWDAelLI7/ybdd1S5P2o2ZoDr6ah2+xTR8BSzew5zaU
+ 75gvQ5OkQw8B6aTDW1TWjcMksL4b12sDPYtUQZFGEdih0H42GDMkAc6
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -76,223 +77,96 @@ X-SA-Exim-Mail-From: s.hauer@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-Historically all commands sent to the mwifiex driver have been
-asynchronous. The different commands sent during driver initialization
-have been queued at once and only the final command has been waited
-for being ready before finally starting the driver.
-
-This has been changed in 7bff9c974e1a ("mwifiex: send firmware
-initialization commands synchronously"). With this the initialization
-is finished once the last mwifiex_send_cmd_sync() (now
-mwifiex_send_cmd()) has returned. This makes all the code used to
-wait for the last initialization command to be finished unnecessary,
-so it's removed in this patch.
+The init argument from mwifiex_sta_init_cmd() is no longer used. Drop
+it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/wireless/marvell/mwifiex/cmdevt.c  | 16 ----------------
- drivers/net/wireless/marvell/mwifiex/init.c    |  5 +++--
- drivers/net/wireless/marvell/mwifiex/main.c    | 12 ++----------
- drivers/net/wireless/marvell/mwifiex/main.h    |  6 ------
- drivers/net/wireless/marvell/mwifiex/sta_cmd.c |  4 ----
- drivers/net/wireless/marvell/mwifiex/util.c    | 18 ------------------
- 6 files changed, 5 insertions(+), 56 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 8 ++++----
+ drivers/net/wireless/marvell/mwifiex/init.c     | 2 +-
+ drivers/net/wireless/marvell/mwifiex/main.h     | 2 +-
+ drivers/net/wireless/marvell/mwifiex/sta_cmd.c  | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cmdevt.c b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-index 5573e2ded72f2..c07857c49a713 100644
---- a/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-@@ -900,18 +900,6 @@ int mwifiex_process_cmdresp(struct mwifiex_adapter *adapter)
- 		ret = mwifiex_process_sta_cmdresp(priv, cmdresp_no, resp);
- 	}
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index a099fdaafa45d..df4186c0678ae 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -1126,7 +1126,7 @@ mwifiex_change_vif_to_p2p(struct net_device *dev,
+ 			     HostCmd_ACT_GEN_SET, 0, NULL, true))
+ 		return -1;
  
--	/* Check init command response */
--	if (adapter->hw_status == MWIFIEX_HW_STATUS_INITIALIZING) {
--		if (ret) {
--			mwifiex_dbg(adapter, ERROR,
--				    "%s: cmd %#x failed during\t"
--				    "initialization\n", __func__, cmdresp_no);
--			mwifiex_init_fw_complete(adapter);
--			return -1;
--		} else if (adapter->last_init_cmd == cmdresp_no)
--			adapter->hw_status = MWIFIEX_HW_STATUS_INIT_DONE;
--	}
--
- 	if (adapter->curr_cmd) {
- 		if (adapter->curr_cmd->wait_q_enabled)
- 			adapter->cmd_wait_q.status = ret;
-@@ -1030,10 +1018,6 @@ mwifiex_cmd_timeout_func(struct timer_list *t)
- 			mwifiex_cancel_pending_ioctl(adapter);
- 		}
- 	}
--	if (adapter->hw_status == MWIFIEX_HW_STATUS_INITIALIZING) {
--		mwifiex_init_fw_complete(adapter);
--		return;
--	}
+-	if (mwifiex_sta_init_cmd(priv, false, false))
++	if (mwifiex_sta_init_cmd(priv, false))
+ 		return -1;
  
- 	if (adapter->if_ops.device_dump)
- 		adapter->if_ops.device_dump(adapter);
+ 	return 0;
+@@ -1167,7 +1167,7 @@ mwifiex_change_vif_to_sta_adhoc(struct net_device *dev,
+ 	if (mwifiex_send_cmd(priv, HostCmd_CMD_SET_BSS_MODE,
+ 			     HostCmd_ACT_GEN_SET, 0, NULL, true))
+ 		return -1;
+-	if (mwifiex_sta_init_cmd(priv, false, false))
++	if (mwifiex_sta_init_cmd(priv, false))
+ 		return -1;
+ 
+ 	return 0;
+@@ -1204,7 +1204,7 @@ mwifiex_change_vif_to_ap(struct net_device *dev,
+ 	if (mwifiex_send_cmd(priv, HostCmd_CMD_SET_BSS_MODE,
+ 			     HostCmd_ACT_GEN_SET, 0, NULL, true))
+ 		return -1;
+-	if (mwifiex_sta_init_cmd(priv, false, false))
++	if (mwifiex_sta_init_cmd(priv, false))
+ 		return -1;
+ 
+ 	return 0;
+@@ -3122,7 +3122,7 @@ struct wireless_dev *mwifiex_add_virtual_intf(struct wiphy *wiphy,
+ 		if (ret)
+ 			goto err_set_bss_mode;
+ 
+-		ret = mwifiex_sta_init_cmd(priv, false, false);
++		ret = mwifiex_sta_init_cmd(priv, false);
+ 		if (ret)
+ 			goto err_sta_init;
+ 	}
 diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
-index dd24e8b140655..dd2c17d946d7c 100644
+index dd2c17d946d7c..32c374e477943 100644
 --- a/drivers/net/wireless/marvell/mwifiex/init.c
 +++ b/drivers/net/wireless/marvell/mwifiex/init.c
-@@ -480,14 +480,12 @@ int mwifiex_init_lock_list(struct mwifiex_adapter *adapter)
-  *      - Initialize the private structure
-  *      - Add BSS priority tables to the adapter structure
-  *      - For each interface, send the init commands to firmware
-- *      - Send the first command in command pending queue, if available
-  */
- int mwifiex_init_fw(struct mwifiex_adapter *adapter)
- {
- 	int ret;
- 	struct mwifiex_private *priv;
- 	u8 i, first_sta = true;
--	int is_cmd_pend_q_empty;
+@@ -510,7 +510,7 @@ int mwifiex_init_fw(struct mwifiex_adapter *adapter)
+ 	} else {
+ 		for (i = 0; i < adapter->priv_num; i++) {
+ 			ret = mwifiex_sta_init_cmd(adapter->priv[i],
+-						   first_sta, true);
++						   first_sta);
+ 			if (ret == -1)
+ 				return -1;
  
- 	adapter->hw_status = MWIFIEX_HW_STATUS_INITIALIZING;
- 
-@@ -526,6 +524,9 @@ int mwifiex_init_fw(struct mwifiex_adapter *adapter)
- 
- 	adapter->hw_status = MWIFIEX_HW_STATUS_READY;
- 
-+	if (adapter->if_ops.init_fw_port)
-+		adapter->if_ops.init_fw_port(adapter);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-index 3f1b8be5ad26c..ff094b5c32239 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -354,13 +354,6 @@ int mwifiex_main_process(struct mwifiex_adapter *adapter)
- 		if (adapter->cmd_resp_received) {
- 			adapter->cmd_resp_received = false;
- 			mwifiex_process_cmdresp(adapter);
--
--			/* call mwifiex back when init_fw is done */
--			if (adapter->hw_status == MWIFIEX_HW_STATUS_INIT_DONE) {
--				adapter->hw_status = MWIFIEX_HW_STATUS_READY;
--				mwifiex_init_fw_complete(adapter);
--				maybe_quirk_fw_disable_ds(adapter);
--			}
- 		}
- 
- 		/* Check if we need to confirm Sleep Request
-@@ -587,7 +580,6 @@ static int _mwifiex_fw_dpc(const struct firmware *firmware, void *context)
- 			goto err_dnld_fw;
- 	}
- 
--	adapter->init_wait_q_woken = false;
- 	ret = mwifiex_init_fw(adapter);
- 	if (ret == -1)
- 		goto err_init_fw;
-@@ -600,6 +592,8 @@ static int _mwifiex_fw_dpc(const struct firmware *firmware, void *context)
- 			goto err_init_fw;
- 	}
- 
-+	maybe_quirk_fw_disable_ds(adapter);
-+
- 	if (!adapter->wiphy) {
- 		if (mwifiex_register_cfg80211(adapter)) {
- 			mwifiex_dbg(adapter, ERROR,
-@@ -1555,7 +1549,6 @@ mwifiex_reinit_sw(struct mwifiex_adapter *adapter)
- 
- 	adapter->hw_status = MWIFIEX_HW_STATUS_INITIALIZING;
- 	clear_bit(MWIFIEX_SURPRISE_REMOVED, &adapter->work_flags);
--	init_waitqueue_head(&adapter->init_wait_q);
- 	clear_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags);
- 	adapter->hs_activated = false;
- 	clear_bit(MWIFIEX_IS_CMD_TIMEDOUT, &adapter->work_flags);
-@@ -1723,7 +1716,6 @@ mwifiex_add_card(void *card, struct completion *fw_done,
- 
- 	adapter->hw_status = MWIFIEX_HW_STATUS_INITIALIZING;
- 	clear_bit(MWIFIEX_SURPRISE_REMOVED, &adapter->work_flags);
--	init_waitqueue_head(&adapter->init_wait_q);
- 	clear_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags);
- 	adapter->hs_activated = false;
- 	init_waitqueue_head(&adapter->hs_activate_wait_q);
 diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
-index 63f1c900e0967..35d13eada0868 100644
+index 35d13eada0868..e01310ccef54f 100644
 --- a/drivers/net/wireless/marvell/mwifiex/main.h
 +++ b/drivers/net/wireless/marvell/mwifiex/main.h
-@@ -239,7 +239,6 @@ struct mwifiex_dbg {
- enum MWIFIEX_HARDWARE_STATUS {
- 	MWIFIEX_HW_STATUS_READY,
- 	MWIFIEX_HW_STATUS_INITIALIZING,
--	MWIFIEX_HW_STATUS_INIT_DONE,
- 	MWIFIEX_HW_STATUS_RESET,
- 	MWIFIEX_HW_STATUS_NOT_READY
- };
-@@ -865,8 +864,6 @@ struct mwifiex_adapter {
- 	unsigned long work_flags;
- 	u32 fw_release_number;
- 	u8 intf_hdr_len;
--	u16 init_wait_q_woken;
--	wait_queue_head_t init_wait_q;
- 	void *card;
- 	struct mwifiex_if_ops if_ops;
- 	atomic_t bypass_tx_pending;
-@@ -919,7 +916,6 @@ struct mwifiex_adapter {
- 	struct cmd_ctrl_node *curr_cmd;
- 	/* spin lock for command */
- 	spinlock_t mwifiex_cmd_lock;
--	u16 last_init_cmd;
- 	struct timer_list cmd_timer;
- 	struct list_head cmd_free_q;
- 	/* spin lock for cmd_free_q */
-@@ -1060,8 +1056,6 @@ void mwifiex_free_priv(struct mwifiex_private *priv);
- 
- int mwifiex_init_fw(struct mwifiex_adapter *adapter);
- 
--int mwifiex_init_fw_complete(struct mwifiex_adapter *adapter);
--
- void mwifiex_shutdown_drv(struct mwifiex_adapter *adapter);
- 
- int mwifiex_dnld_fw(struct mwifiex_adapter *, struct mwifiex_fw_image *);
+@@ -1150,7 +1150,7 @@ void mwifiex_process_sta_txpd(struct mwifiex_private *priv,
+ 			      struct sk_buff *skb);
+ void mwifiex_process_uap_txpd(struct mwifiex_private *priv,
+ 			      struct sk_buff *skb);
+-int mwifiex_sta_init_cmd(struct mwifiex_private *, u8 first_sta, bool init);
++int mwifiex_sta_init_cmd(struct mwifiex_private *, u8 first_sta);
+ int mwifiex_cmd_802_11_scan(struct host_cmd_ds_command *cmd,
+ 			    struct mwifiex_scan_cmd_config *scan_cfg);
+ void mwifiex_queue_scan_cmd(struct mwifiex_private *priv,
 diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-index af38744eddaa9..7a8a74df86ab1 100644
+index 7a8a74df86ab1..b7cae596294bd 100644
 --- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
 +++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-@@ -2433,9 +2433,5 @@ int mwifiex_sta_init_cmd(struct mwifiex_private *priv, u8 first_sta, bool init)
- 	ret = mwifiex_send_cmd(priv, HostCmd_CMD_11N_CFG,
- 			       HostCmd_ACT_GEN_SET, 0, &tx_cfg, true);
- 
--	if (init)
--		/* set last_init_cmd before sending the command */
--		priv->adapter->last_init_cmd = HostCmd_CMD_11N_CFG;
--
- 	return ret;
- }
-diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
-index 1f1f6280a0f25..daa363f082612 100644
---- a/drivers/net/wireless/marvell/mwifiex/util.c
-+++ b/drivers/net/wireless/marvell/mwifiex/util.c
-@@ -115,24 +115,6 @@ static struct mwifiex_debug_data items[] = {
- 
- static int num_of_items = ARRAY_SIZE(items);
- 
--/*
-- * Firmware initialization complete callback handler.
-- *
-- * This function wakes up the function waiting on the init
-- * wait queue for the firmware initialization to complete.
-- */
--int mwifiex_init_fw_complete(struct mwifiex_adapter *adapter)
--{
--
--	if (adapter->hw_status == MWIFIEX_HW_STATUS_READY)
--		if (adapter->if_ops.init_fw_port)
--			adapter->if_ops.init_fw_port(adapter);
--
--	adapter->init_wait_q_woken = true;
--	wake_up_interruptible(&adapter->init_wait_q);
--	return 0;
--}
--
- /*
-  * This function sends init/shutdown command
-  * to firmware.
+@@ -2258,7 +2258,7 @@ int mwifiex_sta_prepare_cmd(struct mwifiex_private *priv, uint16_t cmd_no,
+  *      - Set 11d control
+  *      - Set MAC control (this must be the last command to initialize firmware)
+  */
+-int mwifiex_sta_init_cmd(struct mwifiex_private *priv, u8 first_sta, bool init)
++int mwifiex_sta_init_cmd(struct mwifiex_private *priv, u8 first_sta)
+ {
+ 	struct mwifiex_adapter *adapter = priv->adapter;
+ 	int ret;
 
 -- 
 2.39.5
