@@ -1,248 +1,296 @@
-Return-Path: <linux-wireless+bounces-21450-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21451-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D703A862EC
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Apr 2025 18:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0000BA86362
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Apr 2025 18:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1294E3AE6E2
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Apr 2025 16:10:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F40928C5023
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Apr 2025 16:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B47C219A80;
-	Fri, 11 Apr 2025 16:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2862521CC51;
+	Fri, 11 Apr 2025 16:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="V7MoOUKZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gVc59QP6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2691214A97
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Apr 2025 16:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0EC1DE2DB;
+	Fri, 11 Apr 2025 16:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744387814; cv=none; b=NZzMQdbUZekHr3q5AbyE5VM/SMqdIuCgAmy0dSpX+EPhqKYJ6bPU1LiEXSXA4Lci3tqNLUM1gZkuR+Ei9ExZizdHCc22r2OPk/qLEP6GxlG/CNvvhVYSMWMucd7gb2guUwjPh6vylQXUhi5Cu0A/141o/xPH6b4JbUbiNTCMEIo=
+	t=1744389278; cv=none; b=XB330HtAdLO6RDBz87rDlJYK5FSdchBJ0CTg/bqzHTpmUiT/WwGaaUJ6XDnzC6bqbxDjmYf3+XLLD4LqMKVD79jx7btKjTX36et0zSo/22Gtf7wcFlbkQYbMZXx0SbIJKqD/booBu48awxB2ds/OTYVWTihqMwSJr7S+M0GjbIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744387814; c=relaxed/simple;
-	bh=qrCP2BujL6HWxpDYmtzJxPSHI073Ts2D+gTXSIcARQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MESUSvD85SHN7MpyOWTDJ0Pyd/E1XaJCPiX8cwaOsdxJ0lNSEZNPg/VxbzdzxvzsKqgSaE5CPVInoSvZLo2hUpSJqFhmI4I2Xxs7n3lw9kJVIIRG4njXaqNzezMr7nSQPznkVcZy+/cUZ2Biwds9OmavzeXGLMmk76sYPt9P+RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=V7MoOUKZ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53BB5dn0022544
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Apr 2025 16:10:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	e5rpuA8qxGMaIOxTbCdg2rfqyx4ShOI4xfCipIIYeHA=; b=V7MoOUKZ/1yBAGRa
-	mY5pOkDvLuh2dKHhYm8xU2J/WKuMbwKqI8vr/udNWYm4W89Wb3G1+xy7CnB9RFyn
-	3Qc7lLsMf/PrMC8L481qdhe+ifEGzkrqxkaUA+JQG7ROBirGYhU+SqA3Vwdro9j5
-	yqpWYcYuQL26a+14DDQj7a9aClpzZ0TZRgC3wog/d5lCqw02swAeyZ1Er4e/ZuLX
-	C/XBI1SGNO+e9RoHbdy1xBEgX4ab5p5W2xm0aoqSm4/vQHigO1xDitA7SYUSReoG
-	oep39SIiJ4EMGVCNR/45DnxO88/vLu36T4YMZpz6Img12zhIOAOK/aUVgRFid4aA
-	zSD7WQ==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twcru304-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Apr 2025 16:10:11 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-306b590faaeso1872114a91.3
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Apr 2025 09:10:11 -0700 (PDT)
+	s=arc-20240116; t=1744389278; c=relaxed/simple;
+	bh=TPsDNdO0J5tFY3gM6ug4IFFbTqGLVdNs3Fa7k4whx34=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hFNnwUi87wgH6V5KAHM03eH//r8Qjb5urhQvHuATDmqhMn3chA8qDb/LCfH1LxxLN1FTSVmxBDk0wGepHRbQKv/0Dyi9t4EL8vJEvGMJe1WtuDS7SDSbemWIFWH6IbJdAXc48X2XTP5QBrYo1p/AYt5AhCW9tgmnqr/A1pUdW0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gVc59QP6; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-736c062b1f5so1937487b3a.0;
+        Fri, 11 Apr 2025 09:34:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744389275; x=1744994075; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=i2OP7V+QE6E9gg3GbdLcYE8UHgSFfj9Jnjg73a7+53s=;
+        b=gVc59QP68gF8RNguvnLf7TKxOBGzr11uH3fLOvbaypk4RDbI1QIl1E4bzXB3HdjwVx
+         EV8Wf7D1EK9HPYtfSdq9Z+6ZGA9iw26/r8eft9zkFNrtFfFJRmz5K3UHaIO9SXz5XkyO
+         NIpohQMHLrsnTCK5xkzF2swRkbhQXBwsjGpbZT2GsdSVebSPu7VjgtI73pqC4LM6e04o
+         dkRo7uFs4Jr+G13i2PSY2r2+3LEW1RAstPvuUKg07s7wUR5Bxc8parJ6drQ5MEChbcr1
+         Dfk/Mhd/nPLnT+yVPVdZW1cs6BU9M8qlUO46z5bm3mo/xkwMmokmmgzb3p4iIrXDSS7U
+         jPVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744387810; x=1744992610;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e5rpuA8qxGMaIOxTbCdg2rfqyx4ShOI4xfCipIIYeHA=;
-        b=RSAmHfy9BtxgWR0fjM+fR+lW8HQ0IiCGlrfN/E9tS3FIaod5BM3wi2RBA/pqPAy3wf
-         RbLUHkhcTsyUvRdu59kcXfG23MWP/1jYmFVV5vR7PGeCYqnfwAj0UeWzIZAmK23iZE6Z
-         wDG7Max/O5m2ztfvPP8rpkzj2Wvpv4YjFtipoX2lBw+diyODnjoOY8iCjemztzJBwDrC
-         mHtAwzEPYGz/h1NLh2gKk/AOCj9nXI2ZoL9FVknzdyBQovmwH9+iHNHoVszZ4sIN4Y/g
-         iqL9rXZzNl9PLlbV2M8K8ZK1StKgPWnMw/1mpyr/C3plPPoApEsPOVKaocSuY4HcqiPg
-         dg0w==
-X-Forwarded-Encrypted: i=1; AJvYcCW8GHsLNm+LBuyh5xReUW9e9ZqjpsXEs7QaPzMp+GG0xBoTxtAI4fgu2xL67Ym8GX6R+8niXP/Wgn3UZvPLLA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMquGNMHNZrdhpBTsueyFSySRg3Fgn7+MinwEHlK2TORjB7otY
-	S5vvjQWMQ+N36etqMZHYKPJq8B3qJQosz3ieYjzv+TEUcKMiEgEftbe+m5XDQEKK3BQErxIGros
-	KRdo7+PaCZCct6lPSRPVx/GFwNeObwx5aFLmx3Fo7OvD7CmhvltG1tWKhnTffmtbFcw==
-X-Gm-Gg: ASbGncv4nvJl+qq8D7xfu2hBdv71dyemC/phRqTGx9P99paZslu72rRVp/+2T+fjIMp
-	rfhhAxTKy2karfdKGaLW7JeEA7jwcrEazrMKhR06WV8uXkk7uFjB7g6hEirlGhgcMvSg2WCSX5g
-	K8qOxdatuy3uq4x0LvRg7tl0h0koOL7B4fqDnpLStNOhc/w3GNnAp2xrihoe1ADAvDa4e31iB3N
-	GvgovGKTAcrfmUAjPNAkmFiIhKeuiVAMjakeHyTz9JE8oU9/3A4Y+WKYR206R1lWena1d3AYGa9
-	w4rE8uzdyMHC7XOk52zf39AHAGWxMEtk2o1qJUuwuvhHnhaEkYtg9kZ6nY0+JA==
-X-Received: by 2002:a17:90b:5190:b0:2ff:4bac:6fba with SMTP id 98e67ed59e1d1-3082367ccebmr5671769a91.24.1744387809741;
-        Fri, 11 Apr 2025 09:10:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHjZpokDSvkhfn81duM4VOLav5f2ONQTT0XHhAhCsXbdnQYgeEgXsPcTARrKTVnEFzPynw94A==
-X-Received: by 2002:a17:90b:5190:b0:2ff:4bac:6fba with SMTP id 98e67ed59e1d1-3082367ccebmr5671721a91.24.1744387809277;
-        Fri, 11 Apr 2025 09:10:09 -0700 (PDT)
-Received: from [10.226.59.182] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306df4011f1sm6356192a91.41.2025.04.11.09.10.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Apr 2025 09:10:08 -0700 (PDT)
-Message-ID: <37ea52d5-11de-49c7-a676-ec47cca7f91b@oss.qualcomm.com>
-Date: Fri, 11 Apr 2025 10:10:06 -0600
+        d=1e100.net; s=20230601; t=1744389275; x=1744994075;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i2OP7V+QE6E9gg3GbdLcYE8UHgSFfj9Jnjg73a7+53s=;
+        b=BCb9oXPoz9pR/aDamY9cPBXQWw5/SlfEJ7MZjCMkc4lr4HCMsi/Kv9X2POmlQOjJ/b
+         PhPZjdJFmtrEN3Ni0/Cri6P+fHZQkpwp3/rJnrGeiQK/bA/oPJuPGjPZ/e8AsLgwf4Gw
+         Tv8J3XYpcFhwIUX8bQfJP0daL7OR+CQYWPpuatT0Q9ju8Ntqum7j66B0gja+gzPE5vls
+         ID2cwt0KLmR85UiMtxK3ANawackkwdWrDdakUVkVB67LhGcn8XoFz1sddnw+jshwhOca
+         Ttw1QW4ETrn74JgkDPSvMJjWyZD8pfvkFvk0D7fEP+4yqFSt7RTC7mkQ6Qen97ch4eWN
+         3i6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUI/KgDsiA7f1xI/TLG89EhaMlm5LSvw1r3eptdg9GmswiQsTyJeu/k2jthm0eL2GUz4mz0vM9vspaw/xtu@vger.kernel.org, AJvYcCVYW1IVwPrSoAKWxWsB/nCClGs8N9UipmpsxTiAaw3uokVL58SzQDieLAq3cP1NlgI8/Y3OEcm5@vger.kernel.org, AJvYcCVaZTs7YG2x09BmjaeTk0Tq3LlAYSsnwCnREYML77r8kion6DO6CnXNOMmYzmOlEnKZuNf2/Gfm33ZlIUgN@vger.kernel.org, AJvYcCVuQsZ9R0Lw8PzgERdOAv4+Ih8vPHkyiCBisJlWmYUbAIDCVmUu0nWaJHy2cm4b42Q6CfIl6NT1rKlO2OI=@vger.kernel.org, AJvYcCWaOeSbAsVTtan1M6+6LyANIRi9uQeyLPjsohdKVDzbw4kg4dAy3C0BO5rHzsLifrQ/ZqI=@vger.kernel.org, AJvYcCXM4ju2CzYOvAiZ5MVTwns1PhkCGYB3TyKeBQmf7lA6M2EZ/ySd+C6Y12YIB27QXOwoDGZ49AvfsAp1nQA=@vger.kernel.org, AJvYcCXhou8VB7YSa8JszAHGL2KihBSBJ2dRM5OvRiCXxLzITQuTJDCIBogQqRycazOjOh66Bvb8ukZT8F2K6tyNyUE=@vger.kernel.org, AJvYcCXzp8Hc1t3QFwawh4FjZ0ynBUCTmASriqXeohL5gT9ywOUcuE/gTf29Kh13BklxOdmDcaVP3NtLXAJ/ZVQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAuY+DxJFbyJwgkSdLPfqqF8OoEzszrXJCdRVpRznz4lPwgmhY
+	30ezz7BWFBeGcRAtiodZsrke2DJa9PM4vO50s37L3hldJaqb7dM1
+X-Gm-Gg: ASbGncvNFPpbRKPjaHvwHoLKT2muKrx87qlxKwy+B8tkix1lBUeFzHM/qB99Vv0Xlic
+	Kk+sTDI1Tlet7lbNCgKN6AISzVwIrD81z8pZ4wJhNg0MZ/W5ORObt/Gnkvk49v8U2WkMQfEHDLZ
+	MpTDls94znAlJ4U51/S6js9j/KNkVI3xGWw+kIFkdU3Fp15BqKaD+F0uq7X4FRV+sJXHGH/RSr0
+	1ojYoMap8bf7wG4YimOO6GJGiPCnxoRQTOw2et1BUraXTdGS/DD+CleHmWnmg9gUiaVrpJiCtTn
+	BdUPJqzM+P3v8i8o1BF9wlLaG4OWIZmadoKkiib2+3qA+LR+SyA1HJEXaPiPPP3f70Lz1MMtHK4
+	lvuU=
+X-Google-Smtp-Source: AGHT+IEYqWSvO9nmRhuvu9Nod5I62ZHK0q1nd8Adc2Nrxqu798p8njg5jLN2TKIb2S4uFWzFr2oiJA==
+X-Received: by 2002:a05:6a20:d503:b0:1f5:902e:1e97 with SMTP id adf61e73a8af0-2017998c2d3mr6583017637.41.1744389275369;
+        Fri, 11 Apr 2025 09:34:35 -0700 (PDT)
+Received: from visitorckw-System-Product-Name ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b06161333a8sm258713a12.7.2025.04.11.09.34.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 09:34:34 -0700 (PDT)
+Date: Sat, 12 Apr 2025 00:34:24 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Yury Norov <yury.norov@gmail.com>, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
+	andrzej.hajda@intel.com, neil.armstrong@linaro.org,
+	rfoss@kernel.org, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	simona@ffwll.ch, dmitry.torokhov@gmail.com, mchehab@kernel.org,
+	awalls@md.metrocast.net, hverkuil@xs4all.nl,
+	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+	louis.peens@corigine.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+	jirislaby@kernel.org, akpm@linux-foundation.org, jdelvare@suse.com,
+	linux@roeck-us.net, alexandre.belloni@bootlin.com, pgaj@cadence.com,
+	alistair@popple.id.au, linux@rasmusvillemoes.dk,
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+	jernej.skrabec@gmail.com, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+	oss-drivers@corigine.com, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw, Frank.Li@nxp.com,
+	linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
+	david.laight.linux@gmail.com, andrew.cooper3@citrix.com,
+	Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: Re: [PATCH v4 00/13] Introduce parity_odd() and refactor redundant
+ parity code
+Message-ID: <Z/lEkDwefWvw4ZA3@visitorckw-System-Product-Name>
+References: <20250409154356.423512-1-visitorckw@gmail.com>
+ <Z_amQp3gK5Dm8Qz3@yury>
+ <Z/a5Qh/OeLT8JBS4@visitorckw-System-Product-Name>
+ <Z_a9YpE46Xf8581l@yury>
+ <e97a83a2-dabd-4dc3-b69a-840ca17d70b5@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] bus: mhi: host: don't free bhie tables during
- suspend/hibernation
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson
- <jjohnson@kernel.org>, Yan Zhen <yanzhen@vivo.com>,
-        Youssef Samir <quic_yabdulra@quicinc.com>,
-        Qiang Yu
- <quic_qianyu@quicinc.com>, Alex Elder <elder@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kunwu Chan <chentao@kylinos.cn>
-Cc: kernel@collabora.com, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-References: <20250410145704.207969-1-usama.anjum@collabora.com>
-Content-Language: en-US
-From: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-In-Reply-To: <20250410145704.207969-1-usama.anjum@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: Lu44yzMp9n-4MUf_EQmHF67MZspB_ynF
-X-Authority-Analysis: v=2.4 cv=QuVe3Uyd c=1 sm=1 tr=0 ts=67f93ee3 cx=c_pps a=vVfyC5vLCtgYJKYeQD43oA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=QX4gbG5DAAAA:8 a=IgFyvoMS5YvtXyuxQG8A:9 a=QEXdDO2ut3YA:10
- a=rl5im9kqc5Lf4LNbBjHf:22 a=AbAUZ8qAyYyZVLSsDulk:22
-X-Proofpoint-GUID: Lu44yzMp9n-4MUf_EQmHF67MZspB_ynF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-11_06,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
- spamscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0 priorityscore=1501
- clxscore=1011 phishscore=0 impostorscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504110101
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e97a83a2-dabd-4dc3-b69a-840ca17d70b5@zytor.com>
 
-On 4/10/2025 8:56 AM, Muhammad Usama Anjum wrote:
-> Fix dma_direct_alloc() failure at resume time during bhie_table
-> allocation. There is a crash report where at resume time, the memory
-> from the dma doesn't get allocated and MHI fails to re-initialize.
-> There may be fragmentation of some kind which fails the allocation
-> call.
+On Wed, Apr 09, 2025 at 07:09:28PM -0700, H. Peter Anvin wrote:
+> On 4/9/25 11:33, Yury Norov wrote:
+> > > > 
+> > > I don't have a strong preference for the name, but if I had to guess
+> > > the return value from the function prototype, I would intuitively
+> > > expect an int to return "0 for even and 1 for odd," and a bool to
+> > > return "true for even, false for odd." I recall Jiri and Jacob shared
+> > > similar thoughts, which is why I felt adding _odd could provide better
+> > > clarity.
+> > 
+> > I think they said they are convinced that parity should return 1 for
+> > odd because of folding and __builtin_parity() arguments.
+> > 
 > 
-> To fix it, don't free the memory at power down during suspend /
-> hibernation. Instead, use the same allocated memory again after every
-> resume / hibernation. This patch has been tested with resume and
-> hibernation both.
+> And for bool, 0 == false, and 1 == true. In fact, the *definitions* for
+> false and true in C (but not C++) is:
 > 
-> The rddm is of constant size for a given hardware. While the fbc_image
-> size depends on the firmware. If the firmware changes, we'll free and
-> allocate new memory for it.
+> <stdbool.h>:
+> typedef _Bool bool;
+> #define false	0
+> #define true	1
 > 
-> Here are the crash logs:
+> If someone wants to make more clear, it would be better to put "typedef bool
+> bit_t" in a common header, but that personally seems ridiculous to me.
+>   >>>> type from u8 to u64 for broader applicability, and updates its return
+> > > > > type from int to bool to make its usage and return semantics more
+> > > > > intuitive-returning true for odd parity and false for even parity. It
+> > > > > also adds __attribute_const__ to enable compiler optimizations.
+> > > > 
+> > > > That's correct and nice, but can you support it with a bloat-o-meter's
+> > > > before/after and/or asm snippets? I also think it worth to be a separate
+> > > > patch, preferably the last patch in the series.
+> > > > 
+> > > I quickly tested it with the x86 defconfig, and it appears that the
+> > > generated code doesn't change. I forgot who requested the addition
+> > > during the review process, but I initially thought it would either
+> > > improve the generated code or leave it unchanged without significantly
+> > > increasing the source code size.
+> > 
+> > That's what I actually expected, but was shy to guess openly. :). It's
+> > hard to imagine how compiler may improve code generation in this case...
+> > 
+> > This attribute is used when there's an asm block, or some non-trivial
+> > function call. In this case, the function is self-consistent and makes
+> > no calls. And you see, const annotation raises more questions than
+> > solves problems. Let's drop it.
 > 
-> [ 3029.338587] mhi mhi0: Requested to power ON
-> [ 3029.338621] mhi mhi0: Power on setup success
-> [ 3029.668654] kworker/u33:8: page allocation failure: order:7, mode:0xc04(GFP_NOIO|GFP_DMA32), nodemask=(null),cpuset=/,mems_allowed=0
-> [ 3029.668682] CPU: 4 UID: 0 PID: 2744 Comm: kworker/u33:8 Not tainted 6.11.11-valve10-1-neptune-611-gb69e902b4338 #1ed779c892334112fb968aaa3facf9686b5ff0bd7
-> [ 3029.668690] Hardware name: Valve Galileo/Galileo, BIOS F7G0112 08/01/2024
-> [ 3029.668694] Workqueue: mhi_hiprio_wq mhi_pm_st_worker [mhi]
-> [ 3029.668717] Call Trace:
-> [ 3029.668722]  <TASK>
-> [ 3029.668728]  dump_stack_lvl+0x4e/0x70
-> [ 3029.668738]  warn_alloc+0x164/0x190
-> [ 3029.668747]  ? srso_return_thunk+0x5/0x5f
-> [ 3029.668754]  ? __alloc_pages_direct_compact+0xaf/0x360
-> [ 3029.668761]  __alloc_pages_slowpath.constprop.0+0xc75/0xd70
-> [ 3029.668774]  __alloc_pages_noprof+0x321/0x350
-> [ 3029.668782]  __dma_direct_alloc_pages.isra.0+0x14a/0x290
-> [ 3029.668790]  dma_direct_alloc+0x70/0x270
-> [ 3029.668796]  mhi_alloc_bhie_table+0xe8/0x190 [mhi faa917c5aa23a5f5b12d6a2c597067e16d2fedc0]
-> [ 3029.668814]  mhi_fw_load_handler+0x1bc/0x310 [mhi faa917c5aa23a5f5b12d6a2c597067e16d2fedc0]
-> [ 3029.668830]  mhi_pm_st_worker+0x5c8/0xaa0 [mhi faa917c5aa23a5f5b12d6a2c597067e16d2fedc0]
-> [ 3029.668844]  ? srso_return_thunk+0x5/0x5f
-> [ 3029.668853]  process_one_work+0x17e/0x330
-> [ 3029.668861]  worker_thread+0x2ce/0x3f0
-> [ 3029.668868]  ? __pfx_worker_thread+0x10/0x10
-> [ 3029.668873]  kthread+0xd2/0x100
-> [ 3029.668879]  ? __pfx_kthread+0x10/0x10
-> [ 3029.668885]  ret_from_fork+0x34/0x50
-> [ 3029.668892]  ? __pfx_kthread+0x10/0x10
-> [ 3029.668898]  ret_from_fork_asm+0x1a/0x30
-> [ 3029.668910]  </TASK>
+> Ah yes; one of the quirks about gcc asm is that an asm is implicitly assumed
+> "const" (with no memory operands) or "pure" (with memory operands) unless
+> declared volatile or given an explicit "memory" clobber.
 > 
-> Tested-on: QCNFA765 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+> So yes, the compiler can most definitely derive the constness from the form
+> of the function even in the variable case.
 > 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
-> Changes sice v1:
-> - Don't free bhie tables during suspend/hibernation only
-> - Handle fbc_image changed size correctly
-> - Remove fbc_image getting set to NULL in *free_bhie_table()
-> ---
->   drivers/bus/mhi/host/boot.c           | 15 +++++++++++----
->   drivers/bus/mhi/host/init.c           | 13 ++++++++++---
->   drivers/net/wireless/ath/ath11k/mhi.c |  9 +++++----
->   include/linux/mhi.h                   |  7 +++++++
->   4 files changed, 33 insertions(+), 11 deletions(-)
+> I would still like to see __builtin_parity() being used as an architecture
+> opt-in; it can, of course, also be unconditionally used in the constant
+> case.
 > 
-> diff --git a/drivers/bus/mhi/host/boot.c b/drivers/bus/mhi/host/boot.c
-> index 9dcc7184817d5..0df26100c8f9c 100644
-> --- a/drivers/bus/mhi/host/boot.c
-> +++ b/drivers/bus/mhi/host/boot.c
-> @@ -487,10 +487,17 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->   	 * device transitioning into MHI READY state
->   	 */
->   	if (mhi_cntrl->fbc_download) {
-> -		ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image, fw_sz);
-> -		if (ret) {
-> -			release_firmware(firmware);
-> -			goto error_fw_load;
-> +		if (mhi_cntrl->fbc_image && fw_sz != mhi_cntrl->prev_fw_sz) {
-> +			mhi_free_bhie_table(mhi_cntrl, mhi_cntrl->fbc_image);
-> +			mhi_cntrl->fbc_image = NULL;
-> +		}
-> +		if (!mhi_cntrl->fbc_image) {
-> +			ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image, fw_sz);
-> +			if (ret) {
-> +				release_firmware(firmware);
-> +				goto error_fw_load;
-> +			}
-> +			mhi_cntrl->prev_fw_sz = fw_sz;
+> So in the end one of these two become my preferred implementation, and I
+> really don't think it is very complicated:
+> 
+> #ifndef use_builtin_parity
+> #define use_builtin_parity(x) __builtin_constant_p(x)
+> #endif
+> 
+> static inline bool parity8(u8 val)
+> {
+> 	if (use_builtin_parity(val))
+> 		return __builtin_parity(val);
+> 	val ^= val >> 4;
+> 	return (0x6996 >> (val & 0xf)) & 1;
+> }
+> 
+> static inline bool parity16(u16 val)
+> {
+> 	if (use_builtin_parity(val))
+> 		return __builtin_parity(val);
+> 	return parity8(val ^ (val >> 8));
+> }
+> 
+> static inline bool parity32(u32 val)
+> {
+> 	if (use_builtin_parity(val))
+> 		return __builtin_parity(val);
+> 	return parity16(val ^ (val >> 16));
+> }
+> 
+> static inline bool parity64(u64 val)
+> {
+> 	if (use_builtin_parity(val))
+> 		return __builtin_parityll(val);
+> 	return parity32(val ^ (val >> 32));
+> }
+> 
+> This means that an architecture -- in particular, x86 -- can still ask to
+> use __builtin_parity*() directly. It means that architectures on which
+> __builtin_parity*() produces bad code should either complain to the
+> gcc/clang team and have it fixed, or we can add additional mechanism for
+> them to override the implementation at that time.
+> 
+> The alternative is to stop worrying about overengineering, and just do it
+> once and for all:
+> 
+> #ifndef parity8
+> static inline bool parity8(u8 val)
+> {
+> 	val ^= val >> 4;
+> 	return (0x6996 >> (val & 0xf)) & 1;
+> }
+> #endif
+> 
+> #ifndef parity16
+> static inline bool parity16(u16 val)
+> {
+> 	return parity8(val ^ (val >> 8));
+> }
+> #endif
+> 
+> #ifndef parity32
+> static inline bool parity32(u32 val)
+> {
+> 	return parity16(val ^ (val >> 16));
+> }
+> #endif
+> 
+> #ifndef parity64
+> static inline bool parity64(u64 val)
+> {
+> 	return parity32(val ^ (val >> 32));
+> }
+> #endif
+> 
+> In either case, instead of packing the cascade into one function, make good
+> use of it.
+> 
+> In the latter case, __builtin_constant_p() isn't necessary as it puts the
+> onus on the architecture to separate out const and non-const cases, if it
+> matters -- which it doesn't if the architecture simply wants to use
+> __builtin_parity:
+> 
+> #define parity8(x)  ((bool) __builtin_parity((u8)(x)))
+> #define parity16(x) ((bool) __builtin_parity((u16)(x)))
+> #define parity32(x) ((bool) __builtin_parity((u32)(x)))
+> #define parity64(x) ((bool) __builtin_parityll((u64)(x)))
+> 
+> As stated before, I don't really see that the parity function itself would
+> be very suitable for a generic helper, but if it were to, then using the
+> "standard" macro construct for it would seem to be the better option.
+> 
+> (And I would be very much in favor of not open-coding the helper everywhere
+> but to macroize it; effectively creating a C++ template equivalent. It is
+> out of scope for this project, though.)
+> 
+IIUC, you prefer using the parity8/16/32/64() interface with
+__builtin_parity(), regardless of whether there are users on the hot
+path?
 
-This seems confusing.  Why do we care about the previous fw size when we 
-care about the allocated bhie table size?  Also, if the fw size is 
-smaller than the allocated table size it looks like we'll do a 
-free/alloc, when it seems like we could jsut use the memory we already have.
+If the maintainer has no concerns about maintenance burden, I also lean
+toward this interface. While I don't think the implementation is
+particularly complex, I'm not the maintainer, so I'd rather not argue
+about the maintenance aspect. Also, to be clear, I don't think I'm the
+right person to provide evidence that performance or code generation
+matters to any user.
 
->   		}
->   
->   		/* Load the firmware into BHIE vec table */
-> diff --git a/include/linux/mhi.h b/include/linux/mhi.h
-> index 059dc94d20bb6..65a47c712b3a0 100644
-> --- a/include/linux/mhi.h
-> +++ b/include/linux/mhi.h
-> @@ -382,6 +382,7 @@ struct mhi_controller {
->   	const char *fw_image;
->   	const u8 *fw_data;
->   	size_t fw_sz;
-> +	size_t prev_fw_sz;
+OTOH, If we do end up going with one of the two approaches, since
+bitops.h is included (directly or indirectly) by many files while
+parity is only used in fewer than 20, perhaps we should move the
+parity-related code to a separate parity.h. It doesn't necessarily have
+to be maintained by Yury - it could be someone else, or me.
 
-No documentation?
-
->   	const char *edl_image;
->   	size_t rddm_size;
->   	size_t sbl_size;
-> @@ -662,6 +663,12 @@ void mhi_power_down_keep_dev(struct mhi_controller *mhi_cntrl, bool graceful);
->    */
->   void mhi_unprepare_after_power_down(struct mhi_controller *mhi_cntrl);
->   
-> +/**
-> + * mhi_partial_unprepare_after_power_down - Free any allocated memory after power down partially
-
-This looks like it exceeds 80 char.
-Also what is a "power down partially"?
-
-
+Regards,
+Kuan-Wei
 
