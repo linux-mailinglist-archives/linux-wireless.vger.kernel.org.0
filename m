@@ -1,116 +1,125 @@
-Return-Path: <linux-wireless+bounces-21435-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21436-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5688A856CF
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Apr 2025 10:41:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE22A856F7
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Apr 2025 10:50:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACB873B9A49
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Apr 2025 08:40:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F04F07A61D9
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Apr 2025 08:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4BB29614C;
-	Fri, 11 Apr 2025 08:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E35F285404;
+	Fri, 11 Apr 2025 08:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="vbEX9y5i"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="PPqMHCDI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7E71D86F7
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Apr 2025 08:41:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3442D38FB0;
+	Fri, 11 Apr 2025 08:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744360867; cv=none; b=DbqDtezvD8cSX6wq4rYwm5euLqBzzhpCofi0MOj+XbvoTxzsDcm/dkQ7d+cAq5/4NujnK4OYPsV51cjE8a2BFQZz7S68jBcknDR5i3hgZV1mS/1feqcaF2XPfZxK57va7IXmpjuUHkhwJXZ6VCfo0J8Jt3AJY1ATt4R8Ot4PSo0=
+	t=1744361403; cv=none; b=XqYmpJkfqQ+DWNfJcNeq2Rrx2b3nnqRAxHl41s1HLG2KdRopLcUQIBj0lQTyAeYFF1KbJ1hmrNW7zgTRNQEkw2Z05zpgHoIRBGls7Tvx+DYb6HA5syos3N76Li95i4ayjC7FbGG5tcVqs5r9YI5vzJBtWVZIFqm0x5OskVlzaW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744360867; c=relaxed/simple;
-	bh=Zo9242HXTwRAK7IhTxgtJz4xZq6YJz+wHJcKgoslaM8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CZNKRarBuj3cNenCWlUK8ighv+PhIAxx7xBh4jZTpikcAemu9LYPa1WBvd+wRdHcLzERI2m/py4qCSL0CA39/+id42HAF1WVxa9xXHdjjG8Rl512P7okOZfJfLYMo/EPjad87z3lXYj+Gpv5kEd1s/xAy9v7i4jBMAdbdepJiYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=vbEX9y5i; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=xnDPlXztfA4M7pubAl70kH19DOTiDS/UbWiP+bd28k0=; t=1744360864; x=1745570464; 
-	b=vbEX9y5idPpaLBoFju0ZCJOFDvArhVKzMHwEvtE4vabnRLoUbsULlynsRVslC1dnF8smpPFFU1J
-	kO4sjceSjbrlBbvy1EjKyiwj1JLeJip5c4hR8ZUvF0xLH1g3V7WpQZ2T6gDviRTIZrfM+NNi290KF
-	8Ez3+R3xHTTJByrMNFMGYfPJaR1vi6IYca68cKEfmsSifzv+RpUCrEB/JqJgfrCwvIx0NUku2BmFE
-	k0tHm4f3mU1p3ayZunU8Tqz4hY8Ix2/4wAje1ppsBy2I8I/xO16hI8ktvErgmxmp5HL/dRXEwYpBr
-	Iie7REXiCDV0l+iVXwEjBFFXug30VAoQBokA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1u39wV-00000007TVP-3lPE;
-	Fri, 11 Apr 2025 10:40:56 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH wireless] wifi: iwlwifi: pcie: set state to no-FW before reset handshake
-Date: Fri, 11 Apr 2025 10:40:54 +0200
-Message-ID: <20250411104054.63aa4f56894d.Ife70cfe997db03f0d07fdef2b164695739a05a63@changeid>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1744361403; c=relaxed/simple;
+	bh=V6Fu4VrxxO+l9OZXsluyJdviLxbdbOK0bDXx3CckqI0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=paS+UEJsmXi8KLQxaSb9lZn7ou4Obujmw/I8Wj1NjnVATpiO12zM/h2QCWvR5qhlZH6JhRsmfCqmu/tOilpSrzT5thNXMDLWApQdtqbrAiUXgVwgoCE5BtYKq8uXKaw3c4DD+NDbf9oGgBFH1lwDoyJfXZBaWdNUS8j1omm8H6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=PPqMHCDI; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id BA1CA1FBE7;
+	Fri, 11 Apr 2025 10:49:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1744361398;
+	bh=gPPyNPscjBGAPcxizRLq/wo01rgRCKMweMYk9HxkjrI=; h=From:To:Subject;
+	b=PPqMHCDIgBBA0F4F9wv9dAeM3d9AXchpcsYAlWig8HXS5xnia6ItNspSB2TDqzurV
+	 HlBpY8nDhOfxA8oBere45btV2jQ25SaGSz8r94TOjPLst5eRhkGHvTTP44PPQHVkuF
+	 G4w3Mw69d3xwbOdfjSfGcKi9YNfMo6s9si1tF2aJbZ8LXPBeMd6QV2vHqIPF9JN3PF
+	 28rW/E5wDRtr2lleCDIHofR2UQPaHB4gE7WS33Km9pNxS/D8xGHGJPwewKL8S9y/Hf
+	 rDOi37AB0VRRpdlVlmhSUiR1eFf9aGMkSycH8eamUV6a0r7VK34RZ3NU5uLVQMHf7k
+	 i+Xy3oywA8Lfw==
+Date: Fri, 11 Apr 2025 10:49:54 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: Re: [PATCH 3/4] wifi: mwifiex: drop asynchronous init waiting code
+Message-ID: <20250411084954.GA24608@francesco-nb>
+References: <20250410-mwifiex-drop-asynchronous-init-v1-0-6a212fa9185e@pengutronix.de>
+ <20250410-mwifiex-drop-asynchronous-init-v1-3-6a212fa9185e@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250410-mwifiex-drop-asynchronous-init-v1-3-6a212fa9185e@pengutronix.de>
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Thu, Apr 10, 2025 at 12:28:45PM +0200, Sascha Hauer wrote:
+> Historically all commands sent to the mwifiex driver have been
+> asynchronous. The different commands sent during driver initialization
+> have been queued at once and only the final command has been waited
+> for being ready before finally starting the driver.
+> 
+> This has been changed in 7bff9c974e1a ("mwifiex: send firmware
+> initialization commands synchronously").
 
-The reset handshake attempts to kill the firmware, and it'll go
-into a pretty much dead state once we do that. However, if it
-times out, then we'll attempt to dump the firmware to be able
-to see why it didn't respond. During this dump, we cannot treat
-it as if it was still running, since we just tried to kill it,
-otherwise dumping will attempt to send a DBGC stop command. As
-this command will time out, we'll go into a reset loop.
+> With this the initialization is finished once the last
+> mwifiex_send_cmd_sync() (now mwifiex_send_cmd()) has returned.
 
-For now, fix this by setting the trans->state to say firmware
-isn't running before doing the reset handshake. In the longer
-term, we should clean up the way this state is handled.
+Just for me, the rename/refactor happened in commit fa0ecbb9905d
+("mwifiex: remove global variable cmd_wait_q_required"), in v3.14.
 
-It's not entirely clear but it seems likely that this issue was
-introduced by my rework of the error handling, prior to that it
-would've been synchronous at that point and (I think) not have
-attempted to reset since it was already doing down.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219967
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219968
-Fixes: 7391b2a4f7db ("wifi: iwlwifi: rework firmware error handling")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+> This makes all the code used to wait for the last initialization
+> command to be finished unnecessary, so it's removed in this patch.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/cmdevt.c  | 16 ----------------
+>  drivers/net/wireless/marvell/mwifiex/init.c    |  5 +++--
+>  drivers/net/wireless/marvell/mwifiex/main.c    | 12 ++----------
+>  drivers/net/wireless/marvell/mwifiex/main.h    |  6 ------
+>  drivers/net/wireless/marvell/mwifiex/sta_cmd.c |  4 ----
+>  drivers/net/wireless/marvell/mwifiex/util.c    | 18 ------------------
+>  6 files changed, 5 insertions(+), 56 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/cmdevt.c b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
+> index 5573e2ded72f2..c07857c49a713 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/cmdevt.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
+> @@ -900,18 +900,6 @@ int mwifiex_process_cmdresp(struct mwifiex_adapter *adapter)
+>  		ret = mwifiex_process_sta_cmdresp(priv, cmdresp_no, resp);
+>  	}
+>  
+> -	/* Check init command response */
+> -	if (adapter->hw_status == MWIFIEX_HW_STATUS_INITIALIZING) {
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-index 3ece34e30d58..472f26f83ba8 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-@@ -147,8 +147,14 @@ static void _iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans)
- 		return;
- 
- 	if (trans->state >= IWL_TRANS_FW_STARTED &&
--	    trans_pcie->fw_reset_handshake)
-+	    trans_pcie->fw_reset_handshake) {
-+		/*
-+		 * Reset handshake can dump firmware on timeout, but that
-+		 * should assume that the firmware is already dead.
-+		 */
-+		trans->state = IWL_TRANS_NO_FW;
- 		iwl_trans_pcie_fw_reset_handshake(trans);
-+	}
- 
- 	trans_pcie->is_down = true;
- 
--- 
-2.49.0
+What about the code path from mwifiex_add_card()?
+
+mwifiex_add_card()
+ -> hw_status = MWIFIEX_HW_STATUS_INITIALIZING
+ -> mwifiex_init_hw_fw(adapter, true))
+   -> request_firmware_nowait(..., mwifiex_fw_dpc)
+
+mwifiex_fw_dpc()
+ ...
+     -> mwifiex_init_fw()
+       -> adapter->hw_status = MWIFIEX_HW_STATUS_READY  
+
+mwifiex_fw_dpc() is called asynchronously, is everything as safe as
+before, here?
+
+
+Francesco
 
 
