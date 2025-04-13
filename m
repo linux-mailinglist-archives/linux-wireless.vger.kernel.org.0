@@ -1,63 +1,66 @@
-Return-Path: <linux-wireless+bounces-21477-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21478-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C66A87328
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BFCA87327
 	for <lists+linux-wireless@lfdr.de>; Sun, 13 Apr 2025 20:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7ABE87A56E5
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Apr 2025 18:24:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DC573B0139
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Apr 2025 18:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C131CDFAC;
-	Sun, 13 Apr 2025 18:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E43A1EEA43;
+	Sun, 13 Apr 2025 18:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="F0/YaqiA"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="AwsSvqkV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8B94438B
-	for <linux-wireless@vger.kernel.org>; Sun, 13 Apr 2025 18:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910F68635D
+	for <linux-wireless@vger.kernel.org>; Sun, 13 Apr 2025 18:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744568738; cv=none; b=JSxSv0f3guyHhQN6nc0KmTGXncPDcyFQszr6CV68xjuI99XZQn76qRVysW3cDTw4nBActHMrR/L14x7UpmWeiQOXZFMUiNIkf6t0iPoKPOduQXs/EorIJ1/N4jqWCP1GrT3Kc4nnnCExE/SXs3U2NaW7YNbx531Sd8zJyol1mxM=
+	t=1744568739; cv=none; b=hxnf4fUqNwQBYZuFgLyh0DvhGz3MIfO0j0KUd1Xbn+YCxoDT9RrN4KOlBGigwvLPo8U512rUSNFldNAZtYF9Z+JxT2eVOUx5U4djvcoqan6J21rY68Ewtmv1EuAhTGTqC8cn5ay/ianRmMhU/nD9pyVeYK+R8hL8rOXyOrHQrvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744568738; c=relaxed/simple;
-	bh=z71MQYHjtpY2vQBVcSOUWjqrKzTKFCAZmPIbohcx92k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FtfTsYehiXkoDDdEAYunyeHwHACUEeQwb7CorKP2uO0yvS4vHQdYENFUX9YE1skMpfG8Tbz+yUl5VTAqRilZofg2ci7PdjjMgX6xP1x88NpUgqNuq8cHyEfYkrjMY9xUSTBci0e+6PYRX1a+BnIy4bxe7aF1GOR0ZjPte3NVDoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=F0/YaqiA; arc=none smtp.client-ip=67.231.154.183
+	s=arc-20240116; t=1744568739; c=relaxed/simple;
+	bh=2kFlvAGzKtKZXCZojeJEk9XEUOcNw8sjLKuWvlUNTvo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gB4h1STrYmdByZPANNAlOODaEEDEMoJKYp/+iSeOS2fEqPon/a98JuM916W0UozkuE9SWN4JKT56MFhLm34ulJ07IVfRZZw7MULLuuwHxqZLaR9uAdGuw2AhTrUeG9mFMB8D0GBJsE4OccRiT4zE3j/SwOoDkdZrEyxbNzLsFAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=AwsSvqkV; arc=none smtp.client-ip=148.163.129.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from engine.ppe-hosted.com (unknown [10.110.50.147])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id F161E600E1;
-	Sun, 13 Apr 2025 18:25:29 +0000 (UTC)
+Received: from engine.ppe-hosted.com (unknown [10.7.65.208])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 24F8B600B9;
+	Sun, 13 Apr 2025 18:25:31 +0000 (UTC)
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 0580A800069;
-	Sun, 13 Apr 2025 18:25:28 +0000 (UTC)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id EC1E6180069;
+	Sun, 13 Apr 2025 18:25:29 +0000 (UTC)
 Received: from arrendajo.lan (174-21-144-103.tukw.qwest.net [174.21.144.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 5924613C2B0;
-	Sun, 13 Apr 2025 11:25:28 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5924613C2B0
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 8218013C2B0;
+	Sun, 13 Apr 2025 11:25:29 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8218013C2B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1744568728;
-	bh=z71MQYHjtpY2vQBVcSOUWjqrKzTKFCAZmPIbohcx92k=;
-	h=From:To:Cc:Subject:Date:From;
-	b=F0/YaqiAH8A2vMiZdDCW+sTUT2oJXYsi5u7gwUMErJbh6WGsW7BndG+BRH0Fup1es
-	 PF0g1XcvTrF4UAW1T9pMJF0VNMT+FefI0Aeffm2NNxbNlxi+gY+deSOspEJYmk2owB
-	 Uu/WoKNJLpPnQTZyaKK2TjyB6zaNSWs2UEtpGKFY=
+	s=default; t=1744568729;
+	bh=2kFlvAGzKtKZXCZojeJEk9XEUOcNw8sjLKuWvlUNTvo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AwsSvqkVdLz0zYB3/OvAiVTyciAuwqYMkDutNmR1bl8Lz0U7bRt/BevHSiS9CR8e2
+	 P6RwRRMuZFrTo5yokn4+udHQ0TaNYZJJPaZwO8g1QUNu0oFwEeh+/uO1mNXoYE7ES8
+	 RoDPHECHRH6r6afBx8BP/m4MCvDFKbJiE/km09qk=
 From: Alex Gavin <alex.gavin@candelatech.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Alex Gavin <alex.gavin@candelatech.com>
-Subject: [PATCH iw 0/2] iw: scan: Decode additional WPA3 AKM suites and group ciphers
-Date: Sun, 13 Apr 2025 11:24:53 -0700
-Message-ID: <20250413182515.10755-1-alex.gavin@candelatech.com>
+Subject: [PATCH iw 1/2] iw: scan: Decode additional WPA3 AKM suite types
+Date: Sun, 13 Apr 2025 11:24:54 -0700
+Message-ID: <20250413182515.10755-2-alex.gavin@candelatech.com>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250413182515.10755-1-alex.gavin@candelatech.com>
+References: <20250413182515.10755-1-alex.gavin@candelatech.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,19 +68,47 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1744568729-U0KJ27EsQvQd
+X-MDID: 1744568730-SlWjjF7V7kXe
 X-PPE-STACK: {"stack":"us5"}
 X-MDID-O:
- us5;at1;1744568729;U0KJ27EsQvQd;<alex.gavin@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
+ us5;ut7;1744568730;SlWjjF7V7kXe;<alex.gavin@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
 X-PPE-TRUSTED: V=1;DIR=OUT;
 
-Alex Gavin (2):
-  iw: scan: Decode additional WPA3 AKM suite types
-  iw: scan: Decode additional WPA3 group ciphers
+These values are taken from the publicly-available WPA3
+specification available on the WFA website.
 
- scan.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+Specific string choice attempts to match previous
+printouts, rather than matching the specification
+verbatim.
 
+Signed-off-by: Alex Gavin <alex.gavin@candelatech.com>
+---
+ scan.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/scan.c b/scan.c
+index 6cf44d2..63babdc 100644
+--- a/scan.c
++++ b/scan.c
+@@ -885,6 +885,18 @@ static void print_auth(const uint8_t *data)
+ 		case 18:
+ 			printf("OWE");
+ 			break;
++		case 19:
++			printf("FT/PSK/SHA-384");
++			break;
++		case 20:
++			printf("PSK/SHA-384");
++			break;
++		case 24:
++			printf("SAE-EXT-KEY");
++			break;
++		case 25:
++			printf("FT/SAE-EXT-KEY");
++			break;
+ 		default:
+ 			printf("%.02x-%.02x-%.02x:%d",
+ 				data[0], data[1] ,data[2], data[3]);
 -- 
 2.47.2
 
