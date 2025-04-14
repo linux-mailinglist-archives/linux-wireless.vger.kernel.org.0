@@ -1,138 +1,103 @@
-Return-Path: <linux-wireless+bounces-21486-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21487-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF50A878CD
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 09:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A230FA87948
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 09:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AA943AE516
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 07:33:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 562873B2A5C
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 07:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51CE258CF2;
-	Mon, 14 Apr 2025 07:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="dw158rFs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EBD1F3FD1;
+	Mon, 14 Apr 2025 07:43:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A9F258CEE;
-	Mon, 14 Apr 2025 07:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744616005; cv=pass; b=sIKzPKGLy1h+oBaI+xuYKjxifI1NXFJXv9OQwhYfm/VTvHxjIuumM+HECTF+ie1IuSNO+PlsffmCKYc0V9/+36OIUmDBXJgv7hw1FLLBAl6gCOshfJRi/oSByhITpDXP1JNVdiy7+9MFRCpjvPHNDLzZY5nqhTkyiaxmgeOC3SI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744616005; c=relaxed/simple;
-	bh=0DM+yECyVKmMRm/otDrf4OIShCY4xBTSKZrpEXD0gBY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p8K8rpyogwURuzCura6+3juKDZJzmE3Rm1bJp0YV8hClOKlC/k6vK3AAPi5rtd3wGYQeU3GzIFdVjGlt4e3DNeddcaw66DzpCPlQCUPxEM8xrBSJnS7w+fwdMzofESaL3MSPWFuJ8DS+TJdiPE5aY4UGAiAuAVuat25YUxKGtIw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=dw158rFs; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1744615967; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=S0354nrgj9hb6NeQadl1Jgb85f2XZ6MReFCZUBNsZDdDAzQrzRFwGnwr8EweP211SA50Xn4y+hioKW/Bz7wmSJyQzWGG86Adf+RIiSkVsJrAFwnk++2k92Nh+A0bocClaD6qEvMeHhwgCJW3OQZKy63j5AuNqVz9pD0HTHtwTRk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1744615967; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=r6Hcb7CoSvel25wAUR0OKJ4456sj4HsUlowzVIyObhI=; 
-	b=Qqza8kx+/OPX6Vbfz/xlS+1wWb4D/S0YtI/H9orFvcpgSpGFzTD7ZWXicQMorRRfkLY8zw0Zasu2X+LL5lPj0154UKv9ZEh+w1uw3aNmD0SyOa03w9DM4n1pwHykJNqkny8yw6F3vlYRtsis62vfJZSL6b8wVLirN7KXsEnTp8A=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass header.from=<usama.anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1744615967;
-	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=r6Hcb7CoSvel25wAUR0OKJ4456sj4HsUlowzVIyObhI=;
-	b=dw158rFsigQq+3WvSfq3Kgi3Rvj53BgokKnVLW2u3VAHfgNngg/+0puXeBCjJE+y
-	/UGjtVvi3ANtObQaDu9BNvu0glsKVKO/GPUw9KS+PaIttwYgkUOw3xT4m8cT96ClSuA
-	71V/M5BsqaGYHQ1v/2k7u++MKga8gbd8jKW1CeHc=
-Received: by mx.zohomail.com with SMTPS id 1744615966149258.692739802746;
-	Mon, 14 Apr 2025 00:32:46 -0700 (PDT)
-Message-ID: <7d6b074c-8499-4984-b235-d1285b006ab3@collabora.com>
-Date: Mon, 14 Apr 2025 12:32:34 +0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5425E259CA0;
+	Mon, 14 Apr 2025 07:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744616602; cv=none; b=f8/P8j6QEhO1fbXzqJHRIF7VZcTc2Mm9vyM1gehJ5QZteJC+HEgBN38pVP87OR9dLTZT4UWtVRSbg5OVWh/7mn4NH4bI3vcNMXgU07wEEJJYGl1+oTBetA18wWlwV4r1qIVXIG7ryu5hhOnRS3hxxs1r6GanNoUrtc5KlXg+v9k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744616602; c=relaxed/simple;
+	bh=QAa+J/meRHMtog91cSwrp/o8jck/81Pbje00Mrsvge8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u3/8KkUlgtdYUWnvlGTbRKv97nYSbN5rLe2rdBeprVOS83oTs5OY7EuTCy7CByY9FHvSYeuRsQJhAtw6ND3QzvlcEpEvgaTHnoCoaoJJ2FiI/xaTGCvXLLyy//9BGgS3wb/gK5FxIL3sLmOMLlXXkvuDmm+dTF9bu3rPimoo+Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-05 (Coremail) with SMTP id zQCowADnGwSIvPxnXNrnCA--.16539S2;
+	Mon, 14 Apr 2025 15:43:05 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: arend.vanspriel@broadcom.com
+Cc: kvalo@kernel.org,
+	sebastian.reichel@collabora.com,
+	erick.archer@outlook.com,
+	megi@xff.cz,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>
+Subject: [PATCH RESEND] brcmfmac: Add an error log for brcmf_sdiod_ramrw()
+Date: Mon, 14 Apr 2025 15:42:32 +0800
+Message-ID: <20250414074232.2342-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] bus: mhi: host: don't free bhie tables during
- suspend/hibernation
-To: Krishna Chaitanya Chundru <quic_krichai@quicinc.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson
- <jjohnson@kernel.org>, Jeffrey Hugo <quic_jhugo@quicinc.com>,
- Yan Zhen <yanzhen@vivo.com>, Youssef Samir <quic_yabdulra@quicinc.com>,
- Qiang Yu <quic_qianyu@quicinc.com>, Alex Elder <elder@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Kunwu Chan <chentao@kylinos.cn>, Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Cc: kernel@collabora.com, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- ath11k@lists.infradead.org
-References: <20250410145704.207969-1-usama.anjum@collabora.com>
- <ba09ae0c-fe8d-8f4e-a1b8-9c7e5913c84e@quicinc.com>
- <fc9ca0da-9f6a-42b5-aa79-abcd43c97043@collabora.com>
- <e0159cb8-fe21-7f71-1ebe-744ed26bd698@quicinc.com>
- <85580a01-289a-461b-b0f1-38fa1b96717c@collabora.com>
- <1c0b2217-49d9-360c-ed60-db517eaf2ccc@quicinc.com>
-Content-Language: en-US
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <1c0b2217-49d9-360c-ed60-db517eaf2ccc@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowADnGwSIvPxnXNrnCA--.16539S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Gw4xur47KF4fGFyxWw43Awb_yoWkZFbEqF
+	savrnxX34Sg34kuryDAFW2vrWvk34qqw1vgr1ayayfKr1IgFW3KrZ7ZFn5Jw17WF4IqFnx
+	Cwn8AFyUG3Z7ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbf8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+	6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r4xMxAIw28IcxkI7VAKI4
+	8JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xv
+	wVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjx
+	v20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20E
+	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267
+	AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUj_b15UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwoMA2f8nOl0JgAAs+
 
-On 4/12/25 6:22 AM, Krishna Chaitanya Chundru wrote:
-> 
-> On 4/12/2025 12:02 AM, Muhammad Usama Anjum wrote:
->> On 4/11/25 1:39 PM, Krishna Chaitanya Chundru wrote:
->>>
->>>
->>> On 4/11/2025 12:32 PM, Muhammad Usama Anjum wrote:
->>>> On 4/11/25 8:37 AM, Krishna Chaitanya Chundru wrote:
->>>>>
->>>>>
->>>>> On 4/10/2025 8:26 PM, Muhammad Usama Anjum wrote:
->>>>>> Fix dma_direct_alloc() failure at resume time during bhie_table
->>>>>> allocation. There is a crash report where at resume time, the memory
->>>>>> from the dma doesn't get allocated and MHI fails to re-initialize.
->>>>>> There may be fragmentation of some kind which fails the allocation
->>>>>> call.
->>>>>>
->>>>>> To fix it, don't free the memory at power down during suspend /
->>>>>> hibernation. Instead, use the same allocated memory again after every
->>>>>> resume / hibernation. This patch has been tested with resume and
->>>>>> hibernation both.
->>>>>>
->>>>>> The rddm is of constant size for a given hardware. While the
->>>>>> fbc_image
->>>>>> size depends on the firmware. If the firmware changes, we'll free and
->>>>> If firmware image will change between suspend and resume ?
->>>> Yes, correct.
->>>>
->>> why the firmware image size will change between suspend & resume?
->>> who will update the firmware image after bootup?
->>> It is not expected behaviour.
->> I was trying to research if the firmware can change or not. I've not
->> found any documentation on it.
->>
->> If the firmare is updated in filesystem before suspend/hibernate, would
->> the new firwmare be loaded the next time kernel resumes as the older
->> firmware is no where to be found?
->>
->> What do you think about this?
->>
-> I don't think firmware can be updated before suspend/hibernate. I don't
-> see any reason why it can be updated. If you think it can be updated
-> please quote relevant doc.
-I've not found any documentation on it. Let's wait for others to review
-and it it cannot be updated, I'll remove this part.
+The function brcmf_sdio_buscore_activate() calls the function
+brcmf_sdiod_ramrw(), but does not check its return value. Log
+the error message to prevent silent failure if the function fails.
 
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index b1727f35217b..dd683c2582fb 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -3898,8 +3898,9 @@ static void brcmf_sdio_buscore_activate(void *ctx, struct brcmf_chip *chip,
+ 
+ 	if (rstvec)
+ 		/* Write reset vector to address 0 */
+-		brcmf_sdiod_ramrw(sdiodev, true, 0, (void *)&rstvec,
+-				  sizeof(rstvec));
++		if (brcmf_sdiod_ramrw(sdiodev, true, 0, (void *)&rstvec,
++				      sizeof(rstvec)) < 0)
++			brcmf_err("Fail to reset vector\n");
+ }
+ 
+ static u32 brcmf_sdio_buscore_read32(void *ctx, u32 addr)
 -- 
-Regards,
-Usama
+2.42.0.windows.2
+
 
