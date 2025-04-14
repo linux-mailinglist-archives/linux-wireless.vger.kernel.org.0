@@ -1,50 +1,79 @@
-Return-Path: <linux-wireless+bounces-21506-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21507-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49ED1A87D3E
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 12:14:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9ACBA87DFD
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 12:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6D2188F7E8
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 10:14:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A06D63B4944
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 10:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8542676EE;
-	Mon, 14 Apr 2025 10:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491DF278178;
+	Mon, 14 Apr 2025 10:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="vIwx+Ey9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JAfQUQ95"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D8C26770C
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Apr 2025 10:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4EF266EF3;
+	Mon, 14 Apr 2025 10:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744625591; cv=none; b=G1z8IJ5tnjfB7tmItJS2mx3xieRHwqETB/ZK7T/R6TvWlnwYVWo8oKZRNYl0VLN5Wr5WBd/OofYqe+edOeARoqlhxhzDwpOjLwBzcyurcuWiTFNl+a5Dt+Er+RDDMvEn5yk7GWMlgXbPkr4lFIzltS60Z/7nk8pFkwACpd2Jpys=
+	t=1744627772; cv=none; b=gPLPHetTovTPXCooG4KzI56BxwwrErUtNaYK3o3eT3XsSjwyrRp4qwuZlNLO4XIk5nlB2N3rXRY+KWW0dluxUqOFNJVXrcw/IX2TGape3/tniq4C+LeBQpSM56xrk5B4uEB/FjQpvzPwpBm+uBr64Kpoi3EcyRdER1M2L0o6vx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744625591; c=relaxed/simple;
-	bh=RjFmdWt8kRB1f/GC2NS4C1qfgdlgj5qtvpox1CCBYr0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=hHney8G/LI75ng9V81jO1lPvIb0UH8gkgFRlvPLDB5snV+k5HMzSipO0nQ000oYfWK1/FU0Rl/ncUQqdCC6/lK7/snf21sR0VDePYAjQEi+A5K4TbGg1AfwSaEexeFn9hILe7urhF7Ing+bQWSGsyp9KQbwb725pbg4kWbeK0j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=vIwx+Ey9; arc=none smtp.client-ip=178.154.239.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:3b11:0:640:80c7:0])
-	by forward100b.mail.yandex.net (Yandex) with ESMTPS id D533C60B3E;
-	Mon, 14 Apr 2025 13:12:59 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wCDBXWlLdmI0-VLxMqCvs;
-	Mon, 14 Apr 2025 13:12:59 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1744625579; bh=RjFmdWt8kRB1f/GC2NS4C1qfgdlgj5qtvpox1CCBYr0=;
-	h=Subject:To:From:Cc:Date:Message-ID;
-	b=vIwx+Ey97wyEtTx134esetARyxft2hzB4gp85nlfklWpwslSLgtJA4SxK6hw9wOgG
-	 Jrj3VYSvxNnDhZKSExVA4tzVpBtRjTEILtNPZyZuX38n67At4awYQYEVpWM59IFKwO
-	 Waaj+A+oH7qXbM33G9LCABssZePJhPwuhJfm+b5M=
-Authentication-Results: mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <0cf73d37-fe94-4d3c-8450-a62c047c5138@yandex.ru>
-Date: Mon, 14 Apr 2025 13:12:58 +0300
+	s=arc-20240116; t=1744627772; c=relaxed/simple;
+	bh=nej5Rxx/hhW9hddTky4aUeyep3bqcgBIkysf/UdzfYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E2id7Vj2I+wj/lk1DUizaV+7FCC65LNgnUPDVTKEVYdvs8gpC5XPq9v3Oy1YoQ0swmgAPnX4Xm2YreHdHbLnffgLdm6sBplde3zSjYPT8O2e+/XioWrVIwo87FLkNPvm3NY7eBYqyKmQnRzMWVKk0/ZV8hHUI67Nki9OfM1xioI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JAfQUQ95; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-39c266c1389so2791706f8f.1;
+        Mon, 14 Apr 2025 03:49:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744627769; x=1745232569; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xtsqEiOso+3ySVEpPpnY9tocZGrAQf6OsnV8IcNWh6c=;
+        b=JAfQUQ95ZBinhpz2U9zyX1AQly7CMGuiKRcgWlH3z4eq30KdxvXVbIZbjlzW9QpVHy
+         Tccpp+UdRPPavUGYSlWLypgIBGzle50IqBZiiG+EdvrwoGw+MjbG9cHuTCHoShs4GquV
+         wTfjAsfLkVOBxNOA3IrksADszkXPkyJ8T8M8zvLdRKd6ELwmlreEdJ28O8jixWv6AAGC
+         VBj3HMq4pS+3kkK9nfhObup6NXZQWSeP0f/YybJi4iJDDHBbllRQJxjsV0YWxWs7SEzo
+         TqEyx8p3XgXdOPAaSzs+lE0AHad8/HBwOHwMIOMUKplSA2hByUvxGTyt4tuH4690DPX7
+         MTFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744627769; x=1745232569;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xtsqEiOso+3ySVEpPpnY9tocZGrAQf6OsnV8IcNWh6c=;
+        b=caOOC0YjwoXZCgT8fCnBdJ8zHTirfYLxuEo0yCM2fyexsvwN9Xs6tEQuRBeqAIjiek
+         6hMDBNPbQTgJqQNukeGXu1KkRxAohoy8nNB/q8ARNrXTMN4yhmGayj5sGOLa023OSoQF
+         +SMcKu4k5A4UNntUNF/M4LUFyHx27iVkRNnyz9kk3jn+xL1k3aUUBL2odaLcqze/eMsL
+         W+O9jnC0mvVGvU9pFCjFCmFbkUkrjTA/D0C1G9OfTO4Y0pAA4TzNf7iZST0/0LTlsqwH
+         CWqelPYO9HDL0WPm0GqLrxsiqVpjSeZDGwWiqMUAPjOSRdC1nktAg/kcyTEQnD+TWuQU
+         1MYw==
+X-Forwarded-Encrypted: i=1; AJvYcCV1V+Vp+y+J51MMPYQ5eI/aScRqz54WPSVg8OZoU9ECig7itzo2Za26XC54KPX5sGbcI4Tx4M2GTaJIfrJV9Mg=@vger.kernel.org, AJvYcCV85zKzfYEGVRucjPiaWAJ1g11GsBcDgaE/8Utvf0XxLM1oRVM11++xRy9KLrvKlYidihUNRwvGvFuRKA==@vger.kernel.org, AJvYcCVnoodXbhPDLCjLDqkeAdRUwe5y9FBHQ/na9IrvjCRRHGrKEmPSHi/OA0P63JjYjbmJlAG6W6wA4iR0aeg=@vger.kernel.org, AJvYcCXOzKyB8ElX7lm5buQ1qESI/s31CVwac/IyoRvRJAzSSCA5bkjFOB6B5gvUFkik9WYroBm4cEzZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaPcVLun0cX0u4yoj5apVnN1eEGQFPRwPv5+cy9UgPNJLar+5i
+	FrTcXrlGW22rrAlrAQdf+fOvAuQdD10V1SsBLptB9+zZTt2OVUW/
+X-Gm-Gg: ASbGnctUYzbQmJjSU7JvqHUoD/pIEIEPcEcCLuj3cQYO/0Sbr4CzmUDrClKFH1n94SH
+	SUoElKPWv6teurKjDxkLIg0Kjk5S4Nw+zlPVOh/3PhdWQON4RrzGjGSfFwOL3XZ07OsZlTbGWis
+	iEDL9uDg5XeD880mZlH8IFr272WBHRvrmel+rFdhNAMPRtCz8yyadC7CzB/mPivlr6iuOlrLeZV
+	N2j/NznjXeMhX+U+ygMyETj5Ti6Tb1LsQCLV+/ym4EaWls4lPkTNlM08p2VCVF3wwmSCGxjgWFy
+	x13B3NFg/+oaPncisIjnRwUBTl2BZqu/09EQv9OpQNzYN+CZ3F1PvEgGkY9/
+X-Google-Smtp-Source: AGHT+IH1pMW+2VKVzwJ49w6Ztlv9YMJUN6W45Wwpzz8L92YImh1YeiCHahCGMNa6e6rsSObu5WtiCQ==
+X-Received: by 2002:a5d:6da8:0:b0:39c:1424:3246 with SMTP id ffacd0b85a97d-39ea51d3527mr8524313f8f.2.1744627768500;
+        Mon, 14 Apr 2025 03:49:28 -0700 (PDT)
+Received: from [10.158.37.53] ([193.47.165.251])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eaf445772sm10695726f8f.91.2025.04.14.03.49.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Apr 2025 03:49:28 -0700 (PDT)
+Message-ID: <f4a406e2-af98-4762-af44-9089440c0a7f@gmail.com>
+Date: Mon, 14 Apr 2025 13:49:24 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -52,52 +81,53 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-MW
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
-From: Dmitry Antipov <dmantipov@yandex.ru>
-Autocrypt: addr=dmantipov@yandex.ru; keydata=
- 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
- A/UwwXBRuvydGV0=
-Subject: Using check_hw_ready() through rtw88
+Subject: Re: [PATCH net-next 7/7] net/mlx5: Don't use %pK through tracepoints
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Jeff Johnson <jjohnson@kernel.org>, Loic Poulain <loic.poulain@linaro.org>,
+ Brian Norris <briannorris@chromium.org>,
+ Francesco Dolcini <francesco@dolcini.it>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>
+Cc: ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
+ ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+ wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org
+References: <20250414-restricted-pointers-net-v1-0-12af0ce46cdd@linutronix.de>
+ <20250414-restricted-pointers-net-v1-7-12af0ce46cdd@linutronix.de>
+Content-Language: en-US
+From: Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <20250414-restricted-pointers-net-v1-7-12af0ce46cdd@linutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-I've noticed that rtw8822c_dpk_cal_coef1() is the only place where
-the value returned by check_hw_ready() is silently ignored; is it
-always safe for the rest of the driver?
 
-Dmitry
+
+On 14/04/2025 11:26, Thomas Weißschuh wrote:
+> In the past %pK was preferable to %p as it would not leak raw pointer
+> values into the kernel log.
+> Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
+> the regular %p has been improved to avoid this issue.
+> Furthermore, restricted pointers ("%pK") were never meant to be used
+> through tracepoints. They can still unintentionally leak raw pointers or
+> acquire sleeping looks in atomic contexts.
+> 
+> Switch to the regular pointer formatting which is safer and
+> easier to reason about.
+> There are still a few users of %pK left, but these use it through seq_file,
+> for which its usage is safe.
+> 
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> ---
+>   drivers/net/ethernet/mellanox/mlx5/core/sf/dev/diag/dev_tracepoint.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+
 
