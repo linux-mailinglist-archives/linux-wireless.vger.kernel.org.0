@@ -1,51 +1,50 @@
-Return-Path: <linux-wireless+bounces-21505-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21506-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4DE3A87CBE
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 12:02:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49ED1A87D3E
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 12:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A253F1736D2
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 10:02:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6D2188F7E8
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 10:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8E2191493;
-	Mon, 14 Apr 2025 10:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8542676EE;
+	Mon, 14 Apr 2025 10:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="pXxU+giy"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="vIwx+Ey9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward500d.mail.yandex.net (forward500d.mail.yandex.net [178.154.239.208])
+Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE5F190679
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Apr 2025 10:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D8C26770C
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Apr 2025 10:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744624976; cv=none; b=ayXk4Nw5mm8Hupj/6QFUd1UUeRQv3GMVRficp+uk7cQrKcogrztgjta0KhrokK3XvXlOaVjEChWTtR925nVvvhhmhi3QEUELjpRsQZhzFJopg61nOGhjAcf+tdLpGnRfaIMdnN7DHDzor80zfgFjQIHgknxaqWRgxt+62p0YAWI=
+	t=1744625591; cv=none; b=G1z8IJ5tnjfB7tmItJS2mx3xieRHwqETB/ZK7T/R6TvWlnwYVWo8oKZRNYl0VLN5Wr5WBd/OofYqe+edOeARoqlhxhzDwpOjLwBzcyurcuWiTFNl+a5Dt+Er+RDDMvEn5yk7GWMlgXbPkr4lFIzltS60Z/7nk8pFkwACpd2Jpys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744624976; c=relaxed/simple;
-	bh=WaOn1nzJtw81cYWOBBClLNkBkYybISVXb7Qbd3IW1TM=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
-	 In-Reply-To:Content-Type; b=f1bCeYmDX4Pp0HhJO3zBgRLDtEGqM8de09wfKJwAPuoHNe0GtkQjp7ycSA1dCPGFOSFpnYe1NQQS7c9t0d6L1ff4TQgaq51cZpFRRmyvvs0EK3P9nlMEt7MnylUj6TE68llGCm6TdN46aDLO68o82zFeRTzAb4fXwQGpADuBNXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=pXxU+giy; arc=none smtp.client-ip=178.154.239.208
+	s=arc-20240116; t=1744625591; c=relaxed/simple;
+	bh=RjFmdWt8kRB1f/GC2NS4C1qfgdlgj5qtvpox1CCBYr0=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=hHney8G/LI75ng9V81jO1lPvIb0UH8gkgFRlvPLDB5snV+k5HMzSipO0nQ000oYfWK1/FU0Rl/ncUQqdCC6/lK7/snf21sR0VDePYAjQEi+A5K4TbGg1AfwSaEexeFn9hILe7urhF7Ing+bQWSGsyp9KQbwb725pbg4kWbeK0j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=vIwx+Ey9; arc=none smtp.client-ip=178.154.239.147
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-84.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:8741:0:640:b274:0])
-	by forward500d.mail.yandex.net (Yandex) with ESMTPS id 0E5F661067;
-	Mon, 14 Apr 2025 12:56:58 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id uuCN7xcLfOs0-oe0EOzCM;
-	Mon, 14 Apr 2025 12:56:57 +0300
+Received: from mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:3b11:0:640:80c7:0])
+	by forward100b.mail.yandex.net (Yandex) with ESMTPS id D533C60B3E;
+	Mon, 14 Apr 2025 13:12:59 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wCDBXWlLdmI0-VLxMqCvs;
+	Mon, 14 Apr 2025 13:12:59 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1744624617; bh=mR/ediihOlqFBSquT74exXlm4rC0mnG4nrFwHQoTmew=;
-	h=In-Reply-To:Subject:To:From:Cc:Date:References:Message-ID;
-	b=pXxU+giynU0uGK689vG6DLhJpWfcgiqUtPXz28esUp5zI8Y5RE5PJvMH0nbtN8QN7
-	 djYcbgJSkVTiyv4dWvtWqU7zGB3lEGisUzy193Fm0K1m7IuQdoJ0dh6frBrfulxiJf
-	 L41gfjVYh3/TWT3Ya8GZ2ZGBN6AX0pA65m/NBn5w=
-Authentication-Results: mail-nwsmtp-smtp-production-main-84.klg.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <e0fbf753-61d2-411a-9a99-184b310ebe03@yandex.ru>
-Date: Mon, 14 Apr 2025 12:56:56 +0300
+	t=1744625579; bh=RjFmdWt8kRB1f/GC2NS4C1qfgdlgj5qtvpox1CCBYr0=;
+	h=Subject:To:From:Cc:Date:Message-ID;
+	b=vIwx+Ey97wyEtTx134esetARyxft2hzB4gp85nlfklWpwslSLgtJA4SxK6hw9wOgG
+	 Jrj3VYSvxNnDhZKSExVA4tzVpBtRjTEILtNPZyZuX38n67At4awYQYEVpWM59IFKwO
+	 Waaj+A+oH7qXbM33G9LCABssZePJhPwuhJfm+b5M=
+Authentication-Results: mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <0cf73d37-fe94-4d3c-8450-a62c047c5138@yandex.ru>
+Date: Mon, 14 Apr 2025 13:12:58 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,10 +53,9 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-MW
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org
-References: <20250414083403.561646-1-dmantipov@yandex.ru>
- <d59805fc-578b-4421-90e3-40e322be0652@broadcom.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
 From: Dmitry Antipov <dmantipov@yandex.ru>
 Autocrypt: addr=dmantipov@yandex.ru; keydata=
  xsDNBGBYjL8BDAC1iFIjCNMSvYkyi04ln+5sTl5TCU9O5Ot/kaKKCstLq3TZ1zwsyeqF7S/q
@@ -93,35 +91,13 @@ Autocrypt: addr=dmantipov@yandex.ru; keydata=
  5TXWnMCmaYHDS/lP20obHMHW1MCItEYSIn0c5DaAIfD+IWAg8gn7n5NwrMj0iBrIVHBa5mRp
  KkzhwiUObL7NO2cnjzTQgAVUGt0MSN2YfJwmSWjKH6uppQ7bo4Z+ZEOToeBsl6waJnjCL38v
  A/UwwXBRuvydGV0=
-Subject: Re: [PATCH] wifi: brcmfmac: avoid calling
- platform_driver_unregister() more than once
-In-Reply-To: <d59805fc-578b-4421-90e3-40e322be0652@broadcom.com>
+Subject: Using check_hw_ready() through rtw88
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 4/14/25 12:22 PM, Arend van Spriel wrote:
-
-> When the platform_driver_probe() fails it means that brcmfmac_pdata will be NULL
-
-Hm.
-
-platform_driver_register()
-  -> probe (which is brcmf_common_pd_probe())
-     ...
-     brcmfmac_pdata = dev_get_platdata(&pdev->dev);
-     ...
-  ...
-  if (!bus_for_each_dev(&platform_bus_type, NULL, &drv->driver, is_bound_to_driver)) {
-          retval = -ENODEV;
-          platform_driver_unregister(drv); [1]
-  }
-
-If we hit platform_driver_unregister() at [1], 'brcmfmac_pdata' is not NULL and,
-if something goes wrong in brcmf_core_init() next,  platform_driver_unregister()
-may be called again.
-
-Shouldn't 'brcmf_common_pd_remove()' reset 'brcmfmac_data' back to NULL?
+I've noticed that rtw8822c_dpk_cal_coef1() is the only place where
+the value returned by check_hw_ready() is silently ignored; is it
+always safe for the rest of the driver?
 
 Dmitry
-
 
