@@ -1,129 +1,108 @@
-Return-Path: <linux-wireless+bounces-21494-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21496-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FAFCA87A52
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 10:28:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC165A87A9F
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 10:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72F773A2F5A
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 08:27:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF01C1726A3
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 08:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E99263C97;
-	Mon, 14 Apr 2025 08:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CDF2580CD;
+	Mon, 14 Apr 2025 08:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TIrUb6Ka";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="b81luPP9"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="Rod1DXIg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from forward203b.mail.yandex.net (forward203b.mail.yandex.net [178.154.239.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A68C25E45C;
-	Mon, 14 Apr 2025 08:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8194315DBB3
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Apr 2025 08:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744619181; cv=none; b=ns4l/oqArD2oXvmAsoG81/HW55LioW5CZxlQgpDgesRV5n4pI7J67D9Sps6bN3cAH1oFfYO16Q0qOgmDGKLnQHc7Lc25L+UsAveWAI3Iajo2VVOuLhTabsVCUgmbwSX7c/bIo1JhTgsPcDrc82+tUhrk8UQJQJ6qo0YNzh+fWXU=
+	t=1744620113; cv=none; b=QrwFVXmLY56aTqmc0XL4p2g2jLG20oDcL44nM4Zr4ZYYnT570ZpOZhvV1TLMpbECB9bXsY3g7D00kbQaCpOXzjEHA5pI+nB0qPdRci81m9dMPc3XMtawOsqh8tkFIsMCIofa/a8HX/Ed8o0bhuPhE5IoxdtSh8dP09HU87XQOCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744619181; c=relaxed/simple;
-	bh=WzJ/HmoEyIxMvJeEOlZ2czFzOQnDOjD3iHfVNkyBNQ4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L0FHdT1sWeqkJgP105HkpBro/KduSth2eFueiYYQt2ReieJ+DuRXjmCJpBJ6hwz+RgzV9B8w0a9OtWogMyi4WjYgd8NNN6LucjObwRwk9fWbLW4Mb6pOuXKGiSGW9NwQCrqIDTTJSVZ+dqaVI+Yba8gsucTMrolz7CIe1jo9qpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TIrUb6Ka; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=b81luPP9; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744619177;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+OyON1Yf1rr+8CzcSa4hkkYGRtID+dWFkGoiAoSKTwA=;
-	b=TIrUb6KaLTcpHArLnyDrZ1/XzY6utlfmyG99ojUWp1bMSzIHF1Vgi08/TVQvWG4iM+opbL
-	cWWo8YuQ2dBWBoxAayYDMVZlaw6Ioc86xZFPw3MD/rmV/AU9pxMCsjA3+1uR81ohZq6+Qa
-	kPP1Z+VG90nbHrkaymmkH78gr4q3g3rRDaoSHgaX1aD1/LbBlPUf1ZuHGcTQI0vfjfPb6j
-	ospQd6F5IkYTdO/VqmDmF2+V6Lnjo4B2Ga4yfmBs3b/EfvEMEgoz8I1fzPr6b5FZ1Lt53v
-	XI3GSuhhqbNqKW3qpT3asL9boRf5663GPlGNpqyxXpj1DUZRhDg1b+shCLaklQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744619177;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+OyON1Yf1rr+8CzcSa4hkkYGRtID+dWFkGoiAoSKTwA=;
-	b=b81luPP9nxBvVUYPxsolvoc8ilyKeEV88+u2tvl6LB2jk2uYlffGU4Xys4Y38dexezpnwV
-	22324LRkDL8QYaBg==
-Date: Mon, 14 Apr 2025 10:26:08 +0200
-Subject: [PATCH net-next 7/7] net/mlx5: Don't use %pK through tracepoints
+	s=arc-20240116; t=1744620113; c=relaxed/simple;
+	bh=SbypxFFQrsvtr0LTqtO6BioaFRQQoENE/7g3iEJPaz0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JE+JmzBWWRR0Du5MxGmSV9e3el49Xz/gl80KQ7CTEOfSgaQ2pcnYzatfwzGysCyYAI2DZk++uAi7jnMU6gZhLPAahBu2P0xYAiMGusgw9Fq7uoreXr0R4nwmMZ3pXUs/VmHEKdEfrXM4k/yPqAQ/OrWOUUAbcUke3raNkPQwkeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=Rod1DXIg; arc=none smtp.client-ip=178.154.239.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from forward101b.mail.yandex.net (forward101b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d101])
+	by forward203b.mail.yandex.net (Yandex) with ESMTPS id 409F563DA6
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Apr 2025 11:34:14 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-55.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-55.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:2db2:0:640:9334:0])
+	by forward101b.mail.yandex.net (Yandex) with ESMTPS id D9FFB60F04;
+	Mon, 14 Apr 2025 11:34:05 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-55.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 4YB5bOjLc4Y0-F2IB6xZx;
+	Mon, 14 Apr 2025 11:34:05 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1744619645; bh=KFFYN8y6ggqJWZtTKjrzHfyLxc01ET1wdJWSkdxMulI=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=Rod1DXIgO5Cqu833CGJ3t8uUIA/h7ByN2YO7Dxl+TSDpsbu4OrQIBhrkSidN6b/el
+	 TkWK3HEEAk2WWcT9M99VUTiBqS0iU8A4zNH7tSgNHxP1ZogMD97rtLZqNXo7lPWWLU
+	 M95f6K6jkqRGQW8MTwtn15UpiBMAfSyK/UXa9l9U=
+Authentication-Results: mail-nwsmtp-smtp-production-main-55.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: brcmfmac: avoid calling platform_driver_unregister() more than once
+Date: Mon, 14 Apr 2025 11:34:03 +0300
+Message-ID: <20250414083403.561646-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250414-restricted-pointers-net-v1-7-12af0ce46cdd@linutronix.de>
-References: <20250414-restricted-pointers-net-v1-0-12af0ce46cdd@linutronix.de>
-In-Reply-To: <20250414-restricted-pointers-net-v1-0-12af0ce46cdd@linutronix.de>
-To: Jeff Johnson <jjohnson@kernel.org>, 
- Loic Poulain <loic.poulain@linaro.org>, 
- Brian Norris <briannorris@chromium.org>, 
- Francesco Dolcini <francesco@dolcini.it>, 
- Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
- Tariq Toukan <tariqt@nvidia.com>
-Cc: ath10k@lists.infradead.org, linux-kernel@vger.kernel.org, 
- ath11k@lists.infradead.org, ath12k@lists.infradead.org, 
- wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org, 
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
- linux-rdma@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744619172; l=1640;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=WzJ/HmoEyIxMvJeEOlZ2czFzOQnDOjD3iHfVNkyBNQ4=;
- b=Zuho2QqTEJS0pVHFp2MmyTiIbCDfOTyQV+4ybcxy4I85pU30LrHxUGib19TU2f1V/3c3/DFBC
- e7ly/4/qAorA4GYLUQdHhuDpswxVWNrCo2fL5St4/wIo6zWsIBOTgfx
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-In the past %pK was preferable to %p as it would not leak raw pointer
-values into the kernel log.
-Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
-the regular %p has been improved to avoid this issue.
-Furthermore, restricted pointers ("%pK") were never meant to be used
-through tracepoints. They can still unintentionally leak raw pointers or
-acquire sleeping looks in atomic contexts.
+Since 'platform_driver_probe()' may call to 'platform_driver_unregister()'
+itself (and denote such a case with -ENODEV), this case should be catched
+to avoid calling 'platform_driver_unregister()' for a driver which is not
+actually registered. Compile tested only.
 
-Switch to the regular pointer formatting which is safer and
-easier to reason about.
-There are still a few users of %pK left, but these use it through seq_file,
-for which its usage is safe.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/sf/dev/diag/dev_tracepoint.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/diag/dev_tracepoint.h b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/diag/dev_tracepoint.h
-index 0537de86f9817dc80bd897688c539135b1ad37ac..9b0f44253f332aa602a84a1f6d7532a500dd4f55 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/diag/dev_tracepoint.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/diag/dev_tracepoint.h
-@@ -28,7 +28,7 @@ DECLARE_EVENT_CLASS(mlx5_sf_dev_template,
- 				   __entry->hw_fn_id = sfdev->fn_id;
- 				   __entry->sfnum = sfdev->sfnum;
- 		    ),
--		    TP_printk("(%s) sfdev=%pK aux_id=%d hw_id=0x%x sfnum=%u\n",
-+		    TP_printk("(%s) sfdev=%p aux_id=%d hw_id=0x%x sfnum=%u\n",
- 			      __get_str(devname), __entry->sfdev,
- 			      __entry->aux_id, __entry->hw_fn_id,
- 			      __entry->sfnum)
-
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+index cfcf01eb0daa..d60ed50e8bde 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+@@ -602,11 +602,11 @@ static struct platform_driver brcmf_pd = {
+ 
+ static int __init brcmfmac_module_init(void)
+ {
+-	int err;
++	int err, probe;
+ 
+ 	/* Get the platform data (if available) for our devices */
+-	err = platform_driver_probe(&brcmf_pd, brcmf_common_pd_probe);
+-	if (err == -ENODEV)
++	probe = platform_driver_probe(&brcmf_pd, brcmf_common_pd_probe);
++	if (probe == -ENODEV)
+ 		brcmf_dbg(INFO, "No platform data available.\n");
+ 
+ 	/* Initialize global module paramaters */
+@@ -615,7 +615,7 @@ static int __init brcmfmac_module_init(void)
+ 	/* Continue the initialization by registering the different busses */
+ 	err = brcmf_core_init();
+ 	if (err) {
+-		if (brcmfmac_pdata)
++		if (probe != -ENODEV)
+ 			platform_driver_unregister(&brcmf_pd);
+ 	}
+ 
 -- 
 2.49.0
 
