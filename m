@@ -1,76 +1,77 @@
-Return-Path: <linux-wireless+bounces-21499-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21500-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A854A87BC8
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 11:22:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC9EA87BDC
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 11:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D7383A933F
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 09:22:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBD411731FE
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Apr 2025 09:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5809F1CDFD5;
-	Mon, 14 Apr 2025 09:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE6B25D207;
+	Mon, 14 Apr 2025 09:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PAVmTvfb"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DGM1vHhS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827F625E822
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Apr 2025 09:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5843E25E808
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Apr 2025 09:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744622550; cv=none; b=UEAf1Q6pHWIEGcNBrYbfFQCglhbLiOrWyZ6iTfzW/cut3FUrWma8DhHrImMdePsXAKxHfxoco4BHEkmQ736MgL2vG7bp/BwPJEwGbJeRWkRsXRLX2gsTBSbe3oMB0qWo5TtH2emCO94dIvRgLk0IV2C3cUxnGq33quT6w3nU5NE=
+	t=1744622907; cv=none; b=O5fVRJNl8+0TlKXv7c5JbiM//qGHtYIAh9Is75iWtrctbsd9dvvEXoLbUNAtVYJL7T2iP6ArexeDS0rO1p2QcUtqFo4GtwBOSaHRbw/JxIOPr9ZQ7UV4SPDTGZO4+0k60pYDEGI5dP8LpBTtylzLkcIKAzV9MOTNEXJvfXYPpIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744622550; c=relaxed/simple;
-	bh=CT/YENH049lc/i4S8uPToUWuRtetJFIzO7sFqNFctRE=;
+	s=arc-20240116; t=1744622907; c=relaxed/simple;
+	bh=1vnferAzKT3MsbkrCeVw49kjueGkwshd4AHMNLIGBns=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ap3L5KUuv1+1wYGX6N95Y388kNkEWKSpfI4jmiJL7zswhicZ98aF+s4fHPIC8vGiKyRWgjsSX30t8AzUC79hthRXFTNC+5RNOdzzr0geTOBMMrxgSyODJeFbXp2+XSpLWCzX3kWdS4Bxk/o78hiYLgWTDdE5Hz9DvkuYZ2egfp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PAVmTvfb; arc=none smtp.client-ip=209.85.167.176
+	 In-Reply-To:Content-Type; b=bvQsT9qvGjNQ3rsQUwmMurMPJ1R01n4tG/Gw6D+LM+MUurQY7BikrwgHqWWAOO1cYHPq2nAl+OdUQFyA8BZc5qHA6Vx6WerpbrgySALmY4DPw3VSgJ9yTbe/eRTUVgkZzI6A7XBxyYyAFV35Lg+dToMnEc8jt5oVWTw1i2VJ+20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DGM1vHhS; arc=none smtp.client-ip=209.85.210.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3feaedb4d2cso2401263b6e.1
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Apr 2025 02:22:27 -0700 (PDT)
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-72b0626c785so3332880a34.2
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Apr 2025 02:28:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1744622547; x=1745227347; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1744622904; x=1745227704; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=FZYQSYGdR0512/dBOk/+VrpM7DLNp+23vtrCwIaDtks=;
-        b=PAVmTvfbdfWCniOh8O8+LLR/jtwout66OfiifD8QMdwuel/uITYzimbgmuYIDKOc8d
-         JaB+2nMOk5meY/Zd9oYkZrhGw1Gy9YNYasTG2LWHphyHEvk16goM5744VczewFjYyQV0
-         I47fvmcvr7OhGXRZxnYSqVk8SO9vHNWbOSniU=
+        bh=7VY/Fgrsg+Wz5rLhMXbdQEU2fXLlv3RPzj9N820ixuM=;
+        b=DGM1vHhSn3rg4EqDa+jH03+EYcAU6y7Pg6yloQnQsdnOrhn6Hw9zfW1W55aHp2jMkH
+         8i0uJYAQl1juqESEfL0TcLxC0dtwadR3AqveWSjPXwb9RqhV5XxT6/+8wjP+61VzN1W/
+         qgGBExsWPzE3Mror48fKzogf1HejRo44G6n8s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744622547; x=1745227347;
+        d=1e100.net; s=20230601; t=1744622904; x=1745227704;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FZYQSYGdR0512/dBOk/+VrpM7DLNp+23vtrCwIaDtks=;
-        b=Kv0XHXpUznwZTqLl3hNwdy4zYyDk6Fz92jepyjnBHOEasJvJc1hDnHUuckphSnnx5j
-         QAPVAk2REKHzNgNth5Trh2c9Cx41ev0b6RScfR6/wP5gBvViKbWil2WaaaXyWnJiKtx8
-         FnhitEuVX0TWJNOPJytSu0PgOYfIHb/fgBoJyc1IvKBuAHawSC9xDWsn20XTeD1zLHTK
-         4N+8R48nlvAgD1in7nrbDa465chftc1dVikmckjVP9YfD6cyeIR2DQSjrtW4T7hU5LTU
-         9ZYoISKBdbABzH2BlIrpDl8zDSXFENl+m0gYo5udBnOOAamD4sObd4HZf/MoqxRyQv4r
-         ToDw==
-X-Gm-Message-State: AOJu0YzP6lcR3GVI0WEA4uCLFL2TQnNg/VG7b1KJxhBLcsDmLWzwHHia
-	6sVVOXVrCF4yhCr1/1H0B6WqluqUHQBfuHzwBbxlSFUIcjJoefIpSXs4lvFw2A==
-X-Gm-Gg: ASbGncu+CzW1zImsUEMxUr6adT8YR3oXvNZsOICTIzUGaaVKRUBdVWQ4jUDX9rKgIlE
-	N70J0XCV92+Fau9tPHkxaRs6ENkv7L4LfGI/GYxnGsG2KYgzUGCg0yb7PsLsr6JhV0LRkgIzsXQ
-	mQ75mEbX6BE/rw/uCMcMPIC2s2Cywo+v4W/7henHXNzvhz6GedWXR4rMLCJNVJiuMjCk3l8tVhi
-	nLlPKyB9mtJenuIzqy5Vc43uX0gwWSyzUsGR38pOb7aGUkrwjEDLcFdmyuaMttDkcPnU8U171kt
-	PREc0nT7GKkEiYDltb0Hl8iA8QJa27ioUrcHktsqAILmsf6QT1ap/8TkxVO7TifGxb8=
-X-Google-Smtp-Source: AGHT+IHMPGnr/AdAt7EyHWCE+ffxwrVPeYCLplVvTrY0KgmPGnMZH/mTkah55Cp9IUWwsF6F+Wh6ug==
-X-Received: by 2002:a05:6808:3095:b0:3f8:3eeb:11a3 with SMTP id 5614622812f47-4008505c41fmr8010437b6e.11.1744622547068;
-        Mon, 14 Apr 2025 02:22:27 -0700 (PDT)
+        bh=7VY/Fgrsg+Wz5rLhMXbdQEU2fXLlv3RPzj9N820ixuM=;
+        b=n7eaU5KSqGWDfb5RXDz/Dw1434jTiXEzfoZW5lZoF8bdEWq0ZGIf8vZo7Npibm6FrW
+         w/3wLISlN+/M4ux5g3TpGm1/pBAwewdiZXJZr/yMWx6gIFcK1imQPrZpV+4EXaFBDZYo
+         RRH3k2JoRUWtwQcdYzoBkDrjGZ4qnspzB55yvJYgAUeWDfmEzp/UY1So3FqsiKy594Bf
+         MUclXnQDYRET+pTX8E9bx0TNNUsEsaZQMmzg9avAqQt0OVG+67huIU5tyibisu/3bPac
+         ie3y8cwRuAxh6jpfV7uqpBQXyyAG79C5mIcm+w5ZbB8aDtrd6ShqPrIGCSPoGJ4Z0SXl
+         4R5w==
+X-Forwarded-Encrypted: i=1; AJvYcCWzi603uOUI4Mg7gvAuU/EfQfG1oWcLt6AuhSh538nuxZdaBMA/wvryXPCBKmqvUp4Z0uGzmQ/LcBRics9Q+A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFUP6IIVTfc0d5RWT6YGBwUULkcYkQaPr5UNmwZX+A/mTQnMM0
+	5A67dI8C802CJKzhBwufg85c6Ooxg+tNsGXzAu8jvaBsADzmdbfEWHvC9I0zaA==
+X-Gm-Gg: ASbGncufGZYul9369JMEflpmpyO7VyxfOssHcvjNww2h+WxLYkEQxjTr2iCxczjRZkl
+	OV/vv9Mv205+iqCeYeMCwNd+TQXpc5OHWSNj6ry+48HvplmbhBeIXLAyzMBnHObSvy8LIia9YWc
+	E+/jgPDfS8cvl2EpQiTvXWQq68W8/vuJPB5idR7wW9QpSifqdmT7x7Nv71kmIgE5j4GAAYmXpHK
+	sXQBdIm5GSYtoSq0Jx6U51uyWQYvushkQ009Nu7Hm8+hJmz7GVTyuzSC6Jkgl8IbIqMG8eAI64B
+	jNd/+eTDeAncfx2JqlmT3zoHUq4kA7jJWiSEX6cZ5bLVNr1vSrwEZGHXKA/iUzWQRS0=
+X-Google-Smtp-Source: AGHT+IHKV537btjyYbi1yFgzpC3om8mwKvNmnVLq1zpkUlwpQPwtj5Ip9v5rf3PGXZFDD8kO0FLfOw==
+X-Received: by 2002:a05:6808:191a:b0:3fe:af0c:6eaf with SMTP id 5614622812f47-4008501dca0mr7965228b6e.1.1744622904157;
+        Mon, 14 Apr 2025 02:28:24 -0700 (PDT)
 Received: from [10.176.68.80] ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-400762d5603sm1862462b6e.26.2025.04.14.02.22.23
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6045f5b28basm1820500eaf.36.2025.04.14.02.28.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Apr 2025 02:22:25 -0700 (PDT)
-Message-ID: <d59805fc-578b-4421-90e3-40e322be0652@broadcom.com>
-Date: Mon, 14 Apr 2025 11:22:21 +0200
+        Mon, 14 Apr 2025 02:28:22 -0700 (PDT)
+Message-ID: <52c832ab-1e67-410a-a0f0-91703d24c9c0@broadcom.com>
+Date: Mon, 14 Apr 2025 11:28:17 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -78,11 +79,13 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: brcmfmac: avoid calling
- platform_driver_unregister() more than once
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org
-References: <20250414083403.561646-1-dmantipov@yandex.ru>
+Subject: Re: [PATCH RESEND] brcmfmac: Add an error log for brcmf_sdiod_ramrw()
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: kvalo@kernel.org, sebastian.reichel@collabora.com,
+ erick.archer@outlook.com, megi@xff.cz, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-kernel@vger.kernel.org
+References: <20250414074232.2342-1-vulab@iscas.ac.cn>
 Content-Language: en-US
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
@@ -128,55 +131,24 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <20250414083403.561646-1-dmantipov@yandex.ru>
+In-Reply-To: <20250414074232.2342-1-vulab@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 4/14/2025 10:34 AM, Dmitry Antipov wrote:
-> Since 'platform_driver_probe()' may call to 'platform_driver_unregister()'
-> itself (and denote such a case with -ENODEV), this case should be catched
-> to avoid calling 'platform_driver_unregister()' for a driver which is not
-> actually registered. Compile tested only.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+On 4/14/2025 9:42 AM, Wentao Liang wrote:
+> The function brcmf_sdio_buscore_activate() calls the function
+> brcmf_sdiod_ramrw(), but does not check its return value. Log
+> the error message to prevent silent failure if the function fails.
 
-This is unnecessary. Will try and clarify below...
+If the reset vector can not be written to device memory the firmware 
+will not start and we get a probe failure. While it seems useful to log 
+the error I suspect that the MMC/SDIO subsystem will also provide some 
+feedback when we can not access the memory on the device (SDIO CMD52 
+failure). Oh, well.
 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> index cfcf01eb0daa..d60ed50e8bde 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> @@ -602,11 +602,11 @@ static struct platform_driver brcmf_pd = {
->   
->   static int __init brcmfmac_module_init(void)
->   {
-> -	int err;
-> +	int err, probe;
->   
->   	/* Get the platform data (if available) for our devices */
-> -	err = platform_driver_probe(&brcmf_pd, brcmf_common_pd_probe);
-> -	if (err == -ENODEV)
-> +	probe = platform_driver_probe(&brcmf_pd, brcmf_common_pd_probe);
-> +	if (probe == -ENODEV)
->   		brcmf_dbg(INFO, "No platform data available.\n");
->   
->   	/* Initialize global module paramaters */
-> @@ -615,7 +615,7 @@ static int __init brcmfmac_module_init(void)
->   	/* Continue the initialization by registering the different busses */
->   	err = brcmf_core_init();
->   	if (err) {
-> -		if (brcmfmac_pdata)
-> +		if (probe != -ENODEV)
-
-When the platform_driver_probe() fails it means that brcmfmac_pdata will 
-be NULL so it provides the same info as the returned error. So the net 
-result is the same and no platform_driver_unregister() will be called.
-
-Regards,
-Arend
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
 
