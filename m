@@ -1,123 +1,107 @@
-Return-Path: <linux-wireless+bounces-21538-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21539-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F95A894CF
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 09:21:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D83A896AE
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 10:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59141174756
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 07:21:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56E9A1695B6
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 08:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D94627A106;
-	Tue, 15 Apr 2025 07:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4092820DB;
+	Tue, 15 Apr 2025 08:29:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xcKoYDLx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEBE20DF4;
-	Tue, 15 Apr 2025 07:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063ED284673
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Apr 2025 08:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744701703; cv=none; b=dYeFsz7qmK8FTBfe5bOEIk0Uj67hFuWIr+yJ1Wb3wA1i8NEvXeGNaOVQyC6A27bwKf/1NhrxCv+OZ/xOtzA7hGBiSe5y1ZgsTp3o42JhU8SWh8QOAX2sBVdDTbuEC6QAM7VomLcTOcDScTsPXtFq2hqmvwNMA8V/IoIrZOJan+Q=
+	t=1744705774; cv=none; b=OL7EpvAoF1YGFmzheGbA4JTFkeMbL/rR2b38L6y4R84jfdLKNhcLTLbZmO2QFghorCrWS2DxIabcfKVAL5qwfUEsSdYuR+Fz0KcnFt23qewArG75BiKnlP/MT7OELUe+vhMivILx5JyJDjQqz4TDEDTYoE1yPVjEZoqf4uUad6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744701703; c=relaxed/simple;
-	bh=2o6j5omeEkA4JCWhDM9N80NVkPESG6qQso4cQHUzBdk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LAj38dxEWZ7cFgLS9Dc+spEaGktn5QJu/lXunnPuTpTLY8lFm8aie45tHPfgI77e4okv4xR4L7MakjIgcfnZQsBOSjgsYpcDZek61nlohFcK8ABbvPZsXJERpnjXrapojf0bz2Jmkrf44JdfIVW18MR7ujfuSWTc2PcdKKLhRLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-01 (Coremail) with SMTP id qwCowAAn0gLoCP5nVCb1CA--.103S2;
-	Tue, 15 Apr 2025 15:21:18 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: arend.vanspriel@broadcom.com,
-	kvalo@kernel.org
-Cc: jacobe.zang@wesion.com,
-	sebastian.reichel@collabora.com,
-	christophe.jaillet@wanadoo.fr,
-	erick.archer@outlook.com,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] brcm80211: fmac: Add error handling forbrcmf_usb_dl_writeimage()
-Date: Tue, 15 Apr 2025 15:20:48 +0800
-Message-ID: <20250415072048.2629-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1744705774; c=relaxed/simple;
+	bh=JqF91dZIOXlVj0NeUvRp3kehfD9MyoxzqTqimBqYe6Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XMnY+dodNiW568kTAgEwTeTkPILR7QUN10MYjMGwGTpEFRJYODGpfIgsQj89cB7jzowD3gC/wsAXv3m5cx1zxP0RqzUScUcdqEdsGMc7GMJdsun32f0XxFC/Qm0dwZ7AwjsK0BKX4wdW6peDhWyveXDgOCrlsuKo1QQI7q6QPZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xcKoYDLx; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-30bfed67e08so51657501fa.2
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Apr 2025 01:29:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744705771; x=1745310571; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JqF91dZIOXlVj0NeUvRp3kehfD9MyoxzqTqimBqYe6Q=;
+        b=xcKoYDLxvj3EDKKIoYmqrloJhQUGDIAD4FnRAl+jCsC/9yTvpdYylTMjy2u9pjTZDm
+         iJHzKKKpiGezLUik1oYSkGqKlUfuwu+XIynzXRZPFjzPcixRITHxg7KTovOiKmMCqCrp
+         7zj4vV6YGkzGG4keXPSmeTlg3DT/DuOclA8fNQKL9ZtW9SvBe0kX3KJAgZlPO5uZ4lpS
+         1hdylfNtjy0/LSkfjZUJjbeOdUVDCVoQpS5MwiwNCry5THCEesNNWYq4wCfGL3slEHBz
+         3512Mnav27ajcuCqt5TmQo2nQRnMgUFj5c2I/Frf0NooRvo5rmfZLw1mEhUDqecTy2n+
+         mWRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744705771; x=1745310571;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JqF91dZIOXlVj0NeUvRp3kehfD9MyoxzqTqimBqYe6Q=;
+        b=glXedfvmPiQCjwZqPps/J9m61efoEu6IzTXZihRMHVgeGsopCgsr61vZvzKS9EOZHa
+         C4XK1Xk3rysRIio9nSpRVJscFtmVcKs52xVr35OxyyeEf4KWGT0vUmCkuJ4bdVdvRIN2
+         nMknVmMOpLfKWgCarMSC0e0X961VD1TsnJorDqhUahqJ2gVunAIl0/sIColOdV3uHsrZ
+         GJmYJx5b1sIIOQyInQuHyrFcXvjLW45MtHA+LEFxelmJyKgCJlUfbSM2m9HrCeUEkMy8
+         k1IXqqwyqtZaKlVHBm23IZfmc5y/O3P15U+aznXNS0JHqu4A3ZFEJUfK5iznHIoSu6Up
+         PZWA==
+X-Forwarded-Encrypted: i=1; AJvYcCV9Mp2+ogFrU2hqA3mnsITPj7n4XGF67pvuhHmhLWLE8+zQ7wXzCAZqJDUP/kQLbhdunJVvRbsGRetoJmuF4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxlzn9sYEnEIajCJTtkLNQkHn2mJiQK3L7rlZmRl4qGXRZw0RUJ
+	f+7fa5YKedv814b38Q7yu4BvPrtUZRcbXvSUeY4owpSF/YSrvgf44vmKuYc3/PvqDsTmS4eNkyj
+	h63OlKrhOSL6AU5gYf6LVWhkFE5TomC6a4NCjoQ==
+X-Gm-Gg: ASbGnct2A7rBJaCjx0hZrtMOegxVSaIfgJ5sH3hY6k7vGlFiqFiZ7QqbcBbdfBt2wXT
+	vg5UroF9O5GcEjswL2ctk7aFezJ40fRxjJCwxP2auUXkBjs3dHy1VpeNPTNO78Da0UCCiNVshGq
+	5suGfH/3qVY4B2mik3UaMbnQ==
+X-Google-Smtp-Source: AGHT+IFjWv4YN2TLRK+8gIXeTMozvedsriPJva3Us+iyvNvjh4tmGiLADPX3P4ddGuJK/i6+QCaKD34pqB7ZlhiSFww=
+X-Received: by 2002:a2e:bd08:0:b0:308:e54d:6195 with SMTP id
+ 38308e7fff4ca-31049a021d6mr45079331fa.24.1744705771136; Tue, 15 Apr 2025
+ 01:29:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAn0gLoCP5nVCb1CA--.103S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJryfCw43Aw4DWw43uF18Grg_yoW8Aw1fp3
-	Z7XasrurykW3yakw47JFs7AFykKa4rta4kCFW8ZwnxXF4kCw1vkrs8KFyFkw4DCFWxAa47
-	JFs8Ary7Jrs8KFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8CwCF04k20xvY0x0EwI
-	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
-	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
-	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
-	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUGFAJUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4NA2f95GqL6QAAs-
+References: <20250407-gpiochip-set-rv-bcma-v1-1-fa403ad76966@linaro.org>
+In-Reply-To: <20250407-gpiochip-set-rv-bcma-v1-1-fa403ad76966@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 15 Apr 2025 10:29:20 +0200
+X-Gm-Features: ATxdqUE9g7RM0HJPsiRtWp5uefAcSNQmT280xjEtFgRSUBBli2MK8hnSPFDk1to
+Message-ID: <CACRpkdbu01ivd7AX5vn6App2UXbCFMPCMK5FBoJJvHjV52Q5YQ@mail.gmail.com>
+Subject: Re: [PATCH] bcma: use new GPIO line value setter callbacks
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The function brcmf_usb_dl_writeimage() calls the function
-brcmf_usb_dl_cmd() but dose not check its return value. The
-'state.state' and the 'state.bytes' are uninitialized if the
-function brcmf_usb_dl_cmd() fails. It is dangerous to use
-uninitialized variables in the conditions.
+On Mon, Apr 7, 2025 at 9:10=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl> =
+wrote:
 
-Add error handling for brcmf_usb_dl_cmd() to jump to error
-handling path if the brcmf_usb_dl_cmd() fails and the
-'state.state' and the 'state.bytes' are uninitialized.
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> struct gpio_chip now has callbacks for setting line values that return
+> an integer, allowing to indicate failures. Convert the driver to using
+> them.
+>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Improve the error message to report more detailed error
-information.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
-Cc: stable@vger.kernel.org # v3.4+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-index 2821c27f317e..d06c724f63d9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-@@ -896,14 +896,16 @@ brcmf_usb_dl_writeimage(struct brcmf_usbdev_info *devinfo, u8 *fw, int fwlen)
- 	}
- 
- 	/* 1) Prepare USB boot loader for runtime image */
--	brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
-+	err = brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
-+	if (err)
-+		goto fail;
- 
- 	rdlstate = le32_to_cpu(state.state);
- 	rdlbytes = le32_to_cpu(state.bytes);
- 
- 	/* 2) Check we are in the Waiting state */
- 	if (rdlstate != DL_WAITING) {
--		brcmf_err("Failed to DL_START\n");
-+		brcmf_err("Invalid DL state: %u\n", rdlstate);
- 		err = -EINVAL;
- 		goto fail;
- 	}
--- 
-2.42.0.windows.2
-
+Yours,
+Linus Walleij
 
