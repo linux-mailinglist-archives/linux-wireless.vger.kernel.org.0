@@ -1,63 +1,55 @@
-Return-Path: <linux-wireless+bounces-21546-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21547-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B66A89A5A
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 12:35:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F4EA89C54
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 13:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D797D188EBF6
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 10:34:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FB2F1901054
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 11:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CBB21E0A8;
-	Tue, 15 Apr 2025 10:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9642973DF;
+	Tue, 15 Apr 2025 11:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jP6uLHVj"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Vv4PXsdL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mout.web.de (mout.web.de [212.227.15.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D988633F
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Apr 2025 10:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6002973BD;
+	Tue, 15 Apr 2025 11:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744713245; cv=none; b=h0m2NAkTz0LDxVVcijkRpJconHcaMU+B+XFyP8ngiErmPwlIKLDLOgU0+2mAHZmWBXX5wzgH/O7ynxi2+OMS/3SEXcdmKSUTAWq8ByPArzLATryoZQpDfB9r/TJvm6VVXIu0TT4q38tFvtGVA+uppLgySnVigHwBZHDU4O8DR1w=
+	t=1744716100; cv=none; b=J+yfT2P+TtCEzk+FXc1c1RVVzVTNeZYH6/ohA3kMOhFRbcQ89UG2HgxcrmbUe1WNjlSRTJR84XgQ2ZfWTeEnr2v2ls8HOaRXho96GDrM828JfZAp07pwBTsTbqoEQrnfaMuaF2bvuDiINEcUPLhhMU8RQUV/tCWVuI674uDvWHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744713245; c=relaxed/simple;
-	bh=W7ezv3C7CFezj6FzNQVRi1soxBl21PD3Z+5uyIS5ZRE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=M9+GpGVvV6GT2clfGQhZMujLd++y/Y/LKmCwyiwx0EUUqziC5g7vbBY2U168Qnu9SKDkUGoKcyrm88EVcwP+gNDSw25YtKtxTcqvAzY9CjfJA0bZBCFqT8XzqMJfVJYwIEUeyo8DHvsI7Lsu1PX8hPFOrnvVw5429jbcQDXrPqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jP6uLHVj; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53F8tM6x002421;
-	Tue, 15 Apr 2025 10:33:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	+M69//rVJCJEotb2r3fB/lWzv3UcHCc5pQL25VvW5N4=; b=jP6uLHVjzVcGdnOz
-	Qp2qe3JnzV/GN3d7ZdKglQM65eRetw3fIwI02llN7X8v9YzlOSQ3RuZoI0YREBfa
-	lBTqI/+kDO4t2iB+7gcvWkkKWAZoHVkHECEclERFW2be/mQfcNt+VqsodURriTk3
-	OEgWzd63VA87td4n9DIX6778WtmOC0F/DsgxjR5Cu5GdoLu3OGWc7ctQAM63KlsG
-	ohcxh5bBKw/tleWA5dywMnyt0KaxcIBMmRQfCrlH6/N8QyTRLdkJZWN+Wh6mIeu0
-	oCwhojnX9hVLGhevc+pmZkpzHWjic2HNuJx3t4AU7/BOBDeLZoKbkak58P2Se832
-	wAPYyA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45ygxjyhqf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Apr 2025 10:33:59 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53FAXwgQ011621
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Apr 2025 10:33:58 GMT
-Received: from [10.133.33.156] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 15 Apr
- 2025 03:33:57 -0700
-Message-ID: <283c0cb1-ddce-46a3-afd0-eb50728d2967@quicinc.com>
-Date: Tue, 15 Apr 2025 18:33:54 +0800
+	s=arc-20240116; t=1744716100; c=relaxed/simple;
+	bh=swlEp5ONWnOjBUXTr3HxuyUXycsO0Zbkbf91UmbdTJo=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=qz2u4DN5MUR0RnUfpCIR9QB0BX3VSQRhhS1/jtf/eqz4npPvBmbunC4nkW6RZSoc0bJ4EqyQJR/0IFEJFLhMOv3qJFaRzPyuMACK+61t5XeJWk3q9mTBZgfBhBNiBufrZHJ0MDu2e58lIuKTBfuBUBPkJpHSMU4NwWArSOKQXpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Vv4PXsdL; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1744716085; x=1745320885; i=markus.elfring@web.de;
+	bh=swlEp5ONWnOjBUXTr3HxuyUXycsO0Zbkbf91UmbdTJo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Vv4PXsdLsO2S1Lxta+qqtrwGNUYct4sGg1j00001ylcTg6DNlmi8TwSdOumaP2Bw
+	 jjg6DO3ZDHU2EkLAmdNrFrY4fBBro+5VJ9bAf2Xb9X8cPdwUC4aRc2XPsyuzDjdHg
+	 +w7CndTRBv5lokAS3x3tBqVrXH50GqJm/sod2B1+HaRoCKqcYbFNypO/lTAqLmzoH
+	 3m93xZTYNi/Ztg6UZKDUxNPBD8wMwblmlqntJcXD2fhTS0hEhsAQpmwMH5YSK6Hf3
+	 MSGsO939wjn0Nnb5+c7bBk611LmvzVcMbOy9UlrFGy/kG5Sm379sQav1KpAF7FLQw
+	 DsC8N/XUeZ0IlR0eag==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.24]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MTfon-1tbCjR3zEj-00PNiJ; Tue, 15
+ Apr 2025 13:21:25 +0200
+Message-ID: <af72dff7-8ad1-476f-81f2-6f7d76761b12@web.de>
+Date: Tue, 15 Apr 2025 13:21:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,85 +57,59 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/3] wifi: ath12k: monitor mode cleanup and state
- handling
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20250107025621.1907-1-quic_kangyang@quicinc.com>
- <702c843b-8462-4594-91d0-75721ba5dc48@oss.qualcomm.com>
-Content-Language: en-US
-From: Kang Yang <quic_kangyang@quicinc.com>
-In-Reply-To: <702c843b-8462-4594-91d0-75721ba5dc48@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=WecMa1hX c=1 sm=1 tr=0 ts=67fe3617 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=T5McmiZYbs39c0-wqtQA:9
- a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: O-Gr9geDNbI4WqWMdVPUDEPAAul_szwA
-X-Proofpoint-ORIG-GUID: O-Gr9geDNbI4WqWMdVPUDEPAAul_szwA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-15_05,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- adultscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 mlxscore=0
- impostorscore=0 mlxlogscore=966 spamscore=0 malwarescore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504150074
+To: vulab@iscas.ac.cn, brcm80211-dev-list.pdl@broadcom.com,
+ brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+ Erick Archer <erick.archer@outlook.com>, Jacobe Zang
+ <jacobe.zang@wesion.com>, Kalle Valo <kvalo@kernel.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>
+References: <20250415072048.2629-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH v2] brcm80211: fmac: Add error handling
+ forbrcmf_usb_dl_writeimage()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250415072048.2629-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Dhz2nwlJ5aVsbY/GDkK3rbaI8ZhD37Qt48RXdwBTSD9VIDEvvgZ
+ osoYzVB1fp7HFEopYGEezs2tavB91d23PZ0nnZTCO12lhBPpkwHYJaVkEJqWJ8i1hn8Z2IR
+ GOiDlVP61W/+/rHppIelVe3Mgjj+fkCAYXLayyXsn3b0GyjNXNBpXJsKQrXzXPk4t6xgyLN
+ M7hzES+Y9WaUAiNPPTujg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:CAYibJvv6NM=;SqoCF8okJXN5n36Sry04u1pUXkf
+ GfQH/HLyOkq4Y0lczLsGu/bO85zjjesl1uiMGLnV/cq2J1tX2pRkpxH28C0PdRLvrr7kaCy3m
+ k5znkezQYYKufXTYHaJnyqyfQmY+4wbifDcH6wflPirtxFDg9QObKH+/anZ3G078x4Lb+ON8H
+ RBf+4Ia0MdofphvDx1aG6qzD7enjaqOByu7MVQg+1Mzm8aFcfY9jn+IgIyeKqs4M7VX1EWOHx
+ AVEPiym/FbzTNXGc8wp7ajwmNSz1br4ss/7VZGZKG2DyScKHPUKYKZhLKNaYYAKLfikTHm76J
+ a2G8xqZ5/ojG8b+ZSJI4bmcPrrAZlNMsCMcRAydmTNNo+ZhNLc2a25K0U/CGh2MpILMAQmfsb
+ bjolYOBGBb0Zz8+FbAdwDccyhwup7k8XItjH610zz9ZPir5Lp3KA6SG/o2vMhUwGKTtrXTMAO
+ EtZgRRc5AKPHkjKJLDPaCsBMjJSvNpYtb/p8ITVh3xMmRe9nXSngEgUm3FoZYX4VWOv42po4v
+ GbBEjmNPhPeJbh9esc/3fxEXep1+kl75sXkHpWhUusK9TKZp9ine9SRXxBVPEO0IkEmQtqMrN
+ 63FOQX++0gq/MpWkhRkpaDVwPJitBBaI0cpt0G8wR3PLrlJVCsba03spVFgpzZnWshzcEqE/o
+ M5r/jMqmDKj9CQdc14NAAjSyKV38wMtPm/KfnYyrF1tQ3Of8WCGv2MYaao5h1WehVZ4dkpvKr
+ ZCodSewaBu/RMOBpy08QORn9VsyiEInishTFFKywJjwHJnTDDhDypUFbQRqISyuBU/mjEyKtk
+ udUK14SQzRC1dVuMRjiRunHKDkdnWPEGIAirgVvLZu6URMem/xNpdedooA8k1Mvs/KipOYHv9
+ +jvlkIxTMqzDdu9K8QDnhzp32p89/bWjpopIosgqALhn/f2+bBTRcVMst5kWfUt8J8KfUhEHY
+ iFyGNLa7cZugPsNhGOG9BO1Yo5eMFBoqAxuOTxBeLJaS/niHaL4EznVygjtdiPDtw1RYsnCgg
+ BTCP35RmH8+T+l+NfNYiaqz93Bswp3Z5ljZoY9isnLxM5reFFcWQEwaRZbQxEKYvF2OQ8ctMy
+ DOPzSTLUEWZZ+nHwOMZOOLr0QWLd6JIiBBuNmyelhPW7w4KlTg4g0ZU19A2hSD2WCTI4+Dbam
+ edw6FFwuPX5Ibh9m7Oz0kPWphxmX4kp+RxV2hPT87QlNJrPTcNFTXliIDKiNe7/sCnJHJ3DZz
+ NXaP/UJa12j9xU5rjkt5kf8WIYqOTExxiOI9U+FkD3QxsUXd1Ab6oqu6mi2dJSFmXFAy7GgRy
+ 8UTWr+OzYFXHnt4B1Oq4zOZsxdPT4FHhjBzc27Sg7uav2YYVsoUvkxISnzw7UQC5nsCnAezoB
+ OXfwEEP8TmWjTIAiS3kjY1vEoVwwgKaOmeW9q8brasz5iHk/Z0L302v288GhWSjKCx8DXliol
+ T19XdeX/AiF3xu7qchhQf23fIa/94HCTp5AcbM5RkEmtb9ni1glVObu8Ltf7t+wjbcDU+fA==
 
+=E2=80=A6
+> brcmf_usb_dl_cmd() but dose not check its return value. The
+> 'state.state' and the 'state.bytes' are uninitialized if the
+=E2=80=A6
 
+Would you ever like to benefit any more from change descriptions
+which may contain text lines that would occasionally be longer
+than 60 characters?
 
-On 4/15/2025 7:13 AM, Jeff Johnson wrote:
-> On 1/6/2025 6:56 PM, Kang Yang wrote:
->> This patch-set do some cleanup and handle state variables correctly for
->> monitor mode.
->>
->> Note: The quantity of this patch set was 11 in the previous version. 8
->> of them were merged:
->> https://patchwork.kernel.org/project/linux-wireless/cover/20241022110831.974-1-quic_kangyang@quicinc.com/
->>
->> v6: update copyright for each patch.
->> v5: rebase on tag: ath/main(ath-202412191756).
->> v4: rebase on tag: ath/main(ath-202410161539).
->> v3: rebase on tag: ath/main(ath-202410111606).
->> v2: rebase on tag: ath-202410072115.
->>
->> Kang Yang (3):
->>    wifi: ath12k: optimize storage size for struct ath12k
->>    wifi: ath12k: properly handling the state variables of monitor mode
->>    wifi: ath12k: delete mon reap timer
->>
->>   drivers/net/wireless/ath/ath12k/core.c |  7 +++++-
->>   drivers/net/wireless/ath/ath12k/core.h | 27 +++++++++++------------
->>   drivers/net/wireless/ath/ath12k/dp.c   | 30 +-------------------------
->>   drivers/net/wireless/ath/ath12k/mac.c  | 13 ++++++++++-
->>   4 files changed, 32 insertions(+), 45 deletions(-)
->>
->>
->> base-commit: 09fa3b6974a1245ddd0751747609431494ba5b4f
-> 
-> If these changes are still applicable, can you please rebase?
-> 
-> Applying: wifi: ath12k: optimize storage size for struct ath12k
-> Using index info to reconstruct a base tree...
-> M       drivers/net/wireless/ath/ath12k/core.h
-> Falling back to patching base and 3-way merge...
-> Auto-merging drivers/net/wireless/ath/ath12k/core.h
-> CONFLICT (content): Merge conflict in drivers/net/wireless/ath/ath12k/core.h
-> Recorded preimage for 'drivers/net/wireless/ath/ath12k/core.h'
-> error: Failed to merge in the changes.
-> Patch failed at 0001 wifi: ath12k: optimize storage size for struct ath12k
-
-Patch 1 just optimize storage size for struct ath12k. Seems not 
-necessary, will drop.
-Patch 2 already done by Karthikeyan Periyasamy, will drop.
-
-Will send patch 3 on latest tag.
-
-
-> 
-
+Regards,
+Markus
 
