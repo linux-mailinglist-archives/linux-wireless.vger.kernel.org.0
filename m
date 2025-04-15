@@ -1,107 +1,128 @@
-Return-Path: <linux-wireless+bounces-21539-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21540-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D83A896AE
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 10:32:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1B4A896F7
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 10:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56E9A1695B6
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 08:31:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB0C8189DC42
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 08:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4092820DB;
-	Tue, 15 Apr 2025 08:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xcKoYDLx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A7B1DDC18;
+	Tue, 15 Apr 2025 08:43:25 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063ED284673
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Apr 2025 08:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964DC1AF0AE;
+	Tue, 15 Apr 2025 08:43:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744705774; cv=none; b=OL7EpvAoF1YGFmzheGbA4JTFkeMbL/rR2b38L6y4R84jfdLKNhcLTLbZmO2QFghorCrWS2DxIabcfKVAL5qwfUEsSdYuR+Fz0KcnFt23qewArG75BiKnlP/MT7OELUe+vhMivILx5JyJDjQqz4TDEDTYoE1yPVjEZoqf4uUad6g=
+	t=1744706605; cv=none; b=Liu86L2bshNTYmlh1IEgdcQqu3K4795O5n93lg1RspaIQEb/tAFMzyL+rd0CNIYqf4ATGVMfygFyllGfpoQghr26jKBN2F8VLkXLdvp4zjCujpB+s8PUyVWrVzA8QecOSFxz5VTKKzoBBMtg8DIU3YxWIdNBVA68sU+/k5UfWrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744705774; c=relaxed/simple;
-	bh=JqF91dZIOXlVj0NeUvRp3kehfD9MyoxzqTqimBqYe6Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XMnY+dodNiW568kTAgEwTeTkPILR7QUN10MYjMGwGTpEFRJYODGpfIgsQj89cB7jzowD3gC/wsAXv3m5cx1zxP0RqzUScUcdqEdsGMc7GMJdsun32f0XxFC/Qm0dwZ7AwjsK0BKX4wdW6peDhWyveXDgOCrlsuKo1QQI7q6QPZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xcKoYDLx; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-30bfed67e08so51657501fa.2
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Apr 2025 01:29:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744705771; x=1745310571; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JqF91dZIOXlVj0NeUvRp3kehfD9MyoxzqTqimBqYe6Q=;
-        b=xcKoYDLxvj3EDKKIoYmqrloJhQUGDIAD4FnRAl+jCsC/9yTvpdYylTMjy2u9pjTZDm
-         iJHzKKKpiGezLUik1oYSkGqKlUfuwu+XIynzXRZPFjzPcixRITHxg7KTovOiKmMCqCrp
-         7zj4vV6YGkzGG4keXPSmeTlg3DT/DuOclA8fNQKL9ZtW9SvBe0kX3KJAgZlPO5uZ4lpS
-         1hdylfNtjy0/LSkfjZUJjbeOdUVDCVoQpS5MwiwNCry5THCEesNNWYq4wCfGL3slEHBz
-         3512Mnav27ajcuCqt5TmQo2nQRnMgUFj5c2I/Frf0NooRvo5rmfZLw1mEhUDqecTy2n+
-         mWRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744705771; x=1745310571;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JqF91dZIOXlVj0NeUvRp3kehfD9MyoxzqTqimBqYe6Q=;
-        b=glXedfvmPiQCjwZqPps/J9m61efoEu6IzTXZihRMHVgeGsopCgsr61vZvzKS9EOZHa
-         C4XK1Xk3rysRIio9nSpRVJscFtmVcKs52xVr35OxyyeEf4KWGT0vUmCkuJ4bdVdvRIN2
-         nMknVmMOpLfKWgCarMSC0e0X961VD1TsnJorDqhUahqJ2gVunAIl0/sIColOdV3uHsrZ
-         GJmYJx5b1sIIOQyInQuHyrFcXvjLW45MtHA+LEFxelmJyKgCJlUfbSM2m9HrCeUEkMy8
-         k1IXqqwyqtZaKlVHBm23IZfmc5y/O3P15U+aznXNS0JHqu4A3ZFEJUfK5iznHIoSu6Up
-         PZWA==
-X-Forwarded-Encrypted: i=1; AJvYcCV9Mp2+ogFrU2hqA3mnsITPj7n4XGF67pvuhHmhLWLE8+zQ7wXzCAZqJDUP/kQLbhdunJVvRbsGRetoJmuF4A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxlzn9sYEnEIajCJTtkLNQkHn2mJiQK3L7rlZmRl4qGXRZw0RUJ
-	f+7fa5YKedv814b38Q7yu4BvPrtUZRcbXvSUeY4owpSF/YSrvgf44vmKuYc3/PvqDsTmS4eNkyj
-	h63OlKrhOSL6AU5gYf6LVWhkFE5TomC6a4NCjoQ==
-X-Gm-Gg: ASbGnct2A7rBJaCjx0hZrtMOegxVSaIfgJ5sH3hY6k7vGlFiqFiZ7QqbcBbdfBt2wXT
-	vg5UroF9O5GcEjswL2ctk7aFezJ40fRxjJCwxP2auUXkBjs3dHy1VpeNPTNO78Da0UCCiNVshGq
-	5suGfH/3qVY4B2mik3UaMbnQ==
-X-Google-Smtp-Source: AGHT+IFjWv4YN2TLRK+8gIXeTMozvedsriPJva3Us+iyvNvjh4tmGiLADPX3P4ddGuJK/i6+QCaKD34pqB7ZlhiSFww=
-X-Received: by 2002:a2e:bd08:0:b0:308:e54d:6195 with SMTP id
- 38308e7fff4ca-31049a021d6mr45079331fa.24.1744705771136; Tue, 15 Apr 2025
- 01:29:31 -0700 (PDT)
+	s=arc-20240116; t=1744706605; c=relaxed/simple;
+	bh=HtsOkMq+WLgJHrBJNsrJTc1wbQ/EcZYFGAgOXBZbQrM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fb4Ye/nQcliAp/DdSredi9TcSLaFYSaZZ1pvrEUK48aOR6TDTrqeX8dzAaNBYKApXKJRz8V+evCUEy7mx+f6Mj5Nf1RCSKSVamNzbrqAeYIEKRfonXMxmtOb5Za0NKLbypFDwBHmZjVtRiDXscabziUF8cWCPqGWOCOMhMCac/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-03 (Coremail) with SMTP id rQCowACXOTYgHP5nYXz5CA--.18019S2;
+	Tue, 15 Apr 2025 16:43:13 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: arend.vanspriel@broadcom.com,
+	kvalo@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>
+Subject: [PATCH v3] brcm80211: fmac: Add error log in brcmf_usb_dl_cmd()
+Date: Tue, 15 Apr 2025 16:42:39 +0800
+Message-ID: <20250415084239.2906-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250407-gpiochip-set-rv-bcma-v1-1-fa403ad76966@linaro.org>
-In-Reply-To: <20250407-gpiochip-set-rv-bcma-v1-1-fa403ad76966@linaro.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 15 Apr 2025 10:29:20 +0200
-X-Gm-Features: ATxdqUE9g7RM0HJPsiRtWp5uefAcSNQmT280xjEtFgRSUBBli2MK8hnSPFDk1to
-Message-ID: <CACRpkdbu01ivd7AX5vn6App2UXbCFMPCMK5FBoJJvHjV52Q5YQ@mail.gmail.com>
-Subject: Re: [PATCH] bcma: use new GPIO line value setter callbacks
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACXOTYgHP5nYXz5CA--.18019S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tr4kuFWkAFWrWF4Dtr4fXwb_yoW8AF1fpr
+	4xXayqyFy8Xr1Sgan3trZxG3W5K3WkJayvkay29wn7ur4kCw10gr4rKFy09r1kCrWxA347
+	ZFWUtF1DXr17GFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxV
+	W0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+	7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AK
+	xVWUAVWUtwCY02Avz4vE14v_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
+	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
+	17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
+	C0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
+	73UjIFyTuYvjfU0_MaDUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAgNA2f95Gzj0wAAso
 
-On Mon, Apr 7, 2025 at 9:10=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl> =
-wrote:
+In brcmf_usb_dl_cmd(), the error logging is not enough to describe
+the error state. And some caller of the brcmf_usb_dl_cmd() does not
+haddel its error. An error log in brcmf_usb_dl_cmd is needed to
+prevent silent failure.
 
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> struct gpio_chip now has callbacks for setting line values that return
-> an integer, allowing to indicate failures. Convert the driver to using
-> them.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Add error handling in brcmf_usb_dl_cmd() to log the command id and
+error code in the brcmf_usb_dl_cmd() fails. In this way, every
+invocation of the function logs a message upon failure.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+v3: Change patch name and comment. Move error log into brcmf_usb_dl_cmd().
+v2: Remove redundant bailing out code.
 
-Yours,
-Linus Walleij
+ .../wireless/broadcom/brcm80211/brcmfmac/usb.c   | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+index d06c724f63d9..a11a6d9f3c2b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+@@ -744,12 +744,16 @@ static int brcmf_usb_dl_cmd(struct brcmf_usbdev_info *devinfo, u8 cmd,
+ 	char *tmpbuf;
+ 	u16 size;
+ 
+-	if ((!devinfo) || (devinfo->ctl_urb == NULL))
+-		return -EINVAL;
++	if (!devinfo || !devinfo->ctl_urb) {
++		ret = -EINVAL;
++		goto err;
++	}
+ 
+ 	tmpbuf = kmalloc(buflen, GFP_ATOMIC);
+-	if (!tmpbuf)
+-		return -ENOMEM;
++	if (!tmpbuf) {
++		ret = -ENOMEM;
++		goto err;
++	}
+ 
+ 	size = buflen;
+ 	devinfo->ctl_urb->transfer_buffer_length = size;
+@@ -783,6 +787,10 @@ static int brcmf_usb_dl_cmd(struct brcmf_usbdev_info *devinfo, u8 cmd,
+ finalize:
+ 	kfree(tmpbuf);
+ 	return ret;
++
++err:
++	brcmf_err("dl cmd %u failed: err=%d\n", cmd, ret);
++	return ret;
+ }
+ 
+ static bool
+-- 
+2.42.0.windows.2
+
 
