@@ -1,48 +1,57 @@
-Return-Path: <linux-wireless+bounces-21540-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21541-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1B4A896F7
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 10:43:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904D9A89782
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 11:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB0C8189DC42
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 08:43:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10A993A011C
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Apr 2025 09:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A7B1DDC18;
-	Tue, 15 Apr 2025 08:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAC127B4EB;
+	Tue, 15 Apr 2025 09:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="HqECEJQs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [178.154.239.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964DC1AF0AE;
-	Tue, 15 Apr 2025 08:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72801EDA24
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Apr 2025 09:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744706605; cv=none; b=Liu86L2bshNTYmlh1IEgdcQqu3K4795O5n93lg1RspaIQEb/tAFMzyL+rd0CNIYqf4ATGVMfygFyllGfpoQghr26jKBN2F8VLkXLdvp4zjCujpB+s8PUyVWrVzA8QecOSFxz5VTKKzoBBMtg8DIU3YxWIdNBVA68sU+/k5UfWrM=
+	t=1744708065; cv=none; b=P2/hDO7lChG1xB6aX5Tf93l83xbtdMQEvg6FoBpN9c2wCIwRsfqN2DwaFUSWWOM/pJj3d8UGucqEAEEas8zcBhmG2OcLo7iDWzcjO8raC1QBB+7pU/LSkSNIXOGHlNntaZEhNCreGaIy0p80hqyGDP7B8uxaNlNN2fsmtJfIM2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744706605; c=relaxed/simple;
-	bh=HtsOkMq+WLgJHrBJNsrJTc1wbQ/EcZYFGAgOXBZbQrM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fb4Ye/nQcliAp/DdSredi9TcSLaFYSaZZ1pvrEUK48aOR6TDTrqeX8dzAaNBYKApXKJRz8V+evCUEy7mx+f6Mj5Nf1RCSKSVamNzbrqAeYIEKRfonXMxmtOb5Za0NKLbypFDwBHmZjVtRiDXscabziUF8cWCPqGWOCOMhMCac/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-03 (Coremail) with SMTP id rQCowACXOTYgHP5nYXz5CA--.18019S2;
-	Tue, 15 Apr 2025 16:43:13 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: arend.vanspriel@broadcom.com,
-	kvalo@kernel.org
+	s=arc-20240116; t=1744708065; c=relaxed/simple;
+	bh=X3Vna8Sy8yMt6yp6wiM1uFIJie0caRgCS7TmHCMs8BQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SDMDPSn9ryXjO8VVNuESRU4IrXk470ZSbuckGk+qUZDwPOwu+n9/h1Mpa3OuPdjAH5rwa646KDs8bPQ6U8YuLIQQUa4uxUxqJadZG2zTxjPHdsdDdvTuTn2VxZdZdyBv1q461vZ6nB3/qWvTIsNn+51cNuxTqySmcWaAcDsoxTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=HqECEJQs; arc=none smtp.client-ip=178.154.239.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:4c83:0:640:aa07:0])
+	by forward100a.mail.yandex.net (Yandex) with ESMTPS id E30B946F26;
+	Tue, 15 Apr 2025 12:07:33 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id W7DXtFALfSw0-Fxz7aKHr;
+	Tue, 15 Apr 2025 12:07:33 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1744708053; bh=E8yFLbL7ouJJ4xtQKNosRon0txv+XOE85fTdTJV32LE=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=HqECEJQspyD5lptYnK3CPQj6mxmHIR9CiR9wDAAJ+NPQ2dkFG2cWDUNXUd8U2wmbi
+	 csGH5qBV/XO7YGMOAfBdEc6p5H+pYM2dIgM+OnhNt1Tj99hYdrWEef5TQPl924+9Mk
+	 yRcrM6H+RBQt3+zPBO95/SxlfVV59y/VwJGMcDr0=
+Authentication-Results: mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Ping-Ke Shih <pkshih@realtek.com>
 Cc: linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>
-Subject: [PATCH v3] brcm80211: fmac: Add error log in brcmf_usb_dl_cmd()
-Date: Tue, 15 Apr 2025 16:42:39 +0800
-Message-ID: <20250415084239.2906-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: rtw88: do not ignore hardware read error during DPK
+Date: Tue, 15 Apr 2025 12:07:20 +0300
+Message-ID: <20250415090720.194048-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,79 +59,35 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACXOTYgHP5nYXz5CA--.18019S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tr4kuFWkAFWrWF4Dtr4fXwb_yoW8AF1fpr
-	4xXayqyFy8Xr1Sgan3trZxG3W5K3WkJayvkay29wn7ur4kCw10gr4rKFy09r1kCrWxA347
-	ZFWUtF1DXr17GFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxV
-	W0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AK
-	xVWUAVWUtwCY02Avz4vE14v_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
-	73UjIFyTuYvjfU0_MaDUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAgNA2f95Gzj0wAAso
 
-In brcmf_usb_dl_cmd(), the error logging is not enough to describe
-the error state. And some caller of the brcmf_usb_dl_cmd() does not
-haddel its error. An error log in brcmf_usb_dl_cmd is needed to
-prevent silent failure.
+In 'rtw8822c_dpk_cal_coef1()', do not ignore error returned
+by 'check_hw_ready()' but issue a warning to denote possible
+DPK issue. Compile tested only.
 
-Add error handling in brcmf_usb_dl_cmd() to log the command id and
-error code in the brcmf_usb_dl_cmd() fails. In this way, every
-invocation of the function logs a message upon failure.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Fixes: 5227c2ee453d ("rtw88: 8822c: add SW DPK support")
+Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-v3: Change patch name and comment. Move error log into brcmf_usb_dl_cmd().
-v2: Remove redundant bailing out code.
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- .../wireless/broadcom/brcm80211/brcmfmac/usb.c   | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-index d06c724f63d9..a11a6d9f3c2b 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-@@ -744,12 +744,16 @@ static int brcmf_usb_dl_cmd(struct brcmf_usbdev_info *devinfo, u8 cmd,
- 	char *tmpbuf;
- 	u16 size;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index 5e53e0db177e..8937a7b656ed 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -3951,7 +3951,8 @@ static void rtw8822c_dpk_cal_coef1(struct rtw_dev *rtwdev)
+ 	rtw_write32(rtwdev, REG_NCTL0, 0x00001148);
+ 	rtw_write32(rtwdev, REG_NCTL0, 0x00001149);
  
--	if ((!devinfo) || (devinfo->ctl_urb == NULL))
--		return -EINVAL;
-+	if (!devinfo || !devinfo->ctl_urb) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
+-	check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55);
++	if (!check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55))
++		rtw_warn(rtwdev, "DPK stuck, performance may be suboptimal");
  
- 	tmpbuf = kmalloc(buflen, GFP_ATOMIC);
--	if (!tmpbuf)
--		return -ENOMEM;
-+	if (!tmpbuf) {
-+		ret = -ENOMEM;
-+		goto err;
-+	}
- 
- 	size = buflen;
- 	devinfo->ctl_urb->transfer_buffer_length = size;
-@@ -783,6 +787,10 @@ static int brcmf_usb_dl_cmd(struct brcmf_usbdev_info *devinfo, u8 cmd,
- finalize:
- 	kfree(tmpbuf);
- 	return ret;
-+
-+err:
-+	brcmf_err("dl cmd %u failed: err=%d\n", cmd, ret);
-+	return ret;
- }
- 
- static bool
+ 	rtw_write8(rtwdev, 0x1b10, 0x0);
+ 	rtw_write32_mask(rtwdev, REG_NCTL0, BIT_SUBPAGE, 0x0000000c);
 -- 
-2.42.0.windows.2
+2.49.0
 
 
