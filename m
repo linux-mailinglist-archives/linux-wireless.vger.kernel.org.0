@@ -1,132 +1,196 @@
-Return-Path: <linux-wireless+bounces-21577-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21578-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A762A8ACFD
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 02:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58042A8ADC9
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 04:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E063B3DC9
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 00:49:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEBB23B25B7
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 02:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44BB51DE4DF;
-	Wed, 16 Apr 2025 00:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33E715667D;
+	Wed, 16 Apr 2025 02:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="jJ8RMW0D"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bT4HNkKg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F2B1DE2CA;
-	Wed, 16 Apr 2025 00:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87CE1537DA
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Apr 2025 02:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744764568; cv=none; b=aRPQr53PzAuRQiSpfoR3/kZ9E9CV99eejWbk80e7UfqHq2I4qiWhG4NQQ3BdonlZTOgXuBm2mvmzhAEVmWTR/72Z23e6Zh6723AGDkJ7QxFwsA7yyo0s7K7O7I8Ms6J5l/XaXC1xflrROxpkMj39/s7E6GCJEocUNmNbJMueVO0=
+	t=1744768909; cv=none; b=W1xDXiyewQBw1eqqJ0OVg7ZARjDODj0vUzNTUpBD5GDgd/YEqI2f+/lBAmBkR2Cd4i3fBR+rvlkqbLNmvHggdGI8uTChYTzDDIuzH0mZdYNauvIR2aqe3NUqmY1tCd1ZOuGgoUcDU9Y9jfeCXzVt973O+3iQLQOnxvZ/duu3jbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744764568; c=relaxed/simple;
-	bh=kWr7Zj6a5RU412b1cBjqAp4YZ2i9JTR5ymTqMoBF490=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YPRp78qRxreCKAJn/x68eDJMoK3Frp9v7qtzGyyrPn8e8nGe7Sojec+wzHMLxUDGmFuPgWuw/dorgvhkFs/JPDC5vKqbj4jRwMFCWAggShUEdJakWWv/H5qpeOKbujB5lMustUAH7eYA6Ldv2rjB4UDqRyPtRaH88qXQeS96uOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=jJ8RMW0D; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 53G0nL4o92331416, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1744764561; bh=kWr7Zj6a5RU412b1cBjqAp4YZ2i9JTR5ymTqMoBF490=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=jJ8RMW0Dv4vJEGDgnZ0/w15dJAX7xo1UEuOwhBFMY9f5+jAN5h+niLe4HltnDNg3X
-	 UltJYjts2UgYGxD6gA4S9EqcHpQs/3wyeqwOQR9/mqDKOW1tWWiR+vYEs2v8wZ5sCO
-	 6Z3sMJxmZYlJTZL7YCKo6hFW01JKIqsZa8h9BMgmOjFehgb/7/YQjlGAmCwCNOamgm
-	 /tmEWwSUFjKplWNuuxJF2NcY9PyYG9UwdmHGD7/CjJPIsnc8nVb9HrrtwpXvl9RoKP
-	 7wg4as2jE67FapjY8QUkxEpSEtYWUmXKv4gOqZk+02YAZRnfnBykL1e84+eUtlL+as
-	 iphqcMGj+ynKQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 53G0nL4o92331416
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Apr 2025 08:49:21 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 16 Apr 2025 08:49:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 16 Apr 2025 08:49:21 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Wed, 16 Apr 2025 08:49:21 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Fedor Pchelkin <boddah8794@gmail.com>, Bernie Huang <phhuang@realtek.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [Bug report] rtw89: 8852b: IO_PAGE_FAULTs with beacon filter feature enabled
-Thread-Topic: [Bug report] rtw89: 8852b: IO_PAGE_FAULTs with beacon filter
- feature enabled
-Thread-Index: AQHbrfBpW2AH+n1rZEuyFH6rIsW1k7Olc7dQ
-Date: Wed, 16 Apr 2025 00:49:20 +0000
-Message-ID: <148ed65c53be4ef29246d372dd0fef8e@realtek.com>
-References: <uidltsdsuujrczrtzgerhh5cw2tztxktfen6yvztnc7gttzgvk@jccomj7f4gul>
-In-Reply-To: <uidltsdsuujrczrtzgerhh5cw2tztxktfen6yvztnc7gttzgvk@jccomj7f4gul>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1744768909; c=relaxed/simple;
+	bh=9gsCBqEVsy73ij5c+s7Z5DwcoV3NtwwWcuN5NgE5DGg=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=XFXDDwQ+mFFjGrpA5mVrsod8hjhWTITaQoozmFCIklPFSXRlB4Ki8SxHipscFY05x7UMa0+lNdsrHEqSl5+vA2jCx4LdeKwAxGPlZ/Aw9i7o0vz96sjNTh+gSBYqyPpSlTVjGQZtiiiHdVjrwfZRwWD0B+Jh5sSfy4n3/iIUpaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bT4HNkKg; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53FIHvRK022965
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Apr 2025 02:01:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:date:from:message-id:subject:to; s=qcppdkim1; bh=idDGPAqDhmx2
+	tJ8Bjnk98i01+XNduU/w2CW2GcoML0w=; b=bT4HNkKgqqvbPPjOho/DfK+lo1Z9
+	658q7AWXBf73+Ux5eXY1x+qrXCT17UeRldCeEtA4GlcME/0LuWQg6tw53kF2xMhe
+	MZhQDI0BOaudVxRUpb9pKHSA6mX/KkvlMqoDdkoKPdrfnlXaWvbHP2xHO29TvmIf
+	CPqK9N1W03N5Cq5G27Z1SfgHZFd6uHP8BxEAHtE0KvoPJTyMhOFXRhyh6t6lL0EJ
+	72zfUEZokzztGbPXT7pi/3ylnJ75nr2ctrMrra3AojITJsMQEzMzeymmR1iWMsEi
+	ZgVajzPsLYv/tbv6aptDZoe6afydWZzdyntKLrs08fg09oKmbbCe258dcA==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45ygj99wva-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Apr 2025 02:01:46 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-229668c8659so45264855ad.3
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Apr 2025 19:01:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744768905; x=1745373705;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=idDGPAqDhmx2tJ8Bjnk98i01+XNduU/w2CW2GcoML0w=;
+        b=OH94cLG+SGhLt3QIZHjdjNV/ZhFhoqCz/2H7BeJ+tWZ/A5snoU+VidlZxBpT63Anmq
+         pfWb0n8c6GTS907exGrAf1Vr1+zU/YhzHqSa0pGCNiA6cUh23ONhEpMK5mojWsKj2whM
+         cA6VG6Gz9piGjiu+GK9GViyNNQcFycBosk1N9r3Ij1HVl5r+FFXk1BOYH5PcXnajQ4D/
+         44MUfZW0E4IAXvDQtOSnDzhNDrnWvq3HBzFDMTFFQLeFF4AsP7oQVuKKpjknpJbq505U
+         fxOIWNytQ0tlvkyPce9ZWRuBLc3EMz2Y5q6kaXex83ncPvOZlusb8d0jteXDkZQYQxoQ
+         SxWg==
+X-Gm-Message-State: AOJu0YxVxx9mEosEWOAYzMkvtKCtnfgKSZGl8accByY1Bt64ZdSCMgLL
+	vgk3ZlYsakdvpItulH6e48MkGG9sCM4NQen3VgwPF9veMiYcACoh1Qw0+LHTAGId6Onft4yc3bJ
+	SMNgM+ZL6MfPAvPX4ecKrrPg+5F9nCDk6Pqy7cf5qBlB1GOpfscdZHOrOJolnq0kPpw==
+X-Gm-Gg: ASbGncsdNor0Z4eHFz4odqxaMdbjFL8mO75hmL7VpbHtElBWx1Gs00zyH2Rga80YLWn
+	j5p1fnRT8RT4dijx4dOY2V2riHX6UvUgWHydoRs54O2MD0hG+LJZEugW0PC3Q9Z6OvqSK1JAjID
+	mVSGbc+vyb5WqHrYKSWkXcuczRsQXJNK8kd7ZpNHIW8R3lcOOFqXXW98exVNNjAKhqoZujDmjJK
+	FXBviLJjTg4ieUs2ZNSPp3wPoSQxhvlMl6u7tqanfzE84jYBzX4irFdTUJFAnXgfgCYLiQRPlch
+	eSQEizHNTWu1cHOaU9/NL2CaANM9DzNbHlBhbWFkWlUcCOeXwnQW3nZogsVgtTfrgW73FZlnrp+
+	nprhBP5ykrPZU5pEr3URA/CALcc2z813q4X7lnb1dhkrMgg==
+X-Received: by 2002:a17:902:fc86:b0:224:11fc:40c0 with SMTP id d9443c01a7336-22c358c509cmr846145ad.11.1744768904790;
+        Tue, 15 Apr 2025 19:01:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCbgAet0uemXl+73aKIuaic3aOU9FUrkIc08337Evt5XcSbofxrA2Vo7u/s5HsDCTDfQTJAw==
+X-Received: by 2002:a17:902:fc86:b0:224:11fc:40c0 with SMTP id d9443c01a7336-22c358c509cmr845745ad.11.1744768904319;
+        Tue, 15 Apr 2025 19:01:44 -0700 (PDT)
+Received: from che-siroccolnx03.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33fcbf4bsm2332195ad.195.2025.04.15.19.01.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Apr 2025 19:01:43 -0700 (PDT)
+From: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+Subject: [PATCH] wifi: ath12k: Prevent sending WMI commands to firmware during firmware crash
+Date: Wed, 16 Apr 2025 07:31:38 +0530
+Message-Id: <20250416020138.2161484-1-maharaja.kennadyrajan@oss.qualcomm.com>
+X-Mailer: git-send-email 2.17.1
+X-Proofpoint-ORIG-GUID: NHEmObWORrU9nFMobh_rAVzMxFlLSDU2
+X-Authority-Analysis: v=2.4 cv=PruTbxM3 c=1 sm=1 tr=0 ts=67ff0f8a cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17 a=XR8D0OoHHMoA:10 a=EUspDBNiAAAA:8 a=0aF2uJ-tSyx87ITvGwcA:9 a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-GUID: NHEmObWORrU9nFMobh_rAVzMxFlLSDU2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-16_01,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 malwarescore=0 adultscore=0 lowpriorityscore=0
+ impostorscore=0 clxscore=1015 spamscore=0 mlxscore=0 mlxlogscore=999
+ phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504160015
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
-RmVkb3IgUGNoZWxraW4gPGJvZGRhaDg3OTRAZ21haWwuY29tPiB3cm90ZToNCj4gSGksDQo+IA0K
-PiB0aGVyZSBhcmUgSU9fUEFHRV9GQVVMVCBlcnJvcnMgb2NjYXNzaW9uYWxseSB0aHJvd24gaW50
-byB0aGUgbG9nIHdpdGgNCj4gcnR3ODlfODg1MmJlLWNvbXBhdGlibGUgZGV2aWNlIGluIHVzZToN
-Cj4gDQo+IFsgICAgNy4xMzU1MDldIHJ0dzg5Xzg4NTJiZSAwMDAwOjAzOjAwLjA6IGxvYWRlZCBm
-aXJtd2FyZSBydHc4OS9ydHc4ODUyYl9mdy0xLmJpbg0KPiBbICAgIDcuMTM1NjEwXSBydHc4OV84
-ODUyYmUgMDAwMDowMzowMC4wOiBlbmFibGluZyBkZXZpY2UgKDAwMDAgLT4gMDAwMykNCj4gWyAg
-ICA3LjEzNzA3NF0gcnR3ODlfODg1MmJlIDAwMDA6MDM6MDAuMDogRmlybXdhcmUgdmVyc2lvbiAw
-LjI5LjI5LjggKDM5ZGJmNTBmKSwgY21kIHZlcnNpb24gMCwgdHlwZSA1DQo+IFsgICAgNy4xMzcw
-NzldIHJ0dzg5Xzg4NTJiZSAwMDAwOjAzOjAwLjA6IEZpcm13YXJlIHZlcnNpb24gMC4yOS4yOS44
-ICgzOWRiZjUwZiksIGNtZCB2ZXJzaW9uIDAsIHR5cGUgMw0KPiBbICAgIDcuNDIzODUyXSBydHc4
-OV84ODUyYmUgMDAwMDowMzowMC4wOiBjaGlwIHJmZV90eXBlIGlzIDENCj4gWyAgICA3LjQ1Mjg0
-M10gcnR3ODlfODg1MmJlIDAwMDA6MDM6MDAuMDogcmZraWxsIGhhcmR3YXJlIHN0YXRlIGNoYW5n
-ZWQgdG8gZW5hYmxlDQo+IFsgICAgNy40Nzg0NjZdIHJ0dzg5Xzg4NTJiZSAwMDAwOjAzOjAwLjAg
-d2xvMTogcmVuYW1lZCBmcm9tIHdsYW4wDQo+IC4uLg0KPiBbIDEzNjEuODAzMzg0XSBydHc4OV84
-ODUyYmUgMDAwMDowMzowMC4wOiBBTUQtVmk6IEV2ZW50IGxvZ2dlZCBbSU9fUEFHRV9GQVVMVCBk
-b21haW49MHgwMDEwIGFkZHJlc3M9MHgwDQo+IGZsYWdzPTB4MDAwMF0NCj4gWyAxNDM0LjkxODAx
-Ml0gcnR3ODlfODg1MmJlIDAwMDA6MDM6MDAuMDogQU1ELVZpOiBFdmVudCBsb2dnZWQgW0lPX1BB
-R0VfRkFVTFQgZG9tYWluPTB4MDAxMCBhZGRyZXNzPTB4MA0KPiBmbGFncz0weDAwMDBdDQo+IFsg
-MTU1MS41NTMzNDRdIHJ0dzg5Xzg4NTJiZSAwMDAwOjAzOjAwLjA6IEFNRC1WaTogRXZlbnQgbG9n
-Z2VkIFtJT19QQUdFX0ZBVUxUIGRvbWFpbj0weDAwMTAgYWRkcmVzcz0weDANCj4gZmxhZ3M9MHgw
-MDAwXQ0KPiBbIDE2NDkuMzQ2ODA0XSBydHc4OV84ODUyYmUgMDAwMDowMzowMC4wOiBBTUQtVmk6
-IEV2ZW50IGxvZ2dlZCBbSU9fUEFHRV9GQVVMVCBkb21haW49MHgwMDEwIGFkZHJlc3M9MHgwDQo+
-IGZsYWdzPTB4MDAwMF0NCj4gDQo+IA0KPiBhZGRyZXNzIGFuZCBmbGFncyBhcmUgYWx3YXlzIGFs
-bCB6ZXJvcy4gSXQgaXMgcmVwcm9kdWNpYmxlIG9uIHRoZSBjdXJyZW50DQo+IG1haW5saW5lIHY2
-LjE1LXJjMiBrZXJuZWwgYW5kIHYwLjI5LjI5LjggZncgdmVyc2lvbi4NCj4gDQo+IA0KPiBJdCBp
-cyBtb3N0IHByb2JhYmx5IHJlbGF0ZWQgdG8gdGhlIGJlYWNvbiBmaWx0ZXIgZmVhdHVyZSBlbmFi
-bGVkIGluIHRoZQ0KPiBmaXJtd2FyZS4gQmlzZWN0aW9uIGluIHRoZSBrZXJuZWwgbGVhZHMgdG8N
-Cj4gDQo+IGNvbW1pdCBkNTZjMjYxZTUyMTRlNTFlMmM2ZDIyMTQ5ZjYzNTU1MDM5YjU2MDFlIChI
-RUFEKQ0KPiBBdXRob3I6IFBvLUhhbyBIdWFuZyA8cGhodWFuZ0ByZWFsdGVrLmNvbT4NCj4gRGF0
-ZTogICBUaHUgTm92IDI4IDEzOjU0OjI5IDIwMjQgKzA4MDANCj4gDQo+ICAgICB3aWZpOiBydHc4
-OTogODg1MmI6IGFkZCBiZWFjb24gZmlsdGVyIGFuZCBDUU0gc3VwcG9ydA0KPiANCj4gDQo+IGFu
-ZCBpbiBsaW51eC1maXJtd2FyZSB0bw0KPiANCj4gY29tbWl0IDIwY2FjZTFhZGY2YTMzY2FjNzM1
-OTVlYTMyMDJlYjc4NGRlYTk4YTYNCj4gQXV0aG9yOiBQby1IYW8gSHVhbmcgPHBoaHVhbmdAcmVh
-bHRlay5jb20+DQo+IERhdGU6ICAgVGh1IFNlcCAxOSAxNzowMjoyOCAyMDI0ICswODAwDQo+IA0K
-PiAgICAgcnR3ODk6IDg4NTJiOiB1cGRhdGUgZncgdG8gdjAuMjkuMjkuNw0KPiANCj4gICAgIEVu
-YWJsZSBiZWFjb24gZmlsdGVyIGZlYXR1cmUuDQo+IA0KPiANCg0KVGhhbmtzIGZvciB0aGUgcmVw
-b3J0LiANCg0KQXMgYmlzZWN0aW9uLCBjYW4gSSBzdW1tYXJpemUgYXMgYmVsb3cgdGFibGU/DQoN
-CiAgICBkNTZjMjYxZTUyICAgICAgICAgICBmaXJtd2FyZSAgICAgICAgICAgICBJT19QQUdFX0ZB
-VUxUDQogICAoQ1FNIHN1cHBvcnQpDQogIC0tLS0tLS0tLS0tLS0tLSAgICAgIC0tLS0tLS0tLS0t
-ICAgICAgICAgIC0tLS0tLS0tLS0tLS0tLS0tDQogICAgICBvICAgICAgICAgICAgICAgICAwLjI5
-LjI5LjcgICAgICAgICAgICAgICAgICB5ZXMNCiAgICAgIG8gICAgICAgICAgICAgICAgIDAuMjku
-MjkuNSAgICAgICAgICAgICAgICAgIG5vDQogICAgICB4ICAgICAgICAgICAgICAgICAwLjI5LjI5
-LjcgICAgICAgICAgICAgICAgICBubw0KICAgICAgeCAgICAgICAgICAgICAgICAgMC4yOS4yOS41
-ICAgICAgICAgICAgICAgICAgbm8NCg0KSWYgdGhpcyB0YWJsZSBpcyBjb3JyZWN0LCB3ZSB3aWxs
-IGNoZWNrIHRoZSBiZWFjb24gZmlsdGVyIGZlYXR1cmUgaW4gZmlybXdhcmUuIA0KDQo=
+Currently, we encounter the following kernel call trace when a firmware
+crash occurs. This happens because the host sends WMI commands to the
+firmware while it is in recovery, causing the commands to fail and
+resulting in the kernel call trace.
+
+Set the ATH12K_FLAG_CRASH_FLUSH and ATH12K_FLAG_RECOVERY flags when the
+host driver receives the firmware crash notification from MHI. This
+prevents sending WMI commands to the firmware during recovery.
+
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x75/0xc0
+ register_lock_class+0x6be/0x7a0
+ ? __lock_acquire+0x644/0x19a0
+ __lock_acquire+0x95/0x19a0
+ lock_acquire+0x265/0x310
+ ? ath12k_ce_send+0xa2/0x210 [ath12k]
+ ? find_held_lock+0x34/0xa0
+ ? ath12k_ce_send+0x56/0x210 [ath12k]
+ _raw_spin_lock_bh+0x33/0x70
+ ? ath12k_ce_send+0xa2/0x210 [ath12k]
+ ath12k_ce_send+0xa2/0x210 [ath12k]
+ ath12k_htc_send+0x178/0x390 [ath12k]
+ ath12k_wmi_cmd_send_nowait+0x76/0xa0 [ath12k]
+ ath12k_wmi_cmd_send+0x62/0x190 [ath12k]
+ ath12k_wmi_pdev_bss_chan_info_request+0x62/0xc0 [ath1
+ ath12k_mac_op_get_survey+0x2be/0x310 [ath12k]
+ ieee80211_dump_survey+0x99/0x240 [mac80211]
+ nl80211_dump_survey+0xe7/0x470 [cfg80211]
+ ? kmalloc_reserve+0x59/0xf0
+ genl_dumpit+0x24/0x70
+ netlink_dump+0x177/0x360
+ __netlink_dump_start+0x206/0x280
+ genl_family_rcv_msg_dumpit.isra.22+0x8a/0xe0
+ ? genl_family_rcv_msg_attrs_parse.isra.23+0xe0/0xe0
+ ? genl_op_lock.part.12+0x10/0x10
+ ? genl_dumpit+0x70/0x70
+ genl_rcv_msg+0x1d0/0x290
+ ? nl80211_del_station+0x330/0x330 [cfg80211]
+ ? genl_get_cmd_both+0x50/0x50
+ netlink_rcv_skb+0x4f/0x100
+ genl_rcv+0x1f/0x30
+ netlink_unicast+0x1b6/0x260
+ netlink_sendmsg+0x31a/0x450
+ __sock_sendmsg+0xa8/0xb0
+ ____sys_sendmsg+0x1e4/0x260
+ ___sys_sendmsg+0x89/0xe0
+ ? local_clock_noinstr+0xb/0xc0
+ ? rcu_is_watching+0xd/0x40
+ ? kfree+0x1de/0x370
+ ? __sys_sendmsg+0x7a/0xc0
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Fixes: a9b46dd2e483 ("wifi: ath12k: Add firmware coredump collection support")
+Signed-off-by: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath12k/mhi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/mhi.c b/drivers/net/wireless/ath/ath12k/mhi.c
+index 9c929c4ad8a8..08f44baf182a 100644
+--- a/drivers/net/wireless/ath/ath12k/mhi.c
++++ b/drivers/net/wireless/ath/ath12k/mhi.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2020-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include <linux/msi.h>
+@@ -285,8 +285,11 @@ static void ath12k_mhi_op_status_cb(struct mhi_controller *mhi_cntrl,
+ 			break;
+ 		}
+ 
+-		if (!(test_bit(ATH12K_FLAG_UNREGISTERING, &ab->dev_flags)))
++		if (!(test_bit(ATH12K_FLAG_UNREGISTERING, &ab->dev_flags))) {
++			set_bit(ATH12K_FLAG_CRASH_FLUSH, &ab->dev_flags);
++			set_bit(ATH12K_FLAG_RECOVERY, &ab->dev_flags);
+ 			queue_work(ab->workqueue_aux, &ab->reset_work);
++		}
+ 		break;
+ 	default:
+ 		break;
+
+base-commit: 176f3009ae598d0523b267db319fe16f69577231
+-- 
+2.17.1
+
 
