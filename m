@@ -1,117 +1,102 @@
-Return-Path: <linux-wireless+bounces-21573-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21576-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45290A8ACB3
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 02:28:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B79D8A8ACBF
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 02:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59497441053
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 00:28:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBD28442033
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 00:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8591A264A;
-	Wed, 16 Apr 2025 00:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B561C862A;
+	Wed, 16 Apr 2025 00:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="YGP+Ic+Z"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="jGwpdxzI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E4D1A2643
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Apr 2025 00:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE20781E;
+	Wed, 16 Apr 2025 00:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744763306; cv=none; b=W//K0sMXWSQ769R8ij5rIWSH5oJKgMexHhwsuvMUi7lNNQAJd2MsQkKg4wTnUc853187E4RL/p5mLiH6vnflO4ryV7yIYGmwzVWXa6QUYiIpyR6wvLfo1umrdhtrK7RhIWRrWRMLjE0uintR4vfNZ1LG8bNQzeX0TswJwKNI7Ys=
+	t=1744763588; cv=none; b=lSmBuuNSuTbC1ZCUZb6TpDqQ03uYibhhU6kOW2IDJjXD/TM93Z6x6vWTQlkW4R+bt6MS3CQBlgvshhMFfpFM/qD+KSH66geaTV2I+QhaNo9CpnOOwDe6NJRferzpovWtS25asaYRBqHkLOcFOdfaGaKHa0fTBlyPC6/S3Xr3UAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744763306; c=relaxed/simple;
-	bh=YQ/7oX+aIJiQYkZ2sWYWLgEMl5brguO/ZoGI/yA/TkE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rq1TIE7rskbBWA53fIq08U43I2kHv/uKZppPR4SJuG4qfqMrI0JSqmvVC9CLmKoIzOd4u5pbUrzZBX3v6UKFrC2bOb7dCHhmHLqbkwHKZaugwXVFeC5xmtus/fgdJf2FwYORH/Dmc8QsQlFff7gPJAnAK2Yk6ObOy25/d+TKEAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=YGP+Ic+Z; arc=none smtp.client-ip=148.163.129.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from engine.ppe-hosted.com (unknown [10.7.65.239])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 1056C600FD;
-	Wed, 16 Apr 2025 00:28:22 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 6688E1C0068;
-	Wed, 16 Apr 2025 00:28:20 +0000 (UTC)
-Received: from carkeek.lan (unknown [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id A32DD13C2B4;
-	Tue, 15 Apr 2025 17:28:19 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A32DD13C2B4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1744763299;
-	bh=YQ/7oX+aIJiQYkZ2sWYWLgEMl5brguO/ZoGI/yA/TkE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YGP+Ic+ZmQlHcmiXYrvz8cj2L6iEZlDoXFcUx9F+D3knXfs/Runn491tLrMZwB5at
-	 5wuBoQa4d2JTzZKOtuREguw7o9Ooz4lW9FpQBEdcgoIGnlYel0+TI4/I31liRtiDGP
-	 PtWPNIO8fVZLJZgQIk/pLKOLensPS/xzhigZ06WI=
-From: Rory Little <rory@candelatech.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com
-Cc: shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	Rory Little <rory@candelatech.com>
-Subject: [PATCH 4/4] wifi: mt76: mt7996: Allow monitor enable if phy is already running.
-Date: Tue, 15 Apr 2025 17:26:17 -0700
-Message-ID: <20250416002617.1328286-5-rory@candelatech.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250416002617.1328286-1-rory@candelatech.com>
-References: <20250416002617.1328286-1-rory@candelatech.com>
+	s=arc-20240116; t=1744763588; c=relaxed/simple;
+	bh=/5FgyfoyLdyyIDMJBgE5yun8feWu4HGAH+RQrGVEgFY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=eFIbnzxiyQnyv5LvMj0XtFr9NXJP1gQfJLzZph9gJggmgPiYxm/1rO1spKHmV/QUjNxLsPeg6jQtvL4rEptLC5v4RrgRjBSc8a9Mw7v1XWUCh9KW92Tfmo2pl9ExmlHbuEPMo//TGyyhk7Y65A7QFGVv7MTCqc1U8aVRDnyaiVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=jGwpdxzI; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 53G0Ww2M22305799, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1744763578; bh=/5FgyfoyLdyyIDMJBgE5yun8feWu4HGAH+RQrGVEgFY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=jGwpdxzIYmDdGjUmnQh9YpU2Tld45Dh9ChFpK//RA6h0e/PX9rpUiLz1CyMzXPv6y
+	 knfjQQWxsJzI4oGOFjNkBS5UklLcr2+u5KvxoITZGz7qp+TEXGX4eGoSlqHXMkB2cp
+	 +L7x1abDqLBXE+XOgGlXFajxz/gIWuMnAEUGN9cEuSnOelqeCOImAc91mzSTNBqLrV
+	 m/4DC5sTuugmmTNmBVoVu5DJNAcd34KsT7YS9ZM6Odu67hXBffQ9j5xK3AUjwUTb8X
+	 sl3259BoGfI+X/6SmbmnNXXwXj8JxAJtVK/6ccOhXCLYsb4HbHggvETfr0A1vru3RB
+	 VWT/jI4GvSR1Q==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 53G0Ww2M22305799
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 16 Apr 2025 08:32:58 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 16 Apr 2025 08:32:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 16 Apr 2025 08:32:58 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Wed, 16 Apr 2025 08:32:58 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Zhen XIN
+	<zhen.xin@nokia-sbell.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH -v2 2/2] wifi: rtw88: sdio: map mgmt frames to queue TX_DESC_QSEL_MGMT
+Thread-Topic: [PATCH -v2 2/2] wifi: rtw88: sdio: map mgmt frames to queue
+ TX_DESC_QSEL_MGMT
+Thread-Index: AQHbqi/AoiBG2M0l1Umtjv/+rZii17Okn4AAgADZFsA=
+Date: Wed, 16 Apr 2025 00:32:58 +0000
+Message-ID: <74fe1fe102324d809d7f23b14d335bac@realtek.com>
+References: <20250410154217.1849977-1-zhen.xin@nokia-sbell.com>
+ <20250410154217.1849977-3-zhen.xin@nokia-sbell.com>
+ <CAFBinCDVd6eVFcDzP1N8ayS6OmVZng5ti2jrHfYkbqFY4BdfLQ@mail.gmail.com>
+In-Reply-To: <CAFBinCDVd6eVFcDzP1N8ayS6OmVZng5ti2jrHfYkbqFY4BdfLQ@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1744763301-QDgg88ITqcOU
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1744763301;QDgg88ITqcOU;<rory@candelatech.com>;f49eb8a899f4a60c9b856bf22a60d609
-X-PPE-TRUSTED: V=1;DIR=OUT;
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-This path was being skipped if, for example, a monitor was created on
-a phy which already contained a station.
-
-Fixes: 69d54ce7491d ("wifi: mt76: mt7996: switch to single multi-radio wiphy")
-Signed-off-by: Rory Little <rory@candelatech.com>
----
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index cbc9826320a7..16314fdc090c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -478,13 +478,14 @@ static int mt7996_add_interface(struct ieee80211_hw *hw,
- 	for (i = 0; i < MT7996_MAX_RADIOS; i++) {
- 		struct mt7996_phy *phy = dev->radio_phy[i];
- 
--		if (!phy || !(wdev->radio_mask & BIT(i)) ||
--		    test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
-+		if (!phy || !(wdev->radio_mask & BIT(i)))
- 			continue;
- 
--		err = mt7996_run(phy);
--		if (err)
--			goto out;
-+		if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state)) {
-+			err = mt7996_run(phy);
-+			if (err)
-+				goto out;
-+		}
- 
- 		if (vif->type == NL80211_IFTYPE_MONITOR)
- 			mt7996_set_monitor(phy, true);
--- 
-2.48.1
-
+TWFydGluIEJsdW1lbnN0aW5nbCA8bWFydGluLmJsdW1lbnN0aW5nbEBnb29nbGVtYWlsLmNvbT4g
+d3JvdGU6DQo+IA0KPiBPbiBUaHUsIEFwciAxMCwgMjAyNSBhdCA1OjQ24oCvUE0gWmhlbiBYSU4g
+PHpoZW4ueGluQG5va2lhLXNiZWxsLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBSdHc4OC1zZGlvIGRv
+IG5vdCB3b3JrIGluIEFQIG1vZGUgZHVlIHRvIHRoZSBsYWNrIG9mIHR4IHN0YXR1cyByZXBvcnQg
+Zm9yDQo+IFBpbmctS2UsIGluIGNhc2UgeW91IHdhbnQgdG8ga2VlcCB0aGUgc3BlbGxpbmcgb2Yg
+cnR3ODggY29uc2lzdGVudDoNCj4gY2FuIHlvdSB1cGRhdGUgaXQgd2hpbGUgYXBwbHlpbmcgdGhl
+IHBhdGNoIChvciBkbyB3ZSBuZWVkIGEgdjMpPw0KPiBTYW1lIHF1ZXN0aW9uIGZvciB0aGUgb3Ro
+ZXIgcGF0Y2ggaW4gdGhpcyBzZXJpZXMuDQoNCkkgY2FuIHVwZGF0ZSBjb21taXQgbWVzc2FnZXMg
+d2hpbGUgYXBwbHlpbmcgcGF0Y2hlcy4gQnV0IG5vdCBzdXJlIHdoYXQgeW91DQptZW50aW9uZWQu
+IERpZCB5b3UgbWVhbiB0byBjaGFuZ2UgJ1J0dzg4LXNkaW8nIHRvICdydHc4OC1zZGlvJz8NCg0K
+DQo=
 
