@@ -1,323 +1,125 @@
-Return-Path: <linux-wireless+bounces-21606-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21607-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7836FA90BF8
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 21:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65175A90D22
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 22:27:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36EE07AD3D0
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 19:10:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13D627AF884
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Apr 2025 20:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382782236F4;
-	Wed, 16 Apr 2025 19:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A61022A7EB;
+	Wed, 16 Apr 2025 20:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="bJQPjaEh"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bdAnfQLx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330C32045B7
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Apr 2025 19:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1190224AE3
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Apr 2025 20:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744830665; cv=none; b=qoe74uxCwlnmHYr56kVp0CygG2A3JrjJZYisnnT1u89LwodH9zPJRBv3/ShaoMFPKYR3poor5nDHTbm7zzbM2diRwnm/Ku42OsJYUjxxjioXLzkb3XsrduPmxLNo1pG78j51ZClcq87y3QgaMxEKPfQrIQnnlc05OnoSiOOCfXA=
+	t=1744835227; cv=none; b=QxZLCTirBOV2OiFScUsnGe99agD8aZKsgQYdv/0Jt+NnOL3bCjwGdcDM0hqAJvrGjNY7f9CV6djFCMOfR2HFDJpO/++ecxJqNhePVji8rbaWqhvc2UKQKY8PwdX2QrvY3WybWWP4Hk/sJTzeNgyrwsw9yiXV2WnUFHsF1Z1M3ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744830665; c=relaxed/simple;
-	bh=eH3Bn53YiyGLDnAZwdKK8XPlFtceUS61pLnGtW6Lmvc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=OP1MbyC3xQCjOJ1/3ZQyDD5DYiggiYSx4Gpb3cCdG7XkUJ0SPHwvRrJWS5j0NgV3E6esb6GMlgYbiymJ0ZMlpupudPkTpH7YDC6nPHa9ipG2S71wa/OWWzXlrTXnFzFVqRvR2124wLxZ1FyLuBeHFqj/XS0MyRAcLPh+LPzwjaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=bJQPjaEh; arc=none smtp.client-ip=185.84.6.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
-Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:59630 helo=webmail.newmedia-net.de)
-	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
-	(Exim 4.97.1)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1u587K-000000004Xa-0AeI;
-	Wed, 16 Apr 2025 21:08:14 +0200
-X-SASI-Hits: BODY_SIZE_10000_PLUS 0.000000, CTE_8BIT 0.000000,
-	DKIM_ALIGNS 0.000000, DKIM_SIGNATURE 0.000000, HTML_00_01 0.050000,
-	HTML_00_10 0.050000, IN_REP_TO 0.000000, LEGITIMATE_SIGNS 0.000000,
-	MSGID_SAMEAS_FROM_HEX_844412 0.100000, MSG_THREAD 0.000000,
-	NO_CTA_URI_FOUND 0.000000, NO_FUR_HEADER 0.000000, NO_URI_HTTPS 0.000000,
-	OUTBOUND 0.000000, OUTBOUND_SOPHOS 0.000000, REFERENCES 0.000000,
-	SENDER_NO_AUTH 0.000000, SUSP_DH_NEG 0.000000, USER_AGENT 0.000000,
-	__ANY_URI 0.000000, __BODY_NO_MAILTO 0.000000,
-	__BOUNCE_CHALLENGE_SUBJ 0.000000, __BOUNCE_NDR_SUBJ_EXEMPT 0.000000,
-	__BULK_NEGATE 0.000000, __COURIER_PHRASE 0.000000,
-	__CRYPTO_ADDRESS_OBFU 0.000000, __CT 0.000000, __CTE 0.000000,
-	__CT_TEXT_PLAIN 0.000000, __DKIM_ALIGNS_1 0.000000, __DKIM_ALIGNS_2 0.000000,
-	__DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000, __DQ_NEG_IP 0.000000,
-	__FORWARDED_MSG 0.000000, __FRAUD_MONEY_BIG_COIN 0.000000,
-	__FRAUD_MONEY_BIG_COIN_DIG 0.000000, __FROM_DOMAIN_NOT_IN_BODY 0.000000,
-	__FROM_NAME_NOT_IN_BODY 0.000000, __FUR_RDNS_SOPHOS 0.000000,
-	__HAS_FROM 0.000000, __HAS_MSGID 0.000000, __HAS_REFERENCES 0.000000,
-	__HEADER_ORDER_FROM 0.000000, __HIGHBITS 0.000000, __IN_REP_TO 0.000000,
-	__MAIL_CHAIN 0.000000, __MIME_BOUND_CHARSET 0.000000,
-	__MIME_TEXT_ONLY 0.000000, __MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000,
-	__MIME_VERSION 0.000000, __MOZILLA_USER_AGENT 0.000000,
-	__MSGID_HEX_844412 0.000000, __MULTIPLE_RCPTS_TO_X2 0.000000,
-	__NO_HTML_TAG_RAW 0.000000, __OUTBOUND_SOPHOS_FUR 0.000000,
-	__OUTBOUND_SOPHOS_FUR_IP 0.000000, __OUTBOUND_SOPHOS_FUR_RDNS 0.000000,
-	__RCVD_PASS 0.000000, __REFERENCES 0.000000, __SANE_MSGID 0.000000,
-	__SCAN_D_NEG 0.000000, __SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
-	__SCAN_D_NEG_HEUR2 0.000000, __SUBJ_ALPHA_END 0.000000,
-	__SUBJ_ALPHA_NEGATE 0.000000, __SUBJ_REPLY 0.000000,
-	__TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
-	__TO_NAME_DIFF_FROM_ACC 0.000000, __TO_REAL_NAMES 0.000000,
-	__URI_NO_MAILTO 0.000000, __URI_NO_WWW 0.000000, __USER_AGENT 0.000000,
-	__X_MAILSCANNER 0.000000
-X-SASI-Probability: 8%
-X-SASI-RCODE: 200
-X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2025.4.16.181228
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
-	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID; bh=i8LnURJpuRJzxMjS+qlDwzuPuzUglcE9ImEiNHlCOaA=;
-	b=bJQPjaEhfP5WhCfjh5SGonb7vETvGp50Q8OvSqhX89zRdZnOvgD0c5cbaz5kmpDsC18/EQxJXvokvclYZVZ40zbtmNh0L73yJL3RcKr6zc/97OnT1TVrRZ3pki2KjYiQtmV8TyBR/uE7dYnKMcvLS9L6hHJJU6Zwt5gqSwwb0Y4=;
-Message-ID: <32bdd5b2-cfee-4d49-9df1-b92b9c71ddcd@dd-wrt.com>
-Date: Wed, 16 Apr 2025 21:08:09 +0200
+	s=arc-20240116; t=1744835227; c=relaxed/simple;
+	bh=XU+cG4Rl/BauvGaZuqJSxBXPHrt+N5HECp9+iIJrFUI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DAMPV6YCiVj2RskaWjRMdk+cB3hwjSk8KdxbbyreeBBcPb2TrZk8+nBIcWKqd7CLzSfDQZJNRYnyQoL2rrYqenVnbhkzRL6Hy1KWlPQ1s0EC9PENueas8F24Yg02kZUnG8c+zhBx0GEefnZ4Agq5RaHmpl1jKIp3y5XIwriirBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bdAnfQLx; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53G9mJws003645
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Apr 2025 20:27:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	XU+cG4Rl/BauvGaZuqJSxBXPHrt+N5HECp9+iIJrFUI=; b=bdAnfQLxqVZGCsnY
+	RH22UHKRIGaAfAKrhh+oUpqe6goVwFcCvkLr56UaT5Nat/Xqg5d3IpfnMJSPH68k
+	AteP+6jdMdG/PtfMAWomBLP4sH7WLmT1ESR3VszOLhW96Dhkt91iNhc9V8O+Wk6Y
+	bFpB9+Wvj9UvCO2b0NnqvWUQavDUO2PUoNEz4kSvAsq0zbs6swouXOPaQwfCkP6u
+	mDwpCSuqv1OKfjmpFWzkmeCAl4VREJ8+tNIB/h2ZION03Ay0JzWrGOnGoggUd+00
+	maYsIq6LI4PEx/fEbt/EleaMTCvYq8cVduS3wPhlFIo+qYJePGC7y4IcLbTJGFy8
+	HLklCg==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4628rva07j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Apr 2025 20:27:04 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-af5310c1ac1so19549a12.2
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Apr 2025 13:27:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744835224; x=1745440024;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XU+cG4Rl/BauvGaZuqJSxBXPHrt+N5HECp9+iIJrFUI=;
+        b=eZqtQiOttqLTkH6r932xdqbDFKlmfvDtQ4Ci3Gg1M3NdG6XHAzu9cTBS4RncUQRg8H
+         JSzeErtJi3iB2yc0TD94O/UJOtc8W1ExHRzLYYKVpTerF3O9YI8w75E7dPiLQoq1SZ2B
+         kUJ7APgw0lD/Dt5c0SEDNzEVTxPlWuu0U36cIDRI+HAnF7xIpQRpMm2eBfEtYOCwLkQH
+         Atw0O+Tq24ecUGmhjg6DPV7qf1kdSAYK6atoZEYez4nYGPDOWYIPGqCIQIqu3kG9k/2l
+         B2ReqdcMcCF6F1fTO8N19esjQdRSwvwlawMqiU3KTpZ06itxkEnmf4hOMwEjNSl5mkwf
+         2afA==
+X-Gm-Message-State: AOJu0Yysne3TyINOwq7Fxo5TVl4AkrGjVM5Dhd1c0j5rCpnmqZUWfyEp
+	7VuKKHyOYRy/Lq5pRF/ffg/Vxt8eeX9mFFFYEkZ/yE8l4B4U2Wyh0XgIAP3oZ9/COCVTWq0ew3Q
+	A5QN2Jm5GAYTHWsanTt3rh7z7ZNW2Wd7gGlD3VVstE0R+OH5YdxlbwEWcQsvkilG9eoFTd+k6bQ
+	==
+X-Gm-Gg: ASbGncs0i1DrN31dbZ4EMsAI8NwcJqFfdHbzvjGheqI0HeX6iA/FFLTXGV1bccOQ/X4
+	XRMo5RxYbVWvHnW7vh45xGP9vjWE1HH+SkHb1NJDrpPMIa/LmKddrI9wubeYRAqXs2ZyRMbLOPo
+	BKjA8V/vr0gvuDFED+mzYZJvvPGO21lG7eC0BdR3r9w60jORQWw+hmn4Qjg7ydloAfZpyRTzB4S
+	fbZMeO9VoaG1WVVJNmQOgmYnBoUsWK7yLc1SD793cIKuA0FWzge44FjAlfJXBAobbfqqx/LcrAH
+	3iVf+Wn/wnfslqxkdmd76yS1xXQFBK/2YsnOsa4OpTGl8SQII97pmnyVlMuH8mUALnFWmXQyPVc
+	8u0cn
+X-Received: by 2002:a17:90b:5188:b0:2fa:157e:c78e with SMTP id 98e67ed59e1d1-30863d1dd4bmr4826686a91.7.1744835223885;
+        Wed, 16 Apr 2025 13:27:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHuo7zvWoyCf/GU7A2RTisM4TY7siZHVq4sAVZKlpNh7JppDbecdnn/W7Fuo/7ITI3MuDLLrg==
+X-Received: by 2002:a17:90b:5188:b0:2fa:157e:c78e with SMTP id 98e67ed59e1d1-30863d1dd4bmr4826663a91.7.1744835223529;
+        Wed, 16 Apr 2025 13:27:03 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-308611f00f1sm2092884a91.13.2025.04.16.13.27.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Apr 2025 13:27:03 -0700 (PDT)
+Message-ID: <3bacca4a-94c8-435c-a480-1c18c0f9f5f2@oss.qualcomm.com>
+Date: Wed, 16 Apr 2025 13:27:02 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: RFC: Proposed modularization of ath12k
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
- "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>,
- linux-wireless <linux-wireless@vger.kernel.org>
-References: <4a17d730-ede8-463e-98d8-9b0291d0ca45@oss.qualcomm.com>
-From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-In-Reply-To: <4a17d730-ede8-463e-98d8-9b0291d0ca45@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass (webmail.newmedia-net.de: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=s.gottschall@dd-wrt.com; helo=webmail.newmedia-net.de;
-X-SA-Exim-Connect-IP: 127.0.0.1
-X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
-X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
-X-NMN-MailScanner-Information: Please contact the ISP for more information
-X-NMN-MailScanner-ID: 1u587I-00027H-IZ
-X-NMN-MailScanner: Found to be clean
-X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
-X-Received:  from localhost ([127.0.0.1] helo=webmail.newmedia-net.de)
-	by webmail.newmedia-net.de with esmtp (Exim 4.72)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1u587I-00027H-IZ; Wed, 16 Apr 2025 21:08:12 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next v2] wifi: ath12k: Add MSDU length validation for
+ tkip mic error error
+To: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, P Praneesh <quic_ppranees@quicinc.com>
+References: <20250416021903.3178962-1-nithyanantham.paramasivam@oss.qualcomm.com>
+Content-Language: en-US
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+In-Reply-To: <20250416021903.3178962-1-nithyanantham.paramasivam@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: FFXgdro1UxtEQK_7lXD3VU9FWBdY5udq
+X-Authority-Analysis: v=2.4 cv=RbSQC0tv c=1 sm=1 tr=0 ts=68001298 cx=c_pps a=rz3CxIlbcmazkYymdCej/Q==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=pYjfoAi3eAWinmu-FJwA:9 a=QEXdDO2ut3YA:10 a=AurkjTAPaLoA:10
+ a=bFCP_H2QrGi7Okbo017w:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: FFXgdro1UxtEQK_7lXD3VU9FWBdY5udq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-16_08,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=481
+ suspectscore=0 adultscore=0 impostorscore=0 clxscore=1015 bulkscore=0
+ phishscore=0 priorityscore=1501 spamscore=0 mlxscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504160167
 
-why not do it for all the drivers. ath10k, 11k and 12k. alot of code can 
-be shared.
+On 4/15/2025 7:19 PM, Nithyanantham Paramasivam wrote:
+> From: P Praneesh <quic_ppranees@quicinc.com>
 
-Am 16.04.2025 um 17:15 schrieb Jeff Johnson:
-> BACKGROUND
->
-> Historically, for each generation of Qualcomm Atheros Wi-Fi chipset, there has
-> been a separate driver, the most recent being ath10k for 802.11ac (Wi-Fi 5),
-> ath11k for 802.11ax (Wi-Fi 6/6E), and ath12k for 802.11be (Wi-Fi 7). But there
-> is common functionality and code across these drivers due to firmware and
-> hardware architecture leverage across generations.
->
-> In the existing development model, code leverage is achieved via code
-> duplication. When a new driver is created from the prior driver, it is first
-> stripped down to basic features to allow for easier public review, and then,
-> over time, features are added back to bring the new driver up to parity with
-> the previous generation driver. So there is a period where existing
-> functionality in the previous driver is not present in the new driver. In
-> addition, introduction of new functionality requires porting across the
-> different generations of drivers.
->
-> We are now looking ahead at how to support 802.11bn (Wi-Fi 8). And within
-> Qualcomm there is consensus that the old way is not the best way forward.
-> Therefore we are seeking feedback on the following.
->
-> PROPOSAL
->
-> For better leverage, refactor ath12k into common and generation-specific
-> modules. The common module will contain the logic that is shared across
-> multiple architectures, and the generation-specific modules will contain the
-> logic that is specific for that generation (and specific to the chipsets
-> supporting that generation). Hence there will be one driver that supports
-> Wi-Fi 7, Wi-Fi 8, and hopefully all future generations of Wi-Fi. Previous
-> drivers (ath11k, ath10k, etc) are unchanged.
->
-> Firmware interface, core initialization and de-initialization sequences are
-> usually common across different device families. Hardware register
-> definitions, Copy engine mappings, MHI config, WMI resource config and
-> hardware abstractions are usually generation-specific.
->
-> Common components includes following
->        mac80211 interface: Control path ops are mostly common across different
->        generations. Handlers will be shared as much as possible.
->
->        Firmware interface (WMI, HTT, HTC, QMI): Firmware interfacing messages
->        and sequence is common and kept backward/forward compatible using TLVs.
->
->        Common Datapath flow: Buffer replenish, Processing of RAW packets,
->        delivering frames to mac80211 and similar common path not dependent on
->        hardware TLVs and registers.
->
->        core init sequences, reset sequence & recovery sequence in shared code.
->
-> Generation specific code includes.
->        Some mac80211 handlers that are very close to device like tx will be
->        moved to generation specific components.
->
->        Hardware configs: Hardware capabilities, configs, MHI configuration, WMI
->        resource configuration, HAL and other architecture specific code.
->
->        Data path flow: specific to hardware and TLV integrations like,
->        processing of RX and TX flow that involves hardware register and TLV
->        interactions.
->
-> It is proposed that ath12k.ko will be the common module. It is proposed that
-> ath12k_wifi7.ko will be the generation-specific module for Wi-Fi 7 devices.
->
-> The current ath12k.ko will be refactored as depicted below.
->
->                                          +-----------------+
->                                          |                 |
->                                          |   ath12k.ko     |
->                                          |    (common)     |
->        +---------------+                 |                 |
->        |               |                 +-----------------+
->        |   ath12k.ko   | ===========>
->        |               |                 +------------------+
->        +---------------+                 |                  |
->                                          | ath12k_wifi7.ko  |
->                                          | (wifi7 family)   |
->                                          |                  |
->                                          +------------------+
->
-> Going forward, wifi8 can be added as a new module including all device
-> specific code and new common functionalities will be added in common ath12k.ko
-> that can be leveraged. It will look something like below
->
->                      +-----------------+
->                      |                 |
->                      |   ath12k.ko     |
->                      |    (common)     |
->                      |                 |
->                      +-----------------+
->
->      +------------------+           +------------------+
->      |                  |           |                  |
->      | ath12k_wifi7.ko  |           | ath12k_wifi8.ko  |
->      | (wifi7 family)   |           | (wifi8 family)   |
->      |                  |           |                  |
->      +------------------+           +------------------+
->
->
-> Proposed directory structure
-> Existing                            New
-> .                                   .
-> ├── acpi.c                          ├── acpi.c
-> ├── acpi.h                          ├── acpi.h
-> ├── ce.c                            ├── ce.c
-> ├── ce.h                            ├── ce.h
-> ├── core.c                          ├── core.c
-> ├── coredump.c                      ├── coredump.c
-> ├── coredump.h                      ├── coredump.h
-> ├── core.h                          ├── core.h
-> ├── dbring.c                        ├── dbring.c
-> ├── dbring.h                        ├── dbring.h
-> ├── debug.c                         ├── debug.c
-> ├── debugfs.c                       ├── debugfs.c
-> ├── debugfs.h                       ├── debugfs.h
-> ├── debugfs_htt_stats.c             ├── debugfs_htt_stats.c
-> ├── debugfs_htt_stats.h             ├── debugfs_htt_stats.h
-> ├── debugfs_sta.c                   ├── debugfs_sta.c
-> ├── debugfs_sta.h                   ├── debugfs_sta.h
-> ├── debug.h                         ├── debug.h
-> ├── dp.c                            ├── dp.c
-> ├── dp.h                            ├── dp_cmn.h
-> ├── dp_mon.c                        ├── dp.h
-> ├── dp_mon.h                        ├── dp_htt.c
-> ├── dp_rx.c                         ├── dp_htt.h
-> ├── dp_rx.h                         ├── dp_mon.c
-> ├── dp_tx.c                         ├── dp_mon.h
-> ├── dp_tx.h                         ├── dp_peer.c
-> ├── fw.c                            ├── dp_peer.h
-> ├── fw.h                            ├── dp_rx.c
-> ├── hal.c                           ├── dp_rx.h
-> ├── hal_desc.h                      ├── dp_tx.c
-> ├── hal.h                           ├── dp_tx.h
-> ├── hal_rx.c                        ├── fw.c
-> ├── hal_rx.h                        ├── fw.h
-> ├── hal_tx.c                        ├── hal.c
-> ├── hal_tx.h                        ├── hal.h
-> ├── hif.h                           ├── hif.h
-> ├── htc.c                           ├── htc.c
-> ├── htc.h                           ├── htc.h
-> ├── hw.c                            ├── hw.h
-> ├── hw.h                            ├── Kconfig
-> ├── Kconfig                         ├── mac.c
-> ├── mac.c                           ├── mac.h
-> ├── mac.h                           ├── Makefile
-> ├── Makefile                        ├── mhi.c
-> ├── mhi.c                           ├── mhi.h
-> ├── mhi.h                           ├── p2p.c
-> ├── p2p.c                           ├── p2p.h
-> ├── p2p.h                           ├── pci.c
-> ├── pci.c                           ├── pci.h
-> ├── pci.h                           ├── peer.c
-> ├── peer.c                          ├── peer.h
-> ├── peer.h                          ├── qmi.c
-> ├── qmi.c                           ├── qmi.h
-> ├── qmi.h                           ├── reg.c
-> ├── reg.c                           ├── reg.h
-> ├── reg.h                           ├── testmode.c
-> ├── rx_desc.h                       ├── testmode.h
-> ├── testmode.c                      ├── trace.c
-> ├── testmode.h                      ├── trace.h
-> ├── trace.c                         ├── wmi.c
-> ├── trace.h                         ├── wmi.h
-> ├── wmi.c                           ├── wow.c
-> ├── wmi.h                           ├── wow.h
-> ├── wow.c                           +── wifi7
-> +── wow.h                               ├── dp.c
->                                          ├── dp.h
->                                          ├── dp_rx.c
->                                          ├── dp_rx.h
->                                          ├── dp_tx.c
->                                          ├── dp_tx.h
->                                          ├── hal.c
->                                          ├── hal_desc.h
->                                          ├── hal.h
->                                          ├── hal_qcn9274.c
->                                          ├── hal_qcn9274.h
->                                          ├── hal_rx.c
->                                          ├── hal_rx_desc.h
->                                          ├── hal_rx.h
->                                          ├── hal_tx.c
->                                          ├── hal_tx.h
->                                          ├── hal_wcn7850.c
->                                          ├── hal_wcn7850.h
->                                          ├── hw.c
->                                          ├── hw.h
->                                          ├── Makefile
->                                          ├── mhi.c
->                                          ├── pci.c
->                                          ├── wmi.c
->                                          └── wmi.h
->
-> A proof-of-concept is already being developed in parallel with the current
-> ath12k development in the ath12k-ng (Next Generation) branch in our public
-> ath.git. In order to not interfere with the review of current ath12k
-> development, we will not be posting ath12k-ng patches on the mailing lists.
-> However, it will be easy to tell when new patches have been pushed to the
-> branch since the Intel 0-DAY CI Kernel Test Service will run on this branch
-> and publish the test result to the ath12k list.
->
-> Public branch:
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/log/?h=ath12k-ng
->
-> First Intel 0-DAY build result:
-> https://lore.kernel.org/all/202503300031.2IK6j4IS-lkp@intel.com/
->
-> Public comment on this proposal are welcomed.
->
-> /jeff
->
->
+In the subject: s/tkip mic error error/TKIP MIC error/
+
+no need to repost just for this; i can make that cleanup in 'pending'
+
 
