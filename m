@@ -1,86 +1,86 @@
-Return-Path: <linux-wireless+bounces-21611-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21612-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4AD8A9124C
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Apr 2025 06:43:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA61CA9125F
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Apr 2025 06:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45A9A3B5810
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Apr 2025 04:43:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 199AE189F77E
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Apr 2025 04:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AC41D89E4;
-	Thu, 17 Apr 2025 04:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F4B19ABC6;
+	Thu, 17 Apr 2025 04:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IvMX+PMo"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LNWy3jej"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DCE1C3F30
-	for <linux-wireless@vger.kernel.org>; Thu, 17 Apr 2025 04:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38477E1
+	for <linux-wireless@vger.kernel.org>; Thu, 17 Apr 2025 04:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744865002; cv=none; b=IFEkYoHXMl87X5MeEYzv51+sUtWmgk4U7adaHADUd0CGYmdN/yv1DVdcnEsDLGxwxpRsbl71Iv84dxuNJ3NrlQaw4njTiG6lqVw84qv6EMgfMj4lCBhcJgKdTvlfOXZPg0GopCMwkdI7Qz2CpG2KAuTBgV1i33vCTCut6H7HHuU=
+	t=1744865233; cv=none; b=XH+LEqA8ft50p1ugTYZKAxkR8+4a72Q+Z/kva/M+S/o6lARojvmiSnInHQNKo2KoYvsDNBAzk23mADbMdHTHMj+4KBAvnlAgDPDnTDPTVyBHELnQ+e8K7C/6bBUm9pxy0YjarLM9zADBfOW47DJlNXIq03T5RCqnYIs6cCyEZO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744865002; c=relaxed/simple;
-	bh=KLF/UifRraZCMrlsQRPUUyJgLDqhzWPqyL06NnGXmhM=;
+	s=arc-20240116; t=1744865233; c=relaxed/simple;
+	bh=wT57qYhwYXZPr97BIglla160CwoX1pNurAgpyJED69w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eFiONeRbIaDDOfPVjkkPO585+yLxNiSjXJzy8kuvYfl9xAcbETNxyuqbJ5tmh3LmMAVfQpgJ/IdU+Q9bdx1Vmo0L2auC4W9xj/KCKs7xBCX8t3ahqmiFmopWHy7kUsrfR9cxRRKLrOJX5egblOhmwVBjKZLnfFN4lXOKTQhxiYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IvMX+PMo; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=j8OqX2OvPRC1TJXh+SmnoZPws9XQA5JtaYWUaFsm7FU6RwZkodrm5IAihd8c5XIMhfls6P6TSjaFsh6L58F7ck2bpoK6b7aV2QLmHBUx9o9B3I4E3UCd82c43/fQFxxkE76kYAuan9ddCl8jrmb6rt9eQ13xLC39IPzcRb5Gkhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LNWy3jej; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GMdsWj000401
-	for <linux-wireless@vger.kernel.org>; Thu, 17 Apr 2025 04:43:19 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GLk6nL020618
+	for <linux-wireless@vger.kernel.org>; Thu, 17 Apr 2025 04:47:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	fCpJDEnYU6sGpBaesuuZWJ6MbHU0YyqaOAWM+ZszPNA=; b=IvMX+PMoNxjTTjp7
-	HATSb6oMbHeAjH5oOYlj1LPYIag8DB0nBp9rBWuUDTp0elAJFjhK+OZ7I41ybjRT
-	gKtuyJP8f4448RJmyWd6U+Fj8LVpW6QS+1gzlBtBuxm+erW/R0w26OhnD1OODa4K
-	uPrPZ/bEIhrbK0c2Xbzemm3oeMJ65Nsab5Kb+YeC7l/QDcLm0WLj2Jiage8J0WFO
-	0NyjhFrVMDHSIPlCjzEHovOhNuQz9PIosjbtPrtuAEasyC1C5/NsYfZ2OfwUYkhK
-	WZ0A3oZWg54wMScld/4XpHEEsSFCKq6KA+rvKsW6CxLlECidif/iD/E7Cr2rKUS2
-	NH7mVw==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45yf4vns4t-1
+	nFlHoIzjupgDoxTjH+cWDayJFNrjdRDpixbHZDBCe4k=; b=LNWy3jej/zVVTSdT
+	WeG89fV/k9+B7FcwIVzAtC+MAy6HhoCOj8FiuPMWEV33JZkpGGKeBgcqeGu6vnIa
+	QiTkDDdmfDvzwnAD/VDxrVw5lVjnKU+0cy7npGbvq6R7LWOif9qdfULozMIk0WDJ
+	iU6NI1fvJ1a8cjWq9uUyW4oSt8ZKhKyOesrnn7Q/8r68pRb5BaBBtTO2qBpqj4v9
+	Zh5IcaNxQ1djGl69QsHkmKb332nUqp6u77OKmw9Cg5CBrBBilpFaWNTXINcRJzAJ
+	6JlNKghYNcgXWl8bagtQi1J7ZgQ35kTJ1onEItssAIKTKHUo/nsQ74i5vFhr+c+8
+	hpPfVg==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45yg8wnp3d-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 17 Apr 2025 04:43:19 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2240a96112fso6499695ad.2
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Apr 2025 21:43:19 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Thu, 17 Apr 2025 04:47:09 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-af96cdd7f5bso254863a12.1
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Apr 2025 21:47:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744864999; x=1745469799;
+        d=1e100.net; s=20230601; t=1744865228; x=1745470028;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fCpJDEnYU6sGpBaesuuZWJ6MbHU0YyqaOAWM+ZszPNA=;
-        b=Obzed1h42C/Q4GUXk+5ADBSOB8o2DiUxIZBQzdOw8LkzDebR94iEwkaqRxgCZne6Ig
-         1GKHR3er/alQTyOIEwkMmgwPRpNmKS6azie1JQUbyyLGWvaxbtGvehoYaPsTwLUgpJ2W
-         ZuHE15ZthLDMnjuoS+w8WPBo9rXYodWmxZ9nWN1bXq99NAA2FA9kMv6Q+ub3Wzs6H3RA
-         9kbdQSPd4XOrFr6ZPboUtnOiUmvha2MZwzMgbeNc61b3BK0yl4+/1o0ox0OumYkowIvG
-         Wt0g8VKhKaZdg81cRly94CqA1tEflTTO1BJOsMsNAqA622swytowO1N0BHGtSQAuN9IF
-         C4KQ==
-X-Gm-Message-State: AOJu0Yy80awdzKuvKl2IJ8EVTEyPj2piVFKZ14gzRE9cxOic875us5Ar
-	TNbd7T82lCaOPR0S+p/NFemW6H8di5h5TTR2ES2u3G7VUkkJ8bS6j8w9wEAuGpEmTVuIDF4VO4Z
-	150I/yy1e/azJ/TihbzkT1V+309RAohXzUiggpAccr3mlKN0tpPB34cAn0d6ypMXIsA==
-X-Gm-Gg: ASbGncs7osPR+oRMIIs3dQ1MCo7KYf5/SIzuiQHg2eJoM9J4fBnv30zaWy7oV/qeBQ6
-	JR7a7M++QO5D+pDTh73Js/ZUruoIXI3NqgbgIh9DNQA03K4sFa4qevxm4UJcIE3Y59dgty3lF63
-	wkJFYTLIBCVqJw7SlEmkuWtJzFuqO8wEECDCQtk2c+pZgvLhk3xhiZwJ0VW0OjmE5n10NWNfwep
-	wNH92h6kF+tqbesmLsUzsLZlNLk3V7htxkiv54iFzG2htoN4LGYLAUeK2wbDdHQawxIw1ucjoqT
-	pnhbbvK9J1EJQf6T3aYRchW0ZwD2U7IJ7ICm1sO2QinWqye5OsrTvQ==
-X-Received: by 2002:a17:903:1aaf:b0:224:1781:a947 with SMTP id d9443c01a7336-22c358de2cdmr73234095ad.21.1744864998727;
-        Wed, 16 Apr 2025 21:43:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IErlshvBjFj0x5OLjuHcdiuSjlSiKknrO2d3yqj1ktoI0dScojOvPI2IeEpuD9mvPI+1SvmWg==
-X-Received: by 2002:a17:903:1aaf:b0:224:1781:a947 with SMTP id d9443c01a7336-22c358de2cdmr73233835ad.21.1744864998336;
-        Wed, 16 Apr 2025 21:43:18 -0700 (PDT)
+        bh=nFlHoIzjupgDoxTjH+cWDayJFNrjdRDpixbHZDBCe4k=;
+        b=SMwEjc4zEx8EH1AOY3JQloWYeV4pjxNa9zSmev8x0382MdTa80eQ10tP6OaC9vgZ9X
+         NVbqt1NtTDSKzDuwq6vbn9EIC4+PzAs3hQ2su5ymNeDy1UW1qpq+h4CpYrQsRflvgN+C
+         ij9bIgsFJu/KcKhGDbQDuvv2FoHCirQxqBNFe+20Hi3trMXHGqBgH9yCTHGKiuwoopfP
+         QIR4kDGQH7mh2s/JHAz6c4JqvX51FoXSZXJ8yssxJtVvyPHv2E1u6XG3E+eMUE2O15ja
+         3uAhgGebGXyHI8DuVjeXdrDb55DYiIfX2IDUAZ4Iq73Euz8rxUdRtv1aBlaMT5U3rWI1
+         EYEw==
+X-Gm-Message-State: AOJu0YxNjW1mRgafgakDiJm7oOJcUHqgm+S4CKmYpr9f3Mtap6ySKAA/
+	xtTSGxQySWcWhf3OkAIuEIUJYi6O+tBUyoT42Wa4+FFirE7diGsadzOAnFNknuccv65rvGd2n7+
+	FsfIgiWNjCPqMR+qrsWX60XqJVli3K6yIaVvgGB0IiSfzO+jHq6JVVwO9JiomfvHX5w==
+X-Gm-Gg: ASbGncs3mA7pD3QNqyxcM6e90+LbTCYvamUgqWBEBuzc5dZWr/Ms0w8A/TVY6RGZuN4
+	E8Qb0fK0gVwjfaA3CMO0ydu61XVOAj+Rqf/dX32cfLyyB0MRSPY93ztGq6/hp7hxITJ9haYRTYW
+	ac2EBfScYG1izZ4cK/7dmWMjgnwoqiGPtIxGXgaWnJAVhOnpjO+XLbR6iMsbC+/w5Ljqy4LWPPe
+	E4L+GBtwbwLAu90eBFKvS/thffmI+0e53n5O8OQjSWAo86EhPuF3qbinhhjkEZNUnxjvvAnDW0q
+	jAPLFMMO7Jevwsppq5ymEug0fJUylmiIpBDSpE5zswmXLhLplJvHxA==
+X-Received: by 2002:a17:90b:520a:b0:2fe:b907:3b05 with SMTP id 98e67ed59e1d1-3086416f4dbmr6641867a91.29.1744865228264;
+        Wed, 16 Apr 2025 21:47:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFS8HqQgRJJ+ClcJyzwKwU9DqAukD1WSTXYMhVy8bq7bnit/LMG8kH73H2ihwINMxe0cy69Zw==
+X-Received: by 2002:a17:90b:520a:b0:2fe:b907:3b05 with SMTP id 98e67ed59e1d1-3086416f4dbmr6641853a91.29.1744865227955;
+        Wed, 16 Apr 2025 21:47:07 -0700 (PDT)
 Received: from [10.152.204.0] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33f1ee39sm23789765ad.104.2025.04.16.21.43.16
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30861365f2asm2590782a91.45.2025.04.16.21.47.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Apr 2025 21:43:18 -0700 (PDT)
-Message-ID: <2ead024e-464c-2399-28b0-d40b8d32e21f@oss.qualcomm.com>
-Date: Thu, 17 Apr 2025 10:13:15 +0530
+        Wed, 16 Apr 2025 21:47:07 -0700 (PDT)
+Message-ID: <e9db4da3-136b-3c70-0ff9-feeea08d409d@oss.qualcomm.com>
+Date: Thu, 17 Apr 2025 10:17:05 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,49 +89,53 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH ath-next] wifi: ath12k: Avoid allocating rx_stats when
- ext_rx_stats is disabled
+Subject: Re: [PATCH ath-next] wifi: ath12k: Fix the QoS control field offset
+ to build QoS header
 Content-Language: en-US
-To: P Praneesh <praneesh.p@oss.qualcomm.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250409052647.81955-1-praneesh.p@oss.qualcomm.com>
+To: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
+References: <20250415184102.2707300-1-nithyanantham.paramasivam@oss.qualcomm.com>
 From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-In-Reply-To: <20250409052647.81955-1-praneesh.p@oss.qualcomm.com>
+In-Reply-To: <20250415184102.2707300-1-nithyanantham.paramasivam@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: fKoggKe8DNVQ3OG4lf_z8IiUG0wweMmu
-X-Authority-Analysis: v=2.4 cv=IZ6HWXqa c=1 sm=1 tr=0 ts=680086e7 cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=EUspDBNiAAAA:8 a=6UfVyIx_0tLuMFyWIHAA:9 a=QEXdDO2ut3YA:10
- a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-GUID: fKoggKe8DNVQ3OG4lf_z8IiUG0wweMmu
+X-Authority-Analysis: v=2.4 cv=E9TNpbdl c=1 sm=1 tr=0 ts=680087cd cx=c_pps a=rz3CxIlbcmazkYymdCej/Q==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=a1qPrsHmoJbHl_s4WroA:9 a=QEXdDO2ut3YA:10
+ a=bFCP_H2QrGi7Okbo017w:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: IMlfz3dETbKIlZ1kKDkYyUBx7yee4wIc
+X-Proofpoint-GUID: IMlfz3dETbKIlZ1kKDkYyUBx7yee4wIc
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-17_01,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 clxscore=1015 malwarescore=0 spamscore=0 adultscore=0
- mlxlogscore=695 mlxscore=0 bulkscore=0 impostorscore=0 suspectscore=0
- phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ mlxscore=0 bulkscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0
+ suspectscore=0 mlxlogscore=431 spamscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
  definitions=main-2504170034
 
 
 
-On 4/9/2025 10:56 AM, P Praneesh wrote:
-> Currently, driver allocates the struct ath12k_rx_peer_stats for each
-> station regardless of whether ext_rx_stats is enabled. This structure
-> is populated by the monitor destination ring for both single-user and
-> multi-user scenarios when ext_rx_stats is enabled. However, when
-> ext_rx_stats is disabled, this allocation is unnecessary and results in
-> additional memory consumption.
+On 4/16/2025 12:11 AM, Nithyanantham Paramasivam wrote:
+> From: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
 > 
-> To address this issue, allocate the struct ath12k_rx_peer_stats only when
-> ext_rx_stats is enabled through debugfs. This change prevents unnecessary
-> memory allocation. Additionally, ensure that the station dump RSSI is
-> updated irrespective of the ext_rx_stats enablement.
+> Currently, in the mac80211 layer, received EAPOL packets are dropped
+> when the HT control field is present in the QoS header. This issue
+> arises due to an incorrect QoS control field offset used to build
+> the QoS header in the MSDU data, leading to a corrupted header in the
+> mac80211 layer. This issue also applies to other frames that contain
+> the QoS control field, such as QoS data or Null frames. To resolve
+> this, use ieee80211_get_qos_ctl() to obtain the correct QoS control
+> offset from the MSDU data. Additionally, ensure the QoS control header
+> is copied in little-endian format within the MSDU data.
 > 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 > Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > 
-> Signed-off-by: P Praneesh <praneesh.p@oss.qualcomm.com>
+> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+> Signed-off-by: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
+> Signed-off-by: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
 
 Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
