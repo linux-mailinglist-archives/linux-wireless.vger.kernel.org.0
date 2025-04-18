@@ -1,122 +1,129 @@
-Return-Path: <linux-wireless+bounces-21740-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21741-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7BCA93DF5
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Apr 2025 20:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E0AA93E5C
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Apr 2025 21:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E658E4A0101
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Apr 2025 18:50:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D730464D49
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Apr 2025 19:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F5E22B8C6;
-	Fri, 18 Apr 2025 18:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0CC21CC64;
+	Fri, 18 Apr 2025 19:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="a1tFClEj"
+	dkim=pass (1024-bit key) header.d=etylix.me header.i=@etylix.me header.b="5ZUImbyP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from forward401d.mail.yandex.net (forward401d.mail.yandex.net [178.154.239.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBA522CBF8
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Apr 2025 18:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A3E217654
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Apr 2025 19:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745002137; cv=none; b=ATe7FPRhlcJvvT2Hyave0fgWxgBlbBT285LbXeaMUzZsR+3s9msvblFCXo5E4gaCfwdEgV37pi1WOE+dWH4PTQHDsu5udJLBmiwLnHg/V7viZcVDgP/9xFVABeHvwKMWhPT6aQRH8PKG6ZeX7YWdkjs1TNKqCe5B/kr8zOcYRMk=
+	t=1745005272; cv=none; b=DVSh6/DS4WcyABF33AghQmFEi97S6OJrPGGbCx1WNOlV1arzs5Z8rWoMyxjr2CgpBuAS1Cx74XkVAhOoCKTBc2QM3yqKo2L/cX8FenVACYGEeYalmYnMtPlSwsUg8Q2352neARnRb3z+1EVpgVo0OOCvdb683lPqMRAEx2uT54U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745002137; c=relaxed/simple;
-	bh=wuB+po96jyJcpn4GfMishhM3sK+dPLxABDKFmHpEfHo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=co0li6vdmh+z1Jo2lbDNwHi36jEzVX37Nb92fCQEUZQewybUhvXNGw81H8h6HT3jeelvvcyUr63R6R7HonIy9cfP58H4HEOjCRfBbqBHYnP2x8dXNqnqq4uxpnb3/aasiYFj0jbtRnp5dgzEXugvbETLGxTK2KT4BmjBJ9Q6Eo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=a1tFClEj; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53IFdaH8008153
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Apr 2025 18:48:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	wuB+po96jyJcpn4GfMishhM3sK+dPLxABDKFmHpEfHo=; b=a1tFClEj8naI7yJB
-	eXQKb0MGBhe82uZbz2bregE5Z83n9L2u98ER+ONW+9n0w1p3OIUHp8w9PgqXm54/
-	kkn4U9oOcI5aS56b5Ax3bCuQFjBcnL3JCyvYWqGKFfM1ImXZu3khDY856BuZDWfL
-	Kf5lyEOMPd/8BExzDswmok9CwMhVT7yNF/2IT2vnicH/KzCP+67FOmQ4uHoKOTd7
-	No+01e4SG2Ct70elTLGKpV2rBJMURxGnbYga7r6OE9TxDBaJj9DQDiNjguY6TrLG
-	3xr2EJ0Ad+HAv4Jk3pAtC6oQtKBBQssyorEgtiHgTOsbiaHMoVOK1n+j/sKUwqIe
-	C0/YMQ==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45ygxkak0d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Apr 2025 18:48:55 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-af8e645a1d1so1352767a12.3
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Apr 2025 11:48:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745002134; x=1745606934;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wuB+po96jyJcpn4GfMishhM3sK+dPLxABDKFmHpEfHo=;
-        b=QsFmILHBiauGCiJldNdrWdecDe4G4sy2yB5GPUXnOvs90Fxy9+lBK6o+rPQN2Mq//h
-         3IbZi2zivTYwIoWm6aMIV5+++IEu/dAEGxi5FRURAxNi9ikzBhmV39PwYpmvs2JPHlug
-         ZdFoqbeqzOdtgM99f5t4rLzA24f2/uew9sJGLP+z1SxuELd6+E7/eIf2c/BpkrIf+scr
-         pD3OGz0MP6JvBDDsBZAcpBdL2f3qkG3TByLEn4Ojf2dlYyKRqh9+5Gzkd7SZ9BUZBDwV
-         qYFcFvFMdMT6a9KvWdCBeKybGD6j2C83BPG1DCmGhvk7v7HsXj2lzFCwdrffJ2rUGCrF
-         WAsw==
-X-Gm-Message-State: AOJu0Yx5x70yPCI29vZo/TAVE1mSG6slyrOZ63ERe/x7BnVjOVAg8MrQ
-	SfxxuS5QStzJRi+CuOB+o6QlDtQceq7niunqyMniVAoI35dL08tzfOCyUDq9uT0KUdZbP8rNShA
-	Mn4sx8SbjAjQlXdtYPNTplWK/nwv+D6O+j7RQPhX5kv3sdOhUB003U2qe1wZ57z7yNw==
-X-Gm-Gg: ASbGncu/n6FENP+AGvq8L6TVFlSgoL9tez6H2WK4NT4/zGhAjaB93+cFq2jMVpyGCGm
-	nceGiUr84DzlX6DPnC/BgGdlHMTA+XfBY1Iku1zWYmQIW6nQTX7wVvg2jwOJg3yBPtDWXJeqT/T
-	J5y2exgBojuQVcyNmmmQ9YJ+0nc9dbyQ6FzTPWdR4sk+bjTztL8fGjJOHJZ4S1rAJJ1nrU0oPeh
-	lO2xOS4bmIE7V+7a1TEcNgph+6gbBzsv2sZ9yiV25RGMcuSfA4V5JpucGi0h0Wczi+KOXiNcb1L
-	Kp37fpE2UyUeCiMpTmW6uWJoi7dK9i4iYZopDCNBgLh1hEPdla2FLY4jBDEkl38Eifc5wqRa1e8
-	zX0il
-X-Received: by 2002:a17:903:19f0:b0:21f:68ae:56e3 with SMTP id d9443c01a7336-22c5360dc9bmr53927115ad.39.1745002134173;
-        Fri, 18 Apr 2025 11:48:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH2vHOzst/8vCa4KMObopvWwTseNUfwEWkYiCQV5cjRLm5sx7Pyoz0/LrvQgWu55WOmepl4JA==
-X-Received: by 2002:a17:903:19f0:b0:21f:68ae:56e3 with SMTP id d9443c01a7336-22c5360dc9bmr53926985ad.39.1745002133789;
-        Fri, 18 Apr 2025 11:48:53 -0700 (PDT)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50eb4affsm20035125ad.119.2025.04.18.11.48.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Apr 2025 11:48:53 -0700 (PDT)
-Message-ID: <1173e72a-efb6-40de-87ef-41ebee98aea9@oss.qualcomm.com>
-Date: Fri, 18 Apr 2025 11:48:52 -0700
+	s=arc-20240116; t=1745005272; c=relaxed/simple;
+	bh=1dVeZmkYilsLt/NacfA2GqrKH0eFxeZeegPp2+b4q54=;
+	h=From:To:Cc:Subject:MIME-Version:Date:Message-Id:Content-Type; b=VudSBC595jYWZVjxQX0q8Pg9ZQOSYg3kvKpa3TZdlXwUUGkMxZ+RSw2zaz41bSj73ac7OAAcvfpsSROnD15gbnsg8IqWGp/VnGF7RM+C6jhtpwqSI3h75s3JzeKJ3qKSYR2+Ub9qLxfdL7Q5L76JowdFWRGJmjp8LvniIsu6Mig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=etylix.me; spf=pass smtp.mailfrom=etylix.me; dkim=pass (1024-bit key) header.d=etylix.me header.i=@etylix.me header.b=5ZUImbyP; arc=none smtp.client-ip=178.154.239.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=etylix.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etylix.me
+Received: from mail-nwsmtp-mxback-production-main-46.klg.yp-c.yandex.net (mail-nwsmtp-mxback-production-main-46.klg.yp-c.yandex.net [IPv6:2a02:6b8:c43:7cf:0:640:f67c:0])
+	by forward401d.mail.yandex.net (Yandex) with ESMTPS id 26F66627AE;
+	Fri, 18 Apr 2025 22:35:30 +0300 (MSK)
+Received: from mail.yandex.com (2a02:6b8:c43:4b0f:0:640:cb38:0 [2a02:6b8:c43:4b0f:0:640:cb38:0])
+	by mail-nwsmtp-mxback-production-main-46.klg.yp-c.yandex.net (mxback/Yandex) with HTTPS id HYQFXn0L2Cg0-oPnIjwbU;
+	Fri, 18 Apr 2025 22:35:29 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=etylix.me; s=mail;
+	t=1745004929; bh=Gqf9MNMQv1izUarlmFAo3gQSnimgXjxG/3jtSrbUYSA=;
+	h=Message-Id:Date:Subject:To:From:Cc;
+	b=5ZUImbyPVAolIyFTCGMlPiUQl4kj3QeNnHxaBsjOcQ3amWEYbZJl7017NgVgcl8Tf
+	 kOdP0mdPAPQpTJ4aB5wfJgIsgPAxrnzHieXYZ4VERollau2DE1qPJgO0WQiyOSfz0t
+	 0ZMDbOLSfa4Ai95ruiTea3amNQsdBQc+bGs7WAyI=
+Authentication-Results: mail-nwsmtp-mxback-production-main-46.klg.yp-c.yandex.net; dkim=pass header.i=@etylix.me
+Received: by mail-sendbernar-production-main-32.klg.yp-c.yandex.net with HTTP;
+	Fri, 18 Apr 2025 22:35:29 +0300
+From: Duy Hoang <duy@etylix.me>
+To: linux-wireless@vger.kernel.org
+Cc: wireless-regdb@lists.infradead.org
+Subject: [PATCH] wireless-regdb: Update regulatory info for Vietnam (VN) for 2025
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V13 0/9] wifi: ath12k: add MU-MIMO and 160 MHz bandwidth
- support
-To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250418174818.3336510-1-quic_pradeepc@quicinc.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20250418174818.3336510-1-quic_pradeepc@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+X-Mailer: Yamail [ http://yandex.ru ] 5.0
+Date: Sat, 19 Apr 2025 02:35:29 +0700
+Message-Id: <2199341745004929@mail-sendbernar-production-main-32.klg.yp-c.yandex.net>
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=WecMa1hX c=1 sm=1 tr=0 ts=68029e97 cx=c_pps a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=dZ8E1E-v023Ymm4DEa0A:9 a=QEXdDO2ut3YA:10 a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-GUID: 7p_wKkkO6WmnktpUYNvxtLqVr8aeLWSL
-X-Proofpoint-ORIG-GUID: 7p_wKkkO6WmnktpUYNvxtLqVr8aeLWSL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-18_07,2025-04-17_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- adultscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 mlxscore=0
- impostorscore=0 mlxlogscore=724 spamscore=0 malwarescore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504180142
+Content-Type: text/plain
 
-Reminder: you should be adding a destination branch tag to the subject prefix,
-i.e. [PATCH ath-next v13 0/9]
+According to [1] and [2]:
+- Update frequency range to match with Circular
+- Update units from dBm to mW to match values listed in Circular
+- Add AUTO-BW flags to allow the use of 160 MHz based on other rules
+- Update to allow use of 6 GHz band
 
-Don't resend for this, but keep this in mind for future patches.
+Detail:
+* 2400 - 2483.5 MHz
+  - 200 mW (23 dBm)
+* 5150 - 5250 MHz
+  - 200 mW (23 dBm)
+  - Indoor only
+* 5250 - 5350 MHz
+  - 200 mW (23 dBm)
+  - DFS
+* 5470 - 5725 MHz
+  - 1000 mW (30 dBm)
+  - DFS
+* 5725 - 5850 MHz
+  - 1000 mW (30 dBm)
+* 5925 - 6425 MHz
+  - LPI
+    * 200 mW (23 dBm)
+    * Indoor only
+  - VLP
+    * 25 mW (14 dBm)
+    * Indoor and outdoor
 
-/jeff
+[1] https://datafiles.chinhphu.vn/cpp/files/vbpq/2021/10/08-btttt.signed.pdf
+[2] https://mic.gov.vn/van-ban-phap-luat/25099.htm
+
+Signed-off-by: Hoang Pham Anh Duy <duy@etylix.me>
+---
+ db.txt | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/db.txt b/db.txt
+index e331d4f..eb882de 100644
+--- a/db.txt
++++ b/db.txt
+@@ -2001,12 +2001,16 @@ country VI: DFS-FCC
+ 	(5490 - 5730 @ 160), (24), DFS
+ 	(5735 - 5835 @ 80), (30)
+ 
++# Source:
++# https://datafiles.chinhphu.vn/cpp/files/vbpq/2021/10/08-btttt.signed.pdf
++# https://mic.gov.vn/van-ban-phap-luat/25099.htm
+ country VN: DFS-FCC
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (17)
+-	(5250 - 5330 @ 80), (24), DFS
+-	(5490 - 5730 @ 80), (24), DFS
+-	(5735 - 5835 @ 80), (30)
++	(2400 - 2483.5 @ 40), (200 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
++	(5250 - 5350 @ 80), (200 mW), DFS, AUTO-BW
++	(5470 - 5725 @ 80), (1000 mW), DFS, AUTO-BW
++	(5725 - 5850 @ 80), (1000 mW), AUTO-BW
++	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
+ 
+ # Source:
+ # http://www.trr.vu/attachments/category/130/GURL_for_Short-range_Radiocommunication_Devices2.pdf
+-- 
+2.46.0.windows.1
 
