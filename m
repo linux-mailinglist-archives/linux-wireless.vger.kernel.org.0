@@ -1,139 +1,150 @@
-Return-Path: <linux-wireless+bounces-21694-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21695-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA6BA92ECE
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Apr 2025 02:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F29A9302C
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Apr 2025 04:56:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D96F98A69D5
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Apr 2025 00:28:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5655F8E332C
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Apr 2025 02:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52F9442C;
-	Fri, 18 Apr 2025 00:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A221D267B14;
+	Fri, 18 Apr 2025 02:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YCU2LtXz"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MTZx+gTt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F47125B9
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Apr 2025 00:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BFF24B26;
+	Fri, 18 Apr 2025 02:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744936130; cv=none; b=uBHN7LlGqILv/QU5+0vteaoIVrHiFvTmrj894QjgAH9DGDANPQYe16x0COxWGx2Y6AnXOgXfTcK3FbMocAujPl6ngXcyzlEoAa/Pbe7Qw0Ljl4N93GdEWFXlKBbP2ghre9G9KtfwXiYfVHenUvNa5PLq1v8rRbwnKGTcPuRz5jo=
+	t=1744944968; cv=none; b=tWOhFQWJo8fGAjEU/fEzSKfhQfxWjurgjPV8odvoE8bKU0mDz0DlvqZy8upPFMU8GyWvF4CVUKk/kGDqYhO0omn0ILBSwZFzdEdu2TDsV6jgiIuLc+BVpqO1zyGT+OTZmAce1+y43gETf2TfjtXhSGYM9I29BE1JuyCwKrsWQ9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744936130; c=relaxed/simple;
-	bh=3WrAK6ETBZvh8733Ts6rGsbjWkMKH9hxoX1gr4fgvHI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXtIZEIUvw7RTvtpbaaY9cpV7Q6sNY0Vk7WVU5aAwWTxWd/BQz1ROsKSi2no0lNOBQBxHN0FXNeTjsdk/jlUsXpuKDYfwOSKszPvKGcCs3co0knTlrym2mqGQg7Me6FEI1c2o+F57mL2fZqJkxehy9LtW0ExLTN0nhs4BsBA4ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YCU2LtXz; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e6f4b3ebe5so2554411a12.0
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Apr 2025 17:28:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744936127; x=1745540927; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tmjfnryaL/1Db85i+ddktBGEqym6N7KGAu30Cvm+lw8=;
-        b=YCU2LtXzDiJwiKBQI5+aRi9CScSxF3q9IB8qA+lDrLWLb8MUfDj1+d3LUzSDQuZl4s
-         ff4IhCdCvgKgvS5YmaCffDra8qEfeU6ewTShij8Ilx3PS2ftVikMLlvm/G9uohwu0249
-         ZFeKdTIPMF8MIdtW159JwPH2nABeDuICb/j2WG1e04uODegVDXgu3XrHf2c/tL2gt1Kf
-         c3t8HqjzUqzeBM7S2aErW+/8wCaTH2gGNZNka3eQ+ryBI6Ex8F4msMsrgdbpvDtpjh4G
-         eWx0cL8FBU9opHsHdtgpnmXd4ev+AJM9xaoYA6xJNsf8lvEuGkoE0o4KH3mhDZzFPXCH
-         BzSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744936127; x=1745540927;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tmjfnryaL/1Db85i+ddktBGEqym6N7KGAu30Cvm+lw8=;
-        b=AlaTtfsfsZPjdT4PiU1QhNegZGH9FgmAGnX2tJnUWw5LaxEduyuTDFiGfKvTItEirQ
-         qpf2rMvQlPpAkTpP2USFGDclwSWB6dBh4drLguPWDfuvdAmxQs8uOenZRFBGizifZO1j
-         vV1WpO1qbXm5X5necy/mQNHBn1I3+A7M478hfBkBbPbbmWXG206VOlnqE9ZyBa57DEkX
-         X20qQH2kn6dGA6q69l1+p6RIlZm9FhtRWJLA2XGLl/swViNn8G39GYlYidIZ1vP0xh9p
-         PuybP8wIYLvzXqRiZfoljk1QmvaR/XUEHzGDFXJGovjovqk51mvgip4KxW5B/grgr8+V
-         vZiQ==
-X-Gm-Message-State: AOJu0YzfPXWIzhYtc8QhkhlL4uA9dMi+uhh5aRmP/iGKF2YnGHPpIfwx
-	VWci9DtCZ3jifoEzCbE29Pw2+iF1ZTdSGKa3tTEbijYTsHEnDgpquLyehyXZ
-X-Gm-Gg: ASbGnctLBMjXobwIDrRv90lkohm/9/hEh8O4VuBchrg8N4dUOD9VqX/tcpNpDoMBcfO
-	aRcBUXY8ZJKBqCF82L3TaKuUZFSpMA4GRcLSIjyBJTLXuSEZRUuT+XLgspaRCjuf70mwDKLRzUO
-	mpN0ewzb6DrHgwtKjYYPjWzEqIshIKYt9c8txZnzq4HTy10ZdKVCCjPwOooS8yEyjQKB816/Kwu
-	uk5SokKSXsyUg5aJii83OI1WpG4IVcXTHevRti97DMkInS8ROKV7/cBrM08n+I5TrmetCkpmzem
-	hRcSLqczJl3+pOEJNdCbg0XdhPlYO7N9XeAg+KvlFcZaNiP+sY2xROwJ/rARdzpiOG5ER+gJywy
-	K2MGdqwXg6NYDq/No+MLh
-X-Google-Smtp-Source: AGHT+IFU86iEd9+d/kSLYr8Ym56tzjTGa7GpupEbRPDqKhNOrY04UIsZsxVJqI3o2Pk8Ch4IlYaH7A==
-X-Received: by 2002:a05:6402:2548:b0:5dc:7725:a0c7 with SMTP id 4fb4d7f45d1cf-5f628503d66mr597448a12.3.1744936127290;
-        Thu, 17 Apr 2025 17:28:47 -0700 (PDT)
-Received: from systol.god.lan (157-21-254-92.ftth.glasoperator.nl. [92.254.21.157])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f62583d83bsm395893a12.52.2025.04.17.17.28.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 17:28:46 -0700 (PDT)
-From: Henk Vergonet <henk.vergonet@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Henk Vergonet <Henk.Vergonet@gmail.com>
-Subject: [PATCH 2/2] mt76: mt76x2: Disable VHT on 0x76320044 ASIC
-Date: Fri, 18 Apr 2025 02:28:27 +0200
-Message-ID: <20250418002827.26806-2-henk.vergonet@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250418002827.26806-1-henk.vergonet@gmail.com>
-References: <20250418002827.26806-1-henk.vergonet@gmail.com>
+	s=arc-20240116; t=1744944968; c=relaxed/simple;
+	bh=tQnZteQl1pfaBMAgKXndHdLsQoG7aEDY3mRR86O5cj4=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=UcURPxLRGdHP6LvovimX0n3B6TboGUa94v1peeUO6aOtbE1fOSRLPE94FquQJ3I+OnfyvndiGSWHchc/CHaXm61Ii7Q6B3aNRi/hV7MhS3meqOY7CborOvvW362cjvyxiT4FdBCbox6zVCo7d6SfYNT4OXyDSir1mCD0fxPqsq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MTZx+gTt; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53HMvAeA013110;
+	Fri, 18 Apr 2025 02:55:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=P+I4ipXDKRk9aGZXMixIRi
+	cxc8JYFb5j/GIgL6xvM0M=; b=MTZx+gTt+aOj3A1esOTUB1qzlyVbW6v6fjg3/j
+	2yhWYIME3dIo635pLqLsOz+KAXG7quQIs1xzx0oRFIqa8wwpK0hDZXnpTs8VBHwc
+	i/jrnP2koS2I/VMtsppTkxKTFjxnONj3cPvz0uKOCTiAM51SBMMlAps20bXFh86n
+	Js+Z/Af/cycxznXMppM6PSYZlQogt+8fPqxt/Uh0ZJW1vhLRGznqjkhKYGHbSSbi
+	SzSIUtuL+8FdFynRyLh5KTRv12ICghH8m7UpI4R+1lwFIbprPkHOlBtPm1ebe/We
+	vpELDG1daoMCFQnI7zGHpAtI9W/uJP7KVb1pjxQSDlkm60ag==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45ydhqh1hp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Apr 2025 02:55:56 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53I2ttT4000655
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Apr 2025 02:55:55 GMT
+Received: from [127.0.1.1] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 17 Apr
+ 2025 19:55:53 -0700
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+Subject: [PATCH ath-next 00/15] wifi: ath12k: add support for 6 GHz station
+ for various modes : LPI, SP and VLP
+Date: Fri, 18 Apr 2025 10:55:33 +0800
+Message-ID: <20250418-ath12k-6g-lp-vlp-v1-0-c869c86cad60@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACW/AWgC/4XNTQ6CMBAF4KuQrq1ph/LnynsYF2VooVELAjYYw
+ t2dEBcaTFzM4mXefDOzwfTODOwQzaw3wQ2u9RTkLmLYaF8b7irKDAQkQgnJ9dhIuPC05teOBxq
+ rQZeAGaZJxeis641100qeGLW5N9PIzrRp3DC2/XP9FbJ1/2Zhy4aMCy4tpJDIVOelOt4fDp3HP
+ ba3lQv5PyInwlpVlYJKaOMtUXwQMvlBFETESuegEIuq1N/EsiwvaFDuBkIBAAA=
+X-Change-ID: 20250401-ath12k-6g-lp-vlp-fa2ab2c7c65d
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson
+	<jjohnson@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Baochen Qiang <quic_bqiang@quicinc.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 5NZudpcb2xx0__Y_sZuGT4uvX6Kpt2gC
+X-Authority-Analysis: v=2.4 cv=C7DpyRP+ c=1 sm=1 tr=0 ts=6801bf3c cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=l_BK76kwmV097mJrsh0A:9 a=QEXdDO2ut3YA:10
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: 5NZudpcb2xx0__Y_sZuGT4uvX6Kpt2gC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-18_01,2025-04-17_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
+ priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0 bulkscore=0
+ impostorscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0 mlxscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504180020
 
-From: Henk Vergonet <Henk.Vergonet@gmail.com>
+Currently for 6 GHz reg rules from WMI_REG_CHAN_LIST_CC_EXT_EVENTID event,
+host chooses low power indoor type rule regardless of interface type or AP's
+power type, which is not correct. This series change to choose proper rule
+based on interface type and AP's power type.
 
-VHT is not supported on ASIC revision 0x76320044
+When connecting to a 6 GHz AP, currently host sends power settings to firmware
+over WMI_PDEV_PARAM_TXPOWER_LIMIT2G/WMI_PDEV_PARAM_TXPOWER_LIMIT5G commands.
+Actually there is a new command WMI_VDEV_SET_TPC_POWER_CMDID with which host
+can send more detailed parameter than with those two. So add support for this
+interface.
 
-This fixes the 5G connectibity issue on LiteOn WN4519R module
-see https://github.com/openwrt/mt76/issues/971
+Before above changes, some fix and refactor are done to do some preparation
+for following patches.
 
-And may also fix the 5G issues on the XBox One Wireless Adapter
-see https://github.com/openwrt/mt76/issues/200
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+---
+Baochen Qiang (15):
+      wifi: ath12k: fix a possible dead lock caused by ab->base_lock
+      wifi: ath12k: refactor ath12k_reg_chan_list_event()
+      wifi: ath12k: refactor ath12k_reg_build_regd()
+      wifi: ath12k: add support to select 6 GHz regulatory type
+      wifi: ath12k: move reg info handling outside
+      wifi: ath12k: store reg info for later use
+      wifi: ath12k: determine interface mode in _op_add_interface()
+      wifi: ath12k: update regulatory rules when interface added
+      wifi: ath12k: update regulatory rules when connection established
+      wifi: ath12k: save power spectral density(PSD) of regulatory rule
+      wifi: ath12k: add parse of transmit power envelope element
+      wifi: ath12k: save max transmit power in vdev start response event from firmware
+      wifi: ath12k: fill parameters for vdev set TPC power WMI command
+      wifi: ath12k: add handler for WMI_VDEV_SET_TPC_POWER_CMDID
+      wifi: ath12k: use WMI_VDEV_SET_TPC_POWER_CMDID when EXT_TPC_REG_SUPPORT for 6 GHz
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-index 33a14365ec9b..fbb337ef6b68 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-@@ -191,6 +191,7 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
- {
- 	struct ieee80211_hw *hw = mt76_hw(dev);
- 	struct mt76_usb *usb = &dev->mt76.usb;
-+	bool vht_flag;
- 	int err;
- 
- 	INIT_DELAYED_WORK(&dev->cal_work, mt76x2u_phy_calibrate);
-@@ -217,7 +218,15 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
- 
- 	/* check hw sg support in order to enable AMSDU */
- 	hw->max_tx_fragments = dev->mt76.usb.sg_en ? MT_TX_SG_MAX_SIZE : 1;
--	err = mt76_register_device(&dev->mt76, true, mt76x02_rates,
-+	switch(dev->mt76.rev ) {
-+		/* these ASIC revisions do not support VHT */
-+		case 0x76320044:
-+			vht_flag = false;
-+			break;
-+		default:
-+			vht_flag = true;
-+	}
-+	err = mt76_register_device(&dev->mt76, vht_flag, mt76x02_rates,
- 				   ARRAY_SIZE(mt76x02_rates));
- 	if (err)
- 		goto fail;
+ drivers/net/wireless/ath/ath12k/core.h |   6 +
+ drivers/net/wireless/ath/ath12k/mac.c  | 527 ++++++++++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath12k/mac.h  |  43 +++
+ drivers/net/wireless/ath/ath12k/reg.c  | 209 +++++++++++--
+ drivers/net/wireless/ath/ath12k/reg.h  |  18 +-
+ drivers/net/wireless/ath/ath12k/wmi.c  | 198 +++++++------
+ drivers/net/wireless/ath/ath12k/wmi.h  |  62 ++++
+ 7 files changed, 905 insertions(+), 158 deletions(-)
+---
+base-commit: d33705bb41ff786b537f8ed50a187a474db111c1
+change-id: 20250401-ath12k-6g-lp-vlp-fa2ab2c7c65d
+
+Best regards,
 -- 
-2.45.2
+Baochen Qiang <quic_bqiang@quicinc.com>
 
 
