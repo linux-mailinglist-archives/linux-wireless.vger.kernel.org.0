@@ -1,68 +1,62 @@
-Return-Path: <linux-wireless+bounces-21751-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21752-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F68BA9423A
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 10:13:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96BA4A94240
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 10:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC1B8189E4A5
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 08:13:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C13118A2852
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 08:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230FE1A2860;
-	Sat, 19 Apr 2025 08:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE021AAA1E;
+	Sat, 19 Apr 2025 08:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="n2r2y6cB"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="fY2PUlNv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-20.smtpout.orange.fr [80.12.242.20])
+	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48A317BEB6;
-	Sat, 19 Apr 2025 08:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5341A254C;
+	Sat, 19 Apr 2025 08:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745050405; cv=none; b=Jf03hxecVvKWvQZkuMVmp7kpZbLhB+OXUfTLtt4bgTN1iviFhYFtOFlNxVqsh86I3iYM7hts6AATh6wkigPRIYVmjp+Q5+NSTajFcM75lbUPApgO0RIcOPnnjUk+rAHPoGERGOWgwNhuz1Qqnu02RI6qX2cOqd6Y1vZBlt/LQ4U=
+	t=1745051394; cv=none; b=ODCSrVqJu4EErddPA+2n2hqXrWiBxPV+wG9VdWsmys1tImUBsre9iwfXgOnOhsvsMLn0/6+M04gAhdS3j4wYzvGXvtuDz/5y44ZPSorVAH8VLQxYc1crUeC+7YjvHxgv1Kw+BFcQTgCeg8baGRZRRM5zO0Ob1aSoZIOp8fxfokU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745050405; c=relaxed/simple;
-	bh=h20O5mtqoh2oXGg2M9J4OqV9FerlYNY6edRK0mT37k4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d7AqE5AnyleOMeQLpKWJfyj95W6mHmZOxMOKdOgzlwKoA+vjpxx4ZXluitY97u3jMxXJgKqm6NPUHDYLr/+BOQSSSLdG0KwyEbsuxMBWPQTAdoPqJFPRN99blUKsXwnj+7MNVeYGPLtga7RdqTcAg50gxyGVrxAbabaKhPfuW5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=n2r2y6cB; arc=none smtp.client-ip=159.100.248.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.66.161])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id CC4342618F;
-	Sat, 19 Apr 2025 08:13:14 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id 99A6D3E8FD;
-	Sat, 19 Apr 2025 08:13:06 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 617CA400F8;
-	Sat, 19 Apr 2025 08:13:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1745050384; bh=h20O5mtqoh2oXGg2M9J4OqV9FerlYNY6edRK0mT37k4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=n2r2y6cBYz+v+L6R7fjjgB8DiomPxgD778zxyGcLKVevZdCCPOYkEJ0mjd8rMLE0l
-	 tWC/G9bHRmHcUjP74wK10fnwzdUL3OO/IePtlFxR0jCqOJ5yVHu/lYR+Z4HAlG4It9
-	 RBQsU3i/JMXSz5sy5OsStp4GVQ1q9fBWsrce/7AQ=
-Received: from JellyNote.localdomain (unknown [203.175.14.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id BA7E3406FC;
-	Sat, 19 Apr 2025 08:13:00 +0000 (UTC)
-From: Mingcong Bai <jeffbai@aosc.io>
-To: linux-kernel@vger.kernel.org
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Liangliang Zou <rawdiamondmc@outlook.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	Larry Finger <Larry.Finger@lwfinger.net>,
-	linux-wireless@vger.kernel.org
-Subject: [RFC PATCH] wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723
-Date: Sat, 19 Apr 2025 16:12:50 +0800
-Message-ID: <20250419081251.285987-1-jeffbai@aosc.io>
+	s=arc-20240116; t=1745051394; c=relaxed/simple;
+	bh=gAscmcKNfnO0N3FLcOUQMab5Im0Tp2Z3a7oR01znvBY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DLfJnWpr50lbGvbig6dvlfeFl/kEuldb8ppD6aiIlKuQ8Smm+F4HRcdavd8TDQ2PkSzUW1mf5DIB2wuSMPZ4q5PuT1PzV1oI3f9xKjVoQVC1wspX6AqtlvObDdDQxvdcaOVeG6XG74jTLnLgn7YT76RQV1Nq0u+E1U4I4rqhJw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=fY2PUlNv; arc=none smtp.client-ip=80.12.242.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from localhost.localdomain ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id 63ZxueZLbiSFB63a0u9oRv; Sat, 19 Apr 2025 10:29:42 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1745051382;
+	bh=QZ0M3YULwiTEHZp44mqFeUb6ZMxl5OzqThY94fuFEgw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=fY2PUlNvMrebWHzDO3fXFKroyOGgqOjTtytwkM9ZrkUXLZxilpMrNhnckVOrhleI0
+	 Xzvy+l/pDjuC74rEun5NefeZA+OXOxBSGy9+6DFu5snE3IGpyAJCVXry5AcM/eEbvQ
+	 W8OHJ5AIt1TEzDZyWYJkJFm6Qp715JRoNqsovcfs/b/rtAHs8/IkoqN1jW5Txh+OUU
+	 JlxG81w8mzYatxJzzdWutT5b0ai4vnYGhGmvgsub30CIJ3hwcJMMHY7jk6ovfdOzaC
+	 KLowhTdpTizoPsNcmKgmIZ9vgijQxd/Qe3qmRCyhTpU9TpFZsW4U3uuHk9veuLRMJG
+	 kecF+pAd6QQmQ==
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 19 Apr 2025 10:29:42 +0200
+X-ME-IP: 90.11.132.44
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-wireless@vger.kernel.org,
+	ath10k@lists.infradead.org
+Subject: [PATCH] wifi: ath10k: Constify structures in hw.c
+Date: Sat, 19 Apr 2025 10:29:17 +0200
+Message-ID: <504b4d5276d13f5f9c3bffcfdaf244006312c22b.1745051315.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -71,82 +65,464 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 617CA400F8
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Spamd-Result: default: False [1.40 / 10.00];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[rawdiamondmc.outlook.com:server fail,jeffbai.aosc.io:server fail];
-	FREEMAIL_CC(0.00)[aosc.io,outlook.com,realtek.com,tuxdriver.com,lwfinger.net,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[outlook.com];
-	RCVD_TLS_ALL(0.00)[]
-X-Rspamd-Action: no action
 
-RTL8723BE found on some ASUSTek laptops, such as F441U and X555UQ with
-subsystem ID 11ad:1723 are known to output large amounts of PCIe AER
-errors during and after boot up, causing heavy lags and at times lock-ups:
+Structures defined in hw.c are not modified in this driver.
 
-  pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
-  pcieport 0000:00:1c.5: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
-  pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=00000001/00002000
-  pcieport 0000:00:1c.5:    [ 0] RxErr
+Constifying these structures moves some data to a read-only section, so
+increase overall security.
 
-Disable ASPM on this combo as a quirk.
+On a x86_64, with allmodconfig:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+  10357	    951	      0	  11308	   2c2c	drivers/net/wireless/ath/ath10k/hw.o
 
-This patch is a revision of a previous patch (linked below) which
-attempted to disable ASPM for RTL8723BE on all Intel Skylake and Kaby Lake
-PCIe bridges. I take a more conservative approach as all known reports
-point to ASUSTek laptops of these two generations with this particular
-wireless card.
+After:
+=====
+   text	   data	    bss	    dec	    hex	filename
+  11125	    203	      0	  11328	   2c40	drivers/net/wireless/ath/ath10k/hw.o
 
-Please note, however, before the rtl8723be finishes probing, the AER
-errors remained. After the module finishes probing, all AER errors would
-indeed be eliminated, along with heavy lags, poor network throughput,
-and/or occasional lock-ups.
-
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Reported-by: Liangliang Zou <rawdiamondmc@outlook.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218127
-Link: https://lore.kernel.org/lkml/05390e0b-27fd-4190-971e-e70a498c8221@lwfinger.net/T/
-Tested-by: Liangliang Zou <rawdiamondmc@outlook.com>
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+---
+ drivers/net/wireless/ath/ath10k/ce.c | 28 ++++++-------
+ drivers/net/wireless/ath/ath10k/hw.c | 62 ++++++++++++++--------------
+ drivers/net/wireless/ath/ath10k/hw.h | 34 ++++++++-------
+ 3 files changed, 64 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 0eafc4d125f9..898f597f70a9 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -155,6 +155,16 @@ static void _rtl_pci_update_default_setting(struct ieee80211_hw *hw)
- 	    ((u8)init_aspm) == (PCI_EXP_LNKCTL_ASPM_L0S |
- 				PCI_EXP_LNKCTL_ASPM_L1 | PCI_EXP_LNKCTL_CCC))
- 		ppsc->support_aspm = false;
-+
-+	/* RTL8723BE found on some ASUSTek laptops, such as F441U and
-+	 * X555UQ with subsystem ID 11ad:1723 are known to output large
-+	 * amounts of PCIe AER errors during and after boot up, causing
-+	 * heavy lags, poor network throughput, and occasional lock-ups.
-+	 */
-+	if (rtlpriv->rtlhal.hw_type == HARDWARE_TYPE_RTL8723BE &&
-+	    (rtlpci->pdev->subsystem_vendor == 0x11ad &&
-+	     rtlpci->pdev->subsystem_device == 0x1723))
-+		ppsc->support_aspm = false;
- }
+diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
+index afae4a8027f8..c6ee0cbb58e2 100644
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -80,7 +80,7 @@ static inline u32 shadow_sr_wr_ind_addr(struct ath10k *ar,
  
- static bool _rtl_pci_platform_switch_device_pci_aspm(
+ static inline unsigned int
+ ath10k_set_ring_byte(unsigned int offset,
+-		     struct ath10k_hw_ce_regs_addr_map *addr_map)
++		     const struct ath10k_hw_ce_regs_addr_map *addr_map)
+ {
+ 	return ((offset << addr_map->lsb) & addr_map->mask);
+ }
+@@ -203,7 +203,7 @@ static inline void ath10k_ce_src_ring_dmax_set(struct ath10k *ar,
+ 					       u32 ce_ctrl_addr,
+ 					       unsigned int n)
+ {
+-	struct ath10k_hw_ce_ctrl1 *ctrl_regs = ar->hw_ce_regs->ctrl1_regs;
++	const struct ath10k_hw_ce_ctrl1 *ctrl_regs = ar->hw_ce_regs->ctrl1_regs;
+ 
+ 	u32 ctrl1_addr = ath10k_ce_read32(ar, ce_ctrl_addr +
+ 					  ctrl_regs->addr);
+@@ -217,7 +217,7 @@ static inline void ath10k_ce_src_ring_byte_swap_set(struct ath10k *ar,
+ 						    u32 ce_ctrl_addr,
+ 						    unsigned int n)
+ {
+-	struct ath10k_hw_ce_ctrl1 *ctrl_regs = ar->hw_ce_regs->ctrl1_regs;
++	const struct ath10k_hw_ce_ctrl1 *ctrl_regs = ar->hw_ce_regs->ctrl1_regs;
+ 
+ 	u32 ctrl1_addr = ath10k_ce_read32(ar, ce_ctrl_addr +
+ 					  ctrl_regs->addr);
+@@ -231,7 +231,7 @@ static inline void ath10k_ce_dest_ring_byte_swap_set(struct ath10k *ar,
+ 						     u32 ce_ctrl_addr,
+ 						     unsigned int n)
+ {
+-	struct ath10k_hw_ce_ctrl1 *ctrl_regs = ar->hw_ce_regs->ctrl1_regs;
++	const struct ath10k_hw_ce_ctrl1 *ctrl_regs = ar->hw_ce_regs->ctrl1_regs;
+ 
+ 	u32 ctrl1_addr = ath10k_ce_read32(ar, ce_ctrl_addr +
+ 					  ctrl_regs->addr);
+@@ -313,7 +313,7 @@ static inline void ath10k_ce_src_ring_highmark_set(struct ath10k *ar,
+ 						   u32 ce_ctrl_addr,
+ 						   unsigned int n)
+ {
+-	struct ath10k_hw_ce_dst_src_wm_regs *srcr_wm = ar->hw_ce_regs->wm_srcr;
++	const struct ath10k_hw_ce_dst_src_wm_regs *srcr_wm = ar->hw_ce_regs->wm_srcr;
+ 	u32 addr = ath10k_ce_read32(ar, ce_ctrl_addr + srcr_wm->addr);
+ 
+ 	ath10k_ce_write32(ar, ce_ctrl_addr + srcr_wm->addr,
+@@ -325,7 +325,7 @@ static inline void ath10k_ce_src_ring_lowmark_set(struct ath10k *ar,
+ 						  u32 ce_ctrl_addr,
+ 						  unsigned int n)
+ {
+-	struct ath10k_hw_ce_dst_src_wm_regs *srcr_wm = ar->hw_ce_regs->wm_srcr;
++	const struct ath10k_hw_ce_dst_src_wm_regs *srcr_wm = ar->hw_ce_regs->wm_srcr;
+ 	u32 addr = ath10k_ce_read32(ar, ce_ctrl_addr + srcr_wm->addr);
+ 
+ 	ath10k_ce_write32(ar, ce_ctrl_addr + srcr_wm->addr,
+@@ -337,7 +337,7 @@ static inline void ath10k_ce_dest_ring_highmark_set(struct ath10k *ar,
+ 						    u32 ce_ctrl_addr,
+ 						    unsigned int n)
+ {
+-	struct ath10k_hw_ce_dst_src_wm_regs *dstr_wm = ar->hw_ce_regs->wm_dstr;
++	const struct ath10k_hw_ce_dst_src_wm_regs *dstr_wm = ar->hw_ce_regs->wm_dstr;
+ 	u32 addr = ath10k_ce_read32(ar, ce_ctrl_addr + dstr_wm->addr);
+ 
+ 	ath10k_ce_write32(ar, ce_ctrl_addr + dstr_wm->addr,
+@@ -349,7 +349,7 @@ static inline void ath10k_ce_dest_ring_lowmark_set(struct ath10k *ar,
+ 						   u32 ce_ctrl_addr,
+ 						   unsigned int n)
+ {
+-	struct ath10k_hw_ce_dst_src_wm_regs *dstr_wm = ar->hw_ce_regs->wm_dstr;
++	const struct ath10k_hw_ce_dst_src_wm_regs *dstr_wm = ar->hw_ce_regs->wm_dstr;
+ 	u32 addr = ath10k_ce_read32(ar, ce_ctrl_addr + dstr_wm->addr);
+ 
+ 	ath10k_ce_write32(ar, ce_ctrl_addr + dstr_wm->addr,
+@@ -360,7 +360,7 @@ static inline void ath10k_ce_dest_ring_lowmark_set(struct ath10k *ar,
+ static inline void ath10k_ce_copy_complete_inter_enable(struct ath10k *ar,
+ 							u32 ce_ctrl_addr)
+ {
+-	struct ath10k_hw_ce_host_ie *host_ie = ar->hw_ce_regs->host_ie;
++	const struct ath10k_hw_ce_host_ie *host_ie = ar->hw_ce_regs->host_ie;
+ 
+ 	u32 host_ie_addr = ath10k_ce_read32(ar, ce_ctrl_addr +
+ 					    ar->hw_ce_regs->host_ie_addr);
+@@ -372,7 +372,7 @@ static inline void ath10k_ce_copy_complete_inter_enable(struct ath10k *ar,
+ static inline void ath10k_ce_copy_complete_intr_disable(struct ath10k *ar,
+ 							u32 ce_ctrl_addr)
+ {
+-	struct ath10k_hw_ce_host_ie *host_ie = ar->hw_ce_regs->host_ie;
++	const struct ath10k_hw_ce_host_ie *host_ie = ar->hw_ce_regs->host_ie;
+ 
+ 	u32 host_ie_addr = ath10k_ce_read32(ar, ce_ctrl_addr +
+ 					    ar->hw_ce_regs->host_ie_addr);
+@@ -384,7 +384,7 @@ static inline void ath10k_ce_copy_complete_intr_disable(struct ath10k *ar,
+ static inline void ath10k_ce_watermark_intr_disable(struct ath10k *ar,
+ 						    u32 ce_ctrl_addr)
+ {
+-	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
++	const struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
+ 
+ 	u32 host_ie_addr = ath10k_ce_read32(ar, ce_ctrl_addr +
+ 					    ar->hw_ce_regs->host_ie_addr);
+@@ -396,7 +396,7 @@ static inline void ath10k_ce_watermark_intr_disable(struct ath10k *ar,
+ static inline void ath10k_ce_error_intr_disable(struct ath10k *ar,
+ 						u32 ce_ctrl_addr)
+ {
+-	struct ath10k_hw_ce_misc_regs *misc_regs = ar->hw_ce_regs->misc_regs;
++	const struct ath10k_hw_ce_misc_regs *misc_regs = ar->hw_ce_regs->misc_regs;
+ 
+ 	u32 misc_ie_addr = ath10k_ce_read32(ar,
+ 			ce_ctrl_addr + ar->hw_ce_regs->misc_ie_addr);
+@@ -410,7 +410,7 @@ static inline void ath10k_ce_engine_int_status_clear(struct ath10k *ar,
+ 						     u32 ce_ctrl_addr,
+ 						     unsigned int mask)
+ {
+-	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
++	const struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
+ 
+ 	ath10k_ce_write32(ar, ce_ctrl_addr + wm_regs->addr, mask);
+ }
+@@ -1230,7 +1230,7 @@ void ath10k_ce_per_engine_service(struct ath10k *ar, unsigned int ce_id)
+ {
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+ 	struct ath10k_ce_pipe *ce_state = &ce->ce_states[ce_id];
+-	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
++	const struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
+ 	u32 ctrl_addr = ce_state->ctrl_addr;
+ 
+ 	/*
+diff --git a/drivers/net/wireless/ath/ath10k/hw.c b/drivers/net/wireless/ath/ath10k/hw.c
+index 8fafe096adff..84b35a22fc23 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.c
++++ b/drivers/net/wireless/ath/ath10k/hw.c
+@@ -212,40 +212,40 @@ const struct ath10k_hw_regs wcn3990_regs = {
+ 	.pcie_intr_fw_mask			= 0x00100000,
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map wcn3990_src_ring = {
++static const struct ath10k_hw_ce_regs_addr_map wcn3990_src_ring = {
+ 	.msb	= 0x00000010,
+ 	.lsb	= 0x00000010,
+ 	.mask	= GENMASK(17, 17),
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map wcn3990_dst_ring = {
++static const struct ath10k_hw_ce_regs_addr_map wcn3990_dst_ring = {
+ 	.msb	= 0x00000012,
+ 	.lsb	= 0x00000012,
+ 	.mask	= GENMASK(18, 18),
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map wcn3990_dmax = {
++static const struct ath10k_hw_ce_regs_addr_map wcn3990_dmax = {
+ 	.msb	= 0x00000000,
+ 	.lsb	= 0x00000000,
+ 	.mask	= GENMASK(15, 0),
+ };
+ 
+-static struct ath10k_hw_ce_ctrl1 wcn3990_ctrl1 = {
++static const struct ath10k_hw_ce_ctrl1 wcn3990_ctrl1 = {
+ 	.addr		= 0x00000018,
+ 	.src_ring	= &wcn3990_src_ring,
+ 	.dst_ring	= &wcn3990_dst_ring,
+ 	.dmax		= &wcn3990_dmax,
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map wcn3990_host_ie_cc = {
++static const struct ath10k_hw_ce_regs_addr_map wcn3990_host_ie_cc = {
+ 	.mask	= GENMASK(0, 0),
+ };
+ 
+-static struct ath10k_hw_ce_host_ie wcn3990_host_ie = {
++static const struct ath10k_hw_ce_host_ie wcn3990_host_ie = {
+ 	.copy_complete	= &wcn3990_host_ie_cc,
+ };
+ 
+-static struct ath10k_hw_ce_host_wm_regs wcn3990_wm_reg = {
++static const struct ath10k_hw_ce_host_wm_regs wcn3990_wm_reg = {
+ 	.dstr_lmask	= 0x00000010,
+ 	.dstr_hmask	= 0x00000008,
+ 	.srcr_lmask	= 0x00000004,
+@@ -255,7 +255,7 @@ static struct ath10k_hw_ce_host_wm_regs wcn3990_wm_reg = {
+ 	.addr		= 0x00000030,
+ };
+ 
+-static struct ath10k_hw_ce_misc_regs wcn3990_misc_reg = {
++static const struct ath10k_hw_ce_misc_regs wcn3990_misc_reg = {
+ 	.axi_err	= 0x00000100,
+ 	.dstr_add_err	= 0x00000200,
+ 	.srcr_len_err	= 0x00000100,
+@@ -266,19 +266,19 @@ static struct ath10k_hw_ce_misc_regs wcn3990_misc_reg = {
+ 	.addr		= 0x00000038,
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map wcn3990_src_wm_low = {
++static const struct ath10k_hw_ce_regs_addr_map wcn3990_src_wm_low = {
+ 	.msb	= 0x00000000,
+ 	.lsb	= 0x00000010,
+ 	.mask	= GENMASK(31, 16),
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map wcn3990_src_wm_high = {
++static const struct ath10k_hw_ce_regs_addr_map wcn3990_src_wm_high = {
+ 	.msb	= 0x0000000f,
+ 	.lsb	= 0x00000000,
+ 	.mask	= GENMASK(15, 0),
+ };
+ 
+-static struct ath10k_hw_ce_dst_src_wm_regs wcn3990_wm_src_ring = {
++static const struct ath10k_hw_ce_dst_src_wm_regs wcn3990_wm_src_ring = {
+ 	.addr		= 0x0000004c,
+ 	.low_rst	= 0x00000000,
+ 	.high_rst	= 0x00000000,
+@@ -286,18 +286,18 @@ static struct ath10k_hw_ce_dst_src_wm_regs wcn3990_wm_src_ring = {
+ 	.wm_high	= &wcn3990_src_wm_high,
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map wcn3990_dst_wm_low = {
++static const struct ath10k_hw_ce_regs_addr_map wcn3990_dst_wm_low = {
+ 	.lsb	= 0x00000010,
+ 	.mask	= GENMASK(31, 16),
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map wcn3990_dst_wm_high = {
++static const struct ath10k_hw_ce_regs_addr_map wcn3990_dst_wm_high = {
+ 	.msb	= 0x0000000f,
+ 	.lsb	= 0x00000000,
+ 	.mask	= GENMASK(15, 0),
+ };
+ 
+-static struct ath10k_hw_ce_dst_src_wm_regs wcn3990_wm_dst_ring = {
++static const struct ath10k_hw_ce_dst_src_wm_regs wcn3990_wm_dst_ring = {
+ 	.addr		= 0x00000050,
+ 	.low_rst	= 0x00000000,
+ 	.high_rst	= 0x00000000,
+@@ -305,7 +305,7 @@ static struct ath10k_hw_ce_dst_src_wm_regs wcn3990_wm_dst_ring = {
+ 	.wm_high	= &wcn3990_dst_wm_high,
+ };
+ 
+-static struct ath10k_hw_ce_ctrl1_upd wcn3990_ctrl1_upd = {
++static const struct ath10k_hw_ce_ctrl1_upd wcn3990_ctrl1_upd = {
+ 	.shift = 19,
+ 	.mask = 0x00080000,
+ 	.enable = 0x00000000,
+@@ -344,25 +344,25 @@ const struct ath10k_hw_values wcn3990_values = {
+ 	.ce_desc_meta_data_lsb		= 4,
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map qcax_src_ring = {
++static const struct ath10k_hw_ce_regs_addr_map qcax_src_ring = {
+ 	.msb	= 0x00000010,
+ 	.lsb	= 0x00000010,
+ 	.mask	= GENMASK(16, 16),
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map qcax_dst_ring = {
++static const struct ath10k_hw_ce_regs_addr_map qcax_dst_ring = {
+ 	.msb	= 0x00000011,
+ 	.lsb	= 0x00000011,
+ 	.mask	= GENMASK(17, 17),
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map qcax_dmax = {
++static const struct ath10k_hw_ce_regs_addr_map qcax_dmax = {
+ 	.msb	= 0x0000000f,
+ 	.lsb	= 0x00000000,
+ 	.mask	= GENMASK(15, 0),
+ };
+ 
+-static struct ath10k_hw_ce_ctrl1 qcax_ctrl1 = {
++static const struct ath10k_hw_ce_ctrl1 qcax_ctrl1 = {
+ 	.addr		= 0x00000010,
+ 	.hw_mask	= 0x0007ffff,
+ 	.sw_mask	= 0x0007ffff,
+@@ -375,31 +375,31 @@ static struct ath10k_hw_ce_ctrl1 qcax_ctrl1 = {
+ 	.dmax		= &qcax_dmax,
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map qcax_cmd_halt_status = {
++static const struct ath10k_hw_ce_regs_addr_map qcax_cmd_halt_status = {
+ 	.msb	= 0x00000003,
+ 	.lsb	= 0x00000003,
+ 	.mask	= GENMASK(3, 3),
+ };
+ 
+-static struct ath10k_hw_ce_cmd_halt qcax_cmd_halt = {
++static const struct ath10k_hw_ce_cmd_halt qcax_cmd_halt = {
+ 	.msb		= 0x00000000,
+ 	.mask		= GENMASK(0, 0),
+ 	.status_reset	= 0x00000000,
+ 	.status		= &qcax_cmd_halt_status,
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map qcax_host_ie_cc = {
++static const struct ath10k_hw_ce_regs_addr_map qcax_host_ie_cc = {
+ 	.msb	= 0x00000000,
+ 	.lsb	= 0x00000000,
+ 	.mask	= GENMASK(0, 0),
+ };
+ 
+-static struct ath10k_hw_ce_host_ie qcax_host_ie = {
++static const struct ath10k_hw_ce_host_ie qcax_host_ie = {
+ 	.copy_complete_reset	= 0x00000000,
+ 	.copy_complete		= &qcax_host_ie_cc,
+ };
+ 
+-static struct ath10k_hw_ce_host_wm_regs qcax_wm_reg = {
++static const struct ath10k_hw_ce_host_wm_regs qcax_wm_reg = {
+ 	.dstr_lmask	= 0x00000010,
+ 	.dstr_hmask	= 0x00000008,
+ 	.srcr_lmask	= 0x00000004,
+@@ -409,7 +409,7 @@ static struct ath10k_hw_ce_host_wm_regs qcax_wm_reg = {
+ 	.addr		= 0x00000030,
+ };
+ 
+-static struct ath10k_hw_ce_misc_regs qcax_misc_reg = {
++static const struct ath10k_hw_ce_misc_regs qcax_misc_reg = {
+ 	.axi_err	= 0x00000400,
+ 	.dstr_add_err	= 0x00000200,
+ 	.srcr_len_err	= 0x00000100,
+@@ -420,19 +420,19 @@ static struct ath10k_hw_ce_misc_regs qcax_misc_reg = {
+ 	.addr		= 0x00000038,
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map qcax_src_wm_low = {
++static const struct ath10k_hw_ce_regs_addr_map qcax_src_wm_low = {
+ 	.msb    = 0x0000001f,
+ 	.lsb	= 0x00000010,
+ 	.mask	= GENMASK(31, 16),
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map qcax_src_wm_high = {
++static const struct ath10k_hw_ce_regs_addr_map qcax_src_wm_high = {
+ 	.msb	= 0x0000000f,
+ 	.lsb	= 0x00000000,
+ 	.mask	= GENMASK(15, 0),
+ };
+ 
+-static struct ath10k_hw_ce_dst_src_wm_regs qcax_wm_src_ring = {
++static const struct ath10k_hw_ce_dst_src_wm_regs qcax_wm_src_ring = {
+ 	.addr		= 0x0000004c,
+ 	.low_rst	= 0x00000000,
+ 	.high_rst	= 0x00000000,
+@@ -440,18 +440,18 @@ static struct ath10k_hw_ce_dst_src_wm_regs qcax_wm_src_ring = {
+ 	.wm_high        = &qcax_src_wm_high,
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map qcax_dst_wm_low = {
++static const struct ath10k_hw_ce_regs_addr_map qcax_dst_wm_low = {
+ 	.lsb	= 0x00000010,
+ 	.mask	= GENMASK(31, 16),
+ };
+ 
+-static struct ath10k_hw_ce_regs_addr_map qcax_dst_wm_high = {
++static const struct ath10k_hw_ce_regs_addr_map qcax_dst_wm_high = {
+ 	.msb	= 0x0000000f,
+ 	.lsb	= 0x00000000,
+ 	.mask	= GENMASK(15, 0),
+ };
+ 
+-static struct ath10k_hw_ce_dst_src_wm_regs qcax_wm_dst_ring = {
++static const struct ath10k_hw_ce_dst_src_wm_regs qcax_wm_dst_ring = {
+ 	.addr		= 0x00000050,
+ 	.low_rst	= 0x00000000,
+ 	.high_rst	= 0x00000000,
+diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
+index 442091c6dfd2..7ffa1fbe2874 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.h
++++ b/drivers/net/wireless/ath/ath10k/hw.h
+@@ -289,19 +289,22 @@ struct ath10k_hw_ce_ctrl1 {
+ 	u32 sw_wr_mask;
+ 	u32 reset_mask;
+ 	u32 reset;
+-	struct ath10k_hw_ce_regs_addr_map *src_ring;
+-	struct ath10k_hw_ce_regs_addr_map *dst_ring;
+-	struct ath10k_hw_ce_regs_addr_map *dmax; };
++	const struct ath10k_hw_ce_regs_addr_map *src_ring;
++	const struct ath10k_hw_ce_regs_addr_map *dst_ring;
++	const struct ath10k_hw_ce_regs_addr_map *dmax;
++};
+ 
+ struct ath10k_hw_ce_cmd_halt {
+ 	u32 status_reset;
+ 	u32 msb;
+ 	u32 mask;
+-	struct ath10k_hw_ce_regs_addr_map *status; };
++	const struct ath10k_hw_ce_regs_addr_map *status;
++};
+ 
+ struct ath10k_hw_ce_host_ie {
+ 	u32 copy_complete_reset;
+-	struct ath10k_hw_ce_regs_addr_map *copy_complete; };
++	const struct ath10k_hw_ce_regs_addr_map *copy_complete;
++};
+ 
+ struct ath10k_hw_ce_host_wm_regs {
+ 	u32 dstr_lmask;
+@@ -328,8 +331,9 @@ struct ath10k_hw_ce_dst_src_wm_regs {
+ 	u32 addr;
+ 	u32 low_rst;
+ 	u32 high_rst;
+-	struct ath10k_hw_ce_regs_addr_map *wm_low;
+-	struct ath10k_hw_ce_regs_addr_map *wm_high; };
++	const struct ath10k_hw_ce_regs_addr_map *wm_low;
++	const struct ath10k_hw_ce_regs_addr_map *wm_high;
++};
+ 
+ struct ath10k_hw_ce_ctrl1_upd {
+ 	u32 shift;
+@@ -355,14 +359,14 @@ struct ath10k_hw_ce_regs {
+ 	u32 ce_rri_low;
+ 	u32 ce_rri_high;
+ 	u32 host_ie_addr;
+-	struct ath10k_hw_ce_host_wm_regs *wm_regs;
+-	struct ath10k_hw_ce_misc_regs *misc_regs;
+-	struct ath10k_hw_ce_ctrl1 *ctrl1_regs;
+-	struct ath10k_hw_ce_cmd_halt *cmd_halt;
+-	struct ath10k_hw_ce_host_ie *host_ie;
+-	struct ath10k_hw_ce_dst_src_wm_regs *wm_srcr;
+-	struct ath10k_hw_ce_dst_src_wm_regs *wm_dstr;
+-	struct ath10k_hw_ce_ctrl1_upd *upd;
++	const struct ath10k_hw_ce_host_wm_regs *wm_regs;
++	const struct ath10k_hw_ce_misc_regs *misc_regs;
++	const struct ath10k_hw_ce_ctrl1 *ctrl1_regs;
++	const struct ath10k_hw_ce_cmd_halt *cmd_halt;
++	const struct ath10k_hw_ce_host_ie *host_ie;
++	const struct ath10k_hw_ce_dst_src_wm_regs *wm_srcr;
++	const struct ath10k_hw_ce_dst_src_wm_regs *wm_dstr;
++	const struct ath10k_hw_ce_ctrl1_upd *upd;
+ };
+ 
+ struct ath10k_hw_values {
 -- 
 2.49.0
 
