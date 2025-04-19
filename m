@@ -1,45 +1,45 @@
-Return-Path: <linux-wireless+bounces-21745-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21746-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7E3A9412C
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 04:55:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C18DBA94159
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 05:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D627D447B44
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 02:55:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19A817B220C
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 03:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547ED136E;
-	Sat, 19 Apr 2025 02:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679ED53AC;
+	Sat, 19 Apr 2025 03:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dQcVhoNN"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UD8N6BD3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E833A1CD
-	for <linux-wireless@vger.kernel.org>; Sat, 19 Apr 2025 02:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC612AE97
+	for <linux-wireless@vger.kernel.org>; Sat, 19 Apr 2025 03:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745031320; cv=none; b=gtInO9RSo8WY2zNbWyKtiJUwwTlK55qwZZ7qlseAKBBXQT1rvc7NMmeVzNxKXm6CdABniFugJ3aWQjYdT0hceowU1XFDw/oYSEnV4+vEWMsfVS5Go4YrEXF4JgohXDVdPfnILBKwof3darNvVV58c0cmlQR0uxyyM1S61b5aZBw=
+	t=1745032575; cv=none; b=KsmcWNFHDpDqghmKYklniQd8c6SkqIkrf5ik/on/ihh3lYYoSGBmDhWwhJCav95iHIUOe4azSzXIOINY3hhJ8IfIqJ0ZdcZxZMRehet9DH+Ugpy3a5hM0rE1GxxDdjRYacHtaOeX+UioJ3Irr2abD/9a7PaC5HUvw8mTcx7GSP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745031320; c=relaxed/simple;
-	bh=K9LT1D/0tD04Hyl41reZpd68EkxgVEYYcMwMlkrApPQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=enw+5hZXimPtwXh453NbscOQGfs2jm3E9ASzKJby3auNsSmMFSz0GgDxEOntXZrCRaEDdF4bxQNI0Yf6mbKprKLpyQbbpbPVQbMMKkc45+x1UgTa8SDfmXDrER5xfQb9fGhOsbpivJdao+l/1mHrxWYJoRXBS9NUsEUM+JTg1qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dQcVhoNN; arc=none smtp.client-ip=91.218.175.181
+	s=arc-20240116; t=1745032575; c=relaxed/simple;
+	bh=1hgUWAApDZ5hyEuUg2aB23eXrAGf+Uo6jxH9Jr113xs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iNjhkUN0QhPLFNK1wt3PWDHNCyE9PEi1MZb6EPGsQXwZRujzNibrkWammQTpK9JgNySbmwP7ZxknfgxrpMM0H15t+XtnoEh13c+lrSRJ9qMmPThB5vrwZFdi66Chwv3/Jo+Tk/nXRO4TbE2pvvaHjTw4mjMxdOAlMgRqwbQhrkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UD8N6BD3; arc=none smtp.client-ip=91.218.175.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1745031305;
+	t=1745032569;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=509KQPGQIr3wARpO0voQQWEHesmQ91+o+xtJTGAi9GM=;
-	b=dQcVhoNNESuBOAZ++LX43Y1EWUIxYlO3e26/l2k/JMP8/JOpNALyIBtwdopsC0F7h8Zd2X
-	1kvyqk70Zb7QZKPoSKCieESNsPOdbEMBRe4SxfruTiFFBUVUP0wPnJi2UMrPRwPdT3yYRJ
-	LStkwjFk/rKFjWZBQA+fJIqWJPO5coo=
+	bh=HEB3Gu0mmtCLHoo7vWAwYwONR42w2RB1PSaApMMRgZ0=;
+	b=UD8N6BD3tYDGzkmMJbDeZEkO8JXQY5pN24SwGdbUgaaIaUgiuZAwtjzpkfiVKXTqzoDVjl
+	8ZJQ0OXXBIKd1g47WPLE+obP9bjFP1tERbEtDmJIaBHFvFVw+CvhGgSdKiCICYh0cGeHvc
+	AokjfPoZ966kJE8y4FIVKnneZH4aFt0=
 From: sunliming@linux.dev
 To: nbd@nbd.name,
 	lorenzo@kernel.org,
@@ -57,9 +57,9 @@ To: nbd@nbd.name,
 Cc: sunliming <sunliming@kylinos.cn>,
 	kernel test robot <lkp@intel.com>,
 	Dan Carpenter <error27@gmail.com>
-Subject: [PATCH] wifi: mt76: mt7996: fix variable dereferenced before check warning
-Date: Sat, 19 Apr 2025 10:54:17 +0800
-Message-Id: <20250419025417.2066787-1-sunliming@linux.dev>
+Subject: [PATCH] wifi: mt76: mt7996: fix uninitialized symbol warning
+Date: Sat, 19 Apr 2025 11:15:28 +0800
+Message-Id: <20250419031528.2073892-1-sunliming@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -72,52 +72,40 @@ X-Migadu-Flow: FLOW_OUT
 From: sunliming <sunliming@kylinos.cn>
 
 Fix below smatch warnings:
-drivers/net/wireless/mediatek/mt76/mt7996/main.c:73 mt7996_stop_phy() warn:
-variable dereferenced before check 'phy' (see line 71)
-drivers/net/wireless/mediatek/mt76/mt7996/main.c:360 mt7996_set_monitor() warn:
-variable dereferenced before check 'phy' (see line 358)
+drivers/net/wireless/mediatek/mt76/mt7996/main.c:952 mt7996_mac_sta_add_links()
+error: uninitialized symbol 'err'.
+drivers/net/wireless/mediatek/mt76/mt7996/main.c:1133 mt7996_set_rts_threshold()
+error: uninitialized symbol 'ret'.
 
 Reported-by: kernel test robot <lkp@intel.com>
 Reported-by: Dan Carpenter <error27@gmail.com>
 Closes: https://lore.kernel.org/r/202504101051.1ya4Z4va-lkp@intel.com/
 Signed-off-by: sunliming <sunliming@kylinos.cn>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 91c64e3a0860..cc6bb4544c2a 100644
+index cc6bb4544c2a..7c7c4b5a28b9 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -68,11 +68,13 @@ static int mt7996_start(struct ieee80211_hw *hw)
- 
- static void mt7996_stop_phy(struct mt7996_phy *phy)
+@@ -991,7 +991,7 @@ mt7996_mac_sta_add_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
  {
--	struct mt7996_dev *dev = phy->dev;
-+	struct mt7996_dev *dev;
+ 	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
+ 	unsigned int link_id;
+-	int err;
++	int err = 0;
  
- 	if (!phy || !test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
- 		return;
- 
-+	dev = phy->dev;
-+
- 	cancel_delayed_work_sync(&phy->mt76->mac_work);
+ 	for_each_set_bit(link_id, &new_links, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		struct ieee80211_bss_conf *link_conf;
+@@ -1248,7 +1248,7 @@ static void mt7996_tx(struct ieee80211_hw *hw,
+ static int mt7996_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
+ {
+ 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+-	int i, ret;
++	int i, ret = 0;
  
  	mutex_lock(&dev->mt76.mutex);
-@@ -414,11 +416,13 @@ static void mt7996_phy_set_rxfilter(struct mt7996_phy *phy)
- 
- static void mt7996_set_monitor(struct mt7996_phy *phy, bool enabled)
- {
--	struct mt7996_dev *dev = phy->dev;
-+	struct mt7996_dev *dev;
- 
- 	if (!phy)
- 		return;
- 
-+	dev = phy->dev;
-+
- 	if (enabled == !(phy->rxfilter & MT_WF_RFCR_DROP_OTHER_UC))
- 		return;
  
 -- 
 2.25.1
