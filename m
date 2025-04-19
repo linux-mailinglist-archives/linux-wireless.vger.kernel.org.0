@@ -1,119 +1,187 @@
-Return-Path: <linux-wireless+bounces-21747-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21748-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B19A941DA
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 07:50:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 050E8A941EC
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 08:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F00323AC1DE
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 05:50:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83FA119E2A47
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Apr 2025 06:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9EC13BC3F;
-	Sat, 19 Apr 2025 05:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E50F15B135;
+	Sat, 19 Apr 2025 06:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KLoSw71/"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Zw10cy70"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076BE184F;
-	Sat, 19 Apr 2025 05:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAD929D0B
+	for <linux-wireless@vger.kernel.org>; Sat, 19 Apr 2025 06:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745041813; cv=none; b=ruMcni121dddRTGfvs5oZ5Ou8tZwE3e85lSJaDZOffK88H4oCjwXzpg1CxB2L6kF//pkYBJtMM4WJDf/qZ2PXE9H5AF5EvCKaQCGRx16XdkIctXxIYFENdS0EJDOsJvuSuX+QicKAysmkEVr5RY8yLAhzEVFrb2ij7eqHESEXwg=
+	t=1745042804; cv=none; b=CfD9UuK8TSycStSxrfGEJZaf/galOcLcQi59j5t2O03WNu3/BG0ZFb444Ca5IGI26ay2OaTc/JBZuwVGhfHLTK4+oTJRYKf0yB7XDcw2nsWQbjhD2HQzl5pNzSK0gMLBAWeBhRtvMj2wx/aqzlH7MP/fGj4aed5QYrpAodOsbQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745041813; c=relaxed/simple;
-	bh=LPli2z+7ZbrVnA9jRRA6A9C/NTHjoZymrzz2sqkkUSE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=F58vu/gorMNWoDzxBbU76/yog7ICQ+LWQuMNuhq+Biunldl3LwHVOjdDVq6QyqLAAAzpjRmlA3gBRfOgMt3WWtiak9qjXiESJsVV5NM1ZKfCwm7fn5hfLhAeZvYEdKdFaT9Ik8Zyp+iBJIELXq5miwET66yRJRUkwfbrPtTxb4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KLoSw71/; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-224191d92e4so26746375ad.3;
-        Fri, 18 Apr 2025 22:50:11 -0700 (PDT)
+	s=arc-20240116; t=1745042804; c=relaxed/simple;
+	bh=Tyh0dToRA4LXQ+7rErKSQD4NTqAXsx7LjjWIXmKSpcQ=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=EaTaaHR4e+k84FZBQFKndGvmM5yhL6dCUI675iPPdgIcXzNOPnXYidR2MNZr8FqKtPdVaJEU1IZObTl8T1/ngDUpvUbExC6J5IEmW3NCsMNkP/RqdHY5n55tlNTMmGy9rvFBT3JnS7jB81VQEQU877TW53cScUmZNCjW0lWUgyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Zw10cy70; arc=none smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7300069c447so927619a34.2
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Apr 2025 23:06:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745041811; x=1745646611; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LPli2z+7ZbrVnA9jRRA6A9C/NTHjoZymrzz2sqkkUSE=;
-        b=KLoSw71/BigBV1OgrZ6PmvyRbKTwRS/Wqo17QiknSaVHF8CkKUx9JJYpx8DwsxsSv8
-         as1Ymj5a6oa+ZQnz4Kz/Ax/nBu7ceFykMwQUiZzsEmNQzVOuJwjm8wcU6p4A6AeNCG2Q
-         YIaDtkXnTS9HKtVXLw6vQMtXKffCx9Q7+DF8GFw64nrl1XzN6obJopx/GWoHCvq/RFf5
-         Bcbe0469zNbV45dGTP6TAz7eaxsXP6D3lFiEENtjjIqoxMpSvUj+4hJS9TudveSzQhjk
-         7oF+rL1jvlT79XehB4RvCtf8fYT0XcPcxYzLw4zaIlfHuVoku/pRggEugOEU7gLqsnFC
-         Eiow==
+        d=broadcom.com; s=google; t=1745042801; x=1745647601; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UMui0WVzyvwckCcYsYVmQtsamfg6AQcG6hkaFt/QLv8=;
+        b=Zw10cy70tdLCtGPTzYmnA8OzoE8hjI+4CnuBPxGQr8wxP1Yf/D979yGk69dC9akBia
+         Fhw2HhkYxptKPWuNogX8McJ1v2e/NiqJzXQoiWh0RFxrFdq+zyEAYyNR1xcgp5IdfC6w
+         uzI3fsB1z69MjsICqvSZ+kmDeN169gyunP/Qo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745041811; x=1745646611;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=LPli2z+7ZbrVnA9jRRA6A9C/NTHjoZymrzz2sqkkUSE=;
-        b=lIUn+WY0dtZBUJm1SXQrOrg/+9MOGNdAi8Oxrf4LHl62ph7ZD9hFQHlua200IEnrRX
-         xGfCO1JCpowqnG66YuTbAXSrOp0QgVgnvfObHNgH8GS8ezoCuJYeVV+xS0La5N0qS6c7
-         cVUGC2EaN1BTe377AM+jaDmz2+g3quBkqMPT1rtlPa/03ffAgBacHlIkPnbqEHtmAEIg
-         ek7pa1XzpNjmmHIAc7eE9LbbuqFlNIp467FM4ysoGXNDbs62qsHdAIjClfyH+L2Qavj1
-         E0vmAdaBSH7IfHUgzWYY/TTo+7lS59jEnwQkoTM+aHhH6uBzTG2NmJQ0LAX3dEb26hfW
-         g09A==
-X-Forwarded-Encrypted: i=1; AJvYcCVYhmsilelXZuVT6psFsS1LJ6wsUPHYcIdW6uyNepp7PA9rM2aC0R64LgG+VjNHE10NIup1cKeahn0Y+jM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4nDSvzczldp0uXBpgLVSBhaz7Z+sQgcYzP1MpYRkRM1btSZYB
-	RIyIfahTUKVZFgi7lKJhG05TCaECngAyu+IPKxXnwKdR6st3buKl+1A6qA==
-X-Gm-Gg: ASbGncsQgr8ZCRaS6nU46oKjXmfb0okvDfZRkyJmzD9KENgYCQqLV8Lq/Qnnf069n/A
-	Ahj2EczTa1ljE5ppAjy+nLv2337FnfDobuTRe8oVBR5l/U+K2eyCxCvF7p1j0ehBFcOUsf2jN1k
-	9yjDFTI1GvnrsiXain+NZR09h9zp8jJe5xVvmUR8r9zj09bCEwDAB0yBjmRU2tAD43ttoI5OIAD
-	63J5FUVf55W4qGScB/5hwNik0+xUQoN2FxpWKI/2xqRwNML409k+4Gc9heYIfbIEwQ6KxVrTgO3
-	mYLCTgpkrWaohH2+3YrXts9xd0EVsXxYEw==
-X-Google-Smtp-Source: AGHT+IGQZchKTdoSpm+MEW5tGCs7WYiTxb66sZhCT65AdH09WlgfjP7ijO48WNYCDTzZv7XgiDF0GA==
-X-Received: by 2002:a17:903:40cc:b0:216:6901:d588 with SMTP id d9443c01a7336-22c53580c88mr77144905ad.15.1745041811265;
-        Fri, 18 Apr 2025 22:50:11 -0700 (PDT)
-Received: from localhost ([181.91.133.137])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50bdafffsm26599525ad.49.2025.04.18.22.50.09
+        d=1e100.net; s=20230601; t=1745042801; x=1745647601;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UMui0WVzyvwckCcYsYVmQtsamfg6AQcG6hkaFt/QLv8=;
+        b=QngE4R7qNgcwhCM0d/XEMuOoD2WavWSlE/phLD0PmXVOTkC429+cVo6a5A6fUTAeTf
+         sKFLnDjRES9gSHnbNFlJHeNbeRbevvsZ5dASkTVQ+v7P6+Bn9Ou4wcZxPErkoYsGsALM
+         sagBhnsBS7noGC7uWDaLGSI3vJTHPglMALnz6/cnxFWtNGNpStiRrW2AweUJhqreK1Yo
+         Jwm1szGuwtSyxFmEe6OhGFDPQLBdc55tbu+VB0M0HrKGSQVKc3vTIhrakgPnszJ5nQvi
+         cf9S7cWAmT7maSiYrZhUoya5OmXKttuP3lbNN7Dx7qxODuzDMC6TS61HxcSwLRf0KEAT
+         sOlA==
+X-Gm-Message-State: AOJu0YynVUrv70n7ia0OprX2W0bXtDNmGl7oSLZh8ZGP50JzgSMovFgY
+	+GgNe0NP7NFumqpfhPR8cecONDhuC0UnxluEGltqRJN3dNCBh84gvab74TtSuQ==
+X-Gm-Gg: ASbGncugR8itbCxhcyq1y4+x5unifErRK6BhTTlDwRfnKiGP0j8Dz3w5oQF2ggg2eA2
+	DUIsZTnwjPAtzIgyBjXugVjSvKMyXCYJGfNpVb2DJKK1mJ4DJka/zFAxPugLpdqrmGhB/MffBh+
+	XoSqIPGYKT1OQwDVKC/MlDhzhJd20vxXGGmMbQJBu4F17uLigmpnff0ATDAf2U11iI1QKfp9y0Z
+	+r9XBaBpIBSCo8NdaCgTKhtav6RGbCuA2tb2xiAeg9MGlT8Vt/duLr38TfFcfupIp+MRwBAsfxO
+	5Ye5mYd2iv/tBrVnwXlgvq2FGrjZ/f9HnZQuJcYbz3hYQJz2Md6oxVayT1BJcMuJ4cwnnDwrnQ4
+	Vlb8=
+X-Google-Smtp-Source: AGHT+IFlLEKvpLqnuHbDUzvn/PT9WKfv6eVYKzAsmWNCfAbMgloyVQnne0ZQOsSTM0cm9LoRSa6c2w==
+X-Received: by 2002:a05:6830:7001:b0:72b:8000:d487 with SMTP id 46e09a7af769-730061f3b94mr2921182a34.3.1745042801368;
+        Fri, 18 Apr 2025 23:06:41 -0700 (PDT)
+Received: from [192.168.178.39] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7300478c51asm616461a34.8.2025.04.18.23.06.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Apr 2025 22:50:10 -0700 (PDT)
+        Fri, 18 Apr 2025 23:06:39 -0700 (PDT)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+CC: <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>, <wlan-kernel-dev-list@infineon.com>
+Date: Sat, 19 Apr 2025 08:06:36 +0200
+Message-ID: <1964ca7ede0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <20250416060128.15703-1-gokulkumar.sivakumar@infineon.com>
+References: <20250416060128.15703-1-gokulkumar.sivakumar@infineon.com>
+User-Agent: AquaMail/1.54.1 (build: 105401536)
+Subject: Re: [PATCH] brcmfmac: fix compilation error seen while building only brcmfmac sub-directory
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 19 Apr 2025 02:50:08 -0300
-Message-Id: <D9ADOZOBNY7Q.1MNGEH9AG470H@gmail.com>
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: "Kurt Borja" <kuurtb@gmail.com>, "Miri Korenblit"
- <miriam.rachel.korenblit@intel.com>, "Johannes Berg"
- <johannes.berg@intel.com>, "Emmanuel Grumbach"
- <emmanuel.grumbach@intel.com>
-Cc: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Todd
- Brandt" <todd.e.brandt@intel.com>
-Subject: Re: [PATCH v2] wifi: iwlwifi: pcie: Fix match condition in
- iwl_pci_find_dev_info()
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250418-probe-fix-v2-1-ec1ef2d8a534@gmail.com>
-In-Reply-To: <20250418-probe-fix-v2-1-ec1ef2d8a534@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri Apr 18, 2025 at 3:29 AM -03, Kurt Borja wrote:
-> Fix the following regression:
+On April 16, 2025 8:01:58 AM Gokul Sivakumar 
+<gokulkumar.sivakumar@infineon.com> wrote:
+
+> The function prototypes of brcmf_debug_create_memdump(), 
+> brcmf_debugfs_get_devdir()
+> and brcmf_debugfs_add_entry() are protected by the "DEBUG" config MACRO in 
+> debug.h,
+> while the corresponding function definitions remains unprotected in 
+> debug.c, so add
+> the missing MACRO definition check.
 >
-> iwlwifi: No config found for PCI dev 2725/1674, rev=3D0x420, rfid=3D0x10d=
-000
-> iwlwifi 0000:3b:00.0: probe with driver iwlwifi failed with error -22
+> Compilation error seen while building brcmfmac sub-directory with 
+> CONFIG_BRCMDBG=y
+> is captured below.
 >
-> Which happens due to an extra `!` when matching `dev_info` while
-> probing.
+> $ make M=drivers/net/wireless/broadcom/brcm80211/brcmfmac
 >
-> Fixes: 75a3313f52b7 ("wifi: iwlwifi: make no_160 more generic")
-> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+> make[1]: Entering directory 
+> '/root/wireless-next/drivers/net/wireless/broadcom/brcm80211/brcmfmac'
+> CC [M]  debug.o
+> debug.c:17:5: error: redefinition of ‘brcmf_debug_create_memdump’
+> 17 | int brcmf_debug_create_memdump(struct brcmf_bus *bus, const void *data,
+> |     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> In file included from bus.h:12,
+>        from debug.c:13:
+> debug.h:136:5: note: previous definition of ‘brcmf_debug_create_memdump’ 
+> with type
+> ‘int(struct brcmf_bus *, const void *, size_t)’ {aka ‘int(struct brcmf_bus 
+> *, const void *, long unsigned int)’}
+> 136 | int brcmf_debug_create_memdump(struct brcmf_bus *bus, const void *data,
+> |     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> debug.c:45:16: error: redefinition of ‘brcmf_debugfs_get_devdir’
+> 45 | struct dentry *brcmf_debugfs_get_devdir(struct brcmf_pub *drvr)
+> |                ^~~~~~~~~~~~~~~~~~~~~~~~
+> debug.h:127:30: note: previous definition of ‘brcmf_debugfs_get_devdir’ 
+> with type
+> ‘struct dentry *(struct brcmf_pub *)’
+> 127 | static inline struct dentry *brcmf_debugfs_get_devdir(struct 
+> brcmf_pub *drvr)
+> |                              ^~~~~~~~~~~~~~~~~~~~~~~~
+> debug.c:50:6: error: redefinition of ‘brcmf_debugfs_add_entry’
+> 50 | void brcmf_debugfs_add_entry(struct brcmf_pub *drvr, const char *fn,
+> |      ^~~~~~~~~~~~~~~~~~~~~~~
+> debug.h:132:6: note: previous definition of ‘brcmf_debugfs_add_entry’ with type
+> ‘void(struct brcmf_pub *, const char *, int (*)(struct seq_file *, void *))’
+> 132 | void brcmf_debugfs_add_entry(struct brcmf_pub *drvr, const char *fn,
+> |      ^~~~~~~~~~~~~~~~~~~~~~~
+> make[3]: *** [/root/wireless-next/scripts/Makefile.build:203: debug.o] Error 1
+> make[2]: *** [/root/wireless/wireless-next/Makefile:2006: .] Error 2
+> make[1]: *** [/root/wireless/wireless-next/Makefile:248: __sub-make] Error 2
+> make[1]: Leaving directory 
+> '/root/wireless-next/drivers/net/wireless/broadcom/brcm80211/brcmfmac'
+> make: *** [Makefile:248: __sub-make] Error 2
 
-Tested in a recent bug report thread [1]:
+To be honest I am not sure whether to accept this patch or not. The way the 
+makefiles are setup was never intended to support this usage. The cause of 
+the failure lies within the fact that the makefile in 
+drivers/net/wireless/broadcom/brcm80211 passes -DDEBUG to the subdirs. Also 
+I recall using the M=<dir> option result in out-of-tree taint. That said 
+the following does work:
 
-Tested-by: Todd Brandt <todd.e.brandt@intel.com>
+$ make M=drivers/net/wireless/broadcom/brcm80211 modules
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=3D220029
+So I tend to discard this patch.
 
---=20
- ~ Kurt
+Regards,
+Arend
+
+> Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+> ---
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.c | 2 ++
+> 1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.c 
+> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.c
+> index eecf8a38d94a..3cb50140eb2f 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.c
+> @@ -14,6 +14,7 @@
+> #include "fweh.h"
+> #include "debug.h"
+>
+> +#ifdef DEBUG
+> int brcmf_debug_create_memdump(struct brcmf_bus *bus, const void *data,
+> size_t len)
+> {
+> @@ -54,3 +55,4 @@ void brcmf_debugfs_add_entry(struct brcmf_pub *drvr, 
+> const char *fn,
+> debugfs_create_devm_seqfile(drvr->bus_if->dev, fn,
+> drvr->wiphy->debugfsdir, read_fn);
+> }
+> +#endif
+> --
+> 2.47.0
+
+
+
 
