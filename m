@@ -1,449 +1,262 @@
-Return-Path: <linux-wireless+bounces-21764-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21765-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F01A9482C
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 17:19:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB11A948CD
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 20:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3275E3B4396
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 15:19:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79C7B18904E7
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 18:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8411D5149;
-	Sun, 20 Apr 2025 15:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C392205AD7;
+	Sun, 20 Apr 2025 18:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JzmBj/pk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AfDLzQms"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BF613B59B
-	for <linux-wireless@vger.kernel.org>; Sun, 20 Apr 2025 15:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587291474D3;
+	Sun, 20 Apr 2025 18:15:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745162354; cv=none; b=iScUpABfSbk9NX8C990Elf3h1BV0jd3JTA82G7cdMZpOADHQ15TIe9GEoC2IvcnEBq6Nlgl+2Ls9v5wgiNOj7XhKFNKoWMQkHmDwvqNgyQrduPCOepoHCE6FJfe4iXIVwaYCo55DEVh/jL6QLjaFyLX4mFEVBsjmjxAedhSQtFs=
+	t=1745172958; cv=none; b=PX9hp3e9+5Rl6JgZVkRL9Myt7QG/IX8/c75Vqyeo0dRuVJ1ZEitzbwNk5pAaA7e7s1m9IH/Xi5LB0XtdeXnJJXNf5oSVBdpRMXTgwtdhSo7wnOH0twk3tbB/Ylzcxq96JeAyY0Bt+p3PErw6vyPH9HXuKx2dEtgj3IG4v0tTJzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745162354; c=relaxed/simple;
-	bh=tsH6xTlIpMSaIUXscZDKlHBiCXH//X60hmaP/5lz+0I=;
+	s=arc-20240116; t=1745172958; c=relaxed/simple;
+	bh=odgvtHg+XTEO3AmTBRmJwQpSOiq18WH8OzEFqaQ2MYU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L9sa9bNcoMWH4/4iUSorvp4XEG0oZ6b7dUSG64eTacbOWZjnkgl5va/HPxuXAm86PMIvbMhRRBXOGoWVKWhVBJsP01qaht4EAYzGElI2eT04+nX0RiwjskPpI5CAeEpExViNtdzYPmunlRM6CpLrirtfFKZYV9Uc7IL4OBlApNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JzmBj/pk; arc=none smtp.client-ip=209.85.221.47
+	 To:Cc:Content-Type; b=mBzAv8P/oxH5KP1vVPnr2VTmE+raOeOw5eu6yLpW/ieLp8I5BWY4V9R7uK7NA4VoNoCuO8yuEjDfcJDz5uwzfGKuDR4r0N1X4JvO2HwxkUaSJBcnBY/VdyFpaVPu03AmPAIRH7+prJydxK1N2eRgieYVc9h6sj/pyZn2N877rBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AfDLzQms; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3995ff6b066so1704403f8f.3
-        for <linux-wireless@vger.kernel.org>; Sun, 20 Apr 2025 08:19:11 -0700 (PDT)
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ff64550991so2346754a91.0;
+        Sun, 20 Apr 2025 11:15:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745162350; x=1745767150; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VUpRYXFNUfi4GTbdGgIaY5X5y0N6ByPjitoAtgNIfms=;
-        b=JzmBj/pktPPtnHhfNrybifQJ25t7vPFLhKoYGKD/pz7H38WPnmfE/PxrlA/F3a97rg
-         FgBDvjNGfde+BK2Aktf95yPp+4QOBnqNcNsZ99mTnpzymJD3CEBfHMN850WpV1B5sN4F
-         Wxt/mfhdHkxAgNx+nwMYlNcv7V1Mm9qVb4QKQCu+U4h3waNtiUMByUXoqwoAdOOr/tw7
-         m1CcZrQf+ZteYirVkfUu1u8Vd4WFEUjSWCvdXrF+YAXGPAlGrbZREDuWx4XE7FktrXal
-         h8GZV3fOEByrY0U345FjtY9EEM4c9EjYjxjFX4sBRXNSnQvJQZidpY226UXNCgsU23Am
-         RSyg==
+        d=gmail.com; s=20230601; t=1745172955; x=1745777755; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FydHjTRLby7TeTt4ekj3nT37iiEU98LG90xEAmWrSzs=;
+        b=AfDLzQmsYAN3StPmYO5E75eEy7SUl6WEsTwA9mBLQRcaC8R0OyK16EeBHi9fq0qz+N
+         /CDiMoR8365ocPmd1HDGtOue7wHanAj5r5MnllQus/73W3uRnw8hHj9ZaO05y+t2xIq8
+         4BCW9Odnb7nhc6BVU14R1SBUURUZ8Hm9oy8keBrQgVoYXiws50m8wERYEbbdqa/71wUW
+         siymIsbo5Vvn9z64PiQ+hj16uwvjJuLZ6MkQYglZu20DsI7dA0HycgL5hZOVZs6nASsV
+         5MFh5EMdq0s+Wq7vWmQxUGoUEhiNZk5+qq8wnm4nXBxAy8LbsYLjiThM1FdRJsZKQlxF
+         GzRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745162350; x=1745767150;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VUpRYXFNUfi4GTbdGgIaY5X5y0N6ByPjitoAtgNIfms=;
-        b=IkubKuCTKLt86TyDYohan5Kus7RRWOeI9aDYmZ26EQZ+WgEBrYuw2y6mSRfttQdo81
-         3VrUo4R/LA/icjIuDK5MIyIvHPorMvA7dABkYiZEUX4j/CkaB74wsmb+QIlHdI1w/RiJ
-         el2hcFy/Ds7TbR0HIht0gEa5skJACmuHb+Kbh+JZ847/aign3ZQwHxEAJax04/OgVr76
-         jZ/aifISJxVCu6Sy1rwmkYB2y/jTXQ70POWYGlkxdxKElSUIEmI0rAjfCcYjtn2uorfO
-         EgHkoBXysXv3XitQDFPEGDqSDRHzYaAGbeLcJgDkiPlwFX83t2Qs1He6VJ2V9t3eC5rK
-         reKg==
-X-Forwarded-Encrypted: i=1; AJvYcCXddmhnVp9lv6Up+2ZRXSCs2GYkV6FvSD8XssaOHhA/1HAd5Gd3BhM8oT7EoEk5vCqbaUYaCpDzHFQANuJX9Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfqFj6zeijk3cW+48vxYkxwurRAi7Of81CvZpCq1UNwrbWTppE
-	49lLmqKuNLeq5AdM0cO1M0xw/KNWBOQQ7/bb77wIzRayp94dHQljjU8kgsFPaIzbFTU/SZm0+kU
-	5n6DTvbK6a0hIlKat3PYqZL2P1a33vQ==
-X-Gm-Gg: ASbGncsPYJS2NMjX7ZgqJTZkoleVaoWzYBeyklcJj8YdLGC4lJs9txD8wJpunqnkxmB
-	kmyVhXZrfxZsVZSusiDGNc4qjJggzy5h9hDDEru2IIffpzv1vuqm6NyW0gldslPwWvUu5qI4+Lf
-	4DfpsR1PKXveCTr5Wr5gpX
-X-Google-Smtp-Source: AGHT+IGxbgcj2QvYXKdKj9zNopkDiQUSy8W7UbAVVcJCrxvHsD5yOAUno2aekpIdSjk43zid9tvOs4XweRS+C9NzLpo=
-X-Received: by 2002:adf:e90f:0:b0:39f:601:85fb with SMTP id
- ffacd0b85a97d-39f060187f3mr2434439f8f.2.1745162349830; Sun, 20 Apr 2025
- 08:19:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745172955; x=1745777755;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FydHjTRLby7TeTt4ekj3nT37iiEU98LG90xEAmWrSzs=;
+        b=oQHqWbLt8ZD4aTiLrWyyDJktVyUZ4DYbmKNvLWxtn4Raf+dBY2F+UWFsTOqaYIc89Q
+         Hyyr3kpc2a5I2a2fEscrzd8HUvx39xyVgoOzsrm/edwG26+G6GGv8eOUvwnWx73mo8C0
+         hgqXgao1DbVT/7s3xeV5YNPZV86pd2tlzmwMPdXJse1lvVOzAj258uiESEZlMBEfU9uq
+         5TxHcd5aw+EBKv0pPudC0lT7+6YgrUPgjXo2LILYIBTpRd5xQFX8+oud9rjjjd6wT4cF
+         B25CR7U5vZDF2+Yz9HLI8XCpJ66Frdjb4VcS89MtFs7OCg0v62U67l1v8eFMynrxod2p
+         DGGA==
+X-Forwarded-Encrypted: i=1; AJvYcCWt93W8zgLGZ9GcyQ0ik7VCGETn7WMFjLXEbXwzIhd4CiD1G4oqZiRkQcOYFRS1ZZ+20l1u19NBAnobZTQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwS6Uo3WiYX2+6kD9kaQo8HeHiGfIasUoW1qr2049rp5YH3oVvo
+	sHeVfCkbrdmF0CZ/phQYlV2LLrQF87aNsNSp7Hd9qnegUsK5h+9f2FdIfrMPm/nSrXnAVGI5HRL
+	zt5f4Y/q1ovai8pHQ14ROQ5E2nKI=
+X-Gm-Gg: ASbGnctEkCOUwsvXync6sb5Z/z5h7Jx/K46pLF/PhKKceAvm+642X4/6PhAb1GfMgc7
+	Vlu7L3P07vNmkyx7FvQKhhQBzIxd5jMGRC0wc5qzW+4QvFDglKm/goICUc6jIt96u4YA6jahyiI
+	zVqafPCla+ArOFeRnQO9f84cJRauGmL6muP1g=
+X-Google-Smtp-Source: AGHT+IEmrCEogNYMFqbLYQVZ2wE2zn/ZiUmho4x2xb45nu3PoI0IbYdfcJq0+S2G2M/5p2WSif/7k2jiPfHtMeeEtEY=
+X-Received: by 2002:a17:90a:d60b:b0:2fe:a0ac:5fcc with SMTP id
+ 98e67ed59e1d1-3087bccb0e3mr11217210a91.34.1745172955368; Sun, 20 Apr 2025
+ 11:15:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMb39_ngQs8=FUML5QXMh2RmEZBZ2NwUHefhGoTkGtHat+KWJA@mail.gmail.com>
- <f45323db-ce4d-4374-9c93-0be4d0645fcd@oss.qualcomm.com> <CAMb39_ki7F1XgezyVfb9Tkm9D-FZE0XK3RcSYtFmFf0jP8-M_Q@mail.gmail.com>
- <dc0abf98-862b-47f5-ae71-749c68cffc73@quicinc.com> <CAMb39_kUUv24q6QUq9B9+TEUMrUhu12-8WJadzB53nMPhcAZSQ@mail.gmail.com>
- <ef81db9e-99cb-4802-b17f-94eb623a8b32@quicinc.com> <CAMb39_m+4dNBDbkZmn-rDA7T+u84y-dx1jSfmPNWnse=R1=gCw@mail.gmail.com>
- <18788f02-e374-4aa6-ac4a-fd53bc93754c@quicinc.com> <CAMb39_=G_TEL1pbeF_PAZLQh-JOFcncSfqZChPmEj63NjsEOLA@mail.gmail.com>
- <16ccbe02-b315-40d1-8600-232b592d4dd6@quicinc.com> <CAMb39_n4tyrzS=-j0L+ekJVer=KiZyDYFhMqrrcpr9py_itU9w@mail.gmail.com>
- <0933d8d6-5b72-40df-95f8-69f6fbbdfde7@oss.qualcomm.com> <CAMb39_nHO_TbHPQawdLVY8nt3yt4wDuEHyEuzMa-p5Ab1n94sA@mail.gmail.com>
- <CAMb39_nQ-uyKAqCz1HEUDt5qjszbhzf3oikVcvzHcVwt4_qt=A@mail.gmail.com> <CAMb39_n89hBL_GvfXb7Jw9h5-h-+Qg-3GyqvpahL7MT5ewpvJw@mail.gmail.com>
-In-Reply-To: <CAMb39_n89hBL_GvfXb7Jw9h5-h-+Qg-3GyqvpahL7MT5ewpvJw@mail.gmail.com>
-From: Walt Holman <waltholman09@gmail.com>
-Date: Sun, 20 Apr 2025 10:18:58 -0500
-X-Gm-Features: ATxdqUEgWGN37jSy0H_L4BB4g297QRTGdc-UNBnvcFXvmFf8F2iovPY89PMukM0
-Message-ID: <CAMb39_=YPYg0q7Lf0sMgTx5QwKOqcyJrZR7kTspyXEDa6qz9Bw@mail.gmail.com>
-Subject: Re: ath12k: No 6GHz Wireless found
-To: Kang Yang <kang.yang@oss.qualcomm.com>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, linux-wireless@vger.kernel.org, 
-	"ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
+References: <20250407042028.1481-1-vulab@iscas.ac.cn>
+In-Reply-To: <20250407042028.1481-1-vulab@iscas.ac.cn>
+From: KeithG <ys3al35l@gmail.com>
+Date: Sun, 20 Apr 2025 13:15:44 -0500
+X-Gm-Features: ATxdqUFigDSeDaDfsJZsrpcPI_gDT8BH5CS6xrxpWSxVb-pUH52VIWxRWgBhpBo
+Message-ID: <CAG17S_NDLjfeTZ_qo8B6aXi2z6BHYCakBHzy2AqcqP2Co32hNw@mail.gmail.com>
+Subject: Cannot maintain an ap with brcmfmac
+To: Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
+	brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 18, 2025 at 4:18=E2=80=AFPM Walt Holman <waltholman09@gmail.com=
-> wrote:
->
-> On Tue, Apr 15, 2025 at 4:23=E2=80=AFPM Walt Holman <waltholman09@gmail.c=
-om> wrote:
-> >
-> > On Thu, Apr 10, 2025 at 10:32=E2=80=AFAM Walt Holman <waltholman09@gmai=
-l.com> wrote:
-> > >
-> > > On Thu, Apr 10, 2025 at 3:26=E2=80=AFAM Kang Yang <kang.yang@oss.qual=
-comm.com> wrote:
-> > > >
-> > > >
-> > > >
-> > > > On 4/10/2025 3:37 AM, Walt Holman wrote:
-> > > > > On Tue, Apr 8, 2025 at 4:17=E2=80=AFAM Kang Yang <quic_kangyang@q=
-uicinc.com> wrote:
-> > > > >>
-> > > > >>
-> > > > >>
-> > > > >> On 4/8/2025 1:49 AM, Walt Holman wrote:
-> > > > >>> Attached is a small packet capture where I did an 'iw wlp99s0 s=
-can'
-> > > > >>> and also deactivated and reactivated wireless while the scan wa=
-s
-> > > > >>> ongoing. Hopefully there's something interesting for you in the=
-re.
-> > > > >>> Also, I've take 3 screenshots showing the configs of the wirele=
-ss AP
-> > > > >>> for the 6ghz network. The first screen is just the definition o=
-f the
-> > > > >>> network. No advanced settings are used. The 2nd screen shows th=
-e
-> > > > >>> channels and radio enabled. The 3rd screen has the advanced
-> > > > >>> (professional) settings for the network. I believe I changed 'A=
-gile
-> > > > >>> Multiband' to enabled, but other settings are their defaults. H=
-ope
-> > > > >>> some of this helps. Let me know if you need anything else. Than=
-ks,
-> > > > >>>
-> > > > >>
-> > > > >> Your packets are Ethernet packets. I need wireless packets.
-> > > > >>
-> > > > >>
-> > > > >> Not sure if you know how to add a seperate monitor interface to =
-capture
-> > > > >> 6 G channels' packet on your AP(you can google for specific comm=
-and).
-> > > > >>
-> > > > >>
-> > > > >> Also, please capture firmware log:
-> > > > >>
-> > > > >> 1. sudo apt install trace-cmd
-> > > > >> 2. sudo trace-cmd record -e ath12k_wmi_diag
-> > > > >> 3. run test
-> > > > >> 4. "ctrl c" to stop recording:
-> > > > >> Hit Ctrl^C to stop recording
-> > > > >> ^CCPU0 data recorded at offset=3D0xdf5000
-> > > > >>       2605056 bytes in size
-> > > > >> Then share the trace.dat to us.
-> > > > >>
-> > > > >> So you need to:
-> > > > >> 1. try to capture wireless packets.
-> > > > >> 2. capture firmware log(trade.data).
-> > > > >> 3. save kernel/wpa_supplicant/iw logs.
-> > > > >>
-> > > > >>
-> > > > >>
-> > > > >>
-> > > > >>
-> > > > >>> -Walt
-> > > > >>>
-> > > > >>> On Sun, Apr 6, 2025 at 8:58=E2=80=AFPM Kang Yang <quic_kangyang=
-@quicinc.com> wrote:
-> > > > >>>>
-> > > > >>>>
-> > > > >>>>
-> > > > >>>> On 4/4/2025 12:04 AM, Walt Holman wrote:
-> > > > >>>>> On Thu, Apr 3, 2025 at 3:20=E2=80=AFAM Kang Yang <quic_kangya=
-ng@quicinc.com> wrote:
-> > > > >>>>>>
-> > > > >>>>>>
-> > > > >>>>>>
-> > > > >>>>>> On 4/3/2025 1:48 AM, Walt Holman wrote:
-> > > > >>>>>>> On Tue, Apr 1, 2025 at 9:48=E2=80=AFPM Kang Yang <quic_kang=
-yang@quicinc.com> wrote:
-> > > > >>>>>>
-> > > > >>>>>>>>
-> > > > >>>>>>>> Test on 6.14.0-rc5-wt-ath+, with the firmware you used.
-> > > > >>>>>>>> I can get 6 GHz AP and connect to it.
-> > > > >>>>>>>>
-> > > > >>>>>>>> ath12k_pci 0000:03:00.0: fw_version 0x100301e1 fw_build_ti=
-mestamp
-> > > > >>>>>>>> 2023-12-06 04:05 fw_build_id
-> > > > >>>>>>>> QC_IMAGE_VERSION_STRING=3DWLAN.HMT.1.0.c5-00481-QCAHMTSWPL=
-_V1.0_V2.0_SILICONZ-3
-> > > > >>>>>>>>
-> > > > >>>>>>>> yk@yk-Mayan:~$ sudo iw wls1 scan | tee iw_scan.log:
-> > > > >>>>>>>> BSS 62:03:7f:12:64:64(on wls1) -- associated
-> > > > >>>>>>>>              TSF: 606308271476 usec (7d, 00:25:08)
-> > > > >>>>>>>>              freq: 6275
-> > > > >>>>>>>>              beacon interval: 100 TUs
-> > > > >>>>>>>>              capability: ESS Privacy SpectrumMgmt ShortSlo=
-tTime (0x0511)
-> > > > >>>>>>>>              signal: -17.00 dBm
-> > > > >>>>>>>>              last seen: 52 ms ago
-> > > > >>>>>>>>              Information elements from Probe Response fram=
-e:
-> > > > >>>>>>>>              SSID: MLO-KANG-6G
-> > > > >>>>>>>> and other 6 GHz APs:
-> > > > >>>>>>>>             SSID: 6G-gxia
-> > > > >>>>>>>>             SSID: NETGEAR97-6G
-> > > > >>>>>>>>             =E2=80=A6=E2=80=A6
-> > > > >>>>>>>>
-> > > > >>>>>>>>
-> > > > >>>>>>>> kernel log:
-> > > > >>>>>>>> [88158.033218] wls1: Inserted STA 62:03:7f:12:64:64
-> > > > >>>>>>>> [88158.033232] wls1: authenticate with 62:03:7f:12:64:64 (=
-local
-> > > > >>>>>>>> address=3D00:03:7f:37:12:54)
-> > > > >>>>>>>> [88158.033242] wls1: send auth to 62:03:7f:12:64:64 (try 1=
-/3)
-> > > > >>>>>>>> [88158.041895] wls1: authenticated
-> > > > >>>>>>>> [88158.041914] wls1: moving STA 62:03:7f:12:64:64 to state=
- 2
-> > > > >>>>>>>> [88158.044291] wls1: determined local STA to be EHT, BW li=
-mited to 320 MHz
-> > > > >>>>>>>> [88158.045719] wls1: associate with 62:03:7f:12:64:64 (try=
- 1/3)
-> > > > >>>>>>>> [88158.067045] wls1: RX AssocResp from 62:03:7f:12:64:64 (=
-capab=3D0x511
-> > > > >>>>>>>> status=3D0 aid=3D4)
-> > > > >>>>>>>> [88158.089090] wls1: associated
-> > > > >>>>>>>>
-> > > > >>>>>>>> I can even connect to it by Ubuntu GUI.
-> > > > >>>>>>>>
-> > > > >>>>>>>> Can you update to 6.14.0-rc5-wt-ath+ and have a retry? Als=
-o please make
-> > > > >>>>>>>> sure that your wpa_supplicant/iw support 6 GHz(or directly=
- update to the
-> > > > >>>>>>>> latest version).
-> > > > >>>>>>>>
-> > > > >>>>>>>> If you still cannot find 6 GHz AP, you can set debug_mask =
-to 0xffffffff
-> > > > >>>>>>>> to get ath12k logs. Then give it to us.
-> > > > >>>>>>>>
-> > > > >>>>>>>>
-> > > > >>>>>>>>> -Walt
-> > > > >>>>>>>>>
-> > > > >>>>>>>>
-> > > > >>>>>>>
-> > > > >>>>>>> OK, I retested with the wt-ath 033125 tagged build. This in=
-cluded the
-> > > > >>>>>>> patch the Jeff suggested I try, but the rest of the tree wa=
-s clean.
-> > > > >>>>>>> Still no 6ghz Wifi. I'm attaching a log file of the boot an=
-d first few
-> > > > >>>>>>> seconds with the debug mask turned on. I noticed that if I =
-rmmod the
-> > > > >>>>>>> module and then modprobe it, it complains about not finding
-> > > > >>>>>>> firmware-2.bin, however, I thought that was only for the qc=
-n based
-> > > > >>>>>>> chip? The HW info from dmesg looks like this:
-> > > > >>>>>>>
-> > > > >>>>>>
-> > > > >>>>>> I cannot find this tag...
-> > > > >>>>>>
-> > > > >>>>>>
-> > > > >>>>>>     From the log, the 6 GHz channel should work. When scan i=
-s triggered, FW
-> > > > >>>>>> shall send probe req on these channels. If AP send probe res=
-p, station
-> > > > >>>>>> shall find the AP.
-> > > > >>>>>>
-> > > > >>>>>>
-> > > > >>>>>>
-> > > > >>>>>>
-> > > > >>>>>>> [    6.070282] ath12k_pci 0000:63:00.0: BAR 0 [mem
-> > > > >>>>>>> 0xdd800000-0xdd9fffff 64bit]: assigned
-> > > > >>>>>>> [    6.070310] ath12k_pci 0000:63:00.0: enabling device (00=
-00 -> 0002)
-> > > > >>>>>>> [    6.071249] ath12k_pci 0000:63:00.0: MSI vectors: 16
-> > > > >>>>>>> [    6.071254] ath12k_pci 0000:63:00.0: Hardware name: wcn7=
-850 hw2.0
-> > > > >>>>>>> [    6.596331] ath12k_pci 0000:63:00.0: qmi dma allocation =
-failed
-> > > > >>>>>>> (7077888 B type 1), will try later with sma
-> > > > >>>>>>> ll size
-> > > > >>>>>>> [    6.604041] ath12k_pci 0000:63:00.0: chip_id 0x2 chip_fa=
-mily 0x4
-> > > > >>>>>>> board_id 0xff soc_id 0x40170200
-> > > > >>>>>>> [    6.604044] ath12k_pci 0000:63:00.0: fw_version 0x100301=
-e1
-> > > > >>>>>>> fw_build_timestamp 2023-12-06 04:05 fw_build_id
-> > > > >>>>>>> QC_IMAGE_VERSION_STRING=3DWLAN.HMT.1.0.c5-00481-QCAHMTSWPL_=
-V1.0_V2.0_SILICONZ-
-> > > > >>>>>>>
-> > > > >>>>>>> Also, I noticed when looking through the debug logs there a=
-re the
-> > > > >>>>>>> occasional WARNING statements from a BUG it appears. They t=
-race back
-> > > > >>>>>>> to the mac.c file inside the ath12k code. There should be s=
-ome in the
-> > > > >>>>>>> debug log that's attached. Let me know if I can do anything=
- else.
-> > > > >>>>>>> Thanks,
-> > > > >>>>>>>
-> > > > >>>>>>
-> > > > >>>>>>
-> > > > >>>>>> I have never seen this warning on my upstream setup...Not su=
-re if you
-> > > > >>>>>> have changed anything or using the correct code base.
-> > > > >>>>>>
-> > > > >>>>>> Jeff merged this patch-set into ath-202504021602. Can you tr=
-y on this
-> > > > >>>>>> branch?
-> > > > >>>>>>
-> > > > >>>>>> git clone https://git.kernel.org/pub/scm/linux/kernel/git/at=
-h/ath.git/
-> > > > >>>>>> git pull
-> > > > >>>>>> git reset --hard ath-202504021602
-> > > > >>>>>> compile and install...
-> > > > >>>>>>
-> > > > >>>>>> Also make sure that the firmware you used is from the same f=
-older, don't
-> > > > >>>>>> mix with other folders:
-> > > > >>>>>> linux-firmware/ath12k/WCN7850/hw2.0
-> > > > >>>>>>
-> > > > >>>>>> 1. rmmod/insmod(debug_mask=3D0xffff)
-> > > > >>>>>> 2. iw reg get
-> > > > >>>>>> 3. iw reg set US
-> > > > >>>>>> 4. iw xxx scan
-> > > > >>>>>> wait and collect logs.
-> > > > >>>>>>
-> > > > >>>>>> don't do anything else.
-> > > > >>>>>>
-> > > > >>>>>>
-> > > > >>>>>> Also, can you show me your AP configuration.
-> > > > >>>>>> If you have another 6 GHz AP, you can have a try(better diff=
-erent brands).
-> > > > >>>>>>
-> > > > >>>>
-> > > > >>>> Thanks for testing.
-> > > > >>>>
-> > > > >>>> Could you share your AP configuration?
-> > > > >>>>
-> > > > >>>>
-> > > > >>>>>>
-> > > > >>>>>> If you have sniffer, could please capture packets during tes=
-ting?
-> > > > >>>>
-> > > > >>>>
-> > > > >>>> Can you capture packets during the testing? I need to check pr=
-obe req
-> > > > >>>> and probe resp.
-> > > > >>>>
-> > > > >>>>>>
-> > > > >>>>>> Thanks!
-> > > > >>>>>>
-> > > > >>>>>>> -Walt
-> > > > >>>>>>
-> > > > >>>>> OK, I cloned and built the kernel based on your instructions =
-in your
-> > > > >>>>> last email. Originally, the result was identical to my last e=
-mail,
-> > > > >>>>> including the WARNINGS. The .config I use is configured for a=
- fully RT
-> > > > >>>>> PREEMPT kernel, which I wondered if that was why I was receiv=
-ing the
-> > > > >>>>> WARNING. So I configured it as a Low Latency PREEMPT Desktop =
-without
-> > > > >>>>> the RT_PREEMPT and that eliminated the WARNING. However, stil=
-l no 6Ghz
-> > > > >>>>> networks. The firmware I'm using is straight from kernel.org =
-GIT and I
-> > > > >>>>> do a 'make install; make dedup' to install it. I believe it s=
-hould be
-> > > > >>>>> good. Attached is the latest log file.
-> > > > >>>>>
-> > > > >>>>> -Walt
-> > > > >>>>
-> > > > >>
-> > > > >
-> > > > >
-> > > > > Sorry for the top-post earlier. I can't figure out how to capture=
- the
-> > > > > wireless packets as my chip/driver combo doesn't support monitor =
-mode.
-> > > >
-> > > > Your AP also cannot capture wireless packets?
-> > > > log in AP by usbserial or ssh.
-> > > > Try to enter command line. use iw command to create monitor interfa=
-ce.
-> > > > Then use tcpdump to capture packets.
-> > > >
-> > > > > I've attached a tarball that contains the trace data and addition=
-al
-> > > > > firmware logs from the kernel.log file. Anything else you need, j=
-ust
-> > > > > ask. Thanks for your help,
-> > > >
-> > > >
-> > > > Your AP mac address?
-> > > > Need it to help check the fw log.
-> > > >
-> > > >
-> > > > >
-> > > > > -Walt
-> > > >
-> > >
-> > > Sorry, the AP doesn't have tcpdump available on it. Also, this is a
-> > > mesh setup with 3 nodes total. The main AP and 2 mesh nodes. I'm
-> > > within 10 feet of one of the nodes and it's MAC for the wireless 6ghz
-> > > network is: 10:7C:61:6F:2A:CA
-> > >
-> > > -Walt
-> >
-> > The other 2 node 6ghz mac addresses are:
-> > 10:7C:61:6F:1F:11   - Router
-> > 10:7C:61:6F:32:92   - Node
-> >
-> > The first MAC address I gave you earlier was a node located
-> > approximately 5 feet from where the laptop is.
-> >
-> > -Walt
->
-> Well, I'm running into a brick wall it seems trying to get 6Ghz
-> enabled on this. I tried the ath-next-20250418 tag just now and still
-> don't see or connect to my 6Ghz network. I applied the patches in:
-> https://lore.kernel.org/linux-wireless/20250418-ath12k-6g-lp-vlp-v1-0-c86=
-9c86cad60@quicinc.com/T/#t
->
-> hoping that would help, but alas, no 6Ghz networks. I see that MLO and
-> other nice fixes are coming in 6.16, but without 6Ghz, they'll do me
-> no good. I'm really wondering if it's a firmware issue that excludes
-> my chip or something. Again, anything I can do to help, let me know.
-> Thanks,
->
-> -Walt
+Group,
 
-Well, I used the swiss army tools to look at the firmware, and my chip
-is listed in the firmware, so it's not excluded or anything. Really
-puzzlling issue as my other two laptops connect to the 6Ghz network
-just fine, and this laptop does in Windows, just not in Linux. I
-really don't use Windows at all though, so that does me no good.
+I do not really know what has changed, but I can no longer maintain an
+ap runnning with brcmfmac on my Pis with the brcmfmac43455 chip. The
+firmware is current (and ahead of what RPiOS ships):
 
-This laptop used to connect to the 6Ghz network around the Sep. - Oct.
-2024 timeframe. Something has changed and now it doesn't. I'm going to
-boot off a live image of Ubuntu 24.10 and see if I can see the
-network. It was always hit or miss so we'll see.
--Walt
+[    3.472501] brcmfmac: F1 signature read @0x18000000=0x15264345
+[    3.493274] brcmfmac: brcmf_fw_alloc_request: using
+brcm/brcmfmac43455-sdio for chip BCM4345/6
+[    3.494583] usbcore: registered new interface driver brcmfmac
+[    3.900038] brcmfmac: brcmf_c_process_txcap_blob: no txcap_blob
+available (err=-2)
+[    3.901161] brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4345/6
+wl0: Oct 28 2024 23:27:00 version 7.45.286 (be70ab3 CY) FWID
+01-95efe7fa
+
+I get this with the default RPiOS verison of hostapd:
+# hostapd -v
+hostapd v2.10
+User space daemon for IEEE 802.11 AP management,
+IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator
+Copyright (c) 2002-2022, Jouni Malinen <j@w1.fi> and contributors
+
+And also with the one I built from source. The latest hostapd I could find.
+The git repo it is built from is from here: https://w1.fi/hostapd/
+
+# hostapd -v
+hostapd v2.11-hostap_2_11+
+User space daemon for IEEE 802.11 AP management,
+IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator
+Copyright (c) 2002-2024, Jouni Malinen <j@w1.fi> and contributors
+
+My hostapd.conf is:
+# cat /etc/hostapd/hostapd.conf
+# interface and driver
+interface=ap0
+driver=nl80211
+
+ht_capab=[HT40][SHORT-GI-20][DSSS_CCK-40]
+
+# WIFI-Config
+ssid=TestAP
+channel=6
+hw_mode=g
+wmm_enabled=1
+macaddr_acl=0
+auth_algs=1
+max_num_sta=10
+
+# WIFI authorization
+wpa=2
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP CCMP
+rsn_pairwise=CCMP
+wpa_psk_radius=0
+wpa_passphrase=secret123
+
+If there is something wrong in my setup, let me know.
+
+when I start hostapd with dnsmasq, an interface comes up and I can
+connect. As soon as it connects, it disconnects:
+Apr 20 12:57:39 pi4 systemd-networkd[181]: ap0: Gained carrier
+Apr 20 12:57:39 pi4 dnsmasq[169728]: started, version 2.90 cachesize 150
+Apr 20 12:57:39 pi4 dnsmasq[169728]: compile time options: IPv6
+GNU-getopt DBus no-UBus i18n IDN2 DHCP DHCPv6 no-Lua TFTP conntrack
+ipset nftset auth cryptohash DNSSEC loop-detect inotify dumpfile
+Apr 20 12:57:39 pi4 dnsmasq[169728]: warning: interface ap0 does not
+currently exist
+Apr 20 12:57:39 pi4 dnsmasq-dhcp[169728]: DHCP, IP range 192.168.5.2
+-- 192.168.5.254, lease time 1d
+Apr 20 12:57:39 pi4 dnsmasq[169728]: reading /run/systemd/resolve/resolv.conf
+Apr 20 12:57:39 pi4 dnsmasq[169728]: using nameserver 192.168.2.253#53
+Apr 20 12:57:39 pi4 dnsmasq[169728]: read /etc/hosts - 8 names
+Apr 20 12:57:39 pi4 hostapd[169681]: ap0: interface state UNINITIALIZED->ENABLED
+Apr 20 12:57:39 pi4 hostapd[169681]: ap0: AP-ENABLED
+Apr 20 12:57:39 pi4 resolvconf[169735]: Dropped protocol specifier
+'.dnsmasq' from 'lo.dnsmasq'. Using 'lo' (ifindex=1).
+Apr 20 12:57:39 pi4 resolvconf[169735]: Failed to set DNS
+configuration: Link lo is loopback device.
+Apr 20 12:57:39 pi4 systemd[1]: Started dnsmasq.service - dnsmasq - A
+lightweight DHCP and caching DNS server.
+Apr 20 12:57:40 pi4 kernel: brcmfmac: brcmf_cfg80211_set_power_mgmt:
+power save disabled
+Apr 20 12:57:48 pi4 kernel: ieee80211 phy0: brcmf_escan_timeout: timer expired
+Apr 20 12:57:48 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: associated
+Apr 20 12:57:48 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: associated
+Apr 20 12:57:48 pi4 hostapd[169681]: ap0: AP-STA-CONNECTED 50:84:92:a6:7a:7a
+Apr 20 12:57:48 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a
+RADIUS: starting accounting session 4336779F2221A786
+Apr 20 12:57:48 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a WPA:
+pairwise key handshake completed (RSN)
+Apr 20 12:57:48 pi4 hostapd[169681]: ap0: EAPOL-4WAY-HS-COMPLETED
+50:84:92:a6:7a:7a
+Apr 20 12:57:48 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a
+RADIUS: starting accounting session 4336779F2221A786
+Apr 20 12:57:48 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a WPA:
+pairwise key handshake completed (RSN)
+Apr 20 12:57:48 pi4 dnsmasq-dhcp[169728]: DHCPDISCOVER(ap0) 50:84:92:a6:7a:7a
+Apr 20 12:57:48 pi4 dnsmasq-dhcp[169728]: DHCPOFFER(ap0) 192.168.5.214
+50:84:92:a6:7a:7a
+Apr 20 12:57:48 pi4 dnsmasq-dhcp[169728]: DHCPREQUEST(ap0)
+192.168.5.214 50:84:92:a6:7a:7a
+Apr 20 12:57:48 pi4 dnsmasq-dhcp[169728]: DHCPACK(ap0) 192.168.5.214
+50:84:92:a6:7a:7a
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: disassociated
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: AP-STA-DISCONNECTED 50:84:92:a6:7a:7a
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: disassociated
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: disassociated
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: disassociated
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: disassociated
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: disassociated
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: associated
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: associated
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: AP-STA-CONNECTED 50:84:92:a6:7a:7a
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a
+RADIUS: starting accounting session 33CFF844DBBE630F
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a WPA:
+pairwise key handshake completed (RSN)
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: EAPOL-4WAY-HS-COMPLETED
+50:84:92:a6:7a:7a
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a
+RADIUS: starting accounting session 33CFF844DBBE630F
+Apr 20 12:57:52 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a WPA:
+pairwise key handshake completed (RSN)
+Apr 20 12:57:52 pi4 dnsmasq-dhcp[169728]: DHCPDISCOVER(ap0) 50:84:92:a6:7a:7a
+Apr 20 12:57:52 pi4 dnsmasq-dhcp[169728]: DHCPOFFER(ap0) 192.168.5.214
+50:84:92:a6:7a:7a
+Apr 20 12:57:52 pi4 dnsmasq-dhcp[169728]: DHCPREQUEST(ap0)
+192.168.5.214 50:84:92:a6:7a:7a
+Apr 20 12:57:52 pi4 dnsmasq-dhcp[169728]: DHCPACK(ap0) 192.168.5.214
+50:84:92:a6:7a:7a
+Apr 20 12:57:57 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: disassociated
+Apr 20 12:57:57 pi4 hostapd[169681]: ap0: AP-STA-DISCONNECTED 50:84:92:a6:7a:7a
+Apr 20 12:57:57 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: disassociated
+Apr 20 12:57:57 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: disassociated
+Apr 20 12:57:57 pi4 hostapd[169681]: ap0: STA 50:84:92:a6:7a:7a IEEE
+802.11: disassociated
+Apr 20 12:58:11 pi4 hostapd[169681]: ap0: interface state ENABLED->DISABLED
+Apr 20 12:58:11 pi4 systemd[1]: Stopping hostapd.service - Hostapd
+IEEE 802.11 AP, IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator...
+Apr 20 12:58:11 pi4 hostapd[169681]: ap0: AP-DISABLED
+Apr 20 12:58:11 pi4 hostapd[169681]: ap0: CTRL-EVENT-TERMINATING
+Apr 20 12:58:11 pi4 hostapd[169681]: nl80211: deinit ifname=ap0
+disabled_11b_rates=0
+Apr 20 12:58:11 pi4 systemd-networkd[181]: ap0: Lost carrier
+Apr 20 12:58:11 pi4 systemd[1]: hostapd.service: Deactivated successfully.
+Apr 20 12:58:11 pi4 systemd[1]: Stopped hostapd.service - Hostapd IEEE
+802.11 AP, IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator.
+Apr 20 12:58:12 pi4 systemd[1]: Stopping dnsmasq.service - dnsmasq - A
+lightweight DHCP and caching DNS server...
+Apr 20 12:58:12 pi4 resolvconf[170375]: Dropped protocol specifier
+'.dnsmasq' from 'lo.dnsmasq'. Using 'lo' (ifindex=1).
+Apr 20 12:58:12 pi4 resolvconf[170375]: Failed to revert interface
+configuration: Link lo is loopback device.
+Apr 20 12:58:12 pi4 dnsmasq[169728]: exiting on receipt of SIGTERM
+Apr 20 12:58:12 pi4 systemd[1]: dnsmasq.service: Deactivated successfully.
+Apr 20 12:58:12 pi4 systemd[1]: Stopped dnsmasq.service - dnsmasq - A
+lightweight DHCP and caching DNS server.
+Apr 20 12:58:12 pi4 systemd-networkd[181]: ap0: Link DOWN
+Apr 20 12:58:12 pi4 kernel: ieee80211 phy0:
+brcmf_cfg80211_get_channel: chanspec failed (-52)
 
