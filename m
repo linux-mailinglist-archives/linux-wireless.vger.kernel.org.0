@@ -1,69 +1,70 @@
-Return-Path: <linux-wireless+bounces-21754-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21756-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30E5A946DB
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 09:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89B1DA946DD
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 09:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D24EA17528A
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 07:00:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B88EB1752FB
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 07:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A0D2AE86;
-	Sun, 20 Apr 2025 07:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6A41C7006;
+	Sun, 20 Apr 2025 07:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CvHlG6ZT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SZFoFX6o"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF5A18C33B
-	for <linux-wireless@vger.kernel.org>; Sun, 20 Apr 2025 07:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE3A1C6FE1
+	for <linux-wireless@vger.kernel.org>; Sun, 20 Apr 2025 07:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745132420; cv=none; b=K95Av987MV61wYHXSHB5/nxRSkmaEhRg0W6us2nWekX4+uxWPoB6Au5tWYUdRwEyJFsGpAhjMbsdK6Ojb5VnzHThUOZs809XqMx4BVRjdUDrFpUmtU7CYJaRrbUpGWNFg8oaE7/SzfI98lSJP/7vHG0+BItWRu2Xo4/eB0i86ZQ=
+	t=1745132422; cv=none; b=rW3FlQLfMZDSEdc1RI71wc5HjVxnKme6cTr6UTQUVuR4Ck1d3JPfuEXjaayECQ69DPf+KR9rGJj7+0+shNTF8uGJ9uFgSNJYTqJ3wZKbJCC2DWyNAMbRzmZpXQ/5Gt3fluLKFjx+h2pcS3ChYp62ZeMV/qhpA3ZxXUhgJm/l20o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745132420; c=relaxed/simple;
-	bh=2k64ZHWbjAhOztt2bqxfQTCPdQh3i1EBn85Ep2GnmTI=;
+	s=arc-20240116; t=1745132422; c=relaxed/simple;
+	bh=IGpJ/AwL8haasIessbohiPXKLfvo/QBSwwHjK8R2Y6A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Nn8roRmdwdRc2Wst9YhC8kgXBuDEwmstyweRy9OseJ84n29Eha4r/Ani8NG0Kka0lsFYEQk6lnKXzBkLhjenoW2VqTbG4hn077Qfs8YmaE5TuqcNXjBNY5JhCllKMPGGHJpSWYD/yr5/ScOrIQ3Jz3zle3yEFtyQjZ22xlwyEhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CvHlG6ZT; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=up4nnSVoL+shzO8qlIWtWpjF1Av5GJfFXGbRw4bOuHfv0/E9n9dgFWLbXaDLwNqaxvrQDZnJOxVWvUEJdWF18yACJmBbonv/FPHUav1FqzZEcc8XZOUaVH+OjG4AauUC9cPnWifyncNxS1OVmtCXG5K6yKn/nqZYLGIigxqJCrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SZFoFX6o; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745132418; x=1776668418;
+  t=1745132421; x=1776668421;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2k64ZHWbjAhOztt2bqxfQTCPdQh3i1EBn85Ep2GnmTI=;
-  b=CvHlG6ZTLE4xSoEWln8gcQT+hROMjeKv88Tv7DAtWUYxD7Zfl03J2FgV
-   u+7ekMjX95HOYMxS1/693NNZ5q4zykceUWBhSJIOefINlesO+dtfhZLMs
-   8E3tRGuGc40Ct4B2L70sbRCKBe8yHqdG6Rc9ulWE0ZeqdZ8yYefY3M/oI
-   0yJUmPg1l40bPNqAqmjnQ/KdK+VdAetSu9D7zCq74dkGHKG2OsNdvRIsy
-   CwJiRwK/9iRGTRmAhpJB58rdpLUUmnHwJQyGkXSpFAq7mwnui6BOw2+Qg
-   4KKq2FFo/kkjOHyUWIfdCg683Cw18wHCxUWuWip6lPgetuTNksANxaako
-   A==;
-X-CSE-ConnectionGUID: aSWHUSvRQ0ia1qnrYXtU/w==
-X-CSE-MsgGUID: 483QrzvLTX2cSL9fS1n3Vg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11408"; a="46827883"
+  bh=IGpJ/AwL8haasIessbohiPXKLfvo/QBSwwHjK8R2Y6A=;
+  b=SZFoFX6oyTVwG/ooeWBJHsfkObPvJz+6IljzxLZuRVOZ9Sjyu4FH432b
+   OKHC4f8u8GwufYr9j6r22+ZJWp7UOUvoxY4MYw6HkRR5SHDE4eyCma7LT
+   UPXT3Dr+uOVB6QCB69IE01whBWZfzkbz/to1y3Gfrr50LQ/nL9qyOi3Bz
+   zM5s7Sg3Wpk7fzY+tPDIpnRzCwFNk9cfm3LwDdwfmlDt7tVxhyPYpiFa0
+   8HK/IcGqKR7JI4Pa923Viyqt2vwJDyeCJk8gFkycxABaynPCGmQhwb729
+   Ju8H9kUV+2qRwwOqSFAeLFJitbufvUSMpIrXnmeUhxsZAj0avVEHOw14o
+   Q==;
+X-CSE-ConnectionGUID: BvwWlRm0RFu74S7vRrbr4g==
+X-CSE-MsgGUID: nKuZd6PGQ1yEpnIp2oxjfA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11408"; a="46827889"
 X-IronPort-AV: E=Sophos;i="6.15,225,1739865600"; 
-   d="scan'208";a="46827883"
+   d="scan'208";a="46827889"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2025 00:00:17 -0700
-X-CSE-ConnectionGUID: 7acwdA/uTEaqtGsAv72LJA==
-X-CSE-MsgGUID: 3X/aPmhMSwiM//vtHSK3HA==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2025 00:00:19 -0700
+X-CSE-ConnectionGUID: grrgxCgOR0O5aOhuqqieFQ==
+X-CSE-MsgGUID: htxQbEp9Ri+CvBl2Rsi73Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,225,1739865600"; 
-   d="scan'208";a="154615709"
+   d="scan'208";a="154615721"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2025 00:00:16 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2025 00:00:17 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH wireless 2/7] wifi: iwlwifi: mld: inform trans on init failure
-Date: Sun, 20 Apr 2025 09:59:56 +0300
-Message-Id: <20250420095642.3331d1686556.Ifaf15bdd8ef8c59e04effbd2e7aa0034b30eeacb@changeid>
+Cc: linux-wireless@vger.kernel.org,
+	Benjamin Berg <benjamin.berg@intel.com>
+Subject: [PATCH wireless 3/7] wifi: iwlwifi: mld: only create debugfs symlink if it does not exist
+Date: Sun, 20 Apr 2025 09:59:57 +0300
+Message-Id: <20250420095642.2490696f032a.I74319c7cf18f7e16a3d331cb96e38504b9fbab66@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250420070001.3406977-1-miriam.rachel.korenblit@intel.com>
 References: <20250420070001.3406977-1-miriam.rachel.korenblit@intel.com>
@@ -76,40 +77,53 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-If starting the op mode failed, the opmode memory is being freed,
-so trans->op_mode needs to be NULLified. Otherwise, trans will access
-already freed memory.
-Call iwl_trans_op_mode_leave in that case.
+From: Benjamin Berg <benjamin.berg@intel.com>
+
+When mac80211 switches between non-MLO and MLO it will recreate the
+debugfs directories. This results in the add_if_debugfs handler being
+called multiple times. As the convenience symlink is created in the mld
+debugfs directory and not the vif, it will not be removed by mac80211
+when this happens and still exists.
+
+Add a check and only create the convenience symlink if we have not yet
+done so.
 
 Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/mld.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/debugfs.c  | 5 +++--
+ drivers/net/wireless/intel/iwlwifi/mld/mac80211.c | 1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index cfdf52b43c68..4a0842a46a8d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -414,7 +414,7 @@ iwl_op_mode_mld_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
- 		wiphy_unlock(mld->wiphy);
- 		rtnl_unlock();
- 		iwl_fw_flush_dumps(&mld->fwrt);
--		goto free_hw;
-+		goto err;
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+index 89d95e9b4f30..93f9f78e4276 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+@@ -949,8 +949,9 @@ void iwl_mld_add_vif_debugfs(struct ieee80211_hw *hw,
+ 	snprintf(name, sizeof(name), "%pd", vif->debugfs_dir);
+ 	snprintf(target, sizeof(target), "../../../%pd3/iwlmld",
+ 		 vif->debugfs_dir);
+-	mld_vif->dbgfs_slink =
+-		debugfs_create_symlink(name, mld->debugfs_dir, target);
++	if (!mld_vif->dbgfs_slink)
++		mld_vif->dbgfs_slink =
++			debugfs_create_symlink(name, mld->debugfs_dir, target);
  
- 	/* We are about to stop the FW. Notifications may require an
-@@ -460,7 +460,8 @@ iwl_op_mode_mld_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
- 	iwl_mld_leds_exit(mld);
- free_nvm:
- 	kfree(mld->nvm_data);
--free_hw:
-+err:
-+	iwl_trans_op_mode_leave(mld->trans);
- 	ieee80211_free_hw(mld->hw);
- 	return ERR_PTR(ret);
- }
+ 	if (iwlmld_mod_params.power_scheme != IWL_POWER_SCHEME_CAM &&
+ 	    vif->type == NL80211_IFTYPE_STATION) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+index 99e13cfd1e5f..68d97d3b8f02 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+@@ -651,6 +651,7 @@ void iwl_mld_mac80211_remove_interface(struct ieee80211_hw *hw,
+ 
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+ 	debugfs_remove(iwl_mld_vif_from_mac80211(vif)->dbgfs_slink);
++	iwl_mld_vif_from_mac80211(vif)->dbgfs_slink = NULL;
+ #endif
+ 
+ 	iwl_mld_rm_vif(mld, vif);
 -- 
 2.34.1
 
