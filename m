@@ -1,928 +1,449 @@
-Return-Path: <linux-wireless+bounces-21763-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21764-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F2BA9474D
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 11:02:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F01A9482C
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 17:19:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FA1A1893FE5
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 09:02:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3275E3B4396
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Apr 2025 15:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66738155A30;
-	Sun, 20 Apr 2025 09:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8411D5149;
+	Sun, 20 Apr 2025 15:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m0tJwnnJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JzmBj/pk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CF31DEFFC
-	for <linux-wireless@vger.kernel.org>; Sun, 20 Apr 2025 09:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BF613B59B
+	for <linux-wireless@vger.kernel.org>; Sun, 20 Apr 2025 15:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745139730; cv=none; b=EHyVz+vfeBJBJBJly+sYVEzgkhhLVgiPUq3b8MgJVAgZPauxIz6NvAyXbmIW6qlCd64S58QQdcmiayExGax+O98JaLCB3V+dq9OzGsgHIOXgZmTtG8KPci8aDUEaialD2ORN2P4Mf5AIFUwtTmmkhia3PYi22qvQJIR1KznI7h4=
+	t=1745162354; cv=none; b=iScUpABfSbk9NX8C990Elf3h1BV0jd3JTA82G7cdMZpOADHQ15TIe9GEoC2IvcnEBq6Nlgl+2Ls9v5wgiNOj7XhKFNKoWMQkHmDwvqNgyQrduPCOepoHCE6FJfe4iXIVwaYCo55DEVh/jL6QLjaFyLX4mFEVBsjmjxAedhSQtFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745139730; c=relaxed/simple;
-	bh=3SEj3GT8TMLJroWW8TyShBaeWZRqoFNsv1NZ6Vo88GI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qJYMZ9+IqyGIfAAX9vkwwD+PfQhyRVvy0vCvm6hWWPQqME64Kdru4Y5PZ/I4HH1wOkUyaRY/3M42AeWIZgo+lzIcwV6Fh/6JPCTpaczD9pF1n98bLUMLuWr7BKkveLTtPdW97YXTKY3UbNZ+nSka/pTcyKqxMWoJlLVSd4MvXjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m0tJwnnJ; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745139727; x=1776675727;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3SEj3GT8TMLJroWW8TyShBaeWZRqoFNsv1NZ6Vo88GI=;
-  b=m0tJwnnJzOTXFgAQHCpxH6j0LVCGDw4kY9IQvWMjjyOskrsiz7oSxefu
-   XBG8yCICiWqNyhBz9A1hm/Yl35q7v4GNV8LkUdz4f+TdTlHClYeilddHp
-   CuFE4W9lGMEYlWh4xezVmFG+SUMakzYlvagpbUQ9DHXoJDTB6it8qpbE2
-   YhFKlZWQH9r41eDJt2sLfuysb2L2SWZIIb6oEukWDBf83/MF1x2OBcwgB
-   3l/vPec19o8OBR1L0KQBz7EoRAQIBV7Y93001cP1XT4goPFp85Vd51NNm
-   te9W54ArhSSfsAN38iUb2rCi2mETErrPfKWz1QE7ZKQi4dOFQy8uIx215
-   Q==;
-X-CSE-ConnectionGUID: JqVy6S8TRN6HDc3sImcLmg==
-X-CSE-MsgGUID: PXK1+CR8R6egpJidFlm0qA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11408"; a="56880474"
-X-IronPort-AV: E=Sophos;i="6.15,225,1739865600"; 
-   d="scan'208";a="56880474"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2025 02:02:07 -0700
-X-CSE-ConnectionGUID: oUFuUdc0RzGTXQjVW6rSEA==
-X-CSE-MsgGUID: lKhnkCyQS62UiLCShwsHdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,225,1739865600"; 
-   d="scan'208";a="136632855"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2025 02:02:05 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Todd Brandt <todd.e.brandt@intel.com>
-Subject: [PATCH wireless 2/2] Revert "wifi: iwlwifi: make no_160 more generic"
-Date: Sun, 20 Apr 2025 12:01:50 +0300
-Message-Id: <20250420115541.36dd3007151e.I66b6b78db09bfea12ae84dd85603cf1583271474@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250420090150.3508273-1-miriam.rachel.korenblit@intel.com>
-References: <20250420090150.3508273-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1745162354; c=relaxed/simple;
+	bh=tsH6xTlIpMSaIUXscZDKlHBiCXH//X60hmaP/5lz+0I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L9sa9bNcoMWH4/4iUSorvp4XEG0oZ6b7dUSG64eTacbOWZjnkgl5va/HPxuXAm86PMIvbMhRRBXOGoWVKWhVBJsP01qaht4EAYzGElI2eT04+nX0RiwjskPpI5CAeEpExViNtdzYPmunlRM6CpLrirtfFKZYV9Uc7IL4OBlApNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JzmBj/pk; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3995ff6b066so1704403f8f.3
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Apr 2025 08:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745162350; x=1745767150; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VUpRYXFNUfi4GTbdGgIaY5X5y0N6ByPjitoAtgNIfms=;
+        b=JzmBj/pktPPtnHhfNrybifQJ25t7vPFLhKoYGKD/pz7H38WPnmfE/PxrlA/F3a97rg
+         FgBDvjNGfde+BK2Aktf95yPp+4QOBnqNcNsZ99mTnpzymJD3CEBfHMN850WpV1B5sN4F
+         Wxt/mfhdHkxAgNx+nwMYlNcv7V1Mm9qVb4QKQCu+U4h3waNtiUMByUXoqwoAdOOr/tw7
+         m1CcZrQf+ZteYirVkfUu1u8Vd4WFEUjSWCvdXrF+YAXGPAlGrbZREDuWx4XE7FktrXal
+         h8GZV3fOEByrY0U345FjtY9EEM4c9EjYjxjFX4sBRXNSnQvJQZidpY226UXNCgsU23Am
+         RSyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745162350; x=1745767150;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VUpRYXFNUfi4GTbdGgIaY5X5y0N6ByPjitoAtgNIfms=;
+        b=IkubKuCTKLt86TyDYohan5Kus7RRWOeI9aDYmZ26EQZ+WgEBrYuw2y6mSRfttQdo81
+         3VrUo4R/LA/icjIuDK5MIyIvHPorMvA7dABkYiZEUX4j/CkaB74wsmb+QIlHdI1w/RiJ
+         el2hcFy/Ds7TbR0HIht0gEa5skJACmuHb+Kbh+JZ847/aign3ZQwHxEAJax04/OgVr76
+         jZ/aifISJxVCu6Sy1rwmkYB2y/jTXQ70POWYGlkxdxKElSUIEmI0rAjfCcYjtn2uorfO
+         EgHkoBXysXv3XitQDFPEGDqSDRHzYaAGbeLcJgDkiPlwFX83t2Qs1He6VJ2V9t3eC5rK
+         reKg==
+X-Forwarded-Encrypted: i=1; AJvYcCXddmhnVp9lv6Up+2ZRXSCs2GYkV6FvSD8XssaOHhA/1HAd5Gd3BhM8oT7EoEk5vCqbaUYaCpDzHFQANuJX9Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfqFj6zeijk3cW+48vxYkxwurRAi7Of81CvZpCq1UNwrbWTppE
+	49lLmqKuNLeq5AdM0cO1M0xw/KNWBOQQ7/bb77wIzRayp94dHQljjU8kgsFPaIzbFTU/SZm0+kU
+	5n6DTvbK6a0hIlKat3PYqZL2P1a33vQ==
+X-Gm-Gg: ASbGncsPYJS2NMjX7ZgqJTZkoleVaoWzYBeyklcJj8YdLGC4lJs9txD8wJpunqnkxmB
+	kmyVhXZrfxZsVZSusiDGNc4qjJggzy5h9hDDEru2IIffpzv1vuqm6NyW0gldslPwWvUu5qI4+Lf
+	4DfpsR1PKXveCTr5Wr5gpX
+X-Google-Smtp-Source: AGHT+IGxbgcj2QvYXKdKj9zNopkDiQUSy8W7UbAVVcJCrxvHsD5yOAUno2aekpIdSjk43zid9tvOs4XweRS+C9NzLpo=
+X-Received: by 2002:adf:e90f:0:b0:39f:601:85fb with SMTP id
+ ffacd0b85a97d-39f060187f3mr2434439f8f.2.1745162349830; Sun, 20 Apr 2025
+ 08:19:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+References: <CAMb39_ngQs8=FUML5QXMh2RmEZBZ2NwUHefhGoTkGtHat+KWJA@mail.gmail.com>
+ <f45323db-ce4d-4374-9c93-0be4d0645fcd@oss.qualcomm.com> <CAMb39_ki7F1XgezyVfb9Tkm9D-FZE0XK3RcSYtFmFf0jP8-M_Q@mail.gmail.com>
+ <dc0abf98-862b-47f5-ae71-749c68cffc73@quicinc.com> <CAMb39_kUUv24q6QUq9B9+TEUMrUhu12-8WJadzB53nMPhcAZSQ@mail.gmail.com>
+ <ef81db9e-99cb-4802-b17f-94eb623a8b32@quicinc.com> <CAMb39_m+4dNBDbkZmn-rDA7T+u84y-dx1jSfmPNWnse=R1=gCw@mail.gmail.com>
+ <18788f02-e374-4aa6-ac4a-fd53bc93754c@quicinc.com> <CAMb39_=G_TEL1pbeF_PAZLQh-JOFcncSfqZChPmEj63NjsEOLA@mail.gmail.com>
+ <16ccbe02-b315-40d1-8600-232b592d4dd6@quicinc.com> <CAMb39_n4tyrzS=-j0L+ekJVer=KiZyDYFhMqrrcpr9py_itU9w@mail.gmail.com>
+ <0933d8d6-5b72-40df-95f8-69f6fbbdfde7@oss.qualcomm.com> <CAMb39_nHO_TbHPQawdLVY8nt3yt4wDuEHyEuzMa-p5Ab1n94sA@mail.gmail.com>
+ <CAMb39_nQ-uyKAqCz1HEUDt5qjszbhzf3oikVcvzHcVwt4_qt=A@mail.gmail.com> <CAMb39_n89hBL_GvfXb7Jw9h5-h-+Qg-3GyqvpahL7MT5ewpvJw@mail.gmail.com>
+In-Reply-To: <CAMb39_n89hBL_GvfXb7Jw9h5-h-+Qg-3GyqvpahL7MT5ewpvJw@mail.gmail.com>
+From: Walt Holman <waltholman09@gmail.com>
+Date: Sun, 20 Apr 2025 10:18:58 -0500
+X-Gm-Features: ATxdqUEgWGN37jSy0H_L4BB4g297QRTGdc-UNBnvcFXvmFf8F2iovPY89PMukM0
+Message-ID: <CAMb39_=YPYg0q7Lf0sMgTx5QwKOqcyJrZR7kTspyXEDa6qz9Bw@mail.gmail.com>
+Subject: Re: ath12k: No 6GHz Wireless found
+To: Kang Yang <kang.yang@oss.qualcomm.com>
+Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, linux-wireless@vger.kernel.org, 
+	"ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This reverts commit 75a3313f52b7e08e7e73746f69a68c2b7c28bb2b.
+On Fri, Apr 18, 2025 at 4:18=E2=80=AFPM Walt Holman <waltholman09@gmail.com=
+> wrote:
+>
+> On Tue, Apr 15, 2025 at 4:23=E2=80=AFPM Walt Holman <waltholman09@gmail.c=
+om> wrote:
+> >
+> > On Thu, Apr 10, 2025 at 10:32=E2=80=AFAM Walt Holman <waltholman09@gmai=
+l.com> wrote:
+> > >
+> > > On Thu, Apr 10, 2025 at 3:26=E2=80=AFAM Kang Yang <kang.yang@oss.qual=
+comm.com> wrote:
+> > > >
+> > > >
+> > > >
+> > > > On 4/10/2025 3:37 AM, Walt Holman wrote:
+> > > > > On Tue, Apr 8, 2025 at 4:17=E2=80=AFAM Kang Yang <quic_kangyang@q=
+uicinc.com> wrote:
+> > > > >>
+> > > > >>
+> > > > >>
+> > > > >> On 4/8/2025 1:49 AM, Walt Holman wrote:
+> > > > >>> Attached is a small packet capture where I did an 'iw wlp99s0 s=
+can'
+> > > > >>> and also deactivated and reactivated wireless while the scan wa=
+s
+> > > > >>> ongoing. Hopefully there's something interesting for you in the=
+re.
+> > > > >>> Also, I've take 3 screenshots showing the configs of the wirele=
+ss AP
+> > > > >>> for the 6ghz network. The first screen is just the definition o=
+f the
+> > > > >>> network. No advanced settings are used. The 2nd screen shows th=
+e
+> > > > >>> channels and radio enabled. The 3rd screen has the advanced
+> > > > >>> (professional) settings for the network. I believe I changed 'A=
+gile
+> > > > >>> Multiband' to enabled, but other settings are their defaults. H=
+ope
+> > > > >>> some of this helps. Let me know if you need anything else. Than=
+ks,
+> > > > >>>
+> > > > >>
+> > > > >> Your packets are Ethernet packets. I need wireless packets.
+> > > > >>
+> > > > >>
+> > > > >> Not sure if you know how to add a seperate monitor interface to =
+capture
+> > > > >> 6 G channels' packet on your AP(you can google for specific comm=
+and).
+> > > > >>
+> > > > >>
+> > > > >> Also, please capture firmware log:
+> > > > >>
+> > > > >> 1. sudo apt install trace-cmd
+> > > > >> 2. sudo trace-cmd record -e ath12k_wmi_diag
+> > > > >> 3. run test
+> > > > >> 4. "ctrl c" to stop recording:
+> > > > >> Hit Ctrl^C to stop recording
+> > > > >> ^CCPU0 data recorded at offset=3D0xdf5000
+> > > > >>       2605056 bytes in size
+> > > > >> Then share the trace.dat to us.
+> > > > >>
+> > > > >> So you need to:
+> > > > >> 1. try to capture wireless packets.
+> > > > >> 2. capture firmware log(trade.data).
+> > > > >> 3. save kernel/wpa_supplicant/iw logs.
+> > > > >>
+> > > > >>
+> > > > >>
+> > > > >>
+> > > > >>
+> > > > >>> -Walt
+> > > > >>>
+> > > > >>> On Sun, Apr 6, 2025 at 8:58=E2=80=AFPM Kang Yang <quic_kangyang=
+@quicinc.com> wrote:
+> > > > >>>>
+> > > > >>>>
+> > > > >>>>
+> > > > >>>> On 4/4/2025 12:04 AM, Walt Holman wrote:
+> > > > >>>>> On Thu, Apr 3, 2025 at 3:20=E2=80=AFAM Kang Yang <quic_kangya=
+ng@quicinc.com> wrote:
+> > > > >>>>>>
+> > > > >>>>>>
+> > > > >>>>>>
+> > > > >>>>>> On 4/3/2025 1:48 AM, Walt Holman wrote:
+> > > > >>>>>>> On Tue, Apr 1, 2025 at 9:48=E2=80=AFPM Kang Yang <quic_kang=
+yang@quicinc.com> wrote:
+> > > > >>>>>>
+> > > > >>>>>>>>
+> > > > >>>>>>>> Test on 6.14.0-rc5-wt-ath+, with the firmware you used.
+> > > > >>>>>>>> I can get 6 GHz AP and connect to it.
+> > > > >>>>>>>>
+> > > > >>>>>>>> ath12k_pci 0000:03:00.0: fw_version 0x100301e1 fw_build_ti=
+mestamp
+> > > > >>>>>>>> 2023-12-06 04:05 fw_build_id
+> > > > >>>>>>>> QC_IMAGE_VERSION_STRING=3DWLAN.HMT.1.0.c5-00481-QCAHMTSWPL=
+_V1.0_V2.0_SILICONZ-3
+> > > > >>>>>>>>
+> > > > >>>>>>>> yk@yk-Mayan:~$ sudo iw wls1 scan | tee iw_scan.log:
+> > > > >>>>>>>> BSS 62:03:7f:12:64:64(on wls1) -- associated
+> > > > >>>>>>>>              TSF: 606308271476 usec (7d, 00:25:08)
+> > > > >>>>>>>>              freq: 6275
+> > > > >>>>>>>>              beacon interval: 100 TUs
+> > > > >>>>>>>>              capability: ESS Privacy SpectrumMgmt ShortSlo=
+tTime (0x0511)
+> > > > >>>>>>>>              signal: -17.00 dBm
+> > > > >>>>>>>>              last seen: 52 ms ago
+> > > > >>>>>>>>              Information elements from Probe Response fram=
+e:
+> > > > >>>>>>>>              SSID: MLO-KANG-6G
+> > > > >>>>>>>> and other 6 GHz APs:
+> > > > >>>>>>>>             SSID: 6G-gxia
+> > > > >>>>>>>>             SSID: NETGEAR97-6G
+> > > > >>>>>>>>             =E2=80=A6=E2=80=A6
+> > > > >>>>>>>>
+> > > > >>>>>>>>
+> > > > >>>>>>>> kernel log:
+> > > > >>>>>>>> [88158.033218] wls1: Inserted STA 62:03:7f:12:64:64
+> > > > >>>>>>>> [88158.033232] wls1: authenticate with 62:03:7f:12:64:64 (=
+local
+> > > > >>>>>>>> address=3D00:03:7f:37:12:54)
+> > > > >>>>>>>> [88158.033242] wls1: send auth to 62:03:7f:12:64:64 (try 1=
+/3)
+> > > > >>>>>>>> [88158.041895] wls1: authenticated
+> > > > >>>>>>>> [88158.041914] wls1: moving STA 62:03:7f:12:64:64 to state=
+ 2
+> > > > >>>>>>>> [88158.044291] wls1: determined local STA to be EHT, BW li=
+mited to 320 MHz
+> > > > >>>>>>>> [88158.045719] wls1: associate with 62:03:7f:12:64:64 (try=
+ 1/3)
+> > > > >>>>>>>> [88158.067045] wls1: RX AssocResp from 62:03:7f:12:64:64 (=
+capab=3D0x511
+> > > > >>>>>>>> status=3D0 aid=3D4)
+> > > > >>>>>>>> [88158.089090] wls1: associated
+> > > > >>>>>>>>
+> > > > >>>>>>>> I can even connect to it by Ubuntu GUI.
+> > > > >>>>>>>>
+> > > > >>>>>>>> Can you update to 6.14.0-rc5-wt-ath+ and have a retry? Als=
+o please make
+> > > > >>>>>>>> sure that your wpa_supplicant/iw support 6 GHz(or directly=
+ update to the
+> > > > >>>>>>>> latest version).
+> > > > >>>>>>>>
+> > > > >>>>>>>> If you still cannot find 6 GHz AP, you can set debug_mask =
+to 0xffffffff
+> > > > >>>>>>>> to get ath12k logs. Then give it to us.
+> > > > >>>>>>>>
+> > > > >>>>>>>>
+> > > > >>>>>>>>> -Walt
+> > > > >>>>>>>>>
+> > > > >>>>>>>>
+> > > > >>>>>>>
+> > > > >>>>>>> OK, I retested with the wt-ath 033125 tagged build. This in=
+cluded the
+> > > > >>>>>>> patch the Jeff suggested I try, but the rest of the tree wa=
+s clean.
+> > > > >>>>>>> Still no 6ghz Wifi. I'm attaching a log file of the boot an=
+d first few
+> > > > >>>>>>> seconds with the debug mask turned on. I noticed that if I =
+rmmod the
+> > > > >>>>>>> module and then modprobe it, it complains about not finding
+> > > > >>>>>>> firmware-2.bin, however, I thought that was only for the qc=
+n based
+> > > > >>>>>>> chip? The HW info from dmesg looks like this:
+> > > > >>>>>>>
+> > > > >>>>>>
+> > > > >>>>>> I cannot find this tag...
+> > > > >>>>>>
+> > > > >>>>>>
+> > > > >>>>>>     From the log, the 6 GHz channel should work. When scan i=
+s triggered, FW
+> > > > >>>>>> shall send probe req on these channels. If AP send probe res=
+p, station
+> > > > >>>>>> shall find the AP.
+> > > > >>>>>>
+> > > > >>>>>>
+> > > > >>>>>>
+> > > > >>>>>>
+> > > > >>>>>>> [    6.070282] ath12k_pci 0000:63:00.0: BAR 0 [mem
+> > > > >>>>>>> 0xdd800000-0xdd9fffff 64bit]: assigned
+> > > > >>>>>>> [    6.070310] ath12k_pci 0000:63:00.0: enabling device (00=
+00 -> 0002)
+> > > > >>>>>>> [    6.071249] ath12k_pci 0000:63:00.0: MSI vectors: 16
+> > > > >>>>>>> [    6.071254] ath12k_pci 0000:63:00.0: Hardware name: wcn7=
+850 hw2.0
+> > > > >>>>>>> [    6.596331] ath12k_pci 0000:63:00.0: qmi dma allocation =
+failed
+> > > > >>>>>>> (7077888 B type 1), will try later with sma
+> > > > >>>>>>> ll size
+> > > > >>>>>>> [    6.604041] ath12k_pci 0000:63:00.0: chip_id 0x2 chip_fa=
+mily 0x4
+> > > > >>>>>>> board_id 0xff soc_id 0x40170200
+> > > > >>>>>>> [    6.604044] ath12k_pci 0000:63:00.0: fw_version 0x100301=
+e1
+> > > > >>>>>>> fw_build_timestamp 2023-12-06 04:05 fw_build_id
+> > > > >>>>>>> QC_IMAGE_VERSION_STRING=3DWLAN.HMT.1.0.c5-00481-QCAHMTSWPL_=
+V1.0_V2.0_SILICONZ-
+> > > > >>>>>>>
+> > > > >>>>>>> Also, I noticed when looking through the debug logs there a=
+re the
+> > > > >>>>>>> occasional WARNING statements from a BUG it appears. They t=
+race back
+> > > > >>>>>>> to the mac.c file inside the ath12k code. There should be s=
+ome in the
+> > > > >>>>>>> debug log that's attached. Let me know if I can do anything=
+ else.
+> > > > >>>>>>> Thanks,
+> > > > >>>>>>>
+> > > > >>>>>>
+> > > > >>>>>>
+> > > > >>>>>> I have never seen this warning on my upstream setup...Not su=
+re if you
+> > > > >>>>>> have changed anything or using the correct code base.
+> > > > >>>>>>
+> > > > >>>>>> Jeff merged this patch-set into ath-202504021602. Can you tr=
+y on this
+> > > > >>>>>> branch?
+> > > > >>>>>>
+> > > > >>>>>> git clone https://git.kernel.org/pub/scm/linux/kernel/git/at=
+h/ath.git/
+> > > > >>>>>> git pull
+> > > > >>>>>> git reset --hard ath-202504021602
+> > > > >>>>>> compile and install...
+> > > > >>>>>>
+> > > > >>>>>> Also make sure that the firmware you used is from the same f=
+older, don't
+> > > > >>>>>> mix with other folders:
+> > > > >>>>>> linux-firmware/ath12k/WCN7850/hw2.0
+> > > > >>>>>>
+> > > > >>>>>> 1. rmmod/insmod(debug_mask=3D0xffff)
+> > > > >>>>>> 2. iw reg get
+> > > > >>>>>> 3. iw reg set US
+> > > > >>>>>> 4. iw xxx scan
+> > > > >>>>>> wait and collect logs.
+> > > > >>>>>>
+> > > > >>>>>> don't do anything else.
+> > > > >>>>>>
+> > > > >>>>>>
+> > > > >>>>>> Also, can you show me your AP configuration.
+> > > > >>>>>> If you have another 6 GHz AP, you can have a try(better diff=
+erent brands).
+> > > > >>>>>>
+> > > > >>>>
+> > > > >>>> Thanks for testing.
+> > > > >>>>
+> > > > >>>> Could you share your AP configuration?
+> > > > >>>>
+> > > > >>>>
+> > > > >>>>>>
+> > > > >>>>>> If you have sniffer, could please capture packets during tes=
+ting?
+> > > > >>>>
+> > > > >>>>
+> > > > >>>> Can you capture packets during the testing? I need to check pr=
+obe req
+> > > > >>>> and probe resp.
+> > > > >>>>
+> > > > >>>>>>
+> > > > >>>>>> Thanks!
+> > > > >>>>>>
+> > > > >>>>>>> -Walt
+> > > > >>>>>>
+> > > > >>>>> OK, I cloned and built the kernel based on your instructions =
+in your
+> > > > >>>>> last email. Originally, the result was identical to my last e=
+mail,
+> > > > >>>>> including the WARNINGS. The .config I use is configured for a=
+ fully RT
+> > > > >>>>> PREEMPT kernel, which I wondered if that was why I was receiv=
+ing the
+> > > > >>>>> WARNING. So I configured it as a Low Latency PREEMPT Desktop =
+without
+> > > > >>>>> the RT_PREEMPT and that eliminated the WARNING. However, stil=
+l no 6Ghz
+> > > > >>>>> networks. The firmware I'm using is straight from kernel.org =
+GIT and I
+> > > > >>>>> do a 'make install; make dedup' to install it. I believe it s=
+hould be
+> > > > >>>>> good. Attached is the latest log file.
+> > > > >>>>>
+> > > > >>>>> -Walt
+> > > > >>>>
+> > > > >>
+> > > > >
+> > > > >
+> > > > > Sorry for the top-post earlier. I can't figure out how to capture=
+ the
+> > > > > wireless packets as my chip/driver combo doesn't support monitor =
+mode.
+> > > >
+> > > > Your AP also cannot capture wireless packets?
+> > > > log in AP by usbserial or ssh.
+> > > > Try to enter command line. use iw command to create monitor interfa=
+ce.
+> > > > Then use tcpdump to capture packets.
+> > > >
+> > > > > I've attached a tarball that contains the trace data and addition=
+al
+> > > > > firmware logs from the kernel.log file. Anything else you need, j=
+ust
+> > > > > ask. Thanks for your help,
+> > > >
+> > > >
+> > > > Your AP mac address?
+> > > > Need it to help check the fw log.
+> > > >
+> > > >
+> > > > >
+> > > > > -Walt
+> > > >
+> > >
+> > > Sorry, the AP doesn't have tcpdump available on it. Also, this is a
+> > > mesh setup with 3 nodes total. The main AP and 2 mesh nodes. I'm
+> > > within 10 feet of one of the nodes and it's MAC for the wireless 6ghz
+> > > network is: 10:7C:61:6F:2A:CA
+> > >
+> > > -Walt
+> >
+> > The other 2 node 6ghz mac addresses are:
+> > 10:7C:61:6F:1F:11   - Router
+> > 10:7C:61:6F:32:92   - Node
+> >
+> > The first MAC address I gave you earlier was a node located
+> > approximately 5 feet from where the laptop is.
+> >
+> > -Walt
+>
+> Well, I'm running into a brick wall it seems trying to get 6Ghz
+> enabled on this. I tried the ath-next-20250418 tag just now and still
+> don't see or connect to my 6Ghz network. I applied the patches in:
+> https://lore.kernel.org/linux-wireless/20250418-ath12k-6g-lp-vlp-v1-0-c86=
+9c86cad60@quicinc.com/T/#t
+>
+> hoping that would help, but alas, no 6Ghz networks. I see that MLO and
+> other nice fixes are coming in 6.16, but without 6Ghz, they'll do me
+> no good. I'm really wondering if it's a firmware issue that excludes
+> my chip or something. Again, anything I can do to help, let me know.
+> Thanks,
+>
+> -Walt
 
-The indication of the BW limitation in the sub-device ID is not applicable
-for Killer devices. For those devices, bw_limit will hold a random value,
-so a matching dev_info might not be found, which leads to a probe
-failure.
-Until it is properly fixed, revert this.
+Well, I used the swiss army tools to look at the firmware, and my chip
+is listed in the firmware, so it's not excluded or anything. Really
+puzzlling issue as my other two laptops connect to the 6Ghz network
+just fine, and this laptop does in Windows, just not in Linux. I
+really don't use Windows at all though, so that does me no good.
 
-Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220029
-Fixes: 75a3313f52b7 ("wifi: iwlwifi: make no_160 more generic")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  15 +-
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |   4 +-
- .../net/wireless/intel/iwlwifi/iwl-trans.h    |   7 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 206 +++++++++---------
- .../wireless/intel/iwlwifi/tests/devinfo.c    |  15 +-
- 5 files changed, 118 insertions(+), 129 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 7e4864c00780..acafee538b8a 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -2,7 +2,7 @@
- /*
-  * Copyright (C) 2005-2014, 2018-2021 Intel Corporation
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2025 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  */
- #ifndef __IWL_CONFIG_H__
- #define __IWL_CONFIG_H__
-@@ -451,8 +451,11 @@ struct iwl_cfg {
- #define IWL_CFG_RF_ID_HR		0x7
- #define IWL_CFG_RF_ID_HR1		0x4
- 
--#define IWL_CFG_BW_NO_LIM		(U16_MAX - 1)
--#define IWL_CFG_BW_ANY			U16_MAX
-+#define IWL_CFG_NO_160			0x1
-+#define IWL_CFG_160			0x0
-+
-+#define IWL_CFG_NO_320			0x1
-+#define IWL_CFG_320			0x0
- 
- #define IWL_CFG_CORES_BT		0x0
- #define IWL_CFG_CORES_BT_GNSS		0x5
-@@ -464,7 +467,7 @@ struct iwl_cfg {
- #define IWL_CFG_IS_JACKET		0x1
- 
- #define IWL_SUBDEVICE_RF_ID(subdevice)	((u16)((subdevice) & 0x00F0) >> 4)
--#define IWL_SUBDEVICE_BW_LIM(subdevice)	((u16)((subdevice) & 0x0200) >> 9)
-+#define IWL_SUBDEVICE_NO_160(subdevice)	((u16)((subdevice) & 0x0200) >> 9)
- #define IWL_SUBDEVICE_CORES(subdevice)	((u16)((subdevice) & 0x1C00) >> 10)
- 
- struct iwl_dev_info {
-@@ -472,10 +475,10 @@ struct iwl_dev_info {
- 	u16 subdevice;
- 	u16 mac_type;
- 	u16 rf_type;
--	u16 bw_limit;
- 	u8 mac_step;
- 	u8 rf_step;
- 	u8 rf_id;
-+	u8 no_160;
- 	u8 cores;
- 	u8 cdb;
- 	u8 jacket;
-@@ -489,7 +492,7 @@ extern const unsigned int iwl_dev_info_table_size;
- const struct iwl_dev_info *
- iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
- 		      u16 mac_type, u8 mac_step, u16 rf_type, u8 cdb,
--		      u8 jacket, u8 rf_id, u8 bw_limit, u8 cores, u8 rf_step);
-+		      u8 jacket, u8 rf_id, u8 no_160, u8 cores, u8 rf_step);
- extern const struct pci_device_id iwl_hw_card_ids[];
- #endif
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 08269168b2fa..c381511e9ec6 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2005-2014, 2018-2023, 2025 Intel Corporation
-+ * Copyright (C) 2005-2014, 2018-2023 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -1094,7 +1094,7 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
- 		iftype_data->eht_cap.eht_mcs_nss_supp.bw._320.rx_tx_mcs13_max_nss = 0;
- 	}
- 
--	if (trans->bw_limit < 160)
-+	if (trans->no_160)
- 		iftype_data->he_cap.he_cap_elem.phy_cap_info[0] &=
- 			~IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 2b341bad7102..ce4954b0d524 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2005-2014, 2018-2023, 2025 Intel Corporation
-+ * Copyright (C) 2005-2014, 2018-2023 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -876,7 +876,7 @@ struct iwl_txq {
-  *	only valid for discrete (not integrated) NICs
-  * @invalid_tx_cmd: invalid TX command buffer
-  * @reduced_cap_sku: reduced capability supported SKU
-- * @bw_limit: the max bandwidth
-+ * @no_160: device not supporting 160 MHz
-  * @step_urm: STEP is in URM, no support for MCS>9 in 320 MHz
-  * @restart: restart worker data
-  * @restart.wk: restart worker
-@@ -911,8 +911,7 @@ struct iwl_trans {
- 	char hw_id_str[52];
- 	u32 sku_id[3];
- 	bool reduced_cap_sku;
--	u16 bw_limit;
--	bool step_urm;
-+	u8 no_160:1, step_urm:1;
- 
- 	u8 dsbr_urm_fw_dependent:1,
- 	   dsbr_urm_permanent:1;
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index bbdfa51d1645..debeea2b3ae5 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2005-2014, 2018-2025 Intel Corporation
-+ * Copyright (C) 2005-2014, 2018-2024 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -552,17 +552,16 @@ MODULE_DEVICE_TABLE(pci, iwl_hw_card_ids);
- EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_hw_card_ids);
- 
- #define _IWL_DEV_INFO(_device, _subdevice, _mac_type, _mac_step, _rf_type, \
--		      _rf_id, _rf_step, _bw_limit, _cores, _cdb, _cfg, _name) \
-+		      _rf_id, _rf_step, _no_160, _cores, _cdb, _cfg, _name) \
- 	{ .device = (_device), .subdevice = (_subdevice), .cfg = &(_cfg), \
- 	  .name = _name, .mac_type = _mac_type, .rf_type = _rf_type, .rf_step = _rf_step, \
--	  .bw_limit = _bw_limit, .cores = _cores, .rf_id = _rf_id, \
-+	  .no_160 = _no_160, .cores = _cores, .rf_id = _rf_id, \
- 	  .mac_step = _mac_step, .cdb = _cdb, .jacket = IWL_CFG_ANY }
- 
- #define IWL_DEV_INFO(_device, _subdevice, _cfg, _name) \
- 	_IWL_DEV_INFO(_device, _subdevice, IWL_CFG_ANY, IWL_CFG_ANY,   \
--		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY, \
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_ANY, IWL_CFG_ANY, \
--		      _cfg, _name)
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,  \
-+		      IWL_CFG_ANY, _cfg, _name)
- 
- VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
- #if IS_ENABLED(CONFIG_IWLMVM)
-@@ -725,66 +724,66 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_PU, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_2ac_cfg_soc, iwl9461_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_PU, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_2ac_cfg_soc, iwl9461_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_PU, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_2ac_cfg_soc, iwl9462_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_PU, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_2ac_cfg_soc, iwl9462_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_PU, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_2ac_cfg_soc, iwl9560_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_PU, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_2ac_cfg_soc, iwl9560_name),
- 
- 	_IWL_DEV_INFO(0x2526, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_TH, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_TH, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT_GNSS, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT_GNSS, IWL_CFG_NO_CDB,
- 		      iwl9260_2ac_cfg, iwl9270_160_name),
- 	_IWL_DEV_INFO(0x2526, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_TH, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_TH, IWL_CFG_ANY, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT_GNSS, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT_GNSS, IWL_CFG_NO_CDB,
- 		      iwl9260_2ac_cfg, iwl9270_name),
- 
- 	_IWL_DEV_INFO(0x271B, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_TH, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_TH1, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9260_2ac_cfg, iwl9162_160_name),
- 	_IWL_DEV_INFO(0x271B, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_TH, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_TH1, IWL_CFG_ANY, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9260_2ac_cfg, iwl9162_name),
- 
- 	_IWL_DEV_INFO(0x2526, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_TH, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_TH, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9260_2ac_cfg, iwl9260_160_name),
- 	_IWL_DEV_INFO(0x2526, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_TH, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_TH, IWL_CFG_ANY, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9260_2ac_cfg, iwl9260_name),
- 
- /* Qu with Jf */
-@@ -792,132 +791,132 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_b0_jf_b0_cfg, iwl9461_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_b0_jf_b0_cfg, iwl9461_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_b0_jf_b0_cfg, iwl9462_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_b0_jf_b0_cfg, iwl9462_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_b0_jf_b0_cfg, iwl9560_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_b0_jf_b0_cfg, iwl9560_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, 0x1551,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_b0_jf_b0_cfg, iwl9560_killer_1550s_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, 0x1552,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_b0_jf_b0_cfg, iwl9560_killer_1550i_name),
- 
- 	/* Qu C step */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_C_STEP,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_c0_jf_b0_cfg, iwl9461_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_C_STEP,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_c0_jf_b0_cfg, iwl9461_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_C_STEP,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_c0_jf_b0_cfg, iwl9462_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_C_STEP,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_c0_jf_b0_cfg, iwl9462_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_C_STEP,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_c0_jf_b0_cfg, iwl9560_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_C_STEP,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_c0_jf_b0_cfg, iwl9560_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, 0x1551,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_C_STEP,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_c0_jf_b0_cfg, iwl9560_killer_1550s_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, 0x1552,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_C_STEP,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_qu_c0_jf_b0_cfg, iwl9560_killer_1550i_name),
- 
- 	/* QuZ */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QUZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_quz_a0_jf_b0_cfg, iwl9461_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QUZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_quz_a0_jf_b0_cfg, iwl9461_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QUZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_quz_a0_jf_b0_cfg, iwl9462_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QUZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_quz_a0_jf_b0_cfg, iwl9462_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QUZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_quz_a0_jf_b0_cfg, iwl9560_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QUZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_quz_a0_jf_b0_cfg, iwl9560_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, 0x1551,
- 		      IWL_CFG_MAC_TYPE_QUZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_quz_a0_jf_b0_cfg, iwl9560_killer_1550s_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, 0x1552,
- 		      IWL_CFG_MAC_TYPE_QUZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwl9560_quz_a0_jf_b0_cfg, iwl9560_killer_1550i_name),
- 
- /* Qu with Hr */
-@@ -925,189 +924,189 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_HR1, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_qu_b0_hr1_b0, iwl_ax101_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      80, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_qu_b0_hr_b0, iwl_ax203_name),
- 
- 	/* Qu C step */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_C_STEP,
- 		      IWL_CFG_RF_TYPE_HR1, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_qu_c0_hr1_b0, iwl_ax101_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_C_STEP,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      80, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_qu_c0_hr_b0, iwl_ax203_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QU, SILICON_C_STEP,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_qu_c0_hr_b0, iwl_ax201_name),
- 
- 	/* QuZ */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QUZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR1, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_quz_a0_hr1_b0, iwl_ax101_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QUZ, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      80, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_quz_a0_hr_b0, iwl_ax203_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_QUZ, SILICON_B_STEP,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_quz_a0_hr_b0, iwl_ax201_name),
- 
- /* Ma */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_MA, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_ma, iwl_ax201_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_MA, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_ma, iwl_ax211_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_MA, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_FM, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_ma, iwl_ax231_name),
- 
- /* So with Hr */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      80, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_so_a0_hr_a0, iwl_ax203_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR1, IWL_CFG_ANY, IWL_CFG_ANY,
--		      80, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_so_a0_hr_a0, iwl_ax101_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_so_a0_hr_a0, iwl_ax201_name),
- 
- /* So-F with Hr */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      80, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_so_a0_hr_a0, iwl_ax203_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR1, IWL_CFG_ANY, IWL_CFG_ANY,
--		      80, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_so_a0_hr_a0, iwl_ax101_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_so_a0_hr_a0, iwl_ax201_name),
- 
- /* So-F with Gf */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_ANY, IWL_CFG_CDB,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_CDB,
- 		      iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_name),
- 
- /* SoF with JF2 */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9560_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9560_name),
- 
- /* SoF with JF */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9461_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9462_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9461_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9462_name),
- 
- /* So with GF */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_ANY, IWL_CFG_CDB,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_CDB,
- 		      iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_name),
- 
- /* So with JF2 */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9560_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9560_name),
- 
- /* So with JF */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9461_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9462_160_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9461_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV, IWL_CFG_ANY,
--		      80, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
- 		      iwlax210_2ax_cfg_so_jf_b0, iwl9462_name),
- 
- #endif /* CONFIG_IWLMVM */
-@@ -1116,13 +1115,13 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_BZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_bz, iwl_ax201_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_BZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_bz, iwl_ax211_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-@@ -1134,104 +1133,104 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_BZ, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_WH, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_bz, iwl_wh_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_BZ_W, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_bz, iwl_ax201_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_BZ_W, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_bz, iwl_ax211_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_BZ_W, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_FM, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_bz, iwl_fm_name),
- 
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_BZ_W, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_WH, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_bz, iwl_wh_name),
- 
- /* Ga (Gl) */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_GL, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_FM, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_NO_LIM, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_320, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_gl, iwl_gl_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_GL, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_FM, IWL_CFG_ANY, IWL_CFG_ANY,
--		      160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      IWL_CFG_NO_320, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_gl, iwl_mtp_name),
- 
- /* Sc */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SC, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_sc, iwl_ax211_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SC, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_FM, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_sc, iwl_fm_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SC, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_WH, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_sc, iwl_wh_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SC2, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_sc2, iwl_ax211_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SC2, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_FM, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_sc2, iwl_fm_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SC2, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_WH, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_sc2, iwl_wh_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SC2F, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_sc2f, iwl_ax211_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SC2F, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_FM, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_sc2f, iwl_fm_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SC2F, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_WH, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_sc2f, iwl_wh_name),
- 
- /* Dr */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_DR, IWL_CFG_ANY,
- 		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_dr, iwl_dr_name),
- 
- /* Br */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_BR, IWL_CFG_ANY,
- 		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_BW_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_br, iwl_br_name),
- #endif /* CONFIG_IWLMLD */
- };
-@@ -1383,7 +1382,7 @@ static int map_crf_id(struct iwl_trans *iwl_trans)
- VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info *
- iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
- 		      u16 mac_type, u8 mac_step, u16 rf_type, u8 cdb,
--		      u8 jacket, u8 rf_id, u8 bw_limit, u8 cores, u8 rf_step)
-+		      u8 jacket, u8 rf_id, u8 no_160, u8 cores, u8 rf_step)
- {
- 	int num_devices = ARRAY_SIZE(iwl_dev_info_table);
- 	int i;
-@@ -1426,15 +1425,8 @@ iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
- 		    dev_info->rf_id != rf_id)
- 			continue;
- 
--		/*
--		 * Check that bw_limit have the same "boolean" value since
--		 * IWL_SUBDEVICE_BW_LIM can only return a boolean value and
--		 * dev_info->bw_limit encodes a non-boolean value.
--		 * dev_info->bw_limit == IWL_CFG_BW_NO_LIM must be equal to
--		 * !bw_limit to have a match.
--		 */
--		if (dev_info->bw_limit != IWL_CFG_BW_ANY &&
--		    (dev_info->bw_limit == IWL_CFG_BW_NO_LIM) == !!bw_limit)
-+		if (dev_info->no_160 != (u8)IWL_CFG_ANY &&
-+		    dev_info->no_160 != no_160)
- 			continue;
- 
- 		if (dev_info->cores != (u8)IWL_CFG_ANY &&
-@@ -1572,13 +1564,13 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 					 CSR_HW_RFID_IS_CDB(iwl_trans->hw_rf_id),
- 					 CSR_HW_RFID_IS_JACKET(iwl_trans->hw_rf_id),
- 					 IWL_SUBDEVICE_RF_ID(pdev->subsystem_device),
--					 IWL_SUBDEVICE_BW_LIM(pdev->subsystem_device),
-+					 IWL_SUBDEVICE_NO_160(pdev->subsystem_device),
- 					 IWL_SUBDEVICE_CORES(pdev->subsystem_device),
- 					 CSR_HW_RFID_STEP(iwl_trans->hw_rf_id));
- 	if (dev_info) {
- 		iwl_trans->cfg = dev_info->cfg;
- 		iwl_trans->name = dev_info->name;
--		iwl_trans->bw_limit = dev_info->bw_limit;
-+		iwl_trans->no_160 = dev_info->no_160 == IWL_CFG_NO_160;
- 	}
- 
- #if IS_ENABLED(CONFIG_IWLMVM)
-diff --git a/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c b/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
-index 7ef5e89c6af2..d0bda23c628a 100644
---- a/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
-+++ b/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
-@@ -2,7 +2,7 @@
- /*
-  * KUnit tests for the iwlwifi device info table
-  *
-- * Copyright (C) 2023-2025 Intel Corporation
-+ * Copyright (C) 2023-2024 Intel Corporation
-  */
- #include <kunit/test.h>
- #include <linux/pci.h>
-@@ -13,9 +13,9 @@ MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
- 
- static void iwl_pci_print_dev_info(const char *pfx, const struct iwl_dev_info *di)
- {
--	printk(KERN_DEBUG "%sdev=%.4x,subdev=%.4x,mac_type=%.4x,mac_step=%.4x,rf_type=%.4x,cdb=%d,jacket=%d,rf_id=%.2x,bw_limit=%d,cores=%.2x\n",
-+	printk(KERN_DEBUG "%sdev=%.4x,subdev=%.4x,mac_type=%.4x,mac_step=%.4x,rf_type=%.4x,cdb=%d,jacket=%d,rf_id=%.2x,no_160=%d,cores=%.2x\n",
- 	       pfx, di->device, di->subdevice, di->mac_type, di->mac_step,
--	       di->rf_type, di->cdb, di->jacket, di->rf_id, di->bw_limit,
-+	       di->rf_type, di->cdb, di->jacket, di->rf_id, di->no_160,
- 	       di->cores);
- }
- 
-@@ -31,13 +31,8 @@ static void devinfo_table_order(struct kunit *test)
- 					    di->mac_type, di->mac_step,
- 					    di->rf_type, di->cdb,
- 					    di->jacket, di->rf_id,
--					    di->bw_limit != IWL_CFG_BW_NO_LIM,
--					    di->cores, di->rf_step);
--		if (!ret) {
--			iwl_pci_print_dev_info("No entry found for: ", di);
--			KUNIT_FAIL(test,
--				   "No entry found for entry at index %d\n", idx);
--		} else if (ret != di) {
-+					    di->no_160, di->cores, di->rf_step);
-+		if (ret != di) {
- 			iwl_pci_print_dev_info("searched: ", di);
- 			iwl_pci_print_dev_info("found:    ", ret);
- 			KUNIT_FAIL(test,
--- 
-2.34.1
-
+This laptop used to connect to the 6Ghz network around the Sep. - Oct.
+2024 timeframe. Something has changed and now it doesn't. I'm going to
+boot off a live image of Ubuntu 24.10 and see if I can see the
+network. It was always hit or miss so we'll see.
+-Walt
 
