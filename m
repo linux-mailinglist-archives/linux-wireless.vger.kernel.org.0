@@ -1,235 +1,137 @@
-Return-Path: <linux-wireless+bounces-21795-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21796-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E89A95517
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Apr 2025 19:17:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F219A9561C
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Apr 2025 20:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60A033AF561
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Apr 2025 17:16:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 625FC3A8E2D
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Apr 2025 18:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94F7171CD;
-	Mon, 21 Apr 2025 17:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A43F1A304A;
+	Mon, 21 Apr 2025 18:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ecYvkpwR"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZDIniHKn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1317D12F399
-	for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 17:16:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C737E1E9B2F
+	for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 18:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745255810; cv=none; b=m26iMF4pyoN7yrR2b/WwQd05AcW8YbAfNO2jTD44C7BJPTHGVdGUD2ryGW1SWnqXwxNiALYndNAeAmbiQXRbpWSH88V1I/OyJ5WRk0v/GZ98AEA3fpFvGW2+4htDzb5p76zoIc5iD7WvK5yduA7oP3HrlwGTQMAGR5ZIjebjQKQ=
+	t=1745261093; cv=none; b=r2SXwI0/PJOyKeUemujNZ6+8Wv+TyV/qeze0itWeV5aLjXzNxXRTSx211IGclhVkqbdd6toHupi+dhRe19FNLAfUkqIY1GgcSzAjg4yGOYjIUTXanwKqHSZg9HVyRhPRCAOUmof49AJS+PlPxxJVEz2eEDsB3LLhusISuBTTA14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745255810; c=relaxed/simple;
-	bh=odhzicsI6KC60d7dd4UaLdO+P9vRgJvPrU6d7Be9wQc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GQm1Do/RDDqlvKaHFdqcXRF7mouc86Motmo7+jsM2jv+QJDZKfoxw5ztjFKUEVE4kx/IYYQbhTDKgtGEVllZzO2ik3tf66q3HV+3nwxSlc4ZZCSLu/GAsW18wTq3Uef4GXs+C1rftmH31t0JxfK738z5JLo0dHOtv+QF1NFlHy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ecYvkpwR; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745255808; x=1776791808;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=odhzicsI6KC60d7dd4UaLdO+P9vRgJvPrU6d7Be9wQc=;
-  b=ecYvkpwRh7PVroF2578goP2wZxGo4/qYLxMhQuYoBCT+/O19Br6uQ0kh
-   WXKnm6KbF+zcjSy+xG4rp6DmotIrTUDQKI/sW+BFu4VtWS5vYhqZuvCpg
-   3jkQ2qw78sw9Z5uzqxXLE1w/YwN9GYPAMvL2ZhdHfLMQ74V6wyQQj5omB
-   cb+LMSNHSrJuLPjJkgZ2sQvcC/CZJkzQw/n+4OmrCyMs5m8k/csZ93Hsi
-   HMD6JvEch5QB0wZbPFtIyrvwUd8ut+FEYZm++f5Y3JonIBD25wDCHD3Uc
-   nMb55SmHT5IxrJS6qO+Iaj52U7Rhz1TQQ3O3tVFL8fOZH6uYuR+ViS7yF
-   w==;
-X-CSE-ConnectionGUID: 59raKzq/Q+aUBn5o6unw7Q==
-X-CSE-MsgGUID: 15xKmEkXQ9i6MzNWixWQjw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="46925968"
-X-IronPort-AV: E=Sophos;i="6.15,228,1739865600"; 
-   d="scan'208";a="46925968"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2025 10:16:48 -0700
-X-CSE-ConnectionGUID: 8+T6siWbRjeCc+9DvhVKmQ==
-X-CSE-MsgGUID: KrK9i8KXRFiE13unw1fITQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,228,1739865600"; 
-   d="scan'208";a="136869440"
-Received: from lkp-server01.sh.intel.com (HELO 050dd05385d1) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 21 Apr 2025 10:16:45 -0700
-Received: from kbuild by 050dd05385d1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u6ul9-0000G7-1k;
-	Mon, 21 Apr 2025 17:16:43 +0000
-Date: Tue, 22 Apr 2025 01:16:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>,
-	ath12k@lists.infradead.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-wireless@vger.kernel.org,
-	Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
-Subject: Re: [PATCH ath-next] wifi: ath12k: allow beacon protection keys to
- be installed in hardware
-Message-ID: <202504220128.2KvxCzaG-lkp@intel.com>
-References: <20250421114711.3660911-1-karthikeyan.kathirvel@oss.qualcomm.com>
+	s=arc-20240116; t=1745261093; c=relaxed/simple;
+	bh=4NTNZ7kRwuNfDxpSzwP4LyO5D/370ZD8+egSjrKvECI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZrXDXVMfSR0apvk17BYuOGVKwgAlbUy9tXO0f16mu4nMUhzN7WG56sIO7a13ip6V03EE1eR37uCTwlW8FXcc/XsVfzCkigHfdWCwF51zLmk5QFoFGylhTxxtARtE7sV2Sap3KhdA6ZD39rtG6Ya0f5bCcj6qBstT+79Ofrlw0H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZDIniHKn; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53LIgLui024690
+	for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 18:44:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	UtRScXxIHm6oxt6nV96BNJpPBcZBVBaxFiOva74/L34=; b=ZDIniHKnxVIunbVG
+	SQU2BDP1upbXg5y+6qmUDGhoPvYsYbSdpoeYBV0dZ07C/NMfWzXNCK1LJUHuMBUN
+	aQAdI/IL4fh8MEveL39+rQ2mC+g6o6VlQusA7cbBuWZReJM2EcYPOfiMrOdbwq9n
+	4KLk+UChODRUsMlvoWo27Z44d863pjWxzH4JcqsFhszglTbu5i0AF45HofFzYlGt
+	7ec0aV/gIIFuERCmuGLjtdSGIO8YKHT4QJomDuqNyiQVJXMNZdVQjAViIQpFcZtS
+	7TL4iz0jxbEkdpV77SAhT7nTS2+aSgKYIWCKwZYLVQmcsOCz5reGRmCwZnCSOwd6
+	a/ATQA==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4642u9d39d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 18:44:50 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b073ef14fa7so2440745a12.0
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 11:44:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745261089; x=1745865889;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UtRScXxIHm6oxt6nV96BNJpPBcZBVBaxFiOva74/L34=;
+        b=SKic7ZaatcK4GzPecdDSUvannIMomBSkIoMghULyIFT8s+fFqtfLwTNijkDEBRb1qT
+         6QnC4f9Zjbd307k3t+sFOrAViCDJ4kumOMGDloXSiVkkBfbeEEbU0HgEQSnpPeLwJSKf
+         uSyQO9zeSCWQw6fSYEbzW9g5wmTTZTBImNL3ldpCNXRiSKi74rg2sDwUwjLo5raqSI2x
+         D02A2YXyaPY7AXAYsdUCvQTwiFUGHzbVvxW3Sn5S+vKQFKKh7R7gGfTDP9GUetJnjmxc
+         bQ7jlQBY4nfTtGlCi5eJlbu9DbS46PNgkQDj28HfkkXdLx0rSkzG6itxRXjHXS2Jacrn
+         7Fcw==
+X-Forwarded-Encrypted: i=1; AJvYcCVpG8ovoDcGuWoXOL/IUsr7WtkOsABPGl0XL2he1w1Mdwd3av+pcE1mwfRCU4NU6mW1/DEqet1YFzE7Ug/83Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdFRe4p5MINfEEeS/m6VMyUwtbH6UjIWqV3ONbS9GE3fwkZ/Im
+	tJ7wLII739mkjf9wHciG7/LYEy3HwgpfUTlJp7t3dyaQILx1zyFAe30hLbK28xOvPSznVtfj3NW
+	Pb4mp/fZiDwQA3qds/yxnlg7fE8ObaeqEoCD4NSNHmHnWKVhFoySXcy511M8I7o3vSUduqQxgaA
+	==
+X-Gm-Gg: ASbGncsV/bcNfAhPQ+ZNRqk8fCmBZ4hY/s40K2IUUKaqC52SG9fRI/qPg7BDsjdj+a+
+	rfrQznQho50oiAslqeEJjsaq9fhcF0c1OdyQlbmTVKaMC/lCDQJVZuLXg0JwU0TEPia5NydRB+y
+	/vHPib7hitlvK7Ir1hqYAyZpOH0Xe3RZlXlBdMd+cxOGoonqj8SdAuOU4STkjHEAPXhlnfZK4RW
+	3pmXKUL+mE6Zg38rZ9P7ozRdDFaiAMpUDwPO/HSqZC3bJHOvyd4hY71zGY8X6DEW99BZSoLVrpD
+	LW7CL8cCN8KE8f8wz0izy3YmAB3hfMmrzaQkBBVL21nJTioxOF8nO+ljshMa7+AmMpJ3j++WeMi
+	4Ib67
+X-Received: by 2002:a05:6a20:9f09:b0:1ee:e655:97ea with SMTP id adf61e73a8af0-203cbd60a89mr19672752637.41.1745261088713;
+        Mon, 21 Apr 2025 11:44:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEA0pK6tF2JhEK8ouZupmBtQFU+yOMOxYbB5tNIrlUqNDVEr9iX1u+Kx1ALJ2l8+cvsKSayMw==
+X-Received: by 2002:a05:6a20:9f09:b0:1ee:e655:97ea with SMTP id adf61e73a8af0-203cbd60a89mr19672724637.41.1745261088351;
+        Mon, 21 Apr 2025 11:44:48 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b0fd23599cesm2989744a12.59.2025.04.21.11.44.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Apr 2025 11:44:48 -0700 (PDT)
+Message-ID: <47ea4e64-cd87-4c42-a20d-f663f197e44c@oss.qualcomm.com>
+Date: Mon, 21 Apr 2025 11:44:46 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250421114711.3660911-1-karthikeyan.kathirvel@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next] wifi: ath12k: allow beacon protection keys to be
+ installed in hardware
+To: kernel test robot <lkp@intel.com>,
+        Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>,
+        ath12k@lists.infradead.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        linux-wireless@vger.kernel.org
+References: <20250421114711.3660911-1-karthikeyan.kathirvel@oss.qualcomm.com>
+ <202504220128.2KvxCzaG-lkp@intel.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <202504220128.2KvxCzaG-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=TYaWtQQh c=1 sm=1 tr=0 ts=68069222 cx=c_pps a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=QyXUC8HyAAAA:8 a=EUspDBNiAAAA:8 a=p4PaQEVxqj5bAbq44HAA:9 a=QEXdDO2ut3YA:10
+ a=_Vgx9l1VpLgwpw_dHYaR:22
+X-Proofpoint-ORIG-GUID: iE8Ts23I54uo5EhX54t4KQfYUKX7ctB2
+X-Proofpoint-GUID: iE8Ts23I54uo5EhX54t4KQfYUKX7ctB2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-21_09,2025-04-21_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 adultscore=0 clxscore=1015 priorityscore=1501
+ mlxlogscore=510 mlxscore=0 malwarescore=0 spamscore=0 impostorscore=0
+ phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504210146
 
-Hi Karthikeyan,
+On 4/21/2025 10:16 AM, kernel test robot wrote:
+> Hi Karthikeyan,
+> 
+> kernel test robot noticed the following build errors:
+> 
+> [auto build test ERROR on d33705bb41ff786b537f8ed50a187a474db111c1]
 
-kernel test robot noticed the following build errors:
+lkp@intel.com folks:
+This patch contains the following footer:
 
-[auto build test ERROR on d33705bb41ff786b537f8ed50a187a474db111c1]
+base-commit: d33705bb41ff786b537f8ed50a187a474db111c1
+Depends-on: <20250421111505.3633992-1-karthikeyan.kathirvel@oss.qualcomm.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Karthikeyan-Kathirvel/wifi-ath12k-allow-beacon-protection-keys-to-be-installed-in-hardware/20250421-194813
-base:   d33705bb41ff786b537f8ed50a187a474db111c1
-patch link:    https://lore.kernel.org/r/20250421114711.3660911-1-karthikeyan.kathirvel%40oss.qualcomm.com
-patch subject: [PATCH ath-next] wifi: ath12k: allow beacon protection keys to be installed in hardware
-config: powerpc-randconfig-003-20250421 (https://download.01.org/0day-ci/archive/20250422/202504220128.2KvxCzaG-lkp@intel.com/config)
-compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project f819f46284f2a79790038e1f6649172789734ae8)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250422/202504220128.2KvxCzaG-lkp@intel.com/reproduce)
+Is there a different mechanism needed to tell the robot about the dependency?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202504220128.2KvxCzaG-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/net/wireless/ath/ath12k/mac.c:1474:30: error: use of undeclared identifier 'WLAN_EXT_CAPA11_BCN_PROTECT'
-    1474 |             (ext_cap_ie->data[10] & WLAN_EXT_CAPA11_BCN_PROTECT))
-         |                                     ^
-   drivers/net/wireless/ath/ath12k/mac.c:1528:11: error: use of undeclared identifier 'WLAN_EXT_CAPA11_BCN_PROTECT'
-    1528 |                                              WLAN_EXT_CAPA11_BCN_PROTECT))
-         |                                              ^
-   2 errors generated.
-
-
-vim +/WLAN_EXT_CAPA11_BCN_PROTECT +1474 drivers/net/wireless/ath/ath12k/mac.c
-
-  1447	
-  1448	static void ath12k_mac_set_arvif_ies(struct ath12k_link_vif *arvif,
-  1449					     struct ath12k_link_vif *tx_arvif,
-  1450						 struct sk_buff *bcn,
-  1451					     u8 bssid_index, bool *nontx_profile_found)
-  1452	{
-  1453		struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)bcn->data;
-  1454		const struct element *elem, *nontx, *index, *nie, *ext_cap_ie;
-  1455		const u8 *start, *tail;
-  1456		u16 rem_len;
-  1457		u8 i;
-  1458	
-  1459		start = bcn->data + ieee80211_get_hdrlen_from_skb(bcn) + sizeof(mgmt->u.beacon);
-  1460		tail = skb_tail_pointer(bcn);
-  1461		rem_len = tail - start;
-  1462	
-  1463		arvif->rsnie_present = false;
-  1464		arvif->wpaie_present = false;
-  1465	
-  1466		if (cfg80211_find_ie(WLAN_EID_RSN, start, rem_len))
-  1467			arvif->rsnie_present = true;
-  1468		if (cfg80211_find_vendor_ie(WLAN_OUI_MICROSOFT, WLAN_OUI_TYPE_MICROSOFT_WPA,
-  1469					    start, rem_len))
-  1470			arvif->wpaie_present = true;
-  1471	
-  1472		ext_cap_ie = cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY, start, rem_len);
-  1473		if (ext_cap_ie && ext_cap_ie->datalen >= 11 &&
-> 1474		    (ext_cap_ie->data[10] & WLAN_EXT_CAPA11_BCN_PROTECT))
-  1475			tx_arvif->beacon_prot = true;
-  1476	
-  1477		/* Return from here for the transmitted profile */
-  1478		if (!bssid_index)
-  1479			return;
-  1480	
-  1481		/* Initial rsnie_present for the nontransmitted profile is set to be same as that
-  1482		 * of the transmitted profile. It will be changed if security configurations are
-  1483		 * different.
-  1484		 */
-  1485		*nontx_profile_found = false;
-  1486		for_each_element_id(elem, WLAN_EID_MULTIPLE_BSSID, start, rem_len) {
-  1487			/* Fixed minimum MBSSID element length with at least one
-  1488			 * nontransmitted BSSID profile is 12 bytes as given below;
-  1489			 * 1 (max BSSID indicator) +
-  1490			 * 2 (Nontransmitted BSSID profile: Subelement ID + length) +
-  1491			 * 4 (Nontransmitted BSSID Capabilities: tag + length + info)
-  1492			 * 2 (Nontransmitted BSSID SSID: tag + length)
-  1493			 * 3 (Nontransmitted BSSID Index: tag + length + BSSID index
-  1494			 */
-  1495			if (elem->datalen < 12 || elem->data[0] < 1)
-  1496				continue; /* Max BSSID indicator must be >=1 */
-  1497	
-  1498			for_each_element(nontx, elem->data + 1, elem->datalen - 1) {
-  1499				start = nontx->data;
-  1500	
-  1501				if (nontx->id != 0 || nontx->datalen < 4)
-  1502					continue; /* Invalid nontransmitted profile */
-  1503	
-  1504				if (nontx->data[0] != WLAN_EID_NON_TX_BSSID_CAP ||
-  1505				    nontx->data[1] != 2) {
-  1506					continue; /* Missing nontransmitted BSS capabilities */
-  1507				}
-  1508	
-  1509				if (nontx->data[4] != WLAN_EID_SSID)
-  1510					continue; /* Missing SSID for nontransmitted BSS */
-  1511	
-  1512				index = cfg80211_find_elem(WLAN_EID_MULTI_BSSID_IDX,
-  1513							   start, nontx->datalen);
-  1514				if (!index || index->datalen < 1 || index->data[0] == 0)
-  1515					continue; /* Invalid MBSSID Index element */
-  1516	
-  1517				if (index->data[0] == bssid_index) {
-  1518					*nontx_profile_found = true;
-  1519	
-  1520					/* Check if nontx BSS has beacon protection enabled */
-  1521					if (!tx_arvif->beacon_prot) {
-  1522						ext_cap_ie =
-  1523						    cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY,
-  1524								       nontx->data,
-  1525								       nontx->datalen);
-  1526						if (ext_cap_ie && ext_cap_ie->datalen >= 11 &&
-  1527						    (ext_cap_ie->data[10] &
-  1528						     WLAN_EXT_CAPA11_BCN_PROTECT))
-  1529							tx_arvif->beacon_prot = true;
-  1530					}
-  1531	
-  1532					if (cfg80211_find_ie(WLAN_EID_RSN,
-  1533							     nontx->data,
-  1534							     nontx->datalen)) {
-  1535						arvif->rsnie_present = true;
-  1536						return;
-  1537					} else if (!arvif->rsnie_present) {
-  1538						return; /* Both tx and nontx BSS are open */
-  1539					}
-  1540	
-  1541					nie = cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
-  1542								     nontx->data,
-  1543								     nontx->datalen);
-  1544					if (!nie || nie->datalen < 2)
-  1545						return; /* Invalid non-inheritance element */
-  1546	
-  1547					for (i = 1; i < nie->datalen - 1; i++) {
-  1548						if (nie->data[i] == WLAN_EID_RSN) {
-  1549							arvif->rsnie_present = false;
-  1550							break;
-  1551						}
-  1552					}
-  1553	
-  1554					return;
-  1555				}
-  1556			}
-  1557		}
-  1558	}
-  1559	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
