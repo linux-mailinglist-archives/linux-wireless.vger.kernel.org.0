@@ -1,140 +1,287 @@
-Return-Path: <linux-wireless+bounces-21781-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21782-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BFBA94BD0
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Apr 2025 06:00:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B7FA94C8B
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Apr 2025 08:26:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47CD4189101F
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Apr 2025 04:01:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B4651891551
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Apr 2025 06:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59969F50F;
-	Mon, 21 Apr 2025 04:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655DD2571D0;
+	Mon, 21 Apr 2025 06:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jNuhcXkh"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Xx0Zs0uy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77E47462;
-	Mon, 21 Apr 2025 04:00:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615CA20C473
+	for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 06:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745208050; cv=none; b=Vi2HE8z6LWQ1d639J3DPJQvYoWcyPcyBnVUQikSsfnHoajfeFwga1whQV2EGNOqQ3THPzjfdndhH9oW93kZrXLQOKRjigD2q5LrGmcu04i2BqopOILB7/WgBjJeb0qOhdUr94utWnnpyWZO3N4T7jKAm7Zbj0FDYSz2bciaOREA=
+	t=1745216777; cv=none; b=JLujzxbLUVKxjFCZhQQXJTULhgkExH8rEaSUiGyOVNBYXzrke5muzw58u+YWs9eJHbBxQj5wsk8BTsv6EAhonWxGBxyIbC04Cr2JoVqMalZLJCsTk/QT0qrSbgKZVswTTBMOsge+d0O8haCi+TKyUVVXL7Kaag679+/0Hr60+MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745208050; c=relaxed/simple;
-	bh=7VNkzd2YDzUNUlp+7tBooUqklU7YkhOJGODvN2Qxe6M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JSJ9aP0pvjEDUNhatxo/lBl1A1h+P1iVXhL+5KwoGQLIRKJ0VtvpbRyoJJlvzTqB69MeAXtgj0PlP7ge9Mz0jxRkHBS1swhsoiK5asXe7QXnec5pQ1YRtshl0l5XAzo7fHHiwocCWkt9PCTN1NI6U1nsKq7FV5/Irlf/sMcoY5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jNuhcXkh; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7c54f67db99so456401785a.1;
-        Sun, 20 Apr 2025 21:00:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745208047; x=1745812847; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CX/10vkx/hdhwiym0foBnWUfHy9pxSwgILnrTpQDOqM=;
-        b=jNuhcXkhH97ipY0UPB5seKag8qlKmgLTFnBvfeizJOhKdkOgGyIqyd5z3hcgvPrgvn
-         ki21SknK0SBz/yoFNL+jB5VTMgOrwXNoGTjr07Dn5DO1z+cvRDVTH9pQX49WG9gAC+Yn
-         Xh/eNtDtIPQLiuCV5c7s304/8jmWpp8ikDSlFmYgxVr1Qg7IzUyV2MD/qeX/UdWfoldZ
-         6Lhk9ARPAVx+J26D3HofsYY70F25rozq6mQQNu0HWksWow08+kSw78nkOpHlUUNPeDj8
-         gvjaojSDgu4EdJagm10mSeYRmu/A7DFsjKmsge4YGrajlhpaZHl+Mu5HT4suCxM2Wsdh
-         xNqQ==
+	s=arc-20240116; t=1745216777; c=relaxed/simple;
+	bh=shfSbBKaJO6F+GH4M7z2f3Siz1ZXQjYrrH/nzBD+UCk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GaNDrfFJtHSQxDeewsvqHyAEJbTQBd9EpTgx0CtLIM/bbgQauVfM23EFAaEbcxNCDi+saSf0yzDta9sukc5WLOBkfBws3sS50q4lHAF0qqhRZtQhx91Dl10QGS2xEKIpGRRf8kAOIpzQLFbQrDTJugUAoS0aNePdTf5rPRoE5Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Xx0Zs0uy; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53KNqm0u023986
+	for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 06:26:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	81wtBN9+V7tXS0MM9Mk0cNCiAxviM10Y/8IbcHUZVzk=; b=Xx0Zs0uy2PLEplQm
+	Figf5rUsODrhui6vPd+zq3iq0iKAAONZ2d1FAVf46wqXz18YsSV2iMCfsDMmtRhz
+	6YNRKD74g//tv1pvpAmoa98FRNjmJ1V+9154oWG17RZ1aRjJ1fpjpkyAhIVTQvKE
+	v0edFFPQ1zJVZaFfir7Y2hA5Qo5RaFjx1LZGgFhYrTdGZUu6CV9NSs94lIxnRgzI
+	8RD/aX2pY+Rl2glZJ/TysrvTTffLORv7vU2SAY0zo9I2RrkvTnxSCE82FEeXeISX
+	ZrNt117Zd37WWfkNrYNF/cI+aCI+oPjW/INLzoVJ01DCmJULWdHDDxlO7aGpL1ci
+	QfRZ5g==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 464426k5n0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 06:26:14 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-22650077995so57339035ad.3
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Apr 2025 23:26:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745208047; x=1745812847;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CX/10vkx/hdhwiym0foBnWUfHy9pxSwgILnrTpQDOqM=;
-        b=FYgIBVO1FbpUwKY4j6zs71MGDbwYk45lQencXNyOvSBiqxF5dX9jul08KTCbWiB7Z/
-         cxMxNwfUucW7mj2zI77F5X/1kATqgSrB+RLZhUv0am+y/Cdo6+AKVMAIlwbfdKhX5jvF
-         +UrKGHvF2KlWrEM4tY+rnVL9HdLQU4G2SkaFQkKpxrbtH2LFVbUNyuvc56VAIzfbh9EC
-         TLChXHSFnCyfUHCt6woBrJtn9IheNzUY65ls2CsZLO0XGqOA3D1DObcwcRoGIf0AFYey
-         fDRcDaZhs6iizQZmS+Ks9Pm8cUNWjOHtVKdS62kMcVIxQIDiNz0q8kBdFcrXbAPRv05Y
-         nNCA==
-X-Forwarded-Encrypted: i=1; AJvYcCXxdBpT+N3zbvwMZvWSsJV0XhvxRhjyIr1NJxzDRJXGl2+BqLWNlwO3AvB/q75V6SRAIQcQelIe4bcpsds=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXJ5tuo9RRcdbAR7nFpMsZG7PRcWREiDWUTfHbLX9gqlRT2AQp
-	8nL35TDx6amTsatpl+mQSx7N1B7RuIn45dY3qN1C4S5HJkEa8WtUandnpg==
-X-Gm-Gg: ASbGncsxnIT40cPCwDGdaZrkhUM1NwTrYgg9nosD1vOAOTob188Ol4yJinR5ETtRfT6
-	vlgXmIH3QCINLqph3zYHI7Myvh13UNshbd0CttWYh6H5qJxiMiU26PwQguGrTmYnRO89BFkK1nW
-	iFolbpdaBeoa8SVDO+UKg0ieGpsHxyy/tftYcKJZYgH+wmP/ymwDcFFSAo11A50v/0LqPFtHGEI
-	Pg6xiVjdvOT9NnDQ8sE55/92tfjOMM8C2mXRJhaKO6AYQKHVnJRtJPRco9y3r/m+5xleB4z+qp7
-	AJ8Dq6C47YRukks8ijGcp45dx38=
-X-Google-Smtp-Source: AGHT+IF1eaVaae3F64952TllyruDbPzcrWhEmWG5BmgwcJDsDXZ3/SzMHM+U6g2uLDmpJr9+pAIJAQ==
-X-Received: by 2002:a05:620a:4445:b0:7c3:c9e5:e4ba with SMTP id af79cd13be357-7c925821affmr1859711285a.29.1745208047220;
-        Sun, 20 Apr 2025 21:00:47 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8200:dab8::a86])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925b775c1sm374568085a.97.2025.04.20.21.00.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Apr 2025 21:00:46 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCHv2] wifi: ath9k: ahb: do ioremap resource in one step
-Date: Sun, 20 Apr 2025 21:00:44 -0700
-Message-ID: <20250421040044.44887-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.49.0
+        d=1e100.net; s=20230601; t=1745216773; x=1745821573;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=81wtBN9+V7tXS0MM9Mk0cNCiAxviM10Y/8IbcHUZVzk=;
+        b=NSuRDRnhq7/Q92plTokN90FY726fvxXdFKmoQygj26jOANgwMS4/Od0rmkj74kZvmw
+         /Sezpwup68m2kCb8rjiJK8nusQrdxmLzxXxo1YGTANiK5sL2PSu3fvAraft5x1w6+Msk
+         BUjVauzdm6hZjyzxNvDf5SAbZNINQMfiU/lpM5r6Sz8OWfZesPV3CxKyysmJlQubo7DE
+         psXYTr7+kfzthvNEi8TgMJRmXNDDqiOi2eaG8h8EE3L50rwAbQilU9oiLHa6zJJiA1eU
+         oPVz7xq/itjiWawJrL7Pudyd8lmr1HU32yDC2vMUauxXWCosShqyFBNHVjRiqcl+LDtP
+         Se1A==
+X-Gm-Message-State: AOJu0YwN831/2N/J0NGSg9LidjI0x6AZr/w0YAESZa2uTasZtmebc+kI
+	1yoJ6pEuGtDJQYcC/mIc1lu1wc70uaIxN7QDC+IA0w5l17ydvE+Zsm/b3hrx1omqqhA0AiP8IW7
+	09CLea28x++u5v+oHYvVSzV2+un1yjpMyh2A8nbMR8KZGve1VjIh36P3xvU9PRHg42g==
+X-Gm-Gg: ASbGncsDMrbqySi+kPPlblP0sQN/KoFY4ctkAxUQ74XIv7w8Mnuwr9UO8RJZyHxbyFO
+	jMZ4T97ODYCW3kEAjz6sHEgBn6rYAyzO5mKWCUw9bIDRz0DE50mbKbLx2AdCzCp/TmdLJtsAets
+	qN4IbiaMCC1toslPodeQJl5BEkrRM1mITZGXam7ZBUDtqSy3y6MhL7YAeShmM9LrvldbYNboDm/
+	C3BxgJ4LvrsAkOdiIipoUsduTGzuK2kba+tSRPBVozQ/T60OEeSfIsflBYEjhLBKCXfosYcCRqK
+	kAG/A8dEziUMJEm2iO2hC3jjRk4fMtHr2T3GUnvzTye+XR8+sRaamJ/PiMsdQVwhtVXvMiWIsZs
+	=
+X-Received: by 2002:a17:903:41c7:b0:220:faa2:c911 with SMTP id d9443c01a7336-22c535a4b39mr144450985ad.14.1745216773203;
+        Sun, 20 Apr 2025 23:26:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGz7puTIUYsZfLXpiAYIfV0IpMtR7YCW1rRySiCsm+qOdt9M669LFqpmigrbCIjADkzxITKxw==
+X-Received: by 2002:a17:903:41c7:b0:220:faa2:c911 with SMTP id d9443c01a7336-22c535a4b39mr144450715ad.14.1745216772785;
+        Sun, 20 Apr 2025 23:26:12 -0700 (PDT)
+Received: from [10.133.33.171] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50fe2411sm57881205ad.256.2025.04.20.23.26.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 20 Apr 2025 23:26:12 -0700 (PDT)
+Message-ID: <8d428614-adea-43a5-a47f-457b569bc604@oss.qualcomm.com>
+Date: Mon, 21 Apr 2025 14:26:10 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next v5] wifi: ath12k: read country code from SMBIOS
+ for WCN7850
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Wen Gong <quic_wgong@quicinc.com>
+References: <20250417024227.1712-1-kang.yang@oss.qualcomm.com>
+ <83e417e5-31d8-4fe5-9774-fd97fb51f663@oss.qualcomm.com>
+Content-Language: en-US
+From: Kang Yang <kang.yang@oss.qualcomm.com>
+In-Reply-To: <83e417e5-31d8-4fe5-9774-fd97fb51f663@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: umWi9BcrhumQUuISutge6N4CSZNXpnCl
+X-Proofpoint-GUID: umWi9BcrhumQUuISutge6N4CSZNXpnCl
+X-Authority-Analysis: v=2.4 cv=IP8CChvG c=1 sm=1 tr=0 ts=6805e506 cx=c_pps a=cmESyDAEBpBGqyK7t0alAg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=h2vc5te2_RImeTn38vYA:9
+ a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-21_03,2025-04-17_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
+ mlxscore=0 malwarescore=0 clxscore=1015 priorityscore=1501 bulkscore=0
+ suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
+ impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504210048
 
-Simplifies probe slightly and adds extra error codes.
 
-Switching from devm_ioremap to the platform variant ends up calling
-devm_request_mem_region, which reserves the memory region for the
-various wmacs. Per board, there is only one wmac and after some fairly
-thorough analysis, there are no overlapping memory regions between wmacs
-and other devices on the ahb.
+On 4/18/2025 11:18 AM, Jeff Johnson wrote:
+> On 4/16/2025 7:42 PM, Kang Yang wrote:
+>> From: Wen Gong <quic_wgong@quicinc.com>
+>>
+>> Read the country code from SMBIOS and send it to the firmware. The
+>> firmware will then indicate the regulatory domain information for
+>> the country code, which ath12k will use.
+>>
+>> dmesg:
+>> [ 1242.637253] ath12k_pci 0000:02:00.0: worldwide regdomain setting from SMBIOS
+>> [ 1242.637259] ath12k_pci 0000:02:00.0: bdf variant name not found.
+>> [ 1242.637261] ath12k_pci 0000:02:00.0: SMBIOS bdf variant name not set.
+>> [ 1242.927543] ath12k_pci 0000:02:00.0: set current country pdev id 0 alpha2 00
+>>
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-02582-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+>>
+>> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+>> Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
+>> ---
+>>
+>> Note: This patch is an old patch in public review written by
+>> Wen Gong. Just resend it for him.
+>> Link: https://lore.kernel.org/linux-wireless/20230913105156.17618-1-quic_wgong@quicinc.com/
+>>
+>> v5:
+>>      1. fix "From" header.
+>>      2. rebase on tag: ath/main(ath-202504141512).
+>>      3. change quic email to oss email.
+>> v4:
+>>      1. fix assignment error for case ATH12K_SMBIOS_CC_ISO.
+>>      2. rebase on tag: ath/main(ath-202503251458).
+>> v3:
+>>      1. rebase on tag: ath-202503172347.
+>>      2. add branch tag.
+>>      3. add descripition for Wen Gong.
+>> v2:
+>>      1. rebase on tag: ath/main(ath-202502181756).
+>>      2. rewrite commit message.
+>>
+>> ---
+>>   drivers/net/wireless/ath/ath12k/core.c | 26 +++++++++++++++++++++++--
+>>   drivers/net/wireless/ath/ath12k/core.h | 27 +++++++++++++++++++++++++-
+>>   drivers/net/wireless/ath/ath12k/mac.c  | 11 +++++++++++
+>>   3 files changed, 61 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+>> index 9b23329f1bf2..b5ade9c7530d 100644
+>> --- a/drivers/net/wireless/ath/ath12k/core.c
+>> +++ b/drivers/net/wireless/ath/ath12k/core.c
+>> @@ -697,7 +697,7 @@ static void ath12k_core_stop(struct ath12k_base *ab)
+>>   	/* De-Init of components as needed */
+>>   }
+>>   
+>> -static void ath12k_core_check_bdfext(const struct dmi_header *hdr, void *data)
+>> +static void ath12k_core_check_cc_code_bdfext(const struct dmi_header *hdr, void *data)
+>>   {
+>>   	struct ath12k_base *ab = data;
+>>   	const char *magic = ATH12K_SMBIOS_BDF_EXT_MAGIC;
+>> @@ -719,6 +719,28 @@ static void ath12k_core_check_bdfext(const struct dmi_header *hdr, void *data)
+>>   		return;
+>>   	}
+>>   
+>> +	spin_lock_bh(&ab->base_lock);
+>> +
+>> +	switch (smbios->country_code_flag) {
+>> +	case ATH12K_SMBIOS_CC_ISO:
+>> +		ab->new_alpha2[0] = u16_get_bits(smbios->cc_code >> 8, 0xff);
+>> +		ab->new_alpha2[1] = u16_get_bits(smbios->cc_code, 0xff);
+>> +		ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot smbios cc_code %c%c\n",
+>> +			   ab->new_alpha2[0], ab->new_alpha2[1]);
+>> +		break;
+>> +	case ATH12K_SMBIOS_CC_WW:
+>> +		ab->new_alpha2[0] = '0';
+>> +		ab->new_alpha2[1] = '0';
+>> +		ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot smbios worldwide regdomain\n");
+>> +		break;
+>> +	default:
+>> +		ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot ignore smbios country code setting %d\n",
+>> +			   smbios->country_code_flag);
+>> +		break;
+>> +	}
+>> +
+>> +	spin_unlock_bh(&ab->base_lock);
+>> +
+>>   	if (!smbios->bdf_enabled) {
+>>   		ath12k_dbg(ab, ATH12K_DBG_BOOT, "bdf variant name not found.\n");
+>>   		return;
+>> @@ -758,7 +780,7 @@ static void ath12k_core_check_bdfext(const struct dmi_header *hdr, void *data)
+>>   int ath12k_core_check_smbios(struct ath12k_base *ab)
+>>   {
+>>   	ab->qmi.target.bdf_ext[0] = '\0';
+>> -	dmi_walk(ath12k_core_check_bdfext, ab);
+>> +	dmi_walk(ath12k_core_check_cc_code_bdfext, ab);
+>>   
+>>   	if (ab->qmi.target.bdf_ext[0] == '\0')
+>>   		return -ENODATA;
+>> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+>> index 44e02ebb1071..3f9fcd4d6f20 100644
+>> --- a/drivers/net/wireless/ath/ath12k/core.h
+>> +++ b/drivers/net/wireless/ath/ath12k/core.h
+>> @@ -175,9 +175,34 @@ struct ath12k_ext_irq_grp {
+>>   	struct net_device *napi_ndev;
+>>   };
+>>   
+>> +enum ath12k_smbios_cc_type {
+>> +	/* disable country code setting from SMBIOS */
+>> +	ATH12K_SMBIOS_CC_DISABLE = 0,
+>> +
+>> +	/* set country code by ANSI country name, based on ISO3166-1 alpha2 */
+>> +	ATH12K_SMBIOS_CC_ISO = 1,
+>> +
+>> +	/* worldwide regdomain */
+>> +	ATH12K_SMBIOS_CC_WW = 2,
+>> +};
+>> +
+>>   struct ath12k_smbios_bdf {
+>>   	struct dmi_header hdr;
+>> -	u32 padding;
+>> +	u8 features_disabled;
+>> +
+>> +	/* enum ath12k_smbios_cc_type */
+>> +	u8 country_code_flag;
+>> +
+>> +	/* To set specific country, you need to set country code
+>> +	 * flag=ATH12K_SMBIOS_CC_ISO first, then if country is United
+>> +	 * States, then country code value = 0x5553 ("US",'U' = 0x55, 'S'=
+>> +	 * 0x53). To set country to INDONESIA, then country code value =
+>> +	 * 0x4944 ("IN", 'I'=0x49, 'D'=0x44). If country code flag =
+>> +	 * ATH12K_SMBIOS_CC_WW, then you can use worldwide regulatory
+>> +	 * setting.
+>> +	 */
+>> +	u16 cc_code;
+>> +
+>>   	u8 bdf_enabled;
+>>   	u8 bdf_ext[];
+>>   } __packed;
+>> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+>> index 7af12733a1ff..aee3080a934c 100644
+>> --- a/drivers/net/wireless/ath/ath12k/mac.c
+>> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+>> @@ -11550,6 +11550,17 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
+>>   			goto err_unregister_hw;
+>>   		}
+>>   
+>> +		if (ar->ab->hw_params->current_cc_support && ab->new_alpha2[0]) {
+>> +			struct wmi_set_current_country_arg current_cc = {};
+>> +
+>> +			memcpy(&current_cc.alpha2, ab->new_alpha2, 2);
+>> +			memcpy(&ar->alpha2, ab->new_alpha2, 2);
+>> +			ret = ath12k_wmi_send_set_current_country_cmd(ar, &current_cc);
+>> +			if (ret)
+>> +				ath12k_warn(ar->ab,
+>> +					    "failed set cc code for mac register: %d\n", ret);
+> FYI I split this line in pending to fix the ath12k-check:
+> drivers/net/wireless/ath/ath12k/mac.c:11648: line length of 94 exceeds 90 columns
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=2d2ccff4c0efa4cb55d0a21c75c6e7162788f9db
 
-Tested on a TP-Link Archer C7v2.
+Oh, thanks
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- v2: remove wrong devm irq conversion.
- drivers/net/wireless/ath/ath9k/ahb.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
-index d4805e02b927..49b7ab26c477 100644
---- a/drivers/net/wireless/ath/ath9k/ahb.c
-+++ b/drivers/net/wireless/ath/ath9k/ahb.c
-@@ -74,7 +74,6 @@ static int ath_ahb_probe(struct platform_device *pdev)
- 	void __iomem *mem;
- 	struct ath_softc *sc;
- 	struct ieee80211_hw *hw;
--	struct resource *res;
- 	const struct platform_device_id *id = platform_get_device_id(pdev);
- 	int irq;
- 	int ret = 0;
-@@ -86,16 +85,10 @@ static int ath_ahb_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
- 
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (res == NULL) {
--		dev_err(&pdev->dev, "no memory resource found\n");
--		return -ENXIO;
--	}
--
--	mem = devm_ioremap(&pdev->dev, res->start, resource_size(res));
--	if (mem == NULL) {
-+	mem = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(mem)) {
- 		dev_err(&pdev->dev, "ioremap failed\n");
--		return -ENOMEM;
-+		return PTR_ERR(mem);
- 	}
- 
- 	irq = platform_get_irq(pdev, 0);
--- 
-2.49.0
-
+>
+>> +		}
+>> +
+>>   		ath12k_fw_stats_init(ar);
+>>   		ath12k_debugfs_register(ar);
+>>   	}
+>>
+>> base-commit: b80c52642c1159c2596776b39b06eb1c2e36baff
 
