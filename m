@@ -1,128 +1,155 @@
-Return-Path: <linux-wireless+bounces-21800-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21801-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76B8A95A32
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 02:28:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2E4A95A40
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 02:46:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EC067A25E2
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 00:27:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D329188EA50
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 00:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E74E74059;
-	Tue, 22 Apr 2025 00:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE982125DF;
+	Tue, 22 Apr 2025 00:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="pWsTRTri"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="m3BESd99"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52372A95E;
-	Tue, 22 Apr 2025 00:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDC0139D
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 00:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745281699; cv=none; b=GGG+urXNZONpZ1VndzIo2f/sJoTNtOWAJl8Mihs8u8aTviEhyBfFZdqysdyCZXnjR/ApGbFuvbxHsMNFpBCOfUQ1Ic34ZD4B4989UtjxQ41vlV1XklL1LxWKgZrbX2nyaXHD87ZXlgJAWx81h0WLuopwc+gPzfUOGBKmMW4nP8s=
+	t=1745282810; cv=none; b=HZGZm7VGwi2Gx2G0UHYoGoPhFkQrT7ThOTphNvyo2JQ1PHHSCX9qxKlfhaMJ1mIulqYI43w06adRUocX6cwYvOaJwjVy4bYHb3LrqLmZ0y/Z0SoQUn+68CyQS3XZq8NMXGt6VIKf95COvtJykKAhShsxqcrsGqcqitI9YQDxhpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745281699; c=relaxed/simple;
-	bh=5bvGiubNrKBkPHJtUFc60qqhau+/z1pcrchovxujmlI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VmmCIEgfKHlbcDb96pPllE59rr7rPsfdj4CdESKmQAlSCFNToD08fAM7dlInjdHjt/KWvcab1eHznbA9/g1oZ4waon2EIi+R0Ph5gXMgLgdXtoowP5Ut1NkN19c5bzIIdPT/FweJ8L6YO2GRCStHAj5EIimBubvPoKitMS1szME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=pWsTRTri; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 53M0RDHY03289616, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1745281633; bh=5bvGiubNrKBkPHJtUFc60qqhau+/z1pcrchovxujmlI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=pWsTRTriz4bE2MlnbkJl9vg/ZSkXu/ZcdmzCfZickUesxEeUJt5zef/cg16fxR516
-	 BSrdmyDlL7hDETVfbW9soOxfVYRZlmhhb+RpQdgvlXGdAOTRik6PuEvgZCMCfFNzhJ
-	 OdXAdz0s22vPTZ0VQ9mnrxp7YR0nT+fMRhvZN4F0seZfmtbXm+pBvceicbq6JKn9MV
-	 2Dx2BDDlZRAcQ/yzOXX+5iqj1pawWMQwmxyW64qt/c1DlhTHcMJ91yzHcAZh5QDYbT
-	 4pAujwFc4zz4xhT3Sbkz2dfKZaJxi9KCMODiyK69GG3j/CMfysXeDVuBh2zJ8f5cis
-	 CZZuitVlb+uPw==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 53M0RDHY03289616
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Apr 2025 08:27:13 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 22 Apr 2025 08:27:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 22 Apr 2025 08:27:13 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Tue, 22 Apr 2025 08:27:13 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Mingcong Bai <jeffbai@aosc.io>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-CC: Kexy Biscuit <kexybiscuit@aosc.io>,
-        Liangliang Zou
-	<rawdiamondmc@outlook.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-Subject: RE: [RFC PATCH] wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723
-Thread-Topic: [RFC PATCH] wifi: rtlwifi: disable ASPM for RTL8723BE with
- subsystem ID 11ad:1723
-Thread-Index: AQHbsQLzvT9MJD0RkUSfQMSmmYlilrOu11zA
-Date: Tue, 22 Apr 2025 00:27:13 +0000
-Message-ID: <4a7284bd703743959e709b9465dabf1d@realtek.com>
-References: <20250419081251.285987-1-jeffbai@aosc.io>
-In-Reply-To: <20250419081251.285987-1-jeffbai@aosc.io>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1745282810; c=relaxed/simple;
+	bh=vTY6LT8I7a4anz4QeeLwR5HKGUj/trf02eQvmzZTnfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=su8Ct+3Oe5tNF7Gy6qaVyu9aB0vTCembSbvKLu3nCoIT5ceyM8X1VRcj8ozsgzEgLx+a9UhpSvV/pN09TgevVUMeURbgC8P2TOUp6ditPduDop2SAtjAiHNEYzitH4adbJ2H7Q1cM4NyFhLzHtYwzp7KbZkhUmfovDEu9nsVeRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=m3BESd99; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-736b98acaadso4209202b3a.1
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 17:46:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1745282808; x=1745887608; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DESd6kACTnQKmLSbi0O5NrgwAZmaHVMz5BjPH0vRm/Y=;
+        b=m3BESd99riFlJB9sBQuB4GqQz2+zRTJs+7OF1t7Nj1lcAHVUcaEQIC6S+SFCmJW97O
+         ptRcgRMKfuVJIlaa7n/AsULPpNo1GyUpCiNQ5fuJC6dRWSOfKElH+97Z7Zrxzevs/tN+
+         cZC6/1LPYjrb2Rmnk2WROScW5We9huWAnqlP8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745282808; x=1745887608;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DESd6kACTnQKmLSbi0O5NrgwAZmaHVMz5BjPH0vRm/Y=;
+        b=wWTtbdqDyV+D1+RdPBqDIJdvzZcX9C32rvAG39MhImC4KRFhmYeQ/ZAAaQHEEarLPr
+         f0WkD4pc30B+dC/40N+JGmlT0g+ssEA3Nt71+FFRiKAz8NQqhNsgRFGXT0U5jJBqFiH0
+         U48CTLuDCb0sdn4yQ69K4XsSGZ2/s82tU0WXH0Cw7qTjE72qD5wXRbAmAfMkf2oa6ls5
+         QiDkh/Ho70ig+Q/dOuE1yrx9d+F1dUJHl0BtBTNKYBB9XSzJTUSNQ3GLq78vwoWgXYVn
+         Nc6U0PP46tuykmnfecWphOvoLWJ/HPgrPucy5X1w7iZKt31rZEM02BZbPxSo1/PVrM9x
+         RRqg==
+X-Gm-Message-State: AOJu0YxaKJZdVuw36MaHlJBUH3hqWcdz1GmBvkmBZ3tJNL3qOWqPyYrz
+	zYYJkDAqGALlpAXRPFbC2rZWUO1HIaAsMf8MCl3jJ0zwWHDjBwHH748hxfWNAA==
+X-Gm-Gg: ASbGnctKCarpUYWGcYwpGEZ1tRQbm2SOXzDN8tH5yeZjRSkG6oauM6D2UUsfogXl3xx
+	WD5KgDOR4/U2FMV1tSdy3XgWcuUbLC5hfagIEnSHcCqAKMA919rWEpAisMuDeCmCNi5JXMeGqM6
+	AFjVYvriI6l1P3ubb5UPHyEGpyVcLwm2kTzGxE1w6kh3/el0w1i025HEIJ5TaBdopLwHbXXUEuM
+	VdVFn2DuYWetgg7tqpR/LC+Kxf60Q7S/s52HyM7e2jhjpJ4q5782fNFOxUwMd0yNhqUrZehAhA6
+	A6Ws/a82oMcUfL8cga1zS5vtBRVx6Fb5nOc9F82nF7O2E5q+HlVsA4JeF81RpzMTn4PJBDssfMG
+	dsQM=
+X-Google-Smtp-Source: AGHT+IHpmV5qAalHsZLfGW7snz5zVoC49bLUHJDnuf1xQk+zbKalF+g+4dAFedrgrA/YYjldiv8U2g==
+X-Received: by 2002:a05:6a00:2443:b0:736:32d2:aa8e with SMTP id d2e1a72fcca58-73dc14ad1b3mr17055309b3a.6.1745282808205;
+        Mon, 21 Apr 2025 17:46:48 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:a29d:cdf7:a2a6:e200])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73dbf8e4622sm7566279b3a.67.2025.04.21.17.46.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Apr 2025 17:46:47 -0700 (PDT)
+Date: Mon, 21 Apr 2025 17:46:45 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Jeff Chen <jeff.chen_1@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	johannes@sipsolutions.net, francesco@dolcini.it,
+	tsung-hsien.hsieh@nxp.com, s.hauer@pengutronix.de
+Subject: Re: [PATCH] wifi: mwifiex: Use "scan_plans->iterations" for bgscan
+ repeat count
+Message-ID: <aAbm9W3yAxMc_C1l@google.com>
+References: <20250416155425.4070888-1-jeff.chen_1@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250416155425.4070888-1-jeff.chen_1@nxp.com>
 
-Mingcong Bai <jeffbai@aosc.io> wrote:
+On Wed, Apr 16, 2025 at 11:54:25PM +0800, Jeff Chen wrote:
+> Updated the "mwifiex_cfg80211_sched_scan_start" function to assign
+> "bgscan_cfg->repeat_count" based on "scan_plans->iterations"
+> provided in the sched_scan settings instead of the default
+> "MWIFIEX_BGSCAN_REPEAT_COUNT". This change ensures that the repeat
+> count aligns with the iterations specified in the schedule scan
+> plans.
+> 
+> Signed-off-by: Jeff Chen <jeff.chen_1@nxp.com>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> index a099fdaafa45..be28c841c299 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> @@ -2833,7 +2833,7 @@ mwifiex_cfg80211_sched_scan_start(struct wiphy *wiphy,
+>  				request->scan_plans->interval :
+>  				MWIFIEX_BGSCAN_INTERVAL;
+>  
+> -	bgscan_cfg->repeat_count = MWIFIEX_BGSCAN_REPEAT_COUNT;
 
-> RTL8723BE found on some ASUSTek laptops, such as F441U and X555UQ with
-> subsystem ID 11ad:1723 are known to output large amounts of PCIe AER
-> errors during and after boot up, causing heavy lags and at times lock-ups=
-:
->=20
->   pcieport 0000:00:1c.5: AER: Correctable error message received from 000=
-0:00:1c.5
->   pcieport 0000:00:1c.5: PCIe Bus Error: severity=3DCorrectable, type=3DP=
-hysical Layer, (Receiver ID)
->   pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=3D0000000=
-1/00002000
->   pcieport 0000:00:1c.5:    [ 0] RxErr
->=20
-> Disable ASPM on this combo as a quirk.
->=20
-> This patch is a revision of a previous patch (linked below) which
-> attempted to disable ASPM for RTL8723BE on all Intel Skylake and Kaby Lak=
-e
-> PCIe bridges. I take a more conservative approach as all known reports
-> point to ASUSTek laptops of these two generations with this particular
-> wireless card.
->=20
-> Please note, however, before the rtl8723be finishes probing, the AER
-> errors remained. After the module finishes probing, all AER errors would
-> indeed be eliminated, along with heavy lags, poor network throughput,
-> and/or occasional lock-ups.
+Drop the MWIFIEX_BGSCAN_REPEAT_COUNT definition from main.h, now that
+it's unused.
 
-Let me clarify here means. Do you mean all work well after applying this
-patch? Or still lag, poor throughput or lock-ups?
+> +	bgscan_cfg->repeat_count = request->scan_plans->iterations;
 
-If all symptoms disappear, it would be worth to take this (quirk) patch.=20
+Are you sure you want to take the provided value as-is? For one, the
+request field is 32 bits wide, and your FW interface is 16 bits, so we
+definitely to make some size checks at a minimum.
 
+It seems like we should be setting wiphy->max_sched_scan_plan_iterations
+somewhere...
+
+Additionaly, what about the described behavior for 0 in cfg80211.h?
+
+ * @iterations: number of scan iterations in this scan plan. Zero means
+ *      infinite loop.
+ *      The last scan plan will always have this parameter set to zero,
+ *      all other scan plans will have a finite number of iterations.
+
+Is that how FW treats a value of 0? Or is there some other sentinel
+value?
+
+And, why did we have "6" here previously? Is that an important default?
+Or was it just a guess, and it's really OK to just have 0 (infinite)
+default? This could be a user-noticeable change, but maybe that's OK.
+You should at least acknowledge how and why this will change things in
+real terms.
+
+All in all, it feels like you haven't given me much reasoning to say,
+"yes, this is correct and a good idea."
+
+Brian
+
+>  	bgscan_cfg->report_condition = MWIFIEX_BGSCAN_SSID_MATCH |
+>  				MWIFIEX_BGSCAN_WAIT_ALL_CHAN_DONE;
+>  	bgscan_cfg->bss_type = MWIFIEX_BSS_MODE_INFRA;
+> 
+> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+> -- 
+> 2.34.1
+> 
 
