@@ -1,112 +1,104 @@
-Return-Path: <linux-wireless+bounces-21798-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21799-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF33A959F4
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 01:55:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD385A95A16
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 02:17:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E12E175979
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Apr 2025 23:55:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B9B117402B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 00:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B087221FB9;
-	Mon, 21 Apr 2025 23:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F6827466;
+	Tue, 22 Apr 2025 00:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="MhHCnbbQ"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="El5h6H5O"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAB58632C
-	for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 23:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1FA2F2E
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 00:17:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745279733; cv=none; b=bbjFn83GUWe+o/88vBa2gw1zV14htWnM06qPAPTcuVPHWDiTHvItiagKO+k7+c9r16Tqe3a6JtSc0qVLsw9U1uVZVYRLrZdaMsnUE97SZW5LFlo3c0htTyhBBCQAMSjGN4FTjuePzOdAmVElr65p2k1YNV8tGRwXZIaxLCK11Tw=
+	t=1745281050; cv=none; b=D4FwrBbUtpLpR/xF30WirBLhJr9AfzqWE3eZQ4ogx36LuXgVdb8MInnge7T56OsAe17djW66blej4w1k+lO8WXeT977uFv/QqPsyETnK7XFJpiobuxAaK+QbdgoDmq9uFtTE4JtI+v56GviGAXJON5Xju9q49EhSGCUK/fZGwek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745279733; c=relaxed/simple;
-	bh=AJWyW3TravrW0pqwKqrkjFzRRarpVKg6jNeX9krfP7E=;
+	s=arc-20240116; t=1745281050; c=relaxed/simple;
+	bh=HrgLJwttLL1sQEMe1Kl7T/hru2XImN4ykMYg2UEJwPQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nxu9EjErWOlZlMW9k0eEl1riXbSksU9O4SSXSQ2NnSGHLATro3L+4v+j83yZP4Wd7eptxduZ98efwVVM3EuI5jzXBKd8cdg+O0LLTK0/nGIDuxmYl57oeMBDkHOHsr89xiyKnfroK61fyrNgfnd2IUIvU4DU+0PBZgTfadxWOuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=MhHCnbbQ; arc=none smtp.client-ip=209.85.210.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=qDm/tfYOndYVJl9xSvIkLDKoWK25UcDsiOXHaEdNnMV4NIls2kioh4zF7rsPeXyt9lXpuk0Lp6W/hNiNcfbpQWDcYmM93/buHnXHlcQOqE5m8QqT9oMB33MViuvUs/ODqcf9Q4Bgrn3MW2/1lNtbafvMM1bO0VCpQP/fCmzbcnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=El5h6H5O; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-73c17c770a7so5760132b3a.2
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 16:55:31 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-225df540edcso55810045ad.0
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 17:17:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1745279731; x=1745884531; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4lIvdhiIp7KfEAT9Ev7PNKTHz6RV3HKg7XqQ+xR01ew=;
-        b=MhHCnbbQtu3RnE99VaisY6zdE94TOwwr4cRyjANZEBdqV1cWRWAbF/hUzzw4fTv3fj
-         Pj0ktdDS7NKQhXpkswxXCmCC8aFaKnE8PsLHiU0IHPfoKEEs3TE19WWTKMnGf0M87ObW
-         AmuW8N3WCXWbb9nx8pgHAEF0fwtkZN4hw+1uE=
+        d=chromium.org; s=google; t=1745281048; x=1745885848; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HrgLJwttLL1sQEMe1Kl7T/hru2XImN4ykMYg2UEJwPQ=;
+        b=El5h6H5OppANaA3usiBJ1poh/2kRTJRPImA/dS702evVdR1RQgMlocsYtSdCamtxyy
+         F/Vbx/Yg6R5daFVtRQsFfjCs12NzD9KFcBVJ59jynmeTAKzcLpJin/E2m5KVT/qUfpFS
+         2pRXgqkghSrQxVqofN3zce0trG/S2aQPzqzQE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745279731; x=1745884531;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4lIvdhiIp7KfEAT9Ev7PNKTHz6RV3HKg7XqQ+xR01ew=;
-        b=P0Mze/35+T382j5rwg0YoEYXx9euvBSqkKqrR2oIvp7DG7qhrgQCQk2XpopEMWJ6Zz
-         BybRj/lb1AbGzyZI7RDg0wBMjAfl6tMCoRZDdfJxHr9KL0JoB8hH5QFtH/wi2Fm0RRm1
-         DBmSNoPdWI1Po9H0K+BfYFp6u5IprS0N34e8osjcmd0Ow4+q2AfLgTwJQefQ/CpQp2U5
-         RC1mw2Uviw8wLFaFj7H4un6796pfyNPthHTSdTYOkykLVWavvGOQ/XJMQsqg59OL8+kI
-         FE3rqwoH6Z5/nLe3Qm7Ej+qEBR+JUlfvWqSIEbF2kzW8mOyR517CULmL8pFK9Bx5G4qO
-         GOIw==
-X-Forwarded-Encrypted: i=1; AJvYcCXJUa3q7IWm9DiBBNmdl6f8PoVBHAoHf0rAkabWI0W10BTFIpxpwsfsNS/0S/yznz5MLhPg5+zXNgPUkukjpg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmOQ/YxOJjGVnCwn20VVBhPBrtY+JMOLcGg2FYvznHWERiy45Z
-	TynfBO5ZalOM6PEnG/SMbZhaqo6D9h/MZqUF9Qb1hiunfIJ5+8iV3IuE+XLfJg==
-X-Gm-Gg: ASbGncv14uHACqJD7SqJNzY0Z7PIL0bnSDiKW+c1AVJ43yCtYttk/lyB2ZZVLD0Onwk
-	DrLY+CQ4xz71Kw2EAdaGJ2zumT/YHliYjdSZn654Hdas9oGPSqKQS28/Edi3i7Y6QNAtnHp1Bnd
-	589GeKj4DzWp8CpjDAk6qIt0xT4KmyKasZO+nAepULJqyPiTX0+StsojA+fqpyG3rJHBBgk2rpX
-	v4fCM/QluUSVvwpI26D3rjUSo8Em/xQMSlmLW8Lj4hPkGR4aNCXLMCipYUmzplJ61FQioq7ZTJA
-	iuydqPHWAmgFI3xGUOAs08jrab/zg9kjOw==
-X-Google-Smtp-Source: AGHT+IGJ2eXpK7Tw18O1UcFDo8NrVpdLzOhE0cUZMGnvJYX5+9Xh7zn7vlF1w9hXh4UFv6ZoFQfjxw==
-X-Received: by 2002:a05:6a21:9987:b0:1f5:9024:324f with SMTP id adf61e73a8af0-203cbd27ac2mr22588881637.31.1745279731393;
-        Mon, 21 Apr 2025 16:55:31 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745281048; x=1745885848;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HrgLJwttLL1sQEMe1Kl7T/hru2XImN4ykMYg2UEJwPQ=;
+        b=vutcLCd1Xub/DTLvPUpgA2/rUyU41syzdKwFYh7VkmIW1qIhCIZqn6Ar7a7jVQiPYJ
+         vcTBGkzNoL1f2C/3nTKrs74PnjYbIpGrH0BFOW23Z+7TQIOJmqqv0hVM5XsGBj81Xxh8
+         xYRuAWZoSypwtcwBXHIBokWK/WKNDYuxyonBTHNaKCrlYCnD9+UA4HPVMD+9lljyokQx
+         7sgJvBY88CUUt3dw3m2tavvXFNGtdmjEa1tLde1l2WZxZbifSb2NE5l2a5DHi3euHRTR
+         M6+qs2kW++s353u7WzrJ8kH8DhwBH/IfVXdsiz9XnhJlcqcK8wF8sRovifMn9ldIKgRQ
+         bDlw==
+X-Forwarded-Encrypted: i=1; AJvYcCVXe/cjTO0LLI8NgpChscyXEbKaNO6U0LQP8ODkusaVObG10Ne+WBQ5huG8G79B6RVee2vcE1fhxb6efrrVKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVq2566/BqQ+tEIE/0T4Q6utkxW9bG3QB99gSg2nC7+GAZV/I5
+	0gUtamXFsXY2H7NL9+6w/ywMs7vpyekATIgilOX7+96NyN/rvEorZrnxxpGdx+PO4oZBZTRKVPQ
+	=
+X-Gm-Gg: ASbGncsD0gSzmRgojX590HG7kz6yBDiuo7Uyzg1WzTBN+0Dj7OIDya23hqoyPj5NNbS
+	QVBWj8wkG228bdTpc5IAYP5+xHG4fOoIZjUxfWMKCgN+g+NJ6GE5VVmsQ7LlaUHIKqrkUrhU1rn
+	J8Ooj14x7OspujBKS0HI649oA9wYZQiqcADbeLrHp8O5DmzTNw7dRWX0Xm2ZV8QtM24sjGd6Jle
+	AD1DXLmSBhxljtQPeQIf/nG7RVJ5yA+0xRP9iDy5tUdE8gDMrxYfFGGgb7/TazwodL5NNpnO8Sk
+	4fq8sHdkyxAnsDelerea7y4rSpyhdlUs05QCiVGh8mOykOtv8t5/YFqWCRILctNJM3e5ESiMqEz
+	SoohQRt1SF6nFnA==
+X-Google-Smtp-Source: AGHT+IEYFWReFAeCQ2q7RxoZidDwt2MsEQV2j+m9bpwLJfJPIe79c6ErF+J0K3gyQ4wc/dODZ9PncA==
+X-Received: by 2002:a17:903:1aab:b0:223:607c:1d99 with SMTP id d9443c01a7336-22c53993b51mr221907275ad.0.1745281047858;
+        Mon, 21 Apr 2025 17:17:27 -0700 (PDT)
 Received: from localhost ([2a00:79e0:2e14:7:a29d:cdf7:a2a6:e200])
-        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-b0db13a4084sm6199432a12.32.2025.04.21.16.55.29
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22c50fdba54sm71544675ad.233.2025.04.21.17.17.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Apr 2025 16:55:30 -0700 (PDT)
-Date: Mon, 21 Apr 2025 16:55:28 -0700
+        Mon, 21 Apr 2025 17:17:27 -0700 (PDT)
+Date: Mon, 21 Apr 2025 17:17:25 -0700
 From: Brian Norris <briannorris@chromium.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Francesco Dolcini <francesco@dolcini.it>,
 	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: Re: [PATCH wireless-next] wifi: mwifiex: Don't use %pK through printk
-Message-ID: <aAba8H-8KYZJeezS@google.com>
-References: <20250417-restricted-pointers-wifi-v1-1-b79cdaae5579@linutronix.de>
+	kernel@pengutronix.de
+Subject: Re: [PATCH 0/4] wifi: mwifiex: drop asynchronous init waiting code
+Message-ID: <aAbgFZqOF_HizS98@google.com>
+References: <20250410-mwifiex-drop-asynchronous-init-v1-0-6a212fa9185e@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250417-restricted-pointers-wifi-v1-1-b79cdaae5579@linutronix.de>
+In-Reply-To: <20250410-mwifiex-drop-asynchronous-init-v1-0-6a212fa9185e@pengutronix.de>
 
-On Thu, Apr 17, 2025 at 03:21:54PM +0200, Thomas Weiﬂschuh wrote:
-> In the past %pK was preferable to %p as it would not leak raw pointer
-> values into the kernel log.
-> Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
-> the regular %p has been improved to avoid this issue.
-> Furthermore, restricted pointers ("%pK") were never meant to be used
-> through printk(). They can still unintentionally leak raw pointers or
-> acquire sleeping looks in atomic contexts.
-> 
-> Switch to the regular pointer formatting which is safer and
-> easier to reason about.
-> There are still a few users of %pK left, but these use it through seq_file,
-> for which its usage is safe.
-> 
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+On Thu, Apr 10, 2025 at 12:28:42PM +0200, Sascha Hauer wrote:
+> This is a spin-off from my mwifiex cleanup series. I have split the
+> original single patch into a series which hopefully makes the changes
+> easier to follow and verify.
 
-FWIW:
+Thanks. The split series is indeed easier to process. (It doesn't help
+that the original code you're cleaning up is such a spaghetti mess.)
+
+With the squashed fixup you noted in patch 3, this series looks good to
+me:
 
 Acked-by: Brian Norris <briannorris@chromium.org>
 
