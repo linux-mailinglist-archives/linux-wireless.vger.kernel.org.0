@@ -1,110 +1,128 @@
-Return-Path: <linux-wireless+bounces-21803-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21804-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D463BA95A6D
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 03:22:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8C5A95A8D
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 03:37:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D36091894546
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 01:22:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A02E47A2A93
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 01:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB7342AB4;
-	Tue, 22 Apr 2025 01:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3452AD3E;
+	Tue, 22 Apr 2025 01:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="YdpSEgoW"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="FT9M9jGr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E23C26ADD;
-	Tue, 22 Apr 2025 01:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B58E27702;
+	Tue, 22 Apr 2025 01:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.182.119.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745284925; cv=none; b=KKve4RRFlhwniV7ZkBMpwE23S1RZx/5pZP3zxdrxvp8xQnrBoPtmUhJh+oRyv+vMeU/biG9VwI+Qj1P/pyaCxaaCOIqeOENY/ynR9M1X7hwtQKmE8vHfVFIYQZXsf1w6mfp8Q7wTv30RDM49SRoIthvGrks+iLl9GMqu10lcDVQ=
+	t=1745285846; cv=none; b=VfxNeL4mKX3FXHj9DAaRLzwYTuva76e5VouOqd8KhiYy4gWAiNxst+MJOZrx5cIU5dYawdNmh96e+vhhCcW89Z2bOejU43NJHWzMXw9VLF7xT/hetyGX6QP5swf6QeRhbHfd6zIPjNMTHN87TF4DmwLRsBORQnQ8KUQodRPy8LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745284925; c=relaxed/simple;
-	bh=B143AVIJ23guoYJU6VO+9f4GYSeaGW/SrhvQgIzaQJA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jkELPonP9ZNlhPgQuvHLHymx8tWDc3GTZ6vuzTdYDY+AtdogGR7H0/mL30DGQxuSRxpxxZpuPI9c/ONJAvYtfCMK7WmHvy6kAzTRwq8sW1Vk8HzBNsCYCarACnnplwwKy+uYJVYSO4qIx6q1F2s77ynrCuSS8hIXeA+6mkRlgjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=YdpSEgoW; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 53M1L7Pn83818441, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1745284867; bh=B143AVIJ23guoYJU6VO+9f4GYSeaGW/SrhvQgIzaQJA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=YdpSEgoWhrPyLY+Jm1sI3DjE42GLa8YTG/9PTh8FLAFpozi3zoCHG49CqotMhXNmi
-	 C7GSWU0637hhZxpXoSdkJIlL7gWcNHIWA29m89h1jON6NpHDlfNj6DpdLw6M79SmcU
-	 xenzvABhV94XKJEFK7+NiDfm3HqMXaBq8qyT/P4kknJ4aawrvf3LMrt22mYDwYvE3O
-	 lFx8AzCUmU4Sm9zjgD1Wzta5wVTjHIncNVT2/pjPzJmIFWhTLky5BRlXQI+oBM4ewv
-	 eHfNpyj72M/Ysw/4FaXHP2zCMIhxMe/sYdupzF5jgrh2UqxB0jvQN1Hq/vk35UacqB
-	 9IsJYyymODeJA==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 53M1L7Pn83818441
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Apr 2025 09:21:07 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 22 Apr 2025 09:21:07 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 22 Apr 2025 09:21:06 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Tue, 22 Apr 2025 09:21:06 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Mingcong Bai <jeffbai@aosc.io>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-CC: Kexy Biscuit <kexybiscuit@aosc.io>,
-        Liangliang Zou
-	<rawdiamondmc@outlook.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-Subject: RE: [RFC PATCH] wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723
-Thread-Topic: [RFC PATCH] wifi: rtlwifi: disable ASPM for RTL8723BE with
- subsystem ID 11ad:1723
-Thread-Index: AQHbsQLzvT9MJD0RkUSfQMSmmYlilrOu11zA//+GmwCAAIiqYA==
-Date: Tue, 22 Apr 2025 01:21:06 +0000
-Message-ID: <6f0234bc99094b3d84959afd4eea55d7@realtek.com>
-References: <20250419081251.285987-1-jeffbai@aosc.io>
- <4a7284bd703743959e709b9465dabf1d@realtek.com>
- <985175be-de04-4d1d-a859-fa740d87c9c3@aosc.io>
-In-Reply-To: <985175be-de04-4d1d-a859-fa740d87c9c3@aosc.io>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1745285846; c=relaxed/simple;
+	bh=9JbPWgTtaRUcud7VIMMQhF/8YKR2qN0SN4ekG60jgZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jJhjjrW6+QqEK5zJHI2Qkr0VDFsG0ULoegjEiqoT3cMOmw0lW06HUy1UUErdOnIQMwsmLELp/NUQVLYFam4tTbNW+L/EDXPz6vDx+BWdRrFfDvr7p4ZRXY2nbfmYaUEBVoaAnstFn67q4AjyqkwnupqjuPJhOqqlbQAL4TjT1Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=FT9M9jGr; arc=none smtp.client-ip=217.182.119.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
+	by relay3.mymailcheap.com (Postfix) with ESMTPS id 9408B3E928;
+	Tue, 22 Apr 2025 01:37:16 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf2.mymailcheap.com (Postfix) with ESMTPSA id A838B400AD;
+	Tue, 22 Apr 2025 01:37:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1745285834; bh=9JbPWgTtaRUcud7VIMMQhF/8YKR2qN0SN4ekG60jgZo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FT9M9jGrry8af/5uW3xSDINGCp9SyvfsncPX/7sjj3zWTpyP7ZZp+o/73M/dkgZGr
+	 asbLS7uY9/sapBZjtlyR3MMQDgtIQGsdMj5i4qYGmSp64MWxkjnVj4FAG2N9B1TPKw
+	 AmG6Ms6lDpe/ICm91YpycpaRx4xZIO7sy0Un2Ywc=
+Received: from [198.18.0.1] (unknown [203.175.14.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 58B31404EC;
+	Tue, 22 Apr 2025 01:37:11 +0000 (UTC)
+Message-ID: <0dc30d64-d520-4d54-ae84-43ee6f40b18e@aosc.io>
+Date: Tue, 22 Apr 2025 09:37:07 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] wifi: rtlwifi: disable ASPM for RTL8723BE with
+ subsystem ID 11ad:1723
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
+ Liangliang Zou <rawdiamondmc@outlook.com>,
+ "John W. Linville" <linville@tuxdriver.com>,
+ Larry Finger <Larry.Finger@lwfinger.net>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20250419081251.285987-1-jeffbai@aosc.io>
+ <4a7284bd703743959e709b9465dabf1d@realtek.com>
+ <985175be-de04-4d1d-a859-fa740d87c9c3@aosc.io>
+ <6f0234bc99094b3d84959afd4eea55d7@realtek.com>
+Content-Language: en-US
+From: Mingcong Bai <jeffbai@aosc.io>
+In-Reply-To: <6f0234bc99094b3d84959afd4eea55d7@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A838B400AD
+X-Rspamd-Server: nf2.mymailcheap.com
+X-Spamd-Result: default: False [-0.10 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FREEMAIL_CC(0.00)[aosc.io,outlook.com,tuxdriver.com,lwfinger.net,vger.kernel.org];
+	FREEMAIL_ENVRCPT(0.00)[outlook.com];
+	TO_DN_EQ_ADDR_SOME(0.00)[]
+X-Rspamd-Action: no action
 
-TWluZ2NvbmcgQmFpIDxqZWZmYmFpQGFvc2MuaW8+IHdyb3RlOg0KPiBIaSBQaW5nLUtlLA0KPiAN
-Cj4g5ZyoIDIwMjUvNC8yMiAwODoyNywgUGluZy1LZSBTaGloIOWGmemBkzoNCj4gPiBNaW5nY29u
-ZyBCYWkgPGplZmZiYWlAYW9zYy5pbz4gd3JvdGU6DQo+ID4NCj4gDQo+IDxzbmlwPg0KPiANCj4g
-Pj4NCj4gPj4gUGxlYXNlIG5vdGUsIGhvd2V2ZXIsIGJlZm9yZSB0aGUgcnRsODcyM2JlIGZpbmlz
-aGVzIHByb2JpbmcsIHRoZSBBRVINCj4gPj4gZXJyb3JzIHJlbWFpbmVkLiBBZnRlciB0aGUgbW9k
-dWxlIGZpbmlzaGVzIHByb2JpbmcsIGFsbCBBRVIgZXJyb3JzIHdvdWxkDQo+ID4+IGluZGVlZCBi
-ZSBlbGltaW5hdGVkLCBhbG9uZyB3aXRoIGhlYXZ5IGxhZ3MsIHBvb3IgbmV0d29yayB0aHJvdWdo
-cHV0LA0KPiA+PiBhbmQvb3Igb2NjYXNpb25hbCBsb2NrLXVwcy4NCj4gPg0KPiA+IExldCBtZSBj
-bGFyaWZ5IGhlcmUgbWVhbnMuIERvIHlvdSBtZWFuIGFsbCB3b3JrIHdlbGwgYWZ0ZXIgYXBwbHlp
-bmcgdGhpcw0KPiA+IHBhdGNoPyBPciBzdGlsbCBsYWcsIHBvb3IgdGhyb3VnaHB1dCBvciBsb2Nr
-LXVwcz8NCj4gPg0KPiA+IElmIGFsbCBzeW1wdG9tcyBkaXNhcHBlYXIsIGl0IHdvdWxkIGJlIHdv
-cnRoIHRvIHRha2UgdGhpcyAocXVpcmspIHBhdGNoLg0KPiANCj4gSW5kZWVkLCBldmVyeXRoaW5n
-IHdvcmtzIHdlbGwgYWZ0ZXIgdGhpcyBwYXRjaCwgc2F2ZSBmb3IgdGhlIHJlbWFpbmluZw0KPiBB
-RVIgZXJyb3JzIGR1cmluZyBkcml2ZXIgcHJvYmluZy4NCg0KR29vZC4gVGhlbiBtYWtlIGEgZm9y
-bWFsIHBhdGNoLiANCg0KQnkgdGhlIHdheSwgY3VycmVudGx5IHdpcmVsZXNzIHRyZWUgcnVucyBi
-dWlsZCB0ZXN0aW5nIHdpdGggTklQQSwgc28gcGxlYXNlDQpzcGVjaWZ5IHJ0dy1uZXh0IHRyZWUg
-dGhpcyBwYXRjaCBpcyBnb2luZyB0by4NCmkuZS4gIltQQVRDSCBydHctbmV4dF0gd2lmaTogcnRs
-d2lmaTogLi4uIg0KDQo=
+Hi Ping-Ke,
+
+在 2025/4/22 09:21, Ping-Ke Shih 写道:
+>>>> Please note, however, before the rtl8723be finishes probing, the AER
+>>>> errors remained. After the module finishes probing, all AER errors would
+>>>> indeed be eliminated, along with heavy lags, poor network throughput,
+>>>> and/or occasional lock-ups.
+>>>
+>>> Let me clarify here means. Do you mean all work well after applying this
+>>> patch? Or still lag, poor throughput or lock-ups?
+>>>
+>>> If all symptoms disappear, it would be worth to take this (quirk) patch.
+>>
+>> Indeed, everything works well after this patch, save for the remaining
+>> AER errors during driver probing.
+> 
+> Good. Then make a formal patch.
+> 
+> By the way, currently wireless tree runs build testing with NIPA, so please
+> specify rtw-next tree this patch is going to.
+> i.e. "[PATCH rtw-next] wifi: rtlwifi: ..."
+> 
+
+Understood, sending one right away.
+
+Best Regards,
+Mingcong Bai
 
