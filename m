@@ -1,192 +1,116 @@
-Return-Path: <linux-wireless+bounces-21818-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21819-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E03DA95AF5
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 04:17:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1ECA95C24
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 04:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E42BA7AA4DD
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 02:15:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E9D11886242
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 02:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC23E194AD5;
-	Tue, 22 Apr 2025 02:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hlrLD3gX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2225819D071;
+	Tue, 22 Apr 2025 02:33:13 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140571A5B95;
-	Tue, 22 Apr 2025 02:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F2C63CB;
+	Tue, 22 Apr 2025 02:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288159; cv=none; b=i7I0ZbmkY4DUXyCCtpDiuPNZaxUiKOwT22e2hHRs1iXoyopAZrzmuk+SaUUKFels6WDHJwCf+wec4bAy/67RgNcrmHAhCkkFJ9ujERog8bcP1WRn9eVaX96vjhV63Hfyx8jkzC9ngFiITYr978TITyfPqS4XBP41l/KjkJA9+88=
+	t=1745289193; cv=none; b=cCSJGSgs3D6sfA/TtRgeM18HTqR7jHO9yyAGnchvSBKtZip+/Vx1BBQicpLVpd70KxSFuPPFNcIsNGAn8xSn8gjxRZ+Z00YjsWeYRV8UFMuOIJtUyOIFPy78+gNG6zP5tVHPPZtfhoiM2VfIAzKsk4wXjGf3m1e6dwCW4aaLc3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288159; c=relaxed/simple;
-	bh=eYvWklFUgj90fZadkV0JWrPdYQKzusVDeVBhCI0d52w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ITDqnrH37KhsVdrm7fPVrPA8jVBeULBBi+QMo4FItcy2KIDLQS9tX9P365XdzsoMnWrDQIY3oO/niubB2tN21ZX8t5nS7a7ghWO+aXhEmWoWcfbfHFxwoN31US662QgegWvqYWrgAhWoy5OQZ/PXhKAWpMAQ9SNgsqIH06WTtRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hlrLD3gX; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53LMV7N6015364;
-	Tue, 22 Apr 2025 02:15:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	yPhpEfspJ3un5qULZi8Z94YjW5YiGEKufQi5Vd8r07Y=; b=hlrLD3gXBAN/rLZi
-	WC2ViOO1HlJWzgMxSICQegQdsui3p8SdpjM/5U/IP2LShDyZPY41toa7p5Na1Mz5
-	0Ky0+eb5+N6o5BlVPZZL2zXx1mWl6MGbqG+1g/s863+Pf3dDgGQFANAL4p1RfBwU
-	8HQgmVfmafiRAYr/ORCTIwP0GpC7xfbUugp/hBla357r9ipCze0fXPam6mjLbRot
-	gWquu4Z4SXILhGrJQK3oZei8cEp5xNmNc0O3HpRDrm/i+KxGW4qMwHiAY+aHASzS
-	I8xcIb4EryAOYmKDGL+4SmfmGaR1gSpGR9M4zpTK6N8Y9xnwW+QRhjOCRxkkKSb7
-	gRmywA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 464426nr1a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Apr 2025 02:15:46 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53M2Fj2D020770
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Apr 2025 02:15:45 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 21 Apr
- 2025 19:15:43 -0700
-Message-ID: <5ae72a5c-798a-4c57-b344-02b231cb881c@quicinc.com>
-Date: Tue, 22 Apr 2025 10:15:40 +0800
+	s=arc-20240116; t=1745289193; c=relaxed/simple;
+	bh=3CMcARXpGUUmojvbSQDkeLpdlzz+J7hS6Fy6CnPgn8o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qys7T6cDn9CAfhOiEn+ElB24meqqLsMX0YUk3N24NXWCtksnKSqmxquHZVjmBM+NNsARlHlXYmdM9m6pmVHdH3pLpGl3f707dSJ0hYDx0ZV62sqOLRnniXCLrsPoZB/uSqZvBsMMKmt1iDVmD+eJwkZ15ffm0o782vYJWPYlrvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowADXfP3h_wZoi3kBCw--.13238S2;
+	Tue, 22 Apr 2025 10:33:07 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: miriam.rachel.korenblit@intel.com,
+	kvalo@kernel.org
+Cc: johannes.berg@intel.com,
+	emmanuel.grumbach@intel.com,
+	golan.ben.ami@intel.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>
+Subject: [PATCH v2 RESEND] wifi: iwlwifi: mvm: Add error logging for iwl_finish_nic_init()
+Date: Tue, 22 Apr 2025 10:32:34 +0800
+Message-ID: <20250422023234.1992-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath11k: Fix memory reuse logic
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Jeff Johnson
-	<jjohnson@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        Anilkumar Kolli
-	<quic_akolli@quicinc.com>
-CC: <kernel@collabora.com>, <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-References: <20250418120951.94021-1-usama.anjum@collabora.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20250418120951.94021-1-usama.anjum@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: sQThG3pSeN9kjsxfKHLL6mqGwENvfqQW
-X-Proofpoint-GUID: sQThG3pSeN9kjsxfKHLL6mqGwENvfqQW
-X-Authority-Analysis: v=2.4 cv=IP8CChvG c=1 sm=1 tr=0 ts=6806fbd2 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=QX4gbG5DAAAA:8 a=7xKvOyCpBhAOSqRoKRkA:9 a=QEXdDO2ut3YA:10
- a=AbAUZ8qAyYyZVLSsDulk:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-22_01,2025-04-21_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
- mlxscore=0 malwarescore=0 clxscore=1011 priorityscore=1501 bulkscore=0
- suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504220016
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADXfP3h_wZoi3kBCw--.13238S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7try7ur18tF48tw4kGw15Jwb_yoW8WFy3pF
+	4UGFW2krZ5K397Ca48Ja1IyF98ta1Fk3yDKF92kws5urs7Jr98tF95XFy5ta40g3yrXa4S
+	gF1jka4xGr1DZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUYCJmUU
+	UUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYAA2gG6ExnCQAAst
 
+The function iwl_pci_resume() calls the function iwl_finish_nic_init(),
+but does not check their return values.
 
+Log a detailed error message with the error code to aid in diagnosing
+root causes if encountering irreparable errors. While this does not fix
+the underlying problem, it assist debugging by making the failure
+visible in logs.
 
-On 4/18/2025 8:09 PM, Muhammad Usama Anjum wrote:
-> Firmware requests 2 segments at first. 1st segment is of 6799360 whose
-> allocation fails and we return success to firmware. Then firmware asks
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+v2: Fix improper code.
 
-Host won't fail in case DMA remapping is enabled. Better to rephrase to make it clear that
-the big segment allocation fails in case DMA remapping is not working, usually due to
-IOMMU not present or any necessary kernel config not enabled.
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-> for 22 smaller segments. Those get allocated. At suspend/hibernation
-> time, these segments aren't freed as they are reused by firmware.
-> 
-> After resume the firmware asks for 2 segments again with first segment
-> of 6799360 and with same vaddr of the first smaller segment which we had
-
-Not follow you here. What do you mean by 'same vaddr'? firmware does not care about vaddr
-at all.
-
-> allocated. Hence vaddr isn't NULL and we compare the type and size if it
-> can be reused. Unfornately, we detect that we cannot reuse it and this
-
-s/Unfornately/Unfortunately/
-
-> first smaller segment is freed. Then we continue to allocate 6799360 size
-> memory from dma which fails and we call ath11k_qmi_free_target_mem_chunk()
-> which frees the second smaller segment as well. Later success is returned
-> to firmware which asks for 22 smaller segments again. But as we had freed
-> 2 segments already, we'll allocate the first 2 new segments again and
-> reuse the remaining 20.
-> 
-> This patch is correctiong the skip logic when vaddr is set, but size/type
-
-s/correctiong/correcting/
-
-> don't match. In this case, we should use the same skip and success logic
-> as used when dma_alloc_coherent fails without freeing the memory area.
-> 
-> We had got reports that memory allocation in this function failed at
-
-any public link to the report?
-
-> resume which made us debug why the reuse logic is wrong. Those failures
-> weren't because of the bigger chunk allocation failure as they are
-> skipped. Rather these failures were because of smaller chunk allocation
-> failures. This patch fixes freeing and allocation of 2 smaller chunks.
-
-any you saying kernels fail to alloc a smaller chunk? why? is system memory exhausted or
-too fragmented?
-
-> 
-> Tested-on: QCNFA765 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
-
-QCNFA765 is not an official chip name. please use WCN6855.
-
-> 
-> Fixes: 5962f370ce41 ("ath11k: Reuse the available memory after firmware reload")
-
-I don't think a Fixes tag apply here. As IMO this is not really an issue, it is just not
-doing well.
-
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
->  drivers/net/wireless/ath/ath11k/qmi.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-> index 47b9d4126d3a9..3c26f4dcf5d29 100644
-> --- a/drivers/net/wireless/ath/ath11k/qmi.c
-> +++ b/drivers/net/wireless/ath/ath11k/qmi.c
-> @@ -1990,8 +1990,16 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
->  		 */
->  		if (chunk->vaddr) {
->  			if (chunk->prev_type == chunk->type &&
-> -			    chunk->prev_size == chunk->size)
-> +			    chunk->prev_size == chunk->size) {
->  				continue;
-> +			} else if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
-> +				ath11k_dbg(ab, ATH11K_DBG_QMI,
-> +					   "size/type mismatch (current %d %u) (prev %d %u), try later with small size\n",
-> +					    chunk->size, chunk->type,
-> +					    chunk->prev_size, chunk->prev_type);
-> +				ab->qmi.target_mem_delayed = true;
-> +				return 0;
-> +			}
->  
->  			/* cannot reuse the existing chunk */
->  			dma_free_coherent(ab->dev, chunk->prev_size,
-
-actual code change LGTM.
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 8fb2aa282242..34a7a3e4f7c0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1616,6 +1616,7 @@ static int _iwl_pci_resume(struct device *device, bool restore)
+ 	struct iwl_trans *trans = pci_get_drvdata(pdev);
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	bool device_was_powered_off = false;
++	int err;
+ 
+ 	/* Before you put code here, think about WoWLAN. You cannot check here
+ 	 * whether WoWLAN is enabled or not, and your code will run even if
+@@ -1647,7 +1648,11 @@ static int _iwl_pci_resume(struct device *device, bool restore)
+ 		 * won't really know how to recover.
+ 		 */
+ 		iwl_pcie_prepare_card_hw(trans);
+-		iwl_finish_nic_init(trans);
++		err = iwl_finish_nic_init(trans);
++		if (err)
++			IWL_ERR(trans,
++				"NIC initialization failed after power-off (error %d).",
++				err);
+ 		iwl_op_mode_device_powered_off(trans->op_mode);
+ 	}
+ 
+-- 
+2.42.0.windows.2
 
 
