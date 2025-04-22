@@ -1,99 +1,181 @@
-Return-Path: <linux-wireless+bounces-21853-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21854-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B289A97578
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 21:33:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF2BA9765C
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 21:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C3331B60BDA
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 19:33:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 185A9165827
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 19:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E908C1F5437;
-	Tue, 22 Apr 2025 19:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1E6298CA7;
+	Tue, 22 Apr 2025 19:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="obn1HTZc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bWKXe9qR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523A82367B5
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 19:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E917C10A1F;
+	Tue, 22 Apr 2025 19:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745350379; cv=none; b=WEu2sfk62BUnynJ9RV7+WSQgY8+nwzaqDUurhfAJW+vjUIiN/TDiL64KPLxZnI1BY4uXsbNxSnHGXcrC3u/DqA1ZlQvOHGZ6ef/Mv7oBOEvyttZkvtyc6Rfp5J95WYpQvwkmbPrYOugKxCWOlm43d8QeMLkSk/zoNUrUEkekVsQ=
+	t=1745351951; cv=none; b=SLt7afrEG5uEqiaHhAmgauhuvKuZ6ad7bFmT1UIt6mnUR2wgiwjXKd9SiThNQK+lJqK2SHdqY6dfRR4zfzACp3UhTRF9Y4xYDbW5dQFjVAflP75p0iaI+2762QdusYpKHrxlEgXF8dmOeKrd611ORyQdNw+pPDitmG37uh3OSdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745350379; c=relaxed/simple;
-	bh=dIUy4ak7bK9FmBjUAO+fQ20CPx9jOoEV7DHLw1ktlKs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gC/dY18rYCGGHYQT5AKILfmYeY+U/TwByS97SgzSN1h4gpRrLl541ytCx1nSG18PIR8mvaM5klr237j56szmR024XbwpG3N6dRbfWg8I5B/e6hcJOGJ6QmxsAKuxrss6asgPLEhROx8vwlnHdIjRfz/aunwjNzrfu2m7fobXZd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=obn1HTZc; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=1xm8MbhmR2nTapsEcJjTMsoaopmfVAI/WW+c9qjHrsg=; t=1745350378; x=1746559978; 
-	b=obn1HTZczDeMjVcWUEoXbq1AiEuKJHzbs9/7QwKOywHU9JnGg38/N21fV4dWptpvLi9W14k+LcU
-	4mfTnZi2G5rxe8xMOosZ5Bs0OsaWKkt41O3e1eMKpllJoTXQB6xhfxy1SdsvTaRmYRG3owOi67WEN
-	vxQanLiKWkQOG4CwmJCVMo99XraZ/bYftcjymzGSrBn2hPYlUSBQLR0s3l0vjWemyob1QMnrL2qkC
-	U67udLe0hCPiY1jkFjHh0lwk6x/zL6hkCB7dGNrdaKlHMjbgo67kvNyrwDJUbd0Abry9vXDD+X9aX
-	usPekSqdp6llYHjoSAuoei73bYFB4aLpv8qg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1u7JMT-0000000Cehw-20dx;
-	Tue, 22 Apr 2025 21:32:53 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless] wifi: mac80211: restore monitor for outgoing frames
-Date: Tue, 22 Apr 2025 21:32:51 +0200
-Message-ID: <20250422213251.b3d65fd0f323.Id2a6901583f7af86bbe94deb355968b238f350c6@changeid>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1745351951; c=relaxed/simple;
+	bh=BbMG5QXX3A39cVhl247co58pwl2VChmfMATYNdjNRIM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LSwnm5FTpUcTlWJmsGqGSgdAAVlxyrCEgNGhwwadrik4A+VM8NFrg8CbEJgPBYEHM3q/HnC+SvXU+mP2ZMn96/fi4kzFAvH1H7phDXaMGQauuJfyqNu6uAaPU97Cj4s0dAuwoyGMSTd4IIy4ZDC6iMo4ATPhYwUZOSGE6qVeFCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bWKXe9qR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7116AC4CEE9;
+	Tue, 22 Apr 2025 19:59:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745351949;
+	bh=BbMG5QXX3A39cVhl247co58pwl2VChmfMATYNdjNRIM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bWKXe9qRtol8AS5MA4WPNlI8aPoaa+MaA/RSvtwzglvNHD9Bbw+YySrGY68U4iOy9
+	 RLeTGpwnFwVF8RKpWjzrTsTv8UyUX1ww8mER9J4hDSiNj3gs4s4lUdvBDQzHzSacJ/
+	 lbPoPvqh15D3QknKr+peUAbO0sCC5HMxF/bQt/B5Q2qHfQF0d/7CNPpSVlTlqBjhOH
+	 Z/mCfV/Q0uq0774ec/Nq0OLQ70XfLwWViz00Egg6lbOk8B2AVypSNJPfKVlVvPh/aN
+	 NRtV3t5iJd7tTzPw9MS395ks0ZGM2Q/ffC+2iKv8PuHAD60A7r+74zxabdXRqaYhNN
+	 8IJUYakMo6gxg==
+Date: Tue, 22 Apr 2025 12:59:03 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	linux-wireless@vger.kernel.org,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] wifi: iwlwifi: mld: Work around Clang loop unrolling bug
+Message-ID: <20250422195903.GA3475704@ax162>
+References: <20250421204153.work.935-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250421204153.work.935-kees@kernel.org>
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Mon, Apr 21, 2025 at 01:41:57PM -0700, Kees Cook wrote:
+> The nested loop in iwl_mld_send_proto_offload() confuses Clang into
+> thinking there could be final loop iteration past the end of the "nsc"
+> array (which is only 4 entries). The FORTIFY checking in memcmp()
+> (via ipv6_addr_cmp()) notices this (due to the available bytes in the
+> out-of-bounds position of &nsc[4] being 0), and errors out, failing
+> the build. For some reason (likely due to architectural loop unrolling
+> configurations), this is only exposed on ARM builds currently. Due to
+> Clang's lack of inline tracking[1], the warning is not very helpful:
+> 
+> include/linux/fortify-string.h:719:4: error: call to '__read_overflow' declared with 'error' attribute: detected read beyond size of object (1st parameter)
+>   719 |                         __read_overflow();
+>       |                         ^
+> 1 error generated.
+> 
+> But this was tracked down to iwl_mld_send_proto_offload()'s
+> ipv6_addr_cmp() call.
+> 
+> An upstream Clang bug has been filed[2] to track this, but for now.
+> Fix the build by explicitly bounding the inner loop by "n_nsc", which
+> is what "c" is already limited to.
+> 
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2076
+> Link: https://github.com/llvm/llvm-project/pull/73552 [1]
+> Link: https://github.com/llvm/llvm-project/issues/136603 [2]
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+> Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+> Cc: Johannes Berg <johannes.berg@intel.com>
+> Cc: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+> Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+> Cc: Avraham Stern <avraham.stern@intel.com>
+> Cc: Daniel Gabay <daniel.gabay@intel.com>
+> Cc: <linux-wireless@vger.kernel.org>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/mld/d3.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+> index 2c6e8ecd93b7..1daca1ef02b2 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+> @@ -1754,7 +1754,7 @@ iwl_mld_send_proto_offload(struct iwl_mld *mld,
+>  
+>  		addrconf_addr_solict_mult(&wowlan_data->target_ipv6_addrs[i],
+>  					  &solicited_addr);
+> -		for (j = 0; j < c; j++)
+> +		for (j = 0; j < c && j < n_nsc; j++)
+>  			if (ipv6_addr_cmp(&nsc[j].dest_ipv6_addr,
+>  					  &solicited_addr) == 0)
+>  				break;
+> -- 
+> 2.34.1
+> 
 
-This code was accidentally dropped during the cooked
-monitor removal, but really should've been simplified
-instead. Add the simple version back.
+I might be going crazy but this does not appear to actually resolve the
+warning for me, at least with allmodconfig:
 
-Fixes: 286e69677065 ("wifi: mac80211: Drop cooked monitor support")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/status.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+  $ git cite
+  a33b5a08cbbd ("Merge tag 'sched_ext-for-6.15-rc3-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/sched_ext")
 
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index b17b3cc7fb90..a362254b310c 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -1085,7 +1085,13 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
+  $ make -skj"$(nproc)" ARCH=arm LLVM=1 clean allmodconfig drivers/net/wireless/intel/iwlwifi/mld/d3.o
+  In file included from drivers/net/wireless/intel/iwlwifi/mld/d3.c:5:
+  ...
+  In file included from include/linux/string.h:392:
+  include/linux/fortify-string.h:719:4: error: call to '__read_overflow' declared with 'error' attribute: detected read beyond size of object (1st parameter)
+    719 |                         __read_overflow();
+        |                         ^
+  1 error generated.
+
+  $ b4 -q shazam 20250421204153.work.935-kees@kernel.org
+  ...
+
+  $ make -skj"$(nproc)" ARCH=arm LLVM=1 clean allmodconfig drivers/net/wireless/intel/iwlwifi/mld/d3.o
+  In file included from drivers/net/wireless/intel/iwlwifi/mld/d3.c:5:
+  ...
+  In file included from include/linux/string.h:392:
+  include/linux/fortify-string.h:719:4: error: call to '__read_overflow' declared with 'error' attribute: detected read beyond size of object (1st parameter)
+    719 |                         __read_overflow();
+        |                         ^
+  1 error generated.
+
+However, if I apply the diff at the bottom of the message, it does...
+
+  $ git stash pop
+
+  $ make -skj"$(nproc)" ARCH=arm LLVM=1 clean allmodconfig drivers/net/wireless/intel/iwlwifi/mld/d3.o
+
+It is possible there is something else going on with allmodconfig like
+KASAN or GCOV that causes this but I did not look too closely yet
+
+Cheers,
+Nathan
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+index fba6a7b1bb5c..7ce01ad3608e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+@@ -1757,7 +1757,7 @@ iwl_mld_send_proto_offload(struct iwl_mld *mld,
  
- 	ieee80211_report_used_skb(local, skb, false, status->ack_hwtstamp);
- 
--	if (status->free_list)
-+	/*
-+	 * This is a bit racy but we can avoid a lot of work
-+	 * with this test...
-+	 */
-+	if (local->tx_mntrs)
-+		ieee80211_tx_monitor(local, skb, retry_count, status);
-+	else if (status->free_list)
- 		list_add_tail(&skb->list, status->free_list);
- 	else
- 		dev_kfree_skb(skb);
--- 
-2.49.0
-
+ 		addrconf_addr_solict_mult(&wowlan_data->target_ipv6_addrs[i],
+ 					  &solicited_addr);
+-		for (j = 0; j < c && j < n_nsc; j++)
++		for (j = 0; j < n_nsc && j < c; j++)
+ 			if (ipv6_addr_cmp(&nsc[j].dest_ipv6_addr,
+ 					  &solicited_addr) == 0)
+ 				break;
 
