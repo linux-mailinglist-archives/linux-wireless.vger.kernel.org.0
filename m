@@ -1,239 +1,197 @@
-Return-Path: <linux-wireless+bounces-21832-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21833-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481C8A9606E
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 10:04:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9377A964C2
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 11:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A5B3A2808
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 08:03:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBA24189AE96
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 09:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C7E245016;
-	Tue, 22 Apr 2025 08:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2997A18E3F;
+	Tue, 22 Apr 2025 09:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bRpaVvDL"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="coXIRiOI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B210E230273;
-	Tue, 22 Apr 2025 08:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3362D8BEA
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 09:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745308925; cv=none; b=foz74QEtdc5i9APtMADf9vPr9krdf/tSNwhyZYkLqRhvLsdID0AdYfzYIyrSnIM2kgpX6dK8iuOHb+V7zn5P/6XVpfYkidyKuXlur2xD2wRs9BsT9MoK3sl0VFUlzpObnSWJtdEXGjmpING2MKYifF/1US+ozMLAIL/FtiseGck=
+	t=1745315019; cv=none; b=d3N2/qRqHuLeUy9aYGs5ReA+h8zhuwY/ILsj0lsjR9Hf4QwS5frqNQxymWWj0KaC0aCgdGEL3VjtNvfprvrXnuIYLwBUN7h4SjmaLaVzQmQevKYwdzQvnQgBLShxio2j5x+xgalQBphpoeLoZWrIEq3AOTyK18BzBypPqUz8mso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745308925; c=relaxed/simple;
-	bh=62f+HM3BKRX8wxzWvdN59ZALCUZ2KQ0fsdvYeGqlztI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Hl4yvoQjShKPK+q1xzJDdA1YHp9M95Grq2rUkZkydqso57QM5knaFAomJRYDy+ojXgYrsod968nZMp+dMdkQWCBVh4Uard/eqx0EgpG0L25sQJoYS2wqEiH56o8yCW4EmCHSpABIWSWGysO4D/FBqT9YqThKVtAYb6Bv1maYe+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bRpaVvDL; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53M4OrMP011409;
-	Tue, 22 Apr 2025 08:01:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	q8kYuCu4DSKyBc/5Kb6zYROcKumgaRaR0Lku9VXPPCI=; b=bRpaVvDLaMb9R7yT
-	OODGzlz9ZQSSwF2dOMNFPs2mtOBvCULG1Wbo72VLOBCg15aliBsUsEulMQIRcAmB
-	wQ33e4vn95CCBgVdVz22ye5Th9BzESWBk+Q1rPMiMkbgLRMSOlTwp+C6tGGEypO/
-	1Yib8CMEi/6L9N3PmUIP5K5GB8utlBDQ1j3/F2Gc77fko80ID81EiN29cpUdWlmr
-	8Q2sEk1YsYoxHb0ROmEm7+D73jn+5JofWEpYDkucXrNqA7Z1oxBhaZkYFtG9YK+r
-	WdF0QoNK56jbdlDSv2zl4+gqd+6KgNj8mjq9YvdQtOyLivWT6TvQWR51lbNqK5el
-	dDJhxA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46450peg4q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Apr 2025 08:01:56 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53M81uMI013820
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Apr 2025 08:01:56 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 22 Apr
- 2025 01:01:53 -0700
-Message-ID: <6c4ae1f8-a2ea-4ee3-b67d-4a379f097d9b@quicinc.com>
-Date: Tue, 22 Apr 2025 16:01:48 +0800
+	s=arc-20240116; t=1745315019; c=relaxed/simple;
+	bh=c9QnEAZeP83K+es4UR3MeXYS4WLNtubuEY5Um5LHywM=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=a8DTdlFcWKd9FAaMe34SwyOusp6A7uwHfMQjCuIH5n3L4Yj9u0+qZZWz5/JrlLzNpG7T13M/Jj66f8unT4td2sGdN02/o/J+/N93hTsLjUwMJUFPt2L98rTQeb8DQcbFCsnuRfSP3+HTbPefwI3ae25jdELEY9MXM5RUgjZ4ylI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=coXIRiOI; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53M4P2jx006342
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 09:43:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:date:from:message-id:subject:to; s=qcppdkim1; bh=a0aCPzESRmOL
+	FCZSZqW4C1Bz5aMHm1PCkm2+Jj0kpro=; b=coXIRiOIuG2XzFtF5m8Sc2iUQ0zn
+	NGppuBJ/gwEq+p/us/hOG5Ywzo48UysAxOXIb2S5B81sToNd14QvMkJPmEHQaia0
+	LFFEeAD8TQLGa9ErQeFmavFv79oOj5vGtNb6APowxM//yqU2i7POSvqfDBmHAgaZ
+	VD2KNWdO0HTsM0wXNlSvWSlu1CbydVK8q5zWH3XUFuuMM9oAnasOCpiY39NlSTJZ
+	wZgtLW2PfcvYaVeT5MYCHI0kOtQeVM0ok8lZIsAK5k46KR2RWHpsbg/A9edejZkh
+	cfH8es6LihWtEYJlzKgck01mmlRF3QFgKIJmrHxmXlI1XXxMHWgafXsNPg==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46435jeyux-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 09:43:35 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-73917303082so3476872b3a.3
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 02:43:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745315014; x=1745919814;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a0aCPzESRmOLFCZSZqW4C1Bz5aMHm1PCkm2+Jj0kpro=;
+        b=Yo1gfIrgMfgKAyI38VW/lxSyegvSB2jw9OoupSTuMEZvFieWWe4CiyBDqsGb7898/V
+         9WT4anVfHqTcSL1nCMJNUiuCbO0ft00hNwYdSRu/yTQPcrihaIM/75fMMJIoL71ifPGL
+         CH+BEg5wSxilvAA5Ul+cCgL/62ALbvF1Rl4RfD7QHGhd4srdsR7pN5fnM8t/DnaEVH34
+         zRYX+H9B69Ko8DuUM21uqso1mapWht2YR9l7ddhtyIFVHfV6MjSErmsBJOhrYu9jRyG1
+         qv8nWFwiIczDRobO5HOgjxvpPeC4EhKxSjvUfcmeeIMZrzdqLSuhFfTZ8n9AHpunrvuc
+         crFg==
+X-Gm-Message-State: AOJu0YyJdScejJRH0E6of4y7a47l9JsAgT7K27ZJmjiAkK8rZ+F/Q9qX
+	Y0Zj22nUmj1MVOKBkGwZucDhlHIV2ybzWZ9rT8Sjdvf9rpEDqj6K43m6cUuNbiLo2rzN3SRtUgf
+	TO1bHcuUE8+thrXdzk3JcV3ZZv8Y8QU3tnuH+EEDMLVvqHcERsu6azZk7mIoyIXGlJg==
+X-Gm-Gg: ASbGncvHibuitHynjE3q/nP2f9GIoVgjj1ho06/P/Zr7Hv45UqL4belAY2ztLA40VFL
+	9TEpSVXmOjBCunqv93R4MrPbzXT22ehEUA9exCBMZxryGGSg36Du69/XebQoCqv1gnds1is+Tu5
+	IaJs1AJCzIdQ6KA3XcN6M4PgdIXUhSCdOuw7F1ny8JbA31RC0JhQd+h9UJZo28lbBx8EEXFvkLC
+	9VnK75MZ8sb73PuaH5YT729aKRPxUyZS7EYtr6tZrZSdJFvACi5zK19dX+IOUOV+QGAFPPAnK8q
+	uKsU3rFOy88tpoEjH+hAOYQJOVY1qBUsyncYddvicqm2DOTT9DqHXiWifpY6v1XpsE7yHx2qpD8
+	JOAwSCpALb0aGKgmY/+BF4K3D2zqSzvHFYfJfEMicLmCcWA==
+X-Received: by 2002:a05:6a00:98e:b0:736:5c8e:bab8 with SMTP id d2e1a72fcca58-73dc144c7aamr23123356b3a.3.1745315014342;
+        Tue, 22 Apr 2025 02:43:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEan9zA+8EjugL8KIBuwmnjvji6NNTShHfGQ9LH/OIZR2Y1iL5cxa0Jyk6oLHrP2hF/h1A6hQ==
+X-Received: by 2002:a05:6a00:98e:b0:736:5c8e:bab8 with SMTP id d2e1a72fcca58-73dc144c7aamr23123330b3a.3.1745315013837;
+        Tue, 22 Apr 2025 02:43:33 -0700 (PDT)
+Received: from hu-nithp-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73dbfa58376sm8432243b3a.100.2025.04.22.02.43.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 02:43:33 -0700 (PDT)
+From: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>,
+        Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
+Subject: [PATCH ath-next] wifi: ath12k: Enable AST index based address search in Station Mode
+Date: Tue, 22 Apr 2025 15:12:55 +0530
+Message-Id: <20250422094255.131226-1-nithyanantham.paramasivam@oss.qualcomm.com>
+X-Mailer: git-send-email 2.17.1
+X-Authority-Analysis: v=2.4 cv=EOYG00ZC c=1 sm=1 tr=0 ts=680764c7 cx=c_pps a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=g-AHoWTylar1N0jkHzsA:9 a=zc0IvFSfCIW2DFIPzwfm:22
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: OGIvztSJdiaK7DWwFX_aTpNZfNHzSC7H
+X-Proofpoint-ORIG-GUID: OGIvztSJdiaK7DWwFX_aTpNZfNHzSC7H
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-22_05,2025-04-21_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=999 mlxscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 phishscore=0 spamscore=0 adultscore=0 impostorscore=0
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504220073
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath11k: Fix memory reuse logic
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Jeff Johnson
-	<jjohnson@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        Anilkumar Kolli
-	<quic_akolli@quicinc.com>
-CC: <kernel@collabora.com>, <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-References: <20250418120951.94021-1-usama.anjum@collabora.com>
- <5ae72a5c-798a-4c57-b344-02b231cb881c@quicinc.com>
- <b30bc7f6-845d-4f9d-967e-c04a2b5f13f5@collabora.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <b30bc7f6-845d-4f9d-967e-c04a2b5f13f5@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=Hd0UTjE8 c=1 sm=1 tr=0 ts=68074cf5 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=QX4gbG5DAAAA:8 a=Jd9q7DufAxoOQdnjySsA:9 a=QEXdDO2ut3YA:10
- a=AbAUZ8qAyYyZVLSsDulk:22
-X-Proofpoint-GUID: C9foz-2M2pY1pPCJPyoF1Ii7njwVIT5f
-X-Proofpoint-ORIG-GUID: C9foz-2M2pY1pPCJPyoF1Ii7njwVIT5f
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-22_04,2025-04-21_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 suspectscore=0 bulkscore=0
- adultscore=0 mlxlogscore=999 phishscore=0 clxscore=1015 spamscore=0
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504220059
 
+From: Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
 
+Currently, TCL performs the TX address search for each entry during
+transmission, which may lead to packet delays.
 
-On 4/22/2025 3:46 PM, Muhammad Usama Anjum wrote:
-> Hi,
-> 
-> Thank you for excellent review.
-> 
-> On 4/22/25 7:15 AM, Baochen Qiang wrote:
->>
->>
->> On 4/18/2025 8:09 PM, Muhammad Usama Anjum wrote:
->>> Firmware requests 2 segments at first. 1st segment is of 6799360 whose
->>> allocation fails and we return success to firmware. Then firmware asks
->>
->> Host won't fail in case DMA remapping is enabled. Better to rephrase to make it clear that
->> the big segment allocation fails in case DMA remapping is not working, usually due to
->> IOMMU not present or any necessary kernel config not enabled.
-> IOMMU is turned off. I'll make description better.
-> 
->>
->>> for 22 smaller segments. Those get allocated. At suspend/hibernation
->>> time, these segments aren't freed as they are reused by firmware.
->>>
->>> After resume the firmware asks for 2 segments again with first segment
->>> of 6799360 and with same vaddr of the first smaller segment which we had
->>
->> Not follow you here. What do you mean by 'same vaddr'? firmware does not care about vaddr
->> at all.
-> So we get request to allocate memory of size = 6799360 and vaddr =
-> 0xABC). We fail it. Then we get request to allocate memory of size =
-> 500000 and vaddr is same 0xABC which gets allocated successfully.
-> 
-> When we resume, firmware asks again for 6799360 with 0xABC vaddr even
-> though we had allocated memory of 500000 size at 0xABC. I'm referring to
-> this vaddr that its same.
+To mitigate this issue, enable AST index-based address search during
+transmission in station mode. This AST index-based search is not
+enabled in AP mode due to the complexity involved in fetching peer
+information.
 
-OK, get your point. But like I said, firmware doesn't case about vaddr, so it is not
-asking for a 'same vaddr'.
+Implement changes to retrieve the offset of ast_idx/ast_hash values
+from the PEER_MAP3 event, update the vdev search type to ADDRX, and
+enable AST lookup in the bank configuration.
 
-IMO just mentioning vaddr is not NULL is sufficient.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-> 
->>
->>> allocated. Hence vaddr isn't NULL and we compare the type and size if it
->>> can be reused. Unfornately, we detect that we cannot reuse it and this
->>
->> s/Unfornately/Unfortunately/
->>
->>> first smaller segment is freed. Then we continue to allocate 6799360 size
->>> memory from dma which fails and we call ath11k_qmi_free_target_mem_chunk()
->>> which frees the second smaller segment as well. Later success is returned
->>> to firmware which asks for 22 smaller segments again. But as we had freed
->>> 2 segments already, we'll allocate the first 2 new segments again and
->>> reuse the remaining 20.
->>>
->>> This patch is correctiong the skip logic when vaddr is set, but size/type
->>
->> s/correctiong/correcting/
->>
->>> don't match. In this case, we should use the same skip and success logic
->>> as used when dma_alloc_coherent fails without freeing the memory area.
->>>
->>> We had got reports that memory allocation in this function failed at
->>
->> any public link to the report?
-> There's no public report. I've attached the logs. You'll find following
-> error logs in it:
-> 
-> ath11k_pci 0000:03:00.0: failed to allocate dma memory for qmi (524288 B
-> type 1)
-> ath11k_pci 0000:03:00.0: failed to allocate qmi target memory: -22
-> 
-> 
->>
->>> resume which made us debug why the reuse logic is wrong. Those failures
->>> weren't because of the bigger chunk allocation failure as they are
->>> skipped. Rather these failures were because of smaller chunk allocation
->>> failures. This patch fixes freeing and allocation of 2 smaller chunks.
->>
->> any you saying kernels fail to alloc a smaller chunk? why? is system memory exhausted or
->> too fragmented?
-> Yes, the smaller chunk doesn't get allocated. I've not been able to
-> reproduce it on my setup. Both system memory exhaustion and
-> fragmentation are the suspects.
+Signed-off-by: Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
+Signed-off-by: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath12k/dp.c    | 10 +++++-----
+ drivers/net/wireless/ath/ath12k/dp.h    |  2 ++
+ drivers/net/wireless/ath/ath12k/dp_rx.c |  6 +++++-
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-so it is kernel failing to allocate the buffer, not any issue in ath12k leading to this.
-Please help make this clear to avoid confusion.
+diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+index ad873013e46c..0291fbea6312 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.c
++++ b/drivers/net/wireless/ath/ath12k/dp.c
+@@ -354,7 +354,10 @@ u32 ath12k_dp_tx_get_vdev_bank_config(struct ath12k_base *ab,
+ 			u32_encode_bits(0, HAL_TX_BANK_CONFIG_EPD);
+ 
+ 	/* only valid if idx_lookup_override is not set in tcl_data_cmd */
+-	bank_config |= u32_encode_bits(0, HAL_TX_BANK_CONFIG_INDEX_LOOKUP_EN);
++	if (ahvif->vdev_type == WMI_VDEV_TYPE_STA)
++		bank_config |= u32_encode_bits(1, HAL_TX_BANK_CONFIG_INDEX_LOOKUP_EN);
++	else
++		bank_config |= u32_encode_bits(0, HAL_TX_BANK_CONFIG_INDEX_LOOKUP_EN);
+ 
+ 	bank_config |= u32_encode_bits(arvif->hal_addr_search_flags & HAL_TX_ADDRX_EN,
+ 					HAL_TX_BANK_CONFIG_ADDRX_EN) |
+@@ -1107,11 +1110,8 @@ static void ath12k_dp_update_vdev_search(struct ath12k_link_vif *arvif)
+ {
+ 	switch (arvif->ahvif->vdev_type) {
+ 	case WMI_VDEV_TYPE_STA:
+-		/* TODO: Verify the search type and flags since ast hash
+-		 * is not part of peer mapv3
+-		 */
+ 		arvif->hal_addr_search_flags = HAL_TX_ADDRY_EN;
+-		arvif->search_type = HAL_TX_ADDR_SEARCH_DEFAULT;
++		arvif->search_type = HAL_TX_ADDR_SEARCH_INDEX;
+ 		break;
+ 	case WMI_VDEV_TYPE_AP:
+ 	case WMI_VDEV_TYPE_IBSS:
+diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
+index 706d766d8c81..e3923ff02dbd 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.h
++++ b/drivers/net/wireless/ath/ath12k/dp.h
+@@ -1330,6 +1330,8 @@ struct htt_t2h_version_conf_msg {
+ #define HTT_T2H_PEER_MAP_INFO1_MAC_ADDR_H16	GENMASK(15, 0)
+ #define HTT_T2H_PEER_MAP_INFO1_HW_PEER_ID	GENMASK(31, 16)
+ #define HTT_T2H_PEER_MAP_INFO2_AST_HASH_VAL	GENMASK(15, 0)
++#define HTT_T2H_PEER_MAP3_INFO2_HW_PEER_ID	GENMASK(15, 0)
++#define HTT_T2H_PEER_MAP3_INFO2_AST_HASH_VAL	GENMASK(31, 16)
+ #define HTT_T2H_PEER_MAP_INFO2_NEXT_HOP_M	BIT(16)
+ #define HTT_T2H_PEER_MAP_INFO2_NEXT_HOP_S	16
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 1abfbd15f13c..f83e34db83c0 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -1802,8 +1802,12 @@ void ath12k_dp_htt_htc_t2h_msg_handler(struct ath12k_base *ab,
+ 					     HTT_T2H_PEER_MAP_INFO1_MAC_ADDR_H16);
+ 		ath12k_dp_get_mac_addr(le32_to_cpu(resp->peer_map_ev.mac_addr_l32),
+ 				       peer_mac_h16, mac_addr);
++		ast_hash = le32_get_bits(resp->peer_map_ev.info2,
++					 HTT_T2H_PEER_MAP3_INFO2_AST_HASH_VAL);
++		hw_peer_id = le32_get_bits(resp->peer_map_ev.info2,
++					   HTT_T2H_PEER_MAP3_INFO2_HW_PEER_ID);
+ 		ath12k_peer_map_event(ab, vdev_id, peer_id, mac_addr, ast_hash,
+-				      peer_id);
++				      hw_peer_id);
+ 		break;
+ 	case HTT_T2H_MSG_TYPE_PEER_UNMAP:
+ 	case HTT_T2H_MSG_TYPE_PEER_UNMAP2:
 
-> 
->>
->>>
->>> Tested-on: QCNFA765 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
->>
->> QCNFA765 is not an official chip name. please use WCN6855.
-> Okay. I'll fix all of these mistakes.
-> 
->>
->>>
->>> Fixes: 5962f370ce41 ("ath11k: Reuse the available memory after firmware reload")
->>
->> I don't think a Fixes tag apply here. As IMO this is not really an issue, it is just not
->> doing well.
->>
->>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
->>> ---
->>>  drivers/net/wireless/ath/ath11k/qmi.c | 10 +++++++++-
->>>  1 file changed, 9 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
->>> index 47b9d4126d3a9..3c26f4dcf5d29 100644
->>> --- a/drivers/net/wireless/ath/ath11k/qmi.c
->>> +++ b/drivers/net/wireless/ath/ath11k/qmi.c
->>> @@ -1990,8 +1990,16 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
->>>  		 */
->>>  		if (chunk->vaddr) {
->>>  			if (chunk->prev_type == chunk->type &&
->>> -			    chunk->prev_size == chunk->size)
->>> +			    chunk->prev_size == chunk->size) {
->>>  				continue;
->>> +			} else if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
->>> +				ath11k_dbg(ab, ATH11K_DBG_QMI,
->>> +					   "size/type mismatch (current %d %u) (prev %d %u), try later with small size\n",
->>> +					    chunk->size, chunk->type,
->>> +					    chunk->prev_size, chunk->prev_type);
->>> +				ab->qmi.target_mem_delayed = true;
->>> +				return 0;
->>> +			}
->>>  
->>>  			/* cannot reuse the existing chunk */
->>>  			dma_free_coherent(ab->dev, chunk->prev_size,
->>
->> actual code change LGTM.
->>
->>
-> 
-> 
+base-commit: d33705bb41ff786b537f8ed50a187a474db111c1
+-- 
+2.17.1
 
 
