@@ -1,128 +1,202 @@
-Return-Path: <linux-wireless+bounces-21846-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21847-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B8EA971FF
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 18:09:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A852A97319
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 18:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89404176DED
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 16:09:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68EEC44047B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 16:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0B928FFDC;
-	Tue, 22 Apr 2025 16:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C649C296140;
+	Tue, 22 Apr 2025 16:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HX3Z65O5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ti8Ez0nu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0D720102C;
-	Tue, 22 Apr 2025 16:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEED82900A6;
+	Tue, 22 Apr 2025 16:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745338167; cv=none; b=JdhOK2cufGqqifInAbboux/Bn/0HFE3WEntTljgHt/6tSaWB2CPtQHLdatxrF5w7eRRS/G5LUMVCrd29vEPfIca8zF27DyKb5uQuutKHygtMmBNJ4fb3AB+Yp9fdsMk7ZMieJ4wXpy2FcsU1CxQ356D1BrqVpvm9F3g/fMpmUOw=
+	t=1745340753; cv=none; b=gPTXU1/P+X29GTK+yTKcf+Nuz6wzo5q5ZjgdftFTpdQy6b2AIg0RM9kgqsWHXwH9mdlH1yd2R/d3slhHwd/GE3tpo3RzeVXLpDTUdO/H8wYL34QgRxl4NuAIATRYiH4sjYZXEzWfTcQHIluv1EIiyt4a8xsoxFQg0W6zlxbUzt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745338167; c=relaxed/simple;
-	bh=Qd8a4qsvk9G4mClmpO236TQ3jYEPXO158QQTn0cWxKo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=dGA5+b+cArV6dIFwPjDmNC/iTf0wyi+ocUCPKDxf2aYkJyseq/pW3G9ghCDVJQUu1OGuT+43q9/rQsr6ZRUeFtJiWEGA+mfK20mUlQ6AQMA1sLGf51D7jOpnhEmWN5RGKfoIsEdA/MSeca9VAA5+65ZmqSRTZroKZp90mNvdmr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HX3Z65O5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83FCC4CEE9;
-	Tue, 22 Apr 2025 16:09:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745338167;
-	bh=Qd8a4qsvk9G4mClmpO236TQ3jYEPXO158QQTn0cWxKo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=HX3Z65O5qlPLh9w2tzD5zgqTmEEUNEK6frdS/LWvlhyQODlex5+w4HSJdCbGoofuA
-	 0gQn+BMTfXd7XLr5lao+kMAgSu5Txq5IIBHoQq02UTsB1+yfusdHTZI/mXSP95k5IE
-	 JCqMtjnYl26+MirO5su+/S/djJo/B6kalqrlikwIdjb4Vu39zEDTDScyyECsjs7Fai
-	 xj3CMInF+87Vc5jbImMVngqirfWPFFY/EVDQg/io5f0AlQfwCXr3BL8xM6gBslPVaG
-	 2Q2/l3deREN+8U1BisoC7SipI13tcn9e/v9PO9fsuIMRuduBgAtTmFYvGLoD4BtpK9
-	 aTOM6KqJS8fLw==
-Date: Tue, 22 Apr 2025 11:09:25 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Johan Hovold <johan+linaro@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Jonas Gorski <jonas.gorski@gmail.com>, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] PCI/arm64/ath11k/ath12k: Rename pwrctrl Kconfig
- symbols
-Message-ID: <20250422160925.GA331992@bhelgaas>
+	s=arc-20240116; t=1745340753; c=relaxed/simple;
+	bh=aqfuT4KhozvPqTeyoEUgXQSOVYReVqP3zZDAZuJdN+Y=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=SRviz/grbkvESPU7RDevvmu2FXridX9P6tk6ts/HnDlREYaVYs5V5OsapOBUY+6fvKVlsb0lkq5leO0P1vFgeZjNCRwWaC8N4vRkS0OATqgBUdQoarWilNFSEyQSPkyvrdG2yiE+bZDk5XFwf22C27zaK+D9fxFJQFrLM5o7tGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ti8Ez0nu; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ac34257295dso993286766b.2;
+        Tue, 22 Apr 2025 09:52:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745340750; x=1745945550; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+oAuAoMz4sDO/AVlpJFxLDfgAHNfCGXQoimCA6wbDjw=;
+        b=Ti8Ez0nuNjzivWYduqR6RPjwS9yWFF93Tu8KmJD8KHbb0sG3edFLLWAGfRTkcJoq1X
+         MdJ/QssdIbVfsohj3aYu46kv0RMons/W8NFfv4pciwOkUjhKHVC4kmp6xVJaNx2T3fMa
+         7V9kPmrxvNsPJiQIRSQbgNxV/NRPHmJjZQYNRSZpnJZ+T6R27RFBFAuu/qcD2gvLpwo1
+         6jDWAhIJYGGm+Q3ehVAaoO/h5dAasTOAfNOMXyZ9JD2DDD7XfpiU9NT7IJnOY+7wxIbx
+         3tAYKJWOyD05toSg3LKd+zvQ/EaM0wHTJgjLEIbDCpms9sfyN7i1V8vTDKRt2/Rgt6vX
+         wupA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745340750; x=1745945550;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+oAuAoMz4sDO/AVlpJFxLDfgAHNfCGXQoimCA6wbDjw=;
+        b=aUyIyomqDy5GHyXlYPvBSaFM6uC7BFCaRqWejOsdM77yuVychwHUOlv7y+m2e8ZA1x
+         /Zr5YSq6FvwyzRRhA3YaY1OTyQWUWnOiIoLGVuNz4Gus1fsynrONUp5NOvanrK5D05l3
+         ykg2ZaIKGhMNFQu8bpDD3osMlEq4rLNppDDXQ7VcXr73EgmaEQQD4Dhl/BMCaJmjPEx3
+         SpcFbccp/GxouxC8RBy3n/+Q/uNsuHnAXYwTbGr+BW25ooiBwmxN91lJ1GKn+QvqHZ32
+         MtHCUA7lJBMjFl6aWC4dOfClolXNxl1pUKO0xy7A2VRbWGbbnPyQcODosu3eKDIYPZZ3
+         8ZJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUsNeOoWMbsB8RVnTCSNY4U/6kA8f9YcUL2C5/QecgmZNKPP8+o2htM9v2MUaf5oMWFnO+nugRqqo0+Dyo=@vger.kernel.org, AJvYcCVGyzCU8fy4qNF9Ki6p8EPVi3mJiWMDmJnN8HfIVQ6/zUfDQOE0FHQDRJXzZVZYn3VdWGtlpESW+D/kFk+E/tM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMBM2TMJO/cY9k6V61HHRo78TJso/sjleDVFG7CA78P1S9+MTa
+	EexTVk8BrWM8B4LTlBdaE3oGWdHhzzjr9YCgMPf2j97M5tWEb+Cr/JGDBaGd9kqmiwhAI4XWyQf
+	d7gyrSnyjkLKlKfV5ez4tTxx7rD5xcyhn
+X-Gm-Gg: ASbGncs4VhI31jUOVADFoKP3AsqLyKXsUEEUxXw0e4+eUKyDBYnUqcxijb1+t2spOSh
+	ZcYz7BWBXtqPH0CKtlFP4y+dI7zPO/var+wzz4U++KTclPjLG/kqorMSpw9yMiZCSviJJcKFUmn
+	LgNz44R+uIfInuokZBvYvYYalIZLBYkxxCObj0
+X-Google-Smtp-Source: AGHT+IGjK87FTeUvbxRDMJp3Phzmv+Ss5LEopx3yEtdaEfC6V7gvoX6F8QTxmfGb1oXdbUgI8ofjONrBu5KXE4pRWQs=
+X-Received: by 2002:a17:907:1c07:b0:ac6:e20f:fa48 with SMTP id
+ a640c23a62f3a-acb74bdcde0mr1397216866b.33.1745340750026; Tue, 22 Apr 2025
+ 09:52:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250402132634.18065-1-johan+linaro@kernel.org>
+From: Hank Barta <hbarta@gmail.com>
+Date: Tue, 22 Apr 2025 11:52:17 -0500
+X-Gm-Features: ATxdqUEbJ4WG8mLzFBhg00fim0dvh4GtG-PzrR4F4r3oVhZOFqzj7wc8YjZ8lRg
+Message-ID: <CABTDG886JyTFu0dUWgZAT89Dmxjm78VNk0TXcgf=1yABBRN5XQ@mail.gmail.com>
+Subject: Stack dump, Pi 4B, Debian Bookworm (not RpiOS)
+To: arend.vanspriel@broadcom.com, linux-wireless@vger.kernel.org, 
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-[cc->to Catalin, Will: note the arm64 Kconfig change; my understanding
-is that this shouldn't break existing configs]
+Good morning, I encountered the following while attempting to connect
+to a WiFi AP using iwd. Another user on the Raspberry Pi IRC
+(ukleinek) suggested I forward that to this group.
 
-On Wed, Apr 02, 2025 at 03:26:30PM +0200, Johan Hovold wrote:
-> The PCI pwrctrl framework was renamed after being merged, but the
-> Kconfig symbols still reflect the old name ("pwrctl" without an "r").
-> 
-> This leads to people not knowing how to refer to the framework in
-> writing, inconsistencies in module naming, etc.
-> 
-> Let's rename also the Kconfig symbols before this gets any worse.
-> 
-> The ath11k, ath12k and arm64 changes could go theoretically go through
-> the corresponding subsystem trees in turn once they have the new
-> symbols, but to avoid tracking dependencies over multiple cycles it is
-> much preferred to have all of these go in through the PCI tree.
-> 
-> The wifi patches have been acked by Jeff and I don't think Will or
-> Catalin will mind the single rename in arm64 if they don't see this
-> message in time.
-> 
-> Note that the patches could be squashed into one, but keeping them
-> separate highlights the changes done to other subsystems. I also find it
-> easier to review the changes this way.
-> 
-> There are some new pwrctrl drivers and an arm64 defconfig change on the
-> lists, but the former should also go in through PCI anyway while we can
-> make sure that the defconfig update matches the new slot symbol.
-> 
-> Note that getting this rename into rc1 would be great as that way it
-> would end up in most subsystem trees soon as well.
-> 
-> Johan
-> 
-> 
-> Changes in v2:
->  - drop deprecated symbol for the new slot driver to avoid having to a
->    add a new user visible symbol (e.g. any early adopters will be asked
->    to enable the renamed option again)
-> 
->  - move arm64 patch last two avoid temporarily not having the pwrseq
->    driver selected (Jonas)
-> 
-> Johan Hovold (4):
->   PCI/pwrctrl: Rename pwrctrl Kconfig symbols and slot module
->   wifi: ath11k: switch to PCI_PWRCTRL_PWRSEQ
->   wifi: ath12k: switch to PCI_PWRCTRL_PWRSEQ
->   arm64: Kconfig: switch to HAVE_PWRCTRL
-> 
->  arch/arm64/Kconfig.platforms            |  2 +-
->  drivers/net/wireless/ath/ath11k/Kconfig |  2 +-
->  drivers/net/wireless/ath/ath12k/Kconfig |  2 +-
->  drivers/pci/pwrctrl/Kconfig             | 22 ++++++++++++++++------
->  drivers/pci/pwrctrl/Makefile            |  8 ++++----
->  5 files changed, 23 insertions(+), 13 deletions(-)
+hbarta@olive:~/MkDocs/my-notes/docs/hosts/Raspberry-Pi/4/allegan$ cat
+iwd.crash.txt
+[565142.844103] NET: Registered PF_ALG protocol family
+[565142.895121] alg: No test for hmac(md4) (hmac(md4-generic))
+[565255.271588] ------------[ cut here ]------------
+[565255.278557] memcpy: detected field-spanning write (size 72) of
+single field "&mgmt_frame->u" at
+drivers/net/wireless/broadcom/brcm80211/brcmfm
+ac/p2p.c:1469 (size 26)
+[565255.295948] WARNING: CPU: 1 PID: 1135280 at
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c:1469
+brcmf_p2p_notify_action_frame_rx+0x30c
+/0x440 [brcmfmac]
+[565255.312770] Modules linked in: ghash_generic ghash_ce gf128mul gcm
+ccm algif_aead des_generic libdes ecb algif_skcipher md4 algif_hash
+af_alg
+nf_conntrack_netlink xt_nat veth xt_conntrack bridge stp llc xt_set
+ip_set xt_addrtype xfrm_user xfrm_algo overlay xt_MASQUERADE xt_tcpudp
+xt_mark
+nft_compat nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6
+nf_defrag_ipv4 tun qrtr binfmt_misc hid_logitech_hidpp joydev hci_uart
+btqca btrtl bt
+bcm btintel btsdio bluetooth jitterentropy_rng sha512_generic evdev
+bcm2835_v4l2(C) hid_logitech_dj sha512_arm64 bcm2835_mmal_vchiq(C)
+videobuf2_v
+malloc videobuf2_memops videobuf2_v4l2 cpufreq_dt videobuf2_common
+videodev aes_neon_bs snd_bcm2835(C) mc aes_neon_blk vc4 zfs(POE)
+snd_soc_hdmi_c
+odec snd_soc_core raspberrypi_cpufreq drbg snd_pcm_dmaengine
+ansi_cprng snd_pcm brcmfmac snd_timer zunicode(POE) brcmutil
+ecdh_generic pwm_bcm2835
+snd zzstd(OE) ecc nls_ascii zlua(OE) iproc_rng200 soundcore nls_cp437
+cec bcm2835_wdt vfat fat rc_core bcm2711_thermal vchiq(C)
+[565255.313189]  drm_display_helper v3d zcommon(POE) znvpair(POE)
+hid_generic gpu_sched drm_dma_helper zavl(POE) drm_shmem_helper
+drm_kms_helper i
+cp(POE) leds_gpio spl(OE) sg cfg80211 rfkill nf_tables libcrc32c
+nfnetlink loop fuse drm efi_pstore dm_mod dax configfs ip_tables
+x_tables autofs4
+usbhid hid ext4 crc16 mbcache jbd2 crc32c_generic sd_mod t10_pi
+crc64_rocksoft crc64 crc_t10dif crct10dif_generic uas usb_storage
+scsi_mod scsi_c
+ommon xhci_pci dwc2 xhci_hcd broadcom udc_core bcm_phy_ptp bcm_phy_lib
+reset_raspberrypi roles i2c_bcm2835 usbcore genet sdhci_iproc
+mdio_bcm_unim
+ac of_mdio usb_common fixed_phy fwnode_mdio crct10dif_ce
+crct10dif_common sdhci_pltfm libphy fixed sdhci gpio_regulator
+phy_generic
+[565255.489912] CPU: 1 PID: 1135280 Comm: kworker/1:3 Tainted: P
+  C OE      6.1.0-33-arm64 #1  Debian 6.1.133-1
+[565255.489934] Hardware name: Raspberry Pi 4 Model B Rev 1.5 (DT)
+[565255.489941] Workqueue: events brcmf_fweh_event_worker [brcmfmac]
+[565255.490001] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[565255.490013] pc : brcmf_p2p_notify_action_frame_rx+0x30c/0x440 [brcmfmac]
+[565255.490058] lr : brcmf_p2p_notify_action_frame_rx+0x30c/0x440 [brcmfmac]
+[565255.490100] sp : ffff80000c8d3c20
+[565255.490105] x29: ffff80000c8d3c20 x28: ffff145a4bc40810 x27:
+0000000000000048
+[565255.490123] x26: ffff145a7c9ed560 x25: 0000000000000048 x24:
+ffff145a49cd8900
+[565255.490139] x23: ffff145a07b6aa98 x22: 0000000000000058 x21:
+ffff145a07b6aa80
+[565255.490154] x20: ffff80000c8d3d78 x19: ffff145a48e139c0 x18:
+0000000000000006
+[565255.490169] x17: 010300080103060e x16: 0000000000000010 x15:
+0000000000000001
+[565255.490184] x14: 0000000020000000 x13: 0000000000000002 x12:
+0000000000000000
+[565255.490199] x11: 00000000ffffefff x10: ffffd291cf1109c8 x9 :
+ffffd291cd61d33c
+[565255.490214] x8 : 0000000000017fe8 x7 : c0000000ffffefff x6 :
+0000000000000001
+[565255.490229] x5 : ffff145a7fb74ad0 x4 : ffff145a7fb74ad0 x3 :
+ffff145a7fb80c70
+[565255.490243] x2 : 0000000000000000 x1 : 0000000000000000 x0 :
+ffff145a46768000
+[565255.490258] Call trace:
+[565255.490264]  brcmf_p2p_notify_action_frame_rx+0x30c/0x440 [brcmfmac]
+[565255.490309]  brcmf_fweh_call_event_handler+0x44/0xc0 [brcmfmac]
+[565255.490352]  brcmf_fweh_event_worker+0x190/0x490 [brcmfmac]
+[565255.490395]  process_one_work+0x1f4/0x460
+[565255.490416]  worker_thread+0x188/0x4e0
+[565255.490429]  kthread+0xe0/0xe4
+[565255.490441]  ret_from_fork+0x10/0x20
+[565255.490455] ---[ end trace 0000000000000000 ]---
+[565658.710117] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown
+Frame: category 0x5, action 0x4
+[565658.721227] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: link becomes ready
+[565704.491659] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown
+Frame: category 0x5, action 0x1
+root@cheshire:/home/hbarta#
 
-Applied to pci/pwrctrl for v6.16, thanks!
+This was captured from dmesg output after I connected an Ethernet
+cable because I experienced it while using the console.
 
+I was running iwctl interactively and had entered (to the best of my
+recollection) commands to scan (nothing reported) and list (reported
+list of visible APs which seemed incomplete) and connect [AP Name].
+The last command prompted for the pass phrasxe and when I entered it
+and hit return, the stack dump appeared.
+
+(Stack dumpo also at https://pastebin.com/CtEMNFxf for 6 months.)
+
+The back story on this is that NetworkManager + wpa_supplicant is not
+reliably maintaining a consistent connection so I am exploring other
+configurations hoping to improve that.
+
+best
+
+Edit: I just enabled iwd (systemctl start iwd) and got another stack
+dump on the console. I've added it to the pastebin.
+
+-- 
+Beautiful Sunny Winfield
 
