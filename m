@@ -1,148 +1,174 @@
-Return-Path: <linux-wireless+bounces-21824-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21825-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA28A95D23
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 06:56:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 378B6A95DC5
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 08:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C53B3B7A89
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 04:55:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1433D3B7E24
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 06:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B192914830C;
-	Tue, 22 Apr 2025 04:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153471E9B3B;
+	Tue, 22 Apr 2025 06:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="V+9bxjNY"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="BdLIPs3M"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98603190472
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 04:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23231DE8B3;
+	Tue, 22 Apr 2025 06:09:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745297765; cv=none; b=kIMYL+qKEpmSjzcEPoFzX2t87A4WjGTAZH3PGtxgqLbt/3WZYW+frUOVZqBzibzJzeMeeAcPHZIjq3FLtL26gf7xTzY1F/nl+pNjXrhPbiUQrkxqTPStK2eYlA85wxjrb0ezHh96Va5BHBSvDGLV4H8p4oI59O/oLXhg5v3O3p4=
+	t=1745302165; cv=none; b=Dcne53oAGkWdCrcfFYlMW0COCpC4PC8Nb4sYDv1iHVFMRCWF7ZBmBZINIk3E2tbIwn0yi0YB9X0DZxwYVR8ZmnnbRF+rKK9c834nX2YGFrozEZ18sFwZv0/MZsY7QXWEyXLXJsv473hEEzsb9negbXNisSDV6bYQ92R/BIGMHQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745297765; c=relaxed/simple;
-	bh=1n6VFvcqcUzVl1/IbVIv/Pa/793Z9OAZn+Q6I6OUYBk=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=VzGWVw/zZmG7qAXt8Sr6jLnvDmKLfQRTqHgqfpC5+9cc6KFJOqot2OsCnvuGAEVU1A3JnlagsOKM7aZ9vet5zQ7NESWD7uoZ8K+Y5p1AJhCO/EN46Mapav+RcQDgA7Oy2s1TALJiqghSXhe0MHHxg69SmyHeq9JnDAZZTuDHneU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=V+9bxjNY; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5f5bef591d6so8002113a12.1
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 21:56:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1745297762; x=1745902562; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Wrp+glrqMEFQIOcbV8OH0y2t9hGyNvM/0gI9W80il2Q=;
-        b=V+9bxjNYLaI+t9XZNnmBD5QZcHBo+JB9RlsajG5N+hvGKM+6zvULXg/VfhKPIlkcnx
-         jIrm/sBnN4HU46kQfm5RPrqI3o8K7FkF/jigrI6UiaT+DG02zbBpQxBeVGm3+FnjGkPx
-         L1go9+9Tj6gLPuU6SianNac05Jx11dbcnq7Qk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745297762; x=1745902562;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wrp+glrqMEFQIOcbV8OH0y2t9hGyNvM/0gI9W80il2Q=;
-        b=Q+oiCVN1JS1FZmp80F08xqq++vsV0eTW81PoQ3mkh9VEwmm+VasxDQxnszjQZfsPya
-         nABTuWqgDANDaTljQ/B2b+Bvl2eAhGaXO33v9iH/fHyoDyoIcsM8f/AHfLW+mvW6suiW
-         WJEeW7K97twC161yGCFNup58Su0/3MGJfJJM8e7maQktPVJFohutooZbc4nqZgzpvQdj
-         AoFL5TnNITcs/xPg6fS5ihvdhmHvx0lWq+jvWtq3XQmM7XlJmXBGWT7PG+Njdun1lgTX
-         qu36E0mw70/7/vKiHseHucmZOxoVKpof3xGn8KHxl6S6w6fFTwVWmz5sz1jP7eJvRJlR
-         bRAw==
-X-Forwarded-Encrypted: i=1; AJvYcCVedaxedR7ABNSRK14Hp8hH3l77D/2E8VxdHubR0GEZvN5yRk1rfqDi8tbgBiI3Rb83KhkacmTBToFJQQ3uLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywtx1CitGl+VAlveErqpVIU7chhA+OdnQAAYuL1NuRoGudc0olG
-	0z66TdvKeeDyxDN9YuDX+aNdkK7ac9mbE8pu4McdsLRLyop+4ZXJkYFoqLLdyQ==
-X-Gm-Gg: ASbGncu9/sGvni220MvnmQmF0tPZ645bsitCgtI/HDTSA7cjPag7U3zoMksrh63cuwA
-	O0kaH0SzRsuzALGlv+iktWIqX7qUjZ+91T8ZX2irqZ7UCVt7uNjzxvOaEmkPk5qZbdkzC5+yEGD
-	u0DUfGkmXM2qxdTOYCeBiNi5jhfZT1XoBKMEc5h0zJp6AKWMtEmFUo+2wOEgYWAkv8CLCa1GWBP
-	1xkaTlfJE8CHB7QkIJk1JTGSgPwDC7s48zgaLUvmgKAOX6pkApzRegMVI/e4sBwFDjVSkTXs+5a
-	j6gBcKsz2g8Ju0Ycxc5oTAZ0vVca9D1cbIgDj2MZn0b6AdkfLzR3n3tKmbCjWbpYWpRzhnF7Jr3
-	oUhM=
-X-Google-Smtp-Source: AGHT+IHSU6S5KXFU9LqzhGRG+vKu9XggFzpPIOcZPwBxuMXIbI8vYSXr2SAHZ4O5/Fg7JR4/K6GtBQ==
-X-Received: by 2002:a05:6402:13cd:b0:5e7:2871:c137 with SMTP id 4fb4d7f45d1cf-5f628548a18mr12182351a12.14.1745297761855;
-        Mon, 21 Apr 2025 21:56:01 -0700 (PDT)
-Received: from [192.168.178.39] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f6258340c8sm5392034a12.58.2025.04.21.21.56.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Apr 2025 21:56:01 -0700 (PDT)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Wentao Liang <vulab@iscas.ac.cn>, <kvalo@kernel.org>
-CC: <jacobe.zang@wesion.com>, <sebastian.reichel@collabora.com>, <christophe.jaillet@wanadoo.fr>, <erick.archer@outlook.com>, <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Date: Tue, 22 Apr 2025 06:55:59 +0200
-Message-ID: <1965bda5b18.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20250422042203.2259-1-vulab@iscas.ac.cn>
-References: <20250422042203.2259-1-vulab@iscas.ac.cn>
-User-Agent: AquaMail/1.54.1 (build: 105401536)
-Subject: Re: [PATCH v2 RESEND] brcm80211: fmac: Add error handling for brcmf_usb_dl_writeimage()
+	s=arc-20240116; t=1745302165; c=relaxed/simple;
+	bh=IwA39pqV6CL+2rcWfGOdsnRR0Msq/kLwxa8WtIp/xQM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZUVCqNt5okSCspDkIhDwDscbDcTBqU0ZKh5V3cv/d1YTAIso1u4KjjAKwQAFkFeTI+fjazO+d1WaNLCZRMvfwgeC137veRN5zcZsDp4ZEbtgrDsys38q0pdX7QGTNEOHR8WVWY70neSy0DxBDXcIKGqiZTTknpeCNbefnKv2t5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=BdLIPs3M; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 53M68KPJ0085015, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1745302101; bh=IwA39pqV6CL+2rcWfGOdsnRR0Msq/kLwxa8WtIp/xQM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=BdLIPs3MgCEHKfbl9AXuW+Cu+GE59wmxlB1CncZCBr/XmZZN5KEkyQhSMkxvm2F93
+	 vHmtW9xtoed9jf/g0jOYd4bFleoVhdFl/N9+9d9unNLssEmg8ryEGtMFRyOVgtDf6X
+	 TN2EgW3r6X/scQmyqTZSdoUtCiiFIZKVXprQWweRWoUFUBJvxQUQJZbSASnBIe8iDZ
+	 W2h4Po6CDFjz/+bmTs92m3kEoDJQ79VKCPbIWjfojecTcmUYG0ZervkLkhAbc+1HSa
+	 b9nSBQ7YLMIWl8PRqZBy6h0CLatBJey9qWky8M8qd1Nf4Dr2TKHbf1nhwLp+H3yB2m
+	 qKrn9CDUvIkcg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 53M68KPJ0085015
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 22 Apr 2025 14:08:21 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 22 Apr 2025 14:08:21 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 22 Apr 2025 14:08:21 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Tue, 22 Apr 2025 14:08:21 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Mingcong Bai <jeffbai@aosc.io>
+CC: Kexy Biscuit <kexybiscuit@aosc.io>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>,
+        Liangliang Zou <rawdiamondmc@outlook.com>,
+        "John W.
+ Linville" <linville@tuxdriver.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        "open list:REALTEK WIRELESS DRIVER (rtlwifi family)"
+	<linux-wireless@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH rtw-next] wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723
+Thread-Topic: [PATCH rtw-next] wifi: rtlwifi: disable ASPM for RTL8723BE with
+ subsystem ID 11ad:1723
+Thread-Index: AQHbszW7c9+Tjxh0Ckyy3/cPdXvVgrOvByag
+Date: Tue, 22 Apr 2025 06:08:20 +0000
+Message-ID: <1ab6f74b5b9d4f0d8023eb43d41906be@realtek.com>
+References: <20250422032132.348598-1-jeffbai@aosc.io>
+In-Reply-To: <20250422032132.348598-1-jeffbai@aosc.io>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On April 22, 2025 6:22:48 AM Wentao Liang <vulab@iscas.ac.cn> wrote:
+Mingcong Bai <jeffbai@aosc.io> wrote:
+>=20
+> RTL8723BE found on some ASUSTek laptops, such as F441U and X555UQ with
+> subsystem ID 11ad:1723 are known to output large amounts of PCIe AER
+> errors during and after boot up, causing heavy lags and at times lock-ups=
+:
+>=20
+>   pcieport 0000:00:1c.5: AER: Correctable error message received from 000=
+0:00:1c.5
+>   pcieport 0000:00:1c.5: PCIe Bus Error: severity=3DCorrectable, type=3DP=
+hysical Layer, (Receiver ID)
+>   pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=3D0000000=
+1/00002000
+>   pcieport 0000:00:1c.5:    [ 0] RxErr
+>=20
+> Disable ASPM on this combo as a quirk.
+>=20
+> This patch is a revision of a previous patch (linked below) which
+> attempted to disable ASPM for RTL8723BE on all Intel Skylake and Kaby Lak=
+e
+> PCIe bridges. I take a more conservative approach as all known reports
+> point to ASUSTek laptops of these two generations with this particular
+> wireless card.
+>=20
+> Please note, however, before the rtl8723be finishes probing, the AER
+> errors remained. After the module finishes probing, all AER errors would
+> indeed be eliminated, along with heavy lags, poor network throughput,
+> and/or occasional lock-ups.
+>=20
+> Cc: <stable@vger.kernel.org>
+> Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
 
-> The function brcmf_usb_dl_writeimage() calls the function
-> brcmf_usb_dl_cmd() but dose not check its return value. The
-> 'state.state' and the 'state.bytes' are uninitialized if the
-> function brcmf_usb_dl_cmd() fails. It is dangerous to use
-> uninitialized variables in the conditions.
->
-> Add error handling for brcmf_usb_dl_cmd() to jump to error
-> handling path if the brcmf_usb_dl_cmd() fails and the
-> 'state.state' and the 'state.bytes' are uninitialized.
->
-> Improve the error message to report more detailed error
-> information.
->
-> Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 
-> chipsets")
-> Cc: stable@vger.kernel.org # v3.4+
+This Fixes is weird to me. The subject is RTL8192CE, but you are adding thi=
+s
+for RTL8723BE. More, at that time, HARDWARE_TYPE_RTL8723BE isn't defined ye=
+t.
 
-Thanks for this patch.
+This might be more suitable?
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Fixes: a619d1abe20c ("rtlwifi: rtl8723be: Add new driver")
+
+> Reported-by: Liangliang Zou <rawdiamondmc@outlook.com>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D218127
+> Link: https://lore.kernel.org/lkml/05390e0b-27fd-4190-971e-e70a498c8221@l=
+wfinger.net/T/
+> Tested-by: Liangliang Zou <rawdiamondmc@outlook.com>
+> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
 > ---
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 6 ++++--
-> 1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c 
-> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> index 2821c27f317e..d06c724f63d9 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> @@ -896,14 +896,16 @@ brcmf_usb_dl_writeimage(struct brcmf_usbdev_info 
-> *devinfo, u8 *fw, int fwlen)
+>  drivers/net/wireless/realtek/rtlwifi/pci.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>=20
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wir=
+eless/realtek/rtlwifi/pci.c
+> index 0eafc4d125f9..898f597f70a9 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/pci.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+> @@ -155,6 +155,16 @@ static void _rtl_pci_update_default_setting(struct i=
+eee80211_hw *hw)
+>             ((u8)init_aspm) =3D=3D (PCI_EXP_LNKCTL_ASPM_L0S |
+>                                 PCI_EXP_LNKCTL_ASPM_L1 | PCI_EXP_LNKCTL_C=
+CC))
+>                 ppsc->support_aspm =3D false;
+> +
+> +       /* RTL8723BE found on some ASUSTek laptops, such as F441U and
+> +        * X555UQ with subsystem ID 11ad:1723 are known to output large
+> +        * amounts of PCIe AER errors during and after boot up, causing
+> +        * heavy lags, poor network throughput, and occasional lock-ups.
+> +        */
+> +       if (rtlpriv->rtlhal.hw_type =3D=3D HARDWARE_TYPE_RTL8723BE &&
+> +           (rtlpci->pdev->subsystem_vendor =3D=3D 0x11ad &&
+> +            rtlpci->pdev->subsystem_device =3D=3D 0x1723))
+> +               ppsc->support_aspm =3D false;
 >  }
->
->  /* 1) Prepare USB boot loader for runtime image */
-> - brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
-> + err = brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
-> + if (err)
-> + goto fail;
->
->  rdlstate = le32_to_cpu(state.state);
->  rdlbytes = le32_to_cpu(state.bytes);
->
->  /* 2) Check we are in the Waiting state */
->  if (rdlstate != DL_WAITING) {
-> - brcmf_err("Failed to DL_START\n");
-> + brcmf_err("Invalid DL state: %u\n", rdlstate);
->  err = -EINVAL;
->  goto fail;
->  }
+>=20
+>  static bool _rtl_pci_platform_switch_device_pci_aspm(
 > --
-> 2.42.0.windows.2
-
-
+> 2.49.0
+>=20
 
 
