@@ -1,111 +1,239 @@
-Return-Path: <linux-wireless+bounces-21848-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21849-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A99A97339
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 19:01:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDD1A9733D
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 19:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEADD440A2C
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 17:01:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C4327AB64E
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 17:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A7C2900AC;
-	Tue, 22 Apr 2025 17:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F6C29616D;
+	Tue, 22 Apr 2025 17:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PwywE9M7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A5quNiPT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB8F281369
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 17:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BF72900AC;
+	Tue, 22 Apr 2025 17:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745341274; cv=none; b=EDzbLW0wLHVL664XOZkfa6IZ2L+juGIhU2Sg9Au0QYLah7SkUbKW5MgsIXRCBgf5QO5uOxIoGwae1PbBHRwBBpnRjojRjw32hrY0T/S5WpkDywYhJcj5MHbEMq/OnpKNllQl4bQ0sM3GqLI2swB9BE8FZaS/veqjiSaDCllUvQQ=
+	t=1745341324; cv=none; b=XvjP1HsKvo7/O70BT+cgoPFYS/eBy4xMBMYEZYTirzOmKuuvRQLqzxLVOqLWv9S2vOLOj0z9s/hL8DQBm6NRBrKKGs3wQVU/nfqe7S3SM8pWB6aE3zrjBxieROVYxAdY4OxaDMjZCFuHpuyloeoF6s5N/XWpC42jG3bVWdACnMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745341274; c=relaxed/simple;
-	bh=021RLHa79z8O3rv+ZcQ953h0RH4fReYhIPEqB/dtBKU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=WgKcja12gpiovb9ZuLMRMFf44JxCAeTg9V6cukP2dFr4eT262qfOYRV6ZQ44aj7lUAsLc4xo3xk73TG6pCA5dFGLvVpEKvaagBulVW43OJV8oQDnHG3Q3K/Z2FhP4NLVTUp7GP41bCCuZNi+8IIuf9NYgeiF+SneOZZhMKSAWFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PwywE9M7; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745341272; x=1776877272;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=021RLHa79z8O3rv+ZcQ953h0RH4fReYhIPEqB/dtBKU=;
-  b=PwywE9M7T6TiMFmwswrejEv2crb4xToadZwl8I/8LRolDTuhtWd2cMtW
-   /Sx+Xu35ngGKW0F4qpAqCt/fktdjVJ8fjvPUlcwP2tG0B3M44tvvoA1Yy
-   7qytAHzsUPB/BXz5/UDRcBdt2xpyUtrNbC8TmX48SXTD/N/zBVBzPAarI
-   HIYPn5PGKQGSMcJ627tDaSGsLBG2hygVdexSc1v1oXm6ezlXpXrRgpSsW
-   Aztnw+oNB5P99637oHXkkgLO8Edbo8HzPyMfxEWTKZejA1gakBKAorOfx
-   0i8mXkevfNVKOURkRH4xTCfpi79Pn4gR7v4mZeT3Hc5vtdLDogPKBq3Gb
-   w==;
-X-CSE-ConnectionGUID: xXFgBUASRl6EO9kqD1NiRQ==
-X-CSE-MsgGUID: mPvo3I8yTouiaj13VFoq+Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="46794146"
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
-   d="scan'208";a="46794146"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 10:01:11 -0700
-X-CSE-ConnectionGUID: e2WrTSCbR9q4bxCCGhyGLg==
-X-CSE-MsgGUID: IiUrHkwRQsafVCig84oGCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
-   d="scan'208";a="131963055"
-Received: from iapp347.iil.intel.com (HELO 8ca39f2fbbbb.iil.intel.com) ([10.167.28.6])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 10:01:10 -0700
-From: Itamar Shalev <itamar.shalev@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: miriam.rachel.korenblit@intel.com,
-	Itamar Shalev <itamar.shalev@intel.com>
-Subject: [PATCH wireless] wifi: iwlwifi: restore missing initialization of async_handlers_list
-Date: Tue, 22 Apr 2025 20:01:05 +0300
-Message-Id: <20250422170105.29358-1-itamar.shalev@intel.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1745341324; c=relaxed/simple;
+	bh=tz697PeimqwwKDXfJs0BPD/016iKLpVR0s6NEmZvSyk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=pLjoQEF7DH1F//noj5R9TtOCvLiS52aj67S9cY6tWLbToP8VtJZ7jwvTANCaeZbH4f+DqNrvKuM3c5BcqPOkV5oWd0vrx/2XobKWrVYQOttwE+Q1TwnTvgbv6RkzLGhygblrs6HfxoZyBBnO0nntVdfmnT822aPoLboLPM1Ruvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A5quNiPT; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e5e63162a0so8347499a12.3;
+        Tue, 22 Apr 2025 10:02:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745341321; x=1745946121; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xmsdnMqf5xlO7k6+QnwIpLTJU73C+ck4BW6kSugTHUQ=;
+        b=A5quNiPTKKdWl9uN7QRJrJaNsvP7SpGsTVc3ei/Wk+bYUIE4awrtfnD1sD/dANn7Sh
+         EjxVmxKO7IGWtKDepICkzchIcU9utQqZHOk/+SPBc311gUUozjL1XBxrP4qWOPjiaZE6
+         6RhRsLWjCVg9QlhPP3VRRZ+yOlzBkcM2OTcelJVOJ0jDlrNYEPbEeGWkkQi3zJaTPVsI
+         7d5Re7ypbzQCTx7WRiZrtSWNsddcv1T55fpwz0KAeMriWTAvAAzDRdq+vzo4U6SnjZIk
+         g+cGujD1E/Smpc4dvDt58OjfCbUGe4E0Lo0n7SlYfzkqdQGcGFqNrKxtnmA9xobJJXBG
+         LJmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745341321; x=1745946121;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xmsdnMqf5xlO7k6+QnwIpLTJU73C+ck4BW6kSugTHUQ=;
+        b=GWzo6rZ/eCfjimaVKHEFdcBoOaexVZWoZn9SxYhBU6xElDYtugwXCW8fD2a9m8q0cG
+         eSh5nieZ5L3YgZznfY+yTo6TJjVV7LJDOIIw01k+H3Y0NEuOdcKsD/nKkV2RQhimO7S+
+         bVTwdB7b+hApB7tGAq36yeDVG0mkB5TCJUkpUKbug+ig0EtPXodzpfqlQgPTP4XSP77Y
+         KupxSBRz5gajDFFq64KRm2wMFDdSa5etRG0oWQageeABZWaBXKeQHHuWYVwvIUyREFBx
+         yaJQyvCI//lPtEmuw5k7cRyKemC2Ie2g92uArOPNWDOu4YpjJvOO70/kwZENUXllJvp/
+         MBdA==
+X-Forwarded-Encrypted: i=1; AJvYcCUN6W91RyiSNns4MrpxkghO4QDFCC3bJUHn0htn7kjVcaiZOL/6qAKlG/PbNRoFumoNbzH4YOxyb26Av5DXUMY=@vger.kernel.org, AJvYcCW82dRb2KzuNsl+1cmLJBR5QFMfLcTB62PnOCVFCM7ejloapt+giSaahalzT2Osq+V5bpgGovo42k0gb1A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJlgQVGNeJugSc1cvSU1lUAHIqpQAkoE05ld32rmwfm51JUWRi
+	+htnrAWyDhWb4WaupdVnoIlVb8AiLag03OboXiVZWICoxVmHh26wa/X1CbMQlQMOpmeK9LZ7l+s
+	kF7ORbfihpwM6TlpwVNDJNddecJQ=
+X-Gm-Gg: ASbGncum623PhtD+0pvTwRqJD20YeNacFKJ+n+CekJDeOQYgxQ+fAL5G6cjUwfy0JUo
+	007wOzUd12HjEezDrkV7+wdpW146rl8EENgf9UoBUfcRDXoZdKNhifUGxX4stsGmHPdBvdgLW1s
+	fxPAKgxaqITqQ6dlNwaQv9bzW2tZt6TdmRGbuT
+X-Google-Smtp-Source: AGHT+IHd2N9D1ZrJXInnFHsaJpiRrGdvZOEoz2WndD7gmxPUbmQCpZ/3gUmK1m/ge8Qp9ZnPcHOvzzMo3WOgXfkexnE=
+X-Received: by 2002:a17:906:dc90:b0:ac6:e33e:9ef8 with SMTP id
+ a640c23a62f3a-acb74ad97bamr1143411466b.2.1745341320895; Tue, 22 Apr 2025
+ 10:02:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+References: <CABTDG886JyTFu0dUWgZAT89Dmxjm78VNk0TXcgf=1yABBRN5XQ@mail.gmail.com>
+In-Reply-To: <CABTDG886JyTFu0dUWgZAT89Dmxjm78VNk0TXcgf=1yABBRN5XQ@mail.gmail.com>
+From: Hank Barta <hbarta@gmail.com>
+Date: Tue, 22 Apr 2025 12:01:49 -0500
+X-Gm-Features: ATxdqUHnhdxkjiue3m4U7BvSmKftALxNk06SRc-rmx9Be7QM4KMDNVlJDk1pDLs
+Message-ID: <CABTDG8-A7A7WJUSHio85vVPCKM02nuwcYPhbYju6bQacbteQUg@mail.gmail.com>
+Subject: Re: Stack dump, Pi 4B, Debian Bookworm (not RpiOS)
+To: arend.vanspriel@broadcom.com, linux-wireless@vger.kernel.org, 
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The initialization of async_handlers_list
-was accidentally removed in a previous change.
-This patch restores the missing initialization
-to ensure proper handler registration.
+I should have mentioned that I'm also running Tailscale and Docker on
+this host so there's a lot of "networking" going on. Following a
+reboot, I see what I think is the same stack dump. In addition there
+are a lot of messages on the console like
 
-Fixes: 6895d74c11d8 (wifi: iwlwifi: mld: initialize regulatory early)
-Signed-off-by: Itamar Shalev <itamar.shalev@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mld/mld.c | 1 +
- 1 file changed, 1 insertion(+)
+[  242.666852] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown
+Frame: category 0x5, action 0x1
+[  251.665022] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown
+Frame: category 0x5, action 0x1
+[  260.716149] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown
+Frame: category 0x5, action 0x1
+[  269.670253] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown
+Frame: category 0x5, action 0x1
+[  278.673598] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown
+Frame: category 0x5, action 0x1
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index d4a99ae64074..4bff036aa3a4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -75,6 +75,7 @@ void iwl_construct_mld(struct iwl_mld *mld, struct iwl_trans *trans,
- 
- 	/* Setup async RX handling */
- 	spin_lock_init(&mld->async_handlers_lock);
-+	INIT_LIST_HEAD(&mld->async_handlers_list);
- 	wiphy_work_init(&mld->async_handlers_wk,
- 			iwl_mld_async_handlers_wk);
- 
--- 
-2.34.1
+In spite of that, WiFi and Ethernet seem to be working.
 
----------------------------------------------------------------------
-A member of the Intel Corporation group of companies
+best,
 
-This e-mail and any attachments may contain confidential material for
-the sole use of the intended recipient(s). Any review or distribution
-by others is strictly prohibited. If you are not the intended
-recipient, please contact the sender and delete all copies.
+On Tue, Apr 22, 2025 at 11:52=E2=80=AFAM Hank Barta <hbarta@gmail.com> wrot=
+e:
+>
+> Good morning, I encountered the following while attempting to connect
+> to a WiFi AP using iwd. Another user on the Raspberry Pi IRC
+> (ukleinek) suggested I forward that to this group.
+>
+> hbarta@olive:~/MkDocs/my-notes/docs/hosts/Raspberry-Pi/4/allegan$ cat
+> iwd.crash.txt
+> [565142.844103] NET: Registered PF_ALG protocol family
+> [565142.895121] alg: No test for hmac(md4) (hmac(md4-generic))
+> [565255.271588] ------------[ cut here ]------------
+> [565255.278557] memcpy: detected field-spanning write (size 72) of
+> single field "&mgmt_frame->u" at
+> drivers/net/wireless/broadcom/brcm80211/brcmfm
+> ac/p2p.c:1469 (size 26)
+> [565255.295948] WARNING: CPU: 1 PID: 1135280 at
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c:1469
+> brcmf_p2p_notify_action_frame_rx+0x30c
+> /0x440 [brcmfmac]
+> [565255.312770] Modules linked in: ghash_generic ghash_ce gf128mul gcm
+> ccm algif_aead des_generic libdes ecb algif_skcipher md4 algif_hash
+> af_alg
+> nf_conntrack_netlink xt_nat veth xt_conntrack bridge stp llc xt_set
+> ip_set xt_addrtype xfrm_user xfrm_algo overlay xt_MASQUERADE xt_tcpudp
+> xt_mark
+> nft_compat nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6
+> nf_defrag_ipv4 tun qrtr binfmt_misc hid_logitech_hidpp joydev hci_uart
+> btqca btrtl bt
+> bcm btintel btsdio bluetooth jitterentropy_rng sha512_generic evdev
+> bcm2835_v4l2(C) hid_logitech_dj sha512_arm64 bcm2835_mmal_vchiq(C)
+> videobuf2_v
+> malloc videobuf2_memops videobuf2_v4l2 cpufreq_dt videobuf2_common
+> videodev aes_neon_bs snd_bcm2835(C) mc aes_neon_blk vc4 zfs(POE)
+> snd_soc_hdmi_c
+> odec snd_soc_core raspberrypi_cpufreq drbg snd_pcm_dmaengine
+> ansi_cprng snd_pcm brcmfmac snd_timer zunicode(POE) brcmutil
+> ecdh_generic pwm_bcm2835
+> snd zzstd(OE) ecc nls_ascii zlua(OE) iproc_rng200 soundcore nls_cp437
+> cec bcm2835_wdt vfat fat rc_core bcm2711_thermal vchiq(C)
+> [565255.313189]  drm_display_helper v3d zcommon(POE) znvpair(POE)
+> hid_generic gpu_sched drm_dma_helper zavl(POE) drm_shmem_helper
+> drm_kms_helper i
+> cp(POE) leds_gpio spl(OE) sg cfg80211 rfkill nf_tables libcrc32c
+> nfnetlink loop fuse drm efi_pstore dm_mod dax configfs ip_tables
+> x_tables autofs4
+> usbhid hid ext4 crc16 mbcache jbd2 crc32c_generic sd_mod t10_pi
+> crc64_rocksoft crc64 crc_t10dif crct10dif_generic uas usb_storage
+> scsi_mod scsi_c
+> ommon xhci_pci dwc2 xhci_hcd broadcom udc_core bcm_phy_ptp bcm_phy_lib
+> reset_raspberrypi roles i2c_bcm2835 usbcore genet sdhci_iproc
+> mdio_bcm_unim
+> ac of_mdio usb_common fixed_phy fwnode_mdio crct10dif_ce
+> crct10dif_common sdhci_pltfm libphy fixed sdhci gpio_regulator
+> phy_generic
+> [565255.489912] CPU: 1 PID: 1135280 Comm: kworker/1:3 Tainted: P
+>   C OE      6.1.0-33-arm64 #1  Debian 6.1.133-1
+> [565255.489934] Hardware name: Raspberry Pi 4 Model B Rev 1.5 (DT)
+> [565255.489941] Workqueue: events brcmf_fweh_event_worker [brcmfmac]
+> [565255.490001] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTY=
+PE=3D--)
+> [565255.490013] pc : brcmf_p2p_notify_action_frame_rx+0x30c/0x440 [brcmfm=
+ac]
+> [565255.490058] lr : brcmf_p2p_notify_action_frame_rx+0x30c/0x440 [brcmfm=
+ac]
+> [565255.490100] sp : ffff80000c8d3c20
+> [565255.490105] x29: ffff80000c8d3c20 x28: ffff145a4bc40810 x27:
+> 0000000000000048
+> [565255.490123] x26: ffff145a7c9ed560 x25: 0000000000000048 x24:
+> ffff145a49cd8900
+> [565255.490139] x23: ffff145a07b6aa98 x22: 0000000000000058 x21:
+> ffff145a07b6aa80
+> [565255.490154] x20: ffff80000c8d3d78 x19: ffff145a48e139c0 x18:
+> 0000000000000006
+> [565255.490169] x17: 010300080103060e x16: 0000000000000010 x15:
+> 0000000000000001
+> [565255.490184] x14: 0000000020000000 x13: 0000000000000002 x12:
+> 0000000000000000
+> [565255.490199] x11: 00000000ffffefff x10: ffffd291cf1109c8 x9 :
+> ffffd291cd61d33c
+> [565255.490214] x8 : 0000000000017fe8 x7 : c0000000ffffefff x6 :
+> 0000000000000001
+> [565255.490229] x5 : ffff145a7fb74ad0 x4 : ffff145a7fb74ad0 x3 :
+> ffff145a7fb80c70
+> [565255.490243] x2 : 0000000000000000 x1 : 0000000000000000 x0 :
+> ffff145a46768000
+> [565255.490258] Call trace:
+> [565255.490264]  brcmf_p2p_notify_action_frame_rx+0x30c/0x440 [brcmfmac]
+> [565255.490309]  brcmf_fweh_call_event_handler+0x44/0xc0 [brcmfmac]
+> [565255.490352]  brcmf_fweh_event_worker+0x190/0x490 [brcmfmac]
+> [565255.490395]  process_one_work+0x1f4/0x460
+> [565255.490416]  worker_thread+0x188/0x4e0
+> [565255.490429]  kthread+0xe0/0xe4
+> [565255.490441]  ret_from_fork+0x10/0x20
+> [565255.490455] ---[ end trace 0000000000000000 ]---
+> [565658.710117] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown
+> Frame: category 0x5, action 0x4
+> [565658.721227] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: link becomes ready
+> [565704.491659] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown
+> Frame: category 0x5, action 0x1
+> root@cheshire:/home/hbarta#
+>
+> This was captured from dmesg output after I connected an Ethernet
+> cable because I experienced it while using the console.
+>
+> I was running iwctl interactively and had entered (to the best of my
+> recollection) commands to scan (nothing reported) and list (reported
+> list of visible APs which seemed incomplete) and connect [AP Name].
+> The last command prompted for the pass phrasxe and when I entered it
+> and hit return, the stack dump appeared.
+>
+> (Stack dumpo also at https://pastebin.com/CtEMNFxf for 6 months.)
+>
+> The back story on this is that NetworkManager + wpa_supplicant is not
+> reliably maintaining a consistent connection so I am exploring other
+> configurations hoping to improve that.
+>
+> best
+>
+> Edit: I just enabled iwd (systemctl start iwd) and got another stack
+> dump on the console. I've added it to the pastebin.
+>
+> --
+> Beautiful Sunny Winfield
 
+
+
+--=20
+Beautiful Sunny Winfield
 
