@@ -1,197 +1,233 @@
-Return-Path: <linux-wireless+bounces-21833-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21834-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9377A964C2
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 11:43:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77FC3A96502
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 11:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBA24189AE96
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 09:43:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 783263BADED
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 09:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2997A18E3F;
-	Tue, 22 Apr 2025 09:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B901F4C8B;
+	Tue, 22 Apr 2025 09:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="coXIRiOI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iHqwrdM6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3362D8BEA
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 09:43:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2A11F4C92
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 09:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745315019; cv=none; b=d3N2/qRqHuLeUy9aYGs5ReA+h8zhuwY/ILsj0lsjR9Hf4QwS5frqNQxymWWj0KaC0aCgdGEL3VjtNvfprvrXnuIYLwBUN7h4SjmaLaVzQmQevKYwdzQvnQgBLShxio2j5x+xgalQBphpoeLoZWrIEq3AOTyK18BzBypPqUz8mso=
+	t=1745315294; cv=none; b=Rq0WCeaZY9e29zbbwtSoLHRV//MFaYOHVa/+W0VlSKozim2yIW/kbF/Zx3hGuRTnGKa4GQgyM+L0glnjWMFs2k9jYeRnBJD/oz3dTOo3GVlO4LcfAqsBfW3AKHVLf3hpMylMEoeascVsVnFl/RprkqRpTr8Po2HP/ENNy6ejGlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745315019; c=relaxed/simple;
-	bh=c9QnEAZeP83K+es4UR3MeXYS4WLNtubuEY5Um5LHywM=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=a8DTdlFcWKd9FAaMe34SwyOusp6A7uwHfMQjCuIH5n3L4Yj9u0+qZZWz5/JrlLzNpG7T13M/Jj66f8unT4td2sGdN02/o/J+/N93hTsLjUwMJUFPt2L98rTQeb8DQcbFCsnuRfSP3+HTbPefwI3ae25jdELEY9MXM5RUgjZ4ylI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=coXIRiOI; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53M4P2jx006342
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 09:43:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:date:from:message-id:subject:to; s=qcppdkim1; bh=a0aCPzESRmOL
-	FCZSZqW4C1Bz5aMHm1PCkm2+Jj0kpro=; b=coXIRiOIuG2XzFtF5m8Sc2iUQ0zn
-	NGppuBJ/gwEq+p/us/hOG5Ywzo48UysAxOXIb2S5B81sToNd14QvMkJPmEHQaia0
-	LFFEeAD8TQLGa9ErQeFmavFv79oOj5vGtNb6APowxM//yqU2i7POSvqfDBmHAgaZ
-	VD2KNWdO0HTsM0wXNlSvWSlu1CbydVK8q5zWH3XUFuuMM9oAnasOCpiY39NlSTJZ
-	wZgtLW2PfcvYaVeT5MYCHI0kOtQeVM0ok8lZIsAK5k46KR2RWHpsbg/A9edejZkh
-	cfH8es6LihWtEYJlzKgck01mmlRF3QFgKIJmrHxmXlI1XXxMHWgafXsNPg==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46435jeyux-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 09:43:35 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-73917303082so3476872b3a.3
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 02:43:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745315014; x=1745919814;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a0aCPzESRmOLFCZSZqW4C1Bz5aMHm1PCkm2+Jj0kpro=;
-        b=Yo1gfIrgMfgKAyI38VW/lxSyegvSB2jw9OoupSTuMEZvFieWWe4CiyBDqsGb7898/V
-         9WT4anVfHqTcSL1nCMJNUiuCbO0ft00hNwYdSRu/yTQPcrihaIM/75fMMJIoL71ifPGL
-         CH+BEg5wSxilvAA5Ul+cCgL/62ALbvF1Rl4RfD7QHGhd4srdsR7pN5fnM8t/DnaEVH34
-         zRYX+H9B69Ko8DuUM21uqso1mapWht2YR9l7ddhtyIFVHfV6MjSErmsBJOhrYu9jRyG1
-         qv8nWFwiIczDRobO5HOgjxvpPeC4EhKxSjvUfcmeeIMZrzdqLSuhFfTZ8n9AHpunrvuc
-         crFg==
-X-Gm-Message-State: AOJu0YyJdScejJRH0E6of4y7a47l9JsAgT7K27ZJmjiAkK8rZ+F/Q9qX
-	Y0Zj22nUmj1MVOKBkGwZucDhlHIV2ybzWZ9rT8Sjdvf9rpEDqj6K43m6cUuNbiLo2rzN3SRtUgf
-	TO1bHcuUE8+thrXdzk3JcV3ZZv8Y8QU3tnuH+EEDMLVvqHcERsu6azZk7mIoyIXGlJg==
-X-Gm-Gg: ASbGncvHibuitHynjE3q/nP2f9GIoVgjj1ho06/P/Zr7Hv45UqL4belAY2ztLA40VFL
-	9TEpSVXmOjBCunqv93R4MrPbzXT22ehEUA9exCBMZxryGGSg36Du69/XebQoCqv1gnds1is+Tu5
-	IaJs1AJCzIdQ6KA3XcN6M4PgdIXUhSCdOuw7F1ny8JbA31RC0JhQd+h9UJZo28lbBx8EEXFvkLC
-	9VnK75MZ8sb73PuaH5YT729aKRPxUyZS7EYtr6tZrZSdJFvACi5zK19dX+IOUOV+QGAFPPAnK8q
-	uKsU3rFOy88tpoEjH+hAOYQJOVY1qBUsyncYddvicqm2DOTT9DqHXiWifpY6v1XpsE7yHx2qpD8
-	JOAwSCpALb0aGKgmY/+BF4K3D2zqSzvHFYfJfEMicLmCcWA==
-X-Received: by 2002:a05:6a00:98e:b0:736:5c8e:bab8 with SMTP id d2e1a72fcca58-73dc144c7aamr23123356b3a.3.1745315014342;
-        Tue, 22 Apr 2025 02:43:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEan9zA+8EjugL8KIBuwmnjvji6NNTShHfGQ9LH/OIZR2Y1iL5cxa0Jyk6oLHrP2hF/h1A6hQ==
-X-Received: by 2002:a05:6a00:98e:b0:736:5c8e:bab8 with SMTP id d2e1a72fcca58-73dc144c7aamr23123330b3a.3.1745315013837;
-        Tue, 22 Apr 2025 02:43:33 -0700 (PDT)
-Received: from hu-nithp-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73dbfa58376sm8432243b3a.100.2025.04.22.02.43.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 02:43:33 -0700 (PDT)
-From: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>,
-        Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
-Subject: [PATCH ath-next] wifi: ath12k: Enable AST index based address search in Station Mode
-Date: Tue, 22 Apr 2025 15:12:55 +0530
-Message-Id: <20250422094255.131226-1-nithyanantham.paramasivam@oss.qualcomm.com>
-X-Mailer: git-send-email 2.17.1
-X-Authority-Analysis: v=2.4 cv=EOYG00ZC c=1 sm=1 tr=0 ts=680764c7 cx=c_pps a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=g-AHoWTylar1N0jkHzsA:9 a=zc0IvFSfCIW2DFIPzwfm:22
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: OGIvztSJdiaK7DWwFX_aTpNZfNHzSC7H
-X-Proofpoint-ORIG-GUID: OGIvztSJdiaK7DWwFX_aTpNZfNHzSC7H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-22_05,2025-04-21_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=999 mlxscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 phishscore=0 spamscore=0 adultscore=0 impostorscore=0
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504220073
+	s=arc-20240116; t=1745315294; c=relaxed/simple;
+	bh=VYgcJT5Nn1Z24L2XGwZWRQStHBHOHtqDcH0DTU4ywP0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OgYd+0FEJrKx2EHB5B3F4vmMTncc1UkmQCsdbRZg9JRKX5vPCSmGS6STyZANNOqOGbwDaMYxUQGME3HOnR3gC9Lo+VO2QYcsJQtUnhkgn/IyQ5mPqtGdcTqORtd7m7tiO7PSkXO6jhoofepbWFx1EeVl25ssIX63cFJRPE5R6mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iHqwrdM6; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745315292; x=1776851292;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VYgcJT5Nn1Z24L2XGwZWRQStHBHOHtqDcH0DTU4ywP0=;
+  b=iHqwrdM6jxbWPuEKE4I2FMAjHANYvvErRu1N8/aPvyo9gnDMxGhosbsf
+   Ro5VyXdqz5bvQSZrXPA/e6gFBIRpaICfTQlpyW3zU8CJQGlT0fQEDBAJ2
+   HRu1+3/zavHK6mnIIntxJEaxdrXwoPMzpeUCj1/4xR9YeiPlANXXlUEgI
+   jRMODbssGSdAx7h7jauz5psVpQ5LLzQbzo4C4RPeXiWE98JKJm6tpI6GI
+   03/+AdZLHo9kj3yqud55buwi+Oy8AMDPF073hq2i0K5hbnBNGZyH5nte9
+   M9AwA+G2s1L6RE4FTxkRaJN9mntXsqMK8DpnkiHA7RF1xFj9UGTj4lSEh
+   w==;
+X-CSE-ConnectionGUID: ELjyg3mzQI2gVFLazqn+qQ==
+X-CSE-MsgGUID: BKhVDYS8Tkeo8waAMRG4Dg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="49528534"
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
+   d="scan'208";a="49528534"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 02:48:11 -0700
+X-CSE-ConnectionGUID: 22ESS+U1QwuT3a+nq36+0g==
+X-CSE-MsgGUID: gfeg5WDmTJKPXxDrowJbVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
+   d="scan'208";a="169165208"
+Received: from lkp-server01.sh.intel.com (HELO 050dd05385d1) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 22 Apr 2025 02:48:10 -0700
+Received: from kbuild by 050dd05385d1 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u7AEZ-0000oV-2D;
+	Tue, 22 Apr 2025 09:48:07 +0000
+Date: Tue, 22 Apr 2025 17:48:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>,
+	ath12k@lists.infradead.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
+	Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
+Subject: Re: [PATCH ath-next] wifi: ath12k: allow beacon protection keys to
+ be installed in hardware
+Message-ID: <202504221714.6bYFTiB1-lkp@intel.com>
+References: <20250421114711.3660911-1-karthikeyan.kathirvel@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250421114711.3660911-1-karthikeyan.kathirvel@oss.qualcomm.com>
 
-From: Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
+Hi Karthikeyan,
 
-Currently, TCL performs the TX address search for each entry during
-transmission, which may lead to packet delays.
+kernel test robot noticed the following build errors:
 
-To mitigate this issue, enable AST index-based address search during
-transmission in station mode. This AST index-based search is not
-enabled in AP mode due to the complexity involved in fetching peer
-information.
+[auto build test ERROR on d33705bb41ff786b537f8ed50a187a474db111c1]
 
-Implement changes to retrieve the offset of ast_idx/ast_hash values
-from the PEER_MAP3 event, update the vdev search type to ADDRX, and
-enable AST lookup in the bank configuration.
+url:    https://github.com/intel-lab-lkp/linux/commits/Karthikeyan-Kathirvel/wifi-ath12k-allow-beacon-protection-keys-to-be-installed-in-hardware/20250421-194813
+base:   d33705bb41ff786b537f8ed50a187a474db111c1
+patch link:    https://lore.kernel.org/r/20250421114711.3660911-1-karthikeyan.kathirvel%40oss.qualcomm.com
+patch subject: [PATCH ath-next] wifi: ath12k: allow beacon protection keys to be installed in hardware
+config: sparc-allmodconfig (https://download.01.org/0day-ci/archive/20250422/202504221714.6bYFTiB1-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250422/202504221714.6bYFTiB1-lkp@intel.com/reproduce)
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504221714.6bYFTiB1-lkp@intel.com/
 
-Signed-off-by: Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
-Signed-off-by: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/dp.c    | 10 +++++-----
- drivers/net/wireless/ath/ath12k/dp.h    |  2 ++
- drivers/net/wireless/ath/ath12k/dp_rx.c |  6 +++++-
- 3 files changed, 12 insertions(+), 6 deletions(-)
+All errors (new ones prefixed by >>):
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index ad873013e46c..0291fbea6312 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -354,7 +354,10 @@ u32 ath12k_dp_tx_get_vdev_bank_config(struct ath12k_base *ab,
- 			u32_encode_bits(0, HAL_TX_BANK_CONFIG_EPD);
- 
- 	/* only valid if idx_lookup_override is not set in tcl_data_cmd */
--	bank_config |= u32_encode_bits(0, HAL_TX_BANK_CONFIG_INDEX_LOOKUP_EN);
-+	if (ahvif->vdev_type == WMI_VDEV_TYPE_STA)
-+		bank_config |= u32_encode_bits(1, HAL_TX_BANK_CONFIG_INDEX_LOOKUP_EN);
-+	else
-+		bank_config |= u32_encode_bits(0, HAL_TX_BANK_CONFIG_INDEX_LOOKUP_EN);
- 
- 	bank_config |= u32_encode_bits(arvif->hal_addr_search_flags & HAL_TX_ADDRX_EN,
- 					HAL_TX_BANK_CONFIG_ADDRX_EN) |
-@@ -1107,11 +1110,8 @@ static void ath12k_dp_update_vdev_search(struct ath12k_link_vif *arvif)
- {
- 	switch (arvif->ahvif->vdev_type) {
- 	case WMI_VDEV_TYPE_STA:
--		/* TODO: Verify the search type and flags since ast hash
--		 * is not part of peer mapv3
--		 */
- 		arvif->hal_addr_search_flags = HAL_TX_ADDRY_EN;
--		arvif->search_type = HAL_TX_ADDR_SEARCH_DEFAULT;
-+		arvif->search_type = HAL_TX_ADDR_SEARCH_INDEX;
- 		break;
- 	case WMI_VDEV_TYPE_AP:
- 	case WMI_VDEV_TYPE_IBSS:
-diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
-index 706d766d8c81..e3923ff02dbd 100644
---- a/drivers/net/wireless/ath/ath12k/dp.h
-+++ b/drivers/net/wireless/ath/ath12k/dp.h
-@@ -1330,6 +1330,8 @@ struct htt_t2h_version_conf_msg {
- #define HTT_T2H_PEER_MAP_INFO1_MAC_ADDR_H16	GENMASK(15, 0)
- #define HTT_T2H_PEER_MAP_INFO1_HW_PEER_ID	GENMASK(31, 16)
- #define HTT_T2H_PEER_MAP_INFO2_AST_HASH_VAL	GENMASK(15, 0)
-+#define HTT_T2H_PEER_MAP3_INFO2_HW_PEER_ID	GENMASK(15, 0)
-+#define HTT_T2H_PEER_MAP3_INFO2_AST_HASH_VAL	GENMASK(31, 16)
- #define HTT_T2H_PEER_MAP_INFO2_NEXT_HOP_M	BIT(16)
- #define HTT_T2H_PEER_MAP_INFO2_NEXT_HOP_S	16
- 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 1abfbd15f13c..f83e34db83c0 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -1802,8 +1802,12 @@ void ath12k_dp_htt_htc_t2h_msg_handler(struct ath12k_base *ab,
- 					     HTT_T2H_PEER_MAP_INFO1_MAC_ADDR_H16);
- 		ath12k_dp_get_mac_addr(le32_to_cpu(resp->peer_map_ev.mac_addr_l32),
- 				       peer_mac_h16, mac_addr);
-+		ast_hash = le32_get_bits(resp->peer_map_ev.info2,
-+					 HTT_T2H_PEER_MAP3_INFO2_AST_HASH_VAL);
-+		hw_peer_id = le32_get_bits(resp->peer_map_ev.info2,
-+					   HTT_T2H_PEER_MAP3_INFO2_HW_PEER_ID);
- 		ath12k_peer_map_event(ab, vdev_id, peer_id, mac_addr, ast_hash,
--				      peer_id);
-+				      hw_peer_id);
- 		break;
- 	case HTT_T2H_MSG_TYPE_PEER_UNMAP:
- 	case HTT_T2H_MSG_TYPE_PEER_UNMAP2:
+   drivers/net/wireless/ath/ath12k/mac.c: In function 'ath12k_mac_set_arvif_ies':
+>> drivers/net/wireless/ath/ath12k/mac.c:1474:37: error: 'WLAN_EXT_CAPA11_BCN_PROTECT' undeclared (first use in this function); did you mean 'WLAN_EXT_CAPA11_EMA_SUPPORT'?
+    1474 |             (ext_cap_ie->data[10] & WLAN_EXT_CAPA11_BCN_PROTECT))
+         |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                                     WLAN_EXT_CAPA11_EMA_SUPPORT
+   drivers/net/wireless/ath/ath12k/mac.c:1474:37: note: each undeclared identifier is reported only once for each function it appears in
 
-base-commit: d33705bb41ff786b537f8ed50a187a474db111c1
+
+vim +1474 drivers/net/wireless/ath/ath12k/mac.c
+
+  1447	
+  1448	static void ath12k_mac_set_arvif_ies(struct ath12k_link_vif *arvif,
+  1449					     struct ath12k_link_vif *tx_arvif,
+  1450						 struct sk_buff *bcn,
+  1451					     u8 bssid_index, bool *nontx_profile_found)
+  1452	{
+  1453		struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)bcn->data;
+  1454		const struct element *elem, *nontx, *index, *nie, *ext_cap_ie;
+  1455		const u8 *start, *tail;
+  1456		u16 rem_len;
+  1457		u8 i;
+  1458	
+  1459		start = bcn->data + ieee80211_get_hdrlen_from_skb(bcn) + sizeof(mgmt->u.beacon);
+  1460		tail = skb_tail_pointer(bcn);
+  1461		rem_len = tail - start;
+  1462	
+  1463		arvif->rsnie_present = false;
+  1464		arvif->wpaie_present = false;
+  1465	
+  1466		if (cfg80211_find_ie(WLAN_EID_RSN, start, rem_len))
+  1467			arvif->rsnie_present = true;
+  1468		if (cfg80211_find_vendor_ie(WLAN_OUI_MICROSOFT, WLAN_OUI_TYPE_MICROSOFT_WPA,
+  1469					    start, rem_len))
+  1470			arvif->wpaie_present = true;
+  1471	
+  1472		ext_cap_ie = cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY, start, rem_len);
+  1473		if (ext_cap_ie && ext_cap_ie->datalen >= 11 &&
+> 1474		    (ext_cap_ie->data[10] & WLAN_EXT_CAPA11_BCN_PROTECT))
+  1475			tx_arvif->beacon_prot = true;
+  1476	
+  1477		/* Return from here for the transmitted profile */
+  1478		if (!bssid_index)
+  1479			return;
+  1480	
+  1481		/* Initial rsnie_present for the nontransmitted profile is set to be same as that
+  1482		 * of the transmitted profile. It will be changed if security configurations are
+  1483		 * different.
+  1484		 */
+  1485		*nontx_profile_found = false;
+  1486		for_each_element_id(elem, WLAN_EID_MULTIPLE_BSSID, start, rem_len) {
+  1487			/* Fixed minimum MBSSID element length with at least one
+  1488			 * nontransmitted BSSID profile is 12 bytes as given below;
+  1489			 * 1 (max BSSID indicator) +
+  1490			 * 2 (Nontransmitted BSSID profile: Subelement ID + length) +
+  1491			 * 4 (Nontransmitted BSSID Capabilities: tag + length + info)
+  1492			 * 2 (Nontransmitted BSSID SSID: tag + length)
+  1493			 * 3 (Nontransmitted BSSID Index: tag + length + BSSID index
+  1494			 */
+  1495			if (elem->datalen < 12 || elem->data[0] < 1)
+  1496				continue; /* Max BSSID indicator must be >=1 */
+  1497	
+  1498			for_each_element(nontx, elem->data + 1, elem->datalen - 1) {
+  1499				start = nontx->data;
+  1500	
+  1501				if (nontx->id != 0 || nontx->datalen < 4)
+  1502					continue; /* Invalid nontransmitted profile */
+  1503	
+  1504				if (nontx->data[0] != WLAN_EID_NON_TX_BSSID_CAP ||
+  1505				    nontx->data[1] != 2) {
+  1506					continue; /* Missing nontransmitted BSS capabilities */
+  1507				}
+  1508	
+  1509				if (nontx->data[4] != WLAN_EID_SSID)
+  1510					continue; /* Missing SSID for nontransmitted BSS */
+  1511	
+  1512				index = cfg80211_find_elem(WLAN_EID_MULTI_BSSID_IDX,
+  1513							   start, nontx->datalen);
+  1514				if (!index || index->datalen < 1 || index->data[0] == 0)
+  1515					continue; /* Invalid MBSSID Index element */
+  1516	
+  1517				if (index->data[0] == bssid_index) {
+  1518					*nontx_profile_found = true;
+  1519	
+  1520					/* Check if nontx BSS has beacon protection enabled */
+  1521					if (!tx_arvif->beacon_prot) {
+  1522						ext_cap_ie =
+  1523						    cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY,
+  1524								       nontx->data,
+  1525								       nontx->datalen);
+  1526						if (ext_cap_ie && ext_cap_ie->datalen >= 11 &&
+  1527						    (ext_cap_ie->data[10] &
+  1528						     WLAN_EXT_CAPA11_BCN_PROTECT))
+  1529							tx_arvif->beacon_prot = true;
+  1530					}
+  1531	
+  1532					if (cfg80211_find_ie(WLAN_EID_RSN,
+  1533							     nontx->data,
+  1534							     nontx->datalen)) {
+  1535						arvif->rsnie_present = true;
+  1536						return;
+  1537					} else if (!arvif->rsnie_present) {
+  1538						return; /* Both tx and nontx BSS are open */
+  1539					}
+  1540	
+  1541					nie = cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
+  1542								     nontx->data,
+  1543								     nontx->datalen);
+  1544					if (!nie || nie->datalen < 2)
+  1545						return; /* Invalid non-inheritance element */
+  1546	
+  1547					for (i = 1; i < nie->datalen - 1; i++) {
+  1548						if (nie->data[i] == WLAN_EID_RSN) {
+  1549							arvif->rsnie_present = false;
+  1550							break;
+  1551						}
+  1552					}
+  1553	
+  1554					return;
+  1555				}
+  1556			}
+  1557		}
+  1558	}
+  1559	
+
 -- 
-2.17.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
