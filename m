@@ -1,155 +1,127 @@
-Return-Path: <linux-wireless+bounces-21801-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21802-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A2E4A95A40
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 02:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8FCA95A4D
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 03:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D329188EA50
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 00:47:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F64C1893687
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 01:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE982125DF;
-	Tue, 22 Apr 2025 00:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A3814A4F0;
+	Tue, 22 Apr 2025 01:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="m3BESd99"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="d0DdIXeW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDC0139D
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 00:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B93335C7;
+	Tue, 22 Apr 2025 01:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745282810; cv=none; b=HZGZm7VGwi2Gx2G0UHYoGoPhFkQrT7ThOTphNvyo2JQ1PHHSCX9qxKlfhaMJ1mIulqYI43w06adRUocX6cwYvOaJwjVy4bYHb3LrqLmZ0y/Z0SoQUn+68CyQS3XZq8NMXGt6VIKf95COvtJykKAhShsxqcrsGqcqitI9YQDxhpk=
+	t=1745284127; cv=none; b=H0Ge71X/RFLCgrC04P8tkp4rYpGMYQlHeX/Gq8yRec31wYw+4TeM9dYQmyVHGAYIlA2pHcED8xv2XNFOauXShfX6GbZxN3KIRYJR4WzRqyRF4whQSOeSJUhZtFxpIeSD8LCuUkkh80WSa+YVHzEWDVU4COMUv1OFirrg+UYl1N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745282810; c=relaxed/simple;
-	bh=vTY6LT8I7a4anz4QeeLwR5HKGUj/trf02eQvmzZTnfs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=su8Ct+3Oe5tNF7Gy6qaVyu9aB0vTCembSbvKLu3nCoIT5ceyM8X1VRcj8ozsgzEgLx+a9UhpSvV/pN09TgevVUMeURbgC8P2TOUp6ditPduDop2SAtjAiHNEYzitH4adbJ2H7Q1cM4NyFhLzHtYwzp7KbZkhUmfovDEu9nsVeRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=m3BESd99; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-736b98acaadso4209202b3a.1
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Apr 2025 17:46:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1745282808; x=1745887608; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DESd6kACTnQKmLSbi0O5NrgwAZmaHVMz5BjPH0vRm/Y=;
-        b=m3BESd99riFlJB9sBQuB4GqQz2+zRTJs+7OF1t7Nj1lcAHVUcaEQIC6S+SFCmJW97O
-         ptRcgRMKfuVJIlaa7n/AsULPpNo1GyUpCiNQ5fuJC6dRWSOfKElH+97Z7Zrxzevs/tN+
-         cZC6/1LPYjrb2Rmnk2WROScW5We9huWAnqlP8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745282808; x=1745887608;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DESd6kACTnQKmLSbi0O5NrgwAZmaHVMz5BjPH0vRm/Y=;
-        b=wWTtbdqDyV+D1+RdPBqDIJdvzZcX9C32rvAG39MhImC4KRFhmYeQ/ZAAaQHEEarLPr
-         f0WkD4pc30B+dC/40N+JGmlT0g+ssEA3Nt71+FFRiKAz8NQqhNsgRFGXT0U5jJBqFiH0
-         U48CTLuDCb0sdn4yQ69K4XsSGZ2/s82tU0WXH0Cw7qTjE72qD5wXRbAmAfMkf2oa6ls5
-         QiDkh/Ho70ig+Q/dOuE1yrx9d+F1dUJHl0BtBTNKYBB9XSzJTUSNQ3GLq78vwoWgXYVn
-         Nc6U0PP46tuykmnfecWphOvoLWJ/HPgrPucy5X1w7iZKt31rZEM02BZbPxSo1/PVrM9x
-         RRqg==
-X-Gm-Message-State: AOJu0YxaKJZdVuw36MaHlJBUH3hqWcdz1GmBvkmBZ3tJNL3qOWqPyYrz
-	zYYJkDAqGALlpAXRPFbC2rZWUO1HIaAsMf8MCl3jJ0zwWHDjBwHH748hxfWNAA==
-X-Gm-Gg: ASbGnctKCarpUYWGcYwpGEZ1tRQbm2SOXzDN8tH5yeZjRSkG6oauM6D2UUsfogXl3xx
-	WD5KgDOR4/U2FMV1tSdy3XgWcuUbLC5hfagIEnSHcCqAKMA919rWEpAisMuDeCmCNi5JXMeGqM6
-	AFjVYvriI6l1P3ubb5UPHyEGpyVcLwm2kTzGxE1w6kh3/el0w1i025HEIJ5TaBdopLwHbXXUEuM
-	VdVFn2DuYWetgg7tqpR/LC+Kxf60Q7S/s52HyM7e2jhjpJ4q5782fNFOxUwMd0yNhqUrZehAhA6
-	A6Ws/a82oMcUfL8cga1zS5vtBRVx6Fb5nOc9F82nF7O2E5q+HlVsA4JeF81RpzMTn4PJBDssfMG
-	dsQM=
-X-Google-Smtp-Source: AGHT+IHpmV5qAalHsZLfGW7snz5zVoC49bLUHJDnuf1xQk+zbKalF+g+4dAFedrgrA/YYjldiv8U2g==
-X-Received: by 2002:a05:6a00:2443:b0:736:32d2:aa8e with SMTP id d2e1a72fcca58-73dc14ad1b3mr17055309b3a.6.1745282808205;
-        Mon, 21 Apr 2025 17:46:48 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:a29d:cdf7:a2a6:e200])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73dbf8e4622sm7566279b3a.67.2025.04.21.17.46.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Apr 2025 17:46:47 -0700 (PDT)
-Date: Mon, 21 Apr 2025 17:46:45 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Jeff Chen <jeff.chen_1@nxp.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	johannes@sipsolutions.net, francesco@dolcini.it,
-	tsung-hsien.hsieh@nxp.com, s.hauer@pengutronix.de
-Subject: Re: [PATCH] wifi: mwifiex: Use "scan_plans->iterations" for bgscan
- repeat count
-Message-ID: <aAbm9W3yAxMc_C1l@google.com>
-References: <20250416155425.4070888-1-jeff.chen_1@nxp.com>
+	s=arc-20240116; t=1745284127; c=relaxed/simple;
+	bh=czEkA/zVOBS82zkx4p5INjnF9fJ8GCh884Sqbxam5dQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EDbHYQH5i9ZFBBSY7LPLw+leeOH7hHetE9lfYF98J37Bw6QiAAwtxDh5qYoz/AJzsHK32i3U1B92Y+XfQcAD8F8aj/cgtpJi5gcSsLAu2t+3ygxnBNnnTq1ZsOOFXOcHbDGbASUlAZnlvlikyOt6SQYpON+0VwQO+xsx/qZVD0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=d0DdIXeW; arc=none smtp.client-ip=159.100.248.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.66.162])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 104F42618F;
+	Tue, 22 Apr 2025 01:08:43 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay2.mymailcheap.com (Postfix) with ESMTPS id D847F3E886;
+	Tue, 22 Apr 2025 01:08:34 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 6FC5B40009;
+	Tue, 22 Apr 2025 01:08:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1745284114; bh=czEkA/zVOBS82zkx4p5INjnF9fJ8GCh884Sqbxam5dQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=d0DdIXeWM0oSk1Xq83ZlCb/7yRuqf67gi4IXHEpFXOZ8NMPMm/fEMSIr1FCfbW9kH
+	 /IMD+EdOqVzLorEXuJwL1o+1klNueqYwSBASbAWGvmnJ6BI+3WBVbY0sgoNzvmAcIU
+	 G8nFp9/EIYAxfDCgZ2SKKq5SzXVn03m47TDkYgz0=
+Received: from [198.18.0.1] (unknown [203.175.14.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id A7FFF407DA;
+	Tue, 22 Apr 2025 01:08:30 +0000 (UTC)
+Message-ID: <985175be-de04-4d1d-a859-fa740d87c9c3@aosc.io>
+Date: Tue, 22 Apr 2025 09:08:26 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250416155425.4070888-1-jeff.chen_1@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] wifi: rtlwifi: disable ASPM for RTL8723BE with
+ subsystem ID 11ad:1723
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
+ Liangliang Zou <rawdiamondmc@outlook.com>,
+ "John W. Linville" <linville@tuxdriver.com>,
+ Larry Finger <Larry.Finger@lwfinger.net>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20250419081251.285987-1-jeffbai@aosc.io>
+ <4a7284bd703743959e709b9465dabf1d@realtek.com>
+Content-Language: en-US
+From: Mingcong Bai <jeffbai@aosc.io>
+In-Reply-To: <4a7284bd703743959e709b9465dabf1d@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6FC5B40009
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Spamd-Result: default: False [-0.10 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	SPFBL_URIBL_EMAIL_FAIL(0.00)[jeffbai.aosc.io:server fail];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[outlook.com];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[aosc.io,outlook.com,tuxdriver.com,lwfinger.net,vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[]
+X-Rspamd-Action: no action
 
-On Wed, Apr 16, 2025 at 11:54:25PM +0800, Jeff Chen wrote:
-> Updated the "mwifiex_cfg80211_sched_scan_start" function to assign
-> "bgscan_cfg->repeat_count" based on "scan_plans->iterations"
-> provided in the sched_scan settings instead of the default
-> "MWIFIEX_BGSCAN_REPEAT_COUNT". This change ensures that the repeat
-> count aligns with the iterations specified in the schedule scan
-> plans.
+Hi Ping-Ke,
+
+在 2025/4/22 08:27, Ping-Ke Shih 写道:
+> Mingcong Bai <jeffbai@aosc.io> wrote:
 > 
-> Signed-off-by: Jeff Chen <jeff.chen_1@nxp.com>
-> ---
->  drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+
+<snip>
+
+>>
+>> Please note, however, before the rtl8723be finishes probing, the AER
+>> errors remained. After the module finishes probing, all AER errors would
+>> indeed be eliminated, along with heavy lags, poor network throughput,
+>> and/or occasional lock-ups.
 > 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> index a099fdaafa45..be28c841c299 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> @@ -2833,7 +2833,7 @@ mwifiex_cfg80211_sched_scan_start(struct wiphy *wiphy,
->  				request->scan_plans->interval :
->  				MWIFIEX_BGSCAN_INTERVAL;
->  
-> -	bgscan_cfg->repeat_count = MWIFIEX_BGSCAN_REPEAT_COUNT;
-
-Drop the MWIFIEX_BGSCAN_REPEAT_COUNT definition from main.h, now that
-it's unused.
-
-> +	bgscan_cfg->repeat_count = request->scan_plans->iterations;
-
-Are you sure you want to take the provided value as-is? For one, the
-request field is 32 bits wide, and your FW interface is 16 bits, so we
-definitely to make some size checks at a minimum.
-
-It seems like we should be setting wiphy->max_sched_scan_plan_iterations
-somewhere...
-
-Additionaly, what about the described behavior for 0 in cfg80211.h?
-
- * @iterations: number of scan iterations in this scan plan. Zero means
- *      infinite loop.
- *      The last scan plan will always have this parameter set to zero,
- *      all other scan plans will have a finite number of iterations.
-
-Is that how FW treats a value of 0? Or is there some other sentinel
-value?
-
-And, why did we have "6" here previously? Is that an important default?
-Or was it just a guess, and it's really OK to just have 0 (infinite)
-default? This could be a user-noticeable change, but maybe that's OK.
-You should at least acknowledge how and why this will change things in
-real terms.
-
-All in all, it feels like you haven't given me much reasoning to say,
-"yes, this is correct and a good idea."
-
-Brian
-
->  	bgscan_cfg->report_condition = MWIFIEX_BGSCAN_SSID_MATCH |
->  				MWIFIEX_BGSCAN_WAIT_ALL_CHAN_DONE;
->  	bgscan_cfg->bss_type = MWIFIEX_BSS_MODE_INFRA;
+> Let me clarify here means. Do you mean all work well after applying this
+> patch? Or still lag, poor throughput or lock-ups?
 > 
-> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-> -- 
-> 2.34.1
-> 
+> If all symptoms disappear, it would be worth to take this (quirk) patch.
+
+Indeed, everything works well after this patch, save for the remaining 
+AER errors during driver probing.
+
+Best Regards,
+Mingcong Bai
 
