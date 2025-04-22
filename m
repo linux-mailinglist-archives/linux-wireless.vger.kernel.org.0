@@ -1,233 +1,149 @@
-Return-Path: <linux-wireless+bounces-21834-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21835-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FC3A96502
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 11:48:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FEEA96674
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 12:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 783263BADED
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 09:48:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B68B1897B69
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 10:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B901F4C8B;
-	Tue, 22 Apr 2025 09:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B4F1F5827;
+	Tue, 22 Apr 2025 10:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iHqwrdM6"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="jB9AYxem"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2A11F4C92
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 09:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1051EEA5E;
+	Tue, 22 Apr 2025 10:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745315294; cv=none; b=Rq0WCeaZY9e29zbbwtSoLHRV//MFaYOHVa/+W0VlSKozim2yIW/kbF/Zx3hGuRTnGKa4GQgyM+L0glnjWMFs2k9jYeRnBJD/oz3dTOo3GVlO4LcfAqsBfW3AKHVLf3hpMylMEoeascVsVnFl/RprkqRpTr8Po2HP/ENNy6ejGlk=
+	t=1745318981; cv=none; b=aK5YF7vT8Y7LjdGK+KU8dpN1983Q+FCslGH//thHEa3yPlyTZoiTX6lqVWq3POUfU8KF1Hd4dPcmbWTgqmiYZ2GpgpchJdeUhFvDzI5RGlMfCdIIE/evXfsZyUyDNATat3wKUYGBkrHLmLd5CgN//1b9ynHfawh9RlwXnJ3N+0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745315294; c=relaxed/simple;
-	bh=VYgcJT5Nn1Z24L2XGwZWRQStHBHOHtqDcH0DTU4ywP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OgYd+0FEJrKx2EHB5B3F4vmMTncc1UkmQCsdbRZg9JRKX5vPCSmGS6STyZANNOqOGbwDaMYxUQGME3HOnR3gC9Lo+VO2QYcsJQtUnhkgn/IyQ5mPqtGdcTqORtd7m7tiO7PSkXO6jhoofepbWFx1EeVl25ssIX63cFJRPE5R6mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iHqwrdM6; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745315292; x=1776851292;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VYgcJT5Nn1Z24L2XGwZWRQStHBHOHtqDcH0DTU4ywP0=;
-  b=iHqwrdM6jxbWPuEKE4I2FMAjHANYvvErRu1N8/aPvyo9gnDMxGhosbsf
-   Ro5VyXdqz5bvQSZrXPA/e6gFBIRpaICfTQlpyW3zU8CJQGlT0fQEDBAJ2
-   HRu1+3/zavHK6mnIIntxJEaxdrXwoPMzpeUCj1/4xR9YeiPlANXXlUEgI
-   jRMODbssGSdAx7h7jauz5psVpQ5LLzQbzo4C4RPeXiWE98JKJm6tpI6GI
-   03/+AdZLHo9kj3yqud55buwi+Oy8AMDPF073hq2i0K5hbnBNGZyH5nte9
-   M9AwA+G2s1L6RE4FTxkRaJN9mntXsqMK8DpnkiHA7RF1xFj9UGTj4lSEh
-   w==;
-X-CSE-ConnectionGUID: ELjyg3mzQI2gVFLazqn+qQ==
-X-CSE-MsgGUID: BKhVDYS8Tkeo8waAMRG4Dg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="49528534"
-X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
-   d="scan'208";a="49528534"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 02:48:11 -0700
-X-CSE-ConnectionGUID: 22ESS+U1QwuT3a+nq36+0g==
-X-CSE-MsgGUID: gfeg5WDmTJKPXxDrowJbVg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
-   d="scan'208";a="169165208"
-Received: from lkp-server01.sh.intel.com (HELO 050dd05385d1) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 22 Apr 2025 02:48:10 -0700
-Received: from kbuild by 050dd05385d1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u7AEZ-0000oV-2D;
-	Tue, 22 Apr 2025 09:48:07 +0000
-Date: Tue, 22 Apr 2025 17:48:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>,
-	ath12k@lists.infradead.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
-	Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
-Subject: Re: [PATCH ath-next] wifi: ath12k: allow beacon protection keys to
- be installed in hardware
-Message-ID: <202504221714.6bYFTiB1-lkp@intel.com>
-References: <20250421114711.3660911-1-karthikeyan.kathirvel@oss.qualcomm.com>
+	s=arc-20240116; t=1745318981; c=relaxed/simple;
+	bh=n9YStttPzf+7dwNCPnt66gph95yNu+I9t34XZeiQbyE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=mJQ6y7123ZBqC7cAv8o0ZytxvKVgz/XZHRBefitbg71O5QO7dV/AS0DfjQMw60wf/vMZOutR75SsG9kGKrfp+nUI0Sfa/0wuIOwcLMWShpFPEOPEONaHu1mUK9ZOteAS8KoIN330gAPV1AIKxFmkWH20A9EfTOY5s0O1tZBok6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=jB9AYxem; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1745318971; x=1745923771; i=markus.elfring@web.de;
+	bh=n9YStttPzf+7dwNCPnt66gph95yNu+I9t34XZeiQbyE=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=jB9AYxemw+eyeB6vsi27Y00BaQv/kHJd3++w85L7PkqmVXEHPWe8msEmrEpn/RKj
+	 59AqXgxwpU9XOguwtChjJZgt5mYAFnQa16QPPsYe0PSSPFDB7lcFvS2CDpsQ9CAyc
+	 pZnpjwvScr2CpxvOAdSgMLmraOeksJ1ga7IpdP7UnAPWWNOMlyQoN3sfjafcg13R1
+	 97/SOL7/HpQSn9tdbzJJPWigr1kv0ajhBzGoWthdy4tx/UGQWnoBUiHHDvWfFemUx
+	 8sTiYKxDEwb1v8+6rU7B9dfoqFV75bWB4Vrtya/GDK1iJvWYKbyNBM21qHxmSXrWD
+	 yyFsUwaXBedc7C68Qw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.44]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MSqXM-1uY29u2h3O-00WJdM; Tue, 22
+ Apr 2025 12:43:28 +0200
+Message-ID: <d4de3f9d-5748-4969-98c6-7d17395eef4b@web.de>
+Date: Tue, 22 Apr 2025 12:43:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250421114711.3660911-1-karthikeyan.kathirvel@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+To: vulab@iscas.ac.cn, brcm80211-dev-list.pdl@broadcom.com,
+ brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+ Erick Archer <erick.archer@outlook.com>, Jacobe Zang
+ <jacobe.zang@wesion.com>, Kalle Valo <kvalo@kernel.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>
+References: <20250422042203.2259-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH v2 RESEND] brcm80211: fmac: Add error handling for
+ brcmf_usb_dl_writeimage()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250422042203.2259-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0yUhLNxFOPtA0NXGmqmCyA7AYhTmkLF5aBbUbpQecai2dHLd1N2
+ OKH0vrcRLRiqQ6Nf5ZulLI7rdXhIct4L137OFFsnAbKg/f/h3F3YZVOBE4Z75ijlJ0a5bLj
+ /5V2BxLUvLpKw2UBVZSQvEZC4/CGSczkqnTZ5lnvNPYpcn91W3qviBhjlTQjKiNu1CpNtin
+ Pkyt1WyKGqpvnolvEAHdQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:eHVpLVmPWac=;z6S7tJp14yB01OBgOZF5M47wyCU
+ 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
+ pNxtDWx7MrSSxjiy11x2mc=
 
-Hi Karthikeyan,
+=E2=80=A6
+> brcmf_usb_dl_cmd() but dose not check its return value. The
+=E2=80=A6
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on d33705bb41ff786b537f8ed50a187a474db111c1]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Karthikeyan-Kathirvel/wifi-ath12k-allow-beacon-protection-keys-to-be-installed-in-hardware/20250421-194813
-base:   d33705bb41ff786b537f8ed50a187a474db111c1
-patch link:    https://lore.kernel.org/r/20250421114711.3660911-1-karthikeyan.kathirvel%40oss.qualcomm.com
-patch subject: [PATCH ath-next] wifi: ath12k: allow beacon protection keys to be installed in hardware
-config: sparc-allmodconfig (https://download.01.org/0day-ci/archive/20250422/202504221714.6bYFTiB1-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250422/202504221714.6bYFTiB1-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202504221714.6bYFTiB1-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/net/wireless/ath/ath12k/mac.c: In function 'ath12k_mac_set_arvif_ies':
->> drivers/net/wireless/ath/ath12k/mac.c:1474:37: error: 'WLAN_EXT_CAPA11_BCN_PROTECT' undeclared (first use in this function); did you mean 'WLAN_EXT_CAPA11_EMA_SUPPORT'?
-    1474 |             (ext_cap_ie->data[10] & WLAN_EXT_CAPA11_BCN_PROTECT))
-         |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                                     WLAN_EXT_CAPA11_EMA_SUPPORT
-   drivers/net/wireless/ath/ath12k/mac.c:1474:37: note: each undeclared identifier is reported only once for each function it appears in
+Please avoid typos in such a change description.
 
 
-vim +1474 drivers/net/wireless/ath/ath12k/mac.c
+> Add error handling for brcmf_usb_dl_cmd() to jump to error
+> handling path if the brcmf_usb_dl_cmd() fails and the
+> 'state.state' and the 'state.bytes' are uninitialized.
 
-  1447	
-  1448	static void ath12k_mac_set_arvif_ies(struct ath12k_link_vif *arvif,
-  1449					     struct ath12k_link_vif *tx_arvif,
-  1450						 struct sk_buff *bcn,
-  1451					     u8 bssid_index, bool *nontx_profile_found)
-  1452	{
-  1453		struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)bcn->data;
-  1454		const struct element *elem, *nontx, *index, *nie, *ext_cap_ie;
-  1455		const u8 *start, *tail;
-  1456		u16 rem_len;
-  1457		u8 i;
-  1458	
-  1459		start = bcn->data + ieee80211_get_hdrlen_from_skb(bcn) + sizeof(mgmt->u.beacon);
-  1460		tail = skb_tail_pointer(bcn);
-  1461		rem_len = tail - start;
-  1462	
-  1463		arvif->rsnie_present = false;
-  1464		arvif->wpaie_present = false;
-  1465	
-  1466		if (cfg80211_find_ie(WLAN_EID_RSN, start, rem_len))
-  1467			arvif->rsnie_present = true;
-  1468		if (cfg80211_find_vendor_ie(WLAN_OUI_MICROSOFT, WLAN_OUI_TYPE_MICROSOFT_WPA,
-  1469					    start, rem_len))
-  1470			arvif->wpaie_present = true;
-  1471	
-  1472		ext_cap_ie = cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY, start, rem_len);
-  1473		if (ext_cap_ie && ext_cap_ie->datalen >= 11 &&
-> 1474		    (ext_cap_ie->data[10] & WLAN_EXT_CAPA11_BCN_PROTECT))
-  1475			tx_arvif->beacon_prot = true;
-  1476	
-  1477		/* Return from here for the transmitted profile */
-  1478		if (!bssid_index)
-  1479			return;
-  1480	
-  1481		/* Initial rsnie_present for the nontransmitted profile is set to be same as that
-  1482		 * of the transmitted profile. It will be changed if security configurations are
-  1483		 * different.
-  1484		 */
-  1485		*nontx_profile_found = false;
-  1486		for_each_element_id(elem, WLAN_EID_MULTIPLE_BSSID, start, rem_len) {
-  1487			/* Fixed minimum MBSSID element length with at least one
-  1488			 * nontransmitted BSSID profile is 12 bytes as given below;
-  1489			 * 1 (max BSSID indicator) +
-  1490			 * 2 (Nontransmitted BSSID profile: Subelement ID + length) +
-  1491			 * 4 (Nontransmitted BSSID Capabilities: tag + length + info)
-  1492			 * 2 (Nontransmitted BSSID SSID: tag + length)
-  1493			 * 3 (Nontransmitted BSSID Index: tag + length + BSSID index
-  1494			 */
-  1495			if (elem->datalen < 12 || elem->data[0] < 1)
-  1496				continue; /* Max BSSID indicator must be >=1 */
-  1497	
-  1498			for_each_element(nontx, elem->data + 1, elem->datalen - 1) {
-  1499				start = nontx->data;
-  1500	
-  1501				if (nontx->id != 0 || nontx->datalen < 4)
-  1502					continue; /* Invalid nontransmitted profile */
-  1503	
-  1504				if (nontx->data[0] != WLAN_EID_NON_TX_BSSID_CAP ||
-  1505				    nontx->data[1] != 2) {
-  1506					continue; /* Missing nontransmitted BSS capabilities */
-  1507				}
-  1508	
-  1509				if (nontx->data[4] != WLAN_EID_SSID)
-  1510					continue; /* Missing SSID for nontransmitted BSS */
-  1511	
-  1512				index = cfg80211_find_elem(WLAN_EID_MULTI_BSSID_IDX,
-  1513							   start, nontx->datalen);
-  1514				if (!index || index->datalen < 1 || index->data[0] == 0)
-  1515					continue; /* Invalid MBSSID Index element */
-  1516	
-  1517				if (index->data[0] == bssid_index) {
-  1518					*nontx_profile_found = true;
-  1519	
-  1520					/* Check if nontx BSS has beacon protection enabled */
-  1521					if (!tx_arvif->beacon_prot) {
-  1522						ext_cap_ie =
-  1523						    cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY,
-  1524								       nontx->data,
-  1525								       nontx->datalen);
-  1526						if (ext_cap_ie && ext_cap_ie->datalen >= 11 &&
-  1527						    (ext_cap_ie->data[10] &
-  1528						     WLAN_EXT_CAPA11_BCN_PROTECT))
-  1529							tx_arvif->beacon_prot = true;
-  1530					}
-  1531	
-  1532					if (cfg80211_find_ie(WLAN_EID_RSN,
-  1533							     nontx->data,
-  1534							     nontx->datalen)) {
-  1535						arvif->rsnie_present = true;
-  1536						return;
-  1537					} else if (!arvif->rsnie_present) {
-  1538						return; /* Both tx and nontx BSS are open */
-  1539					}
-  1540	
-  1541					nie = cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
-  1542								     nontx->data,
-  1543								     nontx->datalen);
-  1544					if (!nie || nie->datalen < 2)
-  1545						return; /* Invalid non-inheritance element */
-  1546	
-  1547					for (i = 1; i < nie->datalen - 1; i++) {
-  1548						if (nie->data[i] == WLAN_EID_RSN) {
-  1549							arvif->rsnie_present = false;
-  1550							break;
-  1551						}
-  1552					}
-  1553	
-  1554					return;
-  1555				}
-  1556			}
-  1557		}
-  1558	}
-  1559	
+This wording is improvable.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+> Improve the error message to report more detailed error
+> information.
+
+Please offer such an adjustment by a separate update step.
+https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
+e/Documentation/process/submitting-patches.rst?h=3Dv6.15-rc3#n81
+
+Regards,
+Markus
 
