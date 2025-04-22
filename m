@@ -1,128 +1,124 @@
-Return-Path: <linux-wireless+bounces-21804-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21805-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8C5A95A8D
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 03:37:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDC4A95A9F
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 03:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A02E47A2A93
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 01:36:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46408172217
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Apr 2025 01:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3452AD3E;
-	Tue, 22 Apr 2025 01:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6558215A856;
+	Tue, 22 Apr 2025 01:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="FT9M9jGr"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="nIffhjgR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B58E27702;
-	Tue, 22 Apr 2025 01:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.182.119.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1034156678
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 01:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745285846; cv=none; b=VfxNeL4mKX3FXHj9DAaRLzwYTuva76e5VouOqd8KhiYy4gWAiNxst+MJOZrx5cIU5dYawdNmh96e+vhhCcW89Z2bOejU43NJHWzMXw9VLF7xT/hetyGX6QP5swf6QeRhbHfd6zIPjNMTHN87TF4DmwLRsBORQnQ8KUQodRPy8LE=
+	t=1745286425; cv=none; b=FhnYg3vLKypb2yFkdi8D2UnWLp2G1M5GdBPmEt50mfbj6QtCUbFG6G4/cxolUnV8iqhOFMHlkMPY+3LxXFDb+iCx39dD+93EiAaH6sE38FRIOfCD9AyApiEtHCEhVJbtPjCzxw264ozSngAL78G37ETKzWUpwRyAHjO1kRvzkgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745285846; c=relaxed/simple;
-	bh=9JbPWgTtaRUcud7VIMMQhF/8YKR2qN0SN4ekG60jgZo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jJhjjrW6+QqEK5zJHI2Qkr0VDFsG0ULoegjEiqoT3cMOmw0lW06HUy1UUErdOnIQMwsmLELp/NUQVLYFam4tTbNW+L/EDXPz6vDx+BWdRrFfDvr7p4ZRXY2nbfmYaUEBVoaAnstFn67q4AjyqkwnupqjuPJhOqqlbQAL4TjT1Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=FT9M9jGr; arc=none smtp.client-ip=217.182.119.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id 9408B3E928;
-	Tue, 22 Apr 2025 01:37:16 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id A838B400AD;
-	Tue, 22 Apr 2025 01:37:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1745285834; bh=9JbPWgTtaRUcud7VIMMQhF/8YKR2qN0SN4ekG60jgZo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FT9M9jGrry8af/5uW3xSDINGCp9SyvfsncPX/7sjj3zWTpyP7ZZp+o/73M/dkgZGr
-	 asbLS7uY9/sapBZjtlyR3MMQDgtIQGsdMj5i4qYGmSp64MWxkjnVj4FAG2N9B1TPKw
-	 AmG6Ms6lDpe/ICm91YpycpaRx4xZIO7sy0Un2Ywc=
-Received: from [198.18.0.1] (unknown [203.175.14.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 58B31404EC;
-	Tue, 22 Apr 2025 01:37:11 +0000 (UTC)
-Message-ID: <0dc30d64-d520-4d54-ae84-43ee6f40b18e@aosc.io>
-Date: Tue, 22 Apr 2025 09:37:07 +0800
+	s=arc-20240116; t=1745286425; c=relaxed/simple;
+	bh=zkEsvz9HdVcTdKxc1Wr2iHMYcPN6BZI4DbeGAkNIqQ8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z09NLy7skmVAJBX1r4EpSfgBcwji5OAZtAq5zfERGUpp7qM7Hv/I51OGfa42BEdEwk+MmDl3lDsVK74raPOljuFlWJdz9TpsRWDYpD/uodQmMDMlGhr6DNRqnWd8rQPXfmrKsC7Vzlkql4IUFw+/QFzM3uhkXp+Eb1D9VmEUfOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=nIffhjgR; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 53M1kvoX73859465, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1745286417; bh=zkEsvz9HdVcTdKxc1Wr2iHMYcPN6BZI4DbeGAkNIqQ8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=nIffhjgRA5+sLUeYG1O8iDmqAoJX89OpE4C1TsXhYIYyzzUlerP49IT6tu4K5ydlf
+	 vZp9WxFgBWZfQctQqV6CgSDeG9jLoLJK8tCda9DuR5t0rocsqgwiQghvqj3xh2Daj1
+	 KF9jdiqXoPxWAZxU1dsydG946t9sO+qfY4TlG3FBeDEir4tkTdmL7xuRt7Sh6kSzwI
+	 RQJdKzkHedwW9/iSXqkh13KZzdo6s2esyCfDW0BHX0OiB2b7qW9qZi1GbIrXKe98/t
+	 agHGMBKJ+CV4qkGQ65lgt1A01LjdGL0p5OxKyoMS+60t2AlHl7w7XPhc/mS7bc6ivK
+	 DuIQT+yCwOE2A==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 53M1kvoX73859465
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Apr 2025 09:46:57 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 22 Apr 2025 09:46:57 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 22 Apr
+ 2025 09:46:56 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <damon.chen@realtek.com>, <kevin_yang@realtek.com>
+Subject: [PATCH rtw-next 00/12] wifi: rtw89: fine tune STA + P2P concurrency
+Date: Tue, 22 Apr 2025 09:46:08 +0800
+Message-ID: <20250422014620.18421-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] wifi: rtlwifi: disable ASPM for RTL8723BE with
- subsystem ID 11ad:1723
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
- Liangliang Zou <rawdiamondmc@outlook.com>,
- "John W. Linville" <linville@tuxdriver.com>,
- Larry Finger <Larry.Finger@lwfinger.net>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <20250419081251.285987-1-jeffbai@aosc.io>
- <4a7284bd703743959e709b9465dabf1d@realtek.com>
- <985175be-de04-4d1d-a859-fa740d87c9c3@aosc.io>
- <6f0234bc99094b3d84959afd4eea55d7@realtek.com>
-Content-Language: en-US
-From: Mingcong Bai <jeffbai@aosc.io>
-In-Reply-To: <6f0234bc99094b3d84959afd4eea55d7@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A838B400AD
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Spamd-Result: default: False [-0.10 / 10.00];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_CC(0.00)[aosc.io,outlook.com,tuxdriver.com,lwfinger.net,vger.kernel.org];
-	FREEMAIL_ENVRCPT(0.00)[outlook.com];
-	TO_DN_EQ_ADDR_SOME(0.00)[]
-X-Rspamd-Action: no action
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Hi Ping-Ke,
+Mainly this patchset is to fine tune time slot assignment for STA + P2P
+concurrency. Since the TSF of connected AP is fixed and roaming is
+possible, it is not possible to arrange GO TSF with a fixed offset.
+Therefore, adjust time slot case by case to have better user experience.
 
-在 2025/4/22 09:21, Ping-Ke Shih 写道:
->>>> Please note, however, before the rtl8723be finishes probing, the AER
->>>> errors remained. After the module finishes probing, all AER errors would
->>>> indeed be eliminated, along with heavy lags, poor network throughput,
->>>> and/or occasional lock-ups.
->>>
->>> Let me clarify here means. Do you mean all work well after applying this
->>> patch? Or still lag, poor throughput or lock-ups?
->>>
->>> If all symptoms disappear, it would be worth to take this (quirk) patch.
->>
->> Indeed, everything works well after this patch, save for the remaining
->> AER errors during driver probing.
-> 
-> Good. Then make a formal patch.
-> 
-> By the way, currently wireless tree runs build testing with NIPA, so please
-> specify rtw-next tree this patch is going to.
-> i.e. "[PATCH rtw-next] wifi: rtlwifi: ..."
-> 
+The patch 1/12 is to enlarge time that driver determines AP is gone.
+In field, some AP stop issuing beacon somehow. With larger time,
+connection can stay over 24 hours.
 
-Understood, sending one right away.
+The patch 2/12 is to update ACPI format for TAS, which we can specify
+to enable certain countries.
 
-Best Regards,
-Mingcong Bai
+Kuan-Chung Chen (2):
+  wifi: rtw89: 8922a: increase beacon loss to 6 seconds
+  wifi: rtw89: acpi: introduce country specific TAS enabling
+
+Zong-Zhe Yang (10):
+  wifi: rtw89: add suffix "_ax" to Wi-Fi 6 HW scan struct and func
+  wifi: rtw89: refactor flow that hw scan handles channel list
+  wifi: rtw89: mcc: make GO announce one-time NoA for HW scan process
+  wifi: rtw89: don't re-randomize TSF of AP/GO
+  wifi: rtw89: mcc: make GO+STA mode calculate dynamic beacon offset
+  wifi: rtw89: mcc: handle the case where NoA start time has passed
+  wifi: rtw89: mcc: update entire plan when courtesy config changes
+  wifi: rtw89: mcc: support courtesy mechanism on both roles at the same
+    time
+  wifi: rtw89: mcc: refine filling function of start TSF
+  wifi: rtw89: mcc: avoid that loose pattern sets negative timing for
+    auxiliary GO
+
+ drivers/net/wireless/realtek/rtw89/acpi.c     |  45 +++
+ drivers/net/wireless/realtek/rtw89/acpi.h     |  16 +
+ drivers/net/wireless/realtek/rtw89/chan.c     | 191 +++++------
+ drivers/net/wireless/realtek/rtw89/chan.h     |   8 +
+ drivers/net/wireless/realtek/rtw89/core.c     |   4 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  18 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       | 315 ++++++++++++++----
+ drivers/net/wireless/realtek/rtw89/fw.h       |  23 +-
+ drivers/net/wireless/realtek/rtw89/mac.c      |  14 +-
+ drivers/net/wireless/realtek/rtw89/mac.h      |   5 +-
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  11 +-
+ drivers/net/wireless/realtek/rtw89/mac_be.c   |   2 +
+ drivers/net/wireless/realtek/rtw89/regd.c     |  13 +-
+ drivers/net/wireless/realtek/rtw89/sar.c      |  14 +-
+ drivers/net/wireless/realtek/rtw89/ser.c      |   1 +
+ 15 files changed, 479 insertions(+), 201 deletions(-)
+
+-- 
+2.25.1
+
 
