@@ -1,132 +1,130 @@
-Return-Path: <linux-wireless+bounces-21880-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21881-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B71A97E6F
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 07:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFEA4A97EFC
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 08:17:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FDEC17E4DB
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 05:57:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1980A170B88
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 06:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CF9266B5B;
-	Wed, 23 Apr 2025 05:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40257266B54;
+	Wed, 23 Apr 2025 06:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fgLaTyTb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PhznKqKU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC3D25B663
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 05:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0A51F30DD
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 06:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745387833; cv=none; b=LDH58NQPdbdtONVJXVdavSZkCnE8R2nmMdj7eLEqMOGWHMTMtxwXl7Jaw9uxl9FcsrWfRfjXX6qPrim/UjiuQRMRrm7Ai1r7+I4/5WcAjCV2Ft/TSCgB6+sTps4DC0vCmunhDvnWcrN1E7XqsI7mK3HyBZftZ3+reGikexy6BW8=
+	t=1745389017; cv=none; b=gryS9VyR8KNtV2kPALYfW3TkJBwOHlknvzv8rPeVpkyEJnZOLnrcd+G7Kv1Lk5ea3nVMfRT6juzP1PUSvp+EfN3jPRrfqmkaYIjcZV+jexWAeBeatX6zot2AVG2sf+WUY4WSDYcjQRk9VrVL14g1tweUvZvr7T3LxWYxSluQPqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745387833; c=relaxed/simple;
-	bh=ZpU6TckEBreEDnCkLIomCaOjzeebWEGZzwhVMdG4PoE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SdvnKKQatEHtdB5P/nRPfWjbND+mEJxo5ph3kX1vQN51/5wV04W/Q70ni0LAbryzH4rtiOxNGW5QOqTIGMgJeo2OOPO58LwdgS988OxIrgLz7rfllqDpOZHiTj2dpa20Nll6PSaKcDgjnowNN7qb0TY8D/ORPXN/LbpNMxexJn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fgLaTyTb; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53N0ioHD021819;
-	Wed, 23 Apr 2025 05:57:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pRM+Z/EK1rqU6wyhdduU5NunSfGdw/9opteX32RcVtA=; b=fgLaTyTbc0Y2kFCj
-	FGYc6nY90Eu7u7QiVtSNFMghDnuMNZOK6cPtq3yopQu+Ok0A9CXXak65qwgeI0Ql
-	B30Qnqz1s3QGTWLOx81YltiRsE7aO0g+OZFcOw+ZIkr0S89s2ekkEXI0fOpToqTi
-	sBA/mLHQiltxkWFOgrjuodH+xEQOhCETZfeLjsPQGz9+3IlRaVvoZgZZjzAQyEBR
-	mT2sODmTlJbvFvlb/OtaP2nd1ITeOQkJWHNOnqaXOUOhw+RZioym9wR4Qt/0CbBQ
-	esFQR1MzSrhwXBaXJ+xkfJ8lv3/XrqoVNnSTwX0HeanxecIoZljNv/Zuvo0a0Oq0
-	a4Jf8A==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jh210mj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Apr 2025 05:57:09 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53N5v8Wt006030
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Apr 2025 05:57:08 GMT
-Received: from hu-yintang-sha.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 22 Apr 2025 22:57:07 -0700
-From: Yingying Tang <quic_yintang@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_yintang@quicinc.com>
-Subject: [PATCH ath-next 2/2] wifi: ath12k: Adjust the process of resource release for ahb bus
-Date: Wed, 23 Apr 2025 11:26:50 +0530
-Message-ID: <20250423055650.16230-3-quic_yintang@quicinc.com>
+	s=arc-20240116; t=1745389017; c=relaxed/simple;
+	bh=rigmn0c/093phkPPhSjSuFc82wZroVcs/VMWJ2V5o4c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kcwaFjIxo6koUuViZA7mEzy5BuryRrCDOVOKR+ZLu84Ki1wFsTfLN4z092FGoIfw2Y5rULvoErmEWqEI3gN3BUfS9OwyStbvKLYFscMqJanJgJBSPXoD6oM3IeDtWWYu2RaY/3Rxn7J7vKTDiMZ9pASsHsMt9FfmIvtOYeI+Dus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PhznKqKU; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745389015; x=1776925015;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rigmn0c/093phkPPhSjSuFc82wZroVcs/VMWJ2V5o4c=;
+  b=PhznKqKUclJ/EXb081gK6M22Ep8VF2N0mgnSmtYZk5IL5bPzW/RI/tGU
+   +kkervS3Blb/FzT4O1rVKwzQzSUe77iXCy7rRLJyPXJO2wNFLnyjmns9b
+   hzXTku4H8REkCueJa61I2PvY2Yg0/6I1v9Yggzfb0AkFLCNwx88QsRup9
+   hvmGwH4z4I7SxXbMuYLXaZM4IpA0/7gHOVXVSTM6X75LpnRVsorKv5O+T
+   cWlC4vOQmUHGA1wtCwpZD+ovCLtoTzFOTtAaA/RXUUDj3ByLCa6E8XyYT
+   xEXxv0+ZWJE88r3iZcgQoGZ+jyS+YwZLQVci1ms0gC5AcASsUS1fZagbt
+   A==;
+X-CSE-ConnectionGUID: uBrbb07oR5SnJNnWKHrYZQ==
+X-CSE-MsgGUID: ioWTU7aZTwm9sYGDm+YPNg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="46843612"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
+   d="scan'208";a="46843612"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 23:16:54 -0700
+X-CSE-ConnectionGUID: HtTJfulFTau1zt/5tRgoRQ==
+X-CSE-MsgGUID: 2LdtxzDpTQ+c/9FPvjHnTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
+   d="scan'208";a="163269002"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 23:16:54 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH wireless-next 00/15] wifi: iwlwifi: updates - 2025-04-23
+Date: Wed, 23 Apr 2025 09:16:26 +0300
+Message-Id: <20250423061641.2302908-1-miriam.rachel.korenblit@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250423055650.16230-1-quic_yintang@quicinc.com>
-References: <20250423055650.16230-1-quic_yintang@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=EtLSrTcA c=1 sm=1 tr=0 ts=68088135 cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=1WRsYH4MBVgdcUebPgoA:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: f88dhpjLS_LM2yHAkV9qkbnpfWRJZqf1
-X-Proofpoint-ORIG-GUID: f88dhpjLS_LM2yHAkV9qkbnpfWRJZqf1
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDIzMDAzOCBTYWx0ZWRfX/y5rIZnJdB80 1XYipJHn0dcY0OTuWqY4eTYTyS6SsI5qI8wZfj82QyUl8qkuSJVi+d5/atOGIAU8N/7Eg3lp/NC zCMF/YMXzoUjGyKV5SgcS0dvsNHt6nOjjKD/ZjHaccHasrGDE+KbPyyYUsABmJA7zhneIewSgg/
- dQk15jZxfTPFz3kIqNKJQ7CMHWZD5RtbVaXAZ692I5932DDqP0d+1Kc/ut873qrNVCDygApClZM U2Umq6dpATaSKpHZKnYSiij6V1INEI39B3ZtNyIEq5oFDRaa5aGt2LMyAibfEUduj7wVBK/gNRg N3VTjHQjKsqZeu7OQ/WI/xvEFkZVhcsnDxp8z+YceuhHTr0i7I0ByAseS3CPmYTHATc3p0KsY42
- 2CWWnPR4VXY1QJv/bwrzU7jdoRh2y5YJSQg2kYzX/t/D8ekr7EuV7K9T2YSrIetPD1GtnDEn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-23_03,2025-04-22_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- suspectscore=0 mlxscore=0 clxscore=1015 spamscore=0 mlxlogscore=842
- lowpriorityscore=0 malwarescore=0 priorityscore=1501 impostorscore=0
- adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504230038
 
-Due to the change in the resource release order in ath12k_core_deinit(),
-the resource release order in the AHB bus removal process needs to be
-adjusted accordingly.
+Hi,
+Resending a smaller series and fixing the tree name.
 
-Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
+Thanks,
+Miri
 
-Fixes: 6cee30f0da75 ("wifi: ath12k: add AHB driver support for IPQ5332")
-Signed-off-by: Yingying Tang <quic_yintang@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/ahb.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Anjaneyulu (1):
+  wifi: iwlwifi: parse active and 20 MHz AP NVM channel flag
 
-diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
-index 1c2171e2bb73..dc5dba4658cd 100644
---- a/drivers/net/wireless/ath/ath12k/ahb.c
-+++ b/drivers/net/wireless/ath/ath12k/ahb.c
-@@ -1125,14 +1125,13 @@ static void ath12k_ahb_remove(struct platform_device *pdev)
- 
- 	if (test_bit(ATH12K_FLAG_QMI_FAIL, &ab->dev_flags)) {
- 		ath12k_ahb_power_down(ab, false);
--		ath12k_qmi_deinit_service(ab);
- 		goto qmi_fail;
- 	}
- 
- 	ath12k_ahb_remove_prepare(ab);
--	ath12k_core_deinit(ab);
--
-+	ath12k_core_hw_group_cleanup(ab->ag);
- qmi_fail:
-+	ath12k_core_deinit(ab);
- 	ath12k_ahb_free_resources(ab);
- }
- 
+Emmanuel Grumbach (2):
+  wifi: iwlwifi: mld: remove stored_beacon support
+  wifi: iwlwifi: update the PHY_CONTEXT_CMD API
+
+Johannes Berg (4):
+  wifi: iwlwifi: mvm: remove IWL_EMPTYING_HW_QUEUE_DELBA state
+  wifi: iwlwifi: fw: do reset handshake during assert if needed
+  wifi: iwlwifi: mld: remove P2P powersave tracking
+  wifi: iwlwifi: mld: tests: simplify le32 bitfield handling
+
+Miri Korenblit (8):
+  wifi: iwlwifi: re-add IWL_AMSDU_8K case
+  wifi: iwlwifi: mld: avoid memory leak if mcc_init fails
+  wifi: iwlwifi: mld: stop hw if mcc_init fails
+  wifi: iwlwifi: mld: don't do iwl_trans_stop_device twice
+  wifi: iwlwifi: mld: refactor purging async notifications
+  wifi: iwlwifi: mld: properly handle async notification in op mode
+    start
+  wifi: iwlwifi: mld: inform trans on init failure
+  wifi: iwlwifi: set step_urm in transport and not in the opmodes
+
+ .../wireless/intel/iwlwifi/fw/api/dbg-tlv.h   |  8 +--
+ .../wireless/intel/iwlwifi/fw/api/phy-ctxt.h  |  9 ++--
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 15 ++++--
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |  7 +++
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 36 ++++++++-----
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  1 +
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c   |  2 +
+ drivers/net/wireless/intel/iwlwifi/mld/fw.c   | 48 ++++++-----------
+ .../net/wireless/intel/iwlwifi/mld/iface.c    |  5 --
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c |  9 ----
+ drivers/net/wireless/intel/iwlwifi/mld/mld.c  | 25 +++++++--
+ drivers/net/wireless/intel/iwlwifi/mld/mld.h  |  5 --
+ .../net/wireless/intel/iwlwifi/mld/notif.c    | 51 ++-----------------
+ .../net/wireless/intel/iwlwifi/mld/notif.h    |  2 +-
+ .../wireless/intel/iwlwifi/mld/tests/agg.c    | 14 ++---
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  5 --
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 14 +----
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |  5 ++
+ 19 files changed, 112 insertions(+), 154 deletions(-)
+
 -- 
-2.25.1
+2.34.1
 
 
