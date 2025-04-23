@@ -1,68 +1,63 @@
-Return-Path: <linux-wireless+bounces-21923-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21924-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFCCA99171
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 17:30:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA0AA992F7
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 17:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 013A77AF38C
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 15:29:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AF959214FA
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 15:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C58280CC8;
-	Wed, 23 Apr 2025 15:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28CD28C5AB;
+	Wed, 23 Apr 2025 15:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="aTPbpDWr"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QIvLme8Y"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDEB28468D;
-	Wed, 23 Apr 2025 15:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D4B28CF6E
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 15:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421660; cv=none; b=Hc2oTCtC72YTpjFXWY+oRAb1TfXVrNY7sxLhhF5/wzTAPov04/nR3GZGfNl3Xr9Ryyp2bn4WztyiGWhfJ1ck4izYCUybX9JrdP/uTDouFak9vg8r4S0e4KZ956h6kuCN9JJgJjHEIOS+e4HDZTBU0G8bBTKM/6dkhffhHoSFKg4=
+	t=1745421904; cv=none; b=Q41n8oVnPKRE81HihmIJYBFTze9M5pZvnSG+7IFhtji13BOqce17xn/ooLTvfHUZOcds1+iyhAJBpjQqAJ7KSpclL6f4tMdepwZ9wABv6qCVFdynV9BDvKLdsGkaP40mnx7YawZxhwDBFjdhcDmoepVT337PeCQW9dcl4h2m8P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421660; c=relaxed/simple;
-	bh=/Qxmcd/ZApK6y+6OkZB/fKn43GaZQGZkmr4I67tpeO4=;
+	s=arc-20240116; t=1745421904; c=relaxed/simple;
+	bh=z3vlMr+SyB+YlsOkfoepQu1/yhPre0AUIEWtPj+rGPM=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UPjxKVVHKtIJwX8lwRoNX/Qu/eqCsTOdPUfXCGUu4yFeLYPD4INuVgA0SJziJptWk48uyqvFi0+N/veT2fDfIuslEbn+laLTWSJistcrN9DuvsnjP2nC8TITcgEkRND9BF3uq8aZgbpYh2x8ne11pC3MXRjhnGcmvbsamuIGbDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=aTPbpDWr; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=orWoK1HBT19pSo/Z5h6GNYDi3VEq5ZiCkVxijJoHyOpWbpyVYxm/xL2m0KKqJy6sHWxt2asrCm/zLHdaLx+nMz/EE+Db3l1RE5jBzT+NpjKW3OlO3Rdh3EieaDdhtkgjHhye1bXrTYQAUcFfdwb1bv6pDti8YP2QRRfpvraWdH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QIvLme8Y; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=/Qxmcd/ZApK6y+6OkZB/fKn43GaZQGZkmr4I67tpeO4=;
-	t=1745421659; x=1746631259; b=aTPbpDWrffp7/u6BdTvhvqHwhPQ0K8vTYFFpXJ3hJZxWueu
-	Lh//GY20788MmiSyfBMRu5ObKWCn9et5w4IJFu3QHHQzz8wUkh7gblZDqr86FFUDL88FsC1ioSsFX
-	yQROlix57YfJC8KfJazxg3TzUUOVqYGCscPR3QCavSVo3P/4UiOOPwccHmKT2SmAgNUl3foXmnWHt
-	46iPN2HqFVt30N5nwL/6bdsOeszUX7bK03IukLyBP6ESam4V3ngFB5O4DFdkQywX0Zvzeg2eodZgP
-	KbnjCNuHj5vvxyBgooCEDYpjAYDWVQ5WFVyodsD4ymX6RsDqMPlEYhAR7aimOnCA==;
+	Resent-Cc:Resent-Message-ID; bh=8t0+KPKv/ioJ18JH+ZW9DGQrfj4hDXtsEr67vUFR4CU=;
+	t=1745421903; x=1746631503; b=QIvLme8Ym77cI3YoTzHfF76UBYvlLqCPmlNogh0zmbL6PCX
+	d0/VBgMoVmbsPnKL8bdeE9/8NQl56de0h0AJVwrnQlSm8OH+a0SuEKbt/D6SjnMR6oubqIy+7ZPks
+	24Or06hEoCfcZ20BgEZepAhXY8thlTsl4Mr77PBNCvFGZGL2RObq0/G327tvbsivzyRSYxRRHOhtS
+	NGM80M4mUpKqNKr7DVmEKS0MuB5i3V1Rk8JJTqc3pHZr/QGG2XNOAPWUmCPAUMnCnrLeA3vLA3B5H
+	P+Si7Is8pwrmLVBwdAfppIymlw4c/7y6bK75r0UmJJuPf0KsWF/yKmsLDvJitdzQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.1)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1u7buA-0000000Emku-3iKQ;
-	Wed, 23 Apr 2025 17:20:55 +0200
-Message-ID: <a7de36ea786bd6661b54f4167952af5a0e4393a4.camel@sipsolutions.net>
-Subject: Re: [REGRESSION] iwlwifi: probe with driver iwlwifi failed with
- error -22
+	id 1u7by7-0000000EmzS-1Orp;
+	Wed, 23 Apr 2025 17:24:59 +0200
+Message-ID: <9670e31afa60a810d7ae7b786c8815fd5ba178e5.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v5 1/4] wifi: cfg80211: Add support to get
+ EMLSR capabilities of non-AP MLD
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Chris Bainbridge <chris.bainbridge@gmail.com>, "Korenblit, Miriam
- Rachel"	 <miriam.rachel.korenblit@intel.com>
-Cc: "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>, 
- "linux-wireless@vger.kernel.org"
-	 <linux-wireless@vger.kernel.org>, "kvalo@kernel.org" <kvalo@kernel.org>, 
- "benjamin@sipsolutions.net"
-	 <benjamin@sipsolutions.net>, "regressions@lists.linux.dev"
-	 <regressions@lists.linux.dev>
-Date: Wed, 23 Apr 2025 17:20:53 +0200
-In-Reply-To: <CAP-bSRbDm_-_uqTX817zaP4HXkW3L3q0j15k2hkGxKERAK=_gQ@mail.gmail.com>
-References: <Z-XvFvGigpY7JYFn@debian.local>
-	 <MW5PR11MB5810B066CB7824714FF25D0CA3A22@MW5PR11MB5810.namprd11.prod.outlook.com>
-	 <CAP-bSRbDm_-_uqTX817zaP4HXkW3L3q0j15k2hkGxKERAK=_gQ@mail.gmail.com>
+To: Rameshkumar Sundaram <quic_ramess@quicinc.com>, 
+	ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Ramasamy Kaliappan
+	 <quic_rkaliapp@quicinc.com>
+Date: Wed, 23 Apr 2025 17:24:57 +0200
+In-Reply-To: <20250327051320.3253783-2-quic_ramess@quicinc.com>
+References: <20250327051320.3253783-1-quic_ramess@quicinc.com>
+	 <20250327051320.3253783-2-quic_ramess@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -74,21 +69,16 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Wed, 2025-04-23 at 16:06 +0100, Chris Bainbridge wrote:
-> On Sun, 30 Mar 2025 at 05:12, Korenblit, Miriam Rachel
-> <miriam.rachel.korenblit@intel.com> wrote:
-> >=20
-> > Hi Chris, thanks for the report.
-> > We have a fix for that which will be sent soon.
-> >=20
-> > Thanks,
-> > Miri
+On Thu, 2025-03-27 at 10:43 +0530, Rameshkumar Sundaram wrote:
 >=20
-> Hi, did this get fixed? v6.15-rc3 appears to still be broken.
+> +	/* Reject EMLSR capabilities change after association */
+> +	if (statype =3D=3D CFG80211_STA_AP_CLIENT && params->eml_cap_present)
+> +		return -EINVAL;
 >=20
 
-I just merged a couple of reverts into wireless. I guess if I hurry it
-could get into -rc4.
+I changed that to be "statype !=3D AP_CLIENT_UNASSOC" instead, don't think
+we should let you do it for TDLS/mesh/etc. Please send a fix if that has
+issues.
 
 johannes
 
