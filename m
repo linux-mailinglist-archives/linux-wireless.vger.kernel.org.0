@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-21932-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21933-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86A02A99497
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 18:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A55A99589
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 18:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 183DE9C11EA
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 16:00:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 039669239D1
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 16:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877B0285401;
-	Wed, 23 Apr 2025 15:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DE9267F45;
+	Wed, 23 Apr 2025 16:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="fZydobDQ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ZhUzAPlo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14740264A95
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 15:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9E9288C8A
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 16:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745423403; cv=none; b=paYRnyX/ywJZORmq+O9enreidEPae8FSY5pdZUwcYUr656NaY6jsYyzrtZXCUF0EOhaW8YFH66n83UPRMM60+5y4DVwWGSjP+hvqNIPnPApvim+IDKrog5iYFXku2QAuTnAHVrT0y2oW4l7AoxOCvemRb9RS70hf4IstV7PMRlA=
+	t=1745426132; cv=none; b=ZsWF3IX4BsTA6iVGCBqq6MxWt9jy5SUpfWbqdjeVIiY6+4+bxsF453mqGvbX+ASiYDzH2J4P3hg6jrtcLmAzuGFw1M95VgodI7iuPxRhcnSocR5RjiJ7DsOfZYUpQ5NlUR3YkNJ6bYIUbHkINBussDaZcNjUCRu44FMLfkK/RvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745423403; c=relaxed/simple;
-	bh=cEgdOGtqAGprqQT0vj2e/VKff4T1zpwvjNkJiHHxDdg=;
+	s=arc-20240116; t=1745426132; c=relaxed/simple;
+	bh=RD9ieeiN1Kjul8bwiNjdrFbb75FihL1uw+QFk14WRCU=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pjSvzcVrS/k0I2jolUf9+LP1zz09+rqyFY2AQEchC2mkBmnobom76USA4tYzhEyVLEAQFgBjVntjT+rfBrlby5GZUYQ8DNtKPbt4uMCL37Jc+cOxVVNihZg79C3Yie92ZRIKkTvnPJnf2wYlwoS4+U5LR5GC0q7tIfHEW8oAY8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=fZydobDQ; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=qFZrJsMc852KiXtvooEsyliiaIQN9A0o1nCtaX+P0bpdGWoCivnvVjOvBfRfJMD9oJmQ6waFCSKTYUcdFrcelJ8yuztTxy0ip7TAXH4YCkvJu4xbQVilGjJtclLt5J2DL6YlzhluEAlFb4d3+zMme7+oeqNTCYsLotX4zrtrCbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ZhUzAPlo; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=ChCFxOF45fE1+CQEtl9vrB4/zO7/49wQS3bN/6TB6ho=;
-	t=1745423402; x=1746633002; b=fZydobDQECp7XkpI41wXUGayRcdUnn8hI5XHvVL32uGtg0N
-	Dt9geG7dhjrU55AUsteIhm4tz/kCd15d6l/C6YtYYXXBNu1+Eyar+foc/n/lXo+25XuefhcgdDn1C
-	0VAcjaQJcE6vcbvk9n0ktG0OXFfh12AYT+xYGwBqXke/1K/UN8KQrvwgB4kKkeilzGh0xYd2bWn6i
-	mt8HmIPoO5jCqteh2rBgIMyjd9uY2CvWezzzXjMdB2Eelid+FLf2NItl8z59VkUwh5FuTjZxLadxt
-	YU1WytIq2iZVzKo5fZ5XOb2umtzBzeu4QDJxUxCD074APR7mm2xa4zSd78wPpy8w==;
+	Resent-Cc:Resent-Message-ID; bh=I2DJOp4Vl6I/kLhLMoE5SiWMe7apQTIR8KD81E6UK9A=;
+	t=1745426130; x=1746635730; b=ZhUzAPlodOgfvpz9xrOEFxsy3WTDNJ978c8HD/5q+WsUtPH
+	QitaPJvHQlF9W2jZFEana/6I6H4kcYTfXoCAUgTJB6TcqsFr9ELX1l5y3NMYyzK1Jc1raH6UpX+YP
+	siPxoaHDk6hN1hRMAjxtkzchLLF2p7ONG9dVb/OHIj91F18TWz1abIZq+LDB6ZZtIPZIV0llYnXJT
+	q/1do1O3feX+/IiEzLF5yLOYcmMia102djaCVjDHv6VPhizceFdh4kgTuyBoYD/Te3AxOnPmQN9vv
+	CtOsCgUUt3jedkL+7lqJYFKpF3KH4BTyY8tVoLG7WBTKyL36G6lfZmTUri4KuRgw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.1)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1u7cMJ-0000000Eo9j-0Zgb;
-	Wed, 23 Apr 2025 17:49:59 +0200
-Message-ID: <bd43aa513f7e76c305a0ef75036347c35127c535.camel@sipsolutions.net>
-Subject: Re: [RFC v2 wireless-next 2/2] wifi: mac80211: support tagged EAPOLs
+	id 1u7d4J-0000000Es4T-0Ygi;
+	Wed, 23 Apr 2025 18:35:27 +0200
+Message-ID: <253c8d56425a7549386fd6f0072293f608cb89eb.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v6 01/11] wifi: mac80211: add support
+ towards MLO handling of station statistics
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Janusz Dziedzic <janusz.dziedzic@gmail.com>, 
-	linux-wireless@vger.kernel.org
-Cc: j@w1.fi
-Date: Wed, 23 Apr 2025 17:49:58 +0200
-In-Reply-To: <20250407183818.759759-2-janusz.dziedzic@gmail.com>
-References: <20250407183818.759759-1-janusz.dziedzic@gmail.com>
-	 <20250407183818.759759-2-janusz.dziedzic@gmail.com>
+To: Sarika Sharma <quic_sarishar@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Wed, 23 Apr 2025 18:35:26 +0200
+In-Reply-To: <20250415042030.1246187-2-quic_sarishar@quicinc.com>
+References: <20250415042030.1246187-1-quic_sarishar@quicinc.com>
+	 <20250415042030.1246187-2-quic_sarishar@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -67,18 +67,31 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Mon, 2025-04-07 at 20:34 +0200, Janusz Dziedzic wrote:
-> When configured control_port_over_nl80211 allow to
-> receive/send tagged EAPOLs.
->=20
-> Signed-off-by: Janusz Dziedzic <janusz.dziedzic@gmail.com>
-> ---
-> [v2]:
->  - introduce helpers
->  - enable only when control_port_over_nl80211
+On Tue, 2025-04-15 at 09:50 +0530, Sarika Sharma wrote:
+
+
+> -int ieee80211_ave_rssi(struct ieee80211_vif *vif)
+> +int ieee80211_ave_rssi(struct ieee80211_vif *vif, int link_id)
+>  {
+>  	struct ieee80211_sub_if_data *sdata =3D vif_to_sdata(vif);
+> +	struct ieee80211_link_data *link_data;
+> =20
+>  	if (WARN_ON_ONCE(sdata->vif.type !=3D NL80211_IFTYPE_STATION))
+>  		return 0;
+> =20
+> -	return -ewma_beacon_signal_read(&sdata->deflink.u.mgd.ave_beacon_signal=
+);
+> +	if (link_id < 0)
+> +		link_data =3D &sdata->deflink;
+> +	else
+> +		link_data =3D wiphy_dereference(sdata->local->hw.wiphy,
+> +					      sdata->link[link_id]);
+> +
+> +	if (WARN_ON(!link_data))
+> +		return -99;
 >=20
 
-You still didn't check the frames are well-formed.
+nit: _ONCE? Not that important.
 
 johannes
 
