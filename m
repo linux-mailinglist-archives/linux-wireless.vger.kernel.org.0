@@ -1,63 +1,61 @@
-Return-Path: <linux-wireless+bounces-21930-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21931-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B22CA99421
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 18:08:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35D23A99490
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 18:18:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DFB31B66E71
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 15:57:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D623F9A5A99
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 16:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEE02857E4;
-	Wed, 23 Apr 2025 15:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02910289346;
+	Wed, 23 Apr 2025 15:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="So8kcJYK"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="eBPsN635"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570CF2853E0;
-	Wed, 23 Apr 2025 15:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C1228B517
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 15:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745423092; cv=none; b=kUPnUUBdmrAN8VFfK1w569vsexl5i3V/fSI5O89Y9VZl+qLL3jeKeODFYogDnCpuK40Lpq875wvMHRi7pFc0n+CCUkVUvxzNxP3r9Ub/nLaweKnF1Dyry9aL/MrlFmvwUwrSUs+KjsqWf3HScspWoYEBrRqwXvtJzyyvryfI8eI=
+	t=1745423346; cv=none; b=aAgrR+rKhSMcg+kgoHYKR02q2gxAlcl0b51onKU/ctVs7SMi+9xYlCRt82+IOqWFufkBarSKlTXYTQ1mbNXpaOSE7+dOn6asKQOvhX2Inr98fCk4gnjGP9pocUilly/7prgCBb1CDg05BkXTmdP4vkCCHmqOdvX2a2jUOlmIHJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745423092; c=relaxed/simple;
-	bh=RvH5FgF81bFkw2pxOgwseRZAgpOXsvqHOEmUofvT3cA=;
+	s=arc-20240116; t=1745423346; c=relaxed/simple;
+	bh=I7GJ5ab6NizcbsXVO1QhIBWOyQEALSMe+q7WOwSHyn8=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Id8fY9wgc6b1RG+mKCXYbRV01itshQOWkv+ptoL1OnyBbzzyk378pM9roNrCDT7yaBWcXKjUaujXCmwMQznjtv4pg09FPYmA6uygQNTA4i1ML9YYGWwhbh8Yk9gPwVvLgzXHqJWPciZv0QhUzBDgr9LBhNZSmAyZniGQafMYnaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=So8kcJYK; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=q14X7UGU+1xi1Tv3SGnK6bH7qDXmZMwi8Ib9Ya/yn4w+/sxOpFTtHGfO+JpTmeGSxZYBmUMajY8fdGfhEG+ua6cbKd0FcgjrGFx9ysSQGYCSLqPsb2ob1IXCRTfqCCQ4xwhBGTp7Ag5uhe0/5vZHitp3g8WooiFenpzqNyzszOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=eBPsN635; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=RvH5FgF81bFkw2pxOgwseRZAgpOXsvqHOEmUofvT3cA=;
-	t=1745423091; x=1746632691; b=So8kcJYKTAbL/D1EBRPJIu5p95H6F7AL1cE/SN9LvsQ87fT
-	apYp2+oagzgYrHAKks7YB7dqaJWE6uBtA4HQ6Rnru2RQ/mJfyO0Pzdm5hv+xQLhYgOfV1ELmweBEa
-	MR1hXz5tl48BKBmkFkZ10Z3fIUEjNXn5sHmJR2bs9OlDsgr360aAlb/4ysGVAKNQc5fBkiKZDsrx7
-	u8h6Mh4nHfyVeRDpFrOG1F6KBWXMvUDbHbz15n0osFxHIH6rD2eDmw1QgAYGKjR7etR7H2wwjpfw9
-	538RJ+8uZfTcZN7FsQ8+TQySTp8KkSVd/rzbBXhIfFbJzqiugiph+GwXIXrHt6Yw==;
+	Resent-Cc:Resent-Message-ID; bh=kZ1YmQem+CBn6BHfVDzS6NDx5HOQF6CUdjdpvtBYbS4=;
+	t=1745423345; x=1746632945; b=eBPsN635RXsX5M3gGqXqK/RLnKkt3gE2R8j0BUG6ay5Fzu8
+	rOAz4iEmkAkoQczK9Xi1bhcwt1C7M807PHnFJpCgv+156SscPM21CIt4Be8Ik+z2tMMJntLz7gO4e
+	7jfEj6nw8vjY9dP9VTjgNMRMR8juK6lhEL1SYrXImSUGqd1rVrm3//Dzwp+0xnDVLmpL+tmEL/GS4
+	W3lmi4E5Zy7AV+zbC60EsGTvclh8IGCPj7U6OumzVN5d/b2IE8rkfX/m+AmvQP8A9qqOe7y7chrH4
+	LvIHjIrKUHP5CDN9p3jht0ZS0lklHlXNVupyNoJKmOSicZzBAc1lZrNAJ/6LwLzA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.1)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1u7cHI-0000000Ensa-0njz;
-	Wed, 23 Apr 2025 17:44:48 +0200
-Message-ID: <4a91f731c49d3449632f19dcf4a1a8f5a9eb847b.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/3] cfg80211: Restore initial state on failed
- device_rename() in cfg80211_switch_netns()
+	id 1u7cLO-0000000Eo5h-1f1X;
+	Wed, 23 Apr 2025 17:49:02 +0200
+Message-ID: <f8e7b061a913ade9a8a1ad91f9cff09faa2c1bce.camel@sipsolutions.net>
+Subject: Re: [RFC v2 wireless-next 1/2] wifi: cfg80211: allow send/recv
+ tagged EAPOLs
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Ivan Abramov <i.abramov@mt-integration.ru>
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
-	netdev@vger.kernel.org
-Date: Wed, 23 Apr 2025 17:44:45 +0200
-In-Reply-To: <20250407125345.1238818-2-i.abramov@mt-integration.ru>
-References: <20250407125345.1238818-1-i.abramov@mt-integration.ru>
-	 <20250407125345.1238818-2-i.abramov@mt-integration.ru>
+To: Janusz Dziedzic <janusz.dziedzic@gmail.com>, 
+	linux-wireless@vger.kernel.org
+Cc: j@w1.fi
+Date: Wed, 23 Apr 2025 17:49:01 +0200
+In-Reply-To: <20250407183818.759759-1-janusz.dziedzic@gmail.com>
+References: <20250407183818.759759-1-janusz.dziedzic@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -69,21 +67,32 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Mon, 2025-04-07 at 15:53 +0300, Ivan Abramov wrote:
-> Currently, the return value of device_rename() is not acted upon.
->=20
-> To avoid an inconsistent state in case of failure, roll back the changes
-> made before the device_rename() call.
 
-This kind of seems complicated for something that ought to not happen
-...
+>  				   const u8 *buf, size_t len,
+>  				   const u8 *dest, const __be16 proto,
+>  				   const bool noencrypt, int link_id,
+> -				   u64 *cookie);
+> +				   u64 *cookie, u16 vlan_id);
 
-And also (+netdev), what do we do in case this is called from
-cfg80211_pernet_exit() - leak the whole network namespace because we
-couldn't allocate memory for the name? That seems counterproductive.
+It's tempting to say we should finally put all those parameters into a
+struct ...
 
-I'm really not convinced of this whole patchset.
+> +++ b/net/wireless/nl80211.c
+> @@ -11009,6 +11009,10 @@ static int nl80211_crypto_settings(struct cfg802=
+11_registered_device *rdev,
+> =20
+>  		if (info->attrs[NL80211_ATTR_CONTROL_PORT_NO_PREAUTH])
+>  			settings->control_port_no_preauth =3D true;
+> +
+> +		if (info->attrs[NL80211_ATTR_VLAN_ID])
+> +			settings->control_port_vlan_id =3D
+> +				nla_get_u16(info->attrs[NL80211_ATTR_VLAN_ID]);
+
+I'm not convinced it belongs into crypto settings? At least not with the
+commit message you wrote ;-)
+
+And either way it seems you probably need a feature flag to say it's
+supported for both cases?
 
 johannes
-
 
