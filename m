@@ -1,137 +1,99 @@
-Return-Path: <linux-wireless+bounces-21909-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21910-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE900A98A00
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 14:42:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C7FA98A29
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 14:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD7683B7D0D
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 12:42:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD9331B65095
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 12:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D8D22F17B;
-	Wed, 23 Apr 2025 12:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19317C2FD;
+	Wed, 23 Apr 2025 12:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4KXrHZI"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="dVO0Rj96"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D086920D51E
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 12:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFF379D2;
+	Wed, 23 Apr 2025 12:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745412164; cv=none; b=phN9EcLbj4ueXRIjNCZk2WXE3Bt30hGzbnF7u+iPFSFffSiLBkCTHZMhvhkG/uR1LEKsNKrQpUvDKYnTUkTgT0s4Wf3eEZV/ArB4sS53UJcx45dJxLvdrVLA3vd7HFcJGevYP4lQjnp3oFR8p977BEyg/oDTO2tqG+QBdTlq3uk=
+	t=1745412845; cv=none; b=pMWpdbmFLc6Tg4St4bmaHJaX726fTaOWvW+MqKDrx/Yg1BAoRwxkz6WQ2TUV/QSLxPAozr7YGaA8ZddXHxebfTyWsuW01avQQ4bq9JOuhtr/1iqMxYFp8ovUhZrlt10JuhaXSs9ZwTQgSRmTbHxnuIlkSUMGPepSWaSrzJUBDIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745412164; c=relaxed/simple;
-	bh=53dzs6lELZmawIWhUxrwBA9i61V8rWX4IT2GsaSONjE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VWHcU6fq4zJb6Rqn7J2nOrflI/zkdcvOHBGWGi2fGkjPDTh0GfyNu4FLiT7TLC8hwqBL/7H+wtU9tZ8i6IjEc9jwL2IVrg/S/t/AY6zMZJb2mZ2LDSsay4d0lc9zZr4JXdQlrAhP4yUN0VkOqDy1i+6TxtTFu4lkli94vkQON64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4KXrHZI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1994AC4CEE2;
-	Wed, 23 Apr 2025 12:42:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745412163;
-	bh=53dzs6lELZmawIWhUxrwBA9i61V8rWX4IT2GsaSONjE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=m4KXrHZIn6/+6hKEd0dFyGk+MK/PUla+COP13o2frrPpJLHzrVVL1q+9hoMVvAR47
-	 iuprpyrEIQusBNUiq00ceBOh4LTN3LFpRMj3lbYjZAxS6CoDlyG05zOvh4FSurJmhH
-	 7T4GHgQU3OAynCzNMoiK6h+xw35SlNsx3GVZs9zfd9XVZuy8hD/mjhx71MVUbGPAlT
-	 QDy4rb0RZEAYHYMMqeoMQCM50U9cLJ97YwSyH47PnYtWb+ShBwCW5mYuGLUodyiRRY
-	 kLBk05aRBGycS0c5lc/3ynf/3GUL+S68VsgnPyj1bnv2dx2AwXompsd4iNafxBiSfl
-	 sEmfoxFrP8Urg==
-Message-ID: <5bfa7e68-6ce3-4d36-adda-b6a16b59008c@kernel.org>
-Date: Wed, 23 Apr 2025 14:42:39 +0200
+	s=arc-20240116; t=1745412845; c=relaxed/simple;
+	bh=ZKAVMogWXPx2pj2K5Hh9LlE9qAqI5Iu2j9uhvzT38OM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OzlaK1uMP7tYow8zXg+FQ9brS+Y5OL9T+lE7yHkoRGe/RsSQxE+up7hakRIRyT4KAWZpU/dx0QrGAJalI1a71sf3JELBEtmM5aBmoCgnXMykF0DKzibdYJGMmxmo3kqya36jbMQT/lrT4bhBCaiCYffyILkUoTukJY5SJYmExSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=dVO0Rj96; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=b0qvYVi5EKKwE4d58vIOem1eVuvc6m9T7pA9hU6GFgM=;
+	t=1745412843; x=1746622443; b=dVO0Rj96yMJJjFjxpy/QBleZZ5HxPWK28C/le7dpDSsps+L
+	X2wYSC+N9iUguA3RTgwunXPmUx1apwxcAj/IFJYnXi4sbr2XzhM26/s9PfOsrAd7maVawqRVZwQuC
+	HRBOhO3tJ8kCBQUE17nxwDbjrSnh+zsja76n+5LoGHTyw7/AAuwhMaBXB2RaLsuJbSbdSvVAuIrfQ
+	2NZLxc4W0EHgMbVtWPm/e+x++HO+AmuN/OTpMSdKzF84rQJ4Q/jMAGmaCKUJWrFUDhQYyxAupjs0e
+	3eN3M2eSQYNQqISRaz5mQccHHyXtmVJPq9zvAdAOWyFLjcnsMLoM4fpNd1upSnQQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.1)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1u7Zbu-0000000EfWY-2Ois;
+	Wed, 23 Apr 2025 14:53:54 +0200
+Message-ID: <b30cc04676a031db8c36df243160992094b3848d.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211_hwsim: Prevent tsf from setting if
+ beacon is disabled
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Edward Adam Davis <eadavis@qq.com>, 
+	syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com
+Cc: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Date: Wed, 23 Apr 2025 14:53:53 +0200
+In-Reply-To: <tencent_096EDEEED78C81A7D006E812E4C66E898A06@qq.com>
+References: <67fac9a6.050a0220.379d84.0016.GAE@google.com>
+	 <tencent_096EDEEED78C81A7D006E812E4C66E898A06@qq.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [ath-next 1/2] dt-bindings: net: wireless: ath12k: describe
- firmware-name property
-To: Miaoqing Pan <quic_miaoqing@quicinc.com>, jeff.johnson@oss.qualcomm.com
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <20250423054152.2471568-1-quic_miaoqing@quicinc.com>
- <20250423054152.2471568-2-quic_miaoqing@quicinc.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250423054152.2471568-2-quic_miaoqing@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-On 23/04/2025 07:41, Miaoqing Pan wrote:
-> Introduce 'firmware-name' property to allow end-users and/or integrators
-> to decide which usecase-specific firmware to run on the WCN7850 platform.
-> This is necessary due to resource limitations such as memory capacity and
-> CPU capability, or performance and power optimization for different
-> application scenarios.
-> 
-<form letter>
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
+On Sun, 2025-04-13 at 14:11 +0800, Edward Adam Davis wrote:
+>=20
+> --- a/drivers/net/wireless/virtual/mac80211_hwsim.c
+> +++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+> @@ -1226,6 +1226,11 @@ static void mac80211_hwsim_set_tsf(struct ieee8021=
+1_hw *hw,
+>  {
+>  	struct mac80211_hwsim_data *data =3D hw->priv;
+>  	u64 now =3D mac80211_hwsim_get_tsf(hw, vif);
+> +	struct ieee80211_bss_conf *conf =3D link_conf_dereference_protected(vif=
+,
+> +			data->link_data[0].link_id);
+> +
+> +	if (conf && !conf->enable_beacon)
+> +		return;
+>  	/* MLD not supported here */
+>  	u32 bcn_int =3D data->link_data[0].beacon_int;
+>  	u64 delta =3D abs(tsf - now);
 
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
+Please keep kernel coding style - the line break there is awful (but
+with "conf =3D ..." on a line by itself it can be just one line), and you
+shouldn't have code before variable declarations.
 
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time.
+The comment should probably also move because it's relevant for your new
+[0] as well.
 
-Please kindly resend and include all necessary To/Cc entries.
-</form letter>
-
-Best regards,
-Krzysztof
+johannes
 
