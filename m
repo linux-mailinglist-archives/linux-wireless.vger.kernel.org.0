@@ -1,164 +1,142 @@
-Return-Path: <linux-wireless+bounces-21935-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21936-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F57A995C8
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 18:52:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FB4A9972D
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 19:54:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F7853BEFAC
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 16:52:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96F3A924086
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 17:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D536D288CA0;
-	Wed, 23 Apr 2025 16:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0391F28E602;
+	Wed, 23 Apr 2025 17:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="dIm7MnwT"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="XVqivPNZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp9.infineon.com (smtp9.infineon.com [217.10.52.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E374281370
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 16:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9ED28E5F1
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 17:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745427162; cv=none; b=PxcLZ8oZ9eqKHQM/orHLEOlm7KBOlEgGnG71oRHJIgekdzfqgdrZ6tRg/rtWgknK9Q52OaSf3Zp5LKYz9tQG/DJqblss1J2UioHe5osHz8KIoimHUBRUUrYhpPXRGgsnouxEyrvLxUjIwkmzB3eV7hF9qDX1rYIUW4ME78oL1gw=
+	t=1745430776; cv=none; b=Kj9Uz+gI0VjT9c4hqxkstqR2JVAD5tZzGT15D+f+k8yoFVPDaLhhRLbwOzprtuFUIGTkXnGiwcEUMPWPIKxIz+kINVsUe2EwyXSljSNoXsNjaG5OKy8sNIQX+NCjXPJWO/gZmh/H98uyPYpjhk777cXTuTQDq4pdriohVUsoXLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745427162; c=relaxed/simple;
-	bh=z71hHNwjRWlrlYbor66hlXNQ6DxFx6Q11DhUBr+6XyY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=p9iUmemY16doHFF7Yu07btop+FrZWMSzzMJSY8EHlTCOI3gv+vKNYJ4II2t06R/K7ikBdpub/BCD0Pe0W8zzxUSUhiJeAeA0Z+D6akANXPCcnoIktTxE5utQ0jMqmLJy0FRdHGfEKE6hnC0Xj4xlmgDuXir+5RiazXLp8Q/MKX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=dIm7MnwT; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Ve8OXH0MBrIMwtwNXepI+lqcteOK3cBzZkQH5+8UuM8=;
-	t=1745427161; x=1746636761; b=dIm7MnwTf3jaC9Ez+p18uSpQub7iXEBZKv6MWFX/mxvXkaf
-	uqkrzJVba9e11wuKnY4b8aCtGbr/WRNcBHV2giH5x9hYkFh2iqu2Gq+mZ2nvZZEI8kl+XtWsWz0bK
-	X+1Yhu9x6eZyM44vTUfRaaqI03fVyJVNZWuzg/qvRtgENbvQHdjA7eKe6w4LXo6NRUvX4YANduyVy
-	AGf3Kf6xCnT7KmKTvuwE9DPBNz6e/pNmFGqjIHanhAOfwcrGNQ0oahNFzqjHUejj+vPng8ik+kJFl
-	vJfv3BzcQYR+uTBbJOXGrDuYLbY9v3kIFi9gBX+n5XbIhx4uetAxxGZ6Pg2tpUpw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1u7dKv-0000000Et3c-3ANM;
-	Wed, 23 Apr 2025 18:52:38 +0200
-Message-ID: <fa49a2d4927868be689ed8464aa27c3aad2f03b6.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v6 04/11] wifi: cfg80211: reorg sinfo
- structure elements for MLO
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Sarika Sharma <quic_sarishar@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 23 Apr 2025 18:52:37 +0200
-In-Reply-To: <20250415042030.1246187-5-quic_sarishar@quicinc.com>
-References: <20250415042030.1246187-1-quic_sarishar@quicinc.com>
-	 <20250415042030.1246187-5-quic_sarishar@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1745430776; c=relaxed/simple;
+	bh=OrDEqIilOMy2w+hOXFiB72lAvYn/C545uiwG2bIRd/A=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZoHL8E0Mp4ixcVe4HxOXJpLuG3n80OoEKldGbqtj/EeuPbBrfYQkupJFRiagcYjiVRnIgKaL8xlokJPrw98CXj2Q3lFeJgRP7qDTpMxtvq519lNmiamktOQGc/DusM4o66iN9k6wVfhHr+iW6yJNBUeSuqQoy5A3u2q8+gCMpd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=XVqivPNZ; arc=none smtp.client-ip=217.10.52.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
+  t=1745430773; x=1776966773;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OrDEqIilOMy2w+hOXFiB72lAvYn/C545uiwG2bIRd/A=;
+  b=XVqivPNZ7Z5qqYdS1SKLx/O7iY2qgfuvSOo2hhtNz8iem/e4TA2ZI1sb
+   5Da/GPeecNduw3MiA/L9vFW7Lt0/BHfgwRp+bcLr0irhIhJrU7kiEC0lj
+   RpDXFMC1abhlIAMKl9RiHVqlH8aVCnbMS5+ZjbKy4o7Mb0KsYZJ/tt9yJ
+   Q=;
+X-CSE-ConnectionGUID: oRqkN82sT/KAcjIRULvIaQ==
+X-CSE-MsgGUID: A3vpMq03T9iM7k3Mnnsq2A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="49679325"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739833200"; 
+   d="scan'208";a="49679325"
+Received: from unknown (HELO MUCSE814.infineon.com) ([172.23.29.40])
+  by smtp9.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 19:51:43 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE814.infineon.com
+ (172.23.29.40) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 23 Apr
+ 2025 19:51:42 +0200
+Received: from ISCN5CG14747PP.blr.infineon.com (10.161.6.196) by
+ MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Wed, 23 Apr 2025 19:51:41 +0200
+From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+CC: <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>,
+	<wlan-kernel-dev-list@infineon.com>, Gokul Sivakumar
+	<gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH] brcmfmac: support AP isolation to restrict reachability between stations
+Date: Wed, 23 Apr 2025 23:21:22 +0530
+Message-ID: <20250423175125.7233-1-gokulkumar.sivakumar@infineon.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MUCSE823.infineon.com (172.23.29.54) To
+ MUCSE827.infineon.com (172.23.29.20)
 
-On Tue, 2025-04-15 at 09:50 +0530, Sarika Sharma wrote:
-> Current implementation of NL80211_GET_STATION does not work for
-> multi-link operation(MLO) since in case of MLO only deflink (or one
-> of the links) is considered and not all links.
->=20
-> Therefore to support for MLO, start reorganizing sinfo structure
-> related data elements and add link_sinfo structure for link-level
-> statistics and keep station related data at sinfo structure.
-> Currently, changes are done at the deflink(or one of the links) level.
-> Actual link-level changes will be added in subsequent changes.
->=20
-> Also currently, mac80211 ops .sta_statistics() is mapped to fill sinfo
-> structure. But to add support for station statistics at link level,
-> change the ops to .link_sta_statistics() to fill link_sinfo structure.
->=20
-> Additionally, move connected_time before assoc_at in station_info
-> structure to get minimal holes.
-> pahole summary before this change:
->  - size: 232, cachelines: 4, members: 23
->  - sum members: 223, holes: 3, sum holes: 9
->  - forced alignments: 1
->  - last cacheline: 40 bytes
->=20
-> pahole summary after this change:
->  - size: 224, cachelines: 4, members: 23
->  - sum members: 223, holes: 1, sum holes: 1
->  - forced alignments: 1
->  - last cacheline: 32 bytes
->=20
-> Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-> ---
-> NOTE:
->  - Included driver changes for fixing compilation issue.
+From: Wright Feng <wright.feng@cypress.com>
 
-Does this really need to do all the changes in mac80211 and the drivers?
+hostapd & wpa_supplicant userspace daemons exposes an AP mode specific
+config file parameter "ap_isolate" to the user, which is used to control
+low-level bridging of frames between the stations associated in the BSS.
 
-OTOH maybe if not then it would cause much more back and forth?
+In driver, handle this user setting in the newly defined cfg80211_ops
+function brcmf_cfg80211_change_bss() by enabling "ap_isolate" IOVAR in
+the firmware.
 
-> +++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
-> @@ -1810,47 +1810,51 @@ static int ath6kl_get_station(struct wiphy *wiphy=
-, struct net_device *dev,
->  	else if (left < 0)
->  		return left;
-> =20
-> +	sinfo->links[0] =3D kzalloc(sizeof(*sinfo->links[0]), GFP_KERNEL);
-> +	if (!sinfo->links[0])
-> +		return -ENOMEM;
->=20
+In AP mode, the "ap_isolate" value from the cfg80211 layer represents,
+ 0 = allow low-level bridging of frames between associated stations
+ 1 = restrict low-level bridging of frames to isolate associated stations
+-1 = do not change existing setting
 
-This seems rather error-prone to me.
+Signed-off-by: Wright Feng <wright.feng@cypress.com>
+Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+---
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-We already have sinfo->pertid today, allocated and freed by cfg80211,
-and here you've added something that's allocated by the driver and freed
-by mac80211. That seems odd in comparison?
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 4b70845e1a26..bd72d8df2a22 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -5931,6 +5931,26 @@ static int brcmf_cfg80211_del_pmk(struct wiphy *wiphy, struct net_device *dev,
+ 	return brcmf_set_pmk(ifp, NULL, 0);
+ }
+ 
++static int brcmf_cfg80211_change_bss(struct wiphy *wiphy, struct net_device *dev,
++				     struct bss_parameters *params)
++{
++	struct brcmf_if *ifp = netdev_priv(dev);
++	int ret = 0;
++
++	/* In AP mode, the "ap_isolate" value represents
++	 *  0 = allow low-level bridging of frames between associated stations
++	 *  1 = restrict low-level bridging of frames to isolate associated stations
++	 * -1 = do not change existing setting
++	 */
++	if (params->ap_isolate >= 0) {
++		ret = brcmf_fil_iovar_int_set(ifp, "ap_isolate", params->ap_isolate);
++		if (ret < 0)
++			brcmf_err("ap_isolate iovar failed: ret=%d\n", ret);
++	}
++
++	return ret;
++}
++
+ static struct cfg80211_ops brcmf_cfg80211_ops = {
+ 	.add_virtual_intf = brcmf_cfg80211_add_iface,
+ 	.del_virtual_intf = brcmf_cfg80211_del_iface,
+@@ -5978,6 +5998,7 @@ static struct cfg80211_ops brcmf_cfg80211_ops = {
+ 	.update_connect_params = brcmf_cfg80211_update_conn_params,
+ 	.set_pmk = brcmf_cfg80211_set_pmk,
+ 	.del_pmk = brcmf_cfg80211_del_pmk,
++	.change_bss = brcmf_cfg80211_change_bss,
+ };
+ 
+ struct cfg80211_ops *brcmf_cfg80211_get_ops(struct brcmf_mp_device *settings)
+-- 
+2.47.0
 
-I'm not sure what the choices are, but I can't say I like this one ;-)
-Maybe it's still the least bad option.
-
->  	if (vif->target_stats.rx_byte) {
-> -		sinfo->rx_bytes =3D vif->target_stats.rx_byte;
-> -		sinfo->filled |=3D BIT_ULL(NL80211_STA_INFO_RX_BYTES64);
-> -		sinfo->rx_packets =3D vif->target_stats.rx_pkt;
-> -		sinfo->filled |=3D BIT_ULL(NL80211_STA_INFO_RX_PACKETS);
-> +		sinfo->links[0]->rx_bytes =3D vif->target_stats.rx_byte;
-> +		sinfo->links[0]->filled |=3D BIT_ULL(NL80211_STA_INFO_RX_BYTES64);
-> +		sinfo->links[0]->rx_packets =3D vif->target_stats.rx_pkt;
-> +		sinfo->links[0]->filled |=3D BIT_ULL(NL80211_STA_INFO_RX_PACKETS);
->  	}
-
-You later (patch 7) add support for accumulated statistics. These are in
-the struct station_info.
-
-Why do we need to make these changes to non-MLO drivers at all? It
-stands to reason that for non-MLO drivers we could mostly use the
-accumulated statistics? That'd at least be 9 of the values changed here,
-they just come back as is in patch 7.
-
-I don't think it really matters for non-MLO whether or not link[0] is
-used or the overall STA/accumulated fields?
-
-A similar argument can be made for what's later called 'mld_addr' and
-some other fields, I'd say?
-
-Perhaps it'd be better to structure this patchset the other way around:
-start with the existing non-MLO and move out things that are clearly not
-applicable at all to the MLD level (such as RSSI, rates, etc.). It seems
-plausible that'd really be less than you have now, since the
-accumulation (patch 7) adds back a bunch and should possibly add back
-more than it does (e.g. tx/rx duration, MPDU count, etc.)
-
-
-I probably need to spend more time with this ...
-
-johannes
 
