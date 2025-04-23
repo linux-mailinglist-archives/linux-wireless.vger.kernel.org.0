@@ -1,62 +1,59 @@
-Return-Path: <linux-wireless+bounces-21919-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21920-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263D2A98D6C
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 16:42:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747F8A98D70
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 16:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D30F7A4BC0
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 14:41:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4CD416C128
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 14:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651E127F751;
-	Wed, 23 Apr 2025 14:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9B4149E17;
+	Wed, 23 Apr 2025 14:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="e0KNbBIt"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="PgowDYg/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D612327F739;
-	Wed, 23 Apr 2025 14:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADB97081C
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 14:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419354; cv=none; b=VAdRCkV7LltFIh+RRe5D6gLmJAjHVVRX9K9UDvlj6iWADZBcLRmC3Y3Mn6WSL4I7wO12CiFWrkHzjdbbtpR6kfp98emL2a7+2Y4S8OjqxekcVj+GHDnXTUJChCF+elGYyu7Iof9SoXvHivIXl0IyoBwpsEAWr2at/CR3Lo16ueE=
+	t=1745419440; cv=none; b=WbTWQt7dsVOFErLM/xla2CAgPAvs3IXBcdrUy86xe2M5Y6Anoqs4AelAe8w3Qk4hykzfieJQ0UhEr+Q/PsLl1TNBRmAL9OFz28Z4SMT0VNCpj0ejhTG8Qavyt+iduvi9YZT5WG3vyaEvmkkR2khu2b9Yz6tZX6h8emKT8ZfzUFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419354; c=relaxed/simple;
-	bh=vwxAWQTi9Y0WTKETG0R7OlHjGBeP8e6NtBdiui/TOtY=;
+	s=arc-20240116; t=1745419440; c=relaxed/simple;
+	bh=jm6iS41bwi0ruPwhs/XoD3xcqj9q+M+WsyP20tEUfmU=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TEKq7BRR8aCULjiOug4d2qsOR4W760IMzt+fHxKh57DZTtkiPqdtI7sXAvHPdiX2pKGV/grMNu9rcvhXE4ykrlM/LiOWcQBvN35h6cdZKxW1rhfOWRXECgtQw60D813VR5QtKlpbd+KJX7B0euwiYkWGpIWjqBJOz1/9ztYkmN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=e0KNbBIt; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=es+pqYWSM2YHexFhe+O9XEsBCh+nlINIU8sbP/RXNVkE8hwtleJRT9n3BAzza0FIn5VTuMdQMuMAYv7Iv7YYIo7sWOIhltLWN77mw1Feg02+TSwVWHlBiLRlmXkEydhBmkOv8rdVEkvCv8BQReMtB+f2v6RXI1zrVEPd3GrsAiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=PgowDYg/; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
 	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=vwxAWQTi9Y0WTKETG0R7OlHjGBeP8e6NtBdiui/TOtY=;
-	t=1745419352; x=1746628952; b=e0KNbBItdIdjNC2ZDCKFR1vrTN61Xe1pk76YYgZcnWgPz7X
-	iQWPCgAgGdsFo9P7lYpY1u+w18+5kPdDab2wyK0XTpl6nxg6D0a+CV+Ek/3Ah0/GGGa1ytdDwwB1G
-	CMrmrKyns1bbmlhhjXUG2KSBySth1U/C/O2eIo/Fgwu84ypY3g5b0VbWJGhGpvNpseVKvUCpMnSNB
-	eAh2aip7ynlszN+0uDToQLDNE+D/jVrJtlGltLvG9gqvsellHzF2QlzTLqunDWXVifRz99Eqt8EIu
-	8YPug7WGdBXm8D+dHqJHQ77NDh0QrXHxbsWTRg+M7jIkeSPLgKFWthCQrrjiRq4g==;
+	Resent-Cc:Resent-Message-ID; bh=jm6iS41bwi0ruPwhs/XoD3xcqj9q+M+WsyP20tEUfmU=;
+	t=1745419439; x=1746629039; b=PgowDYg/e04bbAB0XqvUTF0Qh8aHCgbTHXCc7B135aC49wF
+	2X/8p1cC5CzLe/XDkUoVgYOj7NsOlCDxZSQFkopqXWUdFd3uvzLdI2ODAi9YMQay2T14WTIfU08Cg
+	Gyljt5F3zr3Udavk1ZqZvE9DwPL36okaDRNh4rqqYdhqs4hRL0eDqnt9gV43ZqQQ11NwAQ+ITEqyZ
+	8/yDMs+yv8/UZ7JGb3rg5p8znsDVhWtgWTAIPYZKm9HyGESDRopKnROXrPiTkeE9OHGmWDI8B0GVN
+	wHm4Ne+gB3q6PEVnI+KuJblB0KOENyOUhJ9r4i7Y4ZGYS79/jpecboJPI3Pg3e6w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.1)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1u7bIy-0000000Eknu-2CVg;
-	Wed, 23 Apr 2025 16:42:28 +0200
-Message-ID: <0f2108af922f17a371b33b94226e64e6e308c7ec.camel@sipsolutions.net>
-Subject: Re: [PATCH iw,v2 3/3] iw: fix EHT capabilities on Big Endian
- platforms
+	id 1u7bKO-0000000Ekuz-3Kc3;
+	Wed, 23 Apr 2025 16:43:57 +0200
+Message-ID: <0c995a29d73a99084add34ef2b56b0fe673578c4.camel@sipsolutions.net>
+Subject: Re: [PATCH iw] iw: print HE mcs correctly when mcs_len
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Aleksander Jan Bajkowski <olek2@wp.pl>, ilan.peer@intel.com, 
-	christopher.a.wills@intel.com, slakkavalli@datto.com, john@phrozen.org, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 23 Apr 2025 16:42:27 +0200
-In-Reply-To: <20250405184807.701728-4-olek2@wp.pl>
-References: <20250405184807.701728-1-olek2@wp.pl>
-	 <20250405184807.701728-4-olek2@wp.pl>
+To: Janusz Dziedzic <janusz.dziedzic@gmail.com>, 
+	linux-wireless@vger.kernel.org
+Date: Wed, 23 Apr 2025 16:43:55 +0200
+In-Reply-To: <20250413160455.158335-1-janusz.dziedzic@gmail.com>
+References: <20250413160455.158335-1-janusz.dziedzic@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -68,15 +65,13 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Sat, 2025-04-05 at 20:48 +0200, Aleksander Jan Bajkowski wrote:
-> IE fields are encoded in Little Endian and are not correctly
-> printed on Big Endian platforms.
+On Sun, 2025-04-13 at 18:03 +0200, Janusz Dziedzic wrote:
+> Print HE mcs correctly when lower layer
+> report correct/real mcs length.
 >=20
 
-I applied some other patches, and this didn't apply any more. Please
-rebase and resend.
-
-I did apply the other two.
+I applied some other HE related patches and this didn't apply any more.
+Please check/rebase.
 
 johannes
 
