@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-21897-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21898-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8F2A97F1A
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 08:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D9DA97F6F
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 08:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCAB93A3778
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 06:26:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9C0E3B5991
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 06:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B429263F3F;
-	Wed, 23 Apr 2025 06:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E67F267386;
+	Wed, 23 Apr 2025 06:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="Ol5LzmvE"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="JvwIZQTL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4820F157487;
-	Wed, 23 Apr 2025 06:26:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED251264602;
+	Wed, 23 Apr 2025 06:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745389607; cv=pass; b=GyEtHZ8MEJjgm+RtlCG3wljniKuyaS8oH9pa436NhHBuMjPVjD+5/T6Z0a0ZA9Io2heOOa2VEqM6aJGNE4Rwkfvzz5HKzgkq5pmWshK0QPefjcT0pdhxCe6ndUHrksVP5f/yWDwSGhoOrZhlhcDXKDkdTEM5wEueT79lUjBJxSY=
+	t=1745390541; cv=pass; b=oyekSZeP9Ih+EECwsMUkhnhy9VMMQ/ExZsNIWRLPUou6p3mbXedBosMt/vQcfTZ/wJKcW3JLGlC/aTxYwTS0WGV9bFsmtjIBB+c5VGcKZnmLnOlEF/6b9BrYvP6I39fr9eBGns9B+mp40TRTkaYLdaIqQ4Z7TcxEFEavNbZRWrY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745389607; c=relaxed/simple;
-	bh=00dM4dFJUHwD/tB/wgZJw1pFJrJ/pLQ0/M3aCWHR5pI=;
+	s=arc-20240116; t=1745390541; c=relaxed/simple;
+	bh=Q3RPNquah0BRY6MW0I/pDfnKmFcivVrOLFO/tdQ2OUk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fsYrtxK02U4Jc97GwbqHx64V1tehKj5xvcKF/Zjy+1FUjoVv4Dvhui24oVmeV5yxOaeSd8aez7t6OpVrmy8vIrmY/gpOmGbVswzgJsaIV0cxgLLL0lwm4YmYPHbrkZEJRH2fL+zPWKYFtRUCp/Lv5h4+6PpAMWot/fWadwMhQUs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=Ol5LzmvE; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:Content-Type; b=MrazmsV+Qkmz3t25cqCmtlJpGqG7GbBjHYRUaoZnp/l9Iz20ozCLMlhaUAED+04rKwnyIXnp7077TaO1Jr9oT/UsBtP8XFjWXT4WpXyauZlkDI7fgdk1L4rh5u5yTXU2hwHISf/xAvWvhDsap2M+tC7GAN/cS1b0gopgJXedVVs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=JvwIZQTL; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1745389588; cv=none; 
+ARC-Seal: i=1; a=rsa-sha256; t=1745390502; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=ebdmhULDCdrUhAx4aaHuQRurTciMDX++P9TMCC1yWKj12FX4PUzC3fqhzGgLCbkDhjvtLYJs2vbwChjxh3udapZtmzeCOE7jQiLL31pWBiIYokvrvdcbudMj9SrDsXPAJ/jvq9t+JTVPJweYduJDr4DiA2kAvdFRSadyR9xWmqU=
+	b=UcDng3/gs4pj7W2NQJQpAOLexpEAd7IYgHQF9LefGPz7FWcYXxQExeK5yR5TEN24xabkhPKDPyixgEG/W5214urqPMcLE98DnOIWrBn5XRrfGWQZW0cSrTc98CouJGpRQkE8UUI5+pnFiT8AZ/ldDoo6SaHijJdtotsm61cfrNw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1745389588; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=yTzHN7dGIHSIA2ZcTAnz8A4g6gO0WgnqyLnTZP7VHC8=; 
-	b=P6fHgVM+pJcVG+MVaI/WNa73/m3V7DvK6b/pP7wPYAEbJK3cfv7kJP+qgd0sc8adA7KNj9wOlI/rKnBVfCcj5khcWZ43lWP0gtgFcyg8V2at2VxmKgK2tK/zcCz7YJa83rWVPtrI7fk0pA2tg74Jz8YiaBkcb0bST06R56Zsaf4=
+	t=1745390502; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=M8+yFjpdN0MV5z5KCQ5SUdxTchmondAjyXz/TzTi/28=; 
+	b=VuodGdex5p9b9Xw9S4XKtg1frXq2kH/dmuK7NxxgbtW7xRgwZdPjgqLzgUzPLC/63cJdYQHzPEUpHFXHecpoqp6uTGD/SfhkWuVsAwX6smaA69biMwRlJTnejYz0LFVwA6QtAta+6bBrcjHBq+SYPjBYJnkCPFMuKXtOp7/rI88=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
 	dmarc=pass header.from=<usama.anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1745389588;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1745390502;
 	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
 	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=yTzHN7dGIHSIA2ZcTAnz8A4g6gO0WgnqyLnTZP7VHC8=;
-	b=Ol5LzmvEc3ZMuLQ7uqwbVYMrbSnC0B72Cd3fdt83r9QD5vrtChiefTxzo5ud7TqC
-	fgebkqHpO6FsuI2XQNhGutWIPw4KK8TNqyoMpognxgyE+igoxiuNp0Ii1M5fF3gZu7a
-	7Sqhn2jjwwgnFZ7U4yNIwNdt8tDJ42V047+tSFhk=
-Received: by mx.zohomail.com with SMTPS id 1745389584521570.3483502691803;
-	Tue, 22 Apr 2025 23:26:24 -0700 (PDT)
-Message-ID: <1fc423d1-762c-4e0f-8cf1-d4610c547596@collabora.com>
-Date: Wed, 23 Apr 2025 11:26:18 +0500
+	bh=M8+yFjpdN0MV5z5KCQ5SUdxTchmondAjyXz/TzTi/28=;
+	b=JvwIZQTLKy3ZPxH/hIbjsBEw4P+YloukDo26OjR7orZvsfxzy2fYJsE8spaOGI5+
+	0cOc2Y13FofAo/6OAUXH3JZkq15nEZCqQvdDOVT0G2fvbVdVM8s34OmS9C/sAkVALGu
+	LGi9JkSygx06W5FKjIZOf2oDkd7/29EaAlH9iC40=
+Received: by mx.zohomail.com with SMTPS id 1745390500602918.4518726623862;
+	Tue, 22 Apr 2025 23:41:40 -0700 (PDT)
+Message-ID: <7cf2f4e1-8a85-4f07-a886-b47159c92ccc@collabora.com>
+Date: Wed, 23 Apr 2025 11:41:32 +0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -60,120 +60,194 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath11k: Fix memory reuse logic
-To: Baochen Qiang <quic_bqiang@quicinc.com>,
- Jeff Johnson <jjohnson@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Anilkumar Kolli <quic_akolli@quicinc.com>
-Cc: kernel@collabora.com, linux-wireless@vger.kernel.org,
- ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250418120951.94021-1-usama.anjum@collabora.com>
- <5ae72a5c-798a-4c57-b344-02b231cb881c@quicinc.com>
- <b30bc7f6-845d-4f9d-967e-c04a2b5f13f5@collabora.com>
- <6c4ae1f8-a2ea-4ee3-b67d-4a379f097d9b@quicinc.com>
+Subject: Re: [PATCH v2] bus: mhi: host: don't free bhie tables during
+ suspend/hibernation
+To: Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+ Krishna Chaitanya Chundru <quic_krichai@quicinc.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson
+ <jjohnson@kernel.org>, Jeffrey Hugo <quic_jhugo@quicinc.com>,
+ Yan Zhen <yanzhen@vivo.com>, Youssef Samir <quic_yabdulra@quicinc.com>,
+ Qiang Yu <quic_qianyu@quicinc.com>, Alex Elder <elder@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Kunwu Chan <chentao@kylinos.cn>, quic_kvalo@quicinc.com
+Cc: kernel@collabora.com, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org
+References: <20250410145704.207969-1-usama.anjum@collabora.com>
+ <ba09ae0c-fe8d-8f4e-a1b8-9c7e5913c84e@quicinc.com>
+ <fc9ca0da-9f6a-42b5-aa79-abcd43c97043@collabora.com>
+ <e0159cb8-fe21-7f71-1ebe-744ed26bd698@quicinc.com>
+ <85580a01-289a-461b-b0f1-38fa1b96717c@collabora.com>
+ <1c0b2217-49d9-360c-ed60-db517eaf2ccc@quicinc.com>
+ <7d6b074c-8499-4984-b235-d1285b006ab3@collabora.com>
+ <ad5e99e8-3ff1-4727-aed6-528ac747f409@oss.qualcomm.com>
+ <5dcf3ddf-6b0a-4b4c-b4a3-6e015a7e2f53@collabora.com>
+ <822543a0-d7e1-4aec-ae1b-018b32985d1f@oss.qualcomm.com>
+ <1bf328cd-d301-4d1f-a8f5-7020d9e25ea5@collabora.com>
+ <c1fdbd16-4197-4a2e-a33d-6b29cc285f0a@oss.qualcomm.com>
 Content-Language: en-US
 From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <6c4ae1f8-a2ea-4ee3-b67d-4a379f097d9b@quicinc.com>
+In-Reply-To: <c1fdbd16-4197-4a2e-a33d-6b29cc285f0a@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 
-On 4/22/25 1:01 PM, Baochen Qiang wrote:
-> 
-> 
-> On 4/22/2025 3:46 PM, Muhammad Usama Anjum wrote:
->> Hi,
->>
->> Thank you for excellent review.
->>
->> On 4/22/25 7:15 AM, Baochen Qiang wrote:
->>>
->>>
->>> On 4/18/2025 8:09 PM, Muhammad Usama Anjum wrote:
->>>> Firmware requests 2 segments at first. 1st segment is of 6799360 whose
->>>> allocation fails and we return success to firmware. Then firmware asks
->>>
->>> Host won't fail in case DMA remapping is enabled. Better to rephrase to make it clear that
->>> the big segment allocation fails in case DMA remapping is not working, usually due to
->>> IOMMU not present or any necessary kernel config not enabled.
->> IOMMU is turned off. I'll make description better.
->>
->>>
->>>> for 22 smaller segments. Those get allocated. At suspend/hibernation
->>>> time, these segments aren't freed as they are reused by firmware.
+On 4/22/25 7:22 PM, Jeff Hugo wrote:
+> On 4/22/2025 1:23 AM, Muhammad Usama Anjum wrote:
+>> On 4/18/25 7:08 PM, Jeff Hugo wrote:
+>>> On 4/18/2025 2:10 AM, Muhammad Usama Anjum wrote:
+>>>> On 4/14/25 7:14 PM, Jeff Hugo wrote:
+>>>>> On 4/14/2025 1:32 AM, Muhammad Usama Anjum wrote:
+>>>>>> On 4/12/25 6:22 AM, Krishna Chaitanya Chundru wrote:
+>>>>>>>
+>>>>>>> On 4/12/2025 12:02 AM, Muhammad Usama Anjum wrote:
+>>>>>>>> On 4/11/25 1:39 PM, Krishna Chaitanya Chundru wrote:
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> On 4/11/2025 12:32 PM, Muhammad Usama Anjum wrote:
+>>>>>>>>>> On 4/11/25 8:37 AM, Krishna Chaitanya Chundru wrote:
+>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>> On 4/10/2025 8:26 PM, Muhammad Usama Anjum wrote:
+>>>>>>>>>>>> Fix dma_direct_alloc() failure at resume time during bhie_table
+>>>>>>>>>>>> allocation. There is a crash report where at resume time, the
+>>>>>>>>>>>> memory
+>>>>>>>>>>>> from the dma doesn't get allocated and MHI fails to re-
+>>>>>>>>>>>> initialize.
+>>>>>>>>>>>> There may be fragmentation of some kind which fails the
+>>>>>>>>>>>> allocation
+>>>>>>>>>>>> call.
+>>>>>>>>>>>>
+>>>>>>>>>>>> To fix it, don't free the memory at power down during suspend /
+>>>>>>>>>>>> hibernation. Instead, use the same allocated memory again after
+>>>>>>>>>>>> every
+>>>>>>>>>>>> resume / hibernation. This patch has been tested with resume
+>>>>>>>>>>>> and
+>>>>>>>>>>>> hibernation both.
+>>>>>>>>>>>>
+>>>>>>>>>>>> The rddm is of constant size for a given hardware. While the
+>>>>>>>>>>>> fbc_image
+>>>>>>>>>>>> size depends on the firmware. If the firmware changes, we'll
+>>>>>>>>>>>> free and
+>>>>>>>>>>> If firmware image will change between suspend and resume ?
+>>>>>>>>>> Yes, correct.
+>>>>>>>>>>
+>>>>>>>>> why the firmware image size will change between suspend & resume?
+>>>>>>>>> who will update the firmware image after bootup?
+>>>>>>>>> It is not expected behaviour.
+>>>>>>>> I was trying to research if the firmware can change or not. I've
+>>>>>>>> not
+>>>>>>>> found any documentation on it.
+>>>>>>>>
+>>>>>>>> If the firmare is updated in filesystem before suspend/hibernate,
+>>>>>>>> would
+>>>>>>>> the new firwmare be loaded the next time kernel resumes as the
+>>>>>>>> older
+>>>>>>>> firmware is no where to be found?
+>>>>>>>>
+>>>>>>>> What do you think about this?
+>>>>>>>>
+>>>>>>> I don't think firmware can be updated before suspend/hibernate. I
+>>>>>>> don't
+>>>>>>> see any reason why it can be updated. If you think it can be updated
+>>>>>>> please quote relevant doc.
+>>>>>> I've not found any documentation on it. Let's wait for others to
+>>>>>> review
+>>>>>> and it it cannot be updated, I'll remove this part.
+>>>>>>
+>>>>>
+>>>>> Wouldn't this be trivial to test?  Boot the device, go modify the
+>>>>> firmware on the filesystem, then go through a suspend cycle.
+>>>> I just tested this. I've used an old firmware from last year vs the
+>>>> latest one.
 >>>>
->>>> After resume the firmware asks for 2 segments again with first segment
->>>> of 6799360 and with same vaddr of the first smaller segment which we had
+>>>> Firmware A: old firmware size: 5349376
+>>>> Firmware B: new firmware size: 5165056
+>>>>
+>>>> A here has bigger size.
+>>>>
+>>>> 1. I loaded A at boot and then replaced the firmwares in filesystem
+>>>> with
+>>>> B before syspend. At resume time, B was loaded fine by freeing the
+>>>> bigger memory area and allocating the smaller one.
+>>>>
+>>>> 2. I loaded B and then replaced A in its place before suspend. At
+>>>> resume
+>>>> time, memory was freed and larger memory was allocated. But driver
+>>>> wasn't able to initialize correctly:
+>>>>
+>>>> [  184.051902] ath11k_pci 0000:03:00.0: timeout while waiting for
+>>>> restart complete
+>>>> [  184.051916] ath11k_pci 0000:03:00.0: failed to resume core: -110
+>>>> [  184.051923] ath11k_pci 0000:03:00.0: PM: dpm_run_callback():
+>>>> pci_pm_resume returns -110
+>>>> [  184.051945] ath11k_pci 0000:03:00.0: PM: failed to resume async:
+>>>> error -110
+>>>> [  187.251911] ath11k_pci 0000:03:00.0: wmi command 16387 timeout
+>>>> [  187.251924] ath11k_pci 0000:03:00.0: failed to send
+>>>> WMI_PDEV_SET_PARAM cmd
+>>>> [  187.251933] ath11k_pci 0000:03:00.0: failed to enable dynamic bw:
+>>>> -11
+>>>>
+>>>> So should we generalize above that changing firmware at
+>>>> suspend/hibernation time isn't supported. If firmware package is
+>>>> updated, does user restarts every time?
 >>>
->>> Not follow you here. What do you mean by 'same vaddr'? firmware does not care about vaddr
->>> at all.
->> So we get request to allocate memory of size = 6799360 and vaddr =
->> 0xABC). We fail it. Then we get request to allocate memory of size =
->> 500000 and vaddr is same 0xABC which gets allocated successfully.
+>>> You may want to review how other devices handle this.  I can think of
+>>> these threads as potential reference
+>>>
+>>> https://lore.kernel.org/all/
+>>> CAPM=9twyvq3EWkwUeoTdMMj76u_sRPmUDHWrzbzEZFQ8eL++BQ@mail.gmail.com/
+>>> https://lore.kernel.org/all/20250207012531.621369-1-airlied@gmail.com/
+>> They are talking about firmware cache which is not being used in the
+>> wireless drivers. In my kernel config, firwmare cache is enabeld. But
+>> everytime kernel needs to read the firwamre, it reads from the
+>> filesystem.
 >>
->> When we resume, firmware asks again for 6799360 with 0xABC vaddr even
->> though we had allocated memory of 500000 size at 0xABC. I'm referring to
->> this vaddr that its same.
+>> What can be the way forward for this patch? Assuming my previous
+>> experiment with changed firmwares across suspend/resume failed, I should
+>> remove reuse logic and send again?
 > 
-> OK, get your point. But like I said, firmware doesn't case about vaddr, so it is not
-> asking for a 'same vaddr'.
-> 
-> IMO just mentioning vaddr is not NULL is sufficient.
-Okay. I'll update the description to avoid confusion.
+
+Not a good approach to justify, but changing of firmware during
+suspend/resume doesn't seem to be supported. Maybe let's leave it as it
+is and evaluate the current patch in just memory reuse perspective. If
+the new memory requested is same as previous, we'll reuse otherwise free
+and allocate new memory.
+
+> Perhaps you need to refactor the wireless drivers?
+Firmware cache would resolve the changing of firmware. But let's keep is
+separate from this current patch. I'm not sure how easy or hard would it
+be to enable firmware cache.
+
+If firwamre cache would be present, the current patch would become more
+simpler. But without it, the current patch doesn't look that bad.
 
 > 
->>
->>>
->>>> allocated. Hence vaddr isn't NULL and we compare the type and size if it
->>>> can be reused. Unfornately, we detect that we cannot reuse it and this
->>>
->>> s/Unfornately/Unfortunately/
->>>
->>>> first smaller segment is freed. Then we continue to allocate 6799360 size
->>>> memory from dma which fails and we call ath11k_qmi_free_target_mem_chunk()
->>>> which frees the second smaller segment as well. Later success is returned
->>>> to firmware which asks for 22 smaller segments again. But as we had freed
->>>> 2 segments already, we'll allocate the first 2 new segments again and
->>>> reuse the remaining 20.
->>>>
->>>> This patch is correctiong the skip logic when vaddr is set, but size/type
->>>
->>> s/correctiong/correcting/
->>>
->>>> don't match. In this case, we should use the same skip and success logic
->>>> as used when dma_alloc_coherent fails without freeing the memory area.
->>>>
->>>> We had got reports that memory allocation in this function failed at
->>>
->>> any public link to the report?
->> There's no public report. I've attached the logs. You'll find following
->> error logs in it:
->>
->> ath11k_pci 0000:03:00.0: failed to allocate dma memory for qmi (524288 B
->> type 1)
->> ath11k_pci 0000:03:00.0: failed to allocate qmi target memory: -22
->>
->>
->>>
->>>> resume which made us debug why the reuse logic is wrong. Those failures
->>>> weren't because of the bigger chunk allocation failure as they are
->>>> skipped. Rather these failures were because of smaller chunk allocation
->>>> failures. This patch fixes freeing and allocation of 2 smaller chunks.
->>>
->>> any you saying kernels fail to alloc a smaller chunk? why? is system memory exhausted or
->>> too fragmented?
->> Yes, the smaller chunk doesn't get allocated. I've not been able to
->> reproduce it on my setup. Both system memory exhaustion and
->> fragmentation are the suspects.
+> I'm not convinced your patch is valid.  If FW needs to be reloaded due
+> to suspend/resume, it seems like the proper thing is to load the same FW
+> that was loaded at device boot.  Per your testing, loading changed FW
+> can cause a failure.  Even if it doesn't fail, will the changed firmware
+> cause a "breakage" from the user perspective by modifying the device
+> behavior?
+Ideally, changing of firmware shouldn't cause any issues if driver
+handles it correctly. But it seems it not implemented/tested. So its
+unsupported.
+
 > 
-> so it is kernel failing to allocate the buffer, not any issue in ath12k leading to this.
-> Please help make this clear to avoid confusion.
-We caught the bug as kernel was unable to allocate memory at resume.
-Later found out that with the optimization in ath11k, we shouldn't be
-trying to allocate memory in the first place. That's why I've sent this
-patch.
+> This does not seem to be a problem that is relevant to all MHI devices,
+> so whatever the end solution ends up being, I think that it should not
+> be blanket applied to all of MHI.
+The drivers already have blankets. This patch was motivated from the
+ath12k [1] and ath11k [2]. These driver don't free the memory while
+going into suspend and reuse the same memory after resuming. My current
+patch has the same essence as these.
 
-Let me update the description and send v2.
-
+[1]
+https://lore.kernel.org/all/20240419034034.2842-1-quic_bqiang@quicinc.com/
+[2]
+https://lore.kernel.org/all/20220506141448.10340-1-quic_akolli@quicinc.com/
 
 -- 
 Regards,
