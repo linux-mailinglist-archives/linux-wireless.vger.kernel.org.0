@@ -1,61 +1,62 @@
-Return-Path: <linux-wireless+bounces-21928-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21929-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5985A993EE
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 18:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF21A993E2
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 18:05:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB77A9A2FE1
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 15:53:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCEFF9A3DEF
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Apr 2025 15:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C999296148;
-	Wed, 23 Apr 2025 15:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1120828152B;
+	Wed, 23 Apr 2025 15:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="L27UoAVo"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="H6etdCfM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB06629B79F
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 15:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84528280A35
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Apr 2025 15:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422763; cv=none; b=WZioitxKl65g+2ZjxHjJbtSvIXg8pBBZ6DMn8mVrDhGCwdK+Af5zMHI+tQ9gWbn7IYdGE/8D/0jWZyXF5Z8i9xQs7uhB8oQ8PVjgTmOTre4qwS+SvdlrzNBVoLM6lr99RpYSj/2mwgYzFAqpTfgfG4xYQuthnpEwZ9LGt2QVda0=
+	t=1745422899; cv=none; b=dz56zU0G2L5PIH/JqjNKh8xxCqQ1EX1W+krxC8HDHIma0/v6ocNw1+9aYiA+FazznAebqRihlze+kK8vigePZIZaX81vM+VewCYmFJXNJjfqmnqGNMu7xj+iggrsNNN0B8otww1gULTwDm/aWzbcWWiJNy1Z+hh5R52FjDaLqSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422763; c=relaxed/simple;
-	bh=H4Cuk58S2i2STib5Wio3QxavkZvYEV52Pq7M7eJP1zo=;
+	s=arc-20240116; t=1745422899; c=relaxed/simple;
+	bh=ykcnUvgX7Ym90xmVhMd9nhIVHQBhRVa8XWH145R/3qo=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HZ3nZ6CeNKpISvzq52IRxTKW3EkRCGW3+T1Po0/mZSOmeCAlmHiHSnlX2q1hUNydmzcfrGevC8OZlqTcK+ZYUysPZFjRlQFgcVBocnYwQFkE2jsDsUOI8of4rHRGcSM3FTWRj9UMV7sawBmkXs4L3dis5twXhiLRhDTnntomZHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=L27UoAVo; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=mI2ob6vFz+zk+2xO6LxteAtOVhiLuJpYTtQVQqxyD7cvbH+RFlt6wa3xDO4LTmXuoS6gNmcD/ijvIBnxbB02TBBaMuWAD5lwvQb30jDQDgwfrFWV8K/a3OI7jHSyV0x3H2TUK++Af7pXLDFtSx5LOrlknDkM5z32QrEWkaG4GpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=H6etdCfM; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=8BYQdgVTClootxgGvW06mmRSpMcaxCx5cEUru3Y/KDs=;
-	t=1745422761; x=1746632361; b=L27UoAVodX0gQ5qUCS7Tksp1vIoGqyAp+QbjP7rpDqBiBlq
-	EbDL3/8u25wZ9apqL4nN1q0ZsHpbGzSiChcSOMi/qgJHZkK+96ZTe2K+7eww9dC5dDhbCU/92GgRB
-	g2n5ThrZSu4RSPsv+4X5+ZEkDVuD71aiMbihYo4ICBgryniMXVKkL1iSSRKke0VD0C0Xqv1REhr9y
-	AjZ+TQov4/hqhjlAXlcH3krt21M0NgdZ5tAnEMvQsuOQq9UsDx9lxgKOIG5MRRMfsncrcFwT034wf
-	jjw3+OUJ4G1jo5qYQFVS6W10siczZDgh7gqRJKlY4z5+u+nobTK6S5NKRwl1qeTA==;
+	Resent-Cc:Resent-Message-ID; bh=/nV0DrXRtTuN9FBq69BXijYcMW4rDYfFANTEan4EkQw=;
+	t=1745422897; x=1746632497; b=H6etdCfM1OwJhcTAV2GwS23WpQwMEpos8uMzntxaLAuFNOb
+	AT1y0knJbuoIuh5doAXNxyvvTZG77u65FxWuVx7AovkqEYVvP/XgQVfa1HBrpuzVnwf5kQoS5Ijvn
+	IaQpTI2jID4DTlMPmB6kURuBgbsxfQo/5/oiUqXXUn5vy/Gfm6j5++T1m3ngJ/0wi3PZAu6Eqq60l
+	HfG0Z5/kIbzNAYjWe8pLB6QqoeT/SVFOri7Zv5qhjobPNZ0RE3VpuYzs8rt6IOP4ATBIghsKejBeY
+	P4vAtcTo1VTvHhErLGv5r1TQsLOPpvN5GYLoCbHPgbmtyxmuX2KDUVhYGmvtuhzg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.1)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1u7cBw-0000000Ene6-1ZA9;
-	Wed, 23 Apr 2025 17:39:16 +0200
-Message-ID: <f49009f55083da63239bab6fbc0886dba99c52fe.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v6 3/5] wifi: mac80211: Set RTS threshold
- on per-radio basis
+	id 1u7cEA-0000000Enks-1JqU;
+	Wed, 23 Apr 2025 17:41:34 +0200
+Message-ID: <3719131760bb5070378e397d716edde394256933.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v6 5/5] wifi: mac80211: set tx power per
+ radio in a wiphy
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 23 Apr 2025 17:39:15 +0200
-In-Reply-To: <20250328122519.1946729-4-quic_rdevanat@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, Rameshkumar Sundaram
+	 <quic_ramess@quicinc.com>
+Date: Wed, 23 Apr 2025 17:41:33 +0200
+In-Reply-To: <20250328122519.1946729-6-quic_rdevanat@quicinc.com>
 References: <20250328122519.1946729-1-quic_rdevanat@quicinc.com>
-	 <20250328122519.1946729-4-quic_rdevanat@quicinc.com>
+	 <20250328122519.1946729-6-quic_rdevanat@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -67,35 +68,51 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Fri, 2025-03-28 at 17:55 +0530, Roopni Devanathan wrote:
->=20
-> +TRACE_EVENT(drv_set_rts_threshold,
-> +	TP_PROTO(struct ieee80211_local *local, s8 radio_id, u32 value),
+
+> +++ b/net/mac80211/cfg.c
+> @@ -3080,6 +3080,7 @@ static int ieee80211_set_tx_power(struct wiphy *wip=
+hy,
+>  	struct ieee80211_local *local =3D wiphy_priv(wiphy);
+>  	struct ieee80211_sub_if_data *sdata;
+>  	enum nl80211_tx_power_setting txp_type =3D type;
+> +	struct ieee80211_chanctx_conf *conf;
+>  	bool update_txp_type =3D false;
+>  	bool has_monitor =3D false;
+>  	int user_power_level;
+> @@ -3155,6 +3156,12 @@ static int ieee80211_set_tx_power(struct wiphy *wi=
+phy,
+>  			if (!link)
+>  				continue;
+> =20
+> +			if (radio_id >=3D 0 && radio_id < wiphy->n_radio) {
+> +				conf =3D wiphy_dereference(wiphy, link->conf->chanctx_conf);
+> +				if (!conf || conf->radio_idx !=3D radio_id)
+> +					continue;
+> +			}
 > +
-> +	TP_ARGS(local, radio_id, value),
+>  			link->user_power_level =3D local->user_power_level;
+>  			if (txp_type !=3D link->conf->txpower_type)
+>  				update_txp_type =3D true;
+> @@ -3175,6 +3182,12 @@ static int ieee80211_set_tx_power(struct wiphy *wi=
+phy,
+>  			if (!link)
+>  				continue;
+> =20
+> +			if (radio_id >=3D 0 && radio_id < wiphy->n_radio) {
+> +				conf =3D wiphy_dereference(wiphy, link->conf->chanctx_conf);
+> +				if (!conf || conf->radio_idx !=3D radio_id)
+> +					continue;
+> +			}
 > +
-> +	TP_STRUCT__entry(
-> +		LOCAL_ENTRY
-> +		__field(s8, radio_id)
-> +		__field(u32, value)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		LOCAL_ASSIGN;
-> +		__entry->radio_id =3D radio_id;
-> +		__entry->value =3D value;
-> +	),
-> +
-> +	TP_printk(
-> +		LOCAL_PR_FMT " value:%d",
-> +		LOCAL_PR_ARG, __entry->value
-> +	)
 >=20
 
-I think it'd make sense (and be trivial) to have the radio ID here.
 
-Same in the first patch, but I missed it because the print was hidden
-outside the context :)
+Hmm. Is this really enough? What if the link gets disabled and re-
+enabled on a whole different chanctx on a different radio? Or other
+things like that?
+
+Seems like we may need to change how the TX power is stored in mac80211,
+rather than just paper over it like this?
 
 johannes
 
