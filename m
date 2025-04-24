@@ -1,108 +1,105 @@
-Return-Path: <linux-wireless+bounces-22015-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22017-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCECDA9B683
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 20:39:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4449A9B6CF
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 20:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CEA71B8144E
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 18:39:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3619A927F5A
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 18:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A73B28F52B;
-	Thu, 24 Apr 2025 18:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C4328F513;
+	Thu, 24 Apr 2025 18:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="c6pUqxbM"
+	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="NQaIx+3H"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from forward102d.mail.yandex.net (forward102d.mail.yandex.net [178.154.239.213])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E8827F74E;
-	Thu, 24 Apr 2025 18:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52C7290BC0;
+	Thu, 24 Apr 2025 18:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745519953; cv=none; b=XiZBI0mtCBfUPdW0oMnIUmrzs+D9V1feJCMd/QLFxNCL0zawIIWizHgGnweDmQeYPyCiBirNE6LEPG/Ev8gvTC+gX8XfgDQ6qj0czq8WdorUv462m+VPjldNIwxElXHhy7dG/IdpPKX/b9DxeeUXsT9X+F2uyToPtuvjHqSemIA=
+	t=1745520781; cv=none; b=f43VPU0lXBRD7g5Xh2e92j4rNJQwnN0yJyyV5rrakFBLI75ZFZRQriCMulQ+YFdRHriS9w8Yhkz5BatdWzCrlwQldx27/2Z+Bpqp1EcG9b+iFQL4bEeIYHhnpi+qclLoVqwZu6Qs7Zpjju99EJbGZ+vSPnVCJB8Lp4vVhH6BHdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745519953; c=relaxed/simple;
-	bh=6bdpaVdvFvYiYPzJcAlvCLWS4TRiBZPClZi9eEprHSk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=l5RwMnUk4iq7fcTHtlkT6yIdmGocFnIX196is7jD/GGXI0BHogCRPQNvE8Zerk1Jx62QKuXDp2lqkolfKwlvTQPzFTkTl4CpUBwRFVSCd2PZpMKgdEFzBElPkkKMp6drznJh+sKK64zGGcAHCdXFOazjZCdGWPVWzBnsY56Ys8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=c6pUqxbM; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=6bdpaVdvFvYiYPzJcAlvCLWS4TRiBZPClZi9eEprHSk=;
-	t=1745519952; x=1746729552; b=c6pUqxbMRusqXQdwwBsQDHgV+/ZrFqQ02j87oPcJ39EtrBo
-	49FYPn/EA7Li7f2mWmWwioG5mT2GmQoY9va5LYI7B2mTSBmAHfHbPajmITdhteGtXzJL4aLSi0N3Q
-	1Hc3Y37CAFtU03mPxUFe7sTfoxA+bbdmQJmip4Wu2CFvPdBRHXNQEdFTqtjS8xaraxd9wnKD7W+av
-	fuMnuAyIqCOhLxP6cbHmK05Qgr2msjLqcgnQkmLyOMvVY8m1cWn7egR/Y+B49Q0npk//mAaZvvyrv
-	GqGVRL1ICBmx87F/katan/F24iRPDlLI5ySg825T8leTnVy4Feq5MnHKYWXLDZXw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1u81TT-00000000BVN-0Jsz;
-	Thu, 24 Apr 2025 20:39:03 +0200
-Message-ID: <4e5d875c3f666be8d1c72fa19f6237f21b24f7ec.camel@sipsolutions.net>
-Subject: Re: [PATCH v5 3/5] dt-bindings: wireless: bcm4329-fmac: Use
- wireless-controller.yaml schema
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Rob Herring <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, david@ixit.cz, Andrew Lunn	
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni	 <pabeni@redhat.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley	 <conor+dt@kernel.org>, Mailing List	
- <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Lorenzo Bianconi
-	 <lorenzo@kernel.org>, van Spriel <arend@broadcom.com>, 
- =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller	 <jerome.pouiller@silabs.com>, Bjorn
- Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
- Andy Gross <agross@kernel.org>, Mailing List	
- <devicetree-spec@vger.kernel.org>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org, Janne Grunau
-	 <j@jannau.net>
-Date: Thu, 24 Apr 2025 20:39:01 +0200
-In-Reply-To: <CAL_JsqKGmoiW=yDD7G4Qznsa7S2wQ7x4Mh0i4puAyFsvcnHz1A@mail.gmail.com>
-References: <20250324-dt-bindings-network-class-v5-0-f5c3fe00e8f0@ixit.cz>
-	 <20250324-dt-bindings-network-class-v5-3-f5c3fe00e8f0@ixit.cz>
-	 <d8619ab4-3a91-467f-a3d4-f23b4e0383a4@kernel.org>
-	 <57701e2e-0005-4a8a-a3f5-ba098c97b480@kernel.org>
-	 <4b040936baa8fa8669b34e36fe9dff6e08aeede9.camel@sipsolutions.net>
-	 <f0e56cb2-17a6-44d4-ae71-8639966d565a@kernel.org>
-	 <8d8b7c3ad6a67a683abbb4fc6049898747300a16.camel@sipsolutions.net>
-	 <CAL_JsqKGmoiW=yDD7G4Qznsa7S2wQ7x4Mh0i4puAyFsvcnHz1A@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1745520781; c=relaxed/simple;
+	bh=OygmFMPByzJxZQZ/STA64KpZbimdRAppuLQsI9S0AGM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=izdCf0/eDERdiZPv/A5YrFEIo+CAfeKnNvQb4x85nK643ZpSTPkry6HHy3GZ4AC0hiYyKo8pVLGVcsNF+8wMD8ANpPzzpSZq6kggBPjwpgc7kVwAzcwfzb4wIqVKHeoy6LM89n8F3V/l+8xWYO+YRhaaja6rM02+Q/57q1we2aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=NQaIx+3H; arc=none smtp.client-ip=178.154.239.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
+Received: from mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:bca8:0:640:45be:0])
+	by forward102d.mail.yandex.net (Yandex) with ESMTPS id E49B860983;
+	Thu, 24 Apr 2025 21:52:48 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id kqV2ll1LoCg0-foSXLjIP;
+	Thu, 24 Apr 2025 21:52:48 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
+	t=1745520768; bh=eUvSEcjM3P32iq/WojbrYA0IxejTJGbUaeImRlzSclk=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=NQaIx+3H/okY2atnyMu/dUv32bXBU42WHY0TqPoEtI0QKqKM7F3Odw+FQWp5HAGP6
+	 ZBAvJn6f8+pj2lYidSh1sQvnQfLx+lIlahix+d3S1hqxecKxU2QdhvbrLawUMkm1uH
+	 iP7xJkGEjh2ox33wGR52SZk9Q6JftyrFHnOSesUA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
+From: Alexei Safin <a.safin@rosa.ru>
+To: Stanislaw Gruszka <stf_xl@wp.pl>
+Cc: Alexei Safin <a.safin@rosa.ru>,
+	Kalle Valo <kvalo@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH v2] iwlegacy: 4965: fix possible out-of-bounds access in il4965_tx_cmd_build_rate()
+Date: Thu, 24 Apr 2025 21:52:44 +0300
+Message-Id: <20250424185244.3562-1-a.safin@rosa.ru>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2025-04-24 at 13:26 -0500, Rob Herring wrote:
-> While it seems the reviews of the series caused more warnings for
-> Apple, in general, schemas creating warnings is not breaking things.
-> In a way, the whole point is to create warnings because if the .dts
-> files were perfect already we wouldn't need schemas. The main
-> requirement for schemas is only that they don't create warnings for
-> the examples. There's still too many for .dts files to worry about it
-> (and there's intermittent warnings from things getting merged via
-> different trees).
->=20
+Prevent out-of-bounds access in il4965_tx_cmd_build_rate() by rejecting
+rate_idx values greater than or equal to RATE_COUNT_LEGACY.
 
-Oh, sure, but now if you want to apply the fixes you probably have to
-wait for the broken patches in my tree to percolate all the way through
-to Linus, then back to your tree, and then you can apply the fixes?
+Use a correct bounds check to avoid accessing il_rates[] with
+an invalid index. The previous comparison allowed rate_idx to become
+equal to RATE_COUNT_LEGACY, which exceeds the array limit.
 
-Seemed it'd be easier to send the fixes to me but it's all your call,
-just let me know what you prefer.
+Replace the check 'rate_idx > RATE_COUNT_LEGACY' with
+'rate_idx >= RATE_COUNT_LEGACY' to ensure memory safety.
 
-johannes
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 7ac9a364c172 ("iwlegacy: move under intel directory")
+Signed-off-by: Alexei Safin <a.safin@rosa.ru>
+---
+v2: change reciepent
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+index 78dee8ccfebf..f60d9b9798c1 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+@@ -1572,7 +1572,7 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
+ 	 */
+ 	rate_idx = info->control.rates[0].idx;
+ 	if ((info->control.rates[0].flags & IEEE80211_TX_RC_MCS) || rate_idx < 0
+-	    || rate_idx > RATE_COUNT_LEGACY)
++	    || rate_idx >= RATE_COUNT_LEGACY)
+ 		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
+ 	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
+ 	if (info->band == NL80211_BAND_5GHZ)
+-- 
+2.39.5 (Apple Git-154)
+
 
