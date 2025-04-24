@@ -1,133 +1,129 @@
-Return-Path: <linux-wireless+bounces-21978-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21979-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71360A9AD80
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 14:32:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F79A9ADA6
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 14:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DF0F464AD9
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 12:32:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CF5B3A8EDA
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 12:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D1C27B500;
-	Thu, 24 Apr 2025 12:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4921143C69;
+	Thu, 24 Apr 2025 12:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="P4o+m+0G"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DnkuRblh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441E127A92E
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 12:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BB71DEFC8
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 12:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745497948; cv=none; b=gxAjol9v75KCNOG65qj6qfyh+Xz3yqTq9lo+CPf2gHlQHkCvdrPMpdkaq9wczT6ZJnf+fM35CSkEOtrskaknJTNLE7/4tc+6bCCb9tirYXcdWByapvatVczClo63rpowb55+MyFSy0+xoPSDDwduda4MI8Ra+JG6/5vcO5EGhSM=
+	t=1745498328; cv=none; b=CgaVfMbPqXAxiGd3QNxcn6kFUKPyjLT23ZDf/OHo0UM1G/jEgrQcH0eG/uFHwxY29NQa+b5PuxIru3GDrTDrYG5AmTEwmCLJdlRlH3ai+3gMNF12ryNho4OB8pYD8sqhRLYt/wHeHWLq3cUlakNH91uAz+uBwB5FXDaRlUHkl68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745497948; c=relaxed/simple;
-	bh=ol9nrlnpejJEhOlmHwzS5aDVTj5QqmPiCD5MWOOxZYA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=OO6QN2v3rnYQM/xO9xMq2syP3O/WnzbDtDCfp9qcHzS9+GSqilXxcLY9SbuXAdmzf+oR/azzWJtm5FxgmC9x5FpqzV1eDJ0oJNFrlr+etqHn9l59l7Tz909gyZ4ycna8YW4z1uT/q7Q7CKg7Kf3ovfXibRU6L3MMTYYo/LhB2Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=P4o+m+0G; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53OC3IOR011699;
-	Thu, 24 Apr 2025 12:32:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=UTRvcQ+fQc0FSBayEils1u
-	CV7BAeQFoRdQqPdDv3EWY=; b=P4o+m+0G7p4+nHr9p+pLV+npVc+kSfGfgMvUbM
-	hC2xuJFdzqlfDSx9w+BQVR6BXPjAw1GyEZf22W2DEkUvG+1rGvRfAev8pytz+5lK
-	/nyV97qwtYTvH1j8BGzY3sYMZv8qIwzCxKr6jxG5PWvi/HbA3BwRn6NRSJZqxR/l
-	o5ktuIvVny8unWNk88AKOPpeQ0LwlixpoEn8f2PN/eQI5mizGhZvCbxOllFiulgG
-	QD3X3QkFFiPAw1e82OWb3Xewi1tIzopZ7x5WZEkukEAaf7wVRCf+/C1hRovYE/1K
-	qvNhOc8c4+x+lbrHoUKFqWQNhnXG9Mt6t0TQu1UhiSA8azFg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jh1njk1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Apr 2025 12:32:22 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53OCWMiW026811
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Apr 2025 12:32:22 GMT
-Received: from hu-vjakkam-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 24 Apr 2025 05:32:20 -0700
-From: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-Date: Thu, 24 Apr 2025 18:01:42 +0530
-Subject: [PATCH wireless] wifi: cfg80211: fix out-of-bounds access during
- multi-link element defragmentation
+	s=arc-20240116; t=1745498328; c=relaxed/simple;
+	bh=UVjxZaQ+aPXPY1TTOdf+Ng8ky1T69KLYEURiDzetda4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZeCj7N1mgTSH+tiGnR86mNg62+z01wgeX3NHYz+4xl7E2m75nVm+EY4PAt24oUBak5kpUWnIVc9Od8y69UTST2a0E5idzsgMb15C0sssqcSondo++2zHs6tmmS+a1WM5hvA0vRsJMEinPkW0xbdrJlr7VbVNmNL3aAbwhj62t2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DnkuRblh; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745498327; x=1777034327;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UVjxZaQ+aPXPY1TTOdf+Ng8ky1T69KLYEURiDzetda4=;
+  b=DnkuRblhPNXCFOqgY8NzYWver14FW95Fd4rxM/0fNeWMdWOV7k6HpOxU
+   ldxEWsZzE/oZfA2r2V+ZB6vp6NUBigpc4/KHHbBa5Vdl2+2i1a9xGUbak
+   smgVrJIqqSLFnzlfEL8TkBDfPkxYdAyVX+L7+7tSNH4QFudKw9GNf7Y+I
+   bqRq7lDJJoqHrmRDnJZGqC1uNOq5RtBk8OfgqLqA8KgiMAS9ENKUGGmWm
+   1zU1NmTZmy1MR8xtICsJwQlMQmGOMYBjhFiZ3NDzxllkpKejF9muJgIkS
+   2WucLCm+qrH2ZFdMSm4P/DK+q7uPtDs8xat8lFD9FuYiJeR535DLmSk4y
+   g==;
+X-CSE-ConnectionGUID: Hq6FsXXVSAiVj7PDfj1/Pw==
+X-CSE-MsgGUID: JjkN2k7bQzeg8LZri47KMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47302399"
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="47302399"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 05:38:46 -0700
+X-CSE-ConnectionGUID: jsBMar3DTnipiWhnr3pBsA==
+X-CSE-MsgGUID: vHWvKV+pQPemnh4SXKOfiw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="133137370"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 05:38:45 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH wireless-next 00/14] wifi: iwlwifi: updates - 2025-04-24
+Date: Thu, 24 Apr 2025 15:38:17 +0300
+Message-Id: <20250424123831.3524359-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250424-fix_mle_defragmentation_oob_access-v1-1-84412a1743fa@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAC0vCmgC/x2NUQqDMBAFryL73YBJk0J7lVJCzK52QZOSFSuId
- +/Sz4E38w4QakwCj+6ARhsL16JgLx3kdyoTGUZlcL0LvXfejLzHZaaINLY0LVTWtKoTax1iypl
- EzC3cg0WP12QRNPRppNb/5AlfbjTrCl7n+QPeZgvufgAAAA==
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Veerendranath Jakkam
-	<quic_vjakkam@quicinc.com>
-X-Mailer: b4 0.12.5-dev-2aabd
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: dqHXGJAJTNrUT9vQysqEFtzsucZ2hRaK
-X-Proofpoint-ORIG-GUID: dqHXGJAJTNrUT9vQysqEFtzsucZ2hRaK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI0MDA4NCBTYWx0ZWRfX8tNCRz0TZogX Thq8wN1h5+nuK3OeFji0TvRlDqZwSSJh2BZm4LCo7TGdbQ/DlJcBbMmSlVmdDzs1AcM3ApBg+9k wUV6HULv0aTQApGTqSiMEHY2c7dBfwQsH4K1IIkQL1iQX7m9XG7DzapUDMWeGbZiS04fWldvw6Y
- r22VXA13SKsod4gspGqit3ze71UHFBm5Fa0luIDZ4rNHJcV61gkZreNQcaza6xeO4WTp2bSkRzV a5zo8J+QbWgqaSEx8bVJeh+v2crz7fJYzNRFbe6biuopzuF6Uer7SyjaHU2u6kNwuADzjxcjNmT uvycJO/N694D1IQKefl2W6Bc7rie7YJPNIUw/dAp1IX2pL05fogWWSP3M8QQLKpLbr4PEygvVUx
- u7q+xESmRWf4UqP/DIoI1a+9eRKevHrVrVWoQNAu8YzxI4huZWRM97sKT2nF3YXmR7CQhNCR
-X-Authority-Analysis: v=2.4 cv=ZpjtK87G c=1 sm=1 tr=0 ts=680a2f57 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=ErFaxs6tVtXXMqI3DZgA:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.80.40
- definitions=2025-04-24_05,2025-04-22_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 clxscore=1011
- bulkscore=0 suspectscore=0 mlxlogscore=946 spamscore=0 impostorscore=0
- mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504240084
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-Currently during the multi-link element defragmentation process, the
-multi-link element length added to the total IEs length when calculating
-the length of remaining IEs after the multi-link element in
-cfg80211_defrag_mle(). This could lead to out-of-bounds access if the
-multi-link element or its corresponding fragment elements are the last
-elements in the IEs buffer.
+Hi,
+A few cleanups, features and fixes from our internal tree.
 
-To address this issue, correctly calculate the remaining IEs length by
-deducting the multi-link element end offset from total IEs end offset.
+Thanks,
+Miri
 
-Fixes: 2481b5da9c6b ("wifi: cfg80211: handle BSS data contained in ML probe responses")
-Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
----
- net/wireless/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Emmanuel Grumbach (1):
+  wifi: iwlwifi: pcie: add support for the reset handshake in MSI
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 9865f305275d..ddd3a97f6609 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2681,7 +2681,7 @@ cfg80211_defrag_mle(const struct element *mle, const u8 *ie, size_t ielen,
- 	/* Required length for first defragmentation */
- 	buf_len = mle->datalen - 1;
- 	for_each_element(elem, mle->data + mle->datalen,
--			 ielen - sizeof(*mle) + mle->datalen) {
-+			 ie + ielen - mle->data - mle->datalen) {
- 		if (elem->id != WLAN_EID_FRAGMENT)
- 			break;
- 
+Johannes Berg (10):
+  wifi: iwlwifi: mld: clarify variable type
+  wifi: iwlwifi: mld: fix iwl_mld_emlsr_disallowed_with_link() return
+  wifi: iwlwifi: mld: use cfg80211_chandef_get_width()
+  wifi: iwlwifi: mld: allow EMLSR on separated 5 GHz subbands
+  wifi: iwlwifi: define API for external FSEQ images
+  wifi: iwlwifi: mld: skip unknown FW channel load values
+  wifi: iwlwifi: clean up band in RX metadata
+  wifi: iwlwifi: mld: rx: simplify channel handling
+  wifi: iwlwifi: mld: simplify iwl_mld_rx_fill_status()
+  wifi: iwlwifi: clean up config macro
 
----
-base-commit: 175e69e33c66904dfe910c5f43edfe5c95b32f0c
-change-id: 20250424-fix_mle_defragmentation_oob_access-65951d4d3a1d
+Miri Korenblit (3):
+  wifi: iwlwifi: add definitions for iwl_mac_power_cmd version 2
+  wifi: iwlwifi: pcie: make sure to lock rxq->read
+  wifi: iwlwifi: move phy_filters to fw_runtime
+
+ drivers/net/wireless/intel/iwlwifi/Makefile   |    2 +
+ .../net/wireless/intel/iwlwifi/fw/api/power.h |    7 +-
+ .../net/wireless/intel/iwlwifi/fw/api/rx.h    |   16 +-
+ .../net/wireless/intel/iwlwifi/fw/api/stats.h |    5 +-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |   21 +
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |    6 +-
+ .../intel/iwlwifi/iwl-context-info-gen3.h     |   17 +-
+ .../wireless/intel/iwlwifi/iwl-context-info.h |   10 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |   20 +-
+ .../net/wireless/intel/iwlwifi/mld/iface.h    |    2 +
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.c  |   35 +-
+ drivers/net/wireless/intel/iwlwifi/mld/rx.c   |   97 +-
+ .../net/wireless/intel/iwlwifi/mld/stats.c    |   14 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |    4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |    4 -
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |    5 +-
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c       |   21 +-
+ .../wireless/intel/iwlwifi/pcie/ctxt-info.c   |    4 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1175 ++++++++---------
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |   14 +-
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |   18 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |    6 +
+ 22 files changed, 759 insertions(+), 744 deletions(-)
+
+-- 
+2.34.1
 
 
