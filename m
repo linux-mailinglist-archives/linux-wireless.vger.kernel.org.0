@@ -1,154 +1,218 @@
-Return-Path: <linux-wireless+bounces-21965-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21966-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97ADCA9AAD3
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 12:48:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5279FA9AB3E
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 12:59:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C80404A1240
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 10:48:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 717781943F4D
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 10:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF801F8721;
-	Thu, 24 Apr 2025 10:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AC9221285;
+	Thu, 24 Apr 2025 10:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Sqbme87S"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YrsPz20Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911BB1C5D55
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 10:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA577DA6D
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 10:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745491525; cv=none; b=jZtJsvEk9TKDHQyWS7fXPG+DT8PNAoK5b4Nv9DS986h+UguKkD5iyy3ar3vmt3a/gvl2IozC+ukbEHKgiP3PSc0T9DV+jH3LFdFWtC2TTtEEhCF7CkuW3kzX1wRtXKzJeblPpLYI436rjUnx3D0AqfDnx6FH73NjLegRcXGegGE=
+	t=1745492356; cv=none; b=s6NzGswx2UgbrHxqtlixBRMFJKdhkoBjesQTYe8aePk1P3juUGfVmqSxudnk7sUQNio0dbVsFbQqRS2c/v6r1GqxdF9kxngikSuMFRCrgGX5AOky/7GywPwFq78Uq/MFqMm0gZAK2eFvp5IcN89rYJUCYGZZqRYXydhHGtPume4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745491525; c=relaxed/simple;
-	bh=8vTlvfyWKf6xrayBH3qesTWR29ycEXBauBYTPPByuaw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=kQFRnMGZ6qGTfruFJ93fyetOp2SOA0Iw8R2/CgLBMn/KHdMx9DC10vgTBkp3eP4zoQn+LxJThd5wNd/pBK1EpvxyHJeqZ2koJARk3mO30KfvejqCQAQgqj0biE4K0D6jrW8Kp9BksAVQBqlSNXIU4EpClMkryfvHojPM319frts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Sqbme87S; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53OAb53A011207;
-	Thu, 24 Apr 2025 10:45:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4CILdzKcee1/pA4osU26Vv+K3t+hnGDCIxzPM5Zy9Rk=; b=Sqbme87SXwER65BX
-	laDpLGPsq062fhxIY2VWr4CyzUWvvJjY3Nd0nZVwYjO3MwXicCmI9BfxTDSaotA5
-	i2GQ6VTnksmF3hnkmO8PiEqkB76T4xZDzWHR/T27eAHn7VQa52ZEbcWD+AO4vT7a
-	H/lBLOpyriRINYqsM4DHNVgaqADgB74F47cO3xd4NPfmyrl7/v/jHXwI1qo6yuBc
-	CVQEXruitHZ/bF7Zjk6EI7ZMcD3+GVGTXQacX8tXJMP9qScSUsEwWkWBulUJjlNw
-	7Ci0notO7msuyLJu8d7KjDr7DLReK8g3dTd7eTDgYSQmraDSw1HIXapkPlRHMFWK
-	hgpZVQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jh3d77j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Apr 2025 10:45:16 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53OAjGUn020200
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Apr 2025 10:45:16 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 24 Apr
- 2025 03:45:14 -0700
-Message-ID: <3660fcfb-be29-422b-a352-3996ad3fc41f@quicinc.com>
-Date: Thu, 24 Apr 2025 18:45:11 +0800
+	s=arc-20240116; t=1745492356; c=relaxed/simple;
+	bh=APV/Agu7tbmBhr49+pjMXQ6wnUMMbqXEHoZSZ3c1ebI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X5vW1QvyeZzh/IWmXlPv7/FuYIuZf6uq85/Mx3z9OlVIloRP2v6RVdpvuhkEAPN+plDGkkEnKcRhqtSpQeB61QUOipt0gmLTd/1UBu1ZxNUOGHdL4EhIekZs4cParZ2/rYtFpk2c5eTUYazFJIIv3fsXvxMIsJH3KXwo+eDrhzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YrsPz20Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8F1C4CEE4
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 10:59:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745492356;
+	bh=APV/Agu7tbmBhr49+pjMXQ6wnUMMbqXEHoZSZ3c1ebI=;
+	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
+	b=YrsPz20Zqj14qtlvr9CEY5XNsI6PFvO7L+MoZieEVj2DS/EfV1RKwV8BRaqEZr+fq
+	 WEdPYpOnUcaJjchCFH2eOEqQJyhWiFW2Nyj7kkt1/48kJH/tbXnc8nEcZZ9rJSDAMk
+	 kjTrP8u8wuRR+IELRcv42nOFAvZddVQaiC6RjuLu7BCxm0v+PjU0Rn4CrUyqJvWew0
+	 Fu8jDZH9lwQS3BIUcHDRfePiL1SPLKCmcW3eRIvfkiwXLE9s/BtiHjjsxjbZLhlRk+
+	 tP7lNTlvLbC15KKE+wvmDR12NqCOMum/k208e/7DrVD89wYV2YV118EbjRLj6bwtZ/
+	 +sRM3YdtJF4wQ==
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-70576d2faa1so8651547b3.3
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 03:59:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXilLotXeKW7+mcH/GQIlnU44PTHewRn/rcfNs8IDk9dJ4/xGQzIgIeMvvFdSel+7vLBxjaE/MkZf/kPdxqgw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrfqzxRAICS1gPCOx41zoPdvqK/tIlo5cO1C59shOteTf1R+91
+	aUFDpY8tA01pLQwAIu8WHNjybKohVD8hvQkOIeSlW1WC/QffDyRd8z8yecHnYqxIrPVIvTLDWNM
+	muteS/dJUawBB95LpP7otUcb4080=
+X-Google-Smtp-Source: AGHT+IG99Q0hMzd0UoLGXR0Cq41m5dRYR6AQmD6eeiw1BQMLYr0a+cMubH2n/Tx7zZm8HOdEXLJw5ZdzE8VJyClJ618=
+X-Received: by 2002:a05:690c:316:b0:6f9:af1f:fdd0 with SMTP id
+ 00721157ae682-7083eda609fmr31351247b3.31.1745492355465; Thu, 24 Apr 2025
+ 03:59:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath11k: pci: Fix msi_irq crash on driver unload
- with QCN9074 PCIe WiFi 6 modules
-To: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
-        Balsam Chihi
-	<balsam.chihi@moment.tech>
-CC: <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>
-References: <20250416100939.282481-1-balsam.chihi@moment.tech>
- <0e129e2a-67fc-48cc-9773-efbea3f7391d@quicinc.com>
- <fa16bad6-305f-77c1-3f56-703564e2dfee@quicinc.com>
- <CAONkfw6m9O_6FZHBrPYdpv+=AxSgsbh1T7+GaS+U+bnjyVVJvQ@mail.gmail.com>
- <3da5d47b-993c-405e-841f-1d16d8715610@quicinc.com>
- <1d0682c0-ee5d-f2d4-199d-4ebc4e71f9ef@quicinc.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <1d0682c0-ee5d-f2d4-199d-4ebc4e71f9ef@quicinc.com>
+References: <MW5PR11MB581000CDAA04235DBE96FD75A3BA2@MW5PR11MB5810.namprd11.prod.outlook.com>
+In-Reply-To: <MW5PR11MB581000CDAA04235DBE96FD75A3BA2@MW5PR11MB5810.namprd11.prod.outlook.com>
+From: Josh Boyer <jwboyer@kernel.org>
+Date: Thu, 24 Apr 2025 06:59:03 -0400
+X-Gmail-Original-Message-ID: <CA+5PVA6vTf0yKgoTYCZkazR0wg+6gMBs9=dEssiQVpM0P4aCZg@mail.gmail.com>
+X-Gm-Features: ATxdqUG9QcwmKVCFx179mtjUjHOynz2ckQlFvcQ6RsdEpw3eIrjxtcIFsBxO2QM
+Message-ID: <CA+5PVA6vTf0yKgoTYCZkazR0wg+6gMBs9=dEssiQVpM0P4aCZg@mail.gmail.com>
+Subject: Re: pull request: iwlwifi firmware updates 2025-04-23
+To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
+Cc: "linux-firmware@kernel.org" <linux-firmware@kernel.org>, "kyle@infradead.org" <kyle@infradead.org>, 
+	"Hutchings, Ben" <ben@decadent.org.uk>, "Dreyfuss, Haim" <haim.dreyfuss@intel.com>, 
+	"Yang, You-Sheng" <vicamo.yang@canonical.com>, Wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: pQJvlji3CEgbA1ygQrA-qvhL5qx8U9LO
-X-Proofpoint-GUID: pQJvlji3CEgbA1ygQrA-qvhL5qx8U9LO
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI0MDA3MSBTYWx0ZWRfX2VIuBsLZH7cv sf6TucjYwB4UESRYfZKXSEL1WNvaFlaU7N3bDhf/9T4kzk950gJ+HEmVnSRDEErNjkfKVFt9ZH0 4TFKlo1wMNXje3nG96gBql3HWeYwYL7glHb3LifFTpaZagUaotwvmhXOYUmxTyf8kPMEEfAU3lV
- tnsg4gQfTKGCtUHYjKM1yRbk33BFBOxsE3kMwvweKwWWiIl979oywqeKhnTIjE0c9I4IpoYdmkE 4FoM3DOb7Q5DBBKiZBk41eTQRBf2a59yi25lJp4PfgoDncg7CL4nNcyrNUYfX47O8yPkTcxPIIL dIg3P6/7h3CBISNdR0gfyuB70S/J7w74+ttl35rHt528qW/j/6965WpDNziDgtOarpkpV9g7niG
- 3vC/Ltx4zqX7cIEMki+1PU4Q8KBC6v5LWEkgaicloIeYlpBqMYupd9k+HYuiOJH5bQxCBlg1
-X-Authority-Analysis: v=2.4 cv=Mepsu4/f c=1 sm=1 tr=0 ts=680a163c cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VSmY6pKNb7jb4yXACBMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.80.40
- definitions=2025-04-24_05,2025-04-22_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- adultscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0 malwarescore=0
- priorityscore=1501 mlxscore=0 impostorscore=0 clxscore=1015
- mlxlogscore=949 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504240071
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Apr 23, 2025 at 4:52=E2=80=AFPM Korenblit, Miriam Rachel
+<miriam.rachel.korenblit@intel.com> wrote:
+>
+> Hi,
+>
+>
+>
+> This contains some new and updated firmwares for all our currently
+>
+> maintained FW binaries.
+>
+>
+>
+> Please pull or let me know if there are any issues.
+>
+>
+>
+> --
+>
+> Thanks,
+>
+> Miri
+>
+>
+>
+> The following changes since commit 32f3227b67c0e70ffba1103cd6f0767fb7dc76=
+fd:
+>
+>
+>
+>   Merge branch 'robot/pr-0-1745343662' into 'main' (2025-04-22 18:37:42 +=
+0000)
+>
+>
+>
+> are available in the Git repository at:
+>
+>
+>
+>   http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.g=
+it tags/iwlwifi-fw-2025-04-23
 
+Merged and pushed out.
 
-On 4/24/2025 6:36 PM, Vasanthakumar Thiagarajan wrote:
-> 
-> 
-> On 4/24/2025 3:19 PM, Baochen Qiang wrote:
->>
->>
->> On 4/24/2025 5:25 PM, Balsam Chihi wrote:
->>> Hello,
->>>
->>> @Baochen Qiang,
->>> Thank you for your feedback.
->>> I tested unloading and reloading the driver and it is enumerated,
->>> detected and operating correctly.
->>
->> Different hardware platforms may have different behaviors ...
->>
->>> And I understand your concern about other chips, and certainly it is
->>> not the best way to implement such a fix.
->>> I will continue debugging to determine the root cause of the
->>> synchronous external abort.
->>> So this patch is now just a workaround to fix the kernel crash when
->>> rmmod the driver and reboot the system,
->>> that i wanted to share with you to attract your attention to the
->>> problem, and seek for help.
->>>
->>> @Vasanthakumar Thiagarajan,
->>> Thank you too for your feedback.
->>> Yes, I understand.
->>> I will enable the debug_mask and check the logs, like you said.
->>>
->>> I'm wondering if anyone else has the same problem with ath11k_pci.a
->>
->> There is another issue report with the soc_global_reset register, although it is reported
->> on another hardware.
->>
->> Vasanth, could you check if the register address is correctly defined for QCN9074?
->>
->> #define PCIE_SOC_GLOBAL_RESET            0x3008
-> 
-> That offset for global_reset is correct.
+https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/526
 
-Okay, then it should not be global_reset causing this.
+josh
 
-Balsam, could you help debug further to check which specific register access is causing
-this issue? We can then check if the register is defined correctly or not.
-
+>
+>
+>
+> for you to fetch changes up to c1d4c8991f615ebf3545bb9335f98479e346fe30:
+>
+>
+>
+>   iwlwifi: add Bz/gl FW for core95-82 release (2025-04-23 23:24:40 +0300)
+>
+>
+>
+> ----------------------------------------------------------------
+>
+> release core95
+>
+>
+>
+> ----------------------------------------------------------------
+>
+> Miri Korenblit (3):
+>
+>       iwlwifi: update cc/Qu/QuZ firmwares for core95-82 release
+>
+>       iwlwifi: update ty/So/Ma firmwares for core95-82 release
+>
+>       iwlwifi: add Bz/gl FW for core95-82 release
+>
+>
+>
+>  WHENCE                        |  40 ++++++++++++++++++++++++++----------=
+----
+>
+>  iwlwifi-Qu-b0-hr-b0-77.ucode  | Bin 1406184 -> 1406184 bytes
+>
+>  iwlwifi-Qu-b0-jf-b0-77.ucode  | Bin 1322896 -> 1322896 bytes
+>
+>  iwlwifi-Qu-c0-hr-b0-77.ucode  | Bin 1406200 -> 1406200 bytes
+>
+>  iwlwifi-Qu-c0-jf-b0-77.ucode  | Bin 1322912 -> 1322912 bytes
+>
+>  iwlwifi-QuZ-a0-hr-b0-77.ucode | Bin 1406320 -> 1406320 bytes
+>
+>  iwlwifi-QuZ-a0-jf-b0-77.ucode | Bin 1322988 -> 1322988 bytes
+>
+>  iwlwifi-bz-b0-fm-c0-98.ucode  | Bin 0 -> 1925092 bytes
+>
+>  iwlwifi-bz-b0-fm-c0.pnvm      | Bin 295356 -> 295356 bytes
+>
+>  iwlwifi-bz-b0-gf-a0-98.ucode  | Bin 0 -> 1772684 bytes
+>
+>  iwlwifi-bz-b0-gf-a0.pnvm      | Bin 55208 -> 55208 bytes
+>
+>  iwlwifi-bz-b0-hr-b0-98.ucode  | Bin 0 -> 1569048 bytes
+>
+>  iwlwifi-bz-b0-hr-b0.pnvm      | Bin 1788 -> 1788 bytes
+>
+>  iwlwifi-cc-a0-77.ucode        | Bin 1367700 -> 1367700 bytes
+>
+>  iwlwifi-gl-c0-fm-c0-98.ucode  | Bin 0 -> 1910432 bytes
+>
+>  iwlwifi-gl-c0-fm-c0.pnvm      | Bin 295036 -> 295036 bytes
+>
+>  iwlwifi-ma-b0-gf-a0-89.ucode  | Bin 1747512 -> 1747520 bytes
+>
+>  iwlwifi-ma-b0-gf-a0.pnvm      | Bin 55128 -> 55128 bytes
+>
+>  iwlwifi-ma-b0-gf4-a0-89.ucode | Bin 1599852 -> 1599864 bytes
+>
+>  iwlwifi-ma-b0-gf4-a0.pnvm     | Bin 27836 -> 27836 bytes
+>
+>  iwlwifi-ma-b0-hr-b0-89.ucode  | Bin 1539572 -> 1539572 bytes
+>
+>  iwlwifi-so-a0-gf-a0-89.ucode  | Bin 1735936 -> 1735944 bytes
+>
+>  iwlwifi-so-a0-gf-a0.pnvm      | Bin 55208 -> 55208 bytes
+>
+>  iwlwifi-so-a0-gf4-a0-89.ucode | Bin 1590444 -> 1590456 bytes
+>
+>  iwlwifi-so-a0-gf4-a0.pnvm     | Bin 27876 -> 27876 bytes
+>
+>  iwlwifi-so-a0-hr-b0-89.ucode  | Bin 1526740 -> 1526740 bytes
+>
+>  iwlwifi-ty-a0-gf-a0-89.ucode  | Bin 1677804 -> 1677812 bytes
+>
+>  iwlwifi-ty-a0-gf-a0.pnvm      | Bin 55052 -> 55052 bytes
+>
+>  28 files changed, 26 insertions(+), 14 deletions(-)
+>
+> create mode 100644 iwlwifi-bz-b0-fm-c0-98.ucode
+>
+> create mode 100644 iwlwifi-bz-b0-gf-a0-98.ucode
+>
+> create mode 100644 iwlwifi-bz-b0-hr-b0-98.ucode
+>
+> create mode 100644 iwlwifi-gl-c0-fm-c0-98.ucode
 
