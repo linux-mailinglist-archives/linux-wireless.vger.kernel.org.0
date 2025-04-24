@@ -1,63 +1,82 @@
-Return-Path: <linux-wireless+bounces-21968-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21969-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDABDA9AB95
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 13:21:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3CB5A9AB96
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 13:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23AB7170D8F
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 11:21:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0D4C7A9C0A
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 11:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3762222489A;
-	Thu, 24 Apr 2025 11:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A44C1AA79C;
+	Thu, 24 Apr 2025 11:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Cn+j7Qlr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZbF1M11O"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF0922258B
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 11:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6049720B1E8;
+	Thu, 24 Apr 2025 11:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745493650; cv=none; b=rrI/605iE8ZuomC2H2STyxLhTAEnKn4vjwxMMYYVFjaWaiU4qIPhBLSnHH/rwGh57NmaicpMVMfP+ekOiRvtYPfZGCBaGrCwtgnzLRVaFjWhKcD3g5g7ZmTsZZybICzmrQahkpVe1ud09cne2dmIgb7HMzWjBGgTZwfWH+O4LvI=
+	t=1745493657; cv=none; b=D3jrWjqwvALY9w2Vj+x+gZ4qkPFeIlsYDiJ1SxvLARtyihZBI18c9liQRtGaCfxyK952PKH25G+DgKk+Nmg1E0zLCaeEPnbyXAn76XSXbdidO+pJ3TibdooO7VfTkhlk1wTsoy2pTScksFQZgGqeS1ofOh3DZDxWouXuZOU1Zn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745493650; c=relaxed/simple;
-	bh=28rAhRGZj3YTTw8mUV2pZZ53EZiJ1l1Rgk0hra06+ls=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=qqP/4onnUKMYmqZBeUmy8dE9lG6E/a7yakKDV1AkZw+c0XOlL6WehYrhX+RtseVrwiqn8P90SSPRt60WqbCbH1Bv51w65xNv4i30420CTqNhjD2LEfSfd/Gtq2wVTqMWm+WZJHFMfpDOA3F8wkRVZiclKE12he0HRHxWf4CYecM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Cn+j7Qlr; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53OAWYV3005969;
-	Thu, 24 Apr 2025 11:20:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	c1x2O9tpR+xE1WzBgPNjh7tAXxb+CCWqh5jDk2qvaCk=; b=Cn+j7QlrBYp1lLXB
-	DgrcP6bGk8t9CAE/QwTI8ykaiBC1tfsus35Lle/KDdwzQ78eGbQZZ2MGclRCa3AG
-	5bUZZqTxDeDG/n3hHCOnyGM+CdqUV7EeYN3mF0YvKwfV/0FczmbW/ku1sIvIUQz/
-	e183sTD1AUg1d9EbUymMbq3e7UbBbJV1GS1uSbIEVs6SJGEtJoFZhEchdc/dAXD3
-	q00epYKW+zXSTpU9qHgQVulfHsqJjLkG8ro2+Rgq2mhcSDJud0o1JCbwmV6A26WI
-	oyY3bVkaSgQ1Tfml+nhYFw+9ctw/dnGwePZF9spoYmr5v3pkUl295M0E1LE/nTo+
-	Rgxzkw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jh05by7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Apr 2025 11:20:44 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53OBKYuW014396
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Apr 2025 11:20:34 GMT
-Received: from [10.152.206.29] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 24 Apr
- 2025 04:20:33 -0700
-Message-ID: <28d1f106-d498-4e47-bf8a-bde9189918da@quicinc.com>
-Date: Thu, 24 Apr 2025 16:50:24 +0530
+	s=arc-20240116; t=1745493657; c=relaxed/simple;
+	bh=9R6Ud6LiDYCpYeYviU/YkLzW5K35i9P5GV1pnLp/dnM=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jMz6WgROFOD/XfSL0AbEqVIPRvbuVQKQjdT0SRvcqqiYSnY2KXAe7Rd9a9SGXNk5PF+XwUqPEA49Eaa74RWoOG9MCfbAPIbjE2alJSMcGybcU/zInzdY6CEOTbkwdUgSjIXoXE7rHB8INaB8Wnvv/J+UUwYYbyZUAuXUe0k08Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZbF1M11O; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-39c2688e2bbso52108f8f.1;
+        Thu, 24 Apr 2025 04:20:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745493654; x=1746098454; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:disposition-notification-to
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KEx/AtEUJK0OF855G8GNoJBNytgIniB/cH0GIaq4g2k=;
+        b=ZbF1M11OW0NowxxvbnFoKGnLTW6CcbsiqwgcflraPTtGgsLsTvK+fXiqQZ9zSiqPM3
+         AfCorPYzYrFfE9QPh81/tr22DsSVs5pdIvqtXqTq0PsJwulGCrZVufraDtemgrRLeScI
+         mV1DqE7aLyA26+ua2peAFsvIpcuxIOFjdaVQrCwhHzwIVqcVMZE37YA9SxVC/tmqG4NS
+         1JfN7sU0ulrnNyF5qDXdE7fJ8YzjEWwOgTNKLKEdqC7NhI4/s9H6zqgXCsLHF+9c9CMm
+         7HK1w1kiEjwaYBVRGSajTlaRwze8SpHXYZl7tOvjmWvzhi3zrCqd0NWjSXFXgnKFdRd7
+         kjOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745493654; x=1746098454;
+        h=content-transfer-encoding:in-reply-to:disposition-notification-to
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KEx/AtEUJK0OF855G8GNoJBNytgIniB/cH0GIaq4g2k=;
+        b=CnXCVo0hBAqrKm8yh+6kloe5Q/hysVC0jRUDvhZrsQKmRfO4IqqomXmgqLa0oJyIyw
+         vnGknebgj0yU4hLsxjLscLQfRBTnvxDsSDcyLq3S+HIl+bWIGUFObRr0AFzBkIS3bz3g
+         XPtJi5qcke8QmDYHiSP/5joNRH7aMgGj1A+YYI7jhwY9HMg0nud5i5jEq4otj3urvq3A
+         0bWn6Zec2jGxxpRTLakjE1mblVY+FFIvElJmR0+feG+o2mj/ZGlykGB/l7+QdlRPdP38
+         Z4enxjLQTvavYlv9B5hM79RXOpIl6HYkbaiac4QBMLekNB5FeOXmr10Omv9vrRwVJO+v
+         Pl/g==
+X-Forwarded-Encrypted: i=1; AJvYcCUxjuNCpfFP7Y5TUJXQ/4FAGaPlMnocc3fK/gvSeDnEuj/g7QeL8Vco4B1fp+3U8kABzzgN5nk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYCihTurwWgBR92jEsK4LT+jAkvUrA1+4yPd8lJgKOP13rPuwB
+	4YVUPR5475dI8KFlpP0eBs3P5yyi4B5jpPGHhLHZdwron6SsV6lM
+X-Gm-Gg: ASbGnct2Yx3ixMBjATyrx8yfrrVzzMCnpxVnP9hUBzjZBlfLwdNxp0Bd23OSLWJ6bS/
+	p7Aog5jb5hyklfk1XBCFOhqR2NZVqb73pCk+ikSdYvO+WFeF9bVsehWxPztdQiFCIgyNrR0uZRE
+	Rlv+iaRHRxAt5XWMeoVc/ef6/NnE9jgi7GR1NYR41AS+uq2SRQwNN0JQCPvUY7XXjQVy1DhkAhp
+	JEpDGh/sBPesVQHTQP8xwR0Wb1nSibTj3DLoQfx3n5xdfnLnqDn2wqK7UhvbRnXqJqfo/QR5Q99
+	rk2R2FzYxg//KXfsKJD4IP8kQ9isvIeGbIxMVqjsQYPRVd8=
+X-Google-Smtp-Source: AGHT+IFwGNtu2sbgV5btwxIgIwM9+K9v7YDMIK46h4W+kW0f98Q9lDzvWTk4KCKxq5MmSKK8S5ML1g==
+X-Received: by 2002:a05:6000:1846:b0:386:3a50:8c52 with SMTP id ffacd0b85a97d-3a06cf5beeamr679097f8f.7.1745493653457;
+        Thu, 24 Apr 2025 04:20:53 -0700 (PDT)
+Received: from [192.168.36.152] ([82.66.27.2])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4409d2c3b0asm17261405e9.40.2025.04.24.04.20.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Apr 2025 04:20:52 -0700 (PDT)
+From: "=?UTF-8?Q?Jean-Fran=C3=A7ois_Ingelaere?=" <masterprenium@gmail.com>
+X-Google-Original-From: =?UTF-8?Q?Jean-Fran=C3=A7ois_Ingelaere?= <MasterPrenium@gmail.com>
+Message-ID: <28ff58dc-72f3-4b71-817c-ccb4ff5f777d@gmail.com>
+Date: Thu, 24 Apr 2025 13:20:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,143 +84,115 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v6 1/5] wifi: cfg80211: Add Support to Set
- RTS Threshold for each Radio
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20250328122519.1946729-1-quic_rdevanat@quicinc.com>
- <20250328122519.1946729-2-quic_rdevanat@quicinc.com>
- <bef48349364854ba2ec42262e91b747028310a1c.camel@sipsolutions.net>
-Content-Language: en-US
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-In-Reply-To: <bef48349364854ba2ec42262e91b747028310a1c.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI0MDA3NiBTYWx0ZWRfX8UXnAG+61rVr FGmeXraaE49CRfKgw/2Dq/EkSBDWTfBFPOlSSA0cKvJBhJjNZhAy0QpiGWyOvL/8xu+TJ8sUh65 IyyaMzhlr4jZozX5Eu67+xipmS0O6mJZAtLA+vPkwMosvuJRyrKpiEEYyHjOcYJ00J6EMLUx+RF
- RDciDNkzTs+yLlPldGY6LVqMrm1KkvlL3X4rlLhFGwDaDd3bdzs3XlBfte/FM3uK7qOHe5HrcCe ZQVoXefnah0nJcI7PVs1Ihh5tvEfhVEiFNLk6PaPlVZb0oV0rRrSICZsjvXG4SfNvYo/cco49mM m1SeOduH0U2gucSXjmjl3Kp/vtZLUVt0CXZvMOwavfY+H3pK9HXaVDIywsTTpZDnrku7ItZOSEj
- nyj9paZTVsXO6j470wjB1Odi62/4eBtEYtEpvh6+ywFh8IWmBTLkDjB8vj3xCYdQ0VVcqtBT
-X-Proofpoint-GUID: DXr7k8z5phKEF5ZdlyM7wKhG70FIzxD1
-X-Authority-Analysis: v=2.4 cv=ZuTtK87G c=1 sm=1 tr=0 ts=680a1e8c cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=rNVh4dst47hFR5lpOHoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: DXr7k8z5phKEF5ZdlyM7wKhG70FIzxD1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.80.40
- definitions=2025-04-24_05,2025-04-22_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
- impostorscore=0 bulkscore=0 mlxscore=0 adultscore=0 lowpriorityscore=0
- mlxlogscore=715 priorityscore=1501 malwarescore=0 suspectscore=0
- spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504240076
+Subject: Re: FW: Wireless speed regression issue with >6.12.12/6.13.x +
+ firmware update for mediatek MT7925
+To: =?UTF-8?B?TWluZ3llbiBIc2llaCAo6Kyd5piO6Ku6KQ==?=
+ <Mingyen.Hsieh@mediatek.com>, "stable@vger.kernel.org"
+ <stable@vger.kernel.org>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "kvalo@kernel.org" <kvalo@kernel.org>,
+ =?UTF-8?B?QWxsYW4gV2FuZyAo546L5a625YGJKQ==?= <Allan.Wang@mediatek.com>,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <CACr2tqu10_mXiXw-Q3VSqYBJhQU1s_m77_uhvjpe0j3H3jhbgA@mail.gmail.com>
+ <TYZPR03MB61644B8F34946A73E2C16E27F4DF2@TYZPR03MB6164.apcprd03.prod.outlook.com>
+ <5a07aea2090532682c8cd4df3ab1b9026f2e1cd5.camel@mediatek.com>
+ <04dca014-881c-46b4-a084-2001c62b466e@gmail.com>
+ <6cebf6265f5f981dd951851d0832633292a60a46.camel@mediatek.com>
+Content-Language: fr-FR
+Disposition-Notification-To: =?UTF-8?Q?Jean-Fran=C3=A7ois_Ingelaere?=
+ <MasterPrenium@gmail.com>
+In-Reply-To: <6cebf6265f5f981dd951851d0832633292a60a46.camel@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Hello,
+
+I hoped you had previous messages. Firmware is the released from my 
+distro (Gentoo Linux) 20240410, but yes you're right, the firmware used 
+in this case for mt76 is 20240305, sorry.
+
+[74734.459451] Loading firmware: 
+mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin
+[74734.463449] mt7925e 0000:73:00.0: ASIC revision: 79250000
+[74734.539692] Loading firmware: 
+mediatek/mt7925/WIFI_MT7925_PATCH_MCU_1_1_hdr.bin
+[74734.539760] mt7925e 0000:73:00.0: HW/SW Version: 0x8a108a10, Build 
+Time: 20250305132908a
+
+[74734.878892] Loading firmware: 
+mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin
+[74734.879069] mt7925e 0000:73:00.0: WM Firmware Version: ____000000, 
+Build Time: 20250305133013
+[74734.974255] Loading firmware: 
+mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin
 
 
+The AP used is a Cisco C9120AXI-E.
 
-On 4/23/2025 9:06 PM, Johannes Berg wrote:
-> On Fri, 2025-03-28 at 17:55 +0530, Roopni Devanathan wrote:
->>
->> -static int ath6kl_cfg80211_set_wiphy_params(struct wiphy *wiphy, u32 changed)
->> +static int ath6kl_cfg80211_set_wiphy_params(struct wiphy *wiphy, s8 radio_id, u32 changed)
-> 
-> nit: all those lines could be shorter. I'm surprised you even did that
-> by hand rather than spatch ;-)
-> 
-Will address this in next version.
 
->>  #define NL80211_WIPHY_NAME_MAXLEN		64
->> +#define NL80211_WIPHY_RADIO_ID_DEFAULT		-1
-> 
-> It seems to me that should't be in nl80211.h, since it cannot be used by
-> userspace, and is internal anyway?
-> 
-> And why should the attribute even be signed, when you explicitly reject
-> negative values anyway? Seems like it should simply be unsigned?
+Best regards,
+
+
+Le 24/04/2025 à 13:06, Mingyen Hsieh (謝明諺) a écrit :
 >
-Sure, will change this in next version.
- 
->> +	/* Allocate radio configuration space for multi-radio wiphy
->> +	 */
-> 
-> what happened there
-> 
->> +	if (wiphy->n_radio > 0) {
->> +		int idx;
->> +
->> +		wiphy->radio_cfg = kcalloc(wiphy->n_radio, sizeof(*wiphy->radio_cfg),
->> +					   GFP_KERNEL);
->> +		if (!wiphy->radio_cfg)
->> +			return -ENOMEM;
->> +		/*
->> +		 * Initialize wiphy radio parameters to IEEE 802.11 MIB default values.
->> +		 * RTS threshold is disabled by default with the special -1 value.
-> 
-> unnecessarily long lines
-> 
-Will resolve this in next version.
-
->> @@ -1185,6 +1202,7 @@ void wiphy_unregister(struct wiphy *wiphy)
->>  	cfg80211_rdev_free_wowlan(rdev);
->>  	cfg80211_free_coalesce(rdev->coalesce);
->>  	rdev->coalesce = NULL;
->> +	kfree(wiphy->radio_cfg);
->>  }
-> 
-> Hm. Would be safer in wiphy_free()?
-> 
-Sure, will port it to wiphy_free().
-
->> @@ -3875,50 +3887,79 @@ static int nl80211_set_wiphy(struct sk_buff *skb, struct genl_info *info)
->>  
->>  	if (changed) {
->>  		u8 old_retry_short, old_retry_long;
->> -		u32 old_frag_threshold, old_rts_threshold;
->> -		u8 old_coverage_class;
->> +		u32 old_frag_threshold, old_rts_threshold, *old_radio_rts_threshold;
->> +		u8 old_coverage_class, i;
-> 
-> also long lines
-> 
->> +		old_radio_rts_threshold = kcalloc(rdev->wiphy.n_radio, sizeof(u32),
->> +						  GFP_KERNEL);
-> 
-> long line
-> 
-> allocations can fail
-> 
-> you leak it
-> 
-Will resolve this in next version.
-
-> 
->> +
->> +		if (radio_id < rdev->wiphy.n_radio && radio_id >= 0) {
->> +			old_rts_threshold =
->> +				rdev->wiphy.radio_cfg[radio_id].rts_threshold;
->> +
->> +			if (changed & WIPHY_PARAM_RTS_THRESHOLD)
->> +				rdev->wiphy.radio_cfg[radio_id].rts_threshold =
->> +					rts_threshold;
->> +
->> +			result = rdev_set_wiphy_params(rdev, radio_id, changed);
->> +			if (result)
->> +				rdev->wiphy.radio_cfg[radio_id].rts_threshold =
->> +					old_rts_threshold;
-> 
-> this is also getting really deep - probably better to refactor this into
-> new functions for the two cases (with and without radio idx)
-> 
-Sure, will split the code.
-
->>  static inline int
->> -rdev_set_wiphy_params(struct cfg80211_registered_device *rdev, u32 changed)
->> +rdev_set_wiphy_params(struct cfg80211_registered_device *rdev, s8 radio_id, u32 changed)
->>  {
-> 
-> also unnecessarily long
-> 
-Will resolve this in next version.
-
-> johannes
+> On Thu, 2025-04-24 at 12:16 +0200, Jean-François Ingelaere wrote:
+> > 
+> > External email : Please do not click links or open attachments until
+> > you have verified the sender or the content.
+> > 
+> > 
+> > Hello guys,
+> > 
+> > I've just tested 6.14.3 kernel which seems to include the patched
+> > driver. Issue is still present, in Wi-FI 6.
+> > 
+> > Here are some more testings :
+> > 
+> > 6.14.3 + firmware-202412x speed is NOT correct in download but
+> > correct
+> > in upload (20Mbps/750Mbps)
+> > 6.14.3 + firmware-202504x speed is NOT correct in download and in
+> > upload
+> > (<10Mbps/<10Mbps) 98% of time
+> > 6.14.3 + firmware-202504x speed is more or less correct in download
+> > and
+> > in NOT correct upload (400Mbps/<10Mbps) 2% of time
+> > 
+> > With older firmware, speed results are inverted as in 6.12.12 kernel
+> > (DL
+> > / UP), with newer firmware, upload never work correctly.
+> > 
+> > Please note the speed is mono-thread/mono-stream (ex : iperf -P 1),
+> > while running multiple simultaneous connections, the DL speed with
+> > newer
+> > firmware seems quite OK. While I'm not having any issue in <=6.12.12
+> > with mono stream.
+> > Remarks regarding upload speed doesn't change.
+> > 
+> > Any idea ?
+> > 
+> > Best regards,
+> > 
+>
+> It's a bit strange, the latest firmware should be 20250305, there
+> shouldn't be 202504. May I ask where your firmware came from?
+>
+> And which AP are you using? I will test there combinations as well.
+>
+> Best Regards,
+> Yen.
+>
+> *********** MEDIATEK Confidentiality Notice ***********
+> The information contained in this e-mail message (including any
+> attachments) may be confidential, proprietary, privileged, or
+> otherwise exempt from disclosure under applicable laws. It is
+> intended to be conveyed only to the designated recipient(s). Any
+> use, dissemination, distribution, printing, retaining or copying
+> of this e-mail (including its attachments) by unintended recipient(s)
+> is strictly prohibited and may be unlawful. If you are not an
+> intended recipient of this e-mail, or believe that you have received
+> this e-mail in error, please notify the sender immediately
+> (by replying to this e-mail), delete any and all copies of this
+> e-mail (including any attachments) from your system, and do not
+> disclose the content of this e-mail to any other person. Thank you!
 
