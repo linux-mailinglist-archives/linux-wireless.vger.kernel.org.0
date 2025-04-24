@@ -1,220 +1,233 @@
-Return-Path: <linux-wireless+bounces-22006-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22007-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F8CA9B11D
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 16:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E40A9B1AA
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 17:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7596188BDFF
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 14:37:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67C61B808F4
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 15:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185EB15533F;
-	Thu, 24 Apr 2025 14:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41CF19C554;
+	Thu, 24 Apr 2025 15:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gs1F/jQZ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Ftx1BgOa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277E127456
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 14:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4892701C1;
+	Thu, 24 Apr 2025 15:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745505442; cv=none; b=KSSydp7U4rnjRf3BAApmoe9GuEYlU33EIJKRKVfqJg8zy6s3lFyu4tFFjK7u7gq1bwZKJJbP57PDHhK/YxYfQHrwklpEamfBkbLlgcRgbU1Kb4SeOC4rZKWXsyddVJqL5qH6ZLzVbx/x1OVXitzavAufy6GDm4Rc5mEo3/Mvmvw=
+	t=1745507263; cv=none; b=DEP5A10pcKuJkOzQYC+LPdRaHe1C9CP8SV7RY2aV2rxmaQQwouJxYpW9XKtpaj7G4krmeZksFY+Nan5HAoMPKIxm4YT+WR4rbSs4rEodvDVp5wvs9Ei8fmcbqr03QSheBwPmqzFgj0P7KDJHT2JPKPFSjvpf5z0kIZxpNb/uiYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745505442; c=relaxed/simple;
-	bh=MH9HaAy5hecGhRy/cEIVEADeg6zPiZGefyEQGfrbiG0=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=p8rEERi3ddX9F9hQdDqYk3nGE0LGL5TAIQZuKo0sAxqbDjE8J5Z0lE8VV5kB0wfgI1kiOrWdB/5eByApcGlzFAaIHWQDiC463S3XswcZ8V9ntHEa4Gtpk3ZGAZfQrUqK08BV73dLE+df9OVqcu0u5nrk7BzliWM+JJrq0pjatI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gs1F/jQZ; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745505440; x=1777041440;
-  h=date:from:to:cc:subject:message-id;
-  bh=MH9HaAy5hecGhRy/cEIVEADeg6zPiZGefyEQGfrbiG0=;
-  b=gs1F/jQZEjybTjayYjkF215RBOuln5RAm0Qj96X4aBEieihh0A0VGRaa
-   798tE52Y1arrvd4QSCto0SYe947P0VudTEbOCOnkDirSmQytCSxsk5Lnf
-   ndHlYn0trBPxYxSaKqSYfpZYHZnePoD07bUT7IQyx9Ya3uoYw1PUXiJ0I
-   +IybT83wLdq+gL+7iM32yBbRBBFa5GtQRzvH4NnMQUObbTBXZr8yn/bMy
-   Ohzpf0uNKnWazjTC54qYCAeEvfQR+iAIoeEK+t58x3N6OBarhlTZ6Ps1i
-   5XZksrccgFQh0CpAb0v8cg7i58G7X1+gyLINpuN6jO5zKPKe4QmjnoppF
-   Q==;
-X-CSE-ConnectionGUID: pkYr1nXmQdWJYkJue9Lrog==
-X-CSE-MsgGUID: 0R7usSeZTSKuH5RU9iWnVQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="58508339"
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
-   d="scan'208";a="58508339"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 07:37:19 -0700
-X-CSE-ConnectionGUID: XGxNEayHSR+Far3IGGI0Pw==
-X-CSE-MsgGUID: Yauiqsy6Q7CX09tl9EEDlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
-   d="scan'208";a="132528398"
-Received: from lkp-server01.sh.intel.com (HELO 050dd05385d1) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 24 Apr 2025 07:37:16 -0700
-Received: from kbuild by 050dd05385d1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u7xhT-0004E1-2d;
-	Thu, 24 Apr 2025 14:37:15 +0000
-Date: Thu, 24 Apr 2025 22:36:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- 175e69e33c66904dfe910c5f43edfe5c95b32f0c
-Message-ID: <202504242220.p1JjhJjR-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1745507263; c=relaxed/simple;
+	bh=xk2GRBY750TwszttNFyXLeYPgO0ZG5/i9N1Bc2Z1fGw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BnadKRi9dsaD8N3cMFaaR5gjvH0bBGu4BJ9z1EzUKyE/4vLL3hu90C4huNk5mMj5xYb1ZFpXVy6Ehky4pkFX6Ue0jt/e1TtVPYyTfiI/SPhZA2tTqyPODKNKbvaiYMaA2lpPDA/VsFirXOs6V8U0Cq7gJMPc8LCkMITW3fNxpuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Ftx1BgOa; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=A5e4j/jtYATU7avKCEo1DM3FNXJct3asQ+rGyfJl/tU=;
+	t=1745507262; x=1746716862; b=Ftx1BgOah57YvQ7mgk/YaZqPTiZXqXDGhm79Ei/RFAW87px
+	sMGikKE6ZyW2sKVDYTaTeqsl/WWE59OWXUrzpA+L5Le+rrlXUYjflaYF08h01utjlNAfTQa3G1KZl
+	tqXFqCDQPhutp8ZWk9aLVphHSliBKkZ2TK+1veA15K8JpbROru4Ve3KH8YJVu3/U1ry7fERvcGlZb
+	+JWrqZI6lHxYel/6W9WOt0razm3E4crPaeA+sve0Z+ONC52O2658O73lB25VsOoY7WYzzAreEo5e7
+	QPDTyGbf1PQqcNiSr/5PAGwgr4ZzMJZcOoviBlhgJ6lOBi+i766zUp6vK8mRxH6A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.1)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1u7yAt-0000000HPbn-0WT1;
+	Thu, 24 Apr 2025 17:07:39 +0200
+Message-ID: <45b74f9f0831294e783a019cd6a1437fdad4eb6a.camel@sipsolutions.net>
+Subject: Re: [RFC PATCH v2 2/2] wifi: Add Nordic nRF70 series Wi-Fi driver
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Artur Rojek <artur@conclusive.pl>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski
+	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood
+	 <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Sascha Hauer
+	 <s.hauer@pengutronix.de>
+Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jakub Klama <jakub@conclusive.pl>, Wojciech
+ Kloska	 <wojciech@conclusive.pl>, Ulf Axelsson <ulf.axelsson@nordicsemi.no>
+Date: Thu, 24 Apr 2025 17:07:38 +0200
+In-Reply-To: <20250422175918.585022-3-artur@conclusive.pl>
+References: <20250422175918.585022-1-artur@conclusive.pl>
+	 <20250422175918.585022-3-artur@conclusive.pl>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 175e69e33c66904dfe910c5f43edfe5c95b32f0c  wifi: iwlwifi: restore missing initialization of async_handlers_list
+On Tue, 2025-04-22 at 19:59 +0200, Artur Rojek wrote:
+> Introduce support for Nordic Semiconductor nRF70 series wireless
+> companion IC.
 
-elapsed time: 1461m
+Seems simple enough ... but I notice you're not even adding a
+MAINTAINERS file entry. Does that mean you're not going to stick around
+to maintain it at all? I'm definitely _not_ going to. Please don't
+expect the community to.
 
-configs tested: 127
-configs skipped: 3
+Are you doing this for your customers? Or are you just doing this a
+contract for someone who needs it? I don't really care all that much but
+contracts have a tendency to go away and then we're left with nothing
+upstream ...
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Also, related, what are your plans to help out with wireless in general,
+particularly reviews? You're building on the shoulders of everyone who
+did work before ... I'll do a _very_ cursory review, but if you want to
+get this merged I would expect you to also become a part of the
+community and help review other people's code:
 
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-14.2.0
-arc                               allnoconfig    gcc-14.2.0
-arc                              allyesconfig    gcc-14.2.0
-arc                        nsimosci_defconfig    gcc-14.2.0
-arc                   randconfig-001-20250423    gcc-14.2.0
-arc                   randconfig-002-20250423    gcc-14.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-21
-arm                              allyesconfig    gcc-14.2.0
-arm                     am200epdkit_defconfig    gcc-14.2.0
-arm                             pxa_defconfig    gcc-14.2.0
-arm                   randconfig-001-20250423    gcc-10.5.0
-arm                   randconfig-002-20250423    gcc-10.5.0
-arm                   randconfig-003-20250423    gcc-7.5.0
-arm                   randconfig-004-20250423    clang-21
-arm                             rpc_defconfig    clang-18
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-14.2.0
-arm64                 randconfig-001-20250423    gcc-5.5.0
-arm64                 randconfig-002-20250423    gcc-7.5.0
-arm64                 randconfig-003-20250423    clang-17
-arm64                 randconfig-004-20250423    gcc-7.5.0
-csky                              allnoconfig    gcc-14.2.0
-csky                  randconfig-001-20250423    gcc-13.3.0
-csky                  randconfig-002-20250423    gcc-11.5.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-21
-hexagon               randconfig-001-20250423    clang-21
-hexagon               randconfig-002-20250423    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250423    gcc-12
-i386        buildonly-randconfig-002-20250423    clang-20
-i386        buildonly-randconfig-003-20250423    clang-20
-i386        buildonly-randconfig-004-20250423    clang-20
-i386        buildonly-randconfig-005-20250423    gcc-12
-i386        buildonly-randconfig-006-20250423    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch             randconfig-001-20250423    gcc-14.2.0
-loongarch             randconfig-002-20250423    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-mips                           xway_defconfig    clang-21
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20250423    gcc-11.5.0
-nios2                 randconfig-002-20250423    gcc-9.3.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-openrisc                            defconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                              defconfig    gcc-14.2.0
-parisc                randconfig-001-20250423    gcc-12.4.0
-parisc                randconfig-002-20250423    gcc-12.4.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-21
-powerpc                       holly_defconfig    clang-21
-powerpc                  mpc866_ads_defconfig    clang-21
-powerpc                      pcm030_defconfig    clang-21
-powerpc               randconfig-001-20250423    gcc-9.3.0
-powerpc               randconfig-002-20250423    clang-21
-powerpc               randconfig-003-20250423    gcc-9.3.0
-powerpc                     tqm8540_defconfig    gcc-14.2.0
-powerpc                        warp_defconfig    gcc-14.2.0
-powerpc64             randconfig-001-20250423    gcc-5.5.0
-powerpc64             randconfig-002-20250423    gcc-7.5.0
-powerpc64             randconfig-003-20250423    clang-18
-riscv                            allmodconfig    clang-21
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-21
-riscv                 randconfig-001-20250423    gcc-9.3.0
-riscv                 randconfig-002-20250423    gcc-7.5.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-14.2.0
-s390                                defconfig    clang-21
-s390                  randconfig-001-20250423    clang-21
-s390                  randconfig-002-20250423    gcc-8.5.0
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                                  defconfig    gcc-14.2.0
-sh                        dreamcast_defconfig    gcc-14.2.0
-sh                    randconfig-001-20250423    gcc-7.5.0
-sh                    randconfig-002-20250423    gcc-13.3.0
-sh                           se7619_defconfig    gcc-14.2.0
-sh                           se7724_defconfig    gcc-14.2.0
-sh                             sh03_defconfig    gcc-14.2.0
-sh                          urquell_defconfig    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250423    gcc-6.5.0
-sparc                 randconfig-002-20250423    gcc-6.5.0
-sparc64                             defconfig    gcc-14.2.0
-sparc64               randconfig-001-20250423    gcc-12.4.0
-sparc64               randconfig-002-20250423    gcc-12.4.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250423    clang-21
-um                    randconfig-002-20250423    gcc-12
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250423    gcc-12
-x86_64      buildonly-randconfig-002-20250423    gcc-12
-x86_64      buildonly-randconfig-003-20250423    gcc-12
-x86_64      buildonly-randconfig-004-20250423    clang-20
-x86_64      buildonly-randconfig-005-20250423    gcc-12
-x86_64      buildonly-randconfig-006-20250423    gcc-12
-x86_64                              defconfig    gcc-11
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20250423    gcc-8.5.0
-xtensa                randconfig-002-20250423    gcc-8.5.0
+https://lore.kernel.org/linux-wireless/21896d2788b8bc6c7fcb534cd43e75671a57=
+f494.camel@sipsolutions.net/
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +config NRF70
+> +	tristate "Nordic Semiconductor nRF70 series wireless companion IC"
+> +	depends on CFG80211 && INET && SPI_MEM && CPU_LITTLE_ENDIAN
+
+That CPU_LITTLE_ENDIAN seems like a cop-out. Do we really want that?
+Asking not specifically you I guess...
+
+
+> +#define	NRF70_RADIOTAP_PRESENT_FIELDS				\
+> +	cpu_to_le32((1 << IEEE80211_RADIOTAP_RATE) |		\
+> +		    (1 << IEEE80211_RADIOTAP_CHANNEL) |		\
+> +		    (1 << IEEE80211_RADIOTAP_DBM_ANTSIGNAL))
+
+You did some work on making it little endian properly ..
+
+
+> +
+> +#define	NRF70_FW_FEATURE_RAW_MODE	BIT(3)
+> +struct __packed nrf70_fw_header {
+> +	u32 signature;
+> +	u32 num_images;
+> +	u32 version;
+> +	u32 feature_flags;
+> +	u32 length;
+> +	u8 hash[NRF70_FW_HASH_LEN];
+> +	u8 data[];
+> +};
+> +
+> +struct __packed nrf70_fw_img {
+> +	u32 type;
+> +	u32 length;
+> +	u8 data[];
+> +};
+
+making the u32's here __le32's (and fixing sparse) would probably go a
+long way of making it endian clean. The __packed is also placed oddly.
+
+> +static int nrf70_verify_firmware(struct device *dev,
+> +				 const struct nrf70_fw_header *fw)
+
+
+What's the point in doing this? The hash is trivially adjusted if
+someone wants to play with the file, if hw doesn't check anything, and
+... not sure we really need such a thing for "file is corrupt by
+accident"? *shrug*
+
+> +	ret =3D request_firmware(&firmware, "nrf70.bin", dev);
+
+
+You might want to make that async so that the driver can be built-in
+without requiring the firmware to also be built-in.
+
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed to request firmware: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	header =3D (const struct nrf70_fw_header *)firmware->data;
+
+(const void *) cast would probably be sufficient
+
+
+> +	return ret ? ret : (wait_for_completion_timeout(&priv->init_done, HZ) ?
+> +			    0 : -ETIMEDOUT);
+
+that construct seems a bit questionable :)
+
+
+> +static void nrf70_handle_rx_mgmt(struct spi_mem *mem,
+> +				 struct nrf70_event_mlme *ev)
+> +{
+> +	struct nrf70_priv *priv =3D spi_mem_get_drvdata(mem);
+> +	struct nrf70_vif *vif =3D nrf70_get_vif(priv, ev->header.idx.wdev_id);
+> +
+> +	if (IS_ERR(vif))
+> +		return;
+> +
+> +	(void)cfg80211_rx_mgmt(&vif->wdev, ev->frequency, ev->rx_signal_dbm,
+> +			       ev->frame.data, ev->frame.len, ev->wifi_flags);
+
+
+shouldn't need the (void) cast?
+
+
+> +static int nrf70_change_bss(struct wiphy *wiphy, struct net_device *ndev=
+,
+> +			    struct bss_parameters *params)
+
+
+See also this discussion:
+https://lore.kernel.org/linux-wireless/29fa5ea7f4cc177bed823ec3489d610e1d69=
+a08f.camel@sipsolutions.net/
+
+> +static int nrf70_dequeue_umac_event(struct spi_mem *mem, void *data)
+> +{
+> +	struct nrf70_priv *priv =3D spi_mem_get_drvdata(mem);
+> +	struct device *dev =3D &mem->spi->dev;
+> +	struct nrf70_umac_header *header =3D data;
+> +	struct nrf70_vif *vif =3D nrf70_get_vif(priv, header->idx.wdev_id);
+> +	struct cfg80211_scan_info scan_info =3D { .aborted =3D true };
+> +
+> +	if (IS_ERR(vif))
+> +		return PTR_ERR(vif);
+> +
+> +	switch (header->id) {
+> +	case NRF70_UMAC_EVENT_TRIGGER_SCAN_START:
+> +		break;
+
+
+This sounds like you pretty much built the firmware for cfg80211 ;-)
+
+
+> +#define	NRF70_MSG_SYSTEM		0
+> +#define	NRF70_MSG_DATA			2
+> +#define	NRF70_MSG_UMAC			3
+> +
+> +struct __packed nrf70_msg {
+> +	u32 len;
+> +	u32 resubmit;
+> +	u32 type;
+> +	u8 data[];
+
+
+similar comments here throughout this entire file wrt __packed and
+__le32, obviously
+
+> +/* Undocumented PHY configuration parameters. */
+>=20
+
+haha :)
+
+
+Oh and before I forget, how about firmware availability?
+
+johannes
 
