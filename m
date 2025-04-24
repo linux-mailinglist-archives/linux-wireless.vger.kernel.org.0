@@ -1,678 +1,407 @@
-Return-Path: <linux-wireless+bounces-22003-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22004-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0F6A9AFA3
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 15:49:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD9DA9B025
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 16:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABCC5167B75
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 13:49:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 504937AB3E6
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 14:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7774187876;
-	Thu, 24 Apr 2025 13:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB3512CDA5;
+	Thu, 24 Apr 2025 14:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hR4IjZMO"
+	dkim=pass (2048-bit key) header.d=moment-tech.20230601.gappssmtp.com header.i=@moment-tech.20230601.gappssmtp.com header.b="YhLGNQTr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C67C19924E
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 13:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1887C15E5DC
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 14:07:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745502511; cv=none; b=RS6qcZ2RZnR59BY9+oTao3TJ7aP6GSmAKEXtCxseJ7bBB2P7rc4Lo/85qtvnb8ge1iZS2DJAZrce/IQi1DwAOBW1tB3ShrEzlg4QGksHDVdozBWkSo88gb+TfVD7WIkqYLoBLg4MU76YDNp5f3hS/eoFA+c4jzFbiVajppM8DK4=
+	t=1745503671; cv=none; b=SpMsNfcymi3SF/D8lrp0464KVgLjAZquradstm3D69RjzVJtMqXtozCnLC4v6VquEllhSTxGkivPcE/oXuGKy1F17w+Jr4RC2f+9bRB/dFhNFoRYA+t4H0UY1jPbEY10MNsTFPFy1IebH6Bt2qqoGcJoR1cegafzmLOj4t/HlYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745502511; c=relaxed/simple;
-	bh=TO2695ERxjmCwrDvy+Sp3Gb8fDm6hF+Ex2UyldlVlqU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MLITAoHDPAKrfRQsXZcKiu/A9ce7g5HH7ylYzSFLUB+QU+DVZ9z2wsf8AlEN3b1wgECmrfsUwEHT+u11IkzNvFPSta80oV3NK0bTqZl7kZenvRkGOfggGjMDdY5U/TZyhddqffGJGUO7t225bZWEyK+nhQeCXR5YSB0hoyjvjZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hR4IjZMO; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53OC3D5X016238;
-	Thu, 24 Apr 2025 13:48:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	peZToCeV1+to51iVi/U3qr+t4fNHIRYXtyMa48UYyFw=; b=hR4IjZMODn5dKaRp
-	D+lQjjOTe5d7mdxMc6S4TNeVQrmH+fYLOmjEcjZm1lPU5rwO6shotBuG7tKqTwmj
-	OBAnnktSyrlT19HgMsDgA4voQNGe4lsdtEamtWoLBv00NdqC6L95Piz6+vgtTMY+
-	JwqpOpwHgOayt+M+IFbx1M5I6G6mrgiKE/Bau2Yx2q4qmel9b7hOkwR+Rn32pAvG
-	3OdJFrCAHvqGNQbkQE9OuEo/WqxJUxDlNQkyqGNWgsgelGYHOXhteKbUw/yeH9YZ
-	6tBwHkUCvVtO64rDm09+DfJz2fAGrXh3SUjjKuZGFXt3uVqSJDP7Urd4UMzxjEUM
-	/rukcA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jh0duvx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Apr 2025 13:48:23 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53ODmNUQ022972
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Apr 2025 13:48:23 GMT
-Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 24 Apr 2025 06:48:21 -0700
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Roopni Devanathan
-	<quic_rdevanat@quicinc.com>
-Subject: [PATCH wireless-next v7 3/3] wifi: mac80211: Set RTS threshold on per-radio basis
-Date: Thu, 24 Apr 2025 19:17:52 +0530
-Message-ID: <20250424134752.871886-4-quic_rdevanat@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250424134752.871886-1-quic_rdevanat@quicinc.com>
-References: <20250424134752.871886-1-quic_rdevanat@quicinc.com>
+	s=arc-20240116; t=1745503671; c=relaxed/simple;
+	bh=Zsx8+PoFy4NLxrjMCAlC8nNCC64ib3oExbTa5bDB7WM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FkuE3Zeq+m/YPZGVDQxZuPuC+J0N6D2Ee8P4M0CDTIHW9Fgqu/PQtLu6ePapq/T/iyyYVYaw5dS2PLw5hUmMoN62vWdF+CW4u3kuthu4RjHNknc8KJcclMIxEzo0yQGTqW7TLoOsMl2QUElxwS4MkqtTRYMfR6gxUzQ67YTSV0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moment.tech; spf=pass smtp.mailfrom=moment.tech; dkim=pass (2048-bit key) header.d=moment-tech.20230601.gappssmtp.com header.i=@moment-tech.20230601.gappssmtp.com header.b=YhLGNQTr; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moment.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=moment.tech
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5240764f7c1so441121e0c.2
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 07:07:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=moment-tech.20230601.gappssmtp.com; s=20230601; t=1745503667; x=1746108467; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=GdmvGtQ89u3GR+RFOjou40UjczCb89acby3lLgdG7oo=;
+        b=YhLGNQTrfqzVAMgCe4F6IX1cD/GpcFzYRzIB3u6VBSjH3miWJ+UXVC84M4zHqnf8sI
+         kNrB+nJgVLDEjsbC30PTgKmyLIcurT/IwumOJpniE5sUVFNQgMgXBwRaOVMP7gYB19Pu
+         9lfN01CA81i5ZBAqDAYOwbkXCOXAfpfFL5S4Qxxoi5ydQ1aYIQSFTQ3KQHG4mash58f1
+         JePQueg8EigjFVugybERpiDncc5sc70zMHVkg8JVEkPLFUJcxwSz5kSiZXwvMvNsSGwy
+         T0r10DRa4tAYNaa4l5HyYyvrptTbUdRFXweCyAR5vEimioF7uFRLWQnak6tvKKi/AaA4
+         OsKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745503667; x=1746108467;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GdmvGtQ89u3GR+RFOjou40UjczCb89acby3lLgdG7oo=;
+        b=ce7TgdDWWX1wh7mSDYCZh3TQfSgGvCJ3CJpfvKfi3uqL+yc6lhbKR2MxVk+DsH6hzU
+         EkP4O/ZXTXbFUuZTtw3BDmURbDdHFvz10wCwPqbKqBmhwdlAvX1+7o5u06PVP6cZOxVc
+         Lwht6gFEv6CdxdJQR0CBJNAMJunhkJTvP2vTeRXctlJJjjPmuYLZNREtZ1MHwDNoMsZn
+         7oZKwhmOYrReiROSWF/UbcDs88myHa7itE82duVuDPnwWJ+tmkVa5YuH36JG/CJbfJx5
+         cnubo+p4WH+EPReGlgd6mlM5Ua04DAV4o/YXGPWZ31GLqe5MFbHQjc15MR7JcCNnX3VM
+         29Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCVJoJ1K1w2eJEvGsVDINHq6KNDtyybTAwxF8gNLBMsKpSzDi5T50EHEkqOw0GkqUX309WegGFGuQxjwCKOibQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzFGENR7zNxFh+oasxHCI6wY/IWEFQnDis/EvH6DPsCMSaLa3b
+	CmpYaCVN+OTg//TcFBfiHp0m5saOIgdYVDoQB3WXkgE0zjUTq0BGVrZk1VV0QfVJdGJ+RV2c0Yn
+	0Bsq3WX3uLKD6Ff/UaZ6ICYNCdQXTseXllzUi8I1/1TR9MHqsbD1MWg==
+X-Gm-Gg: ASbGncuUDYotFx8PD6xCu28bpvxliLjj0ciqPbMaCyK+5vDRg7LsloYBdotT+zq9Ih1
+	nNo735PdXSz7XewsGQzWg2P2a9D0GNMadgzrSuJehf8vToAxPRlksljYfZY9QqOoohoPrYoHjSk
+	n8A4R5Wx6JdbGpUEaRcBK+AgQk
+X-Google-Smtp-Source: AGHT+IErhQUPnaKpU1zGFJ2/PkQnddkb7MAALj2W8zXHAMxbJSFnvaokxVPCygzxVqnmqKhgbkG9wcy3YrRYjiCEHV0=
+X-Received: by 2002:a05:6122:20ab:b0:518:965c:34a with SMTP id
+ 71dfb90a1353d-52a7823dea3mr2333665e0c.2.1745503666453; Thu, 24 Apr 2025
+ 07:07:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 9B5Z3-kPY1XD4pT_s-tHfjie5zoxZHHe
-X-Proofpoint-ORIG-GUID: 9B5Z3-kPY1XD4pT_s-tHfjie5zoxZHHe
-X-Authority-Analysis: v=2.4 cv=Fv0F/3rq c=1 sm=1 tr=0 ts=680a4128 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=-En92J_SqdoYkblu01YA:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI0MDA5MyBTYWx0ZWRfX3pfvLGNUReXa +vz/FJJBiZ0fN7h3QJ2kJzMueVu2glif/kZ9yE5qTMJD39MvY/befl1Pt6C7+as6ROQ2ZnkhjxF FeHp+pZ6BN3zi8dwSNeRBSfoTwQ2eJaZ4b8faW2QLnFV3rpsyZJaPdafwbcAjuSTRxMGmmyUPjS
- 8HqP5zNWvPjE5cHnRWtn/GuA3eHqmm8vfYijBnw3am0QD3xkoXgnCt23XdeRjXy8dKLcKQvnBII 7+XKfdDPC1zlZwMzgMNJ6nk3DdrGlqrfeKkr0YehGLiZKnjqAKvYgoOKA35U4suiBvxcI089c4W QUejbxRcsOMBCmsnhBlQsf17GFfj3qhsL8z/eEayRJBkOkaqaq8bmy9j/JtOPI5eChq7+INaqSg
- IvpbQCnsk+0mx83AHWet1GvTyxO1jcQWWxBkpRQN+rkPt50hkPb3U7G2LzvqGlJPl9VWLt89
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-24_06,2025-04-24_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- malwarescore=0 mlxlogscore=999 priorityscore=1501 suspectscore=0
- adultscore=0 bulkscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0
- phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504240093
+References: <20250416100939.282481-1-balsam.chihi@moment.tech>
+ <0e129e2a-67fc-48cc-9773-efbea3f7391d@quicinc.com> <fa16bad6-305f-77c1-3f56-703564e2dfee@quicinc.com>
+ <CAONkfw6m9O_6FZHBrPYdpv+=AxSgsbh1T7+GaS+U+bnjyVVJvQ@mail.gmail.com>
+ <3da5d47b-993c-405e-841f-1d16d8715610@quicinc.com> <1d0682c0-ee5d-f2d4-199d-4ebc4e71f9ef@quicinc.com>
+ <3660fcfb-be29-422b-a352-3996ad3fc41f@quicinc.com> <CAONkfw5-bfYRwHZ9iHhgJP2f8Zqyz5SZVbdL4n9EPhKU+=ONPg@mail.gmail.com>
+In-Reply-To: <CAONkfw5-bfYRwHZ9iHhgJP2f8Zqyz5SZVbdL4n9EPhKU+=ONPg@mail.gmail.com>
+From: Balsam Chihi <balsam.chihi@moment.tech>
+Date: Thu, 24 Apr 2025 16:07:10 +0200
+X-Gm-Features: ATxdqUGwtCFsT67ZYg7ZUzooAbjRkhLxFvzWycaGvXtqibopFchZNDxTQk0WmIo
+Message-ID: <CAONkfw7xjJjMAZSfHg5avEV=Bc5aJZqrRxMDvKWK4g14bLNjRQ@mail.gmail.com>
+Subject: Re: [PATCH] wifi: ath11k: pci: Fix msi_irq crash on driver unload
+ with QCN9074 PCIe WiFi 6 modules
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>, jjohnson@kernel.org, 
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add support to get the radio for which RTS threshold needs to be changed
-from userspace. Pass on this radio index to underlying drivers as an
-additional argument.
+I just rebuilt a clean disto and enabled the debug_mask=0x1020.
+There are the logs bellow :
 
-A value of NL80211_WIPHY_RADIO_ID_INVALID(-1) indicates radio index is not
-mentioned and the configuration applies to all radio(s) of the wiphy.
+root@OpenWrt-WAP:~# uname --all
+Linux OpenWrt-WAP 6.6.86 #0 SMP Sun Apr 13 16:38:32 2025 aarch64 GNU/Linux
 
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
----
- drivers/net/wireless/ath/ar5523/ar5523.c      |  2 +-
- drivers/net/wireless/ath/ath10k/mac.c         |  4 ++--
- drivers/net/wireless/ath/ath11k/mac.c         |  3 ++-
- drivers/net/wireless/ath/ath12k/mac.c         |  3 ++-
- drivers/net/wireless/ath/ath9k/htc_drv_main.c |  2 +-
- drivers/net/wireless/ath/wcn36xx/main.c       |  2 +-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 +-
- drivers/net/wireless/marvell/mwl8k.c          |  2 +-
- .../net/wireless/mediatek/mt76/mt7615/main.c  |  2 +-
- drivers/net/wireless/mediatek/mt76/mt76x02.h  |  2 +-
- .../net/wireless/mediatek/mt76/mt76x02_util.c |  2 +-
- .../net/wireless/mediatek/mt76/mt7915/main.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7925/main.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7996/main.c  |  2 +-
- drivers/net/wireless/mediatek/mt7601u/main.c  |  2 +-
- drivers/net/wireless/purelifi/plfxlc/mac.c    |  2 +-
- .../net/wireless/ralink/rt2x00/rt2800lib.c    |  2 +-
- .../net/wireless/ralink/rt2x00/rt2800lib.h    |  2 +-
- drivers/net/wireless/realtek/rtl8xxxu/core.c  |  2 +-
- drivers/net/wireless/realtek/rtw88/mac80211.c |  2 +-
- drivers/net/wireless/realtek/rtw89/mac80211.c |  2 +-
- drivers/net/wireless/rsi/rsi_91x_mac80211.c   |  2 ++
- drivers/net/wireless/silabs/wfx/sta.c         |  2 +-
- drivers/net/wireless/silabs/wfx/sta.h         |  2 +-
- drivers/net/wireless/st/cw1200/sta.c          |  2 +-
- drivers/net/wireless/st/cw1200/sta.h          |  2 +-
- drivers/net/wireless/ti/wl1251/main.c         |  2 +-
- drivers/net/wireless/ti/wlcore/main.c         |  2 +-
- drivers/net/wireless/virtual/mac80211_hwsim.c |  3 ++-
- include/net/mac80211.h                        |  2 +-
- net/mac80211/cfg.c                            |  8 ++++++-
- net/mac80211/driver-ops.h                     |  6 ++---
- net/mac80211/trace.h                          | 24 ++++++++++++++++---
- net/mac80211/util.c                           |  8 ++++++-
- 36 files changed, 75 insertions(+), 40 deletions(-)
+root@OpenWrt-WAP:~# cat /etc/modules.conf
+# examples:
+# options mod1 option=val
+# blacklist mod2
+options ath11k debug_mask=0x1020
 
-diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
-index 96dc2778022a..8a873e90f4e1 100644
---- a/drivers/net/wireless/ath/ar5523/ar5523.c
-+++ b/drivers/net/wireless/ath/ar5523/ar5523.c
-@@ -1083,7 +1083,7 @@ static void ar5523_stop(struct ieee80211_hw *hw, bool suspend)
- 	mutex_unlock(&ar->mutex);
- }
- 
--static int ar5523_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int ar5523_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	struct ar5523 *ar = hw->priv;
- 	int ret;
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index c61b95a928da..2a16c902d1ec 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -3,7 +3,7 @@
-  * Copyright (c) 2005-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include "mac.h"
-@@ -8018,7 +8018,7 @@ static int ath10k_cancel_remain_on_channel(struct ieee80211_hw *hw,
-  * in ath10k, but device-specific in mac80211.
-  */
- 
--static int ath10k_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int ath10k_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	struct ath10k *ar = hw->priv;
- 	struct ath10k_vif *arvif;
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 8191ee14a1fd..72e8430052db 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8182,7 +8182,8 @@ ath11k_set_vdev_param_to_all_vifs(struct ath11k *ar, int param, u32 value)
- /* mac80211 stores device specific RTS/Fragmentation threshold value,
-  * this is set interface specific to firmware from ath11k driver
-  */
--static int ath11k_mac_op_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int ath11k_mac_op_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
-+					   u32 value)
- {
- 	struct ath11k *ar = hw->priv;
- 	int param_id = WMI_VDEV_PARAM_RTS_THRESHOLD;
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 84da77bf245b..34c8eeb5bf88 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -9644,7 +9644,8 @@ ath12k_set_vdev_param_to_all_vifs(struct ath12k *ar, int param, u32 value)
- /* mac80211 stores device specific RTS/Fragmentation threshold value,
-  * this is set interface specific to firmware from ath12k driver
-  */
--static int ath12k_mac_op_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int ath12k_mac_op_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
-+					   u32 value)
- {
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k *ar;
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_main.c b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
-index 19600018e562..f9cf5efdd0aa 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_main.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
-@@ -1737,7 +1737,7 @@ static void ath9k_htc_sw_scan_complete(struct ieee80211_hw *hw,
- 	mutex_unlock(&priv->mutex);
- }
- 
--static int ath9k_htc_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int ath9k_htc_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	return 0;
- }
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index 94d08d6ae1a3..d7925d070e34 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -965,7 +965,7 @@ static void wcn36xx_bss_info_changed(struct ieee80211_hw *hw,
- }
- 
- /* this is required when using IEEE80211_HW_HAS_RATE_CONTROL */
--static int wcn36xx_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int wcn36xx_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	struct wcn36xx *wcn = hw->priv;
- 	wcn36xx_dbg(WCN36XX_DBG_MAC, "mac set RTS threshold %d\n", value);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 5d8f50a455d7..5a6ceb631c33 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -4257,7 +4257,7 @@ int iwl_mvm_mac_sta_state_common(struct ieee80211_hw *hw,
- 	return ret;
- }
- 
--int iwl_mvm_mac_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+int iwl_mvm_mac_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index f6391c7a3e29..7a5939fc88e2 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -2907,7 +2907,7 @@ iwl_mvm_mac_release_buffered_frames(struct ieee80211_hw *hw,
- 				    int num_frames,
- 				    enum ieee80211_frame_release_type reason,
- 				    bool more_data);
--int iwl_mvm_mac_set_rts_threshold(struct ieee80211_hw *hw, u32 value);
-+int iwl_mvm_mac_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value);
- void iwl_mvm_sta_rc_update(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			   struct ieee80211_link_sta *link_sta, u32 changed);
- void iwl_mvm_mac_mgd_prepare_tx(struct ieee80211_hw *hw,
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index bab9ef37a1ab..57cad1a104c8 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -5321,7 +5321,7 @@ static void mwl8k_configure_filter(struct ieee80211_hw *hw,
- 	mwl8k_fw_unlock(hw);
- }
- 
--static int mwl8k_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int mwl8k_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	return mwl8k_cmd_set_rts_threshold(hw, value);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index c54005df08ca..28bcaea12f18 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -784,7 +784,7 @@ static void mt7615_tx(struct ieee80211_hw *hw,
- 	mt76_connac_pm_queue_skb(hw, &dev->pm, wcid, skb);
- }
- 
--static int mt7615_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
-+static int mt7615_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 val)
- {
- 	struct mt7615_dev *dev = mt7615_hw_dev(hw);
- 	struct mt7615_phy *phy = mt7615_hw_phy(hw);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02.h b/drivers/net/wireless/mediatek/mt76/mt76x02.h
-index 4cd63bacd742..1b8af4b704f8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02.h
-@@ -184,7 +184,7 @@ void mt76x02_tx_set_txpwr_auto(struct mt76x02_dev *dev, s8 txpwr);
- void mt76x02_set_tx_ackto(struct mt76x02_dev *dev);
- void mt76x02_set_coverage_class(struct ieee80211_hw *hw,
- 				s16 coverage_class);
--int mt76x02_set_rts_threshold(struct ieee80211_hw *hw, u32 val);
-+int mt76x02_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 val);
- void mt76x02_remove_hdr_pad(struct sk_buff *skb, int len);
- bool mt76x02_tx_status_data(struct mt76_dev *mdev, u8 *update);
- void mt76x02_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-index 4fb30589fa7a..314d13eb3785 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-@@ -559,7 +559,7 @@ void mt76x02_set_coverage_class(struct ieee80211_hw *hw,
- }
- EXPORT_SYMBOL_GPL(mt76x02_set_coverage_class);
- 
--int mt76x02_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
-+int mt76x02_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 val)
- {
- 	struct mt76x02_dev *dev = hw->priv;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 3aa31c5cefa6..3b43eb380681 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -906,7 +906,7 @@ static void mt7915_tx(struct ieee80211_hw *hw,
- 	mt76_tx(mphy, control->sta, wcid, skb);
- }
- 
--static int mt7915_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
-+static int mt7915_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 val)
- {
- 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
- 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 826c48a2ee69..9898307587e0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -902,7 +902,7 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- }
- EXPORT_SYMBOL_GPL(mt7921_mac_sta_remove);
- 
--static int mt7921_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
-+static int mt7921_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 val)
- {
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 66f327781947..2bbd2f764c83 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1262,7 +1262,7 @@ void mt7925_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- }
- EXPORT_SYMBOL_GPL(mt7925_mac_sta_remove);
- 
--static int mt7925_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
-+static int mt7925_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 val)
- {
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 91c64e3a0860..6112b0f0a7c6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1241,7 +1241,7 @@ static void mt7996_tx(struct ieee80211_hw *hw,
- 	rcu_read_unlock();
- }
- 
--static int mt7996_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
-+static int mt7996_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 val)
- {
- 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
- 	int i, ret;
-diff --git a/drivers/net/wireless/mediatek/mt7601u/main.c b/drivers/net/wireless/mediatek/mt7601u/main.c
-index 7570c6ceecea..118eb52c3150 100644
---- a/drivers/net/wireless/mediatek/mt7601u/main.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/main.c
-@@ -334,7 +334,7 @@ mt7601u_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	return mt76_mac_wcid_set_key(dev, msta->wcid.idx, key);
- }
- 
--static int mt7601u_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int mt7601u_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	struct mt7601u_dev *dev = hw->priv;
- 
-diff --git a/drivers/net/wireless/purelifi/plfxlc/mac.c b/drivers/net/wireless/purelifi/plfxlc/mac.c
-index eae93efa6150..13e04cd6d5e6 100644
---- a/drivers/net/wireless/purelifi/plfxlc/mac.c
-+++ b/drivers/net/wireless/purelifi/plfxlc/mac.c
-@@ -678,7 +678,7 @@ static void plfxlc_get_et_stats(struct ieee80211_hw *hw,
- 	data[1] = mac->crc_errors;
- }
- 
--static int plfxlc_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int plfxlc_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	return 0;
- }
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index b7ea606bda08..15c35746a042 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -12100,7 +12100,7 @@ void rt2800_get_key_seq(struct ieee80211_hw *hw,
- }
- EXPORT_SYMBOL_GPL(rt2800_get_key_seq);
- 
--int rt2800_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+int rt2800_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	struct rt2x00_dev *rt2x00dev = hw->priv;
- 	u32 reg;
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-index 194de676df8f..c3c4590aaaf2 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-@@ -253,7 +253,7 @@ int rt2800_probe_hw(struct rt2x00_dev *rt2x00dev);
- void rt2800_get_key_seq(struct ieee80211_hw *hw,
- 			struct ieee80211_key_conf *key,
- 			struct ieee80211_key_seq *seq);
--int rt2800_set_rts_threshold(struct ieee80211_hw *hw, u32 value);
-+int rt2800_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value);
- int rt2800_conf_tx(struct ieee80211_hw *hw,
- 		   struct ieee80211_vif *vif,
- 		   unsigned int link_id, u16 queue_idx,
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index 569856ca677f..81639cdfe44b 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -6988,7 +6988,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
- 			 FIF_PROBE_REQ);
- }
- 
--static int rtl8xxxu_set_rts_threshold(struct ieee80211_hw *hw, u32 rts)
-+static int rtl8xxxu_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 rts)
- {
- 	if (rts > 2347 && rts != (u32)-1)
- 		return -EINVAL;
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index 026fbf4ad9cc..b44e5b50664b 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -706,7 +706,7 @@ static void rtw_ops_mgd_prepare_tx(struct ieee80211_hw *hw,
- 	mutex_unlock(&rtwdev->mutex);
- }
- 
--static int rtw_ops_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int rtw_ops_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	struct rtw_dev *rtwdev = hw->priv;
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index 4fded07d0bee..34d7958fce31 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -997,7 +997,7 @@ static int rtw89_ops_ampdu_action(struct ieee80211_hw *hw,
- 	return 0;
- }
- 
--static int rtw89_ops_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int rtw89_ops_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	struct rtw89_dev *rtwdev = hw->priv;
- 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_mac80211.c b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-index 9db08200f4fa..c320b6464bda 100644
---- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-@@ -1201,11 +1201,13 @@ static int rsi_mac80211_ampdu_action(struct ieee80211_hw *hw,
- /**
-  * rsi_mac80211_set_rts_threshold() - This function sets rts threshold value.
-  * @hw: Pointer to the ieee80211_hw structure.
-+ * @radio_id: Index of the radio whose RTS threshold needs to be changed.
-  * @value: Rts threshold value.
-  *
-  * Return: 0 on success.
-  */
- static int rsi_mac80211_set_rts_threshold(struct ieee80211_hw *hw,
-+					  u8 radio_id,
- 					  u32 value)
- {
- 	struct rsi_hw *adapter = hw->priv;
-diff --git a/drivers/net/wireless/silabs/wfx/sta.c b/drivers/net/wireless/silabs/wfx/sta.c
-index e95b9ded17d9..b2ca43e63917 100644
---- a/drivers/net/wireless/silabs/wfx/sta.c
-+++ b/drivers/net/wireless/silabs/wfx/sta.c
-@@ -220,7 +220,7 @@ int wfx_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	return 0;
- }
- 
--int wfx_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+int wfx_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	struct wfx_dev *wdev = hw->priv;
- 	struct wfx_vif *wvif = NULL;
-diff --git a/drivers/net/wireless/silabs/wfx/sta.h b/drivers/net/wireless/silabs/wfx/sta.h
-index 8702eed5267f..f1288efee527 100644
---- a/drivers/net/wireless/silabs/wfx/sta.h
-+++ b/drivers/net/wireless/silabs/wfx/sta.h
-@@ -22,7 +22,7 @@ struct wfx_sta_priv {
- int wfx_start(struct ieee80211_hw *hw);
- void wfx_stop(struct ieee80211_hw *hw, bool suspend);
- int wfx_config(struct ieee80211_hw *hw, u32 changed);
--int wfx_set_rts_threshold(struct ieee80211_hw *hw, u32 value);
-+int wfx_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value);
- void wfx_set_default_unicast_key(struct ieee80211_hw *hw, struct ieee80211_vif *vif, int idx);
- void wfx_configure_filter(struct ieee80211_hw *hw, unsigned int changed_flags,
- 			  unsigned int *total_flags, u64 unused);
-diff --git a/drivers/net/wireless/st/cw1200/sta.c b/drivers/net/wireless/st/cw1200/sta.c
-index 444272caf124..2d26154ade3e 100644
---- a/drivers/net/wireless/st/cw1200/sta.c
-+++ b/drivers/net/wireless/st/cw1200/sta.c
-@@ -857,7 +857,7 @@ void cw1200_wep_key_work(struct work_struct *work)
- 	wsm_unlock_tx(priv);
- }
- 
--int cw1200_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+int cw1200_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	int ret = 0;
- 	__le32 val32;
-diff --git a/drivers/net/wireless/st/cw1200/sta.h b/drivers/net/wireless/st/cw1200/sta.h
-index b955b92cfd73..3f28bb9ec5ec 100644
---- a/drivers/net/wireless/st/cw1200/sta.h
-+++ b/drivers/net/wireless/st/cw1200/sta.h
-@@ -36,7 +36,7 @@ int cw1200_set_key(struct ieee80211_hw *dev, enum set_key_cmd cmd,
- 		   struct ieee80211_vif *vif, struct ieee80211_sta *sta,
- 		   struct ieee80211_key_conf *key);
- 
--int cw1200_set_rts_threshold(struct ieee80211_hw *hw, u32 value);
-+int cw1200_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value);
- 
- void cw1200_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		  u32 queues, bool drop);
-diff --git a/drivers/net/wireless/ti/wl1251/main.c b/drivers/net/wireless/ti/wl1251/main.c
-index bb53d681c11b..5fcc26e7ed3b 100644
---- a/drivers/net/wireless/ti/wl1251/main.c
-+++ b/drivers/net/wireless/ti/wl1251/main.c
-@@ -1051,7 +1051,7 @@ static int wl1251_op_hw_scan(struct ieee80211_hw *hw,
- 	return ret;
- }
- 
--static int wl1251_op_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int wl1251_op_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	struct wl1251 *wl = hw->priv;
- 	int ret;
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index ea9bc4717a85..3a0061cbc8a7 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -3923,7 +3923,7 @@ static int wl1271_op_set_frag_threshold(struct ieee80211_hw *hw, u32 value)
- 	return ret;
- }
- 
--static int wl1271_op_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int wl1271_op_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
- {
- 	struct wl1271 *wl = hw->priv;
- 	struct wl12xx_vif *wlvif;
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 74d037cfccca..8ff02475968e 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -3333,7 +3333,8 @@ static int mac80211_hwsim_tx_last_beacon(struct ieee80211_hw *hw)
- 	return 1;
- }
- 
--static int mac80211_hwsim_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-+static int mac80211_hwsim_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
-+					    u32 value)
- {
- 	return -EOPNOTSUPP;
- }
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index fdafc37d17cc..5f7adc8897ea 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -4569,7 +4569,7 @@ struct ieee80211_ops {
- 			    struct ieee80211_key_conf *key,
- 			    struct ieee80211_key_seq *seq);
- 	int (*set_frag_threshold)(struct ieee80211_hw *hw, u32 value);
--	int (*set_rts_threshold)(struct ieee80211_hw *hw, u32 value);
-+	int (*set_rts_threshold)(struct ieee80211_hw *hw, u8 radio_id, u32 value);
- 	int (*sta_add)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		       struct ieee80211_sta *sta);
- 	int (*sta_remove)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 725d90cbc17f..d84024b31541 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3054,7 +3054,13 @@ static int ieee80211_set_wiphy_params(struct wiphy *wiphy, u8 radio_id, u32 chan
- 	}
- 
- 	if (changed & WIPHY_PARAM_RTS_THRESHOLD) {
--		err = drv_set_rts_threshold(local, wiphy->rts_threshold);
-+		u32 rts_threshold;
-+
-+		if (radio_id >= wiphy->n_radio)
-+			rts_threshold = wiphy->rts_threshold;
-+		else
-+			rts_threshold = wiphy->radio_cfg[radio_id].rts_threshold;
-+		err = drv_set_rts_threshold(local, radio_id, rts_threshold);
- 
- 		if (err)
- 			return err;
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index 307587c8a003..362cb2f4b45f 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -402,16 +402,16 @@ static inline int drv_set_frag_threshold(struct ieee80211_local *local,
- }
- 
- static inline int drv_set_rts_threshold(struct ieee80211_local *local,
--					u32 value)
-+					u8 radio_id, u32 value)
- {
- 	int ret = 0;
- 
- 	might_sleep();
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
--	trace_drv_set_rts_threshold(local, value);
-+	trace_drv_set_rts_threshold(local, radio_id, value);
- 	if (local->ops->set_rts_threshold)
--		ret = local->ops->set_rts_threshold(&local->hw, value);
-+		ret = local->ops->set_rts_threshold(&local->hw, radio_id, value);
- 	trace_drv_return_int(local, ret);
- 	return ret;
- }
-diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-index 72fad8ea8bb9..b3797aca26bc 100644
---- a/net/mac80211/trace.h
-+++ b/net/mac80211/trace.h
-@@ -823,9 +823,27 @@ DEFINE_EVENT(local_u32_evt, drv_set_frag_threshold,
- 	TP_ARGS(local, value)
- );
- 
--DEFINE_EVENT(local_u32_evt, drv_set_rts_threshold,
--	TP_PROTO(struct ieee80211_local *local, u32 value),
--	TP_ARGS(local, value)
-+TRACE_EVENT(drv_set_rts_threshold,
-+	TP_PROTO(struct ieee80211_local *local, u8 radio_id, u32 value),
-+
-+	TP_ARGS(local, radio_id, value),
-+
-+	TP_STRUCT__entry(
-+		LOCAL_ENTRY
-+		__field(u8, radio_id)
-+		__field(u32, value)
-+	),
-+
-+	TP_fast_assign(
-+		LOCAL_ASSIGN;
-+		__entry->radio_id = radio_id;
-+		__entry->value = value;
-+	),
-+
-+	TP_printk(
-+		LOCAL_PR_FMT " radio_id:%d, value:%d",
-+		LOCAL_PR_ARG, __entry->radio_id, __entry->value
-+	)
- );
- 
- TRACE_EVENT(drv_set_coverage_class,
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 27d414efa3fd..da999b405809 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1829,7 +1829,13 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 	drv_set_frag_threshold(local, hw->wiphy->frag_threshold);
- 
- 	/* setup RTS threshold */
--	drv_set_rts_threshold(local, hw->wiphy->rts_threshold);
-+	if (hw->wiphy->n_radio > 0)
-+		for (i = 0; i < hw->wiphy->n_radio; i++)
-+			drv_set_rts_threshold(local, i,
-+					      hw->wiphy->radio_cfg[i].rts_threshold);
-+	else
-+		drv_set_rts_threshold(local, NL80211_WIPHY_RADIO_ID_DEFAULT,
-+				      hw->wiphy->rts_threshold);
- 
- 	/* reset coverage class */
- 	drv_set_coverage_class(local, hw->wiphy->coverage_class);
--- 
-2.25.1
+root@OpenWrt-WAP:~# cat /sys/module/ath11k/parameters/debug_mask
+4128
 
+root@OpenWrt-WAP:~# dmesg | grep ath
+[   15.093627] ath11k_pci 0001:01:00.0: Adding to iommu group 2
+[   15.099326] ath11k_pci 0001:01:00.0: assign IRQ: got 0
+[   15.099512] ath11k_pci 0001:01:00.0: BAR 0: assigned [mem
+0x2840000000-0x28401fffff 64bit]
+[   15.107879] ath11k_pci 0001:01:00.0: boot pci_mem 0x00000000880f25e0
+[   15.107886] ath11k_pci 0001:01:00.0: boot pci probe 17cb:1104 17cb:1104
+[   15.108483] ath11k_pci 0001:01:00.0: MSI vectors: 16
+[   15.113538] ath11k_pci 0001:01:00.0: pci msi base data is 0
+[   15.113545] ath11k_pci 0001:01:00.0: qcn9074 hw1.0
+[   15.118336] ath11k_pci 0001:01:00.0: FW memory mode: 2
+[   15.125643] ath11k_pci 0001:01:00.0: boot failed to load firmware-2.bin: -2
+[   15.125658] ath11k_pci 0001:01:00.0: boot using fw api 1
+[   15.125668] ath11k_pci 0001:01:00.0: pci msi assignment MHI
+num_vectors 3 user_base_data 0 base_vector 0
+[   15.125675] ath11k_pci 0001:01:00.0: pci num_vectors 3 base_vector 0
+[   15.129780] ath11k_pci 0001:01:00.0: pci msi assignment CE
+num_vectors 5 user_base_data 3 base_vector 3
+[   15.129933] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   15.129964] ath11k_pci 0001:01:00.0: pci irq 369 group 0
+[   15.130013] ath11k_pci 0001:01:00.0: pci irq 370 group 1
+[   15.130059] ath11k_pci 0001:01:00.0: pci irq 371 group 2
+[   15.130110] ath11k_pci 0001:01:00.0: pci irq 372 group 3
+[   15.130157] ath11k_pci 0001:01:00.0: pci irq 373 group 4
+[   15.130204] ath11k_pci 0001:01:00.0: pci irq 374 group 5
+[   15.130250] ath11k_pci 0001:01:00.0: pci irq 375 group 6
+[   15.130295] ath11k_pci 0001:01:00.0: pci irq 376 group 7
+[   15.130359] ath11k_pci 0001:01:00.0: pci after request_irq msi_ep_base_data 0
+[   15.230443] ath11k_pci 0001:01:00.0: pci ltssm 0x111
+[   15.230456] ath11k_pci 0001:01:00.0: pci pcie_hot_rst 0x11
+[   15.235499] ath11k_pci 0001:01:00.0: pci pcie_q6_cookie_addr 0x0
+[   15.235514] ath11k_pci 0001:01:00.0: pci wlaon_warm_sw_entry 0x0
+[   15.255530] ath11k_pci 0001:01:00.0: pci wlaon_warm_sw_entry 0x0
+[   15.255545] ath11k_pci 0001:01:00.0: pci soc reset cause 0
+[   15.275554] ath11k_pci 0001:01:00.0: pci mhistatus 0xff04
+[   15.285571] ath11k_pci 0001:01:00.0: pci link_ctl 0x0000 L0s 0 L1 0
+[   15.446403] ath11k_pci 0001:01:00.0: boot notify status reason
+MHI_CB_EE_SBL_MODE
+[   15.494739] ath11k_pci 0001:01:00.0: boot notify status reason
+MHI_CB_EE_MISSION_MODE
+[   15.515587] ath11k_pci 0001:01:00.0: chip_id 0x0 chip_family 0x0
+board_id 0xff soc_id 0xffffffff
+[   15.524423] ath11k_pci 0001:01:00.0: fw_version 0x290b8862
+fw_build_timestamp 2024-09-23 10:51 fw_build_id
+[   15.534202] ath11k_pci 0001:01:00.0: boot using board name
+'bus=pci,qmi-chip-id=0,qmi-board-id=255'
+[   15.551970] ath11k_pci 0001:01:00.0: boot firmware request
+ath11k/QCN9074/hw1.0/board-2.bin size 786836
+[   15.551992] ath11k_pci 0001:01:00.0: boot board name
+[   15.552001] ath11k_pci 0001:01:00.0: 00000000: 62 75 73 3d 70 63 69
+2c 71 6d 69 2d 63 68 69 70  bus=pci,qmi-chip
+[   15.552007] ath11k_pci 0001:01:00.0: 00000010: 2d 69 64 3d 30 2c 71
+6d 69 2d 62 6f 61 72 64 2d  -id=0,qmi-board-
+[   15.552013] ath11k_pci 0001:01:00.0: 00000020: 69 64 3d 31 36 30
+                            id=160
+[   15.552018] ath11k_pci 0001:01:00.0: boot board name
+[   15.552024] ath11k_pci 0001:01:00.0: 00000000: 62 75 73 3d 70 63 69
+2c 71 6d 69 2d 63 68 69 70  bus=pci,qmi-chip
+[   15.552030] ath11k_pci 0001:01:00.0: 00000010: 2d 69 64 3d 30 2c 71
+6d 69 2d 62 6f 61 72 64 2d  -id=0,qmi-board-
+[   15.552036] ath11k_pci 0001:01:00.0: 00000020: 69 64 3d 31 36 31
+                            id=161
+[   15.552041] ath11k_pci 0001:01:00.0: boot board name
+[   15.552047] ath11k_pci 0001:01:00.0: 00000000: 62 75 73 3d 70 63 69
+2c 71 6d 69 2d 63 68 69 70  bus=pci,qmi-chip
+[   15.552053] ath11k_pci 0001:01:00.0: 00000010: 2d 69 64 3d 30 2c 71
+6d 69 2d 62 6f 61 72 64 2d  -id=0,qmi-board-
+[   15.552059] ath11k_pci 0001:01:00.0: 00000020: 69 64 3d 31 36 32
+                            id=162
+[   15.552064] ath11k_pci 0001:01:00.0: boot board name
+[   15.552070] ath11k_pci 0001:01:00.0: 00000000: 62 75 73 3d 70 63 69
+2c 71 6d 69 2d 63 68 69 70  bus=pci,qmi-chip
+[   15.552076] ath11k_pci 0001:01:00.0: 00000010: 2d 69 64 3d 30 2c 71
+6d 69 2d 62 6f 61 72 64 2d  -id=0,qmi-board-
+[   15.552082] ath11k_pci 0001:01:00.0: 00000020: 69 64 3d 32 35 35
+                            id=255
+[   15.552087] ath11k_pci 0001:01:00.0: boot found match board data
+for name 'bus=pci,qmi-chip-id=0,qmi-board-id=255'
+[   15.552093] ath11k_pci 0001:01:00.0: boot found board data for
+'bus=pci,qmi-chip-id=0,qmi-board-id=255'
+[   15.552100] ath11k_pci 0001:01:00.0: boot using board api 2
+[   16.910820] ath11k_pci 0001:01:00.0: boot firmware request
+ath11k/QCN9074/hw1.0/m3.bin size 340108
+[   16.934188] ath11k_pci 0001:01:00.0: pci msi assignment CE
+num_vectors 5 user_base_data 3 base_vector 3
+[   16.934216] ath11k_pci 0001:01:00.0: pci msi assignment CE
+num_vectors 5 user_base_data 3 base_vector 3
+[   16.934228] ath11k_pci 0001:01:00.0: pci msi assignment CE
+num_vectors 5 user_base_data 3 base_vector 3
+[   16.934238] ath11k_pci 0001:01:00.0: pci msi assignment CE
+num_vectors 5 user_base_data 3 base_vector 3
+[   16.934249] ath11k_pci 0001:01:00.0: pci msi assignment CE
+num_vectors 5 user_base_data 3 base_vector 3
+[   16.934258] ath11k_pci 0001:01:00.0: pci msi assignment CE
+num_vectors 5 user_base_data 3 base_vector 3
+[   16.934273] ath11k_pci 0001:01:00.0: pci msi assignment CE
+num_vectors 5 user_base_data 3 base_vector 3
+[   16.934284] ath11k_pci 0001:01:00.0: pci msi assignment CE
+num_vectors 5 user_base_data 3 base_vector 3
+[   16.935322] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.935333] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 11,ring_num 0
+[   16.937172] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.937185] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 12,ring_num 0
+[   16.937196] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.937203] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 6,ring_num 0
+[   16.937212] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.937219] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 7,ring_num 0
+[   16.937489] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.937497] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 5,ring_num 0
+[   16.937934] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.938396] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.938405] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 5,ring_num 1
+[   16.938823] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.939059] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.939068] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 5,ring_num 2
+[   16.939468] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.939635] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.939642] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 2,ring_num 0
+[   16.939765] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.939872] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.939959] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.939967] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 3,ring_num 0
+[   16.940135] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.940417] ath11k_pci 0001:01:00.0: boot htc service 'Control' ul
+pipe 0 dl pipe 1 eid 0 ready
+[   16.940425] ath11k_pci 0001:01:00.0: boot htc service 'Control' eid
+0 tx flow control disabled
+[   16.941453] ath11k_pci 0001:01:00.0: boot htc service HTT Data does
+not allocate target credits
+[   16.941570] ath11k_pci 0001:01:00.0: boot htc service 'HTT Data' ul
+pipe 4 dl pipe 1 eid 1 ready
+[   16.941578] ath11k_pci 0001:01:00.0: boot htc service 'HTT Data'
+eid 1 tx flow control disabled
+[   16.941633] ath11k_pci 0001:01:00.0: boot htc service 'WMI' ul pipe
+3 dl pipe 2 eid 2 ready
+[   16.941641] ath11k_pci 0001:01:00.0: boot htc service 'WMI' eid 2
+tx flow control disabled
+[   16.943010] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.943267] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.943476] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   16.943604] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   17.246410] ath11k_pci 0001:01:00.0: htt event 48 not handled
+[   17.252661] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   17.253260] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   17.253871] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   17.254512] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   17.254528] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 16,ring_num 0
+[   17.255170] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   17.255743] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   17.255759] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 19,ring_num 0
+[   17.284419] ath11k_pci 0001:01:00.0: pci msi assignment DP
+num_vectors 8 user_base_data 8 base_vector 8
+[   17.284438] ath11k_pci 0001:01:00.0: pci ring not part of an
+ext_group; ring_type: 20,ring_num 0
+[   22.039565] ath11k_pci 0001:01:00.0 phy0-ap0: entered allmulticast mode
+[   22.050081] ath11k_pci 0001:01:00.0 phy0-ap0: entered promiscuous mode
+[   30.709682] ath11k_pci 0001:01:00.0 phy0-ap0: left allmulticast mode
+[   30.716078] ath11k_pci 0001:01:00.0 phy0-ap0: left promiscuous mode
+[   36.330610] ath11k_pci 0001:01:00.0 phy0-ap0: entered allmulticast mode
+[   36.337503] ath11k_pci 0001:01:00.0 phy0-ap0: entered promiscuous mode
+
+root@OpenWrt-WAP:~# iw dev
+phy#0
+Interface phy0-ap0
+ifindex 14
+wdev 0x2
+addr 04:f0:21:bd:d7:99
+type AP
+channel 100 (5500 MHz), width: 160 MHz, center1: 5570 MHz
+multicast TXQ:
+qsz-byt qsz-pkt flows drops marks overlmt hashcol tx-bytes tx-packets
+0 0 0 0 0 0 0 0 0
+
+root@OpenWrt-WAP:~# iwinfo
+phy0-ap0  ESSID: "OpenWrt-WAP-5GHz"
+          Access Point: 04:F0:21:BD:D7:99
+          Mode: Master  Channel: 100 (5.500 GHz)  HT Mode: HE160
+          Center Channel 1: 114 2: unknown
+          Tx-Power: 0 dBm  Link Quality: unknown/70
+          Signal: unknown  Noise: -101 dBm
+          Bit Rate: unknown
+          Encryption: none
+          Type: nl80211  HW Mode(s): 802.11ac/ax/n
+          Hardware: 17CB:1104 17CB:1104 [Qualcomm Atheros QCN6024/9024/9074]
+          TX power offset: none
+          Frequency offset: none
+          Supports VAPs: yes  PHY name: phy0
+
+root@OpenWrt-WAP:~# reboot
+[  343.663492] Internal error: synchronous external abort:
+0000000096000210 [#1] SMP
+[  343.670992] Modules linked in: nft_fib_inet nft_connlimit
+nf_flow_table_inet nf_conncount ath11k_pci(O) ath11k(O) rndis_host
+nft_socket nft_reject_ipv6 nft_reject_ipv4 nft_reject_inet nft_reject
+nft_redir nft_quota nft_queue nft_numgen nft_nat nft_masq nft_log
+nft_limit nft_hash nft_fwd_netdev nft_flow_offload nft_fib_ipv6
+nft_fib_ipv4 nft_fib nft_dup_netdev nft_dup_ipv6 nft_dup_ipv4 nft_ct
+nft_chain_nat nfnetlink_cttimeout nfnetlink_cthelper nf_tables nf_nat
+nf_flow_table nf_conntrack_netlink nf_conntrack mmc_spi mac80211(O)
+ftdi_sio ch348 ch341 cfg80211(O) cdc_subset cdc_ether cdc_eem
+usbserial usbnet usbmon usbhid ums_usbat ums_sddr55 ums_sddr09
+ums_karma ums_jumpshot ums_isd200 ums_freecom ums_datafab ums_cypress
+ums_alauda tps23861 tmp103 tmp102 spidev spi_gpio spi_bitbang sfp
+rtc_pcf8563 rtc_pcf2123 rtc_ds1672 rtc_ds1374 qrtr_mhi qrtr
+qmi_helpers(O) of_mmc_spi nfnetlink_queue nfnetlink nf_socket_ipv6
+nf_socket_ipv4 nf_reject_ipv6 nf_reject_ipv4 nf_log_syslog
+nf_dup_netdev nf_dup_ipv6 nf_dup_ipv4 nf_defrag_ipv6
+[  343.671198]  nf_defrag_ipv4 mhi_pci_generic mhi_net mhi mdio_i2c
+mdio_gpio max6697 ltc4151 lm95241 lm92 lm90 lm85 lm77 lm70 lm63 jc42
+ina2xx ina209 hid_generic compat(O) cdc_acm at25 adt7475 ntfs3 configs
+sg hid tmp421 tc654 adt7410 adt7x10 adcxx ad7418 i2c_gpio
+i2c_designware_pci i2c_ccgx_ucsi i2c_algo_bit gpio_pcf857x i2c_mux_reg
+i2c_mux_pca954x i2c_mux_pca9541 i2c_mux_gpio cryptodev(O) hwmon_vid
+msdos bonding nls_utf8 zram zsmalloc eeprom_93cx6 crypto_user
+algif_skcipher algif_rng algif_hash algif_aead af_alg sha512_generic
+sha512_arm64 seqiv sha3_generic jitterentropy_rng drbg michael_mic md5
+hmac geniv cmac uas usb_storage xhci_plat_hcd xhci_pci xhci_hcd dwc3
+dwc2_pci dwc2 roles ohci_pci uhci_hcd ohci_platform ohci_hcd ehci_pci
+fsl_mph_dr_of ehci_platform ehci_fsl ahci_platform ahci_qoriq
+libahci_platform libahci ehci_hcd nvme nvme_core exfat gpio_cascade
+mux_gpio phy_generic usbcore usb_common microchip mii
+[  343.842432] CPU: 7 PID: 9435 Comm: procd Tainted: G           O
+  6.6.86 #0
+[  343.849746] Hardware name: LS1088A
+[  343.856969] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  343.863933] pc : ath11k_pci_get_msi_irq+0x18a0/0x1900 [ath11k_pci]
+[  343.870125] lr : ath11k_pcic_init_msi_config+0x98/0xc4 [ath11k]
+[  343.876070] sp : ffff80008d473b60
+[  343.879380] x29: ffff80008d473b60 x28: ffff000005e88000 x27: ffff000000e7f138
+[  343.886522] x26: ffff800080f20128 x25: ffff8000811b0028 x24: 0000000000000000
+[  343.893664] x23: 0000000000000001 x22: ffff00000720ade8 x21: ffff800079a80be4
+[  343.900807] x20: ffff000007200000 x19: ffff800083c80500 x18: 0000000000000000
+[  343.907948] x17: 0000000000000000 x16: 0000000000000000 x15: 00004b0957e10d10
+[  343.915090] x14: ffff000002f3961c x13: ffff800081113d10 x12: 0000000000000169
+[  343.922232] x11: ffff800080d63a68 x10: 1fffe000005e7301 x9 : 0000000000000000
+[  343.929374] x8 : 0000000000000000 x7 : ffff7ffffa960000 x6 : 0000000000000004
+[  343.936516] x5 : 0000000000000000 x4 : 000000000007ffff x3 : 0000000000000000
+[  343.943658] x2 : 000000000000003f x1 : ffff00000720ad58 x0 : ffff800083c00000
+[  343.950800] Call trace:
+[  343.953241]  ath11k_pci_get_msi_irq+0x18a0/0x1900 [ath11k_pci]
+[  343.959080]  ath11k_pcic_init_msi_config+0x98/0xc4 [ath11k]
+[  343.964671]  ath11k_pcic_read32+0x30/0xb4 [ath11k]
+[  343.969477]  ath11k_pci_get_msi_irq+0x528/0x1900 [ath11k_pci]
+[  343.975230]  ath11k_pci_get_msi_irq+0x1460/0x1900 [ath11k_pci]
+[  343.981068]  ath11k_pci_get_msi_irq+0x1750/0x1900 [ath11k_pci]
+[  343.986906]  pci_device_shutdown+0x34/0x44
+[  343.991004]  device_shutdown+0x160/0x268
+[  343.994928]  kernel_restart+0x40/0xc0
+[  343.998594]  __do_sys_reboot+0x104/0x23c
+[  344.002518]  __arm64_sys_reboot+0x24/0x30
+[  344.006529]  do_el0_svc+0x6c/0x100
+[  344.009931]  el0_svc+0x28/0x9c
+[  344.012986]  el0t_64_sync_handler+0x120/0x12c
+[  344.017344]  el0t_64_sync+0x178/0x17c
+[  344.021009] Code: f94e0a80 92404a73 91420273 8b130013 (b9400273)
+[  344.027102] ---[ end trace 0000000000000000 ]---
+[  344.031718] Kernel panic - not syncing: synchronous external abort:
+Fatal exception in interrupt
+[  344.040513] Kernel Offset: disabled
+[  344.043997] CPU features: 0x0,00000000,00020000,1000400b
+[  344.049309] Memory Limit: none
+[  344.052358] Rebooting in 3 seconds..
 
