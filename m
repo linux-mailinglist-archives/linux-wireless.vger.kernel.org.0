@@ -1,181 +1,129 @@
-Return-Path: <linux-wireless+bounces-21944-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21945-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15585A99EF4
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 04:50:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A41AA99F7F
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 05:22:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B47C5A53D3
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 02:50:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55A6B44643D
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 03:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CA3157A55;
-	Thu, 24 Apr 2025 02:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB9D198E63;
+	Thu, 24 Apr 2025 03:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="v002FFEU"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LjP+kysb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD981A23AC;
-	Thu, 24 Apr 2025 02:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4381242A82
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 03:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745463011; cv=none; b=jUktxhBIdB9BLvz2abxl8RBMZ4BTjWKHgL8GbiFjk4jmBXa2jUCep2Ex758WPPuyJ6WTtD5wOL+8xtnjPe74rSmJH4AMrjdqreDrW5+QK8jucZN40MvdVQP/GILc/JobxUqjI+T8lx0McHkRfOtMzbKTVI/rDkkRQaF0wNRF6A0=
+	t=1745464930; cv=none; b=apjbcSxxm9ZoWD+U9YfGbl5eWqNtroqTKRqvdtEF8OPU6S+nkVBot1LyNffiF0hGqE+ZHpQE/PXO4FTQUnuK9J4TxCk9oTy5DMNWMzuPkHviUCiaeVOhDnlzZ22F91aCg7KeU9jD/7SqH8unLwig8CRImUZuBPJ4MdX4gVafaJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745463011; c=relaxed/simple;
-	bh=EWfPEEMhtWzHJh3pB1UmpwNAPvdzoaM+KTm2iz8yfus=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OF+3cnLwymywQjmoD7wyDK4CYl8fgOMd/HA4fFVRHN32/fyCAM4iaD49gmWG+Sxh8BQwaw930gab7Q8d/RbfnigtHLV3TCqfrdzYwSBwC6AeGQzXO5DaUGF6YAZZhGcrVknqBE+TsvnR/oeiykv0OG8pApGL1uI+YIwZY58CXp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=v002FFEU; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 53O2o3vT53951108, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1745463004; bh=EWfPEEMhtWzHJh3pB1UmpwNAPvdzoaM+KTm2iz8yfus=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=v002FFEUWPpSxLeFtfc+5gNKVP/3taZqFckDPAUYxUCMJ2YKu/fR6B0b31MnBOygp
-	 JLbRF04B1RyPXKQpVQRhscc6RlW3RQYWoxmkW9KfYl76AKZ69g+zkL5sxhhGBp2Hs+
-	 SgXBlM0Mug0lCQz3dPuZdi9FwRMm43Zlh2gBVjy1KCJhz6zEteJ4pjVaEshcrp84i2
-	 bvQHEKXY6en5Q+uGWITQEPtV8J9TFKKoJ7nXEffbqEnQZiSLpFVj1jTYiDr/4mXzbL
-	 VZPBy2OBlEOPmB5/DGnB1vstcpdV9eM1nHXlQbWshMNWKPnXX7ORR38vmRZbptOO3T
-	 1M5oFe7LBixtA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 53O2o3vT53951108
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Apr 2025 10:50:04 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 24 Apr 2025 10:50:04 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 24 Apr 2025 10:50:03 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Thu, 24 Apr 2025 10:50:03 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Jes Sorensen <Jes.Sorensen@gmail.com>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [RFC PATCH] wifi: rtl8xxxu: toggle P2P for supported devices
-Thread-Topic: [RFC PATCH] wifi: rtl8xxxu: toggle P2P for supported devices
-Thread-Index: AQHbtI0DZ0O+dUUXJEW0GCQZ07RXY7OyD4XQ
-Date: Thu, 24 Apr 2025 02:50:03 +0000
-Message-ID: <ea405158f1c7453dba2b3e2c7c3a0e03@realtek.com>
-References: <20250423201826.1054254-1-yakoyoku@gmail.com>
-In-Reply-To: <20250423201826.1054254-1-yakoyoku@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1745464930; c=relaxed/simple;
+	bh=0DQoqMYw3wEjVwfm0fXV3QrZVFvtLGOEGs8Mq+pul8k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=SY26pIaO4PJicK9OC1/l2Z5BO5vbXg/Fw/rZ86cSPVrR1nypHquB3ljBwcPmosP2bP946NyKSpJlkGYIzet5qB70GJERxxamd9Ee9l/h6/T+01zDk0N7IRKJ56KdHUqwqk7S6yOIiViCIzP0Hd8UhBXJtVvv5VgjAXBRdhyjpFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LjP+kysb; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53O0FDQw031157;
+	Thu, 24 Apr 2025 03:22:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	JGah7OpiEjsMWBtUdpgvxJwO8vPqDsx1r3LbFa10pPs=; b=LjP+kysbyiNE9w5s
+	ng+vMxNAIBNiQq2QZs+iG99R00LnwbyrLyVBM7LwZtFGQjI2MjZB1jf+s4INaB4E
+	zc7fInzK3RYSSDoqpzGriiV4RqgnasGubU5j/710ohxI1yB+TdqvjyIMRmZ9IVCt
+	tGdD1tPJkhEMxcO53vfPKMhWh0qaynl/a3V/XGyr4Zv5+cYdKnNXaztOJnuw4ZkJ
+	UTjXDHV/xlfu/PFYc2zvJme/ucVtmLo0q9Aq2JGP1Q4+/LTxySASF8cMuGGESeZD
+	QUBYIhN7vFBhPUH7ts+lAKBfc3kX57aFY4OPGKn/1KC9QcFFtPv2CJItya3FrwfJ
+	DDbTVQ==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jh5c2gk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Apr 2025 03:22:03 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53O3M2qX013725
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Apr 2025 03:22:02 GMT
+Received: from [10.152.201.120] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 23 Apr
+ 2025 20:22:01 -0700
+Message-ID: <8ff2ad2a-57ff-41c1-80d0-183997bb6326@quicinc.com>
+Date: Thu, 24 Apr 2025 08:51:58 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next v6 01/11] wifi: mac80211: add support
+ towards MLO handling of station statistics
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+References: <20250415042030.1246187-1-quic_sarishar@quicinc.com>
+ <20250415042030.1246187-2-quic_sarishar@quicinc.com>
+ <253c8d56425a7549386fd6f0072293f608cb89eb.camel@sipsolutions.net>
+Content-Language: en-US
+From: Sarika Sharma <quic_sarishar@quicinc.com>
+In-Reply-To: <253c8d56425a7549386fd6f0072293f608cb89eb.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI0MDAxOCBTYWx0ZWRfXwnVTXqAmQpZm E3++YaocATXm6aPvjwHtS3XHgeakFiOsIr9AmRB7bRliL8nC6oaMeiCfGktNqxeoUk01NXwxPsE +HjarXtHHt3Rc41dMCzTmcioMPXih0+kyBQ53ef1WdGeQ+dVSqqoAEOLTiXLlXzzgn0vopMVxss
+ jsHOqAwHnLvNFkCbEOmN/ELiki0pNcDOKEXkOoMXjDSDhBF/G7nmuZlwJvIsFDamX4Ex10gCfXB 3hGYYZwYsTY5K70t5kf816KPZTIovXeTV38z584ZQzmW67mOSS046Z7ORhrjNLshRU9lxeDOfeW ni6LQ7OqgPACt205DDS8iiTNVdOpE4EdYC0RpqZJpkc+NmU0yShVSS/e2HZZbOkma/3mi1i1NLz
+ Fg458Fa5aNVvlzsvSc74hPswf6JL/VFY09jXLWgpLw7B9yi/L/TscO22mRlAQstdKjlpfdtE
+X-Proofpoint-GUID: Zzugg0_oMoPhHUwajUEpwGctHLg-kSPb
+X-Authority-Analysis: v=2.4 cv=B/S50PtM c=1 sm=1 tr=0 ts=6809ae5b cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=88T_HVOLbFgadkYAZmkA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: Zzugg0_oMoPhHUwajUEpwGctHLg-kSPb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.80.40
+ definitions=2025-04-24_01,2025-04-22_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=679
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 suspectscore=0 mlxscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 spamscore=0 clxscore=1015
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504240018
 
-Martin Rodriguez Reboredo <yakoyoku@gmail.com> wrote:
-> This is an RFC to see if rtl8xxxu can be made to support P2P.
->=20
-> Theoretically this should be handled by mac80211 but it seems that
-> drivers may have to take some extra steps depending on which device we
-> are talking about. I know that this patch is so basic that it might be
-> missing some H2C commands or similar for this to work on Realtek chips
-> but I don't have the required knowledge for me to implement it, so if
-> you know a place to read about I'll be glad to hear.
->=20
-> As of now only rtl8192ex devices will have their P2P_CLIENT, P2P_GO
-> and P2P_DEVICE wiphy interface modes set because those are the only
-> ones I can test on my rtl8192eu card.
->=20
-> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> ---
->  drivers/net/wireless/realtek/rtl8xxxu/8192e.c |  3 ++
->  drivers/net/wireless/realtek/rtl8xxxu/core.c  | 34 ++++++++++++++++++-
->  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  3 ++
->  3 files changed, 39 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/8192e.c
-> b/drivers/net/wireless/realtek/rtl8xxxu/8192e.c
-> index 8e123bbfc665..3e78c5b73726 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/8192e.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/8192e.c
-> @@ -1752,6 +1752,9 @@ struct rtl8xxxu_fileops rtl8192eu_fops =3D {
->         .gen2_thermal_meter =3D 1,
->         .needs_full_init =3D 1,
->         .supports_ap =3D 1,
-> +       .supports_p2p_client =3D 1,
-> +       .supports_p2p_go =3D 1,
-> +       .supports_p2p_device =3D 1,
+On 4/23/2025 10:05 PM, Johannes Berg wrote:
+> On Tue, 2025-04-15 at 09:50 +0530, Sarika Sharma wrote:
+> 
+> 
+>> -int ieee80211_ave_rssi(struct ieee80211_vif *vif)
+>> +int ieee80211_ave_rssi(struct ieee80211_vif *vif, int link_id)
+>>   {
+>>   	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
+>> +	struct ieee80211_link_data *link_data;
+>>   
+>>   	if (WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_STATION))
+>>   		return 0;
+>>   
+>> -	return -ewma_beacon_signal_read(&sdata->deflink.u.mgd.ave_beacon_signal);
+>> +	if (link_id < 0)
+>> +		link_data = &sdata->deflink;
+>> +	else
+>> +		link_data = wiphy_dereference(sdata->local->hw.wiphy,
+>> +					      sdata->link[link_id]);
+>> +
+>> +	if (WARN_ON(!link_data))
+>> +		return -99;
+>>
+> 
+> nit: _ONCE? Not that important.
+> 
+> johannes
 
-I think no any device supports either GO or GC only. Combine three to one
-supports_p2p.=20
-
-To prevent messed up the order for every chip_fops. Please define=20
-'supports_p2p =3D 0' for the chips that don't support p2p yet.=20
-
->         .max_macid_num =3D 128,
->         .max_sec_cam_num =3D 64,
->         .adda_1t_init =3D 0x0fc01616,
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> index 569856ca677f..a86c4a9083b2 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> @@ -1600,9 +1600,11 @@ static void rtl8xxxu_set_linktype(struct rtl8xxxu_=
-priv *priv,
->         case NL80211_IFTYPE_ADHOC:
->                 type =3D MSR_LINKTYPE_ADHOC;
->                 break;
-> +       case NL80211_IFTYPE_P2P_CLIENT:
->         case NL80211_IFTYPE_STATION:
->                 type =3D MSR_LINKTYPE_STATION;
->                 break;
-> +       case NL80211_IFTYPE_P2P_GO:
->         case NL80211_IFTYPE_AP:
->                 type =3D MSR_LINKTYPE_AP;
->                 break;
-> @@ -6780,6 +6782,8 @@ static int rtl8xxxu_add_interface(struct ieee80211_=
-hw *hw,
->                 return -EOPNOTSUPP;
->=20
->         switch (vif->type) {
-> +       case NL80211_IFTYPE_P2P_CLIENT:
-> +               fallthrough;
-
-Just like rtl8xxxu_set_linktype(). No need fallthrough.
-
-The fallthrough is needed, only if you do something in the case, but
-still want to fall through to next case.
-
->         case NL80211_IFTYPE_STATION:
->                 if (port_num =3D=3D 0) {
->                         rtl8xxxu_stop_tx_beacon(priv);
-> @@ -6790,6 +6794,8 @@ static int rtl8xxxu_add_interface(struct ieee80211_=
-hw *hw,
->                         rtl8xxxu_write8(priv, REG_BEACON_CTRL, val8);
->                 }
->                 break;
-> +       case NL80211_IFTYPE_P2P_GO:
-> +               fallthrough;
-
-ditto.
-
->         case NL80211_IFTYPE_AP:
->                 if (port_num =3D=3D 1) {
->                         rtl8xxxu_switch_ports(priv);
-
-[...]
-
+Sure, will change to WARN_ON_ONCE.
 
