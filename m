@@ -1,168 +1,305 @@
-Return-Path: <linux-wireless+bounces-22011-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22012-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA58CA9B4EE
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 19:03:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21529A9B5F7
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 20:07:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14D671BA3DA7
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 17:03:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2F9C3AD7C3
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 18:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC56205E34;
-	Thu, 24 Apr 2025 17:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE688190664;
+	Thu, 24 Apr 2025 18:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="kGlJaX2y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ltnn8AKb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4231C289363
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 17:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD7428B4E1
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 18:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745514156; cv=none; b=RoCYrlCHovqEgOObuc6syrtk2F3sG/7ZbNNbMCqKfubWiRjMO8cN7zFYAF8Fpm2MUr8k+uCaPVMwULVBQQBg3YM4pl/hbCUSQOMcM5X66dF5tyneA7jjzubocCfX5k5+clEekA1B/cUG8KeTCFkL83f08JJ3lkIFrXQubTb07sQ=
+	t=1745518061; cv=none; b=jUAWbxpZ5gEMs12xQ+UudzGys4srBLvFTKTv3/3/mCShTps9wGwfhV2q0T301chbmiYmopIQlHgzy/MTKROAr7lY06Zl1IQsmLKFj+jiBpNc4+7gKc5jPM9M9/5VoB/dSkZXEdE4lfAW79L7d5Bvf8QtSwcq1i311rPbHshaI54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745514156; c=relaxed/simple;
-	bh=9u09F66ITQXHDLlhFjmWW64UjJO95+du7MaSj7MZjqg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GDUV35n0fv2PTTX+5pxbte4j4FoqIZ3KhFxlzaELndk78z8Wr9lqVd/6jrSXO5qTrfxDXKJL2/3qRTq6FJkqpyyzse1uX32F2MDcKrDHbmvuG+UO2skC5N11eN/PBFHuOSG/sqnlj1Se8dLYe5y2D1z+iS2CPg1N+kaLvEvM/Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=kGlJaX2y; arc=none smtp.client-ip=148.163.129.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 879D42C72C6
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 17:02:33 +0000 (UTC)
-Received: from engine.ppe-hosted.com (unknown [10.7.64.23])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 15DA06013E;
-	Thu, 24 Apr 2025 17:02:27 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2CFA6C0009C;
-	Thu, 24 Apr 2025 17:02:24 +0000 (UTC)
-Received: from [192.168.100.159] (unknown [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 6E92013C2B0;
-	Thu, 24 Apr 2025 10:02:23 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 6E92013C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1745514143;
-	bh=9u09F66ITQXHDLlhFjmWW64UjJO95+du7MaSj7MZjqg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kGlJaX2yGASEttiwA0pmO1eam0qh7yqvIymWtMYMMplfgYh2dYbvkEBzDsBWuPcuW
-	 iBBLcVz8xbnPq2oloxJVcObcxD2a+Oyk0TT5mJtHXBO7K0+kfBojP/hq63cI98rCPd
-	 I1kr3Kj9k5PaeXAOCgW1CovzhREwB7aHXHa3sT4o=
-Message-ID: <927c6766-47d0-dcf6-cbe5-9da1e67292ad@candelatech.com>
-Date: Thu, 24 Apr 2025 10:02:23 -0700
+	s=arc-20240116; t=1745518061; c=relaxed/simple;
+	bh=37cz90cUNsz9PThJa5HQyMTwKHoEOS3HANpDuEmfWiM=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=uWuA8pKfgGGtPr4WnAohaWwdPbZPWd3eg/aENdwWYXBxv4QFTDlxdGrGfIfHkxYVP0gipHLrAR9ge63SqHDji+KxNqkAz3DB6fTpioHBFOIChVS7Z/J7R/Dq3U+svhpIZ/VAoCDj3FwKY8/7QcCy89xGV6fz2GFXbJzmBJZ6k+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ltnn8AKb; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745518060; x=1777054060;
+  h=date:from:to:cc:subject:message-id;
+  bh=37cz90cUNsz9PThJa5HQyMTwKHoEOS3HANpDuEmfWiM=;
+  b=Ltnn8AKbI2N2hLZyg5b4l0b4pDn66cCYFpguG3aQ4IOy4tgUw3Glp8Xg
+   SR/smQIcnOrTlDyAHB4tEFWwzRHuL6AEFc9//yYrW6p6HxuSkBcH22Ll5
+   3ElpLvHjMkobwnBkAL0MFe+tS/g3CtbLgVQZ3kGCXmz2V67m12EPYzm7c
+   z/alBXcuki12SGJq4sa1YZKHuz2SItCahVTreP0lreUWq4t3hJandmMvL
+   WJvOIsxQoUUcLroUtlUwEJemFiKP5+smgmvVQxKDXVmbkdBBqS0KSCDI5
+   op5jMfjmBFOTy/9EHeC9CvOhZLomPIU1ArUyPG62glBzC/Q/pS9gvd/Bi
+   w==;
+X-CSE-ConnectionGUID: kzVaCFX5S8Kta7AeWOVsoA==
+X-CSE-MsgGUID: t3rBkbCfRpym7zUPhTHNQA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47051322"
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="47051322"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 11:07:39 -0700
+X-CSE-ConnectionGUID: hgmtLklyRtuI2tQXscE19A==
+X-CSE-MsgGUID: EcIRzcb4SlaC8CsVmCS/Ag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="133211670"
+Received: from lkp-server01.sh.intel.com (HELO 050dd05385d1) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 24 Apr 2025 11:07:38 -0700
+Received: from kbuild by 050dd05385d1 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u80z1-0004PC-0v;
+	Thu, 24 Apr 2025 18:07:35 +0000
+Date: Fri, 25 Apr 2025 02:07:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ f600832794c91d7021d7337104734246b02a2b86
+Message-ID: <202504250206.38xb1tmQ-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH wireless-next v6 04/11] wifi: cfg80211: reorg sinfo
- structure elements for MLO
-Content-Language: en-US
-To: Sarika Sharma <quic_sarishar@quicinc.com>,
- Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-References: <20250415042030.1246187-1-quic_sarishar@quicinc.com>
- <20250415042030.1246187-5-quic_sarishar@quicinc.com>
- <fa49a2d4927868be689ed8464aa27c3aad2f03b6.camel@sipsolutions.net>
- <c3a6b07e-007e-4168-bf8a-7b0d9ebbc913@quicinc.com>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <c3a6b07e-007e-4168-bf8a-7b0d9ebbc913@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1745514145-NX2EP57xiiMe
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1745514145;NX2EP57xiiMe;<greearb@candelatech.com>;535bfda298b524f45ffb92fb019ae3e8
-X-PPE-TRUSTED: V=1;DIR=OUT;
 
-On 4/24/25 09:44, Sarika Sharma wrote:
-> On 4/23/2025 10:22 PM, Johannes Berg wrote:
->> On Tue, 2025-04-15 at 09:50 +0530, Sarika Sharma wrote:
->>> Current implementation of NL80211_GET_STATION does not work for
->>> multi-link operation(MLO) since in case of MLO only deflink (or one
->>> of the links) is considered and not all links.
->>>
->>> Therefore to support for MLO, start reorganizing sinfo structure
->>> related data elements and add link_sinfo structure for link-level
->>> statistics and keep station related data at sinfo structure.
->>> Currently, changes are done at the deflink(or one of the links) level.
->>> Actual link-level changes will be added in subsequent changes.
->>>
->>> Also currently, mac80211 ops .sta_statistics() is mapped to fill sinfo
->>> structure. But to add support for station statistics at link level,
->>> change the ops to .link_sta_statistics() to fill link_sinfo structure.
->>>
->>> Additionally, move connected_time before assoc_at in station_info
->>> structure to get minimal holes.
->>> pahole summary before this change:
->>>   - size: 232, cachelines: 4, members: 23
->>>   - sum members: 223, holes: 3, sum holes: 9
->>>   - forced alignments: 1
->>>   - last cacheline: 40 bytes
->>>
->>> pahole summary after this change:
->>>   - size: 224, cachelines: 4, members: 23
->>>   - sum members: 223, holes: 1, sum holes: 1
->>>   - forced alignments: 1
->>>   - last cacheline: 32 bytes
->>>
->>> Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
->>> ---
->>> NOTE:
->>>   - Included driver changes for fixing compilation issue.
->>
->> Does this really need to do all the changes in mac80211 and the drivers?
->>
->> OTOH maybe if not then it would cause much more back and forth?
-> 
-> Yes, true this patch includes only the minimum necessary changes to resolve the compilation issues in mac80211 and the drivers.
-> 
-> Without these changes, compilation issues will persist.
-> 
->>
->>> +++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
->>> @@ -1810,47 +1810,51 @@ static int ath6kl_get_station(struct wiphy *wiphy, struct net_device *dev,
->>>       else if (left < 0)
->>>           return left;
->>> +    sinfo->links[0] = kzalloc(sizeof(*sinfo->links[0]), GFP_KERNEL);
->>> +    if (!sinfo->links[0])
->>> +        return -ENOMEM;
->>>
->>
->> This seems rather error-prone to me.
->>
->> We already have sinfo->pertid today, allocated and freed by cfg80211,
->> and here you've added something that's allocated by the driver and freed
->> by mac80211. That seems odd in comparison?
->>
->> I'm not sure what the choices are, but I can't say I like this one ;-)
->> Maybe it's still the least bad option.
-> 
-> Options what I can think of here, other then above approach, may be can allocate memory during get_station() call only, in cfg80211(but this may not be memory 
-> efficient as have to allocate for all possible links).
-> 
-> or, may be can introduce an API in cfg80211 to allocate the memory for sinfo->links, and call the API from drivers/mac80211 while filling the sinfo->links[] data.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: f600832794c91d7021d7337104734246b02a2b86  wifi: mac80211: restructure tx profile retrieval for MLO MBSSID
 
-sinfo->links[] could be an array in sinfo instead of a pointer, so whatever allocates sinfo
-automatically allocates the links memory area, and then just fill in those values as needed
-in the driver and ignore them in mac80211 if not filled?
+elapsed time: 1445m
 
-Thanks,
-Ben
+configs tested: 212
+configs skipped: 5
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    clang-19
+alpha                            allyesconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-14.2.0
+arc                               allnoconfig    gcc-14.2.0
+arc                              allyesconfig    gcc-14.2.0
+arc                   randconfig-001-20250424    gcc-14.2.0
+arc                   randconfig-001-20250424    gcc-8.5.0
+arc                   randconfig-002-20250424    gcc-14.2.0
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    clang-21
+arm                              allyesconfig    gcc-14.2.0
+arm                       aspeed_g4_defconfig    gcc-14.2.0
+arm                   randconfig-001-20250424    gcc-14.2.0
+arm                   randconfig-001-20250424    gcc-7.5.0
+arm                   randconfig-002-20250424    gcc-14.2.0
+arm                   randconfig-002-20250424    gcc-7.5.0
+arm                   randconfig-003-20250424    clang-21
+arm                   randconfig-003-20250424    gcc-14.2.0
+arm                   randconfig-004-20250424    clang-21
+arm                   randconfig-004-20250424    gcc-14.2.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-14.2.0
+arm64                 randconfig-001-20250424    clang-21
+arm64                 randconfig-001-20250424    gcc-14.2.0
+arm64                 randconfig-002-20250424    gcc-14.2.0
+arm64                 randconfig-002-20250424    gcc-8.5.0
+arm64                 randconfig-003-20250424    clang-21
+arm64                 randconfig-003-20250424    gcc-14.2.0
+arm64                 randconfig-004-20250424    gcc-14.2.0
+arm64                 randconfig-004-20250424    gcc-8.5.0
+csky                             alldefconfig    gcc-14.2.0
+csky                              allnoconfig    gcc-14.2.0
+csky                  randconfig-001-20250424    gcc-12.4.0
+csky                  randconfig-001-20250424    gcc-9.3.0
+csky                  randconfig-002-20250424    gcc-14.2.0
+csky                  randconfig-002-20250424    gcc-9.3.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    clang-19
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-19
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250424    clang-21
+hexagon               randconfig-001-20250424    gcc-9.3.0
+hexagon               randconfig-002-20250424    clang-21
+hexagon               randconfig-002-20250424    gcc-9.3.0
+i386                             allmodconfig    clang-20
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    clang-20
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    clang-20
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250424    gcc-12
+i386        buildonly-randconfig-002-20250424    clang-20
+i386        buildonly-randconfig-002-20250424    gcc-12
+i386        buildonly-randconfig-003-20250424    clang-20
+i386        buildonly-randconfig-003-20250424    gcc-12
+i386        buildonly-randconfig-004-20250424    clang-20
+i386        buildonly-randconfig-004-20250424    gcc-12
+i386        buildonly-randconfig-005-20250424    gcc-12
+i386        buildonly-randconfig-006-20250424    clang-20
+i386        buildonly-randconfig-006-20250424    gcc-12
+i386                                defconfig    clang-20
+i386                  randconfig-001-20250424    clang-20
+i386                  randconfig-002-20250424    clang-20
+i386                  randconfig-003-20250424    clang-20
+i386                  randconfig-004-20250424    clang-20
+i386                  randconfig-005-20250424    clang-20
+i386                  randconfig-006-20250424    clang-20
+i386                  randconfig-007-20250424    clang-20
+i386                  randconfig-011-20250424    gcc-12
+i386                  randconfig-012-20250424    gcc-12
+i386                  randconfig-013-20250424    gcc-12
+i386                  randconfig-014-20250424    gcc-12
+i386                  randconfig-015-20250424    gcc-12
+i386                  randconfig-016-20250424    gcc-12
+i386                  randconfig-017-20250424    gcc-12
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20250424    gcc-14.2.0
+loongarch             randconfig-001-20250424    gcc-9.3.0
+loongarch             randconfig-002-20250424    gcc-12.4.0
+loongarch             randconfig-002-20250424    gcc-9.3.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+m68k                        stmark2_defconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                           ci20_defconfig    gcc-14.2.0
+mips                           ip32_defconfig    gcc-14.2.0
+mips                   sb1250_swarm_defconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250424    gcc-10.5.0
+nios2                 randconfig-001-20250424    gcc-9.3.0
+nios2                 randconfig-002-20250424    gcc-10.5.0
+nios2                 randconfig-002-20250424    gcc-9.3.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+openrisc                            defconfig    gcc-12
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                              defconfig    gcc-12
+parisc                randconfig-001-20250424    gcc-9.3.0
+parisc                randconfig-002-20250424    gcc-7.5.0
+parisc                randconfig-002-20250424    gcc-9.3.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    clang-21
+powerpc                      pmac32_defconfig    gcc-14.2.0
+powerpc               randconfig-001-20250424    clang-21
+powerpc               randconfig-001-20250424    gcc-9.3.0
+powerpc               randconfig-002-20250424    clang-17
+powerpc               randconfig-002-20250424    gcc-9.3.0
+powerpc               randconfig-003-20250424    clang-21
+powerpc               randconfig-003-20250424    gcc-9.3.0
+powerpc                     taishan_defconfig    gcc-14.2.0
+powerpc64             randconfig-001-20250424    clang-21
+powerpc64             randconfig-001-20250424    gcc-9.3.0
+powerpc64             randconfig-002-20250424    clang-21
+powerpc64             randconfig-002-20250424    gcc-9.3.0
+powerpc64             randconfig-003-20250424    clang-21
+powerpc64             randconfig-003-20250424    gcc-9.3.0
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    gcc-12
+riscv                 randconfig-001-20250424    clang-21
+riscv                 randconfig-002-20250424    clang-21
+s390                             allmodconfig    clang-18
+s390                             allmodconfig    gcc-14.2.0
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    gcc-12
+s390                  randconfig-001-20250424    clang-21
+s390                  randconfig-001-20250424    gcc-9.3.0
+s390                  randconfig-002-20250424    clang-21
+s390                  randconfig-002-20250424    gcc-9.3.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                                  defconfig    gcc-12
+sh                        edosk7760_defconfig    gcc-14.2.0
+sh                          r7780mp_defconfig    gcc-14.2.0
+sh                    randconfig-001-20250424    clang-21
+sh                    randconfig-001-20250424    gcc-12.4.0
+sh                    randconfig-002-20250424    clang-21
+sh                    randconfig-002-20250424    gcc-6.5.0
+sh                          sdk7780_defconfig    gcc-14.2.0
+sh                           se7721_defconfig    gcc-14.2.0
+sh                           se7722_defconfig    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250424    clang-21
+sparc                 randconfig-001-20250424    gcc-10.3.0
+sparc                 randconfig-002-20250424    clang-21
+sparc                 randconfig-002-20250424    gcc-11.5.0
+sparc64                             defconfig    gcc-12
+sparc64               randconfig-001-20250424    clang-21
+sparc64               randconfig-001-20250424    gcc-9.3.0
+sparc64               randconfig-002-20250424    clang-21
+sparc64               randconfig-002-20250424    gcc-7.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    clang-19
+um                               allyesconfig    gcc-12
+um                                  defconfig    gcc-12
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250424    clang-21
+um                    randconfig-002-20250424    clang-21
+um                           x86_64_defconfig    gcc-12
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250424    gcc-12
+x86_64      buildonly-randconfig-002-20250424    clang-20
+x86_64      buildonly-randconfig-002-20250424    gcc-12
+x86_64      buildonly-randconfig-003-20250424    gcc-12
+x86_64      buildonly-randconfig-004-20250424    clang-20
+x86_64      buildonly-randconfig-004-20250424    gcc-12
+x86_64      buildonly-randconfig-005-20250424    clang-20
+x86_64      buildonly-randconfig-005-20250424    gcc-12
+x86_64      buildonly-randconfig-006-20250424    gcc-12
+x86_64                              defconfig    clang-20
+x86_64                              defconfig    gcc-11
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20250424    gcc-12
+x86_64                randconfig-002-20250424    gcc-12
+x86_64                randconfig-003-20250424    gcc-12
+x86_64                randconfig-004-20250424    gcc-12
+x86_64                randconfig-005-20250424    gcc-12
+x86_64                randconfig-006-20250424    gcc-12
+x86_64                randconfig-007-20250424    gcc-12
+x86_64                randconfig-008-20250424    gcc-12
+x86_64                randconfig-071-20250424    clang-20
+x86_64                randconfig-072-20250424    clang-20
+x86_64                randconfig-073-20250424    clang-20
+x86_64                randconfig-074-20250424    clang-20
+x86_64                randconfig-075-20250424    clang-20
+x86_64                randconfig-076-20250424    clang-20
+x86_64                randconfig-077-20250424    clang-20
+x86_64                randconfig-078-20250424    clang-20
+x86_64                               rhel-9.4    clang-20
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                  cadence_csp_defconfig    gcc-14.2.0
+xtensa                          iss_defconfig    gcc-14.2.0
+xtensa                randconfig-001-20250424    clang-21
+xtensa                randconfig-001-20250424    gcc-14.2.0
+xtensa                randconfig-002-20250424    clang-21
+xtensa                randconfig-002-20250424    gcc-14.2.0
 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
