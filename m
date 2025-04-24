@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-21955-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-21956-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD6AA9A5AB
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 10:20:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C40CA9A5D7
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 10:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06F1817F078
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 08:20:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E37D646381F
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 08:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FACB20C023;
-	Thu, 24 Apr 2025 08:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1333F20B811;
+	Thu, 24 Apr 2025 08:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ivxr6Ei9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/IuBGXw"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0E719CCEA;
-	Thu, 24 Apr 2025 08:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8001F2BB5;
+	Thu, 24 Apr 2025 08:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745482812; cv=none; b=Usz7kjBN8zLiYIo9WUJkAfuPW0xQASzmmev/s3zKzlTn9bRId1pSl26MQ9WoIzwW3LInW3ebKl0fVIMGy/R/gOSSEpgKMYrtoh5lOcUTCfSRZcSrRworD3ySDO1wkL/VTQU1Lthsme4G2gtfqGvmxEYgOxbVeLr+6UB17LdaD0o=
+	t=1745483307; cv=none; b=YrnrrRvCIJOWBWrNje8XM1eQQ0wkWLA4qKAj35azfdP2E8aejcglbtse9ydZOvsrWyZ7pD66pE8x7QdfJYMx286v5xo5qnjyjJJE7V4z7BsHdi1BSppAxoruwYb6UI8Ou+Gain+nkvU6JQHOJeErPbrckg7JTfJne7T6wzE7gv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745482812; c=relaxed/simple;
-	bh=Y84glWeiDu7rTXdTs8IzcHYOPg+tGzDb6oe0gwQp6NM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hfl43YcO80iPfnDk2DHyD5yIyU6io9N/eqg3IKMS8i2WN1DJaUBR7Mp+15389Fpa2r32AvY+S7+1mjvtJT7FTW6WNLlCT4jp4sGtCvc8uYbGcax6mi3lLSBQSzxE1+tkwzC9X60r5dKqs/BGvX4ZBgNKqmGwfnDpyborxog9o/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ivxr6Ei9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953DCC4CEE3;
-	Thu, 24 Apr 2025 08:20:06 +0000 (UTC)
+	s=arc-20240116; t=1745483307; c=relaxed/simple;
+	bh=ShwC8obxmb4CNtiPkaiML3y0noOhyOD0NrJ6HWSDH74=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=uw/sfFDHiwCl2F1+arr0CAyJek8sbunuzHF24uWH5QHwmHFYgvYifsHu3uhSeGgGtCO7P9lENslK/2NtgwFB3VYrudp5b2DO8kZaIbBic9Y8IVgd0GqVswwpIgJ6n8fl+ojYUAHwoWo1/TrrwWgeP6qD0W4OuNql5ZcWr7ZwsJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/IuBGXw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207BAC4CEEC;
+	Thu, 24 Apr 2025 08:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745482811;
-	bh=Y84glWeiDu7rTXdTs8IzcHYOPg+tGzDb6oe0gwQp6NM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ivxr6Ei9i6wLRQZJL69+vj/KT3hFV9pHN1HPs+Es7HVNeNSt6B4jABS5bAdbGo9xO
-	 2uSRNNHY5PB2j54DJhhxVftGa36dRQvEhdMVBCUs1VyqtUYBsq8Qxu4Ve09rh9Rtzo
-	 T98SCaCR1xDV4Zpp/7/JP/wPHmA3+PtklF71JEhZF+FEEAQKaOzDxJ/PwksIPTojsf
-	 joHOh4Bn+pugmKTKmzL9P9TZTuuMOYhIYeY1uMnLDKeUKWL8pPJFyRQbbsvK54O4EI
-	 DSGNd3/vkJdOiUdgkYxHYdBfiOIIc1AAlzeScpXs+D+j8x488ijY07bkH/y0ON97Uo
-	 igmdIw5021o9g==
-Message-ID: <d8619ab4-3a91-467f-a3d4-f23b4e0383a4@kernel.org>
-Date: Thu, 24 Apr 2025 10:20:04 +0200
+	s=k20201202; t=1745483306;
+	bh=ShwC8obxmb4CNtiPkaiML3y0noOhyOD0NrJ6HWSDH74=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=A/IuBGXwFx60b3FI8hbt/SKfrDZDZn6pcwRAPQtx2zb03JBzQVpzpTqRzgndkR9MV
+	 5xCMImIEVzUQinjv0BUwhOwNjFqIrFLs8syv0a5fPbUu/9H7bPBbQ6UFTzfoSUyf2i
+	 4W1+kyuCj+3QgGOksk9w7ph/p4dDisYltEUfYnAutQQU8r/vYwnq8tpYvxQ6/gPEBg
+	 b0o4g3gBS4dXxbQXSnVjsFwbkRUMf0hFgIXGxeAEkBdlCo5GjMSwYleWjGtGb4khr0
+	 BwN0w0+DRtOnjMeSzHgn/0cofW7sSkPuszeoKmdj2TpNUlQJGRb0BakD6cZLZcNfxC
+	 H+xD4pREvYDAA==
+Message-ID: <57701e2e-0005-4a8a-a3f5-ba098c97b480@kernel.org>
+Date: Thu, 24 Apr 2025 10:28:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -52,6 +52,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v5 3/5] dt-bindings: wireless: bcm4329-fmac: Use
  wireless-controller.yaml schema
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: david@ixit.cz, Andrew Lunn <andrew+netdev@lunn.ch>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
@@ -69,8 +70,8 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, Janne Grunau <j@jannau.net>
 References: <20250324-dt-bindings-network-class-v5-0-f5c3fe00e8f0@ixit.cz>
  <20250324-dt-bindings-network-class-v5-3-f5c3fe00e8f0@ixit.cz>
+ <d8619ab4-3a91-467f-a3d4-f23b4e0383a4@kernel.org>
 Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -114,27 +115,30 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250324-dt-bindings-network-class-v5-3-f5c3fe00e8f0@ixit.cz>
+In-Reply-To: <d8619ab4-3a91-467f-a3d4-f23b4e0383a4@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 24/03/2025 18:41, David Heidelberg via B4 Relay wrote:
-> From: Janne Grunau <j@jannau.net>
+On 24/04/2025 10:20, Krzysztof Kozlowski wrote:
+> On 24/03/2025 18:41, David Heidelberg via B4 Relay wrote:
+>> From: Janne Grunau <j@jannau.net>
+>>
+>> The wireless-controller schema specifies local-mac-address as
+>> used in the bcm4329-fmac device nodes of Apple silicon devices
+>> (arch/arm64/boot/dts/apple).
+>>
+>> Fixes `make dtbs_check` for those devices.
+>>
+>> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+>> Signed-off-by: Janne Grunau <j@jannau.net>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
 > 
-> The wireless-controller schema specifies local-mac-address as
-> used in the bcm4329-fmac device nodes of Apple silicon devices
-> (arch/arm64/boot/dts/apple).
-> 
-> Fixes `make dtbs_check` for those devices.
-> 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Janne Grunau <j@jannau.net>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+> This introduced several new dtbs_check warnings. Including on platforms
+> which were warnings free. It is nice to fix these warnings when you make
+> such changes.
 
-This introduced several new dtbs_check warnings. Including on platforms
-which were warnings free. It is nice to fix these warnings when you make
-such changes.
 
+I will send the patches for them, except for Apple SoCs.
 
 Best regards,
 Krzysztof
