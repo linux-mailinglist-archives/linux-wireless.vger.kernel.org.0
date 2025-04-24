@@ -1,123 +1,162 @@
-Return-Path: <linux-wireless+bounces-22024-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22025-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAE5A9B870
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 21:43:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A74A9B950
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 22:38:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BEE57AB11B
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 19:42:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 670839A02B6
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Apr 2025 20:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709A3291169;
-	Thu, 24 Apr 2025 19:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39C421D58E;
+	Thu, 24 Apr 2025 20:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZSC1pZeE"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="P3g5oAkB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1795A27FD56
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 19:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E59021858E
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 20:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745523812; cv=none; b=SeuPTc3LcKuVqpspGurDCQyU4hmJU2bJA+9SRgXpdGb3kIZBbYP9WAMGZhjmmmIxhYJWHwj5Xx6m+0p5IY8x1TJpTa8Djjtpqgf5jpJCMnDCTFxUeSenzBiT5Va3en9/DXmYLgeSt5kQ74cojZuY5HFu7nZx4J4gUpJqJeRh+eY=
+	t=1745527117; cv=none; b=oMARabZmiVGTZygw0DNTz9FIGf/CPjKJe/huSCEXmiNM/K3Hm7RpYdj0e+32HL7oj/gdDSpdBAyPWzNlmQz32ywpP3Ywv0jYH6hPaFDVw0a5a4rpz98clPIVuCbTS2yNUnTnxCW+ZP0ktSBqH5Cbrf3IHYxJMNGngPQrO9WD3Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745523812; c=relaxed/simple;
-	bh=xGl64ujrsdrC4dnDMQhjfBUYQlSQajI+VS8adhfAycM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1ApJrBPYFyh99G0bXBgh52SURuc1Yti5txZRxVW/Pr3x440j6gtPlKeYUmILcwWSf4ECWBtsZROXA8mfr6nDLTYy69ZEobbJQnXbqcPjqd81Q4twHOUQZvwbSKLE33UBLvFRAJx+UvsUJtnVMkV6uo/uK4WbpRnNRVMKYqd63Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZSC1pZeE; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-736c1138ae5so1426819b3a.3
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 12:43:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1745523807; x=1746128607; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qPDEHHnO2E4wWn9hSbYFv0XULhkYtZMw4vPWkP8Y7ZE=;
-        b=ZSC1pZeEK7ABkqNmjp6Mc58yaorQ17x/DY9oFydXYaa1dZxB7o0ssqo2+8GhIwq3YC
-         8d8dJpoFvuzrqQYNbQoFYWNm0Q0FOPfQs+9anoGD6DLhyAX/QmWB9oP6sypJ6YOHyygP
-         Kr0zocEhzGFKBEg1YnRSQYuCScdvQHRcMYoyU=
+	s=arc-20240116; t=1745527117; c=relaxed/simple;
+	bh=mLuk/U28rf32SqPThUPmlcRROpbyMDSlWH8J5N1Rg8U=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=YA8F3FP6Hz8rSYOeqNNN0GHO4QpuQVGCSiGD2dR+Ibe74Vp7Ki4+8HDbKctVRYl2gS+Lhk5cB03GmaSISrPVqWic8dGgsVXrMRYsotMm9b861Xt02q3pkcJM+RwULGi2OYlXQAhKmF2XyFdSwuPO8UQvG7MAssGScuFIjUJfK8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=P3g5oAkB; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53OJnAow026483
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 20:38:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=3SyUdMW04qFzJTxNWJA3RW
+	A/E6h9+fNCuPWqTh3yVPA=; b=P3g5oAkBsV1IAXrv8HnNnqAx+ErFnKAahxINog
+	tGIaFdmAdSuSDV3FZ5quSVhVN2OX383ZTCVUlw507TfRBtah0KLnR+AyMnWop3Dh
+	eFA92Ue/LFV/qfwyR1TUxsMG4vp8aopV8fBkLyRkyY8kNytNyRSv1fLOSeroDHFm
+	yyXrahfbO9OScZDyndn5g6sVN4v5Dz+fpe2CkNlBC1nDZnTx83n9BtBi17S3D/TZ
+	I4sHxi9D/7IoRLgoNAOKlkIh4I90olsIClgSkodnBoxXDqltbrvV8KVX3PZVIv0A
+	AF6GAIVgA11PNLZiqSlyX2QEqBQh2vHK5H0+HdN69BU8XLsA==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jh16sb1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 20:38:34 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-224191d9228so16853495ad.3
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Apr 2025 13:38:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745523807; x=1746128607;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qPDEHHnO2E4wWn9hSbYFv0XULhkYtZMw4vPWkP8Y7ZE=;
-        b=N0tp0fQvnRXBPaqmcu8DLZ2QUGtY+opt1zppiP4Qkq1jivKzZjdEVidDQhLJxjnZsh
-         zdXveAKk09dwU86VgnuV+XpTMHvFLtTev0ClYoc+81YOoYH4AlecZyEO4UQuOy6XaTei
-         6X3pdwWXasdBpFsBYO3KA572e2JH0MHJTKLjdQnohsVvCSSB43L5wbw9VCeStmc/IVUu
-         Bih4CG/qo0FmU559zSRHsw+qLot1vUeJRR/+qRveYcUz3o/MvFhps9am+y3Z53Fag5Cj
-         GcCfdlq6VYLv4Xe7FTHJNzFsihqoqi7V8BRusZJfqUx6IwQ1lvoKYsiF3LUrUHXKvKim
-         elDQ==
-X-Gm-Message-State: AOJu0Yxtnrwnb/YMlzERUiabM/MT0USFuTuBFQWXWmGfu2QY1H2CLbFS
-	owpAfqAAE3CBORgkyPzYSY50+1V7Qt8l5oB+tIQdRmxzp/DY7S6NFVc1LuRZPA==
-X-Gm-Gg: ASbGncsGBruf1kEwwIB2q9WBxn0zPdOiaMdcrGLSyCX0gy5rt+Isj/lNmEsaocOLfsy
-	XuuNl+j1nF5OHGVciRj9EwmGyU3VFTPEnNi3qAfYvu3SSeQOL4EgrpVyZtvD0b/bNpHHJJrvNcg
-	9Sik9TCPH1PVKBvzcwpgrKpwYQ2FfT/b3jiiPzu7VLIku6j2gnjhISnjdekKipK1gTEW2Btfinw
-	7vA8ofu4sy3yYysqawt3aT2Pbivzs9cD0bGnrr2Sj9yzGjZm+vTkwStNkAkUBiLnV8z2Gg67iH3
-	NW95fP3qkLFDzs3xOnjwvz/uDvWIOaqFl4gk94pskzj26VDQu7lcqMarHcLXQs83ot64mtVMPTM
-	OAX69y3i63Wl66hflhd4W
-X-Google-Smtp-Source: AGHT+IGqPV5RU3YRJqKxlFcS4ArDbfyr8689XOGUQmFQZvrizvJi7h0h8dDGGgkj4fVx+2kC/VURZg==
-X-Received: by 2002:a05:6a00:39a4:b0:73e:359:1c86 with SMTP id d2e1a72fcca58-73e330d3b0amr1224863b3a.18.1745523807257;
-        Thu, 24 Apr 2025 12:43:27 -0700 (PDT)
-Received: from bld-bun-02.bun.broadcom.net ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e25a6aa52sm1863494b3a.94.2025.04.24.12.43.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 12:43:26 -0700 (PDT)
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	Ting-Ying Li <tingying.li@cypress.com>,
-	Ting-Ying Li <tingying.li@infineon.com>,
-	James Prestwood <prestwoj@gmail.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH wireless-next 4/4] wifi: brcmfmac: Fix structure size for WPA3 external SAE
-Date: Thu, 24 Apr 2025 21:42:39 +0200
-Message-ID: <20250424194239.2825830-5-arend.vanspriel@broadcom.com>
-X-Mailer: git-send-email 2.43.4
-In-Reply-To: <20250424194239.2825830-1-arend.vanspriel@broadcom.com>
-References: <20250424194239.2825830-1-arend.vanspriel@broadcom.com>
+        d=1e100.net; s=20230601; t=1745527113; x=1746131913;
+        h=content-transfer-encoding:subject:cc:to:from:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3SyUdMW04qFzJTxNWJA3RWA/E6h9+fNCuPWqTh3yVPA=;
+        b=MJTMXtU1BzV1q6MC7JgiidMssVbOPNs1jfGAl1erCGh+/e9RtyZNBBaAX51X/gvvNC
+         sDw8KXr8FcliwRhKCHWQtqE7pYXR5e6Oz6DgeLSQmCpC4AyvmwYk4so4TC2734MRJH1F
+         b4uu12jN5lcVr3gGdCkQjRKcogb6gSdhDsbMed8jKwd3+BqhoTfatsIhmPsjmWncYBGG
+         wQKJm5/Ls9iE0hh7J5Dub3yKBX9fZgHiqa8gQc8hj96O902/5MyDEo4ELLNC11dIjOB0
+         QIqiZMJ5TQ2Af/CHKC1uHLMj2rxui0CWk7naRawAT0S3z1vEW+4CvjkAc6fcEO9A00Ol
+         7pbQ==
+X-Gm-Message-State: AOJu0YxcSifi9HZKG5uPgMDqN3WEmISMQBOPL00VrBAWjtmMtLFq2tLB
+	ZFZwoy8OcPjNin+/qCAMwq+DTIrpRLpUitSlHVdr0ID/wdVlqrRRHm73gET+tdAunHNRduaXU4M
+	nx3Yziutr+5Y+eH+C9A11oIFZCPtSVTqcnqZT/02azKwQKqILQkN5o9qtA2gGnQMOeTgI8S6jBw
+	==
+X-Gm-Gg: ASbGnctkYTDADI67UntRYeEO4FWAsxN3DEResAymjFdpxDUFy7tFVKiC5OeFXuiS1CG
+	8rMEUCKhI2PYujedamdbfEqwGG4hwBlZWVqoyM/dUKf6Bg8g/lo8zFXWIxU+s/IrkpQCnZsrKR5
+	Hqqn7L8iy9YteWXbnOhYeXai5SSudESJMhyZ6BGo6ZYHiArECdoWGdDTg/35/WeTe2YZsIgSeeV
+	3o39Ip7HkkpZBXcN8nnbywtc139jUJqbgAxFdz+vr/TnG3WbLs94YoojpVVQk48xnJKwtEOvI7t
+	57ZDmzEUauOCUoySP0zp23P4wMRtPMN/SwrM/U6Q+0e7yEFxLSBM0aqgW/vPJaOwQA3sRlnMF25
+	U1Vvs
+X-Received: by 2002:a17:903:1aa8:b0:224:23be:c569 with SMTP id d9443c01a7336-22dbd423f55mr14612065ad.22.1745527113299;
+        Thu, 24 Apr 2025 13:38:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOssOO9EMlEhSWXpnlt0d7EeCfY5WHRuv9lpuIv/YQVdg/51RxVXr3vI3U4gwYL/f1Cu9COw==
+X-Received: by 2002:a17:903:1aa8:b0:224:23be:c569 with SMTP id d9443c01a7336-22dbd423f55mr14611775ad.22.1745527112895;
+        Thu, 24 Apr 2025 13:38:32 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db50e7a8dsm18088275ad.136.2025.04.24.13.38.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Apr 2025 13:38:32 -0700 (PDT)
+Message-ID: <96b43d18-72e1-44a8-bf06-6a22fd012b07@oss.qualcomm.com>
+Date: Thu, 24 Apr 2025 13:38:31 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: linux-firmware@kernel.org
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        ath12k@lists.infradead.org
+Subject: [PULL linux-firmware] ath11k and ath12k firmware 20250424
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 5rqrvDUnjegXulLlRlYLi_1R8OarxLGx
+X-Authority-Analysis: v=2.4 cv=OY6YDgTY c=1 sm=1 tr=0 ts=680aa14a cx=c_pps a=cmESyDAEBpBGqyK7t0alAg==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=c5pCFXJUQfKAI649l18A:9 a=QEXdDO2ut3YA:10
+ a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-ORIG-GUID: 5rqrvDUnjegXulLlRlYLi_1R8OarxLGx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI0MDE0NSBTYWx0ZWRfX+UHlEU1WgxEP xZ4lgOl9LtTvHnzDG0V1rBIVTQWyz+f38hTBhKLdrP7GCT+XXA6QBdt7ZGCm02RWNQJ2UwdJuiy SfboZelL1uO36URP1MRY3q+0h8SZn+nGc0aLPh1Hc2mVbDR4O/VBaHA6Oceah38Vdw3qSxVezu9
+ tSBAP5gFowTXRdocvwZo/uCTaATCxlU5tL5lch3eOrTSfT6DQfIPZ0Va8scq2ED37HU0eX1Ewqi gOFtUPQ1XTv3vav6O5w0Z6w/c0nSxM99HatyKrspsutSK9MCKfLSGFG9p+xtpvoK5+JeZ0pFWQO MTY0CeJw+jrOOShwgolZPUTxd+HPeZsu489Ps+kqYq7KZrSe/jsEQpFnaTQbj3Hmv4L6LZcpHZd
+ xsrImLthDlVwwMSQRbgtTNSnzMuK2arzVai7McFDCfptBjWI+G8cf7EfgAPzKsnNDFVDltEq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-24_09,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 clxscore=1015 malwarescore=0
+ mlxlogscore=783 phishscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504240145
 
-From: Ting-Ying Li <tingying.li@cypress.com>
+Hi,
+Here's a new pull request for ath11k and ath12k.
 
-Add pmkid parameter in "brcmf_auth_req_status_le" structure to
-align the buffer size defined in firmware "wl_auth_req_status"
-structure.
+For ath11k, update the firmware for IPQ5018 and update the board file
+for WCN6855. For ath12k, update the firmware for WCN7850 and update
+the board file for QCN9274.
 
-Signed-off-by: Ting-Ying Li <tingying.li@infineon.com>
-[arend: adapted path to apply to per-vendor variant]
-Tested-by: James Prestwood <prestwoj@gmail.com>
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
----
- .../net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h    | 1 +
- 1 file changed, 1 insertion(+)
+Please let me know if there are any problems.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
-index 18129adb5dc2..1cbe66526d82 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
-@@ -54,6 +54,7 @@ struct brcmf_auth_req_status_le {
- 	u8 peer_mac[ETH_ALEN];
- 	__le32 ssid_len;
- 	u8 ssid[IEEE80211_MAX_SSID_LEN];
-+	u8 pmkid[WLAN_PMKID_LEN];
- };
- 
- /**
--- 
-2.43.5
+/jeff
 
+The following changes since commit 490c0af1d6b9ffca0523edcfad27ba483b9d6da3:
+
+  Merge branch 'robot/pr-0-1745490027' into 'main' (2025-04-24 13:46:05 +0000)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ath/linux-firmware.git ath-20250424
+
+for you to fetch changes up to ce13d29c3933f77674cf45855668485c48d3eba0:
+
+  ath11k: WCN6855 hw2.0: update board-2.bin (2025-04-24 13:04:20 -0700)
+
+----------------------------------------------------------------
+Jeff Johnson (4):
+      ath12k: QCN9274 hw2.0: update board-2.bin
+      ath12k: WCN7850 hw2.0: update to WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+      ath11k: IPQ5018 hw1.0: update to WLAN.HK.2.6.0.1-01300-QCAHKSWPL_SILICONZ-1
+      ath11k: WCN6855 hw2.0: update board-2.bin
+
+ WHENCE                           |    4 +-
+ ath11k/IPQ5018/hw1.0/Notice.txt  | 3918 +++-----------------------------------
+ ath11k/IPQ5018/hw1.0/q6_fw.b00   |  Bin 532 -> 532 bytes
+ ath11k/IPQ5018/hw1.0/q6_fw.b01   |  Bin 520 -> 520 bytes
+ ath11k/IPQ5018/hw1.0/q6_fw.b04   |  Bin 86788 -> 86788 bytes
+ ath11k/IPQ5018/hw1.0/q6_fw.b08   |  Bin 4096 -> 4096 bytes
+ ath11k/IPQ5018/hw1.0/q6_fw.b09   |  Bin 2334720 -> 2334720 bytes
+ ath11k/IPQ5018/hw1.0/q6_fw.b10   |  Bin 269220 -> 269252 bytes
+ ath11k/IPQ5018/hw1.0/q6_fw.b11   |  Bin 99456 -> 99456 bytes
+ ath11k/IPQ5018/hw1.0/q6_fw.b13   |  Bin 7072 -> 7080 bytes
+ ath11k/IPQ5018/hw1.0/q6_fw.mdt   |  Bin 1052 -> 1052 bytes
+ ath11k/WCN6855/hw2.0/board-2.bin |  Bin 6429240 -> 6429240 bytes
+ ath12k/QCN9274/hw2.0/board-2.bin |  Bin 1308544 -> 2626240 bytes
+ ath12k/WCN7850/hw2.0/amss.bin    |  Bin 6000704 -> 6082624 bytes
+ ath12k/WCN7850/hw2.0/m3.bin      |  Bin 299660 -> 299660 bytes
+ 15 files changed, 315 insertions(+), 3607 deletions(-)
 
