@@ -1,143 +1,197 @@
-Return-Path: <linux-wireless+bounces-22072-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22073-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CC9A9CD8D
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 17:48:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DD6A9CD9F
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 17:57:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF2B34C8912
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 15:47:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 734CB4A6EC1
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 15:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA3728F928;
-	Fri, 25 Apr 2025 15:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A0428E605;
+	Fri, 25 Apr 2025 15:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TfrZc44p"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J0oI7sat"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9098928FFD1
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 15:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35422288C9F
+	for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 15:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745596014; cv=none; b=oStfo29IDtjqbXiYGhWjKO7fMnabRHtcwnBGxAr7l3Qal1JMaA1mNbSSQGCFcnZKGeVKSfNOuLUskFxpdhBJt02vHXCz7G8Vpyrq8I+tYG26lsvA/cL1T16IfbhDWWrXwiA+G56S4jMT1zaaktxiQhtbhXu27JSmy3E83Aq6GMY=
+	t=1745596663; cv=none; b=ukCeZAjVk9weB1e4hDSfBm2HPiedeRhAZkin9zC4dA1x6d9RZbBmtY9+LF67UaqrthYItaitlztLd4xOMfKjDvraAhYZhDtCYUg52m4Ar1eue07HqWSRqu8nGDWE9OZb0X9056u+ls7ixMOMAcvkhL1t3dY2lf4b8jWn3cmWaqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745596014; c=relaxed/simple;
-	bh=Kk/JlG5jK1EN/Ao+o/0ULLsaxO+jagFbOPk3W6GsDCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R3L3TS43FITzBOIm5DdhOUgxNLvCkAnW+U5TJMSQM7UwlmaJo3CosUD5e2HFxYvDtOQmEhY5GC0n/AVVcfNVkWOahhWN18O++rdJm0CrqLHrkwHbMPYKnDXxSGK21RjtkFtx8yye0k8bCCG6NgFmo9jl9wzr0dNdzcKE5YXdchw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TfrZc44p; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53P8TASl007408
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 15:46:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Kk/JlG5jK1EN/Ao+o/0ULLsaxO+jagFbOPk3W6GsDCk=; b=TfrZc44pQ5qia/Do
-	aGcsbnHL0gciuxVT/D+zs4PbbtkzCldNl9EQ+03eXtj+GFKrDPZoNzgwzsPO8Kag
-	FO21Kac7urCU+S1AFRTzc0NR5q9Rb+wFGfXGPcO78f17XwBEuYWe5hsCTapnq3O0
-	inZOddQd62ab1ZZJaYOJTbXUUnGmHHHM/+DimDTGt0FD/88w1zX1Ce3lUD74NeUa
-	bECn2csNCybKOMzB+UX9rom5GldCjErxskAyDw75T1hezvYs2cE90TIbsLSI7971
-	eaNiu25D3oYk6VMHLU6JzZ569DvIToSdTIcWGruI+NMthQs+EGvMxSZbZ8edY3Qb
-	DmVBUw==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jh0sfh2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 15:46:51 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-227ea16b03dso36983355ad.3
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 08:46:50 -0700 (PDT)
+	s=arc-20240116; t=1745596663; c=relaxed/simple;
+	bh=GrbOWzhD8A9EcQ9/oMNEwl0tUg9WzmBru/yKPO/Wkt4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gPKcYBNXonpXMCkzrFZUMRb+v+G1UzLx5yDiNRaeLZMiQIbTywZdU2NHihbhkcKSmeiU1CUuvN3aiLoBwxvIxrRdIysa0nU6GMhs0KBLdH38OqE0O2Ht2svr41FMmDMQA8Lf8BDJ8ISqyuxFa8errh8NQRfOQwZ9+jAT50rr5qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J0oI7sat; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-736ad42dfd6so2175603b3a.3
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 08:57:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1745596659; x=1746201459; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=utSRlvWwaJPUba2da6V5YeBrAL7QiUQpMkQtkrVxrps=;
+        b=J0oI7satcWS5kMz1Pr/ksuZnUF9RXWls2CiZDEPvzSmesUlm6HU4g04ZWVjviV1Kfg
+         fKgax+rfKN+wfczorKW9S0PiSXxEQ8/7DKgqay5tT1jJI48bF8MCIHxiZZDwXctLteFc
+         4S8iUfhenJWhcINUT/eK/mpaBsReqSFlmvYUMpGtnaj0amK0k+OPfK9G4/TZFA38cpfX
+         XsEC9CCFnjke1OJryLa3/torC7IjSjMNfTmL9VZ8wcc+zNSfek1CfvXzywJUJei0TXP7
+         FNuI7Dg48ATDukh4fR/bsR37huZ00nX0hWwjzAw3LHy3rah3HW4s+4T4DzpbNh9Hj+uM
+         dysw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745596009; x=1746200809;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1745596659; x=1746201459;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kk/JlG5jK1EN/Ao+o/0ULLsaxO+jagFbOPk3W6GsDCk=;
-        b=lkU8lQ5ypDm7RpKvMn5g/GzQ+j39AMz3c9/Z3HklzdZEG+Y+10z542G7UZpvENqZFV
-         N+l8b2hoHqwl7qp7Wx4xd4utTgHOA0LCb06JAFAlnV1Vhb9ShRNE9Tx1rm1kAEhGW5By
-         kFjTpV55b9GCr836rO5ceG7XSj0TeY55oEvVrCc7hkRnc/dHoRWWCu7JWBJRwwXoSLB6
-         4FHOoeq5D3GmJyoU6ZxcpxHIWQ0q4HI3QPq7fkZ78UposIAHFq9dtFt0+48xwp/5ptSs
-         zLivl7xiA9CdHHFf6W7xOUoBXRNFySjhrP29/MxukHvPh2+Z2gt5g32RrmBcUN1oVA3Q
-         9M8Q==
-X-Gm-Message-State: AOJu0YxKOm8OFfloDOWoUwbO2fo4WLJDNUnrF9m8kUVYgZ700dJ+35fN
-	76z7juA/ON+ePG27j2nau6Yhq34SjegkxoCTdCa8Ge1Xx0LyEwLuedqlGasMDW3Eqf3Yza5Ubez
-	iAALTyJKkLXn9zViz46btaYyz6q8WKXn6lvikFfuzTG0VXVplIV6Ecmx6OUweMId6ow==
-X-Gm-Gg: ASbGncv30SPUUOil10jpeFMZockzkFQrklCcPtDcd8gWT5wmELPrsaOg8qiAu4BFo47
-	5Mfi5bJOC0uCUONzn1N4Ozaw691Zayn3ku9p7XJx5UvRnY0sj+3LDTMq62yJjodIovlChsFyTV/
-	1GVj1rm7jrFUyyd+ZiaQXOoAp8k54rz4ancuhv8Ku9j9QduRrQa2sK6dYK0Xq9dSiPg/UP/6Iy8
-	0e/G+noekwYW04kYpJ1ZFQLZHHXfAxISi+GRANR+nNraceSrws2DpErnxW1XaZVqMABKBoYuBrl
-	UPe70PAmyR8Kcg4ahM4ON7HHW0SBEv3Z2wpXBmoLpv+B3b7dBWYllrTFxl2sF0hl9+OsM1RUuM3
-	m0y4w
-X-Received: by 2002:a17:903:1aaf:b0:224:5a8:ba29 with SMTP id d9443c01a7336-22dc6a8711cmr858955ad.43.1745596009599;
-        Fri, 25 Apr 2025 08:46:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGvHmjNZLntoV8XvGNqIzwDqg8ckNcjVlQeBE1UeRmXlBYhTEON7wSJfvzdebdxlvn8XtjCuQ==
-X-Received: by 2002:a17:903:1aaf:b0:224:5a8:ba29 with SMTP id d9443c01a7336-22dc6a8711cmr858595ad.43.1745596009180;
-        Fri, 25 Apr 2025 08:46:49 -0700 (PDT)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4dbe4desm33943545ad.70.2025.04.25.08.46.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Apr 2025 08:46:48 -0700 (PDT)
-Message-ID: <07c00e98-5280-4563-854f-5c7a457578d0@oss.qualcomm.com>
-Date: Fri, 25 Apr 2025 08:46:47 -0700
+        bh=utSRlvWwaJPUba2da6V5YeBrAL7QiUQpMkQtkrVxrps=;
+        b=NK1qDSLm/db7+kfFi0a7z47QT2yBZMVAn8F2X0/TOQ86lttVZQ5E/uSZhPD0ptdC9x
+         KXV3+AfZ5HDfBynpG0IcF3oEvsM2J5CwpSwnpB+3cG0JUcyZEtCjZa2WgZAcq00beN9X
+         uG8jJQOPlI2zC8sbeMSAkg5Gpu9ZBnDxvwaJ3JvOJIXUAIo8vtXP/RVK4LCx9GB3xlkT
+         v7chfHcnjSIHURS5ADtce4Y4o04DwQaT+2qt7N8AGO4yT8X02RbR4yL3S1sSDoLr8kw0
+         Z1EOQdU2atUAXMR6dCfNHUXr2Al70PNs135IwRzjOpl9gQh/3b4FzNG5slPv59/lcZTu
+         rWSg==
+X-Forwarded-Encrypted: i=1; AJvYcCWahEB0uqQ8J5yKG0fyMkGsULLlOZzN4VHXoCFwe+/Bwi0bL3fmvBbxV/mYKBk/AuahcZORGcc3ja7+FUXwSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/1i/LR5BGhSPB0DLYw4qEUz18rv8krwfSJ4JGTW91PYuHiwOT
+	GnQhiTx1FczaBkmRMGBS+IQs/WRmp4GLxatF2/njXNF0sT5k15WBE5LEzLjf+A==
+X-Gm-Gg: ASbGncuGoEhpwcarO+9M+Tw3WQgse4z32+LCnTW8m9+UurVUYj0QVkPHrSjpZh/j7cJ
+	1hNp+4LYHM6+i8TcddBtivFqiaZJWPnN79LW/gcinj8672siWW78+5kjlDOAsjTt7tor+4K/vp0
+	3y5cFfUVhKQQX5AYVqKrg5XUldEwcRyf5kVhoyLJo/ap72rge1LkxUiTxYZObojdmf+HmdHr4fI
+	Bv1FI0IUorDLDBZpHPlBbDVxdNL81Yrg+qtVdaUzULZU8yREBF4TFUx3hEStHzY0uui3Q9w0Eal
+	2h8pEAAJi/Ldq5SE7dB/lwoDutjeH3ao60RTOf2WBAHUeiIi1igi
+X-Google-Smtp-Source: AGHT+IEv9WTyD1hNXstYJB7wgOh80HyepKndFk0b9Nsc+PbCz+wAO+jxkDebi/3q0xjNfV/24gj4Tg==
+X-Received: by 2002:a05:6a00:b93:b0:736:3be3:3d77 with SMTP id d2e1a72fcca58-73fd8b6be23mr3721308b3a.16.1745596659476;
+        Fri, 25 Apr 2025 08:57:39 -0700 (PDT)
+Received: from thinkpad ([120.56.201.179])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e25912c94sm3344436b3a.3.2025.04.25.08.57.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Apr 2025 08:57:39 -0700 (PDT)
+Date: Fri, 25 Apr 2025 21:27:32 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, 
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Jingoo Han <jingoohan1@gmail.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, 
+	Rob Herring <robh@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, 
+	Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, mhi@lists.linux.dev, linux-wireless@vger.kernel.org, 
+	ath11k@lists.infradead.org, quic_pyarlaga@quicinc.com, quic_vbadigan@quicinc.com, 
+	quic_vpernami@quicinc.com, quic_mrana@quicinc.com, 
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: Re: [PATCH v2 02/10] PCI/bwctrl: Add support to scale bandwidth
+ before & after link re-training
+Message-ID: <7njsbucxngxc2eninh57oexywiqsyysrbesyige5zwr4pmxf7t@rw6657lheg4j>
+References: <20250313-mhi_bw_up-v2-0-869ca32170bf@oss.qualcomm.com>
+ <20250313-mhi_bw_up-v2-2-869ca32170bf@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v6 00/11] wifi: cfg80211/mac80211: add
- support to handle per link statistics of multi-link station
-To: Sarika Sharma <quic_sarishar@quicinc.com>, johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-        "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
-References: <20250415042030.1246187-1-quic_sarishar@quicinc.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20250415042030.1246187-1-quic_sarishar@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: nnF9F20noKbcfjFOfYmcHUBHOmOE5jTm
-X-Authority-Analysis: v=2.4 cv=ftfcZE4f c=1 sm=1 tr=0 ts=680bae6b cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=e70TP3dOR9hTogukJ0528Q==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=WqueRgLFPjDBw-PMjR8A:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
- a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-GUID: nnF9F20noKbcfjFOfYmcHUBHOmOE5jTm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDExMiBTYWx0ZWRfXzTqpcijEUjUf ueF6Oh7BJR4toWCvLCmicavgF06QiXdBtP3+I2WDQ5+GLyHUcHd4iIn4/YgeSdIq3HD/SO4ZwIW zKj4gXrox9JiAK48dacI6tbCbkgW7GPNKwWoCayVf1u7uKStwSZR6EfQrM/QWYm+Ir26l1qIeEr
- Ef4PAyjoG5zUgjTChxeanwnpRdwesQeo6EClNTqnaoxROADtJlPkAdXrPHnew8zbCcAN6sfczB+ 8xhMKq+6gx87qjCnMQgCGDSOgmIeh93LUYA1CW0MhzRP/coinVJMZHxyRRwU0SXtkA8Q04qxmtP uMPrLbWZ15yVatF4jZU3sNmuNutZKqeHWpAzXIBAXRwDaHW/WMpwK7FpS1ZG0vzmYm7XZTPGucn
- iUwFs1zz2qE1pIXByrSU8ZALDoG5lLBIQlVQgZpCMU8+NZpvWPVc2HScVxMZERl4yjM6BwdQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-25_04,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- suspectscore=0 mlxlogscore=660 lowpriorityscore=0 phishscore=0
- malwarescore=0 impostorscore=0 adultscore=0 spamscore=0 clxscore=1015
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504250112
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250313-mhi_bw_up-v2-2-869ca32170bf@oss.qualcomm.com>
 
-Just a couple of generic points:
+On Thu, Mar 13, 2025 at 05:10:09PM +0530, Krishna Chaitanya Chundru wrote:
+> If the driver wants to move to higher data rate/speed than the current data
+> rate then the controller driver may need to change certain votes so that
+> link may come up at requested data rate/speed like QCOM PCIe controllers
+> need to change their RPMh (Resource Power Manager-hardened) state. Once
+> link retraining is done controller drivers needs to adjust their votes
+> based on the final data rate.
+> 
+> Some controllers also may need to update their bandwidth voting like
+> ICC bw votings etc.
+> 
+> So, add pre_scale_bus_bw() & post_scale_bus_bw() op to call before & after
+> the link re-train. There is no explicit locking mechanisms as these are
+> called by a single client endpoint driver.
+> 
+> In case of PCIe switch, if there is a request to change target speed for a
+> downstream port then no need to call these function ops as these are
+> outside the scope of the controller drivers.
+> 
+> Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+> ---
+>  drivers/pci/pcie/bwctrl.c | 15 +++++++++++++++
+>  include/linux/pci.h       | 13 +++++++++++++
+>  2 files changed, 28 insertions(+)
+> 
+> diff --git a/drivers/pci/pcie/bwctrl.c b/drivers/pci/pcie/bwctrl.c
+> index 0a5e7efbce2c..b1d660359553 100644
+> --- a/drivers/pci/pcie/bwctrl.c
+> +++ b/drivers/pci/pcie/bwctrl.c
+> @@ -161,6 +161,8 @@ static int pcie_bwctrl_change_speed(struct pci_dev *port, u16 target_speed, bool
+>  int pcie_set_target_speed(struct pci_dev *port, enum pci_bus_speed speed_req,
+>  			  bool use_lt)
+>  {
+> +	struct pci_host_bridge *host = pci_find_host_bridge(port->bus);
+> +	bool is_rootport = pci_is_root_bus(port->bus);
 
-The last ath/ath-next pull request was processed. You need to rebase since
-this series no longer applies cleanly to wireless-next/main.
+s/rootport/rootbus
 
-When you post v7, please include all parties affected by this series, either
-by using scripts/get_maintainer.pl or by using b4. There are a multitude of
-driver-specific lists and maintainers have not been directly notified of this
-series.
+>  	struct pci_bus *bus = port->subordinate;
+>  	u16 target_speed;
+>  	int ret;
+> @@ -173,6 +175,16 @@ int pcie_set_target_speed(struct pci_dev *port, enum pci_bus_speed speed_req,
+>  
+>  	target_speed = pcie_bwctrl_select_speed(port, speed_req);
+>  
+> +	/*
+> +	 * The controller driver may need to be scaled for targeted speed
 
-Since ath/ath-next matches wireless-next/main, and since this series has
-co-dependent changes, I am freezing ath/ath-next. I'll continue to accumulate
-patches in ath/pending.
+s/controller/host bridge
 
-My hope is that all of the issues in this series can be resolved, and that
-Johannes will be able to apply the entire series to wireless-next/main. After
-that, I'll fast-forward ath/ath-next to pick up the changes, and then I'll
-start applying the accumulated ath/pending patches.
+> +	 * otherwise link might not come up at requested speed.
+> +	 */
+> +	if (is_rootport && host->ops->pre_scale_bus_bw) {
+> +		ret = host->ops->pre_scale_bus_bw(host->bus, target_speed);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+>  	scoped_guard(rwsem_read, &pcie_bwctrl_setspeed_rwsem) {
+>  		struct pcie_bwctrl_data *data = port->link_bwctrl;
+>  
+> @@ -197,6 +209,9 @@ int pcie_set_target_speed(struct pci_dev *port, enum pci_bus_speed speed_req,
+>  	    !list_empty(&bus->devices))
+>  		ret = -EAGAIN;
+>  
+> +	if (is_rootport && host->ops->post_scale_bus_bw)
+> +		host->ops->post_scale_bus_bw(host->bus, pci_bus_speed2lnkctl2(bus->cur_bus_speed));
+> +
+>  	return ret;
+>  }
+>  
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 47b31ad724fa..9ae199c1e698 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -804,6 +804,19 @@ struct pci_ops {
+>  	void __iomem *(*map_bus)(struct pci_bus *bus, unsigned int devfn, int where);
+>  	int (*read)(struct pci_bus *bus, unsigned int devfn, int where, int size, u32 *val);
+>  	int (*write)(struct pci_bus *bus, unsigned int devfn, int where, int size, u32 val);
+> +	/*
+> +	 * Callback to the drivers to update ICC bw votes, clock frequencies etc for
 
-But I'll only hold off for a couple of weeks since I want to issue another
-pull request in time for the v6.16 merge window.
+s/drivers/host bridge drivers/
 
-/jeff
+> +	 * the link re-train to come up in targeted speed. These are called by a single
+> +	 * client endpoint driver, so there is no need for explicit locking mechanisms.
+
+You need to mention that these ops are meant to be called by devices attached
+to the root port.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
