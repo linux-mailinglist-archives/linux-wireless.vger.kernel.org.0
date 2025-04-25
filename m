@@ -1,460 +1,360 @@
-Return-Path: <linux-wireless+bounces-22077-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22078-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D67FA9CE6B
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 18:44:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B00A9CF02
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 18:56:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF3C49A827F
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 16:43:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F320189F25E
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 16:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327921A5BB5;
-	Fri, 25 Apr 2025 16:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F2F1B87C0;
+	Fri, 25 Apr 2025 16:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ksCDKOu9"
+	dkim=pass (2048-bit key) header.d=conclusive.pl header.i=@conclusive.pl header.b="SOq/Gh4v"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E5B1A3A8A
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 16:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CFC1A3152
+	for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 16:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745599435; cv=none; b=JQ0esdvatJ9eXSUsMgqUUEIiGU2/6qPCSG53V28hg9ZJB+bFk3L+v3x20NdRD01lWucR7XB5LMUWmrCL2hoOhbxrcPQXEntXLatf4jRcYzAZ6yez4VGK0swhqECzarPvvmFflZqW7P1W9ffpcEizXO5bN/UpXQY7DvXmSZygVo0=
+	t=1745599778; cv=none; b=WUcwKCSIxWOxwMMfah2gFnJlHAjqlqh4kq366QVGdIXgXz7MpF3EQoQ8t8we3nSlm0nBT4sMZ84j0k2dh7BDwPP+kRy59aLbxtgbX4ekScwxNbGjrsmxVEZ5b89oZCn7OJEFaDa3oyGGWGEhxkaVO38OHkkoq+9pB0tYh/Qa3aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745599435; c=relaxed/simple;
-	bh=ZZfkMKg7jcylqNvLAYsToge78ohtGFBshofDoC2BdgI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EsUWr9k74kE89thsTnF7DwoaK1Z2VyGswYVBloTuXnBWXQvhVxhK5RcrNeslvC05junQYs+XwTu76PS839h1zeIEKYrcdc6qPDXYT8XjiqrHwn+NCsTxDtuXiUjJuicUKD/9M6CdO0PaViQzgGW/vE1JjvzVPdzpCiI1yTyxjgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ksCDKOu9; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-736c062b1f5so2225925b3a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 09:43:52 -0700 (PDT)
+	s=arc-20240116; t=1745599778; c=relaxed/simple;
+	bh=Lsf0S+vUVkTKSmrTusoRK1riqmlMVBxIhTwbVEI953E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bMdiH5eQQtAKRGeoInnfnR6Kkznx+ZVUdU2kDoEKFIlL+2+13IplXuK2pmKqFapP7g6bGuB7zrUjyiFF44pMNLrQZnBpAnD/tNEK539+U4jCQXrlGpy5wBMFPhw9y+NHzxmSv/pu+AsaLM125C5rjl//U1GFzQvBPFETW8G5sY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=conclusive.pl; spf=pass smtp.mailfrom=conclusive.pl; dkim=pass (2048-bit key) header.d=conclusive.pl header.i=@conclusive.pl header.b=SOq/Gh4v; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=conclusive.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=conclusive.pl
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5f435c9f2f9so3203366a12.1
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 09:49:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745599432; x=1746204232; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=AS+QrpLqknNClF7aVTue78LBs0Liiy9mjcaX+EnSv3g=;
-        b=ksCDKOu9Poq9atAyCEPPJIcohaLAVu4fmX2cHtsfHGYYVn4vzxP2jCbNnH+OgLn4Fj
-         SGhJQ+4kWn6lLIMgyMrxW9kmT4sMIevXbCKfvbNT0PgpHzDfZVEHROsPuT7/zmYcSPE4
-         EOdmxvV+dMhRZe3NHFlFRre9lSpC7MrlbFhAtyZwFzeBGZcAWdglPBsK8Yf9MT/zUjUq
-         8jjvRioR8UZdPccufiujFJnHgwfgTKv+cnOB3ApjCgSBnd8jWZaI97GJSNecvD+PFv4P
-         OaRJ9fH4fBncqX0og7feeNuFInTJVW0MJSKW6byhKI8b2CzBPTUypNLtAGjCRh1MrNBl
-         mN+Q==
+        d=conclusive.pl; s=google; t=1745599773; x=1746204573; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kbKgincIXwNS069akmSCof3QJASoEBvfuiSMsRimGso=;
+        b=SOq/Gh4v9+SBkMqNTQ3MZvLfzlCkarb8njY4USLEg+/yp/qswlLn5PrGfydLtIYcss
+         cuqgCc/AWZ6SnG6W7V65wrv5T0Udcu9xpUvST3AZJtuE1XdL5vdj6+jYtMIW71hqpBqL
+         c1PwqdRmW6uKaRQqckQJHaRkwrGrf83RcSbBCnT2D76Vv2jzzrk9C/U4ymYdhGegXSyn
+         eaFKH84mlh98TSG/ho95UKprZtjUElBEMtOvYz40Djis7l74934/BTia6j36/xytmV4c
+         BofYYpvqSlmVUfutcat92IX9QwNcGyAlE2inwwmbap3Ol4AE55JslPvNkaky7hsRcHEM
+         aMdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745599432; x=1746204232;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AS+QrpLqknNClF7aVTue78LBs0Liiy9mjcaX+EnSv3g=;
-        b=LTHgOFy+sY+7t+WvsYmCStY/xGkL096SRxCOINWC6c+QqmrFsOw2gACDtU0DJSCtGY
-         FzvK8/fw5ZX6iO1hWCJiVMWikSyhqHTxw8xwEF4qE/dvCWFgo7wR5hhfLuo1x8+d52fb
-         xQzke9UslVe8/Rlo+ITHmhvkmkERNspJ5Xkur77kU5fwhZBsmA61wQiuL6tZnh3dmp2i
-         0xhY4yknCqLuqVr1RZSllEK3zI0XaJCC9QanbS3dKnfmzpmq4MBMbVXfwgCJwPBUMOGr
-         RQtZV4q9f3uvZ/hTluZ4LkYQlQlpCK3XUyPXh7m5Tc/AH+EtDA9M4baSNr9cuf0uJJ6B
-         8gKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXHVla3cmbSJmpK1AY++NLM6LRAMROEnivm6kHtAwd9CnMRz326Cnq3drWDFFB+iNfO4VRta0k2PzlwnEUtWw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTtQhzr9bRIkQ8nWhHO1cgu/hz02diOgB8CEk7liflpgPEKF0h
-	tFpuCjjBwDUaJX0QmJT8QpsIqV3qT/CVld2mzXzXPQQPh6k83VJjZS7I/Io2tA==
-X-Gm-Gg: ASbGncsbUm5IFbZISOabed1vgeHqy7oUdusGfadIFyqDn8LIt0hyGiaj/DrHURQbsh4
-	ENHHW+rMTPkY1TxYIfjW8f9eYfhzLF+2NHaoWmEyiG1T+aJUw2X+D8RrmaLSvbeTjiVzg1xzeN6
-	jePEEju7Z5AEI4zjaw3zhQK+EAgbfdC8ln7yE9Sc4+LRaRVz7Hm4Jm/kGIF7f4hAQUxzK1x0GDr
-	bMHbDdNMjnZ4DTlk/cTIvLNp5x97YMA9t1hT23sNOplYsg1XJYLQYJfA14rvaUA9GlV+/jezafk
-	xw/7O7lLYSr/tx2ptgLMoNooEqPBtsHskXI2MPIA9MDRrv19ck/D
-X-Google-Smtp-Source: AGHT+IGgd1HtqxdK7jinzzvwPbQz6WacgkM6n+ith1cHu12K4F2zyq9TXM0KGNyrUE/lmduyvdzWiA==
-X-Received: by 2002:a05:6a00:1817:b0:73f:1c49:90f3 with SMTP id d2e1a72fcca58-73fd73c806emr3425152b3a.11.1745599432205;
-        Fri, 25 Apr 2025 09:43:52 -0700 (PDT)
-Received: from thinkpad ([120.56.201.179])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e259414d3sm3376691b3a.47.2025.04.25.09.43.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 09:43:51 -0700 (PDT)
-Date: Fri, 25 Apr 2025 22:13:44 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, 
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Jingoo Han <jingoohan1@gmail.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, 
-	Rob Herring <robh@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, 
-	Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, mhi@lists.linux.dev, linux-wireless@vger.kernel.org, 
-	ath11k@lists.infradead.org, quic_pyarlaga@quicinc.com, quic_vbadigan@quicinc.com, 
-	quic_vpernami@quicinc.com, quic_mrana@quicinc.com, 
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: Re: [PATCH v2 07/10] bus: mhi: host: Add support for Bandwidth scale
-Message-ID: <fzin4uttqtf33moiew6bazgxea7w72at5quumjg646s43wnq2g@3eupbyomplgw>
-References: <20250313-mhi_bw_up-v2-0-869ca32170bf@oss.qualcomm.com>
- <20250313-mhi_bw_up-v2-7-869ca32170bf@oss.qualcomm.com>
+        d=1e100.net; s=20230601; t=1745599773; x=1746204573;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kbKgincIXwNS069akmSCof3QJASoEBvfuiSMsRimGso=;
+        b=i13AEZxIAf7fEDXUWn7cwDqLzZa6UvKl6HhxxpqBoXHU5uEOhUnGe6olBiH1zkIsXg
+         O+FF3JbMMRKMqHDBavCgTb3ti94pfFmFLEIFAnCxbG1v9d8XNnL0rvtJ3EdXW/jXt8i9
+         NYjCKguvAts/3/d6QTDYtlySWFbK4zp9CZdj+R+Vu7WHssuPf8MZegVsPxCHtu26XGmf
+         FYlyNtiKvjrxUeVrsM76xECBLRTMDcRRpsfn9NV/scVWN8csEXupfPmNcvPaAYxAh/Sp
+         HcYmqtsOeAdxF3SBT00RR+k8LNrBT6YzFa+t7xbzZOjsl1kD7xNZ8JEEXTMjwXjdvcFa
+         j/5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVO2XrxA6FgwCDrGkof6R0ir/wheyabNFNef28MhKd8Vyz4Qu6tIJZoy48qkQusRMEXn+UMXCDwfOg8irzk+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7bjLc9jWtE2Q2aus2emVs65PVjwaG9hZboDR19MCTeEY+Iy0M
+	isjAWSoBIcQA5XcHbGoKKY/IzqzWIxv/kkZxJHbvAQDPRHqb0Qu070LA1cbXolQaw2E0WKKGc1X
+	YSr6b7oY6jUTi71B9Woa9pNT+oA4O8PgVdDOGyA==
+X-Gm-Gg: ASbGncsDE4EogMArM5+ANwKvgdDKdR2+l47CCL1q7xTlY0Zj+sQdt9OmrBgWanVPxdE
+	CZeecDW8E7C3SZ/3iXbcT/uaooo7AZJl1AUhhvD96QEwJKPWMPMUhTlwPJ0QsSOsFGzmh6WiwuD
+	F5RZqIfqTNoX1BgSyVyR6sxuE8VYv7Ij36fA==
+X-Google-Smtp-Source: AGHT+IF+K/Y/hteHUL1Z1Houp7sxak6tVG3ZmtYLQ81YFGs/nLav2zw2Js385WaP/0YCdeVMq4A3IVLkIyFbhxRyO8U=
+X-Received: by 2002:a05:6402:254c:b0:5f6:59e5:5c6e with SMTP id
+ 4fb4d7f45d1cf-5f73982bd97mr62863a12.26.1745599773147; Fri, 25 Apr 2025
+ 09:49:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250313-mhi_bw_up-v2-7-869ca32170bf@oss.qualcomm.com>
+References: <20250422175918.585022-1-artur@conclusive.pl> <20250422175918.585022-3-artur@conclusive.pl>
+ <45b74f9f0831294e783a019cd6a1437fdad4eb6a.camel@sipsolutions.net>
+In-Reply-To: <45b74f9f0831294e783a019cd6a1437fdad4eb6a.camel@sipsolutions.net>
+From: Artur Rojek <artur@conclusive.pl>
+Date: Fri, 25 Apr 2025 18:49:22 +0200
+X-Gm-Features: ATxdqUGbZqRqLun2t5seqE0xBbyhBwhTsJOfC8_PKvG7-cB8xXWfuYtVPvY4uP0
+Message-ID: <CAGhaMFO_f_bvFB+39-z6xVF+y446ONwm1ROHQ=rXj=s4MnL54w@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 2/2] wifi: Add Nordic nRF70 series Wi-Fi driver
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jakub Klama <jakub@conclusive.pl>, 
+	Wojciech Kloska <wojciech@conclusive.pl>, Ulf Axelsson <ulf.axelsson@nordicsemi.no>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 13, 2025 at 05:10:14PM +0530, Krishna Chaitanya Chundru wrote:
-> As per MHI spec sec 14, MHI supports bandwidth scaling to reduce power
+Hi Johannes,
+thanks for the review thus far!
 
-Same here, add spec version.
+Replies inline.
 
-> consumption. MHI bandwidth scaling is advertised in devices that contain
+On Thu, Apr 24, 2025 at 5:07=E2=80=AFPM Johannes Berg <johannes@sipsolution=
+s.net> wrote:
+>
+> On Tue, 2025-04-22 at 19:59 +0200, Artur Rojek wrote:
+> > Introduce support for Nordic Semiconductor nRF70 series wireless
+> > companion IC.
+>
+> Seems simple enough ... but I notice you're not even adding a
+> MAINTAINERS file entry. Does that mean you're not going to stick around
+> to maintain it at all? I'm definitely _not_ going to. Please don't
+> expect the community to.
+>
+> Are you doing this for your customers? Or are you just doing this a
+> contract for someone who needs it? I don't really care all that much but
+> contracts have a tendency to go away and then we're left with nothing
+> upstream ...
 
-'advertised in devices or by devices'? Difference is subtle, but it changes the
-context.
+This is commercial work. I am employed by Conclusive Engineering, and
+was tasked with writing this driver. It was done for our internal needs
+(we sell hardware [1] with nRF70 on-board), however I was also asked to
+send the series upstream.
+Nordic showed interest in this work, hence why their representative is
+CCd to this conversation. They agreed to use our hardware as a reference
+board for nRF70 used in Linux context.
 
-> the bandwidth scaling capability registers. If enabled, the device
-> aggregates bandwidth requirements and sends them to the host in the form
-> of an event. After the host performs the bandwidth switch, it sends an
-> acknowledgment by ringing a doorbell.
-> 
-> if the host supports bandwidth scaling events, then it must set
+I fully understand your concerns with maintenance (I am privately
+a kernel contributor as well), and discussed this topic internally with
+appropriate decision making people. They understand the responsibilities
+involved and agreed to allocate time for me to support this driver long
+term. As such, I will add myself to MAINTAINERS in v3.
 
-So this means both host and device has to support bandwidth scaling events? What
-does 'events' mean here?
+>
+> Also, related, what are your plans to help out with wireless in general,
+> particularly reviews? You're building on the shoulders of everyone who
+> did work before ... I'll do a _very_ cursory review, but if you want to
+> get this merged I would expect you to also become a part of the
+> community and help review other people's code:
+>
+> https://lore.kernel.org/linux-wireless/21896d2788b8bc6c7fcb534cd43e75671a=
+57f494.camel@sipsolutions.net/
 
-> BW_CFG.ENABLED bit, set BW_CFG.DB_CHAN_ID to the channel ID to the
-> doorbell that will be used by the host to communicate the bandwidth
-> scaling status and BW_CFG.ER_INDEX to the index for the event ring
-> to which the device should send bandwidth scaling request in the
-> bandwidth scaling capability register.
-> 
-> As part of mmio init check if the bw scale capability is present or not,
-> if present advertise host supports bw scale by setting all the required
-> fields.
-> 
+Bearing in mind above time constraints, I have no objections to helping
+out. That said, this is my first Wi-Fi driver, and as such I am not that
+familiar with the cfg80211 subsystem (hence why this series is RFC), so
+my expertise will be limited at best.
+What sort of help would you expect from me with the reviews?
 
-Sounds like the host is depending on the device for bandwidth scaling.
+>
+> > +config NRF70
+> > +     tristate "Nordic Semiconductor nRF70 series wireless companion IC=
+"
+> > +     depends on CFG80211 && INET && SPI_MEM && CPU_LITTLE_ENDIAN
+>
+> That CPU_LITTLE_ENDIAN seems like a cop-out. Do we really want that?
+> Asking not specifically you I guess...
 
-> MHI layer will only forward the bw scaling request to the controller
-> driver, it is responsibility of the controller driver to do actual bw
-> scaling and then pass status to the MHI. MHI will response back to the
-> device based up on the status of the bw scale received.
-> 
+I addressed this in the cover letter (Patch 0/2), but nRF70 communicates
+using little-endian, byte packed messages, where each message type has
+a unique set of fields. This makes it a challenge to prepare said
+messages on a big-endian system. I am aware of the packing API [2],
+however a cursory look at it indicates that I would need to provide
+custom code for each and every message (there's almost 150 of those in
+total, even if the driver doesn't support all of them at the moment -
+take a look at nrf70_cmds.h).
+So I decided that until someone actually needs to use nRF70 on
+a big-endian machine, implementation of big-endian support can be
+postponed.
+Unless the __packed attribute is guaranteed to align the bytes the same
+way regardless of the endianness, and so calling cpu_to_le* for every
+field of a message is good enough (these messages are byte packed, not
+bit packed)?
 
-Why the controller driver needs to be involved for a spec defined feature?
-This is not answered here.
+>
+>
+> > +#define      NRF70_RADIOTAP_PRESENT_FIELDS                           \
+> > +     cpu_to_le32((1 << IEEE80211_RADIOTAP_RATE) |            \
+> > +                 (1 << IEEE80211_RADIOTAP_CHANNEL) |         \
+> > +                 (1 << IEEE80211_RADIOTAP_DBM_ANTSIGNAL))
+>
+> You did some work on making it little endian properly ..
+>
+>
+> > +
+> > +#define      NRF70_FW_FEATURE_RAW_MODE       BIT(3)
+> > +struct __packed nrf70_fw_header {
+> > +     u32 signature;
+> > +     u32 num_images;
+> > +     u32 version;
+> > +     u32 feature_flags;
+> > +     u32 length;
+> > +     u8 hash[NRF70_FW_HASH_LEN];
+> > +     u8 data[];
+> > +};
+> > +
+> > +struct __packed nrf70_fw_img {
+> > +     u32 type;
+> > +     u32 length;
+> > +     u8 data[];
+> > +};
+>
+> making the u32's here __le32's (and fixing sparse) would probably go a
+> long way of making it endian clean. The __packed is also placed oddly.
 
-> Add a new get_misc_doorbell() to get doorbell for misc capabilities to
-> use the doorbell with mhi events like MHI BW scale etc.
-> 
+When declaring structure members for the messages (in nrf70_cmds.h),
+I noticed that this attribute has to go before the braces:
+> struct __packed { ... } name;
+rather than after braces:
+> struct { ... } __packed name;
 
-So this is a spare doorbell? Why can't you call it as 'get_bw_scaling_db()'?
+I then went and applied the same style elsewhere in the driver. I guess
+I can restore the latter syntax where it makes sense.
 
-> Use workqueue & mutex for the bw scale events as the pci_set_target_speed()
-> which will called by the mhi controller driver can sleep.
-> 
-> Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-> ---
->  drivers/bus/mhi/common.h        |  16 +++++++
->  drivers/bus/mhi/host/init.c     |  64 ++++++++++++++++++++++++-
->  drivers/bus/mhi/host/internal.h |   7 ++-
->  drivers/bus/mhi/host/main.c     | 101 +++++++++++++++++++++++++++++++++++++++-
->  drivers/bus/mhi/host/pm.c       |  10 +++-
->  include/linux/mhi.h             |  13 ++++++
->  6 files changed, 205 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/bus/mhi/common.h b/drivers/bus/mhi/common.h
-> index eedac801b800..0a02acee709a 100644
-> --- a/drivers/bus/mhi/common.h
-> +++ b/drivers/bus/mhi/common.h
-> @@ -208,6 +208,22 @@
->  #define MHI_RSCTRE_DATA_DWORD1		cpu_to_le32(FIELD_PREP(GENMASK(23, 16), \
->  							       MHI_PKT_TYPE_COALESCING))
->  
-> +/* MHI Bandwidth scaling offsets */
-> +#define MHI_BW_SCALE_CFG_OFFSET		0x4
-> +#define MHI_BW_SCALE_CAP_ID		(3)
-> +
-> +#define MHI_BW_SCALE_ENABLE(bw_scale_db, er_index)	cpu_to_le32(FIELD_PREP(GENMASK(31, 25), \
-> +							bw_scale_db) |				\
-> +							FIELD_PREP(GENMASK(23, 19), er_index) |	\
-> +							BIT(24))
-> +
-> +#define MHI_TRE_GET_EV_BW_REQ_SEQ(tre)	FIELD_GET(GENMASK(15, 8), (MHI_TRE_GET_DWORD(tre, 0)))
-> +#define MHI_BW_SCALE_DB_ID(er_index)	FIELD_PREP(GENMASK(31, 25), er_index)
-> +
-> +#define MHI_BW_SCALE_RESULT(status, seq)	cpu_to_le32(FIELD_PREP(GENMASK(11, 8), status) | \
-> +						FIELD_PREP(GENMASK(7, 0), seq))
-> +#define MHI_BW_SCALE_NACK			0xF
-> +
->  enum mhi_pkt_type {
->  	MHI_PKT_TYPE_INVALID = 0x0,
->  	MHI_PKT_TYPE_NOOP_CMD = 0x1,
-> diff --git a/drivers/bus/mhi/host/init.c b/drivers/bus/mhi/host/init.c
-> index 0b14b665ed15..71abe02f5726 100644
-> --- a/drivers/bus/mhi/host/init.c
-> +++ b/drivers/bus/mhi/host/init.c
-> @@ -496,10 +496,56 @@ static int mhi_get_capability_offset(struct mhi_controller *mhi_cntrl, u32 capab
->  	return -ENXIO;
->  }
->  
-> +/* to be used only if a single event ring with the type is present */
+>
+> > +static int nrf70_verify_firmware(struct device *dev,
+> > +                              const struct nrf70_fw_header *fw)
+>
+>
+> What's the point in doing this? The hash is trivially adjusted if
+> someone wants to play with the file, if hw doesn't check anything, and
+> ... not sure we really need such a thing for "file is corrupt by
+> accident"? *shrug*
 
-Then open code in the caller itself. I see no benefit in adding it as a separate
-function.
+No idea if the hw does any verification of the hash, but sure, I can
+drop this.
 
-> +static int mhi_get_er_index(struct mhi_controller *mhi_cntrl,
-> +			    enum mhi_er_data_type type)
-> +{
-> +	struct mhi_event *mhi_event = mhi_cntrl->mhi_event;
-> +	int i;
-> +
-> +	/* find event ring for requested type */
-> +	for (i = 0; i < mhi_cntrl->total_ev_rings; i++, mhi_event++) {
-> +		if (mhi_event->data_type == type)
-> +			return mhi_event->er_index;
-> +	}
-> +
-> +	return -ENOENT;
-> +}
-> +
-> +static int mhi_init_bw_scale(struct mhi_controller *mhi_cntrl,
-> +			     int bw_scale_db)
-> +{
-> +	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-> +	u32 bw_cfg_offset, val = 0;
-> +	int ret, er_index;
-> +
-> +	ret = mhi_get_capability_offset(mhi_cntrl, MHI_BW_SCALE_CAP_ID,
-> +					&bw_cfg_offset);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* No ER configured to support BW scale */
+>
+> > +     ret =3D request_firmware(&firmware, "nrf70.bin", dev);
+>
+>
+> You might want to make that async so that the driver can be built-in
+> without requiring the firmware to also be built-in.
+>
+> > +     if (ret < 0) {
+> > +             dev_err(dev, "Failed to request firmware: %d\n", ret);
+> > +             return ret;
+> > +     }
+> > +
+> > +     header =3D (const struct nrf70_fw_header *)firmware->data;
+>
+> (const void *) cast would probably be sufficient
+>
+>
+> > +     return ret ? ret : (wait_for_completion_timeout(&priv->init_done,=
+ HZ) ?
+> > +                         0 : -ETIMEDOUT);
+>
+> that construct seems a bit questionable :)
+>
+>
+> > +static void nrf70_handle_rx_mgmt(struct spi_mem *mem,
+> > +                              struct nrf70_event_mlme *ev)
+> > +{
+> > +     struct nrf70_priv *priv =3D spi_mem_get_drvdata(mem);
+> > +     struct nrf70_vif *vif =3D nrf70_get_vif(priv, ev->header.idx.wdev=
+_id);
+> > +
+> > +     if (IS_ERR(vif))
+> > +             return;
+> > +
+> > +     (void)cfg80211_rx_mgmt(&vif->wdev, ev->frequency, ev->rx_signal_d=
+bm,
+> > +                            ev->frame.data, ev->frame.len, ev->wifi_fl=
+ags);
+>
+>
+> shouldn't need the (void) cast?
+>
+>
+> > +static int nrf70_change_bss(struct wiphy *wiphy, struct net_device *nd=
+ev,
+> > +                         struct bss_parameters *params)
+>
+>
+> See also this discussion:
+> https://lore.kernel.org/linux-wireless/29fa5ea7f4cc177bed823ec3489d610e1d=
+69a08f.camel@sipsolutions.net/
+>
+> > +static int nrf70_dequeue_umac_event(struct spi_mem *mem, void *data)
+> > +{
+> > +     struct nrf70_priv *priv =3D spi_mem_get_drvdata(mem);
+> > +     struct device *dev =3D &mem->spi->dev;
+> > +     struct nrf70_umac_header *header =3D data;
+> > +     struct nrf70_vif *vif =3D nrf70_get_vif(priv, header->idx.wdev_id=
+);
+> > +     struct cfg80211_scan_info scan_info =3D { .aborted =3D true };
+> > +
+> > +     if (IS_ERR(vif))
+> > +             return PTR_ERR(vif);
+> > +
+> > +     switch (header->id) {
+> > +     case NRF70_UMAC_EVENT_TRIGGER_SCAN_START:
+> > +             break;
+>
+>
+> This sounds like you pretty much built the firmware for cfg80211 ;-)
 
-What does it mean?
+That's because the firmware *is* cfg80211. Perhaps I am opening a can of
+worms here, but it has to be opened at some point during firmware
+upstream. From what I've seen, part of the nRF70 firmware (called UMAC)
+is derived from the cfg80211 project. Nordic makes the source code
+publicly available at this location [3]. I have also asked Nordic to
+provide a matching version of the source code for the fw blob they will
+be upstreaming to the linux-firmware project (I believe I will be
+assisting in that process as well). I hope everything there is dandy
+license-wise, as I am not a lawyer :)
 
-> +	er_index = mhi_get_er_index(mhi_cntrl, MHI_ER_BW_SCALE);
-> +	if (er_index < 0)
-> +		return er_index;
-> +
-> +	bw_cfg_offset += MHI_BW_SCALE_CFG_OFFSET;
-> +
-> +	/* advertise host support */
-> +	val = MHI_BW_SCALE_ENABLE(bw_scale_db, er_index);
-> +
-> +	mhi_write_reg(mhi_cntrl, mhi_cntrl->regs, bw_cfg_offset, val);
-> +
-> +	dev_dbg(dev, "Bandwidth scaling setup complete. Event ring:%d\n",
-> +		er_index);
-> +
+>
+>
+> > +#define      NRF70_MSG_SYSTEM                0
+> > +#define      NRF70_MSG_DATA                  2
+> > +#define      NRF70_MSG_UMAC                  3
+> > +
+> > +struct __packed nrf70_msg {
+> > +     u32 len;
+> > +     u32 resubmit;
+> > +     u32 type;
+> > +     u8 data[];
+>
+>
+> similar comments here throughout this entire file wrt __packed and
+> __le32, obviously
 
-"Bandwidth scaling setup complete with event ring: %d\n"
+Addressed above wrt __packed.
 
-> +	return 0;
-> +}
-> +
->  int mhi_init_mmio(struct mhi_controller *mhi_cntrl)
->  {
->  	u32 val;
-> -	int i, ret;
-> +	int i, ret, doorbell = 0;
->  	struct mhi_chan *mhi_chan;
->  	struct mhi_event *mhi_event;
->  	void __iomem *base = mhi_cntrl->regs;
-> @@ -633,6 +679,16 @@ int mhi_init_mmio(struct mhi_controller *mhi_cntrl)
->  		return ret;
->  	}
->  
-> +	if (mhi_cntrl->get_misc_doorbell)
-> +		doorbell = mhi_cntrl->get_misc_doorbell(mhi_cntrl, MHI_ER_BW_SCALE);
-> +
-> +	if (doorbell > 0) {
-> +		ret = mhi_init_bw_scale(mhi_cntrl, doorbell);
-> +		if (!ret)
-> +			mhi_cntrl->bw_scale_db = base + val + (8 * doorbell);
-> +		else
-> +			dev_warn(dev, "BW scale setup failure\n");
+>
+> > +/* Undocumented PHY configuration parameters. */
+> >
+>
+> haha :)
 
-"Failed to setup bandwidth scaling: %d"
+Yep :)
+To be clear on the development process of this driver, no proprietary
+documentation has been used. I've written it entirely based on the
+publicly available Nordic's SDK [4], their Zephyr driver [5], the
+aforementioned UMAC source code, and a fair amount of guess work. This
+means there is some undocumented stuff available only as magic numbers.
 
-> +	}
->  	return 0;
->  }
->  
-> @@ -778,6 +834,9 @@ static int parse_ev_cfg(struct mhi_controller *mhi_cntrl,
->  		case MHI_ER_CTRL:
->  			mhi_event->process_event = mhi_process_ctrl_ev_ring;
->  			break;
-> +		case MHI_ER_BW_SCALE:
-> +			mhi_event->process_event = mhi_process_bw_scale_ev_ring;
-> +			break;
->  		default:
->  			dev_err(dev, "Event Ring type not supported\n");
->  			goto error_ev_cfg;
-> @@ -1012,9 +1071,12 @@ int mhi_register_controller(struct mhi_controller *mhi_cntrl,
->  
->  		mhi_event->mhi_cntrl = mhi_cntrl;
->  		spin_lock_init(&mhi_event->lock);
-> +		mutex_init(&mhi_event->mutex);
->  		if (mhi_event->data_type == MHI_ER_CTRL)
->  			tasklet_init(&mhi_event->task, mhi_ctrl_ev_task,
->  				     (ulong)mhi_event);
-> +		else if (mhi_event->data_type == MHI_ER_BW_SCALE)
-> +			INIT_WORK(&mhi_event->work, mhi_process_ev_work);
->  		else
->  			tasklet_init(&mhi_event->task, mhi_ev_task,
->  				     (ulong)mhi_event);
-> diff --git a/drivers/bus/mhi/host/internal.h b/drivers/bus/mhi/host/internal.h
-> index 3134f111be35..bf7c6a7c9383 100644
-> --- a/drivers/bus/mhi/host/internal.h
-> +++ b/drivers/bus/mhi/host/internal.h
-> @@ -241,6 +241,8 @@ struct mhi_event {
->  	struct mhi_ring ring;
->  	struct db_cfg db_cfg;
->  	struct tasklet_struct task;
-> +	struct work_struct work;
+>
+>
+> Oh and before I forget, how about firmware availability?
 
-bw_scaling_work or bw_scale_work?
+Nordic gave us permission to upstream it, see the cover letter.
 
-> +	struct mutex mutex;
+PS. I was oblivious to the specific patch submission rules for
+linux-wireless until after I've sent v2 series. Sorry for any
+inconvenience! The v3 will be formatted appropriately.
 
-Add a comment on the purpose of the mutex.
+Cheers,
+Artur
 
->  	spinlock_t lock;
->  	int (*process_event)(struct mhi_controller *mhi_cntrl,
->  			     struct mhi_event *mhi_event,
-> @@ -403,7 +405,8 @@ int mhi_process_data_event_ring(struct mhi_controller *mhi_cntrl,
->  				struct mhi_event *mhi_event, u32 event_quota);
->  int mhi_process_ctrl_ev_ring(struct mhi_controller *mhi_cntrl,
->  			     struct mhi_event *mhi_event, u32 event_quota);
-> -
-> +int mhi_process_bw_scale_ev_ring(struct mhi_controller *mhi_cntrl,
-> +				 struct mhi_event *mhi_event, u32 event_quota);
->  /* ISR handlers */
->  irqreturn_t mhi_irq_handler(int irq_number, void *dev);
->  irqreturn_t mhi_intvec_threaded_handler(int irq_number, void *dev);
-> @@ -419,5 +422,5 @@ void mhi_unmap_single_no_bb(struct mhi_controller *mhi_cntrl,
->  			    struct mhi_buf_info *buf_info);
->  void mhi_unmap_single_use_bb(struct mhi_controller *mhi_cntrl,
->  			     struct mhi_buf_info *buf_info);
-> -
-> +void mhi_process_ev_work(struct work_struct *work);
->  #endif /* _MHI_INT_H */
-> diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
-> index 4de75674f193..967563d86aec 100644
-> --- a/drivers/bus/mhi/host/main.c
-> +++ b/drivers/bus/mhi/host/main.c
-> @@ -472,7 +472,10 @@ irqreturn_t mhi_irq_handler(int irq_number, void *dev)
->  		if (mhi_dev)
->  			mhi_notify(mhi_dev, MHI_CB_PENDING_DATA);
->  	} else {
-> -		tasklet_schedule(&mhi_event->task);
-> +		if (mhi_event->data_type == MHI_ER_BW_SCALE)
-> +			queue_work(mhi_cntrl->hiprio_wq, &mhi_event->work);
+[1] https://conclusive.tech/products/kstr-imx93-sbc/
+[2] https://www.kernel.org/doc/html/latest/core-api/packing.html
+[3] https://files.nordicsemi.com/ui/native/developerDoc/external/oss/nRF700=
+x/
+[4] https://github.com/nrfconnect/sdk-nrfxlib/tree/v2.7-branch/nrf_wifi
+[5] https://github.com/zephyrproject-rtos/zephyr/tree/main/drivers/wifi/nrf=
+_wifi
 
-To avoid the hassle, I think it is worth changing the mutex in bwctrl to
-spinlock. I don't think there would be issues in spinning inside
-pcie_set_target_speed().
-
-> +		else
-> +			tasklet_schedule(&mhi_event->task);
->  	}
->  
->  	return IRQ_HANDLED;
-> @@ -1049,6 +1052,102 @@ int mhi_process_data_event_ring(struct mhi_controller *mhi_cntrl,
->  	return count;
->  }
->  
-> +/* dedicated bw scale event ring processing */
-> +int mhi_process_bw_scale_ev_ring(struct mhi_controller *mhi_cntrl,
-> +				 struct mhi_event *mhi_event, u32 event_quota)
-> +{
-> +	struct mhi_event_ctxt *er_ctxt = &mhi_cntrl->mhi_ctxt->er_ctxt[mhi_event->er_index];
-> +	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-> +	struct mhi_ring *ev_ring = &mhi_event->ring;
-> +	dma_addr_t ptr = le64_to_cpu(er_ctxt->rp);
-> +	u32 response = MHI_BW_SCALE_NACK;
-> +	struct mhi_ring_element *dev_rp;
-> +	struct mhi_link_info link_info;
-> +	int ret = -EINVAL;
-> +
-> +	if (unlikely(MHI_EVENT_ACCESS_INVALID(mhi_cntrl->pm_state))) {
-> +		ret =  -EIO;
-> +		goto exit_bw_scale_process;
-
-exit_bw_scale?
-
-> +	}
-> +
-> +	if (!MHI_IN_MISSION_MODE(mhi_cntrl->ee))
-> +		goto exit_bw_scale_process;
-> +
-> +	if (!is_valid_ring_ptr(ev_ring, ptr)) {
-> +		dev_err(dev,
-> +			"Event ring rp points outside of the event ring\n");
-> +		ret =  -EIO;
-> +		goto exit_bw_scale_process;
-> +	}
-> +
-> +	dev_rp = mhi_to_virtual(ev_ring, ptr);
-> +
-> +	/* if rp points to base, we need to wrap it around */
-
-Nit: Use caps for starting letter and also for acronyms.
-
-> +	if (dev_rp == ev_ring->base)
-> +		dev_rp = ev_ring->base + ev_ring->len;
-> +	dev_rp--;
-> +
-> +	/* fast forward to currently processed element and recycle er */
-> +	ev_ring->rp = dev_rp;
-> +	ev_ring->wp = dev_rp - 1;
-> +	if (ev_ring->wp < ev_ring->base)
-> +		ev_ring->wp = ev_ring->base + ev_ring->len - ev_ring->el_size;
-> +	mhi_recycle_ev_ring_element(mhi_cntrl, ev_ring);
-> +
-> +	if (WARN_ON(MHI_TRE_GET_EV_TYPE(dev_rp) != MHI_PKT_TYPE_BW_REQ_EVENT)) {
-> +		dev_err(dev, "!BW SCALE REQ event\n");
-> +		goto exit_bw_scale_process;
-> +	}
-> +
-> +	link_info.target_link_speed = MHI_TRE_GET_EV_LINKSPEED(dev_rp);
-> +	link_info.target_link_width = MHI_TRE_GET_EV_LINKWIDTH(dev_rp);
-> +	link_info.sequence_num = MHI_TRE_GET_EV_BW_REQ_SEQ(dev_rp);
-> +
-> +	dev_info(dev, "Received BW_REQ with seq:%d link speed:0x%x width:0x%x\n",
-> +		 link_info.sequence_num,
-> +		 link_info.target_link_speed,
-> +		 link_info.target_link_width);
-
-dev_dbg()
-
-> +
-> +	/* bring host and device out of suspended states */
-> +	ret = mhi_device_get_sync(mhi_cntrl->mhi_dev);
-> +	if (ret)
-> +		goto exit_bw_scale_process;
-> +
-> +	mhi_cntrl->runtime_get(mhi_cntrl);
-> +
-> +	ret = mhi_cntrl->bw_scale(mhi_cntrl, &link_info);
-> +	if (!ret)
-> +		response = 0;
-> +
-> +	response = MHI_BW_SCALE_RESULT(response, link_info.sequence_num);
-> +
-> +	write_lock_bh(&mhi_cntrl->pm_lock);
-> +	mhi_write_reg(mhi_cntrl, mhi_cntrl->bw_scale_db, 0, response);
-> +	write_unlock_bh(&mhi_cntrl->pm_lock);
-> +
-> +	mhi_cntrl->runtime_put(mhi_cntrl);
-> +	mhi_device_put(mhi_cntrl->mhi_dev);
-> +
-> +exit_bw_scale_process:
-> +	dev_dbg(dev, "exit er_index:%u ret:%d\n", mhi_event->er_index, ret);
-
-Can these entry exit debug sequences be avoided?
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+>
+> johannes
 
