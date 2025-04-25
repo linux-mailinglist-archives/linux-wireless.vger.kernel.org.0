@@ -1,55 +1,54 @@
-Return-Path: <linux-wireless+bounces-22083-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22084-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5432EA9D193
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 21:31:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B09BA9D1F8
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 21:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C16EA3B3079
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 19:31:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72ED21B84B84
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 19:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592282165E4;
-	Fri, 25 Apr 2025 19:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844C8224AEE;
+	Fri, 25 Apr 2025 19:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="dNjFCy6x"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="C+Rdr/oo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-28.smtpout.orange.fr [80.12.242.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE11017C21C;
-	Fri, 25 Apr 2025 19:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878D1219313;
+	Fri, 25 Apr 2025 19:38:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745609503; cv=none; b=p+OjvdRg6oyap4ygrFIU5l5cal5ZaPu+D2vH+S7cPq7jEPM7t8ZTqg59urCMU/2Zih1wPdt2sNZy9eRxifGqbN0cMXJQ2nlmZP+NiXSBtX7sibgk5A2LInsNSOvKxk3jSyDn3sjHRv8sRieY2w9v2brShifKZ9OfFnKqG/BSUhg=
+	t=1745609905; cv=none; b=RJkCCWtQbTHW5iG8Nht5ylDWcurQ3rtGeCF+deZTfjAwgGZEcGXOFYbsuCoKtiSShRINF33YKQM/PdhxEQMnwWj1gT0VAwHS9bAl5E+BCS8PoMtWSX2WVf90RjJwaOcSwSv6NeN8vbU/DAH51qsGOd8OJF0dwguotg5hP7hz0TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745609503; c=relaxed/simple;
-	bh=8PieXv6mj0nc1z3cu6Sb94XkBuu/I3wwKOQ/R0xhdRw=;
-	h=Message-ID:Date:MIME-Version:Subject:References:From:To:Cc:
-	 In-Reply-To:Content-Type; b=pxyq6BAXzE4OZRPY0Ifc/ht+SjgN3q00mVRojYKGKevOiGDfKbrXaAEn+KN/BgxGCRw01v53iEZDYCoXnweqzHUCooX7eq6X3yIPpcCeKEqdmChOS1+0+RhZr/yi3aEWP87vohziTjs1VnfXHYHnvQv14rVj/Sb26grQHrd3kC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=dNjFCy6x; arc=none smtp.client-ip=80.12.242.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id 8OljuoZghQxp68Olmuvwz2; Fri, 25 Apr 2025 21:31:31 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1745609491;
-	bh=JIqrozcWOsOgrfWz/Flt09tv8c/B8HQaA5udh4Yf2FQ=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To;
-	b=dNjFCy6x6w6fM7gGn/+CfgPLBFdQ5mTn0ML317iEvwlLVdz5O3scxkRbtSPGIgKQZ
-	 iR+FVmsPIBcfQuhpYzeZ61RpB8iT4urP5ZEA1/Dze3sqmfuKPp49tN1mQ+emTSK9Dl
-	 KwlO5AOf9qRl7uKT9o5Wt2e8dAs1gFdOYN9qAzUWRpbfzTBIWqU/nLzxbCl8yBkfOy
-	 etD7xYvQEvbXl4S8fxTOaGfUBodgnzzJ/WfN94KcKiH3V1E56PgjYIvsWA+BTSVvw9
-	 JxFMEqhiPYNW3wd419UeCBZDHdm5qdFils2cN8aOQue/IYDJ1dRL6txzXKu45ETCkZ
-	 DRai1BYlZnx5Q==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Fri, 25 Apr 2025 21:31:31 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <3cfd718f-e96a-44d0-b42f-d759ae698810@wanadoo.fr>
-Date: Fri, 25 Apr 2025 21:31:26 +0200
+	s=arc-20240116; t=1745609905; c=relaxed/simple;
+	bh=wjYY8hD1aR6U/hYht1xTDSyyUul+5U2cO03JezuRPjo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vEWmgvDpDPkBUf8jmpy/uw0O1MD+IPBri652szM5dLGoa947zRNV08gL4TvyxdoLCasdoLDJX98a/YVQwz2U9uL574fzbVPlcULr3DAI19rFAKhpm1YYwCsYTQevUWC4EUlq/Ux0yDjVNV9LkF7ZJnIGnN4Rg2fA6nx4UUxwur4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=C+Rdr/oo; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [IPV6:2601:646:8081:1f93:3f9b:137e:d2cb:73f7] ([IPv6:2601:646:8081:1f93:3f9b:137e:d2cb:73f7])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53PJXQqR3199422
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Fri, 25 Apr 2025 12:33:27 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53PJXQqR3199422
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1745609615;
+	bh=OLByDl2k8QS7+vMeXGAQllfp+4VYlTCCje7Ox6Pfa4g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=C+Rdr/oohHcjiYl3k1s0a/jc7dixN5R0Mv5Px2j8kDdwJbPFLv4mJw8by+4Oto+F1
+	 tveW9WpgN8ttlpQLpdXcxTyaag9b/7TVjdH+TFVTrbHGQKwFJgak240662L863NwH8
+	 vgd5rhQsraf4buOHAZcbX5elWx80ZG9egeLnGj+ScCeWi6QGr1XXyAHAVnHwSmGqjn
+	 GkUO/NnNKAj8Q2mW/Ez/Vn8NVAPQB+fwhPjMvNjg1RQgr6hZA7HmxZl5MiRxUlxIY9
+	 uDj0XpVrhXq3zSB+OYJgYqNwOTX2giqyzWvO0pM/qCL4rFHYBzL4YJWj3wXsa2EaH3
+	 7hq16GNhLhdyg==
+Message-ID: <8571fd6f-4e71-4a6d-b2e8-16d9d72fa56e@zytor.com>
+Date: Fri, 25 Apr 2025 12:33:21 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,54 +56,75 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 2/2] wifi: Add Nordic nRF70 series Wi-Fi driver
-References: <20250422175918.585022-1-artur@conclusive.pl>
- <20250422175918.585022-3-artur@conclusive.pl>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: artur@conclusive.pl
-Cc: broonie@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
- jakub@conclusive.pl, johannes@sipsolutions.net, krzk+dt@kernel.org,
- lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
- ulf.axelsson@nordicsemi.no, wojciech@conclusive.pl
-In-Reply-To: <20250422175918.585022-3-artur@conclusive.pl>
+Subject: Re: [PATCH v4 00/13] Introduce parity_odd() and refactor redundant
+ parity code
+To: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: Yury Norov <yury.norov@gmail.com>, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
+        andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+        dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
+        hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
+        vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+        parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+        johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+        jirislaby@kernel.org, akpm@linux-foundation.org, jdelvare@suse.com,
+        linux@roeck-us.net, alexandre.belloni@bootlin.com, pgaj@cadence.com,
+        alistair@popple.id.au, linux@rasmusvillemoes.dk,
+        Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+        jernej.skrabec@gmail.com, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+        dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+        oss-drivers@corigine.com, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+        brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+        bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw, Frank.Li@nxp.com,
+        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
+        david.laight.linux@gmail.com, andrew.cooper3@citrix.com,
+        Yu-Chun Lin <eleanor15x@gmail.com>
+References: <20250409154356.423512-1-visitorckw@gmail.com>
+ <Z_amQp3gK5Dm8Qz3@yury> <Z/a5Qh/OeLT8JBS4@visitorckw-System-Product-Name>
+ <Z_a9YpE46Xf8581l@yury> <e97a83a2-dabd-4dc3-b69a-840ca17d70b5@zytor.com>
+ <Z/lEkDwefWvw4ZA3@visitorckw-System-Product-Name>
+Content-Language: en-US
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <Z/lEkDwefWvw4ZA3@visitorckw-System-Product-Name>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Le 22/04/2025 à 19:59, Artur Rojek a écrit :
-> Introduce support for Nordic Semiconductor nRF70 series wireless
-> companion IC.
-> 
+On 4/11/25 09:34, Kuan-Wei Chiu wrote:
+>>
+>> In either case, instead of packing the cascade into one function, make good
+>> use of it.
+>>
+>> In the latter case, __builtin_constant_p() isn't necessary as it puts the
+>> onus on the architecture to separate out const and non-const cases, if it
+>> matters -- which it doesn't if the architecture simply wants to use
+>> __builtin_parity:
+>>
+>> #define parity8(x)  ((bool) __builtin_parity((u8)(x)))
+>> #define parity16(x) ((bool) __builtin_parity((u16)(x)))
+>> #define parity32(x) ((bool) __builtin_parity((u32)(x)))
+>> #define parity64(x) ((bool) __builtin_parityll((u64)(x)))
+>>
+>> As stated before, I don't really see that the parity function itself would
+>> be very suitable for a generic helper, but if it were to, then using the
+>> "standard" macro construct for it would seem to be the better option.
+>>
+>> (And I would be very much in favor of not open-coding the helper everywhere
+>> but to macroize it; effectively creating a C++ template equivalent. It is
+>> out of scope for this project, though.)
+>>
+> IIUC, you prefer using the parity8/16/32/64() interface with
+> __builtin_parity(), regardless of whether there are users on the hot
+> path?
 
-Hi,
-...
+As a per-architecture opt-in, yes.
 
-> +	/* vpwr is mandatory, but we want to catch the -ENODEV error. */
-> +	priv->vpwr = devm_regulator_get_optional(dev, "vpwr");
-> +	if (IS_ERR(priv->vpwr))
-> +		return dev_err_probe(dev, PTR_ERR(priv->vpwr),
-> +				     "Unable to find vpwr-supply property");
-> +
-> +	priv->vio = devm_regulator_get_optional(dev, "vio");
-> +	if (IS_ERR(priv->vio) && PTR_ERR(priv->vio) != -ENODEV) {
-> +		return dev_err_probe(dev, PTR_ERR(priv->vio),
-> +				     "Invalid vio-supply property");
-> +	}
+	-hpa
 
-Unneeded extra { }
-
-> +
-> +	irq = of_irq_get_byname(dev->of_node, "host-irq");
-> +	if (irq <= 0)
-> +		return dev_err_probe(dev, irq, "Unable to find host-irq\n");
-
-If irq is 0, is it expected to return sucess here?
-
-> +
-> +	mutex_init(&priv->write_lock);
-> +	mutex_init(&priv->read_lock);
-...
-
-CJ
 
