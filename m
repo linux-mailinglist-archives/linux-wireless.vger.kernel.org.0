@@ -1,165 +1,85 @@
-Return-Path: <linux-wireless+bounces-22049-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22050-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565ADA9C228
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 10:53:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7542A9C21C
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 10:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 651253B49C7
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 08:51:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C07B41893714
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 08:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A036122156E;
-	Fri, 25 Apr 2025 08:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9C921FF3C;
+	Fri, 25 Apr 2025 08:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="C05ahXwG"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="sK5lRm3P"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.167])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA031F75A9
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 08:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97C2236429;
+	Fri, 25 Apr 2025 08:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745571073; cv=none; b=fAkEEevG48NvMbt7XjNv0OJRTIN6KRoBk1ybGqofFeICA0BCFzewmbZ5spyrouxFsEHzINrwEEAtnNbTjzxNXCCje9mXyTOq/GlgO5tEQxofhfLtoJTcN66IIZ+xhApwWCejMfVkj0OysWimwWFqBeTR1I7qYXdvZWVcrGY6D2c=
+	t=1745571082; cv=none; b=h7gD/wXR4qr4JHKNlAsDsTfhPvwIlw8JReP5Hb/m6m+30PG4RoON/nUfgTwVGfH7ikK7UZXeZGyfG2NWpEO22R5uEA7ZRARygrdsb92awURjvmFBv6mI9fISKFozobtn0SJYGi1Q1wh1xAWkb3H/Da5BnjwaWBuixBsXWdjywgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745571073; c=relaxed/simple;
-	bh=QKM81Z5OKSv3auXVAY478OddXt6QHpbIxR9wosP5Auo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ewxd9+Y6wuh4OMeQ1WR70gJpo+1eBsXN9wmUhawSQulnvAPECLQXelohSZiAbpPKrII6zYaaQQgQGWt9H7HJYonMqGCknFb3gtdnTdIkWU7KUMjjDNd0UzdJDKixHm3euLFAqSjDW8v5Uc1ujA2VOpHFFK05N2mwL/syeLO7ohw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=C05ahXwG; arc=none smtp.client-ip=195.121.94.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
-X-KPN-MessageId: 93f16712-21b2-11f0-b9a0-005056abbe64
-Received: from smtp.kpnmail.nl (unknown [10.31.155.38])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 93f16712-21b2-11f0-b9a0-005056abbe64;
-	Fri, 25 Apr 2025 10:52:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:from:to:subject:mime-version:date:message-id;
-	bh=ZUUJHctHfNsWNu1EuQFACb2hrUYidSMtniMgESDbRMU=;
-	b=C05ahXwGA4fFgl5pI9IJHaOIC76m8R/+Es89bI5CvWoa6HqeHuMK1mldeMHIPdQDi2kLlgzYGuFDe
-	 D6MuwZeTwD9wDa1XBMVKPiXUdLXcq+GTqnyBHWJmMljRXk48AhzZTUw4w3JcILCX9BZqxzGIjcGt45
-	 rVpMjojPveoEKJh8q2SHsNUin5NrH2hHy2UM/ToU41fRmD9iRhfZFZVHgj6RTwNoFsLryLF3BsJztF
-	 gaTSBezUZK3uueMs3FZ29rF3MDkksrwOCGH4rjzRi2+4egWucO06G46ulnDHCSBicLhtJMzaffZPP7
-	 sV5V8wKP1no2OVYkOrkoy9/F8HuD5EA==
-X-KPN-MID: 33|AF0t4UVO0ldgi6YmnFhYJXqAPxHkuBjosJGcKGQA7S6P7Abi1YftYhe8yCepFKM
- Um9AVCIhpwBzaPi+MzlrzvCTD1SHpo9+IS4F4rFr5JFU=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|nqQMCrwmB3CHOeiz1JE1vwIQX38ApX4EwzMJX9cEX5ZmT/5GDgIxRdtlrbvDrcJ
- 3U9+ukECS2iUUeZHN8Kv+nQ==
-Received: from [192.168.1.10] (80-60-128-215.fixed.kpn.net [80.60.128.215])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id 6c670738-21b2-11f0-95a4-005056abf0db;
-	Fri, 25 Apr 2025 10:51:06 +0200 (CEST)
-Message-ID: <7d0096ad-a290-4fbc-8c06-dba49e8db8af@xs4all.nl>
-Date: Fri, 25 Apr 2025 10:51:05 +0200
+	s=arc-20240116; t=1745571082; c=relaxed/simple;
+	bh=GsdKqhaZHVy1X7q+VEL9powEi92d1+8HwMYyPzldJWE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=spKwyRNYOyG91JBDYOZBsQ7klCvt6C4kZdOqZzoI9eb6NOUMUJTqhN9Naq7yPAw5Zyw26CTvV6863clFPD0Dw4o00XYWsFlkB8OxZalmlKcEaWSJfHLSjn+dECgPatsvp/FoZWQlcr34eyrfip/6t2WS7ih7fA17yWBi6d6wZrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=sK5lRm3P; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=GsdKqhaZHVy1X7q+VEL9powEi92d1+8HwMYyPzldJWE=;
+	t=1745571080; x=1746780680; b=sK5lRm3PsM7hk4mMlRrrsav3dgLVDWj6FnpLsQDwZi4Xba5
+	O49e7LmLsg1RDzue6gqzs+vLjecaplW0lIZz1at2wIrOx5w/dUKqzrCWy+Kgi8AKClN40v0o4+qo4
+	9D9W99aXgOGuUbahXPP0gtnUXj/ZCbRzNmIFqBBoWGo35GI8ygSgux/hPRhfwvfgQ61cQ7M5uxACe
+	E5As2/SuiAbywOn9t8zYvJtkoo9AZjqEtAX56gdnOetmEQvRgcocFHoB9ds7EF5b8Vh/Bon048fa0
+	kYNNk3apKMxR4yrIEkCNpmOPKpUWO43PoYDmoNUToQ5LpoTBB9t0M5N90tfiPeFw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.1)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1u8EmD-00000001B78-2fHA;
+	Fri, 25 Apr 2025 10:51:18 +0200
+Message-ID: <c03e8384c0c1e338ee9e874780f684d45ce1f1e1.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next 4/4] wifi: brcmfmac: Fix structure size
+ for WPA3 external SAE
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, Ting-Ying Li
+	 <tingying.li@cypress.com>, Ting-Ying Li <tingying.li@infineon.com>, James
+ Prestwood <prestwoj@gmail.com>
+Date: Fri, 25 Apr 2025 10:51:16 +0200
+In-Reply-To: <95cbaef6-761b-4ecb-a722-a546bb034939@broadcom.com>
+References: <20250424194239.2825830-1-arend.vanspriel@broadcom.com>
+	 <20250424194239.2825830-5-arend.vanspriel@broadcom.com>
+	 <850b42ab-a637-4dd9-af18-e12523983ded@broadcom.com>
+	 <44916ff608ee53238d79e57ee31fcbf86dfb672d.camel@sipsolutions.net>
+	 <95cbaef6-761b-4ecb-a722-a546bb034939@broadcom.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/13] media: pci: cx18-av-vbi: Replace open-coded
- parity calculation with parity_odd()
-To: Kuan-Wei Chiu <visitorckw@gmail.com>,
- Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, jk@ozlabs.org, joel@jms.id.au,
- eajames@linux.ibm.com, andrzej.hajda@intel.com, neil.armstrong@linaro.org,
- rfoss@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
- hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
- vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- parthiban.veerasooran@microchip.com, johannes@sipsolutions.net,
- gregkh@linuxfoundation.org, jirislaby@kernel.org, yury.norov@gmail.com,
- akpm@linux-foundation.org, jdelvare@suse.com, linux@roeck-us.net,
- alexandre.belloni@bootlin.com, pgaj@cadence.com, hpa@zytor.com,
- alistair@popple.id.au, linux@rasmusvillemoes.dk,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
- linux-fsi@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
- linux-input@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mtd@lists.infradead.org, oss-drivers@corigine.com,
- netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- linux-serial@vger.kernel.org, bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
- Frank.Li@nxp.com, linux-hwmon@vger.kernel.org,
- linux-i3c@lists.infradead.org, david.laight.linux@gmail.com,
- andrew.cooper3@citrix.com, Yu-Chun Lin <eleanor15x@gmail.com>
-References: <20250409154356.423512-1-visitorckw@gmail.com>
- <20250409154356.423512-4-visitorckw@gmail.com>
- <25b7888d-f704-493b-a2d7-c5e8fff9cfb4@broadcom.com>
- <Z/bDnLzcajzIxey3@visitorckw-System-Product-Name>
-Content-Language: en-US, nl
-From: Hans Verkuil <hverkuil@xs4all.nl>
-In-Reply-To: <Z/bDnLzcajzIxey3@visitorckw-System-Product-Name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-On 09/04/2025 20:59, Kuan-Wei Chiu wrote:
-> On Wed, Apr 09, 2025 at 08:43:09PM +0200, Arend van Spriel wrote:
->> On 4/9/2025 5:43 PM, Kuan-Wei Chiu wrote:
->>> Refactor parity calculations to use the standard parity_odd() helper.
->>> This change eliminates redundant implementations.
->>>
->>> Co-developed-by: Yu-Chun Lin <eleanor15x@gmail.com>
->>> Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
->>> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
->>> ---
->>>   drivers/media/pci/cx18/cx18-av-vbi.c | 12 ++----------
->>>   1 file changed, 2 insertions(+), 10 deletions(-)
->>>
->>> diff --git a/drivers/media/pci/cx18/cx18-av-vbi.c b/drivers/media/pci/cx18/cx18-av-vbi.c
->>> index 65281d40c681..15b515b95956 100644
->>> --- a/drivers/media/pci/cx18/cx18-av-vbi.c
->>> +++ b/drivers/media/pci/cx18/cx18-av-vbi.c
->>
->> [...]
->>
->>> @@ -278,7 +270,7 @@ int cx18_av_decode_vbi_line(struct v4l2_subdev *sd,
->>>   		break;
->>>   	case 6:
->>>   		sdid = V4L2_SLICED_CAPTION_525;
->>> -		err = !odd_parity(p[0]) || !odd_parity(p[1]);
->>> +		err = !parity_odd(p[0]) || !parity_odd(p[1]);
->>
->> No need to call parity_odd() twice here. Instead you could do:
->>
->> 		err = !parity_odd(p[0] ^ p[1]);
+On Fri, 2025-04-25 at 10:49 +0200, Arend van Spriel wrote:
+>=20
+> Crap. Just sent v2 executing my plan as stated above. v3 or is the=20
+> mai..eh..custodian willing to fix it up?
+>=20
 
-I prefer the original approach, it is easier to understand. Performance
-is not an issue here, clarity of the code is more important.
+I'd say yes, but honestly I'm not sure I will get around to it today,
+and will likely forget next week. Sorry.
 
-So for this patch (i.e. this v4 version):
-
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-
->>
->> This is orthogonal to the change to parity_odd() though. More specific to
->> the new parity_odd() you can now do following as parity_odd() argument is
->> u64:
->>
->> 		err = !parity_odd(*(u16 *)p);
->>
->>
-> Thanks for the feedback!
-> Would you prefer this change to be part of the parity() conversion
-> patch, or in a separate one?
-
-Just leave it as-is, as mentioned above.
-
-Regards,
-
-	Hans
-
-> 
-> Regards,
-> Kuan-Wei
-
+johannes
 
