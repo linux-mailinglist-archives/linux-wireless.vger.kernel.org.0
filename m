@@ -1,98 +1,166 @@
-Return-Path: <linux-wireless+bounces-22080-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22081-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0391A9D044
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 20:11:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB578A9D05E
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 20:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF85B4C333E
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 18:11:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E683B189DF2D
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 18:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 209B0215F5C;
-	Fri, 25 Apr 2025 18:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B622201017;
+	Fri, 25 Apr 2025 18:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="yRQ3/tSM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B9Losezt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729EC215766;
-	Fri, 25 Apr 2025 18:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4782B188733;
+	Fri, 25 Apr 2025 18:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745604689; cv=none; b=BqV4NziIjitIc8ZnpRjckGzN+UdRPReh04oSffI2WzclQ/uBOHpbUaAuZGnfNlmwR3SCCl2G5GilG7yH4XP6OUToabFxIhmpGoNfN30bD9PhSACTd9gsaNd3tOS1FqLe1Yu+9M2aIZDgBXfiCdebPOifvvBwmMzrqC8mz2sP5bM=
+	t=1745605117; cv=none; b=fmk4eeOEM39EYCt9ZDsoFDCiFCg5+CH/ahpt22Wkt1wWTtIq82mRuUS5zEdLdv5/jNqKEwtGYxBNq20dgZplOIOBzQDIZtec02Z422O79n4z5ikg+VB/gpLj30KNm0EOc3qZdg2F8Q+SaYD6Ka+QxAEYyM07YEMRoDcsUJPC3E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745604689; c=relaxed/simple;
-	bh=AcQ06o3liKLfIzDuJGETHa8EaWX8bopIoU8BfIQJTIM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tVcJHm8Y38T62HY5t8niSyrJ7nIXX0uYkTpbsYAN93jrAT//kIPPEvaeBDfFTVSrEwkCW4bUqgjLyGZ3EgLjTC9CAqxSoiRxZ1abJ1s9rxsnwZOHx+2+09tt4dzAvlMF4FcRQKloyjUZMTZ18M30eYF14iitwWw7OF1s7jvPnPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=yRQ3/tSM; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=aY55hDS7Z/BNIFuppzqO/uQ5XIZa82l2hzhC8Y0TibY=;
-	t=1745604687; x=1746814287; b=yRQ3/tSMqWpEbmhYwhRCAIRioStPW2rKKBMW7fKi7+ZcSOs
-	vBG6WzcFqut4KdA1Js6X9N/oGw8b/qEXWswG+94pNl3DeOdYMrM2id+VV4HLY4gGFSso3EFYAn7UR
-	dMESjxqBRJjmQI45jE2O9qeDimhvUVE4220SdEqwKh3jH2SQbcu/Bl4TvfEC2KGDNf30NvtxX/TeS
-	xLnnEMgp3r6v3mI5qEWgTYTmo37jUULOhtonQv11G7X1/mpIRu/N7M6lfDlDPZkzSHgPu5eCr2TfP
-	Xqo7veQvgr1VtdnzSnDHj0mmccqb9FYwz0Z2QY/NHvaq3KJACr9fmHLhIsrm133Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1u8NWF-00000002FhA-3yCP;
-	Fri, 25 Apr 2025 20:11:24 +0200
-Message-ID: <4854f6a248fdc501d4157339fdb21f9a3ca3097d.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH v2 0/2] wifi: Nordic nRF70 series
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Artur Rojek <artur@conclusive.pl>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski
-	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood
-	 <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Sascha Hauer
-	 <s.hauer@pengutronix.de>
-Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jakub Klama <jakub@conclusive.pl>, Wojciech
- Kloska	 <wojciech@conclusive.pl>, Ulf Axelsson <ulf.axelsson@nordicsemi.no>
-Date: Fri, 25 Apr 2025 20:11:22 +0200
-In-Reply-To: <20250422175918.585022-1-artur@conclusive.pl>
-References: <20250422175918.585022-1-artur@conclusive.pl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1745605117; c=relaxed/simple;
+	bh=8wlZDXVNIHW3czsSgvXmuXzKYPkYZ78cFqTc5/rODz4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bDhqLFdC5zBSIxtddAmiHck4ofCiY+BVoeh/MTXj019fq8P4MVqZCdX+cy26w1VWj9eRUhAiWP/ak4GOZxxPzA+HV74idBVLtJN7XA9GXmDdx13jkK9jLxCREzt/E9zyvNiNoSfZkzHU+Jt+cJmpRemwpp0Z3SMCRVTCmi+LOaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B9Losezt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB559C4CEE4;
+	Fri, 25 Apr 2025 18:18:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745605116;
+	bh=8wlZDXVNIHW3czsSgvXmuXzKYPkYZ78cFqTc5/rODz4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B9LoseztUEbdU/aPHnCdE/XhzWpLTMxus0yk+uCcEQdgRXGaKybQTO/g7cczUv5+I
+	 M46vHnbp50utmnlFybFzdOTODAgLi0P8Php5EZ2CAY943xYurl5Rx8FAAwM51FgqhC
+	 mLHHIObrFifmccWy3SO7QkRzqZ7BvG7OSt++2O2G4AIiV9Fg1E+lwgDXjxVYuhlsPa
+	 qFcl6T/2K7Y4IYbc6RoZQJT2blDE8CHZIY4agbIp+VfwUAlt22KyxG1HPLzWAisp+t
+	 fnZ5EYW0CKsUvVhwZ7tHgdtwCzoTIXDKzMuSbZcHszbVlXxHo2S+qiljt0epINgO2x
+	 OioL5OZ87H2Lw==
+Date: Fri, 25 Apr 2025 11:18:33 -0700
+From: Kees Cook <kees@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	linux-wireless@vger.kernel.org,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] wifi: iwlwifi: mld: Work around Clang loop unrolling bug
+Message-ID: <202504251032.51B2CB6233@keescook>
+References: <20250421204153.work.935-kees@kernel.org>
+ <20250422195903.GA3475704@ax162>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250422195903.GA3475704@ax162>
 
-On Tue, 2025-04-22 at 19:59 +0200, Artur Rojek wrote:
-> 1) Nordic gave us permission to upstream the firmware blob [1] required
->    to use this driver. As that needs to go through separate
->    linux-firmware repository and is subject to different licensing,
->    should I try to upstream it in parallel with this series, or does it
->    need to wait until the kernel driver gets in?
+On Tue, Apr 22, 2025 at 12:59:03PM -0700, Nathan Chancellor wrote:
+> On Mon, Apr 21, 2025 at 01:41:57PM -0700, Kees Cook wrote:
+> > The nested loop in iwl_mld_send_proto_offload() confuses Clang into
+> > thinking there could be final loop iteration past the end of the "nsc"
+> > array (which is only 4 entries). The FORTIFY checking in memcmp()
+> > (via ipv6_addr_cmp()) notices this (due to the available bytes in the
+> > out-of-bounds position of &nsc[4] being 0), and errors out, failing
+> > the build. For some reason (likely due to architectural loop unrolling
+> > configurations), this is only exposed on ARM builds currently. Due to
+> > Clang's lack of inline tracking[1], the warning is not very helpful:
+> > 
+> > include/linux/fortify-string.h:719:4: error: call to '__read_overflow' declared with 'error' attribute: detected read beyond size of object (1st parameter)
+> >   719 |                         __read_overflow();
+> >       |                         ^
+> > 1 error generated.
+> > 
+> > But this was tracked down to iwl_mld_send_proto_offload()'s
+> > ipv6_addr_cmp() call.
+> > 
+> > An upstream Clang bug has been filed[2] to track this, but for now.
+> > Fix the build by explicitly bounding the inner loop by "n_nsc", which
+> > is what "c" is already limited to.
+> > 
+> > Reported-by: Nathan Chancellor <nathan@kernel.org>
+> > Closes: https://github.com/ClangBuiltLinux/linux/issues/2076
+> > Link: https://github.com/llvm/llvm-project/pull/73552 [1]
+> > Link: https://github.com/llvm/llvm-project/issues/136603 [2]
+> > Signed-off-by: Kees Cook <kees@kernel.org>
+> > ---
+> > Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+> > Cc: Johannes Berg <johannes.berg@intel.com>
+> > Cc: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+> > Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+> > Cc: Avraham Stern <avraham.stern@intel.com>
+> > Cc: Daniel Gabay <daniel.gabay@intel.com>
+> > Cc: <linux-wireless@vger.kernel.org>
+> > ---
+> >  drivers/net/wireless/intel/iwlwifi/mld/d3.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+> > index 2c6e8ecd93b7..1daca1ef02b2 100644
+> > --- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+> > +++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+> > @@ -1754,7 +1754,7 @@ iwl_mld_send_proto_offload(struct iwl_mld *mld,
+> >  
+> >  		addrconf_addr_solict_mult(&wowlan_data->target_ipv6_addrs[i],
+> >  					  &solicited_addr);
+> > -		for (j = 0; j < c; j++)
+> > +		for (j = 0; j < c && j < n_nsc; j++)
+> >  			if (ipv6_addr_cmp(&nsc[j].dest_ipv6_addr,
+> >  					  &solicited_addr) == 0)
+> >  				break;
+> > -- 
+> > 2.34.1
+> > 
+> 
+> I might be going crazy but this does not appear to actually resolve the
+> warning for me, at least with allmodconfig:
+> 
+>   $ git cite
+>   a33b5a08cbbd ("Merge tag 'sched_ext-for-6.15-rc3-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/sched_ext")
 
-I have no idea. Chicken and egg, I guess.
+Make me look. :) "cite" is a local alias, yes? Looks like my own alias
+for "short", but basically "short HEAD". From my ~/.gitconfig:
 
-> 2) In AP mode, for each connected peer I maintain a pending queue for TX
->    skbs that can't be transmitted while the peer is in power save mode.
->    I then use a wiphy_work (nrf70_pending_worker) to move the collected
->    skbs into a single hw queue once the peer is able to receive again.
->    This means there can be multiple workers putting skbs onto the hw
->    queue at any given time. As this scheme relies on the wiphy_work
->    workqueue, can I assume that multiple workers will be able to run in
->    parallel, even on a system with a single CPU? If not, what would be
->    a better solution to the above problem?
+[alias]
+        short = "!f() { for i in \"$@\"; do git log -1 --pretty='%h (\"%s\")' \"$i\"; done; }; f"
 
-wiphy_work() is fully serialized regardless of the number of CPUs, it's
-guaranteed that the wiphy mutex is held for the work execution, after
-all.
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+> index fba6a7b1bb5c..7ce01ad3608e 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+> @@ -1757,7 +1757,7 @@ iwl_mld_send_proto_offload(struct iwl_mld *mld,
+>  
+>  		addrconf_addr_solict_mult(&wowlan_data->target_ipv6_addrs[i],
+>  					  &solicited_addr);
+> -		for (j = 0; j < c && j < n_nsc; j++)
+> +		for (j = 0; j < n_nsc && j < c; j++)
+>  			if (ipv6_addr_cmp(&nsc[j].dest_ipv6_addr,
+>  					  &solicited_addr) == 0)
+>  				break;
 
-johannes
+Oof, an unstable solution. Well, I guess we work with what we've got.
+Your change also solves it for me, so I'll send a v2 with it that way.
+On the "getting it fixed correctly" front, we need someone who can tweak
+SCEV: https://github.com/llvm/llvm-project/issues/136603
+
+-Kees
+
+-- 
+Kees Cook
 
