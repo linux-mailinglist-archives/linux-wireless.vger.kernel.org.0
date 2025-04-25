@@ -1,63 +1,58 @@
-Return-Path: <linux-wireless+bounces-22066-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22067-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85907A9C6B4
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 13:09:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6AFA9C7E9
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 13:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7697D17E773
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 11:09:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3867616E2C3
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 11:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C032923D2AE;
-	Fri, 25 Apr 2025 11:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE11E2459EA;
+	Fri, 25 Apr 2025 11:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BEse50Nm"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="KjRgrNMd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0312823D2AA;
-	Fri, 25 Apr 2025 11:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745579338; cv=none; b=Ig2KmW8pUaQvJwxsWzk0HxBuS9vWJD1+CH0aUw3MuCg4PU6GdOe+5vP/6vaymlxTAxH6VFWTn7h4Jd79IgYvh9hOYv6J+r5fCnvUlXTA3VPql43YHp4p/766amSqW15JUp0hGBm9ixRf9zfcIMovxys5eHv1o55pbtr5IAkPubU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745579338; c=relaxed/simple;
-	bh=A2/kZxRyL0ITwGQYyD6Z2fNR4JvWvhN9lZfhC1i+/bc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=hXtusS69nnPen3LirEJr2fITwTAEKjI6xNEf3LYXTw75JU0CGuFrQikCAW3dVCuN7TqhH6rOz/tHvX+NfYQYcJCnA8vxRYvjleSmE1o/GD5Lts1llTRWbJDlrj8veiH8Ooxncx8EmuuKuLRwA1IM/toclkEeJUMshakSdrBXSSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BEse50Nm; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53P8T77A008626;
-	Fri, 25 Apr 2025 11:08:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	KBe1NI1Wfn0ex1oNt269TcEak7ZMuXOxhR1u9j6mEyc=; b=BEse50NmGUYclXQ5
-	hr5Y3Is4gSTA7KIL18BSOCjY5vd1U7lfhf4O718fWTREbW6fmIbyUHaBm5VH3CI5
-	/fzwM/3NHYiIKEV1KBjoI2AcxkZYo2eHzKAqRnDVLbjniuIDy8aA2Dr/n37fZw3G
-	ftGhcK4RiPXG33WMzjPmqM8m9KMEhpDK+yhv8q9m4fz9SXAsTzlHE3bm5oq5jzLH
-	nvV8bLflsVXgl8YRq0KedULzNQyrHwKK2WhEMq5K0NPs4qx1JIcKRZAScay1IC1W
-	PM9LFVwp8pYRqWPieHBtXyq6GMg8iXfGRd5O2wXIIv/phesxlw5pOo0z1GY8pBf/
-	3yB6NQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jgy8r82-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Apr 2025 11:08:49 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53PB8mcW002623
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Apr 2025 11:08:48 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 25 Apr
- 2025 04:08:46 -0700
-Message-ID: <dee649f1-0516-4a59-a70d-ba206388e568@quicinc.com>
-Date: Fri, 25 Apr 2025 19:08:44 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79F32459D7;
+	Fri, 25 Apr 2025 11:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745581351; cv=pass; b=HpjT9BaXRSjXSORFtWsk2eIaJ3rH5e+MZwWm1B9MKDU2gBpnhwZTGLivXe0j9ojxdoancXWC2JwnPPVMZdzA/qYsudvJuUVSpBrDr0FbcNuq0sQmGLzT1fRIQPfwtdn9OKin5mSjfvP1/TEWf08lzWw88Uid5IVHKpj763exa9o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745581351; c=relaxed/simple;
+	bh=1G6AweYjxm0kJiNi3tcdfVXSJehj5SwP9EIh79+Tjd0=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=tg5jpU52xhm0D21P03BUqC3lQaHWmVYcHpwf9ZJF5o4vISzs+9PnbqeKjS/aOmMqbmO8eWnTeA9xiMxQ8VGFZbCvOI3P6zwZs4t0gkev1xg4ZTK2K256un8iXVLdQPROnpHAr4WW0kvSJz5Xbu9tiVzDneruFgYcqDISOEhMup0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=KjRgrNMd; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1745581316; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ATO62M49i6OKXGbXEsqzcVCpnUqkaDPw41NH+jE9uXMYRr4A4p2GnT2e0ExLoNzJYGZ6GttFkpGgICVCqQngHe8+x4QlmH61vOP07dPzlGvfOOsVfd4vVgth8vpIrq2T4mVivjRtmjIBRsjcOEFelzTs66eAlHm37O6yz5T376Y=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1745581316; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=l4DUDdg/nGvqN1UdcxVddkB5BkoJ1f3+rZUXbIsl6cU=; 
+	b=Wl8eOBZW8/wRHV/gJMpTqYzRfliBCChHOlLNx29kS1HVg2S5FQGYP+5/Ca7vK9csP/rUT4XZjctRmffH3h9BJpETshlcRklQKmL1kCbsgjs5JiEXyNkz2fIqzdgp9m5jfYUVt/3it37EOCG/8eD2oafhiLBQ+gfqBw8CX0Dlwm4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass header.from=<usama.anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1745581316;
+	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=l4DUDdg/nGvqN1UdcxVddkB5BkoJ1f3+rZUXbIsl6cU=;
+	b=KjRgrNMd+H1um2Hg8ung+jJ23G975Y9PLhHqT5paYiZ0mF18EGWqr9wlZRxNU1P8
+	YjGYi2bAbmEGxGhCj6Lo/aQSfqsRexvLRKagUlK+LBmKKEi2ZWwmai+dA4QflPJA1b2
+	rlHBTSYt1sYqeLLFRGJRxGE7hjRatpYkBqjjdGdg=
+Received: by mx.zohomail.com with SMTPS id 1745581313535618.4441025554677;
+	Fri, 25 Apr 2025 04:41:53 -0700 (PDT)
+Message-ID: <a403eb91-c90d-444c-b508-c428a8ef1447@collabora.com>
+Date: Fri, 25 Apr 2025 16:41:43 +0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,106 +60,139 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] wifi: ath11k: Fix MHI target memory reuse logic
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        <jeff.johnson@oss.qualcomm.com>, Jeff Johnson <jjohnson@kernel.org>
-CC: <kernel@collabora.com>, <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-References: <20250425110424.2530460-1-usama.anjum@collabora.com>
+Cc: usama.anjum@collabora.com, Johannes Berg <johannes@sipsolutions.net>,
+ Jeff Johnson <jjohnson@kernel.org>, Jeffrey Hugo <quic_jhugo@quicinc.com>,
+ Yan Zhen <yanzhen@vivo.com>, Youssef Samir <quic_yabdulra@quicinc.com>,
+ Qiang Yu <quic_qianyu@quicinc.com>, Alex Elder <elder@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Kunwu Chan <chentao@kylinos.cn>, kernel@collabora.com, mhi@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH v2] bus: mhi: host: don't free bhie tables during
+ suspend/hibernation
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+References: <20250410145704.207969-1-usama.anjum@collabora.com>
+ <h2wv7drxntokziiwbzjw5xjzbctbomp6cfcba7ppfbih6o7so7@p6dazv32xfx4>
+ <1136c7cb-1c7b-410b-93d2-c74aec939196@collabora.com>
+ <cfb3sntvqhupyhm2m5tevpsl77r6mzl2aqzr3wtxvr22bezmp3@qjh7ftr2kdjy>
+ <4d87ef88-3533-4255-adc6-6c268818fe25@collabora.com>
+ <y5odcxzms6mwpz5bdxhbjxo7p6whsdgwm772usmmzqobhf6nam@p4ul7vn7d3an>
 Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20250425110424.2530460-1-usama.anjum@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <y5odcxzms6mwpz5bdxhbjxo7p6whsdgwm772usmmzqobhf6nam@p4ul7vn7d3an>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDA4MCBTYWx0ZWRfXz4BX1ZSm63PK CI54WtsYPBwnkQyE6/0x9AQ6taMFnSHc9w8X3+4N0Azob+TJ5t8lrE/OiI/hfeKzHOcCz+4pf3o N0AISNJHnPgUTLKQuW5Y8UWleATf9RmMuYPIU7F/e8/xbWYBV9nWiBvQMTkSfrGRl/Cn4S7pkrt
- +q6A08dt3f/8Kad9qvykD3lnVVD62pYmQZFN35r/s2XZCpKQHYGEvLmyE1FgzgaCOi/f/JnTHfp iyI3YPjk2FrS1RCbYFYs3prpJjZso99tkQEjOPBLsYUO87u5VRm1qmZqMQoAi7IPKz/y3rLVouq puBiIVTVN4E9hIG/kPAGWRRR/PswhUco8GsXHBd2Ln/Gkm8e4+2BYHZQC+DL2FEDmqNCA9c9pfK
- dfdwYoRVGkzmoGJOTPvhvU++zbWs1YRAhzHnhkxqfZXorMe7jkXvDHqsHzunGG4j9wUd34Yr
-X-Proofpoint-GUID: 253i4z1cxlQ47EO0lmaGkPUHhyZN4vzB
-X-Proofpoint-ORIG-GUID: 253i4z1cxlQ47EO0lmaGkPUHhyZN4vzB
-X-Authority-Analysis: v=2.4 cv=M5VNKzws c=1 sm=1 tr=0 ts=680b6d41 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=QX4gbG5DAAAA:8 a=COk6AnOGAAAA:8 a=V4x8pWjM2KRL0iEsFYkA:9
- a=QEXdDO2ut3YA:10 a=AbAUZ8qAyYyZVLSsDulk:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-25_03,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 priorityscore=1501 mlxscore=0
- mlxlogscore=999 malwarescore=0 impostorscore=0 clxscore=1015
- suspectscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504250080
+X-ZohoMailClient: External
+
+On 4/25/25 1:59 PM, Manivannan Sadhasivam wrote:
+> On Fri, Apr 25, 2025 at 12:42:38PM +0500, Muhammad Usama Anjum wrote:
+>> On 4/25/25 12:32 PM, Manivannan Sadhasivam wrote:
+>>> On Fri, Apr 25, 2025 at 12:14:39PM +0500, Muhammad Usama Anjum wrote:
+>>>> On 4/25/25 12:04 PM, Manivannan Sadhasivam wrote:
+>>>>> On Thu, Apr 10, 2025 at 07:56:54PM +0500, Muhammad Usama Anjum wrote:
+>>>>>> Fix dma_direct_alloc() failure at resume time during bhie_table
+>>>>>> allocation. There is a crash report where at resume time, the memory
+>>>>>> from the dma doesn't get allocated and MHI fails to re-initialize.
+>>>>>> There may be fragmentation of some kind which fails the allocation
+>>>>>> call.
+>>>>>>
+>>>>>
+>>>>> If dma_direct_alloc() fails, then it is a platform limitation/issue. We cannot
+>>>>> workaround that in the device drivers. What is the guarantee that other drivers
+>>>>> will also continue to work? Will you go ahead and patch all of them which
+>>>>> release memory during suspend?
+>>>>>
+>>>>> Please investigate why the allocation fails. Even this is not a device issue, so
+>>>>> we cannot add quirks :/
+>>>> This isn't a platform specific quirk. We are only hitting it because
+>>>> there is high memory pressure during suspend/resume. This dma allocation
+>>>> failure can happen with memory pressure on any device.
+>>>>
+>>>
+>>> Yes.
+>> Thanks for understanding.
+>>
+>>>
+>>>> The purpose of this patch is just to make driver more robust to memory
+>>>> pressure during resume.
+>>>>
+>>>> I'm not sure about MHI. But other drivers already have such patches as
+>>>> dma_direct_alloc() is susceptible to failures when memory pressure is
+>>>> high. This patch was motivated from ath12k [1] and ath11k [2].
+>>>>
+>>>
+>>> Even if we patch the MHI driver, the issue is going to trip some other driver.
+>>> How does the DMA memory goes low during resume? So some other driver is
+>>> consuming more than it did during probe()?
+>> Think it like this. The first probe happens just after boot. Most of the
+>> RAM was empty. Then let's say user launches applications which not only
+>> consume entire RAM but also the Swap. The DMA memory area is the first
+>> ~4GB on x86_64 (if I'm not mistaken). Now at resume time when we want to
+>> allocate memory from dma, it may not be available entirely or because of
+>> fragmentation we cannot allocate that much contiguous memory.
+>>
+> 
+> Looks like you have a workload that consumes the limited DMA coherent memory.
+> Most likely the GPU applications I think.
+> 
+>> In our testing and real world cases, right now only wifi driver is
+>> misbehaving. Wifi is also very important. So we are hoping to make wifi
+>> driver robust.
+>>
+> 
+> Sounds fair. If you want to move forward, please modify the exisiting
+> mhi_power_down_keep_dev() to include this partial unprepare as well:
+> 
+> mhi_power_down_unprepare_keep_dev()
+> 
+> Since both APIs are anyway going to be used together, I don't see a need to
+> introduce yet another API.
+I've looked at usages of mhi_power_down_keep_dev(). Its getting used by
+ath12k and ath11k both. We would have to look at ath12k as well before
+we can change mhi_power_down_keep_dev(). Unfortunately, I don't have
+device using ath12k at hand.
+
+Should we keep this new API or what should we do?
+
+> 
+> - Mani
+> 
+>>>
+>>>> [1]
+>>>> https://lore.kernel.org/all/20240419034034.2842-1-quic_bqiang@quicinc.com/
+>>>> [2]
+>>>> https://lore.kernel.org/all/20220506141448.10340-1-quic_akolli@quicinc.com/
+>>>>
+>>>> What do you think can be the way forward for this patch?
+>>>>
+>>>
+>>> Let's try first to analyze why the memory pressure happens during suspend. As I
+>>> can see, even if we fix the MHI driver, you are likely to hit this issue
+>>> somewhere else.>
+>>> - Mani
+>>>
+>>>>>
+>>>
+>>> [...]
+>>>
+>>>>> Did you intend to leak this information? If not, please remove it from
+>>>>> stacktrace.
+>>>> The device isn't private. Its fine.
+>>>>
+>>>
+>>> Okay.
+>>>
+>>> - Mani
+>>>
+>>
+>>
+>> -- 
+>> Regards,
+>> Usama
+> 
 
 
-
-On 4/25/2025 7:04 PM, Muhammad Usama Anjum wrote:
-> Firmware requests 2 segments at first. The first segment is of 6799360
-> whose allocation fails due to dma remapping not available. The success
-> is returned to firmware. Then firmware asks for 22 smaller segments
-> instead of 2 big ones. Those get allocated successfully. At suspend/
-> hibernation time, these segments aren't freed as they will be reused
-> by firmware after resuming.
-> 
-> After resuming, the firmware asks for the 2 segments again with the
-> first segment of 6799360 size. Since chunk->vaddr is not NULL, the
-> type and size are compared with the previous type and size to know if
-> it can be reused or not. Unfortunately, it is detected that it cannot
-> be reused and this first smaller segment is freed. Then we continue to
-> allocate 6799360 size memory which fails and ath11k_qmi_free_target_mem_chunk()
-> is called which frees the second smaller segment as well. Later success
-> is returned to firmware which asks for 22 smaller segments again. But
-> as we had freed 2 segments already, we'll allocate the first 2 new
-> smaller segments again and reuse the remaining 20. Hence 20 small
-> segments are being reused instead of 22.
-> 
-> Add skip logic when vaddr is set, but size/type don't match. Use the
-> same skip and success logic as used when dma_alloc_coherent() fails.
-> By skipping, the possibility of resume failure due to kernel failing to
-> allocate memory for QMI can be avoided.
-> 
-> 	kernel: ath11k_pci 0000:03:00.0: failed to allocate dma memory for qmi (524288 B type 1)
-> 	ath11k_pci 0000:03:00.0: failed to allocate qmi target memory: -22
-> 
-> Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
-> 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
-> Changes since v1:
-> - Update description
-> 
-> Changes since v2:
-> - Update description
-> 
-> Changes since v3:
-> - Update description
-> ---
->  drivers/net/wireless/ath/ath11k/qmi.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-> index 47b9d4126d3a9..2782f4723e413 100644
-> --- a/drivers/net/wireless/ath/ath11k/qmi.c
-> +++ b/drivers/net/wireless/ath/ath11k/qmi.c
-> @@ -1993,6 +1993,15 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
->  			    chunk->prev_size == chunk->size)
->  				continue;
->  
-> +			if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
-> +				ath11k_dbg(ab, ATH11K_DBG_QMI,
-> +					   "size/type mismatch (current %d %u) (prev %d %u), try later with small size\n",
-> +					    chunk->size, chunk->type,
-> +					    chunk->prev_size, chunk->prev_type);
-> +				ab->qmi.target_mem_delayed = true;
-> +				return 0;
-> +			}
-> +
->  			/* cannot reuse the existing chunk */
->  			dma_free_coherent(ab->dev, chunk->prev_size,
->  					  chunk->vaddr, chunk->paddr);
-
-LGTM
-
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+-- 
+Regards,
+Usama
 
