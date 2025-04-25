@@ -1,187 +1,183 @@
-Return-Path: <linux-wireless+bounces-22069-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22070-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B2D3A9C9DF
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 15:14:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E3EA9CBFB
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 16:47:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5DFE9E378E
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 13:14:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECF3B9E2FF6
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 14:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2B324BC10;
-	Fri, 25 Apr 2025 13:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5319E252909;
+	Fri, 25 Apr 2025 14:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="k6QbSyoW"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="z79926m5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D208124BCEA
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 13:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7C2502B1
+	for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 14:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745586879; cv=none; b=FUIM8JtIHVIUsNJSsZd/NLYKAJkw/mQ16Ei9fpHCJ+6U04PbqTgCSw/Svl6/NoLfSqUJMB498PAItN8P5NBRdrY2oMpZBikrPAvW76ZJGoOwiVVuyYg2PywSTEZE7SaC5KLajX48agtxPz5iioQo6QGYEDa3iwH6HwpDkd+XqAw=
+	t=1745592444; cv=none; b=Il0SnjEI/Ce2/SaaKCq5xOLnr+l1kymgcgsHW4l7j0KPcFpEftokWWPmgvdSxRzqSFQA8KEZan7UdIfQHSdrXWZ2LaU6dfjH56pY8R/U1xFe4xxPw1W52MVWJGcEj/lNo7pskoUcmDm5M00mJfoWb8BXjo6UmbTuI6qd+hYmfNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745586879; c=relaxed/simple;
-	bh=/s2S2E4DRxL6wPeutRskSlyShEm4JPSgzpMUgNd5OXk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aj+zKs+sEroBXSbZZ8wUgMFXigDosgGcfyskTrrFBS9Z6SIq/Ngr5CnKRICQ0baXgkc58xnmgp2vT8ZaAV1rJgyZEqbGYtSXlW0JrySR5gl5YpzSzhoGM2wtSQGV/k8jBFn0nWi+ZMj07aMt6ghXZcf9D3imfhpu5QtG0gm71PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=k6QbSyoW; arc=none smtp.client-ip=148.163.129.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from engine.ppe-hosted.com (unknown [10.7.65.236])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 19571600BF;
-	Fri, 25 Apr 2025 13:14:37 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id D0BD1C0073;
-	Fri, 25 Apr 2025 13:14:33 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.33.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 5701D13C2B0;
-	Fri, 25 Apr 2025 06:14:33 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5701D13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1745586873;
-	bh=/s2S2E4DRxL6wPeutRskSlyShEm4JPSgzpMUgNd5OXk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=k6QbSyoWFkfOABX51zWQxzat/mXgjuGEaTAfSwlZmxPZh1sDDXUYUjzKLJ3ZCpTcV
-	 I2wwc03jhKGLf2JHb3TtTT4ZssNsJFv2kYuKHYs7kF5MF8YrqDPtIm1NC6oyrXxZvs
-	 alQppdqUfVclh5rWKvvPFeM0mZpzRTRbhaa35SBU=
-Message-ID: <595c7624-c3ab-452a-b3c1-0b14184a6691@candelatech.com>
-Date: Fri, 25 Apr 2025 06:14:32 -0700
+	s=arc-20240116; t=1745592444; c=relaxed/simple;
+	bh=fPAudd0pNdvSq70SAtg2Ygg2O9zP1xgrVtnfFsN3fh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oBRCZ0mvRa1k1ytjBVldijKeSczp+PZRN7Hf4sIr2FEvhjrimYaoZeDVVbg9A5Ibhh0YtXoVdl1GVjCCqRpxN0GkepggDkRWi1tUN5qTyU53Apj2KMuuY9HFcovJExgT1dV4nWVABPd+mPKOrNktrArIMbJxIQBDR6nP+vnuSjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=z79926m5; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2295d78b433so27144455ad.2
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 07:47:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1745592442; x=1746197242; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=tMds6CmcdH779xJQucw6BprWPQmeQRUV0l1L2HM0TV4=;
+        b=z79926m52YRywzSBxfcdXJ1kijC9lg3l4zWjYj9kuoguWruPIbvxz/h/oV0azWjgSt
+         prZMO2VkKjmKNWz3a8F8SegNkdWtFM6/+/zphXyds/jpIr60vasdyAP0ERwPvQv+foT9
+         Xg3gDXQpgK9W9MHw4fsYjySCMoFJD/Mhw0YYwiAC6gjyRbgErqbJ4sLW/owpNtIB0mop
+         VlKDQqUdIFtnc1JShaROE2sBJfzr1kpvB+VOuQTGvU3q/TWHOxXzUktlKuAwD/DfK7Uu
+         2hoiF405FR551wBJPZJbBLCb0YcqNcqq6DtLcUcdBXK+eq6q+4LN49S4RfOtr6tkixdY
+         hn5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745592442; x=1746197242;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tMds6CmcdH779xJQucw6BprWPQmeQRUV0l1L2HM0TV4=;
+        b=dJQ8Hof4v6GbTropinm6NivCuYfxqDuSL3Zhtr3L06B4AUvOt9hO3JFBBG23hEpSjy
+         TYkkHuTdNtKWQLqXsgF8gt2/aKE0k0zzilO44MHHmReiy1SpMZUVUBi46HrDqHBes5D5
+         ZbORKoPdWy/WdCcyjMdP2keM70Ol2Gc3m3R+agNvU06Alv0zPKS9eJpNrMcwg3iYvS5d
+         L0ErdCerKTRc6Y+1LtpN/XuQGb7xQeas57Fuqao5YkIvghkar20cQv2lIiq1+T663jla
+         +9OTyYSaN+E4Udk8Xc5V3gFgdwmGjfevEZAxelAn6IKkc9FYo7YSIAMGDnJGDhvGTmpO
+         st4g==
+X-Forwarded-Encrypted: i=1; AJvYcCXRB0lTRMrspAjCYYf9yOSP1LJjc5IovG0CxunFQIe0L+UA+b1f6kHblVBTnWvoexEc8xL1mBqdzvJqPBjxZQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0ARqsyJd9rJWAQbu/NVgpif3NC0qQbaB09TDN6Gr/pHJE3YCM
+	DGcK3tOaAWDuXzlmDNPiEDsfd0iAQx3LbpIwA7cldWzYspv5epvB8tQOLj5gWA==
+X-Gm-Gg: ASbGncv37fdRao6Kg53GES6ZQUv5GRm7PZMXZLWxlKCEXX8SiL8+J6F5xOg0SiFX1Hg
+	jM/nbmC9vBl62TTb7xwRVgQfoR7giQx7TZoXCW9RY3cEnbOyTkxbMsLMfqgDXy2+vMG10224Is7
+	Ur9hCh5LmdPsPn3B9LMk8AvlsMPkYQz4tk0jwLdWZAMxAJ4aGV7lG7OvegQWmKgHkruBO1NGF0x
+	wUHfzmbKOk5F2IskrT3QImJN6ol9GVyTikiMlDVwBi7Dj9+zEDaRsuVcznmmwAMEBox3Y39HoR3
+	31eAyP4bvQ9VDUJjsHs059tE32CPkoqOY+UVQfhY1qMEmMb8CdOz
+X-Google-Smtp-Source: AGHT+IGlccZ19AfD3jdnufZp8LMe8Yz57J7vptNmjyBiI0lLh+m+16U65auA9epwL1IrRm+aNvHWgg==
+X-Received: by 2002:a17:902:e805:b0:223:5de7:6c81 with SMTP id d9443c01a7336-22dbf5f34f9mr38226475ad.27.1745592441695;
+        Fri, 25 Apr 2025 07:47:21 -0700 (PDT)
+Received: from thinkpad ([120.56.201.179])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db521614dsm32962505ad.215.2025.04.25.07.47.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Apr 2025 07:47:21 -0700 (PDT)
+Date: Fri, 25 Apr 2025 20:17:14 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, 
+	Jeff Johnson <jjohnson@kernel.org>, Jeffrey Hugo <quic_jhugo@quicinc.com>, 
+	Yan Zhen <yanzhen@vivo.com>, Youssef Samir <quic_yabdulra@quicinc.com>, 
+	Qiang Yu <quic_qianyu@quicinc.com>, Alex Elder <elder@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kunwu Chan <chentao@kylinos.cn>, kernel@collabora.com, 
+	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH v2] bus: mhi: host: don't free bhie tables during
+ suspend/hibernation
+Message-ID: <eypd4xigl3yydfj47usazm7ca3kplz5w7bkk7qf6piks4vtaa4@rmecjnlfix66>
+References: <20250410145704.207969-1-usama.anjum@collabora.com>
+ <h2wv7drxntokziiwbzjw5xjzbctbomp6cfcba7ppfbih6o7so7@p6dazv32xfx4>
+ <1136c7cb-1c7b-410b-93d2-c74aec939196@collabora.com>
+ <cfb3sntvqhupyhm2m5tevpsl77r6mzl2aqzr3wtxvr22bezmp3@qjh7ftr2kdjy>
+ <4d87ef88-3533-4255-adc6-6c268818fe25@collabora.com>
+ <y5odcxzms6mwpz5bdxhbjxo7p6whsdgwm772usmmzqobhf6nam@p4ul7vn7d3an>
+ <a403eb91-c90d-444c-b508-c428a8ef1447@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v6 04/11] wifi: cfg80211: reorg sinfo
- structure elements for MLO
-To: Sarika Sharma <quic_sarishar@quicinc.com>,
- Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-References: <20250415042030.1246187-1-quic_sarishar@quicinc.com>
- <20250415042030.1246187-5-quic_sarishar@quicinc.com>
- <fa49a2d4927868be689ed8464aa27c3aad2f03b6.camel@sipsolutions.net>
- <c3a6b07e-007e-4168-bf8a-7b0d9ebbc913@quicinc.com>
- <927c6766-47d0-dcf6-cbe5-9da1e67292ad@candelatech.com>
- <c7d093ce-11fd-44e2-ab23-6ad5a3e4bb64@quicinc.com>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <c7d093ce-11fd-44e2-ab23-6ad5a3e4bb64@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-MDID: 1745586874-UXFSNXd_GuLM
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1745586874;UXFSNXd_GuLM;<greearb@candelatech.com>;535bfda298b524f45ffb92fb019ae3e8
-X-PPE-TRUSTED: V=1;DIR=OUT;
+In-Reply-To: <a403eb91-c90d-444c-b508-c428a8ef1447@collabora.com>
 
-On 4/24/25 22:33, Sarika Sharma wrote:
-> On 4/24/2025 10:32 PM, Ben Greear wrote:
->> On 4/24/25 09:44, Sarika Sharma wrote:
->>> On 4/23/2025 10:22 PM, Johannes Berg wrote:
->>>> On Tue, 2025-04-15 at 09:50 +0530, Sarika Sharma wrote:
->>>>> Current implementation of NL80211_GET_STATION does not work for
->>>>> multi-link operation(MLO) since in case of MLO only deflink (or one
->>>>> of the links) is considered and not all links.
->>>>>
->>>>> Therefore to support for MLO, start reorganizing sinfo structure
->>>>> related data elements and add link_sinfo structure for link-level
->>>>> statistics and keep station related data at sinfo structure.
->>>>> Currently, changes are done at the deflink(or one of the links) level.
->>>>> Actual link-level changes will be added in subsequent changes.
->>>>>
->>>>> Also currently, mac80211 ops .sta_statistics() is mapped to fill sinfo
->>>>> structure. But to add support for station statistics at link level,
->>>>> change the ops to .link_sta_statistics() to fill link_sinfo structure.
->>>>>
->>>>> Additionally, move connected_time before assoc_at in station_info
->>>>> structure to get minimal holes.
->>>>> pahole summary before this change:
->>>>>   - size: 232, cachelines: 4, members: 23
->>>>>   - sum members: 223, holes: 3, sum holes: 9
->>>>>   - forced alignments: 1
->>>>>   - last cacheline: 40 bytes
->>>>>
->>>>> pahole summary after this change:
->>>>>   - size: 224, cachelines: 4, members: 23
->>>>>   - sum members: 223, holes: 1, sum holes: 1
->>>>>   - forced alignments: 1
->>>>>   - last cacheline: 32 bytes
->>>>>
->>>>> Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
->>>>> ---
->>>>> NOTE:
->>>>>   - Included driver changes for fixing compilation issue.
->>>>
->>>> Does this really need to do all the changes in mac80211 and the drivers?
->>>>
->>>> OTOH maybe if not then it would cause much more back and forth?
->>>
->>> Yes, true this patch includes only the minimum necessary changes to resolve the compilation issues in mac80211 and the drivers.
->>>
->>> Without these changes, compilation issues will persist.
->>>
->>>>
->>>>> +++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
->>>>> @@ -1810,47 +1810,51 @@ static int ath6kl_get_station(struct wiphy *wiphy, struct net_device *dev,
->>>>>       else if (left < 0)
->>>>>           return left;
->>>>> +    sinfo->links[0] = kzalloc(sizeof(*sinfo->links[0]), GFP_KERNEL);
->>>>> +    if (!sinfo->links[0])
->>>>> +        return -ENOMEM;
->>>>>
->>>>
->>>> This seems rather error-prone to me.
->>>>
->>>> We already have sinfo->pertid today, allocated and freed by cfg80211,
->>>> and here you've added something that's allocated by the driver and freed
->>>> by mac80211. That seems odd in comparison?
->>>>
->>>> I'm not sure what the choices are, but I can't say I like this one ;-)
->>>> Maybe it's still the least bad option.
->>>
->>> Options what I can think of here, other then above approach, may be can allocate memory during get_station() call only, in cfg80211(but this may not be 
->>> memory efficient as have to allocate for all possible links).
->>>
->>> or, may be can introduce an API in cfg80211 to allocate the memory for sinfo->links, and call the API from drivers/mac80211 while filling the sinfo->links[] 
->>> data.
->>
->> sinfo->links[] could be an array in sinfo instead of a pointer, so whatever allocates sinfo
->> automatically allocates the links memory area, and then just fill in those values as needed
->> in the driver and ignore them in mac80211 if not filled?
->>
+On Fri, Apr 25, 2025 at 04:41:43PM +0500, Muhammad Usama Anjum wrote:
+> On 4/25/25 1:59 PM, Manivannan Sadhasivam wrote:
+> > On Fri, Apr 25, 2025 at 12:42:38PM +0500, Muhammad Usama Anjum wrote:
+> >> On 4/25/25 12:32 PM, Manivannan Sadhasivam wrote:
+> >>> On Fri, Apr 25, 2025 at 12:14:39PM +0500, Muhammad Usama Anjum wrote:
+> >>>> On 4/25/25 12:04 PM, Manivannan Sadhasivam wrote:
+> >>>>> On Thu, Apr 10, 2025 at 07:56:54PM +0500, Muhammad Usama Anjum wrote:
+> >>>>>> Fix dma_direct_alloc() failure at resume time during bhie_table
+> >>>>>> allocation. There is a crash report where at resume time, the memory
+> >>>>>> from the dma doesn't get allocated and MHI fails to re-initialize.
+> >>>>>> There may be fragmentation of some kind which fails the allocation
+> >>>>>> call.
+> >>>>>>
+> >>>>>
+> >>>>> If dma_direct_alloc() fails, then it is a platform limitation/issue. We cannot
+> >>>>> workaround that in the device drivers. What is the guarantee that other drivers
+> >>>>> will also continue to work? Will you go ahead and patch all of them which
+> >>>>> release memory during suspend?
+> >>>>>
+> >>>>> Please investigate why the allocation fails. Even this is not a device issue, so
+> >>>>> we cannot add quirks :/
+> >>>> This isn't a platform specific quirk. We are only hitting it because
+> >>>> there is high memory pressure during suspend/resume. This dma allocation
+> >>>> failure can happen with memory pressure on any device.
+> >>>>
+> >>>
+> >>> Yes.
+> >> Thanks for understanding.
+> >>
+> >>>
+> >>>> The purpose of this patch is just to make driver more robust to memory
+> >>>> pressure during resume.
+> >>>>
+> >>>> I'm not sure about MHI. But other drivers already have such patches as
+> >>>> dma_direct_alloc() is susceptible to failures when memory pressure is
+> >>>> high. This patch was motivated from ath12k [1] and ath11k [2].
+> >>>>
+> >>>
+> >>> Even if we patch the MHI driver, the issue is going to trip some other driver.
+> >>> How does the DMA memory goes low during resume? So some other driver is
+> >>> consuming more than it did during probe()?
+> >> Think it like this. The first probe happens just after boot. Most of the
+> >> RAM was empty. Then let's say user launches applications which not only
+> >> consume entire RAM but also the Swap. The DMA memory area is the first
+> >> ~4GB on x86_64 (if I'm not mistaken). Now at resume time when we want to
+> >> allocate memory from dma, it may not be available entirely or because of
+> >> fragmentation we cannot allocate that much contiguous memory.
+> >>
+> > 
+> > Looks like you have a workload that consumes the limited DMA coherent memory.
+> > Most likely the GPU applications I think.
+> > 
+> >> In our testing and real world cases, right now only wifi driver is
+> >> misbehaving. Wifi is also very important. So we are hoping to make wifi
+> >> driver robust.
+> >>
+> > 
+> > Sounds fair. If you want to move forward, please modify the exisiting
+> > mhi_power_down_keep_dev() to include this partial unprepare as well:
+> > 
+> > mhi_power_down_unprepare_keep_dev()
+> > 
+> > Since both APIs are anyway going to be used together, I don't see a need to
+> > introduce yet another API.
+> I've looked at usages of mhi_power_down_keep_dev(). Its getting used by
+> ath12k and ath11k both. We would have to look at ath12k as well before
+> we can change mhi_power_down_keep_dev(). Unfortunately, I don't have
+> device using ath12k at hand.
 > 
-> sinfo->links[] cannot be used as an array because taking an array of IEEE80211_MLD_MAX_NUM_LINKS (15) would make the station_info structure too large, exceeding 
-> the maximum allowed size.
 
-If you mean max allowed size on the stack, then you could alloc it from the heap
-and free it when done.
+ath12k conversion looks trivial. So please go ahead with this new API conversion
+for that driver as well.
 
-Or you could just alloc storage for 3 links for now since no radio has more than that currently.
-
-Thanks,
-Ben
-
-> 
-> Instead, we can use the earlier method (define deflink(link_station_info) for non-MLO and use the same), but Johannes did not favor that approach, so I avoided 
-> providing this as an additional option.
-> 
->> Thanks,
->> Ben
->>
-> 
-> 
+- Mani
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+மணிவண்ணன் சதாசிவம்
 
