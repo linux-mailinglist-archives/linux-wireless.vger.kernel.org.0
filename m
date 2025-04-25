@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-22074-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22075-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912FBA9CDAA
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 18:02:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A5C6A9CDC9
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 18:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3E5F9C1E79
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 16:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49C0F4A141A
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Apr 2025 16:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D1222318;
-	Fri, 25 Apr 2025 16:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2EE18C91F;
+	Fri, 25 Apr 2025 16:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eQYG55EC"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Yx33lm1a"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7F91482E7
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 16:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCF612C544
+	for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 16:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745596937; cv=none; b=s2MlBDjW3Vi9+wTkqN7WwHVidkv3Ado1KpUQ0Qb9tkGh2ZtUVjrRJM0VoD841mParw/VRLlrmAD1KVIX0dDX5+NBu6DCLWbcKtzwZDfPomza1H7zKfApIuiQxleTeYFY9HTH7OLZ5y3xBji6bqh/hwP3dFttTyV/EyHrA7QNi1Y=
+	t=1745597256; cv=none; b=YDChWdtyRQYE6rnDM3voSi3+9y2gWFEhY2k+HqZiqexVwMwhwfYa5sea98ZBSjkNXWo5lC94/c5YIoLjMP2+FnCqdjS5prkS17Kvw4aH1ukrmNCKiBlntZ+8tX5/ZX3xUzgxvSGajr6naEm325EvFFy+Ks/GtBcRwuUkq8D39BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745596937; c=relaxed/simple;
-	bh=DgZXHclJOkx6g9lcO5qu3kZxuqYewO9zEwjAgW0mWLE=;
+	s=arc-20240116; t=1745597256; c=relaxed/simple;
+	bh=WZaOdc1wZPK/4EneNSUdAaK7q9TWH49BP3VyKo6ZwAI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L6vJgWczkD9k+VBfScCzCY2AhD0FjZR+8/yqybEaED1CI6J1IWugcS8konZAtbdt+ZzczkVvg1OtGWMkEi+P2RTcus2QeApfqxDNFplJHALx9rhsTXGMerNq0wrOTrsjAkauIQquLxNwxaHLlUWnjeCMRXX9DTbrLf3Cg5qn1Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eQYG55EC; arc=none smtp.client-ip=209.85.216.45
+	 Content-Type:Content-Disposition:In-Reply-To; b=jRnCEtUsBLqIxpANQb63UD0eYskvFEtx1HRv22MJO1Jxa2jT0Y5SK39khsridwk+C1dE940c0SIwY0dR8l9SMblRinAT+5JD4du6sj8edFH77KIxw3KUkNCzI5vA29ajuvYddNWFG1vz5ahZdqcuv8c3P3idsGGSfsxfv8alvVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Yx33lm1a; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-30384072398so2263598a91.0
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 09:02:15 -0700 (PDT)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-223fd89d036so32126285ad.1
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Apr 2025 09:07:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745596935; x=1746201735; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1745597253; x=1746202053; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Od8v9uuxXAfd7uGKx+1reVesYOTCW7WP8EaaxY94+tg=;
-        b=eQYG55EC+dcfC5h9A4Pc3HSshs+cSL8AniB17QjT0kSQsLT6QYPGVIHKPPIVBMFTWH
-         l1BR/bvRLyynOjNpGnIs5qe/iFP/6weS2T6pwjkAaYzYae98zwYA+os9EliBHGcuWFoD
-         Ail3wqkGNKZxqj5a9lf9CMoNmtdW9dWbJdq7dqb+DDfRyTIgn/dBwUq+XDmgOnn+oz9C
-         j9tsEBRLNWOp75pkUgvvJ8huahfdyH6kRjT6RKOwN1NXYSRCquajI76SwboSnI1W26dm
-         zBI0lb6gh/aHmx3LHE0d1ZzDedebUkAZ+CbSERFtYR1637135ptT+VPary2wEpdUM6uV
-         hfpA==
+        bh=ma+iGpUn/AKMVwLZapT0W95tZe34aNE+r6szCxKHl2g=;
+        b=Yx33lm1aI5IbDKpBUpJeIh+x2DnQoN7pah6x4C+Hfr/k4pS9xBgOl8MknKaVbziTVU
+         qgXKSRMUijIeiGxw53ncGtJqZgox53RYArm1SATtoygYroRhcP2ZA3AyJ9JZBL1yw9w9
+         TLIZvausDBtEDhro8l44ZXqSSH21mq0dG/0ojz/uUPpeo8q+MYCy37HPQz97afBZOvXs
+         MtqQUju7JIlctQbrOqVw9pf7RzWBjw4LSLxD2JoILT8AOFcsmSgefMq4HanQeoE47gqb
+         YRDVT7FktzR4k/ViinwQJKK4YZ+EHF/G/Hd8RKz6b3NQDLp623QFJzyRL8Tu1RDsAVu+
+         3Vjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745596935; x=1746201735;
+        d=1e100.net; s=20230601; t=1745597253; x=1746202053;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Od8v9uuxXAfd7uGKx+1reVesYOTCW7WP8EaaxY94+tg=;
-        b=kHup61vipD6+MvfMH562YpV2gwpYJ8ATtiYEZT5/mn8mVA8nhQ0GYIxDDbViw5ITRR
-         Cf0R7HzfowfT8dxAlorV++ri7Xpn9FMJT+7oAjxdS3QAamx3mDEja6d0TLEYkQfCqUnK
-         M/LsqRdPmepDvMfSFb55HjwSpQri4Vac73qK67ZcjMK6HG4L4rKMX/1ejEppE6KoZHrF
-         D8d61JrIw/syhJvNIGKtjAs7Fe/I01v9cN9MyAHmI0leG84vPbXNLxW4Mtb0Vp4Da+YY
-         hiuTvVqaq5/J9ZyXW694T3C3OjJn32N7KlZVgtam7j8RXd6LeSl/jfU53or0XeCxF8BO
-         tP8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVcDy8oMn8OiQjlyRta+F0zIDF0xYwb4/vpEy7XwKnmS5bO2aHbcqdZWlTfmUNqn+pRPXrsN7tfPzKM0TDIAg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1rSxlAPj7RjLSfN+RGNSL8WgK2KKf7I2ylGrZlVI577bvGU0O
-	6o7cxSe596t7kSYW1bRIKRi/1RAzqHkU2Hq3MVKQi2Z3GF93GvroNBWZCo5Ldg==
-X-Gm-Gg: ASbGncvMZJaiCBO+gsndRQoM8xqNZmsesWwPyeqUfTNUBcGOJPUDVOt94i67ppFkfIy
-	3eEgydZ7XZMOinuS8T6MIqFfKkVGc9Vu7evHHJluZ27b9qO9dA+nY5CeWqrPEJPizYiK/Z3mM3/
-	Q3jB0WyqeCnTlpixPjDnvlYVlMez+i+JALxULQIH7CD2Gkz8q2P6BM+PcmL3WPspSShjNuqfO7Z
-	4Vvmko2mg6cRIoBHTGEuhKCUA3SzZ2/XHAeQgDroG1fV69C9ThTHctbpo9KSguMrbLUd6NYIFrh
-	BMeNzRNy24YK+reqVVKdmn/2UOndgA50kV8AeYodLL56GMRBwSXZ
-X-Google-Smtp-Source: AGHT+IHdQ4Ba18bl0q2QrVTsaExU1b+SHdhITO9CRQcmytTANa1AqTjF3k17LH9+AYX+x/7+IPAHdg==
-X-Received: by 2002:a17:90b:264b:b0:2ff:58e1:2bc9 with SMTP id 98e67ed59e1d1-309f7e679aamr4543956a91.25.1745596934960;
-        Fri, 25 Apr 2025 09:02:14 -0700 (PDT)
+        bh=ma+iGpUn/AKMVwLZapT0W95tZe34aNE+r6szCxKHl2g=;
+        b=dTTCycmiskc8ev/zo/nz0yhoOm9BjB5YAEkTZftujtE0OPOH4Y1R1mSRSXvUk5f82Q
+         /7vhDhdnj2SKnlYCX2/EpWrvIyAz/YamboJPgxr9PIxW3ktn3PYcy1JKdxUt2MJrWwe2
+         qV3TP69iX975fq0IBVdc9pv3Ac8Ltv88I4syVlIhOChM3XOaJtVRtou2nC8kTnTCM4dR
+         R/4FO8nRul6w9Hs5efRuTxHjmYnBgVHxGTNpJ6ZYBnNWYqCOgY8+24MEIvEdrMCX+K3s
+         ockJf1unzIkz0PtvgNSuC8ulURlJUb0/xvOaw8bKOUyD7fZHraWbnMOY1O/cLyepg3VG
+         UX+g==
+X-Forwarded-Encrypted: i=1; AJvYcCVZRuTIn6FCabdlWb1U5/ooBzxRKetfZ5DJkQqkq4HvQOpWfarIQwyY+2ttyxKEwfUpGoRBScPY5fhbFR0/hQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTNt3uJC/KJq/K0PdhdPmIA5MhvszHlrZ47GJRWlGRRyCAUNRp
+	pU6u7jWSe2Fr4w973xgoTa/8WLCQtf9RVNEuc4wSRdb8jKzyV6y1sFEdIyy/Ag==
+X-Gm-Gg: ASbGncuH+G0FLHPUfSYsnYBCvWfiQt/u9RP241aIkEDmOjnSz+HWgCEbadxaxCCtifY
+	zxonShYBxqB4FVWh3Xd9R2Kw7sjzCebJGCn5rz1ps89/Nk4pwDZGgtapXimv2m3epBIsLnz4pUV
+	zhINd44H3Er3CJQety4ZrOH9dc39VYV2b11xOSAQIQB8jHBAYd8MWGfMTljbTa/JH6i6b1cO0RM
+	E0xp9cEFoWjsubI/JdCiqU5Y7rhpELE94YD1zI0/FagpjnML8My3+H8pvZZSpcHKoajJqId8lvk
+	igRXGdWJ3yI+71Dws78/dKug8A9zEcpvmkI+vCk9CZBjBviC8vxV
+X-Google-Smtp-Source: AGHT+IGHuaRxdPoXNwRTHc78Guuv44yqP3/H83BEy2uFRv1C3A22TKg1MCU7FGgOqFZzBgCQSRzorg==
+X-Received: by 2002:a17:902:d2ce:b0:229:1717:882a with SMTP id d9443c01a7336-22dc69efaeemr2288965ad.4.1745597253205;
+        Fri, 25 Apr 2025 09:07:33 -0700 (PDT)
 Received: from thinkpad ([120.56.201.179])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309f784ac3fsm1806254a91.45.2025.04.25.09.02.07
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b15faee2091sm3098381a12.75.2025.04.25.09.07.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 09:02:14 -0700 (PDT)
-Date: Fri, 25 Apr 2025 21:32:04 +0530
+        Fri, 25 Apr 2025 09:07:32 -0700 (PDT)
+Date: Fri, 25 Apr 2025 21:37:25 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 Cc: Bjorn Helgaas <bhelgaas@google.com>, 
@@ -84,11 +84,10 @@ Cc: Bjorn Helgaas <bhelgaas@google.com>,
 	ath11k@lists.infradead.org, quic_pyarlaga@quicinc.com, quic_vbadigan@quicinc.com, 
 	quic_vpernami@quicinc.com, quic_mrana@quicinc.com, 
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: Re: [PATCH v2 03/10] PCI: dwc: Implement .pre_scale_bus_bw() &
- .post_scale_bus_bw hook
-Message-ID: <6zuyux2emotjxouvo36ijojz4xel7x7aozyem55pmd3xvpbgjs@6abrkkzj3bib>
+Subject: Re: [PATCH v2 05/10] PCI: qcom: Add support for PCIe bus bw scaling
+Message-ID: <ammo5uyd65xyr2gexp6kgkyout2hezrlqqb7l77dix52wbtehl@ezw2ntaabjug>
 References: <20250313-mhi_bw_up-v2-0-869ca32170bf@oss.qualcomm.com>
- <20250313-mhi_bw_up-v2-3-869ca32170bf@oss.qualcomm.com>
+ <20250313-mhi_bw_up-v2-5-869ca32170bf@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -98,54 +97,71 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250313-mhi_bw_up-v2-3-869ca32170bf@oss.qualcomm.com>
+In-Reply-To: <20250313-mhi_bw_up-v2-5-869ca32170bf@oss.qualcomm.com>
 
-On Thu, Mar 13, 2025 at 05:10:10PM +0530, Krishna Chaitanya Chundru wrote:
-> Add support for pre_scale_bus_bw() & post_scale_bus_bw() function op's.
-> Add support for DWC glue drivers to register for these ops.
+On Thu, Mar 13, 2025 at 05:10:12PM +0530, Krishna Chaitanya Chundru wrote:
+> QCOM PCIe controllers need to disable ASPM before initiating link
+> re-train. So as part of pre_bw_scale() disable ASPM and as part of
+> post_scale_bus_bw() enable ASPM back.
+> 
+> Update ICC & OPP votes based on the requested speed so that RPMh votes
+> get updated based on the speed.
 > 
 > Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 > ---
->  drivers/pci/controller/dwc/pcie-designware-host.c | 21 +++++++++++++++++++++
->  drivers/pci/controller/dwc/pcie-designware.h      |  2 ++
->  2 files changed, 23 insertions(+)
+>  drivers/pci/controller/dwc/pcie-qcom.c | 49 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 49 insertions(+)
 > 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> index ffaded8f2df7..4da4df62c3f8 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> @@ -697,10 +697,31 @@ void __iomem *dw_pcie_own_conf_map_bus(struct pci_bus *bus, unsigned int devfn,
+> diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+> index b66c413f1e2b..a68e62422ff7 100644
+> --- a/drivers/pci/controller/dwc/pcie-qcom.c
+> +++ b/drivers/pci/controller/dwc/pcie-qcom.c
+> @@ -1328,10 +1328,59 @@ static int qcom_pcie_set_icc_opp(struct qcom_pcie *pcie, int speed, int width)
+>  	return ret;
 >  }
->  EXPORT_SYMBOL_GPL(dw_pcie_own_conf_map_bus);
 >  
-> +static int dw_pcie_pre_scale_bus_bw(struct pci_bus *bus, int target_speed)
+> +static int qcom_pcie_scale_bw(struct dw_pcie_rp *pp, int speed)
 > +{
-> +	struct dw_pcie_rp *pp = bus->sysdata;
-> +	int ret = 0;
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct qcom_pcie *pcie = to_qcom_pcie(pci);
+> +	u32 offset, status, width;
 > +
-> +	if (pp->ops->pre_scale_bus_bw)
-> +		ret = pp->ops->pre_scale_bus_bw(pp, target_speed);
+> +	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> +	status = readw(pci->dbi_base + offset + PCI_EXP_LNKSTA);
 > +
-> +	return ret;
+> +	width = FIELD_GET(PCI_EXP_LNKSTA_NLW, status);
+> +
+> +	return qcom_pcie_set_icc_opp(pcie, speed, width);
 > +}
 > +
-> +static void dw_pcie_post_scale_bus_bw(struct pci_bus *bus, int current_speed)
-> +{
-> +	struct dw_pcie_rp *pp = bus->sysdata;
-> +
-> +	if (pp->ops->pre_scale_bus_bw)
-> +		pp->ops->post_scale_bus_bw(pp, current_speed);
-> +}
-> +
->  static struct pci_ops dw_pcie_ops = {
->  	.map_bus = dw_pcie_own_conf_map_bus,
->  	.read = pci_generic_config_read,
->  	.write = pci_generic_config_write,
-> +	.pre_scale_bus_bw = dw_pcie_pre_scale_bus_bw,
-> +	.post_scale_bus_bw = dw_pcie_post_scale_bus_bw,
+> +static int qcom_pcie_enable_disable_aspm(struct pci_dev *pdev, void *userdata)
 
-Please do not add these multi level ops without necessity. Just populate the
-callbacks in qcom_pcie_host_init(). DWC has nothing to do with these callbacks.
+qcom_pcie_enable_aspm() since the opaque argument is serving as a boolean.
+
+> +{
+> +	bool *enable = userdata;
+> +
+> +	/*
+> +	 * QCOM controllers doesn't support link re-train with ASPM enabled.
+> +	 * Disable ASPM as part of pre_bus_bw() and enable them back as
+> +	 * part of post_bus_bw().
+> +	 */
+> +	if (*enable)
+> +		pci_enable_link_state_locked(pdev, PCIE_LINK_STATE_ALL);
+> +	else
+> +		pci_disable_link_state_locked(pdev, PCIE_LINK_STATE_ALL);
+> +
+> +	return 0;
+> +}
+> +
+> +static void qcom_pcie_host_post_scale_bus_bw(struct dw_pcie_rp *pp, int current_speed)
+> +{
+> +	bool enable = true;
+> +
+> +	pci_walk_bus(pp->bridge->bus, qcom_pcie_enable_disable_aspm, &enable);
+
+We do not enable ASPM on all platforms. So this is going to affect all platforms
+whose client drivers initiate link retrain.
 
 - Mani
 
