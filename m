@@ -1,113 +1,133 @@
-Return-Path: <linux-wireless+bounces-22101-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22103-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77245A9DD19
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Apr 2025 22:27:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CCEA9DDF0
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Apr 2025 01:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C55CD4625D7
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Apr 2025 20:27:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACFB61B61F36
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Apr 2025 23:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A601F3B8B;
-	Sat, 26 Apr 2025 20:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477991FF7B3;
+	Sat, 26 Apr 2025 23:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k2Vugnic"
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="Xu0yPlSx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFE01EA7DD
-	for <linux-wireless@vger.kernel.org>; Sat, 26 Apr 2025 20:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1381DFF0
+	for <linux-wireless@vger.kernel.org>; Sat, 26 Apr 2025 23:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745699243; cv=none; b=kWb8li50eJAXoz0KX6odu7Z1rTytpjBMVTp7pirgwvQ+O3XmnULC8nfDxw5NvT0284KuSWBhMsfzXJdvB49k31zfIoUaJW0Yp0lp5RywbNi7WJFA1YGdAxwZKpvObqCLdLYSKssiVw928B1RCL2bs71DalECm54Du2ty0soPOB0=
+	t=1745711752; cv=none; b=frmcuJYTw8cIBH6hsmh3INYzF3Y0Dp45jSYw1yQljvOxsNJhgwhQLpvZlG4CHLsQPPot/u1UR5xndVDtPTYJnCHBx7jrJ2dgKHa+b29TeIqXgceZG8/5c3u4lJTFjAO4UUF6kWhbOSSDv+bwwfOaP1/ZYWamU3CXU8EEAvV1sLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745699243; c=relaxed/simple;
-	bh=47viKrJ06wefziWd0nR3v1borq4SwPMPeWa28MhV0k4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tNh/4lvfyeHDaFf/hXlYxGJHGitdw7TXRwjRQMrvXk9gHu0lXqF2dxQrLxQVGLDeUg0dTg6YYeRM1V50y6FU6wOW0vUHV5/khzSHeM9OEcetRpxV1AwLQs9nKZslotCK8M+3QIHzx84L9GtE43ZbotOiIiqK6NOqGrQgxYZHJHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k2Vugnic; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac2ab99e16eso734880566b.0
-        for <linux-wireless@vger.kernel.org>; Sat, 26 Apr 2025 13:27:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745699239; x=1746304039; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PoC+KF50VJ4AzNjYTDphbT/eoTPimlkMf/gxxvjVKxA=;
-        b=k2VugnicqLFqslrDyd6mP/5nPgQsa62f3T+v1DDQZDKw9uLC6mS2yGzgTeGf7fq/Hb
-         ZnUIqc2OGzB19mqRUS3OvEedl8vFkXC8lziA5c5D7vRHbtlSM+p8eF72Jm3y2VhJ7Xvw
-         pOf18+PvEcoRMTb9w9MMKM0EyF7syOngoaVCtAjeZv0G3CVwCiYWSOfO6KSyecM0CBaU
-         dPQlHwjeMGrF4F1AHZdJVUVqD/mD43UGHDINv84Bj9u7gVqdbGyazhy4nRgJspv6tKY1
-         j7+XWSzoRDQfVvPO7FCJFNbnEq23508GO2RZRC5HJm6lh/MmEi5fkPpD30wFGgKeK4bj
-         3A6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745699239; x=1746304039;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PoC+KF50VJ4AzNjYTDphbT/eoTPimlkMf/gxxvjVKxA=;
-        b=HZ07RBmb/rDNb9tNiUOnei9Fq4n0ZO4OKOft7sPiEBZoetYdrKwDGRuPmwjn1VdBeH
-         MdvoBTDtmovkWJV2VTqelI/nOnBlOFYaGhmhoc7Nx2GJdrtF+A7+2j/s3rpQ5RxRToEH
-         t6LFnt4hG+K1xpsKPK8XPVtFEUWNEYRFZbqBGHBBr3ljLMLwUU/ZRz+r6eowUz4vupsc
-         0d2Rk2PZg9+hkLpWNUqHiUyZlbKzI70uuc9xKep882CWRJYNK7qdtUZzY1nSD5ohq0aq
-         bf15yrHCJo/8Axati/G0MdNYOAPoLs3sSls6kvywtJ+hkO5m/Nv+nha4GvQmT6Xwe8We
-         zdsA==
-X-Gm-Message-State: AOJu0Ywm9xsq8kopw/u2hCRcgN4VsDllxdgc2vIwdJsztaDeUUiXAz5L
-	08pZ+zt9oUlLkOfRYQgDQqlsyRKsjA6O8NejCqVpFcgNMVZblSBOCnHJ8Q==
-X-Gm-Gg: ASbGnctwf4uXvf36hOVwlNHdqZbccIoEJqaEQPtLLy2z4ClH//Cty//fzVfbb5ElGFs
-	E0D0J3exgsmh4b2FdvKOFn/CGIkpOnhzhBJvQcAeTdITNXhViOsuaFrPma9o1NBqAKIJHzwIKGX
-	xOK3V4oRRU1nJlHXT+CJPA+w2LNcusICkU82f6LcZiwWh9Q2owYBJawKRBNEIDzhBl0X/tKbFd1
-	3BMXBu9I082TPBXI4LoWTDE8C3Bkgm49keo9Dftn8HAOywVvscFvHy9aWdXE6ji3i0cXv3fqOjr
-	8/HyZwlT1wIusM1iB9BvWFDM1v+HM0/z7gysK6UOPkWmyXwuP+r+WttkFvZEA/jUCAxG29NuGQ6
-	OzhyO
-X-Google-Smtp-Source: AGHT+IEeo0+9AOc0Iu6COpWRV3BiQ3+6SMEmgdjccppvcU4pWa/X+D1nATNZCjZ3RYLUYNYtPs3veQ==
-X-Received: by 2002:a17:907:9812:b0:acb:5070:dd19 with SMTP id a640c23a62f3a-ace7140871emr557015566b.61.1745699239257;
-        Sat, 26 Apr 2025 13:27:19 -0700 (PDT)
-Received: from hp.lan (109241135220.swidnica.vectranet.pl. [109.241.135.220])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6e587093sm336388466b.80.2025.04.26.13.27.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Apr 2025 13:27:18 -0700 (PDT)
-From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	Janusz Dziedzic <janusz.dziedzic@gmail.com>
-Subject: [PATCH iw v2] iw: print HE mcs correctly when mcs_len
-Date: Sat, 26 Apr 2025 22:26:48 +0200
-Message-ID: <20250426202702.913342-1-janusz.dziedzic@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1745711752; c=relaxed/simple;
+	bh=sZukwQouq5e8baLeOsu75MRGU0eGNisjXGvwRrgnHVw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Irw4mhFJVQCwMqe7aL+JeKALTepqAv4DeWX7StPInRon8Pno5E6SKFcfasqG88ai0aVROTKbOWPpPptFjTazcK0lclWNQAh82eulVkSZZWQ9Wyj9fGvS8mXXzjeLYNZ7wwQOkVTGDVQRq/+F3hVBGLswQt5bjiJSQhv1yDdBbeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=Xu0yPlSx; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1745711313; bh=sZukwQouq5e8baLeOsu75MRGU0eGNisjXGvwRrgnHVw=;
+	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:From;
+	b=Xu0yPlSxUDgUb73OdbRopQ5K2HujnsBN/C01Kc/CKTZuIyDLEqsx0EirqppLNf3to
+	 IqrWyu6y+LrdAZZ5wfhuSf38LXaODIwJcJLGsyzibukJ8xBVC8dJGVPdasMqfX6+/p
+	 s5AeCgb7qq5iQcQugVd65rndAtA0OBiBrQ7BqSg8=
+Date: Sun, 27 Apr 2025 01:48:32 +0200
+From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-wireless@vger.kernel.org
+Subject: "no IR" issue with multiple cards using rtw89 driver in one system
+Message-ID: <2goskmst4na36v42p2bs47uernp6kh3gzpadhr3u3r2yvyoxlg@bfprgq2qae7p>
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Print HE mcs correctly when lower layer
-report correct/real mcs length.
+Hello,
 
-Signed-off-by: Janusz Dziedzic <janusz.dziedzic@gmail.com>
----
- util.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I've spent a better part of a day chasing a weird perhaps regulatory related
+issue in rtw89 driver, which I think may be useful reporting on. :)
 
-diff --git a/util.c b/util.c
-index c6d5974..e0bb513 100644
---- a/util.c
-+++ b/util.c
-@@ -1399,7 +1399,7 @@ static void __print_he_capa(const __u16 *mac_cap,
- 			continue;
- 
- 		/* Supports more, but overflow? Abort. */
--		if ((i * 2 + 2) * sizeof(le16toh(mcs_set[0])) >= mcs_len)
-+		if ((i * 2 + 2) * sizeof(le16toh(mcs_set[0])) > mcs_len)
- 			return;
- 
- 		for (j = 0; j < 2; j++) {
--- 
-2.43.0
+I have a dual wifi card system, with both cards serving as APs: RTL8852AE
+and RTL8852CE.
 
+I observe two things:
+
+- hostapd fails to start 5G AP on either RTL8852AE or RTL8852CE with this in the
+  log:
+
+  wlan-5g: interface state UNINITIALIZED->COUNTRY_UPDATE
+  Frequency 5180 (primary) not allowed for AP mode, flags: 0x11873 NO-IR
+  Primary frequency not allowed
+  wlan-5g: IEEE 802.11 Configured channel (36) or frequency (5180)
+    (secondary_channel=1) not found from the channel list of the current mode (2)
+    IEEE 802.11a
+  wlan-5g: IEEE 802.11 Hardware does not support configured channel
+  Could not select hw_mode and channel. (-3)
+  wlan-5g: interface state COUNTRY_UPDATE->DISABLED
+  wlan-5g: AP-DISABLED
+  wlan-5g: Unable to setup interface.
+  wlan-5g: interface state DISABLED->DISABLED
+  wlan-5g: AP-DISABLED
+  wlan-5g: CTRL-EVENT-TERMINATING
+  hostapd_free_hapd_data: Interface wlan-5g wasn't started
+  nl80211: deinit ifname=wlan-5g disabled_11b_rates=0
+  wlan-5g: IEEE 802.11 Configured channel (36) or frequency (5180)
+    (secondary_channel=1) not found from the channel list of the current mode (2)
+    IEEE 802.11a
+  wlan-5g: IEEE 802.11 Hardware does not support configured channel
+  
+  (previously it worked fine)
+
+- I can see this in `iw phy` output for both cards:
+
+  Frequencies:
+  * 5180.0 MHz [36] (20.0 dBm) (no IR)
+  * 5200.0 MHz [40] (20.0 dBm) (no IR)
+  * 5220.0 MHz [44] (20.0 dBm) (no IR)
+  * 5240.0 MHz [48] (20.0 dBm) (no IR)
+  
+- And now the interesting thing. no IR flag is only present, when both cards
+  are installed at once in the system.
+
+- When I remove either one of the cards, "no IR" flags are gone from
+  5G band channels in `iw phy` output and hostapd starts successfully.
+
+- Both cards have \xff\xff in efuse.country_code (so they are WW roaming cards,
+  I guess)
+
+- Interestingly this did not happen when I was using RTL8822AE instead of
+  RTL8852CE in this system. So this seem to be somehow triggered by using
+  two cards driven by rtw89 driver.
+
+`iw reg get` always returns in any case (and hostapd is set up with country_code=CZ
+for both cards):
+
+global 
+country CZ: DFS-ETSI
+	(2400 - 2483 @ 40), (N/A, 20), (N/A)
+	(5150 - 5250 @ 80), (N/A, 23), (N/A), NO-OUTDOOR, AUTO-BW
+	(5250 - 5350 @ 80), (N/A, 20), (0 ms), NO-OUTDOOR, DFS, AUTO-BW
+	(5470 - 5725 @ 160), (N/A, 26), (0 ms), DFS
+	(5725 - 5875 @ 80), (N/A, 13), (N/A)
+	(5945 - 6425 @ 320), (N/A, 23), (N/A), NO-OUTDOOR
+	(57000 - 66000 @ 2160), (N/A, 40), (N/A)
+
+I'm wondering how "no IR" flag can appear on 5G channels when I have two
+cards in one system, and disappear when I have just one installed, all other
+things being equal. :)
+
+Best regards,
+	Ondrej
 
