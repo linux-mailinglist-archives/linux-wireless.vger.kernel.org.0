@@ -1,62 +1,83 @@
-Return-Path: <linux-wireless+bounces-22106-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22107-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFD6A9E002
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Apr 2025 08:45:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCC9A9E24E
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Apr 2025 11:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D0701A832C5
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Apr 2025 06:46:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 529DC7A5499
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Apr 2025 09:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977D5241664;
-	Sun, 27 Apr 2025 06:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA5722D7A4;
+	Sun, 27 Apr 2025 09:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="ie5YftHH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mNiC1LwM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C251192D97
-	for <linux-wireless@vger.kernel.org>; Sun, 27 Apr 2025 06:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75840204090;
+	Sun, 27 Apr 2025 09:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745736347; cv=none; b=q2gEAYhNn9dLju9qDUPXCQz+CG8GeAqzZYGrHqrUzQSu3Nolv/PVMDrV8AkAONtXrd3jvSa/1fSqPJLPbht9nCa1ZaOplbMiuWBcvHq6Wn/sOA0uO0sVzCi/gPCy6tNp1m2tdD80nAQpbh1v7VuisIlY2ZYnQ8cykWI4AbX1Znw=
+	t=1745747874; cv=none; b=lOnHXNTBTRbjEhCp3e2Mic8ov7VfBlQJ7d6J4TM9pEY/Nl6BriCMJDi6S90bt0RiF/fXk0TFZo32yhl4RIBdoxHTpDgn0ZLI7ImWmEkpNwpwMym5fTPPBYUvVz5K+10zr/GOhiU+B146CGxg9vgDNGv4IYVWfRHcJNKwLelk16w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745736347; c=relaxed/simple;
-	bh=cP6/XJCXVqldEshjXYoc8yE5Oq3R5dY8qFB9/WC3g1M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jnyY090Y6VGcBTM+b5PqwK20BhbyDK7ZTwjhfrK0+qYdXt5qTqy3SVZ2QOGGn3RMciD2X/1Fs2UkfQjpJmFEFy5pjg2EcY2eK8EzZiGqxuMJan+a7rZNHucwahwbhcCgUfVJRgLDS0T5R0yBXkmPWjfLzMT9/bHru+/W7oNxgF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=ie5YftHH; arc=none smtp.client-ip=212.77.101.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 17292 invoked from network); 27 Apr 2025 08:39:01 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1745735941; bh=o3uXY+03fHMqEVm7xfc1m3HwM3CT7TcojXJU2tbxrfA=;
-          h=From:To:Cc:Subject;
-          b=ie5YftHHgYaGWXxljKQT+IURdnwlKkaXBpvqN124lcpaqyFuTYF3rQUBUZJPdS/Ip
-           LT9lXqsla0AerdAd6slIu4XlXtkjJl1TYiloi99J77+2syjmq42Fe0vp+BzgVlkZhN
-           inNgKhQmag6+Jx75X0Rqn5VxQ6sArK8ZzsivRzHTLRktD97WGW2Kz9m1AvuIp5C6JB
-           er77cb2I8R5vjeXyRljAfqYV4WYnYgvkwhlWC4r4AIgFziyo6I7JqkqruMryXkLW4I
-           wQ65e0K0CgkzOXYvugtgrdXlTZSiJPX636d3LBopgqC8s0GKBiNruJ+0Q0Dv8jZRpS
-           04RjbOA5UK7XA==
-Received: from 89-64-9-175.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.9.175])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <a.safin@rosa.ru>; 27 Apr 2025 08:39:01 +0200
-Date: Sun, 27 Apr 2025 08:39:00 +0200
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Alexei Safin <a.safin@rosa.ru>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
-Subject: Re: [PATCH v2] iwlegacy: 4965: fix possible out-of-bounds access in
- il4965_tx_cmd_build_rate()
-Message-ID: <20250427063900.GA48509@wp.pl>
-References: <20250424185244.3562-1-a.safin@rosa.ru>
+	s=arc-20240116; t=1745747874; c=relaxed/simple;
+	bh=TlpuGJ0bMIigOMRpg0+97w+8+BynbCFp1g2PtIdfSto=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=JqayrsOdCGJKe/nH++S6uN6hHPu8fzJm1iJXSbnnQ4wrfBtwTwRknX8DCEZ19lDeuIp25CPmTS0HC+h9ivqahzrqhmCXqj/TJNuavA8GATNwPoJJp993PtKY6Q0104zNvGj9P37mUKK0jNDvnUspnnUxGzx3ccTNlC8Nv2mRKAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mNiC1LwM; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5e5bc066283so6533519a12.0;
+        Sun, 27 Apr 2025 02:57:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745747871; x=1746352671; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LxBTUJ+SNYbNqrW5ub0gWFIX7kS/soTqDckkd/+r4lM=;
+        b=mNiC1LwMHl3XJJQ3nH9n+B9LMVHCdIANWi+KgW9iryp6NQ8CGRj8lamYD0le/M1kfR
+         BMecm9xeUSYmr6farfQ6ISFWhrGWjsh2YPLVaQvYisS5tTRkeXIn6jNvgEgs9l9XjgbI
+         sBpk5Fu9Pd81tSvapmpswyW6Wwfhff2boqdWvB8OkjjWTv3MQzXN3WRknZQKpJfb3odj
+         cmIfqR2KIvv+rvl1HXv7zJnqBC9Ei26H6j5tf8CEyfsGrSPnVIJ7tvPNSTHdiV3NPNKg
+         DBPzwJrhbf0LrXbuDrwa+3YCY7F3Hs4GuQJZ21cNJgEg92QiwUvKVpYOEbdobz4cbyis
+         nSuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745747871; x=1746352671;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LxBTUJ+SNYbNqrW5ub0gWFIX7kS/soTqDckkd/+r4lM=;
+        b=qjrLOxI3y040lJERH8XVcPzTXZAvaiNquLGZck3HD2BhvOMnBfW7DbsFWI29BiAy0x
+         JiLr4YoCsMuB1YyLqA45W8wRq594Dcf30JGxA9Ab6cHRBO8D46ImoJYc1z6smq4Ha0Ct
+         xv72ZOzOqvxGrb6CwmPTevgxgXa7sCOEybvwFfFkjlikvkHx/JvppK3ynt0LDp8pFGMG
+         4uKuEy3ifSv49vzQrtlp8OTylvSgh1qpy09dLVSxTw8NVhNwKfINMk+go95sfXbXnoH8
+         wOd6bollTy/1xRlEXTnku++F2i5cOnCgixvz22oqp2sqRoU/mtf0uIeBHdwlHveXBhxw
+         kQ4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUaBdRz5EX9lFVEWfIdYu64o05MpeEXsRaFUTfn9Wv4lsXD6taZ8ozM8h0JXZH1sC5Yv9C+2beBhVH5SE/x+oo=@vger.kernel.org, AJvYcCXIfgGZh6Q1fBdUpfImaGhEFwX40lQbb/vXrXZ4e1jzoA/L41phTitbA2L5gFW/qflVp03K7umv0Y5xETA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrHcL4d+fVNVVC6EmPjdNy031G8EKEISM7Q7/RGNU+YVWLzNR2
+	Hdlwh2RC9Va+SUUobeIglOv9y5RAjbt8n/4NF5UgvAzbaaJu4/N4Er6/ZIqJ
+X-Gm-Gg: ASbGncvddT3nzyDO+100dEvrG9M28sJUZtoGg9gjvq519686nOF4FIaaWX9WT8dDDeJ
+	30PotjjFuYVuv+u/1UD82g6NYvZ1Eg+wMtfGjQ3Xo59fol1bgHnMryjc7ui7pqnT97KCm0diz1y
+	SUG6POpfIo/THMbDwcXp42cAfpgaJcg0Tv/zrXB8zlyx9EuXpqT48DxU4X7GsbE6kNb8qCu01gc
+	QYFVTv59xphIxpEK30ay+gqAy9AZP7OCknkWB3cODd+hBLoHvGaK/nBf+jcAXWgXF++7jyUMTdm
+	G67n8Gw9bc1mRtg0aQm5VxVIXEVwkUAH0KNou54=
+X-Google-Smtp-Source: AGHT+IHadKh3mh3Ib3ydj4hk0Zjl9p47LcKrV35HTQdygvQwQhk2pbY9rpDdxgjEnGZDeffUrnIzCQ==
+X-Received: by 2002:a05:6402:268c:b0:5f6:23b1:ab43 with SMTP id 4fb4d7f45d1cf-5f7219ade61mr7290431a12.0.1745747870585;
+        Sun, 27 Apr 2025 02:57:50 -0700 (PDT)
+Received: from pc ([165.51.0.225])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f70354638bsm3867990a12.63.2025.04.27.02.57.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Apr 2025 02:57:49 -0700 (PDT)
+Date: Sun, 27 Apr 2025 10:57:45 +0100
+From: Salah Triki <salah.triki@gmail.com>
+To: Srinivasan Raju <srini.raju@purelifi.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: salah.triki@gmail.com
+Subject: [PATCH] wireless: purelifi: plfxlc: fix memory in
+ plfxlc_usb_wreq_asyn()
+Message-ID: <aA3_maPlEJzO7wrL@pc>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,69 +86,31 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250424185244.3562-1-a.safin@rosa.ru>
-X-WP-MailID: 3dfcb9b3360eb4c1b73ce68492ffa8f3
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000001 [gSIx]                               
 
-Hi
+Add usb_free_urb() in the error path to prevent memory leak.
 
-On Thu, Apr 24, 2025 at 09:52:44PM +0300, Alexei Safin wrote:
-> Prevent out-of-bounds access in il4965_tx_cmd_build_rate() by rejecting
-> rate_idx values greater than or equal to RATE_COUNT_LEGACY.
-> 
-> Use a correct bounds check to avoid accessing il_rates[] with
-> an invalid index. The previous comparison allowed rate_idx to become
-> equal to RATE_COUNT_LEGACY, which exceeds the array limit.
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+---
+ drivers/net/wireless/purelifi/plfxlc/usb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Thanks for the patch, however I think it's not correct.
+diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
+index 10d2e2124ff8..c2a1234b59db 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/usb.c
++++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
+@@ -503,8 +503,10 @@ int plfxlc_usb_wreq_async(struct plfxlc_usb *usb, const u8 *buffer,
+ 			  (void *)buffer, buffer_len, complete_fn, context);
+ 
+ 	r = usb_submit_urb(urb, GFP_ATOMIC);
+-	if (r)
++	if (r) {
++		usb_free_urb(urb);
+ 		dev_err(&udev->dev, "Async write submit failed (%d)\n", r);
++	}
+ 
+ 	return r;
+ }
+-- 
+2.43.0
 
-The definitions are:
-
-enum {
-        RATE_1M_IDX = 0,
-	...
-	RATE_54M_INDEX,
-	RATE_60M_INDEX,
-	RATE_COUNT
-        RATE_COUNT_LEGACY = RATE_COUNT - 1,     /* Excluding 60M */
-}
-
-extern const struct il_rate_info il_rates[RATE_COUNT];
-
-> Replace the check 'rate_idx > RATE_COUNT_LEGACY' with
-> 'rate_idx >= RATE_COUNT_LEGACY' to ensure memory safety.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-> Fixes: 7ac9a364c172 ("iwlegacy: move under intel directory")
-> Signed-off-by: Alexei Safin <a.safin@rosa.ru>
-> ---
-> v2: change reciepent
->  drivers/net/wireless/intel/iwlegacy/4965-mac.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> index 78dee8ccfebf..f60d9b9798c1 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> +++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> @@ -1572,7 +1572,7 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
->  	 */
->  	rate_idx = info->control.rates[0].idx;
->  	if ((info->control.rates[0].flags & IEEE80211_TX_RC_MCS) || rate_idx < 0
-> -	    || rate_idx > RATE_COUNT_LEGACY)
-> +	    || rate_idx >= RATE_COUNT_LEGACY)
->  		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
-
-.. so looks the check is fine already and changing it will induce a bug
-for RATE_54M_INDEX.
-
-Regards
-Stanislaw
-
->  	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
->  	if (info->band == NL80211_BAND_5GHZ)
-> -- 
-> 2.39.5 (Apple Git-154)
-> 
 
