@@ -1,372 +1,195 @@
-Return-Path: <linux-wireless+bounces-22140-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22141-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2290DA9EF09
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 13:26:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB05A9F32D
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 16:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 518847AB392
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 11:25:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7754718927AD
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 14:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6384A265CAD;
-	Mon, 28 Apr 2025 11:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FB4263C71;
+	Mon, 28 Apr 2025 14:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="RKlDQuVQ"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="FRbnJKgb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECAB25D536
-	for <linux-wireless@vger.kernel.org>; Mon, 28 Apr 2025 11:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FC6156677
+	for <linux-wireless@vger.kernel.org>; Mon, 28 Apr 2025 14:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745839571; cv=none; b=Du5RvTgxERCDDtCBh9+aaL2sDLkAUaapjB65LaBJcQp6DOdAdgtvxcStokzH9mHYMb6s4G5insWcoivFmV3F4xl736aCTZDwbx0yV93PApHObNX06AZyLjBBtqRk9M/lUvPCRlRnrYdIpxdiiK+Z76I8KOiktcdhIrocTPOJWNU=
+	t=1745849414; cv=none; b=koBipInKw24Mi64gUix7QhO56CUe3lLxZ0EXUsi333hQ2B54kGJIumhD4nFB7aDcLpuMTxQcTS2YYuBI6i3zbmsJDt9PhaexinKpIR/yPPNG+Fh6o9Yo/g7Yq8lrVb0SuYsOobnolHYxxyKGLjep0O/BfSBSHsDAMGF2zRiyCxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745839571; c=relaxed/simple;
-	bh=NpV/Qhq23pJTZ38HFzhSGd8SKyxVDc9dTJ4dTJgrPWs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BJc1tDg2BNE/vcANkg6nZ1uKc47bSYiOBYfWSUxM2TAbozL/Ls1NzHw7fj0mS35lTVAF5KRj8AVNfhnY/pQtOv6JBfoV62miTNAG8RGslSmD7qmM93TWYj1qSkEZB3kMxiMkmoD8sKwbKz3dRfyEEnSo05tjym28dS0nBtrC3oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=RKlDQuVQ; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 53SBQ7Pu82101733, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1745839567; bh=NpV/Qhq23pJTZ38HFzhSGd8SKyxVDc9dTJ4dTJgrPWs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=RKlDQuVQjilT2dlpe5ebPNZxyoUdAVeyAqNLIMAMXP36ih6cdR8wSo9887OSOf15Z
-	 emTjIDMPlIlrb/TPr3+vBh+fAxdIStcxwnR7tg3lYjRK+RJ9+ohfFUkZ5AvuJ8p+Z5
-	 ZVz+rqQIePrOHOOw8ydVCwPVawInP2g1ajTnH+hS+g5i+AsGn5aALrBR0zLNLObT/6
-	 qfWs/yUHNCLoINokm0FNnezRY2I0jNuMtPhcgypTyDpQCtRyaeh39Tprw36pEtaPHB
-	 cEeVmsMBLqv9ExZ6O9ypKT6TWfi6xAqRBlMVLeXU/zRBFk7Z3NpWzZQibHh73DkQlR
-	 74IkYhrFAQRDQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 53SBQ7Pu82101733
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 28 Apr 2025 19:26:07 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 28 Apr 2025 19:26:07 +0800
-Received: from [127.0.1.1] (172.16.19.226) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 28 Apr
- 2025 19:26:05 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <phhuang@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 10/10] wifi: rtw89: introduce helper to get designated link for MLO
-Date: Mon, 28 Apr 2025 19:24:56 +0800
-Message-ID: <20250428112456.13165-11-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250428112456.13165-1-pkshih@realtek.com>
-References: <20250428112456.13165-1-pkshih@realtek.com>
+	s=arc-20240116; t=1745849414; c=relaxed/simple;
+	bh=ER+M54+nSI4XYawSAxC0+EGZYnXt2c4bGF+Te0olAWU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XwZftqrVYSsZ52D1mV5XRzHCcKbUBW29bE39I4E7exwBZVGlK7hNoG3BfOYa39yLCqEYIjWFigdwNcTDllv1dATeoNk87NdgxZ2xMBr5cU21LLne+Ba8g3gG6Wu2EYA8I6fz3VXRYgOyQcpP65J2baksPt6rOmDBKwyg5l/Sq/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=FRbnJKgb; arc=none smtp.client-ip=148.163.129.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8147F2C3DCB
+	for <linux-wireless@vger.kernel.org>; Mon, 28 Apr 2025 14:10:11 +0000 (UTC)
+Received: from engine.ppe-hosted.com (unknown [10.7.65.200])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id CFFE960140;
+	Mon, 28 Apr 2025 14:10:04 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 12292C0071;
+	Mon, 28 Apr 2025 14:10:00 +0000 (UTC)
+Received: from [192.168.1.23] (unknown [98.97.33.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 368D813C2B0;
+	Mon, 28 Apr 2025 07:10:00 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 368D813C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1745849400;
+	bh=ER+M54+nSI4XYawSAxC0+EGZYnXt2c4bGF+Te0olAWU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FRbnJKgbY7j04yz4jZweG/XgIyKSsW4fCs2CLBtmsf4i7zIWm/xX65Zmqqw1Hgtg9
+	 nNVimnEwG7rFvbCzyYa+RSVG0dpr33pLk+GNbR3NUcxr+/4wq89xEs77/WUwYOl5M4
+	 uZ4VFEBwpa+mEGV9F32F2OwPqsiRjedXXKSSpi3o=
+Message-ID: <fb8e9d15-3450-4462-b6d4-994abd15f8e2@candelatech.com>
+Date: Mon, 28 Apr 2025 07:09:59 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next v6 04/11] wifi: cfg80211: reorg sinfo
+ structure elements for MLO
+To: Sarika Sharma <quic_sarishar@quicinc.com>,
+ Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
+References: <20250415042030.1246187-1-quic_sarishar@quicinc.com>
+ <20250415042030.1246187-5-quic_sarishar@quicinc.com>
+ <fa49a2d4927868be689ed8464aa27c3aad2f03b6.camel@sipsolutions.net>
+ <c3a6b07e-007e-4168-bf8a-7b0d9ebbc913@quicinc.com>
+ <927c6766-47d0-dcf6-cbe5-9da1e67292ad@candelatech.com>
+ <c7d093ce-11fd-44e2-ab23-6ad5a3e4bb64@quicinc.com>
+ <595c7624-c3ab-452a-b3c1-0b14184a6691@candelatech.com>
+ <6dc1f603-096f-45e8-9a28-69e414fe467a@quicinc.com>
+Content-Language: en-MW
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <6dc1f603-096f-45e8-9a28-69e414fe467a@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-MDID: 1745849402-SMTRjHS591oN
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;ut7;1745849402;SMTRjHS591oN;<greearb@candelatech.com>;535bfda298b524f45ffb92fb019ae3e8
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+On 4/27/25 22:20, Sarika Sharma wrote:
+> On 4/25/2025 6:44 PM, Ben Greear wrote:
+>> On 4/24/25 22:33, Sarika Sharma wrote:
+>>> On 4/24/2025 10:32 PM, Ben Greear wrote:
+>>>> On 4/24/25 09:44, Sarika Sharma wrote:
+>>>>> On 4/23/2025 10:22 PM, Johannes Berg wrote:
+>>>>>> On Tue, 2025-04-15 at 09:50 +0530, Sarika Sharma wrote:
+>>>>>>> Current implementation of NL80211_GET_STATION does not work for
+>>>>>>> multi-link operation(MLO) since in case of MLO only deflink (or one
+>>>>>>> of the links) is considered and not all links.
+>>>>>>>
+>>>>>>> Therefore to support for MLO, start reorganizing sinfo structure
+>>>>>>> related data elements and add link_sinfo structure for link-level
+>>>>>>> statistics and keep station related data at sinfo structure.
+>>>>>>> Currently, changes are done at the deflink(or one of the links) level.
+>>>>>>> Actual link-level changes will be added in subsequent changes.
+>>>>>>>
+>>>>>>> Also currently, mac80211 ops .sta_statistics() is mapped to fill sinfo
+>>>>>>> structure. But to add support for station statistics at link level,
+>>>>>>> change the ops to .link_sta_statistics() to fill link_sinfo structure.
+>>>>>>>
+>>>>>>> Additionally, move connected_time before assoc_at in station_info
+>>>>>>> structure to get minimal holes.
+>>>>>>> pahole summary before this change:
+>>>>>>>   - size: 232, cachelines: 4, members: 23
+>>>>>>>   - sum members: 223, holes: 3, sum holes: 9
+>>>>>>>   - forced alignments: 1
+>>>>>>>   - last cacheline: 40 bytes
+>>>>>>>
+>>>>>>> pahole summary after this change:
+>>>>>>>   - size: 224, cachelines: 4, members: 23
+>>>>>>>   - sum members: 223, holes: 1, sum holes: 1
+>>>>>>>   - forced alignments: 1
+>>>>>>>   - last cacheline: 32 bytes
+>>>>>>>
+>>>>>>> Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+>>>>>>> ---
+>>>>>>> NOTE:
+>>>>>>>   - Included driver changes for fixing compilation issue.
+>>>>>>
+>>>>>> Does this really need to do all the changes in mac80211 and the drivers?
+>>>>>>
+>>>>>> OTOH maybe if not then it would cause much more back and forth?
+>>>>>
+>>>>> Yes, true this patch includes only the minimum necessary changes to resolve the compilation issues in mac80211 and the drivers.
+>>>>>
+>>>>> Without these changes, compilation issues will persist.
+>>>>>
+>>>>>>
+>>>>>>> +++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
+>>>>>>> @@ -1810,47 +1810,51 @@ static int ath6kl_get_station(struct wiphy *wiphy, struct net_device *dev,
+>>>>>>>       else if (left < 0)
+>>>>>>>           return left;
+>>>>>>> +    sinfo->links[0] = kzalloc(sizeof(*sinfo->links[0]), GFP_KERNEL);
+>>>>>>> +    if (!sinfo->links[0])
+>>>>>>> +        return -ENOMEM;
+>>>>>>>
+>>>>>>
+>>>>>> This seems rather error-prone to me.
+>>>>>>
+>>>>>> We already have sinfo->pertid today, allocated and freed by cfg80211,
+>>>>>> and here you've added something that's allocated by the driver and freed
+>>>>>> by mac80211. That seems odd in comparison?
+>>>>>>
+>>>>>> I'm not sure what the choices are, but I can't say I like this one ;-)
+>>>>>> Maybe it's still the least bad option.
+>>>>>
+>>>>> Options what I can think of here, other then above approach, may be can allocate memory during get_station() call only, in cfg80211(but this may not be 
+>>>>> memory efficient as have to allocate for all possible links).
+>>>>>
+>>>>> or, may be can introduce an API in cfg80211 to allocate the memory for sinfo->links, and call the API from drivers/mac80211 while filling the 
+>>>>> sinfo->links[] data.
+>>>>
+>>>> sinfo->links[] could be an array in sinfo instead of a pointer, so whatever allocates sinfo
+>>>> automatically allocates the links memory area, and then just fill in those values as needed
+>>>> in the driver and ignore them in mac80211 if not filled?
+>>>>
+>>>
+>>> sinfo->links[] cannot be used as an array because taking an array of IEEE80211_MLD_MAX_NUM_LINKS (15) would make the station_info structure too large, 
+>>> exceeding the maximum allowed size.
+>>
+>> If you mean max allowed size on the stack, then you could alloc it from the heap
+>> and free it when done.
+>>
+>> Or you could just alloc storage for 3 links for now since no radio has more than that currently.
+> 
+> I agree, currently it's 3 only, but everywhere we are using max-15, so explicitly keeping it 3 here isn't questionable?
+> Also, in future it will not be useful approach, when we need to increase the links(that time we have to change this to pointer instead of array).
 
-A link bound to HW band 0 was previously always assumed to exist, because
-it's true on non-MLD connection, and MLO connection is not supported yet.
-Now, start to consider MLO cases and prepare to enable MLO support in the
-following. Add skeleton of designated link. For single-link cases, helper
-returns the one. For multi-link cases, priorities can be scheduled. Then,
-drop assumption of link bound to HW band 0.
+You can change allocation scheme in the future easily enough, and maybe there will never exist any linux
+driver with more than 3 links anyway?  And you can allocate quite large amounts of memory in the kernel,
+so you could always have it a single struct if you wanted.
 
-One exception is that MCC doesn't work with MLD yet, so it still expects
-link on HW band 0 somewhere.
+Anyway, Johannes makes the real decisions on this, so hopefully you can get his approval before you
+code something up he dislikes, I was just voicing my suggestion.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/chan.c     | 12 ++-----
- drivers/net/wireless/realtek/rtw89/core.c     | 33 ++++++++++---------
- drivers/net/wireless/realtek/rtw89/core.h     | 12 +++++--
- drivers/net/wireless/realtek/rtw89/mac80211.c | 21 +++++++-----
- drivers/net/wireless/realtek/rtw89/wow.c      |  3 +-
- 5 files changed, 43 insertions(+), 38 deletions(-)
+Thanks,
+Ben
 
-diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
-index 6d17456046d5..4fec61ed3454 100644
---- a/drivers/net/wireless/realtek/rtw89/chan.c
-+++ b/drivers/net/wireless/realtek/rtw89/chan.c
-@@ -694,19 +694,13 @@ static void rtw89_mcc_role_macid_sta_iter(void *data, struct ieee80211_sta *sta)
- 	struct rtw89_vif *target = mcc_role->rtwvif_link->rtwvif;
- 	struct rtw89_sta *rtwsta = sta_to_rtwsta(sta);
- 	struct rtw89_vif *rtwvif = rtwsta->rtwvif;
--	struct rtw89_dev *rtwdev = rtwsta->rtwdev;
--	struct rtw89_sta_link *rtwsta_link;
-+	u8 macid;
- 
- 	if (rtwvif != target)
- 		return;
- 
--	rtwsta_link = rtw89_sta_get_link_inst(rtwsta, 0);
--	if (unlikely(!rtwsta_link)) {
--		rtw89_err(rtwdev, "mcc sta macid: find no link on HW-0\n");
--		return;
--	}
--
--	rtw89_mcc_role_fw_macid_bitmap_set_bit(mcc_role, rtwsta_link->mac_id);
-+	macid = rtw89_sta_get_main_macid(rtwsta);
-+	rtw89_mcc_role_fw_macid_bitmap_set_bit(mcc_role, macid);
- }
- 
- static void rtw89_mcc_fill_role_macid_bitmap(struct rtw89_dev *rtwdev,
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 268107b1e039..57fb3cfc0a0d 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1133,22 +1133,20 @@ int rtw89_core_tx_write(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- 	struct rtw89_vif_link *rtwvif_link;
- 	int ret;
- 
--	/* By default, driver writes tx via the link on HW-0. And then,
--	 * according to links' status, HW can change tx to another link.
--	 */
--
- 	if (rtwsta) {
--		rtwsta_link = rtw89_sta_get_link_inst(rtwsta, 0);
-+		rtwsta_link = rtw89_get_designated_link(rtwsta);
- 		if (unlikely(!rtwsta_link)) {
--			rtw89_err(rtwdev, "tx: find no sta link on HW-0\n");
-+			rtw89_err(rtwdev, "tx: find no sta designated link\n");
- 			return -ENOLINK;
- 		}
--	}
- 
--	rtwvif_link = rtw89_vif_get_link_inst(rtwvif, 0);
--	if (unlikely(!rtwvif_link)) {
--		rtw89_err(rtwdev, "tx: find no vif link on HW-0\n");
--		return -ENOLINK;
-+		rtwvif_link = rtwsta_link->rtwvif_link;
-+	} else {
-+		rtwvif_link = rtw89_get_designated_link(rtwvif);
-+		if (unlikely(!rtwvif_link)) {
-+			rtw89_err(rtwdev, "tx: find no vif designated link\n");
-+			return -ENOLINK;
-+		}
- 	}
- 
- 	tx_req.skb = skb;
-@@ -3147,9 +3145,9 @@ static bool rtw89_core_txq_agg_wait(struct rtw89_dev *rtwdev,
- 	if (!rtwsta)
- 		return false;
- 
--	rtwsta_link = rtw89_sta_get_link_inst(rtwsta, 0);
-+	rtwsta_link = rtw89_get_designated_link(rtwsta);
- 	if (unlikely(!rtwsta_link)) {
--		rtw89_err(rtwdev, "agg wait: find no link on HW-0\n");
-+		rtw89_err(rtwdev, "agg wait: find no designated link\n");
- 		return false;
- 	}
- 
-@@ -3372,10 +3370,9 @@ void rtw89_roc_start(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
- 	rtw89_leave_ips_by_hwflags(rtwdev);
- 	rtw89_leave_lps(rtwdev);
- 
--	rtwvif_link = rtw89_vif_get_link_inst(rtwvif, RTW89_ROC_BY_LINK_INDEX);
-+	rtwvif_link = rtw89_get_designated_link(rtwvif);
- 	if (unlikely(!rtwvif_link)) {
--		rtw89_err(rtwdev, "roc start: find no link on HW-%u\n",
--			  RTW89_ROC_BY_LINK_INDEX);
-+		rtw89_err(rtwdev, "roc start: find no designated link\n");
- 		return;
- 	}
- 
-@@ -4806,6 +4803,7 @@ struct rtw89_vif_link *rtw89_vif_set_link(struct rtw89_vif *rtwvif,
- 
- 	set_bit(index, rtwvif->links_inst_map);
- 	rtwvif->links[link_id] = rtwvif_link;
-+	list_add_tail(&rtwvif_link->dlink_schd, &rtwvif->dlink_pool);
- 	return rtwvif_link;
- 
- err:
-@@ -4826,6 +4824,7 @@ void rtw89_vif_unset_link(struct rtw89_vif *rtwvif, unsigned int link_id)
- 	index = rtw89_vif_link_inst_get_index(link);
- 	clear_bit(index, rtwvif->links_inst_map);
- 	*container = NULL;
-+	list_del(&link->dlink_schd);
- }
- 
- struct rtw89_sta_link *rtw89_sta_set_link(struct rtw89_sta *rtwsta,
-@@ -4856,6 +4855,7 @@ struct rtw89_sta_link *rtw89_sta_set_link(struct rtw89_sta *rtwsta,
- 
- 	set_bit(index, rtwsta->links_inst_map);
- 	rtwsta->links[link_id] = rtwsta_link;
-+	list_add_tail(&rtwsta_link->dlink_schd, &rtwsta->dlink_pool);
- 	return rtwsta_link;
- 
- err:
-@@ -4876,6 +4876,7 @@ void rtw89_sta_unset_link(struct rtw89_sta *rtwsta, unsigned int link_id)
- 	index = rtw89_sta_link_inst_get_index(link);
- 	clear_bit(index, rtwsta->links_inst_map);
- 	*container = NULL;
-+	list_del(&link->dlink_schd);
- }
- 
- int rtw89_core_init(struct rtw89_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 5e4b096f42fc..20c0bab2600a 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3380,6 +3380,7 @@ struct rtw89_sec_cam_entry {
- 
- struct rtw89_sta_link {
- 	struct rtw89_sta *rtwsta;
-+	struct list_head dlink_schd;
- 	unsigned int link_id;
- 
- 	u8 mac_id;
-@@ -3446,8 +3447,6 @@ enum rtw89_roc_state {
- 	RTW89_ROC_MGMT,
- };
- 
--#define RTW89_ROC_BY_LINK_INDEX 0
--
- struct rtw89_roc {
- 	struct ieee80211_channel chan;
- 	struct wiphy_delayed_work roc_work;
-@@ -3487,6 +3486,7 @@ struct rtw89_p2p_noa_setter {
- 
- struct rtw89_vif_link {
- 	struct rtw89_vif *rtwvif;
-+	struct list_head dlink_schd;
- 	unsigned int link_id;
- 
- 	bool chanctx_assigned; /* only valid when running with chanctx_ops */
-@@ -5878,6 +5878,7 @@ struct rtw89_vif {
- 	struct rtw89_roc roc;
- 	bool offchan;
- 
-+	struct list_head dlink_pool;
- 	u8 links_inst_valid_num;
- 	DECLARE_BITMAP(links_inst_map, __RTW89_MLD_MAX_LINK_NUM);
- 	struct rtw89_vif_link *links[IEEE80211_MLD_MAX_NUM_LINKS];
-@@ -5917,6 +5918,7 @@ struct rtw89_sta {
- 
- 	DECLARE_BITMAP(pairwise_sec_cam_map, RTW89_MAX_SEC_CAM_NUM);
- 
-+	struct list_head dlink_pool;
- 	u8 links_inst_valid_num;
- 	DECLARE_BITMAP(links_inst_map, __RTW89_MLD_MAX_LINK_NUM);
- 	struct rtw89_sta_link *links[IEEE80211_MLD_MAX_NUM_LINKS];
-@@ -6012,6 +6014,12 @@ rtw89_assoc_link_rcu_dereference(struct rtw89_dev *rtwdev, u8 macid)
- 	return rcu_dereference(rtwdev->assoc_link_on_macid[macid]);
- }
- 
-+#define rtw89_get_designated_link(links_holder) \
-+({ \
-+	typeof(links_holder) p = links_holder; \
-+	list_first_entry_or_null(&p->dlink_pool, typeof(*p->links_inst), dlink_schd); \
-+})
-+
- static inline int rtw89_hci_tx_write(struct rtw89_dev *rtwdev,
- 				     struct rtw89_core_tx_request *tx_req)
- {
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index f4384c1c8cb0..182a952127c4 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -187,6 +187,7 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
- 	if (!rtw89_rtwvif_in_list(rtwdev, rtwvif)) {
- 		list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
- 		INIT_LIST_HEAD(&rtwvif->mgnt_entry);
-+		INIT_LIST_HEAD(&rtwvif->dlink_pool);
- 	}
- 
- 	ether_addr_copy(rtwvif->mac_addr, vif->addr);
-@@ -495,6 +496,8 @@ static int __rtw89_ops_sta_add(struct rtw89_dev *rtwdev,
- 	for (i = 0; i < ARRAY_SIZE(sta->txq); i++)
- 		rtw89_core_txq_init(rtwdev, sta->txq[i]);
- 
-+	INIT_LIST_HEAD(&rtwsta->dlink_pool);
-+
- 	skb_queue_head_init(&rtwsta->roc_queue);
- 	bitmap_zero(rtwsta->pairwise_sec_cam_map, RTW89_MAX_SEC_CAM_NUM);
- 
-@@ -1019,7 +1022,7 @@ static void rtw89_ops_sta_statistics(struct ieee80211_hw *hw,
- 	struct rtw89_sta *rtwsta = sta_to_rtwsta(sta);
- 	struct rtw89_sta_link *rtwsta_link;
- 
--	rtwsta_link = rtw89_sta_get_link_inst(rtwsta, 0);
-+	rtwsta_link = rtw89_get_designated_link(rtwsta);
- 	if (unlikely(!rtwsta_link))
- 		return;
- 
-@@ -1154,9 +1157,9 @@ static void rtw89_ops_sw_scan_start(struct ieee80211_hw *hw,
- 
- 	lockdep_assert_wiphy(hw->wiphy);
- 
--	rtwvif_link = rtw89_vif_get_link_inst(rtwvif, 0);
-+	rtwvif_link = rtw89_get_designated_link(rtwvif);
- 	if (unlikely(!rtwvif_link)) {
--		rtw89_err(rtwdev, "sw scan start: find no link on HW-0\n");
-+		rtw89_err(rtwdev, "sw scan start: find no designated link\n");
- 		return;
- 	}
- 
-@@ -1174,9 +1177,9 @@ static void rtw89_ops_sw_scan_complete(struct ieee80211_hw *hw,
- 
- 	lockdep_assert_wiphy(hw->wiphy);
- 
--	rtwvif_link = rtw89_vif_get_link_inst(rtwvif, 0);
-+	rtwvif_link = rtw89_get_designated_link(rtwvif);
- 	if (unlikely(!rtwvif_link)) {
--		rtw89_err(rtwdev, "sw scan complete: find no link on HW-0\n");
-+		rtw89_err(rtwdev, "sw scan complete: find no designated link\n");
- 		return;
- 	}
- 
-@@ -1208,9 +1211,9 @@ static int rtw89_ops_hw_scan(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	if (rtwdev->scanning || rtwvif->offchan)
- 		return -EBUSY;
- 
--	rtwvif_link = rtw89_vif_get_link_inst(rtwvif, 0);
-+	rtwvif_link = rtw89_get_designated_link(rtwvif);
- 	if (unlikely(!rtwvif_link)) {
--		rtw89_err(rtwdev, "hw scan: find no link on HW-0\n");
-+		rtw89_err(rtwdev, "hw scan: find no designated link\n");
- 		return -ENOLINK;
- 	}
- 
-@@ -1245,9 +1248,9 @@ static void rtw89_ops_cancel_hw_scan(struct ieee80211_hw *hw,
- 	if (!rtwdev->scanning)
- 		return;
- 
--	rtwvif_link = rtw89_vif_get_link_inst(rtwvif, 0);
-+	rtwvif_link = rtw89_get_designated_link(rtwvif);
- 	if (unlikely(!rtwvif_link)) {
--		rtw89_err(rtwdev, "cancel hw scan: find no link on HW-0\n");
-+		rtw89_err(rtwdev, "cancel hw scan: find no designated link\n");
- 		return;
- 	}
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index 17eee58503cb..34a0ab49bd7a 100644
---- a/drivers/net/wireless/realtek/rtw89/wow.c
-+++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -1086,8 +1086,7 @@ static int rtw89_wow_set_wakeups(struct rtw89_dev *rtwdev,
- 		rtw89_wow_init_pno(rtwdev, wowlan->nd_config);
- 
- 	rtw89_for_each_rtwvif(rtwdev, rtwvif) {
--		/* use the link on HW-0 to do wow flow */
--		rtwvif_link = rtw89_vif_get_link_inst(rtwvif, 0);
-+		rtwvif_link = rtw89_get_designated_link(rtwvif);
- 		if (!rtwvif_link)
- 			continue;
- 
+
 -- 
-2.25.1
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
 
