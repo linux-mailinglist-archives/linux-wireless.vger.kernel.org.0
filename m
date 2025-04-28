@@ -1,144 +1,105 @@
-Return-Path: <linux-wireless+bounces-22123-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22124-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664B5A9EA3B
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 10:03:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04542A9EAB0
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 10:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2B697A83FA
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 08:02:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71D93188B51F
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 08:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEAE21ABC8;
-	Mon, 28 Apr 2025 08:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4860523814C;
+	Mon, 28 Apr 2025 08:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="G6YCB5cF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i5oM2tog"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846AC1E008B;
-	Mon, 28 Apr 2025 08:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745827398; cv=pass; b=m7kT/i1K3OiLITkTaj1rPdJuCjiylb0P/S5hvZd3CA1TXkWGIgIwK0R/viztJy7+DbHl4s9qJ41gheQmcqUbBI6nCyoHNgk+GngUsqkZkXa1+BtPwu6mHa8H6elayBzoSyIUuu3ZcWe4llSjKaaV4BEcnEiZSsyqn50zDqJqCVs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745827398; c=relaxed/simple;
-	bh=ew1IfLBM9f06Fw88Dbsj3hnpG8lJBszmC0PC/QSTYHg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=glU9RUUSnXhbcT3KuyySLO7OT7IJaYPzmPruR0FBwcAQgnMzdDzDC/I2SZ/qRK2WOWr8d3SGNm5eDZF4vtgtRNu6VwrAAgm/Dqr+4v/2ikGX0XRWn+DZvbKSG8yPnFLmblTss7errLMy7C5l123Lha/MzBsb4HY8jpB7t8loX1w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=G6YCB5cF; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1745827377; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=kvha5oB3W+E/O+6g3QQB7u/du0v5WtZ58cDy/K++LTGtdU/kUPhIDQctDA9tnVZT5gBTocvn7MElQ3CZfdsHzrR+Hc0Er3YRENRquzw581mxTPw6b8GFsb2xzzAH7T4ZTvYOabzICGYGqczmJAOvr4IkZaXhx8lYwLGCbTCYv9A=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1745827377; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=jMYgEFRVsJYcspvAglHyagEafBPWF1ONaARAIwZKKbg=; 
-	b=YSx1XczLaFjc+3PlgRhvkIRofgBCou1m8hCLLUn8G4se/9yIpTWY0tjWRyzA7wipy3s+ay/eHTWK1wsiK+lWpoYS8mSc2nRkcLivmBHMWKyKqMyDXLBe4awiHX1mke9skmnwHGzn6M/iXHjt3LjmOkKbGyTO5VNPdJtoG3GjsCs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass header.from=<usama.anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1745827377;
-	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=jMYgEFRVsJYcspvAglHyagEafBPWF1ONaARAIwZKKbg=;
-	b=G6YCB5cFG5UHYJP9vjLATjuiH3oviKkPfeHCDKN/NmF26NhLkUHXzT1uvg8jB9ZS
-	NgtQ6q9eub7HixYIyZlJJ/ExmyuWkEkOB4FHzXIv3qdWyfiiu2LAg+F7z07haprPU2Z
-	g6N3iPTNKdB+DFpI0hqojZRo44Sruzd9LJ0Bvjm4=
-Received: by mx.zohomail.com with SMTPS id 1745827375811103.4201133913308;
-	Mon, 28 Apr 2025 01:02:55 -0700 (PDT)
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-To: quic_bqiang@quicinc.com,
-	jeff.johnson@oss.qualcomm.com,
-	Jeff Johnson <jjohnson@kernel.org>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	kernel@collabora.com,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5] wifi: ath11k: Fix memory reuse logic
-Date: Mon, 28 Apr 2025 13:02:41 +0500
-Message-ID: <20250428080242.466901-1-usama.anjum@collabora.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6D41DE892;
+	Mon, 28 Apr 2025 08:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745828741; cv=none; b=etCm9nqenOCtKWlOZ8lRFN4/b4Utxy/I24BRw36uugru1U/WOXy096zlf8LGeQ2FhjuQqKBEmOof1alfjyGZ5KMoGqtgB9aJXqBt/JU2PrXo3/AJ4umDngD4ezt8jyVEx23skzUBtWCuw57gI+ou+6N1eMbws/NdJ5+pwWLBH54=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745828741; c=relaxed/simple;
+	bh=yTHxmPegTimTQRX+ehlBAgPugX5B2Xw+Yx43SP2+8w8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KYHi7h8ub9LUhR+5SynOoAZraJadQ9W4q8bIIkIKHAb3b3kEY7MzwJz/kFSOF7Cc3MhXtG6EumPtk7sA2rypGKQ3OdW8UfcDepkAnTTx1PZ2TXOLwQlvSg8EFE7iffvjnxgJE2T18mLfwjCa0lwcyukl5C+nMr+Zsv9OiII7iaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i5oM2tog; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30243C4CEE4;
+	Mon, 28 Apr 2025 08:25:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745828740;
+	bh=yTHxmPegTimTQRX+ehlBAgPugX5B2Xw+Yx43SP2+8w8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i5oM2togKlPWPVrgBwV1vWVT6oTq4Rbr+Ly55q0JEUiSugVz+K5Diyp4LeyhEw1tu
+	 qa/j8BfyhzjT2ajfsJi/oJaIXVlS/GB3bow8MK/9TYWjVwmJzH/VQzP+h097tPoPpQ
+	 ujKMbvkNcRHAkp3EXsSpHoctsmB7OFabPfObCno2kVwuvrxnF/3/Y1i0eABUCyiyi3
+	 M0WEoJTMYM8w8QqE/fSZFGhEb+cLOtizRtUE8b09uhwlfmwVTBhkEufXrFi7C+UJ9a
+	 pXnxthVIN9a5/ChheCKLPNaa/9omNzQ/x6yoUtvEDQHA5rBJSij1gJfRXutJNYBvAN
+	 GaRTepzaAwRFQ==
+Date: Mon, 28 Apr 2025 10:25:38 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Cc: jjohnson@kernel.org, johannes@sipsolutions.net, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, ath12k@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [RESEND ath-next 1/2] dt-bindings: net: wireless: ath12k:
+ describe firmware-name property
+Message-ID: <20250428-ruddy-bold-macaw-9ffd28@kuoka>
+References: <20250424005703.2479907-1-quic_miaoqing@quicinc.com>
+ <20250424005703.2479907-2-quic_miaoqing@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250424005703.2479907-2-quic_miaoqing@quicinc.com>
 
-Firmware requests 2 segments at first. The first segment is of 6799360
-whose allocation fails due to dma remapping not available. The success
-is returned to firmware. Then firmware asks for 22 smaller segments
-instead of 2 big ones. Those get allocated successfully. At suspend/
-hibernation time, these segments aren't freed as they will be reused
-by firmware after resuming.
+On Thu, Apr 24, 2025 at 08:57:02AM GMT, Miaoqing Pan wrote:
+> Introduce 'firmware-name' property to allow end-users and/or integrators
+> to decide which usecase-specific firmware to run on the WCN7850 platform.
+> This is necessary due to resource limitations such as memory capacity and
+> CPU capability, or performance and power optimization for different
+> application scenarios.
+> 
+> Two firmwares are supported: 'WCN7850/hw2.0' and 'WCN7850/hw2.0/ncm825'.
+> The former is the default firmware, suitable for most WiFi 7 STA
+> functions. The latter adds support for commercial-quality SAP and
+> optimizes power consumption for IoT applications.
+> 
+> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+> ---
+>  .../devicetree/bindings/net/wireless/qcom,ath12k.yaml       | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
-After resuming, the firmware asks for the 2 segments again with the
-first segment of 6799360 size. Since chunk->vaddr is not NULL, the
-type and size are compared with the previous type and size to know if
-it can be reused or not. Unfortunately, it is detected that it cannot
-be reused and this first smaller segment is freed. Then we continue to
-allocate 6799360 size memory which fails and ath11k_qmi_free_target_mem_chunk()
-is called which frees the second smaller segment as well. Later success
-is returned to firmware which asks for 22 smaller segments again. But
-as we had freed 2 segments already, we'll allocate the first 2 new
-smaller segments again and reuse the remaining 20. Hence 20 small
-segments are being reused instead of 22.
+<form letter>
+This is a friendly reminder during the review process.
 
-Add skip logic when vaddr is set, but size/type don't match. Use the
-same skip and success logic as used when dma_alloc_coherent() fails.
-By skipping, the possibility of resume failure due to kernel failing to
-allocate memory for QMI can be avoided.
+It looks like you received a tag and forgot to add it.
 
-	kernel: ath11k_pci 0000:03:00.0: failed to allocate dma memory for qmi (524288 B type 1)
-	ath11k_pci 0000:03:00.0: failed to allocate qmi target memory: -22
+If you do not know the process, here is a short explanation:
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions of patchset, under or above your Signed-off-by tag, unless
+patch changed significantly (e.g. new properties added to the DT
+bindings). Tag is "received", when provided in a message replied to you
+on the mailing list. Tools like b4 can help here. However, there's no
+need to repost patches *only* to add the tags. The upstream maintainer
+will do that for tags received on the version they apply.
 
-Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+Please read:
+https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
 
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
----
-Changes since v1:
-- Update description
+If a tag was not added on purpose, please state why and what changed.
+</form letter>
 
-Changes since v2:
-- Update description and title of patch
-
-Changes since v3:
-- Update description and title of patch
-
-Changes since v4:
-- Update title of the patch
----
- drivers/net/wireless/ath/ath11k/qmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 47b9d4126d3a9..2782f4723e413 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1993,6 +1993,15 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
- 			    chunk->prev_size == chunk->size)
- 				continue;
- 
-+			if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
-+				ath11k_dbg(ab, ATH11K_DBG_QMI,
-+					   "size/type mismatch (current %d %u) (prev %d %u), try later with small size\n",
-+					    chunk->size, chunk->type,
-+					    chunk->prev_size, chunk->prev_type);
-+				ab->qmi.target_mem_delayed = true;
-+				return 0;
-+			}
-+
- 			/* cannot reuse the existing chunk */
- 			dma_free_coherent(ab->dev, chunk->prev_size,
- 					  chunk->vaddr, chunk->paddr);
--- 
-2.43.0
+Best regards,
+Krzysztof
 
 
