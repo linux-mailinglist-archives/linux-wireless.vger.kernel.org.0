@@ -1,195 +1,163 @@
-Return-Path: <linux-wireless+bounces-22141-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22142-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB05A9F32D
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 16:10:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F61A9F3D5
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 16:52:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7754718927AD
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 14:10:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C72703B3046
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 14:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FB4263C71;
-	Mon, 28 Apr 2025 14:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F3126F469;
+	Mon, 28 Apr 2025 14:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="FRbnJKgb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LI8RWQVU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FC6156677
-	for <linux-wireless@vger.kernel.org>; Mon, 28 Apr 2025 14:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB7826A1AA
+	for <linux-wireless@vger.kernel.org>; Mon, 28 Apr 2025 14:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745849414; cv=none; b=koBipInKw24Mi64gUix7QhO56CUe3lLxZ0EXUsi333hQ2B54kGJIumhD4nFB7aDcLpuMTxQcTS2YYuBI6i3zbmsJDt9PhaexinKpIR/yPPNG+Fh6o9Yo/g7Yq8lrVb0SuYsOobnolHYxxyKGLjep0O/BfSBSHsDAMGF2zRiyCxI=
+	t=1745851971; cv=none; b=rDlFfxrwCkadIpY2s9zMrmMFYoO1r20sUfnWxlawk5F7ohTbl8kcPxX/9OcQkmn+XbokdPDIrLIwIYc89k1c80EZpzE4ipU51ZqMJPilD3u0i1ziC2IPiwYxSoalog8qldt3aVhNfSDanmphjvmQYwmTtnId6lhwpV2NOYYScXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745849414; c=relaxed/simple;
-	bh=ER+M54+nSI4XYawSAxC0+EGZYnXt2c4bGF+Te0olAWU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XwZftqrVYSsZ52D1mV5XRzHCcKbUBW29bE39I4E7exwBZVGlK7hNoG3BfOYa39yLCqEYIjWFigdwNcTDllv1dATeoNk87NdgxZ2xMBr5cU21LLne+Ba8g3gG6Wu2EYA8I6fz3VXRYgOyQcpP65J2baksPt6rOmDBKwyg5l/Sq/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=FRbnJKgb; arc=none smtp.client-ip=148.163.129.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8147F2C3DCB
-	for <linux-wireless@vger.kernel.org>; Mon, 28 Apr 2025 14:10:11 +0000 (UTC)
-Received: from engine.ppe-hosted.com (unknown [10.7.65.200])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id CFFE960140;
-	Mon, 28 Apr 2025 14:10:04 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 12292C0071;
-	Mon, 28 Apr 2025 14:10:00 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.33.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 368D813C2B0;
-	Mon, 28 Apr 2025 07:10:00 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 368D813C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1745849400;
-	bh=ER+M54+nSI4XYawSAxC0+EGZYnXt2c4bGF+Te0olAWU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FRbnJKgbY7j04yz4jZweG/XgIyKSsW4fCs2CLBtmsf4i7zIWm/xX65Zmqqw1Hgtg9
-	 nNVimnEwG7rFvbCzyYa+RSVG0dpr33pLk+GNbR3NUcxr+/4wq89xEs77/WUwYOl5M4
-	 uZ4VFEBwpa+mEGV9F32F2OwPqsiRjedXXKSSpi3o=
-Message-ID: <fb8e9d15-3450-4462-b6d4-994abd15f8e2@candelatech.com>
-Date: Mon, 28 Apr 2025 07:09:59 -0700
+	s=arc-20240116; t=1745851971; c=relaxed/simple;
+	bh=SSxhuHltF1pU7A3iqAs3fGaU/D/oeSWAOQoAO7lB1wU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SjEjrqGlLY5gJE3Fc6Cvciz0plvaUyuh/mznq6Yu9NQuUHG0SjIKDXSwa3pL1B5usidun6Weu43Fd9DFC0U3inHP6SHnQgcBi+eONHBScS9DqKfYdw90HNSVtvZLp2gcoFYhff8mM1z7sSpuOmp8zWNW1p9pLorIB+lHoG7AXOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LI8RWQVU; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5edc07c777eso6149725a12.3
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Apr 2025 07:52:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745851968; x=1746456768; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=pkHHzpz+JAc4YPElLbHC8bnOpH0t0OW33hqQ3rGDKGQ=;
+        b=LI8RWQVUyU24wB4qkpp+mIPrWgrbDy6QAWt88aSAqJunOOsfoChUlAich7U+YFgQrh
+         /Gb62rK6l3vxZlfdpZlrIVWwh7U+K3rm/cipnoqZUl1xS5qJvKqlkD17zdvbfZnFmcXw
+         QQ/3s47Vv+Nrv3VdGK+7Av4Gl8YL/L2IWmp8SU7Lj2sv29ugkb38ePV4Qo8Hb42mSOS5
+         69vMBMXkADLzP+HV9+bR/yqFx5dWdfIz/jX4pYYQepJdVSsqmNk/7qcSIaGt9Hby0i68
+         2G8yVeMkRuzsOfi3YR+UFAUPsGiqvoKGVuXWX/8hiJyr1s4fPZktGnoCpVsioUVXaQIy
+         lhVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745851968; x=1746456768;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pkHHzpz+JAc4YPElLbHC8bnOpH0t0OW33hqQ3rGDKGQ=;
+        b=EW8G1FyNlWMFPJ0T3V76ueoRHc5qAn4PWyNcLovSOTi/7AgzfHkHOzJMcdpAuhhGyp
+         KyhclVux6Y/g8DKHw2zTj9nNOH97dGcXgJDVZi9M/XwiLsXmxKpaV8Deg/3QCfofzyTp
+         TVtWAcpmkuXE2CUve5u5LoeK8W1agpFQAUM/pxtw19V6oPiUA9ig9Wcfj+/EZ7H+6Vhw
+         tbt30630wWQB6gAGBSAzk4LaPvuuV+lZzS3LV94R5JehShqGE4I6k8Bfu8/9+mT8Swyt
+         G/SkpdgaHEHjOD5tVFDc662oifHjvY0iJuCNd8DmMIH4ePiezlX2l7h2AK+ENh2c2m0G
+         ImWw==
+X-Forwarded-Encrypted: i=1; AJvYcCXuITnrhq0wSE461Kjmew9VbkoGa1WTTnkLE3KqQXM02ciFsH/N7A6/2lCfwnEzzWVOnSZA2yoVj21qod+DmA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKPWSqNpBUsy3bCAyjGXiTp4vep+N5s2avvbhOWYrO+9Z69J1/
+	uhE1uvgSoOLcGZEetEp4lGqJ2Tjzxwz3C4QbkRCFQlxWfNo1IGsGEcMz3//+u6tABeUO36SiA5p
+	pKRpq610rFumGnSqEQ4eZVCNxdYI=
+X-Gm-Gg: ASbGncss1nSLSdh3P+gbhHBskpLdv3tlBKOvXNnoEXArmMLZQsqwyZX73Lvil35y+hM
+	lnsGZ9U5JB/1w8KJrtbgtBS09XsF6W4FZYHvgUJpBVgDPzLyCy5nYebKLZ3sRjHx0+H5HS67+FO
+	vw0IFcT91/skyQ0afRRSbiwFL3Nt6rZvmzFkdVPg93q50+twUagD2oXHo=
+X-Google-Smtp-Source: AGHT+IGZYr6SLrDNZTnVkaKiHVg1djGU6UdZB0HvXscQWZncCyseLSvIQ5XSgQlJmYpRAlxi2qyCXkTFjHFKldSaM2Q=
+X-Received: by 2002:a05:6402:4405:b0:5f6:59e5:5c8b with SMTP id
+ 4fb4d7f45d1cf-5f72257a516mr10495084a12.5.1745851967494; Mon, 28 Apr 2025
+ 07:52:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v6 04/11] wifi: cfg80211: reorg sinfo
- structure elements for MLO
-To: Sarika Sharma <quic_sarishar@quicinc.com>,
- Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-References: <20250415042030.1246187-1-quic_sarishar@quicinc.com>
- <20250415042030.1246187-5-quic_sarishar@quicinc.com>
- <fa49a2d4927868be689ed8464aa27c3aad2f03b6.camel@sipsolutions.net>
- <c3a6b07e-007e-4168-bf8a-7b0d9ebbc913@quicinc.com>
- <927c6766-47d0-dcf6-cbe5-9da1e67292ad@candelatech.com>
- <c7d093ce-11fd-44e2-ab23-6ad5a3e4bb64@quicinc.com>
- <595c7624-c3ab-452a-b3c1-0b14184a6691@candelatech.com>
- <6dc1f603-096f-45e8-9a28-69e414fe467a@quicinc.com>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <6dc1f603-096f-45e8-9a28-69e414fe467a@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1745849402-SMTRjHS591oN
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1745849402;SMTRjHS591oN;<greearb@candelatech.com>;535bfda298b524f45ffb92fb019ae3e8
-X-PPE-TRUSTED: V=1;DIR=OUT;
+References: <20250425085519.492267-1-arend.vanspriel@broadcom.com>
+In-Reply-To: <20250425085519.492267-1-arend.vanspriel@broadcom.com>
+From: Peter Robinson <pbrobinson@gmail.com>
+Date: Mon, 28 Apr 2025 15:52:36 +0100
+X-Gm-Features: ATxdqUHI3MOlw_BJrxxnx-Uytq9oMoMg32RWU3eW0KBBY4Lf4w_NpTCU-1BpNPo
+Message-ID: <CALeDE9MGXiSN=8E+T_ZGOLHsk8DB4iL=hV7ircqqb9=q1xTUYw@mail.gmail.com>
+Subject: Re: [PATCH wireless-next v3 0/4] wifi: brcmfmac: external auth
+ support for Infineon devices
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
+	brcm80211@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 4/27/25 22:20, Sarika Sharma wrote:
-> On 4/25/2025 6:44 PM, Ben Greear wrote:
->> On 4/24/25 22:33, Sarika Sharma wrote:
->>> On 4/24/2025 10:32 PM, Ben Greear wrote:
->>>> On 4/24/25 09:44, Sarika Sharma wrote:
->>>>> On 4/23/2025 10:22 PM, Johannes Berg wrote:
->>>>>> On Tue, 2025-04-15 at 09:50 +0530, Sarika Sharma wrote:
->>>>>>> Current implementation of NL80211_GET_STATION does not work for
->>>>>>> multi-link operation(MLO) since in case of MLO only deflink (or one
->>>>>>> of the links) is considered and not all links.
->>>>>>>
->>>>>>> Therefore to support for MLO, start reorganizing sinfo structure
->>>>>>> related data elements and add link_sinfo structure for link-level
->>>>>>> statistics and keep station related data at sinfo structure.
->>>>>>> Currently, changes are done at the deflink(or one of the links) level.
->>>>>>> Actual link-level changes will be added in subsequent changes.
->>>>>>>
->>>>>>> Also currently, mac80211 ops .sta_statistics() is mapped to fill sinfo
->>>>>>> structure. But to add support for station statistics at link level,
->>>>>>> change the ops to .link_sta_statistics() to fill link_sinfo structure.
->>>>>>>
->>>>>>> Additionally, move connected_time before assoc_at in station_info
->>>>>>> structure to get minimal holes.
->>>>>>> pahole summary before this change:
->>>>>>>   - size: 232, cachelines: 4, members: 23
->>>>>>>   - sum members: 223, holes: 3, sum holes: 9
->>>>>>>   - forced alignments: 1
->>>>>>>   - last cacheline: 40 bytes
->>>>>>>
->>>>>>> pahole summary after this change:
->>>>>>>   - size: 224, cachelines: 4, members: 23
->>>>>>>   - sum members: 223, holes: 1, sum holes: 1
->>>>>>>   - forced alignments: 1
->>>>>>>   - last cacheline: 32 bytes
->>>>>>>
->>>>>>> Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
->>>>>>> ---
->>>>>>> NOTE:
->>>>>>>   - Included driver changes for fixing compilation issue.
->>>>>>
->>>>>> Does this really need to do all the changes in mac80211 and the drivers?
->>>>>>
->>>>>> OTOH maybe if not then it would cause much more back and forth?
->>>>>
->>>>> Yes, true this patch includes only the minimum necessary changes to resolve the compilation issues in mac80211 and the drivers.
->>>>>
->>>>> Without these changes, compilation issues will persist.
->>>>>
->>>>>>
->>>>>>> +++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
->>>>>>> @@ -1810,47 +1810,51 @@ static int ath6kl_get_station(struct wiphy *wiphy, struct net_device *dev,
->>>>>>>       else if (left < 0)
->>>>>>>           return left;
->>>>>>> +    sinfo->links[0] = kzalloc(sizeof(*sinfo->links[0]), GFP_KERNEL);
->>>>>>> +    if (!sinfo->links[0])
->>>>>>> +        return -ENOMEM;
->>>>>>>
->>>>>>
->>>>>> This seems rather error-prone to me.
->>>>>>
->>>>>> We already have sinfo->pertid today, allocated and freed by cfg80211,
->>>>>> and here you've added something that's allocated by the driver and freed
->>>>>> by mac80211. That seems odd in comparison?
->>>>>>
->>>>>> I'm not sure what the choices are, but I can't say I like this one ;-)
->>>>>> Maybe it's still the least bad option.
->>>>>
->>>>> Options what I can think of here, other then above approach, may be can allocate memory during get_station() call only, in cfg80211(but this may not be 
->>>>> memory efficient as have to allocate for all possible links).
->>>>>
->>>>> or, may be can introduce an API in cfg80211 to allocate the memory for sinfo->links, and call the API from drivers/mac80211 while filling the 
->>>>> sinfo->links[] data.
->>>>
->>>> sinfo->links[] could be an array in sinfo instead of a pointer, so whatever allocates sinfo
->>>> automatically allocates the links memory area, and then just fill in those values as needed
->>>> in the driver and ignore them in mac80211 if not filled?
->>>>
->>>
->>> sinfo->links[] cannot be used as an array because taking an array of IEEE80211_MLD_MAX_NUM_LINKS (15) would make the station_info structure too large, 
->>> exceeding the maximum allowed size.
->>
->> If you mean max allowed size on the stack, then you could alloc it from the heap
->> and free it when done.
->>
->> Or you could just alloc storage for 3 links for now since no radio has more than that currently.
-> 
-> I agree, currently it's 3 only, but everywhere we are using max-15, so explicitly keeping it 3 here isn't questionable?
-> Also, in future it will not be useful approach, when we need to increase the links(that time we have to change this to pointer instead of array).
+Hi Arend,
 
-You can change allocation scheme in the future easily enough, and maybe there will never exist any linux
-driver with more than 3 links anyway?  And you can allocate quite large amounts of memory in the kernel,
-so you could always have it a single struct if you wanted.
+> The Infineon chips support external authentication in station mode when
+> firmware advertises it. The feature that must be present in firmware is
+> sae_ext. This has been ported from Infineon repository and makes use of
+> the per-vendor framework. It showcases how things can be organized per
+> vendor to provide the functionality.
+>
+> Unfortunately, I have no Infineon device and firmware that makes use of
+> external auth. This series was submitted earlier as RFT and it was tested
+> successfully by James Prestwood with iwd after adding a fourth patch to
+> the series. I would not mind if more testing is done with this series
+> like using wpa_supplicant instead of iwd.
 
-Anyway, Johannes makes the real decisions on this, so hopefully you can get his approval before you
-code something up he dislikes, I was just voicing my suggestion.
+So I tried testing this on a RPi4 with the upstream linux-firmware
+repo, both on Fedora 42 using NetworkManager on top of iwd or
+wpa_supplicant.
 
-Thanks,
-Ben
+Now I think this has  the right firmware but TBH I am not 100% sure
+but I get the following listed in the "Supported extended features"
+section when I run 'iw phy phy0 info':
+* [ SAE_OFFLOAD ]: SAE offload support
+* [ SAE_OFFLOAD_AP ]: AP mode SAE authentication offload support
 
+For reference the firmware version is:
+brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4345/6 wl0: Apr 15 2021
+03:03:20 version 7.45.234 (4ca95bb CY) FWID 01-996384e2
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+When I was testing with iwd 3.6 it was actually not repporting WPA3 as
+an option against my SSIDs, just WPA2 where with wpa_supplicant 2.11
+it reports both.
 
+With NM+iwd in use I get an error and nothing happens, if I set sae
+for NM+wpa_supplicant I get a lot of the following in the kernel log
+and the connection fails:
+[ 1141.846900] brcmfmac: brcmf_set_channel: set chanspec 0xd022 fail, reason -52
+[ 1141.962815] brcmfmac: brcmf_set_channel: set chanspec 0xd026 fail, reason -52
+[ 1142.074828] brcmfmac: brcmf_set_channel: set chanspec 0xd02a fail, reason -52
+
+I will try and find a couple of other devices with an appropriate
+cypress/infineon.
+
+Peter
+
+> Arend van Spriel (3):
+>   wifi: brcmfmac: support per-vendor cfg80211 callbacks and firmware
+>     events
+>   wifi: brcmfmac: make per-vendor event map const
+>   wifi: brcmfmac: cyw: support external SAE authentication in station
+>    de
+>
+> Ting-Ying Li (1):
+>   wifi: brcmfmac: Fix structure size for WPA3 external SAE
+>
+>  .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  44 ++-
+>  .../broadcom/brcm80211/brcmfmac/cfg80211.h    |  25 ++
+>  .../broadcom/brcm80211/brcmfmac/common.c      |   1 +
+>  .../broadcom/brcm80211/brcmfmac/core.c        |   2 +
+>  .../broadcom/brcm80211/brcmfmac/cyw/core.c    | 308 ++++++++++++++++++
+>  .../brcm80211/brcmfmac/cyw/fwil_types.h       |  87 +++++
+>  .../broadcom/brcm80211/brcmfmac/feature.c     |   3 +-
+>  .../broadcom/brcm80211/brcmfmac/feature.h     |   4 +-
+>  .../broadcom/brcm80211/brcmfmac/fweh.c        |   7 +-
+>  .../broadcom/brcm80211/brcmfmac/fweh.h        |   8 +-
+>  .../broadcom/brcm80211/brcmfmac/fwvid.h       |  29 ++
+>  11 files changed, 495 insertions(+), 23 deletions(-)
+>  create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
+>
+>
+> base-commit: f600832794c91d7021d7337104734246b02a2b86
+> --
+> 2.43.5
+>
+>
 
