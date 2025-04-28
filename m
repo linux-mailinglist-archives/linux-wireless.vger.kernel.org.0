@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-22127-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22128-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC60A9ED54
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 11:55:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D4FA9ED5A
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 11:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA99C1793D8
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 09:55:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFDA87A420D
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Apr 2025 09:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1962B2036E2;
-	Mon, 28 Apr 2025 09:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5F025EF9C;
+	Mon, 28 Apr 2025 09:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rFfNwySD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cK1UbvJb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB954206B;
-	Mon, 28 Apr 2025 09:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F32925E828;
+	Mon, 28 Apr 2025 09:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745834127; cv=none; b=MzrplM+lkYDOFHR6nXZiohrnUlHis7guq5OX22F73eQIQgndbd1749J9VEOuBxjN97Drjz3J8XW2SZb4tYWE/Ow1F717LZkErH8B6jynjFZscewEoDSiOqnw9pIak2bvscOieyOIsv1yBBXuLGAl4bn5EuafbV7JtViVd/jCrtA=
+	t=1745834219; cv=none; b=cLVALvfwFC8SFfNOGtKNM1jK34LL++ueS78VojwZSLYBtCiLDxy17LN4eZ/nNTTTaforP1GZJshOR3JNKqy332GyrCSOFQ+ylc3Rr7XZAU2FDOyTRIaI90YlOO6kIKrVfoqQ8AVK7y0mSKHlLrLPA5+DIHSzi/LYvjuzIJJ7ljA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745834127; c=relaxed/simple;
-	bh=5gJA+Muqll+Py6HxdXCmp70DGvso8EIkCA2rMU7/Xzk=;
+	s=arc-20240116; t=1745834219; c=relaxed/simple;
+	bh=r2T2f4YcnuwLgVGxrEmJBYwVZbguYteccSC03jsU86s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CAfwn+P3tvXqG9SCpff6FvQXBzOmOfen8JWHbv+dwjvvUYnjzi2AM8QTRxNdnHwozo81pXpLpdDSwjbfurjUU/4Fv4F9DEDq4/hnK6UHgs37wAwf4wUSglkbyZcqoMZsI9yEWvCClKGZl+eC9EcpV+0cA7xoHEe56yJb8Xkyq4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rFfNwySD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F40FC4CEE4;
-	Mon, 28 Apr 2025 09:55:23 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=garySOVjhAhBFp7wGqlXTxS56anwCTI4N9ssQ0L6qx+q6SRmbTDUoG/lqDx2BNrNL+M3yYijnY9QcoTz1DaR3xxCeMOYCyhfmZscZbYtfDapwvJL36tArFISVJiRqx4GMG2JBSaJvrNouKIxaUVRYqohiV3QZGtD/b+GADxg2cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cK1UbvJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D59EC4CEE4;
+	Mon, 28 Apr 2025 09:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745834126;
-	bh=5gJA+Muqll+Py6HxdXCmp70DGvso8EIkCA2rMU7/Xzk=;
+	s=k20201202; t=1745834218;
+	bh=r2T2f4YcnuwLgVGxrEmJBYwVZbguYteccSC03jsU86s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rFfNwySDl4TQQ0LCzt1/Po19Kl+L3qYQdIcPV/Ug8CF36BZlj9bIWugG7SsPfEQOO
-	 n9aLOUws1fn4ibSUxfUNNHHM/dGtWkZuNqgN8tT7qQgAgnsSOmLFxNnWecSnOVCYA9
-	 89oEEHwFyOvNsA4UoUjHu4Zcz/jHXWnhQ+nobQG4s5wf75Do5SqBcoFILkMxfBQTLg
-	 RtBK/gIS36pNQgjwcJ0EeVZpRUXa5h2UnvKwg47ysLPz8bUyRrDlaWYnRQ92zTGVIF
-	 2+nNe8AMC6kpNmt0um6rCYGQvUVF1F3b3Angf8/7TKOJS1yTtGK1DUzBxSBHnEFui/
-	 uWfJE4towXILA==
-Message-ID: <26981b75-16d6-4b1f-83de-c642ac0e342f@kernel.org>
-Date: Mon, 28 Apr 2025 11:55:21 +0200
+	b=cK1UbvJbkilMt2yZt38NGkGCaJCmgK07UMQ89sklVxoweOrxzMvT9pv5iXmg85iEI
+	 8CzItlR4AcCS5GUyRfiFUSvY6bGTwvftMQN0Rp2z/IE6kRD2yTM7nL/Ynf0UngDvh6
+	 obALheQRIt4FGZbfAUF8bJ1XZCTlZypEQgYd12pyNUpctlTbBRKr0UUShXStNEFB2E
+	 1E/tmeAdpUi78iopZZblP/Av4IYbkzMxKM+jyWkPaBtQ5kuHRn9ug5E6GPj8rIudU4
+	 6WJJpDGE8DTd9L6RTVR0W1VPcAh+Xg/q9gWSbr5qDINykA53wTKQfYiyQe40GKRiVC
+	 46YT+CTCTVXpg==
+Message-ID: <2248694b-32ea-4af9-99e1-45ced4f4b641@kernel.org>
+Date: Mon, 28 Apr 2025 11:56:54 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -52,15 +52,13 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RESEND ath-next 1/2] dt-bindings: net: wireless: ath12k:
  describe firmware-name property
-To: Miaoqing Pan <quic_miaoqing@quicinc.com>
-Cc: jjohnson@kernel.org, johannes@sipsolutions.net, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, ath12k@lists.infradead.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
+To: Miaoqing Pan <quic_miaoqing@quicinc.com>, jjohnson@kernel.org,
+ johannes@sipsolutions.net, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 References: <20250424005703.2479907-1-quic_miaoqing@quicinc.com>
  <20250424005703.2479907-2-quic_miaoqing@quicinc.com>
- <20250428-ruddy-bold-macaw-9ffd28@kuoka>
- <bfd1be89-cb03-4426-ad7e-93b6774a68a7@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,44 +104,24 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <bfd1be89-cb03-4426-ad7e-93b6774a68a7@quicinc.com>
+In-Reply-To: <20250424005703.2479907-2-quic_miaoqing@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/04/2025 11:48, Miaoqing Pan wrote:
+On 24/04/2025 02:57, Miaoqing Pan wrote:
+> Introduce 'firmware-name' property to allow end-users and/or integrators
+> to decide which usecase-specific firmware to run on the WCN7850 platform.
+> This is necessary due to resource limitations such as memory capacity and
+> CPU capability, or performance and power optimization for different
+> application scenarios.
 > 
+> Two firmwares are supported: 'WCN7850/hw2.0' and 'WCN7850/hw2.0/ncm825'.
+> The former is the default firmware, suitable for most WiFi 7 STA
+> functions. The latter adds support for commercial-quality SAP and
+> optimizes power consumption for IoT applications.
 > 
-> On 4/28/2025 4:25 PM, Krzysztof Kozlowski wrote:
->> On Thu, Apr 24, 2025 at 08:57:02AM GMT, Miaoqing Pan wrote:
->>> Introduce 'firmware-name' property to allow end-users and/or integrators
->>> to decide which usecase-specific firmware to run on the WCN7850 platform.
->>> This is necessary due to resource limitations such as memory capacity and
->>> CPU capability, or performance and power optimization for different
->>> application scenarios.
->>>
->>> Two firmwares are supported: 'WCN7850/hw2.0' and 'WCN7850/hw2.0/ncm825'.
->>> The former is the default firmware, suitable for most WiFi 7 STA
->>> functions. The latter adds support for commercial-quality SAP and
->>> optimizes power consumption for IoT applications.
->>>
->>> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
->>> ---
->>>   .../devicetree/bindings/net/wireless/qcom,ath12k.yaml       | 6 ++++++
->>>   1 file changed, 6 insertions(+)
->>
->> <form letter>
->> This is a friendly reminder during the review process.
->>
->> It looks like you received a tag and forgot to add it.
->>
-> 
-> I don't find any tags on previous version: 
-> https://patchwork.kernel.org/project/linux-wireless/patch/20250423054152.2471568-2-quic_miaoqing@quicinc.com/.
-> 
-> Do you mean I should add 'Reviewed-by: Krzysztof Kozlowski 
-> <krzk@kernel.org>' ?
 
-No, probably I mixed up the patches.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
