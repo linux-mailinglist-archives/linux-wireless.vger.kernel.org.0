@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-22207-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22208-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AC3AA1B9B
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 21:54:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FD3AA1B9C
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 21:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E0673AAD9F
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 19:54:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C29DD1A818D6
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 19:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D4D261577;
-	Tue, 29 Apr 2025 19:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A408B25FA07;
+	Tue, 29 Apr 2025 19:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ad6jX6Bg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OStUbpCV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259D725FA29
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 19:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B781326156A
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 19:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745956445; cv=none; b=p0WMaWCSDGuQlm+Ib9eot56PhQfXKDiji4diYyiO6ovatDgR8mEwufnrEVGPvxjCXH/Zn19T/VOeyZQvhFc5m5/D1xmj5aStK8bVPsr2rI8s7w00n+0dREaHAF30s92wPtUunqGKTiXA+bmY+QHHpF/AbbfiKyoFRARdZs7Y0Bc=
+	t=1745956449; cv=none; b=Tgk0vbjIUH8Gmrc+2vbO0+SZE9CQ1HePDegoRPEjYfAlq/57JvGNEu6XJ6H1/UBWoB+0OZIlciDKrPx/wzuHlGYYhT4d/NKnU5laZ0RyJPQRJhasqQjQedFgDgm521e3rb46ihHKhK9tUxdr9wX18jJGWbDMgntUWCqdqco8PPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745956445; c=relaxed/simple;
-	bh=gqbEwfaQHa2IM7xHRmm2JpHx5tyibAgDXfBX+DHr/rA=;
+	s=arc-20240116; t=1745956449; c=relaxed/simple;
+	bh=lej7MedZCzB3nkPf7kBOaG89H+aaUVlJo4+dt28uWys=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=B9nMp2hA6jkQlknC8z3sw1h6YQvsYd5PVwKgur5X1Ljf3n2rLCzpuIQsp3bguBOscK+3b6m+gOuOcYCnj3lddck65ifsxEjfn05iuYMD+2bsDEsDO8NqqRf5y8ujl0U3ZR6Bxq2rzWSnKBSLtr9PfofgucpKzJ+jC7X3G3p5ndc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ad6jX6Bg; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=e5CrmaVwrhMIiM1pGCbtPremUXWfibVVT+4a/vU6j0ZuVjEqcICAJS/fcrg58ht24YaS2b4jkjVyMTF/Vd93MsMhkA8r5N5TepBhCbVDgLFJAQc80wenTsSFTPg3jVlsPF8/IcZWazqfKohadj/4qaIQJdPevq10X6RLEBklCtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OStUbpCV; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745956444; x=1777492444;
+  t=1745956446; x=1777492446;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=gqbEwfaQHa2IM7xHRmm2JpHx5tyibAgDXfBX+DHr/rA=;
-  b=ad6jX6BgL1N6m/9gV9M4iU9qtQ7ZEf16FE02g/Ey+otkaRxWk+pW0HhQ
-   SKsKiqArBdAvqwe2Dj9xCFoxtHsT+3TEpp+Iw+4utFc/4Da7zFkbbhy3i
-   qibY+6NBkskLyJPACLkfUB2ljRb6k7ufsMvie9KDGuBKC8f27nLpiz2/6
-   AnlHIgxXl+2A33CTttQ8lzp7f/wKmzAG/akIldpH30Fvrz8apZCUoN2FT
-   cRWa2NomnvlAst74NyrbdrTAUEORbpW2vjKf9/bS7CTFwQh/MZtbLnKWJ
-   JgmV7MLyvjTcaGZZrCDof7mciAYquZjwRntHQN4wSOdG3ZifnHn3qIbKD
-   w==;
-X-CSE-ConnectionGUID: TOTYAPPIRA62DtLlz890uQ==
-X-CSE-MsgGUID: 471ZG7QzSIeIETgD+UlNnw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="46713485"
+  bh=lej7MedZCzB3nkPf7kBOaG89H+aaUVlJo4+dt28uWys=;
+  b=OStUbpCV43UE/QU0sMlt+nhC8InbgijqzuR6JFGSAuyT9rVQubK/U3bA
+   Izj8nSI58ZbcXlB5UFcLIk2Y2vKbhfZ2YtMSVWOMg1acu2OTuF4NDteLE
+   BjcRur+KUmYKsMHZE93KT8pXdLWIM6CNTK/XqD5/cozsMmteRe1Do9Ftr
+   CNhNZKez4Vlpva2qpuqm+S4NKKx+Jr+ebfp0141qgs239FM7SLu2D0rkH
+   Qg+XQ+pOAMDuhat/jL1RcXOihqawwfzeKmwi6v4aJz71ggjr9712algtm
+   wCTm6ooq2EJTNyrjPaFeZd1qZbYQ0bXuleymMZ9eUHfxUPU+B5HlQ1ozV
+   g==;
+X-CSE-ConnectionGUID: 8oThEV3ySkq+aYdP4bwClQ==
+X-CSE-MsgGUID: ok25z2gyTmGIfXE3QvYnVQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="46713489"
 X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; 
-   d="scan'208";a="46713485"
+   d="scan'208";a="46713489"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 12:54:04 -0700
-X-CSE-ConnectionGUID: au/0P+ahQ/u3NIbbFWRysg==
-X-CSE-MsgGUID: 5eK5f/ysThqWsPTVyn9c8Q==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 12:54:05 -0700
+X-CSE-ConnectionGUID: egry5bcITViAIJqrgoyQOw==
+X-CSE-MsgGUID: t2FzlaLERFG2/hDdcyQl7A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; 
-   d="scan'208";a="171154978"
+   d="scan'208";a="171154986"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 12:54:03 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 12:54:05 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH iwlwifi-next 02/14] wifi: iwlwifi: read WPFC also from UEFI
-Date: Tue, 29 Apr 2025 22:53:32 +0300
-Message-Id: <20250429224932.839a5e7dd89b.I491acbf68047874df97b3971f1ba692ebc998a52@changeid>
+Subject: [PATCH iwlwifi-next 03/14] wifi: iwlwifi: mld: send the WPFC table to the FW
+Date: Tue, 29 Apr 2025 22:53:33 +0300
+Message-Id: <20250429224932.e349a33cd871.Ied196cf0fbe18b82b87ce713c4e3347f9aca1c25@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250429195344.254957-1-miriam.rachel.korenblit@intel.com>
 References: <20250429195344.254957-1-miriam.rachel.korenblit@intel.com>
@@ -77,162 +77,115 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-We are currently reading it only from ACPI, but we need to read it from
-UEFI too (if exists, and if the UEFI variables are locked)
-
-Add the reading from the UEFI and use IWL_BIOS_TABLE_LOADER to generate
-the code that determines the source from which the table should be read
-(ACPI/UEFI).
+Read the table on op mode start, and send it to the FW when it is
+loaded.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/regulatory.c    |  3 +-
- .../wireless/intel/iwlwifi/fw/regulatory.h    |  3 +-
- .../net/wireless/intel/iwlwifi/fw/runtime.h   |  2 --
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c  | 28 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h  | 19 +++++++++++++
- 5 files changed, 51 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/fw.c   | 12 +++++++-
+ drivers/net/wireless/intel/iwlwifi/mld/phy.c  | 29 +++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mld/phy.h  |  2 ++
+ .../wireless/intel/iwlwifi/mld/regulatory.c   |  2 ++
+ 4 files changed, 44 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-index 6adcfa6e214a..1444b628214b 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2023 Intel Corporation
-+ * Copyright (C) 2023, 2025 Intel Corporation
-  */
- #include <linux/dmi.h>
- #include "iwl-drv.h"
-@@ -34,6 +34,7 @@ IWL_BIOS_TABLE_LOADER(wrds_table);
- IWL_BIOS_TABLE_LOADER(ewrd_table);
- IWL_BIOS_TABLE_LOADER(wgds_table);
- IWL_BIOS_TABLE_LOADER(ppag_table);
-+IWL_BIOS_TABLE_LOADER(phy_filters);
- IWL_BIOS_TABLE_LOADER_DATA(tas_table, struct iwl_tas_data);
- IWL_BIOS_TABLE_LOADER_DATA(pwr_limit, u64);
- IWL_BIOS_TABLE_LOADER_DATA(mcc, char);
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-index 53693314d505..46d19101b741 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2023-2024 Intel Corporation
-+ * Copyright (C) 2023-2025 Intel Corporation
-  */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/fw.c b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
+index 6e9af37fb86d..238e8ad8ba82 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
+@@ -8,6 +8,7 @@
+ #include "fw/api/alive.h"
+ #include "fw/api/scan.h"
+ #include "fw/api/rx.h"
++#include "phy.h"
+ #include "fw/dbg.h"
+ #include "fw/pnvm.h"
+ #include "hcmd.h"
+@@ -254,7 +255,9 @@ static int iwl_mld_load_fw_wait_alive(struct iwl_mld *mld)
+ static int iwl_mld_run_fw_init_sequence(struct iwl_mld *mld)
+ {
+ 	struct iwl_notification_wait init_wait;
+-	struct iwl_init_extended_cfg_cmd init_cfg = {};
++	struct iwl_init_extended_cfg_cmd init_cfg = {
++		.init_flags = cpu_to_le32(BIT(IWL_INIT_PHY)),
++	};
+ 	static const u16 init_complete[] = {
+ 		INIT_COMPLETE_NOTIF,
+ 	};
+@@ -291,6 +294,13 @@ static int iwl_mld_run_fw_init_sequence(struct iwl_mld *mld)
+ 		return ret;
+ 	}
  
- #ifndef __fw_regulatory_h__
-@@ -236,6 +236,7 @@ bool iwl_puncturing_is_allowed_in_bios(u32 puncturing, u16 mcc);
- #define IWL_DSBR_PERMANENT_URM_MASK	BIT(9)
++	ret = iwl_mld_send_phy_cfg_cmd(mld);
++	if (ret) {
++		IWL_ERR(mld, "Failed to send PHY config command: %d\n", ret);
++		iwl_remove_notification(&mld->notif_wait, &init_wait);
++		return ret;
++	}
++
+ 	ret = iwl_wait_notification(&mld->notif_wait, &init_wait,
+ 				    MLD_INIT_COMPLETE_TIMEOUT);
+ 	if (ret) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/phy.c b/drivers/net/wireless/intel/iwlwifi/mld/phy.c
+index 2fbc8090088b..2345fe5c3291 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/phy.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/phy.c
+@@ -153,3 +153,32 @@ int iwl_mld_phy_fw_action(struct iwl_mld *mld,
  
- int iwl_bios_get_dsbr(struct iwl_fw_runtime *fwrt, u32 *value);
-+int iwl_bios_get_phy_filters(struct iwl_fw_runtime *fwrt);
- 
- static inline void iwl_bios_setup_step(struct iwl_trans *trans,
- 				       struct iwl_fw_runtime *fwrt)
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index 5753d95986cd..a56b96003650 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -185,9 +185,7 @@ struct iwl_fw_runtime {
- 	struct iwl_mcc_allowed_ap_type_cmd uats_table;
- 	bool uats_valid;
- 	u8 uefi_tables_lock_status;
--#ifdef CONFIG_ACPI
- 	struct iwl_phy_specific_cfg phy_filters;
--#endif
- };
- 
- void iwl_fw_runtime_init(struct iwl_fw_runtime *fwrt, struct iwl_trans *trans,
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-index 386aadbce2a2..b0f4c217b2a5 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-@@ -810,3 +810,31 @@ int iwl_uefi_get_dsbr(struct iwl_fw_runtime *fwrt, u32 *value)
- 	kfree(data);
  	return ret;
  }
 +
-+int iwl_uefi_get_phy_filters(struct iwl_fw_runtime *fwrt)
++static u32 iwl_mld_get_phy_config(struct iwl_mld *mld)
 +{
-+	struct uefi_cnv_wpfc_data *data __free(kfree);
-+	struct iwl_phy_specific_cfg *filters = &fwrt->phy_filters;
++	u32 phy_config = ~(FW_PHY_CFG_TX_CHAIN |
++			   FW_PHY_CFG_RX_CHAIN);
++	u32 valid_rx_ant = iwl_mld_get_valid_rx_ant(mld);
++	u32 valid_tx_ant = iwl_mld_get_valid_tx_ant(mld);
 +
-+	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_WPFC_NAME,
-+					      "WPFC", sizeof(*data), NULL);
-+	if (IS_ERR(data))
-+		return -EINVAL;
++	phy_config |= valid_tx_ant << FW_PHY_CFG_TX_CHAIN_POS |
++		      valid_rx_ant << FW_PHY_CFG_RX_CHAIN_POS;
 +
-+	if (data->revision != 0) {
-+		IWL_DEBUG_RADIO(fwrt, "Unsupported UEFI WPFC revision:%d\n",
-+			data->revision);
-+		return -EINVAL;
-+	}
-+
-+	BUILD_BUG_ON(ARRAY_SIZE(filters->filter_cfg_chains) !=
-+		     ARRAY_SIZE(data->chains));
-+
-+	for (int i = 0; i < ARRAY_SIZE(filters->filter_cfg_chains); i++) {
-+		filters->filter_cfg_chains[i] = cpu_to_le32(data->chains[i]);
-+		IWL_DEBUG_RADIO(fwrt, "WPFC: chain %d: %u\n", i, data->chains[i]);
-+	}
-+
-+	IWL_DEBUG_RADIO(fwrt, "Loaded WPFC config from UEFI\n");
-+	return 0;
++	return mld->fw->phy_config & phy_config;
 +}
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-index eb3c05417da3..37d2ced03ce1 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-@@ -24,6 +24,7 @@
- #define IWL_UEFI_WBEM_NAME		L"UefiCnvWlanWBEM"
- #define IWL_UEFI_PUNCTURING_NAME	L"UefiCnvWlanPuncturing"
- #define IWL_UEFI_DSBR_NAME		L"UefiCnvCommonDSBR"
-+#define IWL_UEFI_WPFC_NAME		L"WPFC"
- 
- 
- #define IWL_SGOM_MAP_SIZE		339
-@@ -230,6 +231,18 @@ struct uefi_cnv_wlan_dsbr_data {
- 	u32 config;
- } __packed;
- 
-+/**
-+ * struct uefi_cnv_wpfc_data - BIOS Wi-Fi PHY filter Configuration
-+ * @revision: the revision of the table
-+ * @chains: configuration of each of the chains (a-d)
-+ *
-+ * specific PHY filter configuration
-+ */
-+struct uefi_cnv_wpfc_data {
-+	u8 revision;
-+	u32 chains[4];
-+} __packed;
 +
- /*
-  * This is known to be broken on v4.19 and to work on v5.4.  Until we
-  * figure out why this is the case and how to make it work, simply
-@@ -262,6 +275,7 @@ int iwl_uefi_get_uats_table(struct iwl_trans *trans,
- 			    struct iwl_fw_runtime *fwrt);
- int iwl_uefi_get_puncturing(struct iwl_fw_runtime *fwrt);
- int iwl_uefi_get_dsbr(struct iwl_fw_runtime *fwrt, u32 *value);
-+int iwl_uefi_get_phy_filters(struct iwl_fw_runtime *fwrt);
- #else /* CONFIG_EFI */
- static inline void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
- {
-@@ -370,5 +384,10 @@ int iwl_uefi_get_dsbr(struct iwl_fw_runtime *fwrt, u32 *value)
- {
- 	return -ENOENT;
++int iwl_mld_send_phy_cfg_cmd(struct iwl_mld *mld)
++{
++	const struct iwl_tlv_calib_ctrl *default_calib =
++		&mld->fw->default_calib[IWL_UCODE_REGULAR];
++	struct iwl_phy_cfg_cmd_v3 cmd = {
++		.phy_cfg = cpu_to_le32(iwl_mld_get_phy_config(mld)),
++		.calib_control.event_trigger = default_calib->event_trigger,
++		.calib_control.flow_trigger = default_calib->flow_trigger,
++		.phy_specific_cfg = mld->fwrt.phy_filters,
++	};
++
++	IWL_INFO(mld, "Sending Phy CFG command: 0x%x\n", cmd.phy_cfg);
++
++	return iwl_mld_send_cmd_pdu(mld, PHY_CONFIGURATION_CMD, &cmd);
++}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/phy.h b/drivers/net/wireless/intel/iwlwifi/mld/phy.h
+index 2212a89321b7..563e309deb0a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/phy.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/phy.h
+@@ -52,4 +52,6 @@ iwl_mld_get_chandef_from_chanctx(struct iwl_mld *mld,
+ 				 struct ieee80211_chanctx_conf *ctx);
+ u8 iwl_mld_get_fw_ctrl_pos(const struct cfg80211_chan_def *chandef);
+ 
++int iwl_mld_send_phy_cfg_cmd(struct iwl_mld *mld);
++
+ #endif /* __iwl_mld_phy_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
+index a75af8c1e8ab..fa9f8ac14631 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
+@@ -66,6 +66,8 @@ void iwl_mld_get_bios_tables(struct iwl_mld *mld)
+ 	ret = iwl_uefi_get_uats_table(mld->trans, &mld->fwrt);
+ 	if (ret)
+ 		IWL_DEBUG_RADIO(mld, "failed to read UATS table (%d)\n", ret);
++
++	iwl_bios_get_phy_filters(&mld->fwrt);
  }
-+
-+static inline int iwl_uefi_get_phy_filters(struct iwl_fw_runtime *fwrt)
-+{
-+	return -ENOENT;
-+}
- #endif /* CONFIG_EFI */
- #endif /* __iwl_fw_uefi__ */
+ 
+ static int iwl_mld_geo_sar_init(struct iwl_mld *mld)
 -- 
 2.34.1
 
