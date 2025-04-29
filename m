@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-22169-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22170-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85654AA0105
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 06:01:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F61AA0106
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 06:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E67501B63027
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 04:01:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F1EA7A510E
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 04:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E003270566;
-	Tue, 29 Apr 2025 04:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E11224AE0;
+	Tue, 29 Apr 2025 04:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PwARGIB3"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="K4BKPkI3"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A493627470
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 04:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E867127470
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 04:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745899284; cv=none; b=oKDHOu1CD8eX5/UZb6jdZTjKinYK5ionPwQyUSwGK9UhUjXO4ZhRT0/ICSul2UaP+bPtXtHEqb8WeKD4dZfQtSn0Rmv0Exwm4vsDQSbHFq4p+reNRZkRyyz3OKvE5t9DdLHDPMlq/iAnQlRJk+FxrhJVq5q9gxNU483vdiWaRxo=
+	t=1745899288; cv=none; b=txuhAvc994+QMT84A6SKBFMYQkGlftV1cwylpGXT0HhWGRB0u+htiIkTvwRJOi/CibkXMqhl3dfm/42TlOleXXfO38+lEXAbO/RDcrP9xDXxyqz5dhP4sbvcG3OhyS5K6SwawYrXnODxPBhMZhszSsGXj9/1LrWyQUSOE6arZkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745899284; c=relaxed/simple;
-	bh=hhYPwE3W4gtUSSx7GpLT1PDFFZw3jqHprsj+N6L086A=;
+	s=arc-20240116; t=1745899288; c=relaxed/simple;
+	bh=mTTOSmKJESBwcj3zpQo6PFcMyytuO+iC1U5Plz/0uyE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vavc7F2vZ2yF/EEdm4vW00xqLvHBtuNKEjrENmm7YlRGy54GLjD7X9KVcVleymJDcKHlr0Ex7uJcATZ8h23ceLoDsVnO/0Dn23ZaN1xvaO7ebMJMryMIJkeCgLq4VKxr7v56GBx9u+MwGfqVEqcbzdx2hIUFRBH928NfEknq2Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PwARGIB3; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=XLEUshetQU8PxIPseGuP1GIGmx8QMEkdqZEfktk6tAJHWsjp2Yqhu3O9AUS25erjv/G6xHNBmKY9G/y39YQODNXUafp5eXJgg/dcBjTUmphDP346bBqAAlo8Qsw/VqUEUuDX5n6SU0Z0j+aZD4llw9C/kGtqSrhmmkoBAQqOwL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=K4BKPkI3; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53SNqA2L025312;
-	Tue, 29 Apr 2025 04:01:19 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53SNqIQN006805;
+	Tue, 29 Apr 2025 04:01:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2OMyNmoccqxwJawafjzJACppdOyjFXN+JFFzLtwtPEk=; b=PwARGIB31ufySNmd
-	ovTD0pT+w/wcBxbKqoOH6dUtLiEDzk+uW8tL78MksPVfuEOVP3Rh9LLfTNeEaBji
-	qGC60TWbWK4M2E9FZKKcvdGHVyIpuHz7cJM1LndCuexlBNX+HMqpJZBtoanU8NRJ
-	VOuqo1p6KQdheXVqhSqA0eXe4vopDmzkH3+dHp85zaDVe7hp2yvFNchNZ3vG+FGr
-	Hc3J5eiYhYgMduErTQf+bjc83igOOmOAEo0URqb2JkmQzc6V8OxTLlSD8lKDyL1t
-	GRCP16+ADbR1wMIhMtwZRenov8O3Sj6yTdvQqNxZKzzKUcsWVV8RSvP2FkvJ6iUG
-	Dkq4QQ==
+	64w1DAryRLmDpIbQLE+xItE+YRBTmJXcxoCJeiT0eKc=; b=K4BKPkI33fIP1jHL
+	h+RoSSsfajER3Vd96QICsSNMBq61VTMrcGNysVfuR5xhJVH59SwUYRam0OxscQL8
+	/TBjKj4zNW4tpkoWzNxwJrn9dCzxET4eIx8mLWqxbSV3znm0O/XqF6gHQsY4DIwi
+	ZDnKNx1nmvaxO+l2Hv0WFf3edTxSawoqxVwIp6wra3KlLN9EgzSZ1ixHOpp1WrCZ
+	GtikEiyXm73NqkGD373K0ZJJ1GbJaIUTsnMIr6WzlCdTf2iI0O9y8oOe4C/5OAHD
+	oUrCMsi4wYsILOD/yLwyAKUnYozyzk1oigONceaYfUV4+ZcuFcfi5dmb9CCOwlDh
+	Q/Z1sw==
 Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 468muqkbw3-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 468ptmk5yh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Apr 2025 04:01:18 +0000 (GMT)
+	Tue, 29 Apr 2025 04:01:20 +0000 (GMT)
 Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53T41H3j007671
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53T41J4u007700
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Apr 2025 04:01:17 GMT
+	Tue, 29 Apr 2025 04:01:19 GMT
 Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
  nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 28 Apr 2025 21:01:16 -0700
+ 15.2.1544.9; Mon, 28 Apr 2025 21:01:17 -0700
 From: Roopni Devanathan <quic_rdevanat@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>,
         Roopni Devanathan
 	<quic_rdevanat@quicinc.com>
-Subject: [PATCH wireless-next v9 2/3] wifi: cfg80211: Report per-radio RTS threshold to userspace
-Date: Tue, 29 Apr 2025 09:30:47 +0530
-Message-ID: <20250429040048.3356960-3-quic_rdevanat@quicinc.com>
+Subject: [PATCH wireless-next v9 3/3] wifi: mac80211: Set RTS threshold on per-radio basis
+Date: Tue, 29 Apr 2025 09:30:48 +0530
+Message-ID: <20250429040048.3356960-4-quic_rdevanat@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250429040048.3356960-1-quic_rdevanat@quicinc.com>
 References: <20250429040048.3356960-1-quic_rdevanat@quicinc.com>
@@ -79,82 +79,637 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01c.na.qualcomm.com (10.47.97.35)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI5MDAyNyBTYWx0ZWRfX1lrArlti6V5B egxDRWhCX9Lcb2AhNO3DY0+t+Kqavr2NgOYj/rjQRqAxRJjbiZGOK6/EF3dgoTqA0OdWJ63Kd3n DahR6kvEdErYd1xw2BQrifXcTclYGWZcxyzXCy1QuucKouqzob/3QnjkpSZSfnNNgrCI0TDF74p
- EdYC8R21iZOF/z60giPK1IK75AazLCLG8IwWyXirqRiJWmKeI1iyeO9DxOA4OVLFr3gPvFTr+Wl uamrAaWF75iB5GAIh/M5mnJMIZYN2R2YBhd5ekeTcsAhx6lCOYfr1fauzvvBtNt6Nm1gSy7vok1 15wAqEpdNoEDk0qje5cOvaWQsm7Cc3sDQwnm1AlfQJhN5KUg/kKpdxK4Z0eqS9d1TOV/XICFgYW
- VMBuu3igfxdrbXJU5EvaPpVweg762S6hsPpDMcS501othZ92Q3ZD+g6i4Zd5Oqrc/DJPZVip
-X-Proofpoint-GUID: wV8kdNvHnhaILR46XJTqOcCGsCr4ncI9
-X-Proofpoint-ORIG-GUID: wV8kdNvHnhaILR46XJTqOcCGsCr4ncI9
-X-Authority-Analysis: v=2.4 cv=M/5NKzws c=1 sm=1 tr=0 ts=68104f0e cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=t2xFH_FA9tHEZGNgIz8A:9 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: 86OIXLLz_Prc7mALKIp2bf0Mc2bo1J3f
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI5MDAyOCBTYWx0ZWRfXy/0Bof4KZHS4 cMiixOHUpQ2TwybyRQ5EZcQ8h7iVf2qeP5k0zvTriSFH+SjeU/OzZ7SdVWxQxx5lBc/8JJ4NHu2 3d8Aj5x13M9d+Mo0uir/7m/f3UMOgXPEmNTtsf4LQXQSKWOWZV73rs3gg4gCwN87YnctfPTa0ha
+ skP7CN+hMJPEQiA97lphOat02eqsCgeAeCG9mwrujkQni7Ee8Cxx6/my9yMfgVgEbvJ9E+IpXF6 9Af1CSi8dWkYyjBJLV8O1VEG2sfRfvmfJVl8Ccf35k9HPWLizC+CCc2ioiYf4IJAQxr9NYa9XKh Ph2Z1xr3+1K6awIdtAx2T2OXfsLxqtwl1OlGZypbwdPmxZ6IWP1TRI7h3AzxwpT0brz2srONV+7
+ 7A6Lby4QcGn2nyR/rrRXDnWJTFjFrXU2hfFS3nEm8JY2voBKlWR+MZ+4WEImIPV8VJzpxhK6
+X-Proofpoint-GUID: 86OIXLLz_Prc7mALKIp2bf0Mc2bo1J3f
+X-Authority-Analysis: v=2.4 cv=DKWP4zNb c=1 sm=1 tr=0 ts=68104f10 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=W6LhtnMH47lynLIhlzIA:9 a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-04-29_01,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 mlxscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- adultscore=0 bulkscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504290027
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1015
+ priorityscore=1501 impostorscore=0 mlxscore=0 bulkscore=0 malwarescore=0
+ phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504290028
 
-In case of multi-radio wiphys, with per-radio RTS threshold brought
-into use, RTS threshold for each radio in a wiphy can be recorded in
-wiphy parameter - wiphy_radio_cfg, as an array. Add a new attribute -
-NL80211_WIPHY_RADIO_ATTR_RTS_THRESHOLD in nested parameter -
-NL80211_ATTR_WIPHY_RADIOS. When a request for getting RTS threshold
-for a particular radio is received, parse the radio id and get the
-required data. Add this data to the newly added nested attribute
-NL80211_WIPHY_RADIO_ATTR_RTS_THRESHOLD. Add support to report this
-data to userspace.
+Add support to get the radio for which RTS threshold needs to be changed
+from userspace. Pass on this radio index to underlying drivers as an
+additional argument.
+
+A value of NL80211_WIPHY_RADIO_ID_INVALID(-1) indicates radio index is not
+mentioned and the configuration applies to all radio(s) of the wiphy.
 
 Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
 ---
- include/uapi/linux/nl80211.h | 2 ++
- net/wireless/nl80211.c       | 6 ++++++
- 2 files changed, 8 insertions(+)
+ drivers/net/wireless/ath/ar5523/ar5523.c      |  3 ++-
+ drivers/net/wireless/ath/ath10k/mac.c         |  5 ++--
+ drivers/net/wireless/ath/ath11k/mac.c         |  3 ++-
+ drivers/net/wireless/ath/ath12k/mac.c         |  3 ++-
+ drivers/net/wireless/ath/ath9k/htc_drv_main.c |  3 ++-
+ drivers/net/wireless/ath/wcn36xx/main.c       |  3 ++-
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c |  3 ++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  3 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  3 ++-
+ drivers/net/wireless/marvell/mwl8k.c          |  3 ++-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  3 ++-
+ drivers/net/wireless/mediatek/mt76/mt76x02.h  |  2 +-
+ .../net/wireless/mediatek/mt76/mt76x02_util.c |  2 +-
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |  3 ++-
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |  3 ++-
+ .../net/wireless/mediatek/mt76/mt7925/main.c  |  3 ++-
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  3 ++-
+ drivers/net/wireless/mediatek/mt7601u/main.c  |  3 ++-
+ drivers/net/wireless/purelifi/plfxlc/mac.c    |  3 ++-
+ .../net/wireless/ralink/rt2x00/rt2800lib.c    |  2 +-
+ .../net/wireless/ralink/rt2x00/rt2800lib.h    |  2 +-
+ drivers/net/wireless/realtek/rtl8xxxu/core.c  |  3 ++-
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  3 ++-
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  3 ++-
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c   |  2 ++
+ drivers/net/wireless/silabs/wfx/sta.c         |  2 +-
+ drivers/net/wireless/silabs/wfx/sta.h         |  2 +-
+ drivers/net/wireless/st/cw1200/sta.c          |  2 +-
+ drivers/net/wireless/st/cw1200/sta.h          |  2 +-
+ drivers/net/wireless/ti/wl1251/main.c         |  3 ++-
+ drivers/net/wireless/ti/wlcore/main.c         |  3 ++-
+ drivers/net/wireless/virtual/mac80211_hwsim.c |  4 +++-
+ include/net/mac80211.h                        |  3 ++-
+ net/mac80211/cfg.c                            |  9 ++++++-
+ net/mac80211/driver-ops.h                     |  7 +++---
+ net/mac80211/trace.h                          | 24 ++++++++++++++++---
+ net/mac80211/util.c                           |  8 ++++++-
+ 37 files changed, 100 insertions(+), 41 deletions(-)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index b734018f8869..27beca8ddb60 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -8099,6 +8099,7 @@ enum nl80211_ap_settings_flags {
-  *	and contains attributes defined in &enum nl80211_if_combination_attrs.
-  * @NL80211_WIPHY_RADIO_ATTR_ANTENNA_MASK: bitmask (u32) of antennas
-  *	connected to this radio.
-+ * @NL80211_WIPHY_RADIO_ATTR_RTS_THRESHOLD: RTS threshold (u32) of this radio.
-  *
-  * @__NL80211_WIPHY_RADIO_ATTR_LAST: Internal
-  * @NL80211_WIPHY_RADIO_ATTR_MAX: Highest attribute
-@@ -8110,6 +8111,7 @@ enum nl80211_wiphy_radio_attrs {
- 	NL80211_WIPHY_RADIO_ATTR_FREQ_RANGE,
- 	NL80211_WIPHY_RADIO_ATTR_INTERFACE_COMBINATION,
- 	NL80211_WIPHY_RADIO_ATTR_ANTENNA_MASK,
-+	NL80211_WIPHY_RADIO_ATTR_RTS_THRESHOLD,
+diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
+index 96dc2778022a..f635c3d13542 100644
+--- a/drivers/net/wireless/ath/ar5523/ar5523.c
++++ b/drivers/net/wireless/ath/ar5523/ar5523.c
+@@ -1083,7 +1083,8 @@ static void ar5523_stop(struct ieee80211_hw *hw, bool suspend)
+ 	mutex_unlock(&ar->mutex);
+ }
  
- 	/* keep last */
- 	__NL80211_WIPHY_RADIO_ATTR_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 5f5b359e9c6a..203e54bd34e5 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -2447,6 +2447,7 @@ static int nl80211_put_mbssid_support(struct wiphy *wiphy, struct sk_buff *msg)
- static int nl80211_put_radio(struct wiphy *wiphy, struct sk_buff *msg, int idx)
+-static int ar5523_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int ar5523_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				    u32 value)
  {
- 	const struct wiphy_radio *r = &wiphy->radio[idx];
-+	const struct wiphy_radio_cfg *rcfg = &wiphy->radio_cfg[idx];
- 	struct nlattr *radio, *freq;
- 	int i;
+ 	struct ar5523 *ar = hw->priv;
+ 	int ret;
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index c61b95a928da..ea512e7643ac 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -3,7 +3,7 @@
+  * Copyright (c) 2005-2011 Atheros Communications Inc.
+  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
-@@ -2457,6 +2458,11 @@ static int nl80211_put_radio(struct wiphy *wiphy, struct sk_buff *msg, int idx)
- 	if (nla_put_u32(msg, NL80211_WIPHY_RADIO_ATTR_INDEX, idx))
- 		goto nla_put_failure;
+ #include "mac.h"
+@@ -8018,7 +8018,8 @@ static int ath10k_cancel_remain_on_channel(struct ieee80211_hw *hw,
+  * in ath10k, but device-specific in mac80211.
+  */
  
-+	if (rcfg->rts_threshold &&
-+	    nla_put_u32(msg, NL80211_WIPHY_RADIO_ATTR_RTS_THRESHOLD,
-+			rcfg->rts_threshold))
-+		goto nla_put_failure;
+-static int ath10k_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int ath10k_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				    u32 value)
+ {
+ 	struct ath10k *ar = hw->priv;
+ 	struct ath10k_vif *arvif;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 8191ee14a1fd..72e8430052db 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8182,7 +8182,8 @@ ath11k_set_vdev_param_to_all_vifs(struct ath11k *ar, int param, u32 value)
+ /* mac80211 stores device specific RTS/Fragmentation threshold value,
+  * this is set interface specific to firmware from ath11k driver
+  */
+-static int ath11k_mac_op_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int ath11k_mac_op_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++					   u32 value)
+ {
+ 	struct ath11k *ar = hw->priv;
+ 	int param_id = WMI_VDEV_PARAM_RTS_THRESHOLD;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 84da77bf245b..34c8eeb5bf88 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -9644,7 +9644,8 @@ ath12k_set_vdev_param_to_all_vifs(struct ath12k *ar, int param, u32 value)
+ /* mac80211 stores device specific RTS/Fragmentation threshold value,
+  * this is set interface specific to firmware from ath12k driver
+  */
+-static int ath12k_mac_op_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int ath12k_mac_op_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++					   u32 value)
+ {
+ 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
+ 	struct ath12k *ar;
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_main.c b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
+index 19600018e562..8c2d73626b23 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_main.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
+@@ -1737,7 +1737,8 @@ static void ath9k_htc_sw_scan_complete(struct ieee80211_hw *hw,
+ 	mutex_unlock(&priv->mutex);
+ }
+ 
+-static int ath9k_htc_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int ath9k_htc_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				       u32 value)
+ {
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index 94d08d6ae1a3..c7b35d70910a 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -965,7 +965,8 @@ static void wcn36xx_bss_info_changed(struct ieee80211_hw *hw,
+ }
+ 
+ /* this is required when using IEEE80211_HW_HAS_RATE_CONTROL */
+-static int wcn36xx_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int wcn36xx_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				     u32 value)
+ {
+ 	struct wcn36xx *wcn = hw->priv;
+ 	wcn36xx_dbg(WCN36XX_DBG_MAC, "mac set RTS threshold %d\n", value);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+index 03ef9b33c2d2..54d4e30ad61f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+@@ -1077,7 +1077,8 @@ void iwl_mld_unassign_vif_chanctx(struct ieee80211_hw *hw,
+ }
+ 
+ static
+-int iwl_mld_mac80211_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++int iwl_mld_mac80211_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				       u32 value)
+ {
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 5d8f50a455d7..1bcd92ac2d66 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -4257,7 +4257,8 @@ int iwl_mvm_mac_sta_state_common(struct ieee80211_hw *hw,
+ 	return ret;
+ }
+ 
+-int iwl_mvm_mac_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++int iwl_mvm_mac_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				  u32 value)
+ {
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index f6391c7a3e29..cf8a98280420 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -2907,7 +2907,8 @@ iwl_mvm_mac_release_buffered_frames(struct ieee80211_hw *hw,
+ 				    int num_frames,
+ 				    enum ieee80211_frame_release_type reason,
+ 				    bool more_data);
+-int iwl_mvm_mac_set_rts_threshold(struct ieee80211_hw *hw, u32 value);
++int iwl_mvm_mac_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				  u32 value);
+ void iwl_mvm_sta_rc_update(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			   struct ieee80211_link_sta *link_sta, u32 changed);
+ void iwl_mvm_mac_mgd_prepare_tx(struct ieee80211_hw *hw,
+diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
+index bab9ef37a1ab..4afd1e666642 100644
+--- a/drivers/net/wireless/marvell/mwl8k.c
++++ b/drivers/net/wireless/marvell/mwl8k.c
+@@ -5321,7 +5321,8 @@ static void mwl8k_configure_filter(struct ieee80211_hw *hw,
+ 	mwl8k_fw_unlock(hw);
+ }
+ 
+-static int mwl8k_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int mwl8k_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				   u32 value)
+ {
+ 	return mwl8k_cmd_set_rts_threshold(hw, value);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index c54005df08ca..5314d041258c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -784,7 +784,8 @@ static void mt7615_tx(struct ieee80211_hw *hw,
+ 	mt76_connac_pm_queue_skb(hw, &dev->pm, wcid, skb);
+ }
+ 
+-static int mt7615_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
++static int mt7615_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				    u32 val)
+ {
+ 	struct mt7615_dev *dev = mt7615_hw_dev(hw);
+ 	struct mt7615_phy *phy = mt7615_hw_phy(hw);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02.h b/drivers/net/wireless/mediatek/mt76/mt76x02.h
+index 4cd63bacd742..1b8af4b704f8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02.h
+@@ -184,7 +184,7 @@ void mt76x02_tx_set_txpwr_auto(struct mt76x02_dev *dev, s8 txpwr);
+ void mt76x02_set_tx_ackto(struct mt76x02_dev *dev);
+ void mt76x02_set_coverage_class(struct ieee80211_hw *hw,
+ 				s16 coverage_class);
+-int mt76x02_set_rts_threshold(struct ieee80211_hw *hw, u32 val);
++int mt76x02_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 val);
+ void mt76x02_remove_hdr_pad(struct sk_buff *skb, int len);
+ bool mt76x02_tx_status_data(struct mt76_dev *mdev, u8 *update);
+ void mt76x02_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+index 4fb30589fa7a..314d13eb3785 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+@@ -559,7 +559,7 @@ void mt76x02_set_coverage_class(struct ieee80211_hw *hw,
+ }
+ EXPORT_SYMBOL_GPL(mt76x02_set_coverage_class);
+ 
+-int mt76x02_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
++int mt76x02_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 val)
+ {
+ 	struct mt76x02_dev *dev = hw->priv;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 3aa31c5cefa6..4d836909f50b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -906,7 +906,8 @@ static void mt7915_tx(struct ieee80211_hw *hw,
+ 	mt76_tx(mphy, control->sta, wcid, skb);
+ }
+ 
+-static int mt7915_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
++static int mt7915_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				    u32 val)
+ {
+ 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
+ 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 826c48a2ee69..cfa5e4c4cc15 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -902,7 +902,8 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ }
+ EXPORT_SYMBOL_GPL(mt7921_mac_sta_remove);
+ 
+-static int mt7921_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
++static int mt7921_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				    u32 val)
+ {
+ 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 66f327781947..c3f80e1b1640 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1262,7 +1262,8 @@ void mt7925_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ }
+ EXPORT_SYMBOL_GPL(mt7925_mac_sta_remove);
+ 
+-static int mt7925_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
++static int mt7925_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				    u32 val)
+ {
+ 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 91c64e3a0860..41ad5acf031b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -1241,7 +1241,8 @@ static void mt7996_tx(struct ieee80211_hw *hw,
+ 	rcu_read_unlock();
+ }
+ 
+-static int mt7996_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
++static int mt7996_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				    u32 val)
+ {
+ 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+ 	int i, ret;
+diff --git a/drivers/net/wireless/mediatek/mt7601u/main.c b/drivers/net/wireless/mediatek/mt7601u/main.c
+index 7570c6ceecea..c1a9d9233b1d 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/main.c
++++ b/drivers/net/wireless/mediatek/mt7601u/main.c
+@@ -334,7 +334,8 @@ mt7601u_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	return mt76_mac_wcid_set_key(dev, msta->wcid.idx, key);
+ }
+ 
+-static int mt7601u_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int mt7601u_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				     u32 value)
+ {
+ 	struct mt7601u_dev *dev = hw->priv;
+ 
+diff --git a/drivers/net/wireless/purelifi/plfxlc/mac.c b/drivers/net/wireless/purelifi/plfxlc/mac.c
+index eae93efa6150..253d748fe207 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/mac.c
++++ b/drivers/net/wireless/purelifi/plfxlc/mac.c
+@@ -678,7 +678,8 @@ static void plfxlc_get_et_stats(struct ieee80211_hw *hw,
+ 	data[1] = mac->crc_errors;
+ }
+ 
+-static int plfxlc_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int plfxlc_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				    u32 value)
+ {
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index b7ea606bda08..15c35746a042 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -12100,7 +12100,7 @@ void rt2800_get_key_seq(struct ieee80211_hw *hw,
+ }
+ EXPORT_SYMBOL_GPL(rt2800_get_key_seq);
+ 
+-int rt2800_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++int rt2800_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
+ {
+ 	struct rt2x00_dev *rt2x00dev = hw->priv;
+ 	u32 reg;
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
+index 194de676df8f..c3c4590aaaf2 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
+@@ -253,7 +253,7 @@ int rt2800_probe_hw(struct rt2x00_dev *rt2x00dev);
+ void rt2800_get_key_seq(struct ieee80211_hw *hw,
+ 			struct ieee80211_key_conf *key,
+ 			struct ieee80211_key_seq *seq);
+-int rt2800_set_rts_threshold(struct ieee80211_hw *hw, u32 value);
++int rt2800_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value);
+ int rt2800_conf_tx(struct ieee80211_hw *hw,
+ 		   struct ieee80211_vif *vif,
+ 		   unsigned int link_id, u16 queue_idx,
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+index 569856ca677f..b6e45486d42e 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -6988,7 +6988,8 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
+ 			 FIF_PROBE_REQ);
+ }
+ 
+-static int rtl8xxxu_set_rts_threshold(struct ieee80211_hw *hw, u32 rts)
++static int rtl8xxxu_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				      u32 rts)
+ {
+ 	if (rts > 2347 && rts != (u32)-1)
+ 		return -EINVAL;
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index 026fbf4ad9cc..2638f21d9ca8 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -706,7 +706,8 @@ static void rtw_ops_mgd_prepare_tx(struct ieee80211_hw *hw,
+ 	mutex_unlock(&rtwdev->mutex);
+ }
+ 
+-static int rtw_ops_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int rtw_ops_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				     u32 value)
+ {
+ 	struct rtw_dev *rtwdev = hw->priv;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 4fded07d0bee..5fe269ce1cfd 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -997,7 +997,8 @@ static int rtw89_ops_ampdu_action(struct ieee80211_hw *hw,
+ 	return 0;
+ }
+ 
+-static int rtw89_ops_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int rtw89_ops_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				       u32 value)
+ {
+ 	struct rtw89_dev *rtwdev = hw->priv;
+ 
+diff --git a/drivers/net/wireless/rsi/rsi_91x_mac80211.c b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
+index 9db08200f4fa..c320b6464bda 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
++++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
+@@ -1201,11 +1201,13 @@ static int rsi_mac80211_ampdu_action(struct ieee80211_hw *hw,
+ /**
+  * rsi_mac80211_set_rts_threshold() - This function sets rts threshold value.
+  * @hw: Pointer to the ieee80211_hw structure.
++ * @radio_id: Index of the radio whose RTS threshold needs to be changed.
+  * @value: Rts threshold value.
+  *
+  * Return: 0 on success.
+  */
+ static int rsi_mac80211_set_rts_threshold(struct ieee80211_hw *hw,
++					  u8 radio_id,
+ 					  u32 value)
+ {
+ 	struct rsi_hw *adapter = hw->priv;
+diff --git a/drivers/net/wireless/silabs/wfx/sta.c b/drivers/net/wireless/silabs/wfx/sta.c
+index e95b9ded17d9..b2ca43e63917 100644
+--- a/drivers/net/wireless/silabs/wfx/sta.c
++++ b/drivers/net/wireless/silabs/wfx/sta.c
+@@ -220,7 +220,7 @@ int wfx_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	return 0;
+ }
+ 
+-int wfx_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++int wfx_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
+ {
+ 	struct wfx_dev *wdev = hw->priv;
+ 	struct wfx_vif *wvif = NULL;
+diff --git a/drivers/net/wireless/silabs/wfx/sta.h b/drivers/net/wireless/silabs/wfx/sta.h
+index 8702eed5267f..f1288efee527 100644
+--- a/drivers/net/wireless/silabs/wfx/sta.h
++++ b/drivers/net/wireless/silabs/wfx/sta.h
+@@ -22,7 +22,7 @@ struct wfx_sta_priv {
+ int wfx_start(struct ieee80211_hw *hw);
+ void wfx_stop(struct ieee80211_hw *hw, bool suspend);
+ int wfx_config(struct ieee80211_hw *hw, u32 changed);
+-int wfx_set_rts_threshold(struct ieee80211_hw *hw, u32 value);
++int wfx_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value);
+ void wfx_set_default_unicast_key(struct ieee80211_hw *hw, struct ieee80211_vif *vif, int idx);
+ void wfx_configure_filter(struct ieee80211_hw *hw, unsigned int changed_flags,
+ 			  unsigned int *total_flags, u64 unused);
+diff --git a/drivers/net/wireless/st/cw1200/sta.c b/drivers/net/wireless/st/cw1200/sta.c
+index 444272caf124..2d26154ade3e 100644
+--- a/drivers/net/wireless/st/cw1200/sta.c
++++ b/drivers/net/wireless/st/cw1200/sta.c
+@@ -857,7 +857,7 @@ void cw1200_wep_key_work(struct work_struct *work)
+ 	wsm_unlock_tx(priv);
+ }
+ 
+-int cw1200_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++int cw1200_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value)
+ {
+ 	int ret = 0;
+ 	__le32 val32;
+diff --git a/drivers/net/wireless/st/cw1200/sta.h b/drivers/net/wireless/st/cw1200/sta.h
+index b955b92cfd73..3f28bb9ec5ec 100644
+--- a/drivers/net/wireless/st/cw1200/sta.h
++++ b/drivers/net/wireless/st/cw1200/sta.h
+@@ -36,7 +36,7 @@ int cw1200_set_key(struct ieee80211_hw *dev, enum set_key_cmd cmd,
+ 		   struct ieee80211_vif *vif, struct ieee80211_sta *sta,
+ 		   struct ieee80211_key_conf *key);
+ 
+-int cw1200_set_rts_threshold(struct ieee80211_hw *hw, u32 value);
++int cw1200_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id, u32 value);
+ 
+ void cw1200_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		  u32 queues, bool drop);
+diff --git a/drivers/net/wireless/ti/wl1251/main.c b/drivers/net/wireless/ti/wl1251/main.c
+index bb53d681c11b..490e505081b5 100644
+--- a/drivers/net/wireless/ti/wl1251/main.c
++++ b/drivers/net/wireless/ti/wl1251/main.c
+@@ -1051,7 +1051,8 @@ static int wl1251_op_hw_scan(struct ieee80211_hw *hw,
+ 	return ret;
+ }
+ 
+-static int wl1251_op_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int wl1251_op_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				       u32 value)
+ {
+ 	struct wl1251 *wl = hw->priv;
+ 	int ret;
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+index ea9bc4717a85..b3176d118a67 100644
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -3923,7 +3923,8 @@ static int wl1271_op_set_frag_threshold(struct ieee80211_hw *hw, u32 value)
+ 	return ret;
+ }
+ 
+-static int wl1271_op_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int wl1271_op_set_rts_threshold(struct ieee80211_hw *hw, u8 radio_id,
++				       u32 value)
+ {
+ 	struct wl1271 *wl = hw->priv;
+ 	struct wl12xx_vif *wlvif;
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 74d037cfccca..cf931d4f1181 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -3333,7 +3333,9 @@ static int mac80211_hwsim_tx_last_beacon(struct ieee80211_hw *hw)
+ 	return 1;
+ }
+ 
+-static int mac80211_hwsim_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int mac80211_hwsim_set_rts_threshold(struct ieee80211_hw *hw,
++					    u8 radio_id,
++					    u32 value)
+ {
+ 	return -EOPNOTSUPP;
+ }
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index fdafc37d17cc..02e69db20108 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -4569,7 +4569,8 @@ struct ieee80211_ops {
+ 			    struct ieee80211_key_conf *key,
+ 			    struct ieee80211_key_seq *seq);
+ 	int (*set_frag_threshold)(struct ieee80211_hw *hw, u32 value);
+-	int (*set_rts_threshold)(struct ieee80211_hw *hw, u32 value);
++	int (*set_rts_threshold)(struct ieee80211_hw *hw, u8 radio_id,
++				 u32 value);
+ 	int (*sta_add)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		       struct ieee80211_sta *sta);
+ 	int (*sta_remove)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f227ff083835..a4c3e8363bd9 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3055,7 +3055,14 @@ static int ieee80211_set_wiphy_params(struct wiphy *wiphy, u8 radio_id,
+ 	}
+ 
+ 	if (changed & WIPHY_PARAM_RTS_THRESHOLD) {
+-		err = drv_set_rts_threshold(local, wiphy->rts_threshold);
++		u32 rts_threshold;
 +
- 	if (r->antenna_mask &&
- 	    nla_put_u32(msg, NL80211_WIPHY_RADIO_ATTR_ANTENNA_MASK,
- 			r->antenna_mask))
++		if (radio_id >= wiphy->n_radio)
++			rts_threshold = wiphy->rts_threshold;
++		else
++			rts_threshold =
++				wiphy->radio_cfg[radio_id].rts_threshold;
++		err = drv_set_rts_threshold(local, radio_id, rts_threshold);
+ 
+ 		if (err)
+ 			return err;
+diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
+index 307587c8a003..3f17480b2c59 100644
+--- a/net/mac80211/driver-ops.h
++++ b/net/mac80211/driver-ops.h
+@@ -402,16 +402,17 @@ static inline int drv_set_frag_threshold(struct ieee80211_local *local,
+ }
+ 
+ static inline int drv_set_rts_threshold(struct ieee80211_local *local,
+-					u32 value)
++					u8 radio_id, u32 value)
+ {
+ 	int ret = 0;
+ 
+ 	might_sleep();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+ 
+-	trace_drv_set_rts_threshold(local, value);
++	trace_drv_set_rts_threshold(local, radio_id, value);
+ 	if (local->ops->set_rts_threshold)
+-		ret = local->ops->set_rts_threshold(&local->hw, value);
++		ret = local->ops->set_rts_threshold(&local->hw, radio_id,
++						    value);
+ 	trace_drv_return_int(local, ret);
+ 	return ret;
+ }
+diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
+index 72fad8ea8bb9..b3797aca26bc 100644
+--- a/net/mac80211/trace.h
++++ b/net/mac80211/trace.h
+@@ -823,9 +823,27 @@ DEFINE_EVENT(local_u32_evt, drv_set_frag_threshold,
+ 	TP_ARGS(local, value)
+ );
+ 
+-DEFINE_EVENT(local_u32_evt, drv_set_rts_threshold,
+-	TP_PROTO(struct ieee80211_local *local, u32 value),
+-	TP_ARGS(local, value)
++TRACE_EVENT(drv_set_rts_threshold,
++	TP_PROTO(struct ieee80211_local *local, u8 radio_id, u32 value),
++
++	TP_ARGS(local, radio_id, value),
++
++	TP_STRUCT__entry(
++		LOCAL_ENTRY
++		__field(u8, radio_id)
++		__field(u32, value)
++	),
++
++	TP_fast_assign(
++		LOCAL_ASSIGN;
++		__entry->radio_id = radio_id;
++		__entry->value = value;
++	),
++
++	TP_printk(
++		LOCAL_PR_FMT " radio_id:%d, value:%d",
++		LOCAL_PR_ARG, __entry->radio_id, __entry->value
++	)
+ );
+ 
+ TRACE_EVENT(drv_set_coverage_class,
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 27d414efa3fd..da999b405809 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -1829,7 +1829,13 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 	drv_set_frag_threshold(local, hw->wiphy->frag_threshold);
+ 
+ 	/* setup RTS threshold */
+-	drv_set_rts_threshold(local, hw->wiphy->rts_threshold);
++	if (hw->wiphy->n_radio > 0)
++		for (i = 0; i < hw->wiphy->n_radio; i++)
++			drv_set_rts_threshold(local, i,
++					      hw->wiphy->radio_cfg[i].rts_threshold);
++	else
++		drv_set_rts_threshold(local, NL80211_WIPHY_RADIO_ID_DEFAULT,
++				      hw->wiphy->rts_threshold);
+ 
+ 	/* reset coverage class */
+ 	drv_set_coverage_class(local, hw->wiphy->coverage_class);
 -- 
 2.25.1
 
