@@ -1,223 +1,141 @@
-Return-Path: <linux-wireless+bounces-22190-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22191-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46CEAA05A2
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 10:25:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3B8AA065A
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 10:55:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 037571B612F7
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 08:25:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89E64188DF2C
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 08:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7E821D3EF;
-	Tue, 29 Apr 2025 08:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFB529E048;
+	Tue, 29 Apr 2025 08:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dELq2YZa";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="a8EezwbS";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dELq2YZa";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="a8EezwbS"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="JYm9cFm+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD9E26B96E
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 08:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A24129DB8C
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 08:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745915125; cv=none; b=AaNC/oJdSxSysHmW84o+ibDyHhS0ScyJxNY39a1XRjdH99sCphO5MQDzYtk+9ZBZgWji4+wwx/WunmyhSfCSppl1zcuV2KYh3f6P6f9tYAdRASOhh+Ibd2Yd70Np7lehCKiV3DImH+isme3RAPNk06oigzhldHztLeBXJvhj8I4=
+	t=1745916939; cv=none; b=Bfw4E1To6wxTpfK0/rdtlh6axmxsZZPRegILLDqmT2D4qVNP97AWjGEdDUlzaq4FFP9DjnnXy0sHRFCRBOF1pq/PhZfvp0r4nTthG75V4HJYxrWJkXH0uulfInlXW++LHgxNnYNKjDLuwZ5D2Rf/0KasLh/WhEyNn9OjT0MUeQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745915125; c=relaxed/simple;
-	bh=rH9UccWYWgoC73rk59ha/zTWI5jwNxSAoFCv2UVXiks=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fhvOKcmRI1adU0wt3mFxS3KmZzyYPn3GvGLQWsAmKql53gNeYvMMEyKgVpihXiKd43owGGnHj6ETzK727I+tBILMdStCC67oy42VtKijTEoe5UVpPny2fVF7VZlajjpeH3n0elp551nZhLEbJK7jw1HZeZaZrjelKgBy8tCwrzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dELq2YZa; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=a8EezwbS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dELq2YZa; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=a8EezwbS; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C0D402174D;
-	Tue, 29 Apr 2025 08:25:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1745915115; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TT1i3hdS9mC/hejBjLiByhI9VE+EVpILxulgUDs+hHA=;
-	b=dELq2YZaKtBY7eVjiL8nHE2AhixSZMqmIVjkj95xbNc3uZeuvrbIWvAAO1iHDHW71KSoRo
-	ocIW5Ti9xvfuR0NPUMJsndZkdUM65cxUhIUPR4Yv2/Vl6JqC9u4ZIASwa9xVXGy5goOPcF
-	kipmKieIZ1JJ95ksgnVruPfkcwVgAAQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1745915115;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TT1i3hdS9mC/hejBjLiByhI9VE+EVpILxulgUDs+hHA=;
-	b=a8EezwbSKoJNBw6rWyp3fwavY0Z3JHCJnQvBVO71F6uGIgeVxvSrOhXRJwhBomXP+Pd4b4
-	FiYxAEUM6GfNGBDw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dELq2YZa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=a8EezwbS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1745915115; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TT1i3hdS9mC/hejBjLiByhI9VE+EVpILxulgUDs+hHA=;
-	b=dELq2YZaKtBY7eVjiL8nHE2AhixSZMqmIVjkj95xbNc3uZeuvrbIWvAAO1iHDHW71KSoRo
-	ocIW5Ti9xvfuR0NPUMJsndZkdUM65cxUhIUPR4Yv2/Vl6JqC9u4ZIASwa9xVXGy5goOPcF
-	kipmKieIZ1JJ95ksgnVruPfkcwVgAAQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1745915115;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TT1i3hdS9mC/hejBjLiByhI9VE+EVpILxulgUDs+hHA=;
-	b=a8EezwbSKoJNBw6rWyp3fwavY0Z3JHCJnQvBVO71F6uGIgeVxvSrOhXRJwhBomXP+Pd4b4
-	FiYxAEUM6GfNGBDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9FC6513931;
-	Tue, 29 Apr 2025 08:25:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id J7PNJOuMEGgABQAAD6G6ig
-	(envelope-from <iivanov@suse.de>); Tue, 29 Apr 2025 08:25:15 +0000
-Date: Tue, 29 Apr 2025 11:25:15 +0300
-From: "Ivan T. Ivanov" <iivanov@suse.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Brian Norris <briannorris@chromium.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mmc@vger.kernel.org
-Subject: Re: [PATCH do not merge 4/4] wifi: mwifiex: add iw61x support
-Message-ID: <20250429082515.45yiafmd7uhyw66p@localhost.localdomain>
-References: <20250326-mwifiex-iw61x-v1-0-ff875ed35efc@pengutronix.de>
- <20250326-mwifiex-iw61x-v1-4-ff875ed35efc@pengutronix.de>
- <Z-Pxx983jcb0GTtg@gaggiata.pivistrello.it>
- <Z-QHG0fyM8wRy2FH@pengutronix.de>
- <Z-UbXduYmx2i0kxz@gaggiata.pivistrello.it>
- <Z-a75VNI9liliHz1@pengutronix.de>
+	s=arc-20240116; t=1745916939; c=relaxed/simple;
+	bh=pAAdWk+lDB+lp9svoKoBUgncHf6I+M0m9Zt2UlIzMGs=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=c7CatjbcAkh2KnIdd9/xLRTr9vFassqqQbo9JeT4ZHg3vgAfOdlXyCoK1VsZa62XqP45n+tLqlBNAxOawSoO68YvPVPepD9Rk77f/J+QhyxFRFYsEC6/rOjsqP4BuTE/cnz0Nd4CwMLbdfKmMoCKA0q8MiY2VRVazSc2EOkZZ3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=JYm9cFm+; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ace333d5f7bso932546366b.3
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 01:55:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1745916936; x=1746521736; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TW68MXGwEPbFsS4hScMhFkST84R6M8d9wEyh85F85p4=;
+        b=JYm9cFm+OJtc/lTRbl3PvrAwmWWWoMOPWgbMOkIXnwOSl26KoiGkQ9cLptRm7Fmh28
+         1yVVAWidwxVX7EBtauIW6mGOdpU4iHqd6iOanXm0kHatRpNoErf0nNRbg6cr0ljGwPo/
+         K0Jua+lRb19hvnoxSS3kpMWLoz+6PcMNEbwsA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745916936; x=1746521736;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TW68MXGwEPbFsS4hScMhFkST84R6M8d9wEyh85F85p4=;
+        b=a/eJopb+xZrbWAJmvB8pOrd61GTo3/7Ucsqyvd9DZxxWt9DkXbGQMrZNXJJ3RGhj7w
+         F7lqQ/ZjyGvvON2pVkfK6IDikeu89/rzO/9rI7EzaTAMH18JqOLMDHJyK79mKT1ZtHYN
+         ZCglvBrh6ccQV9dEeqOjBw9vh9J89SAoSF3nnSIs+Z/3gOamrI50mKL5FraW8NByhV06
+         yEets4ZSSiRxy0/FRFJTMCrHEwlUvPXEOVfI2iseQb3CXubwtmrE/stky4L9S7Gsknwc
+         OGacYTfAhRe8hlcL7SXxGLB0yXe4hOXUtaqKIeFBvKpqDLWU1X3h8z2UN9XVVpeXSV8Z
+         DFrg==
+X-Forwarded-Encrypted: i=1; AJvYcCVs0By4WeXa1a8BzmMLs5oWZfa3Z2o38g/c0DdLXhAqTc4QuoWt2fD3E25zhYiJvY0CMWPBJZoOTUVAxKarHw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YziUviLSRwf3J3DI+FWGB9Wc0ZdBY4rHteEm86FZz+3re7VUfxh
+	9WhkwuiXuf/bzvUuUQRa7vrh8mpr5P36kdbcxIAuOUOSFpjQ9isjQ9G1RoK1vipR6AL+oyqRl14
+	mSg==
+X-Gm-Gg: ASbGncvNETE9kiKI4jRDcvmGOUK+kSSyXWAi3mNRDJmXEzAjHVqJ0mXsx1SGGz1hx6G
+	cPEe4WFK7ZW5UAdwpYuMRNX8QeIhYJlEpNAa9exJgBpcrfYZCArTmFKAwQLZFTctYwmHTdsd7OL
+	flYRY87KgNVyys3dZKPP4vYL/YJMrY72p7TIEEoHiCqc6ezRqPDtiTWTVvkTDOqAhsueBJqtQx8
+	7rNKU8IuCoSbkOM8sd2OCxeG/pGLLktsA+wsY1CuiV0Htavd+37zDFX7wU22M4DqNx/sqqB7Kv1
+	7LaNAkQsp90I+csf1OyeBOU58w6EeGMWVaZhJMrq4FKQGzeZmTtBH5tE9vLSExGlJ6J8UTQRSYk
+	GgIQ=
+X-Google-Smtp-Source: AGHT+IHaYfCeH6nUR/6tAIZ9C/xYs2T+HxF+WLJBGle3a4ZVfTJZo/7fVNbO9mL1lQmBd4GJk0qHeQ==
+X-Received: by 2002:a17:907:1ca2:b0:ac7:e366:1eab with SMTP id a640c23a62f3a-ace84af4e8emr1189806866b.48.1745916935717;
+        Tue, 29 Apr 2025 01:55:35 -0700 (PDT)
+Received: from [192.168.178.39] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6edafec7sm744211766b.165.2025.04.29.01.55.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Apr 2025 01:55:35 -0700 (PDT)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Peter Robinson <pbrobinson@gmail.com>
+CC: Johannes Berg <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>
+Date: Tue, 29 Apr 2025 10:55:33 +0200
+Message-ID: <19680c23388.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <CALeDE9ONCUH0pQ4Yux=30Lim_SZMcbQsnWx0R+aPhF0E7tf9=g@mail.gmail.com>
+References: <20250425085519.492267-1-arend.vanspriel@broadcom.com>
+ <CALeDE9MGXiSN=8E+T_ZGOLHsk8DB4iL=hV7ircqqb9=q1xTUYw@mail.gmail.com>
+ <1967fbdeea0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CALeDE9ONCUH0pQ4Yux=30Lim_SZMcbQsnWx0R+aPhF0E7tf9=g@mail.gmail.com>
+User-Agent: AquaMail/1.54.1 (build: 105401536)
+Subject: Re: [PATCH wireless-next v3 0/4] wifi: brcmfmac: external auth support for Infineon devices
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z-a75VNI9liliHz1@pengutronix.de>
-X-Rspamd-Queue-Id: C0D402174D
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,nxp.com:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
-X-Spam-Flag: NO
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-Hi,
+On April 29, 2025 10:19:00 AM Peter Robinson <pbrobinson@gmail.com> wrote:
 
-Thank you for your work on this!
+>>> I will try and find a couple of other devices with an appropriate
+>>> cypress/infineon.
+>>
+>> Thanks for giving the patches a spin. The firmware should have a feature
+>> named sae_ext. I think the one you with iw are indicating same support in
+>> general.
+>
+> I am not so sure.
+>
+> RPi4 (BCM4345/6 - 7.45.234 (4ca95bb CY) FWID 01-996384e2)
+>        Supported extended features:
+>                * [ CQM_RSSI_LIST ]: multiple CQM_RSSI_THOLD records
+>                * [ 4WAY_HANDSHAKE_STA_PSK ]: 4-way handshake with PSK
+> in station mode
+>                * [ 4WAY_HANDSHAKE_STA_1X ]: 4-way handshake with
+> 802.1X in station mode
+>                * [ DFS_OFFLOAD ]: DFS offload
+>                * [ SAE_OFFLOAD ]: SAE offload support
+>                * [ 4WAY_HANDSHAKE_AP_PSK ]: AP mode PSK offload support
+>                * [ SAE_OFFLOAD_AP ]: AP mode SAE authentication offload support
+>
+> Jetson TX1 (BCM4354/1 - fw 7.35.349.104 (775a9ab CY) FWID 01-d55901b0):
+>        Supported extended features:
+>                * [ CQM_RSSI_LIST ]: multiple CQM_RSSI_THOLD records
+>                * [ DFS_OFFLOAD ]: DFS offload
+>
+> So I have different brcmfmac HW reporting different features.
+>
+>> You can check the firmware features in debugfs under
+>> <mount>/ieee80211/phyX/fwcap.
+>
+> I don't get fwcap on either of the above devices:
+>
+> ls /sys/kernel/debug/ieee80211/phy0/
+> fragmentation_threshold  ht40allow_map  long_retry_limit
+> rts_threshold  short_retry_limit
 
-On 03-28 16:10, Sascha Hauer wrote:
-> On Thu, Mar 27, 2025 at 10:33:17AM +0100, Francesco Dolcini wrote:
-> > On Wed, Mar 26, 2025 at 02:54:35PM +0100, Sascha Hauer wrote:
-> > > On Wed, Mar 26, 2025 at 01:23:35PM +0100, Francesco Dolcini wrote:
-> > > > On Wed, Mar 26, 2025 at 01:18:34PM +0100, Sascha Hauer wrote:
-> > > > > This adds iw61x aka SD9177 support to the mwifiex driver. It is named
-> > > > > SD9177 in the downstream driver, I deliberately chose the NXP name in
-> > > > > the driver.
-> > > > > 
-> > > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > > ---
-> > > > >  drivers/net/wireless/marvell/mwifiex/sdio.c | 79 +++++++++++++++++++++++++++++
-> > > > >  drivers/net/wireless/marvell/mwifiex/sdio.h |  3 ++
-> > > > >  include/linux/mmc/sdio_ids.h                |  3 ++
-> > > > >  3 files changed, 85 insertions(+)
-> > > > > 
-> > > > > diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> > > > > index cbcb5674b8036..7b4045a40df57 100644
-> > > > > --- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-> > > > > +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> > > > 
-> > > > ...
-> > > > 
-> > > > > @@ -3212,3 +3289,5 @@ MODULE_FIRMWARE(SD8978_SDIOUART_FW_NAME);
-> > > > >  MODULE_FIRMWARE(SD8987_DEFAULT_FW_NAME);
-> > > > >  MODULE_FIRMWARE(SD8997_DEFAULT_FW_NAME);
-> > > > >  MODULE_FIRMWARE(SD8997_SDIOUART_FW_NAME);
-> > > > > +MODULE_FIRMWARE(IW612_DEFAULT_FW_NAME);
-> > > > > +MODULE_FIRMWARE(IW612_SDIOUART_FW_NAME);
-> > > > > diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.h b/drivers/net/wireless/marvell/mwifiex/sdio.h
-> > > > > index 65d142286c46e..97759456314b0 100644
-> > > > > --- a/drivers/net/wireless/marvell/mwifiex/sdio.h
-> > > > > +++ b/drivers/net/wireless/marvell/mwifiex/sdio.h
-> > > > > @@ -29,6 +29,9 @@
-> > > > >  #define SD8987_DEFAULT_FW_NAME "mrvl/sd8987_uapsta.bin"
-> > > > >  #define SD8997_DEFAULT_FW_NAME "mrvl/sdsd8997_combo_v4.bin"
-> > > > >  #define SD8997_SDIOUART_FW_NAME "mrvl/sdiouart8997_combo_v4.bin"
-> > > > > +#define IW612_DEFAULT_FW_NAME "nxp/sdsd_nw61x.bin"
-> > > > > +#define IW612_SDIOUART_FW_NAME "nxp/sd_w61x.bin"
-> > > > 
-> > > > Is there a way to have BT over SDIO with iw61x? I was sure only sd-uart was
-> > > > possible.
-> > > 
-> > > The communication to the Bluetooth module indeed is UART only.
-> > > 
-> > > I think nxp/sdsd_nw61x.bin contains firmwares for both the WiFi and
-> > > Bluetooth chip. When using this you can use the Bluetooth UART directly
-> > > without uploading a separate Bluetooth firmware.
-> > > 
-> > > nxp/sd_w61x.bin only contains the WiFi firmware, so you have to
-> > > upload a separate Bluetooth firmware over the UART interface.
-> > 
-> > If that the case what you did here is not correct.
-> > 
-> > The 2 firmware files here are used file depending on the BT host interface used
-> > on the Wi-Fi/BT chip, and this is read from some strapping register. See commit
-> > 255ca28a659d ("mwifiex: Select firmware based on strapping").
-> > 
-> > BTW, this name sdsd_nw61x.bin is confusing, I would have expected this to be
-> > something like sduart_nw61x.bin.
-> 
-> You are right, there seem to be some things mixed up. I'll have a look
-> into it for the next round.
-> 
-
-Looking at downstream driver looks like based on chip revision firmware
-files will be different. My best finding on the firmware files naming about
-this chip was this thread [1] on the NXP forums.
+Ah, yes. My bad. They are only created if CONFIG_BRCMDBG is selected.
 
 Regards,
-Ivan
+Arend
 
-[1] https://community.nxp.com/t5/Other-NXP-Products/NXP-IW612-Kernel-Integration-amp-Firmware-Flashing-Issues/m-p/2056699#M27741
+
 
 
