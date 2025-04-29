@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-22194-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22195-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F6FAA0B77
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 14:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83605AA0B89
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 14:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAB4F1B63D18
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 12:23:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8EFF1B63CA8
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 12:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6432213253;
-	Tue, 29 Apr 2025 12:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D082C374F;
+	Tue, 29 Apr 2025 12:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="LnLAgr+Q"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="Al6aHHX6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5CA524F;
-	Tue, 29 Apr 2025 12:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8354624C098;
+	Tue, 29 Apr 2025 12:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745929367; cv=pass; b=IunVoCGS2ianbP5Q0Axyso+I1mvVMkQDtGr59+qIEHJZFVzMVLahzpJpYrjX8i1WtUA0C0Zb388v6lPaIZIAmbt13Uc8BGtsWpTbO4TW+OxGatiLsKGr5YkqkBwzo91oEL6k2LRTXCDCtyb8zmClGA+biuzN85DJXuZxlQ/OuCM=
+	t=1745929495; cv=pass; b=fAqMwLhtKWrIPVM+Ek+HNE6RsQ95peIvDNuE2rbbNb0bg0vLnrrMxNKSkBwWSM+6WUFaEt2IzbCrzBIFgP8Y0s3pc/DzRKPJnDa4dx+fkQxJxSLWie6K4gmEcWt703xUVMtzA1TQgYDTJCFBCToGjwY8RYfq6RXHgySx3Lk7kA4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745929367; c=relaxed/simple;
+	s=arc-20240116; t=1745929495; c=relaxed/simple;
 	bh=Pl/8ZRqKjTYpfRjmRIC8F9O1eyoMR8WT/0aot7GmIc4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EHaOqh7II9OmRhxSSK0bj3lWUd7FXKj/Is0rNFOwEDyezFusitPh9DtApj1dLHOFgUzsxuS0Y1NhPMNojLl1/Q0g0oxl81Vk1YP0oDJIuPnyg2z5QBxx/bOq9hqN7ZyOBprm4RMAIIbATIrhpiErp6ecXNmxkp2RTXSPdeB1130=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=LnLAgr+Q; arc=pass smtp.client-ip=136.143.188.112
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gKOjCO7qs9Hhg7zn69by+7TSRZQEYzSNU7gyJwcDAgVCsyB8q1nmvHW2WMwNXdq6tqBhwQm5tPoa0hBZqONGvceKByDkmk0uC8usGO1lpTPtZfNRb0URgF5wsfHgVMT9mfOb9rpVLl/szRJF3Gnw2m/NHUT0ib7zlY0RYv/GR6k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=Al6aHHX6; arc=pass smtp.client-ip=136.143.184.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1745929328; cv=none; 
+ARC-Seal: i=1; a=rsa-sha256; t=1745929453; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Fac9jr2q+2FFJjwbysdw4ZN5Ctn7rfRpfIx+1lcAnA/nAwvP5nMuS/RO/OYB9QBONGUpSFuRiXN00tpzQkJw6znj2RtH1Sre5JU2DgSBGHtOGwFfG7cKGdG9Hb8s5fA8e/rQ8OgOkco0/YFkdEFX3COBh4+gWTWMUUsTiTj56Dg=
+	b=PYuHLCecog1qRMXuLCs6DMzTZriApuZa1/0MTnGhCpDeMvznSpJBFYBGBiVsP7yixP2Gcd/sOrRLY2rpCokAEGTSqsZ9ZxNLNgAACnhn6epLv5lfPsCmqU7uTlsUup5F68pMlGFQ2nzvLehVlzNEG9L+zxDyNuapGihTmsaMXzw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1745929328; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	t=1745929453; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
 	bh=sKJ1pTVCX4dEVX1vrqZiREtxmyVR9vDTmkBb2JrH30s=; 
-	b=Vzj1rAukVMGMgQhFaGv8ckhYTMk4642OMD55TcoAymjsOlmRmJyXa2GpAbtqshGVqK+2NCeSpVqTMb7SySG+7HLa8VUFVrwV2XZEumqgghkkMevhu2TPvWLKsoawDOtyE1OgZM3nES+tIYjfLT9bsPsGU7hcJab8oBD6F/HuSZI=
+	b=mfMvA+8gSWP9YYwpptSa0BV+2kbL1f2ioRjnoCssYJ/DavYT5M+X0CmscN2MedYM2diER8RDICVnNPrGPESflQIbZiDhyvdR0RsZbLinmtFo+MVkBJ3BeQrmmYtep+eH6fdZP+vkfZh1cdp8dZB/MuTkC1Uj+xwgJbUZg2H61iQ=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
 	dmarc=pass header.from=<usama.anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1745929327;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1745929453;
 	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
 	bh=sKJ1pTVCX4dEVX1vrqZiREtxmyVR9vDTmkBb2JrH30s=;
-	b=LnLAgr+QE8jLvEyADCjhfPHj9SCXQgULDYrsuSGMracCavNIFuNBpDPBgzgM0Bqf
-	8Yb/7XjOHjfoJwkQPsnHeM/hCKt4vH8Va5cfL5OVHN+4EV5tA0u0Q/7uKPVHOYpfHaG
-	WQCftFf8+zqk7CsSYrt2HbFKdT5oLowhz7EJ+SQ0=
-Received: by mx.zohomail.com with SMTPS id 1745929325816339.67490448540536;
-	Tue, 29 Apr 2025 05:22:05 -0700 (PDT)
+	b=Al6aHHX6V7efoRHenD0J77Vq9s4COpOYOZueLi9j+wA1LPQOTl8/W0Iy28h2lIwD
+	REH3shWKufnTwU2NgYOctT53XyfqoQHQpGHx0xAPucFSgil9a2Q8yCmRPTAfxGvGGkT
+	d2FvDkXpyCuFec4dZKwIPK1SUKexzul+QFhhYNv4=
+Received: by mx.zohomail.com with SMTPS id 1745929450569239.30908580364132;
+	Tue, 29 Apr 2025 05:24:10 -0700 (PDT)
 From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Jeff Johnson <jjohnson@kernel.org>,
@@ -58,13 +58,13 @@ To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Matthew Leung <quic_mattleun@quicinc.com>,
 	Muhammad Usama Anjum <usama.anjum@collabora.com>,
 	Yan Zhen <yanzhen@vivo.com>,
-	Alex Elder <elder@kernel.org>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Kunwu Chan <chentao@kylinos.cn>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Troy Hanson <quic_thanson@quicinc.com>,
-	"Dr. David Alan Gilbert" <linux@treblig.org>
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Troy Hanson <quic_thanson@quicinc.com>
 Cc: kernel@collabora.com,
+	Carl Vanderlip <quic_carlv@quicinc.com>,
+	Sumit Garg <sumit.garg@kernel.org>,
 	mhi@lists.linux.dev,
 	linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -72,8 +72,8 @@ Cc: kernel@collabora.com,
 	ath11k@lists.infradead.org,
 	ath12k@lists.infradead.org
 Subject: [PATCH v3] bus: mhi: host: don't free bhie tables during suspend/hibernation
-Date: Tue, 29 Apr 2025 17:20:56 +0500
-Message-ID: <20250429122112.104472-1-usama.anjum@collabora.com>
+Date: Tue, 29 Apr 2025 17:23:35 +0500
+Message-ID: <20250429122351.108684-1-usama.anjum@collabora.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
