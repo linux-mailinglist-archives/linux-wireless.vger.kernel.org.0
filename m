@@ -1,239 +1,385 @@
-Return-Path: <linux-wireless+bounces-22173-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22174-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0CDAA0163
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 06:36:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E3A9AA0165
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 06:36:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57FEF1A88078
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 04:36:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C72C3466E5C
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 04:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C9735972;
-	Tue, 29 Apr 2025 04:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969D248CFC;
+	Tue, 29 Apr 2025 04:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZZAiqfB9"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="EOxDcJzV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F3F4409;
-	Tue, 29 Apr 2025 04:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745901391; cv=fail; b=bzc+hy7sB6NxfFEmvQj9rHspDUaTn6Zotm0TJloFSZ2Z6PWq7jxkkwz6dBY556m5P0V5ItaAaTnJ4t+pfIH3PaNuACj/ULxgVtHap6qXUh7jq1bP9/fr7KRx1cYIb1TdETZTCk9h49Eet2yjKMw9pXLMYpZCrO8Pjj+8JsAmOpg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745901391; c=relaxed/simple;
-	bh=CiEvsHMAAFWQ//VzV/S4gJP/sqWW7BhRfBV8LUJJkTI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=d4bsLsjS5Gz4aENkE4W3f6QjLb+ZAX2MmmtUpX/gpaT1neFH3zdwUQtfg7R6VyUPAbnKllvhTZOvXGn6ahrsIfdCWi6XWnDNmyjPSvf1bJetl3jBNHGm80gLPci8AiJ85MELZaRQRNaE6bbu4LEwi9npvVEoUVjJiGLteL3ZPp8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZZAiqfB9; arc=fail smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745901389; x=1777437389;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=CiEvsHMAAFWQ//VzV/S4gJP/sqWW7BhRfBV8LUJJkTI=;
-  b=ZZAiqfB9/QTjfwuT0PvxJQvRacjM89IjGG4hqNoX8l41Rrf8HcITK6BT
-   pAW7uu0h46qX6Ih4uV8VUDM/tEVjIixQd0EXLpJmYYpn7VWi/a/vhLJy1
-   yF8ej7hnJZr6VoqK+FdFp2AZfcxTMxzfiys1LfUqJ+iRrJnn7gFCP9nAz
-   DoZaKwz/zJ4z6mYd9GF/Xmjfa9W3wbCh4R0A3l7Ru42ZrrZu0OFEDNy/Q
-   hvq07ZN2G8wypfb/CSUmYtYb1C5gUgr0Xi/ls4SY96BUM6J1b/aBut27t
-   YdZZTyaKJ3n0fkIEK4Ni8Iz3Hmdi6oHykWY2hEkV8JtjkHZr2HwdZddRP
-   A==;
-X-CSE-ConnectionGUID: dpk6MQ0lTWKOUPCJBzT96Q==
-X-CSE-MsgGUID: pRIkw+wESxigNH2w0DXI3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="47522354"
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; 
-   d="scan'208";a="47522354"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 21:36:29 -0700
-X-CSE-ConnectionGUID: nSw7d3xFR32O8/Ou5b6b2g==
-X-CSE-MsgGUID: n1a6B0iISr2y0x/ITefiDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; 
-   d="scan'208";a="133613780"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 21:36:29 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Mon, 28 Apr 2025 21:36:28 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Mon, 28 Apr 2025 21:36:28 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 28 Apr 2025 21:36:27 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ksV4NfleIYDdP2iGW1yAEK+Le3Rqpu23TmucO9JwhA31KDlZGy3aEQv5fSdB72pazHI3F4QJaWTApxtjkBsYucYAWulPHoV3r8PbYFJCaSQ8XOIwa8QI+IWU9Kmj1Muw5khCqYndN9GWzkBokSaei1dXb09SNNNg5LdenH/dN3bJ5AYcL2y8qOmJvxKIJS4/FGZ7XY/pWnpDvCVL5jDn0uMu2kYLskqfS3BI+D0q9gAhf+VYg+jLwjiHr8ZcZYa0fjL6lpk4gsvTj+rMUcRlep1KX5hsXMbSgBDfQa/xi4F4BJzrXJzLavIKaqVM/qOLepkcUtVdDsoI1Wbcy6mzaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CiEvsHMAAFWQ//VzV/S4gJP/sqWW7BhRfBV8LUJJkTI=;
- b=q9Sgi34YvGozYYyRbdi8+G86yIQPYuGj/LthDa4od/Wkh7NR53Ka7/HCccj24n1Qmjue0JCkUMRxajBKFHpt7ghq+MkuA2f+9vex/HpqjBrMDWWERF+7SIKtMgj61lUG68gHlBwVsLz28jvvEZqhW8a9ydNInpP9d4ZFWJUuYSzRcLB7UrEXGiixLOIWqfnP9KEh+fm6bzPcR0paquKonRUgl4yeOrN+sJaoPfz07nov/5m/DQTltAn0LX7c5Qcwsui7pahm5UUCxgtEKJ6k5I/JRAC4inDtwMgTMlVuy/zEaGSbFyslyd3djocfV3xmBxksBwePFabMzbDsvaxeTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MW5PR11MB5810.namprd11.prod.outlook.com (2603:10b6:303:192::22)
- by SJ0PR11MB5896.namprd11.prod.outlook.com (2603:10b6:a03:42c::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.34; Tue, 29 Apr
- 2025 04:36:25 +0000
-Received: from MW5PR11MB5810.namprd11.prod.outlook.com
- ([fe80::3a48:8c93:a074:a69b]) by MW5PR11MB5810.namprd11.prod.outlook.com
- ([fe80::3a48:8c93:a074:a69b%7]) with mapi id 15.20.8678.028; Tue, 29 Apr 2025
- 04:36:25 +0000
-From: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] wifi: iwlwifi: Add short description to enum
- iwl_power_scheme
-Thread-Topic: [PATCH] wifi: iwlwifi: Add short description to enum
- iwl_power_scheme
-Thread-Index: AQHbmN1OL30NiSPRDUi2QYi7oX7g6rO6TrHw
-Date: Tue, 29 Apr 2025 04:36:25 +0000
-Message-ID: <MW5PR11MB581072B873108C92E29699E4A3802@MW5PR11MB5810.namprd11.prod.outlook.com>
-References: <20250319-iwl_power_scheme-kdoc-v1-1-2033ae38b178@oss.qualcomm.com>
-In-Reply-To: <20250319-iwl_power_scheme-kdoc-v1-1-2033ae38b178@oss.qualcomm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW5PR11MB5810:EE_|SJ0PR11MB5896:EE_
-x-ms-office365-filtering-correlation-id: 7e69eb37-a932-4a5b-60ef-08dd86d7668e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?aVJ3c1lRcWEyUFdNWXU2NTJDTTB0akZIMFU1NHdpMVlSdzFSMURUTUl6alpU?=
- =?utf-8?B?M0Y3aXlSdVBhRW5uM0xqYU5vSDJTRlFCTW1ldmVTbWNnc0ZnNUtESlJlcGVS?=
- =?utf-8?B?OS9jbEZPSzBFa2tTUVBZZFBRMVE1c3ZqSjZGOVRNN3g2bjNEV2tsN09ZV1NC?=
- =?utf-8?B?MDA2Vm13M2ZOWmJxUDN5cTVKa1RZNzcrZHN6WCt5aGkyQW5BKzl4a3N5UDVM?=
- =?utf-8?B?bWcxSkNobVZNUHExaW1UTG92N0xXTHR2ZUN3cU1BWU9tMnd5RU9jUHRoWnRT?=
- =?utf-8?B?UTZXbzFubGVWWjVZTzZUSWQ1MWFMTi9UeXlJQ2x1SVVLVkdlbU1TVkdZWDRq?=
- =?utf-8?B?elArbUdGa1l0TjFIaGZ0bHd4Q0ZLTnVtelVHZzcwNkt1bWM4M1YzWWxUaWFO?=
- =?utf-8?B?eHVGanpRNmU3L1l3eTVlUjQ1U0ZMWS9OWUZnaHhZazBFZmRYVmY5ekh4ZmRI?=
- =?utf-8?B?Nk5tZjlCNVRvZTFuaC9IVXY5dWVDTVA0VTJPMm5GYXR1dkV4d1ZPODBGMjhY?=
- =?utf-8?B?dXJ5aG1sNFArR3gzanFsRWV3MktJMmhweHUyaklreDFIQ1NOREU0bnlLUDlO?=
- =?utf-8?B?QUNmSFYwQTVleitPTkp2Q1BNcFJHRUhVeEpPQTlSUnRiN0RSWnJPcWdWNUUy?=
- =?utf-8?B?c084bzBESDY5OVdUR2o4aXhMQ3FySXUrV3JMMDJKL2V2c1NXYTZYY25YMlp1?=
- =?utf-8?B?TUtsL0dHSTkwRXVNNGFTaW9PUGNmMXdHWWhVNVFGaDYzVzFPaVdZWTNXcWw1?=
- =?utf-8?B?QUdJSzNaaDhUVjVWMnpVR0V3MUZzNXRsMkxaSVVjOFhkK050TVZzY1c3MlNV?=
- =?utf-8?B?Y095Si9JM1Mvd0lkRkdaOSsvd285a3NLbTB5UHNSM1Bjb0ZkQ2VOb3Q1REh3?=
- =?utf-8?B?Z1NsWngxc3NCTGk3QUFwY0lCVjI2RHNmaGVmN1hnRjdnWmRqbnJ5T2hIZnor?=
- =?utf-8?B?Z2N0TDBmVitFeTJPOThwMHlXWXhVTlBmQ3R5dFMwWU1sZ2ZFWDdkeXI0UVFz?=
- =?utf-8?B?TjgxNGc3WU84ajFNQTcwZTFINHEwbFBzRGNURkdad0twcFgzVlk4enoxb3Vh?=
- =?utf-8?B?Y0VVejJGcVZndG9reFVmNklOelIrQmZsMzRGSi8wTk16dUJNaVB1anVFSXpS?=
- =?utf-8?B?MTFnUTVLanZNbmp1V0dnMWFKUStLOEZDekZkcFQxMldsY3pITWZvWGhkU0FF?=
- =?utf-8?B?MU1zbVRaRTNVMlNlWkMyRHNmWHp3TzhLS0l4Wm56TitoOFdzeEFsaWV2NjYv?=
- =?utf-8?B?ejZmeUxQVFYrRnB0Smk5d1dsNzJkZkFqWUxEZExNNXhWczhCY2JucjZ4NTJR?=
- =?utf-8?B?NHBoWEtHazMxb0xXdlhSV0lueGY0WkhYZmRUWDhPL0hOWlY1dVB6bDVTS29z?=
- =?utf-8?B?b1EvbWVraFV5cXV2Z1NnRW5wejdZOVl6RURsSUZuOUVQM1d6aVRNWFArNjlM?=
- =?utf-8?B?K2E4TUpweWpJUU45bFozVndTS3ZzL04vdytWRkJwMjRpNVAwRUpIQ2Fla1BP?=
- =?utf-8?B?Tkg4Z3pqRFkycmpNTWZmRzVlcTJKNW5ScXBFdHRUM3hpTTg3bU9VMmN2UjF5?=
- =?utf-8?B?cHhBVjVzRC9kRTRha2JvN2tHZko4QzlVQmF1dm0rT3NDWnE1S242ZVpZL2Rs?=
- =?utf-8?B?NkFLWVd1Zk5HYUFNbmhOdzlnWkxjOEpraXpKSGtSY0JLRmgxMDRBclNNZzZi?=
- =?utf-8?B?elZMb3A5ck1tWmtsaURyM2MrOFNSVXBRelc5cDNLRDF1Y2s4V2NRZU5taUlB?=
- =?utf-8?B?dVJIRDJMZFhudG93aG96REpMZFNMRmtUbW5wTk5scm1PeVdkalVmWkFmWkcy?=
- =?utf-8?B?eHF0Tml4V0I4ZlZocVJPam16WTFGOHRsbkFpQldLOCtoa3E4WERrOWVkeCtC?=
- =?utf-8?B?VUhNMnhHS1lWSEJsQkZFTXFRTUFMZnFkNmNhaXd1NnluKzMvY3BhWVB6NUJt?=
- =?utf-8?B?dXRmLzlkWldQbzFhaWZUU1BNQm8wRVl5NWppRjhoemlkeFErTkhDUWlyU1FY?=
- =?utf-8?B?cVlheEZNNEt3PT0=?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR11MB5810.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OVdHRUxJRUhlRk1IT1NSVkwvQ0ZVZXpFdUliZmxIWkNSRTJ4QW5YU1R4b2x0?=
- =?utf-8?B?NFJCY3FqTEtaQXJEQVNXMmtvb0R1c1NWNWFZK01Gb1FSVTBwVnVYVnJ6MDRI?=
- =?utf-8?B?amxxaHFFV0x0V1E3MlhTVUtaaE9Jcm1NTG9TM0V0SGFPU09zUjA3MitRZHIy?=
- =?utf-8?B?R0VvRGxhbzYwZ1lLdzdKMlkvVUlZQ0FkcXpOUFpwTURNb1V0cjVLVW9XZk9n?=
- =?utf-8?B?NWtWTVp2L0RHelpPNUZjeHBnaUwzVzdwY2RMMWRjSGIvalhZcG9mNTJrRjlC?=
- =?utf-8?B?bWtublBOK2NteURtZlU1MEtPNmJCRUwrK0l0OFFjdzhIbUFVNVd1TkE2aXRF?=
- =?utf-8?B?M0NSemtIbHplU0VZK2pQd2ZaMWZMdlk5NXpSSnZRbmJsUXFVZjQwKy9IUjNL?=
- =?utf-8?B?a1lNOHRaL1B0bXB6NFE4N2h1RVdoQm0zdkRmeWRKVlgrSTUvZUJIOVhpTDBM?=
- =?utf-8?B?VklSV1VGd1R5aTh0TElxaUZGY2dXOE5aSnEzS3M0NXhzU0xiZkNwTmdxQnI2?=
- =?utf-8?B?bDV5VkQ1clRBYmdQUDdld2xoMkZZZDB1NmtYbzFNOTFweEdhTzJ1ajNsRmdQ?=
- =?utf-8?B?NnBiclpLSmloN0QzM2NudGlWSkpPMGlQbkpydjNmL3lrMm9uWVJvczY4c0pJ?=
- =?utf-8?B?Y3ZrUmJCT3laYkcvakdnQzhrcXp2YlRUZmlLT3R4ZnVZbGNYcTRBMzdENy9Z?=
- =?utf-8?B?WTJISHBTSnRIRlBINEJ2dkdDVUNnODlsemxwOHAvK09ieWNCbTZyY3hzMDk2?=
- =?utf-8?B?WE5PQmVuMWRGaS90YzBsTTZPK1hTb1ppVkZQMXY2eFBDNmkyNU1DQWFKeE1r?=
- =?utf-8?B?THNuWk5ZRFhhVkVmUFVoMmlvZWlnUzJIZ253Wm91aDBFeUZwck5Lc2Ntdklp?=
- =?utf-8?B?djJOa3czSzM2eFg5Y01QMEFpdE1xSUxoUVZySFFsekNxMmRGUCt0TXlZdzhE?=
- =?utf-8?B?TjRyY3VoUyt5NkZ5MUhVYW0vSHE4QWNENHJmU1lPRUs0VDR4dDlycDNJZkZM?=
- =?utf-8?B?MnhCTVNjdnEzRmRhcGRhVGgrZmJwS0tGbzJlTHNsWWFMaGVEVXFjYU9LZkNv?=
- =?utf-8?B?cW5oT2c3bnZoaXVHRE9vRmxvOVpTSDlGZmltSTc3U1luYmVsQTF2WnJlME5Z?=
- =?utf-8?B?QW9JaE1BQlUwdzZDTE8rdmJpTjZFMVdkWlh5ckcxQ3BhSGk1aHJaQ1h2bjVi?=
- =?utf-8?B?ZTk5Z3lEOWJWR0tvemcrcWZuc1pNNTJtcE9KdnZLS2pnYXh4YVZnNzVMNUh1?=
- =?utf-8?B?NXEranZjOFNnVnh3N2FoM0RWREplT0w4SmVLVFJXZEtoZkpsemZRT3BpcnVZ?=
- =?utf-8?B?YXVCWENrT3hVMUdZNWxnU0s5QklPRVFlNXFqUVlqR29IMmhNTWhST3BvRW9s?=
- =?utf-8?B?UlVnSm5scWJnVUh4aVB5ZEkvTnQ0N2U3RDJ3YVZjRHRpa1BuUGZhQlhUMGZN?=
- =?utf-8?B?WmZDc09zQjA1aFhoOEFROG9wMUFUb2tzWjRibks0Qy9hU3BOT1Z1RXZjY0Y1?=
- =?utf-8?B?RmZTcWJzMHJ3ZnM5enpLMHBRUStuc2l6aVcvMFVPTWdFeWt2QVVmMnM1Rzhh?=
- =?utf-8?B?ZGpoZzJYR1pGcEltaUQza0lLeHJseU9DODVKR0NScDd6YkRlVXU5VndIS0FZ?=
- =?utf-8?B?bHpBdFZYTjRwZERMU0ppWi9qa2M1dkkzc2xxSVpPTURBSU55R2tGRDZjYUE2?=
- =?utf-8?B?RGdjTVQxZitXV2pVZkxNWlMwNCtJSDlPRTNPVmNzOVpHcExjMFh0Q1ozZmdy?=
- =?utf-8?B?eHJ3WHFod0Vtd0FXdVZ3WlJCeWNhcXdmMHpEY29LQXBGUGRDYTlMZ0d0Wm4z?=
- =?utf-8?B?TW91TmFURmdTc2o5NE9Ga2VFUUNqbEFHcFJnVjBPZGFkL2s1Nyt6L1FuVFVm?=
- =?utf-8?B?M3VldEsxbXRaQjRCR0RDK1pMQkg3dWpKd0NTSkJISDU5L01HenQ0M1RBWWdC?=
- =?utf-8?B?cXlVSXcyc3EvaFljNzdZNytETitQdC9uQW1tUXdOZXZkNW9XbEVUVllwRkNv?=
- =?utf-8?B?OWxKNEl1UUNWK3c1Q3kzTjdOUUlWd1RLdmxhSmg0UkxmTkptNVFiZWdlVWtx?=
- =?utf-8?B?NmpmN28xaVVsQi9RcDNVaUM5NC84OEM0L1ZsbllnUHg4M1FmdDJWd2VOY1BS?=
- =?utf-8?B?cWFLQVpTOVI4WFp5TnNFcUxBbll6TlJiVFZmdE9uT3RKMW03VmREL0ZMR2lY?=
- =?utf-8?B?YkE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FA64409
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 04:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745901404; cv=none; b=Eb8+RSqHadoWuC2AoRg3vJN59V8LAWIEWPvoDkq+ke4ha5k9I4iEOkKaf/cfDPkTnwpLw47Ol1YvD6oqXXzzK0hunQNdZdN2ujssbddBuB5YQlctlv4jMO9TWOnU8f/cDSJPAyB1A5ioWwvvAFkJteHu1XBeJENUSsr0LWqd8oA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745901404; c=relaxed/simple;
+	bh=kwAac0XmY9E0EzMUboQix5xD2s5eiCem4Yt7Q1glfi8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=O0ucyP1hs/wkspR1l8oM4tAFMxNNpuTFPeOsRqI+wOOeAI6ClLuZC6+UJod6jZPIUwmcuWYS7Xou814qSGNive7g5jzSlxSZDcsfjD4MbP2UZs2hNhB0HR+cAdpthYihGs7ABw20kOxb3IU9e2kQ/7QHbn4PaI3GcgGHpQPUjnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=EOxDcJzV; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53SNqISY006805;
+	Tue, 29 Apr 2025 04:36:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	h5F6GDNDNVG3efZLMBROVGqEtCgXme6lJSN6yrogOh8=; b=EOxDcJzVSVo8oEiA
+	YwSOwSsYKbzy7PIAX8OoDHSpas4wlsDl6nApSjba4jbHCDyp82lJjd+soKkD3KrI
+	EE43V1/5VaRDtpkh1avZv512emkLs/M0fkH53DZnt/aB4WTBAwzwqr+qoJohq+vL
+	viqDtX1xHSIEvppOyGp58DnwTY2JyAvdJcMDK1lMHxYbR5dbjVlFYxdbyEOGngVs
+	n1ec5ESxP5LKQX7JQWAiWckhXgw34AQUFU2qLW79S+S7slW7wZXmHH9oxcPcdLtD
+	3I5DgsfJiU6ydgN0pTFho3PSEMDJeLR79r0H2A2Yq0AuITE0tnAc8HxzGDqz7gUv
+	0rrFvg==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 468ptmk7x3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Apr 2025 04:36:37 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53T4aaAq003302
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Apr 2025 04:36:36 GMT
+Received: from [10.216.24.29] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 28 Apr
+ 2025 21:36:34 -0700
+Message-ID: <c4aa15f3-79b9-48c8-83a6-a946d8a24a23@quicinc.com>
+Date: Tue, 29 Apr 2025 10:06:31 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW5PR11MB5810.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e69eb37-a932-4a5b-60ef-08dd86d7668e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Apr 2025 04:36:25.2971
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: l0JXpm1oC2uItA7B3jA2TZDQNd7DiJB1nnn9fmSAWpVBGq41QtzCnyhjBmNIwyAgZbKApTp/cbVMJ8z9JyE3CuIGeJTD+eNqTJNHC9LPRffjbTnulA2OTjW76Pdlz2G0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5896
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next 2/2] wifi: ath12k: Split scan request for split
+ band device
+To: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Vignesh C <quic_vignc@quicinc.com>
+References: <20250428151927.1169783-1-rameshkumar.sundaram@oss.qualcomm.com>
+ <20250428151927.1169783-3-rameshkumar.sundaram@oss.qualcomm.com>
+From: Mahendran P <quic_mahep@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20250428151927.1169783-3-rameshkumar.sundaram@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: xE638SdQxjMtbGfWk0GfnEdC8CAix3sz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI5MDAzMyBTYWx0ZWRfX1pDtRrnfulDS opYxp5JJJHVqAbfkSxeACffCk8/zuiPPQOHY7aOwTgi8ALcWfitPxj++evzEfT6wmWu88bfFGm6 zQWM1nrzaFeVSoosn6+OnxXLgEAv9mYE/6lN+9PM5LebgMBdn89KSiTFw63qb4pKi+/Cdzjyrsr
+ CsecE5BtTjS1O0G1KMWO1xoC1u8AhUNUpw1CyKlTtkUcuO/Goqq8lKvYp+8QFz1CYMzpr0FMsXc 2JRx5XqnCrtaTp4rddeeQ4m7555x+1fzVr7GuaiBzgNSBnEVJMsOCmGv4wfdBM/C542Qhl/oyI+ 7shLw/lKqan3CRnaVT9r6CTzMRRMiXZ33nD746v6Rbh4/dcdvGfI0J/jxGdtidVwQ/Zb2NKi9eb
+ QfuuyJ/9WJOAFVJh7Mzqhk0oMoBvqDdJKeA6qw4A3TqMJVMyC1J9tvQlZJPJATSeYi+2B46M
+X-Proofpoint-GUID: xE638SdQxjMtbGfWk0GfnEdC8CAix3sz
+X-Authority-Analysis: v=2.4 cv=DKWP4zNb c=1 sm=1 tr=0 ts=68105755 cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=gB7bVOSc0XIp0_K5HaAA:9
+ a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-29_01,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1015
+ priorityscore=1501 impostorscore=0 mlxscore=0 bulkscore=0 malwarescore=0
+ phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504290033
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSmVmZiBKb2huc29uIDxq
-ZWZmLmpvaG5zb25Ab3NzLnF1YWxjb21tLmNvbT4NCj4gU2VudDogV2VkbmVzZGF5LCAxOSBNYXJj
-aCAyMDI1IDE2OjM4DQo+IFRvOiBLb3JlbmJsaXQsIE1pcmlhbSBSYWNoZWwgPG1pcmlhbS5yYWNo
-ZWwua29yZW5ibGl0QGludGVsLmNvbT4NCj4gQ2M6IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVs
-Lm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgSmVmZiBKb2huc29uDQo+IDxqZWZm
-LmpvaG5zb25Ab3NzLnF1YWxjb21tLmNvbT4NCj4gU3ViamVjdDogW1BBVENIXSB3aWZpOiBpd2x3
-aWZpOiBBZGQgc2hvcnQgZGVzY3JpcHRpb24gdG8gZW51bSBpd2xfcG93ZXJfc2NoZW1lDQo+IA0K
-PiBUaGUga2VybmVsLWRvYyBzY3JpcHQgZmxhZ2dlZCB0aGUgZm9sbG93aW5nOg0KPiANCj4gZHJp
-dmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9tdm0vbXZtLmg6MTMwOiB3YXJuaW5nOiBt
-aXNzaW5nIGluaXRpYWwgc2hvcnQNCj4gZGVzY3JpcHRpb24gb24gbGluZToNCj4gICogZW51bSBp
-d2xfcG93ZXJfc2NoZW1lDQo+IDEgd2FybmluZ3MgYXMgRXJyb3JzDQo+IA0KPiBBZGQgYSBzaG9y
-dCBkZXNjcmlwdGlvbiB0byBhZGRyZXNzIHRoaXMgd2FybmluZy4NCj4gDQo+IFNpZ25lZC1vZmYt
-Ynk6IEplZmYgSm9obnNvbiA8amVmZi5qb2huc29uQG9zcy5xdWFsY29tbS5jb20+DQo+IC0tLQ0K
-PiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9tdm0vbXZtLmggfCAyICstDQo+
-ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRp
-ZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL212bS9tdm0uaA0K
-PiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvbXZtL212bS5oDQo+IGluZGV4
-IGY2MzkxYzdhM2UyOS4uNTk0ODNmYmFhYWIwIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93
-aXJlbGVzcy9pbnRlbC9pd2x3aWZpL212bS9tdm0uaA0KPiArKysgYi9kcml2ZXJzL25ldC93aXJl
-bGVzcy9pbnRlbC9pd2x3aWZpL212bS9tdm0uaA0KPiBAQCAtMTI2LDcgKzEyNiw3IEBAIHN0cnVj
-dCBpd2xfbXZtX3RpbWVfZXZlbnRfZGF0YSB7DQo+ICAgLyogUG93ZXIgbWFuYWdlbWVudCAqLw0K
-PiANCj4gIC8qKg0KPiAtICogZW51bSBpd2xfcG93ZXJfc2NoZW1lDQo+ICsgKiBlbnVtIGl3bF9w
-b3dlcl9zY2hlbWUgLSBpd2wgcG93ZXIgc2NoZW1lcw0KPiAgICogQElXTF9QT1dFUl9TQ0hFTUVf
-Q0FNOiBDb250aW51b3VzbHkgQWN0aXZlIE1vZGUNCj4gICAqIEBJV0xfUE9XRVJfU0NIRU1FX0JQ
-UzogQmFsYW5jZWQgUG93ZXIgU2F2ZSAoZGVmYXVsdCkNCj4gICAqIEBJV0xfUE9XRVJfU0NIRU1F
-X0xQOiBMb3cgUG93ZXINCj4gDQo+IC0tLQ0KPiBiYXNlLWNvbW1pdDogM2ZkNTUyYjI2NThlYjZi
-ZjJhM2I1MzE1NTNmZTU2MzM0MGQzN2ZkZg0KPiBjaGFuZ2UtaWQ6IDIwMjUwMzE5LWl3bF9wb3dl
-cl9zY2hlbWUta2RvYy04OWNmODNiZDEyMWENCkFja2VkLWJ5OiBNaXJpIEtvcmVuYmxpdCA8bWly
-aWFtLnJhY2hlbC5rb3JlbmJsaXRAaW50ZWwuY29tPg0K
+On 4/28/2025 8:49 PM, Rameshkumar Sundaram wrote:
+> When two split-phy devices having supported frequency range in same band
+> (as mentioned below) are combined into an ath12k HW group, they will be
+> part of same wiphy and hence the channel list (wiphy->bands[]) will be
+> common for all of the radios (ar).
+> 
+> 1 - 2.4 GHz + 5 GHz Low band
+> 2 - 5 GHz High band + 6 GHz
+> 
+> When a scan is triggered with frequency list containing frequencies of
+> both  5 GHz low and 5 GHz high, mac80211 generates a single scan request
+> to driver with both the frequencies. This is because mac80211 splits the
+> scan request based on band.
+> 
+> ath12k checks the first frequency in the requested scan frequency list and
+> initiates scan to corresponding radio's(ar) firmware with all the
+> frequencies. Firmware rejects this scan as some frequencies in the scan
+> request are not supported, resulting is scan failure.
+> 
+> Fix this by splitting the scan request into multiples scans in driver
+> based on the supported frequency range of different radios in a band and
+> schedule scans in parallel to them.
+> Finally send scan completion/abort notification to mac80211 after all the
+> radios complete their scheduled scan.
+> 
+> Also, last_scan_link is not needed anymore as ath12k internally schedules
+> multiple scans, remove the same and use ahvif->links_map to identify
+> scan links when scan is cancelled.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+> 
+> Co-developed-by: Vignesh C <quic_vignc@quicinc.com>
+> Signed-off-by: Vignesh C <quic_vignc@quicinc.com>
+> Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/core.h |   2 -
+>  drivers/net/wireless/ath/ath12k/mac.c  | 148 ++++++++++++++++++++-----
+>  2 files changed, 118 insertions(+), 32 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+> index 0d512818ee96..c8fd0b29aaa1 100644
+> --- a/drivers/net/wireless/ath/ath12k/core.h
+> +++ b/drivers/net/wireless/ath/ath12k/core.h
+> @@ -353,8 +353,6 @@ struct ath12k_vif {
+>  	struct ath12k_vif_cache *cache[IEEE80211_MLD_MAX_NUM_LINKS];
+>  	/* indicates bitmap of link vif created in FW */
+>  	u32 links_map;
+> -	u8 last_scan_link;
+> -
+>  	/* Must be last - ends in a flexible-array member.
+>  	 *
+>  	 * FIXME: Driver should not copy struct ieee80211_chanctx_conf,
+> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+> index 6dab2f3a9e0d..236e3ee22d4d 100644
+> --- a/drivers/net/wireless/ath/ath12k/mac.c
+> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+> @@ -4249,6 +4249,23 @@ static void ath12k_scan_timeout_work(struct work_struct *work)
+>  	wiphy_unlock(ath12k_ar_to_hw(ar)->wiphy);
+>  }
+>  
+> +static void ath12k_mac_scan_send_complete(struct ath12k *ar,
+> +					  struct cfg80211_scan_info *info)
+> +{
+> +	struct ath12k_hw *ah = ar->ah;
+> +	struct ath12k *partner_ar;
+> +	int i;
+> +
+> +	lockdep_assert_wiphy(ah->hw->wiphy);
+> +
+> +	for_each_ar(ah, partner_ar, i)
+> +		if (partner_ar != ar &&
+> +		    partner_ar->scan.state == ATH12K_SCAN_RUNNING)
+> +			return;
+> +
+> +	ieee80211_scan_completed(ah->hw, info);
+> +}
+> +
+>  static void ath12k_scan_vdev_clean_work(struct wiphy *wiphy, struct wiphy_work *work)
+>  {
+>  	struct ath12k *ar = container_of(work, struct ath12k,
+> @@ -4287,7 +4304,7 @@ static void ath12k_scan_vdev_clean_work(struct wiphy *wiphy, struct wiphy_work *
+>  				    ATH12K_SCAN_STARTING)),
+>  		};
+>  
+> -		ieee80211_scan_completed(ar->ah->hw, &info);
+> +		ath12k_mac_scan_send_complete(ar, &info);
+>  	}
+>  
+>  	ar->scan.state = ATH12K_SCAN_IDLE;
+> @@ -4506,12 +4523,14 @@ ath12k_mac_find_link_id_by_ar(struct ath12k_vif *ahvif, struct ath12k *ar)
+>  	return ATH12K_FIRST_SCAN_LINK;
+>  }
+>  
+> -static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
+> -				 struct ieee80211_vif *vif,
+> -				 struct ieee80211_scan_request *hw_req)
+> +static int ath12k_mac_initiate_hw_scan(struct ieee80211_hw *hw,
+> +				       struct ieee80211_vif *vif,
+> +				       struct ieee80211_scan_request *hw_req,
+> +				       int n_channels,
+> +				       struct ieee80211_channel **chan_list,
+> +				       struct ath12k *ar)
+>  {
+>  	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
+> -	struct ath12k *ar;
+>  	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
+>  	struct ath12k_link_vif *arvif;
+>  	struct cfg80211_scan_request *req = &hw_req->req;
+> @@ -4525,13 +4544,6 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
+>  
+>  	arvif = &ahvif->deflink;
+>  
+> -	/* Since the targeted scan device could depend on the frequency
+> -	 * requested in the hw_req, select the corresponding radio
+> -	 */
+> -	ar = ath12k_mac_select_scan_device(hw, vif, hw_req->req.channels[0]->center_freq);
+> -	if (!ar)
+> -		return -EINVAL;
+> -
+>  	/* check if any of the links of ML VIF is already started on
+>  	 * radio(ar) corresponding to given scan frequency and use it,
+>  	 * if not use scan link (link id >= 15) for scan purpose.
+> @@ -4634,8 +4646,8 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
+>  		arg->scan_f_passive = 1;
+>  	}
+>  
+> -	if (req->n_channels) {
+> -		arg->num_chan = req->n_channels;
+> +	if (n_channels) {
+> +		arg->num_chan = n_channels;
+>  		arg->chan_list = kcalloc(arg->num_chan, sizeof(*arg->chan_list),
+>  					 GFP_KERNEL);
+>  		if (!arg->chan_list) {
+> @@ -4644,7 +4656,7 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
+>  		}
+>  
+>  		for (i = 0; i < arg->num_chan; i++)
+> -			arg->chan_list[i] = req->channels[i]->center_freq;
+> +			arg->chan_list[i] = chan_list[i]->center_freq;
+>  	}
+>  
+>  	ret = ath12k_start_scan(ar, arg);
+> @@ -4662,13 +4674,6 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
+>  
+>  	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac scan started");
+>  
+> -	/* As per cfg80211/mac80211 scan design, it allows only one
+> -	 * scan at a time. Hence last_scan link id is used for
+> -	 * tracking the link id on which the scan is been done on
+> -	 * this vif.
+> -	 */
+> -	ahvif->last_scan_link = arvif->link_id;
+> -
+>  	/* Add a margin to account for event/command processing */
+>  	ieee80211_queue_delayed_work(ath12k_ar_to_hw(ar), &ar->scan.timeout,
+>  				     msecs_to_jiffies(arg->max_scan_time +
+> @@ -4689,25 +4694,108 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
+>  	return ret;
+>  }
+>  
+> +static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
+> +				 struct ieee80211_vif *vif,
+> +				 struct ieee80211_scan_request *hw_req)
+> +{
+> +	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
+> +	struct ieee80211_channel **chan_list, *chan;
+> +	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
+> +	unsigned long links_map, link_id;
+> +	struct ath12k_link_vif *arvif;
+> +	struct ath12k *ar, *scan_ar;
+> +	int i, j, ret = 0;
+> +
+> +	lockdep_assert_wiphy(hw->wiphy);
+> +
+> +	chan_list = kcalloc(hw_req->req.n_channels, sizeof(*chan_list), GFP_KERNEL);
+> +	if (!chan_list)
+> +		return -ENOMEM;
+> +
+> +	/* There could be channels that belong to multiple underlying radio
+> +	 * in same scan request as mac80211 sees it as single band. In that
+> +	 * case split the hw_req based on frequency range and schedule scans to
+> +	 * corresponding radio.
+> +	 */
+> +	for_each_ar(ah, ar, i) {
+> +		int n_chans = 0;
+> +
+> +		for (j = 0; j < hw_req->req.n_channels; j++) {
+> +			chan = hw_req->req.channels[j];
+> +			scan_ar = ath12k_mac_select_scan_device(hw, vif,
+> +								chan->center_freq);
+> +			if (!scan_ar) {
+> +				ath12k_hw_warn(ah, "unable to select scan device for freq %d\n",
+> +					       chan->center_freq);
+> +				ret = -EINVAL;
+> +				goto abort;
+> +			}
+> +			if (ar != scan_ar)
+> +				continue;
+> +
+> +			chan_list[n_chans++] = chan;
+> +		}
+> +		if (n_chans) {
+> +			ret = ath12k_mac_initiate_hw_scan(hw, vif, hw_req, n_chans,
+> +							  chan_list, ar);
+> +			if (ret)
+> +				goto abort;
+> +		}
+> +	}
+> +abort:
+> +	/* If any of the parallel scans initiated fails, abort all and
+> +	 * remove the scan interfaces created. Return complete scan
+> +	 * failure as mac80211 assumes this as single scan request.
+> +	 */
+> +	if (ret) {
+> +		ath12k_hw_warn(ah, "Scan failed %d , cleanup all scan vdevs\n", ret);
+> +		links_map = ahvif->links_map;
+> +		for_each_set_bit(link_id, &links_map, ATH12K_NUM_MAX_LINKS) {
+> +			arvif = wiphy_dereference(hw->wiphy, ahvif->link[link_id]);
+> +			if (!arvif)
+> +				continue;
+> +
+> +			ar = arvif->ar;
+> +			if (ar->scan.arvif == arvif) {
+> +				wiphy_work_cancel(hw->wiphy, &ar->scan.vdev_clean_wk);
+> +				spin_lock_bh(&ar->data_lock);
+> +				ar->scan.arvif = NULL;
+> +				ar->scan.state = ATH12K_SCAN_IDLE;
+> +				ar->scan_channel = NULL;
+> +				ar->scan.roc_freq = 0;
+> +				spin_unlock_bh(&ar->data_lock);
+> +			}
+> +			if (link_id >= ATH12K_FIRST_SCAN_LINK) {
+> +				ath12k_mac_remove_link_interface(hw, arvif);
+> +				ath12k_mac_unassign_link_vif(arvif);
+> +			}
+> +		}
+> +	}
+> +	kfree(chan_list);
+> +	return ret;
+> +}
+> +
+>  static void ath12k_mac_op_cancel_hw_scan(struct ieee80211_hw *hw,
+>  					 struct ieee80211_vif *vif)
+>  {
+>  	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
+> -	u16 link_id = ahvif->last_scan_link;
+> +	unsigned long link_id, links_map = ahvif->links_map;
+>  	struct ath12k_link_vif *arvif;
+>  	struct ath12k *ar;
+>  
+>  	lockdep_assert_wiphy(hw->wiphy);
+>  
+> -	arvif = wiphy_dereference(hw->wiphy, ahvif->link[link_id]);
+> -	if (!arvif || arvif->is_started)
+> -		return;
+> +	for_each_set_bit(link_id, &links_map, ATH12K_NUM_MAX_LINKS) {
+> +		arvif = wiphy_dereference(hw->wiphy, ahvif->link[link_id]);
+> +		if (!arvif || arvif->is_started)
+> +			continue;
+>  
+> -	ar = arvif->ar;
+> +		ar = arvif->ar;
+>  
+> -	ath12k_scan_abort(ar);
+> +		ath12k_scan_abort(ar);
+>  
+> -	cancel_delayed_work_sync(&ar->scan.timeout);
+> +		cancel_delayed_work_sync(&ar->scan.timeout);
+> +	}
+>  }
+>  
+>  static int ath12k_install_key(struct ath12k_link_vif *arvif,
+> @@ -8917,7 +9005,7 @@ static void ath12k_mac_op_remove_interface(struct ieee80211_hw *hw,
+>  					.aborted = true,
+>  				};
+>  
+> -				ieee80211_scan_completed(ar->ah->hw, &info);
+> +				ath12k_mac_scan_send_complete(ar, &info);
+>  			}
+>  
+>  			ar->scan.state = ATH12K_SCAN_IDLE;
+
+Reviewed-by: Mahendran P <quic_mahep@quicinc.com>
+
 
