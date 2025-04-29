@@ -1,177 +1,167 @@
-Return-Path: <linux-wireless+bounces-22200-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22201-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50C6AA0C9C
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 15:03:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86418AA10E7
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 17:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA3133B2B92
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 13:01:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E172A1BA2362
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 15:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E27E2D026E;
-	Tue, 29 Apr 2025 12:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191B823DE80;
+	Tue, 29 Apr 2025 15:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ki0qKgl6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Isbw33bq";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ki0qKgl6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Isbw33bq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iiTZd18j"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9F92D0262
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 12:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6D823D2A3
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 15:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745931573; cv=none; b=nh8G27+b89SRB8aaqe/CiiRIgmRfXdoXCvYc0CjH00/RAb4sPXfdSr8Gn4zfGABtnxBNqxbekMADwGNl3GyZoijZxf2+8Mo3GpJgK9ln6AHWke/L3S6HiByNu9Oy2M5MW7NcURmmhI6qsRahiAgQzc5Xed7VB80WZYTfZ0nZYvE=
+	t=1745941684; cv=none; b=hIB9VDnOnyAhzZQfdg1kKDVrLqVAXyUTFdU8Oyq2gtS2HsQ45L8EZd5TUgPeHwz5hKVIxG/Co8CURxa8/SsJFBP2jr/67+KJNlv7e86kcEhEJBs0rUyNgzvG4UCjjj/EwpZAPqfQJlJUjoSZvYtB+3vLk4u608Wjq3Z3EzMW3pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745931573; c=relaxed/simple;
-	bh=MjuK/lSg2gfnEJ1nryEr/psdW7THiGFlO+Gx0Qp8XhY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mltfZaibbpvB9UbdOrD+azZjAIDu2QP5B2/yaZBuD3hn3fcYj8dw80Q2YROzMFIPJfuHS/+xsXlCz5BpB5m8fdg4DPW3itFI7iULySeDM2HlYiO/lWbg+P9qAIhTKNOxB/GmFKFE5p/HsvHpkPwel2aevDv9BEC0C8/TXdo4Vwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ki0qKgl6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Isbw33bq; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ki0qKgl6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Isbw33bq; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 72A3B1F391;
-	Tue, 29 Apr 2025 12:59:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1745931569; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LOpr0MmnZWLYeA72wI88/nqcTraiGo+BD0i31sE7Rtk=;
-	b=ki0qKgl6E5qcsG1lSg71g7+Tyz+w7icENL7VGX9dvDqjqqCWqmQQ7+XBm2SqNurWze4Y7z
-	vIOY+mrDeRMKjSLPlWviVq4M1BD9aG4O/rSza7Okfoizn1y5BBd5ZC48CZ+2yGBFwYLRm3
-	pbcRfyDpjWxj+s/EGP+UMJayNJloCcA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1745931569;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LOpr0MmnZWLYeA72wI88/nqcTraiGo+BD0i31sE7Rtk=;
-	b=Isbw33bq03+GreuAyzjBgP//PNMMUsFH2Vs3D6nYe0a0/8cKidwMg+4/w/S3dzdoIyB5Ys
-	+os3INoVfkjjugDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1745931569; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LOpr0MmnZWLYeA72wI88/nqcTraiGo+BD0i31sE7Rtk=;
-	b=ki0qKgl6E5qcsG1lSg71g7+Tyz+w7icENL7VGX9dvDqjqqCWqmQQ7+XBm2SqNurWze4Y7z
-	vIOY+mrDeRMKjSLPlWviVq4M1BD9aG4O/rSza7Okfoizn1y5BBd5ZC48CZ+2yGBFwYLRm3
-	pbcRfyDpjWxj+s/EGP+UMJayNJloCcA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1745931569;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LOpr0MmnZWLYeA72wI88/nqcTraiGo+BD0i31sE7Rtk=;
-	b=Isbw33bq03+GreuAyzjBgP//PNMMUsFH2Vs3D6nYe0a0/8cKidwMg+4/w/S3dzdoIyB5Ys
-	+os3INoVfkjjugDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 533481340C;
-	Tue, 29 Apr 2025 12:59:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 09D4ETHNEGhaYAAAD6G6ig
-	(envelope-from <iivanov@suse.de>); Tue, 29 Apr 2025 12:59:29 +0000
-Date: Tue, 29 Apr 2025 15:59:28 +0300
-From: "Ivan T. Ivanov" <iivanov@suse.de>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, Jeff Chen <jeff.chen_1@nxp.com>,
-	Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mmc@vger.kernel.org
-Subject: Re: [PATCH do not merge 0/4] wifi: mwifiex: add iw61x support
-Message-ID: <20250429125928.pw7k4raw52jyvyaj@localhost.localdomain>
-References: <20250326-mwifiex-iw61x-v1-0-ff875ed35efc@pengutronix.de>
- <20250331065026.GA12444@francesco-nb>
+	s=arc-20240116; t=1745941684; c=relaxed/simple;
+	bh=K85QFtLIjck/gX3IFcEjM53AOM/CBweK5gB7emPaJNM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=R2+5QtCBK563kLaJXOe25YfcF8lj7r6LXFtAiwsT1JFAtjNfzT/XEUJBd38fQM7T1Qvqmn47duvYz7CRDZ+hkJxK/t8JMxZIngdQ0/y+DvuOv8sX//biQjjCb2oWK0CPBIUcDaEt/5tf5Ad2ZAQpCJbyPuaGwlHWK/htMHb5Ios=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iiTZd18j; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30effbfaf61so70271931fa.0
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 08:48:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745941680; x=1746546480; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RJ2Uu4wviK+ET+a1Q/3hHUMgJ+PVwDch+yPdKu89LDM=;
+        b=iiTZd18j5Hb/y7n38dRzf1m6nhzGVFJRnJ58WLBFZnQhveA5U5/Y6MsLDf9d2CGMFD
+         cMXbuM6saTY66137F6prSuqTQGYmbMdHXY/j+GQ6FgCIxX2/GjZZKj+efdg94GcJyXkI
+         f8oG1QwFiLaqRyfdahLv5SFE+E0/OqnNJQwMEUc1PvcfvlcF/IPGK64o5EFnD6F3nLWn
+         PHM3TGWHntV1WjJE+t2yQWO+7/pWSKoVO6bPAx6PNu9cFWw4Kb3l2toFu3cR6Oek6z4+
+         4SbxozB0ToOUCPtm1ahn/6myGUfZVJVb8z98FclCaB5a8ikOeMs7JSKY7sqa5m/LQHW+
+         Drkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745941680; x=1746546480;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=RJ2Uu4wviK+ET+a1Q/3hHUMgJ+PVwDch+yPdKu89LDM=;
+        b=teuoFUMJd0Hp1H43MkKsOECJLQj7LlY9Wi5NMzMUM8dmSY9aEGnO62drQc8qpibBex
+         ZJpQWw4D9q1xnV/XY4Kj4/zrXWPsqo60C3PTQWzSVWoN2j7MIzDBupq34ZBjgzIbe3oR
+         U6k+Jx/ZDyhQqjsy+Hywjur8KtwMWnkwUBxcZ5LUFsaj4UCArmHkLgMjkGBt7WUm/pLg
+         4bZFaQ1KUeayJURAMsB3/AiYpZQHXLz2WPq3oIVLaR8U14WIKa+mWv7xjfY7LGvlIGCq
+         uTZgHZZP1CAnCyQUqOXaBSu3mSU5y2B8hxdpK8cRehuBeoMK5X/Wb40fAKKyK8v0iQEy
+         xTMw==
+X-Gm-Message-State: AOJu0YxRuUHp7l6wTqCg45I2kochtihpz1VlqCXzMSgV/JLYAwFuRrlh
+	kXEMglfoxqGDlrF7iGOnWuo/IMHqqek6kxisP4QAoxy0rtql/o6Q
+X-Gm-Gg: ASbGncv/nxxxPmQaxz828w077yW2tMZF+A7XlDou0FTEZODFl/xPU/i16YRzAZW/l1S
+	du+QKirQ53EbSmFeoJZqmpodm1nBYDn5ugg2MgxRhuaqGLVEU+Au+GVHJzbaQ5im7x4sXYDfFe9
+	OJukqef1/Id4pyBoyygrJjxIlDRKsr0Gq4huLQIjQxDanFnl+/Lqq6cKDK4bu2MsPv3qC6rG0ty
+	MwyfuKKbTu574uv5bV4aFkpbiJ6MKUz4sV1L6+4ZWYx9h8BVy4KLk5W7/RKp6jHofvAqHIWlhzV
+	KO+bdwXIJYL/8Bem2CCJxtcRaSmdIk7JpZzMRbyfrI6IkYOzY6Pv/GT6j1U=
+X-Google-Smtp-Source: AGHT+IH9b85HibhvPJXHR+VJVotRVVPQyUVww3aNhG6Xb5/qwDd3JtHBnySrsUnnvkQRO8EKycfQHQ==
+X-Received: by 2002:a2e:a553:0:b0:30b:c328:3cdc with SMTP id 38308e7fff4ca-31d45a3ce50mr17371591fa.2.1745941680000;
+        Tue, 29 Apr 2025 08:48:00 -0700 (PDT)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-317cf659b1esm24819241fa.20.2025.04.29.08.47.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Apr 2025 08:47:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250331065026.GA12444@francesco-nb>
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 29 Apr 2025 17:47:58 +0200
+Message-Id: <D9J8O65N947J.Y0LSNAOS0AYG@gmail.com>
+Cc: <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH ath-next] wifi: ath12k: allow beacon protection keys to
+ be installed in hardware
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Karthikeyan Kathirvel" <karthikeyan.kathirvel@oss.qualcomm.com>,
+ <ath12k@lists.infradead.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250421114711.3660911-1-karthikeyan.kathirvel@oss.qualcomm.com>
+In-Reply-To: <20250421114711.3660911-1-karthikeyan.kathirvel@oss.qualcomm.com>
 
-Hi,
+On Mon Apr 21, 2025 at 1:47 PM CEST, Karthikeyan Kathirvel wrote:
+> Install beacon protection keys in hardware for AP modes only if hardware
+> supports it, as indicated by the WMI service bit
+> WMI_TLV_SERVICE_BEACON_PROTECTION_SUPPORT. Allow keyidx up to 7, since
+> beacon protection uses keyidx 6 and 7.
+>
+> Control this feature by setting bit 0 of feature_enable_bitmap when sendi=
+ng
+> the WMI_BCN_TMPL_CMDID command to firmware.
+>
+> Check for the beacon protection enabled bit in both tx and non-tx profile=
+s
+> for MBSSID cases. If set in either profile, enable the beacon protection
+> feature in firmware for transmitted vif.
+>
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.=
+com>
+[...]
+> @@ -4964,14 +4994,6 @@ static int ath12k_mac_op_set_key(struct ieee80211_=
+hw *hw, enum set_key_cmd cmd,
+> =20
+>  	lockdep_assert_wiphy(hw->wiphy);
+> =20
+> -	/* BIP needs to be done in software */
+> -	if (key->cipher =3D=3D WLAN_CIPHER_SUITE_AES_CMAC ||
+> -	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
+> -	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_GMAC_256 ||
+> -	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_CMAC_256) {
+> -		return 1;
+> -	}
+> -
+>  	if (key->keyidx > WMI_MAX_KEY_INDEX)
+>  		return -ENOSPC;
+> =20
 
-On 03-31 08:50, Francesco Dolcini wrote:
-> Message-ID: <20250331065026.GA12444@francesco-nb>
-> 
-> +Pete/Jesse @NXP
-> 
-> On Wed, Mar 26, 2025 at 01:18:30PM +0100, Sascha Hauer wrote:
-> > This series adds iw61x support to the mwifiex driver. It works for me,
-> > but is not yet ready to be merged. Some people showed interest in it, so
-> > I am sending it here.
-> > 
-> > All testing and review feedback appreciated.
-> > 
-> > During startup I get these messages:
-> > 
-> > [   12.078010] mwifiex_sdio mmc1:0001:1: Unknown GET_HW_SPEC TLV type: 0xff
-> > [   12.078018] mwifiex_sdio mmc1:0001:1: Unknown GET_HW_SPEC TLV type: 0xff
-> > [   12.078024] mwifiex_sdio mmc1:0001:1: Unknown GET_HW_SPEC TLV type: 0x23e
+This hunk seems to break station mode on QCN9274. Maybe on WCN7850 too ? I =
+see
+that it was not tested against that HW.
 
-In the downstream driver, branch lf-6.12.3_1.0.0, t his seems to be
-MrvlIEtypes_fw_cap_info_t for things like:
+With that hunk I cannot receive broadcast trafic sent by the ap anymore.
+Generated by a simple "arping -b X.X.X.X -I br0" in my case.
 
-FW_CAPINFO_EXT_802_11AX, FW_CAPINFO_EXT_6G ....
+Replacing that hunk with something similar as what is done in CLO [0] seems=
+ to
+fix the issue:
 
-> > [   12.078029] mwifiex_sdio mmc1:0001:1: Unknown GET_HW_SPEC TLV type: 0x25c
-> > 
+@@ -5575,13 +5605,9 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw=
+ *hw, enum set_key_cmd cmd,
+=20
+ 	lockdep_assert_wiphy(hw->wiphy);
+=20
+-	/* BIP needs to be done in software */
+-	if (key->cipher =3D=3D WLAN_CIPHER_SUITE_AES_CMAC ||
+-	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
+-	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_GMAC_256 ||
+-	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_CMAC_256) {
++	/* IGTK needs to be done in host software */
++	if (key->keyidx =3D=3D 4 || key->keyidx =3D=3D 5)
+ 		return 1;
+-	}
+=20
+ 	if (key->keyidx > WMI_MAX_KEY_INDEX)
+ 		return -ENOSPC;
 
-This looks like MrvlIEtypes_Secure_Boot_Uuid_t. Doesn't seems too
-important.
 
-> > Not sure what these are about, I can't see these handled in the
-> > downstream mwifiex driver as well. Could also be there is some parsing
-> > error. Nevertheless the driver seems to work.
+PS: I tested that with firmware PCI WLAN.WBE.1.3.1-00218-QCAHKSWPL_SILICONZ=
+-1
 
-Yep, it is working. Thank you! I am testing this on FRDM-iMX93, which has
-IW612 revision 1.0.
-
-I have to use nxp/sd_w61x_v1.bin.se on this board and NULL firmware_sdiouart
-because it seems that firmware return 1 as "strap" value, even if WiFi
-is definitely connected over SDIO.
-
-Regards,
-Ivan
-
+[0] https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/blob/w=
+in.wlan_host_opensource.3.0/patches/ath12k/726-ath12k-add-beacon-protection=
+-support-for-ath12k.patch?ref_type=3Dheads
 
