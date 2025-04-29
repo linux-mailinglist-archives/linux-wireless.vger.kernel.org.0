@@ -1,167 +1,161 @@
-Return-Path: <linux-wireless+bounces-22201-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22202-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86418AA10E7
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 17:49:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A71FAAA11B3
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 18:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E172A1BA2362
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 15:48:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B10C3B2962
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 16:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191B823DE80;
-	Tue, 29 Apr 2025 15:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B5B246348;
+	Tue, 29 Apr 2025 16:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iiTZd18j"
+	dkim=pass (2048-bit key) header.d=easyb-ch.20230601.gappssmtp.com header.i=@easyb-ch.20230601.gappssmtp.com header.b="a4FKzEKN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6D823D2A3
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 15:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927372459D2
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 16:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745941684; cv=none; b=hIB9VDnOnyAhzZQfdg1kKDVrLqVAXyUTFdU8Oyq2gtS2HsQ45L8EZd5TUgPeHwz5hKVIxG/Co8CURxa8/SsJFBP2jr/67+KJNlv7e86kcEhEJBs0rUyNgzvG4UCjjj/EwpZAPqfQJlJUjoSZvYtB+3vLk4u608Wjq3Z3EzMW3pk=
+	t=1745944739; cv=none; b=sSBmPEg/TVAAZAnZ1Rpt+WxsrUwmlUGIuFH3jIW578LMIndCnH/irYbr9q0XqjuidOAxFQ+PWX5vnC1wFgiXceVL6NCNxNa1zNHFxmwYbwKVO7zWSnCldz4/8nlH3q0/vuyiBKMUe1xXOcNfvwTrL5/YrvvfjHyktCU1zEcCii0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745941684; c=relaxed/simple;
-	bh=K85QFtLIjck/gX3IFcEjM53AOM/CBweK5gB7emPaJNM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=R2+5QtCBK563kLaJXOe25YfcF8lj7r6LXFtAiwsT1JFAtjNfzT/XEUJBd38fQM7T1Qvqmn47duvYz7CRDZ+hkJxK/t8JMxZIngdQ0/y+DvuOv8sX//biQjjCb2oWK0CPBIUcDaEt/5tf5Ad2ZAQpCJbyPuaGwlHWK/htMHb5Ios=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iiTZd18j; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30effbfaf61so70271931fa.0
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 08:48:01 -0700 (PDT)
+	s=arc-20240116; t=1745944739; c=relaxed/simple;
+	bh=hR8Y+nK0cX/CZdCBzLn+W3sfxRoUxjFKeCQdBb+BaYs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bGMmC7bPgFK0OPqd5jmIOyZ15Cn8UmgLH97GMx8Fe76HrbkmlSWIVM+d6qmNBFu21FPm5OhZDvRM+lbcyc0O1gbuf8vxbVvF3U3HoSdZU7ViFenSq+RnPzFWFS7UVK7ibhbXq56x1qFOe8gIaKVKpXxwgM55UCWaQB73h7Oa/WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=easyb.ch; spf=none smtp.mailfrom=easyb.ch; dkim=pass (2048-bit key) header.d=easyb-ch.20230601.gappssmtp.com header.i=@easyb-ch.20230601.gappssmtp.com header.b=a4FKzEKN; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=easyb.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=easyb.ch
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e731cd5f2adso3408104276.0
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 09:38:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745941680; x=1746546480; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=easyb-ch.20230601.gappssmtp.com; s=20230601; t=1745944736; x=1746549536; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RJ2Uu4wviK+ET+a1Q/3hHUMgJ+PVwDch+yPdKu89LDM=;
-        b=iiTZd18j5Hb/y7n38dRzf1m6nhzGVFJRnJ58WLBFZnQhveA5U5/Y6MsLDf9d2CGMFD
-         cMXbuM6saTY66137F6prSuqTQGYmbMdHXY/j+GQ6FgCIxX2/GjZZKj+efdg94GcJyXkI
-         f8oG1QwFiLaqRyfdahLv5SFE+E0/OqnNJQwMEUc1PvcfvlcF/IPGK64o5EFnD6F3nLWn
-         PHM3TGWHntV1WjJE+t2yQWO+7/pWSKoVO6bPAx6PNu9cFWw4Kb3l2toFu3cR6Oek6z4+
-         4SbxozB0ToOUCPtm1ahn/6myGUfZVJVb8z98FclCaB5a8ikOeMs7JSKY7sqa5m/LQHW+
-         Drkw==
+        bh=mKJPPGmtZ4Q4FEXLrbVF+XChkMZLyTXErk0JCwdy/xQ=;
+        b=a4FKzEKN+YLks3QNu8GVGLGXipONF0ukBLVeDOqGDULOPB8dCvDeDGrOrnG2RF+Hbr
+         yj90RDrwwu4hbJr0gZpboNQ6SlQ1zmGb/Tj+8KbTvpeG0HhlV0AzKjtIxG3p9pFcFyTp
+         ifIAYzatPar1wSeTyGSSSr/NGndkUv9h4DG+tSibE0LLbjDpvGtNL3n1FhTPw8PYIYGA
+         ltEM8zccIR10PxRsidosJwORNXUeRMb0vFCFzaXakK+eYN2UMH+Fa/RBVpgbZMqZuyNO
+         T/7ZwWvxkJUCihGYXtlNRY2V2a03DMeuEPDaWouoIeRKqaxY1ily/jHzf8a8vNuyVUUn
+         cypQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745941680; x=1746546480;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RJ2Uu4wviK+ET+a1Q/3hHUMgJ+PVwDch+yPdKu89LDM=;
-        b=teuoFUMJd0Hp1H43MkKsOECJLQj7LlY9Wi5NMzMUM8dmSY9aEGnO62drQc8qpibBex
-         ZJpQWw4D9q1xnV/XY4Kj4/zrXWPsqo60C3PTQWzSVWoN2j7MIzDBupq34ZBjgzIbe3oR
-         U6k+Jx/ZDyhQqjsy+Hywjur8KtwMWnkwUBxcZ5LUFsaj4UCArmHkLgMjkGBt7WUm/pLg
-         4bZFaQ1KUeayJURAMsB3/AiYpZQHXLz2WPq3oIVLaR8U14WIKa+mWv7xjfY7LGvlIGCq
-         uTZgHZZP1CAnCyQUqOXaBSu3mSU5y2B8hxdpK8cRehuBeoMK5X/Wb40fAKKyK8v0iQEy
-         xTMw==
-X-Gm-Message-State: AOJu0YxRuUHp7l6wTqCg45I2kochtihpz1VlqCXzMSgV/JLYAwFuRrlh
-	kXEMglfoxqGDlrF7iGOnWuo/IMHqqek6kxisP4QAoxy0rtql/o6Q
-X-Gm-Gg: ASbGncv/nxxxPmQaxz828w077yW2tMZF+A7XlDou0FTEZODFl/xPU/i16YRzAZW/l1S
-	du+QKirQ53EbSmFeoJZqmpodm1nBYDn5ugg2MgxRhuaqGLVEU+Au+GVHJzbaQ5im7x4sXYDfFe9
-	OJukqef1/Id4pyBoyygrJjxIlDRKsr0Gq4huLQIjQxDanFnl+/Lqq6cKDK4bu2MsPv3qC6rG0ty
-	MwyfuKKbTu574uv5bV4aFkpbiJ6MKUz4sV1L6+4ZWYx9h8BVy4KLk5W7/RKp6jHofvAqHIWlhzV
-	KO+bdwXIJYL/8Bem2CCJxtcRaSmdIk7JpZzMRbyfrI6IkYOzY6Pv/GT6j1U=
-X-Google-Smtp-Source: AGHT+IH9b85HibhvPJXHR+VJVotRVVPQyUVww3aNhG6Xb5/qwDd3JtHBnySrsUnnvkQRO8EKycfQHQ==
-X-Received: by 2002:a2e:a553:0:b0:30b:c328:3cdc with SMTP id 38308e7fff4ca-31d45a3ce50mr17371591fa.2.1745941680000;
-        Tue, 29 Apr 2025 08:48:00 -0700 (PDT)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-317cf659b1esm24819241fa.20.2025.04.29.08.47.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Apr 2025 08:47:59 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745944736; x=1746549536;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mKJPPGmtZ4Q4FEXLrbVF+XChkMZLyTXErk0JCwdy/xQ=;
+        b=xMHqVl2eZblBUOnxqkAovGfGdPxj/IpV2pHAGc2a/svV+dLNJAS6l55qiwOzhnbLrS
+         zf7Lvy5jSjy7/GOaUVk5G1eEnEPhsEpKPzrC3ZCTFlIAL7G1hcxqaSf1G1twI5TeUefF
+         vEc3u1Xe4VLt9tJpFsY/uNrRC6SY6mL03zxBspmdyOBuvBrkgh3JgxKiKtK6iXOULz8i
+         oPqojRhfHuiTDcEAHPfCOirtWryD7q3pcsXX/7aZgS7dDH3/qi1Luo0I+JXPr3QO8JQt
+         rYVq4PffFr2Qe8KajgPsWBPtSU2qbWdx2Rf1f96pj61WNTiCPWmF+Vgt9WTCtMwPuQ15
+         H3dw==
+X-Forwarded-Encrypted: i=1; AJvYcCXi4/pEkZyUUFMQ1t5vNrZGrqEMy/w+1vbGBJkU5EMgVELa/Nx2MHRtbKdNlsRDtkMOd9o/hn0dF2fcA0JRsQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuZ48Bok28Tpxf3hof+7Fs+DcNWOIh9aj/852P5tH5H58AIdxO
+	uA94v5asm+dsVVMHWjNxGk/DPUFPcOd5ebXp6FJWb89vfAFxDKtY6AQWvqC3MiYaoQfh7ZzmZf5
+	rO43SgNLGViK/54tUJ5sD8nEkqKYMVhIyCQEl1w==
+X-Gm-Gg: ASbGncturEFVmj4uDIj+PmmePogp67Tj3BE8Zz0rn5h4wiZ2/jDfs5IZq/6VlH4eKjv
+	iCWzcNUtelHaDt9h5OUmEQvmCfdf4Y/dGlpt0Xpx7HgiyD3IKjzMGqA63qMSJ9ao0tt3V8EGJNd
+	rw1hOA0xGTgPyArEbT4rIuSJ/X+YKyBGDjzaLNJlnrHcoQUiJFoqA=
+X-Google-Smtp-Source: AGHT+IEBBaq5tsglGxhuINvv6IZSxaRI9dE1eDAka1Xuo1qsb8GlnVfNRulVXOsQNgsWdqejnZiq9iGFOJQ10Z6pJ+o=
+X-Received: by 2002:a05:6902:154a:b0:e72:a02e:a797 with SMTP id
+ 3f1490d57ef6-e73511f984dmr5201544276.44.1745944736100; Tue, 29 Apr 2025
+ 09:38:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20241107125209.1736277-1-michael.nemanov@ti.com>
+In-Reply-To: <20241107125209.1736277-1-michael.nemanov@ti.com>
+From: Ezra Buehler <ezra@easyb.ch>
+Date: Tue, 29 Apr 2025 18:38:20 +0200
+X-Gm-Features: ATxdqUHV5CP1dNwzjt8THrj9C95bgv7pJhkhoTGKgrCVvTrrD0jY5bAxDeZ-Gnw
+Message-ID: <CAM1KZSnvDqUHd2ENKyaZc=WyRgL18TrsF766_ZJVeeAiPth+Vw@mail.gmail.com>
+Subject: Re: [PATCH v5 00/17] wifi: cc33xx: Add driver for new TI CC33xx
+ wireless device family
+To: Michael Nemanov <michael.nemanov@ti.com>
+Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Sabeeh Khan <sabeeh-khan@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 29 Apr 2025 17:47:58 +0200
-Message-Id: <D9J8O65N947J.Y0LSNAOS0AYG@gmail.com>
-Cc: <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH ath-next] wifi: ath12k: allow beacon protection keys to
- be installed in hardware
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Karthikeyan Kathirvel" <karthikeyan.kathirvel@oss.qualcomm.com>,
- <ath12k@lists.infradead.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250421114711.3660911-1-karthikeyan.kathirvel@oss.qualcomm.com>
-In-Reply-To: <20250421114711.3660911-1-karthikeyan.kathirvel@oss.qualcomm.com>
 
-On Mon Apr 21, 2025 at 1:47 PM CEST, Karthikeyan Kathirvel wrote:
-> Install beacon protection keys in hardware for AP modes only if hardware
-> supports it, as indicated by the WMI service bit
-> WMI_TLV_SERVICE_BEACON_PROTECTION_SUPPORT. Allow keyidx up to 7, since
-> beacon protection uses keyidx 6 and 7.
->
-> Control this feature by setting bit 0 of feature_enable_bitmap when sendi=
-ng
-> the WMI_BCN_TMPL_CMDID command to firmware.
->
-> Check for the beacon protection enabled bit in both tx and non-tx profile=
-s
-> for MBSSID cases. If set in either profile, enable the beacon protection
-> feature in firmware for transmitted vif.
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.=
-com>
-[...]
-> @@ -4964,14 +4994,6 @@ static int ath12k_mac_op_set_key(struct ieee80211_=
-hw *hw, enum set_key_cmd cmd,
-> =20
->  	lockdep_assert_wiphy(hw->wiphy);
-> =20
-> -	/* BIP needs to be done in software */
-> -	if (key->cipher =3D=3D WLAN_CIPHER_SUITE_AES_CMAC ||
-> -	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
-> -	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_GMAC_256 ||
-> -	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_CMAC_256) {
-> -		return 1;
-> -	}
-> -
->  	if (key->keyidx > WMI_MAX_KEY_INDEX)
->  		return -ENOSPC;
-> =20
+Hi Michael,
 
-This hunk seems to break station mode on QCN9274. Maybe on WCN7850 too ? I =
-see
-that it was not tested against that HW.
+On Thu, Nov 7, 2024 at 1:51=E2=80=AFPM Michael Nemanov <michael.nemanov@ti.=
+com> wrote:
+> This series adds support for CC33xx which is a new family of WLAN IEEE802=
+.11 a/b/g/n/ax
+> and BLE 5.4 transceivers by Texas Instruments.
 
-With that hunk I cannot receive broadcast trafic sent by the ap anymore.
-Generated by a simple "arping -b X.X.X.X -I br0" in my case.
+Thanks for going through the effort of upstreaming the driver.
 
-Replacing that hunk with something similar as what is done in CLO [0] seems=
- to
-fix the issue:
+We have started looking into the CC33xx chips (in conjunction with the
+AM62L SoC) and noticed the following behavior:
 
-@@ -5575,13 +5605,9 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw=
- *hw, enum set_key_cmd cmd,
-=20
- 	lockdep_assert_wiphy(hw->wiphy);
-=20
--	/* BIP needs to be done in software */
--	if (key->cipher =3D=3D WLAN_CIPHER_SUITE_AES_CMAC ||
--	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
--	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_GMAC_256 ||
--	    key->cipher =3D=3D WLAN_CIPHER_SUITE_BIP_CMAC_256) {
-+	/* IGTK needs to be done in host software */
-+	if (key->keyidx =3D=3D 4 || key->keyidx =3D=3D 5)
- 		return 1;
--	}
-=20
- 	if (key->keyidx > WMI_MAX_KEY_INDEX)
- 		return -ENOSPC;
+# curl https://speedtest.init7.net/1GB.dd >/dev/null
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Cur=
+rent
+                                 Dload  Upload   Total   Spent    Left  Spe=
+ed
+  4 1024M    4 42.4M    0     0  2358k      0  0:07:24  0:00:18  0:07:06   =
+  0
 
+After downloading some megabytes of data, with reasonable speed,
+something seems to lock up and no further communication is possible
+through the Wi-Fi interface.
 
-PS: I tested that with firmware PCI WLAN.WBE.1.3.1-00218-QCAHKSWPL_SILICONZ=
--1
+AFAICT nothing is logged, however, when I unload the driver, I see errors
+like:
 
-[0] https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/blob/w=
-in.wlan_host_opensource.3.0/patches/ath12k/726-ath12k-add-beacon-protection=
--support-for-ath12k.patch?ref_type=3Dheads
+[16590.256433] cc33xx: ERROR failed to initiate cmd role disable
+[16590.256446] cc33xx: CC33xx driver attempting recovery
+[16590.256455] cc33xx: Driver being removed, recovery disabled
+[16590.272950] wlan0: deauthenticating from ab:cd:ef:01:23:45 by local
+choice (Reason: 3=3DDEAUTH_LEAVING)
+[16590.784390] cc33xx: WARNING Unable to flush all TX buffers, timed
+out (timeout 500 ms
+[16591.296388] cc33xx: WARNING Unable to flush all TX buffers, timed
+out (timeout 500 ms
+[16591.808379] cc33xx: WARNING Unable to flush all TX buffers, timed
+out (timeout 500 ms
+[16591.816792] wlan0: failed to remove key (0, ab:cd:ef:01:23:45) from
+hardware (-11)
+[16593.840379] cc33xx: WARNING CONFIGURE command NOK
+[16593.845172] cc33xx: WARNING tx param cfg failed: -5
+[16595.856352] cc33xx: WARNING CONFIGURE command NOK
+[16595.861159] cc33xx: WARNING tx param cfg failed: -5
+[16597.872323] cc33xx: WARNING CONFIGURE command NOK
+[16597.877079] cc33xx: WARNING tx param cfg failed: -5
+[16599.888317] cc33xx: WARNING CONFIGURE command NOK
+[16599.893069] cc33xx: WARNING tx param cfg failed: -5
+[16600.400303] cc33xx: WARNING Unable to flush all TX buffers, timed
+out (timeout 500 ms
+[16600.912270] cc33xx: WARNING Unable to flush all TX buffers, timed
+out (timeout 500 ms
+[16600.920388] wlan0: failed to remove key (1, ff:ff:ff:ff:ff:ff) from
+hardware (-11)
+
+We can easily reproduce this behavior on our ATMDS62LEVM board in
+conjunction with the M2-CC3351 card. We run a Yocto-based distribution
+(Scarthgap) using the latest linux-ti-staging-6.12 kernel recipe (Linux
+6.12.17+).
+
+So far, I haven't tried to dig into this deeper. Any ideas on how to
+debug this further?
+
+Cheers,
+Ezra.
 
