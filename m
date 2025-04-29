@@ -1,280 +1,239 @@
-Return-Path: <linux-wireless+bounces-22172-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22173-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213B0AA0162
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 06:36:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0CDAA0163
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 06:36:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 536DB7A8A57
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 04:35:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57FEF1A88078
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 04:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0501078F;
-	Tue, 29 Apr 2025 04:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C9735972;
+	Tue, 29 Apr 2025 04:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="it0Iu3TG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZZAiqfB9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5F24409
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 04:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745901384; cv=none; b=PpW+rQU5UghxGnSWfrkKs9+WpK6vk83O0sZy1NO3rdEi/WT+CCALGXD+x3Jh40uL2BVD3k8Hm0Rz/HENT/3slRCWz+E9mSSbORJJxV8mMfpg2HYUCdDvtlXHFssOEt2pnJpcmivFGD9KvexTj1rMQ8VHwFdUddgg+8RJqxUwB6A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745901384; c=relaxed/simple;
-	bh=q1X4PdsVSQPp+TNC/35tWRYvYjFgw6ROuJxv3ycUBjo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=u11Wie8BR0KuL68NLDZl6dHNDllpxkvY9O+peNWi13N7NCR14Brg+Mn6E429azmpoogZrSEwE4LZEK218RCco3opRweLPTGIYX6VgLL/58GrHhecmTdFxZMrRvZBkYIgFI48voN247Ns8EjswwadVCFtEE5jYyXO8yw/64vVkuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=it0Iu3TG; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53SNqISW006805;
-	Tue, 29 Apr 2025 04:36:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	i/HnctR1j7Z9DcND90xaCFatpdnRa8F8QFkEqOxeNBE=; b=it0Iu3TGlw+WIsp1
-	TfrvsVS0rOZbP3F7svui9kJlLmGBgHLpAqaVhR1vruWcjslMSjTrYZVCbeo7HDxI
-	oy59p9yDFiXv50gh+ygxsTJnpPUiYAxBw/AKTkug8gpBiHLJvcxZGGkuwIpCOsQc
-	dKXOcOJOgIEuPI+0/ostweMiBWzjuoGVTnbcxVuQoJLvpAyrPNsW3aWV3uKIAlcw
-	m8QwwPCY2yIgYP7AhjZxK0S1+NdZTAC3pcJyQwsJn2FtscTJFKQuBkmoupa7oP3z
-	xBb5C9xFx510ACB4AA8oZiQ/fU2PWmplgvsKx6sAzBF4Y2ipk07j1+N5cu/tIZuh
-	mViuPA==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 468ptmk7wa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Apr 2025 04:36:17 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53T4aGB6026357
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Apr 2025 04:36:16 GMT
-Received: from [10.216.24.29] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 28 Apr
- 2025 21:36:14 -0700
-Message-ID: <f885ba24-1736-47b7-b686-8de181cafcc8@quicinc.com>
-Date: Tue, 29 Apr 2025 10:06:11 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F3F4409;
+	Tue, 29 Apr 2025 04:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745901391; cv=fail; b=bzc+hy7sB6NxfFEmvQj9rHspDUaTn6Zotm0TJloFSZ2Z6PWq7jxkkwz6dBY556m5P0V5ItaAaTnJ4t+pfIH3PaNuACj/ULxgVtHap6qXUh7jq1bP9/fr7KRx1cYIb1TdETZTCk9h49Eet2yjKMw9pXLMYpZCrO8Pjj+8JsAmOpg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745901391; c=relaxed/simple;
+	bh=CiEvsHMAAFWQ//VzV/S4gJP/sqWW7BhRfBV8LUJJkTI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=d4bsLsjS5Gz4aENkE4W3f6QjLb+ZAX2MmmtUpX/gpaT1neFH3zdwUQtfg7R6VyUPAbnKllvhTZOvXGn6ahrsIfdCWi6XWnDNmyjPSvf1bJetl3jBNHGm80gLPci8AiJ85MELZaRQRNaE6bbu4LEwi9npvVEoUVjJiGLteL3ZPp8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZZAiqfB9; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745901389; x=1777437389;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=CiEvsHMAAFWQ//VzV/S4gJP/sqWW7BhRfBV8LUJJkTI=;
+  b=ZZAiqfB9/QTjfwuT0PvxJQvRacjM89IjGG4hqNoX8l41Rrf8HcITK6BT
+   pAW7uu0h46qX6Ih4uV8VUDM/tEVjIixQd0EXLpJmYYpn7VWi/a/vhLJy1
+   yF8ej7hnJZr6VoqK+FdFp2AZfcxTMxzfiys1LfUqJ+iRrJnn7gFCP9nAz
+   DoZaKwz/zJ4z6mYd9GF/Xmjfa9W3wbCh4R0A3l7Ru42ZrrZu0OFEDNy/Q
+   hvq07ZN2G8wypfb/CSUmYtYb1C5gUgr0Xi/ls4SY96BUM6J1b/aBut27t
+   YdZZTyaKJ3n0fkIEK4Ni8Iz3Hmdi6oHykWY2hEkV8JtjkHZr2HwdZddRP
+   A==;
+X-CSE-ConnectionGUID: dpk6MQ0lTWKOUPCJBzT96Q==
+X-CSE-MsgGUID: pRIkw+wESxigNH2w0DXI3g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="47522354"
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; 
+   d="scan'208";a="47522354"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 21:36:29 -0700
+X-CSE-ConnectionGUID: nSw7d3xFR32O8/Ou5b6b2g==
+X-CSE-MsgGUID: n1a6B0iISr2y0x/ITefiDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; 
+   d="scan'208";a="133613780"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 21:36:29 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Mon, 28 Apr 2025 21:36:28 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Mon, 28 Apr 2025 21:36:28 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Mon, 28 Apr 2025 21:36:27 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ksV4NfleIYDdP2iGW1yAEK+Le3Rqpu23TmucO9JwhA31KDlZGy3aEQv5fSdB72pazHI3F4QJaWTApxtjkBsYucYAWulPHoV3r8PbYFJCaSQ8XOIwa8QI+IWU9Kmj1Muw5khCqYndN9GWzkBokSaei1dXb09SNNNg5LdenH/dN3bJ5AYcL2y8qOmJvxKIJS4/FGZ7XY/pWnpDvCVL5jDn0uMu2kYLskqfS3BI+D0q9gAhf+VYg+jLwjiHr8ZcZYa0fjL6lpk4gsvTj+rMUcRlep1KX5hsXMbSgBDfQa/xi4F4BJzrXJzLavIKaqVM/qOLepkcUtVdDsoI1Wbcy6mzaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CiEvsHMAAFWQ//VzV/S4gJP/sqWW7BhRfBV8LUJJkTI=;
+ b=q9Sgi34YvGozYYyRbdi8+G86yIQPYuGj/LthDa4od/Wkh7NR53Ka7/HCccj24n1Qmjue0JCkUMRxajBKFHpt7ghq+MkuA2f+9vex/HpqjBrMDWWERF+7SIKtMgj61lUG68gHlBwVsLz28jvvEZqhW8a9ydNInpP9d4ZFWJUuYSzRcLB7UrEXGiixLOIWqfnP9KEh+fm6bzPcR0paquKonRUgl4yeOrN+sJaoPfz07nov/5m/DQTltAn0LX7c5Qcwsui7pahm5UUCxgtEKJ6k5I/JRAC4inDtwMgTMlVuy/zEaGSbFyslyd3djocfV3xmBxksBwePFabMzbDsvaxeTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MW5PR11MB5810.namprd11.prod.outlook.com (2603:10b6:303:192::22)
+ by SJ0PR11MB5896.namprd11.prod.outlook.com (2603:10b6:a03:42c::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.34; Tue, 29 Apr
+ 2025 04:36:25 +0000
+Received: from MW5PR11MB5810.namprd11.prod.outlook.com
+ ([fe80::3a48:8c93:a074:a69b]) by MW5PR11MB5810.namprd11.prod.outlook.com
+ ([fe80::3a48:8c93:a074:a69b%7]) with mapi id 15.20.8678.028; Tue, 29 Apr 2025
+ 04:36:25 +0000
+From: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] wifi: iwlwifi: Add short description to enum
+ iwl_power_scheme
+Thread-Topic: [PATCH] wifi: iwlwifi: Add short description to enum
+ iwl_power_scheme
+Thread-Index: AQHbmN1OL30NiSPRDUi2QYi7oX7g6rO6TrHw
+Date: Tue, 29 Apr 2025 04:36:25 +0000
+Message-ID: <MW5PR11MB581072B873108C92E29699E4A3802@MW5PR11MB5810.namprd11.prod.outlook.com>
+References: <20250319-iwl_power_scheme-kdoc-v1-1-2033ae38b178@oss.qualcomm.com>
+In-Reply-To: <20250319-iwl_power_scheme-kdoc-v1-1-2033ae38b178@oss.qualcomm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MW5PR11MB5810:EE_|SJ0PR11MB5896:EE_
+x-ms-office365-filtering-correlation-id: 7e69eb37-a932-4a5b-60ef-08dd86d7668e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?aVJ3c1lRcWEyUFdNWXU2NTJDTTB0akZIMFU1NHdpMVlSdzFSMURUTUl6alpU?=
+ =?utf-8?B?M0Y3aXlSdVBhRW5uM0xqYU5vSDJTRlFCTW1ldmVTbWNnc0ZnNUtESlJlcGVS?=
+ =?utf-8?B?OS9jbEZPSzBFa2tTUVBZZFBRMVE1c3ZqSjZGOVRNN3g2bjNEV2tsN09ZV1NC?=
+ =?utf-8?B?MDA2Vm13M2ZOWmJxUDN5cTVKa1RZNzcrZHN6WCt5aGkyQW5BKzl4a3N5UDVM?=
+ =?utf-8?B?bWcxSkNobVZNUHExaW1UTG92N0xXTHR2ZUN3cU1BWU9tMnd5RU9jUHRoWnRT?=
+ =?utf-8?B?UTZXbzFubGVWWjVZTzZUSWQ1MWFMTi9UeXlJQ2x1SVVLVkdlbU1TVkdZWDRq?=
+ =?utf-8?B?elArbUdGa1l0TjFIaGZ0bHd4Q0ZLTnVtelVHZzcwNkt1bWM4M1YzWWxUaWFO?=
+ =?utf-8?B?eHVGanpRNmU3L1l3eTVlUjQ1U0ZMWS9OWUZnaHhZazBFZmRYVmY5ekh4ZmRI?=
+ =?utf-8?B?Nk5tZjlCNVRvZTFuaC9IVXY5dWVDTVA0VTJPMm5GYXR1dkV4d1ZPODBGMjhY?=
+ =?utf-8?B?dXJ5aG1sNFArR3gzanFsRWV3MktJMmhweHUyaklreDFIQ1NOREU0bnlLUDlO?=
+ =?utf-8?B?QUNmSFYwQTVleitPTkp2Q1BNcFJHRUhVeEpPQTlSUnRiN0RSWnJPcWdWNUUy?=
+ =?utf-8?B?c084bzBESDY5OVdUR2o4aXhMQ3FySXUrV3JMMDJKL2V2c1NXYTZYY25YMlp1?=
+ =?utf-8?B?TUtsL0dHSTkwRXVNNGFTaW9PUGNmMXdHWWhVNVFGaDYzVzFPaVdZWTNXcWw1?=
+ =?utf-8?B?QUdJSzNaaDhUVjVWMnpVR0V3MUZzNXRsMkxaSVVjOFhkK050TVZzY1c3MlNV?=
+ =?utf-8?B?Y095Si9JM1Mvd0lkRkdaOSsvd285a3NLbTB5UHNSM1Bjb0ZkQ2VOb3Q1REh3?=
+ =?utf-8?B?Z1NsWngxc3NCTGk3QUFwY0lCVjI2RHNmaGVmN1hnRjdnWmRqbnJ5T2hIZnor?=
+ =?utf-8?B?Z2N0TDBmVitFeTJPOThwMHlXWXhVTlBmQ3R5dFMwWU1sZ2ZFWDdkeXI0UVFz?=
+ =?utf-8?B?TjgxNGc3WU84ajFNQTcwZTFINHEwbFBzRGNURkdad0twcFgzVlk4enoxb3Vh?=
+ =?utf-8?B?Y0VVejJGcVZndG9reFVmNklOelIrQmZsMzRGSi8wTk16dUJNaVB1anVFSXpS?=
+ =?utf-8?B?MTFnUTVLanZNbmp1V0dnMWFKUStLOEZDekZkcFQxMldsY3pITWZvWGhkU0FF?=
+ =?utf-8?B?MU1zbVRaRTNVMlNlWkMyRHNmWHp3TzhLS0l4Wm56TitoOFdzeEFsaWV2NjYv?=
+ =?utf-8?B?ejZmeUxQVFYrRnB0Smk5d1dsNzJkZkFqWUxEZExNNXhWczhCY2JucjZ4NTJR?=
+ =?utf-8?B?NHBoWEtHazMxb0xXdlhSV0lueGY0WkhYZmRUWDhPL0hOWlY1dVB6bDVTS29z?=
+ =?utf-8?B?b1EvbWVraFV5cXV2Z1NnRW5wejdZOVl6RURsSUZuOUVQM1d6aVRNWFArNjlM?=
+ =?utf-8?B?K2E4TUpweWpJUU45bFozVndTS3ZzL04vdytWRkJwMjRpNVAwRUpIQ2Fla1BP?=
+ =?utf-8?B?Tkg4Z3pqRFkycmpNTWZmRzVlcTJKNW5ScXBFdHRUM3hpTTg3bU9VMmN2UjF5?=
+ =?utf-8?B?cHhBVjVzRC9kRTRha2JvN2tHZko4QzlVQmF1dm0rT3NDWnE1S242ZVpZL2Rs?=
+ =?utf-8?B?NkFLWVd1Zk5HYUFNbmhOdzlnWkxjOEpraXpKSGtSY0JLRmgxMDRBclNNZzZi?=
+ =?utf-8?B?elZMb3A5ck1tWmtsaURyM2MrOFNSVXBRelc5cDNLRDF1Y2s4V2NRZU5taUlB?=
+ =?utf-8?B?dVJIRDJMZFhudG93aG96REpMZFNMRmtUbW5wTk5scm1PeVdkalVmWkFmWkcy?=
+ =?utf-8?B?eHF0Tml4V0I4ZlZocVJPam16WTFGOHRsbkFpQldLOCtoa3E4WERrOWVkeCtC?=
+ =?utf-8?B?VUhNMnhHS1lWSEJsQkZFTXFRTUFMZnFkNmNhaXd1NnluKzMvY3BhWVB6NUJt?=
+ =?utf-8?B?dXRmLzlkWldQbzFhaWZUU1BNQm8wRVl5NWppRjhoemlkeFErTkhDUWlyU1FY?=
+ =?utf-8?B?cVlheEZNNEt3PT0=?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR11MB5810.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OVdHRUxJRUhlRk1IT1NSVkwvQ0ZVZXpFdUliZmxIWkNSRTJ4QW5YU1R4b2x0?=
+ =?utf-8?B?NFJCY3FqTEtaQXJEQVNXMmtvb0R1c1NWNWFZK01Gb1FSVTBwVnVYVnJ6MDRI?=
+ =?utf-8?B?amxxaHFFV0x0V1E3MlhTVUtaaE9Jcm1NTG9TM0V0SGFPU09zUjA3MitRZHIy?=
+ =?utf-8?B?R0VvRGxhbzYwZ1lLdzdKMlkvVUlZQ0FkcXpOUFpwTURNb1V0cjVLVW9XZk9n?=
+ =?utf-8?B?NWtWTVp2L0RHelpPNUZjeHBnaUwzVzdwY2RMMWRjSGIvalhZcG9mNTJrRjlC?=
+ =?utf-8?B?bWtublBOK2NteURtZlU1MEtPNmJCRUwrK0l0OFFjdzhIbUFVNVd1TkE2aXRF?=
+ =?utf-8?B?M0NSemtIbHplU0VZK2pQd2ZaMWZMdlk5NXpSSnZRbmJsUXFVZjQwKy9IUjNL?=
+ =?utf-8?B?a1lNOHRaL1B0bXB6NFE4N2h1RVdoQm0zdkRmeWRKVlgrSTUvZUJIOVhpTDBM?=
+ =?utf-8?B?VklSV1VGd1R5aTh0TElxaUZGY2dXOE5aSnEzS3M0NXhzU0xiZkNwTmdxQnI2?=
+ =?utf-8?B?bDV5VkQ1clRBYmdQUDdld2xoMkZZZDB1NmtYbzFNOTFweEdhTzJ1ajNsRmdQ?=
+ =?utf-8?B?NnBiclpLSmloN0QzM2NudGlWSkpPMGlQbkpydjNmL3lrMm9uWVJvczY4c0pJ?=
+ =?utf-8?B?Y3ZrUmJCT3laYkcvakdnQzhrcXp2YlRUZmlLT3R4ZnVZbGNYcTRBMzdENy9Z?=
+ =?utf-8?B?WTJISHBTSnRIRlBINEJ2dkdDVUNnODlsemxwOHAvK09ieWNCbTZyY3hzMDk2?=
+ =?utf-8?B?WE5PQmVuMWRGaS90YzBsTTZPK1hTb1ppVkZQMXY2eFBDNmkyNU1DQWFKeE1r?=
+ =?utf-8?B?THNuWk5ZRFhhVkVmUFVoMmlvZWlnUzJIZ253Wm91aDBFeUZwck5Lc2Ntdklp?=
+ =?utf-8?B?djJOa3czSzM2eFg5Y01QMEFpdE1xSUxoUVZySFFsekNxMmRGUCt0TXlZdzhE?=
+ =?utf-8?B?TjRyY3VoUyt5NkZ5MUhVYW0vSHE4QWNENHJmU1lPRUs0VDR4dDlycDNJZkZM?=
+ =?utf-8?B?MnhCTVNjdnEzRmRhcGRhVGgrZmJwS0tGbzJlTHNsWWFMaGVEVXFjYU9LZkNv?=
+ =?utf-8?B?cW5oT2c3bnZoaXVHRE9vRmxvOVpTSDlGZmltSTc3U1luYmVsQTF2WnJlME5Z?=
+ =?utf-8?B?QW9JaE1BQlUwdzZDTE8rdmJpTjZFMVdkWlh5ckcxQ3BhSGk1aHJaQ1h2bjVi?=
+ =?utf-8?B?ZTk5Z3lEOWJWR0tvemcrcWZuc1pNNTJtcE9KdnZLS2pnYXh4YVZnNzVMNUh1?=
+ =?utf-8?B?NXEranZjOFNnVnh3N2FoM0RWREplT0w4SmVLVFJXZEtoZkpsemZRT3BpcnVZ?=
+ =?utf-8?B?YXVCWENrT3hVMUdZNWxnU0s5QklPRVFlNXFqUVlqR29IMmhNTWhST3BvRW9s?=
+ =?utf-8?B?UlVnSm5scWJnVUh4aVB5ZEkvTnQ0N2U3RDJ3YVZjRHRpa1BuUGZhQlhUMGZN?=
+ =?utf-8?B?WmZDc09zQjA1aFhoOEFROG9wMUFUb2tzWjRibks0Qy9hU3BOT1Z1RXZjY0Y1?=
+ =?utf-8?B?RmZTcWJzMHJ3ZnM5enpLMHBRUStuc2l6aVcvMFVPTWdFeWt2QVVmMnM1Rzhh?=
+ =?utf-8?B?ZGpoZzJYR1pGcEltaUQza0lLeHJseU9DODVKR0NScDd6YkRlVXU5VndIS0FZ?=
+ =?utf-8?B?bHpBdFZYTjRwZERMU0ppWi9qa2M1dkkzc2xxSVpPTURBSU55R2tGRDZjYUE2?=
+ =?utf-8?B?RGdjTVQxZitXV2pVZkxNWlMwNCtJSDlPRTNPVmNzOVpHcExjMFh0Q1ozZmdy?=
+ =?utf-8?B?eHJ3WHFod0Vtd0FXdVZ3WlJCeWNhcXdmMHpEY29LQXBGUGRDYTlMZ0d0Wm4z?=
+ =?utf-8?B?TW91TmFURmdTc2o5NE9Ga2VFUUNqbEFHcFJnVjBPZGFkL2s1Nyt6L1FuVFVm?=
+ =?utf-8?B?M3VldEsxbXRaQjRCR0RDK1pMQkg3dWpKd0NTSkJISDU5L01HenQ0M1RBWWdC?=
+ =?utf-8?B?cXlVSXcyc3EvaFljNzdZNytETitQdC9uQW1tUXdOZXZkNW9XbEVUVllwRkNv?=
+ =?utf-8?B?OWxKNEl1UUNWK3c1Q3kzTjdOUUlWd1RLdmxhSmg0UkxmTkptNVFiZWdlVWtx?=
+ =?utf-8?B?NmpmN28xaVVsQi9RcDNVaUM5NC84OEM0L1ZsbllnUHg4M1FmdDJWd2VOY1BS?=
+ =?utf-8?B?cWFLQVpTOVI4WFp5TnNFcUxBbll6TlJiVFZmdE9uT3RKMW03VmREL0ZMR2lY?=
+ =?utf-8?B?YkE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next 1/2] wifi: ath12k: Prepare ahvif scan link for
- parallel scan
-To: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20250428151927.1169783-1-rameshkumar.sundaram@oss.qualcomm.com>
- <20250428151927.1169783-2-rameshkumar.sundaram@oss.qualcomm.com>
-From: Mahendran P <quic_mahep@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20250428151927.1169783-2-rameshkumar.sundaram@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: r8cebaliMr4GjAro7fs4uhVt7eUWg4v0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI5MDAzMyBTYWx0ZWRfX42sMq29lZXHg 0e06ZeyooPo3RDQDv7GKujKyHEej5/ECuwVv8xZP2NyRHjS1ojzDxwLvE9V00Aq81VTMNTHKWTs AFdtRAf8TnPOgMhrpb7ItR0+lCnYQ22RlPIIakR6BPv+DAMfozyx3iXcC7eDyMA1y9SXtf27xmm
- fKqz87/hPFiXClcjMJ6df251N2lrBsBTLiJKj5KK62HYIEhm/P+4V9VMMucN8CSfrV2mkCtw7UD mKqmvYvnG0+o0fbRU3uapC8EKhqhcGvdeWaVA3hxEPvVbozIxVKJ9U2Ra7nnuqt0SrWUZEp5mqB 1gfYUKEMOtnuwPDqM4h1HiludZ1pMDRzEAw4SyXfSSoXV5/+2Fq0bhBETEcHEMJZB8HaLckLTl3
- im6S3nXBiEEvXIXnzENUHBkiYtVuuRn4WDQ8Om7uO8oOBsBl09j7mnSN9vCz1PWGJcJletGz
-X-Proofpoint-GUID: r8cebaliMr4GjAro7fs4uhVt7eUWg4v0
-X-Authority-Analysis: v=2.4 cv=DKWP4zNb c=1 sm=1 tr=0 ts=68105741 cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=EUspDBNiAAAA:8 a=COk6AnOGAAAA:8 a=bHGmK2d0Q8oOqtnJHTwA:9
- a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-29_01,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1015
- priorityscore=1501 impostorscore=0 mlxscore=0 bulkscore=0 malwarescore=0
- phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504290033
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW5PR11MB5810.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e69eb37-a932-4a5b-60ef-08dd86d7668e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Apr 2025 04:36:25.2971
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: l0JXpm1oC2uItA7B3jA2TZDQNd7DiJB1nnn9fmSAWpVBGq41QtzCnyhjBmNIwyAgZbKApTp/cbVMJ8z9JyE3CuIGeJTD+eNqTJNHC9LPRffjbTnulA2OTjW76Pdlz2G0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5896
+X-OriginatorOrg: intel.com
 
-On 4/28/2025 8:49 PM, Rameshkumar Sundaram wrote:
-> When two split-phy devices that support overlapping frequency ranges within
-> the same band(say 5 GHz low and 5 GHz high) are grouped into an ath12k
-> hardware (HW) setup, they share a common wiphy instance. Consequently, the
-> channel list (wiphy->bands[]) becomes unified across all associated
-> radios (ar).
-> 
-> When a scan is triggered with frequency list containing frequencies of
-> both 5 GHz low and 5 GHz high, mac80211 generates a single scan request
-> to driver with all the frequencies. This is because mac80211 splits the
-> scan request based on band.
-> 
-> ath12k checks the first frequency in the requested scan frequency list and
-> initiates scan to corresponding radio's(ar) firmware with all the
-> frequencies. Firmware rejects this scan since some of the frequencies in
-> the scan request are not supported, resulting in a scan failure.
-> To fix this ath12k driver should split the scan request into multiple
-> scans based on requested frequencies and schedule them to corresponding
-> underlying radio(s) in parallel.
-> 
-> Currently, ath12k driver assigns the scan link (link 15) in ahvif->links[]
-> for scan vdev creation. However, with parallel scan support being
-> introduced in the following patch, multiple radios (e.g., 5 GHz low and
-> 5 GHz high) in the same HW group may attempt to use the same scan link
-> concurrently, causing conflicts where the vdev created by one radio could
-> be deleted and re-initialized by another.
-> 
-> To address this, reserve space for additional scan links for each radio in
-> a MLO group and allow subsequent radios to use different available scan
-> links (ahvif->link[15..MAX_SCAN_LINKS]) when scan link (15) is
-> pre-occupied.
-> While at it, rename ATH12K_DEFAULT_SCAN_LINK as ATH12K_FIRST_SCAN_LINK
-> as there is no longer only one scan link.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-> ---
->  drivers/net/wireless/ath/ath12k/core.h |  2 +-
->  drivers/net/wireless/ath/ath12k/mac.c  | 49 +++++++++++++++++++-------
->  drivers/net/wireless/ath/ath12k/mac.h  |  7 ++--
->  3 files changed, 42 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-> index 4b8f434e3e9a..0d512818ee96 100644
-> --- a/drivers/net/wireless/ath/ath12k/core.h
-> +++ b/drivers/net/wireless/ath/ath12k/core.h
-> @@ -352,7 +352,7 @@ struct ath12k_vif {
->  	struct ath12k_link_vif __rcu *link[ATH12K_NUM_MAX_LINKS];
->  	struct ath12k_vif_cache *cache[IEEE80211_MLD_MAX_NUM_LINKS];
->  	/* indicates bitmap of link vif created in FW */
-> -	u16 links_map;
-> +	u32 links_map;
->  	u8 last_scan_link;
->  
->  	/* Must be last - ends in a flexible-array member.
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 8949073c0163..6dab2f3a9e0d 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -3483,7 +3483,7 @@ static struct ath12k_link_vif *ath12k_mac_assign_link_vif(struct ath12k_hw *ah,
->  	/* If this is the first link arvif being created for an ML VIF
->  	 * use the preallocated deflink memory except for scan arvifs
->  	 */
-> -	if (!ahvif->links_map && link_id != ATH12K_DEFAULT_SCAN_LINK) {
-> +	if (!ahvif->links_map && link_id < ATH12K_FIRST_SCAN_LINK) {
->  		arvif = &ahvif->deflink;
->  
->  		if (vif->type == NL80211_IFTYPE_STATION)
-> @@ -4475,11 +4475,12 @@ ath12k_mac_find_link_id_by_ar(struct ath12k_vif *ahvif, struct ath12k *ar)
->  	struct ath12k_link_vif *arvif;
->  	struct ath12k_hw *ah = ahvif->ah;
->  	unsigned long links = ahvif->links_map;
-> +	unsigned long scan_links_map;
->  	u8 link_id;
->  
->  	lockdep_assert_wiphy(ah->hw->wiphy);
->  
-> -	for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
-> +	for_each_set_bit(link_id, &links, ATH12K_NUM_MAX_LINKS) {
->  		arvif = wiphy_dereference(ah->hw->wiphy, ahvif->link[link_id]);
->  
->  		if (!arvif || !arvif->is_created)
-> @@ -4489,10 +4490,20 @@ ath12k_mac_find_link_id_by_ar(struct ath12k_vif *ahvif, struct ath12k *ar)
->  			return link_id;
->  	}
->  
-> -	/* input ar is not assigned to any of the links of ML VIF, use scan
-> -	 * link (15) for scan vdev creation.
-> +	/* input ar is not assigned to any of the links of ML VIF, use next
-> +	 * available scan link for scan vdev creation. There are cases where
-> +	 * single scan req needs to be split in driver and initiate separate
-> +	 * scan requests to firmware based on device.
->  	 */
-> -	return ATH12K_DEFAULT_SCAN_LINK;
-> +
-> +	 /* Unset all non-scan links (0-14) of scan_links_map so that ffs() will
-> +	  * choose an available link among scan links (i.e link id >= 15)
-> +	  */
-> +	scan_links_map = ~ahvif->links_map & ATH12K_SCAN_LINKS_MASK;
-> +	if (scan_links_map)
-> +		return __ffs(scan_links_map);
-> +
-> +	return ATH12K_FIRST_SCAN_LINK;
->  }
->  
->  static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
-> @@ -4523,9 +4534,16 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
->  
->  	/* check if any of the links of ML VIF is already started on
->  	 * radio(ar) corresponding to given scan frequency and use it,
-> -	 * if not use scan link (link 15) for scan purpose.
-> +	 * if not use scan link (link id >= 15) for scan purpose.
->  	 */
->  	link_id = ath12k_mac_find_link_id_by_ar(ahvif, ar);
-> +	/* All scan links are occupied. ideally this shouldn't happen as
-> +	 * mac80211 won't schedule scan for same band until ongoing scan is
-> +	 * completed, don't try to exceed max links just in case if it happens.
-> +	 */
-> +	if (link_id >= ATH12K_NUM_MAX_LINKS)
-> +		return -EBUSY;
-> +
->  	arvif = ath12k_mac_assign_link_vif(ah, vif, link_id);
->  
->  	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac link ID %d selected for scan",
-> @@ -8654,7 +8672,8 @@ static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
->  	struct ath12k_hw *ah = hw->priv;
->  	struct ath12k *ar;
->  	struct ath12k_base *ab;
-> -	u8 link_id = arvif->link_id;
-> +	u8 link_id = arvif->link_id, scan_link_id;
-> +	unsigned long scan_link_map;
->  	int ret;
->  
->  	lockdep_assert_wiphy(hw->wiphy);
-> @@ -8673,12 +8692,16 @@ static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
->  	 * and now we want to create for actual usage.
->  	 */
->  	if (ieee80211_vif_is_mld(vif)) {
-> -		scan_arvif = wiphy_dereference(hw->wiphy,
-> -					       ahvif->link[ATH12K_DEFAULT_SCAN_LINK]);
-> -		if (scan_arvif && scan_arvif->ar == ar) {
-> -			ar->scan.arvif = NULL;
-> -			ath12k_mac_remove_link_interface(hw, scan_arvif);
-> -			ath12k_mac_unassign_link_vif(scan_arvif);
-> +		scan_link_map = ahvif->links_map & ATH12K_SCAN_LINKS_MASK;
-> +		for_each_set_bit(scan_link_id, &scan_link_map, ATH12K_NUM_MAX_LINKS) {
-> +			scan_arvif = wiphy_dereference(hw->wiphy,
-> +						       ahvif->link[scan_link_id]);
-> +			if (scan_arvif && scan_arvif->ar == ar) {
-> +				ar->scan.arvif = NULL;
-> +				ath12k_mac_remove_link_interface(hw, scan_arvif);
-> +				ath12k_mac_unassign_link_vif(scan_arvif);
-> +				break;
-> +			}
->  		}
->  	}
->  
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
-> index da37332352fe..8ec4a890172c 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.h
-> +++ b/drivers/net/wireless/ath/ath12k/mac.h
-> @@ -51,8 +51,11 @@ struct ath12k_generic_iter {
->  /* Default link after the IEEE802.11 defined Max link id limit
->   * for driver usage purpose.
->   */
-> -#define ATH12K_DEFAULT_SCAN_LINK	IEEE80211_MLD_MAX_NUM_LINKS
-> -#define ATH12K_NUM_MAX_LINKS		(IEEE80211_MLD_MAX_NUM_LINKS + 1)
-> +#define ATH12K_FIRST_SCAN_LINK		IEEE80211_MLD_MAX_NUM_LINKS
-> +#define ATH12K_SCAN_MAX_LINKS		ATH12K_GROUP_MAX_RADIO
-> +/* Define 1 scan link for each radio for parallel scan purposes */
-> +#define ATH12K_NUM_MAX_LINKS	(IEEE80211_MLD_MAX_NUM_LINKS + ATH12K_SCAN_MAX_LINKS)
-> +#define ATH12K_SCAN_LINKS_MASK	GENMASK(ATH12K_NUM_MAX_LINKS, IEEE80211_MLD_MAX_NUM_LINKS)
->  
->  enum ath12k_supported_bw {
->  	ATH12K_BW_20    = 0,
-
-Reviewed-by: Mahendran P <quic_mahep@quicinc.com>
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSmVmZiBKb2huc29uIDxq
+ZWZmLmpvaG5zb25Ab3NzLnF1YWxjb21tLmNvbT4NCj4gU2VudDogV2VkbmVzZGF5LCAxOSBNYXJj
+aCAyMDI1IDE2OjM4DQo+IFRvOiBLb3JlbmJsaXQsIE1pcmlhbSBSYWNoZWwgPG1pcmlhbS5yYWNo
+ZWwua29yZW5ibGl0QGludGVsLmNvbT4NCj4gQ2M6IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVs
+Lm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgSmVmZiBKb2huc29uDQo+IDxqZWZm
+LmpvaG5zb25Ab3NzLnF1YWxjb21tLmNvbT4NCj4gU3ViamVjdDogW1BBVENIXSB3aWZpOiBpd2x3
+aWZpOiBBZGQgc2hvcnQgZGVzY3JpcHRpb24gdG8gZW51bSBpd2xfcG93ZXJfc2NoZW1lDQo+IA0K
+PiBUaGUga2VybmVsLWRvYyBzY3JpcHQgZmxhZ2dlZCB0aGUgZm9sbG93aW5nOg0KPiANCj4gZHJp
+dmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9tdm0vbXZtLmg6MTMwOiB3YXJuaW5nOiBt
+aXNzaW5nIGluaXRpYWwgc2hvcnQNCj4gZGVzY3JpcHRpb24gb24gbGluZToNCj4gICogZW51bSBp
+d2xfcG93ZXJfc2NoZW1lDQo+IDEgd2FybmluZ3MgYXMgRXJyb3JzDQo+IA0KPiBBZGQgYSBzaG9y
+dCBkZXNjcmlwdGlvbiB0byBhZGRyZXNzIHRoaXMgd2FybmluZy4NCj4gDQo+IFNpZ25lZC1vZmYt
+Ynk6IEplZmYgSm9obnNvbiA8amVmZi5qb2huc29uQG9zcy5xdWFsY29tbS5jb20+DQo+IC0tLQ0K
+PiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9tdm0vbXZtLmggfCAyICstDQo+
+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRp
+ZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL212bS9tdm0uaA0K
+PiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvbXZtL212bS5oDQo+IGluZGV4
+IGY2MzkxYzdhM2UyOS4uNTk0ODNmYmFhYWIwIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93
+aXJlbGVzcy9pbnRlbC9pd2x3aWZpL212bS9tdm0uaA0KPiArKysgYi9kcml2ZXJzL25ldC93aXJl
+bGVzcy9pbnRlbC9pd2x3aWZpL212bS9tdm0uaA0KPiBAQCAtMTI2LDcgKzEyNiw3IEBAIHN0cnVj
+dCBpd2xfbXZtX3RpbWVfZXZlbnRfZGF0YSB7DQo+ICAgLyogUG93ZXIgbWFuYWdlbWVudCAqLw0K
+PiANCj4gIC8qKg0KPiAtICogZW51bSBpd2xfcG93ZXJfc2NoZW1lDQo+ICsgKiBlbnVtIGl3bF9w
+b3dlcl9zY2hlbWUgLSBpd2wgcG93ZXIgc2NoZW1lcw0KPiAgICogQElXTF9QT1dFUl9TQ0hFTUVf
+Q0FNOiBDb250aW51b3VzbHkgQWN0aXZlIE1vZGUNCj4gICAqIEBJV0xfUE9XRVJfU0NIRU1FX0JQ
+UzogQmFsYW5jZWQgUG93ZXIgU2F2ZSAoZGVmYXVsdCkNCj4gICAqIEBJV0xfUE9XRVJfU0NIRU1F
+X0xQOiBMb3cgUG93ZXINCj4gDQo+IC0tLQ0KPiBiYXNlLWNvbW1pdDogM2ZkNTUyYjI2NThlYjZi
+ZjJhM2I1MzE1NTNmZTU2MzM0MGQzN2ZkZg0KPiBjaGFuZ2UtaWQ6IDIwMjUwMzE5LWl3bF9wb3dl
+cl9zY2hlbWUta2RvYy04OWNmODNiZDEyMWENCkFja2VkLWJ5OiBNaXJpIEtvcmVuYmxpdCA8bWly
+aWFtLnJhY2hlbC5rb3JlbmJsaXRAaW50ZWwuY29tPg0K
 
