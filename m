@@ -1,122 +1,104 @@
-Return-Path: <linux-wireless+bounces-22222-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22223-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E16AA39FC
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 23:40:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC3BAA3F0A
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 02:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A43B9C10E4
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Apr 2025 21:40:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54B55188BB0C
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 00:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFCB26988C;
-	Tue, 29 Apr 2025 21:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DAAB2571D5;
+	Wed, 30 Apr 2025 00:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="nr7tAiVI"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="CKxUxPFQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BA822A7ED
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Apr 2025 21:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A37255F36;
+	Wed, 30 Apr 2025 00:16:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745962829; cv=none; b=RnAI1yQx8jWhnzAtnjKHv75kxERhX9f8rJF2wnjKV3qrfEMdEvUnqPwE3YiKQJpQqOihxhUkI2sYrcAaKgzyDdjCo5L5aXsICAbyPUB/Z8EJMQt3DboPghceOK6FNjmlbnrsFi2GL2sX5K3PwCEDATrIeRZPYgYLm2mqh4XxIkQ=
+	t=1745972217; cv=none; b=iOjRlONIdiI30COZaZJ1M1fh05x2ueWg4tskuvFsPXwmkU7lC5GR/Hm8FFb9AkUoFZny0d3jGO1+SC1DPhkvVkttgdEZuJvejyIoH27IJpoQMFaGcMr4YHn19HgVqf03pecV/wHeF9LhAlC2bznWccuuBOUDiC2FOJibuocelpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745962829; c=relaxed/simple;
-	bh=yRb7/lDslTlRdulv8UKLXCO4mzF4SCMJ6ui9a8zVlH8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t2vaSdJUt7iv6zoCjErANFiUBGbtWxyhHaWiDBTdJANgKkJLpgtcEAXJlcEFoKR4PYp936hHBNtz+r/H16SfuORd0ZFp5RQtwNrlAMcKSZmSkwyOQPlPxAAS93LG4Bt1MnLBz4Ff1VRNoP+582IBPfCd5sclSbU4WUnwdBcUrbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=nr7tAiVI; arc=none smtp.client-ip=212.77.101.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 2564 invoked from network); 29 Apr 2025 23:40:18 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1745962818; bh=QsS+vghrLazG/Lj5WT2xQ0ZHOLkr/aVzxaRWd06fOsA=;
-          h=From:To:Cc:Subject;
-          b=nr7tAiVI4OeziEkW4tnzoYHtRw3WgBLf7x/+AmdORv/YMiHNXGmJNBX5SqAbwmmxz
-           7Ufdptb8CC+hZoxrigvP45Ua3wvyiEizWf1rsJGJIQxkabz9zF17z70vd/b7MHlVkh
-           0tlikjWn1/7sDejMWbORXWs65XMWpChrY4zxPOdwDw4XanzAyDgae8v5C3OKdspQOH
-           2xPo7Y3H4DqPwDLzwyKAyX/IbphAppmpTgC/ZfZek5C5aTeedjbqHWjCYGTyV1uhKZ
-           A1AaWD5OT26mNO1j32PuH0jS6tvZT+Y7zMQvIVMwu+XmVlyJqjkhCTmQlimlRQMSQJ
-           qgxlx4ZPz4nuQ==
-Received: from 89-64-9-175.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.9.175])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <pchelkin@ispras.ru>; 29 Apr 2025 23:40:18 +0200
-Date: Tue, 29 Apr 2025 23:40:18 +0200
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Alexei Safin <a.safin@rosa.ru>, lvc-project@linuxtesting.org,
-	netdev@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v2] iwlegacy: 4965: fix possible out-of-bounds access in
- il4965_tx_cmd_build_rate()
-Message-ID: <20250429214018.GA55582@wp.pl>
-References: <20250424185244.3562-1-a.safin@rosa.ru>
- <20250427063900.GA48509@wp.pl>
- <d57qkj2tj4bgfobgzbhcb4bceh327o35mgamy2yyfuvolg4ymo@7p7hbpyg5bxi>
+	s=arc-20240116; t=1745972217; c=relaxed/simple;
+	bh=EuhYMPtN24wFpetIjEk5bJ0wQu/lkgDl2Mh3Emi0/YM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=BGuA0vR6TaKCTVzafxFOgErXB8oJz7QSdsOgLk9ENgqhTyPE1bfEGrCHYKAqtmPQBxbI0zyRTPIx1lowmcZNXnd1Ak4+uDgZNthXvVWgzZMcmPaHhuaJJuMTvtb91Ee/oxy+uEVKHBIvcIAAamySNA6vl1yXQjtopjKdSdahJXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=CKxUxPFQ; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 53U0GlGI22014676, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1745972207; bh=EuhYMPtN24wFpetIjEk5bJ0wQu/lkgDl2Mh3Emi0/YM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=CKxUxPFQnv21cRUvFBRLhFHcaAAwsbqSjCpzi7jgbZgtn68eBDSkoaBI1xjHsEixG
+	 d7E7QtiEtFuBALR63UglMWSpMTfqaX9LLwloShHU69uZjZEtzC2Qn8S4TGzGyQ/GCE
+	 gdDjuIc+vnLRZgJw+kghfatRtkxLDDoj+oWTM6w/5/NpbGG29hAmIHm6XegNwhtsTj
+	 E11+7H4QsULFh04lIUOU/AaQAHd5FvZ7gcAT3RxfbuZG6+knaE1dC8o6kep2l0jEpd
+	 ZrGZPqBrvXz+PncGkGQkEvN3ZRW15os0MpgNPA4s4kqP7RNLDYktijFJ+J12+axUAY
+	 JY0S/EQAd43bw==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 53U0GlGI22014676
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 30 Apr 2025 08:16:47 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 30 Apr 2025 08:16:48 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 30 Apr 2025 08:16:47 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Wed, 30 Apr 2025 08:16:47 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: =?iso-8859-2?Q?Ond=F8ej_Jirman?= <megi@xff.cz>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH rtw-next v3 2/2] wifi: rtw89: Fix inadverent sharing of struct ieee80211_supported_band data
+Thread-Topic: [PATCH rtw-next v3 2/2] wifi: rtw89: Fix inadverent sharing of
+ struct ieee80211_supported_band data
+Thread-Index: AQHbuQJsTe1wuXvirkCMDKYarBy5Y7O7WAzg
+Date: Wed, 30 Apr 2025 00:16:47 +0000
+Message-ID: <7b2405f82b8f4b879d10453dde55a7f3@realtek.com>
+References: <20250429122916.1734879-1-megi@xff.cz>
+ <20250429122916.1734879-3-megi@xff.cz>
+In-Reply-To: <20250429122916.1734879-3-megi@xff.cz>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d57qkj2tj4bgfobgzbhcb4bceh327o35mgamy2yyfuvolg4ymo@7p7hbpyg5bxi>
-X-WP-MailID: 29ac691aa7d10a18ddcfef0a5cf7185a
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000001 [QXKh]                               
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Hi
+Ond=F8ej Jirman <megi@xff.cz> wrote:
+>=20
+> Internally wiphy writes to individual channels in this structure,
+> so we must not share one static definition of channel list between
+> multiple device instances, because that causes hard to debug
+> breakage.
+>=20
+> For example, with two rtw89 driven devices in the system, channel
+> information may get incoherent, preventing channel use.
+>=20
+> Signed-off-by: Ondrej Jirman <megi@xff.cz>
 
-On Tue, Apr 29, 2025 at 08:15:59PM +0300, Fedor Pchelkin wrote:
-> Hello,
-> 
-> On Sun, 27. Apr 08:39, Stanislaw Gruszka wrote:
-> > > diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> > > index 78dee8ccfebf..f60d9b9798c1 100644
-> > > --- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> > > +++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> > > @@ -1572,7 +1572,7 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
-> > >  	 */
-> > >  	rate_idx = info->control.rates[0].idx;
-> > >  	if ((info->control.rates[0].flags & IEEE80211_TX_RC_MCS) || rate_idx < 0
-> > > -	    || rate_idx > RATE_COUNT_LEGACY)
-> > > +	    || rate_idx >= RATE_COUNT_LEGACY)
-> > >  		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
-> > 
-> > .. so looks the check is fine already and changing it will induce a bug
-> > for RATE_54M_INDEX.
-> > 
-> > Regards
-> > Stanislaw
-> > 
-> > >  	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
-> > >  	if (info->band == NL80211_BAND_5GHZ)
-> 
-> Here goes the fragment:
-> 
-> 		rate_idx += IL_FIRST_OFDM_RATE;
-> 	/* Get PLCP rate for tx_cmd->rate_n_flags */
-> 	rate_plcp = il_rates[rate_idx].plcp;
-> 
-> > > -- 
-> > > 2.39.5 (Apple Git-154)
-> > > 
-> 
-> Looks like the proper checks should be added to address the 5GHZ case and
-> validate that the index won't exceed the array boundaries after being shifted
-> by IL_FIRST_OFDM_RATE.
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Good point. It make sense to move rate_idx range check after possible
-IL_FIRST_OFDM_RATE addition for 5GHz.
+Thanks for your prompt work. :-)
 
-Regards
-Stanislaw
 
