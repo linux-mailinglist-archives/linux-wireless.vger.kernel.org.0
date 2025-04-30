@@ -1,422 +1,148 @@
-Return-Path: <linux-wireless+bounces-22281-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22282-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F82AA509C
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 17:42:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D1FAA51EA
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 18:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06D7C189F5BA
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 15:42:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A19674A084E
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 16:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB543204F9C;
-	Wed, 30 Apr 2025 15:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F42264A95;
+	Wed, 30 Apr 2025 16:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Wdmc0dgq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X6TgGSw5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AAE2DC760
-	for <linux-wireless@vger.kernel.org>; Wed, 30 Apr 2025 15:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7238A2627FC;
+	Wed, 30 Apr 2025 16:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746027761; cv=none; b=Cz1OvPzEHx9Fv9y/OLRmEDq0GGnUxSHwZvX6YY6xe/3/uUbHtpuRzwVlNHS1rPZOwg2+4En3tv3YN5ih7WSnpDKty7VkKi05u5c9twSxkLNsvWzCIuWYGuTsair0eH+IFGD3IqVIvJgR1zXitav4JktoPEtJBd09REDvntrGOSQ=
+	t=1746031543; cv=none; b=hlbFb1klKwxSODwxcldOSAbe3LcTc/rcXq/xA0tG4Ls7OjzLF7KRkEah8D/pqPGlmjAD56qIsjCZ5xq/K+orXaxSHzQiIPswpOt9OClJj5JrMmgW8nWIoaOAt21OFPI7uEeVIFM10AaNriLNihvdgQO8V5bALPQ4DIrHw50fVx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746027761; c=relaxed/simple;
-	bh=woFoXOLadEUAsg4DlOaEPa+E1O871VyQeBIsURbYJEs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U6srywlKc6lWKlx5yESFNie9a60nurWqRQA+yWUeQZ/63aEreFV4/OfHnmnwH2C5dciDz86K2FdWEvSRLHUqMyf9aQq6FL+yePBucyGGr6TNSlk8bwKrmuneiqLp75i8y1BONHFT9BHlr2xvDjSkiPjL1Fa//hIPWPLzmWH+aWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Wdmc0dgq; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53U9bAbd000731;
-	Wed, 30 Apr 2025 15:42:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=LRfW99nOsu+o+0KFkM+QX2
-	uIWyaG7IcpRjY/IbHsvRE=; b=Wdmc0dgqeiZlMigzVpxvxJSvG91lmAU+2485BG
-	epyUKHHR6lY0G8SowciZYZHNx3t1brfK4696P0M+DWqXMYm4dgXkfvyVDS2qw8ea
-	CN2iPBmyF2c+QqLG7nuDYN2oBba3SVysllNXg+CNpsvpxfOuhmUWSKDo2UA+FVN6
-	dOMPlSQ5TF5eN9RtQ8W4FkIinq6RCfUeoCtFRDLZNLXqXAVNR7vwzMgD5tRhsAMc
-	kcxOVb0xPiwBoWbdkGU3DrmRr3OCtLx2GmxLGN+ugDaQBmfPdHFmW3+tKclZaZEK
-	fY1nEg9RjZywTijrswyNUTcxpSd1Dz2cbvQybyT0GX0OlfAA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46b6u2aqew-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Apr 2025 15:42:34 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53UFgXcI025985
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Apr 2025 15:42:33 GMT
-Received: from hu-rajson-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 30 Apr 2025 08:42:31 -0700
-From: Rajat Soni <quic_rajson@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Aishwarya R <quic_aisr@quicinc.com>,
-        Rajat Soni <quic_rajson@quicinc.com>
-Subject: [PATCH ath-next] wifi: ath12k: remove redundant regulatory rules intersection logic in host
-Date: Wed, 30 Apr 2025 21:12:11 +0530
-Message-ID: <20250430154211.669502-1-quic_rajson@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1746031543; c=relaxed/simple;
+	bh=YRFeOE2SvEpVpyHUyxI/7ubZqIxqK3KMU4XzCZOjQhw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eW9kQkSBo/N0ysHSp855Jy0wgFB9JlxxCrCHKzCp3/8VuN94pPOj9PgwDWAY/bV4Js4emcvCj7HufThy7nKG2ATCa6MDogdPdNtpStl+UL5lv2hX+l/x90Nv9OKALkm6qJUpfe/247lpmnW5T4ERmJha9quGwfqRZnGMuhN1fz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X6TgGSw5; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746031540; x=1777567540;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YRFeOE2SvEpVpyHUyxI/7ubZqIxqK3KMU4XzCZOjQhw=;
+  b=X6TgGSw5IvMRySNfuMp06XkqZJsHa2y8K1xExAN5pDeHcsTjNIa+1Q3f
+   f+CQRsOE+5DLvwbqHuTUiemWPgO1lbjy3a9LRuuOGJqWUiEHy/cCcCIKq
+   YhiltBkp2i3mzr3pm/TPgE29TIFXIdNQpFbUoF2VJIs67PZgmKh2CYv9a
+   4vwK/8F2EMQGMis4q/4q1eo+RxdwMJliqcgqDJsfym7Nom/0ci+xXvmV8
+   jKZ5h3kjewgehEL04Q9V655SbckMjIvMPrZYzqy69gg0p07pgDyRHRQir
+   pXKqaWKB+FmDxsc6Ya65JWXMIGG5u2kAGpil9ipkqh3Dw0vEip4emYDwO
+   Q==;
+X-CSE-ConnectionGUID: Gemo4/aoQliaqG0HSHwzNw==
+X-CSE-MsgGUID: 16XeW3LPRV6WZQNC+KPjFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="57900346"
+X-IronPort-AV: E=Sophos;i="6.15,252,1739865600"; 
+   d="scan'208";a="57900346"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 09:45:39 -0700
+X-CSE-ConnectionGUID: FRYk2KNrTwGYffzVPt4jkA==
+X-CSE-MsgGUID: dXoFU1mgRlq9kWHXKov/dA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,252,1739865600"; 
+   d="scan'208";a="134108205"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 30 Apr 2025 09:45:35 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uAAYu-0003cH-2Q;
+	Wed, 30 Apr 2025 16:45:32 +0000
+Date: Thu, 1 May 2025 00:45:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Matthew Leung <quic_mattleun@quicinc.com>,
+	Yan Zhen <yanzhen@vivo.com>, Kunwu Chan <chentao@kylinos.cn>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Troy Hanson <quic_thanson@quicinc.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	kernel@collabora.com, Carl Vanderlip <quic_carlv@quicinc.com>,
+	Sumit Garg <sumit.garg@kernel.org>, mhi@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org
+Subject: Re: [PATCH v3] bus: mhi: host: don't free bhie tables during
+ suspend/hibernation
+Message-ID: <202505010037.1PMLamw8-lkp@intel.com>
+References: <20250429122351.108684-1-usama.anjum@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: FelgGtbUmCpczhe-E0j8dVqibhhIlIBi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDMwMDExMiBTYWx0ZWRfXzog0JwQCHMIU Rmdz61NofNRVo+fbNvJfxBrPjXFrNPGY5TBMowvCr+onVfuEFAB8VU/oUMfxvUe0SOa4vMX/l9C +g/JvBKgOexSP4vwGo0coEdCKmfO7A2GhDZttJsBfMFPWS0F8vXBIayynGPE+UllouibGwkvQAl
- DZB/+I3lSFR/yRmE9ntihBCuy8tCIiVgIszol/UFSi69dOKbq8eMxAhO0kx8r6bk08C2GuZ02VF vKzeLl7saPA1swUZr/K0B5azw8PVydkSeAcTg73AY2q2gTOTVl2BTCcqSQjnZEuGrIUK6paP1Uv NJ72e8MiSIi+Dt//y19xPOSUSSeu1riJNRpaIjKvUuCWRsW2gPO/dR1VxiVQ5CcEG8ZyB3mT92N
- bP0L6s4BChRQgieBVRIT8moqC5rWKJlqWmI9N5Ffgfz+JrNqilydrQ4VBTRGksRfCDNGCa14
-X-Authority-Analysis: v=2.4 cv=b5qy4sGx c=1 sm=1 tr=0 ts=681244ea cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=bctMepNisiZQuO0GxY0A:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: FelgGtbUmCpczhe-E0j8dVqibhhIlIBi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-30_04,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 phishscore=0
- mlxscore=0 impostorscore=0 malwarescore=0 spamscore=0 adultscore=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 priorityscore=1501
- clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504300112
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250429122351.108684-1-usama.anjum@collabora.com>
 
-From: Aishwarya R <quic_aisr@quicinc.com>
+Hi Muhammad,
 
-Whenever there is a change in the country code settings from the
-user, driver does an intersection of the regulatory rules for this
-new country with the original regulatory rules which were reported
-during initialization time.
+kernel test robot noticed the following build warnings:
 
-There is also similar logic running in firmware with a difference
-that the intersection in firmware is only done when the country code
-is configuration during boot up time (BDF/OTP). Firmware logic does
-not kick in when no country code is configured during device bring
-up time as the device is always expected to have the country code
-configured properly in the deployment.
+[auto build test WARNING on ath/ath-next]
+[also build test WARNING on next-20250430]
+[cannot apply to mani-mhi/mhi-next char-misc/char-misc-testing char-misc/char-misc-next char-misc/char-misc-linus staging/staging-testing staging/staging-next staging/staging-linus usb/usb-testing usb/usb-next usb/usb-linus linus/master v6.15-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-There is a debug/test use case that requires absolute regulatory
-rules to be used for a user configured country code when the device
-is not configured with a particular country code during boot up time.
+url:    https://github.com/intel-lab-lkp/linux/commits/Muhammad-Usama-Anjum/bus-mhi-host-don-t-free-bhie-tables-during-suspend-hibernation/20250429-202649
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git ath-next
+patch link:    https://lore.kernel.org/r/20250429122351.108684-1-usama.anjum%40collabora.com
+patch subject: [PATCH v3] bus: mhi: host: don't free bhie tables during suspend/hibernation
+config: arm64-randconfig-002-20250430 (https://download.01.org/0day-ci/archive/20250501/202505010037.1PMLamw8-lkp@intel.com/config)
+compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project f819f46284f2a79790038e1f6649172789734ae8)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250501/202505010037.1PMLamw8-lkp@intel.com/reproduce)
 
-To support the above test use case, remove the redundant regulatory
-rules intersection logic in the host driver. Depend on the
-intersection logic in firmware when the device comes up with
-pre-configured country code.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505010037.1PMLamw8-lkp@intel.com/
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00209-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+All warnings (new ones prefixed by >>):
 
-Signed-off-by: Aishwarya R <quic_aisr@quicinc.com>
-Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/reg.c | 164 ++------------------------
- drivers/net/wireless/ath/ath12k/reg.h |   3 +-
- drivers/net/wireless/ath/ath12k/wmi.c |  24 +---
- 3 files changed, 14 insertions(+), 177 deletions(-)
+>> drivers/bus/mhi/host/pm.c:1246:6: warning: no previous prototype for function 'mhi_power_down_unprepare_keep_dev' [-Wmissing-prototypes]
+    1246 | void mhi_power_down_unprepare_keep_dev(struct mhi_controller *mhi_cntrl)
+         |      ^
+   drivers/bus/mhi/host/pm.c:1246:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+    1246 | void mhi_power_down_unprepare_keep_dev(struct mhi_controller *mhi_cntrl)
+         | ^
+         | static 
+   1 warning generated.
 
-diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wireless/ath/ath12k/reg.c
-index 7048834e0d14..4c7a56ce9ada 100644
---- a/drivers/net/wireless/ath/ath12k/reg.c
-+++ b/drivers/net/wireless/ath/ath12k/reg.c
-@@ -454,129 +454,6 @@ static u32 ath12k_map_fw_phy_flags(u32 phy_flags)
- 	return flags;
- }
- 
--static bool
--ath12k_reg_can_intersect(struct ieee80211_reg_rule *rule1,
--			 struct ieee80211_reg_rule *rule2)
--{
--	u32 start_freq1, end_freq1;
--	u32 start_freq2, end_freq2;
--
--	start_freq1 = rule1->freq_range.start_freq_khz;
--	start_freq2 = rule2->freq_range.start_freq_khz;
--
--	end_freq1 = rule1->freq_range.end_freq_khz;
--	end_freq2 = rule2->freq_range.end_freq_khz;
--
--	if ((start_freq1 >= start_freq2 &&
--	     start_freq1 < end_freq2) ||
--	    (start_freq2 > start_freq1 &&
--	     start_freq2 < end_freq1))
--		return true;
--
--	/* TODO: Should we restrict intersection feasibility
--	 *  based on min bandwidth of the intersected region also,
--	 *  say the intersected rule should have a  min bandwidth
--	 * of 20MHz?
--	 */
--
--	return false;
--}
--
--static void ath12k_reg_intersect_rules(struct ieee80211_reg_rule *rule1,
--				       struct ieee80211_reg_rule *rule2,
--				       struct ieee80211_reg_rule *new_rule)
--{
--	u32 start_freq1, end_freq1;
--	u32 start_freq2, end_freq2;
--	u32 freq_diff, max_bw;
--
--	start_freq1 = rule1->freq_range.start_freq_khz;
--	start_freq2 = rule2->freq_range.start_freq_khz;
--
--	end_freq1 = rule1->freq_range.end_freq_khz;
--	end_freq2 = rule2->freq_range.end_freq_khz;
--
--	new_rule->freq_range.start_freq_khz = max_t(u32, start_freq1,
--						    start_freq2);
--	new_rule->freq_range.end_freq_khz = min_t(u32, end_freq1, end_freq2);
--
--	freq_diff = new_rule->freq_range.end_freq_khz -
--			new_rule->freq_range.start_freq_khz;
--	max_bw = min_t(u32, rule1->freq_range.max_bandwidth_khz,
--		       rule2->freq_range.max_bandwidth_khz);
--	new_rule->freq_range.max_bandwidth_khz = min_t(u32, max_bw, freq_diff);
--
--	new_rule->power_rule.max_antenna_gain =
--		min_t(u32, rule1->power_rule.max_antenna_gain,
--		      rule2->power_rule.max_antenna_gain);
--
--	new_rule->power_rule.max_eirp = min_t(u32, rule1->power_rule.max_eirp,
--					      rule2->power_rule.max_eirp);
--
--	/* Use the flags of both the rules */
--	new_rule->flags = rule1->flags | rule2->flags;
--
--	/* To be safe, lts use the max cac timeout of both rules */
--	new_rule->dfs_cac_ms = max_t(u32, rule1->dfs_cac_ms,
--				     rule2->dfs_cac_ms);
--}
--
--static struct ieee80211_regdomain *
--ath12k_regd_intersect(struct ieee80211_regdomain *default_regd,
--		      struct ieee80211_regdomain *curr_regd)
--{
--	u8 num_old_regd_rules, num_curr_regd_rules, num_new_regd_rules;
--	struct ieee80211_reg_rule *old_rule, *curr_rule, *new_rule;
--	struct ieee80211_regdomain *new_regd = NULL;
--	u8 i, j, k;
--
--	num_old_regd_rules = default_regd->n_reg_rules;
--	num_curr_regd_rules = curr_regd->n_reg_rules;
--	num_new_regd_rules = 0;
--
--	/* Find the number of intersecting rules to allocate new regd memory */
--	for (i = 0; i < num_old_regd_rules; i++) {
--		old_rule = default_regd->reg_rules + i;
--		for (j = 0; j < num_curr_regd_rules; j++) {
--			curr_rule = curr_regd->reg_rules + j;
--
--			if (ath12k_reg_can_intersect(old_rule, curr_rule))
--				num_new_regd_rules++;
--		}
--	}
--
--	if (!num_new_regd_rules)
--		return NULL;
--
--	new_regd = kzalloc(sizeof(*new_regd) + (num_new_regd_rules *
--			sizeof(struct ieee80211_reg_rule)),
--			GFP_ATOMIC);
--
--	if (!new_regd)
--		return NULL;
--
--	/* We set the new country and dfs region directly and only trim
--	 * the freq, power, antenna gain by intersecting with the
--	 * default regdomain. Also MAX of the dfs cac timeout is selected.
--	 */
--	new_regd->n_reg_rules = num_new_regd_rules;
--	memcpy(new_regd->alpha2, curr_regd->alpha2, sizeof(new_regd->alpha2));
--	new_regd->dfs_region = curr_regd->dfs_region;
--	new_rule = new_regd->reg_rules;
--
--	for (i = 0, k = 0; i < num_old_regd_rules; i++) {
--		old_rule = default_regd->reg_rules + i;
--		for (j = 0; j < num_curr_regd_rules; j++) {
--			curr_rule = curr_regd->reg_rules + j;
--
--			if (ath12k_reg_can_intersect(old_rule, curr_rule))
--				ath12k_reg_intersect_rules(old_rule, curr_rule,
--							   (new_rule + k++));
--		}
--	}
--	return new_regd;
--}
--
- static const char *
- ath12k_reg_get_regdom_str(enum nl80211_dfs_regions dfs_region)
- {
-@@ -712,9 +589,9 @@ static void ath12k_reg_update_freq_range(struct ath12k_reg_freq *reg_freq,
- 
- struct ieee80211_regdomain *
- ath12k_reg_build_regd(struct ath12k_base *ab,
--		      struct ath12k_reg_info *reg_info, bool intersect)
-+		      struct ath12k_reg_info *reg_info)
- {
--	struct ieee80211_regdomain *tmp_regd, *default_regd, *new_regd = NULL;
-+	struct ieee80211_regdomain *new_regd = NULL;
- 	struct ath12k_reg_rule *reg_rule;
- 	u8 i = 0, j = 0, k = 0;
- 	u8 num_rules;
-@@ -738,20 +615,20 @@ ath12k_reg_build_regd(struct ath12k_base *ab,
- 	if (reg_info->dfs_region == ATH12K_DFS_REG_ETSI)
- 		num_rules += 2;
- 
--	tmp_regd = kzalloc(sizeof(*tmp_regd) +
-+	new_regd = kzalloc(sizeof(*new_regd) +
- 			   (num_rules * sizeof(struct ieee80211_reg_rule)),
- 			   GFP_ATOMIC);
--	if (!tmp_regd)
-+	if (!new_regd)
- 		goto ret;
- 
--	memcpy(tmp_regd->alpha2, reg_info->alpha2, REG_ALPHA2_LEN + 1);
-+	memcpy(new_regd->alpha2, reg_info->alpha2, REG_ALPHA2_LEN + 1);
- 	memcpy(alpha2, reg_info->alpha2, REG_ALPHA2_LEN + 1);
- 	alpha2[2] = '\0';
--	tmp_regd->dfs_region = ath12k_map_fw_dfs_region(reg_info->dfs_region);
-+	new_regd->dfs_region = ath12k_map_fw_dfs_region(reg_info->dfs_region);
- 
- 	ath12k_dbg(ab, ATH12K_DBG_REG,
- 		   "\r\nCountry %s, CFG Regdomain %s FW Regdomain %d, num_reg_rules %d\n",
--		   alpha2, ath12k_reg_get_regdom_str(tmp_regd->dfs_region),
-+		   alpha2, ath12k_reg_get_regdom_str(new_regd->dfs_region),
- 		   reg_info->dfs_region, num_rules);
- 
- 	/* Reset start and end frequency for each band
-@@ -803,7 +680,7 @@ ath12k_reg_build_regd(struct ath12k_base *ab,
- 		flags |= ath12k_map_fw_reg_flags(reg_rule->flags);
- 		flags |= ath12k_map_fw_phy_flags(reg_info->phybitmap);
- 
--		ath12k_reg_update_rule(tmp_regd->reg_rules + i,
-+		ath12k_reg_update_rule(new_regd->reg_rules + i,
- 				       reg_rule->start_freq,
- 				       reg_rule->end_freq, max_bw,
- 				       reg_rule->ant_gain, reg_rule->reg_power,
-@@ -818,7 +695,7 @@ ath12k_reg_build_regd(struct ath12k_base *ab,
- 		    reg_info->dfs_region == ATH12K_DFS_REG_ETSI &&
- 		    (reg_rule->end_freq > ETSI_WEATHER_RADAR_BAND_LOW &&
- 		    reg_rule->start_freq < ETSI_WEATHER_RADAR_BAND_HIGH)){
--			ath12k_reg_update_weather_radar_band(ab, tmp_regd,
-+			ath12k_reg_update_weather_radar_band(ab, new_regd,
- 							     reg_rule, &i,
- 							     flags, max_bw);
- 			continue;
-@@ -828,36 +705,19 @@ ath12k_reg_build_regd(struct ath12k_base *ab,
- 			ath12k_dbg(ab, ATH12K_DBG_REG, "\t%d. (%d - %d @ %d) (%d, %d) (%d ms) (FLAGS %d) (%d, %d)\n",
- 				   i + 1, reg_rule->start_freq, reg_rule->end_freq,
- 				   max_bw, reg_rule->ant_gain, reg_rule->reg_power,
--				   tmp_regd->reg_rules[i].dfs_cac_ms,
-+				   new_regd->reg_rules[i].dfs_cac_ms,
- 				   flags, reg_rule->psd_flag, reg_rule->psd_eirp);
- 		} else {
- 			ath12k_dbg(ab, ATH12K_DBG_REG,
- 				   "\t%d. (%d - %d @ %d) (%d, %d) (%d ms) (FLAGS %d)\n",
- 				   i + 1, reg_rule->start_freq, reg_rule->end_freq,
- 				   max_bw, reg_rule->ant_gain, reg_rule->reg_power,
--				   tmp_regd->reg_rules[i].dfs_cac_ms,
-+				   new_regd->reg_rules[i].dfs_cac_ms,
- 				   flags);
- 		}
- 	}
- 
--	tmp_regd->n_reg_rules = i;
--
--	if (intersect) {
--		default_regd = ab->default_regd[reg_info->phy_id];
--
--		/* Get a new regd by intersecting the received regd with
--		 * our default regd.
--		 */
--		new_regd = ath12k_regd_intersect(default_regd, tmp_regd);
--		kfree(tmp_regd);
--		if (!new_regd) {
--			ath12k_warn(ab, "Unable to create intersected regdomain\n");
--			goto ret;
--		}
--	} else {
--		new_regd = tmp_regd;
--	}
--
-+	new_regd->n_reg_rules = i;
- ret:
- 	return new_regd;
- }
-diff --git a/drivers/net/wireless/ath/ath12k/reg.h b/drivers/net/wireless/ath/ath12k/reg.h
-index b1eb584ff34c..423dd16ae3dc 100644
---- a/drivers/net/wireless/ath/ath12k/reg.h
-+++ b/drivers/net/wireless/ath/ath12k/reg.h
-@@ -96,8 +96,7 @@ void ath12k_reg_init(struct ieee80211_hw *hw);
- void ath12k_reg_free(struct ath12k_base *ab);
- void ath12k_regd_update_work(struct work_struct *work);
- struct ieee80211_regdomain *ath12k_reg_build_regd(struct ath12k_base *ab,
--						  struct ath12k_reg_info *reg_info,
--						  bool intersect);
-+						  struct ath12k_reg_info *reg_info);
- int ath12k_regd_update(struct ath12k *ar, bool init);
- int ath12k_reg_update_chan_list(struct ath12k *ar, bool wait);
- 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index ea303dca38b5..8583d3b33116 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -6115,22 +6115,10 @@ static void ath12k_wmi_htc_tx_complete(struct ath12k_base *ab,
- 	dev_kfree_skb(skb);
- }
- 
--static bool ath12k_reg_is_world_alpha(char *alpha)
--{
--	if (alpha[0] == '0' && alpha[1] == '0')
--		return true;
--
--	if (alpha[0] == 'n' && alpha[1] == 'a')
--		return true;
--
--	return false;
--}
--
- static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *skb)
- {
- 	struct ath12k_reg_info *reg_info = NULL;
- 	struct ieee80211_regdomain *regd = NULL;
--	bool intersect = false;
- 	int ret = 0, pdev_idx, i, j;
- 	struct ath12k *ar;
- 
-@@ -6178,17 +6166,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
- 		    reg_info->alpha2, 2))
- 		goto mem_free;
- 
--	/* Intersect new rules with default regd if a new country setting was
--	 * requested, i.e a default regd was already set during initialization
--	 * and the regd coming from this event has a valid country info.
--	 */
--	if (ab->default_regd[pdev_idx] &&
--	    !ath12k_reg_is_world_alpha((char *)
--		ab->default_regd[pdev_idx]->alpha2) &&
--	    !ath12k_reg_is_world_alpha((char *)reg_info->alpha2))
--		intersect = true;
--
--	regd = ath12k_reg_build_regd(ab, reg_info, intersect);
-+	regd = ath12k_reg_build_regd(ab, reg_info);
- 	if (!regd) {
- 		ath12k_warn(ab, "failed to build regd from reg_info\n");
- 		goto fallback;
 
-base-commit: 21346cd925c2567d5f56cdb1421c94815ac10221
+vim +/mhi_power_down_unprepare_keep_dev +1246 drivers/bus/mhi/host/pm.c
+
+  1245	
+> 1246	void mhi_power_down_unprepare_keep_dev(struct mhi_controller *mhi_cntrl)
+  1247	{
+  1248		mhi_cntrl->bhi = NULL;
+  1249		mhi_cntrl->bhie = NULL;
+  1250	
+  1251		mhi_deinit_dev_ctxt(mhi_cntrl);
+  1252	}
+  1253	
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
