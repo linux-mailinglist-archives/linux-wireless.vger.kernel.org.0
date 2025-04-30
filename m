@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-22262-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22263-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44B5AA4C66
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 15:02:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829C4AA4C62
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 15:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51AE6188DC6C
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 12:59:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A51716B205
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 12:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015E525F7B9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E928F25FA31;
 	Wed, 30 Apr 2025 12:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VPDvA6al"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a6yM0Tc4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6873A259C9D
-	for <linux-wireless@vger.kernel.org>; Wed, 30 Apr 2025 12:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B248F25DCEE
+	for <linux-wireless@vger.kernel.org>; Wed, 30 Apr 2025 12:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746017867; cv=none; b=VzsMt+19pYW2zbyP+j73FTJc3xTjqpfu4LNQqOwHHbzXwZTQmsGbnPI6+AT8NsWoMD/Kaac8wMLHgDrkboH2UFXQgdv9ho9a/DhbOz5t9Qn5l6g8dbTYh8Rlx3IjCM9nS9PC40au2WlP1ltMgDtnWk/lZOFE670/y80hayh9Bhw=
+	t=1746017868; cv=none; b=OjttdKV0zSBInnOeEQAbNZ5DXOlT6hl2+YZCSsetVNmym9p/SijZpaDlXSlxnct5Am02emCO5bgjnrhxg3YH/Kmc7bswdDzAZDO4KLSFvPHlDXH6VnOAtzhCrpRG/IwIi5ACCpRzEwOHRUCEPxdzgZdZ5ak4PLcLzAIgPnsgEl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746017867; c=relaxed/simple;
-	bh=yFzd5jmOd/wTwdqoklYmnhrg7AYbPo+aXanPYEdOB7k=;
+	s=arc-20240116; t=1746017868; c=relaxed/simple;
+	bh=XswSLjD69x7YyUC4GhDaDCFfdNKGOisdI9YUK/vKO6w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZpgXRAofcs3jRYqRTIxvMZnpxJhPIa9B74zkXo2Axhn3KwsVhDJmskOZTL+5TE4Fj6/NX8Uhb4jJFU5BhErPLab1Pt16n2qZkIZXlZwVuUOgiad101XwdHAOT/e/OwusbQE/q8IlTvg4GmuhfI86cDCEKnmWnWnVeZEWdio83Bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VPDvA6al; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=NdNX+vwrH+cOeOHsNxtKIfgpVDgFw6NGn6tmIIcxZcd7ijZB639r6H6AXKDPkwOLjQ5L9fbKp9UnQ+jjEvFH9BxID0X7a0Vw4BZEoECXdWhlk5XlC2S3rFsj3PBn1I16putJBPaT2ju0bsV9C1vvfxKPLjkbBzzh/JSIWjbiblI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a6yM0Tc4; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746017865; x=1777553865;
+  t=1746017867; x=1777553867;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=yFzd5jmOd/wTwdqoklYmnhrg7AYbPo+aXanPYEdOB7k=;
-  b=VPDvA6alT0ug+KAaMYSaIcuA4T7XvVy3FHOOf/AbEAbM0SpKX9xiDusJ
-   +mCtj0dG8jYIMNMy4PBLjMBFqhbCRlpn/vXD6G4ERDpmA2piKp2t2ybZE
-   FEyUw2R4AksLluPWFzFcLPtukouJKxDWWMBoLDwuhB/iTo0FgRHH5Mi8t
-   Krih1Dn1eguKZ1cBgKThnk6M15EeilOLz8OvKLyDJraBciFtAxFu1bMEY
-   VLZd2qOlqM+UFEBpTnTz7krTaYMmlXFjpmJVSNvN1BlzQ/MyTZAc8srFY
-   hseHBjBl4xxkbw5CvnwOPiIMGb/eks6f7ZDhjBMuuxOFDPUzKy+Z9W5ZD
-   A==;
-X-CSE-ConnectionGUID: K8X9WD69Qm+3Vgmbc87h3A==
-X-CSE-MsgGUID: jJ6g0yG7TZGK4p5v62FUVQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="58332323"
+  bh=XswSLjD69x7YyUC4GhDaDCFfdNKGOisdI9YUK/vKO6w=;
+  b=a6yM0Tc4fh78qh68t9rHtFfGiIlH6qtAYNTuLTaxUu3lUhE+Zs1TQrgK
+   iosaNoZFHJv2RqW903G+7z8NUScNYv/kx+H1nrGGH85ZZmpsh3akE87cj
+   DSwILAvnKPvgRJLPruCQlI0BiwQWjcX5BAmw6+hp3hu+NPLsFPkSerE+u
+   vExn4N5HvMrjiE1Ty2YLMx7QQHCUT2+0cZVqMHU2IUXsnde2TqOdYB4Ax
+   0Gm+S2HFMZrQ68FFK5GDi0uPUR7xIs7aK/oQAX3rfp8kl0/hp1J5MmOYZ
+   btMOIDetfQSXga5ofPgEzQcKj3O3PiFeWVOQGJh3YrgMb2RXXwY4ZmoeU
+   w==;
+X-CSE-ConnectionGUID: 7eAi2CzTTymnM80e0XglHQ==
+X-CSE-MsgGUID: 8DojD6I6RZmer912tr7X7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="58332325"
 X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
-   d="scan'208";a="58332323"
+   d="scan'208";a="58332325"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:44 -0700
-X-CSE-ConnectionGUID: d5lTQti+T4m2ztR45qXK3g==
-X-CSE-MsgGUID: O5t/U+d/SFOULFZORF+hAw==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:46 -0700
+X-CSE-ConnectionGUID: 19IzsJkPS1SE5pBbqsVPnQ==
+X-CSE-MsgGUID: x+0OXwBgRZGQRQ8srFXXlw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
-   d="scan'208";a="134632081"
+   d="scan'208";a="134632085"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:43 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:44 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: linux-wireless@vger.kernel.org,
-	Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
-Subject: [PATCH iwlwifi-next 01/15] wifi: iwlwifi: mld: add kunit test for emlsr with bt on
-Date: Wed, 30 Apr 2025 15:57:15 +0300
-Message-Id: <20250430155443.6621494fa412.If89b4b2dab308d825ca02284dd8e0030675d7af5@changeid>
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH iwlwifi-next 02/15] wifi: iwlwifi: add support for ALIVE v8
+Date: Wed, 30 Apr 2025 15:57:16 +0300
+Message-Id: <20250430155443.dc387ae36e0f.Iafd364c6b23749597b658015be97295ad0c1730d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250430125729.1122751-1-miriam.rachel.korenblit@intel.com>
 References: <20250430125729.1122751-1-miriam.rachel.korenblit@intel.com>
@@ -77,216 +77,122 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-add kunit test to validate entering and exiting
-emlsr scenarios when the bt is on with certain
-penalty on wifi.
+The firmware added a field to describe the platform Id.
+Just print it.
 
-Signed-off-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/mlo.c  |   4 +-
- drivers/net/wireless/intel/iwlwifi/mld/mlo.h  |   4 +
- .../wireless/intel/iwlwifi/mld/tests/Makefile |   2 +-
- .../intel/iwlwifi/mld/tests/emlsr_with_bt.c   | 140 ++++++++++++++++++
- 4 files changed, 148 insertions(+), 2 deletions(-)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/emlsr_with_bt.c
+ .../net/wireless/intel/iwlwifi/fw/api/alive.h | 10 +++++++++
+ drivers/net/wireless/intel/iwlwifi/mld/fw.c   | 21 +++++++++++++++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 13 +++++++++++-
+ 3 files changed, 41 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-index c84b39794c8f..824a328da28e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-@@ -640,7 +640,8 @@ s8 iwl_mld_get_emlsr_rssi_thresh(struct iwl_mld *mld,
- #define IWL_MLD_BT_COEX_ENABLE_EMLSR_RSSI_THRESH	-63
- #define IWL_MLD_BT_COEX_WIFI_LOSS_THRESH		7
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h b/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h
+index 42360a8f23aa..3ce477c248ce 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h
+@@ -112,6 +112,16 @@ struct iwl_alive_ntf_v6 {
+ 	struct iwl_imr_alive_info imr;
+ } __packed; /* UCODE_ALIVE_NTFY_API_S_VER_6 */
  
--static bool
-+VISIBLE_IF_IWLWIFI_KUNIT
-+bool
- iwl_mld_bt_allows_emlsr(struct iwl_mld *mld, struct ieee80211_bss_conf *link,
- 			bool check_entry)
++struct iwl_alive_ntf {
++	__le16 status;
++	__le16 flags;
++	struct iwl_lmac_alive lmac_data[2];
++	struct iwl_umac_alive umac_data;
++	struct iwl_sku_id sku_id;
++	struct iwl_imr_alive_info imr;
++	__le64 platform_id;
++} __packed; /* UCODE_ALIVE_NTFY_API_S_VER_8 */
++
+ /**
+  * enum iwl_extended_cfg_flags - commands driver may send before
+  *	finishing init flow
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/fw.c b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
+index 238e8ad8ba82..268ff7eceb47 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
+@@ -103,12 +103,13 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
+ 			 struct iwl_rx_packet *pkt, void *data)
  {
-@@ -669,6 +670,7 @@ iwl_mld_bt_allows_emlsr(struct iwl_mld *mld, struct ieee80211_bss_conf *link,
- 		      link->link_id, bt_penalty);
- 	return bt_penalty < IWL_MLD_BT_COEX_WIFI_LOSS_THRESH;
- }
-+EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_mld_bt_allows_emlsr);
+ 	unsigned int pkt_len = iwl_rx_packet_payload_len(pkt);
++	unsigned int expected_sz;
+ 	struct iwl_mld *mld =
+ 		container_of(notif_wait, struct iwl_mld, notif_wait);
+ 	struct iwl_trans *trans = mld->trans;
+ 	u32 version = iwl_fw_lookup_notif_ver(mld->fw, LEGACY_GROUP,
+ 					      UCODE_ALIVE_NTFY, 0);
+-	struct iwl_alive_ntf_v6 *palive;
++	struct iwl_alive_ntf *palive;
+ 	bool *alive_valid = data;
+ 	struct iwl_umac_alive *umac;
+ 	struct iwl_lmac_alive *lmac1;
+@@ -117,7 +118,19 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
+ 	u32 umac_error_table;
+ 	u16 status;
  
- static u32
- iwl_mld_emlsr_disallowed_with_link(struct iwl_mld *mld,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.h b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
-index c2bf04b799fb..2122a7c3e945 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
-@@ -161,6 +161,10 @@ struct iwl_mld_link_sel_data {
- u32 iwl_mld_emlsr_pair_state(struct ieee80211_vif *vif,
- 			     struct iwl_mld_link_sel_data *a,
- 			     struct iwl_mld_link_sel_data *b);
+-	if (version < 6 || version > 7 || pkt_len != sizeof(*palive))
++	switch (version) {
++	case 6:
++	case 7:
++		expected_sz = sizeof(struct iwl_alive_ntf_v6);
++		break;
++	case 8:
++		expected_sz = sizeof(struct iwl_alive_ntf);
++		break;
++	default:
++		return false;
++	}
 +
-+bool iwl_mld_bt_allows_emlsr(struct iwl_mld *mld,
-+			     struct ieee80211_bss_conf *link,
-+			     bool entry_criteria);
- #endif
++	if (pkt_len != expected_sz)
+ 		return false;
  
- #endif /* __iwl_mld_mlo_h__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/Makefile b/drivers/net/wireless/intel/iwlwifi/mld/tests/Makefile
-index 36317feb923b..3e2ae6020613 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/tests/Makefile
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
--iwlmld-tests-y += module.o hcmd.o utils.o link.o rx.o agg.o link-selection.o
-+iwlmld-tests-y += module.o hcmd.o utils.o link.o rx.o agg.o link-selection.o emlsr_with_bt.o
+ 	palive = (void *)pkt->data;
+@@ -171,6 +184,10 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
+ 		IWL_DEBUG_FW(mld, "FW alive flags 0x%x\n",
+ 			     le16_to_cpu(palive->flags));
  
- ccflags-y += -I$(src)/../
- obj-$(CONFIG_IWLWIFI_KUNIT_TESTS) += iwlmld-tests.o
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/emlsr_with_bt.c b/drivers/net/wireless/intel/iwlwifi/mld/tests/emlsr_with_bt.c
-new file mode 100644
-index 000000000000..91556ee5c142
---- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/emlsr_with_bt.c
-@@ -0,0 +1,140 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/*
-+ * KUnit tests for link selection functions
-+ *
-+ * Copyright (C) 2025 Intel Corporation
-+ */
-+#include <kunit/static_stub.h>
++	if (version >= 8)
++		IWL_DEBUG_FW(mld, "platform_id 0x%llx\n",
++			     le64_to_cpu(palive->platform_id));
 +
-+#include "utils.h"
-+#include "mld.h"
-+#include "mlo.h"
+ 	iwl_fwrt_update_fw_versions(&mld->fwrt, lmac1, umac);
+ 
+ 	return true;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 5bdd35b433e8..d955f7c4ab8a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -114,7 +114,7 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
+ 	u32 i;
+ 
+ 
+-	if (version == 6) {
++	if (version >= 6) {
+ 		struct iwl_alive_ntf_v6 *palive;
+ 
+ 		if (pkt_len < sizeof(*palive))
+@@ -157,6 +157,17 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
+ 				}
+ 			}
+ 		}
 +
-+static const struct emlsr_with_bt_test_case {
-+	const char *desc;
-+	struct {
-+		struct iwl_bt_coex_profile_notif notif;
-+		s32 signal;
-+		bool check_entry;
-+	} input;
-+	bool emlsr_allowed;
-+} emlsr_with_bt_cases[] = {
-+	{
-+		.desc = "BT penalty(exit) with low rssi 4.5: emlsr allowed",
-+		.input = {
-+			.notif.wifi_loss_low_rssi[1] = {4, 5},
-+			.notif.wifi_loss_mid_high_rssi[1] = {7, 9},
-+			.signal = -69,
-+			.check_entry = false,
-+		},
-+		.emlsr_allowed = true,
-+	},
-+	{
-+		.desc = "BT penalty(exit) from high rssi 5: emlsr allowed",
-+		.input = {
-+			.notif.wifi_loss_low_rssi[1] = {7, 9},
-+			.notif.wifi_loss_mid_high_rssi[1] = {5, 5},
-+			.signal = -68,
-+			.check_entry = false,
-+		},
-+		.emlsr_allowed = true,
-+	},
-+	{
-+		.desc = "BT penalty(exit) with low rssi 8: emlsr not allowed",
-+		.input = {
-+			.notif.wifi_loss_low_rssi[1] = {7, 9},
-+			.notif.wifi_loss_mid_high_rssi[1] = {4, 5},
-+			.signal = -69,
-+			.check_entry = false,
-+		},
-+		.emlsr_allowed = false,
-+	},
-+	{
-+		.desc = "BT penalty(exit) from high rssi 9: emlsr not allowed",
-+		.input = {
-+			.notif.wifi_loss_low_rssi[1] = {4, 5},
-+			.notif.wifi_loss_mid_high_rssi[1] = {9, 9},
-+			.signal = -68,
-+			.check_entry = false,
-+		},
-+		.emlsr_allowed = false,
-+	},
-+	{
-+		.desc = "BT penalty(entry) with low rssi 4.5: emlsr allowed",
-+		.input = {
-+			.notif.wifi_loss_low_rssi[1] = {4, 5},
-+			.notif.wifi_loss_mid_high_rssi[1] = {7, 9},
-+			.signal = -63,
-+			.check_entry = true,
-+		},
-+		.emlsr_allowed = true,
-+	},
-+	{
-+		.desc = "BT penalty(entry) from high rssi 5: emlsr allowed",
-+		.input = {
-+			.notif.wifi_loss_low_rssi[1] = {7, 9},
-+			.notif.wifi_loss_mid_high_rssi[1] = {5, 5},
-+			.signal = -62,
-+			.check_entry = false,
-+		},
-+		.emlsr_allowed = true,
-+	},
-+	{
-+		.desc = "BT penalty(entry) with low rssi 8: emlsr not allowed",
-+		.input = {
-+			.notif.wifi_loss_low_rssi[1] = {7, 9},
-+			.notif.wifi_loss_mid_high_rssi[1] = {4, 5},
-+			.signal = -63,
-+			.check_entry = false,
-+		},
-+		.emlsr_allowed = true,
-+	},
-+	{
-+		.desc = "BT penalty(entry) from high rssi 9: emlsr not allowed",
-+		.input = {
-+			.notif.wifi_loss_low_rssi[1] = {4, 5},
-+			.notif.wifi_loss_mid_high_rssi[1] = {9, 9},
-+			.signal = -62,
-+			.check_entry = true,
-+		},
-+		.emlsr_allowed = false,
-+	},
-+};
++		if (version >= 8) {
++			const struct iwl_alive_ntf *palive_v8 =
++				(void *)pkt->data;
 +
-+KUNIT_ARRAY_PARAM_DESC(emlsr_with_bt, emlsr_with_bt_cases, desc);
++			if (pkt_len < sizeof(*palive_v8))
++				return false;
 +
-+static void test_emlsr_with_bt(struct kunit *test)
-+{
-+	struct iwl_mld *mld = test->priv;
-+	const struct emlsr_with_bt_test_case *test_param =
-+		(const void *)(test->param_value);
-+	struct ieee80211_vif *vif =
-+		iwlmld_kunit_add_vif(true, NL80211_IFTYPE_STATION);
-+	struct ieee80211_bss_conf *link = iwlmld_kunit_add_link(vif, 1);
-+	bool actual_value = false;
-+
-+	KUNIT_ALLOC_AND_ASSERT(test, link->bss);
-+
-+	/* Extract test case parameters */
-+	link->bss->signal = DBM_TO_MBM(test_param->input.signal);
-+	memcpy(&mld->last_bt_notif, &test_param->input.notif,
-+	       sizeof(struct iwl_bt_coex_profile_notif));
-+
-+	actual_value = iwl_mld_bt_allows_emlsr(mld, link,
-+					       test_param->input.check_entry);
-+	/* Assert that the returned value matches the expected emlsr_allowed */
-+	KUNIT_EXPECT_EQ(test, actual_value, test_param->emlsr_allowed);
-+}
-+
-+static struct kunit_case emlsr_with_bt_test_cases[] = {
-+	KUNIT_CASE_PARAM(test_emlsr_with_bt, emlsr_with_bt_gen_params),
-+	{},
-+};
-+
-+static struct kunit_suite emlsr_with_bt = {
-+	.name = "iwlmld-emlsr-with-bt-tests",
-+	.test_cases = emlsr_with_bt_test_cases,
-+	.init = iwlmld_kunit_test_init,
-+};
-+
-+kunit_test_suite(emlsr_with_bt);
++			IWL_DEBUG_FW(mvm, "platform id: 0x%llx\n",
++				     palive_v8->platform_id);
++		}
+ 	}
+ 
+ 	if (version >= 5) {
 -- 
 2.34.1
 
