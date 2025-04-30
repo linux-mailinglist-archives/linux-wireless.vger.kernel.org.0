@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-22265-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22266-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3204AAA4C68
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 15:02:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA61AA4C6A
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 15:02:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDAC8170D2B
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 12:59:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D38C18973E4
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 12:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A213B25B1F8;
-	Wed, 30 Apr 2025 12:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15BA25D8EC;
+	Wed, 30 Apr 2025 12:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bdPxanX6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GoiO9L5F"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA61725FA24
-	for <linux-wireless@vger.kernel.org>; Wed, 30 Apr 2025 12:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035812609D3
+	for <linux-wireless@vger.kernel.org>; Wed, 30 Apr 2025 12:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746017870; cv=none; b=cNXgIBC79RL+clk+QqEwJWXFNdsk0UWDsP8P5pyYSVe2Yxxmf2X+9CnntCQ88fpjxlqEC4Z9Z7dUd4GaBIWgIaf7KsG5GaGA2ufADXixNiY9L8VPa1PHWEj0/vSoQl2m009uk0pYoD04nnNd/5J6tkFbdAEifIU//O0fF2rURZA=
+	t=1746017872; cv=none; b=Aww4ZpSMQqKFHGrrTxVAzjQuJMcN74bkMiYqWXLLoma20nHQZTx72S4RB9l0BO1Qp9lya7ZvBhNqQDoZzjQOk7kIzSTp/Fv90CrsetX7ZAZHbhKCuxhyUKHS7bPrqgbnRNln8W7vzIq3AkO3Eg2SXOAsflon52UHLoR4r8+x9vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746017870; c=relaxed/simple;
-	bh=nQhrKoIkTI95K6xtiYyUdALdzfabXHTgmuymFItOlf8=;
+	s=arc-20240116; t=1746017872; c=relaxed/simple;
+	bh=dfuHT7cVwsYZ2eDnunf2jGG0bed38156J++uRmqK0J0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WhMwblv+M93Lo3kq41+Zhsa8T0JJAih+gKBEx/UJdWXWqjQB4w+K38tXtNFkZ0Ub1Qs07E1PEy7i9l/3msKIaYtW1Dbpc8cj5uELF3ujeqk8juCOp3iOQZ0jjmZGRVf1CnQ6Taw72q3Xrs/sWhQuWMVSD+wvrdt82OEp/KbAahA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bdPxanX6; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=JmzpPmFAfggNEVAocLlMgj5SGIto1WrLwjhOYAF9GxLOFKeVwNTaO5UhU4UXSOmknANWSeQ6NVt4+4e6LfNtNL+Z9j4i/hdvPCIYS5WnguyF9K2BZoh77ogrG1Ine9Uurgtgg2QmjKpy0+nat9iVeyh1YXr2BPwnvXfYbM6dWH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GoiO9L5F; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746017869; x=1777553869;
+  t=1746017871; x=1777553871;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=nQhrKoIkTI95K6xtiYyUdALdzfabXHTgmuymFItOlf8=;
-  b=bdPxanX6/dmlX517DnxWhREvKuwqIcl5VntHHV38c1aYemyJlI+Nd6m4
-   Efzk5Qy0F3QYnpi/LokJetKABeNVHqAUATSotyZEvGIVsQHdVPaHGvtsL
-   /g/RoeXknym0FN/z+hUGOize4xd4CgftG5dRyLsfmvfsqSs/hTWpVDHEe
-   YYTwwJcnfWLAB+Kon6NvrZvInxQLHZuxjbMqtwuCJAJUfYB+qiik/2lXs
-   wLSNv8MdOSwC4Rxm/VQ17j+upisPnMbqGEZzZbnRxfA0P4B76nfXMzKQO
-   3loZTvtQ0eFi4DBzXye2XtBJS2yyxCKW67FilzNTWcX3CAw160zkE71aw
-   g==;
-X-CSE-ConnectionGUID: cBeGNZ9oTvCsc3yX6C1T1w==
-X-CSE-MsgGUID: yUA1ACOMSaqzcO1fh9FT2Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="58332333"
+  bh=dfuHT7cVwsYZ2eDnunf2jGG0bed38156J++uRmqK0J0=;
+  b=GoiO9L5FR9sZwcNH0G5hrQLMJELrlMaFg+j0iLugbII01wahjAu2NGBM
+   fMCmOx7Ha5kwmLPJjNqXNDGy2gWo/c224pEtuQj9oId/o2vjfW10F3k5j
+   R2/cC900BsPagT/h76topS+OV/RIFImfbxAbSOtWPCoe2VozPgc6kKINg
+   5gnG1La+wxJ9quWxAAqtfcihvl/CAC4jCQwgOB0Cn0Y6Gph6s0Q3djmEH
+   h7rIkc+NA2yiBK7g/Yvbfs6zCMvfPY6qELlzRWuM2ZW/60gsZZuQTjgbL
+   B1XUFd4c11tTQrkqzuxHgH128l8JsSMVRNuHhDIoCUui5ps9OTzzJHbrM
+   Q==;
+X-CSE-ConnectionGUID: xJfSPt71Try9XqcrKXrPvw==
+X-CSE-MsgGUID: lP+KjmIQRkqpBJL5pMN/5g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="58332335"
 X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
-   d="scan'208";a="58332333"
+   d="scan'208";a="58332335"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:49 -0700
-X-CSE-ConnectionGUID: kd75YbYMRNyg+YwUumgekw==
-X-CSE-MsgGUID: B0AkE6bdSBC3C6js8Fc3JA==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:50 -0700
+X-CSE-ConnectionGUID: Zq61tCaZTd2ZOvKZ/7WY7Q==
+X-CSE-MsgGUID: /mLO6NsUQPOrfrrEzhbvUQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
-   d="scan'208";a="134632094"
+   d="scan'208";a="134632098"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:47 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:49 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-next 04/15] wifi: iwlwifi: mvm: support ROC command version 6
-Date: Wed, 30 Apr 2025 15:57:18 +0300
-Message-Id: <20250430155443.d118ee63aca4.I12ea349ca6587d8ea606f6ece4a9f3c0c2bb1494@changeid>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi-next 05/15] wifi: iwlwifi: mld: handle SW reset w/o NIC error
+Date: Wed, 30 Apr 2025 15:57:19 +0300
+Message-Id: <20250430155443.b732ff4e9f31.I3948c2d892f1ee82b3a6bf9f123be02a1eaa82e5@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250430125729.1122751-1-miriam.rachel.korenblit@intel.com>
 References: <20250430125729.1122751-1-miriam.rachel.korenblit@intel.com>
@@ -77,63 +77,36 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-This was suppsed to be supported only in iwlmld, but turns out that it
-will be needed also in iwlmvm. Add support for it.
+From: Johannes Berg <johannes.berg@intel.com>
 
+For the upcoming TOP reset, the sw_reset() method may be
+called without nic_error() before it. In this case, also
+abort any still pending scans and set in_hw_restart.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/time-event.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/mld.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-index 1a30bb1ff8ca..478408f802d9 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-@@ -771,15 +771,17 @@ static void iwl_mvm_cancel_session_protection(struct iwl_mvm *mvm,
- 
- static void iwl_mvm_roc_rm_cmd(struct iwl_mvm *mvm, u32 activity)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
+index 87624730fb50..5d91de598256 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
+@@ -674,6 +674,13 @@ static bool iwl_mld_sw_reset(struct iwl_op_mode *op_mode,
  {
--	struct iwl_roc_req_v5 roc_cmd = {
-+	struct iwl_roc_req roc_cmd = {
- 		.action = cpu_to_le32(FW_CTXT_ACTION_REMOVE),
- 		.activity = cpu_to_le32(activity),
- 	};
-+	u8 ver = iwl_fw_lookup_cmd_ver(mvm->fw, WIDE_ID(MAC_CONF_GROUP, ROC_CMD), 0);
-+	u16 cmd_len = ver < 6 ? sizeof(struct iwl_roc_req_v5) : sizeof(roc_cmd);
- 	int ret;
+ 	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
  
- 	lockdep_assert_held(&mvm->mutex);
- 	ret = iwl_mvm_send_cmd_pdu(mvm, WIDE_ID(MAC_CONF_GROUP, ROC_CMD), 0,
--				   sizeof(roc_cmd), &roc_cmd);
-+				   cmd_len, &roc_cmd);
- 	if (ret)
- 		IWL_ERR(mvm, "Couldn't send the ROC_CMD: %d\n", ret);
- }
-@@ -1102,11 +1104,13 @@ int iwl_mvm_roc_add_cmd(struct iwl_mvm *mvm,
- {
- 	int res;
- 	u32 duration_tu, delay;
--	struct iwl_roc_req_v5 roc_req = {
-+	struct iwl_roc_req roc_req = {
- 		.action = cpu_to_le32(FW_CTXT_ACTION_ADD),
- 		.activity = cpu_to_le32(activity),
- 		.sta_id = cpu_to_le32(mvm->aux_sta.sta_id),
- 	};
-+	u8 ver = iwl_fw_lookup_cmd_ver(mvm->fw, WIDE_ID(MAC_CONF_GROUP, ROC_CMD), 0);
-+	u16 cmd_len = ver < 6 ? sizeof(struct iwl_roc_req_v5) : sizeof(roc_req);
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
- 
- 	lockdep_assert_held(&mvm->mutex);
-@@ -1136,7 +1140,7 @@ int iwl_mvm_roc_add_cmd(struct iwl_mvm *mvm,
- 	memcpy(roc_req.node_addr, vif->addr, ETH_ALEN);
- 
- 	res = iwl_mvm_send_cmd_pdu(mvm, WIDE_ID(MAC_CONF_GROUP, ROC_CMD),
--				   0, sizeof(roc_req), &roc_req);
-+				   0, cmd_len, &roc_req);
- 	if (!res)
- 		mvmvif->roc_activity = activity;
- 
++	/* SW reset can happen for TOP error w/o NIC error, so
++	 * also abort scan here and set in_hw_restart, when we
++	 * had a NIC error both were already done.
++	 */
++	iwl_mld_report_scan_aborted(mld);
++	mld->fw_status.in_hw_restart = true;
++
+ 	/* Do restart only in the following conditions are met:
+ 	 * - we consider the FW as running
+ 	 * - The trigger that brought us here is defined as one that requires
 -- 
 2.34.1
 
