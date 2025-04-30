@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-22270-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22271-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3005AA4C6C
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 15:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB51BAA4C6E
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 15:03:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD2D217CDC6
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 12:59:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B491B17D907
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Apr 2025 12:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7AD25B1F2;
-	Wed, 30 Apr 2025 12:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD992609F5;
+	Wed, 30 Apr 2025 12:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gX8rl6Tc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f0C68uBh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AE92609D8
-	for <linux-wireless@vger.kernel.org>; Wed, 30 Apr 2025 12:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767AE2609DE
+	for <linux-wireless@vger.kernel.org>; Wed, 30 Apr 2025 12:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746017877; cv=none; b=PMbKyMRhXGdtdS15El8AIVTccDeF64P7znm1/wU2fTpB4I2SFyr7RDuy8j25b3GnB6XuMRevtipzLf+ZSBhJueLXNVUjSY7zT3Z8mmsX1NLRqVW2PkEmOvaYd1fESf7hpIW0Rl4EGeBZp2jJZaaDN+taIGYgqdkeYuySjcfe0b8=
+	t=1746017879; cv=none; b=hmjzKdGC3EQr7leBVpmUP5aU2+x+LHVzMt+0mHJNAdCbDAHavINmqcQdBqWc/RUTapCwSP78bUq4QtGpQEVpZEkk9r19Vn3CUIkt/QPLLTxK12xDXaKyylPBkzFOSQo4/MLFP829NOh+AEDqyuq1IT5Zct13+MZkBSW44EE9d1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746017877; c=relaxed/simple;
-	bh=ILusB7PFnxQyIzjTvRv7q+NAVKnZaSMYDt87e+8C8KU=;
+	s=arc-20240116; t=1746017879; c=relaxed/simple;
+	bh=iXMEHaYOFcWMsmrq2wsuI+hM35v+874+zxjcDGaKryQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SMYAvJ6OyhjFlxFjE9imvX2e7oCUZtxZEvvnUiJoiuJDq0BwRYwJaFYS0ZrqLKft6ahCfTv1R08zkxMFgh66mCAosTCH1Fh6Y0X2AlGFJCCkGE4THcYjVuBzhNgVHe4HutUnOGegdWokgmSHRiZKFs4vpvjr+MtwHYcXC4WuJpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gX8rl6Tc; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=rDTUfDFxom0F9SUl30l81exA8ltSICLuo776pt5pwbCLK1nvjfHYLW+7pyu9RsJzqWKwapYZYkwoA/fPqBMsGZSnWCnjz9Fct7E9vNtAQ45P6UMdN4NpPGC3SZ9pB6RqxQPWb4XoK6i0G840G1NMhjNq6D3f6xYLGsxvO4FEx7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f0C68uBh; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746017876; x=1777553876;
+  t=1746017877; x=1777553877;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ILusB7PFnxQyIzjTvRv7q+NAVKnZaSMYDt87e+8C8KU=;
-  b=gX8rl6Tc4FLXcJtN3mq9EkxIr5hV3Xcx7/sLBTW88Lm6O4YM7bbrbEQM
-   26RcVEfegEKQyGb38H/mAcxdnr2C6DvYVkBWIghAvahVAYTEzQcZbnXsr
-   QOryAtkXyGFxQm9EA26XdmY60pQ1yMVrciZOQThy2NhQLbp7jq30qZv14
-   o09vPbV/OaNhJ9ZIadlCiVfvKVKri5qLZ7KGxgZKfJrGJUYqGBfYgGMKq
-   Mo8oZtAeLQ2Gvyj/QdIDdXqGrQjtMdLL5c4LP0iXRkucgi7ghz5v/NAc7
-   ffjSrbFtODvZQy/exctqNKdqwhHue0+kjn0pItHdRlwv7odc6TDxaGiid
-   A==;
-X-CSE-ConnectionGUID: BAD2j5XyTtyTjVvNDommgw==
-X-CSE-MsgGUID: bH28n5wtSL2QGs6m7QA9VA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="58332345"
+  bh=iXMEHaYOFcWMsmrq2wsuI+hM35v+874+zxjcDGaKryQ=;
+  b=f0C68uBh3SMD0o7/qG1jH9qWzEyM40GXprFuMPPKbIw0Nxvy4AU2Ntrr
+   JFOp/aPgswIM5Si9HQ0qeZ8q5UJBwSb3yD9RA32H3MKujXbfIWKW8UKX2
+   Sd6YXU4wutTbxRjmmGgvTWtb8H9A/YUpP7I7y0dMLfU+QeAtpzJ1Idi5T
+   9AQl6qAnTdUV+uZQWco1ieBWLarC+k32XaN6Ilk4/jBwNKzQ7g0jgLeA3
+   /C/tClhxZL8dibs3Sceptiqc8gyvgOpuwZvEnC9t6ocqBzAQMW5NqQyYw
+   wbBdgAKy9OX6VeQx/2UL4v5Bzhtu6H63KDqnqrOJGmhQ8wy+3PE8XN0Jn
+   w==;
+X-CSE-ConnectionGUID: 5w3mK6CuTqKmaXzJve5tmw==
+X-CSE-MsgGUID: oaJpflj9Qm2R0S6MLUJZaQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="58332346"
 X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
-   d="scan'208";a="58332345"
+   d="scan'208";a="58332346"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:56 -0700
-X-CSE-ConnectionGUID: nJ5qVZBkTomcEi9quI4Wag==
-X-CSE-MsgGUID: TeBDrhQZTz+cMXXKf8OTXQ==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:57 -0700
+X-CSE-ConnectionGUID: ph8j5MdOQ7O0YFXcdxDR+w==
+X-CSE-MsgGUID: 77/epHYWRsq7XaEPP+jDJw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
-   d="scan'208";a="134632113"
+   d="scan'208";a="134632118"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:54 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:57:56 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: linux-wireless@vger.kernel.org,
-	Daniel Gabay <daniel.gabay@intel.com>
-Subject: [PATCH iwlwifi-next 09/15] wifi: iwlwifi: mld: add monitor internal station
-Date: Wed, 30 Apr 2025 15:57:23 +0300
-Message-Id: <20250430155443.5ec460d3f1c2.Ic8456efb4cdd722dcd9c4910a1569ef9d3e4e066@changeid>
+	Avraham Stern <avraham.stern@intel.com>
+Subject: [PATCH iwlwifi-next 10/15] wifi: iwlwifi: mld: start AP with the correct bandwidth
+Date: Wed, 30 Apr 2025 15:57:24 +0300
+Message-Id: <20250430155443.30b043b10fb1.I62c2aa58687e4796b759fa68132122119a337b49@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250430125729.1122751-1-miriam.rachel.korenblit@intel.com>
 References: <20250430125729.1122751-1-miriam.rachel.korenblit@intel.com>
@@ -77,191 +77,104 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-This is needed for TX injection over monitor interface.
+When a channel context is added, it is still not assigned to the link
+and the link is not yet active. As a result, the channel context
+min_def is used when the AP is started, even when the full bandwidth
+should be used.
+Fix it by updating the PHY channel context when the link is already
+active so the full bandwidth is used when needed.
 
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/link.c |  1 +
- drivers/net/wireless/intel/iwlwifi/mld/link.h |  4 +++
- .../net/wireless/intel/iwlwifi/mld/mac80211.c | 12 +++++--
- drivers/net/wireless/intel/iwlwifi/mld/sta.c  | 34 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/sta.h  |  8 +++++
- drivers/net/wireless/intel/iwlwifi/mld/tx.c   |  4 ++-
- 6 files changed, 60 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/ap.c       |  9 +++++++++
+ drivers/net/wireless/intel/iwlwifi/mld/mac80211.c |  3 +--
+ drivers/net/wireless/intel/iwlwifi/mld/phy.c      | 11 +++++++++++
+ drivers/net/wireless/intel/iwlwifi/mld/phy.h      |  3 +++
+ 4 files changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-index 82a4979a3af3..fa822b748791 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-@@ -783,6 +783,7 @@ iwl_mld_init_link(struct iwl_mld *mld, struct ieee80211_bss_conf *link,
- 	iwl_mld_init_internal_sta(&mld_link->bcast_sta);
- 	iwl_mld_init_internal_sta(&mld_link->mcast_sta);
- 	iwl_mld_init_internal_sta(&mld_link->aux_sta);
-+	iwl_mld_init_internal_sta(&mld_link->mon_sta);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ap.c b/drivers/net/wireless/intel/iwlwifi/mld/ap.c
+index 571eabd0b511..26511b49d89a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/ap.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/ap.c
+@@ -11,6 +11,7 @@
+ #include "tx.h"
+ #include "power.h"
+ #include "key.h"
++#include "phy.h"
+ #include "iwl-utils.h"
  
- 	wiphy_delayed_work_init(&mld_link->rx_omi.finished_work,
- 				iwl_mld_omi_bw_finished_work);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.h b/drivers/net/wireless/intel/iwlwifi/mld/link.h
-index 42b7bdcbd741..40492f0974e2 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/link.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/link.h
-@@ -40,6 +40,7 @@ struct iwl_probe_resp_data {
-  * @bcast_sta: station used for broadcast packets. Used in AP, GO and IBSS.
-  * @mcast_sta: station used for multicast packets. Used in AP, GO and IBSS.
-  * @aux_sta: station used for remain on channel. Used in P2P device.
-+ * @mon_sta: station used for TX injection in monitor interface.
-  * @link_id: over the air link ID
-  * @ap_early_keys: The firmware cannot install keys before bcast/mcast STAs,
-  *	but higher layers work differently, so we store the keys here for
-@@ -73,6 +74,7 @@ struct iwl_mld_link {
- 	struct iwl_mld_int_sta bcast_sta;
- 	struct iwl_mld_int_sta mcast_sta;
- 	struct iwl_mld_int_sta aux_sta;
-+	struct iwl_mld_int_sta mon_sta;
- 	u8 link_id;
+ #include "fw/api/sta.h"
+@@ -269,6 +270,7 @@ int iwl_mld_start_ap_ibss(struct ieee80211_hw *hw,
+ {
+ 	struct iwl_mld *mld = IWL_MAC80211_GET_MLD(hw);
+ 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	struct ieee80211_chanctx_conf *ctx;
+ 	int ret;
  
- 	struct {
-@@ -107,6 +109,8 @@ iwl_mld_cleanup_link(struct iwl_mld *mld, struct iwl_mld_link *link)
- 		iwl_mld_free_internal_sta(mld, &link->mcast_sta);
- 	if (link->aux_sta.sta_id != IWL_INVALID_STA)
- 		iwl_mld_free_internal_sta(mld, &link->aux_sta);
-+	if (link->mon_sta.sta_id != IWL_INVALID_STA)
-+		iwl_mld_free_internal_sta(mld, &link->mon_sta);
- }
+ 	if (vif->type == NL80211_IFTYPE_AP)
+@@ -314,6 +316,13 @@ int iwl_mld_start_ap_ibss(struct ieee80211_hw *hw,
+ 		return iwl_mld_mac_fw_action(mld, mld->p2p_device_vif,
+ 					     FW_CTXT_ACTION_MODIFY);
  
- /* Convert a percentage from [0,100] to [0,255] */
++	/* When the channel context was added, the link is not yet active, so
++	 * min_def is always used. Update the PHY again here in case def should
++	 * actually be used.
++	 */
++	ctx = wiphy_dereference(mld->wiphy, link->chanctx_conf);
++	iwl_mld_update_phy_chandef(mld, ctx);
++
+ 	return 0;
+ rm_bcast:
+ 	iwl_mld_remove_bcast_sta(mld, vif, link);
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index ef976e4d700f..b64e3f290e71 100644
+index b64e3f290e71..e06cf72b2de5 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -1021,12 +1021,19 @@ int iwl_mld_assign_vif_chanctx(struct ieee80211_hw *hw,
- 		iwl_mld_send_ap_tx_power_constraint_cmd(mld, vif, link);
- 
- 	if (vif->type == NL80211_IFTYPE_MONITOR) {
--		/* TODO: task=sniffer add sniffer station */
-+		ret = iwl_mld_add_mon_sta(mld, vif, link);
-+		if (ret)
-+			goto deactivate_link;
-+
- 		mld->monitor.p80 =
- 			iwl_mld_chandef_get_primary_80(&vif->bss_conf.chanreq.oper);
+@@ -887,9 +887,8 @@ void iwl_mld_change_chanctx(struct ieee80211_hw *hw,
+ 			return;
  	}
+ update:
+-	phy->chandef = *chandef;
  
- 	return 0;
-+
-+deactivate_link:
-+	if (mld_link->active)
-+		iwl_mld_deactivate_link(mld, link);
- err:
- 	RCU_INIT_POINTER(mld_link->chan_ctx, NULL);
- 	return ret;
-@@ -1052,7 +1059,8 @@ void iwl_mld_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 
- 	iwl_mld_deactivate_link(mld, link);
- 
--	/* TODO: task=sniffer remove sniffer station */
-+	if (vif->type == NL80211_IFTYPE_MONITOR)
-+		iwl_mld_remove_mon_sta(mld, vif, link);
- 
- 	if (n_active > 1) {
- 		/* Indicate to mac80211 that EML is disabled */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/sta.c b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-index 332a7aecec2d..dfaa885dd1d0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-@@ -1087,6 +1087,24 @@ int iwl_mld_add_aux_sta(struct iwl_mld *mld,
- 					0, NULL, IWL_MAX_TID_COUNT);
+-	iwl_mld_phy_fw_action(mld, ctx, FW_CTXT_ACTION_MODIFY);
++	iwl_mld_update_phy_chandef(mld, ctx);
  }
  
-+int iwl_mld_add_mon_sta(struct iwl_mld *mld,
-+			struct ieee80211_vif *vif,
-+			struct ieee80211_bss_conf *link)
-+{
-+	struct iwl_mld_link *mld_link = iwl_mld_link_from_mac80211(link);
-+
-+	if (WARN_ON(!mld_link))
-+		return -EINVAL;
-+
-+	if (WARN_ON(vif->type != NL80211_IFTYPE_MONITOR))
-+		return -EINVAL;
-+
-+	return iwl_mld_add_internal_sta(mld, &mld_link->mon_sta,
-+					STATION_TYPE_BCAST_MGMT,
-+					mld_link->fw_id, NULL,
-+					IWL_MAX_TID_COUNT);
-+}
-+
- static void iwl_mld_remove_internal_sta(struct iwl_mld *mld,
- 					struct iwl_mld_int_sta *internal_sta,
- 					bool flush, u8 tid)
-@@ -1156,6 +1174,22 @@ void iwl_mld_remove_aux_sta(struct iwl_mld *mld,
- 				    IWL_MAX_TID_COUNT);
+ static u8
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/phy.c b/drivers/net/wireless/intel/iwlwifi/mld/phy.c
+index 2345fe5c3291..3a80ee5e1cb3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/phy.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/phy.c
+@@ -182,3 +182,14 @@ int iwl_mld_send_phy_cfg_cmd(struct iwl_mld *mld)
+ 
+ 	return iwl_mld_send_cmd_pdu(mld, PHY_CONFIGURATION_CMD, &cmd);
  }
- 
-+void iwl_mld_remove_mon_sta(struct iwl_mld *mld,
-+			    struct ieee80211_vif *vif,
-+			    struct ieee80211_bss_conf *link)
++
++void iwl_mld_update_phy_chandef(struct iwl_mld *mld,
++				struct ieee80211_chanctx_conf *ctx)
 +{
-+	struct iwl_mld_link *mld_link = iwl_mld_link_from_mac80211(link);
++	struct iwl_mld_phy *phy = iwl_mld_phy_from_mac80211(ctx);
++	struct cfg80211_chan_def *chandef =
++		iwl_mld_get_chandef_from_chanctx(mld, ctx);
 +
-+	if (WARN_ON(!mld_link))
-+		return;
-+
-+	if (WARN_ON(vif->type != NL80211_IFTYPE_MONITOR))
-+		return;
-+
-+	iwl_mld_remove_internal_sta(mld, &mld_link->mon_sta, false,
-+				    IWL_MAX_TID_COUNT);
++	phy->chandef = *chandef;
++	iwl_mld_phy_fw_action(mld, ctx, FW_CTXT_ACTION_MODIFY);
 +}
-+
- static int iwl_mld_update_sta_resources(struct iwl_mld *mld,
- 					struct ieee80211_vif *vif,
- 					struct ieee80211_sta *sta,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/sta.h b/drivers/net/wireless/intel/iwlwifi/mld/sta.h
-index ddcffd7b9fde..c45d815d0c73 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/sta.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/sta.h
-@@ -247,6 +247,10 @@ int iwl_mld_add_mcast_sta(struct iwl_mld *mld,
- int iwl_mld_add_aux_sta(struct iwl_mld *mld,
- 			struct iwl_mld_int_sta *internal_sta);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/phy.h b/drivers/net/wireless/intel/iwlwifi/mld/phy.h
+index 563e309deb0a..0deaf179f07c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/phy.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/phy.h
+@@ -54,4 +54,7 @@ u8 iwl_mld_get_fw_ctrl_pos(const struct cfg80211_chan_def *chandef);
  
-+int iwl_mld_add_mon_sta(struct iwl_mld *mld,
-+			struct ieee80211_vif *vif,
-+			struct ieee80211_bss_conf *link);
-+
- void iwl_mld_remove_bcast_sta(struct iwl_mld *mld,
- 			      struct ieee80211_vif *vif,
- 			      struct ieee80211_bss_conf *link);
-@@ -259,6 +263,10 @@ void iwl_mld_remove_aux_sta(struct iwl_mld *mld,
- 			    struct ieee80211_vif *vif,
- 			    struct ieee80211_bss_conf *link);
+ int iwl_mld_send_phy_cfg_cmd(struct iwl_mld *mld);
  
-+void iwl_mld_remove_mon_sta(struct iwl_mld *mld,
-+			    struct ieee80211_vif *vif,
-+			    struct ieee80211_bss_conf *link);
++void iwl_mld_update_phy_chandef(struct iwl_mld *mld,
++				struct ieee80211_chanctx_conf *ctx);
 +
- int iwl_mld_update_link_stas(struct iwl_mld *mld,
- 			     struct ieee80211_vif *vif,
- 			     struct ieee80211_sta *sta,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.c b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
-index 543abe72e465..f818545fae97 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
-@@ -649,8 +649,10 @@ iwl_mld_get_tx_queue_id(struct iwl_mld *mld, struct ieee80211_txq *txq,
- 		WARN_ON(!ieee80211_is_mgmt(fc));
- 
- 		return mld_vif->deflink.aux_sta.queue_id;
-+	case NL80211_IFTYPE_MONITOR:
-+		mld_vif = iwl_mld_vif_from_mac80211(info->control.vif);
-+		return mld_vif->deflink.mon_sta.queue_id;
- 	default:
--		/* TODO: consider monitor (task=monitor) */
- 		WARN_ONCE(1, "Unsupported vif type\n");
- 		break;
- 	}
+ #endif /* __iwl_mld_phy_h__ */
 -- 
 2.34.1
 
