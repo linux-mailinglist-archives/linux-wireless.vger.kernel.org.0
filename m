@@ -1,96 +1,145 @@
-Return-Path: <linux-wireless+bounces-22312-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22313-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E1CAA6166
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 18:30:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904C5AA627D
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 19:46:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A344B16C6B8
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 16:30:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 530301B676C4
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 17:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5845C20D51A;
-	Thu,  1 May 2025 16:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F53D214A97;
+	Thu,  1 May 2025 17:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="li1W4gmN"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="e6hd/Ecs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-27.smtpout.orange.fr [80.12.242.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686E420D516;
-	Thu,  1 May 2025 16:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8731D6DBC;
+	Thu,  1 May 2025 17:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746117006; cv=none; b=H4rXIA7DcSPOTw8ysKzPz5w4Ri/jUADDDutqRwq219pyYkNJS5CNJm8nCPAvniA7pvm+2l04lc+ld/DmOkty1h2ft1uruY+I0pgZtWdv8akB4JkeOVsZIVx6k442jpf4Kp7yffXBVIZJC2aeyZy9daFfrEw5DK2VvNejP9kzueg=
+	t=1746121568; cv=none; b=beKCcsa9qv/dOslwUp1H6F/w7tNbgHpkQVT3Ks87vauAYJ8dVEMtEKTPz/t1x24zSeldC6A+DXhnlxoTSLd12iTiJzP7d9fNosXejwRUa8j1hBlk+8ggfMcu/7HO9s5HwuVjQivMLX58r3P5VGH5e+Rtblhnyq86IGrAnYn8aG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746117006; c=relaxed/simple;
-	bh=hNZfYFFtAr2xHt90ZdfXgjZK8UcYhDMKV8t3YTODBWo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RwrrpE9Uyic7QzEGpBLGqfHgwBULSBM+99G7d1jqHYS52Zjv9nfMWZd7yFK/ay9+J55c+5pmKiGRbhbbzjPxbIjz09PZEwW/P12D6dGWjY0CHatiXHhms5KCEmoF1Of4UB9815+DCNKmSReHg9mgmDwg4x5tv9L77VUzYYXrf/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=li1W4gmN; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1746116442; bh=hNZfYFFtAr2xHt90ZdfXgjZK8UcYhDMKV8t3YTODBWo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=li1W4gmNEOZXw7qZPbl2GyNKGbS7Qt01EHKXqgUDAT0g1m6WiRfIzmzbwQnNRUgnO
-	 t6tN8jHiS7NQ00RkQ6XLGB/JOtWjEjxcCVvtBPFqaUvnCemFSxepf/irq7jcRThJs9
-	 Ng6kVmubrp0bDAA83PkBWjXpF6hl7+zHtTgw7hqFvgE1zqXF05DX5/UuPExNUs6rXh
-	 T9bSHtXSGDCsaNYfdD5YjHdG0uvRkExq/VmKB1M5bLsLYmxJIJBAAH0bknRkq0kwIm
-	 tv34LbQrRoYJC7LRbAlekYfx6RXKcH3ls+boB65JrNVkK0KegLESdL/tvEVHwNEw/9
-	 xP+B9YzpY6y/A==
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linux-wireless@vger.kernel.org, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCHv2] wifi: ath9k: ahb: do ioremap resource in one step
-In-Reply-To: <CAKxU2N_3mcv7e2i8Z_b0+oQUXxMmpKH1eGvEZiwcRxx8HKYDwg@mail.gmail.com>
-References: <20250421040044.44887-1-rosenp@gmail.com>
- <87ldrsjrvp.fsf@toke.dk>
- <CAKxU2N_3mcv7e2i8Z_b0+oQUXxMmpKH1eGvEZiwcRxx8HKYDwg@mail.gmail.com>
-Date: Thu, 01 May 2025 18:20:42 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87o6wc5mlh.fsf@toke.dk>
+	s=arc-20240116; t=1746121568; c=relaxed/simple;
+	bh=idSL8FIZNtnlvPROVmiwxEiJwDqSNBxM751hv/Tx08g=;
+	h=Message-ID:Date:MIME-Version:Subject:References:From:Cc:To:
+	 In-Reply-To:Content-Type; b=VX+MRMDinBlPjGMFXRkJGoC75dGoiWrHDUtIihf9Oq3gIybb4Z0pGc75FER7GWNkCHDLysooHAYGp9c6RiaxIKwdUIuKrfNANEhxT9DYQ7C2HjuyR3oQsOuRhXV+Vqwdpe5mp4Ulnx+Qi79itsshEF+ZD0cUHSqB5aYjyRym4HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=e6hd/Ecs; arc=none smtp.client-ip=80.12.242.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id AXxpuAhzzGqxdAXxsugzS3; Thu, 01 May 2025 19:44:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1746121494;
+	bh=z7Nrw4AKQmy2euxdBhwFFiDxhQNLz4rSOScscuh0W0I=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To;
+	b=e6hd/EcsRx6taxaXTxk2taRj60hukc4HpaW8I/gT9gCIIY4QSz7wOdqu1UXQoYSPh
+	 GdHtdPl5nHlivewS3IHl6Ee/IJz6dDdd5yL+VkdRPVq73RZMAGt0vYMRbHrmzojZIy
+	 8p8m1Myau4F3hU6/17scjv8dF0IegiTmVtUgoinmrH30z9PS0/nm53hXTMfw+RkPOO
+	 NYFtDgeZINfF310bF/aJHQVCKV0WlzGPsdyfadWucJphCKEVAd0xdiYHogobPu46VR
+	 wfH1OOWDup6fveZMCvu+NcOjRN4xRfUK8AEDuqJTF9Se5HyGdYrMtqHxygTTwD50pw
+	 TsCw+ZUxZwxBg==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Thu, 01 May 2025 19:44:54 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <a73dd097-cc0b-449c-b819-3450688e67ba@wanadoo.fr>
+Date: Thu, 1 May 2025 19:44:49 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 2/2] wifi: Add Nordic nRF70 series Wi-Fi driver
+References: <20250422175918.585022-1-artur@conclusive.pl>
+ <20250422175918.585022-3-artur@conclusive.pl>
+ <3cfd718f-e96a-44d0-b42f-d759ae698810@wanadoo.fr>
+ <CAGhaMFNhq-O3O0TCj6cvzvTqzPQKE_id67U0hZjV0V2uKV91Tw@mail.gmail.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: broonie@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ jakub@conclusive.pl, johannes@sipsolutions.net, krzk+dt@kernel.org,
+ lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
+ ulf.axelsson@nordicsemi.no, wojciech@conclusive.pl
+To: artur@conclusive.pl
+In-Reply-To: <CAGhaMFNhq-O3O0TCj6cvzvTqzPQKE_id67U0hZjV0V2uKV91Tw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Rosen Penev <rosenp@gmail.com> writes:
-
-> On Tue, Apr 22, 2025 at 5:35=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen =
-<toke@toke.dk> wrote:
+Le 01/05/2025 à 12:41, Artur Rojek a écrit :
+> Hi Christophe,
+> 
+> thanks for the review!
+> Reply inline.
+> 
+> On Fri, Apr 25, 2025 at 9:31 PM Christophe JAILLET
+> <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org> wrote:
 >>
->> Rosen Penev <rosenp@gmail.com> writes:
+>> Le 22/04/2025 à 19:59, Artur Rojek a écrit :
+>>> Introduce support for Nordic Semiconductor nRF70 series wireless
+>>> companion IC.
+>>>
 >>
->> > Simplifies probe slightly and adds extra error codes.
->> >
->> > Switching from devm_ioremap to the platform variant ends up calling
->> > devm_request_mem_region, which reserves the memory region for the
->> > various wmacs. Per board, there is only one wmac and after some fairly
->> > thorough analysis, there are no overlapping memory regions between wma=
-cs
->> > and other devices on the ahb.
->> >
->> > Tested on a TP-Link Archer C7v2.
->> >
->> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
->> > ---
->> >  v2: remove wrong devm irq conversion.
->> >  drivers/net/wireless/ath/ath9k/ahb.c | 13 +++----------
->> >  1 file changed, 3 insertions(+), 10 deletions(-)
+>> Hi,
+>> ...
 >>
->> Is there any benefit from this other than code simplification? Because,
->> TBH, I'm not sure saving 7 lines of code is worth the risk of changing
->> something we know works already...
-> It's the same API calls fundamentally. This change has already been
-> done treewide across various drivers.
+>>> +     /* vpwr is mandatory, but we want to catch the -ENODEV error. */
+>>> +     priv->vpwr = devm_regulator_get_optional(dev, "vpwr");
+>>> +     if (IS_ERR(priv->vpwr))
+>>> +             return dev_err_probe(dev, PTR_ERR(priv->vpwr),
+>>> +                                  "Unable to find vpwr-supply property");
+>>> +
+>>> +     priv->vio = devm_regulator_get_optional(dev, "vio");
+>>> +     if (IS_ERR(priv->vio) && PTR_ERR(priv->vio) != -ENODEV) {
+>>> +             return dev_err_probe(dev, PTR_ERR(priv->vio),
+>>> +                                  "Invalid vio-supply property");
+>>> +     }
+>>
+>> Unneeded extra { }
+>>
+>>> +
+>>> +     irq = of_irq_get_byname(dev->of_node, "host-irq");
+>>> +     if (irq <= 0)
+>>> +             return dev_err_probe(dev, irq, "Unable to find host-irq\n");
+>>
+>> If irq is 0, is it expected to return sucess here?
+> 
+> No, return value of 0 is considered IRQ mapping failure, as per
+> of_irq_get_byname() documentation. Perhaps it warrants a different error
+> message, though.
 
-Hmm, alright, let's give it a shot...
+My point is nor related to the test itself, or the message.
 
--Toke
+I mean, that, should irq = 0, then it ends to
+	return dev_err_probe(dev, 0, "Unable to find host-irq\n");
+and the probe returns success.
+
+Maybe something like:
+	return dev_err_probe(dev, irq ? irq : -ESOMETHING, "Unable to find 
+host-irq\n");
+
+CJ
+
+> 
+> Cheers,
+> Artur
+> 
+>>
+>>> +
+>>> +     mutex_init(&priv->write_lock);
+>>> +     mutex_init(&priv->read_lock);
+>> ...
+>>
+>> CJ
+> 
+> 
+
 
