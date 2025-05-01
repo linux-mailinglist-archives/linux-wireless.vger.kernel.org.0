@@ -1,128 +1,96 @@
-Return-Path: <linux-wireless+bounces-22311-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22312-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF538AA611C
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 18:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E1CAA6166
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 18:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47F164C471F
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 16:00:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A344B16C6B8
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 16:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF72204840;
-	Thu,  1 May 2025 16:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5845C20D51A;
+	Thu,  1 May 2025 16:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yw7F+88U"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="li1W4gmN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1687618DB22;
-	Thu,  1 May 2025 16:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686E420D516;
+	Thu,  1 May 2025 16:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746115231; cv=none; b=iWGcoiyTBeNAwG/+/ZQd0akglTCBsuuHFL0bWAg6UcBdE9BnOE0Gy/wAJS/y/cDrW8aRzNcacPXC7tSV4pbkMip/LsZGXs2WWSMP+JoO9Wa04I9DXm0fD5U2OdZ5G2ZqcqgpayiXv0b1e2utxdl+ybzAeNjEjwXwGRmAhRGelBY=
+	t=1746117006; cv=none; b=H4rXIA7DcSPOTw8ysKzPz5w4Ri/jUADDDutqRwq219pyYkNJS5CNJm8nCPAvniA7pvm+2l04lc+ld/DmOkty1h2ft1uruY+I0pgZtWdv8akB4JkeOVsZIVx6k442jpf4Kp7yffXBVIZJC2aeyZy9daFfrEw5DK2VvNejP9kzueg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746115231; c=relaxed/simple;
-	bh=QdLG6Mxfeg9stM1JIO8NgkMtgfF8uSG0xcaTqwxc4jA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WaO/MebSr4JJan4GnFUVIuMQqUsIclLbymwC/Ke6VrlSj3c+Sik2FQcyv6oyIHdnorleqF+OVCX1HMJR1uyWRtWLRWmzd6T4dGVe5nRHlGB2l9MY8focd06j/17enC1F63TSL8ENothNe8LI2RL/2qNSNzmbflHzdFwpBQMmtDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yw7F+88U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6A7C4CEE3;
-	Thu,  1 May 2025 16:00:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746115230;
-	bh=QdLG6Mxfeg9stM1JIO8NgkMtgfF8uSG0xcaTqwxc4jA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Yw7F+88U1p7hXmr+E/yol8oSlQWOTDSnm9TzXi8h1FFbqpY2uy2uAFQ3QubihEcrF
-	 7uUDL3iQpzSMHZS6K9b5d1ec8UNQyIrfp7fUFGX3YbiFRBsdgFnrmDGt9eRlM3tqhC
-	 7uaeqvAHolASbfZ/lUhfjL5Bsx7SoY2vmpYP28KI=
-Date: Thu, 1 May 2025 18:00:27 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Youssef Samir <quic_yabdulra@quicinc.com>,
-	Matthew Leung <quic_mattleun@quicinc.com>,
-	Yan Zhen <yanzhen@vivo.com>, Alex Elder <elder@kernel.org>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Troy Hanson <quic_thanson@quicinc.com>,
-	"Dr. David Alan Gilbert" <linux@treblig.org>, kernel@collabora.com,
-	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org, ath12k@lists.infradead.org
-Subject: Re: [PATCH v3] bus: mhi: host: don't free bhie tables during
- suspend/hibernation
-Message-ID: <2025050110-unpeeled-spur-e4af@gregkh>
-References: <20250429122112.104472-1-usama.anjum@collabora.com>
+	s=arc-20240116; t=1746117006; c=relaxed/simple;
+	bh=hNZfYFFtAr2xHt90ZdfXgjZK8UcYhDMKV8t3YTODBWo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RwrrpE9Uyic7QzEGpBLGqfHgwBULSBM+99G7d1jqHYS52Zjv9nfMWZd7yFK/ay9+J55c+5pmKiGRbhbbzjPxbIjz09PZEwW/P12D6dGWjY0CHatiXHhms5KCEmoF1Of4UB9815+DCNKmSReHg9mgmDwg4x5tv9L77VUzYYXrf/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=li1W4gmN; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1746116442; bh=hNZfYFFtAr2xHt90ZdfXgjZK8UcYhDMKV8t3YTODBWo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=li1W4gmNEOZXw7qZPbl2GyNKGbS7Qt01EHKXqgUDAT0g1m6WiRfIzmzbwQnNRUgnO
+	 t6tN8jHiS7NQ00RkQ6XLGB/JOtWjEjxcCVvtBPFqaUvnCemFSxepf/irq7jcRThJs9
+	 Ng6kVmubrp0bDAA83PkBWjXpF6hl7+zHtTgw7hqFvgE1zqXF05DX5/UuPExNUs6rXh
+	 T9bSHtXSGDCsaNYfdD5YjHdG0uvRkExq/VmKB1M5bLsLYmxJIJBAAH0bknRkq0kwIm
+	 tv34LbQrRoYJC7LRbAlekYfx6RXKcH3ls+boB65JrNVkK0KegLESdL/tvEVHwNEw/9
+	 xP+B9YzpY6y/A==
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-wireless@vger.kernel.org, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCHv2] wifi: ath9k: ahb: do ioremap resource in one step
+In-Reply-To: <CAKxU2N_3mcv7e2i8Z_b0+oQUXxMmpKH1eGvEZiwcRxx8HKYDwg@mail.gmail.com>
+References: <20250421040044.44887-1-rosenp@gmail.com>
+ <87ldrsjrvp.fsf@toke.dk>
+ <CAKxU2N_3mcv7e2i8Z_b0+oQUXxMmpKH1eGvEZiwcRxx8HKYDwg@mail.gmail.com>
+Date: Thu, 01 May 2025 18:20:42 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87o6wc5mlh.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250429122112.104472-1-usama.anjum@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 29, 2025 at 05:20:56PM +0500, Muhammad Usama Anjum wrote:
-> Fix dma_direct_alloc() failure at resume time during bhie_table
-> allocation. There is a crash report where at resume time, the memory
-> from the dma doesn't get allocated and MHI fails to re-initialize.
-> There is fragmentation/memory pressure.
-> 
-> To fix it, don't free the memory at power down during suspend /
-> hibernation. Instead, use the same allocated memory again after every
-> resume / hibernation. This patch has been tested with resume and
-> hibernation both.
-> 
-> The rddm is of constant size for a given hardware. While the fbc_image
-> size depends on the firmware. If the firmware changes, we'll free and
-> allocate new memory for it.
-> 
-> Here are the crash logs:
-> 
-> [ 3029.338587] mhi mhi0: Requested to power ON
-> [ 3029.338621] mhi mhi0: Power on setup success
-> [ 3029.668654] kworker/u33:8: page allocation failure: order:7, mode:0xc04(GFP_NOIO|GFP_DMA32), nodemask=(null),cpuset=/,mems_allowed=0
-> [ 3029.668682] CPU: 4 UID: 0 PID: 2744 Comm: kworker/u33:8 Not tainted 6.11.11-valve10-1-neptune-611-gb69e902b4338 #1ed779c892334112fb968aaa3facf9686b5ff0bd7
-> [ 3029.668690] Hardware name: Valve Galileo/Galileo, BIOS F7G0112 08/01/2024
-> [ 3029.668694] Workqueue: mhi_hiprio_wq mhi_pm_st_worker [mhi]
-> [ 3029.668717] Call Trace:
-> [ 3029.668722]  <TASK>
-> [ 3029.668728]  dump_stack_lvl+0x4e/0x70
-> [ 3029.668738]  warn_alloc+0x164/0x190
-> [ 3029.668747]  ? srso_return_thunk+0x5/0x5f
-> [ 3029.668754]  ? __alloc_pages_direct_compact+0xaf/0x360
-> [ 3029.668761]  __alloc_pages_slowpath.constprop.0+0xc75/0xd70
-> [ 3029.668774]  __alloc_pages_noprof+0x321/0x350
-> [ 3029.668782]  __dma_direct_alloc_pages.isra.0+0x14a/0x290
-> [ 3029.668790]  dma_direct_alloc+0x70/0x270
-> [ 3029.668796]  mhi_alloc_bhie_table+0xe8/0x190 [mhi faa917c5aa23a5f5b12d6a2c597067e16d2fedc0]
-> [ 3029.668814]  mhi_fw_load_handler+0x1bc/0x310 [mhi faa917c5aa23a5f5b12d6a2c597067e16d2fedc0]
-> [ 3029.668830]  mhi_pm_st_worker+0x5c8/0xaa0 [mhi faa917c5aa23a5f5b12d6a2c597067e16d2fedc0]
-> [ 3029.668844]  ? srso_return_thunk+0x5/0x5f
-> [ 3029.668853]  process_one_work+0x17e/0x330
-> [ 3029.668861]  worker_thread+0x2ce/0x3f0
-> [ 3029.668868]  ? __pfx_worker_thread+0x10/0x10
-> [ 3029.668873]  kthread+0xd2/0x100
-> [ 3029.668879]  ? __pfx_kthread+0x10/0x10
-> [ 3029.668885]  ret_from_fork+0x34/0x50
-> [ 3029.668892]  ? __pfx_kthread+0x10/0x10
-> [ 3029.668898]  ret_from_fork_asm+0x1a/0x30
-> [ 3029.668910]  </TASK>
-> 
-> Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
-> 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Rosen Penev <rosenp@gmail.com> writes:
 
-What commit id does this fix?  Should it go to stable kernel(s)?  If so,
-how far back?
+> On Tue, Apr 22, 2025 at 5:35=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen =
+<toke@toke.dk> wrote:
+>>
+>> Rosen Penev <rosenp@gmail.com> writes:
+>>
+>> > Simplifies probe slightly and adds extra error codes.
+>> >
+>> > Switching from devm_ioremap to the platform variant ends up calling
+>> > devm_request_mem_region, which reserves the memory region for the
+>> > various wmacs. Per board, there is only one wmac and after some fairly
+>> > thorough analysis, there are no overlapping memory regions between wma=
+cs
+>> > and other devices on the ahb.
+>> >
+>> > Tested on a TP-Link Archer C7v2.
+>> >
+>> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+>> > ---
+>> >  v2: remove wrong devm irq conversion.
+>> >  drivers/net/wireless/ath/ath9k/ahb.c | 13 +++----------
+>> >  1 file changed, 3 insertions(+), 10 deletions(-)
+>>
+>> Is there any benefit from this other than code simplification? Because,
+>> TBH, I'm not sure saving 7 lines of code is worth the risk of changing
+>> something we know works already...
+> It's the same API calls fundamentally. This change has already been
+> done treewide across various drivers.
 
-thanks,
+Hmm, alright, let's give it a shot...
 
-greg k-h
+-Toke
 
