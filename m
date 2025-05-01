@@ -1,145 +1,145 @@
-Return-Path: <linux-wireless+bounces-22313-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22314-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904C5AA627D
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 19:46:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DA6DAA65C9
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 23:46:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 530301B676C4
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 17:46:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80DDD17340D
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 May 2025 21:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F53D214A97;
-	Thu,  1 May 2025 17:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B218B1EFF81;
+	Thu,  1 May 2025 21:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="e6hd/Ecs"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="SI3TUTNB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-27.smtpout.orange.fr [80.12.242.27])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8731D6DBC;
-	Thu,  1 May 2025 17:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A22B18024
+	for <linux-wireless@vger.kernel.org>; Thu,  1 May 2025 21:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746121568; cv=none; b=beKCcsa9qv/dOslwUp1H6F/w7tNbgHpkQVT3Ks87vauAYJ8dVEMtEKTPz/t1x24zSeldC6A+DXhnlxoTSLd12iTiJzP7d9fNosXejwRUa8j1hBlk+8ggfMcu/7HO9s5HwuVjQivMLX58r3P5VGH5e+Rtblhnyq86IGrAnYn8aG0=
+	t=1746135966; cv=none; b=hgfzjpA3cIZTUsB8GcWONdARNFQp3/VKrMPG4Jf9qNPVI4bVvriy1qho9pHF6KsNfrNaGDIwKmgEI/sJSdIDVwcESiW7NENAEn4NaFhwA41RYslMwXe9FuAdmUe9uQnTiiUU9BeYS2i7p2GYS0I1PtYTuuRvtVdn2OpffFLTJeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746121568; c=relaxed/simple;
-	bh=idSL8FIZNtnlvPROVmiwxEiJwDqSNBxM751hv/Tx08g=;
-	h=Message-ID:Date:MIME-Version:Subject:References:From:Cc:To:
-	 In-Reply-To:Content-Type; b=VX+MRMDinBlPjGMFXRkJGoC75dGoiWrHDUtIihf9Oq3gIybb4Z0pGc75FER7GWNkCHDLysooHAYGp9c6RiaxIKwdUIuKrfNANEhxT9DYQ7C2HjuyR3oQsOuRhXV+Vqwdpe5mp4Ulnx+Qi79itsshEF+ZD0cUHSqB5aYjyRym4HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=e6hd/Ecs; arc=none smtp.client-ip=80.12.242.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id AXxpuAhzzGqxdAXxsugzS3; Thu, 01 May 2025 19:44:54 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1746121494;
-	bh=z7Nrw4AKQmy2euxdBhwFFiDxhQNLz4rSOScscuh0W0I=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To;
-	b=e6hd/EcsRx6taxaXTxk2taRj60hukc4HpaW8I/gT9gCIIY4QSz7wOdqu1UXQoYSPh
-	 GdHtdPl5nHlivewS3IHl6Ee/IJz6dDdd5yL+VkdRPVq73RZMAGt0vYMRbHrmzojZIy
-	 8p8m1Myau4F3hU6/17scjv8dF0IegiTmVtUgoinmrH30z9PS0/nm53hXTMfw+RkPOO
-	 NYFtDgeZINfF310bF/aJHQVCKV0WlzGPsdyfadWucJphCKEVAd0xdiYHogobPu46VR
-	 wfH1OOWDup6fveZMCvu+NcOjRN4xRfUK8AEDuqJTF9Se5HyGdYrMtqHxygTTwD50pw
-	 TsCw+ZUxZwxBg==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Thu, 01 May 2025 19:44:54 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <a73dd097-cc0b-449c-b819-3450688e67ba@wanadoo.fr>
-Date: Thu, 1 May 2025 19:44:49 +0200
+	s=arc-20240116; t=1746135966; c=relaxed/simple;
+	bh=PSE1LAkDDMjQiwMzNDZWzuYhdejlsgU3BuUUrrubvEI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=W2G5nxy5Gfg7k8Ac0N34YifIg5uroDoWO+wAigM/fbuD4I5UsSDgLxLDL+qcB/NCHsSiZdQVqZJCydrgJHcWYzbOGO/w0eLlUfD+e8GL2hz5kt7h8KwBWk06sfBgzxbAteosTsjPwChVUKVAfD9O3RtI1fWScsXO2nmj5fhlBLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=SI3TUTNB; arc=none smtp.client-ip=67.231.154.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A550B307E75
+	for <linux-wireless@vger.kernel.org>; Thu,  1 May 2025 21:46:00 +0000 (UTC)
+Received: from engine.ppe-hosted.com (unknown [10.110.50.131])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 34ED6600C2;
+	Thu,  1 May 2025 21:45:54 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id C11FF98009A;
+	Thu,  1 May 2025 21:45:52 +0000 (UTC)
+Received: from [192.168.100.159] (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id BCABB13C2B0;
+	Thu,  1 May 2025 14:45:51 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com BCABB13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1746135951;
+	bh=PSE1LAkDDMjQiwMzNDZWzuYhdejlsgU3BuUUrrubvEI=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=SI3TUTNBYnmLqK6sf6um7KWrnOUKXeHzzENGYOLUqIL7svyr4uKBZO0V/oIK2XT4k
+	 UL9OVU9yBXgMcDBFkYQSH1HBKZkVSv5TNhBLA/rXVmqBzp4CAOf47F+2mHYla1+j5o
+	 qUAEoaBzZmpP/x2VS8vX6h0glIjS6BWbR9ypGUeQ=
+Message-ID: <7783ae40-8d26-0dad-dd6b-591824cdfcdd@candelatech.com>
+Date: Thu, 1 May 2025 14:45:51 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 2/2] wifi: Add Nordic nRF70 series Wi-Fi driver
-References: <20250422175918.585022-1-artur@conclusive.pl>
- <20250422175918.585022-3-artur@conclusive.pl>
- <3cfd718f-e96a-44d0-b42f-d759ae698810@wanadoo.fr>
- <CAGhaMFNhq-O3O0TCj6cvzvTqzPQKE_id67U0hZjV0V2uKV91Tw@mail.gmail.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: broonie@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
- jakub@conclusive.pl, johannes@sipsolutions.net, krzk+dt@kernel.org,
- lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
- ulf.axelsson@nordicsemi.no, wojciech@conclusive.pl
-To: artur@conclusive.pl
-In-Reply-To: <CAGhaMFNhq-O3O0TCj6cvzvTqzPQKE_id67U0hZjV0V2uKV91Tw@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 23/24] wifi: mt76: mt7996: switch to single multi-radio
+ wiphy
+Content-Language: en-US
+To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+References: <20250102163508.52945-1-nbd@nbd.name>
+ <20250102163508.52945-23-nbd@nbd.name>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <20250102163508.52945-23-nbd@nbd.name>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-MDID: 1746135953-lBMyZozZSbZj
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;at1;1746135953;lBMyZozZSbZj;<greearb@candelatech.com>;340f598122f25443170ac9d27e6a82df
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-Le 01/05/2025 à 12:41, Artur Rojek a écrit :
-> Hi Christophe,
-> 
-> thanks for the review!
-> Reply inline.
-> 
-> On Fri, Apr 25, 2025 at 9:31 PM Christophe JAILLET
-> <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org> wrote:
->>
->> Le 22/04/2025 à 19:59, Artur Rojek a écrit :
->>> Introduce support for Nordic Semiconductor nRF70 series wireless
->>> companion IC.
->>>
->>
->> Hi,
->> ...
->>
->>> +     /* vpwr is mandatory, but we want to catch the -ENODEV error. */
->>> +     priv->vpwr = devm_regulator_get_optional(dev, "vpwr");
->>> +     if (IS_ERR(priv->vpwr))
->>> +             return dev_err_probe(dev, PTR_ERR(priv->vpwr),
->>> +                                  "Unable to find vpwr-supply property");
->>> +
->>> +     priv->vio = devm_regulator_get_optional(dev, "vio");
->>> +     if (IS_ERR(priv->vio) && PTR_ERR(priv->vio) != -ENODEV) {
->>> +             return dev_err_probe(dev, PTR_ERR(priv->vio),
->>> +                                  "Invalid vio-supply property");
->>> +     }
->>
->> Unneeded extra { }
->>
->>> +
->>> +     irq = of_irq_get_byname(dev->of_node, "host-irq");
->>> +     if (irq <= 0)
->>> +             return dev_err_probe(dev, irq, "Unable to find host-irq\n");
->>
->> If irq is 0, is it expected to return sucess here?
-> 
-> No, return value of 0 is considered IRQ mapping failure, as per
-> of_irq_get_byname() documentation. Perhaps it warrants a different error
-> message, though.
+On 1/2/25 08:35, Felix Fietkau wrote:
+> Use generic mt76 chanctx functions and look up phy from vif link.
+> The driver now uses only a single phy to handle multiple interfaces on
+> different channels. This is preparation for full MLO support.
 
-My point is nor related to the test itself, or the message.
+Hello Felix,
 
-I mean, that, should irq = 0, then it ends to
-	return dev_err_probe(dev, 0, "Unable to find host-irq\n");
-and the probe returns success.
+Did you combine all of the antennas on purpose?
 
-Maybe something like:
-	return dev_err_probe(dev, irq ? irq : -ESOMETHING, "Unable to find 
-host-irq\n");
+iw phy phy0 info
+...
+	Available Antennas: TX 0xf RX 0xf
+	Configured Antennas: TX 0xfff RX 0xfff
 
-CJ
+I noticed this while trying to set antennas...it was failing because
+the orig_chainmask is not always 0xf (it shifts by 4 for each phy it seems).
+
+I guess this *might* let you use un-modified iw to set different radio's
+antennas...but seems like a weird API to me.  I was in the middle of passing
+in a 'radio-id', based on logic by Roopni in this series when I found this
+weirdness.
+
+Roopni's series to allow per-radio config:
+
+wifi: cfg80211/mac80211: Set/get wiphy parameters on per-radio basis
+
 
 > 
-> Cheers,
-> Artur
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>   .../wireless/mediatek/mt76/mt7996/eeprom.c    |   1 +
+>   .../net/wireless/mediatek/mt76/mt7996/init.c  | 252 ++++---
+>   .../net/wireless/mediatek/mt76/mt7996/mac.c   |   6 +-
+>   .../net/wireless/mediatek/mt76/mt7996/main.c  | 649 +++++++++++-------
+>   .../net/wireless/mediatek/mt76/mt7996/mcu.c   |  15 +-
+>   .../net/wireless/mediatek/mt76/mt7996/mmio.c  |   3 +
+>   .../wireless/mediatek/mt76/mt7996/mt7996.h    |  52 +-
+>   7 files changed, 595 insertions(+), 383 deletions(-)
 > 
->>
->>> +
->>> +     mutex_init(&priv->write_lock);
->>> +     mutex_init(&priv->read_lock);
->> ...
->>
->> CJ
-> 
-> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+> index da94751df020..53dfac02f8af 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+> @@ -305,6 +305,7 @@ int mt7996_eeprom_parse_hw_cap(struct mt7996_dev *dev, struct mt7996_phy *phy)
+>   
+>   	mphy->antenna_mask = BIT(nss) - 1;
+>   	mphy->chainmask = (BIT(path) - 1) << dev->chainshift[band_idx];
+> +	phy->orig_chainmask = mphy->chainmask;
+>   	dev->chainmask |= mphy->chainmask;
+>   	if (band_idx < MT_BAND2)
+>   		dev->chainshift[band_idx + 1] = dev->chainshift[band_idx] +
+[snip]
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
 
 
