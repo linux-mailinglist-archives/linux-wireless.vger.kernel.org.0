@@ -1,201 +1,135 @@
-Return-Path: <linux-wireless+bounces-22323-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22324-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50DF5AA6ED4
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 12:05:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5643CAA70DC
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 13:49:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5FE21BC3A57
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 10:05:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F11D09A0B45
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 11:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979B5238C12;
-	Fri,  2 May 2025 10:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4629A15C140;
+	Fri,  2 May 2025 11:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="RvVqmUAp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ixpppb7/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C871EE03C
-	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 10:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899EA3D76
+	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 11:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746180248; cv=none; b=soRt7Asb4m/ysZADpakccGgcjcyOVsA0QjP4ClvGm9/4ZqW+Jq7mOMnAlz7DyV2+PwWfPiDjK/nxN3OCbcW4k9/CKnJY7z04EZbCQZrcIcoDzoV1WJSlCCCMAg9SOeWUAD5UXRAPJWuGwjupaSYTiDlOj4Sv4X4fJSzAEx7uX3U=
+	t=1746186547; cv=none; b=FG+d+W0hnOEBrRfuF6YdcyjZRYZjWqr32jCHNccdyYrhdKV026Ga+aZo+UlHmRzOecdKP8GgurEe1pOJTYixihA8uX3gVchfeYT8GAYmvGIjEQjhE8ojcLF4V/YXmnOt8Kee5tdIaR2i3dqZkXdHcZm8A3hZiZkNSckMgdMpbb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746180248; c=relaxed/simple;
-	bh=a+4NTP7GAXZxu26Q7gR9o+DTZj2sBGxCE8Et4DTkVLQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qqCDBV72bb/f+2jD+FoOm/s/Ku4LqxxzyuFO3U84AB/EWHQtN/mj/QFBQ7eObT84piHsWcyVnUweY5syKC64CmdO86uGSJU3y8ax+zOPhyZ1zubAH3LBi0G9/MpPANbszC/l96UAZ6l7HEqx/7vmA7BcBmBYHrNLL/EslD41ySA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=RvVqmUAp; arc=none smtp.client-ip=212.77.101.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 24179 invoked from network); 2 May 2025 12:03:54 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1746180234; bh=JxgIDUsaIMgLK10xPZb5AYDJC+rfdHR+oalBdnFri1g=;
-          h=From:To:Cc:Subject;
-          b=RvVqmUAp6CEBPtUFED5hYrTeu3I5G82Vg3yfqgG5xYD4C06+YWv4JEZ4t2ORlTzsi
-           abcepRhyyFjJ2Yy+QOOljw3/PdK0/lMaHnoZL0XYD7ONDbSzDJTwavsu7MY4wy1eti
-           /XD7OFUQnQjJgRTzifZ0ctzCVa/QpB168biXAJrvyyO/rsqSMY4F8nHhA9/cTOl9Dt
-           G2IYTt1hiJeSJt8WvOLApEiTgdp1HJ0TXQAiVwVE+WHocBO1BNLMFrC1HFJVRJKHo9
-           QcHUubUqFoMujfDsEx5Y0HWQ6UgqvUOU5SBgOryUuWpzy6mUsMhbU5MSijzl7XMJxb
-           kI0JNKuLLgAkg==
-Received: from 83.5.150.21.ipv4.supernova.orange.pl (HELO laptop-olek.home) (olek2@wp.pl@[83.5.150.21])
-          (envelope-sender <olek2@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <johannes.berg@intel.com>; 2 May 2025 12:03:54 +0200
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
-To: johannes.berg@intel.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Aleksander Jan Bajkowski <olek2@wp.pl>
-Subject: [PATCH iw] iw: scan: Add printing of EHT Operation Element
-Date: Fri,  2 May 2025 12:03:53 +0200
-Message-Id: <20250502100353.3149470-1-olek2@wp.pl>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1746186547; c=relaxed/simple;
+	bh=PF4QvOXYtnKxvyiE8J+J2rrQvH4jT+8hVsfCdPzTpWI=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=IMt0MsWBtECZwD+dX525zcrHBDv2qCks4vlwAfZJOvsI0cWZRT92MoSPpYrhagJ6ErydgsxpET9z+5vcVkxa//W+GlzlUD6ad7LJUf6HmjlGi3LxtgoR2lIzZGNR9tmSodBgVV7Hw39RiPUs9NAtaSN/3WWOdSurCSL0K5MtJxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ixpppb7/; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5f861d16622so3222313a12.2
+        for <linux-wireless@vger.kernel.org>; Fri, 02 May 2025 04:49:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746186544; x=1746791344; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VU0T8HiU4xATyOjzce/z1DVs6p+g0NeyojheO6vIMSI=;
+        b=Ixpppb7/Mfz0qGYq1P7JXmsilv3deYPuxrwIBm7XSBBC/lPC34rg2vJ2bTgTpaDUlH
+         vrT5zTiBl5khQdyCT2vFqcw/6wKbkDCgktRGWL8f2zo9VqD8arofagfyf5BedZa+gfjE
+         dEzFh2sDLGDgp5zQQdh332VVwkS+eu+mtFRAJ3SOMiT9cjFokHpjqbNivKl47n4C3Xq7
+         NkHTfkZBKHMeOfqfGnVtNavh5G7okCWEdVR0dxzHcJlEHOTlXIDZj7lImeX5APQ+qrAg
+         /p/Su5BXTgWXj40TlYZ8xfjlg1W4M3rDjf1RoHlrltn6PMKoMnjdrXXaYCBmY+a6Lt0E
+         WUAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746186544; x=1746791344;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=VU0T8HiU4xATyOjzce/z1DVs6p+g0NeyojheO6vIMSI=;
+        b=GV3Tlldq50DGRIRdyqmsZ7VACfSlDUnQVc9oHS7f6vSg+dAvFLWejqw2FJH20wCa2j
+         dQbXX6e4pOqxGW/1l8iNTUhbSHRK7kwLEoHH1aZHU9ljRQM9EUCgc20s/AxvxhI2X1KE
+         LWAXCKqkPSegxRLNhBfM70dckpKO2Mh+jS07xdKmU00ZMeM4bvYnZLGWc6Avs9Jm1Knh
+         H7zXOifko1iwqS0sgneh5qgetcPoYrLR8WT3At2W/i9I1NtiBnoqv1wesw5fLVgyk4nG
+         7vj/kiF6ipUKC9d+1W9WPenwmcsPpFtB/HHw5mZW10UI1SYQqS0vdbLhloKj6qK6jIVK
+         fcxA==
+X-Gm-Message-State: AOJu0YytJsIRZmVOpNi3eLc29oEx/k3hKWW6kprLzkjqhUlaBqvVonlI
+	pFG/vXwG+tMEWn5MJ5+HLDOawS1G2QlwpdNlZXO+k+qIIxs+QuNRmkj1zg==
+X-Gm-Gg: ASbGncvywV6gztm5eXcTx4rQHhSZFzNQdeCucq7hznKIfQKswsardMZyrBBmXezaz8N
+	OEjb5Le0gADR3W6zS7o2IkP3FZHxbCAz/2I+uEYC2nli5edm6ay7YDo0M4D66Cr2gX4/cR7/V+h
+	QuyNmFj/MtJWIEAQhcRl1HPdEDYgXtGYQcdznu2lH03Cb+UvvKz605gtmPpceYZM6wJRVI7b5E1
+	paWy54RvpyL2RQuR65HZZY81i8HkPYxOV6SSb7KZzvfAQix3cdj3aPv3Zm56FOI/uwHZX+hx/sb
+	vIn0pNzZKnZByhPd7SgBSQ+ndHeEv9hId4R0BZ1vx8r3pUoSJQ==
+X-Google-Smtp-Source: AGHT+IFMEQzrbFa875Cz9sFTG3m2LrK7PwxVWqmvwlxuKsgFGsPO+t1PGIkT/hLYCRfERl9PSC9cKg==
+X-Received: by 2002:a05:6402:13d0:b0:5f4:d0c3:4dd with SMTP id 4fb4d7f45d1cf-5fa77fd7135mr1795556a12.6.1746186543463;
+        Fri, 02 May 2025 04:49:03 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.209])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5fa76f3b9e6sm1142855a12.0.2025.05.02.04.49.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 May 2025 04:49:02 -0700 (PDT)
+Message-ID: <4c79fdc1-54bc-4986-9931-bb3ceb418b97@gmail.com>
+Date: Fri, 2 May 2025 14:49:01 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-WP-DKIM-Status: good (id: wp.pl)                                                      
-X-WP-MailID: 728dea30b0664b2579c9c2915b3f293e
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 000000A [YYN0]                               
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next v2 1/2] wifi: rtw88: Fix RX aggregation settings for
+ RTL8723DS
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add ability to print out EHT capabilities from AP beacons.
+Use the same RX aggregation size and timeout used by the out-of-tree
+RTL8723DS driver. Also set mystery bit 31 of REG_RXDMA_AGG_PG_TH. This
+improves the RX speed from ~44 Mbps to ~67 Mbps.
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
- ieee80211.h |  1 +
- iw.h        |  1 +
- scan.c      |  8 +++++++
- util.c      | 62 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 72 insertions(+)
+v2:
+ - Restore the original behaviour for RTL8821A and RTL8812A.
+---
+ drivers/net/wireless/realtek/rtw88/sdio.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/ieee80211.h b/ieee80211.h
-index 1e29371..c31041e 100644
---- a/ieee80211.h
-+++ b/ieee80211.h
-@@ -99,6 +99,7 @@ enum elem_id {
- enum elem_id_ext {
- 	EID_EXT_HE_CAPABILITY		= 35,
- 	EID_EXT_HE_OPERATION		= 36,
-+	EID_EXT_EHT_OPERATION		= 106,
- 	EID_EXT_EHT_CAPABILITY		= 108,
- };
- 
-diff --git a/iw.h b/iw.h
-index b8caccd..a423431 100644
---- a/iw.h
-+++ b/iw.h
-@@ -247,6 +247,7 @@ void print_he_operation(const uint8_t *ie, int len);
- void print_he_info(struct nlattr *nl_iftype);
- void print_eht_capability(const uint8_t *ie, int len, const uint8_t *he_cap,
- 			  bool from_ap);
-+void print_eht_operation(const uint8_t *ie, int len);
- void print_eht_info(struct nlattr *nl_iftype, int band);
- void print_s1g_capability(const uint8_t *caps);
- 
-diff --git a/scan.c b/scan.c
-index 748ead1..263d2e3 100644
---- a/scan.c
-+++ b/scan.c
-@@ -2426,10 +2426,18 @@ static void print_eht_capa(const uint8_t type, uint8_t len,
- 	print_eht_capability(data, len, ctx->he_cap, ctx->from_ap);
- }
- 
-+static void print_eht_oper(const uint8_t type, uint8_t len, const uint8_t *data,
-+			   const struct ie_context *ctx)
-+{
-+	printf("\n");
-+	print_eht_operation(data, len);
-+}
-+
- static const struct ie_print ext_printers[] = {
- 	[EID_EXT_HE_CAPABILITY] = { "HE capabilities", print_he_capa, 21, 54, BIT(PRINT_SCAN), },
- 	[EID_EXT_HE_OPERATION] = { "HE Operation", print_he_oper, 6, 15, BIT(PRINT_SCAN), },
- 	[EID_EXT_EHT_CAPABILITY] = { "EHT capabilities", print_eht_capa, 13, 30, BIT(PRINT_SCAN), },
-+	[EID_EXT_EHT_OPERATION] = { "EHT Operation", print_eht_oper, 5, 10, BIT(PRINT_SCAN), },
- };
- 
- static void print_extension(unsigned char len, unsigned char *ie,
-diff --git a/util.c b/util.c
-index c6d5974..e285e20 100644
---- a/util.c
-+++ b/util.c
-@@ -1924,6 +1924,68 @@ void print_he_operation(const uint8_t *ie, int len)
- 	}
- }
- 
-+void print_eht_operation(const uint8_t *ie, int len)
-+{
-+	uint8_t oper_parameters = ie[0];
-+	uint8_t disabled_subchannel_info_present = oper_parameters & 0x02;
-+	uint8_t eht_operation_info_present = oper_parameters & 0x01;
-+
-+	printf("\t\tEHT Operation Parameters: (0x%02x)\n",
-+	       oper_parameters);
-+
-+	if (oper_parameters & 0x04)
-+		printf("\t\t\tEHT Default PE Duration\n");
-+
-+	if (oper_parameters & 0x08)
-+		printf("\t\t\tGroup Addressed BU Indication Limit\n");
-+
-+	printf("\t\t\tGroup Addressed BU Indication Exponent: 0x%01x\n",
-+	       (oper_parameters >> 4 & 3));
-+
-+	printf("\t\tBasic EHT-MCS And Nss Set: 0x");
-+	for (uint8_t i = 0; i < 4; i++)
-+		printf("%02x", ie[1 + i]);
-+
-+	printf("\n");
-+
-+	if (eht_operation_info_present) {
-+		uint8_t offset = 5;
-+		const uint8_t control = ie[offset];
-+		uint8_t eht_operation_info_len = 3;
-+
-+		if (disabled_subchannel_info_present)
-+			eht_operation_info_len += 2;
-+
-+		if (len - offset < eht_operation_info_len) {
-+			printf("\t\tEHT Operation Info: Invalid\n");
-+			return;
-+		}
-+
-+		printf("\t\tEHT Operation Info: 0x");
-+		for (uint8_t i = 0; i < eht_operation_info_len; i++)
-+			printf("%02x", ie[offset + i]);
-+
-+		printf("\n");
-+		printf("\t\t\tChannel Width: ");
-+		switch (control & 0x7) {
-+		case 0: printf("20 MHz\n"); break;
-+		case 1: printf("40 MHz\n"); break;
-+		case 2: printf("80 MHz\n"); break;
-+		case 3: printf("160 MHz\n"); break;
-+		case 4: printf("320 MHz\n"); break;
-+		}
-+
-+		printf("\t\t\tCenter Frequency Segment 0: %hhu\n",
-+		       ie[offset + 1]);
-+		printf("\t\t\tCenter Frequency Segment 1: %hhu\n",
-+		       ie[offset + 2]);
-+
-+		if (disabled_subchannel_info_present)
-+			printf("\t\t\tDisabled Subchannel Bitmap: 0x%02x%02x\n",
-+			       ie[offset + 3], ie[offset + 4]);
-+	}
-+}
-+
- void iw_hexdump(const char *prefix, const __u8 *buf, size_t size)
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index c57f683d9af8..71cbe49b6c59 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -677,12 +677,22 @@ static void rtw_sdio_enable_rx_aggregation(struct rtw_dev *rtwdev)
  {
- 	size_t i;
+ 	u8 size, timeout;
+ 
+-	if (rtw_chip_wcpu_11n(rtwdev)) {
++	switch (rtwdev->chip->id) {
++	case RTW_CHIP_TYPE_8703B:
++	case RTW_CHIP_TYPE_8821A:
++	case RTW_CHIP_TYPE_8812A:
+ 		size = 0x6;
+ 		timeout = 0x6;
+-	} else {
++		break;
++	case RTW_CHIP_TYPE_8723D:
++		size = 0xa;
++		timeout = 0x3;
++		rtw_write8_set(rtwdev, REG_RXDMA_AGG_PG_TH + 3, BIT(7));
++		break;
++	default:
+ 		size = 0xff;
+ 		timeout = 0x1;
++		break;
+ 	}
+ 
+ 	/* Make the firmware honor the size limit configured below */
 -- 
-2.39.5
+2.49.0
 
 
