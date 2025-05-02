@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-22339-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22340-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17317AA719D
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 14:21:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D24AA719F
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 14:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F67E1735BE
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 12:21:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CDBF1BC7858
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 12:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961E025484E;
-	Fri,  2 May 2025 12:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CA725485F;
+	Fri,  2 May 2025 12:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AAMra7iW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NGZGp7EW"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1F22550D5
-	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 12:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A275425485B
+	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 12:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746188465; cv=none; b=IPk2rhn4tSERjsTSgio9wiyMKejey9pzkPfLy1wo8tOubRIh6vYgkrsBh0/uR92j62ioi/tYabXbmZ7Ta9vXj0giP3B+4S33yFR1YJraS2fCr87UnEEXOpRIdk1WxZSzxuhepH8fkXRspJJiJlIUEc+wy05WNpw0cfy6QoH+CTA=
+	t=1746188467; cv=none; b=Mhxl5LLquyPh6CgcRXltZd/WjM0MuKos1sNuoNZ+/xrwIASsKQHmE98YV46lDNkNPkgo3f/UyWD8L6sfuKVJO9cJxqfgB4l2GicbqK0zhGBghjIbVPzLY6Mw4JOK98RbiUrNqRx5wfSV+qaZJjRhlY8A2Bn4EH+irgUODhzH39M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746188465; c=relaxed/simple;
-	bh=t7YD4gtBUu98i9qV6T5EDwc4PEGmU5TVB1+yLSKWNQ4=;
+	s=arc-20240116; t=1746188467; c=relaxed/simple;
+	bh=WrhpF7Jkgn1D47WuxgkWWgZy+CDTmEVC69jfuWD4fqs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CP5L+oem8/JCxLkueBaeC+YLmf0WpMOsgAkIGKNnH368q0I84z78ZNyFkQ4fWfki2MzKE2wI/hcRGwlXOn7CrlaZWqP8HvUcBPBW1XjyLWD3kt4QfnvumU3dXV8DlWrc8j0hFE0zBdDfOL/QJWFQIzbTdONH0/ujy7St8C+BMSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AAMra7iW; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=VZxVr/y6tVNMQgEz/fPvzQQ+W1oAuOVuLIHg8EF+sDuIMYTrPeSQSH1Bw4YE8yKrC2dz7u67XiZ6QObUyFm8OTlGhpKIBFQ6U5hkcbvtfmPjZdMyJZnncCMLT3GSe9PzRTEl8KkURMJxsVh5LxsG4g5JaG4K0DdazdBd5AYtLJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NGZGp7EW; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746188464; x=1777724464;
+  t=1746188465; x=1777724465;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=t7YD4gtBUu98i9qV6T5EDwc4PEGmU5TVB1+yLSKWNQ4=;
-  b=AAMra7iWaSSXPUka9e+XusD48r9+pt0KmRhBR3DpsmDZh6X1xmQn2bNr
-   nnAP9eN1tGGimSbmtoP6lvlg8qWn6O6/FGm6YxQA2GUEGxYHjB/0i/YJo
-   6vRSf/WnsSYUAGoAYZMCZlTDDcHpRb5befRl9l3LJYR78pVWSdTzWbVEF
-   MhRozzh8M7UDTqHHveJ0KNVNnbmUrbQgyvZs9jxVeXeuHB5577MtLN6IV
-   rTaVNg2VS9lKCN86GWJR6hQunICMLlsM4dYnYmEiSvhznC/49EeuDC32w
-   aHZkjkCSb6KMh9TvJcWp/ZnYyodV4oK1NFrHAsahqlVFG6UDy8s2g6C1l
-   Q==;
-X-CSE-ConnectionGUID: raJu/0rUTIGJ2jWR4WGMIA==
-X-CSE-MsgGUID: 9JAZEGaDTrGp5NvEGx8PuQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48010371"
+  bh=WrhpF7Jkgn1D47WuxgkWWgZy+CDTmEVC69jfuWD4fqs=;
+  b=NGZGp7EWQCuglmcm2LWyk27vuh/0xTzr76veaLmnbSGQjVkFDsUpGHeQ
+   nvqE5nyjzVLIefFLUGnDX1FB/ntGHZoIOu7UZXsrxniIQgnxLL8f5XJMP
+   vaO/fuw2QtQ8JcVPhrVfCniPFZsckf7ginBVSNCtUIgEfBiVk5yuS04pd
+   2nrNKsstZPFXIgLnN6cnHdVOH7Pvscgt/IQfODhpIdCyCPXQhbidqZCJ0
+   QeZeW0kJr94/k/YqI0TRD14oxVbNghmVkIIPUAPpPXZVJdYDkbePyl0Q7
+   LK5wuzpb1bQKGOey/xlZ4jdYLh9p7bSPCnwY6FG+21dcL/S9UX/uSflR6
+   w==;
+X-CSE-ConnectionGUID: AoiBlvTIQkSMAh5tfDFvCA==
+X-CSE-MsgGUID: a7f1vTk0RFOkfc4omvJqmQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48010374"
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="48010371"
+   d="scan'208";a="48010374"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:21:03 -0700
-X-CSE-ConnectionGUID: SQzTyIJlR72qM8WVkAcYIQ==
-X-CSE-MsgGUID: AcYT7mbkT8GqizN66a8pPA==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:21:05 -0700
+X-CSE-ConnectionGUID: VxLcEY3jSU69o0Z6lJ5XCg==
+X-CSE-MsgGUID: +LmlK994RLi7bUpUoy9OyQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="134586148"
+   d="scan'208";a="134586156"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:21:02 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:21:03 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 iwlwifi-next 13/15] wifi: iwlwifi: cfg: remove iwl_ax201_cfg_qu_hr
-Date: Fri,  2 May 2025 15:20:28 +0300
-Message-Id: <20250502151751.17fc47c72232.I2cb4476b9bca6e770bd375ad6ce650553dbde0f1@changeid>
+Subject: [PATCH v2 iwlwifi-next 14/15] wifi: iwlwifi: cfg: remove duplicated iwl_cfg_gl
+Date: Fri,  2 May 2025 15:20:29 +0300
+Message-Id: <20250502151751.fbb78183dc85.Ic5429009677ae1023cf1f43a655e90409a30c493@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250502122030.3130085-1-miriam.rachel.korenblit@intel.com>
 References: <20250502122030.3130085-1-miriam.rachel.korenblit@intel.com>
@@ -79,253 +79,65 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We can handle the name differently, so do that and remove
-the extra config entry.
+This really is the same device as covered by iwl_cfg_bz,
+just the discrete version. Since discrete vs integrated
+is handled in the transport config, there's no need to
+have both. Remove iwl_cfg_gl.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/cfg/22000.c    |   6 -
- .../net/wireless/intel/iwlwifi/iwl-config.h   |   1 -
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 130 +++++++++---------
- 3 files changed, 65 insertions(+), 72 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c     | 7 -------
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h | 1 -
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c   | 4 ++--
+ 3 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 70005e6b2d57..172ca18d888b 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -215,12 +215,6 @@ const struct iwl_cfg iwl_qu_hr = {
- 	.num_rbds = IWL_NUM_RBDS_22000_HE,
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+index 1d491c72bae8..f3f2dc66bfb5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+@@ -169,13 +169,6 @@ const struct iwl_cfg iwl_cfg_bz = {
+ 	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
  };
  
--const struct iwl_cfg iwl_ax201_cfg_qu_hr = {
--	.name = "Intel(R) Wi-Fi 6 AX201 160MHz",
--	IWL_DEVICE_22500,
--	.num_rbds = IWL_NUM_RBDS_22000_HE,
+-const struct iwl_cfg iwl_cfg_gl = {
+-	.uhb_supported = true,
+-	IWL_DEVICE_BZ,
+-	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
+-	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
 -};
 -
- const struct iwl_cfg iwl_ax200_cfg_cc = {
- 	.fw_name_pre = IWL_CC_A_FW_PRE,
- 	IWL_DEVICE_22500,
+ MODULE_FIRMWARE(IWL_BZ_A_HR_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
+ IWL_FW_AND_PNVM(IWL_BZ_A_GF_A_FW_PRE, IWL_BZ_UCODE_API_MAX);
+ IWL_FW_AND_PNVM(IWL_BZ_A_GF4_A_FW_PRE, IWL_BZ_UCODE_API_MAX);
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 26d0faa44695..cdb3f4abd21b 100644
+index cdb3f4abd21b..c4f914010033 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -623,7 +623,6 @@ extern const struct iwl_cfg iwl9560_2ac_cfg_soc;
- extern const struct iwl_cfg iwl_qu_hr1;
- extern const struct iwl_cfg iwl_qu_hr;
- extern const struct iwl_cfg iwl_ax200_cfg_cc;
--extern const struct iwl_cfg iwl_ax201_cfg_qu_hr;
- extern const struct iwl_cfg iwlax210_2ax_cfg_so_jf_b0;
- extern const struct iwl_cfg iwlax211_2ax_cfg_so_gf_a0;
- extern const struct iwl_cfg iwlax211_2ax_cfg_so_gf_a0_long;
+@@ -639,7 +639,6 @@ extern const struct iwl_cfg iwl_cfg_so_a0_hr_a0;
+ extern const struct iwl_ht_params iwl_bz_ht_params;
+ 
+ extern const struct iwl_cfg iwl_cfg_bz;
+-extern const struct iwl_cfg iwl_cfg_gl;
+ 
+ extern const struct iwl_cfg iwl_cfg_sc;
+ extern const struct iwl_cfg iwl_cfg_sc2;
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 95123cb26de6..ad938f05410f 100644
+index ad938f05410f..950c680edbfa 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -647,137 +647,137 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
- 		     DEVICE(0x2723), SUBDEV(0x1654), BW_NO_LIMIT),
+@@ -1120,9 +1120,9 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
+ 	IWL_DEV_INFO(iwl_cfg_bz, iwl_wh_name, MAC_TYPE(BZ_W), RF_TYPE(WH)),
  
- 	/* Qu with Hr */
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x43F0), SUBDEV(0x0070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x43F0), SUBDEV(0x0074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x43F0), SUBDEV(0x0078), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x43F0), SUBDEV(0x007C), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650s_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650s_name,
- 		     DEVICE(0x43F0), SUBDEV(0x1651), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650i_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650i_name,
- 		     DEVICE(0x43F0), SUBDEV(0x1652), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x43F0), SUBDEV(0x2074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x43F0), SUBDEV(0x4070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0xA0F0), SUBDEV(0x0070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0xA0F0), SUBDEV(0x0074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0xA0F0), SUBDEV(0x0078), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0xA0F0), SUBDEV(0x007C), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0xA0F0), SUBDEV(0x0A10), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650s_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650s_name,
- 		     DEVICE(0xA0F0), SUBDEV(0x1651), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650i_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650i_name,
- 		     DEVICE(0xA0F0), SUBDEV(0x1652), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0xA0F0), SUBDEV(0x2074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0xA0F0), SUBDEV(0x4070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0xA0F0), SUBDEV(0x6074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x02F0), SUBDEV(0x0070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x02F0), SUBDEV(0x0074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x02F0), SUBDEV(0x6074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x02F0), SUBDEV(0x0078), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x02F0), SUBDEV(0x007C), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x02F0), SUBDEV(0x0310), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650s_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650s_name,
- 		     DEVICE(0x02F0), SUBDEV(0x1651), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650i_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650i_name,
- 		     DEVICE(0x02F0), SUBDEV(0x1652), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x02F0), SUBDEV(0x2074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x02F0), SUBDEV(0x4070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x06F0), SUBDEV(0x0070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x06F0), SUBDEV(0x0074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x06F0), SUBDEV(0x0078), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x06F0), SUBDEV(0x007C), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x06F0), SUBDEV(0x0310), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650s_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650s_name,
- 		     DEVICE(0x06F0), SUBDEV(0x1651), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650i_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650i_name,
- 		     DEVICE(0x06F0), SUBDEV(0x1652), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x06F0), SUBDEV(0x2074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x06F0), SUBDEV(0x4070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x34F0), SUBDEV(0x0070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x34F0), SUBDEV(0x0074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x34F0), SUBDEV(0x0078), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x34F0), SUBDEV(0x007C), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x34F0), SUBDEV(0x0310), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650s_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650s_name,
- 		     DEVICE(0x34F0), SUBDEV(0x1651), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650i_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650i_name,
- 		     DEVICE(0x34F0), SUBDEV(0x1652), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x34F0), SUBDEV(0x2074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x34F0), SUBDEV(0x4070), BW_NO_LIMIT),
+ /* Ga (Gl) */
+-	IWL_DEV_INFO(iwl_cfg_gl, iwl_gl_name, MAC_TYPE(GL), RF_TYPE(FM),
++	IWL_DEV_INFO(iwl_cfg_bz, iwl_gl_name, MAC_TYPE(GL), RF_TYPE(FM),
+ 		     BW_NO_LIMIT, NO_CDB),
+-	IWL_DEV_INFO(iwl_cfg_gl, iwl_mtp_name, MAC_TYPE(GL), RF_TYPE(FM),
++	IWL_DEV_INFO(iwl_cfg_bz, iwl_mtp_name, MAC_TYPE(GL), RF_TYPE(FM),
+ 		     BW_LIMIT(160), NO_CDB),
  
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x3DF0), SUBDEV(0x0070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x3DF0), SUBDEV(0x0074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x3DF0), SUBDEV(0x0078), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x3DF0), SUBDEV(0x007C), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x3DF0), SUBDEV(0x0310), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650s_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650s_name,
- 		     DEVICE(0x3DF0), SUBDEV(0x1651), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650i_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650i_name,
- 		     DEVICE(0x3DF0), SUBDEV(0x1652), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x3DF0), SUBDEV(0x2074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x3DF0), SUBDEV(0x4070), BW_NO_LIMIT),
- 
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x4DF0), SUBDEV(0x0070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x4DF0), SUBDEV(0x0074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x4DF0), SUBDEV(0x0078), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x4DF0), SUBDEV(0x007C), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x4DF0), SUBDEV(0x0310), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650s_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650s_name,
- 		     DEVICE(0x4DF0), SUBDEV(0x1651), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, iwl_ax201_killer_1650i_name,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_killer_1650i_name,
- 		     DEVICE(0x4DF0), SUBDEV(0x1652), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x4DF0), SUBDEV(0x2074), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x4DF0), SUBDEV(0x4070), BW_NO_LIMIT),
--	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
-+	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name,
- 		     DEVICE(0x4DF0), SUBDEV(0x6074), BW_NO_LIMIT),
- 
- 	/* So with HR */
+ /* Sc */
 -- 
 2.34.1
 
