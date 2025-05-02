@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-22337-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22338-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F31AA71A1
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 14:22:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31843AA719C
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 14:21:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 732179855B3
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 12:21:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A2D416A029
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 12:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F6B2522A5;
-	Fri,  2 May 2025 12:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70826253F1B;
+	Fri,  2 May 2025 12:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VY8ztkTJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bZokfXFf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2806A253B65
-	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 12:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9401A252905
+	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 12:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746188462; cv=none; b=S+yHRyUN5xpY7CA0eRgcvdT/6YoGAiMHds+nRKwq30gJ21ynC1Dn++a5N0KZarg6H/2Ft1XxCBy1A7C5Jo3FLHZKww2xROnd4X7p313HArreau19LOQuMmSrxyjBUp/Kq5rNanbq0EXi61I6nJVi3blcSXCeH1v2xC4zvXRyJ/Y=
+	t=1746188465; cv=none; b=qqJdxEuloKfM9yiOv6WAtfnmFZdV46QYw9rUK2aIWZStxTmV4L1Pl+z/cNSXobi2OJiXTGiCFsSy1J2CRse3yG8PalTzUpkDhLAVK2dUqkevR18Gnz9yiuB5CASPvg5UEs0+FgyrVF+bkjhOk3hNoJr+WniSovH24HHCFbTB5KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746188462; c=relaxed/simple;
-	bh=LFPXWYsRgUT6g1Dmbnfr05VJBMaBrEuD3ddgEGDe7b0=;
+	s=arc-20240116; t=1746188465; c=relaxed/simple;
+	bh=lyd/HnSPIfCTaOyDvWvtpoVJWwvSX/bZZvQjREJAc9M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=g1VjsqpIqwNse8icMQEFeeQA9+ZTAtNxOotKFysvd5NutZmyDH9cUqQv+mSMoiWxNIRoXoW3+uSISYnqbwIFkyo2KYytnmK6ZzCCWrVIJXWJg6qMLuxz3AQntuChItVYe0t6V1f33IfK9tHJmHCGjBS38zjY+hJNfyqnLNm9m90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VY8ztkTJ; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=S0dpc8vHrKnhTodFVXqRLpU3j+c+0C50h1B9OmK/iZHIZLmjhNhw6HV6BTVQiZhi5G0zp36dDqBCiwjtMTSdTIZFjjhcDmHQIVEdPq07MOmdly8ZcR2OgdBCh967MbKKQqC0Xa3MKOVN3vNwwQjYvqWGObt10oeRZS2/hjr6CSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bZokfXFf; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746188461; x=1777724461;
+  t=1746188462; x=1777724462;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=LFPXWYsRgUT6g1Dmbnfr05VJBMaBrEuD3ddgEGDe7b0=;
-  b=VY8ztkTJCT5p/KZ/M6jf96GvXRR3lXJmuPB154/L21ZbVmmPzL9FAm4s
-   TRlmixJL9IX8g5Ac9z3z+6zPTLnIMOpc0GEe3J6y3G//2C078Y+JV3dG7
-   taJDo+Mxt3nAQQUpCtRjuq3AOBJwmoTENtjiY0b6sUNFTI/1t87jjSOBT
-   ZoU9i4JYwQJlCVcdIs/qd1T2K63dPZhXCrHNxRvWVHapDxaBKRbfagR09
-   HVdsK4n20/FipLt4zR7dUx1UIBBn4jC7X9VQUtzENxpHUVgntj9voRLSx
-   H4VszDs4pavx7O42tt4YSVQXxkQDTieQO4Cz9+zyk2yem+n6y2fQY2UTw
-   w==;
-X-CSE-ConnectionGUID: lD6ojiMZR6Kso8/q215anw==
-X-CSE-MsgGUID: vde+K5aeRV2/B2vtCFucxw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48010367"
+  bh=lyd/HnSPIfCTaOyDvWvtpoVJWwvSX/bZZvQjREJAc9M=;
+  b=bZokfXFfY7d3NLzXR6f+L74hTmDZdGt94S17ktPz8B6OLXQPagf4RKK4
+   5t7EaFyz+fFTD5RTT7T6K4eMcMPAQBFZzOjy+/jR+OhZ8vF7JPzLABjdc
+   22a/Q2qKeMJPZCBEN5DmBhvtEjmPZafuJkKRUQ4yqTIbDVWMdIOdJqOyG
+   sjzMqgMdWO1SIUwCoxy2x2OF4OfcdR6JB7WiJJDBWPxa4IztXZVIT/9bN
+   w2K/WyrbkyafVnaivBJUQrIy9mkmVDr1/VinYzRwOYY1RKj+z+bDARYQ5
+   h6AvvMacx9ZleaIWE7Yg3IEUEkDND+t8eAXlTXpVFuQXSnJCySQKmMH8F
+   A==;
+X-CSE-ConnectionGUID: JtnaslMkQZ6We57HeDuujg==
+X-CSE-MsgGUID: oj7cZdx6Tc+KTaQU6GAuMg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48010368"
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="48010367"
+   d="scan'208";a="48010368"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:21:00 -0700
-X-CSE-ConnectionGUID: GH9eRohsT/eYjv2hoApkjg==
-X-CSE-MsgGUID: RyIw6C9kR3SnKFribxZ5+A==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:21:02 -0700
+X-CSE-ConnectionGUID: 8ai7BgkKSHOc88VYjeuQeg==
+X-CSE-MsgGUID: PFTUewkqQe+gqWNtRB+EWA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="134586137"
+   d="scan'208";a="134586141"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:20:59 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:21:00 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 iwlwifi-next 11/15] wifi: iwlwifi: cfg: remove unused config externs
-Date: Fri,  2 May 2025 15:20:26 +0300
-Message-Id: <20250502151751.64977630101f.I9997a72027d37249620a78091759fa44f9d32c87@changeid>
+Subject: [PATCH v2 iwlwifi-next 12/15] wifi: iwlwifi: cfg: remove max_tx_agg_size
+Date: Fri,  2 May 2025 15:20:27 +0300
+Message-Id: <20250502151751.9c2689e2ca8e.I8274b29ca64d9ef9d1e357bbe34ca3a4b97aeb7a@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250502122030.3130085-1-miriam.rachel.korenblit@intel.com>
 References: <20250502122030.3130085-1-miriam.rachel.korenblit@intel.com>
@@ -79,28 +79,121 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-There are two killer configs that no longer exist,
-remove the externs.
+This was used in some really old devices, and then got
+carried forward to Qu devices, even though on those we
+don't need it at all since the TX aggregation start is
+offloaded to the firmware. Remove it.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-config.h | 2 --
- 1 file changed, 2 deletions(-)
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    | 30 -------------------
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |  2 --
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  5 ----
+ 3 files changed, 37 deletions(-)
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+index 4affcf079a85..70005e6b2d57 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+@@ -178,12 +178,6 @@ const struct iwl_cfg iwl9560_qu_jf_cfg = {
+ const struct iwl_cfg iwl9560_quz_a0_jf_b0_cfg = {
+ 	.fw_name_pre = IWL_QUZ_A_JF_B_FW_PRE,
+ 	IWL_DEVICE_22500,
+-	/*
+-	 * This device doesn't support receiving BlockAck with a large bitmap
+-	 * so we need to restrict the size of transmitted aggregation to the
+-	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
+-	 */
+-	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
+ 	.num_rbds = IWL_NUM_RBDS_NON_HE,
+ };
+ 
+@@ -212,48 +206,24 @@ const char iwl_ax201_killer_1650i_name[] =
+ 
+ const struct iwl_cfg iwl_qu_hr1 = {
+ 	IWL_DEVICE_22500,
+-	/*
+-	 * This device doesn't support receiving BlockAck with a large bitmap
+-	 * so we need to restrict the size of transmitted aggregation to the
+-	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
+-	 */
+-	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
+ 	.tx_with_siso_diversity = true,
+ 	.num_rbds = IWL_NUM_RBDS_22000_HE,
+ };
+ 
+ const struct iwl_cfg iwl_qu_hr = {
+ 	IWL_DEVICE_22500,
+-	/*
+-	 * This device doesn't support receiving BlockAck with a large bitmap
+-	 * so we need to restrict the size of transmitted aggregation to the
+-	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
+-	 */
+-	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
+ 	.num_rbds = IWL_NUM_RBDS_22000_HE,
+ };
+ 
+ const struct iwl_cfg iwl_ax201_cfg_qu_hr = {
+ 	.name = "Intel(R) Wi-Fi 6 AX201 160MHz",
+ 	IWL_DEVICE_22500,
+-	/*
+-	 * This device doesn't support receiving BlockAck with a large bitmap
+-	 * so we need to restrict the size of transmitted aggregation to the
+-	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
+-	 */
+-	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
+ 	.num_rbds = IWL_NUM_RBDS_22000_HE,
+ };
+ 
+ const struct iwl_cfg iwl_ax200_cfg_cc = {
+ 	.fw_name_pre = IWL_CC_A_FW_PRE,
+ 	IWL_DEVICE_22500,
+-	/*
+-	 * This device doesn't support receiving BlockAck with a large bitmap
+-	 * so we need to restrict the size of transmitted aggregation to the
+-	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
+-	 */
+-	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
+ 	.num_rbds = IWL_NUM_RBDS_22000_HE,
+ };
+ 
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index a551967d1724..b9f6f122e752 100644
+index b9f6f122e752..26d0faa44695 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -626,8 +626,6 @@ extern const struct iwl_cfg iwl_qu_hr1;
- extern const struct iwl_cfg iwl_qu_hr;
- extern const struct iwl_cfg iwl_ax200_cfg_cc;
- extern const struct iwl_cfg iwl_ax201_cfg_qu_hr;
--extern const struct iwl_cfg killer1650x_2ax_cfg;
--extern const struct iwl_cfg killer1650w_2ax_cfg;
- extern const struct iwl_cfg iwlax210_2ax_cfg_so_jf_b0;
- extern const struct iwl_cfg iwlax211_2ax_cfg_so_gf_a0;
- extern const struct iwl_cfg iwlax211_2ax_cfg_so_gf_a0_long;
+@@ -334,7 +334,6 @@ struct iwl_fw_mon_regs {
+  * @mac_addr_from_csr: read HW address from CSR registers at this offset
+  * @features: hw features, any combination of feature_passlist
+  * @pwr_tx_backoffs: translation table between power limits and backoffs
+- * @max_tx_agg_size: max TX aggregation size of the ADDBA request/response
+  * @dccm_offset: offset from which DCCM begins
+  * @dccm_len: length of DCCM (including runtime stack CCM)
+  * @dccm2_offset: offset from which the second DCCM begins
+@@ -397,7 +396,6 @@ struct iwl_cfg {
+ 	u8 valid_rx_ant;
+ 	u8 non_shared_ant;
+ 	u8 nvm_hw_section_num;
+-	u8 max_tx_agg_size;
+ 	u8 ucode_api_max;
+ 	u8 ucode_api_min;
+ 	u16 num_rbds;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 76603ef02704..14932700c6f9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1313,11 +1313,6 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 
+ 	hw->max_rx_aggregation_subframes = max_agg;
+ 
+-	if (cfg->max_tx_agg_size)
+-		hw->max_tx_aggregation_subframes = cfg->max_tx_agg_size;
+-	else
+-		hw->max_tx_aggregation_subframes = max_agg;
+-
+ 	op_mode = hw->priv;
+ 
+ 	mvm = IWL_OP_MODE_GET_MVM(op_mode);
 -- 
 2.34.1
 
