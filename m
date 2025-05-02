@@ -1,77 +1,78 @@
-Return-Path: <linux-wireless+bounces-22324-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22325-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5643CAA70DC
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 13:49:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C75EAA70DD
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 13:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F11D09A0B45
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 11:48:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FCCE17849D
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 11:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4629A15C140;
-	Fri,  2 May 2025 11:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3381D15C140;
+	Fri,  2 May 2025 11:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ixpppb7/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C6Nsxeq9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899EA3D76
-	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 11:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB0E3D76
+	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 11:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746186547; cv=none; b=FG+d+W0hnOEBrRfuF6YdcyjZRYZjWqr32jCHNccdyYrhdKV026Ga+aZo+UlHmRzOecdKP8GgurEe1pOJTYixihA8uX3gVchfeYT8GAYmvGIjEQjhE8ojcLF4V/YXmnOt8Kee5tdIaR2i3dqZkXdHcZm8A3hZiZkNSckMgdMpbb8=
+	t=1746186581; cv=none; b=iGvag+JaWKwOAOl7+QASmEFqy6gPOVYmUlvBzif9VhHXEEiPCdYSiTtsMzomAsSNialTK84xKtkgbIXTkrt+Cag/zlvMGbjULZlbwsj1Q/ZZkZGYUw+1uT3Y0ybFjzzCb6SjvbzKSE5bNIy6Mz0s6jiGJl2Fjn0yjcHeVn+lJxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746186547; c=relaxed/simple;
-	bh=PF4QvOXYtnKxvyiE8J+J2rrQvH4jT+8hVsfCdPzTpWI=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=IMt0MsWBtECZwD+dX525zcrHBDv2qCks4vlwAfZJOvsI0cWZRT92MoSPpYrhagJ6ErydgsxpET9z+5vcVkxa//W+GlzlUD6ad7LJUf6HmjlGi3LxtgoR2lIzZGNR9tmSodBgVV7Hw39RiPUs9NAtaSN/3WWOdSurCSL0K5MtJxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ixpppb7/; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1746186581; c=relaxed/simple;
+	bh=lWeHKGjbx0dl18Rm1pdQxt6/FTjsTOthznB/Oguh9gk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jrq0jK04buAewezOMaaCilzjJPcHCF17J8tYgpvHHuiXzbWgVIa/jzbR3W8NL23sgT+F2tkPZ9ExPQreBG03mlQQ8Oo2TcccA1dicS8PY7kyQ7ByFbqG4I4RL2gNuhT4sGgfvAfEeUJaXJtq9p91LXHpCsrpaqKvtSsyjKLcM80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C6Nsxeq9; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5f861d16622so3222313a12.2
-        for <linux-wireless@vger.kernel.org>; Fri, 02 May 2025 04:49:05 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5e5e63162a0so2881230a12.3
+        for <linux-wireless@vger.kernel.org>; Fri, 02 May 2025 04:49:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746186544; x=1746791344; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VU0T8HiU4xATyOjzce/z1DVs6p+g0NeyojheO6vIMSI=;
-        b=Ixpppb7/Mfz0qGYq1P7JXmsilv3deYPuxrwIBm7XSBBC/lPC34rg2vJ2bTgTpaDUlH
-         vrT5zTiBl5khQdyCT2vFqcw/6wKbkDCgktRGWL8f2zo9VqD8arofagfyf5BedZa+gfjE
-         dEzFh2sDLGDgp5zQQdh332VVwkS+eu+mtFRAJ3SOMiT9cjFokHpjqbNivKl47n4C3Xq7
-         NkHTfkZBKHMeOfqfGnVtNavh5G7okCWEdVR0dxzHcJlEHOTlXIDZj7lImeX5APQ+qrAg
-         /p/Su5BXTgWXj40TlYZ8xfjlg1W4M3rDjf1RoHlrltn6PMKoMnjdrXXaYCBmY+a6Lt0E
-         WUAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746186544; x=1746791344;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+        d=gmail.com; s=20230601; t=1746186577; x=1746791377; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=VU0T8HiU4xATyOjzce/z1DVs6p+g0NeyojheO6vIMSI=;
-        b=GV3Tlldq50DGRIRdyqmsZ7VACfSlDUnQVc9oHS7f6vSg+dAvFLWejqw2FJH20wCa2j
-         dQbXX6e4pOqxGW/1l8iNTUhbSHRK7kwLEoHH1aZHU9ljRQM9EUCgc20s/AxvxhI2X1KE
-         LWAXCKqkPSegxRLNhBfM70dckpKO2Mh+jS07xdKmU00ZMeM4bvYnZLGWc6Avs9Jm1Knh
-         H7zXOifko1iwqS0sgneh5qgetcPoYrLR8WT3At2W/i9I1NtiBnoqv1wesw5fLVgyk4nG
-         7vj/kiF6ipUKC9d+1W9WPenwmcsPpFtB/HHw5mZW10UI1SYQqS0vdbLhloKj6qK6jIVK
-         fcxA==
-X-Gm-Message-State: AOJu0YytJsIRZmVOpNi3eLc29oEx/k3hKWW6kprLzkjqhUlaBqvVonlI
-	pFG/vXwG+tMEWn5MJ5+HLDOawS1G2QlwpdNlZXO+k+qIIxs+QuNRmkj1zg==
-X-Gm-Gg: ASbGncvywV6gztm5eXcTx4rQHhSZFzNQdeCucq7hznKIfQKswsardMZyrBBmXezaz8N
-	OEjb5Le0gADR3W6zS7o2IkP3FZHxbCAz/2I+uEYC2nli5edm6ay7YDo0M4D66Cr2gX4/cR7/V+h
-	QuyNmFj/MtJWIEAQhcRl1HPdEDYgXtGYQcdznu2lH03Cb+UvvKz605gtmPpceYZM6wJRVI7b5E1
-	paWy54RvpyL2RQuR65HZZY81i8HkPYxOV6SSb7KZzvfAQix3cdj3aPv3Zm56FOI/uwHZX+hx/sb
-	vIn0pNzZKnZByhPd7SgBSQ+ndHeEv9hId4R0BZ1vx8r3pUoSJQ==
-X-Google-Smtp-Source: AGHT+IFMEQzrbFa875Cz9sFTG3m2LrK7PwxVWqmvwlxuKsgFGsPO+t1PGIkT/hLYCRfERl9PSC9cKg==
-X-Received: by 2002:a05:6402:13d0:b0:5f4:d0c3:4dd with SMTP id 4fb4d7f45d1cf-5fa77fd7135mr1795556a12.6.1746186543463;
-        Fri, 02 May 2025 04:49:03 -0700 (PDT)
+        bh=Wps79G+1SXv8e6i5kI3fklzLKMUJdykiFW3v72ktH3M=;
+        b=C6Nsxeq9g9D43djE/cMRtLXECWMm05X1F5vC8OFhRXNHesMh9tufaFX976vw+h2NEw
+         IWxUDjHtBOk9MQKHJ6HzNqJmQiYN+pvOyJTZl6VcnNPZZhxQ0Kclf5lrUvHqm+EDmWcm
+         wP+RxWxPMmlI4rBcIBoGbUqQsbeV7xkRhhiSQzk20yA7aFyxL3dj9xzPnJKWMnrEAI2B
+         Wm4vivJP5fZBbEa+WRzE0dAghbTwlOTLlQlp85F/VsI7l+82h7rcQo6+IlyQgenb/l6g
+         SJDF1rdgKnb15UmQUU7I3blHWZxYjtvoX1woMaZOcHYm3Jit8omvneyiWSIib5tRQzri
+         1mEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746186577; x=1746791377;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wps79G+1SXv8e6i5kI3fklzLKMUJdykiFW3v72ktH3M=;
+        b=VvpMoDw0A2/9vy+wf1uSWGQ/hDCb5powd+J1qma7suH6V7BGchqjhNDBw3Fl9Wh3Kv
+         OSWEJTkrfi9KGrk2JuEHY6pHOVIlnNmwkb+5umTEj5DpUK5xttMOuyk4dWEX/qPq1ga2
+         N9goT3Sv3bwrqbXOv44vxHG3FliFAvckjK0ao/foEJ36pBnYq3bD5ZEvXoRrfyj7ziO3
+         6vV3Ac6wwsfkSf6PZca3oKsqQoNEk5zXPi3x5B9a9SvEa2vDm+ib2r8+HzBhVruYA2W4
+         6krPhURDqmm+5BoEiWTlPpeooUTR6GPfRZNzxXybWh88/Qt2RWIdk4R/6fxTBqZ08pLr
+         ptFQ==
+X-Gm-Message-State: AOJu0YydV6VTda7CR5DBSS2Fk9Gxt6mfZZFB8rRBcDKn/X27ypADJX5A
+	/Vd2BPScTCfrlzPZnsDRJ17E+vtrSPglBtGvBvnrid8XSU5/UZ18nk6sWQ==
+X-Gm-Gg: ASbGncsiRK3RagC6JYXucZRhwUQ0jq32iK6L8cwr8we6VybTTqC9Kr3rni/B9LzzVgI
+	RIIEMJt2zeysL2W70Py7Xnz2MKLOoRaix8t64TPrLNvkGagSFtqD5ZUfqCCz9o70Fec0nCyc7za
+	iUgmscJiciAYXMv/1RfNjvFk+6Tb2g4U4BEl+Dpv/g0OGTVuOSTrRWyjHdIEfsXnHl6Fl01tsKy
+	/TcHtU5IenJTWfP4RO1vSjRDGZdvPFcdklTPsjnNqO2bm2d88e9roP9t+mZ0JgN4hUZMDzWhIXm
+	Er9WB/Od0U7dYI4m6tIQ6OJB2ey4IaJy5Nv1opEaF6evtEPwwQ==
+X-Google-Smtp-Source: AGHT+IHtpqXL5N61PTjDNpi5tgqz68AwEZGcbPz+PLziN6PXk1y7boJw1VxJYmtkX1xjA/6DU83whQ==
+X-Received: by 2002:a05:6402:24c4:b0:5fa:964f:b8b4 with SMTP id 4fb4d7f45d1cf-5fa964fbbddmr488942a12.23.1746186577118;
+        Fri, 02 May 2025 04:49:37 -0700 (PDT)
 Received: from [192.168.0.50] ([79.119.240.209])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5fa76f3b9e6sm1142855a12.0.2025.05.02.04.49.01
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5fa77816ffbsm1090521a12.34.2025.05.02.04.49.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 May 2025 04:49:02 -0700 (PDT)
-Message-ID: <4c79fdc1-54bc-4986-9931-bb3ceb418b97@gmail.com>
-Date: Fri, 2 May 2025 14:49:01 +0300
+        Fri, 02 May 2025 04:49:36 -0700 (PDT)
+Message-ID: <5734afe7-0870-40b2-acd4-5657a02d7c56@gmail.com>
+Date: Fri, 2 May 2025 14:49:34 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,56 +80,215 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-US
+Subject: [PATCH rtw-next v2 2/2] wifi: rtw88: Handle RTL8723D(S) with blank
+ efuse
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH rtw-next v2 1/2] wifi: rtw88: Fix RX aggregation settings for
- RTL8723DS
+References: <4c79fdc1-54bc-4986-9931-bb3ceb418b97@gmail.com>
+Content-Language: en-US
+In-Reply-To: <4c79fdc1-54bc-4986-9931-bb3ceb418b97@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Use the same RX aggregation size and timeout used by the out-of-tree
-RTL8723DS driver. Also set mystery bit 31 of REG_RXDMA_AGG_PG_TH. This
-improves the RX speed from ~44 Mbps to ~67 Mbps.
+Some users have RTL8723DS chips with nearly blank efuse. Currently these
+chips cannot connect when using rtw88, but they do work using the old
+out-of-tree driver.
 
+Use reasonable default values for TX power, antenna configuration, and
+crystal cap if the chip's efuse is missing these things.
+
+RTL8723D can use the same default values as RTL8703B, so simply move
+the code from rtl8703b_read_efuse() to the shared function
+__rtl8723x_read_efuse().
+
+Link: https://github.com/lwfinger/rtw88/issues/157
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
 v2:
- - Restore the original behaviour for RTL8821A and RTL8812A.
+ - Add Acked-by.
 ---
- drivers/net/wireless/realtek/rtw88/sdio.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8703b.c | 60 -------------------
+ drivers/net/wireless/realtek/rtw88/rtw8723x.c | 59 ++++++++++++++++++
+ 2 files changed, 59 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
-index c57f683d9af8..71cbe49b6c59 100644
---- a/drivers/net/wireless/realtek/rtw88/sdio.c
-+++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-@@ -677,12 +677,22 @@ static void rtw_sdio_enable_rx_aggregation(struct rtw_dev *rtwdev)
- {
- 	u8 size, timeout;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.c b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+index 5e59cfe4dfdf..9e6700c43a63 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+@@ -519,15 +519,6 @@ static const struct rtw_rqpn rqpn_table_8703b[] = {
+ 	 RTW_DMA_MAPPING_EXTRA, RTW_DMA_MAPPING_HIGH},
+ };
  
--	if (rtw_chip_wcpu_11n(rtwdev)) {
-+	switch (rtwdev->chip->id) {
-+	case RTW_CHIP_TYPE_8703B:
-+	case RTW_CHIP_TYPE_8821A:
-+	case RTW_CHIP_TYPE_8812A:
- 		size = 0x6;
- 		timeout = 0x6;
--	} else {
-+		break;
-+	case RTW_CHIP_TYPE_8723D:
-+		size = 0xa;
-+		timeout = 0x3;
-+		rtw_write8_set(rtwdev, REG_RXDMA_AGG_PG_TH + 3, BIT(7));
-+		break;
-+	default:
- 		size = 0xff;
- 		timeout = 0x1;
-+		break;
+-/* Default power index table for RTL8703B, used if EFUSE does not
+- * contain valid data. Replaces EFUSE data from offset 0x10 (start of
+- * txpwr_idx_table).
+- */
+-static const u8 rtw8703b_txpwr_idx_table[] = {
+-	0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D,
+-	0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x02
+-};
+-
+ static void try_mac_from_devicetree(struct rtw_dev *rtwdev)
+ {
+ 	struct device_node *node = rtwdev->dev->of_node;
+@@ -544,15 +535,9 @@ static void try_mac_from_devicetree(struct rtw_dev *rtwdev)
+ 	}
+ }
+ 
+-#define DBG_EFUSE_FIX(rtwdev, name)					\
+-	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "Fixed invalid EFUSE value: "	\
+-		# name "=0x%x\n", rtwdev->efuse.name)
+-
+ static int rtw8703b_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
+ {
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
+-	u8 *pwr = (u8 *)efuse->txpwr_idx_table;
+-	bool valid = false;
+ 	int ret;
+ 
+ 	ret = rtw8723x_read_efuse(rtwdev, log_map);
+@@ -562,51 +547,6 @@ static int rtw8703b_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
+ 	if (!is_valid_ether_addr(efuse->addr))
+ 		try_mac_from_devicetree(rtwdev);
+ 
+-	/* If TX power index table in EFUSE is invalid, fall back to
+-	 * built-in table.
+-	 */
+-	for (int i = 0; i < ARRAY_SIZE(rtw8703b_txpwr_idx_table); i++)
+-		if (pwr[i] != 0xff) {
+-			valid = true;
+-			break;
+-		}
+-	if (!valid) {
+-		for (int i = 0; i < ARRAY_SIZE(rtw8703b_txpwr_idx_table); i++)
+-			pwr[i] = rtw8703b_txpwr_idx_table[i];
+-		rtw_dbg(rtwdev, RTW_DBG_EFUSE,
+-			"Replaced invalid EFUSE TX power index table.");
+-		rtw8723x_debug_txpwr_limit(rtwdev,
+-					   efuse->txpwr_idx_table, 2);
+-	}
+-
+-	/* Override invalid antenna settings. */
+-	if (efuse->bt_setting == 0xff) {
+-		/* shared antenna */
+-		efuse->bt_setting |= BIT(0);
+-		/* RF path A */
+-		efuse->bt_setting &= ~BIT(6);
+-		DBG_EFUSE_FIX(rtwdev, bt_setting);
+-	}
+-
+-	/* Override invalid board options: The coex code incorrectly
+-	 * assumes that if bits 6 & 7 are set the board doesn't
+-	 * support coex. Regd is also derived from rf_board_option and
+-	 * should be 0 if there's no valid data.
+-	 */
+-	if (efuse->rf_board_option == 0xff) {
+-		efuse->regd = 0;
+-		efuse->rf_board_option &= GENMASK(5, 0);
+-		DBG_EFUSE_FIX(rtwdev, rf_board_option);
+-	}
+-
+-	/* Override invalid crystal cap setting, default comes from
+-	 * vendor driver. Chip specific.
+-	 */
+-	if (efuse->crystal_cap == 0xff) {
+-		efuse->crystal_cap = 0x20;
+-		DBG_EFUSE_FIX(rtwdev, crystal_cap);
+-	}
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723x.c b/drivers/net/wireless/realtek/rtw88/rtw8723x.c
+index 69f73cb5b4cd..4c77963fdd37 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723x.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723x.c
+@@ -69,6 +69,9 @@ static void __rtw8723x_lck(struct rtw_dev *rtwdev)
+ #define DBG_EFUSE_2BYTE(rtwdev, map, name)			\
+ 	rtw_dbg(rtwdev, RTW_DBG_EFUSE, # name "=0x%02x%02x\n",	\
+ 		(map)->name[0], (map)->name[1])
++#define DBG_EFUSE_FIX(rtwdev, name)					\
++	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "Fixed invalid EFUSE value: "	\
++		# name "=0x%x\n", rtwdev->efuse.name)
+ 
+ static void rtw8723xe_efuse_debug(struct rtw_dev *rtwdev,
+ 				  struct rtw8723x_efuse *map)
+@@ -238,10 +241,21 @@ static void rtw8723xs_efuse_parsing(struct rtw_efuse *efuse,
+ 	ether_addr_copy(efuse->addr, map->s.mac_addr);
+ }
+ 
++/* Default power index table for RTL8703B/RTL8723D, used if EFUSE does
++ * not contain valid data. Replaces EFUSE data from offset 0x10 (start
++ * of txpwr_idx_table).
++ */
++static const u8 rtw8723x_txpwr_idx_table[] = {
++	0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D,
++	0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x02
++};
++
+ static int __rtw8723x_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
+ {
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
++	u8 *pwr = (u8 *)efuse->txpwr_idx_table;
+ 	struct rtw8723x_efuse *map;
++	bool valid = false;
+ 	int i;
+ 
+ 	map = (struct rtw8723x_efuse *)log_map;
+@@ -279,6 +293,51 @@ static int __rtw8723x_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
+ 		return -EOPNOTSUPP;
  	}
  
- 	/* Make the firmware honor the size limit configured below */
++	/* If TX power index table in EFUSE is invalid, fall back to
++	 * built-in table.
++	 */
++	for (i = 0; i < ARRAY_SIZE(rtw8723x_txpwr_idx_table); i++)
++		if (pwr[i] != 0xff) {
++			valid = true;
++			break;
++		}
++	if (!valid) {
++		for (i = 0; i < ARRAY_SIZE(rtw8723x_txpwr_idx_table); i++)
++			pwr[i] = rtw8723x_txpwr_idx_table[i];
++		rtw_dbg(rtwdev, RTW_DBG_EFUSE,
++			"Replaced invalid EFUSE TX power index table.");
++		rtw8723x_debug_txpwr_limit(rtwdev,
++					   efuse->txpwr_idx_table, 2);
++	}
++
++	/* Override invalid antenna settings. */
++	if (efuse->bt_setting == 0xff) {
++		/* shared antenna */
++		efuse->bt_setting |= BIT(0);
++		/* RF path A */
++		efuse->bt_setting &= ~BIT(6);
++		DBG_EFUSE_FIX(rtwdev, bt_setting);
++	}
++
++	/* Override invalid board options: The coex code incorrectly
++	 * assumes that if bits 6 & 7 are set the board doesn't
++	 * support coex. Regd is also derived from rf_board_option and
++	 * should be 0 if there's no valid data.
++	 */
++	if (efuse->rf_board_option == 0xff) {
++		efuse->regd = 0;
++		efuse->rf_board_option &= GENMASK(5, 0);
++		DBG_EFUSE_FIX(rtwdev, rf_board_option);
++	}
++
++	/* Override invalid crystal cap setting, default comes from
++	 * vendor driver. Chip specific.
++	 */
++	if (efuse->crystal_cap == 0xff) {
++		efuse->crystal_cap = 0x20;
++		DBG_EFUSE_FIX(rtwdev, crystal_cap);
++	}
++
+ 	return 0;
+ }
+ 
 -- 
 2.49.0
 
