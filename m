@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-22343-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22344-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D9F5AA72AA
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 14:56:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9050AA72AB
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 14:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E41F61BC304A
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 12:57:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F215A2BF4
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 12:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17025253B7B;
-	Fri,  2 May 2025 12:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D557254AF8;
+	Fri,  2 May 2025 12:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DvZHSKEz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GJblBIQD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD2E24677A
-	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 12:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B812522AB
+	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 12:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746190609; cv=none; b=L5Wrist+P4+QKXTAX/aUwq7q4HLfLl6/W/XDFPFuTYZy/N9c4LhWBjrcndPYZ/i4AUu1M8EGX7VHUfYvruxDCcI8pruHNbvfi/ssWAUT7hlCxkZZSI++wpgLXMt5t2VwfOeho99LVe1qOA3QKWMRrx1bSBcnlZKJPS2nVuW77pk=
+	t=1746190610; cv=none; b=Mv+L1boOwxCrp+Q4mOMEnpgYt68DrM0KPDEgs5T3TEUhkYPUQxHHQ3rJXTQEc6SfEwZRVi53bS1a/q31hKMO5IPpS34N/NM38xvmIpuoF2ElVK/AMCI/o1vtjKiWz/tCm2E4uJ7mvS8M9zBPB6ZaC5ijIgSI92rYO4DCGkioO6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746190609; c=relaxed/simple;
-	bh=6ExVofQO/mGozoeImBBS0bn9JNgb1/lpowWmeQUb+q8=;
+	s=arc-20240116; t=1746190610; c=relaxed/simple;
+	bh=VW1uH1TS8CQq2QGxMG8LFdFSdbogbZ8MkiQZc6K54Zk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=n4+tgDhb8grcv+FZ2yOsYXXgM9YpR40SLZymJgPf2TxTAo1VxsLb4MgJhq407lOgjyZmokDKWfKkXM1znhkHJP01Epola24VUPadCc/P4wNle6SbBi7mgX0hFpluKZ/EtT0rvi3hPs0iiDmapRq5nDGDJ8un11P4vRqKH+czR4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DvZHSKEz; arc=none smtp.client-ip=198.175.65.12
+	 MIME-Version; b=QaqUdAxhqtPF3K1bLq0eE5kKMjaVf3MF+itAU0FXGB8RRKdQdSvMsVvjkt4+oQK+oAiQWlVK4lIJxIEqbEqhptyYScRf5NDDNF7GBLSqP0zT9NVDLx6qtnX/GAESocBCfI37Ts/jx1+P+UZ75zy7grpeXNPfIhsOFY9EBxeWgYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GJblBIQD; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746190608; x=1777726608;
+  t=1746190609; x=1777726609;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6ExVofQO/mGozoeImBBS0bn9JNgb1/lpowWmeQUb+q8=;
-  b=DvZHSKEzz/vewhwuRE0IUjkTf3VqE82O4m1adEqW8Xw7tuCxJcf+Yblu
-   aTuXpw2kqi9F5NsLGPqQYTS2xX40H9nKSyC7y80PhBke+Fa6Zb5t17Qso
-   IPo6BAPIZjN2Yhn2jQOHKgwaeBvhVBXkeQf6kj9HSeylH4U22OIPHWyP/
-   ElIi7ovTIIBwtzc0i82Lm39QpEK2wIL1fdTG5fepc1uXpMcQrqlwAOHLp
-   8JSwxWk1cukVc2E4FqPqfMIH9l7zn4SbOT2ywU3CbDSInThmmDAaTCd+4
-   bQfaLOv1DRAUOuq9gZQui8I4iMRB+suGmMv5KD0w19JktcJlAjZPRoyrz
-   A==;
-X-CSE-ConnectionGUID: AybB0iW6S7yAzEgNIO7AqQ==
-X-CSE-MsgGUID: cRyJnejDQqm9ZB1ii4ctYg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="59255533"
+  bh=VW1uH1TS8CQq2QGxMG8LFdFSdbogbZ8MkiQZc6K54Zk=;
+  b=GJblBIQDi4jxHN4JWUNReqzFsqbQ4KcWHoz0C14fRE4ZgJi9mApeaMD6
+   U35o748eejRymyNgYI+6a9aamDs9NESTgoRBeyymgFzWsXLkBRMES0XgL
+   JYsiNuq5wSY9HdurZa5gZPrjQSFaV8iKLM1nP12fCWgpLR9lDW80o/sEB
+   9wJ+ecnDRzCIjlwUPNSBhAeAezksah4cSYFhtMwVksTpfRBsCn4ivGLZE
+   6kynS2KhNJK1iWgOGByV5hmTGhD4637cLTNtIzulzu+pMEzQLVbZ5jW4G
+   +aULCCXehX8qMKs6ETSavcLFGN6c2fOWGJ/ydi0zWGQchT1AKD4muMpVZ
+   Q==;
+X-CSE-ConnectionGUID: sjhpdVE9SL+23o32ZPc1BA==
+X-CSE-MsgGUID: yiXl0plnQcqX83bdPoUJjQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="59255535"
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="59255533"
+   d="scan'208";a="59255535"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:56:47 -0700
-X-CSE-ConnectionGUID: y8DocBf+TYWi1nCCdJFFCA==
-X-CSE-MsgGUID: NZescXw4QACKZHi/l4+KUg==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:56:49 -0700
+X-CSE-ConnectionGUID: PV5sCHzKQ1in5e4T+RNyNQ==
+X-CSE-MsgGUID: ctUC2K1FTm23MugsQ9Yh5w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="165554697"
+   d="scan'208";a="165554701"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:56:45 -0700
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:56:47 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 01/15] wifi: iwlwifi: cfg: remove iwl_cfg_br
-Date: Fri,  2 May 2025 15:56:17 +0300
-Message-Id: <20250502155404.83b86e8a182b.Iec7f3027e7058005a98ff6d05cc224ab61b7c44a@changeid>
+Subject: [PATCH iwlwifi-next 02/15] wifi: iwlwifi: tests: check configs are not duplicated
+Date: Fri,  2 May 2025 15:56:18 +0300
+Message-Id: <20250502155404.0cfd9fb8322e.I9567b839405be8d1e4be0bfca7a17b5d222b0158@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250502125631.3184319-1-miriam.rachel.korenblit@intel.com>
 References: <20250502125631.3184319-1-miriam.rachel.korenblit@intel.com>
@@ -79,57 +79,81 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This is the same as iwl_cfg_dr, just different by the MAC,
-so no need to keep a separate config; remove it.
+Add a kunit test to check that all (used) config structs
+are not duplicated, ignoring the name since that can be
+handled differently via the dev-info list.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/dr.c     | 4 ----
- drivers/net/wireless/intel/iwlwifi/iwl-config.h | 1 -
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c   | 2 +-
- 3 files changed, 1 insertion(+), 6 deletions(-)
+ .../wireless/intel/iwlwifi/tests/devinfo.c    | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-index 4bca1b13858f..8bbeb2a1f691 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-@@ -154,10 +154,6 @@ const struct iwl_cfg_trans_params iwl_br_trans_cfg = {
+diff --git a/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c b/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
+index a64880fd3398..0de3a01001d7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
++++ b/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
+@@ -58,6 +58,52 @@ static void devinfo_names(struct kunit *test)
+ 	}
+ }
  
- const char iwl_br_name[] = "Intel(R) TBD Br device";
- 
--const struct iwl_cfg iwl_cfg_br = {
--	IWL_DEVICE_DR,
--};
--
- MODULE_FIRMWARE(IWL_DR_A_PE_A_FW_MODULE_FIRMWARE(IWL_DR_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BR_A_PET_A_FW_MODULE_FIRMWARE(IWL_DR_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BR_A_PE_A_FW_MODULE_FIRMWARE(IWL_DR_UCODE_API_MAX));
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 8862148a49bb..1ecd873911bc 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -642,7 +642,6 @@ extern const struct iwl_cfg iwl_cfg_bz;
- 
- extern const struct iwl_cfg iwl_cfg_sc;
- extern const struct iwl_cfg iwl_cfg_dr;
--extern const struct iwl_cfg iwl_cfg_br;
- #endif /* CONFIG_IWLMLD */
- 
- #endif /* __IWL_CONFIG_H__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 6c4854f44b26..b96b85e7d5d8 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1152,7 +1152,7 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
- 	IWL_DEV_INFO(iwl_cfg_dr, iwl_dr_name, MAC_TYPE(DR)),
- 
- /* Br */
--	IWL_DEV_INFO(iwl_cfg_br, iwl_br_name, MAC_TYPE(BR)),
-+	IWL_DEV_INFO(iwl_cfg_dr, iwl_br_name, MAC_TYPE(BR)),
- #endif /* CONFIG_IWLMLD */
++static void devinfo_no_cfg_dups(struct kunit *test)
++{
++	/* allocate iwl_dev_info_table_size as upper bound */
++	const struct iwl_cfg **cfgs = kunit_kcalloc(test,
++						    iwl_dev_info_table_size,
++						    sizeof(*cfgs), GFP_KERNEL);
++	int p = 0;
++
++	KUNIT_ASSERT_NOT_NULL(test, cfgs);
++
++	/* build a list of unique (by pointer) configs first */
++	for (int i = 0; i < iwl_dev_info_table_size; i++) {
++		bool found = false;
++
++		for (int j = 0; j < p; j++) {
++			if (cfgs[j] == iwl_dev_info_table[i].cfg) {
++				found = true;
++				break;
++			}
++		}
++		if (!found) {
++			cfgs[p] = iwl_dev_info_table[i].cfg;
++			p++;
++		}
++	}
++
++	/* check that they're really all different */
++	for (int i = 0; i < p; i++) {
++		struct iwl_cfg cfg_i = *cfgs[i];
++
++		/* null out the names since we can handle them differently */
++		cfg_i.name = NULL;
++
++		for (int j = 0; j < i; j++) {
++			struct iwl_cfg cfg_j = *cfgs[j];
++
++			cfg_j.name = NULL;
++
++			KUNIT_EXPECT_NE_MSG(test, memcmp(&cfg_i, &cfg_j,
++							 sizeof(cfg_i)), 0,
++					    "identical configs: %ps and %ps\n",
++					    cfgs[i], cfgs[j]);
++		}
++	}
++}
++
+ static void devinfo_pci_ids(struct kunit *test)
+ {
+ 	struct pci_dev *dev;
+@@ -83,6 +129,7 @@ static void devinfo_pci_ids(struct kunit *test)
+ static struct kunit_case devinfo_test_cases[] = {
+ 	KUNIT_CASE(devinfo_table_order),
+ 	KUNIT_CASE(devinfo_names),
++	KUNIT_CASE(devinfo_no_cfg_dups),
+ 	KUNIT_CASE(devinfo_pci_ids),
+ 	{}
  };
- EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_dev_info_table);
 -- 
 2.34.1
 
