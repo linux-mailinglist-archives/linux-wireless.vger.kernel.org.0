@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-22334-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22336-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A18AA719E
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 14:21:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B632AA71A0
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 14:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D92223BDA7C
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 12:21:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11D2D980642
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 May 2025 12:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FB6253938;
-	Fri,  2 May 2025 12:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352B3253F04;
+	Fri,  2 May 2025 12:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ka+Rvlv0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="klWcVAMH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884DC2550A0
-	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 12:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BDD252905
+	for <linux-wireless@vger.kernel.org>; Fri,  2 May 2025 12:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746188458; cv=none; b=H+6het3ZXuR3xuE5E3QvNXBV16jESxldDQi1RVDzNxNPqESug/jL5VJkYl7h8eg8e3A4fgW3a2Pv71F7s9YLfH5pgBnEhtpeBlpXR+Z+o6MPVsAbzSC4JGXL08or9pf6ZPHZsLPK/Gp06VQPUSm4wXOCqA/Azm+1+X/CIcjHKFQ=
+	t=1746188461; cv=none; b=p+7MvLZY2kNjyz5fPm12Wfj3MF8xJhhrCXX/8VK4j7PBqyhp+nEN1lBD8LeEZLY4wczrkGdYq2mS21P6EFkegXzEIzAYSrlbELe8fZvg2KlAujZXMvYxqJQFzk7dB9R8Cw2SfVkPW2wqVL+JVeWEsHPI3HCt4AMfwG4NOEOoEHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746188458; c=relaxed/simple;
-	bh=b5uUfqdDXd7rrhHISL4WPOB7btGtAUG06d2e8WX7olU=;
+	s=arc-20240116; t=1746188461; c=relaxed/simple;
+	bh=FsGfnvSn2g9EIj3yPceqHI2iHULBDRLBJ/382hIUgRc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G0XNeHhFSjg6vw3sdeeU7O/KSXu9iGTuI8OfHQdbBsWFizO8G+YY2mtIGLr2QnIAa2Yxqr3/7zhbxLF4yHxKe2wCrBifrlk+D2+R7a13AwNUXyJaZOcV2skSzM3nOJBb5lT93cnzurM+ZB3fL42cYsvWU11Ug8e2gNHAwarlrPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ka+Rvlv0; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=j6a6/hwvBPMm7EqQhUukzcBBazcDeYJlVnyyPCUu7eSARQje3FXaIA2JaistyLK+nk4iz3AjUizjksbUE1o1T8W+dYMKsy0JX778+cSUH2tmldk20DPcfAPEJnBAetFN6p0EvRRy9e9R2xbif9Ens5e7aJcXyVa0uVgaJi0oVpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=klWcVAMH; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746188456; x=1777724456;
+  t=1746188458; x=1777724458;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=b5uUfqdDXd7rrhHISL4WPOB7btGtAUG06d2e8WX7olU=;
-  b=ka+Rvlv0PciWoKsafqCrBKBAtmfOqC3xURs56lv+I5sRx70FI9tz9Vnm
-   tLOAmVy+Ttv3twcMR0NstbOAxGSJBVugwabm9agqsQFMor0B2dN+RSgDs
-   V2pHpv3Rroyv80gONKGPQyr1g6NmjBHa/msPPU+FRUYRIBGUaT4Ddof09
-   BziAoeJvPevaSqmQ77+yjprgwatDSeS73dBHzTqe1YvVpORlt/4GNQgVQ
-   N0XTYuOXkmIbvM3NpYVqaQW0VFkmr/DiAFNqz1KYDMPNP4/hcWJ/rjMoW
-   vxDV0lwxH9q+W1G1uPtcnMnENaxP3KiFMdJAwlE96I5BDkVr+qPsLUPkr
-   A==;
-X-CSE-ConnectionGUID: w5Qem1q7Q6O9lKegj0ENtw==
-X-CSE-MsgGUID: I+r3ibC5TwCmiUWjzXwDMw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48010362"
+  bh=FsGfnvSn2g9EIj3yPceqHI2iHULBDRLBJ/382hIUgRc=;
+  b=klWcVAMHGg67a9Gk1cEH7plS1Se0XQfnW/e3Qsi11ko6dhZJvnWBBFcP
+   WdddyExvJ00x84WyxSyDrkC5yCOif3Vk5Va7er8amidTlaIK3xD9ygAo1
+   TNKgtjnHagCxgq+VV6EKFDnWO2oML1Qy9VRPDa6Ue2du01bLq6iEI0Yng
+   k0cgn5hGOV1hEpTg/sv7HxWMDzNUlC1GbIJVum/ceg+bnD6mO+jH9Becw
+   Mx+nlXvx19lOp2rSwB4LlF0AmO72wUSL7jUsnkiuwLfe9Dd8sABDyQZ1/
+   Z9q6EgYoe1VVZd8ImkeuaKXhIUxXTAndhJAt21SBO6Qzl2ribTW60MPSO
+   g==;
+X-CSE-ConnectionGUID: fQ/hVdvQQ+qFR6OWnqJPuQ==
+X-CSE-MsgGUID: sNloimlCTbOp7iRvVUI7aw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48010365"
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="48010362"
+   d="scan'208";a="48010365"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:20:56 -0700
-X-CSE-ConnectionGUID: eXyZd11USNyVWlS7o7VAXg==
-X-CSE-MsgGUID: PKZXFy4yTNGRsmIrQrNSEg==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:20:58 -0700
+X-CSE-ConnectionGUID: RDfGNMGoRnOQIpZ0J6Igmw==
+X-CSE-MsgGUID: Mauvr1UXS42OfUsa70tLiA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="134586126"
+   d="scan'208";a="134586129"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:20:54 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 05:20:56 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH v2 iwlwifi-next 08/15] wifi: iwlwifi: cfg: remove fw_name_mac
-Date: Fri,  2 May 2025 15:20:23 +0300
-Message-Id: <20250502151751.8dba9a2d3546.I41fa594d6a0be163444b90c1ed4b441a949d3899@changeid>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH v2 iwlwifi-next 09/15] wifi: iwlwifi: cfg: unify Qu/QuZ configs
+Date: Fri,  2 May 2025 15:20:24 +0300
+Message-Id: <20250502151751.957fbb5437ce.If51ad0b2c8afaaa131208125af3bc292793613bb@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250502122030.3130085-1-miriam.rachel.korenblit@intel.com>
 References: <20250502122030.3130085-1-miriam.rachel.korenblit@intel.com>
@@ -80,295 +79,252 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Instead of having fw_name_mac in the config, derive it
-from the MAC type instead.
+Now that the fw_name_mac is no longer around and derived
+from the MAC type automatically, we no longer need to have
+different configurations for Qu/QuZ. Combine them. For the
+killer AX1650s/i, also fix the names, there was a mixup.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/cfg/22000.c    | 11 ----
- .../net/wireless/intel/iwlwifi/cfg/ax210.c    |  3 +-
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |  2 -
- drivers/net/wireless/intel/iwlwifi/cfg/dr.c   |  2 -
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |  3 --
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  2 -
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c  | 54 ++++++++++++++++---
- 7 files changed, 49 insertions(+), 28 deletions(-)
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    | 63 +------------------
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |  5 --
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  2 +
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 60 +++++++-----------
+ 4 files changed, 26 insertions(+), 104 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 1237d1b62b65..b2d24a49234c 100644
+index b2d24a49234c..ac137c82f7c5 100644
 --- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
 +++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -171,7 +171,6 @@ const struct iwl_cfg_trans_params iwl_qu_long_latency_trans_cfg = {
-  * 9560 nevertheless.
-  */
- const struct iwl_cfg iwl9560_qu_jf_cfg = {
--	.fw_name_mac = "Qu",
- 	IWL_DEVICE_22500,
- 	.num_rbds = IWL_NUM_RBDS_NON_HE,
- };
-@@ -212,7 +211,6 @@ const char iwl_ax201_killer_1650i_name[] =
- 	"Killer(R) Wi-Fi 6 AX1650i 160MHz Wireless Network Adapter (201NGW)";
- 
- const struct iwl_cfg iwl_qu_hr1 = {
--	.fw_name_mac = "Qu",
- 	IWL_DEVICE_22500,
- 	/*
- 	 * This device doesn't support receiving BlockAck with a large bitmap
-@@ -225,7 +223,6 @@ const struct iwl_cfg iwl_qu_hr1 = {
+@@ -245,54 +245,6 @@ const struct iwl_cfg iwl_ax201_cfg_qu_hr = {
+ 	.num_rbds = IWL_NUM_RBDS_22000_HE,
  };
  
- const struct iwl_cfg iwl_qu_hr = {
--	.fw_name_mac = "Qu",
+-const struct iwl_cfg iwl_quz_hr1 = {
+-	IWL_DEVICE_22500,
+-	/*
+-	 * This device doesn't support receiving BlockAck with a large bitmap
+-	 * so we need to restrict the size of transmitted aggregation to the
+-	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
+-	 */
+-	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
+-	.tx_with_siso_diversity = true,
+-	.num_rbds = IWL_NUM_RBDS_22000_HE,
+-};
+-
+-const struct iwl_cfg iwl_ax201_cfg_quz_hr = {
+-	.name = "Intel(R) Wi-Fi 6 AX201 160MHz",
+-	IWL_DEVICE_22500,
+-	/*
+-         * This device doesn't support receiving BlockAck with a large bitmap
+-         * so we need to restrict the size of transmitted aggregation to the
+-         * HT size; mac80211 would otherwise pick the HE max (256) by default.
+-         */
+-	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
+-	.num_rbds = IWL_NUM_RBDS_22000_HE,
+-};
+-
+-const struct iwl_cfg iwl_ax1650s_cfg_quz_hr = {
+-	.name = "Killer(R) Wi-Fi 6 AX1650s 160MHz Wireless Network Adapter (201D2W)",
+-	IWL_DEVICE_22500,
+-	/*
+-         * This device doesn't support receiving BlockAck with a large bitmap
+-         * so we need to restrict the size of transmitted aggregation to the
+-         * HT size; mac80211 would otherwise pick the HE max (256) by default.
+-         */
+-	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
+-	.num_rbds = IWL_NUM_RBDS_22000_HE,
+-};
+-
+-const struct iwl_cfg iwl_ax1650i_cfg_quz_hr = {
+-	.name = "Killer(R) Wi-Fi 6 AX1650i 160MHz Wireless Network Adapter (201NGW)",
+-	IWL_DEVICE_22500,
+-	/*
+-         * This device doesn't support receiving BlockAck with a large bitmap
+-         * so we need to restrict the size of transmitted aggregation to the
+-         * HT size; mac80211 would otherwise pick the HE max (256) by default.
+-         */
+-	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
+-	.num_rbds = IWL_NUM_RBDS_22000_HE,
+-};
+-
+ const struct iwl_cfg iwl_ax200_cfg_cc = {
+ 	.fw_name_pre = IWL_CC_A_FW_PRE,
  	IWL_DEVICE_22500,
- 	/*
- 	 * This device doesn't support receiving BlockAck with a large bitmap
-@@ -238,7 +235,6 @@ const struct iwl_cfg iwl_qu_hr = {
- 
- const struct iwl_cfg iwl_ax201_cfg_qu_hr = {
- 	.name = "Intel(R) Wi-Fi 6 AX201 160MHz",
--	.fw_name_mac = "Qu",
- 	IWL_DEVICE_22500,
- 	/*
- 	 * This device doesn't support receiving BlockAck with a large bitmap
-@@ -250,7 +246,6 @@ const struct iwl_cfg iwl_ax201_cfg_qu_hr = {
+@@ -306,7 +258,7 @@ const struct iwl_cfg iwl_ax200_cfg_cc = {
  };
- 
- const struct iwl_cfg iwl_quz_hr1 = {
--	.fw_name_mac = "QuZ",
- 	IWL_DEVICE_22500,
- 	/*
- 	 * This device doesn't support receiving BlockAck with a large bitmap
-@@ -264,7 +259,6 @@ const struct iwl_cfg iwl_quz_hr1 = {
- 
- const struct iwl_cfg iwl_ax201_cfg_quz_hr = {
- 	.name = "Intel(R) Wi-Fi 6 AX201 160MHz",
--	.fw_name_mac = "QuZ",
- 	IWL_DEVICE_22500,
- 	/*
-          * This device doesn't support receiving BlockAck with a large bitmap
-@@ -277,7 +271,6 @@ const struct iwl_cfg iwl_ax201_cfg_quz_hr = {
- 
- const struct iwl_cfg iwl_ax1650s_cfg_quz_hr = {
- 	.name = "Killer(R) Wi-Fi 6 AX1650s 160MHz Wireless Network Adapter (201D2W)",
--	.fw_name_mac = "QuZ",
- 	IWL_DEVICE_22500,
- 	/*
-          * This device doesn't support receiving BlockAck with a large bitmap
-@@ -290,7 +283,6 @@ const struct iwl_cfg iwl_ax1650s_cfg_quz_hr = {
- 
- const struct iwl_cfg iwl_ax1650i_cfg_quz_hr = {
- 	.name = "Killer(R) Wi-Fi 6 AX1650i 160MHz Wireless Network Adapter (201NGW)",
--	.fw_name_mac = "QuZ",
- 	IWL_DEVICE_22500,
- 	/*
-          * This device doesn't support receiving BlockAck with a large bitmap
-@@ -315,7 +307,6 @@ const struct iwl_cfg iwl_ax200_cfg_cc = {
  
  const struct iwl_cfg killer1650s_2ax_cfg_qu_hr = {
- 	.name = "Killer(R) Wi-Fi 6 AX1650s 160MHz Wireless Network Adapter (201NGW)",
--	.fw_name_mac = "Qu",
+-	.name = "Killer(R) Wi-Fi 6 AX1650s 160MHz Wireless Network Adapter (201NGW)",
++	.name = iwl_ax201_killer_1650s_name,
  	IWL_DEVICE_22500,
  	/*
  	 * This device doesn't support receiving BlockAck with a large bitmap
-@@ -328,7 +319,6 @@ const struct iwl_cfg killer1650s_2ax_cfg_qu_hr = {
+@@ -318,18 +270,7 @@ const struct iwl_cfg killer1650s_2ax_cfg_qu_hr = {
+ };
  
  const struct iwl_cfg killer1650i_2ax_cfg_qu_hr = {
- 	.name = "Killer(R) Wi-Fi 6 AX1650i 160MHz Wireless Network Adapter (201D2W)",
--	.fw_name_mac = "Qu",
+-	.name = "Killer(R) Wi-Fi 6 AX1650i 160MHz Wireless Network Adapter (201D2W)",
+-	IWL_DEVICE_22500,
+-	/*
+-	 * This device doesn't support receiving BlockAck with a large bitmap
+-	 * so we need to restrict the size of transmitted aggregation to the
+-	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
+-	 */
+-	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
+-	.num_rbds = IWL_NUM_RBDS_22000_HE,
+-};
+-
+-const struct iwl_cfg iwl_cfg_quz_hr = {
++	.name = iwl_ax201_killer_1650i_name,
  	IWL_DEVICE_22500,
  	/*
  	 * This device doesn't support receiving BlockAck with a large bitmap
-@@ -340,7 +330,6 @@ const struct iwl_cfg killer1650i_2ax_cfg_qu_hr = {
- };
- 
- const struct iwl_cfg iwl_cfg_quz_hr = {
--	.fw_name_mac = "QuZ",
- 	IWL_DEVICE_22500,
- 	/*
- 	 * This device doesn't support receiving BlockAck with a large bitmap
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-index e87b57b9e2c0..309d59d28c73 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2024 Intel Corporation
-+ * Copyright (C) 2018-2025 Intel Corporation
-  */
- #include <linux/module.h>
- #include <linux/stringify.h>
-@@ -248,7 +248,6 @@ const struct iwl_cfg iwlax411_2ax_cfg_so_gf4_a0_long = {
- };
- 
- const struct iwl_cfg iwl_cfg_ma = {
--	.fw_name_mac = "ma",
- 	.uhb_supported = true,
- 	IWL_DEVICE_AX210,
- 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-index f055255a7c93..1d491c72bae8 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-@@ -163,7 +163,6 @@ const char iwl_gl_name[] = "Intel(R) Wi-Fi 7 BE200 320MHz";
- const char iwl_mtp_name[] = "Intel(R) Wi-Fi 7 BE202 160MHz";
- 
- const struct iwl_cfg iwl_cfg_bz = {
--	.fw_name_mac = "bz",
- 	.uhb_supported = true,
- 	IWL_DEVICE_BZ,
- 	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
-@@ -171,7 +170,6 @@ const struct iwl_cfg iwl_cfg_bz = {
- };
- 
- const struct iwl_cfg iwl_cfg_gl = {
--	.fw_name_mac = "gl",
- 	.uhb_supported = true,
- 	IWL_DEVICE_BZ,
- 	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-index 282b9b846c3a..4bca1b13858f 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-@@ -138,7 +138,6 @@ const struct iwl_cfg_trans_params iwl_dr_trans_cfg = {
- const char iwl_dr_name[] = "Intel(R) TBD Dr device";
- 
- const struct iwl_cfg iwl_cfg_dr = {
--	.fw_name_mac = "dr",
- 	IWL_DEVICE_DR,
- };
- 
-@@ -156,7 +155,6 @@ const struct iwl_cfg_trans_params iwl_br_trans_cfg = {
- const char iwl_br_name[] = "Intel(R) TBD Br device";
- 
- const struct iwl_cfg iwl_cfg_br = {
--	.fw_name_mac = "br",
- 	IWL_DEVICE_DR,
- };
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-index 5c740f302c93..4b39f11c9582 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-@@ -146,17 +146,14 @@ const char iwl_sp_name[] = "Intel(R) Wi-Fi 7 BE213 160MHz";
- const char iwl_pe_name[] = "Intel(R) Wi-Fi 8 BN201";
- 
- const struct iwl_cfg iwl_cfg_sc = {
--	.fw_name_mac = "sc",
- 	IWL_DEVICE_SC,
- };
- 
- const struct iwl_cfg iwl_cfg_sc2 = {
--	.fw_name_mac = "sc2",
- 	IWL_DEVICE_SC,
- };
- 
- const struct iwl_cfg iwl_cfg_sc2f = {
--	.fw_name_mac = "sc2f",
- 	IWL_DEVICE_SC,
- };
- 
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index db8dbdde55bd..82ca7faf3fe0 100644
+index 82ca7faf3fe0..127d4dd548ac 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -312,7 +312,6 @@ struct iwl_fw_mon_regs {
-  * @fw_name_pre: Firmware filename prefix. The api version and extension
-  *	(.ucode) will be added to filename before loading from disk. The
-  *	filename is constructed as <fw_name_pre>-<api>.ucode.
-- * @fw_name_mac: MAC name for this config, the remaining pieces of the
-  *	name will be generated dynamically
-  * @ucode_api_max: Highest version of uCode API supported by driver.
-  * @ucode_api_min: Lowest version of uCode API supported by driver.
-@@ -363,7 +362,6 @@ struct iwl_cfg {
- 	/* params specific to an individual device within a device family */
- 	const char *name;
- 	const char *fw_name_pre;
--	const char *fw_name_mac;
- 	/* params likely to change within a device family */
- 	const struct iwl_ht_params *ht_params;
- 	const struct iwl_eeprom_params *eeprom_params;
+@@ -623,13 +623,9 @@ extern const struct iwl_cfg iwl9560_qu_jf_cfg;
+ extern const struct iwl_cfg iwl9560_quz_a0_jf_b0_cfg;
+ extern const struct iwl_cfg iwl9560_2ac_cfg_soc;
+ extern const struct iwl_cfg iwl_qu_hr1;
+-extern const struct iwl_cfg iwl_quz_hr1;
+ extern const struct iwl_cfg iwl_qu_hr;
+ extern const struct iwl_cfg iwl_ax200_cfg_cc;
+ extern const struct iwl_cfg iwl_ax201_cfg_qu_hr;
+-extern const struct iwl_cfg iwl_ax201_cfg_quz_hr;
+-extern const struct iwl_cfg iwl_ax1650i_cfg_quz_hr;
+-extern const struct iwl_cfg iwl_ax1650s_cfg_quz_hr;
+ extern const struct iwl_cfg killer1650s_2ax_cfg_qu_hr;
+ extern const struct iwl_cfg killer1650i_2ax_cfg_qu_hr;
+ extern const struct iwl_cfg killer1650x_2ax_cfg;
+@@ -644,7 +640,6 @@ extern const struct iwl_cfg iwlax411_2ax_cfg_so_gf4_a0_long;
+ extern const struct iwl_cfg iwl_cfg_ma;
+ 
+ extern const struct iwl_cfg iwl_cfg_so_a0_hr_a0;
+-extern const struct iwl_cfg iwl_cfg_quz_hr;
+ #endif /* CONFIG_IWLMVM */
+ 
+ #if IS_ENABLED(CONFIG_IWLMLD)
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index d36837501e08..0b208d973585 100644
+index 0b208d973585..7ff97fb71905 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -182,16 +182,59 @@ static bool iwl_drv_is_wifi7_supported(struct iwl_trans *trans)
- const char *iwl_drv_get_fwname_pre(struct iwl_trans *trans, char *buf)
- {
- 	char mac_step, rf_step;
--	const char *rf, *cdb;
-+	const char *mac, *rf, *cdb;
+@@ -201,6 +201,8 @@ const char *iwl_drv_get_fwname_pre(struct iwl_trans *trans, char *buf)
+ 		break;
+ 	case IWL_CFG_MAC_TYPE_QUZ:
+ 		mac = "QuZ";
++		/* all QuZ use A0 firmware */
++		mac_step = 'a';
+ 		break;
+ 	case IWL_CFG_MAC_TYPE_SO:
+ 	case IWL_CFG_MAC_TYPE_SOF:
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 6852a2214936..deff291a43ca 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -685,43 +685,43 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
+ 		     DEVICE(0xA0F0), SUBDEV(0x4070), BW_NO_LIMIT),
+ 	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0xA0F0), SUBDEV(0x6074), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x02F0), SUBDEV(0x0070), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x02F0), SUBDEV(0x0074), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x02F0), SUBDEV(0x6074), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x02F0), SUBDEV(0x0078), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x02F0), SUBDEV(0x007C), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x02F0), SUBDEV(0x0310), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax1650s_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(killer1650s_2ax_cfg_qu_hr, NULL,
+ 		     DEVICE(0x02F0), SUBDEV(0x1651), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax1650i_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(killer1650i_2ax_cfg_qu_hr, NULL,
+ 		     DEVICE(0x02F0), SUBDEV(0x1652), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x02F0), SUBDEV(0x2074), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x02F0), SUBDEV(0x4070), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x06F0), SUBDEV(0x0070), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x06F0), SUBDEV(0x0074), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x06F0), SUBDEV(0x0078), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x06F0), SUBDEV(0x007C), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x06F0), SUBDEV(0x0310), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax1650s_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(killer1650s_2ax_cfg_qu_hr, NULL,
+ 		     DEVICE(0x06F0), SUBDEV(0x1651), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax1650i_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(killer1650i_2ax_cfg_qu_hr, NULL,
+ 		     DEVICE(0x06F0), SUBDEV(0x1652), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x06F0), SUBDEV(0x2074), BW_NO_LIMIT),
+-	IWL_DEV_INFO(iwl_ax201_cfg_quz_hr, NULL,
++	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x06F0), SUBDEV(0x4070), BW_NO_LIMIT),
+ 	IWL_DEV_INFO(iwl_ax201_cfg_qu_hr, NULL,
+ 		     DEVICE(0x34F0), SUBDEV(0x0070), BW_NO_LIMIT),
+@@ -1025,11 +1025,11 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
+ 		     RF_TYPE(HR2), BW_NO_LIMIT, NO_CDB),
  
- 	if (trans->cfg->fw_name_pre)
- 		return trans->cfg->fw_name_pre;
+ 	/* QuZ */
+-	IWL_DEV_INFO(iwl_quz_hr1, iwl_ax101_name, MAC_TYPE(QUZ),
++	IWL_DEV_INFO(iwl_qu_hr1, iwl_ax101_name, MAC_TYPE(QUZ),
+ 		     RF_TYPE(HR1), NO_CDB),
+-	IWL_DEV_INFO(iwl_cfg_quz_hr, iwl_ax203_name, MAC_TYPE(QUZ),
++	IWL_DEV_INFO(iwl_qu_hr, iwl_ax203_name, MAC_TYPE(QUZ),
+ 		     MAC_STEP(B), RF_TYPE(HR2), BW_LIMIT(80), NO_CDB),
+-	IWL_DEV_INFO(iwl_cfg_quz_hr, iwl_ax201_name, MAC_TYPE(QUZ),
++	IWL_DEV_INFO(iwl_qu_hr, iwl_ax201_name, MAC_TYPE(QUZ),
+ 		     MAC_STEP(B), RF_TYPE(HR2), BW_NO_LIMIT, NO_CDB),
  
--	if (WARN_ON(!trans->cfg->fw_name_mac))
--		return "unconfigured";
+ /* Ma */
+@@ -1520,22 +1520,6 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	if (cfg_7265d &&
+ 	    (iwl_trans->hw_rev & CSR_HW_REV_TYPE_MSK) == CSR_HW_REV_TYPE_7265D)
+ 		iwl_trans->cfg = cfg_7265d;
 -
- 	mac_step = iwl_drv_get_step(trans->hw_rev_step);
- 
-+	switch (CSR_HW_REV_TYPE(trans->hw_rev)) {
-+	case IWL_CFG_MAC_TYPE_PU:
-+		mac = "pu";
-+		break;
-+	case IWL_CFG_MAC_TYPE_TH:
-+		mac = "th";
-+		break;
-+	case IWL_CFG_MAC_TYPE_QU:
-+		mac = "Qu";
-+		break;
-+	case IWL_CFG_MAC_TYPE_QUZ:
-+		mac = "QuZ";
-+		break;
-+	case IWL_CFG_MAC_TYPE_SO:
-+	case IWL_CFG_MAC_TYPE_SOF:
-+		mac = "so";
-+		break;
-+	case IWL_CFG_MAC_TYPE_MA:
-+		mac = "ma";
-+		break;
-+	case IWL_CFG_MAC_TYPE_BZ:
-+	case IWL_CFG_MAC_TYPE_BZ_W:
-+		mac = "bz";
-+		break;
-+	case IWL_CFG_MAC_TYPE_GL:
-+		mac = "gl";
-+		break;
-+	case IWL_CFG_MAC_TYPE_SC:
-+		mac = "sc";
-+		break;
-+	case IWL_CFG_MAC_TYPE_SC2:
-+		mac = "sc2";
-+		break;
-+	case IWL_CFG_MAC_TYPE_SC2F:
-+		mac = "sc2f";
-+		break;
-+	case IWL_CFG_MAC_TYPE_BR:
-+		mac = "br";
-+		break;
-+	case IWL_CFG_MAC_TYPE_DR:
-+		mac = "dr";
-+		break;
-+	default:
-+		return "unknown-mac";
-+	}
-+
- 	rf_step = iwl_drv_get_step(CSR_HW_RFID_STEP(trans->hw_rf_id));
- 
- 	switch (CSR_HW_RFID_TYPE(trans->hw_rf_id)) {
-@@ -223,8 +266,7 @@ const char *iwl_drv_get_fwname_pre(struct iwl_trans *trans, char *buf)
- 
- 	scnprintf(buf, FW_NAME_PRE_BUFSIZE,
- 		  "iwlwifi-%s-%c0-%s%s-%c0",
--		  trans->cfg->fw_name_mac, mac_step,
--		  rf, cdb, rf_step);
-+		  mac, mac_step, rf, cdb, rf_step);
- 
- 	return buf;
- }
+-	/*
+-	 * This is a hack to switch from QuZ to Qu C0.  We need to
+-	 * do this for all cfgs that use QuZ, except for those using
+-	 * Jf, which have already been moved to the new table.  The
+-	 * rest must be removed once we convert Qu with Hr as well.
+-	 */
+-	if (iwl_trans->hw_rev == CSR_HW_REV_TYPE_QUZ) {
+-		if (iwl_trans->cfg == &iwl_ax201_cfg_qu_hr)
+-			iwl_trans->cfg = &iwl_ax201_cfg_quz_hr;
+-		else if (iwl_trans->cfg == &killer1650s_2ax_cfg_qu_hr)
+-			iwl_trans->cfg = &iwl_ax1650s_cfg_quz_hr;
+-		else if (iwl_trans->cfg == &killer1650i_2ax_cfg_qu_hr)
+-			iwl_trans->cfg = &iwl_ax1650i_cfg_quz_hr;
+-	}
+-
+ #endif
+ 	/*
+ 	 * If we didn't set the cfg yet, the PCI ID table entry should have
 -- 
 2.34.1
 
