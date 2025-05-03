@@ -1,69 +1,74 @@
-Return-Path: <linux-wireless+bounces-22367-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22368-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0F4AA8257
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 21:44:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01AABAA8258
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 21:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D343517CA3D
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 19:44:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69DB717CDD5
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 19:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1B427E7DB;
-	Sat,  3 May 2025 19:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F611553A3;
+	Sat,  3 May 2025 19:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SaE1UDmt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NZv48BZL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6572D1553A3
-	for <linux-wireless@vger.kernel.org>; Sat,  3 May 2025 19:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4A427E7D8
+	for <linux-wireless@vger.kernel.org>; Sat,  3 May 2025 19:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746301492; cv=none; b=TQOBMOaxhg6YsiRNAHVVVG/b0JyhrVJr/Y0aIL+UWTK/cj96tmJX8dZLI3qGMobsdbpTpw+TK1u2Sj5yi+pzpVaQ4/NbbT40Zx/tlrvQbUnSYVLhjzARpvs9kTWq2lvm7qaLl/WlSwa/YI2rwAge7Kw283Mqn/Gs+fSZDiAAc9g=
+	t=1746301494; cv=none; b=Bptka2FmpBinO/eVDsoW7hZ6hK5iH9YU4Aq/JlhTn7qLtz3+NwZRAa/D+jE4bSUigP+leQJY2QOJ9AJB8N+plbg3XfySo+HiHZvgpLmj1yHKvF9VOstLMfFTvh8KBVuiBubQl0nOPkmTEP5WUU8+ijgs/jAwO9iGswssArqPPI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746301492; c=relaxed/simple;
-	bh=uX9EnKxfwkAyGATe2yLn2irmiXzRmjZdnWVmRnJPR4Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KEZCQujMmNUIyk6o7SzN1BtwUy1n/ptY6zv9ZG66VGmtTjmcklcyKl0j4GDiVpuKgtA7zvQaiFGjtdTLdinVY6RTbGY9Wr2THnmwhCH0AlKcrb3oiQ0F+c3XCouNarKCw5+LbqIuI6WgXHRlJgZoFSpGsl70vpfkfG4qmn3Iqew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SaE1UDmt; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1746301494; c=relaxed/simple;
+	bh=ILfcGPLPPOe7CfbL7nE7pQOXayrMYeICAa9B/noQuEI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aDl0oQWvd1xMS84yDblJALyhqFNR3M23VlehZFbIf7JZa5d45qi/w3mtmMSjLUXzczjEr4ZSsHyO1+cMY0HjvtejRizYgnbmmIDnRTXMbu0/fP0EvypEGjfh91jl+C3RVkncL1lGfFy+gMJ8wV3XE5KS9oMVvWEWBqFfhdhq3mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NZv48BZL; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746301490; x=1777837490;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=uX9EnKxfwkAyGATe2yLn2irmiXzRmjZdnWVmRnJPR4Q=;
-  b=SaE1UDmtbFDYE5iBbF/boClWuWju0ryXHoAaGHDPYP3xzRdHRVnDl+41
-   pZ0KHS2y3ZIWh7eI6TNp0Uza1GqDCitcabINjFowNKseZIETauoF14+7k
-   AfsatU6AqLjgTNlT01i2cbXWiO3qwMPm8gRP56Xqg0PNX5hfw9hcGOsxl
-   ll8JWhDwKDd/YO5GmvQcGL5fbgFd7pWlQcIw3CUN35s1lAO01l10inNnS
-   YehdovRepst3zD7HfECLI6WUg7gGe4jz94dv9sbKJHQ7Ou4eZ1t2Wq0jx
-   pDvl2FqmwBy8Yv11TxRc12V53eQQ3rO62k2FOdkiMEIAConYD9An37dJ2
+  t=1746301492; x=1777837492;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ILfcGPLPPOe7CfbL7nE7pQOXayrMYeICAa9B/noQuEI=;
+  b=NZv48BZLD4k316lRVzn9FSJEDwNwuNyKs6HjbkWzdMrU7+Mz8rS3Eaz/
+   aJ3Wo8ACl1kaqmb8U2Xo3oDaCRbn5UmS2nEVFipXtf56lyOGxMJb2oK1m
+   gFkDtiIAK6bgTM6l6/MqK9B21gqjeLLe7Obn8dQ2oHpVRc4hQSizGp5lK
+   ia3iJd4dMI220SkMwy1qNV0tPyuyHWnJ/X0AdQ35q8CB1ffeKWPnLgL1y
+   Yj/eEyL5ZI7m5AN2RRMo47C2boYIio47n5MkdQ1HeBBtrXUQjGmPS0xz5
+   Ln9PPf7ePXYErR7ovZwvZi8N0h/BmX4jtSm1xrAl/75QNTozBNSnnQ7EE
    g==;
-X-CSE-ConnectionGUID: 07qzx9QfSrKK7s4X5bDspg==
-X-CSE-MsgGUID: YAo2ccr6TDKlEmZVlW3AaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="58613256"
+X-CSE-ConnectionGUID: 5tYHgyKKT/u4BCgy4VVOrA==
+X-CSE-MsgGUID: uv4j7JyVR2GeBeJa5cG1Cw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="58613257"
 X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
-   d="scan'208";a="58613256"
+   d="scan'208";a="58613257"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:44:49 -0700
-X-CSE-ConnectionGUID: h7+jVCrZQ42pkmzcloLLew==
-X-CSE-MsgGUID: 7bQnZ3DiSgWM2pqes4Y4zg==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:44:51 -0700
+X-CSE-ConnectionGUID: 24k6b7MORTKNrUc/mGneOA==
+X-CSE-MsgGUID: 7BTRugVzTbiiowNwydZ7Gg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
-   d="scan'208";a="134644236"
+   d="scan'208";a="134644246"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:44:48 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:44:49 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH iwlwifi-next 00/15] wifi: iwlwifi: updates - 2025-05-03
-Date: Sat,  3 May 2025 22:44:19 +0300
-Message-Id: <20250503194434.147426-1-miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH iwlwifi-next 01/15] wifi: iwlwifi: pcie: rename "continuous" memory
+Date: Sat,  3 May 2025 22:44:20 +0300
+Message-Id: <20250503224231.8c2ccc0a7469.I6ef88a48c2a2e5c0baa881382017d34eb07f9316@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250503194434.147426-1-miriam.rachel.korenblit@intel.com>
+References: <20250503194434.147426-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,84 +78,96 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Hi,
-A few cleanups, features and bugfixes from our internal tree.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Thanks,
-Miri
+What's really meant here is "contiguous", appreviate it
+as "contig".
 
-Ilan Peer (1):
-  wifi: iwlfiwi: mvm: Fix the rate reporting
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c       | 26 ++++++++-----------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
-Johannes Berg (13):
-  wifi: iwlwifi: pcie: rename "continuous" memory
-  wifi: iwlwifi: pcie: move ME check data to pcie
-  wifi: iwlwifi: pcie: move invalid TX CMD into PCIe
-  wifi: iwlwifi: pcie: move wait_command_queue into PCIe
-  wifi: iwlwifi: unexport iwl_trans_pcie_send_hcmd()
-  wifi: iwlwifi: remove PM mode and send-in-D3
-  wifi: iwlwifi: pass full FW info to transport
-  wifi: iwlwifi: trans: remove hw_id_str
-  wifi: iwlwifi: trans: remove hw_wfpm_id
-  wifi: iwlwifi: pcie: remove constant wdg_timeout
-  wifi: iwlwifi: remove bc_table_dword transport config
-  wifi: iwlwifi: trans: remove SCD base address validation
-  wifi: iwlwifi: trans: collect device information
-
-Somashekhar Puttagangaiah (1):
-  wifi: iwlwifi: handle reasons recommended by FW for leaving EMLSR
-
- .../net/wireless/intel/iwlwifi/dvm/eeprom.c   |   2 +-
- .../net/wireless/intel/iwlwifi/dvm/mac80211.c |   4 +-
- drivers/net/wireless/intel/iwlwifi/dvm/main.c |   7 +-
- .../net/wireless/intel/iwlwifi/dvm/ucode.c    |  10 +-
- .../wireless/intel/iwlwifi/fw/api/datapath.h  |   2 +-
- .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   |  43 +++++-
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |  21 +--
- .../net/wireless/intel/iwlwifi/fw/debugfs.c   |   2 +-
- drivers/net/wireless/intel/iwlwifi/fw/init.c  |   6 +-
- drivers/net/wireless/intel/iwlwifi/fw/pnvm.c  |  12 +-
- .../wireless/intel/iwlwifi/fw/regulatory.c    |   8 +-
- .../intel/iwlwifi/iwl-context-info-gen3.h     |   3 +-
- .../wireless/intel/iwlwifi/iwl-context-info.h |   2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  20 +--
- drivers/net/wireless/intel/iwlwifi/iwl-io.c   |   4 +-
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  12 +-
- .../net/wireless/intel/iwlwifi/iwl-trans.c    |  58 +++++---
- .../net/wireless/intel/iwlwifi/iwl-trans.h    | 127 +++++++---------
- drivers/net/wireless/intel/iwlwifi/mld/agg.c  |   6 +-
- drivers/net/wireless/intel/iwlwifi/mld/d3.c   |   7 +-
- drivers/net/wireless/intel/iwlwifi/mld/fw.c   |   8 +-
- .../wireless/intel/iwlwifi/mld/low_latency.c  |  12 +-
- .../net/wireless/intel/iwlwifi/mld/mac80211.c |   6 +-
- drivers/net/wireless/intel/iwlwifi/mld/mld.c  |   3 -
- drivers/net/wireless/intel/iwlwifi/mld/mlo.c  |  33 ++++-
- drivers/net/wireless/intel/iwlwifi/mld/mlo.h  |   2 +-
- .../net/wireless/intel/iwlwifi/mld/notif.c    |   5 +-
- drivers/net/wireless/intel/iwlwifi/mld/rx.c   |   2 +-
- drivers/net/wireless/intel/iwlwifi/mld/sta.c  |   8 +-
- drivers/net/wireless/intel/iwlwifi/mld/tx.c   |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |  28 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  18 +--
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  16 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  10 +-
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  |   8 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  12 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c   |   2 +
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  16 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   2 +-
- .../intel/iwlwifi/pcie/ctxt-info-gen3.c       |  52 ++++---
- .../wireless/intel/iwlwifi/pcie/ctxt-info.c   |   6 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 137 ++++++++++--------
- .../wireless/intel/iwlwifi/pcie/internal.h    |  39 +++--
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  32 ++--
- .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |  16 +-
- .../net/wireless/intel/iwlwifi/pcie/trans.c   |  86 ++++++-----
- .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |   7 +-
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  29 ++--
- 49 files changed, 495 insertions(+), 462 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+index e383757cfbe0..644ef3fb7ab7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+@@ -347,9 +347,9 @@ void iwl_pcie_ctxt_info_gen3_free(struct iwl_trans *trans, bool alive)
+ 	trans_pcie->prph_info = NULL;
+ }
+ 
+-static int iwl_pcie_load_payloads_continuously(struct iwl_trans *trans,
+-					       const struct iwl_pnvm_image *pnvm_data,
+-					       struct iwl_dram_data *dram)
++static int iwl_pcie_load_payloads_contig(struct iwl_trans *trans,
++					 const struct iwl_pnvm_image *pnvm_data,
++					 struct iwl_dram_data *dram)
+ {
+ 	u32 len, len0, len1;
+ 
+@@ -470,10 +470,8 @@ int iwl_trans_pcie_ctx_info_gen3_load_pnvm(struct iwl_trans *trans,
+ 			trans->pnvm_loaded = true;
+ 	} else {
+ 		/* save only in one DRAM section */
+-		ret = iwl_pcie_load_payloads_continuously
+-						(trans,
+-						 pnvm_payloads,
+-						 &dram_regions->drams[0]);
++		ret = iwl_pcie_load_payloads_contig(trans, pnvm_payloads,
++						    &dram_regions->drams[0]);
+ 		if (!ret) {
+ 			dram_regions->n_regions = 1;
+ 			trans->pnvm_loaded = true;
+@@ -508,7 +506,7 @@ static void iwl_pcie_set_pnvm_segments(struct iwl_trans *trans)
+ 		cpu_to_le32(iwl_dram_regions_size(dram_regions));
+ }
+ 
+-static void iwl_pcie_set_continuous_pnvm(struct iwl_trans *trans)
++static void iwl_pcie_set_contig_pnvm(struct iwl_trans *trans)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	struct iwl_prph_scratch_ctrl_cfg *prph_sc_ctrl =
+@@ -529,7 +527,7 @@ void iwl_trans_pcie_ctx_info_gen3_set_pnvm(struct iwl_trans *trans,
+ 	if (fw_has_capa(capa, IWL_UCODE_TLV_CAPA_FRAGMENTED_PNVM_IMG))
+ 		iwl_pcie_set_pnvm_segments(trans);
+ 	else
+-		iwl_pcie_set_continuous_pnvm(trans);
++		iwl_pcie_set_contig_pnvm(trans);
+ }
+ 
+ int iwl_trans_pcie_ctx_info_gen3_load_reduce_power(struct iwl_trans *trans,
+@@ -566,10 +564,8 @@ int iwl_trans_pcie_ctx_info_gen3_load_reduce_power(struct iwl_trans *trans,
+ 			trans->reduce_power_loaded = true;
+ 	} else {
+ 		/* save only in one DRAM section */
+-		ret = iwl_pcie_load_payloads_continuously
+-						(trans,
+-						 payloads,
+-						 &dram_regions->drams[0]);
++		ret = iwl_pcie_load_payloads_contig(trans, payloads,
++						    &dram_regions->drams[0]);
+ 		if (!ret) {
+ 			dram_regions->n_regions = 1;
+ 			trans->reduce_power_loaded = true;
+@@ -592,7 +588,7 @@ static void iwl_pcie_set_reduce_power_segments(struct iwl_trans *trans)
+ 		cpu_to_le32(iwl_dram_regions_size(dram_regions));
+ }
+ 
+-static void iwl_pcie_set_continuous_reduce_power(struct iwl_trans *trans)
++static void iwl_pcie_set_contig_reduce_power(struct iwl_trans *trans)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	struct iwl_prph_scratch_ctrl_cfg *prph_sc_ctrl =
+@@ -614,6 +610,6 @@ iwl_trans_pcie_ctx_info_gen3_set_reduce_power(struct iwl_trans *trans,
+ 	if (fw_has_capa(capa, IWL_UCODE_TLV_CAPA_FRAGMENTED_PNVM_IMG))
+ 		iwl_pcie_set_reduce_power_segments(trans);
+ 	else
+-		iwl_pcie_set_continuous_reduce_power(trans);
++		iwl_pcie_set_contig_reduce_power(trans);
+ }
+ 
 -- 
 2.34.1
 
