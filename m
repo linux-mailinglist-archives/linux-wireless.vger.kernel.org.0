@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-22373-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22374-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CABFAA825D
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 21:45:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67563AA825E
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 21:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6FFD189D518
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 19:45:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B52D189D76B
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 19:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603DB27F4F7;
-	Sat,  3 May 2025 19:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E69427EC76;
+	Sat,  3 May 2025 19:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J/kpbWhi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iz8uzEll"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D3127E7F8
-	for <linux-wireless@vger.kernel.org>; Sat,  3 May 2025 19:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C56B1A83E8
+	for <linux-wireless@vger.kernel.org>; Sat,  3 May 2025 19:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746301503; cv=none; b=tv/7UB2RWpyY9CWinMmmKd/efSxd3LdWQKN2ceeIM1wBCWu8QM8zhE56fN54qfJeikWsBZOAJCx3TN5x1JsLkDoYT2qACBCZjYKAk3/T6X8zfbZtLUh/yHO9ptjmwW/42EhFqalPio+kifZdliXlSloz4uIuqYwDApuS0TK3kS4=
+	t=1746301505; cv=none; b=QBtvbnOYP7flBr3q/G2jVBGtQsk/cn4nnknmzPODX1tdLI7XdV+Yni5WL73j8eiISIJAzbACX8QXZaGVbeHELtIZwezLFanDDRqLpKSEKs9zXXORskWknDR8Z3A8gViCFe2q2q7Qv+pkkni3TVuFAeA3yqQm4OHBsv4vjwIjvCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746301503; c=relaxed/simple;
-	bh=ZUAV8PyrfQseooXRnlECQm4FcRss5saOXF6qaDcNqtI=;
+	s=arc-20240116; t=1746301505; c=relaxed/simple;
+	bh=qmanLoEtoIwgNiKiLgVUsYn0xUDzRdDxoLiW+NAR1vc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NP1F62icWFgqNBgnI6iqcpiluMqVic6XAHfC7t7uJOpXwbIDTzXg1jECswZ4Up2ZCleJsshWVvFh/58kn+hkh65qoTcxC6Tb98gIn404DvlQz+aGhSg9JUHm63kdgkegM6zZ0BYHdjv73Mxp1sa2ljs2OX9Mp5xTHJvwGLVrnzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J/kpbWhi; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=fV13BCLiK3vg2h8hY2MgdVsWqVmyMGfoFnwBPU7GzjP674ZosvUdUiK043q/cemwxdJk5FnRU1hEoyMWOtoekjPCPCfZe8A/m5xUGZkvyqWCyJ8wP/T2lHNBBVWYL22MJ3PNh3yuIPHDdtCi9yCzZGvH1OxD9cDDQmvxChZy8fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iz8uzEll; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746301501; x=1777837501;
+  t=1746301503; x=1777837503;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ZUAV8PyrfQseooXRnlECQm4FcRss5saOXF6qaDcNqtI=;
-  b=J/kpbWhi8pf0chbOh9hHuTmIITcx6UnF7elm/zh4uepWEybO3L8IO/C5
-   taHjvbGH+1SMOMx0u0iaROrzUr0HKBqUgbgSQ+X5LgOPf9j14jyBs4lv/
-   T3mBCICnhhVIvEikQIYt6PaLh9zRU7e+6fixLHDluWuESD3XTt7YzyHyQ
-   jpp8NM7b/f8oFq86hOqr6Yb/+pKEcZ5QFcpBNSS8s0Rf26sOtx/d7urHv
-   dtl1ThV/pdlBWj2MPRCqE113ZmaR+F8gb7rhsPwlo+GdT4AJeafAbc86V
-   DVjPVtUGbr+oFJGq0Jz5DLEcMQBnGbCvVseAgYbcAg3wmnHYWiK6T/7iV
-   Q==;
-X-CSE-ConnectionGUID: giOK3+0CSvm1EpyuYsWUAg==
-X-CSE-MsgGUID: vYPy+vePSN+FfROWvUxeYg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="58613263"
+  bh=qmanLoEtoIwgNiKiLgVUsYn0xUDzRdDxoLiW+NAR1vc=;
+  b=Iz8uzEll5QPlRAK4eU4FOdHSQ6jstXeUrA2yFzzyCn//+WlZnNb1PhMb
+   0SiZ/M84rX32LfXCYbvEypugl55qHYRIBRJjIcZ4rOXdtftDkQWhcWf+v
+   gXOSuN3OJgIv7jKDIDX7dk05wN2ahiEWI7wi6tlJOMOekQJfSULq16Z0k
+   lterKOZMh1du+rL9tHc6hhgru192JQW5e5en9COm8uTw804DCoBD+637k
+   s9xWXoYrGkP5A+M4B/tCF3VN2HXGbmOMg2/YS1mHH6/MDuIcK8jUjswUt
+   L2LbbDBFCypkRkolTsmLb7W58bflrslMAOifU0wMF3ezNf+Bo2NM4bkN4
+   w==;
+X-CSE-ConnectionGUID: 9p+5TPbLTI+B5zYFvF7DGQ==
+X-CSE-MsgGUID: 8VsmYNiCTbqEv6jXg6KE0g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="58613264"
 X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
-   d="scan'208";a="58613263"
+   d="scan'208";a="58613264"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:45:01 -0700
-X-CSE-ConnectionGUID: V2Fz7FauQhyd2bI8HetiUg==
-X-CSE-MsgGUID: pmDD8cj1SAeH4XJgPexG/w==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:45:03 -0700
+X-CSE-ConnectionGUID: USgFb4qBSQOe+9jMrIVtiA==
+X-CSE-MsgGUID: pkqLAbcsQByiveBw1ylSrw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
-   d="scan'208";a="134644289"
+   d="scan'208";a="134644305"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:44:59 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:45:01 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-next 06/15] wifi: iwlwifi: remove PM mode and send-in-D3
-Date: Sat,  3 May 2025 22:44:25 +0300
-Message-Id: <20250503224231.cc3360761f1e.I72261afc42cee8983198b4660b7d38b7df7963da@changeid>
+	Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi-next 07/15] wifi: iwlwifi: handle reasons recommended by FW for leaving EMLSR
+Date: Sat,  3 May 2025 22:44:26 +0300
+Message-Id: <20250503224231.0582726248a4.I9d1d00eb98d10a3a742cb3e06665ce10e5ec93f0@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250503194434.147426-1-miriam.rachel.korenblit@intel.com>
 References: <20250503194434.147426-1-miriam.rachel.korenblit@intel.com>
@@ -78,323 +78,169 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
 
-Simplify the logic here by tracking only suspended as a
-status bit, and remove CMD_SEND_IN_D3 completely. There
-is no value, since the op-mode sets the state and also
-sends the commands.
+FW sends new notification version 2 indicating whether activating EMLSR
+mode is recommended or not. If recommendation is to leave EMLSR or force
+leave then FW sends the reason. Add debug log for the reason sent by FW.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/iwl-trans.c    | 31 +++++++++++--------
- .../net/wireless/intel/iwlwifi/iwl-trans.h    | 29 ++---------------
- drivers/net/wireless/intel/iwlwifi/mld/d3.c   |  3 --
- drivers/net/wireless/intel/iwlwifi/mld/mld.c  |  1 -
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 22 ++++---------
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  1 -
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  6 ----
- 7 files changed, 27 insertions(+), 66 deletions(-)
+ .../wireless/intel/iwlwifi/fw/api/datapath.h  |  2 +-
+ .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 43 ++++++++++++++++---
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.c  | 31 ++++++++++---
+ .../net/wireless/intel/iwlwifi/mld/notif.c    |  3 +-
+ 4 files changed, 66 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index 67f9edcdf8f6..9f1c2870c5b7 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -342,17 +342,7 @@ int iwl_trans_send_cmd(struct iwl_trans *trans, struct iwl_host_cmd *cmd)
- 		     test_bit(STATUS_RFKILL_OPMODE, &trans->status)))
- 		return -ERFKILL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h b/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
+index c139b965980d..9c88bb280609 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
+@@ -98,7 +98,7 @@ enum iwl_data_path_subcmd_ids {
  
--	/*
--	 * We can't test IWL_MVM_STATUS_IN_D3 in mvm->status because this
--	 * bit is set early in the D3 flow, before we send all the commands
--	 * that configure the firmware for D3 operation (power, patterns, ...)
--	 * and we don't want to flag all those with CMD_SEND_IN_D3.
--	 * So use the system_pm_mode instead. The only command sent after
--	 * we set system_pm_mode is D3_CONFIG_CMD, which we now flag with
--	 * CMD_SEND_IN_D3.
--	 */
--	if (unlikely(trans->system_pm_mode == IWL_PLAT_PM_MODE_D3 &&
--		     !(cmd->flags & CMD_SEND_IN_D3)))
-+	if (unlikely(test_bit(STATUS_SUSPENDED, &trans->status)))
- 		return -EHOSTDOWN;
- 
- 	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status)))
-@@ -435,6 +425,8 @@ int iwl_trans_start_hw(struct iwl_trans *trans)
- 	might_sleep();
- 
- 	clear_bit(STATUS_TRANS_RESET_IN_PROGRESS, &trans->status);
-+	/* opmode may not resume if it detects errors */
-+	clear_bit(STATUS_SUSPENDED, &trans->status);
- 
- 	return iwl_trans_pcie_start_hw(trans);
- }
-@@ -525,18 +517,31 @@ IWL_EXPORT_SYMBOL(iwl_trans_dump_data);
- 
- int iwl_trans_d3_suspend(struct iwl_trans *trans, bool test, bool reset)
- {
-+	int err;
-+
- 	might_sleep();
- 
--	return iwl_trans_pcie_d3_suspend(trans, test, reset);
-+	err = iwl_trans_pcie_d3_suspend(trans, test, reset);
-+
-+	if (!err)
-+		set_bit(STATUS_SUSPENDED, &trans->status);
-+
-+	return err;
- }
- IWL_EXPORT_SYMBOL(iwl_trans_d3_suspend);
- 
- int iwl_trans_d3_resume(struct iwl_trans *trans, enum iwl_d3_status *status,
- 			bool test, bool reset)
- {
-+	int err;
-+
- 	might_sleep();
- 
--	return iwl_trans_pcie_d3_resume(trans, status, test, reset);
-+	err = iwl_trans_pcie_d3_resume(trans, status, test, reset);
-+
-+	clear_bit(STATUS_SUSPENDED, &trans->status);
-+
-+	return err;
- }
- IWL_EXPORT_SYMBOL(iwl_trans_d3_resume);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 34e386bf96b6..550045438223 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -109,16 +109,12 @@ static inline u32 iwl_rx_packet_payload_len(const struct iwl_rx_packet *pkt)
-  *	the response. The caller needs to call iwl_free_resp when done.
-  * @CMD_SEND_IN_RFKILL: Send the command even if the NIC is in RF-kill.
-  * @CMD_BLOCK_TXQS: Block TXQs while the comment is executing.
-- * @CMD_SEND_IN_D3: Allow the command to be sent in D3 mode, relevant to
-- *	SUSPEND and RESUME commands. We are in D3 mode when we set
-- *	trans->system_pm_mode to IWL_PLAT_PM_MODE_D3.
-  */
- enum CMD_MODE {
- 	CMD_ASYNC		= BIT(0),
- 	CMD_WANT_SKB		= BIT(1),
- 	CMD_SEND_IN_RFKILL	= BIT(2),
- 	CMD_BLOCK_TXQS		= BIT(3),
--	CMD_SEND_IN_D3          = BIT(4),
- };
- #define CMD_MODE_BITS 5
- 
-@@ -306,6 +302,8 @@ enum iwl_d3_status {
-  *	the firmware state yet
-  * @STATUS_TRANS_RESET_IN_PROGRESS: reset is still in progress, don't
-  *	attempt another reset yet
-+ * @STATUS_SUSPENDED: device is suspended, don't send commands that
-+ *	aren't marked accordingly
-  */
- enum iwl_trans_status {
- 	STATUS_SYNC_HCMD_ACTIVE,
-@@ -320,6 +318,7 @@ enum iwl_trans_status {
- 	STATUS_IN_SW_RESET,
- 	STATUS_RESET_PENDING,
- 	STATUS_TRANS_RESET_IN_PROGRESS,
-+	STATUS_SUSPENDED,
- };
- 
- static inline int
-@@ -516,23 +515,6 @@ enum iwl_trans_state {
-  * be confused with the physical device power state.
-  */
- 
--/**
-- * enum iwl_plat_pm_mode - platform power management mode
-- *
-- * This enumeration describes the device's platform power management
-- * behavior when in system-wide suspend (i.e WoWLAN).
-- *
-- * @IWL_PLAT_PM_MODE_DISABLED: power management is disabled for this
-- *	device.  In system-wide suspend mode, it means that the all
-- *	connections will be closed automatically by mac80211 before
-- *	the platform is suspended.
-- * @IWL_PLAT_PM_MODE_D3: the device goes into D3 mode (i.e. WoWLAN).
-- */
--enum iwl_plat_pm_mode {
--	IWL_PLAT_PM_MODE_DISABLED,
--	IWL_PLAT_PM_MODE_D3,
--};
--
- /**
-  * enum iwl_ini_cfg_state
-  * @IWL_INI_CFG_STATE_NOT_LOADED: no debug cfg was given
-@@ -869,9 +851,6 @@ struct iwl_txq {
-  *	start of the 802.11 header in the @rx_mpdu_cmd
-  * @dbg: additional debug data, see &struct iwl_trans_debug
-  * @init_dram: FW initialization DMA data
-- * @system_pm_mode: the system-wide power management mode in use.
-- *	This mode is set dynamically, depending on the WoWLAN values
-- *	configured from the userspace at runtime.
-  * @name: the device name
-  * @mbx_addr_0_step: step address data 0
-  * @mbx_addr_1_step: step address data 1
-@@ -951,8 +930,6 @@ struct iwl_trans {
- 	struct iwl_trans_debug dbg;
- 	struct iwl_self_init_dram init_dram;
- 
--	enum iwl_plat_pm_mode system_pm_mode;
--
- 	const char *name;
- 	u32 mbx_addr_0_step;
- 	u32 mbx_addr_1_step;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-index 21b20e07aab4..f90043728689 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-@@ -1346,7 +1346,6 @@ int iwl_mld_no_wowlan_suspend(struct iwl_mld *mld)
- 	} else {
- 		/* Async notification might send hcmds, which is not allowed in suspend */
- 		iwl_mld_cancel_async_notifications(mld);
--		mld->trans->system_pm_mode = IWL_PLAT_PM_MODE_D3;
- 		mld->fw_status.in_d3 = true;
- 	}
- 
-@@ -1371,7 +1370,6 @@ int iwl_mld_no_wowlan_resume(struct iwl_mld *mld)
- 
- 	IWL_DEBUG_WOWLAN(mld, "Starting the no wowlan resume flow\n");
- 
--	mld->trans->system_pm_mode = IWL_PLAT_PM_MODE_DISABLED;
- 	mld->fw_status.in_d3 = false;
- 	iwl_fw_dbg_read_d3_debug_data(&mld->fwrt);
- 
-@@ -1902,7 +1900,6 @@ int iwl_mld_wowlan_resume(struct iwl_mld *mld)
- 
- 	IWL_DEBUG_WOWLAN(mld, "Starting the wowlan resume flow\n");
- 
--	mld->trans->system_pm_mode = IWL_PLAT_PM_MODE_DISABLED;
- 	if (!mld->fw_status.in_d3) {
- 		IWL_DEBUG_WOWLAN(mld,
- 				 "Device_powered_off() was called during wowlan\n");
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index e26fcce773aa..81a4443d3b4c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -710,7 +710,6 @@ static void iwl_mld_device_powered_off(struct iwl_op_mode *op_mode)
- 	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
- 
- 	wiphy_lock(mld->wiphy);
--	mld->trans->system_pm_mode = IWL_PLAT_PM_MODE_DISABLED;
- 	iwl_mld_stop_fw(mld);
- 	mld->fw_status.in_d3 = false;
- 	wiphy_unlock(mld->wiphy);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 3e8b7168af01..456ad4fadd8f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -1266,7 +1266,7 @@ static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
- 	};
- 	struct iwl_host_cmd d3_cfg_cmd = {
- 		.id = D3_CONFIG_CMD,
--		.flags = CMD_WANT_SKB | CMD_SEND_IN_D3,
-+		.flags = CMD_WANT_SKB,
- 		.data[0] = &d3_cfg_cmd_data,
- 		.len[0] = sizeof(d3_cfg_cmd_data),
- 	};
-@@ -1373,8 +1373,6 @@ static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
- 	if (mvm->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_9000)
- 		iwl_fw_dbg_stop_restart_recording(&mvm->fwrt, NULL, true);
- 
--	mvm->trans->system_pm_mode = IWL_PLAT_PM_MODE_D3;
--
- 	/* must be last -- this switches firmware state */
- 	ret = iwl_mvm_send_cmd(mvm, &d3_cfg_cmd);
- 	if (ret)
-@@ -3407,9 +3405,9 @@ static int iwl_mvm_resume_firmware(struct iwl_mvm *mvm, bool test)
- 	int ret;
- 	enum iwl_d3_status d3_status;
- 	struct iwl_host_cmd cmd = {
--			.id = D0I3_END_CMD,
--			.flags = CMD_WANT_SKB | CMD_SEND_IN_D3,
--		};
-+		.id = D0I3_END_CMD,
-+		.flags = CMD_WANT_SKB,
-+	};
- 	bool reset = fw_has_capa(&mvm->fw->ucode_capa,
- 				 IWL_UCODE_TLV_CAPA_CNSLDTD_D3_D0_IMG);
- 
-@@ -3564,9 +3562,6 @@ static int __iwl_mvm_resume(struct iwl_mvm *mvm, bool test)
- 
- 	iwl_mvm_unblock_esr(mvm, vif, IWL_MVM_ESR_BLOCKED_WOWLAN);
- 
--	/* after the successful handshake, we're out of D3 */
--	mvm->trans->system_pm_mode = IWL_PLAT_PM_MODE_DISABLED;
--
- 	/* when reset is required we can't send these following commands */
- 	if (d3_data.d3_end_flags & IWL_D0I3_RESET_REQUIRE)
- 		goto query_wakeup_reasons;
-@@ -3639,9 +3634,6 @@ static int __iwl_mvm_resume(struct iwl_mvm *mvm, bool test)
+ 	/**
+ 	 * @ESR_MODE_NOTIF: notification to recommend/force a wanted esr mode,
+-	 *	uses &struct iwl_esr_mode_notif
++	 *	uses &struct iwl_esr_mode_notif or &struct iwl_esr_mode_notif_v1
  	 */
- 	set_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED, &mvm->status);
+ 	ESR_MODE_NOTIF = 0xF3,
  
--	/* regardless of what happened, we're now out of D3 */
--	mvm->trans->system_pm_mode = IWL_PLAT_PM_MODE_DISABLED;
--
- 	return 1;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+index b511e3aa6bb2..35a370918251 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+@@ -686,9 +686,9 @@ struct iwl_mvm_sta_disable_tx_cmd {
+ 
+ /**
+  * enum iwl_mvm_fw_esr_recommendation - FW recommendation code
+- * @ESR_RECOMMEND_LEAVE: recommendation to leave esr
+- * @ESR_FORCE_LEAVE: force exiting esr
+- * @ESR_RECOMMEND_ENTER: recommendation to enter esr
++ * @ESR_RECOMMEND_LEAVE: recommendation to leave EMLSR
++ * @ESR_FORCE_LEAVE: force exiting EMLSR
++ * @ESR_RECOMMEND_ENTER: recommendation to enter EMLSR
+  */
+ enum iwl_mvm_fw_esr_recommendation {
+ 	ESR_RECOMMEND_LEAVE,
+@@ -697,14 +697,45 @@ enum iwl_mvm_fw_esr_recommendation {
+ }; /* ESR_MODE_RECOMMENDATION_CODE_API_E_VER_1 */
+ 
+ /**
+- * struct iwl_esr_mode_notif - FWs recommendation/force for esr mode
++ * struct iwl_esr_mode_notif_v1 - FW recommendation/force for EMLSR mode
+  *
+- * @action: the action to apply on esr state. See &iwl_mvm_fw_esr_recommendation
++ * @action: the action to apply on EMLSR state.
++ *	See &iwl_mvm_fw_esr_recommendation
+  */
+-struct iwl_esr_mode_notif {
++struct iwl_esr_mode_notif_v1 {
+ 	__le32 action;
+ } __packed; /* ESR_MODE_RECOMMENDATION_NTFY_API_S_VER_1 */
+ 
++/**
++ * enum iwl_esr_leave_reason - reasons for leaving EMLSR mode
++ *
++ * @ESR_LEAVE_REASON_OMI_MU_UL_DISALLOWED: OMI MU UL disallowed
++ * @ESR_LEAVE_REASON_NO_TRIG_FOR_ESR_STA: No trigger for EMLSR station
++ * @ESR_LEAVE_REASON_NO_ESR_STA_IN_MU_DL: No EMLSR station in MU DL
++ * @ESR_LEAVE_REASON_BAD_ACTIV_FRAME_TH: Bad activation frame threshold
++ * @ESR_LEAVE_REASON_RTS_IN_DUAL_LISTEN: RTS in dual listen
++ */
++enum iwl_esr_leave_reason {
++	ESR_LEAVE_REASON_OMI_MU_UL_DISALLOWED	= BIT(0),
++	ESR_LEAVE_REASON_NO_TRIG_FOR_ESR_STA	= BIT(1),
++	ESR_LEAVE_REASON_NO_ESR_STA_IN_MU_DL	= BIT(2),
++	ESR_LEAVE_REASON_BAD_ACTIV_FRAME_TH	= BIT(3),
++	ESR_LEAVE_REASON_RTS_IN_DUAL_LISTEN	= BIT(4),
++};
++
++/**
++ * struct iwl_esr_mode_notif - FW recommendation/force for EMLSR mode
++ *
++ * @action: the action to apply on EMLSR state.
++ *	See &iwl_mvm_fw_esr_recommendation
++ * @leave_reason_mask: mask for various reasons to leave EMLSR mode.
++ *	See &iwl_esr_leave_reason
++ */
++struct iwl_esr_mode_notif {
++	__le32 action;
++	__le32 leave_reason_mask;
++} __packed; /* ESR_MODE_RECOMMENDATION_NTFY_API_S_VER_2 */
++
+ /**
+  * struct iwl_missed_beacons_notif - sent when by the firmware upon beacon loss
+  *  ( MISSED_BEACONS_NOTIF = 0xF6 )
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
+index 824a328da28e..189946d5b2cb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
+@@ -326,23 +326,44 @@ static void
+ iwl_mld_vif_iter_emlsr_mode_notif(void *data, u8 *mac,
+ 				  struct ieee80211_vif *vif)
+ {
+-	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
+-	struct iwl_esr_mode_notif *notif = (void *)data;
++	const struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	enum iwl_mvm_fw_esr_recommendation action;
++	const struct iwl_esr_mode_notif *notif = NULL;
++
++	if (iwl_fw_lookup_notif_ver(mld_vif->mld->fw, DATA_PATH_GROUP,
++				    ESR_MODE_NOTIF, 0) > 1) {
++		notif = (void *)data;
++		action = le32_to_cpu(notif->action);
++	} else {
++		const struct iwl_esr_mode_notif_v1 *notif_v1 = (void *)data;
++
++		action = le32_to_cpu(notif_v1->action);
++	}
+ 
+ 	if (!iwl_mld_vif_has_emlsr_cap(vif))
+ 		return;
+ 
+-	switch (le32_to_cpu(notif->action)) {
++	switch (action) {
+ 	case ESR_RECOMMEND_LEAVE:
++		if (notif)
++			IWL_DEBUG_INFO(mld_vif->mld,
++				       "FW recommend leave reason = 0x%x\n",
++				       le32_to_cpu(notif->leave_reason_mask));
++
+ 		iwl_mld_exit_emlsr(mld_vif->mld, vif,
+ 				   IWL_MLD_EMLSR_EXIT_FW_REQUEST,
+ 				   iwl_mld_get_primary_link(vif));
+ 		break;
+-	case ESR_RECOMMEND_ENTER:
+ 	case ESR_FORCE_LEAVE:
++		if (notif)
++			IWL_DEBUG_INFO(mld_vif->mld,
++				       "FW force leave reason = 0x%x\n",
++				       le32_to_cpu(notif->leave_reason_mask));
++		fallthrough;
++	case ESR_RECOMMEND_ENTER:
+ 	default:
+ 		IWL_WARN(mld_vif->mld, "Unexpected EMLSR notification: %d\n",
+-			 le32_to_cpu(notif->action));
++			 action);
+ 	}
  }
  
-@@ -3679,8 +3671,7 @@ void iwl_mvm_fast_suspend(struct iwl_mvm *mvm)
- 	set_bit(IWL_MVM_STATUS_IN_D3, &mvm->status);
- 
- 	WARN_ON(iwl_mvm_power_update_device(mvm));
--	mvm->trans->system_pm_mode = IWL_PLAT_PM_MODE_D3;
--	ret = iwl_mvm_send_cmd_pdu(mvm, D3_CONFIG_CMD, CMD_SEND_IN_D3,
-+	ret = iwl_mvm_send_cmd_pdu(mvm, D3_CONFIG_CMD, 0,
- 				   sizeof(d3_cfg_cmd_data), &d3_cfg_cmd_data);
- 	if (ret)
- 		IWL_ERR(mvm,
-@@ -3735,7 +3726,6 @@ int iwl_mvm_fast_resume(struct iwl_mvm *mvm)
- 
- out:
- 	clear_bit(IWL_MVM_STATUS_IN_D3, &mvm->status);
--	mvm->trans->system_pm_mode = IWL_PLAT_PM_MODE_DISABLED;
- 	mvm->fast_resume = false;
- 
- 	return ret;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 5c7c1d53a28d..5629aa0a91fd 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -2126,7 +2126,6 @@ static void iwl_op_mode_mvm_device_powered_off(struct iwl_op_mode *op_mode)
- 
- 	mutex_lock(&mvm->mutex);
- 	clear_bit(IWL_MVM_STATUS_IN_D3, &mvm->status);
--	mvm->trans->system_pm_mode = IWL_PLAT_PM_MODE_DISABLED;
- 	iwl_mvm_stop_device(mvm);
- 	mvm->fast_resume = false;
- 	mutex_unlock(&mvm->mutex);
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-index 3c86a5f23d8f..7d7a217b1575 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-@@ -2659,12 +2659,6 @@ int iwl_trans_pcie_send_hcmd(struct iwl_trans *trans,
- 		return -ERFKILL;
- 	}
- 
--	if (unlikely(trans->system_pm_mode == IWL_PLAT_PM_MODE_D3 &&
--		     !(cmd->flags & CMD_SEND_IN_D3))) {
--		IWL_DEBUG_WOWLAN(trans, "Dropping CMD 0x%x: D3\n", cmd->id);
--		return -EHOSTDOWN;
--	}
--
- 	if (cmd->flags & CMD_ASYNC) {
- 		int ret;
- 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/notif.c b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
+index 76b1a21135a8..61e00b13f2ce 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/notif.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
+@@ -336,7 +336,8 @@ CMD_VERSIONS(bt_coex_notif,
+ CMD_VERSIONS(beacon_notification,
+ 	     CMD_VER_ENTRY(6, iwl_extended_beacon_notif))
+ CMD_VERSIONS(emlsr_mode_notif,
+-	     CMD_VER_ENTRY(1, iwl_esr_mode_notif))
++	     CMD_VER_ENTRY(1, iwl_esr_mode_notif_v1)
++	     CMD_VER_ENTRY(2, iwl_esr_mode_notif))
+ CMD_VERSIONS(emlsr_trans_fail_notif,
+ 	     CMD_VER_ENTRY(1, iwl_esr_trans_fail_notif))
+ CMD_VERSIONS(uapsd_misbehaving_ap_notif,
 -- 
 2.34.1
 
