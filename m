@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-22377-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22378-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831B2AA8261
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 21:45:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12CBAA8262
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 21:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F071617D8E2
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 19:45:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB069189CF80
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 19:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF861862;
-	Sat,  3 May 2025 19:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD2D148827;
+	Sat,  3 May 2025 19:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OTJRozph"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M0WugMO5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8382427EC7C
-	for <linux-wireless@vger.kernel.org>; Sat,  3 May 2025 19:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A091D1A239E
+	for <linux-wireless@vger.kernel.org>; Sat,  3 May 2025 19:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746301511; cv=none; b=lP6MdtaUo2O67A4z524n4uE07W+LmrDQryQ873pIrmHc48F3rMjOU/JfJTZg7h9rAVzqrrwaKxY8EsQTTPRxndxrdi0dH673oJxlXwaMkbGapEoaqR0NWBfo4OxmMInIxiDyCD6XDuNGqu4rP61BiRmJhjORDLfWbYcXU5B4rpw=
+	t=1746301513; cv=none; b=LNP6GetC3pj8xcroBnmS8Nz0OhtMyhMkPSHZdt5G9+K+yzmm9b2g3GeOdU+SRyeCkVKvCGKKhYWhkBWEg9pGF4pfZN+sxlmX9vFGrpqPv1oxDQMBf/+FS7R9ALhCFzl/gLbbkt6U2FYTn5AMck77nzx3wK9uC3b/a3HFQV5M3Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746301511; c=relaxed/simple;
-	bh=35l6DVrho25JOp11o4Foto3YcEx5GkQKRQ0iVG0Mbn8=;
+	s=arc-20240116; t=1746301513; c=relaxed/simple;
+	bh=TNE8f/foyCZay2hPBZLNTV1jpbsBWL+/lvhICBh1jOo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DlG2Ptfq5thmUK8r+6AZhuGeWnceIMT9p20Pe+1Ctmcf/hH7TI1kdPTKnK0Tj3SgSMbk8QODfBVx3xW0IZ/99FV+6ElUOhYNbL5ntSBPaGjmobEQ/75RjZU3BPqJWaPrGU4zKM1UpnAZjJBRc/94Mxh0arzEzDc5c/jtT8PwA+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OTJRozph; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=QJFQdoBx8PMkWoYcNPlgMKcL/Fpi8scTkDLdivBhDGuRD6OdAgftV96Vy5R/VO6IoU+v/p4bF55c0bJuqaUGG6MID0hKg+gBsMqMBSJF3lhPiMn0jBP/FgBSMpeh8cdahxahKz5aihhu5JkNNvnvhMMLi6nWoVIUfVEfStu9NWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M0WugMO5; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746301509; x=1777837509;
+  t=1746301511; x=1777837511;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=35l6DVrho25JOp11o4Foto3YcEx5GkQKRQ0iVG0Mbn8=;
-  b=OTJRozphbla8LjFNjMe7wnOEoQXlgcw7RoZMSd0LrYtlMXwNksoQb/X0
-   fB4LaJLqoj7F1GoU3utE6vFsO6mL3roP9ezky9jJ+xQPHm8tAl8YGOUdL
-   eSFixPiKg2BOYGj6l4zVfws2D3s5889PZBlOjhQDmAfeKWI1VRGtfhlE8
-   9gOWVvKwBpQ7B/RtyEcWJfDj7FPA0s0P9OI5JCVMd0rmRmBKa5fDMpMIu
-   zKAgw7UeKBYF5W5b16BEXmg9qboklj7Hvy+b7D31ZEuEjzVOONMkLJKv5
-   zz/rnqUEQYcYyL9IxuIdX+XqvZwlohetlexiA27tOm4DrIhoONkm2LGT0
+  bh=TNE8f/foyCZay2hPBZLNTV1jpbsBWL+/lvhICBh1jOo=;
+  b=M0WugMO5BQBHthqNNb4ywXPsqtugYSpJmhWrvaZf2S3UAzPt4n9IQJjD
+   x+lYK+kp7ihra3xlKCQDLqo95K00WbGo0LQ9vRM6skye46ZoeR1ZbeK9Y
+   T2j1vwG80xEWK+eura/fu0L7GCaDaa0p6OzoUK3Q2KP3SVgSXO+vBRIRF
+   RI7a6utf71Gljv/P5NrbT0bDVwAuvWrcLctMxBZO2Uapf9BlKQ+TCVyFn
+   IuA7RRucipMHeiHYCDR0vXWylT+nfIGRdhtwFIIdhkNlYb8wMOY37aXkj
+   SSqat/KYJdAYXT4LqgC249dMbyGIM0mF2k6IeHjIEOWFtQAc7b/d7NO3+
    w==;
-X-CSE-ConnectionGUID: xvHg1X2JTLKn0bsH5emVPg==
-X-CSE-MsgGUID: M1hp6SkvTBOtRpIz9i8YtA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="58613267"
+X-CSE-ConnectionGUID: OvWYfl+nQCWDXUmBSFDIqQ==
+X-CSE-MsgGUID: kZmSEz0VQt+4zsUc04et2A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="58613269"
 X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
-   d="scan'208";a="58613267"
+   d="scan'208";a="58613269"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:45:09 -0700
-X-CSE-ConnectionGUID: MDrBgEizTiK0vmAc3gnAIA==
-X-CSE-MsgGUID: W7IlLcA9Qi6uMGKB513A5A==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:45:11 -0700
+X-CSE-ConnectionGUID: deCAoDwqQ7G9v8wGiB65eQ==
+X-CSE-MsgGUID: pr5NKnxKRumka12d/UX4jg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
-   d="scan'208";a="134644341"
+   d="scan'208";a="134644353"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:45:07 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:45:09 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>,
 	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-next 10/15] wifi: iwlwifi: trans: remove hw_wfpm_id
-Date: Sat,  3 May 2025 22:44:29 +0300
-Message-Id: <20250503224232.4dfa2ae2a844.I46466f2523d8760e93228cd9a93c112d371e002d@changeid>
+Subject: [PATCH iwlwifi-next 11/15] wifi: iwlwifi: pcie: remove constant wdg_timeout
+Date: Sat,  3 May 2025 22:44:30 +0300
+Message-Id: <20250503224232.48333e80a74d.I6c1aaa23fac5ff7400aa59a3093b53774261cb0e@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250503194434.147426-1-miriam.rachel.korenblit@intel.com>
 References: <20250503194434.147426-1-miriam.rachel.korenblit@intel.com>
@@ -80,87 +80,65 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We only need to have this during init in PCIe, so can
-just re-read the value. Do that and don't store it.
+This value is only ever initialized and read, so just
+replace the usage with the constant and remove it.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h |  2 --
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c  | 16 +++++++++-------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/internal.h | 2 --
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c    | 3 ---
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c       | 2 +-
+ 3 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 627afd27e23b..548cee430bbe 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -820,7 +820,6 @@ struct iwl_txq {
-  * @hw_rf_id: a u32 with the device RF ID
-  * @hw_cnv_id: a u32 with the device CNV ID
-  * @hw_crf_id: a u32 with the device CRF ID
-- * @hw_wfpm_id: a u32 with the device wfpm ID
-  * @hw_id: a u32 with the ID of the device / sub-device.
-  *	Set during transport allocation.
-  * @sku_id: the SKU identifier (for PNVM matching)
-@@ -884,7 +883,6 @@ struct iwl_trans {
- 	u32 hw_rf_id;
- 	u32 hw_crf_id;
- 	u32 hw_cnv_id;
--	u32 hw_wfpm_id;
- 	u32 hw_id;
- 	u32 sku_id[3];
- 	bool reduced_cap_sku;
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 27023baa6565..e2c5ec091533 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1520,6 +1520,7 @@ EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_dev_info_table_size);
- static void get_crf_id(struct iwl_trans *iwl_trans)
- {
- 	u32 sd_reg_ver_addr;
-+	u32 hw_wfpm_id;
- 	u32 val = 0;
- 	u8 step;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index 360367bf6988..f08978d4402e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -304,7 +304,6 @@ enum iwl_pcie_imr_status {
+  * @cmd: command queue data
+  * @cmd.fifo: FIFO number
+  * @cmd.q_id: queue ID
+- * @cmd.wdg_timeout: watchdog timeout
+  * @tfd: TFD data
+  * @tfd.max_tbs: max number of buffers per TFD
+  * @tfd.size: TFD size
+@@ -324,7 +323,6 @@ struct iwl_pcie_txqs {
+ 	struct {
+ 		u8 fifo;
+ 		u8 q_id;
+-		unsigned int wdg_timeout;
+ 	} cmd;
  
-@@ -1562,11 +1563,10 @@ static void get_crf_id(struct iwl_trans *iwl_trans)
+ 	struct {
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index cb41dbf3e0d3..db9431f09738 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -3845,9 +3845,6 @@ iwl_trans_pcie_alloc(struct pci_dev *pdev,
  	}
+ 	trans->max_skb_frags = IWL_TRANS_PCIE_MAX_FRAGS(trans_pcie);
  
- 	/* Read cdb info (also contains the jacket info if needed in the future */
--	iwl_trans->hw_wfpm_id =
--		iwl_read_umac_prph_no_grab(iwl_trans, WFPM_OTP_CFG1_ADDR);
-+	hw_wfpm_id = iwl_read_umac_prph_no_grab(iwl_trans, WFPM_OTP_CFG1_ADDR);
- 	IWL_INFO(iwl_trans, "Detected crf-id 0x%x, cnv-id 0x%x wfpm id 0x%x\n",
- 		 iwl_trans->hw_crf_id, iwl_trans->hw_cnv_id,
--		 iwl_trans->hw_wfpm_id);
-+		 hw_wfpm_id);
- }
+-	/* Set a short watchdog for the command queue */
+-	trans_pcie->txqs.cmd.wdg_timeout = IWL_DEF_WD_TIMEOUT;
+-
+ 	trans_pcie->txqs.tso_hdr_page = alloc_percpu(struct iwl_tso_hdr_page);
+ 	if (!trans_pcie->txqs.tso_hdr_page) {
+ 		ret = -ENOMEM;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 7d7a217b1575..6c2477eec97d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -514,7 +514,7 @@ void iwl_pcie_tx_start(struct iwl_trans *trans, u32 scd_base_addr)
  
- /*
-@@ -1579,9 +1579,11 @@ static int map_crf_id(struct iwl_trans *iwl_trans)
- 	u32 val = iwl_trans->hw_crf_id;
- 	u32 step_id = REG_CRF_ID_STEP(val);
- 	u32 slave_id = REG_CRF_ID_SLAVE(val);
--	u32 jacket_id_cnv  = REG_CRF_ID_SLAVE(iwl_trans->hw_cnv_id);
--	u32 jacket_id_wfpm  = WFPM_OTP_CFG1_IS_JACKET(iwl_trans->hw_wfpm_id);
--	u32 cdb_id_wfpm  = WFPM_OTP_CFG1_IS_CDB(iwl_trans->hw_wfpm_id);
-+	u32 jacket_id_cnv = REG_CRF_ID_SLAVE(iwl_trans->hw_cnv_id);
-+	u32 hw_wfpm_id = iwl_read_umac_prph_no_grab(iwl_trans,
-+						    WFPM_OTP_CFG1_ADDR);
-+	u32 jacket_id_wfpm = WFPM_OTP_CFG1_IS_JACKET(hw_wfpm_id);
-+	u32 cdb_id_wfpm = WFPM_OTP_CFG1_IS_CDB(hw_wfpm_id);
+ 	iwl_trans_ac_txq_enable(trans, trans_pcie->txqs.cmd.q_id,
+ 				trans_pcie->txqs.cmd.fifo,
+-				trans_pcie->txqs.cmd.wdg_timeout);
++				IWL_DEF_WD_TIMEOUT);
  
- 	/* Map between crf id to rf id */
- 	switch (REG_CRF_ID_TYPE(val)) {
-@@ -1641,7 +1643,7 @@ static int map_crf_id(struct iwl_trans *iwl_trans)
- 		 REG_CRF_ID_TYPE(val), step_id, slave_id, iwl_trans->hw_rf_id);
- 	IWL_INFO(iwl_trans,
- 		 "Detected cdb-id 0x%x jacket-id 0x%x from wfpm id 0x%x\n",
--		 cdb_id_wfpm, jacket_id_wfpm, iwl_trans->hw_wfpm_id);
-+		 cdb_id_wfpm, jacket_id_wfpm, hw_wfpm_id);
- 	IWL_INFO(iwl_trans, "Detected jacket-id 0x%x from cnvi id 0x%x\n",
- 		 jacket_id_cnv, iwl_trans->hw_cnv_id);
- 
+ 	/* Activate all Tx DMA/FIFO channels */
+ 	iwl_scd_activate_fifos(trans);
 -- 
 2.34.1
 
