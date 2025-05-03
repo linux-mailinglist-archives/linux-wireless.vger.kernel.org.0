@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-22369-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22370-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE3DAA8259
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 21:45:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27589AA825A
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 21:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19169189CFC2
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 19:45:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86D0017CD85
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 19:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF8427EC78;
-	Sat,  3 May 2025 19:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B05D27E7FA;
+	Sat,  3 May 2025 19:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zno8fqfU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q0Zy+wF9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733C627E7FA
-	for <linux-wireless@vger.kernel.org>; Sat,  3 May 2025 19:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1AB27E7D8
+	for <linux-wireless@vger.kernel.org>; Sat,  3 May 2025 19:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746301495; cv=none; b=n0roo/L6x41SDPC9MjW2PrY8EyeUzyiuHl1gVvhNe2m8ejV5qseHAOopoMT/UCrZNSi2ejAIQxUuqynvLWocOl5C7iGIGvWMo9C1alrz1e5mDrGKweHGVwvgz6u62w4pliZoF/AaAj4EwK7gHtNY2/gbWL76VdWdJUTMvAv/FPQ=
+	t=1746301497; cv=none; b=fiX+CZL6VhwdfDshWsamPWow+nZBCrfgJPMLmwgxTGvAn1RyO06yYWzz1qkqdxssVOShKp8ic27jVAdIED/A2UGWrJQbmvYyAXm0oPoOaXikn01UUVyCQSPKCOoD1A9D6Srx5aaYf9NmkZq+J7wDjay/SFNHORinvUZDd7P8QpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746301495; c=relaxed/simple;
-	bh=0e3woT+ENeZB9jvv5PHwMTB9XtfM41LrXl0kD4U/Jvg=;
+	s=arc-20240116; t=1746301497; c=relaxed/simple;
+	bh=jTdXv7egadhBKSd34IvOOM4NAVE5uXB10GGZUYubztU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e9URPKTPf3DfSCMDivt4INty0uvMrwuTehfWgR8UP4sRwQJfH/5MHoSk3YWRYcDB8/4fH1kHgrAr6Vo4Ixb/sPOiExEc7TDZnANgh72apTivBNqheWJmdyrNb8qBv/M9biKW7p+Xk4Mq8v+GVzQDA8Vv5ihcG2K/9rtpqwi1pWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zno8fqfU; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=BUaDCHPJBNp2M0+bn5+kMI69gxQZCGRyN4gUXdhudYTLiCTjilh2+khg6Ze7Y3JnBvCvA/TqomZ8XZ6RvcDw3yRI35vBmwiD+YQMtHxJ9uEBwnApIjzx4s4ReA2BN9brRuc5sN4+k64XXIebe797xs5Kv5+kiMcBMrmga43JwOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q0Zy+wF9; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746301493; x=1777837493;
+  t=1746301495; x=1777837495;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0e3woT+ENeZB9jvv5PHwMTB9XtfM41LrXl0kD4U/Jvg=;
-  b=Zno8fqfUwpdGvhzlmagb4nHezX0mAalpB61WLkXNUpmPqPcwV5V7LV6a
-   SRsvJO0h8X5oN8yjm+MFnMq0/cX/rhLzMG48hie0/PMw60Z65NZc3f/s8
-   yKlocKij84M1M4epN7pZ/Ma8WI8TXTtfWx5FnZ5SE43smh7oBeNs2UNPL
-   Qfygerekli/IrOzSPnmwogdKIQULlP0l+oLLdCPL8PjK3u/qx6BHuoAD0
-   uCd2Jl53OSzFZVMJjHmClpvXzj8RC6WBgkgAy7L6mXyNewEndcPNhvDWR
-   TLoSLYh2ZHsEV/4dmaV9Nxd8PwacgHVvgnIaRwK5bIUo6AsSrXA+RCkkR
-   A==;
-X-CSE-ConnectionGUID: reYawWJIQW6xK287nFG+lA==
-X-CSE-MsgGUID: aIEXWOqARTGUtJSyD3UUMQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="58613258"
+  bh=jTdXv7egadhBKSd34IvOOM4NAVE5uXB10GGZUYubztU=;
+  b=Q0Zy+wF9pBRcULE0hR+E5if2aTFpJP44CmyRV4LQrupJ/knnUoYcGoAS
+   CSq6jFXk1f4QPolXnw4JYHwxhGWE3/YDgqrN3V0gO0Csn66Af+0QvJFWB
+   2xo9J7HXGlVsvRnwpWM7Db1uSagLzKAq9c+ovD+7/Jy4aIBPx1fXX+P+h
+   /HkzqUbRGJKULgz6V4tnYzqLJOR/C3uF+xOEpC/PEMP/l3FSNCV/pMn2S
+   MgpU2AdQ55KiKQyb27uADkJ0d7tE5g8lMY2d6e9Yr+OaSznROr5EQr0go
+   hfpIKimkVUg7D47XOB6qzXMKfC7HU0qiM0ln9aVQAMClIwemjigz2tNvF
+   w==;
+X-CSE-ConnectionGUID: 7HYb2qgQQaKw71IzQLLEqg==
+X-CSE-MsgGUID: EfSDXJeSQGWfG1VODTt5Og==
+X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="58613259"
 X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
-   d="scan'208";a="58613258"
+   d="scan'208";a="58613259"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:44:53 -0700
-X-CSE-ConnectionGUID: leSxfU4sRPStaNcizF91VA==
-X-CSE-MsgGUID: cZoPzm0kSumOefJy5eUuWg==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:44:55 -0700
+X-CSE-ConnectionGUID: oPIZJtHqSui0N+yl6wKmOw==
+X-CSE-MsgGUID: Oo7BSoo/RkGr73+EG0pbOQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
-   d="scan'208";a="134644255"
+   d="scan'208";a="134644268"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:44:51 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:44:53 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>,
 	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-next 02/15] wifi: iwlwifi: pcie: move ME check data to pcie
-Date: Sat,  3 May 2025 22:44:21 +0300
-Message-Id: <20250503224231.0b74726b2651.I2c6bff6945b9288eadf242895906ab1c2cb76389@changeid>
+Subject: [PATCH iwlwifi-next 03/15] wifi: iwlwifi: pcie: move invalid TX CMD into PCIe
+Date: Sat,  3 May 2025 22:44:22 +0300
+Message-Id: <20250503224231.d4916769a25b.Ife9b0283e50023efb6b3f44e81a6ff3885fe5a8d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250503194434.147426-1-miriam.rachel.korenblit@intel.com>
 References: <20250503194434.147426-1-miriam.rachel.korenblit@intel.com>
@@ -80,163 +80,129 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-There's no reason for this data to be in the generic transport
-struct, so move it to pcie.
+There's no reason for this to be in the generic transport
+struct, move it into the PCIe code.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/iwl-trans.h    |  6 -----
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 23 +++++++++++--------
- .../wireless/intel/iwlwifi/pcie/internal.h    |  6 +++++
- .../net/wireless/intel/iwlwifi/pcie/trans.c   |  5 ++--
- 4 files changed, 22 insertions(+), 18 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h     | 3 ---
+ drivers/net/wireless/intel/iwlwifi/pcie/internal.h | 9 +++++++--
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c    | 9 ++++++---
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c       | 6 ++++--
+ 4 files changed, 17 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 7dae61fb8f15..e956fcd89821 100644
+index e956fcd89821..771e4a3e05f5 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -885,9 +885,6 @@ struct iwl_txq {
-  * @restart.wk: restart worker
-  * @restart.mode: reset/restart error mode information
-  * @restart.during_reset: error occurred during previous software reset
-- * @me_recheck_wk: worker to recheck WiAMT/CSME presence
-- * @me_present: WiAMT/CSME is detected as present (1), not present (0)
-- *	or unknown (-1, so can still use it as a boolean safely)
-  * @trans_specific: data for the specific transport this is allocated for/with
-  * @dsbr_urm_fw_dependent: switch to URM based on fw settings
-  * @dsbr_urm_permanent: switch to URM permanently
-@@ -973,9 +970,6 @@ struct iwl_trans {
- 		bool during_reset;
- 	} restart;
+@@ -878,7 +878,6 @@ struct iwl_txq {
+  * @mbx_addr_1_step: step address data 1
+  * @pcie_link_speed: current PCIe link speed (%PCI_EXP_LNKSTA_CLS_*),
+  *	only valid for discrete (not integrated) NICs
+- * @invalid_tx_cmd: invalid TX command buffer
+  * @reduced_cap_sku: reduced capability supported SKU
+  * @step_urm: STEP is in URM, no support for MCS>9 in 320 MHz
+  * @restart: restart worker data
+@@ -962,8 +961,6 @@ struct iwl_trans {
  
--	struct delayed_work me_recheck_wk;
--	s8 me_present;
+ 	u8 pcie_link_speed;
+ 
+-	struct iwl_dma_ptr invalid_tx_cmd;
 -
- 	u8 request_top_reset:1,
- 	   do_top_reset:1;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 6bb7de8c43fe..27023baa6565 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1719,21 +1719,23 @@ EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_pci_find_dev_info);
- 
- static void iwl_pcie_recheck_me_status(struct work_struct *wk)
- {
--	struct iwl_trans *trans = container_of(wk, typeof(*trans),
--					       me_recheck_wk.work);
-+	struct iwl_trans_pcie *trans_pcie = container_of(wk,
-+							 typeof(*trans_pcie),
-+							 me_recheck_wk.work);
- 	u32 val;
- 
--	val = iwl_read32(trans, CSR_HW_IF_CONFIG_REG);
--	trans->me_present = !!(val & CSR_HW_IF_CONFIG_REG_IAMT_UP);
-+	val = iwl_read32(trans_pcie->trans, CSR_HW_IF_CONFIG_REG);
-+	trans_pcie->me_present = !!(val & CSR_HW_IF_CONFIG_REG_IAMT_UP);
- }
- 
- static void iwl_pcie_check_me_status(struct iwl_trans *trans)
- {
-+	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
- 	u32 val;
- 
--	trans->me_present = -1;
-+	trans_pcie->me_present = -1;
- 
--	INIT_DELAYED_WORK(&trans->me_recheck_wk,
-+	INIT_DELAYED_WORK(&trans_pcie->me_recheck_wk,
- 			  iwl_pcie_recheck_me_status);
- 
- 	/* we don't have a good way of determining this until BZ */
-@@ -1742,7 +1744,7 @@ static void iwl_pcie_check_me_status(struct iwl_trans *trans)
- 
- 	val = iwl_read_prph(trans, CNVI_SCU_REG_FOR_ECO_1);
- 	if (val & CNVI_SCU_REG_FOR_ECO_1_WIAMT_KNOWN) {
--		trans->me_present =
-+		trans_pcie->me_present =
- 			!!(val & CNVI_SCU_REG_FOR_ECO_1_WIAMT_PRESENT);
- 		return;
- 	}
-@@ -1750,12 +1752,12 @@ static void iwl_pcie_check_me_status(struct iwl_trans *trans)
- 	val = iwl_read32(trans, CSR_HW_IF_CONFIG_REG);
- 	if (val & (CSR_HW_IF_CONFIG_REG_ME_OWN |
- 		   CSR_HW_IF_CONFIG_REG_IAMT_UP)) {
--		trans->me_present = 1;
-+		trans_pcie->me_present = 1;
- 		return;
- 	}
- 
- 	/* recheck again later, ME might still be initializing */
--	schedule_delayed_work(&trans->me_recheck_wk, HZ);
-+	schedule_delayed_work(&trans_pcie->me_recheck_wk, HZ);
- }
- 
- static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-@@ -1904,11 +1906,12 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- static void iwl_pci_remove(struct pci_dev *pdev)
- {
- 	struct iwl_trans *trans = pci_get_drvdata(pdev);
-+	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
- 
- 	if (!trans)
- 		return;
- 
--	cancel_delayed_work_sync(&trans->me_recheck_wk);
-+	cancel_delayed_work_sync(&trans_pcie->me_recheck_wk);
- 
- 	iwl_drv_stop(trans->drv);
- 
+ 	struct {
+ 		struct delayed_work wk;
+ 		struct iwl_fw_error_dump_mode mode;
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-index c0a670994ce7..2cf2936dbf2d 100644
+index 2cf2936dbf2d..6eee20ffbfc8 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-@@ -420,6 +420,9 @@ struct iwl_pcie_txqs {
-  * @isr_stats: interrupt statistics
-  * @napi_dev: (fake) netdev for NAPI registration
-  * @txqs: transport tx queues data.
-+ * @me_present: WiAMT/CSME is detected as present (1), not present (0)
-+ *	or unknown (-1, so can still use it as a boolean safely)
-+ * @me_recheck_wk: worker to recheck WiAMT/CSME presence
+@@ -423,6 +423,7 @@ struct iwl_pcie_txqs {
+  * @me_present: WiAMT/CSME is detected as present (1), not present (0)
+  *	or unknown (-1, so can still use it as a boolean safely)
+  * @me_recheck_wk: worker to recheck WiAMT/CSME presence
++ * @invalid_tx_cmd: invalid TX command buffer
   */
  struct iwl_trans_pcie {
  	struct iwl_rxq *rxq;
-@@ -519,6 +522,9 @@ struct iwl_trans_pcie {
- 	char rf_name[32];
+@@ -525,6 +526,8 @@ struct iwl_trans_pcie {
  
- 	struct iwl_pcie_txqs txqs;
+ 	s8 me_present;
+ 	struct delayed_work me_recheck_wk;
 +
-+	s8 me_present;
-+	struct delayed_work me_recheck_wk;
++	struct iwl_dma_ptr invalid_tx_cmd;
  };
  
  static inline struct iwl_trans_pcie *
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 904922581b42..547adc45f164 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -2348,6 +2348,7 @@ static void iwl_trans_pcie_removal_wk(struct work_struct *wk)
- 
- void iwl_trans_pcie_reset(struct iwl_trans *trans, enum iwl_reset_mode mode)
+@@ -758,10 +761,12 @@ int iwl_txq_gen2_set_tb(struct iwl_trans *trans,
+ static inline void iwl_txq_set_tfd_invalid_gen2(struct iwl_trans *trans,
+ 						struct iwl_tfh_tfd *tfd)
  {
 +	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
- 	struct iwl_trans_pcie_removal *removal;
- 	char _msg = 0, *msg = &_msg;
++
+ 	tfd->num_tbs = 0;
  
-@@ -2358,9 +2359,9 @@ void iwl_trans_pcie_reset(struct iwl_trans *trans, enum iwl_reset_mode mode)
- 	if (test_bit(STATUS_TRANS_DEAD, &trans->status))
- 		return;
+-	iwl_txq_gen2_set_tb(trans, tfd, trans->invalid_tx_cmd.dma,
+-			    trans->invalid_tx_cmd.size);
++	iwl_txq_gen2_set_tb(trans, tfd, trans_pcie->invalid_tx_cmd.dma,
++			    trans_pcie->invalid_tx_cmd.size);
+ }
  
--	if (trans->me_present && mode == IWL_RESET_MODE_PROD_RESET) {
-+	if (trans_pcie->me_present && mode == IWL_RESET_MODE_PROD_RESET) {
- 		mode = IWL_RESET_MODE_FUNC_RESET;
--		if (trans->me_present < 0)
-+		if (trans_pcie->me_present < 0)
- 			msg = " instead of product reset as ME may be present";
- 		else
- 			msg = " instead of product reset as ME is present";
+ void iwl_txq_gen2_tfd_unmap(struct iwl_trans *trans,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 547adc45f164..bfde1e3dc74c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -2026,11 +2026,14 @@ void iwl_trans_pcie_free_pnvm_dram_regions(struct iwl_dram_regions *dram_regions
+ 
+ static void iwl_pcie_free_invalid_tx_cmd(struct iwl_trans *trans)
+ {
+-	iwl_pcie_free_dma_ptr(trans, &trans->invalid_tx_cmd);
++	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
++
++	iwl_pcie_free_dma_ptr(trans, &trans_pcie->invalid_tx_cmd);
+ }
+ 
+ static int iwl_pcie_alloc_invalid_tx_cmd(struct iwl_trans *trans)
+ {
++	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	struct iwl_cmd_header_wide bad_cmd = {
+ 		.cmd = INVALID_WR_PTR_CMD,
+ 		.group_id = DEBUG_GROUP,
+@@ -2040,11 +2043,11 @@ static int iwl_pcie_alloc_invalid_tx_cmd(struct iwl_trans *trans)
+ 	};
+ 	int ret;
+ 
+-	ret = iwl_pcie_alloc_dma_ptr(trans, &trans->invalid_tx_cmd,
++	ret = iwl_pcie_alloc_dma_ptr(trans, &trans_pcie->invalid_tx_cmd,
+ 				     sizeof(bad_cmd));
+ 	if (ret)
+ 		return ret;
+-	memcpy(trans->invalid_tx_cmd.addr, &bad_cmd, sizeof(bad_cmd));
++	memcpy(trans_pcie->invalid_tx_cmd.addr, &bad_cmd, sizeof(bad_cmd));
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 7c8cab294321..c728722533a8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -280,10 +280,12 @@ iwl_txq_gen1_tfd_tb_get_addr(struct iwl_tfd *tfd, u8 idx)
+ static void iwl_txq_set_tfd_invalid_gen1(struct iwl_trans *trans,
+ 					 struct iwl_tfd *tfd)
+ {
++	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
++
+ 	tfd->num_tbs = 0;
+ 
+-	iwl_pcie_gen1_tfd_set_tb(tfd, 0, trans->invalid_tx_cmd.dma,
+-				 trans->invalid_tx_cmd.size);
++	iwl_pcie_gen1_tfd_set_tb(tfd, 0, trans_pcie->invalid_tx_cmd.dma,
++				 trans_pcie->invalid_tx_cmd.size);
+ }
+ 
+ static void iwl_txq_gen1_tfd_unmap(struct iwl_trans *trans,
 -- 
 2.34.1
 
