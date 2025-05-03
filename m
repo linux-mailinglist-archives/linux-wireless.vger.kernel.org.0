@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-22374-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22375-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67563AA825E
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 21:45:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8808AA825F
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 21:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B52D189D76B
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 19:45:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F5E5189D50D
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 May 2025 19:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E69427EC76;
-	Sat,  3 May 2025 19:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BE627E1CF;
+	Sat,  3 May 2025 19:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iz8uzEll"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ad9CriFN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C56B1A83E8
-	for <linux-wireless@vger.kernel.org>; Sat,  3 May 2025 19:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C6D27F736
+	for <linux-wireless@vger.kernel.org>; Sat,  3 May 2025 19:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746301505; cv=none; b=QBtvbnOYP7flBr3q/G2jVBGtQsk/cn4nnknmzPODX1tdLI7XdV+Yni5WL73j8eiISIJAzbACX8QXZaGVbeHELtIZwezLFanDDRqLpKSEKs9zXXORskWknDR8Z3A8gViCFe2q2q7Qv+pkkni3TVuFAeA3yqQm4OHBsv4vjwIjvCc=
+	t=1746301508; cv=none; b=losFvjs0rzyaXes+ZuHsL5xztsXOA4jUbMJsXdxrr6rGlL+UXDZrl3L1EM5jIxJFOJihaiOp5L7ygy9P700UMpMO6WtMmUWkOyuWqP5QxpUATg1WtbbBEU2xdHco1tvimq32jAuy7N055cfmK6+ybKHgIF2kxWKHo/okrmSHMKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746301505; c=relaxed/simple;
-	bh=qmanLoEtoIwgNiKiLgVUsYn0xUDzRdDxoLiW+NAR1vc=;
+	s=arc-20240116; t=1746301508; c=relaxed/simple;
+	bh=wt8xcmBEoXwOpDZ7xtqiudexy6CNJJ0mUFE7pb0mqYQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fV13BCLiK3vg2h8hY2MgdVsWqVmyMGfoFnwBPU7GzjP674ZosvUdUiK043q/cemwxdJk5FnRU1hEoyMWOtoekjPCPCfZe8A/m5xUGZkvyqWCyJ8wP/T2lHNBBVWYL22MJ3PNh3yuIPHDdtCi9yCzZGvH1OxD9cDDQmvxChZy8fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iz8uzEll; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=lmSQgxtNDaxlu2OcQXSUcUuJw+yWZdX304cseyjO3n0/k0XZ9e7fbgRZkGof6QU+3ULOcPZl1iEvOE9+4V/DPvQxmXGTYeOgKlbYRfX+/x5im0iorP8VkT6XXa4afgGKIIrnjHxLuXGLA0kFGhmiCFn72IbQUwEh04nGE3XbIeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ad9CriFN; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746301503; x=1777837503;
+  t=1746301506; x=1777837506;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qmanLoEtoIwgNiKiLgVUsYn0xUDzRdDxoLiW+NAR1vc=;
-  b=Iz8uzEll5QPlRAK4eU4FOdHSQ6jstXeUrA2yFzzyCn//+WlZnNb1PhMb
-   0SiZ/M84rX32LfXCYbvEypugl55qHYRIBRJjIcZ4rOXdtftDkQWhcWf+v
-   gXOSuN3OJgIv7jKDIDX7dk05wN2ahiEWI7wi6tlJOMOekQJfSULq16Z0k
-   lterKOZMh1du+rL9tHc6hhgru192JQW5e5en9COm8uTw804DCoBD+637k
-   s9xWXoYrGkP5A+M4B/tCF3VN2HXGbmOMg2/YS1mHH6/MDuIcK8jUjswUt
-   L2LbbDBFCypkRkolTsmLb7W58bflrslMAOifU0wMF3ezNf+Bo2NM4bkN4
-   w==;
-X-CSE-ConnectionGUID: 9p+5TPbLTI+B5zYFvF7DGQ==
-X-CSE-MsgGUID: 8VsmYNiCTbqEv6jXg6KE0g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="58613264"
+  bh=wt8xcmBEoXwOpDZ7xtqiudexy6CNJJ0mUFE7pb0mqYQ=;
+  b=Ad9CriFN2+NboSO09hgkfDVTGXGWRl7sFIM8FD5aiNBudYeXAe7AT4Oi
+   uZHMdCAybU+Ut5hSz8oBnjK9S+AnluvoRjq84quwefYapDmcroRwzHHGx
+   TEGbtTn/4TJ3qlNoKtAqujHSHwtQmj6uM8g2QaD2IK9Gov4Vnlsw2rwL/
+   sTKtmsTKWStX00F+5BZRRtDMhtKxcp1+Tqmp9pUO3EqCRSgvWBmYcpIkh
+   61YNDf+uF5fsQ3aEizT6li5BJE0ar5pwt9tehElo+0zq8eVpDqhJrfHvx
+   KhvA/vETLbHX+WeUMmXtIY3IkDHuoSeVOBazs6mvn5LZTP/yPAQj5ikp9
+   Q==;
+X-CSE-ConnectionGUID: qZnlN2/WTpqKIbtfUQ2puQ==
+X-CSE-MsgGUID: Chv+hqrhQ4G6BAk76LwO7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="58613265"
 X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
-   d="scan'208";a="58613264"
+   d="scan'208";a="58613265"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:45:03 -0700
-X-CSE-ConnectionGUID: USgFb4qBSQOe+9jMrIVtiA==
-X-CSE-MsgGUID: pkqLAbcsQByiveBw1ylSrw==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:45:05 -0700
+X-CSE-ConnectionGUID: 9PR69/c7QtKEOhHlWRj7rA==
+X-CSE-MsgGUID: h96Gn8ToQn6Jjflzd4xzSg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
-   d="scan'208";a="134644305"
+   d="scan'208";a="134644320"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:45:01 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:45:03 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
 Cc: linux-wireless@vger.kernel.org,
-	Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 07/15] wifi: iwlwifi: handle reasons recommended by FW for leaving EMLSR
-Date: Sat,  3 May 2025 22:44:26 +0300
-Message-Id: <20250503224231.0582726248a4.I9d1d00eb98d10a3a742cb3e06665ce10e5ec93f0@changeid>
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH iwlwifi-next 08/15] wifi: iwlwifi: pass full FW info to transport
+Date: Sat,  3 May 2025 22:44:27 +0300
+Message-Id: <20250503224231.eac4006e81c5.Iebadc56bb2762e5f4d71f66bb2609d74b33daf11@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250503194434.147426-1-miriam.rachel.korenblit@intel.com>
 References: <20250503194434.147426-1-miriam.rachel.korenblit@intel.com>
@@ -78,169 +78,448 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-FW sends new notification version 2 indicating whether activating EMLSR
-mode is recommended or not. If recommendation is to leave EMLSR or force
-leave then FW sends the reason. Add debug log for the reason sent by FW.
+The code currently passes only the specific image that should
+be loaded, but then has to pass the IML (image loader) out of
+band, which is confusing. Pass the full FW data together with
+desired image type, and use the IML from that.
 
-Signed-off-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+This also cleans up the code in the various sub-drivers a bit
+as they no longer have to look up and check for the image.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/api/datapath.h  |  2 +-
- .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 43 ++++++++++++++++---
- drivers/net/wireless/intel/iwlwifi/mld/mlo.c  | 31 ++++++++++---
- .../net/wireless/intel/iwlwifi/mld/notif.c    |  3 +-
- 4 files changed, 66 insertions(+), 13 deletions(-)
+ .../net/wireless/intel/iwlwifi/dvm/ucode.c    |  8 ++-----
+ .../intel/iwlwifi/iwl-context-info-gen3.h     |  3 ++-
+ .../wireless/intel/iwlwifi/iwl-context-info.h |  2 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    | 15 +++++++++----
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  9 ++------
+ drivers/net/wireless/intel/iwlwifi/mld/fw.c   |  4 +---
+ drivers/net/wireless/intel/iwlwifi/mld/mld.c  |  2 --
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 10 +++------
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  3 ---
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c       | 22 ++++++++++---------
+ .../wireless/intel/iwlwifi/pcie/ctxt-info.c   |  4 ++--
+ .../wireless/intel/iwlwifi/pcie/internal.h    | 10 +++++++--
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |  8 ++++---
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  8 ++++---
+ 14 files changed, 54 insertions(+), 54 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h b/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
-index c139b965980d..9c88bb280609 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
-@@ -98,7 +98,7 @@ enum iwl_data_path_subcmd_ids {
- 
- 	/**
- 	 * @ESR_MODE_NOTIF: notification to recommend/force a wanted esr mode,
--	 *	uses &struct iwl_esr_mode_notif
-+	 *	uses &struct iwl_esr_mode_notif or &struct iwl_esr_mode_notif_v1
- 	 */
- 	ESR_MODE_NOTIF = 0xF3,
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-index b511e3aa6bb2..35a370918251 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-@@ -686,9 +686,9 @@ struct iwl_mvm_sta_disable_tx_cmd {
- 
- /**
-  * enum iwl_mvm_fw_esr_recommendation - FW recommendation code
-- * @ESR_RECOMMEND_LEAVE: recommendation to leave esr
-- * @ESR_FORCE_LEAVE: force exiting esr
-- * @ESR_RECOMMEND_ENTER: recommendation to enter esr
-+ * @ESR_RECOMMEND_LEAVE: recommendation to leave EMLSR
-+ * @ESR_FORCE_LEAVE: force exiting EMLSR
-+ * @ESR_RECOMMEND_ENTER: recommendation to enter EMLSR
-  */
- enum iwl_mvm_fw_esr_recommendation {
- 	ESR_RECOMMEND_LEAVE,
-@@ -697,14 +697,45 @@ enum iwl_mvm_fw_esr_recommendation {
- }; /* ESR_MODE_RECOMMENDATION_CODE_API_E_VER_1 */
- 
- /**
-- * struct iwl_esr_mode_notif - FWs recommendation/force for esr mode
-+ * struct iwl_esr_mode_notif_v1 - FW recommendation/force for EMLSR mode
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/ucode.c b/drivers/net/wireless/intel/iwlwifi/dvm/ucode.c
+index bb13ca5d666c..d504fa178cbe 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/ucode.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/ucode.c
+@@ -3,6 +3,7 @@
   *
-- * @action: the action to apply on esr state. See &iwl_mvm_fw_esr_recommendation
-+ * @action: the action to apply on EMLSR state.
-+ *	See &iwl_mvm_fw_esr_recommendation
-  */
--struct iwl_esr_mode_notif {
-+struct iwl_esr_mode_notif_v1 {
- 	__le32 action;
- } __packed; /* ESR_MODE_RECOMMENDATION_NTFY_API_S_VER_1 */
+  * Copyright(c) 2008 - 2014 Intel Corporation. All rights reserved.
+  * Copyright(c) 2015 Intel Deutschland GmbH
++ * Copyright (C) 2025 Intel Corporation
+  *****************************************************************************/
  
-+/**
-+ * enum iwl_esr_leave_reason - reasons for leaving EMLSR mode
-+ *
-+ * @ESR_LEAVE_REASON_OMI_MU_UL_DISALLOWED: OMI MU UL disallowed
-+ * @ESR_LEAVE_REASON_NO_TRIG_FOR_ESR_STA: No trigger for EMLSR station
-+ * @ESR_LEAVE_REASON_NO_ESR_STA_IN_MU_DL: No EMLSR station in MU DL
-+ * @ESR_LEAVE_REASON_BAD_ACTIV_FRAME_TH: Bad activation frame threshold
-+ * @ESR_LEAVE_REASON_RTS_IN_DUAL_LISTEN: RTS in dual listen
-+ */
-+enum iwl_esr_leave_reason {
-+	ESR_LEAVE_REASON_OMI_MU_UL_DISALLOWED	= BIT(0),
-+	ESR_LEAVE_REASON_NO_TRIG_FOR_ESR_STA	= BIT(1),
-+	ESR_LEAVE_REASON_NO_ESR_STA_IN_MU_DL	= BIT(2),
-+	ESR_LEAVE_REASON_BAD_ACTIV_FRAME_TH	= BIT(3),
-+	ESR_LEAVE_REASON_RTS_IN_DUAL_LISTEN	= BIT(4),
-+};
-+
-+/**
-+ * struct iwl_esr_mode_notif - FW recommendation/force for EMLSR mode
-+ *
-+ * @action: the action to apply on EMLSR state.
-+ *	See &iwl_mvm_fw_esr_recommendation
-+ * @leave_reason_mask: mask for various reasons to leave EMLSR mode.
-+ *	See &iwl_esr_leave_reason
-+ */
-+struct iwl_esr_mode_notif {
-+	__le32 action;
-+	__le32 leave_reason_mask;
-+} __packed; /* ESR_MODE_RECOMMENDATION_NTFY_API_S_VER_2 */
-+
- /**
-  * struct iwl_missed_beacons_notif - sent when by the firmware upon beacon loss
-  *  ( MISSED_BEACONS_NOTIF = 0xF6 )
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-index 824a328da28e..189946d5b2cb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-@@ -326,23 +326,44 @@ static void
- iwl_mld_vif_iter_emlsr_mode_notif(void *data, u8 *mac,
- 				  struct ieee80211_vif *vif)
+ #include <linux/kernel.h>
+@@ -293,15 +294,10 @@ int iwl_load_ucode_wait_alive(struct iwl_priv *priv,
  {
--	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
--	struct iwl_esr_mode_notif *notif = (void *)data;
-+	const struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	enum iwl_mvm_fw_esr_recommendation action;
-+	const struct iwl_esr_mode_notif *notif = NULL;
-+
-+	if (iwl_fw_lookup_notif_ver(mld_vif->mld->fw, DATA_PATH_GROUP,
-+				    ESR_MODE_NOTIF, 0) > 1) {
-+		notif = (void *)data;
-+		action = le32_to_cpu(notif->action);
-+	} else {
-+		const struct iwl_esr_mode_notif_v1 *notif_v1 = (void *)data;
-+
-+		action = le32_to_cpu(notif_v1->action);
-+	}
+ 	struct iwl_notification_wait alive_wait;
+ 	struct iwl_alive_data alive_data;
+-	const struct fw_img *fw;
+ 	int ret;
+ 	enum iwl_ucode_type old_type;
+ 	static const u16 alive_cmd[] = { REPLY_ALIVE };
  
- 	if (!iwl_mld_vif_has_emlsr_cap(vif))
- 		return;
+-	fw = iwl_get_ucode_image(priv->fw, ucode_type);
+-	if (WARN_ON(!fw))
+-		return -EINVAL;
+-
+ 	old_type = priv->cur_ucode;
+ 	priv->cur_ucode = ucode_type;
+ 	priv->ucode_loaded = false;
+@@ -310,7 +306,7 @@ int iwl_load_ucode_wait_alive(struct iwl_priv *priv,
+ 				   alive_cmd, ARRAY_SIZE(alive_cmd),
+ 				   iwl_alive_fn, &alive_data);
  
--	switch (le32_to_cpu(notif->action)) {
-+	switch (action) {
- 	case ESR_RECOMMEND_LEAVE:
-+		if (notif)
-+			IWL_DEBUG_INFO(mld_vif->mld,
-+				       "FW recommend leave reason = 0x%x\n",
-+				       le32_to_cpu(notif->leave_reason_mask));
+-	ret = iwl_trans_start_fw(priv->trans, fw, false);
++	ret = iwl_trans_start_fw(priv->trans, priv->fw, ucode_type, false);
+ 	if (ret) {
+ 		priv->cur_ucode = old_type;
+ 		iwl_remove_notification(&priv->notif_wait, &alive_wait);
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h b/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h
+index b028343672cc..3eba27fd5293 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h
+@@ -324,7 +324,8 @@ struct iwl_context_info_gen3 {
+ } __packed; /* IPC_CONTEXT_INFO_S */
+ 
+ int iwl_pcie_ctxt_info_gen3_alloc(struct iwl_trans *trans,
+-				  const struct fw_img *fw);
++				  const struct iwl_fw *fw,
++				  const struct fw_img *img);
+ void iwl_pcie_ctxt_info_gen3_kick(struct iwl_trans *trans);
+ void iwl_pcie_ctxt_info_gen3_free(struct iwl_trans *trans, bool alive);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h b/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
+index b495eb94d126..062334e1c449 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
+@@ -181,7 +181,7 @@ struct iwl_context_info {
+ 	__le32 reserved3[16];
+ } __packed;
+ 
+-int iwl_pcie_ctxt_info_init(struct iwl_trans *trans, const struct fw_img *fw);
++int iwl_pcie_ctxt_info_init(struct iwl_trans *trans, const struct fw_img *img);
+ void iwl_pcie_ctxt_info_free(struct iwl_trans *trans);
+ void iwl_pcie_ctxt_info_free_paging(struct iwl_trans *trans);
+ int iwl_pcie_init_fw_sec(struct iwl_trans *trans,
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+index 9f1c2870c5b7..0c3b713ac526 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+@@ -605,21 +605,28 @@ void iwl_trans_fw_alive(struct iwl_trans *trans, u32 scd_addr)
+ }
+ IWL_EXPORT_SYMBOL(iwl_trans_fw_alive);
+ 
+-int iwl_trans_start_fw(struct iwl_trans *trans, const struct fw_img *fw,
+-		       bool run_in_rfkill)
++int iwl_trans_start_fw(struct iwl_trans *trans, const struct iwl_fw *fw,
++		       enum iwl_ucode_type ucode_type, bool run_in_rfkill)
+ {
++	const struct fw_img *img;
+ 	int ret;
+ 
+ 	might_sleep();
+ 
+ 	WARN_ON_ONCE(!trans->rx_mpdu_cmd);
+ 
++	img = iwl_get_ucode_image(fw, ucode_type);
++	if (!img)
++		return -EINVAL;
 +
- 		iwl_mld_exit_emlsr(mld_vif->mld, vif,
- 				   IWL_MLD_EMLSR_EXIT_FW_REQUEST,
- 				   iwl_mld_get_primary_link(vif));
- 		break;
--	case ESR_RECOMMEND_ENTER:
- 	case ESR_FORCE_LEAVE:
-+		if (notif)
-+			IWL_DEBUG_INFO(mld_vif->mld,
-+				       "FW force leave reason = 0x%x\n",
-+				       le32_to_cpu(notif->leave_reason_mask));
-+		fallthrough;
-+	case ESR_RECOMMEND_ENTER:
- 	default:
- 		IWL_WARN(mld_vif->mld, "Unexpected EMLSR notification: %d\n",
--			 le32_to_cpu(notif->action));
-+			 action);
- 	}
+ 	clear_bit(STATUS_FW_ERROR, &trans->status);
+ 
+ 	if (trans->trans_cfg->gen2)
+-		ret = iwl_trans_pcie_gen2_start_fw(trans, fw, run_in_rfkill);
++		ret = iwl_trans_pcie_gen2_start_fw(trans, fw, img,
++						   run_in_rfkill);
+ 	else
+-		ret = iwl_trans_pcie_start_fw(trans, fw, run_in_rfkill);
++		ret = iwl_trans_pcie_start_fw(trans, fw, img,
++					      run_in_rfkill);
+ 
+ 	if (ret == 0)
+ 		trans->state = IWL_TRANS_FW_STARTED;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index 550045438223..cdd16c37a585 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -838,8 +838,6 @@ struct iwl_txq {
+  * @wide_cmd_header: true when ucode supports wide command header format
+  * @num_rx_queues: number of RX queues allocated by the transport;
+  *	the transport must set this before calling iwl_drv_start()
+- * @iml_len: the length of the image loader
+- * @iml: a pointer to the image loader itself
+  * @dev_cmd_pool: pool for Tx cmd allocation - for internal use only.
+  *	The user should use iwl_trans_{alloc,free}_tx_cmd.
+  * @dev_cmd_pool_name: name for the TX command allocation pool
+@@ -914,9 +912,6 @@ struct iwl_trans {
+ 
+ 	u8 num_rx_queues;
+ 
+-	size_t iml_len;
+-	u8 *iml;
+-
+ 	/* The following fields are internal only */
+ 	struct kmem_cache *dev_cmd_pool;
+ 	char dev_cmd_pool_name[50];
+@@ -961,8 +956,8 @@ void iwl_trans_op_mode_leave(struct iwl_trans *trans);
+ 
+ void iwl_trans_fw_alive(struct iwl_trans *trans, u32 scd_addr);
+ 
+-int iwl_trans_start_fw(struct iwl_trans *trans, const struct fw_img *fw,
+-		       bool run_in_rfkill);
++int iwl_trans_start_fw(struct iwl_trans *trans, const struct iwl_fw *fw,
++		       enum iwl_ucode_type ucode_type, bool run_in_rfkill);
+ 
+ void iwl_trans_stop_device(struct iwl_trans *trans);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/fw.c b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
+index 268ff7eceb47..c2ee4b2a7523 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
+@@ -227,8 +227,6 @@ static void iwl_mld_print_alive_notif_timeout(struct iwl_mld *mld)
+ 
+ static int iwl_mld_load_fw_wait_alive(struct iwl_mld *mld)
+ {
+-	const struct fw_img *fw =
+-		iwl_get_ucode_image(mld->fw, IWL_UCODE_REGULAR);
+ 	static const u16 alive_cmd[] = { UCODE_ALIVE_NTFY };
+ 	struct iwl_notification_wait alive_wait;
+ 	bool alive_valid = false;
+@@ -242,7 +240,7 @@ static int iwl_mld_load_fw_wait_alive(struct iwl_mld *mld)
+ 
+ 	iwl_dbg_tlv_time_point(&mld->fwrt, IWL_FW_INI_TIME_POINT_EARLY, NULL);
+ 
+-	ret = iwl_trans_start_fw(mld->trans, fw, true);
++	ret = iwl_trans_start_fw(mld->trans, mld->fw, IWL_UCODE_REGULAR, true);
+ 	if (ret) {
+ 		iwl_remove_notification(&mld->notif_wait, &alive_wait);
+ 		return ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
+index 81a4443d3b4c..8fb33b4459d7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
+@@ -348,8 +348,6 @@ iwl_mld_configure_trans(struct iwl_op_mode *op_mode)
+ 
+ 	trans->rx_mpdu_cmd = REPLY_RX_MPDU_CMD;
+ 	trans->rx_mpdu_cmd_hdr_size = sizeof(struct iwl_rx_mpdu_res_start);
+-	trans->iml = mld->fw->iml;
+-	trans->iml_len = mld->fw->iml_len;
+ 	trans->wide_cmd_header = true;
+ 
+ 	iwl_trans_configure(trans, &trans_cfg);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index d955f7c4ab8a..2ef5a48a970d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -315,7 +315,6 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
+ {
+ 	struct iwl_notification_wait alive_wait;
+ 	struct iwl_mvm_alive_data alive_data = {};
+-	const struct fw_img *fw;
+ 	int ret;
+ 	enum iwl_ucode_type old_type = mvm->fwrt.cur_fw_img;
+ 	static const u16 alive_cmd[] = { UCODE_ALIVE_NTFY };
+@@ -328,11 +327,7 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
+ 	    iwl_fw_dbg_conf_usniffer(mvm->fw, FW_DBG_START_FROM_ALIVE) &&
+ 	    !(fw_has_capa(&mvm->fw->ucode_capa,
+ 			  IWL_UCODE_TLV_CAPA_USNIFFER_UNIFIED)))
+-		fw = iwl_get_ucode_image(mvm->fw, IWL_UCODE_REGULAR_USNIFFER);
+-	else
+-		fw = iwl_get_ucode_image(mvm->fw, ucode_type);
+-	if (WARN_ON(!fw))
+-		return -EINVAL;
++		ucode_type = IWL_UCODE_REGULAR_USNIFFER;
+ 	iwl_fw_set_current_image(&mvm->fwrt, ucode_type);
+ 	clear_bit(IWL_MVM_STATUS_FIRMWARE_RUNNING, &mvm->status);
+ 
+@@ -345,7 +340,8 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
+ 	 * For the unified firmware case, the ucode_type is not
+ 	 * INIT, but we still need to run it.
+ 	 */
+-	ret = iwl_trans_start_fw(mvm->trans, fw, run_in_rfkill);
++	ret = iwl_trans_start_fw(mvm->trans, mvm->fw, ucode_type,
++				 run_in_rfkill);
+ 	if (ret) {
+ 		iwl_fw_set_current_image(&mvm->fwrt, old_type);
+ 		iwl_remove_notification(&mvm->notif_wait, &alive_wait);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 5629aa0a91fd..17aa614a2632 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1482,9 +1482,6 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 	trans->dbg.dest_tlv = mvm->fw->dbg.dest_tlv;
+ 	trans->dbg.n_dest_reg = mvm->fw->dbg.n_dest_reg;
+ 
+-	trans->iml = mvm->fw->iml;
+-	trans->iml_len = mvm->fw->iml_len;
+-
+ 	/* set up notification wait support */
+ 	iwl_notification_wait_init(&mvm->notif_wait);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+index 644ef3fb7ab7..c11ea1d4f7fc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+@@ -98,7 +98,8 @@ iwl_pcie_ctxt_info_dbg_enable(struct iwl_trans *trans,
  }
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/notif.c b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
-index 76b1a21135a8..61e00b13f2ce 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/notif.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
-@@ -336,7 +336,8 @@ CMD_VERSIONS(bt_coex_notif,
- CMD_VERSIONS(beacon_notification,
- 	     CMD_VER_ENTRY(6, iwl_extended_beacon_notif))
- CMD_VERSIONS(emlsr_mode_notif,
--	     CMD_VER_ENTRY(1, iwl_esr_mode_notif))
-+	     CMD_VER_ENTRY(1, iwl_esr_mode_notif_v1)
-+	     CMD_VER_ENTRY(2, iwl_esr_mode_notif))
- CMD_VERSIONS(emlsr_trans_fail_notif,
- 	     CMD_VER_ENTRY(1, iwl_esr_trans_fail_notif))
- CMD_VERSIONS(uapsd_misbehaving_ap_notif,
+ int iwl_pcie_ctxt_info_gen3_alloc(struct iwl_trans *trans,
+-				  const struct fw_img *fw)
++				  const struct iwl_fw *fw,
++				  const struct fw_img *img)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	struct iwl_context_info_gen3 *ctxt_info_gen3;
+@@ -187,7 +188,7 @@ int iwl_pcie_ctxt_info_gen3_alloc(struct iwl_trans *trans,
+ 	prph_sc_ctrl->step_cfg.mbx_addr_1 = cpu_to_le32(trans->mbx_addr_1_step);
+ 
+ 	/* allocate ucode sections in dram and set addresses */
+-	ret = iwl_pcie_init_fw_sec(trans, fw, &prph_scratch->dram.common);
++	ret = iwl_pcie_init_fw_sec(trans, img, &prph_scratch->dram.common);
+ 	if (ret)
+ 		goto err_free_prph_scratch;
+ 
+@@ -261,7 +262,8 @@ int iwl_pcie_ctxt_info_gen3_alloc(struct iwl_trans *trans,
+ 	trans_pcie->prph_scratch = prph_scratch;
+ 
+ 	/* Allocate IML */
+-	trans_pcie->iml = dma_alloc_coherent(trans->dev, trans->iml_len,
++	trans_pcie->iml_len = fw->iml_len;
++	trans_pcie->iml = dma_alloc_coherent(trans->dev, fw->iml_len,
+ 					     &trans_pcie->iml_dma_addr,
+ 					     GFP_KERNEL);
+ 	if (!trans_pcie->iml) {
+@@ -269,7 +271,7 @@ int iwl_pcie_ctxt_info_gen3_alloc(struct iwl_trans *trans,
+ 		goto err_free_ctxt_info;
+ 	}
+ 
+-	memcpy(trans_pcie->iml, trans->iml, trans->iml_len);
++	memcpy(trans_pcie->iml, fw->iml, fw->iml_len);
+ 
+ 	return 0;
+ 
+@@ -298,11 +300,9 @@ void iwl_pcie_ctxt_info_gen3_kick(struct iwl_trans *trans)
+ 	iwl_enable_fw_load_int_ctx_info(trans, trans->do_top_reset);
+ 
+ 	/* kick FW self load */
+-	iwl_write64(trans, CSR_CTXT_INFO_ADDR,
+-		    trans_pcie->ctxt_info_dma_addr);
+-	iwl_write64(trans, CSR_IML_DATA_ADDR,
+-		    trans_pcie->iml_dma_addr);
+-	iwl_write32(trans, CSR_IML_SIZE_ADDR, trans->iml_len);
++	iwl_write64(trans, CSR_CTXT_INFO_ADDR, trans_pcie->ctxt_info_dma_addr);
++	iwl_write64(trans, CSR_IML_DATA_ADDR, trans_pcie->iml_dma_addr);
++	iwl_write32(trans, CSR_IML_SIZE_ADDR, trans_pcie->iml_len);
+ 
+ 	iwl_set_bit(trans, CSR_CTXT_INFO_BOOT_CTRL,
+ 		    CSR_AUTO_FUNC_BOOT_ENA);
+@@ -313,9 +313,11 @@ void iwl_pcie_ctxt_info_gen3_free(struct iwl_trans *trans, bool alive)
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 
+ 	if (trans_pcie->iml) {
+-		dma_free_coherent(trans->dev, trans->iml_len, trans_pcie->iml,
++		dma_free_coherent(trans->dev, trans_pcie->iml_len,
++				  trans_pcie->iml,
+ 				  trans_pcie->iml_dma_addr);
+ 		trans_pcie->iml_dma_addr = 0;
++		trans_pcie->iml_len = 0;
+ 		trans_pcie->iml = NULL;
+ 	}
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+index 4e79ca7e47b2..81a8cac3bb0a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+@@ -161,7 +161,7 @@ int iwl_pcie_init_fw_sec(struct iwl_trans *trans,
+ }
+ 
+ int iwl_pcie_ctxt_info_init(struct iwl_trans *trans,
+-			    const struct fw_img *fw)
++			    const struct fw_img *img)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	struct iwl_context_info *ctxt_info;
+@@ -223,7 +223,7 @@ int iwl_pcie_ctxt_info_init(struct iwl_trans *trans,
+ 		TFD_QUEUE_CB_SIZE(IWL_CMD_QUEUE_SIZE);
+ 
+ 	/* allocate ucode sections in dram and set addresses */
+-	ret = iwl_pcie_init_fw_sec(trans, fw, &ctxt_info->dram);
++	ret = iwl_pcie_init_fw_sec(trans, img, &ctxt_info->dram);
+ 	if (ret) {
+ 		dma_free_coherent(trans->dev, sizeof(*trans_pcie->ctxt_info),
+ 				  ctxt_info, trans_pcie->ctxt_info_dma_addr);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index 259ad96c012d..360367bf6988 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -353,6 +353,7 @@ struct iwl_pcie_txqs {
+  * @prph_scratch_dma_addr: dma addr of prph scratch
+  * @ctxt_info_dma_addr: dma addr of context information
+  * @iml: image loader image virtual address
++ * @iml_len: image loader image size
+  * @iml_dma_addr: image loader image DMA address
+  * @trans: pointer to the generic transport area
+  * @scd_base_addr: scheduler sram base address in SRAM
+@@ -438,6 +439,7 @@ struct iwl_trans_pcie {
+ 	struct iwl_prph_info *prph_info;
+ 	struct iwl_prph_scratch *prph_scratch;
+ 	void *iml;
++	size_t iml_len;
+ 	dma_addr_t ctxt_info_dma_addr;
+ 	dma_addr_t prph_info_dma_addr;
+ 	dma_addr_t prph_scratch_dma_addr;
+@@ -1135,7 +1137,9 @@ void iwl_trans_pcie_release_nic_access(struct iwl_trans *trans);
+ /* transport gen 1 exported functions */
+ void iwl_trans_pcie_fw_alive(struct iwl_trans *trans, u32 scd_addr);
+ int iwl_trans_pcie_start_fw(struct iwl_trans *trans,
+-			    const struct fw_img *fw, bool run_in_rfkill);
++			    const struct iwl_fw *fw,
++			    const struct fw_img *img,
++			    bool run_in_rfkill);
+ void iwl_trans_pcie_stop_device(struct iwl_trans *trans);
+ 
+ /* common functions that are used by gen2 transport */
+@@ -1158,7 +1162,9 @@ void iwl_pcie_alloc_fw_monitor(struct iwl_trans *trans, u8 max_power);
+ 
+ /* transport gen 2 exported functions */
+ int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
+-				 const struct fw_img *fw, bool run_in_rfkill);
++				 const struct iwl_fw *fw,
++				 const struct fw_img *img,
++				 bool run_in_rfkill);
+ void iwl_trans_pcie_gen2_fw_alive(struct iwl_trans *trans);
+ int iwl_trans_pcie_gen2_send_hcmd(struct iwl_trans *trans,
+ 				  struct iwl_host_cmd *cmd);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+index bc19f082a8f5..9283547e9616 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+@@ -484,7 +484,9 @@ static void iwl_pcie_spin_for_iml(struct iwl_trans *trans)
+ }
+ 
+ int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
+-				 const struct fw_img *fw, bool run_in_rfkill)
++				 const struct iwl_fw *fw,
++				 const struct fw_img *img,
++				 bool run_in_rfkill)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	bool hw_rfkill, keep_ram_busy;
+@@ -553,14 +555,14 @@ int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
+ 
+ 	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210) {
+ 		if (!top_reset_done) {
+-			ret = iwl_pcie_ctxt_info_gen3_alloc(trans, fw);
++			ret = iwl_pcie_ctxt_info_gen3_alloc(trans, fw, img);
+ 			if (ret)
+ 				goto out;
+ 		}
+ 
+ 		iwl_pcie_ctxt_info_gen3_kick(trans);
+ 	} else {
+-		ret = iwl_pcie_ctxt_info_init(trans, fw);
++		ret = iwl_pcie_ctxt_info_init(trans, img);
+ 		if (ret)
+ 			goto out;
+ 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index c418be1ff75c..cdcd3c8e47a8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -1337,7 +1337,9 @@ void iwl_pcie_synchronize_irqs(struct iwl_trans *trans)
+ }
+ 
+ int iwl_trans_pcie_start_fw(struct iwl_trans *trans,
+-			    const struct fw_img *fw, bool run_in_rfkill)
++			    const struct iwl_fw *fw,
++			    const struct fw_img *img,
++			    bool run_in_rfkill)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	bool hw_rfkill;
+@@ -1409,9 +1411,9 @@ int iwl_trans_pcie_start_fw(struct iwl_trans *trans,
+ 
+ 	/* Load the given image to the HW */
+ 	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_8000)
+-		ret = iwl_pcie_load_given_ucode_8000(trans, fw);
++		ret = iwl_pcie_load_given_ucode_8000(trans, img);
+ 	else
+-		ret = iwl_pcie_load_given_ucode(trans, fw);
++		ret = iwl_pcie_load_given_ucode(trans, img);
+ 
+ 	/* re-check RF-Kill state since we may have missed the interrupt */
+ 	hw_rfkill = iwl_pcie_check_hw_rf_kill(trans);
 -- 
 2.34.1
 
