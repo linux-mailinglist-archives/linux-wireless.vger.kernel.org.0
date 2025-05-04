@@ -1,70 +1,69 @@
-Return-Path: <linux-wireless+bounces-22395-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22396-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B97AA85F8
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 May 2025 12:27:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7347AA85F9
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 May 2025 12:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 564DB1899D1A
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 May 2025 10:27:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A2F0178ABF
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 May 2025 10:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021641A3172;
-	Sun,  4 May 2025 10:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCE81AAE28;
+	Sun,  4 May 2025 10:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eyuYosuz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DWLFieHW"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409001AAE28
-	for <linux-wireless@vger.kernel.org>; Sun,  4 May 2025 10:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C253E18FC84
+	for <linux-wireless@vger.kernel.org>; Sun,  4 May 2025 10:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746354427; cv=none; b=FSYqVr4e/dcL0V/a9l+eAYCbEqiNyrP3tcyR1rTAPumjNM/taaYe1Qlc+2FzqJ60tP03qfMEqqmdj+gAxAb3q0jb4ZvxcDE9hBZfJue6ZVBTGA73XXfzkrnbB0uFCBUy8z/84L+SXW/WG3loXlJCnKAk/rqaH5QcJQC9YIRN9M8=
+	t=1746354429; cv=none; b=mKB4e81u9mPwtcOVE8PECwo9iQbtie69V/evFDAkdwLxUEquLmi0xcMH6EhBU5ZrqVYtVKJ4p74hX/h0yObMaVFoTyApqv0lxnrtQZNYBhDRrIWK9uYCpEfk15YcS7SI+FXMF1T+pnATMJ6rI9TGh12s+NYcfz4nLUXKT/dVngE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746354427; c=relaxed/simple;
-	bh=F2ud+Jwy5y5V9xMC9qCSwbX0DzEJTybNAX+ouWQkh0Y=;
+	s=arc-20240116; t=1746354429; c=relaxed/simple;
+	bh=asS9d46KahPTY8eQ9UxVN2+bGHEX3hnKeHyOAaqRZa8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LrB7ZCdBJK0ORsXT4IvovslXq6FKIajgNvm+vR54hwCC4HScXghPDkofqyCHWTcuihaWWUazA363QUb2kOyod+BS556lZmwDq4ygfzBOkV/mC2SWfyFYYr5UXdxZs5t/8Gj2ST3bmkztFNj9Tnm3GL4cQjEfRBBre9+mqruoBz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eyuYosuz; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=mTzaWydn089oymh3OoadPHcwLGz1quMfVfCt8HnnUQ0lBG0WDzHMF+RT4dwdKLGJIPG8+nwa5x+jWacpSu6NOselaWNGb34jB+FYT3u/bT/Cy3jX/I2G5SOag+eVEjLrLZJGH9VpEVQQqPobdJg+aXd+A1fzaUjdP/g42Jw7h4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DWLFieHW; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746354426; x=1777890426;
+  t=1746354427; x=1777890427;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=F2ud+Jwy5y5V9xMC9qCSwbX0DzEJTybNAX+ouWQkh0Y=;
-  b=eyuYosuzj4Cg2ajOJVf32IWAyeno1/YCDwcP7Q/docUjSRjUR1gh1zZ2
-   D6CbLz+ugdqNMstTTgxgEHV9UVlwA8JNWxgKuoOCqpJt2lYWeBU9OlgIk
-   e1SjXe+HDF6YgpAP7HQJ5gxvx8xBxaXF8Bd+An6+wAsHROAcdTifSe6IM
-   AsoZ7q9ElWfEsFo235Z4uDoHnFFTAwRHRZMhvu4LiKkpwmUhQyB7NFSpt
-   olkk2gkFxNgdLiEQQ+zqYFBHA4n4ndl2rslOcmf4pOan8srdrk+0gDoTz
-   27Koqvv/OrvD1qED1jfOIo6Jqfnj8lX/tDV6m2ulMaGtFpb2cd+7ah+dm
-   g==;
-X-CSE-ConnectionGUID: O4gCZVf6RByWGZG5NOUsVA==
-X-CSE-MsgGUID: lT3jJfY0T2C2bCpMo8vTsw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="65511502"
+  bh=asS9d46KahPTY8eQ9UxVN2+bGHEX3hnKeHyOAaqRZa8=;
+  b=DWLFieHW47eIbuRdWf6g/jbE9PRCm83I9Tf0cVi2dI+MtfG0EigYQkdT
+   jOa/OGC3zFSazuCIVF0lsyLu9EpwBn2jcZOSMt3vkka91YA+hsbqzIGM2
+   Gs7Hf0jgzFpDDRADQJonirZm50ZXd/ZhMzBBs6a1xPwRgZxE2tl/jE215
+   H5lfyFhq2eOh2LyamDR36i7uX21iJEOSBAFdfc8TYB3NcVryx67oorLZV
+   zewj8eFyQdOU0NcXT56YlPSMGHOv1jgm2iCA6xdIGA7cdg/v82zo1VVD0
+   RrAsiWJZt9pw/eyjfx5UMI6lDJPSg5nH0WKg0C5HrPVg2fy3ghm8VW6y2
+   A==;
+X-CSE-ConnectionGUID: /wLf5qbQQYGbkPGWQMjOZA==
+X-CSE-MsgGUID: tb0tJW9xSpqekanDgIgrIg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="65511504"
 X-IronPort-AV: E=Sophos;i="6.15,261,1739865600"; 
-   d="scan'208";a="65511502"
+   d="scan'208";a="65511504"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2025 03:27:05 -0700
-X-CSE-ConnectionGUID: dXdbHCB/T0qGUwfwXLlQEA==
-X-CSE-MsgGUID: R3VRCWTjQXuhsmufaEtL3w==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2025 03:27:07 -0700
+X-CSE-ConnectionGUID: gfoK31OxQfaew6Kf1kfq0g==
+X-CSE-MsgGUID: 0dWfgZoBQKyzZPkf2+jFZw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,261,1739865600"; 
-   d="scan'208";a="139778899"
+   d="scan'208";a="139778905"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2025 03:27:04 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2025 03:27:06 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 10/15] wifi: iwlwifi: mvm: remove HT greenfield support
-Date: Sun,  4 May 2025 13:26:25 +0300
-Message-Id: <20250504132447.805ec090c61f.Iafd87f62ceb463b72f861a5348078999dcaace92@changeid>
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH iwlwifi-next 11/15] wifi: iwlwifi: bump FW API to 99 for BZ/SC/DR devices
+Date: Sun,  4 May 2025 13:26:26 +0300
+Message-Id: <20250504132447.677db25ce2c7.Ie4a7a00ff3562bfed1e8ac1fb42c1382cd24a486@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250504102630.757937-1-miriam.rachel.korenblit@intel.com>
 References: <20250504102630.757937-1-miriam.rachel.korenblit@intel.com>
@@ -77,114 +76,54 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+Start supporting API version 99 for those devices.
 
-No hardware that uses iwlmvm actually supports HT greenfield.
-Remove the support and then clean up the v1 rate API by doing
-a conversion to v2 rate API, the only thing v1 covered that
-couldn't be done in v2 was HT greenfield.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h |  3 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c  |  9 ++++---
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c  |  2 --
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c  | 27 --------------------
- 4 files changed, 5 insertions(+), 36 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/dr.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 37a432081995..19dcc2ed8396 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1801,9 +1801,6 @@ int iwl_mvm_legacy_rate_to_mac80211_idx(u32 rate_n_flags,
- void iwl_mvm_hwrate_to_tx_rate(u32 rate_n_flags,
- 			       enum nl80211_band band,
- 			       struct ieee80211_tx_rate *r);
--void iwl_mvm_hwrate_to_tx_rate_v1(u32 rate_n_flags,
--				  enum nl80211_band band,
--				  struct ieee80211_tx_rate *r);
- u8 iwl_mvm_mac80211_idx_to_hwrate(const struct iwl_fw *fw, int rate_idx);
- u8 iwl_mvm_mac80211_ac_to_ucode_ac(enum ieee80211_ac_numbers ac);
- bool iwl_mvm_is_nic_ack_enabled(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-index c2729dab8e79..50496edf41f8 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-@@ -2697,8 +2697,8 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
- 	lq_sta = mvm_sta;
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+index cc405a4b21a9..f3144ad251f3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+@@ -10,7 +10,7 @@
+ #include "fw/api/txq.h"
  
- 	spin_lock_bh(&lq_sta->pers.lock);
--	iwl_mvm_hwrate_to_tx_rate_v1(lq_sta->last_rate_n_flags,
--				     info->band, &info->control.rates[0]);
-+	iwl_mvm_hwrate_to_tx_rate(iwl_new_rate_from_v1(lq_sta->last_rate_n_flags),
-+				  info->band, &info->control.rates[0]);
- 	info->control.rates[0].count = 1;
+ /* Highest firmware API version supported */
+-#define IWL_BZ_UCODE_API_MAX	98
++#define IWL_BZ_UCODE_API_MAX	99
  
- 	/* Report the optimal rate based on rssi and STA caps if we haven't
-@@ -2708,8 +2708,9 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
- 		optimal_rate = rs_get_optimal_rate(mvm, lq_sta);
- 		last_ucode_rate = ucode_rate_from_rs_rate(mvm,
- 							  optimal_rate);
--		iwl_mvm_hwrate_to_tx_rate_v1(last_ucode_rate, info->band,
--					     &txrc->reported_rate);
-+		last_ucode_rate = iwl_new_rate_from_v1(last_ucode_rate);
-+		iwl_mvm_hwrate_to_tx_rate(last_ucode_rate, info->band,
-+					  &txrc->reported_rate);
- 		txrc->reported_rate.count = 1;
- 	}
- 	spin_unlock_bh(&lq_sta->pers.lock);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-index a5cd0fd7a11a..8eb0aa448c85 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-@@ -490,8 +490,6 @@ void iwl_mvm_rx_rx_mpdu(struct iwl_mvm *mvm, struct napi_struct *napi,
- 	if (!(rate_n_flags & RATE_MCS_CCK_MSK_V1) &&
- 	    rate_n_flags & RATE_MCS_SGI_MSK_V1)
- 		rx_status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
--	if (rate_n_flags & RATE_HT_MCS_GF_MSK)
--		rx_status->enc_flags |= RX_ENC_FLAG_HT_GF;
- 	if (rate_n_flags & RATE_MCS_LDPC_MSK_V1)
- 		rx_status->enc_flags |= RX_ENC_FLAG_LDPC;
- 	if (rate_n_flags & RATE_MCS_HT_MSK_V1) {
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index a9b2b846ab37..1da0a829f529 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1500,33 +1500,6 @@ void iwl_mvm_hwrate_to_tx_rate(u32 rate_n_flags,
- 	}
- }
+ /* Lowest firmware API version supported */
+ #define IWL_BZ_UCODE_API_MIN	93
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
+index 7211c6376b99..c4f637627901 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
+@@ -9,7 +9,7 @@
+ #include "fw/api/txq.h"
  
--void iwl_mvm_hwrate_to_tx_rate_v1(u32 rate_n_flags,
--				  enum nl80211_band band,
--				  struct ieee80211_tx_rate *r)
--{
--	if (rate_n_flags & RATE_HT_MCS_GF_MSK)
--		r->flags |= IEEE80211_TX_RC_GREEN_FIELD;
--
--	r->flags |=
--		iwl_mvm_get_hwrate_chan_width(rate_n_flags &
--					      RATE_MCS_CHAN_WIDTH_MSK_V1);
--
--	if (rate_n_flags & RATE_MCS_SGI_MSK_V1)
--		r->flags |= IEEE80211_TX_RC_SHORT_GI;
--	if (rate_n_flags & RATE_MCS_HT_MSK_V1) {
--		r->flags |= IEEE80211_TX_RC_MCS;
--		r->idx = rate_n_flags & RATE_HT_MCS_INDEX_MSK_V1;
--	} else if (rate_n_flags & RATE_MCS_VHT_MSK_V1) {
--		ieee80211_rate_set_vht(
--			r, rate_n_flags & RATE_VHT_MCS_RATE_CODE_MSK,
--			FIELD_GET(RATE_MCS_NSS_MSK, rate_n_flags) + 1);
--		r->flags |= IEEE80211_TX_RC_VHT_MCS;
--	} else {
--		r->idx = iwl_mvm_legacy_rate_to_mac80211_idx(rate_n_flags,
--							     band);
--	}
--}
--
- /*
-  * translate ucode response to mac80211 tx status control values
-  */
+ /* Highest firmware API version supported */
+-#define IWL_DR_UCODE_API_MAX	98
++#define IWL_DR_UCODE_API_MAX	99
+ 
+ /* Lowest firmware API version supported */
+ #define IWL_DR_UCODE_API_MIN	96
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
+index 033cbf4d1a0d..a0b5c4b8fc57 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
+@@ -10,7 +10,7 @@
+ #include "fw/api/txq.h"
+ 
+ /* Highest firmware API version supported */
+-#define IWL_SC_UCODE_API_MAX	98
++#define IWL_SC_UCODE_API_MAX	99
+ 
+ /* Lowest firmware API version supported */
+ #define IWL_SC_UCODE_API_MIN	98
 -- 
 2.34.1
 
