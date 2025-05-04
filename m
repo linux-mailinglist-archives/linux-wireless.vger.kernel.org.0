@@ -1,246 +1,125 @@
-Return-Path: <linux-wireless+bounces-22402-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22401-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C7DAA8665
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 May 2025 14:51:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0A0AA865C
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 May 2025 14:36:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D98CE18990B5
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 May 2025 12:51:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F9283AF1FA
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 May 2025 12:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573D11C5490;
-	Sun,  4 May 2025 12:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004911B0411;
+	Sun,  4 May 2025 12:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="tc9y/1v6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OIA6N3ID"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sonic305-21.consmr.mail.ne1.yahoo.com (sonic305-21.consmr.mail.ne1.yahoo.com [66.163.185.147])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAB815ECDF
-	for <linux-wireless@vger.kernel.org>; Sun,  4 May 2025 12:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.185.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E791F948
+	for <linux-wireless@vger.kernel.org>; Sun,  4 May 2025 12:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746363054; cv=none; b=IJ7Wywnyi2sDP0x6oJCqGSwk4LwPiO9ycdoD3HD16D+gFkKmSMrdkoNJMN0dXjC7NEuqCBBKKqNZ4MCNKksDY04yqve2j3QD16tWN5QNqOW7dLKs9Q8lTunEf1VJ+ppaH6++4lTqLu8dfSnsHlU0S35jEGoHtPUb3qUzRhEUvgs=
+	t=1746362215; cv=none; b=rmsmoFgvj42NBxixAoPo1jz8TItwAb/rVJDQANT5IXJHXYKoOhQsNXR6L2XtC0/VBdSS7mJnNhGjh3z2Daz+fDudxtDH9f1aioDh3t9VNP3AnoVeS9PTY5DKgUh+UNXeBhEVmq8D52NE5kujBB7dK2g+b4N9lMjDCyTm9OPNbxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746363054; c=relaxed/simple;
-	bh=KU+9Q2sf2elqxmlkywg5UaKeeF4W+MjXIQ/bimyTBeM=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type:
-	 References; b=HZUaXTECtD+haPkTOb1Z/u/IHUeCyiookmOztnR0kQVemQrAeuDKGGSygQBQhjy2j45Su0JkyDX+/hhcdd1D33vv9K9FvRaY/N/ySsTlEThXtLD5JKgH4NRRge1RAIfSm7kyoogvNMDDez2cUWE5sJpXsycYCcWPnmYgIUMlrxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=tc9y/1v6; arc=none smtp.client-ip=66.163.185.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1746363045; bh=NOTcye4wrXHyxRjNRnZdhgNsdQjuIqvzPSm16mN+V28=; h=Date:From:Subject:To:Cc:References:From:Subject:Reply-To; b=tc9y/1v6NgAOVrtc0C51IWA/LzUohrwOCPexOgl/b6tdqnyXCnTnA8iqLQpSnfVkSbGNP9aDxdls+tz/F+47JkASgDeNzUsqvNDqg/5ay9/ycm7Il5hJ/wmgAkRQLClSdNvfI77m5BuXZAaTZHNs9+t/PWNEJUxju/IYyQiomLsJKI4clKpIoKtUMq4EDIHbqaiHjBAxZGHc3P/5/Gpiy+Dhte6lD52OlwrIsjgqd9Nr4vNNZ695pwcqqwtZeVrY0DR6cV/yyHKb6IQaJsUqmFm/tFAX7mS3DI+k3V+Wt9tBPS/vIISkBv3IppLZGQLOKh+9dhWOyiEPjtR+WaY9xg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1746363045; bh=3c3YYeT+EBktH4iqSKyxFjzeTdJ8xhA1+ThrtCHVvHz=; h=X-Sonic-MF:Date:From:Subject:To:From:Subject; b=djlr93HDUnw8URoe94ctI2g09fMLNPYebwqYhoJuNtk0YvEUXSkK83/hX6SxEVW33NJf4B1s9Z/TwxSQ0Ch/NLRkSTQtAl61deUajwloR5m/CUk8exLH3Tnhyo8YxuUk5iTwfAWlc+2to6G9ek1zqvo7ZZivFOi8/iUvn50FSRWf7qcOSG5wdyAEvAFJN8YS7FFc10Z+R3e9shZ6lfvEst8SVt6OkSa07efl27HKuot0EIzaP2d39F1xesIU8nRutVqIs4acUpWuZltrptfKFt2ImsHgcTAzxvO2Z2l2M1doKBdzZ7jmjUwY6MYpPdx7ueY0G90t/1XAEG/4SWa2Xw==
-X-YMail-OSG: DAoQMbMVM1m_eQ80102u3MeGN3F3zZMzVAZm917mMsqtNEaDiviEi18bNm.ttcB
- O2uyM5Kulcdh5Pr4yHkc41gt4FNs4zQZcdhmtrvW_11JFy8W8hsPRF2C6ijreZPDDNu2R7wK_vlp
- 9_w7Rlajt1mTUHSlulQgAPpzdZsPTwm8snLYFMuERbB.rhTCm6sqy4H4v50afVF79wFX6TZqCIO.
- Z1mJ7fhuS1odLIFQa75EV4IFVqz6iKzTIo9vCJb52tXKZU5KkDLiXSS7405nxxeGpxJFUGLCBqVg
- z5eMd9ED.OatQlWFzUlwa.bCy7PI1pYO8ws6.ysN3MubLzJAQevEywLQQHhoipDs5LV.sbAnRGJq
- kAL49wdg6D3KjA2nB4HZF0Pxj9hZWwtaF2NLn2HxuCmb52Ch4uiB0q3Bnvdo3rnuAF9.GO0vcAsW
- e_23Hgn47DfhyeH4PYfFyiY5mKk9KW_IuGcYX9.EWA7Uo24krjcFiWztQIJmpR4OQ4jkugpgIk.j
- oCnRU8M_AP_m9PwTfFvwa3lwRU6OM33EG1rSU8KmnG7TPdOi6y_4oweB.sNpkSifGk8m0V5ASp02
- LVbBLwDxJRZPO5Apqdenu3rxTYoUDIfYeU1WgsDuZraQEFBTqmqck12uf_4RMdlNTvnMCVE2fVSX
- j9sFBRjklog1.W3w03FOEETmv6Lq73_saG9P_Xoc8jjq.S523jvQL1pZdkV_RTR_uajtI_6HNctO
- dgxTJspzGGEMynT0ORce5fa7QHR5jGOn5WtppH8LXSDBWnR3ZvrxmtK4VuYGX4inTg4aig7GamqJ
- b2aSWqlS7CUeUP_58ZsavXMC2VXhfDtNNDWCnZQE6GOYotgyfQ8MSRcKcj8X2r008hRqydH0ZOO2
- lrva_iIbhW7tkTsgRGJ6JS8cbNykNpmry7dRZi2XBd8iLi.rOP1QTYGXxzyfk6.8E4ywOaD.YukF
- wqxfTDcgAk7PzsrtFfNL1sBqCFWrhQuYQybNgWQtNl1guc_QN7JvrEAF3cjttkdPf7tbLcYzZENn
- EgPoy6d.GM2BzMNvYdli29ctUBhzg7GCBzH4L57kTNyjix9ehsxK71BUcBhvrCyGkfQ6WszEI8rK
- 6Jms5LyUCUb0ZXC_.xbcDzec64OeGnm86NnIDDiIDKtoXYekRbBmzLjr0wtq6D21t4HLej_9YMLb
- _f_V_AnvXdL91brwNwSnWt7cCkx9cCVJHMQ7lzny_r2ImfaCFqXLckjaDJ4_HfzffUKi42zneshd
- HE8UGFnxB1vU_h3X6og7DqDW2aJLyS1osLObdPOKo70bsmf0Q8riqVBKxpFU.YGNkgAX4jHxWEYx
- Jz2gCSg6DMYvJEdVXp95Cenig5int618f1lDkQMhn_jjOELFGrt0UhQlesmFLYrxgRoMscOgixgR
- dub7ZSuwjBMdRvRAb4ZrLRm_Dh0CQ_FSkqLA7ejOwm6PLEAvWBXM38XFhlYcQjZdVXuxG6nc7YgY
- tJcD3fG5Hd1ZDkFS7x73yXamI0VevIfzlYrS0_2B0HuR0MZkGfBn3Xzk8Fzefk8sO8Sm8sLhQv.P
- I4J03YAufNQEbtNq0KfeT3HXKDjd4GIUzOd2Tl_JnMfu7jhSkyq_DXCE8QiDWlgCEhluuNkU76BA
- kOeFqz927YVEs21mKH4hCZNMbqKFi5zYBEj5D11vyGv.VrBspBF8Kg6ZgnfKa6Kh6xrl4v9OeNLj
- .z9vByqfN6Z0MIbrEokXr7zBJmrc1fq3yuHbPwMek7PjKYtzyuinGGcMJ32q8tVZbNA1nchfeyl9
- mjdbuQ8tjUE77BY2JatX8eLySFxeTXiV3MCc9cwohU7yQUtMXrOJzqsUogxSG_1MCkeCAtp5XFA8
- ebzTpnV0Qx9_pK9tJqUK9t4vxcjlukn0WskZaU4Pnwl4BOZ_XiGrj8rGDt41CFy9BaTW0XY9m3yY
- gS1co0bE0.yObpqqMPqVKKsNaBkbhJF9L6BjghFtLCIbS.acAQt.HNhM8zZPxDgKLmdLxs1jWDK.
- fsltam2WCj4xNU015VAvR84mpFEZbz5D_7vdCw_.sjkAZKkpq_K2h.w0yP_OKDkzciXXJrI_ovVT
- .8QUrs05Z75.V3Qc8vpZjNSnqp.upDRrUvZwaTCutNKgncFmH0.FwTonS1gYacTJI_VWW01X2.BQ
- psQ7I9yNUhsfmwXVMkzKHejivpfqWXWX4V80UDHADAvkcY67.J_vuoTsn0p0wbRd1Dfm9WtUXr7k
- ZiSbKwkOz6w_8IF.aeZcBpEo3mlyNY62ocPYHPMCFozKG66qYy63OOimTrR9I2vctBrIzldae92t
- N
-X-Sonic-MF: <veysel.macit@yahoo.com>
-X-Sonic-ID: e89f4db9-dd99-494b-b64b-14ddee54da6f
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.ne1.yahoo.com with HTTP; Sun, 4 May 2025 12:50:45 +0000
-Received: by hermes--production-ir2-858bd4ff7b-86wkp (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID d8912e0ef56b828e96d0aeeec9cb51f8;
-          Sun, 04 May 2025 12:10:13 +0000 (UTC)
-Message-ID: <5eea68e3-9857-4a6e-92b6-7bbff8016ac0@yahoo.com>
-Date: Sun, 4 May 2025 14:10:11 +0200
+	s=arc-20240116; t=1746362215; c=relaxed/simple;
+	bh=CM08xeHPPzPAtEx6J7jBMfY5mggSPnim894fiEb9CM0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=TVhxVHCk/7IMeiZSwbI75kLyVQxmERZfE6L6MZw+nidx6azXLP/Lf9kLOZwQBHKZ/VHy/ausWz1fSozxZ1A5e6fBenqNZVHM/zeBi3sdf41sx7zYZwFLEuvot4AiKl7sZnYIEt2dRKJzeAgrSpyQW+9GQlRC3vT0wBt8qQishX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OIA6N3ID; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43d0c18e84eso14159215e9.3
+        for <linux-wireless@vger.kernel.org>; Sun, 04 May 2025 05:36:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746362211; x=1746967011; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CM08xeHPPzPAtEx6J7jBMfY5mggSPnim894fiEb9CM0=;
+        b=OIA6N3IDWQzaiE0p0v1l3CBSFTgin8lv4vs5etRVyKkE28GKfsTrSddAY8FI2GX8r3
+         ElQpfFuFDsfguEHzl8kW1t67kDjfZ9S3qNUK2V8EMPCpXGX0DWNHtGatKw6G6zvy8hBX
+         lqNbUu4WEtzFSZGBUFv0drn3A0xsMSRWDKPFHTLjrfCtmYCbNXSfCaENkcPaWfRVGwaB
+         ea4a+PH1DEMg63Csg+fuvOlZeS7RqZABKeS5AgbR+ZqtU4C6R722lN2VeaAs7RbZfIQy
+         Q3ZomwEgHXsm26h8L1sIoQ4+GS0INZRkzKXkMFY4vKiURS4WWJMQn5jeOPMilfe0Q07r
+         eLPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746362211; x=1746967011;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=CM08xeHPPzPAtEx6J7jBMfY5mggSPnim894fiEb9CM0=;
+        b=Rd0jpoDZGMJfqIrWOkilPLddCaCqhQvC+Tqf50acFL1AriFOug0y74goj5evfC+up1
+         k9kMGsi2N1eJ+6a7Tec0CHs1ipxdWUwBxMakmThw+NC/8BwibRWWIJTSkim9JeZnfjeD
+         2DIwZDI+FV7OCGS/7SQruWSjl0izWpHnbDn1mQVHbCtLOW6zVAyZMbHMATod3j58mu2T
+         K4XqyotZASJVe28JQQfhxhZQKV5W9MYNH4eo6UZfhE7dG8X40KoLe7KGeoG/9m8LJZkw
+         z03QpzpXsbGfDoe5bmtAGNkd2Sljq30z33GDYe6u8+V81CrmVn1bD8zIs9G7dF4FWu3e
+         YI5Q==
+X-Gm-Message-State: AOJu0YweUselSEzcDbRmQnrsK2AH2Ii4vBW5750+z22mVMYLyMisAbS7
+	PvW2xyJ8EexJ3nfYnZlRVkm6UfIyM9OEtZHKAlbv/yL3UKUWZ64Q
+X-Gm-Gg: ASbGncs4cnUg+Sx/UMZm4QdYfgEBtx6XHlcF/nYLdE/IVS6NvFHTfuu9BD+HMb6ztdp
+	zwX6rOB4zYV2dBZW39ekeiCc32vZlkfWL7Ir/Pi5ws5HB3dEfKLPC3jkpYmObTXP9TazwM9tAgb
+	4hipYY4VSDHi2shJTO0kO0apLiDq96VYGZ8jzPPh2mPG3+9VYCI3az3JTGcmXPekSDLhurbyRur
+	PbTUTIVZwmrCYwvvYSpE32EE0aCJvRu2eK0yfXkyu0sHY9mXc7nNtMthX4FqR78U3V4Sn+a0x+V
+	FgMCZtRGlb5MFXb/gaweySd67IbCfeP5DashnqgZJiMcq9KMcuYntwqPkOc=
+X-Google-Smtp-Source: AGHT+IEApNLeMqXPTD74HBZS5fOAX/1hg+752BPbILvPZGU6lVPtLCQ59W/vyrEscsgOIHE1jBlxFw==
+X-Received: by 2002:a05:600c:828c:b0:43d:160:cd97 with SMTP id 5b1f17b1804b1-441c4923807mr26739845e9.25.1746362210525;
+        Sun, 04 May 2025 05:36:50 -0700 (PDT)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441c0dfc537sm55192625e9.16.2025.05.04.05.36.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 04 May 2025 05:36:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Veysel B. Macit" <veysel.macit@yahoo.com>
-Subject: panic due to null pointer dereference around
- mt7925_sta_set_decap_offload()
-To: linux-wireless@vger.kernel.org
-Cc: mingyen.hsieh@mediatek.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-References: <5eea68e3-9857-4a6e-92b6-7bbff8016ac0.ref@yahoo.com>
-X-Mailer: WebService/1.1.23772 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 04 May 2025 14:36:48 +0200
+Message-Id: <D9NDQJB4VMWA.V4IPOZOIR46W@gmail.com>
+Subject: Re: [PATCH] Revert "ath11k: clear the keys properly via
+ DISABLE_KEY"
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Vasanthakumar Thiagarajan" <quic_vthiagar@quicinc.com>,
+ <ath11k@lists.infradead.org>, "Sven Eckelmann" <se@simonwunderlich.de>
+Cc: <linux-wireless@vger.kernel.org>, "Steffen Moser"
+ <lists@steffen-moser.de>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250117191455.3395145-1-nico.escande@gmail.com>
+ <20e0a239-3d23-473b-5bc8-41bc25a64088@quicinc.com>
+In-Reply-To: <20e0a239-3d23-473b-5bc8-41bc25a64088@quicinc.com>
 
+On Sat Jan 18, 2025 at 11:29 AM CET, Vasanthakumar Thiagarajan wrote:
+> Hi Nicolas,
+>
+> On 1/18/2025 12:44 AM, Nicolas Escande wrote:
+>> This reverts commit 436a4e88659842a7cf634d7cc088c8f2cc94ebf5.
+>>=20
+>> This as been reported by multiple people [0] that with this commit,
+>> broadcast packets were not being delivered after GTK exchange.
+>> Qualcomm seems to have a similar patch [1] confirming the issue.
+>>=20
+>
+> This will re-open https://www.spinics.net/lists/hostap/msg08921.html
+> reported by Sven. The recommended ath firmware ABI during GTK re-keying
+> is SET_KEY instead of current DEL_KEY followed by SET_KEY. We are looking
+> at other options like some marking by mac80211 for the driver to be able
+> to identify if the received DEL_KEY is for re-keying. Also I'm curious
+> if roaming between secure and non-secure mode is a critical use case.
+> If not, we can probably go ahead with this revert as temporary WAR,
+> @Sven?
+>
+> Vasanth
 
+Hello,
 
-it is easy to reproduce issue.
+Any news on this ?
+I would hate for this to sink into oblivion once again given how hard this
+affects end users when it does hit.
 
-with mt7925 ap mode just try to disconnect and several time and it 
-occurs occasionally.
-
-[  222.120550] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-[  222.120585] CPU: 1 UID: 0 PID: 1072 Comm: hostapd Tainted: G        
-W  O       6.11.0-24-generic #24~24.04.1-Ubuntu
-[  222.120643] Tainted: [W]=WARN, [O]=OOT_MODULE
-[  222.120667] Hardware name: Default string Default string/Default 
-string, BIOS M6_MAX V0.06 02/19/2025
-[  222.120712] RIP: 0010:mt7925_sta_set_decap_offload+0xd3/0x180 
-[mt7925_common]
-[  222.120778] Code: 00 00 00 b8 01 00 00 00 f3 48 0f bc c0 41 89 c6 3c 
-0e 77 b5 49 8d 87 30 02 00 00 48 89 45 b8 49 8b 87 18 06 00 00 41 0f b6 
-ce <66> 83 78 98 00 74 6d 48 63 c1 80 f9 0e 77 7b 49 8b 84 c7 a0 05 00
-[  222.120858] RSP: 0018:ffff9cb5810f73a8 EFLAGS: 00010293
-[  222.120890] RAX: 0000000000000000 RBX: ffff8918508c2020 RCX: 
-0000000000000000
-[  222.120927] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 
-0000000000000000
-[  222.120963] RBP: ffff9cb5810f7400 R08: 0000000000000000 R09: 
-0000000000000000
-[  222.120999] R10: 0000000000000000 R11: 0000000000000000 R12: 
-ffff89185feb9d38
-[  222.121034] R13: 0000000000000001 R14: 0000000000000000 R15: 
-ffff8918421b8a98
-[  222.121070] FS:  00007d8ff3952740(0000) GS:ffff891bafa80000(0000) 
-knlGS:0000000000000000
-Oops#1 Part4
-[  222.121116] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  222.121147] CR2: ffffffffffffff98 CR3: 00000001013aa000 CR4: 
-0000000000f50ef0
-[  222.121185] PKRU: 55555554
-[  222.121205] Call Trace:
-[  222.121224]  <TASK>
-[  222.121245]  ? show_regs+0x6c/0x80
-[  222.121278]  ? __die+0x24/0x80
-[  222.121304]  ? page_fault_oops+0x96/0x1b0
-[  222.121336]  ? kernelmode_fixup_or_oops.isra.0+0x69/0x90
-[  222.121373]  ? __bad_area_nosemaphore+0x1a1/0x2d0
-[  222.121404]  ? radix_tree_lookup+0xd/0x20
-[  222.121434]  ? start_flush_work+0x227/0x2e0
-[  222.121468]  ? bad_area_nosemaphore+0x16/0x30
-[  222.121496]  ? do_kern_addr_fault+0x78/0xa0
-[  222.121524]  ? exc_page_fault+0x1b0/0x1c0
-[  222.121557]  ? asm_exc_page_fault+0x27/0x30
-[  222.121590]  ? mt7925_sta_set_decap_offload+0xd3/0x180 [mt7925_common]
-[  222.121647]  ? mt7925_sta_set_decap_offload+0x50/0x180 [mt7925_common]
-[  222.121706]  drv_sta_set_decap_offload+0x98/0x1e0 [mac80211]
-[  222.122015]  ieee80211_check_fast_rx+0x315/0x420 [mac80211]
-[  222.122301]  _sta_info_move_state+0x38e/0x3f0 [mac80211]
-[  222.122551]  sta_info_move_state+0x13/0x20 [mac80211]
-[  222.122798]  sta_apply_auth_flags.isra.0+0x5a/0x1e0 [mac80211]
-[  222.123082]  sta_apply_parameters+0x26c/0x350 [mac80211]
-[  222.123362]  ieee80211_add_station+0xde/0x1a0 [mac80211]
-[  222.123615]  nl80211_new_station+0x4e3/0x780 [cfg80211]
-[  222.123839]  genl_family_rcv_msg_doit+0xf7/0x160
-[  222.123873]  genl_family_rcv_msg+0x182/0x250
-[  222.123901]  ? __pfx_nl80211_pre_doit+0x10/0x10 [cfg80211]
-[  222.124107]  ? __pfx_nl80211_new_station+0x10/0x10 [cfg80211]
-Oops#1 Part3
-[  222.124314]  ? __pfx_nl80211_post_doit+0x10/0x10 [cfg80211]
-[  222.124517]  genl_rcv_msg+0x4c/0xb0
-[  222.124538]  ? __pfx_genl_rcv_msg+0x10/0x10
-[  222.124561]  netlink_rcv_skb+0x5a/0x110
-[  222.124588]  genl_rcv+0x28/0x50
-[  222.124606]  netlink_unicast+0x245/0x390
-[  222.124633]  netlink_sendmsg+0x213/0x470
-[  222.124661]  ____sys_sendmsg+0x3a8/0x410
-[  222.124688]  ___sys_sendmsg+0x9a/0xf0
-[  222.124718]  __sys_sendmsg+0x89/0xf0
-[  222.124742]  __x64_sys_sendmsg+0x1d/0x30
-[  222.124765]  x64_sys_call+0x912/0x25f0
-[  222.124791]  do_syscall_64+0x7e/0x170
-[  222.124816]  ? __sys_setsockopt+0x76/0xe0
-[  222.124842]  ? aa_sk_perm+0x46/0x240
-[  222.124866]  ? syscall_exit_to_user_mode+0x4e/0x250
-[  222.124895]  ? copy_from_sockptr_offset.constprop.0+0x24/0x30
-[  222.124924]  ? do_sock_setsockopt+0xbe/0x190
-[  222.124950]  ? __sys_setsockopt+0x76/0xe0
-[  222.124975]  ? syscall_exit_to_user_mode+0x4e/0x250
-[  222.125003]  ? do_syscall_64+0x8a/0x170
-[  222.125026]  ? syscall_exit_to_user_mode+0x18d/0x250
-[  222.125058]  ? do_syscall_64+0x8a/0x170
-[  222.125083]  ? __rseq_handle_notify_resume+0x36/0x70
-[  222.125112]  ? irqentry_exit_to_user_mode+0x43/0x250
-[  222.126008]  ? irqentry_exit+0x43/0x50
-[  222.126852]  ? sysvec_apic_timer_interrupt+0x57/0xc0
-[  222.127704]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  222.128549] RIP: 0033:0x7d8ff312c004
-[  222.129383] Code: 15 19 6e 0d 00 f7 d8 64 89 02 b8 ff ff ff ff eb bf 
-0f 1f 44 00 00 f3 0f 1e fa 80 3d 45 f0 0d 00 00 74 13 b8 2e 00 00 00 0f 
-05 <48> 3d 00 f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
-Oops#1 Part2
-[  222.130251] RSP: 002b:00007ffcb5182188 EFLAGS: 00000202 ORIG_RAX: 
-000000000000002e
-[  222.131128] RAX: ffffffffffffffda RBX: 00005632b6a8b4e0 RCX: 
-00007d8ff312c004
-[  222.132006] RDX: 0000000000000000 RSI: 00007ffcb51821c0 RDI: 
-0000000000000005
-[  222.132881] RBP: 00007ffcb51821b0 R08: 0000000000000004 R09: 
-00000000000000f0
-[  222.133745] R10: 00007ffcb51822cc R11: 0000000000000202 R12: 
-00005632b6ae94c0
-[  222.134602] R13: 00005632b6a8b3f0 R14: 00007ffcb51821c0 R15: 
-00007ffcb51822cc
-[  222.135452]  </TASK>
-[  222.136280] Modules linked in: cmac ccm snd_sof_pci_intel_tgl 
-snd_sof_pci_intel_cnl snd_sof_intel_hda_generic soundwire_intel 
-soundwire_cadence qrtr snd_sof_intel_hda_common snd_sof_intel_hda_mlink 
-snd_sof_intel_hda snd_sof_pci snd_sof_xtensa_dsp snd_sof 
-x86_pkg_temp_thermal intel_powerclamp snd_hda_codec_hdmi snd_sof_utils 
-snd_soc_hdac_hda aic8800_fdrv(O) snd_soc_acpi_intel_match 
-snd_hda_codec_realtek soundwire_generic_allocation snd_hda_codec_generic 
-snd_soc_acpi snd_hda_scodec_component soundwire_bus snd_soc_avs 
-snd_soc_hda_codec snd_hda_ext_core snd_soc_core coretemp snd_compress 
-ac97_bus snd_pcm_dmaengine kvm_intel snd_hda_intel kvm snd_intel_dspcfg 
-bridge snd_intel_sdw_acpi stp snd_hda_codec crct10dif_pclmul llc 
-polyval_clmulni snd_hda_core polyval_generic snd_hwdep 
-ghash_clmulni_intel sha256_ssse3 mt7925e sha1_ssse3 snd_pcm aesni_intel 
-mt7925_common snd_seq_midi crypto_simd binfmt_misc snd_seq_midi_event 
-mt792x_lib cryptd processor_thermal_device_pci mt76_connac_lib 
-processor_thermal_device snd_rawmidi
-Oops#1 Part1
-[  222.136317]  ip6table_nat mt76 cmdlinepart i915 ip6_tables 
-processor_thermal_wt_hint spi_nor snd_seq mac80211 xt_conntrack rapl 
-drm_buddy processor_thermal_rfim mtd snd_seq_device cfg80211(O) 
-intel_rapl_msr mei_pxp mei_hdcp snd_timer processor_thermal_rapl 
-nls_iso8859_1 spi_intel_pci ttm i2c_i801 nft_chain_nat snd intel_cstate 
-intel_rapl_common xt_MASQUERADE libarc4 i2c_mux spi_intel 
-drm_display_helper aic_load_fw(O) soundcore processor_thermal_wt_req 
-mei_me i2c_smbus processor_thermal_power_floor mei cec nf_nat 
-processor_thermal_mbox rc_core int340x_thermal_zone i2c_algo_bit 
-igen6_edac nf_conntrack intel_pmc_core nf_defrag_ipv6 intel_vsec 
-pmt_telemetry nf_defrag_ipv4 intel_hid acpi_pad nft_compat pmt_class 
-sparse_keymap acpi_tad nf_tables libcrc32c joydev input_leds mac_hid 
-serio_raw sch_fq_codel msr parport_pc ppdev lp parport efi_pstore 
-nfnetlink dmi_sysfs ip_tables x_tables autofs4 hid_generic rndis_host 
-usbhid uas cdc_ether hid usbnet usb_storage mii sdhci_pci cqhci r8169 
-ahci intel_ish_ipc xhci_pci crc32_pclmul
-[  222.140788]  sdhci realtek libahci intel_ishtp xhci_pci_renesas video 
-wmi pinctrl_alderlake
-[  222.146678] CR2: ffffffffffffff98
-[  222.147703] ---[ end trace 0000000000000000 ]---
-
-
-time to time only mt7925e restart itself with:
-Message 00020003 (seq 9) timeout
-
-
+Thanks,
 
