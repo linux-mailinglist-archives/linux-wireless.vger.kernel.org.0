@@ -1,58 +1,59 @@
-Return-Path: <linux-wireless+bounces-22605-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22606-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7202DAAB60C
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 07:41:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D97B3AAB5E0
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 07:38:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38CB1503B71
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 05:37:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39E497AA6D2
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 05:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0145929AB1A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B54C319A6C;
 	Tue,  6 May 2025 00:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDY+OE3D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mIRXy51k"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10A23579F1;
-	Mon,  5 May 2025 22:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3211029AAF5;
+	Mon,  5 May 2025 22:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485074; cv=none; b=rj2JSH3UOJuh7T19UF3A/WfYeq5vQw3FSTgEKlX/XneOon/hclzTBrjzBmZ3YpUOGpL/vT+uHoDEL5imYKrz2OQ2i5CXplOXtHvf47hmToehRRDiAmYU8zdyj4x2JUbZuhOOHzjfwwKC1SHL/axUpCurUPnesnGfGoWDi/JBE0w=
+	t=1746485076; cv=none; b=dTDZ7R+tIlZZCKuvoXFkwUp+Enf6l3xi3flOP2mVuoYou7E5iOEewFUuk04XTRTL1k79VCm2uTk+umuthR4P7cwPcKOxOolEVYjzBLMoNyaQA4Q8Qvh6ZEfCw6uDlkEr+JDV7dPyCGPBRM5pMF8gsD3DiN5UMrIrXldMHJCAzV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485074; c=relaxed/simple;
-	bh=5UYltFtK9fHPV7+8c5lZv+Yq4pxdhEUuN2aJzPU8pnA=;
+	s=arc-20240116; t=1746485076; c=relaxed/simple;
+	bh=wOu7wKLs1vsRiMPFnLYhaedB4hJlgXEYCm1Jz72cGMc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jjesD4nmAGeg/LCEFmv2vl7fVRByGTPxQfEwPsp/c6ARy/hqVltiFwUWxr8ZA2LnDZrZEqpJyPmPreh4yjISqt3vCSUzPu0CWjPis4pWtoMMedjvFrggSbK92w7p1mUNvl5KyTzgKFWwd2Lh1Cg8GHPr7s8epGY629idMbuudZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDY+OE3D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44971C4CEFC;
-	Mon,  5 May 2025 22:44:31 +0000 (UTC)
+	 MIME-Version; b=L3VyfqHH+pPCP7WNbejuERWG8PfIt3tt5WEfC/BxfNrKC/cd3BCqkrm+yxLG9Exv3k0bxv8/2IzC5UT974Rwm9zUL4HqsQZDp+8FfcxG+Qk38khs07wffbWxsX6Za4DBNLCK0RprGCJIXOY638bav0Wo5ad/C62XWIurh9p6SHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mIRXy51k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18695C4CEED;
+	Mon,  5 May 2025 22:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485073;
-	bh=5UYltFtK9fHPV7+8c5lZv+Yq4pxdhEUuN2aJzPU8pnA=;
+	s=k20201202; t=1746485076;
+	bh=wOu7wKLs1vsRiMPFnLYhaedB4hJlgXEYCm1Jz72cGMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDY+OE3DotyCPCpJ+Valb0HjaPk+66UjNbg2xCTUAUeWR9JP92x3ENJtnzX2m4bfb
-	 +x+dwxTjIxLQX6befE7Xvaaj/78ehIJYIPlJ32GHh3NmHCDZjzqJRqKfEd0C5EXsxC
-	 FNvoKdc8lIfA2Sl0kKI/jrM2uweMkrUGxTEWLD2W8ZnXrd7zX4/hBLbNU5oEq27ljb
-	 ESz6vUWATJOeBnxDeWnjm3HmsGTVnrlaqQSPzq88Hx1xF57NbXX2k1+60NVNSMLUrr
-	 plrU3Gwwc9vr6iWVpgEo3B1aCAqVEFpUeQ5Sb71MnQn7t2Shg8olnuR9n1rO7/Irqo
-	 1BA3aBDaZtqpQ==
+	b=mIRXy51k2FBwLF0M+vHJZ1kJuK18Ui2PsETl+9T6vU/AJd9Ec2t8cUj5IHDb/KGaR
+	 Pco3l/OBztWihzHISkSHBx4e/xwKlUrZBali58gzgTMPZKrQla86jrazD2CxGLKmbR
+	 IClv0Q2/LvNeJ0CG2ZiRL1UVRPCsGlnfXowhy1Xn4mwg/mpFO9goHlxx+R7qKbVOM7
+	 ETKNY1m8T0MJ1F5B+xHlo+2TWEDJIG3QaPupLv6+SzFNSSpn5e0PoJpVc9NRamtAcR
+	 xCPSFqUHMV5Kp8BvBSFzvaZtUni7yrw5kGJe+l4RSBrfOPgh7a6+56f83TddobKXlI
+	 OC1M0sOyABGOw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
+Cc: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 152/486] wifi: mac80211: fix warning on disconnect during failed ML reconf
-Date: Mon,  5 May 2025 18:33:48 -0400
-Message-Id: <20250505223922.2682012-152-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 154/486] wifi: cfg80211: allow IR in 20 MHz configurations
+Date: Mon,  5 May 2025 18:33:50 -0400
+Message-Id: <20250505223922.2682012-154-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -67,37 +68,197 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-[ Upstream commit 0e104aa3676d020f6c442cd7fbaeb72adaaab6fc ]
+[ Upstream commit cf4bd1608882792d4742e27a819493312904a680 ]
 
-If multi-link reconfiguration fails, we can disconnect with a local link
-already allocated but the BSS entry not assigned yet, which leads to a
-warning in cfg80211. Add a check to avoid the warning.
+Some regulatory bodies doesn't allow IR (initiate radioation) on a
+specific subband, but allows it for channels with a bandwidth of 20 MHz.
+Add a channel flag that indicates that, and consider it in
+cfg80211_reg_check_beaconing.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+While on it, fix the kernel doc of enum nl80211_reg_rule_flags and
+change it to use BIT().
+
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Co-developed-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
+Signed-off-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308225541.699bd9cbabe5.I599d5ff69092a65e916e2acd25137ae9df8debe8@changeid
+Link: https://patch.msgid.link/20250308225541.d3ab352a73ff.I8a8f79e1c9eb74936929463960ee2a324712fe51@changeid
+[fix typo]
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/cfg80211.h       |  3 +++
+ include/uapi/linux/nl80211.h | 52 ++++++++++++++++++++----------------
+ net/wireless/chan.c          |  8 +++++-
+ net/wireless/nl80211.c       |  4 +++
+ net/wireless/reg.c           |  4 ++-
+ 5 files changed, 46 insertions(+), 25 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index ad0d040569dcd..f000026ab714a 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4033,7 +4033,7 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
- 			struct ieee80211_link_data *link;
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 941dc62f3027c..8a712ca73f2b0 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -127,6 +127,8 @@ struct wiphy;
+  *	even if it is otherwise disabled.
+  * @IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP: Allow using this channel for AP operation
+  *	with very low power (VLP), even if otherwise set to NO_IR.
++ * @IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY: Allow activity on a 20 MHz channel,
++ *	even if otherwise set to NO_IR.
+  */
+ enum ieee80211_channel_flags {
+ 	IEEE80211_CHAN_DISABLED			= BIT(0),
+@@ -155,6 +157,7 @@ enum ieee80211_channel_flags {
+ 	IEEE80211_CHAN_NO_6GHZ_AFC_CLIENT	= BIT(23),
+ 	IEEE80211_CHAN_CAN_MONITOR		= BIT(24),
+ 	IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP	= BIT(25),
++	IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY     = BIT(26),
+ };
  
- 			link = sdata_dereference(sdata->link[link_id], sdata);
--			if (!link)
-+			if (!link || !link->conf->bss)
- 				continue;
- 			cfg80211_unlink_bss(local->hw.wiphy, link->conf->bss);
- 			link->conf->bss = NULL;
+ #define IEEE80211_CHAN_NO_HT40 \
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index f97f5adc8d518..c2d7faf8d87fa 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -4294,6 +4294,8 @@ enum nl80211_wmm_rule {
+  *	otherwise completely disabled.
+  * @NL80211_FREQUENCY_ATTR_ALLOW_6GHZ_VLP_AP: This channel can be used for a
+  *	very low power (VLP) AP, despite being NO_IR.
++ * @NL80211_FREQUENCY_ATTR_ALLOW_20MHZ_ACTIVITY: This channel can be active in
++ *	20 MHz bandwidth, despite being NO_IR.
+  * @NL80211_FREQUENCY_ATTR_MAX: highest frequency attribute number
+  *	currently defined
+  * @__NL80211_FREQUENCY_ATTR_AFTER_LAST: internal use
+@@ -4338,6 +4340,7 @@ enum nl80211_frequency_attr {
+ 	NL80211_FREQUENCY_ATTR_NO_6GHZ_AFC_CLIENT,
+ 	NL80211_FREQUENCY_ATTR_CAN_MONITOR,
+ 	NL80211_FREQUENCY_ATTR_ALLOW_6GHZ_VLP_AP,
++	NL80211_FREQUENCY_ATTR_ALLOW_20MHZ_ACTIVITY,
+ 
+ 	/* keep last */
+ 	__NL80211_FREQUENCY_ATTR_AFTER_LAST,
+@@ -4549,31 +4552,34 @@ enum nl80211_sched_scan_match_attr {
+  * @NL80211_RRF_NO_6GHZ_AFC_CLIENT: Client connection to AFC AP not allowed
+  * @NL80211_RRF_ALLOW_6GHZ_VLP_AP: Very low power (VLP) AP can be permitted
+  *	despite NO_IR configuration.
++ * @NL80211_RRF_ALLOW_20MHZ_ACTIVITY: Allow activity in 20 MHz bandwidth,
++ *	despite NO_IR configuration.
+  */
+ enum nl80211_reg_rule_flags {
+-	NL80211_RRF_NO_OFDM		= 1<<0,
+-	NL80211_RRF_NO_CCK		= 1<<1,
+-	NL80211_RRF_NO_INDOOR		= 1<<2,
+-	NL80211_RRF_NO_OUTDOOR		= 1<<3,
+-	NL80211_RRF_DFS			= 1<<4,
+-	NL80211_RRF_PTP_ONLY		= 1<<5,
+-	NL80211_RRF_PTMP_ONLY		= 1<<6,
+-	NL80211_RRF_NO_IR		= 1<<7,
+-	__NL80211_RRF_NO_IBSS		= 1<<8,
+-	NL80211_RRF_AUTO_BW		= 1<<11,
+-	NL80211_RRF_IR_CONCURRENT	= 1<<12,
+-	NL80211_RRF_NO_HT40MINUS	= 1<<13,
+-	NL80211_RRF_NO_HT40PLUS		= 1<<14,
+-	NL80211_RRF_NO_80MHZ		= 1<<15,
+-	NL80211_RRF_NO_160MHZ		= 1<<16,
+-	NL80211_RRF_NO_HE		= 1<<17,
+-	NL80211_RRF_NO_320MHZ		= 1<<18,
+-	NL80211_RRF_NO_EHT		= 1<<19,
+-	NL80211_RRF_PSD			= 1<<20,
+-	NL80211_RRF_DFS_CONCURRENT	= 1<<21,
+-	NL80211_RRF_NO_6GHZ_VLP_CLIENT	= 1<<22,
+-	NL80211_RRF_NO_6GHZ_AFC_CLIENT	= 1<<23,
+-	NL80211_RRF_ALLOW_6GHZ_VLP_AP	= 1<<24,
++	NL80211_RRF_NO_OFDM                 = 1 << 0,
++	NL80211_RRF_NO_CCK                  = 1 << 1,
++	NL80211_RRF_NO_INDOOR               = 1 << 2,
++	NL80211_RRF_NO_OUTDOOR              = 1 << 3,
++	NL80211_RRF_DFS                     = 1 << 4,
++	NL80211_RRF_PTP_ONLY                = 1 << 5,
++	NL80211_RRF_PTMP_ONLY               = 1 << 6,
++	NL80211_RRF_NO_IR                   = 1 << 7,
++	__NL80211_RRF_NO_IBSS               = 1 << 8,
++	NL80211_RRF_AUTO_BW                 = 1 << 11,
++	NL80211_RRF_IR_CONCURRENT           = 1 << 12,
++	NL80211_RRF_NO_HT40MINUS            = 1 << 13,
++	NL80211_RRF_NO_HT40PLUS             = 1 << 14,
++	NL80211_RRF_NO_80MHZ                = 1 << 15,
++	NL80211_RRF_NO_160MHZ               = 1 << 16,
++	NL80211_RRF_NO_HE                   = 1 << 17,
++	NL80211_RRF_NO_320MHZ               = 1 << 18,
++	NL80211_RRF_NO_EHT                  = 1 << 19,
++	NL80211_RRF_PSD                     = 1 << 20,
++	NL80211_RRF_DFS_CONCURRENT          = 1 << 21,
++	NL80211_RRF_NO_6GHZ_VLP_CLIENT      = 1 << 22,
++	NL80211_RRF_NO_6GHZ_AFC_CLIENT      = 1 << 23,
++	NL80211_RRF_ALLOW_6GHZ_VLP_AP       = 1 << 24,
++	NL80211_RRF_ALLOW_20MHZ_ACTIVITY    = 1 << 25,
+ };
+ 
+ #define NL80211_RRF_PASSIVE_SCAN	NL80211_RRF_NO_IR
+diff --git a/net/wireless/chan.c b/net/wireless/chan.c
+index e579d7e1425fe..c4f3fefeb3544 100644
+--- a/net/wireless/chan.c
++++ b/net/wireless/chan.c
+@@ -6,7 +6,7 @@
+  *
+  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+- * Copyright 2018-2024	Intel Corporation
++ * Copyright 2018-2025	Intel Corporation
+  */
+ 
+ #include <linux/export.h>
+@@ -1621,6 +1621,12 @@ bool cfg80211_reg_check_beaconing(struct wiphy *wiphy,
+ 	if (cfg->reg_power == IEEE80211_REG_VLP_AP)
+ 		permitting_flags |= IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP;
+ 
++	if ((cfg->iftype == NL80211_IFTYPE_P2P_GO ||
++	     cfg->iftype == NL80211_IFTYPE_AP) &&
++	    (chandef->width == NL80211_CHAN_WIDTH_20_NOHT ||
++	     chandef->width == NL80211_CHAN_WIDTH_20))
++		permitting_flags |= IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY;
++
+ 	return _cfg80211_reg_can_beacon(wiphy, chandef, cfg->iftype,
+ 					check_no_ir ? IEEE80211_CHAN_NO_IR : 0,
+ 					permitting_flags);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index ecfceddce00fc..c778ffa1c8efd 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -1213,6 +1213,10 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
+ 		if ((chan->flags & IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP) &&
+ 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_ALLOW_6GHZ_VLP_AP))
+ 			goto nla_put_failure;
++		if ((chan->flags & IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY) &&
++		    nla_put_flag(msg,
++				 NL80211_FREQUENCY_ATTR_ALLOW_20MHZ_ACTIVITY))
++			goto nla_put_failure;
+ 	}
+ 
+ 	if (nla_put_u32(msg, NL80211_FREQUENCY_ATTR_MAX_TX_POWER,
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 2b626078739c5..f6846eb0f4b84 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -5,7 +5,7 @@
+  * Copyright 2008-2011	Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright      2017  Intel Deutschland GmbH
+- * Copyright (C) 2018 - 2024 Intel Corporation
++ * Copyright (C) 2018 - 2025 Intel Corporation
+  *
+  * Permission to use, copy, modify, and/or distribute this software for any
+  * purpose with or without fee is hereby granted, provided that the above
+@@ -1603,6 +1603,8 @@ static u32 map_regdom_flags(u32 rd_flags)
+ 		channel_flags |= IEEE80211_CHAN_PSD;
+ 	if (rd_flags & NL80211_RRF_ALLOW_6GHZ_VLP_AP)
+ 		channel_flags |= IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP;
++	if (rd_flags & NL80211_RRF_ALLOW_20MHZ_ACTIVITY)
++		channel_flags |= IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY;
+ 	return channel_flags;
+ }
+ 
 -- 
 2.39.5
 
