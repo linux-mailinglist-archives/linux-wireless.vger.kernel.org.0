@@ -1,57 +1,56 @@
-Return-Path: <linux-wireless+bounces-22538-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22539-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE05AAAA7CA
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:40:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B040AAA7A4
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ACDD98616A
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:35:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1865F4A4FE1
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8B12989DB;
-	Mon,  5 May 2025 22:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7F12989FE;
+	Mon,  5 May 2025 22:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SabD7JSe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDEaGhoA"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285532989D7;
-	Mon,  5 May 2025 22:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AF72989F6;
+	Mon,  5 May 2025 22:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484654; cv=none; b=eB2Ff5M3lGVZdmj5ADp35rytgU4LsNeXtuBiRMaB41P8hakvb4/IPe0gMSFwgtrN0AtV71ILlT/jedPohfHIQgVjMV4LqrLnk68QVrHOn2ziPA+42aFtKT2JIxWNxkBOBCN/Y6NlLBUBk5Ds10BJeXqh780nx+XUQ+VfPhS4EoU=
+	t=1746484655; cv=none; b=rAE0AlAepgB0dPNQY2fIF/6a1QRfHGhW2ic0lbGe4Bb2ZcCxjPattSmcMFENdrL374vNlmK0CUhvKgUtMPYu0i+K9fVnZlLaEpvDH2sGQtMxS3jPiICQAvh0RqeDDszyNY8bf7PuIkdMl8cmlB8tKD34DAx6BambIYQl/oaq918=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484654; c=relaxed/simple;
-	bh=oICzpjc+PidZ180DElfETsb3v6xdVVeNPNtBIvsbBgg=;
+	s=arc-20240116; t=1746484655; c=relaxed/simple;
+	bh=R56KiKT+6z9Ua7x8vA+eYoe+SncVp1m7DAurbrtEiqU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oTbpoPy9niBxshvhYpri2ZbnSsstIwS5nd+xiI7ogGslRdPR9sPXr9yFSlcsRXKU0S8CZcPSB4M3FQnSBdZ7WQbsYsHb2LgH9OjWuXqhI7DuKhAexVfkmuxWoEoDnwnQ+W1Gi70TCPHuWB73YRSPfhYwnV3RBDjCWTqk8ta2JAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SabD7JSe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBE0C4CEF1;
-	Mon,  5 May 2025 22:37:32 +0000 (UTC)
+	 MIME-Version; b=SiAm1SGKnt6uxUF0FJv5UOMPH6GyiC99bFlWEpLrVDJWXHAbUwKuzMtO9vLegIRuScJimBWiLQqSfiWMy9lr7gOA+GCPVFNecYdYVo7C3gJY3H0YuCEa5rbHQlQmMs3ik10N/LaM4Dm4u7r8dZtIeFpPGhtSB3jW6e6kkK40FuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDEaGhoA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147C4C4CEED;
+	Mon,  5 May 2025 22:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484653;
-	bh=oICzpjc+PidZ180DElfETsb3v6xdVVeNPNtBIvsbBgg=;
+	s=k20201202; t=1746484654;
+	bh=R56KiKT+6z9Ua7x8vA+eYoe+SncVp1m7DAurbrtEiqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SabD7JSehR6RheHodwXfOFlkqkeFJ79XhXtpcmEDU1HSqccYS/jlJYEoM6nkkWtUc
-	 LyB8XX9zQ8AIulw4GqSaGciXBKNFuIHIdcHEGtpNhR8uU13os92T2x2sYKiOsc4zic
-	 Pzn47h6ecuDChg8SsvpsIvxAhcd0W4ypTqYaHFeBHX5cz1sou6k9nJ9NqMl1wmtGxM
-	 6DTJj4PvEDqbuoNbc+8wsmiw9w1BIDeD0CRv/q0QbjmbYbQUreyfhiLRLxFfSMkxfb
-	 WpxsImGktcCUWBppFBq84u7OPHsbR92XUWhDEKsXKZoYu+Cw8uvjlxGDT021zpNLak
-	 FA5wpLZhBtQ5w==
+	b=RDEaGhoAIkBFuvW9wQfWyvmoP2BU/h1lyFMMZ6m6EGQHyndG3MNfVk5D76YyZCkzo
+	 IEmG7Y3L64VjX/9yGj8s0COWhR1SeOeIwOR1vQpWh4ontSwslBPzIHAJZnonrAbNsL
+	 3K5z5avBTqUvXyKm4J6siQ57GjxgcpSXw5yTtJHtnJ0rEyKAeuSZeoUhfTRF3keL0f
+	 rIxJf25F10pVJ2L+hlL6m4ch9n07xw+EDHiJbHmP2SPXCL4O/D7hqnbYVGdpU/PJeD
+	 bqaK6K86iWhxzr5JebD34GFvKqWYsZBUs1JeN5ID+tfMuFS6S5n52ejSDbtwVlgqAv
+	 S4bADh9L6DExw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Soeren Moch <smoch@web.de>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Jes.Sorensen@gmail.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 586/642] wifi: rtl8xxxu: retry firmware download on error
-Date: Mon,  5 May 2025 18:13:22 -0400
-Message-Id: <20250505221419.2672473-586-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 587/642] wifi: rtw88: Don't use static local variable in rtw8822b_set_tx_power_index_by_rate
+Date: Mon,  5 May 2025 18:13:23 -0400
+Message-Id: <20250505221419.2672473-587-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -66,65 +65,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Soeren Moch <smoch@web.de>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 3d3e28feca7ac8c6cf2a390dbbe1f97e3feb7f36 ]
+[ Upstream commit 00451eb3bec763f708e7e58326468c1e575e5a66 ]
 
-Occasionally there is an EPROTO error during firmware download.
-This error is converted to EAGAIN in the download function.
-But nobody tries again and so device probe fails.
+Some users want to plug two identical USB devices at the same time.
+This static variable could theoretically cause them to use incorrect
+TX power values.
 
-Implement download retry to fix this.
+Move the variable to the caller and pass a pointer to it to
+rtw8822b_set_tx_power_index_by_rate().
 
-This error was observed (and fix tested) on a tbs2910 board [1]
-with an embedded RTL8188EU (0bda:8179) device behind a USB hub.
-
-[1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
-
-Signed-off-by: Soeren Moch <smoch@web.de>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250127194828.599379-1-smoch@web.de
+Link: https://patch.msgid.link/8a60f581-0ab5-4d98-a97d-dd83b605008f@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/core.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index 4ce0c05c51291..569856ca677f6 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -860,9 +860,10 @@ rtl8xxxu_writeN(struct rtl8xxxu_priv *priv, u16 addr, u8 *buf, u16 len)
- 	return len;
- 
- write_error:
--	dev_info(&udev->dev,
--		 "%s: Failed to write block at addr: %04x size: %04x\n",
--		 __func__, addr, blocksize);
-+	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_REG_WRITE)
-+		dev_info(&udev->dev,
-+			 "%s: Failed to write block at addr: %04x size: %04x\n",
-+			 __func__, addr, blocksize);
- 	return -EAGAIN;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index 7f03903ddf4bb..23a29019752da 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -935,11 +935,11 @@ static void query_phy_status(struct rtw_dev *rtwdev, u8 *phy_status,
  }
  
-@@ -4064,8 +4065,14 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
- 	 */
- 	rtl8xxxu_write16(priv, REG_TRXFF_BNDY + 2, fops->trxff_boundary);
+ static void
+-rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
++rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path,
++				    u8 rs, u32 *phy_pwr_idx)
+ {
+ 	struct rtw_hal *hal = &rtwdev->hal;
+ 	static const u32 offset_txagc[2] = {0x1d00, 0x1d80};
+-	static u32 phy_pwr_idx;
+ 	u8 rate, rate_idx, pwr_index, shift;
+ 	int j;
  
--	ret = rtl8xxxu_download_firmware(priv);
--	dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
-+	for (int retry = 5; retry >= 0 ; retry--) {
-+		ret = rtl8xxxu_download_firmware(priv);
-+		dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
-+		if (ret != -EAGAIN)
-+			break;
-+		if (retry)
-+			dev_dbg(dev, "%s: retry firmware download\n", __func__);
-+	}
- 	if (ret)
- 		goto exit;
- 	ret = rtl8xxxu_start_firmware(priv);
+@@ -947,12 +947,12 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
+ 		rate = rtw_rate_section[rs][j];
+ 		pwr_index = hal->tx_pwr_tbl[path][rate];
+ 		shift = rate & 0x3;
+-		phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
++		*phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
+ 		if (shift == 0x3) {
+ 			rate_idx = rate & 0xfc;
+ 			rtw_write32(rtwdev, offset_txagc[path] + rate_idx,
+-				    phy_pwr_idx);
+-			phy_pwr_idx = 0;
++				    *phy_pwr_idx);
++			*phy_pwr_idx = 0;
+ 		}
+ 	}
+ }
+@@ -960,11 +960,13 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
+ static void rtw8822b_set_tx_power_index(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_hal *hal = &rtwdev->hal;
++	u32 phy_pwr_idx = 0;
+ 	int rs, path;
+ 
+ 	for (path = 0; path < hal->rf_path_num; path++) {
+ 		for (rs = 0; rs < RTW_RATE_SECTION_MAX; rs++)
+-			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs);
++			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs,
++							    &phy_pwr_idx);
+ 	}
+ }
+ 
 -- 
 2.39.5
 
