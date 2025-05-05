@@ -1,56 +1,55 @@
-Return-Path: <linux-wireless+bounces-22580-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22581-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059CCAAAB99
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:59:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4721AAAB73
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E38561885F61
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 01:55:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24047462023
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 01:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A683B17A4;
-	Mon,  5 May 2025 23:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803DA3B17BE;
+	Mon,  5 May 2025 23:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hV/Sm3Fi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hdRQ8ShO"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B632DB4BA;
-	Mon,  5 May 2025 23:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD00F35C93E;
+	Mon,  5 May 2025 23:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486363; cv=none; b=hbUsxfR7CV++2jkCcSDkXP4UHd9TEaPezDlBZ3/c77t8iw1Ip0Qo3RwXvi74opJbvYMoXOBfGkLO7nr4pTtQCThoT1HY3S4O2UzSpbOtBiE2ixMAXctUbILDdIt1dnQS1vN6j41m0lbXqUmQXpBGcGeLQ4Z6CMkw9uK2kqcpjvA=
+	t=1746486365; cv=none; b=nLucrqwyrWEcBrzx3+HcL62mr8Dtj2AuG9NxIhrXi5mJ94sV89kri2QhDCr5wvp9WAvPnOUeQoqot4PNuRg+wXEMfJ7IWuiMcL0W+EmZS5ys1MciRaAuDXMTIiX9qxKQtVPI/bmYCVpwEeD6rNGaFivWoxBGA/nX/qN1ZDmeHaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486363; c=relaxed/simple;
-	bh=M9P9gXHPKc8muv0zGwNFp9Iica9ZFNy4A4gX/1oT0nQ=;
+	s=arc-20240116; t=1746486365; c=relaxed/simple;
+	bh=O0/F7IB7rVhvkUwQ7ooED6FDRzDGO0E0J1ZKYYqH+CE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XDNvx/YNnDV4OcB8tjAakUq5cTbFDwbLPeu+lnevQXdc2tinhwUXxWCS9tZ2KLgUBuCKScJZwpQVWTr052vjJk64XgOZfjIyE48j5pnOFfvc5x8VJh5tL2RNBezNw1ry8VhReOpefr/sSkIp10PfvqS6SqFXiY7C4F4AIG1fHJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hV/Sm3Fi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8726C4CEEE;
-	Mon,  5 May 2025 23:06:01 +0000 (UTC)
+	 MIME-Version; b=QAnmCGc6qor9wiert+BhMnSnbKwMhwrDK+yGqbLCGCPi64M/1NaD+E8ituYZ6hf1Hzk7AJb7tKBmOCF/XnZpZyo5oDHeSb9BEUUQn6tF8EUp8L10WZffAyo2e64hntFa7G+LFEVMu7d/UpGxa2t1CKh45/w1PUqKuybzpGLb+j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hdRQ8ShO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2121CC4CEF1;
+	Mon,  5 May 2025 23:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486362;
-	bh=M9P9gXHPKc8muv0zGwNFp9Iica9ZFNy4A4gX/1oT0nQ=;
+	s=k20201202; t=1746486363;
+	bh=O0/F7IB7rVhvkUwQ7ooED6FDRzDGO0E0J1ZKYYqH+CE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hV/Sm3Fik84HFUH9fqRVj+HEbwJIgeKCcAIDeeSfccPyleduiYqVZFYN4mY5y3F4q
-	 mloiKU90tQS5znlcpYTbRKIuXYYJk+uWlkx275wk44KTDYEWgNTjMlqjsFPziqwxJ/
-	 SNf5MHCPMn+BwJDMZ/AzQrbRAwzNrKA7vWDybOmXMLhYzEnauFrPsEx4LiMpOIuq5E
-	 hcF9ETbyjfDIovItgiHwryaUWKwwRk3goeV8zOeywrVfLfPZsQD1AN/eCEjksGlV/Q
-	 WJbOFuzwDUW3FCBijOKgvR5OEzsCMMqGmgrWBd6soC5fKV0/UaNlzRWzYtisKc3SML
-	 UKSSIj3I0ZpKQ==
+	b=hdRQ8ShOzAOpbiNcgyG2h1eoM9zC5eO5R8FzNFRIIkLuHy412s1qSzow/b72JWvrO
+	 R+UaOktBhw8AnfxRUDobsrI7me6Cvf4CboTIo+p+AmKL0IpDVt5veK8Yj+9O3E9PXe
+	 Ck0984awtOxTYQUh5DRRdOimp0VvJV+Mrc93XRgwIpeSVYUYAl5csUaEl2SSjeroWm
+	 P2C1s/jzCOu2jA4SFEAdeygyAhmZteb8uc62kKghuWXdt5X3b3aF8XqBOH0jgLW30L
+	 siqvIHETgJvsGIVLxU5ER1lscBTCRFnmHqzUa0RXBtFMV8bwuBaSJsHXeNhr+SHWEF
+	 znizUGJ/8cItQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 282/294] wifi: rtw88: Don't use static local variable in rtw8822b_set_tx_power_index_by_rate
-Date: Mon,  5 May 2025 18:56:22 -0400
-Message-Id: <20250505225634.2688578-282-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 283/294] wifi: rtw89: add wiphy_lock() to work that isn't held wiphy_lock() yet
+Date: Mon,  5 May 2025 18:56:23 -0400
+Message-Id: <20250505225634.2688578-283-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -65,75 +64,69 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 00451eb3bec763f708e7e58326468c1e575e5a66 ]
+[ Upstream commit ebfc9199df05d37b67f4d1b7ee997193f3d2e7c8 ]
 
-Some users want to plug two identical USB devices at the same time.
-This static variable could theoretically cause them to use incorrect
-TX power values.
+To ensure where are protected by driver mutex can also be protected by
+wiphy_lock(), so afterward we can remove driver mutex safely.
 
-Move the variable to the caller and pass a pointer to it to
-rtw8822b_set_tx_power_index_by_rate().
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/8a60f581-0ab5-4d98-a97d-dd83b605008f@gmail.com
+Link: https://patch.msgid.link/20250122060310.31976-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822b.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/wireless/realtek/rtw89/regd.c | 2 ++
+ drivers/net/wireless/realtek/rtw89/ser.c  | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index 3017a9760da8d..99318a82b43f4 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -975,11 +975,11 @@ static void rtw8822b_query_rx_desc(struct rtw_dev *rtwdev, u8 *rx_desc,
+diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
+index 9e2328db18656..91f0895d9f540 100644
+--- a/drivers/net/wireless/realtek/rtw89/regd.c
++++ b/drivers/net/wireless/realtek/rtw89/regd.c
+@@ -451,6 +451,7 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
+ 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
+ 	struct rtw89_dev *rtwdev = hw->priv;
+ 
++	wiphy_lock(wiphy);
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtw89_leave_ps_mode(rtwdev);
+ 
+@@ -468,6 +469,7 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
+ 
+ exit:
+ 	mutex_unlock(&rtwdev->mutex);
++	wiphy_unlock(wiphy);
  }
  
- static void
--rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
-+rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path,
-+				    u8 rs, u32 *phy_pwr_idx)
- {
- 	struct rtw_hal *hal = &rtwdev->hal;
- 	static const u32 offset_txagc[2] = {0x1d00, 0x1d80};
--	static u32 phy_pwr_idx;
- 	u8 rate, rate_idx, pwr_index, shift;
- 	int j;
+ static void __rtw89_reg_6ghz_power_recalc(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index 01b17b8f4ff9d..45165cf3e824e 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -156,9 +156,11 @@ static void ser_state_run(struct rtw89_ser *ser, u8 evt)
+ 	rtw89_debug(rtwdev, RTW89_DBG_SER, "ser: %s receive %s\n",
+ 		    ser_st_name(ser), ser_ev_name(ser, evt));
  
-@@ -987,12 +987,12 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
- 		rate = rtw_rate_section[rs][j];
- 		pwr_index = hal->tx_pwr_tbl[path][rate];
- 		shift = rate & 0x3;
--		phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
-+		*phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
- 		if (shift == 0x3) {
- 			rate_idx = rate & 0xfc;
- 			rtw_write32(rtwdev, offset_txagc[path] + rate_idx,
--				    phy_pwr_idx);
--			phy_pwr_idx = 0;
-+				    *phy_pwr_idx);
-+			*phy_pwr_idx = 0;
- 		}
- 	}
++	wiphy_lock(rtwdev->hw->wiphy);
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtw89_leave_lps(rtwdev);
+ 	mutex_unlock(&rtwdev->mutex);
++	wiphy_unlock(rtwdev->hw->wiphy);
+ 
+ 	ser->st_tbl[ser->state].st_func(ser, evt);
  }
-@@ -1000,11 +1000,13 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
- static void rtw8822b_set_tx_power_index(struct rtw_dev *rtwdev)
- {
- 	struct rtw_hal *hal = &rtwdev->hal;
-+	u32 phy_pwr_idx = 0;
- 	int rs, path;
+@@ -676,9 +678,11 @@ static void ser_l2_reset_st_hdl(struct rtw89_ser *ser, u8 evt)
  
- 	for (path = 0; path < hal->rf_path_num; path++) {
- 		for (rs = 0; rs < RTW_RATE_SECTION_MAX; rs++)
--			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs);
-+			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs,
-+							    &phy_pwr_idx);
- 	}
- }
+ 	switch (evt) {
+ 	case SER_EV_STATE_IN:
++		wiphy_lock(rtwdev->hw->wiphy);
+ 		mutex_lock(&rtwdev->mutex);
+ 		ser_l2_reset_st_pre_hdl(ser);
+ 		mutex_unlock(&rtwdev->mutex);
++		wiphy_unlock(rtwdev->hw->wiphy);
  
+ 		ieee80211_restart_hw(rtwdev->hw);
+ 		ser_set_alarm(ser, SER_RECFG_TIMEOUT, SER_EV_L2_RECFG_TIMEOUT);
 -- 
 2.39.5
 
