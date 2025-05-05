@@ -1,55 +1,60 @@
-Return-Path: <linux-wireless+bounces-22536-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22537-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC648AAA6ED
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:22:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 308DCAAA792
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C612217E6C0
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:21:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1398D5A1F43
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48001331084;
-	Mon,  5 May 2025 22:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D658F338C14;
+	Mon,  5 May 2025 22:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dInbJfDw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="brnFPH0B"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196EF33107B;
-	Mon,  5 May 2025 22:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4DB293473;
+	Mon,  5 May 2025 22:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484547; cv=none; b=rKSmJTD/DW4M/EUxN1CWe7Ky6o/axGFP+8jbx8e47KoKFmayHBxw2Mwz61DMxMT4UtKcwqXhiS283u/Z4TZDQk5w+9/8otecVS/kkINlK+fzvSZhlZ2/S5TLj8fkJntP5DEy/QtImfQtuDFRcyZjpl7YMLY9DagvYM0HHdXL0Qc=
+	t=1746484625; cv=none; b=pUVHvB/jpvqGTJmVizRp0xoTxRt34sjlftD3vizJDIPLII85jkXANCSBXu7KfDgK4u1UNmTZ6QzqVdaN47BK4k8CtOwGoItqmxZ//9oQ02h4AOEoCLJRtF8s4HhFeCZm6V00P0YfUF0PKLRA0YrLZ5Q4HnHD3amzPAYQb7LcSfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484547; c=relaxed/simple;
-	bh=AiItp+61vcabD+hEJKHmr/MFEQ4C+WBDvuijjLFywEU=;
+	s=arc-20240116; t=1746484625; c=relaxed/simple;
+	bh=Iorwx/78CiNVkAt+h36FsYKKL7SESneynjnqM6o1jN8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=foj1thZD3QRIYt4kDij7OWR4LppkhY+1nIU+jZ5S7zeEZMK8x0EiF52blVz16UrYvIRVlFJm54WiOCJEnwVvRgbVxyZdbngwGIvm25phpfsWxnxbYMAtrx5TuRkgN0guWb11cFVv7/RL3pCkpNbJy012NuVGklpKxrdA9ROylps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dInbJfDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F92C4CEEF;
-	Mon,  5 May 2025 22:35:46 +0000 (UTC)
+	 MIME-Version; b=ZEPNx8qArYS2i6egCrwAmgZHMeDIzP8KDuuBScNZGjF/AwBOvPwU02yCdOUwgTKrNmFL4bYq4082WF1caCIqOmQAq5cSsWKCzdYIT1db3QjDUeSAVfo/HlwvLeExRvRkjTPDiux2X4UoRTOCN1vRAF5fSBBdzn+xHbOYWeZGDAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=brnFPH0B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF12C4CEE4;
+	Mon,  5 May 2025 22:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484547;
-	bh=AiItp+61vcabD+hEJKHmr/MFEQ4C+WBDvuijjLFywEU=;
+	s=k20201202; t=1746484625;
+	bh=Iorwx/78CiNVkAt+h36FsYKKL7SESneynjnqM6o1jN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dInbJfDwseifdN7qWNBVfz3RY+PFTPB34pIVVw3c/MCRCNB+079u3Alc2GETeWgju
-	 fQSc1eJMRQWyFGfmvxgyaO18l0w5QGb45B1X55CIryfU9p6xTI3904R8Di/flCp6ON
-	 I6H0+629Zs1cO/UDXija+/UezWiptZ5rP1WpU6u2gEr8sEvKVg3ithFr+dBh1Qiwcx
-	 8MdesiWy5Dp1gm+xuBB5/6/0xtx/3f79R9GrQ5Rp7SXT7i0GrpZZAiKY4HNpIcl/W3
-	 9tABV7llJmI1S8KRqxXD2SkuTMrRMY9s24krUecPiGGscPHlW28X0CsD1ZhFoojnse
-	 ulA6/xYvHbdpA==
+	b=brnFPH0Bo9F78qbw6rFVFKfrNBLhvWAd+SIrbcTEG0voE3PKpSf7Kapz4WBHY37XU
+	 JgDc2Nve+Lzj912y60pAPWrj0Md+UtvCwpoNoabRqsTC7GTy63Ci6EtpmcTRFW1E7h
+	 mUosthKPDOvbVCUGtjI+a0K+T1zxIC+dvrza9Jx/Un5YR99n+WY6fjBdq5JQtaPTGJ
+	 nZGda5bhx3h78Fc/ig0dKHAirh2r1oZOsHIo6CpsB3tdxGhbt0NTKQQlxe+LhSAC2/
+	 oqagYas8QgwcSw3OIVOL7zNQZvIfCVZU59zO3D/x/wklc5wH+8L/TyrNtxkVkOSTRt
+	 oxhEVV2dC9NgA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Avula Sri Charan <quic_asrichar@quicinc.com>,
+	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 529/642] wifi: rtw89: call power_on ahead before selecting firmware
-Date: Mon,  5 May 2025 18:12:25 -0400
-Message-Id: <20250505221419.2672473-529-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 569/642] wifi: ath12k: Avoid napi_sync() before napi_enable()
+Date: Mon,  5 May 2025 18:13:05 -0400
+Message-Id: <20250505221419.2672473-569-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -64,166 +69,76 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Avula Sri Charan <quic_asrichar@quicinc.com>
 
-[ Upstream commit d078f5857a00c06fa0ddee26d3cb722e938e1688 ]
+[ Upstream commit 268c73d470a5790a492a2fc2ded084b909d144f3 ]
 
-Driver selects firmware by hardware version, which normally can be read
-from registers before selecting firmware. However, certain chips such as
-RTL8851B, it needs to read hardware version from efuse while doing
-power_on, but do power_on after selecting firmware in current flow.
+In case of MHI error a reset work will be queued which will try
+napi_disable() after napi_synchronize().
 
-To resolve this flow problem, move power_on out from
-rtw89_mac_partial_init(), and call rtw89_mac_pwr_on() separately at
-proper places to have expected flow.
+As the napi will be only enabled after qmi_firmware_ready event,
+trying napi_synchronize() before napi_enable() will result in
+indefinite sleep in case of a firmware crash in QMI init sequence.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250203072911.47313-2-pkshih@realtek.com
+To avoid this, introduce napi_enabled flag to check if napi is enabled
+or not before calling napi_synchronize().
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Avula Sri Charan <quic_asrichar@quicinc.com>
+Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250124090058.3194299-1-quic_tamizhr@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 23 +++++++++++-------
- drivers/net/wireless/realtek/rtw89/mac.c  | 29 ++++++++++++++++-------
- drivers/net/wireless/realtek/rtw89/mac.h  |  1 +
- 3 files changed, 36 insertions(+), 17 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.h |  1 +
+ drivers/net/wireless/ath/ath12k/pci.c  | 13 ++++++++++---
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index c84446ec9e4f4..422cc3867f3bc 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -5086,8 +5086,6 @@ static int rtw89_chip_efuse_info_setup(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 6325ac493f82c..2699c383fc4c9 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -166,6 +166,7 @@ struct ath12k_ext_irq_grp {
+ 	u32 num_irq;
+ 	u32 grp_id;
+ 	u64 timestamp;
++	bool napi_enabled;
+ 	struct napi_struct napi;
+ 	struct net_device *napi_ndev;
+ };
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index ee14b84845487..895b2314d1d58 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -483,8 +483,11 @@ static void __ath12k_pci_ext_irq_disable(struct ath12k_base *ab)
  
- 	rtw89_hci_mac_pre_deinit(rtwdev);
+ 		ath12k_pci_ext_grp_disable(irq_grp);
  
--	rtw89_mac_pwr_off(rtwdev);
--
- 	return 0;
+-		napi_synchronize(&irq_grp->napi);
+-		napi_disable(&irq_grp->napi);
++		if (irq_grp->napi_enabled) {
++			napi_synchronize(&irq_grp->napi);
++			napi_disable(&irq_grp->napi);
++			irq_grp->napi_enabled = false;
++		}
+ 	}
  }
  
-@@ -5168,36 +5166,45 @@ int rtw89_chip_info_setup(struct rtw89_dev *rtwdev)
+@@ -1114,7 +1117,11 @@ void ath12k_pci_ext_irq_enable(struct ath12k_base *ab)
+ 	for (i = 0; i < ATH12K_EXT_IRQ_GRP_NUM_MAX; i++) {
+ 		struct ath12k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
  
- 	rtw89_read_chip_ver(rtwdev);
- 
-+	ret = rtw89_mac_pwr_on(rtwdev);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to power on\n");
-+		return ret;
-+	}
+-		napi_enable(&irq_grp->napi);
++		if (!irq_grp->napi_enabled) {
++			napi_enable(&irq_grp->napi);
++			irq_grp->napi_enabled = true;
++		}
 +
- 	ret = rtw89_wait_firmware_completion(rtwdev);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to wait firmware completion\n");
--		return ret;
-+		goto out;
+ 		ath12k_pci_ext_grp_enable(irq_grp);
  	}
  
- 	ret = rtw89_fw_recognize(rtwdev);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to recognize firmware\n");
--		return ret;
-+		goto out;
- 	}
- 
- 	ret = rtw89_chip_efuse_info_setup(rtwdev);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	ret = rtw89_fw_recognize_elements(rtwdev);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to recognize firmware elements\n");
--		return ret;
-+		goto out;
- 	}
- 
- 	ret = rtw89_chip_board_info_setup(rtwdev);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	rtw89_core_setup_rfe_parms(rtwdev);
- 	rtwdev->ps_mode = rtw89_update_ps_mode(rtwdev);
- 
--	return 0;
-+out:
-+	rtw89_mac_pwr_off(rtwdev);
-+
-+	return ret;
- }
- EXPORT_SYMBOL(rtw89_chip_info_setup);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 2c74d7781bd40..def12dbfe48d3 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1495,6 +1495,21 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
- #undef PWR_ACT
- }
- 
-+int rtw89_mac_pwr_on(struct rtw89_dev *rtwdev)
-+{
-+	int ret;
-+
-+	ret = rtw89_mac_power_switch(rtwdev, true);
-+	if (ret) {
-+		rtw89_mac_power_switch(rtwdev, false);
-+		ret = rtw89_mac_power_switch(rtwdev, true);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- void rtw89_mac_pwr_off(struct rtw89_dev *rtwdev)
- {
- 	rtw89_mac_power_switch(rtwdev, false);
-@@ -3996,14 +4011,6 @@ int rtw89_mac_partial_init(struct rtw89_dev *rtwdev, bool include_bb)
- {
- 	int ret;
- 
--	ret = rtw89_mac_power_switch(rtwdev, true);
--	if (ret) {
--		rtw89_mac_power_switch(rtwdev, false);
--		ret = rtw89_mac_power_switch(rtwdev, true);
--		if (ret)
--			return ret;
--	}
--
- 	rtw89_mac_ctrl_hci_dma_trx(rtwdev, true);
- 
- 	if (include_bb) {
-@@ -4036,6 +4043,10 @@ int rtw89_mac_init(struct rtw89_dev *rtwdev)
- 	bool include_bb = !!chip->bbmcu_nr;
- 	int ret;
- 
-+	ret = rtw89_mac_pwr_on(rtwdev);
-+	if (ret)
-+		return ret;
-+
- 	ret = rtw89_mac_partial_init(rtwdev, include_bb);
- 	if (ret)
- 		goto fail;
-@@ -4067,7 +4078,7 @@ int rtw89_mac_init(struct rtw89_dev *rtwdev)
- 
- 	return ret;
- fail:
--	rtw89_mac_power_switch(rtwdev, false);
-+	rtw89_mac_pwr_off(rtwdev);
- 
- 	return ret;
- }
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 373366a602e0b..71574dbd8764e 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -1145,6 +1145,7 @@ rtw89_write32_port_set(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rtwvif_l
- 	rtw89_write32_set(rtwdev, reg, bit);
- }
- 
-+int rtw89_mac_pwr_on(struct rtw89_dev *rtwdev);
- void rtw89_mac_pwr_off(struct rtw89_dev *rtwdev);
- int rtw89_mac_partial_init(struct rtw89_dev *rtwdev, bool include_bb);
- int rtw89_mac_init(struct rtw89_dev *rtwdev);
 -- 
 2.39.5
 
