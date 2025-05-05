@@ -1,105 +1,97 @@
-Return-Path: <linux-wireless+bounces-22420-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22421-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE7EAA8AA3
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 03:39:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81BCFAA8AA5
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 03:40:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 711381893485
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 01:39:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7989918931C3
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 01:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130F6187FE4;
-	Mon,  5 May 2025 01:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01860188587;
+	Mon,  5 May 2025 01:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="W2151x2v"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="HybIZt8p"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4206014B950;
-	Mon,  5 May 2025 01:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C98214B950;
+	Mon,  5 May 2025 01:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746409173; cv=none; b=EK/3iyzVMs03v/DSOTozCRXr5GYy/+8YEJMThbxZLST5MVS7flKvxXdVDQfSjIlcvr4NkqkLyt7tj6rejVFPTXNJ3Me9oW0Atlqnb7xLuYnEyO/IPoOBZ61ohpHLa7VF4OtbRB6ypbAh5dhLoQs3TTr8TSayKiKyzvCxEYFFC34=
+	t=1746409215; cv=none; b=VrmkDQApPjwxfTesrEshDtHIvS35m1pPNLiEuAwYaGqd6nWP2y4hagPcos1sDP8uHvn8z9KFqwq9Jg7d2kXZjSKQDhPaUdUxGEsQgBzaTmWasQQlkjsWDRrvVNyhMT9qIzIqNQJ4uzuYVO5YqkoYiEHh8nBbQjJYSk0tkcwd+gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746409173; c=relaxed/simple;
-	bh=q77f7B5wiZvw9Dz+CYUdQx/N+1/Qk9NORtkzzhluIuU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dReKUJ/FkqNrI+8VgAtC1TefKhlgmcU+h9rrlhSwggEUvYWNxpkiL5URQzgpVAuJCWTmsmAUIhDNEJMkHmOu/P1Yp35TrtJc+r1eyylmkgsMawKuWJP0S1o2CnPNM2YffmxTL+rRKI0mxDEQ3umbZ16l1Pf7EdF5olfk57bxZgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=W2151x2v; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=YNp13OGSu5oPbjO5Hd769k73sfu68cuaSBLtC2WdS5k=; b=W2151x2vaMZHC+7L
-	DJ/Sg1D2FO6/OIU3lEoXdp5XNdgdKyOTkgvIKwLqU8cW7xEshh8EQuw4XIHmXsuicAl3S1DvabM/W
-	hPHbg7RNyTPxphtfZ16rw2Cpw6fdDTuNKpDVw5uyhb3zDKl475GlgcYS8FxDu/P/7vu9sZwaleEgr
-	h5rnm0ETOFhAb9a9I+2/xKrP0lSK6oU/W2NVzt/PrvEAzAt7HaklQZvQaNdCFAxhcRW3HQMqRsk1d
-	JfePgiEKdLGHgW7XxMAV/YWks81nha56sawjnV4ljLqoU3CKX4KIG847cLE4ejAJdTeaURy8zbS/w
-	X3g6OGXxWwIvSUiWkw==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-	(envelope-from <dg@treblig.org>)
-	id 1uBknp-001MAh-0N;
-	Mon, 05 May 2025 01:39:29 +0000
-Date: Mon, 5 May 2025 01:39:29 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] wifi: rtlwifi: Remove unused rtl_usb_{resume|suspend}
-Message-ID: <aBgW0UXKC7ZUo49S@gallifrey>
-References: <20250425235340.288340-1-linux@treblig.org>
- <20250425235340.288340-2-linux@treblig.org>
- <c92a8101-e8fe-4727-9f85-e1e96ef5392c@RTEXMBS04.realtek.com.tw>
+	s=arc-20240116; t=1746409215; c=relaxed/simple;
+	bh=4sCB9tgQppUJl7cUoS9258sEW/5by1jhCOsqXVeoQSM=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=XnpZCzbYnEefp5Hg6nAcXmsKBZz8bBUVK9om2YFCD3cqk8sHXUKEKwfclcxT891NBLSbi+iVeacuTqYtNbc39CN/sZpp9jAxFl4wHbsaW6gXVHUTojnp136Dq/iPhNf/iyZwoI2rddBFkFeVM2Mu5S2H5zW9CJ6tkXJXq0zgs58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=HybIZt8p; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5451e0Sw93384589, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1746409201; bh=4sCB9tgQppUJl7cUoS9258sEW/5by1jhCOsqXVeoQSM=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date;
+	b=HybIZt8pV89odwUMc16CA/n0RF2oapZEhJ01aeNv3Xtz+bJ7TVMQUGvLLJ1v5JV8+
+	 CUrhmMvbSFK3qiF13CAq8Vzr2RCQXiijDuPLu4f/ClIjYfXeyp9/OFSVlaxzTOiW94
+	 3Q2CqHdE9rzJilZQ+v2eIcQEAoVNMX8PW277Q6pQsPWwPFULYbWKjzcxRvY8X5jc1Q
+	 2do5IVkAItQYrcsY3PbGWtEon0RkkEtt4WkFAKe+Tt0xCa2etaNpYbu8S5rkl9xQox
+	 sWQt68WyOGO4h6Ajd7KG0YUYDdDgDPgDPT93UXhEsc1gPTrlA++zFFLWTErOyiYrlI
+	 cqGhgtqh+Sa8w==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5451e0Sw93384589
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 May 2025 09:40:00 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 5 May 2025 09:40:00 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 5 May
+ 2025 09:40:00 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Kees Cook <kees@kernel.org>, Ping-Ke Shih <pkshih@realtek.com>
+CC: Kees Cook <kees@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-hardening@vger.kernel.org>
+Subject: Re: [PATCH] wifi: rtw89: fw: Remove "const" on allocation type
+In-Reply-To: <20250426060935.work.049-kees@kernel.org>
+References: <20250426060935.work.049-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <c92a8101-e8fe-4727-9f85-e1e96ef5392c@RTEXMBS04.realtek.com.tw>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
-X-Uptime: 01:38:51 up 7 days,  9:52,  1 user,  load average: 0.00, 0.01, 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
+Content-Type: text/plain
+Message-ID: <501a4bd4-cb49-45f7-b47e-7f59f80a497f@RTEXMBS04.realtek.com.tw>
+Date: Mon, 5 May 2025 09:40:00 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-* Ping-Ke Shih (pkshih@realtek.com) wrote:
-> linux@treblig.org wrote:
-> 
-> > From: "Dr. David Alan Gilbert" <linux@treblig.org>
-> > 
-> > rtl_usb_resume() and rtl_usb_suspend() are trivial stubs that were
-> > added in 2011's
-> > commit 2ca20f79e0d8 ("rtlwifi: Add usb driver")
-> > but aren't wired up anywhere (though commit 442888c706e9 ("rtlwifi:
-> > rtl8192cu: Add routines dm, fw, led and sw")  added commented
-> > out assignments).
-> > 
-> > Remove them.
-> > 
-> > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-> 
-> 3 patch(es) applied to rtw-next branch of rtw.git, thanks.
-> 
-> d559636e382a wifi: rtlwifi: Remove unused rtl_usb_{resume|suspend}
-> 2d867b18eb93 wifi: rtlwifi: Remove uncalled stub rtl*_phy_ap_calibrate
-> 406dac790c25 wifi: rtlwifi: Remove unused rtl_bb_delay()
+Kees Cook <kees@kernel.org> wrote:
 
-Thanks!
-Did you see the question in the 0/3 cover letter asking why
-rtl8188ee_bt_hw_init() isn't called?
-
-Dave
-
-> ---
-> https://github.com/pkshih/rtw.git
+> In preparation for making the kmalloc family of allocators type aware,
+> we need to make sure that the returned type from the allocation matches
+> the type of the variable being assigned. (Before, the allocator would
+> always return "void *", which can be implicitly cast to any pointer type.)
 > 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+> The assigned type is "struct rtw89_reg2_def *" but the returned type,
+> while technically matching, will be const qualified. As there isn't a
+> general way to discard "const" qualifiers, adjust the returned type to
+> match the assigned type. No change in allocation size results.
+> 
+> Signed-off-by: Kees Cook <kees@kernel.org>
+
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+
+5b8dfb75b2c7 wifi: rtw89: fw: Remove "const" on allocation type
+
+---
+https://github.com/pkshih/rtw.git
+
 
