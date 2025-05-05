@@ -1,59 +1,60 @@
-Return-Path: <linux-wireless+bounces-22606-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22609-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97B3AAB5E0
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 07:38:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B58AAB64A
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 07:46:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39E497AA6D2
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 05:36:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 535D83AC47E
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 05:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B54C319A6C;
-	Tue,  6 May 2025 00:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D78C3278C1;
+	Tue,  6 May 2025 00:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mIRXy51k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKpRzBoh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3211029AAF5;
-	Mon,  5 May 2025 22:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D08E2BE119;
+	Mon,  5 May 2025 22:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485076; cv=none; b=dTDZ7R+tIlZZCKuvoXFkwUp+Enf6l3xi3flOP2mVuoYou7E5iOEewFUuk04XTRTL1k79VCm2uTk+umuthR4P7cwPcKOxOolEVYjzBLMoNyaQA4Q8Qvh6ZEfCw6uDlkEr+JDV7dPyCGPBRM5pMF8gsD3DiN5UMrIrXldMHJCAzV4=
+	t=1746485275; cv=none; b=qm68oKahPCwlUYz8CZDJxE5NydYlR43ecJYK1aSKN7gxm+kq+Q59e4xIMs9afGp4o/2WEknrhKf0/S6D5dMFaDSQz11H+BIIrNJP570uVK2LpAeHpBYFGdKrM6qKgCrDWGs40LjKJPOVNKuR3FwdeCsqe/rUnw79VcVHiYKFeVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485076; c=relaxed/simple;
-	bh=wOu7wKLs1vsRiMPFnLYhaedB4hJlgXEYCm1Jz72cGMc=;
+	s=arc-20240116; t=1746485275; c=relaxed/simple;
+	bh=DriiC+jigrAkqE9YIrsDXI5AvQJgjGi1697ipqfGh1A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L3VyfqHH+pPCP7WNbejuERWG8PfIt3tt5WEfC/BxfNrKC/cd3BCqkrm+yxLG9Exv3k0bxv8/2IzC5UT974Rwm9zUL4HqsQZDp+8FfcxG+Qk38khs07wffbWxsX6Za4DBNLCK0RprGCJIXOY638bav0Wo5ad/C62XWIurh9p6SHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mIRXy51k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18695C4CEED;
-	Mon,  5 May 2025 22:44:35 +0000 (UTC)
+	 MIME-Version; b=DexGu+psvF1fVD0PZ3Il0XTu1GNImCBW1nQZydqx6mhnRXOCdsIuS/9spb16VpVQjARr3nCn1pVuQ+9tI0XQl2mJJTta5QBrR3zw95PuNO8MG7y6qMg6L3ja+LDCYw6VYjPp/agUqkGSnhm+fuBfPJo9iswdTOufJBFN7nrSjIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKpRzBoh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07123C4CEE4;
+	Mon,  5 May 2025 22:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485076;
-	bh=wOu7wKLs1vsRiMPFnLYhaedB4hJlgXEYCm1Jz72cGMc=;
+	s=k20201202; t=1746485274;
+	bh=DriiC+jigrAkqE9YIrsDXI5AvQJgjGi1697ipqfGh1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIRXy51k2FBwLF0M+vHJZ1kJuK18Ui2PsETl+9T6vU/AJd9Ec2t8cUj5IHDb/KGaR
-	 Pco3l/OBztWihzHISkSHBx4e/xwKlUrZBali58gzgTMPZKrQla86jrazD2CxGLKmbR
-	 IClv0Q2/LvNeJ0CG2ZiRL1UVRPCsGlnfXowhy1Xn4mwg/mpFO9goHlxx+R7qKbVOM7
-	 ETKNY1m8T0MJ1F5B+xHlo+2TWEDJIG3QaPupLv6+SzFNSSpn5e0PoJpVc9NRamtAcR
-	 xCPSFqUHMV5Kp8BvBSFzvaZtUni7yrw5kGJe+l4RSBrfOPgh7a6+56f83TddobKXlI
-	 OC1M0sOyABGOw==
+	b=PKpRzBohfS/aTLnFGutW/4mICdFPCU8I6w8/PiGUeprX7MY0ZpTm0jVHhvfcFmDUb
+	 YLFo8AFOvWY2A/ohwCnoXlEaV64blS7XyCPFHM3OYd+f0yY8yUi/ntYg2kSyMDQufJ
+	 KROrL+c20bGcMir4xi62CSocAJcwPpf0vjKksLz4i/3iv3r1IJg9wU35qJ8kWmvaNj
+	 aEcD1QRJaCxBYp2D5uLx45QYDhdmQz46k/IK9kAs7OinqY2sdIbIDGXSJgTDsJql9K
+	 HWd+xHlhJM0TlmAR4/fK98yMa842dL7ciBM22N8sB42Bb8AuQQyUNPuOYrtcjPOdyL
+	 ttUk+WHrW/z0Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>,
+	Roopni Devanathan <quic_rdevanat@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 154/486] wifi: cfg80211: allow IR in 20 MHz configurations
-Date: Mon,  5 May 2025 18:33:50 -0400
-Message-Id: <20250505223922.2682012-154-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 247/486] wifi: ath12k: Improve BSS discovery with hidden SSID in 6 GHz band
+Date: Mon,  5 May 2025 18:35:23 -0400
+Message-Id: <20250505223922.2682012-247-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,197 +69,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
 
-[ Upstream commit cf4bd1608882792d4742e27a819493312904a680 ]
+[ Upstream commit 27d38bdfd416f4db70e09c3bef3b030c86fd235a ]
 
-Some regulatory bodies doesn't allow IR (initiate radioation) on a
-specific subband, but allows it for channels with a bandwidth of 20 MHz.
-Add a channel flag that indicates that, and consider it in
-cfg80211_reg_check_beaconing.
+Currently, sometimes, the station is unable to identify the configured
+AP SSID in its scan results when the AP is not broadcasting its name
+publicly and has a hidden SSID.
 
-While on it, fix the kernel doc of enum nl80211_reg_rule_flags and
-change it to use BIT().
+Currently, channel dwell time for an ath12k station is 30 ms. Sometimes,
+station can send broadcast probe request to AP close to the end of dwell
+time. In some of these cases, before AP sends a response to the received
+probe request, the dwell time on the station side would come to an end.
+So, the station will move to scan next channel and will not be able to
+acknowledge the unicast probe response.
 
-Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Co-developed-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
-Signed-off-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308225541.d3ab352a73ff.I8a8f79e1c9eb74936929463960ee2a324712fe51@changeid
-[fix typo]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Resolve this issue by increasing station's channel dwell time to 70 ms,
+so that the it remains on the same channel for a longer period. This
+would increase the station's chance of receiving probe response from the
+AP. The station will then send a response acknowledgment back to the AP,
+thus leading to successful scan and BSS discovery.
+
+With an increased dwell time, scan would take longer than it takes now.
+But, this fix is an improvement for hidden SSID scan issue.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
+Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250207060005.153835-1-quic_rdevanat@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/cfg80211.h       |  3 +++
- include/uapi/linux/nl80211.h | 52 ++++++++++++++++++++----------------
- net/wireless/chan.c          |  8 +++++-
- net/wireless/nl80211.c       |  4 +++
- net/wireless/reg.c           |  4 ++-
- 5 files changed, 46 insertions(+), 25 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 941dc62f3027c..8a712ca73f2b0 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -127,6 +127,8 @@ struct wiphy;
-  *	even if it is otherwise disabled.
-  * @IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP: Allow using this channel for AP operation
-  *	with very low power (VLP), even if otherwise set to NO_IR.
-+ * @IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY: Allow activity on a 20 MHz channel,
-+ *	even if otherwise set to NO_IR.
-  */
- enum ieee80211_channel_flags {
- 	IEEE80211_CHAN_DISABLED			= BIT(0),
-@@ -155,6 +157,7 @@ enum ieee80211_channel_flags {
- 	IEEE80211_CHAN_NO_6GHZ_AFC_CLIENT	= BIT(23),
- 	IEEE80211_CHAN_CAN_MONITOR		= BIT(24),
- 	IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP	= BIT(25),
-+	IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY     = BIT(26),
- };
- 
- #define IEEE80211_CHAN_NO_HT40 \
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index f97f5adc8d518..c2d7faf8d87fa 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4294,6 +4294,8 @@ enum nl80211_wmm_rule {
-  *	otherwise completely disabled.
-  * @NL80211_FREQUENCY_ATTR_ALLOW_6GHZ_VLP_AP: This channel can be used for a
-  *	very low power (VLP) AP, despite being NO_IR.
-+ * @NL80211_FREQUENCY_ATTR_ALLOW_20MHZ_ACTIVITY: This channel can be active in
-+ *	20 MHz bandwidth, despite being NO_IR.
-  * @NL80211_FREQUENCY_ATTR_MAX: highest frequency attribute number
-  *	currently defined
-  * @__NL80211_FREQUENCY_ATTR_AFTER_LAST: internal use
-@@ -4338,6 +4340,7 @@ enum nl80211_frequency_attr {
- 	NL80211_FREQUENCY_ATTR_NO_6GHZ_AFC_CLIENT,
- 	NL80211_FREQUENCY_ATTR_CAN_MONITOR,
- 	NL80211_FREQUENCY_ATTR_ALLOW_6GHZ_VLP_AP,
-+	NL80211_FREQUENCY_ATTR_ALLOW_20MHZ_ACTIVITY,
- 
- 	/* keep last */
- 	__NL80211_FREQUENCY_ATTR_AFTER_LAST,
-@@ -4549,31 +4552,34 @@ enum nl80211_sched_scan_match_attr {
-  * @NL80211_RRF_NO_6GHZ_AFC_CLIENT: Client connection to AFC AP not allowed
-  * @NL80211_RRF_ALLOW_6GHZ_VLP_AP: Very low power (VLP) AP can be permitted
-  *	despite NO_IR configuration.
-+ * @NL80211_RRF_ALLOW_20MHZ_ACTIVITY: Allow activity in 20 MHz bandwidth,
-+ *	despite NO_IR configuration.
-  */
- enum nl80211_reg_rule_flags {
--	NL80211_RRF_NO_OFDM		= 1<<0,
--	NL80211_RRF_NO_CCK		= 1<<1,
--	NL80211_RRF_NO_INDOOR		= 1<<2,
--	NL80211_RRF_NO_OUTDOOR		= 1<<3,
--	NL80211_RRF_DFS			= 1<<4,
--	NL80211_RRF_PTP_ONLY		= 1<<5,
--	NL80211_RRF_PTMP_ONLY		= 1<<6,
--	NL80211_RRF_NO_IR		= 1<<7,
--	__NL80211_RRF_NO_IBSS		= 1<<8,
--	NL80211_RRF_AUTO_BW		= 1<<11,
--	NL80211_RRF_IR_CONCURRENT	= 1<<12,
--	NL80211_RRF_NO_HT40MINUS	= 1<<13,
--	NL80211_RRF_NO_HT40PLUS		= 1<<14,
--	NL80211_RRF_NO_80MHZ		= 1<<15,
--	NL80211_RRF_NO_160MHZ		= 1<<16,
--	NL80211_RRF_NO_HE		= 1<<17,
--	NL80211_RRF_NO_320MHZ		= 1<<18,
--	NL80211_RRF_NO_EHT		= 1<<19,
--	NL80211_RRF_PSD			= 1<<20,
--	NL80211_RRF_DFS_CONCURRENT	= 1<<21,
--	NL80211_RRF_NO_6GHZ_VLP_CLIENT	= 1<<22,
--	NL80211_RRF_NO_6GHZ_AFC_CLIENT	= 1<<23,
--	NL80211_RRF_ALLOW_6GHZ_VLP_AP	= 1<<24,
-+	NL80211_RRF_NO_OFDM                 = 1 << 0,
-+	NL80211_RRF_NO_CCK                  = 1 << 1,
-+	NL80211_RRF_NO_INDOOR               = 1 << 2,
-+	NL80211_RRF_NO_OUTDOOR              = 1 << 3,
-+	NL80211_RRF_DFS                     = 1 << 4,
-+	NL80211_RRF_PTP_ONLY                = 1 << 5,
-+	NL80211_RRF_PTMP_ONLY               = 1 << 6,
-+	NL80211_RRF_NO_IR                   = 1 << 7,
-+	__NL80211_RRF_NO_IBSS               = 1 << 8,
-+	NL80211_RRF_AUTO_BW                 = 1 << 11,
-+	NL80211_RRF_IR_CONCURRENT           = 1 << 12,
-+	NL80211_RRF_NO_HT40MINUS            = 1 << 13,
-+	NL80211_RRF_NO_HT40PLUS             = 1 << 14,
-+	NL80211_RRF_NO_80MHZ                = 1 << 15,
-+	NL80211_RRF_NO_160MHZ               = 1 << 16,
-+	NL80211_RRF_NO_HE                   = 1 << 17,
-+	NL80211_RRF_NO_320MHZ               = 1 << 18,
-+	NL80211_RRF_NO_EHT                  = 1 << 19,
-+	NL80211_RRF_PSD                     = 1 << 20,
-+	NL80211_RRF_DFS_CONCURRENT          = 1 << 21,
-+	NL80211_RRF_NO_6GHZ_VLP_CLIENT      = 1 << 22,
-+	NL80211_RRF_NO_6GHZ_AFC_CLIENT      = 1 << 23,
-+	NL80211_RRF_ALLOW_6GHZ_VLP_AP       = 1 << 24,
-+	NL80211_RRF_ALLOW_20MHZ_ACTIVITY    = 1 << 25,
- };
- 
- #define NL80211_RRF_PASSIVE_SCAN	NL80211_RRF_NO_IR
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index e579d7e1425fe..c4f3fefeb3544 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -6,7 +6,7 @@
-  *
-  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-- * Copyright 2018-2024	Intel Corporation
-+ * Copyright 2018-2025	Intel Corporation
-  */
- 
- #include <linux/export.h>
-@@ -1621,6 +1621,12 @@ bool cfg80211_reg_check_beaconing(struct wiphy *wiphy,
- 	if (cfg->reg_power == IEEE80211_REG_VLP_AP)
- 		permitting_flags |= IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP;
- 
-+	if ((cfg->iftype == NL80211_IFTYPE_P2P_GO ||
-+	     cfg->iftype == NL80211_IFTYPE_AP) &&
-+	    (chandef->width == NL80211_CHAN_WIDTH_20_NOHT ||
-+	     chandef->width == NL80211_CHAN_WIDTH_20))
-+		permitting_flags |= IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY;
-+
- 	return _cfg80211_reg_can_beacon(wiphy, chandef, cfg->iftype,
- 					check_no_ir ? IEEE80211_CHAN_NO_IR : 0,
- 					permitting_flags);
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index ecfceddce00fc..c778ffa1c8efd 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1213,6 +1213,10 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
- 		if ((chan->flags & IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP) &&
- 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_ALLOW_6GHZ_VLP_AP))
- 			goto nla_put_failure;
-+		if ((chan->flags & IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY) &&
-+		    nla_put_flag(msg,
-+				 NL80211_FREQUENCY_ATTR_ALLOW_20MHZ_ACTIVITY))
-+			goto nla_put_failure;
- 	}
- 
- 	if (nla_put_u32(msg, NL80211_FREQUENCY_ATTR_MAX_TX_POWER,
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 2b626078739c5..f6846eb0f4b84 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -5,7 +5,7 @@
-  * Copyright 2008-2011	Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright      2017  Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2024 Intel Corporation
-+ * Copyright (C) 2018 - 2025 Intel Corporation
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-  * purpose with or without fee is hereby granted, provided that the above
-@@ -1603,6 +1603,8 @@ static u32 map_regdom_flags(u32 rd_flags)
- 		channel_flags |= IEEE80211_CHAN_PSD;
- 	if (rd_flags & NL80211_RRF_ALLOW_6GHZ_VLP_AP)
- 		channel_flags |= IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP;
-+	if (rd_flags & NL80211_RRF_ALLOW_20MHZ_ACTIVITY)
-+		channel_flags |= IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY;
- 	return channel_flags;
- }
- 
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index a6ba97949440e..30836a09d5506 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -2206,8 +2206,8 @@ void ath12k_wmi_start_scan_init(struct ath12k *ar,
+ 	arg->dwell_time_active = 50;
+ 	arg->dwell_time_active_2g = 0;
+ 	arg->dwell_time_passive = 150;
+-	arg->dwell_time_active_6g = 40;
+-	arg->dwell_time_passive_6g = 30;
++	arg->dwell_time_active_6g = 70;
++	arg->dwell_time_passive_6g = 70;
+ 	arg->min_rest_time = 50;
+ 	arg->max_rest_time = 500;
+ 	arg->repeat_probe_time = 0;
 -- 
 2.39.5
 
