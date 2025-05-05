@@ -1,113 +1,112 @@
-Return-Path: <linux-wireless+bounces-22452-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22453-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F3DFAA9220
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 13:36:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC286AA9221
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 13:36:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 363063AD25C
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 11:36:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3632218891CF
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 11:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EE61F948;
-	Mon,  5 May 2025 11:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A90200BB2;
+	Mon,  5 May 2025 11:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="T9CmCQQi"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="m5yuYO65"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15ACA200BB2
-	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 11:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161BC204592
+	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 11:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746444990; cv=none; b=fXWcyyBFGDVXIFpajwAWv9DJoASLKGy2si6Erz9Ge2gL1Ug7YFTs/pzipoDzsu4ZhiugWtfY7/S7SPn6S8B7Ge7cRBGffv0fKRP08hNzTCQ7xpAsACHKSxWHov4vHwuiZda95ZHlACLG/aJGithRoSCKC/9zkN8s9b+rvOGYTrw=
+	t=1746444991; cv=none; b=Y1yPLzJ3GhIXWCdHZPjwYTS3TZjs5v4ZpUj6IH7V9xHvKOCwq7THKnqOt8sjN8/KjEoCmnuBMyeyLUQL9oJ2PmlZSaMc4XJAkan0SyQVl4O0XmuDp+ivHCYq+hxpl7VbWHqd0Wp3UZ3pmeNM+Bsljz4NXeXIRXT5CyBoZ+snLz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746444990; c=relaxed/simple;
-	bh=8SEyhfjP9X1MSbDm3ZIXz6Yar2UIACms5rw/jzfi8BY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=uw8wCD5hcmZk6MnV5YaS10P24yx5Y77s5jV16vlpu/lauyVlCSLP8M0ITlShMPKc2ZXYZn70hv0vPKPe1vXVlak42JNhOaTWJdKKA+HBipoWq+c03NSNDKRnhc7dLtdLoWnfqBTJfX7I/6UqmoKRuGgitEHCZ4TtezokgneBpTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=T9CmCQQi; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1746444991; c=relaxed/simple;
+	bh=tg9Z2/C7Cvlvx0J305uqJ8kQlYGc9SuOKtHSzPFzmPc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=L6DOm8ZRebXOyQ3Epza6OrnoGPkieOpcQVX4IkCmSKUxbzd0hhx8P+ZWUyZ/ZDLND4mIbO1/OpsCKeUoCcQNWERyAp+1aSGM1nAJS2FmHcr2d4D9Z5m7XyjI8b2BOmPMZrowQYP+F+gxBkQ6C8J1vcpYE99l08smJjtlpaAs9OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=m5yuYO65; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 544NHl5K017230
-	for <linux-wireless@vger.kernel.org>; Mon, 5 May 2025 11:36:27 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 544LwJGi014092
+	for <linux-wireless@vger.kernel.org>; Mon, 5 May 2025 11:36:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:date:from:in-reply-to:message-id:references:subject:to; s=
-	qcppdkim1; bh=Y86fPAmtKmnZHSfXMNDslF6qXxAkG8J/KBwFQmVGcEk=; b=T9
-	CmCQQirrMPZyZoJzsuLSA5tBWYRtJajDHne4toA3dzT6BILnw/0lef6qfHnapRt8
-	S8scG9KQAl9rWXyMpMDXp1npzYAVXlqcort3fHnwa2LSbEumzU+CcL6FVhdpEyxM
-	W8+oh+MQ9CtcUA50p8xOavvsdqZO+vS1S+aqieHwkOhXA+wAtKm0YYxHU6/BHlvA
-	dY2vXsc3l4MPXqxFuFKZIue+w3f9xPQTw9K14SO5qjEGmvgycuYFpPEzlOVtZYk9
-	163DoZXeOu+xfKx7RaZ62pHO754S2NQW0qpXqa5IU25OMsXek7IZYo/jMUFb8coM
-	elHUeM4ISe3JFp85JDWw==
+	qcppdkim1; bh=Qq51XT7YYtig8sR6o9TZUSlLWr6Yl9WicUlD2R+enF8=; b=m5
+	yuYO65EoMCUk55F3+PteBT/0Q27g3uTV82sct3Z1bxw+3Euq/1Zn0l2wxNJdicpY
+	C6DMInOHXpk7O/GL5BD+zLZJ5AfPzORwykAgDuXO5BQ4gl3KhhSbIgXwDmL3DZJY
+	g67XxqJvte0ZFvxfk4dZcqFL3OTNb28p9uvQhEiB/24LYqi1+qgKemAU3E063pUi
+	vCh1YTXQm02Q2a13TmDVw7+mK7mR+yv31a75FfiAzgPc3x06YyXqZTjQO7l1z6YE
+	jW7+0hTQThUhtRKMw9Vm48n7QqUm7C0ZhjN/fb1fNdFTkKoWIgpOClKkK2Obv/9o
+	YUotIsExmfxgKuTHPCTQ==
 Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46dd3n3u57-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46d9nkv209-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 05 May 2025 11:36:27 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-736cd36189bso6173370b3a.2
-        for <linux-wireless@vger.kernel.org>; Mon, 05 May 2025 04:36:27 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Mon, 05 May 2025 11:36:28 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-73720b253fcso3286516b3a.2
+        for <linux-wireless@vger.kernel.org>; Mon, 05 May 2025 04:36:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746444986; x=1747049786;
+        d=1e100.net; s=20230601; t=1746444988; x=1747049788;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y86fPAmtKmnZHSfXMNDslF6qXxAkG8J/KBwFQmVGcEk=;
-        b=EMYDZkghJbFiHt4jL/n4N15kOTNpxk0GWySGAEAwKuXOiouIx5yD1bA5LEDAXY5AX5
-         FT4fTvENKxq6FaZVXmeg+srn2V18MU8ouK3g4PJTFVwtM46USjieV/+a9OdVMtJdgIwB
-         yyxl//mK4dQAsawlk1umvPjdpghmfbxA5IAPWRtZdvLX6nYgd+SClzS7+t0SVSRhG8Be
-         Qx/mRSiqfLGWBitTm/p5H8eQm8g0C3i3jCaNtG6Bw2UN4c+kY5u1LTp7k3O1CqJJo2nX
-         bwoDkvtoC54cjvZDJgEy58RooDVzezyGcWSZlfw5EzB+vqHvlZHatU4wGCtGdLf/xQU+
-         Yqjw==
-X-Gm-Message-State: AOJu0Yw3L9GtfvwHYzAdgdcAg8yBKErPVp2BR5fnbWi6kBE6xl7cOAXR
-	HRfKrCy85ANu6J/GIbMoJG3NiEhakBfA3uDlGzLC3wFbr2D+i4Btzeb18Wg03V8Y04HKrM0OcA7
-	o6VkOf/SNtEZpSKs/sGbqMUu837HzSjRk3lZdvLiK/Qhf2YzwgCCoUqCA81WTXZzLHmFfacK3KQ
-	==
-X-Gm-Gg: ASbGncsCxH7ida3hpF9hvhjKiWTkmg+Dgdseir3N4o5WZc/YaAFbTTrZ2FqBq82usZ7
-	lHheik1jBDkWFBp7ot6wKQOJOHpXM9YP3U856coDukgeaDn8Jp/A/ipXfEPoK8Mbr/Iv6uFCmZ7
-	cwK/1cbv742V98B9H8BniwAWssdJiSG3Tv3BTgEnkBkqRS2fuU84N/wyibcY1wigxzx1LlCoBbc
-	u6KQyTHcNHoMn7VZi7BlJRPm6OgYmawYg09Qo45D+EJbpS/UOmFvIbYtFzaaM5gLK9OXtY2aOyL
-	ItivqDZBEXghzIVf4NRzyqV4WCF2tAK38vDHR/7dIz6BLbI9il7Shk6wUIjGR7kp6G/SDoHSMBy
-	CBVvdfgrdTKH5XwQYYVL8YevR68jW7RG6cR5HnNgg8w4Hrw==
-X-Received: by 2002:a05:6a21:c98:b0:1f5:72eb:8b62 with SMTP id adf61e73a8af0-20e96ae46e1mr8402449637.20.1746444986251;
-        Mon, 05 May 2025 04:36:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFoJOLpKJ/OkKxf/NyufKD/iRcK7STotmKlly4YdOo8afr+2kQlzvAiqWq9hqRjmZWyMVI1Cw==
-X-Received: by 2002:a05:6a21:c98:b0:1f5:72eb:8b62 with SMTP id adf61e73a8af0-20e96ae46e1mr8402422637.20.1746444985896;
-        Mon, 05 May 2025 04:36:25 -0700 (PDT)
+        bh=Qq51XT7YYtig8sR6o9TZUSlLWr6Yl9WicUlD2R+enF8=;
+        b=Add1BR3Yx6iZV+gK1SvnRRtOR4qqJmpWDoiM0WERcYNlal8VMdwAygdMxkgXZT75Yb
+         ethXV71zph/WgF5qN2Q42O2kL/DkSjdGl/qX3r7pjZ0bOMcwiCePLPfww/nCQiERivOR
+         /RRThkDT7AqMhyQd3nQZv0Tov/V/p64IU4c98JgXooufgiJjg7qfMkL6zaWWeftSWP9L
+         DVVZTiTAWsxZf2nWrIGUm9ldjMLuaPKEhy8i+X69Mms9AXH0NfK1AT5Qk9KhMPwfak0Y
+         zYvCIjqtC8hTb2qRL84j0ZlTHyJy1d8gqbcY1hrexnnyGsVRhPbSXd00FP9/X7Grrh+g
+         brRQ==
+X-Gm-Message-State: AOJu0YzDUrzW+ltdgM6/p40PFEmY4WW7Ty+Ab8vc4cFp5kn+Sz/DnZKg
+	IPHMTYydo5NEYjl31sI10MK0cBa+cF0IZ4H+3cIhvKGL+KRe4IjLwgvlBpFf6130r4oI/EVDisB
+	2xP3LMVjIgq+j+xuoDB2ozQ6GZM+IPHNFDky8YgvzKZq4YJe5xgsloY56t8kiPW1wSg==
+X-Gm-Gg: ASbGnctE7bUbqC8qmHfpWsP/ABtDe3k0p0GZlCryZ0IJ/xsw2BsIckoBdrbXrxQleJI
+	DINowCqNqQIw7LtF8zlzon4puNG30yxOIgciPE8WLYU+omo0QeD+T8my9cui1ylYTf93p4IB5zB
+	1bp6ae7FBjxOLgMH++4ebwdUe2Oq5kR0uAIsv6sEYoyZY8SJWLcA8PZNkoM9IuEZ/GqJ5Gnqd9m
+	k5JKiJod5/bmDPb9S0vEvs/2YU7KninsTgHgtcPxo4Xr5gnCeVN6Uhz+dmsYAyhc4QvgoFAtu0f
+	tmmhcOhvKCI3UtEEbE4YVee53iqxROCpO5c93gCqP6A6NalE8p9P/LX2GNriXd2X8xq/N0DM+4B
+	f6v2v1jDxFNzbNjTTrbnfl/Tkb4SqBOlTGypXHjN7J2ZLeA==
+X-Received: by 2002:a05:6a00:808e:b0:739:4a30:b902 with SMTP id d2e1a72fcca58-7406f08b5ccmr9332429b3a.2.1746444988011;
+        Mon, 05 May 2025 04:36:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/CJU+Q9tDRMDbB/CVYkiL73Ye5BxywuI+MtNZ4fq+E6hd1XEHoYA1w2mQQXAjjYC69+4bfA==
+X-Received: by 2002:a05:6a00:808e:b0:739:4a30:b902 with SMTP id d2e1a72fcca58-7406f08b5ccmr9332399b3a.2.1746444987617;
+        Mon, 05 May 2025 04:36:27 -0700 (PDT)
 Received: from che-siroccolnx03.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74058db9200sm6497067b3a.42.2025.05.05.04.36.24
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74058db9200sm6497067b3a.42.2025.05.05.04.36.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 04:36:25 -0700 (PDT)
+        Mon, 05 May 2025 04:36:27 -0700 (PDT)
 From: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
         Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
-Subject: [PATCH wireless-next RFC v2 1/2] wifi: mac80211: update ieee80211_rx_status::freq documentation for multi-radio
-Date: Mon,  5 May 2025 17:06:18 +0530
-Message-Id: <20250505113619.3654343-2-maharaja.kennadyrajan@oss.qualcomm.com>
+Subject: [PATCH wireless-next RFC v2 2/2] wifi: mac80211: process group addressed Rx data and mgmt packets on intended interface
+Date: Mon,  5 May 2025 17:06:19 +0530
+Message-Id: <20250505113619.3654343-3-maharaja.kennadyrajan@oss.qualcomm.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20250505113619.3654343-1-maharaja.kennadyrajan@oss.qualcomm.com>
 References: <20250505113619.3654343-1-maharaja.kennadyrajan@oss.qualcomm.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDExMCBTYWx0ZWRfX5AxZQ/WqqDU6
- kTtX2bdlfIjb46AhgiO2NdFI6+eO/1ZALK8dbvSb1FwjUjNGtJvIBxC5M2fW0FMV7taiAPsGyyt
- gx5+yOjJe2yfoez61HpKmmK4a2GNfd8CtGGeVOUVA8hKB6n+TCnLbumM/x8atTmWQEYrsoSicSb
- APcfgE8Ik6R1ubD+0vgvahTtdQuzL3a/UQo/mYvQksWNQYC7QLmHoofpSHMHnWVlPulyjpL8sLC
- WiP0vsKg9qdxfkLHUd8aYO5upgYS1e0pEMZ56ge17pj5sBA7rvNZRBx73npQeKerRpHUclUNDKZ
- VHgfXGB8G2fXcDhXEla5AlUSizGpgyOawnTnz6vrhUEPh3lrkNTzDlXKK54lhu/9JF4cnSEag+f
- /5EFVeesIndTAY76JaaF22glBtmcN71ZerulPy2tMEvpm9dobOArnHfheZg989ZelikESdye
-X-Proofpoint-GUID: Cz6yBsLRU4qGz5PJZaz-MDH0jAoJWnbW
-X-Proofpoint-ORIG-GUID: Cz6yBsLRU4qGz5PJZaz-MDH0jAoJWnbW
-X-Authority-Analysis: v=2.4 cv=UNDdHDfy c=1 sm=1 tr=0 ts=6818a2bb cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDExMCBTYWx0ZWRfX61lG5LrKB29g
+ tQuG1/ENi1pPsS1w+Eq3SWNwiUdqMx8nX7AkWe68+9kWthe9nvTAmU2ad8gd0gGsfhBUw07o29f
+ 7RJxTtuOo0WduLhljoRKLHNSz7I4OprErw2cTSdWFxuEZlLq5DejQOH65ILvhO070LrRO7wGHky
+ F0Nx06UJNmw60t0MMRc0qi/bfun5EgIIyXE03OhBhTzkoi+xkwEtRF9kkSzcYznZlPAq2uPD+1U
+ gkhztBXTh4PfVavW6OMpADGo0ckyfAElfdyjTUgaKWoT9tqRipBpeKD+DOvzbcHgb7gHZZVulGH
+ sssFL1eFnxNUPAxfzXt+X06KlQoRoBxeOt+Xr2WLaqFrmu2j/c7eGaWSSwGZfiVqmVYxQ7ssrqG
+ 4gSBol6ASxvOMzSxu6obKEKLbNJyMxXr5DSDXwQfN1oB+xm0MLJBfX13nxz5TGxN4P86XS8C
+X-Proofpoint-GUID: V2nnpygY-Xva-LTouWtsirkF5BTOvYky
+X-Authority-Analysis: v=2.4 cv=LpeSymdc c=1 sm=1 tr=0 ts=6818a2bc cx=c_pps
  a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=dt9VzEwgFbYA:10 a=EUspDBNiAAAA:8 a=G3GIQwjkmUm1iQ8NZroA:9
+ a=dt9VzEwgFbYA:10 a=EUspDBNiAAAA:8 a=Y7y7kotgnV_wd4PCqGcA:9
  a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-ORIG-GUID: V2nnpygY-Xva-LTouWtsirkF5BTOvYky
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-05_05,2025-04-30_01,2025-02-21_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 adultscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
- mlxscore=0 phishscore=0 priorityscore=1501 spamscore=0 bulkscore=0
- malwarescore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ mlxlogscore=999 adultscore=0 lowpriorityscore=0 impostorscore=0 mlxscore=0
+ spamscore=0 malwarescore=0 priorityscore=1501 clxscore=1015 phishscore=0
+ bulkscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
  definitions=main-2505050110
 Precedence: bulk
@@ -116,43 +115,97 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 
-With multi-radio device, it has been observed that the group-addressed
-management/data Rx frames, which are actually received on one band, are
-getting processed on an interface running on a different band.
+Currently, in multi-radio devices, group-addressed data and management
+frames received on one band are getting processed on an interface running
+on a different band. This occurs because these frames do not have the
+destination station information, unlike unicast Rx frame processing where
+the transmitting station is known.
 
-This occurs because there is currently no check to ensure that the sdata is
-running on the same band as the frames are received on before start
-processing those frames.
+There is no check to ensure that the sdata is running on the same band as
+the frames are received on before processing those frames.
 
-Update the documentation of ieee80211_rx_status::freq to make it
-mandatory for group-addressed data frames in multi-radio device.
+Fix this by checking the operating frequency of the interface against the
+frequency of the packets received before forwarding them to the interface
+in multi-radio devices.
 
-Drivers such as ath12k and mediatek(mt76) are currently supporting
-multi-radio and report ieee80211_rx_status::freq in their Rx frame
-indication to the mac80211 driver.
+The current behavior is retained as a fallback mechanism when the frequency
+is not reported by the drivers.
 
 Signed-off-by: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
 ---
- include/net/mac80211.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/mac80211/rx.c | 48 +++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 40 insertions(+), 8 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index fdafc37d17cc..bbb39af4cc8e 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1609,8 +1609,10 @@ enum mac80211_rx_encoding {
-  *	it but can store it and pass it back to the driver for synchronisation
-  * @band: the active band when this frame was received
-  * @freq: frequency the radio was tuned to when receiving this frame, in MHz
-- *	This field must be set for management frames, but isn't strictly needed
-- *	for data (other) frames - for those it only affects radiotap reporting.
-+ *	This field must be set for management frames, also for group
-+ *	addressed data frames in case of multi-radio device, but otherwise
-+ *	this isn't strictly needed for data (other) frames - for those it
-+ *	only affects radiotap reporting.
-  * @freq_offset: @freq has a positive offset of 500Khz.
-  * @signal: signal strength when receiving this frame, either in dBm, in dB or
-  *	unspecified depending on the hardware capabilities flags
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 09beb65d6108..59028c08dd52 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -5125,6 +5125,30 @@ static bool ieee80211_rx_for_interface(struct ieee80211_rx_data *rx,
+ 	return ieee80211_prepare_and_rx_handle(rx, skb, consume);
+ }
+ 
++static bool
++ieee80211_rx_is_sdata_match(struct ieee80211_sub_if_data *sdata,
++			    int freq)
++{
++	struct ieee80211_link_data *link;
++	struct ieee80211_bss_conf *bss_conf;
++	struct ieee80211_chanctx_conf *conf;
++
++	if (!freq)
++		return true;
++
++	for_each_link_data(sdata, link) {
++		bss_conf = link->conf;
++		if (!bss_conf)
++			continue;
++		conf = rcu_dereference(bss_conf->chanctx_conf);
++		if (conf && conf->def.chan &&
++		    conf->def.chan->center_freq == freq)
++			return true;
++	}
++
++	return false;
++}
++
+ /*
+  * This is the actual Rx frames handler. as it belongs to Rx path it must
+  * be called with rcu_read_lock protection.
+@@ -5264,18 +5288,26 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 		 * the loop to avoid copying the SKB once too much
+ 		 */
+ 
+-		if (!prev) {
+-			prev = sdata;
+-			continue;
+-		}
++		/* Process the group addressed management and data packets
++		 * in the intended interface when the operating frequency
++		 * matches with rx_status->freq in multi-radio devices.
++		 * If rx_status->freq is not set by the driver, then
++		 * follow the existing code flow.
++		 */
+ 
+-		rx.sdata = prev;
+-		ieee80211_rx_for_interface(&rx, skb, false);
++		if (ieee80211_rx_is_sdata_match(sdata, status->freq)) {
++			if (!prev) {
++				prev = sdata;
++				continue;
++			}
+ 
+-		prev = sdata;
++			rx.sdata = prev;
++			ieee80211_rx_for_interface(&rx, skb, false);
++			prev = sdata;
++		}
+ 	}
+ 
+-	if (prev) {
++	if (prev && ieee80211_rx_is_sdata_match(prev, status->freq)) {
+ 		rx.sdata = prev;
+ 
+ 		if (ieee80211_rx_for_interface(&rx, skb, true))
 -- 
 2.17.1
 
