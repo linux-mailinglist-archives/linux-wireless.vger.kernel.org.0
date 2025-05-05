@@ -1,60 +1,57 @@
-Return-Path: <linux-wireless+bounces-22563-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22566-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7050AAA9E9
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:25:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1450AAAA51
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AB167B3033
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 01:23:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45A551883E60
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 01:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350882DA0FF;
-	Mon,  5 May 2025 22:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129CF2DC128;
+	Mon,  5 May 2025 23:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nc5oHZjr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qelmbq78"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52FA2BE10A;
-	Mon,  5 May 2025 22:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208CF2D7AF7;
+	Mon,  5 May 2025 22:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485243; cv=none; b=TwbdCju+HfZq+jlM2U+qb72tdsajtP/QJhn/K94ZByFRmn9qs7dsgPdPdE+48VbRki0zbJHDr6Mu0BqZL8syJd6GK+UeacG9OaLP2nGrT7dxw1Jay1lP0CyeowgtNGOy2XNgmS/8pbV9U5hIKQvDs6TtmOeB8kJYzg6CndDwHeo=
+	t=1746485762; cv=none; b=fsDBELk9iCXXFYIfbY6moouMC/ZAbrF3Skt8sC+cNOC7LI8P6PXL8/AxEjmVwor1Tc8mAtwG9dc5uDgui1zQCJzSonJErjTCYvpYYRP43UohLMBLQu4n9pYexzADzN7soYebEJoaBwAU0nWr4HHGzlW/p7NczQYQIDUe8pr1oSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485243; c=relaxed/simple;
-	bh=ob0vvT2R1TZYXplndaOjW3twfOQy1RYATc7niEKvVFY=;
+	s=arc-20240116; t=1746485762; c=relaxed/simple;
+	bh=SgI4QQB3OheU7ULdDzQTMVDQs2Cqi1Nn/noA8ypWu1o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=V3MBXSQKpnUg57acYuI0PXWZ67eBKYj2Zxi4RAjyLPQjjn9s17EQhXii1ucuCvSttcMLFfHiGCXcYn8PtmHDc17v6WkJIJcaHcBj4yklp4itUNH4YYheKQQHGTU984AXQm0nSnX+o63ZlUSQfjmC4uKJl0aZngmYuhbf+fpoKFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nc5oHZjr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BE6C4CEEE;
-	Mon,  5 May 2025 22:47:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gBYJF4Sk4BIQswNmx+ADFfBdXgRCCI1sqktZgEj0tGroexQsygzYohcV45IlCeR/ulZXQ9fuvijYrtcPdxk+e+t+9nf48GiJrsUmCvCYs3bf5h3A9mMQzfIWl7pHGQmMtG81KCDAglaUd+nyG2je5NsvqF05T0OhnbOGtOHVzp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qelmbq78; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E491C4CEED;
+	Mon,  5 May 2025 22:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485242;
-	bh=ob0vvT2R1TZYXplndaOjW3twfOQy1RYATc7niEKvVFY=;
+	s=k20201202; t=1746485761;
+	bh=SgI4QQB3OheU7ULdDzQTMVDQs2Cqi1Nn/noA8ypWu1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nc5oHZjr6V5lg/J9TipRDP8ftjZNB17madeqkKEh4wi4sBg2mqyXjuhb94Ro/Nnwi
-	 gsQwiBxm4xGzwtI8Ns2cPiW2LwogGaJ6m/nBsggtG/MKGWtXwAsfsFwJ78D5Zhree8
-	 0MvA1Fyn9MIRGP7pdH7oMCZtMaSin6vdDElOSm3uiYYWy/qWmDqGDmacx1++COLz+z
-	 u2+3032UJMGqh00FNkvyxR8lzkmnbXfpOkKLSTSU07zdFFlFYukemSOkDmsMizX836
-	 z8Gj4FbgBj9c70C1MAIhlB8apfKCyDEgzWjtRDp3dkRGj6Brh6GopKnUC/CG8r2WZk
-	 yvzE3vO+0gp5Q==
+	b=qelmbq78NdC9twjoi+ohkjclGDJUfcykFT73kIoVusj3UlEhmtMNrqGEjMfkr9rGx
+	 pcYEe6zXUqlKIpqkS3lc3CywrdwdTvr4q7tJh+3A6mowCO8hMX0IYkO7qIZ6nn3vpy
+	 i015g/MHfVVdPvARWlkDAPWhZIG3h1a6+cBLEhntKMLZcn6cDx6R5HqOcrs3l2TWMa
+	 BnrGYUvao+gsIaPgK6BENHBicXGyG9YazpaLsAUz1u+LnM43R0e0YszRCAxSpNk4l0
+	 jav14hVCSlIpAx3dYsHnt6AOfHEEgC2XanGowDZ8BiYbiet200AaZv0kb2mmk2qXK+
+	 zAFZFhxDJBdrg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vinith Kumar R <quic_vinithku@quicinc.com>,
-	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+Cc: Rosen Penev <rosenp@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 231/486] wifi: ath12k: Report proper tx completion status to mac80211
-Date: Mon,  5 May 2025 18:35:07 -0400
-Message-Id: <20250505223922.2682012-231-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 470/486] wifi: ath9k: return by of_get_mac_address
+Date: Mon,  5 May 2025 18:39:06 -0400
+Message-Id: <20250505223922.2682012-470-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -64,59 +61,47 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Vinith Kumar R <quic_vinithku@quicinc.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit d2d9c9b8de725e1006d3aa3d18678a732f5d3584 ]
+[ Upstream commit dfffb317519f88534bb82797f055f0a2fd867e7b ]
 
-Currently Tx completion for few exception packets are received from
-firmware and the tx status updated to mac80211. The tx status values of
-HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP and HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL
-are considered as tx failure and reported as tx failure to mac80211.
-But these failure status is due to internal firmware tx drop and these
-packets were not tried to transmit in the air.
-In case of mesh this invalid tx status report might trigger mpath broken
-issue due to increase in mpath fail average.
-So do not report these tx status as tx failure instead free the skb
-by calling ieee80211_free_txskb(), and that will be accounted as dropped
-frame.
+When using nvmem, ath9k could potentially be loaded before nvmem, which
+loads after mtd. This is an issue if DT contains an nvmem mac address.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+If nvmem is not ready in time for ath9k, -EPROBE_DEFER is returned. Pass
+it to _probe so that ath9k can properly grab a potentially present MAC
+address.
 
-Signed-off-by: Vinith Kumar R <quic_vinithku@quicinc.com>
-Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://patch.msgid.link/20241122173432.2064858-1-quic_tamizhr@quicinc.com
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Link: https://patch.msgid.link/20241105222326.194417-1-rosenp@gmail.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_tx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath9k/init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index 44406e0b4a342..ad21fbfbcbe22 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -557,13 +557,13 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index 7fad7e75af6a3..619bebd389bd2 100644
+--- a/drivers/net/wireless/ath/ath9k/init.c
++++ b/drivers/net/wireless/ath/ath9k/init.c
+@@ -691,7 +691,9 @@ static int ath9k_of_init(struct ath_softc *sc)
+ 		ah->ah_flags |= AH_NO_EEP_SWAP;
+ 	}
  
- 	switch (wbm_status) {
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_OK:
--	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
--	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
- 		ts.acked = (wbm_status == HAL_WBM_REL_HTT_TX_COMP_STATUS_OK);
- 		ts.ack_rssi = le32_get_bits(status_desc->info2,
- 					    HTT_TX_WBM_COMP_INFO2_ACK_RSSI);
- 		ath12k_dp_tx_htt_tx_complete_buf(ab, msdu, tx_ring, &ts);
- 		break;
-+	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
-+	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT:
- 		ath12k_dp_tx_free_txbuf(ab, msdu, mac_id, tx_ring);
+-	of_get_mac_address(np, common->macaddr);
++	ret = of_get_mac_address(np, common->macaddr);
++	if (ret == -EPROBE_DEFER)
++		return ret;
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
