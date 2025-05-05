@@ -1,128 +1,158 @@
-Return-Path: <linux-wireless+bounces-22459-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22460-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92E5AA97A4
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 17:40:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92351AA9A31
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 19:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23436171CAA
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 15:40:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9491118994F9
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 17:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976A225D91B;
-	Mon,  5 May 2025 15:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA831FFC50;
+	Mon,  5 May 2025 17:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZOaOSYCa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W6bi8Kk0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD7125D203
-	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 15:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2E854279
+	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 17:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746459601; cv=none; b=MyO2AlT6CKBFQNFSL3fEGCyANHKXhV34442rPKBwv+gDca+HqNgfEaXj27b9Z+ogtweTgE9yRFlUxs7upHl25vCgPl0RD0yplmuu66/7/GWJ/7AYqvBgA2cR0FVyo+qOz4UBJTbDrsZOm3By6u5AzbDsIB/WekOme9F8zStY8mo=
+	t=1746465182; cv=none; b=X3bb0p65ESFZ/IjNdJu0rYSmNKozWAv2pXDIVIH3ns9WQ9uXQSmL8n0BiFmxDZRjJwF31S6pqddIwhvkRxnEBUtvzq4ADqAxEel2StPUvpamaxUhMTBSM4YmRD4yobTle8FUOSrh3nTFViTKeO2dH8xlZ8ozyfbMd2CNZeD86Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746459601; c=relaxed/simple;
-	bh=GCjVRhJedbBQ5nKr2sMqAoyX7GEfSsAhJqn8wg9Fp/Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=bTCwUqDbGE9wKp+8KUKHNLf4hmNballFfNOaNiLy/WwdXOmSOtp6Gdh+nl3YvW8DyoLiWuJZbDrPWEW8FIzmP4D9D9+yz2nM/FIvxpFRbwO87KjnLhk0Yf/aKvmLNQn6E4SXkdoNJfJP0hARutzqVkHqnliM1snxHrhKra+XMJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZOaOSYCa; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 545BbtPD017230;
-	Mon, 5 May 2025 15:39:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nDb9ZFmDUYAMKLFSvUF+qoNmfJc+FlNKpdHG1oUOfxY=; b=ZOaOSYCa/aDlQbGW
-	5QQOEPbxnkCMcj7uJvo+Lb7OHlYgVfC4EYfppTV1KzJbMh1NEJNSJlya+HPn+3uC
-	j+vHCaB6gpLOHFag8brm8wwXOxDqU67PCwDNldpvRwvGzNkM2A0ry/LLujSIsMKC
-	VEJ72g5knrAp/IguDaC+8XSYIX43M8x82JNP+4RbY30kUjeni5g0puTWUREe2IMx
-	d5GNMcsDSx/cJewa1sejYiQ4l3lauIDr2d6caP93x6lx6YVt5wCl2hcVTIuWhRMu
-	Kf63XyiK/6TaQVk0/gBSs72ORh2mVId6GeDfKjXgBfwVdoFKx0FDNmOIe9LhDcOQ
-	toKh9Q==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46dd3n4cy4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 May 2025 15:39:55 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 545Fds4F005191
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 5 May 2025 15:39:54 GMT
-Received: from [10.216.3.116] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 5 May 2025
- 08:39:52 -0700
-Message-ID: <d4450ef8-5463-4f5a-a5e8-15cad2349883@quicinc.com>
-Date: Mon, 5 May 2025 21:09:49 +0530
+	s=arc-20240116; t=1746465182; c=relaxed/simple;
+	bh=AYSADc3wtB8Dy9FGjlKmPce9Ygp8RARu4b5GyPF0/Nw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NvvuqVf/OYYdWilWB53LU+BDUGT9NRHSNr8B6w9oSvnoqPeWhkWPhH1OboH0Z+V0zJlIqZOIgPXA8pHSPNyHESYk6et7rpN8SDUBdtVk+FGWkmcJ+zG3fqyY2pKsNdx7bI4RIGHNxcO7expZiGPdO3FTq5RYMnGkRXVj5c4qYZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W6bi8Kk0; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ac2aeada833so907834266b.0
+        for <linux-wireless@vger.kernel.org>; Mon, 05 May 2025 10:13:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746465179; x=1747069979; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9Pv9kuiajRL9rhsWpA317JLxdwp+p1B2V543Ot4gN5g=;
+        b=W6bi8Kk0QSrJ75dK2TIb/oj80JSZ6wnntptyPY2BU+zWMT0d0o1H3tzwe9RK+nWkx+
+         sDbooOpNHYUDl6tPaNXxowUgf8nr+CQHjHN6XEixIN3LTgro3ox1SMAMfLYrOAl3SUMz
+         0vFeTewp7W2O2GUqw2xkH8U4w/9kayBi6Rag4r7N9Ppg/HWOth0cFhZMR26eop2c7EOy
+         NmxKQeV4XT5BrJmzpPcw+gfYSubpDZRcm/eDXUE7Dks9yC0w9Ea+RBwVgfhMhgyMrq1p
+         pjCiE39jHHgS2iRrWqo3sglUwLZ2bl3jiXLCrAdv3SidypR3PWCBNpKdfkL98kjRsAFC
+         k3Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746465179; x=1747069979;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9Pv9kuiajRL9rhsWpA317JLxdwp+p1B2V543Ot4gN5g=;
+        b=qVvZF8jPS32VMCmJjaJHxqteYBQueRIw5pmvIXjkoMjXMXPcJoUF/4B42OAWGJrUTk
+         BuugTUBjZd/nyQxnRrb1SkrXtxV11t4htC3X+BT9qFXWAhvPoE9hRDGtIjXtsGDi0G7x
+         8IKMQsyKkiPrjqLoAY7FLYwpKJACcULiuEDMfnuaEB6W0OhMOU5Dfe8dmfvjOhl4bhCh
+         9h4i4dJ6cgmtGASeJmFv4iRC37q/2xwU5zKL+JZ4RYADVDq5fkrH+/DwQ9SQhL6nIx9t
+         7B6MCI8dzJDWfgLcxeJZsggaI6FupLhswtnhrBHYAOpLPzTTLwHWwK7Jje4gtXN7sMrM
+         uy3Q==
+X-Gm-Message-State: AOJu0Yw3AeLNIy0G8YkkM7/TX5UN9bil27M0cmC3vXuGEeMxogLYUpKB
+	2eqVFxTH2L81UATuI1eLD8Sfk/qbQRGNAjw3N6jB5wDSUsVCta3kvbXBXWO1+3YbOUKrbo17bhS
+	vPjD/5HHBvHZh4IolZiVRCoGEAWY=
+X-Gm-Gg: ASbGncttnSq0gkj0ZroqLaIQBFW27LPhCv2UMh/dJPF5ueCEyQkyRjxejUhRpvKAKm5
+	2xu1EDrHiZ/gh3gknD0mLkbJScTBgUsYIzwXrCPuMrAxFsbFsTWPslxAOknYPVtQpCAUHPWBwV7
+	Fo5q5Csje02DdsokR9gji6KX4v
+X-Google-Smtp-Source: AGHT+IE/6nVBZsAQDyzJcy+YZjASaJHU1con3EeZLn83v/8whRNc3ZqsuwNNMmMTTX7Z3SOAhypHzTl4vISeDnT756k=
+X-Received: by 2002:a17:907:7294:b0:acb:1165:9a93 with SMTP id
+ a640c23a62f3a-ad1d2e7af6emr30310366b.3.1746465178565; Mon, 05 May 2025
+ 10:12:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v2] wifi: mac80211: Update MCS15 support in
- link_conf
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Dhanavandhana Kannan
-	<quic_dhanavan1@quicinc.com>
-References: <20250505152836.3266829-1-quic_mkumarg@quicinc.com>
-Content-Language: en-US
-From: Mohan Kumar G <quic_mkumarg@quicinc.com>
-In-Reply-To: <20250505152836.3266829-1-quic_mkumarg@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDE0OSBTYWx0ZWRfX/Kzb9zLFzee1
- wfyWebCklgYLzLTLtVVt8k5/Xw/4zkQOpt10GrHAGHOFOpSNeCj36XQp1UryzecqceAsJrf9QYK
- G/h0mRhUuZzY3wU2MSIHWbYKLUJ13mAtLt9RmNLkpwexydt9DzkKR4RgKK1cxqFxJfaeDdiPqpA
- KYfvYKqB8+4hViE88TpPP4YsQZQS0JXgu4+w46oaCGe5oAq5Asn/KPtjBs7h5SzpPPbJN4kVUzB
- dIGEoSQmnV3FeytTpamJpcMOsNdmSZDPQUgJR0/GvM83/6rrhjCYIWVWo+ywOUC0e0yK0J7vnb8
- xgFFk3jOUWofneSZ64mFBxTqTirIVNT+GMjgtm443vvTsQwpzHaWdqT0ldQZgaNIX1JleOaVfiM
- L6W+qc+B34wRC2m3DQXRNgCR8w9Liimj7MwPOTHMb3aDnvrnS9hedBHncJ8r464e1D1bRRMH
-X-Proofpoint-GUID: al6i1JXAxKv_9Q7cgAQJKZu7cDCkjqf3
-X-Proofpoint-ORIG-GUID: al6i1JXAxKv_9Q7cgAQJKZu7cDCkjqf3
-X-Authority-Analysis: v=2.4 cv=UNDdHDfy c=1 sm=1 tr=0 ts=6818dbcb cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8
- a=COk6AnOGAAAA:8 a=KWIm60pxQzOdfeBkbBsA:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-05_07,2025-05-05_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=703 adultscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
- mlxscore=0 phishscore=0 priorityscore=1501 spamscore=0 bulkscore=0
- malwarescore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505050149
+References: <CAD+XiyEJo0m8L6PbmBD=NPPa0E_wX3kk4ezn1qZ0d8JGXsS1qQ@mail.gmail.com>
+ <0cf9bd4b99864f428175e34a2f2e014b@realtek.com>
+In-Reply-To: <0cf9bd4b99864f428175e34a2f2e014b@realtek.com>
+From: Samuel Reyes <zohrlaffz@gmail.com>
+Date: Mon, 5 May 2025 11:12:41 -0600
+X-Gm-Features: ATxdqUHlpLsFQvoFhDZ1D3wh8ShgliWyZRhYKTzGqdPBd0KLi0sXYru9bEY40hE
+Message-ID: <CAD+XiyFkogCyQTk8Xhu8htGa892zFkY707+8WVCOdejb3FLNpg@mail.gmail.com>
+Subject: Re: RTL8922AE driver issues
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Big update, I updated my motherboard to the newest BIOS (vF4) and it
+has helped dramatically with the amount of errors in dmesg. But the
+issue with the connection dropping after some time remains. I added
+amd_iommu=3Doff to my kernel parameters and ran sudo iw wlan0 set
+power_save off. I did NOT apply the kernel patch you included yet. I
+ran dmesg when my connection dropped and saw a bunch of 'failed to
+update XX RXBD info: -11' errors again.
 
-On 5/5/2025 8:58 PM, Mohan Kumar G wrote:
-> As per IEEE 802.11be-2024 - 9.4.2.321, EHT operation element
-> contains MCS15 Disable subfield as the sixth bit, which is set when
-> MCS15 support is not enabled.
->
-> Get MCS15 support from EHT operation params and add it in link_conf
-> so that driver can use this value to know if EHT-MCS 15 reception
-> is enabled.
->
-> Co-developed-by: Dhanavandhana Kannan <quic_dhanavan1@quicinc.com>
-> Signed-off-by: Dhanavandhana Kannan <quic_dhanavan1@quicinc.com>
-> Signed-off-by: Mohan Kumar G <quic_mkumarg@quicinc.com>
-> ---
->
-> NOTE: An upcoming ath12k patch will utilize this change.
+I managed to capture the connection drop in a recording so you can see
+what it looks like on my end. My connection will remain 'broken'
+indefinitely until I toggle airplane mode.
 
-The following ath12k patch will be utilizing this change
-Link: 
-https://lore.kernel.org/linux-wireless/20250505153536.3275145-1-quic_mkumarg@quicinc.com/
+Video: https://youtu.be/BbVlTU8K9Hg
+
+Thanks for your help!
+
+Samuel Reyes
+
+On Mon, May 5, 2025 at 2:51=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> wr=
+ote:
+>
+> Samuel Reyes <zohrlaffz@gmail.com> wrote:
+> >
+> > Hello,
+> >
+> > My WiFi has intermittent connection issues on Arch. My motherboard is
+> > a Gigabyte X870 AORUS ELITE WIFI7.
+> >
+> > Even when installing Arch my connection was unstable, dmesg -T is
+> > littered with entries like this:
+> > rtw89_8922ae 0000:07:00.0: failed to update 162 RXBD info: -11
+> > rtw89_8922ae 0000:07:00.0: failed to update 163 RXBD info: -11
+> > rtw89_8922ae 0000:07:00.0: failed to update 32 RXBD info: -11
+> > rtw89_8922ae 0000:07:00.0: failed to release TX skbs
+>
+> Could you help to enlarge retry count? or even larger.
+>
+> --- a/drivers/net/wireless/realtek/rtw89/pci.c
+> +++ b/drivers/net/wireless/realtek/rtw89/pci.c
+> @@ -228,7 +228,7 @@ int rtw89_pci_sync_skb_for_device_and_validate_rx_inf=
+o(struct rtw89_dev *rtwdev,
+>                                                        struct sk_buff *sk=
+b)
+>  {
+>         struct rtw89_pci_rx_info *rx_info =3D RTW89_PCI_RX_SKB_CB(skb);
+> -       int rx_tag_retry =3D 100;
+> +       int rx_tag_retry =3D 1000;
+>         int ret;
+>
+>         do {
+>
+>
+> Since this motherboard is AMD platform, please also try to turn off IOMMU
+> via kernel command line amd_iommu=3Doff to see it can help.
+>
+> >
+> > My connection can remain active for a long time but will occasionally
+> > disconnect. Toggling Airplane Mode fixes the issue. Prolonged
+> > downloads, such as a large video game, causes the connection to drop
+> > several times. Toggling Airplane Mode lets the game begin download
+> > each time.
+>
+> Not very sure if disconnection is related to above messages. Try to
+> disable power save to see if it becomes stable by
+>
+>     sudo iw wlan0 set power_save off
+>
+>
+>
 
