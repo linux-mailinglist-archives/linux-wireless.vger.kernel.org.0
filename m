@@ -1,120 +1,100 @@
-Return-Path: <linux-wireless+bounces-22441-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22442-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57A9AA8CFF
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 09:26:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63589AA8D13
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 09:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36895172496
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 07:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC8FD171141
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 07:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4647F1DB546;
-	Mon,  5 May 2025 07:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CB61C84B3;
+	Mon,  5 May 2025 07:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="GGxvLPfT"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="XSwnb6jG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2AC1DB13E
-	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 07:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2648019995E;
+	Mon,  5 May 2025 07:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746429934; cv=none; b=DhYskH1LJhLRxWXM4l8VP+9YtLgODeGEktyOR2imnBJm9jH+OEphDxM2CukBC1y0Yqwf2jQFLUqEF7gilY0iqjZdm9AzFT8mwOcXotFF9KPP/6zas5fad/1lBJrwPtct7F9ScIf/THlNebsFmdTIq1D3TkH2S3sfiZ1/jMJPRno=
+	t=1746430394; cv=none; b=ZZJIKsau3Kx2zUqvUEBN+AZlc/8qcI/4iSZdmo1AL2/A/jU4NPMTrnO69Cv+F3O3O9kp2StQjZVlnmdSY6CLp5sF7Ce+K6IDz8oiEuypur1SfznnN/G3UtJYtPD24C0/v8ITWgN39/mPYxEmROXkmNpbDi+k7Y3WpdNo722u0LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746429934; c=relaxed/simple;
-	bh=YSDoewFXL4OD/hSXyJxeGOqe+eKCMe2gpoUG2b99b4E=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m70u6xnYBTZCdxT7Xsyy2j/r9l4d0IgS7rzu8YAEzMJPzIkT6IRc06MOVsxbiDssPGhOt5+d64DYPsyQjzMM0GoUyEwx+CT+AB3ThCgK6ZSq4ppGLCCrdn4fqFLkL90VzotUJR6PTpqAdaBpqaEOWnMPbBj8OKwrT8qYVbQxPTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=GGxvLPfT; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5457PTvG43831300, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1746429929; bh=YSDoewFXL4OD/hSXyJxeGOqe+eKCMe2gpoUG2b99b4E=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=GGxvLPfTAQeG0/Sp2N7Ou66d4/VKl+kbK/6kK0hYhSGv6e7+2TKAWct89GcQxp3Xx
-	 QOlEB/MZR+SMrLpSQ+y9VnROFx+UlCIIskrOckp+gP8LZSm+USHZHa9voX/T2yRKpQ
-	 LUMsjyLAdFEtpAvKiDPg8xAP5Y4vmCGw81e3YVBvJ2olPuGNFez3fpTsoHZXYquGkf
-	 YVdSaR+MwKGCog8NO3ALV8O06xvx6SYruEQJXLht4DR+0JaEbe7XTWGa0ZaERlttnd
-	 XbLX56IM30KR1ppA+HJ0cQ2Z5aPwMPpbKKn99/ljSuYtNQNsGQSH9cfhnJE9HpBSVi
-	 SoXkG92zlwMnw==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5457PTvG43831300
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 5 May 2025 15:25:29 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 5 May 2025 15:25:29 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 5 May
- 2025 15:25:28 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <phhuang@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 11/11] wifi: rtw89: declare MLO support if prerequisites are met
-Date: Mon, 5 May 2025 15:24:40 +0800
-Message-ID: <20250505072440.45113-12-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250505072440.45113-1-pkshih@realtek.com>
-References: <20250505072440.45113-1-pkshih@realtek.com>
+	s=arc-20240116; t=1746430394; c=relaxed/simple;
+	bh=o9Ua9es+nDQSCTMlF2S5n70GzvrIm3GZj9ppMhDTiO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gWu3mur00NrRfbx5l3ejOjVnIi0rEucBSBEZj58qkDwtRX8FO3yjv9MBextWEODpq2t/gO3bTpHg1THiDG8zzM224PTT5Pu1/WjINtWNo7/OoOejzZuYpAsBEKYLZu7I13n38dt7FQ6wApdT3I4mul/5qF+W4DpYflQWQq+4980=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=XSwnb6jG; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
+	by mail11.truemail.it (Postfix) with ESMTPA id 98E3E1F842;
+	Mon,  5 May 2025 09:33:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1746430381;
+	bh=/zksZ8p8UU1t+kGoN2N2Kk+JAb77n7Fw4YIg48JHLvo=; h=From:To:Subject;
+	b=XSwnb6jGDpr1y0ta615f3VPtth08iehvZCxcn5LdnaodpKe+HSAJ3/US6VskIKZMY
+	 1XYDDlYzIhgEUl9KthaarKKGUCgX+22Dnd0z07Py9D7cxW1Pg56W/QooSmwN7UldfL
+	 gu06tdtucnyd/hHvLKe8NbVBucRuLuJHNrE9r5+LaoA8Ficm9rLENY/f3yBLlahn/q
+	 0Utt/4sdkeexqCy1qnAbqkwMaDHcAPqsUhXSJ+g/Otgm6qCdZd3mdCVsYRxaT9btKu
+	 PyAbzMAg9Q+v09LgNmb5v+Nlnq6Y0beou9IC6xmEhQuzimXRTRgDOi9esSaK+qYkQN
+	 aPcBFyz2fSPvw==
+Date: Mon, 5 May 2025 09:32:55 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: "Ivan T. Ivanov" <iivanov@suse.de>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Jeff Chen <jeff.chen_1@nxp.com>,
+	Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mmc@vger.kernel.org
+Subject: Re: [PATCH do not merge 0/4] wifi: mwifiex: add iw61x support
+Message-ID: <20250505073255.GA12817@francesco-nb>
+References: <20250326-mwifiex-iw61x-v1-0-ff875ed35efc@pengutronix.de>
+ <20250331065026.GA12444@francesco-nb>
+ <20250429125928.pw7k4raw52jyvyaj@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250429125928.pw7k4raw52jyvyaj@localhost.localdomain>
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+On Tue, Apr 29, 2025 at 03:59:28PM +0300, Ivan T. Ivanov wrote:
+> On 03-31 08:50, Francesco Dolcini wrote:
+> > Message-ID: <20250331065026.GA12444@francesco-nb>
+> > On Wed, Mar 26, 2025 at 01:18:30PM +0100, Sascha Hauer wrote:
+> > > This series adds iw61x support to the mwifiex driver. It works for me,
+> > > but is not yet ready to be merged. Some people showed interest in it, so
+> > > I am sending it here.
 
-When the following prerequisites are met, driver will enable support_mlo.
-It means that driver will declare WIPHY_FLAG_SUPPORTS_MLO, and then deal
-with MLO related things.
+...
 
-The main prerequisites are as below.
-1. all prerequisites for running with chanctx
-2. FW feature NOTIFY_AP_INFO
+> > > Not sure what these are about, I can't see these handled in the
+> > > downstream mwifiex driver as well. Could also be there is some parsing
+> > > error. Nevertheless the driver seems to work.
+> 
+> Yep, it is working. Thank you! I am testing this on FRDM-iMX93, which has
+> IW612 revision 1.0.
+> 
+> I have to use nxp/sd_w61x_v1.bin.se on this board and NULL firmware_sdiouart
+> because it seems that firmware return 1 as "strap" value, even if WiFi
+> is definitely connected over SDIO.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Wi-Fi is always connected over SDIO (for IW61x), the strapping is
+related to the interface used for BT. In the past it was common to have
+options for having BT over SDIO or UART or USB, but for IW61x it seems
+that UART is the only available option.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 22a0c54de716..0b6fb30cbf52 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -5666,13 +5666,13 @@ struct rtw89_dev *rtw89_alloc_ieee80211_hw(struct device *device,
- 	if (!hw)
- 		goto err;
- 
--	/* TODO: When driver MLO arch. is done, determine whether to support MLO
--	 * according to the following conditions.
--	 * 1. run with chanctx_ops
--	 * 2. chip->support_link_num != 0
--	 * 3. FW feature supports AP_LINK_PS
-+	/* Currently, our AP_LINK_PS handling only works for non-MLD softap
-+	 * or MLD-single-link softap. If RTW89_MLD_NON_STA_LINK_NUM enlarges,
-+	 * please tweak entire AP_LINKS_PS handling before supporting MLO.
- 	 */
--	support_mlo = false;
-+	support_mlo = !no_chanctx && chip->support_link_num &&
-+		      RTW89_CHK_FW_FEATURE(NOTIFY_AP_INFO, &early_fw) &&
-+		      RTW89_MLD_NON_STA_LINK_NUM == 1;
- 
- 	hw->wiphy->iface_combinations = rtw89_iface_combs;
- 
--- 
-2.25.1
+Francesco
 
 
