@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-22577-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22576-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FA9AAAF2B
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 05:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECEADAAAF33
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 05:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DAB43AD7E7
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:06:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C51113B6DF6
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7BD390E38;
-	Mon,  5 May 2025 23:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64267390E1A;
+	Mon,  5 May 2025 23:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Co2rjaQf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWrmu+PJ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2044837A8A4;
-	Mon,  5 May 2025 23:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EF037A8BF;
+	Mon,  5 May 2025 23:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486150; cv=none; b=i2RcQ7obL/F6zx8D4CRc91n5igwyP3cmct1XuniTkOq/i/6RYPcGOeuXq8xHHAU9Z8A/YJiTJ/6itTU9MhL/x5u3Wgf/0xodcS6em+qPErYPupXGVycutZ6W2NXDf1H7ahjE4B5A0tTk7eBQ5FxMnKl98lEZCz2dlYcCb3NY308=
+	t=1746486152; cv=none; b=O28c7AQqi0ReWqbLIjYJLtw4LDxGpx/sVKPuecud8Z12gQEM1C242GlCt3yBENe/C+SzCST3ypdMvuxEBilIrc2ZvQgQUvlmb5OQSYaAwy2rG0kdKBB1yNN8t5d5oCbRW18qcoECUrCNSuQ2ur6Ve1cxFIEnBzJ5dLiFVq5slXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486150; c=relaxed/simple;
-	bh=aHGGD3OQduVo8PO6ZGX50jXlZ63vX+g0i24Rx/tS0Hs=;
+	s=arc-20240116; t=1746486152; c=relaxed/simple;
+	bh=LLl1aICgBdR4QRjTCYYziShIzCVf+X5RSGgDnZPmOlo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CMYT/iAoUbv8fe6iwzPsdDQtSOgn31qTj1QzPRKaZK+IFPtotTXVQDCawywyEEL8fJtIzmfqCMgi3o76okVG45gAQ06MKnPUUIOu1kSyf8YuBnnSAHxBJB/jev2/EIZT05LTAAVHxE4QiGizoTO/PS3apfXaLXe5GIRAxpK305w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Co2rjaQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51F9C4CEEE;
-	Mon,  5 May 2025 23:02:27 +0000 (UTC)
+	 MIME-Version; b=fNqGj/s9P/EaHRPpQPDPVfx4hA/nPVVA+DRZyWICvo63nEOfh8H8snS5sGp6Yb94Fi54fapJcBcB95jA9xuHlxoEratN2IsyCbrcGGZjSDCFTXQd15dNTJ6+MgQ8cBDNNpWZPqZySZJOvisap9DcS2GrAYMDAo/DWpQY4A9kz2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWrmu+PJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217CFC4CEF1;
+	Mon,  5 May 2025 23:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486148;
-	bh=aHGGD3OQduVo8PO6ZGX50jXlZ63vX+g0i24Rx/tS0Hs=;
+	s=k20201202; t=1746486151;
+	bh=LLl1aICgBdR4QRjTCYYziShIzCVf+X5RSGgDnZPmOlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Co2rjaQfagvaohxyx2om+FO2y2twCgj5unVmYzzB+kLhxLCf3u/zevBzLkMQpcLDI
-	 MFj6HXZgPbc6FC/xfZOebAv/acjsR0swTYmfIzUareeFIIUJS8M8nKPSnKKDfcc58d
-	 c+Vc8PCwJCu44BVahDU1NyO5aLnXHrrs77suyc2q6/wj5fQdj1nIxWoCO7qRQGsmII
-	 Nan3yU5DOoGMNcqDFX+TTGLONngshlc0LxM8qW7DlsttZnDR8rKdHd5LF2bbQ5Fz5B
-	 uEs3EB6UBKmyD5bAJuhQmPr6Iiv3/yMNjgsfKEcGjxrs7UhYXEnVKe7RvKWB7mdUDe
-	 laRUaXlbuhwMQ==
+	b=ZWrmu+PJ2akC1cHB5xvrei+Yu5uQRJlpcW4KN2mn409kjarFxFDlVLOxC0mwWKkaj
+	 luQfBtIdSJFMoFfxXLcckkgbDcLt1ub/STzLZN69U3arxnVnUWsphaDMnVPx0wWHZQ
+	 Ah36UC7oaDaGYj6Ou3X+TkAjfPkzOzLp606cC7sG+Rj7hhs7dFchl4rRYROwPphm/c
+	 /1oIz0yFL639AWutdHTkfUeu0xiLu9mE818ISfU0hAim1ijn9zyxYEk/cY7iJM6xdI
+	 JrkM3dZG5g1UCe3dAgmBv3gPi1aakNXMn+UvugEdmkQPCHM6mor8jTOlQdwuC0HBE4
+	 jo8+5vUBtMmHA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 177/294] wifi: rtw88: Fix rtw_init_vht_cap() for RTL8814AU
-Date: Mon,  5 May 2025 18:54:37 -0400
-Message-Id: <20250505225634.2688578-177-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 179/294] wifi: rtw88: Fix rtw_desc_to_mcsrate() to handle MCS16-31
+Date: Mon,  5 May 2025 18:54:39 -0400
+Message-Id: <20250505225634.2688578-179-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -67,64 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 6be7544d19fcfcb729495e793bc6181f85bb8949 ]
+[ Upstream commit 86d04f8f991a0509e318fe886d5a1cf795736c7d ]
 
-Set the MCS maps and the highest rates according to the number of
-spatial streams the chip has. For RTL8814AU that is 3.
+This function translates the rate number reported by the hardware into
+something mac80211 can understand. It was ignoring the 3SS and 4SS HT
+rates. Translate them too.
+
+Also set *nss to 0 for the HT rates, just to make sure it's
+initialised.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/e86aa009-b5bf-4b3a-8112-ea5e3cd49465@gmail.com
+Link: https://patch.msgid.link/d0a5a86b-4869-47f6-a5a7-01c0f987cc7f@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ drivers/net/wireless/realtek/rtw88/util.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index b90ea6c88b15d..557526e0eb7f3 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1580,8 +1580,9 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
- 			     struct ieee80211_sta_vht_cap *vht_cap)
- {
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
--	u16 mcs_map;
-+	u16 mcs_map = 0;
- 	__le16 highest;
-+	int i;
- 
- 	if (efuse->hw_cap.ptcl != EFUSE_HW_CAP_IGNORE &&
- 	    efuse->hw_cap.ptcl != EFUSE_HW_CAP_PTCL_VHT)
-@@ -1604,21 +1605,15 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
- 	if (rtw_chip_has_rx_ldpc(rtwdev))
- 		vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC;
- 
--	mcs_map = IEEE80211_VHT_MCS_SUPPORT_0_9 << 0 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 4 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 6 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 8 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 10 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 12 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 14;
--	if (efuse->hw_cap.nss > 1) {
--		highest = cpu_to_le16(780);
--		mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << 2;
--	} else {
--		highest = cpu_to_le16(390);
--		mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << 2;
-+	for (i = 0; i < 8; i++) {
-+		if (i < efuse->hw_cap.nss)
-+			mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << (i * 2);
-+		else
-+			mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << (i * 2);
+diff --git a/drivers/net/wireless/realtek/rtw88/util.c b/drivers/net/wireless/realtek/rtw88/util.c
+index e222d3c01a77e..66819f6944055 100644
+--- a/drivers/net/wireless/realtek/rtw88/util.c
++++ b/drivers/net/wireless/realtek/rtw88/util.c
+@@ -101,7 +101,8 @@ void rtw_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
+ 		*nss = 4;
+ 		*mcs = rate - DESC_RATEVHT4SS_MCS0;
+ 	} else if (rate >= DESC_RATEMCS0 &&
+-		   rate <= DESC_RATEMCS15) {
++		   rate <= DESC_RATEMCS31) {
++		*nss = 0;
+ 		*mcs = rate - DESC_RATEMCS0;
  	}
- 
-+	highest = cpu_to_le16(390 * efuse->hw_cap.nss);
-+
- 	vht_cap->vht_mcs.rx_mcs_map = cpu_to_le16(mcs_map);
- 	vht_cap->vht_mcs.tx_mcs_map = cpu_to_le16(mcs_map);
- 	vht_cap->vht_mcs.rx_highest = highest;
+ }
 -- 
 2.39.5
 
