@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-22625-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22626-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E09AAB200
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 06:11:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C29AAB204
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 06:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2CBB7B8C5D
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 04:09:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18EA0161B59
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 04:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DDA41F4F3;
-	Tue,  6 May 2025 00:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5ADF41F519;
+	Tue,  6 May 2025 00:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/wgz4TC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ly6sMsiM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF032D47DE;
-	Mon,  5 May 2025 22:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9194225C80A;
+	Mon,  5 May 2025 22:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485652; cv=none; b=aWO0Di2OlhWRIblGGkAq4WYN4VPzzKaq2D92sNn4L7Tnuz9G07XHQ2vE+ujAv1Q7yMyZzNARRHQTUJpVAPMsB3AjeBe8Ebe+RUehUgvaOW2/RYAosf2x6/HOgPQNjKxjXtxxBm72oK5qAktc6I6jsaqbj91bxK41nURCRkIsUA8=
+	t=1746485653; cv=none; b=j+ifxZfvnmLJM238kEipIbiyP2IZCps/SCHji3laaSTAIR4lYEMi+7s09izE37QmN79O3aQY5wWbDwhlZRt5t5VKl2HNJ9cEwmQJc0YFYZtseFRG9DxcPO2Gv1odHk9pcQkvgzeR47Bljd07v1RIcA+QRFb2U4L0kHN/TtWcqd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485652; c=relaxed/simple;
-	bh=BDysUVsvtSATMxdGWrcvRNC/TEmnIU1Qo9xNd3/2Z8I=;
+	s=arc-20240116; t=1746485653; c=relaxed/simple;
+	bh=X1MGSto8owJXPYQbFsgBcykCrX0+To6OlBLwOsYNXbA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bYWXOwzdHNa5TL3mG2rQT0KBdu9VUR71JZXZ0xqaTrewSSVpOVQYf8MpRGNkkzQjBr9eWbXk/3x0Jvmpeit6HIZxo15lDNOHEFtJT7D5mtIdtMxKwMGAuUIfc7KTWETklzljQYFKZ+1RglWBDKGyZ1V1MLXpUW2t0hJtbJfWfrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/wgz4TC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA5EC4CEEE;
-	Mon,  5 May 2025 22:54:11 +0000 (UTC)
+	 MIME-Version; b=DoQxsE3+3wqz33wSPI/yz2POilFEMQw1MHLHfQhevyTtD8SFr2X3Bkh85mPs40wuatb/kbfbAvq79kGZzQPsizGXC5/d+uPM7S7Y3r9c2KIy61ul7w3BN+5Y3XaxNu2KWZnT58uwB+8fhi0hiu9WcnpjQicjfrHk8oYLhlI8c24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ly6sMsiM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4010C4CEED;
+	Mon,  5 May 2025 22:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485652;
-	bh=BDysUVsvtSATMxdGWrcvRNC/TEmnIU1Qo9xNd3/2Z8I=;
+	s=k20201202; t=1746485653;
+	bh=X1MGSto8owJXPYQbFsgBcykCrX0+To6OlBLwOsYNXbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/wgz4TCe4UcBhgC1+LZwjXpDA7fI46qCLA4VC40227vF0rkcfXRm6bviMd2CAzeV
-	 GIspf+mew7PgIJbQmcRKQ2bQq+q6CKL2BDPli03bmom0nc4/aApkXKW4LU1TmK/f5J
-	 iDHOujVRcfWN4gTmCrJs+dpJjNfjQBYRnw65b4Svr/CGPmwwwQYoM8ss4L67P1eVEg
-	 CLtGafkAR590umHiNxD0HK/XBjtfSbdWn//LYz959EZ4oTVO6apO571EoJiyQ1jaPU
-	 hDXYQq79JrrjLDfim6UXhB1RDMGKnzcwG8LqC9C9QLCF710oB8U1x/d6cAFMsKMlpZ
-	 0fiUCHAtaQ8QA==
+	b=ly6sMsiMl2zqo6GaFutI1kqwIHMy3vxmVDEvr/oRJ1dLnVONAoK0bDiwblRT/q23s
+	 rmwFhP1tykyRiQA0fMU1V8D/T+b0C9zGEpQy6vTh4AFhCFFpPh39/UKR5xRb0eF6Qb
+	 dc7N9oEVjN/Ga4psbTEDnb0H6IWGJKILUYnkCoG1wiGMMAK2SqnFTIns47A+h/bPXH
+	 nxM1nYItyWgMHEKyfDwDAvOknbBdm3QltWVt6xfTyb116TNwWfJSrsiC2nfooLLibO
+	 LifQHz2sMzuqzlsi2C48iXIRmBdGI6X4wgjf7OFXcCPx6ABXHWR5P82ehD5AgzYWQW
+	 Gv6Fxq9RqgOow==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 408/486] wifi: rtw89: fw: validate multi-firmware header before getting its size
-Date: Mon,  5 May 2025 18:38:04 -0400
-Message-Id: <20250505223922.2682012-408-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 409/486] wifi: rtw89: fw: validate multi-firmware header before accessing
+Date: Mon,  5 May 2025 18:38:05 -0400
+Message-Id: <20250505223922.2682012-409-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -66,58 +66,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 2b8bdc5237014cc61784b3676cbaca5325959f3d ]
+[ Upstream commit 1f0efffd597893404aea5c3d4f1bdaa1c61d4434 ]
 
-To access firmware elements appended after multi-firmware, add its size
-as offset to get start address of firmware elements.
+A firmeware file contains multi-firmware with a header to represent
+contents. The mfw_hdr->fw_nr is to define number of firmware in file.
 
-         +-----+-------+------+---------+--------------+ --
-         | sig | fw_nr | rsvd | version | reserved     |   \
+         +-----+-------+------+---------+--------------+
+         | sig | fw_nr | rsvd | version | reserved     |
+         +---------------------------------------------+ --
+ fw 0    | cv | type | mp | rsvd | shift | size | rsvd |   \
          +---------------------------------------------+   |
- fw 0    | cv | type | mp | rsvd | shift | size | rsvd |   |
+ fw 1    | cv | type | mp | rsvd | shift | size | rsvd |   | mfw_hdr->fw_nr
          +---------------------------------------------+   |
- fw 1    | cv | type | mp | rsvd | shift | size | rsvd |   |
-         +---------------------------------------------+   |
- fw N-1  |                  ...                        |   |
-         +=============================================+   | mfw size
-         |               fw 0 content                  |   |
-         +=============================================+   |
-         |               fw 1 content                  |   |
-         +=============================================+   |
-         |                  ...                        |   |
-         +=============================================+   |
-         |               fw N -1 content               |   |
-         +=============================================+ --/
-         |             fw element TLV X                |
-         +=============================================+
-         |             fw element TLV Y                |
-         +=============================================+
-         |             fw element TLV Z                |
+ fw N-1  |                  ...                        |   /
+         +=============================================+ --
+         |               fw 0 content                  |
+         |       (pointed by fw0 shift/size)           |
          +=============================================+
 
-To avoid Coverity warning when getting mfw size, validate it header ahead.
+To avoid Coverity warning, validate header is in range of firmware size,
+and also validate the range of actual firmware content is in range.
 
-Addresses-Coverity-ID: 1544385 ("Untrusted array index read")
+Addresses-Coverity-ID: 1494046 ("Untrusted loop bound")
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250203072911.47313-5-pkshih@realtek.com
+Link: https://patch.msgid.link/20250203072911.47313-4-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/realtek/rtw89/fw.c | 35 +++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 9346fe082040c..520dc0bc01956 100644
+index 520dc0bc01956..e5c90050e7115 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -563,12 +563,17 @@ static u32 rtw89_mfw_get_size(struct rtw89_dev *rtwdev)
- 		(const struct rtw89_mfw_hdr *)firmware->data;
- 	const struct rtw89_mfw_info *mfw_info;
- 	u32 size;
+@@ -501,6 +501,30 @@ static int rtw89_fw_hdr_parser(struct rtw89_dev *rtwdev,
+ 	}
+ }
+ 
++static int rtw89_mfw_validate_hdr(struct rtw89_dev *rtwdev,
++				  const struct firmware *firmware,
++				  const struct rtw89_mfw_hdr *mfw_hdr)
++{
++	const void *mfw = firmware->data;
++	u32 mfw_len = firmware->size;
++	u8 fw_nr = mfw_hdr->fw_nr;
++	const void *ptr;
++
++	if (fw_nr == 0) {
++		rtw89_err(rtwdev, "mfw header has no fw entry\n");
++		return -ENOENT;
++	}
++
++	ptr = &mfw_hdr->info[fw_nr];
++
++	if (ptr > mfw + mfw_len) {
++		rtw89_err(rtwdev, "mfw header out of address\n");
++		return -EFAULT;
++	}
++
++	return 0;
++}
++
+ static
+ int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
+ 			struct rtw89_fw_suit *fw_suit, bool nowarn)
+@@ -511,6 +535,7 @@ int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
+ 	u32 mfw_len = firmware->size;
+ 	const struct rtw89_mfw_hdr *mfw_hdr = (const struct rtw89_mfw_hdr *)mfw;
+ 	const struct rtw89_mfw_info *mfw_info = NULL, *tmp;
 +	int ret;
+ 	int i;
  
  	if (mfw_hdr->sig != RTW89_MFW_SIG) {
- 		rtw89_warn(rtwdev, "not mfw format\n");
+@@ -523,6 +548,10 @@ int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
  		return 0;
  	}
  
@@ -125,8 +147,21 @@ index 9346fe082040c..520dc0bc01956 100644
 +	if (ret)
 +		return ret;
 +
- 	mfw_info = &mfw_hdr->info[mfw_hdr->fw_nr - 1];
- 	size = le32_to_cpu(mfw_info->shift) + le32_to_cpu(mfw_info->size);
+ 	for (i = 0; i < mfw_hdr->fw_nr; i++) {
+ 		tmp = &mfw_hdr->info[i];
+ 		if (tmp->type != type)
+@@ -552,6 +581,12 @@ int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
+ found:
+ 	fw_suit->data = mfw + le32_to_cpu(mfw_info->shift);
+ 	fw_suit->size = le32_to_cpu(mfw_info->size);
++
++	if (fw_suit->data + fw_suit->size > mfw + mfw_len) {
++		rtw89_err(rtwdev, "fw_suit %d out of address\n", type);
++		return -EFAULT;
++	}
++
+ 	return 0;
+ }
  
 -- 
 2.39.5
