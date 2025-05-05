@@ -1,61 +1,67 @@
-Return-Path: <linux-wireless+bounces-22485-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22486-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C250AAA06B
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:34:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BDEAAA071
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:34:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF1A81A834C7
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 22:34:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 673031A837C7
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 22:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F06B29009F;
-	Mon,  5 May 2025 22:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B292D290BAC;
+	Mon,  5 May 2025 22:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+8LdaL0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2SA2VFY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66445290097;
-	Mon,  5 May 2025 22:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882B327BF64;
+	Mon,  5 May 2025 22:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483427; cv=none; b=OO9ocpzuRU6s/SSC3e2yDboVs18z/w6ulN7/zSkhwPrtiV9Ny6ORMx3DbGUQZ9JEEsXQcb9+hgFjwYKkWB5s+JVmL/pMiTanc/tFu3ea7bpPFU6Di3pTBpuaVs+GlZ2Z6IsLcWILztP6+lypRfl3/Bfi3qIlX4Qh/Xhia6JREM4=
+	t=1746483431; cv=none; b=hTUub3hkvpU8GMXhVj7KQL3S6F1/iNQrxq8kROVeqA1suWRIdWkXzYHWVm8Iz4JmByjZzI4tuuPekhCjdwjurnrpTWBkoUwb0ZoMeKR3gSvFJNwg6dCW5KqZ22U8SglLPk3znvwXldKURqCX/EF9GPxiz+CpaXpKhrwCKkeGycA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483427; c=relaxed/simple;
-	bh=/b3J7JjYOwlDGnUX53TNs6feQxn0vwXryA22VULuaAo=;
+	s=arc-20240116; t=1746483431; c=relaxed/simple;
+	bh=3qEf2fFv1ctCBQfhN3VdnszlaOGcMXZgdrvEJbs9jsI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hd29N8MQX7oyeCs3IAGaaBHDIpNuA6yAaUfPOiFFKyd0vyydU0c5gld71Vd/IuWwM76Vlxzc67hCMoWg4TWTfrvfTBKNo6u6j8V37AVWfQTHTyo9SErJCmGBG47nXntEBpTWifgu06uuFmC1p7dDL18SgTUSLvkcBAoz19iosgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+8LdaL0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0DDC4CEE4;
-	Mon,  5 May 2025 22:17:06 +0000 (UTC)
+	 MIME-Version; b=RoQT9xlllHvaj5QMCA14UUARi97UTyEE9lK9KI/qHvhWBXwO9OAH/7Ot+lVZ9C8sXKVY+hmAr5787iZaWSoCpfFHPyuOvQZS5dNaq7KTaqgIvkqj9Mz9yWy+MJKW2MvrCXpi5ehZ1fBT1sHOYNaKRXtyaqYCYywtfXMR1EhA/p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2SA2VFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3840C4CEE4;
+	Mon,  5 May 2025 22:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483427;
-	bh=/b3J7JjYOwlDGnUX53TNs6feQxn0vwXryA22VULuaAo=;
+	s=k20201202; t=1746483431;
+	bh=3qEf2fFv1ctCBQfhN3VdnszlaOGcMXZgdrvEJbs9jsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+8LdaL0zlSrtyPxyWKO9f+UWS5oOvoccOqbb7m82jkVMfNc6rrJwVP0rf5Qzl0Rn
-	 QW6+mi0c43TdWGGQgoCUISeQXLlxl4nAKOW+q6V6/4pdAhbWo2OfSnCBvhF/sYyTge
-	 GM3ZT5udxDgpKj+ZcYDsXU6/KR86EKmNxNKye9UrN8/Rv8PA0s+PfL5mfVVZFOdWoA
-	 +d7ZEi7Wjz/f9KDIPbsDV6tGw41XVYISABjr5BtJE6+IRmMQbbGkPLTBbUT9uoKkgo
-	 AyK6PeZy3i+51czHoioaoNRd5g8/vm6VfLxnLWrmxwUsyTErrJtre3qNTnFopXSGjn
-	 grcIixCbve6JA==
+	b=K2SA2VFYka19dbhJEfE04bIzTGVVi/3q6n1KgMalb8BNldNrDzRV7ZXVBQDS0xT6G
+	 IG/P7yVWP1qLkDB7Vf5mAGIJgQSdbG6Z8LeB+jYZMnXhxhcRhSYjruOqfS2iIDAYVd
+	 jPpyomg29TvzPjRHHlrGjtSnOO8Fh/15rpn+xT1tIhoD+SnClS1/svmWOJUGDmsqva
+	 nxvjrpgf12P2uKTZFNMjZ6Twb6vR7Ga/92Mmsngi1TRjnsiwBIw1EkO5/+NEVHnJTA
+	 sOtbZ4vYipfUqx5MJi1SrkfyW3Kgd783M7M9GJzUQOx4CUGjVo4CvkJC/tCvRLf/2a
+	 ASrWzGYQ8zlSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>,
+Cc: Rex Lu <rex.lu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
 	lorenzo@kernel.org,
 	ryder.lee@mediatek.com,
 	matthias.bgg@gmail.com,
 	angelogioacchino.delregno@collabora.com,
+	chui-hao.chiu@mediatek.com,
+	razvan.grigore@vampirebyte.ro,
+	Bo.Jiao@mediatek.com,
+	shayne.chen@mediatek.com,
+	wiagn233@outlook.com,
 	linux-wireless@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 077/642] wifi: mt76: scan: set vif offchannel link for scanning/roc
-Date: Mon,  5 May 2025 18:04:53 -0400
-Message-Id: <20250505221419.2672473-77-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 078/642] wifi: mt76: mt7996: fix SER reset trigger on WED reset
+Date: Mon,  5 May 2025 18:04:54 -0400
+Message-Id: <20250505221419.2672473-78-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -70,65 +76,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Rex Lu <rex.lu@mediatek.com>
 
-[ Upstream commit 3ba20af886d1f604dceeb4d4c8ff872e2c4e885e ]
+[ Upstream commit 8d38abdf6c182225c5c0a81451fa51b7b36a635d ]
 
-The driver needs to know what vif link to use
+The firmware needs a specific trigger when WED is being reset due to an
+ethernet reset condition. This helps prevent further L1 SER failure.
 
-Link: https://patch.msgid.link/20250311103646.43346-4-nbd@nbd.name
+Signed-off-by: Rex Lu <rex.lu@mediatek.com>
+Link: https://patch.msgid.link/20250311103646.43346-2-nbd@nbd.name
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/channel.c | 3 +++
- drivers/net/wireless/mediatek/mt76/mt76.h    | 2 ++
- 2 files changed, 5 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.h  | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7996/mmio.c | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/channel.c b/drivers/net/wireless/mediatek/mt76/channel.c
-index 6a35c6ebd823e..e7b839e742903 100644
---- a/drivers/net/wireless/mediatek/mt76/channel.c
-+++ b/drivers/net/wireless/mediatek/mt76/channel.c
-@@ -293,6 +293,7 @@ struct mt76_vif_link *mt76_get_vif_phy_link(struct mt76_phy *phy,
- 		kfree(mlink);
- 		return ERR_PTR(ret);
- 	}
-+	rcu_assign_pointer(mvif->offchannel_link, mlink);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+index 43468bcaffc6d..a75e1c9435bb0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+@@ -908,7 +908,8 @@ enum {
+ 	UNI_CMD_SER_SET_RECOVER_L3_TX_DISABLE,
+ 	UNI_CMD_SER_SET_RECOVER_L3_BF,
+ 	UNI_CMD_SER_SET_RECOVER_L4_MDP,
+-	UNI_CMD_SER_SET_RECOVER_FULL,
++	UNI_CMD_SER_SET_RECOVER_FROM_ETH,
++	UNI_CMD_SER_SET_RECOVER_FULL = 8,
+ 	UNI_CMD_SER_SET_SYSTEM_ASSERT,
+ 	/* action */
+ 	UNI_CMD_SER_ENABLE = 1,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+index 7a8ee6c75cf2b..9d37f82387464 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+@@ -281,7 +281,7 @@ static int mt7996_mmio_wed_reset(struct mtk_wed_device *wed)
+ 	if (test_and_set_bit(MT76_STATE_WED_RESET, &mphy->state))
+ 		return -EBUSY;
  
- 	return mlink;
- }
-@@ -301,10 +302,12 @@ void mt76_put_vif_phy_link(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 			   struct mt76_vif_link *mlink)
- {
- 	struct mt76_dev *dev = phy->dev;
-+	struct mt76_vif_data *mvif = mlink->mvif;
- 
- 	if (IS_ERR_OR_NULL(mlink) || !mlink->offchannel)
- 		return;
- 
-+	rcu_assign_pointer(mvif->offchannel_link, NULL);
- 	dev->drv->vif_link_remove(phy, vif, &vif->bss_conf, mlink);
- 	kfree(mlink);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 8714418f3906c..e4ecd9cde36dc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -351,6 +351,7 @@ struct mt76_wcid {
- 	u8 hw_key_idx;
- 	u8 hw_key_idx2;
- 
-+	u8 offchannel:1;
- 	u8 sta:1;
- 	u8 sta_disabled:1;
- 	u8 amsdu:1;
-@@ -788,6 +789,7 @@ struct mt76_vif_link {
- 
- struct mt76_vif_data {
- 	struct mt76_vif_link __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
-+	struct mt76_vif_link __rcu *offchannel_link;
- 
- 	struct mt76_phy *roc_phy;
- 	u16 valid_links;
+-	ret = mt7996_mcu_set_ser(dev, UNI_CMD_SER_TRIGGER, UNI_CMD_SER_SET_RECOVER_L1,
++	ret = mt7996_mcu_set_ser(dev, UNI_CMD_SER_TRIGGER, UNI_CMD_SER_SET_RECOVER_FROM_ETH,
+ 				 mphy->band_idx);
+ 	if (ret)
+ 		goto out;
 -- 
 2.39.5
 
