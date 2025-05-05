@@ -1,59 +1,58 @@
-Return-Path: <linux-wireless+bounces-22543-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22544-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92FEAAA7BC
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3864FAAA7C1
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:40:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B72A4A651E
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:38:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE0FA168AB4
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E171233EF62;
-	Mon,  5 May 2025 22:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8863433F720;
+	Mon,  5 May 2025 22:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfZIG9It"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ge22sTKQ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A243133E439;
-	Mon,  5 May 2025 22:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF1333EF89;
+	Mon,  5 May 2025 22:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484667; cv=none; b=hhSNtnyE0QAcmujeHwW8eboTEc0yWfGOJO8khwPO49tM1+JgDDl4VGClyP3tmsErvEUbB9WQZbJXOizVPvyZl/IWkly99jHKDv2QYZObSWDW79FyiS36CbRWU5wXcafVaOsD43gcpwmP5szZY5D0W43McTryoacwIINYdsbbGRI=
+	t=1746484671; cv=none; b=M54uHkp/tSHK8tgD72NW+X2tRUnY1cEXkXLs5R4REWXpDVMiZ3Iq+70UPrPK/r7oHwPavtqfB0zW/v5eL/Avq3cZxMrJJ3yXnrf7DS6vvgoROZNrroODBoTou1gmTiZ+xEE4PfsI3FjWuP17BpZidEK9E7DSKxi5rg+XK/1sPmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484667; c=relaxed/simple;
-	bh=GR4Lgf/aIjapp/01EHUzV6bYrz/37XW4chuuWbqaYDg=;
+	s=arc-20240116; t=1746484671; c=relaxed/simple;
+	bh=lqhKCAY77koNv/uMHWNWMDW2vBWWPyKqPu5DipKfz/M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LzwLgUNDavWzhXHGQWgPJV7ThtusxrkNZiUwm4eZsa8rFU2BskD9/j4+LTHc3CwoPNUTdxcN5t6k5rhZq3hG1QsiBqWguc+Or28SfVApK1UZDV7fUnhAKoGY+JAZbzubUZTxJnTb0q91YuQHYPjj8JhopprGw3N7PhO9YB8P0HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KfZIG9It; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87450C4CEE4;
-	Mon,  5 May 2025 22:37:46 +0000 (UTC)
+	 MIME-Version; b=qjxZ9lsj5pQ6m5scLym8x9DXUurj/IbxXbnNOwbi7jyLAErHkmdXVzcxa8H2tnAwP6N4S6qZDKuf0epXa8KXgzC3Nr6NKVGPz8w8LpreaJM1MX2baRhCAmr4Hhd6ab8iybbSMAUqjtQMeQqQZmZgQBGPNvlwHyNSrLaJifM9cq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ge22sTKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3405C4CEEF;
+	Mon,  5 May 2025 22:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484667;
-	bh=GR4Lgf/aIjapp/01EHUzV6bYrz/37XW4chuuWbqaYDg=;
+	s=k20201202; t=1746484670;
+	bh=lqhKCAY77koNv/uMHWNWMDW2vBWWPyKqPu5DipKfz/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KfZIG9ItxpFDjyIWGBj2sp+HO7y5qYRv2Xy8Q/sjbiLIdIgHNP58pwx+kScgyTE/W
-	 nCkcAhFueVqUCYK0cHrlWLfBJY1vYTc1u8byjsMpWuBCPOyy2+KLuR8lIN8pRISz5x
-	 TrIEFgUeBP47n5F/OVGJCHo1Dpb6p5/nyoAsEaorfJPAXyF0TMECZ3aGil9wkvroaQ
-	 KKDjKvywfReHz4YvUTDQdpw6ctGlYQumgaU3yk7QH5w7d6QQMD4ChjZDf6n0i26Yf2
-	 BJiDYshy5mrQ05CI1xpNnskwQ/e/Cx+Sk3/YzTkGY+0RzIDm2xokd0hLQ3DV1SCJyy
-	 TRKe3Z7z/QNJA==
+	b=Ge22sTKQbMTDnxYMnaZtpFQqhLfts82fHg2Z5oCB31rbIHPQIaLeVf+s74Ion+VBN
+	 uaXRS9bNgfgmgTUfH3kMdNXsISc3E3ZhZfX//Zogh1JwVyyaI4I+HIEJ3u1aQ6E4pY
+	 2DjQJedY7XwJfmTvwFQ2GaOmT8tdhPI2OpwkMwXaeXUpTFw6BtxXqDiBQhRFikx4l0
+	 +Yen+sETZ6SgmkgrE+k0fUnIxRhlWoni5aUh4snj4m32NhAyQp2lpmGAySdzdM2V54
+	 V+ADmx/B94F2GbTBXl5t2hY2jpmDthuEECvlg4bQZhEh4cwWBAFwogaFRSECR44/4+
+	 ZEN3+8t8qQMWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aaradhana Sahu <quic_aarasahu@quicinc.com>,
-	Aditya Kumar Singh <quic_adisi@quicinc.com>,
+Cc: P Praneesh <quic_ppranees@quicinc.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
 	jjohnson@kernel.org,
 	linux-wireless@vger.kernel.org,
 	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 596/642] wifi: ath12k: Fetch regdb.bin file from board-2.bin
-Date: Mon,  5 May 2025 18:13:32 -0400
-Message-Id: <20250505221419.2672473-596-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 598/642] wifi: ath12k: Fix end offset bit definition in monitor ring descriptor
+Date: Mon,  5 May 2025 18:13:34 -0400
+Message-Id: <20250505221419.2672473-598-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,75 +67,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit 24f587572acf7509127dbdfcbf1b681ef84eeba0 ]
+[ Upstream commit 6788a666000d600bd8f2e9f991cad9cc805e7f01 ]
 
-Currently, ath12k_core_fetch_regdb() finds regdb.bin file through
-board id's but in board-2.bin file regdb.bin file is present with
-default board id because of which regdb.bin is not fetched.
-
-Add support to fetch regdb.bin file from board-2.bin through
-default board id.
+End offset for the monitor destination ring descriptor is defined as
+16 bits, while the firmware definition specifies only 12 bits.
+The remaining bits (bit 12 to bit 15) are reserved and may contain
+junk values, leading to invalid information retrieval. Fix this issue
+by updating the correct genmask values.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
-Reviewed-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Link: https://patch.msgid.link/20250116032835.118397-1-quic_aarasahu@quicinc.com
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Link: https://patch.msgid.link/20241223060132.3506372-8-quic_ppranees@quicinc.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath12k/hal_desc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index ffd173ff7b08c..d0aed4c56050d 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -173,7 +173,7 @@ EXPORT_SYMBOL(ath12k_core_resume);
+diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
+index 7b0403d245e59..a102d27e5785f 100644
+--- a/drivers/net/wireless/ath/ath12k/hal_desc.h
++++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
+@@ -2968,7 +2968,7 @@ struct hal_mon_buf_ring {
  
- static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
- 					   size_t name_len, bool with_variant,
--					   bool bus_type_mode)
-+					   bool bus_type_mode, bool with_default)
- {
- 	/* strlen(',variant=') + strlen(ab->qmi.target.bdf_ext) */
- 	char variant[9 + ATH12K_QMI_BDF_EXT_STR_LENGTH] = { 0 };
-@@ -204,7 +204,9 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
- 			  "bus=%s,qmi-chip-id=%d,qmi-board-id=%d%s",
- 			  ath12k_bus_str(ab->hif.bus),
- 			  ab->qmi.target.chip_id,
--			  ab->qmi.target.board_id, variant);
-+			  with_default ?
-+			  ATH12K_BOARD_ID_DEFAULT : ab->qmi.target.board_id,
-+			  variant);
- 		break;
- 	}
+ #define HAL_MON_DEST_COOKIE_BUF_ID      GENMASK(17, 0)
  
-@@ -216,19 +218,19 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
- static int ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
- 					 size_t name_len)
- {
--	return __ath12k_core_create_board_name(ab, name, name_len, true, false);
-+	return __ath12k_core_create_board_name(ab, name, name_len, true, false, false);
- }
- 
- static int ath12k_core_create_fallback_board_name(struct ath12k_base *ab, char *name,
- 						  size_t name_len)
- {
--	return __ath12k_core_create_board_name(ab, name, name_len, false, false);
-+	return __ath12k_core_create_board_name(ab, name, name_len, false, false, true);
- }
- 
- static int ath12k_core_create_bus_type_board_name(struct ath12k_base *ab, char *name,
- 						  size_t name_len)
- {
--	return __ath12k_core_create_board_name(ab, name, name_len, false, true);
-+	return __ath12k_core_create_board_name(ab, name, name_len, false, true, true);
- }
- 
- const struct firmware *ath12k_core_firmware_request(struct ath12k_base *ab,
+-#define HAL_MON_DEST_INFO0_END_OFFSET		GENMASK(15, 0)
++#define HAL_MON_DEST_INFO0_END_OFFSET		GENMASK(11, 0)
+ #define HAL_MON_DEST_INFO0_FLUSH_DETECTED	BIT(16)
+ #define HAL_MON_DEST_INFO0_END_OF_PPDU		BIT(17)
+ #define HAL_MON_DEST_INFO0_INITIATOR		BIT(18)
 -- 
 2.39.5
 
