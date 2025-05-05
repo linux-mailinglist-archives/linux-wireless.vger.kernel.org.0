@@ -1,258 +1,150 @@
-Return-Path: <linux-wireless+bounces-22461-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22462-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616B0AA9A40
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 19:18:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF70AA9AFB
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 19:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F2EE189C754
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 17:18:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D97DD189E358
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 17:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5731526A087;
-	Mon,  5 May 2025 17:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E975264A86;
+	Mon,  5 May 2025 17:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bKjhSY1Z"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IyQbVtES"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248381F6667;
-	Mon,  5 May 2025 17:18:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5290C1A23B9
+	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 17:46:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746465514; cv=none; b=XKpLpwsPsaK/1SLj6PIE5yIpxDqF971lkfVZajysrDpzqh4VNVrfV7R9KgfwXvZ1ybonUb1l6s+pBUDlJp4H6vo/x6Qjq7Pm2TQEcyuJdNKfKWEstm4bCj/ztTeEJWHtvijKkL7Np4Q572qqm5RWIbtwbIpqe4W5kYSKQa5SyKk=
+	t=1746467217; cv=none; b=hnKHTHtbBaPTv4eRzGljgzPfjUFMnDVj5pdVt/FPjaDHCmAh142tIF3D35uH8jgkohGYHYvRvwVw3+X/j01/J/WMDG64m5q9ObXi0I2Hp7wPaNdIb3j2cQqzA/3t//SJx4ooiL1o7EDo+huo3LjR2vQh3UBHY//DTCjfEk64Lno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746465514; c=relaxed/simple;
-	bh=zAYILOUuPLzGJcE+H/qrkjNUK62hvMnUtpZ+b93J6PE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MQbw6ug2o9TnNAG6+cHix1ATbOk5jP/r+C/35uRCqaSQtMmTsQVMZrZ3BdMretqo5LfOmFFIEm64lFpU6tbYInG9bFuWa1bVOlPcUEYrx5Ym7x4SOWn87RhY0qfEhdd5GFg8VoKd5kfJZ/qUw8afN5X9MphHGlOLFPh0U7+IJr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bKjhSY1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E03C4CEEE;
-	Mon,  5 May 2025 17:18:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746465513;
-	bh=zAYILOUuPLzGJcE+H/qrkjNUK62hvMnUtpZ+b93J6PE=;
-	h=Subject:From:Reply-To:To:Cc:Date:In-Reply-To:References:From;
-	b=bKjhSY1ZFAKpkyxZ4vBD4W9x8dCZDJZkQW3reZNSIuF9qTqh99PTq+rQLO5ew/UaW
-	 5JNE8HkQuTds+5Tn+9CvaMY9gymsMbyj3i5/EmvwSZPmxZgPW9DqHrml3NzsMKXtEU
-	 +ps5924p/evGCsh4iPrg72kBsA5O6myVmHYewV8vaiPAIOEDYgmWfGvwOEekHQSCEn
-	 RZZNXRi47qVPxCtEjJvTXcbU70cEnY6BCEBu+M+K/5QNw07fAX9Us3h4IWx4ICWu3O
-	 86NPJFX87m6u/VLensYpuY8u+kZyPikBwfvofCEVJpaZunpT1M+F8unJ9P2KVQ+4jO
-	 6TExxeLdUQpyw==
-Message-ID: <0736898d8d53e6249d5be637c9b7e7c81398218a.camel@kernel.org>
-Subject: Re: [REGRESSION][BISECTED][STABLE] MT7925: mDNS and IPv6 broken in
- kernel 6.14.3 and above
-From: Niklas Schnelle <niks@kernel.org>
-Reply-To: niks@kernel.org
-To: Mingyen Hsieh =?UTF-8?Q?=28=E8=AC=9D=E6=98=8E=E8=AB=BA=29?=	
- <Mingyen.Hsieh@mediatek.com>, "stable@vger.kernel.org"
- <stable@vger.kernel.org>,  "fossben@pm.me"	 <fossben@pm.me>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
- "linux-mediatek@lists.infradead.org"
-	 <linux-mediatek@lists.infradead.org>, Allan Wang
- =?UTF-8?Q?=28=E7=8E=8B=E5=AE=B6=E5=81=89=29?=
-	 <Allan.Wang@mediatek.com>, "linux-kernel@vger.kernel.org"
-	 <linux-kernel@vger.kernel.org>, "regressions@lists.linux.dev"
-	 <regressions@lists.linux.dev>
-Date: Mon, 05 May 2025 19:18:29 +0200
-In-Reply-To: <28ef2cc608d071d1530902d7b5df045555ab5651.camel@mediatek.com>
-References:
-		 	<EmWnO5b-acRH1TXbGnkx41eJw654vmCR-8_xMBaPMwexCnfkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vfdg=@pm.me>
-				 <f73dec60b60dd7bb3be40c1feefbe223c7afe19b.camel@mediatek.com>
-				 <5ae1ef34c9844d6d0f5fb167dd596a4c43321367.camel@kernel.org>
-			 <28ef2cc608d071d1530902d7b5df045555ab5651.camel@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 
+	s=arc-20240116; t=1746467217; c=relaxed/simple;
+	bh=LgXCoxH+HBvXs5sLSOeVJ4nk4wHjIeokAturRVndvCI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JhP6r3JQF4gKmYiBP5jOv3Nut2EqxOyk2VxXbUYV/jj8rB+mi8BBoJkU2CNzlEWlASuAnM9Y/bi/aYCnluH/tDQFxVInq5cEYKyuAeZHCZDT9OPTpcVp7wSq791jS7Quhe2yLM2YL4SRZrP2stM0I0SWpkpHeoT8Gi91TpZXBhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IyQbVtES; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 545CBiaO011474
+	for <linux-wireless@vger.kernel.org>; Mon, 5 May 2025 17:46:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	gc8xK7MUaegQ4Hd1zIE2N7VWBlBkfEVs+amTpWNe2X8=; b=IyQbVtESVCED85bc
+	0o159F2/I6eCiRbpmmRSLFFcGOPMIQC4U0uTXBeP4b3ucBygj5v8Wh9cvwSj3Oz4
+	uVe50o+c9GvzHk3N/3qnW1Ifi3oZscxgBJPShD6TAPJmw69tGPGYV4N8jL9fShAr
+	1TG7XklVVBV7nOUcq1hFGlanDTnb2sy2wxVddYYCkew7M/WleXVPFiyUxpqJAslQ
+	qSvGPv079bYRzjT67U/poGCB5kcnGsHm833e3sEq1juCYOz3ry1ovk1XfpF/Luey
+	AM5WkJcSa6I0Gann/klPn5YfOJ89AeliJVPXEknE+cnDW+BdzddwieRwEs5oZsar
+	i8oz+Q==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46dbwfmq36-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 05 May 2025 17:46:54 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7395095a505so3260066b3a.1
+        for <linux-wireless@vger.kernel.org>; Mon, 05 May 2025 10:46:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746467213; x=1747072013;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gc8xK7MUaegQ4Hd1zIE2N7VWBlBkfEVs+amTpWNe2X8=;
+        b=MPZfszM2vj+zrqJ9BjuWhn0REJjzTpW1B7u+w4RCI9+hKkq3M+MEKBgyqV24Jmrtga
+         IPiH46ECjigIWkiNterNhacO5y4v0mO7jA8ToZS+JAdMGclaekCI/pCD8gtipkWttAEE
+         Z00IoZZxmyFKllPABiKOIgpREqGIz5L737uz0w0bE1lvAhFnpa1NReKlJ7+75DBbN5SD
+         HUBGvukrZToNSw2a80pUot/MsPwPklqY83ZS0PSfvRHTYq2Tlz0WOS8JHXTTvsr4GPem
+         ZvMUeVaWSUFz1Wsemoaw9N/innQFMv0ltAPlMtKvWsxfpcf2Difk5zcZWXOX9ohJDhNi
+         fjLA==
+X-Gm-Message-State: AOJu0YxOH9Eoaq6o13AHgKfIbU2DWStpK2MEE0PM6wXWNhtbR0uUP8fj
+	OGcr28qNm54+PS1xPLu5bW6gjHqJrnRqN6Ha0Y+yt65QhQ0NKzjmDsHxhZfKcMfae9cFCEScHaP
+	Q3LcqvZymhlYGJvOeskhnJTfO4tWQ8BI9pCqlysdvlJjXp0quAJIOfqmU+zeQOxM4WA==
+X-Gm-Gg: ASbGncvFBoh0cEQWd5k//IsVG7PpmvuvIZ6gwyf87zsvFFk+dFnYV0+kTf7a6+0zmsX
+	1+k2adaGTsYVvLNUeBZBUl9+G0mNsClFSUIT8jG6PA4cVhaqBSHo0C0oPOeRgLKTmQZnSv4n2QG
+	jiWs1MtfEp0KRU0YZGQHR7vKGa3e0geRoKG8YsuzkgTQExGVeqHOS8JVY4NW+P2bZWs6Usx1cKE
+	JHv6oRfbdR44ENa+xKsuGPC4FZ8CzKGveCyCbRoO6q6UnJDXkWFYKbCgDamFmzCbC4TjTh4e2YM
+	Y2TbCxTS2pQnLMGnr6PJCA0pT65R/mvgKdE86hpJUAhvKfesV3Hf/VTLNCoQpikHBEc=
+X-Received: by 2002:a05:6a20:43a1:b0:201:8a13:f392 with SMTP id adf61e73a8af0-21181146f0cmr49162637.20.1746467213356;
+        Mon, 05 May 2025 10:46:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHNurxKi73dxQdNRKjVd5IgfE8FJGdhrSPwkrS9BHFQeVceJ4PrtyFTQw5d58wQk/Q8BTJEmg==
+X-Received: by 2002:a05:6a20:43a1:b0:201:8a13:f392 with SMTP id adf61e73a8af0-21181146f0cmr49135637.20.1746467212931;
+        Mon, 05 May 2025 10:46:52 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b1fb3b7c309sm5782394a12.38.2025.05.05.10.46.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 May 2025 10:46:52 -0700 (PDT)
+Message-ID: <5fcbf500-8005-403c-a9db-597fb8a54bc1@oss.qualcomm.com>
+Date: Mon, 5 May 2025 10:46:51 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next] wifi: ath12k: disable pdev for non supported
+ country
+To: Muna Sinada <muna.sinada@oss.qualcomm.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Karthik M <quic_karm@quicinc.com>
+References: <20250502230240.3692678-1-muna.sinada@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250502230240.3692678-1-muna.sinada@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: lYrs-FlzODGKWdPihLB9loZeoJQI_VnO
+X-Proofpoint-GUID: lYrs-FlzODGKWdPihLB9loZeoJQI_VnO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDE2NyBTYWx0ZWRfX3MwXlBNhlyEZ
+ m9I1+C2OblwkeChRZNeQ1M0Ie+S4/QN9npmK6huTwd/cjIuVcrJga3XHokd+nuwXY0B402dxWjK
+ a14qWgpzGjdTFWxAAtSTLP0DYHN1GJx0A6f+FLdf0vCWZpyK1P157XMuSW7chF4+CcHlyO8G3j3
+ qT19akYKibmFZ7B0jdSd/TaCGIjJmDjR9Kn2T2IWo0i+qIm9AzX7sK0AXH4oTKpmGaXg8QcB7zf
+ F+zhU0tGttCjbL1JE1P9K6ue4U4uptlDfR4YLeElXHqf+Y2E+CJIa6JVdYUxtDd+1A/O4O+vFG8
+ usutJQ+F7LPicoyaf6ccO47cS5rXsIzpGRqQ2llO9CE4rV0qTYsJHjrzGQ1osEl/EaszfcPKYcd
+ IiRQ0jN+AqADpqP6cREurlxEFx4D9HaoyxskzLETNIssNDhkSmrK7SF0lzjxfAXYXRgMjVOv
+X-Authority-Analysis: v=2.4 cv=AfqxH2XG c=1 sm=1 tr=0 ts=6818f98e cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=zEEqOW7EwutULFlLG24A:9
+ a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-05_08,2025-05-05_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 priorityscore=1501 phishscore=0 impostorscore=0
+ mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=600
+ spamscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505050167
 
-On Mon, 2025-05-05 at 05:48 +0000, Mingyen Hsieh (=E8=AC=9D=E6=98=8E=E8=AB=
-=BA) wrote:
-> On Sun, 2025-05-04 at 00:39 +0200, Niklas Schnelle wrote:
-> >=20
-> > External email : Please do not click links or open attachments until
-> > you have verified the sender or the content.
-> >=20
-> >=20
-> > On Wed, 2025-04-30 at 06:47 +0000, Mingyen Hsieh (=E8=AC=9D=E6=98=8E=E8=
-=AB=BA) wrote:
-> > > On Wed, 2025-04-30 at 01:14 +0000, fossben@pm.me=C2=A0wrote:
-> > > >=20
-> > > > External email : Please do not click links or open attachments
-> > > > until
-> > > > you have verified the sender or the content.
-> > > >=20
-> > > >=20
-> > > > Hello all,
-> > > >=20
-> > > > After upgrading to 6.14.3 on my PC with a MT7925 chip, I noticed
-> > > > that
-> > > > I could no longer ping *.local addresses provided by Avahi. In
-> > > > addition, I also noticed that I was not able to get a DHCP IPv6
-> > > > address from my router, no matter how many times I rebooted the
-> > > > router or reconnected with NetworkManager.
-> > > >=20
-> > > > Reverting to 6.14.2 fixes both mDNS and IPv6 addresses
-> > > > immediately.
-> > > > Going back to 6.14.3 immediately breaks mDNS again, but the IPv6
-> > > > address will stay there for a while before disappearing later,
-> > > > possibly because the DHCP lease expired? I am not sure exactly
-> > > > when
-> > > > it stops working.
-> > > >=20
-> > > > I've done a kernel bisect between 6.14.2 and 6.14.3 and found the
-> > > > offending commit that causes mDNS to fail:
-> > > >=20
-> > > > commit 80007d3f92fd018d0a052a706400e976b36e3c87
-> > > > Author: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> > > > Date:=C2=A0=C2=A0 Tue Mar 4 16:08:50 2025 -0800
-> > > >=20
-> > > > =C2=A0=C2=A0=C2=A0 wifi: mt76: mt7925: integrate *mlo_sta_cmd and *=
-sta_cmd
-> > > >=20
-> > > > =C2=A0=C2=A0=C2=A0 commit cb1353ef34735ec1e5d9efa1fe966f05ff1dc1e1 =
-upstream.
-> > > >=20
-> > > > =C2=A0=C2=A0=C2=A0 Integrate *mlo_sta_cmd and *sta_cmd for the MLO =
-firmware.
-> > > >=20
-> > > > =C2=A0=C2=A0=C2=A0 Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabli=
-ng MLO when
-> > > > the
-> > > > firmware supports it")
-> > > >=20
-> > > > =C2=A0drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 59 ++++----=
----
-> > > > ----
-> > > > --------------------------------------------
-> > > > =C2=A01 file changed, 4 insertions(+), 55 deletions(-)
-> > > >=20
-> > > > I do not know if this same commit is also causing the IPv6 issues
-> > > > as
-> > > > testing that requires quite a bit of time to reproduce. What I do
-> > > > know with certainty as of this moment is that it definitely
-> > > > breaks in
-> > > > kernel 6.14.3.
-> > > >=20
-> > > > I've attached my hardware info as well as dmesg logs from the
-> > > > last
-> > > > working kernel from the bisect and 6.14.4 which exhibits the
-> > > > issue.
-> > > > Please let me know if there's any other info you need.
-> > > >=20
-> > > > Thanks!
-> > > > Benjamin Xiao
-> > >=20
-> > > Hi,
-> > >=20
-> > > Thanks for reporting this issue, we will aim into this.
-> > >=20
-> > > Can you provide me with your testing steps?
-> > >=20
-> > > Best Regards,
-> > > Yen.
-> > >=20
-> >=20
-> > Hi Yan,
-> >=20
-> > I see the same IPv6 issue on my Framework 13 (Ryzen 5 AI 340) with an
-> > mt7925e WiFI module. My setup is just a home router with native IPv6
-> > both for my uplink and in the LAN. The problems with IPv6 can already
-> > be seen just in the LAN for example by checking which IP was used for
-> > SSH, in my setup it should always be IPv6 but falls back to IPv4 in
-> > the
-> > broken state.
-> >=20
-> > As another data point, I tried reverting cb1353ef3473 ("wifi: mt76:
-> > mt7925: integrate *mlo_sta_cmd and *sta_cmd") on top of 6.15.-rc4.
-> > This
-> > fully restores IPv6 for me. Also note I'm running this with the
-> > mt7925
-> > firmware version 20250425073330 from linux-firmware's master branch
-> > as
-> > I had some dropped connections with earlier firmware.
-> >=20
-> > So it definitely looks like that commit also broke IPv6 and not just
-> > mDNS. Note that if if I use DHCPv6 instead of router advertisements,
-> > on
-> > the latest firmware, but without the revert, I get a global IPv6
-> > address added to the interface but then native IPv6 addresses are
-> > still
-> > uncreachable. With the offending patch reverted my SSH session to an
-> > IPv6 only host works fine and is stable. Also I'd be willing to test
-> > a
-> > proper fix as I rely on IPv6 heavily due to having to use CGNAT for
-> > IPv4 but not for IPv6.
-> >=20
-> >=20
-> > Thanks,
-> > Niklas
->=20
-> Hi Benjamin & Niklas,
->=20
-> Can you help to try this patch? I can get IPv6 address through this
-> patch.
->=20
-> If it can work at your environment as well, i will upstream it and add
-> test tag with you.
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> index a42b584634ab..fd756f0d18f8 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> @@ -2183,14 +2183,14 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
->                         mt7925_mcu_sta_mld_tlv(skb, info->vif, info-
-> > link_sta->sta);
->                         mt7925_mcu_sta_eht_mld_tlv(skb, info->vif,
-> info->link_sta->sta);
->                 }
-> -
-> -               mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info-
-> > link_sta);
->         }
->=20
->         if (!info->enable) {
->                 mt7925_mcu_sta_remove_tlv(skb);
->                 mt76_connac_mcu_add_tlv(skb, STA_REC_MLD_OFF,
->                                         sizeof(struct tlv));
-> +       } else {
-> +               mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info-
-> > link_sta);
->         }
->=20
->         return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
->=20
->=20
-> Thanks~
-> Yen.
->=20
+On 5/2/2025 4:02 PM, Muna Sinada wrote:
+> From: Karthik M <quic_karm@quicinc.com>
+> 
+> In MLO configuration, ath12k_mac_radio_start() iterates through all
+> the radios and makes the ar state 'ON'. Even though some bands are
+> not supported in certain countries, ath12k_reg_update_chan_list()
+> tries to update the channel list for all the active pdevs and ends
+> up in the warn_on for non-supported band.
+> 
+> To prevent this, disable the pdev when the num of channels in a band
 
-Hi Yen,
+s/num/number/
 
-As the patch didn't apply, I edited mt7925_mcu_sta_cmd() manually on
-top of v6.15-rc5 according to the diff. With that IPv6 works fine for
-me.
+> for a particular country is zero.
 
-If it were me, I'd probably structure the if different. I'd leave
-the=C2=A0mt7925_mcu_sta_hdr_trans_tlv() where it is but have an inner if
-(info->link_sta) inside just if (!info->enable), then the !info->enable
-case becomes just an else. I'd maybe even put the if (info->link_sta)
-body in its own static function if that makes sense semantically, but I
-don't know enough (anything) about the driver to know. Anyway, that's
-all a matter of taste and actually makes the patch quite a bit larger.
+Can you explain what is meant by disabling the pdev? There are plenty of
+countries where not all bands are supported, but I'd expect the pdev to be
+active on the bands that are supported.
 
-So whichever way you decide on feel free to add:
+Or is it more accurate to say:
+disable the pdev when the number of channels across all bands supported by the
+pdev is zero for a particular country?
 
-Tested-by: Niklas Schnelle <niks@kernel.org>
+I just want to make sure the description is accurate.
 
-Thanks,
-Niklas
+/jeff
 
