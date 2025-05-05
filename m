@@ -1,56 +1,55 @@
-Return-Path: <linux-wireless+bounces-22533-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22534-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B96AAAA6EA
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:22:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 960D5AAA6E6
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:22:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FEAB18867F3
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:21:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BD054A2D29
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2798B330528;
-	Mon,  5 May 2025 22:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238F5330AC0;
+	Mon,  5 May 2025 22:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctxzQqdt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eoZ9VEP5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F254C27BF9B;
-	Mon,  5 May 2025 22:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC9F330AB7;
+	Mon,  5 May 2025 22:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484544; cv=none; b=ofckN6jQ8fG4rlsk4RQVDd0Pu8oqf4dkEWXAuMwdFaPgzSoX7fvIKkrPfLTbhhhlEccswRacRyP641vudV7R0w0mcg/nfiW2V6kLNXxTpeRvlgIcqh1ZfNsB3RYYGS5F6EhcGvqBVEjwalQ+YyZs1/eD8GTRjPmzfo8mqeHlDCU=
+	t=1746484545; cv=none; b=qf0fV1f6FsrmnS3nnZwMr3VaRMgzVeqVU4SQsH0ucKwVougDOwMJFCnrbfi0m7AGLt0tj5WXR+TG4symKg2zWItdiOQra5vK59ozW+C2gA8wZ3+mD7793DTJoaV7F3ZEdliQ9RwqiHkUbfy98DEkCZcNv9s/vzr2JJzzqmzx+QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484544; c=relaxed/simple;
-	bh=SXzfBkPzTlsUYBqOKVEAba0Zcf2JkGjWUbI4rmLDc/4=;
+	s=arc-20240116; t=1746484545; c=relaxed/simple;
+	bh=xnuNC+Q6D2hlHOL5WtUzsxPOsQCqX33zSI02nE+MXTI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LbWWT/3iXALEuSXwHl1Yn4lrFhzuiD9UGeda4xJd6e+aGwMjKdAsMUxuJO+bKzvh4rsP6fAxejNRDUPdBJD5tnGcZsQv65yPx+nfUv+JPkgC4VxSiWxK0XuK+ZoLqnc0lf3OIw9p15sAwM5Zj8ql3Nb21EWtIJTN3Z0CKmqP5r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctxzQqdt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C88C4CEEF;
-	Mon,  5 May 2025 22:35:42 +0000 (UTC)
+	 MIME-Version; b=XRKNOMALyCNulEoyLLgWbn7kj6gABC++odLhHcSsgKCes7w/3h3RbVikgkjUl4wrm5Y/eMBCq3rZKCBQSrBt7THuvxmZfuJxaDKp2//eL9KIZRjdWX5EO+alUZmJJpwjPJjEIm7jYHzND27QqLm1deuGJRQug9RbO+ccbosog58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eoZ9VEP5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E7DC4CEEE;
+	Mon,  5 May 2025 22:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484543;
-	bh=SXzfBkPzTlsUYBqOKVEAba0Zcf2JkGjWUbI4rmLDc/4=;
+	s=k20201202; t=1746484544;
+	bh=xnuNC+Q6D2hlHOL5WtUzsxPOsQCqX33zSI02nE+MXTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctxzQqdteLWzPWgTAZVFIwuj3Ilwfha8W3g56gJEW7TOuFehYKYsK7GLxbfkt+t2a
-	 luqF1Ry/71D/1Vq+ELevtHKlsirTc3/0D0IdrHS1xE00Hx9UfF1iho1K88MufIQhE4
-	 hF2uta6D0Ud0ViUHEVdTe1PNxVJASP/tPK4+eBm6dda0VYAlh+J4Gr7wOv+Bcdc6np
-	 iHUufJBwq48swDKd763xdxNU/A6dKNwNWt13Yt9jpXFrCwdAjtxWGJTcMtmkttX5NR
-	 0GG2i85+DZBYjcKO17nHUyF0dY/KuklN4cHlkuOL3Js1FFK/MDEARxPT3TqKkoviq1
-	 Qwe63Jcy9KQvA==
+	b=eoZ9VEP5IPTZfYOJUSnfZrciDVusQuzsyls2FZvKKFJOWyDlrD5Y7wFgipNeMcmcl
+	 kr2vqA+1Mex1G7iFaI6M7rRup8levVdA+vczYxDc1twKlSNrPoLijjTESPqPtU93by
+	 +7jFVSwkByY9GOh6nx6sb2vhC0xsOHQxc2l1IuAWgfc5+qVauuMnNv6TXk0A4fm1iU
+	 OQOCtZgQdFRT9rFEm7vlN+Klr1/2+DV8fobWupJHtzRsrk/YP+z/2D9Pq8vIwkLCrV
+	 s//FnHqmyfR/Tva8KtQVu+4oBQVr3REjx9lWgbyRsEjG9OU/c7xpLC6EU9XEQFGPLk
+	 VJ0egqX9w0u7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ching-Te Ku <ku920601@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 526/642] wifi: rtw89: coex: Assign value over than 0 to avoid firmware timer hang
-Date: Mon,  5 May 2025 18:12:22 -0400
-Message-Id: <20250505221419.2672473-526-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 527/642] wifi: rtw89: fw: validate multi-firmware header before getting its size
+Date: Mon,  5 May 2025 18:12:23 -0400
+Message-Id: <20250505221419.2672473-527-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -65,39 +64,70 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Ching-Te Ku <ku920601@realtek.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 2e4c4717b3f6f019c71af984564b6e4d0ae8d0bd ]
+[ Upstream commit 2b8bdc5237014cc61784b3676cbaca5325959f3d ]
 
-If the slot duration is 0, the firmware timer will trigger timer hang at
-the timer initializing state in a low rate due to hardware algorithm.
+To access firmware elements appended after multi-firmware, add its size
+as offset to get start address of firmware elements.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+         +-----+-------+------+---------+--------------+ --
+         | sig | fw_nr | rsvd | version | reserved     |   \
+         +---------------------------------------------+   |
+ fw 0    | cv | type | mp | rsvd | shift | size | rsvd |   |
+         +---------------------------------------------+   |
+ fw 1    | cv | type | mp | rsvd | shift | size | rsvd |   |
+         +---------------------------------------------+   |
+ fw N-1  |                  ...                        |   |
+         +=============================================+   | mfw size
+         |               fw 0 content                  |   |
+         +=============================================+   |
+         |               fw 1 content                  |   |
+         +=============================================+   |
+         |                  ...                        |   |
+         +=============================================+   |
+         |               fw N -1 content               |   |
+         +=============================================+ --/
+         |             fw element TLV X                |
+         +=============================================+
+         |             fw element TLV Y                |
+         +=============================================+
+         |             fw element TLV Z                |
+         +=============================================+
+
+To avoid Coverity warning when getting mfw size, validate it header ahead.
+
+Addresses-Coverity-ID: 1544385 ("Untrusted array index read")
+
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250205013233.10945-2-pkshih@realtek.com
+Link: https://patch.msgid.link/20250203072911.47313-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 9e06cc36a75e2..d94a028555e20 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -89,10 +89,10 @@ static const struct rtw89_btc_fbtc_slot s_def[] = {
- 	[CXST_B4]	= __DEF_FBTC_SLOT(50,  0xe5555555, SLOT_MIX),
- 	[CXST_LK]	= __DEF_FBTC_SLOT(20,  0xea5a5a5a, SLOT_ISO),
- 	[CXST_BLK]	= __DEF_FBTC_SLOT(500, 0x55555555, SLOT_MIX),
--	[CXST_E2G]	= __DEF_FBTC_SLOT(0,   0xea5a5a5a, SLOT_MIX),
--	[CXST_E5G]	= __DEF_FBTC_SLOT(0,   0xffffffff, SLOT_ISO),
-+	[CXST_E2G]	= __DEF_FBTC_SLOT(5,   0xea5a5a5a, SLOT_MIX),
-+	[CXST_E5G]	= __DEF_FBTC_SLOT(5,   0xffffffff, SLOT_ISO),
- 	[CXST_EBT]	= __DEF_FBTC_SLOT(5,   0xe5555555, SLOT_MIX),
--	[CXST_ENULL]	= __DEF_FBTC_SLOT(0,   0xaaaaaaaa, SLOT_ISO),
-+	[CXST_ENULL]	= __DEF_FBTC_SLOT(5,   0xaaaaaaaa, SLOT_ISO),
- 	[CXST_WLK]	= __DEF_FBTC_SLOT(250, 0xea5a5a5a, SLOT_MIX),
- 	[CXST_W1FDD]	= __DEF_FBTC_SLOT(50,  0xffffffff, SLOT_ISO),
- 	[CXST_B1FDD]	= __DEF_FBTC_SLOT(50,  0xffffdfff, SLOT_ISO),
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index f4b3438615541..aed0647955d8e 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -601,12 +601,17 @@ static u32 rtw89_mfw_get_size(struct rtw89_dev *rtwdev)
+ 		(const struct rtw89_mfw_hdr *)firmware->data;
+ 	const struct rtw89_mfw_info *mfw_info;
+ 	u32 size;
++	int ret;
+ 
+ 	if (mfw_hdr->sig != RTW89_MFW_SIG) {
+ 		rtw89_warn(rtwdev, "not mfw format\n");
+ 		return 0;
+ 	}
+ 
++	ret = rtw89_mfw_validate_hdr(rtwdev, firmware, mfw_hdr);
++	if (ret)
++		return ret;
++
+ 	mfw_info = &mfw_hdr->info[mfw_hdr->fw_nr - 1];
+ 	size = le32_to_cpu(mfw_info->shift) + le32_to_cpu(mfw_info->size);
+ 
 -- 
 2.39.5
 
