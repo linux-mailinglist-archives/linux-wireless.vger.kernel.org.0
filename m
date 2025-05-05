@@ -1,60 +1,56 @@
-Return-Path: <linux-wireless+bounces-22573-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22574-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95EC0AAAB02
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:49:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B426AAAAF8
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88267189FC79
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 01:46:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D385F4A5C6D
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 01:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F6E38AF55;
-	Mon,  5 May 2025 23:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4AD2DEB9A;
+	Mon,  5 May 2025 23:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OadaC4z7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NMJhgDgs"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA9D38C427;
-	Mon,  5 May 2025 23:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5482037A8B6;
+	Mon,  5 May 2025 23:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486093; cv=none; b=U3cmiCwTQwx9ouaXWAL7rgqetOy+QQ4wRipsg6RFezGUu/1Iwbvl+KhiVpUrxreecgV7w0vplHpejJMqzXE1sG2TO/F8ExSsvw5HKKJB1jLooFJuq/ztLeWCSZSG9MPIJZpZ27RPJVXDlbHLyxb0TUoLC1bS2JofClW4YzQMQXQ=
+	t=1746486151; cv=none; b=hmAD5DHR+A6jWhxRb+0smWIHLNl3V4VsQr5wFO9hFtbnomTa7IJBb2EiZpS2olufxRZkAbEFjBVg7BjyVvOKjiMrLCkL5M8JCECwnaVd/NW7rjJrHMukP2tbGciBPGnejsYK1LjzjS7L1Ok+IqZxVEz+DtLJXEDlv40+3xmyIkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486093; c=relaxed/simple;
-	bh=qWI4Veu+G4Y/XLuv+c8eCI1sefPk1C68m2Dnv+2qFFs=;
+	s=arc-20240116; t=1746486151; c=relaxed/simple;
+	bh=0jrTjslHxbnVxgsMgzGNHFGh0/mdDFuYfc6oBpVnebA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qzz6yeYEWRP3AwyRVfvCrtfUbsY/d7vxEag6P9J4GO9Xf9UCSwc9QBPd/S+Ximv8j1YGSdxULvl2hOtkAY2036zc99wX+cB8wQNGFCP+1bjm5fiCks2Mm2qIO+SEo4IhEORpKrHIFIwESZHBgSW1itaVlzjJLeum0ZWG7i1j5VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OadaC4z7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1805C4CEE4;
-	Mon,  5 May 2025 23:01:30 +0000 (UTC)
+	 MIME-Version; b=LgrZ7I0DoBw2ldj0MxRBlDU8jte5aFrvbshoPb7pwyBRI7Pm4oBOW63Sf53UkqTIer9zC2vf1F7NzuQecx9rwAO5z1Q/f+hyO+B6VKwfxBsw1End5b5kxhbuyBpsDQMteW0eFgIE4pUaSPVc6dHcD5QO4mGdRRovgE2y2alhflU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NMJhgDgs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C51C4CEE4;
+	Mon,  5 May 2025 23:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486092;
-	bh=qWI4Veu+G4Y/XLuv+c8eCI1sefPk1C68m2Dnv+2qFFs=;
+	s=k20201202; t=1746486149;
+	bh=0jrTjslHxbnVxgsMgzGNHFGh0/mdDFuYfc6oBpVnebA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OadaC4z7llMYP2/bNPVqJDH0faSTrmnX04gb0YjN/Pmb7zZXAFEFPVfSSyl5ouCiG
-	 oI7IfwraQxrlvZ3eix5Gqh5mxzuaznD4FUd8A3AF7/Cy+fflz/wJc3a6PFWKzMubAD
-	 GOVcmvUMqNbYYTgcl9wHvhMmg4ZkiRQVnub+4+PdZCxOSM8BmZ9KEOve6DRI3aBH8O
-	 hcQ1rBcw/NZX32YrKyo3adlllpOefHNdTswzg2q5xE/K9oS+2LNK7mEpjYjFY3KOS/
-	 F6OOvC6Fcls+D0qAP2BXPsQ/TEiRqT2tXGy4Jie/l1iNDvbn62LWZ0+yG/ZC2Q0YQs
-	 L2EFktrRze9wg==
+	b=NMJhgDgsKL7EVdsv+3UyCMpwGtOwGHvV1QG+LFf8M+k1pXb/T8M6Ipq+EFXPJ098D
+	 kVIaLWKUov3BribrydILfMYRSDhcRESP56uxjiY7H5qpR0irEjfCmeqvMu6qI/Cpzx
+	 pwYmzkznLXwWdEnbhYJzkUprXhaUizmQ79f/eL4neEu2KbBpdvkTe0Olva/Cm9I5Ud
+	 mrcPaWLPsr2pFA1Hx3RTjTfss8LoQX9zOPuCSczsdTWyGoYWw5LBZ9F8TsAUzycIiD
+	 sDMm5I1K0HoHL20EsCczoL1rknYHe31sMdyTbii4kwrS16VaLEQHujPQSfc2KKwap+
+	 S52X9TC5Z50XQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>,
-	Roopni Devanathan <quic_rdevanat@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 151/294] wifi: ath12k: Improve BSS discovery with hidden SSID in 6 GHz band
-Date: Mon,  5 May 2025 18:54:11 -0400
-Message-Id: <20250505225634.2688578-151-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 178/294] wifi: rtw88: Fix rtw_init_ht_cap() for RTL8814AU
+Date: Mon,  5 May 2025 18:54:38 -0400
+Message-Id: <20250505225634.2688578-178-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -69,57 +65,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 27d38bdfd416f4db70e09c3bef3b030c86fd235a ]
+[ Upstream commit c7eea1ba05ca5b0dbf77a27cf2e1e6e2fb3c0043 ]
 
-Currently, sometimes, the station is unable to identify the configured
-AP SSID in its scan results when the AP is not broadcasting its name
-publicly and has a hidden SSID.
+Set the RX mask and the highest RX rate according to the number of
+spatial streams the chip can receive. For RTL8814AU that is 3.
 
-Currently, channel dwell time for an ath12k station is 30 ms. Sometimes,
-station can send broadcast probe request to AP close to the end of dwell
-time. In some of these cases, before AP sends a response to the received
-probe request, the dwell time on the station side would come to an end.
-So, the station will move to scan next channel and will not be able to
-acknowledge the unicast probe response.
-
-Resolve this issue by increasing station's channel dwell time to 70 ms,
-so that the it remains on the same channel for a longer period. This
-would increase the station's chance of receiving probe response from the
-AP. The station will then send a response acknowledgment back to the AP,
-thus leading to successful scan and BSS discovery.
-
-With an increased dwell time, scan would take longer than it takes now.
-But, this fix is an improvement for hidden SSID scan issue.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250207060005.153835-1-quic_rdevanat@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/4e786f50-ed1c-4387-8b28-e6ff00e35e81@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index c977dfbae0a46..d87d5980325e8 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -2115,8 +2115,8 @@ void ath12k_wmi_start_scan_init(struct ath12k *ar,
- 	arg->dwell_time_active = 50;
- 	arg->dwell_time_active_2g = 0;
- 	arg->dwell_time_passive = 150;
--	arg->dwell_time_active_6g = 40;
--	arg->dwell_time_passive_6g = 30;
-+	arg->dwell_time_active_6g = 70;
-+	arg->dwell_time_passive_6g = 70;
- 	arg->min_rest_time = 50;
- 	arg->max_rest_time = 500;
- 	arg->repeat_probe_time = 0;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 557526e0eb7f3..0d0b5123b5fe2 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1544,6 +1544,7 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ {
+ 	const struct rtw_chip_info *chip = rtwdev->chip;
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
++	int i;
+ 
+ 	ht_cap->ht_supported = true;
+ 	ht_cap->cap = 0;
+@@ -1563,17 +1564,11 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ 	ht_cap->ampdu_factor = IEEE80211_HT_MAX_AMPDU_64K;
+ 	ht_cap->ampdu_density = chip->ampdu_density;
+ 	ht_cap->mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
+-	if (efuse->hw_cap.nss > 1) {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0xFF;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(300);
+-	} else {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0x00;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(150);
+-	}
++
++	for (i = 0; i < efuse->hw_cap.nss; i++)
++		ht_cap->mcs.rx_mask[i] = 0xFF;
++	ht_cap->mcs.rx_mask[4] = 0x01;
++	ht_cap->mcs.rx_highest = cpu_to_le16(150 * efuse->hw_cap.nss);
+ }
+ 
+ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
 -- 
 2.39.5
 
