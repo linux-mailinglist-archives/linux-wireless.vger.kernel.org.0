@@ -1,58 +1,56 @@
-Return-Path: <linux-wireless+bounces-22634-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22636-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2C9AAB34D
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 06:42:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F045BAAB370
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 06:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AA7B17A4AC
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 04:39:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0FF73A47DD
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 04:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0804F233D8E;
-	Tue,  6 May 2025 00:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF952376EB;
+	Tue,  6 May 2025 00:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BTyb2hFb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YANSsYWx"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30284220F30;
-	Mon,  5 May 2025 23:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2FF28851A;
+	Mon,  5 May 2025 23:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486283; cv=none; b=OpTTwmG30mywW/T/9mS1uxbtRz2CO+6zX8qDSCoA3eHdzy7lbOyOnE81BmTtZhr4DHugnNDFVgfQmk21CvPZ3EGJ5Ll9chMcyvfLGNJ/wxHpgRtwICLmEu4tTju69LhgAeHJ13x/Dq5TI4V6+DHXXpSA10v4WBlO10UzfYQ+xxI=
+	t=1746486304; cv=none; b=ng6ZRZCDvt+hn042nMDRFeVRMjGtOtYzrmPbn7TfMfkX+IPZzby6Xy166vndpd+gRKQxiU/dLlJ/Ia3dJjIwhrrwIffprJWRlIF0YEw06QkszwWUjoWVMeSAh4YKI7RzIv/kZYcw1TvWFX4RQvoCHSjYJzJVJhb5g5gLyKnpbhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486283; c=relaxed/simple;
-	bh=HYmXqjYu3rvNOscRW8nTFJ53wN59Z/5Opd9boYQ/7Zs=;
+	s=arc-20240116; t=1746486304; c=relaxed/simple;
+	bh=B9tOZS/ox7jmTR6yugzjfNVVHlOv4OVJ2ggf44z3mFE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PkgdBivUEt+dKJOfAlgh3AZbn32OQ7ByEOj+zmxU8gkRoqzdWWiegwWtblDW31st8DRran0kgptpIwVebbE67ZtsVr2A32yVQyEz3xci4/Egi0rApbj+N3yqA3KHlYnmupRH90ZI6bN+4dnf7ei/Q09VLACMj9jiwnWD7lkz8JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BTyb2hFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAFCC4CEEF;
-	Mon,  5 May 2025 23:04:41 +0000 (UTC)
+	 MIME-Version; b=Fk4MVE2DD7gziSKcDNt6SzOqBZQlYWpPSjgMLPVgB4rcsUI+NarNojjCbgNTQX801llmTYeud6o2yn+0Vlj15cNkkYqp/umGMe6zn3cIYGEELBm3iU+x3OnIgMg7lgVb/7OyC5y1xKM+Y+lvTWLYtOavZbPzLv5bL6dkdmTVt2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YANSsYWx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D47CC4CEE4;
+	Mon,  5 May 2025 23:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486282;
-	bh=HYmXqjYu3rvNOscRW8nTFJ53wN59Z/5Opd9boYQ/7Zs=;
+	s=k20201202; t=1746486303;
+	bh=B9tOZS/ox7jmTR6yugzjfNVVHlOv4OVJ2ggf44z3mFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BTyb2hFbESqqp7fX07CRDw2ZeiBL/bvDSVQFIaXfJ5KWzl5ygdZ/3fTHEj8uB3Bc3
-	 U6GQRVthnlxewOaZeT89gxa2jMaFi0qEKfDz4rP9ipLNJayydDxbsrF8tzUKh/wpru
-	 W4VJCbxcOOnNgZuJNKYIdnm3lOmf3Pxq06XHGTA5LUuEx/fddcnSCMXgp3ccow/IKk
-	 9BgpONmtPhZC0nusam0kfxjYJchnCtfNM/jAlhZqeW3glvPEV6szwuncLhVCTKyOSC
-	 yKpMKE9G8GWMV2mjclh7PFADcFRvbtyrUzqst/jVkHvENrNZBfMJawBUv/1Mgbs1mE
-	 swpBKof2Az63A==
+	b=YANSsYWxAtrkYCsvR4+qahilZ1X81abErWDSwG98+mXL1BjqMEf4Kw9uOf0bYxhK6
+	 W2YMk4stKf/I13z8uq6TjwBiKCqYH9UvyuCKvUnooldPziof+9+vcw6T4I0utS1QnQ
+	 bC7WKcx2lUFvukLAvtrMlNxZbw8rc9ipttMDVRjaaCNoFg1EKosWKLLsTQk6FKJB0/
+	 k7W/YhalMOXtmIid+BlzAT2Fq1mJCnvpUJV6x0THTXJZEtSU8v/tZNAtsVxSR/XBCp
+	 Y2FpAvX22VHAWrHENc/zN5XMVoy2vBDD1/Nn1W0entvQDznzOTHProJ8XJoZ/mF9EE
+	 9V8HXITYiVDOQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 238/294] wifi: mac80211: remove misplaced drv_mgd_complete_tx() call
-Date: Mon,  5 May 2025 18:55:38 -0400
-Message-Id: <20250505225634.2688578-238-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 248/294] wifi: rtw88: Fix download_firmware_validate() for RTL8814AU
+Date: Mon,  5 May 2025 18:55:48 -0400
+Message-Id: <20250505225634.2688578-248-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -67,39 +65,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit f4995cdc4d02d0abc8e9fcccad5c71ce676c1e3f ]
+[ Upstream commit 9e8243025cc06abc975c876dffda052073207ab3 ]
 
-In the original commit 15fae3410f1d ("mac80211: notify driver on
-mgd TX completion") I evidently made a mistake and placed the
-call in the "associated" if, rather than the "assoc_data". Later
-I noticed the missing call and placed it in commit c042600c17d8
-("wifi: mac80211: adding missing drv_mgd_complete_tx() call"),
-but didn't remove the wrong one. Remove it now.
+After the firmware is uploaded, download_firmware_validate() checks some
+bits in REG_MCUFW_CTRL to see if everything went okay. The
+RTL8814AU power on sequence sets bits 13 and 12 to 2, which this
+function does not expect, so it thinks the firmware upload failed.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250205110958.6ed954179bbf.Id8ef8835b7e6da3bf913c76f77d201017dc8a3c9@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Make download_firmware_validate() ignore bits 13 and 12.
+
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/049d2887-22fc-47b7-9e59-62627cb525f8@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/reg.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 37163d84104fa..2c7e139efd532 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7822,7 +7822,6 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
- 		ieee80211_report_disconnect(sdata, frame_buf,
- 					    sizeof(frame_buf), true,
- 					    req->reason_code, false);
--		drv_mgd_complete_tx(sdata->local, sdata, &info);
- 		return 0;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
+index 7c6c11d50ff30..0e76bc07bddef 100644
+--- a/drivers/net/wireless/realtek/rtw88/reg.h
++++ b/drivers/net/wireless/realtek/rtw88/reg.h
+@@ -108,6 +108,7 @@
+ #define BIT_SHIFT_ROM_PGE	16
+ #define BIT_FW_INIT_RDY		BIT(15)
+ #define BIT_FW_DW_RDY		BIT(14)
++#define BIT_CPU_CLK_SEL		(BIT(12) | BIT(13))
+ #define BIT_RPWM_TOGGLE		BIT(7)
+ #define BIT_RAM_DL_SEL		BIT(7)	/* legacy only */
+ #define BIT_DMEM_CHKSUM_OK	BIT(6)
+@@ -125,7 +126,7 @@
+ 				 BIT_CHECK_SUM_OK)
+ #define FW_READY_LEGACY		(BIT_MCUFWDL_RDY | BIT_FWDL_CHK_RPT |	       \
+ 				 BIT_WINTINI_RDY | BIT_RAM_DL_SEL)
+-#define FW_READY_MASK		0xffff
++#define FW_READY_MASK		(0xffff & ~BIT_CPU_CLK_SEL)
  
+ #define REG_MCU_TST_CFG		0x84
+ #define VAL_FW_TRIGGER		0x1
 -- 
 2.39.5
 
