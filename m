@@ -1,62 +1,56 @@
-Return-Path: <linux-wireless+bounces-22528-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22529-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9609EAAA6A6
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:16:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E367AAA70F
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:25:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE14A173C77
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:16:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B5943B6037
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF3832B28E;
-	Mon,  5 May 2025 22:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A6D29117B;
+	Mon,  5 May 2025 22:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mywAHtbu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYHPKXaV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A65532B289;
-	Mon,  5 May 2025 22:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C537932F6F7;
+	Mon,  5 May 2025 22:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484504; cv=none; b=bx2L41JXU8o5azZL3uD1XFa75APJp4rTcvG+hMWW4GlfdMuvFkQR2UQBZuNC7EKUp6DoT1a5+GmfYIZJ5s7cayvgNddO5QrixHmIbG1bhMhX7o0JQqytSBdM8s/+S3caPNX2WXvZzrmG40zbHQCBgQiTLj0JucXjb9xuyUesiQ0=
+	t=1746484538; cv=none; b=Y+48qilSGWzQkC3cL7aL6jvsPAIHynq+ehoMOCF8fduh+EK0v99KGfKXOddP9+6RwCedCgdEJPJ3d9+99FHLxCny1Gr2EZ1U0l86wlaz1w/eYV0VthUOpbVwLb8Dj4imokjO5ceepRpMFkF3CublIAzZTVE2syy2QeWxsWTXWiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484504; c=relaxed/simple;
-	bh=R0u/VdLaMWu7kyV8lfZ8TIitA7+Z0QAZ5cf1KpFAkcA=;
+	s=arc-20240116; t=1746484538; c=relaxed/simple;
+	bh=+sQsGDO+W+FlN9vNxlSsb+JID5vYDs0PjzuBaRNv7mg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o7J9Hct21LmDJCC+FK49CHKy6XSZXen5P/nH8E2CpdIyogbz3wB9SB5j+en9T9Js0CMYRe6FUZVf7OFDT2bHSK52Tpw1Mxn8w4rZJl6aHD3ZThu81sETUY9A+IIsjM34fYV5m3AMoGHN+D8ngTcN82Z2/p7nWnt5ZoivV1fS24k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mywAHtbu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A712FC4CEE4;
-	Mon,  5 May 2025 22:35:02 +0000 (UTC)
+	 MIME-Version; b=Ufw+UTJA8OWLFt99Abzu64vn85PlZWt3nKODJjOXMtzrQ81xH0AKqYZ92h0AyWE+55dnLV/lnsA2JILU5Rr1yMnr/4HYfmUKUcdfSNpiZgW7Xf+92Zhgg+jAcveXSMtAqbw9Z9Tk4n9h1OKVH55gKIE2yQY9mIPM5J3kXdv2i/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYHPKXaV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FAEC4CEE4;
+	Mon,  5 May 2025 22:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484504;
-	bh=R0u/VdLaMWu7kyV8lfZ8TIitA7+Z0QAZ5cf1KpFAkcA=;
+	s=k20201202; t=1746484538;
+	bh=+sQsGDO+W+FlN9vNxlSsb+JID5vYDs0PjzuBaRNv7mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mywAHtbutJyk1JjCFtrWdeN/XEhneA6E8q1eI2tqiETzx9NA+wd4qzSDTURaNrPIn
-	 g7L7+SjH3idkySst1JaQ3Fz5WHIRtyDwDItAltBBZeBo/msArNFBiY2Ta58VdcQ8+X
-	 lpM8dxoHnSHYd7TBZxcL+C6O1E9eo296TLIPrURN6BFaRe1/V4aNgLpgIAhjhigE0V
-	 PVU2nIMRq7qGNHSo9a2ijd/bu5P1ndVFMHoh/VjA/Sud5u3rQvxygE5qTaQnWUYqJy
-	 w37vSdvxz2bswPz4+2L+UUDemoGSuk9khRHsIKxcN7L3pf6WgVySBw/r3aqhyega0g
-	 wbA6l1ftJ5OmA==
+	b=KYHPKXaVt2J6HlFmfYRdlVWd54kelEI86RVh1NQ2wBMlXutn4j3WVyDH+wgLVT2mP
+	 XWdl6wmj4syD+3/PRXaqGjsTseDGwnWOEMtBLfVUsKu46qQoy7qmsnoPOgy9MIUl29
+	 LDtaZBy7RGsmFkdUdbc93398rXxqRGc/LOogwd0WDMuxnRBWDXWQKMQCm0dtvYtK0B
+	 Ekr2Srdej++gUmv3dNriOiOdL9bD8vsCOVsqXYePCjietvDp+Kc/7Yub6cMys9Qj4H
+	 3657xvZsn0P4Lg1STMfyEDDodTJJDmGQOIqq6jna7LDm/bdr25CPncIhDrQKj6IH+1
+	 jj2nRBCseCAqg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	johannes@sipsolutions.net,
-	netdev@vger.kernel.org,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 506/642] wifi: mac80211: Drop cooked monitor support
-Date: Mon,  5 May 2025 18:12:02 -0400
-Message-Id: <20250505221419.2672473-506-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 522/642] wifi: rtw88: Fix rtw_update_sta_info() for RTL8814AU
+Date: Mon,  5 May 2025 18:12:18 -0400
+Message-Id: <20250505221419.2672473-522-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,874 +65,69 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 286e696770654d79b34bd15953e7101a1c4784c7 ]
+[ Upstream commit 9f00e2218e15a2ea3c284567424a100c10b6fb85 ]
 
-Hostapd switched from cooked monitor interfaces to nl80211 Dec 2011.
-Drop support for the outdated cooked monitor interfaces and fix
-creating the virtual monitor interfaces in the following cases:
+This function tells the firmware what rates it can use.
 
- 1) We have one non-monitor and one monitor interface with
-    %MONITOR_FLAG_ACTIVE enabled and then delete the non-monitor
-    interface.
+Put the 3SS and 4SS HT rates supported by the other station into the
+rate mask.
 
- 2) We only have monitor interfaces enabled on resume while at least one
-    has %MONITOR_FLAG_ACTIVE set.
+Remove the 3SS and 4SS rates from the rate mask if the hardware only has
+2 spatial streams.
 
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Link: https://patch.msgid.link/20250204111352.7004-2-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+And finally, select the right rate ID (a parameter for the firmware)
+when the hardware has 3 spatial streams.
+
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/48d1d90f-2aeb-4ec5-9a24-0980e10eae1e@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dropreason.h   |   6 --
- net/mac80211/cfg.c         |   9 +-
- net/mac80211/drop.h        |  21 ++--
- net/mac80211/ieee80211_i.h |  11 +--
- net/mac80211/iface.c       |  50 ++++------
- net/mac80211/main.c        |  16 +--
- net/mac80211/rx.c          | 194 ++++++++++---------------------------
- net/mac80211/status.c      |  34 +------
- net/mac80211/tx.c          |   2 +-
- 9 files changed, 94 insertions(+), 249 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/dropreason.h b/include/net/dropreason.h
-index 56cb7be92244c..7d3b1a2a6feca 100644
---- a/include/net/dropreason.h
-+++ b/include/net/dropreason.h
-@@ -17,12 +17,6 @@ enum skb_drop_reason_subsys {
- 	 */
- 	SKB_DROP_REASON_SUBSYS_MAC80211_UNUSABLE,
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index f4ee4e922afa7..9b9e76eebce95 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1234,7 +1234,9 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
+ 		if (sta->deflink.vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC)
+ 			ldpc_en = VHT_LDPC_EN;
+ 	} else if (sta->deflink.ht_cap.ht_supported) {
+-		ra_mask |= (sta->deflink.ht_cap.mcs.rx_mask[1] << 20) |
++		ra_mask |= ((u64)sta->deflink.ht_cap.mcs.rx_mask[3] << 36) |
++			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[2] << 28) |
++			   (sta->deflink.ht_cap.mcs.rx_mask[1] << 20) |
+ 			   (sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
+ 		if (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
+ 			stbc_en = HT_STBC_EN;
+@@ -1244,6 +1246,9 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
  
--	/**
--	 * @SKB_DROP_REASON_SUBSYS_MAC80211_MONITOR: mac80211 drop reasons
--	 * for frames still going to monitor, see net/mac80211/drop.h
--	 */
--	SKB_DROP_REASON_SUBSYS_MAC80211_MONITOR,
--
- 	/**
- 	 * @SKB_DROP_REASON_SUBSYS_OPENVSWITCH: openvswitch drop reasons,
- 	 * see net/openvswitch/drop.h
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index b766472703b12..1ec246133d244 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -89,15 +89,14 @@ static int ieee80211_set_mon_options(struct ieee80211_sub_if_data *sdata,
+ 	if (efuse->hw_cap.nss == 1 || rtwdev->hal.txrx_1ss)
+ 		ra_mask &= RA_MASK_VHT_RATES_1SS | RA_MASK_HT_RATES_1SS;
++	else if (efuse->hw_cap.nss == 2)
++		ra_mask &= RA_MASK_VHT_RATES_2SS | RA_MASK_HT_RATES_2SS |
++			   RA_MASK_VHT_RATES_1SS | RA_MASK_HT_RATES_1SS;
  
- 	/* check flags first */
- 	if (params->flags && ieee80211_sdata_running(sdata)) {
--		u32 mask = MONITOR_FLAG_COOK_FRAMES | MONITOR_FLAG_ACTIVE;
-+		u32 mask = MONITOR_FLAG_ACTIVE;
- 
- 		/*
--		 * Prohibit MONITOR_FLAG_COOK_FRAMES and
--		 * MONITOR_FLAG_ACTIVE to be changed while the
--		 * interface is up.
-+		 * Prohibit MONITOR_FLAG_ACTIVE to be changed
-+		 * while the interface is up.
- 		 * Else we would need to add a lot of cruft
- 		 * to update everything:
--		 *	cooked_mntrs, monitor and all fif_* counters
-+		 *	monitor and all fif_* counters
- 		 *	reconfigure hardware
- 		 */
- 		if ((params->flags & mask) != (sdata->u.mntr.flags & mask))
-diff --git a/net/mac80211/drop.h b/net/mac80211/drop.h
-index 59e3ec4dc9607..eb9ab310f91ca 100644
---- a/net/mac80211/drop.h
-+++ b/net/mac80211/drop.h
-@@ -11,12 +11,6 @@
- 
- typedef unsigned int __bitwise ieee80211_rx_result;
- 
--#define MAC80211_DROP_REASONS_MONITOR(R)	\
--	R(RX_DROP_M_UNEXPECTED_4ADDR_FRAME)	\
--	R(RX_DROP_M_BAD_BCN_KEYIDX)		\
--	R(RX_DROP_M_BAD_MGMT_KEYIDX)		\
--/* this line for the trailing \ - add before this */
--
- #define MAC80211_DROP_REASONS_UNUSABLE(R)	\
- 	/* 0x00 == ___RX_DROP_UNUSABLE */	\
- 	R(RX_DROP_U_MIC_FAIL)			\
-@@ -66,6 +60,10 @@ typedef unsigned int __bitwise ieee80211_rx_result;
- 	R(RX_DROP_U_UNEXPECTED_STA_4ADDR)	\
- 	R(RX_DROP_U_UNEXPECTED_VLAN_MCAST)	\
- 	R(RX_DROP_U_NOT_PORT_CONTROL)		\
-+	R(RX_DROP_U_UNEXPECTED_4ADDR_FRAME)	\
-+	R(RX_DROP_U_BAD_BCN_KEYIDX)		\
-+	/* 0x30 */				\
-+	R(RX_DROP_U_BAD_MGMT_KEYIDX)		\
- 	R(RX_DROP_U_UNKNOWN_ACTION_REJECTED)	\
- /* this line for the trailing \ - add before this */
- 
-@@ -78,10 +76,6 @@ enum ___mac80211_drop_reason {
- 	___RX_QUEUED	= SKB_NOT_DROPPED_YET,
- 
- #define ENUM(x) ___ ## x,
--	___RX_DROP_MONITOR = SKB_DROP_REASON_SUBSYS_MAC80211_MONITOR <<
--		SKB_DROP_REASON_SUBSYS_SHIFT,
--	MAC80211_DROP_REASONS_MONITOR(ENUM)
--
- 	___RX_DROP_UNUSABLE = SKB_DROP_REASON_SUBSYS_MAC80211_UNUSABLE <<
- 		SKB_DROP_REASON_SUBSYS_SHIFT,
- 	MAC80211_DROP_REASONS_UNUSABLE(ENUM)
-@@ -89,11 +83,10 @@ enum ___mac80211_drop_reason {
- };
- 
- enum mac80211_drop_reason {
--	RX_CONTINUE	 = (__force ieee80211_rx_result)___RX_CONTINUE,
--	RX_QUEUED	 = (__force ieee80211_rx_result)___RX_QUEUED,
--	RX_DROP_MONITOR	 = (__force ieee80211_rx_result)___RX_DROP_MONITOR,
-+	RX_CONTINUE	= (__force ieee80211_rx_result)___RX_CONTINUE,
-+	RX_QUEUED	= (__force ieee80211_rx_result)___RX_QUEUED,
-+	RX_DROP		= (__force ieee80211_rx_result)___RX_DROP_UNUSABLE,
- #define DEF(x) x = (__force ieee80211_rx_result)___ ## x,
--	MAC80211_DROP_REASONS_MONITOR(DEF)
- 	MAC80211_DROP_REASONS_UNUSABLE(DEF)
- #undef DEF
- };
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 8f5f7797f0b6b..afc6fda6b606b 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -200,7 +200,6 @@ enum ieee80211_packet_rx_flags {
- /**
-  * enum ieee80211_rx_flags - RX data flags
-  *
-- * @IEEE80211_RX_CMNTR: received on cooked monitor already
-  * @IEEE80211_RX_BEACON_REPORTED: This frame was already reported
-  *	to cfg80211_report_obss_beacon().
-  *
-@@ -208,8 +207,7 @@ enum ieee80211_packet_rx_flags {
-  * for a single frame.
-  */
- enum ieee80211_rx_flags {
--	IEEE80211_RX_CMNTR		= BIT(0),
--	IEEE80211_RX_BEACON_REPORTED	= BIT(1),
-+	IEEE80211_RX_BEACON_REPORTED	= BIT(0),
- };
- 
- struct ieee80211_rx_data {
-@@ -1380,7 +1378,7 @@ struct ieee80211_local {
- 	spinlock_t queue_stop_reason_lock;
- 
- 	int open_count;
--	int monitors, cooked_mntrs, tx_mntrs;
-+	int monitors, tx_mntrs;
- 	/* number of interfaces with corresponding FIF_ flags */
- 	int fif_fcsfail, fif_plcpfail, fif_control, fif_other_bss, fif_pspoll,
- 	    fif_probe_req;
-@@ -1492,7 +1490,7 @@ struct ieee80211_local {
- 
- 	/* see iface.c */
- 	struct list_head interfaces;
--	struct list_head mon_list; /* only that are IFF_UP && !cooked */
-+	struct list_head mon_list; /* only that are IFF_UP */
- 	struct mutex iflist_mtx;
- 
- 	/* Scanning and BSS list */
-@@ -2090,8 +2088,7 @@ struct sk_buff *
- ieee80211_build_data_template(struct ieee80211_sub_if_data *sdata,
- 			      struct sk_buff *skb, u32 info_flags);
- void ieee80211_tx_monitor(struct ieee80211_local *local, struct sk_buff *skb,
--			  int retry_count, bool send_to_cooked,
--			  struct ieee80211_tx_status *status);
-+			  int retry_count, struct ieee80211_tx_status *status);
- 
- void ieee80211_check_fast_xmit(struct sta_info *sta);
- void ieee80211_check_fast_xmit_all(struct ieee80211_local *local);
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index d299bdbca6b3b..5616c0adbe093 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -483,8 +483,6 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 		ieee80211_ibss_stop(sdata);
+ 	if (hal->current_band_type == RTW_BAND_5G) {
+ 		ra_mask |= (u64)sta->deflink.supp_rates[NL80211_BAND_5GHZ] << 4;
+@@ -1302,10 +1307,9 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
  		break;
- 	case NL80211_IFTYPE_MONITOR:
--		if (sdata->u.mntr.flags & MONITOR_FLAG_COOK_FRAMES)
--			break;
- 		list_del_rcu(&sdata->u.mntr.list);
- 		break;
- 	default:
-@@ -584,18 +582,17 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 		/* no need to tell driver */
- 		break;
- 	case NL80211_IFTYPE_MONITOR:
--		if (sdata->u.mntr.flags & MONITOR_FLAG_COOK_FRAMES) {
--			local->cooked_mntrs--;
--			break;
--		}
-+		if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE) &&
-+		    !ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR)) {
- 
--		local->monitors--;
--		if (local->monitors == 0) {
--			local->hw.conf.flags &= ~IEEE80211_CONF_MONITOR;
--			hw_reconf_flags |= IEEE80211_CONF_CHANGE_MONITOR;
--		}
-+			local->monitors--;
-+			if (local->monitors == 0) {
-+				local->hw.conf.flags &= ~IEEE80211_CONF_MONITOR;
-+				hw_reconf_flags |= IEEE80211_CONF_CHANGE_MONITOR;
-+			}
- 
--		ieee80211_adjust_monitor_flags(sdata, -1);
-+			ieee80211_adjust_monitor_flags(sdata, -1);
-+		}
- 		break;
- 	case NL80211_IFTYPE_NAN:
- 		/* clean all the functions */
-@@ -1333,27 +1330,24 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
- 		}
- 		break;
- 	case NL80211_IFTYPE_MONITOR:
--		if (sdata->u.mntr.flags & MONITOR_FLAG_COOK_FRAMES) {
--			local->cooked_mntrs++;
--			break;
--		}
--
- 		if ((sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE) ||
- 		    ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR)) {
- 			res = drv_add_interface(local, sdata);
- 			if (res)
- 				goto err_stop;
--		} else if (local->monitors == 0 && local->open_count == 0) {
--			res = ieee80211_add_virtual_monitor(local);
--			if (res)
--				goto err_stop;
--		}
-+		} else {
-+			if (local->monitors == 0 && local->open_count == 0) {
-+				res = ieee80211_add_virtual_monitor(local);
-+				if (res)
-+					goto err_stop;
-+			}
-+			local->monitors++;
- 
--		/* must be before the call to ieee80211_configure_filter */
--		local->monitors++;
--		if (local->monitors == 1) {
--			local->hw.conf.flags |= IEEE80211_CONF_MONITOR;
--			hw_reconf_flags |= IEEE80211_CONF_CHANGE_MONITOR;
-+			/* must be before the call to ieee80211_configure_filter */
-+			if (local->monitors == 1) {
-+				local->hw.conf.flags |= IEEE80211_CONF_MONITOR;
-+				hw_reconf_flags |= IEEE80211_CONF_CHANGE_MONITOR;
-+			}
- 		}
- 
- 		ieee80211_adjust_monitor_flags(sdata, 1);
-@@ -1430,8 +1424,6 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
- 		rcu_assign_pointer(local->p2p_sdata, sdata);
- 		break;
- 	case NL80211_IFTYPE_MONITOR:
--		if (sdata->u.mntr.flags & MONITOR_FLAG_COOK_FRAMES)
--			break;
- 		list_add_tail_rcu(&sdata->u.mntr.list, &local->mon_list);
- 		break;
- 	default:
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 53e5aee468856..741e6c7edcb7c 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1744,18 +1744,7 @@ void ieee80211_free_hw(struct ieee80211_hw *hw)
- 	wiphy_free(local->hw.wiphy);
- }
- EXPORT_SYMBOL(ieee80211_free_hw);
--
--static const char * const drop_reasons_monitor[] = {
--#define V(x)	#x,
--	[0] = "RX_DROP_MONITOR",
--	MAC80211_DROP_REASONS_MONITOR(V)
--};
--
--static struct drop_reason_list drop_reason_list_monitor = {
--	.reasons = drop_reasons_monitor,
--	.n_reasons = ARRAY_SIZE(drop_reasons_monitor),
--};
--
-+#define V(x)   #x,
- static const char * const drop_reasons_unusable[] = {
- 	[0] = "RX_DROP_UNUSABLE",
- 	MAC80211_DROP_REASONS_UNUSABLE(V)
-@@ -1784,8 +1773,6 @@ static int __init ieee80211_init(void)
- 	if (ret)
- 		goto err_netdev;
- 
--	drop_reasons_register_subsys(SKB_DROP_REASON_SUBSYS_MAC80211_MONITOR,
--				     &drop_reason_list_monitor);
- 	drop_reasons_register_subsys(SKB_DROP_REASON_SUBSYS_MAC80211_UNUSABLE,
- 				     &drop_reason_list_unusable);
- 
-@@ -1804,7 +1791,6 @@ static void __exit ieee80211_exit(void)
- 
- 	ieee80211_iface_exit();
- 
--	drop_reasons_unregister_subsys(SKB_DROP_REASON_SUBSYS_MAC80211_MONITOR);
- 	drop_reasons_unregister_subsys(SKB_DROP_REASON_SUBSYS_MAC80211_UNUSABLE);
- 
- 	rcu_barrier();
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 0659ec892ec6c..ad019a50b6b33 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -1045,14 +1045,14 @@ static ieee80211_rx_result ieee80211_rx_mesh_check(struct ieee80211_rx_data *rx)
- 		if (is_multicast_ether_addr(hdr->addr1)) {
- 			if (ieee80211_has_tods(hdr->frame_control) ||
- 			    !ieee80211_has_fromds(hdr->frame_control))
--				return RX_DROP_MONITOR;
-+				return RX_DROP;
- 			if (ether_addr_equal(hdr->addr3, dev_addr))
--				return RX_DROP_MONITOR;
-+				return RX_DROP;
- 		} else {
- 			if (!ieee80211_has_a4(hdr->frame_control))
--				return RX_DROP_MONITOR;
-+				return RX_DROP;
- 			if (ether_addr_equal(hdr->addr4, dev_addr))
--				return RX_DROP_MONITOR;
-+				return RX_DROP;
- 		}
  	}
  
-@@ -1064,20 +1064,20 @@ static ieee80211_rx_result ieee80211_rx_mesh_check(struct ieee80211_rx_data *rx)
- 		struct ieee80211_mgmt *mgmt;
+-	if (sta->deflink.vht_cap.vht_supported && ra_mask & 0xffc00000)
+-		tx_num = 2;
+-	else if (sta->deflink.ht_cap.ht_supported && ra_mask & 0xfff00000)
+-		tx_num = 2;
++	if (sta->deflink.vht_cap.vht_supported ||
++	    sta->deflink.ht_cap.ht_supported)
++		tx_num = efuse->hw_cap.nss;
+ 
+ 	rate_id = get_rate_id(wireless_set, bw_mode, tx_num);
  
- 		if (!ieee80211_is_mgmt(hdr->frame_control))
--			return RX_DROP_MONITOR;
-+			return RX_DROP;
- 
- 		if (ieee80211_is_action(hdr->frame_control)) {
- 			u8 category;
- 
- 			/* make sure category field is present */
- 			if (rx->skb->len < IEEE80211_MIN_ACTION_SIZE)
--				return RX_DROP_MONITOR;
-+				return RX_DROP;
- 
- 			mgmt = (struct ieee80211_mgmt *)hdr;
- 			category = mgmt->u.action.category;
- 			if (category != WLAN_CATEGORY_MESH_ACTION &&
- 			    category != WLAN_CATEGORY_SELF_PROTECTED)
--				return RX_DROP_MONITOR;
-+				return RX_DROP;
- 			return RX_CONTINUE;
- 		}
- 
-@@ -1087,7 +1087,7 @@ static ieee80211_rx_result ieee80211_rx_mesh_check(struct ieee80211_rx_data *rx)
- 		    ieee80211_is_auth(hdr->frame_control))
- 			return RX_CONTINUE;
- 
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 	}
- 
- 	return RX_CONTINUE;
-@@ -1513,7 +1513,7 @@ ieee80211_rx_h_check(struct ieee80211_rx_data *rx)
- 			hdrlen = ieee80211_hdrlen(hdr->frame_control);
- 
- 			if (rx->skb->len < hdrlen + 8)
--				return RX_DROP_MONITOR;
-+				return RX_DROP;
- 
- 			skb_copy_bits(rx->skb, hdrlen + 6, &ethertype, 2);
- 			if (ethertype == rx->sdata->control_port_protocol)
-@@ -1526,7 +1526,7 @@ ieee80211_rx_h_check(struct ieee80211_rx_data *rx)
- 					       GFP_ATOMIC))
- 			return RX_DROP_U_SPURIOUS;
- 
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 	}
- 
- 	return RX_CONTINUE;
-@@ -1862,7 +1862,7 @@ ieee80211_rx_h_sta_process(struct ieee80211_rx_data *rx)
- 				cfg80211_rx_unexpected_4addr_frame(
- 					rx->sdata->dev, sta->sta.addr,
- 					GFP_ATOMIC);
--			return RX_DROP_M_UNEXPECTED_4ADDR_FRAME;
-+			return RX_DROP_U_UNEXPECTED_4ADDR_FRAME;
- 		}
- 		/*
- 		 * Update counter and free packet here to avoid
-@@ -1997,7 +1997,7 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
- 				cfg80211_rx_unprot_mlme_mgmt(rx->sdata->dev,
- 							     skb->data,
- 							     skb->len);
--			return RX_DROP_M_BAD_BCN_KEYIDX;
-+			return RX_DROP_U_BAD_BCN_KEYIDX;
- 		}
- 
- 		rx->key = ieee80211_rx_get_bigtk(rx, mmie_keyidx);
-@@ -2011,11 +2011,11 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
- 
- 		if (mmie_keyidx < NUM_DEFAULT_KEYS ||
- 		    mmie_keyidx >= NUM_DEFAULT_KEYS + NUM_DEFAULT_MGMT_KEYS)
--			return RX_DROP_M_BAD_MGMT_KEYIDX; /* unexpected BIP keyidx */
-+			return RX_DROP_U_BAD_MGMT_KEYIDX; /* unexpected BIP keyidx */
- 		if (rx->link_sta) {
- 			if (ieee80211_is_group_privacy_action(skb) &&
- 			    test_sta_flag(rx->sta, WLAN_STA_MFP))
--				return RX_DROP_MONITOR;
-+				return RX_DROP;
- 
- 			rx->key = rcu_dereference(rx->link_sta->gtk[mmie_keyidx]);
- 		}
-@@ -2100,11 +2100,11 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
- 
- 	if (rx->key) {
- 		if (unlikely(rx->key->flags & KEY_FLAG_TAINTED))
--			return RX_DROP_MONITOR;
-+			return RX_DROP;
- 
- 		/* TODO: add threshold stuff again */
- 	} else {
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 	}
- 
- 	switch (rx->key->conf.cipher) {
-@@ -2278,7 +2278,7 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
- 		goto out;
- 
- 	if (is_multicast_ether_addr(hdr->addr1))
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	I802_DEBUG_INC(rx->local->rx_handlers_fragments);
- 
-@@ -2333,7 +2333,7 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
- 					  rx->seqno_idx, hdr);
- 	if (!entry) {
- 		I802_DEBUG_INC(rx->local->rx_handlers_drop_defrag);
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 	}
- 
- 	/* "The receiver shall discard MSDUs and MMPDUs whose constituent
-@@ -2855,25 +2855,25 @@ ieee80211_rx_mesh_data(struct ieee80211_sub_if_data *sdata, struct sta_info *sta
- 		return RX_CONTINUE;
- 
- 	if (!pskb_may_pull(skb, sizeof(*eth) + 6))
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	mesh_hdr = (struct ieee80211s_hdr *)(skb->data + sizeof(*eth));
- 	mesh_hdrlen = ieee80211_get_mesh_hdrlen(mesh_hdr);
- 
- 	if (!pskb_may_pull(skb, sizeof(*eth) + mesh_hdrlen))
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	eth = (struct ethhdr *)skb->data;
- 	multicast = is_multicast_ether_addr(eth->h_dest);
- 
- 	mesh_hdr = (struct ieee80211s_hdr *)(eth + 1);
- 	if (!mesh_hdr->ttl)
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	/* frame is in RMC, don't forward */
- 	if (is_multicast_ether_addr(eth->h_dest) &&
- 	    mesh_rmc_check(sdata, eth->h_source, mesh_hdr))
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	/* forward packet */
- 	if (sdata->crypto_tx_tailroom_needed_cnt)
-@@ -2890,7 +2890,7 @@ ieee80211_rx_mesh_data(struct ieee80211_sub_if_data *sdata, struct sta_info *sta
- 			/* has_a4 already checked in ieee80211_rx_mesh_check */
- 			proxied_addr = mesh_hdr->eaddr2;
- 		else
--			return RX_DROP_MONITOR;
-+			return RX_DROP;
- 
- 		rcu_read_lock();
- 		mppath = mpp_path_lookup(sdata, proxied_addr);
-@@ -2922,14 +2922,14 @@ ieee80211_rx_mesh_data(struct ieee80211_sub_if_data *sdata, struct sta_info *sta
- 			goto rx_accept;
- 
- 		IEEE80211_IFSTA_MESH_CTR_INC(ifmsh, dropped_frames_ttl);
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 	}
- 
- 	if (!ifmsh->mshcfg.dot11MeshForwarding) {
- 		if (is_multicast_ether_addr(eth->h_dest))
- 			goto rx_accept;
- 
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 	}
- 
- 	skb_set_queue_mapping(skb, ieee802_1d_to_ac[skb->priority]);
-@@ -3122,7 +3122,7 @@ ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx)
- 		return RX_CONTINUE;
- 
- 	if (unlikely(!ieee80211_is_data_present(fc)))
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	if (unlikely(ieee80211_has_a4(hdr->frame_control))) {
- 		switch (rx->sdata->vif.type) {
-@@ -3179,19 +3179,16 @@ ieee80211_rx_h_data(struct ieee80211_rx_data *rx)
- 		return RX_CONTINUE;
- 
- 	if (unlikely(!ieee80211_is_data_present(hdr->frame_control)))
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
--	/*
--	 * Send unexpected-4addr-frame event to hostapd. For older versions,
--	 * also drop the frame to cooked monitor interfaces.
--	 */
-+	/* Send unexpected-4addr-frame event to hostapd */
- 	if (ieee80211_has_a4(hdr->frame_control) &&
- 	    sdata->vif.type == NL80211_IFTYPE_AP) {
- 		if (rx->sta &&
- 		    !test_and_set_sta_flag(rx->sta, WLAN_STA_4ADDR_EVENT))
- 			cfg80211_rx_unexpected_4addr_frame(
- 				rx->sdata->dev, rx->sta->sta.addr, GFP_ATOMIC);
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 	}
- 
- 	res = __ieee80211_data_to_8023(rx, &port_control);
-@@ -3203,7 +3200,7 @@ ieee80211_rx_h_data(struct ieee80211_rx_data *rx)
- 		return res;
- 
- 	if (!ieee80211_frame_allowed(rx, fc))
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	/* directly handle TDLS channel switch requests/responses */
- 	if (unlikely(((struct ethhdr *)rx->skb->data)->h_proto ==
-@@ -3268,11 +3265,11 @@ ieee80211_rx_h_ctrl(struct ieee80211_rx_data *rx, struct sk_buff_head *frames)
- 		};
- 
- 		if (!rx->sta)
--			return RX_DROP_MONITOR;
-+			return RX_DROP;
- 
- 		if (skb_copy_bits(skb, offsetof(struct ieee80211_bar, control),
- 				  &bar_data, sizeof(bar_data)))
--			return RX_DROP_MONITOR;
-+			return RX_DROP;
- 
- 		tid = le16_to_cpu(bar_data.control) >> 12;
- 
-@@ -3284,7 +3281,7 @@ ieee80211_rx_h_ctrl(struct ieee80211_rx_data *rx, struct sk_buff_head *frames)
- 
- 		tid_agg_rx = rcu_dereference(rx->sta->ampdu_mlme.tid_rx[tid]);
- 		if (!tid_agg_rx)
--			return RX_DROP_MONITOR;
-+			return RX_DROP;
- 
- 		start_seq_num = le16_to_cpu(bar_data.start_seq_num) >> 4;
- 		event.u.ba.tid = tid;
-@@ -3308,12 +3305,7 @@ ieee80211_rx_h_ctrl(struct ieee80211_rx_data *rx, struct sk_buff_head *frames)
- 		return RX_QUEUED;
- 	}
- 
--	/*
--	 * After this point, we only want management frames,
--	 * so we can drop all remaining control frames to
--	 * cooked monitor interfaces.
--	 */
--	return RX_DROP_MONITOR;
-+	return RX_DROP;
- }
- 
- static void ieee80211_process_sa_query_req(struct ieee80211_sub_if_data *sdata,
-@@ -3422,10 +3414,10 @@ ieee80211_rx_h_mgmt_check(struct ieee80211_rx_data *rx)
- 	 * and unknown (reserved) frames are useless.
- 	 */
- 	if (rx->skb->len < 24)
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	if (!ieee80211_is_mgmt(mgmt->frame_control))
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	/* drop too small action frames */
- 	if (ieee80211_is_action(mgmt->frame_control) &&
-@@ -3951,17 +3943,16 @@ ieee80211_rx_h_action_return(struct ieee80211_rx_data *rx)
- 	 * ones. For all other modes we will return them to the sender,
- 	 * setting the 0x80 bit in the action category, as required by
- 	 * 802.11-2012 9.24.4.
--	 * Newer versions of hostapd shall also use the management frame
--	 * registration mechanisms, but older ones still use cooked
--	 * monitor interfaces so push all frames there.
-+	 * Newer versions of hostapd use the management frame registration
-+	 * mechanisms and old cooked monitor interface is no longer supported.
- 	 */
- 	if (!(status->rx_flags & IEEE80211_RX_MALFORMED_ACTION_FRM) &&
- 	    (sdata->vif.type == NL80211_IFTYPE_AP ||
- 	     sdata->vif.type == NL80211_IFTYPE_AP_VLAN))
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	if (is_multicast_ether_addr(mgmt->da))
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	/* do not return rejected action frames */
- 	if (mgmt->u.action.category & 0x80)
-@@ -4006,7 +3997,7 @@ ieee80211_rx_h_ext(struct ieee80211_rx_data *rx)
- 		return RX_CONTINUE;
- 
- 	if (sdata->vif.type != NL80211_IFTYPE_STATION)
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	/* for now only beacons are ext, so queue them */
- 	ieee80211_queue_skb_to_iface(sdata, rx->link_id, rx->sta, rx->skb);
-@@ -4027,7 +4018,7 @@ ieee80211_rx_h_mgmt(struct ieee80211_rx_data *rx)
- 	    sdata->vif.type != NL80211_IFTYPE_ADHOC &&
- 	    sdata->vif.type != NL80211_IFTYPE_OCB &&
- 	    sdata->vif.type != NL80211_IFTYPE_STATION)
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 
- 	switch (stype) {
- 	case cpu_to_le16(IEEE80211_STYPE_AUTH):
-@@ -4038,32 +4029,32 @@ ieee80211_rx_h_mgmt(struct ieee80211_rx_data *rx)
- 	case cpu_to_le16(IEEE80211_STYPE_DEAUTH):
- 		if (is_multicast_ether_addr(mgmt->da) &&
- 		    !is_broadcast_ether_addr(mgmt->da))
--			return RX_DROP_MONITOR;
-+			return RX_DROP;
- 
- 		/* process only for station/IBSS */
- 		if (sdata->vif.type != NL80211_IFTYPE_STATION &&
- 		    sdata->vif.type != NL80211_IFTYPE_ADHOC)
--			return RX_DROP_MONITOR;
-+			return RX_DROP;
- 		break;
- 	case cpu_to_le16(IEEE80211_STYPE_ASSOC_RESP):
- 	case cpu_to_le16(IEEE80211_STYPE_REASSOC_RESP):
- 	case cpu_to_le16(IEEE80211_STYPE_DISASSOC):
- 		if (is_multicast_ether_addr(mgmt->da) &&
- 		    !is_broadcast_ether_addr(mgmt->da))
--			return RX_DROP_MONITOR;
-+			return RX_DROP;
- 
- 		/* process only for station */
- 		if (sdata->vif.type != NL80211_IFTYPE_STATION)
--			return RX_DROP_MONITOR;
-+			return RX_DROP;
- 		break;
- 	case cpu_to_le16(IEEE80211_STYPE_PROBE_REQ):
- 		/* process only for ibss and mesh */
- 		if (sdata->vif.type != NL80211_IFTYPE_ADHOC &&
- 		    sdata->vif.type != NL80211_IFTYPE_MESH_POINT)
--			return RX_DROP_MONITOR;
-+			return RX_DROP;
- 		break;
- 	default:
--		return RX_DROP_MONITOR;
-+		return RX_DROP;
- 	}
- 
- 	ieee80211_queue_skb_to_iface(sdata, rx->link_id, rx->sta, rx->skb);
-@@ -4071,82 +4062,9 @@ ieee80211_rx_h_mgmt(struct ieee80211_rx_data *rx)
- 	return RX_QUEUED;
- }
- 
--static void ieee80211_rx_cooked_monitor(struct ieee80211_rx_data *rx,
--					struct ieee80211_rate *rate,
--					ieee80211_rx_result reason)
--{
--	struct ieee80211_sub_if_data *sdata;
--	struct ieee80211_local *local = rx->local;
--	struct sk_buff *skb = rx->skb, *skb2;
--	struct net_device *prev_dev = NULL;
--	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
--	int needed_headroom;
--
--	/*
--	 * If cooked monitor has been processed already, then
--	 * don't do it again. If not, set the flag.
--	 */
--	if (rx->flags & IEEE80211_RX_CMNTR)
--		goto out_free_skb;
--	rx->flags |= IEEE80211_RX_CMNTR;
--
--	/* If there are no cooked monitor interfaces, just free the SKB */
--	if (!local->cooked_mntrs)
--		goto out_free_skb;
--
--	/* room for the radiotap header based on driver features */
--	needed_headroom = ieee80211_rx_radiotap_hdrlen(local, status, skb);
--
--	if (skb_headroom(skb) < needed_headroom &&
--	    pskb_expand_head(skb, needed_headroom, 0, GFP_ATOMIC))
--		goto out_free_skb;
--
--	/* prepend radiotap information */
--	ieee80211_add_rx_radiotap_header(local, skb, rate, needed_headroom,
--					 false);
--
--	skb_reset_mac_header(skb);
--	skb->ip_summed = CHECKSUM_UNNECESSARY;
--	skb->pkt_type = PACKET_OTHERHOST;
--	skb->protocol = htons(ETH_P_802_2);
--
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
--		if (!ieee80211_sdata_running(sdata))
--			continue;
--
--		if (sdata->vif.type != NL80211_IFTYPE_MONITOR ||
--		    !(sdata->u.mntr.flags & MONITOR_FLAG_COOK_FRAMES))
--			continue;
--
--		if (prev_dev) {
--			skb2 = skb_clone(skb, GFP_ATOMIC);
--			if (skb2) {
--				skb2->dev = prev_dev;
--				netif_receive_skb(skb2);
--			}
--		}
--
--		prev_dev = sdata->dev;
--		dev_sw_netstats_rx_add(sdata->dev, skb->len);
--	}
--
--	if (prev_dev) {
--		skb->dev = prev_dev;
--		netif_receive_skb(skb);
--		return;
--	}
--
-- out_free_skb:
--	kfree_skb_reason(skb, (__force u32)reason);
--}
--
- static void ieee80211_rx_handlers_result(struct ieee80211_rx_data *rx,
- 					 ieee80211_rx_result res)
- {
--	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(rx->skb);
--	struct ieee80211_supported_band *sband;
--	struct ieee80211_rate *rate = NULL;
--
- 	if (res == RX_QUEUED) {
- 		I802_DEBUG_INC(rx->sdata->local->rx_handlers_queued);
- 		return;
-@@ -4158,23 +4076,13 @@ static void ieee80211_rx_handlers_result(struct ieee80211_rx_data *rx,
- 			rx->link_sta->rx_stats.dropped++;
- 	}
- 
--	if (u32_get_bits((__force u32)res, SKB_DROP_REASON_SUBSYS_MASK) ==
--			SKB_DROP_REASON_SUBSYS_MAC80211_UNUSABLE) {
--		kfree_skb_reason(rx->skb, (__force u32)res);
--		return;
--	}
--
--	sband = rx->local->hw.wiphy->bands[status->band];
--	if (status->encoding == RX_ENC_LEGACY)
--		rate = &sband->bitrates[status->rate_idx];
--
--	ieee80211_rx_cooked_monitor(rx, rate, res);
-+	kfree_skb_reason(rx->skb, (__force u32)res);
- }
- 
- static void ieee80211_rx_handlers(struct ieee80211_rx_data *rx,
- 				  struct sk_buff_head *frames)
- {
--	ieee80211_rx_result res = RX_DROP_MONITOR;
-+	ieee80211_rx_result res = RX_DROP;
- 	struct sk_buff *skb;
- 
- #define CALL_RXH(rxh)			\
-@@ -4238,7 +4146,7 @@ static void ieee80211_rx_handlers(struct ieee80211_rx_data *rx,
- static void ieee80211_invoke_rx_handlers(struct ieee80211_rx_data *rx)
- {
- 	struct sk_buff_head reorder_release;
--	ieee80211_rx_result res = RX_DROP_MONITOR;
-+	ieee80211_rx_result res = RX_DROP;
- 
- 	__skb_queue_head_init(&reorder_release);
- 
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index 5f28f3633fa0a..b17b3cc7fb903 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -895,8 +895,7 @@ static int ieee80211_tx_get_rates(struct ieee80211_hw *hw,
- }
- 
- void ieee80211_tx_monitor(struct ieee80211_local *local, struct sk_buff *skb,
--			  int retry_count, bool send_to_cooked,
--			  struct ieee80211_tx_status *status)
-+			  int retry_count, struct ieee80211_tx_status *status)
- {
- 	struct sk_buff *skb2;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-@@ -930,10 +929,6 @@ void ieee80211_tx_monitor(struct ieee80211_local *local, struct sk_buff *skb,
- 			if (sdata->u.mntr.flags & MONITOR_FLAG_SKIP_TX)
- 				continue;
- 
--			if ((sdata->u.mntr.flags & MONITOR_FLAG_COOK_FRAMES) &&
--			    !send_to_cooked)
--				continue;
--
- 			if (prev_dev) {
- 				skb2 = skb_clone(skb, GFP_ATOMIC);
- 				if (skb2) {
-@@ -964,7 +959,6 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
- 	struct ieee80211_tx_info *info = status->info;
- 	struct sta_info *sta;
- 	__le16 fc;
--	bool send_to_cooked;
- 	bool acked;
- 	bool noack_success;
- 	struct ieee80211_bar *bar;
-@@ -1091,28 +1085,10 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
- 
- 	ieee80211_report_used_skb(local, skb, false, status->ack_hwtstamp);
- 
--	/* this was a transmitted frame, but now we want to reuse it */
--	skb_orphan(skb);
--
--	/* Need to make a copy before skb->cb gets cleared */
--	send_to_cooked = !!(info->flags & IEEE80211_TX_CTL_INJECTED) ||
--			 !(ieee80211_is_data(fc));
--
--	/*
--	 * This is a bit racy but we can avoid a lot of work
--	 * with this test...
--	 */
--	if (!local->tx_mntrs && (!send_to_cooked || !local->cooked_mntrs)) {
--		if (status->free_list)
--			list_add_tail(&skb->list, status->free_list);
--		else
--			dev_kfree_skb(skb);
--		return;
--	}
--
--	/* send to monitor interfaces */
--	ieee80211_tx_monitor(local, skb, retry_count,
--			     send_to_cooked, status);
-+	if (status->free_list)
-+		list_add_tail(&skb->list, status->free_list);
-+	else
-+		dev_kfree_skb(skb);
- }
- 
- void ieee80211_tx_status_skb(struct ieee80211_hw *hw, struct sk_buff *skb)
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index a24636bda6793..1289df373795e 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5617,7 +5617,7 @@ struct sk_buff *ieee80211_beacon_get_tim(struct ieee80211_hw *hw,
- 	if (!copy)
- 		return bcn;
- 
--	ieee80211_tx_monitor(hw_to_local(hw), copy, 1, false, NULL);
-+	ieee80211_tx_monitor(hw_to_local(hw), copy, 1, NULL);
- 
- 	return bcn;
- }
 -- 
 2.39.5
 
