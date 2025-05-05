@@ -1,158 +1,126 @@
-Return-Path: <linux-wireless+bounces-22427-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22428-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234C8AA8B54
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 05:48:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E74DAA8B56
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 05:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E275A1891E0C
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 03:48:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CA4F7A22C8
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 03:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC27F8488;
-	Mon,  5 May 2025 03:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636C614B96E;
+	Mon,  5 May 2025 03:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="inWAg4vp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UffyoQE/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40754C6E
-	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 03:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1874C6E
+	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 03:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746416919; cv=none; b=NX83b2cCPn2/D4PqD5vap5K8r3corv8pVsw3fZ7onFwBdIdUDlXfVSec+3ia1qqy1vNGZeYBZw92AJQNB0pW1sWH0M3NOqrGcrKQsMYKkRvdQ/ri2GbU/e0Qcrx0xk2lw1YdoRyR6Wx59GL9WSAFrmnffl5RGnll82gnFRIxq/c=
+	t=1746417050; cv=none; b=vE+xdt++YWrVZwe/2aZxMt7/jt9oAwWkjpWG59xzHeYUBrl6cT8sbHL36IVsnbEmMdEBlMmb5gaCsOdPfxbxTGXeePfs32XxXXeWC0E5wotKnOg0eGNs0MO0FZTx0cEuQCMqPrr7gfiqh0mvOHEsIJLTxr0D0BTDF6tfGVb4dD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746416919; c=relaxed/simple;
-	bh=9dZuWla1djYhnirfF89ua0otnKzwUiib3nor/BGvQQ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Cga0M9faS3xVrigXl7Mlp1z0dC4bORJp5JkDhJqRpHG+z0qCVYoMgsluTDAQ0LtbkL2SUan6FQaE/xx5isdM9Vl/UW14za9oClO77ArigO/89ZNdVORRec3/72LeRPxiao07PYQShKAse1i1Lkjd0XaNOvkiZfNpeYOUtEUjyq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=inWAg4vp; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54519M1x021562;
-	Mon, 5 May 2025 03:48:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	JiGbZ0jK0ixlXLOERXzZpS+yIGD83aUGnLZBtXoqsgI=; b=inWAg4vpekpnjAjA
-	DWJUYaE5tIf3y4B+x2jJSWDZ4ju4+M2qvOrBNehkAeKSovPCrZbn6huwsMvprZpL
-	JGKVAX7mb8EONOLoQV/TBHKU0TwtFrgXf4VGa5rjrU4R1belWa3+E1r3NvaiHqFq
-	CUvT6fdMjt3MaxmDC7fhYE9BnmCW9Up+5JdTtjDXzroqjHHDnx2arH/7rzN5jwAL
-	dP1ttUGe6Qaii57eQHswjQdicDO5Okat9QM6HiAyTSf14mOW6+fbG+vDJzOeCtGT
-	5VPW3py5Gqeo3ML5sMaOSQv99NuZUDoeARgmzkOfXw6pAWSawsTVnZVExiWWRPdK
-	ry1lAg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46dd3n2r1b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 May 2025 03:48:31 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5453mUSP028588
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 5 May 2025 03:48:30 GMT
-Received: from [10.152.194.219] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 4 May 2025
- 20:48:29 -0700
-Message-ID: <8522a98a-8f43-4ad5-b097-e177702e9b40@quicinc.com>
-Date: Mon, 5 May 2025 09:18:14 +0530
+	s=arc-20240116; t=1746417050; c=relaxed/simple;
+	bh=vYtITgka0WCExMfmhJHg25zGVrIXvPdee1YNAZYSMF8=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=LCe2pCUkKk71sITqUKT+DDyrdH7+i80YNrHTPjQU8soIYxA2G/Ad5hIszrhxVXfGRcVGyOAs5pp5l89CZaCL54L8Qyr3nnDkQvD7mBrLY++qd8Dv+raA/VuN12SeEcWUgg/uYPzqDdwvI1y6PWbVdUAebfGw5KlkdHSnWj352Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UffyoQE/; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5e5e63162a0so6070312a12.3
+        for <linux-wireless@vger.kernel.org>; Sun, 04 May 2025 20:50:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746417046; x=1747021846; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PUjcMptLSLyFRZE/3kaPRNeIAkij7+eKxbc+D4z0Ci0=;
+        b=UffyoQE/nv72uzbojX0cjw1jJTaCelX2N1dPLlsC40b2m6l612f+GBeQPxN2ZD63/v
+         ianZH68C3Ub1CAp256ML2vu/9axpSi+7R4LHze8U6Suzn6cxz3PXAY6TrkMbwd70ipJ0
+         zHrr5usMbu1Iy9nOmEszxsh2uL2BPQHYv3XvJhJIsmElgBZZxNi1MczI4cfAErFM3LJx
+         e/PeZQSl4PjJRc7xUXAVy48cKS6bx3VpZnJmSLHXAAfP45PLLKMJEdr8YpvlE69KrD7H
+         o3P6JFl/bdyi423UTnSi0FpXHZlGHY8EQ1sLlYvOoE1vNCGdp+bHA+3yXKeqFk2Lq4lj
+         +teg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746417046; x=1747021846;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PUjcMptLSLyFRZE/3kaPRNeIAkij7+eKxbc+D4z0Ci0=;
+        b=SiAVoaO3GnHF4rY6YjVGSlsoD6cyWVe0lFTgJJkBJVe0RkJsXXH6KfoisY4s6Im/dW
+         aLkkhfacI9F9GpXHASlNnfmemxYZfRAu9Ff2Od9GDCrz7S/ItypMlFn9vsb975aFad6B
+         +HWOeACmd/JntLIuGKTRKo+1oE2Ac2hqWy792ADTee6QdRn/mg5SuK/c+xln8vQlOAE8
+         nti0Y8fW/or3TiVW3cxw55AbJOUFwngKdxBYZ2T2ZtX3rT1dX9CV6A2GdDEf5wY1Ebkr
+         t8KknK+Vi1owiuw3merDMEIkqNrdGaebpzmWAZoHIzKP+N0TUbWtk6vAw3AJuSj0UqL/
+         rfrQ==
+X-Gm-Message-State: AOJu0YxfBovL86Z7qMJFLjiHYkneu43lhU0lh+QXynCkBgjqO0oNKJbT
+	osY1/hsA3/mO3DpPFicJVKFOAux3OC8qz4CZ9Qfg8G43R9mDo4w00HmoRtun2+ONZYhunD6EDs+
+	qs6hlE93oFPj8m1rSXqO8DID5Dvb1cg1c
+X-Gm-Gg: ASbGnctta+SNI5HGEtUgXrJooUpZorH4Gw18ChYTFmhHen3UOwz+tuvkSt/q7iogEtP
+	uaAveVyR4IhcW+SralfEltYhnfyLGnm048RW8FLAdlqSlP4g+QO4ypUkCILJKQaQCa/a32hn9VG
+	KHe3LsTNujbPHM9wwgX+r3O9Hk52wquUN9dy/+3uJ/9xQ2drsMZVOeow==
+X-Google-Smtp-Source: AGHT+IHxqJ2/Nm+9QA0Hb5syBlXBxaZ/0O2z2/CCQiaiQDv2IANW4DbRz3aOyo2ii+nDFz9DXB2RR3PGcR7p1iwIQbQ=
+X-Received: by 2002:a05:6402:27d0:b0:5e5:bb58:d6bd with SMTP id
+ 4fb4d7f45d1cf-5fa7802f96fmr10473012a12.10.1746417046389; Sun, 04 May 2025
+ 20:50:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next] wifi: ath12k: remove redundant regulatory rules
- intersection logic in host
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Aishwarya R <quic_aisr@quicinc.com>
-References: <20250430154211.669502-1-quic_rajson@quicinc.com>
- <b934485c-05b3-47fb-a3ad-b7e03706d0c8@oss.qualcomm.com>
-Content-Language: en-US
-From: Rajat Soni <quic_rajson@quicinc.com>
-In-Reply-To: <b934485c-05b3-47fb-a3ad-b7e03706d0c8@oss.qualcomm.com>
+From: Samuel Reyes <zohrlaffz@gmail.com>
+Date: Sun, 4 May 2025 21:50:29 -0600
+X-Gm-Features: ATxdqUHbje6j_1Sp1WMsGpIkTkDOV6DEJbFCl5wPo75I4hXQgawE-2F-xNEGPOQ
+Message-ID: <CAD+XiyEJo0m8L6PbmBD=NPPa0E_wX3kk4ezn1qZ0d8JGXsS1qQ@mail.gmail.com>
+Subject: RTL8922AE driver issues
+To: linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDAzNCBTYWx0ZWRfX1eEkik5UjkFL
- 0VJN9nAbN64+XJtbn9xUl+1xPE437+tk53bfvuZomNTOeDBWnx75htAaOOiri8H/W82PJjmPNPF
- DTEUGVm8aMCCxQyFBTPvc9PvtSE+pVIdq9d9bpGiMyX/LPVwsaqhhKHGGdJSFDEncOTYz75pms1
- gXYgFjZVYsg75mS8WRhsaAp1JHmPHTIEhV2bxkSDpxnC/6tsDOWbuyAF3uvcnQWtjNHzAHvH1ff
- cjEWBbDxwbDwQNfbajB44HIur/pi9co5U4LpAuX4HGahNKMECiqeCHxHXduXb9iAyeHEWpE54uh
- 9dO6+Ak4tKq/RmsPuIGLJSlCkrYeW4EACSJ5vcqUrWISJvZzU7J+xgHxuI4CPY1+ZpJSZoNsh/r
- 1zfPuyhMtss31C1spwTd5isOwEX4tJwmQDRgWKOfqGiO7IxexLfUHzpWCOYzVmetzJtdZASf
-X-Proofpoint-GUID: HgneW2nGZa4RQl00f_xI24KHFopH6lMU
-X-Proofpoint-ORIG-GUID: HgneW2nGZa4RQl00f_xI24KHFopH6lMU
-X-Authority-Analysis: v=2.4 cv=UNDdHDfy c=1 sm=1 tr=0 ts=6818350f cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8
- a=LRjWmmqLfYJXe2i0rwQA:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-05_02,2025-04-30_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 adultscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
- mlxscore=0 phishscore=0 priorityscore=1501 spamscore=0 bulkscore=0
- malwarescore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505050034
 
+Hello,
 
+My WiFi has intermittent connection issues on Arch. My motherboard is
+a Gigabyte X870 AORUS ELITE WIFI7.
 
-On 5/3/2025 2:27 AM, Jeff Johnson wrote:
-> On 4/30/2025 8:42 AM, Rajat Soni wrote:
->> From: Aishwarya R <quic_aisr@quicinc.com>
->>
->> Whenever there is a change in the country code settings from the
->> user, driver does an intersection of the regulatory rules for this
->> new country with the original regulatory rules which were reported
->> during initialization time.
->>
->> There is also similar logic running in firmware with a difference
->> that the intersection in firmware is only done when the country code
->> is configuration during boot up time (BDF/OTP). Firmware logic does
->> not kick in when no country code is configured during device bring
->> up time as the device is always expected to have the country code
->> configured properly in the deployment.
->>
->> There is a debug/test use case that requires absolute regulatory
->> rules to be used for a user configured country code when the device
->> is not configured with a particular country code during boot up time.
->>
->> To support the above test use case, remove the redundant regulatory
->> rules intersection logic in the host driver. Depend on the
->> intersection logic in firmware when the device comes up with
->> pre-configured country code.
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00209-QCAHKSWPL_SILICONZ-1
->> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
->>
->> Signed-off-by: Aishwarya R <quic_aisr@quicinc.com>
->> Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
->> ---
->>  drivers/net/wireless/ath/ath12k/reg.c | 164 ++------------------------
->>  drivers/net/wireless/ath/ath12k/reg.h |   3 +-
->>  drivers/net/wireless/ath/ath12k/wmi.c |  24 +---
->>  3 files changed, 14 insertions(+), 177 deletions(-)
-> 
-> While this applies cleanly on top of ath-next, it does not apply cleanly on
-> the pending branch.
-> 
-> Can you please rebase on ath/main-pending, and post a v2 with ath-pending as
-> the destination branch tag? Don't worry if the patchwork bot ignores it due to
-> an unknown branch tag.
-> 
-> /jeff
+Even when installing Arch my connection was unstable, dmesg -T is
+littered with entries like this:
+rtw89_8922ae 0000:07:00.0: failed to update 162 RXBD info: -11
+rtw89_8922ae 0000:07:00.0: failed to update 163 RXBD info: -11
+rtw89_8922ae 0000:07:00.0: failed to update 32 RXBD info: -11
+rtw89_8922ae 0000:07:00.0: failed to release TX skbs
 
-Sure, jeff. I have sent [PATCH ath-pending v2] wifi: ath12k: remove redundant regulatory rules intersection logic in host.
+I have not found any information online for this.
 
-Thanks,
-Rajat Soni
+I've added this as a file to my /etc/modprobe.d/ folder but it hasn't helped:
+options rtw89_pci disable_aspm_l1=y disable_aspm_l1ss=y
+options rtw89_core disable_ps_mode=y
 
+Here's my lspci -nnk entry:
+Network controller [0280]: Realtek Semiconductor Co., Ltd. RTL8922AE
+802.11be PCIe Wireless Network Adapter [10ec:8922] (rev 01)
+        Subsystem: Realtek Semiconductor Co., Ltd. RTL8922AE 802.11be
+PCIe Wireless Network Adapter [10ec:8922]
+        Kernel driver in use: rtw89_8922ae
+        Kernel modules: rtw89_8922ae
+
+lsmod | grep rtw:
+smod |grep rtw
+rtw89_8922ae           12288  0
+rtw89_8922a            73728  1 rtw89_8922ae
+rtw89_pci             118784  1 rtw89_8922ae
+rtw89_core           1130496  2 rtw89_8922a,rtw89_pci
+mac80211             1757184  2 rtw89_core,rtw89_pci
+cfg80211             1441792  3 rtw89_core,rtw89_8922a,mac80211
+rfkill                 40960  8 rtw89_core,bluetooth,cfg80211
+
+My connection can remain active for a long time but will occasionally
+disconnect. Toggling Airplane Mode fixes the issue. Prolonged
+downloads, such as a large video game, causes the connection to drop
+several times. Toggling Airplane Mode lets the game begin download
+each time.
+
+I'm happy to provide as much info as necessary.
+
+Thank you!
 
