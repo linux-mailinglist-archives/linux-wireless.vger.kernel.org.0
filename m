@@ -1,69 +1,73 @@
-Return-Path: <linux-wireless+bounces-22463-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22464-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0494AA9C10
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 20:57:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3DAAA9C0F
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 20:57:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62B30189FB9C
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 18:57:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97D5117D7B6
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 18:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDAD71AAE28;
-	Mon,  5 May 2025 18:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C9326F444;
+	Mon,  5 May 2025 18:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hSUvgD48"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RBYKUiHV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2231C1F12
-	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 18:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0125326E146
+	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 18:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746471431; cv=none; b=NZlGcasJENffkt8vlCGPhIDVLgXQAIEOmoxqq0sDZ7pBxGq9JYAnct9TzLtc7SaA2fn3ArERw476YDMWoxtLEeF1JjOoWihWexLp1eDLZ5P/Naw7JGrJeYO8xpYjyS4hbCjUfLX75GOvrUSKaAuAgNpuFZ776ONeMEZC+VRrQiY=
+	t=1746471432; cv=none; b=MMbhEgD30rDCw5rwUY5He/50lZC76imhK8YiJy52IM9ba2Mwr4eO1tg4P3nhi9MllRptl2x5OVZY3f32oxb3iAyNrbMM1mQtUP+a2vkIpVjth/dgWoz1/edyNKS3/ECMSs8SR+a7C7DP0+brqctvL9VhJbWtJuAfJppojWcqCwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746471431; c=relaxed/simple;
-	bh=h/FXaFTrwdswTTCyib/XZ7EuKtS1E2wk9WJhWN+9N4U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DGdwP4RTZpBWtVCbrQZNNVj/eqnMzpvjkOYAK+PIkVDeRpy0r5MnoLqrd7zZpFK6ClA0yXfjysIuX9t1LEbR1udJpsqO8Zd1wb7eiCm8JYNgpWKjDqfdBWKqHyooi6RdZN1ds/3Rq6j5Q6H0yMNKrNs50yS6RLbc+1E9+YDU9AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hSUvgD48; arc=none smtp.client-ip=192.198.163.18
+	s=arc-20240116; t=1746471432; c=relaxed/simple;
+	bh=XCUK2bhXng/sO6G4l78RlaoLex4lWrKXRJaNNf/a8pA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sDsSaK94bZdMs+EEmR7qFnVGFBbMf6u3vWRhj7lyOOIW1nrbUY+HuznmglI6rdwng5R66onKHn9DBibLP9UaCq2UzoBUklwNgQ7IZS5Tf6tntgstjHxIcrM2Ju8w9wHUutBWfsrd3kHDuBYYSOQxOt1BBstEckxFLVpq0KiGh58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RBYKUiHV; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746471429; x=1778007429;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=h/FXaFTrwdswTTCyib/XZ7EuKtS1E2wk9WJhWN+9N4U=;
-  b=hSUvgD48wEdOhuCqZjZYPmBulQc0OevcDi1atdmhSG186ujFl79TOb06
-   RLsdrAIardHm29fQ+8eQg7fpsL+7v76W1Qa/qpRJo3Cr+CInZJ2oVpbHX
-   PR4FCzXPFqvgqdvsYhXrvM/cRLdeCbsddv1K8esIam2eVPdKOTIQeN4eC
-   GcFjkyHXnrjbTFl1IgjRVO3CilVEYVewoQzFvHrMEvMEm1qpbnntocpoB
-   bV8rmTFUx/ieSOtzYdSpnXd3N7Dt5LGDKARjcoAm3Ho0jdcOxpgZnNsXT
-   Ta3cL2X4BL29VWITl8yjaoVTNOQfxfAQsXawxfufXtWrIbHn6KMldtUYj
+  t=1746471431; x=1778007431;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=XCUK2bhXng/sO6G4l78RlaoLex4lWrKXRJaNNf/a8pA=;
+  b=RBYKUiHVQNKAS07QcPnTypx7g7bYTOcrNWdDTELGhqAJlkjL0SM35ND9
+   BlZQq8sGII2hGdLO3292vPDScy07mP+vxY15lS25mj72+UCGC0BngjyXv
+   F0eVyjX7l6OQW22EdlT6cJ0fvd5LouycofD8IihoDUiNtbz01K6meXDoQ
+   9/mAZyjYEdjqw937lp9HYub368AUwLregy6BgOobpNQlkJiY697bRZh4c
+   WagTVqrxCuuXFS0FivZnkOY5D4XCxyMgpw5nedKBRPQ8PfM6RT0GDq1SK
+   z7hvn5g8H8b4J4kNY1HZ0A4NA20GUkcgKXmYzeeEgBXOzaolwfoSiM146
    Q==;
-X-CSE-ConnectionGUID: aRNNgqSRRYCIM+iAJXYzxA==
-X-CSE-MsgGUID: mRhWQaJNQJOVO+tsxOTUzQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="47359430"
+X-CSE-ConnectionGUID: YEylia+cQ9qTM/PA/jrLqA==
+X-CSE-MsgGUID: Tjs57AXGRwiPQ2+v/7zFag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="47359433"
 X-IronPort-AV: E=Sophos;i="6.15,264,1739865600"; 
-   d="scan'208";a="47359430"
+   d="scan'208";a="47359433"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 11:57:08 -0700
-X-CSE-ConnectionGUID: IZtDoITLRFOPgoyQrHS6Zg==
-X-CSE-MsgGUID: YrEKf3Q1SRyfnGAJJ1NdrA==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 11:57:10 -0700
+X-CSE-ConnectionGUID: NW0ejxSBRK2H8SaCZz5hPA==
+X-CSE-MsgGUID: rrj2lckARumpV9GeGNKuuQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,264,1739865600"; 
-   d="scan'208";a="135697888"
+   d="scan'208";a="135697900"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 11:57:08 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 11:57:09 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: miriam.rachel.korenblit@intel.com
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH iwlwifi-next 00/15] wifi: iwlwifi: updates - 2025-05-05
-Date: Mon,  5 May 2025 21:56:39 +0300
-Message-Id: <20250505185654.2068339-1-miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi-next 01/15] wifi: iwlwifi: mld: remove one more error in unallocated BAID
+Date: Mon,  5 May 2025 21:56:40 +0300
+Message-Id: <20250505215512.115c9092cf63.Id5aa779b6a0a0d51cc127ba561c01ffc6594a178@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250505185654.2068339-1-miriam.rachel.korenblit@intel.com>
+References: <20250505185654.2068339-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,80 +77,38 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Hi,
+Since the FW is the one to assign an ID to a BA, it can happen that
+the FW sends a bar_frame_release_notif before the driver had the chance to
+allocate the BAID.
 
-Features, cleanups and bugfixes from our internal tree
+Convert the IWL_FW_CHECK into a regular debug print.
 
-Thanks,
-Miri
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mld/agg.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Avraham Stern (1):
-  wifi: iwlwifi: mld: add debugfs for using ptp clock time for monitor
-    interface
-
-Emmanuel Grumbach (2):
-  wifi: iwlwifi: add support PE RF
-  wifi: iwlwifi: drop whtc RF
-
-Johannes Berg (7):
-  wifi: iwlwifi: pcie: log async commands
-  wifi: iwlwifi: dvm: init 'keep_alive_beacons' in power tables
-  wifi: iwlwifi: remove NVM C step override
-  wifi: iwlwifi: mvm: fix beacon CCK flag
-  wifi: iwlwifi: make iwl_uefi_get_uats_table() return void
-  wifi: iwlwifi: fix 6005N/SFF match
-  wifi: iwlwifi: handle v3 rates
-
-Miri Korenblit (4):
-  wifi: iwlwifi: mld: remove one more error in unallocated BAID
-  wifi: iwlwifi: print the DSM value when read from UEFI
-  wifi: iwlwifi: mld: don't check the TPT counters when scanning
-  wifi: iwlwifi: debug: set CDB indication from CSR
-
-Pagadala Yesu Anjaneyulu (1):
-  wifi: iwlwifi: mld: add RFI_CONFIG_CMD to iwl_mld_system_names array
-
- drivers/net/wireless/intel/iwlwifi/cfg/8000.c |   3 -
- .../net/wireless/intel/iwlwifi/dvm/power.c    |  32 +--
- .../net/wireless/intel/iwlwifi/fw/api/rs.h    |  65 ++++--
- .../net/wireless/intel/iwlwifi/fw/api/rx.h    |  16 +-
- .../net/wireless/intel/iwlwifi/fw/api/tx.h    |  15 +-
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |  25 +--
- .../wireless/intel/iwlwifi/fw/error-dump.h    |   7 +-
- drivers/net/wireless/intel/iwlwifi/fw/rs.c    |  98 ---------
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c  |  17 +-
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h  |  10 +-
- .../net/wireless/intel/iwlwifi/iwl-config.h   |   1 -
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  11 +-
- drivers/net/wireless/intel/iwlwifi/mld/agg.c  |   8 +-
- .../net/wireless/intel/iwlwifi/mld/debugfs.c  |  25 ++-
- .../net/wireless/intel/iwlwifi/mld/mac80211.c |  34 +++-
- drivers/net/wireless/intel/iwlwifi/mld/mld.c  |   4 +
- drivers/net/wireless/intel/iwlwifi/mld/mld.h  |   5 +
- drivers/net/wireless/intel/iwlwifi/mld/mlo.c  |  66 +++++++
- drivers/net/wireless/intel/iwlwifi/mld/mlo.h  |   3 +
- .../net/wireless/intel/iwlwifi/mld/notif.c    |   6 +-
- .../wireless/intel/iwlwifi/mld/regulatory.c   |   4 +-
- drivers/net/wireless/intel/iwlwifi/mld/rx.c   |  28 ++-
- drivers/net/wireless/intel/iwlwifi/mld/scan.c |   3 +
- drivers/net/wireless/intel/iwlwifi/mld/tlc.c  |   4 +-
- drivers/net/wireless/intel/iwlwifi/mld/tx.c   |  32 +--
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   7 +-
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  17 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   2 +
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  |  18 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  38 ++++
- .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    |  19 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c   | 187 +++++++++++++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/rs.h   |   5 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  26 +--
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 112 +++++------
- .../net/wireless/intel/iwlwifi/mvm/utils.c    |  12 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |   2 +-
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  10 +-
- 39 files changed, 616 insertions(+), 363 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/agg.c b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
+index f606a39a53ec..bda488ae9eec 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/agg.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
+@@ -124,10 +124,12 @@ void iwl_mld_handle_bar_frame_release_notif(struct iwl_mld *mld,
+ 
+ 	rcu_read_lock();
+ 	baid_data = rcu_dereference(mld->fw_id_to_ba[baid]);
+-	if (IWL_FW_CHECK(mld, !baid_data,
+-			 "Got valid BAID %d but not allocated, invalid BAR release!\n",
+-			 baid))
++	if (!baid_data) {
++		IWL_DEBUG_HT(mld,
++			     "Got valid BAID %d but not allocated\n",
++			     baid);
+ 		goto out_unlock;
++	}
+ 
+ 	if (IWL_FW_CHECK(mld, tid != baid_data->tid ||
+ 			 sta_id > mld->fw->ucode_capa.num_stations ||
 -- 
 2.34.1
 
