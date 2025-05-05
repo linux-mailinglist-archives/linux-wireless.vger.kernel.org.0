@@ -1,67 +1,66 @@
-Return-Path: <linux-wireless+bounces-22551-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22552-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629ADAAA8DE
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:03:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7326CAAA8D7
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:02:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3203189E899
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 01:02:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA301467969
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 01:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72630355694;
-	Mon,  5 May 2025 22:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408F3355E09;
+	Mon,  5 May 2025 22:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O/Go31eq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yya8OAkw"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FA135568D;
-	Mon,  5 May 2025 22:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C59355E08;
+	Mon,  5 May 2025 22:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484881; cv=none; b=PmSDbywWkubfCDRfBNs2AxzuH7YYwAC/VWusmIEmsBdsBlHLgyZFIZ/iIuWuFtyuBQaZ34mXHYkj/GCARbC8zdivV+V+aBNzJJZz5iXMPiyX+uqTreY4sQJJ9McMYERtQyMqhEw57+vQYtvfhBYXECKdWtcjOCVCpGyuCCtBdEU=
+	t=1746484885; cv=none; b=oa4dfnEAByGF6mz4Kup8qVMdHl7LDBzrJV2Ia9tlYl3fUX4GyzEXUBy2B4t8gGLDbXsfIi3F/+/w+8cazfUO0BbepSPmdMmCBkji39/ojKpLTWoM+mQZkHzvixB/8Jpc++3MCX24fALXbwoIZwZ3IAqUX/hFfnCYvM6eoOsQMEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484881; c=relaxed/simple;
-	bh=DK1NNzx9X/rE5G8Y1YDJEO+qp/3WCpguqAhtF85L4y0=;
+	s=arc-20240116; t=1746484885; c=relaxed/simple;
+	bh=0YrSew3NfA+7HZmbdS+TzG3l2EOfWNfGj5GGAJeLDVw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=I1JMRelref3mHBAAOWB0lCBXCLAYY5NUlBwcASuGncxvIfGTvJSFZcCMrAEwdDy5yi8XYlG0DDkWKCz2pCyLVa4OlzlDHSC6NpVoGVZI/8So7m6IlIl8LEdzXu8XAklY3+YkvYmhvxUst3rmg/YRulx9cB8Mgq64xPoSD1vyJjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O/Go31eq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C05EC4CEE4;
-	Mon,  5 May 2025 22:41:19 +0000 (UTC)
+	 MIME-Version; b=OCmDr4e7xiY8xNPoS9BEcNhCTY013QnYzas+GOjebiT2Ch7iAcDE8DsNndOwbqgs128LrbXhnp9hJgb66Uwpv7zUeD4dp5YhK0BjI4J8aK2TjmJyUHCSAx8pvuarYiXdvEWBvm/X1z0WhFBA6XZDxWNHpEiaaTj2cc5UrIF8188=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yya8OAkw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDD3C4CEE4;
+	Mon,  5 May 2025 22:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484881;
-	bh=DK1NNzx9X/rE5G8Y1YDJEO+qp/3WCpguqAhtF85L4y0=;
+	s=k20201202; t=1746484885;
+	bh=0YrSew3NfA+7HZmbdS+TzG3l2EOfWNfGj5GGAJeLDVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/Go31eqv0I3f+rtjDq/etQxVVAybR2F1SZ+TTdlTTy0KbrI6h1WoUwgvbsLYmjf1
-	 H/yog4hDCBrduAiBFjwgqlW/SZRzbX8+tUxrOOIkueb8IDzrZGpWNQEmqbOprDjjoi
-	 9QH9ycOFJy4ETCgYNxu7fmfRZkJSY5/iCoAPykoQZWlXk0MGrqd5c5QCfteGbMyg+I
-	 lzQGd5UuCKPDvErDnTms0tCtFg/2uH/VGOM+FoTKV2RcCIuEUkWUO3tXeuZy6zmlwp
-	 cqMPgys6VC3dTdF+sX9I42eo8Xby5RR0h3ldpcut4Qw35g3dt1MdkjswcvLQwFO930
-	 7gCeoFpesuDlA==
+	b=Yya8OAkwl3EW44tJxtE20ayqMzYvUs1rpyk7Ejzava9LPqZJol8m/pqF0SugDXCS7
+	 OKG1hvauZeAcy75PPyEcQl32HYEwbwevofUb62TrNBjUfgy/1N62zxg/P5JToC8Cle
+	 Gp/h+AUmhzDvgU2Um3Se2Qg0oNGuURp9jYxgMWYsv58V9mNR6q3/ODbKYiZutqAVMH
+	 YUh5kA7siw9mCsOwMtecIUgqCTZVKel/9Yf3zMz4t8d7+fw+L9+0vcTXsneUD3HoHa
+	 aY2P+bqiYzY2HZaG0TxVrvO63i+O4PyQXVHL7MTT7LNzltSIsTsOp9OgYXJyPF3OeU
+	 m+KPrUyy78pUQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>,
+Cc: Rex Lu <rex.lu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
 	lorenzo@kernel.org,
 	ryder.lee@mediatek.com,
 	matthias.bgg@gmail.com,
 	angelogioacchino.delregno@collabora.com,
-	miriam.rachel.korenblit@intel.com,
-	emmanuel.grumbach@intel.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	johannes.berg@intel.com,
-	uwu@icenowy.me,
+	chui-hao.chiu@mediatek.com,
+	shayne.chen@mediatek.com,
+	razvan.grigore@vampirebyte.ro,
+	wiagn233@outlook.com,
 	linux-wireless@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 060/486] wifi: mt76: only mark tx-status-failed frames as ACKed on mt76x0/2
-Date: Mon,  5 May 2025 18:32:16 -0400
-Message-Id: <20250505223922.2682012-60-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 061/486] wifi: mt76: mt7996: fix SER reset trigger on WED reset
+Date: Mon,  5 May 2025 18:32:17 -0400
+Message-Id: <20250505223922.2682012-61-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -76,109 +75,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Rex Lu <rex.lu@mediatek.com>
 
-[ Upstream commit 0c5a89ceddc1728a40cb3313948401dd70e3c649 ]
+[ Upstream commit 8d38abdf6c182225c5c0a81451fa51b7b36a635d ]
 
-The interrupt status polling is unreliable, which can cause status events
-to get lost. On all newer chips, txs-timeout is an indication that the
-packet was either never sent, or never acked.
-Fixes issues with inactivity polling.
+The firmware needs a specific trigger when WED is being reset due to an
+ethernet reset condition. This helps prevent further L1 SER failure.
 
-Link: https://patch.msgid.link/20250311103646.43346-6-nbd@nbd.name
+Signed-off-by: Rex Lu <rex.lu@mediatek.com>
+Link: https://patch.msgid.link/20250311103646.43346-2-nbd@nbd.name
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h       | 1 +
- drivers/net/wireless/mediatek/mt76/mt76x0/pci.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt76x0/usb.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt76x2/pci.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/tx.c         | 3 ++-
- 6 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.h  | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7996/mmio.c | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index e2e9b5ece74e2..a6ac8e5512eba 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -489,6 +489,7 @@ struct mt76_hw_cap {
- #define MT_DRV_RX_DMA_HDR		BIT(3)
- #define MT_DRV_HW_MGMT_TXQ		BIT(4)
- #define MT_DRV_AMSDU_OFFLOAD		BIT(5)
-+#define MT_DRV_IGNORE_TXS_FAILED	BIT(6)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+index 43468bcaffc6d..a75e1c9435bb0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+@@ -908,7 +908,8 @@ enum {
+ 	UNI_CMD_SER_SET_RECOVER_L3_TX_DISABLE,
+ 	UNI_CMD_SER_SET_RECOVER_L3_BF,
+ 	UNI_CMD_SER_SET_RECOVER_L4_MDP,
+-	UNI_CMD_SER_SET_RECOVER_FULL,
++	UNI_CMD_SER_SET_RECOVER_FROM_ETH,
++	UNI_CMD_SER_SET_RECOVER_FULL = 8,
+ 	UNI_CMD_SER_SET_SYSTEM_ASSERT,
+ 	/* action */
+ 	UNI_CMD_SER_ENABLE = 1,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+index 442f72450352b..b6209ed1cfe01 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+@@ -281,7 +281,7 @@ static int mt7996_mmio_wed_reset(struct mtk_wed_device *wed)
+ 	if (test_and_set_bit(MT76_STATE_WED_RESET, &mphy->state))
+ 		return -EBUSY;
  
- struct mt76_driver_ops {
- 	u32 drv_flags;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-index 1eb955f3ca130..911e162a45980 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-@@ -156,7 +156,8 @@ mt76x0e_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	static const struct mt76_driver_ops drv_ops = {
- 		.txwi_size = sizeof(struct mt76x02_txwi),
- 		.drv_flags = MT_DRV_TX_ALIGNED4_SKBS |
--			     MT_DRV_SW_RX_AIRTIME,
-+			     MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.set_channel = mt76x0_set_channel,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-index b031c500b7415..90e5666c0857d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-@@ -214,7 +214,8 @@ static int mt76x0u_probe(struct usb_interface *usb_intf,
- 			 const struct usb_device_id *id)
- {
- 	static const struct mt76_driver_ops drv_ops = {
--		.drv_flags = MT_DRV_SW_RX_AIRTIME,
-+		.drv_flags = MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.set_channel = mt76x0_set_channel,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-index 67c9d1caa0bd6..55f076231bdc5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-@@ -22,7 +22,8 @@ mt76x2e_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	static const struct mt76_driver_ops drv_ops = {
- 		.txwi_size = sizeof(struct mt76x02_txwi),
- 		.drv_flags = MT_DRV_TX_ALIGNED4_SKBS |
--			     MT_DRV_SW_RX_AIRTIME,
-+			     MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.set_channel = mt76x2e_set_channel,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index a4f4d12f904e7..84ef80ab4afbf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -30,7 +30,8 @@ static int mt76x2u_probe(struct usb_interface *intf,
- 			 const struct usb_device_id *id)
- {
- 	static const struct mt76_driver_ops drv_ops = {
--		.drv_flags = MT_DRV_SW_RX_AIRTIME,
-+		.drv_flags = MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.set_channel = mt76x2u_set_channel,
-diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index ce193e625666b..065a1e4537457 100644
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -100,7 +100,8 @@ __mt76_tx_status_skb_done(struct mt76_dev *dev, struct sk_buff *skb, u8 flags,
- 		return;
- 
- 	/* Tx status can be unreliable. if it fails, mark the frame as ACKed */
--	if (flags & MT_TX_CB_TXS_FAILED) {
-+	if (flags & MT_TX_CB_TXS_FAILED &&
-+	    (dev->drv->drv_flags & MT_DRV_IGNORE_TXS_FAILED)) {
- 		info->status.rates[0].count = 0;
- 		info->status.rates[0].idx = -1;
- 		info->flags |= IEEE80211_TX_STAT_ACK;
+-	ret = mt7996_mcu_set_ser(dev, UNI_CMD_SER_TRIGGER, UNI_CMD_SER_SET_RECOVER_L1,
++	ret = mt7996_mcu_set_ser(dev, UNI_CMD_SER_TRIGGER, UNI_CMD_SER_SET_RECOVER_FROM_ETH,
+ 				 mphy->band_idx);
+ 	if (ret)
+ 		goto out;
 -- 
 2.39.5
 
