@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-22511-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22512-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6C9AAA53B
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 01:45:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC1BAAA546
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 01:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C9A2188B2F4
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 23:42:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22D803BD6B9
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 23:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1505228BA81;
-	Mon,  5 May 2025 22:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA2C2868A3;
+	Mon,  5 May 2025 22:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7DD7D3N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j1UhILo8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF12828B51B;
-	Mon,  5 May 2025 22:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13936286899;
+	Mon,  5 May 2025 22:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484137; cv=none; b=sY8hjFawfm5pX+1jYaZwQKzK5aPXP+x6hZhD2BtLXJI3ctYIZltEi6f6IuYcAFWKXffDlQFbwBJdnir9Vmgb0lUO30engn0XD4oJpehUOkYSdtMZS93vanRfBfY31sywYKV+VKsKLqEKsnn98jwkx7Klvfzn3wVHWR2bc3TrgE0=
+	t=1746484138; cv=none; b=FD97PzZUpgVRi+rI9x3k3fbaRIsnVw4tbJU9oNi76Oww2LOAjBYiBdwuVvoBWfl44/fVtH7zVL59tEEGOWUwTto7i9kGcJ/qoJJx4IKiNnyupoOkDxXv2hrGktb4qpX6dSjj/mBnJ8w9h295GBCUglUoZnntV7rMVzHDErmOUNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484137; c=relaxed/simple;
-	bh=LLl1aICgBdR4QRjTCYYziShIzCVf+X5RSGgDnZPmOlo=;
+	s=arc-20240116; t=1746484138; c=relaxed/simple;
+	bh=0PeuTbO+NKhSwoD3WIVNVMp/eT1XP+eyoWerkm2g7Bo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sKpgyA3AUVN0fPJ4KZ+/Bk5M57iJgLmFrQCc21sHR1caHFX8kEm/hY125jQdfJNv94LEsXIQjmt5TXn27azKOmmi55F45dqMxlQVci9CbbFTQriRrMTo7UGXeGOzhyJP2LzT4pYGItD/qiOOilUy7Vqjt01pcBqFjh1XhOcN9JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7DD7D3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D72DC4CEEE;
-	Mon,  5 May 2025 22:28:55 +0000 (UTC)
+	 MIME-Version; b=HQ2vlZXNtpM1ZIZFd72kufWy363JDbnSY6+iDuZNO6fBzKD8MrGb6YUzyL6eBRHYNvw5ohzjbWCKa8cKFTSqf8sm0Zi7BsPPkIyLDJmEsqc+ERbJzRIYIHZbxthmhXC2bIUT2thQ5801zysXHl7y7pA1waFdVr8WRu9/vYOAsMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j1UhILo8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A45C4CEED;
+	Mon,  5 May 2025 22:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484136;
-	bh=LLl1aICgBdR4QRjTCYYziShIzCVf+X5RSGgDnZPmOlo=;
+	s=k20201202; t=1746484137;
+	bh=0PeuTbO+NKhSwoD3WIVNVMp/eT1XP+eyoWerkm2g7Bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7DD7D3Nfns5wSa3wRW/oV/p7/KGwA0gRBeYJ+bMEluDC5OzygnnU3kn121xL4eip
-	 v6PJAthqv2jBmLVJgz3BPXLdQhPtHYztwiOTJKC22dxACXAeGUi3opiKY8FmoL5STU
-	 5iOxFg3l/YLEi5d7yYXU0WlRfvrP0MZ/WHsAN1pRAfSmYlwC1S2m4t68n2/HUgHJdI
-	 YF4/JUjTGTCoNoTWDUjAdMfXcCr0b0rvnEV4HdB8FgGoibx4vs03AcqpgXBo6DZVn2
-	 Rtx+/dvCFb4QbIo213U/bN9+CX1gT6hdGzJtv06KyMqn1bo6jB1gOovlhgxRQ96TkF
-	 vUHg5kTwIwpkA==
+	b=j1UhILo8vv1om9THQnsE3TZ9oeTMy82f3QwWiQeKXtpwT+pvyXLcqVSHU05KO0RSh
+	 aEolNsS0Mcc07GhdH+JSTuJ0touZ4KwEYzKZ2cOXPiYEJH5+lwrC7nL450VKnTcgaE
+	 /964h7nLWp4KlmvQjmB/o1357luf8kuxeQzA2TSjvuu1EIEP5vvOq4RSg+GknW7Mtw
+	 f/j88yJdt+BGm7TxAxG1E9YYGzhM8E/f1DCqHccEWYPyDX1wKMz+VCcyvssQ/NZ+nP
+	 r9OzHzONtbmeQuwFPUKBAjzPnRjESefMlcP9VA7zOoRIsJ2I6KOYfj7PX/Lhgdc9Cr
+	 FtkJAxSvWCx4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 366/642] wifi: rtw88: Fix rtw_desc_to_mcsrate() to handle MCS16-31
-Date: Mon,  5 May 2025 18:09:42 -0400
-Message-Id: <20250505221419.2672473-366-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 367/642] wifi: rtw88: Fix rtw_mac_power_switch() for RTL8814AU
+Date: Mon,  5 May 2025 18:09:43 -0400
+Message-Id: <20250505221419.2672473-367-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -67,38 +67,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 86d04f8f991a0509e318fe886d5a1cf795736c7d ]
+[ Upstream commit e66bca16638ee59e997f9d9a3711b3ae587d04d9 ]
 
-This function translates the rate number reported by the hardware into
-something mac80211 can understand. It was ignoring the 3SS and 4SS HT
-rates. Translate them too.
-
-Also set *nss to 0 for the HT rates, just to make sure it's
-initialised.
+rtw_mac_power_switch() checks bit 8 of REG_SYS_STATUS1 to see if the
+chip is powered on. This bit appears to be always on in the RTL8814AU,
+so ignore it.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/d0a5a86b-4869-47f6-a5a7-01c0f987cc7f@gmail.com
+Link: https://patch.msgid.link/2f0fcffb-3067-4d95-a68c-f2f3a5a47921@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/util.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/util.c b/drivers/net/wireless/realtek/rtw88/util.c
-index e222d3c01a77e..66819f6944055 100644
---- a/drivers/net/wireless/realtek/rtw88/util.c
-+++ b/drivers/net/wireless/realtek/rtw88/util.c
-@@ -101,7 +101,8 @@ void rtw_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
- 		*nss = 4;
- 		*mcs = rate - DESC_RATEVHT4SS_MCS0;
- 	} else if (rate >= DESC_RATEMCS0 &&
--		   rate <= DESC_RATEMCS15) {
-+		   rate <= DESC_RATEMCS31) {
-+		*nss = 0;
- 		*mcs = rate - DESC_RATEMCS0;
- 	}
- }
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index cae9cca6dca3d..ea6406df42b3d 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -291,6 +291,7 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
+ 	if (rtw_read8(rtwdev, REG_CR) == 0xea)
+ 		cur_pwr = false;
+ 	else if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_USB &&
++		 chip->id != RTW_CHIP_TYPE_8814A &&
+ 		 (rtw_read8(rtwdev, REG_SYS_STATUS1 + 1) & BIT(0)))
+ 		cur_pwr = false;
+ 	else
 -- 
 2.39.5
 
