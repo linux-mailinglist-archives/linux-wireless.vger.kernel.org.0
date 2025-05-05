@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-22526-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22527-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10209AAA6A1
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:16:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6795AAA6A3
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 02:16:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C05B463811
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:15:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0691916417F
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 00:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3757E32AB83;
-	Mon,  5 May 2025 22:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4D132ABA4;
+	Mon,  5 May 2025 22:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qlZrx60g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kXKK/NL1"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070C229673F;
-	Mon,  5 May 2025 22:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54C832AB90;
+	Mon,  5 May 2025 22:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484501; cv=none; b=e3ojB8WJbO0LBP4pWUMhu8p8aJsWeMKJnoJ/rN9WeRfzSU/8LZU/Uh7N/5so9LcxiEUA/FJWvxQHrOUvWcU2HT5hnNd15W9FBCoRKCFs+sBortoRswa5i49Dt37NzBtVmcSdmD0Kfbq96sYgVZa+YiW6NJyHzyeMhPL7c/UogvA=
+	t=1746484502; cv=none; b=HQNCckeGEwC55xWdiZH5c+VqDgyfOqnONgcuYeq/WSe+S2IJD2GURwc7PgmqwTlqL5TNJmhbfJ99wG7iByXrrZYWIW/9a9jGPF/EuYS7DswTsMVvw5/8ibb4J3kadHP1chuNFZUt6P6TCTiAG5vyYpuCPVe+Qgw8OetHt2Rv6LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484501; c=relaxed/simple;
-	bh=mZGoNHX7kzC6i8SSbCkQgV40eNut3/40B0+hesX5SvE=;
+	s=arc-20240116; t=1746484502; c=relaxed/simple;
+	bh=1pPZD/AZBY2vAbtfHSxBwZNxaxFCsPhS4ZMv5mU0+M0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eDq3xshYvR7Er8vKZJsCEmoQ8mWlRQ/ETo0dE/1FxJvldsKLh+vYfnC6u/0AeX2GNghXNEeIJde8xrkUN6hGf71BGDAn86OWr2oyzn0U4uP+rs2kvqHFaTcmXYbjTYCRgFG+xjagvXCj1IBHc3GsPx0Or+W/EFpE0DZlrNMiZD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qlZrx60g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A306C4CEE4;
-	Mon,  5 May 2025 22:34:59 +0000 (UTC)
+	 MIME-Version; b=LCvKY/1Wy2q8TB3XD+2tyC35IfpS6OFQNAtx0o/dcKX/+XNE9deyXSKFHFoePxXhjcAo6+j6cBXVqd3EqkqAl/TlPLONbMAK9zrdGUy5pRKoXO1j3YYc3Qce0xSA7U+Uwr26fQUrRv54X9LwwHBhk2NVRXlDFNtw9nfXzTEqWmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kXKK/NL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6906C4CEEF;
+	Mon,  5 May 2025 22:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484500;
-	bh=mZGoNHX7kzC6i8SSbCkQgV40eNut3/40B0+hesX5SvE=;
+	s=k20201202; t=1746484501;
+	bh=1pPZD/AZBY2vAbtfHSxBwZNxaxFCsPhS4ZMv5mU0+M0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qlZrx60g8byffb0zeabrZQLguoSbtnM4pfE7oHyqrLmYGS0T5NKBaOcW3gW4HOIKP
-	 WA3RbXCw5HTs+0cSMs/W5fY+m4askBjD9Jq4DdDvZ5VwpCIgX3zacu1SdJQKr/iW84
-	 +C0q84M+wmyphM3DFBhAY0/DkNhidvcxPXMkQdJLYZbyF9AuRKo3ranoC6bUekriNh
-	 v4rF8ngE1FxJ8e0tQTlQOr3778U1AvxHN3Xr5ONk/LM+bwLlt0JMsm5Jxf5MHFWMv3
-	 VNTXG7GvnN/sLMoqw2ond8zCj4O8S1BlH1VEo2U28dI6vrFsoo0BD4emBa7GY6c7oW
-	 gN8UyDjy5biLA==
+	b=kXKK/NL1byTUYCEInYh8pxPH9Upi112QuSOC8ksn2JpmOLLHU0IEFPC7LRz40WuR9
+	 +DOaKuXMbyk1qhx8J9PnRLuWUqj2Wy3RFjkKh20uNwGnzWkkuTgnNg0GfHuNL3LAy3
+	 wLsctt7tsn+CPZagyFHEvHQLJ7Cy942iBrbH93k+5GK/+JGCZ8KyBevr2vgSpK9vIB
+	 ysM9DhoYEt2e8mDRzatqxa7gaWik6JPaPUpHYJ31SHCQavuxtygcF3qZ8geYOybfW8
+	 kP8pcRHRrGStBCrl6da+Ij0wSkHEQaKlRiqnU8xwZYOINfV68OFr/H74A9+ttVJ5bf
+	 cxYQoSCoh35dg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Benjamin Berg <benjamin.berg@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 504/642] wifi: mac80211: set ieee80211_prep_tx_info::link_id upon Auth Rx
-Date: Mon,  5 May 2025 18:12:00 -0400
-Message-Id: <20250505221419.2672473-504-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 505/642] wifi: mac80211: add HT and VHT basic set verification
+Date: Mon,  5 May 2025 18:12:01 -0400
+Message-Id: <20250505221419.2672473-505-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -67,94 +67,174 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 8c60179b64434894eac1ffab7396bac131bc8b6e ]
+[ Upstream commit 574faa0e936d12718e2cadad11ce1e184d9e5a32 ]
 
-This will be used by the low level driver.
-Note that link_id  will be 0 in case of a non-MLO authentication.
-Also fix a call-site of mgd_prepare_tx() where the link_id was not
-populated.
+So far we did not verify the HT and VHT basic MCS set. However, in
+P802.11REVme/D7.0 (6.5.4.2.4) says that the MLME-JOIN.request shall
+return an error if the VHT and HT basic set requirements are not met.
 
-Update the documentation to reflect the current state
-ieee80211_prep_tx_info::link_id is also available in mgd_complete_tx().
+Given broken APs, apply VHT basic MCS/NSS set checks only in
+strict mode.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250205110958.6a590f189ce5.I1fc5c0da26b143f5b07191eb592f01f7083d55ae@changeid
+Link: https://patch.msgid.link/20250205110958.e2d8d4095f6b.I66bcf6c2de3b9d3325e4ffd9f573f4cd26ce5685@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h    | 4 ++--
- net/mac80211/driver-ops.h | 3 ++-
- net/mac80211/mlme.c       | 4 +++-
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ net/mac80211/mlme.c | 129 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 129 insertions(+)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index dcbb2e54746c7..b421526aae851 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -7,7 +7,7 @@
-  * Copyright 2007-2010	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2024 Intel Corporation
-+ * Copyright (C) 2018 - 2025 Intel Corporation
-  */
- 
- #ifndef MAC80211_H
-@@ -3829,7 +3829,7 @@ enum ieee80211_reconfig_type {
-  * @was_assoc: set if this call is due to deauth/disassoc
-  *	while just having been associated
-  * @link_id: the link id on which the frame will be TX'ed.
-- *	Only used with the mgd_prepare_tx() method.
-+ *	0 for a non-MLO connection.
-  */
- struct ieee80211_prep_tx_info {
- 	u16 duration;
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index 5acecc7bd4a99..307587c8a0037 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -2,7 +2,7 @@
- /*
- * Portions of this file
- * Copyright(c) 2016 Intel Deutschland GmbH
--* Copyright (C) 2018-2019, 2021-2024 Intel Corporation
-+* Copyright (C) 2018-2019, 2021-2025 Intel Corporation
- */
- 
- #ifndef __MAC80211_DRIVER_OPS
-@@ -955,6 +955,7 @@ static inline void drv_mgd_complete_tx(struct ieee80211_local *local,
- 		return;
- 	WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_STATION);
- 
-+	info->link_id = info->link_id < 0 ? 0 : info->link_id;
- 	trace_drv_mgd_complete_tx(local, sdata, info->duration,
- 				  info->subtype, info->success);
- 	if (local->ops->mgd_complete_tx)
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 39cfb926354a5..9904018383fc9 100644
+index 9904018383fc9..9eccf86e9254e 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -8,7 +8,7 @@
-  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2024 Intel Corporation
-+ * Copyright (C) 2018 - 2025 Intel Corporation
-  */
+@@ -345,6 +345,115 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
+ 	return IEEE80211_CONN_MODE_EHT;
+ }
  
- #include <linux/delay.h>
-@@ -4579,6 +4579,8 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
- 	auth_transaction = le16_to_cpu(mgmt->u.auth.auth_transaction);
- 	status_code = le16_to_cpu(mgmt->u.auth.status_code);
- 
-+	info.link_id = ifmgd->auth_data->link_id;
++static bool
++ieee80211_verify_sta_ht_mcs_support(struct ieee80211_sub_if_data *sdata,
++				    struct ieee80211_supported_band *sband,
++				    const struct ieee80211_ht_operation *ht_op)
++{
++	struct ieee80211_sta_ht_cap sta_ht_cap;
++	int i;
 +
- 	if (auth_alg != ifmgd->auth_data->algorithm ||
- 	    (auth_alg != WLAN_AUTH_SAE &&
- 	     auth_transaction != ifmgd->auth_data->expected_transaction) ||
++	if (sband->band == NL80211_BAND_6GHZ)
++		return true;
++
++	if (!ht_op)
++		return false;
++
++	memcpy(&sta_ht_cap, &sband->ht_cap, sizeof(sta_ht_cap));
++	ieee80211_apply_htcap_overrides(sdata, &sta_ht_cap);
++
++	/*
++	 * P802.11REVme/D7.0 - 6.5.4.2.4
++	 * ...
++	 * If the MLME of an HT STA receives an MLME-JOIN.request primitive
++	 * with the SelectedBSS parameter containing a Basic HT-MCS Set field
++	 * in the HT Operation parameter that contains any unsupported MCSs,
++	 * the MLME response in the resulting MLME-JOIN.confirm primitive shall
++	 * contain a ResultCode parameter that is not set to the value SUCCESS.
++	 * ...
++	 */
++
++	/* Simply check that all basic rates are in the STA RX mask */
++	for (i = 0; i < IEEE80211_HT_MCS_MASK_LEN; i++) {
++		if ((ht_op->basic_set[i] & sta_ht_cap.mcs.rx_mask[i]) !=
++		    ht_op->basic_set[i])
++			return false;
++	}
++
++	return true;
++}
++
++static bool
++ieee80211_verify_sta_vht_mcs_support(struct ieee80211_sub_if_data *sdata,
++				     int link_id,
++				     struct ieee80211_supported_band *sband,
++				     const struct ieee80211_vht_operation *vht_op)
++{
++	struct ieee80211_sta_vht_cap sta_vht_cap;
++	u16 ap_min_req_set, sta_rx_mcs_map, sta_tx_mcs_map;
++	int nss;
++
++	if (sband->band != NL80211_BAND_5GHZ)
++		return true;
++
++	if (!vht_op)
++		return false;
++
++	memcpy(&sta_vht_cap, &sband->vht_cap, sizeof(sta_vht_cap));
++	ieee80211_apply_vhtcap_overrides(sdata, &sta_vht_cap);
++
++	ap_min_req_set = le16_to_cpu(vht_op->basic_mcs_set);
++	sta_rx_mcs_map = le16_to_cpu(sta_vht_cap.vht_mcs.rx_mcs_map);
++	sta_tx_mcs_map = le16_to_cpu(sta_vht_cap.vht_mcs.tx_mcs_map);
++
++	/*
++	 * Many APs are incorrectly advertising an all-zero value here,
++	 * which really means MCS 0-7 are required for 1-8 streams, but
++	 * they don't really mean it that way.
++	 * Some other APs are incorrectly advertising 3 spatial streams
++	 * with MCS 0-7 are required, but don't really mean it that way
++	 * and we'll connect only with HT, rather than even HE.
++	 * As a result, unfortunately the VHT basic MCS/NSS set cannot
++	 * be used at all, so check it only in strict mode.
++	 */
++	if (!ieee80211_hw_check(&sdata->local->hw, STRICT))
++		return true;
++
++	/*
++	 * P802.11REVme/D7.0 - 6.5.4.2.4
++	 * ...
++	 * If the MLME of a VHT STA receives an MLME-JOIN.request primitive
++	 * with a SelectedBSS parameter containing a Basic VHT-MCS And NSS Set
++	 * field in the VHT Operation parameter that contains any unsupported
++	 * <VHT-MCS, NSS> tuple, the MLME response in the resulting
++	 * MLME-JOIN.confirm primitive shall contain a ResultCode parameter
++	 * that is not set to the value SUCCESS.
++	 * ...
++	 */
++	for (nss = 8; nss > 0; nss--) {
++		u8 ap_op_val = (ap_min_req_set >> (2 * (nss - 1))) & 3;
++		u8 sta_rx_val;
++		u8 sta_tx_val;
++
++		if (ap_op_val == IEEE80211_HE_MCS_NOT_SUPPORTED)
++			continue;
++
++		sta_rx_val = (sta_rx_mcs_map >> (2 * (nss - 1))) & 3;
++		sta_tx_val = (sta_tx_mcs_map >> (2 * (nss - 1))) & 3;
++
++		if (sta_rx_val == IEEE80211_HE_MCS_NOT_SUPPORTED ||
++		    sta_tx_val == IEEE80211_HE_MCS_NOT_SUPPORTED ||
++		    sta_rx_val < ap_op_val || sta_tx_val < ap_op_val) {
++			link_id_info(sdata, link_id,
++				     "Missing mandatory rates for %d Nss, rx %d, tx %d oper %d, disable VHT\n",
++				     nss, sta_rx_val, sta_tx_val, ap_op_val);
++			return false;
++		}
++	}
++
++	return true;
++}
++
+ static bool
+ ieee80211_verify_peer_he_mcs_support(struct ieee80211_sub_if_data *sdata,
+ 				     int link_id,
+@@ -1042,6 +1151,26 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
+ 		link_id_info(sdata, link_id,
+ 			     "regulatory prevented using AP config, downgraded\n");
+ 
++	if (conn->mode >= IEEE80211_CONN_MODE_HT &&
++	    !ieee80211_verify_sta_ht_mcs_support(sdata, sband,
++						 elems->ht_operation)) {
++		conn->mode = IEEE80211_CONN_MODE_LEGACY;
++		conn->bw_limit = IEEE80211_CONN_BW_LIMIT_20;
++		link_id_info(sdata, link_id,
++			     "required MCSes not supported, disabling HT\n");
++	}
++
++	if (conn->mode >= IEEE80211_CONN_MODE_VHT &&
++	    !ieee80211_verify_sta_vht_mcs_support(sdata, link_id, sband,
++						  elems->vht_operation)) {
++		conn->mode = IEEE80211_CONN_MODE_HT;
++		conn->bw_limit = min_t(enum ieee80211_conn_bw_limit,
++				       conn->bw_limit,
++				       IEEE80211_CONN_BW_LIMIT_40);
++		link_id_info(sdata, link_id,
++			     "required MCSes not supported, disabling VHT\n");
++	}
++
+ 	if (conn->mode >= IEEE80211_CONN_MODE_HE &&
+ 	    (!ieee80211_verify_peer_he_mcs_support(sdata, link_id,
+ 						   (void *)elems->he_cap,
 -- 
 2.39.5
 
