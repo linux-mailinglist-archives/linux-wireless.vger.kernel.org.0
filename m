@@ -1,117 +1,207 @@
-Return-Path: <linux-wireless+bounces-22449-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22450-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E26BFAA8F01
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 11:10:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9043CAA8FA7
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 11:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3535D189785E
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 09:10:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB2DB1752E9
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 09:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8473E1F416C;
-	Mon,  5 May 2025 09:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF7014A4F9;
+	Mon,  5 May 2025 09:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="CKRL1TwN"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="IPtu4UE6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9011A5BAE;
-	Mon,  5 May 2025 09:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2A934CF5
+	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 09:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746436234; cv=none; b=lHo+U/wAQM0bQP03c473Z9KQLISmXLiXlsc+46Z8pPh0Q1zZtEBwIo79iZON2Uh6FGTupTJZM4CSy4iJIF5L/EdYCcv3hA9UpW7nqBYq2jxJz+RhavInKPXk9xMGcy8G/4hqhuJIHQ0E6ZxKfN2mBAwmPcMqZtupkh/NB1XJF8Q=
+	t=1746437590; cv=none; b=bs+ZSzGLepAqXqQKBszabCfL1BpWK7xJMBfI/ATvzN+8ysW1S6gv5LbSMjpB28L2J/hI8GpCp8svgdJ/SJOnYU4RdRtd0aXFgYFKn/CJEczUosueAsPsPrr8QEo90/Q+bnEFJ+fOqACQ8QTTrU6ZggnJx6xKUrrS2sMwEYm0MFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746436234; c=relaxed/simple;
-	bh=BsoJw9Awkc2b9z0Ir3SPQ6bfTit5OupPAahv1L/C5n8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KGFgJl+5DsA6iC0A7bvzW8s7Izin5QwIL+MfUAMP1lZ0tgfowr+0vAEsAI60qTezEXIM0yzDL6dZ8YSnA2AhsH8wF5zSPArKxAYn/8WlbAdkqS9TfXJWWx5E3oB2HaiW7sj1EPk/pJfUGaqzUbqo4M0Bqgsy2kfznmv5xrXhaQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=CKRL1TwN; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=DSB+wJ+TDPRmWBcqAGxu93uKfUHoTJ506dWsYvX2S+c=;
-	t=1746436232; x=1747645832; b=CKRL1TwNfwmtV7wPYtYvEuP5uoxa953jgbv8EqAlsnP8aWh
-	4AVFY/wtnzohLiCJRvQLXApMRICgDOjXgTNQ2ny34fq6PsgTNX9ZW5+k3b9Px2fIdO3cNwFgS4HSD
-	pt9frtt5oxIE5xv9mt1KW9+K/KMEfMWJOLifrh63uOBVmO73YUkpttr3ynOvUGam7VIdWM7o5qS1v
-	/YGC1p4L5ulTqLq5xFsyKOmQFWODr/C+UpoBHpWE3y5LqPPudb9+rmZfaEbYBNXAAuRipXdqO058j
-	pb7vdkj1FMOOQ3cW7Tp2r2xVNzcyE0m1HbOWTcaKBDWpwYcSnlVvaR6sJz6IqCbg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uBrqG-000000046Hp-2D0t;
-	Mon, 05 May 2025 11:10:28 +0200
-Message-ID: <004030652d592b379e730be2f0344bebc4a03475.camel@sipsolutions.net>
-Subject: Re: [PATCH net-next v5 10/10] netlink: specs: wireless: add a spec
- for nl80211
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Donald Hunter <donald.hunter@gmail.com>, netdev@vger.kernel.org, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,
- linux-wireless@vger.kernel.org, donald.hunter@redhat.com
-Date: Mon, 05 May 2025 11:10:27 +0200
-In-Reply-To: <20250503130739.1c94d433@kernel.org>
-References: <20250211120127.84858-1-donald.hunter@gmail.com>
-		<20250211120127.84858-11-donald.hunter@gmail.com>
-	 <20250503130739.1c94d433@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+	s=arc-20240116; t=1746437590; c=relaxed/simple;
+	bh=pEi+K8rSvreBGJdxoOveyy2y/Yx1A+pWvjbE23Xd8c0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Bxucs29WpySlrVO5WX2xf9sOGQdEhdgcax+Ty5dwzxbIRKuYVU0/YUdCOoq1LF0O6jjOsPBhsue32euI2KdZi+0wmMs7IY2/2ISf/MZnD3WumaYb82CTaGSCBWEmOVbnBJtPDkhcGIaUmn46dpmr6kk0n+6qYbuIDQPyYow4RoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=IPtu4UE6; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5459WKgK43977804, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1746437540; bh=pEi+K8rSvreBGJdxoOveyy2y/Yx1A+pWvjbE23Xd8c0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=IPtu4UE6uDUvu3FbydkFazYv0zlHReI3xYbNpZ2BTFtG5htRrrq3PT1K8wSb9TGHw
+	 l08rSHWc0LA0U/8Qy7hZwT0oh/iQ0GT6LLuIqNZg+bHZ+JHnmo0YbdijdmyDusN6fD
+	 KblYPTke1YFEGZi6tLx0UvfPcqo8RdLoKONQaUKb6utX9t9QmDXBG7uYYrRKErGlLM
+	 gR7f3ZRFUfiO/LJ8zIipMdmCrSCHwFfo+hB0M1faDeMmh0nGUgz4Uy+76o/NqIm5RV
+	 ZyFrpERSfIoBkXYIGRYMiytFT07W1EpNFoUoow9ZEqbUjVNMY4Lk4ueHzn7NnveYfn
+	 Bi2TExE2QqNRA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5459WKgK43977804
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 May 2025 17:32:20 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 5 May 2025 17:32:20 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 5 May 2025 17:32:19 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Mon, 5 May 2025 17:32:19 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Allan Wang <allan.wang@mediatek.com>, "nbd@nbd.name" <nbd@nbd.name>,
+        "lorenzo@kernel.org" <lorenzo@kernel.org>
+CC: "deren.wu@mediatek.com" <deren.wu@mediatek.com>,
+        "mingyen.hsieh@mediatek.com" <mingyen.hsieh@mediatek.com>,
+        "Sean.Wang@mediatek.com" <Sean.Wang@mediatek.com>,
+        "Soul.Huang@mediatek.com"
+	<Soul.Huang@mediatek.com>,
+        "Leon.Yen@mediatek.com" <Leon.Yen@mediatek.com>,
+        "Michael.Lo@mediatek.com" <Michael.Lo@mediatek.com>,
+        "Eric-SY.Chang@mediatek.com" <Eric-SY.Chang@mediatek.com>,
+        "km.lin@mediatek.com" <km.lin@mediatek.com>,
+        "robin.chiu@mediatek.com"
+	<robin.chiu@mediatek.com>,
+        "ch.yeh@mediatek.com" <ch.yeh@mediatek.com>,
+        "posh.sun@mediatek.com" <posh.sun@mediatek.com>,
+        "Quan.Zhou@mediatek.com"
+	<Quan.Zhou@mediatek.com>,
+        "Ryder.Lee@mediatek.com" <Ryder.Lee@mediatek.com>,
+        "Shayne.Chen@mediatek.com" <Shayne.Chen@mediatek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>
+Subject: RE: [PATCH] wifi: mt76: mt7925: add rfkill_poll for hardware rfkill
+Thread-Topic: [PATCH] wifi: mt76: mt7925: add rfkill_poll for hardware rfkill
+Thread-Index: AQHbvZOVfpHFzMbbC0e6vR0ZbyOdv7PDxISg
+Date: Mon, 5 May 2025 09:32:19 +0000
+Message-ID: <794916dfd01545579d2fe7f523b5b29a@realtek.com>
+References: <20250505073734.3923790-1-allan.wang@mediatek.com>
+In-Reply-To: <20250505073734.3923790-1-allan.wang@mediatek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
 
-On Sat, 2025-05-03 at 13:07 -0700, Jakub Kicinski wrote:
-> Looks like we have 3 structs in the Netlink spec:
->  - ieee80211-ht-cap
->  - ieee80211-mcs-info
->  - ieee80211-vht-mcs-info
-> which are defined in include/linux/ieee80211.h rather than the uAPI,
-> but we do use them in Netlink attrs. I'm guessing these come from=20
-> the IEEE spec so there is no ambiguity?
+Allan Wang <allan.wang@mediatek.com> wrote:
 
-Yes. In some of these cases userspace has different definitions that
-match the same bits, but might have e.g. __le32 vs. u8 for some fields
-and then just has a different number of fields. For HT it looks pretty
-similar though.
+[...]
 
-Certainly there are many more in this area that could have a similar
-situation. There are also new ones where there's maybe not a good struct
-representation at all, unless you care only about special cases (which
-may well be appropriate for some tools, but not for the API.)
+> @@ -2205,6 +2208,18 @@ static void mt7925_unassign_vif_chanctx(struct iee=
+e80211_hw *hw,
+>         mutex_unlock(&dev->mt76.mutex);
+>  }
+>=20
+> +static void mt7925_rfkill_poll(struct ieee80211_hw *hw)
+> +{
+> +       struct mt792x_phy *phy =3D mt792x_hw_phy(hw);
+> +       int ret =3D 0;
 
-> I'm trying to figure out what to do with them in the C codegen
-> for YNL. Normally we assume all structs used by the spec are defined
-> in the headers. We can add an annotation to render the definition
-> in user space code, but I wonder if this omission is really intentional?
-> Wouldn't it be generally useful to user space to expose the types=20
-> in uAPI?
+no need initializer.
 
-We never even conceptually exposed these in the original nl80211.h, that
-just literally said it's the HT capability element, without caring how
-you arrived at the bytes representing it. We did define the length for
-the policy check, but I guess in some way even that isn't needed.
+> +
+> +       mt792x_mutex_acquire(phy->dev);
+> +       ret =3D mt7925_mcu_wf_rf_pin_ctrl(phy);
+> +       mt792x_mutex_release(phy->dev);
+> +
+> +       wiphy_rfkill_set_hw_state(hw->wiphy, ret ? false : true);
 
-I'm not really sure it really is all that useful given that different
-tools care about different things and restrictions (endian, etc.).
+wiphy_rfkill_set_hw_state(hw->wiphy, ret =3D=3D 0);
 
-I also don't know if we'd really want the kernel to become the canonical
-definition of structures used for elements defined in the spec., but
-then is it restricted to those that need to be in the userspace API?
-That would also feel a bit odd?
+or
 
-So not sure. I'd almost prefer to just remove the struct annotation from
-the spec here.
+wiphy_rfkill_set_hw_state(hw->wiphy, !ret);
 
-johannes
+> +}
+> +
+>  const struct ieee80211_ops mt7925_ops =3D {
+>         .tx =3D mt792x_tx,
+>         .start =3D mt7925_start,
+> @@ -2265,6 +2280,7 @@ const struct ieee80211_ops mt7925_ops =3D {
+>         .link_info_changed =3D mt7925_link_info_changed,
+>         .change_vif_links =3D mt7925_change_vif_links,
+>         .change_sta_links =3D mt7925_change_sta_links,
+> +       .rfkill_poll =3D mt7925_rfkill_poll,
+>  };
+>  EXPORT_SYMBOL_GPL(mt7925_ops);
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> index 286f602623c0..31fa092d2c8c 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> @@ -3633,6 +3633,45 @@ int mt7925_mcu_set_rate_txpower(struct mt76_phy *p=
+hy)
+>         return 0;
+>  }
+>=20
+> +int mt7925_mcu_wf_rf_pin_ctrl(struct mt792x_phy *phy)
+> +{
+> +#define UNI_CMD_RADIO_STATUS_GET       0
+> +       struct mt792x_dev *dev =3D phy->dev;
+> +       struct sk_buff *skb;
+> +       int ret;
+> +
+
+Should avoid empty line in declarations?=20
+
+> +       struct {
+> +               __le16 tag;
+> +               __le16 len;
+> +               u8 rsv[4];
+> +       } __packed req =3D {
+> +               .tag =3D UNI_CMD_RADIO_STATUS_GET,
+> +               .len =3D cpu_to_le16(sizeof(req)),
+> +       };
+> +
+> +       struct mt7925_radio_status_event {
+> +               __le16 tag;
+> +               __le16 len;
+> +
+> +               u8 data;
+> +               u8 rsv[3];
+> +       } __packed * status;
+
+I remember this should be "__packed *status", but checkpatch reports
+false-alarm.=20
+
+> +
+> +       ret =3D mt76_mcu_send_and_get_msg(&dev->mt76,
+> +                                       MCU_UNI_CMD(RADIO_STATUS),
+> +                                       &req, sizeof(req), true, &skb);
+> +       if (ret)
+> +               return ret;
+> +
+> +       skb_pull(skb, sizeof(struct tlv));
+> +       status =3D (struct mt7925_radio_status_event *)skb->data;
+> +       ret =3D (int)status->data;
+
+I feel int casting is unnecessary.
+
+> +
+> +       dev_kfree_skb(skb);
+> +
+> +       return ret;
+> +}
+> +
+>  int mt7925_mcu_set_rxfilter(struct mt792x_dev *dev, u32 fif,
+>                             u8 bit_op, u32 bit_map)
+>  {
+
+[...]
+
 
