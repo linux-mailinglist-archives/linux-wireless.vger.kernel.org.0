@@ -1,207 +1,161 @@
-Return-Path: <linux-wireless+bounces-22450-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22451-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9043CAA8FA7
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 11:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48982AA921F
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 13:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB2DB1752E9
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 09:33:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9613216F893
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 11:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF7014A4F9;
-	Mon,  5 May 2025 09:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62092202C31;
+	Mon,  5 May 2025 11:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="IPtu4UE6"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cXhbpPU8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2A934CF5
-	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 09:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866C11F948
+	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 11:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746437590; cv=none; b=bs+ZSzGLepAqXqQKBszabCfL1BpWK7xJMBfI/ATvzN+8ysW1S6gv5LbSMjpB28L2J/hI8GpCp8svgdJ/SJOnYU4RdRtd0aXFgYFKn/CJEczUosueAsPsPrr8QEo90/Q+bnEFJ+fOqACQ8QTTrU6ZggnJx6xKUrrS2sMwEYm0MFU=
+	t=1746444989; cv=none; b=uDe0vsRcYTpaUErlH9OK1tS4nFl2BxC7N7TeyAQ61RPok3G98pwvnF5g+K6w3iOVAtotJLqNzfFl0lCkLFOIUzSBsHiB7T/1igQiDwyqDQK89JCbj5+cTlbvlWn9RlZWFecZH6ufXGB163coSun9Wnc2VVD6Il+Gch1tKbJwypI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746437590; c=relaxed/simple;
-	bh=pEi+K8rSvreBGJdxoOveyy2y/Yx1A+pWvjbE23Xd8c0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Bxucs29WpySlrVO5WX2xf9sOGQdEhdgcax+Ty5dwzxbIRKuYVU0/YUdCOoq1LF0O6jjOsPBhsue32euI2KdZi+0wmMs7IY2/2ISf/MZnD3WumaYb82CTaGSCBWEmOVbnBJtPDkhcGIaUmn46dpmr6kk0n+6qYbuIDQPyYow4RoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=IPtu4UE6; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5459WKgK43977804, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1746437540; bh=pEi+K8rSvreBGJdxoOveyy2y/Yx1A+pWvjbE23Xd8c0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=IPtu4UE6uDUvu3FbydkFazYv0zlHReI3xYbNpZ2BTFtG5htRrrq3PT1K8wSb9TGHw
-	 l08rSHWc0LA0U/8Qy7hZwT0oh/iQ0GT6LLuIqNZg+bHZ+JHnmo0YbdijdmyDusN6fD
-	 KblYPTke1YFEGZi6tLx0UvfPcqo8RdLoKONQaUKb6utX9t9QmDXBG7uYYrRKErGlLM
-	 gR7f3ZRFUfiO/LJ8zIipMdmCrSCHwFfo+hB0M1faDeMmh0nGUgz4Uy+76o/NqIm5RV
-	 ZyFrpERSfIoBkXYIGRYMiytFT07W1EpNFoUoow9ZEqbUjVNMY4Lk4ueHzn7NnveYfn
-	 Bi2TExE2QqNRA==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5459WKgK43977804
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 May 2025 17:32:20 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 5 May 2025 17:32:20 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 5 May 2025 17:32:19 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Mon, 5 May 2025 17:32:19 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Allan Wang <allan.wang@mediatek.com>, "nbd@nbd.name" <nbd@nbd.name>,
-        "lorenzo@kernel.org" <lorenzo@kernel.org>
-CC: "deren.wu@mediatek.com" <deren.wu@mediatek.com>,
-        "mingyen.hsieh@mediatek.com" <mingyen.hsieh@mediatek.com>,
-        "Sean.Wang@mediatek.com" <Sean.Wang@mediatek.com>,
-        "Soul.Huang@mediatek.com"
-	<Soul.Huang@mediatek.com>,
-        "Leon.Yen@mediatek.com" <Leon.Yen@mediatek.com>,
-        "Michael.Lo@mediatek.com" <Michael.Lo@mediatek.com>,
-        "Eric-SY.Chang@mediatek.com" <Eric-SY.Chang@mediatek.com>,
-        "km.lin@mediatek.com" <km.lin@mediatek.com>,
-        "robin.chiu@mediatek.com"
-	<robin.chiu@mediatek.com>,
-        "ch.yeh@mediatek.com" <ch.yeh@mediatek.com>,
-        "posh.sun@mediatek.com" <posh.sun@mediatek.com>,
-        "Quan.Zhou@mediatek.com"
-	<Quan.Zhou@mediatek.com>,
-        "Ryder.Lee@mediatek.com" <Ryder.Lee@mediatek.com>,
-        "Shayne.Chen@mediatek.com" <Shayne.Chen@mediatek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>
-Subject: RE: [PATCH] wifi: mt76: mt7925: add rfkill_poll for hardware rfkill
-Thread-Topic: [PATCH] wifi: mt76: mt7925: add rfkill_poll for hardware rfkill
-Thread-Index: AQHbvZOVfpHFzMbbC0e6vR0ZbyOdv7PDxISg
-Date: Mon, 5 May 2025 09:32:19 +0000
-Message-ID: <794916dfd01545579d2fe7f523b5b29a@realtek.com>
-References: <20250505073734.3923790-1-allan.wang@mediatek.com>
-In-Reply-To: <20250505073734.3923790-1-allan.wang@mediatek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1746444989; c=relaxed/simple;
+	bh=ofqC0RoSF97Le0fhXTG2VW0oNvarap2Z6RX4pswfXU0=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=fxwLoBTjcUgB2keb6C4qjduq8YtAkqqlsOCivn8CDTeP9yc/sWdMHes+K4S6MEPaKh/PfVIajNi1y52eVPsPHCaLT3taPJbNpPoPpB8cpizaxKUbJfv8rZUfyuh14qPsidQrtvW9hb/R8jYzHRnNtnZ9xb/fGjHY0+njN2DE7aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cXhbpPU8; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 544MhJMC002441
+	for <linux-wireless@vger.kernel.org>; Mon, 5 May 2025 11:36:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:date:from:message-id:subject:to; s=qcppdkim1; bh=ZYt6qh4c3aG4
+	BDhCS+7MrnJ6uABYUDP6r1QWDhraVSU=; b=cXhbpPU8ucScsaU1jPaSSJbR6weA
+	cOHfioltOJMTLjKq9Njo/bylhBtjZQh8SQylKcnnjLg/gNWiL5mwE1UXSxvCGyQz
+	hHswbCfi0ZZsIleICzkyKE+AEyfdxVEeQwX1KQpebRK2vFuQBCW1qE/3T2e828g4
+	n3VdwB0sA9ENQPPh95tl70PYAllFox+V8byM9yAEQdDQLrm0LXvk16DvVNnJhH85
+	JrWOhUs6HwI4Dr92miprtjqMFiGEfZCJle87Pns9JN0/TvOcDTDtdC9bVILqBUnW
+	VOdCADG2H0jbJshYQgHLhUqAvgnxlnchxCul5Pytna0KBc/c7U4KXMANDQ==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46e0xstegy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 05 May 2025 11:36:25 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7391d68617cso4792022b3a.0
+        for <linux-wireless@vger.kernel.org>; Mon, 05 May 2025 04:36:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746444984; x=1747049784;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZYt6qh4c3aG4BDhCS+7MrnJ6uABYUDP6r1QWDhraVSU=;
+        b=jK6TvwXCzQ1p6TNvm425RYU5o4DRu6h4QPgFgnr9KJQmkYQ48wksdUjfyyqtPZkbmP
+         AZVMzTJV1gzcr0MbG35yP1SqKXZWPZ8mawXfZDUH55VimPToTnNJ0gry8fi5Q2JPTFp8
+         fh0HX/Y41XM59hHAGpFgdgBrO0S0OczSKY9z/JWW4hkuU4QWDnZNLShh1NpQawmQKVOd
+         WwpTixZ95Weu20NKJ+bI8fZrYDRkR2NhXgB0rpVWO2ye6U0WfalCd8Upk4nQskxE1b2F
+         f5jPbRoz7WFlXwboEHJb0aECLwcWwRhp+pH/+o2Gz9JJLAIRZIdFsZpdrH8X1/LTUhDS
+         oNpA==
+X-Gm-Message-State: AOJu0Yw7clFSHg+43R6eeDqxsscaidQ35ZIbxgNjgcEBEzhc5Z5z1E6J
+	nueTKH/s41HfnzawifraJowvL+IUabqvXQh24ejgGzmDUU/g1uJQgwKQKE/O+eA93SB3HrZAi3w
+	Bz7gLD9+vcsWj0xsJVkJe3dnnmur0NlV54sqsAR5tPGg3lWn0DojeIoO07w7DE+fBJA==
+X-Gm-Gg: ASbGncupv3iTC/lXAt5x3xEQnXca6Cd5GeaeSXpa1RXnGdgdoGYYtB2wO/PNQ1TFrYE
+	ETr5Bvu5Hw0CeZIUpJCPOIY/64qPJB29FcjRv9bWHK4OCvyvj8VX/sYQdB0HN/ePerYhfB6L5sd
+	69FBtqXU+H6eVkZHQtSLhrfYD+ZGh/LiuSlDHcubz1zKEYrzpaxqRsshQXKAqektP54PVNCNL3x
+	tKXYB9Yz3TV6EvpT1LDbTlTA0vCrf621aqZ0706bPGogxpX67tFcF5gNWboPJ6oDMAAIRsdzMXn
+	u7NtFUJFM3QONe+9GRBzNJcRR0csdM46OyD0ikg3FKaoKZ6djeYmBVZcRrQLHqnWwYDQtOK3TVe
+	Mh+Wq4l/sJ2nE71ymM7eeUt/OBDX5PvUc34rVn1Qo7sN45w==
+X-Received: by 2002:a05:6a20:6f96:b0:1fe:61a4:7210 with SMTP id adf61e73a8af0-20bd6e49617mr21787574637.2.1746444984551;
+        Mon, 05 May 2025 04:36:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRjg9Mf44TQ0IFpIyDEdbEp7UOJfSHHIb36CPunkp0o8qiGwdoasGtd9EnaeU15RY3+CGmgw==
+X-Received: by 2002:a05:6a20:6f96:b0:1fe:61a4:7210 with SMTP id adf61e73a8af0-20bd6e49617mr21787540637.2.1746444984159;
+        Mon, 05 May 2025 04:36:24 -0700 (PDT)
+Received: from che-siroccolnx03.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74058db9200sm6497067b3a.42.2025.05.05.04.36.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 May 2025 04:36:23 -0700 (PDT)
+From: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+        Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+Subject: [PATCH wireless-next RFC v2 0/2] wifi: mac80211: Fix Rx packet handling in multi-radio devices
+Date: Mon,  5 May 2025 17:06:17 +0530
+Message-Id: <20250505113619.3654343-1-maharaja.kennadyrajan@oss.qualcomm.com>
+X-Mailer: git-send-email 2.17.1
+X-Proofpoint-GUID: RER9CjkibZkZWpvFHDLOnaY1LzniiLSN
+X-Proofpoint-ORIG-GUID: RER9CjkibZkZWpvFHDLOnaY1LzniiLSN
+X-Authority-Analysis: v=2.4 cv=bdprUPPB c=1 sm=1 tr=0 ts=6818a2b9 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=dt9VzEwgFbYA:10 a=d07TIHH5PQL_qa27likA:9 a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDExMCBTYWx0ZWRfXybx+dBLnjfTN
+ AQ6/cj9TqdRtx3oHUSeSEVMR6OlfECvrRP9IU6BGUbElyeqkG8UaAu1KKn4FreM/qZivBbp7zDm
+ AGL7GqL68olo2Wv7Xe7efWCusfbA1G6560ON/esPyh8Rxz8R2UwhXJ2lGxq3bfg9OyCaURIbNEl
+ 1+ngvwrwqYFQbia2bRDEXEFPcdZ5vZNT6hTlHbfp/2Wz8e3JzHm5/L6OQm9p0DYKzfL7L/9TIZe
+ 31ccouhhfLEVV4+x3YXvfR6ijetTLJMrU4xJ9m5oAJp25b8z5gPjOvJkGaG3KlHJJzwMgQxH2Ov
+ 27q3vfrujAn3+aVjly7hwdFKDP4CK5Ex5PUzBhrSHe6K0wZwlE0nGlPgxnuTNQrGwze6tEbJNZl
+ aPzxIVLGLUAD5PPACKtVPdC25/tUipfdCwWdSIM9S/2wBgfrXJQwweJknt8WJKGPr9fpOcj4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-05_05,2025-04-30_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ clxscore=1015 phishscore=0 adultscore=0 spamscore=0 impostorscore=0
+ mlxlogscore=999 mlxscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2504070000 definitions=main-2505050110
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
 
-Allan Wang <allan.wang@mediatek.com> wrote:
+This patch series addresses issues related to the handling of Rx group
+addressed data and management frames in multi-radio devices with ath12k
+driver. These frames don't have the destination station information, unlike
+unicast Rx frames, and are forwarded to all the active sdata of the device.
 
-[...]
+This happens because currently there is no check to ensure if the sdata is
+running on the same band as the frames are received on before start
+processing those frames.
 
-> @@ -2205,6 +2208,18 @@ static void mt7925_unassign_vif_chanctx(struct iee=
-e80211_hw *hw,
->         mutex_unlock(&dev->mt76.mutex);
->  }
->=20
-> +static void mt7925_rfkill_poll(struct ieee80211_hw *hw)
-> +{
-> +       struct mt792x_phy *phy =3D mt792x_hw_phy(hw);
-> +       int ret =3D 0;
+The patches ensure that packets are correctly processed and forwarded only
+to the appropriate interfaces by mandating the ieee80211_rx_status::freq
+for group addressed data frames and check the operating frequency against
+the rx_status->freq and forward to the appropriate interface when the
+frequency matches.
 
-no need initializer.
+Marking this patch as RFC to seek feedback for the functional change which
+mandates the ieee80211_rx_status::freq for group addressed data frames to
+fix the above Rx packet processing issue in multi-radio devices and
+following the current behavior (Rx packets are received on one band are
+processed on an interface running on a different band in multi-radio
+device) when the ieee80211_rx_status::freq is not reported by the driver
+for the packets received.
 
-> +
-> +       mt792x_mutex_acquire(phy->dev);
-> +       ret =3D mt7925_mcu_wf_rf_pin_ctrl(phy);
-> +       mt792x_mutex_release(phy->dev);
-> +
-> +       wiphy_rfkill_set_hw_state(hw->wiphy, ret ? false : true);
+This issue is also likely be applicable for Mediatek driver (mt76),
+the other driver that registers multi-radio device (also seems to report
+freq in rx_status).
 
-wiphy_rfkill_set_hw_state(hw->wiphy, ret =3D=3D 0);
+v2: Addressed Johannes's comments.
+    * Changed to for_each_link_data() from for_each_set_bit()
+    * Removed boolean variable and return with bool value.
+    * Combined the if condition.
 
-or
+Maharaja Kennadyrajan (2):
+  wifi: mac80211: update ieee80211_rx_status::freq documentation for
+    multi-radio
+  wifi: mac80211: process group addressed Rx data and mgmt packets on
+    intended interface
 
-wiphy_rfkill_set_hw_state(hw->wiphy, !ret);
+ include/net/mac80211.h |  6 ++++--
+ net/mac80211/rx.c      | 48 +++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 44 insertions(+), 10 deletions(-)
 
-> +}
-> +
->  const struct ieee80211_ops mt7925_ops =3D {
->         .tx =3D mt792x_tx,
->         .start =3D mt7925_start,
-> @@ -2265,6 +2280,7 @@ const struct ieee80211_ops mt7925_ops =3D {
->         .link_info_changed =3D mt7925_link_info_changed,
->         .change_vif_links =3D mt7925_change_vif_links,
->         .change_sta_links =3D mt7925_change_sta_links,
-> +       .rfkill_poll =3D mt7925_rfkill_poll,
->  };
->  EXPORT_SYMBOL_GPL(mt7925_ops);
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> index 286f602623c0..31fa092d2c8c 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> @@ -3633,6 +3633,45 @@ int mt7925_mcu_set_rate_txpower(struct mt76_phy *p=
-hy)
->         return 0;
->  }
->=20
-> +int mt7925_mcu_wf_rf_pin_ctrl(struct mt792x_phy *phy)
-> +{
-> +#define UNI_CMD_RADIO_STATUS_GET       0
-> +       struct mt792x_dev *dev =3D phy->dev;
-> +       struct sk_buff *skb;
-> +       int ret;
-> +
 
-Should avoid empty line in declarations?=20
-
-> +       struct {
-> +               __le16 tag;
-> +               __le16 len;
-> +               u8 rsv[4];
-> +       } __packed req =3D {
-> +               .tag =3D UNI_CMD_RADIO_STATUS_GET,
-> +               .len =3D cpu_to_le16(sizeof(req)),
-> +       };
-> +
-> +       struct mt7925_radio_status_event {
-> +               __le16 tag;
-> +               __le16 len;
-> +
-> +               u8 data;
-> +               u8 rsv[3];
-> +       } __packed * status;
-
-I remember this should be "__packed *status", but checkpatch reports
-false-alarm.=20
-
-> +
-> +       ret =3D mt76_mcu_send_and_get_msg(&dev->mt76,
-> +                                       MCU_UNI_CMD(RADIO_STATUS),
-> +                                       &req, sizeof(req), true, &skb);
-> +       if (ret)
-> +               return ret;
-> +
-> +       skb_pull(skb, sizeof(struct tlv));
-> +       status =3D (struct mt7925_radio_status_event *)skb->data;
-> +       ret =3D (int)status->data;
-
-I feel int casting is unnecessary.
-
-> +
-> +       dev_kfree_skb(skb);
-> +
-> +       return ret;
-> +}
-> +
->  int mt7925_mcu_set_rxfilter(struct mt792x_dev *dev, u32 fif,
->                             u8 bit_op, u32 bit_map)
->  {
-
-[...]
+base-commit: 885e5cbaa0ee3738fcd99167439459ede2cc102c
+-- 
+2.17.1
 
 
