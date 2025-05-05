@@ -1,60 +1,56 @@
-Return-Path: <linux-wireless+bounces-22572-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22577-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CAAAAAEFB
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 05:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FA9AAAF2B
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 05:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ABE53AFEA3
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:03:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DAB43AD7E7
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 03:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A30C2F15C4;
-	Mon,  5 May 2025 23:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7BD390E38;
+	Mon,  5 May 2025 23:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="soYu2KYe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Co2rjaQf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C228F2DCB4C;
-	Mon,  5 May 2025 23:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2044837A8A4;
+	Mon,  5 May 2025 23:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486071; cv=none; b=t3L2iEUqyR6yV8QQKNtOf0bAyLnwTBT5+2qFq+r/MoY+ncoJb/xWFVH0f5daL7O/pkql0RRRFIvacuRqY3zKjMxSfkf2S2/wB0Yb/PpZUdsa7GACNmq1m8Qu3jMfJrUvwjiiYNuQN3We0rhXDeUXzv+6+BwNhRJPRBYYa2Plf5g=
+	t=1746486150; cv=none; b=i2RcQ7obL/F6zx8D4CRc91n5igwyP3cmct1XuniTkOq/i/6RYPcGOeuXq8xHHAU9Z8A/YJiTJ/6itTU9MhL/x5u3Wgf/0xodcS6em+qPErYPupXGVycutZ6W2NXDf1H7ahjE4B5A0tTk7eBQ5FxMnKl98lEZCz2dlYcCb3NY308=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486071; c=relaxed/simple;
-	bh=CIOyiHhIcQe3oubqf8zVbmf/WHGd27a2psRoGPh9+r4=;
+	s=arc-20240116; t=1746486150; c=relaxed/simple;
+	bh=aHGGD3OQduVo8PO6ZGX50jXlZ63vX+g0i24Rx/tS0Hs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dGxW4U4nI/wY9N/Kr9FtpkGIBCAzT/Oxtavenir5SC/gmG1Z4yFoiiIofzIL0aJGNVMN7mkf7HncFZBlgnyZIcRU0MLOKp12Z6YXz/OgNQs7mTnHEozpR/PI8XvL55t6h4R76InIrJlbNJFvZmzNfSoF0E/WnXbjZKW6UfrGYA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=soYu2KYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288B7C4CEEF;
-	Mon,  5 May 2025 23:01:09 +0000 (UTC)
+	 MIME-Version; b=CMYT/iAoUbv8fe6iwzPsdDQtSOgn31qTj1QzPRKaZK+IFPtotTXVQDCawywyEEL8fJtIzmfqCMgi3o76okVG45gAQ06MKnPUUIOu1kSyf8YuBnnSAHxBJB/jev2/EIZT05LTAAVHxE4QiGizoTO/PS3apfXaLXe5GIRAxpK305w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Co2rjaQf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51F9C4CEEE;
+	Mon,  5 May 2025 23:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486070;
-	bh=CIOyiHhIcQe3oubqf8zVbmf/WHGd27a2psRoGPh9+r4=;
+	s=k20201202; t=1746486148;
+	bh=aHGGD3OQduVo8PO6ZGX50jXlZ63vX+g0i24Rx/tS0Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=soYu2KYeWvO8Ydt1WpN+MYlVn0Zzc9ganCObCNo0C0X76xHvWX8S6HxW0hN9aMx8d
-	 wgDlTWsbKrR4k/vdluo+AnFgPl3JJvaJEQFb6MPRlm9RnlbnAuAaHbaLDOw8WIDnJ/
-	 BsL/xJxsKiU8136pFg+4MOlB9gTDZJhES64zvF3QrHbc9V1+6Fsc7HhiwvThcNMFQM
-	 wFf+grX2/ud3C5KWDrGf1tHukssRq+Tb/wCwwJH4G3KhW7TuDIuV8+UHx8oNuG4oEq
-	 WAo0yc3UGAvqOJfDwtxUbOWHNssVyZaekfGE8cNOAfCrsHK2tegjhfFExetkNQub6Y
-	 8fDLWzNmC8h7g==
+	b=Co2rjaQfagvaohxyx2om+FO2y2twCgj5unVmYzzB+kLhxLCf3u/zevBzLkMQpcLDI
+	 MFj6HXZgPbc6FC/xfZOebAv/acjsR0swTYmfIzUareeFIIUJS8M8nKPSnKKDfcc58d
+	 c+Vc8PCwJCu44BVahDU1NyO5aLnXHrrs77suyc2q6/wj5fQdj1nIxWoCO7qRQGsmII
+	 Nan3yU5DOoGMNcqDFX+TTGLONngshlc0LxM8qW7DlsttZnDR8rKdHd5LF2bbQ5Fz5B
+	 uEs3EB6UBKmyD5bAJuhQmPr6Iiv3/yMNjgsfKEcGjxrs7UhYXEnVKe7RvKWB7mdUDe
+	 laRUaXlbuhwMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vinith Kumar R <quic_vinithku@quicinc.com>,
-	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 139/294] wifi: ath12k: Report proper tx completion status to mac80211
-Date: Mon,  5 May 2025 18:53:59 -0400
-Message-Id: <20250505225634.2688578-139-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 177/294] wifi: rtw88: Fix rtw_init_vht_cap() for RTL8814AU
+Date: Mon,  5 May 2025 18:54:37 -0400
+Message-Id: <20250505225634.2688578-177-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -69,54 +65,66 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Vinith Kumar R <quic_vinithku@quicinc.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit d2d9c9b8de725e1006d3aa3d18678a732f5d3584 ]
+[ Upstream commit 6be7544d19fcfcb729495e793bc6181f85bb8949 ]
 
-Currently Tx completion for few exception packets are received from
-firmware and the tx status updated to mac80211. The tx status values of
-HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP and HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL
-are considered as tx failure and reported as tx failure to mac80211.
-But these failure status is due to internal firmware tx drop and these
-packets were not tried to transmit in the air.
-In case of mesh this invalid tx status report might trigger mpath broken
-issue due to increase in mpath fail average.
-So do not report these tx status as tx failure instead free the skb
-by calling ieee80211_free_txskb(), and that will be accounted as dropped
-frame.
+Set the MCS maps and the highest rates according to the number of
+spatial streams the chip has. For RTL8814AU that is 3.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Vinith Kumar R <quic_vinithku@quicinc.com>
-Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://patch.msgid.link/20241122173432.2064858-1-quic_tamizhr@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/e86aa009-b5bf-4b3a-8112-ea5e3cd49465@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_tx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index e025e4d0e7678..25a9d4c4fae76 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -422,13 +422,13 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index b90ea6c88b15d..557526e0eb7f3 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1580,8 +1580,9 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
+ 			     struct ieee80211_sta_vht_cap *vht_cap)
+ {
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
+-	u16 mcs_map;
++	u16 mcs_map = 0;
+ 	__le16 highest;
++	int i;
  
- 	switch (wbm_status) {
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_OK:
--	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
--	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
- 		ts.acked = (wbm_status == HAL_WBM_REL_HTT_TX_COMP_STATUS_OK);
- 		ts.ack_rssi = le32_get_bits(status_desc->info2,
- 					    HTT_TX_WBM_COMP_INFO2_ACK_RSSI);
- 		ath12k_dp_tx_htt_tx_complete_buf(ab, msdu, tx_ring, &ts);
- 		break;
-+	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
-+	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT:
- 		ath12k_dp_tx_free_txbuf(ab, msdu, mac_id, tx_ring);
+ 	if (efuse->hw_cap.ptcl != EFUSE_HW_CAP_IGNORE &&
+ 	    efuse->hw_cap.ptcl != EFUSE_HW_CAP_PTCL_VHT)
+@@ -1604,21 +1605,15 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
+ 	if (rtw_chip_has_rx_ldpc(rtwdev))
+ 		vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC;
+ 
+-	mcs_map = IEEE80211_VHT_MCS_SUPPORT_0_9 << 0 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 4 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 6 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 8 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 10 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 12 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 14;
+-	if (efuse->hw_cap.nss > 1) {
+-		highest = cpu_to_le16(780);
+-		mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << 2;
+-	} else {
+-		highest = cpu_to_le16(390);
+-		mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << 2;
++	for (i = 0; i < 8; i++) {
++		if (i < efuse->hw_cap.nss)
++			mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << (i * 2);
++		else
++			mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << (i * 2);
+ 	}
+ 
++	highest = cpu_to_le16(390 * efuse->hw_cap.nss);
++
+ 	vht_cap->vht_mcs.rx_mcs_map = cpu_to_le16(mcs_map);
+ 	vht_cap->vht_mcs.tx_mcs_map = cpu_to_le16(mcs_map);
+ 	vht_cap->vht_mcs.rx_highest = highest;
 -- 
 2.39.5
 
