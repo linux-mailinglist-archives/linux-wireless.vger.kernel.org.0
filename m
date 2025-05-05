@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-22433-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22434-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7DFAA8CF5
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 09:25:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0FABAA8CF6
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 09:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 693F77A7DC3
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 07:24:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B9591722BC
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 May 2025 07:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4771D8DFB;
-	Mon,  5 May 2025 07:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10821DB365;
+	Mon,  5 May 2025 07:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="lnRNcWcd"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="bwIM2Cp/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736A41CDFAC
-	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 07:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C49F1DED4A
+	for <linux-wireless@vger.kernel.org>; Mon,  5 May 2025 07:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746429907; cv=none; b=PwYMg4UO6Sh9FqSRSAeJnk1jdf2lMsjnBp2hoer1RYr3FEIeQAMcr2P3/yR+9jbwUC6egI3wCPg+3oFG/9TWsr3+T1iBpg+C0Eox7wLkFmgYj7deOT1MqPUtN8LTZW2V2vKzgGg/B9xOqohjRozAin/PyRYDsBySapXdwOaSwoE=
+	t=1746429910; cv=none; b=Y4fg7GUYDpWq3XYhYETuVIOHAxelJ8S2ILZmftyij0C1ipwE3KWcJPbPrqsYgoKjpiAN4kZLqZDZg4d2Ps23/cRQyeOt6gv0hurSubwxd0uLUa53UXXNfdyoS9kQK/+uBGqVW4bcb+ZUqBX473AImMkNSGmpSxso8lYmPsyYY0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746429907; c=relaxed/simple;
-	bh=ReikMNucw7Jwc/6z6Eo9NqtVTHWkMB/isjbFA9QPMyw=;
+	s=arc-20240116; t=1746429910; c=relaxed/simple;
+	bh=LAPkI3mQD+zOLMJ8kB0XrUmNqSSgNnHEYZLSUYn0WAM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LWm+0vhv7PhfbfS7+W4s8jaBbET5J0W69/7QL4F7umk+ZwFDn8v4EFJa/J1mKu8K9/sweiAKt4L8SXcnWLCFx8/qkn8D9cFS5gp+A/N5Y8rWyd65aUhMSqUwAfzmryVQpm86nDgqYvbTnMAbljaaF9pHOMOpzlW/zhVUCWG+1LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=lnRNcWcd; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=tMQoSP5710TON+HARawQgc33h6KF23biAlviVEa8J5WHkO5lnnRoqplz53Q8zt6Fedr585OeW5pZr3DKdBFs3z+fqLIE32B4in451mc68KHRhHVl5iyVKHSKtczzKcodl4pVAq7ZHDaj08cMpyu4ECKzVUwWuJSnG/ux/DsrqD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=bwIM2Cp/; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5457P3aP43831156, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5457P6sS43831165, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1746429903; bh=ReikMNucw7Jwc/6z6Eo9NqtVTHWkMB/isjbFA9QPMyw=;
+	t=1746429906; bh=LAPkI3mQD+zOLMJ8kB0XrUmNqSSgNnHEYZLSUYn0WAM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=lnRNcWcdJXbrfYz+NAyZwFVWkefgrOjLsPeEQkjZ84Of8KN7XzVF85mTH3gRArWAv
-	 UfTLcR4VNjIpXX5JJ2rDBfuIKTETjmbmvJhU/oPWcczkR2S7wShMiue9Ru1kuGCLNC
-	 Gqw57fangLIicTTLjR/wRj2ZvDL2uQbiQXN+8Kq2Pe+AieRYgq/JEOpSCiYSFDC5Tf
-	 lw/S+sUHLmnUw3iG/k0dyiWftQgfEMMXaJgP2VlPwtMtuL2RMNwTBzBVQNOb3G/UvO
-	 YbK/kT+md+i8BjVcUT+CnP/c+lttoXxsCwJ+5mR79vAayIsZ1/GEa9QphukSmSlC9C
-	 9UUph4cZ4kGlQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5457P3aP43831156
+	b=bwIM2Cp/CgzBr/hvQ2PDyeNLBltxN91RPFEQPQt/jPadem6aBXSOqY3Bn1XN5tqdk
+	 TDxhfPv79X6T0k75V+th117By/eA/odsncnbea80+o9O9dC1gfaE7kG7axLWqyDZUQ
+	 SBQdKouGg1gbYPTpb7SLahZySVRUqjG/KAAlwJyXsXV0he6bfZf8nplHqIJraXyPzc
+	 SYbq98JSgkh7SphcDmVsHebLgEOhDWrV/8qRaO3whY2boJPRKqX3SEAkpyww+VRf4V
+	 pGrtHoPsIRp1Gpo6+/r4oCdKK+pJAImojBVcYL4A+jYytSPXysUw+TkpaGNqbeHTNV
+	 Spx/wYX40rYGg==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5457P6sS43831165
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 5 May 2025 15:25:03 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 5 May 2025 15:25:06 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 5 May 2025 15:25:03 +0800
+ 15.1.2507.39; Mon, 5 May 2025 15:25:06 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 5 May
- 2025 15:25:02 +0800
+ 2025 15:25:05 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <phhuang@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 03/11] wifi: rtw89: send nullfunc based on the given link
-Date: Mon, 5 May 2025 15:24:32 +0800
-Message-ID: <20250505072440.45113-4-pkshih@realtek.com>
+Subject: [PATCH rtw-next 04/11] wifi: rtw89: chan: re-calculate MLO DBCC mode during setting channel
+Date: Mon, 5 May 2025 15:24:33 +0800
+Message-ID: <20250505072440.45113-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250505072440.45113-1-pkshih@realtek.com>
 References: <20250505072440.45113-1-pkshih@realtek.com>
@@ -74,56 +74,99 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-From: Po-Hao Huang <phhuang@realtek.com>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-The nullfunc sender function is link specific. Use core_tx_write_link
-with sw_mld flag to TX the nullfunc via the given link.
+Wi-Fi 7 chips have dual HW bands. After impending MLO support, they
+can work with HW-[0] / HW-[1] / HW-[0,1] according to active links.
+So, during setting channel, also re-calculate the MLO DBCC mode flag.
+Then, leaf chip functions of setting channel can configure with HWs
+based on current case.
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+Besides, tweak the initial and idle MLO DBCC mode of Wi-Fi 7 chips to
+MLO_1_PLUS_1_1RF to work with dual HW bands. And, after disconnecting,
+due to no active links, MLO DBCC mode will re-calculate to idle case,
+i.e. MLO_1_PLUS_1_1RF.
+
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/chan.c | 32 +++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/core.c |  2 +-
+ 2 files changed, 33 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
+index 4fec61ed3454..871befa63889 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.c
++++ b/drivers/net/wireless/realtek/rtw89/chan.c
+@@ -359,12 +359,41 @@ const struct rtw89_chan *__rtw89_mgnt_chan_get(struct rtw89_dev *rtwdev,
+ }
+ EXPORT_SYMBOL(__rtw89_mgnt_chan_get);
+ 
++static enum rtw89_mlo_dbcc_mode
++rtw89_entity_sel_mlo_dbcc_mode(struct rtw89_dev *rtwdev, u8 active_hws)
++{
++	if (rtwdev->chip->chip_gen != RTW89_CHIP_BE)
++		return MLO_DBCC_NOT_SUPPORT;
++
++	switch (active_hws) {
++	case BIT(0):
++		return MLO_2_PLUS_0_1RF;
++	case BIT(1):
++		return MLO_0_PLUS_2_1RF;
++	case BIT(0) | BIT(1):
++	default:
++		return MLO_1_PLUS_1_1RF;
++	}
++}
++
++static
++void rtw89_entity_recalc_mlo_dbcc_mode(struct rtw89_dev *rtwdev, u8 active_hws)
++{
++	enum rtw89_mlo_dbcc_mode mode;
++
++	mode = rtw89_entity_sel_mlo_dbcc_mode(rtwdev, active_hws);
++	rtwdev->mlo_dbcc_mode = mode;
++
++	rtw89_debug(rtwdev, RTW89_DBG_STATE, "recalc mlo dbcc mode to %d\n", mode);
++}
++
+ static void rtw89_entity_recalc_mgnt_roles(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+ 	struct rtw89_entity_mgnt *mgnt = &hal->entity_mgnt;
+ 	struct rtw89_vif_link *link;
+ 	struct rtw89_vif *role;
++	u8 active_hws = 0;
+ 	u8 pos = 0;
+ 	int i, j;
+ 
+@@ -413,10 +442,13 @@ static void rtw89_entity_recalc_mgnt_roles(struct rtw89_dev *rtwdev)
+ 				continue;
+ 
+ 			mgnt->chanctx_tbl[pos][i] = link->chanctx_idx;
++			active_hws |= BIT(i);
+ 		}
+ 
+ 		mgnt->active_roles[pos++] = role;
+ 	}
++
++	rtw89_entity_recalc_mlo_dbcc_mode(rtwdev, active_hws);
+ }
+ 
+ enum rtw89_entity_mode rtw89_entity_recalc(struct rtw89_dev *rtwdev)
 diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index c8b00f790829..c5bb3452946e 100644
+index c5bb3452946e..1546e3d8e2e0 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.c
 +++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -3335,8 +3335,10 @@ static int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev,
- {
- 	struct ieee80211_vif *vif = rtwvif_link_to_vif(rtwvif_link);
- 	int link_id = ieee80211_vif_is_mld(vif) ? rtwvif_link->link_id : -1;
-+	struct rtw89_sta_link *rtwsta_link;
- 	struct ieee80211_sta *sta;
- 	struct ieee80211_hdr *hdr;
-+	struct rtw89_sta *rtwsta;
- 	struct sk_buff *skb;
- 	int ret, qsel;
- 
-@@ -3349,6 +3351,7 @@ static int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev,
- 		ret = -EINVAL;
- 		goto out;
+@@ -4966,7 +4966,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
+ 	if (rtwdev->chip->chip_gen == RTW89_CHIP_BE) {
+ 		rtwdev->dbcc_en = true;
+ 		rtwdev->mac.qta_mode = RTW89_QTA_DBCC;
+-		rtwdev->mlo_dbcc_mode = MLO_2_PLUS_0_1RF;
++		rtwdev->mlo_dbcc_mode = MLO_1_PLUS_1_1RF;
  	}
-+	rtwsta = sta_to_rtwsta(sta);
  
- 	skb = ieee80211_nullfunc_get(rtwdev->hw, vif, link_id, qos);
- 	if (!skb) {
-@@ -3360,7 +3363,13 @@ static int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev,
- 	if (ps)
- 		hdr->frame_control |= cpu_to_le16(IEEE80211_FCTL_PM);
- 
--	ret = rtw89_core_tx_write(rtwdev, vif, sta, skb, &qsel);
-+	rtwsta_link = rtwsta->links[rtwvif_link->link_id];
-+	if (unlikely(!rtwsta_link)) {
-+		ret = -ENOLINK;
-+		goto out;
-+	}
-+
-+	ret = rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link, skb, &qsel, true);
- 	if (ret) {
- 		rtw89_warn(rtwdev, "nullfunc transmit failed: %d\n", ret);
- 		dev_kfree_skb_any(skb);
+ 	rtwdev->bbs[RTW89_PHY_0].phy_idx = RTW89_PHY_0;
 -- 
 2.25.1
 
