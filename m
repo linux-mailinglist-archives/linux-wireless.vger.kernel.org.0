@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-22618-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22616-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E6FAAB1BD
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 06:06:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF0CAAB1BE
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 06:06:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 057EF4E1934
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 04:05:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F5757AC091
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 04:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29F941B790;
-	Tue,  6 May 2025 00:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BDD841B773;
+	Tue,  6 May 2025 00:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GtzwL8zK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YE8/7yPM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679102D3FAA;
-	Mon,  5 May 2025 22:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADAC2D3FBB;
+	Mon,  5 May 2025 22:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485613; cv=none; b=FzdcHsTwgRY0yDH8DvrQcgi6rbG2Ps5NsY39IPrhrYlh83/mB0q6Dt9uhK/ZuGFCALcc8LlzssfOt1Ar1w+R88qn79Kr3Q0pck63AEhKgqfDMq9Kon7Gp8xL1Xcwrq9+BOm0Z8x3o7jxUux13CMQgRbWzu9sAO2cdjDX8GkZ0As=
+	t=1746485617; cv=none; b=c/m6hFrNPl440e0ldxN3t53WsWptN2+fvyKqk4WkYE2b0QoPADTI5mm5sN7Q4N4d1to1MfCjRtpWJYua+x/yIYgR20PRl48opS2qUuHY0+qTkbLiPMIqCfVF/U5omtRpyhinK5kVcGvCC0+u15l+ze1EenN74xdSBBTyB3PcLYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485613; c=relaxed/simple;
-	bh=eBpYEcCvWDyfihYZrWMBxe7dijLhnanSGNvrEJ4065w=;
+	s=arc-20240116; t=1746485617; c=relaxed/simple;
+	bh=sqCRRX5se34m6d3XsYR9wyca+/LOv0PL2t1VKF+e8lc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nn155mzZ94AEVi8slGqNv5s/Gl4hllZ4ytpeTiPRmC2lDI3Owi5xk6qJeUd/OCD3OtDTPvrfOYAKoheDRYbC/TXTFMSLH+J+hUj5kCss/bMKpw2VyHCXcozthQw4MKOqTwn0awZNLbTPs2GnOkv+2hsH+4VJaED7apSJZM5Wegg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GtzwL8zK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39623C4CEE4;
-	Mon,  5 May 2025 22:53:31 +0000 (UTC)
+	 MIME-Version; b=s8XsdEATAREOMXA27NIMP6I98pFhNAaen+bnQRnru6cUbFyZlRsME/tUrwJlbGq/vuFBNWGoOltfJry95Cw+lCITRI1iUaIwp4gZfZ2sEsScqjkOjDyLYRDvs/Vsb8AwB6bdIap+gCbFzQ2Pa6K7Tl2qz/KCkgavTxxHEKmPqy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YE8/7yPM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F81EC4CEED;
+	Mon,  5 May 2025 22:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485612;
-	bh=eBpYEcCvWDyfihYZrWMBxe7dijLhnanSGNvrEJ4065w=;
+	s=k20201202; t=1746485616;
+	bh=sqCRRX5se34m6d3XsYR9wyca+/LOv0PL2t1VKF+e8lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GtzwL8zK+THBdRAN2N4gvki91gv2kFhkYWSFF3Dv+XVkZOq4hAUJKZ81erI3/Kng3
-	 CcIiSuKIR6HHCt50kXU9RRXLfq9XmT/8sw7E6KZdZeIllWEBeQHJ5niXTCFNvL36TR
-	 T5W9awNJgf3IuQOGlMKOG/OS+C3cKKT8k5aKIOeyGm01q2vmW4+nlDUsDx0kIPodSr
-	 v38es9OD8FePxgWei6hzhaRYkR3gdA6ePV9MiAF2LdurcLNOWTB9VgTdMOPl8EkgfZ
-	 QUrAtqKUm0sSN/oQsAHAQnE/zZCt76kLiDwmmQ8hvYWfMEP2D39S46eHtIXnDx/ziC
-	 uQ6J71VPZNVhA==
+	b=YE8/7yPMByzoWkz7Rr+BvbcboPreaguHYqF9E7mCyO60dQjCyPiGlHAwPxDZ6ctc5
+	 frno309cxiXF15w9+sWg4l2QKtDVs6aCZQCxaa4UuJ1za5G4Oyw70hu0f0/JHu6EfK
+	 OFVonUAtEH0lrQfWXBD73Xoe1yRvnYRi1l6x9IfS3A3tKPUazDku+049QsGl6H4mB5
+	 7HNlAbzuTgkGpMG9A897t/ZZe/usnfRrI2TMVNkTRaqmlsqXAUX1XDcjdlrgfWVxmK
+	 GakfIiIWK/Nx1ErhAUvRB0jNQ+M0ekZlD0raVnTVK1N9xrR3Cakbk2Ka9oXtcJMW2t
+	 y9xFaaWC9b/KA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: P Praneesh <quic_ppranees@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 386/486] wifi: ath12k: fix the ampdu id fetch in the HAL_RX_MPDU_START TLV
-Date: Mon,  5 May 2025 18:37:42 -0400
-Message-Id: <20250505223922.2682012-386-sashal@kernel.org>
+	eilon.rinat@intel.com,
+	emmanuel.grumbach@intel.com,
+	daniel.gabay@intel.com,
+	yedidya.ben.shimol@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 388/486] wifi: iwlwifi: use correct IMR dump variable
+Date: Mon,  5 May 2025 18:37:44 -0400
+Message-Id: <20250505223922.2682012-388-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -69,104 +69,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit dff4f278ee1ef12d822b7ed2a1048d27037209bb ]
+[ Upstream commit 21e4d29ac0def546d57bacebe4a51cbed1209b03 ]
 
-Currently, ampdu id is update with peer id mask which is incorrect.
-Therefore, update the ampdu id with PPDU id mask value. Also move
-the ampdu_id field inside the user stats since it is a user id based
-statistics.
+We shouldn't dump the reg_data here which dumps the last
+entry again, it should use the imr_reg_data.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Link: https://patch.msgid.link/20250206013854.174765-7-quic_periyasa@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250205145347.3313b18667d1.Iaa9ab66b1d397912a573525e060d39ea01b29d19@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 16 ++++++++++------
- drivers/net/wireless/ath/ath12k/hal_rx.h |  3 ++-
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 4c98b9de1e584..6a88745369447 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 6594216f873c4..cd284767ff4ba 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
  /*
-  * Copyright (c) 2019-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+- * Copyright (C) 2005-2014, 2018-2024 Intel Corporation
++ * Copyright (C) 2005-2014, 2018-2025 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
   */
- 
- #include "dp_mon.h"
-@@ -666,6 +666,11 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k_base *ab,
- 		if (userid < HAL_MAX_UL_MU_USERS) {
- 			struct hal_rx_user_status *rxuser_stats =
- 				&ppdu_info->userstats[userid];
-+
-+			if (ppdu_info->num_mpdu_fcs_ok > 1 ||
-+			    ppdu_info->num_mpdu_fcs_err > 1)
-+				ppdu_info->userstats[userid].ampdu_present = true;
-+
- 			ppdu_info->num_users += 1;
- 
- 			ath12k_dp_mon_rx_handle_ofdma_info(tlv_data, rxuser_stats);
-@@ -783,8 +788,8 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k_base *ab,
- 		if (userid < HAL_MAX_UL_MU_USERS) {
- 			info[0] = __le32_to_cpu(mpdu_start->info0);
- 			ppdu_info->userid = userid;
--			ppdu_info->ampdu_id[userid] =
--				u32_get_bits(info[0], HAL_RX_MPDU_START_INFO1_PEERID);
-+			ppdu_info->userstats[userid].ampdu_id =
-+				u32_get_bits(info[0], HAL_RX_MPDU_START_INFO0_PPDU_ID);
- 		}
- 
- 		mon_mpdu = kzalloc(sizeof(*mon_mpdu), GFP_ATOMIC);
-@@ -1020,15 +1025,14 @@ static void ath12k_dp_mon_update_radiotap(struct ath12k *ar,
- {
- 	struct ieee80211_supported_band *sband;
- 	u8 *ptr = NULL;
--	u16 ampdu_id = ppduinfo->ampdu_id[ppduinfo->userid];
- 
- 	rxs->flag |= RX_FLAG_MACTIME_START;
- 	rxs->signal = ppduinfo->rssi_comb + ATH12K_DEFAULT_NOISE_FLOOR;
- 	rxs->nss = ppduinfo->nss + 1;
- 
--	if (ampdu_id) {
-+	if (ppduinfo->userstats[ppduinfo->userid].ampdu_present) {
- 		rxs->flag |= RX_FLAG_AMPDU_DETAILS;
--		rxs->ampdu_reference = ampdu_id;
-+		rxs->ampdu_reference = ppduinfo->userstats[ppduinfo->userid].ampdu_id;
+@@ -2691,7 +2691,7 @@ static u32 iwl_dump_ini_trigger(struct iwl_fw_runtime *fwrt,
  	}
+ 	/* collect DRAM_IMR region in the last */
+ 	if (imr_reg_data.reg_tlv)
+-		size += iwl_dump_ini_mem(fwrt, list, &reg_data,
++		size += iwl_dump_ini_mem(fwrt, list, &imr_reg_data,
+ 					 &iwl_dump_ini_region_ops[IWL_FW_INI_REGION_DRAM_IMR]);
  
- 	if (ppduinfo->he_mu_flags) {
-diff --git a/drivers/net/wireless/ath/ath12k/hal_rx.h b/drivers/net/wireless/ath/ath12k/hal_rx.h
-index 095216eabc01d..8c37cbc01b1c5 100644
---- a/drivers/net/wireless/ath/ath12k/hal_rx.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_rx.h
-@@ -143,6 +143,8 @@ struct hal_rx_user_status {
- 	u32 mpdu_fcs_ok_bitmap[HAL_RX_NUM_WORDS_PER_PPDU_BITMAP];
- 	u32 mpdu_ok_byte_count;
- 	u32 mpdu_err_byte_count;
-+	bool ampdu_present;
-+	u16 ampdu_id;
- };
- 
- #define HAL_MAX_UL_MU_USERS	37
-@@ -226,7 +228,6 @@ struct hal_rx_mon_ppdu_info {
- 	u8 addr4[ETH_ALEN];
- 	struct hal_rx_user_status userstats[HAL_MAX_UL_MU_USERS];
- 	u8 userid;
--	u16 ampdu_id[HAL_MAX_UL_MU_USERS];
- 	bool first_msdu_in_mpdu;
- 	bool is_ampdu;
- 	u8 medium_prot_type;
+ 	if (size) {
 -- 
 2.39.5
 
