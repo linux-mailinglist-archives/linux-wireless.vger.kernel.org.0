@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-22678-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22679-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006AAAACE34
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 21:41:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C558AACE35
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 21:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9FE94E35D2
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 19:41:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C9827B89BA
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 19:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A11214228;
-	Tue,  6 May 2025 19:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4881FC0EA;
+	Tue,  6 May 2025 19:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VWvlG4Hv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gc87nbfW"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E588209F46
-	for <linux-wireless@vger.kernel.org>; Tue,  6 May 2025 19:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FE020AF9C
+	for <linux-wireless@vger.kernel.org>; Tue,  6 May 2025 19:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746560483; cv=none; b=gm5M/DMpznnNY2JlgIIoBNlAY2VsrIs+c076rFqmQ4egsLnXO+HnF/Dl1dHaLQzIYwIHk2xgKJaLyUSFThiTX/J6RcIxuQIW6k/s0EwkvDI14CmkJvIVC9Y/95cQ2wtUGUv9AhfyzpC/r4qM1evkh2jDB7lEkVO05bebV4AGAaI=
+	t=1746560485; cv=none; b=eKFQD//tKcmvxHViMS4QWV+BDi/GB7TXgmSF2uzUk/NKweG54SUR+EyS4wY/dv6K8C/iUuJDRB2PawzrypHVkOB9UuCq4W4W4IueGB9aezrkyCvOi0DmRbJbGJlTnt8WufSJ5FkbpgUChNp+C4r2eJiaW0CbVda4gvmRCCm3pds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746560483; c=relaxed/simple;
-	bh=J1+vjc2CsnpwJmRFquZ5IVX2yWnzrRR8J+oOMY/3nPQ=;
+	s=arc-20240116; t=1746560485; c=relaxed/simple;
+	bh=BCC9SD4/ZLHiTUN39sVgcdLsoLrV57NfX7yRYnkEJIw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C1rHqEXtv9JfgroQGUokzo9ddNEIDK/+Gnh1tbZFzk2qq4cHcn93SEuYCQE+vh+7+tECw0/Fv8wuGHO8sCDogg1bsBq64AjudF9haUbxJUDCXcYNmfWPhIqMKnQXuesmUB9m43j3379f22tm0kFeTz67Ku4m8+3vnCN7q2DJerg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VWvlG4Hv; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=Qugnq2ZtxVC0iOWefKnyl2vkZHzPNsJe3SRorGBD/ZmZ/azcRT9AtR4TMyfdG8219BoX8XmRBaE9q+uRKN/xbkk1x1+uT55tXTyvQD0zL0WeWTi8+jGBJ4WlY9s1e+YN+jPdSaJlapzZc6d6dmtNAekFM6hFb2lmeHr5Nf6Wjls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gc87nbfW; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746560482; x=1778096482;
+  t=1746560484; x=1778096484;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=J1+vjc2CsnpwJmRFquZ5IVX2yWnzrRR8J+oOMY/3nPQ=;
-  b=VWvlG4HvKyA77cSTJd9y+wQepRiath+2uOrhO7vM8lFTwOW1rjeRDHp4
-   Vc8yWifFLFJxuLs9BQttLxpvpnGM01XTpU8ljInvPu6Tlzn7X61nf7Z+N
-   BrbsKnfyDkDwQy47BQU0m3xvd55+Fe66GWlwpFdLlzQyEofrLMxSBirp2
-   //3dHBjxblJ2GoBPum2uTMXFjdnF14YDqq8ZHf5mLWiteP8ZoI+oNHwcz
-   A9zA1u0f+DtofqTmsGCn73xu/rN7W2Qx1J11ZBF7OpdGJ7IutrIGgfQM6
-   EenCte4nBC+O06eDAtSShxhL4Fb2awNYFyef1mhGSJCCodTAAyb5/gRGY
-   g==;
-X-CSE-ConnectionGUID: 3/+fA4OsT1ad9YSsGp0uoQ==
-X-CSE-MsgGUID: YAwTtY5EQYOo3iVcCo3qiw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="47961621"
+  bh=BCC9SD4/ZLHiTUN39sVgcdLsoLrV57NfX7yRYnkEJIw=;
+  b=gc87nbfWxboJv/7qrFtkKdXO1oDbdOiNL7FrnNaxekWSoFyLwEcRTDp7
+   fJRT3l7wx9z/RsQeDUk1x3DqEueYdXO/c71m2hMu94WATyCkZ/PoyNVgg
+   LKPBU4moS19hlt5xL1RF4cRfL8d5/kQvoKshtDg0yK/Bkj+sMg1HDV8IL
+   Omqb7Rc5xIT2oJof94k/pCz9FVfeXegtvNJKykD4IWAiEoQjwi6nk8g0N
+   VS843BEBTTuW4Wbo2GmoZ7MrVatU2eknLIzLcq5GfiGcEHoyZuEhEFnOf
+   FEaHviQNt9jAtjAN1UBGAlkBu+P920JGCenLU4Ln2cSCZnT6jaSTT+flg
+   w==;
+X-CSE-ConnectionGUID: h8fiWpQwR56xCc9jTP8TdQ==
+X-CSE-MsgGUID: uY7zHYT8T1647nUw0PQiOg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="47961627"
 X-IronPort-AV: E=Sophos;i="6.15,267,1739865600"; 
-   d="scan'208";a="47961621"
+   d="scan'208";a="47961627"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 12:41:21 -0700
-X-CSE-ConnectionGUID: lVpplWLoS7uySFRA3rUT6Q==
-X-CSE-MsgGUID: sq36pFiyTCqImdWk6J5gEw==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 12:41:23 -0700
+X-CSE-ConnectionGUID: /AmdWThKSVm+T71P71YZCQ==
+X-CSE-MsgGUID: YRVJ7sSeRSGJV3nbDLfECg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,267,1739865600"; 
-   d="scan'208";a="140465413"
+   d="scan'208";a="140465429"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 12:41:20 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 12:41:21 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Subject: [PATCH iwlwifi-next 03/15] wifi: iwlwifi: Add a new version for sta config command
-Date: Tue,  6 May 2025 22:40:50 +0300
-Message-Id: <20250506194102.3407967-4-miriam.rachel.korenblit@intel.com>
+Subject: [PATCH iwlwifi-next 04/15] wifi: iwlwifi: Add a new version for mac config command
+Date: Tue,  6 May 2025 22:40:51 +0300
+Message-Id: <20250506194102.3407967-5-miriam.rachel.korenblit@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250506194102.3407967-1-miriam.rachel.korenblit@intel.com>
 References: <20250506194102.3407967-1-miriam.rachel.korenblit@intel.com>
@@ -78,166 +78,273 @@ Content-Transfer-Encoding: 8bit
 
 From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 
-Add a new version of sta configuration command
-which includes these wifi8 features:
-
-1. LDPC X2 CW size support indication
-2. Indication if ICF frame is needed instead of RTS
-3. support for MIC padding delays for protected control frames
+Add a new version of mac configuration command
+which includes UHR support indication.
 
 Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Message-Id: <20250506223834.e6e095374ee0.If2ff606e20ccf83e9b27ca2f81686108a829896a@changeid>
+Message-Id: <20250506223834.42006c1a6277.I3c189fcdf45fe84cf1cfa8a35e5f4ab919b3284b@changeid>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 73 ++++++++++++++++++-
- drivers/net/wireless/intel/iwlwifi/mld/sta.c  |  8 +-
- .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  |  8 +-
- 3 files changed, 83 insertions(+), 6 deletions(-)
+ .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 50 +++++++++++++++----
+ .../net/wireless/intel/iwlwifi/mld/iface.c    | 35 +++++++++----
+ .../net/wireless/intel/iwlwifi/mvm/mld-mac.c  | 46 ++++++++++++-----
+ 3 files changed, 100 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-index 35a370918251..58690bb6577d 100644
+index 58690bb6577d..53b7340ef8a1 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-@@ -588,6 +588,62 @@ enum iwl_fw_sta_type {
- 	STATION_TYPE_AUX,
- }; /* STATION_TYPE_E_VER_1 */
+@@ -310,9 +310,42 @@ enum iwl_mac_config_filter_flags {
+ 	MAC_CFG_FILTER_ACCEPT_PROBE_REQ		= BIT(5),
+ }; /* MAC_FILTER_FLAGS_MASK_E_VER_1 */
  
 +/**
-+ * struct iwl_sta_cfg_cmd_v1 - cmd structure to add a peer sta to the uCode's
-+ *	station table
-+ * ( STA_CONFIG_CMD = 0xA )
++ * struct iwl_mac_wifi_gen_support_v2 - parameters of iwl_mac_config_cmd
++ *	with support up to eht as in version 2 of the command
 + *
-+ * @sta_id: index of station in uCode's station table
-+ * @link_id: the id of the link that is used to communicate with this sta
-+ * @peer_mld_address: the peers mld address
-+ * @reserved_for_peer_mld_address: reserved
-+ * @peer_link_address: the address of the link that is used to communicate
-+ *	with this sta
-+ * @reserved_for_peer_link_address: reserved
-+ * @station_type: type of this station. See &enum iwl_fw_sta_type
-+ * @assoc_id: for GO only
-+ * @beamform_flags: beam forming controls
-+ * @mfp: indicates whether the STA uses management frame protection or not.
-+ * @mimo: indicates whether the sta uses mimo or not
-+ * @mimo_protection: indicates whether the sta uses mimo protection or not
-+ * @ack_enabled: indicates that the AP supports receiving ACK-
-+ *	enabled AGG, i.e. both BACK and non-BACK frames in a single AGG
-+ * @trig_rnd_alloc: indicates that trigger based random allocation
-+ *	is enabled according to UORA element existence
-+ * @tx_ampdu_spacing: minimum A-MPDU spacing:
-+ *	4 - 2us density, 5 - 4us density, 6 - 8us density, 7 - 16us density
-+ * @tx_ampdu_max_size: maximum A-MPDU length: 0 - 8K, 1 - 16K, 2 - 32K,
-+ *	3 - 64K, 4 - 128K, 5 - 256K, 6 - 512K, 7 - 1024K.
-+ * @sp_length: the size of the SP in actual number of frames
-+ * @uapsd_acs:  4 LS bits are trigger enabled ACs, 4 MS bits are the deliver
-+ *	enabled ACs.
-+ * @pkt_ext: optional, exists according to PPE-present bit in the HE/EHT-PHY
-+ *	capa
-+ * @htc_flags: which features are supported in HTC
++ * @he_support: does this MAC support HE
++ * @he_ap_support: HE AP enabled, "pseudo HE", no trigger frame handling
++ * @eht_support: does this MAC support EHT. Requires he_support
 + */
-+struct iwl_sta_cfg_cmd_v1 {
-+	__le32 sta_id;
-+	__le32 link_id;
-+	u8 peer_mld_address[ETH_ALEN];
-+	__le16 reserved_for_peer_mld_address;
-+	u8 peer_link_address[ETH_ALEN];
-+	__le16 reserved_for_peer_link_address;
-+	__le32 station_type;
-+	__le32 assoc_id;
-+	__le32 beamform_flags;
-+	__le32 mfp;
-+	__le32 mimo;
-+	__le32 mimo_protection;
-+	__le32 ack_enabled;
-+	__le32 trig_rnd_alloc;
-+	__le32 tx_ampdu_spacing;
-+	__le32 tx_ampdu_max_size;
-+	__le32 sp_length;
-+	__le32 uapsd_acs;
-+	struct iwl_he_pkt_ext_v2 pkt_ext;
-+	__le32 htc_flags;
-+} __packed; /* STA_CMD_API_S_VER_1 */
++struct iwl_mac_wifi_gen_support_v2 {
++	__le16 he_support;
++	__le16 he_ap_support;
++	__le32 eht_support;
++} __packed;
++
++/**
++ * struct iwl_mac_wifi_gen_support - parameters of iwl_mac_config_cmd
++ *	with support up to uhr as in version 3 of the command
++ * ( MAC_CONTEXT_CONFIG_CMD = 0x8 )
++ *
++ * @he_support: does this MAC support HE
++ * @he_ap_support: HE AP enabled, "pseudo HE", no trigger frame handling
++ * @eht_support: does this MAC support EHT. Requires he_support
++ * @uhr_support: does this MAC support UHR. Requires eht_support
++ * @reserved: reserved for alignment and to match version 2's size
++ */
++struct iwl_mac_wifi_gen_support {
++	u8 he_support;
++	u8 he_ap_support;
++	u8 eht_support;
++	u8 uhr_support;
++	__le32 reserved;
++} __packed;
 +
  /**
-  * struct iwl_sta_cfg_cmd - cmd structure to add a peer sta to the uCode's
-  *	station table
-@@ -620,6 +676,14 @@ enum iwl_fw_sta_type {
-  * @pkt_ext: optional, exists according to PPE-present bit in the HE/EHT-PHY
-  *	capa
-  * @htc_flags: which features are supported in HTC
-+ * @use_ldpc_x2_cw: Indicates whether to use LDPC with double CW
-+ * @use_icf: Indicates whether to use ICF instead of RTS
-+ * @dps_pad_time: DPS (Dynamic Power Save) padding delay resolution to ensure
-+ *	proper timing alignment
-+ * @dps_trans_delay: DPS minimal time that takes the peer to return to low power
-+ * @mic_prep_pad_delay: MIC prep time padding
-+ * @mic_compute_pad_delay: MIC compute time padding
-+ * @reserved: Reserved for alignment
+  * struct iwl_mac_config_cmd - command structure to configure MAC contexts in
+- *	MLD API
++ *	MLD API for versions 2 and 3
+  * ( MAC_CONTEXT_CONFIG_CMD = 0x8 )
+  *
+  * @id_and_color: ID and color of the MAC
+@@ -321,9 +354,8 @@ enum iwl_mac_config_filter_flags {
+  * @local_mld_addr: mld address
+  * @reserved_for_local_mld_addr: reserved
+  * @filter_flags: combination of &enum iwl_mac_config_filter_flags
+- * @he_support: does this MAC support HE
+- * @he_ap_support: HE AP enabled, "pseudo HE", no trigger frame handling
+- * @eht_support: does this MAC support EHT. Requires he_support
++ * @wifi_gen_v2: he/eht parameters as in cmd version 2
++ * @wifi_gen: he/eht/uhr parameters as in cmd version 3
+  * @nic_not_ack_enabled: mark that the NIC doesn't support receiving
+  *	ACK-enabled AGG, (i.e. both BACK and non-BACK frames in single AGG).
+  *	If the NIC is not ACK_ENABLED it may use the EOF-bit in first non-0
+@@ -332,7 +364,6 @@ enum iwl_mac_config_filter_flags {
+  * @p2p_dev: mac data for p2p device
   */
- struct iwl_sta_cfg_cmd {
- 	__le32 sta_id;
-@@ -642,7 +706,14 @@ struct iwl_sta_cfg_cmd {
- 	__le32 uapsd_acs;
- 	struct iwl_he_pkt_ext_v2 pkt_ext;
- 	__le32 htc_flags;
--} __packed; /* STA_CMD_API_S_VER_1 */
-+	u8 use_ldpc_x2_cw;
-+	u8 use_icf;
-+	u8 dps_pad_time;
-+	u8 dps_trans_delay;
-+	u8 mic_prep_pad_delay;
-+	u8 mic_compute_pad_delay;
-+	u8 reserved[2];
-+} __packed; /* STA_CMD_API_S_VER_2 */
+ struct iwl_mac_config_cmd {
+-	/* COMMON_INDEX_HDR_API_S_VER_1 */
+ 	__le32 id_and_color;
+ 	__le32 action;
+ 	/* MAC_CONTEXT_TYPE_API_E */
+@@ -340,16 +371,17 @@ struct iwl_mac_config_cmd {
+ 	u8 local_mld_addr[6];
+ 	__le16 reserved_for_local_mld_addr;
+ 	__le32 filter_flags;
+-	__le16 he_support;
+-	__le16 he_ap_support;
+-	__le32 eht_support;
++	union {
++		struct iwl_mac_wifi_gen_support_v2 wifi_gen_v2;
++		struct iwl_mac_wifi_gen_support wifi_gen;
++	};
+ 	__le32 nic_not_ack_enabled;
+ 	/* MAC_CONTEXT_CONFIG_SPECIFIC_DATA_API_U_VER_2 */
+ 	union {
+ 		struct iwl_mac_client_data client;
+ 		struct iwl_mac_p2p_dev_data p2p_dev;
+ 	};
+-} __packed; /* MAC_CONTEXT_CONFIG_CMD_API_S_VER_2 */
++} __packed; /* MAC_CONTEXT_CONFIG_CMD_API_S_VER_2_VER_3 */
  
  /**
-  * struct iwl_aux_sta_cmd - command for AUX STA configuration
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/sta.c b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-index b91f53341cdf..bddeb557fd5b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-@@ -401,9 +401,11 @@ static u32 iwl_mld_get_htc_flags(struct ieee80211_link_sta *link_sta)
- static int iwl_mld_send_sta_cmd(struct iwl_mld *mld,
- 				const struct iwl_sta_cfg_cmd *cmd)
- {
--	int ret = iwl_mld_send_cmd_pdu(mld,
--				       WIDE_ID(MAC_CONF_GROUP, STA_CONFIG_CMD),
--				       cmd);
-+	u32 cmd_id = WIDE_ID(MAC_CONF_GROUP, STA_CONFIG_CMD);
-+	int cmd_len = iwl_fw_lookup_cmd_ver(mld->fw, cmd_id, 0) > 1 ?
-+		      sizeof(*cmd) :
-+		      sizeof(struct iwl_sta_cfg_cmd_v1);
-+	int ret = iwl_mld_send_cmd_pdu(mld, cmd_id, cmd, cmd_len);
- 	if (ret)
- 		IWL_ERR(mld, "STA_CONFIG_CMD send failed, ret=0x%x\n", ret);
- 	return ret;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-index 9dd670041137..8f275397fddf 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -1,6 +1,6 @@
+  * enum iwl_link_ctx_modify_flags - indicate to the fw what fields are being
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.c b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+index 47b5b31b5b91..c083ba416d40 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/iface.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+@@ -103,6 +103,24 @@ static bool iwl_mld_is_nic_ack_enabled(struct iwl_mld *mld,
+ 			       IEEE80211_HE_MAC_CAP2_ACK_EN);
+ }
+ 
++static void iwl_mld_set_he_support(struct iwl_mld *mld,
++				   struct ieee80211_vif *vif,
++				   struct iwl_mac_config_cmd *cmd,
++				   int cmd_ver)
++{
++	if (vif->type == NL80211_IFTYPE_AP) {
++		if (cmd_ver == 2)
++			cmd->wifi_gen_v2.he_ap_support = cpu_to_le16(1);
++		else
++			cmd->wifi_gen.he_ap_support = 1;
++	} else {
++		if (cmd_ver == 2)
++			cmd->wifi_gen_v2.he_support = cpu_to_le16(1);
++		else
++			cmd->wifi_gen.he_support = 1;
++	}
++}
++
+ /* fill the common part for all interface types */
+ static void iwl_mld_mac_cmd_fill_common(struct iwl_mld *mld,
+ 					struct ieee80211_vif *vif,
+@@ -112,6 +130,9 @@ static void iwl_mld_mac_cmd_fill_common(struct iwl_mld *mld,
+ 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
+ 	struct ieee80211_bss_conf *link_conf;
+ 	unsigned int link_id;
++	int cmd_ver = iwl_fw_lookup_cmd_ver(mld->fw,
++					    WIDE_ID(MAC_CONF_GROUP,
++						    MAC_CONFIG_CMD), 0);
+ 
+ 	lockdep_assert_wiphy(mld->wiphy);
+ 
+@@ -138,12 +159,11 @@ static void iwl_mld_mac_cmd_fill_common(struct iwl_mld *mld,
+ 	 * and enable both when we have MLO.
+ 	 */
+ 	if (ieee80211_vif_is_mld(vif)) {
+-		if (vif->type == NL80211_IFTYPE_AP)
+-			cmd->he_ap_support = cpu_to_le16(1);
++		iwl_mld_set_he_support(mld, vif, cmd, cmd_ver);
++		if (cmd_ver == 2)
++			cmd->wifi_gen_v2.eht_support = cpu_to_le32(1);
+ 		else
+-			cmd->he_support = cpu_to_le16(1);
+-
+-		cmd->eht_support = cpu_to_le32(1);
++			cmd->wifi_gen.eht_support = 1;
+ 		return;
+ 	}
+ 
+@@ -151,10 +171,7 @@ static void iwl_mld_mac_cmd_fill_common(struct iwl_mld *mld,
+ 		if (!link_conf->he_support)
+ 			continue;
+ 
+-		if (vif->type == NL80211_IFTYPE_AP)
+-			cmd->he_ap_support = cpu_to_le16(1);
+-		else
+-			cmd->he_support = cpu_to_le16(1);
++		iwl_mld_set_he_support(mld, vif, cmd, cmd_ver);
+ 
+ 		/* EHT, if supported, was already set above */
+ 		break;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+index bb7851042177..81ca9ff67be9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+@@ -1,17 +1,25 @@
  // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
  /*
-- * Copyright (C) 2022-2024 Intel Corporation
-+ * Copyright (C) 2022-2025 Intel Corporation
+- * Copyright (C) 2022 - 2024 Intel Corporation
++ * Copyright (C) 2022 - 2025 Intel Corporation
   */
  #include "mvm.h"
- #include "time-sync.h"
-@@ -48,9 +48,13 @@ u32 iwl_mvm_sta_fw_id_mask(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- static int iwl_mvm_mld_send_sta_cmd(struct iwl_mvm *mvm,
- 				    struct iwl_sta_cfg_cmd *cmd)
+ 
+ static void iwl_mvm_mld_set_he_support(struct iwl_mvm *mvm,
+ 				       struct ieee80211_vif *vif,
+-				       struct iwl_mac_config_cmd *cmd)
++				       struct iwl_mac_config_cmd *cmd,
++				       int cmd_ver)
  {
-+	u32 cmd_id = WIDE_ID(MAC_CONF_GROUP, STA_CONFIG_CMD);
-+	int cmd_len = iwl_fw_lookup_cmd_ver(mvm->fw, cmd_id, 0) > 1 ?
-+		      sizeof(*cmd) :
-+		      sizeof(struct iwl_sta_cfg_cmd_v1);
- 	int ret = iwl_mvm_send_cmd_pdu(mvm,
- 				       WIDE_ID(MAC_CONF_GROUP, STA_CONFIG_CMD),
--				       0, sizeof(*cmd), cmd);
-+				       0, cmd_len, cmd);
- 	if (ret)
- 		IWL_ERR(mvm, "STA_CONFIG_CMD send failed, ret=0x%x\n", ret);
- 	return ret;
+-	if (vif->type == NL80211_IFTYPE_AP)
+-		cmd->he_ap_support = cpu_to_le16(1);
+-	else
+-		cmd->he_support = cpu_to_le16(1);
++	if (vif->type == NL80211_IFTYPE_AP) {
++		if (cmd_ver == 2)
++			cmd->wifi_gen_v2.he_ap_support = cpu_to_le16(1);
++		else
++			cmd->wifi_gen.he_ap_support = 1;
++	} else {
++		if (cmd_ver == 2)
++			cmd->wifi_gen_v2.he_support = cpu_to_le16(1);
++		else
++			cmd->wifi_gen.he_support = 1;
++	}
+ }
+ 
+ static void iwl_mvm_mld_mac_ctxt_cmd_common(struct iwl_mvm *mvm,
+@@ -22,6 +30,12 @@ static void iwl_mvm_mld_mac_ctxt_cmd_common(struct iwl_mvm *mvm,
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct ieee80211_bss_conf *link_conf;
+ 	unsigned int link_id;
++	int cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw,
++					    WIDE_ID(MAC_CONF_GROUP,
++						    MAC_CONFIG_CMD), 0);
++
++	if (WARN_ON(cmd_ver < 1 && cmd_ver > 3))
++		return;
+ 
+ 	cmd->id_and_color = cpu_to_le32(mvmvif->id);
+ 	cmd->action = cpu_to_le32(action);
+@@ -30,8 +44,8 @@ static void iwl_mvm_mld_mac_ctxt_cmd_common(struct iwl_mvm *mvm,
+ 
+ 	memcpy(cmd->local_mld_addr, vif->addr, ETH_ALEN);
+ 
+-	cmd->he_support = 0;
+-	cmd->eht_support = 0;
++	cmd->wifi_gen_v2.he_support = 0;
++	cmd->wifi_gen_v2.eht_support = 0;
+ 
+ 	/* should be set by specific context type handler */
+ 	cmd->filter_flags = 0;
+@@ -51,8 +65,11 @@ static void iwl_mvm_mld_mac_ctxt_cmd_common(struct iwl_mvm *mvm,
+ 	 * and enable both when we have MLO.
+ 	 */
+ 	if (ieee80211_vif_is_mld(vif)) {
+-		iwl_mvm_mld_set_he_support(mvm, vif, cmd);
+-		cmd->eht_support = cpu_to_le32(1);
++		iwl_mvm_mld_set_he_support(mvm, vif, cmd, cmd_ver);
++		if (cmd_ver == 2)
++			cmd->wifi_gen_v2.eht_support = cpu_to_le32(1);
++		else
++			cmd->wifi_gen.eht_support = 1;
+ 		return;
+ 	}
+ 
+@@ -63,16 +80,19 @@ static void iwl_mvm_mld_mac_ctxt_cmd_common(struct iwl_mvm *mvm,
+ 			continue;
+ 
+ 		if (link_conf->he_support)
+-			iwl_mvm_mld_set_he_support(mvm, vif, cmd);
++			iwl_mvm_mld_set_he_support(mvm, vif, cmd, cmd_ver);
+ 
+-		/* it's not reasonable to have EHT without HE and FW API doesn't
++		/* It's not reasonable to have EHT without HE and FW API doesn't
+ 		 * support it. Ignore EHT in this case.
+ 		 */
+ 		if (!link_conf->he_support && link_conf->eht_support)
+ 			continue;
+ 
+ 		if (link_conf->eht_support) {
+-			cmd->eht_support = cpu_to_le32(1);
++			if (cmd_ver == 2)
++				cmd->wifi_gen_v2.eht_support = cpu_to_le32(1);
++			else
++				cmd->wifi_gen.eht_support = 1;
+ 			break;
+ 		}
+ 	}
 -- 
 2.34.1
 
