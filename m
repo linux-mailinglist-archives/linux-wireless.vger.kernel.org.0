@@ -1,144 +1,143 @@
-Return-Path: <linux-wireless+bounces-22658-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22659-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B37AABF17
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 11:21:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1141CAAC18D
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 12:40:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6679716306F
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 09:20:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B94ED1C013A4
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 10:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C9621B9F4;
-	Tue,  6 May 2025 09:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CACD2459D8;
+	Tue,  6 May 2025 10:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Sc0l0/ZL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gi20R0q4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A500E22DA04
-	for <linux-wireless@vger.kernel.org>; Tue,  6 May 2025 09:19:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21EF1F2BB5
+	for <linux-wireless@vger.kernel.org>; Tue,  6 May 2025 10:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746523197; cv=none; b=XueKX/mtjAKCSHtukbEIoLTj+zh1ZFHzCwWfIP4EcMbx76Yolg9ekkjxpp26t37xbprW1YM/4MWZvrJGBwvTKfy5ryx2DgOyLzJTrOayUNBW8GGV5nq4CTiWqEyYqhua5Vkn405SKxoNWPuKBQXNaA91/IGcBjLqpVKnkTR6YJg=
+	t=1746527990; cv=none; b=o3D5Ghzz+itoQ8IAc/6NV5pATEjFca3IwUaRGzOLUudTwX8RE+xkgXH6lPPGmTn4FhNaZkL1VgIcj3Fkf4ZekPWxl77G9foF6rE3tqSUEHBUJYD1m1oqdkEy61VdVRbmffLUPzeM8wgh2B65nRJqVFhRBG4A1ZS39u2Ac4wJPfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746523197; c=relaxed/simple;
-	bh=vsin+CoQ+vWqmZlTkAkCpKsSF6ZhhI/p7luj+oyKOAk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=eTa6iR9PluZnJ34bXBycRVc551L+0PbEw5FEZScQJzf7b9OwgoaL30RFQ9WzFhh3Slt9hRIrnNV7prt2ZPUGGJBtCf7AbCIAbmApFy4qvXLu2G4Yx0kHlKShtTrZEbI+cCwl0s6NEsCyQ/A4a5dTThelpY9uT8wLWZUbgglfx9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Sc0l0/ZL; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5467ItQt016934;
-	Tue, 6 May 2025 09:19:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	hmQ5itCDXl4b8OO8xUVwuQa9wDyhI4g/YkbaLq6LtD8=; b=Sc0l0/ZLxr+jZ+Qd
-	loM+f4gDxyHgIedhv/DAA04ZnMUkJkTAUOhuoxEzXF9ktpPK1yH8R/2mr7HeKEVO
-	x6mcCIm7fhSksSKNHt+tcyvaDmBXZ+eesPcHTrQKtERUUy73l+fjjxDJc3NewI6v
-	v6S8WfvJuxeO3Ee68IbOwUwLxVEjHZEeMzzmcYoT7qxlWSp6qMtX8oa3ldXSXP1V
-	Zjpbrsx0gpkakp0ItDRzoDMQu6uvqeT/pIebhTsSBjw8TI1h+2Yf12jJGBow3Ib2
-	EfRqH9w3lI391jJT+D+LBnrdnYQ4/UQ+SZtPL0MbZf67hrDBgRjBLHODwEb7RZjB
-	ab43Pg==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46fdwtrc3e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 May 2025 09:19:44 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5469JiY2018297
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 6 May 2025 09:19:44 GMT
-Received: from [10.216.28.46] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 6 May 2025
- 02:19:42 -0700
-Message-ID: <0c166b5b-f358-1f39-4569-a1ac388033df@quicinc.com>
-Date: Tue, 6 May 2025 14:49:39 +0530
+	s=arc-20240116; t=1746527990; c=relaxed/simple;
+	bh=UMPzWo9N6HRvGrsZ52/UEh5x6iHvHqUOItRrXHR1lNs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=La7xv7+04cK0GmIDixhws546bgAppf4lbsZD9NnogxmP2miwHb4l5SQXKCBDMhca/FOH2hD75VhoYcnZU/fXzSYFMle1Mg0Yi0VqiGNoOB2tes6sZasJWXiPiATtbTLqXSpCmqVjIipYgycobNSPd4Re6O2p+DxDwOV2LGBJtaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gi20R0q4; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-739525d4e12so5309509b3a.3
+        for <linux-wireless@vger.kernel.org>; Tue, 06 May 2025 03:39:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746527988; x=1747132788; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iZ7wr+TP5KQIJS/QzakF5Qi2XH46Y72f1UENvfbzHUo=;
+        b=gi20R0q46plxWoFRg5RfRhrhOh0Br41l07i0KnY/fhIzmITQBfEIeNHJedayZzlHKv
+         l1g4tFw01VzhWHjq1EMACxCx8Ww7m59xIiYsM88LJ8R6sOUxkqxTGP50n51W4vgNv64R
+         IC9JJXSl/OTievTOlEuEJI5iRFGHakwtJufui3W0HfxDT6PXXvM+b5K/v83q3mYaF0h2
+         YqebEtUt7N7Xa249sqgqfvVRFRpF1iiikhSnG/JsO15Ozktu0HcrrNs6TD1RQWXwvAMr
+         SPJm3IdWGWQTBqODgHhf21eClRA+iE3UfKL805RRTmOfPeCxHo+UT9+34otPaQfMQddi
+         5DGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746527988; x=1747132788;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iZ7wr+TP5KQIJS/QzakF5Qi2XH46Y72f1UENvfbzHUo=;
+        b=U6QdlO4Rvsrh4eqW6DmmhV4EHsCX4tK4Vkor5XO3tgpqwvCn5Hr/K143eEE4mlqSLQ
+         /prKp2WBuZ5tqo/saztZ48Ct7siDLLPIMSppHA4MnjpJEM7a0QxKWu+fP7OOo5biYnhe
+         f96gD6tra5nt06tHe8D1rHvszsTiCS+5xgqRVJ/qrU0CMh2q8+aSbWbGIBudFOm8xCrA
+         nCXbJNUO4Oo1Fdund4/2XHD2HmGvJ2taT9jHjhHBu+uhCbcx4UmsI11iVICtYuGcZz52
+         H66W54OedYnOt4jkY7nxrns9fPFW6FCIPYY5DU8nqpoHGG3k35SLQlNmBVnpULAmnOKE
+         uM+A==
+X-Gm-Message-State: AOJu0YwvBRtlDDsPoReRddT2yznx++MC/AHH43Y4Qp5/rwDX2SLYocjQ
+	JIR4xvMFn4+x1+zre663SvMGRJFQKnHfUbKqlNFt6CXTI6WU7XQctEqa1GpApD4=
+X-Gm-Gg: ASbGncvajMx+8s9NRPOj72g8fbjgscjVkIfPjLeJb9NYeZJCCu1cR6UwJhwoREJGHRq
+	sSdm7MyJOIBO3MedhJDHLrxs/wuQD8G/E3V72hxMaQaKJqQR8eKDYBye0hXCaWRQZ7wTgffnp9D
+	7Nrba5V6k3NDl/5xmeMDa33d9FYLr5ESP25gcIRhdN8Nx2c4nzoawSBjJPpTOAcKZCFFseoAEG3
+	QYfCmoQyKF8rqau1MDp5rDzQKR6kp3KzlbqpAAvviFwBGcqkBHMTSFnXlkyFKUPG4ZYtSryXwv1
+	OdVsam12TsNqFhdd1ID2qT/6NimmB+/zsn6Gs8NVTcJjV/Us5u5SwSmjly4reoRUhFi+A1F/iWW
+	Geb6zHOkuO5gNYheVZhU=
+X-Google-Smtp-Source: AGHT+IEwxcPIlCKhBrlTlvmsX0jxmDbAAWt6eQlLkB+eXYhiJkqntOS5/w1zvozaqnVXGPJ5mCJluQ==
+X-Received: by 2002:a05:6a00:8c04:b0:736:53bc:f1ab with SMTP id d2e1a72fcca58-74058a56812mr26072248b3a.12.1746527988058;
+        Tue, 06 May 2025 03:39:48 -0700 (PDT)
+Received: from ?IPV6:2400:4051:1da1:4500:3111:6953:848d:8929? ([2400:4051:1da1:4500:3111:6953:848d:8929])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74058db8f34sm8604585b3a.37.2025.05.06.03.39.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 May 2025 03:39:47 -0700 (PDT)
+Message-ID: <df65e2a9-5430-47b2-853f-a04c404179ba@gmail.com>
+Date: Tue, 6 May 2025 19:39:30 +0900
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] Revert "ath11k: clear the keys properly via DISABLE_KEY"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi:rtw88:rtw8822bu VID/PID for BUFFALO WI-U2-866DM
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <CA+Tmi=P0kFARoU3yrbMTOBhXz=1Q8MoroaSNbQDw_NZye6r60A@mail.gmail.com>
+ <20250503003227.6673-1-wf.yn386@gmail.com>
+ <deb6f384a0bf4f96b2c3092fd7f767e1@realtek.com>
 Content-Language: en-US
-To: Nicolas Escande <nico.escande@gmail.com>, <ath11k@lists.infradead.org>,
-        Sven Eckelmann <se@simonwunderlich.de>
-CC: <linux-wireless@vger.kernel.org>, Steffen Moser <lists@steffen-moser.de>
-References: <20250117191455.3395145-1-nico.escande@gmail.com>
- <20e0a239-3d23-473b-5bc8-41bc25a64088@quicinc.com>
- <D9NDQJB4VMWA.V4IPOZOIR46W@gmail.com>
-From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
-In-Reply-To: <D9NDQJB4VMWA.V4IPOZOIR46W@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Yuuki NAGAO <wf.yn386@gmail.com>
+In-Reply-To: <deb6f384a0bf4f96b2c3092fd7f767e1@realtek.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=VPPdn8PX c=1 sm=1 tr=0 ts=6819d431 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=OLL_FvSJAAAA:8
- a=IbVDsZSo2lVlMIwTQQ8A:9 a=QEXdDO2ut3YA:10 a=cq9DwLQcLZUA:10
- a=Iy0t56g-M2wA:10 a=oIrB72frpwYPwTMnlWqB:22
-X-Proofpoint-GUID: 0qxcDUgYLaC0xEml_eltkdevkWe14pI5
-X-Proofpoint-ORIG-GUID: 0qxcDUgYLaC0xEml_eltkdevkWe14pI5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA2MDA4OCBTYWx0ZWRfX7tjRIBDXYq7W
- ++bypCaRnEAyJ5pbjhWAQr+yk2D1EEtxbkfkQmLNU+IA0Mk/reucNPdplpaB52LtKECpFUQlXlT
- ZdpekatG2xaD0LST0Ab4B0duTHNSixxnXZRn9++TYD8lgheiZaP9DuAerCV9of2pX6+Zqgww9fg
- ljrNAq8HU3PU4RsbALWJVmPIiOMcJXp8pwcTqEfdKv0jOXBDlVnFDmzRSokz7ox//O+WZlH2lUg
- Clr/sA8/XU8fbM1nHWJiy8sLyRBfjOp5/U7K2pXyvtkMygk6zcqqq5Use05bmAMb0GwTX1Dcqg8
- dVJ30+GRqM1dyC5o4mbjH0c7MQ/0EBj2f6RrDdFPyM8dNtviG7jW5LPC/xnexOnIGMhBo1qgWi3
- ginN5r9d89utY73qexG8Yz1SdJ7o7RuOBHkYPizBUzg+maHrvGU+9uX04gUqsJk5LjGyAX07
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-06_04,2025-05-05_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 suspectscore=0 adultscore=0 mlxscore=0
- bulkscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0 malwarescore=0
- mlxlogscore=577 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505060088
 
-Hi Nicolas
 
-On 5/4/2025 6:06 PM, Nicolas Escande wrote:
-> On Sat Jan 18, 2025 at 11:29 AM CET, Vasanthakumar Thiagarajan wrote:
->> Hi Nicolas,
+
+On 2025/05/05 9:34, Ping-Ke Shih wrote:
+> Yuuki NAGAO <wf.yn386@gmail.com> wrote:
 >>
->> On 1/18/2025 12:44 AM, Nicolas Escande wrote:
->>> This reverts commit 436a4e88659842a7cf634d7cc088c8f2cc94ebf5.
->>>
->>> This as been reported by multiple people [0] that with this commit,
->>> broadcast packets were not being delivered after GTK exchange.
->>> Qualcomm seems to have a similar patch [1] confirming the issue.
->>>
+>> Add VID/PID 0411/03d1 for recently released
+>> BUFFALO WI-U2-866DM USB WiFi adapter.
 >>
->> This will re-open https://www.spinics.net/lists/hostap/msg08921.html
->> reported by Sven. The recommended ath firmware ABI during GTK re-keying
->> is SET_KEY instead of current DEL_KEY followed by SET_KEY. We are looking
->> at other options like some marking by mac80211 for the driver to be able
->> to identify if the received DEL_KEY is for re-keying. Also I'm curious
->> if roaming between secure and non-secure mode is a critical use case.
->> If not, we can probably go ahead with this revert as temporary WAR,
->> @Sven?
->>
->> Vasanth
+>> Signed-off-by: Yuuki NAGAO <wf.yn386@gmail.com>
 > 
-> Hello,
+> For the subject, need spaces after "wifi:" and "rtw88:".
+> I can add spaces when I merge.
 > 
-> Any news on this ?
-> I would hate for this to sink into oblivion once again given how hard this
-> affects end users when it does hit.
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-We are working on a driver change w/o reverting the commit, we'll share
-the patch once complete.
+Sorry for inconvenience. Could you please add spaces to the subject
+when you merge this patch?
+If I should repost patch myself, I will repost this patch
+after modifying subject.
 
-Vasanth
+> 
+>> ---
+>> Changes since v1:
+>> - Fixed malformed patch.
+>> ---
+>> ---
+>>  drivers/net/wireless/realtek/rtw88/rtw8822bu.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+>> b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+>> index 572d1f31832e..ab50b3c40562 100644
+>> --- a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+>> +++ b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+>> @@ -77,6 +77,8 @@ static const struct usb_device_id rtw_8822bu_id_table[] = {
+>>           .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* Mercusys MA30N */
+>>         { USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3322, 0xff, 0xff, 0xff),
+>>           .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* D-Link DWA-T185 rev. A1 */
+>> +       { USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03d1, 0xff, 0xff, 0xff),
+>> +         .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* BUFFALO WI-U2-866DM */
+>>         {},
+>>  };
+>>  MODULE_DEVICE_TABLE(usb, rtw_8822bu_id_table);
+>> --
+>> 2.43.0
+> 
+
 
