@@ -1,125 +1,103 @@
-Return-Path: <linux-wireless+bounces-22663-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22664-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28BF1AAC334
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 13:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2CCEAAC579
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 15:14:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 430733B1A56
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 11:56:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D22CB3ABE0F
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 May 2025 13:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF63C27C84E;
-	Tue,  6 May 2025 11:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749D528033C;
+	Tue,  6 May 2025 13:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="eTCfCT8f"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="dJkQeUSi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CE427C153;
-	Tue,  6 May 2025 11:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746532612; cv=none; b=t+opY2Aehvzb6m4kmJE9YVncBgyChfz80eDWhob7tEYG+SOhdQgdPj6N7JrbPiZ4VNQ/jI2huWV+jNqYGOOiar07PN+bXgUhbglvg4up3KLPePM6mmod/mAm0BLIg+3Yn9vZd/TZLq4HnYEeOMdKsKFRUjjFU7T7fhlQPm24eDM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746532612; c=relaxed/simple;
-	bh=wEwUv++zHwmlk3siwS63rhWQRc7vYZ9kaT/NCb8Ytcw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dGkSsaJledvNPWi4QUujO3jMLYs5d7mU/ST1awr0Qd5yWTzw98+Gx+wFhnojnmNRwpWvEGvW7epbC2GoeFlr4qbfieMBMW9bfvUSTHj0mhV8LtPkghsaD1wY6Pma5SBSEYabb1R4/36aBl8AcfeHb9Y/O6MuQ1InY1EuzNF9ZXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=eTCfCT8f; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fedora.intra.ispras.ru (unknown [10.10.165.23])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 78F8A4076186;
-	Tue,  6 May 2025 11:56:40 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 78F8A4076186
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1746532600;
-	bh=CdKhF1dz8le1BxUGeNhnXLgthKYZanVP+D2h7mGr3gs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eTCfCT8fjeYYEb7Sg7xO68w3ygdO+aRNtTSnkV8u9DFbD1ndgqqpYgp7Nhtln5+bS
-	 fNJo+TT+RocYX+O+0X4eUWok1gHeDxcrLGo7g9v/IKbS1q2Oz5hJBKvqgWLTOXETiE
-	 3jjysTAqCXftL/AA08mnxqgvdICd52qpvp5JdenM=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Joe Damato <jdamato@fastly.com>,
-	Eric Dumazet <edumazet@google.com>,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: mt76: disable napi on driver removal
-Date: Tue,  6 May 2025 14:55:39 +0300
-Message-ID: <20250506115540.19045-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.49.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9DC21773D;
+	Tue,  6 May 2025 13:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746537077; cv=pass; b=AXe6Fo3mlXFMaUTgsYNA62DsM/juCMV8ZIYZJrl9zrgegoyrcuRPp8ItS5r/4gf+wer+sOot+xmmzqMGBukA11e2pbpAQrpONfdjnuzsCahY7kT+nPVgEQmv+OGhTFI5j6bMC6ZEX6IX27KCKJBLD5Dz+uHjXFrAfL+vO0SjpYo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746537077; c=relaxed/simple;
+	bh=bqEDUeRg0Z13orMPXIlqQ9MbK2GR9UJRD02DfsPmnL8=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=MQmLEW0zL83IgKK8TN2cgBKnikiFRJrK90CxasCTsQc7AVVRW/kL9CMYtBmNG34bKAM+rykZWpvXb/TUbPv5y3THsmc2N3ERZ1cnzuLdCOUXYg86jUuXFbUa6BBI86PKL0OxmSFfnOiIhKBYC95/bKNnSlrveWeN3mF8UHxa6Xw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=dJkQeUSi; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1746537055; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Mi3wkTw0euUe1uZMnqrVoRQTAXYgJJJpKX+sAdKc+DsIa9D58bptoy+VYTDd0PXgDOyP8xV98/AX/FrMMeFuhd/Kky+4/jkm9g/tkIWUwAnKOfuOPrjGdWHXblqjUTP94ePSAb8itAD6JRgtpEkfiu4sqyMRYV1IctmbHzhFjcE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1746537055; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=le+RGOEXf+PLjSVW04iEzrbaCc2v/k7AHP12FCt1V0Y=; 
+	b=T0STJ2kuRkK56z6+ILP8yF7R6fyJKSscrn2rQl9bhUWQwaTFxhdws9qzTGcz046IX1WfjQGFwdl9i5p1r/dStlYcq9BMFslV6EMtQmpi+uYGlJ1E9JEzM2gyxrl38lfpo7wi4pUquPRm7FXvVvO9sbETZUT/S6m2pVPBM+Bcl3Q=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass header.from=<usama.anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1746537055;
+	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=le+RGOEXf+PLjSVW04iEzrbaCc2v/k7AHP12FCt1V0Y=;
+	b=dJkQeUSiBYBeRg/Hpa4Cz7IPFuwAeLIk1iv2kmqb3DzxaY4ulM12yl4CsYaRqlKy
+	+mFLgkbWqQWWJ5lJOrdMGDDnZMwXoCttV6TMDoxQorJCQ/V+HacA4Uy7nnz87cQWsnC
+	p4YG4fAU6WRQKU/qjbxh0xvkd4pBaLq+KpoS9AO8=
+Received: by mx.zohomail.com with SMTPS id 17465370533315.429619863376274;
+	Tue, 6 May 2025 06:10:53 -0700 (PDT)
+Message-ID: <ec0bb100-4a70-4827-86b1-e4a7e8867a2d@collabora.com>
+Date: Tue, 6 May 2025 18:10:48 +0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@collabora.com, kernel@collabora.com,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] wifi: ath11k: Fix memory reuse logic
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, quic_bqiang@quicinc.com,
+ Jeff Johnson <jjohnson@kernel.org>
+References: <20250428080242.466901-1-usama.anjum@collabora.com>
+ <f58075f7-f643-4e47-b774-dc529aaa01e5@oss.qualcomm.com>
+Content-Language: en-US
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <f58075f7-f643-4e47-b774-dc529aaa01e5@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-A warning on driver removal started occurring after commit 9dd05df8403b
-("net: warn if NAPI instance wasn't shut down"). Disable tx napi before
-deleting it in mt76_dma_cleanup().
+On 5/6/25 12:17 AM, Jeff Johnson wrote:
+> v2 feedback was not incorporated:
+> For starters, can we make the subject a bit more specific, i.e.
+> Fix MHI target memory reuse logic
+> 
+> But don't repost for this -- I'll make that change in ath/pending
+I'd changed again on the request of another reviewer. Please feel free
+to change as you like. I don't have any opinion on it.
 
- WARNING: CPU: 4 PID: 18828 at net/core/dev.c:7288 __netif_napi_del_locked+0xf0/0x100
- CPU: 4 UID: 0 PID: 18828 Comm: modprobe Not tainted 6.15.0-rc4 #4 PREEMPT(lazy)
- Hardware name: ASUS System Product Name/PRIME X670E-PRO WIFI, BIOS 3035 09/05/2024
- RIP: 0010:__netif_napi_del_locked+0xf0/0x100
- Call Trace:
- <TASK>
- mt76_dma_cleanup+0x54/0x2f0 [mt76]
- mt7921_pci_remove+0xd5/0x190 [mt7921e]
- pci_device_remove+0x47/0xc0
- device_release_driver_internal+0x19e/0x200
- driver_detach+0x48/0x90
- bus_remove_driver+0x6d/0xf0
- pci_unregister_driver+0x2e/0xb0
- __do_sys_delete_module.isra.0+0x197/0x2e0
- do_syscall_64+0x7b/0x160
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> 
+> However, does ath12k need the same fix?
+Looking at ath12k, there is similar code structure in
+ath12k_qmi_alloc_chunk(). By adding some logging, we can confirm if
+ath12k requires the fix or not. As a lot of code is similar in both
+drivers, ath12k may require the same fix.
 
-Tested with mt7921e but the same pattern can be actually applied to other
-mt76 drivers calling mt76_dma_cleanup() during removal. Tx napi is enabled
-in their *_dma_init() functions and only toggled off and on again inside
-their suspend/resume/reset paths. So it should be okay to disable tx
-napi in such a generic way.
+I don't have access to ath12k. So I cannot test on it.
 
-Found by Linux Verification Center (linuxtesting.org).
+> If so, can you post a separate patch for that?
+> 
+> /jeff
 
-Fixes: 2ac515a5d74f ("mt76: mt76x02: use napi polling for tx cleanup")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/net/wireless/mediatek/mt76/dma.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index 844af16ee551..35b4ec91979e 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -1011,6 +1011,7 @@ void mt76_dma_cleanup(struct mt76_dev *dev)
- 	int i;
- 
- 	mt76_worker_disable(&dev->tx_worker);
-+	napi_disable(&dev->tx_napi);
- 	netif_napi_del(&dev->tx_napi);
- 
- 	for (i = 0; i < ARRAY_SIZE(dev->phys); i++) {
 -- 
-2.49.0
-
+Regards,
+Usama
 
