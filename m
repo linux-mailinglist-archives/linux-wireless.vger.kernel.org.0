@@ -1,228 +1,148 @@
-Return-Path: <linux-wireless+bounces-22704-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22705-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44ED6AAD540
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 07:31:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9860AAD5AD
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 08:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD0E97B3B47
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 05:30:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BBC81BA806A
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 06:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4533026AF3;
-	Wed,  7 May 2025 05:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F60315B971;
+	Wed,  7 May 2025 06:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="SqgD5xLT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h+UGAQ5N"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095B4139E
-	for <linux-wireless@vger.kernel.org>; Wed,  7 May 2025 05:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6613209
+	for <linux-wireless@vger.kernel.org>; Wed,  7 May 2025 06:07:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746595905; cv=none; b=tvGAQ6ZwJ1JBSIUjNxC+jFLH6bAW8vDywspMTFfwV+dMyq8Trf6VWTC0G59cH10ZrhXck2MJZK3gPQ7CZ/pbCbYkLN10iMKuGmufo0fHhLVkWJr7vDu3jxtrhmfaROb8mKqGAk3CTLSYZxhrpFVb7F+3+DSMYFKuiNSewm7TPhI=
+	t=1746598029; cv=none; b=UFjNQidsUp3/jqlIWG5Uez5Wcx0Ens5veLv2z+dMkaketxGvyfhHFFfG4tSlH2d6mB8OpPkNszU4ZFtduo+axy/3dfmObUnr1gwhR5ydQFsWft9pNyCOjog9OQHNy7yvrP8AQ7+Ad6JnAa+d9H8hxeHld0OKtfhjAFQJXifKCLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746595905; c=relaxed/simple;
-	bh=H3P249h/ozME+NQNdzD3FCZfJtXaoqom0DmiQtVnLFc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mAddYCcaJ9lxJshM5KTzxxEAA7OXZ7+CBnCZs1e+haFw/ihqV3IplUHPydTz9f5It61CCqDJik7lGBSFMUePc5neP2SP+sl6nRP4EgAkvSutqv0kE/3PApDlBK7+T+0Czrr9kIXFw/zeXS112bKwVpJ2aTNc+Wr1KYgH+dBEYYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=SqgD5xLT; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 8a70fb6a2b0411f0813e4fe1310efc19-20250507
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=pixdk5rgkJ7JFR+t6+4hCwvqh3IN3gRUoapBmNv5Rlw=;
-	b=SqgD5xLTzxmCpE/UXaHqkoPHe32JusTTKwpkX9AigQqJjPrxD4wGXpQD+NV9xJ78NNFPjRv2J0k0+gaaXoZpn6Ft6Z0PlxWD82BbdvzuBmcCUk2A9MmV0dO9nOsfZCo0l+8sQimV9cku/PV8dNkbMcvkgMvgy+uSp475Z85d3Uw=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.1,REQID:10b72982-909f-49ae-8969-f48f05157213,IP:0,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-25
-X-CID-META: VersionHash:0ef645f,CLOUDID:b111d202-a4e8-4faa-a873-a300648b31e3,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 8a70fb6a2b0411f0813e4fe1310efc19-20250507
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
-	(envelope-from <allan.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 969675490; Wed, 07 May 2025 13:31:35 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- MTKMBS14N2.mediatek.inc (172.21.101.76) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Wed, 7 May 2025 13:31:33 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Wed, 7 May 2025 13:31:33 +0800
-From: Allan Wang <allan.wang@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <mingyen.hsieh@mediatek.com>,
-	<Sean.Wang@mediatek.com>, <Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
-	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Allan Wang <allan.wang@mediatek.com>
-Subject: [PATCH v2] wifi: mt76: mt7925: add rfkill_poll for hardware rfkill
-Date: Wed, 7 May 2025 13:31:31 +0800
-Message-ID: <20250507053131.4173691-1-allan.wang@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1746598029; c=relaxed/simple;
+	bh=gIBFpUcdpTEqET201boe5OeaEhR1cNbJ+GzsTMz0LeE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TfnDRSgYLgBl3s+dU/xAEwiyrEaISh2ldlk4HrjIDWH4uPRR/oyDVlu2bicBO+JlcUkjD3eWX6xvK0cHkhGr7odr15BXRGMHR67PNz4CooRahXJVKF19P4tHOwBbSW3Max/5hk+esrH0O+USkAIAr47uXCQTVhP7i4Gv6gO5M44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h+UGAQ5N; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746598028; x=1778134028;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gIBFpUcdpTEqET201boe5OeaEhR1cNbJ+GzsTMz0LeE=;
+  b=h+UGAQ5NeepokQsVE7q9Zm37Sn6+E8ev196JQaDIsQPP9VRYwnaxpDwn
+   L2fw9HrmTzB6DyP3pZ3euweq/T0vSKcm1BnGjn9j3iW1GsAnShWJuBULL
+   SXhw6fjTv/nTl51YObtB28qS1CSgjBijFMfoRTcxCQHCneldghc9+SJTn
+   u+4yihoh5AWanNpBNS5pj/zHQa5y13JVmnYnRjAAN2t7d1HG4QZs2rl5G
+   hauy0sPAvz8P53dLEpYE3Zs7sPKkIjayxdVsAtqsOHD/zKjUC1K1iHtdc
+   HAIvnPHV7W7SI496e7TURDIq6P4jDjoB0GSvUJ748Wki2lfDKqz7W/ASA
+   g==;
+X-CSE-ConnectionGUID: PrAlYoHnTsWFWkTiOuiLZA==
+X-CSE-MsgGUID: tbmlkoMoRoisqXw69PJ4sA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="48452760"
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; 
+   d="scan'208";a="48452760"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 23:07:07 -0700
+X-CSE-ConnectionGUID: 3COYIDj7RFWGpAPNHlNk4Q==
+X-CSE-MsgGUID: bnvAyUhlSGW0RCQMAk2f0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; 
+   d="scan'208";a="136252149"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 06 May 2025 23:07:05 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uCXvq-00079N-3B;
+	Wed, 07 May 2025 06:07:02 +0000
+Date: Wed, 7 May 2025 14:06:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Rory Little <rory@candelatech.com>, nbd@nbd.name, lorenzo@kernel.org,
+	ryder.lee@mediatek.com
+Cc: oe-kbuild-all@lists.linux.dev, shayne.chen@mediatek.com,
+	sean.wang@mediatek.com, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH mt76 v2 1/4] wifi: mt76: mt7996: Add per-radio phy
+ debugfs directories.
+Message-ID: <202505071352.R4Bb2GN1-lkp@intel.com>
+References: <20250430232225.3943242-2-rory@candelatech.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250430232225.3943242-2-rory@candelatech.com>
 
-Add mac80211 rfkill_poll ops to monitor hardware rfkill state
-and state change will be updated.
+Hi Rory,
 
-Signed-off-by: Allan Wang <allan.wang@mediatek.com>
+kernel test robot noticed the following build warnings:
 
----
-v2: Refine coding style
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
- .../net/wireless/mediatek/mt76/mt7925/main.c  | 16 ++++++++
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 37 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt7925/mt7925.h    |  1 +
- .../net/wireless/mediatek/mt76/mt7925/pci.c   |  4 ++
- 5 files changed, 59 insertions(+)
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main linus/master v6.15-rc5 next-20250506]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 478cd1886736..e195d69f61f6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1298,6 +1298,7 @@ enum {
- 	MCU_UNI_CMD_PER_STA_INFO = 0x6d,
- 	MCU_UNI_CMD_ALL_STA_INFO = 0x6e,
- 	MCU_UNI_CMD_ASSERT_DUMP = 0x6f,
-+	MCU_UNI_CMD_RADIO_STATUS = 0x80,
- 	MCU_UNI_CMD_SDO = 0x88,
- };
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 83f93f9e002c..e1ea7136751a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -334,6 +334,9 @@ int __mt7925_start(struct mt792x_phy *phy)
- 	ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
- 				     MT792x_WATCHDOG_TIME);
- 
-+	if (phy->chip_cap & MT792x_CHIP_CAP_WF_RF_PIN_CTRL_EVT_EN)
-+		wiphy_rfkill_start_polling(mphy->hw->wiphy);
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(__mt7925_start);
-@@ -2205,6 +2208,18 @@ static void mt7925_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 	mutex_unlock(&dev->mt76.mutex);
- }
- 
-+static void mt7925_rfkill_poll(struct ieee80211_hw *hw)
-+{
-+	struct mt792x_phy *phy = mt792x_hw_phy(hw);
-+	int ret;
-+
-+	mt792x_mutex_acquire(phy->dev);
-+	ret = mt7925_mcu_wf_rf_pin_ctrl(phy);
-+	mt792x_mutex_release(phy->dev);
-+
-+	wiphy_rfkill_set_hw_state(hw->wiphy, ret == 0);
-+}
-+
- const struct ieee80211_ops mt7925_ops = {
- 	.tx = mt792x_tx,
- 	.start = mt7925_start,
-@@ -2265,6 +2280,7 @@ const struct ieee80211_ops mt7925_ops = {
- 	.link_info_changed = mt7925_link_info_changed,
- 	.change_vif_links = mt7925_change_vif_links,
- 	.change_sta_links = mt7925_change_sta_links,
-+	.rfkill_poll = mt7925_rfkill_poll,
- };
- EXPORT_SYMBOL_GPL(mt7925_ops);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 286f602623c0..ec4c4a027922 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -3633,6 +3633,43 @@ int mt7925_mcu_set_rate_txpower(struct mt76_phy *phy)
- 	return 0;
- }
- 
-+int mt7925_mcu_wf_rf_pin_ctrl(struct mt792x_phy *phy)
-+{
-+#define UNI_CMD_RADIO_STATUS_GET	0
-+	struct mt792x_dev *dev = phy->dev;
-+	struct sk_buff *skb;
-+	int ret;
-+	struct {
-+		__le16 tag;
-+		__le16 len;
-+		u8 rsv[4];
-+	} __packed req = {
-+		.tag = UNI_CMD_RADIO_STATUS_GET,
-+		.len = cpu_to_le16(sizeof(req)),
-+	};
-+	struct mt7925_radio_status_event {
-+		__le16 tag;
-+		__le16 len;
-+
-+		u8 data;
-+		u8 rsv[3];
-+	} __packed *status;
-+
-+	ret = mt76_mcu_send_and_get_msg(&dev->mt76,
-+					MCU_UNI_CMD(RADIO_STATUS),
-+					&req, sizeof(req), true, &skb);
-+	if (ret)
-+		return ret;
-+
-+	skb_pull(skb, sizeof(struct tlv));
-+	status = (struct mt7925_radio_status_event *)skb->data;
-+	ret = status->data;
-+
-+	dev_kfree_skb(skb);
-+
-+	return ret;
-+}
-+
- int mt7925_mcu_set_rxfilter(struct mt792x_dev *dev, u32 fif,
- 			    u8 bit_op, u32 bit_map)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index 4e50f2597ccd..283a40badd28 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -365,5 +365,6 @@ int mt7925_mcu_wtbl_update_hdr_trans(struct mt792x_dev *dev,
- 				     struct ieee80211_vif *vif,
- 				     struct ieee80211_sta *sta,
- 				     int link_id);
-+int mt7925_mcu_wf_rf_pin_ctrl(struct mt792x_phy *phy);
- 
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-index c7b5dc1dbb34..b997cd8bf8d0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-@@ -31,6 +31,10 @@ static void mt7925e_unregister_device(struct mt792x_dev *dev)
- {
- 	int i;
- 	struct mt76_connac_pm *pm = &dev->pm;
-+	struct ieee80211_hw *hw = mt76_hw(dev);
-+
-+	if (dev->phy.chip_cap & MT792x_CHIP_CAP_WF_RF_PIN_CTRL_EVT_EN)
-+		wiphy_rfkill_stop_polling(hw->wiphy);
- 
- 	cancel_work_sync(&dev->init_work);
- 	mt76_unregister_device(&dev->mt76);
+url:    https://github.com/intel-lab-lkp/linux/commits/Rory-Little/wifi-mt76-mt7996-Add-per-radio-phy-debugfs-directories/20250501-072345
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20250430232225.3943242-2-rory%40candelatech.com
+patch subject: [PATCH mt76 v2 1/4] wifi: mt76: mt7996: Add per-radio phy debugfs directories.
+config: openrisc-allyesconfig (https://download.01.org/0day-ci/archive/20250507/202505071352.R4Bb2GN1-lkp@intel.com/config)
+compiler: or1k-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250507/202505071352.R4Bb2GN1-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505071352.R4Bb2GN1-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c: In function 'mt7996_init_debugfs':
+>> drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c:851:52: warning: 'snprintf' output may be truncated before the last format character [-Wformat-truncation=]
+     851 |         snprintf(fname, sizeof(fname), "radio_phy%d", phy->mt76->band_idx);
+         |                                                    ^
+   In function 'mt7996_init_radio_phy_debugfs',
+       inlined from 'mt7996_init_debugfs' at drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c:900:9:
+   drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c:851:9: note: 'snprintf' output between 11 and 13 bytes into a destination of size 12
+     851 |         snprintf(fname, sizeof(fname), "radio_phy%d", phy->mt76->band_idx);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+vim +/snprintf +851 drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
+
+   841	
+   842	DEFINE_DEBUGFS_ATTRIBUTE(fops_rf_regval, mt7996_rf_regval_get,
+   843				 mt7996_rf_regval_set, "0x%08llx\n");
+   844	
+   845	static int
+   846	mt7996_init_radio_phy_debugfs(struct mt7996_phy *phy)
+   847	{
+   848		struct dentry *dir;
+   849		char fname[12];
+   850	
+ > 851		snprintf(fname, sizeof(fname), "radio_phy%d", phy->mt76->band_idx);
+   852		dir = debugfs_create_dir(fname, phy->dev->debugfs_dir);
+   853	
+   854		if (IS_ERR_OR_NULL(dir))
+   855			return -ENOMEM;
+   856	
+   857		phy->debugfs_dir = dir;
+   858	
+   859		return 0;
+   860	}
+   861	
+
 -- 
-2.45.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
