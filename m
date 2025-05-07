@@ -1,172 +1,137 @@
-Return-Path: <linux-wireless+bounces-22699-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22700-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90CDAAD31C
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 04:10:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70989AAD31E
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 04:12:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E41CC3A43E3
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 02:10:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D499F501490
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 02:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542CB15746F;
-	Wed,  7 May 2025 02:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18913183CCA;
+	Wed,  7 May 2025 02:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="v3gxNOsD"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nCMS3w8I"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93499219ED
-	for <linux-wireless@vger.kernel.org>; Wed,  7 May 2025 02:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B60413C914;
+	Wed,  7 May 2025 02:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746583829; cv=none; b=NMXRv1vSedQjE4RTtI36y+L7zmZCu6EXLkq8Ohei5Mw2pjBsY9tUGGAsJmiW//JnPFzHLsJkqkvVa+JJRjgJG0Gj0LTIFTcB3ZZ02O/E1jciQB4EfeM6VfbcZ3v31nZaIirTn21MEOxrTF7W9p378zY5xxKSmr5PnZ2XIwBX1Ws=
+	t=1746583973; cv=none; b=fJCbxv5xFSfbhd1vn1o95mw96GzSJtXUe/RKrptx11Nh1Iw3r2Mb0nbU9jUbm8+9o4BC02gwvFyz9Ph+lAdfAv9zF027l58pviNCksYmJWdEk2vMWnoW33Yco/rGY3+2z5B2HfzHJSxbxbLGhm1mavE+AbgUnONxGUXKYBsBUIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746583829; c=relaxed/simple;
-	bh=JDdcrgaEn5ZC5rZbaqwWNMqE20rjVwxuZ7l1varsLB0=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Er8m7XHP/YpjVFPwMgHYpmSFGRoGfZcDytqa1pRXrTy96vIanVCiybZJsFMypWSoJ0iSIMCHw2XLfmQaA2cr91zIDftWmzpnZVbDlNPhJEJ+7NdRZ7/IiQmvRr3fAF1cNpZVChA5GMFXRLMt0UL9RsCO5iwD1zCnKL9F7x6gtz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=v3gxNOsD; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5472AIJB03617273, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1746583818; bh=JDdcrgaEn5ZC5rZbaqwWNMqE20rjVwxuZ7l1varsLB0=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=v3gxNOsDEUUg3WOY2nkE97QzJDM/hFQvvEIzJ86Dd/zMx7LUBVc5TXtFD57s25htI
-	 bu2/YuYnTJxRdPygeeP4POXMhgSB2Lq3AhwudwiNT+V9VAslZK4FDEQAjB+AB9bDZe
-	 rPLtExs+q2zdUMHK2OrRg+kyAD2m7GGnu4wQBALhmxoy6Lx/40KjlRWwbAraglcajM
-	 ufzxSb8bSf/hsGmGZrRUAkjfLKMpoMkT7y8NKTAQbNeRKpqCGN5niMJJ5nYilG7rgW
-	 eAgImUtbzHFLs3G65YIJc+tRvAEOGqR204RuBPjlg5hklgj6jRvShobkNQYLEWUiXw
-	 rSzTXezhMFVtA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5472AIJB03617273
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 May 2025 10:10:18 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 7 May 2025 10:10:18 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 7 May 2025 10:10:18 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Wed, 7 May 2025 10:10:18 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "zhengyushi(ZHENGYU SHI)" <zhengyushi@global.tencent.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [BUG] rtw89: high latency jitter on AzureWave Device 6110 (RTL8851BE) under Linux 6.14.4
-Thread-Topic: [BUG] rtw89: high latency jitter on AzureWave Device 6110
- (RTL8851BE) under Linux 6.14.4
-Thread-Index: AQHbvl9He46pkUrVxEWfnGKUw2rIorPGZ6MA
-Date: Wed, 7 May 2025 02:10:18 +0000
-Message-ID: <817f1db10717446ab92e85786ac34dd1@realtek.com>
-References: <DM6PR13MB3324CB742CF4CE86B4B363ACF3892@DM6PR13MB3324.namprd13.prod.outlook.com>
-In-Reply-To: <DM6PR13MB3324CB742CF4CE86B4B363ACF3892@DM6PR13MB3324.namprd13.prod.outlook.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1746583973; c=relaxed/simple;
+	bh=dzrbkY4X23RipD3l3Ge3/ZqWj4593/alobH6BpDh7hA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=X6Q0DGitZEfE2Qnr9LW3Hsqqr+QT4Z/moJ7cuZfqK+ORoSSVPrY9T6MP+bxQN6tIrOEKKSrNBMQmAwijrUgx39ks9f0Vq3jtjNXWJfy9AwfSpJeJF+ltJh57bWsGkH8g6v+gTiRRKLgucJ3AT/pW84VnEUY93663A26PyKVDp0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nCMS3w8I; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5471HAL8028440;
+	Wed, 7 May 2025 02:12:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	LfB5xXq277MAtXzOU/9GyduFI0JF/YzAt4MvMU6xV7w=; b=nCMS3w8IqfJ5TA8o
+	irqWTzhKWUbLuRds7P1UVuOGcxrw0Gl5x+nSARKjbECtfctBO5E4bfVeOHQiyOY1
+	KgTWteypuPAAQMqIi4uEJ7tNqW+GikRe46KiIrE6Z/IZSsBe4dVI3W0MZT94khAD
+	4cEXHvEWZ4bSJG096VQC9lPXrIxf4NA3g4HAGpTZRpinPMI4NsVwJrhaZPNbKfUE
+	aFiMD7p4BVP0yap1bMHQA05rVuu2bfO0O8nt6TrQIpSnZc1K9vHSD069MlPdtVyz
+	CL2f61XNGu9823B7yF4T7g8MtF4cYJOL3pDX9ik/8nK0ogMz0KFsUbxW/ZkcMhmn
+	NKaoqQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46fguuj94k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 May 2025 02:12:43 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5472CZH4018497
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 7 May 2025 02:12:35 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 6 May 2025
+ 19:12:33 -0700
+Message-ID: <3448c268-06e6-4d82-8f6c-ec635e624fe7@quicinc.com>
+Date: Wed, 7 May 2025 10:12:30 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] wifi: ath11k: Fix memory reuse logic
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        Muhammad Usama Anjum
+	<usama.anjum@collabora.com>,
+        Jeff Johnson <jjohnson@kernel.org>
+CC: <kernel@collabora.com>, <linux-wireless@vger.kernel.org>,
+        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20250428080242.466901-1-usama.anjum@collabora.com>
+ <f58075f7-f643-4e47-b774-dc529aaa01e5@oss.qualcomm.com>
+ <ec0bb100-4a70-4827-86b1-e4a7e8867a2d@collabora.com>
+ <b21ced75-b239-43ad-b4a1-293300b00eb4@oss.qualcomm.com>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <b21ced75-b239-43ad-b4a1-293300b00eb4@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=UJPdHDfy c=1 sm=1 tr=0 ts=681ac19b cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10
+ a=Ai7BlpgEY3ezrPMUgKsA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
+X-Proofpoint-ORIG-GUID: NWgPhPa3jJygoQ0xgcXFwyBiyB6pupGU
+X-Proofpoint-GUID: NWgPhPa3jJygoQ0xgcXFwyBiyB6pupGU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDAxOSBTYWx0ZWRfXws3uU9xpFPWE
+ j0V7gwbmvdtgj+ndAGlyHeyKjS9ju/E1xRUx+RSmzlqM8WHOD6Wo6WyZgbWhCGs7STGYlBr6fX0
+ vEKlQVs0eV9hTrRH6JHT6+vfxQXaTVd/SReQ0CxdGrvNIj2N+k4mb3o0z0peWm/4SUAavCk2jNZ
+ S1cloQoJkHu3LzclsI+My2YYtUNKShRV1NNZqBMaIpTE83nVPOft8gCSmwkRZ6E2eUHsXLJatL2
+ WWESoD7psknoPj6Z/1EOmEq7C1ZPIrkeRdd1hUJVyWeNWuGuS7k590xmlsawuo2CPBpWb66lK6J
+ uCvH8GuJ5i9Ptn3zSix5R5pJxD09cCMUatq1yMbIMjEOIL59f1JwzjGxoDE3ztc/6O2VtWXn1n4
+ os0etMPl2aTdUSmfqXBwosl3jvILk5e90LRlEzt2Z23C2Lyxhn2UdRG/bqVg7ZsuRiivROW4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-07_01,2025-05-06_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 clxscore=1015 phishscore=0 spamscore=0
+ impostorscore=0 mlxlogscore=999 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ malwarescore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2504070000 definitions=main-2505070019
 
-zhengyushi(ZHENGYU SHI) <zhengyushi@global.tencent.com> wrote:
->=20
-> I=1B$B!G=1B(Bm seeing severe ping spikes (1?90 ms) when using the onboard=
- Realtek RTL8851BE Wi-Fi (Device b851,
-> rtw89_8851be) on Arch Linux. Switching to a USB-tethered phone (same AP) =
-completely eliminates the jitter
-> (<5 ms). The behavior is completely reproducible. I suspect an issue in t=
-he rtw89 driver=1B$B!G=1B(Bs power-management
-> or PCIe handling.
->=20
-> I tried
-> - Disabling power management via injecting ASPM/L1/L1SS and CLKREQ via rt=
-w89_pci.disable_clkreq=3Dy
-> rtw89_pci.disable_aspm_l1=3Dy rtw89_pci.disable_aspm_l1ss=3Dy
-> - Verified no firmware=1B$B!>=1B(Bdriven roaming or reassociation in logs
->=20
-> Device Info:
-> % lspci | awk '/[Nn]et/ {print $1}' | xargs -i% lspci -ks %
-> 07:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168=
-/8211/8411 PCI Express Gigabit
-> Ethernet Controller (rev 15)
->         DeviceName: Realtek RTL8125BG LAN
->         Subsystem: ASUSTeK Computer Inc. Onboard RTL8111H Ethernet
->         Kernel driver in use: r8169
->         Kernel modules: r8169
-> 08:00.0 Network controller: Realtek Semiconductor Co., Ltd. Device b851
->         Subsystem: AzureWave Device 6110
->         Kernel driver in use: rtw89_8851be
->         Kernel modules: rtw89_8851be
->=20
-> % uname -r
-> 6.14.4-arch1-1
->=20
-> % mtr 8.8.8.8
-> Apotheosis (192.168.0.42) =1B$B"*=1B(B 8.8.8.8 (8.8.8.8)  2025-05-05T21:1=
-5:47+0800
->  Host                    Loss%  Snt  Last   Avg  Best  Wrst  StDev
->  1. _gateway              0.3%   330   0.7   1.6   0.3  82.4   5.8
->  2. 100.66.0.3            1.2%   330   2.0   3.1   1.2 109.9   9.5
->  3. chj-dsl9.vqbn.com     0.3%   330   2.0   3.3   1.3  95.3   8.5
->  4. 132.147.112.109       0.0%   329   2.6   4.0   1.7 102.8   9.4
->  5. 132.147.112.194      24.0%   329   4.7   7.9   3.4 127.1  16.0
->  6. 209.85.255.97         0.0%   329   2.5   3.5   1.6 131.1   8.6
->  7. 142.251.241.1         0.0%   329   2.4   3.4   2.0 109.7   7.3
->  8. dns.google            0.0%   329   2.8   3.0   1.5 105.9   7.2
->=20
 
-This is my test in office where at least 50 AP are existing:
-(Actually I don't expect the latency is always low in this environment.)
 
-64 bytes from 192.168.0.1: icmp_seq=3D1 ttl=3D64 time=3D3.40 ms
-64 bytes from 192.168.0.1: icmp_seq=3D2 ttl=3D64 time=3D24.0 ms
-64 bytes from 192.168.0.1: icmp_seq=3D3 ttl=3D64 time=3D4.32 ms
-64 bytes from 192.168.0.1: icmp_seq=3D4 ttl=3D64 time=3D4.36 ms
-64 bytes from 192.168.0.1: icmp_seq=3D5 ttl=3D64 time=3D6.30 ms
-64 bytes from 192.168.0.1: icmp_seq=3D6 ttl=3D64 time=3D7.15 ms
-64 bytes from 192.168.0.1: icmp_seq=3D7 ttl=3D64 time=3D2.48 ms
-64 bytes from 192.168.0.1: icmp_seq=3D8 ttl=3D64 time=3D2.54 ms
-64 bytes from 192.168.0.1: icmp_seq=3D9 ttl=3D64 time=3D2.04 ms
-64 bytes from 192.168.0.1: icmp_seq=3D10 ttl=3D64 time=3D122 ms
+On 5/6/2025 10:37 PM, Jeff Johnson wrote:
+> On 5/6/2025 6:10 AM, Muhammad Usama Anjum wrote:
+>> On 5/6/25 12:17 AM, Jeff Johnson wrote:
+>>> v2 feedback was not incorporated:
+>>> For starters, can we make the subject a bit more specific, i.e.
+>>> Fix MHI target memory reuse logic
+>>>
+>>> But don't repost for this -- I'll make that change in ath/pending
+>> I'd changed again on the request of another reviewer. Please feel free
+>> to change as you like. I don't have any opinion on it.
+>>
+>>>
+>>> However, does ath12k need the same fix?
+>> Looking at ath12k, there is similar code structure in
+>> ath12k_qmi_alloc_chunk(). By adding some logging, we can confirm if
+>> ath12k requires the fix or not. As a lot of code is similar in both
+>> drivers, ath12k may require the same fix.
+>>
+>> I don't have access to ath12k. So I cannot test on it.
+> 
+> Baochen, do you want to propagate the change to ath12k?
 
-This is another test in my house where AP is much less:
-
-64 bytes from 192.168.1.1: icmp_seq=3D1 ttl=3D64 time=3D2.86 ms
-64 bytes from 192.168.1.1: icmp_seq=3D2 ttl=3D64 time=3D1.33 ms
-64 bytes from 192.168.1.1: icmp_seq=3D3 ttl=3D64 time=3D1.31 ms
-64 bytes from 192.168.1.1: icmp_seq=3D4 ttl=3D64 time=3D3.54 ms
-64 bytes from 192.168.1.1: icmp_seq=3D5 ttl=3D64 time=3D1.50 ms
-64 bytes from 192.168.1.1: icmp_seq=3D6 ttl=3D64 time=3D4.03 ms
-64 bytes from 192.168.1.1: icmp_seq=3D7 ttl=3D64 time=3D3.55 ms
-64 bytes from 192.168.1.1: icmp_seq=3D8 ttl=3D64 time=3D2.86 ms
-64 bytes from 192.168.1.1: icmp_seq=3D9 ttl=3D64 time=3D1.27 ms
-64 bytes from 192.168.1.1: icmp_seq=3D10 ttl=3D64 time=3D3.49 ms
-
-I'm using firmware v0.29.41.3. Please check which version you are using.
-
-Turning off power_save by 'sudo iw wlan0 set power_save off' can improve
-a little bit. You can also try it.=20
-
-The factors of high latency might be caused by noisy environment, so
-RTL8851BE is hard to transmit out or collision. Using a sniffer with
-ping test would be easier to diagnose the reason.=20
-
-Method to use another RTL8851BE or other WiFi devices as a sniffer:=20
-   sudo iw dev wlan0 interface add mon0 type monitor
-   sudo wireshark
-Then select proper channel via wireshark GUI to capture packets from/to
-target RTL8851BE.
-
+Yeah, I can test and fix if same issue is there.
 
 
