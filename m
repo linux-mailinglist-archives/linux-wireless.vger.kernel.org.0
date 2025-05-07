@@ -1,63 +1,79 @@
-Return-Path: <linux-wireless+bounces-22708-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22709-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707E4AADB3C
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 11:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2FAAADF4D
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 14:35:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F5969A2991
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 09:18:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF81C3B551B
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 May 2025 12:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D582239E72;
-	Wed,  7 May 2025 09:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF5025E448;
+	Wed,  7 May 2025 12:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UjGYEWdz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VacKoebf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7511A239E65;
-	Wed,  7 May 2025 09:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6048825F7B4
+	for <linux-wireless@vger.kernel.org>; Wed,  7 May 2025 12:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746609289; cv=none; b=hDv0eZgwMiy5n3IBV4Rn8iQge5+qEQa/74ZDIf3F0lSrP2u2BS6fK/AnexHepk2FcvNeafzpGtRz9XIVj7VC357fU7WU2eti0vpaghe8EGLvS0GMXFzhzRP2LDVOufkfc6oSM2Insls5v87Xjc5RXLA8MstDJl1hsc3JiLR/QKc=
+	t=1746621243; cv=none; b=Or0g7WGepNQa29JwABX/7naoaBuyk6LusqttyQ53sPZyhjqkDfnRCbgOXBGrMOtb3Q/fww6HuhpGQVhrLapftuNDbnWxg7yUA4hQxYWqqqGEZDh5VLDdOdkqWOE989wjFNF3FCI8GNzkvNgYbs07Ye2S2WKdJ5qjEsVeqVA4Qzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746609289; c=relaxed/simple;
-	bh=H+z/PrLzViRI7mr7rkhd46u4J8IMUe1WBuvk9lrspRY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=uCjXdQEE5EbFZPZwwmD7f4STkExH6cSGyJPpMRBtR10BjuAObBMieT7DRRtiGiKU/uoQwDHp4WQC2VXqBkTFRI+P1S832mNCNnDO//GMqu97ib4TMvU6er05FmipQ4HbnZyg3f1gOfj0tq+c8Uhj/+EwgKBXvdnqgEAO45AlBsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UjGYEWdz; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5471GsQd019058;
-	Wed, 7 May 2025 09:14:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	UWDAuqxY3hVY3E91SimJ0g+97uFO5MxUMA4Q1Xjwb4g=; b=UjGYEWdzlI6uLIrq
-	6mzcwkh0+3tLb/88Y87wK27JamAXLJm/S6HiTvk3jpBuh7JcjWHcnldjvCTsFo4l
-	OJTGRwt/UUtegygLOLSMxmxxMiIKaUeM4BgPiRQkmn2K6eUzfCs/eBEmOCfF2gZT
-	ahhPfCDd09YNVcP0ng6Ygmj1yp3sUzgFlXq6vPqMdVc/HPiVA7HkZ8LMIEMgZYka
-	yw4imIdUIEkpPfAklnvSFiU+IcA719SXndRTMxn7BNBQGXHA+0nqoWx1MZ6oVSxc
-	5FLVcZWuAEqumkkW0vYlQkawSTXQMjQDlEw1M/fr3gBbhCHzhaGyZwwqz8JIT5FO
-	yAnAFA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46f5wg522r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 May 2025 09:14:25 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5479EN80003651
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 7 May 2025 09:14:23 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 7 May 2025
- 02:14:17 -0700
-Message-ID: <d3725aa4-ed50-447a-b396-6d3a79bdef99@quicinc.com>
-Date: Wed, 7 May 2025 17:14:14 +0800
+	s=arc-20240116; t=1746621243; c=relaxed/simple;
+	bh=s1nWMSAsqLkUyvjaUg7HtoD/qw/s1CiRNpr/p5nwflI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Cd566eTvDj9Nc+ooRoNyV3+j+CznGZtkHxcPgl8EKLfDbVxttsMDWQqdkqzDeIVA5vT/jhqjGsbSiD+U4pk4212zdjYbKh9WscqQ04AFBHHPksO4K6uVF/C1keKm5OmLkVbY7egxGCaMuTAhDJQRJFOjtFNauFOp/yLOLc6qHqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VacKoebf; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-acb615228a4so182268766b.0
+        for <linux-wireless@vger.kernel.org>; Wed, 07 May 2025 05:34:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746621239; x=1747226039; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NViojh1UZmKOXZB2h8qH9qc2/mGhk8LtxoxD813chjU=;
+        b=VacKoebf2cpcoqH+Y5X+j7o3bVDwIRxINnU6QEdX3lDjB11OkS/sukG8DQDZrmstR6
+         iGPwfArikxwfQ0c+tuT+zaWIBbi6mNlFek7M6lVux3b34p6CSaRfZAuSLbDdG9ESu7eb
+         ozHnlDZL3vMM5RoU1B4DzTq0CkU8hEnvVo4L/vr9WlM8XiM/i6o50LrgavWXsNetVNyK
+         8Yjet0tf8+bsMze2rRjBHfr9ZM5A1Q+KVR6QduSoz73iT62Z+7MXc1+wsOeRgRzstF8G
+         Hb/eVrdYYLVR3msfNmQ5uEDmP7+ZmXd3i1A/DZYDNB0QPPst0k/5MQm6Xzh4hX2VzsMx
+         Xmvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746621239; x=1747226039;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NViojh1UZmKOXZB2h8qH9qc2/mGhk8LtxoxD813chjU=;
+        b=OoV9drV/1PBlJgmuJOTZqfq8G1uM0mEG7EOCJbM4wkJG/MCeC2wpg3Ge/JdrbpyNtl
+         GCbNsigXIqM9klBt4rot+raL8/MFN8X6kOmSv3DBDNk36Z04KHYFofePO28HWPakSlYA
+         MQp7PUE66FUP0qPHuZux3s5OyqfTiIfI1vTI+BDqpDiUTWLMN8h8ziIji9beXoxWGuot
+         C7RQC4NF6ERs5HFX2cw71A86aw22Fl75HUyqkR97WU0wqehsIF9gApEZST5Nx7C/VfOi
+         X6IpBHF6YAP7uTuO8VZ4CrpXvn310wUGqY5DNq4qA6gme1iZF6tI59XuG7Rt+ufi8GS7
+         fd8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUVGG5D077MmorGr1wCGvifxxchYiJgqEU9Rrhkds7Jr51gY09B2BHCYKpRL9hNfthYIoj2UQcekojwxgytNQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzoiSqVkEK2PFvPhZKilr9Sxmb9aVWuEmIY3uQutjYc/K5677F
+	P0hOD0Hk9wQ6OBx2JlOOa3HmL5K2Lg1qkIvd7OcKuD/10yk4+Pd/hrtLJQ==
+X-Gm-Gg: ASbGncsm+c57Uh0Bze3soegfGyqwzojLmPu7SNy9UTmLEwQtzx0DNdxAYzVaH9PFyIL
+	5AQwEIREdNUE18dpZGENd2/Wk6JEB4qzyg2ZEOiuzpiuB4xuDap0LuAga6sK5XQnxfpck6d/WW3
+	8y3pQTOLpMqUOdIKdMzSOj7YP4JAxjqE4dRoOmCkGy/AwGjOQNkOI6JudB3d1BNmlEokmdmoiHV
+	8OrhSbXvfz6aE3NTHMUalhlYIm1M+Dzdh08MtjNSyD8GGz+tXIxFV3iYFZbOpyiS0f4cWRDy/8k
+	sUKDH3g7igAzKlDTU11yaIdXbhurUVMGCIkOWjsG/2wjXAtD0g==
+X-Google-Smtp-Source: AGHT+IEdJJM3KggfwCezvSkJx9x5Yui5uWffoKbEbmM+c+ly1D2xs+dV/qPdgWYsNzLTA8Cj/OmzUA==
+X-Received: by 2002:a17:907:cd0d:b0:ace:be7c:11df with SMTP id a640c23a62f3a-ad1eaefaedcmr295979366b.6.1746621239351;
+        Wed, 07 May 2025 05:33:59 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.158])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad1894c29d3sm895655966b.113.2025.05.07.05.33.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 May 2025 05:33:58 -0700 (PDT)
+Message-ID: <05dbbbc9-58b1-4b4c-b170-ea4225b0ccbe@gmail.com>
+Date: Wed, 7 May 2025 15:33:56 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,93 +81,64 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] bus: mhi: host: don't free bhie tables during
- suspend/hibernation
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Manivannan Sadhasivam
-	<manivannan.sadhasivam@linaro.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        "Jeff
- Hugo" <jeff.hugo@oss.qualcomm.com>,
-        Youssef Samir
-	<quic_yabdulra@quicinc.com>,
-        Matthew Leung <quic_mattleun@quicinc.com>,
-        Yan
- Zhen <yanzhen@vivo.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-        Kunwu Chan
-	<chentao@kylinos.cn>,
-        "Troy Hanson" <quic_thanson@quicinc.com>,
-        "Dr. David
- Alan Gilbert" <linux@treblig.org>
-CC: <kernel@collabora.com>, <sebastian.reichel@collabora.com>,
-        Carl Vanderlip
-	<quic_carlv@quicinc.com>,
-        Alex Elder <elder@kernel.org>, <mhi@lists.linux.dev>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
-        <ath12k@lists.infradead.org>
-References: <20250506144941.2715345-1-usama.anjum@collabora.com>
+Subject: Re: [PATCH rtw-next v2 1/2] wifi: rtw88: Fix RX aggregation settings
+ for RTL8723DS
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <4c79fdc1-54bc-4986-9931-bb3ceb418b97@gmail.com>
+ <43ff8b6babd649b895e8af8993d53c36@realtek.com>
+ <ff57b627-5842-44ee-adcf-f1b4bdfac1b9@gmail.com>
+ <e057b56d05bb4d26b95932a05a1c50f9@realtek.com>
 Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20250506144941.2715345-1-usama.anjum@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <e057b56d05bb4d26b95932a05a1c50f9@realtek.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: p_jG0Sbno2oZ98DpC9OAqDCV3vFL_SqM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDA4NSBTYWx0ZWRfX28FjdaIizGlH
- OjmKXluBVlr8MqtezBOfynzjclypPoCtQTToE0P1h+VtGLUN/dSruNDkLTFaijeC4tYD2WFk9n8
- ToHMVAp17i2+Jvw8TaFTmqwU9/4UrtjRUtYGw6ieOh7oNLKtWhjwZ1m4suYYK3ydPk1mnUUvYWp
- i3zikAl208PxjSII13dZ+xjniCzEFZF3TRYoaYBerar1hU3ZGlJd8ze8wzBV7ODy69UN2a+kF7v
- V1eKqKEg4CWH/7K6BOVKtj2sfLcMDfqWatCZRje6hRgCMTDac6TjS3V2kKtgcX/JzWZe8Pt3kV3
- c2MFuqQOIlGjSJuyGaD451xtgqsWyZnB5dn2tyCdN0TNjijafgDvzGywcFcnopkOqVgHxjsCaNw
- FYeLLoO1sr/hZyzAFCeEUZuzavA9Zgm4C1c8WZ4VrxVMoH2odAui+AY4VQ4wxzNHcvRD76ne
-X-Authority-Analysis: v=2.4 cv=dPemmPZb c=1 sm=1 tr=0 ts=681b2471 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=QX4gbG5DAAAA:8
- a=COk6AnOGAAAA:8 a=mPD-axTYSJuEfRLCb94A:9 a=QEXdDO2ut3YA:10
- a=AbAUZ8qAyYyZVLSsDulk:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: p_jG0Sbno2oZ98DpC9OAqDCV3vFL_SqM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-07_03,2025-05-06_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 mlxlogscore=913 priorityscore=1501 impostorscore=0
- suspectscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 malwarescore=0
- mlxscore=0 clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505070085
 
-
-
-On 5/6/2025 10:49 PM, Muhammad Usama Anjum wrote:
-> Fix dma_direct_alloc() failure at resume time during bhie_table
-> allocation because of memory pressure. There is a report where at
-> resume time, the memory from the dma doesn't get allocated and MHI
-> fails to re-initialize.
+On 06/05/2025 04:56, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> On 05/05/2025 03:45, Ping-Ke Shih wrote:
+>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>>> Use the same RX aggregation size and timeout used by the out-of-tree
+>>>> RTL8723DS driver. Also set mystery bit 31 of REG_RXDMA_AGG_PG_TH. This
+>>>> improves the RX speed from ~44 Mbps to ~67 Mbps.
+>>>>
+>>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>>> ---
+>>>> v2:
+>>>>  - Restore the original behaviour for RTL8821A and RTL8812A.
+>>>
+>>> This patch actually restores the behavior of RTL8821A and RTL8812A. But
+>>> they are 802.11ac chips [1] [2], somehow defined as RTW_WCPU_11N.
+>>>
+>>> I can accept this patch ahead. Please help to think how we can correct
+>>> this mistake.
+>>>
+>>
+>> Yes, the enums RTW_WCPU_11AC and RTW_WCPU_11N have wrong names.
+>> RTL8821A and RTL8812A are 11ac chips but their MCU is the
+>> RTW_WCPU_11N type. RTL8733BU (not supported in rtw88) is 11n but its
+>> MCU is the RTW_WCPU_11AC type.
+>>
+>> I was thinking to rename them:
+>>
+>> RTW_WCPU_11N  -> RTW_WCPU_8051
+>> RTW_WCPU_11AC -> RTW_WCPU_3081
+>>
+>> 8051 and 3081 are the names used in the vendor drivers:
+>>
+>> #define PHYDM_IC_8051_SERIES    (ODM_RTL8881A | ODM_RTL8812 | ODM_RTL8821 |\
+>>                                  ODM_RTL8192E | ODM_RTL8723B | ODM_RTL8703B |\
+>>                                  ODM_RTL8188F | ODM_RTL8192F | ODM_RTL8721D |\
+>>                                  ODM_RTL8710C)
+>> #define PHYDM_IC_3081_SERIES    (ODM_RTL8814A | ODM_RTL8822B | ODM_RTL8197F |\
+>>                                  ODM_RTL8821C | ODM_RTL8195B | ODM_RTL8198F |\
+>>                                  ODM_RTL8822C | ODM_RTL8812F | ODM_RTL8814B |\
+>>                                  ODM_RTL8197G)
 > 
-> To fix it, don't free the memory at power down during suspend /
-> hibernation. Instead, use the same allocated memory again after every
-> resume / hibernation. This patch has been tested with resume and
-> hibernation both.
+> Thanks. Please help making a patch. 
 > 
-> The rddm is of constant size for a given hardware. While the fbc_image
-> size depends on the firmware. If the firmware changes, we'll free and
-> allocate new memory for it.
 > 
-> Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
-> 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-with WLAN firmware unchanged, suspend/resume is working well:
-
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Tested-by: Baochen Qiang <quic_bqiang@quicinc.com>
-
-
+I will do it soon.
 
