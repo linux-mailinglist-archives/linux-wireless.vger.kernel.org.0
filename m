@@ -1,167 +1,188 @@
-Return-Path: <linux-wireless+bounces-22756-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22757-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A803AB00CA
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 18:59:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE780AB04B3
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 22:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6558A1C0379F
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 16:59:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19A4B170578
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 20:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE01283148;
-	Thu,  8 May 2025 16:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5101C284667;
+	Thu,  8 May 2025 20:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UKafBGhJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SIqjP2w6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53CC278E42
-	for <linux-wireless@vger.kernel.org>; Thu,  8 May 2025 16:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A901E4BE
+	for <linux-wireless@vger.kernel.org>; Thu,  8 May 2025 20:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746723539; cv=none; b=g1mXHuSPg86oOsCgYpTx3QGQWIWzJbL/794ijog7Bn7Z7IgrXlCkRpmPBVMDS/XIm+1Svqm/7AZbvsbeoJvM0VosHw8a39Pi+5NArY2X+3InC5rL5i5wWqaRKzdd22Fx53Z9+PiKMdFHyw2u63vMsBUI8BRoMEXyp2fYb97iUgc=
+	t=1746736485; cv=none; b=MlGS0b5d6HRrnsVzVfTn4qerRkEWhG7ew4X0t4Uf5FqYZBo0kimr+O7Gr/MjOD3otz1dku7wXZ7SEoJSuzXU07TLewUN+j9Yt1Ky1NiDAGGywDBUdo9wmouB6bu9fBUtjM4Ze1qQpXWTYHVxE8LrpEM3xMOfof39b9Opjq7Ibfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746723539; c=relaxed/simple;
-	bh=LedG43Uj2lo44/KgzdsMBaSPayLVIdnJOy4nnNI2yyc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=a417RBM9KU4vOh3dAOr3tlr/l/kwpX8JL4HIMBl3lRR3bE6VPgjx+uL6It7aSyUkBZ77Y2o/JxzA1TWYb14r5iOI//0Flb5hYB3tE8kG/sExSZ3pgHuw5XQZUcEiW7r9KPNp1OkgOyYlo/3OUwUN7Gmeqa3JZ15hQajzOiifadA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UKafBGhJ; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1746736485; c=relaxed/simple;
+	bh=bP2Pf6SXwn7FpWaU6TdYJx0/WYYo8BLZoS3AgYfFMzQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=YNomq6/hcwcTi5B+U+qm6wXgRAdfAZeLlLTuwU+AdI0EIZ1/99JA3KdL8Z36RXjbtAnXeJIQ3xKsg6MxUSR+jTsP8T9QDVpNz/CWdLd3vknfhbKqSdVs3BuvcVtc5fYWD3cCp8PLKlEyhovDNQNBILUtP7MzEGDJ/29hS+Svk9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SIqjP2w6; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5f624291db6so1928912a12.3
-        for <linux-wireless@vger.kernel.org>; Thu, 08 May 2025 09:58:56 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac25d2b2354so238081266b.1
+        for <linux-wireless@vger.kernel.org>; Thu, 08 May 2025 13:34:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746723535; x=1747328335; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Tr8HFCWXqvJ0O9IUmbzJCUVwaUN4z3DFygbfJwdUZbE=;
-        b=UKafBGhJHH9ayETAoRugpXsjsB5ExZoyZwOOEQI90uZ5UKK9RekUEeBJfMkS9TmayN
-         bdezCQe8hIaVJzaQB5Cxvzm+AJL93uIfyODcOnMsRSKVb6V2lGT6a1dbvGWP0Ig+cZD4
-         5tzaVwnt/BBV/XNycf1aoW0ftW66bERfDUH1/FJvrrBExTvpNL/h6g7z8gfVzHsckIBh
-         +Jl2p1JbxIpYKlsqjeIrG8BYStXP65EtTz7iKrH8Ihw9ccDqUlXjEv3DLQnKD0vi91mH
-         QqZLTaVWXQ2efvkl/3gbu5B37KouL+w8L2ZkL3N7QNOymHSCXi/0zu3slqhTCRCEPgBg
-         jucA==
+        d=gmail.com; s=20230601; t=1746736482; x=1747341282; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CpiGmGmsn7qvi89P3DpfkRsxq67BoNdkh3fWqhgRW94=;
+        b=SIqjP2w6MqlcWmbQkQ/h49U5WRdG5z0qxW7xr1sSdoJTt9+EN+hJGXWk8A9llVbh9s
+         ClSFHEfzul/93t5QEQ6B1vjllayTPQ1ipktj5M6A4iAQgRwli1NZQZOcKSvAl7O8e4Q9
+         23oxh98kwQy1y5wZqAAx+B6dfTHpnvr8DZ1PgD4fZ6ZcoYVq+pTmCkZm/wEJG4A0YDPd
+         VSpeXKo/Eq82IIbRTt3D/lVU/EKu3qSxFcrydo64Lc9CRcWm7ut1NnuPZhecoowp4982
+         hyAZVdqTBRYm+6d+HSc4KW50ptSA0a8w/7QCqZQg0/wymy5wjpWaHyMmP9P5in9GeYAC
+         pTRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746723535; x=1747328335;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tr8HFCWXqvJ0O9IUmbzJCUVwaUN4z3DFygbfJwdUZbE=;
-        b=xNZ9VkSYYnKnv4Z8ZJ559eY1tB+t/nXKGClEvn9whprH9p18QMN0lccuFUbjh1SWOB
-         9s2OeVUyBxdkLKk5cV+sosx6/JHhFxKw0/zRumKzMmOUwYSJL+yTgNnvMiPBKIhixmIm
-         LePXh/wsIg28UMF9+j0jvC146ldfKGF4uz056z12Prdm9eYfWR5rrV9JxMhbOYUluhFZ
-         SJLs+wq5Pbmcbzkp5tqcohylO47tm3MqgClWG6gtBazJm62NSrXLByXvZNKoBBJ0z6a8
-         ELwQxXTRGkikrVGYBfm37J/uiqJWvw47MLxPLeANnsqNuA+8eOiQbKuuLGJQhzcN2Ffs
-         Ph5A==
-X-Forwarded-Encrypted: i=1; AJvYcCXlRklq81uzp7n6n2nTf58fjhBZGx5Ovb+wfBQsl+BJkhNC0G8eXEqfZtoSBiaa7mM8ZH6xa0e0V+J7OrygNQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyojgiJjTir0NEPjim+V+k/ia0c5via0XRbt3opPt8PASArNtEz
-	j5sYrZo8cU+sfw99+uYpDH6FeCX6k5Tmkowqqb8cgXnYpWJ/vB+t
-X-Gm-Gg: ASbGncuC07Al4G2kIBIDLJ6RXlgql9zl0+I5qbvbrHiC/DNniuWNPyOJsZ6AkSWSWSo
-	WXpAh/+IGxCGeKslDwHP0PEtMJ5/a/gFZRlK9bN52u9rob4vlork/NxUjV1JdphOrFMW4qI39Jn
-	LxVbhKvaS+L9wxasZCeuhRL1kIyfiKKsBkCDvHO/np0AZ4AwTkExG3gAdKO0yf1cfEiGeMvQz3i
-	c/CxgAniiUq4jjN+tsU8tyJ41m+MjMWnX0afQfT7WHV/vmX6ISGNafNeSyciGpTMI+w4P0lJbVx
-	VjboOT6qowxdliYraAWY1pLveY9AHmeFl3mymV1KGRfLDDWeIC+LRa/ck11H
-X-Google-Smtp-Source: AGHT+IFD8Mj7cWkAaBSnVMBU8hPurD5LVZaGrrFdYmfB9rLz4xCTASzli2KJIS6EcWuv3LwJ7qJzCA==
-X-Received: by 2002:a05:6402:27d2:b0:5ec:c990:b578 with SMTP id 4fb4d7f45d1cf-5fca0797656mr40188a12.19.1746723534983;
-        Thu, 08 May 2025 09:58:54 -0700 (PDT)
-Received: from [192.168.0.50] ([79.119.240.158])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5fc9cbe516asm131216a12.15.2025.05.08.09.58.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 May 2025 09:58:54 -0700 (PDT)
-Message-ID: <0890b8b7-0426-404e-b833-0144b726e17e@gmail.com>
-Date: Thu, 8 May 2025 19:58:53 +0300
+        d=1e100.net; s=20230601; t=1746736482; x=1747341282;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CpiGmGmsn7qvi89P3DpfkRsxq67BoNdkh3fWqhgRW94=;
+        b=dSBcO8wfGjiC9VnNJOM+9Da1QS+eNEnOx+9D9gIoeiNHrnIS9yQI0iz4OVW0I9/T/6
+         vsh3nDWjBtmHlH8uysgm4cXQcnosOXG2b3adrB+07V2LsIeXjsO7dnq2ziHjfPBGgW8o
+         GjRUa0RyV3Zeq5OTdoUAyOq2Sh85rj++BxnJEVgouBgKjo3e3CINAa3lm28gyn9y2gmD
+         h9ED8Ws42Suw4N8i5HXMr8LIqjRK75PWZk3OIY5vU8fRV2H5ZEbcyK6iJfnqGok/c5LF
+         xNXBlfDwyt8w9PeWeHlFQR31Uzzfxywf0xQGx6iaVUXteut+m8Zd9BInzI3itZFQi3+O
+         ihFw==
+X-Forwarded-Encrypted: i=1; AJvYcCWjCHL5TeoKsN0ctPFhKcgNXGiTEdalL44G7Nx/qgFGIep+y1uf7/d05Fw3XJlDyU2nZegPVke/CeDRHzYMHQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqaLvJWnS01qg7jTXaYCq1UFDf4uFV5ihBpaGnjzp0tlHdrDcC
+	SxQnpGwcT6hRbIijaI0c2FGD+GmMAad4Ap1tm6Qjo6GbTWLlrU8nK3gRSqYfxSwdKfbfovq/Qn9
+	DWoGf2x1Ju2MQuCJC+qalnENvjkc=
+X-Gm-Gg: ASbGncuYKvSmU96x8ORrNq9prryJjtiEggDzGEgnICP6pYgQkfcnFkYyYwxDw+HrxUP
+	6ngV/fz03DvplURjm+BYC2LJTnz53MARODx2bsqBw5dgTpEuTzmjLUDjA68qvk7fmsi418A8f3+
+	rHXlLis1Yjhrudi7+BpyVfPVpPTsDhZIpaVgb3Fmo4X1/kA5g57dbLhHmMNPTQZ7Ep
+X-Google-Smtp-Source: AGHT+IFMn0RlHyrgMVQipzfktU2amZP5WR9WDKNxUOmGGFPPMNxLYB/KAf9KPkFankIyUHvDanyMsY10l/KJwH/rULI=
+X-Received: by 2002:a17:906:ba90:b0:aca:cac7:28e2 with SMTP id
+ a640c23a62f3a-ad21927d08fmr102257766b.40.1746736481427; Thu, 08 May 2025
+ 13:34:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next 2/2] wifi: rtw88: usb: Upload the firmware in
- bigger chunks
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <af4d2d58-f567-4bdf-841b-8345d21f7035@gmail.com>
- <9faaa45f-9ba8-46dc-b507-f97b3b6f52d3@gmail.com>
- <670259643afc42f581632c7383fa7f3f@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <670259643afc42f581632c7383fa7f3f@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CAD+XiyEJo0m8L6PbmBD=NPPa0E_wX3kk4ezn1qZ0d8JGXsS1qQ@mail.gmail.com>
+ <0cf9bd4b99864f428175e34a2f2e014b@realtek.com> <CAD+XiyFkogCyQTk8Xhu8htGa892zFkY707+8WVCOdejb3FLNpg@mail.gmail.com>
+ <ae5013a930574e68b96544df82f93157@realtek.com> <CAD+XiyEQPt9HGngt0XBB7Hf=0tDHHcU+3=E20vhPnC3VL1Y+vg@mail.gmail.com>
+ <31b6571789b34b95aca2bca73dca2d62@realtek.com>
+In-Reply-To: <31b6571789b34b95aca2bca73dca2d62@realtek.com>
+From: Samuel Reyes <zohrlaffz@gmail.com>
+Date: Thu, 8 May 2025 14:34:25 -0600
+X-Gm-Features: ATxdqUE17AIxhwCQThOZWFlrMLQihTxJZf9bT1KZWR_g6RnFuiQOgnkyEI6piqA
+Message-ID: <CAD+XiyEXU_cxgfk1DxFZLFMLXWbmo-cDf7d30Hb1F7_BqdBCQw@mail.gmail.com>
+Subject: Re: RTL8922AE driver issues
+To: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 08/05/2025 06:29, Ping-Ke Shih wrote:
-> : Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> RTL8811AU stops responding during the firmware download on some systems:
->>
->> [  809.256440] rtw_8821au 5-2.1:1.0: Firmware version 42.4.0, H2C version 0
->> [  812.759142] rtw_8821au 5-2.1:1.0 wlp48s0f4u2u1: renamed from wlan0
->> [  837.315388] rtw_8821au 1-4:1.0: write register 0x1ef4 failed with -110
->> [  867.524259] rtw_8821au 1-4:1.0: write register 0x1ef8 failed with -110
->> [  868.930976] rtw_8821au 5-2.1:1.0 wlp48s0f4u2u1: entered promiscuous mode
->> [  897.730952] rtw_8821au 1-4:1.0: write register 0x1efc failed with -110
->>
->> Maybe it takes too long when writing the firmware 4 bytes at a time.
->>
->> Write 196 bytes at a time for RTL8821AU, RTL8811AU, and RTL8812AU,
->> and 254 bytes at a time for RTL8723DU. These are the sizes used in
->> their official drivers. Tested with all these chips.
->>
->> Cc: stable@vger.kernel.org
->> Link: https://github.com/lwfinger/rtw88/issues/344
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> 
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-> 
-> [..]
-> 
->> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
->> index b16db579fdce..ad15ce12ab7f 100644
->> --- a/drivers/net/wireless/realtek/rtw88/usb.c
->> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
->> @@ -165,6 +165,60 @@ static void rtw_usb_write32(struct rtw_dev *rtwdev, u32 addr, u32 val)
->>         rtw_usb_write(rtwdev, addr, val, 4);
->>  }
->>
->> +static void rtw_usb_write_firmware_page(struct rtw_dev *rtwdev, u32 page,
->> +                                       const u8 *data, u32 size)
->> +{
->> +       struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
->> +       struct usb_device *udev = rtwusb->udev;
->> +       u32 addr = FW_8192C_START_ADDRESS;
-> 
-> FW_8192C_START_ADDRESS is existing already. But something like
-> RTW_USB_FW_START_ADDRESS would be better. 
-> 
+On Wed, May 7, 2025 at 7:23=E2=80=AFPM Ping-Ke Shih <pkshih@realtek.com> wr=
+ote:
+>
+> Samuel Reyes <zohrlaffz@gmail.com> wrote:
+> > On Mon, May 5, 2025 at 8:11=E2=80=AFPM Ping-Ke Shih <pkshih@realtek.com=
+> wrote:
+> > >
+> > > Samuel Reyes <zohrlaffz@gmail.com> wrote:
+> > > > Big update, I updated my motherboard to the newest BIOS (vF4) and i=
+t
+> > > > has helped dramatically with the amount of errors in dmesg. But the
+> > > > issue with the connection dropping after some time remains. I added
+> > > > amd_iommu=3Doff to my kernel parameters and ran sudo iw wlan0 set
+> > > > power_save off. I did NOT apply the kernel patch you included yet. =
+I
+> > > > ran dmesg when my connection dropped and saw a bunch of 'failed to
+> > > > update XX RXBD info: -11' errors again.
+> > >
+> > > I don't have clear idea now. Please try my patch first.
+> > > I will check internally and will need your help to collect more data.
+> > >
+> > > >
+> > > > I managed to capture the connection drop in a recording so you can =
+see
+> > > > what it looks like on my end. My connection will remain 'broken'
+> > > > indefinitely until I toggle airplane mode.
+> > > >
+> > > > Video: https://youtu.be/BbVlTU8K9Hg
+> > > >
+> > >
+> > > Can you open a terminal to show kernel log next time? I would like to
+> > > know disconnection happens along 'failed to update XX RXBD info: -11'=
+.
+> > >
+> > > By the way, please not top-posting in wireless mailing.
+> > >
+> >
+> > Hi!
+> >
+> > Thanks again for your assistance.
+> >
+> > I spent all day yesterday and this morning trying to figure out how to
+> > apply your patch and wasn't able to do it. I'm by no means an expert
+> > and quickly found that patching a kernel is no easy feat.
+>
+> What are the problems you met? Below is the rough steps to build driver:
+> 1. grab kernel source
+>    git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-s=
+table.git
+> 2. switch to tag you are using
+>    eg. git checkout v6.14.2
+> 3. install toolchain/kernel header by 'apt install'
+>    sudo apt install build-essential
+>    (I don't remember how to install kernel header. Please google it yours=
+elf.)
+> 4. make driver
+>    e.g. make -C /lib/modules/6.14.2-061402-generic/build M=3D/$(KERNEL_SO=
+URCE_PATH)/drivers/net/wireless/realtek/rtw89/
+> 5. rmmod/insmod
+>    ```lsmod | grep rtw89``` can see all rtw89 modules
+>
+>
+> > I wanted to
+> > record a before and after video (before your patch and after) of the
+> > download, but since I couldn't figure out how to patch my kernel I
+> > only have a before video. It has the terminal running so you can see
+> > the errors pop up in real time. It's pretty long since I recorded it
+> > from the very start of the download. The crash happens at around 11:30
+> > into the video: https://youtu.be/2nrLOuY6Pwk
+>
+> I guess the cause is that RXD can't be recognized and then
+> "failed to release TX skbs" can't free TX WD properly, so run out of
+> TX resource. Therefore, let's try the patch to see if we can resolve
+> 'failed to update XX RXBD info: -11' problem first.
+>
+> >
+> > P.S. I hope this is what you meant about top-posting, I also had to
+> > research what that meant and how to avoid it :P
+>
+> Yes, it is. :)
+>
 
-I agree, because rtw88 doesn't handle RTL8192C. There is
-FW_START_ADDR_LEGACY in fw.h. I must not have noticed it before.
-Should I send v2 for this?
+The obstacle was unloading the module which was in use to load in the
+patched one. I did it though, I had to boot from an Arch live
+environment on a USB.
 
->> +       u8 *data_dup, *buf;
->> +       u32 n, block_size;
->> +       int ret;
->> +
->> +       switch (rtwdev->chip->id) {
->> +       case RTW_CHIP_TYPE_8723D:
->> +               block_size = 254;
->> +               break;
->> +       default:
->> +               block_size = 196;
->> +               break;
->> +       }
->> +
->> +       data_dup = kmemdup(data, size, GFP_KERNEL);
-> 
-> This is because type of argument `data` of usb_control_msg() is not const, right?
-> Do you know if usb_control_msg() will actually modify the data?
-> 
+Anyways the patch works!! dmesg is clear of those pesky RXBD messages
+and my download completed without failure. This is the first time I've
+been able to make a large download like that without the connection
+dropping :)
 
-No, it's because usb_control_msg() rejects memory allocated by
-vmalloc(). I don't remember what error it printed. Maybe because the
-memory is not suitable for DMA.
+You'll see the download speed dip a few times (e.g. around 4:45
+minutes in the video) over the course of the download, but it always
+recovers successfully. In the past those dips were a sign of the
+connection dropping.
+
+Video: https://youtu.be/A5PUGaIo_pw
 
