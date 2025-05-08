@@ -1,126 +1,119 @@
-Return-Path: <linux-wireless+bounces-22726-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22727-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AAFAAF1AE
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 05:29:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CE7AAF2C2
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 07:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68DF5188F1F6
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 03:29:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 263933B95E2
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 05:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5FE1EDA16;
-	Thu,  8 May 2025 03:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDA12135A4;
+	Thu,  8 May 2025 05:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="rRlGZEjn"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="TGD6GepW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F5E1AA786
-	for <linux-wireless@vger.kernel.org>; Thu,  8 May 2025 03:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127CC213227;
+	Thu,  8 May 2025 05:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746674976; cv=none; b=gzpIQ8W7anCJPkXO2B2QK8RfTEPnO80oVJEkmP4NQEvrxR3dnX0ZIAsd4d0yDFwIx+Y0h+918AidRO2f4oSp/DzuWBXhNw55cVktyH6pT9dLvphaZnGTFftU6unBLxSeGHFQTekxbyDWWJSnGnArZmOzCpTS+Nha85qLCHuMMBQ=
+	t=1746681384; cv=none; b=uvZmUVHXf08D3QAROyuSjL1QD0feMT05XGvdvfNRRaC5pj00Gt1Y7YJgjKD90uNCKDBfxYiRAlclhjfyYmCPDTww1PC6iD81sF1DAa99//RuvTOjZ++Yte/P/V3HRv2pxIBijCayEb72fMWO2TmKoHyGRvAqybqlWrGto6PctKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746674976; c=relaxed/simple;
-	bh=0lcVPI6uV131UId+1O2YVo4qADvMsZIEGBGU/fDWUNQ=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=SWRLvK2Y1OVj7WsMgfQV4EpHHK8RGuti7GdihINmc2JClMKeyxmlYSg0EcESfV8/JNh2EcAFlEF/+xwdWgFO58yb3G8lUe7y2X2WJvd/yWouQFKGwmxAlFVegFi575qG9MOm22DCqbRTRNUh6WhTNksCnuO3VpCpmZwKU5TeyOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=rRlGZEjn; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5483TSZ301474001, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1746674968; bh=0lcVPI6uV131UId+1O2YVo4qADvMsZIEGBGU/fDWUNQ=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=rRlGZEjnGBAAZ5oLKQdcmCWvi+hvC8lRONCvHTuad9PrcYD858Q9G+KEHNfMepfEt
-	 bIi2m0c1/XPUyhfn7wvf4SpmStWHgtEyfZTU72wxM5NIvvVOoZ4W4KLAfsTebgrsVa
-	 OBABBxNvgVcTAP3ygH2QSs7c3FuMyG2PhMyLk5fwAt2YS+qlkePS/56gJ8RiHwGEMD
-	 s3OfamNYij4aOAyJnIQk4O24JhRKriqZo22JLNwrazJMOxWDzUU5tr5sBdfeQnr3A/
-	 Nj0AsVLsHumyndEmAZrTMPKKZ7LB0uCwwc/r+Dp1Fx/LH61n64fzelAOP2o6nbVy+R
-	 Q/kznLRbCNuQg==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5483TSZ301474001
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 May 2025 11:29:28 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+	s=arc-20240116; t=1746681384; c=relaxed/simple;
+	bh=fvfk1rN9at/x9/s1QMvLTS+mJ8ZBQUK8ceaW8i0w/mA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KLCY0mFU4UftUviDhLCFHaZ3OVdG2zyAyRX1tGSvELwzHrnoCs1La90HSANNIMySlT0z3VYXG53K804UC/MXQGe69r03nwClR2mYsS6yjRRSclpryrBDzFhuGp2a6iOmcOSGzN4JukTWw8pd/B9+hiwxro/U7qGA8Qc+FL33oJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=TGD6GepW; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 8cba32342bcb11f082f7f7ac98dee637-20250508
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=eB+nig6p0qQNlwfENUx4jlMxAMgQY3TgotzcJmiZERs=;
+	b=TGD6GepWfYa0hdVt16UwAMOJQvjRnVlxMCsuWhqp0uxNbiXXS3/TXH/gLR26fnhxsS35H2q5dz9zPadusRH+MRwzpBasboycwElStFaG89jZJSqud5ZX2wO3V9L8iFwKmshnJByRD78UjA54JO80VRC6iRUxevmGPL39rnPY3DU=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.2.1,REQID:1d56b577-59a6-44d4-9350-403376b81144,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:0ef645f,CLOUDID:359c4a51-76c0-4e62-bb75-246dfb0889c6,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 8cba32342bcb11f082f7f7ac98dee637-20250508
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 828154473; Thu, 08 May 2025 13:16:08 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 8 May 2025 11:29:29 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 8 May 2025 11:29:28 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Thu, 8 May 2025 11:29:28 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next 2/2] wifi: rtw88: usb: Upload the firmware in bigger chunks
-Thread-Topic: [PATCH rtw-next 2/2] wifi: rtw88: usb: Upload the firmware in
- bigger chunks
-Thread-Index: AQHbv1CyImz0neihfUW5/jPo1pGLVLPID6gQ
-Date: Thu, 8 May 2025 03:29:28 +0000
-Message-ID: <670259643afc42f581632c7383fa7f3f@realtek.com>
-References: <af4d2d58-f567-4bdf-841b-8345d21f7035@gmail.com>
- <9faaa45f-9ba8-46dc-b507-f97b3b6f52d3@gmail.com>
-In-Reply-To: <9faaa45f-9ba8-46dc-b507-f97b3b6f52d3@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 15.2.1258.39; Thu, 8 May 2025 13:16:07 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Thu, 8 May 2025 13:16:07 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
+Subject: [PATCH] wifi: mt76: mt7925: fix missing hdr_trans_tlv command for broadcast wtbl
+Date: Thu, 8 May 2025 13:16:04 +0800
+Message-ID: <20250508051604.280661-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
-OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4gd3JvdGU6DQo+IFJU
-TDg4MTFBVSBzdG9wcyByZXNwb25kaW5nIGR1cmluZyB0aGUgZmlybXdhcmUgZG93bmxvYWQgb24g
-c29tZSBzeXN0ZW1zOg0KPiANCj4gWyAgODA5LjI1NjQ0MF0gcnR3Xzg4MjFhdSA1LTIuMToxLjA6
-IEZpcm13YXJlIHZlcnNpb24gNDIuNC4wLCBIMkMgdmVyc2lvbiAwDQo+IFsgIDgxMi43NTkxNDJd
-IHJ0d184ODIxYXUgNS0yLjE6MS4wIHdscDQ4czBmNHUydTE6IHJlbmFtZWQgZnJvbSB3bGFuMA0K
-PiBbICA4MzcuMzE1Mzg4XSBydHdfODgyMWF1IDEtNDoxLjA6IHdyaXRlIHJlZ2lzdGVyIDB4MWVm
-NCBmYWlsZWQgd2l0aCAtMTEwDQo+IFsgIDg2Ny41MjQyNTldIHJ0d184ODIxYXUgMS00OjEuMDog
-d3JpdGUgcmVnaXN0ZXIgMHgxZWY4IGZhaWxlZCB3aXRoIC0xMTANCj4gWyAgODY4LjkzMDk3Nl0g
-cnR3Xzg4MjFhdSA1LTIuMToxLjAgd2xwNDhzMGY0dTJ1MTogZW50ZXJlZCBwcm9taXNjdW91cyBt
-b2RlDQo+IFsgIDg5Ny43MzA5NTJdIHJ0d184ODIxYXUgMS00OjEuMDogd3JpdGUgcmVnaXN0ZXIg
-MHgxZWZjIGZhaWxlZCB3aXRoIC0xMTANCj4gDQo+IE1heWJlIGl0IHRha2VzIHRvbyBsb25nIHdo
-ZW4gd3JpdGluZyB0aGUgZmlybXdhcmUgNCBieXRlcyBhdCBhIHRpbWUuDQo+IA0KPiBXcml0ZSAx
-OTYgYnl0ZXMgYXQgYSB0aW1lIGZvciBSVEw4ODIxQVUsIFJUTDg4MTFBVSwgYW5kIFJUTDg4MTJB
-VSwNCj4gYW5kIDI1NCBieXRlcyBhdCBhIHRpbWUgZm9yIFJUTDg3MjNEVS4gVGhlc2UgYXJlIHRo
-ZSBzaXplcyB1c2VkIGluDQo+IHRoZWlyIG9mZmljaWFsIGRyaXZlcnMuIFRlc3RlZCB3aXRoIGFs
-bCB0aGVzZSBjaGlwcy4NCj4gDQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+IExpbms6
-IGh0dHBzOi8vZ2l0aHViLmNvbS9sd2Zpbmdlci9ydHc4OC9pc3N1ZXMvMzQ0DQo+IFNpZ25lZC1v
-ZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KDQpBY2tl
-ZC1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQoNClsuLl0NCg0KPiBkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91c2IuYyBiL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvdXNiLmMNCj4gaW5kZXggYjE2ZGI1NzlmZGNl
-Li5hZDE1Y2UxMmFiN2YgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnR3ODgvdXNiLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4
-OC91c2IuYw0KPiBAQCAtMTY1LDYgKzE2NSw2MCBAQCBzdGF0aWMgdm9pZCBydHdfdXNiX3dyaXRl
-MzIoc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgdTMyIGFkZHIsIHUzMiB2YWwpDQo+ICAgICAgICAg
-cnR3X3VzYl93cml0ZShydHdkZXYsIGFkZHIsIHZhbCwgNCk7DQo+ICB9DQo+IA0KPiArc3RhdGlj
-IHZvaWQgcnR3X3VzYl93cml0ZV9maXJtd2FyZV9wYWdlKHN0cnVjdCBydHdfZGV2ICpydHdkZXYs
-IHUzMiBwYWdlLA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY29u
-c3QgdTggKmRhdGEsIHUzMiBzaXplKQ0KPiArew0KPiArICAgICAgIHN0cnVjdCBydHdfdXNiICpy
-dHd1c2IgPSBydHdfZ2V0X3VzYl9wcml2KHJ0d2Rldik7DQo+ICsgICAgICAgc3RydWN0IHVzYl9k
-ZXZpY2UgKnVkZXYgPSBydHd1c2ItPnVkZXY7DQo+ICsgICAgICAgdTMyIGFkZHIgPSBGV184MTky
-Q19TVEFSVF9BRERSRVNTOw0KDQpGV184MTkyQ19TVEFSVF9BRERSRVNTIGlzIGV4aXN0aW5nIGFs
-cmVhZHkuIEJ1dCBzb21ldGhpbmcgbGlrZQ0KUlRXX1VTQl9GV19TVEFSVF9BRERSRVNTIHdvdWxk
-IGJlIGJldHRlci4gDQoNCj4gKyAgICAgICB1OCAqZGF0YV9kdXAsICpidWY7DQo+ICsgICAgICAg
-dTMyIG4sIGJsb2NrX3NpemU7DQo+ICsgICAgICAgaW50IHJldDsNCj4gKw0KPiArICAgICAgIHN3
-aXRjaCAocnR3ZGV2LT5jaGlwLT5pZCkgew0KPiArICAgICAgIGNhc2UgUlRXX0NISVBfVFlQRV84
-NzIzRDoNCj4gKyAgICAgICAgICAgICAgIGJsb2NrX3NpemUgPSAyNTQ7DQo+ICsgICAgICAgICAg
-ICAgICBicmVhazsNCj4gKyAgICAgICBkZWZhdWx0Og0KPiArICAgICAgICAgICAgICAgYmxvY2tf
-c2l6ZSA9IDE5NjsNCj4gKyAgICAgICAgICAgICAgIGJyZWFrOw0KPiArICAgICAgIH0NCj4gKw0K
-PiArICAgICAgIGRhdGFfZHVwID0ga21lbWR1cChkYXRhLCBzaXplLCBHRlBfS0VSTkVMKTsNCg0K
-VGhpcyBpcyBiZWNhdXNlIHR5cGUgb2YgYXJndW1lbnQgYGRhdGFgIG9mIHVzYl9jb250cm9sX21z
-ZygpIGlzIG5vdCBjb25zdCwgcmlnaHQ/DQpEbyB5b3Uga25vdyBpZiB1c2JfY29udHJvbF9tc2co
-KSB3aWxsIGFjdHVhbGx5IG1vZGlmeSB0aGUgZGF0YT8NCg0KDQo=
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+
+The hdr_trans_tlv function call has been moved inside the conditional block
+to ensure it is executed when info->enable is true.
+
+Cc: stable@vger.kernel.org
+Fixes: cb1353ef3473 ("wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta_cmd")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index a42b584634ab..fd756f0d18f8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2183,14 +2183,14 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
+ 			mt7925_mcu_sta_mld_tlv(skb, info->vif, info->link_sta->sta);
+ 			mt7925_mcu_sta_eht_mld_tlv(skb, info->vif, info->link_sta->sta);
+ 		}
+-
+-		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
+ 	}
+ 
+ 	if (!info->enable) {
+ 		mt7925_mcu_sta_remove_tlv(skb);
+ 		mt76_connac_mcu_add_tlv(skb, STA_REC_MLD_OFF,
+ 					sizeof(struct tlv));
++	} else {
++		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
+ 	}
+ 
+ 	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
+-- 
+2.34.1
+
 
