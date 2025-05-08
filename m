@@ -1,126 +1,93 @@
-Return-Path: <linux-wireless+bounces-22753-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22754-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C652AAF981
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 14:14:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91646AAFF89
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 17:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E60013BCA0B
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 12:14:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAED517E392
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 15:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E559D22A7E2;
-	Thu,  8 May 2025 12:13:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ckZtn2QI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A4F2798F6;
+	Thu,  8 May 2025 15:49:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F760225415
-	for <linux-wireless@vger.kernel.org>; Thu,  8 May 2025 12:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE5B22C321
+	for <linux-wireless@vger.kernel.org>; Thu,  8 May 2025 15:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746706425; cv=none; b=EM09I/Bdug2L7cyZ9Z7DRySwyS/mV6mRU04zc9wOVUGIGgSc0RkMWIao3kS8DYXNcHMNtdzyy3hzKjwJ3V7ecLMH3rW6mDNfVY7IMHWdxTSwL/UJyO0G99smNNXOSEx9hnbk9grsBYj+9Zn1Qlnmf2HAdt4i728kNW8X9V19SYA=
+	t=1746719346; cv=none; b=JJ51KDr1UQJLqcZT+3FHT0hn21bz29b0Z2qbeBmPCO2xyuX2OAlFFhTZxz7Q6nqndqba//eNLJ3VZLFMQa+4gX2gHyLnst4GewEp3wldBm3nVLmNRDpIVOQsr60x0Lf/2b5CkFCcR9a7nFdhnxwzhgXn97MjRUgffRnFXzzZDqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746706425; c=relaxed/simple;
-	bh=TGv90qRhe2xFkVM+xKfpsgm8YgBP3zcdfnDb8M75qEM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J5XDJ/KpOf6d85MmIFH7Hohe3gvo3njRNZJe+UxrbfeZXXlKJrqHlsFUxnxhuF4b9Zon6pwwTbYpdA6gyt0ckOdetALPMFvw3qB7Qh4VNNIg2lmUsHVKBiCQI8V+jFFZMhxf9c+7tTrLQuMQcCqphg30OmlODcTkx0eHbt3OQpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ckZtn2QI; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746706424; x=1778242424;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TGv90qRhe2xFkVM+xKfpsgm8YgBP3zcdfnDb8M75qEM=;
-  b=ckZtn2QIpc3+SteTmrzZRkKd4+xTGob2o4E+NSXuoGvt3kP2uFFAVIgm
-   y2P+0OzmyZ03jfHPYomT8EIKinGvED269uH8MqPway1D0+fQR+isa1eKc
-   jvrQOKFw9AK5WTw0GtaJoM3I1zk70xub9qYueA3T68zet4K9QFkMI/FTF
-   AK+OnwXKVVDQhS6IPtdkInQcqigq7vQ+dt3ZAuRQQ7xU9UaXtr79S3jMt
-   aWp/sOu9dzCV4t37lf2VLNJ8P70Ctecwxr1BTaoJbbtFEga09jkR5gVbx
-   tS4ZuRTzN6mw7oCZviQKVgbTG9bJ0TPI6wM+2fXhFWA1PM/1LxPoTetnr
-   g==;
-X-CSE-ConnectionGUID: K9KaymWHR7qnPTxfZzW93w==
-X-CSE-MsgGUID: mRcw2mt2Qr2iWNZzffMEcQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="58688059"
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
-   d="scan'208";a="58688059"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 05:13:43 -0700
-X-CSE-ConnectionGUID: sdz7NEYiSwGzfgvLkuQOqA==
-X-CSE-MsgGUID: aDz26KOQQRKQqXUM8XSfrA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
-   d="scan'208";a="167347898"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 05:13:42 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 15/15] wifi: iwlwifi: remove unused high_temp from iwl_cfg
-Date: Thu,  8 May 2025 15:13:06 +0300
-Message-Id: <20250508121306.1277801-16-miriam.rachel.korenblit@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250508121306.1277801-1-miriam.rachel.korenblit@intel.com>
-References: <20250508121306.1277801-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1746719346; c=relaxed/simple;
+	bh=CThFNMFKx4HWp2XE28KqxH2Y1BwNwB82Ka51sKvSg2k=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=mUo64t8J2PNA+r784QP59idRVFdljXaP8GutDq/Qh6I7JIsdK7lfclPopgk+AnfYAb/fnjPS8eImpXTI2fmsERrlr4r5wJzH+lPdQVNkfQ5AI1dvCBzzKDhM3OFf+17CBKMk9pBGxr1cu1yaACmF6tIDCxAqvzWGm/hPZY/zDho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-86465e3f1c6so221322539f.1
+        for <linux-wireless@vger.kernel.org>; Thu, 08 May 2025 08:49:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746719343; x=1747324143;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aD+jxVgbrfQVFDofzdatQtArk4oPWbWikKud7IOptlA=;
+        b=GskqlLLcZp/rIevHPRgKGzWl73xUMY87aZKK70sTee3xvNs+XenloTnFwETJGDfjoU
+         tsw4vMihYkKA8IXoSWjgTuhKfggqDcvZAYKCX9diE2tZsGlW+YSxxGpyfu60zlsE5kFb
+         dVzeYRy9p13ETBGZWZhqv10ObLObs99B9g3/p5bpxZgq4/YIoNQMMEexRbNlSC3V9ZtW
+         z/Epq+0ocayPfAO4ZAY04uNqx4nTLedAOEnd1QFU6NznGaKamuSJxmhBRoclSRhyX2n2
+         zvw2D0ZP2Fe8QCDkI7oxHbcqWiomJvNw7p2xwDpRubFpohiJO6iLueqBR1Xj8FwIOmSE
+         zeFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWkNZ3LVSCfasvGt7acn5T34IMGAhGT4Bi20OvfP/5AfO+4DfQRZx2BI6ODZZ1AxSyFrtMBkC50tmMbRZWcHQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/lZfNcjqcnfgG7hu+pUl41V/gVIlhLQ5PXeaAX7sDRm5//4VX
+	sLa9meI84U43fzYOPOZ1qdPHaTcs5ces/E+Iw3+F8fETEwAyi/QwsBDBxS+WvQ/EfOWtdsgIc9A
+	g45Lqeu8yu4Yz7D2/X7JCoVsWv05DY8aeO8w4LLI2WWsOBgZycIs5Dj4=
+X-Google-Smtp-Source: AGHT+IFZWx+Z2aq+RnZG+0pCjh3GKc6ah8W6E1+BJ41KJTho9rKRkt85qUUCAas8WRzaxK7EdGyTRM8BLnJDYWP9m2RcKnrwtHLE
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:174c:b0:3d3:fa69:6755 with SMTP id
+ e9e14a558f8ab-3da7854f6b3mr43699355ab.5.1746719343684; Thu, 08 May 2025
+ 08:49:03 -0700 (PDT)
+Date: Thu, 08 May 2025 08:49:03 -0700
+In-Reply-To: <00000000000054bc390618ccb092@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <681cd26f.050a0220.a19a9.0116.GAE@google.com>
+Subject: Re: [syzbot] [wireless?] WARNING in minstrel_ht_update_caps
+From: syzbot <syzbot+d805aca692aded25f888@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, johannes.berg@intel.com, 
+	johannes@sipsolutions.net, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, m.lobanov@rosa.ru, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Johannes Berg <johannes.berg@intel.com>
+syzbot suspects this issue was fixed by commit:
 
-This value is never read, so it's not needed. Remove it.
+commit 16ee3ea8faef8ff042acc15867a6c458c573de61
+Author: Mikhail Lobanov <m.lobanov@rosa.ru>
+Date:   Mon Mar 17 10:31:37 2025 +0000
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Message-Id: <20250508151045.7ad912c81934.If378122dcee1a3d919340a69207242a65f04081b@changeid>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/cfg/7000.c   | 1 -
- drivers/net/wireless/intel/iwlwifi/iwl-config.h | 2 --
- 2 files changed, 3 deletions(-)
+    wifi: mac80211: check basic rates validity in sta_link_apply_parameters
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/7000.c b/drivers/net/wireless/intel/iwlwifi/cfg/7000.c
-index c2c8e81904f2..4b50a02b1cc5 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/7000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/7000.c
-@@ -151,7 +151,6 @@ const struct iwl_cfg iwl7260_high_temp_cfg = {
- 		.ht40_bands = BIT(NL80211_BAND_2GHZ) | BIT(NL80211_BAND_5GHZ),
- 	},
- 	.nvm_ver = IWL7260_NVM_VERSION,
--	.high_temp = true,
- 	.host_interrupt_operation_mode = true,
- 	.lp_xtal_workaround = true,
- 	.dccm_len = IWL7260_DCCM_LEN,
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index c99b18b0ef7f..b5cfaad6a037 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -359,7 +359,6 @@ struct iwl_mac_cfg {
-  * @rx_with_siso_diversity: 1x1 device with rx antenna diversity
-  * @tx_with_siso_diversity: 1x1 device with tx antenna diversity
-  * @internal_wimax_coex: internal wifi/wimax combo device
-- * @high_temp: Is this NIC is designated to be in high temperature.
-  * @host_interrupt_operation_mode: device needs host interrupt operation
-  *	mode set
-  * @pwr_tx_backoffs: translation table between power limits and backoffs
-@@ -400,7 +399,6 @@ struct iwl_cfg {
- 	    tx_with_siso_diversity:1,
- 	    internal_wimax_coex:1,
- 	    host_interrupt_operation_mode:1,
--	    high_temp:1,
- 	    lp_xtal_workaround:1,
- 	    vht_mu_mimo_supported:1,
- 	    uhb_supported:1;
--- 
-2.34.1
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=101444f4580000
+start commit:   0ec986ed7bab tcp: fix incorrect undo caused by DSACK of TL..
+git tree:       net
+kernel config:  https://syzkaller.appspot.com/x/.config?x=864caee5f78cab51
+dashboard link: https://syzkaller.appspot.com/bug?extid=d805aca692aded25f888
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12fb56e1980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17490685980000
 
+If the result looks correct, please mark the issue as fixed by replying with:
+
+#syz fix: wifi: mac80211: check basic rates validity in sta_link_apply_parameters
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
