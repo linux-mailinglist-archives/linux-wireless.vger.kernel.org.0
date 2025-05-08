@@ -1,188 +1,139 @@
-Return-Path: <linux-wireless+bounces-22757-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22758-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE780AB04B3
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 22:34:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C1FAB05C8
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 00:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19A4B170578
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 20:34:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F4774E7E3D
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 May 2025 22:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5101C284667;
-	Thu,  8 May 2025 20:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8680A2222CF;
+	Thu,  8 May 2025 22:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SIqjP2w6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IN+DE+wu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A901E4BE
-	for <linux-wireless@vger.kernel.org>; Thu,  8 May 2025 20:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D65B1A2390;
+	Thu,  8 May 2025 22:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746736485; cv=none; b=MlGS0b5d6HRrnsVzVfTn4qerRkEWhG7ew4X0t4Uf5FqYZBo0kimr+O7Gr/MjOD3otz1dku7wXZ7SEoJSuzXU07TLewUN+j9Yt1Ky1NiDAGGywDBUdo9wmouB6bu9fBUtjM4Ze1qQpXWTYHVxE8LrpEM3xMOfof39b9Opjq7Ibfo=
+	t=1746741964; cv=none; b=B7dRSltsi54BpPpGjES5iVYIrgsHI80qi1/c+9Y/snXkcSnU1GTC6+66an2TWpOvlMCS4j61tkKsk/3GJ4KxZ21sPP28rnnPa+iXg19t68b4HCyemfUDoIqIP63dQVV8afUjMJjn6o4odFoPYmjcGBmQy/QqwNyPfPj11eSrpHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746736485; c=relaxed/simple;
-	bh=bP2Pf6SXwn7FpWaU6TdYJx0/WYYo8BLZoS3AgYfFMzQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=YNomq6/hcwcTi5B+U+qm6wXgRAdfAZeLlLTuwU+AdI0EIZ1/99JA3KdL8Z36RXjbtAnXeJIQ3xKsg6MxUSR+jTsP8T9QDVpNz/CWdLd3vknfhbKqSdVs3BuvcVtc5fYWD3cCp8PLKlEyhovDNQNBILUtP7MzEGDJ/29hS+Svk9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SIqjP2w6; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac25d2b2354so238081266b.1
-        for <linux-wireless@vger.kernel.org>; Thu, 08 May 2025 13:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746736482; x=1747341282; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CpiGmGmsn7qvi89P3DpfkRsxq67BoNdkh3fWqhgRW94=;
-        b=SIqjP2w6MqlcWmbQkQ/h49U5WRdG5z0qxW7xr1sSdoJTt9+EN+hJGXWk8A9llVbh9s
-         ClSFHEfzul/93t5QEQ6B1vjllayTPQ1ipktj5M6A4iAQgRwli1NZQZOcKSvAl7O8e4Q9
-         23oxh98kwQy1y5wZqAAx+B6dfTHpnvr8DZ1PgD4fZ6ZcoYVq+pTmCkZm/wEJG4A0YDPd
-         VSpeXKo/Eq82IIbRTt3D/lVU/EKu3qSxFcrydo64Lc9CRcWm7ut1NnuPZhecoowp4982
-         hyAZVdqTBRYm+6d+HSc4KW50ptSA0a8w/7QCqZQg0/wymy5wjpWaHyMmP9P5in9GeYAC
-         pTRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746736482; x=1747341282;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CpiGmGmsn7qvi89P3DpfkRsxq67BoNdkh3fWqhgRW94=;
-        b=dSBcO8wfGjiC9VnNJOM+9Da1QS+eNEnOx+9D9gIoeiNHrnIS9yQI0iz4OVW0I9/T/6
-         vsh3nDWjBtmHlH8uysgm4cXQcnosOXG2b3adrB+07V2LsIeXjsO7dnq2ziHjfPBGgW8o
-         GjRUa0RyV3Zeq5OTdoUAyOq2Sh85rj++BxnJEVgouBgKjo3e3CINAa3lm28gyn9y2gmD
-         h9ED8Ws42Suw4N8i5HXMr8LIqjRK75PWZk3OIY5vU8fRV2H5ZEbcyK6iJfnqGok/c5LF
-         xNXBlfDwyt8w9PeWeHlFQR31Uzzfxywf0xQGx6iaVUXteut+m8Zd9BInzI3itZFQi3+O
-         ihFw==
-X-Forwarded-Encrypted: i=1; AJvYcCWjCHL5TeoKsN0ctPFhKcgNXGiTEdalL44G7Nx/qgFGIep+y1uf7/d05Fw3XJlDyU2nZegPVke/CeDRHzYMHQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqaLvJWnS01qg7jTXaYCq1UFDf4uFV5ihBpaGnjzp0tlHdrDcC
-	SxQnpGwcT6hRbIijaI0c2FGD+GmMAad4Ap1tm6Qjo6GbTWLlrU8nK3gRSqYfxSwdKfbfovq/Qn9
-	DWoGf2x1Ju2MQuCJC+qalnENvjkc=
-X-Gm-Gg: ASbGncuYKvSmU96x8ORrNq9prryJjtiEggDzGEgnICP6pYgQkfcnFkYyYwxDw+HrxUP
-	6ngV/fz03DvplURjm+BYC2LJTnz53MARODx2bsqBw5dgTpEuTzmjLUDjA68qvk7fmsi418A8f3+
-	rHXlLis1Yjhrudi7+BpyVfPVpPTsDhZIpaVgb3Fmo4X1/kA5g57dbLhHmMNPTQZ7Ep
-X-Google-Smtp-Source: AGHT+IFMn0RlHyrgMVQipzfktU2amZP5WR9WDKNxUOmGGFPPMNxLYB/KAf9KPkFankIyUHvDanyMsY10l/KJwH/rULI=
-X-Received: by 2002:a17:906:ba90:b0:aca:cac7:28e2 with SMTP id
- a640c23a62f3a-ad21927d08fmr102257766b.40.1746736481427; Thu, 08 May 2025
- 13:34:41 -0700 (PDT)
+	s=arc-20240116; t=1746741964; c=relaxed/simple;
+	bh=nJGSya3nk9fSTp7YpGyO3JhSqO1gXL/uAOoUiq4UGgo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XESMJdBz/fnZJGZl+iMvIzarMUjARdt/TIOm8R3dvxFOzwluwdCgFKR+oae5BnFRopWg3dqb+qKMDVPCdIIocSByjP32E9v+5CiD/4Jl3zR+GriF32HbSrPlR9BXuOUXzI17Fr732bvPIqRni0uw02pq8hLfSRunTzVxrvwhtPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IN+DE+wu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE5DC4CEE7;
+	Thu,  8 May 2025 22:05:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746741963;
+	bh=nJGSya3nk9fSTp7YpGyO3JhSqO1gXL/uAOoUiq4UGgo=;
+	h=Subject:From:Reply-To:To:Cc:Date:In-Reply-To:References:From;
+	b=IN+DE+wuCAWPAELs5oW0EpKs5ORy43kC+oE1Q2vW0wWTQQwY29Op9abjDOt6onAQt
+	 6Ut9bUmgXFuh+1IXL/m7ysUpkC/rhe6i7MrxqhnuU/+TzfpMMtkV28rrryI86j18RF
+	 e3Cc3+28GQ2WCy0U/Rous0UTwRv/vo4y5PXoaO8zeV0rmPmRzAfwq/SqVTdoyKq+MY
+	 dbXI/tF95dqosOSSmgIHom4Frq2mcOWUFPcGIME4Q4u62aPY/OnxzzDv9eoQarkt5Z
+	 b1/2jIYRuD1IOX9x8F0skh/+az+G/LbnTZlnmanbtiH9tIf5mUmdGrnieIPwHOHkQ6
+	 nRNNo290L6UZA==
+Message-ID: <18a80b20916b2f7d73ea29cc67d1389662f9836b.camel@kernel.org>
+Subject: Re: [PATCH v2] wifi: mt76: mt7925: fix missing hdr_trans_tlv
+ command for broadcast wtbl
+From: Niklas Schnelle <niks@kernel.org>
+Reply-To: niks@kernel.org
+To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, nbd@nbd.name, 
+	lorenzo@kernel.org
+Cc: deren.wu@mediatek.com, Sean.Wang@mediatek.com, Leon.Yen@mediatek.com, 
+	Michael.Lo@mediatek.com, allan.wang@mediatek.com,
+ Eric-SY.Chang@mediatek.com, 	km.lin@mediatek.com, Quan.Zhou@mediatek.com,
+ Ryder.Lee@mediatek.com, 	Shayne.Chen@mediatek.com,
+ linux-wireless@vger.kernel.org, 	linux-mediatek@lists.infradead.org,
+ stable@vger.kernel.org, fossben@pm.me
+Date: Fri, 09 May 2025 00:05:57 +0200
+In-Reply-To: <20250508085534.305242-1-mingyen.hsieh@mediatek.com>
+References: <20250508085534.305242-1-mingyen.hsieh@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAD+XiyEJo0m8L6PbmBD=NPPa0E_wX3kk4ezn1qZ0d8JGXsS1qQ@mail.gmail.com>
- <0cf9bd4b99864f428175e34a2f2e014b@realtek.com> <CAD+XiyFkogCyQTk8Xhu8htGa892zFkY707+8WVCOdejb3FLNpg@mail.gmail.com>
- <ae5013a930574e68b96544df82f93157@realtek.com> <CAD+XiyEQPt9HGngt0XBB7Hf=0tDHHcU+3=E20vhPnC3VL1Y+vg@mail.gmail.com>
- <31b6571789b34b95aca2bca73dca2d62@realtek.com>
-In-Reply-To: <31b6571789b34b95aca2bca73dca2d62@realtek.com>
-From: Samuel Reyes <zohrlaffz@gmail.com>
-Date: Thu, 8 May 2025 14:34:25 -0600
-X-Gm-Features: ATxdqUE17AIxhwCQThOZWFlrMLQihTxJZf9bT1KZWR_g6RnFuiQOgnkyEI6piqA
-Message-ID: <CAD+XiyEXU_cxgfk1DxFZLFMLXWbmo-cDf7d30Hb1F7_BqdBCQw@mail.gmail.com>
-Subject: Re: RTL8922AE driver issues
-To: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 7, 2025 at 7:23=E2=80=AFPM Ping-Ke Shih <pkshih@realtek.com> wr=
-ote:
->
-> Samuel Reyes <zohrlaffz@gmail.com> wrote:
-> > On Mon, May 5, 2025 at 8:11=E2=80=AFPM Ping-Ke Shih <pkshih@realtek.com=
-> wrote:
-> > >
-> > > Samuel Reyes <zohrlaffz@gmail.com> wrote:
-> > > > Big update, I updated my motherboard to the newest BIOS (vF4) and i=
-t
-> > > > has helped dramatically with the amount of errors in dmesg. But the
-> > > > issue with the connection dropping after some time remains. I added
-> > > > amd_iommu=3Doff to my kernel parameters and ran sudo iw wlan0 set
-> > > > power_save off. I did NOT apply the kernel patch you included yet. =
-I
-> > > > ran dmesg when my connection dropped and saw a bunch of 'failed to
-> > > > update XX RXBD info: -11' errors again.
-> > >
-> > > I don't have clear idea now. Please try my patch first.
-> > > I will check internally and will need your help to collect more data.
-> > >
-> > > >
-> > > > I managed to capture the connection drop in a recording so you can =
-see
-> > > > what it looks like on my end. My connection will remain 'broken'
-> > > > indefinitely until I toggle airplane mode.
-> > > >
-> > > > Video: https://youtu.be/BbVlTU8K9Hg
-> > > >
-> > >
-> > > Can you open a terminal to show kernel log next time? I would like to
-> > > know disconnection happens along 'failed to update XX RXBD info: -11'=
-.
-> > >
-> > > By the way, please not top-posting in wireless mailing.
-> > >
-> >
-> > Hi!
-> >
-> > Thanks again for your assistance.
-> >
-> > I spent all day yesterday and this morning trying to figure out how to
-> > apply your patch and wasn't able to do it. I'm by no means an expert
-> > and quickly found that patching a kernel is no easy feat.
->
-> What are the problems you met? Below is the rough steps to build driver:
-> 1. grab kernel source
->    git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-s=
-table.git
-> 2. switch to tag you are using
->    eg. git checkout v6.14.2
-> 3. install toolchain/kernel header by 'apt install'
->    sudo apt install build-essential
->    (I don't remember how to install kernel header. Please google it yours=
-elf.)
-> 4. make driver
->    e.g. make -C /lib/modules/6.14.2-061402-generic/build M=3D/$(KERNEL_SO=
-URCE_PATH)/drivers/net/wireless/realtek/rtw89/
-> 5. rmmod/insmod
->    ```lsmod | grep rtw89``` can see all rtw89 modules
->
->
-> > I wanted to
-> > record a before and after video (before your patch and after) of the
-> > download, but since I couldn't figure out how to patch my kernel I
-> > only have a before video. It has the terminal running so you can see
-> > the errors pop up in real time. It's pretty long since I recorded it
-> > from the very start of the download. The crash happens at around 11:30
-> > into the video: https://youtu.be/2nrLOuY6Pwk
->
-> I guess the cause is that RXD can't be recognized and then
-> "failed to release TX skbs" can't free TX WD properly, so run out of
-> TX resource. Therefore, let's try the patch to see if we can resolve
-> 'failed to update XX RXBD info: -11' problem first.
->
-> >
-> > P.S. I hope this is what you meant about top-posting, I also had to
-> > research what that meant and how to avoid it :P
->
-> Yes, it is. :)
->
+On Thu, 2025-05-08 at 16:55 +0800, Mingyen Hsieh wrote:
+> From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+>=20
+> The hdr_trans_tlv function call has been moved inside the conditional blo=
+ck
+> to ensure it is executed when info->enable is true.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: cb1353ef3473 ("wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta=
+_cmd")
+> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+> Tested-by: Niklas Schnelle <niks@kernel.org>
+> ---
+> v2:
+>     add tested-by tag
+>=20
 
-The obstacle was unloading the module which was in use to load in the
-patched one. I did it though, I had to boot from an Arch live
-environment on a USB.
+Thanks for adding the tag, appreciate it. If I may add some stylistic
+comments. I saw that this is one of your first independent upstream
+patches so congratulations on that and even better it's an actual
+proper fix. Well done!
 
-Anyways the patch works!! dmesg is clear of those pesky RXBD messages
-and my download completed without failure. This is the first time I've
-been able to make a large download like that without the connection
-dropping :)
+One thing, I noticed though is that your commit message lacks context,
+like this affecting IPv6 and multicast. Basically it just re-iterates
+what I can already see in the code. It also doesn't use the recommended
+imperative tone (see [0]). Moreover, I think this would be a good case
+for using a Link: tag pointing to the thread[1] of Ben's bisect result.
+Relatedly one could also add a Reported-by tag for Ben, I still fondly
+remember getting a Reported-by mention long before I did my first
+kernel contribution. This stuff is hard to balance with getting fixes
+out there and I still screw up some detail with mails sometimes, but
+we're all learning so wanted to give my 5 cents.
 
-You'll see the download speed dip a few times (e.g. around 4:45
-minutes in the video) over the course of the download, but it always
-recovers successfully. In the past those dips were a sign of the
-connection dropping.
+Thanks,
+Niklas
 
-Video: https://youtu.be/A5PUGaIo_pw
+[0]
+https://www.kernel.org/doc/html/v4.12/process/submitting-patches.html#descr=
+ibe-your-changes
+[1]
+https://lore.kernel.org/lkml/EmWnO5b-acRH1TXbGnkx41eJw654vmCR-8_xMBaPMwexCn=
+fkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vfdg=3D@pm.me/
+
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7925/mcu.c
+> index a42b584634ab..fd756f0d18f8 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> @@ -2183,14 +2183,14 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
+>  			mt7925_mcu_sta_mld_tlv(skb, info->vif, info->link_sta->sta);
+>  			mt7925_mcu_sta_eht_mld_tlv(skb, info->vif, info->link_sta->sta);
+>  		}
+> -
+> -		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
+>  	}
+> =20
+>  	if (!info->enable) {
+>  		mt7925_mcu_sta_remove_tlv(skb);
+>  		mt76_connac_mcu_add_tlv(skb, STA_REC_MLD_OFF,
+>  					sizeof(struct tlv));
+> +	} else {
+> +		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
+>  	}
+> =20
+>  	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
 
