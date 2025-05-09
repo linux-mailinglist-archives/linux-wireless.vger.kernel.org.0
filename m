@@ -1,135 +1,143 @@
-Return-Path: <linux-wireless+bounces-22792-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22793-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A02FAB16E5
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 16:10:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04170AB18D0
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 17:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802B91BC5020
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 14:10:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62A703A2D4D
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 15:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0EA62918F7;
-	Fri,  9 May 2025 14:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92E722E3E0;
+	Fri,  9 May 2025 15:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fOz5zLDw"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TiXupP/U"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343872920B6
-	for <linux-wireless@vger.kernel.org>; Fri,  9 May 2025 14:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432DC22CBE9
+	for <linux-wireless@vger.kernel.org>; Fri,  9 May 2025 15:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746799814; cv=none; b=aqMjj3hqYyWgw/+LGyfUyxTN5ZJzkLRy1831vPMXX0LxcHEhYoFlXnNY60vGhpOFXAE9+FyalnAxRVbDx4A7AWvapTZ8f1af7/Niafz6aYbsFSe1oApUuPFLIJ/3thj9ijmFfN0Ii8VIDz/txMYiTPY+QyvpYN3LU9sCbTzDdG0=
+	t=1746804898; cv=none; b=TDq1CV/OhXIODDDen/cMrIKbDgq10dLDaxZtCN+k1EJ06YJQZrFQF5WbyMr1+kh8DjrGu20kYz3T8n3XxVCf18O4b2wSAA3mm3+WPyf1v7AYdviAvIst2pQO9Y6Mp+VVJPG4jlR1+7NisfZvBD43YysqZdxuiPh6WTl6kdLeYCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746799814; c=relaxed/simple;
-	bh=jv2nYnyW45W2O7iOZjQIFqIOczwNPCCn+cSs4vmT9Io=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sGeZBWpgMz0wkmkNRYzFWHz79ZfCVLNfqdPDcNxO498i6sZxEXLy+9zg/V4mtVCgxyvrjRWMByui89PFsbLyoU2Q0YCnjPxi4Sso1peyYoFZpJLSvs3RdeAe4/ZeKkQafGKV/jEfCaTtVvIS1PX+uo/fIdBgi8VMnPJbDN0p7Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fOz5zLDw; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7c55500cf80so216954285a.1
-        for <linux-wireless@vger.kernel.org>; Fri, 09 May 2025 07:10:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746799811; x=1747404611; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=T1rXhUKHNS5ZnX5jzs+VLeHWyFhaGS+q5ScHq6Ic0gQ=;
-        b=fOz5zLDwuyXcVweWjMEh3sCIIZcgEvFpj70Gc+YkcW9KS9q2l8c1W3sLmFSSegO03q
-         x3n1k4PcgomQjdK66l3EGNYzQILnzsIpbLiL0LSXCgdelXpWfTR3CBIMm52M6L/5B91r
-         p3ffyMAcDKAWFqR3Io0pEnpGbgU9HuSsnYbVluebsl4sU225aZObt2sPksXpZF6U4jJx
-         a7+XGxUXIstH+2VdhrZwK99fVPwC3WGcVAIS8v+iRZdtI91rVVEBL4lHvJP0xGUF7I8z
-         Zk01rqW7MVXeT30olE46CE6+/PWDA/w1TiwvNz0MenZPSDHpjN3yoBoGfRO+BbSXvy2i
-         OMvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746799811; x=1747404611;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T1rXhUKHNS5ZnX5jzs+VLeHWyFhaGS+q5ScHq6Ic0gQ=;
-        b=tcYXMJsZh9Khhcv5pSTNhA76X8bc3DfzsR8tBhFCraI8zv7EsjZen+ZoGVN/IjQLpX
-         JCVXBb4A3+K229WGLGv2ljP5QXaHmgE+oWIXFkkWfAdYQvexrwzfrBLfjjlTwaus4CCU
-         Br1KD/OVfrfHnd4wPMX//8dpSg3coovWc5CrSTBzQjiNl0dEQ3yCoKH5KzJnGPHYPP1C
-         UW0gQtpFJEKos3BG10pNP7AxHvhN6AvaggW22w/9IwaeeZNaBS/Pt4nxjTvMsD/fgoZO
-         mLyevl53PCt/mjYy0Ym/qRr8EUcfR64Pnbzv9ZumM8pzVvKc0blnzMH/WRxijNYllI4F
-         objg==
-X-Gm-Message-State: AOJu0YxnCqIc9sJfSibGg77tjpKUCunkBpqiGT2OcvccrQFmGYr/wLAa
-	BqFY3mD9nMbb1cSTXn1sQ034Mhke4A7QcNBLMAEVIHOHwLKKwerl/gRWpw==
-X-Gm-Gg: ASbGncupKrxW1enipSUHNLLs0kl/fjW4DzGDeO8gElm13zGyxv0nzYbqd/0AzBcBqSw
-	UcEpxMFjNBgIXITRPsD8fqI5yPboH1atEapJtIE+E9c1H8B0tevyqMp009RooEl5Mgr2O4ki/sy
-	u5/X75agnuYIzJn+FnhZYrU91Sdmn/5tHxuLueP+X51d2n0pBnQjJKoX6vY+jS41Ul7en/4eniA
-	CVM1nW7BraBhEV+BILKb3HL9ByaS25ZPcJ7O+Mi3yRhQ12Zo1AWxDijhRCfe+kmGmTcoG/AffEs
-	S6y5u4ic8gOgeD04NceJzAjRr8uUGsK3WdKnuid1HSqc
-X-Google-Smtp-Source: AGHT+IE3h/Timp0Govs5h8jv7g5PW/qPtietaf4THLtBxhWNkr5tQO9cExgL2PWE1hAYX6b4p84VGw==
-X-Received: by 2002:a05:620a:4403:b0:7c5:9a6c:b7d3 with SMTP id af79cd13be357-7cd01157590mr554349485a.37.1746799811008;
-        Fri, 09 May 2025 07:10:11 -0700 (PDT)
-Received: from [10.100.121.195] ([152.193.78.90])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd00fdc779sm143486985a.76.2025.05.09.07.10.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 May 2025 07:10:10 -0700 (PDT)
-Message-ID: <15943a1f-0e5d-4705-b8ef-3f22fa3fe672@gmail.com>
-Date: Fri, 9 May 2025 07:10:08 -0700
+	s=arc-20240116; t=1746804898; c=relaxed/simple;
+	bh=jt5rb8d5fKE4a3vlYY5cMVaZ1rxZaincj0NA4OY4gvQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=KDSbVQJtdYkG2h9tET872CKox80+S57aPeIn+p/px/4vO0uS2BZF2k6NgusFUBuH8nbHVPpXXPOvaza7CJEhF/uXmXRIFD3KRTcBuhbXYtOplFwdgXd/f3EuTjDl/nAx31ozC6bpFxVYBv8jKdXjXQKjmV+6vdXLc2foztPxAxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TiXupP/U; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5497mmnx019353;
+	Fri, 9 May 2025 15:34:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	hLAgz81NgOrdhBcH1vnfPBEBFEqANxBTAuyVS9y0I9k=; b=TiXupP/Ujv5tqw55
+	DNYljiCk9RZ2fdQzFdUYavXhs0HaJdBGIXpkHkgRnW9e/6Uv5/Zo4VuPPmvmaokU
+	nBF7xyfuVlww8XN1VErwvaX2UrVPiVWFt3XJG4I1gWZ32xcfnkhUX3FyltzZ/SZp
+	nb0e4eVhHa2amKNegxwzNJ0LGWHUft7HT9HkD8QSY5rYJ7YS0KTe4E9+xBQNl5Kv
+	0++2JBm8G3b3skQ8AUHHY3KdBYor6z8s9Pvke2FOiB0deeQhT1J+2l6qB6xkzv+8
+	ulsTBMVAoFo7PamSRQQ75uTrK+SCV3N2aF1JEIHV8FezPi/BtxKI6FGOIuz7CMrh
+	PCTW1Q==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46gsdj4jma-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 May 2025 15:34:46 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 549FYjxb011981
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 9 May 2025 15:34:45 GMT
+Received: from [10.216.9.250] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 9 May 2025
+ 08:34:42 -0700
+Message-ID: <45f60f9b-66ff-6bc1-f77d-c29f255a2fee@quicinc.com>
+Date: Fri, 9 May 2025 21:04:38 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: wifi: iwlwifi: SAE fails when AP sends confirm before STA
-To: Jan Hendrik Farr <kernel@jfarr.cc>
-Cc: linux-wireless@vger.kernel.org,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>, iwd@lists.linux.dev
-References: <aB30Ea2kRG24LINR@archlinux>
- <4ffbeb94-ac19-4437-9d98-24981fe6c240@gmail.com> <aB4HC8Iaa6wR5dj7@archlinux>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3] wifi: ath11k: support DBS and DFS compatibility
 Content-Language: en-US
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <aB4HC8Iaa6wR5dj7@archlinux>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "Yu Zhang(Yuriy)" <quic_yuzha@quicinc.com>, <kvalo@kernel.org>
+CC: <quic_jjohnson@quicinc.com>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, Mihai Moldovan <ionic@ionic.de>
+References: <20241127022742.4016870-1-quic_yuzha@quicinc.com>
+From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+In-Reply-To: <20241127022742.4016870-1-quic_yuzha@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=PMAP+eqC c=1 sm=1 tr=0 ts=681e2096 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=bC-a23v3AAAA:8
+ a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=AOP5zEUh8TzVeoG01q4A:9 a=QEXdDO2ut3YA:10
+ a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA5MDE1MyBTYWx0ZWRfX0I79IZYkpF96
+ qxbTLkOVmMp9A4LNS8lfXbYzBjIBvLQ8ORzvOxWAFcZp9yzxg/BLlfUx0fFnHTv57YGOyCZ1a1M
+ +MDKbZ28EzNm7xaFFPPa3aRSOzPevL55EunpQtOekDV9Z6h+BLd8g1+Ihmr7ZF+Lofmh3WC3nEX
+ UVorP0vkLdwstaCvYTKi83R4xSJJaniHP71uIvLu9l+UtB2R6YlV9LSEaz8hl7C7w3HK9KnBVll
+ Yh5eu6tAcesLjKM09C+PbRfy1a1FT4eOoKO1BNRdvCO1eKpcYlvymVeEi83NLV58l8UBm6xZIG7
+ FS6BB2MpqG7m/ga6E8U4nSgcLWhbg/57MP3Pp5vwEAspf5oWMNaCuI/ezHVw3Mrrw8LDWGauy1y
+ OYfFjjwhgjYHocmR46NO9mynQSy2vGwK01x9C9JV13zb7hB1MnxmAYBQ1qqf/zpJTGUm3nN8
+X-Proofpoint-GUID: 7jPHvQtOneHefREtHzIq9j9pKHp7ynNt
+X-Proofpoint-ORIG-GUID: 7jPHvQtOneHefREtHzIq9j9pKHp7ynNt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-09_06,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0 mlxscore=0 suspectscore=0 spamscore=0
+ bulkscore=0 priorityscore=1501 clxscore=1011 lowpriorityscore=0
+ mlxlogscore=616 adultscore=0 malwarescore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2504070000 definitions=main-2505090153
 
-Hi,
 
-On 5/9/25 6:45 AM, Jan Hendrik Farr wrote:
-> On 09 06:12:23, James Prestwood wrote:
->> One thing you could try easily right off the bat would be to try forcing the
->> default SAE group in IWD's config. I've seen some APs really struggle with
->> group negotiation which is why we added the ability to set this. In your
->> network profile (/var/lib/iwd/ssid.psk) set this:
->>
->>
->> [Settings]
->> UseDefaultEccGroup=true
->>
->> And see if that helps.
-> Thanks for the suggestion. It does not appear to change the behavior I'm
-> seeing. Also I'm pretty convinced that the AP is not at fault here. It
-> is sending the confirm, and the STA fails to ACK that and the confirm
-> never shows up in iwd.
->
-> Confirmed that the settings is applied using these logs from iwd:
->
-> [SAE]: Using SAE H2E
-> [SAE]: Using group 19
->
-> I assume group 19 is the default group?
 
-Yep that's it. At least we can take that out of the equation.
+On 11/27/2024 7:57 AM, Yu Zhang(Yuriy) wrote:
+> Now some chips which support 'support_dual_stations' will enable DBS,
+> but will disable DFS. Restructure the ath11k_mac_setup_iface_combinations
+> function to support DBS and DFS compatibility.
+> 
+> About 'support_dual_station' feature can refer:
+> https://msgid.link/20230714023801.2621802-2-quic_cjhuang@quicinc.com
+> 
+> Add a ieee80211_iface_combination to support DBS and DFS compatibility,
+> one combination can support DFS(same with non dual sta), another
+> combination can support DBS. When running different scenarios that will
+> use different ieee80211_iface_combination due to mac80211 will go through
+> all of possible interface combinations.
+> 
+> In addition, maximum number of interfaces of these types should be total
+> allowed in this group.
+> 
+> The chips affected are:
+> 
+>   QCA6390 hw2.0
+>   WCN6855 hw2.0
+>   WCN6855 hw2.1
+> 
+> Other chips are not affected.
+> 
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-00410-QCAHKSWPL_SILICONZ-2
+> Tested-on: IPQ6018 hw1.0 AHB WLAN.HK.2.1.0.1-01161-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04402-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1.
+> Tested-by: Mihai Moldovan <ionic@ionic.de>
+> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
+> 
+> Signed-off-by: Yu Zhang(Yuriy) <quic_yuzha@quicinc.com>
 
-And yes, in the PCAP I do see the confirm's being sent but no ACK. We'll 
-have to wait for an iwlwifi person to chime in. I suspect we'll need 
-some iwlwifi debugging enabled to see if the confirm was received at 
-some level in the driver and dropped, or never received at all.
-
-Thanks,
-
-James
-
->
-> Best Regards
-> Jan
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
