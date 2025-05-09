@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-22770-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22771-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0F6AB10FA
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 12:45:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AB9AB10FB
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 12:45:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EAF11C251CD
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 10:45:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D7C2A0695F
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 10:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D59521D3CD;
-	Fri,  9 May 2025 10:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A0221ADA3;
+	Fri,  9 May 2025 10:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aQS4YhUN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AyMGKcDK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3FC21ADA3
-	for <linux-wireless@vger.kernel.org>; Fri,  9 May 2025 10:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3949428F51B
+	for <linux-wireless@vger.kernel.org>; Fri,  9 May 2025 10:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746787512; cv=none; b=KmfSlN2v3C9iruKgusuNfnSE9/znl06ymn+2jdwCWp83H+2UGehSCUGeythl7jMkrfrpesKZl00gw1N90DxlwkmNPN4AmE0dA2DhVSPEVmlozNx/oZ+RRZYMuPLps0u4DFRiiPgxPrSieabnbGS8txUTA1NN8N3T3Qzb1kAyUXM=
+	t=1746787513; cv=none; b=RvKk9tCu6WeDJqRP6us+bIBQ0VcAUn38RzZf0QtpmGaW3UPCd0tkfrc4ShDVBf5ki5fOuaZhQO4yegnxw+dJCrjjIC3ilVhBJNU//GSjRDij1rfFoTHsrRYDMYzonukK1UvhUWqziaNmf2Od5tWHoYWbOE4ddY0PMyV85yHaezg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746787512; c=relaxed/simple;
-	bh=6WVip0+aCcEFZBxFTAGC0i6HbWeAMuE8uPplTLJ019Y=;
+	s=arc-20240116; t=1746787513; c=relaxed/simple;
+	bh=bl1nkgXljoYzT629OL0iSsj6mGgkSPvaIJFYOz5fuBo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=a052aOAqWyein9WiAZuUJ/Wy3aKHugPvCwyw4CJ4jGVkArTYF4nasGatDvI6NhQaYsXtXK/QUlmwWaDv4v+WTmYTMquNuhS/0V8uHdQ4Xp9aDBIIexfGstzKlaTbve5Tx9zH8TKg66qLi6sjxtP7VAaMiEZUOTlJiLLHcgRRuSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aQS4YhUN; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=VsfApaf9DVyfoKPLbbj0/pFdX159ieBP3at8YE1L6mDsywRana3cqEeKZh6Oa3ea1jWRAmCvvM6sSvVvod0LDxhj6uvVMNkK64yw1ZzZS9FhvyuxVKxX0ARvXuax4Jqx4n3giLxHnqip654P/gPwTUdW3aqU8cwgXLH5xr53Ve8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AyMGKcDK; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746787510; x=1778323510;
+  t=1746787511; x=1778323511;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6WVip0+aCcEFZBxFTAGC0i6HbWeAMuE8uPplTLJ019Y=;
-  b=aQS4YhUNl6zSVgzWS5br+VAcCiKeXgpSJ+EV6cxhGEeDPgX3G7V2HBlk
-   6dqg9myep4eppWD2JMwYltdDkDMB0tGyKqNZAPL8r3fuvXgIB1FhWNfC1
-   3QEMczREwg1oeRurYcMSI+gbNJAF+weCRcoCRphFaWY13lcgO4vUthlJ1
-   i9N9coQJQabsnzAOW45vxFhM0ehmZwCikodT4XBH0nxbO94JidudLiVUU
-   a0o1H9zHVlcZ8AAiosK5aqcHypIsaEfOrSWXWieSPyZTjDmLXxMBSlOvX
-   APOnqleZp1aFEX/ejrgXnmNyKBicU6dJg4gJa2jR0Zpd55y2iQD23oQD3
+  bh=bl1nkgXljoYzT629OL0iSsj6mGgkSPvaIJFYOz5fuBo=;
+  b=AyMGKcDK1WfRGcFQfdTOhtF3+th9gHYtBMI226DxvTyU5WLaeJcAnAAj
+   g4Ln/CXZnMAZQmGgRuvrtKTaByTLNeygOQDMZuNAlomuRNM+YSvhp+RwP
+   leBXyBd5w1WYSNkImV1AQAE1166rVg8wnTym1aPoi9p6PUiORUpupDBjE
+   lPB9BkneuFpUovd0I+zJLxE9LIorV9mzUVJU1cxtkJlT2qXcXwlivX0X5
+   FIr11LT2OJe+PX1cOBV/bS+NgoE0AHTdNUsGYIB0/eETbi2KpiAURr9Nz
+   XZCa/pNmIaji6Ks9EjkBMhKEiEfw0L9zMGCZoGO1S4dzH6630E/ny9PQM
    Q==;
-X-CSE-ConnectionGUID: KRYFjOANTjW2DISMr1YbOA==
-X-CSE-MsgGUID: wjBNSN1zTLOXqI2Ojoj9Yg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="59239869"
+X-CSE-ConnectionGUID: y4SDwg4IRK60nSIbzgoPhw==
+X-CSE-MsgGUID: HQb+C3hZRMKXdU9QCWGcmQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="59239878"
 X-IronPort-AV: E=Sophos;i="6.15,275,1739865600"; 
-   d="scan'208";a="59239869"
+   d="scan'208";a="59239878"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 03:45:09 -0700
-X-CSE-ConnectionGUID: HCRCWUn3QRujrPbiVZ7jEg==
-X-CSE-MsgGUID: pGpvuqm0Roq6fiy/5sjQcg==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 03:45:11 -0700
+X-CSE-ConnectionGUID: 1pdrNFvlRkG4364A9GUowA==
+X-CSE-MsgGUID: Nw75LIa+R1GKw0KqQKAX9w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,275,1739865600"; 
-   d="scan'208";a="136537008"
+   d="scan'208";a="136537011"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 03:45:08 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 03:45:10 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 01/15] wifi: iwlwifi: cfg: add ucode API min/max to MAC config
-Date: Fri,  9 May 2025 13:44:40 +0300
-Message-Id: <20250509104454.2582160-2-miriam.rachel.korenblit@intel.com>
+Subject: [PATCH iwlwifi-next 02/15] wifi: iwlwifi: cfg: unify num_rbds config
+Date: Fri,  9 May 2025 13:44:41 +0300
+Message-Id: <20250509104454.2582160-3-miriam.rachel.korenblit@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250509104454.2582160-1-miriam.rachel.korenblit@intel.com>
 References: <20250509104454.2582160-1-miriam.rachel.korenblit@intel.com>
@@ -78,257 +78,313 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-In some older devices, the min/max firmware API supported by
-the driver depends on the specific device, when sharing the
-the same MAC (config). For most newer devices, it really is
-dependent on the MAC instead, since the firmware was frozen
-for certain MAC types. However, in the future we expect also
-freezes for RF types there.
-
-To handle this most generally, add an API min/max to the MAC
-config and then use the narrowest range prescribed by both,
-if set.
-
-For the newer MACs since 9000, move the configuration, there
-was only a freeze on MAC+RF lines so far.
+This should depend on both the RF (VHT/HE/EHT support) and
+the MAC (<=22000 can put multiple frames into one buffer),
+so unify the config in the struct iwl_cfg to just have it
+sized according to the RF, and then double it for all the
+MACs starting from AX210 (So/Ty).
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Message-Id: <20250509134302.23a88a8b57cf.I9ba14e8caa547a9cd0301e5ee7f0d40a8e99a2ba@changeid>
+Message-Id: <20250509134302.d7326eb49e10.I5e86b672f6e4dfe96c602a60166a5a75e1c2e2b8@changeid>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/cfg/22000.c    |  4 +-
- drivers/net/wireless/intel/iwlwifi/cfg/9000.c |  4 +-
- .../net/wireless/intel/iwlwifi/cfg/ax210.c    |  4 +-
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |  4 +-
- drivers/net/wireless/intel/iwlwifi/cfg/dr.c   |  4 +-
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |  4 +-
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  4 ++
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c  | 44 +++++++++++++++----
- 8 files changed, 51 insertions(+), 21 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c   | 16 +++-------------
+ drivers/net/wireless/intel/iwlwifi/cfg/9000.c    |  2 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/ax210.c   | 16 +++-------------
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c      | 10 ++--------
+ drivers/net/wireless/intel/iwlwifi/cfg/dr.c      |  8 +-------
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c      |  8 +-------
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h  | 10 ++++++++++
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h   | 13 +++++++++++++
+ .../wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c |  2 +-
+ .../net/wireless/intel/iwlwifi/pcie/ctxt-info.c  |  4 ++--
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c    |  2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c     |  2 +-
+ 12 files changed, 39 insertions(+), 54 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 42f2e2ede774..92ae336405fd 100644
+index 92ae336405fd..0ae910828704 100644
 --- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
 +++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -83,11 +83,11 @@ static const struct iwl_family_base_params iwl_22000_base = {
- 			.mask = 0xffffffff,
- 		},
- 	},
-+	.ucode_api_min = IWL_22000_UCODE_API_MIN,
-+	.ucode_api_max = IWL_22000_UCODE_API_MAX,
+@@ -131,16 +131,6 @@ const struct iwl_mac_cfg iwl_qu_long_latency_mac_cfg = {
+ 	.ltr_delay = IWL_CFG_TRANS_LTR_DELAY_2500US,
  };
  
- #define IWL_DEVICE_22500						\
--	.ucode_api_min = IWL_22000_UCODE_API_MIN,			\
--	.ucode_api_max = IWL_22000_UCODE_API_MAX,			\
- 	.led_mode = IWL_LED_RF_STATE,					\
- 	.non_shared_ant = ANT_B,					\
- 	.vht_mu_mimo_supported = true,					\
+-/*
+- * If the device doesn't support HE, no need to have that many buffers.
+- * 22000 devices can split multiple frames into a single RB, so fewer are
+- * needed; AX210 cannot (but use smaller RBs by default) - these sizes
+- * were picked according to 8 MSDUs inside 256 A-MSDUs in an A-MPDU, with
+- * additional overhead to account for processing time.
+- */
+-#define IWL_NUM_RBDS_NON_HE		512
+-#define IWL_NUM_RBDS_22000_HE		2048
+-
+ /*
+  * All JF radio modules are part of the 9000 series, but the MAC part
+  * looks more like 22000.  That's why this device is here, but called
+@@ -182,17 +172,17 @@ const char iwl_ax201_killer_1650i_name[] =
+ const struct iwl_cfg iwl_qu_hr1 = {
+ 	IWL_DEVICE_22500,
+ 	.tx_with_siso_diversity = true,
+-	.num_rbds = IWL_NUM_RBDS_22000_HE,
++	.num_rbds = IWL_NUM_RBDS_HE,
+ };
+ 
+ const struct iwl_cfg iwl_qu_hr = {
+ 	IWL_DEVICE_22500,
+-	.num_rbds = IWL_NUM_RBDS_22000_HE,
++	.num_rbds = IWL_NUM_RBDS_HE,
+ };
+ 
+ const struct iwl_cfg iwl_qu_hr_80mhz = {
+ 	IWL_DEVICE_22500,
+-	.num_rbds = IWL_NUM_RBDS_22000_HE,
++	.num_rbds = IWL_NUM_RBDS_HE,
+ 	.bw_limit = 80,
+ };
+ 
 diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/9000.c b/drivers/net/wireless/intel/iwlwifi/cfg/9000.c
-index bc497abd07c1..5424133fae1d 100644
+index 5424133fae1d..e4f99cef6d7a 100644
 --- a/drivers/net/wireless/intel/iwlwifi/cfg/9000.c
 +++ b/drivers/net/wireless/intel/iwlwifi/cfg/9000.c
-@@ -72,6 +72,8 @@ static const struct iwl_family_base_params iwl9000_base = {
- 			.mask = 0xffffffff,
- 		},
- 	},
-+	.ucode_api_max = IWL9000_UCODE_API_MAX,
-+	.ucode_api_min = IWL9000_UCODE_API_MIN,
- };
- 
- static const struct iwl_tt_params iwl9000_tt_params = {
-@@ -96,8 +98,6 @@ static const struct iwl_tt_params iwl9000_tt_params = {
- };
- 
- #define IWL_DEVICE_9000							\
--	.ucode_api_max = IWL9000_UCODE_API_MAX,				\
--	.ucode_api_min = IWL9000_UCODE_API_MIN,				\
- 	.led_mode = IWL_LED_RF_STATE,					\
- 	.non_shared_ant = ANT_B,					\
- 	.dccm_offset = IWL9000_DCCM_OFFSET,				\
+@@ -105,7 +105,7 @@ static const struct iwl_tt_params iwl9000_tt_params = {
+ 	.dccm2_offset = IWL9000_DCCM2_OFFSET,				\
+ 	.dccm2_len = IWL9000_DCCM2_LEN,					\
+ 	.thermal_params = &iwl9000_tt_params,				\
+-	.num_rbds = 512,						\
++	.num_rbds = IWL_NUM_RBDS_NON_HE,				\
+ 	.vht_mu_mimo_supported = true,					\
+ 	.nvm_type = IWL_NVM_EXT,					\
+ 	.ht_params = {							\
 diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-index 748c1f1f73a2..d0a8069196b2 100644
+index d0a8069196b2..6d3c1e032265 100644
 --- a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
 +++ b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-@@ -87,11 +87,11 @@ static const struct iwl_family_base_params iwl_ax210_base = {
- 			.mask = DBGC_CUR_DBGBUF_STATUS_IDX_MSK,
- 		},
- 	},
-+	.ucode_api_min = IWL_AX210_UCODE_API_MIN,
-+	.ucode_api_max = IWL_AX210_UCODE_API_MAX,
+@@ -141,16 +141,6 @@ const struct iwl_mac_cfg iwl_so_long_latency_imr_mac_cfg = {
+ 	.imr_enabled = true,
  };
  
- #define IWL_DEVICE_AX210						\
--	.ucode_api_min = IWL_AX210_UCODE_API_MIN,			\
--	.ucode_api_max = IWL_AX210_UCODE_API_MAX,			\
- 	.led_mode = IWL_LED_RF_STATE,					\
- 	.non_shared_ant = ANT_B,					\
- 	.vht_mu_mimo_supported = true,					\
+-/*
+- * If the device doesn't support HE, no need to have that many buffers.
+- * AX210 devices can split multiple frames into a single RB, so fewer are
+- * needed; AX210 cannot (but use smaller RBs by default) - these sizes
+- * were picked according to 8 MSDUs inside 256 A-MSDUs in an A-MPDU, with
+- * additional overhead to account for processing time.
+- */
+-#define IWL_NUM_RBDS_NON_HE		512
+-#define IWL_NUM_RBDS_AX210_HE		4096
+-
+ const struct iwl_mac_cfg iwl_ma_mac_cfg = {
+ 	.device_family = IWL_DEVICE_FAMILY_AX210,
+ 	.base = &iwl_ax210_base,
+@@ -193,17 +183,17 @@ const char iwl_ax210_name[] = "Intel(R) Wi-Fi 6 AX210 160MHz";
+ const struct iwl_cfg iwl_cfg_ma = {
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_AX210,
+-	.num_rbds = IWL_NUM_RBDS_AX210_HE,
++	.num_rbds = IWL_NUM_RBDS_HE,
+ };
+ 
+ const struct iwl_cfg iwl_cfg_so_a0_hr_a0 = {
+ 	IWL_DEVICE_AX210,
+-	.num_rbds = IWL_NUM_RBDS_AX210_HE,
++	.num_rbds = IWL_NUM_RBDS_HE,
+ };
+ 
+ const struct iwl_cfg iwl_cfg_so_a0_hr_a0_80mhz = {
+ 	IWL_DEVICE_AX210,
+-	.num_rbds = IWL_NUM_RBDS_AX210_HE,
++	.num_rbds = IWL_NUM_RBDS_HE,
+ 	.bw_limit = 80,
+ };
+ 
 diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-index 3c632b8c7650..86871b0431b1 100644
+index 86871b0431b1..dc1b4930c24a 100644
 --- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
 +++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-@@ -89,11 +89,11 @@ static const struct iwl_family_base_params iwl_bz_base = {
- 		},
- 	},
- 	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
-+	.ucode_api_max = IWL_BZ_UCODE_API_MAX,
-+	.ucode_api_min = IWL_BZ_UCODE_API_MIN,
+@@ -106,12 +106,6 @@ static const struct iwl_family_base_params iwl_bz_base = {
+ 	.nvm_ver = IWL_BZ_NVM_VERSION,					\
+ 	.nvm_type = IWL_NVM_EXT
+ 
+-/*
+- * This size was picked according to 8 MSDUs inside 512 A-MSDUs in an
+- * A-MPDU, with additional overhead to account for processing time.
+- */
+-#define IWL_NUM_RBDS_BZ_EHT		(512 * 16)
+-
+ const struct iwl_mac_cfg iwl_bz_mac_cfg = {
+ 	.device_family = IWL_DEVICE_FAMILY_BZ,
+ 	.base = &iwl_bz_base,
+@@ -142,13 +136,13 @@ const char iwl_mtp_name[] = "Intel(R) Wi-Fi 7 BE202 160MHz";
+ const struct iwl_cfg iwl_cfg_bz = {
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
+-	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
++	.num_rbds = IWL_NUM_RBDS_EHT,
  };
  
- #define IWL_DEVICE_BZ							\
--	.ucode_api_max = IWL_BZ_UCODE_API_MAX,				\
--	.ucode_api_min = IWL_BZ_UCODE_API_MIN,				\
+ const struct iwl_cfg iwl_cfg_bz_160mhz = {
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
+-	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
++	.num_rbds = IWL_NUM_RBDS_EHT,
+ 	.bw_limit = 160,
+ };
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
+index 6696c30ed7b6..91da09423158 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
+@@ -93,7 +93,7 @@ static const struct iwl_family_base_params iwl_dr_base = {
+ 	.nvm_ver = IWL_DR_NVM_VERSION,					\
+ 	.nvm_type = IWL_NVM_EXT,					\
+ 	.uhb_supported = true,						\
+-	.num_rbds = IWL_NUM_RBDS_DR_EHT,				\
++	.num_rbds = IWL_NUM_RBDS_EHT,				\
  	.ht_params = {							\
  		.stbc = true,						\
  		.ldpc = true,						\
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-index d7f0797c3231..6696c30ed7b6 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-@@ -82,11 +82,11 @@ static const struct iwl_family_base_params iwl_dr_base = {
- 		},
- 	},
- 	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
-+	.ucode_api_max = IWL_DR_UCODE_API_MAX,
-+	.ucode_api_min = IWL_DR_UCODE_API_MIN,
- };
+@@ -101,12 +101,6 @@ static const struct iwl_family_base_params iwl_dr_base = {
+ 			      BIT(NL80211_BAND_5GHZ),			\
+ 	}
  
- #define IWL_DEVICE_DR							\
--	.ucode_api_max = IWL_DR_UCODE_API_MAX,				\
--	.ucode_api_min = IWL_DR_UCODE_API_MIN,				\
- 	.led_mode = IWL_LED_RF_STATE,					\
- 	.non_shared_ant = ANT_B,					\
- 	.vht_mu_mimo_supported = true,					\
+-/*
+- * This size was picked according to 8 MSDUs inside 512 A-MSDUs in an
+- * A-MPDU, with additional overhead to account for processing time.
+- */
+-#define IWL_NUM_RBDS_DR_EHT		(512 * 16)
+-
+ const struct iwl_mac_cfg iwl_dr_mac_cfg = {
+ 	.device_family = IWL_DEVICE_FAMILY_DR,
+ 	.base = &iwl_dr_base,
 diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-index e9a94d4c7d4d..6669dc316019 100644
+index 6669dc316019..6db25355df42 100644
 --- a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
 +++ b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-@@ -89,11 +89,11 @@ static const struct iwl_family_base_params iwl_sc_base = {
- 		},
- 	},
- 	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
-+	.ucode_api_max = IWL_SC_UCODE_API_MAX,
-+	.ucode_api_min = IWL_SC_UCODE_API_MIN,
- };
+@@ -100,7 +100,7 @@ static const struct iwl_family_base_params iwl_sc_base = {
+ 	.nvm_ver = IWL_SC_NVM_VERSION,					\
+ 	.nvm_type = IWL_NVM_EXT,					\
+ 	.uhb_supported = true,						\
+-	.num_rbds = IWL_NUM_RBDS_SC_EHT,				\
++	.num_rbds = IWL_NUM_RBDS_EHT,				\
+ 	.ht_params = {							\
+ 		.stbc = true,						\
+ 		.ldpc = true,						\
+@@ -108,12 +108,6 @@ static const struct iwl_family_base_params iwl_sc_base = {
+ 			      BIT(NL80211_BAND_5GHZ),			\
+ 	}
  
- #define IWL_DEVICE_SC							\
--	.ucode_api_max = IWL_SC_UCODE_API_MAX,				\
--	.ucode_api_min = IWL_SC_UCODE_API_MIN,				\
- 	.led_mode = IWL_LED_RF_STATE,					\
- 	.non_shared_ant = ANT_B,					\
- 	.vht_mu_mimo_supported = true,					\
+-/*
+- * This size was picked according to 8 MSDUs inside 512 A-MSDUs in an
+- * A-MPDU, with additional overhead to account for processing time.
+- */
+-#define IWL_NUM_RBDS_SC_EHT		(512 * 16)
+-
+ const struct iwl_mac_cfg iwl_sc_mac_cfg = {
+ 	.device_family = IWL_DEVICE_FAMILY_SC,
+ 	.base = &iwl_sc_base,
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index b5cfaad6a037..9e6c9650fbae 100644
+index 9e6c9650fbae..3593914793a5 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -170,6 +170,8 @@ struct iwl_fw_mon_regs {
-  * @mon_dbgi_regs: monitor DBGI registers
-  * @mon_dram_regs: monitor DRAM registers
-  * @mon_smem_regs: monitor SMEM registers
-+ * @ucode_api_max: Highest version of uCode API supported by driver.
-+ * @ucode_api_min: Lowest version of uCode API supported by driver.
-  */
- struct iwl_family_base_params {
- 	unsigned int wd_timeout;
-@@ -190,6 +192,8 @@ struct iwl_family_base_params {
+@@ -342,6 +342,16 @@ struct iwl_mac_cfg {
+ 	    imr_enabled:1;
+ };
  
- 	u8 max_ll_items;
- 	u8 led_compensation;
-+	u8 ucode_api_max;
-+	u8 ucode_api_min;
- 	u32 mac_addr_from_csr:10;
- 	u8 nvm_hw_section_num;
- 	netdev_features_t features;
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index d300b7a12ed7..8734c7913b2f 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -291,12 +291,37 @@ IWL_EXPORT_SYMBOL(iwl_drv_get_fwname_pre);
- static void iwl_req_fw_callback(const struct firmware *ucode_raw,
- 				void *context);
++/*
++ * These sizes were picked according to 8 MSDUs inside 64/256/612 A-MSDUs
++ * in an A-MPDU, with additional overhead to account for processing time.
++ * They will be doubled for MACs starting from So/Ty that don't support
++ * putting multiple frames into a single buffer.
++ */
++#define IWL_NUM_RBDS_NON_HE		(64 * 8)
++#define IWL_NUM_RBDS_HE			(256 * 8)
++#define IWL_NUM_RBDS_EHT		(512 * 8)
++
+ /**
+  * struct iwl_cfg
+  * @fw_name_pre: Firmware filename prefix. The api version and extension
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index 904df78297f3..894436a65351 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -1214,6 +1214,19 @@ static inline bool iwl_trans_is_hw_error_value(u32 val)
  
-+static void iwl_get_ucode_api_versions(struct iwl_trans *trans,
-+				       unsigned int *api_min,
-+				       unsigned int *api_max)
+ void iwl_trans_free_restart_list(void);
+ 
++static inline u16 iwl_trans_get_num_rbds(struct iwl_trans *trans)
 +{
-+	const struct iwl_family_base_params *base = trans->mac_cfg->base;
-+	const struct iwl_cfg *cfg = trans->cfg;
++	u16 result = trans->cfg->num_rbds;
 +
-+	if (!base->ucode_api_max) {
-+		*api_min = cfg->ucode_api_min;
-+		*api_max = cfg->ucode_api_max;
-+		return;
-+	}
-+
-+	if (!cfg->ucode_api_max) {
-+		*api_min = base->ucode_api_min;
-+		*api_max = base->ucode_api_max;
-+		return;
-+	}
-+
-+	*api_min = max(cfg->ucode_api_min, base->ucode_api_min);
-+	*api_max = min(cfg->ucode_api_max, base->ucode_api_max);
++	/*
++	 * Since AX210 family (So/Ty) the device cannot put mutliple
++	 * frames into the same buffer, so double the value for them.
++	 */
++	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
++		return 2 * result;
++	return result;
 +}
 +
- static int iwl_request_firmware(struct iwl_drv *drv, bool first)
- {
--	const struct iwl_cfg *cfg = drv->trans->cfg;
- 	char _fw_name_pre[FW_NAME_PRE_BUFSIZE];
-+	unsigned int ucode_api_max, ucode_api_min;
- 	const char *fw_name_pre;
+ /*****************************************************
+  * PCIe handling
+  *****************************************************/
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+index dcc8edeb34ff..4759e570e807 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+@@ -256,7 +256,7 @@ int iwl_pcie_ctxt_info_gen3_alloc(struct iwl_trans *trans,
+ 	ctxt_info_gen3->mtr_size =
+ 		cpu_to_le16(TFD_QUEUE_CB_SIZE(cmdq_size));
+ 	ctxt_info_gen3->mcr_size =
+-		cpu_to_le16(RX_QUEUE_CB_SIZE(trans->cfg->num_rbds));
++		cpu_to_le16(RX_QUEUE_CB_SIZE(iwl_trans_get_num_rbds(trans)));
  
-+	iwl_get_ucode_api_versions(drv->trans, &ucode_api_min, &ucode_api_max);
-+
- 	if (drv->trans->mac_cfg->device_family == IWL_DEVICE_FAMILY_9000 &&
- 	    (drv->trans->info.hw_rev_step != SILICON_B_STEP &&
- 	     drv->trans->info.hw_rev_step != SILICON_C_STEP)) {
-@@ -309,21 +334,21 @@ static int iwl_request_firmware(struct iwl_drv *drv, bool first)
- 	fw_name_pre = iwl_drv_get_fwname_pre(drv->trans, _fw_name_pre);
+ 	trans_pcie->ctxt_info_gen3 = ctxt_info_gen3;
+ 	trans_pcie->prph_info = prph_info;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+index cc3e3d91b27f..cb36baac14da 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+@@ -202,10 +202,10 @@ int iwl_pcie_ctxt_info_init(struct iwl_trans *trans,
+ 		rb_size = IWL_CTXT_INFO_RB_SIZE_4K;
+ 	}
  
- 	if (first)
--		drv->fw_index = cfg->ucode_api_max;
-+		drv->fw_index = ucode_api_max;
- 	else
- 		drv->fw_index--;
- 
--	if (drv->fw_index < cfg->ucode_api_min) {
-+	if (drv->fw_index < ucode_api_min) {
- 		IWL_ERR(drv, "no suitable firmware found!\n");
- 
--		if (cfg->ucode_api_min == cfg->ucode_api_max) {
-+		if (ucode_api_min == ucode_api_max) {
- 			IWL_ERR(drv, "%s-%d is required\n", fw_name_pre,
--				cfg->ucode_api_max);
-+				ucode_api_max);
- 		} else {
- 			IWL_ERR(drv, "minimum version required: %s-%d\n",
--				fw_name_pre, cfg->ucode_api_min);
-+				fw_name_pre, ucode_api_min);
- 			IWL_ERR(drv, "maximum version supported: %s-%d\n",
--				fw_name_pre, cfg->ucode_api_max);
-+				fw_name_pre, ucode_api_max);
+-	WARN_ON(RX_QUEUE_CB_SIZE(trans->cfg->num_rbds) > 12);
++	WARN_ON(RX_QUEUE_CB_SIZE(iwl_trans_get_num_rbds(trans)) > 12);
+ 	control_flags = IWL_CTXT_INFO_TFD_FORMAT_LONG;
+ 	control_flags |=
+-		u32_encode_bits(RX_QUEUE_CB_SIZE(trans->cfg->num_rbds),
++		u32_encode_bits(RX_QUEUE_CB_SIZE(iwl_trans_get_num_rbds(trans)),
+ 				IWL_CTXT_INFO_RB_CB_SIZE);
+ 	control_flags |= u32_encode_bits(rb_size, IWL_CTXT_INFO_RB_SIZE);
+ 	ctxt_info->control.control_flags = cpu_to_le32(control_flags);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 45a62733b28a..7db0ca1a59aa 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1864,7 +1864,7 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 			ret = -EINVAL;
+ 			goto out_free_trans;
  		}
+-		trans_pcie->num_rx_bufs = iwl_trans->cfg->num_rbds;
++		trans_pcie->num_rx_bufs = iwl_trans_get_num_rbds(iwl_trans);
+ 	} else {
+ 		trans_pcie->num_rx_bufs = RX_QUEUE_SIZE;
+ 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+index c283ceff0417..c5fdadf7de1f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+@@ -722,7 +722,7 @@ static int iwl_pcie_alloc_rxq_dma(struct iwl_trans *trans,
  
- 		IWL_ERR(drv,
-@@ -1554,14 +1579,15 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
- 	struct iwlwifi_opmode_table *op;
- 	int err;
- 	struct iwl_firmware_pieces *pieces;
--	const unsigned int api_max = drv->trans->cfg->ucode_api_max;
--	const unsigned int api_min = drv->trans->cfg->ucode_api_min;
-+	unsigned int api_min, api_max;
- 	size_t trigger_tlv_sz[FW_DBG_TRIGGER_MAX];
- 	u32 api_ver;
- 	int i;
- 	bool usniffer_images = false;
- 	bool failure = true;
+ 	spin_lock_init(&rxq->lock);
+ 	if (trans->mac_cfg->mq_rx_supported)
+-		rxq->queue_size = trans->cfg->num_rbds;
++		rxq->queue_size = iwl_trans_get_num_rbds(trans);
+ 	else
+ 		rxq->queue_size = RX_QUEUE_SIZE;
  
-+	iwl_get_ucode_api_versions(drv->trans, &api_min, &api_max);
-+
- 	fw->ucode_capa.max_probe_length = IWL_DEFAULT_MAX_PROBE_LENGTH;
- 	fw->ucode_capa.standard_phy_calibration_size =
- 			IWL_DEFAULT_STANDARD_PHY_CALIBRATE_TBL_SIZE;
 -- 
 2.34.1
 
