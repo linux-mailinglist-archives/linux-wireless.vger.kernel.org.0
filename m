@@ -1,134 +1,155 @@
-Return-Path: <linux-wireless+bounces-22790-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22791-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94BAAB15C8
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 15:51:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44EFAB15DC
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 15:53:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AEE2189ACF1
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 13:49:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A255A03205
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 13:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3794C8632C;
-	Fri,  9 May 2025 13:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D04B292095;
+	Fri,  9 May 2025 13:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jfarr.cc header.i=@jfarr.cc header.b="A+XbDlxZ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="r26vCT76"
+	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="NLdoh3NN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91150267B74
-	for <linux-wireless@vger.kernel.org>; Fri,  9 May 2025 13:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135D429208B
+	for <linux-wireless@vger.kernel.org>; Fri,  9 May 2025 13:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746798353; cv=none; b=Lz/WYZHkU/EqWSRTzKSmAT6hNQ3Ld0RIHw+IPiKq5mQm9P3e664SS0R9hN5mMFyrPJ5tgBVtRy3ZSSLD209V+x7Sit0uLGLjGLNS5+q1TsdE6/BX4iEGsza+wB+xDkaZL8S+q16EFuadVYTOl9cThnvQJlEpnCpPw6O6XHuuKvY=
+	t=1746798604; cv=none; b=i1CSdqnbgZ0K6FK9ijqeFFWSn/RzGWpdAqVKQ0V0tDi8+z6ISTzTThbpjUfiqv+DtcB7gehq8iYo/9j05DcEKbuFd+SuSk0qfsVuQ7COwvU9EgKIEwdIsp7IDkSOtoSDTHFWLR09dBj/bTwdG5RCSBYaXHHOWrLbYZrktfJ99ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746798353; c=relaxed/simple;
-	bh=BrPK8k/DO3VHGWLMymAKRJriwZkP4LWX9Q5CIJlVdYI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DQkO1LRnk122BBekw+nNksw/i8JMwNb6CQCpU3NLJqPtd1EYzjdN2C3CCidEjwbLCtDYz7vK7gZh/pvH1arfYJ1/CJ5qFs6tPoO6M1093l6YpaaSP4pBoj4tfJcYhHWIx4+NUCo6ULdZ7toXBVYHCyXZWnR7Kf+4+b7tbCFh/nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jfarr.cc; spf=pass smtp.mailfrom=jfarr.cc; dkim=pass (2048-bit key) header.d=jfarr.cc header.i=@jfarr.cc header.b=A+XbDlxZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=r26vCT76; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jfarr.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jfarr.cc
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfout.phl.internal (Postfix) with ESMTP id 9730C1380291;
-	Fri,  9 May 2025 09:45:49 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Fri, 09 May 2025 09:45:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1746798349; x=1746884749; bh=UXHc7xHX9E
-	ONnrGRxG53xhIsWzuFWwpFboRpg7vFIHI=; b=A+XbDlxZGd0Sm48QQY10nQvEhP
-	MMwtE8hTnOtQtLz9Oo6fP4DFYK+iS71EHu+eitwXlF1+Ermp0nH4sNPvS7OfYPUi
-	ci10bZPnu9hr/D5KUk/Ukhl3p1eLNv9w1S3Gc7HGbe3vUg+Zx7P+khArg0NTMVFM
-	y5OzcJACD5NXbLW5M2qSZ4dQSp3rNyEwwBWnkhv8xsva4FtLiij+1TnjU1TFwiah
-	X+wXiS/iprZMKnuhaMMqVBKgNwNYg0FTU1heUoSdXNNGDGNYhIA7yCqg/HTSngnA
-	BPqO6b4bAAHxVB2dkOYeevM7rDXUnbOZnEir3o02NZN4SSEXNGJ7fLCN/xtA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1746798349; x=1746884749; bh=UXHc7xHX9EONnrGRxG53xhIsWzuFWwpFboR
-	pg7vFIHI=; b=r26vCT76quwOrSv5LJfB/rsiyjkqv7WhGxwesCQ3H1ZxmAaG4Bu
-	A3dHWULmjniJFXBZykjSH8of9iL6/PXlpPfdh/3paD9A/cCAuICbl8k1HqFjUkyq
-	E6yM+hxogPKH/rB2C3PctPPEfoEzbGiyhXoDERZQGsFjHwtyDhNwylALPhCBADOy
-	boTfnuMp3Z8ZOob/HPZMcqDBid3wOIbcaCcatEI1k6Jyq3b9gA7up2k9KFFwixKV
-	iFqCVSGCBY6rHD3PHlMJc9kbUiaNq5ZhKom1Xyy89EsZcukk2ReekI2epbhFZcSu
-	1K4CqGtExXN5XEoly19qp7vLbPpVgtpcu9g==
-X-ME-Sender: <xms:DQceaKlrOmHLBB0ynw0GSUTAErg3K5BJlLMaxmZJN-tyGOWuOVnQ-w>
-    <xme:DQceaB3JW_jdeMdajqVtkBlgMko90egTILlTFbWpKvZtVTf4TyEhF6i7ldET4t_9O
-    N8OxI0yV8AQRzUwT88>
-X-ME-Received: <xmr:DQceaIoH4bl1E5SfKPynfBcQFox8gBCXC0ctgeOZIeAH_yGmOW6LJekmtS6F7_ui26h7cEqKBIGhoDdmgBCk3Vwa2Rbq>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvledvjeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnegfrhhlucfvnfffucdlfedtmdenucfjughrpeffhffvvefu
-    kfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeflrghnucfjvghnughrihhkucfhrg
-    hrrhcuoehkvghrnhgvlhesjhhfrghrrhdrtggtqeenucggtffrrghtthgvrhhnpedukeeg
-    ffdtfeeihfehteevvdeiueetteelgfefvdfhleeufeegieduieduhfekieenucevlhhush
-    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkvghrnhgvlhesjhhf
-    rghrrhdrtggtpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtph
-    htthhopehprhgvshhtfihojhesghhmrghilhdrtghomhdprhgtphhtthhopehlihhnuhig
-    qdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmih
-    hrihgrmhdrrhgrtghhvghlrdhkohhrvghnsghlihhtsehinhhtvghlrdgtohhmpdhrtghp
-    thhtohepihifugeslhhishhtshdrlhhinhhugidruggvvh
-X-ME-Proxy: <xmx:DQceaOmdsTUBcNYqyxs5KUFHMqZrbsmvCYWyB4Es9xUAh6quTeXAsg>
-    <xmx:DQceaI1Wj02C9D8jly7U5VphOfhR-bZqrc-te9oCqvG3nIX4n3KwQw>
-    <xmx:DQceaFskrV7oUhM4wFKKvX3nsqZmeysQyw1L6YUAzCd8ufuxe0-f0A>
-    <xmx:DQceaEXO476PLvPyYWI6aF_BFOTnEOHN5PRsuhisll5a9Mv7iijgnw>
-    <xmx:DQceaORKVtJMQ-QMraXjnqtUh9q0lhyopezVObD7WNoXxXDRqgkrExDU>
-Feedback-ID: i01d149f8:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 9 May 2025 09:45:48 -0400 (EDT)
-Date: Fri, 9 May 2025 15:45:47 +0200
-From: Jan Hendrik Farr <kernel@jfarr.cc>
-To: James Prestwood <prestwoj@gmail.com>
-Cc: linux-wireless@vger.kernel.org,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	iwd@lists.linux.dev
-Subject: Re: wifi: iwlwifi: SAE fails when AP sends confirm before STA
-Message-ID: <aB4HC8Iaa6wR5dj7@archlinux>
-References: <aB30Ea2kRG24LINR@archlinux>
- <4ffbeb94-ac19-4437-9d98-24981fe6c240@gmail.com>
+	s=arc-20240116; t=1746798604; c=relaxed/simple;
+	bh=IJJKiBhXbSlEGV/PSsKojqrjlNpmFogcbL4l1YifxqI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XROi81cLxuMdMmXyndb8teTxJzEus+xWIGnBtrtZqbYKR9O6f0xB96/7kJlbWKlBs2saEMb9pUdXV9qywL0liAdnhgvUy4uMPQouyujKQjB7Ienzr2D0UAwrmRxtzUPFnfHh/yDWgPdsYt+cED/II/cFBSy+7Wo4g/o6TC1MP4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=NLdoh3NN; arc=none smtp.client-ip=185.84.6.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
+Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:40864 helo=webmail.newmedia-net.de)
+	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
+	(Exim 4.97.1)
+	(envelope-from <s.gottschall@dd-wrt.com>)
+	id 1uDO6u-000000001zf-1ShG;
+	Fri, 09 May 2025 15:49:56 +0200
+X-SASI-Hits: BODYTEXTP_SIZE_3000_LESS 0.000000, BODY_SIZE_2000_2999 0.000000,
+	BODY_SIZE_5000_LESS 0.000000, BODY_SIZE_7000_LESS 0.000000,
+	CTE_7BIT 0.000000, DKIM_ALIGNS 0.000000, DKIM_SIGNATURE 0.000000,
+	HTML_00_01 0.050000, HTML_00_10 0.050000, IN_REP_TO 0.000000,
+	LEGITIMATE_SIGNS 0.000000, MSGID_SAMEAS_FROM_HEX_844412 0.100000,
+	MSG_THREAD 0.000000, MULTIPLE_RCPTS 0.100000, MULTIPLE_REAL_RCPTS 0.000000,
+	NO_CTA_FOUND 0.000000, NO_CTA_URI_FOUND 0.000000, NO_FUR_HEADER 0.000000,
+	NO_URI_HTTPS 0.000000, OUTBOUND 0.000000, OUTBOUND_SOPHOS 0.000000,
+	REFERENCES 0.000000, SENDER_NO_AUTH 0.000000, SUSP_DH_NEG 0.000000,
+	USER_AGENT 0.000000, __ANY_URI 0.000000, __BODY_NO_MAILTO 0.000000,
+	__BOUNCE_CHALLENGE_SUBJ 0.000000, __BOUNCE_NDR_SUBJ_EXEMPT 0.000000,
+	__BULK_NEGATE 0.000000, __CC_NAME 0.000000, __CC_NAME_DIFF_FROM_ACC 0.000000,
+	__CC_REAL_NAMES 0.000000, __CT 0.000000, __CTE 0.000000,
+	__CT_TEXT_PLAIN 0.000000, __DKIM_ALIGNS_1 0.000000, __DKIM_ALIGNS_2 0.000000,
+	__DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000, __DQ_NEG_IP 0.000000,
+	__FORWARDED_MSG 0.000000, __FROM_DOMAIN_NOT_IN_BODY 0.000000,
+	__FUR_RDNS_SOPHOS 0.000000, __HAS_CC_HDR 0.000000, __HAS_FROM 0.000000,
+	__HAS_MSGID 0.000000, __HAS_REFERENCES 0.000000,
+	__HEADER_ORDER_FROM 0.000000, __IN_REP_TO 0.000000, __MAIL_CHAIN 0.000000,
+	__MIME_BOUND_CHARSET 0.000000, __MIME_TEXT_ONLY 0.000000,
+	__MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000, __MIME_VERSION 0.000000,
+	__MOZILLA_USER_AGENT 0.000000, __MSGID_HEX_844412 0.000000,
+	__MULTIPLE_RCPTS_CC_X2 0.000000, __NO_HTML_TAG_RAW 0.000000,
+	__OUTBOUND_SOPHOS_FUR 0.000000, __OUTBOUND_SOPHOS_FUR_IP 0.000000,
+	__OUTBOUND_SOPHOS_FUR_RDNS 0.000000, __RCVD_PASS 0.000000,
+	__REFERENCES 0.000000, __SANE_MSGID 0.000000, __SCAN_D_NEG 0.000000,
+	__SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
+	__SCAN_D_NEG_HEUR2 0.000000, __SUBJ_ALPHA_END 0.000000,
+	__SUBJ_ALPHA_NEGATE 0.000000, __SUBJ_REPLY 0.000000,
+	__TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
+	__TO_NAME_DIFF_FROM_ACC 0.000000, __TO_REAL_NAMES 0.000000,
+	__URI_NO_MAILTO 0.000000, __URI_NO_WWW 0.000000, __USER_AGENT 0.000000,
+	__X_MAILSCANNER 0.000000
+X-SASI-Probability: 8%
+X-SASI-RCODE: 200
+X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2025.5.9.132728
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
+	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=LqQdyORHbJ+WljesHXXhhkp3aHmrD2aDHe/8+59w2QQ=;
+	b=NLdoh3NNhArpXhthKv2u62pOB9Z61p7IeFxyyFcwf6NZVPOOz0IXk+tKjlZ1uZgqHDXfAJjs/NCikEXGzA9hNWIDMjvRc5ap51dBaYKrQf3o1acaFo/KBPsItAeBUOMgEafVQI1Mp5lSoZCjz5rlBfxq8irv0y32Fkus/ivfk8E=;
+Message-ID: <592e4722-d7e1-4202-897f-e2a522074fe6@dd-wrt.com>
+Date: Fri, 9 May 2025 15:49:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4ffbeb94-ac19-4437-9d98-24981fe6c240@gmail.com>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: Question about TX power
+To: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>, ath11k@lists.infradead.org,
+ linux-wireless@vger.kernel.org
+References: <aB3AK83USvOdTvDv@FUE-ALEWI-WINX>
+ <73b2bd16-66aa-405c-acda-237d56be63dd@dd-wrt.com>
+ <aB3uKfu3frLyJ/2c@FUE-ALEWI-WINX>
+From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+In-Reply-To: <aB3uKfu3frLyJ/2c@FUE-ALEWI-WINX>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass (webmail.newmedia-net.de: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=s.gottschall@dd-wrt.com; helo=webmail.newmedia-net.de;
+X-SA-Exim-Connect-IP: 127.0.0.1
+X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
+X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
+X-NMN-MailScanner-Information: Please contact the ISP for more information
+X-NMN-MailScanner-ID: 1uDO6t-000AmL-Ei
+X-NMN-MailScanner: Found to be clean
+X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
+X-Received:  from localhost ([127.0.0.1] helo=webmail.newmedia-net.de)
+	by webmail.newmedia-net.de with esmtp (Exim 4.72)
+	(envelope-from <s.gottschall@dd-wrt.com>)
+	id 1uDO6t-000AmL-Ei; Fri, 09 May 2025 15:49:55 +0200
 
-On 09 06:12:23, James Prestwood wrote:
-> 
-> One thing you could try easily right off the bat would be to try forcing the
-> default SAE group in IWD's config. I've seen some APs really struggle with
-> group negotiation which is why we added the ability to set this. In your
-> network profile (/var/lib/iwd/ssid.psk) set this:
-> 
-> 
-> [Settings]
-> UseDefaultEccGroup=true
-> 
-> And see if that helps.
 
-Thanks for the suggestion. It does not appear to change the behavior I'm
-seeing. Also I'm pretty convinced that the AP is not at fault here. It
-is sending the confirm, and the STA fails to ACK that and the confirm
-never shows up in iwd.
-
-Confirmed that the settings is applied using these logs from iwd:
-
-[SAE]: Using SAE H2E
-[SAE]: Using group 19
-
-I assume group 19 is the default group?
-
-Best Regards
-Jan
+Am 09.05.2025 um 13:59 schrieb Alexander Wilhelm:
+> Am Fri, May 09, 2025 at 12:54:47PM +0200 schrieb Sebastian Gottschall:
+>> Am 09.05.2025 um 10:43 schrieb Alexander Wilhelm:
+>>> Hello devs,
+>>>
+>>> I'd like to understand how TX power setting works on ath11k devices. For example
+>>> when I'm using channel 36 for ETSI based regulatory domain, I can set up to 23
+>>> dBm. But then I get only 20 dBm as a result. On different channels and/or
+>>> regulatory domains I get different reductions. I tried to follow the source
+>>> code. As far as I understood is that 'ath11k_mac_txpower_recalc' sets the
+>>> correct values and 'ath11k_mac_op_get_txpower' return the different one.
+>>>
+>>> My question is where this reduction offset is encoded. Is it in the module's
+>>> firmware or is it part of the boardfile? Thank you in advance.
+>>>
+>>>
+>>> Best regards
+>>> Alexander Wilhelm
+>> the boardfile contains chipset specific calibration data which also defines
+>> the hardware power limits (more specific data also included in the on board
+>> calibration flash of the device or if its a router, in flash memory of the
+>> router itself. in addition it includes a regulatory database which is used
+>> by the firmware for managing the total power. you have also to consider that
+>> the 23dbm are specified without antenna gain.
+>> so if the antenna gain is 3 dbm, you get 20 dbm in total. this antenna gain
+>> may again be specified in the boardfile.
+>> so you will not find your answers in any sourcecode. its all encoded in
+>> binary data.
+>>
+>> Sebastian
+>>
+> Alright, thank you Sebastian. Since I'm not using any calibration data on my
+> router/AP device, all data come from the boardfile. I've also understood that
+> the power limit reduction is related to antenna gain. I'll ask the radio module
+> manufacturer to create another boardfile for me that matches the required
+> antenna gain for my router/AP device.
+my answer might be not accurate here. which chipset we are talking about 
+for ath11k?
+>
+> Best regards
+> Alexander Wilhelm
+>
 
