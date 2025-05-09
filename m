@@ -1,76 +1,65 @@
-Return-Path: <linux-wireless+bounces-22761-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22762-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F58AB075C
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 03:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA8AAB077A
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 03:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA44E4E5E49
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 01:04:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38D344E228B
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 01:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0693C376F1;
-	Fri,  9 May 2025 01:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E217FBAC;
+	Fri,  9 May 2025 01:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="LzU24JKy"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="CRvZwANp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB4B20E6;
-	Fri,  9 May 2025 01:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E6735942
+	for <linux-wireless@vger.kernel.org>; Fri,  9 May 2025 01:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746752672; cv=none; b=WCQRATFMqZSKUcLF5KzlPnCiSLXninMqggiJ3gnR/6AlLKUJfKDACTOSE+QRPGgi2JXIhOKotaLERNwB8oDhx1QHWqRv5l7e3INg5gCviDr8+/3V3Ba67mIn2u/KS2/Yad7VOsYsRkkciD963KeZdfihlLNUkZpVI4v5ET/Wrv4=
+	t=1746754489; cv=none; b=u0ayBkPoz3QTtob9IDEwbNt1FSsKAHAlut2+Rh2ZQasiwx4mrvcecI6gpbDEUfMgAEDtOPf3M+KSKKR30wcybFfqjoCCdjS063u2+7PzDodZ0P86xXu48390Gq1il9GEVOEVfrNgwUQAMqAwFXyuVgTs5pAZajpBC/3IHlyXBsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746752672; c=relaxed/simple;
-	bh=d5tRvZCmJBVCc6MoiOu5zf+hcKgcc+Z6A6RFbN4W7rY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dms9Iu/+y0v3Pw0rZIUJh667AsNCrw0zeuMbFrSvJR2altCivObyL4i4g2p3EAO/s/P3KgHQfL3q2kmDCxvwlHydhrQ7nz4m5l8Qfu9dXMAKPACg6RE5PplLGEEXtFpui5ZF11QJqSsQB7JsJjg8xUPYWgGyv/Zx5cVUBCRfZ/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=LzU24JKy; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 8bdeb7f82c7111f0813e4fe1310efc19-20250509
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=0vPECswObQPRV1ipuOt1lHBTvRNdDtkZAdIDJlDmFKY=;
-	b=LzU24JKyOU33svUeHPRxmMjtgLL1/N4E2R8puiajLVEYffRR0UJSOYR8IeJ+1W4owZOWD0BpgApjpnjvSjbD2ij+bAEBHDFLaoxJ4KtMFzAorEizex8Xa+G223M/1k8km8K6UB2Dj5mVRPpjMtrwMcMxbmCwrBWcFA9ga+df8cI=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.1,REQID:22f903f5-b47e-47f1-81e9-94b367fae313,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:0ef645f,CLOUDID:841c7480-1eec-4f76-b81b-944fecd9abcd,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,
-	LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-UUID: 8bdeb7f82c7111f0813e4fe1310efc19-20250509
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1904332798; Fri, 09 May 2025 09:04:23 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+	s=arc-20240116; t=1746754489; c=relaxed/simple;
+	bh=s26mkkE1HWiyoWSkVxMdFtxrNDFHOcFdJjK9lQ2y73Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PPs+cbUo2QKbweo4KG8BA6sgDsw3L8DvEzO+hgRhrco7h2Ctr6D/t+bm1lzKtarQbSHW9Cy6HaPz2dhmkABITS/kgxVRA2pSTO/a/DI7W6MHrR47wfWF5cYw4nLLVSikBqKd6xLBa8ybr/IktqvLQ+UGjH/DXqsva4jty3GoSG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=CRvZwANp; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5491YgD823321731, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1746754482; bh=s26mkkE1HWiyoWSkVxMdFtxrNDFHOcFdJjK9lQ2y73Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=CRvZwANpdLpxWgVaBYcMc96dGQNQ8smYLriEpEdrSNBdJ1+CVty6er8VPmA5fj5X+
+	 SXZSN94bnAHlWG1Fv6NxN3vFB22uyPwswzCXYDjymTU2UHtYD3PWKtVeOWLo6m3Pqq
+	 Do0FQEji7TYGMoVXHoNd5AL4fsOVtzQ+AyR2o1t76Am6icbViEIgjnwQn4nXDkVQPr
+	 uTaiEbiTEHOR0/TRu5nF+kp6yp3VDxwZE12t6gbzJZBC2Ifk3aKnTQtvVArwy0OK78
+	 2qZwGqAr3mO0bjFGvuRIfzFGnzmNSxCP9uNudF5ou6ooUNxH3wMhcRivxsmfLBcqqX
+	 R+kh5Ku/IQKIw==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5491YgD823321731
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 May 2025 09:34:42 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Fri, 9 May 2025 09:04:21 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Fri, 9 May 2025 09:04:21 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>, Benjamin Xiao
-	<fossben@pm.me>, Niklas Schnelle <niks@kernel.org>
-Subject: [PATCH v3] wifi: mt76: mt7925: fix missing hdr_trans_tlv command for broadcast wtbl
-Date: Fri, 9 May 2025 09:04:20 +0800
-Message-ID: <20250509010421.403022-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+ 15.1.2507.39; Fri, 9 May 2025 09:34:42 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 9 May
+ 2025 09:34:42 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <zohrlaffz@gmail.com>
+Subject: [PATCH rtw-next] wifi: rtw89: pci: enlarge retry times of RX tag to 1000
+Date: Fri, 9 May 2025 09:34:33 +0800
+Message-ID: <20250509013433.7573-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,49 +68,40 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-MTK: N
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+RX tag is sequence number to ensure RX DMA is complete. On platform
+Gigabyte X870 AORUS ELITE WIFI7, sometimes it needs longer retry times
+to complete RX DMA, or driver throws warnings and connection drops:
 
-Ensure that the hdr_trans_tlv command is included in the broadcast wtbl to
-prevent the IPv6 and multicast packet from being dropped by the chip.
+  rtw89_8922ae 0000:07:00.0: failed to update 162 RXBD info: -11
+  rtw89_8922ae 0000:07:00.0: failed to update 163 RXBD info: -11
+  rtw89_8922ae 0000:07:00.0: failed to update 32 RXBD info: -11
+  rtw89_8922ae 0000:07:00.0: failed to release TX skbs
 
-Cc: stable@vger.kernel.org
-Fixes: cb1353ef3473 ("wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta_cmd")
-Reported-by: Benjamin Xiao <fossben@pm.me>
-Tested-by: Niklas Schnelle <niks@kernel.org>
-Link: https://lore.kernel.org/lkml/EmWnO5b-acRH1TXbGnkx41eJw654vmCR-8_xMBaPMwexCnfkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vfdg=@pm.me/
+Fixes: 0bc7d1d4e63c ("wifi: rtw89: pci: validate RX tag for RXQ and RPQ")
+Reported-by: Samuel Reyes <zohrlaffz@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/f4355539f3ac46bbaf9c586d059a8cbb@realtek.com/T/#t
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
-v2:
-    add tested-by tag
-v3:
-    add more info in commit
----
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index a42b584634ab..fd756f0d18f8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -2183,14 +2183,14 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
- 			mt7925_mcu_sta_mld_tlv(skb, info->vif, info->link_sta->sta);
- 			mt7925_mcu_sta_eht_mld_tlv(skb, info->vif, info->link_sta->sta);
- 		}
--
--		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index c2fe5a898dc7..28e696476c5b 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -228,7 +228,7 @@ int rtw89_pci_sync_skb_for_device_and_validate_rx_info(struct rtw89_dev *rtwdev,
+ 						       struct sk_buff *skb)
+ {
+ 	struct rtw89_pci_rx_info *rx_info = RTW89_PCI_RX_SKB_CB(skb);
+-	int rx_tag_retry = 100;
++	int rx_tag_retry = 1000;
+ 	int ret;
  
- 	if (!info->enable) {
- 		mt7925_mcu_sta_remove_tlv(skb);
- 		mt76_connac_mcu_add_tlv(skb, STA_REC_MLD_OFF,
- 					sizeof(struct tlv));
-+	} else {
-+		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
- 	}
- 
- 	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
+ 	do {
 -- 
-2.34.1
+2.25.1
 
 
