@@ -1,155 +1,135 @@
-Return-Path: <linux-wireless+bounces-22791-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22792-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44EFAB15DC
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 15:53:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A02FAB16E5
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 16:10:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A255A03205
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 13:50:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802B91BC5020
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 May 2025 14:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D04B292095;
-	Fri,  9 May 2025 13:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0EA62918F7;
+	Fri,  9 May 2025 14:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="NLdoh3NN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fOz5zLDw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135D429208B
-	for <linux-wireless@vger.kernel.org>; Fri,  9 May 2025 13:50:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343872920B6
+	for <linux-wireless@vger.kernel.org>; Fri,  9 May 2025 14:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746798604; cv=none; b=i1CSdqnbgZ0K6FK9ijqeFFWSn/RzGWpdAqVKQ0V0tDi8+z6ISTzTThbpjUfiqv+DtcB7gehq8iYo/9j05DcEKbuFd+SuSk0qfsVuQ7COwvU9EgKIEwdIsp7IDkSOtoSDTHFWLR09dBj/bTwdG5RCSBYaXHHOWrLbYZrktfJ99ow=
+	t=1746799814; cv=none; b=aqMjj3hqYyWgw/+LGyfUyxTN5ZJzkLRy1831vPMXX0LxcHEhYoFlXnNY60vGhpOFXAE9+FyalnAxRVbDx4A7AWvapTZ8f1af7/Niafz6aYbsFSe1oApUuPFLIJ/3thj9ijmFfN0Ii8VIDz/txMYiTPY+QyvpYN3LU9sCbTzDdG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746798604; c=relaxed/simple;
-	bh=IJJKiBhXbSlEGV/PSsKojqrjlNpmFogcbL4l1YifxqI=;
+	s=arc-20240116; t=1746799814; c=relaxed/simple;
+	bh=jv2nYnyW45W2O7iOZjQIFqIOczwNPCCn+cSs4vmT9Io=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XROi81cLxuMdMmXyndb8teTxJzEus+xWIGnBtrtZqbYKR9O6f0xB96/7kJlbWKlBs2saEMb9pUdXV9qywL0liAdnhgvUy4uMPQouyujKQjB7Ienzr2D0UAwrmRxtzUPFnfHh/yDWgPdsYt+cED/II/cFBSy+7Wo4g/o6TC1MP4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=NLdoh3NN; arc=none smtp.client-ip=185.84.6.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
-Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:40864 helo=webmail.newmedia-net.de)
-	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
-	(Exim 4.97.1)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1uDO6u-000000001zf-1ShG;
-	Fri, 09 May 2025 15:49:56 +0200
-X-SASI-Hits: BODYTEXTP_SIZE_3000_LESS 0.000000, BODY_SIZE_2000_2999 0.000000,
-	BODY_SIZE_5000_LESS 0.000000, BODY_SIZE_7000_LESS 0.000000,
-	CTE_7BIT 0.000000, DKIM_ALIGNS 0.000000, DKIM_SIGNATURE 0.000000,
-	HTML_00_01 0.050000, HTML_00_10 0.050000, IN_REP_TO 0.000000,
-	LEGITIMATE_SIGNS 0.000000, MSGID_SAMEAS_FROM_HEX_844412 0.100000,
-	MSG_THREAD 0.000000, MULTIPLE_RCPTS 0.100000, MULTIPLE_REAL_RCPTS 0.000000,
-	NO_CTA_FOUND 0.000000, NO_CTA_URI_FOUND 0.000000, NO_FUR_HEADER 0.000000,
-	NO_URI_HTTPS 0.000000, OUTBOUND 0.000000, OUTBOUND_SOPHOS 0.000000,
-	REFERENCES 0.000000, SENDER_NO_AUTH 0.000000, SUSP_DH_NEG 0.000000,
-	USER_AGENT 0.000000, __ANY_URI 0.000000, __BODY_NO_MAILTO 0.000000,
-	__BOUNCE_CHALLENGE_SUBJ 0.000000, __BOUNCE_NDR_SUBJ_EXEMPT 0.000000,
-	__BULK_NEGATE 0.000000, __CC_NAME 0.000000, __CC_NAME_DIFF_FROM_ACC 0.000000,
-	__CC_REAL_NAMES 0.000000, __CT 0.000000, __CTE 0.000000,
-	__CT_TEXT_PLAIN 0.000000, __DKIM_ALIGNS_1 0.000000, __DKIM_ALIGNS_2 0.000000,
-	__DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000, __DQ_NEG_IP 0.000000,
-	__FORWARDED_MSG 0.000000, __FROM_DOMAIN_NOT_IN_BODY 0.000000,
-	__FUR_RDNS_SOPHOS 0.000000, __HAS_CC_HDR 0.000000, __HAS_FROM 0.000000,
-	__HAS_MSGID 0.000000, __HAS_REFERENCES 0.000000,
-	__HEADER_ORDER_FROM 0.000000, __IN_REP_TO 0.000000, __MAIL_CHAIN 0.000000,
-	__MIME_BOUND_CHARSET 0.000000, __MIME_TEXT_ONLY 0.000000,
-	__MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000, __MIME_VERSION 0.000000,
-	__MOZILLA_USER_AGENT 0.000000, __MSGID_HEX_844412 0.000000,
-	__MULTIPLE_RCPTS_CC_X2 0.000000, __NO_HTML_TAG_RAW 0.000000,
-	__OUTBOUND_SOPHOS_FUR 0.000000, __OUTBOUND_SOPHOS_FUR_IP 0.000000,
-	__OUTBOUND_SOPHOS_FUR_RDNS 0.000000, __RCVD_PASS 0.000000,
-	__REFERENCES 0.000000, __SANE_MSGID 0.000000, __SCAN_D_NEG 0.000000,
-	__SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
-	__SCAN_D_NEG_HEUR2 0.000000, __SUBJ_ALPHA_END 0.000000,
-	__SUBJ_ALPHA_NEGATE 0.000000, __SUBJ_REPLY 0.000000,
-	__TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
-	__TO_NAME_DIFF_FROM_ACC 0.000000, __TO_REAL_NAMES 0.000000,
-	__URI_NO_MAILTO 0.000000, __URI_NO_WWW 0.000000, __USER_AGENT 0.000000,
-	__X_MAILSCANNER 0.000000
-X-SASI-Probability: 8%
-X-SASI-RCODE: 200
-X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2025.5.9.132728
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
-	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=LqQdyORHbJ+WljesHXXhhkp3aHmrD2aDHe/8+59w2QQ=;
-	b=NLdoh3NNhArpXhthKv2u62pOB9Z61p7IeFxyyFcwf6NZVPOOz0IXk+tKjlZ1uZgqHDXfAJjs/NCikEXGzA9hNWIDMjvRc5ap51dBaYKrQf3o1acaFo/KBPsItAeBUOMgEafVQI1Mp5lSoZCjz5rlBfxq8irv0y32Fkus/ivfk8E=;
-Message-ID: <592e4722-d7e1-4202-897f-e2a522074fe6@dd-wrt.com>
-Date: Fri, 9 May 2025 15:49:55 +0200
+	 In-Reply-To:Content-Type; b=sGeZBWpgMz0wkmkNRYzFWHz79ZfCVLNfqdPDcNxO498i6sZxEXLy+9zg/V4mtVCgxyvrjRWMByui89PFsbLyoU2Q0YCnjPxi4Sso1peyYoFZpJLSvs3RdeAe4/ZeKkQafGKV/jEfCaTtVvIS1PX+uo/fIdBgi8VMnPJbDN0p7Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fOz5zLDw; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7c55500cf80so216954285a.1
+        for <linux-wireless@vger.kernel.org>; Fri, 09 May 2025 07:10:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746799811; x=1747404611; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T1rXhUKHNS5ZnX5jzs+VLeHWyFhaGS+q5ScHq6Ic0gQ=;
+        b=fOz5zLDwuyXcVweWjMEh3sCIIZcgEvFpj70Gc+YkcW9KS9q2l8c1W3sLmFSSegO03q
+         x3n1k4PcgomQjdK66l3EGNYzQILnzsIpbLiL0LSXCgdelXpWfTR3CBIMm52M6L/5B91r
+         p3ffyMAcDKAWFqR3Io0pEnpGbgU9HuSsnYbVluebsl4sU225aZObt2sPksXpZF6U4jJx
+         a7+XGxUXIstH+2VdhrZwK99fVPwC3WGcVAIS8v+iRZdtI91rVVEBL4lHvJP0xGUF7I8z
+         Zk01rqW7MVXeT30olE46CE6+/PWDA/w1TiwvNz0MenZPSDHpjN3yoBoGfRO+BbSXvy2i
+         OMvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746799811; x=1747404611;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T1rXhUKHNS5ZnX5jzs+VLeHWyFhaGS+q5ScHq6Ic0gQ=;
+        b=tcYXMJsZh9Khhcv5pSTNhA76X8bc3DfzsR8tBhFCraI8zv7EsjZen+ZoGVN/IjQLpX
+         JCVXBb4A3+K229WGLGv2ljP5QXaHmgE+oWIXFkkWfAdYQvexrwzfrBLfjjlTwaus4CCU
+         Br1KD/OVfrfHnd4wPMX//8dpSg3coovWc5CrSTBzQjiNl0dEQ3yCoKH5KzJnGPHYPP1C
+         UW0gQtpFJEKos3BG10pNP7AxHvhN6AvaggW22w/9IwaeeZNaBS/Pt4nxjTvMsD/fgoZO
+         mLyevl53PCt/mjYy0Ym/qRr8EUcfR64Pnbzv9ZumM8pzVvKc0blnzMH/WRxijNYllI4F
+         objg==
+X-Gm-Message-State: AOJu0YxnCqIc9sJfSibGg77tjpKUCunkBpqiGT2OcvccrQFmGYr/wLAa
+	BqFY3mD9nMbb1cSTXn1sQ034Mhke4A7QcNBLMAEVIHOHwLKKwerl/gRWpw==
+X-Gm-Gg: ASbGncupKrxW1enipSUHNLLs0kl/fjW4DzGDeO8gElm13zGyxv0nzYbqd/0AzBcBqSw
+	UcEpxMFjNBgIXITRPsD8fqI5yPboH1atEapJtIE+E9c1H8B0tevyqMp009RooEl5Mgr2O4ki/sy
+	u5/X75agnuYIzJn+FnhZYrU91Sdmn/5tHxuLueP+X51d2n0pBnQjJKoX6vY+jS41Ul7en/4eniA
+	CVM1nW7BraBhEV+BILKb3HL9ByaS25ZPcJ7O+Mi3yRhQ12Zo1AWxDijhRCfe+kmGmTcoG/AffEs
+	S6y5u4ic8gOgeD04NceJzAjRr8uUGsK3WdKnuid1HSqc
+X-Google-Smtp-Source: AGHT+IE3h/Timp0Govs5h8jv7g5PW/qPtietaf4THLtBxhWNkr5tQO9cExgL2PWE1hAYX6b4p84VGw==
+X-Received: by 2002:a05:620a:4403:b0:7c5:9a6c:b7d3 with SMTP id af79cd13be357-7cd01157590mr554349485a.37.1746799811008;
+        Fri, 09 May 2025 07:10:11 -0700 (PDT)
+Received: from [10.100.121.195] ([152.193.78.90])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd00fdc779sm143486985a.76.2025.05.09.07.10.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 May 2025 07:10:10 -0700 (PDT)
+Message-ID: <15943a1f-0e5d-4705-b8ef-3f22fa3fe672@gmail.com>
+Date: Fri, 9 May 2025 07:10:08 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: Question about TX power
-To: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>, ath11k@lists.infradead.org,
- linux-wireless@vger.kernel.org
-References: <aB3AK83USvOdTvDv@FUE-ALEWI-WINX>
- <73b2bd16-66aa-405c-acda-237d56be63dd@dd-wrt.com>
- <aB3uKfu3frLyJ/2c@FUE-ALEWI-WINX>
-From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-In-Reply-To: <aB3uKfu3frLyJ/2c@FUE-ALEWI-WINX>
+User-Agent: Mozilla Thunderbird
+Subject: Re: wifi: iwlwifi: SAE fails when AP sends confirm before STA
+To: Jan Hendrik Farr <kernel@jfarr.cc>
+Cc: linux-wireless@vger.kernel.org,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>, iwd@lists.linux.dev
+References: <aB30Ea2kRG24LINR@archlinux>
+ <4ffbeb94-ac19-4437-9d98-24981fe6c240@gmail.com> <aB4HC8Iaa6wR5dj7@archlinux>
+Content-Language: en-US
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <aB4HC8Iaa6wR5dj7@archlinux>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass (webmail.newmedia-net.de: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=s.gottschall@dd-wrt.com; helo=webmail.newmedia-net.de;
-X-SA-Exim-Connect-IP: 127.0.0.1
-X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
-X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
-X-NMN-MailScanner-Information: Please contact the ISP for more information
-X-NMN-MailScanner-ID: 1uDO6t-000AmL-Ei
-X-NMN-MailScanner: Found to be clean
-X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
-X-Received:  from localhost ([127.0.0.1] helo=webmail.newmedia-net.de)
-	by webmail.newmedia-net.de with esmtp (Exim 4.72)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1uDO6t-000AmL-Ei; Fri, 09 May 2025 15:49:55 +0200
 
+Hi,
 
-Am 09.05.2025 um 13:59 schrieb Alexander Wilhelm:
-> Am Fri, May 09, 2025 at 12:54:47PM +0200 schrieb Sebastian Gottschall:
->> Am 09.05.2025 um 10:43 schrieb Alexander Wilhelm:
->>> Hello devs,
->>>
->>> I'd like to understand how TX power setting works on ath11k devices. For example
->>> when I'm using channel 36 for ETSI based regulatory domain, I can set up to 23
->>> dBm. But then I get only 20 dBm as a result. On different channels and/or
->>> regulatory domains I get different reductions. I tried to follow the source
->>> code. As far as I understood is that 'ath11k_mac_txpower_recalc' sets the
->>> correct values and 'ath11k_mac_op_get_txpower' return the different one.
->>>
->>> My question is where this reduction offset is encoded. Is it in the module's
->>> firmware or is it part of the boardfile? Thank you in advance.
->>>
->>>
->>> Best regards
->>> Alexander Wilhelm
->> the boardfile contains chipset specific calibration data which also defines
->> the hardware power limits (more specific data also included in the on board
->> calibration flash of the device or if its a router, in flash memory of the
->> router itself. in addition it includes a regulatory database which is used
->> by the firmware for managing the total power. you have also to consider that
->> the 23dbm are specified without antenna gain.
->> so if the antenna gain is 3 dbm, you get 20 dbm in total. this antenna gain
->> may again be specified in the boardfile.
->> so you will not find your answers in any sourcecode. its all encoded in
->> binary data.
+On 5/9/25 6:45 AM, Jan Hendrik Farr wrote:
+> On 09 06:12:23, James Prestwood wrote:
+>> One thing you could try easily right off the bat would be to try forcing the
+>> default SAE group in IWD's config. I've seen some APs really struggle with
+>> group negotiation which is why we added the ability to set this. In your
+>> network profile (/var/lib/iwd/ssid.psk) set this:
 >>
->> Sebastian
 >>
-> Alright, thank you Sebastian. Since I'm not using any calibration data on my
-> router/AP device, all data come from the boardfile. I've also understood that
-> the power limit reduction is related to antenna gain. I'll ask the radio module
-> manufacturer to create another boardfile for me that matches the required
-> antenna gain for my router/AP device.
-my answer might be not accurate here. which chipset we are talking about 
-for ath11k?
+>> [Settings]
+>> UseDefaultEccGroup=true
+>>
+>> And see if that helps.
+> Thanks for the suggestion. It does not appear to change the behavior I'm
+> seeing. Also I'm pretty convinced that the AP is not at fault here. It
+> is sending the confirm, and the STA fails to ACK that and the confirm
+> never shows up in iwd.
 >
-> Best regards
-> Alexander Wilhelm
+> Confirmed that the settings is applied using these logs from iwd:
 >
+> [SAE]: Using SAE H2E
+> [SAE]: Using group 19
+>
+> I assume group 19 is the default group?
+
+Yep that's it. At least we can take that out of the equation.
+
+And yes, in the PCAP I do see the confirm's being sent but no ACK. We'll 
+have to wait for an iwlwifi person to chime in. I suspect we'll need 
+some iwlwifi debugging enabled to see if the confirm was received at 
+some level in the driver and dropped, or never received at all.
+
+Thanks,
+
+James
+
+>
+> Best Regards
+> Jan
 
