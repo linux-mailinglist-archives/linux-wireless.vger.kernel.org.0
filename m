@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-22835-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22832-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E95AB2668
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 May 2025 05:53:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EF2AB2664
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 May 2025 05:52:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02FE67B0EC3
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 May 2025 03:51:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A71A01899D37
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 May 2025 03:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6C318B47E;
-	Sun, 11 May 2025 03:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD1A17A309;
+	Sun, 11 May 2025 03:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="eWx2rTLs"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="uDF17SL6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0A61885B8
-	for <linux-wireless@vger.kernel.org>; Sun, 11 May 2025 03:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704C413BC0C
+	for <linux-wireless@vger.kernel.org>; Sun, 11 May 2025 03:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746935571; cv=none; b=muTyaUGk5yMQfaSHMdiAKydSD9et6cSKNwt32Ujcz99eZxlvGsX+N/j5a/jr8HhvZI8/pTrUptNJhhiJ+H/o+WWpVJ/P/My3SHLGUl6qBdDhZg9azCOkvNLCi02FtWszsg+otxsIxzJ4pNTdeocSju/44//XKDq0xqb9k5REHZY=
+	t=1746935568; cv=none; b=gXyPrFUlIMz/+LlekakmPQQGzd8opjhDasgHWaxhwDPGDv550frHfw4Bz23+1hxpxqCtQBd9P/wyK0puYw3qgeoFfbU9J75m2czbjQ9Maq4zhpH0SMXnyq2LblXYlLmEMoaLd4VZM1fONW3aJWgVBzaIrHuZ9w1UiZzzvS3v09A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746935571; c=relaxed/simple;
-	bh=6kd7W2yV7IVYikrigN8SJRyfk8xW+bqV+SGZMUAhm7c=;
+	s=arc-20240116; t=1746935568; c=relaxed/simple;
+	bh=iQwDKQ1iYaOWMv8kEsriAMUFKSo+hVmeuAJRIf5y++U=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dMKct1Yx1XgW1Ev35TfWVx8u1t0u5xujetwMEp1lMtgY0meZJzlT2n0FXxUjdBxZUOhxhRlvwssRpH+w2ayxj2feM9kxT2GxabjhVaGMN8nFmqDccHk0XCK6g6d54JNDqy3BvNSjlvuI2H4dfMGDby4PFhkYXfAuCcP2ZsJORBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=eWx2rTLs; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=IkJi1axi+z2yrX3IPGMje016BpGEJgHugNHLHBOExQyVq5gh2sT7T9kSTMvLQngXB49VE7yPY5hbqiO/ugTxTnCSwpTzwxYqWfXVLiUx3XqR5AYAEljFqXJ/bkpXVsSWM7+ZyijT+58BApAzQCAMlN249rm6pNj30fOs4LOG7R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=uDF17SL6; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 54B3qeexF3302879, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 54B3qgKbB3302896, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1746935560; bh=6kd7W2yV7IVYikrigN8SJRyfk8xW+bqV+SGZMUAhm7c=;
+	t=1746935562; bh=iQwDKQ1iYaOWMv8kEsriAMUFKSo+hVmeuAJRIf5y++U=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=eWx2rTLsHn4RMwA/4JtSku5VUXqVJ+qH7Hn/+CS8ESWGuQ9/+rGUsahR9uQ7wr7UU
-	 NFbzW+OSAxFCTROTzRevNf8zzGamTZYjbWrxsxiKri0BUgcbh3OmYBulKbJhcDlMLD
-	 aoX4S/+NcxrjmvCMxQVmS0SeQHpoC4YjueXMV/XIBng41vUhtpUmGhC5LzPfwkfIA8
-	 c+oVdN8/Tsk73jiInaB7RCM/LyfwMq1yWdJcJnNPrgcXGMlo/SjCv7O8Etfc9Uu+FT
-	 2y9lYLm39SqLC/KhD7rG1hL2UuZGSGnwjKw/DENVwB8QhaEIX8goE0QXU3xj23s2cR
-	 EWohGZ52nRkIQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 54B3qeexF3302879
+	b=uDF17SL6n30nYRi4sX8edtvl7X6+EkHHD3tAjvnWLCU3uKHQf1T/M6et+l8LSq2/b
+	 SBl86WigAR4PjN9wAakt3J0r05UDdgq+ralg1mnLNRhzh/U/43bfExCeOypBQ+w8Il
+	 cxV50yK7C+u6Cb3leHlbA+/gpnE4jTS6XfyXai/DmEsNEB0DR56L0wnHJ0oDC29Qh1
+	 vYNMcuqdo9RGS6OLJSeXvUHQ463o0uvPclDunXxdqf9xILuEqscJJM7sZnZwy0FhwU
+	 J/Y4MHRrWQR0yS4uFDU0TYCkdSkBv8YePe/o5WGaJuLPuc4AW78u7dhXwsMCHCjN7V
+	 jWmOqrzHoqLTQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 54B3qgKbB3302896
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Sun, 11 May 2025 11:52:40 +0800
+	for <linux-wireless@vger.kernel.org>; Sun, 11 May 2025 11:52:42 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sun, 11 May 2025 11:52:40 +0800
+ 15.1.2507.39; Sun, 11 May 2025 11:52:43 +0800
 Received: from [127.0.1.1] (10.22.224.86) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sun, 11 May
- 2025 11:52:40 +0800
+ 2025 11:52:42 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 2/6] wifi: rtw89: mcc: drop queued chanctx changes when stopping
-Date: Sun, 11 May 2025 11:52:13 +0800
-Message-ID: <20250511035217.10410-3-pkshih@realtek.com>
+Subject: [PATCH rtw-next 3/6] wifi: rtw89: mcc: add courtesy mechanism conditions to P2P roles
+Date: Sun, 11 May 2025 11:52:14 +0800
+Message-ID: <20250511035217.10410-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250511035217.10410-1-pkshih@realtek.com>
 References: <20250511035217.10410-1-pkshih@realtek.com>
@@ -76,41 +76,57 @@ X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-When MCC is about to stop, there may be some chanctx changes which are
-queued for work but have not yet been run. To avoid these changes from
-being processed in a wrong state (e.g. next new MCC instance), cancel
-the queued work and drop queued changes.
+In one enablement of courtesy mechanism, there is one provider and
+one receiver. And, receiver can use the provider's time in a given
+period. But, to make P2P NoA protocol work as expected as possible,
+GO should be present at the time it doesn't announce absent, and GC
+should not use the time when GO announces absent. So, don't enable
+courtesy mechanism if provider is GO or receiver is GC.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/chan.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/realtek/rtw89/chan.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
-index ff476bde39ab..e733564abc7a 100644
+index e733564abc7a..e09541ceb504 100644
 --- a/drivers/net/wireless/realtek/rtw89/chan.c
 +++ b/drivers/net/wireless/realtek/rtw89/chan.c
-@@ -2150,6 +2150,7 @@ static int rtw89_mcc_stop_sel_iterator(struct rtw89_dev *rtwdev,
- static void rtw89_mcc_stop(struct rtw89_dev *rtwdev,
- 			   const struct rtw89_chanctx_pause_parm *pause)
- {
-+	struct rtw89_hal *hal = &rtwdev->hal;
- 	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
- 	struct rtw89_mcc_role *ref = &mcc->role_ref;
- 	struct rtw89_mcc_stop_sel sel = {
-@@ -2157,6 +2158,11 @@ static void rtw89_mcc_stop(struct rtw89_dev *rtwdev,
- 	};
- 	int ret;
+@@ -961,6 +961,15 @@ static int rtw89_mcc_fill_all_roles(struct rtw89_dev *rtwdev)
+ 	return 0;
+ }
  
-+	if (!pause) {
-+		wiphy_delayed_work_cancel(rtwdev->hw->wiphy, &rtwdev->chanctx_work);
-+		bitmap_zero(hal->changes, NUM_OF_RTW89_CHANCTX_CHANGES);
-+	}
++static bool rtw89_mcc_can_courtesy(const struct rtw89_mcc_role *provider,
++				   const struct rtw89_mcc_role *receiver)
++{
++	if (provider->is_go || receiver->is_gc)
++		return false;
 +
- 	/* by default, stop at ref */
- 	rtw89_iterate_mcc_roles(rtwdev, rtw89_mcc_stop_sel_iterator, &sel);
- 	if (!sel.filled)
++	return true;
++}
++
+ static void rtw89_mcc_assign_pattern(struct rtw89_dev *rtwdev,
+ 				     const struct rtw89_mcc_pattern *new)
+ {
+@@ -980,7 +989,7 @@ static void rtw89_mcc_assign_pattern(struct rtw89_dev *rtwdev,
+ 	*pattern = *new;
+ 	memset(&pattern->courtesy, 0, sizeof(pattern->courtesy));
+ 
+-	if (RTW89_MCC_REQ_COURTESY(pattern, aux)) {
++	if (RTW89_MCC_REQ_COURTESY(pattern, aux) && rtw89_mcc_can_courtesy(ref, aux)) {
+ 		crtz = &pattern->courtesy.ref;
+ 		ref->crtz = crtz;
+ 
+@@ -994,7 +1003,7 @@ static void rtw89_mcc_assign_pattern(struct rtw89_dev *rtwdev,
+ 		ref->crtz = NULL;
+ 	}
+ 
+-	if (RTW89_MCC_REQ_COURTESY(pattern, ref)) {
++	if (RTW89_MCC_REQ_COURTESY(pattern, ref) && rtw89_mcc_can_courtesy(aux, ref)) {
+ 		crtz = &pattern->courtesy.aux;
+ 		aux->crtz = crtz;
+ 
 -- 
 2.25.1
 
