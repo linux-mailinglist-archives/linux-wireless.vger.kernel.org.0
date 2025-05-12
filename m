@@ -1,263 +1,131 @@
-Return-Path: <linux-wireless+bounces-22862-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22863-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53E6AB3009
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 May 2025 08:47:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18AF8AB3029
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 May 2025 08:59:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE110179B61
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 May 2025 06:47:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8938A3A702B
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 May 2025 06:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AFB2F50;
-	Mon, 12 May 2025 06:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC991B0434;
+	Mon, 12 May 2025 06:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="S0ioEWfR"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GWnK2/Rj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B13C610D
-	for <linux-wireless@vger.kernel.org>; Mon, 12 May 2025 06:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C529259C
+	for <linux-wireless@vger.kernel.org>; Mon, 12 May 2025 06:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747032375; cv=none; b=nVaT3ZO0MPbGx6q+ShCaW3rEO2O0zNAHGobVIuGcVOO9JoH74s1RNC09lBgjY+0uQib+hfvmc21+vn7xO8R+/Ufl3XCWmw2LCmkbjLIpsSWG0j5xC57vnYTjElzHCeCUKh0n0Wg9lBWMOdAvpqQ2RcrwmGL0bn38KKqks2RlsCQ=
+	t=1747033185; cv=none; b=soT7ngF7nDen+IDclR54FGVoN1vZhH31veMpj69X8n5vLDYRo+K5W0vEBAtSStaqYKWUtDh1N1GbFbGjT3LUL9DQ8sddepH1ZTA/c8mZ1Cyy/+lOQ7KE5qKd2kx1k3Z4fav5rsDXKG9yYtN21Z8rAOTfqrTim0Ppl1iaKeFU7ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747032375; c=relaxed/simple;
-	bh=Oz/jDQvpVP0wIl/DZu1lLicL5woD18dV+/5t250QZB8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=vC4Dk4HM7TUJjiQOb0ou4HiWKiLksNSD1l/+3ASMV8wyDJKzMYxYuik1BygXQZWoLXAntVnNBeeEzzYDa8T9v4am0I/OXeJliKbkPX0zuf3dzPh9B9NK0lFOPkwpZx4RnCasmibck3USQosXP4h3XJ/sozxMWxl3CpDxTfWYtEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=S0ioEWfR; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1747033185; c=relaxed/simple;
+	bh=Y/rrfysoxeDcgCjH5v5FkYyVONXs7biMZBfreP+0/X8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MQxnfePql7mK4bQ7+mHoQ7kqUcipP0AsIV5UI2gKizQRAFStI8Ul7wOwdaqA1Ud5tc7VuqTODOA8J4a7WQRnbG0fgzcQ41EJqwYqABLEL9/ndXyGPXy4e1vHlb3lPXnYBz75ANKME0fmVoFF5F2anekbCaoaJdZyNzvA1PtCVbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GWnK2/Rj; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54BNK2Ug021385;
-	Mon, 12 May 2025 06:46:04 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54C06cjH031462;
+	Mon, 12 May 2025 06:59:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	sewhkj5iSPX8OVR4RDJvqEcnFj++rIK/PUn2pZHeXa4=; b=S0ioEWfRfhs9p0/o
-	2cb88xkNTyilyiJoy0md4G4L5gppJUBNeFyw5twluksE3CB5VuH+V1VP6P8ku74R
-	H0U1E5BqswjW6iIRW6/9ljuRqR2tU3RrMPUYL5/fGy7bUVRmtqZagVDpibx16tVq
-	Jb9NkkeJ4ITWujxxT1RZKI5SrAxddnzloCQmMr5vfSD4wg3C7mXvDl4CrwehFh15
-	c2JjsQN6aLRB0qSZOAddU85U0A3Rn0IY4HGaN7HSQxA1KUOz1/vYC1YXSeyFOcJH
-	/VeZ6UBTNJn6xIJVjuDjVXttHS3KFrTiV3QmNLHDGTRkS5Kovz0W/MUv+Ocx4G0/
-	gwTxfw==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46hx4k3c1q-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=N6EFIMFrkjfiGZ4uCgxNtU
+	2JG99itvrATn2wS6zRAws=; b=GWnK2/RjMDZWaU3ZBZ2lnDqvcuDnP8vbBH8noF
+	h1VcNFke0s8As9R7ZUcryd5pSfh246LuoTT7sjcuD0CPLCRN4/lYllxEmh7s2QUF
+	bSQ/wahC8kFkoG+VbzbTls0FHeolpE0J9k+SeFODKkJHqfgrqrSY4jSrtjs7i4sp
+	EO1ANqcYyybu/h7ogkdVW5m2TA9IbDh1jTs0RhFNdENmoJFKu1uskC77MgvXj0r+
+	kgobZKFkGg45LaM8u1hjcR4hSCCyvc8ZxcqA2fDuI/LrX+Ltht530WCByCU1h0As
+	QjPp+OA72Lq2H2d79ryzatv24M1U13jCdSnaOfOz3XM0v8xw==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46hvghbk5b-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 May 2025 06:46:03 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54C6k2LG024212
+	Mon, 12 May 2025 06:59:39 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54C6xcan003811
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 May 2025 06:46:02 GMT
-Received: from [10.253.79.189] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 11 May
- 2025 23:46:01 -0700
-Message-ID: <c071fcd1-4a33-49cf-a605-9e4591ee4378@quicinc.com>
-Date: Mon, 12 May 2025 14:45:58 +0800
+	Mon, 12 May 2025 06:59:38 GMT
+Received: from hu-vignc-blr.qualcomm.com (10.80.80.8) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Sun, 11 May 2025 23:59:37 -0700
+From: Vignesh C <quic_vignc@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Vignesh C <quic_vignc@quicinc.com>
+Subject: [PATCH ath-next] wifi: ath12k: Fix scan initiation failure handling
+Date: Mon, 12 May 2025 12:28:49 +0530
+Message-ID: <20250512065849.2833232-1-quic_vignc@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] wifi: ath11k: support DBS and DFS compatibility
-To: Baochen Qiang <quic_bqiang@quicinc.com>, <kvalo@kernel.org>
-CC: <quic_jjohnson@quicinc.com>, <ath11k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, Mihai Moldovan <ionic@ionic.de>
-References: <20241127022742.4016870-1-quic_yuzha@quicinc.com>
- <e8eb20ec-d022-45e4-82d9-00a4ab575676@quicinc.com>
- <31e80294-5202-4210-ac22-842b08250c16@quicinc.com>
- <4c88816a-d3af-426a-8373-922a4a6c5825@quicinc.com>
-Content-Language: en-US
-From: "Yu Zhang (Yuriy)" <quic_yuzha@quicinc.com>
-In-Reply-To: <4c88816a-d3af-426a-8373-922a4a6c5825@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=ReqQC0tv c=1 sm=1 tr=0 ts=6821992c cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=bC-a23v3AAAA:8
- a=COk6AnOGAAAA:8 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=AQUzA07Z9d_4P_bY5MMA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=-FEs8UIgK8oA:10
- a=FO4_E8m0qiDe52t0p3_H:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: 4TVeiWBmLmArS7LaCVoumf84dz7nMvdI
-X-Proofpoint-ORIG-GUID: 4TVeiWBmLmArS7LaCVoumf84dz7nMvdI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDA3MCBTYWx0ZWRfX0NxxREZ2EH68
- 3cvl84Hu4mc+bJGztDHBMXkus+/1Vcoeof6+08q85yrFS8yuH/GQKfw6wU/Z1VUXN7nbanXhdzH
- 3qA44BWnBc0TqkwJDCvdN3tnv0c5TnFxWuHp4nhMrKMJZTtfZqvO2oPMyVbSSqQYVIZR9OULOY7
- UBMiwiOgaoiZBT+c1ujY/V5BhgzUc5si46SXoZWuz5dtVBCqnwXBI3qIzYdXMi0+V1+c6hyk+dH
- rtCBbC7GiSprJPqZPQLcNDbDeftJX/ySdaVP6wJ3CVe3yfb6h0Xni5DZQmjoMXnV+rLEuU+7KG5
- D8iBthRPZuXB0iIRtIhDj4xpSYAFweCm3iagCrzDuFcGaP09XwByeoYs8OYKKfJdWs5X2h7O7PC
- tDElbiiYbPP/SXo2LhHY7ziA0cMOQQ8mm2Kv/wxbAVI/inmKM2qG8EmzhEpvKDrEW7W0lg3P
+X-Proofpoint-GUID: gNe3UMECcwwwmk4dEAz0qMjv9UdfzM2G
+X-Proofpoint-ORIG-GUID: gNe3UMECcwwwmk4dEAz0qMjv9UdfzM2G
+X-Authority-Analysis: v=2.4 cv=AMDybF65 c=1 sm=1 tr=0 ts=68219c5b cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=VIDGliHIJPvldr3RAkwA:9
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDA3MiBTYWx0ZWRfX8eQ8Alu3Em3T
+ tJXK+QhHDFMh4v0XzEkxFCetbXpMhjz6UJwBpqP4bR3zl8v/nqm5CiHfPLCdq6MOEPs/2YwZzdT
+ KKijDZM2KNU/3DGSaBwI6ED0LXj9ViuKM4YTZuJ3rTMQyf3Xjlp6LWq74FL5v+b9izX1/OX33ZA
+ HKIjCRoJ52gikZCSAr4GXPb4uL5ITvb8vb61tI5xJGzPs7gMzZKp97bVOYvMQSz67pYgx9fPAfX
+ J+arhLcW84CLJ9xobxFF0VayNAdVS8vUP7zrJvHSwPHfCNBRQk0OCETBcSzbLTYPkbgup8oTdLC
+ uo2zUXMnCwF8vFXBYMCJCQ3pXML3fqWjubp9xQ6KPlu0+Y2VO/fCFWHj3PfJazfJ9CdZGTAbpku
+ G05zQU/zAztDFyEzFBYPTdv6WW5fV/iNIaHCq6oC7ecyZh5AdRVmlRLzh6n0QcwNq0tcx6si
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-12_02,2025-05-09_01,2025-02-21_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 mlxscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
- spamscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
- adultscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ clxscore=1011 spamscore=0 priorityscore=1501 adultscore=0 impostorscore=0
+ phishscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0
+ mlxlogscore=999 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505120070
+ definitions=main-2505120072
 
+During a code review, it is observed that in the scenario
+where scan initiation fails, the current code schedules the
+ar->scan.timeout workqueue which is not necessary.
 
+In the scan initiation failure scenario, exit the code instead
+of scheduling the ar->scan.timeout workqueue.
 
-On 5/12/2025 2:09 PM, Baochen Qiang wrote:
-> 
-> 
-> On 5/12/2025 1:52 PM, Yu Zhang (Yuriy) wrote:
->>
->>
->> On 5/12/2025 10:56 AM, Baochen Qiang wrote:
->>>
->>>
->>> On 11/27/2024 10:27 AM, Yu Zhang(Yuriy) wrote:
->>>> Now some chips which support 'support_dual_stations' will enable DBS,
->>>> but will disable DFS. Restructure the ath11k_mac_setup_iface_combinations
->>>> function to support DBS and DFS compatibility.
->>>>
->>>> About 'support_dual_station' feature can refer:
->>>> https://msgid.link/20230714023801.2621802-2-quic_cjhuang@quicinc.com
->>>>
->>>> Add a ieee80211_iface_combination to support DBS and DFS compatibility,
->>>> one combination can support DFS(same with non dual sta), another
->>>> combination can support DBS. When running different scenarios that will
->>>> use different ieee80211_iface_combination due to mac80211 will go through
->>>> all of possible interface combinations.
->>>>
->>>> In addition, maximum number of interfaces of these types should be total
->>>> allowed in this group.
->>>>
->>>> The chips affected are:
->>>>
->>>>    QCA6390 hw2.0
->>>>    WCN6855 hw2.0
->>>>    WCN6855 hw2.1
->>>>
->>>> Other chips are not affected.
->>>>
->>>> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-00410-QCAHKSWPL_SILICONZ-2
->>>> Tested-on: IPQ6018 hw1.0 AHB WLAN.HK.2.1.0.1-01161-QCAHKSWPL_SILICONZ-1
->>>> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04402-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1.
->>>> Tested-by: Mihai Moldovan <ionic@ionic.de>
->>>> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
->>>>
->>>> Signed-off-by: Yu Zhang(Yuriy) <quic_yuzha@quicinc.com>
->>>> ---
->>>> v2:
->>>>    - Add tested-on IPQ8074 and IPQ6018.
->>>> v3:
->>>>    - Add tested-on QCA6390.
->>>> ---
->>>>    drivers/net/wireless/ath/ath11k/mac.c | 42 +++++++++++++++------------
->>>>    1 file changed, 24 insertions(+), 18 deletions(-)
->>>>
->>>> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
->>>> index 31ae9b384a29..aa63f5e20f2b 100644
->>>> --- a/drivers/net/wireless/ath/ath11k/mac.c
->>>> +++ b/drivers/net/wireless/ath/ath11k/mac.c
->>>> @@ -9911,12 +9911,17 @@ static int ath11k_mac_setup_iface_combinations(struct ath11k *ar)
->>>>        struct ath11k_base *ab = ar->ab;
->>>>        struct ieee80211_iface_combination *combinations;
->>>>        struct ieee80211_iface_limit *limits;
->>>> -    int n_limits;
->>>> +    int n_limits, n_combos;
->>>>        bool p2p;
->>>>          p2p = ab->hw_params.interface_modes & BIT(NL80211_IFTYPE_P2P_DEVICE);
->>>>    -    combinations = kzalloc(sizeof(*combinations), GFP_KERNEL);
->>>> +    if (ab->hw_params.support_dual_stations)
->>>> +        n_combos = 2;
->>>> +    else
->>>> +        n_combos = 1;
->>>> +
->>>> +    combinations = kcalloc(n_combos, sizeof(*combinations), GFP_KERNEL);
->>>>        if (!combinations)
->>>>            return -ENOMEM;
->>>>    @@ -9931,7 +9936,9 @@ static int ath11k_mac_setup_iface_combinations(struct ath11k *ar)
->>>>            return -ENOMEM;
->>>>        }
->>>>    +    limits[0].max = 1;
->>>>        limits[0].types |= BIT(NL80211_IFTYPE_STATION);
->>>> +    limits[1].max = 16;
->>>>        limits[1].types |= BIT(NL80211_IFTYPE_AP);
->>>>        if (IS_ENABLED(CONFIG_MAC80211_MESH) &&
->>>>            ab->hw_params.interface_modes & BIT(NL80211_IFTYPE_MESH_POINT))
->>>> @@ -9941,25 +9948,24 @@ static int ath11k_mac_setup_iface_combinations(struct ath11k *ar)
->>>>        combinations[0].n_limits = n_limits;
->>>>        combinations[0].beacon_int_infra_match = true;
->>>>        combinations[0].beacon_int_min_gcd = 100;
->>>> +    combinations[0].max_interfaces = 16;
->>>> +    combinations[0].num_different_channels = 1;
->>>> +    combinations[0].radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
->>>> +                        BIT(NL80211_CHAN_WIDTH_20) |
->>>> +                        BIT(NL80211_CHAN_WIDTH_40) |
->>>> +                        BIT(NL80211_CHAN_WIDTH_80) |
->>>> +                        BIT(NL80211_CHAN_WIDTH_80P80) |
->>>> +                        BIT(NL80211_CHAN_WIDTH_160);
->>>>          if (ab->hw_params.support_dual_stations) {
->>>>            limits[0].max = 2;
->>>
->>> as this limits array is assigned to combinations[0], don't you need another array that
->>> would be assigned to combinations[1]?
->> This limits array just for AP and STA iftypes that can be shared.
-> 
-> do you mean that combinations[0] and combinations[1] share the same limit configuration?
-> which is
-> 
-> limits[0].max = 2;
-> limits[0].types |= BIT(NL80211_IFTYPE_STATION);
-> limits[1].max = 16;
-> limits[1].types |= BIT(NL80211_IFTYPE_AP);
-yes, when support_dual_stations limits[0].max = 2, else limits[0].max = 1.
-> 
-> 
->>>
->>>> -        limits[1].max = 1;
->>>
->>> why is this removed?
->> AP interface shouldn't be limited to only 1.
->> As Jose Ignacio Tornos Martinez <jtornosm@redhat.com> issues "[PATCH] wifi: ath11k: allow
->> APs combination when dual stations are supported" https://lore.kernel.org/
->> all/20241202091858.200773-1-jtornosm@redhat.com/
->>>
->>>> -
->>>> -        combinations[0].max_interfaces = ab->hw_params.num_vdevs;
->>>> -        combinations[0].num_different_channels = 2;
->>>> -    } else {
->>>> -        limits[0].max = 1;
->>>> -        limits[1].max = 16;
->>>>    -        combinations[0].max_interfaces = 16;
->>>> -        combinations[0].num_different_channels = 1;
->>>> -        combinations[0].radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
->>>> -                            BIT(NL80211_CHAN_WIDTH_20) |
->>>> -                            BIT(NL80211_CHAN_WIDTH_40) |
->>>> -                            BIT(NL80211_CHAN_WIDTH_80) |
->>>> -                            BIT(NL80211_CHAN_WIDTH_80P80) |
->>>> -                            BIT(NL80211_CHAN_WIDTH_160);
->>>> +        combinations[1].limits = limits;
->>>> +        combinations[1].n_limits = n_limits;
->>>> +        combinations[1].beacon_int_infra_match = true;
->>>> +        combinations[1].beacon_int_min_gcd = 100;
->>>> +        combinations[1].max_interfaces = ab->hw_params.num_vdevs;
->>>> +        combinations[1].num_different_channels = 2;
->>>>        }
->>>>          if (p2p) {
->>>> @@ -9970,7 +9976,7 @@ static int ath11k_mac_setup_iface_combinations(struct ath11k *ar)
->>>>        }
->>>>          ar->hw->wiphy->iface_combinations = combinations;
->>>> -    ar->hw->wiphy->n_iface_combinations = 1;
->>>> +    ar->hw->wiphy->n_iface_combinations = n_combos;
->>>>          return 0;
->>>>    }
->>>
->>
-> 
+Compile tested only.
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Vignesh C <quic_vignc@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 4dae941c9615..0cf2b3d06c3b 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4647,6 +4647,7 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
+ 		spin_lock_bh(&ar->data_lock);
+ 		ar->scan.state = ATH12K_SCAN_IDLE;
+ 		spin_unlock_bh(&ar->data_lock);
++		goto exit;
+ 	}
+ 
+ 	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac scan started");
+
+base-commit: 3a64d6def8733e75909abcfab983efae92dc4102
+-- 
+2.34.1
 
 
