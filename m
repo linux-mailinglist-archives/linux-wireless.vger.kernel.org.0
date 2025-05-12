@@ -1,86 +1,93 @@
-Return-Path: <linux-wireless+bounces-22869-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22870-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D587CAB3AC1
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 May 2025 16:35:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D12AAB3BF0
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 May 2025 17:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61DE87ACBF8
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 May 2025 14:34:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FF2A3AC944
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 May 2025 15:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFF422A1CA;
-	Mon, 12 May 2025 14:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35E7B66E;
+	Mon, 12 May 2025 15:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell-sw-com.20230601.gappssmtp.com header.i=@bell-sw-com.20230601.gappssmtp.com header.b="jAsPt2ph"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RfFx15G+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9C5229B2E
-	for <linux-wireless@vger.kernel.org>; Mon, 12 May 2025 14:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01ABE1DE8A6
+	for <linux-wireless@vger.kernel.org>; Mon, 12 May 2025 15:23:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747060509; cv=none; b=Ec+GexBNZ1EWA2iFcJspy0po8fyrtOlJ2Amr1xDpwDi6c0sw1w+NocwSKSHsF5EMfysF2GKrdXpJj9CfLBOAEZ2Zk9WjeJisLJ6Gf+3HX9Fm0kgTs4CnuHkfUM0pdep9ED/fh3N6Vz9v4wgR9cWxq1pWul2Z5DcIo0yrlZSfRnI=
+	t=1747063403; cv=none; b=eFUkYwgBDxbvuiVs6l6wK3lAd0hFZjgucPLtqgoy1T8WT5BFvyS1VhU4/W/JteIol2WfEqrqRns3YuwosKXE1uxUnGiFMhuhW/dW3hRVk7kPhqdRTwZ2boW0SbYLajZPlG0B3wLPKDHO+895GxSNgt1QL0e2NQkU1iHoL4xQVyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747060509; c=relaxed/simple;
-	bh=Of7ka9hMXGo16Owrab9b8hlZNOg2CKSZZ/6dxQLWwYs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=e0g//fDrwnaD63pEtdRA2e9Dl6Uicyv1+S13FfJNMsrkIbv55pleU0R3n3b6pAN9syfmlkOaSf4kADoPuuHM4WdYvuDcm+J6TVFOOnXCdDmbfqifjTcuF3/NbGRjCM6gMHLReE0V/4GVVK8tyh+cOa50QttjwvWI229M1lSpENA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell-sw.com; spf=pass smtp.mailfrom=bell-sw.com; dkim=pass (2048-bit key) header.d=bell-sw-com.20230601.gappssmtp.com header.i=@bell-sw-com.20230601.gappssmtp.com header.b=jAsPt2ph; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell-sw.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell-sw.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-702628e34f2so45176447b3.0
-        for <linux-wireless@vger.kernel.org>; Mon, 12 May 2025 07:35:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bell-sw-com.20230601.gappssmtp.com; s=20230601; t=1747060506; x=1747665306; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=R97yIxV0uT7GwLkeFinXJPFtVVZBVzQD6JSs+qYgRtA=;
-        b=jAsPt2phxoTxOivw5vKCveJitapS7PQPH01Zz+6TZuU5l5nxdYkK8dGPFJhFr8yQ94
-         ATdanrN9+oW8qg3gaS4ShKsE+7dD4evQLzDWu2jmANRSd65qHp9M2TMPLJdfXf6YaIj7
-         UwgZY/1H+AzqbaeNiDPToY7CcIgQ8uDSKEnN5ikYL4cd5QRMo6D2DNWULwYyBLsl5+Bx
-         rt7Hdo06cxBaQEoN3WcRnysASsmexPmpOI/jYjuMHQl3m84t7l9Bcbkp/cGXNgPjawuf
-         D22u+bi7WGPHNpPCw9xLxjEyrkBUV9Ct8mYGPPPIdvmu5H5C+GEn6TZBTrNrHzCS5RBg
-         AXww==
+	s=arc-20240116; t=1747063403; c=relaxed/simple;
+	bh=nGqTgJgJJarcgWnfChPOqPpuxbS9prEWZ3MU7ZEHgj8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iOEXghnNoptcblGZe2y+ZM3d/1b2MQMNMTK6aaj9C4mqWF47NUAO8hMMrpXp0vWrdIe5WaMPskMO4p5jRG5uvBw9971OP5pOOu9XicIHkWtXMtOUe4NOXyTuTYYvw5xx9QT8jn40jNy35rjZ3SUBHKBMVeSXKIqmT4ANFSenTPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RfFx15G+; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54C9PaRt019935
+	for <linux-wireless@vger.kernel.org>; Mon, 12 May 2025 15:23:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=zrQ8HCH0L6bcF6OpRumggZPbii/H5c4lVW7
+	jizG6qnY=; b=RfFx15G+/Xuxp7RkCRHTewcXM65zfLwrWTQvHyQvX45aoEAQcHj
+	u29poMpk49En/MXIgLPvBw9TklEWia+joI9yh5gC8zkNX2RBmRQ0wTCAsSiJspoU
+	O2d+Y+N37KWoNoFq4e37aT2xuiB7tiT4OCgwHgsjYmBzxqfd4oKvRdIFZmB0CzzK
+	XuRPBwJHfpgpLqRdzPvSLzl1/VPZaQo1JE/L0/L74aqmpQJwwP+aFNy10f3xkg9W
+	7a+Gl4xJnWiLnf7YRH3PJqBFxxtN5hXRZ47s3ilunk39OLzFthwzGNY8PKYmlmVe
+	rGBiOc30oAbYd2wK5Ee3m6fuT+Wpe7djiLQ==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46hv5qd2rj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 12 May 2025 15:23:17 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-30cbf82bd11so800871a91.3
+        for <linux-wireless@vger.kernel.org>; Mon, 12 May 2025 08:23:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747060506; x=1747665306;
+        d=1e100.net; s=20230601; t=1747063396; x=1747668196;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=R97yIxV0uT7GwLkeFinXJPFtVVZBVzQD6JSs+qYgRtA=;
-        b=jMHExTxlUZ62wioV//5YqvY/4HfcEb3YRiZi6HvuK7GmFylliVbKuAL5//CLs7BpQJ
-         tVYfpYzY4+VHlIeMggul0TqFG3xEI7JH/Lq8+ctPk1QgHqkIAEq0qFLnB4fELev192mf
-         Yip9GdJOxDHq8syU7BevrjowIu2jy9Mrx70/r35WC/9nO6OqG6Y2ABZvnPw0d/UAoBBZ
-         1JDQNCTpyFomSUyNmdIJMhBiVlh9tnSLXHipwTOAIclOpjiG2m8PNtbFHJrSCquPqbzB
-         av6PEEBM0Ohq+lFa9ZnWhmV7tySr+iS6myNhQRsMaLK94KLABaRg0Qa8k3zG69jpjJZp
-         kZLA==
-X-Gm-Message-State: AOJu0Yw5fccpRkANmyCEndw9Z/lleTtvMmPOHN8r8U6ojGoyRChSXcDq
-	HYo9z1/1Pql1YLYKgwCPdaRhAid1Wb8TGvtzj+kLEJHGqSz7+AbD+0AOvr1mn7P64oigSZUGQq8
-	=
-X-Gm-Gg: ASbGncvcRc8K17L9pKHiHjct3lLL+iV9beJ6i7Hfmo1wgQCpAZ8d4XZugfh4deJmVIv
-	2wUVAt+8vwNMsBq7bUJqUJES5ju2gqcIO7vK4BN4sqmmGUeHBNoBv/4OKWa/+YwB2H/Gfr2GJWK
-	/Mna1QDE2KzVSovkYrJa3k2dMnDQkOIuQ1+xSqBx19X3iZ4orNlcd/4kR7lv4ZBltpuGWgSrg/T
-	6RwTEKkr4fU2Nm3h8ia9nIUDP+X+eGGK9CS24HiZnclCQra4wyO5GKUNZMbsd5awOufDhYReAVI
-	DihE0/5sB+TwR4eY4av+Xja/xxZ8gwEnTSLabYKROiW0C1/r3nNDPiDc/dPVUXH/nBOAI/4=
-X-Google-Smtp-Source: AGHT+IGE2LN1p7qpCZfamnkZ0PsFnvtQNvYY7UOf7e0PlcjYwjwD4fqs4hNHekAP0v3CdFC1Gp1jRw==
-X-Received: by 2002:a05:690c:6a86:b0:706:afbf:50cc with SMTP id 00721157ae682-70a3fe87c32mr174422477b3.11.1747060505874;
-        Mon, 12 May 2025 07:35:05 -0700 (PDT)
-Received: from localhost.localdomain ([185.119.2.99])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-70a3d8da29dsm19655157b3.54.2025.05.12.07.35.04
+        bh=zrQ8HCH0L6bcF6OpRumggZPbii/H5c4lVW7jizG6qnY=;
+        b=vj9/UZt1d8R8pDAHvrDg72PN7AHO4Wj4gGtm4D41MkTMma+iaMI0A3/HO5BoCfxGi7
+         RCKgsVvNZJwWK0eIWqtx0S2HznTCSsM7SM8A3bXJKGG+Ul3yWWkl4YZ+2ZzxB/+IwjwQ
+         r3xbwej8gpY+MBzlpgxOe/bcCp/IWlmB52ZsuMXDWkQyfUFpSDsDSX5iuUBzeb2QIGyZ
+         bPiRlvP/1y0us6ygE7k6SzoJQXxZWfXCuHLix39+P8ySX/gVonlNmr9RxTZEeq0p8XrG
+         5CjrAQb0qmrQVSiUXRWvHuPgmYbQCD3ZA6+JajFqb8SNDf5E5df76py3A1cqjCCBXM9W
+         RISQ==
+X-Gm-Message-State: AOJu0YxegoqOkJfexkX2/Xhpr1sisr2Ap46rjIMCWFbZ6k06+RuWEYes
+	7KwZsw8ew6YzCuPQRUa/y0Bvr63dzxidy902vtEGGraWx/p7ySHYkt+Na52CYQyPoK+I+r6whXb
+	XfWU1jEq1EI2nASS5yhsi4UJY2fOrKWfLsJrH8qnBkiuY9XA2nHOu3hXTYZ/OyRkKbwYfc1Wq1g
+	==
+X-Gm-Gg: ASbGncua1jXwkDQAGblL2DKfFcaANuIu/hmbk1isS8Xax3dDfSeyjDpAPX7JH3JVCP2
+	HSoMHqDL0xSai040NPjA55x8BdCNJJxcZB4OKHX1o8PZFPSnsJGiF7U+1II1xO7+bYlGk3ee948
+	vB9YK/hzt3BX6l4WhZRYCMpjqVncfLz/2GyscID4uQYbcNeM2t6HwvBsJ+LyTHu85+kRnUV/66R
+	nRbjjZD9Z7dvbsqLKOuZ3OyvuOQ48EB/SF2zd90tIM4PjEp1FXqkyvWTph6UJh628u4vMqm9kaH
+	c4sxs+HcMHUBI8/Se58nJoi00PMRUSoiJSUsahUkdKPC/Q3rplEprt1n4i0OUMwyWJ3PQTaE9va
+	pJ/eeo0mZz/Ag4PcxorFBr4vDhlslCW9RQFyQMyyjQQqZ
+X-Received: by 2002:a17:90b:4a0f:b0:2f7:4cce:ae37 with SMTP id 98e67ed59e1d1-30c3d3e8420mr24060570a91.18.1747063395611;
+        Mon, 12 May 2025 08:23:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFFOcB/v/0uMX1D61eCtM1HPB6fg3P20OSO3SBkF/y/CxZOvTs+2wtwWPWs8NQcTbUNZ5nRvg==
+X-Received: by 2002:a17:90b:4a0f:b0:2f7:4cce:ae37 with SMTP id 98e67ed59e1d1-30c3d3e8420mr24060543a91.18.1747063395208;
+        Mon, 12 May 2025 08:23:15 -0700 (PDT)
+Received: from hu-mdharane-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30ad4fe22f2sm9850368a91.30.2025.05.12.08.23.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 May 2025 07:35:05 -0700 (PDT)
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-To: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Yan-Hsuan Chuang <yhchuang@realtek.com>,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Subject: [PATCH] wifi: rtw88: fix the 'para' buffer size to avoid reading out of bounds
-Date: Mon, 12 May 2025 14:33:37 +0000
-Message-Id: <20250512143337.54199-1-aleksei.kodanev@bell-sw.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 12 May 2025 08:23:14 -0700 (PDT)
+From: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+        Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+        Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
+Subject: [PATCH v2] iw: print NO-EHT flags for reg get command
+Date: Mon, 12 May 2025 20:53:04 +0530
+Message-Id: <20250512152304.2852658-1-manish.dharanenthiran@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,40 +95,70 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=DqtW+H/+ c=1 sm=1 tr=0 ts=68221265 cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=dt9VzEwgFbYA:10 a=EUspDBNiAAAA:8 a=BzR64oxeuZbbf90ASlgA:9
+ a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-ORIG-GUID: I7IOirNfX93P6hY48jXoAyOzTVWsU9GJ
+X-Proofpoint-GUID: I7IOirNfX93P6hY48jXoAyOzTVWsU9GJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE2MCBTYWx0ZWRfX7mT69XyNBWol
+ R6v57YEI9kXUknY5EqulcEs9l95dLFJ2P4pv3LOFz8S9qE5+rWBG9ZqDdSe5QYpPXpbOR8pVJzK
+ XmN1lEKN4cAWnOe7HMjZFEi+W8jjxi1QQJFNegosRvVkfijakJZf0XZD8sgGKQWyUBpmJuGjo4X
+ zQc38BStqYCo9C5fODA4IPGNyySCzZk3eAb/12qX/PHXfWEmXLiMJrhb6r1mY/nBISHuo7wj1yd
+ mQ54Fg+ulY3dzRaGtEGlVZuA/SlUBBcn3CftHDExpNlEX5B37X/816U0jWyVjqxBfkRBkuNUJao
+ yyO4Eyj2FdsIcvsn+uLkT49ACSKpeGhkGukBPW40tnefPVkKmMABY3JpM+YTCVNgw35FQkutRYz
+ axhBqKO62/YasoD+eCRl9SAGsM4C0BUrurWcwItMnyt1UtZeFvXzBSTFW+uwfINxJNNPm+0S
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-12_05,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0 phishscore=0 clxscore=1011 adultscore=0
+ lowpriorityscore=0 impostorscore=0 spamscore=0 mlxlogscore=999 malwarescore=0
+ suspectscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2504070000 definitions=main-2505120160
 
-Set the size to 6 instead of 2, since 'para' array is passed to
-'rtw_fw_bt_wifi_control(rtwdev, para[0], &para[1])', which reads
-5 bytes:
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
 
-void rtw_fw_bt_wifi_control(struct rtw_dev *rtwdev, u8 op_code, u8 *data)
-{
-    ...
-    SET_BT_WIFI_CONTROL_DATA1(h2c_pkt, *data);
-    SET_BT_WIFI_CONTROL_DATA2(h2c_pkt, *(data + 1));
-    ...
-    SET_BT_WIFI_CONTROL_DATA5(h2c_pkt, *(data + 4));
+Currently when NO-EHT flag is set by driver, iw doesn't display that
+information in the 'iw reg get' command. Add changes to print "NO-EHT"
+while displaying the reg rules via reg get command, if a reg rule is
+marked with NO-EHT flag.
 
-Detected using the static analysis tool - Svace.
-Fixes: 4136214f7c46 ("rtw88: add BT co-existence support")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Sample Output:
+
+country RU: DFS-UNSET
+        (2402 - 2472 @ 40), (N/A, 20), (N/A), NO-EHT
+        (5170 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW, NO-EHT
+        (5250 - 5330 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW, NO-EHT
+        (5490 - 5730 @ 160), (N/A, 24), (0 ms), DFS, AUTO-BW, NO-EHT
+        (5735 - 5835 @ 80), (N/A, 30), (N/A), AUTO-BW, NO-EHT
+
+Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Signed-off-by: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
 ---
- drivers/net/wireless/realtek/rtw88/coex.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2:
+ - Re-based on ToT. No functionality changes.
+ - Updated mailing list.
+---
+ reg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index c929db1e53ca..347807801270 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -309,7 +309,7 @@ static void rtw_coex_tdma_timer_base(struct rtw_dev *rtwdev, u8 type)
- {
- 	struct rtw_coex *coex = &rtwdev->coex;
- 	struct rtw_coex_stat *coex_stat = &coex->stat;
--	u8 para[2] = {0};
-+	u8 para[6] = {0};
- 	u8 times;
- 	u16 tbtt_interval = coex_stat->wl_beacon_interval;
+diff --git a/reg.c b/reg.c
+index 27899ce..f24535d 100644
+--- a/reg.c
++++ b/reg.c
+@@ -204,6 +204,7 @@ static int print_reg_handler(struct nl_msg *msg, void *arg)
+ 		PARSE_FLAG(NL80211_RRF_NO_160MHZ, "NO-160MHZ");
+ 		PARSE_FLAG(NL80211_RRF_NO_HE, "NO-HE");
+ 		PARSE_FLAG(NL80211_RRF_NO_320MHZ, "NO-320MHZ");
++		PARSE_FLAG(NL80211_RRF_NO_EHT, "NO-EHT");
  
+ 		/* Kernels that support NO_IR always turn on both flags */
+ 		if ((flags & NL80211_RRF_NO_IR) && (flags & __NL80211_RRF_NO_IBSS)) {
+
+base-commit: 59660a349cf35903e951f99bdd8a74df063c912e
 -- 
-2.25.1
+2.34.1
 
 
