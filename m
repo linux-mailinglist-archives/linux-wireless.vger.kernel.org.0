@@ -1,125 +1,144 @@
-Return-Path: <linux-wireless+bounces-22879-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22880-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E9CAB48B6
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 May 2025 03:19:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78457AB4935
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 May 2025 04:07:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 945BD3A7740
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 May 2025 01:18:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D40437B2D5A
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 May 2025 02:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE89170A11;
-	Tue, 13 May 2025 01:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="piFci/E8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C0019AD8C;
+	Tue, 13 May 2025 02:07:18 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFF5EEA6;
-	Tue, 13 May 2025 01:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C15818DB20;
+	Tue, 13 May 2025 02:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747099140; cv=none; b=GikiP2EczUZi8bGRHI6vegN0bB1WXFokPsL2Sk4BfCQDQI56QuywQCruagZrwN/3CgOSy8QwAuF7BlccjKUxgtX0PoZPClr39jHzTRPtUv1bOLse2tyeu0CB1qIgZS3VfJHdCuUI3F34WUbIf6a9TsNxlVcej3WGk4dLAPbsnvU=
+	t=1747102038; cv=none; b=t4zouUJM2dVcw/7FUgpA9nLdUbH7szFaY9xg3//GlRuUBa6Ze1bjn3KvrT0FKQgByW8Dbpta97rcjkeT2jMsFYUjlfSJlJuE7DIL40aM3m89kxGYrJ1KPReO1hkR8UT/5fMu4Tme6W7kHhjMoLccr8CrbznJqrTBM0VfAf0jKdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747099140; c=relaxed/simple;
-	bh=pyfuiCMB2ninRXDR4/H6qlyDteVXJ3oMN4nnLFi0hF4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=X0qO2gpUMQZyFzZUS/kIgHtApnuu1y4rZ/TxHn6LPLEvT/P2nHkbUbZFRtXV3iu049sbvKC17my+UtfKWMmuGDz10jU79KzOYP4gJi8HoqavjZdF7Yx2MJP2Mv7tfWddSgtJJZxhBch1bIFZRTwEGyMXhX0hNLlXoHXx7kyY034=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=piFci/E8; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54D1IcwI63420062, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1747099118; bh=pyfuiCMB2ninRXDR4/H6qlyDteVXJ3oMN4nnLFi0hF4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=piFci/E8rTC3+bCyF/i2CuiuvtpoSFL34G8RoTVyutLYVVUFqDOcITH/BzDMjOeHf
-	 +yZO/W8zciLDKTdmks9KVYD0D4qE1ANsDUGgo4BlQZd6ltO/um3DWsLzPqM8Zhoxip
-	 GugmBo0YxSR1XTUjhr9AnE+GP/yIMx3M36FwdHn/4QJOz6XjaPyOu1y+0sMh3m8dRW
-	 SuPObChHup2LK7EqEYOdH12pgtooCRmLEYX813cUNeXbWMPA0UxdNO5u7j2mB5PRRe
-	 a2wGS92j9QACEdikPQ6au78y78Vl9XU3jVeuourSy+OQmuuYvzhySULWfEAd9L8Xk1
-	 N04/+HdMG9MMA==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54D1IcwI63420062
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 May 2025 09:18:38 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 13 May 2025 09:18:39 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 13 May 2025 09:18:38 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Tue, 13 May 2025 09:18:38 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Kalle Valo
-	<kvalo@kernel.org>,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>
-Subject: RE: [PATCH] wifi: rtw88: fix the 'para' buffer size to avoid reading out of bounds
-Thread-Topic: [PATCH] wifi: rtw88: fix the 'para' buffer size to avoid reading
- out of bounds
-Thread-Index: AQHbw0sjyu5rq8WqSEO8oYP+FaXu/bPPwrVg
-Date: Tue, 13 May 2025 01:18:38 +0000
-Message-ID: <56143c6a5eb94431abb4431a5acdbf36@realtek.com>
-References: <20250512143337.54199-1-aleksei.kodanev@bell-sw.com>
-In-Reply-To: <20250512143337.54199-1-aleksei.kodanev@bell-sw.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1747102038; c=relaxed/simple;
+	bh=CNUHkt67UtuoRyMOScLNUcMEjQj2NOYzghsKilvulV0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ucTAJsJGdcrgbA9wtQH+FLurdqKAJkJuvHX7TMZV7Q3xCrbyBflkLDxZBq4jyOxR0cipp+a/KhFdjIsN8ht/NvtTJX/yaXSrsAZeIgFIfRUxjcIWhDViVOdIi1SL1tYX1N06VtITIWHZy8KHKdJY7sPEhkx4usAjiIVth0hp/Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54D1x28u014990;
+	Mon, 12 May 2025 19:06:46 -0700
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46j6ajt6ew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 12 May 2025 19:06:46 -0700 (PDT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Mon, 12 May 2025 19:06:45 -0700
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Mon, 12 May 2025 19:06:42 -0700
+From: <jianqi.ren.cn@windriver.com>
+To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <jianqi.ren.cn@windriver.com>, <johannes@sipsolutions.net>,
+        <davem@davemloft.net>, <kuba@kernel.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.or>,
+        <johannes.berg@intel.com>
+Subject: [PATCH 5.15.y] wifi: cfg80211: check A-MSDU format more carefully
+Date: Tue, 13 May 2025 10:06:42 +0800
+Message-ID: <20250513020642.3361140-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: lPlt57WDfABipqFRRiMvBqyZODW62Qi6
+X-Authority-Analysis: v=2.4 cv=c8irQQ9l c=1 sm=1 tr=0 ts=6822a936 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=dt9VzEwgFbYA:10 a=bC-a23v3AAAA:8 a=QyXUC8HyAAAA:8 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8 a=bq9goISz1wTSU3ywWP0A:9
+ a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=cQPPKAXgyycSBL8etih5:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEzMDAxOCBTYWx0ZWRfX5x1XsH80Tdwp 3EQMqolUNG3vG4v8eFIEK/fs62TEp9mx6v4tQw4N/nmfkCbFz9Ll75Rdc58lfBea9K328Ky4+Q5 OG3YJNIlf5g7jjlDmBAL/w+Kk3qvV1NBf5IClbFU7hA/AMF1bjrdLcGnOUdehra0wfiNVhJUq5B
+ gADPUuokUoZ72jIg/M5jQDkLqq5JiRtezTaAOXT3UhXpMQhcBeAdTFAazb5KzCYkSryRaVWnS7B EI79gMBQHjNuH7EX/l9UhnxqxXbDk7Nsq1JysUbzNrub9suLGlNAaZPbCVyGDccx0L2yXvx/zFD +YJ1qx4qIjM4K41ovgsBMvrIkE7mhVZdXkt52DCIoxehMyDQ+FJRpp+zXWsame6hPuyp1vxZNyH
+ J0QRzOoKElxxkVFW8S1TudQslfIcUhATbf++rA8kGJYhTkGMxE5x1DKURtDg74P8ZgaSbEg7
+X-Proofpoint-GUID: lPlt57WDfABipqFRRiMvBqyZODW62Qi6
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-12_07,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 mlxscore=0 clxscore=1011 bulkscore=0 adultscore=0
+ mlxlogscore=945 malwarescore=0 spamscore=0 priorityscore=1501
+ suspectscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2504070000
+ definitions=main-2505130018
 
-Alexey Kodanev <aleksei.kodanev@bell-sw.com> wrote:
-> Set the size to 6 instead of 2, since 'para' array is passed to
-> 'rtw_fw_bt_wifi_control(rtwdev, para[0], &para[1])', which reads
-> 5 bytes:
->=20
-> void rtw_fw_bt_wifi_control(struct rtw_dev *rtwdev, u8 op_code, u8 *data)
-> {
->     ...
->     SET_BT_WIFI_CONTROL_DATA1(h2c_pkt, *data);
->     SET_BT_WIFI_CONTROL_DATA2(h2c_pkt, *(data + 1));
->     ...
->     SET_BT_WIFI_CONTROL_DATA5(h2c_pkt, *(data + 4));
->=20
-> Detected using the static analysis tool - Svace.
-> Fixes: 4136214f7c46 ("rtw88: add BT co-existence support")
-> Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/coex.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wire=
-less/realtek/rtw88/coex.c
-> index c929db1e53ca..347807801270 100644
-> --- a/drivers/net/wireless/realtek/rtw88/coex.c
-> +++ b/drivers/net/wireless/realtek/rtw88/coex.c
-> @@ -309,7 +309,7 @@ static void rtw_coex_tdma_timer_base(struct rtw_dev *=
-rtwdev, u8 type)
->  {
->         struct rtw_coex *coex =3D &rtwdev->coex;
->         struct rtw_coex_stat *coex_stat =3D &coex->stat;
-> -       u8 para[2] =3D {0};
-> +       u8 para[6] =3D {0};
+From: Johannes Berg <johannes.berg@intel.com>
 
-The fix is correct. However, I don't prefer 0 as initializer.
-Please use this style:=20
+[ Upstream commit 9ad7974856926129f190ffbe3beea78460b3b7cc ]
 
-  u8 para[6] =3D {};
+If it looks like there's another subframe in the A-MSDU
+but the header isn't fully there, we can end up reading
+data out of bounds, only to discard later. Make this a
+bit more careful and check if the subframe header can
+even be present.
 
+Reported-by: syzbot+d050d437fe47d479d210@syzkaller.appspotmail.com
+Link: https://msgid.link/20240226203405.a731e2c95e38.I82ce7d8c0cc8970ce29d0a39fdc07f1ffc425be4@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[Minor conflict resolved due to code context change. And routine
+ieee80211_is_valid_amsdu is introduced by commit fe4a6d2db3ba
+ ("wifi: mac80211: implement support for yet another mesh A-MSDU format")
+ after 6.4.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+Verified the build test
+---
+ net/wireless/util.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 6ebc6567b287..0fd48361e3e1 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -751,24 +751,27 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
+ 	struct sk_buff *frame = NULL;
+ 	u16 ethertype;
+ 	u8 *payload;
+-	int offset = 0, remaining;
++	int offset = 0;
+ 	struct ethhdr eth;
+ 	bool reuse_frag = skb->head_frag && !skb_has_frag_list(skb);
+ 	bool reuse_skb = false;
+ 	bool last = false;
+ 
+ 	while (!last) {
++		int remaining = skb->len - offset;
+ 		unsigned int subframe_len;
+ 		int len;
+ 		u8 padding;
+ 
++		if (sizeof(eth) > remaining)
++			goto purge;
++
+ 		skb_copy_bits(skb, offset, &eth, sizeof(eth));
+ 		len = ntohs(eth.h_proto);
+ 		subframe_len = sizeof(struct ethhdr) + len;
+ 		padding = (4 - subframe_len) & 0x3;
+ 
+ 		/* the last MSDU has no padding */
+-		remaining = skb->len - offset;
+ 		if (subframe_len > remaining)
+ 			goto purge;
+ 		/* mitigate A-MSDU aggregation injection attacks */
+-- 
+2.34.1
 
 
