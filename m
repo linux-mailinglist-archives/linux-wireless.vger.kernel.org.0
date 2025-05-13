@@ -1,103 +1,123 @@
-Return-Path: <linux-wireless+bounces-22912-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22913-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57859AB5536
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 May 2025 14:52:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC3CAB56B4
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 May 2025 16:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEBC84A3F51
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 May 2025 12:52:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 407BC3BBB82
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 May 2025 14:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAFF28CF5F;
-	Tue, 13 May 2025 12:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753301531E1;
+	Tue, 13 May 2025 14:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="bhicCeSY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cq0AEfT5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DA6286439
-	for <linux-wireless@vger.kernel.org>; Tue, 13 May 2025 12:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F127519AD8C
+	for <linux-wireless@vger.kernel.org>; Tue, 13 May 2025 14:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747140745; cv=none; b=MDjlD+lQsa9gMBNZ95glZF/6HEXD2K9DIFs8qJ3IsisEd1MUwIY93hhCLDSBTdYilHypHv1t0aG1SRdzExFaItR0njtt9q+ONjTjNVWpcUwYipRB337Hn3OAmoDDu/9o/kJQW4RM4BeVXkcb/7JH0L2+TI4vcRvtFsD2nbuB38Y=
+	t=1747145039; cv=none; b=AoQAKV+uumcSDUdO1G7Sx2vlkmfcjSWPw2dKy15xDuASGrvlGRFU7rGTxyEQRjLBExKmzeZfB9OJzN/daRMoxvPrfUOyUbR5u2AgwxR6mvQZ/YthYXZHWbRVASlHqlndHtIcZX8qqZAKJrhT6zfU1bD4EW/3CJDe/ytGaG0+OsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747140745; c=relaxed/simple;
-	bh=eTBefvjCzkUyPkzru3hBKqHAD1XCpvteKf0aI2ap1FQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Dw3BD+a1jhikJJeohY9fVXIpzE9+rtYkyKnWtlXjG7zBGjsz22Sl5EsVjseikzYZB1NT7wvSXk6ZWoFZy7piubCf5ZRkSBTrVx+Ikw856faDF408xUU9+JQYmw2eEFe6LhcsYAfAMA1hgVyco79MDQNSuw/qseEsT2wZbjkFPHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=bhicCeSY; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54DCqHhdD071421, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1747140738; bh=eTBefvjCzkUyPkzru3hBKqHAD1XCpvteKf0aI2ap1FQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=bhicCeSYcY/w8O1vW6w107gsl3RuGDwwAW1nfsosjKgvOX/TiK0VvNINWQwQqv3ta
-	 7fWZNpBPySdDEzhH/4NDBYbDMBnXl4kicmUQIuszVU5FFHJl0HoJl+EAzelBbzmDvC
-	 n3PIB857qNVfahx0LoGc26es2Vu//orSRlHlyrZ8sao9oAHXWLXKG4SMPJjwvqk5L3
-	 RRRQ8mSdQJWsFlge2/XWPBF7LFYjvvRc3izZsPpt9zvfMmb9+66HALHZivWmkyQKhJ
-	 5bEIW7CnVX+dnWvSpluZb5VDIxhxc1DgMY8IiwaKAi2Ajsf/ypcdE6qAaM4YTD4QnI
-	 HaF/yf/rOZ1vw==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54DCqHhdD071421
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 13 May 2025 20:52:17 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 13 May 2025 20:52:18 +0800
-Received: from [127.0.1.1] (10.22.226.127) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 13 May
- 2025 20:52:16 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <timlee@realtek.com>
-Subject: [PATCH rtw-next] wifi: rtw89: fix firmware scan delay unit for WiFi 6 chips
-Date: Tue, 13 May 2025 20:52:03 +0800
-Message-ID: <20250513125203.6858-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1747145039; c=relaxed/simple;
+	bh=zNU1NIcR+mxh0uAMBcOW0JdSObK1+f1hTWBbJCyMdWI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sJ60kV69vEJU6uFroUnbzu6cK6CMMn78L7/1GKwW/0E5zgx6i0BVjiL8msjBR3cH9J1rACkyKlc7NlJPnZQkeJ1u+jlUQPX0qgJzJ4R+IK9/hehfUU+58mOcb8P9mbG/f6WxMvPl1w9JJoNokvuWn2D+J7WUkuaN9klv+eCS0ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cq0AEfT5; arc=none smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2cca475546fso3247329fac.1
+        for <linux-wireless@vger.kernel.org>; Tue, 13 May 2025 07:03:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747145037; x=1747749837; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aW5B8TTX3bVin0Mq8HXvLIsjm9fkCwp2j09ZBvJh1GA=;
+        b=Cq0AEfT5HwR2FjcGWZGIaDtk74qp5b0WkQlY9wz+LT1gREPzy95PjrqBnCGauO8iQR
+         vcnrIV5kFcr61AUt/m47pOWf/BnLuNZzQWhZX3rIhV9GQc3k/b/+l90wwpnCSaA1Jo01
+         eHCkAd2y8rV6vtMNUig5jsgxqukR+ji3Cpo/M22bKyRaZEb7IpB0CLg3AkwDWZAEvI+i
+         HV5dB8YtT7+pIJ0VahaLZyXLMhxdx2buUknFBUXqzzee6f3yPTN3A58Ma8u726wbudmx
+         oxb/zVdxnQACRFjwyt49z/p76IknPr977ZTAvPEfk7qXvBQHUP8G1slbrSub4an/aT8+
+         KdNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747145037; x=1747749837;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aW5B8TTX3bVin0Mq8HXvLIsjm9fkCwp2j09ZBvJh1GA=;
+        b=rOf+XaBe3tzPwYQh84DdWAPSyt6GsiexgIGTDpUIW/x46Eop3E4AI8oOQKPrpn+E9L
+         JP/kzI3oD0NlDcbiO/EUHH68I0jZ94jhZ4CGHW3GP9b5cI2HguEM3jjhdrYYFnUXBepx
+         IAp/ZhzXfVZdq8W4ZofVEIsAcPQed2XWt/FV7EJahM9UapSzmStxHiuu0e8YOje5CEGe
+         1YW/uM+6kRH88cAU8X0awZZK8sQjY3/algdaYVGQNsKvFR1ZkEug1FWMAmOh4mD4Gix6
+         4+rf2eN26B0hCw+V11QJJIoL4eEW1s8ylcaZGDriEWh5wFKTxe3z62Ne5YlTtChG3ftw
+         UwdA==
+X-Forwarded-Encrypted: i=1; AJvYcCXsOUT1ESrfVME6xEXDYKQtZX7xfWgl04GIuhPHe7gOZke66doIZp9/Kx+AfcvuSOIdIpLIwoa1Ay8JaZfJMA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2KhlwskTmjwuOUPAcbizucJ+r5W4ZfdEJjVKzFdduvVEyEcDc
+	gocSkACSndKGrbtxzXiGouuBnF/wTa0vHQm2CLYoiNmF+euhh4As
+X-Gm-Gg: ASbGncvb83dcqMYic+Que576ABaDI1NHDK4ltaM4RaUVv80gDtkBeHJDOSZxg20122y
+	ANzMDlO44DI6m63lA2TpeY5DeXd9krqyjCdfn6eEoJSeFSDOuj3fR4WX4t+k1PlURNjoVYH+rDC
+	Uz9caUFbF8knmR60niX2b6Hdll6536if1E2VvFCBkKyR1YHqgH6h0edPfdLOWE4J3Yzv95bmmAQ
+	sqqrrSwvq8NwAP2q5QeZ1K6vmG3C9EqRLeHpcbb+l2+noxAFE2I+gPw7+a5OTJWHFax+qSlvERQ
+	uEbwJLhQ+Ae+M0NSL616A/VOp0/nbJVvCef0tPklr+CWohwNDQGBVtdsU7tA4iVEvh8GQPHe640
+	jTMXtT5+1Ss/OvIoQ
+X-Google-Smtp-Source: AGHT+IFTkYDjrtvLD5vmMkiEOxHVhw9cbcvARvdT4vUjXFb0TOS0ch27+iqfn1uyVsIieCCESgCueA==
+X-Received: by 2002:a05:6870:9125:b0:2d5:1d1:8613 with SMTP id 586e51a60fabf-2dba434eaedmr9471588fac.23.1747145036627;
+        Tue, 13 May 2025 07:03:56 -0700 (PDT)
+Received: from [192.168.1.25] (syn-070-114-247-242.res.spectrum.com. [70.114.247.242])
+        by smtp.googlemail.com with ESMTPSA id 46e09a7af769-732264dd290sm1924596a34.40.2025.05.13.07.03.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 May 2025 07:03:56 -0700 (PDT)
+Message-ID: <562c4ac5-088d-4bab-9883-1d4f8eca2b2a@gmail.com>
+Date: Tue, 13 May 2025 09:03:54 -0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+User-Agent: Mozilla Thunderbird
+Subject: Re: wifi: iwlwifi: SAE fails when AP sends confirm before STA
+To: Jan Hendrik Farr <kernel@jfarr.cc>,
+ Johannes Berg <johannes@sipsolutions.net>
+Cc: James Prestwood <prestwoj@gmail.com>, linux-wireless@vger.kernel.org,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>, iwd@lists.linux.dev
+References: <aB30Ea2kRG24LINR@archlinux>
+ <4ffbeb94-ac19-4437-9d98-24981fe6c240@gmail.com> <aB4HC8Iaa6wR5dj7@archlinux>
+ <15943a1f-0e5d-4705-b8ef-3f22fa3fe672@gmail.com> <aB4hMsBfyawYatoj@archlinux>
+ <902daf8802c723d72fff0155cd0638848ce1bc7f.camel@sipsolutions.net>
+ <aB5onavenLymR-QJ@archlinux>
+ <8a1c5172bc0fd9d2a33522294d1a2a4c4ceb313a.camel@sipsolutions.net>
+ <aCMtCCYtNNl4dL5Q@archlinux>
+Content-Language: en-US
+From: Denis Kenzior <denkenz@gmail.com>
+In-Reply-To: <aCMtCCYtNNl4dL5Q@archlinux>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Chin-Yen Lee <timlee@realtek.com>
+Hi Jan,
 
-The scan delay unit of firmware command for WiFi 6 chips is
-microsecond, but is wrong set now and lead to abnormal work
-for net-detect. Correct the unit to avoid the error.
+ >
+> There is a an SAE confirm sent by the AP. It's frame 170 in
+> capture2.pcapng. It's also retried a number of times after that.
+> 
 
-Fixes: e99dd80c8a18 ("wifi: rtw89: wow: add delay option for net-detect")
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+What I also find interesting is that the kernel on the client side reports 
+sending the Authenticate-Confirm 3 times (according to dmesg and trace2.dat), 
+but only a single Confirm from the client is seen in the air trace.  I'm 
+guessing the retransmissions (attempt 2 & 3) are lost somehow?.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 76350351dfb2..75e5112f519a 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -5537,7 +5537,7 @@ int rtw89_fw_h2c_scan_list_offload_be(struct rtw89_dev *rtwdev, int ch_num,
- 	return 0;
- }
- 
--#define RTW89_SCAN_DELAY_TSF_UNIT 104800
-+#define RTW89_SCAN_DELAY_TSF_UNIT 1000000
- int rtw89_fw_h2c_scan_offload_ax(struct rtw89_dev *rtwdev,
- 				 struct rtw89_scan_option *option,
- 				 struct rtw89_vif_link *rtwvif_link,
--- 
-2.25.1
+[64414.164169] wlan0: send auth to 96:2a:6f:b6:d7:9f (try 2/3)
+[64415.063575] iwlwifi 0000:00:14.3: Not associated and the session protection 
+is over already...
+[64415.063668] wlan0: Connection to AP 96:2a:6f:b6:d7:9f lost
+[64416.215729] wlan0: send auth to 96:2a:6f:b6:d7:9f (try 3/3)
 
+Regards,
+-Denis
 
