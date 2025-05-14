@@ -1,120 +1,92 @@
-Return-Path: <linux-wireless+bounces-22943-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22944-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534A6AB6EE5
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 17:07:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B0FDAB71E0
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 18:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F7D23BA51B
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 15:04:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AA777A4E7B
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 16:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99141A23B0;
-	Wed, 14 May 2025 15:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748911A841E;
+	Wed, 14 May 2025 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SnyjUgcM"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="I6UlKGfU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7262188A3B
-	for <linux-wireless@vger.kernel.org>; Wed, 14 May 2025 15:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CC41A2391
+	for <linux-wireless@vger.kernel.org>; Wed, 14 May 2025 16:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747235068; cv=none; b=mT1tYqn1/L6Hp0JeG0njNPGDqQbOAkqNLBzhI6IN1ED3yFQhvIoymcSc0QVyfE8MdUVu0WLqaU2GoQ0oriw8uxV29Tn0mFqE6ewngi0pnZ/rpniy18Bz0p2np0ARUvXDu+xjcTb9REIbeacdM/8XQFbYm1cJHtI3ukk04VQqXjk=
+	t=1747241367; cv=none; b=JCUrMwVGA/CXh8SSfiyicgj/+bni9SRrQHd/eXhgQr0aYj74g8Opm6ibAOOVOwXxeXr5mTn4oojRhC9pBOpa/bQggEaFcXktpsfCmEjKgFBXRdi8byqyIjJaxVXoLFEEyCkcsoj07JNYK4QPSb+Duvj6o1P9uZyk7R1mXLKz1Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747235068; c=relaxed/simple;
-	bh=enAAgcAkRRPDtMbAlVwvjsUjqsabflmhwH1favUCliE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eAXX0t4nuPuargbiFeDgAYcqzY6b+GSXzH0z7JMOtSuPHP+/lPwkKTbTSsqGT0xKH52C4pyJT3w05ZE+MJompkl4fqGr9Hf8uSOg5AfcR02OeWboweBZ3oal81wYlhXzBqpPYar0ni/4CF4hkDMWXJj2f7WvzSkDebH6Ud3RXY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SnyjUgcM; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1747241367; c=relaxed/simple;
+	bh=z1pKH1qz/6ht+PdXxr2dPFHkvES+d19KJFlqBTQcipA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YS0/xbqClbwVyeogeHK52HruzBD1NX9xye0QDTjBR81LJLPwl6qxDVucQF11VUweOAklRGuPTuCbuoP+1aWcaGI8d4iPxAJtd6Kca5nDNTJOFf7ez8KuOvyBw9Hu0z8EdTD7Eqo7UDpNhLTDLjLr0Yh4MDwJmDwMMsseHi49etI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=I6UlKGfU; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54EAuw80003073
-	for <linux-wireless@vger.kernel.org>; Wed, 14 May 2025 15:04:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ABl9jKANhqzzr/vAZe4CDKc9veauV3B8kvEEP2dIxNw=; b=SnyjUgcMMaPiVgCD
-	oFEjYkHpDqi8YGI0JNGoBU4cXUMO+e3cN0NJt0WsFLVFc50Kp4bkekl6dleX9Ojx
-	VDwpsGFprlflJ7p8p6Wsd9/isRitdV0spJXIgrbgctRdvkeyyAf7cf8JV2QsmO87
-	mHgHf1uqoc5DwreAneJ+fCEFHDr9Xt0I/tTUYznSklSOzznR+ZBBh0+/5+V3VR8p
-	6Fs/llfQFyzQ1OOjDpK2V5y6K/JtVCqSKtA0KqAthspWC/PR7mmkeafOGBl0z6J0
-	UMG8Gl8kYDaunRcAOUgrmnd2lINQZ+sHtRgwUsP/sAWlJEFkB4en82FWxPy6gufp
-	Jjo2lw==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46mbcrb1y1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 14 May 2025 15:04:25 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-22e540fa2d0so56097975ad.1
-        for <linux-wireless@vger.kernel.org>; Wed, 14 May 2025 08:04:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747235064; x=1747839864;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ABl9jKANhqzzr/vAZe4CDKc9veauV3B8kvEEP2dIxNw=;
-        b=XUOoJi/+NsjHlbO8pNa/fITND6vizivWixStFU3aHlFhbgCmaVqo4XNd5Gq4xQUtuC
-         aETMgyj8wWHnVullJpYjzC5dGG5QzRPXO+Efch9SXtsHrUtjdprTzUiexd7fLkyIjyd+
-         VQnS5g0KJ84PBMJ4WP1hy2ZJPStrPNXuPIqLYkegqyYYWOWceMcF9cwsJTFYSCdhIbrt
-         eNB+am3fyxjqFHosuWml/j58eMAQiYcYvibiAjhtSrNHRwuJ+kw2DvNla1ASj39OJcmb
-         k8+D02dE9gRYji4H7qD71dsseHYMnGHY5VAofyDvfzeGw2dEJHr+/4gChc3yRKrxm16E
-         SJKw==
-X-Gm-Message-State: AOJu0YzWy9S8/6iGIxQ/Dj0swBqw8DbW4NLsa0bOpL9axzM8O0Lo4kO4
-	NZ01Z8VuPU0IU6EXbtjElM4NtWrvjoJcdGAZUA3FyttLUp4hGjvRsAgvAWR/efWRMo2JbyBhAX5
-	FzXd+vlak/SHUw5OcTDc3y7a8jfNc+mLiuf26Ebf17OboMuDwvwMVSM4raaN+4tnWEg==
-X-Gm-Gg: ASbGncsAYEWxudlzcyF4L1XqSeL/qintU7FYwfATjv+0PBop5RCXrzAtdAfWKWIY6Bo
-	1YeQXqyxlBQj51J+6SVbkUJzWowXg/DUn58ZGuVR2M8XdcPf/MbLOBUlMcqoeZ9vNhE2tD2XWnD
-	BNopuOeMyPIiwmmc6M8sxFVbDhdmtdzS5huwHm+l6BEcKPAlCzY8vaJWH1xEloOkPyIR09X8/+7
-	y42KK8EEo18rKJE8BR628ePtMVv19ENX6N2znY+2Uk7qcQwoNtjrB2i1XET422E5B18vyM23V9b
-	wjURTcbjoVVbXDKdKsfhsjevhEJes3Iv3EIsQtRLy4mLp1I9x/4I2FX5idjSFNvWxQM=
-X-Received: by 2002:a17:903:1b06:b0:22f:a4aa:b82b with SMTP id d9443c01a7336-2319813b0f2mr46446905ad.21.1747235063606;
-        Wed, 14 May 2025 08:04:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGjQ7t9o70lrzuaqlLt1wRe0tTalCwo5HCmLlKoR6bfnHAzYaJQ9Ag3++6SUvGsVhD0BfQ3VQ==
-X-Received: by 2002:a17:903:1b06:b0:22f:a4aa:b82b with SMTP id d9443c01a7336-2319813b0f2mr46446475ad.21.1747235063117;
-        Wed, 14 May 2025 08:04:23 -0700 (PDT)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22fc829dbb7sm101127735ad.211.2025.05.14.08.04.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 May 2025 08:04:22 -0700 (PDT)
-Message-ID: <84238fd9-8270-487a-8709-c5d492e81cef@oss.qualcomm.com>
-Date: Wed, 14 May 2025 08:04:20 -0700
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54EAuxN2003121;
+	Wed, 14 May 2025 16:49:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=tzkn8j26MHS52uT30KZdga
+	d6FId2oELnmlaG9ypaTS8=; b=I6UlKGfUlX6DCBrQ/L7goMnH9uFa2dz9c7wB+g
+	OoDAMs7PK2hD/Sael20nlcvKhDfk6Sr63tc6u8Oo8RiZikANZN9B4QYLJNhl84dD
+	kHOqvmvlgtllLzq53q7BCQPLiojw3ZwnJohsipQaGzL+OUdChYfWTGnnQtXa4KvV
+	BL+dP90OpeJQoTAYttRkcJYvulWa8A2GDykLuSkSIrfJfzJuzXBbdTU0u1X4Xr2/
+	3kFfNqJ7hZO6BIYlmpPS4mZjuTQ09fQlo21+FXQwOdiyhsbtE8rlms8cL/sjryAl
+	MTIv4kA5L3z9dfiPPbobm9MUscfT6Oc//coqwHer5l5J/iOA==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46mbcrbbv9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 May 2025 16:49:21 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54EGnKHA028088
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 May 2025 16:49:20 GMT
+Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 14 May 2025 09:49:18 -0700
+From: Sarika Sharma <quic_sarishar@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>,
+        Sarika Sharma
+	<quic_sarishar@quicinc.com>
+Subject: [PATCH wireless-next v7 00/10] wifi: cfg80211/mac80211: add support to handle per link statistics of multi-link station
+Date: Wed, 14 May 2025 22:18:47 +0530
+Message-ID: <20250514164857.227540-1-quic_sarishar@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL linux-firmware] ath11k and ath12k firmware 20250424
-To: Mario Limonciello <superm1@kernel.org>, linux-firmware@kernel.org
-Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org,
-        "Pananchikkal, Renjith" <Renjith.Pananchikkal@amd.com>,
-        Christian Heusel <christian@heusel.eu>
-References: <96b43d18-72e1-44a8-bf06-6a22fd012b07@oss.qualcomm.com>
- <62cba955-0f4a-4b25-8ec9-065ccfa9e26e@kernel.org>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <62cba955-0f4a-4b25-8ec9-065ccfa9e26e@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: 5DryRn4fgzdhCMrN8XeXinL27Xos_Mld
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDEzNCBTYWx0ZWRfX6En0s42hcjAc
- cdOtSCzARKzssYGGvt+XqcDP9rwnvJrvD8SqLvsqUxwtWVPgY7FVdy8PV2eqz0dnRpKp3IW6V8W
- GlzbsYwIWHC6DtRDmuAwsy9TP4pcl4RPEJS0yI2Fz1LZHbtUW4RpcKDMGoYPGEQNVfXvrvyCUE7
- CpKXOzqkSFnPtvYlNdk/ltoEq1AohcpdsmQldqpFuUOwQc8xsaxr6fppzriSoF/nVtSzW4d+bFV
- dFQBh8AtwRs6Z//Wy3fzsLvgM84J5mdo1D2bLmpoEJpegmTqHSpAXoaTVrWwFblZQ7A6X7+yhiS
- kkFr2Jf9Ho26nOCq5sOrX8ye+fwmRt8nlWyMK53bmtEg4ictzZjb/gYUEJRIoEf6Debpo5pIoLV
- lVXOFr2qxhyrq4SrlWHp9mnxrJu9LoTZGu87M+2aB5TQO+0+B5cgdU29cYdcyg2C6CxM5Ad4
-X-Authority-Analysis: v=2.4 cv=K7UiHzWI c=1 sm=1 tr=0 ts=6824b0f9 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=mehdgkVfAAAA:8 a=KSb9T-wMAAAA:8
- a=PjuYqXk4AAAA:8 a=VwQbUJbxAAAA:8 a=y1C2Jo8pdxxprBwrj4UA:9 a=QEXdDO2ut3YA:10
- a=324X-CrmTo6CU4MGRt3R:22 a=J1pP9gvGZaT0y92QayzM:22 a=KF4VuIdXkMyp4E_ug72i:22
-X-Proofpoint-GUID: 5DryRn4fgzdhCMrN8XeXinL27Xos_Mld
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: GpuAArd8b2c8YeP9b2NJYUTCUquDEV35
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDE1MSBTYWx0ZWRfX/yGi78N9No6C
+ Ncplb+Uv7DEcGU9qEudtPdKMjCkx/IhNAa8lX8vN8/kDsNNxU0FI6inBUkY6D8sP4QTZQUGRpwo
+ HOAi3opFe02Y6jSXFX9rmJ6U1fhW6lhVVj12dmrDIS+Fc10C4OjeV4X5/F6u0viWjCGltruO3Ak
+ eSgj9vNXJ797C9C1B7MkCDUer10rH8uO4yH/BT1G4jEHunKEJkqolzd0YlsinqE4BoGA2aD+KB4
+ Xg0ITHv/eoKIHrzSfNFPO0SNXDbwYSjwPFLmIWODTEYFhF9wD/kRsW3oSg5gE1k3I+FdfH1ekGS
+ 3mzabl0/AyJ+CtOe4K3HMkzJcLcbDEUPlz+ub0+TNZpsmxSIF+F5BLSWyBU+0OFVqQZ9OYZbuTP
+ pu5Gi8BNBXJeOHphhDiYsFjvbD5S/K1bfszX85AwlWd7XA9LaDK3hFwi772LH6oYbl+2lz45
+X-Authority-Analysis: v=2.4 cv=K7UiHzWI c=1 sm=1 tr=0 ts=6824c991 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=0tEs9va4rEXjYGKJGLgA:9
+X-Proofpoint-GUID: GpuAArd8b2c8YeP9b2NJYUTCUquDEV35
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
@@ -123,69 +95,134 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  phishscore=0 mlxlogscore=999 clxscore=1015 bulkscore=0 impostorscore=0
  lowpriorityscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505140134
+ definitions=main-2505140151
 
-On 5/14/2025 7:33 AM, Mario Limonciello wrote:
-> On 4/24/2025 3:38 PM, Jeff Johnson wrote:
->> Hi,
->> Here's a new pull request for ath11k and ath12k.
->>
->> For ath11k, update the firmware for IPQ5018 and update the board file
->> for WCN6855. For ath12k, update the firmware for WCN7850 and update
->> the board file for QCN9274.
->>
->> Please let me know if there are any problems.
->>
->> /jeff
->>
->> The following changes since commit 490c0af1d6b9ffca0523edcfad27ba483b9d6da3:
->>
->>    Merge branch 'robot/pr-0-1745490027' into 'main' (2025-04-24 13:46:05 +0000)
->>
->> are available in the Git repository at:
->>
->>    git://git.kernel.org/pub/scm/linux/kernel/git/ath/linux-firmware.git ath-20250424
->>
->> for you to fetch changes up to ce13d29c3933f77674cf45855668485c48d3eba0:
->>
->>    ath11k: WCN6855 hw2.0: update board-2.bin (2025-04-24 13:04:20 -0700)
->>
->> ----------------------------------------------------------------
->> Jeff Johnson (4):
->>        ath12k: QCN9274 hw2.0: update board-2.bin
->>        ath12k: WCN7850 hw2.0: update to WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
->>        ath11k: IPQ5018 hw1.0: update to WLAN.HK.2.6.0.1-01300-QCAHKSWPL_SILICONZ-1
->>        ath11k: WCN6855 hw2.0: update board-2.bin
->>
->>   WHENCE                           |    4 +-
->>   ath11k/IPQ5018/hw1.0/Notice.txt  | 3918 +++-----------------------------------
->>   ath11k/IPQ5018/hw1.0/q6_fw.b00   |  Bin 532 -> 532 bytes
->>   ath11k/IPQ5018/hw1.0/q6_fw.b01   |  Bin 520 -> 520 bytes
->>   ath11k/IPQ5018/hw1.0/q6_fw.b04   |  Bin 86788 -> 86788 bytes
->>   ath11k/IPQ5018/hw1.0/q6_fw.b08   |  Bin 4096 -> 4096 bytes
->>   ath11k/IPQ5018/hw1.0/q6_fw.b09   |  Bin 2334720 -> 2334720 bytes
->>   ath11k/IPQ5018/hw1.0/q6_fw.b10   |  Bin 269220 -> 269252 bytes
->>   ath11k/IPQ5018/hw1.0/q6_fw.b11   |  Bin 99456 -> 99456 bytes
->>   ath11k/IPQ5018/hw1.0/q6_fw.b13   |  Bin 7072 -> 7080 bytes
->>   ath11k/IPQ5018/hw1.0/q6_fw.mdt   |  Bin 1052 -> 1052 bytes
->>   ath11k/WCN6855/hw2.0/board-2.bin |  Bin 6429240 -> 6429240 bytes
->>   ath12k/QCN9274/hw2.0/board-2.bin |  Bin 1308544 -> 2626240 bytes
->>   ath12k/WCN7850/hw2.0/amss.bin    |  Bin 6000704 -> 6082624 bytes
->>   ath12k/WCN7850/hw2.0/m3.bin      |  Bin 299660 -> 299660 bytes
->>   15 files changed, 315 insertions(+), 3607 deletions(-)
->>
-> 
-> FWIW - this appears to have broken Wifi for a bunch of people.
-> 
-> https://discuss.cachyos.org/t/wifi-interface-fails-to-initialize-after-linux-firmware-upgrade-qualcomm-wcn7850-ath12k/8765
-> 
-> https://bugzilla.opensuse.org/show_bug.cgi?id=1241986
-> 
-> https://www.reddit.com/r/archlinux/comments/1kja6f9/ath12k_regression_on_latest_linuxfirmware_upgrade/
+Current implementation of NL80211_CMD_GET_STATION does not work
+for multi-link operation(MLO) since in case of MLO only deflink
+(or one of the links) is considered and not all links.
+
+Hence, add the link_sinfo structure to provide infrastructure
+for link-level station statistics for multi-link operation(MLO).
+
+Additionally, accumulated stats for MLO are included in a concise
+manner to provide a comprehensive overview of the ML stations.
+
+V7:
+ - Redesign the approach according to provided comments( mentioned the
+   current implemented approach below in "Purposed Flow").
+
+V6:
+ - Fix compilation failure.
+ - Add expected_throughput, beacon_loss_count, rx_dropped_misc at MLO
+   level.
+ - Removed is_per_link_stats_support boolean from sinfo structure.
+ - Used ether_addr_copy() instead of memcpy().
+
+V5:
+ - Rebased the patches.
+
+V4:
+ - Update helper function for link_sta derefrence.                    
+ - Instead of using unnecessary rssi variable directly use return.
+ - Correct commit tittle and message for some patches.
+ - Corrected cfg80211_sinfo_release_content() unnecessary logic.
+ - Split the patches for cfg80211/mac80211.
+ - Add additional fields at MLO level.
+ - Remove Ath12k patche from this series.
+ - Remove unnecessary if condition check from "add additional MLO
+   statistics".
+
+V3:
+ - Convert RFC patch to actual PATCH with each patch bisectable.
+ - Add logic for MLO level signal and rates.
+
+V2:
+ - Update cover letter to give more details on structural changes.
+ - Split the patch(1/7) in two patches.
+ - Do the required changes for MLO bringup before as seperate patches.
+ - Remove link_sinfo naming to sinfo for better clarity on changes.
+ - Add accumulated stats logic in cfg80211.
+ - Add flag to indicate driver supports per-link station statistics or not.
+
+Current flow:
+  cfg80211:
+  - Structure station_info is used to fill all station information (station
+    level as well link level).
+  - Nl80211_get_station() - locally define sinfo, call -.get_station() ops
+
+  mac80211:
+  - Sta_set_sinfo() - fill station information and call mac80211
+    ops - .sta_statistics()(to fill the station_info structure).
+
+Purposed Flow:
+ cfg80211:
+ - introduce link_station_info structure for link level statistics
+    structure link_station_info {
+      filled
+      rates
+      ...etc // all link specific fields
+    }
+  - add link_station_info for MAX links in station_info structure
+    structure station_info {
+      filled
+      packets
+      sta_flags
+      ... etc 
+
+      valid_links
+      link_station_info *links[IEEE80211_MLD_MAX_NUM_LINKS]
+    }
+
+ - Station_info structure is used for non-ML station statistics and
+   update the sinfo_structure for MLO, for accumulated, best, least
+   among all valid links in cfg80211_sta_set_mld_sinfo().
+ - Allocate and free memory for link_sinfo for all links.
+ - Embed NL message to include link level data, if valid_links are present.
+
+mac80211:
+  - Sta_set_sinfo() - fill station specific information as filled before
+    if non-ML:
+    - call mac80211 ops .sta_statistics() to fill station_info structure.
+    if MLO:
+    - call sta_set_link_sinfo(), for all valid links to fill
+      link_station_info in *links[link_id].
+    - introduce and call mac80211 ops for each link- .link_sta_statistics()
+      to fill link statistics from drivers.
+    - Maintain accumulated data for removed links in sta_info structure
+      and fill in to station_info structure for consistency.
+
+Sarika Sharma (10):
+  wifi: mac80211: add support towards MLO handling of station statistics
+  wifi: cfg80211: add link_station_info structure to support MLO
+    statistics
+  wifi: cfg80211: extend to embed link level statistics in NL message
+  wifi: cfg80211: add statistics for providing overview for MLO station
+  wifi: cfg80211: allocate memory for link_station info structure
+  wifi: mac80211: add support to accumulate removed link statistics
+  wifi: cfg80211: reset sinfo->filled for MLO station statistics
+  wifi: mac80211: extend support to fill link level sinfo structure
+  wifi: mac80211: add link_sta_statistics ops to fill link station
+    statistics
+  wifi: mac80211: correct RX stats packet increment for multi-link
+
+ drivers/net/wireless/intel/iwlwifi/dvm/lib.c |   2 +-
+ include/net/cfg80211.h                       | 124 ++++++
+ include/net/mac80211.h                       |  16 +-
+ net/mac80211/cfg.c                           |  13 +
+ net/mac80211/driver-ops.h                    |  19 +
+ net/mac80211/ibss.c                          |   4 +-
+ net/mac80211/rx.c                            |  15 +-
+ net/mac80211/sta_info.c                      | 393 +++++++++++++++--
+ net/mac80211/sta_info.h                      |  36 +-
+ net/mac80211/trace.h                         |   7 +
+ net/mac80211/util.c                          |  14 +-
+ net/wireless/nl80211.c                       | 434 ++++++++++++++++++-
+ net/wireless/util.c                          |  12 +
+ 13 files changed, 1051 insertions(+), 38 deletions(-)
 
 
-yes, the underlying issue has been found and a new firmware will be available
-soon. (internal POCs BCC'ed)
+base-commit: 63a9a727d373fa5b8ce509eef50dbc45e0f745b9
+-- 
+2.34.1
 
-/jeff
 
