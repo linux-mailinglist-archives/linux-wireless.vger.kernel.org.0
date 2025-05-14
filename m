@@ -1,62 +1,63 @@
-Return-Path: <linux-wireless+bounces-22960-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22961-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E61AB75EF
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 21:34:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08849AB7630
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 21:53:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B1F816B921
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 19:34:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C64F3AF2BB
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 19:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB2C28E616;
-	Wed, 14 May 2025 19:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2019170A37;
+	Wed, 14 May 2025 19:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="YP82jBx2"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="pLoVNpRi"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50561624DD
-	for <linux-wireless@vger.kernel.org>; Wed, 14 May 2025 19:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB0320311
+	for <linux-wireless@vger.kernel.org>; Wed, 14 May 2025 19:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747251243; cv=none; b=cTRV3efpihk5D1hCBUv6ftVumfoZTRow7CtfdoPg+kWKlVgc168ByhqPoqxRily6AXuS7l/RdiF5/MEr6GUbGV/FuvTu73Yz2Aac0U+seUzU2725pBQFliODWu6Af55iBBL+olYWnSs904FibsUQixH6jYVhlu1Uo+tHyFb+9EU=
+	t=1747252389; cv=none; b=aiK6MMvt/uL3fKiFNn5mQputj2xb4Wi0TR3M4iz0N0EytOOFC4gWJ+Aqx90JKZzVVQrhEwAW8mejNqv3BNPap7oPoEFwAXJ9XT8hx/dt7raEsa3TVRHE8E35pgSu9ph+Mqp+Fb/5mZqoH92ct1QdJQouaR1absSIEaSDtVaVZoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747251243; c=relaxed/simple;
-	bh=bjv0v2HmWLfU9IGKDDjdyHQzkVF9Sjm/sMUggJZmirI=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OAGA4b04kR15A9afCh8pwawZlgVPioRKiuV5QRlDNQLAPAiZ8N+A1vIFMusBj+6SUv9EueUN+1ZRz58Wqe08zGWGQNyajITmMm04hpizT24Lrip6ej3htOMU/46Ohita7+co7AhNl+TwCppLxjUAO54yKcpMfjkcpbrmQ6Wv85I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=YP82jBx2; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1747252389; c=relaxed/simple;
+	bh=o5jY+CIO5RkHpHkYk7HHcZ7xNl3RNkDDfBuK10E+BGs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UBWlnAHRSAiwmDporVCf1Pd+0VWjNo9ySWJKkJOwuPsYvxTcnsPHi13MqVOKUvGNjvYDAjOyEAfPH0MWwsw6kzs0jY2sLGqPDLPgKg77pVRX+dMMr3b/joNtRnwGlFtMq6epQeTnGOO7udoV5pNR1Rk2/JdzWaPHokbpX3mvbpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=pLoVNpRi; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=bjv0v2HmWLfU9IGKDDjdyHQzkVF9Sjm/sMUggJZmirI=;
-	t=1747251241; x=1748460841; b=YP82jBx2wlxQEVdqnMsa5SlNRx3wE53XMoDRzvawwkZc7P0
-	mUgEqEMnL2DuKeKDgH8Zl1Ya9ZE5WlpNRudS6ClEJT2bLg42mg9dPMIxUmrycy0Lpf/6a1fWqeQmG
-	gqNEHmqy92bSUcvriH64uB+F0SpqoPhtdhO14Cp/h53BjEglUM/Hew6lCoTCVEKrplf04ZpEDbSH0
-	zmfIbgJUv8mFcGnLeTQfaAxrNqp0Asycasr/WCe2I2oWQE4rtSgAVi7BJu9mtkZdjMf2IpvzQyPVR
-	UY0qyV9ivg7yaVtt77zXKhQXxBtiNJiMzRmOA+s+qXZyDzQdBIMxedHcwjZ08xmw==;
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=o5jY+CIO5RkHpHkYk7HHcZ7xNl3RNkDDfBuK10E+BGs=;
+	t=1747252388; x=1748461988; b=pLoVNpRilMaD3ngKlBaD1yqcNSHNYyeQMfuHx4xdo//Fcgn
+	PIZORyayqPk50aizs4XxfizMdfeqdDD9DKkCUjTP5GlRfNlAmHaoi1Ir2QIS8E7VkBjDQxaoViV3j
+	84ZkG+5xrm6NWfWZHkm6S9cjqKVDmQf/9ev8KjhSgDQe4su0zrIQLHxHPKM2fbHmttPqZRH/MAlKI
+	HTf6ZoHGxT6FOmzGOHzOZ3C2Hfyf7pWD+rzR+wMoBPNTeN3lS2RCYOkbanFCpRIng/9iadGi+s+re
+	UgehZowN8mKKBU9+lEPmny7SzX+4PEqHJTeTv704bUVnWz2/gGz1S8CaUWgqnuSA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.1)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uFHra-00000008iPC-3haO;
-	Wed, 14 May 2025 21:33:59 +0200
-Message-ID: <bcadebc3bfef65ea334c983dd8bad75d411d1e77.camel@sipsolutions.net>
-Subject: Re: pull-request: iwlwifi-next-2025-05-14
+	id 1uFIA4-00000008kkk-2AAW;
+	Wed, 14 May 2025 21:53:04 +0200
+Message-ID: <25b89deed3bb6871109fa94c3c967a27a35e3d90.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v7 05/10] wifi: cfg80211: allocate memory
+ for link_station info structure
 From: Johannes Berg <johannes@sipsolutions.net>
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>, Wireless
-	 <linux-wireless@vger.kernel.org>
-Date: Wed, 14 May 2025 21:33:58 +0200
-In-Reply-To: <MW5PR11MB5810C98CE53692F2644960CBA391A@MW5PR11MB5810.namprd11.prod.outlook.com>
-References: 
-	<MW5PR11MB5810C98CE53692F2644960CBA391A@MW5PR11MB5810.namprd11.prod.outlook.com>
+To: Sarika Sharma <quic_sarishar@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Wed, 14 May 2025 21:53:03 +0200
+In-Reply-To: <20250514164857.227540-6-quic_sarishar@quicinc.com>
+References: <20250514164857.227540-1-quic_sarishar@quicinc.com>
+	 <20250514164857.227540-6-quic_sarishar@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -66,57 +67,30 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-T24gV2VkLCAyMDI1LTA1LTE0IGF0IDA4OjI4ICswMDAwLCBLb3JlbmJsaXQsIE1pcmlhbSBSYWNo
-ZWwgd3JvdGU6Cj4gVGhlIGZvbGxvd2luZyBjaGFuZ2VzIHNpbmNlIGNvbW1pdCA4ODVlNWNiYWEw
-ZWUzNzM4ZmNkOTkxNjc0Mzk0NTllZGUyY2MxMDJjOsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IMKgwqBS
-ZXZlcnQgIndpZmk6IGl3bHdpZmk6IGNsZWFuIHVwIGNvbmZpZyBtYWNybyIgKDIwMjUtMDQtMjUg
-MTE6NTk6NTQgKzAyMDApwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBhcmUgYXZhaWxhYmxlIGluIHRo
-ZSBHaXQgcmVwb3NpdG9yeSBhdDrCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+
-IMKgwqBodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dpdC9pd2x3
-aWZpL2l3bHdpZmktbmV4dC5naXQvIGl3bHdpZmktbmV4dC0yMDI1LTA1LTE0Cj4gwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCAKPiBmb3IgeW91IHRvIGZldGNoIGNoYW5nZXMgdXAgdG8gMmU3YmVk
-YzQ0MmNmYzQ1MjYwZjBjYjU5MGMwN2E5NGVmZWY3MWIzZTrCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoHwKPiDCoMKgd2lmaTogaXdsd2lmaTogbWxkOiBhbGxvdyAyIFJPQ3Mgb24gdGhlIHNhbWUg
-dmlmICgyMDI1LTA1LTEzIDEzOjE0OjE5ICswMzAwKcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgfAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHwKPiAtLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgfAo+IGl3bHdpZmkgZmVhdHVyZXMsIG5vdGFibHkgYSByZXdvcmsgb2YgdGhl
-IHRyYW5zIGNvbmZpZ3VyYXRpb27CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfAoKWW91IGhhdmUgYSBsb3Qg
-b2YgdHJhaWxpbmcgd2hpdGVzcGFjZSAoSSBhZGRlZCB0aGUgfCBjaGFycyk/IFRoYXQncwp3ZWly
-ZD8gTWF5YmUgeW91IGNhbiBjb3B5L3Bhc3RlIGRpZmZlcmVudGx5LCBvciBzb21ldGhpbmc/CgpB
-bnl3YXksIG1vcmUgaW1wb3J0YW50bHk6Cgpjb21taXQgNDY0NzU3NTIzM2M1NTI2MGI2YjBmMjk5
-ZWNjNDU1NWU2MDYwN2U3YiBoYXMgYSBicm9rZW4gbGluayB0YWc6CgpMaW5rOiBodHRwczovL3Bh
-dGNoLm1zZ2lkLmxpbmsvMjAyNTA1MTExOTUxMzcuOWYxN2RmZWYxNmU0LkkwZmZlMjQyZjNhMDAy
-MWQxN2IyNGI4YTIxZDI0MmVkNzRkNmMyYWQ1eC1pd2x3aWZpLXN0YWNrLWRldjogYWE0YjZhMzQ0
-MTFhMWQwZGYyMTdjMzNmYWEyNmM5OTJjMzFlYmFmMkBjaGFuZ2VpZAoKU2luY2UgeW91IGNhbiBy
-ZWJhc2UgeW91ciB0cmVlIHBsZWFzZSBmaXggdGhhdC4KCgpBbHNvIG9uZSBjb21taXQgdXNlZCBh
-IGRpZmZlcmVudCBkb21haW46CgpMaW5rOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9yLzIwMjUw
-MzE5LWl3bF9wb3dlcl9zY2hlbWUta2RvYy12MS0xLTIwMzNhZTM4YjE3OEBvc3MucXVhbGNvbW0u
-Y29tCgpXYXMgdGhhdCBpbnRlbmRlZD8KCmpvaGFubmVzCg==
+On Wed, 2025-05-14 at 22:18 +0530, Sarika Sharma wrote:
+> Currently, station_info structure is passed to fill station statistics
+> from mac80211/drivers. After NL message send to user space for requested
+> station statistics, memory for station statistics is freed in cfg80211.
+> Therefore, memory allocation/free for link station statistics should
+> also happen in cfg80211 only.
+>=20
+> Hence, allocate the memory for link_station structure for all
+> possible links and free in cfg80211_sinfo_release_content().
 
+I'll probably take a look myself tomorrow in the interest of getting all
+things lined up for 6.16 quickly, but chances are you'll be at work a
+couple of hours before me (and I'm not really all that awake now), so
+pointer to this bug report from the bot:
+
+http://wifibot.sipsolutions.net/results/962902/14088291/build_allmodconfig_=
+warn/summary
+
+Says some locking issue.
+
+
+Also, is there any specific reason to want to allocate each link
+individually? Why not allocate them all together in one bigger
+allocation? Doesn't matter much though I guess.
+
+johannes
 
