@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-22945-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22946-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E52AB71E1
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 18:49:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 862E9AB71E2
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 18:49:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88EF73A7239
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 16:49:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C38277A0420
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 16:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274A027C844;
-	Wed, 14 May 2025 16:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7802A27E1C3;
+	Wed, 14 May 2025 16:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NIu+Hfzq"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="U11AbSnj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5661E7C24
-	for <linux-wireless@vger.kernel.org>; Wed, 14 May 2025 16:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AF227C172
+	for <linux-wireless@vger.kernel.org>; Wed, 14 May 2025 16:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747241369; cv=none; b=BB070xjnbsDhlBP0zeNZt10EUSGdNac+ktMmjA2cRscRzEEbtr/Q1rylALsxb51TxDQzmXf78pj5mcDPU40cxkcqc/z8rF0HKtrxCXiSBkuhgkqEosSIrZxTIKEzlWCv8fnkmyIZo5InYfXRBQ55fVjrKA0gV5KTr3HE2groHv0=
+	t=1747241370; cv=none; b=YuMXjaA2GkdUiowRVqVyBJWhFHQ459BEI3ScncoB0ATXCJrvbT3riJXsuj033YZFAgbaf5rlO4wTjBXZa/PBrJNV7oGhgWTw/E0u4HX2nJMkt+SLS3AqSJJ3TT5ftRHcT5NO2x1EyQC2J5iWQsscqKI14zp/tViXLJny+SorB44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747241369; c=relaxed/simple;
-	bh=SVVRZfL+S1AZUmFucA9za5fYLRBNkd1rSk+lPcpKh2M=;
+	s=arc-20240116; t=1747241370; c=relaxed/simple;
+	bh=FWGhdtc4riSrRePg5GYQsNnp0HMzMVtOdNGOqQ9eB4g=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q5IysM2DC7iNR0l298Z+yYH3sgr+Rmtl06tyM5lpEBykjHn+RfVbUb7ic2hKluCzDlqtp1TbQdkt4mI+GpBrDt3gGZPxEqBAVZjZjMYWHi2yWpsmuTA0vrJ/5JWT9waiQWsz4bg09hX33E9afK43OTDXNgQjJhDPZbHal6i7v+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NIu+Hfzq; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=tyvmLmsV7zL1TxsMjK1Yppc4vNwMQHk9K/exMfSEKsOwC27wlDar0wan1cpAJD6oHQxisXjxOgmN2+5iaVnwoHQlgSAaZWC2Kf4rWkX4YEz56wJnRA5zVfIoinxY+5XpkwNc2QPuCX4OXuU7wS5h5z8/dInCSBampVf/OkuwKck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=U11AbSnj; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54EAutXX009078;
-	Wed, 14 May 2025 16:49:23 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54EAuvph015927;
+	Wed, 14 May 2025 16:49:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	YuF4Lx2G1nIFlsn6Oi4ptZQuVIwvj47pMLyWlR4QwXo=; b=NIu+HfzqmkakGi3K
-	YQIy21kPcS7LbwXJKIxj6Q5MEn7Dl2rVwvoPdc4qXipFbeAbpAyM2upydUmRP15x
-	sH5Vh3iSpHxeaF0kbxysucmFIcTvT6PmDlenA2lpPkIQ0hksSQwQGTDz3Oc9kt2h
-	EWmMNCp1CaL39Iv5Qc+icfWcoUE+Qv1Q5U4Bq20T0ODMnuw4dAuq/WnZ2GsP8gpi
-	VrQonr2L4/sHmQh1sU4U1zMMuuf+upefK9VOtYXOX/Q6unGjzaJCVbQWl6t4p7C5
-	zneovOnafjk8Fw/3EJbJNZNFD9r40cPfG9Wc7UXjVgIQSmfsde89iN3I5XQ4toYr
-	LFxqVA==
+	icBZYqC9IA9svxKNLBN/LiQ8RCmexrdOPhZS9wZaVTY=; b=U11AbSnjy5poZJqI
+	eVjXtKQfyXULIPZX/gXTDhqhqbmbOSshnhYaFTdeSQmAtkvLIc4qIN2YnKnHGSiZ
+	pm7Sh0vCQmUZTvoob0IZBLyxAFDzlsSMlv5CspKgpfliGi5zaHEaqZozYCQSHtgP
+	tp1zP0bV9MjUWgbalJIA1GdbQGaR42Uex5E0/7B13RAVEJfirT5qq4u7AV67gyyE
+	KQ8aObV+6JRyLipl6xMtzfeqS+XMqKuX7arEu4qpzNu5mFLjVhdbY/HxY0CXP8Vm
+	eb81ecfnAVYc8quHOlevTTriQyLz1877i1bh7OeCgzL6885SydMQLNbkEL4Tbw1n
+	8O0K0A==
 Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46mbcpudc6-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46mbcmufw6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 May 2025 16:49:22 +0000 (GMT)
+	Wed, 14 May 2025 16:49:24 +0000 (GMT)
 Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54EGnLbi026155
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54EGnNbn026173
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 May 2025 16:49:21 GMT
+	Wed, 14 May 2025 16:49:23 GMT
 Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
  nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 14 May 2025 09:49:20 -0700
+ 15.2.1544.9; Wed, 14 May 2025 09:49:22 -0700
 From: Sarika Sharma <quic_sarishar@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>,
         Sarika Sharma
 	<quic_sarishar@quicinc.com>
-Subject: [PATCH wireless-next v7 01/10] wifi: mac80211: add support towards MLO handling of station statistics
-Date: Wed, 14 May 2025 22:18:48 +0530
-Message-ID: <20250514164857.227540-2-quic_sarishar@quicinc.com>
+Subject: [PATCH wireless-next v7 02/10] wifi: cfg80211: add link_station_info structure to support MLO statistics
+Date: Wed, 14 May 2025 22:18:49 +0530
+Message-ID: <20250514164857.227540-3-quic_sarishar@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250514164857.227540-1-quic_sarishar@quicinc.com>
 References: <20250514164857.227540-1-quic_sarishar@quicinc.com>
@@ -79,344 +79,174 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nasanex01c.na.qualcomm.com (10.45.79.139)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: yrEFYBCELvLcYNQMkG_8AGBVFQJQR53d
-X-Proofpoint-ORIG-GUID: yrEFYBCELvLcYNQMkG_8AGBVFQJQR53d
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDE1MSBTYWx0ZWRfX9Od6T0XfYh76
- eYbV8mNNvbNLmxJy+09luO9t6RsLmOKcWIiBIq88FRvKNGav0wlHNAuh+cn0Of0rr0/GrUoD9KD
- dfhV3UhqNw7yaB3k0jN3FZ/9oWS1syiVpldnO86Qva/fcDonBjm5duizHG/65mPYEnqH96/wp9c
- FntVRVq3vDJ0R/N9s5suSXR+hc5nC3BnJgXyWzNaNeWsSYsOuTAsBbCMQ2j2im2lUFdunzpyAMy
- jL0P5fAf+kIE5077xpql4O74V66wx6FCZMyEfjVTW/hE375mUGD6Zb0yD7bT8pNVmPrLuAqJCvY
- FLmiME3OYGSbJ4QPoEj0S77T5v80v94MsrkZwRWzDEgn/adoGKeWCpCSKN9gK2g72ggsr/q576N
- IW8fDGV2bt1dha+Ib8GAoefmD7Ke0UFnNP62WGtCE9rLnz9W2MoezfuAdet88fJk8gYx+Qg4
-X-Authority-Analysis: v=2.4 cv=KcvSsRYD c=1 sm=1 tr=0 ts=6824c992 cx=c_pps
+X-Proofpoint-ORIG-GUID: mTOnJZrqCHOQsPvCnEZrc4dDMN5uTGUb
+X-Authority-Analysis: v=2.4 cv=HZ4UTjE8 c=1 sm=1 tr=0 ts=6824c994 cx=c_pps
  a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=4qy7MeMMegWVXLquuOAA:9
+ a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=C2RrUa7LX1Wj_Yod6t4A:9
  a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: mTOnJZrqCHOQsPvCnEZrc4dDMN5uTGUb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDE1MSBTYWx0ZWRfX2IeHNKHqKUA3
+ mXGtIZoWfPjeX9Zr8Ftc6eZUNeDg70RW3i4BiS1auFPnqSmdQr7UoYAsTKxp70I3tGJkTaiaBDP
+ 9N9dIxOnM13r7tEcb3vwDQwG70dbo9jxF+ZKBUVoOBOSl5WbQDAx7L6DB518WDHs2TJ4CYjZo9E
+ a5tLexDXRidhEzOzOq/XuXIzInY8HPv/h/nWYZ7CWbggFed0WYriY6q8fmN6nUtxtij30tU5VZl
+ fXhoH194rxvrt7aPiVk3KJL5cOukeFdnHpReOvuWo/eYXjhNChXs8D8iRnlmwbWvf7xDE2umCDn
+ HWNinOJVnhrRnz0Gifj8eQwr8YRA+m98Jivie+hcWufIcJPLN4HkI3hD7KIebFpggSKlGvD33J3
+ blPbxdLSgULYIvOKod/VxOXZ8CJu9fmDcS+uXTaDPxIX7nVm2429pMWeyz+exldykSjw/Sxh
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 clxscore=1015 adultscore=0 phishscore=0
- lowpriorityscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 impostorscore=0
- mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ impostorscore=0 adultscore=0 spamscore=0 clxscore=1015 priorityscore=1501
+ suspectscore=0 mlxscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
  definitions=main-2505140151
 
-Currently, in supporting API's to fill sinfo structure from sta
-structure, is mapped to fill the fields from sta->deflink. However,
-for multi-link (ML) station, sinfo structure should be filled from
-corresponding link_id.
+Current implementation of NL80211_GET_STATION does not work for
+multi-link operation(MLO) since in case of MLO only deflink (or one
+of the links) is considered and not all links.
 
-Therefore, add  link_id as an additional argument in supporting API's
-for filling sinfo structure correctly. Link_id is set to -1 for non-ML
-station and corresponding link_id for ML stations. In supporting API's
-for filling sinfo structure, check for link_id, if link_id < 0, fill
-the sinfo structure from sta-> deflink, otherwise fill from
-sta->link[link_id].
+Therefore to support for MLO, add link_station_info structure
+to account link level statistics for station.
 
-Current, changes are done at the deflink level i.e, pass -1 as link_id.
-Actual link_id will be added in subsequent patches to support
-station statistics for MLO.
+Additionally, add valid_links in station_info structure to indicate
+bitmap of valid links for MLO. This will be helpful to check the link
+related statistics during MLO.
 
 Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/lib.c |  2 +-
- include/net/mac80211.h                       |  3 +-
- net/mac80211/ibss.c                          |  4 +-
- net/mac80211/sta_info.c                      | 79 ++++++++++++++------
- net/mac80211/sta_info.h                      |  2 +-
- net/mac80211/util.c                          | 14 +++-
- 6 files changed, 73 insertions(+), 31 deletions(-)
+ include/net/cfg80211.h | 104 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/lib.c b/drivers/net/wireless/intel/iwlwifi/dvm/lib.c
-index 1dc974e2c511..48711dbcfa5a 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/lib.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/lib.c
-@@ -586,7 +586,7 @@ static bool iwlagn_fill_txpower_mode(struct iwl_priv *priv,
- 		return false;
- 	}
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index d1848dc8ec99..48096a23deb2 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -2017,6 +2017,102 @@ struct cfg80211_tid_stats {
  
--	ave_rssi = ieee80211_ave_rssi(ctx->vif);
-+	ave_rssi = ieee80211_ave_rssi(ctx->vif, -1);
- 	if (!ave_rssi) {
- 		/* no rssi data, no changes to reduce tx power */
- 		IWL_DEBUG_COEX(priv, "no rssi data available\n");
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 82617579d910..a305e7f9c6b2 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -7242,13 +7242,14 @@ void ieee80211_disable_rssi_reports(struct ieee80211_vif *vif);
-  * ieee80211_ave_rssi - report the average RSSI for the specified interface
+ #define IEEE80211_MAX_CHAINS	4
+ 
++/**
++ * struct link_station_info - link station information
++ *
++ * Link station information filled by driver for get_station() and
++ *	dump_station().
++ * @link_id: Link ID uniquely identifying the link STA. This is -1 for non-ML
++ * @filled: bit flag of flags using the bits of &enum nl80211_sta_info to
++ *	indicate the relevant values in this struct for them
++ * @connected_time: time(in secs) since a link of station is last connected
++ * @inactive_time: time since last activity for link station(tx/rx)
++ *	in milliseconds
++ * @assoc_at: bootime (ns) of the last association of link of station
++ * @rx_bytes: bytes (size of MPDUs) received from this link of station
++ * @tx_bytes: bytes (size of MPDUs) transmitted to this link of station
++ * @signal: The signal strength, type depends on the wiphy's signal_type.
++ *	For CFG80211_SIGNAL_TYPE_MBM, value is expressed in _dBm_.
++ * @signal_avg: Average signal strength, type depends on the wiphy's
++ *	signal_type. For CFG80211_SIGNAL_TYPE_MBM, value is expressed in _dBm_
++ * @chains: bitmask for filled values in @chain_signal, @chain_signal_avg
++ * @chain_signal: per-chain signal strength of last received packet in dBm
++ * @chain_signal_avg: per-chain signal strength average in dBm
++ * @txrate: current unicast bitrate from this link of station
++ * @rxrate: current unicast bitrate to this link of station
++ * @rx_packets: packets (MSDUs & MMPDUs) received from this link of station
++ * @tx_packets: packets (MSDUs & MMPDUs) transmitted to this link of station
++ * @tx_retries: cumulative retry counts (MPDUs) for this link of station
++ * @tx_failed: number of failed transmissions (MPDUs) (retries exceeded, no ACK)
++ * @rx_dropped_misc:  Dropped for un-specified reason.
++ * @bss_param: current BSS parameters
++ * @beacon_loss_count: Number of times beacon loss event has triggered.
++ * @expected_throughput: expected throughput in kbps (including 802.11 headers)
++ *	towards this station.
++ * @rx_beacon: number of beacons received from this peer
++ * @rx_beacon_signal_avg: signal strength average (in dBm) for beacons received
++ *	from this peer
++ * @rx_duration: aggregate PPDU duration(usecs) for all the frames from a peer
++ * @tx_duration: aggregate PPDU duration(usecs) for all the frames to a peer
++ * @airtime_weight: current airtime scheduling weight
++ * @pertid: per-TID statistics, see &struct cfg80211_tid_stats, using the last
++ *	(IEEE80211_NUM_TIDS) index for MSDUs not encapsulated in QoS-MPDUs.
++ *	Note that this doesn't use the @filled bit, but is used if non-NULL.
++ * @ack_signal: signal strength (in dBm) of the last ACK frame.
++ * @avg_ack_signal: average rssi value of ack packet for the no of msdu's has
++ *	been sent.
++ * @rx_mpdu_count: number of MPDUs received from this station
++ * @fcs_err_count: number of packets (MPDUs) received from this station with
++ *	an FCS error. This counter should be incremented only when TA of the
++ *	received packet with an FCS error matches the peer MAC address.
++ * @addr: For MLO STA connection, filled with address of the link of station.
++ **/
++
++struct link_station_info {
++	int link_id;
++	u64 filled;
++	u32 connected_time;
++	u32 inactive_time;
++	u64 assoc_at;
++	u64 rx_bytes;
++	u64 tx_bytes;
++	s8 signal;
++	s8 signal_avg;
++
++	u8 chains;
++	s8 chain_signal[IEEE80211_MAX_CHAINS];
++	s8 chain_signal_avg[IEEE80211_MAX_CHAINS];
++
++	struct rate_info txrate;
++	struct rate_info rxrate;
++	u32 rx_packets;
++	u32 tx_packets;
++	u32 tx_retries;
++	u32 tx_failed;
++	u32 rx_dropped_misc;
++	struct sta_bss_parameters bss_param;
++
++	u32 beacon_loss_count;
++
++	u32 expected_throughput;
++
++	u64 tx_duration;
++	u64 rx_duration;
++	u64 rx_beacon;
++	u8 rx_beacon_signal_avg;
++
++	u16 airtime_weight;
++
++	s8 ack_signal;
++	s8 avg_ack_signal;
++	struct cfg80211_tid_stats *pertid;
++
++	u32 rx_mpdu_count;
++	u32 fcs_err_count;
++
++	u8 addr[ETH_ALEN] __aligned(2);
++};
++
+ /**
+  * struct station_info - station information
   *
-  * @vif: the specified virtual interface
-+ * @link_id: the link ID for MLO, or -1 for non-MLO
-  *
-  * Note: This function assumes that the given vif is valid.
-  *
-  * Return: The average RSSI value for the requested interface, or 0 if not
-  * applicable.
+@@ -2101,6 +2197,11 @@ struct cfg80211_tid_stats {
+  *	dump_station() callbacks. User space needs this information to determine
+  *	the accepted and rejected affiliated links of the connected station.
+  * @assoc_resp_ies_len: Length of @assoc_resp_ies buffer in octets.
++ * @valid_links: bitmap of valid links, or 0 for non-MLO. Drivers fill this
++ *	information in cfg80211_new_sta(), cfg80211_del_sta_sinfo(),
++ *	get_station() and dump_station() callbacks.
++ * @links: reference to Link sta entries for MLO STA, all link specific
++ *	information is accessed through links[link_id].
   */
--int ieee80211_ave_rssi(struct ieee80211_vif *vif);
-+int ieee80211_ave_rssi(struct ieee80211_vif *vif, int link_id);
+ struct station_info {
+ 	u64 filled;
+@@ -2165,6 +2266,9 @@ struct station_info {
+ 	u8 mld_addr[ETH_ALEN] __aligned(2);
+ 	const u8 *assoc_resp_ies;
+ 	size_t assoc_resp_ies_len;
++
++	u16 valid_links;
++	struct link_station_info *links[IEEE80211_MLD_MAX_NUM_LINKS];
+ };
  
  /**
-  * ieee80211_report_wowlan_wakeup - report WoWLAN wakeup
-diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
-index a6e7b7ba6a01..d521308734c4 100644
---- a/net/mac80211/ibss.c
-+++ b/net/mac80211/ibss.c
-@@ -635,7 +635,7 @@ static int ieee80211_sta_active_ibss(struct ieee80211_sub_if_data *sdata)
- 	rcu_read_lock();
- 
- 	list_for_each_entry_rcu(sta, &local->sta_list, list) {
--		unsigned long last_active = ieee80211_sta_last_active(sta);
-+		unsigned long last_active = ieee80211_sta_last_active(sta, -1);
- 
- 		if (sta->sdata == sdata &&
- 		    time_is_after_jiffies(last_active +
-@@ -1228,7 +1228,7 @@ static void ieee80211_ibss_sta_expire(struct ieee80211_sub_if_data *sdata)
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
- 	list_for_each_entry_safe(sta, tmp, &local->sta_list, list) {
--		unsigned long last_active = ieee80211_sta_last_active(sta);
-+		unsigned long last_active = ieee80211_sta_last_active(sta, -1);
- 
- 		if (sdata != sta->sdata)
- 			continue;
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 84b18be1f0b1..5cc28eb1005b 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1650,7 +1650,7 @@ void ieee80211_sta_expire(struct ieee80211_sub_if_data *sdata,
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
- 	list_for_each_entry_safe(sta, tmp, &local->sta_list, list) {
--		unsigned long last_active = ieee80211_sta_last_active(sta);
-+		unsigned long last_active = ieee80211_sta_last_active(sta, -1);
- 
- 		if (sdata != sta->sdata)
- 			continue;
-@@ -2419,18 +2419,27 @@ void ieee80211_sta_update_pending_airtime(struct ieee80211_local *local,
- }
- 
- static struct ieee80211_sta_rx_stats *
--sta_get_last_rx_stats(struct sta_info *sta)
-+sta_get_last_rx_stats(struct sta_info *sta, int link_id)
- {
--	struct ieee80211_sta_rx_stats *stats = &sta->deflink.rx_stats;
-+	struct ieee80211_sta_rx_stats *stats;
-+	struct link_sta_info *link_sta_info;
- 	int cpu;
- 
--	if (!sta->deflink.pcpu_rx_stats)
-+	if (link_id < 0)
-+		link_sta_info = &sta->deflink;
-+	else
-+		link_sta_info = wiphy_dereference(sta->local->hw.wiphy,
-+						  sta->link[link_id]);
-+
-+	stats = &link_sta_info->rx_stats;
-+
-+	if (!link_sta_info->pcpu_rx_stats)
- 		return stats;
- 
- 	for_each_possible_cpu(cpu) {
- 		struct ieee80211_sta_rx_stats *cpustats;
- 
--		cpustats = per_cpu_ptr(sta->deflink.pcpu_rx_stats, cpu);
-+		cpustats = per_cpu_ptr(link_sta_info->pcpu_rx_stats, cpu);
- 
- 		if (time_after(cpustats->last_rx, stats->last_rx))
- 			stats = cpustats;
-@@ -2498,9 +2507,10 @@ static void sta_stats_decode_rate(struct ieee80211_local *local, u32 rate,
- 	}
- }
- 
--static int sta_set_rate_info_rx(struct sta_info *sta, struct rate_info *rinfo)
-+static int sta_set_rate_info_rx(struct sta_info *sta, struct rate_info *rinfo,
-+				int link_id)
- {
--	u32 rate = READ_ONCE(sta_get_last_rx_stats(sta)->last_rate);
-+	u32 rate = READ_ONCE(sta_get_last_rx_stats(sta, link_id)->last_rate);
- 
- 	if (rate == STA_STATS_RATE_INVALID)
- 		return -EINVAL;
-@@ -2525,20 +2535,28 @@ static inline u64 sta_get_tidstats_msdu(struct ieee80211_sta_rx_stats *rxstats,
- 
- static void sta_set_tidstats(struct sta_info *sta,
- 			     struct cfg80211_tid_stats *tidstats,
--			     int tid)
-+			     int tid, int link_id)
- {
- 	struct ieee80211_local *local = sta->local;
-+	struct link_sta_info *link_sta_info;
- 	int cpu;
- 
-+	if (link_id < 0)
-+		link_sta_info = &sta->deflink;
-+	else
-+		link_sta_info = wiphy_dereference(sta->local->hw.wiphy,
-+						  sta->link[link_id]);
-+
- 	if (!(tidstats->filled & BIT(NL80211_TID_STATS_RX_MSDU))) {
--		tidstats->rx_msdu += sta_get_tidstats_msdu(&sta->deflink.rx_stats,
--							   tid);
-+		tidstats->rx_msdu +=
-+			sta_get_tidstats_msdu(&link_sta_info->rx_stats,
-+					      tid);
- 
- 		if (sta->deflink.pcpu_rx_stats) {
- 			for_each_possible_cpu(cpu) {
- 				struct ieee80211_sta_rx_stats *cpurxs;
- 
--				cpurxs = per_cpu_ptr(sta->deflink.pcpu_rx_stats,
-+				cpurxs = per_cpu_ptr(link_sta_info->pcpu_rx_stats,
- 						     cpu);
- 				tidstats->rx_msdu +=
- 					sta_get_tidstats_msdu(cpurxs, tid);
-@@ -2550,19 +2568,21 @@ static void sta_set_tidstats(struct sta_info *sta,
- 
- 	if (!(tidstats->filled & BIT(NL80211_TID_STATS_TX_MSDU))) {
- 		tidstats->filled |= BIT(NL80211_TID_STATS_TX_MSDU);
--		tidstats->tx_msdu = sta->deflink.tx_stats.msdu[tid];
-+		tidstats->tx_msdu = link_sta_info->tx_stats.msdu[tid];
- 	}
- 
- 	if (!(tidstats->filled & BIT(NL80211_TID_STATS_TX_MSDU_RETRIES)) &&
- 	    ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS)) {
- 		tidstats->filled |= BIT(NL80211_TID_STATS_TX_MSDU_RETRIES);
--		tidstats->tx_msdu_retries = sta->deflink.status_stats.msdu_retries[tid];
-+		tidstats->tx_msdu_retries =
-+			link_sta_info->status_stats.msdu_retries[tid];
- 	}
- 
- 	if (!(tidstats->filled & BIT(NL80211_TID_STATS_TX_MSDU_FAILED)) &&
- 	    ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS)) {
- 		tidstats->filled |= BIT(NL80211_TID_STATS_TX_MSDU_FAILED);
--		tidstats->tx_msdu_failed = sta->deflink.status_stats.msdu_failed[tid];
-+		tidstats->tx_msdu_failed =
-+			link_sta_info->status_stats.msdu_failed[tid];
- 	}
- 
- 	if (tid < IEEE80211_NUM_TIDS) {
-@@ -2633,7 +2653,7 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
- 	int i, ac, cpu;
- 	struct ieee80211_sta_rx_stats *last_rxstats;
- 
--	last_rxstats = sta_get_last_rx_stats(sta);
-+	last_rxstats = sta_get_last_rx_stats(sta, -1);
- 
- 	sinfo->generation = sdata->local->sta_generation;
- 
-@@ -2661,7 +2681,7 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
- 	sinfo->connected_time = ktime_get_seconds() - sta->last_connected;
- 	sinfo->assoc_at = sta->assoc_at;
- 	sinfo->inactive_time =
--		jiffies_to_msecs(jiffies - ieee80211_sta_last_active(sta));
-+		jiffies_to_msecs(jiffies - ieee80211_sta_last_active(sta, -1));
- 
- 	if (!(sinfo->filled & (BIT_ULL(NL80211_STA_INFO_TX_BYTES64) |
- 			       BIT_ULL(NL80211_STA_INFO_TX_BYTES)))) {
-@@ -2750,7 +2770,8 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
- 	    !(sdata->vif.driver_flags & IEEE80211_VIF_BEACON_FILTER)) {
- 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_BEACON_RX) |
- 				 BIT_ULL(NL80211_STA_INFO_BEACON_SIGNAL_AVG);
--		sinfo->rx_beacon_signal_avg = ieee80211_ave_rssi(&sdata->vif);
-+		sinfo->rx_beacon_signal_avg =
-+			ieee80211_ave_rssi(&sdata->vif, -1);
- 	}
- 
- 	if (ieee80211_hw_check(&sta->local->hw, SIGNAL_DBM) ||
-@@ -2799,13 +2820,13 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
- 
- 	if (!(sinfo->filled & BIT_ULL(NL80211_STA_INFO_RX_BITRATE)) &&
- 	    !sta->sta.valid_links) {
--		if (sta_set_rate_info_rx(sta, &sinfo->rxrate) == 0)
-+		if (sta_set_rate_info_rx(sta, &sinfo->rxrate, -1) == 0)
- 			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_BITRATE);
- 	}
- 
- 	if (tidstats && !cfg80211_sinfo_alloc_tid_stats(sinfo, GFP_KERNEL)) {
- 		for (i = 0; i < IEEE80211_NUM_TIDS + 1; i++)
--			sta_set_tidstats(sta, &sinfo->pertid[i], i);
-+			sta_set_tidstats(sta, &sinfo->pertid[i], i, -1);
- 	}
- 
- #ifdef CONFIG_MAC80211_MESH
-@@ -2888,14 +2909,24 @@ u32 sta_get_expected_throughput(struct sta_info *sta)
- 	return thr;
- }
- 
--unsigned long ieee80211_sta_last_active(struct sta_info *sta)
-+unsigned long ieee80211_sta_last_active(struct sta_info *sta, int link_id)
- {
--	struct ieee80211_sta_rx_stats *stats = sta_get_last_rx_stats(sta);
-+	struct ieee80211_sta_rx_stats *stats;
-+	struct link_sta_info *link_sta_info;
-+
-+	stats = sta_get_last_rx_stats(sta, link_id);
- 
--	if (!sta->deflink.status_stats.last_ack ||
--	    time_after(stats->last_rx, sta->deflink.status_stats.last_ack))
-+	if (link_id < 0)
-+		link_sta_info = &sta->deflink;
-+	else
-+		link_sta_info = wiphy_dereference(sta->local->hw.wiphy,
-+						  sta->link[link_id]);
-+
-+	if (!link_sta_info->status_stats.last_ack ||
-+	    time_after(stats->last_rx, link_sta_info->status_stats.last_ack))
- 		return stats->last_rx;
--	return sta->deflink.status_stats.last_ack;
-+
-+	return link_sta_info->status_stats.last_ack;
- }
- 
- int ieee80211_sta_allocate_link(struct sta_info *sta, unsigned int link_id)
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 7a95d8d34fca..e5b91e60405b 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -936,7 +936,7 @@ void ieee80211_sta_ps_deliver_wakeup(struct sta_info *sta);
- void ieee80211_sta_ps_deliver_poll_response(struct sta_info *sta);
- void ieee80211_sta_ps_deliver_uapsd(struct sta_info *sta);
- 
--unsigned long ieee80211_sta_last_active(struct sta_info *sta);
-+unsigned long ieee80211_sta_last_active(struct sta_info *sta, int link_id);
- 
- void ieee80211_sta_set_max_amsdu_subframes(struct sta_info *sta,
- 					   const u8 *ext_capab,
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 27d414efa3fd..85297faf659c 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3265,14 +3265,24 @@ int ieee80211_put_srates_elem(struct sk_buff *skb,
- 	return 0;
- }
- 
--int ieee80211_ave_rssi(struct ieee80211_vif *vif)
-+int ieee80211_ave_rssi(struct ieee80211_vif *vif, int link_id)
- {
- 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-+	struct ieee80211_link_data *link_data;
- 
- 	if (WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_STATION))
- 		return 0;
- 
--	return -ewma_beacon_signal_read(&sdata->deflink.u.mgd.ave_beacon_signal);
-+	if (link_id < 0)
-+		link_data = &sdata->deflink;
-+	else
-+		link_data = wiphy_dereference(sdata->local->hw.wiphy,
-+					      sdata->link[link_id]);
-+
-+	if (WARN_ON_ONCE(!link_data))
-+		return -99;
-+
-+	return -ewma_beacon_signal_read(&link_data->u.mgd.ave_beacon_signal);
- }
- EXPORT_SYMBOL_GPL(ieee80211_ave_rssi);
- 
 -- 
 2.34.1
 
