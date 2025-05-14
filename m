@@ -1,213 +1,329 @@
-Return-Path: <linux-wireless+bounces-22938-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22939-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41AD0AB6C62
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 15:15:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C30AB6D1C
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 15:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A7443ABD49
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 13:15:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04ABC188BB16
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 13:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A745B28DD0;
-	Wed, 14 May 2025 13:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7317E18BB8E;
+	Wed, 14 May 2025 13:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="X2KJ17ih"
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="tz44HVin"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D7814AA9;
-	Wed, 14 May 2025 13:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D52122615;
+	Wed, 14 May 2025 13:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747228541; cv=none; b=J9FSq+QvuCLvltci+J+bxSBw6zDR9uRvWQSixe9Co78g0wi9X/e/EHrK0VNLyZv35p1JLjTnEFxqZ7j45x13uZ4lK+CEkiBeNswZvHM6lwDcUMAzPDrkpMGD++u3MlBrAluIeFMR0Q2Av0HdBwDY2Qmkz57/qy61eRWLUh9KxRE=
+	t=1747230403; cv=none; b=HZ5oP7SkEmfzcXDjxr5mmWw+/8pCOgmAzbrW6VEtV6yZhN0SR3vXb4AzWv6WHbGUEv/KjVlf9sYSHvDEdYJ218hkPqMgyOt48qTcsQD9cR9DAga2ocO9/cQWcnbXkj5Q0jJJRB8X27+ofsU42vvjezO4TZTYzdsnorUrNNINVGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747228541; c=relaxed/simple;
-	bh=FZHRZmibNVKSe41yuOXiAs9hx4wzzfN6h/VdvLZyzh8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=WZKD+JvxGd9x2aaKoeTWCtY4zKZ59qVl2S0Vy2O5If8TN+YISyc1l8etjHXMM7RieCFZwetdu2DJnChf0yab7yGQeSxoGVUUYPc2J/8vEefPRhqdoDBE3GD1DXyxtOH/+H1BAAftAf/DKcJY/pse41IsAItZah/W/gChXX7mNGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=X2KJ17ih; arc=none smtp.client-ip=157.90.84.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
-Received: from [192.168.178.76] (host-212-18-30-247.customer.m-online.net [212.18.30.247])
-	(Authenticated sender: g.gottleuber@tuxedocomputers.com)
-	by mail.tuxedocomputers.com (Postfix) with ESMTPSA id B0DBD2FC0050;
-	Wed, 14 May 2025 15:15:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
-	s=default; t=1747228529;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UizUCsRI54NulxCIGiE3a13b3aowPXbAgl8KTCDAKHE=;
-	b=X2KJ17ih4v72TpBy4Wxw0AnqbqoLTHpfV8Uyd7xh7vrzDT43wIrmqx5W7QtvwU2ExLFx4z
-	42dpGu1epMreLztFrYMKbW9lC6h6n3yTUyMpmChmxDAkaGDcb0gI7eODxDpwmj1cRi5N9p
-	TIhRB+2QqYWCxpF8ilat2iL0k8WcsIo=
-Authentication-Results: mail.tuxedocomputers.com;
-	auth=pass smtp.auth=g.gottleuber@tuxedocomputers.com smtp.mailfrom=ggo@tuxedocomputers.com
-Message-ID: <8db21316-9db2-4ef8-95ca-bec9b6623211@tuxedocomputers.com>
-Date: Wed, 14 May 2025 15:15:28 +0200
+	s=arc-20240116; t=1747230403; c=relaxed/simple;
+	bh=rK8crzKNsT9l/5ZEsMIGnF+i2H4Z59zJPO5cKuaMaIc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=btSqxQC9MvlCtxaXc8G7OXB847hH3TXebPU6d5j+I4D8R8XXo3TB4k1qYoOztmcY/yi2lBa89i2FU4WY30vz4nBqW0E48nXApQH9+nt5tKFCzHzH3rz2JZoQCMCAJ2avUplTW7xO7SKjeo6vAHPAOeNyyQNX45iRoCU9AT2YPMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=tz44HVin; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1747230377; x=1747835177; i=spasswolf@web.de;
+	bh=+TQ+F6UqZ2YyIp8s6fLPHLaOot28CRqH0fegWBi2AcU=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=tz44HVinuJs8Y0QCguGTcvOE6R4NTA1Um5IgeTSe2IbclTbby/seD4xFTQIF/UPF
+	 +gJVWxQBCBQnHKWT7aNMZtHQAKawEt0ECtvSWQleOJZ7NjRIiwEPRSg1XxUYkWSod
+	 fBM1LjE2mKPOIh0WbKJqi9o4Bcjvfb7B3AHdV5qFeMc1hmG3Nxx9fT90cY8dMbG3K
+	 GrlDsYQdyyZ1qzPPnfjzoH+HxOkHCoZi4+VWplVejhpvEhiDdQtGHMKaq3zg2TKkm
+	 9fTXyTUxZ0/EfF68iilZPxFiOrzIK6YUH+y19th78D95cEeKnn3omYclL/TEaxSBy
+	 Py5ZAVMsyL/8XpVR0Q==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N3oz4-1uxA6a2ooC-017frE; Wed, 14
+ May 2025 15:46:16 +0200
+Message-ID: <2cad838b39f00d93319509d2a6a77a4c42c7fa92.camel@web.de>
+Subject: Re: lockup and kernel panic in linux-next-202505{09,12} when
+ compiled with clang
+From: Bert Karwatzki <spasswolf@web.de>
+To: Johannes Berg <johannes@sipsolutions.net>,
+ "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>
+Cc: "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>, 
+ "llvm@lists.linux.dev"
+	 <llvm@lists.linux.dev>, Thomas Gleixner <tglx@linutronix.de>, 
+	linux-wireless@vger.kernel.org, spasswolf@web.de
+Date: Wed, 14 May 2025 15:46:15 +0200
+In-Reply-To: <2d8c1929bf5ab5260dacf9aa390456b3b49ce465.camel@sipsolutions.net>
+References: <20250513164807.51780-1-spasswolf@web.de> <87h61ojg3g.ffs@tglx>
+			 <7471a185adcc34a79c2ab8ce1e87ab922ae2232b.camel@web.de>
+		 <b644ff1714731cfb652d809d4864f0d178b24a97.camel@web.de>
+	 <2d8c1929bf5ab5260dacf9aa390456b3b49ce465.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: RE: 6 Ghz frequencies always listed as disabled in newer kernels
- with Mediatek MT7921K (RZ608)
-To: =?UTF-8?B?TWluZ3llbiBIc2llaCAo6Kyd5piO6Ku6KQ==?=
- <Mingyen.Hsieh@mediatek.com>, Slavi Pantaleev <slavi@devture.com>,
- Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Ryder Lee <Ryder.Lee@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- =?UTF-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>
-References: <18be5ba2-6dc4-4766-9944-59cb46c8dfaf@devture.com>
- <SI2PR03MB532296077BDB2BEBE79DDB2885FC2@SI2PR03MB5322.apcprd03.prod.outlook.com>
-Content-Language: en-US
-From: ggo@tuxedocomputers.com
-Autocrypt: addr=g.gottleuber@tuxedocomputers.com; keydata=
- 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
- bsxTTcOuRnk=
-Cc: Georg Gottleuber <ggo@tuxedocomputers.com>
-In-Reply-To: <SI2PR03MB532296077BDB2BEBE79DDB2885FC2@SI2PR03MB5322.apcprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:4L5PY97agYt03K0vBnhFzdRDh8ErKa43ybp1GTTY66Ule2AeLa2
+ 0jHVEqUH4dVxJMQSaL+tWSYe/PWJ+iHibjgVqe3o97BbGfjT29rRPJb0UtCqB6OQzAZHPSj
+ OZQ2TmjXkXcczcW1F8Peor0XT08y5x1D/Tmx0kCI8nlJaJF6WgYIH258twbcPQtBDNnWJ1l
+ XjByS6l3XDp+MmLNrDoLg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:IkS5GNLRGpw=;DEAgzj28aTuoYCOarQcylnT0Vt+
+ 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
 
-Hi Yen,
+Am Mittwoch, dem 14.05.2025 um 12:23 +0200 schrieb Johannes Berg:
+> + linux-wireless
+>=20
+> On Wed, 2025-05-14 at 09:32 +0000, Bert Karwatzki wrote:
+>=20
+> > Then I reapplied commit 76a853f86c97 hunk by hunk and found the one hu=
+nk that
+> > causes the problem:
+> >=20
+> > diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+> > index 3e751dd3ae7b..63df21228029 100644
+> > --- a/net/mac80211/tx.c
+> > +++ b/net/mac80211/tx.c
+> > @@ -4648,8 +4648,7 @@ static void ieee80211_8023_xmit(struct
+> > ieee80211_sub_if_data *sdata,
+> >                         memcpy(IEEE80211_SKB_CB(seg), info, sizeof(*in=
+fo));
+> >         }
+> >=20
+> > -       if (unlikely(skb->sk &&
+> > -                    skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS)) {
+> > +       if (unlikely(skb->sk && sock_flag(skb->sk, SOCK_WIFI_STATUS)))=
+ {
+> >                 info->status_data =3D ieee80211_store_ack_skb(local, s=
+kb,
+> >                                                             &info->fla=
+gs, NULL);
+> >                 if (info->status_data)
+>=20
+> I think it crashed later on the status, but this inserts the skb into
+> the IDR so the status can pick it up to return the status and afaict
+> _that's_ where it crashed.
+>=20
+> Still I don't really know what could go wrong? The (copied) skb should
+> still have been keeping the socket alive.
+>=20
+> > This is enough to cause a kernel panic when compiled with clang (clang=
+-19.1.7
+> > from debian sid). Compiling the same kernel with gcc (gcc-14.2.0 from =
+debian
+> > sid) shows no problem.
+>=20
+> Right, even stranger. But I can't even say you should look at this place
+> (which inserts) or the other (which takes it out again and crashed) to
+> compare the code :-/
+>=20
+>=20
+> johannes
 
-Friendly reminder of this topic.
+I've split off the problematic piece of code into an noinline function to =
+simplify the disassembly:
 
-We have the same problem with RZ608 and RZ616: All 6GHz channels are
-disabled by mt7921_regd_channel_update().
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 20de6e6b0929..075e012d9992 100644
+=2D-- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -4582,7 +4582,19 @@ static bool ieee80211_tx_8023(struct ieee80211_sub_=
+if_data *sdata,
+ 	return ret;
+ }
+=20
+-static noinline void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sd=
+ata,
++static noinline void ieee80211_8023_xmit_clang_debug_helper(struct sk_buf=
+f *skb,
++							    struct ieee80211_local *local,
++							    struct ieee80211_tx_info *info)
++{
++	if (unlikely(skb->sk && sock_flag(skb->sk, SOCK_WIFI_STATUS))) {
++		info->status_data =3D ieee80211_store_ack_skb(local, skb,
++							    &info->flags, NULL);
++		if (info->status_data)
++			info->status_data_idr =3D 1;
++	}
++}
++
++static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
+ 				struct net_device *dev, struct sta_info *sta,
+ 				struct ieee80211_key *key, struct sk_buff *skb)
+ {
+@@ -4648,12 +4660,7 @@ static noinline void ieee80211_8023_xmit(struct iee=
+e80211_sub_if_data *sdata,
+ 			memcpy(IEEE80211_SKB_CB(seg), info, sizeof(*info));
+ 	}
+=20
+-	if (unlikely(skb->sk && sock_flag(skb->sk, SOCK_WIFI_STATUS))) {
+-		info->status_data =3D ieee80211_store_ack_skb(local, skb,
+-							    &info->flags, NULL);
+-		if (info->status_data)
+-			info->status_data_idr =3D 1;
+-	}
++	ieee80211_8023_xmit_clang_debug_helper(skb, local, info);
+=20
+ 	dev_sw_netstats_tx_add(dev, skbs, len);
+ 	sta->deflink.tx_stats.packets[queue] +=3D skbs;
 
-Is there anything I can do to help?
+This shows the the behaviour as the old code, i.e. kernel panic when compi=
+led with clang(-19.1.7), no problem when
+compiled with gcc(-14.2.0).
 
-Regards,
-Georg
+When compiled with clang the disassembly of the function is (from objdump =
+-d)
+
+000000000000a260 <ieee80211_8023_xmit_clang_debug_helper>:
+    a260:	48 8b 47 18          	mov    0x18(%rdi),%rax
+    a264:	48 85 c0             	test   %rax,%rax
+    a267:	74 0c                	je     a275 <ieee80211_8023_xmit_clang_deb=
+ug_helper+0x15>
+    a269:	53                   	push   %rbx
+    a26a:	48 f7 40 60 00 00 08 	testq  $0x80000,0x60(%rax)
+    a271:	00=20
+    a272:	75 07                	jne    a27b <ieee80211_8023_xmit_clang_deb=
+ug_helper+0x1b>
+    a274:	5b                   	pop    %rbx
+    a275:	2e e9 00 00 00 00    	cs jmp a27b <ieee80211_8023_xmit_clang_deb=
+ug_helper+0x1b>
+    a27b:	48 89 f8             	mov    %rdi,%rax
+    a27e:	48 89 f7             	mov    %rsi,%rdi
+    a281:	48 89 c6             	mov    %rax,%rsi
+    a284:	48 89 d3             	mov    %rdx,%rbx
+    a287:	31 c9                	xor    %ecx,%ecx
+    a289:	e8 02 ff ff ff       	call   a190 <ieee80211_store_ack_skb>
+    a28e:	25 ff 1f 00 00       	and    $0x1fff,%eax
+    a293:	89 c2                	mov    %eax,%edx
+    a295:	b9 0f 00 fe ff       	mov    $0xfffe000f,%ecx
+    a29a:	23 4b 04             	and    0x4(%rbx),%ecx
+    a29d:	c1 e2 04             	shl    $0x4,%edx
+    a2a0:	09 d1                	or     %edx,%ecx
+    a2a2:	89 4b 04             	mov    %ecx,0x4(%rbx)
+    a2a5:	85 c0                	test   %eax,%eax
+    a2a7:	74 cb                	je     a274 <ieee80211_8023_xmit_clang_deb=
+ug_helper+0x14>
+    a2a9:	83 c9 08             	or     $0x8,%ecx
+    a2ac:	89 4b 04             	mov    %ecx,0x4(%rbx)
+    a2af:	eb c3                	jmp    a274 <ieee80211_8023_xmit_clang_deb=
+ug_helper+0x14>
+    a2b1:	66 66 66 66 66 66 2e 	data16 data16 data16 data16 data16 cs nopw=
+ 0x0(%rax,%rax,1)
+    a2b8:	0f 1f 84 00 00 00 00=20
+    a2bf:	00=20
+
+When compiled with gcc the disassembly is
+
+00000000000010e0 <ieee80211_8023_xmit_clang_debug_helper>:
+    10e0:	48 8b 4f 18          	mov    0x18(%rdi),%rcx
+    10e4:	48 89 f8             	mov    %rdi,%rax
+    10e7:	48 85 c9             	test   %rcx,%rcx
+    10ea:	75 05                	jne    10f1 <ieee80211_8023_xmit_clang_deb=
+ug_helper+0x11>
+    10ec:	e9 00 00 00 00       	jmp    10f1 <ieee80211_8023_xmit_clang_deb=
+ug_helper+0x11>
+    10f1:	48 8b 49 60          	mov    0x60(%rcx),%rcx
+    10f5:	f7 c1 00 00 08 00    	test   $0x80000,%ecx
+    10fb:	74 ef                	je     10ec <ieee80211_8023_xmit_clang_deb=
+ug_helper+0xc>
+    10fd:	48 83 ec 08          	sub    $0x8,%rsp
+    1101:	48 89 f7             	mov    %rsi,%rdi
+    1104:	31 c9                	xor    %ecx,%ecx
+    1106:	48 89 c6             	mov    %rax,%rsi
+    1109:	48 89 14 24          	mov    %rdx,(%rsp)
+    110d:	e8 ce f8 ff ff       	call   9e0 <ieee80211_store_ack_skb>
+    1112:	48 8b 14 24          	mov    (%rsp),%rdx
+    1116:	89 c1                	mov    %eax,%ecx
+    1118:	8b 42 04             	mov    0x4(%rdx),%eax
+    111b:	81 e1 ff 1f 00 00    	and    $0x1fff,%ecx
+    1121:	c1 e1 04             	shl    $0x4,%ecx
+    1124:	25 0f 00 fe ff       	and    $0xfffe000f,%eax
+    1129:	09 c8                	or     %ecx,%eax
+    112b:	89 42 04             	mov    %eax,0x4(%rdx)
+    112e:	a9 f0 ff 01 00       	test   $0x1fff0,%eax
+    1133:	74 04                	je     1139 <ieee80211_8023_xmit_clang_deb=
+ug_helper+0x59>
+    1135:	80 4a 04 08          	orb    $0x8,0x4(%rdx)
+    1139:	48 83 c4 08          	add    $0x8,%rsp
+    113d:	e9 00 00 00 00       	jmp    1142 <ieee80211_8023_xmit_clang_deb=
+ug_helper+0x62>
+    1142:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
+    1149:	00 00 00 00=20
+    114d:	0f 1f 00             	nopl   (%rax)
+    1150:	90                   	nop
+    1151:	90                   	nop
+    1152:	90                   	nop
+    1153:	90                   	nop
+    1154:	90                   	nop
+    1155:	90                   	nop
+    1156:	90                   	nop
+    1157:	90                   	nop
+    1158:	90                   	nop
+    1159:	90                   	nop
+    115a:	90                   	nop
+    115b:	90                   	nop
+    115c:	90                   	nop
+    115d:	90                   	nop
+    115e:	90                   	nop
+    115f:	90                   	nop
 
 
-Am 12.02.25 um 03:18 schrieb Mingyen Hsieh (謝明諺):
-> Hi Slavi,
-> 
-> Thank you for reporting this issue.
-> I will look into what went wrong.
-> 
-> Best Regards,
-> Yen.
-> 
-> -----Original Message-----
-> From: Slavi Pantaleev <slavi@devture.com> 
-> Sent: Monday, February 10, 2025 10:56 PM
-> To: Felix Fietkau <nbd@nbd.name>; Lorenzo Bianconi <lorenzo@kernel.org>; Ryder Lee <Ryder.Lee@mediatek.com>; Kalle Valo <kvalo@kernel.org>; Matthias Brugger <matthias.bgg@gmail.com>; AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>; Mingyen Hsieh (謝明諺) <Mingyen.Hsieh@mediatek.com>; Deren Wu (武德仁) <Deren.Wu@mediatek.com>; linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-mediatek@lists.infradead.org
-> Subject: 6 Ghz frequencies always listed as disabled in newer kernels with Mediatek MT7921K (RZ608)
-> 
-> 
-> External email : Please do not click links or open attachments until you have verified the sender or the content.
-> 
-> 
-> Hello!
-> 
-> This is in regard to Bugzilla Bug 218731 - Tri-band AMD RZ608 (MediaTek
-> MT7921K) has 6GHz band disabled in kernel 6.7+ despite working in <=6.6
-> 
-> URL: https://urldefense.com/v3/__https://bugzilla.kernel.org/show_bug.cgi?id=218731__;!!CTRNKA9wMg0ARbw!hwgyrPE5EUmlhv276MLdhh3io-OmXeYvNMVGUpAUbJ7wgc9z8WI4fZoD0Ze1WlIlqf_1qrieE1unap_P8_E$
-> 
-> I'm in Bulgaria and `iw reg get` reports this:
-> 
-> ```
-> global
-> country BG: DFS-ETSI
->          (2400 - 2483 @ 40), (N/A, 20), (N/A)
->          (5150 - 5250 @ 80), (N/A, 23), (N/A), NO-OUTDOOR, AUTO-BW
->          (5250 - 5350 @ 80), (N/A, 20), (0 ms), NO-OUTDOOR, DFS, AUTO-BW
->          (5470 - 5725 @ 160), (N/A, 26), (0 ms), DFS
->          (5725 - 5875 @ 80), (N/A, 13), (N/A)
->          (5945 - 6425 @ 160), (N/A, 23), (N/A), NO-OUTDOOR
->          (57000 - 66000 @ 2160), (N/A, 40), (N/A) ```
-> 
-> For testing purposes, I've also tried switching to another regulatory domain (`US`, `DE`, `SE`, `NL`) via `iw reg set ..`.
-> 
-> Regardless of the regulatory domain, `iw list | grep -A 15 Frequencies` always reports the 6 Ghz frequencies as disabled on newer kernels.
-> 
-> As the original bug reporter has discovered, the regression begins to appear in kernel 6.7.0 while it isn't present in 6.6.30.
-> I've done a bisection and the results are like this:
-> 
-> 1. [bad] mainline (954a209f431c06b62718a49b403bd4c549f0d6fb)
-> 2. [good] v6.6.30
-> 3. [bad] v6.7.12
-> 4. [good] v6.6
-> 5. [bad] edd8e84ae9514e93368f56c3715b11af52df6c3b
-> 6. [bad] 89ed67ef126c4160349c1b96fdb775ea6170ac90
-> 7. [good] b827ac419721a106ae2fccaa40576b0594edad92
-> 8. [bad] d1a02ed66fe62aa2edd77bd54e270ebc33bd12ff
-> 9. [good] 3abbd0699b678fc48e0100704338cff9180fe4bb
-> 10. [good] 5a423552e0d9bb882f22cb0bf85f520ca2692706
-> 11. [bad] 56a7bb12c78ffa1b02e154b1d779ed2a1555fa3c
-> 12. [good] a3c2dd96487f1dd734c9443a3472c8dafa689813
-> 13. [bad] 089482a06b74a40d45773b1871182e8f04be026b
-> 14. [good] fce9c967820a72f600abbf061d7077861685a14d
-> 15. [good] c948b5da6bbec742b433138e3e3f9537a85af2e5
-> 16. [good] 9585316a2aaf773a67846bdc8bbdd4df1e9622fa
-> 17. [good] 51ba0e3a15eb1643116a93674e230e11b9499592
-> 18. [bad] 09382d8f8641bc12fffc41a93eb9b37be0e653c0
-> 19. [good] 4fc8df50fd41c2762d893211487be0ecb24c6a05
-> 
-> 09382d8f8641bc12fffc41a93eb9b37be0e653c0 is reported as the first bad commit.
-> 
-> URL:
-> https://urldefense.com/v3/__https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux/*/09382d8f8641bc12fffc41a93eb9b37be0e653c0__;Kw!!CTRNKA9wMg0ARbw!hwgyrPE5EUmlhv276MLdhh3io-OmXeYvNMVGUpAUbJ7wgc9z8WI4fZoD0Ze1WlIlqf_1qrieE1unR0MDLCs$
-> 
-> Regards
-> 
+I've not yet taken a closer look, but perhaps the error is obvious
+for some one else.
+
+Bert Karwatzki
 
 
