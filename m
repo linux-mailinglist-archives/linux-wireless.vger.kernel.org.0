@@ -1,350 +1,168 @@
-Return-Path: <linux-wireless+bounces-22926-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22927-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D363AB5CFD
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 May 2025 21:14:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D16CAB604D
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 02:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E76391B6117F
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 May 2025 19:14:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B84613B22BB
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 May 2025 00:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982232BF98C;
-	Tue, 13 May 2025 19:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923844438B;
+	Wed, 14 May 2025 00:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="uV8C6XTx"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="rnfLARQQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8D642A80
-	for <linux-wireless@vger.kernel.org>; Tue, 13 May 2025 19:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C069478
+	for <linux-wireless@vger.kernel.org>; Wed, 14 May 2025 00:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747163660; cv=none; b=c1yfllLnt/p8v/9WUGudW1la88liEkonjILkI4bQV3X4VKeHzz8KSZWd+1dVM1GlD0zW8cgwlDbOoVbjKUOxCtqRDF21S33BmCH3a22F1SdjnSBdx0uupFPQDNlR91rwj1Kgy7P95/KxEqoHhUwDaTWBaXSlHjOzNXIBFHy5XjE=
+	t=1747184177; cv=none; b=E2DiuTBpVadDe3pr1rsA8bSwU/4t1l46GcPe/+tvCOkcIsw25JFY2MIcqrrIvppvpFkCW4W+4DCuU7fhQ3qlFTswPcgxGWzAJdQ1ZvvOJpgTriQYGZpWogHcxJOeDcZ8tyWzm878oY7Qg/E2dO02us3j//RR50JQrNKzxYFrP/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747163660; c=relaxed/simple;
-	bh=84AUyiseIrSXm+1CHXRjvjW5HCqOuFOAHLYDayKe/tg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E6hhevH6F+VekdfVHWIS6p4Xm42TM16ViO1v1BKt6IIJIh7Sh5u6UDvykuY7lQS8W+l2WUSyENdEOkz8O/I3/ddxxGjpCpeA0nfUzxIezF7qIqrn8E0nXZgZWnEhXSkYpsdxLuPuSoiLSkDh7fmopI0YQcs8XVIlhar7FzrJKzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=uV8C6XTx; arc=none smtp.client-ip=44.202.169.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-6005a.ext.cloudfilter.net ([10.0.30.201])
-	by cmsmtp with ESMTPS
-	id EmtguFxlNVkcREv4yuYyIH; Tue, 13 May 2025 19:14:16 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id Ev4xuwPTfZ6h1Ev4xuSYvB; Tue, 13 May 2025 19:14:15 +0000
-X-Authority-Analysis: v=2.4 cv=ergUzZpX c=1 sm=1 tr=0 ts=68239a07
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=efVMuJ2jJG67FGuSm7J3ww==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
- a=2WyGJ_ah1ZAX_JhrdjoA:9 a=QEXdDO2ut3YA:10 a=Xt_RvD8W3m28Mn_h3AK8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=uCLttBLOu3aSbpDrlBobQP+5p7vrc/F5lCFNvtz1450=; b=uV8C6XTx1OCfRRlnj7B6m3s/ZS
-	OWOcgFA653IV953+DDxHvueNLBMqDeV7sz0BeBYQyyLvtpriqSBeheUAIFVQqrFqKHk//i+Q14oGG
-	c40ZJjo4e3+TgBXDWl2mVXAm/ZoVGold4lbTTm+P87JQxrgMX4CkkeH1yGE9kP+JjkjJUPzbQn9bt
-	dN/kIXBAIn3PzmOJnR9nEA+cjqemyeN6M/eQkbq2QLpiJVg1fND0+Ds0d3nxlc83fwYtJPNtT38k5
-	hp3ia1ew0RhPRyZq56zfCbt6LB4v71cqlzCtNzjdqdltXZGBe3VpRPY+wAorD2Hm4h4lqC0BnTfmr
-	KXsY+ARQ==;
-Received: from [177.238.17.151] (port=64196 helo=[192.168.0.103])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1uEv4w-00000002NOS-2eKr;
-	Tue, 13 May 2025 14:14:14 -0500
-Message-ID: <1ef9857b-efdb-4142-b068-91cb453849ad@embeddedor.com>
-Date: Tue, 13 May 2025 13:14:07 -0600
+	s=arc-20240116; t=1747184177; c=relaxed/simple;
+	bh=1plLAu/sZj3oxCcHNpbypoAZPo1GHR5DPwOw246JvDw=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=kbKiSJ3VoYYJ2N42QdSwG3e/woJLrJKeISbtAQvA0OEvX91wRSzZOdmf3I1RDmuupeVjcXFC/+2XOqn6vEPkqf3sJ3dq4pwTXNd0y0kJrJu5p0xy66pS+Uyvrvvt+bHYBa+4KmJOaj1PmCZ3yv8xDehu5ujLBSpazhZTH9u4uTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=rnfLARQQ; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54E0u8cX5912861, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1747184168; bh=1plLAu/sZj3oxCcHNpbypoAZPo1GHR5DPwOw246JvDw=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=rnfLARQQ1IdIUjkDE9YAvlKKio+5JQ5U9V2MIOcsTdij1GtgLICEtGiLcH0CAcDrL
+	 D7wLg9wphMG8oMQd2u86W95y5UafS+Q6nm7/zlbzT/H7yviVW5g5HGiS/DA4Yts1hw
+	 WgYi2jq+EqtCt9gcSA/lNgErjqemu5od65he3L2ru1u8bzb2G7fq3GmFcPauE8LTmp
+	 t1gWuiULMXdc4gsZfjuLo69OngPKtzlhoIP+MPGKHMIEelDaZo2N9IZ2etfDiLR0FD
+	 f/3jH0VChJsyO1uVRx7993jX1k09H4A9RA8COyn5zgC/4OCb66Te6wIQwWO5qrLer2
+	 B0q4QwMDdBZAA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54E0u8cX5912861
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 14 May 2025 08:56:08 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 14 May 2025 08:56:09 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 14 May 2025 08:56:08 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Wed, 14 May 2025 08:56:08 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH rtw-next v1 02/13] wifi: rtw89: Get dle_mem via rtw89_hci_dle_mem()
+Thread-Topic: [PATCH rtw-next v1 02/13] wifi: rtw89: Get dle_mem via
+ rtw89_hci_dle_mem()
+Thread-Index: AQHbvTYOjUg1tNmko0OMin8tnDz9BrPRVXVQ
+Date: Wed, 14 May 2025 00:56:08 +0000
+Message-ID: <e587721eeb7244beaa1f07b88d9b4f59@realtek.com>
+References: <b146b670-d91c-41a7-96f0-c37945040aea@gmail.com>
+ <594d5987-5e6d-405c-b482-d101b43cb65c@gmail.com>
+In-Reply-To: <594d5987-5e6d-405c-b482-d101b43cb65c@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2][next] wifi: iwlwifi: mvm/fw: Avoid
- -Wflex-array-member-not-at-end warnings
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>,
- Johannes Berg <johannes.berg@intel.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>
-References: <aAv7RiLsmXq5d0ge@kspp>
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <aAv7RiLsmXq5d0ge@kspp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 177.238.17.151
-X-Source-L: No
-X-Exim-ID: 1uEv4w-00000002NOS-2eKr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.0.103]) [177.238.17.151]:64196
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 4
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfGWdZeGYlI92PMCopo413+dAw4peiN6u7ewGTejhedcC1IX6HXDhbu6kT877yLlSnO7gTzYIYydDGh6cCZDivWRIAkq1/y1OdeoEM2hxDnk3hGse+LIn
- EOYh6wiFOoeKJhxwRS5BNfWemaXRK6DniwMC8gqv6k+OXMGj2D7vzXhMZOXwHn/kwvpcsIeyYHs6Zwka4EOCicPQ6vvsGWmXrCX4yKrB8tiwRAkgzHJDJwJJ
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Hi all,
-
-Friendly ping: who can take this, please? :)
-
-Thanks!
--Gustavo
-
-On 25/04/25 15:14, Gustavo A. R. Silva wrote:
-> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-> getting ready to enable it, globally.
-> 
-> So, in order to avoid ending up with a flexible-array member in the
-> middle of multiple other structs, we use the `__struct_group()`
-> helper to create a new tagged `struct iwl_tx_cmd_hdr`. This structure
-> groups together all the members of the flexible `struct iwl_tx_cmd`
-> except the flexible array.
-> 
-> As a result, the array is effectively separated from the rest of the
-> members without modifying the memory layout of the flexible structure.
-> We then change the type of the middle struct members currently causing
-> trouble from `struct iwl_tx_cmd` to `struct iwl_tx_cmd_hdr`.
-> 
-> We also want to ensure that when new members need to be added to the
-> flexible structure, they are always included within the newly created
-> tagged struct. For this, we use `static_assert()`. This ensures that the
-> memory layout for both the flexible structure and the new tagged struct
-> is the same after any changes.
-> 
-> This approach avoids having to implement `struct iwl_tx_cmd_hdr`
-> as a completely separate structure, thus preventing having to maintain
-> two independent but basically identical structures, closing the door
-> to potential bugs in the future.
-> 
-> We also use `container_of()` whenever we need to retrieve a pointer to
-> the flexible structure, through which we can access the flexible-array
-> member, if necessary.
-> 
-> Also, as part of the refactoring required to use `__struct_group()`,
-> remove unused flex array `payload`.
-> 
-> So, with these changes, fix the following warnings:
-> 
-> drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tdls.h:134:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tdls.h:53:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tx.h:745:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> drivers/net/wireless/intel/iwlwifi/mld/../fw/api/tx.h:764:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tdls.h:134:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tdls.h:53:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tx.h:745:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tx.h:764:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 
-> Reviewed-by: Kees Cook <kees@kernel.org>
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> ---
-> Changes in v2:
->   - Update changelog text - mention removal of flex array `payload`.
->     (Kees)
->   - Fix kernel-doc block. (Johannes).
->   - Add RB tag.
-> 
-> v1:
->   - Link: https://lore.kernel.org/linux-hardening/Z-9G-GHufhXKeYft@kspp/
-> 
->   .../net/wireless/intel/iwlwifi/fw/api/tdls.h  |  4 +-
->   .../net/wireless/intel/iwlwifi/fw/api/tx.h    | 63 ++++++++++---------
->   .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  8 ++-
->   drivers/net/wireless/intel/iwlwifi/mvm/tdls.c | 10 +--
->   4 files changed, 45 insertions(+), 40 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h b/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
-> index cfa6532a3cdd..02198bc37f8c 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
-> +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
-> @@ -50,7 +50,7 @@ struct iwl_tdls_channel_switch_timing {
->    */
->   struct iwl_tdls_channel_switch_frame {
->   	__le32 switch_time_offset;
-> -	struct iwl_tx_cmd tx_cmd;
-> +	struct iwl_tx_cmd_hdr tx_cmd;
->   	u8 data[IWL_TDLS_CH_SW_FRAME_MAX_SIZE];
->   } __packed; /* TDLS_STA_CHANNEL_SWITCH_FRAME_API_S_VER_1 */
->   
-> @@ -131,7 +131,7 @@ struct iwl_tdls_config_cmd {
->   	struct iwl_tdls_sta_info sta_info[IWL_TDLS_STA_COUNT];
->   
->   	__le32 pti_req_data_offset;
-> -	struct iwl_tx_cmd pti_req_tx_cmd;
-> +	struct iwl_tx_cmd_hdr pti_req_tx_cmd;
->   	u8 pti_req_template[];
->   } __packed; /* TDLS_CONFIG_CMD_API_S_VER_1 */
->   
-> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-> index 0a39e4b6eb62..dba18d898ea2 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-> +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-> @@ -205,8 +205,7 @@ enum iwl_tx_offload_assist_flags_pos {
->    * @tid_tspec: TID/tspec
->    * @pm_frame_timeout: PM TX frame timeout
->    * @reserved4: reserved
-> - * @payload: payload (same as @hdr)
-> - * @hdr: 802.11 header (same as @payload)
-> + * @hdr: 802.11 header
->    *
->    * The byte count (both len and next_frame_len) includes MAC header
->    * (24/26/30/32 bytes)
-> @@ -222,34 +221,36 @@ enum iwl_tx_offload_assist_flags_pos {
->    * and then the actial payload.
->    */
->   struct iwl_tx_cmd {
-> -	__le16 len;
-> -	__le16 offload_assist;
-> -	__le32 tx_flags;
-> -	struct {
-> -		u8 try_cnt;
-> -		u8 btkill_cnt;
-> -		__le16 reserved;
-> -	} scratch; /* DRAM_SCRATCH_API_U_VER_1 */
-> -	__le32 rate_n_flags;
-> -	u8 sta_id;
-> -	u8 sec_ctl;
-> -	u8 initial_rate_index;
-> -	u8 reserved2;
-> -	u8 key[16];
-> -	__le32 reserved3;
-> -	__le32 life_time;
-> -	__le32 dram_lsb_ptr;
-> -	u8 dram_msb_ptr;
-> -	u8 rts_retry_limit;
-> -	u8 data_retry_limit;
-> -	u8 tid_tspec;
-> -	__le16 pm_frame_timeout;
-> -	__le16 reserved4;
-> -	union {
-> -		DECLARE_FLEX_ARRAY(u8, payload);
-> -		DECLARE_FLEX_ARRAY(struct ieee80211_hdr, hdr);
-> -	};
-> +	/* New members MUST be added within the __struct_group() macro below. */
-> +	__struct_group(iwl_tx_cmd_hdr, __hdr, __packed,
-> +		__le16 len;
-> +		__le16 offload_assist;
-> +		__le32 tx_flags;
-> +		struct {
-> +			u8 try_cnt;
-> +			u8 btkill_cnt;
-> +			__le16 reserved;
-> +		} scratch; /* DRAM_SCRATCH_API_U_VER_1 */
-> +		__le32 rate_n_flags;
-> +		u8 sta_id;
-> +		u8 sec_ctl;
-> +		u8 initial_rate_index;
-> +		u8 reserved2;
-> +		u8 key[16];
-> +		__le32 reserved3;
-> +		__le32 life_time;
-> +		__le32 dram_lsb_ptr;
-> +		u8 dram_msb_ptr;
-> +		u8 rts_retry_limit;
-> +		u8 data_retry_limit;
-> +		u8 tid_tspec;
-> +		__le16 pm_frame_timeout;
-> +		__le16 reserved4;
-> +	);
-> +	struct ieee80211_hdr hdr[];
->   } __packed; /* TX_CMD_API_S_VER_6 */
-> +static_assert(offsetof(struct iwl_tx_cmd, hdr) == sizeof(struct iwl_tx_cmd_hdr),
-> +	      "struct member likely outside of __struct_group()");
->   
->   struct iwl_dram_sec_info {
->   	__le32 pn_low;
-> @@ -742,7 +743,7 @@ struct iwl_compressed_ba_notif {
->    * @frame: the template of the beacon frame
->    */
->   struct iwl_mac_beacon_cmd_v6 {
-> -	struct iwl_tx_cmd tx;
-> +	struct iwl_tx_cmd_hdr tx;
->   	__le32 template_id;
->   	__le32 tim_idx;
->   	__le32 tim_size;
-> @@ -761,7 +762,7 @@ struct iwl_mac_beacon_cmd_v6 {
->    * @frame: the template of the beacon frame
->    */
->   struct iwl_mac_beacon_cmd_v7 {
-> -	struct iwl_tx_cmd tx;
-> +	struct iwl_tx_cmd_hdr tx;
->   	__le32 template_id;
->   	__le32 tim_idx;
->   	__le32 tim_size;
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-> index bec18d197f31..f010e68b4a55 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-> @@ -1032,7 +1032,9 @@ static int iwl_mvm_mac_ctxt_send_beacon_v6(struct iwl_mvm *mvm,
->   	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
->   	struct iwl_mac_beacon_cmd_v6 beacon_cmd = {};
->   
-> -	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon, &beacon_cmd.tx);
-> +	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon,
-> +				container_of(&beacon_cmd.tx,
-> +					     struct iwl_tx_cmd, __hdr));
->   
->   	beacon_cmd.template_id = cpu_to_le32((u32)mvmvif->id);
->   
-> @@ -1052,7 +1054,9 @@ static int iwl_mvm_mac_ctxt_send_beacon_v7(struct iwl_mvm *mvm,
->   	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
->   	struct iwl_mac_beacon_cmd_v7 beacon_cmd = {};
->   
-> -	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon, &beacon_cmd.tx);
-> +	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon,
-> +				container_of(&beacon_cmd.tx,
-> +					     struct iwl_tx_cmd, __hdr));
->   
->   	beacon_cmd.template_id = cpu_to_le32((u32)mvmvif->id);
->   
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
-> index 36379b738de1..bcfae05192ad 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
-> @@ -342,6 +342,8 @@ iwl_mvm_tdls_config_channel_switch(struct iwl_mvm *mvm,
->   	struct iwl_tdls_channel_switch_cmd_tail *tail =
->   		iwl_mvm_chan_info_cmd_tail(mvm, &cmd.ci);
->   	u16 len = sizeof(cmd) - iwl_mvm_chan_info_padding(mvm);
-> +	struct iwl_tx_cmd *tx_cmd =
-> +		container_of(&tail->frame.tx_cmd, struct iwl_tx_cmd, __hdr);
->   	int ret;
->   
->   	lockdep_assert_held(&mvm->mutex);
-> @@ -410,14 +412,12 @@ iwl_mvm_tdls_config_channel_switch(struct iwl_mvm *mvm,
->   			ret = -EINVAL;
->   			goto out;
->   		}
-> -		iwl_mvm_set_tx_cmd_ccmp(info, &tail->frame.tx_cmd);
-> +		iwl_mvm_set_tx_cmd_ccmp(info, tx_cmd);
->   	}
->   
-> -	iwl_mvm_set_tx_cmd(mvm, skb, &tail->frame.tx_cmd, info,
-> -			   mvmsta->deflink.sta_id);
-> +	iwl_mvm_set_tx_cmd(mvm, skb, tx_cmd, info, mvmsta->deflink.sta_id);
->   
-> -	iwl_mvm_set_tx_cmd_rate(mvm, &tail->frame.tx_cmd, info, sta,
-> -				hdr->frame_control);
-> +	iwl_mvm_set_tx_cmd_rate(mvm, tx_cmd, info, sta, hdr->frame_control);
->   	rcu_read_unlock();
->   
->   	memcpy(tail->frame.data, skb->data, skb->len);
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBEb24n
+dCBhY2Nlc3MgZGxlX21lbSBpbiBnZXRfZGxlX21lbV9jZmcoKSBkaXJlY3RseS4gVVNCIDIsIFVT
+QiAzLCBhbmQNCj4gU0RJTyB3aWxsIG5lZWQgZGlmZmVyZW50IHNldHMgb2YgdmFsdWVzLg0KPiAN
+Cj4gUmVuYW1lIGRsZV9tZW0gaW4gc3RydWN0IHJ0dzg5X2NoaXBfaW5mbyB0byBkbGVfbWVtX3Bj
+aWUgYW5kIGdldCBpdA0KPiB2aWEgcnR3ODlfaGNpX2RsZV9tZW0oKSBhbmQgcnR3ODlfcGNpX29w
+c19kbGVfbWVtKCkuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4
+ODIxY2VyZmUyQGdtYWlsLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFs
+dGVrL3J0dzg5L2NvcmUuaCAgICAgIHwgMTAgKysrKysrKysrLQ0KPiAgZHJpdmVycy9uZXQvd2ly
+ZWxlc3MvcmVhbHRlay9ydHc4OS9tYWMuYyAgICAgICB8ICAyICstDQo+ICBkcml2ZXJzL25ldC93
+aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3BjaS5jICAgICAgIHwgIDggKysrKysrKysNCj4gIGRyaXZl
+cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcnR3ODg1MWIuYyAgfCAgMiArLQ0KPiAgZHJp
+dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4ODUyYS5jICB8ICAyICstDQo+ICBk
+cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0dzg4NTJiLmMgIHwgIDIgKy0NCj4g
+IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcnR3ODg1MmJ0LmMgfCAgMiArLQ0K
+PiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4ODUyYy5jICB8ICAyICst
+DQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0dzg5MjJhLmMgIHwgIDIg
+Ky0NCj4gIDkgZmlsZXMgY2hhbmdlZCwgMjQgaW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkN
+Cj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2Nv
+cmUuaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvY29yZS5oDQo+IGluZGV4
+IGJlMTI1OWNmYTcxMi4uYWZjZjAzNTNhNjI1IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93
+aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2NvcmUuaA0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVz
+cy9yZWFsdGVrL3J0dzg5L2NvcmUuaA0KPiBAQCAtMzU3OSw2ICszNTc5LDggQEAgc3RydWN0IHJ0
+dzg5X2hjaV9vcHMgew0KPiAgICAgICAgIHZvaWQgKCpkaXNhYmxlX2ludHIpKHN0cnVjdCBydHc4
+OV9kZXYgKnJ0d2Rldik7DQo+ICAgICAgICAgdm9pZCAoKmVuYWJsZV9pbnRyKShzdHJ1Y3QgcnR3
+ODlfZGV2ICpydHdkZXYpOw0KPiAgICAgICAgIGludCAoKnJzdF9iZHJhbSkoc3RydWN0IHJ0dzg5
+X2RldiAqcnR3ZGV2KTsNCg0KYW4gZW1wdHkgbGluZQ0KDQo+ICsgICAgICAgY29uc3Qgc3RydWN0
+IHJ0dzg5X2RsZV9tZW0gKigqZGxlX21lbSkoc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2LA0KPiAr
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHU4IHF0YV9tb2Rl
+KTsNCj4gIH07DQo+IA0KPiAgc3RydWN0IHJ0dzg5X2hjaV9pbmZvIHsNCj4gQEAgLTQyNzEsNyAr
+NDI3Myw3IEBAIHN0cnVjdCBydHc4OV9jaGlwX2luZm8gew0KPiAgICAgICAgIGJvb2wgZGlzXzJn
+XzQwbV91bF9vZmRtYTsNCj4gICAgICAgICB1MzIgcnN2ZF9wbGVfb2ZzdDsNCj4gICAgICAgICBj
+b25zdCBzdHJ1Y3QgcnR3ODlfaGZjX3BhcmFtX2luaSAqaGZjX3BhcmFtX2luaTsNCj4gLSAgICAg
+ICBjb25zdCBzdHJ1Y3QgcnR3ODlfZGxlX21lbSAqZGxlX21lbTsNCj4gKyAgICAgICBjb25zdCBz
+dHJ1Y3QgcnR3ODlfZGxlX21lbSAqZGxlX21lbV9wY2llOw0KDQpJIHJlY29uc2lkZXIgaWYgdGhp
+cyBjYW4gYmUgYW4gYXJyYXkgd2l0aCBhIG5ldyBlbnVtID0ge1BDSUUsIFVTQjIsIFVTQjMsIFNE
+SU99DQpzdG9yZWQgaW4gaGFsLT5oY2lfZGxlX21lbV90eXBlLiBUaGVuLCBjb25zdW1lcnMgY2Fu
+IGp1c3QgYWNjZXNzIGl0IHZpYQ0KY2hpcC0+ZGxlX21lbVtoYWwtPmhjaV9kbGVfbWVtX3R5cGVd
+W3F1b3RhXS4gQnV0LCBJJ20gbm90IHN1cmUgaWYgVVNCDQpzdWJzeXN0ZW0gY2FuIG5vdGlmeSBk
+cml2ZXIgd2hlbiBVU0Igc3BlZWQgaXMgY2hhbmdlZC4gDQoNClRoaXMgaXMgYSB0aG91Z2h0IHRv
+IHNpbXBseSB0aGUgc3RydWN0IGRlZmluaXRpb24uIA0KDQo+ICAgICAgICAgdTggd2RlX3FlbXB0
+eV9hY3FfZ3JwbnVtOw0KPiAgICAgICAgIHU4IHdkZV9xZW1wdHlfbWdxX2dycHNlbDsNCj4gICAg
+ICAgICB1MzIgcmZfYmFzZV9hZGRyWzJdOw0KPiBAQCAtNjE0Niw2ICs2MTQ4LDEyIEBAIHN0YXRp
+YyBpbmxpbmUgdm9pZCBydHc4OV9oY2lfY2xlYXIoc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2LCBz
+dHJ1Y3QgcGNpX2RldiAqcGRlDQo+ICAgICAgICAgICAgICAgICBydHdkZXYtPmhjaS5vcHMtPmNs
+ZWFyKHJ0d2RldiwgcGRldik7DQo+ICB9DQo+IA0KPiArc3RhdGljIGlubGluZSBjb25zdA0KPiAr
+c3RydWN0IHJ0dzg5X2RsZV9tZW0gKnJ0dzg5X2hjaV9kbGVfbWVtKHN0cnVjdCBydHc4OV9kZXYg
+KnJ0d2RldiwgdTggcXRhX21vZGUpDQo+ICt7DQo+ICsgICAgICAgcmV0dXJuIHJ0d2Rldi0+aGNp
+Lm9wcy0+ZGxlX21lbShydHdkZXYsIHF0YV9tb2RlKTsNCj4gK30NCj4gKw0KPiAgc3RhdGljIGlu
+bGluZQ0KPiAgc3RydWN0IHJ0dzg5X3R4X3NrYl9kYXRhICpSVFc4OV9UWF9TS0JfQ0Ioc3RydWN0
+IHNrX2J1ZmYgKnNrYikNCj4gIHsNCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODkvbWFjLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5
+L21hYy5jDQo+IGluZGV4IDU5MmZiYjZkMjcyOC4uNzdkMzVkYjNlMTMzIDEwMDY0NA0KPiAtLS0g
+YS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L21hYy5jDQo+ICsrKyBiL2RyaXZl
+cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvbWFjLmMNCj4gQEAgLTE3MTksNyArMTcxOSw3
+IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgcnR3ODlfZGxlX21lbSAqZ2V0X2RsZV9tZW1fY2ZnKHN0
+cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwNCj4gICAgICAgICBzdHJ1Y3QgcnR3ODlfbWFjX2luZm8g
+Km1hYyA9ICZydHdkZXYtPm1hYzsNCj4gICAgICAgICBjb25zdCBzdHJ1Y3QgcnR3ODlfZGxlX21l
+bSAqY2ZnOw0KPiANCj4gLSAgICAgICBjZmcgPSAmcnR3ZGV2LT5jaGlwLT5kbGVfbWVtW21vZGVd
+Ow0KPiArICAgICAgIGNmZyA9IHJ0dzg5X2hjaV9kbGVfbWVtKHJ0d2RldiwgbW9kZSk7DQo+ICAg
+ICAgICAgaWYgKCFjZmcpDQo+ICAgICAgICAgICAgICAgICByZXR1cm4gTlVMTDsNCj4gDQo+IGRp
+ZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3BjaS5jIGIvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9wY2kuYw0KPiBpbmRleCBjMmZlNWE4OThk
+YzcuLjFkZWM2MDMwMTJiYSAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
+bHRlay9ydHc4OS9wY2kuYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
+dzg5L3BjaS5jDQo+IEBAIC00MzQxLDYgKzQzNDEsMTMgQEAgc3RhdGljIGludCBfX21heWJlX3Vu
+dXNlZCBydHc4OV9wY2lfcmVzdW1lKHN0cnVjdCBkZXZpY2UgKmRldikNCj4gIFNJTVBMRV9ERVZf
+UE1fT1BTKHJ0dzg5X3BtX29wcywgcnR3ODlfcGNpX3N1c3BlbmQsIHJ0dzg5X3BjaV9yZXN1bWUp
+Ow0KPiAgRVhQT1JUX1NZTUJPTChydHc4OV9wbV9vcHMpOw0KPiANCj4gK3N0YXRpYyBjb25zdA0K
+PiArc3RydWN0IHJ0dzg5X2RsZV9tZW0gKnJ0dzg5X3BjaV9vcHNfZGxlX21lbShzdHJ1Y3QgcnR3
+ODlfZGV2ICpydHdkZXYsDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgdTggcXRhX21vZGUpDQo+ICt7DQo+ICsgICAgICAgcmV0dXJuICZydHdkZXYtPmNoaXAt
+PmRsZV9tZW1fcGNpZVtxdGFfbW9kZV07DQo+ICt9DQo+ICsNCj4gIGNvbnN0IHN0cnVjdCBydHc4
+OV9wY2lfZ2VuX2RlZiBydHc4OV9wY2lfZ2VuX2F4ID0gew0KPiAgICAgICAgIC5pc3JfcmR1ID0g
+Ql9BWF9SRFVfSU5ULA0KPiAgICAgICAgIC5pc3JfaGFsdF9jMmggPSBCX0FYX0hBTFRfQzJIX0lO
+VF9FTiwNCj4gQEAgLTQ0MTMsNiArNDQyMCw3IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgcnR3ODlf
+aGNpX29wcyBydHc4OV9wY2lfb3BzID0gew0KPiAgICAgICAgIC5kaXNhYmxlX2ludHIgICA9IHJ0
+dzg5X3BjaV9kaXNhYmxlX2ludHJfbG9jaywNCj4gICAgICAgICAuZW5hYmxlX2ludHIgICAgPSBy
+dHc4OV9wY2lfZW5hYmxlX2ludHJfbG9jaywNCj4gICAgICAgICAucnN0X2JkcmFtICAgICAgPSBy
+dHc4OV9wY2lfcmVzZXRfYmRyYW0sDQoNCmFuIGVtcHR5IGxpbmUNCg0KPiArICAgICAgIC5kbGVf
+bWVtICAgICAgICA9IHJ0dzg5X3BjaV9vcHNfZGxlX21lbSwNCj4gIH07DQo+IA0KDQpbLi4uXQ0K
+DQoNCg==
 
