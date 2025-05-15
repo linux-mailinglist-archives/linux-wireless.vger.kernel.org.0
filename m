@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-22996-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-22995-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38660AB8360
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 May 2025 11:56:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D8AAB8321
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 May 2025 11:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B1D09E0734
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 May 2025 09:55:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6988A3A2B67
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 May 2025 09:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E831529615A;
-	Thu, 15 May 2025 09:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B4BEBE;
+	Thu, 15 May 2025 09:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="dIlwThY8"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="IrKcFo/v"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433EE1FCFFC
-	for <linux-wireless@vger.kernel.org>; Thu, 15 May 2025 09:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB3D1F2BAD
+	for <linux-wireless@vger.kernel.org>; Thu, 15 May 2025 09:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747302965; cv=none; b=MjI5agnrQdztrdRhQxH80o1Nc7/GrpCPMRusAsO5NB2M3/+K50/Tvoga28K5A6vUZzhx0WsEfz1mES7lnfrBPhT4Tzax/yZMiwlNQafaXkKziKqlH3neG+b+Xbl/PkhFsDeRRz+c+bmHiFHTE2FDrjgwYUjQOiOIK9liZqUmheM=
+	t=1747302330; cv=none; b=iD8pwt32feLZEJqqVFMoN1XQZnnBKfeyw33PnRdywaJ6UDxNLOYwuUHqO0XIcoX12D2L40/UMnwHugMXiTmKe0V4Yi076IVEKNJ5qjHlj1dTrUqMl9yjbm8yCm/upB6NLB5j8PtTmBS2Om90GK949ctpX1iP/u1iVnbmw0doiTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747302965; c=relaxed/simple;
-	bh=HFjFiRxebsClyeFgsBdJmFhbbMXE9hiSk2rGcIZe1ug=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=JwtvajmpX4qUyT8x/fxoCu4RlG1/GYuw+sFl/REBLBHlNFIsZ+MEtLIgWzA9E5hmmYgZjeeRP9+X5+UE6vFPyJ2yIeADqmqiEexSQLlgu2dBO8wCdsrZT3USxk+JOAK3JaGaSwqauobRu+JBZ7ROhIcq5bbXWBI2fpUXUU/ZWqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=dIlwThY8; arc=none smtp.client-ip=46.4.11.11
+	s=arc-20240116; t=1747302330; c=relaxed/simple;
+	bh=EtEWVBgGhpQEWmUPQivTmhUR1suADTuweZvtxFbYREM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=L8nWLX8ljNeUGh+pPuZlpxFtDLpHz67pdluFPEH00s1EZZe4bKxWQT8/Z+nJKQJzxhe2pQ11F9pvFMR8IShdaKwUMk7PDP0hxICQDC71JqwzV20MNEJgwgQtJi3JKZ93GkyubAkR3lIp5/HVC8vC8POBZeGmgxSB4BeG4HEMw0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=IrKcFo/v; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -36,17 +36,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
 	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=czbSEk6aan1ZweJ18iqWzDGP7KorHUieh0vLuUipyTw=; b=dIlwThY8Gr//P2Sq4jDmBn9WB/
-	EIRs0xx2C2Z3Rer/3iWhW5F0tj4S94gJnk05yYXD5kHYqcRBAq8fOLedNb1DnSTx88YOw0mGQcNbo
-	uZmC+VoaQQ+6QG1cIP1nzcF6HNhwY6VJS6l89lO0DFgL6EQZPVnGifnK0XY/KnhvgnuU=;
+	bh=OjNbXp4o+d5z4qmhOicoXHTWTVITnOM/szBBVuA79ZQ=; b=IrKcFo/vadQxQlMJBnoGmf8KLt
+	yQ4Y7WZOIJiDM65EM6xZkwLGQ/yEYPOXZu87dzzY+aTlepqor4V3LdWxlPWHVfXwKvqzR9Bl08/nX
+	gdLSgltZG1keV8K/OsKxPiOJo8jUb2zNg+NIMW5+j8ZZPlNhJWaqu8EmJ9dA3jHxE1u8=;
 Received: from p5b206e31.dip0.t-ipconnect.de ([91.32.110.49] helo=nf.local)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1uFV2l-004eZ4-2n;
-	Thu, 15 May 2025 11:38:23 +0200
-Message-ID: <8835e42c-e6d8-4025-ad91-cd81915a5912@nbd.name>
-Date: Thu, 15 May 2025 11:38:23 +0200
+	id 1uFV9Y-004egR-2w;
+	Thu, 15 May 2025 11:45:24 +0200
+Message-ID: <3b526d06-b717-4d47-817c-a9f47b796a31@nbd.name>
+Date: Thu, 15 May 2025 11:45:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,10 +55,10 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Felix Fietkau <nbd@nbd.name>
-Subject: pull request: mt76-fixes 2025-05-15
+Subject: pull request: mt76-fixes 2025-05-15 v2
 To: linux-wireless <linux-wireless@vger.kernel.org>
-Content-Language: en-US
 Cc: Johannes Berg <johannes@sipsolutions.net>
+Content-Language: en-US
 Autocrypt: addr=nbd@nbd.name; keydata=
  xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
  ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
@@ -87,7 +87,7 @@ Content-Transfer-Encoding: 7bit
 
 Hi,
 
-Here's my mt76-fixes pull request for 6.15
+Here's an updated version of my mt76-fixes pull request for 6.15
 
 - Felix
 
@@ -99,19 +99,24 @@ are available in the Git repository at:
 
    https://github.com/nbd168/wireless tags/mt76-fixes-2025-05-15
 
-for you to fetch changes up to 78ab4be549533432d97ea8989d2f00b508fa68d8:
+for you to fetch changes up to 0aa8496adda570c2005410a30df963a16643a3dc:
 
-   wifi: mt76: disable napi on driver removal (2025-05-15 11:22:41 +0200)
+   wifi: mt76: mt7925: fix missing hdr_trans_tlv command for broadcast wtbl (2025-05-15 11:42:12 +0200)
 
 ----------------------------------------------------------------
 mt76 fix for 6.15
 
-- disable napi on driver removal
+- disable napi on driver removal to fix warning
+- fix multicast rx regression on mt7925
 
 ----------------------------------------------------------------
 Fedor Pchelkin (1):
        wifi: mt76: disable napi on driver removal
 
-  drivers/net/wireless/mediatek/mt76/dma.c | 1 +
-  1 file changed, 1 insertion(+)
+Ming Yen Hsieh (1):
+       wifi: mt76: mt7925: fix missing hdr_trans_tlv command for broadcast wtbl
+
+  drivers/net/wireless/mediatek/mt76/dma.c        | 1 +
+  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++--
+  2 files changed, 3 insertions(+), 2 deletions(-)
 
