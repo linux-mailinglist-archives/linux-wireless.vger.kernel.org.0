@@ -1,164 +1,162 @@
-Return-Path: <linux-wireless+bounces-23034-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23035-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48386AB8E6D
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 May 2025 20:04:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E1AAB8E75
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 May 2025 20:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D99A169610
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 May 2025 18:04:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A86B3460DB6
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 May 2025 18:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2DB1EA7F9;
-	Thu, 15 May 2025 18:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B0B25A633;
+	Thu, 15 May 2025 18:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="i8ZBX1bS"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jFC/KlBy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6765125B1E0
-	for <linux-wireless@vger.kernel.org>; Thu, 15 May 2025 18:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E971EA7F9
+	for <linux-wireless@vger.kernel.org>; Thu, 15 May 2025 18:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747332239; cv=none; b=Kc5dE5PwQUxlkFkZxXxbR64yaQ+uIcjd4ZfrRPvJ7AAsb4cXngBoXmHFZwA+qEZOD/shBjMJ0R9+lVhL5x5N23ABLCAQVB32QOnuvs7vwzSjrq+ZZiA31tuN9bo/K4XxYrxJ+8F8/SURARj2lTokRGrwBacBKF/IN3a2ronuYVo=
+	t=1747332323; cv=none; b=SxfKUZzKNLGea5PGdrafphx8JiDW0t69zWMlGBBrppuU+A4BmLdAKGTyFfN5qijAQ3MW46YepfRsP94XqBkG+7APXYUs/HzvQF71r5kniY5aCRATD4XcxiVOO29qg6YkQqVG9WKVbBAjp6DMttC42DLjE0UdiDs+nUXpiZsjfi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747332239; c=relaxed/simple;
-	bh=b1iBNPEo6FAn17Wq9FdjzD2hyaWi/P1zDWkSLUdNWTk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RnUuFS3z23TvVGmqy/D5r2rTtRLv2TslD/qTniyNVHhbDsNMRoPSEFvDOiqI9EcB+upnUGSRyzreY31L32t2AMCBrxvpqgsbbAunpbQjfU4pMJ35NgeGEILHnFy2KoDGo/cPjBAqR2loR1wP2ReY4dIYjm9JfpOKXqDo3TEI4k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=i8ZBX1bS; arc=none smtp.client-ip=185.84.6.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
-Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:57846 helo=webmail.newmedia-net.de)
-	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
-	(Exim 4.97.1)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1uFcvp-0000000029E-17yJ;
-	Thu, 15 May 2025 20:03:45 +0200
-X-SASI-Hits: BODYTEXTP_SIZE_3000_LESS 0.000000, BODY_SIZE_2000_2999 0.000000,
-	BODY_SIZE_5000_LESS 0.000000, BODY_SIZE_7000_LESS 0.000000,
-	CTE_7BIT 0.000000, DKIM_ALIGNS 0.000000, DKIM_SIGNATURE 0.000000,
-	HTML_00_01 0.050000, HTML_00_10 0.050000, IN_REP_TO 0.000000,
-	LEGITIMATE_SIGNS 0.000000, MSGID_SAMEAS_FROM_HEX_844412 0.100000,
-	MSG_THREAD 0.000000, MULTIPLE_RCPTS 0.100000, MULTIPLE_REAL_RCPTS 0.000000,
-	NO_CTA_FOUND 0.000000, NO_CTA_URI_FOUND 0.000000, NO_FUR_HEADER 0.000000,
-	NO_URI_HTTPS 0.000000, OUTBOUND 0.000000, OUTBOUND_SOPHOS 0.000000,
-	REFERENCES 0.000000, SENDER_NO_AUTH 0.000000, SUSP_DH_NEG 0.000000,
-	USER_AGENT 0.000000, __ANY_URI 0.000000, __BODY_NO_MAILTO 0.000000,
-	__BOUNCE_CHALLENGE_SUBJ 0.000000, __BOUNCE_NDR_SUBJ_EXEMPT 0.000000,
-	__BULK_NEGATE 0.000000, __CC_NAME 0.000000, __CC_NAME_DIFF_FROM_ACC 0.000000,
-	__CC_REAL_NAMES 0.000000, __CT 0.000000, __CTE 0.000000,
-	__CT_TEXT_PLAIN 0.000000, __DKIM_ALIGNS_1 0.000000, __DKIM_ALIGNS_2 0.000000,
-	__DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000, __DQ_NEG_IP 0.000000,
-	__FORWARDED_MSG 0.000000, __FROM_DOMAIN_NOT_IN_BODY 0.000000,
-	__FUR_RDNS_SOPHOS 0.000000, __HAS_CC_HDR 0.000000, __HAS_FROM 0.000000,
-	__HAS_MSGID 0.000000, __HAS_REFERENCES 0.000000,
-	__HEADER_ORDER_FROM 0.000000, __IN_REP_TO 0.000000, __MAIL_CHAIN 0.000000,
-	__MIME_BOUND_CHARSET 0.000000, __MIME_TEXT_ONLY 0.000000,
-	__MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000, __MIME_VERSION 0.000000,
-	__MOZILLA_USER_AGENT 0.000000, __MSGID_HEX_844412 0.000000,
-	__MULTIPLE_RCPTS_CC_X2 0.000000, __NO_HTML_TAG_RAW 0.000000,
-	__OUTBOUND_SOPHOS_FUR 0.000000, __OUTBOUND_SOPHOS_FUR_IP 0.000000,
-	__OUTBOUND_SOPHOS_FUR_RDNS 0.000000, __RCVD_PASS 0.000000,
-	__REFERENCES 0.000000, __SANE_MSGID 0.000000, __SCAN_D_NEG 0.000000,
-	__SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
-	__SCAN_D_NEG_HEUR2 0.000000, __SUBJ_ALPHA_END 0.000000,
-	__SUBJ_ALPHA_NEGATE 0.000000, __SUBJ_REPLY 0.000000,
-	__TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
-	__TO_NAME_DIFF_FROM_ACC 0.000000, __TO_REAL_NAMES 0.000000,
-	__URI_NO_MAILTO 0.000000, __URI_NO_WWW 0.000000, __USER_AGENT 0.000000,
-	__X_MAILSCANNER 0.000000
-X-SASI-Probability: 8%
-X-SASI-RCODE: 200
-X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2025.5.15.172728
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
-	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=sBz/Ja5f1gktQ1PgWCfZnCZrLBBYmcdP46pxidQq15E=;
-	b=i8ZBX1bS8kaFDcg+kqXDePGDnW2ohpUnwNk+d89kfDSpxnzVnSWaYNMGBLu0kd/W1mrxZXdaDvSE8fUYcj+qjvAWeVJShNWQoFTsyCyRxDfWfcoc2AO9U1oagtIPm9rXrhspJx+MVtUzIyJn5PBXHrGHiW6lGWT4dusZXfVZV3g=;
-Message-ID: <2cf0a878-1ced-43e4-b8bc-f0dff9c56dd9@dd-wrt.com>
-Date: Thu, 15 May 2025 20:03:41 +0200
+	s=arc-20240116; t=1747332323; c=relaxed/simple;
+	bh=ROFLMNaRFR9x/wyzv/emjASjuPB47MFbP09DEuBS5HM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Ks4pwqqHSor+iIKp2qrdfa/ECSHac27wvwJNPtkAh28yNnoECTUG0KOkzC7+sp+HzjD6do1L3u7BJ2W6s5s+v5veIsF5OAf6cWbwXRHS2WsBZSsyOMBLNjAuiEKrbeGtBl9czxO1Ts/iW8ZEduLiUQYkdpC+YuCNbiA5WzNZE7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jFC/KlBy; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FEFT9A025111
+	for <linux-wireless@vger.kernel.org>; Thu, 15 May 2025 18:05:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	YGTbjpAygM2J0KwEeWYgPo4Eet0TyJJhore/XR7KdgQ=; b=jFC/KlByBPlkzI/O
+	uZtXIqLuoFLxOn8kTxiAnIlkEUIWCyQN6RLfEk0+tVM/e5KqqIHeRiMZa8KcV9Wy
+	6DFybNa1siSyQvLrDhEH30CvkLmUuqfwU6HK/iObosFt2JnQsj9C+aHobOLsq5pe
+	AQ0zvQJ4RupCTnoeiaA7I34JeA4OC9gG6RTy1Zb/ym2oi8EC8sd1P+1ii27XmZmb
+	UfvlGvNObzJAgz3hV+W76SoezAbLjL7HBu3174XlZYxXI+/P/ob0J0bSvcQoDBGq
+	XkwpzgjPKHQM2NmU/zjSzqm1qS1JKqRkqf7uW+SXqnh4e3ljYSSOoPsbemM+Zw+V
+	uiX+CQ==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46mbcmyc2g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 15 May 2025 18:05:21 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b269789425bso1244164a12.0
+        for <linux-wireless@vger.kernel.org>; Thu, 15 May 2025 11:05:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747332320; x=1747937120;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YGTbjpAygM2J0KwEeWYgPo4Eet0TyJJhore/XR7KdgQ=;
+        b=ss2TmHgUIsbERBKgjPVXUuesMJgb2ZnpvBGh4p8MJEUOk2W6uujVbSF3ONzC8mEUr+
+         eJxjQj8M6x+QyPe4QE6jt09tupNHV5P7F42KNrAiBKAgOAF7F51k9VNT2vXZqXIh0mJa
+         /7tkuGh0a45TBYRmTR2gyt88tF2OG/tZsQDHcEjJHbQCWjB/dWnl8ZmYYMoiYt9GPSc2
+         Res+PaAWl2cU968KD/SDpt1ArQIFXtHmnhzAyEZpOkpXSvowp/p9xe4A9P2ia9tT64c5
+         2btW9V2gZI7Uoy9EVAgYG8T59wmd/Gl1lf8YjaUvB606vHhrv+UhyiMbC8xWd0DghonQ
+         jTjw==
+X-Gm-Message-State: AOJu0YyFYFqwxFF9sRBgCxBh9SLzvlqx0IHSX+AOHzQe3eLfyTFsHJZS
+	+qcwESqRaHbYyHkMiNfvXlYZ1jvRUK515rDi+tT9D0CWwb/N4Zx7BtK0aPyLpOlHlAU5dWpPaMB
+	79eqk1xw7jWcJ82Hl2Zk+3jkV2QHDqOQcvyvHSv7p+sJIYKx3aZ6km5vOaV2t2w+uuYMhNWPpRz
+	aGiw==
+X-Gm-Gg: ASbGncst0rexRV0SfZA8/dEhQU68O9Me0pwidmvmpw/uDjUi4HKufDYhc7w1SPfjuXi
+	De7wnZRWT1B42/BUnOoIhuDWskjGBCFn39mW5I2PkGzYhynKSceOSp1erbSB5KkFK63H3dkXItb
+	7t43iGYNPZYPWfv8R4h3VR3JYeUzkqVah3fIyNIhH7ORcP2yf+8OD/X3Qa899AHxUPx/jR9REWC
+	S4OYNDnlnVprfdKTnFs6nV1dloSmAGhTDF49++MNG/HCxLwtcZPTb/0a/Fjz7vq/YpIhv5kxORx
+	352iksPr8f9Q9Z3FLfUQWy6SleB6IiWLEinhET7SSPa2HF2hzBQ=
+X-Received: by 2002:a17:90b:2d4c:b0:301:1c11:aa74 with SMTP id 98e67ed59e1d1-30e7d5a84a3mr435247a91.28.1747332319773;
+        Thu, 15 May 2025 11:05:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGh4TYq3jsoeNL50CmSxPGpRbpni09FC9zVNSR1KqfJ/OUNHnXz0I9U6uNc4wtsY+Glw2D+AA==
+X-Received: by 2002:a17:90b:2d4c:b0:301:1c11:aa74 with SMTP id 98e67ed59e1d1-30e7d5a84a3mr435185a91.28.1747332319210;
+        Thu, 15 May 2025 11:05:19 -0700 (PDT)
+Received: from [192.168.29.88] ([49.37.212.209])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30e7b4dda42sm198205a91.35.2025.05.15.11.05.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 May 2025 11:05:18 -0700 (PDT)
+Message-ID: <535df7b7-def9-4aac-8118-04e2fd0239d9@oss.qualcomm.com>
+Date: Thu, 15 May 2025 23:35:15 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: Question about TX power
-To: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>, ath11k@lists.infradead.org,
- linux-wireless@vger.kernel.org
-References: <aB3AK83USvOdTvDv@FUE-ALEWI-WINX>
- <73b2bd16-66aa-405c-acda-237d56be63dd@dd-wrt.com>
- <aB3uKfu3frLyJ/2c@FUE-ALEWI-WINX>
- <592e4722-d7e1-4202-897f-e2a522074fe6@dd-wrt.com>
- <aCG2q2vNcLe4z/ff@FUE-ALEWI-WINX>
-From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-In-Reply-To: <aCG2q2vNcLe4z/ff@FUE-ALEWI-WINX>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next 1/2] wifi: mac80211: validate SCAN_FLAG_AP
+ in scan request during MLO
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250513-bug_fix_mlo_scan-v1-0-94235bb42fbe@oss.qualcomm.com>
+ <20250513-bug_fix_mlo_scan-v1-1-94235bb42fbe@oss.qualcomm.com>
+ <16499ad8e4b060ee04c8a8b3615fe8952aa7b07b.camel@sipsolutions.net>
+ <26a9e68d-bce6-4bba-871d-13e2aeee3fed@oss.qualcomm.com>
+ <296b9aa887022258f8ec8e4f352822c24b41ab82.camel@sipsolutions.net>
+ <77fe950d-c5af-4c28-8b0b-bd1aa08d885a@oss.qualcomm.com>
+ <d211e634532031322a77053ff912394714b5ff35.camel@sipsolutions.net>
+ <772514cb-298a-40b0-9a33-a7dfcf037bd1@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <772514cb-298a-40b0-9a33-a7dfcf037bd1@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass (webmail.newmedia-net.de: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=s.gottschall@dd-wrt.com; helo=webmail.newmedia-net.de;
-X-SA-Exim-Connect-IP: 127.0.0.1
-X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
-X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
-X-NMN-MailScanner-Information: Please contact the ISP for more information
-X-NMN-MailScanner-ID: 1uFcvm-000Bbt-R3
-X-NMN-MailScanner: Found to be clean
-X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
-X-Received:  from localhost ([127.0.0.1] helo=webmail.newmedia-net.de)
-	by webmail.newmedia-net.de with esmtp (Exim 4.72)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1uFcvm-000Bbt-R3; Thu, 15 May 2025 20:03:42 +0200
+X-Proofpoint-ORIG-GUID: YexLwqX9wPchhgvvwozSacAKOZ85Rpzq
+X-Authority-Analysis: v=2.4 cv=HZ4UTjE8 c=1 sm=1 tr=0 ts=68262ce1 cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=XZDIsMRYGlSp8tquX/g+9Q==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=YmykfdemIhMYyei05fwA:9 a=QEXdDO2ut3YA:10 a=3WC7DwWrALyhR5TkjVHa:22
+X-Proofpoint-GUID: YexLwqX9wPchhgvvwozSacAKOZ85Rpzq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE3OCBTYWx0ZWRfX1xgT6jXwJUBq
+ A4GFsPjcBss16EiVSIm3NYdwMuMLFFOmYcOQMPFCS4ITVMj/8PbIAqXJXbOlLI4Hh2dv2kYwA2P
+ ntg8v2kn7nkfhNLfpxlMPnJGs4kMt/bRg3sMTKo84rxQ4Ua7SDJtg1435tvX7P4iqDnzCMnWzcs
+ dbOA1lpzq/+Uq2GojCVY/W7WaC0JwmsE//YP/Q6rrVwO52l++oJLE1xCPtem1MSZ6Xt39gmaKsB
+ iBhP2Fvt76MqcYruBtRRgm0QRadPdyBdrbSCwE+ZwCvUellU6Krsylb9v5Pv9K5V2yEzt5xzJl8
+ zvVZhxW/Eipb6RORJ9dAeW2IYbfy1paBrk8CklyUxKEU/QoswfagGQqSRGL4uaKPpYZ9MVegKjT
+ CfUgMy7USFohMtkaXvu1AFn9GiX2OItGvCsWLkjyA/Qy44YjX6KKEa1r9bWLxhnVhOumv0eO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-15_08,2025-05-15_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0 spamscore=0 clxscore=1015 priorityscore=1501
+ suspectscore=0 mlxscore=0 mlxlogscore=714 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505150178
 
-
-Am 12.05.2025 um 10:51 schrieb Alexander Wilhelm:
-> Am Fri, May 09, 2025 at 03:49:55PM +0200 schrieb Sebastian Gottschall:
->> Am 09.05.2025 um 13:59 schrieb Alexander Wilhelm:
->>> Am Fri, May 09, 2025 at 12:54:47PM +0200 schrieb Sebastian Gottschall:
->>>> Am 09.05.2025 um 10:43 schrieb Alexander Wilhelm:
->>>>> Hello devs,
->>>>>
->>>>> I'd like to understand how TX power setting works on ath11k devices. For example
->>>>> when I'm using channel 36 for ETSI based regulatory domain, I can set up to 23
->>>>> dBm. But then I get only 20 dBm as a result. On different channels and/or
->>>>> regulatory domains I get different reductions. I tried to follow the source
->>>>> code. As far as I understood is that 'ath11k_mac_txpower_recalc' sets the
->>>>> correct values and 'ath11k_mac_op_get_txpower' return the different one.
->>>>>
->>>>> My question is where this reduction offset is encoded. Is it in the module's
->>>>> firmware or is it part of the boardfile? Thank you in advance.
->>>>>
->>>>>
->>>>> Best regards
->>>>> Alexander Wilhelm
->>>> the boardfile contains chipset specific calibration data which also defines
->>>> the hardware power limits (more specific data also included in the on board
->>>> calibration flash of the device or if its a router, in flash memory of the
->>>> router itself. in addition it includes a regulatory database which is used
->>>> by the firmware for managing the total power. you have also to consider that
->>>> the 23dbm are specified without antenna gain.
->>>> so if the antenna gain is 3 dbm, you get 20 dbm in total. this antenna gain
->>>> may again be specified in the boardfile.
->>>> so you will not find your answers in any sourcecode. its all encoded in
->>>> binary data.
->>>>
->>>> Sebastian
->>>>
->>> Alright, thank you Sebastian. Since I'm not using any calibration data on my
->>> router/AP device, all data come from the boardfile. I've also understood that
->>> the power limit reduction is related to antenna gain. I'll ask the radio module
->>> manufacturer to create another boardfile for me that matches the required
->>> antenna gain for my router/AP device.
->> my answer might be not accurate here. which chipset we are talking about for
->> ath11k?
-> I'm using QCN9074 chipset.
-okay. then we are at least talking about a common chipset i was talking 
-about.
-whats the vendor and exact name of that device? i have some sorts of 
-boardfiles from vendors collected.
->
->>> Best regards
->>> Alexander Wilhelm
+On 5/13/2025 4:26 PM, Aditya Kumar Singh wrote:
+> On 5/13/2025 4:18 PM, Johannes Berg wrote:
+>> On Tue, 2025-05-13 at 16:02 +0530, Aditya Kumar Singh wrote:
 >>>
+>>> Okay sure let me first send a clean up. So,
+>>> ieee80211_num_beaconing_links() should return 1 for non-MLO as well?
+>>>
+>>
+>> That would seem logical to me? For this and many other things non-MLO is
+>> mostly equivalent to just having a single link (apart from the address
+>> translation.)
+> 
+> Yeah in a way true only.
+> 
+>>
+>>> And callers should test for == 1 instead of <= 1.
+>>
+>> Not even sure that matters enough to need to change?
+> yeah can be left as it is. Sure then I will change the function alone to 
+> return 1 for non-MLO case as well.
+> 
+> Thanks for the inputs :)
+> 
+
+Done. Here is the clean up patch for review -
+Link: 
+https://lore.kernel.org/all/20250515-fix_num_beaconing_links-v1-1-4a39e2704314@oss.qualcomm.com/
+
+-- 
+Aditya
 
