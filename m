@@ -1,61 +1,62 @@
-Return-Path: <linux-wireless+bounces-23059-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23060-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A557BAB970B
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 10:01:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD5BAB971F
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 10:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B4253A35AD
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 08:01:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E38B7ADE7F
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 08:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C250225A35;
-	Fri, 16 May 2025 08:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842FB21CC4D;
+	Fri, 16 May 2025 08:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="NckPpyb9"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="g2cpSz0Z"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC49320B807;
-	Fri, 16 May 2025 08:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00F91F866B;
+	Fri, 16 May 2025 08:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747382479; cv=none; b=FoKFV2Q77hFqR9yd+VFjHMgfFRXaBduUFIhy88fGwHgmSgjAriy/LzbJ5hU3WyVKY1778lMWOEZ28saCf/+Xmlmx1EjLJCIDxzyvIcZ6/HifmmA9XugG4054CYv2f1Bdd/HXGa8HhGoJzN3wKjt4noLjHxNP3mgdPyfTFdbL/18=
+	t=1747382740; cv=none; b=h9oRpdcKAEVt9StgKGraeaW3Y6GNoCl72DETiOxYqw6Ak9SnulbrvOadZsHavJnNiuYmzAGgzgA1jU9Sv8YI+b/8RJtzfvQXmyvKIErXIYBCgsl5/jyKezz58GAwIOKEpsbqS36rG1Xu0fTGSiryZpVR93MU39eh6UJW3/oAmJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747382479; c=relaxed/simple;
-	bh=wIjTiwi1RCwoRNBe09BLJXxzhYLSf+aCXPd/oQh3fI0=;
+	s=arc-20240116; t=1747382740; c=relaxed/simple;
+	bh=4Dur5LcJY0Rru4CF6YGZCkt+dSlj3SfRF3eQtTCBifI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=U+hJtlG0MCPCXt4hRTSKZb//QS3/z61GkCTed6On+OBd/hklpzSoyHJyZ4oRduDM217RF0muAsUBKcQR3AmUsyMbuBtKpF0EdgW8WUnNuGGiYSv/YpTrwd0ySLcl/22HtF6Pf2tAz1hnJc78SRMvdcgVsYSEisAzlF7ongLT+Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=NckPpyb9; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=tiulRXR1eLBnDsX6BXP4dzlSojcZ7g5v9vtJNh7gsHl0kkUlas5G5fDFbQiH6ookEgZQ4WulmPCLFoJFrcWVEB+FQFXdjv0UsuiQtl7Th/eUYA3e6D0OUrRlyM6NhyZPDy86Kn0odXbVEGcsSXdTsgSGRV40ivq9/lvYgZ9KmjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=g2cpSz0Z; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=X1HXctmWs4+Ph3l5TlPhcon/Scqg6QqLW4qi06AARVA=;
-	t=1747382477; x=1748592077; b=NckPpyb9AnoSGYjUTsdxMl2Wx52BUVz7npBhjgQs+hRJA9k
-	uXvLNAIeoYE0XPPT6RNkPUkL0Ww0hxmuhdL1r7G4h5VWx9g7kx5JV9OzjGVeyP12Ho0aiZBt9RKN8
-	hcChsB0I/B5A7W3SZIbuXOmWshJjvfDgHYPxbKHuwhPZo6C1uzQ+L5bs+YLvn4TV7iBsnOn8fFLxJ
-	miF2tHdz6LbQ8V8lgzhOizDJ9Wkkqtk0MpCc0JWiMcNpkZXXk+/aM52oF2KrS4rv4ineZAECRx/fn
-	ZyxjgPB7lY+XmtczTQOtRIG4lTuR4ltQd2Q66qhpL7/5jo2f65d5hXr1mesdOwzg==;
+	Resent-Cc:Resent-Message-ID; bh=e0NeXVJw3ujz9iV+I5DNa6JpkKtpG1sdmlMDy54FzXM=;
+	t=1747382739; x=1748592339; b=g2cpSz0ZjlM60g+KQ3HlVOOpy5bfzGGUNh5L6ChryiN92z7
+	/cwqnEW1TcOfUN2C9is8JxXPfYwcn0rgLOFHo41//C1ziM3sip3ddM/XaYj93edcMKF35EhIggXQc
+	7Yb7QvjvLVCnZRHHkJ1bFMT2dblCcWpbiXAgq04a9cZ+V9PaPi0490TeEBilGdHKhKCKFZNy2NhR4
+	/p7ewedond1SCiPjFf67P1s/zPW8BRWKVa2XIxmKpyetPGIwmVf1N4nPcMVZUFNz0Jn0GGwNzXLIm
+	4TZh6W51rLjAYBktzVKL/yyShwdW0CO5m9SmbSGQCRIgh3BISXQ6/G94bXODn8hg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.1)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uFq0G-0000000E1g6-0yF3;
-	Fri, 16 May 2025 10:01:12 +0200
-Message-ID: <d23e55879c6d8b6cabcc8357f153ae0622a4c53a.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next 2/3] wifi: mac80211: Allow scan on a radio
- while operating on DFS on another radio
+	id 1uFq4V-0000000E2Jf-0sHu;
+	Fri, 16 May 2025 10:05:35 +0200
+Message-ID: <fb6cb470c66e215c0fde3652c1986d604731ac94.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next 3/3] wifi: mac80211: Allow DFS/CSA on a
+ radio if scan is ongoing on another radio
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 16 May 2025 10:01:11 +0200
-In-Reply-To: <20250514-mlo-dfs-acs-v1-2-74e42a5583c6@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, Aditya
+ Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Date: Fri, 16 May 2025 10:05:34 +0200
+In-Reply-To: <20250514-mlo-dfs-acs-v1-3-74e42a5583c6@quicinc.com>
 References: <20250514-mlo-dfs-acs-v1-0-74e42a5583c6@quicinc.com>
-	 <20250514-mlo-dfs-acs-v1-2-74e42a5583c6@quicinc.com>
+	 <20250514-mlo-dfs-acs-v1-3-74e42a5583c6@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -68,72 +69,50 @@ MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
 On Wed, 2025-05-14 at 16:58 +0530, Raj Kumar Bhagat wrote:
-> Currently, in multi-radio wiphy cases, if one radio is operating on a DFS
-> channel, -EBUSY is returned even when a scan is requested on a different
-> radio. Because of this, an MLD AP with one radio (link) on a DFS channel
-> and Automatic Channel Selection (ACS) on another radio (link) cannot be
-> brought up.
 >=20
-> In multi-radio wiphy cases, multiple radios are grouped under a single
-> wiphy. Hence, if a radio is operating on a DFS channel and a scan is
-> requested on a different radio of the same wiphy, the scan can be allowed
-> simultaneously without impacting the DFS operations.
->=20
-> Add logic to check the underlying radio used for the requested scan. If t=
-he
-> radio on which DFS is already running is not being used, allow the scan
-> operation; otherwise, return -EBUSY.
+> +static bool
+> +__ieee80211_is_scan_ongoing(struct wiphy *wiphy,
+> +			    struct ieee80211_local *local,
+> +			    struct cfg80211_chan_def *chandef)
 
-So while I agree in principle, I think this needs to be more carefully
-constructed because it relies on an unstated (?) assumption that each
-radio is going to ever be used for scanning on a certain band. That
-seems to make sense, and a radio will certainly only ever be able to
-_operate_ on the frequencies listed for it (due to chanctx etc.), but is
-it really true that it will never be able to operate at all on other
-frequencies?
+Any particular reason or the __ name? We usually have that for internal
+locking-related things, but here doesn't matter, and there's no non-__
+version either?
 
-I'm not sure I find the notion of e.g. having a 5 and 6 GHz radio that
-are used for operating on those bands, but being able to scan 5 GHz
-channels using the 6 GHz radio completely unimaginable? Maybe it is
-though and I'm just overly paranoid?
-
-We could also just leave that up to the drivers, of course, but then I
-think we should _state_ this assumption somewhere in the docs/header
-file(s)?
-
-> +bool ieee80211_is_radio_idx_in_scan_req(struct wiphy *wiphy,
-> +					struct cfg80211_scan_request *scan_req,
-> +					int radio_idx)
 > +{
-> +	struct ieee80211_channel *chan;
-> +	int i, chan_radio_idx;
+> +	struct cfg80211_scan_request *scan_req;
+> +	int chan_radio_idx, req_radio_idx;
+> +	struct ieee80211_roc_work *roc;
+> +	bool ret =3D false;
 > +
-> +	if (!scan_req)
-> +		return false;
+> +	if (!list_empty(&local->roc_list) || local->scanning)
+> +		ret =3D true;
+> +
+> +	if (wiphy->n_radio < 2)
+> +		return ret;
+> +
+> +	/*
+> +	 * Multiple HWs are grouped under same wiphy. If not scanning then
+> +	 * return now itself
+> +	 */
+> +	if (!ret)
+> +		return ret;
 
-That seems overly paranoid, or maybe it should be WARN_ON()? I mean,
-asking something about a scan request and then not giving one is just
-the wrong thing to do in the first place, no?
-
-And if you're going to be paranoid then this probably shouldn't be
-called with an invalid/negative radio_idx either :)
+I don't fully understand this logic, and certainly not the comment. You
+can certainly "return false" here anyway or something. And initialize
+ret =3D list_empty || scanning or something, the whole thing is hard to
+follow?
 
 
-> +	for (i =3D 0; i < scan_req->n_channels; i++) {
-> +		chan =3D scan_req->channels[i];
-> +		chan_radio_idx =3D cfg80211_get_radio_idx_by_chan(wiphy, chan);
-> +		/*
-> +		 * Skip channels with an invalid radio index and continue
-> +		 * checking. If any channel in the scan request matches the
-> +		 * given radio index, return true.
-> +		 */
-> +		if (chan_radio_idx < 0)
-> +			continue;
+> +	if (!list_empty(&local->roc_list)) {
+> +		list_for_each_entry(roc, &local->roc_list, list) {
 
-This seems ... wrong? If there's a channel in the scan request that
-didn't map to _any_ radio then how are we even scanning there? And the
-comment seems even stranger, why would we _want_ to ignore it (which it
-conveniently doesn't answer)?
+There's no point in checking first before iterating, it's perfectly fine
+to iterate an empty list and do nothing while doing so ...
+
+
+Also patch-order wise, it seems this one really should go before the
+2nd?
 
 johannes
 
