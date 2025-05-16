@@ -1,505 +1,384 @@
-Return-Path: <linux-wireless+bounces-23087-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23088-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321BBABA288
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 20:10:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6549CABA2AC
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 20:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5A7EA07579
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 18:09:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D870B7A5B56
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 18:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C224326AA99;
-	Fri, 16 May 2025 18:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31ABD27C84B;
+	Fri, 16 May 2025 18:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jFXO3F+S"
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="rZnzGgS5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644BB27703E
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 18:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B90126A0BE;
+	Fri, 16 May 2025 18:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747418981; cv=none; b=nIZ2CKYkeppFtlqIiICtLVI9dZOAX3gVrHvU8Cc6ChKP+2f0xptzM56Re66qsjceuqWclBzz7fs3JTsq7yul12dAbiybVr5FmTs0EOEo0p77iVhDwE2fkrLXkqfRU4CnXLUH1PEawhxZgSj5pzYsoETWVI9BfIb6K52Mpr2hNiA=
+	t=1747419630; cv=none; b=f4OLnmSXjs5Ofn7QnRXLcmhx4yaU+erzx1Yg8P6nn4Q1HlCRpRfEEt5FfxO7YAw/AgKKOLzjgUUV35Pvx1bIL0tQXRQUhcQb/sumb8E/ZQPZ/ItaJb2Oj6+jah5qyXHnShuyT27RiTBgdv2tvrVIyXlg2EchuF/n+rXNWZYbIgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747418981; c=relaxed/simple;
-	bh=tCYB5QEBDRZOTMmCcl95BuW6OZJ96iwrQ/HtvaYv+Ag=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HETtRV5ykKOkTX+D4cCsZQSRpyYll4Q9yWO91T3rkOkv48fyMdm0L5bMEirOpVaS8YEVjDnMXYEBTjCY2YVcitbeaO08MGOGcMPB27JTmY0VjHg7pEGqWr6Ft0tmKCab8Nqeog2uL9QdYLI1T1OYJr5k6PLlv6tqufwYiB4VfC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jFXO3F+S; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-440685d6afcso24906405e9.0
-        for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 11:09:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747418978; x=1748023778; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tfxBlFzAT+LujjVhFEwNDgs6yFpiz6R9oI+q/9AM+Uw=;
-        b=jFXO3F+S/EKQI+AwG79QD7e/MXKH9qNqM8Ua9tAiuJqohVuotXatTjYJWQfJkaxGWH
-         0tcj0/XnvyvUheMRKmNh7kAxzUpTyc3LvtJjO2q28w/fhDQOOwa3ya8BZkAqgUOhpyw3
-         09Qi1dVfB03Q7+yQLFmcKiIgWmRMoB4MSXpfAz5ghaU+gNPVwS+M/xAjKkyL7eEmMYGM
-         aBViFLEIOZaD96K1AMfhzjLmSjAH0Y+Y5ilBtYfLNY+PGvAlyvZUQDMqN3U9ZMBHsauu
-         surPRqIWLcxOyvDn9s1+KttdLdm1+FSsAg9IWoxeUMtyxWJeSEQ7SBM2dgHLId8Xg84m
-         Vm9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747418978; x=1748023778;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tfxBlFzAT+LujjVhFEwNDgs6yFpiz6R9oI+q/9AM+Uw=;
-        b=Gv0oRPVDm0fBh/6bZEKTNv1U8oFlfof70yWVB3BLYlSyHiqRGMu8HPCsaiqAR1c3t/
-         EPoMOq0MFPzGX5F9/jIbQ7swfHpM2INJwXD7ReJDA01IN5AcYvE9/loF4YZEu2f0b16P
-         qQyD3lowfQXxl50DcMzTMwynd4ScL8+q/2WZVnUKWw4q08KiccQNCgWqNwCOyTAuRIbt
-         Uj5KrN480Z7qGTN4rv2lufvsLgFif4hDAR3XfCuzLiL1dswt8xlKrLflK3IciBbcwGP3
-         tM80n7gDnnOthYwP9LGBwOgknEnaP2qarx0fzGPBA7z3PIsO+7xtqiOHG92cY3hC75Yx
-         BE2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXgRmoDIJSMHGij03plF8KR1zY17UaJCJ7EAU1UXJJr1ZUIz2zHZ6MB8mqMG0fm9TILYWzzuilOTH1M6FxILQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcCPaTmV0FCpyBxLBo/htpQNya3PVgLUNvRq1A5OKssqXxdYhv
-	a6tTLnyNzACzX7Yo3Ns502m/+ARlQms8X17fOf+vvAXnik32VnhYMM3NDHLhk6Fm3vpuLi5KhCs
-	yQH43iSAiJQusTZ7LBnGOJfbqiayIdAs=
-X-Gm-Gg: ASbGncsqH1Nv6hkNyPlWF/tCZDNmUwsVHsy7/Loixa72sLLpb+VU9yCmytwwQpZ9LZM
-	KBj6vlHn+RSzf7ZdxnpLvCkRkbKRi9RWpX7RogNl608OIa6bCivjYy+Yiz6ed0202FpvtfzrNjy
-	z3KkaO11OZ4wL+ebOkTGJupTAqoO4+a3s=
-X-Google-Smtp-Source: AGHT+IFBAn19SeUtaINrz2pgX25CNrCXYCbl7/6XRcL9NinukM+SA7TUH62MzhUuuPP4VpkV5gnLxPEB07Py9GFs7IY=
-X-Received: by 2002:a05:600c:1994:b0:442:f44f:655 with SMTP id
- 5b1f17b1804b1-442ff03c60dmr32807135e9.32.1747418977208; Fri, 16 May 2025
- 11:09:37 -0700 (PDT)
+	s=arc-20240116; t=1747419630; c=relaxed/simple;
+	bh=i22A1w5AKhlN8jaaG9r62lrwQPlASEcY4n9aoE+UlEM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=a0ZFn8PVRlDP98vzzkVQPtCpfj6eSPEKV5a2PQTnSjOcEzm5YPiAe9Ucd6itHFNUKTWEaHuilZu6kdqrXORIG7X/9u0/JMapiyWWw9ESwVhyCSKGGxit+7a8YRFRuJcO9Edts4WiSR0Y/zgS9/nd1l0tqBfHEFRtphudWptKRdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=rZnzGgS5; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1747419600; x=1748024400; i=spasswolf@web.de;
+	bh=DljaHIK2q81/b2zdkPMR/eG/mnEl+c+88QLWW5/55rA=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=rZnzGgS56uA/DN5zs9ZlzD5Wb6VNmG42X46iemZyLtsWUKfJ+IfVwtpvetZXDp3O
+	 sSfB9vZr5Ou4asJZ8/NVleYC4nDtUQYGeSUu0Yxi3J2XOBulroPtYiKjSp/keXwem
+	 h3XNWM9i415i+A9/pVJqGlhZ4TDMoku78Neo8eej6jJ1sMdGNbKOi9baZCUDVl1Ny
+	 x9AuwTy5wGUtv99JBwj63UuBu13Rwa7LUckuc54c8/3sKbIw7s8R9letEJgHDGPgj
+	 IXOgx9TVvMAkPMaUWsyiBsJ0Km7C9DeHyCoQdZyWSoC/6KHNE2okGYUucSWr803xw
+	 lx4lbFxwqwqfaWODkQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MIL4Y-1uAY9U2Vz2-00BTDU; Fri, 16
+ May 2025 20:20:00 +0200
+Message-ID: <63cc1dbf07bde2c9d14e1f86ce2c2ce26a2a9936.camel@web.de>
+Subject: Re: lockup and kernel panic in linux-next-202505{09,12} when
+ compiled with clang
+From: Bert Karwatzki <spasswolf@web.de>
+To: Johannes Berg <johannes@sipsolutions.net>,
+ "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>
+Cc: "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>, 
+ "llvm@lists.linux.dev"
+	 <llvm@lists.linux.dev>, Thomas Gleixner <tglx@linutronix.de>, 
+	linux-wireless@vger.kernel.org, spasswolf@web.de
+Date: Fri, 16 May 2025 20:19:59 +0200
+In-Reply-To: <ba97a2559cda1b14e0c9754523ff1152bdad90ef.camel@web.de>
+References: <20250513164807.51780-1-spasswolf@web.de> <87h61ojg3g.ffs@tglx>
+										 <7471a185adcc34a79c2ab8ce1e87ab922ae2232b.camel@web.de>
+									 <b644ff1714731cfb652d809d4864f0d178b24a97.camel@web.de>
+								 <2d8c1929bf5ab5260dacf9aa390456b3b49ce465.camel@sipsolutions.net>
+							 <2cad838b39f00d93319509d2a6a77a4c42c7fa92.camel@web.de>
+						 <a12c82c394e9676e32ede6b8312f821a16fef94b.camel@sipsolutions.net>
+			 <f8552d41fb7eae286803b78302390614179b33b0.camel@web.de>
+		 <8684a2b4bf367e2e2a97e2b52356ffe5436a8270.camel@sipsolutions.net>
+	 <ba97a2559cda1b14e0c9754523ff1152bdad90ef.camel@web.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMb39_ngQs8=FUML5QXMh2RmEZBZ2NwUHefhGoTkGtHat+KWJA@mail.gmail.com>
- <ef81db9e-99cb-4802-b17f-94eb623a8b32@quicinc.com> <CAMb39_m+4dNBDbkZmn-rDA7T+u84y-dx1jSfmPNWnse=R1=gCw@mail.gmail.com>
- <18788f02-e374-4aa6-ac4a-fd53bc93754c@quicinc.com> <CAMb39_=G_TEL1pbeF_PAZLQh-JOFcncSfqZChPmEj63NjsEOLA@mail.gmail.com>
- <16ccbe02-b315-40d1-8600-232b592d4dd6@quicinc.com> <CAMb39_n4tyrzS=-j0L+ekJVer=KiZyDYFhMqrrcpr9py_itU9w@mail.gmail.com>
- <0933d8d6-5b72-40df-95f8-69f6fbbdfde7@oss.qualcomm.com> <CAMb39_nHO_TbHPQawdLVY8nt3yt4wDuEHyEuzMa-p5Ab1n94sA@mail.gmail.com>
- <CAMb39_nQ-uyKAqCz1HEUDt5qjszbhzf3oikVcvzHcVwt4_qt=A@mail.gmail.com>
- <CAMb39_n89hBL_GvfXb7Jw9h5-h-+Qg-3GyqvpahL7MT5ewpvJw@mail.gmail.com>
- <CAMb39_=YPYg0q7Lf0sMgTx5QwKOqcyJrZR7kTspyXEDa6qz9Bw@mail.gmail.com>
- <e9da4ad5-52cb-416d-991a-259140469e2c@oss.qualcomm.com> <87774003-d0a5-4408-b710-20bd3c194cec@quicinc.com>
- <CAMb39_ntK9Zv3pOuMSza5hRfs_KZBhya=GAPnpBWjN2wZDst9w@mail.gmail.com> <c7c0dfd4-bda9-4a63-84f9-a47b716c6ddd@quicinc.com>
-In-Reply-To: <c7c0dfd4-bda9-4a63-84f9-a47b716c6ddd@quicinc.com>
-From: Walt Holman <waltholman09@gmail.com>
-Date: Fri, 16 May 2025 13:09:25 -0500
-X-Gm-Features: AX0GCFvbi7J3GhYsY4Nb8McNum3Z8nqzRF0leXwb_OnUspQJPsUDKBSj3oKS78o
-Message-ID: <CAMb39_nxGevnV4rQq1mQ4Tnu8BYxvwdSnRT0B3GNYV+GOn=xEg@mail.gmail.com>
-Subject: Re: ath12k: No 6GHz Wireless found
-To: Kang Yang <quic_kangyang@quicinc.com>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, linux-wireless@vger.kernel.org, 
-	"ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:a/xw0bSc2Eo/mXot/Scjsv8aM99ZOruv4XCQwbG9/7ZBEBwiBvs
+ rpIvr3f5FEYu7u74M0YQom2c5bfcYLeEbapkrS+zr0rhzan4dBKnzSP9FEUqtYK13n06GE6
+ K/6Duod2/lRUCWrmQizipvtGQua/S9mAuyjjvQan7P21WocOcE4VqX9WHuLgY1c3Y4nYw71
+ rQVYKfGGBigFNgSpXduRw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:zr+ApHmj1sg=;zAqcXrRKqIB/uGhdpofFIeMXn1G
+ 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
 
-On Thu, May 15, 2025 at 10:06=E2=80=AFPM Kang Yang <quic_kangyang@quicinc.c=
-om> wrote:
->
->
->
-> On 5/16/2025 1:47 AM, Walt Holman wrote:
-> > On Thu, May 15, 2025 at 4:22=E2=80=AFAM Kang Yang <quic_kangyang@quicin=
-c.com> wrote:
-> >>
-> >>
-> >>
-> >> On 5/15/2025 4:12 PM, Kang Yang wrote:
-> >>>
-> >>> On 4/20/2025 11:18 PM, Walt Holman wrote:
-> >>>> On Fri, Apr 18, 2025 at 4:18=E2=80=AFPM Walt Holman <waltholman09@gm=
-ail.com>
-> >>>> wrote:
-> >>>>> On Tue, Apr 15, 2025 at 4:23=E2=80=AFPM Walt Holman <waltholman09@g=
-mail.com>
-> >>>>> wrote:
-> >>>>>> On Thu, Apr 10, 2025 at 10:32=E2=80=AFAM Walt Holman
-> >>>>>> <waltholman09@gmail.com> wrote:
-> >>>>>>> On Thu, Apr 10, 2025 at 3:26=E2=80=AFAM Kang Yang
-> >>>>>>> <kang.yang@oss.qualcomm.com> wrote:
-> >>>>>>>>
-> >>>>>>>>
-> >>>>>>>> On 4/10/2025 3:37 AM, Walt Holman wrote:
-> >>>>>>>>> On Tue, Apr 8, 2025 at 4:17=E2=80=AFAM Kang Yang
-> >>>>>>>>> <quic_kangyang@quicinc.com> wrote:
-> >>>>>>>>>>
-> >>>>>>>>>>
-> >>>>>>>>>> On 4/8/2025 1:49 AM, Walt Holman wrote:
-> >>>>>>>>>>> Attached is a small packet capture where I did an 'iw wlp99s0
-> >>>>>>>>>>> scan'
-> >>>>>>>>>>> and also deactivated and reactivated wireless while the scan =
-was
-> >>>>>>>>>>> ongoing. Hopefully there's something interesting for you in t=
-here.
-> >>>>>>>>>>> Also, I've take 3 screenshots showing the configs of the
-> >>>>>>>>>>> wireless AP
-> >>>>>>>>>>> for the 6ghz network. The first screen is just the definition
-> >>>>>>>>>>> of the
-> >>>>>>>>>>> network. No advanced settings are used. The 2nd screen shows =
-the
-> >>>>>>>>>>> channels and radio enabled. The 3rd screen has the advanced
-> >>>>>>>>>>> (professional) settings for the network. I believe I changed
-> >>>>>>>>>>> 'Agile
-> >>>>>>>>>>> Multiband' to enabled, but other settings are their defaults.=
- Hope
-> >>>>>>>>>>> some of this helps. Let me know if you need anything else. Th=
-anks,
-> >>>>>>>>>>>
-> >>>>>>>>>> Your packets are Ethernet packets. I need wireless packets.
-> >>>>>>>>>>
-> >>>>>>>>>>
-> >>>>>>>>>> Not sure if you know how to add a seperate monitor interface t=
-o
-> >>>>>>>>>> capture
-> >>>>>>>>>> 6 G channels' packet on your AP(you can google for specific
-> >>>>>>>>>> command).
-> >>>>>>>>>>
-> >>>>>>>>>>
-> >>>>>>>>>> Also, please capture firmware log:
-> >>>>>>>>>>
-> >>>>>>>>>> 1. sudo apt install trace-cmd
-> >>>>>>>>>> 2. sudo trace-cmd record -e ath12k_wmi_diag
-> >>>>>>>>>> 3. run test
-> >>>>>>>>>> 4. "ctrl c" to stop recording:
-> >>>>>>>>>> Hit Ctrl^C to stop recording
-> >>>>>>>>>> ^CCPU0 data recorded at offset=3D0xdf5000
-> >>>>>>>>>>         2605056 bytes in size
-> >>>>>>>>>> Then share the trace.dat to us.
-> >>>>>>>>>>
-> >>>>>>>>>> So you need to:
-> >>>>>>>>>> 1. try to capture wireless packets.
-> >>>>>>>>>> 2. capture firmware log(trade.data).
-> >>>>>>>>>> 3. save kernel/wpa_supplicant/iw logs.
-> >>>>>>>>>>
-> >>>>>>>>>>
-> >>>>>>>>>>
-> >>>>>>>>>>
-> >>>>>>>>>>
-> >>>>>>>>>>> -Walt
-> >>>>>>>>>>>
-> >>>>>>>>>>> On Sun, Apr 6, 2025 at 8:58=E2=80=AFPM Kang Yang
-> >>>>>>>>>>> <quic_kangyang@quicinc.com> wrote:
-> >>>>>>>>>>>>
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> On 4/4/2025 12:04 AM, Walt Holman wrote:
-> >>>>>>>>>>>>> On Thu, Apr 3, 2025 at 3:20=E2=80=AFAM Kang Yang
-> >>>>>>>>>>>>> <quic_kangyang@quicinc.com> wrote:
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>> On 4/3/2025 1:48 AM, Walt Holman wrote:
-> >>>>>>>>>>>>>>> On Tue, Apr 1, 2025 at 9:48=E2=80=AFPM Kang Yang
-> >>>>>>>>>>>>>>> <quic_kangyang@quicinc.com> wrote:
-> >>>>>>>>>>>>>>>> Test on 6.14.0-rc5-wt-ath+, with the firmware you used.
-> >>>>>>>>>>>>>>>> I can get 6 GHz AP and connect to it.
-> >>>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>>> ath12k_pci 0000:03:00.0: fw_version 0x100301e1
-> >>>>>>>>>>>>>>>> fw_build_timestamp
-> >>>>>>>>>>>>>>>> 2023-12-06 04:05 fw_build_id
-> >>>>>>>>>>>>>>>> QC_IMAGE_VERSION_STRING=3DWLAN.HMT.1.0.c5-00481-
-> >>>>>>>>>>>>>>>> QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> >>>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>>> yk@yk-Mayan:~$ sudo iw wls1 scan | tee iw_scan.log:
-> >>>>>>>>>>>>>>>> BSS 62:03:7f:12:64:64(on wls1) -- associated
-> >>>>>>>>>>>>>>>>                TSF: 606308271476 usec (7d, 00:25:08)
-> >>>>>>>>>>>>>>>>                freq: 6275
-> >>>>>>>>>>>>>>>>                beacon interval: 100 TUs
-> >>>>>>>>>>>>>>>>                capability: ESS Privacy SpectrumMgmt
-> >>>>>>>>>>>>>>>> ShortSlotTime (0x0511)
-> >>>>>>>>>>>>>>>>                signal: -17.00 dBm
-> >>>>>>>>>>>>>>>>                last seen: 52 ms ago
-> >>>>>>>>>>>>>>>>                Information elements from Probe Response =
-frame:
-> >>>>>>>>>>>>>>>>                SSID: MLO-KANG-6G
-> >>>>>>>>>>>>>>>> and other 6 GHz APs:
-> >>>>>>>>>>>>>>>>               SSID: 6G-gxia
-> >>>>>>>>>>>>>>>>               SSID: NETGEAR97-6G
-> >>>>>>>>>>>>>>>>               =E2=80=A6=E2=80=A6
-> >>>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>>> kernel log:
-> >>>>>>>>>>>>>>>> [88158.033218] wls1: Inserted STA 62:03:7f:12:64:64
-> >>>>>>>>>>>>>>>> [88158.033232] wls1: authenticate with 62:03:7f:12:64:64
-> >>>>>>>>>>>>>>>> (local
-> >>>>>>>>>>>>>>>> address=3D00:03:7f:37:12:54)
-> >>>>>>>>>>>>>>>> [88158.033242] wls1: send auth to 62:03:7f:12:64:64 (try=
- 1/3)
-> >>>>>>>>>>>>>>>> [88158.041895] wls1: authenticated
-> >>>>>>>>>>>>>>>> [88158.041914] wls1: moving STA 62:03:7f:12:64:64 to sta=
-te 2
-> >>>>>>>>>>>>>>>> [88158.044291] wls1: determined local STA to be EHT, BW
-> >>>>>>>>>>>>>>>> limited to 320 MHz
-> >>>>>>>>>>>>>>>> [88158.045719] wls1: associate with 62:03:7f:12:64:64 (t=
-ry
-> >>>>>>>>>>>>>>>> 1/3)
-> >>>>>>>>>>>>>>>> [88158.067045] wls1: RX AssocResp from 62:03:7f:12:64:64
-> >>>>>>>>>>>>>>>> (capab=3D0x511
-> >>>>>>>>>>>>>>>> status=3D0 aid=3D4)
-> >>>>>>>>>>>>>>>> [88158.089090] wls1: associated
-> >>>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>>> I can even connect to it by Ubuntu GUI.
-> >>>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>>> Can you update to 6.14.0-rc5-wt-ath+ and have a retry?
-> >>>>>>>>>>>>>>>> Also please make
-> >>>>>>>>>>>>>>>> sure that your wpa_supplicant/iw support 6 GHz(or direct=
-ly
-> >>>>>>>>>>>>>>>> update to the
-> >>>>>>>>>>>>>>>> latest version).
-> >>>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>>> If you still cannot find 6 GHz AP, you can set debug_mas=
-k
-> >>>>>>>>>>>>>>>> to 0xffffffff
-> >>>>>>>>>>>>>>>> to get ath12k logs. Then give it to us.
-> >>>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>>>> -Walt
-> >>>>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>> OK, I retested with the wt-ath 033125 tagged build. This
-> >>>>>>>>>>>>>>> included the
-> >>>>>>>>>>>>>>> patch the Jeff suggested I try, but the rest of the tree
-> >>>>>>>>>>>>>>> was clean.
-> >>>>>>>>>>>>>>> Still no 6ghz Wifi. I'm attaching a log file of the boot
-> >>>>>>>>>>>>>>> and first few
-> >>>>>>>>>>>>>>> seconds with the debug mask turned on. I noticed that if =
-I
-> >>>>>>>>>>>>>>> rmmod the
-> >>>>>>>>>>>>>>> module and then modprobe it, it complains about not findi=
-ng
-> >>>>>>>>>>>>>>> firmware-2.bin, however, I thought that was only for the
-> >>>>>>>>>>>>>>> qcn based
-> >>>>>>>>>>>>>>> chip? The HW info from dmesg looks like this:
-> >>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>> I cannot find this tag...
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>       From the log, the 6 GHz channel should work. When sc=
-an
-> >>>>>>>>>>>>>> is triggered, FW
-> >>>>>>>>>>>>>> shall send probe req on these channels. If AP send probe
-> >>>>>>>>>>>>>> resp, station
-> >>>>>>>>>>>>>> shall find the AP.
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>> [    6.070282] ath12k_pci 0000:63:00.0: BAR 0 [mem
-> >>>>>>>>>>>>>>> 0xdd800000-0xdd9fffff 64bit]: assigned
-> >>>>>>>>>>>>>>> [    6.070310] ath12k_pci 0000:63:00.0: enabling device
-> >>>>>>>>>>>>>>> (0000 -> 0002)
-> >>>>>>>>>>>>>>> [    6.071249] ath12k_pci 0000:63:00.0: MSI vectors: 16
-> >>>>>>>>>>>>>>> [    6.071254] ath12k_pci 0000:63:00.0: Hardware name:
-> >>>>>>>>>>>>>>> wcn7850 hw2.0
-> >>>>>>>>>>>>>>> [    6.596331] ath12k_pci 0000:63:00.0: qmi dma allocatio=
-n
-> >>>>>>>>>>>>>>> failed
-> >>>>>>>>>>>>>>> (7077888 B type 1), will try later with sma
-> >>>>>>>>>>>>>>> ll size
-> >>>>>>>>>>>>>>> [    6.604041] ath12k_pci 0000:63:00.0: chip_id 0x2
-> >>>>>>>>>>>>>>> chip_family 0x4
-> >>>>>>>>>>>>>>> board_id 0xff soc_id 0x40170200
-> >>>>>>>>>>>>>>> [    6.604044] ath12k_pci 0000:63:00.0: fw_version 0x1003=
-01e1
-> >>>>>>>>>>>>>>> fw_build_timestamp 2023-12-06 04:05 fw_build_id
-> >>>>>>>>>>>>>>> QC_IMAGE_VERSION_STRING=3DWLAN.HMT.1.0.c5-00481-
-> >>>>>>>>>>>>>>> QCAHMTSWPL_V1.0_V2.0_SILICONZ-
-> >>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>> Also, I noticed when looking through the debug logs there
-> >>>>>>>>>>>>>>> are the
-> >>>>>>>>>>>>>>> occasional WARNING statements from a BUG it appears. They
-> >>>>>>>>>>>>>>> trace back
-> >>>>>>>>>>>>>>> to the mac.c file inside the ath12k code. There should be
-> >>>>>>>>>>>>>>> some in the
-> >>>>>>>>>>>>>>> debug log that's attached. Let me know if I can do anythi=
-ng
-> >>>>>>>>>>>>>>> else.
-> >>>>>>>>>>>>>>> Thanks,
-> >>>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>> I have never seen this warning on my upstream setup...Not
-> >>>>>>>>>>>>>> sure if you
-> >>>>>>>>>>>>>> have changed anything or using the correct code base.
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>> Jeff merged this patch-set into ath-202504021602. Can you
-> >>>>>>>>>>>>>> try on this
-> >>>>>>>>>>>>>> branch?
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>> git clone https://git.kernel.org/pub/scm/linux/kernel/git/
-> >>>>>>>>>>>>>> ath/ath.git/
-> >>>>>>>>>>>>>> git pull
-> >>>>>>>>>>>>>> git reset --hard ath-202504021602
-> >>>>>>>>>>>>>> compile and install...
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>> Also make sure that the firmware you used is from the same
-> >>>>>>>>>>>>>> folder, don't
-> >>>>>>>>>>>>>> mix with other folders:
-> >>>>>>>>>>>>>> linux-firmware/ath12k/WCN7850/hw2.0
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>> 1. rmmod/insmod(debug_mask=3D0xffff)
-> >>>>>>>>>>>>>> 2. iw reg get
-> >>>>>>>>>>>>>> 3. iw reg set US
-> >>>>>>>>>>>>>> 4. iw xxx scan
-> >>>>>>>>>>>>>> wait and collect logs.
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>> don't do anything else.
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>> Also, can you show me your AP configuration.
-> >>>>>>>>>>>>>> If you have another 6 GHz AP, you can have a try(better
-> >>>>>>>>>>>>>> different brands).
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>> Thanks for testing.
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> Could you share your AP configuration?
-> >>>>>>>>>>>>
-> >>>>>>>>>>>>
-> >>>>>>>>>>>>>> If you have sniffer, could please capture packets during
-> >>>>>>>>>>>>>> testing?
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> Can you capture packets during the testing? I need to check
-> >>>>>>>>>>>> probe req
-> >>>>>>>>>>>> and probe resp.
-> >>>>>>>>>>>>
-> >>>>>>>>>>>>>> Thanks!
-> >>>>>>>>>>>>>>
-> >>>>>>>>>>>>>>> -Walt
-> >>>>>>>>>>>>> OK, I cloned and built the kernel based on your instruction=
-s
-> >>>>>>>>>>>>> in your
-> >>>>>>>>>>>>> last email. Originally, the result was identical to my last
-> >>>>>>>>>>>>> email,
-> >>>>>>>>>>>>> including the WARNINGS. The .config I use is configured for=
- a
-> >>>>>>>>>>>>> fully RT
-> >>>>>>>>>>>>> PREEMPT kernel, which I wondered if that was why I was
-> >>>>>>>>>>>>> receiving the
-> >>>>>>>>>>>>> WARNING. So I configured it as a Low Latency PREEMPT Deskto=
-p
-> >>>>>>>>>>>>> without
-> >>>>>>>>>>>>> the RT_PREEMPT and that eliminated the WARNING. However,
-> >>>>>>>>>>>>> still no 6Ghz
-> >>>>>>>>>>>>> networks. The firmware I'm using is straight from kernel.or=
-g
-> >>>>>>>>>>>>> GIT and I
-> >>>>>>>>>>>>> do a 'make install; make dedup' to install it. I believe it
-> >>>>>>>>>>>>> should be
-> >>>>>>>>>>>>> good. Attached is the latest log file.
-> >>>>>>>>>>>>>
-> >>>>>>>>>>>>> -Walt
-> >>>>>>>>>
-> >>>>>>>>> Sorry for the top-post earlier. I can't figure out how to captu=
-re
-> >>>>>>>>> the
-> >>>>>>>>> wireless packets as my chip/driver combo doesn't support monito=
-r
-> >>>>>>>>> mode.
-> >>>>>>>> Your AP also cannot capture wireless packets?
-> >>>>>>>> log in AP by usbserial or ssh.
-> >>>>>>>> Try to enter command line. use iw command to create monitor
-> >>>>>>>> interface.
-> >>>>>>>> Then use tcpdump to capture packets.
-> >>>>>>>>
-> >>>>>>>>> I've attached a tarball that contains the trace data and additi=
-onal
-> >>>>>>>>> firmware logs from the kernel.log file. Anything else you need,=
- just
-> >>>>>>>>> ask. Thanks for your help,
-> >>>>>>>>
-> >>>>>>>> Your AP mac address?
-> >>>>>>>> Need it to help check the fw log.
-> >>>>>>>>
-> >>>>>>>>
-> >>>>>>>>> -Walt
-> >>>>>>> Sorry, the AP doesn't have tcpdump available on it. Also, this is=
- a
-> >>>>>>> mesh setup with 3 nodes total. The main AP and 2 mesh nodes. I'm
-> >>>>>>> within 10 feet of one of the nodes and it's MAC for the wireless =
-6ghz
-> >>>>>>> network is: 10:7C:61:6F:2A:CA
-> >>>>>>>
-> >>>>>>> -Walt
-> >>>>>> The other 2 node 6ghz mac addresses are:
-> >>>>>> 10:7C:61:6F:1F:11   - Router
-> >>>>>> 10:7C:61:6F:32:92   - Node
-> >>>>>>
-> >>>>>> The first MAC address I gave you earlier was a node located
-> >>>>>> approximately 5 feet from where the laptop is.
-> >>>>>>
-> >>>>>> -Walt
-> >>>>> Well, I'm running into a brick wall it seems trying to get 6Ghz
-> >>>>> enabled on this. I tried the ath-next-20250418 tag just now and sti=
-ll
-> >>>>> don't see or connect to my 6Ghz network. I applied the patches in:
-> >>>>> https://lore.kernel.org/linux-wireless/20250418-ath12k-6g-lp-vlp-
-> >>>>> v1-0-c869c86cad60@quicinc.com/T/#t
-> >>>>>
-> >>>>> hoping that would help, but alas, no 6Ghz networks. I see that MLO =
-and
-> >>>>> other nice fixes are coming in 6.16, but without 6Ghz, they'll do m=
-e
-> >>>>> no good. I'm really wondering if it's a firmware issue that exclude=
-s
-> >>>>> my chip or something. Again, anything I can do to help, let me know=
-.
-> >>>>> Thanks,
-> >>>>>
-> >>>>> -Walt
-> >>>> Well, I used the swiss army tools to look at the firmware, and my ch=
-ip
-> >>>> is listed in the firmware, so it's not excluded or anything. Really
-> >>>> puzzlling issue as my other two laptops connect to the 6Ghz network
-> >>>> just fine, and this laptop does in Windows, just not in Linux. I
-> >>>> really don't use Windows at all though, so that does me no good.
-> >>>>
-> >>>> This laptop used to connect to the 6Ghz network around the Sep. - Oc=
-t.
-> >>>> 2024 timeframe. Something has changed and now it doesn't. I'm going =
-to
-> >>>> boot off a live image of Ubuntu 24.10 and see if I can see the
-> >>>> network. It was always hit or miss so we'll see.
-> >>>> -Walt
-> >>>
-> >>>
-> >>> Can you find 6 GHz AP now?
-> >>>
-> >>
-> >> Our firmware team said you station device sent the probe request but
-> >> didn't receive the probe resp or beacon.
-> >>
-> >> Since your current configuration is single 6 GHz AP. Could you change
-> >> your AP configuration to 6 GHz + 2/5 GHz to have a retry?
-> >>
-> > I adedd another network with 2.4 / 5 / 6Ghz settings and still only
-> > connect to the 5Ghz network portion. This is verified through wavemon
-> > and the AP. I saw some patches recently to address 6 Ghz operatoins in
-> > various modes (https://lore.kernel.org/linux-wireless/1692f2f8-c77e-87c=
-e-db70-00b4d9fc7c95@oss.qualcomm.com/),
-> > but the patch doesn't apply cleanly to current or ath-pending. Don't
-> > know that it would help, but it seemed interesting.
-> >
-> > When I went back to the older kernel / distro I still could not see
-> > the 6 Ghz band nor connect to it. I think something has changed on the
-> > AP as well, as this used to work intermittently. I think I have
-> > mentioned this before, but I have a dual-boot setup on this laptop and
-> > in Windows 11, it does see and connect to the 6 Ghz band and MLO works
-> > as well. Also, I have about 5 other devices (phones and laptops) that
-> > can all connect to the 6 Ghz band. I think it's a combination of the
-> > AP and the driver / firmware.
->
->
->
->
-> Do you have another WCN7850?
-> Our monitor mode is now in pending branch, and one fix is coming so that
-> you can use WCN7850 to capture 6 GHz management packects. So that our
-> firmware team can do further research.
 
-I do have another m.2 card, however, I purchased the one I've got
-installed due to the original card having the same issues.
-Think I'll sit tight for a couple days and see how the fix goes in for
-the pending tree and try that with monitor mode as well to get a
-better look. Thank you for your help,
+I've added a debugging statement:
 
--Walt
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 3bd5ee0995fe..853493eca4f5 100644
+=2D-- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -4586,7 +4586,11 @@ static noinline void ieee80211_8023_xmit_clang_debu=
+g_helper(struct sk_buff *skb,
+                                                            struct ieee802=
+11_local *local,
+                                                            struct ieee802=
+11_tx_info *info)
+ {
+-       if (unlikely(skb->sk && sock_flag(skb->sk, SOCK_WIFI_STATUS))) {
++       if (unlikely(skb->sk && ((skb_shinfo(skb)->tx_flags & SKBTX_WIFI_S=
+TATUS) ||
++                               sock_flag(skb->sk, SOCK_WIFI_STATUS)))) {
++               if ((skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS) ^ sock=
+_flag(skb->sk, SOCK_WIFI_STATUS))
++                       printk(KERN_INFO "%s: skb_shinfo(skb)->tx_flags & =
+SKBTX_WIFI_STATUS =3D %u sock_flag(skb->sk,
+SOCK_WIFI_STATUS) =3D %u\n",
++                                       __func__, (skb_shinfo(skb)->tx_fla=
+gs & SKBTX_WIFI_STATUS), sock_flag(skb->sk,
+SOCK_WIFI_STATUS));
+                info->status_data =3D ieee80211_store_ack_skb(local, skb,
+                                                            &info->flags, =
+NULL);
+                if (info->status_data)
+
+This gives the following logoutput (and a lockup), indicating that sock_fl=
+ag(skb->sk, SOCK_WIFI_STATUS) and
+(skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS) are actually NOT equivalen=
+t (when compiled with clang and
+PREEMPT_RT=3Dy)
+
+2025-05-16T20:09:58.818563+02:00 lisa kernel: [  T581] ieee80211_8023_xmit=
+_clang_debug_helper: skb_shinfo(skb)->tx_flags
+& SKBTX_WIFI_STATUS =3D 0 sock_flag(skb->sk, SOCK_WIFI_STATUS) =3D 1
+2025-05-16T20:10:19.829599+02:00 lisa kernel: [    C2] rcu: INFO: rcu_pree=
+mpt detected stalls on CPUs/tasks:
+2025-05-16T20:10:19.829607+02:00 lisa kernel: [    C2] rcu: 	4-...!: (1 GP=
+s behind) idle=3D1ddc/1/0x4000000000000000
+softirq=3D0/0 fqs=3D72 rcuc=3D21002 jiffies(starved)
+2025-05-16T20:10:19.829609+02:00 lisa kernel: [    C2] rcu: 	14-...!: (1 G=
+Ps behind) idle=3D4cbc/1/0x4000000000000000
+softirq=3D0/0 fqs=3D72 rcuc=3D21013 jiffies(starved)
+2025-05-16T20:10:19.829611+02:00 lisa kernel: [    C2] rcu: 	Tasks blocked=
+ on level-0 rcu_node (CPUs 0-15): P581
+2025-05-16T20:10:19.829613+02:00 lisa kernel: [    C2] rcu: 	(detected by =
+2, t=3D21002 jiffies, g=3D7525, q=3D973
+ncpus=3D16)
+2025-05-16T20:10:19.829615+02:00 lisa kernel: [    C2] Sending NMI from CP=
+U 2 to CPUs 4:
+2025-05-16T20:10:19.829616+02:00 lisa kernel: [    C4] NMI backtrace for c=
+pu 4
+2025-05-16T20:10:19.829618+02:00 lisa kernel: [    C4] CPU: 4 UID: 0 PID: =
+581 Comm: napi/phy0-0 Not tainted 6.15.0-rc6-
+next-20250513-llvm-00011-gf9a7992d47e7 #978 PREEMPT_{RT,(full)}=20
+2025-05-16T20:10:19.829620+02:00 lisa kernel: [    C4] Hardware name: Micr=
+o-Star International Co., Ltd. Alpha 15
+B5EEK/MS-158L, BIOS E158LAMS.10F 11/11/2024
+2025-05-16T20:10:19.829622+02:00 lisa kernel: [    C4] RIP: 0010:rtlock_sl=
+owlock_locked+0xaed/0xc70
+2025-05-16T20:10:19.829623+02:00 lisa kernel: [    C4] Code: 59 61 6a ff 4=
+9 c7 07 01 00 00 00 4d 89 7f 08 65 ff 0d b7 bd
+c1 00 74 4f 4d 85 ed 0f 84 76 ff ff ff e8 77 28 71 ff 48 8b 43 18 <48> 83 =
+e0 fe 49 39 c5 75 2a 41 83 7d 34 00 0f 84 54
+ff ff ff 41 8b
+2025-05-16T20:10:19.829625+02:00 lisa kernel: [    C4] RSP: 0018:ffffcc0dc=
+1ef7b00 EFLAGS: 00000246
+
+2025-05-16T20:10:19.829627+02:00 lisa kernel: [    C4] RAX: ffff89e9c52f80=
+01 RBX: ffff89e9e17a2e10 RCX: ffff89e9c52f8001
+2025-05-16T20:10:19.829629+02:00 lisa kernel: [    C4] RDX: ffffcc0dc1ef7b=
+38 RSI: ffff89e9c52fd000 RDI: ffffcc0dc1ef7bf0
+2025-05-16T20:10:19.829631+02:00 lisa kernel: [    C4] RBP: ffff89e9c52fd8=
+20 R08: ffffffffffffeb42 R09: 0000000000000002
+2025-05-16T20:10:19.829632+02:00 lisa kernel: [    C4] R10: 00000000000000=
+e4 R11: 00000000000005fe R12: ffffcc0dc1ef7b38
+2025-05-16T20:10:19.829634+02:00 lisa kernel: [    C4] R13: ffff89e9c52f80=
+00 R14: ffff89e9c52fd000 R15: ffffcc0dc1ef7bf0
+2025-05-16T20:10:19.829636+02:00 lisa kernel: [    C4] FS:  00000000000000=
+00(0000) GS:ffff89f8986c1000(0000)
+knlGS:0000000000000000
+2025-05-16T20:10:19.829637+02:00 lisa kernel: [    C4] CS:  0010 DS: 0000 =
+ES: 0000 CR0: 0000000080050033
+2025-05-16T20:10:19.829638+02:00 lisa kernel: [    C4] CR2: 00007f9ea92e20=
+00 CR3: 00000007e5a3a000 CR4: 0000000000750ef0
+2025-05-16T20:10:19.829640+02:00 lisa kernel: [    C4] PKRU: 55555554
+2025-05-16T20:10:19.829642+02:00 lisa kernel: [    C4] Call Trace:
+2025-05-16T20:10:19.829643+02:00 lisa kernel: [    C4]  <TASK>
+2025-05-16T20:10:19.829644+02:00 lisa kernel: [    C4]  ? rt_spin_unlock+0=
+x12/0x40
+2025-05-16T20:10:19.829646+02:00 lisa kernel: [    C4]  ? srso_alias_retur=
+n_thunk+0x5/0xfbef5
+2025-05-16T20:10:19.829648+02:00 lisa kernel: [    C4]  rt_spin_lock+0x81/=
+0xa0
+2025-05-16T20:10:19.829649+02:00 lisa kernel: [    C4]  mt76_rx_complete+0=
+x49/0x2e0 [mt76]
+2025-05-16T20:10:19.829651+02:00 lisa kernel: [    C4]  ? srso_alias_retur=
+n_thunk+0x5/0xfbef5
+2025-05-16T20:10:19.829653+02:00 lisa kernel: [    C4]  mt76_rx_poll_compl=
+ete+0x4a4/0x4d0 [mt76]
+2025-05-16T20:10:19.829654+02:00 lisa kernel: [    C4]  ? mt76_dma_rx_poll=
++0xf6/0x660 [mt76]
+2025-05-16T20:10:19.829656+02:00 lisa kernel: [    C4]  mt76_dma_rx_poll+0=
+x147/0x660 [mt76]
+2025-05-16T20:10:19.829657+02:00 lisa kernel: [    C4]  ? mt792x_poll_rx+0=
+x2a/0x120 [mt792x_lib]
+2025-05-16T20:10:19.829658+02:00 lisa kernel: [    C4]  mt792x_poll_rx+0x7=
+1/0x120 [mt792x_lib]
+2025-05-16T20:10:19.829660+02:00 lisa kernel: [    C4]  __napi_poll+0x2a/0=
+x170
+2025-05-16T20:10:19.829662+02:00 lisa kernel: [    C4]  ? napi_threaded_po=
+ll_loop+0x32/0x1b0
+2025-05-16T20:10:19.829663+02:00 lisa kernel: [    C4]  napi_threaded_poll=
+_loop+0xe4/0x1b0
+2025-05-16T20:10:19.829678+02:00 lisa kernel: [    C4]  ? napi_threaded_po=
+ll_loop+0x32/0x1b0
+2025-05-16T20:10:19.829679+02:00 lisa kernel: [    C4]  ? asm_sysvec_apic_=
+timer_interrupt+0x1a/0x20
+2025-05-16T20:10:19.829680+02:00 lisa kernel: [    C4]  napi_threaded_poll=
++0x57/0x80
+2025-05-16T20:10:19.829682+02:00 lisa kernel: [    C4]  ? __pfx_napi_threa=
+ded_poll+0x10/0x10
+2025-05-16T20:10:19.829683+02:00 lisa kernel: [    C4]  kthread+0x25c/0x28=
+0
+2025-05-16T20:10:19.829685+02:00 lisa kernel: [    C4]  ? __pfx_kthread+0x=
+10/0x10
+2025-05-16T20:10:19.829696+02:00 lisa kernel: [    C4]  ret_from_fork+0xc4=
+/0x1b0
+2025-05-16T20:10:19.829698+02:00 lisa kernel: [    C4]  ? __pfx_kthread+0x=
+10/0x10
+2025-05-16T20:10:19.829699+02:00 lisa kernel: [    C4]  ret_from_fork_asm+=
+0x1a/0x30
+2025-05-16T20:10:19.829701+02:00 lisa kernel: [    C4]  </TASK>
+2025-05-16T20:10:19.829702+02:00 lisa kernel: [    C2] Sending NMI from CP=
+U 2 to CPUs 14:
+2025-05-16T20:10:19.829704+02:00 lisa kernel: [   C14] NMI backtrace for c=
+pu 14
+2025-05-16T20:10:19.829705+02:00 lisa kernel: [   C14] CPU: 14 UID: 0 PID:=
+ 585 Comm: napi/phy0-0 Not tainted 6.15.0-rc6-
+next-20250513-llvm-00011-gf9a7992d47e7 #978 PREEMPT_{RT,(full)}=20
+2025-05-16T20:10:19.829707+02:00 lisa kernel: [   C14] Hardware name: Micr=
+o-Star International Co., Ltd. Alpha 15
+B5EEK/MS-158L, BIOS E158LAMS.10F 11/11/2024
+2025-05-16T20:10:19.829708+02:00 lisa kernel: [   C14] RIP: 0010:queued_sp=
+in_lock_slowpath+0x134/0x1c0
+2025-05-16T20:10:19.829710+02:00 lisa kernel: [   C14] Code: 03 c1 e6 04 8=
+3 e0 fc 49 c7 c0 f8 ff ff ff 49 8b 84 40 a0 fa
+98 95 48 89 94 06 c0 21 06 96 83 7a 08 00 75 08 f3 90 83 7a 08 00 <74> f8 =
+48 8b 32 48 85 f6 74 09 0f 0d 0e eb 0a 31 f6
+eb 06 31 f6 eb
+2025-05-16T20:10:19.829714+02:00 lisa kernel: [   C14] RSP: 0018:ffffcc0dc=
+201f998 EFLAGS: 00000046
+2025-05-16T20:10:19.829715+02:00 lisa kernel: [   C14] RAX: 00000000000000=
+00 RBX: 0000000000000286 RCX: 00000000003c0000
+2025-05-16T20:10:19.829717+02:00 lisa kernel: [   C14] RDX: ffff89f82e9a31=
+c0 RSI: 0000000000000010 RDI: ffff89ea89ad79a8
+2025-05-16T20:10:19.829718+02:00 lisa kernel: [   C14] RBP: ffff89ea05e8e0=
+00 R08: fffffffffffffff8 R09: 0000000000000001
+2025-05-16T20:10:19.829720+02:00 lisa kernel: [   C14] R10: 00000000000000=
+01 R11: ffffffff951f07f0 R12: ffff89ea89ad7990
+2025-05-16T20:10:19.829722+02:00 lisa kernel: [   C14] R13: ffff89e9e17a24=
+80 R14: ffff89ea89ad79a8 R15: ffff89ea89ad79a8
+2025-05-16T20:10:19.829723+02:00 lisa kernel: [   C14] FS:  00000000000000=
+00(0000) GS:ffff89f898941000(0000)
+knlGS:0000000000000000
+2025-05-16T20:10:19.829735+02:00 lisa kernel: [   C14] CS:  0010 DS: 0000 =
+ES: 0000 CR0: 0000000080050033
+2025-05-16T20:10:19.829737+02:00 lisa kernel: [   C14] CR2: 00007f522c1f70=
+00 CR3: 00000007e5a3a000 CR4: 0000000000750ef0
+2025-05-16T20:10:19.829738+02:00 lisa kernel: [   C14] PKRU: 55555554
+2025-05-16T20:10:19.829740+02:00 lisa kernel: [   C14] Call Trace:
+2025-05-16T20:10:19.829741+02:00 lisa kernel: [   C14]  <TASK>
+2025-05-16T20:10:19.829743+02:00 lisa kernel: [   C14]  _raw_spin_lock_irq=
+save+0x57/0x60
+2025-05-16T20:10:19.829744+02:00 lisa kernel: [   C14]  rt_spin_lock+0x73/=
+0xa0
+2025-05-16T20:10:19.829745+02:00 lisa kernel: [   C14]  sock_queue_err_skb=
++0xdc/0x140
+2025-05-16T20:10:19.829773+02:00 lisa kernel: [   C14]  skb_complete_wifi_=
+ack+0xa9/0x120
+2025-05-16T20:10:19.829775+02:00 lisa kernel: [   C14]  ieee80211_report_u=
+sed_skb+0x541/0x6e0 [mac80211]
+2025-05-16T20:10:19.829786+02:00 lisa kernel: [   C14]  ? srso_alias_retur=
+n_thunk+0x5/0xfbef5
+2025-05-16T20:10:19.829816+02:00 lisa kernel: [   C14]  ? __schedule+0x506=
+/0x1280
+2025-05-16T20:10:19.829822+02:00 lisa kernel: [   C14]  ? preempt_schedule=
+_irq+0x42/0x80
+2025-05-16T20:10:19.829823+02:00 lisa kernel: [   C14]  ieee80211_tx_statu=
+s_ext+0x3b3/0x870 [mac80211]
+2025-05-16T20:10:19.829824+02:00 lisa kernel: [   C14]  ? srso_alias_retur=
+n_thunk+0x5/0xfbef5
+2025-05-16T20:10:19.829826+02:00 lisa kernel: [   C14]  ? rt_spin_lock+0x3=
+d/0xa0
+2025-05-16T20:10:19.829828+02:00 lisa kernel: [   C14]  ? mt76_tx_status_u=
+nlock+0x38/0x230 [mt76]
+2025-05-16T20:10:19.829829+02:00 lisa kernel: [   C14]  mt76_tx_status_unl=
+ock+0x1e0/0x230 [mt76]
+2025-05-16T20:10:19.829830+02:00 lisa kernel: [   C14]  __mt76_tx_complete=
+_skb+0x13b/0x2e0 [mt76]
+2025-05-16T20:10:19.829832+02:00 lisa kernel: [   C14]  ? srso_alias_retur=
+n_thunk+0x5/0xfbef5
+2025-05-16T20:10:19.829833+02:00 lisa kernel: [   C14]  ? rt_spin_unlock+0=
+x12/0x40
+2025-05-16T20:10:19.829834+02:00 lisa kernel: [   C14]  ? srso_alias_retur=
+n_thunk+0x5/0xfbef5
+2025-05-16T20:10:19.829836+02:00 lisa kernel: [   C14]  mt76_connac2_txwi_=
+free+0x127/0x150 [mt76_connac_lib]
+2025-05-16T20:10:19.829838+02:00 lisa kernel: [   C14]  mt7921_mac_tx_free=
++0x112/0x260 [mt7921_common]
+2025-05-16T20:10:19.829839+02:00 lisa kernel: [   C14]  mt7921_rx_check+0x=
+33/0xe0 [mt7921_common]
+2025-05-16T20:10:19.829841+02:00 lisa kernel: [   C14]  mt76_dma_rx_poll+0=
+x322/0x660 [mt76]
+2025-05-16T20:10:19.829842+02:00 lisa kernel: [   C14]  ? mt792x_poll_rx+0=
+x2a/0x120 [mt792x_lib]
+2025-05-16T20:10:19.829843+02:00 lisa kernel: [   C14]  mt792x_poll_rx+0x7=
+1/0x120 [mt792x_lib]
+2025-05-16T20:10:19.829845+02:00 lisa kernel: [   C14]  __napi_poll+0x2a/0=
+x170
+2025-05-16T20:10:19.829846+02:00 lisa kernel: [   C14]  ? napi_threaded_po=
+ll_loop+0x32/0x1b0
+2025-05-16T20:10:19.829848+02:00 lisa kernel: [   C14]  napi_threaded_poll=
+_loop+0xe4/0x1b0
+2025-05-16T20:10:19.829849+02:00 lisa kernel: [   C14]  ? napi_threaded_po=
+ll_loop+0x32/0x1b0
+2025-05-16T20:10:19.829851+02:00 lisa kernel: [   C14]  ? ttwu_do_activate=
++0xa9/0x1a0
+2025-05-16T20:10:19.829863+02:00 lisa kernel: [   C14]  ? srso_alias_retur=
+n_thunk+0x5/0xfbef5
+2025-05-16T20:10:19.829864+02:00 lisa kernel: [   C14]  napi_threaded_poll=
++0x57/0x80
+2025-05-16T20:10:19.829866+02:00 lisa kernel: [   C14]  ? __pfx_napi_threa=
+ded_poll+0x10/0x10
+2025-05-16T20:10:19.829867+02:00 lisa kernel: [   C14]  kthread+0x25c/0x28=
+0
+2025-05-16T20:10:19.829868+02:00 lisa kernel: [   C14]  ? __pfx_kthread+0x=
+10/0x10
+2025-05-16T20:10:19.829871+02:00 lisa kernel: [   C14]  ret_from_fork+0xc4=
+/0x1b0
+2025-05-16T20:10:19.829873+02:00 lisa kernel: [   C14]  ? __pfx_kthread+0x=
+10/0x10
+2025-05-16T20:10:19.829874+02:00 lisa kernel: [   C14]  ret_from_fork_asm+=
+0x1a/0x30
+2025-05-16T20:10:19.829875+02:00 lisa kernel: [   C14]  </TASK>
+
+
+Bert Karwatzki
 
