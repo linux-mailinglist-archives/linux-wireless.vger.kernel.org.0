@@ -1,127 +1,151 @@
-Return-Path: <linux-wireless+bounces-23039-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23040-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A269AB9247
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 00:25:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B40AB9330
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 02:28:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E55B31BA680A
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 May 2025 22:25:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D67497A189A
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 00:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EF5280A4B;
-	Thu, 15 May 2025 22:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8474C4B1E47;
+	Fri, 16 May 2025 00:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SGGaY4Dm"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="kb+Gq6+u"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D311C198823;
-	Thu, 15 May 2025 22:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D808C611E
+	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 00:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747347931; cv=none; b=Xg15XnHoXU8iZtX/hG/cLFq2FrmS5pz0rns0JPfHPAClxlP2GPmkKnc9o8YtuByP6nTFUcCYVR8KiPJHLgHTSDbt6c03UiFsLgUWVYUYRUsCOdYKOqWQFZHFVIr799TrkyW3LpCJNhDvcpKDgzoRGxe9/PBUK2co5KyN5blCdbw=
+	t=1747355320; cv=none; b=KqWKZf6vtmsSeqwnGUvDItWlh/tuzVZ1t/v3u5gLazYjNHjwRPo8ZE9yNHpXP1VzE/C4ccRe6NZ6CJBrX+SoGq29kKULo3HqWUiah7VTFLPQIzFMkai7uixp6h1dfXdFrcp8DtptJHw1wQGiy4/FoIKXiAzIZEJjgzoGRQHl0zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747347931; c=relaxed/simple;
-	bh=6FSa4xzac07nTKUuiZ5eHBluODj2JOGzX6Wf+8IItKE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iSyxm1n/0JtLzKDdlNTQbSWZSuNx8ZmTf0Ez8YCr5wJ82Ug/ffwhBJSGUkLYVbaplpmXowbzzTFs9ilwIVu7v6dJIj5S2GiXa8NDxz11YkAOLMdJKIZZryZgmeIFyNMXrrtG+wtkZmokZr0JOZTWUObXazj67AuflWVs62uAk2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SGGaY4Dm; arc=none smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-52403e39a23so762610e0c.2;
-        Thu, 15 May 2025 15:25:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747347928; x=1747952728; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IKoACcwZvqB4hjAADhBiXrdtznQVIY5lA2O4xWzuOU0=;
-        b=SGGaY4Dmo16/+p+eDrwILWSAMvyFixfdTXOo0vk6y5TnjLfGtRA8QpWsFdXrdPkvOg
-         g5g5o4ZUKWPWHPwP0NVgFG4UkRT0Jc5UkTU3uLyKsctC5MXkyoWbnQYICnj4xsUHgfKy
-         xyG1Z9t0FMZOLxvu4nSfw146gx2iACBbmk+FoLzyV2To616Q/S4m7zCIUvwWz6TpWMQ6
-         N7DHzpm3+x/B6fyFIBceLEykk+jcgF56euObJtZNGqtQvy2wO7ve+QhsytGLDoCRl0uq
-         Q6pvdcisgAyENOoNB/kvobp+gUVoRGyxrLkjbxF3gpWQ35ozwIhhjqr1uf2fyn9w+O9j
-         JTug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747347928; x=1747952728;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IKoACcwZvqB4hjAADhBiXrdtznQVIY5lA2O4xWzuOU0=;
-        b=mUdqWTS/GgbeWyPoYDEJEyIEMecWVJgeqOVgmyta2HmlC1euPzkxGmTNOUREl1shBN
-         GvMvlxaM0772dTe1BH40h3I09IzDaukiWdi8nzbAqnTWHwOTwU7BwZJk1lBWVuw0JW6C
-         fOtef4VfDqdIINvHnYxzTuV0DVhUQoTw3YJrHQuiPnLzeS941/3EtUdXILU3wFZp/KCf
-         5SuwzjUPTQjtM+mFoPztqhh1ehsYXrxSZ/cUk+U0bbEsygAeZp4JMfqmoDVh5t5hku8q
-         2ztl2UfXw9aUUgMTai3M01KFClYFY+g3QUplxxC303bMmWlMMSRSNrIyFGCc9jywG7f6
-         3YjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUmLSNgjvKiOipG+AapKrE/PopcMK2ElRvHWfV3ZJgXyZmsjX60XFyBju2QbZbP7MGKcZWru9jhko6+WKsRuiQ=@vger.kernel.org, AJvYcCV4HJKtuYL9aS+YKAv8VKvq62FtfTPxN5ur8E1MWaKSp7DOVUXa1Nx34JKwssJEtOeR17tPxAwSigU0/eA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYfounRe81ng91Obxg2TrulPvCEfuZbdEjUxokztWkoKDgPRK5
-	UbWN1iFZje1c5WNMS+mwiLapshNWaJjV+Q+BDjig4lmKSWaiZdYbfrtLjW8+fJUl
-X-Gm-Gg: ASbGncv85ao/R02cVraH28J/2Da1A46/kvvtBBP3A3Yk8pNZQ9vTtILYm68ocouKoje
-	Z6yN9UTMtm7MhV0tQcJoVpF4Tddl7oK73Qyn/vE85SwAvY6sy7U7aT3evVqFvH5PRLTR3hyCjjB
-	n5v96fmbmgMug03Sizy9MpCUBaMhMTBAACtfhSqnlFjoIj95v20khiAHx9sCWIvIKeaRP8bWg1W
-	ELVgwwugpEZFJwWnTmWNK1n+GaF6uGrE6ZuIA5V8+8v6uMqtfVLu8yN3iNTWYYsaOG2sahhpCJX
-	Jio3qncxSpirQxZygCpW7pJ2EKLwgwuS/sHoskd2TOyka6HG8PQ+MTtmanxkwCiJHyUJe+a5rg8
-	=
-X-Google-Smtp-Source: AGHT+IH0Tx0zRc430b72Scg4pBsmQupJJ3uqemf4Bh0+E2crHEPLAfCrR3/q35Bega+vTcWuytGTlQ==
-X-Received: by 2002:a05:6122:88c:b0:52a:cdd8:fc33 with SMTP id 71dfb90a1353d-52dba614e02mr2282226e0c.0.1747347928588;
-        Thu, 15 May 2025 15:25:28 -0700 (PDT)
-Received: from localhost.localdomain ([2804:14d:4c64:81ec:7409:107a:a63b:a3da])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-52dba9408f5sm724417e0c.15.2025.05.15.15.25.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 May 2025 15:25:28 -0700 (PDT)
-From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-To: jjohnson@kernel.org
-Cc: ~lkcamp/patches@lists.sr.ht,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] wifi: ath11k: clean-up during wrong ath11k_crypto_mode
-Date: Thu, 15 May 2025 19:22:48 -0300
-Message-ID: <20250515222520.4922-1-rodrigo.gobbi.7@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1747355320; c=relaxed/simple;
+	bh=wrFswCpRw3b3/tACeqUiwJNFhkcSIA1Se/h/9ZIj96Q=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=B7xZgpkN0YNQCJucwj6+8GoOKoDGR6xybDOcp9fFyzj0bT4mh+KKmW6+Nbt1CHyR6jdQZwrwfh6unpYWbtW2/TIdLJfZnXAgIITD2Qa2JbnNUtIqr/zMaRE2/TNOxVfoZy7l+sPe9ES6bjMKKBLZbfDGHLLgGQPM2XepWzE41Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=kb+Gq6+u; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54G0SVbdC033829, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1747355311; bh=wrFswCpRw3b3/tACeqUiwJNFhkcSIA1Se/h/9ZIj96Q=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date;
+	b=kb+Gq6+uhv1Ux/horYrz3Vu7U0WFbMkW4tecrYR0TgFnK59sFM3f5NXk9eLgXbGtW
+	 jMOY84bjSp2rN9ZrbW2bPz4lu2KQ4gozuX06oPUHYYJBcE4P14iq6/iMIqiQUfUGww
+	 U/rD5O3GpUxUxQ/xon0Rk/Sp06chuKemdGRfuAX/Ral491RgcfFK8fD/c0lY2LVbtA
+	 D+VH9jPq7BfKR2p6RPOWALHy/FR8vaNnzanqI8WyE6Ok92zggcyWpqSexQzR0oT6nZ
+	 yJsg34d4+GbiI5cXJEdM26CxYzctYUdjhr6qdINjbCxQxWtrRSExiKtDl6Phxrjj//
+	 zknYpw2u4ka2g==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54G0SVbdC033829
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 May 2025 08:28:31 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 16 May 2025 08:28:32 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 16 May
+ 2025 08:28:31 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <rtl8821cerfe2@gmail.com>
+Subject: Re: [PATCH rtw-next] wifi: rtw89: pci: configure manual DAC mode via PCI config API only
+In-Reply-To: <20250506015356.7995-1-pkshih@realtek.com>
+References: <20250506015356.7995-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Message-ID: <a400148f-9d5b-4de4-ad2a-fec5356eed37@RTEXMBS04.realtek.com.tw>
+Date: Fri, 16 May 2025 08:28:31 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-if ath11k_crypto_mode is invalid (not ATH11K_CRYPT_MODE_SW/ATH11K_CRYPT_MODE_HW),
-ath11k_core_qmi_firmware_ready() will not undo some actions that was previously
-started/configured. It's reasonable to undo things during this condition, fixing
-the following smatch warning:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-drivers/net/wireless/ath/ath11k/core.c:2166 ath11k_core_qmi_firmware_ready()
-warn: missing unwind goto?
+> To support 36-bit DMA, configure chip proprietary bit via PCI config API
+> or chip DBI interface. However, the PCI device mmap isn't set yet and
+> the DBI is also inaccessible via mmap, so only if the bit can be accessible
+> via PCI config API, chip can support 36-bit DMA. Otherwise, fallback to
+> 32-bit DMA.
+> 
+> With NULL mmap address, kernel throws trace:
+> 
+>   BUG: unable to handle page fault for address: 0000000000001090
+>   #PF: supervisor write access in kernel mode
+>   #PF: error_code(0x0002) - not-present page
+>   PGD 0 P4D 0
+>   Oops: Oops: 0002 [#1] PREEMPT SMP PTI
+>   CPU: 1 UID: 0 PID: 71 Comm: irq/26-pciehp Tainted: G           OE      6.14.2-061402-generic #202504101348
+>   Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+>   RIP: 0010:rtw89_pci_ops_write16+0x12/0x30 [rtw89_pci]
+>   RSP: 0018:ffffb0ffc0acf9d8 EFLAGS: 00010206
+>   RAX: ffffffffc158f9c0 RBX: ffff94865e702020 RCX: 0000000000000000
+>   RDX: 0000000000000718 RSI: 0000000000001090 RDI: ffff94865e702020
+>   RBP: ffffb0ffc0acf9d8 R08: 0000000000000000 R09: 0000000000000000
+>   R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000015
+>   R13: 0000000000000719 R14: ffffb0ffc0acfa1f R15: ffffffffc1813060
+>   FS:  0000000000000000(0000) GS:ffff9486f3480000(0000) knlGS:0000000000000000
+>   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>   CR2: 0000000000001090 CR3: 0000000090440001 CR4: 00000000000626f0
+>   Call Trace:
+>    <TASK>
+>    rtw89_pci_read_config_byte+0x6d/0x120 [rtw89_pci]
+>    rtw89_pci_cfg_dac+0x5b/0xb0 [rtw89_pci]
+>    rtw89_pci_probe+0xa96/0xbd0 [rtw89_pci]
+>    ? __pfx___device_attach_driver+0x10/0x10
+>    ? __pfx___device_attach_driver+0x10/0x10
+>    local_pci_probe+0x47/0xa0
+>    pci_call_probe+0x5d/0x190
+>    pci_device_probe+0xa7/0x160
+>    really_probe+0xf9/0x370
+>    ? pm_runtime_barrier+0x55/0xa0
+>    __driver_probe_device+0x8c/0x140
+>    driver_probe_device+0x24/0xd0
+>    __device_attach_driver+0xcd/0x170
+>    bus_for_each_drv+0x99/0x100
+>    __device_attach+0xb4/0x1d0
+>    device_attach+0x10/0x20
+>    pci_bus_add_device+0x59/0x90
+>    pci_bus_add_devices+0x31/0x80
+>    pciehp_configure_device+0xaa/0x170
+>    pciehp_enable_slot+0xd6/0x240
+>    pciehp_handle_presence_or_link_change+0xf1/0x180
+>    pciehp_ist+0x162/0x1c0
+>    irq_thread_fn+0x24/0x70
+>    irq_thread+0xef/0x1c0
+>    ? __pfx_irq_thread_fn+0x10/0x10
+>    ? __pfx_irq_thread_dtor+0x10/0x10
+>    ? __pfx_irq_thread+0x10/0x10
+>    kthread+0xfc/0x230
+>    ? __pfx_kthread+0x10/0x10
+>    ret_from_fork+0x47/0x70
+>    ? __pfx_kthread+0x10/0x10
+>    ret_from_fork_asm+0x1a/0x30
+>    </TASK>
+> 
+> Fixes: 1fd4b3fe52ef ("wifi: rtw89: pci: support 36-bit PCI DMA address")
+> Reported-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Closes: https://lore.kernel.org/linux-wireless/ccaf49b6-ff41-4917-90f1-f53cadaaa0da@gmail.com/T/#u
+> Closes: https://github.com/openwrt/openwrt/issues/17025
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+
+a70cf04b08f4 wifi: rtw89: pci: configure manual DAC mode via PCI config API only
+
 ---
-Changelog:
-v2: add smatch warn at commit msg
-v1: https://lore.kernel.org/linux-wireless/20250515004258.87234-1-rodrigo.gobbi.7@gmail.com/
----
- drivers/net/wireless/ath/ath11k/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 2e9f8a5e61e4..fd3017c444a4 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -2163,7 +2163,9 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
- 		break;
- 	default:
- 		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		ath11k_dp_free(ab);
-+		goto err_firmware_stop;
- 	}
- 
- 	if (ath11k_frame_mode == ATH11K_HW_TXRX_RAW)
--- 
-2.49.0
+https://github.com/pkshih/rtw.git
 
 
