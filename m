@@ -1,140 +1,91 @@
-Return-Path: <linux-wireless+bounces-23069-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23068-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F27AAB985E
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 11:10:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 683EAAB985D
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 11:09:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE6AB7A2CEE
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 09:08:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1F4AA00D4F
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 09:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F7C224223;
-	Fri, 16 May 2025 09:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357D722F76B;
+	Fri, 16 May 2025 09:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=etylix.me header.i=@etylix.me header.b="TIpUGNmv"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="OQCKGxKi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward202d.mail.yandex.net (forward202d.mail.yandex.net [178.154.239.219])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5EB1A704B
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 09:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943DF22FDE7
+	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 09:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747386594; cv=none; b=SGb2PkbnIYWTX0D59s4lARTllX7OekBGn82/CeMWuHFDXWeQmsrpcrJr/9UaRKCX9/PlFok0mY104Y5TQVXTVYeMX7zzjSdazilbQmj+UKn5eWQ1BLvSxHUcBdUySOh0HZEx48FSQZYChF+PR8T0xowGRBtJYqAmbcK69ul/HAE=
+	t=1747386525; cv=none; b=CXb60tgEFvpRQojTLerbHr9DjDRmQWu/Ed8jF7p432OfLuKJJtiaZx+27NmftiDGd0//TF+AbXh55ODSo6RelzVwk89WHdwEBoRirjv9BWBrxuU7tHftmq1RyjKQIEvsFp1CQShtS7Yx8p7pwc9X4LrjPnOElSc2RFsOmu92/AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747386594; c=relaxed/simple;
-	bh=9C33aEa5++LNlQ/TNwAjp8rTDVdNw0xI6+APNbsLDOM=;
-	h=From:To:Cc:Subject:MIME-Version:Date:Message-Id:Content-Type; b=IXX3QgFnjqi4SewqdCF+LRTV4dvkuQtmNFbwoFgsBxCLONCDsz2cyRZnrn+dWMhXPMJsGRUWMZ9HYv/+OCH8xocBN4umoNDKORI7P1IGUg62gXwTjTUl/3KN9e3S7jWflXKlE2TKXF4Fo9Adr8KAkrswToauDfrl5O8Xm+IvJ1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=etylix.me; spf=pass smtp.mailfrom=etylix.me; dkim=pass (1024-bit key) header.d=etylix.me header.i=@etylix.me header.b=TIpUGNmv; arc=none smtp.client-ip=178.154.239.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=etylix.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etylix.me
-Received: from forward100d.mail.yandex.net (forward100d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d100])
-	by forward202d.mail.yandex.net (Yandex) with ESMTPS id 433FB66860
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 12:02:27 +0300 (MSK)
-Received: from mail-nwsmtp-mxback-production-main-39.klg.yp-c.yandex.net (mail-nwsmtp-mxback-production-main-39.klg.yp-c.yandex.net [IPv6:2a02:6b8:c43:4784:0:640:7e86:0])
-	by forward100d.mail.yandex.net (Yandex) with ESMTPS id 49F0A60B04;
-	Fri, 16 May 2025 12:02:19 +0300 (MSK)
-Received: from mail.yandex.com (2a02:6b8:c43:bc8:0:640:a01e:0 [2a02:6b8:c43:bc8:0:640:a01e:0])
-	by mail-nwsmtp-mxback-production-main-39.klg.yp-c.yandex.net (mxback/Yandex) with HTTPS id I2FWFo3L2Sw0-13Witsxj;
-	Fri, 16 May 2025 12:02:18 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=etylix.me; s=mail;
-	t=1747386138; bh=0Kx9ib+Ofl/vDR5bndogDZ9PCi/VQn+K6y2Dhv2ezE4=;
-	h=Message-Id:Date:Subject:To:From:Cc;
-	b=TIpUGNmvWCVH3lL94cjU2+gunftQQK65xI5513cPLxWSskZfNrA81GMfoQFeN4Pzo
-	 q4Nj3iYT+EGAcn1aXsQ/27ZHw/B17leUOtfjoPxTFue9MS8a87wRot0KK7IzV2/vkS
-	 w+EplfpQvtENn9AlBzkgN5yBioQQffgTzJbJ5P3k=
-Authentication-Results: mail-nwsmtp-mxback-production-main-39.klg.yp-c.yandex.net; dkim=pass header.i=@etylix.me
-Received: by mail-sendbernar-production-main-36.klg.yp-c.yandex.net with HTTP;
-	Fri, 16 May 2025 12:02:18 +0300
-From: Duy Hoang <duy@etylix.me>
-To: linux-wireless@vger.kernel.org
+	s=arc-20240116; t=1747386525; c=relaxed/simple;
+	bh=1hc+Pg6BdBspacF7uC7eeGCXOZZ7VNa/r4YFcvfOVBw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CAY4nR9Ds4haiB2OteXadP9VX9Y4Y+OmOHtaNd6AFwcdioh51YZSoGnl9HH8j+rS4BQgByXLpwHupLyQ/o9q94pNidwH0i767uVpJ+wgVpKlYsQr3PZaBEWrv6JVPtpxdEkiPWMyvfLF80SkUR3H/8tvFiv0MOVosqRAXTWNpIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=OQCKGxKi; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=ZqtSMkyWgK5O9yoxSo2YjhzoYKwwO2tY8zxxGFJlFqc=;
+	t=1747386523; x=1748596123; b=OQCKGxKi/hshIEz79mQz5QEN12U6W9LZaB2TTBcIZzEBUr6
+	0eGo8hTVKyTFttJxrL57rIsfesPTGa1S2GKFbxZDku0cQXicYmEj2O2p2xeVx7XqotblS4mB1pm65
+	IieeTfilREhkRMb/2fIq3oDnSPE5oHQ8GipU8O51qxThNg3nRCxg88KJBoJzetBj+SWdAMeNE+cbn
+	sTrFfZ+zB+fb2wcU6a9xDTUrdwU0rVXRUiRh4aCPom4N5SBiwBt+PMLoCZ3bDiwD9NuTkhCYgIk+e
+	8dv1Augvub3grK3mxQTfhve8+0zL47Rfn4EqIJACqIeFWbbDapbtWIgTPrERxYZw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.1)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uFr3Y-0000000EBix-3pHC;
+	Fri, 16 May 2025 11:08:41 +0200
+Message-ID: <19cbc5ca0dc485c39c61ce713f2b4f4faabad684.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] wireless-regdb: Update regulatory info for Vietnam
+ (VN) for 2025
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Duy Hoang <duy@etylix.me>, linux-wireless@vger.kernel.org
 Cc: wireless-regdb@lists.infradead.org
-Subject: [PATCH v2] wireless-regdb: Update regulatory info for Vietnam (VN) for 2025
+Date: Fri, 16 May 2025 11:08:40 +0200
+In-Reply-To: <12521651747386138@mail-sendbernar-production-main-36.klg.yp-c.yandex.net>
+References: 
+	<12521651747386138@mail-sendbernar-production-main-36.klg.yp-c.yandex.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mailer: Yamail [ http://yandex.ru ] 5.0
-Date: Fri, 16 May 2025 16:02:18 +0700
-Message-Id: <12521651747386138@mail-sendbernar-production-main-36.klg.yp-c.yandex.net>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-According to [1] and [2]:
-- Update frequency range to match with Circular
-- Update units from dBm to mW to match values listed in Circular
-- Add AUTO-BW flags to allow the use of 160 MHz based on other rules
-- Update to allow use of 6 GHz band
+On Fri, 2025-05-16 at 16:02 +0700, Duy Hoang wrote:
+>=20
+> * 5470 - 5725 MHz
+>   - 500 mW (27 dBm)
 
-Detail:
-* 2400 - 2483.5 MHz
-  - 200 mW (23 dBm)
-* 5150 - 5250 MHz
-  - 200 mW (23 dBm)
-  - Indoor only
-* 5250 - 5350 MHz
-  - 100 mW (20 dBm)
-  - DFS/TPC
-* 5470 - 5725 MHz
-  - 500 mW (27 dBm)
-  - DFS/TPC
-* 5725 - 5850 MHz
-  - 1000 mW (30 dBm)
-* 5925 - 6425 MHz
-  - LPI
-    * 200 mW (23 dBm)
-    * Indoor only
-  - VLP
-    * 25 mW (14 dBm)
-    * Indoor and outdoor
-* 57000 - 66000 MHz
-  - 10000 mW
+So as we found in the ETSI thread, this (500 mW =3D=3D 27 dBm) isn't
+actually what happens, but rather you get 26 dBm.
 
-[1] https://datafiles.chinhphu.vn/cpp/files/vbpq/2021/10/08-btttt.signed.pdf
-[2] https://mic.gov.vn/van-ban-phap-luat/25099.htm
+However, the Vietnam regulations, although seemingly the same as ETSI,
+explicitly state 500 mW rather than the 3 dB reduction from 1 W that's
+stated in Germany!
 
-Signed-off-by: Hoang Pham Anh Duy <duy@etylix.me>
----
-Patch v2:
-  - Since Linux does not support TPC, reduce 5250 - 5350 MHz to 100 mW and 5470 - 5725 MHz to 500mW
-  - Add AUTO-BW for 6GHz band
-  - Add 60GHz
----
- db.txt | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+I'd still probably argue that the difference between 500 and 501.187 is
+small enough that you can state 27 dB here in the db, rather than
+stating 500mW.
 
-diff --git a/db.txt b/db.txt
-index e331d4f..4e9539b 100644
---- a/db.txt
-+++ b/db.txt
-@@ -2001,12 +2001,17 @@ country VI: DFS-FCC
- 	(5490 - 5730 @ 160), (24), DFS
- 	(5735 - 5835 @ 80), (30)
- 
-+# Source:
-+# https://datafiles.chinhphu.vn/cpp/files/vbpq/2021/10/08-btttt.signed.pdf
-+# https://mic.gov.vn/van-ban-phap-luat/25099.htm
- country VN: DFS-FCC
--	(2402 - 2482 @ 40), (20)
--	(5170 - 5250 @ 80), (17)
--	(5250 - 5330 @ 80), (24), DFS
--	(5490 - 5730 @ 80), (24), DFS
--	(5735 - 5835 @ 80), (30)
-+	(2400 - 2483.5 @ 40), (200 mW)
-+	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
-+	(5250 - 5350 @ 80), (100 mW), DFS, AUTO-BW
-+	(5470 - 5725 @ 80), (500 mW), DFS, AUTO-BW
-+	(5725 - 5850 @ 80), (1000 mW), AUTO-BW
-+	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR, AUTO-BW
-+	(57000 - 66000 @ 2160), (10000 mW), NO-OUTDOOR
- 
- # Source:
- # http://www.trr.vu/attachments/category/130/GURL_for_Short-range_Radiocommunication_Devices2.pdf
--- 
-2.46.0.windows.1
+I'm not sure we should make the processing scripts do rounding in this
+case, perhaps we should, if we decide that we want to ignore the
+difference of 0.237%?
+
+johannes
 
