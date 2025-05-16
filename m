@@ -1,319 +1,145 @@
-Return-Path: <linux-wireless+bounces-23049-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23050-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECE8AB9393
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 03:24:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B741AB93CE
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 03:52:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E790C17A8BC
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 01:24:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D88364A4162
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 01:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11300221DA3;
-	Fri, 16 May 2025 01:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164BE221F0A;
+	Fri, 16 May 2025 01:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="eW3bUSq0"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RFU7aqn2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A609B8F5E
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 01:24:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B8523AD;
+	Fri, 16 May 2025 01:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747358662; cv=none; b=mciDTTa7UAeWFHvcBWyVEr03jgZGAvbzQS4Z+MoQ6veAE3Pw6bSv+UUGwHvrs+EjRpLmYhfLlK/KYvoHr/NnxvDvFyWTp18gykx6beltMqajRBmnz+1Oe8X6vWJCzMP6FB7t5djPPgMoG8s7e3jFUWZZt9SqFnSQH+12UTJzrIM=
+	t=1747360322; cv=none; b=gkCBgCsaHuGb05jxC3+K+ScaE+fK5AsojHJC6hremKISYf6bNMmtQ9JQrjyxw0EECVx17j/vxja/WQjy8lCPpCMV5uP2LJYdgAgysgEcZn3hGShGG2piOcLKDXdA2w0zgfLrZYWEBuq7HTwkVJXcOTJJGydBJG/+UltFYpLeJUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747358662; c=relaxed/simple;
-	bh=hlbcWaulLAqd9Slz1dPMlJXkqamhqhWqgHCZbNM3LmY=;
-	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date; b=sivs6bIUezWVoQ1SaEkXoMbkI41RbvjKBSTf+ZvOz+qxw7mWkJ8ZQx6tYQiWLeIzslZ50kKQQ2EFSJz6A+lFLjbo0noGoF7Ky+Vu0lNvZFW4fyQPkHbolItktohC06a2VwXN5NW4W/FqILw9OnSfeMGdipyY6FWfxmbc/FHTTgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=eW3bUSq0; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54G1OF4X0115848, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1747358655; bh=hlbcWaulLAqd9Slz1dPMlJXkqamhqhWqgHCZbNM3LmY=;
-	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date;
-	b=eW3bUSq0NUHxmI6LUT3RRSb4MTZE+j2vmIk01Dj6ty6+sgeQY4aUVlkhVL1LVQnCS
-	 dcI652/akxZCeHdJR6fuF3d9klj410AzYyYEBRoX6i1pQeOLf6MnoL7vJCcZLxkXfq
-	 lpdOYAc6s79ekJj72lVR/218fSL6YY1klc4ySsBhVMajiFltCUzc/I3qL//A1ckyNF
-	 1EKPAvZpZ9ri4s+wxhoAtMi7QFeYtva4nT7sxm7Ifgqid2SSmDTMLobdBafxKmA+eT
-	 nBpr4qahRVs2Sze0Sh9PrCiQ5tdwWp5k1kPRBG1gUYGK9gK99ygzx31gp0KWx2yRaz
-	 +6Yt1VIQOAjpw==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54G1OF4X0115848
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 09:24:15 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 16 May 2025 09:24:16 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 16 May
- 2025 09:24:16 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: pull-request: rtw-next-2025-05-16
+	s=arc-20240116; t=1747360322; c=relaxed/simple;
+	bh=u5Z5saGKv/FLbtXJ1oygIX4iaLnFdF9faZRcgpDR8QE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VVz/l8DNu2TAwMLdT/xciusG+qik63DNM7w19FXOvj1D7RF4NBoWj6ccLt3SECFKj6FJ+5yAo/y0eUE1aPCEtT/d0wxHOg6wCtM0MwddREXO1LRmcmwV5IgBMohYL/ogfUZZeUC9lRsss8JF31C4P+Ndkev96pEI71x12yagJEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RFU7aqn2; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FEFPAx031652;
+	Fri, 16 May 2025 01:51:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	CTvwtxAEl/GoW/Fv6LUxyvVqZYvC664HWlTMIoG42sI=; b=RFU7aqn2mSKCi2wX
+	ptRaHioNftC9aYL9vxcvOZ0YuUOms8BL1izF4tbQ0IzjGOm5JJKxv/cY7+SxXNf4
+	EFjCPLz8lF4DhC5lgFEnvqdPZiyg0lKFolg6V5AEPsYq1CSu6BDbHdmymyGC6rMy
+	Et5/nHQJF/kOFrsTlV2SQQhwv3IQP50nAubhFKyy6WumRAtC44oa/nnXGpZzVNRh
+	syVh5vmIc4Y36wrLvXUsiPgQJ50lEqaUU+1wndHO/snAsv/EdB7CgeC1ghtqEI9j
+	dfPCCvNhTNxG5WRNsOEXjySrcbioS5eSi4ORU7QHDLGVyR/skUWRtKlOpH6bvWdi
+	h5cI7Q==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46mbcr811e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 May 2025 01:51:51 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54G1pViq005568
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 May 2025 01:51:31 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 15 May
+ 2025 18:51:29 -0700
+Message-ID: <50e0757f-03e8-460c-b14a-103e675f5f84@quicinc.com>
+Date: Fri, 16 May 2025 09:51:26 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <17e74675-70cc-43d7-a797-afb937030d34@RTEXMBS04.realtek.com.tw>
-Date: Fri, 16 May 2025 09:24:16 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath11k: clean-up during wrong ath11k_crypto_mode
+To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>, <jjohnson@kernel.org>
+CC: <~lkcamp/patches@lists.sr.ht>, <linux-wireless@vger.kernel.org>,
+        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20250515222520.4922-1-rodrigo.gobbi.7@gmail.com>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <20250515222520.4922-1-rodrigo.gobbi.7@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: oFmd9ZE8O3rekEovDSMgfM2t5JrJJGjT
+X-Authority-Analysis: v=2.4 cv=Auju3P9P c=1 sm=1 tr=0 ts=68269a37 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=VJvuOwoLhTZW_tfsPHkA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: oFmd9ZE8O3rekEovDSMgfM2t5JrJJGjT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE2MDAxNiBTYWx0ZWRfX5EZH73auMXZ2
+ BdR0hP03ZoOHE0zmXhY1S7o8HNb+GQkIvfpjL4SeDkVAKqVI3KJRu/+cNlXKzsNPpv05O1JviMR
+ x6xc6pbbeFd7EM58pzoBGlfalhEjLdhg4TBZXcoc3g8dBQEpitgt8kkg8K/7QqDTkZdPiyFYlZu
+ THOpnKP9Q0XLElT6mO2xYenOxHNMS6/8q33EXl7duqghZIFqOAAfqN8zda7vMdwCe/Zs2z5FR09
+ 9G7AjRNNpXIPp2zqDh0tdnQFR7fw+lpfWn8KZ0+t2X2TtWcTJrOCb/IhUcirIzFW9KB7gZ4mzyQ
+ 9Dmp6UAZuharqnk+8+tH1IiKuEez1TjfpDH37U7tfKCgLNA6wU2K40MshB4CF+lPgXkhxjNw+7g
+ Cz2FyEAyGZ6QSQDDs8XNFqeOqNUQYfDnncxWjWCIHPGpnE6h4sJDqBoRqap37lp/6KVqaiQ7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-16_01,2025-05-15_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1011 spamscore=0 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 mlxscore=0 adultscore=0 priorityscore=1501 mlxlogscore=944
+ phishscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505160016
 
-Hi,
 
-A pull-request of rtw-next to wireless-next tree, more info below. Please
-let me know if any problems.
 
-Thanks
-Ping-Ke
+On 5/16/2025 6:22 AM, Rodrigo Gobbi wrote:
+> if ath11k_crypto_mode is invalid (not ATH11K_CRYPT_MODE_SW/ATH11K_CRYPT_MODE_HW),
+> ath11k_core_qmi_firmware_ready() will not undo some actions that was previously
+> started/configured. It's reasonable to undo things during this condition, fixing
+> the following smatch warning:
+> 
+> drivers/net/wireless/ath/ath11k/core.c:2166 ath11k_core_qmi_firmware_ready()
+> warn: missing unwind goto?
+> 
+> Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+> ---
+> Changelog:
+> v2: add smatch warn at commit msg
+> v1: https://lore.kernel.org/linux-wireless/20250515004258.87234-1-rodrigo.gobbi.7@gmail.com/
+> ---
+>  drivers/net/wireless/ath/ath11k/core.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+> index 2e9f8a5e61e4..fd3017c444a4 100644
+> --- a/drivers/net/wireless/ath/ath11k/core.c
+> +++ b/drivers/net/wireless/ath/ath11k/core.c
+> @@ -2163,7 +2163,9 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
+>  		break;
+>  	default:
+>  		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
+> -		return -EINVAL;
+> +		ret = -EINVAL;
+> +		ath11k_dp_free(ab);
+> +		goto err_firmware_stop;
+>  	}
 
----
+Instead, how about moving the ath11k_crypto_mode validating to the top of
+ath11k_core_qmi_firmware_ready()?
 
-The following changes since commit 1794d7ab34d2221ac7eb921b171e75b856e10561:
+>  
+>  	if (ath11k_frame_mode == ATH11K_HW_TXRX_RAW)
 
-  wifi: mt76: mt7996: fix locking in mt7996_mac_sta_rc_work() (2025-03-19 19:44:25 +0100)
-
-are available in the Git repository at:
-
-  https://github.com/pkshih/rtw.git tags/rtw-next-2025-05-16
-
-for you to fetch changes up to 3cc35394fac15d533639c9c9e42f28d28936a4a0:
-
-  wifi: rtw89: fix firmware scan delay unit for WiFi 6 chips (2025-05-16 09:03:40 +0800)
-
-----------------------------------------------------------------
-rtw-next patches for v6.16
-
-Some fixes and refinements across drivers, and regular development of
-MLO and STA + P2P concurrency. Major changes are listed below.
-
-rtw88:
-
- * improve throughput for RTL8814AU
-
-rtw89:
-
- * support MLO
-
- * improve user experience for STA + P2P concurrency
-
- * dynamic antenna gain (DAG) with different power by antenna
-
- * load SAR tables from ACPI
-
-----------------------------------------------------------------
-Alexey Kodanev (1):
-      wifi: rtw88: fix the 'para' buffer size to avoid reading out of bounds
-
-Bitterblue Smith (10):
-      wifi: rtw88: usb: Enable switching the RTL8814AU to USB 3
-      wifi: rtw88: usb: Enable RX aggregation for RTL8814AU
-      wifi: rtw88: Set AMPDU factor to hardware for RTL8814A
-      wifi: rtw88: Don't set SUPPORTS_AMSDU_IN_AMPDU for RTL8814AU
-      wifi: rtw88: Fix the module names printed in dmesg
-      wifi: rtw88: Fix RX aggregation settings for RTL8723DS
-      wifi: rtw88: Handle RTL8723D(S) with blank efuse
-      wifi: rtw88: usb: Reduce control message timeout to 500 ms
-      wifi: rtw88: usb: Upload the firmware in bigger chunks
-      wifi: rtw88: Fix the random "error beacon valid" messages for USB
-
-Chen Ni (2):
-      wifi: rtw88: sdio: Remove redundant 'flush_workqueue()' calls
-      wifi: rtw88: usb: Remove redundant 'flush_workqueue()' calls
-
-Chin-Yen Lee (1):
-      wifi: rtw89: fix firmware scan delay unit for WiFi 6 chips
-
-Dian-Syuan Yang (1):
-      wifi: rtw89: leave idle mode when setting WEP encryption for AP mode
-
-Dmitry Antipov (1):
-      wifi: rtw88: do not ignore hardware read error during DPK
-
-Dr. David Alan Gilbert (3):
-      wifi: rtlwifi: Remove unused rtl_usb_{resume|suspend}
-      wifi: rtlwifi: Remove uncalled stub rtl*_phy_ap_calibrate
-      wifi: rtlwifi: Remove unused rtl_bb_delay()
-
-Kees Cook (1):
-      wifi: rtw89: fw: Remove "const" on allocation type
-
-Kuan-Chung Chen (6):
-      wifi: rtw89: 8922a: fix TX fail with wrong VCO setting
-      wifi: rtw89: set pre-calculated antenna matrices for HE trigger frame
-      wifi: rtw89: 8922a: increase beacon loss to 6 seconds
-      wifi: rtw89: acpi: introduce country specific TAS enabling
-      wifi: rtw89: phy: add C2H event handler for report of FW scan
-      wifi: rtw89: constrain TX power according to dynamic antenna power table
-
-Mingcong Bai (1):
-      wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723
-
-Ondrej Jirman (2):
-      wifi: rtw89: Convert rtw89_core_set_supported_band to use devm_*
-      wifi: rtw89: Fix inadverent sharing of struct ieee80211_supported_band data
-
-Ping-Ke Shih (7):
-      wifi: rtw89: set 2TX for 1SS rate by default
-      wifi: rtw89: fw: cast mfw_hdr pointer from address of zeroth byte of firmware->data
-      wifi: rtw89: phy: reset value of force TX power for MAC ID
-      wifi: rtw89: 8852c: update supported firmware format to 2
-      wifi: rtw89: 8922a: rfk: adjust timeout time of RX DCK
-      wifi: rtw89: pci: configure manual DAC mode via PCI config API only
-      wifi: rtw89: pci: enlarge retry times of RX tag to 1000
-
-Po-Hao Huang (12):
-      wifi: rtw89: 8922a: use SW CRYPTO when broadcast in MLO mode
-      wifi: rtw89: Adjust management queue mapping for [MLO, HW-1]
-      wifi: rtw89: Configure scan band when mlo_dbcc_mode changes
-      wifi: rtw89: extend join_info H2C command for MLO fields
-      wifi: rtw89: add MLD capabilities declaration
-      wifi: rtw89: Fill in correct Rx link ID for MLO
-      wifi: rtw89: allow driver to do specific band TX for MLO
-      wifi: rtw89: send nullfunc based on the given link
-      wifi: rtw89: add MLO track for MLSR switch decision
-      wifi: rtw89: debug: extend dbgfs for MLO
-      wifi: rtw89: debug: add MLD table dump
-      wifi: rtw89: debug: add FW log component for MLO
-
-Yuuki NAGAO (1):
-      wifi: rtw88: rtw8822bu VID/PID for BUFFALO WI-U2-866DM
-
-Zhen XIN (2):
-      wifi: rtw88: sdio: map mgmt frames to queue TX_DESC_QSEL_MGMT
-      wifi: rtw88: sdio: call rtw_sdio_indicate_tx_status unconditionally
-
-Zong-Zhe Yang (37):
-      wifi: rtw89: fix typo of "access" in rtw89_sar_info description
-      wifi: rtw89: regd: introduce string getter for reuse
-      wifi: rtw89: sar: introduce structure to wrap query parameters
-      wifi: rtw89: sar: add skeleton for SAR configuration via ACPI
-      wifi: rtw89: acpi: introduce method evaluation function for reuse
-      wifi: rtw89: acpi: support loading static SAR table
-      wifi: rtw89: acpi: support loading dynamic SAR tables and indicator
-      wifi: rtw89: acpi: support loading GEO SAR tables
-      wifi: rtw89: sar: add skeleton for different configs by antenna
-      wifi: rtw89: 8922a: support different SAR configs by antenna
-      wifi: rtw89: 8852c: support different SAR configs by antenna
-      wifi: rtw89: 8852bx: support different SAR configs by antenna
-      wifi: rtw89: regd: indicate if regd_UK TX power settings follow regd_ETSI
-      wifi: rtw89: add suffix "_ax" to Wi-Fi 6 HW scan struct and func
-      wifi: rtw89: refactor flow that hw scan handles channel list
-      wifi: rtw89: mcc: make GO announce one-time NoA for HW scan process
-      wifi: rtw89: don't re-randomize TSF of AP/GO
-      wifi: rtw89: mcc: make GO+STA mode calculate dynamic beacon offset
-      wifi: rtw89: mcc: handle the case where NoA start time has passed
-      wifi: rtw89: mcc: update entire plan when courtesy config changes
-      wifi: rtw89: mcc: support courtesy mechanism on both roles at the same time
-      wifi: rtw89: mcc: refine filling function of start TSF
-      wifi: rtw89: mcc: avoid that loose pattern sets negative timing for auxiliary GO
-      wifi: rtw89: extend mapping from Qsel to DMA ch for MLO
-      wifi: rtw89: roc: dynamically handle link id and link instance index
-      wifi: rtw89: introduce helper to get designated link for MLO
-      wifi: rtw89: extract link part from core tx write function
-      wifi: rtw89: chan: re-calculate MLO DBCC mode during setting channel
-      wifi: rtw89: add handling of mlo_link_cfg H2C command and C2H event
-      wifi: rtw89: debug: add mlo_mode dbgfs
-      wifi: rtw89: declare MLO support if prerequisites are met
-      wifi: rtw89: mcc: pass whom to stop at when pausing chanctx
-      wifi: rtw89: mcc: drop queued chanctx changes when stopping
-      wifi: rtw89: mcc: add courtesy mechanism conditions to P2P roles
-      wifi: rtw89: mcc: introduce calculation of anchor pattern
-      wifi: rtw89: mcc: deal with non-periodic NoA
-      wifi: rtw89: mcc: avoid redundant recalculations if no chance to improve
-
- drivers/net/wireless/realtek/rtlwifi/core.c        |   11 -
- drivers/net/wireless/realtek/rtlwifi/core.h        |    1 -
- drivers/net/wireless/realtek/rtlwifi/pci.c         |   10 +
- .../net/wireless/realtek/rtlwifi/rtl8192de/phy.c   |    5 -
- .../net/wireless/realtek/rtlwifi/rtl8192de/phy.h   |    1 -
- .../net/wireless/realtek/rtlwifi/rtl8192du/phy.c   |    5 -
- .../net/wireless/realtek/rtlwifi/rtl8192du/phy.h   |    1 -
- .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c   |    4 -
- .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.h   |    1 -
- .../net/wireless/realtek/rtlwifi/rtl8821ae/phy.c   |    4 -
- .../net/wireless/realtek/rtlwifi/rtl8821ae/phy.h   |    1 -
- drivers/net/wireless/realtek/rtlwifi/usb.c         |   12 -
- drivers/net/wireless/realtek/rtlwifi/usb.h         |    2 -
- drivers/net/wireless/realtek/rtw88/coex.c          |    2 +-
- drivers/net/wireless/realtek/rtw88/fw.c            |    8 +-
- drivers/net/wireless/realtek/rtw88/hci.h           |    8 +
- drivers/net/wireless/realtek/rtw88/mac.c           |   11 +-
- drivers/net/wireless/realtek/rtw88/mac.h           |    2 +
- drivers/net/wireless/realtek/rtw88/mac80211.c      |    2 +
- drivers/net/wireless/realtek/rtw88/main.c          |   35 +-
- drivers/net/wireless/realtek/rtw88/main.h          |    4 +
- drivers/net/wireless/realtek/rtw88/pci.c           |    2 +
- drivers/net/wireless/realtek/rtw88/rtw8703b.c      |   61 +-
- drivers/net/wireless/realtek/rtw88/rtw8723cs.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8723d.c      |    1 +
- drivers/net/wireless/realtek/rtw88/rtw8723de.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8723ds.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8723du.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8723x.c      |   59 ++
- drivers/net/wireless/realtek/rtw88/rtw8812a.c      |    2 +
- drivers/net/wireless/realtek/rtw88/rtw8812au.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8814a.c      |   12 +
- drivers/net/wireless/realtek/rtw88/rtw8814ae.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8814au.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8821a.c      |    2 +
- drivers/net/wireless/realtek/rtw88/rtw8821au.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8821c.c      |    2 +
- drivers/net/wireless/realtek/rtw88/rtw8821ce.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8821cs.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8821cu.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8822b.c      |    2 +
- drivers/net/wireless/realtek/rtw88/rtw8822be.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8822bs.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8822bu.c     |    4 +-
- drivers/net/wireless/realtek/rtw88/rtw8822c.c      |    5 +-
- drivers/net/wireless/realtek/rtw88/rtw8822ce.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8822cs.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/rtw8822cu.c     |    2 +-
- drivers/net/wireless/realtek/rtw88/sdio.c          |   27 +-
- drivers/net/wireless/realtek/rtw88/usb.c           |   63 +-
- drivers/net/wireless/realtek/rtw89/acpi.c          | 1037 +++++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/acpi.h          |  190 ++++
- drivers/net/wireless/realtek/rtw89/cam.c           |    7 +
- drivers/net/wireless/realtek/rtw89/chan.c          |  418 +++++---
- drivers/net/wireless/realtek/rtw89/chan.h          |   17 +-
- drivers/net/wireless/realtek/rtw89/core.c          |  493 +++++++---
- drivers/net/wireless/realtek/rtw89/core.h          |  144 ++-
- drivers/net/wireless/realtek/rtw89/debug.c         |  174 +++-
- drivers/net/wireless/realtek/rtw89/fw.c            |  480 +++++++--
- drivers/net/wireless/realtek/rtw89/fw.h            |   94 +-
- drivers/net/wireless/realtek/rtw89/mac.c           |   58 +-
- drivers/net/wireless/realtek/rtw89/mac.h           |   19 +-
- drivers/net/wireless/realtek/rtw89/mac80211.c      |   38 +-
- drivers/net/wireless/realtek/rtw89/mac_be.c        |    3 +
- drivers/net/wireless/realtek/rtw89/pci.c           |   36 +-
- drivers/net/wireless/realtek/rtw89/phy.c           |  131 ++-
- drivers/net/wireless/realtek/rtw89/phy.h           |   15 +
- drivers/net/wireless/realtek/rtw89/phy_be.c        |    2 +-
- drivers/net/wireless/realtek/rtw89/ps.c            |  147 +++
- drivers/net/wireless/realtek/rtw89/ps.h            |    3 +
- drivers/net/wireless/realtek/rtw89/reg.h           |   15 +-
- drivers/net/wireless/realtek/rtw89/regd.c          |   46 +-
- drivers/net/wireless/realtek/rtw89/rtw8851b.c      |    2 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c      |    2 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c      |    2 +
- .../net/wireless/realtek/rtw89/rtw8852b_common.c   |   24 +
- drivers/net/wireless/realtek/rtw89/rtw8852bt.c     |    2 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c      |   30 +-
- drivers/net/wireless/realtek/rtw89/rtw8922a.c      |   32 +-
- drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.c  |    5 -
- drivers/net/wireless/realtek/rtw89/sar.c           |  296 +++++-
- drivers/net/wireless/realtek/rtw89/sar.h           |   19 +-
- drivers/net/wireless/realtek/rtw89/ser.c           |    3 +
- drivers/net/wireless/realtek/rtw89/txrx.h          |   31 +
- drivers/net/wireless/realtek/rtw89/wow.c           |    3 +-
- 85 files changed, 3740 insertions(+), 682 deletions(-)
 
