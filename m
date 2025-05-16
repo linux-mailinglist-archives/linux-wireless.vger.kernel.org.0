@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-23070-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23071-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C86AB9869
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 11:14:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B991BAB98AE
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 11:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E48609E577A
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 09:14:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47707500297
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 09:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064CF224B12;
-	Fri, 16 May 2025 09:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F09222592;
+	Fri, 16 May 2025 09:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="aM4G0NIz";
-	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="QkodJu+B"
+	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="VLnFtO3H";
+	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="xL3vy+3K"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx07-0057a101.pphosted.com (mx07-0057a101.pphosted.com [205.220.184.10])
+Received: from mx08-0057a101.pphosted.com (mx08-0057a101.pphosted.com [185.183.31.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC461A704B
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 09:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.184.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382D115530C
+	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 09:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.183.31.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747386875; cv=fail; b=GaNNVe68YNDtKhW3cYiOxxA47K2fKrMKUETrDPjhDY9XhGIe09UYBd0IGJfuUJDO6T+0j+DRo2W2M1tM1WWxIgekZKCd7vnXGq3BdWvmCUlrTiXvPlWkMsOi4+UI/zh3iRSSDw1FkjMH+WISLBmAcfAmnGVuyiQfLjD429FPwRg=
+	t=1747387385; cv=fail; b=i1L0AaAZ3ClMvPF1XFEDQtR6v3p2yIINKa+eCmv+mGomi1RVncpIzBkBYabKjkZMpo55HRMbX/mMFQogicYe9LDJi+2R8XHYS+QSrLJFhrglyVGSkOxqjFPM2OMS2Qhd79kf2VDLvEM9q34C+9hRnmXzDAefAmcKHlD9Mcoeebo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747386875; c=relaxed/simple;
-	bh=riD26Pg5h7qJhjKtacTXKppMd5hG5+SN4UrlVquyFSo=;
+	s=arc-20240116; t=1747387385; c=relaxed/simple;
+	bh=fRyv5c034RE62RoYjJv9ChT/bkgq+wVrCv6MnGJ84To=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UCbkwstTIIZRp/AhLMwUaxTuksQtQRZcm/YPIjWf+q/Z3FZSI6vdpWTgUYkj5SahsE69DLGm6xiCexn67RdNkJ55ex9WXHs1afHTESCXjp7aVrXd7qBgn60YRCWyhLrUEZgVBlMIpwfl1VnjzoslELFB1NPZmUtyfQliZMeRC7U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=aM4G0NIz; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=QkodJu+B; arc=fail smtp.client-ip=205.220.184.10
+	 Content-Disposition:In-Reply-To:MIME-Version; b=L8N1l0y3m2lZyGobfP015TfkvKkcU15o5cHhVDTS/KDS1rs1vQR4Wwp+RQC3It8jbmadvWDIso6afZU49Y/OGAr4MRuOY7TC3ygnWx26q7VJA0MtyQ5mU67E074nAQapp3wzvqhP4G+e30lyt/pN/Hv7FprMRB1snAXdtvAtExw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=VLnFtO3H; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=xL3vy+3K; arc=fail smtp.client-ip=185.183.31.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=westermo.com
-Received: from pps.filterd (m0214197.ppops.net [127.0.0.1])
-	by mx07-0057a101.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54G5d2rW017633;
-	Fri, 16 May 2025 11:14:17 +0200
+Received: from pps.filterd (m0214196.ppops.net [127.0.0.1])
+	by mx07-0057a101.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54G5soOY006294;
+	Fri, 16 May 2025 11:22:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=270620241; bh=
-	8t931oEVJ4y4woOHT6PaUtuLaq18ujjH5uYcSRHZjeM=; b=aM4G0NIzv2V2OsXZ
-	4U6cSjyefbAB6czTXXxvOrAUUETb8qW3OPcBx3sM0CsM2VIVRntiNFsHgor4ke8D
-	dl/nEoV9jsDh44lxyOVqAAwwtP1CCMtsMBNoWRmXV1VtLNHGgiVT+gbTfxefJfPy
-	FK6zqElXMch+Xj02XwJZuBIftbAVzgsjwog37Wmw5yo5Vy2eerXU27VBMoNPoiwG
-	6lWsrVhPzoi6A4CZyuD9oJTLYa0uadruF9WcBa9mPOqWGGnj64UZ8c7h9H1koNgi
-	rau7/Feq8Vhpz4nnjnU2mkMYCa/+wxRJkkCsVlS/+Zqz+8C0UWxOIkVvjrIwW/fK
-	O23cyQ==
-Received: from eur05-am6-obe.outbound.protection.outlook.com (mail-am6eur05lp2106.outbound.protection.outlook.com [104.47.18.106])
-	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 46hu5bfc8f-1
+	MNjkuwYwpdhvjqkr2yntZrtnD7ay/BTEWQdShTGSXV0=; b=VLnFtO3HuQmaaYmx
+	M8Ty+ZFe/NSNyV1YocR1y00WphQg/8TXtYD3kub+SYo6xgVCjVylVtC3cn0RbAKY
+	aJsU2eWfvWDG5R73WSkSWd0lKMvv3U7UfvPX56JgxwvnO9vn3ANyWWIINh77CgkC
+	LqTI2ysm5pwE6sgLRIIL7aiWejH7jI7o3sO+Jy6SsRsNUDVb6TST9ZJMgnn4CUnp
+	x0VQKORu2AHKGDLThGT3/WDnfg1Fs17hepBY3KvG4PXqVw6pcK2RTSfnv5wUrUfN
+	AaieYCDqgSj/MZ9aBOyRl3rkZiRa2/WnlNbbJ4Ovi4BcFTpU8loT8l0nYHE4EzdD
+	Ev327Q==
+Received: from eur05-vi1-obe.outbound.protection.outlook.com (mail-vi1eur05lp2170.outbound.protection.outlook.com [104.47.17.170])
+	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 46htt46sh4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 May 2025 11:14:16 +0200 (MEST)
+	Fri, 16 May 2025 11:22:53 +0200 (MEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QLIrpZw78PIPzCExhyNTen+LBrmBEf6K/K5Oe1i5Opylb5D1X5kR/POYSyipgTFGLGrdlwIp9Pw5f+s0TGKn0NZ7PQi5BTSsW/n6nJdaEQ+9DvuqJg/VKZ06jxuraDPeobLBSaIvIdxBkxIvVgGmIIaB/5fatXeKuIBmC0oudKjGCIbXm6ONG2mUI6JhzWTYbyp46345KzRuUIdY+ePqVS5aPIUnHT18xQIudpH5VOQIgwto0hvONweLSQmrhQeCdudPad3JcGSEqq7BWca3NnOkBc6Xzfz5l/POJy36o9ggUxX+53SS6Q3ntDRKqf0aPOBnS59t0/1DPFf8TBewEQ==
+ b=lcDQGMh87n1oe5chSOqHrIa3a8zpW/Q2slMEB1EITocooERgECQKEzj5Il+BGe+ujPAMziHpxaOSdq2lXAukCpwBqHPnML7BEam1hx3iaG+6QY0W5+GL3fAoQvSpZMX0me+1lceptWx3f/5xqhYx8qjADIhID8GlZSkNeGyfMhCrR453MhaAcjpPUhyPEGRxjwSnw9JA49jY3sX7YGuOXNbrFMGeML/ax13HAxjwM3KWjwY2WJXHE4/mCw3keWd2DJ1p7sw2K5aFCEZJAi9LFF3T3wh+zUqXVynIbHPmJfO1CjiYQ+Cf8XLvqSNFQ1b2LQdDTalwh2fCfumSs+RBlA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8t931oEVJ4y4woOHT6PaUtuLaq18ujjH5uYcSRHZjeM=;
- b=tKYR9sFPs/zAYDEUZzSw5BVPFBX9yOiBR7OriJX7J5yQ5sVpdUgWCc8+RCpMdJvdRmskebNJEONXo/s/qjaGhR+/oaYViQ/wKh8+7cX/20DvS72fahU6tQmTSS5ZQeX16e/gM7nvWj36v7n3bttMxw/DDOa4Re9At0QbkEUFBuK9QaXVtERDEfFy8a6FBLXVAYeIhxm1E6wgs0X6sMOCSpxasrnHfPYpdeGimrSc0S21t9mOqj9clnKwjltQl5HaJAAjASp70loHBRq66dWu+SAyo/LkJE4WIoFufW6YHETCLuJLeP9FhSMoK0lld1JqKTYxKGVFF/TazzkRhXsg0g==
+ bh=MNjkuwYwpdhvjqkr2yntZrtnD7ay/BTEWQdShTGSXV0=;
+ b=GzuBEUYHBIbiZ9yuKGiID/yhXwzZteyMo1QTpLgJBCo/hWS1uv/FU1/+MZMnfjk2DjQa1ZJkQAoqliXF/jCes4I8hyhiEFvLzzfSCEfSQRSc5FBAe7lT4Nq9z8nvSw02T/L3Gjni8d9PIAvbD46ll2nVQ8mPNUsqOYvLSLQngLspWmCx9UfKgJj1A55Z/JdwQUov5ITceTuDe4JJTUDoPcZRBkXS8aISAN9NVtPayh1Br2JM7NFC/S3dk5dMEPG6NSeNk/waGet0HZmDnNPjMqdAbgXIxnk1HDkTS31AXOrIDH9qRFboinQW5PxbRah6ACeReWEtrGfwOEYsD8NHgw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
  dkim=pass header.d=westermo.com; arc=none
@@ -63,33 +63,34 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=beijerelectronicsab.onmicrosoft.com;
  s=selector1-beijerelectronicsab-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8t931oEVJ4y4woOHT6PaUtuLaq18ujjH5uYcSRHZjeM=;
- b=QkodJu+BrYSBdv3Oschjjj6dkJ1OS96lLh5RNZ7ZSwzN5FBRA8zjizFMpU/IB8jQkutU7PH79pJM6IAsJl3zZR8TFjWdWaoERcM82QvamSz0fvGIM2hky/HzccK24Of4kL/xlPkwID1Yvz20AmH1FwqMmqVeab1QRvgVFinoYUw=
+ bh=MNjkuwYwpdhvjqkr2yntZrtnD7ay/BTEWQdShTGSXV0=;
+ b=xL3vy+3KpXCrvchG+hp4UuD+TGD67y0O4GOJMm/tnFDF1YynftVGvHO42VAkdKcfGaFiTPJHvnxNfp5gN9Y3yei3Q9Z3gPPHV280JhMoBk0Yfyz0kJlYCBKRps+z3JA2hJxo1P7G/C0s1db/HuqoorMc0xpRZclhbfihqCACPzg=
 Received: from AS8P192MB2240.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:63a::18)
- by PR3P192MB0896.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:97::14) with
+ by DU0P192MB1745.EURP192.PROD.OUTLOOK.COM (2603:10a6:10:3be::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.31; Fri, 16 May
- 2025 09:14:15 +0000
+ 2025 09:22:48 +0000
 Received: from AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
  ([fe80::bee5:29b7:49f2:cf70]) by AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
  ([fe80::bee5:29b7:49f2:cf70%3]) with mapi id 15.20.8722.027; Fri, 16 May 2025
- 09:14:15 +0000
-Date: Fri, 16 May 2025 11:14:09 +0200
+ 09:22:48 +0000
+Date: Fri, 16 May 2025 11:22:45 +0200
 From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-To: Chen-Yu Tsai <wens@kernel.org>
-Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org,
-        Johannes Berg <johannes@sipsolutions.net>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: wens@kernel.org, linux-wireless@vger.kernel.org,
+        wireless-regdb@lists.infradead.org
 Subject: Re: wireless-regdb: Wrong ETSI tranmit power without TPC
-Message-ID: <aCcB4XtVG8TZdaie@FUE-ALEWI-WINX>
+Message-ID: <aCcD5QLRpbMexvq9@FUE-ALEWI-WINX>
 References: <aBoK6p1+F5ve1rC6@FUE-ALEWI-WINX>
  <CAGb2v676sXN_eC9s6_2a6k2ACzf3n5jBgY_id22ruoz+Zb-Jaw@mail.gmail.com>
+ <424fc6a24f3af233fc70296b9995a97c2d7f9e17.camel@sipsolutions.net>
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGb2v676sXN_eC9s6_2a6k2ACzf3n5jBgY_id22ruoz+Zb-Jaw@mail.gmail.com>
+In-Reply-To: <424fc6a24f3af233fc70296b9995a97c2d7f9e17.camel@sipsolutions.net>
 User-Agent: Mutt/2.1.4 (2021-12-11)
-X-ClientProxiedBy: GV3PEPF00007A7B.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::606) To AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
+X-ClientProxiedBy: GV2PEPF00007567.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::3e5) To AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
  (2603:10a6:20b:63a::18)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -98,99 +99,97 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P192MB2240:EE_|PR3P192MB0896:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f56a381-7c27-4a88-a12a-08dd945a079b
+X-MS-TrafficTypeDiagnostic: AS8P192MB2240:EE_|DU0P192MB1745:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99e9b977-e667-445a-a9b7-08dd945b398a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?em5JbGwrZm96NU5KRG14Uitha0Zpckd2cmQyUnEzWVFSTHZucG5jV21LUHlk?=
- =?utf-8?B?SjdsTlBzSExrMkxvc1Jvck14UGFBUDhFWEVxcE5PT3M5TEE0RGdGcS9MZTRn?=
- =?utf-8?B?WEZ3dmM2ZjdvSmdjUXplcDRlNW54WHYzRXJ2UHQ0Vk9rWEc5azBEUnFNclQr?=
- =?utf-8?B?QVpiMElObFRlTUYya0taTEtSM2U4bkVQS3FZNjN4OVFOVng4UDJvdTJaNzFU?=
- =?utf-8?B?dGdsWVN3Y3E4ak1NK3gzN1l6K1E2QTYweDJvdDRBSHJIam9yaEEwdFduV1dQ?=
- =?utf-8?B?bWVtcWlZeHA0aElsT2swVC9hcUF6aEVsSlRicks4Vm93aTVDdUlWeDJpcG9O?=
- =?utf-8?B?UHN3YXdzWEdmVndIcCt1cktPaEdQQWdBQzYvK0dUUXZyMC9hNitxdHBiMENw?=
- =?utf-8?B?L3IvaDh2LzVRWXZ5RW0vQVE5TlRQNlN6VUFhbWZkS3dKcnhxdWVVS2preEE3?=
- =?utf-8?B?dGo2Z3FxWjM1OVF5MnpnS3lXcFZNL1AzbDB3Y3hKcEF0dVlvcllXT09oTUVR?=
- =?utf-8?B?Z0xiTU5YQkgvRHNVNFFjYmJUcTVWMk9QT2tFZVoyUE5aSS9RRTVTWGtqL0FK?=
- =?utf-8?B?TTk3eEVvcDZ4NnZCT0JnR1ZBdVlWazNqTU95Nk5IOXdwVUp5aTcvVFZWT1N2?=
- =?utf-8?B?MUszTXp1NDd2bkdzeGxSU2ZJK0lTaWRtbTYvZ2drMTRrSSt6Z1B5L1Q3c0Fp?=
- =?utf-8?B?ODZJa1dWYTVnRlpTc3N0MzVVbmF5S3BHdmxUR1lPSnZPdEE2ZVNGNHYxQUdO?=
- =?utf-8?B?QlQ1b2NUeUxGK1lPN1dYd1ZCSDAyeXVHN3FnQ2xVM2dWcjk3K1hiWW1UK3RS?=
- =?utf-8?B?T2tkRlBIalQ2TkRkclIxSzBMWEcxNFk4Vnp5NU9vWTkwem5vTlZIcSs1SWow?=
- =?utf-8?B?ZE80U3ZMQWZ2SlhoWGp2d0F5cDFheXlnRE45MktqeGRtTU9QWE8rZzhlNjE1?=
- =?utf-8?B?dmFPOHJIK1ljSC9DUVptQ0kvSXkyQUltYmEwL0NuZUVwbU9wZENTd2lKS2t4?=
- =?utf-8?B?SHVZU0JLNGdGeE1pcEwwemVsbjBtcDlOZHQvS2ZqUE40cUE4NUQvMmd4T21Q?=
- =?utf-8?B?UCt1SE5BOVdVcFRYc214RWs4K1N3OXpmQmh5S3lza05yT214OFNQT1hxY3R1?=
- =?utf-8?B?elNGRHlEQUhXM1lNSG5TaUIrTG1VdENZZnRlNGlUMkxTZTRKWFdsb2pHQ21w?=
- =?utf-8?B?eVZxOEJjTHhKSk5TTlBLd1Q2Qm1tNlpESWYrQjdqSnhZYmFETnBOVVpYM2lh?=
- =?utf-8?B?WHFOdk5sRVl5S0orZHZRaHdEWkkwMTh1bWJnVysyTnU3OXk0c1J5TmRoRkxt?=
- =?utf-8?B?NUxMclc5WWtDWmZsYmZEcS9FZ3c2ZkxmcExXd2ZPVVg2TGlLWG5zRlNSbFJN?=
- =?utf-8?B?RkgvZUZ3aVMvbXp1YkJsQVlsNFpzaTgvUnlIa0JqUHphekh0cUJ5YnEzSVhE?=
- =?utf-8?B?RUxTUGlwMEJHRUNJWCtoSGZybXBqY2tDMzU3eTd2aDkraG1yenJlektMN1dV?=
- =?utf-8?B?V1dFYng3amY2TTRwZ2dNbFpFMFBOQ01QKytDaHFKV0pFTFNjd1VFcStPOGt4?=
- =?utf-8?B?NlVYWVZmdGEwUUVaSi96Uk8ycVhRQWdNUnRaUGhQbzZ6V2RWWEQ3Q1BBeHYr?=
- =?utf-8?B?Wm5sV08zT00vVW9WTitTdDNpUUgvRWgzRW5oRllIL3RHMS9SODFKTGRVZ1V2?=
- =?utf-8?B?aFFxVU9CODYxeUgyOFFYWEdkY2IyeVZpUVdrcGFWcnJoZUt5NDdYWnJ1TkdR?=
- =?utf-8?B?UURIMEpPNFRHL1oxUTljb3Jpc2lVeVFXOU9vY2FxSDNzWFRrV3BuTmlSUGlP?=
- =?utf-8?B?TzEwVWFDYVprcmFLQW1CU0ZZU2Z2MGVWWTJ6Zk8yM25DRDA5ek44d2g1NDhU?=
- =?utf-8?B?MVc3QkxaV1FtUWVzRzNKN0RIWFh4SDUyRDdKLzYzaEdlc0JrcUNmQ20yN25S?=
- =?utf-8?Q?thAY8gXN6Bs=3D?=
+	=?utf-8?B?d0s3ZThiYnNwUHlaTS9xY045eWF6ZGszakxiSGpvTHdNclhzOFM0SXkyMmlU?=
+ =?utf-8?B?NmV6MnhOQ0l3YkV6Ujl1R0l5NkExMVpSV0dwTU1EUGhPR2o2VFVzRlZleHow?=
+ =?utf-8?B?MTdFNG5ydjh1ek5vSHhQeUVJN1U1SXR0N2paWjUwQUE3c0lrclVEbXZ4bTRM?=
+ =?utf-8?B?eEo4L3ZpR3F3d2FpdWJGMW8wYjVPcWgxZU9hTzFzeUZla2xSMTkzOGh2cHpQ?=
+ =?utf-8?B?NTZmYTJoczJEdWM1TWJ4RmZmT1Fva1JoZ0ZTM3hkM1hQVW5uWldiWjYvUGJi?=
+ =?utf-8?B?TVplY2RGMnBNRjVHVFdZSStVeldXTkFSSmt6czZRUkRLVXNma25nUUdEdXF5?=
+ =?utf-8?B?ek1rVWR1UEZTcEtBaFNPa05PZUE1L2ZHa2NkdkZIM0lTS0EyWHNKRHBvOFdS?=
+ =?utf-8?B?WTFkc2Q5ckwwTGtYbGMxd2FvOWN0SkNhK1lEWTkxQmZiTm9qK0lDdjFLWTRq?=
+ =?utf-8?B?TnROZVRLbFhsQWZseXFVUkFwQ3BQNjhlQ042NVpMTmdxNW5RclpkUGNMVjhH?=
+ =?utf-8?B?d0trV3FMTitDM0tYa1ZwTjlmR05zSWZXOFJkSXFweS8vRVNHLzlqcjliR2g5?=
+ =?utf-8?B?cFNONjBJN3E4UGJ3T2NoeDJFMTh0UEpLdzNIWFVvOEFMZDFYMlJwYVFxcXBK?=
+ =?utf-8?B?bWl5UTAzdE1LR05YM0tMYWxuOEl6MXBWMFJnWWdieXJEd0Jvb2pvSi9DUVcy?=
+ =?utf-8?B?Wmx6eC9QaVI1R2I1NkJhaG83ZHluVVplUS9BRXo0VkRNU0orNWREcE9oRDBN?=
+ =?utf-8?B?ZXk0U2FMMUdnekJBZTArM0pveXJ4RjU4Y05uQWNzSWROUDNmZ3FrelZaT3F6?=
+ =?utf-8?B?OGdYQUxnejU0MzFMRUdoNFNXcEdaVUl3NEpCUEl1SU1DaWFKOU1NQzN5K1l4?=
+ =?utf-8?B?WXoxZGVqQnhRNllHY3JtRmlKZS9xZ0FjZlo0anY1OU93b1A0RWlNQTlZdndy?=
+ =?utf-8?B?UngyTDNyOVVPMkVHS3h1M0VqOFh1ZE53ZDhKeHFQdkVYdEl3enBPQ2VpK1BJ?=
+ =?utf-8?B?KzRsVzJqVTJUYnBraXNhalJXWjA5R2k2SWxKNC9uamhCcnUzd3h5WDNoMGZT?=
+ =?utf-8?B?NWdqRTJFL2VmSC9GamhnYXQvWDFtOGNnY2J0S3l2TUYzUS8zZXEzeWk4Qkgy?=
+ =?utf-8?B?TmZrQm9WUjRkZTNaK25JdWc1YU8rdHlLTGhsOEU1cnhvRXJxNHl6ejNRZnpy?=
+ =?utf-8?B?OEhDaDliQUs1S01la0xIaEI3cnRRM0JXRW1HNXgrVWtrY3UwdC80eEo3M2Vs?=
+ =?utf-8?B?Umw3K1ZnSDNrTFVycXhjdlgrWSt3NG56UkxoSmhrV0tmN2VtSjkrM3BTSzli?=
+ =?utf-8?B?R2o4TTRqdU41elBDdHpTZUp6WmZSWVRhbmVkQi9Pa2Z5RGZlSVFsTHdrNTN5?=
+ =?utf-8?B?bVpGeG44dVpHTlF1c0NmNzBIbFpjMWhkUjdEZ0pDUXFkQlZoVGw4Yzl3Wndt?=
+ =?utf-8?B?dnBwcHBLaHcyNzJVV2toUm5ISXBuSWhKYkdvSHZsdEhyL2dhQXQxbWoxdzlE?=
+ =?utf-8?B?TGtyNHNxR3U1SG0wUFNUZHFyQTM2QU85NURVWGdvNDlPSnB4Zkh5Qll0eUxU?=
+ =?utf-8?B?NUQ2R1dhYnVuUFBBSGU3V1lWYlFHR2E4eU4xTmxJemZmL1ZTOGN2OEVUV254?=
+ =?utf-8?B?ZmlZVFZTT00wQ2tGL1lnczVyV1JFNFVHVENNVi9MMWh0dVRoOUpkekJkKzl2?=
+ =?utf-8?B?dloza0pZR2hJQlllOG9QNVBqcWltVTFUa3c0Z0lFNUdiQnc3dXh3TXVOVmJj?=
+ =?utf-8?B?aXRrTDJNVTc5UE1yM1BOaVNNZVMxYkZKTzFydm9vcVJRb1ZRaGI5WlRxbWNW?=
+ =?utf-8?Q?ql3YAi/qweEXur/W+wcSzEzcWi8STwp31s9Ck=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P192MB2240.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P192MB2240.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?REpKRTRrRTQyTkdmSkI3Mjd1WU1RS3RpRjdmb3NYalpyWi93dnZORWNPYW12?=
- =?utf-8?B?Q0tpRnVOckVwNkp6WlpQL1BpSEk2RVBqelhxOFFMWjAxazJkbWRsSnBidk8z?=
- =?utf-8?B?VlVMUzA0alVHbm50RnVrZm1seWxxUGlNUksxdTdlNHNwTXhsRm1ma1FkQ01G?=
- =?utf-8?B?V2xUeEZnbXdqbnhrdkN5SEtzaVdCMDEzNUY5ZzQyK0hsL2czTVMvZjdoWURG?=
- =?utf-8?B?Zk1WWHo2SXdMMXdNMjRqYjM1QXdTbHRGaDFJZ0RvSm8xOExNc2ZLQmtUelBJ?=
- =?utf-8?B?YWFxbE43ZjhGZWlVZjl1N3RsYzFKNmhXaFYvakZrRDRCWDNpTXFwS0VkNTh2?=
- =?utf-8?B?aEJIT1dSbHhiZmprdEhoaWJQTm9BRVUzV2doZGpPWExUZk5QMFBrQmFteTh6?=
- =?utf-8?B?RVhQMzJOT1RCMDZjbFprb29icFhuQ3BDNXR2cDVabUo0TGZHMUN3d3BQL3Bj?=
- =?utf-8?B?V29ZY05qZmZ0enhvNVlESXVoNk5yaVFSYXpQWGRuZVU2VDcwczFZYndXWm96?=
- =?utf-8?B?VU9hVDJzYlhPNDNLOXNOTUs4V3dyU2lvSm9hVjc3Qm9BTEU1N0hvQVV3RTI0?=
- =?utf-8?B?VDJnTlVTc3ByeHkrSzJwMDgrZmNOUWVzWldEVkppd2wrZE9uSFNibVFRVGpU?=
- =?utf-8?B?aSt6bXVUY1RXc0hqOHZ4OXNLK1RVQy9TOUNPbzA2Wm5FeGs2YnhSdUlDRGtB?=
- =?utf-8?B?T3lpVkFpRytsK2dTRmxzQktQRVlyejZTUDJsekVBS2pLQzZSREZmTC9xOVlm?=
- =?utf-8?B?Q09BYVBVMThjYkNaRHF5NVMybzZ3MEtiakhzRDIzMklzSzQ5Z1JBK2RIcTV5?=
- =?utf-8?B?ZU5SVHpaUTJFZ3JUNnhxV0dKU25SQlp2aDFuejNjY0xQbDlsNVFnaHAxYWs2?=
- =?utf-8?B?clpBekpZWm8xUTdyWHoyWWxpVk4vTkdrd2JuRjlGVUhXZk5oNU9oRkhyeEFy?=
- =?utf-8?B?NGI4QS9BUjBxaEN2RHhFTWtYVHhIOGVGdHNyU0pRM2lsZks2VTF6UUd4Mm16?=
- =?utf-8?B?QUllU3drRnFtamlnanZjTHJsc0VZOFJ2SEhwZ1VpVHdqWGxwc2tmR1o3TXRv?=
- =?utf-8?B?MUk3aG1nSmxIWnNmOVl0dUlwaFpibHA4NUtIUktGaXpHeFJpc1pGS2tMd2NM?=
- =?utf-8?B?bnNZMzdqOExKQmRocUV3Mno2WnpQMlJQdEp0OHljdXF2R0lDV0EwTVM2dnBG?=
- =?utf-8?B?NkdQV2pEWTlYSzB6WWJJUTdQWmhuNUlWZHBuVEdiTmdGZ0VFV0RkS1ZpYWJY?=
- =?utf-8?B?bm1IZXQzTStNd0Rzc0RZNzhWTGlld1lYK2F3WUQvYU56SFpJVnVFTjNQVHRS?=
- =?utf-8?B?MGhrL1ZnOU8xL0wwSHdnYWRFYkZ1QWg1Q3h1NkRreUlqRlZFN0htc3pGaWR3?=
- =?utf-8?B?ekVTUGVmRnJGWlhlOFZaYmpOdGFxR09tVGNzQ2dBU0szdnplaGwxYzkyMnJq?=
- =?utf-8?B?bzZZWkUzYTczZk9FY0QzUzVGY0FtWGUvVXpldUZsdWxSK2M3UWxUNGNsb0NS?=
- =?utf-8?B?OGc3ZGNYR3crRjZDWGprZXpKUFFVaHRnNnM1OFc1WXV1LzduNVFNeUVLa2p0?=
- =?utf-8?B?MGplc3Vac3g1M0lDWkNWRlROVUQwYTJwTDcySjhScTJFTmVlVTJIU2RBU1Zo?=
- =?utf-8?B?R0RiUEhhVzZLenlneUhUeVBxemJ0WElFbTlURkl5K09FWHB4M2k1NWZYb3RY?=
- =?utf-8?B?QmdoUTZWay9HczhpbzFhUkV0Ymh5d3E4Y1BhUTJheEgyVVNtdy9uV1F3WlBE?=
- =?utf-8?B?Y2Mza3JTSnhVT1cvTEVZbjhKWHZQeFNlOWRNOUswRXRXRlMwVm11dXJWZjd6?=
- =?utf-8?B?ZEtpdm9OM0d5Y1J6eEI4VVNWU2dyc001REZ2UEQ5YnNpdkorYTVDVlMyUzdu?=
- =?utf-8?B?RUloWDVTdmxiaW1CeEhFcjgrVlpDdGxBbVRwbjV2S1p1L2tyZ1RwZldDZmhL?=
- =?utf-8?B?MlprYWg3OTlNWWtMK3kwNjVYOWQxRlhjNlpQTW42ZWE0Kzh2R0gzS2c1L2xp?=
- =?utf-8?B?RkhvdG5ERXFJWkdlV3Z3U2t5WnU0VUgwa1pVQ1gwSFppbG10OUV4VklLOWRR?=
- =?utf-8?B?N2RnNWZBRkRheVU4dlY2L21xQk40SjhlNjVGdEZVTFVQTHFFRUJEb2M2S085?=
- =?utf-8?Q?7Wl+NktSGHSgcoOzR9HAf3uKH?=
+	=?utf-8?B?S01uTkNhU21QSjBQS2YzbnhUbEU3K0NhMHRaV0Y3SjFYd1g5bjdCNEFJVVRn?=
+ =?utf-8?B?NXF3QmNrRm5Ib0lUamQxeVlZWEkwbzRpblVOemhqYjIzSXhSb3ltaG1rRTVa?=
+ =?utf-8?B?QitFN2Y5TFhSR1ZjZnhiSWhPcXdjWTFXSG9iRGdTZTl1anRDcVFYOGFlWXJi?=
+ =?utf-8?B?bFlUSzNEdFZJd1U4WERGL04zUndkTktLKzc1UEZGWVVUZGRNV1FzNG5UQ2Nt?=
+ =?utf-8?B?dkRyanJXNkpBQzFBb0tCRnZPRXI0Y0xEampvUnA2SmFScnlzVjQvd0llUTNn?=
+ =?utf-8?B?QmJGYm1zRW1PK1dwdmZzWW01cU8raXBCZER1MXV0RE83a2s0bjlHYTZsM2th?=
+ =?utf-8?B?WGtCZmZieGdZbUxtVVN0cjNjSDRJNGRFa01OV2dVa1pKbVEwNTZzbVZpME5r?=
+ =?utf-8?B?Z0hFMUMvaytQcnhzc0hYSVhYY0Y2cDBWT3NkYjRZbzNlNS9kamtWL0RsWkxB?=
+ =?utf-8?B?Zi9iSkNubDV2eTNnaWlvSFBHQXp6UE1zMTdkK3BGSnFlWUE0cXBDWDBSMWpy?=
+ =?utf-8?B?RGVqUi9venVqbENwV3R4eDlqK2xSVmlJSVA4Q1ZMMUxwSk5nN21jd3V3a1lF?=
+ =?utf-8?B?R0NCYnFQMndOVEdNdnJjOE0rQllaWkQzckhvNEM3Uys0bzJYZ240aDAxTk9T?=
+ =?utf-8?B?WG1oNlRrVEVHNTluc3kwNzNSZGNxU0dkUy9ieWNhLzJKclViSFRPNzROY0hz?=
+ =?utf-8?B?MTRRMDJZMVB6V3Y2OTBYSXZYNEk1cHBKR0Q5eE5FWmZweTkwWFlaZVNRZ2xN?=
+ =?utf-8?B?WDNQQlhBbUZwSzA1dU9IcmY2T1BsSkZWc3JiWmp2UFN1d21hM3gxUFF3dzNU?=
+ =?utf-8?B?T2R2b1RHTVBNMU5EZS85dFUreXoxRk8vN0JlcDRVMTNoRi84L0ZXU1JkM25t?=
+ =?utf-8?B?c1RIWG5NR09UdG5zZXA2T3dsTmJJRzMrd0cvcmVXamgzUWRtd0Z1OTlvNFFS?=
+ =?utf-8?B?WlZ0YUpETm1PZUQ5Nit1SUVXMzJBWmY3NlQ3MmhtYmhTMHNxV3ZFY0I4aFVK?=
+ =?utf-8?B?NENsd3JLMktRT0lDWnZUT2Z5SnU4eEdqTm5VWlNxVkZNejFyb3IxeGhWa0J1?=
+ =?utf-8?B?WlFOZWlSTXM2RU1DYkhyZGhlZ0pqdTREcXk5UlBCR3ZjdkEyV1JlYmdoSndy?=
+ =?utf-8?B?RFgrdDVjVWtPSmdXSnRZcE1UUTQ2L05NYWEwbU95VXpJWXdoL29kL0JhWi9i?=
+ =?utf-8?B?SWdsME9HUWpQR1pFdU13cVBzM3NTZFdkUmZXcVZYYVhQZXZMbk1OZ3FSckFP?=
+ =?utf-8?B?dFJkaGhZZnJWWnBBcVFwWHNlREJQbjluM0lvdlNaQ3krSFJ0bGpQOUk2MHdx?=
+ =?utf-8?B?MXVUS3doT0F5NitJWEZ1aEdDSFlUdmRnVmw0Y2Q0djRKM3Y4Ni9rNzZHWUlo?=
+ =?utf-8?B?ais2Um1vVVhrM1FFTHRXZEpKYWdkZUhiaWVQWVA0bHgzazY5S2Y3aERUV3Nk?=
+ =?utf-8?B?RjNJUEJoVUlzS2loU01VbG5NQWRDYjMxM1NvSy9pRkRzTGZ5N2RXNzh4bDFr?=
+ =?utf-8?B?QWlLSXZmRlVWYkE5ekpwNTFWVDlKSmk2Q3ZFdlB3b2RzVWtTaXZxaTlCblVr?=
+ =?utf-8?B?RDR6MG9heWFOZmJyQTMyUXAyMmpEV0pud0RVNmlrTk1GU0RYQzhPai9iaGdR?=
+ =?utf-8?B?UmhUWkV6bzIzT0YrUmJkR2dPZWpoMGU2T0x4L29UaXVnZy94SkxGd21aS3RW?=
+ =?utf-8?B?OWNlQ2UrSUFkQU1DNUtLdll3RXBNQmhWL3Y4VEJGTFdGVWRCWjNZVUEzVS9h?=
+ =?utf-8?B?WmxGejUxZmtQYWN3SDlsWkRFUFBXTXlXVktPSW1BTEZGekxubndQdG5wVmNG?=
+ =?utf-8?B?R1JVQmhUT0o1cGluT0pxcytjanZML0JJcnN6bnFIMjN3bktCUUY2VHBQOG9i?=
+ =?utf-8?B?RTRPNEt0L3BwOXVNU1VveHdHVEF3RzFnUUtMYnFNL1N6bUFxNXZQSDRxTkRP?=
+ =?utf-8?B?SVlEaHZ4VmNBWDdNdldnNktDVmY4N1E2OEZUVWhzQ3EvMWN1QUFiQmdCTWlH?=
+ =?utf-8?B?U1dqNUUxMUtuamcvMWNhaEhOT3pDQWpPWjF2TVl3UjFhZTdzZXA4b011RWlm?=
+ =?utf-8?B?Q1lFcDZFWDJnN0FPZE54cTFNOUMzbG45dVBVZ1JqbEFWTFNHY0tkYjh0MjJJ?=
+ =?utf-8?Q?dhzH/d8lQODaLP3X7mUds/C+9?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	HSfaF1sjT+ddPqlCPKAooerluQiPY07LadnS2bNR78OV7XL5tTDNnLzkYOss1nGqCyYYh/w24iEzN78LXvg6WwmvTGdkFAwMn2So8GNaoQthn8KURhA57dYoAynly9uJI7/8bphSL9dg7X1PCSvjVj/lXAXZQU9dLdSSMhwjAl0XdVt6IpkuSPNhA9RD/W1EbKhRPHXdrQFwN8d0mxNwBihd+0mNWlT9h2bmyiLcqsLKTPr7EHBPtzcuSXzFmf3DasgD09Eg767kAOczu6j2/Ac4Ll3DvzMfEFL0Izqz9cMAexnLLFSRtXM1cKdbQ2k7P4LkD63Pg6C4ZNF/oMNwo+m5C5VnhKUXueY45KI4/f14u4DtMefwz4npfjCyyWUCT//NRucpMY1U0hetZDovxtqA8K/7ZXg31qpevr7OYuBei/Aup8XBD9DNhVW693EptqimoF0H5jgE/aN6NcNcZ0fTnydwyznFqiY6n3UnEZNeNRWRXiCRr1DA1mvkxPvDPCvvkAl/LRPMxjL+Z6KaUSLGnOu3x+pncOOGW9/iTkgkep34DNRTZTBtBE++jDnJSrEd+UO19apG8j2wTBeZHW8QuMlk7NrNMxSEIB1nuG3gJ+tKUVwwT++OiE+xOfDC
+	bPRiNqT4myPRv8WFViITYtY6qkSAxJtJ4ShCDzGYQF+9Rm+5E0LcE1rKq46WqFKrzt98ybt+G0cRcrr2bWW32/WJQTraieAOA3KonmqdOrl3TV5OipFdiHNg0h8oF8flOJSxyDW1ExDyTAgeRV0MT/zHuFisLNWTcB8HKc7ivUuhcuveu9tpmT0LiEbrWnw24nKpJQEvmCjDxfjVIitPR4WwSKX7BmuJA9FtTPcmWQlvAlekBuhjsX73uwQhNuo7MehCS1AGlfCu/p4buCvrqELYuiKG0XQhumDsz1Zal/CwqveKEZyzCs5zGRuXfpQVYbe6Hb/gh3SR/gG3++CjJ2EQVTtshgiYmeIr5fo2U/7fh6qrC6lw1Wklc2L54uK7UkjguVYnOXamK5eNK7HIs+KdLR+SarU4hGqSN/XD6ES+x6KXrKgKvIPY9/Qtt/GKRHMm+HVFGe6ca3kgBdTomcgj438SSF/R+tOcSo/V54qscrXZSD2sziIHt1hbBgXQbkVR8I458emb+ujvz4qzYvrEk3MFLmXFJuCa+BvjfUCRGGDQXstDu1QaXMkCNxT3MO8ZFN6ml2dD7YyJny7KNrOeq7iXSTQr0+baY+FP8NCkIxGbtBr0KdxFYmmEwQ6C
 X-OriginatorOrg: westermo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f56a381-7c27-4a88-a12a-08dd945a079b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99e9b977-e667-445a-a9b7-08dd945b398a
 X-MS-Exchange-CrossTenant-AuthSource: AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2025 09:14:15.3785
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2025 09:22:48.6382
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +QsgB0rwjQPCQjtw3WJU5T6tq0AMSYY52qNJ5KPfVbPynoQIbq4ji9LXBufFQKUm/GFnEBhffGD4SWPYaubeOg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3P192MB0896
+X-MS-Exchange-CrossTenant-UserPrincipalName: fdcU7xqBCb90XsaV4ny7SmQJCA1fEfsyomAxXObRBvLRYnGmKUlraNnHpkkv9+09+peWqIQq1z2H1LJqgdXW2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0P192MB1745
 X-MS-Exchange-CrossPremises-AuthSource: AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossPremises-AuthAs: Internal
 X-MS-Exchange-CrossPremises-AuthMechanism: 14
@@ -203,71 +202,82 @@ X-MS-Exchange-CrossPremises-Antispam-ScanContext:
 	DIR:Originating;SFV:NSPM;SKIP:0;
 X-MS-Exchange-CrossPremises-SCL: 1
 X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
-X-OrganizationHeadersPreserved: PR3P192MB0896.EURP192.PROD.OUTLOOK.COM
-X-Proofpoint-ORIG-GUID: 2IawQItnKFHP60FpCtTm9GSKVzSWt_-y
-X-Proofpoint-GUID: 2IawQItnKFHP60FpCtTm9GSKVzSWt_-y
-X-Authority-Analysis: v=2.4 cv=LINmQIW9 c=1 sm=1 tr=0 ts=682701e9 cx=c_pps a=6Hn8pli4REgfWvaJFfKueQ==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=dt9VzEwgFbYA:10 a=8gLI3H-aZtYA:10 a=N9GNhs4bAAAA:8 a=EDG_nEDfII5wme-T6BkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=PZhj9NlD-CKO8hVp7yCs:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE2MDA4NyBTYWx0ZWRfX5+oaHet4KPyu /+qnq72BsxbCNBxb47VhODnWtPYPZBO6KcO32MwyXdeCk6LXnNLTNiEPWgXugUCG9K8YELZTF7D GvFGuVwfjuuVHyF487hy6GZ5HU1aJWbo+sDHVv70cyoEAMqlqk9kysNqZantWyEc76DZAmSBj1D
- dnav68mqJXsTTnFGyi3EAjOx6U0O5f6wzQrpR3pDdx43UnlEIFQacrcbYr1A303mWQINahli4kV tV1bBMcuMbfAzeVCyDn3HMcJXqHWNR/3moOaHZY1L6M+SM/lrNaWXl0h7ho4Po5QGHkrta+C8Af eEdSxJbk8YI+VStn4kxZzM3TFMMCJuMlIMPTUTeNBBRNL1XGi8DfC7LB8PXPcpnIQiLMxF3XU2m
- CU6HDCRHkXBxnpM8f4iQ8YM8RY6W5CtNHN7eRuIOOVPHGtQJ0CJbnwfcew4CpxiDNpmtgYDU
+X-OrganizationHeadersPreserved: DU0P192MB1745.EURP192.PROD.OUTLOOK.COM
+X-Proofpoint-GUID: QM86WAfwWloMZjSoTkCgoSoOgIu2Bbc1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE2MDA4NyBTYWx0ZWRfX8RRSNvhShK0G t9ONRbL3RCGpgm5arKkKHmgEcclfLaZ8pkHh2t4UHuJzUFHe2i+KqfL8xM3JmcWLO6lv6Lr0BPz wJt4i8XPBbnaFr4lGoqpNJqcA+UP/yXGf/uNEj64kbz5ozcm/WgvpxkV+qjTpCvJBU04gf1Fqc5
+ BiyeeKiPLuX3iSI2Mqb22kCwnQUFO1ZcsnsN3c1CWQyouI6lXeacgq6b2hIU0TC0Dny6nV3g23c baQuWAPv0gSFW7KWbMuiiVccQu6jJt0fzLnIK+yT6UbAkEoHP2FpYRXUOgSuWhYEByv9Bq8zqiL 9h0nHFWm1c+BKXX2WQGIFv1piFQfZ+Rm9rvcSzul6DGynETLsich5twNgIQKlbRAr0O6u5i43zm
+ 7SKlRKo0PoK4DheSXkjnfrVcH8NOhle5FsbbVUBjns+1UxOunV+k6mlV/migeCkCCHrGd07X
+X-Proofpoint-ORIG-GUID: QM86WAfwWloMZjSoTkCgoSoOgIu2Bbc1
+X-Authority-Analysis: v=2.4 cv=SJtCVPvH c=1 sm=1 tr=0 ts=682703ed cx=c_pps a=G0dRk995gfaoSGr6a0qYcw==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=dt9VzEwgFbYA:10 a=8gLI3H-aZtYA:10 a=02BgHTXZAAAA:8 a=1JH1qzqAEujoWz3kIqkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=zM26VYTW1YGJCMSE5WE3:22
 
-Am Fri, May 16, 2025 at 04:15:40PM +0800 schrieb Chen-Yu Tsai:
-> On Thu, May 8, 2025 at 1:25 AM Alexander Wilhelm
-> <alexander.wilhelm@westermo.com> wrote:
-> >
-> > Hello devs,
-> >
-> > please correct me if I'm wrong. Since TPC is not used, the EU Rules dictates to
-> > decrease the transmit power by 3 dBm on some sub-bands. For the most of the EU
-> > countries the mW instead of dBm is used. Therefore they are halved (e.g for
-> > Germany (DE) in commit 81d251dda3985e1088bd89f5d9f565e63ba5a30f). The problem is
-> > that the values are then converted to dBm and rounded down and result in a wrong
-> > supported value. Take a look at example (Germany again):
-> >
-> > country DE: DFS-ETSI
-> >     (2400 - 2483.5 @ 40), (100 mW)
-> >     (5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
-> >     (5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
-> >     (5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
-> >     # short range devices (ETSI EN 300 440-1)
-> >     (5725 - 5875 @ 80), (25 mW)
-> >     # WiFi 6E
-> >     (5945 - 6425 @ 320), (23), NO-OUTDOOR, wmmrule=ETSI
-> >     # 60 GHz band channels 1-4 (ETSI EN 302 567)
-> >     (57000 - 66000 @ 2160), (40)
-> >
-> > For the frequencies 5250 - 5350 the power of 100 mW results it 20 dBm. Correct.
-> > The frequencies 5470 - 5725 have a power of 500 mW. It results in 26 dBm. But I
-> > believe 27 dBm are allowed. For the frequncies 5725 - 5875 the value of 25 mW is
-> > also dictated. I'm not sure if I should expect 14 dBm, but I get 13 dBm.
+Am Fri, May 16, 2025 at 10:38:04AM +0200 schrieb Johannes Berg:
+> On Fri, 2025-05-16 at 16:15 +0800, Chen-Yu Tsai wrote:
+> > > The frequencies 5470 - 5725 have a power of 500 mW. It results in 26 dBm. But I
+> > > believe 27 dBm are allowed.
 > 
-> Are you reading the converted numbers from the system, not the database
-> text file?
+> Seems like. But units are hard...
+> 
+> The link in the db went stale, but the current versions
+> 
+> https://urldefense.com/v3/__https://www.bundesnetzagentur.de/SharedDocs/Downloads/DE/Sachgebiete/Telekommunikation/Unternehmen_Institutionen/Frequenzen/Allgemeinzuteilungen/MobilfunkDectWlanCBFunk/WLAN_5GHz_pdf.pdf?__blob=publicationFile&v=1__;!!I9LPvj3b!Hih48oBC7IPvu59VI1FRTqSb45uwWEnAELFqlK_ubfJdtkTnODDPuyA5gG6olCgbiPxC6m0zQdcuNJ3nzRJ1RJ_PT6ux0w$ 
+> 
+> states (page 5):
+> 
+> --------------------
+> Frequenzband 5470–5725 MHz
+> ...
+> Maximale mittlere EIRP für
+> bandinterne Aussendungen
+> 
+> 1 W
+> Ausnahmen:
+> für Anlagen in Straßenfahrzeugen gilt eine maximale
+> mittlere EIRP von 200 mW.
+> 
+> ...
+> 
+> Maximale mittlere EIRP-Dichte für
+> bandinterne Aussendungen
+> 
+> 50 mW/MHz in jedem 1 MHz-Band
+> 
+> ...
+> 
+> Sendeleistungsregelung (TPC)
+> 
+> TPC muss durchschnittlich einen Abschwächungsfaktor von
+> mindestens 3 dB gegenüber der höchstzulässigen
+> Sendeleistung der Systeme erbringen; oder ohne TPC muss die
+> höchstzulässige mittlere EIRP und die Obergrenze für die
+> entsprechende mittlere EIRP-Dichte um 3 dB verringert
+> werden.
+> --------------------
+> 
+> 
+> So to be _really_ precise you'd end up with 1W reduced by 3dB which of
+> course _is_ precisely 27dBm since 1W is 10^30 or precisely 30 dBm.
+> 
+> (Except in "street vehicles", apparently. Rail has its own things, so I
+> guess that really does mean cars/trams/etc.)
+> 
+> But given the unit conversions are hard, we should probably just do this
+> in the db in dBm?
+> 
+> johannes
 
-From the system itself. I'm using the 'iw phy info' tool.
+I referred to the following EU Rules:
 
-Regards
+* ETSI EN 300 328 V2.2.2 (2.4 GHz)
+* ETSI EN 301 893 V2.1.1 (5 GHz)
+* ETSI EN 300 440 V2.2.1 (5.8 GHz)
+
+The problem with them is that almost always the unit _mW_ is used. And the
+reduction without TPC then is given in _dBm_. However, for 5.8 GHz (SRD devices)
+the transmission power is stated as 25 mW. Does the EU Rules means 14 dBm or
+only 13 dBm are allowed?
+
+
+Best regards
 Alexander Wilhelm
-
-> 
-> > Is there inconsistencies between dBm/mW conversions? Please give me a feedback.
-> 
-> The conversions don't always produce round numbers, and since we can't let
-> the system exceed the _actual_ limit, the values can only be rounded down.
-> For example, 500 mW converts to roughly 26.9897 dBm. We can't use 27 dBm,
-> since if the system outputs at 26.999 dBm, it would be in violation of
-> the rules.
-> 
-> Or, if we understand 3 dBm reduction to be halving the power, we could
-> fix up any rules that "have their base limit in mW and were converted to
-> dBm to apply the reduction" be rewritten in mW with the numbers halved.
-> That would require someone to go through the entries though. But if
-> the rules are already written in mW, and what you observe is the kernel
-> rounding down the numbers, then perhaps the kernel may need to support
-> both units.
-> 
-> 
-> Thanks
-> ChenYu
 
