@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-23064-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23065-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2D3AB9781
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 10:26:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 936F8AB97D2
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 10:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD84F1890CA5
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 08:26:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E2714E5756
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 08:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED56221D98;
-	Fri, 16 May 2025 08:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA4D22D4DD;
+	Fri, 16 May 2025 08:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="gqB8t9VH"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="oe3a1LN6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59921FECB1
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 08:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B80A282E1
+	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 08:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747383997; cv=none; b=tkjK9O+qlOrLr4jG4Ypiav8X4/hOR8YREnh+70o+t2xSfiX+nD5pczNTWx00WeFWaVbXAAadHw2PIcrLipF+r6qB9P/3RV6uUC1WV5X4HSNogqrMdKwQDwQymlaCBLsVsQdF3TxKXMAI85nFxREOwjxKl/lDOEBR20PHRXo+YOo=
+	t=1747384691; cv=none; b=UxyP5XLWq+6ny/2TxXmXLzDHqWbV1m+NtoPk1XOok1VeY+U39nFKz7HTTWyPhdtQyRGLEkeSQ70U3FYgWDCXFZzUrTTGixxPN9bEedyJTkWJU/aGacVNbBSK9fsb6w8OhzuKNoD2KBPvwqRbNgdZS3dfOH8HV3Ilqn6tBpc/46c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747383997; c=relaxed/simple;
-	bh=Vqk4oEVinCOlFI/uJi49DuXA/NTBNXt8lD6a8yPWOgI=;
+	s=arc-20240116; t=1747384691; c=relaxed/simple;
+	bh=3+eO/Qfn6xTvJMuj8st/TlhNA5PDFTSdkuTMA5gffj4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oSTiWw02wlCJWI2fKM9WDWyx9ZCOOBGY9yaYGA1sWJyvuj8MO5EbLcOhx0J5wcUH2riOhqknejALeT7TVn5eNK5xTAV3arvSoDpPu97kwzd/+1Jo+jQba6OAKGAYDvqtkli/bmOkrrA2z58mnDNJCNPQie3PKkdiCqi3KEqTewI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=gqB8t9VH; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=DiYmd0xMDQZHU4JUTw9u9ciS/n8aWM5IWEzrln76mJS8EGCRE7/IRH+YfmCsLFKw1xtCsrurZIIWuotmnw/UUNz8ZVI2D0iYj/qDwkpOxvNey7gVQTJ8OK3T1IIqZIBxbqPyAQR6xX0YXZLUxY3l64Jm9wK0Nj90R5AF1xuCLLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=oe3a1LN6; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Vqk4oEVinCOlFI/uJi49DuXA/NTBNXt8lD6a8yPWOgI=;
-	t=1747383996; x=1748593596; b=gqB8t9VHSldtTG7as+BUd5LYPf78zsBVHBNK4RSUU2I48VW
-	9pleZ135zNHaS9JULZi4EBdWPsRySQEJs0hgQHw+tCaxHJA/he2pKGM7kIYJ3Ot37xwWg9ExLqD5U
-	R1JlubkmGfzJ23UE18dimu/XGCct2LwTHDa6XHABE3zioDcJH7FxwJSS9hshDXQ1OGg4qd5T6Shpg
-	dxM7NeuIxhcsGYrstdUPmmIcMB9uOjuAuvb+n+5e850u5OncqXoigek+1g21IZqRNmo0ENsXnVLpu
-	ezSOkPnZGNWmrkSvYG+UZ++2pNip38zSrQZu352fPiQmeV7WdkieLBMsmtSaHmXA==;
+	Resent-Cc:Resent-Message-ID; bh=3+eO/Qfn6xTvJMuj8st/TlhNA5PDFTSdkuTMA5gffj4=;
+	t=1747384689; x=1748594289; b=oe3a1LN6eRsRZmkiXdxGxWZpNqiYhuHeHKtg7YE4vwHFkxv
+	Whg0K0Eplsbfhk5BHi7rWpk7g4TZXFXm5akkmRoYijEAyDYs0SsUnidjugIAl1DWcDCM/yHmUyhxR
+	Zodpy+p7EMft2PMU73lUoRfZYZtgkpGnTjZ3ufRfMuHQQzklNkynnAX3L2ZQIIcFSIqDC7L3QOYbG
+	TdI9OJk2PienWJQA2IaYyKNiMLkwt9RM5cSZyg2tVJxnMxnMW1f1BUxkO8zrznS/1CKCMKHoWy+rY
+	E7fS8CDAwrK90DOI9zEVPCRLJ4Jzh6+Ttc4IgJSzwOaEwDeOwDEPDXtEplRuNWtQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.1)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uFqOm-0000000E5Zb-2UWt;
-	Fri, 16 May 2025 10:26:32 +0200
-Message-ID: <e709c160b9a8eae55c5678fd222f1239657dfa29.camel@sipsolutions.net>
+	id 1uFqZx-0000000E7Ec-2b3M;
+	Fri, 16 May 2025 10:38:05 +0200
+Message-ID: <424fc6a24f3af233fc70296b9995a97c2d7f9e17.camel@sipsolutions.net>
 Subject: Re: wireless-regdb: Wrong ETSI tranmit power without TPC
 From: Johannes Berg <johannes@sipsolutions.net>
 To: wens@kernel.org, Alexander Wilhelm <alexander.wilhelm@westermo.com>
 Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
-Date: Fri, 16 May 2025 10:26:30 +0200
+Date: Fri, 16 May 2025 10:38:04 +0200
 In-Reply-To: <CAGb2v676sXN_eC9s6_2a6k2ACzf3n5jBgY_id22ruoz+Zb-Jaw@mail.gmail.com>
 References: <aBoK6p1+F5ve1rC6@FUE-ALEWI-WINX>
 	 <CAGb2v676sXN_eC9s6_2a6k2ACzf3n5jBgY_id22ruoz+Zb-Jaw@mail.gmail.com>
@@ -67,35 +67,59 @@ MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
 On Fri, 2025-05-16 at 16:15 +0800, Chen-Yu Tsai wrote:
-> The conversions don't always produce round numbers, and since we can't le=
-t
-> the system exceed the _actual_ limit, the values can only be rounded down=
-.
-> For example, 500 mW converts to roughly 26.9897 dBm. We can't use 27 dBm,
-> since if the system outputs at 26.999 dBm, it would be in violation of
-> the rules.
+> > The frequencies 5470 - 5725 have a power of 500 mW. It results in 26 dB=
+m. But I
+> > believe 27 dBm are allowed.
 
-While technically true, I'd think it's probably hard to even measure
-that accurately, 27 dBm is 501.187 mW?
+Seems like. But units are hard...
 
-> Or, if we understand 3 dBm reduction to be halving the power,
+The link in the db went stale, but the current versions
 
-That's fairly precise, a factor of 0.501.
+https://www.bundesnetzagentur.de/SharedDocs/Downloads/DE/Sachgebiete/Teleko=
+mmunikation/Unternehmen_Institutionen/Frequenzen/Allgemeinzuteilungen/Mobil=
+funkDectWlanCBFunk/WLAN_5GHz_pdf.pdf?__blob=3DpublicationFile&v=3D1
 
-> we could
-> fix up any rules that "have their base limit in mW and were converted to
-> dBm to apply the reduction" be rewritten in mW with the numbers halved.
-> That would require someone to go through the entries though. But if
-> the rules are already written in mW, and what you observe is the kernel
-> rounding down the numbers, then perhaps the kernel may need to support
-> both units.
+states (page 5):
 
-I don't think _drivers_ (or firmware) would support both units, so
-that'd just shift the rounding issue elsewhere?
+--------------------
+Frequenzband 5470=E2=80=935725 MHz
+...
+Maximale mittlere EIRP f=C3=BCr
+bandinterne Aussendungen
 
-Though I think in some places we use "mBm" instead of dBm? But then we
-also just convert to dBm in many places so that'd likely not make it any
-better.
+1 W
+Ausnahmen:
+f=C3=BCr Anlagen in Stra=C3=9Fenfahrzeugen gilt eine maximale
+mittlere EIRP von 200 mW.
+
+...
+
+Maximale mittlere EIRP-Dichte f=C3=BCr
+bandinterne Aussendungen
+
+50 mW/MHz in jedem 1 MHz-Band
+
+...
+
+Sendeleistungsregelung (TPC)
+
+TPC muss durchschnittlich einen Abschw=C3=A4chungsfaktor von
+mindestens 3 dB gegen=C3=BCber der h=C3=B6chstzul=C3=A4ssigen
+Sendeleistung der Systeme erbringen; oder ohne TPC muss die
+h=C3=B6chstzul=C3=A4ssige mittlere EIRP und die Obergrenze f=C3=BCr die
+entsprechende mittlere EIRP-Dichte um 3 dB verringert
+werden.
+--------------------
+
+
+So to be _really_ precise you'd end up with 1W reduced by 3dB which of
+course _is_ precisely 27dBm since 1W is 10^30 or precisely 30 dBm.
+
+(Except in "street vehicles", apparently. Rail has its own things, so I
+guess that really does mean cars/trams/etc.)
+
+But given the unit conversions are hard, we should probably just do this
+in the db in dBm?
 
 johannes
 
