@@ -1,147 +1,225 @@
-Return-Path: <linux-wireless+bounces-23090-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23091-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22CA5ABA305
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 20:36:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F236ABA30E
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 20:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F25541C03A77
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 18:35:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F9FB1BC6557
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 18:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2399127FD47;
-	Fri, 16 May 2025 18:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0A627814F;
+	Fri, 16 May 2025 18:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YjhXfSGw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gBY2wHpK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC6C27FD4E
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 18:34:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A631A0BF1;
+	Fri, 16 May 2025 18:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747420449; cv=none; b=X9bzCHgZAUHxailp29KhGrhoaCsRf7q9unijfDBJL4pJ195V5oUeI3X7Lh5PNSQ3nfzxHRS9JmizIzGMx7jeILwBQ1dezY9Fr+mU1m8qdCFGBqJoCNzyjG80TQ4KduhqPf44CA7twMY9U5yyItMN1+9y/TRhDEIj6NcDeKoHCyM=
+	t=1747420872; cv=none; b=a3lbl2LUXIMqWStRus2TiwevYwUqHSqKBkUa/UiyY/DeciGfBUt8EAnc3xM3a4hZbbVzzdFXpcEbtC9jcbl8EsEJkWA3XBLWGCOhPX8IXefnTgc1TE67lLW9BcM/2m7AaWoOxqlVuRq4DpkBncdFY9O0LSrdQmewATQfxFafl4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747420449; c=relaxed/simple;
-	bh=UYZqON+ZFLEFPV8xXlqzXYZdSo6MtDW3hfKSgxkGcq0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=kRB7c4yRuPXCNKQk6r/7kkVMn38u4DrPWxbC4K6+oShEGLT/fdJeAyDbeHPG8kd4bnxXpK0eiAgzsRQKJbu0pB9oKNqdWECST5r6NJGy5vzZv2DnQIVDJh17D+7Cr1MlRvUMNciZIaXCNGrWLdTC9wlYkvt9qFNXwTnrJvaeipE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YjhXfSGw; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54GBaj9O014558
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 18:34:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ep3GVkZ4Eolm/Nd+NWY05dh9tPS7F/FgWegfzyDT6Xw=; b=YjhXfSGwOXSVU8SN
-	QXzWuY8kKT06vZJHHqm9AessV+QGtpkVYTHMTHOZqyVHFQ91lBsg6l0xsJKnowk7
-	sU/flYvBOMt5mfN1o/6gS35ebrr85vOU2gnnLHo9wSEZvv4+ya+Xq/cUKgHDwM7J
-	3FiO3bnHrGciCqjckbO8rR+11lfxYsA9nvlmdG+Y6ShUsPD42YZBSGScArll7P/4
-	sqt5GpdOrzoifNV7eG3iLRuSjg4fqf0JCYix5XVO/45GEbeZwhtpJ+ye0xi6g7G6
-	YkCj/aegEW6V/+dhH6TrRW2Jo5kgIqkcsNcY4MVQhV/Fu0w29tA4cgZFCXysdCz3
-	YBaUZw==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46mbcpk1cf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 18:34:06 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-30e78145dc4so1733758a91.2
-        for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 11:34:06 -0700 (PDT)
+	s=arc-20240116; t=1747420872; c=relaxed/simple;
+	bh=j/psQkdzMVMF/cO2seHId0bpPEQPneH5fdBDVA9IMM4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MX1JCfCc7skhzRU+rJMbUUiDE/vK6XqpKrTLgEMQcUZxsNBGmCXpNUD5SclAFfYmcmS5gSBnoHOHqbiMdXOJVWS27JYclj26nR0kRcmnVOJafwP+zkcLCHpJ9b51JGTRvdowisvumvoxhOblTGM4j8K5PEEmLMT3ECz2oqORTgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gBY2wHpK; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43d0618746bso19596035e9.2;
+        Fri, 16 May 2025 11:41:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747420868; x=1748025668; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2s3pifaOo54XXjlPvrpcaeSY+7yLzjRWQvRopUWszpY=;
+        b=gBY2wHpKEwo7DA5qVE3w9HjDrmMrmLSRMP16fT7D/eDTspWs0rmedzRzk+l71TVwui
+         tmayQBoiceEAUexZgrU2JsC6v1SJgojQeEd4RUUobfxS1PNljziMbkkE9dlPQJ29ImXT
+         NqxzREdtjhufoE+p+ZHJinNADvY3PSbBGGM/eY1HbJrThPV2kMEmz831WYdXcPaImTyJ
+         amQNWvtUaQURH8C7Pz1GyodLfjv/igtbux4O7r2GVVvIESqIi6W2om+BcNwqkRMnT5LT
+         CFpCfXdvHfkXhNKR1IRDrn/kfs1TbyUEDp8ldwnh5gTX7MTG4yn5Dqx+Jd/Z3Yz3aCVz
+         G9hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747420446; x=1748025246;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1747420868; x=1748025668;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ep3GVkZ4Eolm/Nd+NWY05dh9tPS7F/FgWegfzyDT6Xw=;
-        b=qdIlcpjVYOSiNDYv9q+ZRBAXmPpbxCBkGYKOsVQn710mxFUFUlvheFs+p3Igsz5bFu
-         xxsCXjHQ9mwB81OD0J6V8hD5DJJ/tWA5FDIKL3lvrydP34Seqa3jT148kvqJWkVeV4XZ
-         G4oDbH5WhjvGRsIgfvb5lk58XdxgVZFrXj5GiiMmfjbd/IlAQUeSBz3gNTrCRb5XkXbJ
-         rtT2UM6SvfIRs3pektUzjyo/m68BUbHJ7UqeaWlxMB3Tb+WoAgLwfV5xNoJrwjx6vZAf
-         NqEOdrmhrQYzqTmqZoYnIrActY7GkcD4kti9ZlBMPNmHVOt2nvfsrE4nl5UaGoGA9mNm
-         Xg4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUF3D97TUl7FL5IiDcRihyxGUpfIlazF5zaIVlZDYWRCYNRSq2g1IDRodymratk1yBPOXZcABXYDp0Rx/SNvA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YygoVe6reYf9tewHiTiCGVD68Sah5rxnf7pagBWA3TuOG2PXwjl
-	8IpK422wj+wi2Uwmvw/yqOgb4GlYE51xS8i43RgVTPzZbNI9ZR1X4L4m6lkPG1C8BwgHObjsRTx
-	FQYpFb7ekI+f5R0jDw8FZPY+qi5mtCo/IweZYufRf94z5xwU5R/U0ao1/JGWX1nv/1izOKfGBvC
-	eB/Q==
-X-Gm-Gg: ASbGncuOcPKpEBy7e8egfg6PFhT5/VW+PDoCc2HdvVnbzRB1ty+O3tGxlE6uTWfvqMh
-	Cl0o5wuOMciwjVj012rGT5rKVsWsqPKoA/A7CZKPvV8OkXoR8uVZQglqRTt5TWxIhkGVus27o/6
-	QXoj0iHWu1H+BghdpWzx5IMtq4HlFPCjuEVkGTLS2qoS8OGkJLfYSmK+WuVokm9ogiJM/NO2w2c
-	k9LUHJU8VQo/bTuzNif504BiznI4JOPCX0kmXneeF+JvSElZbx0FE8+vi32XgjhAVF8lAgpGSDy
-	9Er/bBIlRmCE0yG9/9ubP7Y+T0yqfKqBNEwfzWkm6KumKclS
-X-Received: by 2002:a17:90b:4cca:b0:30e:8c5d:8ed with SMTP id 98e67ed59e1d1-30e8c5d09a8mr3472352a91.19.1747420445671;
-        Fri, 16 May 2025 11:34:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFmwxsYFanrjNojESxjOjstpNSKMOyUoQ43sxObOWZovIg1oLpCDHjqkqvVd1CCMDR5DP9LfA==
-X-Received: by 2002:a17:90b:4cca:b0:30e:8c5d:8ed with SMTP id 98e67ed59e1d1-30e8c5d09a8mr3472317a91.19.1747420445236;
-        Fri, 16 May 2025 11:34:05 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30e7d576babsm1886299a91.33.2025.05.16.11.34.04
+        bh=2s3pifaOo54XXjlPvrpcaeSY+7yLzjRWQvRopUWszpY=;
+        b=VbMTboxQ0x3NH5EMQTIlBOGN1Dj+Bppv4dBU4jlrPDwEHzSfPnxkCsDZ3/UTsdXCtZ
+         tZeL/H3V9c50LBCgdJnmOBXIFksJqnVKz3JuVOaaIKppYpdLMuEXQOjKKV4kCdxJ6qvO
+         Ok3HinWzmTAcD7/3K0j4+N5c7AZEpskdmi1TED7xYbTwE39U4fygFp1D/wfxDvVcroq5
+         vgeFQlplfM5HdpW3FSAhG1rQhcBuD8QEjIdruu73S9OanTOJnXIvsQTYfiZOavCJThQn
+         dDYZD5LVZr3RMN3bdpiapVHBUwE4Z6I5BDQxbJXIj9SS1rk2K9npq1vShSwQFGlSjDwG
+         CqDg==
+X-Forwarded-Encrypted: i=1; AJvYcCU1LBqwUo2O2qGCCYHAVeq806IA3c666pE+PEr89MyqPmze/3EhqMzm7yHtx7fTH9LuVQh3+YylDnzR3KA=@vger.kernel.org, AJvYcCWS5vdrmILLtlPvoNx3SOKEs1/XIfHB9rtmgVZfpVIngNta1cy5PIly1kMlGGI0ISzeFEIAo+hz@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2Nv5uMFoE/BOu9OOhD3oJOakGa7PJLziVnJmP5hdO0xTpEMDi
+	YG/HDzVaT2Se9L8f3ifwF5JJryJQYDnUjjhg+/I1sXPb+IOzudPMNfeju31VFw==
+X-Gm-Gg: ASbGncuZtb262WANFtxDPyc1n/My5zxpdACVVKnUk1owFIoSrRHoKuu4Cnu8wkSBr+p
+	Oy+WcravI1ur0gtprwd0VyU4FpgOgJf5T5bRdSdXarX0Bh8RNIjuw+c+0zktnKDIzJdgIFgQy6b
+	68T/19d3TmYOTVHqu20MylznOChYPfzw7LBnjMzYFPmDoUKlckVuVMlN+L+CxUbWOhV3ZgK5NAb
+	xhBQyMI4Zn1qhQP+X3p/VdHrPj+Fm7/OGYaP3RsurHRRHF2Sf3P0ti2BvH+JMTDCjpQse+MVT5T
+	3v4/7GU4SyassNqn6FbjvyhEA0KW7lWv3ELdDDa4FQ5E4LaPUz/2CN92qCmirMsCXE9NkHy8L76
+	NQo0t9hbGqf/gxHJQJ7D+NEuY6/Wq60e6UtHdJRRNlTnBWdoO8X5MWTI=
+X-Google-Smtp-Source: AGHT+IE7CbxsQRDRTjq+jdXKJjuEnw8oymFGz6wOWQjIpQ0orwEOHaYfnrlH8jcpnWI/RbTSz5dmVw==
+X-Received: by 2002:a05:600c:698c:b0:43c:eeee:b70a with SMTP id 5b1f17b1804b1-442ff029b68mr28706455e9.22.1747420868246;
+        Fri, 16 May 2025 11:41:08 -0700 (PDT)
+Received: from shift.daheim (p200300d5ff34db0050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff34:db00:50f4:96ff:fe46:beef])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-443000ee99csm28950405e9.31.2025.05.16.11.41.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 May 2025 11:34:04 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: kvalo@kernel.org, "Yu Zhang(Yuriy)" <quic_yuzha@quicinc.com>
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Mihai Moldovan <ionic@ionic.de>,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-In-Reply-To: <20241127022742.4016870-1-quic_yuzha@quicinc.com>
-References: <20241127022742.4016870-1-quic_yuzha@quicinc.com>
-Subject: Re: [PATCH v3] wifi: ath11k: support DBS and DFS compatibility
-Message-Id: <174742044400.3092151.5988875334107442165.b4-ty@oss.qualcomm.com>
-Date: Fri, 16 May 2025 11:34:04 -0700
+        Fri, 16 May 2025 11:41:07 -0700 (PDT)
+Received: from chuck by shift.daheim with local (Exim 4.98.2)
+	(envelope-from <chuck@shift.daheim>)
+	id 1uFzzX-00000000CR3-0Zip;
+	Fri, 16 May 2025 20:41:07 +0200
+From: Christian Lamparter <chunkeey@gmail.com>
+To: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Robert Morris <rtm@csail.mit.edu>
+Cc: Kalle Valo <kvalo@kernel.org>,
+	"John W . Linville" <linville@tuxdriver.com>,
+	stable@kernel.org,
+	Robert Morris <rtm@mit.edu>
+Subject: [PATCH net v1] wifi: p54: prevent buffer-overflow in p54_rx_eeprom_readback()
+Date: Fri, 16 May 2025 20:41:06 +0200
+Message-ID: <20250516184107.47794-1-chunkeey@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <28782.1747258414@localhost>
+References: <28782.1747258414@localhost>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.0
-X-Proofpoint-GUID: d7Cg3_ddFi0NLwKhno0zBjczEeUmfKVJ
-X-Proofpoint-ORIG-GUID: d7Cg3_ddFi0NLwKhno0zBjczEeUmfKVJ
-X-Authority-Analysis: v=2.4 cv=cO7gskeN c=1 sm=1 tr=0 ts=6827851e cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=bC-a23v3AAAA:8 a=COk6AnOGAAAA:8
- a=EUspDBNiAAAA:8 a=Fa9wrM33oQaVqebvgmIA:9 a=QEXdDO2ut3YA:10 a=-FEs8UIgK8oA:10
- a=iS9zxrgQBfv6-_F4QbHw:22 a=FO4_E8m0qiDe52t0p3_H:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE2MDE4MiBTYWx0ZWRfX0L4hHm+cpjOk
- Yn2HWGax9pNwJeCmJtYuIx7qLqA9C4/VKPNf9NtVBM4SWimw/99RSaiNrLwojipqeagVFRsSmvn
- 1SYgicVkqT7o0po3KmO5JAUrQGeRyEdqfzyCqrDy3a70W2yrWcvNBApOvCFMtWGFPtFVrAl9+Jw
- oaXo+H55CL673v/i8ySVDljT76TGUq9lcVDwjnCUQTT3A0Aj8quZP7otE6oJiHwAOf7bLIVz7hM
- RgxdFeionU9JMF0aCNZkfXOgf113kYViReI6L6pK6FK4k22j5ZKl1xCiYWUNkdrZI21heOXfFt5
- tD4GRdFKwdrti8xU1AfhmItPSbt5DzB2dc0PU2zysloCo89rlXi1qoEmhO4n9D+Gtf50NRQeQTy
- zIdPADoioYqGLJf3O81m2qj5wlvzUiPgvq3YSpEOAnI0WohnbnlLGESHsHvLTUSJMYZXgKNB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-16_06,2025-05-16_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=618 spamscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0
- adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0 clxscore=1015
- priorityscore=1501 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505160182
+Content-Transfer-Encoding: 8bit
 
+Robert Morris reported:
 
-On Wed, 27 Nov 2024 10:27:42 +0800, Yu Zhang(Yuriy) wrote:
-> Now some chips which support 'support_dual_stations' will enable DBS,
-> but will disable DFS. Restructure the ath11k_mac_setup_iface_combinations
-> function to support DBS and DFS compatibility.
-> 
-> About 'support_dual_station' feature can refer:
-> https://msgid.link/20230714023801.2621802-2-quic_cjhuang@quicinc.com
-> 
-> [...]
+|If a malicious USB device pretends to be an Intersil p54 wifi
+|interface and generates an eeprom_readback message with a large
+|eeprom->v1.len, p54_rx_eeprom_readback() will copy data from the
+|message beyond the end of priv->eeprom.
+|
+|static void p54_rx_eeprom_readback(struct p54_common *priv,
+|                                   struct sk_buff *skb)
+|{
+|        struct p54_hdr *hdr = (struct p54_hdr *) skb->data;
+|        struct p54_eeprom_lm86 *eeprom = (struct p54_eeprom_lm86 *) hdr->data;
+|
+|        if (priv->fw_var >= 0x509) {
+|                memcpy(priv->eeprom, eeprom->v2.data,
+|                       le16_to_cpu(eeprom->v2.len));
+|        } else {
+|                memcpy(priv->eeprom, eeprom->v1.data,
+|                       le16_to_cpu(eeprom->v1.len));
+|        }
+| [...]
 
-Applied, thanks!
+The eeprom->v{1,2}.len is set by the driver in p54_download_eeprom().
+The device is supposed to provide the same length back to the driver.
+But yes, it's possible (like shown in the report) to alter the value
+to something that causes a crash/panic due to overrun.
 
-[1/1] wifi: ath11k: support DBS and DFS compatibility
-      commit: 6fe9b60f3504c7047451c5b8df14308dad440ff1
+This patch addresses the issue by adding the size to the common device
+context, so p54_rx_eeprom_readback no longer relies on possibly tampered
+values... That said, it also checks if the "firmware" altered the value
+and no longer copies them.
 
-Best regards,
+The one, small saving grace is: Before the driver tries to read the eeprom,
+it needs to upload >a< firmware. the vendor firmware has a proprietary
+license and as a reason, it is not present on most distributions by
+default.
+
+Cc: <stable@kernel.org>
+Reported-by: Robert Morris <rtm@mit.edu>
+Closes: https://lore.kernel.org/linux-wireless/28782.1747258414@localhost/
+Fixes: 7cb770729ba8 ("p54: move eeprom code into common library")
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+
+---
+
+First of all: Congratulation and Thank you! This is a great report.
+the reprod. is the icing on the cake...
+I guess you found more issues with p54, right?
+
+From what I see, the first patch that introduced the "unchecked" buffer
+overrun has a date of "Sep 1 22:48:51 2008 +0200"
+
+I don't know who currently handles these patches, maybe netdev?
+---
+ drivers/net/wireless/intersil/p54/fwio.c |  2 ++
+ drivers/net/wireless/intersil/p54/p54.h  |  1 +
+ drivers/net/wireless/intersil/p54/txrx.c | 13 +++++++++----
+ 3 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/intersil/p54/fwio.c b/drivers/net/wireless/intersil/p54/fwio.c
+index 772084a9bd8d..3baf8ab01e22 100644
+--- a/drivers/net/wireless/intersil/p54/fwio.c
++++ b/drivers/net/wireless/intersil/p54/fwio.c
+@@ -231,6 +231,7 @@ int p54_download_eeprom(struct p54_common *priv, void *buf,
+ 
+ 	mutex_lock(&priv->eeprom_mutex);
+ 	priv->eeprom = buf;
++	priv->eeprom_slice_size = len;
+ 	eeprom_hdr = skb_put(skb, eeprom_hdr_size + len);
+ 
+ 	if (priv->fw_var < 0x509) {
+@@ -253,6 +254,7 @@ int p54_download_eeprom(struct p54_common *priv, void *buf,
+ 		ret = -EBUSY;
+ 	}
+ 	priv->eeprom = NULL;
++	priv->eeprom_slice_size = 0;
+ 	mutex_unlock(&priv->eeprom_mutex);
+ 	return ret;
+ }
+diff --git a/drivers/net/wireless/intersil/p54/p54.h b/drivers/net/wireless/intersil/p54/p54.h
+index 522656de4159..aeb5e40cc5ef 100644
+--- a/drivers/net/wireless/intersil/p54/p54.h
++++ b/drivers/net/wireless/intersil/p54/p54.h
+@@ -258,6 +258,7 @@ struct p54_common {
+ 
+ 	/* eeprom handling */
+ 	void *eeprom;
++	size_t eeprom_slice_size;
+ 	struct completion eeprom_comp;
+ 	struct mutex eeprom_mutex;
+ };
+diff --git a/drivers/net/wireless/intersil/p54/txrx.c b/drivers/net/wireless/intersil/p54/txrx.c
+index 8414aa208655..2deb1bb54f24 100644
+--- a/drivers/net/wireless/intersil/p54/txrx.c
++++ b/drivers/net/wireless/intersil/p54/txrx.c
+@@ -496,14 +496,19 @@ static void p54_rx_eeprom_readback(struct p54_common *priv,
+ 		return ;
+ 
+ 	if (priv->fw_var >= 0x509) {
+-		memcpy(priv->eeprom, eeprom->v2.data,
+-		       le16_to_cpu(eeprom->v2.len));
++		if (le16_to_cpu(eeprom->v2.len) != priv->eeprom_slice_size)
++			return;
++
++		memcpy(priv->eeprom, eeprom->v2.data, priv->eeprom_slice_size);
+ 	} else {
+-		memcpy(priv->eeprom, eeprom->v1.data,
+-		       le16_to_cpu(eeprom->v1.len));
++		if (le16_to_cpu(eeprom->v1.len) != priv->eeprom_slice_size)
++			return;
++
++		memcpy(priv->eeprom, eeprom->v1.data, priv->eeprom_slice_size);
+ 	}
+ 
+ 	priv->eeprom = NULL;
++	priv->eeprom_slice_size = 0;
+ 	tmp = p54_find_and_unlink_skb(priv, hdr->req_id);
+ 	dev_kfree_skb_any(tmp);
+ 	complete(&priv->eeprom_comp);
 -- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+2.49.0
 
 
