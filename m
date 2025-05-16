@@ -1,113 +1,168 @@
-Return-Path: <linux-wireless+bounces-23072-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23073-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF78CAB98CF
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 11:29:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2332AAB9A35
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 12:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF1CA1BA8A6C
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 09:30:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 025CF9E7131
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 10:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BDB22FF4E;
-	Fri, 16 May 2025 09:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695C9230D2B;
+	Fri, 16 May 2025 10:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="o45EMBzt"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aZj9L9I7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D556917B425
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 09:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF7D213E8E
+	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 10:32:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747387790; cv=none; b=a2ZMVqkunwYeao7T3f9YUpZ3wW7AIhqejky8I62Gfjxztq6ligOqJ4ornH95bijARrsrPmsVfQyeEegYnkuP+y2r/Strz7EGYgTxdwOXqzL1N5dtyZ2kaV9U7n0qs+XtytgHNlJ3kFG6707Gd9RjiUgM/4cXA/i8EuydW87j5wk=
+	t=1747391543; cv=none; b=ourI8NYWzgrIbFIRJ7t03tuCYDCCfhWaGqfY9hs2pwMoNWiaNH/c1JYw/QiII2mKhImlvGb+dvRSH8GLY/VilFHePpA2W8eziZ1Ubqvc1MEHMHumTQcXcdXeDnKzcHh8LYGsAMtCana94DzhkvqGyhHGoumy/PdJrDk9wLEgzwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747387790; c=relaxed/simple;
-	bh=q5CO50yhbzeFsHy1hImtV3jvDNccMC3aRZWtBIM8rHQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XOW6gWHFjlXZaa4yQsJopc/kr5u+WlfBqDiaODxXs/pt+4cgZ7PkvnTdP9jFHYxUSxzq9TMgC6X82MphVIjTievTJS7E1AMYUpEuAKrm+hO89YOs+sR2hHGaEMUCSfdBCmYK6BE1B+a7lVz4Aqg01a54UkHMHG8l2P8JKVqOn7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=o45EMBzt; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=q5CO50yhbzeFsHy1hImtV3jvDNccMC3aRZWtBIM8rHQ=;
-	t=1747387788; x=1748597388; b=o45EMBztG8UZYQ6aXBR486N0tl1pWIqKDM6X+yowF76si+9
-	JaXwwA8jRkLdDfzUrNw5A7qWYy6xIo87UMn4CG0WKdRYcj7vfcvll28aca4zKT13lSJgqnrRdIfFg
-	wfNuLzzvTPCHT3H0zgzSKTNXFNHd9+qr6qIKvKuUwAIwJEs5xzWsk7+46ziHDSr16XJKBowUpdGKn
-	cNsGGM1NKnxDIRlJuGSnE7o92ef80sur0qhBSIUEgOZSlourpJ+jKav80w07AkUbloK0r0Dip2HZZ
-	ofhgUuaeGU4lF6ZZjG0YDfk+xPrbn7aBbVx4iBrVB/Z2PNOotoILbBWupVPEYhow==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uFrNx-0000000EEi4-0NHF;
-	Fri, 16 May 2025 11:29:45 +0200
-Message-ID: <30e8968b8acb0406d614d320bdf7f6c1c34c068b.camel@sipsolutions.net>
-Subject: Re: wireless-regdb: Wrong ETSI tranmit power without TPC
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-Cc: wens@kernel.org, linux-wireless@vger.kernel.org, 
-	wireless-regdb@lists.infradead.org
-Date: Fri, 16 May 2025 11:29:44 +0200
-In-Reply-To: <aCcD5QLRpbMexvq9@FUE-ALEWI-WINX>
-References: <aBoK6p1+F5ve1rC6@FUE-ALEWI-WINX>
-	 <CAGb2v676sXN_eC9s6_2a6k2ACzf3n5jBgY_id22ruoz+Zb-Jaw@mail.gmail.com>
-	 <424fc6a24f3af233fc70296b9995a97c2d7f9e17.camel@sipsolutions.net>
-	 <aCcD5QLRpbMexvq9@FUE-ALEWI-WINX>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1747391543; c=relaxed/simple;
+	bh=a8ch7gicVeQYk0s0g17/TSxDaoXIRs7pIpXTym2VefE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IJ1h2wM95JorOKawBD4TVOicRXP73L4zrEfd8udEjRDY7oBca17d1IhIDwtFMmxyp83N3CbAemEz/tqO4NYvvLmgM4miz48dCmq5Va1TxmTBGQjGzV08V43njISkaBKcPN2aR+63WFL2697X+Eca7qvn8kxg8fZ6zvL9GZ/3FNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aZj9L9I7; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54G3ZGng014763
+	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 10:32:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=QcCZddeYaGyi07pSs0CvoB
+	rZISg5ik3bB/eBUeNltxI=; b=aZj9L9I7rTD4ftxP1OikyWQQLPmB8Ysq63U8hk
+	mAp2LNYXzqEAeijrmTKtuBiLGyOyVVsZNx9dLgbao/9c0lpJyvHBjT3XFpT6rhkN
+	s/dAwl1oLLNYeWwjSFTwb148Hc4HmgWNzJAA9W/c01BMTX+KrFAW6S+2ZSiODIu+
+	HFRXzWqjuMcvWOu3QtHtL+PiJcydd7tcgjojqhGtObnmNxXwIv4q/uUfLzq7yYLv
+	vkp7Nd+dhel/26mI8P78i6QqklGNbhvBKSkNmqnCNNjtPSAcYtL3Dch8wEcM1vpS
+	a9H3VsOmp28/uu8fpsez55MWaDdNV/ZK7z+w7GV/vnf7X4wQ==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46mbcphrj2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 10:32:21 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-742b01ad1a5so507791b3a.0
+        for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 03:32:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747391540; x=1747996340;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QcCZddeYaGyi07pSs0CvoBrZISg5ik3bB/eBUeNltxI=;
+        b=Ry2mkzGFY/P9jxlG8TmUsZzzXiPqgW9l55UfN+qr47WlkvO3b2Yr7FMk+cvDq38Ewk
+         laHpb+dos5hjZ3qPKUtpl4mRV+vg7z6QZylqkAih9LoCbhUgdZOGJbTvU1sap1SMJoTs
+         S5xedhLYMuwX6I2dypTcZaw/HsUrnvViY+NvdqgmrTC6PR7bw/tEWxIsNbISFQWEUbsI
+         /4Revr0Wn9ujgO+FOjlGF9qYgD3e3y9tO1O+IvUVq2qxyYtl3tOytHmRPcDkm652KYCX
+         gMBFYpsK559xJdrEceQ09z58WbjbXydznw++8x3/Ltql5uizqjUEPFBdKmig34f0v+t5
+         ahXQ==
+X-Gm-Message-State: AOJu0YwnBrwygXP7sCUwpmT2CpfedThh2kUg/6KiMtHvhCJNp1z2m7hW
+	9dHhEBiHpUTjMYwZs8F36EGcFntmRYGnwpW28PfXQcx+PFBQ6ZdTkIriltaRt+I0xdWgo1A5Xbe
+	XrBukcfCwXzeDX8sFTWnpOmGI8uYOXHOY9jv2VNtxsLRjJDMBSJnVk3wkqgdjxaPflepHUsYWi1
+	P8GA==
+X-Gm-Gg: ASbGnctg4trOVw3awDkYWem6fE0RMxr2GGuYLBEI8wadZgSeM6EYsF/MBq7tMjlHDHF
+	R3MucdSsOTVBHclPKmpP18lh8MX1vZuLaAHY1a+feSFCweTtvpSL/7qf2rPDjUg9k2nR3pNn03A
+	mJBXNF9ZsITU/ude4kevrwgHHL6DMu2ldKSCVbYgEW3RX50SsA67t3A2ODPjzL4LNu4gpUyXmEj
+	yLDHApG9GH4kEO9uTAwdqNwAshOn2O0ulrL86DOfIXu9zWMieiB3sdXtSBT8wNivpwarSB70Pwl
+	5SXbHPGOcbO6p3v8+mUKmh6RGPI5PXwf9+pAwUhPzC7VjgwwbYvBRyaFzXCNl0EACKH6jN3nDxM
+	qXx0H1eL0WtKbTLjfZ1xfxOUZbDxo/fTinp6s
+X-Received: by 2002:a05:6a00:1382:b0:740:5927:aa4c with SMTP id d2e1a72fcca58-742acba8f87mr2737946b3a.0.1747391540003;
+        Fri, 16 May 2025 03:32:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhnO1ecGoSJXfMsKvSCjPaHv/MOQMmbO2A1LqkZG3UPXES6eAFxgdeGK4jmgoSaTbApYRLtg==
+X-Received: by 2002:a05:6a00:1382:b0:740:5927:aa4c with SMTP id d2e1a72fcca58-742acba8f87mr2737914b3a.0.1747391539567;
+        Fri, 16 May 2025 03:32:19 -0700 (PDT)
+Received: from hu-adisi-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a986d8d7sm1247585b3a.130.2025.05.16.03.32.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 May 2025 03:32:19 -0700 (PDT)
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Subject: [PATCH wireless-next v2 0/2] wifi: mac80211: some bug fixes in MLO
+ scan handling
+Date: Fri, 16 May 2025 16:02:06 +0530
+Message-Id: <20250516-bug_fix_mlo_scan-v2-0-12e59d9110ac@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACYUJ2gC/3XQ22oDIRAG4FcJXtego642V32PUhYPYyLsoV0Tm
+ xL23WuWQgPZvRGG8f9mmBvJOCXM5LC7kQlLymkcagEvO+JPdjgiTaHWBBgoJhlQdzm2MV3bvhv
+ b7O1AIyodlXbcm4bU2OeEtb+Q7+Q7TdhhznTA65l81PYp5fM4/SwDC18+/dni2S6cMiqAWVN95
+ 7h9G3Pef11s58e+39fnPnHJK76Vf5UglHMSosPn/H2nAo97yBUHqtPEBkAbyYyWG454dPSKI6r
+ jTUDjYgBh+YYj/x21dvMiq2O9cgGYb0LwK848z79SsEPP3gEAAA==
+X-Change-ID: 20250402-bug_fix_mlo_scan-fe57f57b1c86
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Proofpoint-GUID: SV_X9TRRHmwNJcPexZT40YBK6q_MBSP8
+X-Proofpoint-ORIG-GUID: SV_X9TRRHmwNJcPexZT40YBK6q_MBSP8
+X-Authority-Analysis: v=2.4 cv=cO7gskeN c=1 sm=1 tr=0 ts=68271435 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=gPft80QSANvjOYXkS70A:9 a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE2MDA5OSBTYWx0ZWRfX/TD2ugGVNl6p
+ aqR24YbvRWbAuOWrQ0l+KQbduQZ6jUtEevKS0fPMnCCXUCXqCVe16AMCaWeB+tLNGAGpTOgIicJ
+ 0q8PWmoXBYp6yHsPRXZEEllhC7dA32hm2xEINejWUH95xzhLczo61k6owjsX8lMLrD556FAVTW7
+ 8bjhLWYq/eEY1tf20Dy2Hbm7m965qwfDJKn9TCezA2dDOx+g1KJQ6uxyZ9mgIGfqbFPVKNOHkRy
+ lXEouMNtJDrliCbYlvW/quHWokb+Nm1FJTrF6FLPqpbCx7AVW2QYPkMS7aPipr/VaFm8ds+1F3l
+ 3zMOFDPwNq/1PQ/0uCecwRAVywKm7bgD33xAzKGIt7hmnNaiCUdcnwnkOT/q9MY1kwuvPa6lLbD
+ c4tie/1vI7bV0AVd0E6rmba8WX6GzqaKEA8AB4ggWczsa0vwOEAe/j958TACddx6ytvliXQl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-16_04,2025-05-16_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=900 spamscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0
+ adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0 clxscore=1015
+ priorityscore=1501 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505160099
 
-On Fri, 2025-05-16 at 11:22 +0200, Alexander Wilhelm wrote:
->=20
-> I referred to the following EU Rules:
->=20
-> * ETSI EN 300 328 V2.2.2 (2.4 GHz)
-> * ETSI EN 301 893 V2.1.1 (5 GHz)
-> * ETSI EN 300 440 V2.2.1 (5.8 GHz)
+This series addresses issues related to MLO handling in probe response
+acceptance and scan request validation.
 
-Is that really all that relevant? I don't think ETSI has normative
-power, that's left to the per-country regulators, IIRC. Who in Germany,
-as demonstrated, did a mix of units for the range you were talking about
-before.
+* Validate SCAN_FLAG_AP in scan request during MLO:
+	Enforce the requirement for the NL80211_SCAN_FLAG_AP flag in scan
+	requests when an AP interface is beaconing.
 
-> The problem with them is that almost always the unit _mW_ is used. And th=
-e
-> reduction without TPC then is given in _dBm_. However, for 5.8 GHz (SRD d=
-evices)
-> the transmission power is stated as 25 mW. Does the EU Rules means 14 dBm=
- or
-> only 13 dBm are allowed?
+	Apply this restriction to ML interfaces by using the existing
+	helper ieee80211_num_beaconing_links() to check if any link is
+	beaconing.
 
-It means just that, 25 mW is allowed? I'm not sure you should read more
-into it than written.
+* Accept probe response on link address as well:
+	Ensure unicast probe response frames are accepted if the
+	destination address matches any of the link addresses when a
+	random MAC address is not requested.
 
-You could argue that 14 dBm is "close enough" at 25.11886 mW (0.47% too
-much), but perhaps that's not something the computer should do, but
-rather whoever updated the database. It might even differ slightly per
-country, I guess, technically - though here the German document [1]
-states the same.
+	This change corrects the behavior where probe response frames are
+	dropped incorrectly for MLO interfaces.
 
-[1] https://www.bundesnetzagentur.de/SharedDocs/Downloads/DE/Sachgebiete/Te=
-lekommunikation/Unternehmen_Institutionen/Frequenzen/Allgemeinzuteilungen/F=
-unkanlagenGeringerReichweite/2018_05_SRD_pdf.pdf?__blob=3DpublicationFile&v=
-=3D2
+Both the changes are as such independent from each other. Since both are
+related to MLO scanning, currently kept in same series.
 
+---
+Changes in v2:
+- Use ieee80211_num_beaconing_links() alone since now it can handle non-mlo
+  as well.
+- Link to v1: https://lore.kernel.org/r/20250513-bug_fix_mlo_scan-v1-0-94235bb42fbe@oss.qualcomm.com
 
-So perhaps the database could state 14 dBm with an appropriate
-justification, but the conversion from 25 mW to eventually rounded down
-13 dBm also seems right.
+---
+Aditya Kumar Singh (2):
+      wifi: mac80211: validate SCAN_FLAG_AP in scan request during MLO
+      wifi: mac80211: accept probe response on link address as well
 
-johannes
+ net/mac80211/cfg.c  |  2 +-
+ net/mac80211/scan.c | 18 +++++++++++++++++-
+ 2 files changed, 18 insertions(+), 2 deletions(-)
+---
+base-commit: 68b44b05f4c880c42109a91d2e0e7faa94f40529
+change-id: 20250402-bug_fix_mlo_scan-fe57f57b1c86
+
 
