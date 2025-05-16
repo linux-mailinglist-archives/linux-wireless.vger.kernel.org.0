@@ -1,135 +1,178 @@
-Return-Path: <linux-wireless+bounces-23062-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23063-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145D3AB974B
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 10:17:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41502AB9770
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 10:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3A15A05434
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 08:16:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFDFA4E839B
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 May 2025 08:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0798B22CBFD;
-	Fri, 16 May 2025 08:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3D7224B05;
+	Fri, 16 May 2025 08:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VY6EHgDd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LMnEsJyo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A1622CBE8
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 08:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3D622DFB6
+	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 08:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747383354; cv=none; b=EwHDPprGeTmeDqqC8YWY6TsxRFEXq8IqkEqLmg0uWgBiviB1FOTQpXpUAt8E8YKD20FRtyoH2anu2BUsIflUyRv+I3H3IdMG8CjqBQU+BlErCkLmSRyoYjwq8y86RG/xlqWCdKDJKRdLgdPyo3h4NIyypDc4/Z/ZM9+WpWXYw2g=
+	t=1747383650; cv=none; b=FbRy3PfKQLVR7EytxhB0C4QASY2BozYWZJoe3vc3sA44xhG4g+vqJByk4vY2MAtva/Nmduqq8/5MxlWYF7L6xRlpu3YbtUQSWVmWJInOfZ/u1euRzETPHAUQMbs5JEEYm9+VtcTM5P9b38HKIeAyHAgblTO4q/Pwws0VXuYX2O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747383354; c=relaxed/simple;
-	bh=sbofOfQ8qYoR6VnvhpGlReJGNeE++W4mzbqm6wxsDoo=;
+	s=arc-20240116; t=1747383650; c=relaxed/simple;
+	bh=Z9yHLCOcUTvAJaDRoOqBHTW1paqPZ4hEEJAWtS+PHPg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ODGnCtCe16jGOw8i+B45wv+6XYvFQ4UmxJVr3/4TT9wFKFUfMqnN5EboK5NW2XieVEsVnRViXFXnILEL6OWJq6/GcD0HgGIqFxryp9v6ff6+UJuXCQbc1DMjCKDeG92Ds/abqaNuPdI7GoVVwONBs7Vl1KtXGWO0I8721wHvxsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VY6EHgDd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44804C4AF09
-	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 08:15:54 +0000 (UTC)
+	 To:Cc:Content-Type; b=M8idBLIKRE/2xUWjz3D/YZkU6dpPtSryotkblalP9gRDIkskJZMRn+tbGMZri/qOiZtS+bFVk2fANu2hNyX0ONpjsPwSEmjGcxCpgNB1WUR7tgak6w62V/gMTHy/G1PnifapGQGmxliUAwKWTLJt+XUS5v7RbCgjwOeH0IR1EYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LMnEsJyo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C68C4CEEB
+	for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 08:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747383354;
-	bh=sbofOfQ8qYoR6VnvhpGlReJGNeE++W4mzbqm6wxsDoo=;
+	s=k20201202; t=1747383650;
+	bh=Z9yHLCOcUTvAJaDRoOqBHTW1paqPZ4hEEJAWtS+PHPg=;
 	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=VY6EHgDdaRNFBn+q3R9xGUZEHvhxD21280YJPL+//FoQWz8p7v5dWN2XdsYyLoGCY
-	 ipVuadhNfmdfAe4KHumc1av90X0Lju6+cnkQ9scS+VqGBHmN6V4fVNMmQagqJcX+1D
-	 mHoPSVuD0bTu/LGkffTqGVHnHce2s0U9sO5uWtr9zx8KbyhmHI5+pm9ZBYaGB7BRBc
-	 jGt8EfMUQ8sd7t19xeHxxgR5rFXd8qhYQfXRbp5Mf1JwQVxh6cmJuj9s8Ng4zlFIPJ
-	 tSG68Em9wEI47OuhjlI2duA2Gz1/fyY8QYqiv+F5pQzJnFRF+6x0UHwBFt5n7fAkHG
-	 nloB6ahuEzttQ==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30ddad694c1so20005981fa.2
-        for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 01:15:54 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyAg8bI66VNsLowenmWoHNKX5Yv1sqiROuYaxKt2TGN4En9SwrX
-	JW7vZNQlGzSWYN2QXhZC82rnzYhgh+Y3ptzCYeKFNHn4mEUs4KSnRxhXuanwovHCqt+fHFoz/2l
-	lfNeNzVDEEHTdCbGfJ19dGJ03oL8zaFQ=
-X-Google-Smtp-Source: AGHT+IHvoE8TOTQ64vdjGwNqqK1uzPtuktATwgcYMidtFPO15Yh9BoKOYwe2lTpOlV8zU11DST5EQsTW1o2Boi28HRw=
-X-Received: by 2002:a05:651c:31c1:b0:30c:111d:d7b8 with SMTP id
- 38308e7fff4ca-328076fca1cmr6434061fa.10.1747383352619; Fri, 16 May 2025
- 01:15:52 -0700 (PDT)
+	b=LMnEsJyojFOs1eKC+AaeJ4oYf6JLUoJIvgYj4lk2xsS8FrfjV91jlJDkxXcEMy4JL
+	 JLpDQH+zLnm+ttE/HlAQtv81OAyM77lmLLncY296uYMm7+4fD9WowKA0UsziMFE3zz
+	 g31sMy6xkN3ZQO91GJsO91kXl5gRoAL0kyyD3iMLRJDj9DeNJNuEGjc3nqmnJM+HN9
+	 D0yp/nTUEmK1hS9zdaurgoC1zaF8kQDybXK5CZqOiQp6W77l4FKi7FtOXhN4gNXlv4
+	 oNnoZ3Y5+WwJ2B+ucDWJ7ESEfNKCl5CSNfSf4175bXdG/yjntTju/KR9Z79CMjlcjI
+	 OxjQcehuUxcAg==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-327fa3cec3fso14631861fa.1
+        for <linux-wireless@vger.kernel.org>; Fri, 16 May 2025 01:20:49 -0700 (PDT)
+X-Gm-Message-State: AOJu0YytEoyiScGHLVIsao888h3Bakm91xD6Gw0ZgnDuxiWss5KHUyWD
+	zbp+8Sa+ecGGNcOa/HwaLh2x9M8KPgOpgc/VrfR/2GfGreoEKp6+e1r5LyfLSlbx0IDK+N+lfPf
+	d1/C/FJg4IodUCvyPrEcNxGFhswRr5sM=
+X-Google-Smtp-Source: AGHT+IFOUDfa13iDohf+REfjZamfX5SNyDISO8nLy9XQVzgpJAurr3TSu0MSfkO50YCvVlzWPZhYmgN39RYWozx5Oxc=
+X-Received: by 2002:a2e:b88e:0:b0:30d:e104:b795 with SMTP id
+ 38308e7fff4ca-328077d4cf2mr8224481fa.39.1747383648317; Fri, 16 May 2025
+ 01:20:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aBoK6p1+F5ve1rC6@FUE-ALEWI-WINX>
-In-Reply-To: <aBoK6p1+F5ve1rC6@FUE-ALEWI-WINX>
+References: <CAC=t7aR6tripS=+LJprV25wzcqd_T47iAHepZrRQOzDRKzuGtg@mail.gmail.com>
+ <CAC=t7aQZL9uih-e+8Eq-rikJExspYRUi7gt4N_DpddzszTOGMQ@mail.gmail.com> <CAC=t7aT8SanBhCBrJi+fE1ym0zfEvXUULYfXtwBfc7u1hB=Xzw@mail.gmail.com>
+In-Reply-To: <CAC=t7aT8SanBhCBrJi+fE1ym0zfEvXUULYfXtwBfc7u1hB=Xzw@mail.gmail.com>
 Reply-To: wens@kernel.org
 From: Chen-Yu Tsai <wens@kernel.org>
-Date: Fri, 16 May 2025 16:15:40 +0800
-X-Gmail-Original-Message-ID: <CAGb2v676sXN_eC9s6_2a6k2ACzf3n5jBgY_id22ruoz+Zb-Jaw@mail.gmail.com>
-X-Gm-Features: AX0GCFsRs10QpUGqpJqwT4TPV9Q9e-KLoXLHjEASJXFTgAjmKW5xYikSy036M6s
-Message-ID: <CAGb2v676sXN_eC9s6_2a6k2ACzf3n5jBgY_id22ruoz+Zb-Jaw@mail.gmail.com>
-Subject: Re: wireless-regdb: Wrong ETSI tranmit power without TPC
-To: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org, 
-	Johannes Berg <johannes@sipsolutions.net>
+Date: Fri, 16 May 2025 16:20:36 +0800
+X-Gmail-Original-Message-ID: <CAGb2v65_MXsuQjCPB-uHOYQVgLU+Zs7MtB5_X9Q3O-aQ=_39nA@mail.gmail.com>
+X-Gm-Features: AX0GCFv1WvHzXvsGtH5a1vFCXaS2pA8JzlMACIpC6Apa9ohfxXE3VFdKK8cbGC8
+Message-ID: <CAGb2v65_MXsuQjCPB-uHOYQVgLU+Zs7MtB5_X9Q3O-aQ=_39nA@mail.gmail.com>
+Subject: Re: wireless-regdb: Update regulatory rules for Iraq (IQ)
+To: Mohammed Abdullah Ali Al-Obaidi <mnewiraq2000@gmail.com>
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 8, 2025 at 1:25=E2=80=AFAM Alexander Wilhelm
-<alexander.wilhelm@westermo.com> wrote:
->
-> Hello devs,
->
-> please correct me if I'm wrong. Since TPC is not used, the EU Rules dicta=
-tes to
-> decrease the transmit power by 3 dBm on some sub-bands. For the most of t=
-he EU
-> countries the mW instead of dBm is used. Therefore they are halved (e.g f=
-or
-> Germany (DE) in commit 81d251dda3985e1088bd89f5d9f565e63ba5a30f). The pro=
-blem is
-> that the values are then converted to dBm and rounded down and result in =
-a wrong
-> supported value. Take a look at example (Germany again):
->
-> country DE: DFS-ETSI
->     (2400 - 2483.5 @ 40), (100 mW)
->     (5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=3DETSI
->     (5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=3DETS=
-I
->     (5470 - 5725 @ 160), (500 mW), DFS, wmmrule=3DETSI
->     # short range devices (ETSI EN 300 440-1)
->     (5725 - 5875 @ 80), (25 mW)
->     # WiFi 6E
->     (5945 - 6425 @ 320), (23), NO-OUTDOOR, wmmrule=3DETSI
->     # 60 GHz band channels 1-4 (ETSI EN 302 567)
->     (57000 - 66000 @ 2160), (40)
->
-> For the frequencies 5250 - 5350 the power of 100 mW results it 20 dBm. Co=
-rrect.
-> The frequencies 5470 - 5725 have a power of 500 mW. It results in 26 dBm.=
- But I
-> believe 27 dBm are allowed. For the frequncies 5725 - 5875 the value of 2=
-5 mW is
-> also dictated. I'm not sure if I should expect 14 dBm, but I get 13 dBm.
+Hi,
 
-Are you reading the converted numbers from the system, not the database
-text file?
+On Tue, May 6, 2025 at 2:32=E2=80=AFPM Mohammed Abdullah Ali Al-Obaidi
+<mnewiraq2000@gmail.com> wrote:
+>
+> Dear wireless-regdb maintainers,
+>
+> I understand that my previous email was flagged as spam. I apologize
+> for any inconvenience. I will try again with a shorter version.
 
-> Is there inconsistencies between dBm/mW conversions? Please give me a fee=
-dback.
+It could be that you were sending the emails in HTML, which the Linux
+kernel mailing lists don't accept. Attachments also don't work well.
 
-The conversions don't always produce round numbers, and since we can't let
-the system exceed the _actual_ limit, the values can only be rounded down.
-For example, 500 mW converts to roughly 26.9897 dBm. We can't use 27 dBm,
-since if the system outputs at 26.999 dBm, it would be in violation of
-the rules.
+> I am reaching out to propose an update to the wireless regulatory
+> database to reflect Wi-Fi frequency regulations in Iraq. Attached is
+> the official documentation detailing these regulations. Could you
+> please guide me on submitting these changes?
 
-Or, if we understand 3 dBm reduction to be halving the power, we could
-fix up any rules that "have their base limit in mW and were converted to
-dBm to apply the reduction" be rewritten in mW with the numbers halved.
-That would require someone to go through the entries though. But if
-the rules are already written in mW, and what you observe is the kernel
-rounding down the numbers, then perhaps the kernel may need to support
-both units.
+Please follow the documentation at:
+
+https://wireless.docs.kernel.org/en/latest/en/developers/regulatory/wireles=
+s-regdb.html
+
+In essence, you:
+  1. clone the wireless-regdb repository
+  2. make an edit to the db.txt file to add an entry block for Iraq
+  3. make a git commit from the edit
+  4. make a patch file from the git commit
+  5. send the patch to this mailing list
+
+> The source of the provided document is
+> https://cmc.iq/ar/wp-content/uploads/2025/03/Republic-of-Iraq-National-Fr=
+equency-Allocation-Table-2-Final.pdf
+
+The document only lists the allocation, but not the power limits for each
+band, or any other restrictions. You would need to track that down.
 
 
 Thanks
 ChenYu
+
+> Regards,
+>
+> Mohammed
+>
+>
+>
+> Regards,
+>
+> Mohammed Abdalla
+> +9647902729029
+> mnewiraq2000@gmail.com
+>
+>
+> On Tue, May 6, 2025 at 12:30=E2=80=AFAM Mohammed Abdullah Ali Al-Obaidi
+> <mnewiraq2000@gmail.com> wrote:
+> >
+> > Dear wireless-regdb maintainers,
+> >
+> > I understand that my previous email was flagged as spam. I apologize fo=
+r any inconvenience. I will try again with a shorter version.
+> >
+> > I am reaching out to propose an update to the wireless regulatory datab=
+ase to reflect Wi-Fi frequency regulations in Iraq. Attached is the officia=
+l documentation detailing these regulations. Could you please guide me on s=
+ubmitting these changes?
+> >
+> > The source of the provided document is https://cmc.iq/ar/wp-content/upl=
+oads/2025/03/Republic-of-Iraq-National-Frequency-Allocation-Table-2-Final.p=
+df
+> >
+> > Regards,
+> >
+> > Mohammed
+> >
+> > On Tue, 6 May 2025, 12:18=E2=80=AFam Mohammed Abdullah Ali Al-Obaidi, <=
+mnewiraq2000@gmail.com> wrote:
+> >>
+> >> Good day,
+> >>
+> >> I hope you=E2=80=99re doing well. I am reaching out to propose an upda=
+te to the wireless regulatory database to correctly reflect Wi-Fi frequency=
+ regulations in Iraq.
+> >>
+> >> Currently, OpenWrt maps Iraq=E2=80=99s IQ code to the world 00 domain,=
+ which does not account for the specific frequency and power limitations se=
+t by Iraqi authorities. To address this, I would like to submit official re=
+gulatory documentation outlining Iraq=E2=80=99s permitted bands, transmit p=
+ower levels, and any necessary restrictions.
+> >>
+> >> Attached to this email is official documentation detailing these regul=
+ations. I kindly request your guidance on how best to submit these changes =
+and ensure accurate representation for the IQ country code within the Linux=
+ Wireless framework.
+> >>
+> >> Please let me know if any additional information is required, and than=
+k you for your time and support in maintaining an up-to-date wireless regul=
+atory database.
+> >>
+> >> Regards,
+> >>
+> >> Mohammed Abdalla
+> >> +9647902729029
+> >> mnewiraq2000@gmail.com
 
