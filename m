@@ -1,422 +1,576 @@
-Return-Path: <linux-wireless+bounces-23116-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23117-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62964ABAC2B
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 May 2025 21:49:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0986CABAC2D
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 May 2025 21:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A82757AE887
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 May 2025 19:48:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB55A3BE68B
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 May 2025 19:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AF11C6FE2;
-	Sat, 17 May 2025 19:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="FF8gom7o"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4F717E4;
+	Sat, 17 May 2025 19:53:33 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazolkn19012058.outbound.protection.outlook.com [52.103.33.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21ED417E4;
-	Sat, 17 May 2025 19:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747511388; cv=none; b=mzAGg9vMC7b+7u8C8L8roACXr01y/Q9CEzw+BnuR+M8CWTeyiMHmTEKBa8eoyMj2xjMWTu4zIzLi1MXA3Fn9ggmzF7tewrXc6Z+9opUF4ni66IYex+X1CjZHXKJVkr/xb/ErwZPL2Dh8pjhvmEToUD0D8Ox2fyR+UkUFg3vhr6E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747511388; c=relaxed/simple;
-	bh=XQO6wQTeUm9Nlytzmcb0X/cJhPkMXeNSo25rIsazWEE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YcmjM287vbb/mj+P6W00zaYo7IH4EQt29brANYCWjudgfkDaz38rG48KsC/5FLid/hDS8lES60MsZ202M61Uw+8Xfc8kl38QG/DOFcP3R4evFwlhTswqLPsFFL++Sblu9ME9bj6iPRnIHmcA7pyszfItfHaYSc++R4sla0dIleI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=FF8gom7o; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1747511365; x=1748116165; i=spasswolf@web.de;
-	bh=Lb18E4a+wHns7EolImEwuBScFMtE4Yi7mU7s8xVLWww=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=FF8gom7o1qh7VAmXnj5AFqhQGd5dmTz6liwMmKyzcGhJZO5XZQw4xbai0mCox98Y
-	 bxNlCgLFo0okC1XINO3FG4HHcbELNdHV2EtaVPLvfJazfoUgBRZmITu38VHTQ4IBQ
-	 K0sZybPYr2qgMOwYNoGgYvi1PNmbSZTJG5tqJmn82+9c6Dt1yHXF7xPTYZyG6lS6E
-	 XtyBMrPiUBeh0KxX1GbZ0XlvLcJTVVRiM8kjfUzfDHXz3y7s+ui9ptQZYjSRqYtVa
-	 Bmz1WCdPID4gAyXVRekypaOc5kscX9Ey6jpgEYZB7Av7zlFpuPx9fA5QjECN1Pife
-	 c+50qol7ktuFd5n0cQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MqqPN-1ulIaC2mKf-00fNVk; Sat, 17
- May 2025 21:49:25 +0200
-Message-ID: <15f3633cbd08b30475d5b76c5cc9180fbf17a12f.camel@web.de>
-Subject: Re: lockup and kernel panic in linux-next-202505{09,12} when
- compiled with clang
-From: Bert Karwatzki <spasswolf@web.de>
-To: Johannes Berg <johannes@sipsolutions.net>,
- "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>
-Cc: "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>, 
- "llvm@lists.linux.dev"
-	 <llvm@lists.linux.dev>, Thomas Gleixner <tglx@linutronix.de>, 
-	linux-wireless@vger.kernel.org, Jason Xing <kerneljasonxing@gmail.com>, 
-	spasswolf@web.de
-Date: Sat, 17 May 2025 21:49:24 +0200
-In-Reply-To: <388bbc4c805ce029bbd08010fd30405494f998a9.camel@web.de>
-References: <20250513164807.51780-1-spasswolf@web.de> <87h61ojg3g.ffs@tglx>
-												 <7471a185adcc34a79c2ab8ce1e87ab922ae2232b.camel@web.de>
-											 <b644ff1714731cfb652d809d4864f0d178b24a97.camel@web.de>
-										 <2d8c1929bf5ab5260dacf9aa390456b3b49ce465.camel@sipsolutions.net>
-									 <2cad838b39f00d93319509d2a6a77a4c42c7fa92.camel@web.de>
-								 <a12c82c394e9676e32ede6b8312f821a16fef94b.camel@sipsolutions.net>
-					 <f8552d41fb7eae286803b78302390614179b33b0.camel@web.de>
-				 <8684a2b4bf367e2e2a97e2b52356ffe5436a8270.camel@sipsolutions.net>
-			 <ba97a2559cda1b14e0c9754523ff1152bdad90ef.camel@web.de>
-		 <63cc1dbf07bde2c9d14e1f86ce2c2ce26a2a9936.camel@web.de>
-	 <388bbc4c805ce029bbd08010fd30405494f998a9.camel@web.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.1-1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095384B1E77
+	for <linux-wireless@vger.kernel.org>; Sat, 17 May 2025 19:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747511613; cv=fail; b=e7eCr1fBzE0qjWymAcUCAg9SO9/bP2m0dqrCnrc86m9K3Jxz1nUxY7A1bNd04zrvZj/sC+5V8gd3fnhwp9hX91+L0c5ihRQpf07iCVOg2HR91ded+27cMkBiHPOirhhKWV2AM63U0krDi9S1Pp25vq6YGI0Aln1PXuWOUw0Efgw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747511613; c=relaxed/simple;
+	bh=76hv7YunkVsRg6pmRwR55eZ5Z+CE/xZY10BMdRSFeYI=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=r1pDjQ1JE/EVV8D2chtxVzRgH8+7/cGXLBEryPgtah+htSdHX/OIeI6wBl1Uh1fbr4wQlxXJU0REe7Ph/cQMYSTIya9jyRZATwHz08F7TU56DnullZGvUhCa2rmxfxKNOgXOsQ7v37zojvrYtdQ7utr0Ffg+I9xekY11x+NJ8Nk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rapan.cz; spf=pass smtp.mailfrom=rapan.cz; arc=fail smtp.client-ip=52.103.33.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rapan.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rapan.cz
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qqhLNeJRxcJDzaP+X//DzinKuFV9BufHOPrA53b1sWIDwPciq53JimQozsBFKdvyzn2s9m09xscqPizly23Wwq9GtCQKQz/D0lAVWIPHy5EF1Pg72kAQdgYJkZ728I4AdHPntgAdtfp+t0BD+MwCUJ01VtV7qqEUD3QFqNlDKBoOQ62QX5Kj8RYg6LIsMLcFRboDTirHIWkasqtrAiljSAbFL7G6YP8TSjspX49VoS5k/6tu6Ec/jd1CL8vBcAqgz3KHl0cDERrDTyyVRf/wpae+GnQB+d7M8D8PGGfscdZ2RtXMUPi7XpIyTqzfNDJhN6pIGKYdn1eQppoqnUZjXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jHhuD+SKvmjhShJufIFkwA+7zxG5vU/4tqpZWnjcCzs=;
+ b=fIruKLeg+T56brVIQpRR9eFgw2nUMJbCfduMD8ZHPzCwk2o7ba3A1qHnNtVY3W0+tsbwOGt+QN2corswL6aNoXzzT8pGEErhqbufMk3s5WrNXAf30d7Fo44kbXt1mdfOPhlJP/bFL01GUmNb5mvrcPA5ftS9GFYLne5dG+jISxnBLNw/x63B9NZKc8X4QVPiCwMcVJogU3ALNqVrEBujsJ26ATcn7G3EiX9c4k1tK3gjoAxF1+fMpPj+s0WiydUcRwHJMPC9wAS9L6MBxE5biUSZ4FAH/mcZEeNNGDtwG2uBIP8VvHuGYpIfL58r0NmfLs2lhAZZcDhVtXJ24iOIhQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from DB6PR08MB2693.eurprd08.prod.outlook.com (2603:10a6:6:1c::13) by
+ DB3PR08MB8841.eurprd08.prod.outlook.com (2603:10a6:10:43c::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8722.33; Sat, 17 May 2025 19:53:28 +0000
+Received: from DB6PR08MB2693.eurprd08.prod.outlook.com
+ ([fe80::e6db:6f9a:2c0b:acb7]) by DB6PR08MB2693.eurprd08.prod.outlook.com
+ ([fe80::e6db:6f9a:2c0b:acb7%5]) with mapi id 15.20.8722.031; Sat, 17 May 2025
+ 19:53:27 +0000
+From: =?iso-8859-2?Q?David_Rapa=F2?= <david@rapan.cz>
+To: "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"jjohnson@kernel.org" <jjohnson@kernel.org>, "johannes@sipsolutions.net"
+	<johannes@sipsolutions.net>
+Subject: [PATCH] ath11k: add support for dynamic vlan (ap/vlan)
+Thread-Topic: [PATCH] ath11k: add support for dynamic vlan (ap/vlan)
+Thread-Index: AQHbx2OkXnFc6lM2sUO0yo3YvwE4ig==
+Date: Sat, 17 May 2025 19:53:27 +0000
+Message-ID:
+ <DB6PR08MB2693ADF1B27329C7BCED7AA5DF92A@DB6PR08MB2693.eurprd08.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB6PR08MB2693:EE_|DB3PR08MB8841:EE_
+x-ms-office365-filtering-correlation-id: 469616d3-b47f-48a9-f30c-08dd957c7df9
+x-ms-exchange-slblob-mailprops:
+ Cq7lScuPrnoSu68Y5FdRDlCPOBk43FEto4axgr+a4en4tQufMkczX2EmhGRq7gXrBkjdUgei8lfTYkIfBktg5QcU29Joq7mH5PZeZTR3lQoyMejSwKth1Bh/jCLJKMGcaKE5wSVBZtGLxeNzufeeS9MIgt0AbbF6BUk9oZ6sFI718ilYtk9knFCH9HdCFElwQdJOd5zVV6p6YN3RLd+eMrEpxsYO4o/TyV5VFcy8fml04Jf2wKPba15RaV4aTf3LhHC+h8iBD0OCwX+GuNowoXBuSsJ9k0rnjfk/K+NE0OscsiU0WAcPBi03efXcff0UbgsF9bOpbFlkWBDVcPxSNPfcx1AeKvG27TgdfspAyHDwL9kSznI4VBXAY8/joeWGMJX0xjnvW6DLKNTkPi9x2HCm+22weXIr5q3GD+nG9WTdDEeqhUgtFoXaRh4Dkbkj11G+Oev3joWnu1YLGRkISMOVdVhwa/VEqdjxwuf8jlRxTUhj8WvK2yM3mMThGmDQXw3j93UxCd5vDnaGl+5qvSHVzhqtZlqCiIyph90/n5Xj3UOBOXplMseUFZ9lK5PLlrxt7egP92h20Lizsl0s7cf9fgHnqszKxyqVXIS1RSeg/SzuYVrRZFxUpacUCim/QBuIALyLsel4c1nQukZ+3k6Fr7h5xnNm8nxnoXuogtCgbfjF7Fb5Zt6kEagqdkQa3bO8pT6zvpwX+UYoRsYmz+bVBgMtHNF9L1vsiKgVqLuHOFJI9mC3d75pe9P0391e7WP3JxNCH0E=
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|7072599006|41001999006|19110799006|8062599006|15030799003|7092599006|8060799009|461199028|15080799009|102099032|3412199025|440099028|19111999003|12091999003|1710799026;
+x-microsoft-antispam-message-info:
+ =?iso-8859-2?Q?F8s1VRlKGScAI8mu2MQGeDeyj70RSK/j8mTjXCoRFQo1K1U1bQmV3xnJ/z?=
+ =?iso-8859-2?Q?0S/dBfbmg6v5NtVatZ9xS6kPfeBZgbRUU2DE6K0hZ3ULECzTwKke683Msn?=
+ =?iso-8859-2?Q?UR8DosL3/L4gSHP/acOlH4jZkxh8Bdb3Jub9aRL+sZOiKVQaOfHudiiztq?=
+ =?iso-8859-2?Q?ctfk1fl4VEJq3d4fRpM+cgJ7SOydQGuFnoUHVJNYeb1TnyN4emqh99org9?=
+ =?iso-8859-2?Q?oGE/9rMpu82gWb5ClS01eCDRpV8w0B6KA9zlqMu3jgHxwJ7c57vXhwKc+N?=
+ =?iso-8859-2?Q?JWGT1MtKPEW6ZnN1WbcJJ21cRDN/lXTcPYaPH1c2wKjCFioSfJDUiDcivD?=
+ =?iso-8859-2?Q?5Ij4UhXk1hTOidnc/gMButs0xQnibj5DFwsXUYU8fFsNbJrmUig4ePh4bm?=
+ =?iso-8859-2?Q?m94+aWv/OfjrZkVBRNv7aAoSqViWdfCZJpca+iBLvk08F/CKteBFfxBIQC?=
+ =?iso-8859-2?Q?RR5xtAL61DNPwFp3foDpjKGpAiLo3auNxW0fQKOa6mduoESr6uSrnJqq/e?=
+ =?iso-8859-2?Q?Oh+Oh9yHSTY2dKS+ZTzs9k+T/c2Rzi0h0uuNzyTrHPboCQBSO9t//vJXEq?=
+ =?iso-8859-2?Q?cHEFzr9TuuqZppNlbi2LSrjy2pNc7vywrIR1sdgX/83zXmO0zaVGqMtSg5?=
+ =?iso-8859-2?Q?XdTOwvMdzlHmbbk/oKrF5y+s6kRM/IM992j6JIwaN9YmwPCPsosxYeGhaG?=
+ =?iso-8859-2?Q?odDyXndwh3nwHr+8GH7lktIkPFvPF0qpTcPNybYuBUkMowa2OBAqa8C6aS?=
+ =?iso-8859-2?Q?32KIX4UwbB2RpRUp52H3nx1K6KKSjJiihLBz9QgJ8B2gJYdqqOK/P+TBei?=
+ =?iso-8859-2?Q?cqbYx8+wLf0Ko0z7A6KGWrcYtE/sGTXTS2eV/WaFmWDdqUqEgxxDFWSSJK?=
+ =?iso-8859-2?Q?3J03ze2K0RSc5dRi2HB921gyLf0PRLIxT1RcUSIoq4hc3eM7YPmCD31NxA?=
+ =?iso-8859-2?Q?amkJyjErhfDgqM4/1mJ3PEkIsfR39J0DXWyUAZ8u4txyuIrPrYs72BZtba?=
+ =?iso-8859-2?Q?C2fiTxwTjYOSeZJVIFF/Q7hM1BeCJVxR/cMfndDq44rL57Lyzv0SQgWXAE?=
+ =?iso-8859-2?Q?k3wE8t7FVil3xqX6CIGa+UJBZUti+qRETJQvfT7UQljFLYPND4hRPzGXHL?=
+ =?iso-8859-2?Q?tDwBhSoD8g6106VeydVggcilQPFkjKFuj5VXx6ZBs+wsk30rg5fB1nqQE1?=
+ =?iso-8859-2?Q?J+VY+z80lu3gCDkEjTyXvx5u/x3FQaXM0WwCJj1wy1p0ZP0EFxNbLqudlx?=
+ =?iso-8859-2?Q?83ua1ZwhbJS6dwgIDyHZg6rrM5QL89CV7Mba8b1+Oopgg43pKEYa6WlK1l?=
+ =?iso-8859-2?Q?zxMfzsMTJSuJMfG4RAtyNSAeJP155Ei6HvfAdBaUsHLW4vQ=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-2?Q?KApqZGwXgez58lKMs88nqoaFWZRxnSQ4dqQcD7C78c4kR1wli2ujOkX24z?=
+ =?iso-8859-2?Q?LSDpKQSHq1Tf2U+3/mNBpI3AkccPX1VTXCiCc0ZkREMyx6W8KcsfMA3ADa?=
+ =?iso-8859-2?Q?6SXn8a3ynW2auvVGUPcCeqE8pj2r70Dw/gzxanOMMp1QnR6rIwU7FShu9v?=
+ =?iso-8859-2?Q?4OghYgZiKyCfv462abj621C5OcvsWxMvb4AvGuh89BRD8iFRDbQS36aOPx?=
+ =?iso-8859-2?Q?odevsuIwT1N4HA1ekBcbvVFzkF/xFA4ysGQEkDFkhwTMJlaKrytwrnJgIf?=
+ =?iso-8859-2?Q?pzUhb24dSyNCV+YRG8V+IZa4AtDb8gO7rmp+91r2cbfy8LkNu6Kck6Ajm/?=
+ =?iso-8859-2?Q?ltxzbnm4dJeCcVUn58iID2VaJLX+NfYkqeo6dTqE75Q7brQShtsX1K2eI7?=
+ =?iso-8859-2?Q?/fGiWyIPM+lYMmBGO6OhIYxggev4N6YW0vqk5GAEfpTorICa08TqRcG6Ee?=
+ =?iso-8859-2?Q?YAlwOlU7PNssUtQppckW4lNsX9KIJVYW4CXAnNE/9JgTNiVHeIRIbUocg2?=
+ =?iso-8859-2?Q?UiM6ML1n1Y9H1G27DbQaVKUG/btcB6HNVZ7pzyY2gg1+UZN0jirPrVKAlS?=
+ =?iso-8859-2?Q?MLLI9AWV8bOYTXlDgeOWvDTWGUKZ08phzMf+5aLcc5WSjka0+IICUtWBFD?=
+ =?iso-8859-2?Q?PpdSNGKJa8ZkQiX3CvMvtsL25A0BgqkeGPs94eo/jzsmvzMw82P4stg0N2?=
+ =?iso-8859-2?Q?9uZRt6khpXKAc+vhAz4XW5kWg+Nk0/zxyHO9SUz0lu24dhqGg2UtFVUDLQ?=
+ =?iso-8859-2?Q?xMf2+EvL0ew9TXRtyaQMtH/AAD4K+ifyeQbwgm/tWi4jApBy5KnBsFX0q6?=
+ =?iso-8859-2?Q?tQ7T5u81CfoaYEncQCS3FWYnFul6+kcsfejjDMGYAOal+tKT7yogXwktTC?=
+ =?iso-8859-2?Q?5qQgxD48PeyjNuuGhTC7SrGD20idZlhm4cvYrkjCTXoj3D68VB52wbjrNc?=
+ =?iso-8859-2?Q?QDoH2NdvPbuNCP2MN6xEcJehzYIAotV/7Yv55QJt9U+2oorvkjc5jGl52r?=
+ =?iso-8859-2?Q?SRXHRSbQNwGGumblkd6a0Ox3ntZLp6SPLZPGVqXVsDelIj8ZP/zAr49Hkz?=
+ =?iso-8859-2?Q?hM9bsYbdGal4+LFMVwND2miShWhOIA+Xip+kEpq3dgJOgOxVaFoHD0+7NX?=
+ =?iso-8859-2?Q?TVqKEEE6fY8cm8dZzwWeN5/YYQoVTwyehRoxtLsQMI+rnV1Wi6i2zww45P?=
+ =?iso-8859-2?Q?qIHPeaSyuBxeHGy24LDJ+fQd9dGwqWKkcHAzzj0UBsC3V3Jb6DBhFBXklH?=
+ =?iso-8859-2?Q?QN5iINyo2D7T5X6YXQdzZ7T25YnQHDWzyqU5FfC8GoXQjVVOoY24mTuLzB?=
+ =?iso-8859-2?Q?UbaT9HLh8O1Xxt6QBZK4xCc7kw=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:bt1lOAv4WI5hqOQFiWb3ZC+bVp8gF2UaYVCHfz2fzBXt7i/Ohea
- vYObJ/ByVi7U9KEBFF+fzCJb5ce4bw6B1MZi0t5l1hLSNyqoMcQxwpD7InALo1fg1zA07+T
- LbToAZ664Xs2gMZx7au8pyDxA03TVIBvpKdjgWUOWKoBjNdqkozGhQReBdhtVUBoykkU222
- kx9eUINYIXz6kk/f7C0dw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:SwbBK1cvTd0=;v0aqcMWx0B8dsC9qBH78chfqcEA
- tRLJaYBXiGStsti1iDV/8q/M2ZwJoRTejeCVMFpcyb1vTJWvb93csJ7boSqu+CMLD8KPbKHb4
- pCe+itgvcFMwE6Rq0qnNDR/6Eq9iL8IaUTIHtI6b1eTnWbwbgYnQyc4siZRzGuZw4Alj8fbvA
- lXfB9EN37u/zlNPSxdy8T5Oy8XWq9qONHlYzQllY0vH3ftx5ORJOtb1Vbt0yomDWYpzcu2FWC
- RKXWxgOiOQror+iG2BLHASq3iU+TzKB4rtIfXVVLH3pZlWHDzz7vh7vtq6gq5Mvpt72qgFw/v
- 8hSUBBj11uhW/3LQnI6PR9FMPSd2la6JwW/t9wXo86r71OYZVoLG6EbyqfwdtFLiwcx93vRSj
- UCs+K70CGVYlsGa9XxMAfT16Uw/v2FpGrefBn95b3T2hZjlQGqnX73Z1XWFTyjPEoM19nZyoT
- BaVwbJSjjoWEqtyrZOvfD7HepP6IT/n7OhcOE1ywxkIkOI5F5kvjYccsi3gTgBrrH2yDT9Vfd
- 14aLj4jrU3w1t4zMDWRMB57UCSzZar0//Ejmw/T66kxMQbRWPH8QnoxvJxR2tEbgP1RRocLaL
- 48ng1f8dV+uD0F9rn0Hl2EtQgJPbLpEOQjth8+BneXBg8SyOQrfJgCXwFpwaaait876scDMYJ
- LOzyLXi0fKKQXq0Ns/vQKHNp3hcqkMJi3IjS2aIcUlJeT0d4BXLatRNbIwFYz6GRuJBSfNUVW
- rTOP3IC8pqMxrYlMIB0FVrWVx3vFoZ+3/a+E0QaDNdAE520IRejQf4HTpach4s4OnxB9TT/g+
- lHGDrrwz+E86shfX6eKPLY6JKNd9gXMjQyzbOgFMrwg6AcUWOq7zW5QI3ExNNDo8AdKe4ZtiO
- ymEEozIU2XqJXv9wAN81JVTtG1gZ6nfof4XbBleizIwwUlMgVIT+81Pyi4k28ilA0jeL2z8/t
- PYd39PD95hsI2xO19R/b8RqW9BS64krHAQJ5wbsy48G+tn5GexAQRyJHcmBYMGMIBHiMJL1CW
- TkxCf3a3nNIMcFyH7od3BVPeN4/zNzD/SOZfPwFV+694eCEH6D7swLOTNHtCAfqBDCB5F0WAi
- pMVnyhL80KIVfZYJji9ahCd0BHBbfJzDlywr/LdpZjEhiYa6l56Z51fZBX7O+8c0nJBod6QD3
- O4omJv9Q00wWJlrs1GpCadHrSfUXVB16MlScI/l0mtJJCXpHqSG5+w5mBuI6dbD3VrWHx+nWj
- Uej5eoy3Io/zQ2PNwNUgGFgpHD6QaENrUsp8HxqqbVlaI6COE5sC4beNhfpUtyJpurNhK4vai
- rA4bAT9O9w5iu2ubAu9VSjo16Ufmu45btVg+VwtcL7ycw+PySQ5rio/4AQTzz5dfqZ8PMCRDa
- hkY+MRD6hPk63N3rANsvi9WYrxDN/xziez3Zpdzoo9vQIwcF10p6BY8yH+CljkTM35WGgBe1a
- PQBk9EKYwgUoK8p1v8LpADKVZwKs1WZqJrAgrBfTyAejCd6OYDfNVIis878c6NQMnoS1GWwoX
- jL1GR6judiO8r3RX+XBB9GKQ7DugnACvmJOAVCzmlSBX5A3FOHA5t0WehsCpJUHicmHx0jJND
- Akfuyz4XnBJmUINyuP91ttaqZoh0SGDSIIRXBJ8ghTgAdPNN6zQOgAr6BApn7v5ZTbR4zfsUG
- U4e1TXpc19YaI/QuE7/V9EDNuRMWNAF8oOVdPUB7DYE+h1VM8qcJBhTWmQB16xbpLwdXfZRhm
- e7aCWQBDvCj3pAd+IM3jcW8fSqONlTAMAx1xR5XTeV0lJJ/jmbl8Uw0mH1M9tMVnFsjL1AAEW
- JHz4L/xl69WyJhZR4TDZWypShr/kck2DztW+lxrRXWXFBMVw9fmXx1bVpuTTIrmNoAAjA/inA
- ibU6VOtbSwfI9HrUzR4J0dEdHTN5LRuUVTHI1MsiJJbIyqWJaCTvrrGdO3d+Op4PEfYRhsTT2
- 7Gue6Xko3ICMJeO3DTNfHxFiUHfOkU2mrJ6ZO7oYlkTAj8TaxUhLYO2H5OLfk0BKtFGRQbroB
- RHcvV2XsjRqgx+IwLp1m94LKvMuVjbvgyLNUk0GtlR3z7aNw2lKKAC+cYYwUCxL64y8Sc7vN9
- o/wNYIasYkOzsjzMPKGJQugGhOAB/xO2HuTrPQ74Ns8nm5vvHZM/D7qnRoVpnK7Kgw9PmD9Cl
- AVBw//omdWd0VA+vS+1oK+J83LzEOMi6QRBnFCaCqZEAjn2v13J6JXgf5g3A1mCMCu96H4mO3
- HypwAZqfHuKSziE25Pd15lt2tvxXECtO6pQRtuQNaKNN3B9OCJIT4iFpJNivm/aB/kiak0Tp7
- g9/LGc1kaJBwaEYKAd2FROwdCWHFcoA3hNCDPW0ps0vHLFYvZ+0Mj0ykfqKvusO36kaxHWUV8
- msApphYDOogXy71S/I0BLa/CtIT2i4wKUBB9yQZ/EMcrhdvs65ngKc5kWY4GtGVjESgDsXnw2
- 1dOCYFq5vGvBd0k+z5wDjBHUWWd+KRjvc1l6T15fK65Xi5hpDLgeHvtQOugpyMA74hiuqwte3
- l21zmCG2V9Uo/hgJph7kYkDtsaITbmGe9J0nw+pBjROJCnJ+NTh3nmzIF1vlqAlfu9+ru40CR
- UIasvDD34Ce3+qVfvUGPOOvbIII3++SYmLEDV8dAzcx9NT5byH6mfRU9WjxUegO50QJppXdSv
- uGb/VP51IKlivhcs94WqrCCyc8K71cZOJrQ3XyOVT9aw7vpyLvL7Cu0jhJyF2DRuD84cxJQPV
- 8PHk9zgxHyXrE2/X25frf+WTbkY1CLxnYkJwPx2ny4RuzAK3uYWYIAJTkk9z1Z6B7r1XZOq8j
- TM8YHFzY+mlyOXDaxfWYPe7fRcaAK40+vxpHHs+LGRpVHjYedMbnC9WkH8BaacVDCh2pJwRQG
- VKuG7UJQiv1CZYIC+hexa0DGvBHXzz/GqUkqEHgW5MI2aL/K/Xf3wn3FWDyhuRh50nbWldxtT
- qylaQCjua3AofBdrLAwdtzIBf5gAXL04q5mjBEMl93EYrC/DY9y2msodAwPnbKb3yCXOH6ejm
- dzAF+VZ5moBtqZU0h+wxLLIoI9TEaGlbeZldfYANSe4
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-de33f.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB6PR08MB2693.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 469616d3-b47f-48a9-f30c-08dd957c7df9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 May 2025 19:53:27.8479
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR08MB8841
 
-Am Samstag, dem 17.05.2025 um 13:34 +0200 schrieb Bert Karwatzki:
-> Am Freitag, dem 16.05.2025 um 20:19 +0200 schrieb Bert Karwatzki:
-> > I've added a debugging statement:
-> >=20
-> > diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-> > index 3bd5ee0995fe..853493eca4f5 100644
-> > --- a/net/mac80211/tx.c
-> > +++ b/net/mac80211/tx.c
-> > @@ -4586,7 +4586,11 @@ static noinline void ieee80211_8023_xmit_clang_=
-debug_helper(struct sk_buff *skb,
-> >                                                             struct iee=
-e80211_local *local,
-> >                                                             struct iee=
-e80211_tx_info *info)
-> >  {
-> > -       if (unlikely(skb->sk && sock_flag(skb->sk, SOCK_WIFI_STATUS)))=
- {
-> > +       if (unlikely(skb->sk && ((skb_shinfo(skb)->tx_flags & SKBTX_WI=
-FI_STATUS) ||
-> > +                               sock_flag(skb->sk, SOCK_WIFI_STATUS)))=
-) {
-> > +               if ((skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS) ^ =
-sock_flag(skb->sk, SOCK_WIFI_STATUS))
-> > +                       printk(KERN_INFO "%s: skb_shinfo(skb)->tx_flag=
-s & SKBTX_WIFI_STATUS =3D %u sock_flag(skb->sk,
-> > SOCK_WIFI_STATUS) =3D %u\n",
-> > +                                       __func__, (skb_shinfo(skb)->tx=
-_flags & SKBTX_WIFI_STATUS), sock_flag(skb->sk,
-> > SOCK_WIFI_STATUS));
-> >                 info->status_data =3D ieee80211_store_ack_skb(local, s=
-kb,
-> >                                                             &info->fla=
-gs, NULL);
-> >                 if (info->status_data)
-> >=20
-> > This gives the following logoutput (and a lockup), indicating that soc=
-k_flag(skb->sk, SOCK_WIFI_STATUS) and
-> > (skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS) are actually NOT equiv=
-alent (when compiled with clang and
-> > PREEMPT_RT=3Dy)
->=20
-> I've added more debugging output:
->=20
-> diff --git a/include/net/sock.h b/include/net/sock.h
-> index e223102337c7..e13560b5b7a8 100644
-> --- a/include/net/sock.h
-> +++ b/include/net/sock.h
-> @@ -2735,8 +2735,10 @@ static inline void _sock_tx_timestamp(struct sock=
- *sk,
->  				*tskey =3D atomic_inc_return(&sk->sk_tskey) - 1;
->  		}
->  	}
-> -	if (unlikely(sock_flag(sk, SOCK_WIFI_STATUS)))
-> +	if (unlikely(sock_flag(sk, SOCK_WIFI_STATUS))) {
-> +		printk(KERN_INFO "%s: setting SKBTX_WIFI_STATUS for sk =3D %px\n", __=
-func__, sk);
->  		*tx_flags |=3D SKBTX_WIFI_STATUS;
-> +	}
->  }
-> =20
->  static inline void sock_tx_timestamp(struct sock *sk,
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index e02a78538e3e..f6589ad5ba36 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -1548,6 +1548,7 @@ int sk_setsockopt(struct sock *sk, int level, int =
-optname,
->  		break;
-> =20
->  	case SO_WIFI_STATUS:
-> +		printk(KERN_INFO "%s: setting SOCK_WIFI_STATUS to %u for sk =3D %px\n=
-", __func__, valbool, sk);
->  		sock_valbool_flag(sk, SOCK_WIFI_STATUS, valbool);
->  		break;
-> =20
-> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-> index 853493eca4f5..eee2f80949c6 100644
-> --- a/net/mac80211/tx.c
-> +++ b/net/mac80211/tx.c
-> @@ -4588,9 +4588,12 @@ static noinline void ieee80211_8023_xmit_clang_de=
-bug_helper(struct sk_buff *skb,
->  {
->  	if (unlikely(skb->sk && ((skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATU=
-S) ||
->  				sock_flag(skb->sk, SOCK_WIFI_STATUS)))) {
-> -		if ((skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS) ^ sock_flag(skb->=
-sk, SOCK_WIFI_STATUS))
-> +		if ((skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS) ^ sock_flag(skb->=
-sk, SOCK_WIFI_STATUS)) {
->  			printk(KERN_INFO "%s: skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS =
-=3D %u sock_flag(skb->sk, SOCK_WIFI_STATUS) =3D %u\n",
->  					__func__, (skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS), sock_fl=
-ag(skb->sk, SOCK_WIFI_STATUS));
-> +			printk(KERN_INFO "%s: skb->sk =3D %px skb->sk->sk_flags =3D 0x%lx\n"=
-, __func__, skb->sk, skb->sk->sk_flags);
-> +			return; // This should make this case non-fatal.
-> +		}
->  		info->status_data =3D ieee80211_store_ack_skb(local, skb,
->  							    &info->flags, NULL);
->  		if (info->status_data)
->=20
->=20
->=20
-> This gives after ~15min uptime
->=20
-> [  189.337797] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb_sh=
-info(skb)->tx_flags & SKBTX_WIFI_STATUS =3D 0 sock_flag(skb->sk, SOCK_WIFI=
-_STATUS) =3D 1
-> [  189.337803] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb->s=
-k =3D ffff8c1b798c4e00 skb->sk->sk_flags =3D 0xffffffffb4efe640
-> [  191.325256] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb_sh=
-info(skb)->tx_flags & SKBTX_WIFI_STATUS =3D 0 sock_flag(skb->sk, SOCK_WIFI=
-_STATUS) =3D 1
-> [  191.325259] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb->s=
-k =3D ffff8c1b798c5a00 skb->sk->sk_flags =3D 0xffffffffb4efe640
-> [  257.591831] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb_sh=
-info(skb)->tx_flags & SKBTX_WIFI_STATUS =3D 0 sock_flag(skb->sk, SOCK_WIFI=
-_STATUS) =3D 1
-> [  257.591844] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb->s=
-k =3D ffff8c1baf3bca00 skb->sk->sk_flags =3D 0xffffffffb4efe640
-> [  301.786963] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb_sh=
-info(skb)->tx_flags & SKBTX_WIFI_STATUS =3D 0 sock_flag(skb->sk, SOCK_WIFI=
-_STATUS) =3D 1
-> [  301.786967] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb->s=
-k =3D ffff8c1c1bc40100 skb->sk->sk_flags =3D 0xffffffffb4efe640
-> [  302.780881] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb_sh=
-info(skb)->tx_flags & SKBTX_WIFI_STATUS =3D 0 sock_flag(skb->sk, SOCK_WIFI=
-_STATUS) =3D 1
-> [  302.780884] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb->s=
-k =3D ffff8c1a44cf6000 skb->sk->sk_flags =3D 0xffffffffb4efe640
-> [  482.792298] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb_sh=
-info(skb)->tx_flags & SKBTX_WIFI_STATUS =3D 0 sock_flag(skb->sk, SOCK_WIFI=
-_STATUS) =3D 1
-> [  482.792304] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb->s=
-k =3D ffff8c1da0f4de00 skb->sk->sk_flags =3D 0xffffffffb4efe640
-> [  482.806144] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb_sh=
-info(skb)->tx_flags & SKBTX_WIFI_STATUS =3D 0 sock_flag(skb->sk, SOCK_WIFI=
-_STATUS) =3D 1
-> [  482.806148] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb->s=
-k =3D ffff8c1da0f4c500 skb->sk->sk_flags =3D 0xffffffffb4efe640
-> [  482.817280] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb_sh=
-info(skb)->tx_flags & SKBTX_WIFI_STATUS =3D 0 sock_flag(skb->sk, SOCK_WIFI=
-_STATUS) =3D 1
-> [  482.817284] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb->s=
-k =3D ffff8c1da0f4df00 skb->sk->sk_flags =3D 0xffffffffb4efe640
-> [  552.327291] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb_sh=
-info(skb)->tx_flags & SKBTX_WIFI_STATUS =3D 0 sock_flag(skb->sk, SOCK_WIFI=
-_STATUS) =3D 1
-> [  552.327295] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb->s=
-k =3D ffff8c1da0f4de00 skb->sk->sk_flags =3D 0xffffffffb4efe640
-> [  916.971599] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb_sh=
-info(skb)->tx_flags & SKBTX_WIFI_STATUS =3D 0 sock_flag(skb->sk, SOCK_WIFI=
-_STATUS) =3D 1
-> [  916.971607] [    T576] ieee80211_8023_xmit_clang_debug_helper: skb->s=
-k =3D ffff8c1a62834000 skb->sk->sk_flags =3D 0xffffffffb4efe640
->=20
-> The printk()s in sk_set_sockopt() and _sock_tx_timestamp() are not calle=
-d at all so the flag=C2=A0
-> SOCK_WIFI_STATUS is actually nevers set! What is printed when printing s=
-kb->sk->sk_flags looks
-> suspiciously like a pointer, and as sk_flags is actually a member of a u=
-nion in struct sock_common
-> it seems clang is using sk_flags for one of the other union members here
->=20
-> struct sock_common {
-> [...]
-> 	union {
-> 		unsigned long	skc_flags;
-> 		struct sock	*skc_listener; /* request_sock */
-> 		struct inet_timewait_death_row *skc_tw_dr; /* inet_timewait_sock */
-> 	};
-> [...]
-> }
->=20
-> Bert Karwatzki
-
-I added even more debugging output and found out why commit 76a853f86c97 (=
-" wifi: free=C2=A0
-SKBTX_WIFI_STATUS skb tx_flags flag") does not work.
-
-diff --git a/include/net/sock.h b/include/net/sock.h
-index e13560b5b7a8..6e1291d2e5a1 100644
-=2D-- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2738,6 +2738,8 @@ static inline void _sock_tx_timestamp(struct sock *s=
-k,
- 	if (unlikely(sock_flag(sk, SOCK_WIFI_STATUS))) {
- 		printk(KERN_INFO "%s: setting SKBTX_WIFI_STATUS for sk =3D %px\n", __fu=
-nc__, sk);
- 		*tx_flags |=3D SKBTX_WIFI_STATUS;
-+	} else {
-+		printk(KERN_INFO "%s: NOT setting SKBTX_WIFI_STATUS for sk =3D %px\n", =
-__func__, sk);
- 	}
- }
-=20
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_so=
-ck.c
-index 20915895bdaa..4913b09c0617 100644
-=2D-- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -912,6 +912,7 @@ reqsk_alloc_noprof(const struct request_sock_ops *ops,=
- struct sock *sk_listener,
- 			return NULL;
- 		}
- 		req->rsk_listener =3D sk_listener;
-+		printk(KERN_INFO "%s: sk_listener =3D %px\n", __func__, sk_listener);
- 	}
- 	req->rsk_ops =3D ops;
- 	req_to_sk(req)->sk_prot =3D sk_listener->sk_prot;
-@@ -986,6 +987,7 @@ static struct request_sock *inet_reqsk_clone(struct re=
-quest_sock *req,
- 	nreq_sk->sk_incoming_cpu =3D req_sk->sk_incoming_cpu;
-=20
- 	nreq->rsk_listener =3D sk;
-+	printk(KERN_INFO "%s: rsk_listener =3D%px\n", __func__, sk);
-=20
- 	/* We need not acquire fastopenq->lock
- 	 * because the child socket is locked in inet_csk_listen_stop().
-diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
-index 67efe9501581..1a3108ec7503 100644
-=2D-- a/net/ipv4/inet_timewait_sock.c
-+++ b/net/ipv4/inet_timewait_sock.c
-@@ -190,6 +190,7 @@ struct inet_timewait_sock *inet_twsk_alloc(const struc=
-t sock *sk,
- 		const struct inet_sock *inet =3D inet_sk(sk);
-=20
- 		tw->tw_dr	    =3D dr;
-+		printk(KERN_INFO "%s: sk =3D %px tw_dr =3D %px\n", __func__, sk, dr);
- 		/* Give us an identity. */
- 		tw->tw_daddr	    =3D inet->inet_daddr;
- 		tw->tw_rcv_saddr    =3D inet->inet_rcv_saddr;
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index eee2f80949c6..227b86427e06 100644
-=2D-- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4586,6 +4586,8 @@ static noinline void ieee80211_8023_xmit_clang_debug=
-_helper(struct sk_buff *skb,
- 							    struct ieee80211_local *local,
- 							    struct ieee80211_tx_info *info)
- {
-+	if (skb->sk)
-+		printk(KERN_INFO "%s: skb->sk =3D %px skb->sk->sk_flags =3D 0x%lx\n", _=
-_func__, skb->sk, skb->sk->sk_flags);
- 	if (unlikely(skb->sk && ((skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS)=
- ||
- 				sock_flag(skb->sk, SOCK_WIFI_STATUS)))) {
- 		if ((skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS) ^ sock_flag(skb->sk=
-, SOCK_WIFI_STATUS)) {
-
-
-This monitor the value of skb->sk->sk_flags not only in the error case but=
- in all cases, and also monitors
-the places where the other members of the sk_flags union are set. The erro=
-r occurs when at the start
-of ieee80211_8023_xmit_clang_debug_helper() sk_flags is not actually the s=
-kc_flags member of the union
-but insted is skc_tw_dr which is only interpreted is flags.
- So why does it work with gcc but fail with clang? sock_flag(skb->sk, SOCK=
-_WIFI_STATUS) test bit 19 of=C2=A0
-skb->sk->sk_flags=C2=A0
-
-Here are the important snippets of debug output:
-
-clang:
-[  T575] ieee80211_8023_xmit_clang_debug_helper: skb->sk =3D ffff8f1bebba4=
-300 skb->sk->sk_flags =3D 0xffffffffa16fe640
-
-Here test_bit(0xffffffffa16fe640, SOCK_WIFI_STATUS) is 1.
-
-gcc:
-[  T600] ieee80211_8023_xmit_clang_debug_helper: skb->sk =3D ffff8d3506bec=
-700 skb->sk->sk_flags =3D 0xffffffff93d40100
-Here test_bit(0xffffffff93d40100, SOCK_WIFI_STATUS) is 0.
-
-So that this works with gcc just seems like luck. I've not yet test why it=
- works with clang when PREEMPT_RT is not
-enabled but my guess is that in that case we have a tw_dr pointer which fa=
-ils the test_bit().
-
-Bert Karwatzki
-
-
-
-
-
-
-
+ath11k currently lacks support for dynamic vlan (AP/VLAN), so this patch=0A=
+adds feature advertisement in '__ath11k_mac_register' alongside=0A=
+all the other neccessary components supporting its function, including=0A=
+prerequisites for software encryption of VLAN group traffics.=0A=
+VLAN unicast packets shall be taking 8023 xmit path if encapsulation=0A=
+offload is enabled and multicast/broadcast then 80211 xmit path.=0A=
+=0A=
+Metadata info in dp_tx added to notify firmware that the=0A=
+multicast/broadcast packets are encrypted in software.=0A=
+=0A=
+Tested, long-term in production environment using OpenWrt platform=0A=
+installed on multiple AX3600 with FT.=0A=
+=0A=
+Tested-on: IPQ8074 hw2.0 AHB AWLAN.HK.2.9.0.1-01385-QCAHKSWPL_SILICONZ-1=0A=
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.9.0.1-01977-QCAHKSWPL_SILICONZ-1=0A=
+=0A=
+Signed-off-by: Seevalamuthu Mariappan <seevalam@codeaurora.org>=0A=
+Signed-off-by: David Rapan <david@rapan.cz>=0A=
+---=0A=
+ drivers/net/wireless/ath/ath11k/core.h  |   1 +=0A=
+ drivers/net/wireless/ath/ath11k/dp_tx.c |  79 +++++++++-=0A=
+ drivers/net/wireless/ath/ath11k/dp_tx.h | 197 ++++++++++++++++++++++++=0A=
+ drivers/net/wireless/ath/ath11k/mac.c   |   3 +=0A=
+ net/mac80211/tx.c                       |  19 +++=0A=
+ 5 files changed, 297 insertions(+), 2 deletions(-)=0A=
+=0A=
+base-commit: ff8069c7cf3eb0fcd53adebdf341b6aaa98bdd3b=0A=
+=0A=
+--- a/drivers/net/wireless/ath/ath11k/core.h=0A=
++++ b/drivers/net/wireless/ath/ath11k/core.h=0A=
+@@ -120,6 +120,7 @@ struct ath11k_skb_cb {=0A=
+ 	u32 cipher;=0A=
+ 	struct ath11k *ar;=0A=
+ 	struct ieee80211_vif *vif;=0A=
++	u32 pkt_offset;=0A=
+ } __packed;=0A=
+ =0A=
+ struct ath11k_skb_rxcb {=0A=
+--- a/drivers/net/wireless/ath/ath11k/dp_tx.c=0A=
++++ b/drivers/net/wireless/ath/ath11k/dp_tx.c=0A=
+@@ -79,6 +79,42 @@ enum hal_encrypt_type ath11k_dp_tx_get_e=0A=
+ 	}=0A=
+ }=0A=
+ =0A=
++#define HTT_META_DATA_ALIGNMENT	0x8=0A=
++=0A=
++static int ath11k_dp_metadata_align_skb(struct sk_buff *skb, u8 align_len)=
+=0A=
++{=0A=
++	if (unlikely(skb_cow_head(skb, align_len)))=0A=
++		return -ENOMEM;=0A=
++=0A=
++	skb_push(skb, align_len);=0A=
++	memset(skb->data, 0, align_len);=0A=
++	return 0;=0A=
++}=0A=
++=0A=
++static int ath11k_dp_prepare_htt_metadata(struct sk_buff *skb,=0A=
++					 u8 *htt_metadata_size)=0A=
++{=0A=
++	u8 htt_desc_size;=0A=
++	/* Size rounded of multiple of 8 bytes */=0A=
++	u8 htt_desc_size_aligned;=0A=
++	int ret;=0A=
++	struct htt_tx_msdu_desc_ext *desc_ext;=0A=
++=0A=
++	htt_desc_size =3D sizeof(struct htt_tx_msdu_desc_ext);=0A=
++	htt_desc_size_aligned =3D ALIGN(htt_desc_size, HTT_META_DATA_ALIGNMENT);=
+=0A=
++=0A=
++	ret =3D ath11k_dp_metadata_align_skb(skb, htt_desc_size_aligned);=0A=
++	if (unlikely(ret))=0A=
++		return ret;=0A=
++=0A=
++	desc_ext =3D (struct htt_tx_msdu_desc_ext *)skb->data;=0A=
++	desc_ext->valid_encrypt_type =3D 1;=0A=
++	desc_ext->encrypt_type =3D 0;=0A=
++	desc_ext->host_tx_desc_pool =3D 1;=0A=
++	*htt_metadata_size =3D htt_desc_size_aligned;=0A=
++	return 0;=0A=
++}=0A=
++=0A=
+ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,=0A=
+ 		 struct ath11k_sta *arsta, struct sk_buff *skb)=0A=
+ {=0A=
+@@ -97,6 +133,9 @@ int ath11k_dp_tx(struct ath11k *ar, stru=0A=
+ 	u32 ring_selector =3D 0;=0A=
+ 	u8 ring_map =3D 0;=0A=
+ 	bool tcl_ring_retry;=0A=
++	bool is_diff_encap =3D false;=0A=
++	u8 align_pad;=0A=
++	u8 htt_meta_size =3D 0;=0A=
+ =0A=
+ 	if (unlikely(test_bit(ATH11K_FLAG_CRASH_FLUSH, &ar->ab->dev_flags)))=0A=
+ 		return -ESHUTDOWN;=0A=
+@@ -189,7 +228,10 @@ tcl_ring_sel:=0A=
+ =0A=
+ 	switch (ti.encap_type) {=0A=
+ 	case HAL_TCL_ENCAP_TYPE_NATIVE_WIFI:=0A=
+-		ath11k_dp_tx_encap_nwifi(skb);=0A=
++		if (arvif->vif->offload_flags & IEEE80211_OFFLOAD_ENCAP_ENABLED)=0A=
++			is_diff_encap =3D true;=0A=
++		else=0A=
++			ath11k_dp_tx_encap_nwifi(skb);=0A=
+ 		break;=0A=
+ 	case HAL_TCL_ENCAP_TYPE_RAW:=0A=
+ 		if (!test_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags)) {=0A=
+@@ -208,6 +250,33 @@ tcl_ring_sel:=0A=
+ 		goto fail_remove_idr;=0A=
+ 	}=0A=
+ =0A=
++	/* Add metadata for software encryption of vlan group traffic */=0A=
++	if ((!test_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ar->ab->dev_flags) &&=0A=
++	    !(info->control.flags & IEEE80211_TX_CTL_HW_80211_ENCAP) &&=0A=
++	    !info->control.hw_key && ieee80211_has_protected(hdr->frame_control))=
+ ||=0A=
++	    (skb->protocol =3D=3D cpu_to_be16(ETH_P_PAE) && is_diff_encap)) {=0A=
++		/* HW requirement is that metadata should always point to a=0A=
++		 * 8-byte aligned address. So we add alignment pad to start of=0A=
++		 * buffer. HTT Metadata should be ensured to be multiple of 8-bytes=0A=
++		 * to get 8-byte aligned start address along with align_pad added=0A=
++		 */=0A=
++		align_pad =3D ((unsigned long)skb->data) & (HTT_META_DATA_ALIGNMENT - 1)=
+;=0A=
++		ret =3D ath11k_dp_metadata_align_skb(skb, align_pad);=0A=
++		if (unlikely(ret))=0A=
++			goto fail_remove_idr;=0A=
++=0A=
++		ti.pkt_offset +=3D align_pad;=0A=
++		ret =3D ath11k_dp_prepare_htt_metadata(skb, &htt_meta_size);=0A=
++		if (unlikely(ret))=0A=
++			goto fail_remove_idr;=0A=
++=0A=
++		ti.pkt_offset +=3D htt_meta_size;=0A=
++		ti.meta_data_flags |=3D HTT_TCL_META_DATA_VALID_HTT;=0A=
++		ti.flags0 |=3D FIELD_PREP(HAL_TCL_DATA_CMD_INFO1_TO_FW, 1);=0A=
++		ti.encap_type =3D HAL_TCL_ENCAP_TYPE_RAW;=0A=
++		ti.encrypt_type =3D HAL_ENCRYPT_TYPE_OPEN;=0A=
++	}=0A=
++=0A=
+ 	ti.paddr =3D dma_map_single(ab->dev, skb->data, skb->len, DMA_TO_DEVICE);=
+=0A=
+ 	if (unlikely(dma_mapping_error(ab->dev, ti.paddr))) {=0A=
+ 		atomic_inc(&ab->soc_stats.tx_err.misc_fail);=0A=
+@@ -216,7 +285,8 @@ tcl_ring_sel:=0A=
+ 		goto fail_remove_idr;=0A=
+ 	}=0A=
+ =0A=
+-	ti.data_len =3D skb->len;=0A=
++	ti.data_len =3D skb->len - ti.pkt_offset;=0A=
++	skb_cb->pkt_offset =3D ti.pkt_offset;=0A=
+ 	skb_cb->paddr =3D ti.paddr;=0A=
+ 	skb_cb->vif =3D arvif->vif;=0A=
+ 	skb_cb->ar =3D ar;=0A=
+@@ -272,6 +342,8 @@ fail_unmap_dma:=0A=
+ 	dma_unmap_single(ab->dev, ti.paddr, ti.data_len, DMA_TO_DEVICE);=0A=
+ =0A=
+ fail_remove_idr:=0A=
++	if (ti.pkt_offset)=0A=
++		skb_pull(skb, ti.pkt_offset);=0A=
+ 	spin_lock_bh(&tx_ring->tx_idr_lock);=0A=
+ 	idr_remove(&tx_ring->txbuf_idr,=0A=
+ 		   FIELD_GET(DP_TX_DESC_ID_MSDU_ID, ti.desc_id));=0A=
+@@ -348,6 +420,10 @@ ath11k_dp_tx_htt_tx_complete_buf(struct=0A=
+ 		return;=0A=
+ 	}=0A=
+ =0A=
++	if (skb_cb->pkt_offset)=0A=
++		/* Removing the alignment and htt meta data */=0A=
++		skb_pull(msdu, skb_cb->pkt_offset);=0A=
++=0A=
+ 	memset(&info->status, 0, sizeof(info->status));=0A=
+ =0A=
+ 	if (ts->acked) {=0A=
+--- a/drivers/net/wireless/ath/ath11k/dp_tx.h=0A=
++++ b/drivers/net/wireless/ath/ath11k/dp_tx.h=0A=
+@@ -17,6 +17,203 @@ struct ath11k_dp_htt_wbm_tx_status {=0A=
+ 	u16 peer_id;=0A=
+ };=0A=
+ =0A=
++/* htt_tx_msdu_desc_ext=0A=
++ *=0A=
++ * valid_pwr=0A=
++ *		If set, tx pwr spec is valid=0A=
++ *=0A=
++ * valid_mcs_mask=0A=
++ *		If set, tx MCS mask is valid=0A=
++ *=0A=
++ * valid_nss_mask=0A=
++ *		If set, tx Nss mask is valid=0A=
++ *=0A=
++ * valid_preamble_type=0A=
++ *		If set, tx preamble spec is valid=0A=
++ *=0A=
++ * valid_retries=0A=
++ *		If set, tx retries spec is valid=0A=
++ *=0A=
++ * valid_bw_info=0A=
++ *		If set, tx dyn_bw and bw_mask are valid=0A=
++ *=0A=
++ * valid_guard_interval=0A=
++ *		If set, tx guard intv spec is valid=0A=
++ *=0A=
++ * valid_chainmask=0A=
++ *		If set, tx chainmask is valid=0A=
++ *=0A=
++ * valid_encrypt_type=0A=
++ *		If set, encrypt type is valid=0A=
++ *=0A=
++ * valid_key_flags=0A=
++ *		If set, key flags is valid=0A=
++ *=0A=
++ * valid_expire_tsf=0A=
++ *		If set, tx expire TSF spec is valid=0A=
++ *=0A=
++ * valid_chanfreq=0A=
++ *		If set, chanfreq is valid=0A=
++ *=0A=
++ * is_dsrc=0A=
++ *		If set, MSDU is a DSRC frame=0A=
++ *=0A=
++ * guard_interval=0A=
++ *		0.4us, 0.8us, 1.6us, 3.2us=0A=
++ *=0A=
++ * encrypt_type=0A=
++ *		0 =3D NO_ENCRYPT,=0A=
++ *		1 =3D ENCRYPT,=0A=
++ *		2 ~ 3 - Reserved=0A=
++ *=0A=
++ * retry_limit=0A=
++ *		Specify the maximum number of transmissions, including the=0A=
++ *		initial transmission, to attempt before giving up if no ack=0A=
++ *		is received.=0A=
++ *		If the tx rate is specified, then all retries shall use the=0A=
++ *		same rate as the initial transmission.=0A=
++ *		If no tx rate is specified, the target can choose whether to=0A=
++ *		retain the original rate during the retransmissions, or to=0A=
++ *		fall back to a more robust rate.=0A=
++ *=0A=
++ * use_dcm_11ax=0A=
++ *		If set, Use Dual subcarrier modulation.=0A=
++ *		Valid only for 11ax preamble types HE_SU=0A=
++ *		and HE_EXT_SU=0A=
++ *=0A=
++ * ltf_subtype_11ax=0A=
++ *		Takes enum values of htt_11ax_ltf_subtype_t=0A=
++ *		Valid only for 11ax preamble types HE_SU=0A=
++ *		and HE_EXT_SU=0A=
++ *=0A=
++ * dyn_bw=0A=
++ *		0 =3D static bw, 1 =3D dynamic bw=0A=
++ *=0A=
++ * bw_mask=0A=
++ *		Valid only if dyn_bw =3D=3D 0 (static bw).=0A=
++ *=0A=
++ * host_tx_desc_pool=0A=
++ *		If set, Firmware allocates tx_descriptors=0A=
++ *		in WAL_BUFFERID_TX_HOST_DATA_EXP,instead=0A=
++ *		of WAL_BUFFERID_TX_TCL_DATA_EXP.=0A=
++ *		Use cases:=0A=
++ *		Any time firmware uses TQM-BYPASS for Data=0A=
++ *		TID, firmware expect host to set this bit.=0A=
++ *=0A=
++ * power=0A=
++ *		Unit of the power field is 0.5 dbm=0A=
++ *		signed value ranging from -64dbm to 63.5 dbm=0A=
++ *=0A=
++ * mcs_mask=0A=
++ *		mcs bit mask of 0 ~ 11=0A=
++ *		Setting more than one MCS isn't currently=0A=
++ *		supported by the target but is supported=0A=
++ *		in the interface in case in the future=0A=
++ *		the target supports specifications of=0A=
++ *		a limited set of MCS values.=0A=
++ *=0A=
++ * nss_mask=0A=
++ *		Nss bit mask 0 ~ 7=0A=
++ *		Setting more than one Nss isn't currently=0A=
++ *		supported by the target but is supported=0A=
++ *		in the interface in case in the future=0A=
++ *		the target supports specifications of=0A=
++ *		a limited set of Nss values.=0A=
++ *=0A=
++ * pream_type=0A=
++ *		Preamble types=0A=
++ *=0A=
++ * update_peer_cache=0A=
++ *		When set these custom values will be=0A=
++ *		used for all packets, until the next=0A=
++ *		update via this ext header.=0A=
++ *		This is to make sure not all packets=0A=
++ *		need to include this header.=0A=
++ *=0A=
++ * chain_mask=0A=
++ *		Specify which chains to transmit from=0A=
++ *=0A=
++ * key_flags=0A=
++ *		Key Index and related flags - used in mesh mode=0A=
++ *=0A=
++ * chanfreq=0A=
++ *		Channel frequency: This identifies the desired channel=0A=
++ *		frequency (in MHz) for tx frames. This is used by FW to help=0A=
++ *		determine when it is safe to transmit or drop frames for=0A=
++ *		off-channel operation.=0A=
++ *		The default value of zero indicates to FW that the corresponding=0A=
++ *		VDEV's home channel (if there is one) is the desired channel=0A=
++ *		frequency.=0A=
++ *=0A=
++ * expire_tsf_lo=0A=
++ *		tx expiry time (TSF) LSBs=0A=
++ *=0A=
++ * expire_tsf_hi=0A=
++ *		tx expiry time (TSF) MSBs=0A=
++ *=0A=
++ * learning_frame=0A=
++ *		When this flag is set, this frame will be dropped by FW=0A=
++ *		rather than being enqueued to the Transmit Queue Manager (TQM) HW.=0A=
++ *=0A=
++ * send_as_standalone=0A=
++ *		This will indicate if the msdu needs to be sent as a singleton PPDU,=
+=0A=
++ *		i.e. with no A-MSDU or A-MPDU aggregation.=0A=
++ *		The scope is extended to other use-cases.=0A=
++ *=0A=
++ * is_host_opaque_valid=0A=
++ *		Set this bit to 1 if the host_opaque_cookie is populated=0A=
++ *		with valid information.=0A=
++ *=0A=
++ * host_opaque_cookie=0A=
++ *		Host opaque cookie for special frames=0A=
++ */=0A=
++struct htt_tx_msdu_desc_ext {=0A=
++	u32=0A=
++		valid_pwr            :  1,=0A=
++		valid_mcs_mask       :  1,=0A=
++		valid_nss_mask       :  1,=0A=
++		valid_preamble_type  :  1,=0A=
++		valid_retries        :  1,=0A=
++		valid_bw_info        :  1,=0A=
++		valid_guard_interval :  1,=0A=
++		valid_chainmask      :  1,=0A=
++		valid_encrypt_type   :  1,=0A=
++		valid_key_flags      :  1,=0A=
++		valid_expire_tsf     :  1,=0A=
++		valid_chanfreq       :  1,=0A=
++		is_dsrc              :  1,=0A=
++		guard_interval       :  2,=0A=
++		encrypt_type         :  2,=0A=
++		retry_limit          :  4,=0A=
++		use_dcm_11ax         :  1,=0A=
++		ltf_subtype_11ax     :  2,=0A=
++		dyn_bw               :  1,=0A=
++		bw_mask              :  6,=0A=
++		host_tx_desc_pool    :  1;=0A=
++	u32=0A=
++		power                :  8,=0A=
++		mcs_mask             : 12,=0A=
++		nss_mask             :  8,=0A=
++		pream_type           :  3,=0A=
++		update_peer_cache    :  1;=0A=
++	u32=0A=
++		chain_mask           :  8,=0A=
++		key_flags            :  8,=0A=
++		chanfreq             : 16;=0A=
++=0A=
++	u32 expire_tsf_lo;=0A=
++	u32 expire_tsf_hi;=0A=
++=0A=
++	u32=0A=
++		learning_frame       :  1,=0A=
++		send_as_standalone   :  1,=0A=
++		is_host_opaque_valid :  1,=0A=
++		rsvd0                : 29;=0A=
++	u32=0A=
++		host_opaque_cookie   : 16,=0A=
++		rsvd1                : 16;=0A=
++} __packed;=0A=
++=0A=
+ void ath11k_dp_tx_update_txcompl(struct ath11k *ar, struct hal_tx_status *=
+ts);=0A=
+ int ath11k_dp_tx_htt_h2t_ver_req_msg(struct ath11k_base *ab);=0A=
+ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,=0A=
+--- a/drivers/net/wireless/ath/ath11k/mac.c=0A=
++++ b/drivers/net/wireless/ath/ath11k/mac.c=0A=
+@@ -10324,6 +10324,9 @@ static int __ath11k_mac_register(struct=0A=
+ 		goto err_free_if_combs;=0A=
+ 	}=0A=
+ =0A=
++	ar->hw->wiphy->interface_modes |=3D BIT(NL80211_IFTYPE_AP_VLAN);=0A=
++	ar->hw->wiphy->software_iftypes |=3D BIT(NL80211_IFTYPE_AP_VLAN);=0A=
++=0A=
+ 	if (!ab->hw_params.supports_monitor)=0A=
+ 		/* There's a race between calling ieee80211_register_hw()=0A=
+ 		 * and here where the monitor mode is enabled for a little=0A=
+--- a/net/mac80211/tx.c=0A=
++++ b/net/mac80211/tx.c=0A=
+@@ -40,6 +40,10 @@=0A=
+ =0A=
+ /* misc utils */=0A=
+ =0A=
++static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,=0A=
++				struct net_device *dev, struct sta_info *sta,=0A=
++				struct ieee80211_key *key, struct sk_buff *skb);=0A=
++=0A=
+ static __le16 ieee80211_duration(struct ieee80211_tx_data *tx,=0A=
+ 				 struct sk_buff *skb, int group_addr,=0A=
+ 				 int next_frag_len)=0A=
+@@ -4257,6 +4261,8 @@ void __ieee80211_subif_start_xmit(struct=0A=
+ {=0A=
+ 	struct ieee80211_sub_if_data *sdata =3D IEEE80211_DEV_TO_SUB_IF(dev);=0A=
+ 	struct ieee80211_local *local =3D sdata->local;=0A=
++	struct ieee80211_sub_if_data *ap_sdata;=0A=
++	struct ieee80211_key *key =3D NULL;=0A=
+ 	struct sta_info *sta;=0A=
+ 	struct sk_buff *next;=0A=
+ 	int len =3D skb->len;=0A=
+@@ -4281,5 +4287,18 @@ void __ieee80211_subif_start_xmit(struct=0A=
+ 	if (IS_ERR(sta))=0A=
+ 		sta =3D NULL;=0A=
+ =0A=
++	if (sdata->vif.type =3D=3D NL80211_IFTYPE_AP_VLAN) {=0A=
++		ap_sdata =3D container_of(sdata->bss,=0A=
++				 struct ieee80211_sub_if_data, u.ap);=0A=
++		if (ap_sdata->vif.offload_flags & IEEE80211_OFFLOAD_ENCAP_ENABLED &&=0A=
++		   !is_multicast_ether_addr(skb->data)) {=0A=
++			if (sta)=0A=
++				key =3D rcu_dereference(sta->ptk[sta->ptk_idx]);=0A=
++			ieee80211_8023_xmit(sdata, dev, sta, key, skb);=0A=
++			rcu_read_unlock();=0A=
++			return;=0A=
++		}=0A=
++	}=0A=
++=0A=
+ 	skb_set_queue_mapping(skb, ieee80211_select_queue(sdata, sta, skb));=0A=
+ 	ieee80211_aggr_check(sdata, sta, skb);=0A=
 
