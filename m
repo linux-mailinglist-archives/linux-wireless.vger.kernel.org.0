@@ -1,165 +1,116 @@
-Return-Path: <linux-wireless+bounces-23112-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23113-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F975ABAAC4
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 May 2025 16:54:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0990ABAAE4
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 May 2025 17:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD84E161A2B
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 May 2025 14:54:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9267189110C
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 May 2025 15:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226041FDA9E;
-	Sat, 17 May 2025 14:54:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="o/S121zr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC22120127B;
+	Sat, 17 May 2025 15:46:50 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53061E3DF4
-	for <linux-wireless@vger.kernel.org>; Sat, 17 May 2025 14:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142103EA63;
+	Sat, 17 May 2025 15:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747493640; cv=none; b=SMQ/4icm46/9OzzA1rBaKFBM779uCk8ddlBC857Qmvb4XKNUWwyRF7MhcWR70TAmR1xyX8x308V7vugWKiUBPo/b5CVXhkwICzTUkOW0xbK0qMuvd+Oow38y2lnWiFXsWXELnGUPbT6PmES9K+VbQOiM5X0VPtnxzh0HvQJou+Y=
+	t=1747496810; cv=none; b=MO00wExzs+Arr4Vl7mG0LBdTmsPPF7L6hxfFlA/hJNYH+VRZ0egX7qVm0DqhtJDfbOPJlgYxKIByEtCDplV092v12t9myBzZ5mplfd26yYok9TRlhZbhEgK5bhAswqvvT0XO5iALFp6IPuCSzFr68QtPqtLa4HMRLI0a2dYNauo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747493640; c=relaxed/simple;
-	bh=cXMPqTXmSg3A8q4/lexSQeKGv7Eq/skAQeXYIDOSZKY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pm5sgNVa6OZSyvkv4Sgmbmh0gxisH9ED/2vAr3xvRG/qaXjtWOtGX2qNIHQVer/H6ezvdnFyPEkUzEz5a7xrhGevdI4a9sYnVaFeu7JYaun1u7v3xcNrD9bUooqc2iDuvI5XdIU3uBBYvG5Cuxi9CfqdtmCbRaffUukE7JH2obk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=o/S121zr; arc=none smtp.client-ip=212.77.101.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 35466 invoked from network); 17 May 2025 16:53:54 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1747493634; bh=h56n9EjT24/ca+cjGGEx6B8lTas1EKvnunog3UGR0TE=;
-          h=From:To:Cc:Subject;
-          b=o/S121zrHyMZmR5wlV6RIf/tnaIlsf2C8/kf0ajc8VaiUkd5M+CcDGLqabNoINkzt
-           GLU5AaUnvqDoI8FtuAoRRHmMbVPjICsUXALnxwANtmNblZcCh8t0LrCcYYSNGofH3j
-           RmMYFZXIt3MCMcnBIGww9Et4RXFqRNGs2jg+sRYHe/3NLGewKBPyNolzHMmgtwwwvX
-           Rj3q9lKv+hU1NpR7uLG8DELcXFI7TBJWTaGMqYwp9PgndnYtgRYtZN1oX9vW/6JIxS
-           zBwernAIAk3BxjBYxsC4Mgl0WPnD7XM/IPvVztwE+E39NO7plEZExQjlWlSTlPzMXm
-           F3R4detOERQng==
-Received: from 89-64-9-114.dynamic.play.pl (HELO localhost) (stf_xl@wp.pl@[89.64.9.114])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <pchelkin@ispras.ru>; 17 May 2025 16:53:54 +0200
-Date: Sat, 17 May 2025 16:53:53 +0200
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Alexei Safin <a.safin@rosa.ru>, lvc-project@linuxtesting.org,
-	netdev@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH] wifi: iwlegacy: Check rate_idx range after addition
-Message-ID: <20250517145353.GA138457@wp.pl>
-References: <20250424185244.3562-1-a.safin@rosa.ru>
- <20250427063900.GA48509@wp.pl>
- <d57qkj2tj4bgfobgzbhcb4bceh327o35mgamy2yyfuvolg4ymo@7p7hbpyg5bxi>
- <20250517074040.GA96365@wp.pl>
- <hrpy3omokg5zvrqnchx4jvp26bvfgdrashkmrjonsyz5b64aaz@6d5kn7z7x73q>
+	s=arc-20240116; t=1747496810; c=relaxed/simple;
+	bh=B17RbtciEnVVEu7Dlw7ST4KzADZ1kSpxHtr6ZOzjFME=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SPKqCMiuvuDD1ZQtgBa/ZDZ9y+orH+toOvTe8YtiD2ItWZQJA0GQbWhk9yNzAt9959gBGeqbjx2XqixRPsSQZeLFN5vGcglKI4ikVOyAmouiWR6FMCih7K6ij4CmK2HRg+swKqoIBv1X83bzwQbtoFE9yQa2qAplT+IqemL54vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.201.46.250])
+	by APP-05 (Coremail) with SMTP id zQCowAB3tihZryhogGKtAA--.34380S2;
+	Sat, 17 May 2025 23:46:34 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: ajay.kathat@microchip.com,
+	claudiu.beznea@tuxon.dev,
+	kvalo@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: wilc1000: Handle wilc_sdio_cmd52() failure in wilc_sdio_read_init()
+Date: Sat, 17 May 2025 23:46:11 +0800
+Message-ID: <20250517154611.910-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <hrpy3omokg5zvrqnchx4jvp26bvfgdrashkmrjonsyz5b64aaz@6d5kn7z7x73q>
-X-WP-MailID: 97996bdff59639d864b2fefc20139b51
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [8UNh]                               
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAB3tihZryhogGKtAA--.34380S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tr4fWFWxKF4fXw4UZFW5ZFb_yoW8XF1kpF
+	WxurWYqw10kFWru3W7tFs5Aa4rJa4UtrW7WFWxuw1fur4kZr1Skr4fXa45Xr1qg3WUC3Wx
+	Xw40vr4jgF1IvFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
+	6r4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+	7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AK
+	xVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
+	0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1l
+	IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
+	AFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
+	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUBVb
+	kUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYFA2gopvIMOQAAst
 
-Hi Fedor, thanks for review,
+The wilc_sdio_read_init() calls wilc_sdio_cmd52() but does not check the
+return value. This could lead to execution with potentially invalid data
+if wilc_sdio_cmd52() fails. A proper implementation can be found in
+wilc_sdio_read_reg().
 
-On Sat, May 17, 2025 at 03:21:03PM +0300, Fedor Pchelkin wrote:
-> On Sat, 17. May 09:40, Stanislaw Gruszka wrote:
-> > Move rate_idx range check after we add IL_FIRST_OFDM_RATE for it
-> > for 5GHz band.
-> > 
-> > Additionally use ">= RATE_COUNT" check instead of "> RATE_COUNT_LEGACY"
-> > to avoid possible reviewers and static code analyzers confusion about
-> > size of il_rate array.
-> > 
-> > Reported-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> > Reported-by: Alexei Safin <a.safin@rosa.ru>
-> > Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
-> > ---
-> 
-> Thank you for the patch, Stanislaw!
-> 
-> Please see some comments below.
-> 
-> >  drivers/net/wireless/intel/iwlegacy/4965-mac.c | 15 +++++++++------
-> >  1 file changed, 9 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> > index dc8c408902e6..2294ea43b4c7 100644
-> > --- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> > +++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> > @@ -1567,16 +1567,19 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
-> >  	/**
-> >  	 * If the current TX rate stored in mac80211 has the MCS bit set, it's
-> >  	 * not really a TX rate.  Thus, we use the lowest supported rate for
-> > -	 * this band.  Also use the lowest supported rate if the stored rate
-> > -	 * idx is invalid.
-> > +	 * this band.
-> >  	 */
-> >  	rate_idx = info->control.rates[0].idx;
-> > -	if ((info->control.rates[0].flags & IEEE80211_TX_RC_MCS) || rate_idx < 0
-> > -	    || rate_idx > RATE_COUNT_LEGACY)
-> > +	if (info->control.rates[0].flags & IEEE80211_TX_RC_MCS)
-> >  		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
-> > -	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
-> > -	if (info->band == NL80211_BAND_5GHZ)
-> > +	else if (info->band == NL80211_BAND_5GHZ)
-> 
-> 5GHZ shouldn't be in 'else if' clause, I think. Is it mutually exclusive
-> with IEEE80211_TX_RC_MCS ?
+Add error handling for wilc_sdio_cmd52(). If wilc_sdio_cmd52() fails,
+log an error message via dev_err().
 
-Right, this is wrong. I thought we can use index returned by
-rate_lowest_index() but we still should add IL_FIRST_OFDM_RATE.
-At least this is how is done now.
+Fixes: eda308be643f ("staging: wilc1000: refactor interrupt handling for sdio")
+Cc: stable@vger.kernel.org # v5.7
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/net/wireless/microchip/wilc1000/sdio.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-> 
-> > +		/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
-> >  		rate_idx += IL_FIRST_OFDM_RATE;
-> > +
-> > +	/* Use the lowest supported rate if the stored rate idx is invalid. */
-> > +	if (rate_idx < 0 || rate_idx >= RATE_COUNT)
-> 
-> There is a check inside il4965_rs_get_rate():
-> 
-> 	/* Check for invalid rates */
-> 	if (rate_idx < 0 || rate_idx >= RATE_COUNT_LEGACY ||
-> 	    (sband->band == NL80211_BAND_5GHZ &&
-> 	     rate_idx < IL_FIRST_OFDM_RATE))
-> 		rate_idx = rate_lowest_index(sband, sta);
-> 
-> so RATE_COUNT_LEGACY (60M) is considered invalid there but is accepted
-> here in il4965_tx_cmd_build_rate(). It looks strange, at least for the
-> fresh reader as me..
-
-Indeed this is strange. I'm not sure why those checks differ.
-
-Anyway for the rate_idx in il4965_tx_cmd_build_rate()
-for 5GHs I'll just add additional check like below:
-
-	if (info->band == NL80211_BAND_5GHZ) {
-		rate_idx += IL_FIRST_OFDM_RATE;
-		if (rate_idx > IL_LAST_OFDM_RATE);
-			rate_idx = IL_LAST_OFDM_RATE;
-	}
-
-This patch should be dropped.
-
-Regards
-Stanislaw
-
+diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
+index e7a2bc9f9902..d0e8b812b622 100644
+--- a/drivers/net/wireless/microchip/wilc1000/sdio.c
++++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
+@@ -809,6 +809,7 @@ static int wilc_sdio_read_int(struct wilc *wilc, u32 *int_status)
+ 	u32 tmp;
+ 	u8 irq_flags;
+ 	struct sdio_cmd52 cmd;
++	int ret;
+ 
+ 	wilc_sdio_read_size(wilc, &tmp);
+ 
+@@ -827,7 +828,12 @@ static int wilc_sdio_read_int(struct wilc *wilc, u32 *int_status)
+ 	cmd.raw = 0;
+ 	cmd.read_write = 0;
+ 	cmd.data = 0;
+-	wilc_sdio_cmd52(wilc, &cmd);
++	ret = wilc_sdio_cmd52(wilc, &cmd);
++	if (ret) {
++		dev_err(&func->devm, "Fail cmd 52, get IRQ register...\n");
++		return ret;
++	}
++
+ 	irq_flags = cmd.data;
+ 
+ 	if (sdio_priv->irq_gpio)
+-- 
+2.42.0.windows.2
 
 
