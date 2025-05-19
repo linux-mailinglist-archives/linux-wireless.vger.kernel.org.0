@@ -1,90 +1,89 @@
-Return-Path: <linux-wireless+bounces-23143-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23142-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B69ABBA0C
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 11:49:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86CA5ABB9E8
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 11:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4A46189E74B
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 09:46:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDC497AC439
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 09:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864EC270557;
-	Mon, 19 May 2025 09:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06AAE2701C9;
+	Mon, 19 May 2025 09:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BXz6b7oC"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ExbS2gRR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8902270556
-	for <linux-wireless@vger.kernel.org>; Mon, 19 May 2025 09:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B99D2701B6
+	for <linux-wireless@vger.kernel.org>; Mon, 19 May 2025 09:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747647778; cv=none; b=hU0T+qLohZosgsf3XIu2MnQvhrL+RouQBZipNqmcUHV4Qq6h9/jDMk7RqIkQ9H2aKGnD0XSfpcTSQV+nKt6TKRfQY/J3EyQgbG/QA57suCp9v0O+1t3QnCylVaqygXuyyIGHqa5omN7SAziHq6EN85lYrKDOQInmIQKu54t63Nw=
+	t=1747647770; cv=none; b=YU305382L4msavkO3v4GBJT1pBmNz5kOsNzvZ1Q3tx6SDkiULqRelSINKRHyGrJTuGm/lSqvAOTByOmwAqA28aqwby5BqKGf3+wEQkh3eFQCzkaasEp59lIc56AS7lnetYDxMZEOzmVqtJyFiZzZTzuEn8qYRN2pAEBRhwi6Q58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747647778; c=relaxed/simple;
-	bh=x0K9OeLFsl2BOA7hHSAfMIHOVP+bgVA6z5/oLYSV7cM=;
+	s=arc-20240116; t=1747647770; c=relaxed/simple;
+	bh=LW6uUZFGqD1UyYUFU68Xi6WQWlLczbA/2FzJMIC0YvA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cktu4yF8Ff4vkgRrnqhucR1AX41FzKwuiWhWFphVdBkKbh/7imetPOwVm3v3BXwQklzjTFLjC1Ex90LnpYpW7jHil5Ezrh1P3N7D0l76QqxVRqUieTNyaXy33s8uyEuHcog/Jf5r4nNRpFGgqveLnSXD+y+9GRFYFIFgSEucBnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BXz6b7oC; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:To:Cc; b=cWe+P5HIteXVd4bPwuNY3U+Zvfb2Dm2Y+TU34J6zRp07BwuD4yw+E90EK4g/n0851osBE9CSbIE8AlHw8c4haZ+k6YGhcbe9TAKxwyte4FeuL7T2qiPPT2Q1CDaQkJcSJz1tyLGprYhIlA+sw5OOpWJRESvwqIbJ1E8Q1PXv/mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ExbS2gRR; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54J7Ghsi023299
-	for <linux-wireless@vger.kernel.org>; Mon, 19 May 2025 09:42:56 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54J98952020941
+	for <linux-wireless@vger.kernel.org>; Mon, 19 May 2025 09:42:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	XiJWQOsSjPJDty+H6k9sLvaFKHbc2ZYPjWloagFTUus=; b=BXz6b7oCx8lOjDWn
-	a1ZyRCCwePp3jJU2m0BeELMhlfxJ9BonPX6mOYoGQGUR83ZFc1OwQ6kA/nDCTTpJ
-	3bOxqowzeTICY29iLNlVeSOL/FTFtfonwsB5U/dM9MOClQf1UFawsFg5aagXy3/e
-	vVQWoWjvBolfSzwSzgoCbIxl3aJ0TTcO8VMjttKdgv7h1jsGz2bBFGYQyRbwGYyc
-	n750LmfZpsm5feKrRNfVEZ6Z9lfti+HeqO2eBijaMiwHYcMzsym0oQJo5KOlFqyJ
-	YuGoMrlGGXzk0VBgDb3ZKjpZ23ikNIhWqZbpKoPuwP2jvFho9e7+uDq5Lbj9iP/f
-	jnh+KQ==
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46r041rdr8-1
+	qaEhlMZNRK2NLwdfwilZTHaAPGsfv+pU1e/jm5Z+ob0=; b=ExbS2gRR+sO6HL9d
+	j9rfgQ5wlpGb0F82HJE006JlxlF+RTyNz7lYfsH3p4v+klgFFW7Qbi7UHWbX/+17
+	C2DmOvkRrwK6LSo0hsTAy+fHZasoC7n6XF3JagCfnsEhkFX9IRyt23d73+N/phGd
+	dfnpE7QAWwYSKt9rw/cXWQv6A5QXcLDah7GzhSVYHK8R4IAYonjD/8CgRsZLcXBt
+	VOCoscgIOrvXEGQdhU5ZshNzITpSgE4JHVWlkKoSOfUp0xgNL1X09QMjf49Fm3vf
+	mCVSx5lS1+7yf3g4ZDNh1OJto0E52EyFisDBQxPN2gqCkKez/xlgW0Qd4BTotZ4w
+	UcdpRA==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46pjnykw37-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 19 May 2025 09:42:55 +0000 (GMT)
-Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-2c23beea898so2459665fac.0
-        for <linux-wireless@vger.kernel.org>; Mon, 19 May 2025 02:42:55 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Mon, 19 May 2025 09:42:48 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-73e0094706bso5792528b3a.3
+        for <linux-wireless@vger.kernel.org>; Mon, 19 May 2025 02:42:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747647772; x=1748252572;
+        d=1e100.net; s=20230601; t=1747647767; x=1748252567;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XiJWQOsSjPJDty+H6k9sLvaFKHbc2ZYPjWloagFTUus=;
-        b=ncR20YA++/ZXwuSzbodvywjXqsBr9vARI5qr/yT0JjN8HuAiPYGEZFmncGeMh81x2v
-         GIxKmayYp83xki1Zekht6aiEWL6miTqdw2DeHI4agEU//aOcZ5YnhJ2PgZTh578nlX2w
-         worhFGN2nfyi1DPkftCQBSDhfXKBCb6Z9K6yUQblbBwu7qSFWGsrxy99mF8pIl18enqt
-         INqOlpH7HMTDiaf5JYs6BYZjiWP39YgR53MYQ3AOJ2DzZ+k1cm1riKomI09+sW/6gOuf
-         e/rhQ3gUbbq8YVTYpPg2dG0Bbpe96fLfzQhRKPO+0x/tYDkJGW22mmFTF+xnaAtP4upn
-         N0Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCXlzfj2n42wSvLP7SMHJwQimfurn60pXoc7u+Fw4tTUJBj49Fiu5K86SgjFhYUkJZZuf7n22lpCN1eK62j9Yw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjzciUOP7aPpFyEhjdhcgesDA/7H5FG4gQExFEeyXkEYQhbuee
-	NHvUFnGfefW7d9K64ty2qUiE2vI++M54ZwSLgnmybV3gDCI5H6+ZbgZzIH0LDVIksLGriQereTy
-	8lNK0Yz/GwKGmsddTqvYDxEbs/h/LC7Z+OVv/ttOpTGiSVRcfGpoznqzVfFbJmdNTJRhlfzxKm8
-	OP4A==
-X-Gm-Gg: ASbGnctgY6HCkDLnWrQsDWao6sbQ3VfahFx5JcNNDt5dBBO6ek12C0mgTivBBPkYNKM
-	wUdoru7t0rgMh95ILjBmIrILPpwe9qhlW/hX0L/5KWAqKR3/ICq6ExBgEmiYr7bIRuSASpvUs0O
-	fGQEz8e8afedijRv9eTfPEhZbXTm2x1ygVTWyyMjViJpeyz/x84JNFPp0oJLKVXZgs/u6ZNGJgd
-	OvCzB+tWWqDxJwRFxnN9U/WIo+5d8m2w3ac4VRpJ0cF4NVWvqkaH6VeZ2U/34QRTPs0oXNrkRY1
-	BJeJya5F/HoRTW/TdKj2P8ohhbLBjityWcM3lsHXk24ZSNI=
-X-Received: by 2002:a05:6870:6f13:b0:2c2:4090:9e8 with SMTP id 586e51a60fabf-2e3c1c98dcfmr6811439fac.22.1747647772328;
-        Mon, 19 May 2025 02:42:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGBnYDYjqkRiND8LMiPz62w5VQU2kQ//u6sfClrPQdPj8SXQ+K7WCVUKR9gzx/G2jYXnJcn9Q==
-X-Received: by 2002:a05:6a21:9006:b0:1f5:889c:3cbd with SMTP id adf61e73a8af0-216219ece5dmr18241891637.35.1747647760987;
-        Mon, 19 May 2025 02:42:40 -0700 (PDT)
+        bh=qaEhlMZNRK2NLwdfwilZTHaAPGsfv+pU1e/jm5Z+ob0=;
+        b=cX9RmJ4x18JLKh4RPLDFDjMltTjqHj7DbN5YcHAWXY+O7FE2j8mNOiTLEfCqKGAWR7
+         FsKrA2iwwaVj84A6a5nNBHDsnsV2V9P0yyStEQQK/oZnJ0+e0jeHP0DtqrocvrfdHyQe
+         PLauodj+QWZoY9w9dTM93WKO973LOiYrM9FbKdmoc8mFlyO/mnWxFFacpis1nd71X+5c
+         weLMK8dtn6NKtYd14AJ2kX2uGZCN/lOQG94mckrn36rOXB9VM1mEK8PzURYENIOvSRB8
+         FalJ7M8zsSPXVVTi2FqPhQba4Pq3lgCki6M8jygtWdO14PFBucClJfnvd1hmkw86qwM4
+         FSnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUhWgp3wkBUjwB0owINdKPqS94r6UAn0uhUNk9sQTEOm+Rbo1uAv3VU19PVYeKZKvy8XAKUaFS3gJBS2bCuqw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzSmR1j3kMIMhWOEILMzpMUrcOZxkPoH9dHG0ydK9Ft6At71jH
+	mYuyaQ+0WHv3yWf3nw80Fsw2lS+pQ/Gu1fQc88NXt+PiucKyLrb2gqw/X9SdxTyebyMf3+c+Gco
+	ebDbq9+KqCt9RQC8okGcZHz6ioQ5TCBxT/2vvjGSGZhZ42+iyxFS8vxs0KBJOtTew8Z7g9w==
+X-Gm-Gg: ASbGncuMGK045hdocTDU8zk5EFPA4oY1YU8cKiMxzOqtCb3jlm8NxR4jHqhyB6IlV6u
+	Vee+HwU5wLlnaua0oSPKFcJzWztsTpoXi2zoBYJtv/K9tBs1gvSTnfkveDfI0uyPyiEI/kZAr/j
+	w7mL87zr59n66P3YImjA8P8WN3OqkBHg5zatz/FNg/4LFNNgyWHMrQOkdRVSTpZw09P6UGN5ruz
+	cc7irlH7wBdpFP9C32ZeT9sTHk8bAvYTsj2AftFxc5KdR720TRDRHENKGISCFN0n6JguPn11Npv
+	TkDjneccPYd2QJhJn135oWkI/0SU9YtORoHTNItdkSU/9so=
+X-Received: by 2002:a05:6a20:2d21:b0:1f5:8eec:e516 with SMTP id adf61e73a8af0-216219c83c7mr20960846637.32.1747647767000;
+        Mon, 19 May 2025 02:42:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPivW2uuHer/futXB6CATvxy78IsEmfKwkUhEBc2jqHppm0UtJRVQovLwVfQwoCRtaYVtxaA==
+X-Received: by 2002:a05:6a20:2d21:b0:1f5:8eec:e516 with SMTP id adf61e73a8af0-216219c83c7mr20960821637.32.1747647766601;
+        Mon, 19 May 2025 02:42:46 -0700 (PDT)
 Received: from hu-krichai-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a97398f8sm5809092b3a.78.2025.05.19.02.42.35
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a97398f8sm5809092b3a.78.2025.05.19.02.42.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 02:42:40 -0700 (PDT)
+        Mon, 19 May 2025 02:42:46 -0700 (PDT)
 From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Date: Mon, 19 May 2025 15:12:15 +0530
-Subject: [PATCH v3 02/11] PCI/bwctrl: Add support to scale bandwidth before
- & after link re-training
+Date: Mon, 19 May 2025 15:12:16 +0530
+Subject: [PATCH v3 03/11] PCI/ASPM: Return enabled ASPM states as part of
+ pcie_aspm_enabled()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -93,7 +92,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250519-mhi_bw_up-v3-2-3acd4a17bbb5@oss.qualcomm.com>
+Message-Id: <20250519-mhi_bw_up-v3-3-3acd4a17bbb5@oss.qualcomm.com>
 References: <20250519-mhi_bw_up-v3-0-3acd4a17bbb5@oss.qualcomm.com>
 In-Reply-To: <20250519-mhi_bw_up-v3-0-3acd4a17bbb5@oss.qualcomm.com>
 To: Bjorn Helgaas <bhelgaas@google.com>,
@@ -114,125 +113,86 @@ Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
         Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
         Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1747647743; l=4129;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1747647743; l=2254;
  i=krishna.chundru@oss.qualcomm.com; s=20230907; h=from:subject:message-id;
- bh=x0K9OeLFsl2BOA7hHSAfMIHOVP+bgVA6z5/oLYSV7cM=;
- b=hlXh3zqujL1wiLOQN/Kx308qPCf3/2bpuedRxHJErXBNzLyLD75gSBrgDdI32RFQT1req0ZTZ
- DFCDxSNTsC/B0J+RdROE7tmUukDSd4Zr+1UT97h29tM6Teigs25q2Kt
+ bh=LW6uUZFGqD1UyYUFU68Xi6WQWlLczbA/2FzJMIC0YvA=;
+ b=CeH1rqozNMSAmO9N8S8eg5Dl36biG9HcHhnJfMpzs/VU2cnmb7kh/fdVzeA1DzlaweGbH0UQg
+ KwlHYmQmjGXABbM8yXmUPJRmsh+iFpFd/GgRSJ5Np41KR2CV1JFVSLP
 X-Developer-Key: i=krishna.chundru@oss.qualcomm.com; a=ed25519;
  pk=10CL2pdAKFyzyOHbfSWHCD0X0my7CXxj8gJScmn1FAg=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE5MDA5MSBTYWx0ZWRfX6ajxexNwMRin
- Fnrx1YNCA/hOArnbpS34UMYdgmh0s56O2iMk+cxEEnLLaoGqvzvOGJ2Wsai/hgpavhWtDVaMB0z
- 6e4ufsVnDV2+YRkyVyNmnODJj+ST9umR/CpNYzla4PFYHW+cWScpEGJKjnmiSHdXbAnPykaeFRO
- H/S+pBLdT+yizLzBTxEmZiY4Pj/18dkG4cLqn67N9Iwsyii87SAL3c/Nsgg+R4wDgWUOefOha9J
- gJGXigvTWdsfiEdhCQlwIsaZMJqla8BfT4y+ki+DGeJswjts3UzfoMdwzyIVFjPdx415rfzqhPj
- 7F/5cKPv1urt60wuAFO+Fiesn1bDgdHHD531ZTxE38sNd2gyEAplMWBja+OYWNKSlqPZM+MXfIg
- c/Vb/PFCqy7oqHzgws6dHcqgi872WOhL+AVi3sqorheBry3TUQAxUovNV/5lPiCNC5Q/3nDw
-X-Proofpoint-ORIG-GUID: Qcx8WOOXKRhcM3Q4juEsRS90vPceRpOn
-X-Proofpoint-GUID: Qcx8WOOXKRhcM3Q4juEsRS90vPceRpOn
-X-Authority-Analysis: v=2.4 cv=HIjDFptv c=1 sm=1 tr=0 ts=682afd1f cx=c_pps
- a=Z3eh007fzM5o9awBa1HkYQ==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=EUspDBNiAAAA:8 a=AH_oHoLqry_2ofrPVhgA:9
- a=QEXdDO2ut3YA:10 a=eBU8X_Hb5SQ8N-bgNfv4:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE5MDA5MSBTYWx0ZWRfX9j9fFRq+wnLX
+ aHRo0UJLTUgF7XRYbyb5a1GYjqDdjl8ZS+kSqF39J+hstMoPGdc3lQLH58F5p9CUMsTS5Gkgwlb
+ hSv6YP2as4CRjBLUU7lxbI7U5gtJkygadgoS3G3Dg8qAbKLElMZaj5QE31Wz5Z6HRGCv3tDcKiH
+ LtRtfFbjHLiNVM5CQhUr4d/OByYx1q/Rc3BSok5QXO4SvaZ6noeIEBTEWSBmIZjm9+vpjBchPCo
+ Zy9voOqkvQz9VL5f8Hwm1UoIQ0Pp5ihnOj3lzLg66dWiZNDA7OKwqJts9sWfdyd1JNmu5EHyaHv
+ YiIWn3HgYfNXmzB6Pl44vdGSqnPseGcgLJuabAfkj7eFfvuHv0wrThh0bc0VQdFMqJLL/eV/zAp
+ k8wu9PzKmR7MzzP/zfehqX/RYH9pb+aKpBu9PgxmbKB1NimPP+dtaJ12e84V+9MRHJ407xcR
+X-Authority-Analysis: v=2.4 cv=Z9XsHGRA c=1 sm=1 tr=0 ts=682afd18 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=EUspDBNiAAAA:8 a=wuQQqu7ThqwHlQwkt1oA:9
+ a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-GUID: __q48Vt1SrDbATYWiiCiH4hF4vqYZpmT
+X-Proofpoint-ORIG-GUID: __q48Vt1SrDbATYWiiCiH4hF4vqYZpmT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-19_04,2025-05-16_03,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0 clxscore=1015
- bulkscore=0 suspectscore=0 spamscore=0 priorityscore=1501 malwarescore=0
- impostorscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505070000 definitions=main-2505190091
+ phishscore=0 lowpriorityscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
+ adultscore=0 impostorscore=0 bulkscore=0 suspectscore=0 clxscore=1015
+ malwarescore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505190091
 
-If the driver wants to move to higher data rate/speed than the current data
-rate then the controller driver may need to change certain votes so that
-link may come up at requested data rate/speed like QCOM PCIe controllers
-need to change their RPMh (Resource Power Manager-hardened) state. Once
-link retraining is done controller drivers needs to adjust their votes
-based on the final data rate.
+PCIe ASPM states can be also controlled by userspace using exposed sysfs
+entries, if drivers wants to disable and enable ASPM at runtime they
+need to know enabled states for correctly enabling them back.
 
-Some controllers also may need to update their bandwidth voting like
-ICC bw votings etc.
-
-So, add pre_scale_bus_bw() & post_scale_bus_bw() op to call before & after
-the link re-train. There is no explicit locking mechanisms as these are
-called by a single client endpoint driver.
-
-In case of PCIe switch, if there is a request to change target speed for a
-downstream port then no need to call these function ops as these are
-outside the scope of the controller drivers.
+So return the enabled aspm states as part of pcie_aspm_enabled().
 
 Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 ---
- drivers/pci/pcie/bwctrl.c | 15 +++++++++++++++
- include/linux/pci.h       | 14 ++++++++++++++
- 2 files changed, 29 insertions(+)
+ drivers/pci/pcie/aspm.c | 4 +++-
+ include/linux/pci.h     | 4 ++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/pcie/bwctrl.c b/drivers/pci/pcie/bwctrl.c
-index d8d2aa85a22928b99c5bba1d2bcc5647c0edeeb6..3525bc0cd10f1dd7794abbe84ccb10e2c53a10af 100644
---- a/drivers/pci/pcie/bwctrl.c
-+++ b/drivers/pci/pcie/bwctrl.c
-@@ -161,6 +161,8 @@ static int pcie_bwctrl_change_speed(struct pci_dev *port, u16 target_speed, bool
- int pcie_set_target_speed(struct pci_dev *port, enum pci_bus_speed speed_req,
- 			  bool use_lt)
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 29fcb0689a918f9cb123691e1680de5a1af2c115..94324fc0d3e650cd3ca2c0bb8c1895ca7e647b9d 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1555,8 +1555,10 @@ module_param_call(policy, pcie_aspm_set_policy, pcie_aspm_get_policy,
+  * is deallocated only when the last child of the bridge (i.e., @pdev or a
+  * sibling) is removed, and the caller should be holding a reference to
+  * @pdev, so this should be safe.
++ *
++ * Return: Enabled ASPM states
+  */
+-bool pcie_aspm_enabled(struct pci_dev *pdev)
++int pcie_aspm_enabled(struct pci_dev *pdev)
  {
-+	struct pci_host_bridge *host = pci_find_host_bridge(port->bus);
-+	bool is_rootbus = pci_is_root_bus(port->bus);
- 	struct pci_bus *bus = port->subordinate;
- 	u16 target_speed;
- 	int ret;
-@@ -173,6 +175,16 @@ int pcie_set_target_speed(struct pci_dev *port, enum pci_bus_speed speed_req,
- 
- 	target_speed = pcie_bwctrl_select_speed(port, speed_req);
- 
-+	/*
-+	 * The host bridge driver may need to be scaled for targeted speed
-+	 * otherwise link might not come up at requested speed.
-+	 */
-+	if (is_rootbus && host->pre_scale_bus_bw) {
-+		ret = host->pre_scale_bus_bw(host, port, target_speed);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	scoped_guard(rwsem_read, &pcie_bwctrl_setspeed_rwsem) {
- 		struct pcie_bwctrl_data *data = port->link_bwctrl;
- 
-@@ -197,6 +209,9 @@ int pcie_set_target_speed(struct pci_dev *port, enum pci_bus_speed speed_req,
- 	    !list_empty(&bus->devices))
- 		ret = -EAGAIN;
- 
-+	if (bus && is_rootbus && host->post_scale_bus_bw)
-+		host->post_scale_bus_bw(host, port, pci_bus_speed2lnkctl2(bus->cur_bus_speed));
-+
- 	return ret;
- }
+ 	struct pcie_link_state *link = pcie_aspm_get_link(pdev);
  
 diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 51e2bd6405cda5acc33d268bbe1d491b145e083f..7eb0856ba0ed20bd1336683b68add124c7483902 100644
+index 7eb0856ba0ed20bd1336683b68add124c7483902..ce9d0812a61c2337ba533ef246393a0101e617ee 100644
 --- a/include/linux/pci.h
 +++ b/include/linux/pci.h
-@@ -601,6 +601,20 @@ struct pci_host_bridge {
- 	void (*release_fn)(struct pci_host_bridge *);
- 	int (*enable_device)(struct pci_host_bridge *bridge, struct pci_dev *dev);
- 	void (*disable_device)(struct pci_host_bridge *bridge, struct pci_dev *dev);
-+	/*
-+	 * Callback to the host bridge drivers to update ICC bw votes, clock frequencies etc
-+	 * for the link re-train to come up in targeted speed. These are intended to be
-+	 * called by devices directly attached to the root port. These are called by a single
-+	 * client endpoint driver, so there is no need for explicit locking mechanisms.
-+	 */
-+	int (*pre_scale_bus_bw)(struct pci_host_bridge *bridge, struct pci_dev *dev, int speed);
-+	/*
-+	 * Callback to the host bridge drivers to adjust ICC bw votes, clock frequencies etc
-+	 * to the updated speed after link re-train. These are intended to be called by
-+	 * devices directly attached to the root port. These are called by a single client
-+	 * endpoint driver, so there is no need for explicit locking mechanisms.
-+	 */
-+	void (*post_scale_bus_bw)(struct pci_host_bridge *bridge, struct pci_dev *dev, int speed);
- 	void		*release_data;
- 	unsigned int	ignore_reset_delay:1;	/* For entire hierarchy */
- 	unsigned int	no_ext_tags:1;		/* No Extended Tags */
+@@ -1849,7 +1849,7 @@ int pci_enable_link_state(struct pci_dev *pdev, int state);
+ int pci_enable_link_state_locked(struct pci_dev *pdev, int state);
+ void pcie_no_aspm(void);
+ bool pcie_aspm_support_enabled(void);
+-bool pcie_aspm_enabled(struct pci_dev *pdev);
++int pcie_aspm_enabled(struct pci_dev *pdev);
+ #else
+ static inline int pci_disable_link_state(struct pci_dev *pdev, int state)
+ { return 0; }
+@@ -1861,7 +1861,7 @@ static inline int pci_enable_link_state_locked(struct pci_dev *pdev, int state)
+ { return 0; }
+ static inline void pcie_no_aspm(void) { }
+ static inline bool pcie_aspm_support_enabled(void) { return false; }
+-static inline bool pcie_aspm_enabled(struct pci_dev *pdev) { return false; }
++static inline int pcie_aspm_enabled(struct pci_dev *pdev) { return false; }
+ #endif
+ 
+ #ifdef CONFIG_PCIEAER
 
 -- 
 2.34.1
