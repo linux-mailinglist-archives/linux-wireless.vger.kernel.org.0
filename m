@@ -1,399 +1,277 @@
-Return-Path: <linux-wireless+bounces-23131-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23133-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D944ABB142
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 May 2025 20:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C74ABB29D
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 02:20:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28A573B5694
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 May 2025 18:23:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 337553B47E0
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 00:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62FF521D5B0;
-	Sun, 18 May 2025 18:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B497BAEC;
+	Mon, 19 May 2025 00:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OeNxmXGH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YU8vnqIU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851B11FAC23;
-	Sun, 18 May 2025 18:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C20A55;
+	Mon, 19 May 2025 00:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747592608; cv=none; b=LDrk6ebc4UeQ1z2vtFDHlLgLbpE5i4Jugrb9tMOjkmXL6RBtAsymeFRod82onyTa+7tN4afjZkTiC0TKx284tUapLKSxsNCh7xElnGVF9/PJEbu/HZZLuFkrC0Ikc1FELyNKsQ49AU4oyXLRA/ZgCJJbf7oBtjG44vkralqOEbM=
+	t=1747613997; cv=none; b=o5xTr/Kxu+ZgunAugV2XT39n5wWn150Up8hGmRNPnf3u3yuYD7Vd+RfWnt4rSpQjbiGJHaRDA+YGFxOkdLgAcinQQo038Q76+LQiQE3h+WEBflZ5Le7QfGf8+zpPbcRr7WQvzNSQ/tC/Lg4XElSchtJec8uvhU8ghcNxRInfBHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747592608; c=relaxed/simple;
-	bh=MsNdBs/3Q+jNyguJm1dlmEu6PKBSuhmq477YGcPot58=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=ZbxA0RIScrF3oVAe2jXzyfXO6KXkPHyPDBfwcxAiA6WMAKZS72goQvBDQb3EojBMal6SpztOd5fDnhSCFUr36FYFyyhYxYgSEUpkJhskvldsOLaYDUy191FOfCI/ylTJldJueVX1A29RkM4ZigbF+Acy5XoFPeTLNhayH7ugojk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OeNxmXGH; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54IIA2Re029077;
-	Sun, 18 May 2025 18:23:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	I/4l9n3MNcIl9r+2nFmOXILpdKv0avHCmu00r9eveT8=; b=OeNxmXGHCMGLx4e2
-	ZMGj8QXAuPMLgL83O1mMaNmF4f1TigqHnZCULN0YJY5oYPWbiaioFGEyZxB0vACS
-	znKZR12UFIZyCVbtKGXMD+skESK+GKh9aCJ70XxLpqUnBYA+ECFON28rTlc3dFLR
-	BTig8eGBM04JYTlcE2L0VdnMCctA83FU1m7bOqZ1FmtWt3EdezV/bxkOH/mofp1B
-	yj5O68W9rpsbnCN+rj9mnBokewl8z8W25jcRmWR0ldwHCQusD2gzdgqQFh3Z6oQU
-	z4CTNb6vK683pSCvYHCevejrY4HsxunZCwnQyi7yJrt+5l+Xf3gbBzxapKpmHdhe
-	csUgog==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46pk7g28tx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 May 2025 18:23:12 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54IINCXa002342
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 May 2025 18:23:12 GMT
-Received: from hu-rajkbhag-blr.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sun, 18 May 2025 11:23:08 -0700
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Date: Sun, 18 May 2025 23:52:32 +0530
-Subject: [PATCH ath-next v2 5/5] wifi: ath12k: Enable IPQ5424 WiFi device
- support
+	s=arc-20240116; t=1747613997; c=relaxed/simple;
+	bh=e+8xX1cNRYnccXiDprAPn7Ln+YBvl0s4xBwFMImTf8Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b+r7j5CZyn0F+LRvsNbjjRnFzsBcSBG2Mebu2Uyz2knKLlD3arnhvDIWWGgHUGknTxMZAaSPJFNw73uaIny530ibvaOqo0GCR5DUdf1IVj4qNce8OtIg34jXJZiAf7lwtemkIdPy2F+yUbbxq9eVerKZ/kOtUg/uaexxG1OTEKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YU8vnqIU; arc=none smtp.client-ip=209.85.166.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-85d9a87660fso459035639f.1;
+        Sun, 18 May 2025 17:19:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747613995; x=1748218795; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9mIEs5JgSEaPbr5jSK7sQiQaNvyQeS4sY5VhRKgpWgQ=;
+        b=YU8vnqIUROhgPVcb2MIR27+xpSve2TvDxS2z4dXCJjIVylV0eDU0sObBRf0paIOhdl
+         thLRx6GnDkugmoHrS6zJuuyo9qLPnuiMh3oA0Li4jcBs4zJ17g5m0wJ8mKnn2fmhSRk9
+         tOqwiFrMJ1dcBGsmr8T/MZE+gZ4rKTX4QlUG0xB+HpN62LZ8oJXCf6T0Nn//9JQoTdQI
+         8HiHJH4fLIVg9+c0yntdMOEyDj3afF000b366OCcILn/0l7hff+iqKzSV8px2iDrdywb
+         t0WjWETorJ0FZkeSstY4W7tQFTSCE4rgdsDT8N9LVA4slEyQ/Zhp2CymI8YxX9XKXMwG
+         Aisw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747613995; x=1748218795;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9mIEs5JgSEaPbr5jSK7sQiQaNvyQeS4sY5VhRKgpWgQ=;
+        b=h2OAwUR96WMAITHvCELf4KNLzp48D8PvA3JU07xsOSiZGvQHxu6bEogeW5xH5StgFX
+         CGVne2sisjAvUSEjECpoA3EUceSJr9TQvIBEJ1a62mQrXMJ3ztDyNf4Id3/ui5VQMswh
+         8O2NK0pw4UsqwBMb8Lc1Q7LLgg4AwDGVx/WacMJ92jSdWYAjKPT3wtQvAGNiTNE/87Yq
+         e8C+s6o74Du6TJRBqqbcjU9s0O9H/mWNfooxrNuGu0E5Wlb+jDk+kh5EUtOuAGiOlY32
+         hLmqI3WngOQe9RhpeXNJjOFauwLCkl6u52bvbfHSJRZKDdLNKsQIbaywH9tcC177V+Pc
+         QSUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPvQXobH9KnuywW/VRi4C3iUQjwcQlhwK2Q9uHVJJj3tyXKIuWGyEAujOCvPoutlyl6NjJbnzXMtj4HyI=@vger.kernel.org, AJvYcCWX623Xc0a9Jc1sMils7ARo2JFPLBpZZ1J/C4r4GnwL3jBQnZm2ho9Br93PLHhs7CaTtBu1B1gtzYlGjw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvEu9rW3t1mtguwqAwV2415sPmPkzZ0VW98dLYawip5uYVxkCo
+	qF3RAGVgSdd7lKJRi4AaGT4B76h3fiyEIOTEOfJZfE+JirB8Q8wgzaK1xo8bI6+GUJwz5TQ4Nx0
+	imnNibVeME1TORLXacfbBfZcUZtVPApA=
+X-Gm-Gg: ASbGncvn6xbymYwaTCR+24+lK6dUcLmxRW9XuLj/B5J4tBvNlHAnQp+mnMgTKgOd5xm
+	JJrGf2o4JwRJXjw73TZY+bR2sp3FDNDNzhOIOZuNtDXFaOHSbhQas1Zl/m0FD3cV1W4iojMbYS/
+	nQoj0wNO8lKvn/OnGIoE+jC4bmNfA7ous=
+X-Google-Smtp-Source: AGHT+IG3O0hhjIORebx7V/xhzGNNRuXYkKqud94y0o19uMMgfpdEla4ZCmPTNNnrWvglmcw7RIoLzbae0POswDlNp1I=
+X-Received: by 2002:a05:6e02:1a02:b0:3d4:2306:a875 with SMTP id
+ e9e14a558f8ab-3db8573b7f2mr117674435ab.8.1747613995011; Sun, 18 May 2025
+ 17:19:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250518-ath12k-ipq5424-v2-5-ef81b833dc97@quicinc.com>
-References: <20250518-ath12k-ipq5424-v2-0-ef81b833dc97@quicinc.com>
-In-Reply-To: <20250518-ath12k-ipq5424-v2-0-ef81b833dc97@quicinc.com>
-To: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <ath12k@lists.infradead.org>,
-        "Sowmiya Sree
- Elavalagan" <quic_ssreeela@quicinc.com>,
-        Saravanakumar Duraisamy
-	<quic_saradura@quicinc.com>,
-        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 1RkriNYIfdnlOrwHiHVZOOulIyXdZe_q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE4MDE3OSBTYWx0ZWRfX9sXBlJeq4YNF
- MVpj/HA17h9QTlSFeCmXMIuS6oAQ6oGcPJefa2jfokqpAWPmzplhV0yRrwDvgy6OUb9M4X6JUqH
- tl2ZdfBRtfPybyV2L9l/Wzfe5i40ooE9vS/mK0Ekjt6jEI26Ex4XNggJjXo5dez6jYoNHffgAKw
- NKn8Pm+OcKd+KhMHY0gNy/6K8PmU9BRLQKNnwFeqBZVLT6Ys+No0p0gp9uV7qt+e0xaIEYv+uDP
- qjbrBIL17gE007UHnzthKNu+G0wTfSrkT1mTxDBMlVHsho+uca83dEo0zTjqZH2fmB6RLp361SS
- QvWwPHHdFZcJdDfu9Q6Pb8z15LGSZtz/F/uQpSQGakkyhFOXFz7b80VhgsT1zBvuJ4DLhA6Y8mj
- 3sjuCq40/YHgHmSL0TJVlRIVOCp8MU8NcGhINBoKKTtgYe2LRq/ajP7/td5ai6Fxzqg6bT3a
-X-Authority-Analysis: v=2.4 cv=CKkqXQrD c=1 sm=1 tr=0 ts=682a2590 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8
- a=-7epug4WMcN2zn_RaXQA:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: 1RkriNYIfdnlOrwHiHVZOOulIyXdZe_q
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-18_09,2025-05-16_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 suspectscore=0
- spamscore=0 adultscore=0 impostorscore=0 phishscore=0 bulkscore=0
- clxscore=1015 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505070000 definitions=main-2505180179
+References: <20250518164546.4612-1-spasswolf@web.de>
+In-Reply-To: <20250518164546.4612-1-spasswolf@web.de>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Mon, 19 May 2025 08:19:19 +0800
+X-Gm-Features: AX0GCFvOvbUTzmHJdz0uqX0nRrz7gaE2_-JhccWYMysTJrerFVRfpgOSNjwvooA
+Message-ID: <CAL+tcoB8kP-q-RsWBrow0yauGd5aiqq=zmokD-s5GWrqOZx=EA@mail.gmail.com>
+Subject: Re: [PATCH] wifi: Check if socket flags are valid
+To: Bert Karwatzki <spasswolf@web.de>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-next@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+On Mon, May 19, 2025 at 12:46=E2=80=AFAM Bert Karwatzki <spasswolf@web.de> =
+wrote:
+>
+> The check, if a particular SO_* flag_bit is set, may give a wrong result
+> since sk_flags are part of a union and the union is used otherwise.
+> This happens, if a socket is not a full socket, like a request socket
+> for example.
+>
+> Add a check to verify, if the union is used for sk_flags.
+>
+> This solution is taken from commit
+> e8a64bbaaad1 ("net/sched: taprio: Check if socket flags are valid").
+>
+> Fixes: 76a853f86c97 ("wifi: free SKBTX_WIFI_STATUS skb tx_flags flag")
+>
 
-Currently, ath12k AHB (in IPQ5332) uses SCM calls to authenticate the
-firmware image to bring up userpd. From IPQ5424 onwards, Q6 firmware can
-directly communicate with the Trusted Management Engine - Lite (TME-L),
-eliminating the need for SCM calls for userpd bring-up.
+nit: empty line
 
-Hence, to enable IPQ5424 device support, use qcom_mdt_load_no_init() and
-skip the SCM call as Q6 will directly authenticate the userpd firmware.
+> Signed-off-by: Bert Karwatzki <spasswolf@web.de>
 
-Tested-on: IPQ5424 hw1.0 AHB WLAN.WBE.1.5-01053-QCAHKSWPL_SILICONZ-1
-Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
+Great! Thanks!
 
-Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
-Co-developed-by: Saravanakumar Duraisamy <quic_saradura@quicinc.com>
-Signed-off-by: Saravanakumar Duraisamy <quic_saradura@quicinc.com>
-Co-developed-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/ahb.c | 114 +++++++++++++++++++++-------------
- drivers/net/wireless/ath/ath12k/ahb.h |  17 ++++-
- 2 files changed, 86 insertions(+), 45 deletions(-)
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
 
-diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
-index 40690cef7e57d121c6c41765048d8e64c9320b02..f5a2c176d03d6eebb119165a7fa1a394cf3ef3b2 100644
---- a/drivers/net/wireless/ath/ath12k/ahb.c
-+++ b/drivers/net/wireless/ath/ath12k/ahb.c
-@@ -16,15 +16,6 @@
- #include "debug.h"
- #include "hif.h"
- 
--static const struct of_device_id ath12k_ahb_of_match[] = {
--	{ .compatible = "qcom,ipq5332-wifi",
--	  .data = (void *)ATH12K_HW_IPQ5332_HW10,
--	},
--	{ }
--};
--
--MODULE_DEVICE_TABLE(of, ath12k_ahb_of_match);
--
- #define ATH12K_IRQ_CE0_OFFSET 4
- #define ATH12K_MAX_UPDS 1
- #define ATH12K_UPD_IRQ_WRD_LEN  18
-@@ -348,9 +339,9 @@ static int ath12k_ahb_power_up(struct ath12k_base *ab)
- 	struct reserved_mem *rmem = NULL;
- 	unsigned long time_left;
- 	phys_addr_t mem_phys;
-+	u32 pasid, userpd_id;
- 	void *mem_region;
- 	size_t mem_size;
--	u32 pasid;
- 	int ret;
- 
- 	rmem = ath12k_core_get_reserved_mem(ab, 0);
-@@ -366,8 +357,9 @@ static int ath12k_ahb_power_up(struct ath12k_base *ab)
- 		return PTR_ERR(mem_region);
- 	}
- 
-+	userpd_id = ab_ahb->ahb_data->userpd_id;
- 	snprintf(fw_name, sizeof(fw_name), "%s/%s/%s%d%s", ATH12K_FW_DIR,
--		 ab->hw_params->fw.dir, ATH12K_AHB_FW_PREFIX, ab_ahb->userpd_id,
-+		 ab->hw_params->fw.dir, ATH12K_AHB_FW_PREFIX, userpd_id,
- 		 ATH12K_AHB_FW_SUFFIX);
- 
- 	ret = request_firmware(&fw, fw_name, dev);
-@@ -385,12 +377,12 @@ static int ath12k_ahb_power_up(struct ath12k_base *ab)
- 		goto err_fw;
- 	}
- 
--	pasid = (u32_encode_bits(ab_ahb->userpd_id, ATH12K_USERPD_ID_MASK)) |
-+	pasid = (u32_encode_bits(userpd_id, ATH12K_USERPD_ID_MASK)) |
- 		ATH12K_AHB_UPD_SWID;
- 
- 	/* Load FW image to a reserved memory location */
--	ret = qcom_mdt_load(dev, fw, fw_name, pasid, mem_region, mem_phys, mem_size,
--			    &mem_phys);
-+	ret = ab_ahb->ahb_data->ahb_ops->mdt_load(dev, fw, fw_name, pasid, mem_region,
-+						  mem_phys, mem_size, &mem_phys);
- 	if (ret) {
- 		ath12k_err(ab, "Failed to load MDT segments: %d\n", ret);
- 		goto err_fw;
-@@ -421,11 +413,13 @@ static int ath12k_ahb_power_up(struct ath12k_base *ab)
- 		goto err_fw2;
- 	}
- 
--	/* Authenticate FW image using peripheral ID */
--	ret = qcom_scm_pas_auth_and_reset(pasid);
--	if (ret) {
--		ath12k_err(ab, "failed to boot the remote processor %d\n", ret);
--		goto err_fw2;
-+	if (ab_ahb->ahb_data->scm_auth_enabled) {
-+		/* Authenticate FW image using peripheral ID */
-+		ret = qcom_scm_pas_auth_and_reset(pasid);
-+		if (ret) {
-+			ath12k_err(ab, "failed to boot the remote processor %d\n", ret);
-+			goto err_fw2;
-+		}
- 	}
- 
- 	/* Instruct Q6 to spawn userPD thread */
-@@ -454,7 +448,7 @@ static int ath12k_ahb_power_up(struct ath12k_base *ab)
- 
- 	qcom_smem_state_update_bits(ab_ahb->spawn_state, BIT(ab_ahb->spawn_bit), 0);
- 
--	ath12k_dbg(ab, ATH12K_DBG_AHB, "UserPD%d is now UP\n", ab_ahb->userpd_id);
-+	ath12k_dbg(ab, ATH12K_DBG_AHB, "UserPD%d is now UP\n", userpd_id);
- 
- err_fw2:
- 	release_firmware(fw2);
-@@ -467,7 +461,7 @@ static void ath12k_ahb_power_down(struct ath12k_base *ab, bool is_suspend)
- {
- 	struct ath12k_ahb *ab_ahb = ath12k_ab_to_ahb(ab);
- 	unsigned long time_left;
--	u32 pasid;
-+	u32 pasid, userpd_id;
- 	int ret;
- 
- 	qcom_smem_state_update_bits(ab_ahb->stop_state, BIT(ab_ahb->stop_bit),
-@@ -482,13 +476,16 @@ static void ath12k_ahb_power_down(struct ath12k_base *ab, bool is_suspend)
- 
- 	qcom_smem_state_update_bits(ab_ahb->stop_state, BIT(ab_ahb->stop_bit), 0);
- 
--	pasid = (u32_encode_bits(ab_ahb->userpd_id, ATH12K_USERPD_ID_MASK)) |
--		ATH12K_AHB_UPD_SWID;
--	/* Release the firmware */
--	ret = qcom_scm_pas_shutdown(pasid);
--	if (ret)
--		ath12k_err(ab, "scm pas shutdown failed for userPD%d: %d\n",
--			   ab_ahb->userpd_id, ret);
-+	if (ab_ahb->ahb_data->scm_auth_enabled) {
-+		userpd_id = ab_ahb->ahb_data->userpd_id;
-+		pasid = (u32_encode_bits(userpd_id, ATH12K_USERPD_ID_MASK)) |
-+			 ATH12K_AHB_UPD_SWID;
-+		/* Release the firmware */
-+		ret = qcom_scm_pas_shutdown(pasid);
-+		if (ret)
-+			ath12k_err(ab, "scm pas shutdown failed for userPD%d\n",
-+				   userpd_id);
-+	}
- }
- 
- static void ath12k_ahb_init_qmi_ce_config(struct ath12k_base *ab)
-@@ -698,6 +695,14 @@ static int ath12k_ahb_map_service_to_pipe(struct ath12k_base *ab, u16 service_id
- 	return 0;
- }
- 
-+static const struct ath12k_ahb_ops ahb_ops_ipq5332 = {
-+	.mdt_load = qcom_mdt_load,
-+};
-+
-+static const struct ath12k_ahb_ops ahb_ops_ipq5424 = {
-+	.mdt_load = qcom_mdt_load_no_init,
-+};
-+
- static const struct ath12k_hif_ops ath12k_ahb_hif_ops_ipq5332 = {
- 	.start = ath12k_ahb_start,
- 	.stop = ath12k_ahb_stop,
-@@ -747,7 +752,7 @@ static int ath12k_ahb_config_rproc_irq(struct ath12k_base *ab)
- 			return -ENOMEM;
- 
- 		scnprintf(upd_irq_name, ATH12K_UPD_IRQ_WRD_LEN, "UserPD%u-%s",
--			  ab_ahb->userpd_id, ath12k_userpd_irq[i]);
-+			  ab_ahb->ahb_data->userpd_id, ath12k_userpd_irq[i]);
- 		ret = devm_request_threaded_irq(&ab->pdev->dev, ab_ahb->userpd_irq_num[i],
- 						NULL, ath12k_userpd_irq_handler,
- 						IRQF_TRIGGER_RISING | IRQF_ONESHOT,
-@@ -991,10 +996,8 @@ static void ath12k_ahb_resource_deinit(struct ath12k_base *ab)
- static int ath12k_ahb_probe(struct platform_device *pdev)
- {
- 	struct ath12k_base *ab;
--	const struct ath12k_hif_ops *hif_ops;
- 	struct ath12k_ahb *ab_ahb;
--	enum ath12k_hw_rev hw_rev;
--	u32 addr, userpd_id;
-+	u32 addr;
- 	int ret;
- 
- 	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
-@@ -1008,24 +1011,19 @@ static int ath12k_ahb_probe(struct platform_device *pdev)
- 	if (!ab)
- 		return -ENOMEM;
- 
--	hw_rev = (enum ath12k_hw_rev)(kernel_ulong_t)of_device_get_match_data(&pdev->dev);
--	switch (hw_rev) {
--	case ATH12K_HW_IPQ5332_HW10:
--		hif_ops = &ath12k_ahb_hif_ops_ipq5332;
--		userpd_id = ATH12K_IPQ5332_USERPD_ID;
--		break;
--	default:
-+	ab_ahb = ath12k_ab_to_ahb(ab);
-+	ab_ahb->ab = ab;
-+	ab_ahb->ahb_data =
-+		(struct ath12k_ahb_probe_data *)of_device_get_match_data(&pdev->dev);
-+	if (!ab_ahb->ahb_data) {
- 		ret = -EOPNOTSUPP;
- 		goto err_core_free;
- 	}
- 
--	ab->hif.ops = hif_ops;
-+	ab->hif.ops = ab_ahb->ahb_data->hif_ops;
-+	ab->hw_rev = ab_ahb->ahb_data->hw_rev;
- 	ab->pdev = pdev;
--	ab->hw_rev = hw_rev;
- 	platform_set_drvdata(pdev, ab);
--	ab_ahb = ath12k_ab_to_ahb(ab);
--	ab_ahb->ab = ab;
--	ab_ahb->userpd_id = userpd_id;
- 
- 	/* Set fixed_mem_region to true for platforms that support fixed memory
- 	 * reservation from DT. If memory is reserved from DT for FW, ath12k driver
-@@ -1136,6 +1134,34 @@ static void ath12k_ahb_remove(struct platform_device *pdev)
- 	ath12k_ahb_free_resources(ab);
- }
- 
-+static const struct ath12k_ahb_probe_data ath12k_ahb_ipq5332 = {
-+	.hw_rev = ATH12K_HW_IPQ5332_HW10,
-+	.userpd_id = ATH12K_IPQ5332_USERPD_ID,
-+	.scm_auth_enabled = true,
-+	.ahb_ops = &ahb_ops_ipq5332,
-+	.hif_ops = &ath12k_ahb_hif_ops_ipq5332,
-+};
-+
-+static const struct ath12k_ahb_probe_data ath12k_ahb_ipq5424 = {
-+	.hw_rev = ATH12K_HW_IPQ5424_HW10,
-+	.userpd_id = ATH12K_IPQ5332_USERPD_ID,
-+	.scm_auth_enabled = false,
-+	.ahb_ops = &ahb_ops_ipq5424,
-+	.hif_ops = &ath12k_ahb_hif_ops_ipq5332,
-+};
-+
-+static const struct of_device_id ath12k_ahb_of_match[] = {
-+	{ .compatible = "qcom,ipq5332-wifi",
-+	  .data = (void *)&ath12k_ahb_ipq5332,
-+	},
-+	{ .compatible = "qcom,ipq5424-wifi",
-+	  .data = (void *)&ath12k_ahb_ipq5424,
-+	},
-+	{ }
-+};
-+
-+MODULE_DEVICE_TABLE(of, ath12k_ahb_of_match);
-+
- static struct platform_driver ath12k_ahb_driver = {
- 	.driver         = {
- 		.name   = "ath12k_ahb",
-diff --git a/drivers/net/wireless/ath/ath12k/ahb.h b/drivers/net/wireless/ath/ath12k/ahb.h
-index d56244b20a6a667cf3730dc1ce38a22b0e86ffca..84415008331a3d719573d4f88e1596f460b1522c 100644
---- a/drivers/net/wireless/ath/ath12k/ahb.h
-+++ b/drivers/net/wireless/ath/ath12k/ahb.h
-@@ -43,6 +43,21 @@ enum ath12k_ahb_userpd_irq {
- 
- struct ath12k_base;
- 
-+struct ath12k_ahb_ops {
-+	int (*mdt_load)(struct device *dev, const struct firmware *fw,
-+			const char *firmware, int pas_id, void *mem_region,
-+			phys_addr_t mem_phys, size_t mem_size,
-+			phys_addr_t *reloc_base);
-+};
-+
-+struct ath12k_ahb_probe_data {
-+	enum ath12k_hw_rev hw_rev;
-+	u32 userpd_id;
-+	bool scm_auth_enabled;
-+	const struct ath12k_ahb_ops *ahb_ops;
-+	const struct ath12k_hif_ops *hif_ops;
-+};
-+
- struct ath12k_ahb {
- 	struct ath12k_base *ab;
- 	struct rproc *tgt_rproc;
-@@ -55,10 +70,10 @@ struct ath12k_ahb {
- 	struct completion userpd_spawned;
- 	struct completion userpd_ready;
- 	struct completion userpd_stopped;
--	u32 userpd_id;
- 	u32 spawn_bit;
- 	u32 stop_bit;
- 	int userpd_irq_num[ATH12K_USERPD_MAX_IRQ];
-+	const struct ath12k_ahb_probe_data *ahb_data;
- };
- 
- static inline struct ath12k_ahb *ath12k_ab_to_ahb(struct ath12k_base *ab)
+> ---
+>  drivers/net/wireless/ath/wil6210/txrx.h     | 2 +-
+>  drivers/net/wireless/marvell/mwifiex/main.c | 2 +-
+>  net/mac80211/mesh.c                         | 2 +-
+>  net/mac80211/tx.c                           | 6 +++---
+>  4 files changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/wil6210/txrx.h b/drivers/net/wirele=
+ss/ath/wil6210/txrx.h
+> index 33ccd0b248d4..91432b318ec2 100644
+> --- a/drivers/net/wireless/ath/wil6210/txrx.h
+> +++ b/drivers/net/wireless/ath/wil6210/txrx.h
+> @@ -618,7 +618,7 @@ static inline bool wil_need_txstat(struct sk_buff *sk=
+b)
+>         const u8 *da =3D wil_skb_get_da(skb);
+>
+>         return is_unicast_ether_addr(da) && skb->sk &&
+> -              sock_flag(skb->sk, SOCK_WIFI_STATUS);
+> +              sk_fullsock(skb->sk) && sock_flag(skb->sk, SOCK_WIFI_STATU=
+S);
+>  }
+>
+>  static inline void wil_consume_skb(struct sk_buff *skb, bool acked)
+> diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wi=
+reless/marvell/mwifiex/main.c
+> index 1485f949ad4e..973df2656238 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/main.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/main.c
+> @@ -913,7 +913,7 @@ mwifiex_hard_start_xmit(struct sk_buff *skb, struct n=
+et_device *dev)
+>
+>         multicast =3D is_multicast_ether_addr(skb->data);
+>
+> -       if (unlikely(!multicast && skb->sk &&
+> +       if (unlikely(!multicast && skb->sk && sk_fullsock(skb->sk) &&
+>                      sock_flag(skb->sk, SOCK_WIFI_STATUS) &&
+>                      priv->adapter->fw_api_ver =3D=3D MWIFIEX_FW_V15))
+>                 skb =3D mwifiex_clone_skb_for_tx_status(priv,
+> diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+> index a381b4b756ea..11b6cb639ae7 100644
+> --- a/net/mac80211/mesh.c
+> +++ b/net/mac80211/mesh.c
+> @@ -777,7 +777,7 @@ bool ieee80211_mesh_xmit_fast(struct ieee80211_sub_if=
+_data *sdata,
+>         if (ethertype < ETH_P_802_3_MIN)
+>                 return false;
+>
+> -       if (skb->sk && sock_flag(skb->sk, SOCK_WIFI_STATUS))
+> +       if (skb->sk && sk_fullsock(skb->sk) && sock_flag(skb->sk, SOCK_WI=
+FI_STATUS))
+>                 return false;
+>
+>         if (skb->ip_summed =3D=3D CHECKSUM_PARTIAL) {
+> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+> index 3b9392a6ddb2..8b5bcddd5cc9 100644
+> --- a/net/mac80211/tx.c
+> +++ b/net/mac80211/tx.c
+> @@ -2859,7 +2859,7 @@ static struct sk_buff *ieee80211_build_hdr(struct i=
+eee80211_sub_if_data *sdata,
+>         }
+>
+>         if (unlikely(!multicast &&
+> -                    ((skb->sk && sock_flag(skb->sk, SOCK_WIFI_STATUS)) |=
+|
+> +                    ((skb->sk && sk_fullsock(skb->sk) && sock_flag(skb->=
+sk, SOCK_WIFI_STATUS)) ||
+>                       ctrl_flags & IEEE80211_TX_CTL_REQ_TX_STATUS)))
+>                 info_id =3D ieee80211_store_ack_skb(local, skb, &info_fla=
+gs,
+>                                                   cookie);
+> @@ -3756,7 +3756,7 @@ static bool ieee80211_xmit_fast(struct ieee80211_su=
+b_if_data *sdata,
+>                 return false;
+>
+>         /* don't handle TX status request here either */
+> -       if (skb->sk && sock_flag(skb->sk, SOCK_WIFI_STATUS))
+> +       if (skb->sk && sk_fullsock(skb->sk) && sock_flag(skb->sk, SOCK_WI=
+FI_STATUS))
+>                 return false;
+>
+>         if (hdr->frame_control & cpu_to_le16(IEEE80211_STYPE_QOS_DATA)) {
+> @@ -4648,7 +4648,7 @@ static void ieee80211_8023_xmit(struct ieee80211_su=
+b_if_data *sdata,
+>                         memcpy(IEEE80211_SKB_CB(seg), info, sizeof(*info)=
+);
+>         }
+>
+> -       if (unlikely(skb->sk && sock_flag(skb->sk, SOCK_WIFI_STATUS))) {
+> +       if (unlikely(skb->sk && sk_fullsock(skb->sk) && sock_flag(skb->sk=
+, SOCK_WIFI_STATUS))) {
+>                 info->status_data =3D ieee80211_store_ack_skb(local, skb,
+>                                                             &info->flags,=
+ NULL);
+>                 if (info->status_data)
+> --
+> 2.49.0
+>
+> I've dug a little into the history of sk_flags (which have been introduce=
+d in
+> v4.4) and found commit e8a64bbaaad1 ("net/sched: taprio: Check if socket =
+flags
+> are valid"), which seems to address the same problem we're currently faci=
+ng:
 
--- 
-2.34.1
+Indeed, sk_flags can only be used by a full socket.
 
+Thanks,
+Jason
+
+>
+> commit e8a64bbaaad1f6548cec5508297bc6d45e8ab69e
+> Author: Benedikt Spranger <b.spranger@linutronix.de>
+> Date:   Fri Apr 8 11:47:45 2022 +0200
+>
+>     net/sched: taprio: Check if socket flags are valid
+>
+>     A user may set the SO_TXTIME socket option to ensure a packet is send
+>     at a given time. The taprio scheduler has to confirm, that it is allo=
+wed
+>     to send a packet at that given time, by a check against the packet ti=
+me
+>     schedule. The scheduler drop the packet, if the gates are closed at t=
+he
+>     given send time.
+>
+>     The check, if SO_TXTIME is set, may fail since sk_flags are part of a=
+n
+>     union and the union is used otherwise. This happen, if a socket is no=
+t
+>     a full socket, like a request socket for example.
+>
+>     Add a check to verify, if the union is used for sk_flags.
+>
+>     Fixes: 4cfd5779bd6e ("taprio: Add support for txtime-assist mode")
+>     Signed-off-by: Benedikt Spranger <b.spranger@linutronix.de>
+>     Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+>     Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+>     Signed-off-by: David S. Miller <davem@davemloft.net>
+>
+> diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+> index 377f896bdedc..b9c71a304d39 100644
+> --- a/net/sched/sch_taprio.c
+> +++ b/net/sched/sch_taprio.c
+> @@ -417,7 +417,8 @@ static int taprio_enqueue_one(struct sk_buff *skb, st=
+ruct Qdisc *sch,
+>  {
+>         struct taprio_sched *q =3D qdisc_priv(sch);
+>
+> -       if (skb->sk && sock_flag(skb->sk, SOCK_TXTIME)) {
+> +       /* sk_flags are only safe to use on full sockets. */
+> +       if (skb->sk && sk_fullsock(skb->sk) && sock_flag(skb->sk, SOCK_TX=
+TIME)) {
+>                 if (!is_valid_interval(skb, sch))
+>                         return qdisc_drop(skb, sch, to_free);
+>         } else if (TXTIME_ASSIST_IS_ENABLED(q->flags)) {
+>
+> I'm not sure if all sk_fullsock() checks are necessary, or if it can
+> be guessed from context if the socket is valid, though.
+>
+> This has been tested for ~1h so far.
+>
+> Bert Karwatzki
 
