@@ -1,513 +1,230 @@
-Return-Path: <linux-wireless+bounces-23156-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23157-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C5BABBFC8
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 15:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54BF5ABC1C7
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 17:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 056F1189D50B
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 13:51:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59F9718909F6
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 15:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC2F284B3A;
-	Mon, 19 May 2025 13:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970CE284B40;
+	Mon, 19 May 2025 15:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f/ZdRvJe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xzq9OBK+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D08D28468E;
-	Mon, 19 May 2025 13:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34665283FEE
+	for <linux-wireless@vger.kernel.org>; Mon, 19 May 2025 15:11:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747662549; cv=none; b=gBW291h2Iu8LKiNyKkWWUDY2mz9uiGQuGzeqzrByL74nHn3lks7FQZvDEm4ZKWoqFO5siXqCY5g4xlLBsnSKVuVjsQzwHhqTrK0v9OGwaiIlNoBR3trEx1X7l7G+ZQ/qMu7GFCU1i3cGM21gJqofZ/Sz0W+mj69FbxnrBECBSlw=
+	t=1747667492; cv=none; b=buwzELvHgcc6COTVFEkPr2ciHNE4CJXEn5Cs6STXYZ3pBFgFxic47WRWD74dfW+jtJ1Z1wVHieuMQzgJT8GJPZ7Wyk7zHyQ2MRrx6kVd5ds6XhaVx5H62Ow+ekbTaRoR2sGPlYAn9XJiNCxpnikw0cGkniJIDsibNrC4ad4FyzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747662549; c=relaxed/simple;
-	bh=3Y9vgZxUkqCQy/C5E7UaFN+86AiBh9q4BHIvaPaSCI4=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=q6AMr37nOB8UGs1YFmWXt05Wzx2iKlulqbGMBYBr36RXbipqUQLyoGGu+zAAh6KEEWPXlwr2VpCCL38N3/cVLnKaZmtpy1uG887Zl1s59wgw6/P/DtLskLQXYVrCZn28X0Zzx1EkmS5V1cm6fuR1lUyokVom9k+xLOPZnQp+XhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f/ZdRvJe; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747662548; x=1779198548;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=3Y9vgZxUkqCQy/C5E7UaFN+86AiBh9q4BHIvaPaSCI4=;
-  b=f/ZdRvJevqo0WQ+0q517kFdCz5OVm2r9lXtw61gPCASk/JP/1slKMovT
-   T9JoPjs5+FdKDUvSICDClPs7DFpZk28MtRxRlBmnt8bYIwubSddzMTbG/
-   oha4LEGDDNbFvFb5mXuowuT95j2UWMNHhdClsBB4585bNE0NUCIny9XeC
-   LDqUKyLJm4+m1zqx6436ZpK1QqP5w1f1PFgyi5Yxx2KW9eJP11X4Qdlsg
-   +nLCqBKwQDOccz+aQiHi4md8CCGAi4zptrc2rlKXCIoyM7L/fS+3PTdLl
-   p2BozTlR3ihJyAjZyam6j4NyTTqIY9wALtCigFfMPmpEe99iYsqe07JjX
-   A==;
-X-CSE-ConnectionGUID: vJZVnxezTLOGEG98QKd6UQ==
-X-CSE-MsgGUID: oSJhs6YaSXSchn5bMNTsaw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="48816176"
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
-   d="scan'208";a="48816176"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 06:49:06 -0700
-X-CSE-ConnectionGUID: 9k6r2Pg+TD6HcGA5O6HG8w==
-X-CSE-MsgGUID: OMEVtZL5SI2D4hu/XakykA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
-   d="scan'208";a="140265633"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.35])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 06:48:59 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 19 May 2025 16:48:56 +0300 (EEST)
-To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>, 
-    Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
-    Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-    =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>, 
-    Rob Herring <robh@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, 
-    Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-    linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    linux-arm-msm@vger.kernel.org, mhi@lists.linux.dev, 
-    linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
-    qiang.yu@oss.qualcomm.com, quic_vbadigan@quicinc.com, 
-    quic_vpernami@quicinc.com, quic_mrana@quicinc.com, 
-    Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: Re: [PATCH v3 08/11] bus: mhi: host: Add support for Bandwidth
- scale
-In-Reply-To: <20250519-mhi_bw_up-v3-8-3acd4a17bbb5@oss.qualcomm.com>
-Message-ID: <9ff58fd9-4a8e-a752-ef28-491102d13ff3@linux.intel.com>
-References: <20250519-mhi_bw_up-v3-0-3acd4a17bbb5@oss.qualcomm.com> <20250519-mhi_bw_up-v3-8-3acd4a17bbb5@oss.qualcomm.com>
+	s=arc-20240116; t=1747667492; c=relaxed/simple;
+	bh=ipCJPVedwHjI4QLsxFqW3FavNfzJ1WEN8VZ2TRVwhA4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=S8a7TeLBXui8JxcrxuPd/a8KGspj9QwT0nWB572SFiDyLqxSyO9Yefi7/eD6+dJS4Whk7UIWX10RzgDO1n2FORCqK7KtjzKvLB4f7B9FDecWv5eyu7qq6Rb4VYS+nXGGwd4yE3w6eFHN5/BFHxQ4So1gY6axn2QjYiVWdj5T93A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xzq9OBK+; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-442ccf0e1b3so55530055e9.3
+        for <linux-wireless@vger.kernel.org>; Mon, 19 May 2025 08:11:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747667488; x=1748272288; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p311D//fNmx/GnFe2BD77SqJxf5TY8Y/xCia91MxfcY=;
+        b=Xzq9OBK+sYymG7RmUMi7boriSQh8c9IdNb/JMRNlqWMta/aSGL0htZurMcHM5NGOjm
+         yxgHLJaBB94/R8n7Z0Zvp69ACPN6+MA1kL28UC3MmGuMZ+5+ME9XtaJqibhb15U2eKoD
+         lqf/AB3ATpnL9TiPQQGbmXtbZ9cmmAdMRJMFZz0LjqfVVuoza06ZvMq7LWD9k07d9Zro
+         1XugFwqUKQthnNOgRaWM3VH9O0ewbRiPOMUG36xKMK7wdG4DZT4VLjlZ+2/idYAkpWIj
+         cCHmGspxZoLTdRjRJEhz25Te2KnzBCyWWinkABsXnxtszcLPFndchX8DV/omLVzwOb6U
+         6hzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747667488; x=1748272288;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=p311D//fNmx/GnFe2BD77SqJxf5TY8Y/xCia91MxfcY=;
+        b=N8Co6vTfJmmlF/OpBWc+MFmoctJ7euTq4jTbn6cC3JTX4Dayb4YUgdeSwMREcHQfbQ
+         VntLnlbiemtDAmkDKwqmcY86QV6Ssx0OrvmEmxbHRALWbRc6zHHRbdUea2O5EPwaeBBv
+         +pQjG1oQsK9UP45ktVbqXpQ4cq/4FfTIWBn5McYqdgT5puiCH+kscNId+pVaybZZdEUc
+         m6yR51sd40+PXS2ShsXYOpylT0jN+gaAs3ekCpmqtu4E3d1EPaHwFhG9PDBSNMQ9jD/O
+         2VzksfiquACjltef8NI5Ro7lHM5IVjGbdpqWVajJ+WcvO4c+GKcvOUJYBHO83h1N4/bc
+         0Uyw==
+X-Gm-Message-State: AOJu0YwtiOtF2bJx3dmQ0/EHmmGYsPBpVxTYzYtuj+zh3aBFcecjDCnU
+	kbocowxLr5YHx9dMJYnuzertEh8IxGk+yhhgx9NYjESV5RliBmjpAa+s
+X-Gm-Gg: ASbGnctfFgi941R1MqVWW8/HgWZEcfp8u2KcE53t5tNP56ovzja0sssJqyhAJoIMeQP
+	A7WAG5jvwS3jMfzWqcRFfjYfGoug43PpDOWUtJVQKUMcDe8Lq8T6KmavJJ82N+jP8NkMzz3eJEr
+	3QcTTsRQjuce0ej2sixMfrhRLt7geG2Lw/vXW17My8ItrqrrwCzpN4sdbIhMKP0KFKpWUoQGt+j
+	wgcQMmyG7s0tnRUPzrrFaY8u7DHgO5o179CHz8hTVa0FOhmvLN88bSg8GZSJz4JaI6keevGW2lY
+	bSfPX4xVVLWwWisWdLd+C2usrGFUZfKbbBfv+qkzcFFM0YWBbWNOtYwUR4+l+QLR3hYfEKrI325
+	uRPoF
+X-Google-Smtp-Source: AGHT+IHFyZHIyrcYe/USleuAgTaUwD4OgFsuo7BATAmi0EMS/lWwD3Aj2fSBu9c73EXwKsCdHYts7A==
+X-Received: by 2002:a05:600c:5305:b0:441:b19c:96fe with SMTP id 5b1f17b1804b1-442fd622eb4mr158353615e9.10.1747667488104;
+        Mon, 19 May 2025 08:11:28 -0700 (PDT)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442f395166fsm214209205e9.18.2025.05.19.08.11.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 May 2025 08:11:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 May 2025 17:11:27 +0200
+Message-Id: <DA08F3TG062A.151WKWWF5OPL0@gmail.com>
+Subject: Re: [PATCH V13 8/9] wifi: ath12k: add support for 160 MHz bandwidth
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Pradeep Kumar Chitrapu" <quic_pradeepc@quicinc.com>,
+ <ath12k@lists.infradead.org>
+Cc: <linux-wireless@vger.kernel.org>, "P Praneesh"
+ <quic_ppranees@quicinc.com>, "Jeff Johnson" <quic_jjohnson@quicinc.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250418174818.3336510-1-quic_pradeepc@quicinc.com>
+ <20250418174818.3336510-9-quic_pradeepc@quicinc.com>
+In-Reply-To: <20250418174818.3336510-9-quic_pradeepc@quicinc.com>
 
-On Mon, 19 May 2025, Krishna Chaitanya Chundru wrote:
+On Fri Apr 18, 2025 at 7:48 PM CEST, Pradeep Kumar Chitrapu wrote:
+> Add support to configure maximum NSS in 160 MHz bandwidth.
+> Firmware advertises support for handling NSS ratio information
+> as a part of service ready ext event using nss_ratio_enabled
+> flag. Save this information in ath12k_pdev_cap to calculate
+> NSS ratio.
+>
+> Additionally, reorder the code by moving
+> ath12k_peer_assoc_h_phymode() before ath12k_peer_assoc_h_vht()
+> to ensure that arg->peer_phymode correctly reflects the bandwidth
+> in the max NSS calculation.
+>
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>
+> Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+[...]
 
-> As per MHI spec v1.2, sec 14, MHI supports bandwidth scaling to reduce
-> power consumption. MHI bandwidth scaling is advertised by devices that
-> contain the bandwidth scaling capability registers. If enabled, the device
-> aggregates bandwidth requirements and sends them to the host through
-> dedicated mhi event ring. After the host performs the bandwidth switch,
-> it sends an acknowledgment by ringing a doorbell.
-> 
-> if the host supports bandwidth scaling events, then it must set
-> BW_CFG.ENABLED bit, set BW_CFG.DB_CHAN_ID to the channel ID to the
-> doorbell that will be used by the host to communicate the bandwidth
-> scaling status and BW_CFG.ER_INDEX to the index for the event ring
-> to which the device should send bandwidth scaling request in the
-> bandwidth scaling capability register.
-> 
-> As part of mmio init check if the bw scale capability is present or not,
-> if present advertise host supports bw scale by setting all the required
-> fields.
-> 
-> MHI layer will only forward the bw scaling request to the controller
-> driver since MHI doesn't have any idea about transport layer used by
-> the controller, it is responsibility of the controller driver to do actual
-> bw scaling and then pass status to the MHI. MHI will response back to the
-> device based up on the status of the bw scale received.
-> 
-> Add a new get_misc_doorbell() to get doorbell for misc capabilities to
-> use the doorbell with mhi events like MHI BW scale etc.
-> 
-> Use workqueue & mutex for the bw scale events as the pci_set_target_speed()
-> which will called by the mhi controller driver can sleep.
-> 
-> Co-developed-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
-> Signed-off-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
-> Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-> ---
->  drivers/bus/mhi/common.h        | 16 +++++++
->  drivers/bus/mhi/host/init.c     | 61 ++++++++++++++++++++++++-
->  drivers/bus/mhi/host/internal.h |  7 ++-
->  drivers/bus/mhi/host/main.c     | 98 ++++++++++++++++++++++++++++++++++++++++-
->  drivers/bus/mhi/host/pm.c       | 10 ++++-
->  include/linux/mhi.h             | 13 ++++++
->  6 files changed, 199 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/bus/mhi/common.h b/drivers/bus/mhi/common.h
-> index eedac801b80021e44f7c65d33cd50760e06c02f2..0a02acee709af7a2a6abddcb9547ef56564ce453 100644
-> --- a/drivers/bus/mhi/common.h
-> +++ b/drivers/bus/mhi/common.h
-> @@ -208,6 +208,22 @@
->  #define MHI_RSCTRE_DATA_DWORD1		cpu_to_le32(FIELD_PREP(GENMASK(23, 16), \
->  							       MHI_PKT_TYPE_COALESCING))
->  
-> +/* MHI Bandwidth scaling offsets */
-> +#define MHI_BW_SCALE_CFG_OFFSET		0x4
-> +#define MHI_BW_SCALE_CAP_ID		(3)
-> +
-> +#define MHI_BW_SCALE_ENABLE(bw_scale_db, er_index)	cpu_to_le32(FIELD_PREP(GENMASK(31, 25), \
-> +							bw_scale_db) |				\
-> +							FIELD_PREP(GENMASK(23, 19), er_index) |	\
-> +							BIT(24))
+Hello,
 
-This code would be easier to understand if you would name those 
-GENMASK()s and BIT() with defines first.
+With this patch set we sometimes see the following warning shortly followed=
+ by a
+firmware crash on QCN9274 running WLAN.WBE.1.3.1-00218-QCAHKSWPL_SILICONZ-1
 
-Why does this have to be a macro?
+[  242.416516] ------------[ cut here ]------------
+[  242.423608] WARNING: CPU: 2 PID: 1427 at drivers/net/wireless/ath/ath12k=
+/mac.c:3224 ath12k_peer_assoc_h_phymode+0xd4/0x800 [ath12k]
+[  242.428475] Modules linked in: dvb_usb_af9035 dvb_usb_dib0700 dib0070 di=
+b7000m dibx000_common at24 ath12k qmi_helpers nf_nat_sip nf_conntrack_sip d=
+wc3_qcom nf_nat_pptp nf_conntrack_pptp ipq_lpass
+[  242.444176] CPU: 2 UID: 0 PID: 1427 Comm: memcheck-arm64- Not tainted 6.=
+13.0-02013-gd424b7b9a373-dirty #140
+[  242.466407] Hardware name: XXX (DT)
+[  242.476124] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=
+=3D--)
+[  242.480639] pc : ath12k_peer_assoc_h_phymode+0xd4/0x800 [ath12k]
+[  242.487584] lr : ath12k_peer_assoc_h_phymode+0x540/0x800 [ath12k]
+[  242.493834] sp : ffffffc08588b4b0
+[  242.499820] x29: ffffffc08588b4b0 x28: 0000000000000008 x27: ffffff80278=
+1bb60
+[  242.503123] x26: ffffff802cfa9af0 x25: ffffff802781bb60 x24: ffffff8016f=
+38be0
+[  242.510241] x23: ffffff802cfa9fb0 x22: ffffff802781bce0 x21: ffffff802d5=
+0dc00
+[  242.517360] x20: ffffff8016f38be0 x19: ffffff802781bce0 x18: fffffffffff=
+fffff
+[  242.524477] x17: 30363120726f6620 x16: 6f666e6920797469 x15: 6c696261706=
+16320
+[  242.531595] x14: 5948502054485620 x13: 0000000000000001 x12: 00000000000=
+00060
+[  242.538714] x11: ffffffc08126c6b0 x10: 0000000000000274 x9 : ffffffc0801=
+0468c
+[  242.545832] x8 : 00000000ffffdfff x7 : 00000000ffffe000 x6 : 00000000000=
+00001
+[  242.552949] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 00000000000=
+00000
+[  242.560067] x2 : ffffff80bff6de70 x1 : ffffff80bff640c8 x0 : 00000000000=
+00021
+[  242.567186] Call trace:
+[  242.574299]  ath12k_peer_assoc_h_phymode+0xd4/0x800 [ath12k] (P)
+[  242.576560]  ath12k_peer_assoc_prepare+0x5d4/0x1608 [ath12k]
+[  242.582809]  ath12k_mac_op_sta_state+0x1f4/0x1100 [ath12k]
+[  242.588451]  drv_sta_state+0xa0/0x5e0
+[  242.593745]  _sta_info_move_state+0x20c/0x4b8
+[  242.597477]  sta_info_move_state+0x18/0x28
+[  242.601817]  sta_apply_auth_flags.isra.0+0x190/0x1c0
+[  242.605812]  sta_apply_parameters+0x240/0x5e0
+[  242.610933]  ieee80211_change_station+0x164/0x200
+[  242.615187]  nl80211_set_station+0x3bc/0x520
+[  242.619874]  genl_family_rcv_msg_doit+0xbc/0x128
+[  242.624215]  genl_rcv_msg+0x1c0/0x260
+[  242.628815]  netlink_rcv_skb+0x40/0x100
+[  242.632373]  genl_rcv+0x3c/0x60
+[  242.636018]  netlink_unicast+0x2d8/0x338
+[  242.639144]  netlink_sendmsg+0x158/0x398
+[  242.643311]  ____sys_sendmsg+0x104/0x290
+[  242.647217]  ___sys_sendmsg+0x70/0xa0
+[  242.651123]  __sys_sendmsg+0x64/0xb0
+[  242.654682]  __arm64_sys_sendmsg+0x28/0x38
+[  242.658329]  do_el0_svc+0x70/0x100
+[  242.662234]  el0_svc+0x18/0x60
+[  242.665619]  el0t_64_sync_handler+0x104/0x130
+[  242.668659]  el0t_64_sync+0x154/0x158
+[  242.673086] ---[ end trace 0000000000000000 ]---
 
-These are also hard to read when they're misindented like that.
+It's probably there since v1 of thies series but I just finally got to the
+bottom of this now and I've tracked it down to the following hunk:
 
-> +#define MHI_TRE_GET_EV_BW_REQ_SEQ(tre)	FIELD_GET(GENMASK(15, 8), (MHI_TRE_GET_DWORD(tre, 0)))
-> +#define MHI_BW_SCALE_DB_ID(er_index)	FIELD_PREP(GENMASK(31, 25), er_index)
-> +
-> +#define MHI_BW_SCALE_RESULT(status, seq)	cpu_to_le32(FIELD_PREP(GENMASK(11, 8), status) | \
-> +						FIELD_PREP(GENMASK(7, 0), seq))
-> +#define MHI_BW_SCALE_NACK			0xF
-> +
->  enum mhi_pkt_type {
->  	MHI_PKT_TYPE_INVALID = 0x0,
->  	MHI_PKT_TYPE_NOOP_CMD = 0x1,
-> diff --git a/drivers/bus/mhi/host/init.c b/drivers/bus/mhi/host/init.c
-> index a7137a040bdce1c58c98fe9c2340aae4cc4387d1..9fe6020f7868ec8bd114d0d96edc9d17624cbac5 100644
-> --- a/drivers/bus/mhi/host/init.c
-> +++ b/drivers/bus/mhi/host/init.c
-> @@ -496,10 +496,53 @@ static int mhi_find_capability(struct mhi_controller *mhi_cntrl, u32 capability,
->  	return -ENXIO;
->  }
->  
-> +static int mhi_get_er_index(struct mhi_controller *mhi_cntrl,
-> +			    enum mhi_er_data_type type)
-> +{
-> +	struct mhi_event *mhi_event = mhi_cntrl->mhi_event;
-> +	int i;
-> +
-> +	/* Find event ring for requested type */
-> +	for (i = 0; i < mhi_cntrl->total_ev_rings; i++, mhi_event++) {
-> +		if (mhi_event->data_type == type)
-> +			return mhi_event->er_index;
-> +	}
-> +
-> +	return -ENOENT;
-> +}
-> +
-> +static int mhi_init_bw_scale(struct mhi_controller *mhi_cntrl,
-> +			     int bw_scale_db)
-> +{
-> +	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-> +	int ret, er_index, val;
-> +	u32 bw_cfg_offset;
-> +
-> +	ret = mhi_find_capability(mhi_cntrl, MHI_BW_SCALE_CAP_ID, &bw_cfg_offset);
-> +	if (ret)
-> +		return ret;
-> +
-> +	er_index = mhi_get_er_index(mhi_cntrl, MHI_ER_BW_SCALE);
-> +	if (er_index < 0)
-> +		return er_index;
-> +
-> +	bw_cfg_offset += MHI_BW_SCALE_CFG_OFFSET;
-> +
-> +	/* Advertise host support */
-> +	val = MHI_BW_SCALE_ENABLE(bw_scale_db, er_index);
-> +
-> +	mhi_write_reg(mhi_cntrl, mhi_cntrl->regs, bw_cfg_offset, val);
-> +
-> +	dev_dbg(dev, "Bandwidth scaling setup complete with event ring: %d\n",
-> +		er_index);
-> +
-> +	return 0;
-> +}
-> +
->  int mhi_init_mmio(struct mhi_controller *mhi_cntrl)
+> @@ -2822,11 +2883,12 @@ static enum wmi_phy_mode ath12k_mac_get_phymode_v=
+ht(struct ath12k *ar,
+>  						    struct ieee80211_link_sta *link_sta)
 >  {
->  	u32 val;
-> -	int i, ret;
-> +	int i, ret, doorbell = 0;
->  	struct mhi_chan *mhi_chan;
->  	struct mhi_event *mhi_event;
->  	void __iomem *base = mhi_cntrl->regs;
-> @@ -633,6 +676,16 @@ int mhi_init_mmio(struct mhi_controller *mhi_cntrl)
->  		return ret;
+>  	if (link_sta->bandwidth =3D=3D IEEE80211_STA_RX_BW_160) {
+> -		if (link_sta->vht_cap.cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ)
+> +		if (link_sta->vht_cap.cap & (IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ =
+|
+> +		    IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))
+>  			return MODE_11AC_VHT160;
+> =20
+>  		/* not sure if this is a valid case? */
+> -		return MODE_11AC_VHT160;
+> +		return MODE_UNKNOWN;
 >  	}
->  
-> +	if (mhi_cntrl->get_misc_doorbell)
-> +		doorbell = mhi_cntrl->get_misc_doorbell(mhi_cntrl, MHI_ER_BW_SCALE);
-> +
-> +	if (doorbell > 0) {
-> +		ret = mhi_init_bw_scale(mhi_cntrl, doorbell);
-> +		if (!ret)
-> +			mhi_cntrl->bw_scale_db = base + val + (8 * doorbell);
-> +		else
-> +			dev_warn(dev, "Failed to setup bandwidth scaling: %d\n", ret);
-> +	}
->  	return 0;
->  }
->  
-> @@ -778,6 +831,9 @@ static int parse_ev_cfg(struct mhi_controller *mhi_cntrl,
->  		case MHI_ER_CTRL:
->  			mhi_event->process_event = mhi_process_ctrl_ev_ring;
->  			break;
-> +		case MHI_ER_BW_SCALE:
-> +			mhi_event->process_event = mhi_process_bw_scale_ev_ring;
-> +			break;
->  		default:
->  			dev_err(dev, "Event Ring type not supported\n");
->  			goto error_ev_cfg;
-> @@ -1012,9 +1068,12 @@ int mhi_register_controller(struct mhi_controller *mhi_cntrl,
->  
->  		mhi_event->mhi_cntrl = mhi_cntrl;
->  		spin_lock_init(&mhi_event->lock);
-> +		mutex_init(&mhi_event->mutex);
->  		if (mhi_event->data_type == MHI_ER_CTRL)
->  			tasklet_init(&mhi_event->task, mhi_ctrl_ev_task,
->  				     (ulong)mhi_event);
-> +		else if (mhi_event->data_type == MHI_ER_BW_SCALE)
-> +			INIT_WORK(&mhi_event->work, mhi_process_ev_work);
->  		else
->  			tasklet_init(&mhi_event->task, mhi_ev_task,
->  				     (ulong)mhi_event);
-> diff --git a/drivers/bus/mhi/host/internal.h b/drivers/bus/mhi/host/internal.h
-> index ce566f7d2e9240c64044407aa4124ad3cdb98003..cf64adaecad2aeec8569da5276ec60dd7e97e5e0 100644
-> --- a/drivers/bus/mhi/host/internal.h
-> +++ b/drivers/bus/mhi/host/internal.h
-> @@ -248,6 +248,8 @@ struct mhi_event {
->  	struct mhi_ring ring;
->  	struct db_cfg db_cfg;
->  	struct tasklet_struct task;
-> +	struct work_struct work;
-> +	struct mutex mutex; /* lock for synchronization */
->  	spinlock_t lock;
->  	int (*process_event)(struct mhi_controller *mhi_cntrl,
->  			     struct mhi_event *mhi_event,
-> @@ -410,7 +412,8 @@ int mhi_process_data_event_ring(struct mhi_controller *mhi_cntrl,
->  				struct mhi_event *mhi_event, u32 event_quota);
->  int mhi_process_ctrl_ev_ring(struct mhi_controller *mhi_cntrl,
->  			     struct mhi_event *mhi_event, u32 event_quota);
-> -
-> +int mhi_process_bw_scale_ev_ring(struct mhi_controller *mhi_cntrl,
-> +				 struct mhi_event *mhi_event, u32 event_quota);
->  /* ISR handlers */
->  irqreturn_t mhi_irq_handler(int irq_number, void *dev);
->  irqreturn_t mhi_intvec_threaded_handler(int irq_number, void *dev);
-> @@ -426,5 +429,5 @@ void mhi_unmap_single_no_bb(struct mhi_controller *mhi_cntrl,
->  			    struct mhi_buf_info *buf_info);
->  void mhi_unmap_single_use_bb(struct mhi_controller *mhi_cntrl,
->  			     struct mhi_buf_info *buf_info);
-> -
-> +void mhi_process_ev_work(struct work_struct *work);
->  #endif /* _MHI_INT_H */
-> diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
-> index 9bb0df43ceef1e54e8817422516aab1def6fdc4a..f87e9550b59227947fc7268c5799eea274c66b98 100644
-> --- a/drivers/bus/mhi/host/main.c
-> +++ b/drivers/bus/mhi/host/main.c
-> @@ -472,7 +472,10 @@ irqreturn_t mhi_irq_handler(int irq_number, void *dev)
->  		if (mhi_dev)
->  			mhi_notify(mhi_dev, MHI_CB_PENDING_DATA);
->  	} else {
-> -		tasklet_schedule(&mhi_event->task);
-> +		if (mhi_event->data_type == MHI_ER_BW_SCALE)
-> +			queue_work(mhi_cntrl->hiprio_wq, &mhi_event->work);
-> +		else
-> +			tasklet_schedule(&mhi_event->task);
->  	}
->  
->  	return IRQ_HANDLED;
-> @@ -1049,6 +1052,99 @@ int mhi_process_data_event_ring(struct mhi_controller *mhi_cntrl,
->  	return count;
->  }
->  
-> +int mhi_process_bw_scale_ev_ring(struct mhi_controller *mhi_cntrl,
-> +				 struct mhi_event *mhi_event, u32 event_quota)
-> +{
-> +	struct mhi_event_ctxt *er_ctxt = &mhi_cntrl->mhi_ctxt->er_ctxt[mhi_event->er_index];
-> +	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-> +	struct mhi_ring *ev_ring = &mhi_event->ring;
-> +	dma_addr_t ptr = le64_to_cpu(er_ctxt->rp);
-> +	u32 response = MHI_BW_SCALE_NACK;
-> +	struct mhi_ring_element *dev_rp;
-> +	struct mhi_link_info link_info;
-> +	int ret = -EINVAL;
-> +
-> +	if (unlikely(MHI_EVENT_ACCESS_INVALID(mhi_cntrl->pm_state))) {
-> +		ret =  -EIO;
-> +		goto exit_bw_scale;
-> +	}
-> +
-> +	if (!MHI_IN_MISSION_MODE(mhi_cntrl->ee))
-> +		goto exit_bw_scale;
-> +
-> +	if (!is_valid_ring_ptr(ev_ring, ptr)) {
-> +		dev_err(dev,
-> +			"Event ring rp points outside of the event ring\n");
-> +		ret =  -EIO;
-> +		goto exit_bw_scale;
-> +	}
-> +
-> +	dev_rp = mhi_to_virtual(ev_ring, ptr);
-> +
-> +	/* If rp points to base, we need to wrap it around */
-> +	if (dev_rp == ev_ring->base)
-> +		dev_rp = ev_ring->base + ev_ring->len;
-> +	dev_rp--;
-> +
-> +	/* Fast forward to currently processed element and recycle er */
-> +	ev_ring->rp = dev_rp;
-> +	ev_ring->wp = dev_rp - 1;
-> +	if (ev_ring->wp < ev_ring->base)
-> +		ev_ring->wp = ev_ring->base + ev_ring->len - ev_ring->el_size;
-> +	mhi_recycle_ev_ring_element(mhi_cntrl, ev_ring);
-> +
-> +	if (WARN_ON(MHI_TRE_GET_EV_TYPE(dev_rp) != MHI_PKT_TYPE_BW_REQ_EVENT)) {
-> +		dev_err(dev, "!BW SCALE REQ event\n");
-> +		goto exit_bw_scale;
-> +	}
-> +
-> +	link_info.target_link_speed = MHI_TRE_GET_EV_LINKSPEED(dev_rp);
-> +	link_info.target_link_width = MHI_TRE_GET_EV_LINKWIDTH(dev_rp);
-> +	link_info.sequence_num = MHI_TRE_GET_EV_BW_REQ_SEQ(dev_rp);
-> +
-> +	dev_dbg(dev, "Received BW_REQ with seq:%d link speed:0x%x width:0x%x\n",
-> +		link_info.sequence_num,
-> +		link_info.target_link_speed,
-> +		link_info.target_link_width);
-> +
-> +	/* Bring host and device out of suspended states */
-> +	ret = mhi_device_get_sync(mhi_cntrl->mhi_dev);
-> +	if (ret)
-> +		goto exit_bw_scale;
-> +
-> +	mhi_cntrl->runtime_get(mhi_cntrl);
-> +
-> +	ret = mhi_cntrl->bw_scale(mhi_cntrl, &link_info);
-> +	if (!ret)
-> +		response = 0;
-> +
-> +	response = MHI_BW_SCALE_RESULT(response, link_info.sequence_num);
-> +
-> +	write_lock_bh(&mhi_cntrl->pm_lock);
-> +	mhi_write_reg(mhi_cntrl, mhi_cntrl->bw_scale_db, 0, response);
-> +	write_unlock_bh(&mhi_cntrl->pm_lock);
-> +
-> +	mhi_cntrl->runtime_put(mhi_cntrl);
-> +	mhi_device_put(mhi_cntrl->mhi_dev);
-> +
-> +exit_bw_scale:
-> +	return ret;
-> +}
-> +
-> +void mhi_process_ev_work(struct work_struct *work)
-> +{
-> +	struct mhi_event *mhi_event = container_of(work, struct mhi_event,
-> +						   work);
-> +
-> +	struct mhi_controller *mhi_cntrl = mhi_event->mhi_cntrl;
-> +
-> +	if (unlikely(MHI_EVENT_ACCESS_INVALID(mhi_cntrl->pm_state)))
-> +		return;
-> +
-> +	guard(mutex)(&mhi_event->mutex);
-> +	mhi_event->process_event(mhi_cntrl, mhi_event, U32_MAX);
-> +}
-> +
->  void mhi_ev_task(unsigned long data)
->  {
->  	struct mhi_event *mhi_event = (struct mhi_event *)data;
-> diff --git a/drivers/bus/mhi/host/pm.c b/drivers/bus/mhi/host/pm.c
-> index 2fb27e6f8f88ebc701dad56dd60844d8470dd418..8b518da4995d83a299f419908b3753e6b78c8803 100644
-> --- a/drivers/bus/mhi/host/pm.c
-> +++ b/drivers/bus/mhi/host/pm.c
-> @@ -523,7 +523,10 @@ static void mhi_pm_disable_transition(struct mhi_controller *mhi_cntrl,
->  		if (mhi_event->offload_ev)
->  			continue;
->  		disable_irq(mhi_cntrl->irq[mhi_event->irq]);
-> -		tasklet_kill(&mhi_event->task);
-> +		if (mhi_event->data_type == MHI_ER_BW_SCALE)
-> +			cancel_work_sync(&mhi_event->work);
-> +		else
-> +			tasklet_kill(&mhi_event->task);
->  	}
->  
->  	/* Release lock and wait for all pending threads to complete */
-> @@ -670,7 +673,10 @@ static void mhi_pm_sys_error_transition(struct mhi_controller *mhi_cntrl)
->  	for (i = 0; i < mhi_cntrl->total_ev_rings; i++, mhi_event++) {
->  		if (mhi_event->offload_ev)
->  			continue;
-> -		tasklet_kill(&mhi_event->task);
-> +		if (mhi_event->data_type == MHI_ER_BW_SCALE)
-> +			cancel_work_sync(&mhi_event->work);
-> +		else
-> +			tasklet_kill(&mhi_event->task);
->  	}
->  
->  	/* Release lock and wait for all pending threads to complete */
-> diff --git a/include/linux/mhi.h b/include/linux/mhi.h
-> index dd372b0123a6da5107b807ff8fe940c567eb2030..2041bbb2e2396eb2e19e6bc0a5e981aa2917ebdd 100644
-> --- a/include/linux/mhi.h
-> +++ b/include/linux/mhi.h
-> @@ -102,10 +102,12 @@ struct image_info {
->   * struct mhi_link_info - BW requirement
->   * target_link_speed - Link speed as defined by TLS bits in LinkControl reg
->   * target_link_width - Link width as defined by NLW bits in LinkStatus reg
-> + * sequence_num - used by device to track bw requests sent to host
->   */
->  struct mhi_link_info {
->  	unsigned int target_link_speed;
->  	unsigned int target_link_width;
-> +	int sequence_num;
->  };
->  
->  /**
-> @@ -183,10 +185,12 @@ enum mhi_ch_ee_mask {
->   * enum mhi_er_data_type - Event ring data types
->   * @MHI_ER_DATA: Only client data over this ring
->   * @MHI_ER_CTRL: MHI control data and client data
-> + * @MHI_ER_BW_SCALE: MHI controller bandwidth scale functionality
->   */
->  enum mhi_er_data_type {
->  	MHI_ER_DATA,
->  	MHI_ER_CTRL,
-> +	MHI_ER_BW_SCALE,
->  };
->  
->  /**
-> @@ -299,6 +303,7 @@ struct mhi_controller_config {
->   * @bhi: Points to base of MHI BHI register space
->   * @bhie: Points to base of MHI BHIe register space
->   * @wake_db: MHI WAKE doorbell register address
-> + * @wake_db: MHI BW_SCALE doorbell register address
->   * @iova_start: IOMMU starting address for data (required)
->   * @iova_stop: IOMMU stop address for data (required)
->   * @fw_image: Firmware image name for normal booting (optional)
-> @@ -355,6 +360,8 @@ struct mhi_controller_config {
->   * @write_reg: Write a MHI register via the physical link (required)
->   * @reset: Controller specific reset function (optional)
->   * @edl_trigger: CB function to trigger EDL mode (optional)
-> + * @get_misc_doobell: function to get doorbell used for MISC feature like BW scale etc (optional)
-> + * @bw_scale: CB function for passing BW scale info (optional)
->   * @buffer_len: Bounce buffer length
->   * @index: Index of the MHI controller instance
->   * @bounce_buf: Use of bounce buffer
-> @@ -376,6 +383,7 @@ struct mhi_controller {
->  	void __iomem *bhi;
->  	void __iomem *bhie;
->  	void __iomem *wake_db;
-> +	void __iomem *bw_scale_db;
->  
->  	dma_addr_t iova_start;
->  	dma_addr_t iova_stop;
-> @@ -440,6 +448,11 @@ struct mhi_controller {
->  	void (*reset)(struct mhi_controller *mhi_cntrl);
->  	int (*edl_trigger)(struct mhi_controller *mhi_cntrl);
->  
-> +	int (*get_misc_doorbell)(struct mhi_controller *mhi_cntrl,
-> +				 enum mhi_er_data_type type);
-> +	int (*bw_scale)(struct mhi_controller *mhi_cntrl,
-> +			struct mhi_link_info *link_info);
-> +
->  	size_t buffer_len;
->  	int index;
->  	bool bounce_buf;
-> 
-> 
+> =20
+>  	if (link_sta->bandwidth =3D=3D IEEE80211_STA_RX_BW_80)
 
--- 
- i.
+Which led me to understand that a sta that supports both VHT 160 and 80+80 =
+ie
+IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ will end up with a phy mo=
+de
+MODE_UNKNOWN send to the firmware. Which I guess is the reason of the crash=
+.
 
+I understand that VHT 80+80 is not supported by this chipset, but shouldn't=
+ we
+just allow the sta to connect using VHT 160 right ? Something like this may=
+be ?
+
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/a=
+th/ath12k/mac.c
+index 048d62a48c88..d3a87af076e7 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -3041,7 +3041,7 @@ static enum wmi_phy_mode ath12k_mac_get_phymode_vht(s=
+truct ath12k *ar,
+ 						    struct ieee80211_link_sta *link_sta)
+ {
+ 	if (link_sta->bandwidth =3D=3D IEEE80211_STA_RX_BW_160) {
+-		if (link_sta->vht_cap.cap & (IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
++		if (link_sta->vht_cap.cap & (IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK |
+ 		    IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))
+ 			return MODE_11AC_VHT160;
 
