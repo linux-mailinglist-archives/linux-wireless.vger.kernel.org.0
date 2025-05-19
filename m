@@ -1,173 +1,165 @@
-Return-Path: <linux-wireless+bounces-23137-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23138-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF88ABB5E2
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 09:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C52BABB635
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 09:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B431177F16
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 07:13:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF1381752F8
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 May 2025 07:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575FD266B52;
-	Mon, 19 May 2025 07:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hmxJHsqX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C612676EB;
+	Mon, 19 May 2025 07:33:08 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C331F1507;
-	Mon, 19 May 2025 07:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9125A267396;
+	Mon, 19 May 2025 07:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747638781; cv=none; b=Mz7C+D6PbUo8q9mgCOkJWem3w2khQvCTfI91jQfbNqXZS0WKOrSUWnrWZ8/9NMuhtuzJ82TxXxarMOTL+YN9FdyUDh5TQd45HN1GnA2mE6ZLkP+yANeiwRCpCdAVWJM6MrkbFTZf7n5E1KSJ0bIwOvmJvOV5RnczgFqmgg8QBZE=
+	t=1747639988; cv=none; b=Yey7BTaMbxWdaqGQkdjYl1GDIBq+s/opVC44OMQdFDuvhLnFsvwgiwLJt5FctswN6FTwGnt3HJs9W+S8SKvDaDSa+ITDSi6HmSISMaDCbdyQY0ao/2fCSW+k00ERrU1/Z5rIhEvtwbvu1XKmee/A24qO4VSh5Rto5TTDZakpBp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747638781; c=relaxed/simple;
-	bh=7/SWLXW5Hy6DaiAx0ceb1uY2JzdxPxmqQ8x1Y1jN5VE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jl5+E6k3qCWGAg+5A/fcSnqfm2QTrlrRdAfDoUWBR5V6cwMzNUqvcYEI+eFsERiKT8cwy/noWwfG12m+/IGiutbDqHFIctrmdlTpdDNhCiKtke1ew6WUB1bJvmHYcoLe2fJTJ5QtdmuxcihKNRtPY8kF7b6/2ddDaD3Hboiv/aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hmxJHsqX; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747638780; x=1779174780;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7/SWLXW5Hy6DaiAx0ceb1uY2JzdxPxmqQ8x1Y1jN5VE=;
-  b=hmxJHsqXrJwZV/ar1cPbNDdWTuz2eGKFeiuMN8+558eqJgnMrzkp7Iy4
-   9A5465w6nrEcP/0pyBpCZPQK8yFpRABlCcRF+wrJHqcF74YJRoUGAmpVB
-   nwkQUd6yBKcInW5UqVMKTcyDRO57woBRm3ZUzdEo9NIAmFvcC5ogQq8P2
-   yuB+7uVXEAVEQwKFE42/QcS93C2hiBYnNYRjVZTXJWndNM/CuutkSptz9
-   izzCMEnx0ZuFW76s0AkPbZuuhbI2qW2gevBWBgn3aM+uTkSIrjyMGEOIu
-   XN5WOg37q4qFC+HswLDYVhVZgeWX5jovAFbMi9ZuJ9t0M1EjY5hoP5s2L
-   A==;
-X-CSE-ConnectionGUID: ZUqo5DFwTCObKj/5c5PLAw==
-X-CSE-MsgGUID: 068ZW2KNSpOX4xhOrmAcXA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11437"; a="37142812"
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
-   d="scan'208";a="37142812"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 00:12:59 -0700
-X-CSE-ConnectionGUID: TPxZaDTwQjG4bRil4Fs00A==
-X-CSE-MsgGUID: 3XDW3SxGQiOJ1pnp0+rzZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
-   d="scan'208";a="139700215"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 19 May 2025 00:12:56 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uGugA-000LFH-0G;
-	Mon, 19 May 2025 07:12:54 +0000
-Date: Mon, 19 May 2025 15:12:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wentao Liang <vulab@iscas.ac.cn>, ajay.kathat@microchip.com,
-	claudiu.beznea@tuxon.dev, kvalo@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: wilc1000: Add error handling for
- wilc_sdio_cmd52()
-Message-ID: <202505191448.OycntzLM-lkp@intel.com>
-References: <20250519014434.901-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1747639988; c=relaxed/simple;
+	bh=jz37jXkqFlTdllQA2QcYD917Kx1k3Z4qHcOyFzR/TX8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gO14Ke82c7oNxLrikkpKFET53a4NS8w7a8AKLmSbhNz73oQvA/4P1KqFWjXG/da1mTWDuQJdT2TCcPUhQFXasBPqa/7JDcHXB/wB5etfj3B+k82rbpltP3/hU1QRuPVh5X9Abh8VxAhfKIybZ7dgUu0DrAgjNauna5NCqp4vsek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5259327a93bso1273815e0c.2;
+        Mon, 19 May 2025 00:33:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747639984; x=1748244784;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J3qgKwHLt5P4bRuuOKVpHIxKeEfaWTv63kxyj0yKhe8=;
+        b=bBUBkcUQdlETh0l8OIG+WQAfIHLDcaMlBoXi9NGfpCJXmFtbNLaOKVuOzRNBYcqQDi
+         EfkzT5jN4V0JCyl8GIi1yu/p7rxtYkgEypaN32P519eUbFbV47U1wJJfDeCryef7yduH
+         DKvlKR9FnUYGEJijhU5n2LNIcdJjUUSWIF8cSWFjEZnyLwOAaW79p1gYFbftdPgt6Nn9
+         ZUnb/rfw/wHz+zpFt/DKfoQeInQnL7fT+UBm50rlJ1c2FIiNuK4qrbhrL98cVid4kHhC
+         NMCiL0ai45X+vSiSGvKywiknMH5u8jO37JIkK8vhYlOCmp+h3DrOLBQnd7MbBLAWmd7l
+         Y0Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCUbhUlZyxasuuOxwfaRa6jVEBWmnH65ojIDYkZRWedxacxQIvPtjLU4Dw6VR0EmMHj+QrD1kHqq9c7TxvI=@vger.kernel.org, AJvYcCW/trhayuGYDx5e6nr+wkXiYBPZkGb3wkhhaWrXdDEbUfSnCL9y5xEe5Rh2pNQOMXHOUeySVUUO@vger.kernel.org, AJvYcCWCNhINTkHTr8tUdYVoUY2r5RdKNNFJeNYhiyFJhgnO07hh9NTJgUTiw6dsrlzYlyBLmIhhIhh0LRVnUUES7GU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzVhegeVenb1zT6s41DmrarwoZqxTDJFMrhLWMrP0k/t16X1Fh
+	fsrovhA8gKWeEebVWA7seSGcJhDszuk7+Tjg/OeNrIXL+2ivAORYRxdT/za7pbpJ
+X-Gm-Gg: ASbGnctTP7X3E+QiU7JRqTb1sLRHAVItOWuHr0ZTHHv5lUfOh97423wK+j4KQ4YeX4a
+	tZVttXLsUl3uAWOhFbcpdoD2Bdta/10/nJJiXmx8rZKqzkUcVCdbGkLycQOXT2O6rlYK+t5HeYp
+	Y7qxfpQju9QWzuadLjgrn57wJTbycV2zLbw0eXQQl3n5jaBPtkw5NQpUGkkog47KkcaHne2czbO
+	J0l0CzY+LB56CQllVGrf9t+kp2zk73zfhDsoMqJrdw9kRbob27hmO8RrwPl0TlNnKmzNO2IFmEg
+	BJzYsSFkpRyLabqEGae/m3vya9up+pPC5T4F/Pco5h0cd2HmTLptdwTA7qdKbGzUU79XNI5S7Yh
+	HOi78y/MojgiXXg==
+X-Google-Smtp-Source: AGHT+IFpIS/CvTbnNT+e9lasiTIcvTFpICG4kZhikG4xBdDIIJ3TlQOTifqNK3w1H/ZtoYuItfx0JQ==
+X-Received: by 2002:a05:6122:4317:b0:520:6773:e5bf with SMTP id 71dfb90a1353d-52dba800001mr9095958e0c.1.1747639984486;
+        Mon, 19 May 2025 00:33:04 -0700 (PDT)
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com. [209.85.217.45])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-52dbab6b275sm6194781e0c.39.2025.05.19.00.33.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 May 2025 00:33:04 -0700 (PDT)
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-4e2534c08a5so556245137.1;
+        Mon, 19 May 2025 00:33:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWt1AoynpW+6b51yaugVwSaR5ja4ltJjEEIpbt6QT7Vs6BQ3E5Fr3uezcrWe9y5EI30Ag//qCknzW9CsQ8cWMk=@vger.kernel.org, AJvYcCX1V7u4v0aTnqb8FrJsBE5tkFJEBHCyn2BFjoHPZVNhX7m3ZxNgaJKNu2DPEGsrTnZmF7vESJcvs/z8GXg=@vger.kernel.org, AJvYcCXrsK14Xgi9E1j8rBLsGFfgsQz7vqnn0QvZE/mWxWluyzzQPwnj559MqbRe+d7nkRtiP0RgcIdI@vger.kernel.org
+X-Received: by 2002:a05:6102:50a4:b0:4c1:7ece:88d9 with SMTP id
+ ada2fe7eead31-4dfa6c431c4mr10663276137.21.1747639983678; Mon, 19 May 2025
+ 00:33:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250519014434.901-1-vulab@iscas.ac.cn>
+References: <20250516083842.903-1-vulab@iscas.ac.cn>
+In-Reply-To: <20250516083842.903-1-vulab@iscas.ac.cn>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 19 May 2025 09:32:51 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV=96tSH77P9Gqr1M3VfiKB9jYCeJDDFCNq_TGdYb0vFQ@mail.gmail.com>
+X-Gm-Features: AX0GCFtZWuEUgkZTPTuuMD1TIn0WiwNaXw3_TLGkuFPdIiaP9JAMXSxC6tz5Ais
+Message-ID: <CAMuHMdV=96tSH77P9Gqr1M3VfiKB9jYCeJDDFCNq_TGdYb0vFQ@mail.gmail.com>
+Subject: Re: [PATCH] wifi: wilc1000: Add error handling for wilc_sdio_cmd52()
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: ajay.kathat@microchip.com, claudiu.beznea@tuxon.dev, kvalo@kernel.org, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
 Hi Wentao,
 
-kernel test robot noticed the following build errors:
+Thanks for your patch!
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master v6.15-rc7 next-20250516]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On Fri, 16 May 2025 at 10:39, Wentao Liang <vulab@iscas.ac.cn> wrote:
+> The wilc_sdio_read_size() calls wilc_sdio_cmd52() but does not check the
+> return value. This could lead to execution with potentially invalid data
+> if wilc_sdio_cmd52() fails. A proper implementation can be found in
+> wilc_sdio_read_reg().
+>
+> Add error handling for wilc_sdio_cmd52(). If wilc_sdio_cmd52() fails,
+> log an error message via dev_err().
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/wifi-wilc1000-Add-error-handling-for-wilc_sdio_cmd52/20250519-094706
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20250519014434.901-1-vulab%40iscas.ac.cn
-patch subject: [PATCH v2] wifi: wilc1000: Add error handling for wilc_sdio_cmd52()
-config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20250519/202505191448.OycntzLM-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250519/202505191448.OycntzLM-lkp@intel.com/reproduce)
+There is no need to print an error message, as wilc_sdio_cmd52()
+already does that. Same with the existing wilc_sdio_read_reg(), and
+with all of its callers, which leads to multiple error messages for
+a single failure.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505191448.OycntzLM-lkp@intel.com/
+> Fixes: 0e1af73ddeb9 ("staging/wilc1000: use proper naming for global symbols")
 
-All errors (new ones prefixed by >>):
+This is not the commit you are looking for...
 
->> drivers/net/wireless/microchip/wilc1000/sdio.c:789:2: error: use of undeclared identifier 'ret'
-     789 |         ret = wilc_sdio_cmd52(wilc, &cmd);
-         |         ^
-   drivers/net/wireless/microchip/wilc1000/sdio.c:790:6: error: use of undeclared identifier 'ret'
-     790 |         if (ret) {
-         |             ^
-   drivers/net/wireless/microchip/wilc1000/sdio.c:792:10: error: use of undeclared identifier 'ret'
-     792 |                 return ret;
-         |                        ^
-   drivers/net/wireless/microchip/wilc1000/sdio.c:798:2: error: use of undeclared identifier 'ret'
-     798 |         ret = wilc_sdio_cmd52(wilc, &cmd);
-         |         ^
-   drivers/net/wireless/microchip/wilc1000/sdio.c:799:6: error: use of undeclared identifier 'ret'
-     799 |         if (ret) {
-         |             ^
-   drivers/net/wireless/microchip/wilc1000/sdio.c:801:10: error: use of undeclared identifier 'ret'
-     801 |                 return ret;
-         |                        ^
-   6 errors generated.
+> Cc: stable@vger.kernel.org # v4.15
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
+> --- a/drivers/net/wireless/microchip/wilc1000/sdio.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
+> @@ -771,6 +771,8 @@ static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
+>  {
+>         u32 tmp;
+>         struct sdio_cmd52 cmd;
+> +       struct sdio_func *func = dev_to_sdio_func(wilc->dev);
+> +       int ret;
+>
+>         /**
+>          *      Read DMA count in words
+> @@ -780,12 +782,20 @@ static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
+>         cmd.raw = 0;
+>         cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG;
+>         cmd.data = 0;
+> -       wilc_sdio_cmd52(wilc, &cmd);
+> +       ret = wilc_sdio_cmd52(wilc, &cmd);
+> +       if (ret) {
+> +               dev_err(&func->devm, "Fail cmd 52, interrupt data register...\n");
 
-vim +/ret +789 drivers/net/wireless/microchip/wilc1000/sdio.c
+Looks like the AI wasn't trained properly.  Please try to (at least)
+test-compile your patches.
 
-   774	
-   775	static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
-   776	{
-   777		u32 tmp;
-   778		struct sdio_cmd52 cmd;
-   779		struct sdio_func *func = dev_to_sdio_func(wilc->dev);
-   780	
-   781		/**
-   782		 *      Read DMA count in words
-   783		 **/
-   784		cmd.read_write = 0;
-   785		cmd.function = 0;
-   786		cmd.raw = 0;
-   787		cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG;
-   788		cmd.data = 0;
- > 789		ret = wilc_sdio_cmd52(wilc, &cmd);
-   790		if (ret) {
-   791			dev_err(&func->dev, "Fail cmd 52, interrupt data register...\n");
-   792			return ret;
-   793		}
-   794		tmp = cmd.data;
-   795	
-   796		cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG + 1;
-   797		cmd.data = 0;
-   798		ret = wilc_sdio_cmd52(wilc, &cmd);
-   799		if (ret) {
-   800			dev_err(&func->dev, "Fail cmd 52, interrupt data register...\n");
-   801			return ret;
-   802		}
-   803		tmp |= (cmd.data << 8);
-   804	
-   805		*size = tmp;
-   806		return 0;
-   807	}
-   808	
+> +               return ret;
+> +       }
+>         tmp = cmd.data;
+>
+>         cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG + 1;
+>         cmd.data = 0;
+> -       wilc_sdio_cmd52(wilc, &cmd);
+> +       ret = wilc_sdio_cmd52(wilc, &cmd);
+> +       if (ret) {
+> +               dev_err(&func->devm, "Fail cmd 52, interrupt data register...\n");
+
+Likewise.
+
+> +               return ret;
+> +       }
+>         tmp |= (cmd.data << 8);
+>
+>         *size = tmp;
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
