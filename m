@@ -1,124 +1,90 @@
-Return-Path: <linux-wireless+bounces-23171-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23172-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515DDABCF0B
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 May 2025 08:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B13F2ABD21B
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 May 2025 10:36:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A3497A99E6
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 May 2025 06:13:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 994C97AC419
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 May 2025 08:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A4C25C803;
-	Tue, 20 May 2025 06:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A424212FB7;
+	Tue, 20 May 2025 08:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l89EImAP"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Ku+Eph+9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FFC25B1D2;
-	Tue, 20 May 2025 06:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A179021CC48
+	for <linux-wireless@vger.kernel.org>; Tue, 20 May 2025 08:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747721664; cv=none; b=A41fOU3ZA1jNGks+RVKs1aqC0J6t4mjdRdYfxl6rUSQM7+cwrADQ1FDPWfd3i43Wa8QniOx3zBMTVbgRbtgk4bWZgMTP9VRSPQQkCxsf7ImcQ6yUgiabQvxLozfGRBbNOTlTgjGpnD34sTR0kiFuwXpMYUJ3SDInBSgSdmDCnDM=
+	t=1747730205; cv=none; b=R99LEvMsG8vrdgkKsK/lLoBbgjUgU66BfnHVlbcjhl57S76z6NVR/MbMu7xgdujxjtCgMum0MLg4ceQ0pCsferTcydE9+OgmemzBXDRpZkiuGi3MIxBGMYi+gTKIdVXn/idik/QBEDZHrX7qfdSuUGcSH6gUmtGBzpVfCfSYiwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747721664; c=relaxed/simple;
-	bh=GjK6KCDRvwmZFOi3zazPKZde1fTZF4GSJtSxDNaBoWs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cTQ+ADb8zU58eNGIOSY8ddz4PrXhcO0rl8SfaMQVAvlQqQB3WBW9WQ4kGLBbspqKCKZXlWeUVYTTIc3wtkYF8Yf1UtMn0ayVwihEjvl0m+3cAj3NMCismeYmB1xyN+KR07HgLPLZqa1J2GFdgwsCcGeIPttdB+7sp13vO670+uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l89EImAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B1CC4CEE9;
-	Tue, 20 May 2025 06:14:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747721663;
-	bh=GjK6KCDRvwmZFOi3zazPKZde1fTZF4GSJtSxDNaBoWs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l89EImAPLxMnMCZWnDFoePo6clGnpmzPikXJygneptBfHRt+cm8mI68Au1hZorKNa
-	 FB2tXI/bKtLSMuiFVPR28Qzxxh6xt5Z69a3C9aVl/cBrzASWwxXpBzmNTxRR0gxmIk
-	 7bsVSOtdWlw/tBz05O8WwjFvXX+RxywIOHLufth51xrqVpiRffxEt38At41qVYeccx
-	 1LXz3hQ59TQ3oJ9qZiDaXBzfnVZl1tBIN/LGj4NG6lVCncj2reGcYFt03CP+MlbXGc
-	 iZsnlvC3fIGJ6kuvez6gABHnBXA0px6NZCHwQoXC3TUqz8cApPST/4czi2P3d/F865
-	 nvQqPzn7zubgQ==
-Message-ID: <74d24ca3-db40-4788-952b-316b1c101b85@kernel.org>
-Date: Tue, 20 May 2025 08:14:19 +0200
+	s=arc-20240116; t=1747730205; c=relaxed/simple;
+	bh=MZPvg3Ynji32q0uvpW3ijSSgKiUOG0VLcPxeyEXy4d4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=B66QWQArkvx3vsOoFlLeEWVhOWAzfABPVm8YUDYHDD3bbIOfWykGkl9lNbqXrjLnGr10m8/tcsPXUODa5Okrkhrhi9mQj4ODTrKLnQwHUjOpodOusLETCslzQkk+scy1n7b0xSCIxwShg/T8U4WjQHyBhATCMoL22+0PZ2iWBeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Ku+Eph+9; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=keV/abDRj4pAIs66OLto54KFFMfQz8LZm9zTGohMrbQ=;
+	t=1747730203; x=1748939803; b=Ku+Eph+9Dm6yV5U0KecV1Oyie9xtrJHiYS5LxnbI+VAQVqr
+	tcHeAba765RYd6See75MDY7Ps7ou4bz2YUaPI4wNGT6NPp3SqQQU0ZPOTLTntOqStBKfCA0iDZlHE
+	yrkalprjNJlY/KJI5dWTBOGLi6s2uvscEcSIzjZ4pOmaNXaaklP9ER+VmgyMvRJZjoYL66WvzUNZt
+	4mSYIUIWnzoWPCWDopHemAS4UVE8a2gIdQSM43Wb9i8uDR2V37sdCo3qXHOwQH7q345K61dSm7McY
+	8F/bFxcb+RQoJB4/NzRisjkwMXhDAiSSVtFDkUaCk5ADViD/1/lT4/AkEnu4oQZA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uHISe-0000000Ap74-1t16;
+	Tue, 20 May 2025 10:36:32 +0200
+Message-ID: <ff2c4100a53e14c0e7c226b4d20f11a72fca3308.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v8 03/10] wifi: cfg80211: extend to embed
+ link level statistics in NL message
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Sarika Sharma <quic_sarishar@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Tue, 20 May 2025 10:36:31 +0200
+In-Reply-To: <999eb0ee-f49b-4ea8-93e6-78e3c2fe5e8c@quicinc.com>
+References: <20250515054904.1214096-1-quic_sarishar@quicinc.com>
+	 <20250515054904.1214096-4-quic_sarishar@quicinc.com>
+	 <16406ee04378160b2f9cc8f4ff5a233c45be2e94.camel@sipsolutions.net>
+	 <999eb0ee-f49b-4ea8-93e6-78e3c2fe5e8c@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v2 1/5] dt-bindings: net: wireless: add ath12k
- wifi device IPQ5424
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
- Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ath12k@lists.infradead.org
-References: <20250518-ath12k-ipq5424-v2-0-ef81b833dc97@quicinc.com>
- <20250518-ath12k-ipq5424-v2-1-ef81b833dc97@quicinc.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250518-ath12k-ipq5424-v2-1-ef81b833dc97@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-On 18/05/2025 20:22, Raj Kumar Bhagat wrote:
-> Add the device-tree bindings for the ATH12K AHB wifi device IPQ5424.
-> 
-> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-> ---
->  Documentation/devicetree/bindings/net/wireless/qcom,ipq5332-wifi.yaml | 1 +
->  1 file changed, 1 insertion(+)
+On Thu, 2025-05-15 at 22:28 +0530, Sarika Sharma wrote:
+>=20
+> Yes, this is needed when we don't really want to report the pertid at=20
+> MLO level( as currently pertid is one of links data(deflink) for MLO).
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+I'm not sure it makes sense at all. Why would we have mac80211 provide
+some data that we then discard immediately? Maybe we can
 
-Best regards,
-Krzysztof
+ if (WARN_ON(pertid_data)) {
+    kfree(pertid_data);
+    pertid_data =3D NULL;
+ }
+
+for userspace consistency, but I think we should really avoid doing work
+to create data that doesn't make sense and isn't needed.
+
+johannes
+
 
