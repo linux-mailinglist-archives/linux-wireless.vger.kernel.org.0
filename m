@@ -1,53 +1,55 @@
-Return-Path: <linux-wireless+bounces-23250-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23251-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A95EABFFF2
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 00:46:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1654AABFFF3
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 00:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A66B9E1E06
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 22:45:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 477C81BC4521
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 22:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD101EA65;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD0A23A562;
 	Wed, 21 May 2025 22:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NyTpefuP"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gwsO0461"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA2A2376E4
-	for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 22:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9B523506D
+	for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 22:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747867559; cv=none; b=Ot8CO3frGPdzULDxkXn0IOgpH6oIMC2FI7qFRbRyq79av6j3ajDrAQ66HpA3uDsh6B1r93u7mpL1EtwJsdumMTZmaXcS2dCJxQggqK/GrUYrIwqCLs0QzO9TQjhAfYBTsfKPRlzOCJl+qcC1lA9zEx4+9Y6SL6eWPxQQov8DGQA=
+	t=1747867559; cv=none; b=QXLrpE5trQYq3qZVPuAYdZ8IfmZi7XatjLyxn+9IZXmAWvPsCpT2EOrmLKoTKXH1gxwInwHzxiiwzDveDdYBFh2FGnxhAgdJlTBf1yChfW7+YndhKTtca3rP8z+Zt8QK48/n7gpmFEWkKGmxkG1DKIkCHgAZjD///ttubaAe2gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747867559; c=relaxed/simple;
-	bh=XTUWrdzEJym/rTnjr46c//5p58Mu5Y/AWdbpj65e/oI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KMDo5eStsqksHnrxmYyf60Wg4O8cjZDkEti98rsapwj8En/539lghW8duqLaYg/coo4N0IUq2bux4dVcQhqSdVHkxeOYraeWQG+tBALopeZaQ11iGwfYr1EWqQ+yTEtT6Yk+Z+eqSDD4sM9+UoRWQfFYKkyBlpLdMCSgHxiZx+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NyTpefuP; arc=none smtp.client-ip=205.220.180.131
+	bh=wlnSlGktw4cBYqpNPJwSPfG4fkld5ABcJ0NmmjY/jLg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A4dIxT87Fh9Y97+jvDIVTPlA5cnixK5ZcCAl5lklS0dCWBpo0QkFFiYyRUSKso7kYaT6KFazofkMt8A2z/fDgN8gVZgqEkaXDFSRjqNWCtoplSK7qYryl88snzbQvzD52CbWKkX8yu2Qmd98HFrl2kg69o1e4wzXVcNc+fehea8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gwsO0461; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54LJ0GR3011336;
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54LIZCMW000836;
 	Wed, 21 May 2025 22:45:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=SkBtOb6ERC41NqMKxpZepS
-	28MVVqnTvaZ4PXI3QW3VI=; b=NyTpefuPmvEqLmP056Lm9bVVYPiH4mQgxN5Kgg
-	BjBV7xTG7VFq9t/Zn5j0XQzxuqcBa5w+KTlHzSB6C1kXzIpjVAvQ48GG3W/VNmkS
-	22Wl82TL2JeizAP7J42ruhQQmnKKeG0tfvR3DyRmiqU8ohjH1qlmVBfhMrVr2NdU
-	3W1WxwCVsDrmLjzUkapPiwEz4hbaREJH2V9lj1Sg6xxP1OjxuyERIWTGiEpNw1q/
-	cVfJf3tcg/RQTusbbLrE0oVO09k6o/IScocMTJP2A3NGuZSNq3MHBl456/Nb6Ql5
-	JjE9hovWbD3CFBqNg+el2RwVsZLEH+ygUGLMrRTxshc/2qmg==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwfb4b3u-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	jJ/9931jjDg+8neUbH09oigyzQwINmgJKgsYw6rWwPU=; b=gwsO0461NDm4hzMy
+	/aP5LNjbfqB08SmlMEzcZ/MRNS7Ffjdvz9gsUyJR4DOilx71C5MvB0ZBvxEJF6pg
+	qcU4QPZtOzyixWx+3vL6eh4Sdt/RN5AD/6U6TJEZCPwdJNLMD5uB2OQjP87NG9Wj
+	2aEs+kb//lRXz6Gy5d7CCDW3+1KSDzgIg/cYJecPjWsMKbyCxTeFTIkkdonetQyz
+	PSzkIDi3IBnca94koYTQyFTVvpUVHpC3QAq+jM9+xQJOItRbDHZjdPjLG6q1ML4W
+	zYHODhd8LupxL323rnWJQxtYu5Ver7g2LgPW3npNz/JEdF2Hq9b8G0w5U8qVJVHr
+	2nNuUA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf6vbsd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 May 2025 22:45:52 +0000 (GMT)
+	Wed, 21 May 2025 22:45:53 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54LMjqqk027086
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54LMjqLl023280
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 21 May 2025 22:45:52 GMT
 Received: from ath12k-linux2.qualcomm.com (10.80.80.8) by
@@ -58,11 +60,16 @@ From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
         Pradeep Kumar Chitrapu
-	<quic_pradeepc@quicinc.com>
-Subject: [PATCH ath-next V14 0/9] wifi: ath12k: add MU-MIMO and 160 MHz bandwidth support
-Date: Wed, 21 May 2025 15:45:30 -0700
-Message-ID: <20250521224539.355985-1-quic_pradeepc@quicinc.com>
+	<quic_pradeepc@quicinc.com>,
+        Muna Sinada <quic_msinada@quicinc.com>,
+        "Jeff
+ Johnson" <quic_jjohnson@quicinc.com>
+Subject: [PATCH ath-next V14 1/9] wifi: ath12k: push HE MU-MIMO params to hardware
+Date: Wed, 21 May 2025 15:45:31 -0700
+Message-ID: <20250521224539.355985-2-quic_pradeepc@quicinc.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250521224539.355985-1-quic_pradeepc@quicinc.com>
+References: <20250521224539.355985-1-quic_pradeepc@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,112 +82,405 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 1Ed1cKzVoXEGqLcj5Djrm3eREqLkLlE5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIxMDIyNiBTYWx0ZWRfX9Y8kVJABjWWu
- knFNdsV/Bx6CBLh4keYMI+ddVkPEzdf8O/8UNqINuJMhyMEh7gADFuSP6DnY9GF3aGNdEX0JN6n
- n/np7kwdazOqQf4YX0DUohsPTGW3cev6Xaby0j4xHYct2SSFXHu/jhj2J0WOKmOWYMSRa8j2hDx
- Q9Yy98PSUOTnOfSbvmDYj6Z96oA9sTCIzNRMh062GCYkeL0MHe9GSOHPe/ai8Joz8254hlyvhwV
- c6IFtMzTPP+xoiUEq0S+Wzjorysgk1KkcjplhmY/dYCDhJIoUsJdQI/alh2GE3AdeL9Akqws1z/
- rUfCJvO4W7RV2J4TJjmleVI5woxcBPoW2ngq8nCwKSkNRe4qKdIKvnU/fLyNuFXUTIYKqC08Fuw
- NLhCqarcFnXjPcL/3u/5UfIJJHdLqbjZ384JI/W6C62HYq0n5sQFm/cPTL9KgnSZ6WU5eLOn
-X-Proofpoint-GUID: 1Ed1cKzVoXEGqLcj5Djrm3eREqLkLlE5
-X-Authority-Analysis: v=2.4 cv=dLCmmPZb c=1 sm=1 tr=0 ts=682e57a1 cx=c_pps
+X-Proofpoint-GUID: Zzf2Q5y4JzSN5f1E_vlCnvLRODG4zasa
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIxMDIyNiBTYWx0ZWRfXyLZVeJQcQf0U
+ B/O6/0+L+1nXg6SAFSC1bdc8B/eF8RxRnvbbX+YkF3RG14/UHGCF654g8ZXTq8oTCDzm3x5wmAk
+ i8wAlv0otog8iYaicRd5q/x9Vynwlo0e67/iHhH1K0rxsp5yagZ6L3XLS82iLDPuXzHP7ylgo+I
+ D0c1CMcLo4bGNe421uQk2jqRij3j1iAoI0gGSwcQqHRucJQSYetF+SSp/oDox9Dn2TqOagngt4V
+ UxzAxO13SoH2X7RyWe5NxhfbEjOUmHjfodyJhBfIYh4s5SCx8IDUn6jSorAnl5mh1ZmAfISyZCC
+ UqoQ2LDdmGl1HT3d4xvb7/ah09ru4wukKEcvP+HDrow6Xn/WsfgmRy6xdRv5vdNODiEv64XOGHa
+ TxrJA2l36xRwX82xvkyUzyQ1sIeXwbvD0Wn//AQSmFVE0uMJHnCwRE1OYRGf9Dd2p/mfZfFh
+X-Authority-Analysis: v=2.4 cv=fZOty1QF c=1 sm=1 tr=0 ts=682e57a1 cx=c_pps
  a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=QCY7fwImu4SyahzicskA:9
+ a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=-_O-Wy8N5QNPZvNXkjkA:9
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: Zzf2Q5y4JzSN5f1E_vlCnvLRODG4zasa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-21_07,2025-05-20_03,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 clxscore=1015 adultscore=0 bulkscore=0 phishscore=0 suspectscore=0
- impostorscore=0 malwarescore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505210226
+ clxscore=1015 mlxscore=0 adultscore=0 spamscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 priorityscore=1501 impostorscore=0 mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505160000 definitions=main-2505210226
 
- Add support for
-1. enabling MU-MIMO in HE and EHT modes from hardware
-2. setting fixed HE rate/GI/LTF
-3. 160 MHz bandwidth in HE mode
-4. extended NSS bandwidth support
+Currently, only the HE IE in management frames is updated with
+respect to MU-MIMO configurations, but this change is not
+reflected in the hardware. Add support to propagate MU-MIMO
+configurations to the hardware as well.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-changes in v14:
- patch 6/9:
- - cap max_nss using ar->num_tx_chains to fix interop issue caused due
-   to sending nss value 4 when firmware only supports nss value 2.
- patch 8/9:
- - Set the default return value to MODE_11AC_VHT160 for 160 MHz
-   to allow STA to connect to the AP even if it does not
-   explicitly indicate 160 MHz bandwidth support.
+Co-developed-by: Muna Sinada <quic_msinada@quicinc.com>
+Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
+Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 228 +++++++++++++++++---------
+ drivers/net/wireless/ath/ath12k/mac.h |  15 ++
+ drivers/net/wireless/ath/ath12k/wmi.h |  28 +---
+ 3 files changed, 169 insertions(+), 102 deletions(-)
 
-changes in v13:
- - rebase
-
-changes in v12:
- - rebase
-
-changes in v11:
- patch 1/9:
-  - fix return values in ath12k_mac_set_he_txbf_conf() and
-    ath12k_mac_vif_recalc_sta_he_txbf()
- patch 6/9:
-  - fix missing he_mcs initialization in ath12k_mac_init_arvif()
-
-changes in v10:
- patch 6/9:
-  - use ath12k_ahsta_to_sta()
-  - fix rcu_dereference warning in ath12k_mac_set_bitrate_mask_iter()
-  - change return type for ath12k_mac_validate_fixed_rate_settings()
-  - improve readability by adhering to nl80211 definitions of GI
-    NL80211_TXRATE_DEFAULT_GI. Introduce ath12k_mac_nlgi_to_wmigi()
-    for conversion.
- patch 7/9:
-  - do not change default MODE_11AC_VHT160 in
-    ath12k_mac_get_phymode_vht() as it breaks clients which do not
-    set VHT_CAP_SUPP_CHAN_WIDTH_160MHZ.
- patch 8/9:
-  - Use IEEE80211_VHT_CAP_EXT_NSS_BW_MASK along with
-    IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ for determining VHT160
-    phymode.
-
-changes in v9: rebase on top of master branch with mlo changes
- patch 1/9 and 2/9:
-  - fetch link_conf using ath12k_mac_get_link_bss_conf()
-    instead of arvif->vif->bss_conf before mlo
- patch 6/9
-  - fetch mcs/nss values from sta->link[] instead of sta->deflink
-  - fix spelling of 'incompatibility'
- patch 8/9
-  - replace sta->deflink.addr with arsta->addr in
-    ath12k_peer_assoc_h_vht
- patch 9/9
-  - replace sta->deflink.rx_nss with link_sta->rx_nss
-
-changes in v8:
- - rebase and resolve KASAN warnings reported by Jeff in v7, in patch 6/9.
-
-Pradeep Kumar Chitrapu (9):
-  wifi: ath12k: push HE MU-MIMO params to hardware
-  wifi: ath12k: push EHT MU-MIMO params to hardware
-  wifi: ath12k: move HE MCS mapper to a separate function
-  wifi: ath12k: generate rx and tx mcs maps for supported HE mcs
-  wifi: ath12k: fix TX and RX MCS rate configurations in HE mode
-  wifi: ath12k: add support for setting fixed HE rate/GI/LTF
-  wifi: ath12k: clean up 80P80 support
-  wifi: ath12k: add support for 160 MHz bandwidth
-  wifi: ath12k: add extended NSS bandwidth support for 160 MHz
-
- drivers/net/wireless/ath/ath12k/core.h |    2 +
- drivers/net/wireless/ath/ath12k/mac.c  | 1144 ++++++++++++++++++++----
- drivers/net/wireless/ath/ath12k/mac.h  |   17 +
- drivers/net/wireless/ath/ath12k/wmi.c  |   13 +-
- drivers/net/wireless/ath/ath12k/wmi.h  |  107 ++-
- 5 files changed, 1061 insertions(+), 222 deletions(-)
-
-
-base-commit: 0d777aa2ca77584b339ce195db86fe0ee7dda5d5
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 81ff32d2ce5a..1b64d418b433 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -3142,6 +3142,125 @@ static int ath12k_setup_peer_smps(struct ath12k *ar, struct ath12k_link_vif *arv
+ 					 ath12k_smps_map[smps]);
+ }
+ 
++static int ath12k_mac_set_he_txbf_conf(struct ath12k_link_vif *arvif)
++{
++	struct ath12k_vif *ahvif = arvif->ahvif;
++	struct ath12k *ar = arvif->ar;
++	u32 param = WMI_VDEV_PARAM_SET_HEMU_MODE;
++	u32 value = 0;
++	int ret;
++	struct ieee80211_bss_conf *link_conf;
++
++	link_conf = ath12k_mac_get_link_bss_conf(arvif);
++	if (!link_conf) {
++		ath12k_warn(ar->ab, "unable to access bss link conf in txbf conf\n");
++		return -EINVAL;
++	}
++
++	if (!link_conf->he_support)
++		return 0;
++
++	if (link_conf->he_su_beamformer) {
++		value |= u32_encode_bits(HE_SU_BFER_ENABLE, HE_MODE_SU_TX_BFER);
++		if (link_conf->he_mu_beamformer &&
++		    ahvif->vdev_type == WMI_VDEV_TYPE_AP)
++			value |= u32_encode_bits(HE_MU_BFER_ENABLE, HE_MODE_MU_TX_BFER);
++	}
++
++	if (ahvif->vif->type != NL80211_IFTYPE_MESH_POINT) {
++		value |= u32_encode_bits(HE_DL_MUOFDMA_ENABLE, HE_MODE_DL_OFDMA) |
++			 u32_encode_bits(HE_UL_MUOFDMA_ENABLE, HE_MODE_UL_OFDMA);
++
++		if (link_conf->he_full_ul_mumimo)
++			value |= u32_encode_bits(HE_UL_MUMIMO_ENABLE, HE_MODE_UL_MUMIMO);
++
++		if (link_conf->he_su_beamformee)
++			value |= u32_encode_bits(HE_SU_BFEE_ENABLE, HE_MODE_SU_TX_BFEE);
++	}
++
++	ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id, param, value);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed to set vdev %d HE MU mode: %d\n",
++			    arvif->vdev_id, ret);
++		return ret;
++	}
++
++	param = WMI_VDEV_PARAM_SET_HE_SOUNDING_MODE;
++	value =	u32_encode_bits(HE_VHT_SOUNDING_MODE_ENABLE, HE_VHT_SOUNDING_MODE) |
++		u32_encode_bits(HE_TRIG_NONTRIG_SOUNDING_MODE_ENABLE,
++				HE_TRIG_NONTRIG_SOUNDING_MODE);
++	ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
++					    param, value);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed to set vdev %d sounding mode: %d\n",
++			    arvif->vdev_id, ret);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int ath12k_mac_vif_recalc_sta_he_txbf(struct ath12k *ar,
++					     struct ath12k_link_vif *arvif,
++					     struct ieee80211_sta_he_cap *he_cap,
++					     int *hemode)
++{
++	struct ieee80211_vif *vif = arvif->ahvif->vif;
++	struct ieee80211_he_cap_elem he_cap_elem = {};
++	struct ieee80211_sta_he_cap *cap_band;
++	struct cfg80211_chan_def def;
++	u8 link_id = arvif->link_id;
++	struct ieee80211_bss_conf *link_conf;
++
++	link_conf = ath12k_mac_get_link_bss_conf(arvif);
++	if (!link_conf) {
++		ath12k_warn(ar->ab, "unable to access bss link conf in recalc txbf conf\n");
++		return -EINVAL;
++	}
++
++	if (!link_conf->he_support)
++		return 0;
++
++	if (vif->type != NL80211_IFTYPE_STATION)
++		return -EINVAL;
++
++	if (WARN_ON(ath12k_mac_vif_link_chan(vif, link_id, &def)))
++		return -EINVAL;
++
++	if (def.chan->band == NL80211_BAND_2GHZ)
++		cap_band = &ar->mac.iftype[NL80211_BAND_2GHZ][vif->type].he_cap;
++	else
++		cap_band = &ar->mac.iftype[NL80211_BAND_5GHZ][vif->type].he_cap;
++
++	memcpy(&he_cap_elem, &cap_band->he_cap_elem, sizeof(he_cap_elem));
++
++	*hemode = 0;
++	if (HECAP_PHY_SUBFME_GET(he_cap_elem.phy_cap_info)) {
++		if (HECAP_PHY_SUBFMR_GET(he_cap->he_cap_elem.phy_cap_info))
++			*hemode |= u32_encode_bits(HE_SU_BFEE_ENABLE, HE_MODE_SU_TX_BFEE);
++		if (HECAP_PHY_MUBFMR_GET(he_cap->he_cap_elem.phy_cap_info))
++			*hemode |= u32_encode_bits(HE_MU_BFEE_ENABLE, HE_MODE_MU_TX_BFEE);
++	}
++
++	if (vif->type != NL80211_IFTYPE_MESH_POINT) {
++		*hemode |= u32_encode_bits(HE_DL_MUOFDMA_ENABLE, HE_MODE_DL_OFDMA) |
++			  u32_encode_bits(HE_UL_MUOFDMA_ENABLE, HE_MODE_UL_OFDMA);
++
++		if (HECAP_PHY_ULMUMIMO_GET(he_cap_elem.phy_cap_info))
++			if (HECAP_PHY_ULMUMIMO_GET(he_cap->he_cap_elem.phy_cap_info))
++				*hemode |= u32_encode_bits(HE_UL_MUMIMO_ENABLE,
++							  HE_MODE_UL_MUMIMO);
++
++		if (u32_get_bits(*hemode, HE_MODE_MU_TX_BFEE))
++			*hemode |= u32_encode_bits(HE_SU_BFEE_ENABLE, HE_MODE_SU_TX_BFEE);
++
++		if (u32_get_bits(*hemode, HE_MODE_MU_TX_BFER))
++			*hemode |= u32_encode_bits(HE_SU_BFER_ENABLE, HE_MODE_SU_TX_BFER);
++	}
++
++	return 0;
++}
++
+ static u32 ath12k_mac_ieee80211_sta_bw_to_wmi(struct ath12k *ar,
+ 					      struct ieee80211_link_sta *link_sta)
+ {
+@@ -3187,6 +3306,7 @@ static void ath12k_bss_assoc(struct ath12k *ar,
+ 	struct ath12k_sta *ahsta;
+ 	struct ath12k_peer *peer;
+ 	bool is_auth = false;
++	u32 hemode = 0;
+ 	int ret;
+ 
+ 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+@@ -3230,8 +3350,26 @@ static void ath12k_bss_assoc(struct ath12k *ar,
+ 
+ 	ath12k_peer_assoc_prepare(ar, arvif, arsta, peer_arg, false);
+ 
++	/* link_sta->he_cap must be protected by rcu_read_lock */
++	ret = ath12k_mac_vif_recalc_sta_he_txbf(ar, arvif, &link_sta->he_cap, &hemode);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed to recalc he txbf for vdev %i on bss %pM: %d\n",
++			    arvif->vdev_id, bss_conf->bssid, ret);
++		rcu_read_unlock();
++		return;
++	}
++
+ 	rcu_read_unlock();
+ 
++	/* keep this before ath12k_wmi_send_peer_assoc_cmd() */
++	ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
++					    WMI_VDEV_PARAM_SET_HEMU_MODE, hemode);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed to submit vdev param txbf 0x%x: %d\n",
++			    hemode, ret);
++		return;
++	}
++
+ 	ret = ath12k_wmi_send_peer_assoc_cmd(ar, peer_arg);
+ 	if (ret) {
+ 		ath12k_warn(ar->ab, "failed to run peer assoc for %pM vdev %i: %d\n",
+@@ -3850,6 +3988,13 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
+ 		ether_addr_copy(arvif->bssid, info->bssid);
+ 
+ 	if (changed & BSS_CHANGED_BEACON_ENABLED) {
++		if (info->enable_beacon) {
++			ret = ath12k_mac_set_he_txbf_conf(arvif);
++			if (ret)
++				ath12k_warn(ar->ab,
++					    "failed to set HE TXBF config for vdev: %d\n",
++					    arvif->vdev_id);
++		}
+ 		ath12k_control_beaconing(arvif, info);
+ 
+ 		if (arvif->is_up && info->he_support &&
+@@ -6806,11 +6951,14 @@ static void ath12k_mac_copy_he_cap(struct ath12k_band_cap *band_cap,
+ 
+ 	he_cap_elem->mac_cap_info[1] &=
+ 		IEEE80211_HE_MAC_CAP1_TF_MAC_PAD_DUR_MASK;
+-
++	he_cap_elem->phy_cap_info[0] &=
++		IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G |
++		IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
++		IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G;
++	he_cap_elem->phy_cap_info[0] &=
++		~IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G;
+ 	he_cap_elem->phy_cap_info[5] &=
+ 		~IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_UNDER_80MHZ_MASK;
+-	he_cap_elem->phy_cap_info[5] &=
+-		~IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_ABOVE_80MHZ_MASK;
+ 	he_cap_elem->phy_cap_info[5] |= num_tx_chains - 1;
+ 
+ 	switch (iftype) {
+@@ -8109,72 +8257,6 @@ static int ath12k_mac_setup_vdev_create_arg(struct ath12k_link_vif *arvif,
+ 	return 0;
+ }
+ 
+-static u32
+-ath12k_mac_prepare_he_mode(struct ath12k_pdev *pdev, u32 viftype)
+-{
+-	struct ath12k_pdev_cap *pdev_cap = &pdev->cap;
+-	struct ath12k_band_cap *cap_band = NULL;
+-	u32 *hecap_phy_ptr = NULL;
+-	u32 hemode;
+-
+-	if (pdev->cap.supported_bands & WMI_HOST_WLAN_2GHZ_CAP)
+-		cap_band = &pdev_cap->band[NL80211_BAND_2GHZ];
+-	else
+-		cap_band = &pdev_cap->band[NL80211_BAND_5GHZ];
+-
+-	hecap_phy_ptr = &cap_band->he_cap_phy_info[0];
+-
+-	hemode = u32_encode_bits(HE_SU_BFEE_ENABLE, HE_MODE_SU_TX_BFEE) |
+-		 u32_encode_bits(HECAP_PHY_SUBFMR_GET(hecap_phy_ptr),
+-				 HE_MODE_SU_TX_BFER) |
+-		 u32_encode_bits(HECAP_PHY_ULMUMIMO_GET(hecap_phy_ptr),
+-				 HE_MODE_UL_MUMIMO);
+-
+-	/* TODO: WDS and other modes */
+-	if (viftype == NL80211_IFTYPE_AP) {
+-		hemode |= u32_encode_bits(HECAP_PHY_MUBFMR_GET(hecap_phy_ptr),
+-					  HE_MODE_MU_TX_BFER) |
+-			  u32_encode_bits(HE_DL_MUOFDMA_ENABLE, HE_MODE_DL_OFDMA) |
+-			  u32_encode_bits(HE_UL_MUOFDMA_ENABLE, HE_MODE_UL_OFDMA);
+-	} else {
+-		hemode |= u32_encode_bits(HE_MU_BFEE_ENABLE, HE_MODE_MU_TX_BFEE);
+-	}
+-
+-	return hemode;
+-}
+-
+-static int ath12k_set_he_mu_sounding_mode(struct ath12k *ar,
+-					  struct ath12k_link_vif *arvif)
+-{
+-	u32 param_id, param_value;
+-	struct ath12k_base *ab = ar->ab;
+-	struct ath12k_vif *ahvif = arvif->ahvif;
+-	int ret;
+-
+-	param_id = WMI_VDEV_PARAM_SET_HEMU_MODE;
+-	param_value = ath12k_mac_prepare_he_mode(ar->pdev, ahvif->vif->type);
+-	ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+-					    param_id, param_value);
+-	if (ret) {
+-		ath12k_warn(ab, "failed to set vdev %d HE MU mode: %d param_value %x\n",
+-			    arvif->vdev_id, ret, param_value);
+-		return ret;
+-	}
+-	param_id = WMI_VDEV_PARAM_SET_HE_SOUNDING_MODE;
+-	param_value =
+-		u32_encode_bits(HE_VHT_SOUNDING_MODE_ENABLE, HE_VHT_SOUNDING_MODE) |
+-		u32_encode_bits(HE_TRIG_NONTRIG_SOUNDING_MODE_ENABLE,
+-				HE_TRIG_NONTRIG_SOUNDING_MODE);
+-	ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+-					    param_id, param_value);
+-	if (ret) {
+-		ath12k_warn(ab, "failed to set vdev %d HE MU mode: %d\n",
+-			    arvif->vdev_id, ret);
+-		return ret;
+-	}
+-	return ret;
+-}
+-
+ static void ath12k_mac_update_vif_offload(struct ath12k_link_vif *arvif)
+ {
+ 	struct ath12k_vif *ahvif = arvif->ahvif;
+@@ -9360,14 +9442,6 @@ ath12k_mac_vdev_start_restart(struct ath12k_link_vif *arvif,
+ 		spin_unlock_bh(&ab->base_lock);
+ 
+ 		/* TODO: Notify if secondary 80Mhz also needs radar detection */
+-		if (link_conf->he_support) {
+-			ret = ath12k_set_he_mu_sounding_mode(ar, arvif);
+-			if (ret) {
+-				ath12k_warn(ar->ab, "failed to set he mode vdev %i\n",
+-					    arg.vdev_id);
+-				return ret;
+-			}
+-		}
+ 	}
+ 
+ 	arg.passive |= !!(chandef->chan->flags & IEEE80211_CHAN_NO_IR);
+diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
+index e6e74b45bfa4..6432efc5fb29 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.h
++++ b/drivers/net/wireless/ath/ath12k/mac.h
+@@ -54,6 +54,21 @@ struct ath12k_generic_iter {
+ #define ATH12K_DEFAULT_SCAN_LINK	IEEE80211_MLD_MAX_NUM_LINKS
+ #define ATH12K_NUM_MAX_LINKS		(IEEE80211_MLD_MAX_NUM_LINKS + 1)
+ 
++#define HECAP_PHY_SUBFMR_GET(hecap_phy) \
++	u8_get_bits(hecap_phy[3], IEEE80211_HE_PHY_CAP3_SU_BEAMFORMER)
++
++#define HECAP_PHY_SUBFME_GET(hecap_phy) \
++	u8_get_bits(hecap_phy[4], IEEE80211_HE_PHY_CAP4_SU_BEAMFORMEE)
++
++#define HECAP_PHY_MUBFMR_GET(hecap_phy) \
++	u8_get_bits(hecap_phy[4], IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER)
++
++#define HECAP_PHY_ULMUMIMO_GET(hecap_phy) \
++	u8_get_bits(hecap_phy[2], IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO)
++
++#define HECAP_PHY_ULOFDMA_GET(hecap_phy) \
++	u8_get_bits(hecap_phy[2], IEEE80211_HE_PHY_CAP2_UL_MU_PARTIAL_MU_MIMO)
++
+ enum ath12k_supported_bw {
+ 	ATH12K_BW_20    = 0,
+ 	ATH12K_BW_40    = 1,
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index ac18f75e0449..6554253688b3 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -3117,31 +3117,6 @@ struct ath12k_wmi_rx_reorder_queue_remove_arg {
+ #define WMI_VDEV_PARAM_TXBF_SU_TX_BFER BIT(2)
+ #define WMI_VDEV_PARAM_TXBF_MU_TX_BFER BIT(3)
+ 
+-#define HECAP_PHYDWORD_0	0
+-#define HECAP_PHYDWORD_1	1
+-#define HECAP_PHYDWORD_2	2
+-
+-#define HECAP_PHY_SU_BFER		BIT(31)
+-#define HECAP_PHY_SU_BFEE		BIT(0)
+-#define HECAP_PHY_MU_BFER		BIT(1)
+-#define HECAP_PHY_UL_MUMIMO		BIT(22)
+-#define HECAP_PHY_UL_MUOFDMA		BIT(23)
+-
+-#define HECAP_PHY_SUBFMR_GET(hecap_phy) \
+-	u32_get_bits(hecap_phy[HECAP_PHYDWORD_0], HECAP_PHY_SU_BFER)
+-
+-#define HECAP_PHY_SUBFME_GET(hecap_phy) \
+-	u32_get_bits(hecap_phy[HECAP_PHYDWORD_1], HECAP_PHY_SU_BFEE)
+-
+-#define HECAP_PHY_MUBFMR_GET(hecap_phy) \
+-	u32_get_bits(hecap_phy[HECAP_PHYDWORD_1], HECAP_PHY_MU_BFER)
+-
+-#define HECAP_PHY_ULMUMIMO_GET(hecap_phy) \
+-	u32_get_bits(hecap_phy[HECAP_PHYDWORD_0], HECAP_PHY_UL_MUMIMO)
+-
+-#define HECAP_PHY_ULOFDMA_GET(hecap_phy) \
+-	u32_get_bits(hecap_phy[HECAP_PHYDWORD_0], HECAP_PHY_UL_MUOFDMA)
+-
+ #define HE_MODE_SU_TX_BFEE	BIT(0)
+ #define HE_MODE_SU_TX_BFER	BIT(1)
+ #define HE_MODE_MU_TX_BFEE	BIT(2)
+@@ -3153,8 +3128,11 @@ struct ath12k_wmi_rx_reorder_queue_remove_arg {
+ #define HE_DL_MUOFDMA_ENABLE	1
+ #define HE_UL_MUOFDMA_ENABLE	1
+ #define HE_DL_MUMIMO_ENABLE	1
++#define HE_UL_MUMIMO_ENABLE	1
+ #define HE_MU_BFEE_ENABLE	1
+ #define HE_SU_BFEE_ENABLE	1
++#define HE_MU_BFER_ENABLE	1
++#define HE_SU_BFER_ENABLE	1
+ 
+ #define HE_VHT_SOUNDING_MODE_ENABLE		1
+ #define HE_SU_MU_SOUNDING_MODE_ENABLE		1
 -- 
 2.43.0
 
