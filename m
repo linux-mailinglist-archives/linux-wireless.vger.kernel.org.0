@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-23226-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23227-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBB7ABF6BE
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 15:56:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB966ABF729
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 16:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D72043AEB0F
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 13:56:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D7D1178953
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 14:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F3B158DAC;
-	Wed, 21 May 2025 13:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A8918EFD1;
+	Wed, 21 May 2025 14:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tt+mZQYf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nRp1YWSS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D81415B115;
-	Wed, 21 May 2025 13:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD291917F9;
+	Wed, 21 May 2025 14:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747835797; cv=none; b=FZT1nxgC0l7T4mbyVuOCvBV5OR+NDccn3Gly1WrGF66Q7Ip24zj/cN43vy/rFIJ3KFrU48GO0dzVm0M789x59GHrdeG8DyjP71n0VjDIwHmlUKLxF7PotZZ8sC5NjC4HzWaMTRxHPtH66fvMsL+Xdg8/ttI5rcq648rWsP49Ub8=
+	t=1747836423; cv=none; b=goXZM+HZPknQ5uFznqOKkIWuTE29D5/Yfl2KXW2WRsK+fyHOGb1PqUnaALx06BHlM/EgR7xTcauSFOrbk+/qLLHyJbVhR59+++dQUHAA2MIipGgRcJUeU4Dhght/L4aifz/RoQH2LmbsaXeE4EMEmIxn8gZJtecDextL/Zrd/l8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747835797; c=relaxed/simple;
-	bh=fhSK92qIz8poswhb2TZ+Ynud2jnbG9BvqmBT8U8vJwA=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=oLNH6/YOWea8LKJ1EP+p5IQKmp3CxeYzyTtVt396XxKa/U9tOZGqdANR2VU0DCOpB9gSWUxVV+DDNverbRxPTDr6WjAZjFDCOJF++oeb8Ywk7E+xXTPa+zOuZfFtfFzIh/UnU/ty3kmS2LsgwOiR4WmzVlCCi4Rln3tSt+IzKfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tt+mZQYf; arc=none smtp.client-ip=209.85.208.177
+	s=arc-20240116; t=1747836423; c=relaxed/simple;
+	bh=PrdPwrTaCyVZJ6LhMx3co+GcbOb13kfr2nu9W6OuDZM=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ht3emG9Q2dGbP+x7ktgE58ZDZfwVrd1bPxi+com6/0dn5T7R6oyTf56mPdePSB1dZWAE+7AUJD0MdPz7dXLce+UIiR1Putll5kcQhAfYpFsUGH7bUzU6xAsrC1znwIMCa0tOETZDto3bWcvSvhTe2af2wjXSbrJeI4m3BM5PTdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nRp1YWSS; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-329157c9f79so18151711fa.1;
-        Wed, 21 May 2025 06:56:35 -0700 (PDT)
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a376ba6f08so1792239f8f.1;
+        Wed, 21 May 2025 07:07:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747835794; x=1748440594; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747836420; x=1748441220; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=fhSK92qIz8poswhb2TZ+Ynud2jnbG9BvqmBT8U8vJwA=;
-        b=Tt+mZQYfbr7LB81pciwMAq0U6Cg3sv/a9q5VmDN7dRsNno87KXKhiJSb98RWpR9o5B
-         C84ke7Ed3bHsmhaeEQ4Bhb3I7iVq5NIIp0amlQAIvuQjIXj0SMRLZn1KTARdBWCLM0sA
-         fVXoxQaoWG27K19Zby+uco7xO3Ypf8qnUi9DDK/CBKjMUclzg0v5pMMGsr5Xb4xIkdc4
-         GJpuusw9xTEF9v43CIDOYNxjKAUuzu6qMPXNg8HbPVg7OR/Zadx8OUpHLA53LbbO4vmi
-         JlEKJ7uiO9/x4Z68ZEHHVK/6qeltwDJkjvOD2N0K4I5YF4tvjIWU2a/CiO8t27rK66Dn
-         t2dQ==
+        bh=PrdPwrTaCyVZJ6LhMx3co+GcbOb13kfr2nu9W6OuDZM=;
+        b=nRp1YWSSkjg4jDEDMNkgHlCwS181eUwqj9lFpLtn04ZAY43ggzs8D8Dd7/IgDJqYE2
+         5yrtHlUJtYIJXcZe5mrjbzgzyE8HuukjJpHRWzhOzl7eus2xoM9GWSJIb/x42vHxvdFe
+         5ziUJAOvxnxeQoOfOxewgcxGJgwVSqq9q1/ncY7Pk1YG3Ea2W5zQoSf9redOg4XkZ8/+
+         9Wza35U7J13XongDDdo4Zaf+4mRX5agTOL4ItoH4tykEkg9voCg0F836Bmh808bIpbFI
+         OQES569ag+yRdGpF5ZOdQjiM2DKaTviCL5NcmFnUFQnLQvFilsEE7tPRi/Kth1tOVpxw
+         2yRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747835794; x=1748440594;
+        d=1e100.net; s=20230601; t=1747836420; x=1748441220;
         h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=fhSK92qIz8poswhb2TZ+Ynud2jnbG9BvqmBT8U8vJwA=;
-        b=il3b7ly+weTiRGJ9Mqs6kqyYPVjt2Eioj0gGcbCA4u93Sxlca8kizdgaa3b9Drr6HE
-         HACKZKyb1KNdsf0wQpW6eW2o+br13qn6SjJ0VZU1yMHEH+snAdEQ7eUkX491mwGM0atJ
-         MAVDNryVJABJYGgNQhyvoLgLO4ExcX3ebQw/bVpNhkRnEdkr11hD1HB4QkHraInDZ5vV
-         cI+iKvrGWJ/1cqBD+u6R4r19hrNixjjzMdQVrFrjPmP+uAzZj3M88eVvc8Oz9/PwvGzy
-         HqkwIIqcFyczn/ASHxivUc8E6L+yFfcPZqLNkGX2xcDjLnGTmuTPp/Tby0zeZ6JONXWz
-         xbyA==
-X-Forwarded-Encrypted: i=1; AJvYcCVi8B0Qmx/GJ8AxCHjDXkG0mB33lEpJ3NY23FRwwwFMA3v2ojoHGkqeol0iq4JF7RML7xGZQSHfDRumMqA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOgeoeHcbVegYnvgtses7M5u06CnhDRK25rQgnHsWlNSm+S6WT
-	PDjt7fGWnIVCEWgmWB/Z9CeuNAaVTZDogz9nI0ZnfWjTZ9apn+/ihRlOd3fXVcvAs7jxc2bsG1z
-	20v8VhPBJqOfmI+m0fcCr0Fv92l+ltQuavISfqA==
-X-Gm-Gg: ASbGnctKm1UBqPFP/dYnanvf8Oa1iLvl5czH/HkrLVQRPzfUGmGdtqgTAQffwQ60l+2
-	F4eVrUGFgWd3YnAYtpftU2k0zFCVHwP2ud6K9AfoDuFu82Zfo6mtKrE9dxIKLcA3W/5w8gyFX+6
-	zjp7EekDIlhrH3Mbd+ZMrft8xy2a1+94SuUb/+XWQ/j/LdR94me01hEg==
-X-Google-Smtp-Source: AGHT+IHNRSlH2urQGoP4VnsmY05jJmYgV4LzyqX/JwSmcoPNv94uQpK/V2swcMjkUH8RXepH2B5eQEQXC4wrT1XUeAE=
-X-Received: by 2002:a2e:a551:0:b0:30b:d562:c154 with SMTP id
- 38308e7fff4ca-328077321a5mr78487191fa.19.1747835793761; Wed, 21 May 2025
- 06:56:33 -0700 (PDT)
+        bh=PrdPwrTaCyVZJ6LhMx3co+GcbOb13kfr2nu9W6OuDZM=;
+        b=Dflo427qvgepvJ8yrsbFTsg1S3Od0Of9LFpFFhh2qgj/Be1QhSRkW/TE6bs19rkTVO
+         n+2OltN98VckgfaPhon0m/e3Ma2VZBBO/I7qNxXy4jGcdqqu/mVVmn+B+1M4vhlDmi0t
+         uJIvBLM6jRNhTUZsE2Sg42X7dP8dyIZCNjkAqkgeWCSate3ChJfE8i8qihMb3EwT89Aj
+         hdW657JmCrP5a+gtct9n71d2EF0yjyKNHdNpTJkR9gW4dAZLb6j4GDGddEE630s8EIgF
+         fFFlmnr8PDkSv6KRcVDaqgPOgzm8FW5tVkIOo3Lsh2ZaSyivYbwyQOQbimh9Duw+HO7+
+         SpRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUiwrf321Riz+Za2/BrVhH7aQxqgDwP6ey/MOsc2e5sdAxZ6vuCiMGItO2O3+GmlntN4QPhi0MrsyxhIhU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3B5+2KonyUoWAvsWESQGkswybEXYEhDLqgJ4tCol45BGoi/Mk
+	srsZmud7pfK2nzTz3azre3cldFcNpD64BIRsIAVsvB/aAWFIscoUNc/q+rPAN3RlxeR7Pg1vz2k
+	EWxIVnPIaAn4yvA5N1HHTVjpZa5sT5YAjcw9itw==
+X-Gm-Gg: ASbGnctuOWpRYEvacQcKbWvJVbFPINSF8zmDAvuOOaQ/rK+DcOycJp0NQFl5ZuoZLap
+	mHPflUn6ZciL90coglP+SehBOPOmckYZL+O0pPiZiex7vcajRyz2sEc6IslHGC/0hpbHT7/MVif
+	dKy3gkDFoCJrCcEeTlZ7x9uLPflwkmXl9OGIqn/F8tBh/J+xENBeO/Vg==
+X-Google-Smtp-Source: AGHT+IGWlj44DyZkDHN2p0d1xh93yb6V5ZaLQlfiMVxPwmzJHtxveqB5gjDhKF+gkEh0V5Z9d7d6NdyN03te1+8qmX4=
+X-Received: by 2002:a2e:a553:0:b0:326:e80a:46c6 with SMTP id
+ 38308e7fff4ca-328077b3495mr80523321fa.34.1747836408759; Wed, 21 May 2025
+ 07:06:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -72,11 +72,10 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 From: John <john.cs.hey@gmail.com>
-Date: Wed, 21 May 2025 21:56:20 +0800
-X-Gm-Features: AX0GCFvtZwNaIYor0agv7Uq26ppQh02gdEar_RB_fD0JW4hJXX3Tl5N1vq9Bz_w
-Message-ID: <CAP=Rh=NP-KjKhzfh21GKCCvDwDPfh37z8+b13btXVS5owUS4WQ@mail.gmail.com>
-Subject: [Bug] "INFO: trying to register non-static key in cfg80211_dev_free"
- in Linux Kernel v6.14
+Date: Wed, 21 May 2025 22:06:35 +0800
+X-Gm-Features: AX0GCFt1Kr1QhJULNOmld5jR13TDzBLZ3oxzE20BweSiEtr1U6s_Oz1QcZvRmtk
+Message-ID: <CAP=Rh=M50sHJqAUYfqBsOR1iTRaoykZy-C1wHsM2gQmE0i-__Q@mail.gmail.com>
+Subject: [Bug] "WARNING in __ieee80211_beacon_update_cntdwn" in Linux kernel v6.14
 To: Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
@@ -90,26 +89,28 @@ testing of the Linux Kernel version v6.14.
 
 Git Commit: 38fec10eb60d687e30c8c6b5420d86e8149f7557 (tag: v6.14)
 
-Bug Location: 0010:cfg80211_dev_free+0x2ba/0x3b0 net/wireless/core.c:1197
+Bug Location: 0010:__ieee80211_beacon_update_cntdwn.isra.0.part.0+0x6/0x10
+net/mac80211/tx.c:5040
 
-Bug report: https://pastebin.com/1XeQBvgW
+Bug report: https://pastebin.com/8BAbTqUc
 
-Complete log: https://pastebin.com/tcvP4fP4
+Complete log: https://pastebin.com/YgXnKSiP
 
 Entire kernel config: https://pastebin.com/MRWGr3nv
 
 Root Cause Analysis:
-A WARN_ON is triggered in cfg80211_dev_free() due to a spinlock being
-used before initialization or after free. Lockdep reports a non-static
-key warning, indicating that the spinlock inside rdev->devlist_mtx is
-either uninitialized or UAF.
-The issue escalates to a second warning from __flush_work() when
-trying to cancel and synchronize a work item that may still be pending
-or undefined. This is reproducible via mac80211_hwsim netlink
-interface when rapidly creating and destroying virtual radios.
-This bug exposes synchronization issues and unsafe memory usage in
-cfg80211's device free path and requires proper spinlock
-initialization and work item handling before release.
+The kernel warning originates from __ieee80211_beacon_update_cntdwn()
+in net/mac80211/tx.c, where the countdown field for Channel Switch
+Announcement (CSA) elements in beacon frames is updated.
+ The warning is triggered due to an invalid internal state, likely
+caused by malformed netlink input.
+The user-space process syz.0.238 sent a netlink message with an
+invalid attribute length, and the simulated driver mac80211_hwsim
+attempted to process it.
+This resulted in invalid countdown offset handling, leading to a
+WARN_ON() in beacon generation. This is indicative of missing sanity
+checks on user-provided parameters in the beacon update logic of
+mac80211.
 
 At present, I have not yet obtained a minimal reproducer for this
 issue. However, I am actively working on reproducing it, and I will
