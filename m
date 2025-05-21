@@ -1,109 +1,139 @@
-Return-Path: <linux-wireless+bounces-23204-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23206-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5C0ABECFE
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 09:24:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A4FABEEE9
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 11:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 360757A693A
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 07:23:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4845D3B6980
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 09:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C4E2343C9;
-	Wed, 21 May 2025 07:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 070C4233153;
+	Wed, 21 May 2025 09:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="avpLffxl"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Alv6QJ7P"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B866199EAF;
-	Wed, 21 May 2025 07:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F405237194
+	for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 09:01:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747812266; cv=none; b=HyE6imU/CiyTr9oxGLLva+qalxauhQUIfzIr4nnNfDJyenfAJzgXbiacfs84SbwBWXYVzNZDBfowxCxDPEEC2siLxXirmmKsJfy+0li0iW4Fjy2hAuvxqU0k2qpOttThagadw1Avpp/YULV/YSrgHP1d0GVd3M5xdeeddq68EWs=
+	t=1747818074; cv=none; b=WV3bXa1NcudmY8mYbY+S5aZZUaU9RMdqVO3A5LtIN0UL4wtSUKU8QMWkl0QV1hGsNPf4LiYyFVtR/nE9A7PztmpcU2rydd/ze1GRUT2m9lez5uQ+GcU7WrWwkqgN/jFItdc4n6KMqfs9ihpwYPqoAmkhOtXAbtbvRhWp3x9Kwg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747812266; c=relaxed/simple;
-	bh=bsRKvz0IeflenEfvIJXltQBXIEynMd8vYvMNQDAeBNo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j7yjPyYeuGO/p0yLido0kEqcPm5SEqDvuNXvCXjmrRoBIpAb6yJj0qHdJEwiJX0s1r0m75KcH03m9sTD1F5xrpPK10pm255pUm2gvIbO95JHEgLX7VD2AWOI83IYRIuL3cF477AUJJi6jmKIXxaE+Bp0jqUaUeKh5FzpXBYF3Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=avpLffxl; arc=none smtp.client-ip=209.85.166.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-861d7a09c88so154212839f.2;
-        Wed, 21 May 2025 00:24:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747812264; x=1748417064; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bsRKvz0IeflenEfvIJXltQBXIEynMd8vYvMNQDAeBNo=;
-        b=avpLffxlLvZPCPH7ewdoPbFaR2a7Snr70IFgMAUf6h5tGeH9/vKhahlqrzvbiVzczP
-         ZsqQloFKWYc1Qu5HjD0IbfuaTHMPW2RjfRbdMK/z/jbWptdKM1yfght7LUSEA4BZLWEu
-         n3m6crFKtsWFjfNnBRWuPreRMUqzJZCrGarkHy4moclgLec2qaCLgVs6Nht2MBnB9osx
-         cvnVz8SJUtMy/e4IX1jKqYocQQuW6OJ3bIe9ydqDqyv1NAc0aOBz2daQOgTMQEjzYqDU
-         Y1vaDRP7WKHE1xJCGAHjdgWcmcxNhdQ5YI3uPTsevd+mRaKBh0htTpANTF1t+rLtL5a6
-         wHKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747812264; x=1748417064;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bsRKvz0IeflenEfvIJXltQBXIEynMd8vYvMNQDAeBNo=;
-        b=hr18D+5mxpUuM8nmcIHaTR8QaSQ4dDmz+u+BwE3huKLIPiUKQMwmyaJnamLDnYVbYb
-         hUhWjQF88aeMGNfa29f2TgmTAedw+QIH48n/tsmdibjnONvLdoH32tsuqtXim+ENYIFx
-         0eOwiZIa0io/ORKLYPplEsSLYEcrcwhUraFpW9XfjeeRPAPbvcFoZ3L873J9TDe9DcKZ
-         0Lslcvf5BeJrYgfBUsP3l3lbXwq21IGaHAXuth2IOwwe2MYNfhoeOYZKNGTHICHD46SV
-         9wR2FFV+zpoGvnRS+2CRhvd2IRktDF1CMbPGGxzX9tUksR0eHjQw0SzNqUtSNwuxBMoR
-         5PuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUkidpvfVsjSX2aV/oh02XRj8KMYUtfk9Fdq0oubRalPu/2Zx9y69xNdu6sbukV4StbsIu9NII1z6VXHMs=@vger.kernel.org, AJvYcCVArbWAdKULrxxdNHGvxSGJe0na1hoZFJ3gcSFivIKD5HoLDO1dVnFgB/XQMIkK/Q+qSr4WSz0CMPKvXA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDHAwPqixGolaWQQqNwdIsTo7GimlGEhHsM7Vx6g7IkQ2bubyy
-	mQFdKxM2T0wdf/nYFMyd0p9N5KaCuXwFc4eOrPpoHJTDuCbmSOK6wuF1z8FX+Ptpinluqh4uRfI
-	S74gInZkFYantHDuKUoMWfYNYq2sPZcE=
-X-Gm-Gg: ASbGncuoqGxSFyCn7tkPQWtdpcPPKO0SfIKOvW1fY5/TXhnOEU2inWmN/q5DQRaa4S0
-	6r5v4Er0KpIhVL6rr5v+VcAVVTSO3HETinNhKx1yHnV6JgSD2p3qEqfj9NHSVCLnzG6IBkWdBQz
-	cOsyKGnAgXCmNWCCq49SrcR55IL1bg8616
-X-Google-Smtp-Source: AGHT+IGFDYBRiQXD5xgvrn5c6GrFeLVxKsut4Q0h05F8cCwAOAEYT3ecSVh9wv9zXcr7frmDxZ0UC4M6jQeMmcdwzfo=
-X-Received: by 2002:a5e:da43:0:b0:86a:2523:a9fc with SMTP id
- ca18e2360f4ac-86a2523ab62mr1661574539f.0.1747812264166; Wed, 21 May 2025
- 00:24:24 -0700 (PDT)
+	s=arc-20240116; t=1747818074; c=relaxed/simple;
+	bh=uyOZqUEOIqvnwFAzCQBWwsAmkmayMP09kTZlm9b9sQA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=b88KD1LOwb/JnGqQjQbOGOWqOxGMxR+R35SVHQ861zZp7VWg9cPaw/8e43Ww00iy4g2wsBOhdOUlLnD+6Ntdyz6fUllbB6N5DO5yCTSneZzOFba4heSYFWVRS1O1D81lVKY6yvxMAWqygO9vkdiuHn28nbLrwDeMG4zM/bHxl9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Alv6QJ7P; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54L6QMFj026861;
+	Wed, 21 May 2025 09:01:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	lRTrAafg4/XOhFfs4sZKNdG+ERHWR2syWWaD+pKcuZk=; b=Alv6QJ7PSAfZHkmf
+	5aSKUxA+JpKLTUX46WI8XGq6YAmZWKNv2Hm6yuvD5onb0L3yjFn2ASN2dRdaC/cZ
+	byiKUUZfTmXLe8yXJ+Kcjp8UG1XXd1mFkIzI3sfp55R05qj0Qffavh9yhAxPA11c
+	eXzh+cPl+OsUd0yq3xXG89tr2pu33tjOm/bOzsyz6aem8hJCLdUqdyx3EJzk4n4k
+	IREKS3zMG2mWgnnQfIfTSfAMJ0LTRHz3cHV43jYj07GDltCK1PQxhugFk5HGwh8W
+	j9pWMhZmo8WMedP5GhovET2zAbT6zbBAwJTV6vfh1iQQffvIC7Jd+kN0lVJBDZe2
+	sB9YaA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf9a95u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 May 2025 09:01:08 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54L918J8010085
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 May 2025 09:01:08 GMT
+Received: from [10.50.1.145] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 21 May
+ 2025 02:01:06 -0700
+Message-ID: <3850d61a-8c6d-4cb5-b56b-d53a4a8afd32@quicinc.com>
+Date: Wed, 21 May 2025 14:30:59 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250520223430.6875-1-spasswolf@web.de>
-In-Reply-To: <20250520223430.6875-1-spasswolf@web.de>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Wed, 21 May 2025 15:23:47 +0800
-X-Gm-Features: AX0GCFttNynCNWUpGDwxv5Ee1zvFjTDsRbF65Fu6DSl_bVrh9rFic3i78TZ0q48
-Message-ID: <CAL+tcoDtk2vNqiNWdG1hvo3jMNt0_fPffi5ts8LZWZzMDvsLXg@mail.gmail.com>
-Subject: Re: [PATCH] wifi: add sk_requests_wifi_status()
-To: Bert Karwatzki <spasswolf@web.de>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-next@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next v9 3/3] wifi: mac80211: Set RTS threshold on
+ per-radio basis
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+References: <20250429040048.3356960-1-quic_rdevanat@quicinc.com>
+ <20250429040048.3356960-4-quic_rdevanat@quicinc.com>
+ <e98a1b2791eaef6ec12ae2f9d9060cf6eca47d46.camel@sipsolutions.net>
+Content-Language: en-US
+From: Roopni Devanathan <quic_rdevanat@quicinc.com>
+In-Reply-To: <e98a1b2791eaef6ec12ae2f9d9060cf6eca47d46.camel@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 0Shk0CUIlMz9JcbD_ynO49d782tw1txS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIxMDA4OCBTYWx0ZWRfX/kg3Lu6srvO0
+ Vn4I5Vh6W5fbI39+6J3M1KiE1t/oib5MWXpiasyNAYY/SeI0qbAZVK7AC6IfrV6BL5UUaJdyy2i
+ Ftv9Gkq0/Xd2zLPm34q9v0KN60EiNe/H6+4NVv0HwZ7QanRqXswvyurnhwOCaaTI8s/2IcqZ945
+ 2ThovrxzAJ/xFeD9G3obJIOztfHTHJvynN73NdD9SSX79BAL5yQY3Hb1DUiFbjA7JSvyvvzvdtg
+ EbWKAe/RBwVuX6wU9TmzkG3YGhv78qP7zXXa4yGCfld/czzdtcIina+Xboo+KoVWUQV/7GrHKhx
+ T9DItDOwaKkjiBfZWt9143khZ8XXB05Rz6T5Mnc7t48pEtphbEqBRJVPJR4N5RRnwDmFR1Audm3
+ Bkyfs/N3rusAwwqkIgAvXcmXy+6jro94SGood3h5odPAlpqdiwk3Z8yPbVQjn2KEZOL3Mt9G
+X-Authority-Analysis: v=2.4 cv=GawXnRXL c=1 sm=1 tr=0 ts=682d9655 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10
+ a=4Mt3-w3Eu43CLoluh6oA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 0Shk0CUIlMz9JcbD_ynO49d782tw1txS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-21_02,2025-05-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 clxscore=1015 malwarescore=0 phishscore=0 bulkscore=0
+ spamscore=0 suspectscore=0 adultscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505160000 definitions=main-2505210088
 
-On Wed, May 21, 2025 at 6:34=E2=80=AFAM Bert Karwatzki <spasswolf@web.de> w=
-rote:
->
-> Checking the SOCK_WIFI_STATUS flag bit in sk_flags, may give a wrong resu=
-lt
-> since sk_flags are part of a union and the union is used otherwise. Add
-> a sk_requests_wifi_status() which checks if sk is non-NULL, sk is a full =
-socket
-> and checks the flag bit.
->
-> Fixes: 76a853f86c97 ("wifi: free SKBTX_WIFI_STATUS skb tx_flags flag")
-> Idea-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Bert Karwatzki <spasswolf@web.de>
 
-Since Johannes will modify it manually, so...
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
 
-Thanks,
-Jason
+On 5/21/2025 12:49 PM, Johannes Berg wrote:
+> On Tue, 2025-04-29 at 09:30 +0530, Roopni Devanathan wrote:
+> 
+>> +++ b/include/net/mac80211.h
+>> @@ -4569,7 +4569,8 @@ struct ieee80211_ops {
+>>  			    struct ieee80211_key_conf *key,
+>>  			    struct ieee80211_key_seq *seq);
+>>  	int (*set_frag_threshold)(struct ieee80211_hw *hw, u32 value);
+>> -	int (*set_rts_threshold)(struct ieee80211_hw *hw, u32 value);
+>> +	int (*set_rts_threshold)(struct ieee80211_hw *hw, u8 radio_id,
+>> +				 u32 value);
+> 
+> That should probably have documentation updates. And passing a negative
+> value to a u8 seems awkward? Maybe that should just be 'int'? For a
+> value that's likely passed in a register, u8 will probably require more
+> (machine) code anyway.
+> 
+The following snippet of code tests the value of radio_id in
+nl80211_set_wiphy() in net/wireless/nl80211.c:
++		/* Radio idx is not expected for non-multi radio wiphy */
++		if (rdev->wiphy.n_radio <= 0)
++			return -EINVAL;
+
+This snippet returns an error if the radio_id is negative, so radio_id
+passed to set_rts_threshold() will always be positive. So can we retain
+u8 data type for radio_id?
+
+I'll add documentation update in next version of patch series.
+
+> johannes
 
