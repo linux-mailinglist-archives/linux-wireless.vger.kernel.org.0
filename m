@@ -1,162 +1,136 @@
-Return-Path: <linux-wireless+bounces-23221-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23222-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93BB9ABF0B2
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 12:03:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3EAABF165
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 12:20:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492814A7421
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 10:03:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AB3D3B22B6
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 10:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42E425B69A;
-	Wed, 21 May 2025 10:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCF023D285;
+	Wed, 21 May 2025 10:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="XqgoKQB3"
+	dkim=pass (2048-bit key) header.d=beims.me header.i=@beims.me header.b="EVT8lniS";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sC1Gpnwl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA5E25B666
-	for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 10:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D49225C82A;
+	Wed, 21 May 2025 10:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747821776; cv=none; b=Gj+ag2TwNxUJe2SejZ+yYJYEun6ZoG8XbbKrrGGEMISshHkDzp3IiQdqfrIystzE7Li2wSek3ghCO0PQXsRGIN8TtQGvGbkLHLysKnHXqBkh4Pc2seLg/w5ox0hjGqqAzes1AByrvW3U0DF5TJBoyOoyfzBOkv1+DBdySh4FV8k=
+	t=1747822838; cv=none; b=YG6uComjCJkFAwzCLvYuAWgyWIBtRKJq/maG45S4B0nGW1qY6BU+T8h8Co4QDFcEnA2uX174a7TLOcwbUa+Mh0g6MzUCnJLQafSpTmCfu5pqEgqFGTb+JVyjT3s2WtoFoBTMPU1KcKberYXqKtXxESrej151/Ba90uqk987f47A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747821776; c=relaxed/simple;
-	bh=wJ7DL0HqWmUjD1n7F3tZRjI2c2GkhOAVGDx3imk7vM0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Tri1ots27EreW64CmYRXstk3cmd+tvS/JlnbsSAwKN1fjR2RxMgrKHZgtSwsbxvQE8SWImrtiTNWyAqT6PWISgdx8+BgBR8nW7iYMIfpYOADumBpb8rQNQYkuQZLz0+SyZjIbTPzV6v8f7KRQBoTIDtoH4W7UcBsFxrBaAaYfOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=XqgoKQB3; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54L9XSiV016644;
-	Wed, 21 May 2025 10:02:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	/JI/W3g4p8IYME0zi4Q+xvcgzIYNeBtvj2TZ2du2E9w=; b=XqgoKQB3PnQzVBFC
-	1QA9dQGNKcpRylJbBlq8oksSyRNgPe8M0Dtxx9uc6xWlOKJhpyOsogt0kgqHWhFS
-	4MW9zJCudwDy1C5Swqg5vA5hFZGQ91iWWaAkxxYJXz+zBv9GgXEx91pWuSP4tmHV
-	jx+QBKfGbvNsx2iIGHAbgzJn1swn8rtgtafR6n0ywgZLWpBw04imBAE6RvWyTQOO
-	zmstQrLJl5RLiectxukIeA69Z9YXeg5WSi3tmRMVAovu5zyTpCrhjyAlh5Zi+IxL
-	ElOz42V1Iyb98g+QfFdLjRkO/2rgXdlYShWPv9hH6Am5U4KKn3cHjbv6zkKds3Vy
-	BznaEw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf9tgeg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 May 2025 10:02:47 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54LA2kJs011493
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 May 2025 10:02:46 GMT
-Received: from [10.50.1.145] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 21 May
- 2025 03:02:45 -0700
-Message-ID: <233b62f2-1cf6-4492-9053-eb6efdf51787@quicinc.com>
-Date: Wed, 21 May 2025 15:32:42 +0530
+	s=arc-20240116; t=1747822838; c=relaxed/simple;
+	bh=hgO/tUb6I/7A3eZ1GUbTujtom76PxW0NEx2daJdEgWE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gX+t8GLzPeMm25dWrXF52AeSdA7icBHitb02+yop7IJsRzDcDU/7Xl552DTyGlp2IvRl4KWF9cW0zo02OYAhUhbMPewr1fUnKKF5J2RH+8wVsO91FzPrrOvZ9a0hyBwDJaUglmaLterWsO0ppYYkiqpJRmJfEJv0MFegA24YqfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=beims.me; spf=pass smtp.mailfrom=beims.me; dkim=pass (2048-bit key) header.d=beims.me header.i=@beims.me header.b=EVT8lniS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sC1Gpnwl; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=beims.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=beims.me
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id ED6731140190;
+	Wed, 21 May 2025 06:20:34 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Wed, 21 May 2025 06:20:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=beims.me; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1747822834; x=1747909234; bh=NI0XmhRBWdAqcvMsZeFHc
+	aGIu0yjQa3Cy0NnWsMz3rg=; b=EVT8lniSCPgfDyLQ1Lspm/w/jYrWcwxsH0Xe6
+	8ixtSSbBCu9RIh/usUv+0yDw/nRgtaZxJo192xQFhDtAGhguaIgvuVhs3/QSqZmJ
+	iphgGjNL7k/9Gd25sbQFHPt8zVH3Zyn7wzcCbM7si3oSHXMux80iN8kQUhZVyb9o
+	aEURQlzmAViU2EmqMXB894yKrD1s6XzPsXOHUxiepikin7ssVm7FU885bkoMtD4T
+	54ObH/ur5AGebLLQqv/xpwFdTSz9sqd+Uw2jRlPhqQ4fLduWMr5n+fBIxvkTG3hA
+	G81VkilFCaagqEpvx0u0aXTiz8Rwcej55KLXh/i8uc9ypIhvg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1747822834; x=1747909234; bh=NI0XmhRBWdAqcvMsZeFHcaGIu0yjQa3Cy0N
+	nWsMz3rg=; b=sC1GpnwlXsv+sJmUWcqYB5mQdmopYM9YWyz4RZ88SVrP2NBJuyx
+	KK7URAMsB+iFnI+f1V7U3u5uGTUhsWetMgLChXhmH06AnIBNaaHLhFrRpGK//6Fi
+	LV5mIslWVh4HvE7h3khw7lphJFa9QHUQVPqtCTXwIW6u6BS8ucHTWvqPF7dUIF1e
+	krUMsvbYVmQbpRScXyqKAuSs4jGengUITE7db8TQH2+0e2Zipw8ywU///ZzuYTSy
+	96KB+ayykj79fCZXSsfZndtaM53xO+d0rtrbFP2O/T+FCLUXkpF12nFz/hbPup8B
+	ulLJUg2uIXcPK8z+sUqpu6pNFDP4IHDdMuA==
+X-ME-Sender: <xms:8qgtaILJWD_JFiHGSL8H3qeu7jyX4uM1raZzkPebppDEOp5h1007hQ>
+    <xme:8qgtaIK0poXZPxP4LwpSNwY5q4-Bbz5oGO9N45h8rjyvaCOfzH1qkMfArdUIJJ_Pj
+    X92DW22fOJWCiP5OBQ>
+X-ME-Received: <xmr:8qgtaIv_X8m9g5-774kU2f3p9njcz5D7sfqQv6LYcT0rNWHv4SdUdR-y-6g5xJLZp0E>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvkedvucdltddurdegfedvrddttd
+    dmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgf
+    nhhsuhgsshgtrhhisggvpdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttd
+    enucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgg
+    gfestdekredtredttdenucfhrhhomheprhgrfhgrvghlsegsvghimhhsrdhmvgenucggtf
+    frrghtthgvrhhnpeefkeekgfdvhefhfefgleethfduudeuffejvedvkefhgffhleejgeel
+    keehtddtieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehrrghfrggvlhessggvihhmshdrmhgvpdhnsggprhgtphhtthhopeehpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopegsrhhirghnnhhorhhrihhssegthhhrohhmihhumh
+    drohhrghdprhgtphhtthhopehfrhgrnhgtvghstghoseguohhltghinhhirdhithdprhgt
+    phhtthhopehrrghfrggvlhdrsggvihhmshesthhorhgruggvgidrtghomhdprhgtphhtth
+    hopehlihhnuhigqdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:8qgtaFYcfmDzKsVfb6NNKlJpCqH3_2zdBaYns1sEyK6wSfFtQL1gOg>
+    <xmx:8qgtaPYYs1LVwecx6sScTahQSi4JCFTz3YzYfq8vHt0PCQW25ZDz0g>
+    <xmx:8qgtaBBBXfa1cpepqC9CTgwrg8_AeS8Z9x7G7dTBFCgQ2bdtoV6eTA>
+    <xmx:8qgtaFalhvtHZCK2cP0PDjKq9ftjw1h0Vad-8FQ4CijvNmZ_KSmuUA>
+    <xmx:8qgtaB0n4Zwsg4SH8nC1jwfN80F83nq7q0W1IKGNPlXLVQbP3XUqdaTm>
+Feedback-ID: idc214666:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 May 2025 06:20:33 -0400 (EDT)
+From: rafael@beims.me
+To: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>
+Cc: Rafael Beims <rafael.beims@toradex.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: mwifiex: enable host mlme on sdio W8997 chipsets
+Date: Wed, 21 May 2025 07:19:34 -0300
+Message-ID: <20250521101950.1220793-1-rafael@beims.me>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v9 1/3] wifi: cfg80211: Add Support to Set
- RTS Threshold for each Radio
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20250429040048.3356960-1-quic_rdevanat@quicinc.com>
- <20250429040048.3356960-2-quic_rdevanat@quicinc.com>
- <accbd6fc15d4a22ec66fc67b4bc8f97c7b24d7fd.camel@sipsolutions.net>
-Content-Language: en-US
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-In-Reply-To: <accbd6fc15d4a22ec66fc67b4bc8f97c7b24d7fd.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=V9990fni c=1 sm=1 tr=0 ts=682da4c7 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8
- a=stkexhm8AAAA:8 a=IcepAnfWZxy4S1riAngA:9 a=QEXdDO2ut3YA:10
- a=pIW3pCRaVxJDc-hWtpF8:22
-X-Proofpoint-ORIG-GUID: jZam_jNbUKPZgB7fP2OZ7NYmDNi6PFtu
-X-Proofpoint-GUID: jZam_jNbUKPZgB7fP2OZ7NYmDNi6PFtu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIxMDA5OCBTYWx0ZWRfX+98n82LeBrty
- I7X5a4xQ0jlhV3QTDdXaDPqbMSnbshiiR42X7WIzgVFR8tf88W/B+UOyoDbaO3RrsZcIcYXcVhf
- S3bcIW8AGnPaIaVYCgqrZnLoRIAVXGYX8rL5ADGee180mkZzlxp91WeRnW12VKw2dASjOEUxVv+
- +MYGPxYuP8FhKL+RTzHaCBdm0bJnD0ojjzesnobOGSZC7IpT9UPPFOHkxFArfOka0iUamWEAIW0
- IJrNRPF2xV1IXo5Ps3uDfzLvt3zTkwNxvFzfBKzp2qNg3NrNLU5+VTgFhRnoNsqqHI8ikIwjUTK
- 0JKk0Bg06VpWFLmmmSElckkCcab1EE89LG5RXwvGq74hqXKrwIsED7oBXsgvbIx3qMLWf58BOdG
- T3s1CUiVWaxzZjqKiLSgKlaxKalg+Z6Lkh9saNiR1qpo6aR34Pnkn5yWe0xh7A7EeoqTeWYS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-21_03,2025-05-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=554 bulkscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 mlxscore=0 spamscore=0 phishscore=0 suspectscore=0
- adultscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505210098
+Content-Transfer-Encoding: 8bit
 
+From: Rafael Beims <rafael.beims@toradex.com>
 
+Enable the host mlme flag for W8997 chipsets so WPA3 can be used.
+This feature depends on firmware support (V2 API key), which may not be
+available in all available firmwares.
 
-On 5/21/2025 12:47 PM, Johannes Berg wrote:
-> On Tue, 2025-04-29 at 09:30 +0530, Roopni Devanathan wrote:
->>
->>  #define NL80211_WIPHY_NAME_MAXLEN		64
->> +#define NL80211_WIPHY_RADIO_ID_DEFAULT		-1
-> 
-> I pointed this out before, that doesn't belong to the API.
-> 
-> https://lore.kernel.org/linux-wireless/bef48349364854ba2ec42262e91b747028310a1c.camel@sipsolutions.net/
-> 
-> Please address comments or tell me why you disagree.
-> 
-As discussed, I'll remove the define in next version.
+Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
+---
+Tested on a Verdin iMX8MP (SDIO-UART) and Verdin iMX8MM (SDIO-SDIO):
+    - created AP's requiring WPA2 and WPA3 authentication and successfully
+      connected clients to them.
+    - connected as a client to AP's requiring WPA2 and WPA3 authentication
+---
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->> +	if (info->attrs[NL80211_ATTR_WIPHY_RTS_THRESHOLD]) {
->> +		rts_threshold = nla_get_u32(
->> +				info->attrs[NL80211_ATTR_WIPHY_RTS_THRESHOLD]);
->> +		changed |= WIPHY_PARAM_RTS_THRESHOLD;
->> +	}
->> +
->> +	if (changed) {
->> +		old_rts_threshold = rdev->wiphy.radio_cfg[radio_id].rts_threshold;
->> +
->> +		rdev->wiphy.radio_cfg[radio_id].rts_threshold = rts_threshold;
->> +
->> +		result = rdev_set_wiphy_params(rdev, radio_id, changed);
->> +		if (result)
->> +			rdev->wiphy.radio_cfg[radio_id].rts_threshold = old_rts_threshold;
->> +	}
->> +
->> +	return result;
-> 
-> nit: you could invert the "changed" test and save some indentation,
-> those lines are pretty long. Then you can also not initialize "result=0"
-> and "return 0" for the !changed case, which is more readable.
-> 
-Sure, will do this in next version.
-
->> +		old_radio_rts_threshold = kcalloc(rdev->wiphy.n_radio,
->> +						  sizeof(u32),
->> +						  GFP_KERNEL);
->> +		if (!old_radio_rts_threshold) {
->> +			kfree(old_radio_rts_threshold);
->> +			return -ENOMEM;
-> 
-> Hmm?
-> 
-> Also doesn't that leak?
->I'll remove kfree() from within the if() condition and free old_radio_rts_threshold
-towards the end of its usage.
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index c1fe48448839..f039d6f19183 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -438,7 +438,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8997 = {
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
+ 	.fw_ready_extra_delay = false,
+-	.host_mlme = false,
++	.host_mlme = true,
+ };
  
-> johannes
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8887 = {
+-- 
+2.47.2
+
 
