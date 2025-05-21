@@ -1,87 +1,109 @@
-Return-Path: <linux-wireless+bounces-23203-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23204-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E825ABECF8
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 09:19:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C5C0ABECFE
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 09:24:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBBA53AD275
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 07:19:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 360757A693A
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 07:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FAA5201266;
-	Wed, 21 May 2025 07:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C4E2343C9;
+	Wed, 21 May 2025 07:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VyX76Bn/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="avpLffxl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7746C7DA6D
-	for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 07:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B866199EAF;
+	Wed, 21 May 2025 07:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747811968; cv=none; b=cHQTCBmk4oBGFiIebjIjkMIRJH4w/1cfMJrnFMQxAluBPUtFwzVR3vr5gWbH7A511tVr4KEmr6gKILOIlT+mOmgFsmbo9tvOIu6T8TluK5tKGPxLvq1zBJlXHclH82KeG7S/OspH6W/EfmY3rpJZOe23ivkP31Q+I7AOfWtwn94=
+	t=1747812266; cv=none; b=HyE6imU/CiyTr9oxGLLva+qalxauhQUIfzIr4nnNfDJyenfAJzgXbiacfs84SbwBWXYVzNZDBfowxCxDPEEC2siLxXirmmKsJfy+0li0iW4Fjy2hAuvxqU0k2qpOttThagadw1Avpp/YULV/YSrgHP1d0GVd3M5xdeeddq68EWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747811968; c=relaxed/simple;
-	bh=0C70zI1ebK0kas71SzbYEYeU1Nlh4qNEhqjLLKCh6CA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Xvyj0ZngGyGywPdevTnQspB19L5y2OBjjg6M2YGdVEZ3OBr2b4LedhKshiLJCl/Y0K2vyBoQcB+Ip9PuijIM44tP5f2c5xo8i0Cqe42kv3/50EuKCOFwOxZ88pR6QMLLKQDcAvufvbIMkfWUPml3UK4G+/kpYbAf7jN6iIJFJSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VyX76Bn/; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=/AX9b0jB7q6rskYsdAzwLMjNKe15u7XA7wXGzSsNQVQ=;
-	t=1747811966; x=1749021566; b=VyX76Bn/hdqhvKyFfv15ZDPQlxjYgabH1KQXTJnC01y7l+J
-	IoGFTsNmIrgCN4N7q4/1FalC4ISapTRSLwOMW/iVRLj4jGpxnx+fUp/XmR+jPmnewa3p7ND8yKMnr
-	D9ptwgKGqQ/Jqeg/pQ4y2JzYLn1nafCndSiGD/QRwZBYm5tA6gFkpGKP3bZUBGzmB6Q4c22CjnfVv
-	0XAEjZl0Ml1XvmxAjMI+pw3Qmud1RslvMfeYBk8a+XXR3OkchjxHff8d1L5n6QLxzPUruiHKhehbw
-	/i4LEs/Of1XBiKUUDqNSZalgBA5mWxkO5BXpMpb8BW2j8SLk6PAhPBrEx7fiSpwA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uHdjW-0000000DwwI-1VDz;
-	Wed, 21 May 2025 09:19:22 +0200
-Message-ID: <e98a1b2791eaef6ec12ae2f9d9060cf6eca47d46.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v9 3/3] wifi: mac80211: Set RTS threshold
- on per-radio basis
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 21 May 2025 09:19:21 +0200
-In-Reply-To: <20250429040048.3356960-4-quic_rdevanat@quicinc.com>
-References: <20250429040048.3356960-1-quic_rdevanat@quicinc.com>
-	 <20250429040048.3356960-4-quic_rdevanat@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1747812266; c=relaxed/simple;
+	bh=bsRKvz0IeflenEfvIJXltQBXIEynMd8vYvMNQDAeBNo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j7yjPyYeuGO/p0yLido0kEqcPm5SEqDvuNXvCXjmrRoBIpAb6yJj0qHdJEwiJX0s1r0m75KcH03m9sTD1F5xrpPK10pm255pUm2gvIbO95JHEgLX7VD2AWOI83IYRIuL3cF477AUJJi6jmKIXxaE+Bp0jqUaUeKh5FzpXBYF3Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=avpLffxl; arc=none smtp.client-ip=209.85.166.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-861d7a09c88so154212839f.2;
+        Wed, 21 May 2025 00:24:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747812264; x=1748417064; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bsRKvz0IeflenEfvIJXltQBXIEynMd8vYvMNQDAeBNo=;
+        b=avpLffxlLvZPCPH7ewdoPbFaR2a7Snr70IFgMAUf6h5tGeH9/vKhahlqrzvbiVzczP
+         ZsqQloFKWYc1Qu5HjD0IbfuaTHMPW2RjfRbdMK/z/jbWptdKM1yfght7LUSEA4BZLWEu
+         n3m6crFKtsWFjfNnBRWuPreRMUqzJZCrGarkHy4moclgLec2qaCLgVs6Nht2MBnB9osx
+         cvnVz8SJUtMy/e4IX1jKqYocQQuW6OJ3bIe9ydqDqyv1NAc0aOBz2daQOgTMQEjzYqDU
+         Y1vaDRP7WKHE1xJCGAHjdgWcmcxNhdQ5YI3uPTsevd+mRaKBh0htTpANTF1t+rLtL5a6
+         wHKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747812264; x=1748417064;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bsRKvz0IeflenEfvIJXltQBXIEynMd8vYvMNQDAeBNo=;
+        b=hr18D+5mxpUuM8nmcIHaTR8QaSQ4dDmz+u+BwE3huKLIPiUKQMwmyaJnamLDnYVbYb
+         hUhWjQF88aeMGNfa29f2TgmTAedw+QIH48n/tsmdibjnONvLdoH32tsuqtXim+ENYIFx
+         0eOwiZIa0io/ORKLYPplEsSLYEcrcwhUraFpW9XfjeeRPAPbvcFoZ3L873J9TDe9DcKZ
+         0Lslcvf5BeJrYgfBUsP3l3lbXwq21IGaHAXuth2IOwwe2MYNfhoeOYZKNGTHICHD46SV
+         9wR2FFV+zpoGvnRS+2CRhvd2IRktDF1CMbPGGxzX9tUksR0eHjQw0SzNqUtSNwuxBMoR
+         5PuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUkidpvfVsjSX2aV/oh02XRj8KMYUtfk9Fdq0oubRalPu/2Zx9y69xNdu6sbukV4StbsIu9NII1z6VXHMs=@vger.kernel.org, AJvYcCVArbWAdKULrxxdNHGvxSGJe0na1hoZFJ3gcSFivIKD5HoLDO1dVnFgB/XQMIkK/Q+qSr4WSz0CMPKvXA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDHAwPqixGolaWQQqNwdIsTo7GimlGEhHsM7Vx6g7IkQ2bubyy
+	mQFdKxM2T0wdf/nYFMyd0p9N5KaCuXwFc4eOrPpoHJTDuCbmSOK6wuF1z8FX+Ptpinluqh4uRfI
+	S74gInZkFYantHDuKUoMWfYNYq2sPZcE=
+X-Gm-Gg: ASbGncuoqGxSFyCn7tkPQWtdpcPPKO0SfIKOvW1fY5/TXhnOEU2inWmN/q5DQRaa4S0
+	6r5v4Er0KpIhVL6rr5v+VcAVVTSO3HETinNhKx1yHnV6JgSD2p3qEqfj9NHSVCLnzG6IBkWdBQz
+	cOsyKGnAgXCmNWCCq49SrcR55IL1bg8616
+X-Google-Smtp-Source: AGHT+IGFDYBRiQXD5xgvrn5c6GrFeLVxKsut4Q0h05F8cCwAOAEYT3ecSVh9wv9zXcr7frmDxZ0UC4M6jQeMmcdwzfo=
+X-Received: by 2002:a5e:da43:0:b0:86a:2523:a9fc with SMTP id
+ ca18e2360f4ac-86a2523ab62mr1661574539f.0.1747812264166; Wed, 21 May 2025
+ 00:24:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+References: <20250520223430.6875-1-spasswolf@web.de>
+In-Reply-To: <20250520223430.6875-1-spasswolf@web.de>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Wed, 21 May 2025 15:23:47 +0800
+X-Gm-Features: AX0GCFttNynCNWUpGDwxv5Ee1zvFjTDsRbF65Fu6DSl_bVrh9rFic3i78TZ0q48
+Message-ID: <CAL+tcoDtk2vNqiNWdG1hvo3jMNt0_fPffi5ts8LZWZzMDvsLXg@mail.gmail.com>
+Subject: Re: [PATCH] wifi: add sk_requests_wifi_status()
+To: Bert Karwatzki <spasswolf@web.de>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-next@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2025-04-29 at 09:30 +0530, Roopni Devanathan wrote:
+On Wed, May 21, 2025 at 6:34=E2=80=AFAM Bert Karwatzki <spasswolf@web.de> w=
+rote:
+>
+> Checking the SOCK_WIFI_STATUS flag bit in sk_flags, may give a wrong resu=
+lt
+> since sk_flags are part of a union and the union is used otherwise. Add
+> a sk_requests_wifi_status() which checks if sk is non-NULL, sk is a full =
+socket
+> and checks the flag bit.
+>
+> Fixes: 76a853f86c97 ("wifi: free SKBTX_WIFI_STATUS skb tx_flags flag")
+> Idea-by: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Bert Karwatzki <spasswolf@web.de>
 
-> +++ b/include/net/mac80211.h
-> @@ -4569,7 +4569,8 @@ struct ieee80211_ops {
->  			    struct ieee80211_key_conf *key,
->  			    struct ieee80211_key_seq *seq);
->  	int (*set_frag_threshold)(struct ieee80211_hw *hw, u32 value);
-> -	int (*set_rts_threshold)(struct ieee80211_hw *hw, u32 value);
-> +	int (*set_rts_threshold)(struct ieee80211_hw *hw, u8 radio_id,
-> +				 u32 value);
+Since Johannes will modify it manually, so...
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
 
-That should probably have documentation updates. And passing a negative
-value to a u8 seems awkward? Maybe that should just be 'int'? For a
-value that's likely passed in a register, u8 will probably require more
-(machine) code anyway.
-
-johannes
+Thanks,
+Jason
 
