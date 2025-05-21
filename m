@@ -1,62 +1,61 @@
-Return-Path: <linux-wireless+bounces-23205-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23202-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C413ABED34
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 09:37:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BD0ABECF6
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 09:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DABF93A682E
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 07:37:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8D73BF477
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 07:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5CF235067;
-	Wed, 21 May 2025 07:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D682367C0;
+	Wed, 21 May 2025 07:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qGFoeDdE"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nUwyc9Wk"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1423C232785;
-	Wed, 21 May 2025 07:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B9123645D
+	for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 07:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747813060; cv=none; b=sgMAotCQCbYsGO57wQ5SNfOKAo2hBpL847Wevhku0+4FjOzHVXlFFlrymh/gFd8yZmhACnjHKMAOxqAk2c/2JfV3+rLauE+KUGp8MXgVJyaIHSf8Pw0FdYJb0p+yGVIfJaYxTkoui0/E7ZaL2bcmlBnjgFgKf+39ObBCT9IFwcc=
+	t=1747811829; cv=none; b=tle3jFvSITjWGVD7foHtJz+SBFX8EmKTfPtkRcNsNLWjK8OWljQ7DuK3TpumDg0g6OLEQYYWGmqPo3XrZXMNCw7swiE2pccexEX7OKaBo40yMTqX0pjj8Uc7ulddSuWjMzoLHTDbo9pUokgSfNd6MBvjIpIiZ86tM9SoVoVPtFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747813060; c=relaxed/simple;
-	bh=HeVcLu5pe7AJAPaB6hhsXE3LQ25Ay29oZ+Uaj3gjiHM=;
+	s=arc-20240116; t=1747811829; c=relaxed/simple;
+	bh=3VWsDIE/k6SeHPBj+Axdiv1lM5KREhu+sLI50KENhCQ=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XI6IzpO68rZziZ0cFfwCUwiNz5uE/JhoVlhqAThcAVKpt9+zY06fX1CNBMqodRlkSk1w7t0JE+QfZVHGELRpwcNiKfJOUx+2Hy+1ROM4uDpbRktcL+gj/byJC13Kwd2ETu0VmIoEe1FJ4uUINaH9IkbRYDDqJFj1QrB2poxVNaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qGFoeDdE; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=Rb5kB9Kcf0dnAyai72V1Ho4XKLDdWhGeT755vgAe0eEBgclrxy1TyN1La3VY7rBjvV2aXTKKc72KleFroyvBxKEfUmMk+0BJwX0va8MWsmUbcqMIBNk/acG4XuRKsr3tVuIP/Vc60FixmRpZcIHqKL0P9+qeh/K/FSkHub2LPQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nUwyc9Wk; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=HeVcLu5pe7AJAPaB6hhsXE3LQ25Ay29oZ+Uaj3gjiHM=;
-	t=1747813059; x=1749022659; b=qGFoeDdELxjJvvhY021qcqiNYhevf3kBNrN4QeU/HR3fdKn
-	7uIQBgtsS+hP3wYBqI4wbpVyF2rF+1N0hbxL7w7lmdwE6ZO1Z6MRYdQNdcs/nWADWeZzt9cDIjx1t
-	fLHFUAyv87KGmj1f9hYnXKqz5OmQYPzmxXo/gJn0c1FLT7YggO0K/t7LgF3Mc6I6q1jmPSsf3ttId
-	sGDDbWsOpzuMUKuJjs71oRwEe6Puqj5EAGpQbww0kLj7b44TRO/4NR7Y0SrIptAYT0IoBNfmLSSkK
-	bfP3o1FgQveeNiL3p5mgzWFH0m6PlA6PTuYo21egzR776C0tr4M/1Uu2H4k7EDWw==;
+	Resent-Cc:Resent-Message-ID; bh=Q4W9GHgRKlVuWbMEM88KOqWXNcxBFxOOGslwklSujHo=;
+	t=1747811828; x=1749021428; b=nUwyc9Wkl5OXd/FbSE4WZa0GRXCDrNwNcf0CV7B1aso866n
+	zEJo9bUoSVbD56Xp5+VPM0qH0KKGuvM43k6n7zdIETGfR0yjdQcn6nhKCh3uGsmPavLVTEGZeQggb
+	lMjgq7pZ9qRbmQUpcNx6NbZZidpmsQVvmWXlTR8lj2XGm8Nak0dj1eNAUPgyyeleNIlVU9HWyL0xO
+	YG7Fa9oOxLms/i8vlaJDSNtOS0XWj/SaO3nKqphq9jzpve95adP6tZYRSnDWkI+q3Mkl+5zraFRIX
+	Kf35BpZid/aQGAePQSZE3IyzUVw85rzh7EQYJlUiYToZ4Hg+LTjFL7YnhvSGQzrA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uHdSq-0000000Dv3Z-18jl;
-	Wed, 21 May 2025 09:02:08 +0200
-Message-ID: <545397842b6079ac0d51cfa8c49d5b2f13c14f58.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: add sk_requests_wifi_status()
+	id 1uHdhI-0000000DwiD-29oY;
+	Wed, 21 May 2025 09:17:04 +0200
+Message-ID: <accbd6fc15d4a22ec66fc67b4bc8f97c7b24d7fd.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v9 1/3] wifi: cfg80211: Add Support to Set
+ RTS Threshold for each Radio
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Randy Dunlap <rdunlap@infradead.org>, Bert Karwatzki <spasswolf@web.de>,
- 	linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-next@vger.kernel.org, Jason Xing
-	 <kerneljasonxing@gmail.com>
-Date: Wed, 21 May 2025 09:02:07 +0200
-In-Reply-To: <8cc4c232-c7cd-4dec-97c8-3573b5e471c2@infradead.org>
-References: <20250520223430.6875-1-spasswolf@web.de>
-	 <8cc4c232-c7cd-4dec-97c8-3573b5e471c2@infradead.org>
+To: Roopni Devanathan <quic_rdevanat@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Wed, 21 May 2025 09:17:03 +0200
+In-Reply-To: <20250429040048.3356960-2-quic_rdevanat@quicinc.com>
+References: <20250429040048.3356960-1-quic_rdevanat@quicinc.com>
+	 <20250429040048.3356960-2-quic_rdevanat@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -68,17 +67,50 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Tue, 2025-05-20 at 15:57 -0700, Randy Dunlap wrote:
-...
-> That is usually spelled
-> Suggested-by:
-...
-> Missing indentation on the line above.
-...
+On Tue, 2025-04-29 at 09:30 +0530, Roopni Devanathan wrote:
+>=20
+>  #define NL80211_WIPHY_NAME_MAXLEN		64
+> +#define NL80211_WIPHY_RADIO_ID_DEFAULT		-1
 
-I'll just fix that - will apply it now. Maybe also change the subject,
-since really it's about checking the socket flags properly, the main
-feature isn't adding the function :)
+I pointed this out before, that doesn't belong to the API.
+
+https://lore.kernel.org/linux-wireless/bef48349364854ba2ec42262e91b74702831=
+0a1c.camel@sipsolutions.net/
+
+Please address comments or tell me why you disagree.
+
+> +	if (info->attrs[NL80211_ATTR_WIPHY_RTS_THRESHOLD]) {
+> +		rts_threshold =3D nla_get_u32(
+> +				info->attrs[NL80211_ATTR_WIPHY_RTS_THRESHOLD]);
+> +		changed |=3D WIPHY_PARAM_RTS_THRESHOLD;
+> +	}
+> +
+> +	if (changed) {
+> +		old_rts_threshold =3D rdev->wiphy.radio_cfg[radio_id].rts_threshold;
+> +
+> +		rdev->wiphy.radio_cfg[radio_id].rts_threshold =3D rts_threshold;
+> +
+> +		result =3D rdev_set_wiphy_params(rdev, radio_id, changed);
+> +		if (result)
+> +			rdev->wiphy.radio_cfg[radio_id].rts_threshold =3D old_rts_threshold;
+> +	}
+> +
+> +	return result;
+
+nit: you could invert the "changed" test and save some indentation,
+those lines are pretty long. Then you can also not initialize "result=3D0"
+and "return 0" for the !changed case, which is more readable.
+
+> +		old_radio_rts_threshold =3D kcalloc(rdev->wiphy.n_radio,
+> +						  sizeof(u32),
+> +						  GFP_KERNEL);
+> +		if (!old_radio_rts_threshold) {
+> +			kfree(old_radio_rts_threshold);
+> +			return -ENOMEM;
+
+Hmm?
+
+Also doesn't that leak?
 
 johannes
 
