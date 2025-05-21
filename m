@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-23223-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23224-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82C8ABF264
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 13:08:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B32ABF26F
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 13:09:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5436A4E34E4
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 11:08:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E70C5189A03F
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 11:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45B325E83F;
-	Wed, 21 May 2025 11:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BCA25FA3F;
+	Wed, 21 May 2025 11:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZbS0oiJC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dH5ZyA4E"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8240A233D7C;
-	Wed, 21 May 2025 11:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F8646B5;
+	Wed, 21 May 2025 11:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747825683; cv=none; b=U9X9/qldcYil0umgLK+wPRhaejM7ZOz0I7tFHFdj1BiF01iSA9qjUqEvJVx4T+utIJRTuCPr7NLRRM0t3QgEGzJEFoIV6lN2EWwNl6jjG7apmI7jK5vesZlcZSLsE6xaWq1gq3wLI/sq0U4ZdyDeQorU1eKTi2OV6Flt6OGoZ7Y=
+	t=1747825752; cv=none; b=UeTwONVwc3spG9zCsAFOQmqb4bIsU2Gr1oCWxLXq2iEWy9X2ZalGFzXJcwC+5Xr/oZaSspF6/jrI9yqyub2O7APePRq3INLVA0Rq6k7t/7kCT0/mdqwJd0COPcch380MYlQsj8nCEpO/jn615eU498Z9Vqw1a1/gtc79eHM2sN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747825683; c=relaxed/simple;
-	bh=SgqtN2QJnSYj697kaLFqHOFNfE6uupsWuUcmLGOP5so=;
+	s=arc-20240116; t=1747825752; c=relaxed/simple;
+	bh=teL1ExaTgwk0A24QKGbbFQaV+6uqaGGfhT+BH48aQSg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MCEtEk1bVMAzc3bzBxUHKaMzjk/Mi0PugaLDF0+zANlDD1AI9ORQOfrKm9PgkrGy+veijrxNOop7givze2Vk6yuFu8UVQC1UTqemgbg1SkePQao2feuB9Rke18KxcEXdOJ2Iqkgg5/mpeC7w3p/+Ruvv3QprDBxDsaph8SjYXYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZbS0oiJC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70558C4CEE4;
-	Wed, 21 May 2025 11:08:00 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=qoN9JTDYy8R0O0dH4PqjLpiWHHKge4cyDOgYNE+t5dykI5OJcflxs5RfU5VUmAKsk1nYSlAiV9K1TF6MrAN5kOl5oJg+k707hUC6ephubJST5WhX9ImMHQZRWbDdfiJrSzxPWCZA06xqONRAzr5R6GU74FsHtSAR/02y70CEUC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dH5ZyA4E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A375C4CEE4;
+	Wed, 21 May 2025 11:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747825683;
-	bh=SgqtN2QJnSYj697kaLFqHOFNfE6uupsWuUcmLGOP5so=;
+	s=k20201202; t=1747825750;
+	bh=teL1ExaTgwk0A24QKGbbFQaV+6uqaGGfhT+BH48aQSg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZbS0oiJCCpnsbwyLezGXZdVcbEifd/2JL8ymn24pJ3jTf85SDaNN+ELcHmCVY0LNx
-	 5+QPHIskaSE+iDB8Yqg0/DwTeQYHSxUJPeanhfwBFNgKh7VkF/vPOrSiopcpLNoveJ
-	 /shH29htC61uCJFvL4eQFs4T6OYngtuVaASB7ezNcSP89GY+Q0ltdkJVcmWgttVYzO
-	 avvu7/0SSR1M237y3FKe8l79rf402WFGqjClkR4F1EgdtZzJXV4E66mZOdmbYoxerT
-	 5Q1MEHqszcJ6qM2MI/33r8g9Kwz+PDApuj0O93W2T12z8Wwx9s0Exgrv6yQq8RduYu
-	 W/xhzaCj31Aaw==
-Message-ID: <5de13266-d6d4-4497-8913-e442080702ed@kernel.org>
-Date: Wed, 21 May 2025 13:07:58 +0200
+	b=dH5ZyA4E4Oz+MheLIui+apXfWY2nYgrqB+rh8LgEgD7sSW4/sY7RWUSSsUX5hOPsI
+	 O26TwhXKB55ud32L1Hlwcj0JVDCY8gTNN1HRf0Xisy4CCWwlBoHXfBlK+9k7MbGO6K
+	 bh/LvRP7jzkOWXYl286RhIR9u8jN8K2p1d0SedIHCyJZNtrP7BkGsYRCd0C2jUaM3S
+	 gnustsSX+owcyb5OnX6c+cMjQ5ypAiONUqokCGaQiW0d94AvRC1jKoh9TnmDMapqK8
+	 0Xckvv8T5i4OcZirqCx2etKt3ZRDIzDd926QUOFsqmUGMUF/Wu+PErFCNQ2oQCsGMR
+	 /v/RTymXilO9g==
+Message-ID: <b00c3805-aa8c-40d7-a882-66f59f777747@kernel.org>
+Date: Wed, 21 May 2025 13:09:06 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] wifi: ath9k: ahb: replace id_table with of
+Subject: Re: [PATCH 4/4] mips: dts: qca: add wmac support
 To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>,
@@ -60,7 +60,7 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  <devicetree@vger.kernel.org>, "open list:MIPS" <linux-mips@vger.kernel.org>,
  open list <linux-kernel@vger.kernel.org>
 References: <20250521021557.666611-1-rosenp@gmail.com>
- <20250521021557.666611-4-rosenp@gmail.com>
+ <20250521021557.666611-5-rosenp@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,79 +106,53 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250521021557.666611-4-rosenp@gmail.com>
+In-Reply-To: <20250521021557.666611-5-rosenp@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 21/05/2025 04:15, Rosen Penev wrote:
-> -		.name = "qca955x_wmac",
-> -		.driver_data = AR9300_DEVID_QCA955X,
-> -	},
-> -	{
-> -		.name = "qca953x_wmac",
-> -		.driver_data = AR9300_DEVID_AR953X,
-> -	},
-> -	{
-> -		.name = "qca956x_wmac",
-> -		.driver_data = AR9300_DEVID_QCA956X,
-> -	},
-> +static const struct of_device_id ath9k_of_match_table[] = {
-> +	{ .compatible = "qca,ar9130-wmac", .data = (void *)AR5416_AR9100_DEVID },
-> +	{ .compatible = "qca,ar9330-wmac", .data = (void *)AR9300_DEVID_AR9330 },
-> +	{ .compatible = "qca,ar9340-wmac", .data = (void *)AR9300_DEVID_AR9340 },
-> +	{ .compatible = "qca,qca9530-wmac", .data = (void *)AR9300_DEVID_AR953X },
-> +	{ .compatible = "qca,qca9550-wmac", .data = (void *)AR9300_DEVID_QCA955X },
-> +	{ .compatible = "qca,qca9560-wmac", .data = (void *)AR9300_DEVID_QCA956X },
+> Now that OF ahb support was added to the ath9k driver, we can use it to
+> enable and use the SoC wireless found in these chipsets.
+> 
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  arch/mips/boot/dts/qca/ar9132.dtsi                       | 9 +++++++++
+>  arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts         | 4 ++++
+>  arch/mips/boot/dts/qca/ar9331.dtsi                       | 9 +++++++++
+>  arch/mips/boot/dts/qca/ar9331_dpt_module.dts             | 4 ++++
+>  arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts           | 4 ++++
+>  arch/mips/boot/dts/qca/ar9331_omega.dts                  | 4 ++++
+>  .../mips/boot/dts/qca/ar9331_openembed_som9331_board.dts | 4 ++++
+>  arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts              | 4 ++++
+>  8 files changed, 42 insertions(+)
+> 
+> diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
+> index 61dcfa5b6ca7..dc94459aa3e9 100644
+> --- a/arch/mips/boot/dts/qca/ar9132.dtsi
+> +++ b/arch/mips/boot/dts/qca/ar9132.dtsi
+> @@ -156,6 +156,15 @@ spi: spi@1f000000 {
+>  			#address-cells = <1>;
+>  			#size-cells = <0>;
+>  		};
+> +
+> +		wmac: wmac@180c0000 {
 
-Undocumented ABI.
+The name is enforced by bindings now (if you tested that). It's wifi.
+
+It does not look like you tested the DTS against bindings. Please run
+`make dtbs_check W=1` (see
+Documentation/devicetree/bindings/writing-schema.rst or
+https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+for instructions).
+Maybe you need to update your dtschema and yamllint. Don't rely on
+distro packages for dtschema and be sure you are using the latest
+released dtschema.
 
 Please run scripts/checkpatch.pl on the patches and fix reported
 warnings. After that, run also 'scripts/checkpatch.pl --strict' on the
 patches and (probably) fix more warnings. Some warnings can be ignored,
 especially from --strict run, but the code here looks like it needs a
 fix. Feel free to get in touch if the warning is not clear.
-
-
->  	{},
->  };
->  
-> @@ -72,20 +55,16 @@ static const struct ath_bus_ops ath_ahb_bus_ops  = {
->  
->  static int ath_ahb_probe(struct platform_device *pdev)
->  {
-> -	const struct platform_device_id *id = platform_get_device_id(pdev);
-> +	const struct of_device_id *match;
->  	struct ieee80211_hw *hw;
->  	struct ath_softc *sc;
->  	struct ath_hw *ah;
->  	void __iomem *mem;
->  	char hw_name[64];
-> +	u16 dev_id;
->  	int irq;
->  	int ret;
->  
-> -	if (!dev_get_platdata(&pdev->dev)) {
-> -		dev_err(&pdev->dev, "no platform data specified\n");
-> -		return -EINVAL;
-> -	}
-> -
->  	mem = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(mem)) {
->  		dev_err(&pdev->dev, "ioremap failed\n");
-> @@ -118,7 +97,9 @@ static int ath_ahb_probe(struct platform_device *pdev)
->  		goto err_free_hw;
->  	}
->  
-> -	ret = ath9k_init_device(id->driver_data, sc, &ath_ahb_bus_ops);
-> +	match = of_match_device(ath9k_of_match_table, &pdev->dev);
-
-There is a wrapper for getting data, use it.
-
-> +	dev_id = (uintptr_t)match->data;
-
-And dev_id is enum? Then you want kernel_ulong_t.
-
-
 
 
 Best regards,
