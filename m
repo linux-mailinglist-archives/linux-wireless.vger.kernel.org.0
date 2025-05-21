@@ -1,194 +1,153 @@
-Return-Path: <linux-wireless+bounces-23245-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23246-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93B8ABFE06
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 22:43:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C6BABFE9F
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 23:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A7591BA7CD6
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 20:43:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05C333BA7B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 21:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527AC29C35C;
-	Wed, 21 May 2025 20:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59B729C345;
+	Wed, 21 May 2025 21:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KBA9mmoT"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MxOxmSmh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8A92673BA;
-	Wed, 21 May 2025 20:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F55616F288
+	for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 21:04:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747860200; cv=none; b=jb3qiQWh8Y9cn08jznDO6WfRhZsO/6CDu1dsydVLup8aU9XE+lUsrfJBqw7dhPQ98mJjUuleFp/suX2skTuykZCXB0fWcoPsF5Az/XERe2iB335ipvZ+4HnMEG/AeA73O1Q1m6nr40lgdJ1prVApqODVvGw1e9unMkeJ7s11Kzo=
+	t=1747861498; cv=none; b=dXBhUXosTE5mWa2w4lYQgTOQ5yH34oD6luKRGW1WPhXd4lfrzotHjtcDr4QMN78Ko+1sbSoC5qXAksBaIxnJ9sLbiexcWHnuXqT/nYHZf+zd9Q89zlcCvoBD2CNBSlLFm2CJQqlNDFJe2jTM63I+gTUq+/I2YdJU7MotLCYjHjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747860200; c=relaxed/simple;
-	bh=IwrRCiDNtk8v6QhRVXRTWIgPaS40Y4CEAbnOkbHmGGI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mVo9fbqXiYCwLR32AwgDPuwjfrYyu/P5dIO2TexELM8ukGS+1uLPgfzXBtmpV4xXlCgMux/fs88GzDzmK3Uh4vGboDuLIp/vbXyUr5p1pPUboA2hJT+rnDXsANbbgCDh5G/Z8YWwDGeLzxdudj2AxpoRusmLba8tyO0aF5jyWn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KBA9mmoT; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-70dda931089so32711587b3.1;
-        Wed, 21 May 2025 13:43:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747860197; x=1748464997; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I/DjaVjylUwkku9SaRveOg/Gwyx+o4sa3Ygm6F3w6CM=;
-        b=KBA9mmoT+rT9ToW6m+fzXgrZRpoRf2L+v0g6S/n6Bxu0TBNZpqNHg07xuclo9Jb7BH
-         GEKOLRxWl1ETfAPHw3nEZm3FMmlBi5HoL4ejW1UPiLZCPsqPtOYLPdiEgMJUAbadUAD3
-         HUAiuHqGqfnCQScWQ+vPCOKNW/GwhxzEH3b4zotze/ADBHt+9jhiWbaLIujosXvOVCV3
-         ZSH1Ek3ElT/3u+1qpBgi0eSJIr0N0UXX+qCiy6hbyX0qGQqktU32R0O+aMgXKZ49Ew7O
-         jgyQZB01WwRZ+8VNwCnwLrD/uUkM2aK0G2ygs767MNC576+rhlMId9kp815WaqDCTwjG
-         7WhA==
+	s=arc-20240116; t=1747861498; c=relaxed/simple;
+	bh=chJwl55od09sVeWIrN0MmDLleb4Odia5evr1uKP0pXA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=PbnCMGvZmUqcgh8O0p0WZ6qqTGgp/qcf9uRNGHQcvAlfjx9aVfLltAvERqCfQbf9w/lPUvW6wLWmACzBR32tOJM0OIQjaQBC15AK4C7t5CdIN0113eHlEEXrDP0OmK61v/5AMjwwyw8PCHe7r8n5Ja8/1dbX7i4Sb8rpgZmlRvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MxOxmSmh; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54LJh7Qu015209
+	for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 21:04:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	n8pfrRmMMPxVsgesSad2JR7BoMNnIt88nEFw4z/RGv4=; b=MxOxmSmhhtc76zDd
+	VKjuwHqbDF6Uin5xc7s6h6CGg8yQ60YMNrG1K2NzR8FRMlF4iUgesDqiSXtjMtL3
+	SLgI52SSqY0+qCSVE6CkV03TWvjS2zDeAuUeUGxejWd2eZwr7ecvidDbizLx8CSW
+	bioeiRTAHUpBAF2tfdZYf9hvPLSKrzbvuhc0pFH756KVCLDR1B6tonfuEYATlaND
+	f+G54wYaGpxRRLjim5DdvUbMV8ahL0zglUFGunzIddfyZVEmC5+D3tsTMvse3F/o
+	aRndXbL546InDhxrXekGM48/U5smAIv+gbVjOOqwzRwlnEkXyH4qBz1yJV2ZFJHf
+	8oTjRg==
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf9c50g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 21:04:55 +0000 (GMT)
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-7391d68617cso6229439b3a.0
+        for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 14:04:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747860197; x=1748464997;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1747861494; x=1748466294;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=I/DjaVjylUwkku9SaRveOg/Gwyx+o4sa3Ygm6F3w6CM=;
-        b=TO+qm+ugeLsW/gZlmj+T71ueyLwdL7a8xRZw1yeToCjdFIdt8huewiJTSH5NT8i+H2
-         tc6biUUv4zFRY6HzFeXhy2EHHgh3Mj7CSTB01ROQSjA+XY3sxeB235eg7tUJoh3hUV5n
-         L47hNllq7MO2Uj9z7E+CR5rZQMciDq5ndpSvrUK7SUoi7eICxc6EEqzHkPvyA7CH5jWm
-         c5MgAeWMMOv+/N/MvE6G1VXVy81NL14r/GuH8/zaXwiaUAC/us0AAFOFAiHCYUT1vqsC
-         AcGnYNTIX4LZNmsBCvWUankfglmeH3xg/IUMafUBwePL6YvK4VZics2qmcb8l0zxGcll
-         Lh+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVPQpF/iDDaGj7UNhaEw64RYaYRwJoR6MXoLr0ttlY1uMFyqG+2eX2OJXEllNcobpypqlkfW4B7zeZR3FXf@vger.kernel.org, AJvYcCWsuXoJ2l4R0mgHb1+Bjel3mnqZRrQgafi61QrFba7fBEgMmRcivDRW6oR3M7nicw9v+O20CvuxyejG@vger.kernel.org, AJvYcCXeiFAzfijcqBgdHvJeTyvHZ8fzRqEZlzNLuUqF+86aJxvO2e9RGa/NSXm4R9GlD+yw1h1sO+ZKAW7Uvg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLEN1txWwaeFF/GERnW9afpEARJKxegM2twIsqY/Vjago+I+tr
-	M1Z1+kBpmxexV7Xz+oEU8pTyg2ICoyMFrnQbSfpHWtAW3sXird1g/08LOZkih7VuH+PMuqo4YIJ
-	pWdWSDrpgKH2ZBtFeZHHt8wWANUbEbfw=
-X-Gm-Gg: ASbGnctUEpW3Hrh3nK8da332GSQkO9dcGn3HvnzNRMUatxCvUvobvhW8vUwiDPzp1u6
-	VOKYS+rzPC/2hCbYWjFdEduRkdmBuxS/HNVvSVFcWIG3Gvg+0063gRQSJ9HFY5NMeYJotp2EW6j
-	3hZ18we9pp2C6FJrsRxThdu7c50tmaOE2z51ZKYr0fjk9ogg==
-X-Google-Smtp-Source: AGHT+IEO6sBgvdCHcR8JGZXZ4dzSUK0Nu5a1MgT/3BhJ0uncUhOOu/EW2B4W5UgPvtgkogJGshbmnl27422KYGnc9cQ=
-X-Received: by 2002:a05:690c:8e0b:b0:6fd:97a7:1474 with SMTP id
- 00721157ae682-70ca7a30020mr296466807b3.11.1747860197547; Wed, 21 May 2025
- 13:43:17 -0700 (PDT)
+        bh=n8pfrRmMMPxVsgesSad2JR7BoMNnIt88nEFw4z/RGv4=;
+        b=Mp+HYDs6P3q7A1tzySVhaXpEwmQdsHI2+NFwit1AQGgjLdsmVOepcqEwsDJwQdhkeA
+         lWXOzhV7BBPqrv2hHmFvBuFABLIb4H4Kf21OCrebIVQVEIHNS52riu3dCFjeAvd2/bco
+         8AAYoGelYS5HtuVmhtQ+d2r+Sl9AyyGu/O21Q286Xa4PpO3pItDnH5KhVQVV6lmn+xmH
+         ZL0sBJmCW5eswHnlmG7zdjDTOMUcvS2sloahrAWc0wMSE2Xfoaxd2Lj9XnRcPAYTjfxZ
+         D484IOvdXPNt1NZjHyv8DfROS0NsWK/9KRi9WGQT0YSwCVLHj5oCCiWBAw6qRLLGxmBm
+         G+wQ==
+X-Gm-Message-State: AOJu0YyPh1Md/uBhk7D3Ih7dIlBVaAa4Yq4WeHzYpCaSE2Fezkyf+Mol
+	4MdztrvQFbAdNPW120iYXI/JkC/fNJ+Z/OUPBbNitKsOT76amx1paFHpawcDyQjuKCLI1fSH9m2
+	T+rx21j2nMsJZYPVhdTqkBFc7YW336Tk/CHQCjD6kqSIxXKai/vfLjd/heR9JspiS7Nr0BQ==
+X-Gm-Gg: ASbGncsOXCYzJX+KMaKaNb/3uzLGTjwweAtEsd3+ZL7A7J2hs7AmiuL/CFUHFDAMb0F
+	6pw3C0v9/Dlj+5s+0Pj3h+838ntbrWs0ZpUxqbAh/PmH40Z5ueTY0UM4gX4fZKb2s4Us9A7vDIY
+	ky35ekKJXt/nOknUoqsZYlL1IdYrTYM+H2druOfeV6LJm2pkIH7Mi59wEGCWSvi/Us5fuGPSIS1
+	n6omsp65YiMwtJJknF+dw/atZfP6ntwZBcJ+AcdOwOlnGqhp4eYzbR9xvlirmMuwepLTuAZXgCj
+	7KoKOpKiIAH/gllvnqe/N66PZpwvgbgR3XH62Z8qBuR8HZaJ
+X-Received: by 2002:a05:6a20:6f96:b0:1f3:26ae:7792 with SMTP id adf61e73a8af0-2165f87234fmr31590426637.18.1747861494488;
+        Wed, 21 May 2025 14:04:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwyz7dPN3iVMEKuZm00Xxt7WNxKbvIPZRXOMsuu9ovK+uJlYmywLQxhYU5YAUcR5aa5ssk/g==
+X-Received: by 2002:a05:6a20:6f96:b0:1f3:26ae:7792 with SMTP id adf61e73a8af0-2165f87234fmr31590380637.18.1747861494053;
+        Wed, 21 May 2025 14:04:54 -0700 (PDT)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a982b7f3sm10057303b3a.87.2025.05.21.14.04.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 May 2025 14:04:53 -0700 (PDT)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: Jeff Johnson <jjohnson@kernel.org>, Kang Yang <quic_kangyang@quicinc.com>,
+        Wen Gong <quic_wgong@quicinc.com>,
+        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+        Baochen Qiang <quic_bqiang@quicinc.com>,
+        Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20250521-ath12k-fix-ah-regd_updated-v1-0-9737de5bf98e@oss.qualcomm.com>
+References: <20250521-ath12k-fix-ah-regd_updated-v1-0-9737de5bf98e@oss.qualcomm.com>
+Subject: Re: [PATCH ath-next 0/3] wifi: ath12k: fix several regdomain
+ update issues
+Message-Id: <174786149316.3123854.11064222745292053302.b4-ty@oss.qualcomm.com>
+Date: Wed, 21 May 2025 14:04:53 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250521021557.666611-1-rosenp@gmail.com> <20250521021557.666611-4-rosenp@gmail.com>
- <5de13266-d6d4-4497-8913-e442080702ed@kernel.org>
-In-Reply-To: <5de13266-d6d4-4497-8913-e442080702ed@kernel.org>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Wed, 21 May 2025 13:43:06 -0700
-X-Gm-Features: AX0GCFtCgtQspZEgjiG8yAwSQqWmuBRmHD0YqwzNjsX_MMXlabY3ueL4Vk3cb18
-Message-ID: <CAKxU2N9LJcX2AbCipk9nzHQhx=AKT2gUV8-Bk91BLzrUwfkGYw@mail.gmail.com>
-Subject: Re: [PATCH 3/4] wifi: ath9k: ahb: replace id_table with of
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-wireless@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, "open list:MIPS" <linux-mips@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0
+X-Proofpoint-ORIG-GUID: 7-nKUivInHN4E9NchPXBzPhakcpF1kXJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIxMDIwOSBTYWx0ZWRfX47Wqm8J15eIv
+ xyX5LVocZUgyc41Wb90aTjM9c5Vxv17/n5Uu9Nl/CAyWdQrGVTZ8G7wvmKz2GrHc3DYiSJAtqoL
+ XimwzGpL6YY+nJnAB8bUs9gTiwzBniYNQPYGRNgq52kNjgUGNUC274zTgUMV7pVYbyql7gsMVHm
+ 15gnBXu2fT2lE/64ZIwDN5VBnyC4YdFUgc8nwkJBdyuBf+n02xWiYdi/HzUPs4TKt7jrne1YSJ0
+ ywaiZteQB38IjW346R+DNRokFi54XZq+oR/s4WOU6qMoxPASitdb6HeOCJizuyL1lg2iyp7uSXq
+ EmNl+DNQhtJVLKcZpg/tYyuyaR3SpnG2OkYTMzeRPMefDtEeXMa1VBTRCkL1BLa1YjXT/flUk9T
+ Z2KC++wn/8U1a2Q3e3QX7pf9ZIVRK47CFq60LYTZnmi6Zmq81+yRFVhFTWdXY0X3CEUPCnsx
+X-Authority-Analysis: v=2.4 cv=GawXnRXL c=1 sm=1 tr=0 ts=682e3ff7 cx=c_pps
+ a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=EUspDBNiAAAA:8 a=qE4HOfYLDg8APkTHxjoA:9
+ a=QEXdDO2ut3YA:10 a=2VI0MkxyNR6bbpdq8BZq:22
+X-Proofpoint-GUID: 7-nKUivInHN4E9NchPXBzPhakcpF1kXJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-21_07,2025-05-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 clxscore=1015 malwarescore=0 phishscore=0 bulkscore=0
+ spamscore=0 suspectscore=0 adultscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505160000 definitions=main-2505210209
 
-On Wed, May 21, 2025 at 4:08=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
->
-> On 21/05/2025 04:15, Rosen Penev wrote:
-> > -             .name =3D "qca955x_wmac",
-> > -             .driver_data =3D AR9300_DEVID_QCA955X,
-> > -     },
-> > -     {
-> > -             .name =3D "qca953x_wmac",
-> > -             .driver_data =3D AR9300_DEVID_AR953X,
-> > -     },
-> > -     {
-> > -             .name =3D "qca956x_wmac",
-> > -             .driver_data =3D AR9300_DEVID_QCA956X,
-> > -     },
-> > +static const struct of_device_id ath9k_of_match_table[] =3D {
-> > +     { .compatible =3D "qca,ar9130-wmac", .data =3D (void *)AR5416_AR9=
-100_DEVID },
-> > +     { .compatible =3D "qca,ar9330-wmac", .data =3D (void *)AR9300_DEV=
-ID_AR9330 },
-> > +     { .compatible =3D "qca,ar9340-wmac", .data =3D (void *)AR9300_DEV=
-ID_AR9340 },
-> > +     { .compatible =3D "qca,qca9530-wmac", .data =3D (void *)AR9300_DE=
-VID_AR953X },
-> > +     { .compatible =3D "qca,qca9550-wmac", .data =3D (void *)AR9300_DE=
-VID_QCA955X },
-> > +     { .compatible =3D "qca,qca9560-wmac", .data =3D (void *)AR9300_DE=
-VID_QCA956X },
->
-> Undocumented ABI.
-Hrm wonder where to document.
 
-Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+On Wed, 21 May 2025 22:29:28 +0530, Aditya Kumar Singh wrote:
+> Following commit 4c546023d71a ("wifi: ath12k: update regulatory rules when
+> interface added"), the WCN7850 fails to connect to a 6 GHz AP due to
+> ah->regd_updated not being reset. This issue is addressed in patch 1.
+> 
+> For the same reason, regulatory domain updates also fail during interface
+> addition and connection establishment. These issues are resolved in
+> patches 2 and 3, respectively.
+> 
+> [...]
 
-sounds like the place but that file looks like it's for pci(e) only.
-This patch adds the bindings to ahb, not pci(e).
->
-> Please run scripts/checkpatch.pl on the patches and fix reported
-> warnings. After that, run also 'scripts/checkpatch.pl --strict' on the
-> patches and (probably) fix more warnings. Some warnings can be ignored,
-> especially from --strict run, but the code here looks like it needs a
-> fix. Feel free to get in touch if the warning is not clear.
->
->
-> >       {},
-> >  };
-> >
-> > @@ -72,20 +55,16 @@ static const struct ath_bus_ops ath_ahb_bus_ops  =
-=3D {
-> >
-> >  static int ath_ahb_probe(struct platform_device *pdev)
-> >  {
-> > -     const struct platform_device_id *id =3D platform_get_device_id(pd=
-ev);
-> > +     const struct of_device_id *match;
-> >       struct ieee80211_hw *hw;
-> >       struct ath_softc *sc;
-> >       struct ath_hw *ah;
-> >       void __iomem *mem;
-> >       char hw_name[64];
-> > +     u16 dev_id;
-> >       int irq;
-> >       int ret;
-> >
-> > -     if (!dev_get_platdata(&pdev->dev)) {
-> > -             dev_err(&pdev->dev, "no platform data specified\n");
-> > -             return -EINVAL;
-> > -     }
-> > -
-> >       mem =3D devm_platform_ioremap_resource(pdev, 0);
-> >       if (IS_ERR(mem)) {
-> >               dev_err(&pdev->dev, "ioremap failed\n");
-> > @@ -118,7 +97,9 @@ static int ath_ahb_probe(struct platform_device *pde=
-v)
-> >               goto err_free_hw;
-> >       }
-> >
-> > -     ret =3D ath9k_init_device(id->driver_data, sc, &ath_ahb_bus_ops);
-> > +     match =3D of_match_device(ath9k_of_match_table, &pdev->dev);
->
-> There is a wrapper for getting data, use it.
-I assume you mean of_device_get_match_data. Will do.
->
-> > +     dev_id =3D (uintptr_t)match->data;
->
-> And dev_id is enum? Then you want kernel_ulong_t.
-The entries specified in data are macros in the form of 0xYYYY. This
-is why I used u16. The ath9k_init_device takes an int here.
+Applied, thanks!
 
-Interestingly enough in the newer ath drivers, it looks like these
-macros are placed in an enum. ath9k uses a u16 field in the struct.
+[1/3] wifi: ath12k: fix regdomain update failure after 11D scan completes
+      commit: d662c14a51910ba0ad66afd248b601ba30b9f7f1
+[2/3] wifi: ath12k: fix regdomain update failure when adding interface
+      commit: 37e775a0a9d79a031d28d9e21480f99f448e9215
+[3/3] wifi: ath12k: fix regdomain update failure when connection establishes
+      commit: 886bb3624e4c9914a943b63fcfdf30b8d2f2b66e
 
-As for kernel_ulong_t, ath12k uses that, ath10k uintptr_t. I assume
-the former is more appropriate.
->
->
->
->
-> Best regards,
-> Krzysztof
+Best regards,
+-- 
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+
 
